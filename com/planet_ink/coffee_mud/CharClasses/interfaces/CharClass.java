@@ -642,6 +642,8 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	public static final int WEAPONS_ALLCLERIC=10;
 	/** constant returned by allowedWeaponLevel() to designate flails only. @see com.planet_ink.coffee_mud.CharClass.StdCharClass#allowedWeaponLevel() */
 	public static final int WEAPONS_FLAILONLY=11;
+	/** constant returned by allowedWeaponLevel() to designate natural weapons only. @see com.planet_ink.coffee_mud.CharClass.StdCharClass#allowedWeaponLevel() */
+	public static final int WEAPONS_MERLIKE=12;
 	/** constant set of integer arrays defining the Weapon.CLASS_* constants for the CharClass.WEAPONS_* constants, ordered by CharClass.WEAPONS_* values. */
 	public static final int[][] WEAPONS_SETS={
 /*0*/{Weapon.CLASS_AXE,Weapon.CLASS_BLUNT,Weapon.CLASS_DAGGER,Weapon.CLASS_EDGED,Weapon.CLASS_FLAILED,Weapon.CLASS_HAMMER,Weapon.CLASS_NATURAL,Weapon.CLASS_POLEARM,Weapon.CLASS_RANGED,Weapon.CLASS_STAFF,Weapon.CLASS_SWORD,Weapon.CLASS_THROWN},
@@ -656,6 +658,7 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 /*9*/{Weapon.CLASS_BLUNT,Weapon.CLASS_RANGED,Weapon.CLASS_THROWN,Weapon.CLASS_STAFF,Weapon.CLASS_NATURAL,Weapon.CLASS_SWORD},
 /*10*/{Weapon.CLASS_AXE,Weapon.CLASS_BLUNT,Weapon.CLASS_DAGGER,Weapon.CLASS_EDGED,Weapon.CLASS_FLAILED,Weapon.CLASS_HAMMER,Weapon.CLASS_NATURAL,Weapon.CLASS_POLEARM,Weapon.CLASS_RANGED,Weapon.CLASS_STAFF,Weapon.CLASS_SWORD,Weapon.CLASS_THROWN},
 /*11*/{Weapon.CLASS_NATURAL,Weapon.CLASS_FLAILED},
+/*12*/{Weapon.CLASS_POLEARM,RawMaterial.MATERIAL_WOODEN,RawMaterial.MATERIAL_UNKNOWN,RawMaterial.MATERIAL_VEGETATION,RawMaterial.MATERIAL_FLESH,RawMaterial.MATERIAL_LEATHER},
 	};
 	/** list of string descriptions for the CharClass.WEAPONS_* constants, ordered by their value.  @see CharClass */
 	public static final String[] WEAPONS_LONGDESC=CMLib.lang().sessionTranslation(new String[]{
@@ -670,7 +673,8 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 /*8*/"Must use hammers, staves, flailed, natural, or blunt weapons.",
 /*9*/"Must use swords, staves, natural, ranged, or blunt weapons",
 /*10*/"Evil must use polearm, sword, axe, edged, or daggers.  Neutral must use blunt, ranged, thrown, staff, natural, or sword.  Good must use blunt, flailed, natural, staff, or hammer.",
-/*11*/"Must use flailed weapons."
+/*11*/"Must use flailed weapons.",
+/*12*/"May use polearms of any kind or other weapons made from wood, plant-based materials, or leather.",
 	});
 
 	/** for character classes that define themselves using getParms, this can designate racelessness bitmaps */

@@ -24,6 +24,8 @@
   23. New Locale type: Whirlpool.
   24. Autoreaction ranges adjusted, and aggressive tagged to only affect near levels
   25. New Aggressive/MobileAgressive flag: CHECKLEVEL, see help on those behaviors.
+  26. Archon wands/staffs now have GAIN ability to grant spells
+  27. New Druid sub-class: Mer
 # Build 5.9.1 Released 01/04/2016
    1. "Who accounts", used by an archon, can quickly list the account name of each player online.
    2. New Achievement event "GOTITEM", and new rewards (see new stats below and achievements.ini)

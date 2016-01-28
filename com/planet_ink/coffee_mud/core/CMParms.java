@@ -2781,6 +2781,27 @@ public class CMParms
 	}
 
 	/**
+	 * Returns the index of the first of the given numbers in the given array.
+	 * @param theList the int array
+	 * @param xs the numbers to search for
+	 * @return the index of the number in the list, or -1 if not found
+	 */
+	public final static int indexOfFirst(final int[] theList, final int[] xs)
+	{
+		if(theList==null) 
+			return -1;
+		for(int i=0;i<theList.length;i++)
+		{
+			for(final int x : xs)
+			{
+				if(theList[i]==x)
+					return i;
+			}
+		}
+		return -1;
+	}
+	
+	/**
 	 * Returns the index of the given byte in the given array.
 	 * @param theList the byte array
 	 * @param x the byte to search for
@@ -2899,6 +2920,27 @@ public class CMParms
 	}
 
 	/**
+	 * Returns the index of the first of the given Objects in the given array.
+	 * @param theList the Object array
+	 * @param objs the Objects to search for
+	 * @return the index of the Object in the list, or -1 if not found
+	 */
+	public final static int indexOfFirst(final Object[] theList, final Object[] objs)
+	{
+		if((theList==null)||(objs==null)) 
+			return -1;
+		for(int i=0;i<theList.length;i++)
+		{
+			for(final Object y : objs)
+			{
+				if(theList[i].equals(y))
+					return i;
+			}
+		}
+		return -1;
+	}
+	
+	/**
 	 * Returns the index of the given Object appears in the given list.
 	 * @param theList the list
 	 * @param obj the Object to search for
@@ -2911,8 +2953,10 @@ public class CMParms
 		if(obj==null) 
 			return -1;
 		for(int i=0;i<theList.length;i++)
+		{
 			if(theList[i].equals(obj))
 				return i;
+		}
 		return -1;
 	}
 
@@ -3070,6 +3114,17 @@ public class CMParms
 	}
 
 	/**
+	 * Returns whether any of the given given Objects appears in the given list.
+	 * @param theList the list
+	 * @param objs the Objects to search for
+	 * @return true if the Object is in the list, false otherwise
+	 */
+	public final static boolean contains(final Object[] theList, final Object[] objs)
+	{
+		return indexOfFirst(theList,objs)>=0;
+	}
+
+	/**
 	 * Returns whether the given int appears in the given list.
 	 * @param theList the list
 	 * @param x the int to search for
@@ -3078,6 +3133,17 @@ public class CMParms
 	public final static boolean contains(final int[] theList, final int x)
 	{
 		return indexOf(theList,x)>=0;
+	}
+
+	/**
+	 * Returns whether any of the given ints appears in the given list.
+	 * @param theList the list
+	 * @param xs the ints to search for
+	 * @return true if the int is in the list, false otherwise
+	 */
+	public final static boolean contains(final int[] theList, final int[] xs)
+	{
+		return indexOfFirst(theList,xs)>=0;
 	}
 
 	/**

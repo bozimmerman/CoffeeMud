@@ -84,7 +84,7 @@ public class Chant_SummonJellyfish extends Chant
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_SPELL | Ability.DOMAIN_ANIMALAFFINITY;
+		return Ability.ACODE_CHANT | Ability.DOMAIN_ANIMALAFFINITY;
 	}
 
 	protected MOB theJellyfish = null;

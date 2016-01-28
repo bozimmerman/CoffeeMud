@@ -1,4 +1,5 @@
 package com.planet_ink.coffee_mud.Items.MiscMagic;
+import java.util.Enumeration;
 import java.util.List;
 
 import com.planet_ink.coffee_mud.core.interfaces.*;
@@ -13,6 +14,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.AbilityMapping;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -36,7 +38,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 public class WandArchon extends StdWand implements ArchonOnly
 {
 	@Override public String ID(){    return "WandArchon";}
-	protected final static String[] MAGIC_WORDS={"LEVEL","RESTORE","REFRESH","BLAST","BURN"};
+	protected final static String[] MAGIC_WORDS={"LEVEL","RESTORE","REFRESH","BLAST","BURN","GAIN"};
 	public WandArchon()
 	{
 		super();
@@ -49,21 +51,21 @@ public class WandArchon extends StdWand implements ArchonOnly
 		baseGoldValue=20000;
 		material=RawMaterial.RESOURCE_OAK;
 		recoverPhyStats();
-		secretWord="REFRESH, RESTORE, BLAST, LEVEL X UP, LEVEL X DOWN, BURN";
+		secretWord="REFRESH, RESTORE, BLAST, LEVEL X UP, LEVEL X DOWN, BURN, GAIN X UP";
 	}
 
 	@Override
 	public void setSpell(Ability theSpell)
 	{
 		super.setSpell(theSpell);
-		secretWord="REFRESH, BLAST, LEVEL X UP, LEVEL X DOWN, BURN";
+		secretWord="REFRESH, BLAST, LEVEL X UP, LEVEL X DOWN, BURN, GAIN X UP";
 	}
 
 	@Override
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
-		secretWord="REFRESH, BLAST, LEVEL X UP, LEVEL X DOWN, BURN";
+		secretWord="REFRESH, BLAST, LEVEL X UP, LEVEL X DOWN, BURN, GAIN X UP";
 	}
 
 	@Override
@@ -209,6 +211,70 @@ public class WandArchon extends StdWand implements ArchonOnly
 							CMLib.leveler().level(target);
 						else
 							CMLib.leveler().postExperience(target,null,null,target.getExpNeededLevel()+1,false);
+					}
+					return;
+				}
+				else
+				if(message.startsWith("GAIN ")&&message.endsWith(" UP"))
+				{
+					if(!safetyCheck(mob,message))
+						return;
+					message=message.substring(5).trim();
+					message=message.substring(0,message.length()-2).trim();
+					if((message.length()>0)&&(!message.equalsIgnoreCase("ALL"))) 
+					{
+						Ability A=CMClass.getAbility(message);
+						if(A==null)
+							A=CMClass.findAbility(message);
+						if(A==null)
+							mob.tell(L("There is no such skill as @x1.",message.toLowerCase()));
+						else
+						if((target.fetchAbility(A.ID())!=null)&&(target.fetchAbility(A.ID()).proficiency()>=100))
+							mob.tell(L("@x1 is already proficient in @x2.",target.Name(),message.toLowerCase()));
+						else
+						{
+							mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("@x1 glows brightly at <T-NAME>.",this.name()));
+							if(target.fetchAbility(ID())!=null)
+								target.fetchAbility(ID()).setProficiency(100);
+							else
+							{
+								A.setProficiency(100);
+								target.addAbility(A);
+								A.setSavable(true);
+								A.autoInvocation(target, false);
+							}
+						}
+					} 
+					else 
+					{
+						final CharClass C=target.charStats().getCurrentClass();
+						boolean didSomething = false;
+						for(Enumeration<AbilityMapping> amap = CMLib.ableMapper().getClassAbles(C.ID(), true);amap.hasMoreElements();)
+						{
+							AbilityMapping map = amap.nextElement();
+							if(target.fetchAbility(map.abilityID()) != null)
+							{
+								Ability A=target.fetchAbility(map.abilityID());
+								if(A.proficiency()<100)
+								{
+									A.setProficiency(100);
+									didSomething = true;
+								}
+							}
+							else
+							{
+								Ability A=CMClass.getAbility(map.abilityID());
+								A.setSavable(true);
+								A.setProficiency(100);
+								A.setMiscText(map.defaultParm());
+								target.addAbility(A);
+								A.autoInvocation(target, false);
+								didSomething = true;
+							}
+						}
+						if(didSomething)
+							mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("@x1 glows brightly at <T-NAME>.",this.name()));
+						
 					}
 					return;
 				}
