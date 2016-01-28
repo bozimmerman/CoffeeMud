@@ -37,20 +37,71 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Mood extends StdAbility
 {
-	@Override public String ID() { return "Mood"; }
-	private final static String localizedName = CMLib.lang().L("Mood");
-	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return (moodCode<=0)?"":"(In "+CMLib.english().startWithAorAn(MOODS[moodCode][0].toLowerCase())+" mood)";}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
-	@Override public int classificationCode(){return Ability.ACODE_PROPERTY;}
-	@Override public boolean isAutoInvoked(){return true;}
-	@Override public boolean canBeUninvoked(){return false;}
-	protected int moodCode=-1;
-	protected Object lastOne=null;
-	protected CMMsg lastMsg=null;
-	public static final String[] BOAST_CHANNELS={"BOAST","GRATZ","ANNOUNCE","GOSSIP","OOC","CHAT"};
+	@Override
+	public String ID()
+	{
+		return "Mood";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Mood");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public String displayText()
+	{
+		return (moodCode <= 0) ? "" : "(In " + CMLib.english().startWithAorAn(MOODS[moodCode][0].toLowerCase()) + " mood)";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_SELF;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PROPERTY;
+	}
+
+	@Override
+	public boolean isAutoInvoked()
+	{
+		return true;
+	}
+
+	@Override
+	public boolean canBeUninvoked()
+	{
+		return false;
+	}
+
+	protected int		moodCode	= -1;
+	protected Object	lastOne		= null;
+	protected CMMsg		lastMsg		= null;
+	
+	public static final String[] BOAST_CHANNELS=
+	{
+		"BOAST","GRATZ","ANNOUNCE","GOSSIP","OOC","CHAT"
+	};
+	
 	public static final String[][] MOODS={
 		/*0 */{"FORMAL","+ADJCHA 17","^Bformal","formally"},
 		/*1 */{"POLITE","+ADJCHA 13","^Bpolite","politely"},
@@ -66,35 +117,36 @@ public class Mood extends StdAbility
 		/*11*/{"LONELY","","^Clonely","lonely"},
 	};
 
-	public final static String[] uglyPhrases={
-	"orc-brain",
-	"jerk",
-	"dork",
-	"dim-wit",
-	"excremental waste",
-	"squeegy",
-	"ding-dong",
-	"female-dog",
-	"smelly dork",
-	"geek",
-	"illegitimate offspring",
-	"gluteous maximus cavity",
-	"uncle copulator",
-	"ugly yokle",
-	"brainless goop",
-	"stupid noodle",
-	"stupid ugly-bottom",
-	"pig-dog",
-	"son of a silly person",
-	"silly K...kanigget",
-	"empty-headed animal",
-	"food trough wiper",
-	"perfidious mousedropping hoarder",
-	"son of a window-dresser",
-	"brightly-colored, mealy-templed, cranberry-smeller",
-	"electric donkey-bottom biter",
-	"bed-wetting type",
-	"tiny-brained wiper of other people`s bottoms"
+	public final static String[] uglyPhrases=
+	{
+		"orc-brain",
+		"jerk",
+		"dork",
+		"dim-wit",
+		"excremental waste",
+		"squeegy",
+		"ding-dong",
+		"female-dog",
+		"smelly dork",
+		"geek",
+		"illegitimate offspring",
+		"gluteous maximus cavity",
+		"uncle copulator",
+		"ugly yokle",
+		"brainless goop",
+		"stupid noodle",
+		"stupid ugly-bottom",
+		"pig-dog",
+		"son of a silly person",
+		"silly K...kanigget",
+		"empty-headed animal",
+		"food trough wiper",
+		"perfidious mousedropping hoarder",
+		"son of a window-dresser",
+		"brightly-colored, mealy-templed, cranberry-smeller",
+		"electric donkey-bottom biter",
+		"bed-wetting type",
+		"tiny-brained wiper of other people`s bottoms"
 	};
 
 	@Override
@@ -116,8 +168,10 @@ public class Mood extends StdAbility
 			}
 			else
 			for(int i=0;i<MOODS.length;i++)
+			{
 				if(MOODS[i][0].equalsIgnoreCase(newText))
 					moodCode=i;
+			}
 			if(moodCode<0)
 				newText="";
 		}
@@ -156,6 +210,7 @@ public class Mood extends StdAbility
 			return msg.substring(0,y)+to+msg.substring(y+6);
 		return msg;
 	}
+	
 	private void changeAllSays(CMMsg msg, String to)
 	{
 		msg.setSourceMessage(changeSay(msg.sourceMessage(),to));
@@ -176,12 +231,14 @@ public class Mood extends StdAbility
 			return null;
 		if(R.numInhabitants()==2)
 		for(int r=0;r<R.numInhabitants();r++)
+		{
 			if(R.fetchInhabitant(r)!=mob)
 				return R.fetchInhabitant(r);
+		}
 		if((lastOne instanceof MOB)&&(R.isInhabitant((MOB)lastOne)))
 			return (MOB)lastOne;
-		final Vector<MOB> players=new Vector<MOB>();
-		final Vector<MOB> mobs=new Vector<MOB>();
+		final List<MOB> players=new ArrayList<MOB>(R.numInhabitants());
+		final ArrayList<MOB> mobs=new ArrayList<MOB>(R.numInhabitants());
 		MOB M=null;
 		for(int r=0;r<R.numInhabitants();r++)
 		{
@@ -189,18 +246,18 @@ public class Mood extends StdAbility
 			if((M!=mob)&&(M!=null))
 			{
 				if(M.isMonster())
-					mobs.addElement(M);
+					mobs.add(M);
 				else
 				if(!M.isMonster())
-					players.addElement(M);
+					players.add(M);
 			}
 		}
 		if(players.size()==1)
-			return players.firstElement();
+			return players.get(0);
 		if(players.size()>1)
 			return null;
 		if(mobs.size()==1)
-			return mobs.firstElement();
+			return mobs.get(0);
 		return null;
 	}
 
@@ -358,16 +415,36 @@ public class Mood extends StdAbility
 						str=CMStrings.endWithAPeriod(str);
 						switch(CMLib.dice().roll(1,15,0))
 						{
-						case 1: changeAllSays(msg,"state(s)"); break;
-						case 2: changeAllSays(msg,"declare(s)"); break;
-						case 3: changeAllSays(msg,"announces(s)"); break;
-						case 4: changeAllSays(msg,"elucidate(s)"); break;
-						case 5: changeAllSays(msg,"enunciate(s)"); break;
-						case 6: changeAllSays(msg,"indicate(s)"); break;
-						case 7: changeAllSays(msg,"communicate(s)"); break;
-						case 8: changeAllSays(msg,"avow(s)"); break;
-						case 9: changeAllSays(msg,"inform(s)"); break;
-						case 10: changeAllSays(msg,"propound(s)"); break;
+						case 1:
+							changeAllSays(msg, "state(s)");
+							break;
+						case 2:
+							changeAllSays(msg, "declare(s)");
+							break;
+						case 3:
+							changeAllSays(msg, "announces(s)");
+							break;
+						case 4:
+							changeAllSays(msg, "elucidate(s)");
+							break;
+						case 5:
+							changeAllSays(msg, "enunciate(s)");
+							break;
+						case 6:
+							changeAllSays(msg, "indicate(s)");
+							break;
+						case 7:
+							changeAllSays(msg, "communicate(s)");
+							break;
+						case 8:
+							changeAllSays(msg, "avow(s)");
+							break;
+						case 9:
+							changeAllSays(msg, "inform(s)");
+							break;
+						case 10:
+							changeAllSays(msg, "propound(s)");
+							break;
 						default:
 							break;
 						}
@@ -383,13 +460,27 @@ public class Mood extends StdAbility
 						}
 						switch(CMLib.dice().roll(1,5,0))
 						{
-						case 1: str=L("If you please, @x1",str); break;
-						case 2: str=L("@x1 Thank you.",CMStrings.endWithAPeriod(str)); break;
-						case 3: str=L("@x1 If you please.",CMStrings.endWithAPeriod(str)); break;
-						case 4: str=L("Forgive me but, @x1",str); break;
-						case 5: str=L("If I may, @x1",str); break;
-						case 6: str=L("Please, @x1",str); break;
-						case 7: str=L("Humbly speaking, @x1",str); break;
+						case 1:
+							str = L("If you please, @x1", str);
+							break;
+						case 2:
+							str = L("@x1 Thank you.", CMStrings.endWithAPeriod(str));
+							break;
+						case 3:
+							str = L("@x1 If you please.", CMStrings.endWithAPeriod(str));
+							break;
+						case 4:
+							str = L("Forgive me but, @x1", str);
+							break;
+						case 5:
+							str = L("If I may, @x1", str);
+							break;
+						case 6:
+							str = L("Please, @x1", str);
+							break;
+						case 7:
+							str = L("Humbly speaking, @x1", str);
+							break;
 						default:
 							if(msg.source().charStats().getStat(CharStats.STAT_GENDER)=='F')
 							{
@@ -407,10 +498,18 @@ public class Mood extends StdAbility
 						}
 						switch(CMLib.dice().roll(1,5,0))
 						{
-						case 1: changeAllSays(msg,"politely say(s)"); break;
-						case 2: changeAllSays(msg,"humbly say(s)"); break;
-						case 3: changeAllSays(msg,"meekly say(s)"); break;
-						case 4: changeAllSays(msg,"politely say(s)"); break;
+						case 1:
+							changeAllSays(msg, "politely say(s)");
+							break;
+						case 2:
+							changeAllSays(msg, "humbly say(s)");
+							break;
+						case 3:
+							changeAllSays(msg, "meekly say(s)");
+							break;
+						case 4:
+							changeAllSays(msg, "politely say(s)");
+							break;
 						default:
 							break;
 						}
@@ -426,13 +525,27 @@ public class Mood extends StdAbility
 						}
 						switch(CMLib.dice().roll(1,7,0))
 						{
-						case 1: changeAllSays(msg,"laugh(s)"); break;
-						case 2: changeAllSays(msg,"smile(s)"); break;
-						case 3: changeAllSays(msg,"beam(s)"); break;
-						case 4: changeAllSays(msg,"cheerfully say(s)"); break;
-						case 5: changeAllSays(msg,"happily say(s)"); break;
-						case 6: changeAllSays(msg,"playfully say(s)"); break;
-						case 7: changeAllSays(msg,"sweetly say(s)"); break;
+						case 1:
+							changeAllSays(msg, "laugh(s)");
+							break;
+						case 2:
+							changeAllSays(msg, "smile(s)");
+							break;
+						case 3:
+							changeAllSays(msg, "beam(s)");
+							break;
+						case 4:
+							changeAllSays(msg, "cheerfully say(s)");
+							break;
+						case 5:
+							changeAllSays(msg, "happily say(s)");
+							break;
+						case 6:
+							changeAllSays(msg, "playfully say(s)");
+							break;
+						case 7:
+							changeAllSays(msg, "sweetly say(s)");
+							break;
 						}
 						break;
 					}
@@ -446,13 +559,27 @@ public class Mood extends StdAbility
 						}
 						switch(CMLib.dice().roll(1,10,0))
 						{
-						case 1: changeAllSays(msg,"sigh(s)"); break;
-						case 2: changeAllSays(msg,"cr(ys)"); break;
-						case 3: changeAllSays(msg,"sob(s)"); break;
-						case 4: changeAllSays(msg,"sadly say(s)"); break;
-						case 5: changeAllSays(msg,"moap(s)"); break;
-						case 6: changeAllSays(msg,"sulk(s)"); break;
-						case 7: changeAllSays(msg,"ache(s)"); break;
+						case 1:
+							changeAllSays(msg, "sigh(s)");
+							break;
+						case 2:
+							changeAllSays(msg, "cr(ys)");
+							break;
+						case 3:
+							changeAllSays(msg, "sob(s)");
+							break;
+						case 4:
+							changeAllSays(msg, "sadly say(s)");
+							break;
+						case 5:
+							changeAllSays(msg, "moap(s)");
+							break;
+						case 6:
+							changeAllSays(msg, "sulk(s)");
+							break;
+						case 7:
+							changeAllSays(msg, "ache(s)");
+							break;
 						default:
 							break;
 						}
@@ -462,13 +589,27 @@ public class Mood extends StdAbility
 					{
 						switch(CMLib.dice().roll(1,10,0))
 						{
-						case 1: changeAllSays(msg,"growl(s)"); break;
-						case 2: changeAllSays(msg,"snarl(s)"); break;
-						case 3: changeAllSays(msg,"rage(s)"); break;
-						case 4: changeAllSays(msg,"snap(s)"); break;
-						case 5: changeAllSays(msg,"roar(s)"); break;
-						case 6: changeAllSays(msg,"yell(s)"); break;
-						case 7: changeAllSays(msg,"angrily say(s)"); break;
+						case 1:
+							changeAllSays(msg, "growl(s)");
+							break;
+						case 2:
+							changeAllSays(msg, "snarl(s)");
+							break;
+						case 3:
+							changeAllSays(msg, "rage(s)");
+							break;
+						case 4:
+							changeAllSays(msg, "snap(s)");
+							break;
+						case 5:
+							changeAllSays(msg, "roar(s)");
+							break;
+						case 6:
+							changeAllSays(msg, "yell(s)");
+							break;
+						case 7:
+							changeAllSays(msg, "angrily say(s)");
+							break;
 						case 8:
 							if(M!=null)
 								msg.source().doCommand(new XVector<String>("GRUMBLE",M.Name()),MUDCmdProcessor.METAFLAG_FORCED);
@@ -485,16 +626,36 @@ public class Mood extends StdAbility
 					{
 						switch(CMLib.dice().roll(1,10,0))
 						{
-						case 1: changeAllSays(msg,"sneer(s)"); break;
-						case 2: changeAllSays(msg,"jeer(s)"); break;
-						case 3: changeAllSays(msg,"sniff(s)"); break;
-						case 4: changeAllSays(msg,"disdainfully say(s)"); break;
-						case 5: changeAllSays(msg,"insultingly say(s)"); break;
-						case 6: changeAllSays(msg,"scoff(s)"); break;
-						case 7: changeAllSays(msg,"rudely say(s)"); break;
-						case 8: changeAllSays(msg,"gibe(s)"); break;
-						case 9: changeAllSays(msg,"mockingly say(s)"); break;
-						case 10: changeAllSays(msg,"interrupt(s)"); break;
+						case 1:
+							changeAllSays(msg, "sneer(s)");
+							break;
+						case 2:
+							changeAllSays(msg, "jeer(s)");
+							break;
+						case 3:
+							changeAllSays(msg, "sniff(s)");
+							break;
+						case 4:
+							changeAllSays(msg, "disdainfully say(s)");
+							break;
+						case 5:
+							changeAllSays(msg, "insultingly say(s)");
+							break;
+						case 6:
+							changeAllSays(msg, "scoff(s)");
+							break;
+						case 7:
+							changeAllSays(msg, "rudely say(s)");
+							break;
+						case 8:
+							changeAllSays(msg, "gibe(s)");
+							break;
+						case 9:
+							changeAllSays(msg, "mockingly say(s)");
+							break;
+						case 10:
+							changeAllSays(msg, "interrupt(s)");
+							break;
 						default:
 							break;
 						}
@@ -504,16 +665,36 @@ public class Mood extends StdAbility
 					{
 						switch(CMLib.dice().roll(1,10,0))
 						{
-						case 1: changeAllSays(msg,"sneer(s)"); break;
-						case 2: changeAllSays(msg,"jeer(s)"); break;
-						case 3: changeAllSays(msg,"sniff(s)"); break;
-						case 4: changeAllSays(msg,"disdainfully say(s)"); break;
-						case 5: changeAllSays(msg,"insultingly say(s)"); break;
-						case 6: changeAllSays(msg,"scoff(s)"); break;
-						case 7: changeAllSays(msg,"meanly say(s)"); break;
-						case 8: changeAllSays(msg,"gibe(s)"); break;
-						case 9: changeAllSays(msg,"mockingly say(s)"); break;
-						case 10: changeAllSays(msg,"tauntingly say(s)"); break;
+						case 1:
+							changeAllSays(msg, "sneer(s)");
+							break;
+						case 2:
+							changeAllSays(msg, "jeer(s)");
+							break;
+						case 3:
+							changeAllSays(msg, "sniff(s)");
+							break;
+						case 4:
+							changeAllSays(msg, "disdainfully say(s)");
+							break;
+						case 5:
+							changeAllSays(msg, "insultingly say(s)");
+							break;
+						case 6:
+							changeAllSays(msg, "scoff(s)");
+							break;
+						case 7:
+							changeAllSays(msg, "meanly say(s)");
+							break;
+						case 8:
+							changeAllSays(msg, "gibe(s)");
+							break;
+						case 9:
+							changeAllSays(msg, "mockingly say(s)");
+							break;
+						case 10:
+							changeAllSays(msg, "tauntingly say(s)");
+							break;
 						default:
 							break;
 						}
@@ -549,9 +730,15 @@ public class Mood extends StdAbility
 						}
 						switch(CMLib.dice().roll(1,5,0))
 						{
-						case 1: changeAllSays(msg,"boast(s)"); break;
-						case 2: changeAllSays(msg,"announce(s)"); break;
-						case 3: changeAllSays(msg,"proudly say(s)"); break;
+						case 1:
+							changeAllSays(msg, "boast(s)");
+							break;
+						case 2:
+							changeAllSays(msg, "announce(s)");
+							break;
+						case 3:
+							changeAllSays(msg, "proudly say(s)");
+							break;
 						default:
 							break;
 						}
@@ -567,8 +754,12 @@ public class Mood extends StdAbility
 						}
 						switch(CMLib.dice().roll(1,2,0))
 						{
-						case 1: changeAllSays(msg,"mutter(s)"); break;
-						case 2: changeAllSays(msg,"grumble(s)"); break;
+						case 1:
+							changeAllSays(msg, "mutter(s)");
+							break;
+						case 2:
+							changeAllSays(msg, "grumble(s)");
+							break;
 						default:
 							break;
 						}
@@ -584,10 +775,18 @@ public class Mood extends StdAbility
 						}
 						switch(CMLib.dice().roll(1,5,0))
 						{
-						case 1: changeAllSays(msg,"shout(s)"); break;
-						case 2: changeAllSays(msg,"blurt(s)"); break;
-						case 3: changeAllSays(msg,"screech(es)"); break;
-						case 4: changeAllSays(msg,"excitedly say(s)"); break;
+						case 1:
+							changeAllSays(msg, "shout(s)");
+							break;
+						case 2:
+							changeAllSays(msg, "blurt(s)");
+							break;
+						case 3:
+							changeAllSays(msg, "screech(es)");
+							break;
+						case 4:
+							changeAllSays(msg, "excitedly say(s)");
+							break;
 						case 5:
 							if(M!=null)
 								msg.source().doCommand(new XVector<String>("FIDGET",M.Name()),MUDCmdProcessor.METAFLAG_FORCED);
@@ -615,11 +814,21 @@ public class Mood extends StdAbility
 						}
 						switch(CMLib.dice().roll(1,6,0))
 						{
-						case 1: changeAllSays(msg,"meekly say(s)"); break;
-						case 2: changeAllSays(msg,"stutter(s)"); break;
-						case 3: changeAllSays(msg,", shivering, say(s)"); break;
-						case 4: changeAllSays(msg,"squeek(s)"); break;
-						case 5: changeAllSays(msg,"barely say(s)"); break;
+						case 1:
+							changeAllSays(msg, "meekly say(s)");
+							break;
+						case 2:
+							changeAllSays(msg, "stutter(s)");
+							break;
+						case 3:
+							changeAllSays(msg, ", shivering, say(s)");
+							break;
+						case 4:
+							changeAllSays(msg, "squeek(s)");
+							break;
+						case 5:
+							changeAllSays(msg, "barely say(s)");
+							break;
 						case 6:
 							if(M!=null)
 								msg.source().doCommand(new XVector<String>("WINCE",M.Name()),MUDCmdProcessor.METAFLAG_FORCED);
@@ -641,11 +850,21 @@ public class Mood extends StdAbility
 						}
 						switch(CMLib.dice().roll(1,5,0))
 						{
-						case 1: changeAllSays(msg,"sigh(s)"); break;
-						case 2: changeAllSays(msg,"whisper(s)"); break;
-						case 3: changeAllSays(msg,", alone, say(s)"); break;
-						case 4: changeAllSays(msg,"mutter(s)"); break;
-						case 5: changeAllSays(msg,"whine(s)"); break;
+						case 1:
+							changeAllSays(msg, "sigh(s)");
+							break;
+						case 2:
+							changeAllSays(msg, "whisper(s)");
+							break;
+						case 3:
+							changeAllSays(msg, ", alone, say(s)");
+							break;
+						case 4:
+							changeAllSays(msg, "mutter(s)");
+							break;
+						case 5:
+							changeAllSays(msg, "whine(s)");
+							break;
 						default:
 							break;
 						}
@@ -655,15 +874,17 @@ public class Mood extends StdAbility
 						break;
 					}
 					if(!oldStr.equals(str))
-					msg.modify(msg.source(),
-							  msg.target(),
-							  msg.tool(),
-							  msg.sourceCode(),
-							  CMStrings.substituteSayInMessage(msg.sourceMessage(),str),
-							  msg.targetCode(),
-							  CMStrings.substituteSayInMessage(msg.targetMessage(),str),
-							  msg.othersCode(),
-							  CMStrings.substituteSayInMessage(msg.othersMessage(),str));
+					{
+						msg.modify(msg.source(),
+								  msg.target(),
+								  msg.tool(),
+								  msg.sourceCode(),
+								  CMStrings.substituteSayInMessage(msg.sourceMessage(),str),
+								  msg.targetCode(),
+								  CMStrings.substituteSayInMessage(msg.targetMessage(),str),
+								  msg.othersCode(),
+								  CMStrings.substituteSayInMessage(msg.othersMessage(),str));
+					}
 				}
 			}
 		}
@@ -685,6 +906,7 @@ public class Mood extends StdAbility
 				int channelC=-1;
 				final String[] CHANNELS=CMLib.channels().getChannelNames();
 				for(int c=0;c<CHANNELS.length;c++)
+				{
 					if(CMStrings.contains(BOAST_CHANNELS,CHANNELS[c]))
 					{
 						channelIndex=CMLib.channels().getChannelIndex(CHANNELS[c]);
@@ -692,18 +914,33 @@ public class Mood extends StdAbility
 						if(channelIndex>=0)
 							break;
 					}
+				}
 				if(channelIndex>=0)
 				{
 					String addOn=".";
 					switch(CMLib.dice().roll(1,10,0))
 					{
-					case 1: addOn=", but that`s not suprising, is it?"; break;
-					case 2: addOn=". I rock."; break;
-					case 3: addOn=". I am **POWERFUL**."; break;
-					case 4: addOn=". I am sooo cool."; break;
-					case 5: addOn=". You can`t touch me."; break;
-					case 6: addOn=".. never had a chance, either."; break;
-					case 7: addOn=", with my PINKEE!"; break;
+					case 1:
+						addOn = ", but that`s not suprising, is it?";
+						break;
+					case 2:
+						addOn = ". I rock.";
+						break;
+					case 3:
+						addOn = ". I am **POWERFUL**.";
+						break;
+					case 4:
+						addOn = ". I am sooo cool.";
+						break;
+					case 5:
+						addOn = ". You can`t touch me.";
+						break;
+					case 6:
+						addOn = ".. never had a chance, either.";
+						break;
+					case 7:
+						addOn = ", with my PINKEE!";
+						break;
 					default:
 						break;
 					}
@@ -756,23 +993,31 @@ public class Mood extends StdAbility
 		if(entered.equalsIgnoreCase("NORMAL"))
 			choice="NORMAL";
 		else
+		{
 			for (final String[] element : MOODS)
+			{
 				if(element[0].equalsIgnoreCase(entered))
 				{
 					choice=element[0];
 					mask=element[1];
 				}
+			}
+		}
 		if((choice==null)&&(entered.length()>0)&&(Character.isLetter(entered.charAt(0))))
 		{
 			if("NORMAL".startsWith(entered.toUpperCase()))
 				choice="NORMAL";
 			else
+			{
 				for (final String[] element : MOODS)
+				{
 					if(element[0].startsWith(entered.toUpperCase()))
 					{
 						choice=element[0];
 						mask=element[1];
 					}
+				}
+			}
 		}
 		if((choice==null)||(entered.equalsIgnoreCase("list")))
 		{

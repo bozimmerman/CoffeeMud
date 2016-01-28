@@ -35,10 +35,18 @@ import java.util.*;
 
 public class Mood extends StdCommand
 {
-	public Mood(){}
+	public Mood()
+	{
+	}
 
-	private final String[] access=I(new String[]{"MOOD"});
-	@Override public String[] getAccessWords(){return access;}
+	private final String[]	access	= I(new String[] { "MOOD" });
+
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
+
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
@@ -54,5 +62,10 @@ public class Mood extends StdCommand
 			mob.tell(L("This command is not implemented."));
 		return false;
 	}
-	@Override public boolean canBeOrdered(){return true;}
+
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 }
