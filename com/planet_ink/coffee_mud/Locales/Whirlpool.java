@@ -160,7 +160,7 @@ public class Whirlpool extends StdGrid
 				Behavior currents=CMClass.getBehavior("WaterCurrents");
 				if(currents != null)
 				{
-					currents.setParms("minticks=1 maxticks=2 chance=75 "+Directions.getDirectionName(dir));
+					currents.setParms("minticks=1 maxticks=2 chance=75 BOATS "+Directions.getDirectionName(dir));
 					currents.setSavable(true);
 					lastRoom.addBehavior(currents);
 					lastRoom.setDescription(lastRoom.description() +L("%0D^HThe swirling waters are pulling you "+Directions.getDirectionName(dir)+".^?"));
