@@ -193,7 +193,7 @@ public class WaterCurrents extends ActiveTicker
 								}
 							}
 							R2.moveItemTo(I,ItemPossessor.Expire.Player_Drop);
-							R2.show(srcM,I,new AWaterCurrent(),CMMsg.MSG_OK_ACTION,L("@x1 is swept in from @x2 by the current.",
+							R2.showOthers(srcM,I,new AWaterCurrent(),CMMsg.MSG_OK_ACTION,L("@x1 is swept in from @x2 by the current.",
 									I.name(),Directions.getFromCompassDirectionName(Directions.getOpDirectionCode(dir)).toLowerCase()));
 						}
 					}
