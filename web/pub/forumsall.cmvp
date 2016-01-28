@@ -175,7 +175,7 @@
     @JournalMessageNext@
     <TR> 
         <TD VALIGN=CENTER ALIGN=CENTER BGCOLOR=LIGHTGREY>
-            <IMG WIDTH=30 HEIGHT=30 SRC=@JournalInfo?MSGTYPEICON@>
+            <IMG WIDTH=30 HEIGHT=30 SRC=/images/@JournalInfo?MSGTYPEICON@>
         </TD>
         <TD VALIGN=CENTER ALIGN=CENTER BGCOLOR=LIGHTBLUE>
             @AddRequestParameter?MSGICON=@@JournalInfo?MSGICON@@ @

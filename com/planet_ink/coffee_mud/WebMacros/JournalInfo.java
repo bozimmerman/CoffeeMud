@@ -248,12 +248,12 @@ public class JournalInfo extends StdWebMacro
 			if(parms.containsKey("MSGTYPEICON"))
 			{
 				if(entry.attributes()==0)
-					return "images/doc.gif";
+					return "doc.gif";
 				if(CMath.bset(entry.attributes(), JournalEntry.ATTRIBUTE_STUCKY))
-					return "images/doclocked.gif";
+					return "doclocked.gif";
 				if(CMath.bset(entry.attributes(), JournalEntry.ATTRIBUTE_PROTECTED))
-					return "images/docstar.gif";
-				return "images/docunknown.gif";
+					return "docstar.gif";
+				return "docunknown.gif";
 			}
 			else
 			if(parms.containsKey("CARDINAL"))
