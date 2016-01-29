@@ -106,7 +106,7 @@ public class Chant_CallMate extends Chant
 				final MOB mob=(MOB)affected;
 				if(((mob.amFollowing()!=invoker)
 				||(mob.amDead())
-				||(mob.amFollowing().getGroupMembers(new HashSet<MOB>()).size()>1)
+				||(mob.amFollowing().getGroupMembers(new HashSet<MOB>()).size()>2)
 				||(mob.charStats().getMyRace() != invoker.charStats().getMyRace())
 				||(mob.location()!=invoker.location())))
 					unInvoke();
@@ -200,7 +200,7 @@ public class Chant_CallMate extends Chant
 			return false;
 		}
 		
-		if(mob.getGroupMembers(new HashSet<MOB>()).size()>0)
+		if(mob.getGroupMembers(new HashSet<MOB>()).size()>1)
 		{
 			mob.tell(L("You already have companions, so a mate would not come to you."));
 			return false;
@@ -214,13 +214,14 @@ public class Chant_CallMate extends Chant
 		if(success)
 		{
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),auto?"":L("^S<S-NAME> chants, calling for <S-HIS-HER> mate.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),auto?"":L("^S<S-NAME> chant(s), calling for <S-HIS-HER> mate.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				final MOB target = determineMonster(mob, mob.charStats().getMyRace());
 				beneficialAffect(mob,target,asLevel,Integer.MAX_VALUE / 2);
-				CMLib.commands().postFollow(target,mob,true);
+				mob.location().show(target, null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> answers the call.");
+				CMLib.commands().postFollow(target,mob,false);
 				if(target.amFollowing()!=mob)
 					mob.tell(L("@x1 seems unwilling to follow you.",target.name(mob)));
 			}
@@ -245,6 +246,7 @@ public class Chant_CallMate extends Chant
 		final int oldCat=caster.baseCharStats().ageCategory();
 		String name=R.makeMobName(mobGender, R.getAgingChart()[oldCat]);
 		name=CMLib.english().startWithAorAn(name).toLowerCase();
+		newMOB.setName(name);
 		newMOB.setDisplayText(L("@x1 is here.",name));
 		newMOB.setDescription("");
 		CMLib.factions().setAlignment(newMOB,Faction.Align.NEUTRAL);

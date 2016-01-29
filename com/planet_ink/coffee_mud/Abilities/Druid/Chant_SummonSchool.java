@@ -110,6 +110,8 @@ public class Chant_SummonSchool extends Chant
 				return false;
 			}
 		}
+		if(numberOfImages<=0)
+			unInvoke();
 		return true;
 	}
 	@Override
@@ -148,8 +150,10 @@ public class Chant_SummonSchool extends Chant
 				if(numberOfImages<=0)
 					unInvoke();
 				else
+				{
 					for(int x=0;x<numberOfImages;x++)
 						msg.addTrailerMsg(CMClass.getMsg(mob,msg.target(),msg.tool(),CMMsg.MSG_OK_VISUAL,msg.othersMessage()));
+				}
 			}
 		}
 		else

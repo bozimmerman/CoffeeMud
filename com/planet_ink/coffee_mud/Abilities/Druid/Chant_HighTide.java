@@ -282,7 +282,7 @@ public class Chant_HighTide extends Chant
 								if(success)
 								{
 									if(target.location()==mob.location())
-										CMLib.combat().postDamage(mob,target,this,20,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,-1,L("The water rushes underneath <T-YOUPOSS> feet cause(s) <T-HIM-HER> to fall(s)!"));
+										CMLib.combat().postDamage(mob,target,this,20,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,-1,L("The water rushes underneath <T-YOUPOSS> feet cause(s) <T-HIM-HER> to fall!"));
 								}
 							}
 							else

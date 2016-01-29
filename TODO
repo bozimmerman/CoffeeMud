@@ -1,4 +1,5 @@
 BUGS
+   *. Filter water doesn't neutralize anything.. should it?
 
 TECH
    *. shopkeepers price degredation should begin by counting the number of items, num resources, etc.
