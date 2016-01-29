@@ -37,6 +37,31 @@ public class WeakArrayList<T> extends AbstractList<T>
 		addAll(0, c);
 	}
 
+	@Override
+	public synchronized boolean add(T element)
+	{
+		if(this.needsCleaning.get() && ((System.currentTimeMillis() - this.lastCleaning.get()) > cleanIntervalMs))
+			cleanReleased();
+		return list.add(new WeakReference<T>(element));
+	}
+
+	@Override
+	public synchronized boolean remove(Object element)
+	{
+		if(this.needsCleaning.get() && ((System.currentTimeMillis() - this.lastCleaning.get()) > cleanIntervalMs))
+			cleanReleased();
+		return super.remove(element);
+	}
+
+	@Override
+	public synchronized T remove(int index)
+	{
+		if(this.needsCleaning.get() && ((System.currentTimeMillis() - this.lastCleaning.get()) > cleanIntervalMs))
+			cleanReleased();
+		return super.remove(index);
+	}
+
+	@Override
 	public synchronized void add(int index, T element)
 	{
 		if(this.needsCleaning.get() && ((System.currentTimeMillis() - this.lastCleaning.get()) > cleanIntervalMs))
@@ -44,13 +69,15 @@ public class WeakArrayList<T> extends AbstractList<T>
 		list.add(index, new WeakReference<T>(element));
 	}
 
-	public Iterator<T> iterator()
+	@Override
+	public synchronized Iterator<T> iterator()
 	{
 		if(this.needsCleaning.get() && ((System.currentTimeMillis() - this.lastCleaning.get()) > cleanIntervalMs))
 			cleanReleased();
 		return new FilteredIterator<T>(new ConvertingIterator<WeakReference<T>,T>(list.iterator(), WeakConverter), WeakFilterer);
 	}
 
+	@Override
 	public synchronized int size()
 	{
 		if(this.needsCleaning.get())
@@ -58,6 +85,7 @@ public class WeakArrayList<T> extends AbstractList<T>
 		return list.size();
 	}
 
+	@Override
 	public synchronized T get(int index)
 	{
 		if(this.needsCleaning.get() && ((System.currentTimeMillis() - this.lastCleaning.get()) > cleanIntervalMs))

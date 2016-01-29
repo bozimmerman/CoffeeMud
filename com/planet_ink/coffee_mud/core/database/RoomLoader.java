@@ -1455,7 +1455,7 @@ public class RoomLoader
 			Log.debugOut("RoomLoader","Done creating area "+A.name());
 	}
 
-	public void DBUpdate(String keyName,Area A)
+	public void DBUpdate(String areaID, Area A)
 	{
 		if((A==null)||(!A.isSavable()))
 			return;
@@ -1472,7 +1472,7 @@ public class RoomLoader
 		+"CMDESC=?,"
 		+"CMROTX=?,"
 		+"CMTECH="+A.getThemeCode()+" "
-		+"WHERE CMAREA='"+keyName+"'",
+		+"WHERE CMAREA='"+areaID+"'",
 		new String[]{A.description()+" ",A.text()+" "});
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMAREA)||CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMS)))
 			Log.debugOut("RoomLoader","Done updating area "+A.name());

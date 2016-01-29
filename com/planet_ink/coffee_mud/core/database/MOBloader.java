@@ -1208,8 +1208,10 @@ public class MOBloader
 		@SuppressWarnings("unchecked")
 		final List<Pair<String,Integer>>[][] top=new Vector[TimeClock.TimePeriod.values().length][AccountStats.PrideStat.values().length];
 		for(int x=0;x<top.length;x++)
+		{
 			for(int y=0;y<top[x].length;y++)
 				top[x][y]=new Vector<Pair<String,Integer>>(topThisMany+1);
+		}
 		DBConnection D=null;
 		final long msWait=Math.round(1000.0 * CMath.div(scanCPUPercent, 100));
 		final long sleepAmount=1000 - msWait;
@@ -1258,6 +1260,7 @@ public class MOBloader
 									final List<Pair<String,Integer>> topPrides=topPeriods[pride.ordinal()];
 									final int oldSize=topPrides.size();
 									for(int i=0;i<topPrides.size();i++)
+									{
 										if(val >= topPrides.get(i).second.intValue())
 										{
 											topPrides.add(i, new Pair<String,Integer>(userID,Integer.valueOf(val)));
@@ -1265,6 +1268,7 @@ public class MOBloader
 												topPrides.remove(topPrides.size()-1);
 											break;
 										}
+									}
 									if((oldSize==topPrides.size())&&(topPrides.size()<topThisMany))
 										topPrides.add(new Pair<String,Integer>(userID,Integer.valueOf(val)));
 								}

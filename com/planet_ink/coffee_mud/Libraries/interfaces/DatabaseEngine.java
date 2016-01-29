@@ -369,147 +369,200 @@ public interface DatabaseEngine extends CMLibrary
 	
 	/**
 	 * Table category: DBMAP
-	 * 
-	 * @param areaName
-	 * @param reportStatus
-	 * @return
+	 * Reads all the room numbers for the area with the given name from the
+	 * database and returns a compressed roomnumberset object.  
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.RoomnumberSet
+	 * @param areaName the name of the area to load numbers from
+	 * @param reportStatus true to update the global status, false otherwise
+	 * @return the rooms in this area, as a compressed set
 	 */
 	public RoomnumberSet DBReadAreaRoomList(String areaName, boolean reportStatus);
 
 	/**
 	 * Table category: DBMAP
-	 * 
-	 * @param roomID
-	 * @param mob
+	 * Assuming the given mob is savable, this method will update the
+	 * database record for the given mob in the given room by deleting
+	 * the mob from the room's database record and re-creating him in it.
+	 * @param roomID the id of the room that the mob was in
+	 * @param mob the mob to save
 	 */
 	public void DBUpdateMOB(String roomID, MOB mob);
 
 	/**
 	 * Table category: DBMAP
-	 * 
-	 * @param roomID
-	 * @param item
+	 * Assuming the given item is savable, this method will update the
+	 * database record for the given item in the given room by deleting
+	 * the item from the room's database record and re-creating it in it.
+	 * @param roomID the id of the room that the item was in
+	 * @param item the item to save
 	 */
 	public void DBUpdateItem(String roomID, Item item);
 
 	/**
 	 * Table category: DBMAP
-	 * 
-	 * @param roomID
-	 * @param mob
+	 * Removes the given mob, and only the given mob, from the database
+	 * records for the given room id.
+	 * @param roomID the id of the room that the mob was in
+	 * @param mob the mob to remove
 	 */
 	public void DBDeleteMOB(String roomID, MOB mob);
 
 	/**
 	 * Table category: DBMAP
-	 * 
-	 * @param roomID
-	 * @param item
+	 * Removes the given item, and only the given item, from the database
+	 * records for the given room id.
+	 * @param roomID the id of the room that the item was in
+	 * @param item the item to remove
 	 */
 	public void DBDeleteItem(String roomID, Item item);
 
 	/**
 	 * Table category: DBMAP
-	 * 
-	 * @param room
+	 * Updates all of the savable items in the given room by
+	 * removing all item records from the database and re-inserting
+	 * all of the current item records back in.  
+	 * @param room the room to update
 	 */
 	public void DBUpdateItems(Room room);
 
 	/**
 	 * Table category: DBMAP
-	 * 
-	 * @param room
-	 * @param oldID
+	 * Changes the room ID of the given room in the database
+	 * by updating all of the records with the old room id
+	 * to instead use the new room id of the room given.
+	 * @param room the room with the new id
+	 * @param oldID the old room id
 	 */
 	public void DBReCreate(Room room, String oldID);
 
 	/**
 	 * Table category: DBMAP
-	 * 
-	 * @param room
+	 * Deletes the room and all of its exits and contents
+	 * from the database entirely.
+	 * @param room the room to blow away
 	 */
 	public void DBDeleteRoom(Room room);
 
 	/**
 	 * Table category: DBMAP
-	 * 
-	 * @param A
+	 * Creates a new area record in the database.
+	 * Only does the area record, not the rooms.
+	 * @param A the area to create.
 	 */
 	public void DBCreateArea(Area A);
 
 	/**
 	 * Table category: DBMAP
-	 * 
-	 * @param A
+	 * Removes the given area record from the database.
+	 * Only does the area record, not the rooms.
+	 * @param A the area to destroy.
 	 */
 	public void DBDeleteArea(Area A);
 
 	/**
 	 * Table category: DBMAP
-	 * 
-	 * @param keyName
-	 * @param A
+	 * Updates the area record in the database with the
+	 * given areaID with the data from the given area
+	 * object.  The areaID and the name of the area can
+	 * be different for area renamings.  
+	 * @param areaID the current db area name
+	 * @param A the area data to save
 	 */
-	public void DBUpdateArea(String keyName,Area A);
+	public void DBUpdateArea(String areaID, Area A);
 
 	/**
 	 * Table category: DBPLAYERS
+	 * Re-builds the entire top-10 player tables from the
+	 * database.  It returns a two dimensional array of
+	 * lists of players and their scores, in reverse sorted
+	 * order by score.  The first dimension of the array is
+	 * the time period ordinal (month, year, whatever), and the 
+	 * second is the pridestat ordinal. 
 	 * 
-	 * @param topThisMany
-	 * @param scanCPUPercent
-	 * @return
+	 * The cpu percent is the percent (0-100) of each second of work
+	 * to spend actually working.  The balance is spent sleeping. 
+	 * 
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock.TimePeriod
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.AccountStats.PrideStat
+	 * @param topThisMany the number of items in each list
+	 * @param scanCPUPercent the percent (0-100) to spend working
+	 * @return the arrays of lists of top winner players
 	 */
 	public List<Pair<String,Integer>>[][] DBScanPridePlayerWinners(int topThisMany, short scanCPUPercent);
 
 	/**
 	 * Table category: DBPLAYERS
+	 * Re-builds the entire top-10 account tables from the
+	 * database.  It returns a two dimensional array of
+	 * lists of accounts and their scores, in reverse sorted
+	 * order by score.  The first dimension of the array is
+	 * the time period ordinal (month, year, whatever), and the 
+	 * second is the pridestat ordinal. 
 	 * 
-	 * @param topThisMany
-	 * @param scanCPUPercent
-	 * @return
+	 * The cpu percent is the percent (0-100) of each second of work
+	 * to spend actually working.  The balance is spent sleeping. 
+	 * 
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock.TimePeriod
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.AccountStats.PrideStat
+	 * @param topThisMany the number of items in each list
+	 * @param scanCPUPercent the percent (0-100) to spend working
+	 * @return the arrays of lists of top winner accounts
 	 */
 	public List<Pair<String,Integer>>[][] DBScanPrideAccountWinners(int topThisMany, short scanCPUPercent);
 
 	/**
 	 * Table category: DBPLAYERS
-	 * 
-	 * @param mob
+	 * Does a complete update of the given player mob,
+	 * including their items, abilities, and account.
+	 * Followers are not included.
+	 * @param mob the player mob to update
 	 */
 	public void DBUpdatePlayer(MOB mob);
 
 	/**
 	 * Table category: DBPLAYERS
-	 * 
-	 * @param skipNames
-	 * @return
+	 * If this system uses the character expiration system, then
+	 * this method will scan all the players for expired characters,
+	 * and return the list of names, or an empty list if there are
+	 * none.  The skipNames is a list of protected names that are
+	 * never expired.
+	 * @param skipNames the names to never expire, or null
+	 * @return the list of expired names, or an empty list
 	 */
 	public List<String> DBExpiredCharNameSearch(Set<String> skipNames);
 
 	/**
 	 * Table category: DBPLAYERS
-	 * 
-	 * @param mob
+	 * Updates only the player stats record for the given player.
+	 * These are player-unique variables, such as the prompt.
+	 * @param mob the player to update
 	 */
 	public void DBUpdatePlayerPlayerStats(MOB mob);
 
 	/**
 	 * Table category: DBPLAYERS
-	 * 
-	 * @param mob
+	 * Updates only the base mob data in the database for
+	 * the given player.  This includes playerstat data
+	 * and clan affiliation records, but not items, or
+	 * abilities, or other such stuff.
+	 * @param mob the player mob to update
 	 */
 	public void DBUpdatePlayerMOBOnly(MOB mob);
 
 	/**
 	 * Table category: DBPLAYERS
-	 * 
-	 * @param mob
+	 * Updates only the ability records in the database
+	 * for the given player.  This also includes effects,
+	 * behaviors, and scripts on players, but nothing else.
+	 * @param mob the player to update
 	 */
 	public void DBUpdatePlayerAbilities(MOB mob);
 
 	/**
 	 * Table category: DBPLAYERS
-	 * 
-	 * @param mob
+	 * Updates only the item/inventory/equipment records
+	 * in the database for the given player.  Nothing else.
+	 * @param mob the player to update
 	 */
 	public void DBUpdatePlayerItems(MOB mob);
 

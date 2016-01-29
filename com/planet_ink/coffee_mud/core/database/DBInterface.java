@@ -704,9 +704,9 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
-	public void DBUpdateArea(String keyName, Area A)
+	public void DBUpdateArea(String areaID, Area A)
 	{
-		RoomLoader.DBUpdate(keyName, A);
+		RoomLoader.DBUpdate(areaID, A);
 	}
 
 	@Override
