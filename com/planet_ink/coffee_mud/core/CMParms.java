@@ -2736,8 +2736,52 @@ public class CMParms
 		if(str==null) 
 			return -1;
 		for(int i=0;i<stringList.length;i++)
+		{
 			if(stringList[i].equals(str))
 				return i;
+		}
+		return -1;
+	}
+
+	/**
+	 * Returns the index of the string in the given string array that starts
+	 * with the given one. The search is case sensitive.
+	 * @param stringList the string array
+	 * @param str the string to search for a starter of
+	 * @return the index of the string in the list that starts, or -1 if not found
+	 */
+	public final static int indexOfStartsWith(final String[] stringList, final String str)
+	{
+		if(stringList==null) 
+			return -1;
+		if(str==null) 
+			return -1;
+		for(int i=0;i<stringList.length;i++)
+		{
+			if(stringList[i].startsWith(str))
+				return i;
+		}
+		return -1;
+	}
+
+	/**
+	 * Returns the index of the string in the given string array that ends
+	 * with the given one. The search is case sensitive.
+	 * @param stringList the string array
+	 * @param str the string to search for a ender of
+	 * @return the index of the string in the list that ends, or -1 if not found
+	 */
+	public final static int indexOfEndsWith(final String[] stringList, final String str)
+	{
+		if(stringList==null) 
+			return -1;
+		if(str==null) 
+			return -1;
+		for(int i=0;i<stringList.length;i++)
+		{
+			if(stringList[i].endsWith(str))
+				return i;
+		}
 		return -1;
 	}
 

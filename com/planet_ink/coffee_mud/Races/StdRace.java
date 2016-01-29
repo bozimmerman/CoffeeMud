@@ -46,7 +46,7 @@ public class StdRace implements Race
 	protected static final int[] breatheAnythingArray	= new int[0];
 	protected static final int[] breatheAirArray		= new int[] { RawMaterial.RESOURCE_AIR };
 	protected static final int[] breatheWaterArray		= new int[] { RawMaterial.RESOURCE_FRESHWATER, RawMaterial.RESOURCE_SALTWATER };
-	protected static final int[] breatheAirWaterArray	= new int[] { RawMaterial.RESOURCE_AIR, RawMaterial.RESOURCE_FRESHWATER, RawMaterial.RESOURCE_SALTWATER };
+	protected static final int[] breatheAirWaterArray	= new int[] { RawMaterial.RESOURCE_FRESHWATER, RawMaterial.RESOURCE_SALTWATER, RawMaterial.RESOURCE_AIR };
 	protected static final List empty					= new ReadOnlyVector(1);
 	//  												   an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] 	parts					= {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};

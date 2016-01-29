@@ -218,6 +218,7 @@ public class Mobile extends ActiveTicker implements MobileBehavior
 			}
 			if(dir>=0)
 				CMLib.tracking().walk(mob, dir, true, true);
+			firstRun=true; // keep non-breathers in constant panic
 		}
 		return false;
 	}

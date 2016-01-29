@@ -583,7 +583,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			if((A!=null)
 			&&(evokedBy(A,evokeWord)))
 			{
-				if(evokableAbility!=null)
+				if((evokableAbility!=null)&&(!A.ID().equals(evokableAbility.ID())))
 				{
 					foundMoreThanOne=true;
 					evokableAbility=null;
@@ -632,7 +632,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 						break;
 					}
 					else
-					if(evokableAbility!=null)
+					if((evokableAbility!=null)&&(!A.ID().equals(evokableAbility.ID())))
 						foundMoreThanOne=true;
 					else
 						evokableAbility=A;

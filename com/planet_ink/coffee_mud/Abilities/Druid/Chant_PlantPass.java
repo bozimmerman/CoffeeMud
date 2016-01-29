@@ -107,15 +107,25 @@ public class Chant_PlantPass extends Chant
 			return false;
 		}
 
-		final List<Room> candidates=Druid_MyPlants.myPlantRooms(mob);
 		Room newRoom=null;
-		for(int m=0;m<candidates.size();m++)
+		if(CMath.isInteger(areaName))
 		{
-			final Room room=candidates.get(m);
-			if(CMLib.english().containsString(room.displayText(mob),areaName))
+			final List<Item> plants=Druid_MyPlants.getMyPlants(mob);
+			int i=CMath.s_int(areaName);
+			if((i>0)&&(i<=plants.size()))
+				newRoom=CMLib.map().roomLocation(plants.get(i-1));
+		}
+		else
+		{
+			final List<Room> candidates=Druid_MyPlants.myPlantRooms(mob);
+			for(int m=0;m<candidates.size();m++)
 			{
-				newRoom=room;
-				break;
+				final Room room=candidates.get(m);
+				if(CMLib.english().containsString(room.displayText(mob),areaName))
+				{
+					newRoom=room;
+					break;
+				}
 			}
 		}
 		if(newRoom==null)

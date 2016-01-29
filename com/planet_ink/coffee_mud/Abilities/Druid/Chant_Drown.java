@@ -87,16 +87,18 @@ public class Chant_Drown extends Chant
 				remove++;
 			if(CMParms.contains(breatheables, RawMaterial.RESOURCE_FRESHWATER))
 				remove++;
-			
+			boolean addAir = (remove == breatheables.length);
 			if(remove > 0)
 			{
-				newSet=Arrays.copyOf(breatheables,breatheables.length-remove);
+				newSet=Arrays.copyOf(breatheables,breatheables.length-remove + (addAir?1:0));
 				for(int i=0,ni=0;i<breatheables.length;i++)
 				{
 					if((breatheables[i]!=RawMaterial.RESOURCE_SALTWATER)
 					&&(breatheables[i]!=RawMaterial.RESOURCE_FRESHWATER))
 						newSet[ni++]=breatheables[i];
 				}
+				if(addAir)
+					newSet[newSet.length-1]=RawMaterial.RESOURCE_AIR;
 				Arrays.sort(newSet);
 			}
 			else

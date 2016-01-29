@@ -354,19 +354,48 @@ public class Druid_ShapeShift extends StdAbility
 				{
 					if(!mob.session().confirm(L("You have not yet chosen your form, would you like to now (Y/n)?"),"Y"))
 						return false;
-					final StringBuffer str=new StringBuffer(L("Choose from the following:\n\r"));
-					final StringBuffer choices=new StringBuffer("");
-					for(int i=0;i<forms.length;i++)
+					while(!mob.session().isStopped())
 					{
-						if(racesTaken[i]==0)
+						final StringBuffer str=new StringBuffer(L("Choose from the following:\n\r"));
+						final List<String> formNames=new ArrayList<String>();
+						final Map<String,Integer> formMap=new Hashtable<String,Integer>();
+						for(int i=0;i<forms.length;i++)
 						{
-							str.append(CMStrings.padLeft(""+(i+1),2)+") "+forms[i]+"\n\r");
-							choices.append(""+(i+1));
+							if(racesTaken[i]==0)
+							{
+								str.append(CMStrings.padLeft(""+(i+1),2)+") "+forms[i]+"\n\r");
+								formNames.add(forms[i].toLowerCase());
+								formMap.put(forms[i].toLowerCase(), Integer.valueOf(i));
+							}
+						}
+						str.append(L("Please select: "));
+						final String choice=mob.session().prompt(str.toString(),"");
+						if(choice.trim().length()==0)
+						{
+							mob.tell(L("Aborted."));
+							return false;
+						}
+						if(CMath.isInteger(choice))
+						{
+							int x=CMath.s_int(choice)-1;
+							if((x>=0)&&(x<formNames.size()))
+							{
+								myRaceCode = formMap.get(formNames.get(x)).intValue();
+								break;
+							}
+						}
+						else
+						{
+							int x=CMParms.indexOf(formNames.toArray(new String[0]), choice.toLowerCase().trim());
+							if(x<0)
+								x=CMParms.indexOfStartsWith(formNames.toArray(new String[0]), choice.toLowerCase().trim());
+							if(x>=0)
+							{
+								myRaceCode = formMap.get(formNames.get(x)).intValue();
+								break;
+							}
 						}
 					}
-					str.append(L("Please select: "));
-					final String choice=mob.session().choose(str.toString(),choices.toString(),"");
-					myRaceCode=CMath.s_int(choice)-1;
 				}
 				catch (final Exception e)
 				{

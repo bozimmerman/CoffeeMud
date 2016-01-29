@@ -124,8 +124,7 @@ public class Chant_FilterWater extends Chant
 	
 	public boolean finalizeFreshness(MOB mob, Physical target, Drink D, int asLevel)
 	{
-		this.beneficialAffect(mob, target, asLevel, 0);
-		Ability A=target.fetchEffect(ID());
+		Ability A=this.beneficialAffect(mob, target, asLevel, 0);
 		if(A!=null)
 		{
 			StringBuilder parms=new StringBuilder("");
@@ -181,7 +180,7 @@ public class Chant_FilterWater extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				if(this.finalizeFreshness(mob, target, D, asLevel)
+				if(finalizeFreshness(mob, target, D, asLevel)
 				&&(target instanceof Container))
 				{
 					final List<Item> V=((Container)D).getContents();
