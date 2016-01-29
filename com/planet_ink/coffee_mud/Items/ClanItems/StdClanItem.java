@@ -384,25 +384,30 @@ public class StdClanItem extends StdItem implements ClanItem
 							if (relation == Clan.REL_WAR)
 								break;
 						}
-						if (relation != Clan.REL_WAR)
-						{
-							msg.source().tell(CMLib.lang().L("You must be at war with this clan to take one of their items."));
-							return false;
-						}
 						final Room room = msg.source().location();
 						if ((room != null) && (room.getArea() != null))
 						{
 							final LegalBehavior theLaw = CMLib.law().getLegalBehavior(room.getArea());
-							if ((theLaw != null) 
-							&& (theLaw.rulingOrganization() != null) 
-							&& (theLaw.rulingOrganization().equals(itemC.clanID())))
+							if ((theLaw != null) && (theLaw.rulingOrganization() != null))
 							{
-								msg.source().tell(CMLib.lang().L("You'll need to conquer this area to do that."));
-								return false;
+								if(theLaw.rulingOrganization().equals(itemC.clanID()))
+								{
+									msg.source().tell(CMLib.lang().L("You'll need to conquer this area to do that."));
+									return false;
+								}
+								if(msg.source().getClanRole(theLaw.rulingOrganization())!=null)
+								{
+									if(!theLaw.isFullyControlled())
+									{
+										msg.source().tell(CMLib.lang().L("Your clan does not yet fully control the area."));
+										return false;
+									}
+								}
 							}
-							if ((theLaw != null) && (!theLaw.isFullyControlled()))
+							else
+							if (relation != Clan.REL_WAR)
 							{
-								msg.source().tell(CMLib.lang().L("Your clan does not yet fully control the area."));
+								msg.source().tell(CMLib.lang().L("You must be at war with this clan to take one of their items."));
 								return false;
 							}
 						}
