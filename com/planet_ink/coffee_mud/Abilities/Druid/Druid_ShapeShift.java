@@ -144,7 +144,7 @@ public class Druid_ShapeShift extends StdAbility
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		if((newRace!=null)&&(affected instanceof MOB)&&(myRaceLevel>=0)&&(myRaceCode>=0))
+		if((newRace!=null)&&(affected instanceof MOB)&&(myRaceCode>=0))
 		{
 			final PhyStats stats = affectableStats;
 			final int xlvl=getXLEVELLevel(invoker());

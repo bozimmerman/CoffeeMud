@@ -35,16 +35,52 @@ import java.util.*;
 
 public class Spell_PhantomHound extends Spell
 {
-	@Override public String ID() { return "Spell_PhantomHound"; }
+	@Override
+	public String ID()
+	{
+		return "Spell_PhantomHound";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Phantom Hound");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
-	protected MOB victim=null;
-	protected int pointsLeft=0;
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public int enchantQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	protected MOB	victim		= null;
+	protected int	pointsLeft	= 0;
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL | Ability.DOMAIN_ILLUSION;
+	}
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
@@ -98,7 +134,7 @@ public class Spell_PhantomHound extends Spell
 					{
 						final Room R=beast.location();
 						if(R!=null)
-							R.show(victim, beast,CMMsg.MSG_OK_VISUAL, L("<S-NAME> disbelieve(s) <T-NAME>, who vanish(es)!"));
+							R.show(victim, beast,CMMsg.MSG_OK_VISUAL, L("<S-NAME> disbelieve(s) <T-NAME>, who vanishes!"));
 						if(beast.amDead())
 							beast.setLocation(null);
 						beast.destroy();

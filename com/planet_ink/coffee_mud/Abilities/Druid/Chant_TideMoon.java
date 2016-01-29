@@ -65,6 +65,12 @@ public class Chant_TideMoon extends Chant
 	}
 
 	@Override
+	public void setAbilityCode(int newCode)
+	{
+		this.abilityCode = newCode;
+	}
+
+	@Override
 	public int abstractQuality()
 	{
 		return Ability.QUALITY_INDIFFERENT;
