@@ -36,10 +36,17 @@ import java.util.*;
 
 public class Shell extends StdCommand
 {
-	public Shell(){}
+	public Shell()
+	{
+	}
 
-	private final String[] access=I(new String[]{"SHELL","CMFS","."});
-	@Override public String[] getAccessWords(){return access;}
+	private final String[]	access	= I(new String[] { "SHELL", "CMFS", "." });
+
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
 	protected static DVector pwds=new DVector(2);
 	protected String[][] SUB_CMDS={
@@ -258,12 +265,14 @@ public class Shell extends StdCommand
 				{
 					allcmds.append(SUB_CMDS[i][x]+" (");
 					for(int x2=0;x2<SUB_CMDS[i].length;x2++)
+					{
 						if(x2!=x)
 						{
 							allcmds.append(SUB_CMDS[i][x2]);
 							if(x2<SUB_CMDS[i].length-1)
 								allcmds.append("/");
 						}
+					}
 					allcmds.append("), ");
 				}
 			}
@@ -355,8 +364,16 @@ public class Shell extends StdCommand
 			final java.util.List<CMFile> ddirs=sortDirsUp(dirs);
 			for(final CMFile SF: ddirs)
 			{
-				if((SF==null)||(!SF.exists())){ mob.tell(L("^xError: source @x1 does not exist!^N",desc(SF))); return false;}
-				if(!SF.canRead()){mob.tell(L("^xError: access denied to source @x1!^N",desc(SF))); return false;}
+				if ((SF == null) || (!SF.exists()))
+				{
+					mob.tell(L("^xError: source @x1 does not exist!^N", desc(SF)));
+					return false;
+				}
+				if (!SF.canRead())
+				{
+					mob.tell(L("^xError: access denied to source @x1!^N", desc(SF)));
+					return false;
+				}
 				if((SF.isDirectory())&&(!opts.preservePaths))
 				{
 					if(dirs.length==1)
@@ -398,8 +415,16 @@ public class Shell extends StdCommand
 					mob.tell(L("^xError: destination must be a directory!^N"));
 					return false;
 				}
-				if(DF.mustOverwrite()){ mob.tell(L("^xError: destination @x1 already exists!^N",desc(DF))); return false;}
-				if(!DF.canWrite()){ mob.tell(L("^xError: access denied to destination @x1!^N",desc(DF))); return false;}
+				if (DF.mustOverwrite())
+				{
+					mob.tell(L("^xError: destination @x1 already exists!^N", desc(DF)));
+					return false;
+				}
+				if (!DF.canWrite())
+				{
+					mob.tell(L("^xError: access denied to destination @x1!^N", desc(DF)));
+					return false;
+				}
 				if((SF.isDirectory())&&(opts.recurse))
 				{
 					if(!DF.mkdir())
@@ -410,7 +435,10 @@ public class Shell extends StdCommand
 				else
 				{
 					final byte[] O=SF.raw();
-					if(O.length==0){ mob.tell(L("^xWarning: @x1 file had no data^N",desc(SF)));}
+					if (O.length == 0)
+					{
+						mob.tell(L("^xWarning: @x1 file had no data^N", desc(SF)));
+					}
 					if(!DF.saveRaw(O))
 						mob.tell(L("^xWarning: write failed to @x1 ^N",desc(DF)));
 					else
@@ -696,8 +724,16 @@ public class Shell extends StdCommand
 			for(int d=0;d<ddirs.size();d++)
 			{
 				final CMFile SF=ddirs.get(d);
-				if((SF==null)||(!SF.exists())){ mob.tell(L("^xError: source @x1 does not exist!^N",desc(SF))); return false;}
-				if(!SF.canRead()){mob.tell(L("^xError: access denied to source @x1!^N",desc(SF))); return false;}
+				if ((SF == null) || (!SF.exists()))
+				{
+					mob.tell(L("^xError: source @x1 does not exist!^N", desc(SF)));
+					return false;
+				}
+				if (!SF.canRead())
+				{
+					mob.tell(L("^xError: access denied to source @x1!^N", desc(SF)));
+					return false;
+				}
 				if((SF.isDirectory())&&(!opts.preservePaths))
 				{
 					if(dirs.length==1)
@@ -739,8 +775,16 @@ public class Shell extends StdCommand
 					mob.tell(L("^xError: destination must be a directory!^N"));
 					return false;
 				}
-				if(DF.mustOverwrite() && (!opts.forceOverwrites)){ mob.tell(L("^xError: destination @x1 already exists!^N",desc(DF))); return false;}
-				if(!DF.canWrite()){ mob.tell(L("^xError: access denied to destination @x1!^N",desc(DF))); return false;}
+				if (DF.mustOverwrite() && (!opts.forceOverwrites))
+				{
+					mob.tell(L("^xError: destination @x1 already exists!^N", desc(DF)));
+					return false;
+				}
+				if (!DF.canWrite())
+				{
+					mob.tell(L("^xError: access denied to destination @x1!^N", desc(DF)));
+					return false;
+				}
 				if((SF.isDirectory())&&(opts.recurse))
 				{
 					if((!DF.mustOverwrite())&&(!DF.mkdir()))
@@ -752,9 +796,15 @@ public class Shell extends StdCommand
 				else
 				{
 					final byte[] O=SF.raw();
-					if(O.length==0){ mob.tell(L("^xWarning: @x1 file had no data^N",desc(SF)));}
+					if (O.length == 0)
+					{
+						mob.tell(L("^xWarning: @x1 file had no data^N", desc(SF)));
+					}
 					if(!DF.saveRaw(O))
+					{
 						mob.tell(L("^xWarning: write failed to @x1 ^N",desc(DF)));
+						break;
+					}
 					else
 						mob.tell(L("@x1 moved to @x2",desc(SF),desc(DF)));
 					if((!SF.delete())&&(SF.exists()))
@@ -822,12 +872,16 @@ public class Shell extends StdCommand
 			}
 			final StringBuilder text1=new StringBuilder("");
 			for(final String s : Resources.getFileLineVector(file1.text()))
+			{
 				if(s.trim().length()>0)
 					text1.append(s.trim()).append("\n\r");
+			}
 			final StringBuilder text2=new StringBuilder("");
 			for(final String s : Resources.getFileLineVector(file2.text()))
+			{
 				if(s.trim().length()>0)
 					text2.append(s.trim()).append("\n\r");
+			}
 			final LinkedList<CMStrings.Diff> diffs=CMStrings.diff_main(text1.toString(), text2.toString(), false);
 			boolean flipFlop=false;
 			for(final CMStrings.Diff d : diffs)
@@ -848,9 +902,20 @@ public class Shell extends StdCommand
 		return true;
 	}
 
-	public String desc(CMFile CF){ return (CF.isLocalFile()?"Local file ":"VFS file ")+"'/"+CF.getVFSPathAndName()+"'";}
+	public String desc(CMFile CF)
+	{
+		return (CF.isLocalFile() ? "Local file " : "VFS file ") + "'/" + CF.getVFSPathAndName() + "'";
+	}
 
-	@Override public boolean canBeOrdered(){return false;}
-	@Override public boolean securityCheck(MOB mob){return CMSecurity.hasAccessibleDir(mob,null);}
+	@Override
+	public boolean canBeOrdered()
+	{
+		return false;
+	}
 
+	@Override
+	public boolean securityCheck(MOB mob)
+	{
+		return CMSecurity.hasAccessibleDir(mob, null);
+	}
 }

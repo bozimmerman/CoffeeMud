@@ -100,12 +100,6 @@ public class GrinderFactions
 		{
 			final String prefix=prefixes[i];
 			final Vector<String> V=new Vector<String>();
-			switch(i)
-			{
-			case 0: F.setAutoDefaults(V); break;
-			case 1: F.setDefaults(V); break;
-			case 2: F.setChoices(V); break;
-			}
 			num=0;
 			while(httpReq.getUrlParameter(prefix+num)!=null)
 			{
@@ -116,6 +110,18 @@ public class GrinderFactions
 					V.addElement((CMath.s_long(value)+" "+mask).trim());
 				}
 				num++;
+			}
+			switch(i)
+			{
+			case 0:
+				F.setAutoDefaults(V);
+				break;
+			case 1:
+				F.setDefaults(V);
+				break;
+			case 2:
+				F.setChoices(V);
+				break;
 			}
 		}
 
