@@ -60,7 +60,7 @@ public class Prop_ModExperience extends Property
 	public String translateNumber(String val)
 	{
 		if(val.endsWith("%"))
-			return "@x1 * (" + val.substring(0,val.length()-1) + " / 100)";
+			return "( @x1 * (" + val.substring(0,val.length()-1) + " / 100) )";
 		return Integer.toString(CMath.s_int(val));
 	}
 
