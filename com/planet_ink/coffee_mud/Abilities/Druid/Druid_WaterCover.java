@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Abilities.Ranger;
+package com.planet_ink.coffee_mud.Abilities.Druid;
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
@@ -20,7 +20,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2016 Bo Zimmerman
+   Copyright 2016-2016 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -35,15 +35,15 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Ranger_Hide extends StdAbility
+public class Druid_WaterCover extends StdAbility
 {
 	@Override
 	public String ID()
 	{
-		return "Ranger_Hide";
+		return "Druid_WaterCover";
 	}
 
-	private final static String	localizedName	= CMLib.lang().L("Woodland Hide");
+	private final static String	localizedName	= CMLib.lang().L("Water Cover");
 
 	@Override
 	public String name()
@@ -75,7 +75,7 @@ public class Ranger_Hide extends StdAbility
 		return Ability.QUALITY_OK_SELF;
 	}
 
-	private static final String[]	triggerStrings	= I(new String[] { "WHIDE" });
+	private static final String[]	triggerStrings	= I(new String[] { "WCOVER" });
 
 	@Override
 	public String[] triggerStrings()
@@ -86,7 +86,7 @@ public class Ranger_Hide extends StdAbility
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_SKILL | Ability.DOMAIN_STEALTHY;
+		return Ability.ACODE_SKILL | Ability.DOMAIN_WATERLORE;
 	}
 
 	@Override
@@ -195,14 +195,7 @@ public class Ranger_Hide extends StdAbility
 			return false;
 		}
 
-		if((!CMLib.flags().isInWilderness(mob))&&(!auto))
-		{
-			mob.tell(L("You only know how to hide outdoors."));
-			return false;
-		}
-		if(((mob.location().domainType()==Room.DOMAIN_OUTDOORS_CITY)
-		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT))
-		&&(!auto))
+		if((!CMLib.flags().isWatery(mob.location()))&&(!auto))
 		{
 			mob.tell(L("You don't know how to hide in a place like this."));
 			return false;
@@ -211,12 +204,7 @@ public class Ranger_Hide extends StdAbility
 		final MOB highestMOB=getHighestLevelMOB(mob,null);
 		final int levelDiff=(mob.phyStats().level()+(2*getXLEVELLevel(mob)))-getMOBLevel(highestMOB);
 
-		String str=L("You creep into some foliage and remain completely still.");
-		if((mob.location().domainType()==Room.DOMAIN_OUTDOORS_ROCKS)
-		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_MOUNTAINS)
-		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_DESERT))
-			str=L("You creep behind some rocks and remain completely still.");
-
+		String str=L("You slink into a watery corner and remain completely still.");
 
 		boolean success=(highestMOB==null)||proficiencyCheck(mob,levelDiff*10,auto);
 
@@ -235,7 +223,7 @@ public class Ranger_Hide extends StdAbility
 				mob.location().send(mob,msg);
 				invoker=mob;
 				final Ability newOne=(Ability)this.copyOf();
-				((Ranger_Hide)newOne).bonus=getXLEVELLevel(mob)*2;
+				((Druid_WaterCover)newOne).bonus=getXLEVELLevel(mob)*2;
 				if(mob.fetchEffect(newOne.ID())==null)
 					mob.addEffect(newOne);
 				mob.recoverPhyStats();

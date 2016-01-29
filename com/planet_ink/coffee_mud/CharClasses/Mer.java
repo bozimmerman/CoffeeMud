@@ -137,84 +137,109 @@ public class Mer extends StdCharClass
 	public void initializeClass()
 	{
 		super.initializeClass();
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Swim",100,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Write",0,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Recall",50,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Climb",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Revoke",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_WandUse",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Swim",100,true);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Climb",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Natural",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Polearm",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Herbology",0,false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Druidic",50,true);
 
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Druid_SeaLore",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Chant_BreatheWater",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Chant_SummonSeaweed",true);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Druid_Shapeshift",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Druid_ShapeShift",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Druid_AquaticPass",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Druid_MyPlants",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Chant_PredictTides",false);
 		
-		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Chant_SenseWater",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Chant_PredictPhase",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Chant_SenseWater",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Chant_Darkvision",false);
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Chant_BestowName",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"AnimalBonding",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Chant_FilterWater",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Chant_FilterWater",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Chant_SummonChum",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Chant_SnuffFlame",false);
 		
-		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Chant_EelShock",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Chant_EelShock",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Chant_FindDriftwood",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Chant_LocateAnimals",false);
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Chant_SpeakWithAnimals",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Chant_WaterWalking",false);
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Chant_CalmAnimal",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Chant_SummonCoral",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Chant_SummonCoral",true);
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Chant_FeelElectricity",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Chant_BloodyWater",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Chant_BloodyWater",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Druid_KnowPlants",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Chant_NaturalBalance",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Druid_WaterCover",false);
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Chant_UnderwaterAction",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Chant_WaterHammer",false);
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Chant_AnimalFriendship",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Chant_CalmWind",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Chant_SummonSchool",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Chant_SummonSchool",true);
 		
-		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Chant_Drown",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Chant_Drown",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Chant_Waterguard",false);
 		
-		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Chant_ReefWalking",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Chant_ReefWalking",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Chant_CallMate",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Chant_VenomWard",false);
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Chant_CharmAnimal",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Chant_HighTide",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Chant_HighTide",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Chant_WhisperWard",false);
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Chant_Capsize",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Chant_BreatheAir",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Chant_BreatheAir",true);
 		
-		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Chant_FeedingFrenzy",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Chant_FeedingFrenzy",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Thief_Observation",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Chant_MuddyGrounds",false);
 		
-		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Chant_CalmSeas",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Chant_CalmSeas",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Chant_WarningWinds",false);
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Chant_SummonJellyfish",false);
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Chant_Flippers",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Druid_ShapeShift2",true);
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Chant_Flood",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Chant_Hippieness",false);
 		
-		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Chant_SiftWrecks",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Chant_SiftWrecks",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Chant_RustCurse",false);
 		
-		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Chant_FavorableWinds",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Chant_FavorableWinds",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Chant_SenseFluids",false);
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Chant_TideMoon",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Chant_AnimalSpy",false);
 		
-		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Chant_AnimalGrowth",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Chant_AnimalGrowth",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Chant_NeutralizePoison",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Skill_AttackHalf",false);
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Chant_TidalWave",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Chant_SenseGems",false);
 		
-		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Chant_Waterspout",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Chant_Waterspout",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Chant_CharmArea",false);
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Chant_Whirlpool",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Chant_Crossbreed",false);
 		
-		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Chant_Tsunami",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Chant_Tsunami",true);
 	}
 
 	@Override

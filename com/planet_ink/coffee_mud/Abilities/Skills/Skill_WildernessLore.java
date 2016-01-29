@@ -35,16 +35,57 @@ import java.util.*;
 
 public class Skill_WildernessLore extends StdSkill
 {
-	@Override public String ID() { return "Skill_WildernessLore"; }
-	private final static String localizedName = CMLib.lang().L("Wilderness Lore");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	private static final String[] triggerStrings =I(new String[] {"WILDERNESSLORE","WLORE"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_NATURELORE;}
-	@Override public int usageType(){return USAGE_MANA;}
+	@Override
+	public String ID()
+	{
+		return "Skill_WildernessLore";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Wilderness Lore");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "WILDERNESSLORE", "WLORE" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL | Ability.DOMAIN_NATURELORE;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MANA;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)

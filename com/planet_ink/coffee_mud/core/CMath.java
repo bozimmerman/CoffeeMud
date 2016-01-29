@@ -1204,27 +1204,47 @@ public class CMath
 		{
 			switch(o.type)
 			{
-				case CompiledOperation.OPERATION_VALUE:
-					curValue = o.value; break;
-				case CompiledOperation.OPERATION_VARIABLE:
-					curValue = vars[o.variableIndex]; break;
-				case CompiledOperation.OPERATION_LIST:
-					curValue = parseMathExpression(o.list,vars,finalValue); break;
-				case CompiledOperation.OPERATION_PREVIOUSVALUE:
-					curValue = previous; break;
-				case CompiledOperation.OPERATION_OPERATION:
-					switch(o.operation)
-					{
-						case '+': finalValue+=curValue; break;
-						case '-': finalValue-=curValue; break;
-						case '%': finalValue%=curValue; break;
-						case '*': finalValue*=curValue; break;
-						case '/': finalValue/=curValue; break;
-						case '?': finalValue= ((curValue-finalValue+0.5) * rand.nextDouble()) + finalValue; break;
-						case '<': finalValue = finalValue < curValue? finalValue : curValue; break;
-						case '>': finalValue = finalValue > curValue? finalValue : curValue; break;
-					}
+			case CompiledOperation.OPERATION_VALUE:
+				curValue = o.value;
+				break;
+			case CompiledOperation.OPERATION_VARIABLE:
+				curValue = vars[o.variableIndex];
+				break;
+			case CompiledOperation.OPERATION_LIST:
+				curValue = parseMathExpression(o.list, vars, finalValue);
+				break;
+			case CompiledOperation.OPERATION_PREVIOUSVALUE:
+				curValue = previous;
+				break;
+			case CompiledOperation.OPERATION_OPERATION:
+				switch(o.operation)
+				{
+				case '+':
+					finalValue += curValue;
 					break;
+				case '-':
+					finalValue -= curValue;
+					break;
+				case '%':
+					finalValue %= curValue;
+					break;
+				case '*':
+					finalValue *= curValue;
+					break;
+				case '/':
+					finalValue /= curValue;
+					break;
+				case '?':
+					finalValue = ((curValue - finalValue + 0.5) * rand.nextDouble()) + finalValue;
+					break;
+				case '<':
+					finalValue = finalValue < curValue ? finalValue : curValue;
+					break;
+				case '>':
+					finalValue = finalValue > curValue ? finalValue : curValue;
+					break;
+				}
+				break;
 			}
 		}
 		return finalValue;

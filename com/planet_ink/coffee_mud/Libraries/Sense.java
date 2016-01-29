@@ -854,6 +854,8 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		{
 			return (((Room)P).domainType()!=Room.DOMAIN_OUTDOORS_CITY)
 					&&(((Room)P).domainType()!=Room.DOMAIN_OUTDOORS_SPACEPORT)
+					&&(((Room)P).domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE)
+					&&(((Room)P).domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
 					&&((((Room)P).domainType()&Room.INDOORS)==0);
 		}
 		else
