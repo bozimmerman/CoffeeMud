@@ -472,6 +472,44 @@ public interface DatabaseEngine extends CMLibrary
 
 	/**
 	 * Table category: DBPLAYERS
+	 * Updates an existing account record in the database
+	 * by altering its key fields in the existing record.
+	 * @param account the account to update
+	 */
+	public void DBUpdateAccount(PlayerAccount account);
+
+	/**
+	 * Table category: DBPLAYERS
+	 * 
+	 * @param account
+	 */
+	public void DBCreateAccount(PlayerAccount account);
+
+	/**
+	 * Table category: DBPLAYERS
+	 * 
+	 * @param account
+	 */
+	public void DBDeleteAccount(PlayerAccount account);
+
+	/**
+	 * Table category: DBPLAYERS
+	 * 
+	 * @param Login
+	 * @return
+	 */
+	public PlayerAccount DBReadAccount(String Login);
+
+	/**
+	 * Table category: DBPLAYERS
+	 * 
+	 * @param mask
+	 * @return
+	 */
+	public List<PlayerAccount> DBListAccounts(String mask);
+
+	/**
+	 * Table category: DBPLAYERS
 	 * Re-builds the entire top-10 player tables from the
 	 * database.  It returns a two dimensional array of
 	 * lists of players and their scores, in reverse sorted
@@ -577,47 +615,10 @@ public interface DatabaseEngine extends CMLibrary
 	/**
 	 * Table category: DBPLAYERS
 	 * 
-	 * @param account
-	 */
-	public void DBUpdateAccount(PlayerAccount account);
-
-	/**
-	 * Table category: DBPLAYERS
-	 * 
-	 * @param account
-	 */
-	public void DBCreateAccount(PlayerAccount account);
-
-	/**
-	 * Table category: DBPLAYERS
-	 * 
-	 * @param account
-	 */
-	public void DBDeleteAccount(PlayerAccount account);
-
-	/**
-	 * Table category: DBPLAYERS
-	 * 
-	 * @param Login
-	 * @return
-	 */
-	public PlayerAccount DBReadAccount(String Login);
-
-	/**
-	 * Table category: DBPLAYERS
-	 * 
 	 * @param name
 	 * @return
 	 */
 	public MOB DBReadPlayer(String name);
-
-	/**
-	 * Table category: DBPLAYERS
-	 * 
-	 * @param mask
-	 * @return
-	 */
-	public List<PlayerAccount> DBListAccounts(String mask);
 
 	/**
 	 * Table category: DBPLAYERS
