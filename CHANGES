@@ -29,6 +29,8 @@
   28. New Druid sub-class: Mer
   29. Golem races can now see in the dark.
   30. Shopkeepers will now include the size of bulk sales in devalue rates. 
+  31. GMODIFY change parms ADDABILITY, ADDEFFECT, ADDBEHAVIOR now support parms in parenthesis ().
+      e.g. CHANGE=ADDABILITY=Prop_ReqSafePet(MSG=no!)
 # Build 5.9.1 Released 01/04/2016
    1. "Who accounts", used by an archon, can quickly list the account name of each player online.
    2. New Achievement event "GOTITEM", and new rewards (see new stats below and achievements.ini)

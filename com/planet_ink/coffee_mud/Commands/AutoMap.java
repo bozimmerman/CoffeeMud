@@ -35,10 +35,18 @@ import java.util.*;
 
 public class AutoMap extends StdCommand
 {
-	public AutoMap(){}
+	public AutoMap()
+	{
+	}
 
-	private final String[] access=I(new String[]{"AUTOMAP"});
-	@Override public String[] getAccessWords(){return access;}
+	private final String[]	access	= I(new String[] { "AUTOMAP" });
+
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
+
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
@@ -63,9 +71,16 @@ public class AutoMap extends StdCommand
 		return false;
 	}
 
-	@Override public boolean canBeOrdered(){return true;}
-	@Override public boolean securityCheck(MOB mob){return CMProps.getIntVar(CMProps.Int.AWARERANGE)>0;}
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 
-
+	@Override
+	public boolean securityCheck(MOB mob)
+	{
+		return CMProps.getIntVar(CMProps.Int.AWARERANGE) > 0;
+	}
 }
 

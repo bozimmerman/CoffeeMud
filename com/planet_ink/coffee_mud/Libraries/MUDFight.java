@@ -41,37 +41,38 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	@Override public String ID(){return "MUDFight";}
 	static final char[] PARENS={'(',')'};
 
-	public String lastStr="";
-	public long lastRes=0;
-	public Object[][][] hitWordIndex=null;
-	public Object[][][] hitWordsChanged=null;
-	protected LinkedList<CMath.CompiledOperation> attackAdjustmentFormula = null;
-	protected LinkedList<CMath.CompiledOperation> armorAdjustmentFormula = null;
-	protected LinkedList<CMath.CompiledOperation> attackerFudgeBonusFormula  = null;
-	protected LinkedList<CMath.CompiledOperation> pvpAttackerFudgeBonusFormula  = null;
-	protected LinkedList<CMath.CompiledOperation> spellFudgeDamageFormula  = null;
-	protected LinkedList<CMath.CompiledOperation> pvpSpellFudgeDamageFormula  = null;
-	protected LinkedList<CMath.CompiledOperation> spellCritChanceFormula = null;
-	protected LinkedList<CMath.CompiledOperation> pvpSpellCritChanceFormula = null;
-	protected LinkedList<CMath.CompiledOperation> spellCritDmgFormula = null;
-	protected LinkedList<CMath.CompiledOperation> pvpSpellCritDmgFormula = null;
-	protected LinkedList<CMath.CompiledOperation> targetedRangedDamageFormula = null;
-	protected LinkedList<CMath.CompiledOperation> pvpTargetedRangedDamageFormula = null;
-	protected LinkedList<CMath.CompiledOperation> rangedFudgeDamageFormula  = null;
-	protected LinkedList<CMath.CompiledOperation> pvpRangedFudgeDamageFormula  = null;
-	protected LinkedList<CMath.CompiledOperation> targetedMeleeDamageFormula = null;
-	protected LinkedList<CMath.CompiledOperation> pvpTargetedMeleeDamageFormula = null;
-	protected LinkedList<CMath.CompiledOperation> meleeFudgeDamageFormula  = null;
-	protected LinkedList<CMath.CompiledOperation> pvpMeleeFudgeDamageFormula  = null;
-	protected LinkedList<CMath.CompiledOperation> staticRangedDamageFormula = null;
-	protected LinkedList<CMath.CompiledOperation> staticMeleeDamageFormula = null;
-	protected LinkedList<CMath.CompiledOperation> weaponCritChanceFormula = null;
-	protected LinkedList<CMath.CompiledOperation> pvpWeaponCritChanceFormula = null;
-	protected LinkedList<CMath.CompiledOperation> weaponCritDmgFormula = null;
-	protected LinkedList<CMath.CompiledOperation> pvpWeaponCritDmgFormula = null;
-	protected LinkedList<CMath.CompiledOperation> stateHitPointRecoverFormula = null;
-	protected LinkedList<CMath.CompiledOperation> stateManaRecoverFormula = null;
-	protected LinkedList<CMath.CompiledOperation> stateMovesRecoverFormula  = null;
+	public String 		lastStr			= "";
+	public long 		lastRes			= 0;
+	public Object[][][] hitWordIndex	= null;
+	public Object[][][] hitWordsChanged	= null;
+	
+	protected LinkedList<CMath.CompiledOperation>	attackAdjustmentFormula			= null;
+	protected LinkedList<CMath.CompiledOperation>	armorAdjustmentFormula			= null;
+	protected LinkedList<CMath.CompiledOperation>	attackerFudgeBonusFormula		= null;
+	protected LinkedList<CMath.CompiledOperation>	pvpAttackerFudgeBonusFormula	= null;
+	protected LinkedList<CMath.CompiledOperation>	spellFudgeDamageFormula			= null;
+	protected LinkedList<CMath.CompiledOperation>	pvpSpellFudgeDamageFormula		= null;
+	protected LinkedList<CMath.CompiledOperation>	spellCritChanceFormula			= null;
+	protected LinkedList<CMath.CompiledOperation>	pvpSpellCritChanceFormula		= null;
+	protected LinkedList<CMath.CompiledOperation>	spellCritDmgFormula				= null;
+	protected LinkedList<CMath.CompiledOperation>	pvpSpellCritDmgFormula			= null;
+	protected LinkedList<CMath.CompiledOperation>	targetedRangedDamageFormula		= null;
+	protected LinkedList<CMath.CompiledOperation>	pvpTargetedRangedDamageFormula	= null;
+	protected LinkedList<CMath.CompiledOperation>	rangedFudgeDamageFormula		= null;
+	protected LinkedList<CMath.CompiledOperation>	pvpRangedFudgeDamageFormula		= null;
+	protected LinkedList<CMath.CompiledOperation>	targetedMeleeDamageFormula		= null;
+	protected LinkedList<CMath.CompiledOperation>	pvpTargetedMeleeDamageFormula	= null;
+	protected LinkedList<CMath.CompiledOperation>	meleeFudgeDamageFormula			= null;
+	protected LinkedList<CMath.CompiledOperation>	pvpMeleeFudgeDamageFormula		= null;
+	protected LinkedList<CMath.CompiledOperation>	staticRangedDamageFormula		= null;
+	protected LinkedList<CMath.CompiledOperation>	staticMeleeDamageFormula		= null;
+	protected LinkedList<CMath.CompiledOperation>	weaponCritChanceFormula			= null;
+	protected LinkedList<CMath.CompiledOperation>	pvpWeaponCritChanceFormula		= null;
+	protected LinkedList<CMath.CompiledOperation>	weaponCritDmgFormula			= null;
+	protected LinkedList<CMath.CompiledOperation>	pvpWeaponCritDmgFormula			= null;
+	protected LinkedList<CMath.CompiledOperation>	stateHitPointRecoverFormula		= null;
+	protected LinkedList<CMath.CompiledOperation>	stateManaRecoverFormula			= null;
+	protected LinkedList<CMath.CompiledOperation>	stateMovesRecoverFormula		= null;
 
 	private static final int ATTACK_ADJUSTMENT = 50;
 
@@ -1080,11 +1081,13 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		return dividers;
 	}
 
-	protected DeadBody justDie(MOB source, MOB target)
+	protected DeadBody justDie(final MOB source, final MOB target)
 	{
 		if(target==null)
 			return null;
 		final Room deathRoom=target.location();
+		if(deathRoom == null)
+			return null;
 
 		//TODO: this creates too many loops.  The right thing is to loop once
 		// and call  a boolean function to populate all these lists.

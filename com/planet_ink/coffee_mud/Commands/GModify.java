@@ -83,6 +83,19 @@ public class GModify extends StdCommand
 		}
 		return "";
 	}
+	
+	public static String[] splitClassParms(String value)
+	{
+		if(value.endsWith(")"))
+		{
+			int x=value.indexOf('(');
+			if(x>0)
+			{
+				return new String[]{value.substring(0, x),value.substring(x+1,value.length()-1)};
+			}
+		}
+		return new String[]{value,""};
+	}
 
 	public static void setStat(Environmental E, String stat, String value)
 	{
@@ -98,15 +111,45 @@ public class GModify extends StdCommand
 			else
 			if((stat.equalsIgnoreCase("ADDABILITY"))
 			&&(E instanceof AbilityContainer))
-				((AbilityContainer)E).addAbility(CMClass.getAbility(value));
+			{
+				final String[] classParms = splitClassParms(value);
+				Ability A=((AbilityContainer)E).fetchAbility(classParms[0]);
+				if(A==null)
+					A=CMClass.getAbility(classParms[0]);
+				if(A!=null)
+				{
+					A.setMiscText(classParms[1]);
+					((AbilityContainer)E).addAbility(A);
+				}
+			}
 			else
 			if((stat.equalsIgnoreCase("ADDAFFECT"))
 			&&(E instanceof Affectable))
-				((Affectable)E).addNonUninvokableEffect(CMClass.getAbility(value));
+			{
+				final String[] classParms = splitClassParms(value);
+				Ability A=((Affectable)E).fetchEffect(classParms[0]);
+				if(A==null)
+					A=CMClass.getAbility(classParms[0]);
+				if(A!=null)
+				{
+					A.setMiscText(classParms[1]);
+					((Affectable)E).addNonUninvokableEffect(A);
+				}
+			}
 			else
 			if((stat.equalsIgnoreCase("ADDBEHAVIOR"))
 			&&(E instanceof Behavable))
-				((Behavable)E).addBehavior(CMClass.getBehavior(value));
+			{
+				final String[] classParms = splitClassParms(value);
+				Behavior B=((Behavable)E).fetchBehavior(classParms[0]);
+				if(B==null)
+					B=CMClass.getBehavior(classParms[0]);
+				if(B!=null)
+				{
+					B.setParms(classParms[1]);
+					((Behavable)E).addBehavior(B);
+				}
+			}
 			else
 			if((stat.equalsIgnoreCase("DELABILITY"))
 			&&(E instanceof AbilityContainer))
