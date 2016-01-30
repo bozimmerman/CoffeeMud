@@ -271,14 +271,11 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		return true;
 	}
 
-	@Override
-	public double rawSpecificGoldPrice(Environmental product,
-									   CoffeeShop shop,
-									   double numberOfThem)
+	public double rawSpecificGoldPrice(Environmental product, CoffeeShop shop)
 	{
 		double price=0.0;
 		if(product instanceof Item)
-			price=((Item)product).value()*numberOfThem;
+			price=((Item)product).value();
 		else
 		if(product instanceof Ability)
 		{
@@ -436,7 +433,6 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 											 ShopKeeper shop,
 											 boolean includeSalesTax)
 	{
-		final double number=1.0;
 		final ShopKeeper.ShopPrice val=new ShopKeeper.ShopPrice();
 		if(product==null)
 			return val;
@@ -452,7 +448,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		if(stockPrice>=0)
 			val.absoluteGoldPrice=stockPrice;
 		else
-			val.absoluteGoldPrice=rawSpecificGoldPrice(product,shop.getShop(),number);
+			val.absoluteGoldPrice=rawSpecificGoldPrice(product,shop.getShop());
 
 		if(buyer==null)
 		{
@@ -643,16 +639,18 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		}
 	}
 	
-	@Override
-	public double devalue(ShopKeeper shop, Environmental product)
+	public double devalue(ShopKeeper shop, Environmental product, double number)
 	{
-		final int num=shop.getShop().numberInStock(product);
+		int num=shop.getShop().numberInStock(product);
+		num += (int)Math.round(Math.floor(number/2.0));
 		if(num<=0)
 			return 0.0;
 		final double[] rates=shop.finalDevalueRate();
 		if(rates == null)
 			return 0.0;
 		double rate=(product instanceof RawMaterial)?rates[1]:rates[0];
+		if(rate<=0.0)
+			return 0.0;
 		rate=rate*num;
 		if(rate>1.0)
 			rate=1.0;
@@ -668,46 +666,69 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 											 ShopKeeper shop)
 	{
 		double number=1.0;
-		if(product instanceof PackagedItems)
-		{
-			number=((PackagedItems)product).numberOfItemsInPackage();
-			product=((PackagedItems)product).peekFirstItem();
-		}
 		final ShopKeeper.ShopPrice val=new ShopKeeper.ShopPrice();
-		if(product==null)
-			return val;
-		final int stockPrice=shop.getShop().stockPrice(product);
-		if(stockPrice<=-100)
-			return val;
+		try
+		{
+			if(product instanceof PackagedItems)
+			{
+				number=((PackagedItems)product).numberOfItemsInPackage();
+				product=((PackagedItems)product).peekFirstItem();
+			}
+			else
+			if(product instanceof RawMaterial)
+			{
+				number = ((RawMaterial)product).basePhyStats().weight();
+				product = (Environmental)product.copyOf();
+				((RawMaterial) product).basePhyStats().setWeight(1);
+				((RawMaterial) product).phyStats().setWeight(1);
+			}
+			if(product==null)
+				return val;
+			final int stockPrice=shop.getShop().stockPrice(product);
+			if(stockPrice<=-100)
+			{
+				return val;
+			}
+	
+			if(stockPrice>=0.0)
+				val.absoluteGoldPrice=stockPrice;
+			else
+				val.absoluteGoldPrice=rawSpecificGoldPrice(product,shop.getShop());
+	
+			if(buyer==null)
+			{
+				val.absoluteGoldPrice *= number;
+				return val;
+			}
+	
+			double prejudiceFactor=prejudiceFactor(buyer,shop.finalPrejudiceFactors(),true);
+			final Room loc=CMLib.map().roomLocation(shop);
+			prejudiceFactor*=itemPriceFactor(product,loc,shop.finalItemPricingAdjustments(),true);
+			val.absoluteGoldPrice=CMath.mul(prejudiceFactor,val.absoluteGoldPrice);
+	
+			// gets the shopkeeper a deal on junk.  Pays 5% at 3 charisma, and 50% at 35
+			double buyPrice=CMath.div(CMath.mul(val.absoluteGoldPrice,buyer.charStats().getStat(CharStats.STAT_CHARISMA)),70.0);
+			if(!(product instanceof Ability))
+				buyPrice=CMath.mul(buyPrice,1.0-devalue(shop,product,number));
+	
+	
+			final double sellPrice=sellingPrice(seller,buyer,product,shop,false).absoluteGoldPrice;
+	
+			if(buyPrice>sellPrice)
+				val.absoluteGoldPrice=sellPrice;
+			else
+				val.absoluteGoldPrice=buyPrice;
+	
+			val.absoluteGoldPrice *= number;
 
-		if(stockPrice>=0.0)
-			val.absoluteGoldPrice=stockPrice;
-		else
-			val.absoluteGoldPrice=rawSpecificGoldPrice(product,shop.getShop(),number);
-
-		if(buyer==null)
-			return val;
-
-		double prejudiceFactor=prejudiceFactor(buyer,shop.finalPrejudiceFactors(),true);
-		final Room loc=CMLib.map().roomLocation(shop);
-		prejudiceFactor*=itemPriceFactor(product,loc,shop.finalItemPricingAdjustments(),true);
-		val.absoluteGoldPrice=CMath.mul(prejudiceFactor,val.absoluteGoldPrice);
-
-		// gets the shopkeeper a deal on junk.  Pays 5% at 3 charisma, and 50% at 35
-		double buyPrice=CMath.div(CMath.mul(val.absoluteGoldPrice,buyer.charStats().getStat(CharStats.STAT_CHARISMA)),70.0);
-		if(!(product instanceof Ability))
-			buyPrice=CMath.mul(buyPrice,1.0-devalue(shop,product));
-
-
-		final double sellPrice=sellingPrice(seller,buyer,product,shop,false).absoluteGoldPrice;
-
-		if(buyPrice>sellPrice)
-			val.absoluteGoldPrice=sellPrice;
-		else
-			val.absoluteGoldPrice=buyPrice;
-
-		if(val.absoluteGoldPrice<=0.0)
-			val.absoluteGoldPrice=1.0;
+			if(val.absoluteGoldPrice<=0.0)
+				val.absoluteGoldPrice=1.0;
+		}
+		finally
+		{
+			if((number > 1.0)&&(product!=null))
+				product.destroy();
+		}
 		return val;
 	}
 

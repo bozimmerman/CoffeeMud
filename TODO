@@ -2,7 +2,6 @@ BUGS
    *. Filter water doesn't neutralize anything.. should it?
 
 TECH
-   *. shopkeepers price degredation should begin by counting the number of items, num resources, etc.
    *. instead of being blended, perhaps tech ships should show paragraph form for all ship tech only.
    *. add synthetic raw materials, see tech.doc
    *. new power generators: solar (day, outside), hydro (outside, on shore), wind (outside)
