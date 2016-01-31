@@ -518,6 +518,22 @@ public interface RawMaterial extends Item
 	public final static int	RESOURCE_NITROGEN		= MATERIAL_GAS | 185;
 	public final static int	RESOURCE_CHLORINE		= MATERIAL_GAS | 186;
 	public final static int	RESOURCE_ALUMINUM		= MATERIAL_METAL | 187;
+	public final static int	RESOURCE_TITANIUM		= MATERIAL_METAL | 188;
+	public final static int	RESOURCE_FIBREGLASS		= MATERIAL_CLOTH | 189;
+	public final static int	RESOURCE_ULTRANIUM		= MATERIAL_METAL | 190;
+	public final static int	RESOURCE_DURANIUM		= MATERIAL_METAL | 191;
+	public final static int	RESOURCE_URANIUM		= MATERIAL_ROCK  | 192;
+	public final static int	RESOURCE_ANTIMATTER		= MATERIAL_ENERGY| 193;
+	public final static int	RESOURCE_DIAMELS		= MATERIAL_PRECIOUS | 194;
+	public final static int	RESOURCE_PETROLEUM		= MATERIAL_LIQUID| 195;
+	public final static int	RESOURCE_GASOLINE		= MATERIAL_LIQUID| 196;
+	public final static int	RESOURCE_DIESEL			= MATERIAL_LIQUID| 197;
+	public final static int	RESOURCE_SILICON		= MATERIAL_ROCK  | 198;
+	public final static int	RESOURCE_POLYESTER		= MATERIAL_CLOTH | 199;
+	public final static int	RESOURCE_DENIM			= MATERIAL_CLOTH | 200;
+	public final static int	RESOURCE_DILITHIUM		= MATERIAL_PRECIOUS | 201;
+	public final static int	RESOURCE_TAR			= MATERIAL_LIQUID | 202;
+	
 	public final static int	RESOURCE_MASK			= 255;
 
 	/**
@@ -725,11 +741,27 @@ public interface RawMaterial extends Item
 		SLIME(RESOURCE_SLIME, 5, 10, 1, 750, "horridly acidic", "Prop_UseSpellCast2(Spell_AcidSpray)", null),
 		AIR(RESOURCE_AIR, 0, 100, 0, 0, "", "", null),
 		OXYGEN(RESOURCE_OXYGEN, 10, 100, 0, 0, "", "", null),
-		HYDROGEN(RESOURCE_HYDROGEN, 20, 100, 0, 0, "", "", null),
-		FLOURINE(RESOURCE_FLOURINE, 60, 40, 0, 0, "strong pungent smell", "", null),
-		NITROGEN(RESOURCE_NITROGEN, 10, 100, 0, 0, "", "", null),
-		CHLORINE(RESOURCE_CHLORINE, 10, 100, 0, 0, "strong acidic smell", "", null)
-		;
+		HYDROGEN(RESOURCE_HYDROGEN,       20, 100, 0, 0, "", "", null),
+		FLOURINE(RESOURCE_FLOURINE,       60, 40,  0, 0, "strong pungent smell", "", null),
+		NITROGEN(RESOURCE_NITROGEN,       10, 100, 0, 0, "", "", null),
+		CHLORINE(RESOURCE_CHLORINE,       10, 100, 0, 0, "strong acidic smell", "", null),
+		TITANIUM(RESOURCE_TITANIUM		, 75,   0, 8, 784, "", "", null),
+		FIBREGLASS(RESOURCE_FIBREGLASS	, 10,   0, 2, 0, "", "", null),
+		ULTRANIUM(RESOURCE_ULTRANIUM	, 175,  0, 11, 900, "", "", null),
+		DURANIUM(RESOURCE_DURANIUM		, 159,  0, 10, 300, "", "", null),
+		URANIUM(RESOURCE_URANIUM		, 100,  1, 0, 2000, "", "", null),
+		ANTIMATTER(RESOURCE_ANTIMATTER	, 500,  0, 0, 0, "", "", null),
+		DIAMELS(RESOURCE_DIAMELS		, 5,    20, 9, 3510, "", "", null),
+		PETROLEUM(RESOURCE_PETROLEUM	, 50,   5, 1, 880, "strong oily", "", null),
+		GASOLINE(RESOURCE_GASOLINE		, 80,   0, 0, 880, "strong unique", "", null),
+		DIESEL(RESOURCE_DIESEL			, 70,   0, 0, 880, "strong unique", "", null),
+		SILICON(RESOURCE_SILICON		, 10,   10, 6, 500, "", "", null),
+		POLYESTER(RESOURCE_POLYESTER	, 15,   0, 2, 545, "", "", null),
+		DENIM(RESOURCE_DENIM			, 15,   0, 2, 745, "", "", null),
+		DILITHIUM(RESOURCE_DILITHIUM	, 5000, 0, 7, 5010, "", "", null),
+		TAR(RESOURCE_TAR				, 10,   15, 2, 1280, "strong oily", "", null),
+		
+		;//code, 						  v, freq, h, b, smell, effects, ResourceFlag flags
 		public final int			code, value, frequency, hardness, bouancy;
 		public final String			smell, effect, desc;
 		public final ResourceFlag	flag;
