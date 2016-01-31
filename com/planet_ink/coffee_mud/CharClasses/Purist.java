@@ -203,7 +203,7 @@ public class Purist extends Cleric
 	}
 
 	private final String[] raceRequiredList=new String[]{
-		"Humanoid","Dwarf","Elf","HalfElf","Elf-kin","Fairy-kin"
+		"Human","Humanoid","Dwarf","Elf","HalfElf","Elf-kin","Fairy-kin"
 	};
 	@Override public String[] getRequiredRaceList(){ return raceRequiredList; }
 
