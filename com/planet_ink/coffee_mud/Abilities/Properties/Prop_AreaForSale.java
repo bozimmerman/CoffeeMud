@@ -188,7 +188,7 @@ public class Prop_AreaForSale extends Property implements LandTitle
 			CMLib.database().DBUpdateArea(((Area)affected).name(),(Area)affected);
 		else
 		if(affected instanceof Room)
-			Log.errOut("Prop_AreaForSale","Prop_AreaForSale goes on an Area, NOT "+CMLib.map().getExtendedRoomID((Room)affected));
+			Log.errOut("Prop_AreaForSale","Prop_AreaForSale goes on an Area, NOT "+CMLib.map().getDescriptiveExtendedRoomID((Room)affected));
 		else
 		{
 			final Area A=CMLib.map().getArea(landPropertyID());

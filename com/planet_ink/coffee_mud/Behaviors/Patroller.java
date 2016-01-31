@@ -265,7 +265,7 @@ public class Patroller extends ActiveTicker
 				if(thatRoom==null)
 				{
 					if(step>0)
-						Log.errOut("Patroller","'"+nxt+"' for "+ticking.name()+" at "+CMLib.map().getExtendedRoomID(thisRoom)+" is impossible!");
+						Log.errOut("Patroller","'"+nxt+"' for "+ticking.name()+" at "+CMLib.map().getDescriptiveExtendedRoomID(thisRoom)+" is impossible!");
 					step=-1;
 					tickStatus=Tickable.STATUS_NOT;
 					final Room myStartRoom=startRoom.get();
@@ -363,7 +363,7 @@ public class Patroller extends ActiveTicker
 				}
 				else
 				{
-					Log.errOut("Patroller","'"+nxt+"' for "+ticking.name()+" ("+CMLib.map().getExtendedRoomID(CMLib.map().getStartRoom((Environmental)ticking))+") is utterly unknown!");
+					Log.errOut("Patroller","'"+nxt+"' for "+ticking.name()+" ("+CMLib.map().getDescriptiveExtendedRoomID(CMLib.map().getStartRoom((Environmental)ticking))+") is utterly unknown!");
 					tickStatus=Tickable.STATUS_NOT;
 					return true;
 				}

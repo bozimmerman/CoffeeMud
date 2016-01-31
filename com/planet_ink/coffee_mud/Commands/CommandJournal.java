@@ -239,7 +239,7 @@ public class CommandJournal extends StdCommand
 				}
 				String prePend="";
 				if(journal.getFlag(JournalsLibrary.CommandJournalFlags.ADDROOM)!=null)
-					prePend="(^<LSTROOMID^>"+CMLib.map().getExtendedRoomID(mob.location())+"^</LSTROOMID^>) ";
+					prePend="(^<LSTROOMID^>"+CMLib.map().getDescriptiveExtendedRoomID(mob.location())+"^</LSTROOMID^>) ";
 				CMLib.database().DBWriteJournal(journal.JOURNAL_NAME(),mob.Name(),"ALL",
 						CMStrings.padRight("^.^N"+msgString+"^.^N",20),
 						prePend+msgString);

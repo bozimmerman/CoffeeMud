@@ -530,6 +530,40 @@ public class Directions
 	}
 
 	/**
+	 * Returns the proper english compass direction name to relative to somewhere else. 
+	 * @param code the direction code
+	 * @return the name of the direction phrase
+	 */
+	public static final String getRelativeCompassDirectionName(final int code)
+	{
+		switch(code)
+		{
+		case NORTH:
+			return "north of";
+		case SOUTH:
+			return "south of";
+		case EAST:
+			return "east of";
+		case WEST:
+			return "west of";
+		case UP:
+			return "above";
+		case DOWN:
+			return "below";
+		case GATE:
+			return "";
+		case NORTHEAST:
+			return "northeast of";
+		case NORTHWEST:
+			return "northwest of";
+		case SOUTHEAST:
+			return "southeast of";
+		case SOUTHWEST:
+			return "southwest of";
+		}
+		return "";
+	}
+	/**
 	 * Returns the proper english ship direction name to follow the preposition 
 	 * "from" when talking about something or someone coming FROM the given direction 
 	 * code on a ship.  Completes the following sentence: "Joe arrived from ..."

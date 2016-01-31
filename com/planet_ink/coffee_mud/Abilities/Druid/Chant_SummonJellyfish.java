@@ -203,6 +203,7 @@ public class Chant_SummonJellyfish extends Chant
 						P.setMiscText("MSG=\""+L("Zoom! Nope, they are just too quick for you.")+"\"");
 						C.theJellyfish.addNonUninvokableEffect(P);
 					}
+					C.theJellyfish.setLocation(target);
 					target.addInhabitant(C.theJellyfish);
 				}
 			}

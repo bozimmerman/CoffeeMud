@@ -1228,7 +1228,7 @@ public class StdMOB implements MOB
 		}
 		if (location() == null)
 		{
-			Log.errOut("StdMOB", name() + " of " + CMLib.map().getExtendedRoomID(newLocation) + " was auto-destroyed!");
+			Log.errOut("StdMOB", name() + " of " + CMLib.map().getDescriptiveExtendedRoomID(newLocation) + " was auto-destroyed!");
 			destroy();
 			return;
 		}
@@ -1252,7 +1252,7 @@ public class StdMOB implements MOB
 		}
 		if (location() == null)
 		{
-			Log.errOut("StdMOB", name() + " of " + CMLib.map().getExtendedRoomID(newLocation)
+			Log.errOut("StdMOB", name() + " of " + CMLib.map().getDescriptiveExtendedRoomID(newLocation)
 					+ " was auto-destroyed by its tick!!");
 			destroy();
 			return;
@@ -1266,7 +1266,7 @@ public class StdMOB implements MOB
 
 		if (location() == null)
 		{
-			Log.errOut("StdMOB", name() + " of " + CMLib.map().getExtendedRoomID(newLocation)
+			Log.errOut("StdMOB", name() + " of " + CMLib.map().getDescriptiveExtendedRoomID(newLocation)
 					+ " was auto-destroyed by its room recover!!");
 			destroy();
 			return;
@@ -4228,7 +4228,7 @@ public class StdMOB implements MOB
 			{
 				final Clan C=CMLib.clans().getClan(clanID);
 				if(C==null)
-					Log.errOut("StdMOB","Unknown clan: "+clanID+" on "+Name()+" in "+CMLib.map().getExtendedRoomID(location()));
+					Log.errOut("StdMOB","Unknown clan: "+clanID+" on "+Name()+" in "+CMLib.map().getDescriptiveExtendedRoomID(location()));
 				else
 				{
 					p=new Pair<Clan,Integer>(C,Integer.valueOf(role));

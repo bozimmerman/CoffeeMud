@@ -184,8 +184,7 @@ public class Chant_FeedingFrenzy extends Chant
 							&&CMLib.flags().isAnimalIntelligence(M)
 							&&CMLib.flags().canActAtAll(M)
 							&&(M.fetchEffect(ID())==null)
-							&&(CMLib.flags().isMarine(M))
-							&&(CMLib.flags().isUndead(mob)))
+							&&(CMLib.flags().isMarine(M)))
 								maliciousAffect(mob,M,asLevel,0,CMMsg.MASK_MALICIOUS|CMMsg.TYP_MIND);
 						}
 					}

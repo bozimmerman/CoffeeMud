@@ -881,6 +881,36 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
+	public String getDescriptiveExtendedRoomID(final Room room)
+	{
+		if(room==null)
+			return "";
+		final String roomID = getExtendedRoomID(room);
+		if(roomID.length()>0)
+			return roomID;
+		final GridLocale gridParentRoom=room.getGridParent();
+		if((gridParentRoom!=null)&&(gridParentRoom.roomID().length()==0))
+		{
+			for(int dir=0;dir<Directions.NUM_DIRECTIONS();dir++)
+			{
+				final Room attachedRoom = gridParentRoom.rawDoors()[dir];
+				if(attachedRoom != null)
+				{
+					final String attachedRoomID = getExtendedRoomID(attachedRoom);
+					if(attachedRoomID.length()>0)
+						return Directions.getFromCompassDirectionName(Directions.getOpDirectionCode(dir))+" "+attachedRoomID;
+				}
+			}
+		}
+		Area area=room.getArea();
+		if((area==null)&&(gridParentRoom!=null))
+			area=gridParentRoom.getArea();
+		if(area == null)
+			return "";
+		return area.Name()+"#?";
+	}
+	
+	@Override
 	public String getExtendedTwinRoomIDs(final Room R1,final Room R2)
 	{
 		final String R1s=getExtendedRoomID(R1);

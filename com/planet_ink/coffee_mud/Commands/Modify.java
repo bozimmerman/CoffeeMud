@@ -2130,7 +2130,7 @@ public class Modify extends StdCommand
 				((Item)thang).recoverPhyStats();
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("@x1 shake(s) under the transforming power.",thang.name()));
 				if(!copyItem.sameAs(thang))
-					Log.sysOut("CreateEdit",mob.Name()+" modified item "+thang.Name()+" ("+thang.ID()+") in "+CMLib.map().getExtendedRoomID(mob.location())+".");
+					Log.sysOut("CreateEdit",mob.Name()+" modified item "+thang.Name()+" ("+thang.ID()+") in "+CMLib.map().getDescriptiveExtendedRoomID(mob.location())+".");
 				copyItem.destroy();
 			}
 			else
@@ -2144,7 +2144,7 @@ public class Modify extends StdCommand
 					mob.location().showOthers(mob,thang,CMMsg.MSG_OK_ACTION,L("<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>."));
 					CMLib.genEd().modifyStdMob(mob,(MOB)thang);
 					if(!copyMOB.sameAs(thang))
-						Log.sysOut("CreateEdit",mob.Name()+" modified mob "+thang.Name()+" ("+thang.ID()+") in "+CMLib.map().getExtendedRoomID(((MOB)thang).location())+".");
+						Log.sysOut("CreateEdit",mob.Name()+" modified mob "+thang.Name()+" ("+thang.ID()+") in "+CMLib.map().getDescriptiveExtendedRoomID(((MOB)thang).location())+".");
 				}
 				else
 				if(!((MOB)thang).isMonster())
@@ -2159,7 +2159,7 @@ public class Modify extends StdCommand
 					mob.location().showOthers(mob,thang,CMMsg.MSG_OK_ACTION,L("<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>."));
 					CMLib.genEd().genMiscSet(mob,thang);
 					if(!copyMOB.sameAs(thang))
-						Log.sysOut("CreateEdit",mob.Name()+" modified mob "+thang.Name()+" ("+thang.ID()+") in "+CMLib.map().getExtendedRoomID(((MOB)thang).location())+".");
+						Log.sysOut("CreateEdit",mob.Name()+" modified mob "+thang.Name()+" ("+thang.ID()+") in "+CMLib.map().getDescriptiveExtendedRoomID(((MOB)thang).location())+".");
 					copyMOB.destroy();
 				}
 				((MOB)thang).recoverPhyStats();

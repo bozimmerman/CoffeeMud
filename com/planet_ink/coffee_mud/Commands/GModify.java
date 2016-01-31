@@ -361,7 +361,7 @@ public class GModify extends StdCommand
 					{
 						if(E instanceof Room)
 						{
-							Log.sysOut("GMODIFY","Room "+CMLib.map().getExtendedRoomID((Room)E)+" was DESTROYED by "+mob.Name()+"!");
+							Log.sysOut("GMODIFY","Room "+CMLib.map().getDescriptiveExtendedRoomID((Room)E)+" was DESTROYED by "+mob.Name()+"!");
 							CMLib.map().obliterateRoom((Room)E);
 						}
 						else

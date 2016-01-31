@@ -3436,110 +3436,117 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 					if(stoppingQuest)
 					for(int i=questState.addons.size()-1;i>=0;i--)
 					{
-						final Integer I=(Integer)questState.addons.elementAt(i,2);
-						if(I.intValue()>0)
+						try
 						{
-							questState.addons.setElementAt(i,2,Integer.valueOf(I.intValue()-1));
-							continue;
-						}
-						final List V=(List)questState.addons.elementAt(i,1);
-						questState.addons.removeElementAt(i);
-						if(V.size()<2)
-							continue;
-						final Environmental E=(Environmental)V.get(0);
-						final Object O=V.get(1);
-						if(O instanceof String)
-						{
-							final String stat=(String)O;
-							final String parms=(String)V.get(2);
-							if(CMStrings.contains(E.getStatCodes(),stat.toUpperCase().trim()))
-								E.setStat(stat,parms);
-							else
-							if((E instanceof MOB)&&CMStrings.contains(((Physical)E).basePhyStats().getStatCodes(),stat.toUpperCase().trim()))
+							final Integer I=(Integer)questState.addons.elementAt(i,2);
+							if(I.intValue()>0)
 							{
-								((Physical)E).basePhyStats().setStat(stat.toUpperCase().trim(),parms);
-								((Physical)E).recoverPhyStats();
+								questState.addons.setElementAt(i,2,Integer.valueOf(I.intValue()-1));
+								continue;
 							}
-							else
-							if((E instanceof MOB)&&(CMStrings.contains(CharStats.CODES.NAMES(),stat.toUpperCase().trim())))
+							final List V=(List)questState.addons.elementAt(i,1);
+							questState.addons.removeElementAt(i);
+							if(V.size()<2)
+								continue;
+							final Environmental E=(Environmental)V.get(0);
+							final Object O=V.get(1);
+							if(O instanceof String)
 							{
-								((MOB)E).baseCharStats().setStat(CMParms.indexOf(CharStats.CODES.NAMES(),stat.toUpperCase().trim()),CMath.s_int(parms));
-								((MOB)E).recoverCharStats();
-							}
-							else
-							if((E instanceof MOB)&&CMStrings.contains(((MOB)E).baseState().getStatCodes(),stat))
-							{
-								((MOB)E).baseState().setStat(stat,parms);
-								((MOB)E).recoverMaxState();
-								((MOB)E).resetToMaxState();
-							}
-						}
-						else
-						if(O instanceof Behavior)
-						{
-							if(E instanceof PhysicalAgent)
-							{
-								final PhysicalAgent BB=(PhysicalAgent)E;
-								Behavior B=BB.fetchBehavior(((Behavior)O).ID());
-								if((E instanceof MOB)&&(B instanceof ScriptingEngine))
-									((ScriptingEngine)B).endQuest((PhysicalAgent)E,(MOB)E,name());
-								if((V.size()>2)&&(V.get(2) instanceof String))
+								final String stat=(String)O;
+								final String parms=(String)V.get(2);
+								if(CMStrings.contains(E.getStatCodes(),stat.toUpperCase().trim()))
+									E.setStat(stat,parms);
+								else
+								if((E instanceof MOB)&&CMStrings.contains(((Physical)E).basePhyStats().getStatCodes(),stat.toUpperCase().trim()))
 								{
-									if(B==null){ B=(Behavior)O; BB.addBehavior(B);}
-									B.setParms((String)V.get(2));
+									((Physical)E).basePhyStats().setStat(stat.toUpperCase().trim(),parms);
+									((Physical)E).recoverPhyStats();
 								}
 								else
-								if(B!=null)
-									BB.delBehavior(B);
-							}
-						}
-						else
-						if(O instanceof ScriptingEngine)
-						{
-							final ScriptingEngine S=(ScriptingEngine)O;
-							if((E instanceof MOB)&&(!S.isSavable()))
-							{
-								S.endQuest((MOB)E,(MOB)E,name());
-								((MOB)E).delScript(S);
-							}
-						}
-						else
-						if(O instanceof Ability)
-						{
-							if((V.size()>2)
-							&&(V.get(2) instanceof Ability)
-							&&(E instanceof MOB))
-							{
-								Ability A=((MOB)E).fetchAbility(((Ability)O).ID());
-								if((V.size()>3)&&(V.get(3) instanceof String))
+								if((E instanceof MOB)&&(CMStrings.contains(CharStats.CODES.NAMES(),stat.toUpperCase().trim())))
 								{
-									if(A==null){A=(Ability)O; ((MOB)E).addAbility(A);}
-									A.setMiscText((String)V.get(3));
+									((MOB)E).baseCharStats().setStat(CMParms.indexOf(CharStats.CODES.NAMES(),stat.toUpperCase().trim()),CMath.s_int(parms));
+									((MOB)E).recoverCharStats();
 								}
 								else
-								if(A!=null)
-									((MOB)E).delAbility(A);
+								if((E instanceof MOB)&&CMStrings.contains(((MOB)E).baseState().getStatCodes(),stat))
+								{
+									((MOB)E).baseState().setStat(stat,parms);
+									((MOB)E).recoverMaxState();
+									((MOB)E).resetToMaxState();
+								}
 							}
 							else
-							if(E instanceof Physical)
+							if(O instanceof Behavior)
 							{
-								Ability A=((Physical)E).fetchEffect(((Ability)O).ID());
-								if((V.size()>2)&&(V.get(2) instanceof String))
+								if(E instanceof PhysicalAgent)
 								{
-									if(A==null){A=(Ability)O; ((Physical)E).addEffect(A);}
-									A.setMiscText((String)V.get(2));
-								}
-								else
-								if(A!=null)
-								{
-									A.unInvoke();
-									((Physical)E).delEffect(A);
+									final PhysicalAgent BB=(PhysicalAgent)E;
+									Behavior B=BB.fetchBehavior(((Behavior)O).ID());
+									if((E instanceof MOB)&&(B instanceof ScriptingEngine))
+										((ScriptingEngine)B).endQuest((PhysicalAgent)E,(MOB)E,name());
+									if((V.size()>2)&&(V.get(2) instanceof String))
+									{
+										if(B==null){ B=(Behavior)O; BB.addBehavior(B);}
+										B.setParms((String)V.get(2));
+									}
+									else
+									if(B!=null)
+										BB.delBehavior(B);
 								}
 							}
+							else
+							if(O instanceof ScriptingEngine)
+							{
+								final ScriptingEngine S=(ScriptingEngine)O;
+								if((E instanceof MOB)&&(!S.isSavable()))
+								{
+									S.endQuest((MOB)E,(MOB)E,name());
+									((MOB)E).delScript(S);
+								}
+							}
+							else
+							if(O instanceof Ability)
+							{
+								if((V.size()>2)
+								&&(V.get(2) instanceof Ability)
+								&&(E instanceof MOB))
+								{
+									Ability A=((MOB)E).fetchAbility(((Ability)O).ID());
+									if((V.size()>3)&&(V.get(3) instanceof String))
+									{
+										if(A==null){A=(Ability)O; ((MOB)E).addAbility(A);}
+										A.setMiscText((String)V.get(3));
+									}
+									else
+									if(A!=null)
+										((MOB)E).delAbility(A);
+								}
+								else
+								if(E instanceof Physical)
+								{
+									Ability A=((Physical)E).fetchEffect(((Ability)O).ID());
+									if((V.size()>2)&&(V.get(2) instanceof String))
+									{
+										if(A==null){A=(Ability)O; ((Physical)E).addEffect(A);}
+										A.setMiscText((String)V.get(2));
+									}
+									else
+									if(A!=null)
+									{
+										A.unInvoke();
+										((Physical)E).delEffect(A);
+									}
+								}
+							}
+							else
+							if(O instanceof Item)
+								((Item)O).destroy();
 						}
-						else
-						if(O instanceof Item)
-							((Item)O).destroy();
+						catch(ArrayIndexOutOfBoundsException e)
+						{
+							// eat it
+						}
 					}
 				}
 			}

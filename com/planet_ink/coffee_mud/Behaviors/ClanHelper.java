@@ -61,7 +61,7 @@ public class ClanHelper extends StdBehavior
 				if(C!=null)
 					((MOB)forMe).setClan(C.clanID(),C.getGovernment().getAcceptPos());
 				else
-					Log.errOut("ClanHelper","Unknown clan "+parms+" for "+forMe.Name()+" in "+CMLib.map().getExtendedRoomID(CMLib.map().roomLocation(forMe)));
+					Log.errOut("ClanHelper","Unknown clan "+parms+" for "+forMe.Name()+" in "+CMLib.map().getDescriptiveExtendedRoomID(CMLib.map().roomLocation(forMe)));
 			}
 		}
 	}

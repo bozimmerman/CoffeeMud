@@ -127,7 +127,7 @@ public class Prop_AddDamage extends Property implements TriggeredAffect
 					}
 				}
 				if((!done)&&(!s.equals("ALL")))
-					Log.errOut("Prop_AddDamage","Unknown weapon type/attack: "+s+" in "+CMLib.map().getExtendedRoomID(CMLib.map().roomLocation(affected)));
+					Log.errOut("Prop_AddDamage","Unknown weapon type/attack: "+s+" in "+CMLib.map().getDescriptiveExtendedRoomID(CMLib.map().roomLocation(affected)));
 			}
 		}
 	}

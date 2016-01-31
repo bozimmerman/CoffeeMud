@@ -249,19 +249,21 @@ public class Reset extends StdCommand
 			return null;
 		final StringBuffer warning=new StringBuffer("");
 		for(final Session S : CMLib.sessions().localOnlineIterable())
+		{
 			if((S!=null)&&(S.mob()!=null)&&(S.mob()!=mob)&&(S.mob().location()==R))
-				warning.append("A player, '"+S.mob().Name()+"' is in "+CMLib.map().getExtendedRoomID(R)+"\n\r");
+				warning.append("A player, '"+S.mob().Name()+"' is in "+CMLib.map().getDescriptiveExtendedRoomID(R)+"\n\r");
+		}
 		Item I=null;
 		for(int i=0;i<R.numItems();i++)
 		{
 			I=R.getItem(i);
 			if((I instanceof DeadBody)
 			&&(((DeadBody)I).isPlayerCorpse()))
-				warning.append("A player corpse, '"+I.Name()+"' is in "+CMLib.map().getExtendedRoomID(R)+"\n\r");
+				warning.append("A player corpse, '"+I.Name()+"' is in "+CMLib.map().getDescriptiveExtendedRoomID(R)+"\n\r");
 			else
 			if((I instanceof PrivateProperty)
 			&&(((PrivateProperty)I).getOwnerName().length()>0))
-				warning.append("A private property, '"+I.Name()+"' is in "+CMLib.map().getExtendedRoomID(R)+"\n\r");
+				warning.append("A private property, '"+I.Name()+"' is in "+CMLib.map().getDescriptiveExtendedRoomID(R)+"\n\r");
 		}
 		if(R instanceof GridLocale)
 		{

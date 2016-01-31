@@ -798,7 +798,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		if(scripted!=null)
 		{
 			final Room R=CMLib.map().roomLocation(scripted);
-			Log.errOut("Scripting",scripted.name()+"/"+CMLib.map().getExtendedRoomID(R)+"/"+ cmdName+"/"+errType+"/"+errMsg);
+			Log.errOut("Scripting",scripted.name()+"/"+CMLib.map().getDescriptiveExtendedRoomID(R)+"/"+ cmdName+"/"+errType+"/"+errMsg);
 			if(R!=null)
 				R.showHappens(CMMsg.MSG_OK_VISUAL,L("Scripting Error: @x1/@x2/@x3/@x4/@x5/@x6",scripted.name(),CMLib.map().getExtendedRoomID(R),CMParms.toListString(externalFiles()),cmdName,errType,errMsg));
 		}
@@ -7030,7 +7030,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					}
 					catch(final Exception e)
 					{
-						Log.errOut("Scripting",scripted.name()+"/"+CMLib.map().getExtendedRoomID(lastKnownLocation)+"/JSCRIPT Error: "+e.getMessage());
+						Log.errOut("Scripting",scripted.name()+"/"+CMLib.map().getDescriptiveExtendedRoomID(lastKnownLocation)+"/JSCRIPT Error: "+e.getMessage());
 					}
 					Context.exit();
 				}
@@ -9273,7 +9273,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if((newTarget!=null)&&(F!=null)&&(newTarget instanceof MOB))
 				{
 					final MOB themob=(MOB)newTarget;
-					int curFaction = themob.fetchFaction(faction);
+					int curFaction = themob.fetchFaction(F.factionID());
 					if((curFaction == Integer.MAX_VALUE)||(curFaction == Integer.MIN_VALUE))
 						curFaction = F.findDefault(themob);
 					if((range.startsWith("--"))&&(CMath.isInteger(range.substring(2).trim())))
