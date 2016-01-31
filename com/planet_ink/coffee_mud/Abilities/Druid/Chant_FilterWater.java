@@ -80,7 +80,12 @@ public class Chant_FilterWater extends Chant
 		int x=super.miscText.indexOf(';');
 		if(x>0)
 		{
-			affectableStats.setName(super.miscText.substring(x+1));
+			int y=super.miscText.indexOf('~',x);
+			if(y>x+1)
+				affectableStats.setName(super.miscText.substring(x+1,y));
+			else
+			if((y<0)&&(x<super.miscText.length()-1))
+				affectableStats.setName(super.miscText.substring(x+1));
 		}
 	}
 
@@ -99,7 +104,13 @@ public class Chant_FilterWater extends Chant
 				if((R!=null)&&(invoker!=null))
 					R.show(invoker,affected,null,CMMsg.MSG_OK_VISUAL,"<T-NAME> revert(s) to its previous state.");
 			}
-			int x=splitMe.indexOf(';');
+			int x=splitMe.indexOf('~');
+			if(x>0)
+			{
+				affected.setMiscText(splitMe.substring(x+1));
+				splitMe=splitMe.substring(0,x);
+			}
+			x=splitMe.indexOf(';');
 			if(x>0)
 				splitMe=splitMe.substring(0,x);
 			x=splitMe.indexOf('/');
@@ -124,28 +135,37 @@ public class Chant_FilterWater extends Chant
 	
 	public boolean finalizeFreshness(MOB mob, Physical target, Drink D, int asLevel)
 	{
-		Ability A=this.beneficialAffect(mob, target, asLevel, 0);
-		if(A!=null)
+		StringBuilder parms=new StringBuilder("");
+		if(target instanceof Item)
 		{
-			StringBuilder parms=new StringBuilder("");
-			if(target instanceof Item)
+			Item I=(Item)target;
+			String rscName = RawMaterial.CODES.NAME(I.material()).toLowerCase();
+			parms.append(I.material()+"/"+((Drink)I).liquidType());
+			int x=I.Name().toLowerCase().indexOf(" "+rscName+" ");
+			parms.append(";");
+			if(x>0)
+				parms.append(I.Name().substring(0,x)+" fresh water "+I.Name().substring(x+rscName.length()+2));
+			parms.append("~").append(I.text());
+			if(I.material() == D.liquidType())
+				I.setMaterial(RawMaterial.RESOURCE_FRESHWATER);
+		}
+		else
+		{
+			parms.append("0/"+D.liquidType());
+			parms.append(";~").append(D.text());
+		}
+		if(target.fetchEffect(ID())==null)
+		{
+			D.delAllEffects(true);
+			Ability A=this.beneficialAffect(mob, target, asLevel, 0);
+			if(A!=null)
 			{
-				Item I=(Item)target;
-				String rscName = RawMaterial.CODES.NAME(I.material()).toLowerCase();
-				parms.append(I.material()+"/"+((Drink)I).liquidType());
-				int x=I.Name().toLowerCase().indexOf(" "+rscName+" ");
-				if(x>0)
-					parms.append(";"+I.Name().substring(0,x)+" fresh water "+I.Name().substring(x+rscName.length()+2));
-				if(I.material() == D.liquidType())
-					I.setMaterial(RawMaterial.RESOURCE_FRESHWATER);
+				A.setMiscText(parms.toString());
+				D.setLiquidType(RawMaterial.RESOURCE_FRESHWATER);
+				if(target instanceof SpellHolder)
+					((SpellHolder)target).setSpellList("");
+				return true;
 			}
-			else
-			{
-				parms.append("0/"+D.liquidType());
-			}
-			A.setMiscText(parms.toString());
-			D.setLiquidType(RawMaterial.RESOURCE_FRESHWATER);
-			return true;
 		}
 		return false;
 	}
@@ -163,7 +183,9 @@ public class Chant_FilterWater extends Chant
 		}
 		
 		Drink D=(Drink)target;
-		if(D.liquidType() == RawMaterial.RESOURCE_FRESHWATER)
+		if((D.liquidType() == RawMaterial.RESOURCE_FRESHWATER)
+		&&(!(D instanceof SpellHolder))
+		&&(D.numEffects()==0))
 		{
 			mob.tell(L("@x1 already contains fresh water.",target.name(mob)));
 			return false;
