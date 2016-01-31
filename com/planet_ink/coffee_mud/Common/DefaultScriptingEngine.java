@@ -9273,22 +9273,26 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if((newTarget!=null)&&(F!=null)&&(newTarget instanceof MOB))
 				{
 					final MOB themob=(MOB)newTarget;
+					int curFaction = themob.fetchFaction(faction);
+					if((curFaction == Integer.MAX_VALUE)||(curFaction == Integer.MIN_VALUE))
+						curFaction = F.findDefault(themob);
 					if((range.startsWith("--"))&&(CMath.isInteger(range.substring(2).trim())))
 					{
 						final int amt=CMath.s_int(range.substring(2).trim());
 						themob.tell(L("You lose @x1 faction with @x2.",""+amt,F.name()));
-						range=""+(themob.fetchFaction(faction)-amt);
+						range=""+(curFaction-amt);
 					}
 					else
 					if((range.startsWith("+"))&&(CMath.isInteger(range.substring(1).trim())))
 					{
 						final int amt=CMath.s_int(range.substring(1).trim());
 						themob.tell(L("You gain @x1 faction with @x2.",""+amt,F.name()));
-						range=""+(themob.fetchFaction(faction)+amt);
+						range=""+(curFaction+amt);
 					}
 					else
 					if(CMath.isInteger(range))
 						themob.tell(L("Your faction with @x1 is now @x2.",F.name(),""+CMath.s_int(range.trim())));
+					
 					if(CMath.isInteger(range))
 						themob.addFaction(F.factionID(),CMath.s_int(range.trim()));
 					else
