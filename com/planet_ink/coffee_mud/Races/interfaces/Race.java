@@ -173,6 +173,14 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, M
 	public String healthText(MOB viewer, MOB mob);
 
 	/**
+	 * Returns the list of ability IDs of skills that this
+	 * race is flatly and quietly immune to, whether
+	 * malicious or not -- it just won't happen.
+	 * @return the list of Ability IDs.
+	 */
+	public String[] abilityImmunities();
+	
+	/**
 	 * Sends back a generic mob name appropriate to a mob of this
 	 * race, at the given gender and age-group.
 	 *

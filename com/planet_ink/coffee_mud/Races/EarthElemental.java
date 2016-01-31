@@ -40,6 +40,12 @@ public class EarthElemental extends StdRace
 		return "EarthElemental";
 	}
 
+	public EarthElemental()
+	{
+		super();
+		super.naturalAbilImmunities.add("Disease_Syphilis");
+	}
+	
 	private final static String localizedStaticName = CMLib.lang().L("Earth Elemental");
 
 	@Override

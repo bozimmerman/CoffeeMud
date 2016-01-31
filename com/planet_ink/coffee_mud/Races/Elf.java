@@ -40,6 +40,12 @@ public class Elf extends StdRace
 		return "Elf";
 	}
 
+	public Elf()
+	{
+		super();
+		super.naturalAbilImmunities.add("Disease_PoisonIvy");
+	}
+	
 	private final static String localizedStaticName = CMLib.lang().L("Elf");
 
 	@Override

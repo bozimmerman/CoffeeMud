@@ -38,6 +38,13 @@ public class Crocodile extends GreatLizard
 		return "Crocodile";
 	}
 
+	public Crocodile()
+	{
+		super();
+		super.naturalAbilImmunities.add("Disease_Gonorrhea");
+		super.naturalAbilImmunities.add("Disease_Malaria");
+	}
+	
 	private final static String localizedStaticName = CMLib.lang().L("Crocodile");
 
 	@Override

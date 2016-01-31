@@ -40,6 +40,12 @@ public class Bat extends StdRace
 		return "Bat";
 	}
 
+	public Bat()
+	{
+		super();
+		super.naturalAbilImmunities.add("Disease_Syphilis");
+	}
+	
 	private final static String localizedStaticName = CMLib.lang().L("Bat");
 
 	@Override

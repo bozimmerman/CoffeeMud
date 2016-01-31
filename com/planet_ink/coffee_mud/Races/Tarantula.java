@@ -41,6 +41,13 @@ public class Tarantula extends StdRace
 		return "Tarantula";
 	}
 
+	public Tarantula()
+	{
+		super();
+		super.naturalAbilImmunities.add("Disease_Gonorrhea");
+		super.naturalAbilImmunities.add("Disease_Malaria");
+	}
+	
 	private final static String localizedStaticName = CMLib.lang().L("Tarantula");
 
 	@Override

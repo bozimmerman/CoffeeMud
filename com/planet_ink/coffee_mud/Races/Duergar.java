@@ -41,6 +41,12 @@ public class Duergar extends Dwarf
 		return "Duergar";
 	}
 
+	public Duergar()
+	{
+		super();
+		super.naturalAbilImmunities.add("Disease_Syphilis");
+	}
+	
 	private final static String localizedStaticName = CMLib.lang().L("Duergar");
 
 	@Override

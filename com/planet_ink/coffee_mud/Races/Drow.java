@@ -41,6 +41,12 @@ public class Drow extends Elf
 		return "Drow";
 	}
 
+	public Drow()
+	{
+		super();
+		super.naturalAbilImmunities.add("Disease_Syphilis");
+	}
+	
 	private final static String localizedStaticName = CMLib.lang().L("Drow");
 
 	@Override

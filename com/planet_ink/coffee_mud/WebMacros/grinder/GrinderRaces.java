@@ -245,6 +245,28 @@ public class GrinderRaces
 		}
 	}
 
+	public static void setDynImmunities(Modifiable M, HTTPRequest httpReq)
+	{
+		final List<String> theclasses=new Vector<String>();
+		if(httpReq.isUrlParameter("IABLE1"))
+		{
+			int num=1;
+			String behav=httpReq.getUrlParameter("IABLE"+num);
+			while(behav!=null)
+			{
+				if(behav.length()>0)
+				{
+					theclasses.add(behav);
+				}
+				num++;
+				behav=httpReq.getUrlParameter("IABLE"+num);
+			}
+		}
+		M.setStat("NUMIABLE", ""+theclasses.size());
+		for(int i=0;i<theclasses.size();i++)
+			M.setStat("GETIABLE"+i, theclasses.get(i));
+	}
+
 
 	public static DVector cabilities(HTTPRequest httpReq)
 	{
@@ -400,6 +422,7 @@ public class GrinderRaces
 		DVector DV;
 		setDynAbilities(R,httpReq);
 		setDynEffects(R,httpReq);
+		setDynImmunities(R,httpReq);
 
 		DV=cabilities(httpReq);
 		R.setStat("NUMCABLE", ""+DV.size());

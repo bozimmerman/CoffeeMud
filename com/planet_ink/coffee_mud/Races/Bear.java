@@ -40,6 +40,12 @@ public class Bear extends StdRace
 		return "Bear";
 	}
 
+	public Bear()
+	{
+		super();
+		super.naturalAbilImmunities.add("Disease_PoisonIvy");
+	}
+	
 	private final static String localizedStaticName = CMLib.lang().L("Bear");
 
 	@Override

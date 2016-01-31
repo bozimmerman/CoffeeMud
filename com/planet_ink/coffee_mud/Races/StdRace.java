@@ -62,6 +62,7 @@ public class StdRace implements Race
 	protected boolean		mappedCulturalAbilities	= false;
 	protected List<Item>	outfitChoices			= null;
 	protected List<Weapon>	naturalWeaponChoices	= null;
+	protected Set<String>	naturalAbilImmunities	= new HashSet<String>();
 	
 	protected Map<Integer,SearchIDList<Ability>> racialAbilityMap	= null;
 	protected Map<Integer,SearchIDList<Ability>> racialEffectMap	= null;
@@ -214,6 +215,12 @@ public class StdRace implements Race
 	protected String[] culturalAbilityNames()
 	{
 		return null;
+	}
+
+	@Override
+	public String[] abilityImmunities()
+	{
+		return CMParms.toStringArray(this.naturalAbilImmunities);
 	}
 
 	protected int[] culturalAbilityProficiencies()
@@ -466,14 +473,21 @@ public class StdRace implements Race
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if(uncharmable()
-		&&(msg.target()==myHost)
+		if((msg.target()==myHost)
 		&&(msg.tool() instanceof Ability)
-		&&(myHost instanceof MOB)
-		&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_CHARMING)))
+		&&(myHost instanceof MOB))
 		{
-			msg.source().location().show(msg.source(),myHost,CMMsg.MSG_OK_VISUAL,L("<T-NAME> seem(s) unaffected by the charm magic from <S-NAMESELF>."));
-			return false;
+			if(uncharmable()
+			&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_CHARMING)))
+			{
+				msg.source().location().show(msg.source(),myHost,CMMsg.MSG_OK_VISUAL,L("<T-NAME> seem(s) unaffected by the charm magic from <S-NAMESELF>."));
+				return false;
+			}
+			else
+			if(naturalAbilImmunities.contains(msg.tool().ID()))
+			{
+				return false;
+			}
 		}
 		return true;
 	}
@@ -1200,6 +1214,13 @@ public class StdRace implements Race
 			}
 		}
 
+		GR.setStat("NUMIABLE","");
+		{
+			int i=0;
+			for(final String ableID : this.naturalAbilImmunities)
+				GR.setStat("GETIABLE"+(i++),ableID);
+		}
+
 		GR.setStat("NUMCABLE","");
 		if(culturalAbilityNames()!=null)
 		{
@@ -1501,6 +1522,28 @@ public class StdRace implements Race
 			GR.setStat("GETREFFLVL"+i,""+CMLib.ableMapper().getQualifyingLevel(race1.ID(),false,A.ID()));
 			GR.setStat("GETREFFPARM"+i,""+CMLib.ableMapper().getDefaultProficiency(race1.ID(),false,A.ID()));
 		}
+		
+		final List<String> imms=new XVector<String>();
+		skip=false;
+		for(final String A : race1.abilityImmunities())
+		{
+			if(!skip)
+				imms.add(A);
+			skip=!skip;
+		}
+		for(final String A : race2.abilityImmunities())
+		{
+			if(!skip)
+				imms.add(A);
+			skip=!skip;
+		}
+		GR.setStat("NUMIABLE",""+data.size());
+		for(int i=0;i<imms.size();i++)
+		{
+			final String AID=imms.get(i);
+			GR.setStat("GETIABLE"+i,AID);
+		}
+		
 		return GR;
 	}
 

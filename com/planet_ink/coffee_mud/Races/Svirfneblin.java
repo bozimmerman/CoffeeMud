@@ -40,6 +40,12 @@ public class Svirfneblin extends StdRace
 		return "Svirfneblin";
 	}
 
+	public Svirfneblin()
+	{
+		super();
+		super.naturalAbilImmunities.add("Disease_Syphilis");
+	}
+	
 	private final static String localizedStaticName = CMLib.lang().L("Svirfneblin");
 
 	@Override

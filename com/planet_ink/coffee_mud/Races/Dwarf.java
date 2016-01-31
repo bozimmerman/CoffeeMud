@@ -40,6 +40,12 @@ public class Dwarf extends StdRace
 		return "Dwarf";
 	}
 
+	public Dwarf()
+	{
+		super();
+		super.naturalAbilImmunities.add("Disease_Syphilis");
+	}
+	
 	private final static String localizedStaticName = CMLib.lang().L("Dwarf");
 
 	@Override

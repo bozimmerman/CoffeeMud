@@ -7028,6 +7028,93 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		}
 	}
 
+	protected void genDynamicImmunitiess(MOB mob, Modifiable E, String typeName, int showNumber, int showFlag)
+			throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
+		while((mob.session()!=null)&&(!mob.session().isStopped())&&(true))
+		{
+			final StringBuffer parts=new StringBuffer("");
+			final int numResources=CMath.s_int(E.getStat("NUMIABLE"));
+			final Vector<Ability> ables=new Vector<Ability>();
+			final Vector<String> data=new Vector<String>();
+			for(int v=0;v<numResources;v++)
+			{
+				final Ability A=CMClass.getAbility(E.getStat("GETIABLE"+v));
+				if(A!=null)
+				{
+					parts.append(A.ID());
+					parts.append(", ");
+					ables.addElement(A);
+					data.addElement(A.ID());
+				}
+			}
+			if(parts.toString().endsWith(", "))
+			{
+				parts.deleteCharAt(parts.length()-1);
+				parts.deleteCharAt(parts.length()-1);
+			}
+			mob.tell(L("@x1. @x2 Immunities: @x3.",""+showNumber,typeName,parts.toString()));
+			if((showFlag!=showNumber)&&(showFlag>-999)) 
+				return;
+			final String newName=mob.session().prompt(L("Enter an ability id to add or remove\n\r:"),"");
+			if(newName.equalsIgnoreCase("?"))
+				mob.tell(CMLib.lister().reallyList(mob,CMClass.abilities(),-1).toString());
+			else
+			if(newName.length()>0)
+			{
+				int partNum=-1;
+				for(int i=0;i<ables.size();i++)
+				{
+					if(ables.elementAt(i).ID().equalsIgnoreCase(newName))
+					{ 
+						partNum=i; 
+						break;
+					}
+				}
+				boolean updateList=false;
+				if(partNum<0)
+				{
+					final Ability A=CMClass.getAbility(newName);
+					if(A==null)
+						mob.tell(L("That is neither an existing immunity ability id, nor a valid one to add.  Use ? for a list."));
+					else
+					{
+						data.addElement(A.ID());
+						ables.addElement(A);
+						mob.tell(L("@x1 added.",A.name()));
+						updateList=true;
+					}
+				}
+				else
+				{
+					final Ability A=ables.elementAt(partNum);
+					ables.removeElementAt(partNum);
+					data.removeElementAt(partNum);
+					updateList=true;
+					mob.tell(L("@x1 removed.",A.name()));
+				}
+				if(updateList)
+				{
+					if(data.size()>0)
+						E.setStat("NUMIABLE",""+data.size());
+					else
+						E.setStat("NUMIABLE","");
+					for(int i=0;i<data.size();i++)
+					{
+						E.setStat("GETIABLE"+i,data.get(i));
+					}
+				}
+			}
+			else
+			{
+				mob.tell(L("(no change)"));
+				return;
+			}
+		}
+	}
+
 	@SuppressWarnings("unchecked")
 	protected DVector genClassAbleMod(MOB mob, DVector sets, String ableID, int origLevelIndex, int origAbleIndex)
 	throws IOException
@@ -8069,6 +8156,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genDynamicAbilities(mob,me,"Racial","char",++showNumber,showFlag);
 			genCulturalAbilities(mob,me,++showNumber,showFlag);
 			genDynamicEffects(mob,me,"Racial","char",++showNumber,showFlag);
+			genDynamicImmunitiess(mob,me,"Racial",++showNumber,showFlag);
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
 			showFlag=CMath.s_int(mob.session().prompt(L("Edit which? "),""));

@@ -38,6 +38,13 @@ public class Alligator extends GreatLizard
 		return "Alligator";
 	}
 
+	public Alligator()
+	{
+		super();
+		super.naturalAbilImmunities.add("Disease_Gonorrhea");
+		super.naturalAbilImmunities.add("Disease_Malaria");
+	}
+	
 	private final static String localizedStaticName = CMLib.lang().L("Alligator");
 
 	@Override

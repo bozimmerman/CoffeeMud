@@ -40,6 +40,12 @@ public class Gnome extends StdRace
 		return "Gnome";
 	}
 
+	public Gnome()
+	{
+		super();
+		super.naturalAbilImmunities.add("Disease_Syphilis");
+	}
+	
 	private final static String localizedStaticName = CMLib.lang().L("Gnome");
 
 	@Override

@@ -40,6 +40,12 @@ public class Vine extends StdRace
 		return "Vine";
 	}
 
+	public Vine()
+	{
+		super();
+		super.naturalAbilImmunities.add("Disease_PoisonIvy");
+	}
+	
 	private final static String localizedStaticName = CMLib.lang().L("Vine");
 
 	@Override

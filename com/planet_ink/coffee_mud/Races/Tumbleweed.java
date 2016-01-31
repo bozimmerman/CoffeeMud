@@ -40,6 +40,12 @@ public class Tumbleweed extends StdRace
 		return "Tumbleweed";
 	}
 
+	public Tumbleweed()
+	{
+		super();
+		super.naturalAbilImmunities.add("Disease_PoisonIvy");
+	}
+	
 	private final static String localizedStaticName = CMLib.lang().L("Tumbleweed");
 
 	@Override

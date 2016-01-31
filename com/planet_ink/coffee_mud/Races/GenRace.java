@@ -541,6 +541,20 @@ public class GenRace extends StdRace
 			}
 			str.append("</CABILITIES>");
 		}
+		if((naturalAbilImmunities==null)||(naturalAbilImmunities.size()==0))
+			str.append("<IABILITIES/>");
+		else
+		{
+			str.append("<IABILITIES>");
+			for(String ableID : naturalAbilImmunities)
+			{
+				str.append("<IABILITY>");
+				str.append("<ICLASS>"+ableID+"</ICLASS>");
+				str.append("</IABILITY>");
+			}
+			str.append("</IABILITIES>");
+		}
+		
 		if(xtraValues==null)
 			xtraValues=CMProps.getExtraStatCodesHolder(this);
 		for(int i=this.getSaveStatIndex();i<getStatCodes().length;i++)
@@ -798,6 +812,19 @@ public class GenRace extends StdRace
 			}
 		}
 
+		xV=CMLib.xml().getContentsFromPieces(raceData,"IABILITIES");
+		this.naturalAbilImmunities.clear();
+		if((xV!=null)&&(xV.size()>0))
+		{
+			for(int x=0;x<xV.size();x++)
+			{
+				final XMLTag iblk=xV.get(x);
+				if((!iblk.tag().equalsIgnoreCase("IABILITY"))||(iblk.contents()==null))
+					continue;
+				this.naturalAbilImmunities.add(iblk.getValFromPieces("ICLASS"));
+			}
+		}
+
 		xtraValues=CMProps.getExtraStatCodesHolder(this);
 		for(int i=this.getSaveStatIndex();i<getStatCodes().length;i++)
 			setStat(getStatCodes()[i],CMLib.xml().getValFromPieces(raceData, getStatCodes()[i]));
@@ -813,7 +840,8 @@ public class GenRace extends StdRace
 									 "NUMOFT","GETOFTID","GETOFTPARM","BODYKILL",
 									 "NUMREFF","GETREFF","GETREFFPARM","GETREFFLVL","AGING",
 									 "DISFLAGS","STARTASTATE","EVENTRACE","WEAPONRACE", "HELP",
-									 "BREATHES","CANRIDE"
+									 "BREATHES","CANRIDE",
+									 "NUMIABLE","GETIABLE"
 									 };
 
 	@Override
@@ -929,6 +957,10 @@ public class GenRace extends StdRace
 			return CMParms.toListString(sortedBreathables);
 		case 46:
 			return "" + isRideable;
+		case 47:
+			return "" + this.naturalAbilImmunities.size();
+		case 48:
+			return this.abilityImmunities()[num];
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -1393,6 +1425,16 @@ public class GenRace extends StdRace
 		case 46:
 		{
 			isRideable=CMath.s_bool(val);
+			break;
+		}
+		case 47:
+		{
+			naturalAbilImmunities.clear();
+			break;
+		}
+		case 48:
+		{
+			naturalAbilImmunities.add(val);
 			break;
 		}
 		default:

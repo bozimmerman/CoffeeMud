@@ -40,6 +40,12 @@ public class Deer extends StdRace
 		return "Deer";
 	}
 
+	public Deer()
+	{
+		super();
+		super.naturalAbilImmunities.add("Disease_PoisonIvy");
+	}
+	
 	private final static String localizedStaticName = CMLib.lang().L("Deer");
 
 	@Override

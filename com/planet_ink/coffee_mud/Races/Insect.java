@@ -41,6 +41,13 @@ public class Insect extends StdRace
 		return "Insect";
 	}
 
+	public Insect()
+	{
+		super();
+		super.naturalAbilImmunities.add("Disease_Gonorrhea");
+		super.naturalAbilImmunities.add("Disease_Malaria");
+	}
+	
 	private final static String localizedStaticName = CMLib.lang().L("Insect");
 
 	@Override

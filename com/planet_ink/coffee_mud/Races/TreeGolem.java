@@ -40,6 +40,12 @@ public class TreeGolem extends StdRace
 		return "TreeGolem";
 	}
 
+	public TreeGolem()
+	{
+		super();
+		super.naturalAbilImmunities.add("Disease_PoisonIvy");
+	}
+	
 	private final static String localizedStaticName = CMLib.lang().L("Tree Golem");
 
 	@Override

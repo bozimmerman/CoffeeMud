@@ -41,6 +41,13 @@ public class Bullywug extends StdRace
 		return "Bullywug";
 	}
 
+	public Bullywug()
+	{
+		super();
+		super.naturalAbilImmunities.add("Disease_Gonorrhea");
+		super.naturalAbilImmunities.add("Disease_Malaria");
+	}
+	
 	private final static String localizedStaticName = CMLib.lang().L("Bullywug");
 
 	@Override

@@ -40,6 +40,12 @@ public class Fox extends StdRace
 		return "Fox";
 	}
 
+	public Fox()
+	{
+		super();
+		super.naturalAbilImmunities.add("Disease_PoisonIvy");
+	}
+	
 	private final static String localizedStaticName = CMLib.lang().L("Fox");
 
 	@Override

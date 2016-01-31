@@ -610,6 +610,64 @@ public class RaceData extends StdWebMacro
 		return str;
 	}
 
+	public static StringBuffer dynImmunities(String ID, Modifiable obj, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize, String font)
+	{
+		final StringBuffer str=new StringBuffer("");
+		final List<String> theclasses=new Vector<String>();
+		if(httpReq.isUrlParameter("IABLE1"))
+		{
+			int num=1;
+			String behav=httpReq.getUrlParameter("IABLE"+num);
+			while(behav!=null)
+			{
+				if(behav.length()>0)
+				{
+					theclasses.add(behav);
+				}
+				num++;
+				behav=httpReq.getUrlParameter("IABLE"+num);
+			}
+		}
+		else
+		{
+			final int numAbles=CMath.s_int(obj.getStat("NUMIABLE"));
+			for(int a=0;a<numAbles;a++)
+			{
+				final String ableID=obj.getStat("GETIABLE"+a);
+				theclasses.add(ableID);
+			}
+		}
+		if(font==null)
+			font="<FONT COLOR=WHITE><B>";
+		str.append("<TABLE WIDTH=100% BORDER="+borderSize+" CELLSPACING=0 CELLPADDING=0>");
+		for(int i=0;i<theclasses.size();i++)
+		{
+			final String theclass=theclasses.get(i);
+			str.append("<TR><TD><TABLE BORDER=0 WIDTH=100% CELLSPACING=0 CELLPADDING=0><TR><TD WIDTH=35%>");
+			str.append("<SELECT ONCHANGE=\"EditAffect(this);\" NAME=IABLE"+(i+1)+">");
+			str.append("<OPTION VALUE=\"\">Delete!");
+			str.append("<OPTION VALUE=\""+theclass+"\" SELECTED>"+theclass);
+			str.append("</SELECT>");
+			str.append("</TD>");
+			str.append("</TR>");
+			str.append("</TABLE></TD></TR>");
+		}
+		str.append("<TR><TD><TABLE BORDER=0 WIDTH=100% CELLSPACING=0 CELLPADDING=0><TR><TD WIDTH=35%>");
+		str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME=IABLE"+(theclasses.size()+1)+">");
+		str.append("<OPTION SELECTED VALUE=\"\">Select an Ability");
+		for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+		{
+			final String cnam=a.nextElement().ID();
+			str.append("<OPTION VALUE=\""+cnam+"\">"+cnam);
+		}
+		str.append("</SELECT>");
+		str.append("</TD>");
+		str.append("</TR>");
+		str.append("</TABLE></TD></TR>");
+		str.append("</TABLE>");
+		return str;
+	}
+
 	public static StringBuffer cabilities(Race E, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize, String font)
 	{
 		final StringBuffer str=new StringBuffer("");
@@ -920,6 +978,15 @@ public class RaceData extends StdWebMacro
 							str.append(codes.name(b)+", ");
 					}
 				}
+				if(parms.containsKey("IMMUNITIES"))
+				{
+					for(String ableID : R.abilityImmunities())
+					{
+						final Ability A=CMClass.getAbilityPrototype(ableID);
+						if(A!=null)
+							str.append(A.name()+", ");
+					}
+				}
 				if(parms.containsKey("RABLE"))
 				{
 					final MOB mob=Authenticate.getAuthenticatedMob(httpReq);
@@ -927,6 +994,8 @@ public class RaceData extends StdWebMacro
 				}
 				if(parms.containsKey("REFFS"))
 					str.append(dynEffects(R.ID(),R,httpReq,parms,0,parms.get("FONT"))+", ");
+				if(parms.containsKey("IABLE"))
+					str.append(dynImmunities(R.ID(),R,httpReq,parms,0,parms.get("FONT"))+", ");
 				if(parms.containsKey("CABLE"))
 					str.append(cabilities(R,httpReq,parms,0,parms.get("FONT"))+", ");
 				if(parms.containsKey("WEARID"))

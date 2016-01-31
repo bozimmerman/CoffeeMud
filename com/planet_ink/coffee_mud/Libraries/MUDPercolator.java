@@ -2223,6 +2223,16 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			R.setStat("GETREFFLVL"+i, ""+ableMap.qualLevel());
 		}
 		ignoreStats.addAll(Arrays.asList(new String[]{"NUMREFF","GETREFF","GETREFFPARM","GETREFFLVL"}));
+		
+		final List<AbilityMapping> iables = findRaceAbles(E,"IMMUNITY","RACE_IMMUNITY_",piece,defined);
+		R.setStat("NUMIABLE", ""+reffs.size());
+		for(int i=0;i<iables.size();i++)
+		{
+			final AbilityMapping ableMap=reffs.get(i);
+			R.setStat("GETIABLE"+i, ableMap.abilityID());
+		}
+		ignoreStats.addAll(Arrays.asList(new String[]{"NUMIABLE","GETIABLE"}));
+		
 		fillOutStatCodes(R,ignoreStats,"RACE_",piece,defined);
 		CMLib.database().DBCreateRace(R.ID(),R.racialParms());
 		return R;
