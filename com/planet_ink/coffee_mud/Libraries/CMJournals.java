@@ -625,17 +625,19 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 					setThreadStatus(serviceClient,"updating journal "+CMJ.NAME());
 					final List<JournalEntry> items=CMLib.database().DBReadJournalMsgs(CMJ.JOURNAL_NAME());
 					if(items!=null)
-					for(int i=items.size()-1;i>=0;i--)
 					{
-						final JournalEntry entry=items.get(i);
-						long compdate=entry.update();
-						compdate=compdate+Math.round(CMath.mul(TimeManager.MILI_DAY,CMath.s_double(num)));
-						if(System.currentTimeMillis()>compdate)
+						for(int i=items.size()-1;i>=0;i--)
 						{
-							final String from=entry.from();
-							final String message=entry.msg();
-							Log.sysOut(Thread.currentThread().getName(),"Expired "+CMJ.NAME()+" from "+from+": "+message);
-							CMLib.database().DBDeleteJournal(CMJ.JOURNAL_NAME(),entry.key());
+							final JournalEntry entry=items.get(i);
+							long compdate=entry.update();
+							compdate=compdate+Math.round(CMath.mul(TimeManager.MILI_DAY,CMath.s_double(num)));
+							if(System.currentTimeMillis()>compdate)
+							{
+								final String from=entry.from();
+								final String message=entry.msg();
+								Log.sysOut(Thread.currentThread().getName(),"Expired "+CMJ.NAME()+" from "+from+": "+message);
+								CMLib.database().DBDeleteJournal(CMJ.JOURNAL_NAME(),entry.key());
+							}
 						}
 					}
 					setThreadStatus(serviceClient,"command journal sweeping");

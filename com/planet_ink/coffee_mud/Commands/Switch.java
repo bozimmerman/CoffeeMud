@@ -118,11 +118,12 @@ public class Switch extends StdCommand
 				target.setSession(s1);
 				s1.setMob(target);
 				if(CMLib.login().completeLogin(s1, target, target.location(), resetStats) != CharCreationLibrary.LoginResult.NORMAL_LOGIN)
-				{
 					s1.stopSession(true, true, true);
-				}
 				else
+				{
+					CMLib.login().showTheNews(target);
 					Log.sysOut(mob.Name()+" switched login to: "+target.Name());
+				}
 			}
 		}
 		return false;
