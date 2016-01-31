@@ -341,12 +341,12 @@ public class AstroEngineering extends TechSkill
 			targetItem=targetRoom.findItem(null,itemName);
 		if((targetItem==null)&&(targetPanel==null))
 		{
+			final CMFlagLibrary flagLib=CMLib.flags();
 			for(int i=0;i<targetRoom.numItems();i++)
 			{
-				Item I=targetRoom.getItem(i);
-				if((I instanceof Electronics.ElecPanel)
-				&&(((Electronics.ElecPanel)I).isOpen())
-				&&(CMLib.flags().canBeSeenBy(I, mob)))
+				final Item I=targetRoom.getItem(i);
+				if((flagLib.isOpenAccessibleContainer(I))
+				&&(flagLib.canBeSeenBy(I, mob)))
 				{
 					targetItem=targetRoom.findItem(I,itemName);
 					if(targetItem!=null)

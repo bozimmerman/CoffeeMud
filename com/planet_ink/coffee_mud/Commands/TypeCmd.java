@@ -66,17 +66,19 @@ public class TypeCmd extends Go
 				final String typeWhere=CMParms.combine(commands,x+1);
 				typeIntoThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,typeWhere,Wearable.FILTER_ANY);
 				if(typeIntoThis==null)
+				{
+					final CMFlagLibrary flagLib=CMLib.flags();
 					for(int i=0;i<R.numItems();i++)
 					{
 						final Item I=R.getItem(i);
-						if((I instanceof Electronics.ElecPanel)
-						&&(((Electronics.ElecPanel)I).isOpen()))
+						if(flagLib.isOpenAccessibleContainer(I))
 						{
 							typeIntoThis=R.fetchFromRoomFavorItems(I, typeWhere);
 							if(typeIntoThis!=null)
 								break;
 						}
 					}
+				}
 				if(typeIntoThis!=null)
 				{
 					while(commands.size()>x)

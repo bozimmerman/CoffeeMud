@@ -35,10 +35,17 @@ import java.util.*;
 
 public class Examine extends StdCommand
 {
-	public Examine(){}
+	public Examine()
+	{
+	}
 
-	private final String[] access=I(new String[]{"EXAMINE","EXAM","EXA","LONGLOOK","LLOOK","LL"});
-	@Override public String[] getAccessWords(){return access;}
+	private final String[]	access	= I(new String[] { "EXAMINE", "EXAM", "EXA", "LONGLOOK", "LLOOK", "LL" });
+
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
@@ -52,7 +59,8 @@ public class Examine extends StdCommand
 			quiet=true;
 		}
 		final String textMsg="<S-NAME> examine(s) ";
-		if(mob.location()==null)
+		final Room R=mob.location();
+		if(R==null)
 			return false;
 		if((commands!=null)&&(commands.size()>1))
 		{
@@ -60,30 +68,44 @@ public class Examine extends StdCommand
 
 			final String ID=CMParms.combine(commands,1);
 			if(ID.length()==0)
-				thisThang=mob.location();
+				thisThang=R;
 			else
 			if((ID.toUpperCase().startsWith("EXIT")&&(commands.size()==2)))
 			{
 				final CMMsg exitMsg=CMClass.getMsg(mob,thisThang,null,CMMsg.MSG_LOOK_EXITS,null);
 				if((CMProps.getIntVar(CMProps.Int.EXVIEW)>=2)!=mob.isAttributeSet(MOB.Attrib.BRIEF))
 					exitMsg.setValue(CMMsg.MASK_OPTIMIZE);
-				if(mob.location().okMessage(mob, exitMsg))
-					mob.location().send(mob, exitMsg);
+				if(R.okMessage(mob, exitMsg))
+					R.send(mob, exitMsg);
 				return false;
 			}
 			if(ID.equalsIgnoreCase("SELF")||ID.equalsIgnoreCase("ME"))
 				thisThang=mob;
 
 			if(thisThang==null)
-				thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,ID,Wearable.FILTER_ANY);
+				thisThang=R.fetchFromMOBRoomFavorsItems(mob,null,ID,Wearable.FILTER_ANY);
+			if(thisThang == null)
+			{
+				final CMFlagLibrary flagLib=CMLib.flags();
+				for(int i=0;i<R.numItems();i++)
+				{
+					final Item I=R.getItem(i);
+					if(flagLib.isOpenAccessibleContainer(I))
+					{
+						thisThang=R.fetchFromRoomFavorItems(I, ID);
+						if(thisThang != null)
+							break;
+					}
+				}
+			}
 			int dirCode=-1;
 			if(thisThang==null)
 			{
 				dirCode=Directions.getGoodDirectionCode(ID);
 				if(dirCode>=0)
 				{
-					final Room room=mob.location().getRoomInDir(dirCode);
-					final Exit exit=mob.location().getExitInDir(dirCode);
+					final Room room=R.getRoomInDir(dirCode);
+					final Exit exit=R.getExitInDir(dirCode);
 					if((room!=null)&&(exit!=null))
 						thisThang=exit;
 					else
@@ -98,16 +120,16 @@ public class Examine extends StdCommand
 				String name="<T-NAMESELF>";
 				if((thisThang instanceof Room)||(thisThang instanceof Exit))
 				{
-					if(thisThang==mob.location())
+					if(thisThang==R)
 						name="around";
 					else
 					if(dirCode>=0)
-						name=((mob.location() instanceof BoardableShip)||(mob.location().getArea() instanceof BoardableShip))?
+						name=((R instanceof BoardableShip)||(R.getArea() instanceof BoardableShip))?
 							Directions.getShipDirectionName(dirCode):Directions.getDirectionName(dirCode);
 				}
 				final CMMsg msg=CMClass.getMsg(mob,thisThang,null,CMMsg.MSG_EXAMINE,L("@x1@x2 closely.",textMsg,name));
-				if(mob.location().okMessage(mob,msg))
-					mob.location().send(mob,msg);
+				if(R.okMessage(mob,msg))
+					R.send(mob,msg);
 				if((mob.isAttributeSet(MOB.Attrib.AUTOEXITS))&&(thisThang instanceof Room))
 					msg.addTrailerMsg(CMClass.getMsg(mob,thisThang,null,CMMsg.MSG_LOOK_EXITS,null));
 			}
@@ -116,15 +138,30 @@ public class Examine extends StdCommand
 		}
 		else
 		{
-			final CMMsg msg=CMClass.getMsg(mob,mob.location(),null,CMMsg.MSG_EXAMINE,(quiet?null:textMsg+"around carefully."),CMMsg.MSG_EXAMINE,(quiet?null:textMsg+"at you."),CMMsg.MSG_EXAMINE,(quiet?null:textMsg+"around carefully."));
-			if((mob.isAttributeSet(MOB.Attrib.AUTOEXITS))&&(CMLib.flags().canBeSeenBy(mob.location(),mob)))
-				msg.addTrailerMsg(CMClass.getMsg(mob,mob.location(),null,CMMsg.MSG_LOOK_EXITS,null));
-			if(mob.location().okMessage(mob,msg))
-				mob.location().send(mob,msg);
+			final CMMsg msg=CMClass.getMsg(mob,R,null,CMMsg.MSG_EXAMINE,(quiet?null:textMsg+"around carefully."),CMMsg.MSG_EXAMINE,(quiet?null:textMsg+"at you."),CMMsg.MSG_EXAMINE,(quiet?null:textMsg+"around carefully."));
+			if((mob.isAttributeSet(MOB.Attrib.AUTOEXITS))&&(CMLib.flags().canBeSeenBy(R,mob)))
+				msg.addTrailerMsg(CMClass.getMsg(mob,R,null,CMMsg.MSG_LOOK_EXITS,null));
+			if(R.okMessage(mob,msg))
+				R.send(mob,msg);
 		}
 		return false;
 	}
-	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandCombatActionCost(ID());}
-	@Override public double actionsCost(MOB mob, List<String> cmds){return 1.0;}
-	@Override public boolean canBeOrdered(){return true;}
+
+	@Override
+	public double combatActionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandCombatActionCost(ID());
+	}
+
+	@Override
+	public double actionsCost(MOB mob, List<String> cmds)
+	{
+		return 1.0;
+	}
+
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 }

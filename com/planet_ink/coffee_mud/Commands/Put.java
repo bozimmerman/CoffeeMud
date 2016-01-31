@@ -132,12 +132,33 @@ public class Put extends StdCommand
 			return false;
 		}
 
+		final Room R=mob.location();
+		if(R==null)
+			return false;
+		
 		String containerName = commands.get(commands.size()-1);
 		Environmental container=CMLib.english().possibleContainer(mob,commands,false,Wearable.FILTER_ANY);
 		if(container == null)
 		{
-			container = mob.location().fetchFromMOBRoomFavorsItems(mob,null, containerName, Wearable.FILTER_UNWORNONLY);
+			container = R.fetchFromMOBRoomFavorsItems(mob,null, containerName, Wearable.FILTER_UNWORNONLY);
 			commands.remove(commands.size()-1);
+		}
+		if(container == null)
+		{
+			final CMFlagLibrary flagLib=CMLib.flags();
+			for(int i=0;i<R.numItems();i++)
+			{
+				final Item I=R.getItem(i);
+				if(flagLib.isOpenAccessibleContainer(I))
+				{
+					Physical P=R.fetchFromRoomFavorItems(I, containerName);
+					if(P instanceof Container)
+					{
+						container=P;
+						break;
+					}
+				}
+			}
 		}
 		if((container==null)||(!CMLib.flags().canBeSeenBy(container,mob)))
 		{
@@ -153,9 +174,17 @@ public class Put extends StdCommand
 		int addendum=1;
 		String addendumStr="";
 		final Vector<Item> V=new Vector<Item>();
-		boolean allFlag=(commands.size()>0)?commands.get(0).equalsIgnoreCase("all"):false;
-		if(thingToPut.toUpperCase().startsWith("ALL.")){ allFlag=true; thingToPut="ALL "+thingToPut.substring(4);}
-		if(thingToPut.toUpperCase().endsWith(".ALL")){ allFlag=true; thingToPut="ALL "+thingToPut.substring(0,thingToPut.length()-4);}
+		boolean allFlag = (commands.size() > 0) ? commands.get(0).equalsIgnoreCase("all") : false;
+		if (thingToPut.toUpperCase().startsWith("ALL."))
+		{
+			allFlag = true;
+			thingToPut = "ALL " + thingToPut.substring(4);
+		}
+		if (thingToPut.toUpperCase().endsWith(".ALL"))
+		{
+			allFlag = true;
+			thingToPut = "ALL " + thingToPut.substring(0, thingToPut.length() - 4);
+		}
 		final boolean onlyGoldFlag=mob.hasOnlyGoldInInventory();
 		Item putThis=CMLib.english().bestPossibleGold(mob,null,thingToPut);
 		if(putThis!=null)
@@ -195,15 +224,15 @@ public class Put extends StdCommand
 			putThis=V.get(i);
 			final String putWord=(container instanceof Rideable)?((Rideable)container).putString(mob):"in";
 			final CMMsg putMsg=CMClass.getMsg(mob,container,putThis,CMMsg.MASK_OPTIMIZE|CMMsg.MSG_PUT,L("<S-NAME> put(s) <O-NAME> @x1 <T-NAME>.",putWord));
-			if(mob.location().okMessage(mob,putMsg))
-				mob.location().send(mob,putMsg);
+			if(R.okMessage(mob,putMsg))
+				R.send(mob,putMsg);
 			if(putThis instanceof Coins)
 				((Coins)putThis).putCoinsBack();
 			if(putThis instanceof RawMaterial)
 				((RawMaterial)putThis).rebundle();
 		}
-		mob.location().recoverRoomStats();
-		mob.location().recoverRoomStats();
+		R.recoverRoomStats();
+		R.recoverRoomStats();
 		return false;
 	}
 	

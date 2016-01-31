@@ -461,6 +461,14 @@ public interface CMFlagLibrary extends CMLibrary
 	public boolean isWithSeenContents(Physical P);
 
 	/**
+	 * Returns whether the given item is a container which,
+	 * when open, has accessible contents, and is also open.
+	 * @param I the item to check
+	 * @return true if the contents are accessible right now.
+	 */
+	public boolean isOpenAccessibleContainer(Item I);
+	
+	/**
 	 * Returns whether the given item, mob, room, whatever is
 	 * seeable at all.  This is beyond invisibility to the 
 	 * metaphysically unseeable.

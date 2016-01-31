@@ -1663,20 +1663,21 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		
 		final String possibleContainerID=CMParms.combine(commands,containerDex);
 
-
 		Environmental E=R.fetchFromMOBRoomFavorsItems(mob,null,possibleContainerID,filter);
 		if(E==null)
+		{
+			final CMFlagLibrary flagLib=CMLib.flags();
 			for(int i=0;i<R.numItems();i++)
 			{
 				final Item I=R.getItem(i);
-				if((I instanceof Electronics.ElecPanel)
-				&&(((Electronics.ElecPanel)I).isOpen()))
+				if(flagLib.isOpenAccessibleContainer(I))
 				{
 					E=R.fetchFromMOBRoomFavorsItems(mob,I,possibleContainerID,filter);
 					if(E instanceof Container)
 						break;
 				}
 			}
+		}
 		if((E!=null)
 		&&(E instanceof Item)
 		&&(((Item)E) instanceof Container)

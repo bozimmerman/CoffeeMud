@@ -533,6 +533,15 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			return isReallyEvil((FactionMember)P);
 		return false;
 	}
+	
+	@Override
+	public boolean isOpenAccessibleContainer(Item I)
+	{
+		return (I instanceof Container)
+			 &&(CMath.bset(I.phyStats().sensesMask(), PhyStats.SENSE_INSIDEACCESSIBLE))
+			 &&((Container)I).isOpen();
+	}
+	
 
 	@Override
 	public boolean isTracking(MOB M)

@@ -475,12 +475,12 @@ public interface PhyStats extends CMCommon, Modifiable
 	public final static int SENSE_ITEMNORUIN=8192;
 	/** a bit setting, as from sensesMask(), flagging this item/room being unwishable for */
 	public final static int SENSE_ITEMNOWISH=16384;
-	/** a bit setting, as from sensesMask(), flagging this room contains electronic circuitry  */
-	//public final static int SENSE_ROOMCIRCUITED=32768;
+	/** a bit setting, as from sensesMask(), flagging this item/room is always viewed compressed  */
+	public final static int SENSE_ALWAYSCOMPRESSED=32768;
 	/** a bit setting, as from sensesMask(), flagging this item/room and unable to be destroyed */
 	public final static int SENSE_UNDESTROYABLE=65536;
 	/** a bit setting, as from sensesMask(), flagging this ...  */
-	//public final static int SENSE_ROOMCIRCUITED=131072;
+	public final static int SENSE_INSIDEACCESSIBLE=131072;
 	/** a bit setting, as from sensesMask(), flagging this as a busy item that can't do other things ...  */
 	public final static int SENSE_CAN_NOT_WORK=262144;
 	/** a bit setting, as from sensesMask(), flagging this ...  */
@@ -505,9 +505,9 @@ public interface PhyStats extends CMCommon, Modifiable
 		"ROOMGRIDSYNC",
 		"ITEMNORUIN",
 		"ITEMNOWISH",
-		"UNUSEDMASK",
+		"ALWAYSCOMPRESSED",
 		"UNDESTROYABLE",
-		"UNUSEDMASK",
+		"INSIDEACCESSIBLE",
 		"CANNOTWORK",
 		"UNUSEDMASK",
 		"UNCAMPABLE"

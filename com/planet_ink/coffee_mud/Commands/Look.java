@@ -62,10 +62,10 @@ public class Look extends StdCommand
 			Environmental thisThang=null;
 
 			if((commands.size()>2)&&(commands.get(1).equalsIgnoreCase("at")))
-			   commands.remove(1);
+				commands.remove(1);
 			else
 			if((commands.size()>2)&&(commands.get(1).equalsIgnoreCase("to")))
-			   commands.remove(1);
+				commands.remove(1);
 			final String ID=CMParms.combine(commands,1);
 
 			if((ID.toUpperCase().startsWith("EXIT")&&(commands.size()==2))&&(CMProps.getIntVar(CMProps.Int.EXVIEW)!=1))
@@ -95,6 +95,20 @@ public class Look extends StdCommand
 				{
 					CMLib.commands().doCommandFail(mob,origCmds,L("That's not a container."));
 					return false;
+				}
+			}
+			if(thisThang == null)
+			{
+				final CMFlagLibrary flagLib=CMLib.flags();
+				for(int i=0;i<R.numItems();i++)
+				{
+					final Item I=R.getItem(i);
+					if(flagLib.isOpenAccessibleContainer(I))
+					{
+						thisThang=R.fetchFromRoomFavorItems(I, ID);
+						if(thisThang != null)
+							break;
+					}
 				}
 			}
 			int dirCode=-1;

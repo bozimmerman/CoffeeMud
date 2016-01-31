@@ -59,17 +59,19 @@ public class Activate extends StdCommand
 		if((!(E instanceof Electronics))||(E instanceof Software))
 			E=null;
 		if(E==null)
+		{
+			final CMFlagLibrary flagLib=CMLib.flags();
 			for(int i=0;i<R.numItems();i++)
 			{
 				final Item I=R.getItem(i);
-				if((I instanceof Electronics.ElecPanel)
-				&&(((Electronics.ElecPanel)I).isOpen()))
+				if(flagLib.isOpenAccessibleContainer(I))
 				{
 					E=R.fetchFromRoomFavorItems(I, whole);
 					if((E instanceof Electronics)&&(!(E instanceof Software)))
 						break;
 				}
 			}
+		}
 		if((!(E instanceof Electronics))||(E instanceof Software))
 			E=null;
 		else
@@ -83,17 +85,18 @@ public class Activate extends StdCommand
 			if((!(E instanceof Electronics))||(E instanceof Software))
 				E=null;
 			if(E==null)
+			{
 				for(int i=0;i<R.numItems();i++)
 				{
 					final Item I=R.getItem(i);
-					if((I instanceof Electronics.ElecPanel)
-					&&(((Electronics.ElecPanel)I).isOpen()))
+					if(CMLib.flags().isOpenAccessibleContainer(I))
 					{
 						E=R.fetchFromRoomFavorItems(I, what);
 						if((E instanceof Electronics)&&(!(E instanceof Software)))
 							break;
 					}
 				}
+			}
 			if((!(E instanceof Electronics))||(E instanceof Software))
 				E=null;
 			if((E==null)&&(mob.riding() instanceof Electronics.Computer))

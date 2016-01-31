@@ -55,21 +55,23 @@ public class Deactivate extends StdCommand
 		final String what=commands.get(commands.size()-1);
 		final String whole=CMParms.combine(commands,0);
 		Item item=null;
-		Environmental E=mob.location().fetchFromMOBRoomFavorsItems(mob,null,whole,Wearable.FILTER_ANY);
+		Environmental E=R.fetchFromMOBRoomFavorsItems(mob,null,whole,Wearable.FILTER_ANY);
 		if((!(E instanceof Electronics))||(E instanceof Software))
 			E=null;
 		if(E==null)
+		{
+			final CMFlagLibrary flagLib=CMLib.flags();
 			for(int i=0;i<R.numItems();i++)
 			{
 				final Item I=R.getItem(i);
-				if((I instanceof Electronics.ElecPanel)
-				&&(((Electronics.ElecPanel)I).isOpen()))
+				if(flagLib.isOpenAccessibleContainer(I))
 				{
 					E=R.fetchFromRoomFavorItems(I, whole);
 					if((E instanceof Electronics)&&(!(E instanceof Software)))
 						break;
 				}
 			}
+		}
 		if((!(E instanceof Electronics))||(E instanceof Software))
 			E=null;
 		else
@@ -79,21 +81,22 @@ public class Deactivate extends StdCommand
 		}
 		if(E==null)
 		{
-			E=mob.location().fetchFromMOBRoomFavorsItems(mob,null,what,Wearable.FILTER_ANY);
+			E=R.fetchFromMOBRoomFavorsItems(mob,null,what,Wearable.FILTER_ANY);
 			if((!(E instanceof Electronics))||(E instanceof Software))
 				E=null;
 			if(E==null)
+			{
 				for(int i=0;i<R.numItems();i++)
 				{
 					final Item I=R.getItem(i);
-					if((I instanceof Electronics.ElecPanel)
-					&&(((Electronics.ElecPanel)I).isOpen()))
+					if(CMLib.flags().isOpenAccessibleContainer(I))
 					{
 						E=R.fetchFromRoomFavorItems(I, what);
 						if((E instanceof Electronics)&&(!(E instanceof Software)))
 							break;
 					}
 				}
+			}
 			if((!(E instanceof Electronics))||(E instanceof Software))
 				E=null;
 			if((E==null)&&(mob.riding() instanceof Electronics.Computer))
@@ -120,8 +123,8 @@ public class Deactivate extends StdCommand
 
 		final String rest=CMParms.combine(commands,0);
 		final CMMsg newMsg=CMClass.getMsg(mob,item,null,CMMsg.MSG_DEACTIVATE,null,CMMsg.MSG_DEACTIVATE,(rest.length()==0)?null:rest,CMMsg.MSG_DEACTIVATE,null);
-		if(mob.location().okMessage(mob,newMsg))
-			mob.location().send(mob,newMsg);
+		if(R.okMessage(mob,newMsg))
+			R.send(mob,newMsg);
 		return false;
 	}
 	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandCombatActionCost(ID());}

@@ -53,6 +53,7 @@ public class GenShipPanel extends StdCompPanel
 		baseGoldValue=5;
 		setCapacity(25000);
 		basePhyStats().setLevel(1);
+		basePhyStats().setSensesMask(basePhyStats().sensesMask()|PhyStats.SENSE_ALWAYSCOMPRESSED|PhyStats.SENSE_INSIDEACCESSIBLE);
 		recoverPhyStats();
 		setMaterial(RawMaterial.RESOURCE_STEEL);
 	}

@@ -1164,9 +1164,9 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		if(msg.targetMinor()!=CMMsg.TYP_EXAMINE)
 			lookCode=(msg.sourceMessage()==null)?LOOK_BRIEFOK:LOOK_NORMAL;
 
-		final StringBuilder Say=new StringBuilder("");
+		final StringBuilder finalLookStr=new StringBuilder("");
 		boolean sysmsgs=mob.isAttributeSet(MOB.Attrib.SYSOPMSGS);
-		final boolean compress=mob.isAttributeSet(MOB.Attrib.COMPRESS);
+		final boolean compress=mob.isAttributeSet(MOB.Attrib.COMPRESS) || (CMath.bset(room.phyStats().sensesMask(), PhyStats.SENSE_ALWAYSCOMPRESSED));
 		if(sysmsgs && (!CMSecurity.isAllowed(mob,room,CMSecurity.SecFlag.SYSMSGS)))
 		{
 			mob.setAttribute(MOB.Attrib.SYSOPMSGS,false);
@@ -1175,7 +1175,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		if(sysmsgs)
 		{
 			if(room.getArea()!=null)
-				Say.append("^!Area  :^N "+room.getArea().Name()+"\n\r");
+				finalLookStr.append("^!Area  :^N "+room.getArea().Name()+"\n\r");
 			final String rscName=room.myResource()>=0?RawMaterial.CODES.NAME(room.myResource()):"";
 			final String domType;
 			final StringBuilder domCond=new StringBuilder("");
@@ -1194,11 +1194,11 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				domCond.append(" dry");
 			if(CMath.bset(climateType, Places.CLIMASK_WINDY))
 				domCond.append(" windy");
-			Say.append("^!RoomID:^N "+CMLib.map().getExtendedRoomID(room)+"\n\r^!"+room.ID()+"^N: "+domType+" "+domCond.toString()+" <"+rscName+"> "+room.basePhyStats().weight()+"mv \n\r");
+			finalLookStr.append("^!RoomID:^N "+CMLib.map().getExtendedRoomID(room)+"\n\r^!"+room.ID()+"^N: "+domType+" "+domCond.toString()+" <"+rscName+"> "+room.basePhyStats().weight()+"mv \n\r");
 		}
 		if(CMLib.flags().canBeSeenBy(room,mob))
 		{
-			Say.append("^O^<RName^>" + room.displayText(mob)+"^</RName^>"+CMLib.flags().getDispositionBlurbs(room,mob)+"^L\n\r");
+			finalLookStr.append("^O^<RName^>" + room.displayText(mob)+"^</RName^>"+CMLib.flags().getDispositionBlurbs(room,mob)+"^L\n\r");
 			if((lookCode!=LOOK_BRIEFOK)||(!mob.isAttributeSet(MOB.Attrib.BRIEF)))
 			{
 				String roomDesc=room.description(mob);
@@ -1252,26 +1252,28 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				}
 				if((CMProps.getIntVar(CMProps.Int.EXVIEW)==1)||(CMProps.getIntVar(CMProps.Int.EXVIEW)==2))
 					roomDesc += getRoomExitsParagraph(mob,room);
-				Say.append("^L^<RDesc^>" + roomDesc+"^</RDesc^>");
+				finalLookStr.append("^L^<RDesc^>" + roomDesc+"^</RDesc^>");
 
 				if((!mob.isMonster())&&(sess.getClientTelnetMode(Session.TELNET_MXP)))
-					Say.append(CMLib.protocol().mxpImage(room," ALIGN=RIGHT H=70 W=70"));
+					finalLookStr.append(CMLib.protocol().mxpImage(room," ALIGN=RIGHT H=70 W=70"));
 				if(compress)
-					Say.append("^N  ");
+					finalLookStr.append("^N  ");
 				else
-					Say.append("^N\n\r\n\r");
+					finalLookStr.append("^N\n\r\n\r");
 			}
 		}
 
 		final Item notItem;
-		if((mob.location()!=room)
-		&&(mob.location()!=null)
-		&&(mob.location().getArea() instanceof BoardableShip))
-			notItem=((BoardableShip)mob.location().getArea()).getShipItem();
+		final Room mobLocR=mob.location();
+		if((mobLocR!=room)
+		&&(mobLocR!=null)
+		&&(mobLocR.getArea() instanceof BoardableShip))
+			notItem=((BoardableShip)mobLocR.getArea()).getShipItem();
 		else
 			notItem=null;
 		
 		final List<Item> viewItems=new ArrayList<Item>(room.numItems());
+		final List<Item> compressedItems=((compress) || (lookCode==LOOK_LONG)) ? null :  new ArrayList<Item>(1);
 		int itemsInTheDarkness=0;
 		for(int c=0;c<room.numItems();c++)
 		{
@@ -1283,13 +1285,22 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			{
 				if(CMLib.flags().canBarelyBeSeenBy(item,mob))
 					itemsInTheDarkness++;
-				viewItems.add(item);
+				if((compressedItems!=null)&&(CMath.bset(item.phyStats().sensesMask(), PhyStats.SENSE_ALWAYSCOMPRESSED)))
+					compressedItems.add(item);
+				else
+					viewItems.add(item);
 			}
 		}
 
+		if((compressedItems != null) && (compressedItems.size()>0))
+		{
+			final StringBuilder itemStr=CMLib.lister().lister(mob,compressedItems,false,"RItem"," \"*\"",false,true);
+			if(itemStr.length()>0)
+				finalLookStr.append(itemStr).append("\n\r\n\r");
+		}
 		final StringBuilder itemStr=CMLib.lister().lister(mob,viewItems,false,"RItem"," \"*\"",lookCode==LOOK_LONG,compress);
 		if(itemStr.length()>0)
-			Say.append(itemStr);
+			finalLookStr.append(itemStr);
 
 		int mobsInTheDarkness=0;
 		for(int i=0;i<room.numInhabitants();i++)
@@ -1304,21 +1315,21 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 					if(CMLib.flags().canBeSeenBy(mob2,mob))
 					{
 						if((!compress)&&(!mob.isMonster())&&(sess.getClientTelnetMode(Session.TELNET_MXP)))
-							Say.append(CMLib.protocol().mxpImage(mob2," H=10 W=10",""," "));
-						Say.append("^M^<RMob \""+CMStrings.removeColors(mob2.name())+"\"^>");
+							finalLookStr.append(CMLib.protocol().mxpImage(mob2," H=10 W=10",""," "));
+						finalLookStr.append("^M^<RMob \""+CMStrings.removeColors(mob2.name())+"\"^>");
 						if(compress)
-							Say.append(CMLib.flags().getDispositionBlurbs(mob2,mob)+"^M ");
+							finalLookStr.append(CMLib.flags().getDispositionBlurbs(mob2,mob)+"^M ");
 						if(displayText.length()>0)
-							Say.append(CMStrings.endWithAPeriod(CMStrings.capitalizeFirstLetter(displayText)));
+							finalLookStr.append(CMStrings.endWithAPeriod(CMStrings.capitalizeFirstLetter(displayText)));
 						else
-							Say.append(CMStrings.endWithAPeriod(CMStrings.capitalizeFirstLetter(mob2.name())));
-						Say.append("^</RMob^>");
+							finalLookStr.append(CMStrings.endWithAPeriod(CMStrings.capitalizeFirstLetter(mob2.name())));
+						finalLookStr.append("^</RMob^>");
 						if(sysmsgs)
-							Say.append("^H("+CMClass.classID(mob2)+")^N ");
+							finalLookStr.append("^H("+CMClass.classID(mob2)+")^N ");
 						if(!compress)
-							Say.append(CMLib.flags().getDispositionBlurbs(mob2,mob)+"^N\n\r");
+							finalLookStr.append(CMLib.flags().getDispositionBlurbs(mob2,mob)+"^N\n\r");
 						else
-							Say.append("^N");
+							finalLookStr.append("^N");
 					}
 					else
 					if(CMLib.flags().canBarelyBeSeenBy(mob2,mob))
@@ -1327,13 +1338,13 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			}
 		}
 
-		if(Say.length()==0)
+		if(finalLookStr.length()==0)
 			mob.tell(L("You can't see anything!"));
 		else
 		{
 			if(compress)
-				Say.append("\n\r");
-			mob.tell(Say.toString());
+				finalLookStr.append("\n\r");
+			mob.tell(finalLookStr.toString());
 			if((CMProps.getIntVar(CMProps.Int.AWARERANGE)>0)
 			&&(!mob.isAttributeSet(MOB.Attrib.AUTOMAP)))
 			{
@@ -1343,7 +1354,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				{
 					sess.colorOnlyPrintln("", true);
 					final Vector<String> list=new Vector<String>();
-					awarenessA.invoke(mob, list, mob.location(), true, CMProps.getIntVar(CMProps.Int.AWARERANGE));
+					awarenessA.invoke(mob, list, mobLocR, true, CMProps.getIntVar(CMProps.Int.AWARERANGE));
 					for(final String o : list)
 						sess.colorOnlyPrintln(o, true);
 					sess.colorOnlyPrintln("\n\r", true);
