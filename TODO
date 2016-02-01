@@ -1,35 +1,36 @@
 BUGS
 
 TECH
-   *. Lots of great thrusters stuff about midway down the tech doc -- use it 
-   *. Droids! Powered slave mobs.
-   *. Message Bouey Launcher
-   *. When it's time to make the Real Software, good categories in tech docs
-   *. Light Switches for rooms.
-   *. powered rideables.  ability to mount heavy gear, like engines to things.
-   *. personal scanner/tricorder software: mineral scanner, computer interface (with ship perhaps?)!
-   *. entry systems for ships (default entry key card, voice code, identifying scanner)
-   *. work on automatic component values ??
-   *. Talk to Tim: Space Tech power consumption depends on tech level of generator, panel
+   *. light switches for rooms.
    *. make tractor beam system -- esp important for pirates!
    *. make ship shield systems murder motel again -- some good against phasers, some torpedos, some lasers
    *. make ship phaser, laser systems murder motel again-- see tech doc
    *. make ship torpedo launchers and torpedo containers-- see tech doc
    *. make ship impulse and warp engines -- see tech doc
+   *. make more ship sensors
+   *. make communication system
+   *. When it's time to make the Real Software, good categories in tech docs
+   *. powered rideables.  ability to mount heavy gear, like engines to things.
+   *. entry systems for ships (default entry key card, voice code, identifying scanner)
+   *. work on automatic component values ??
+   *. Talk to Tim: Space Tech power consumption depends on tech level of generator, panel, or interaction damage?
+   *. make message bouey launcher
    *. Implement accelleration damage to the people on-board.
-   *. make ship dampeners, gravity generators
+   *. make ship dampeners, 
+   *. make fake gravity generators
    *. make food generators, and refrigerators, water recycler, 
    *. turbo lift -- moveable rooms
-   *. --Transporters-- 
+   *. personal scanner/tricorder software: mineral scanner, computer interface (with ship perhaps?)!
+   *. make transporter systems
+   *. make shuttle system
    *. damaged systems should sometimes require random parts, from particular manufacturers, that repair respects
-   *. finish main ship software for controlling all this stuff
    *. add electronics to guides, how to make a ship, how to build space, etc, details about tech
    *. add electronics to MG
    *. add spaceobject stuff to MG
    *. add spaceobject mapper system to MG
-   *. interacting items of diff tech level might damage each other -- done after everthing else please
    *. keep reviewing and updating the GameOverview.html doc
    *. Giant Space Mobs! Including Space Mobs that have rooms inside.
+   *. Droids! Powered slave mobs.
    *. Radiation Props: Alpha (damage), Beta (?!), Gamma (Mutation if in too long)
 
 NON-TECH
