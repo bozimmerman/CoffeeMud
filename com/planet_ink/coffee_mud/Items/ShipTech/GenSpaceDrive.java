@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.ShipComponent.ShipEngine.ThrustPort;
 import com.planet_ink.coffee_mud.Libraries.interfaces.GenericBuilder;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -83,7 +84,7 @@ public class GenSpaceDrive extends StdShipFuellessThruster
 	}
 
 	private final static String[] MYCODES={"POWERCAP","POWERREM","MAXTHRUST","ACTIVATED","MANUFACTURER","INSTFACT",
-										   "SPECIMPL","FUELEFF","MINTHRUST","ISCONST"};
+										   "SPECIMPL","FUELEFF","MINTHRUST","ISCONST","AVAILPORTS"};
 	
 	@Override
 	public String getStat(String code)
@@ -112,6 +113,8 @@ public class GenSpaceDrive extends StdShipFuellessThruster
 			return "" + getMinThrust();
 		case 9:
 			return "" + isConstantThruster();
+		case 10:
+			return CMParms.toListString(getAvailPorts());
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -154,6 +157,9 @@ public class GenSpaceDrive extends StdShipFuellessThruster
 			break;
 		case 9:
 			this.setConstantThruster(CMath.s_bool(val));
+			break;
+		case 10:
+			this.setAvailPorts(CMParms.parseEnumList(ThrustPort.class, val, ',').toArray(new ThrustPort[0]));
 			break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);

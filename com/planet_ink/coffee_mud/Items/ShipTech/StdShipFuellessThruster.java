@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.ShipComponent.ShipEngine;
+import com.planet_ink.coffee_mud.Items.interfaces.ShipComponent.ShipEngine.ThrustPort;
 import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechType;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -49,6 +50,8 @@ public class StdShipFuellessThruster extends StdElecCompItem implements ShipComp
 	protected long		specificImpulse	= SpaceObject.VELOCITY_SUBLIGHT;
 	protected double	fuelEfficiency	= 0.33;
 	protected boolean	constantThrust	= true;
+	
+	protected ThrustPort[] ports 		= ThrustPort.values(); 
 
 	public StdShipFuellessThruster()
 	{
@@ -153,6 +156,28 @@ public class StdShipFuellessThruster extends StdElecCompItem implements ShipComp
 	public void setConstantThruster(boolean isConstant)
 	{
 		constantThrust = isConstant;
+	}
+	
+	/**
+	 * Gets set of available thrust ports on this engine.
+	 * @see ShipEngine#setAvailPorts(Set<ThrustPort>)
+	 * @return the set of available thrust ports.
+	 */
+	@Override
+	public ThrustPort[] getAvailPorts()
+	{
+		return ports;
+	}
+
+	/**
+	 * Sets set of available thrust ports on this engine.
+	 * @see ShipEngine#getAvailPorts()
+	 * @param ports the set of available thrust ports.
+	 */
+	@Override
+	public void setAvailPorts(ThrustPort[] ports)
+	{
+		this.ports = ports;
 	}
 	
 	@Override

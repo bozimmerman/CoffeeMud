@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.ShipComponent.ShipEngine;
+import com.planet_ink.coffee_mud.Items.interfaces.ShipComponent.ShipEngine.ThrustPort;
 import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechCommand;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -495,8 +496,8 @@ public class RocketShipProgram extends GenShipProgram
 			}
 			else
 			{
-				E=findEngineByName(uword);
-				if(E==null)
+				ShipEngine engineE=findEngineByName(uword);
+				if(engineE==null)
 				{
 					super.addScreenMessage(L("Error: Unknown engine name or command word '"+uword+"'.   Try HELP."));
 					return;
@@ -522,35 +523,42 @@ public class RocketShipProgram extends GenShipProgram
 				if(parsed.size()==3)
 				{
 					portDir=(ShipEngine.ThrustPort)CMath.s_valueOf(ShipEngine.ThrustPort.class, parsed.get(1).toUpperCase().trim());
-					if(portDir!=null) { }
+					if(portDir!=null) 
+					{ 
+						if(!CMParms.contains(engineE.getAvailPorts(), portDir))
+						{
+							super.addScreenMessage(L("Error: '@x1' is not a valid direction for that engine.  Try: @x2.",parsed.get(1),CMParms.toListString(engineE.getAvailPorts())));
+							return;
+						}
+					}
 					else
-					if("aft".startsWith(parsed.get(1).toLowerCase()))
+					if("aft".startsWith(parsed.get(1).toLowerCase()) && CMParms.contains(engineE.getAvailPorts(), ThrustPort.AFT))
 						portDir=ShipEngine.ThrustPort.AFT;
 					else
-					if("port".startsWith(parsed.get(1).toLowerCase()))
+					if("port".startsWith(parsed.get(1).toLowerCase()) && CMParms.contains(engineE.getAvailPorts(), ThrustPort.PORT))
 						portDir=ShipEngine.ThrustPort.PORT;
 					else
-					if("starboard".startsWith(parsed.get(1).toLowerCase()))
+					if("starboard".startsWith(parsed.get(1).toLowerCase()) && CMParms.contains(engineE.getAvailPorts(), ThrustPort.STARBOARD))
 						portDir=ShipEngine.ThrustPort.STARBOARD;
 					else
-					if("ventral".startsWith(parsed.get(1).toLowerCase()))
+					if("ventral".startsWith(parsed.get(1).toLowerCase()) && CMParms.contains(engineE.getAvailPorts(), ThrustPort.VENTRAL))
 						portDir=ShipEngine.ThrustPort.VENTRAL;
 					else
-					if("dorsel".startsWith(parsed.get(1).toLowerCase()))
+					if("dorsel".startsWith(parsed.get(1).toLowerCase()) && CMParms.contains(engineE.getAvailPorts(), ThrustPort.DORSEL))
 						portDir=ShipEngine.ThrustPort.DORSEL;
 					else
 					{
-						super.addScreenMessage(L("Error: '@x1' is not a valid direction: AFT, PORT, VENTRAL, DORSEL, or STARBOARD.",parsed.get(1)));
+						super.addScreenMessage(L("Error: '@x1' is not a valid direction for that engine.  Try: @x2.",parsed.get(1),CMParms.toListString(engineE.getAvailPorts())));
 						return;
 					}
 				}
 				if(amount > 0)
 				{
 					final String code=Technical.TechCommand.THRUST.makeCommand(portDir,Integer.valueOf(amount));
-					msg=CMClass.getMsg(mob, E, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
+					msg=CMClass.getMsg(mob, engineE, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
 				}
 				else
-					msg=CMClass.getMsg(mob, E, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_DEACTIVATE|CMMsg.MASK_CNTRLMSG, null, CMMsg.NO_EFFECT,null);
+					msg=CMClass.getMsg(mob, engineE, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_DEACTIVATE|CMMsg.MASK_CNTRLMSG, null, CMMsg.NO_EFFECT,null);
 			}
 			if((E!=null) && (msg != null))
 			{

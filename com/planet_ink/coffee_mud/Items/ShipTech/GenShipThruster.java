@@ -86,7 +86,7 @@ public class GenShipThruster extends StdShipThruster
 	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES","RESETTIME",
 										   "POWERCAP","POWERREM","CONSUMEDTYPES","MAXTHRUST","ACTIVATED",
 										   "MANUFACTURER", "INSTFACT","DEFCLOSED","DEFLOCKED",
-										   "SPECIMPL","FUELEFF","MINTHRUST","ISCONST"};
+										   "SPECIMPL","FUELEFF","MINTHRUST","ISCONST","AVAILPORTS"};
 	
 	
 	@Override
@@ -141,6 +141,8 @@ public class GenShipThruster extends StdShipThruster
 			return "" + getMinThrust();
 		case 17:
 			return "" + isConstantThruster();
+		case 18:
+			return CMParms.toListString(getAvailPorts());
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -217,6 +219,9 @@ public class GenShipThruster extends StdShipThruster
 			break;
 		case 17:
 			this.setConstantThruster(CMath.s_bool(val));
+			break;
+		case 18:
+			this.setAvailPorts(CMParms.parseEnumList(ThrustPort.class, val, ',').toArray(new ThrustPort[0]));
 			break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);

@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.MoneyLibrary.MoneyDenomina
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.ShipComponent.ShipEngine.ThrustPort;
 import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechType;
 import com.planet_ink.coffee_mud.Items.interfaces.MusicalInstrument.InstrumentType;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -1190,6 +1191,10 @@ public class ItemData extends StdWebMacro
 					case MINTHRUST:
 						if(I instanceof ShipComponent.ShipEngine)
 							str.append((firstTime) ? (""+((ShipComponent.ShipEngine)I).getMinThrust()) : old).append(", ");
+						break;
+					case AVAILPORTS:
+						if(I instanceof ShipComponent.ShipEngine)
+							str.append((firstTime) ? (""+CMParms.toListString(((ShipComponent.ShipEngine)I).getAvailPorts())) : old).append(", ");
 						break;
 					case SPECIMPULSE:
 						if(I instanceof ShipComponent.ShipEngine)

@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.ShipComponent.ShipEngine.ThrustPort;
 import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechType;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -23,7 +24,6 @@ import java.util.Map.Entry;
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.CatalogLibrary.CataData;
-import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
 
 /*
@@ -461,6 +461,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			text.append(CMLib.xml().convertXMLtoTag("SSFEFF",""+((ShipComponent.ShipEngine)E).getFuelEfficiency()));
 			text.append(CMLib.xml().convertXMLtoTag("SSNTHRUST",""+((ShipComponent.ShipEngine)E).getMinThrust()));
 			text.append(CMLib.xml().convertXMLtoTag("SSCONST",""+((ShipComponent.ShipEngine)E).isConstantThruster()));
+			text.append(CMLib.xml().convertXMLtoTag("SSAPORTS",CMParms.toListString(((ShipComponent.ShipEngine)E).getAvailPorts())));
 		}
 		if(E instanceof Electronics.PowerGenerator)
 		{
@@ -2984,6 +2985,11 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			((ShipComponent.ShipEngine)E).setFuelEfficiency(CMLib.xml().getDoubleFromPieces(buf,"SSFEFF"));
 			((ShipComponent.ShipEngine)E).setMinThrust(CMLib.xml().getIntFromPieces(buf,"SSNTHRUST"));
 			((ShipComponent.ShipEngine)E).setConstantThruster(CMLib.xml().getBoolFromPieces(buf,"SSCONST",true));
+			final String portsStr = CMLib.xml().getValFromPieces(buf, "SSAPORTS", "");
+			if(portsStr.length()==0)
+				((ShipComponent.ShipEngine)E).setAvailPorts(ThrustPort.values());
+			else
+				((ShipComponent.ShipEngine)E).setAvailPorts(CMParms.parseEnumList(ThrustPort.class, portsStr, ',').toArray(new ThrustPort[0]));
 		}
 		if(E instanceof Electronics.PowerGenerator)
 		{

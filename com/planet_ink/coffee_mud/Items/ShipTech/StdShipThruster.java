@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.ShipComponent.ShipEngine;
+import com.planet_ink.coffee_mud.Items.interfaces.ShipComponent.ShipEngine.ThrustPort;
 import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechType;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -49,6 +50,8 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipComponen
 	protected long		specificImpulse	= SpaceObject.VELOCITY_SUBLIGHT;
 	protected double	fuelEfficiency	= 0.33;
 	protected boolean	constantThrust	= true;
+	
+	protected ThrustPort[] ports 		= ThrustPort.values(); 
 
 	public StdShipThruster()
 	{
@@ -167,6 +170,28 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipComponen
 	{
 		constantThrust = isConstant;
 	}
+	
+	/**
+	 * Gets set of available thrust ports on this engine.
+	 * @see ShipEngine#setAvailPorts(Set<ThrustPort>)
+	 * @return the set of available thrust ports.
+	 */
+	@Override
+	public ThrustPort[] getAvailPorts()
+	{
+		return ports;
+	}
+
+	/**
+	 * Sets set of available thrust ports on this engine.
+	 * @see ShipEngine#getAvailPorts()
+	 * @param ports the set of available thrust ports.
+	 */
+	@Override
+	public void setAvailPorts(ThrustPort[] ports)
+	{
+		this.ports = ports;
+	}
 
 	@Override
 	public void executeMsg(Environmental myHost, CMMsg msg)
@@ -245,6 +270,8 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipComponen
 		final SpaceShip ship=(SpaceShip)obj;
 		if((portDir==null)||(amount<0))
 			return reportError(me, controlI, mob, lang.L("@x1 "+rumbleWord+"s loudly, but accomplishes nothing.",me.name(mob)), lang.L("Failure: @x1: exhaust control.",me.name(mob)));
+		if(!CMParms.contains(me.getAvailPorts(), portDir))
+			return reportError(me, controlI, mob, lang.L("@x1 "+rumbleWord+"s a little, but accomplishes nothing.",me.name(mob)), lang.L("Failure: @x1: port control.",me.name(mob)));
 		double thrust=Math.round(me.getInstalledFactor() * amount);
 		if(thrust > me.getMaxThrust())
 			thrust=me.getMaxThrust();
@@ -350,7 +377,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipComponen
 				final int fuelToConsume=(int)Math.round(CMath.ceiling(me.getThrust()*me.getFuelEfficiency()*Math.max(.33, Math.abs(2.0-manufacturer.getEfficiencyPct()))/getFuelDivisor()));
 				if(me.consumeFuel(fuelToConsume))
 				{
-					if((me.getThrust() > 0) && (me.isConstantThruster()))
+					if((me.getThrust() > 0) && (me.isConstantThruster()) && (CMParms.contains(me.getAvailPorts(),ThrustPort.AFT)))
 					{
 						final SpaceObject obj=CMLib.map().getSpaceObject(me, true);
 						if(obj instanceof SpaceShip)

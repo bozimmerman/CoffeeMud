@@ -725,6 +725,33 @@ public class CMParms
 	}
 
 	/**
+	 * Parses the given string comma-delimited for the given enum obj
+	 * names.
+	 * @param c the enum class
+	 * @param s the string to parse
+	 * @param delim the delimiter to use
+	 * @return the list of parsed enums
+	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public final static List<Enum<? extends Enum>> parseEnumList(final Class<? extends Enum> c, final String s, char delim)
+	{
+		final List<String> lst = parseAny(s,delim,true);
+		final List<Enum<? extends Enum>> finalLst=new ArrayList<Enum<? extends Enum>>(lst.size());
+		for(final String entry : lst)
+		{
+			try
+			{
+				finalLst.add(Enum.valueOf(c, entry));
+			}
+			catch(final Exception e)
+			{
+			}
+		}
+		return finalLst;
+	}
+
+	
+	/**
 	 * Parses the given string period-delimited.
 	 * @param s the string to parse
 	 * @return the list of parsed strings

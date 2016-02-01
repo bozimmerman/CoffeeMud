@@ -1,5 +1,7 @@
 package com.planet_ink.coffee_mud.Items.interfaces;
 
+import java.util.Set;
+
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -11,6 +13,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.ShipComponent.ShipEngine.ThrustPort;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -77,6 +80,20 @@ public interface ShipComponent extends Electronics
 			STARBOARD,
 			FORWARD
 		}
+
+		/**
+		 * Gets set of available thrust ports on this engine.
+		 * @see ShipEngine#setAvailPorts(Set<ThrustPort>)
+		 * @return the set of available thrust ports.
+		 */
+		public ThrustPort[] getAvailPorts();
+
+		/**
+		 * Sets set of available thrust ports on this engine.
+		 * @see ShipEngine#getAvailPorts()
+		 * @param ports the set of available thrust ports.
+		 */
+		public void setAvailPorts(ThrustPort[] ports);
 
 		/**
 		 * Gets the maximum amount of thrust that this engine can put out.
