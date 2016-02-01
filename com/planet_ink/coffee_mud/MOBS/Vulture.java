@@ -40,7 +40,7 @@ public class Vulture extends StdMOB
 		super();
 		final Random randomizer = new Random(System.currentTimeMillis());
 
-		username="a raven";
+		username="a vulture";
 		setDescription("It\\`s a large bird that eats meats.");
 		setDisplayText("A vulture awaits your death.");
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);
