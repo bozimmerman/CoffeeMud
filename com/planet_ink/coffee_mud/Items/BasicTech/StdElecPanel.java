@@ -36,30 +36,52 @@ import java.util.*;
 */
 public class StdElecPanel extends StdElecContainer implements Electronics.ElecPanel
 {
-	@Override public String ID(){	return "StdElecPanel";}
+	@Override
+	public String ID()
+	{
+		return "StdElecPanel";
+	}
 
 	protected volatile int powerNeeds=0;
 	protected volatile String circuitKey=null;
+	protected TechType panelType=TechType.ANY;
 
 	public StdElecPanel()
 	{
 		super();
 		setName("an electronics panel");
-		setDisplayText("");
+		setDisplayText("an electronics panel is on the wall");
 		setDescription("Usually seemless with the wall, these panels can be opened to install new equipment.");
 		super.setDoorsNLocks(true, true, true,false, false,false);
-		basePhyStats().setSensesMask(basePhyStats.sensesMask()|PhyStats.SENSE_ITEMNOTGET);
+		basePhyStats().setSensesMask(basePhyStats().sensesMask()|PhyStats.SENSE_ALWAYSCOMPRESSED|PhyStats.SENSE_INSIDEACCESSIBLE|PhyStats.SENSE_ITEMNOTGET);
 		this.activated=true;
 		this.openDelayTicks=0;
 		this.recoverPhyStats();
 	}
 
-	@Override public TechType getTechType() { return TechType.SHIP_PANEL; }
+	@Override
+	public TechType getTechType()
+	{
+		return TechType.SHIP_PANEL;
+	}
 
-	protected TechType panelType=TechType.ANY;
-	@Override public TechType panelType(){return panelType;}
-	@Override public void setPanelType(TechType type){panelType=type;}
-	@Override public int powerNeeds(){return powerNeeds; }
+	@Override
+	public TechType panelType()
+	{
+		return panelType;
+	}
+
+	@Override
+	public void setPanelType(TechType type)
+	{
+		panelType = type;
+	}
+
+	@Override
+	public int powerNeeds()
+	{
+		return powerNeeds;
+	}
 
 	@Override
 	public String displayText()
@@ -68,6 +90,7 @@ public class StdElecPanel extends StdElecContainer implements Electronics.ElecPa
 			return name()+" is opened here.";
 		return "";
 	}
+
 	@Override
 	public boolean canContain(Item I)
 	{

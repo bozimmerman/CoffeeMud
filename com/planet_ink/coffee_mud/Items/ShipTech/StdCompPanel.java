@@ -49,10 +49,10 @@ public class StdCompPanel extends StdElecCompContainer implements Electronics.El
 	{
 		super();
 		setName("an engineering panel");
-		setDisplayText("");
+		setDisplayText("an engineering panel is on the wall");
 		setDescription("Usually seemless with the wall, these panels can be opened to install new equipment.");
 		super.setDoorsNLocks(true, true, true,false, false,false);
-		basePhyStats().setSensesMask(basePhyStats.sensesMask()|PhyStats.SENSE_ITEMNOTGET);
+		basePhyStats().setSensesMask(basePhyStats().sensesMask()|PhyStats.SENSE_ALWAYSCOMPRESSED|PhyStats.SENSE_INSIDEACCESSIBLE|PhyStats.SENSE_ITEMNOTGET);
 		this.activated=true;
 		this.openDelayTicks=0;
 		this.recoverPhyStats();

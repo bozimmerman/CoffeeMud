@@ -37,7 +37,11 @@ import java.util.*;
 */
 public class StdComputerConsole extends StdRideable implements ShipComponent, Electronics.Computer, Electronics.ElecPanel
 {
-	@Override public String ID(){	return "StdComputerConsole";}
+	@Override
+	public String ID()
+	{
+		return "StdComputerConsole";
+	}
 
 	protected volatile String	circuitKey			= null;
 	protected float				installedFactor		= 1.0F;
@@ -191,8 +195,16 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 		return cachedManufact;
 	}
 
-	@Override public TechType panelType(){return TechType.SHIP_SOFTWARE;}
-	@Override public void setPanelType(TechType type){ }
+	@Override
+	public TechType panelType()
+	{
+		return TechType.SHIP_SOFTWARE;
+	}
+
+	@Override
+	public void setPanelType(TechType type)
+	{
+	}
 
 	@Override
 	public boolean canContain(Item I)

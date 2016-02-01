@@ -36,11 +36,14 @@ import java.util.*;
 */
 public class StdElecCompItem extends StdElecItem implements ShipComponent
 {
-	@Override public String ID(){	return "StdElecCompItem";}
+	@Override
+	public String ID()
+	{
+		return "StdElecCompItem";
+	}
 
 	protected float installedFactor = 1.0f;
 	protected volatile String circuitKey=null;
-
 
 	public StdElecCompItem()
 	{

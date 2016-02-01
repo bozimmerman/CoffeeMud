@@ -34,7 +34,11 @@ import java.util.*;
 */
 public class StdCompFuelConsumer extends StdElecCompContainer implements Electronics.FuelConsumer
 {
-	@Override public String ID(){	return "StdCompFuelConsumer";}
+	@Override
+	public String ID()
+	{
+		return "StdCompFuelConsumer";
+	}
 
 	protected int[] generatedFuelTypes;
 	protected int   ticksPerFuelConsume = 10;
@@ -44,11 +48,12 @@ public class StdCompFuelConsumer extends StdElecCompContainer implements Electro
 	{
 		super();
 		setName("a fuel consuming engine");
-		basePhyStats.setWeight(50000);
+		basePhyStats.setWeight(5000);
 		setDisplayText("a fuel consuming engine sits here.");
 		setDescription("");
-		baseGoldValue=500000;
+		baseGoldValue=5000;
 		basePhyStats().setLevel(1);
+		basePhyStats.setWeight(500);
 		recoverPhyStats();
 		setMaterial(RawMaterial.RESOURCE_STEEL);
 		setConsumedFuelType(new int[]{RawMaterial.RESOURCE_DEUTERIUM});
@@ -141,6 +146,7 @@ public class StdCompFuelConsumer extends StdElecCompContainer implements Electro
 	}
 
 	protected volatile List<Item> fuelCache=null;
+
 	protected synchronized List<Item> getFuel()
 	{
 		if(fuelCache==null)

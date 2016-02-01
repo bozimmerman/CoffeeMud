@@ -100,21 +100,21 @@ public class GenElecCompSensor extends StdElecCompSensor
 		else
 		switch(getCodeNum(code))
 		{
-			case 0:
-				setPowerCapacity(CMath.s_parseLongExpression(val));
-				break;
-			case 1:
-				activate(CMath.s_bool(val));
-				break;
-			case 2:
-				setPowerRemaining(CMath.s_parseLongExpression(val));
-				break;
-			case 3:
-				setManufacturerName(val);
-				break;
-			case 4:
-				setInstalledFactor(CMath.s_float(val));
-				break;
+		case 0:
+			setPowerCapacity(CMath.s_parseLongExpression(val));
+			break;
+		case 1:
+			activate(CMath.s_bool(val));
+			break;
+		case 2:
+			setPowerRemaining(CMath.s_parseLongExpression(val));
+			break;
+		case 3:
+			setManufacturerName(val);
+			break;
+		case 4:
+			setInstalledFactor(CMath.s_float(val));
+			break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;

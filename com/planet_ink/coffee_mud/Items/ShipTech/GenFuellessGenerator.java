@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2013-2016 Bo Zimmerman
+   Copyright 2016-2016 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -32,24 +32,24 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class GenShipEngine extends StdShipEngine
+public class GenFuellessGenerator extends StdCompFuellessGenerator
 {
 	@Override
 	public String ID()
 	{
-		return "GenShipEngine";
+		return "GenFuellessGenerator";
 	}
 
-	protected String	readableText	= "";
-
-	public GenShipEngine()
+	protected String readableText="";
+	
+	public GenFuellessGenerator()
 	{
 		super();
-		setName("a generic ship engine");
-		setDisplayText("a generic ship engine sits here.");
+		setName("a power generaotr");
+		setDisplayText("a power generator sits here.");
 		setDescription("");
 	}
-
+	
 	@Override
 	public boolean isGeneric()
 	{
@@ -83,9 +83,8 @@ public class GenShipEngine extends StdShipEngine
 	}
 
 	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES","RESETTIME",
-										   "POWERCAP","POWERREM","CONSUMEDTYPES","GENAMTPER","MANUFACTURER",
-										   "INSTFACT","DEFCLOSED","DEFLOCKED",
-										   "MAXTHRUST","SPECIMPL","FUELEFF"};
+										   "POWERCAP","POWERREM","GENAMTPER","MANUFACTURER","INSTFACT","DEFCLOSED","DEFLOCKED"};
+	
 	@Override
 	public String getStat(String code)
 	{
@@ -106,40 +105,24 @@ public class GenShipEngine extends StdShipEngine
 		case 5:
 			return "" + powerCapacity();
 		case 6:
-		{
-			final StringBuilder str=new StringBuilder("");
-			for(int i=0;i<getConsumedFuelTypes().length;i++)
-			{
-				if(i>0)
-					str.append(", ");
-				str.append(RawMaterial.CODES.NAME(getConsumedFuelTypes()[i]));
-			}
-			return str.toString();
-		}
-		case 7:
 			return "" + powerRemaining();
-		case 8:
+		case 7:
 			return "" + getGeneratedAmountPerTick();
-		case 9:
+		case 8:
 			return "" + activated();
-		case 10:
+		case 9:
 			return "" + getManufacturerName();
-		case 11:
+		case 10:
 			return "" + getInstalledFactor();
-		case 12:
+		case 11:
 			return "" + defaultsClosed();
-		case 13:
+		case 12:
 			return "" + defaultsLocked();
-		case 14:
-			return "" + getMaxThrust();
-		case 15:
-			return "" + getSpecificImpulse();
-		case 16:
-			return "" + Math.round(getFuelEfficiency() * 100);
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
 	}
+	
 	@Override
 	public void setStat(String code, String val)
 	{
@@ -167,53 +150,32 @@ public class GenShipEngine extends StdShipEngine
 			setPowerCapacity(CMath.s_parseLongExpression(val));
 			break;
 		case 6:
-			{
-				final List<String> mats = CMParms.parseCommas(val,true);
-				final int[] newMats = new int[mats.size()];
-				for(int x=0;x<mats.size();x++)
-				{
-					final int rsccode = RawMaterial.CODES.FIND_CaseSensitive(mats.get(x).trim());
-					if(rsccode > 0)
-						newMats[x] = rsccode;
-				}
-				super.setConsumedFuelType(newMats);
-				break;
-			}
-		case 7:
 			setPowerCapacity(CMath.s_parseLongExpression(val));
 			break;
-		case 8:
+		case 7:
 			setGeneratedAmountPerTick(CMath.s_parseIntExpression(val));
 			break;
-		case 9:
+		case 8:
 			activate(CMath.s_bool(val));
 			break;
-		case 10:
+		case 9:
 			setManufacturerName(val);
 			break;
-		case 11:
+		case 10:
 			setInstalledFactor(CMath.s_float(val));
 			break;
-		case 12:
+		case 11:
 			setDoorsNLocks(hasADoor(), isOpen(), CMath.s_bool(val), hasALock(), isLocked(), defaultsLocked());
 			break;
-		case 13:
+		case 12:
 			setDoorsNLocks(hasADoor(), isOpen(), defaultsClosed(), hasALock(), isLocked(), CMath.s_bool(val));
-			break;
-		case 14:
-			setMaxThrust(CMath.s_parseIntExpression(val));
-			break;
-		case 15:
-			setSpecificImpulse(CMath.s_parseLongExpression(val));
-			break;
-		case 16:
-			setFuelEfficiency(CMath.s_parseMathExpression(val) / 100.0);
 			break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;
 		}
 	}
+	
 	@Override
 	protected int getCodeNum(String code)
 	{
@@ -224,15 +186,15 @@ public class GenShipEngine extends StdShipEngine
 		}
 		return -1;
 	}
-
-	private static String[]	codes	= null;
-
+	
+	private static String[] codes=null;
+	
 	@Override
 	public String[] getStatCodes()
 	{
 		if(codes!=null)
 			return codes;
-		final String[] MYCODES=CMProps.getStatCodesList(GenShipEngine.MYCODES,this);
+		final String[] MYCODES=CMProps.getStatCodesList(GenFuellessGenerator.MYCODES,this);
 		final String[] superCodes=CMParms.toStringArray(GenericBuilder.GenItemCode.values());
 		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;
@@ -246,7 +208,7 @@ public class GenShipEngine extends StdShipEngine
 	@Override
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof GenShipEngine))
+		if(!(E instanceof GenCompGenerator))
 			return false;
 		final String[] theCodes=getStatCodes();
 		for(int i=0;i<theCodes.length;i++)

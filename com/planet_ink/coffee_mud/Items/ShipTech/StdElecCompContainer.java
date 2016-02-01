@@ -52,7 +52,7 @@ public class StdElecCompContainer extends StdElecContainer implements ShipCompon
 		basePhyStats.setWeight(500);
 		setDisplayText("a component container sits here.");
 		setDescription("");
-		baseGoldValue=500000;
+		baseGoldValue=500;
 		setUsesRemaining(100);
 		basePhyStats().setLevel(1);
 		recoverPhyStats();
@@ -68,7 +68,8 @@ public class StdElecCompContainer extends StdElecContainer implements ShipCompon
 	@Override
 	public void setInstalledFactor(float pct)
 	{
-		installedFactor = pct;
+		if ((pct >= 0.0) && (pct <= 2.0))
+			installedFactor = pct;
 	}
 
 	@Override

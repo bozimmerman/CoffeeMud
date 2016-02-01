@@ -36,7 +36,11 @@ import java.util.*;
 */
 public class StdElecContainer extends StdContainer implements Electronics
 {
-	@Override public String ID(){	return "StdElecContainer";}
+	@Override
+	public String ID()
+	{
+		return "StdElecContainer";
+	}
 
 	protected long 			powerCapacity	= 100;
 	protected long 			power			= 100;

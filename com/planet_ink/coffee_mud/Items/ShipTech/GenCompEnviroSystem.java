@@ -42,9 +42,10 @@ public class GenCompEnviroSystem extends GenElecCompItem
 	}
 
 	protected final static int ENVIRO_TICKS=7;
-	protected int tickDown=ENVIRO_TICKS;
-
-	protected int airResource=RawMaterial.RESOURCE_AIR;
+	
+	
+	protected int	tickDown	= ENVIRO_TICKS;
+	protected int	airResource	= RawMaterial.RESOURCE_AIR;
 
 	public GenCompEnviroSystem()
 	{

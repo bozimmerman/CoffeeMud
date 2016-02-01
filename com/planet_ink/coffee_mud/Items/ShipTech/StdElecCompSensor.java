@@ -37,8 +37,12 @@ import java.util.*;
 */
 public class StdElecCompSensor extends StdElecCompItem implements ShipComponent
 {
-	@Override public String ID(){	return "StdElecCompSensor";}
-	
+	@Override
+	public String ID()
+	{
+		return "StdElecCompSensor";
+	}
+
 	@Override
 	public TechType getTechType()
 	{

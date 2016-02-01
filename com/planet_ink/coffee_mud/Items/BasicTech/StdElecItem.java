@@ -42,7 +42,8 @@ public class StdElecItem extends StdItem implements Electronics
 	{
 		return "StdElecItem";
 	}
-
+	
+	protected int			maxRechargePer	= Integer.MAX_VALUE;
 	protected long			powerCapacity	= 100;
 	protected long			power			= 100;
 	protected boolean		activated		= false;
@@ -118,7 +119,7 @@ public class StdElecItem extends StdItem implements Electronics
 	@Override
 	public int powerNeeds()
 	{
-		return (int) Math.min(powerCapacity - power, Integer.MAX_VALUE);
+		return (int) Math.min(powerCapacity - power, maxRechargePer);
 	}
 
 	@Override

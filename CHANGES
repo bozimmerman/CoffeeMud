@@ -35,6 +35,7 @@
   33. Internal: Any container can have accessible contents.  Currently used only for tech panels.
   34. Races now support natural immunities (mostly for disease).  MG and CL editor support added.
   35. Added the rest of the Tech resource types .. mind your items with custom resource defs!
+  36. Some new tech power generator types created.
 # Build 5.9.1 Released 01/04/2016
    1. "Who accounts", used by an archon, can quickly list the account name of each player online.
    2. New Achievement event "GOTITEM", and new rewards (see new stats below and achievements.ini)

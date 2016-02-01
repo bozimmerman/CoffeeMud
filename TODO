@@ -22,7 +22,7 @@ TECH
    *. Implement accelleration damage to the people on-board.
    *. make ship dampeners, gravity generators
    *. make food generators, and refrigerators, water recycler, 
-   *. turbo list -- moveable rooms
+   *. turbo lift -- moveable rooms
    *. --Transporters-- 
    *. damaged systems should sometimes require random parts, from particular manufacturers, that repair respects
    *. finish main ship software for controlling all this stuff
@@ -34,8 +34,10 @@ TECH
    *. keep reviewing and updating the GameOverview.html doc
 
 NON-TECH
+   *. Allow GMODIFY to change room types.
    *. Wants and Needs engine - similar to slavery system
    *. Builder Achievements, Archon Achievements, Clan Achievements, Timed achievements (within a time period)
+   *. Port Siplet to C++ and shove it inside a Chromium window.
    *. Start on Spell Research?
    *. Simple Desires quest behavior - see Tim's Wants and Needs doc
    *. RandomQuests based off the Percolator engine -- a way to randomly generate different quests.

@@ -251,7 +251,8 @@ public class DefaultClimate implements Climate
 	@Override
 	public boolean canSeeTheSun(Room room)
 	{
-		if(((room.getArea().getTimeObj().getTODCode()!=TimeClock.TimeOfDay.DAY)
+		if((room==null)
+		||((room.getArea().getTimeObj().getTODCode()!=TimeClock.TimeOfDay.DAY)
 			&&(room.getArea().getTimeObj().getTODCode()!=TimeClock.TimeOfDay.DAWN))
 		||(!CMLib.map().hasASky(room))
 		||(CMLib.flags().isInDark(room)))

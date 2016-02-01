@@ -35,9 +35,12 @@ import java.util.*;
 */
 public class StdShipEngine extends StdCompGenerator implements ShipComponent.ShipEngine
 {
-	@Override public String ID(){	return "StdShipEngine";}
+	@Override
+	public String ID()
+	{
+		return "StdShipEngine";
+	}
 
-	protected float 	installedFactor	= 1.0F;
 	protected int		maxThrust		= 8900000;
 	protected int		thrust			= 0;
 	protected long		specificImpulse	= SpaceObject.VELOCITY_SUBLIGHT;
@@ -73,19 +76,6 @@ public class StdShipEngine extends StdCompGenerator implements ShipComponent.Shi
 	public void setFuelEfficiency(double amt)
 	{
 		fuelEfficiency = amt;
-	}
-
-	@Override
-	public float getInstalledFactor()
-	{
-		return installedFactor;
-	}
-
-	@Override
-	public void setInstalledFactor(float pct)
-	{
-		if ((pct >= 0.0) && (pct <= 2.0))
-			installedFactor = pct;
 	}
 
 	@Override

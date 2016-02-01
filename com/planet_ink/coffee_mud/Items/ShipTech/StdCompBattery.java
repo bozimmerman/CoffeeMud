@@ -35,7 +35,11 @@ import java.util.*;
 */
 public class StdCompBattery extends StdElecCompItem implements Electronics.PowerSource, ShipComponent
 {
-	@Override public String ID(){	return "StdCompBattery";}
+	@Override
+	public String ID()
+	{
+		return "StdCompBattery";
+	}
 
 	public StdCompBattery()
 	{
@@ -53,7 +57,11 @@ public class StdCompBattery extends StdElecCompItem implements Electronics.Power
 		super.setPowerRemaining(1000);
 	}
 
-	@Override public TechType getTechType() { return TechType.SHIP_POWER; }
+	@Override
+	public TechType getTechType()
+	{
+		return TechType.SHIP_POWER;
+	}
 
 	@Override
 	public void setMiscText(String newText)

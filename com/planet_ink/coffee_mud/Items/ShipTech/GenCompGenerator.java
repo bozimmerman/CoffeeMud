@@ -46,13 +46,8 @@ public class GenCompGenerator extends StdCompGenerator
 	{
 		super();
 		setName("a generic generator");
-		basePhyStats.setWeight(2);
 		setDisplayText("a generic generator sits here.");
 		setDescription("");
-		baseGoldValue=5;
-		basePhyStats().setLevel(1);
-		recoverPhyStats();
-		setMaterial(RawMaterial.RESOURCE_STEEL);
 	}
 
 	@Override
@@ -208,8 +203,10 @@ public class GenCompGenerator extends StdCompGenerator
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<MYCODES.length;i++)
+		{
 			if(code.equalsIgnoreCase(MYCODES[i]))
 				return i;
+		}
 		return -1;
 	}
 	

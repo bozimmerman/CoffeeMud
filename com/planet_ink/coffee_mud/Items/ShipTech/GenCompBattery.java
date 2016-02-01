@@ -46,11 +46,6 @@ public class GenCompBattery extends StdCompBattery implements Electronics.PowerS
 		setName("a generic battery");
 		setDisplayText("a generic battery sits here.");
 		setDescription("");
-		basePhyStats.setWeight(2);
-		baseGoldValue=5;
-		basePhyStats().setLevel(1);
-		recoverPhyStats();
-		setMaterial(RawMaterial.RESOURCE_STEEL);
 		super.setPowerCapacity(1000);
 		super.setPowerRemaining(1000);
 	}
@@ -130,8 +125,10 @@ public class GenCompBattery extends StdCompBattery implements Electronics.PowerS
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<MYCODES.length;i++)
+		{
 			if(code.equalsIgnoreCase(MYCODES[i]))
 				return i;
+		}
 		return -1;
 	}
 	

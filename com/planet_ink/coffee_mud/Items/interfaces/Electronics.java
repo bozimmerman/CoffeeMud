@@ -244,7 +244,7 @@ public interface Electronics extends Item, Technical
 	 * @author Bo Zimmerman
 	 *
 	 */
-	public interface PowerGenerator extends PowerSource, FuelConsumer
+	public interface PowerGenerator extends PowerSource
 	{
 		/**
 		 * Gets the amount of power generated every tick.  This is fed into
