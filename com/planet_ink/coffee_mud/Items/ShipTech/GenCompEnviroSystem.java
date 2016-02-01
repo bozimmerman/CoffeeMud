@@ -99,4 +99,12 @@ public class GenCompEnviroSystem extends GenElecCompItem
 			}
 		}
 	}
+	
+	@Override
+	public boolean sameAs(Environmental E)
+	{
+		if(!(E instanceof GenCompEnviroSystem))
+			return false;
+		return super.sameAs(E);
+	}
 }

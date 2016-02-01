@@ -68,7 +68,8 @@ public class GrinderItems
 		ISSHIPCOMPONENT,ISSHIPENGINE,ISPANEL,ISFUELCONSUMER,ISPOWERGENERATION,
 		MANUFACTURER,POWCAPACITY,POWREMAINING,ACTIVATED,
 		MAXTHRUST,SPECIMPULSE,FUELEFFICIENCY,INSTALLFACTOR,
-		PANELTYPE,GENAMTPERTICK,CONSUMEDMATS,AREAXML,RECIPESKILLHELP;
+		PANELTYPE,GENAMTPERTICK,CONSUMEDMATS,AREAXML,RECIPESKILLHELP,
+		MINTHRUST,ISCONSTTHRUST;
 		public boolean isGenField;
 		private ItemDataField(boolean isGeneric)
 		{
@@ -709,9 +710,17 @@ public class GrinderItems
 					if(I instanceof Electronics)
 						((Electronics)I).activate(old.equalsIgnoreCase("on"));
 					break;
+				case ISCONSTTHRUST:
+					if(I instanceof ShipComponent.ShipEngine)
+						((ShipComponent.ShipEngine)I).setConstantThruster(old.equalsIgnoreCase("on"));
+					break;
 				case MAXTHRUST:
 					if(I instanceof ShipComponent.ShipEngine)
 						((ShipComponent.ShipEngine)I).setMaxThrust(CMath.s_int(old));
+					break;
+				case MINTHRUST:
+					if(I instanceof ShipComponent.ShipEngine)
+						((ShipComponent.ShipEngine)I).setMinThrust(CMath.s_int(old));
 					break;
 				case SPECIMPULSE:
 					if(I instanceof ShipComponent.ShipEngine)

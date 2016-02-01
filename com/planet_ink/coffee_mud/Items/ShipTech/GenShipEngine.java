@@ -83,9 +83,9 @@ public class GenShipEngine extends StdShipEngine
 	}
 
 	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES","RESETTIME",
-										   "POWERCAP","POWERREM","CONSUMEDTYPES","GENAMTPER","MANUFACTURER",
-										   "INSTFACT","DEFCLOSED","DEFLOCKED",
-										   "MAXTHRUST","SPECIMPL","FUELEFF"};
+										   "POWERCAP","CONSUMEDTYPES","POWERREM","GENAMTPER","ACTIVATED",
+										   "MANUFACTURER","INSTFACT","DEFCLOSED","DEFLOCKED",
+										   "MAXTHRUST","SPECIMPL","FUELEFF","MINTHRUST","ISCONST"};
 	@Override
 	public String getStat(String code)
 	{
@@ -136,6 +136,10 @@ public class GenShipEngine extends StdShipEngine
 			return "" + getSpecificImpulse();
 		case 16:
 			return "" + Math.round(getFuelEfficiency() * 100);
+		case 17:
+			return "" + getMinThrust();
+		case 18:
+			return "" + isConstantThruster();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -208,6 +212,12 @@ public class GenShipEngine extends StdShipEngine
 			break;
 		case 16:
 			setFuelEfficiency(CMath.s_parseMathExpression(val) / 100.0);
+			break;
+		case 17:
+			setMinThrust(CMath.s_parseIntExpression(val));
+			break;
+		case 18:
+			setConstantThruster(CMath.s_bool(val));
 			break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);

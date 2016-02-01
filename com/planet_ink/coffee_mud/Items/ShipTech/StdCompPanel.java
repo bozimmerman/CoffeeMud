@@ -259,4 +259,12 @@ public class StdCompPanel extends StdElecCompContainer implements Electronics.El
 			super.executeMsg(myHost, msg);
 		}
 	}
+	
+	@Override
+	public boolean sameAs(Environmental E)
+	{
+		if(!(E instanceof StdCompPanel))
+			return false;
+		return super.sameAs(E);
+	}
 }

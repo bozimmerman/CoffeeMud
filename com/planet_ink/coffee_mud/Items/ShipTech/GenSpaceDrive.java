@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2013-2016 Bo Zimmerman
+   Copyright 2016-2016 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -32,24 +32,24 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class GenCompGenerator extends StdCompGenerator
+public class GenSpaceDrive extends StdShipFuellessThruster
 {
 	@Override
 	public String ID()
 	{
-		return "GenCompGenerator";
+		return "GenSpaceDrive";
 	}
 
 	protected String readableText="";
 	
-	public GenCompGenerator()
+	public GenSpaceDrive()
 	{
 		super();
-		setName("a generic generator");
-		setDisplayText("a generic generator sits here.");
+		setName("a space drive");
+		setDisplayText("a space drive sits here.");
 		setDescription("");
 	}
-
+	
 	@Override
 	public boolean isGeneric()
 	{
@@ -82,9 +82,8 @@ public class GenCompGenerator extends StdCompGenerator
 		recoverPhyStats();
 	}
 
-	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES","RESETTIME",
-										   "POWERCAP","CONSUMEDTYPES","POWERREM","GENAMTPER","ACTIVATED",
-										   "MANUFACTURER","INSTFACT","DEFCLOSED","DEFLOCKED"};
+	private final static String[] MYCODES={"POWERCAP","POWERREM","MAXTHRUST","ACTIVATED","MANUFACTURER","INSTFACT",
+										   "SPECIMPL","FUELEFF","MINTHRUST","ISCONST"};
 	
 	@Override
 	public String getStat(String code)
@@ -94,42 +93,25 @@ public class GenCompGenerator extends StdCompGenerator
 		switch(getCodeNum(code))
 		{
 		case 0:
-			return "" + hasALock();
-		case 1:
-			return "" + hasADoor();
-		case 2:
-			return "" + capacity();
-		case 3:
-			return "" + containTypes();
-		case 4:
-			return "" + openDelayTicks();
-		case 5:
 			return "" + powerCapacity();
-		case 6:
-		{
-			final StringBuilder str=new StringBuilder("");
-			for(int i=0;i<getConsumedFuelTypes().length;i++)
-			{
-				if(i>0)
-					str.append(", ");
-				str.append(RawMaterial.CODES.NAME(getConsumedFuelTypes()[i]));
-			}
-			return str.toString();
-		}
-		case 7:
+		case 1:
 			return "" + powerRemaining();
-		case 8:
-			return "" + getGeneratedAmountPerTick();
-		case 9:
+		case 2:
+			return "" + getMaxThrust();
+		case 3:
 			return "" + activated();
-		case 10:
+		case 4:
 			return "" + getManufacturerName();
-		case 11:
+		case 5:
 			return "" + getInstalledFactor();
-		case 12:
-			return "" + defaultsClosed();
-		case 13:
-			return "" + defaultsLocked();
+		case 6:
+			return "" + getSpecificImpulse();
+		case 7:
+			return "" + Math.round(getFuelEfficiency() * 100);
+		case 8:
+			return "" + getMinThrust();
+		case 9:
+			return "" + isConstantThruster();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -143,57 +125,36 @@ public class GenCompGenerator extends StdCompGenerator
 		else
 		switch(getCodeNum(code))
 		{
-			case 0:
-				setDoorsNLocks(hasADoor(), isOpen(), defaultsClosed(), CMath.s_bool(val), false, CMath.s_bool(val) && defaultsLocked());
-				break;
-			case 1:
-				setDoorsNLocks(CMath.s_bool(val), isOpen(), CMath.s_bool(val) && defaultsClosed(), hasALock(), isLocked(), defaultsLocked());
-				break;
-			case 2:
-				setCapacity(CMath.s_parseIntExpression(val));
-				break;
-			case 3:
-				setContainTypes(CMath.s_parseBitLongExpression(Container.CONTAIN_DESCS, val));
-				break;
-			case 4:
-				setOpenDelayTicks(CMath.s_parseIntExpression(val));
-				break;
-			case 5:
-				setPowerCapacity(CMath.s_parseLongExpression(val));
-				break;
-		case 6:{
-				final List<String> mats = CMParms.parseCommas(val,true);
-				final int[] newMats = new int[mats.size()];
-				for(int x=0;x<mats.size();x++)
-				{
-					final int rsccode = RawMaterial.CODES.FIND_CaseSensitive(mats.get(x).trim());
-					if(rsccode > 0)
-						newMats[x] = rsccode;
-				}
-				super.setConsumedFuelType(newMats);
-				break;
-			   }
-			case 7:
-				setPowerCapacity(CMath.s_parseLongExpression(val));
-				break;
-			case 8:
-				setGeneratedAmountPerTick(CMath.s_parseIntExpression(val));
-				break;
-			case 9:
-				activate(CMath.s_bool(val));
-				break;
-			case 10:
-				setManufacturerName(val);
-				break;
-			case 11:
-				setInstalledFactor(CMath.s_float(val));
-				break;
-			case 12:
-				setDoorsNLocks(hasADoor(), isOpen(), CMath.s_bool(val), hasALock(), isLocked(), defaultsLocked());
-				break;
-			case 13:
-				setDoorsNLocks(hasADoor(), isOpen(), defaultsClosed(), hasALock(), isLocked(), CMath.s_bool(val));
-				break;
+		case 0:
+			setPowerCapacity(CMath.s_parseLongExpression(val));
+			break;
+		case 1:
+			setPowerCapacity(CMath.s_parseLongExpression(val));
+			break;
+		case 2:
+			setMaxThrust(CMath.s_parseIntExpression(val));
+			break;
+		case 3:
+			activate(CMath.s_bool(val));
+			break;
+		case 4:
+			setManufacturerName(val);
+			break;
+		case 5:
+			setInstalledFactor(CMath.s_float(val));
+			break;
+		case 6:
+			setSpecificImpulse(CMath.s_parseLongExpression(val));
+			break;
+		case 7:
+			setFuelEfficiency(CMath.s_parseMathExpression(val) / 100.0);
+			break;
+		case 8:
+			setMinThrust(CMath.s_parseIntExpression(val));
+			break;
+		case 9:
+			this.setConstantThruster(CMath.s_bool(val));
+			break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;
@@ -218,7 +179,7 @@ public class GenCompGenerator extends StdCompGenerator
 	{
 		if(codes!=null)
 			return codes;
-		final String[] MYCODES=CMProps.getStatCodesList(GenCompGenerator.MYCODES,this);
+		final String[] MYCODES=CMProps.getStatCodesList(GenSpaceDrive.MYCODES,this);
 		final String[] superCodes=CMParms.toStringArray(GenericBuilder.GenItemCode.values());
 		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;
@@ -232,7 +193,7 @@ public class GenCompGenerator extends StdCompGenerator
 	@Override
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof GenCompGenerator))
+		if(!(E instanceof GenSpaceDrive))
 			return false;
 		final String[] theCodes=getStatCodes();
 		for(int i=0;i<theCodes.length;i++)

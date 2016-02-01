@@ -89,7 +89,8 @@ public class GenShipPanel extends StdCompPanel
 		recoverPhyStats();
 	}
 
-	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY", "CONTAINTYPES","RESETTIME","POWERCAP", "ACTIVATED","POWERREM","PANTYPE","DEFCLOSED","DEFLOCKED"};
+	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY", "CONTAINTYPES","RESETTIME",
+										   "POWERCAP", "ACTIVATED","POWERREM","PANTYPE","DEFCLOSED","DEFLOCKED"};
 	
 	@Override
 	public String getStat(String code)

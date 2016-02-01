@@ -696,4 +696,12 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 			}
 		}
 	}
+	
+	@Override
+	public boolean sameAs(Environmental E)
+	{
+		if(!(E instanceof StdComputerConsole))
+			return false;
+		return super.sameAs(E);
+	}
 }

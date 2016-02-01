@@ -253,4 +253,5 @@ public class StdElecCompContainer extends StdElecContainer implements ShipCompon
 		}
 		super.executeMsg(host, msg);
 	}
+	
 }

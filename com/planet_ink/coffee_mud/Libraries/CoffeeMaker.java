@@ -459,6 +459,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			text.append(CMLib.xml().convertXMLtoTag("SSTHRUST",""+((ShipComponent.ShipEngine)E).getMaxThrust()));
 			text.append(CMLib.xml().convertXMLtoTag("SSIMPL",""+((ShipComponent.ShipEngine)E).getSpecificImpulse()));
 			text.append(CMLib.xml().convertXMLtoTag("SSFEFF",""+((ShipComponent.ShipEngine)E).getFuelEfficiency()));
+			text.append(CMLib.xml().convertXMLtoTag("SSNTHRUST",""+((ShipComponent.ShipEngine)E).getMinThrust()));
+			text.append(CMLib.xml().convertXMLtoTag("SSCONST",""+((ShipComponent.ShipEngine)E).isConstantThruster()));
 		}
 		if(E instanceof Electronics.PowerGenerator)
 		{
@@ -2980,6 +2982,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			((ShipComponent.ShipEngine)E).setMaxThrust(CMLib.xml().getIntFromPieces(buf,"SSTHRUST"));
 			((ShipComponent.ShipEngine)E).setSpecificImpulse(CMLib.xml().getIntFromPieces(buf,"SSIMPL"));
 			((ShipComponent.ShipEngine)E).setFuelEfficiency(CMLib.xml().getDoubleFromPieces(buf,"SSFEFF"));
+			((ShipComponent.ShipEngine)E).setMinThrust(CMLib.xml().getIntFromPieces(buf,"SSNTHRUST"));
+			((ShipComponent.ShipEngine)E).setConstantThruster(CMLib.xml().getBoolFromPieces(buf,"SSCONST",true));
 		}
 		if(E instanceof Electronics.PowerGenerator)
 		{

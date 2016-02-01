@@ -126,4 +126,12 @@ public class StdCompGenerator extends StdCompFuelConsumer implements Electronics
 			}
 		}
 	}
+	
+	@Override
+	public boolean sameAs(Environmental E)
+	{
+		if(!(E instanceof StdCompGenerator))
+			return false;
+		return super.sameAs(E);
+	}
 }

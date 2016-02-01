@@ -45,7 +45,7 @@ public class GenFuellessGenerator extends StdCompFuellessGenerator
 	public GenFuellessGenerator()
 	{
 		super();
-		setName("a power generaotr");
+		setName("a power generator");
 		setDisplayText("a power generator sits here.");
 		setDescription("");
 	}
@@ -82,8 +82,7 @@ public class GenFuellessGenerator extends StdCompFuellessGenerator
 		recoverPhyStats();
 	}
 
-	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES","RESETTIME",
-										   "POWERCAP","POWERREM","GENAMTPER","MANUFACTURER","INSTFACT","DEFCLOSED","DEFLOCKED"};
+	private final static String[] MYCODES={"POWERCAP","POWERREM","GENAMTPER","ACTIVATED","MANUFACTURER","INSTFACT"};
 	
 	@Override
 	public String getStat(String code)
@@ -93,31 +92,17 @@ public class GenFuellessGenerator extends StdCompFuellessGenerator
 		switch(getCodeNum(code))
 		{
 		case 0:
-			return "" + hasALock();
-		case 1:
-			return "" + hasADoor();
-		case 2:
-			return "" + capacity();
-		case 3:
-			return "" + containTypes();
-		case 4:
-			return "" + openDelayTicks();
-		case 5:
 			return "" + powerCapacity();
-		case 6:
+		case 1:
 			return "" + powerRemaining();
-		case 7:
+		case 2:
 			return "" + getGeneratedAmountPerTick();
-		case 8:
+		case 3:
 			return "" + activated();
-		case 9:
+		case 4:
 			return "" + getManufacturerName();
-		case 10:
+		case 5:
 			return "" + getInstalledFactor();
-		case 11:
-			return "" + defaultsClosed();
-		case 12:
-			return "" + defaultsLocked();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -132,43 +117,22 @@ public class GenFuellessGenerator extends StdCompFuellessGenerator
 		switch(getCodeNum(code))
 		{
 		case 0:
-			setDoorsNLocks(hasADoor(), isOpen(), defaultsClosed(), CMath.s_bool(val), false, CMath.s_bool(val) && defaultsLocked());
+			setPowerCapacity(CMath.s_parseLongExpression(val));
 			break;
 		case 1:
-			setDoorsNLocks(CMath.s_bool(val), isOpen(), CMath.s_bool(val) && defaultsClosed(), hasALock(), isLocked(), defaultsLocked());
+			setPowerCapacity(CMath.s_parseLongExpression(val));
 			break;
 		case 2:
-			setCapacity(CMath.s_parseIntExpression(val));
-			break;
-		case 3:
-			setContainTypes(CMath.s_parseBitLongExpression(Container.CONTAIN_DESCS, val));
-			break;
-		case 4:
-			setOpenDelayTicks(CMath.s_parseIntExpression(val));
-			break;
-		case 5:
-			setPowerCapacity(CMath.s_parseLongExpression(val));
-			break;
-		case 6:
-			setPowerCapacity(CMath.s_parseLongExpression(val));
-			break;
-		case 7:
 			setGeneratedAmountPerTick(CMath.s_parseIntExpression(val));
 			break;
-		case 8:
+		case 3:
 			activate(CMath.s_bool(val));
 			break;
-		case 9:
+		case 4:
 			setManufacturerName(val);
 			break;
-		case 10:
+		case 5:
 			setInstalledFactor(CMath.s_float(val));
-			break;
-		case 11:
-			setDoorsNLocks(hasADoor(), isOpen(), CMath.s_bool(val), hasALock(), isLocked(), defaultsLocked());
-			break;
-		case 12:
-			setDoorsNLocks(hasADoor(), isOpen(), defaultsClosed(), hasALock(), isLocked(), CMath.s_bool(val));
 			break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
@@ -208,7 +172,7 @@ public class GenFuellessGenerator extends StdCompFuellessGenerator
 	@Override
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof GenCompGenerator))
+		if(!(E instanceof GenFuellessGenerator))
 			return false;
 		final String[] theCodes=getStatCodes();
 		for(int i=0;i<theCodes.length;i++)

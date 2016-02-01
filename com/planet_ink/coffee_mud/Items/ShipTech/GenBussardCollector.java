@@ -58,4 +58,12 @@ public class GenBussardCollector extends GenFuellessGenerator
 		}
 		return false;
 	}
+	
+	@Override
+	public boolean sameAs(Environmental E)
+	{
+		if(!(E instanceof GenBussardCollector))
+			return false;
+		return super.sameAs(E);
+	}
 }

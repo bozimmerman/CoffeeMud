@@ -384,8 +384,16 @@ public class RocketShipProgram extends GenShipProgram
 			{
 				str.append("^H").append(CMStrings.padRight(L("ENGINE@x1",""+engineNumber),9));
 				str.append(CMStrings.padRight(engine.activated()?L("^gACTIVE"):L("^rINACTIVE"),9));
-				str.append("^H").append(CMStrings.padRight(L("Fuel"),5));
-				str.append("^N").append(CMStrings.padRight(Long.toString(engine.getFuelRemaining()),11));
+				if(engine instanceof Electronics.FuelConsumer)
+				{
+					str.append("^H").append(CMStrings.padRight(L("Fuel"),5));
+					str.append("^N").append(CMStrings.padRight(Long.toString(((Electronics.FuelConsumer)engine).getFuelRemaining()),11));
+				}
+				else
+				{
+					str.append("^H").append(CMStrings.padRight(L("Pwr"),5));
+					str.append("^N").append(CMStrings.padRight(Long.toString(engine.powerRemaining()),11));
+				}
 				str.append("^H").append(CMStrings.padRight(engine.Name(),24));
 				str.append("^.^N\n\r");
 				engineNumber++;

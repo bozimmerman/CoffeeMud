@@ -198,7 +198,7 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 							{
 								final ThrustPort dir=(ThrustPort)parms[0];
 								final int amount=((Integer)parms[1]).intValue();
-								//long specificImpulse=((Long)parms[2]).longValue();
+								final boolean isConst = ((Boolean)parms[2]).booleanValue();
 								if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
 									Log.debugOut("SpaceShip "+name()+" accellerates "+amount+" to the "+dir.toString());
 								if(amount != 0)
@@ -225,6 +225,14 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 											unDock(true);
 										// this will move it, but will also update speed and direction -- all good!
 										final double inAirFactor=inAirFlag.booleanValue()?(1.0-getOMLCoeff()):1.0;
+										//TODO: calculate inertia gforce damage here, and send the message
+										if(isConst)
+										{
+											// a constant thruster means the ship attains speed in one burst,
+											// and slows in one burst as well.  It is therefore right and good
+											// to eliminate all speed, do a complicated gforce calc, and re-speed
+											this.setSpeed(0);
+										}
 										CMLib.map().moveSpaceObject(this,facing(),Math.round((amount-1.0)*inAirFactor));
 										break;
 									}

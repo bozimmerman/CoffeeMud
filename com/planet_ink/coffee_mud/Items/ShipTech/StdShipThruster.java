@@ -43,10 +43,12 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipComponen
 		return "StdShipThruster";
 	}
 
-	protected int		maxThrust		= 900000;
+	protected int		maxThrust		= 8900000;
+	protected int		minThrust		= 0;
 	protected int		thrust			= 0;
 	protected long		specificImpulse	= SpaceObject.VELOCITY_SUBLIGHT;
 	protected double	fuelEfficiency	= 0.33;
+	protected boolean	constantThrust	= true;
 
 	public StdShipThruster()
 	{
@@ -68,15 +70,6 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipComponen
 		if(!(E instanceof StdShipThruster))
 			return false;
 		return super.sameAs(E);
-	}
-
-	/**
-	 * This is the "grade" of engine.  
-	 * @return the factor to multiply by the users thrust amount.
-	 */
-	protected static double getThrustFactor() 
-	{ 
-		return 100000.0; 
 	}
 
 	protected static double getFuelDivisor() 
@@ -149,6 +142,30 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipComponen
 	protected boolean willConsumeFuelIdle()
 	{
 		return getThrust() > 0;
+	}
+
+	@Override
+	public int getMinThrust()
+	{
+		return minThrust;
+	}
+
+	@Override
+	public void setMinThrust(int min)
+	{
+		this.minThrust = min;
+	}
+
+	@Override
+	public boolean isConstantThruster()
+	{
+		return constantThrust;
+	}
+	
+	@Override
+	public void setConstantThruster(boolean isConstant)
+	{
+		constantThrust = isConstant;
 	}
 
 	@Override
@@ -239,9 +256,14 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipComponen
 		
 		final double activeThrust;
 		if(portDir==ThrustPort.AFT) // when thrusting aft, there's a smidgeon more power
-			activeThrust = (thrust * getThrustFactor() / ship.getMass());
+		{
+			activeThrust = (thrust * me.getSpecificImpulse() / ship.getMass());
+			if(activeThrust < me.getMinThrust())
+				return reportError(me, controlI, mob, lang.L("@x1 humms loudly, but nothing happens.",me.name(mob)), lang.L("Failure: @x1: insufficient thrust.",me.name(mob)));
+		}
 		else
 			activeThrust = thrust;
+		
 		final long accelleration=Math.round(Math.ceil(activeThrust));
 		
 		if((amount > 1)&&((portDir!=ThrustPort.AFT) || (me.getThrust() > oldThrust)))
@@ -256,7 +278,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipComponen
 		if(me.consumeFuel(fuelToConsume))
 		{
 			final SpaceObject spaceObject=ship.getShipSpaceObject();
-			final String code=Technical.TechCommand.ACCELLLERATION.makeCommand(portDir,Integer.valueOf((int)accelleration),Long.valueOf(me.getSpecificImpulse()));
+			final String code=Technical.TechCommand.ACCELLLERATION.makeCommand(portDir,Integer.valueOf((int)accelleration),Boolean.valueOf(me.isConstantThruster()));
 			final CMMsg msg=CMClass.getMsg(mob, spaceObject, me, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
 			if(spaceObject.okMessage(mob, msg))
 			{
@@ -302,8 +324,23 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipComponen
 				break;
 			case CMMsg.TYP_DEACTIVATE:
 				me.setThrust(0);
+				if(me.isConstantThruster() && (me.activated()))
+				{
+					me.activate(false);
+					// when a constant thruster deactivates, all speed stops
+					final SpaceObject obj=CMLib.map().getSpaceObject(me, true);
+					if(obj instanceof SpaceShip)
+					{
+						final MOB mob=msg.source();
+						final SpaceShip ship=(SpaceShip)obj;
+						final SpaceObject spaceObject=ship.getShipSpaceObject();
+						final String code=Technical.TechCommand.ACCELLLERATION.makeCommand(ThrustPort.AFT,Integer.valueOf(0),Boolean.valueOf(true));
+						final CMMsg msg2=CMClass.getMsg(mob, spaceObject, me, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
+						if(spaceObject.okMessage(mob, msg2))
+							spaceObject.executeMsg(mob, msg2);
+					}
+				}
 				me.activate(false);
-				//TODO:what does the ship need to know?
 				break;
 			case CMMsg.TYP_POWERCURRENT:
 			{
@@ -311,7 +348,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipComponen
 				final int fuelToConsume=(int)Math.round(CMath.ceiling(me.getThrust()*me.getFuelEfficiency()*Math.max(.33, Math.abs(2.0-manufacturer.getEfficiencyPct()))/getFuelDivisor()));
 				if(me.consumeFuel(fuelToConsume))
 				{
-					if(me.getThrust() > 0)
+					if((me.getThrust() > 0) && (me.isConstantThruster()))
 					{
 						final SpaceObject obj=CMLib.map().getSpaceObject(me, true);
 						if(obj instanceof SpaceShip)

@@ -1179,9 +1179,17 @@ public class ItemData extends StdWebMacro
 						if(I instanceof Electronics)
 							str.append((firstTime) ? (((Electronics)I).activated()?"CHECKED":"") : (old.equalsIgnoreCase("on")?"CHECKED":"")).append(", ");
 						break;
+					case ISCONSTTHRUST:
+						if(I instanceof ShipComponent.ShipEngine)
+							str.append((firstTime) ? (((ShipComponent.ShipEngine)I).isConstantThruster()?"CHECKED":"") : (old.equalsIgnoreCase("on")?"CHECKED":"")).append(", ");
+						break;
 					case MAXTHRUST:
 						if(I instanceof ShipComponent.ShipEngine)
 							str.append((firstTime) ? (""+((ShipComponent.ShipEngine)I).getMaxThrust()) : old).append(", ");
+						break;
+					case MINTHRUST:
+						if(I instanceof ShipComponent.ShipEngine)
+							str.append((firstTime) ? (""+((ShipComponent.ShipEngine)I).getMinThrust()) : old).append(", ");
 						break;
 					case SPECIMPULSE:
 						if(I instanceof ShipComponent.ShipEngine)

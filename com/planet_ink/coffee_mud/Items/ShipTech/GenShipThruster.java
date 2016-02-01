@@ -84,8 +84,9 @@ public class GenShipThruster extends StdShipThruster
 	}
 
 	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES","RESETTIME",
-										   "POWERCAP","POWERREM","CONSUMEDTYPES","MAXTHRUST","MANUFACTURER","INSTFACT","DEFCLOSED","DEFLOCKED",
-										   "SPECIMPL","FUELEFF"};
+										   "POWERCAP","POWERREM","CONSUMEDTYPES","MAXTHRUST","ACTIVATED",
+										   "MANUFACTURER", "INSTFACT","DEFCLOSED","DEFLOCKED",
+										   "SPECIMPL","FUELEFF","MINTHRUST","ISCONST"};
 	
 	
 	@Override
@@ -108,6 +109,8 @@ public class GenShipThruster extends StdShipThruster
 		case 5:
 			return "" + powerCapacity();
 		case 6:
+			return "" + powerRemaining();
+		case 7:
 		{
 			final StringBuilder str=new StringBuilder("");
 			for(int i=0;i<getConsumedFuelTypes().length;i++)
@@ -118,8 +121,6 @@ public class GenShipThruster extends StdShipThruster
 			}
 			return str.toString();
 		}
-		case 7:
-			return "" + powerRemaining();
 		case 8:
 			return "" + getMaxThrust();
 		case 9:
@@ -136,6 +137,10 @@ public class GenShipThruster extends StdShipThruster
 			return "" + getSpecificImpulse();
 		case 15:
 			return "" + Math.round(getFuelEfficiency() * 100);
+		case 16:
+			return "" + getMinThrust();
+		case 17:
+			return "" + isConstantThruster();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -149,63 +154,70 @@ public class GenShipThruster extends StdShipThruster
 		else
 		switch(getCodeNum(code))
 		{
-			case 0:
-				setDoorsNLocks(hasADoor(), isOpen(), defaultsClosed(), CMath.s_bool(val), false, CMath.s_bool(val) && defaultsLocked());
-				break;
-			case 1:
-				setDoorsNLocks(CMath.s_bool(val), isOpen(), CMath.s_bool(val) && defaultsClosed(), hasALock(), isLocked(), defaultsLocked());
-				break;
-			case 2:
-				setCapacity(CMath.s_parseIntExpression(val));
-				break;
-			case 3:
-				setContainTypes(CMath.s_parseBitLongExpression(Container.CONTAIN_DESCS, val));
-				break;
-			case 4:
-				setOpenDelayTicks(CMath.s_parseIntExpression(val));
-				break;
-			case 5:
-				setPowerCapacity(CMath.s_parseLongExpression(val));
-				break;
-		case 6:{
-				final List<String> mats = CMParms.parseCommas(val,true);
-				final int[] newMats = new int[mats.size()];
-				for(int x=0;x<mats.size();x++)
-				{
-					final int rsccode = RawMaterial.CODES.FIND_CaseSensitive(mats.get(x).trim());
-					if(rsccode > 0)
-						newMats[x] = rsccode;
-				}
-				super.setConsumedFuelType(newMats);
-				break;
-			   }
-			case 7:
-				setPowerCapacity(CMath.s_parseLongExpression(val));
-				break;
-			case 8:
-				setMaxThrust(CMath.s_parseIntExpression(val));
-				break;
-			case 9:
-				activate(CMath.s_bool(val));
-				break;
-			case 10:
-				setManufacturerName(val);
-				break;
-			case 11:
-				setInstalledFactor(CMath.s_float(val));
-				break;
-			case 12:
-				setDoorsNLocks(hasADoor(), isOpen(), CMath.s_bool(val), hasALock(), isLocked(), defaultsLocked());
-				break;
-			case 13:
-				setDoorsNLocks(hasADoor(), isOpen(), defaultsClosed(), hasALock(), isLocked(), CMath.s_bool(val));
-				break;
-			case 14:
-				setSpecificImpulse(CMath.s_parseLongExpression(val));
-				break;
-			case 15:
-				setFuelEfficiency(CMath.s_parseMathExpression(val) / 100.0);
-				break;
+		case 0:
+			setDoorsNLocks(hasADoor(), isOpen(), defaultsClosed(), CMath.s_bool(val), false, CMath.s_bool(val) && defaultsLocked());
+			break;
+		case 1:
+			setDoorsNLocks(CMath.s_bool(val), isOpen(), CMath.s_bool(val) && defaultsClosed(), hasALock(), isLocked(), defaultsLocked());
+			break;
+		case 2:
+			setCapacity(CMath.s_parseIntExpression(val));
+			break;
+		case 3:
+			setContainTypes(CMath.s_parseBitLongExpression(Container.CONTAIN_DESCS, val));
+			break;
+		case 4:
+			setOpenDelayTicks(CMath.s_parseIntExpression(val));
+			break;
+		case 5:
+			setPowerCapacity(CMath.s_parseLongExpression(val));
+			break;
+		case 6:
+			setPowerRemaining(CMath.s_parseLongExpression(val));
+			break;
+		case 7:
+		{
+			final List<String> mats = CMParms.parseCommas(val,true);
+			final int[] newMats = new int[mats.size()];
+			for(int x=0;x<mats.size();x++)
+			{
+				final int rsccode = RawMaterial.CODES.FIND_CaseSensitive(mats.get(x).trim());
+				if(rsccode > 0)
+					newMats[x] = rsccode;
+			}
+			super.setConsumedFuelType(newMats);
+			break;
+		}
+		case 8:
+			setMaxThrust(CMath.s_parseIntExpression(val));
+			break;
+		case 9:
+			activate(CMath.s_bool(val));
+			break;
+		case 10:
+			setManufacturerName(val);
+			break;
+		case 11:
+			setInstalledFactor(CMath.s_float(val));
+			break;
+		case 12:
+			setDoorsNLocks(hasADoor(), isOpen(), CMath.s_bool(val), hasALock(), isLocked(), defaultsLocked());
+			break;
+		case 13:
+			setDoorsNLocks(hasADoor(), isOpen(), defaultsClosed(), hasALock(), isLocked(), CMath.s_bool(val));
+			break;
+		case 14:
+			setSpecificImpulse(CMath.s_parseLongExpression(val));
+			break;
+		case 15:
+			setFuelEfficiency(CMath.s_parseMathExpression(val) / 100.0);
+			break;
+		case 16:
+			setMinThrust(CMath.s_parseIntExpression(val));
+			break;
+		case 17:
+			this.setConstantThruster(CMath.s_bool(val));
+			break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;

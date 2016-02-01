@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Items.ShipTech;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -10,6 +11,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.ShipComponent.ShipEngine;
 import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechType;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -19,7 +21,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2013-2016 Bo Zimmerman
+   Copyright 2016-2016 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -33,12 +35,12 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class StdShipEngine extends StdCompGenerator implements ShipComponent.ShipEngine
+public class StdShipFuellessThruster extends StdElecCompItem implements ShipComponent.ShipEngine
 {
 	@Override
 	public String ID()
 	{
-		return "StdShipEngine";
+		return "StdShipFuellessThruster";
 	}
 
 	protected int		maxThrust		= 8900000;
@@ -47,24 +49,24 @@ public class StdShipEngine extends StdCompGenerator implements ShipComponent.Shi
 	protected long		specificImpulse	= SpaceObject.VELOCITY_SUBLIGHT;
 	protected double	fuelEfficiency	= 0.33;
 	protected boolean	constantThrust	= true;
-	
 
-	public StdShipEngine()
+	public StdShipFuellessThruster()
 	{
 		super();
-		setName("a ships engine");
-		basePhyStats.setWeight(50000);
-		setDisplayText("a ships engine sits here.");
+		setName("a space drive");
+		basePhyStats.setWeight(5000);
+		setDisplayText("a space drive sits here.");
 		setDescription("");
 		baseGoldValue=500000;
 		basePhyStats().setLevel(1);
 		recoverPhyStats();
 		setMaterial(RawMaterial.RESOURCE_STEEL);
 	}
+
 	@Override
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof StdShipEngine))
+		if(!(E instanceof StdShipFuellessThruster))
 			return false;
 		return super.sameAs(E);
 	}
@@ -124,24 +126,11 @@ public class StdShipEngine extends StdCompGenerator implements ShipComponent.Shi
 	}
 
 	@Override
-	protected boolean willConsumeFuelIdle()
-	{
-		return getThrust() > 0;
-	}
-
-	@Override
 	protected double getComputedEfficiency()
 	{
 		return super.getComputedEfficiency() * this.getInstalledFactor();
 	}
 	
-	@Override
-	public void executeMsg(Environmental myHost, CMMsg msg)
-	{
-		super.executeMsg(myHost, msg);
-		StdShipThruster.executeThrusterMsg(this, myHost, circuitKey, msg);
-	}
-
 	@Override
 	public int getMinThrust()
 	{
@@ -164,5 +153,23 @@ public class StdShipEngine extends StdCompGenerator implements ShipComponent.Shi
 	public void setConstantThruster(boolean isConstant)
 	{
 		constantThrust = isConstant;
+	}
+	
+	@Override
+	public boolean consumeFuel(int amount)
+	{
+		if(this.powerRemaining() > amount)
+		{
+			this.setPowerRemaining(powerRemaining()-amount);
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public void executeMsg(Environmental myHost, CMMsg msg)
+	{
+		super.executeMsg(myHost, msg);
+		StdShipThruster.executeThrusterMsg(this, myHost, circuitKey, msg);
 	}
 }

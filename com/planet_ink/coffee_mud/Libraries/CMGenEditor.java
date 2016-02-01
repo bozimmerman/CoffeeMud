@@ -8524,8 +8524,10 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(me instanceof ShipComponent.ShipEngine)
 			{
 				final ShipComponent.ShipEngine E=(ShipComponent.ShipEngine)me;
+				E.setMinThrust(prompt(mob, E.getMinThrust(), ++showNumber, showFlag, "Min thrust"));
 				E.setMaxThrust(prompt(mob, E.getMaxThrust(), ++showNumber, showFlag, "Max thrust"));
-				E.setSpecificImpulse(prompt(mob, E.getSpecificImpulse(), ++showNumber, showFlag, "Max velocity"));
+				E.setConstantThruster(prompt(mob, E.isConstantThruster(), ++showNumber, showFlag, "Constant thrust"));
+				E.setSpecificImpulse(prompt(mob, E.getSpecificImpulse(), ++showNumber, showFlag, "Spec Impulse"));
 				E.setFuelEfficiency(prompt(mob, E.getFuelEfficiency()*100.0, ++showNumber, showFlag, "Fuel Effic. %")/100.0);
 			}
 			if(me instanceof ShipComponent)

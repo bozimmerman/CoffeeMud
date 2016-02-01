@@ -186,5 +186,11 @@ public class StdElecCompSensor extends StdElecCompItem implements ShipComponent
 		}
 	}
 
-	
+	@Override
+	public boolean sameAs(Environmental E)
+	{
+		if(!(E instanceof StdElecCompSensor))
+			return false;
+		return super.sameAs(E);
+	}
 }

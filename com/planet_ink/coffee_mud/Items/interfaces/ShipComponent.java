@@ -61,7 +61,7 @@ public interface ShipComponent extends Electronics
 	 * @author Bo Zimmerman
 	 *
 	 */
-	public interface ShipEngine extends ShipComponent, Electronics.FuelConsumer
+	public interface ShipEngine extends ShipComponent
 	{
 		/**
 		 * The ThrustPort enum is for the different thrust ports, denoting
@@ -91,6 +91,38 @@ public interface ShipComponent extends Electronics
 		 * @param max the maximum amount of thrust that this engine can put out.
 		 */
 		public void setMaxThrust(int max);
+
+		/**
+		 * Gets the minimum amount of thrust that this engine can put out.
+		 * @see ShipEngine#setMinThrust(int)
+		 * @return the minimum amount of thrust that this engine can put out.
+		 */
+		public int getMinThrust();
+
+		/**
+		 * Sets the minimum amount of thrust that this engine can put out.
+		 * @see ShipEngine#getMinThrust()
+		 * @param min the minimum amount of thrust that this engine can put out.
+		 */
+		public void setMinThrust(int min);
+
+		/**
+		 * Gets whether this engine, once thrust is engaged, will continue
+		 * to thrust at that speed, thus accellerating.  True if it does, 
+		 * and false if whatever speed you get out of it is all you get.
+		 * @see ShipEngine#setConstantThruster(boolean)
+		 * @return true for an accellerator, false for one shot
+		 */
+		public boolean isConstantThruster();
+
+		/**
+		 * Sets whether this engine, once thrust is engaged, will continue
+		 * to thrust at that speed, thus accellerating.  True if it does, 
+		 * and false if whatever speed you get out of it is all you get.
+		 * @see ShipEngine#isConstantThruster()
+		 * @param isConstant true for an accellerator, false for one shot
+		 */
+		public void setConstantThruster(boolean isConstant);
 
 		/**
 		 * Gets the current amount of thrust being emitted by this ShipEngine,
@@ -143,5 +175,14 @@ public interface ShipComponent extends Electronics
 		 * @param amt the fuel efficiency pct
 		 */
 		public void setFuelEfficiency(double amt);
+		
+		/**
+		 * Forces this engine to consumer some amount of its
+		 * fuel, without any other effect. If there was not enough
+		 * fuel to be consumed, it might result in de-activation.
+		 * @param amount the amount of fuel to consume
+		 * @return true if there was NOT enough fuel, false if fuel was consumed OK.
+		 */
+		public boolean consumeFuel(int amount);
 	}
 }

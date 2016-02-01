@@ -105,4 +105,12 @@ public class GenWindGenerator extends GenFuellessGenerator
 		}
 		return false;
 	}
+	
+	@Override
+	public boolean sameAs(Environmental E)
+	{
+		if(!(E instanceof GenWindGenerator))
+			return false;
+		return super.sameAs(E);
+	}
 }

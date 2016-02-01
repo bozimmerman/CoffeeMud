@@ -35,7 +35,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class StdCompFuellessGenerator extends StdElecCompContainer implements Electronics.PowerGenerator
+public class StdCompFuellessGenerator extends StdElecCompItem implements Electronics.PowerGenerator
 {
 	@Override
 	public String ID()
@@ -134,4 +134,13 @@ public class StdCompFuellessGenerator extends StdElecCompContainer implements El
 			}
 		}
 	}
+	
+	@Override
+	public boolean sameAs(Environmental E)
+	{
+		if(!(E instanceof StdCompFuellessGenerator))
+			return false;
+		return super.sameAs(E);
+	}
+
 }
