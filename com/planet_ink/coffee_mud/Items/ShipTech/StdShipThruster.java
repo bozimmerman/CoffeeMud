@@ -239,11 +239,12 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipComponen
 		final LanguageLibrary lang=CMLib.lang();
 		final SpaceObject obj=CMLib.map().getSpaceObject(me, true);
 		final Manufacturer manufacturer=me.getFinalManufacturer();
+		final String rumbleWord = (me instanceof FuelConsumer) ? "rumble" : "hum";
 		if(!(obj instanceof SpaceShip))
-			return reportError(me, controlI, mob, lang.L("@x1 rumbles and fires, but nothing happens.",me.name(mob)), lang.L("Failure: @x1: exhaust ports.",me.name(mob)));
+			return reportError(me, controlI, mob, lang.L("@x1 "+rumbleWord+"s and fires, but nothing happens.",me.name(mob)), lang.L("Failure: @x1: exhaust ports.",me.name(mob)));
 		final SpaceShip ship=(SpaceShip)obj;
 		if((portDir==null)||(amount<0))
-			return reportError(me, controlI, mob, lang.L("@x1 rumbles loudly, but accomplishes nothing.",me.name(mob)), lang.L("Failure: @x1: exhaust control.",me.name(mob)));
+			return reportError(me, controlI, mob, lang.L("@x1 "+rumbleWord+"s loudly, but accomplishes nothing.",me.name(mob)), lang.L("Failure: @x1: exhaust control.",me.name(mob)));
 		double thrust=Math.round(me.getInstalledFactor() * amount);
 		if(thrust > me.getMaxThrust())
 			thrust=me.getMaxThrust();
@@ -259,7 +260,9 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipComponen
 		{
 			activeThrust = (thrust * me.getSpecificImpulse() / ship.getMass());
 			if(activeThrust < me.getMinThrust())
-				return reportError(me, controlI, mob, lang.L("@x1 humms loudly, but nothing happens.",me.name(mob)), lang.L("Failure: @x1: insufficient thrust.",me.name(mob)));
+			{
+				return reportError(me, controlI, mob, lang.L("@x1 "+rumbleWord+"s loudly, but nothing happens.",me.name(mob)), lang.L("Failure: @x1: insufficient thrust.",me.name(mob)));
+			}
 		}
 		else
 			activeThrust = thrust;
@@ -267,12 +270,12 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipComponen
 		final long accelleration=Math.round(Math.ceil(activeThrust));
 		
 		if((amount > 1)&&((portDir!=ThrustPort.AFT) || (me.getThrust() > oldThrust)))
-			tellWholeShip(me,mob,CMMsg.MSG_NOISE,CMLib.lang().L("You feel a rumble and hear the blast of @x1.",me.name(mob)));
+			tellWholeShip(me,mob,CMMsg.MSG_NOISE,CMLib.lang().L("You feel a "+rumbleWord+" and hear the blast of @x1.",me.name(mob)));
 		if(accelleration == 0)
 		{
 			final String code=Technical.TechCommand.COMPONENTFAILURE.makeCommand(TechType.SHIP_ENGINE, "Failure: "+me.name()+": insufficient_thrust_capacity.");
 			sendComputerMessage(me,circuitKey,mob,controlI,code);
-			return reportError(me, controlI, mob, lang.L("@x1 rumbles very loudly, but nothing is happening.",me.name(mob)), lang.L("Failure: @x1: insufficient engine thrust capacity.",me.name(mob)));
+			return reportError(me, controlI, mob, lang.L("@x1 "+rumbleWord+"s very loudly, but nothing is happening.",me.name(mob)), lang.L("Failure: @x1: insufficient engine thrust capacity.",me.name(mob)));
 		}
 		else
 		if(me.consumeFuel(fuelToConsume))
@@ -290,7 +293,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipComponen
 		{
 			final String code=Technical.TechCommand.COMPONENTFAILURE.makeCommand(TechType.SHIP_ENGINE, "Failure:_"+me.name().replace(' ','_')+":_insufficient_fuel.");
 			sendComputerMessage(me,circuitKey,mob,controlI,code);
-			return reportError(me, controlI, mob, lang.L("@x1 rumbles loudly, then sputters down.",me.name(mob)), lang.L("Failure: @x1: insufficient fuel.",me.name(mob)));
+			return reportError(me, controlI, mob, lang.L("@x1 "+rumbleWord+"s loudly, then sputters down.",me.name(mob)), lang.L("Failure: @x1: insufficient fuel.",me.name(mob)));
 		}
 		return false;
 	}
@@ -324,9 +327,8 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipComponen
 				break;
 			case CMMsg.TYP_DEACTIVATE:
 				me.setThrust(0);
-				if(me.isConstantThruster() && (me.activated()))
+				if(!me.isConstantThruster() && (me.activated()))
 				{
-					me.activate(false);
 					// when a constant thruster deactivates, all speed stops
 					final SpaceObject obj=CMLib.map().getSpaceObject(me, true);
 					if(obj instanceof SpaceShip)
