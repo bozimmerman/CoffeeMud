@@ -847,7 +847,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	{
 		if(!isSwimming(P))
 			return false;
-		return isWatery(CMLib.map().roomLocation(P));
+		return isWateryRoom(CMLib.map().roomLocation(P));
 	}
 	
 	@Override
@@ -1511,8 +1511,10 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	}
 
 	@Override
-	public boolean isWatery(Room R)
+	public boolean isWateryRoom(Room R)
 	{
+		if(R==null)
+			return false;
 		switch(R.domainType())
 		{
 		case Room.DOMAIN_INDOORS_UNDERWATER:
@@ -1521,9 +1523,53 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		case Room.DOMAIN_OUTDOORS_WATERSURFACE:
 			return true;
 		}
-		return false;
+		return ((R.getAtmosphere()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID)
+				||isSwimming(R);
 	}
 
+
+	/**
+	 * Returns whether the given room, whatever is 
+	 * watery, such as a water surface, etc.
+	 * @param R the room to check
+	 * @return true if it is water surfacy, false otherwise
+	 */
+	@Override
+	public boolean isWaterySurfaceRoom(Room R)
+	{
+		if(R==null)
+			return false;
+		switch(R.domainType())
+		{
+		case Room.DOMAIN_INDOORS_WATERSURFACE:
+		case Room.DOMAIN_OUTDOORS_WATERSURFACE:
+			return true;
+		}
+		return ((R.getAtmosphere()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_LIQUID)
+				&&isSwimming(R);
+	}
+
+	/**
+	 * Returns whether the given room, whatever is 
+	 * watery, such as an underwater, etc.
+	 * @param R the room to check
+	 * @return true if it is underwatery, false otherwise
+	 */
+	@Override
+	public boolean isUnderWateryRoom(Room R)
+	{
+		if(R==null)
+			return false;
+		switch(R.domainType())
+		{
+		case Room.DOMAIN_INDOORS_UNDERWATER:
+		case Room.DOMAIN_OUTDOORS_UNDERWATER:
+			return true;
+		}
+		return ((R.getAtmosphere()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID)
+				&&isSwimming(R);
+	}
+	
 	@Override
 	public boolean isInTheGame(final Environmental E, final boolean reqInhabitation)
 	{

@@ -195,7 +195,7 @@ public class Druid_WaterCover extends StdAbility
 			return false;
 		}
 
-		if((!CMLib.flags().isWatery(mob.location()))&&(!auto))
+		if((!CMLib.flags().isWateryRoom(mob.location()))&&(!auto))
 		{
 			mob.tell(L("You don't know how to hide in a place like this."));
 			return false;

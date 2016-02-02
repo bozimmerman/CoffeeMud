@@ -36,16 +36,52 @@ import java.util.*;
 
 public class Chant_SummonFire extends Chant
 {
-	@Override public String ID() { return "Chant_SummonFire"; }
-	private final static String localizedName = CMLib.lang().L("Summon Fire");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return 0;}
-	protected Room FireLocation=null;
-	protected Item littleFire=null;
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	@Override public long flags(){return Ability.FLAG_HEATING|Ability.FLAG_FIREBASED;}
+	@Override
+	public String ID()
+	{
+		return "Chant_SummonFire";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Summon Fire");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	protected Room	FireLocation	= null;
+	protected Item	littleFire		= null;
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT | Ability.DOMAIN_DEEPMAGIC;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_HEATING | Ability.FLAG_FIREBASED;
+	}
 
 	@Override
 	public void unInvoke()
@@ -77,9 +113,8 @@ public class Chant_SummonFire extends Chant
 		}
 		if(((mob.location().domainType()==Room.DOMAIN_OUTDOORS_CITY)
 		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)
-		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
 		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_AIR)
-		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
+		   ||CMLib.flags().isWateryRoom(mob.location()))
 		   &&(!auto))
 		{
 			mob.tell(L("This magic will not work here."));

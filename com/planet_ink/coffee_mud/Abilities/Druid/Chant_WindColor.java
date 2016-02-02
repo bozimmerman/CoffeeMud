@@ -36,14 +36,41 @@ import java.util.*;
 
 public class Chant_WindColor extends Chant
 {
-	@Override public String ID() { return "Chant_WindColor"; }
-	private final static String localizedName = CMLib.lang().L("Wind Color");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Wind Color)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;}
-	Room lastRoom=null;
+	@Override
+	public String ID()
+	{
+		return "Chant_WindColor";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Wind Color");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Wind Color)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_SELF;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT | Ability.DOMAIN_WEATHER_MASTERY;
+	}
+
+	Room	lastRoom	= null;
 
 	@Override
 	public void unInvoke()
@@ -57,6 +84,7 @@ public class Chant_WindColor extends Chant
 		if(canBeUninvoked())
 			mob.tell(L("Your senses are no longer sensitive to the winds."));
 	}
+
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -67,7 +95,7 @@ public class Chant_WindColor extends Chant
 		&&(((MOB)affected).location()!=null)
 		&&(((MOB)affected).location()!=lastRoom)
 		&&((((MOB)affected).location().domainType()&Room.INDOORS)==0)
-		&&(((MOB)affected).location().domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER))
+		&&(!CMLib.flags().isUnderWateryRoom(((MOB)affected).location())))
 		{
 			lastRoom=((MOB)affected).location();
 			final String prediction=getWindColor((MOB)affected,((MOB)affected).location());
@@ -81,15 +109,24 @@ public class Chant_WindColor extends Chant
 	{
 		switch(i)
 		{
-		case 0: return "black";
-		case 1: return "red";
-		case 2: return "blue";
-		case 3: return "green";
-		case 4: return "grey";
-		case 5: return "purple";
-		case 6: return "yellow";
-		case 7: return "brown";
-		case 8: return "orange";
+		case 0:
+			return "black";
+		case 1:
+			return "red";
+		case 2:
+			return "blue";
+		case 3:
+			return "green";
+		case 4:
+			return "grey";
+		case 5:
+			return "purple";
+		case 6:
+			return "yellow";
+		case 7:
+			return "brown";
+		case 8:
+			return "orange";
 		}
 		return "";
 	}
@@ -116,30 +153,65 @@ public class Chant_WindColor extends Chant
 					levelCode=4;
 				else
 				if(I.phyStats().level()>=(mob.phyStats().level()+15))
-				{ if (levelCode<3) levelCode=3;}
+				{
+					if (levelCode < 3)
+						levelCode = 3;
+				}
 				else
 				if(I.phyStats().level()>=(mob.phyStats().level()+5))
-				{ if (levelCode<2) levelCode=2;}
+				{
+					if (levelCode < 2)
+						levelCode = 2;
+				}
 				else
 				if(I.phyStats().level()>(mob.phyStats().level()-5))
-				{ if (levelCode<1) levelCode=1;}
+				{
+					if (levelCode < 1)
+						levelCode = 1;
+				}
 				else
 				if(I.phyStats().level()>(mob.phyStats().level()-15))
-				{ if (levelCode<0) levelCode=0;}
+				{
+					if (levelCode < 0)
+						levelCode = 0;
+				}
 				if(CMLib.flags().isHidden(I))
-				{ done++; colors[5]++;}
+				{
+					done++;
+					colors[5]++;
+				}
 				if(CMLib.flags().isInvisible(I))
-				{ done++; colors[6]++;}
+				{
+					done++;
+					colors[6]++;
+				}
 				if((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN)
-				{ done++; colors[7]++;}
+				{
+					done++;
+					colors[7]++;
+				}
 				if(CMLib.flags().isMetal(I)
 				||((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_ROCK))
-				{ done++; colors[4]++;}
+				{
+					done++;
+					colors[4]++;
+				}
 				if(CMLib.utensils().fetchMyTrap(I)!=null)
-				{ done++; colors[8]++;}
-				if(CMLib.flags().isGood(I)){done++; colors[2]++;}
+				{
+					done++;
+					colors[8]++;
+				}
+				if (CMLib.flags().isGood(I))
+				{
+					done++;
+					colors[2]++;
+				}
 				else
-				if(CMLib.flags().isEvil(I)){done++; colors[1]++;}
+				if (CMLib.flags().isEvil(I))
+				{
+					done++;
+					colors[1]++;
+				}
 				if(done>1)
 				{
 					if(sourceCode>=0)
@@ -159,29 +231,56 @@ public class Chant_WindColor extends Chant
 					levelCode=4;
 				else
 				if(M.phyStats().level()>=(mob.phyStats().level()+15))
-				{ if (levelCode<3) levelCode=3;}
+				{
+					if (levelCode < 3)
+						levelCode = 3;
+				}
 				else
 				if(M.phyStats().level()>=(mob.phyStats().level()+5))
-				{ if (levelCode<2) levelCode=2;}
+				{
+					if (levelCode < 2)
+						levelCode = 2;
+				}
 				else
 				if(M.phyStats().level()>(mob.phyStats().level()-5))
-				{ if (levelCode<1) levelCode=1;}
+				{
+					if (levelCode < 1)
+						levelCode = 1;
+				}
 				else
 				if(M.phyStats().level()>(mob.phyStats().level()-15))
-				{ if (levelCode<0) levelCode=0;}
+				{
+					if (levelCode < 0)
+						levelCode = 0;
+				}
 
 				int done=0;
 				if(M.charStats().getMyRace().racialCategory().equalsIgnoreCase("Undead"))
-				{ done++; colors[0]++;}
+				{
+					done++;
+					colors[0]++;
+				}
 				if((M.charStats().getMyRace().ID().equals("StoneGolem"))
 				||(M.charStats().getMyRace().ID().equals("MetalGolem")))
-				{ done++; colors[4]++;}
+				{
+					done++;
+					colors[4]++;
+				}
 				if(CMLib.flags().isHidden(M))
-				{ done++; colors[5]++;}
+				{
+					done++;
+					colors[5]++;
+				}
 				if(CMLib.flags().isInvisible(M))
-				{ done++; colors[6]++;}
+				{
+					done++;
+					colors[6]++;
+				}
 				if(M.charStats().getMyRace().ID().equals("WoodGolem"))
-				{ done++; colors[7]++;}
+				{
+					done++;
+					colors[7]++;
+				}
 				if(done>0)
 				{
 					if(sourceCode>=0)

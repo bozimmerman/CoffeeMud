@@ -37,18 +37,65 @@ import java.util.*;
 
 public class Soiled extends StdAbility
 {
-	@Override public String ID() { return "Soiled"; }
-	private final static String localizedName = CMLib.lang().L("Soiled");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Soiled)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public boolean putInCommandlist(){return false;}
-	private static final String[] triggerStrings =I(new String[] {"SOIL"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode(){return Ability.ACODE_SKILL;}
+	@Override
+	public String ID()
+	{
+		return "Soiled";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Soiled");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Soiled)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public boolean putInCommandlist()
+	{
+		return false;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "SOIL" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL;
+	}
 
 	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
@@ -96,10 +143,7 @@ public class Soiled extends StdAbility
 			if((msg.sourceMajor(CMMsg.MASK_MOVE))
 			&&(msg.source().riding()==null)
 			&&(msg.source().location()!=null)
-			&&((msg.source().location().domainType()==Room.DOMAIN_INDOORS_WATERSURFACE)
-				||(msg.source().location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)
-				||(msg.source().location().domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
-				||(msg.source().location().domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)))
+			&&(CMLib.flags().isWateryRoom(msg.source().location())))
 				unInvoke();
 			else
 			if((msg.sourceMajor(CMMsg.MASK_MOVE))
@@ -120,11 +164,21 @@ public class Soiled extends StdAbility
 			String smell=null;
 			switch(CMLib.dice().roll(1,5,0))
 			{
-				case 1: smell="<T-NAME> is stinky!"; break;
-				case 2: smell="<T-NAME> smells like poo."; break;
-				case 3: smell="<T-NAME> has soiled a diaper."; break;
-				case 4: smell="Whew! <T-NAME> stinks!"; break;
-				case 5: smell="<T-NAME> must have let one go!"; break;
+			case 1:
+				smell = L("<T-NAME> is stinky!");
+				break;
+			case 2:
+				smell = L("<T-NAME> smells like poo.");
+				break;
+			case 3:
+				smell = L("<T-NAME> has soiled a diaper.");
+				break;
+			case 4:
+				smell = L("Whew! <T-NAME> stinks!");
+				break;
+			case 5:
+				smell = L("<T-NAME> must have let one go!");
+				break;
 			}
 			if((CMLib.flags().canSmell(msg.source()))&&(smell!=null))
 				msg.source().tell(msg.source(),affected,null,smell);
@@ -162,11 +216,21 @@ public class Soiled extends StdAbility
 				String smell=null;
 				switch(CMLib.dice().roll(1,5,0))
 				{
-				case 1: smell="<S-NAME> <S-IS-ARE> stinky!"; break;
-				case 2: smell="<S-NAME> smells like poo."; break;
-				case 3: smell="<S-NAME> has soiled a diaper."; break;
-				case 4: smell="Whew! <S-NAME> stinks!"; break;
-				case 5: smell="<S-NAME> must have let one go!"; break;
+					case 1:
+						smell = L("<S-NAME> <S-IS-ARE> stinky!");
+						break;
+					case 2:
+						smell = L("<S-NAME> smells like poo.");
+						break;
+					case 3:
+						smell = L("<S-NAME> has soiled a diaper.");
+						break;
+					case 4:
+						smell = L("Whew! <S-NAME> stinks!");
+						break;
+					case 5:
+						smell = L("<S-NAME> must have let one go!");
+						break;
 				}
 				if((smell!=null)
 				&&(CMLib.flags().isInTheGame(M,true)))

@@ -36,13 +36,43 @@ import java.util.*;
 
 public class Chant_DistantFungalGrowth extends Chant
 {
-	@Override public String ID() { return "Chant_DistantFungalGrowth"; }
-	private final static String localizedName = CMLib.lang().L("Distant Fungal Growth");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return CAN_ROOMS;}
+	@Override
+	public String ID()
+	{
+		return "Chant_DistantFungalGrowth";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Distant Fungal Growth");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT | Ability.DOMAIN_PLANTGROWTH;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_ROOMS;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -69,7 +99,10 @@ public class Chant_DistantFungalGrowth extends Chant
 					break;
 				}
 			}
-		}catch(final NoSuchElementException e){}
+		}
+		catch (final NoSuchElementException e)
+		{
+		}
 
 		if(newRoom==null)
 		{
@@ -79,8 +112,7 @@ public class Chant_DistantFungalGrowth extends Chant
 			if((anyRoom.domainType()&Room.INDOORS)==0)
 				mob.tell(L("There IS such a place, but it is outdoors, where your fungus will not grow."));
 			else
-			if((anyRoom.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
-			||(anyRoom.domainType()==Room.DOMAIN_INDOORS_WATERSURFACE))
+			if(CMLib.flags().isWateryRoom(anyRoom))
 				mob.tell(L("There IS such a place, but it is on or in the water, so your magic would fail."));
 			else
 				mob.tell(L("There IS such a place, but it is not in a cave, so your magic would fail."));

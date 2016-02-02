@@ -36,19 +36,75 @@ import java.util.*;
 
 public class Fighter_SmokeSignals extends FighterSkill
 {
-	@Override public String ID() { return "Fighter_SmokeSignals"; }
-	private final static String localizedName = CMLib.lang().L("Smoke Signals");
-	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "";}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_NATURELORE;}
-	@Override public boolean isAutoInvoked(){return true;}
-	@Override public boolean canBeUninvoked(){return false;}
-	@Override public int usageType(){return USAGE_MOVEMENT;}
-	private static final String[] triggerStrings =I(new String[] {"SMOKESIGNALS","SMOKESIGNAL"});
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override
+	public String ID()
+	{
+		return "Fighter_SmokeSignals";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Smoke Signals");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public String displayText()
+	{
+		return "";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL | Ability.DOMAIN_NATURELORE;
+	}
+
+	@Override
+	public boolean isAutoInvoked()
+	{
+		return true;
+	}
+
+	@Override
+	public boolean canBeUninvoked()
+	{
+		return false;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "SMOKESIGNALS", "SMOKESIGNAL" });
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
 
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
@@ -100,7 +156,7 @@ public class Fighter_SmokeSignals extends FighterSkill
 		int weather=R.getArea().getClimateObj().weatherType(R);
 
 		if(((R.domainType()&Room.INDOORS)==Room.INDOORS)
-		||(R.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER))
+		||(CMLib.flags().isUnderWateryRoom(R)))
 		{
 			mob.tell(L("You can't signal anyone from here."));
 			return false;
@@ -145,7 +201,7 @@ public class Fighter_SmokeSignals extends FighterSkill
 					weather=R.getArea().getClimateObj().weatherType(R);
 					if((R!=mob.location())
 					&&((R.domainType()&Room.INDOORS)==0)
-					&&(R.domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
+					&&(!CMLib.flags().isUnderWateryRoom(R))
 					&&(weather!=Climate.WEATHER_BLIZZARD)
 					&&(weather!=Climate.WEATHER_DUSTSTORM)
 					&&(weather!=Climate.WEATHER_HAIL)
@@ -154,7 +210,7 @@ public class Fighter_SmokeSignals extends FighterSkill
 					&&(weather!=Climate.WEATHER_SNOW)
 					&&(weather!=Climate.WEATHER_THUNDERSTORM)
 					&&(R.okMessage(mob,msg2)))
-					   R.sendOthers(msg.source(),msg2);
+						R.sendOthers(msg.source(),msg2);
 				}
 			}
 		}

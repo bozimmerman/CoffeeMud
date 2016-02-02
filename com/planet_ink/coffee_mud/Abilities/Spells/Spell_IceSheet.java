@@ -35,16 +35,51 @@ import java.util.*;
 
 public class Spell_IceSheet extends Spell
 {
-	@Override public String ID() { return "Spell_IceSheet"; }
-	private final static String localizedName = CMLib.lang().L("Ice Sheet");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Ice Sheet spell)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return CAN_ROOMS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
+	@Override
+	public String ID()
+	{
+		return "Spell_IceSheet";
+	}
 
+	private final static String	localizedName	= CMLib.lang().L("Ice Sheet");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Ice Sheet spell)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_ROOMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL | Ability.DOMAIN_CONJURATION;
+	}
 
 	@Override
 	public void unInvoke()
@@ -141,10 +176,7 @@ public class Spell_IceSheet extends Spell
 		{
 
 			String msgStr=L("the ground becomes covered in ice!");
-			if((mob.location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)
-			||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
-			||(mob.location().domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
-			||(mob.location().domainType()==Room.DOMAIN_INDOORS_WATERSURFACE))
+			if(CMLib.flags().isWateryRoom(mob.location()))
 				msgStr=L("the water freezes over!");
 			if(auto)
 				msgStr=Character.toUpperCase(msgStr.charAt(0))+msgStr.substring(1);

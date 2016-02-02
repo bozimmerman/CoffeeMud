@@ -107,17 +107,8 @@ public class Chant_UnderwaterAction extends Chant
 					if(R==msg.source().location())
 						return true;
 				}
-				switch(R.domainType())
-				{
-				case Room.DOMAIN_INDOORS_WATERSURFACE:
-				case Room.DOMAIN_OUTDOORS_WATERSURFACE:
-				case Room.DOMAIN_INDOORS_UNDERWATER:
-				case Room.DOMAIN_OUTDOORS_UNDERWATER:
+				if(CMLib.flags().isWateryRoom(R))
 					msg.source().phyStats().setDisposition(msg.source().phyStats().disposition()|PhyStats.IS_SWIMMING);
-					break;
-				default:
-					break;
-				}
 			}
 		}
 		return true;
@@ -131,16 +122,8 @@ public class Chant_UnderwaterAction extends Chant
 			final Room R=mob.location();
 			if(R!=null)
 			{
-				switch(R.domainType())
-				{
-				case Room.DOMAIN_INDOORS_WATERSURFACE:
-				case Room.DOMAIN_OUTDOORS_WATERSURFACE:
-				case Room.DOMAIN_INDOORS_UNDERWATER:
-				case Room.DOMAIN_OUTDOORS_UNDERWATER:
+				if(CMLib.flags().isWateryRoom(R))
 					return Ability.QUALITY_BENEFICIAL_SELF;
-				default:
-					break;
-				}
 				return Ability.QUALITY_INDIFFERENT;
 			}
 		}
@@ -156,18 +139,11 @@ public class Chant_UnderwaterAction extends Chant
 			final Room R=M.location();
 			if((R!=null)&&(!CMLib.flags().isWaterWorthy(affected)))
 			{
-				switch(R.domainType())
+				if(CMLib.flags().isWateryRoom(R))
 				{
-				case Room.DOMAIN_INDOORS_WATERSURFACE:
-				case Room.DOMAIN_OUTDOORS_WATERSURFACE:
-				case Room.DOMAIN_INDOORS_UNDERWATER:
-				case Room.DOMAIN_OUTDOORS_UNDERWATER:
 					affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SWIMMING);
 					if(!M.isInCombat())
 						affectableStats.setSpeed(affectableStats.speed()+1.0);
-					break;
-				default:
-					break;
 				}
 			}
 		}

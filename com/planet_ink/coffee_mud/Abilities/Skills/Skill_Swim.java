@@ -110,10 +110,7 @@ public class Skill_Swim extends StdSkill
 	public boolean placeToSwim(Room r2)
 	{
 		if((r2==null)
-		||((r2.domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE)
-		&&(r2.domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
-		&&(r2.domainType()!=Room.DOMAIN_INDOORS_UNDERWATER)
-		&&(r2.domainType()!=Room.DOMAIN_INDOORS_WATERSURFACE)))
+		||(!CMLib.flags().isWateryRoom(r2)))
 			return false;
 		return true;
 	}

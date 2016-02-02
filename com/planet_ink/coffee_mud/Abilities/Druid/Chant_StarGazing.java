@@ -36,16 +36,53 @@ import java.util.*;
 
 public class Chant_StarGazing extends Chant
 {
-	@Override public String ID() { return "Chant_StarGazing"; }
-	private final static String localizedName = CMLib.lang().L("Star Gazing");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Gazing at the Stars)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
-	long lastTime=0;
+	@Override
+	public String ID()
+	{
+		return "Chant_StarGazing";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Star Gazing");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Gazing at the Stars)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT | Ability.DOMAIN_ENDURING;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_SELF;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	long	lastTime	= 0;
 
 	@Override
 	public void unInvoke()
@@ -119,16 +156,36 @@ public class Chant_StarGazing extends Chant
 					CMLib.factions().postFactionChange(mob,this, CMLib.factions().AlignID(), -ratePct);
 				switch(CMLib.dice().roll(1,10,0))
 				{
-				case 0: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,L("<S-NAME> whisper(s) to infinity.")); break;
-				case 1: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,L("<S-NAME> learn(s) the patterns of the heavens.")); break;
-				case 2: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,L("<S-NAME> watch(es) a single point of light.")); break;
-				case 3: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,L("<S-NAME> embrace(s) the cosmos.")); break;
-				case 4: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,L("<S-NAME> inhale(s) the heavens.")); break;
-				case 5: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,L("<S-NAME> watch(es) the stars move across the sky.")); break;
-				case 6: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,L("<S-NAME> become(s) one with the universe.")); break;
-				case 7: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,L("<S-NAME> seek(s) the inner beauty of the cosmic order.")); break;
-				case 8: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,L("<S-NAME> expunge(s) <S-HIS-HER> unnatural thoughts.")); break;
-				case 9: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,L("<S-NAME> find(s) clarity in the stars.")); break;
+				case 0:
+					room.show(mob, null, this, CMMsg.MSG_CONTEMPLATE, L("<S-NAME> whisper(s) to infinity."));
+					break;
+				case 1:
+					room.show(mob, null, this, CMMsg.MSG_CONTEMPLATE, L("<S-NAME> learn(s) the patterns of the heavens."));
+					break;
+				case 2:
+					room.show(mob, null, this, CMMsg.MSG_CONTEMPLATE, L("<S-NAME> watch(es) a single point of light."));
+					break;
+				case 3:
+					room.show(mob, null, this, CMMsg.MSG_CONTEMPLATE, L("<S-NAME> embrace(s) the cosmos."));
+					break;
+				case 4:
+					room.show(mob, null, this, CMMsg.MSG_CONTEMPLATE, L("<S-NAME> inhale(s) the heavens."));
+					break;
+				case 5:
+					room.show(mob, null, this, CMMsg.MSG_CONTEMPLATE, L("<S-NAME> watch(es) the stars move across the sky."));
+					break;
+				case 6:
+					room.show(mob, null, this, CMMsg.MSG_CONTEMPLATE, L("<S-NAME> become(s) one with the universe."));
+					break;
+				case 7:
+					room.show(mob, null, this, CMMsg.MSG_CONTEMPLATE, L("<S-NAME> seek(s) the inner beauty of the cosmic order."));
+					break;
+				case 8:
+					room.show(mob, null, this, CMMsg.MSG_CONTEMPLATE, L("<S-NAME> expunge(s) <S-HIS-HER> unnatural thoughts."));
+					break;
+				case 9:
+					room.show(mob, null, this, CMMsg.MSG_CONTEMPLATE, L("<S-NAME> find(s) clarity in the stars."));
+					break;
 				}
 			}
 		}
@@ -153,7 +210,7 @@ public class Chant_StarGazing extends Chant
 			mob.tell(L("You must be outdoors for this chant to work."));
 			return false;
 		}
-		if(mob.location().domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
+		if(CMLib.flags().isUnderWateryRoom(mob.location()))
 		{
 			mob.tell(L("This magic will not work here."));
 			return false;

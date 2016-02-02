@@ -146,10 +146,7 @@ public class WaterCurrents extends ActiveTicker
 						if((R.getExitInDir(dir)!=null)
 						&&(R.getExitInDir(dir).isOpen())
 						&&((R2.domainType()==R.domainType())
-							||(R2.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
-							||(R2.domainType()==Room.DOMAIN_INDOORS_WATERSURFACE)
-							||(R2.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
-							||(R2.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)))
+							||(CMLib.flags().isWateryRoom(R2))))
 								break;
 						R2=null;
 					}
@@ -233,10 +230,7 @@ public class WaterCurrents extends ActiveTicker
 				for(final Enumeration<Room> r=((Area)ticking).getMetroMap();r.hasMoreElements();)
 				{
 					final Room R=r.nextElement();
-					if((R.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
-					||(R.domainType()==Room.DOMAIN_INDOORS_WATERSURFACE)
-					||(R.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
-					||(R.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
+					if(CMLib.flags().isWateryRoom(R))
 						applyCurrents(R,sweeps);
 				}
 			}

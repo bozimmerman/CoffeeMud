@@ -77,11 +77,7 @@ public class Chant_SummonChum extends Chant
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		if((!auto)
-		   &&(mob.location().domainType()!=Room.DOMAIN_INDOORS_UNDERWATER)
-		   &&(mob.location().domainType()!=Room.DOMAIN_INDOORS_WATERSURFACE)
-		   &&(mob.location().domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
-		   &&(mob.location().domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE))
+		if((!auto)&&(!CMLib.flags().isWateryRoom(mob.location())))
 		{
 			mob.tell(L("This magic will not work here."));
 			return false;

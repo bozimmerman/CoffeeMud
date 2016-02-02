@@ -36,13 +36,43 @@ import java.util.*;
 
 public class Chant_CharmArea extends Chant
 {
-	@Override public String ID() { return "Chant_CharmArea"; }
-	private final static String localizedName = CMLib.lang().L("Charm Area");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	@Override protected int canAffectCode(){return CAN_ROOMS;}
-	@Override protected int canTargetCode(){return 0;}
+	@Override
+	public String ID()
+	{
+		return "Chant_CharmArea";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Charm Area");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT | Ability.DOMAIN_ENDURING;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_ROOMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
@@ -98,9 +128,7 @@ public class Chant_CharmArea extends Chant
 					return Ability.QUALITY_INDIFFERENT;
 				if((R.domainType()==Room.DOMAIN_OUTDOORS_CITY)
 				||(R.domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)
-				||(R.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
-				||(R.domainType()==Room.DOMAIN_OUTDOORS_AIR)
-				||(R.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
+				||(R.domainType()==Room.DOMAIN_OUTDOORS_AIR))
 					return Ability.QUALITY_INDIFFERENT;
 
 			}
@@ -129,9 +157,7 @@ public class Chant_CharmArea extends Chant
 		}
 		if(((mob.location().domainType()==Room.DOMAIN_OUTDOORS_CITY)
 		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)
-		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
-		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_AIR)
-		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
+		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_AIR))
 		&&(!auto))
 		{
 			mob.tell(L("This chant does not work here."));

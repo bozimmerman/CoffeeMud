@@ -36,13 +36,43 @@ import java.util.*;
 
 public class Chant_FungalBloom extends Chant
 {
-	@Override public String ID() { return "Chant_FungalBloom"; }
-	private final static String localizedName = CMLib.lang().L("Fungal Bloom");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
-	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override
+	public String ID()
+	{
+		return "Chant_FungalBloom";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Fungal Bloom");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ITEMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_ITEMS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT | Ability.DOMAIN_PLANTCONTROL;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
 
 	public Item getShroomHere(Room R)
 	{
@@ -66,10 +96,9 @@ public class Chant_FungalBloom extends Chant
 			final Room R=mob.location();
 			if(R!=null)
 			{
-				if((R.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
-				||(R.domainType()==Room.DOMAIN_OUTDOORS_AIR)
+				if((R.domainType()==Room.DOMAIN_OUTDOORS_AIR)
 				||(R.domainType()==Room.DOMAIN_INDOORS_AIR)
-				||(R.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
+				||(CMLib.flags().isWateryRoom(R)))
 					return Ability.QUALITY_INDIFFERENT;
 				if(getShroomHere(mob.location())==null)
 					return Ability.QUALITY_INDIFFERENT;
@@ -81,10 +110,9 @@ public class Chant_FungalBloom extends Chant
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		if((mob.location().domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
-		||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_AIR)
+		if((mob.location().domainType()==Room.DOMAIN_OUTDOORS_AIR)
 		||(mob.location().domainType()==Room.DOMAIN_INDOORS_AIR)
-		||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
+		||(CMLib.flags().isWateryRoom(mob.location())))
 		{
 			mob.tell(L("This magic will not work here."));
 			return false;

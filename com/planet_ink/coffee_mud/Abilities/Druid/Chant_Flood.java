@@ -135,13 +135,13 @@ public class Chant_Flood extends Chant
 				final Exit E=mobR.getExitInDir(d);
 				if((R!=null)&&(E!=null)&&(E.isOpen()))
 				{
-					if(CMLib.flags().isWatery(R))
+					if(CMLib.flags().isWateryRoom(R))
 					{
 						return d;
 					}
 					final Room R2=R.getRoomInDir(d);
 					final Exit E2=R.getExitInDir(d);
-					if((R2!=null)&&(E2!=null)&&(E2.isOpen()) && (CMLib.flags().isWatery(R2)))
+					if((R2!=null)&&(E2!=null)&&(E2.isOpen()) && (CMLib.flags().isWateryRoom(R2)))
 					{
 						return d;
 					}
@@ -170,9 +170,15 @@ public class Chant_Flood extends Chant
 			return false;
 		}
 		
+		int newAtmosphere = RawMaterial.RESOURCE_FRESHWATER;
+		
 		String fromDir;
-		if(CMLib.flags().isWatery(mobR))
+		if(CMLib.flags().isWateryRoom(mobR))
+		{
 			fromDir="right here";
+			if((mobR.getAtmosphere()&RawMaterial.MATERIAL_LIQUID)>0)
+				newAtmosphere = mobR.getAtmosphere();
+		}
 		else
 		{
 			int waterDir = -1;
@@ -184,7 +190,7 @@ public class Chant_Flood extends Chant
 					if((I!=null)&&(I.owner() instanceof Room))
 					{
 						Room R=(Room)I.owner();
-						if(CMLib.flags().isWatery(R))
+						if(CMLib.flags().isWateryRoom(R))
 							waterDir = CMLib.dice().roll(1, 4, -1);
 						else
 							waterDir = getWaterRoomDir(R);
@@ -203,20 +209,43 @@ public class Chant_Flood extends Chant
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
+		
+		for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+		{
+			Room R=mobR.getRoomInDir(d);
+			if(R!=null)
+			{
+				if((R.getAtmosphere()&RawMaterial.MATERIAL_LIQUID)>0)
+				{
+					newAtmosphere =R.getAtmosphere();
+					break;
+				}
+				R=R.getRoomInDir(d);
+				if(R!=null)
+				{
+					if((R.getAtmosphere()&RawMaterial.MATERIAL_LIQUID)>0)
+					{
+						newAtmosphere =R.getAtmosphere();
+						break;
+					}
+				}
+			}
+		}
 
 		boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto), L(auto?"A flood rushes in from @x1":
+			if(mobR.show(mob,null,this,verbalCastCode(mob,null,auto), L(auto?"A flood rushes in from @x1":
 				"^S<S-NAME> chant(s) thunderously as flood waters rush in from @x1.^?",fromDir)+CMLib.protocol().msp("earthquake.wav",40)))
 			{
-				int oldAtmo=mob.location().getAtmosphereCode();
-				Ability A=maliciousAffect(mob,mob.location(),asLevel,0,-1);
+				int oldAtmo=mobR.getAtmosphereCode();
+				Ability A=maliciousAffect(mob,mobR,asLevel,0,-1);
 				if(A!=null)
 				{
 					A.setMiscText("ATMOSPHERE="+oldAtmo);
-					mob.location().setAtmosphere(RawMaterial.RESOURCE_FRESHWATER);
+					if(mobR.getAtmosphere()!=newAtmosphere)
+						mobR.setAtmosphere(newAtmosphere);
 				}
 			}
 		}

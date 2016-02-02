@@ -35,13 +35,43 @@ import java.util.*;
 
 public class Spell_GravitySlam extends Spell
 {
-	@Override public String ID() { return "Spell_GravitySlam"; }
-	private final static String localizedName = CMLib.lang().L("Gravity Slam");
-	@Override public String name() { return localizedName; }
-	@Override public int maxRange(){return adjustedMaxInvokerRange(5);}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
-	@Override public long flags(){return Ability.FLAG_MOVING;}
+	@Override
+	public String ID()
+	{
+		return "Spell_GravitySlam";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Gravity Slam");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int maxRange()
+	{
+		return adjustedMaxInvokerRange(5);
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL | Ability.DOMAIN_ALTERATION;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_MOVING;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -69,11 +99,9 @@ public class Spell_GravitySlam extends Spell
 				if(!CMLib.flags().isInFlight(target))
 					maxDie=maxDie/2;
 				final Room R=mob.location();
-				if((R.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
-				||(R.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER))
+				if(CMLib.flags().isUnderWateryRoom(R))
 					maxDie=maxDie/6;
-				if((R.domainType()==Room.DOMAIN_INDOORS_WATERSURFACE)
-				||(R.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
+				if(CMLib.flags().isWaterySurfaceRoom(R))
 					maxDie=maxDie/4;
 
 				damage += CMLib.dice().roll(maxDie,20,6+maxDie);

@@ -35,14 +35,43 @@ import java.util.*;
 
 public class Chant_SweetScent extends Chant
 {
-	@Override public String ID() { return "Chant_SweetScent"; }
-	private final static String localizedName = CMLib.lang().L("Sweet Scent");
-	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
-	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
-	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}
+	@Override
+	public String ID()
+	{
+		return "Chant_SweetScent";
+	}
 
+	private final static String	localizedName	= CMLib.lang().L("Sweet Scent");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT | Ability.DOMAIN_PLANTCONTROL;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ITEMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_ITEMS;
+	}
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
@@ -108,16 +137,14 @@ public class Chant_SweetScent extends Chant
 		&&(CMLib.flags().canSmell(msg.source())))
 			msg.source().tell(msg.source(),affected,null,L("<T-NAME> smell(s) absolutely intoxicating!"));
 	}
+
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(
-		  (mob.location().domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
+		  (CMLib.flags().isWateryRoom(mob.location()))
 		||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_AIR)
-		||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)
-		||(mob.location().domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
 		||(mob.location().domainType()==Room.DOMAIN_INDOORS_AIR)
-		||(mob.location().domainType()==Room.DOMAIN_INDOORS_WATERSURFACE)
 		   )
 		{
 			mob.tell(L("This magic will not work here."));

@@ -158,7 +158,7 @@ public class Chant_FeedingFrenzy extends Chant
 		if((mob.location().domainType() != Room.DOMAIN_INDOORS_UNDERWATER)
 		&&(mob.location().domainType() != Room.DOMAIN_OUTDOORS_UNDERWATER))
 		{
-			mob.tell(L("You must be underwater for this chant to work."));
+			mob.tell(L("You must be under a sea, lake or ocean for this chant to work."));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

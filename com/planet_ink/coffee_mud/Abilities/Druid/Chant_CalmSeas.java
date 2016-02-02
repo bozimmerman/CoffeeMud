@@ -184,7 +184,7 @@ public class Chant_CalmSeas extends Chant
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		if((((mob.location().domainType()&Room.INDOORS)>0)||(!CMLib.flags().isWatery(mob.location())))
+		if((((mob.location().domainType()&Room.INDOORS)>0)||(!CMLib.flags().isWateryRoom(mob.location())))
 		&&(!auto))
 		{
 			mob.tell(L("You must be on the sea for this chant to work."));

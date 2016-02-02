@@ -149,8 +149,7 @@ public class Chant_SummonSeaweed extends Chant_SummonPlants
 			return false;
 		}
 
-		if((mob.location().domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
-		   &&(mob.location().domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE))
+		if(!CMLib.flags().isWateryRoom(mob.location()))
 		{
 			mob.tell(L("This magic will not work here."));
 			return false;

@@ -570,8 +570,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 				else
 				if((oldRoom.domainType()!=nextRoom.domainType())
 				&&(!CMLib.flags().isSwimming(mob))
-				&&((nextRoom.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
-				||(nextRoom.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)))
+				&&(CMLib.flags().isUnderWateryRoom(nextRoom)))
 					direction=-1;
 				else
 				if((!wander)&&(!oldRoom.getArea().Name().equals(nextRoom.getArea().Name())))
@@ -647,8 +646,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			return false;
 		}
 
-		if(((nextRoom.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)
-		||(nextRoom.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
+		if(((CMLib.flags().isWaterySurfaceRoom(nextRoom)))
 		   &&(!CMLib.flags().isWaterWorthy(mob))
 		   &&(!CMLib.flags().isInFlight(mob))
 		   &&(mob.fetchAbility("Skill_Swim")!=null))
@@ -797,10 +795,8 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			{
 				if(((R.domainType()==Room.DOMAIN_INDOORS_AIR)&&(!CMLib.flags().isFlying(M)))
 				||((R.domainType()==Room.DOMAIN_OUTDOORS_AIR)&&(!CMLib.flags().isFlying(M)))
-				||((R.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)&&(!CMLib.flags().isSwimming(M)))
-				||((R.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)&&(!CMLib.flags().isSwimming(M)))
-				||((R.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)&&(!CMLib.flags().isWaterWorthy(M)))
-				||((R.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)&&(!CMLib.flags().isWaterWorthy(M))))
+				||((CMLib.flags().isUnderWateryRoom(R))&&(!CMLib.flags().isSwimming(M)))
+				||((CMLib.flags().isWaterySurfaceRoom(R))&&(!CMLib.flags().isWaterWorthy(M))))
 					dir=-1;
 				if(tries < 65)
 				{

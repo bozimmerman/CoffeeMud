@@ -64,7 +64,7 @@ public class GenWindGenerator extends GenFuellessGenerator
 			final Room R=CMLib.map().roomLocation(this);
 			if((R!=null)
 			&&((R.domainType()&Room.INDOORS)==0)
-			&&(R.domainType()!=Room.DOMAIN_INDOORS_UNDERWATER)
+			&&(!CMLib.flags().isUnderWateryRoom(R))
 			&&((R.getAtmosphere() & RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_GAS))
 			{
 				final Area A=R.getArea();

@@ -235,7 +235,7 @@ public class Chant_FindDriftwood extends Chant_FindPlant
 		final Room R=mob.location();
 		if(R==null)
 			return false;
-		if((R.domainType()!=Room.DOMAIN_INDOORS_WATERSURFACE) && (R.domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE))
+		if(!CMLib.flags().isWaterySurfaceRoom(R))
 		{
 			mob.tell(L("You must be on the surface of the water to find driftwood."));
 			return false;

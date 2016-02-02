@@ -34,11 +34,16 @@ import java.util.*;
 */
 public class LightSource extends StdItem implements Light
 {
-	@Override public String ID(){	return "LightSource";}
-	protected boolean lit=false;
-	protected int durationTicks=200;
-	protected boolean destroyedWhenBurnedOut=true;
-	protected boolean goesOutInTheRain=true;
+	@Override
+	public String ID()
+	{
+		return "LightSource";
+	}
+
+	protected boolean	lit						= false;
+	protected int		durationTicks			= 200;
+	protected boolean	destroyedWhenBurnedOut	= true;
+	protected boolean	goesOutInTheRain		= true;
 
 	public LightSource()
 	{
@@ -54,15 +59,47 @@ public class LightSource extends StdItem implements Light
 		recoverPhyStats();
 	}
 
-	@Override public void setDuration(int duration){durationTicks=duration;}
-	@Override public int getDuration(){return durationTicks;}
-	@Override public boolean destroyedWhenBurnedOut(){return destroyedWhenBurnedOut;}
-	@Override public void setDestroyedWhenBurntOut(boolean truefalse){destroyedWhenBurnedOut=truefalse;}
-	@Override public boolean goesOutInTheRain(){return this.goesOutInTheRain;}
-	@Override public boolean isLit(){return lit;}
-	@Override public void light(boolean isLit){lit=isLit;}
+	@Override
+	public void setDuration(int duration)
+	{
+		durationTicks = duration;
+	}
 
+	@Override
+	public int getDuration()
+	{
+		return durationTicks;
+	}
 
+	@Override
+	public boolean destroyedWhenBurnedOut()
+	{
+		return destroyedWhenBurnedOut;
+	}
+
+	@Override
+	public void setDestroyedWhenBurntOut(boolean truefalse)
+	{
+		destroyedWhenBurnedOut = truefalse;
+	}
+
+	@Override
+	public boolean goesOutInTheRain()
+	{
+		return this.goesOutInTheRain;
+	}
+
+	@Override
+	public boolean isLit()
+	{
+		return lit;
+	}
+
+	@Override
+	public void light(boolean isLit)
+	{
+		lit = isLit;
+	}
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
@@ -167,8 +204,7 @@ public class LightSource extends StdItem implements Light
 	{
 		if((room==null)||(mob==null))
 			return false;
-		if((room.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
-		||(room.domainType()==Room.DOMAIN_INDOORS_UNDERWATER))
+		if(CMLib.flags().isUnderWateryRoom(room))
 			return true;
 		if((!CMLib.flags().isFlying(mob))
 		&&(mob.riding()==null)
@@ -204,6 +240,7 @@ public class LightSource extends StdItem implements Light
 		}
 
 		if(msg.amITarget(this))
+		{
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_EXTINGUISH:
@@ -266,4 +303,5 @@ public class LightSource extends StdItem implements Light
 				}
 			}
 		}
+	}
 }

@@ -205,8 +205,7 @@ public class Chant_Capsize extends Chant
 			mob.tell(L("You must be on the water for this chant to work."));
 			return false;
 		}
-		if((R.domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE)
-		&&(R.domainType()!=Room.DOMAIN_INDOORS_WATERSURFACE))
+		if(!CMLib.flags().isWaterySurfaceRoom(R))
 		{
 			mob.tell(L("This chant does not work here."));
 			return false;

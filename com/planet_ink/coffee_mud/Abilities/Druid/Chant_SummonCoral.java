@@ -143,7 +143,7 @@ public class Chant_SummonCoral extends Chant_SummonPlants
 	public boolean isSaltWaterRoom(Room R)
 	{
 		if((R==null)
-		||((R.domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)&&(R.domainType()!=Room.DOMAIN_INDOORS_UNDERWATER))
+		||(!CMLib.flags().isUnderWateryRoom(R))
 		||(!(R instanceof Drink))
 		||(((Drink)R).liquidType()!=RawMaterial.RESOURCE_SALTWATER))
 			return false;

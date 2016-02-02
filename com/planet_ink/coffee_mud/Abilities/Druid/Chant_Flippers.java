@@ -105,7 +105,7 @@ public class Chant_Flippers extends Chant
 		&&(msg.target() instanceof Room)
 		&&(msg.tool() instanceof Exit)
 		&&(CMLib.flags().isSwimming(affected))
-		&&(CMLib.flags().isWatery((Room)msg.target()))
+		&&(CMLib.flags().isWateryRoom((Room)msg.target()))
 		&&(((Exit)msg.tool()).isOpen()))
 		{
 			try
@@ -122,7 +122,7 @@ public class Chant_Flippers extends Chant
 					Exit E=finalRoom.getExitInDir(dir);
 					if((R!=null)
 					&&(E!=null)
-					&&(CMLib.flags().isWatery(R))
+					&&(CMLib.flags().isWateryRoom(R))
 					&&(E.isOpen())
 					&&(R.roomID().length()==0))
 					{

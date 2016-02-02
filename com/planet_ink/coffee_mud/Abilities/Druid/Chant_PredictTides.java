@@ -78,7 +78,7 @@ public class Chant_PredictTides extends Chant
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		boolean isWateryEnough = CMLib.flags().isWatery(mob.location());
+		boolean isWateryEnough = CMLib.flags().isWateryRoom(mob.location());
 		if(!isWateryEnough)
 		{
 			if(mob.location().resourceChoices().contains(Integer.valueOf(RawMaterial.RESOURCE_FISH)))

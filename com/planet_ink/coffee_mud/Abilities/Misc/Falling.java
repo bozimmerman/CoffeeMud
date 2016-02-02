@@ -37,38 +37,49 @@ import java.util.*;
 
 public class Falling extends StdAbility
 {
-	@Override public String ID() { return "Falling"; }
-	private final static String localizedName = CMLib.lang().L("Falling");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Falling)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return CAN_ITEMS|Ability.CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
-	boolean temporarilyDisable=false;
-	public Room room=null;
-	boolean hitTheCeiling=false;
-	int damageToTake=0;
-	protected int fallTickDown=1;
-
-	protected boolean reversed(){return proficiency()==100;}
-
-	protected boolean isWaterSurface(Room R)
+	@Override
+	public String ID()
 	{
-		if(R==null)
-			return false;
-		if((R.domainType()==Room.DOMAIN_INDOORS_WATERSURFACE)
-		||(R.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
-			return true;
-		return false;
+		return "Falling";
 	}
-	protected boolean isUnderWater(Room R)
+
+	private final static String	localizedName	= CMLib.lang().L("Falling");
+
+	@Override
+	public String name()
 	{
-		if(R==null)
-			return false;
-		if((R.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
-		||(R.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER))
-			return true;
-		return false;
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Falling)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_ITEMS | Ability.CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	boolean			temporarilyDisable	= false;
+	public Room		room				= null;
+	boolean			hitTheCeiling		= false;
+	int				damageToTake		= 0;
+	protected int	fallTickDown		= 1;
+
+	protected boolean reversed()
+	{
+		return proficiency() == 100;
 	}
 
 	protected boolean isAirRoom(Room R)
@@ -91,7 +102,7 @@ public class Falling extends StdAbility
 		||(fromHere.getExitInDir(direction)==null)
 		||(!fromHere.getExitInDir(direction).isOpen()))
 			return false;
-		if(isWaterSurface(fromHere)&&isUnderWater(toHere))
+		if(CMLib.flags().isWaterySurfaceRoom(fromHere)&&CMLib.flags().isUnderWateryRoom(toHere))
 			return false;
 		return true;
 	}
@@ -117,7 +128,7 @@ public class Falling extends StdAbility
 			if(isAirRoom(R))
 				R.show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> stop(s) falling.@x1",CMLib.protocol().msp("splat.wav",50)));
 			else
-			if(isWaterSurface(R)||isUnderWater(R))
+			if(CMLib.flags().isWaterySurfaceRoom(R)||CMLib.flags().isUnderWateryRoom(R))
 				R.show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> hit(s) the water.@x1",CMLib.protocol().msp("splat.wav",50)));
 			else
 			{
@@ -141,7 +152,7 @@ public class Falling extends StdAbility
 						damage.damageLimb(limbs.get(CMLib.dice().roll(1, limbs.size(), -1)));
 					}
 				}
-				}
+			}
 			CMLib.combat().postDamage(mob,mob,this,damageToTake,CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,-1,null);
 		}
 		mob.delEffect(this);
@@ -260,6 +271,7 @@ public class Falling extends StdAbility
 			return true;
 		final MOB mob=msg.source();
 		if(affected instanceof MOB)
+		{
 			if(msg.amISource((MOB)affected))
 			{
 				if(CMLib.flags().isInFlight(mob))
@@ -274,6 +286,7 @@ public class Falling extends StdAbility
 					return false;
 				}
 			}
+		}
 		return true;
 	}
 
@@ -297,6 +310,7 @@ public class Falling extends StdAbility
 			}
 		}
 	}
+
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
@@ -304,6 +318,7 @@ public class Falling extends StdAbility
 		if((affectableStats.disposition()&PhyStats.IS_FLYING)==0)
 			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_FALLING);
 	}
+
 	@Override
 	public void setAffectedOne(Physical P)
 	{
@@ -312,6 +327,7 @@ public class Falling extends StdAbility
 		else
 			super.setAffectedOne(P);
 	}
+
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical target, boolean auto, int asLevel)
 	{

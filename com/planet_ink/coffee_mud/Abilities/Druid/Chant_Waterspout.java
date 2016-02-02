@@ -102,8 +102,7 @@ public class Chant_Waterspout extends Chant
 			final Room R=mob.location();
 			if(R!=null)
 			{
-				if((R.domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE)
-				&&(R.domainType()!=Room.DOMAIN_INDOORS_WATERSURFACE))
+				if(!CMLib.flags().isWaterySurfaceRoom(R))
 					return Ability.QUALITY_INDIFFERENT;
 				if(R.fetchEffect(this.ID())!=null)
 					return Ability.QUALITY_INDIFFERENT;
@@ -118,8 +117,7 @@ public class Chant_Waterspout extends Chant
 		if(!auto)
 		{
 			final Room R=mob.location();
-			if((R.domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE)
-			&&(R.domainType()!=Room.DOMAIN_INDOORS_WATERSURFACE))
+			if(!CMLib.flags().isWaterySurfaceRoom(R))
 			{
 				mob.tell(L("You must be on a water surface for this chant to work."));
 				return false;

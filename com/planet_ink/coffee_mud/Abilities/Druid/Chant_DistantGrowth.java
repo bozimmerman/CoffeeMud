@@ -36,13 +36,43 @@ import java.util.*;
 
 public class Chant_DistantGrowth extends Chant
 {
-	@Override public String ID() { return "Chant_DistantGrowth"; }
-	private final static String localizedName = CMLib.lang().L("Distant Growth");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return CAN_ROOMS;}
+	@Override
+	public String ID()
+	{
+		return "Chant_DistantGrowth";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Distant Growth");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT | Ability.DOMAIN_PLANTGROWTH;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_ROOMS;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -66,14 +96,16 @@ public class Chant_DistantGrowth extends Chant
 				if(((R.domainType()&Room.INDOORS)==0)
 				&&(R.domainType()!=Room.DOMAIN_OUTDOORS_CITY)
 				&&(R.domainType()!=Room.DOMAIN_OUTDOORS_SPACEPORT)
-				&&(R.domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
-				&&(R.domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE))
+				&&(!CMLib.flags().isWateryRoom(mob.location())))
 				{
 					newRoom=R;
 					break;
 				}
 			}
-		}catch(final NoSuchElementException e){}
+		}
+		catch (final NoSuchElementException e)
+		{
+		}
 
 		if(newRoom==null)
 		{
@@ -84,8 +116,7 @@ public class Chant_DistantGrowth extends Chant
 			||(anyRoom.domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT))
 				mob.tell(L("There IS such a place, but it is an overtrodden street, so your magic would fail."));
 			else
-			if((anyRoom.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
-			||(anyRoom.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
+			if(CMLib.flags().isWateryRoom(anyRoom))
 				mob.tell(L("There IS such a place, but it is on or in the water, so your magic would fail."));
 			else
 				mob.tell(L("There IS such a place, but it is not outdoors, so your magic would fail."));

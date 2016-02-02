@@ -56,7 +56,7 @@ public class GenWaterPowerGenerator extends GenFuellessGenerator
 		if(activated())
 		{
 			final Room R=CMLib.map().roomLocation(this);
-			if((R!=null)&&(R.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
+			if((R!=null)&&(CMLib.flags().isWaterySurfaceRoom(R)))
 				return true;
 		}
 		return false;

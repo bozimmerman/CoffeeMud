@@ -35,10 +35,16 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class StdRideable extends StdContainer implements Rideable
 {
-	@Override public String ID(){	return "StdRideable";}
-	protected int rideBasis=Rideable.RIDEABLE_WATER;
-	protected int riderCapacity=4;
-	protected List<Rider> riders=new SVector<Rider>();
+	@Override
+	public String ID()
+	{
+		return "StdRideable";
+	}
+
+	protected int			rideBasis		= Rideable.RIDEABLE_WATER;
+	protected int			riderCapacity	= 4;
+	protected List<Rider>	riders			= new SVector<Rider>();
+
 	public StdRideable()
 	{
 		super();
@@ -92,19 +98,51 @@ public class StdRideable extends StdContainer implements Rideable
 		}
 		return true;
 	}
+	
 	// common item/mob stuff
-	@Override public int rideBasis(){return rideBasis;}
-	@Override public void setRideBasis(int basis){rideBasis=basis;}
-	@Override public int riderCapacity(){ return riderCapacity;}
-	@Override public void setRiderCapacity(int newCapacity){riderCapacity=newCapacity;}
-	@Override public int numRiders(){return riders.size();}
+	@Override
+	public int rideBasis()
+	{
+		return rideBasis;
+	}
+
+	@Override
+	public void setRideBasis(int basis)
+	{
+		rideBasis = basis;
+	}
+
+	@Override
+	public int riderCapacity()
+	{
+		return riderCapacity;
+	}
+
+	@Override
+	public void setRiderCapacity(int newCapacity)
+	{
+		riderCapacity = newCapacity;
+	}
+
+	@Override
+	public int numRiders()
+	{
+		return riders.size();
+	}
+
 	@Override
 	public Rider fetchRider(int which)
 	{
-		try	{ return riders.get(which);	}
-		catch(final java.lang.ArrayIndexOutOfBoundsException e){}
+		try
+		{
+			return riders.get(which);
+		}
+		catch (final java.lang.ArrayIndexOutOfBoundsException e)
+		{
+		}
 		return null;
 	}
+
 	@Override
 	public void addRider(Rider mob)
 	{
@@ -132,6 +170,7 @@ public class StdRideable extends StdContainer implements Rideable
 		super.cloneFix(E);
 		riders=new SVector();
 	}
+
 	@Override
 	public Set<MOB> getRideBuddies(Set<MOB> list)
 	{
@@ -160,6 +199,7 @@ public class StdRideable extends StdContainer implements Rideable
 		}
 		return false;
 	}
+
 	@Override
 	public String stateString(Rider R)
 	{
@@ -183,6 +223,7 @@ public class StdRideable extends StdContainer implements Rideable
 		}
 		return "riding in";
 	}
+
 	@Override
 	public String putString(Rider R)
 	{
@@ -228,6 +269,7 @@ public class StdRideable extends StdContainer implements Rideable
 		}
 		return "board(s)";
 	}
+
 	@Override
 	public String dismountString(Rider R)
 	{
@@ -249,6 +291,7 @@ public class StdRideable extends StdContainer implements Rideable
 		}
 		return "disembark(s) from";
 	}
+
 	@Override
 	public String stateStringSubject(Rider R)
 	{
@@ -279,6 +322,7 @@ public class StdRideable extends StdContainer implements Rideable
 		if(rideBasis==Rideable.RIDEABLE_WATER)
 			phyStats().setDisposition(phyStats().disposition()|PhyStats.IS_SWIMMING);
 	}
+
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
@@ -330,13 +374,15 @@ public class StdRideable extends StdContainer implements Rideable
 			}
 			return sendBack.toString();
 		}
- 		return super.displayText(mob);
+		return super.displayText(mob);
 	}
+
 	@Override
 	public boolean amRiding(Rider mob)
 	{
 		return riders.contains(mob);
 	}
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -536,20 +582,17 @@ public class StdRideable extends StdContainer implements Rideable
 					case Rideable.RIDEABLE_LAND:
 					case Rideable.RIDEABLE_WAGON:
 						if((targetRoom.domainType()==Room.DOMAIN_OUTDOORS_AIR)
-						  ||(targetRoom.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
-						  ||(targetRoom.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)
-						  ||(targetRoom.domainType()==Room.DOMAIN_INDOORS_AIR)
-						  ||(targetRoom.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
-						  ||(targetRoom.domainType()==Room.DOMAIN_INDOORS_WATERSURFACE))
+						||(targetRoom.domainType()==Room.DOMAIN_INDOORS_AIR)
+						||CMLib.flags().isWateryRoom(targetRoom))
 							ok=false;
-							if((rideBasis==Rideable.RIDEABLE_WAGON)
-							&&((riding()==null)
-							   ||(!(riding() instanceof MOB))
-							   ||(((MOB)riding()).basePhyStats().weight()<(basePhyStats().weight()/5))))
-							{
-								msg.source().tell(L("@x1 doesn't seem to be moving.",name(msg.source())));
-								return false;
-							}
+						if((rideBasis==Rideable.RIDEABLE_WAGON)
+						&&((riding()==null)
+						   ||(!(riding() instanceof MOB))
+						   ||(((MOB)riding()).basePhyStats().weight()<(basePhyStats().weight()/5))))
+						{
+							msg.source().tell(L("@x1 doesn't seem to be moving.",name(msg.source())));
+							return false;
+						}
 						break;
 					case Rideable.RIDEABLE_AIR:
 						break;
@@ -557,17 +600,14 @@ public class StdRideable extends StdContainer implements Rideable
 						ok=true;
 						break;
 					case Rideable.RIDEABLE_WATER:
-						if((sourceRoom.domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE)
-						&&(targetRoom.domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE)
-						&&(sourceRoom.domainType()!=Room.DOMAIN_INDOORS_WATERSURFACE)
-						&&(targetRoom.domainType()!=Room.DOMAIN_INDOORS_WATERSURFACE))
+						if((!CMLib.flags().isWaterySurfaceRoom(sourceRoom))
+						&&(!CMLib.flags().isWaterySurfaceRoom(targetRoom)))
 							ok=false;
 						else
 							ok=true;
 						if((targetRoom.domainType()==Room.DOMAIN_INDOORS_AIR)
 						||(targetRoom.domainType()==Room.DOMAIN_OUTDOORS_AIR)
-						||(targetRoom.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
-						||(targetRoom.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER))
+						||(CMLib.flags().isUnderWateryRoom(targetRoom)))
 							ok=false;
 						break;
 					}
@@ -626,6 +666,7 @@ public class StdRideable extends StdContainer implements Rideable
 		}
 		return super.okMessage(myHost,msg);
 	}
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -708,7 +749,7 @@ public class StdRideable extends StdContainer implements Rideable
 		case CMMsg.TYP_DEATH:
 			if(amRiding(msg.source()))
 			{
-			   msg.source().setRiding(null);
+				msg.source().setRiding(null);
 				if(msg.source().location()!=null)
 					msg.source().location().recoverRoomStats();
 			}

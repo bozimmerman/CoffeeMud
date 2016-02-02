@@ -83,14 +83,8 @@ public class Chant_ReefWalking extends Chant_PlantPass
 	@Override
 	protected boolean isAcceptableTargetRoom(MOB mob, Room newRoom)
 	{
-		switch(newRoom.domainType())
+		if(!CMLib.flags().isWateryRoom(newRoom))
 		{
-		case Room.DOMAIN_INDOORS_UNDERWATER:
-		case Room.DOMAIN_INDOORS_WATERSURFACE:
-		case Room.DOMAIN_OUTDOORS_UNDERWATER:
-		case Room.DOMAIN_OUTDOORS_WATERSURFACE:
-			break;
-		default:
 			mob.tell(L("You mau only travel to another a watery area with this chant."));
 			return false;
 		}
@@ -105,14 +99,8 @@ public class Chant_ReefWalking extends Chant_PlantPass
 		final Room R=mob.location();
 		if(R==null)
 			return false;
-		switch(R.domainType())
+		if(!CMLib.flags().isWateryRoom(R))
 		{
-		case Room.DOMAIN_INDOORS_UNDERWATER:
-		case Room.DOMAIN_INDOORS_WATERSURFACE:
-		case Room.DOMAIN_OUTDOORS_UNDERWATER:
-		case Room.DOMAIN_OUTDOORS_WATERSURFACE:
-			break;
-		default:
 			mob.tell(L("You must be in a watery area to do reef walking."));
 			return false;
 		}

@@ -78,26 +78,6 @@ public class Sinking extends StdAbility
 		return proficiency() == 100;
 	}
 
-	protected boolean isWaterSurface(Room R)
-	{
-		if(R==null)
-			return false;
-		if((R.domainType()==Room.DOMAIN_INDOORS_WATERSURFACE)
-		||(R.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
-			return true;
-		return false;
-	}
-	
-	protected boolean isUnderWater(Room R)
-	{
-		if(R==null)
-			return false;
-		if((R.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
-		||(R.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER))
-			return true;
-		return false;
-	}
-
 	protected boolean canSinkFrom(Room fromHere, int direction)
 	{
 		if((fromHere==null)||(direction<0)||(direction>=Directions.NUM_DIRECTIONS()))
@@ -108,7 +88,7 @@ public class Sinking extends StdAbility
 		||(fromHere.getExitInDir(direction)==null)
 		||(!fromHere.getExitInDir(direction).isOpen()))
 			return false;
-		if((!isWaterSurface(toHere))&&(!isUnderWater(toHere)))
+		if((!CMLib.flags().isWaterySurfaceRoom(toHere))&&(!CMLib.flags().isUnderWateryRoom(toHere)))
 			return false;
 		return true;
 	}
@@ -188,7 +168,7 @@ public class Sinking extends StdAbility
 			if(R==null)
 				return false;
 
-			if(!isWaterSurface(R)
+			if(!CMLib.flags().isWaterySurfaceRoom(R)
 			||(CMLib.flags().isWaterWorthy(mob))
 			||(CMLib.flags().isInFlight(mob))
 			||(mob.phyStats().weight()<1)

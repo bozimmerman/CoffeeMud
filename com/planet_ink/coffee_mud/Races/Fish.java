@@ -193,12 +193,8 @@ public class Fish extends StdRace
 		final MOB mob=(MOB)affected;
 		final Room R=mob.location();
 		if((R!=null)
-		&&((R.domainType()==Room.DOMAIN_INDOORS_WATERSURFACE)
-			||(R.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)
-			||(R.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
-			||(R.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
-			||((RawMaterial.CODES.GET(R.getAtmosphere())&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID)))
-				affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SWIMMING);
+		&&(CMLib.flags().isWateryRoom(R)))
+			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SWIMMING);
 	}
 
 	protected boolean canBreatheThis(final MOB mob, final int atmoResource)

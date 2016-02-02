@@ -35,20 +35,73 @@ import java.util.*;
 
 public class Skill_Dirt extends StdSkill
 {
-	boolean doneTicking=false;
-	@Override public String ID() { return "Skill_Dirt"; }
-	private final static String localizedName = CMLib.lang().L("Dirt");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Dirt in your eyes)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	private static final String[] triggerStrings =I(new String[] {"DIRT"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_DIRTYFIGHTING;}
-	@Override public int maxRange(){return adjustedMaxInvokerRange(1);}
-	@Override public int usageType(){return USAGE_MOVEMENT;}
+	@Override
+	public String ID()
+	{
+		return "Skill_Dirt";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Dirt");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Dirt in your eyes)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "DIRT" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL | Ability.DOMAIN_DIRTYFIGHTING;
+	}
+
+	@Override
+	public int maxRange()
+	{
+		return adjustedMaxInvokerRange(1);
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT;
+	}
+
+	boolean	doneTicking	= false;
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
@@ -116,11 +169,8 @@ public class Skill_Dirt extends StdSkill
 		 ||(R.domainType()==Room.DOMAIN_OUTDOORS_AIR)
 		 ||(R.domainType()==Room.DOMAIN_OUTDOORS_CITY)
 		 ||(R.domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)
-		 ||(R.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
-		 ||(R.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)
+		 ||(CMLib.flags().isWateryRoom(R))
 		 ||(R.domainType()==Room.DOMAIN_INDOORS_AIR)
-		 ||(R.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
-		 ||(R.domainType()==Room.DOMAIN_INDOORS_WATERSURFACE)
 		 ||(R.domainType()==Room.DOMAIN_INDOORS_MAGIC)
 		 ||(R.domainType()==Room.DOMAIN_INDOORS_STONE)
 		 ||(R.domainType()==Room.DOMAIN_INDOORS_METAL)

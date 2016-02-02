@@ -1070,7 +1070,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 				}
 				if((R.domainType()==Room.DOMAIN_INDOORS_WATERSURFACE)
 				||(R.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
-						verb=L("demolishing the pool");
+					verb=L("demolishing the pool");
 				else
 				if((R.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
 				||(R.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER))

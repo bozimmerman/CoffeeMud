@@ -199,13 +199,13 @@ public class Chant_TidalWave extends Chant
 				final Exit E=mobR.getExitInDir(d);
 				if((R!=null)&&(E!=null)&&(E.isOpen()))
 				{
-					if(CMLib.flags().isWatery(R))
+					if(CMLib.flags().isWateryRoom(R))
 					{
 						return d;
 					}
 					final Room R2=R.getRoomInDir(d);
 					final Exit E2=R.getExitInDir(d);
-					if((R2!=null)&&(E2!=null)&&(E2.isOpen()) && (CMLib.flags().isWatery(R2)))
+					if((R2!=null)&&(E2!=null)&&(E2.isOpen()) && (CMLib.flags().isWateryRoom(R2)))
 					{
 						return d;
 					}
@@ -231,7 +231,7 @@ public class Chant_TidalWave extends Chant
 	{
 		if(target instanceof Room)
 		{
-			if(CMLib.flags().isWatery((Room)target))
+			if(CMLib.flags().isWateryRoom((Room)target))
 				return (Room)target;
 			
 		}
@@ -246,7 +246,7 @@ public class Chant_TidalWave extends Chant
 			return (Room)((Item)target).owner();
 		return null;
 	}
-	
+
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -258,8 +258,7 @@ public class Chant_TidalWave extends Chant
 			mob.tell(L("You must be on or near the water for this chant to work."));
 			return false;
 		}
-		if((R.domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE)
-		&&(R.domainType()!=Room.DOMAIN_INDOORS_WATERSURFACE))
+		if(!CMLib.flags().isWaterySurfaceRoom(R))
 		{
 			mob.tell(L("This chant does not work here."));
 			return false;
@@ -363,7 +362,7 @@ public class Chant_TidalWave extends Chant
 		
 		String fromDir;
 		int waterDir = -1;
-		if(CMLib.flags().isWatery(R))
+		if(CMLib.flags().isWateryRoom(R))
 			fromDir="right here";
 		else
 		{
@@ -375,7 +374,7 @@ public class Chant_TidalWave extends Chant
 					if((I!=null)&&(I.owner() instanceof Room))
 					{
 						Room R2=(Room)I.owner();
-						if(CMLib.flags().isWatery(R2))
+						if(CMLib.flags().isWateryRoom(R2))
 							waterDir = CMLib.dice().roll(1, 4, -1);
 						else
 							waterDir = getWaterRoomDir(R2);

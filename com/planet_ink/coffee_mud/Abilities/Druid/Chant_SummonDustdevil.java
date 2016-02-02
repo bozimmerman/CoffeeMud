@@ -35,17 +35,63 @@ import java.util.*;
 
 public class Chant_SummonDustdevil extends Chant
 {
-	@Override public String ID() { return "Chant_SummonDustdevil"; }
-	private final static String localizedName = CMLib.lang().L("Summon Dustdevil");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Summon Dustdevil)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public long flags(){return Ability.FLAG_SUMMONING;}
+	@Override
+	public String ID()
+	{
+		return "Chant_SummonDustdevil";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Summon Dustdevil");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Summon Dustdevil)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_SELF;
+	}
+
+	@Override
+	public int enchantQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT | Ability.DOMAIN_WEATHER_MASTERY;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_SUMMONING;
+	}
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
@@ -178,12 +224,10 @@ public class Chant_SummonDustdevil extends Chant
 			{
 				if((R.domainType()&Room.INDOORS)>0)
 					return Ability.QUALITY_INDIFFERENT;
-				if((R.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
-				||(R.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
+				if(CMLib.flags().isWateryRoom(R))
 					return Ability.QUALITY_INDIFFERENT;
 				if(mob.isInCombat())
 					return Ability.QUALITY_INDIFFERENT;
-
 			}
 		}
 		return super.castingQuality(mob,target);
@@ -197,8 +241,7 @@ public class Chant_SummonDustdevil extends Chant
 			mob.tell(L("You must be outdoors for this chant to work."));
 			return false;
 		}
-		if((mob.location().domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
-		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
+		if(CMLib.flags().isWateryRoom(mob.location()))
 		{
 			mob.tell(L("This magic will not work here."));
 			return false;

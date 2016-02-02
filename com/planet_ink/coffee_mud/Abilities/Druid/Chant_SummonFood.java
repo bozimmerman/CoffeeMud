@@ -36,13 +36,43 @@ import java.util.*;
 
 public class Chant_SummonFood extends Chant
 {
-	@Override public String ID() { return "Chant_SummonFood"; }
-	private final static String localizedName = CMLib.lang().L("Summon Food");
-	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
+	@Override
+	public String ID()
+	{
+		return "Chant_SummonFood";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Summon Food");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT | Ability.DOMAIN_PLANTGROWTH;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -55,9 +85,8 @@ public class Chant_SummonFood extends Chant
 		}
 		if((mob.location().domainType()==Room.DOMAIN_OUTDOORS_CITY)
 		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)
-		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
 		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_AIR)
-		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
+		   ||(CMLib.flags().isWateryRoom(mob.location())))
 		{
 			mob.tell(L("This magic will not work here."));
 			return false;

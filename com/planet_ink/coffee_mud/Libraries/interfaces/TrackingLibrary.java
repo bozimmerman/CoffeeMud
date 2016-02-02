@@ -141,10 +141,7 @@ public interface TrackingLibrary extends CMLibrary
 			@Override
 			public boolean isFilteredOut(Room hostR, final Room R, final Exit E, final int dir)
 			{
-				return (R.domainType() == Room.DOMAIN_INDOORS_WATERSURFACE) 
-						|| (R.domainType() == Room.DOMAIN_INDOORS_UNDERWATER) 
-						|| (R.domainType() == Room.DOMAIN_OUTDOORS_UNDERWATER)
-						|| (R.domainType() == Room.DOMAIN_OUTDOORS_WATERSURFACE);
+				return CMLib.flags().isWateryRoom(R);
 			}
 		}),
 		WATERSURFACEONLY(new RFilter()
@@ -152,8 +149,7 @@ public interface TrackingLibrary extends CMLibrary
 			@Override
 			public boolean isFilteredOut(Room hostR, final Room R, final Exit E, final int dir)
 			{
-				return (R.domainType() != Room.DOMAIN_INDOORS_WATERSURFACE)
-						&& (R.domainType() != Room.DOMAIN_OUTDOORS_WATERSURFACE);
+				return !CMLib.flags().isWaterySurfaceRoom(R);
 			}
 		}),
 		UNDERWATERONLY(new RFilter()
@@ -161,8 +157,7 @@ public interface TrackingLibrary extends CMLibrary
 			@Override
 			public boolean isFilteredOut(Room hostR, final Room R, final Exit E, final int dir)
 			{
-				return (R.domainType() != Room.DOMAIN_INDOORS_UNDERWATER)
-						&& (R.domainType() != Room.DOMAIN_OUTDOORS_UNDERWATER);
+				return !CMLib.flags().isUnderWateryRoom(R);
 			}
 		}),
 		FLOORSONLY(new RFilter()

@@ -62,6 +62,7 @@ public class StdRideable extends StdMOB implements Rideable
 		super.cloneFix(E);
 		riders=new SVector();
 	}
+
 	@Override
 	public DeadBody killMeDead(boolean createBody)
 	{
@@ -160,21 +161,29 @@ public class StdRideable extends StdMOB implements Rideable
 	@Override
 	public Rider fetchRider(int which)
 	{
-		try	{ return riders.get(which);	}
-		catch(final java.lang.ArrayIndexOutOfBoundsException e){}
+		try
+		{
+			return riders.get(which);
+		}
+		catch (final java.lang.ArrayIndexOutOfBoundsException e)
+		{
+		}
 		return null;
 	}
+
 	@Override
 	public String putString(Rider R)
 	{
 		return "on";
 	}
+
 	@Override
 	public void addRider(Rider mob)
 	{
 		if((mob!=null)&&(!riders.contains(mob)))
 			riders.add(mob);
 	}
+
 	@Override
 	public void delRider(Rider mob)
 	{
@@ -476,25 +485,19 @@ public class StdRideable extends StdMOB implements Rideable
 					{
 					case Rideable.RIDEABLE_LAND:
 						if((targetRoom.domainType()==Room.DOMAIN_OUTDOORS_AIR)
-						||(targetRoom.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
-						||(targetRoom.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
-						||(targetRoom.domainType()==Room.DOMAIN_INDOORS_WATERSURFACE)
-						||(targetRoom.domainType()==Room.DOMAIN_INDOORS_AIR)
-						||(targetRoom.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
+						||(CMLib.flags().isWateryRoom(targetRoom))
+						||(targetRoom.domainType()==Room.DOMAIN_INDOORS_AIR))
 							ok=false;
 						break;
 					case Rideable.RIDEABLE_AIR:
 						break;
 					case Rideable.RIDEABLE_WATER:
-						if((sourceRoom.domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE)
-						&&(targetRoom.domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE)
-						&&(sourceRoom.domainType()!=Room.DOMAIN_INDOORS_WATERSURFACE)
-						&&(targetRoom.domainType()!=Room.DOMAIN_INDOORS_WATERSURFACE))
+						if((!CMLib.flags().isWaterySurfaceRoom(sourceRoom))
+						&&(!CMLib.flags().isWaterySurfaceRoom(targetRoom)))
 							ok=false;
 						if((targetRoom.domainType()==Room.DOMAIN_INDOORS_AIR)
 						||(targetRoom.domainType()==Room.DOMAIN_OUTDOORS_AIR)
-						||(targetRoom.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
-						||(targetRoom.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER))
+						||(CMLib.flags().isUnderWateryRoom(targetRoom)))
 							ok=false;
 						break;
 					}

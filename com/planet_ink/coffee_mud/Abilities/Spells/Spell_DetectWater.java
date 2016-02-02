@@ -36,16 +36,53 @@ import java.util.*;
 
 public class Spell_DetectWater extends Spell
 {
-	@Override public String ID() { return "Spell_DetectWater"; }
-	private final static String localizedName = CMLib.lang().L("Detect Water");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Detecting Water)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
-	@Override public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	Room lastRoom=null;
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;	}
+	@Override
+	public String ID()
+	{
+		return "Spell_DetectWater";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Detect Water");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Detecting Water)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_SELF;
+	}
+
+	@Override
+	public int enchantQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_SELF;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	Room	lastRoom	= null;
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL | Ability.DOMAIN_DIVINATION;
+	}
 
 	@Override
 	public void unInvoke()
@@ -59,6 +96,7 @@ public class Spell_DetectWater extends Spell
 		if(canBeUninvoked())
 			mob.tell(L("Your senses are no longer sensitive to liquids."));
 	}
+
 	public String waterCheck(MOB mob, Item I, Item container, StringBuffer msg)
 	{
 		if(I==null)
@@ -76,6 +114,7 @@ public class Spell_DetectWater extends Spell
 				msg.append(L("@x1 contains some sort of liquid.\n\r",I.container().name()));
 		return msg.toString();
 	}
+
 	public String waterHere(MOB mob, Environmental E, Item container)
 	{
 		final StringBuffer msg=new StringBuffer("");
@@ -84,10 +123,7 @@ public class Spell_DetectWater extends Spell
 		if((E instanceof Room)&&(CMLib.flags().canBeSeenBy(E,mob)))
 		{
 			final Room room=(Room)E;
-			if((room.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
-			||(room.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)
-			||(room.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
-			||(room.domainType()==Room.DOMAIN_INDOORS_WATERSURFACE))
+			if(CMLib.flags().isWateryRoom(room))
 				msg.append(L("Your liquid senses are saturated.  This is a very wet place.\n\r"));
 			else
 			if(CMath.bset(room.getClimateType(),Places.CLIMASK_WET))
@@ -132,7 +168,7 @@ public class Spell_DetectWater extends Spell
 				final StringBuffer msg2=new StringBuffer("");
 				waterCheck(mob,I,container,msg2);
 				if(msg2.length()>0)
-					return E.name()+" is carrying some liquids.";
+					return L("@x1 is carrying some liquids.",E.name());
 			}
 			final ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(E);
 			if(SK!=null)
@@ -144,7 +180,7 @@ public class Spell_DetectWater extends Spell
 					if(E2 instanceof Item)
 						waterCheck(mob,(Item)E2,container,msg2);
 					if(msg2.length()>0)
-						return E.name()+" has some liquids in stock.";
+						return L("@x1 has some liquids in stock.",E.name());
 				}
 			}
 		}

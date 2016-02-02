@@ -35,25 +35,96 @@ import java.util.*;
 
 public class Disease_HeatExhaustion extends Disease
 {
-	@Override public String ID() { return "Disease_HeatExhaustion"; }
-	private final static String localizedName = CMLib.lang().L("Heat Exhaustion");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Heat Exhaustion)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public boolean putInCommandlist(){return false;}
-	@Override public int difficultyLevel(){return 1;}
+	@Override
+	public String ID()
+	{
+		return "Disease_HeatExhaustion";
+	}
 
-	@Override protected int DISEASE_TICKS(){return 300;}
-	@Override protected int DISEASE_DELAY(){return 3;}
-	@Override protected String DISEASE_DONE(){return L("Your head stops spinning.");}
-	@Override protected String DISEASE_START(){return L("^G<S-NAME> <S-IS-ARE> overcome by the heat.^?");}
-	@Override protected String DISEASE_AFFECT(){return "";}
-	@Override public int abilityCode(){return 0;}
-	protected Room theRoom=null;
-	protected int changeDown=300;
+	private final static String	localizedName	= CMLib.lang().L("Heat Exhaustion");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Heat Exhaustion)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public boolean putInCommandlist()
+	{
+		return false;
+	}
+
+	@Override
+	public int difficultyLevel()
+	{
+		return 1;
+	}
+
+	@Override
+	protected int DISEASE_TICKS()
+	{
+		return 300;
+	}
+
+	@Override
+	protected int DISEASE_DELAY()
+	{
+		return 3;
+	}
+
+	@Override
+	protected String DISEASE_DONE()
+	{
+		return L("Your head stops spinning.");
+	}
+
+	@Override
+	protected String DISEASE_START()
+	{
+		return L("^G<S-NAME> <S-IS-ARE> overcome by the heat.^?");
+	}
+
+	@Override
+	protected String DISEASE_AFFECT()
+	{
+		return "";
+	}
+
+	@Override
+	public int abilityCode()
+	{
+		return 0;
+	}
+
+	protected Room	theRoom		= null;
+	protected int	changeDown	= 300;
 
 	public Room room(Room R)
 	{
@@ -103,10 +174,8 @@ public class Disease_HeatExhaustion extends Disease
 			if(M.location()!=null)
 			{
 				final Area A=M.location().getArea();
-				switch(M.location().domainType())
+				if(CMLib.flags().isUnderWateryRoom(M.location()))
 				{
-				case Room.DOMAIN_INDOORS_UNDERWATER:
-				case Room.DOMAIN_OUTDOORS_UNDERWATER:
 					unInvoke();
 					return false;
 				}
@@ -114,6 +183,7 @@ public class Disease_HeatExhaustion extends Disease
 				if(A!=null)
 					C=A.getClimateObj();
 				if(C!=null)
+				{
 					switch(C.weatherType(M.location()))
 					{
 					case Climate.WEATHER_BLIZZARD:
@@ -129,6 +199,7 @@ public class Disease_HeatExhaustion extends Disease
 					default:
 						break;
 					}
+				}
 			}
 
 		}

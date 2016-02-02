@@ -37,15 +37,51 @@ import java.util.*;
 
 public class Chant_SacredEarth extends Chant
 {
-	@Override public String ID() { return "Chant_SacredEarth"; }
-	private final static String localizedName = CMLib.lang().L("Sacred Earth");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Sacred Earth)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	@Override protected int canAffectCode(){return CAN_ROOMS;}
-	@Override protected int canTargetCode(){return 0;}
+	@Override
+	public String ID()
+	{
+		return "Chant_SacredEarth";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Sacred Earth");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Sacred Earth)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT | Ability.DOMAIN_ENDURING;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_ROOMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
 
 	@Override
 	public void unInvoke()
@@ -84,17 +120,16 @@ public class Chant_SacredEarth extends Chant
 		return true;
 	}
 
-   @Override
-public int castingQuality(MOB mob, Physical target)
-   {
+	@Override
+	public int castingQuality(MOB mob, Physical target)
+	{
 		if(mob!=null)
 		{
 			final Room R=mob.location();
 			if(R!=null)
 			{
 				if(((R.domainType()&Room.INDOORS)>0)
-				||(R.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
-				||(R.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)
+				||CMLib.flags().isWateryRoom(R)
 				||(R.domainType()==Room.DOMAIN_OUTDOORS_AIR))
 					return Ability.QUALITY_INDIFFERENT;
 			}
@@ -128,8 +163,7 @@ public int castingQuality(MOB mob, Physical target)
 			return false;
 		}
 		if((((mob.location().domainType()&Room.INDOORS)>0)
-		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
-		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)
+		   ||(CMLib.flags().isWateryRoom(mob.location()))
 		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_AIR))
 		&&(!auto))
 		{
@@ -159,8 +193,7 @@ public int castingQuality(MOB mob, Physical target)
 						if((R!=null)
 						&&(R.fetchEffect(ID())==null)
 						&&((R.domainType()&Room.INDOORS)==0)
-						&&(R.domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
-						&&(R.domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE)
+						&&(!CMLib.flags().isWateryRoom(R))
 						&&(R.domainType()!=Room.DOMAIN_OUTDOORS_AIR))
 							beneficialAffect(mob,R,asLevel,0);
 					}

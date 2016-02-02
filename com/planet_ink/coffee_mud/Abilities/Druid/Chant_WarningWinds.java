@@ -36,14 +36,41 @@ import java.util.*;
 
 public class Chant_WarningWinds extends Chant
 {
-	@Override public String ID() { return "Chant_WarningWinds"; }
-	private final static String localizedName = CMLib.lang().L("Warning Winds");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Warning Winds)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;}
-	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
-	Room lastRoom=null;
+	@Override
+	public String ID()
+	{
+		return "Chant_WarningWinds";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Warning Winds");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Warning Winds)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT | Ability.DOMAIN_WEATHER_MASTERY;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_SELF;
+	}
+
+	Room	lastRoom	= null;
 
 	@Override
 	public void unInvoke()
@@ -57,6 +84,7 @@ public class Chant_WarningWinds extends Chant
 		if(canBeUninvoked())
 			mob.tell(L("Your senses are no longer attuned to the winds."));
 	}
+
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -67,7 +95,7 @@ public class Chant_WarningWinds extends Chant
 		&&(((MOB)affected).location()!=null)
 		&&(((MOB)affected).location()!=lastRoom)
 		&&((((MOB)affected).location().domainType()&Room.INDOORS)==0)
-		&&(((MOB)affected).location().domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER))
+		&&(!CMLib.flags().isUnderWateryRoom(((MOB)affected).location())))
 		{
 			lastRoom=((MOB)affected).location();
 			final Vector<Room> V=new Vector<Room>();

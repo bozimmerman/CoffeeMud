@@ -77,7 +77,7 @@ public class Chant_SiftWrecks extends Chant
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		if(!auto && !CMLib.flags().isWatery(mob.location()))
+		if(!auto && !CMLib.flags().isWateryRoom(mob.location()))
 		{
 			mob.tell(L("You should be in a watery locale to use this magic."));
 			return false;

@@ -87,15 +87,8 @@ public class Chant_WaterHammer extends Chant
 		final Room R=caster.location();
 		if(R!=null)
 		{
-			switch(R.domainType())
-			{
-			case Room.DOMAIN_INDOORS_WATERSURFACE:
-			case Room.DOMAIN_OUTDOORS_WATERSURFACE:
-			case Room.DOMAIN_INDOORS_UNDERWATER:
-			case Room.DOMAIN_OUTDOORS_UNDERWATER:
+			if(CMLib.flags().isWateryRoom(R))
 				return R;
-			default:
-			}
 			for(Enumeration<Item> i=R.items();i.hasMoreElements();)
 			{
 				final Item I=i.nextElement();
@@ -120,15 +113,8 @@ public class Chant_WaterHammer extends Chant
 				if(I.owner() instanceof Room)
 				{
 					Room outerR=((Room)I.owner());
-					switch(outerR.domainType())
-					{
-					case Room.DOMAIN_INDOORS_WATERSURFACE:
-					case Room.DOMAIN_OUTDOORS_WATERSURFACE:
-					case Room.DOMAIN_INDOORS_UNDERWATER:
-					case Room.DOMAIN_OUTDOORS_UNDERWATER:
+					if(CMLib.flags().isWateryRoom(outerR))
 						return outerR;
-					default:
-					}
 				}
 			}
 		}

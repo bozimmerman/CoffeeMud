@@ -37,21 +37,69 @@ import java.util.*;
 
 public class Ranger_FindWater extends StdAbility
 {
-	@Override public String ID() { return "Ranger_FindWater"; }
-	private final static String localizedName = CMLib.lang().L("Find Water");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(finding water)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
-	private static final String[] triggerStrings =I(new String[] {"FINDWATER"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_NATURELORE;}
-	@Override public long flags(){return Ability.FLAG_TRACKING;}
+	@Override
+	public String ID()
+	{
+		return "Ranger_FindWater";
+	}
 
-	protected List<Room> theTrail=null;
-	public int nextDirection=-2;
+	private final static String	localizedName	= CMLib.lang().L("Find Water");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(finding water)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_SELF;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "FINDWATER" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL | Ability.DOMAIN_NATURELORE;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_TRACKING;
+	}
+
+	protected List<Room>	theTrail		= null;
+	public int				nextDirection	= -2;
+
 	@Override
 	public void unInvoke()
 	{
@@ -186,10 +234,7 @@ public class Ranger_FindWater extends StdAbility
 		if((E instanceof Room)&&(CMLib.flags().canBeSeenBy(E,mob)))
 		{
 			final Room room=(Room)E;
-			if((room.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
-			   ||(room.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)
-			   ||(room.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
-			   ||(room.domainType()==Room.DOMAIN_INDOORS_WATERSURFACE))
+			if(CMLib.flags().isWateryRoom(room))
 				msg.append(L("Your water-finding senses are saturated.  This is a very wet place.\n\r"));
 			else
 			if(CMath.bset(room.getClimateType(),Places.CLIMASK_WET))
@@ -234,7 +279,7 @@ public class Ranger_FindWater extends StdAbility
 				final StringBuffer msg2=new StringBuffer("");
 				waterCheck(mob,I,container,msg2);
 				if(msg2.length()>0)
-					return E.name()+" is carrying some liquids.";
+					return L("@x1 is carrying some liquids.",E.name());
 			}
 			final ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(E);
 			if(SK!=null)
@@ -246,7 +291,7 @@ public class Ranger_FindWater extends StdAbility
 					if(E2 instanceof Item)
 						waterCheck(mob,(Item)E2,container,msg2);
 					if(msg2.length()>0)
-						return E.name()+" has some liquids in stock.";
+						return L("@x1 has some liquids in stock.",E.name());
 				}
 			}
 		}

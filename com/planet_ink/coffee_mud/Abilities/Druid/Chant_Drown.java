@@ -131,17 +131,8 @@ public class Chant_Drown extends Chant
 		final Room R=myChar.location();
 		if(R==null)
 			return true;
-		switch(R.domainType())
-		{
-		case Room.DOMAIN_INDOORS_WATERSURFACE:
-		case Room.DOMAIN_OUTDOORS_WATERSURFACE:
-		case Room.DOMAIN_INDOORS_UNDERWATER:
-		case Room.DOMAIN_OUTDOORS_UNDERWATER:
-			break;
-		default:
+		if(!CMLib.flags().isWateryRoom(R))
 			unInvoke();
-			break;
-		}
 		return true;
 	}
 	
@@ -210,7 +201,6 @@ public class Chant_Drown extends Chant
 		}
 		else
 			return maliciousFizzle(mob,target,L("<S-NAME> chant(s) to <T-NAMESELF>, but the magic fades."));
-
 
 		// return whether it worked
 		return success;

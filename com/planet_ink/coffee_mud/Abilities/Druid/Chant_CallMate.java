@@ -185,10 +185,7 @@ public class Chant_CallMate extends Chant
 		String raceCat = mob.charStats().getMyRace().racialCategory();
 		if((raceCat.equalsIgnoreCase("Fish"))||(raceCat.equalsIgnoreCase("Sea Mammal")))
 		{
-			if((R.domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
-			&&(R.domainType()!=Room.DOMAIN_INDOORS_UNDERWATER)
-			&&(R.domainType()!=Room.DOMAIN_INDOORS_WATERSURFACE)
-			&&(R.domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE))
+			if(!CMLib.flags().isWateryRoom(R))
 			{
 				mob.tell(L("This magic will not work here."));
 				return false;

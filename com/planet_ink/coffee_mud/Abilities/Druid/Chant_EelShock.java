@@ -36,17 +36,63 @@ import java.util.*;
 
 public class Chant_EelShock extends Chant
 {
-	@Override public String ID() { return "Chant_EelShock"; }
-	private final static String localizedName = CMLib.lang().L("Eel Shock");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Stunned)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public int maxRange() {return 3;}
-	@Override public int minRange() {return 0;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;}
-	@Override public long flags(){return Ability.FLAG_AIRBASED;}
+	@Override
+	public String ID()
+	{
+		return "Chant_EelShock";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Eel Shock");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Stunned)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public int maxRange()
+	{
+		return 3;
+	}
+
+	@Override
+	public int minRange()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT | Ability.DOMAIN_WEATHER_MASTERY;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_AIRBASED;
+	}
 
 	@Override
 	public void unInvoke()
@@ -68,7 +114,6 @@ public class Chant_EelShock extends Chant
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setDisposition(PhyStats.IS_SITTING);
 	}
-
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
@@ -93,11 +138,7 @@ public class Chant_EelShock extends Chant
 
 	private boolean roomWet(Room location)
 	{
-		if(location.domainType() == Room.DOMAIN_INDOORS_UNDERWATER ||
-		   location.domainType() == Room.DOMAIN_INDOORS_WATERSURFACE ||
-		   location.domainType() == Room.DOMAIN_OUTDOORS_UNDERWATER ||
-		   location.domainType() == Room.DOMAIN_OUTDOORS_WATERSURFACE ||
-		   location.domainType() == Room.DOMAIN_OUTDOORS_SWAMP)
+		if(CMLib.flags().isWateryRoom(location) || location.domainType() == Room.DOMAIN_OUTDOORS_SWAMP)
 			return true;
 
 		final Area currentArea = location.getArea();
@@ -151,6 +192,7 @@ public class Chant_EelShock extends Chant
 		if(success)
 		{
 			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),L("^S<S-NAME> chant(s) and electrical sparks dance across <S-HIS-HER> skin.^?")))
+			{
 				for (final Object element : h)
 				{
 					final MOB target=(MOB)element;
@@ -163,6 +205,7 @@ public class Chant_EelShock extends Chant
 							maliciousAffect(mob,target,asLevel,3+super.getXLEVELLevel(mob)+(2*super.getX1Level(mob)),-1);
 					}
 				}
+			}
 		}
 		else
 			return maliciousFizzle(mob,null,L("<S-NAME> sees tiny sparks dance across <S-HIS-HER> skin, but nothing more happens."));

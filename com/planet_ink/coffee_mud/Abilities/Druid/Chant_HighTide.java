@@ -170,19 +170,6 @@ public class Chant_HighTide extends Chant
 		return super.castingQuality(mob,target);
 	}
 
-	public boolean isWaterRoom(Room R)
-	{
-		switch(R.domainType())
-		{
-		case Room.DOMAIN_INDOORS_UNDERWATER:
-		case Room.DOMAIN_OUTDOORS_UNDERWATER:
-		case Room.DOMAIN_INDOORS_WATERSURFACE:
-		case Room.DOMAIN_OUTDOORS_WATERSURFACE:
-			return true;
-		}
-		return false;
-	}
-	
 	public int getWaterRoomDir(Room mobR)
 	{
 		for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
@@ -193,13 +180,13 @@ public class Chant_HighTide extends Chant
 				final Exit E=mobR.getExitInDir(d);
 				if((R!=null)&&(E!=null)&&(E.isOpen()))
 				{
-					if(isWaterRoom(R))
+					if(CMLib.flags().isWateryRoom(R))
 					{
 						return d;
 					}
 					final Room R2=R.getRoomInDir(d);
 					final Exit E2=R.getExitInDir(d);
-					if((R2!=null)&&(E2!=null)&&(E2.isOpen()) && (isWaterRoom(R2)))
+					if((R2!=null)&&(E2!=null)&&(E2.isOpen()) && (CMLib.flags().isWateryRoom(R2)))
 					{
 						return d;
 					}
@@ -215,7 +202,7 @@ public class Chant_HighTide extends Chant
 		final Room mobR=mob.location();
 		if(mobR==null)
 			return false;
-		if(isWaterRoom(mobR))
+		if(CMLib.flags().isWateryRoom(mobR))
 		{
 			mob.tell(L("This chant won't be noticeable ON the water."));
 			return false;
@@ -229,7 +216,7 @@ public class Chant_HighTide extends Chant
 				if((I!=null)&&(I.owner() instanceof Room))
 				{
 					Room R=(Room)I.owner();
-					if(isWaterRoom(R))
+					if(CMLib.flags().isWateryRoom(R))
 						waterDir = CMLib.dice().roll(1, 4, -1);
 					else
 						waterDir = getWaterRoomDir(R);

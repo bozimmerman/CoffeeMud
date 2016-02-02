@@ -376,7 +376,7 @@ public class GenSailingShip extends StdBoardable
 		if((msg.targetMinor()==CMMsg.TYP_SIT)
 		&&(msg.target()==this)
 		&&(msg.source().location()==owner())
-		&&(CMLib.flags().isWatery(msg.source().location()))
+		&&(CMLib.flags().isWateryRoom(msg.source().location()))
 		&&(!CMLib.flags().isClimbing(msg.source()))
 		&&(!CMLib.flags().isFlying(msg.source()))
 		&&(!CMLib.law().doesHavePriviledgesHere(msg.source(), super.getDestinationRoom())))
@@ -468,7 +468,7 @@ public class GenSailingShip extends StdBoardable
 	}
 
 	@Override
-    protected Room findNearestDocks(Room R)
+	protected Room findNearestDocks(Room R)
 	{
 		if(R!=null)
 		{
@@ -489,25 +489,22 @@ public class GenSailingShip extends StdBoardable
 			}
 			for(final Room R2 : rooms)
 			{
-				if(R2.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)
+				if(CMLib.flags().isWaterySurfaceRoom(R2))
 				{
-					final Room underWaterR=R.getRoomInDir(Directions.DOWN);
+					final Room underWaterR=R2.getRoomInDir(Directions.DOWN);
 					if((underWaterR!=null)
-					&&(R2.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
+					&&(CMLib.flags().isUnderWateryRoom(underWaterR))
 					&&(R.getExitInDir(Directions.DOWN)!=null)
 					&&(R.getExitInDir(Directions.DOWN).isOpen()))
 					{
 						for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
 						{
-							final Room adjacentR = underWaterR.getRoomInDir(d);
-							final Exit adjacentE = underWaterR.getExitInDir(d);
+							final Room adjacentR = R2.getRoomInDir(d);
+							final Exit adjacentE = R2.getExitInDir(d);
 							if((adjacentR!=null)
 							&&(adjacentE!=null)
 							&&(adjacentE.isOpen())
-							&&(R2.domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE)
-							&&(R2.domainType()!=Room.DOMAIN_INDOORS_WATERSURFACE)
-							&&(R2.domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
-							&&(R2.domainType()!=Room.DOMAIN_INDOORS_UNDERWATER))
+							&&(!CMLib.flags().isWateryRoom(adjacentR)))
 								return adjacentR;
 						}
 					}

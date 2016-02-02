@@ -156,13 +156,13 @@ public class Chant_Tsunami extends Chant
 				final Exit E=mobR.getExitInDir(d);
 				if((R!=null)&&(E!=null)&&(E.isOpen()))
 				{
-					if(CMLib.flags().isWatery(R))
+					if(CMLib.flags().isWateryRoom(R))
 					{
 						return d;
 					}
 					final Room R2=R.getRoomInDir(d);
 					final Exit E2=R.getExitInDir(d);
-					if((R2!=null)&&(E2!=null)&&(E2.isOpen()) && (CMLib.flags().isWatery(R2)))
+					if((R2!=null)&&(E2!=null)&&(E2.isOpen()) && (CMLib.flags().isWateryRoom(R2)))
 					{
 						return d;
 					}
@@ -187,17 +187,17 @@ public class Chant_Tsunami extends Chant
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		final Room R=mob.location();
-		if(R==null)
+		final Room mobR=mob.location();
+		if(mobR==null)
 			return false;
-		if(((R.domainType()&Room.INDOORS)>0)||(R.getArea() instanceof BoardableShip))
+		if(((mobR.domainType()&Room.INDOORS)>0)||(mobR.getArea() instanceof BoardableShip))
 		{
 			mob.tell(L("You must be on or near the shore for this chant to work."));
 			return false;
 		}
 		
 		List<Room> targetRooms = new ArrayList<Room>();
-		int waterDir = this.getWaterRoomDir(mob.location());
+		int waterDir = this.getWaterRoomDir(mobR);
 		if(waterDir < 0)
 		{
 			mob.tell(L("You must be on or near the shore for this chant to work."));
@@ -205,9 +205,9 @@ public class Chant_Tsunami extends Chant
 		}
 		String fromDir = Directions.getFromCompassDirectionName(waterDir);
 		
-		targetRooms.add(mob.location());
+		targetRooms.add(mobR);
 		TrackingLibrary.TrackingFlags flags=CMLib.tracking().newFlags().plus(TrackingFlag.NOAIR).plus(TrackingFlag.OPENONLY).plus(TrackingFlag.NOWATER);
-		targetRooms.addAll(CMLib.tracking().getRadiantRooms(mob.location(), flags, 1));
+		targetRooms.addAll(CMLib.tracking().getRadiantRooms(mobR, flags, 1));
 		
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -239,15 +239,40 @@ public class Chant_Tsunami extends Chant
 			}
 		}
 		
-		Physical target=mob.location();
+		Physical target=mobR;
 		
 		if(success)
 		{
+			int newAtmosphere = RawMaterial.RESOURCE_SALTWATER;
+			if((mobR.getAtmosphere()&RawMaterial.MATERIAL_LIQUID)>0)
+				newAtmosphere = mobR.getAtmosphere();
+			for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+			{
+				Room R=mobR.getRoomInDir(d);
+				if(R!=null)
+				{
+					if((R.getAtmosphere()&RawMaterial.MATERIAL_LIQUID)>0)
+					{
+						newAtmosphere =R.getAtmosphere();
+						break;
+					}
+					R=R.getRoomInDir(d);
+					if(R!=null)
+					{
+						if((R.getAtmosphere()&RawMaterial.MATERIAL_LIQUID)>0)
+						{
+							newAtmosphere =R.getAtmosphere();
+							break;
+						}
+					}
+				}
+			}
+			
 			final Set<MOB> casterGroup=mob.getGroupMembers(new HashSet<MOB>());
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L(""):L("^S<S-NAME> chant(s), calling in a tsunami from @x1.^?",fromDir));
-			if(R.okMessage(mob,msg))
+			if(mobR.okMessage(mob,msg))
 			{
-				R.send(mob, msg);
+				mobR.send(mob, msg);
 				
 				final CMMsg msg2=CMClass.getMsg(mob,null,this,verbalCastCode(mob,target,auto),null);
 				final CMMsg msg3=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_WATER|(auto?CMMsg.MASK_ALWAYS:0),null);
@@ -274,10 +299,10 @@ public class Chant_Tsunami extends Chant
 							msg2.setValue(0);
 							msg3.setTarget(M);
 							msg3.setValue(0);
-							if(((R2==R)||(R2.okMessage(mob,msg2)))
+							if(((R2==mobR)||(R2.okMessage(mob,msg2)))
 							&&((R2.okMessage(mob,msg3))))
 							{
-								if(R2!=R)
+								if(R2!=mobR)
 									R2.send(mob,msg2);
 								R2.send(mob,msg3);
 								if((msg2.value()<=0)&&(msg3.value()<=0))
@@ -292,15 +317,15 @@ public class Chant_Tsunami extends Chant
 					Chant A=(Chant)CMClass.getAbility("Chant_Flood");
 					if(A!=null)
 					{
-						if(R.fetchEffect(A.ID())==null)
+						if(mobR.fetchEffect(A.ID())==null)
 						{
-							int oldAtmo=R.getAtmosphereCode();
-							Chant A1=(Chant)A.maliciousAffect(mob,R,asLevel,0,-1);
+							int oldAtmo=mobR.getAtmosphereCode();
+							Chant A1=(Chant)A.maliciousAffect(mob,mobR,asLevel,0,-1);
 							if(A1!=null)
 							{
 								A1.setTickDownRemaining(A1.getTickDownRemaining() / 5);
 								A1.setMiscText("ATMOSPHERE="+oldAtmo);
-								R.setAtmosphere(RawMaterial.RESOURCE_SALTWATER);
+								mobR.setAtmosphere(newAtmosphere);
 							}
 						}
 					}

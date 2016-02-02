@@ -126,10 +126,7 @@ public class Chant_SenseWater extends Chant
 		if((E instanceof Room)&&(CMLib.flags().canBeSeenBy(E,mob)))
 		{
 			final Room room=(Room)E;
-			if((room.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
-			||(room.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)
-			||(room.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
-			||(room.domainType()==Room.DOMAIN_INDOORS_WATERSURFACE))
+			if(CMLib.flags().isWateryRoom(room))
 				msg.append(L("Your water senses are saturated.  This is a very wet place.\n\r"));
 			else
 			if(CMath.bset(room.getClimateType(),Places.CLIMASK_WET))

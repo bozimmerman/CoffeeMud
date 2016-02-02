@@ -256,16 +256,14 @@ public class Chant_Whirlpool extends Chant
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final Room target=mob.location();
-		if((target.domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE)
-		&&(target.domainType()!=Room.DOMAIN_INDOORS_WATERSURFACE))
+		if(!CMLib.flags().isWaterySurfaceRoom(target))
 		{
 			mob.tell(L("This magic only works in water surfaces."));
 			return false;
 		}
 
 		Room waterBelow = target.getRoomInDir(Directions.DOWN);
-		if((waterBelow.domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
-		&&(waterBelow.domainType()!=Room.DOMAIN_INDOORS_UNDERWATER))
+		if(!CMLib.flags().isUnderWateryRoom(waterBelow))
 		{
 			mob.tell(L("This magic only works above the watery deeps."));
 			return false;

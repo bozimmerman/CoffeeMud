@@ -38,7 +38,11 @@ import java.lang.ref.WeakReference;
 */
 public class CommonMsgs extends StdLibrary implements CommonCommands
 {
-	@Override public String ID(){return "CommonMsgs";}
+	@Override
+	public String ID()
+	{
+		return "CommonMsgs";
+	}
 
 	protected final static int LOOK_LONG=0;
 	protected final static int LOOK_NORMAL=1;
@@ -655,7 +659,9 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				int basePrice=1;
 				switch(CMProps.getIntVar(CMProps.Int.MANACONSUMEAMT))
 				{
-				case -100: basePrice=basePrice*mob.phyStats().level(); break;
+				case -100:
+					basePrice = basePrice * mob.phyStats().level();
+					break;
 				case -200:
 					{
 						int total=0;
@@ -954,7 +960,6 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		return ""+CMLib.time().date2EllapsedTime((item.expirationDate()-System.currentTimeMillis()), TimeUnit.MINUTES, false);
 	}
 
-
 	protected void handleBeingItemLookedAt(CMMsg msg)
 	{
 		final MOB mob=msg.source();
@@ -1092,13 +1097,13 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		case Room.DOMAIN_INDOORS_WATERSURFACE:
 		case Room.DOMAIN_OUTDOORS_UNDERWATER:
 		case Room.DOMAIN_OUTDOORS_WATERSURFACE:
-			smell.append("It smells very WET here. ");
+			smell.append(L("It smells very WET here. "));
 			break;
 		case Room.DOMAIN_OUTDOORS_SEAPORT:
-			smell.append("It smells clean, wet, and breezy here. ");
+			smell.append(L("It smells clean, wet, and breezy here. "));
 			break;
 		case Room.DOMAIN_INDOORS_CAVE:
-			smell.append("It smells very dank and mildewy here. ");
+			smell.append(L("It smells very dank and mildewy here. "));
 			break;
 		case Room.DOMAIN_OUTDOORS_HILLS:
 		case Room.DOMAIN_OUTDOORS_PLAINS:
@@ -1106,11 +1111,11 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			{
 			case FALL:
 			case WINTER:
-				smell.append("There is a faint grassy smell here. ");
+				smell.append(L("There is a faint grassy smell here. "));
 				break;
 			case SPRING:
 			case SUMMER:
-				smell.append("There is a floral grassy smell here. ");
+				smell.append(L("There is a floral grassy smell here. "));
 				break;
 			}
 			break;
@@ -1119,16 +1124,16 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			{
 			case FALL:
 			case WINTER:
-				smell.append("There is a faint woodsy smell here. ");
+				smell.append(L("There is a faint woodsy smell here. "));
 				break;
 			case SPRING:
 			case SUMMER:
-				smell.append("There is a rich woodsy smell here. ");
+				smell.append(L("There is a rich woodsy smell here. "));
 				break;
 			}
 			break;
 		case Room.DOMAIN_OUTDOORS_JUNGLE:
-			smell.append("There is a rich floral and plant aroma here. ");
+			smell.append(L("There is a rich floral and plant aroma here. "));
 			break;
 		case Room.DOMAIN_OUTDOORS_MOUNTAINS:
 		case Room.DOMAIN_OUTDOORS_ROCKS:
@@ -1137,15 +1142,15 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			case FALL:
 			case WINTER:
 			case SUMMER:
-				smell.append("It smells musty and rocky here. ");
+				smell.append(L("It smells musty and rocky here. "));
 				break;
 			case SPRING:
-				smell.append("It smells musty, rocky, and a bit grassy here. ");
+				smell.append(L("It smells musty, rocky, and a bit grassy here. "));
 				break;
 			}
 			break;
 		case Room.DOMAIN_OUTDOORS_SWAMP:
-			smell.append("It smells stinky and gassy here. ");
+			smell.append(L("It smells stinky and gassy here. "));
 			break;
 		}
 		if(smell.length()>0)
@@ -1492,7 +1497,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			else
 			if((msg.sourceMinor()!=CMMsg.TYP_NOISYMOVEMENT)
 			||(mob.riding()!=null)
-			||(CMLib.flags().isWatery(mob.location())))
+			||(CMLib.flags().isWateryRoom(mob.location())))
 			{
 				final long h=mob.playerStats().getHygiene();
 				if((h>0)

@@ -35,11 +35,26 @@ import java.util.*;
 
 public class RandomTeleporter extends ActiveTicker
 {
-	@Override public String ID(){return "RandomTeleporter";}
-	@Override protected int canImproveCode(){return Behavior.CAN_MOBS;}
-	@Override public long flags(){return Behavior.FLAG_MOBILITY;}
-	protected Vector<Integer> restrictedLocales=null;
-	protected boolean nowander=false;
+	@Override
+	public String ID()
+	{
+		return "RandomTeleporter";
+	}
+
+	@Override
+	protected int canImproveCode()
+	{
+		return Behavior.CAN_MOBS;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Behavior.FLAG_MOBILITY;
+	}
+
+	protected Vector<Integer>	restrictedLocales	= null;
+	protected boolean			nowander			= false;
 
 	public RandomTeleporter()
 	{
@@ -102,8 +117,10 @@ public class RandomTeleporter extends ActiveTicker
 					s=s.substring(1).toUpperCase().trim();
 					int code=-1;
 					for(int i=0;i<Room.DOMAIN_INDOORS_DESCS.length;i++)
+					{
 						if(Room.DOMAIN_INDOORS_DESCS[i].startsWith(s))
 							code=Room.INDOORS+i;
+					}
 					if(code>=0)
 					{
 						if((c=='+')&&(restrictedLocales.contains(Integer.valueOf(code))))
@@ -114,8 +131,10 @@ public class RandomTeleporter extends ActiveTicker
 					}
 					code=-1;
 					for(int i=0;i<Room.DOMAIN_OUTDOOR_DESCS.length;i++)
+					{
 						if(Room.DOMAIN_OUTDOOR_DESCS[i].startsWith(s))
 							code=i;
+					}
 					if(code>=0)
 					{
 						if((c=='+')&&(restrictedLocales.contains(Integer.valueOf(code))))
@@ -156,8 +175,7 @@ public class RandomTeleporter extends ActiveTicker
 						R=null;
 					else
 					if((!CMLib.flags().isSwimming(mob))
-					&&((R.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
-					||(R.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)))
+					&&(CMLib.flags().isUnderWateryRoom(R)))
 						R=null;
 					else
 					if(!okRoomForMe(mob.location(),R))

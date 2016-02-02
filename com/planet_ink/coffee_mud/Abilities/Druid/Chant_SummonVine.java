@@ -36,18 +36,65 @@ import java.util.*;
 
 public class Chant_SummonVine extends Chant
 {
-	@Override public String ID() { return "Chant_SummonVine"; }
-	private final static String localizedName = CMLib.lang().L("Summon Vine");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Summon Vine)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
-	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
-	protected int peaceTicks=0;
-	@Override public long flags(){return Ability.FLAG_SUMMONING;}
+	@Override
+	public String ID()
+	{
+		return "Chant_SummonVine";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Summon Vine");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Summon Vine)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT | Ability.DOMAIN_PLANTCONTROL;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_SELF;
+	}
+
+	@Override
+	public int enchantQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	protected int	peaceTicks	= 0;
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_SUMMONING;
+	}
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
@@ -131,9 +178,8 @@ public class Chant_SummonVine extends Chant
 					return Ability.QUALITY_INDIFFERENT;
 				if((R.domainType()==Room.DOMAIN_OUTDOORS_CITY)
 				||(R.domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)
-				||(R.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
-				||(R.domainType()==Room.DOMAIN_OUTDOORS_AIR)
-				||(R.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
+				||(CMLib.flags().isWateryRoom(R))
+				||(R.domainType()==Room.DOMAIN_OUTDOORS_AIR))
 					return Ability.QUALITY_INDIFFERENT;
 				if(!mob.isInCombat())
 					return Ability.QUALITY_INDIFFERENT;
@@ -153,9 +199,8 @@ public class Chant_SummonVine extends Chant
 		}
 		if((mob.location().domainType()==Room.DOMAIN_OUTDOORS_CITY)
 		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)
-		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
-		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_AIR)
-		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
+		   ||(CMLib.flags().isWateryRoom(mob.location()))
+		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_AIR))
 		{
 			mob.tell(L("This magic will not work here."));
 			return false;
@@ -195,6 +240,7 @@ public class Chant_SummonVine extends Chant
 		// return whether it worked
 		return success;
 	}
+
 	public MOB determineMonster(MOB caster, int material)
 	{
 		final MOB victim=caster.getVictim();

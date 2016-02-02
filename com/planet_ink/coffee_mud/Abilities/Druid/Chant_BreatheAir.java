@@ -99,8 +99,7 @@ public class Chant_BreatheAir extends Chant
 					return Ability.QUALITY_INDIFFERENT;
 				final Room R=targetM.location();
 				if((R!=null)
-				&&((R.domainType()!=Room.DOMAIN_INDOORS_UNDERWATER)
-					||(R.domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)))
+				&&(!CMLib.flags().isUnderWateryRoom(R)))
 					return Ability.QUALITY_BENEFICIAL_OTHERS;
 			}
 		}

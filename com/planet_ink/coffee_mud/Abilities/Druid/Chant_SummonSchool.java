@@ -129,8 +129,7 @@ public class Chant_SummonSchool extends Chant
 		Room R=mob.location();
 		if(R==null)
 			return;
-		if((R.domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
-		&&(R.domainType()!=Room.DOMAIN_INDOORS_UNDERWATER))
+		if(!CMLib.flags().isUnderWateryRoom(R))
 		{
 			unInvoke();
 		}
@@ -221,8 +220,7 @@ public class Chant_SummonSchool extends Chant
 		Room R=mob.location();
 		if(R==null)
 			return false;
-		if((R.domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
-		&&(R.domainType()!=Room.DOMAIN_INDOORS_UNDERWATER))
+		if(!CMLib.flags().isUnderWateryRoom(R))
 		{
 			mob.tell(L("You can only summon a school underwater."));
 			return false;

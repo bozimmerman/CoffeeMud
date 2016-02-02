@@ -169,8 +169,7 @@ public class Chant_SummonJellyfish extends Chant
 		Room R=mob.location();
 		if(R==null)
 			return false;
-		if((R.domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
-		&&(R.domainType()!=Room.DOMAIN_INDOORS_UNDERWATER))
+		if(!CMLib.flags().isUnderWateryRoom(R))
 		{
 			mob.tell(L("You can only summon jellyfish underwater."));
 			return false;

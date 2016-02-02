@@ -97,7 +97,7 @@ public class Druid_SeaLore extends StdAbility
 		super.affectPhyStats(affected,affectableStats);
 		if((invoker==null)&&(affected instanceof MOB))
 		   invoker=(MOB)affected;
-		if(CMLib.flags().isWatery(invoker.location()))
+		if(CMLib.flags().isWateryRoom(invoker.location()))
 		{
 			final int xlvl=super.getXLEVELLevel(invoker());
 			affectableStats.setDamage(affectableStats.damage()+5+xlvl);
@@ -113,7 +113,7 @@ public class Druid_SeaLore extends StdAbility
 		&&(msg.source()==affected)
 		&&(msg.target() instanceof MOB)
 		&&(CMLib.dice().roll(1, 10, 0)==1)
-		&&(CMLib.flags().isWatery(msg.source().location())))
+		&&(CMLib.flags().isWateryRoom(msg.source().location())))
 			helpProficiency(msg.source(), 0);
 		return super.okMessage(myHost, msg);
 	}

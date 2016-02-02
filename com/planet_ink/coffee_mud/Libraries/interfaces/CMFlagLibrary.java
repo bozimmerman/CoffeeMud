@@ -696,11 +696,27 @@ public interface CMFlagLibrary extends CMLibrary
 
 	/**
 	 * Returns whether the given room, whatever is 
-	 * watery.
+	 * watery, such as a water surface, underwater, etc.
 	 * @param R the room to check
 	 * @return true if it is watery, false otherwise
 	 */
-	public boolean isWatery(Room R);
+	public boolean isWateryRoom(Room R);
+
+	/**
+	 * Returns whether the given room, whatever is 
+	 * watery, such as a water surface, etc.
+	 * @param R the room to check
+	 * @return true if it is water surfacy, false otherwise
+	 */
+	public boolean isWaterySurfaceRoom(Room R);
+
+	/**
+	 * Returns whether the given room, whatever is 
+	 * watery, such as an underwater, etc.
+	 * @param R the room to check
+	 * @return true if it is underwatery, false otherwise
+	 */
+	public boolean isUnderWateryRoom(Room R);
 
 	/**
 	 * Returns whether the given item, mob, whatever is 

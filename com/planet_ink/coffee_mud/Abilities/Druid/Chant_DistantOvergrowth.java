@@ -36,13 +36,43 @@ import java.util.*;
 
 public class Chant_DistantOvergrowth extends Chant
 {
-	@Override public String ID() { return "Chant_DistantOvergrowth"; }
-	private final static String localizedName = CMLib.lang().L("Distant Overgrowth");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return CAN_ROOMS;}
+	@Override
+	public String ID()
+	{
+		return "Chant_DistantOvergrowth";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Distant Overgrowth");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT | Ability.DOMAIN_PLANTGROWTH;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_ROOMS;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -69,7 +99,10 @@ public class Chant_DistantOvergrowth extends Chant
 					break;
 				}
 			}
-		}catch(final NoSuchElementException e){}
+		}
+		catch (final NoSuchElementException e)
+		{
+		}
 
 		if(newRoom==null)
 		{
@@ -95,8 +128,7 @@ public class Chant_DistantOvergrowth extends Chant
 				if(newRoom.domainType()==Room.DOMAIN_INDOORS_CAVE)
 					newItem=new Chant_SummonFungus().buildFungus(mob,newRoom);
 				else
-				if((newRoom.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
-				||(newRoom.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
+				if(CMLib.flags().isWateryRoom(newRoom))
 					newItem=new Chant_SummonSeaweed().buildSeaweed(mob,newRoom);
 				else
 				if((newRoom.domainType()==Room.DOMAIN_INDOORS_STONE)

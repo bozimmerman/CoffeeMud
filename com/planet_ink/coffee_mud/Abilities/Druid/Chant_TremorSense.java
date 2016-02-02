@@ -35,15 +35,47 @@ import java.util.*;
 
 public class Chant_TremorSense extends Chant
 {
-	@Override public String ID() { return "Chant_TremorSense"; }
-	private final static String localizedName = CMLib.lang().L("Tremor Sense");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Tremor Sense)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
-	@Override protected int canAffectCode(){return CAN_MOBS|CAN_ROOMS;}
-	protected Vector<Room> rooms=new Vector<Room>();
+	@Override
+	public String ID()
+	{
+		return "Chant_TremorSense";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Tremor Sense");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Tremor Sense)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT | Ability.DOMAIN_DEEPMAGIC;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_SELF;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS | CAN_ROOMS;
+	}
+
+	protected Vector<Room>	rooms	= new Vector<Room>();
 
 	@Override
 	public CMObject copyOf()
@@ -169,8 +201,7 @@ public class Chant_TremorSense extends Chant
 					final Room R=rooms.elementAt(r);
 					if((R!=mob.location())
 					&&(R.domainType()!=Room.DOMAIN_INDOORS_AIR)
-					&&(R.domainType()!=Room.DOMAIN_INDOORS_UNDERWATER)
-					&&(R.domainType()!=Room.DOMAIN_INDOORS_WATERSURFACE)
+					&&(!CMLib.flags().isWateryRoom(R))
 					&&(R.domainType()!=Room.DOMAIN_OUTDOORS_AIR)
 					&&(R.domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
 					&&(R.domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE))

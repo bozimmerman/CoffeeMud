@@ -36,14 +36,49 @@ import java.util.*;
 
 public class Prayer_EarthMud extends Prayer
 {
-	@Override public String ID() { return "Prayer_EarthMud"; }
-	private final static String localizedName = CMLib.lang().L("Earth to Mud");
-	@Override public String name() { return localizedName; }
-	@Override protected int canTargetCode(){return 0;}
-	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}
-	@Override public long flags(){return Ability.FLAG_NEUTRAL;}
+	@Override
+	public String ID()
+	{
+		return "Prayer_EarthMud";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Earth to Mud");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ROOMS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER | Ability.DOMAIN_CREATION;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_NEUTRAL;
+	}
 
 	@Override
 	public void unInvoke()
@@ -90,8 +125,7 @@ public class Prayer_EarthMud extends Prayer
 					||(type==Room.DOMAIN_OUTDOORS_AIR)
 					||(type==Room.DOMAIN_OUTDOORS_CITY)
 					||(type==Room.DOMAIN_OUTDOORS_SPACEPORT)
-					||(type==Room.DOMAIN_OUTDOORS_UNDERWATER)
-					||(type==Room.DOMAIN_OUTDOORS_WATERSURFACE))
+					||CMLib.flags().isWateryRoom(mob.location()))
 						return Ability.QUALITY_INDIFFERENT;
 			}
 		}
@@ -107,8 +141,7 @@ public class Prayer_EarthMud extends Prayer
 			||(type==Room.DOMAIN_OUTDOORS_AIR)
 			||(type==Room.DOMAIN_OUTDOORS_CITY)
 			||(type==Room.DOMAIN_OUTDOORS_SPACEPORT)
-			||(type==Room.DOMAIN_OUTDOORS_UNDERWATER)
-			||(type==Room.DOMAIN_OUTDOORS_WATERSURFACE))
+			||(CMLib.flags().isWateryRoom(mob.location())))
 		{
 			mob.tell(L("That magic won't work here."));
 			return false;
@@ -127,7 +160,6 @@ public class Prayer_EarthMud extends Prayer
 				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,L("The ground here turns to MUD!"));
 				beneficialAffect(mob,mob.location(),asLevel,0);
 			}
-
 		}
 		else
 			beneficialWordsFizzle(mob,null,L("<S-NAME> @x1, but nothing happens.",prayWord(mob)));

@@ -866,8 +866,7 @@ public class WeatherAffects extends PuddleMaker
 			if((R!=null)
 			&&((R.domainType()&Room.INDOORS)==0)
 			&&(R.domainType()!=Room.DOMAIN_OUTDOORS_SWAMP)
-			&&(R.domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
-			&&(R.domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE)
+			&&(!CMLib.flags().isWateryRoom(R))
 			&&(!CMath.bset(R.getClimateType(),Places.CLIMASK_WET)))
 			{
 				final Item I=R.getRandomItem();
@@ -957,20 +956,14 @@ public class WeatherAffects extends PuddleMaker
 				if(R==null)
 					continue;
 
-				switch(R.domainType())
+				if(CMLib.flags().isWaterySurfaceRoom(R))
 				{
-				case Room.DOMAIN_INDOORS_UNDERWATER:
-				case Room.DOMAIN_OUTDOORS_UNDERWATER:
-					rustChance+=5;
-					break;
-				case Room.DOMAIN_INDOORS_WATERSURFACE:
-				case Room.DOMAIN_OUTDOORS_WATERSURFACE:
 					if(!CMLib.flags().isFlying(M))
 						rustChance+=3;
-					break;
-				default:
-					break;
 				}
+				else
+				if(CMLib.flags().isUnderWateryRoom(R))
+					rustChance+=5;
 				if((R.getClimateType()&Places.CLIMASK_WET)>0)
 					rustChance+=2;
 				if(CMLib.dice().rollPercentage()<rustChance)

@@ -99,16 +99,9 @@ public class Druid_AquaticPass extends StdAbility
 			final Room R=M.location();
 			if(R!=null)
 			{
-				switch(R.domainType())
-				{
-				case Room.DOMAIN_INDOORS_UNDERWATER:
-				case Room.DOMAIN_INDOORS_WATERSURFACE:
-				case Room.DOMAIN_OUTDOORS_UNDERWATER:
-				case Room.DOMAIN_OUTDOORS_WATERSURFACE:
+				if(CMLib.flags().isWateryRoom(R))
 					return true;
-				default:
-					return false;
-				}
+				return false;
 			}
 		}
 		return false;

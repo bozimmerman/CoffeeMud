@@ -232,8 +232,7 @@ public class Chant_BloodyWater extends Chant
 			return false;
 		}
 		
-		if((mob.location().domainType() != Room.DOMAIN_INDOORS_UNDERWATER)
-		&&(mob.location().domainType() != Room.DOMAIN_OUTDOORS_UNDERWATER))
+		if(!CMLib.flags().isUnderWateryRoom(mob.location()))
 		{
 			mob.tell(L("You must be underwater for this chant to work."));
 			return false;
