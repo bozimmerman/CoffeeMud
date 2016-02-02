@@ -783,6 +783,22 @@ public class ItemData extends StdWebMacro
 							old="checked";
 						str.append(old);
 						break;
+					case CONTENTSACCESS:
+						if(firstTime)
+							old=CMath.bset(I.basePhyStats().sensesMask(), PhyStats.SENSE_INSIDEACCESSIBLE)?"":"checked";
+						else
+						if(old.equals("on"))
+							old="checked";
+						str.append(old);
+						break;
+					case BLENDEDVIEW:
+						if(firstTime)
+							old=CMath.bset(I.basePhyStats().sensesMask(), PhyStats.SENSE_ALWAYSCOMPRESSED)?"":"checked";
+						else
+						if(old.equals("on"))
+							old="checked";
+						str.append(old);
+						break;
 					case ISKEY: // is key
 						if(I instanceof DoorKey)
 							return "true";

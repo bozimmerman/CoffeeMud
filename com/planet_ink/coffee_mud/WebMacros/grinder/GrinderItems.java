@@ -70,7 +70,7 @@ public class GrinderItems
 		MANUFACTURER,POWCAPACITY,POWREMAINING,ACTIVATED,
 		MAXTHRUST,SPECIMPULSE,FUELEFFICIENCY,INSTALLFACTOR,
 		PANELTYPE,GENAMTPERTICK,CONSUMEDMATS,AREAXML,RECIPESKILLHELP,
-		MINTHRUST,ISCONSTTHRUST,AVAILPORTS;
+		MINTHRUST,ISCONSTTHRUST,AVAILPORTS,CONTENTSACCESS,BLENDEDVIEW;
 		public boolean isGenField;
 		private ItemDataField(boolean isGeneric)
 		{
@@ -476,6 +476,20 @@ public class GrinderItems
 					else
 					if((I.basePhyStats().sensesMask()&PhyStats.SENSE_UNLOCATABLE)>0)
 						I.basePhyStats().setSensesMask(I.basePhyStats().sensesMask()-PhyStats.SENSE_UNLOCATABLE);
+					break;
+				case CONTENTSACCESS:
+					if(old.equals("on"))
+						I.basePhyStats().setSensesMask(I.basePhyStats().sensesMask()|PhyStats.SENSE_INSIDEACCESSIBLE);
+					else
+					if((I.basePhyStats().sensesMask()&PhyStats.SENSE_INSIDEACCESSIBLE)>0)
+						I.basePhyStats().setSensesMask(I.basePhyStats().sensesMask()-PhyStats.SENSE_INSIDEACCESSIBLE);
+					break;
+				case BLENDEDVIEW:
+					if(old.equals("on"))
+						I.basePhyStats().setSensesMask(I.basePhyStats().sensesMask()|PhyStats.SENSE_ALWAYSCOMPRESSED);
+					else
+					if((I.basePhyStats().sensesMask()&PhyStats.SENSE_ALWAYSCOMPRESSED)>0)
+						I.basePhyStats().setSensesMask(I.basePhyStats().sensesMask()-PhyStats.SENSE_ALWAYSCOMPRESSED);
 					break;
 				case ISKEY: // is key
 					break;

@@ -2000,8 +2000,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			mob.session().println(L("    B) Is Droppable  : @x1",""+(!CMath.bset(I.basePhyStats().sensesMask(),PhyStats.SENSE_ITEMNODROP))));
 			mob.session().println(L("    C) Is Removable  : @x1",""+(!CMath.bset(I.basePhyStats().sensesMask(),PhyStats.SENSE_ITEMNOREMOVE))));
 			mob.session().println(L("    D) Non-Locatable : @x1",(((I.basePhyStats().sensesMask()&PhyStats.SENSE_UNLOCATABLE)>0)?"true":"false")));
+			mob.session().println(L("    E) Blend Display : @x1",(((I.basePhyStats().sensesMask()&PhyStats.SENSE_ALWAYSCOMPRESSED)>0)?"true":"false")));
+			if(I instanceof Container)
+				mob.session().println(L("    F) Contents Acces: @x1",(((I.basePhyStats().sensesMask()&PhyStats.SENSE_INSIDEACCESSIBLE)>0)?"true":"false")));
+			else
 			if(I instanceof Weapon)
-				mob.session().println(L("    E) Is Two-Handed : @x1",""+I.rawLogicalAnd()));
+				mob.session().println(L("    F) Is Two-Handed : @x1",""+I.rawLogicalAnd()));
 			if((showFlag!=showNumber)&&(showFlag>-999))
 				return;
 			c=mob.session().choose(L("Enter one to change, or ENTER when done:"),L("ABCDE\n"),"\n").toUpperCase();
@@ -2010,14 +2014,37 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			case 'A': CMLib.flags().setGettable(I,(CMath.bset(I.basePhyStats().sensesMask(),PhyStats.SENSE_ITEMNOTGET))); break;
 			case 'B': CMLib.flags().setDroppable(I,(CMath.bset(I.basePhyStats().sensesMask(),PhyStats.SENSE_ITEMNODROP))); break;
 			case 'C': CMLib.flags().setRemovable(I,(CMath.bset(I.basePhyStats().sensesMask(),PhyStats.SENSE_ITEMNOREMOVE))); break;
-			case 'D': if((I.basePhyStats().sensesMask()&PhyStats.SENSE_UNLOCATABLE)>0)
-						  I.basePhyStats().setSensesMask(I.basePhyStats().sensesMask()-PhyStats.SENSE_UNLOCATABLE);
-					  else
-						  I.basePhyStats().setSensesMask(I.basePhyStats().sensesMask()|PhyStats.SENSE_UNLOCATABLE);
-					  break;
-			case 'E': if(I instanceof Weapon)
-						  I.setRawLogicalAnd(!I.rawLogicalAnd());
-					  break;
+			case 'D':
+			{
+				if((I.basePhyStats().sensesMask()&PhyStats.SENSE_UNLOCATABLE)>0)
+					I.basePhyStats().setSensesMask(I.basePhyStats().sensesMask()-PhyStats.SENSE_UNLOCATABLE);
+				else
+					I.basePhyStats().setSensesMask(I.basePhyStats().sensesMask()|PhyStats.SENSE_UNLOCATABLE);
+				break;
+			}
+			case 'E':
+			{
+				if((I.basePhyStats().sensesMask()&PhyStats.SENSE_ALWAYSCOMPRESSED)>0)
+					I.basePhyStats().setSensesMask(I.basePhyStats().sensesMask()-PhyStats.SENSE_ALWAYSCOMPRESSED);
+				else
+					I.basePhyStats().setSensesMask(I.basePhyStats().sensesMask()|PhyStats.SENSE_ALWAYSCOMPRESSED);
+				break;
+			}
+			case 'F': 
+			{
+				if(I instanceof Container)
+				{
+					if((I.basePhyStats().sensesMask()&PhyStats.SENSE_INSIDEACCESSIBLE)>0)
+						I.basePhyStats().setSensesMask(I.basePhyStats().sensesMask()-PhyStats.SENSE_INSIDEACCESSIBLE);
+					else
+						I.basePhyStats().setSensesMask(I.basePhyStats().sensesMask()|PhyStats.SENSE_INSIDEACCESSIBLE);
+					break;
+				}
+				else
+				if(I instanceof Weapon)
+					I.setRawLogicalAnd(!I.rawLogicalAnd());
+				break;
+			}
 			}
 		}
 	}

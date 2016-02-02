@@ -31,8 +31,8 @@
   30. Shopkeepers will now include the size of bulk sales in devalue rates. 
   31. GMODIFY change parms ADDABILITY, ADDEFFECT, ADDBEHAVIOR now support parms in parenthesis ().
       e.g. CHANGE=ADDABILITY=Prop_ReqSafePet(MSG=no!)
-  32. Internal: Any item can now appear 'compressed' in room desc.  Currently used only for tech panels.
-  33. Internal: Any container can have accessible contents.  Currently used only for tech panels.
+  32. Any item can now appear 'compressed' in room desc.  See item editors.
+  33. Any container can have directly accessible contents.   See item editors.
   34. Races now support natural immunities (mostly for disease).  MG and CL editor support added.
   35. Added the rest of the Tech resource types .. mind your items with custom resource defs!
   36. Some new tech power generator types created, as well as a new fuelless engine type and options.
