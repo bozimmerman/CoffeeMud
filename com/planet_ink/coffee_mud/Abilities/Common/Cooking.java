@@ -239,10 +239,10 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 					ing+="/BERRIES";
 			}
 			else
-			if((((I.material()&RawMaterial.MATERIAL_VEGETATION)>0)
-				||((I.material()&RawMaterial.MATERIAL_LIQUID)>0)
-				||((I.material()&RawMaterial.MATERIAL_FLESH)>0))
-				&&(CMParms.parse(I.name()).size()>0))
+			if((((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_VEGETATION)
+				||((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID)
+				||((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_FLESH))
+			&&(CMParms.parse(I.name()).size()>0))
 					ing=CMParms.parse(I.name()).lastElement().toUpperCase();
 			else
 				ing=I.name();

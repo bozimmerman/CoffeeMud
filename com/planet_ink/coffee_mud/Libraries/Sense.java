@@ -456,7 +456,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	@Override
 	public boolean isAPlant(Item I)
 	{
-		return (I!=null) && ((I.material()&RawMaterial.MATERIAL_VEGETATION)>0);
+		return (I!=null) && ((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_VEGETATION);
 	}
 	
 	@Override
@@ -467,8 +467,8 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			final List<RawMaterial> mats = M.charStats().getMyRace().myResources();
 			for(final Item I : mats)
 			{
-				if(CMath.bset(I.material(), RawMaterial.MATERIAL_VEGETATION)
-				||CMath.bset(I.material(), RawMaterial.MATERIAL_WOODEN))
+				if(((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_VEGETATION)
+				||((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN))
 					return true;
 			}
 			return false;

@@ -1225,14 +1225,13 @@ public class StdRoom implements Room
 		basePhyStats=(PhyStats)newStats.copyOf();
 	}
 
+	private final static int phyStatsMaskOut = ~(PhyStats.IS_DARK|PhyStats.IS_LIGHTSOURCE|PhyStats.IS_SLEEPING|PhyStats.IS_HIDDEN|PhyStats.IS_SWIMMING|PhyStats.IS_NOT_SEEN); 
+	
 	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		getArea().affectPhyStats(affected,affectableStats);
-		//if(phyStats().sensesMask()>0)
-		//	affectableStats.setSensesMask(affectableStats.sensesMask()|phyStats().sensesMask());
-		final int disposition=phyStats().disposition()
-			&((~(PhyStats.IS_DARK|PhyStats.IS_LIGHTSOURCE|PhyStats.IS_SLEEPING|PhyStats.IS_HIDDEN|PhyStats.IS_NOT_SEEN)));
+		final int disposition=phyStats().disposition() & phyStatsMaskOut;
 		if(disposition>0)
 			affectableStats.setDisposition(affectableStats.disposition()|disposition);
 		eachEffect(new EachApplicable<Ability>()

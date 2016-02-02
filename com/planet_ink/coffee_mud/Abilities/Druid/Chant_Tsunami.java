@@ -205,9 +205,9 @@ public class Chant_Tsunami extends Chant
 		}
 		String fromDir = Directions.getFromCompassDirectionName(waterDir);
 		
-		targetRooms.add(mobR);
+		//targetRooms.add(mobR);
 		TrackingLibrary.TrackingFlags flags=CMLib.tracking().newFlags().plus(TrackingFlag.NOAIR).plus(TrackingFlag.OPENONLY).plus(TrackingFlag.NOWATER);
-		targetRooms.addAll(CMLib.tracking().getRadiantRooms(mobR, flags, 1));
+		targetRooms.addAll(CMLib.tracking().getRadiantRooms(mobR, flags, 2));
 		
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -244,14 +244,14 @@ public class Chant_Tsunami extends Chant
 		if(success)
 		{
 			int newAtmosphere = RawMaterial.RESOURCE_SALTWATER;
-			if((mobR.getAtmosphere()&RawMaterial.MATERIAL_LIQUID)>0)
+			if((mobR.getAtmosphere()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID)
 				newAtmosphere = mobR.getAtmosphere();
 			for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
 			{
 				Room R=mobR.getRoomInDir(d);
 				if(R!=null)
 				{
-					if((R.getAtmosphere()&RawMaterial.MATERIAL_LIQUID)>0)
+					if((R.getAtmosphere()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID)
 					{
 						newAtmosphere =R.getAtmosphere();
 						break;
@@ -259,7 +259,7 @@ public class Chant_Tsunami extends Chant
 					R=R.getRoomInDir(d);
 					if(R!=null)
 					{
-						if((R.getAtmosphere()&RawMaterial.MATERIAL_LIQUID)>0)
+						if((R.getAtmosphere()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID)
 						{
 							newAtmosphere =R.getAtmosphere();
 							break;
@@ -290,6 +290,7 @@ public class Chant_Tsunami extends Chant
 					numEnemies=1;
 				for(final Room R2 : targetRooms)
 				{
+					R2.showHappens(CMMsg.MSG_OK_ACTION, L("^HA massive Tsunami rushes in, flooding the whole area!"));
 					for(final Enumeration<MOB> m=R2.inhabitants();m.hasMoreElements();)
 					{
 						final MOB M=m.nextElement();
@@ -317,15 +318,15 @@ public class Chant_Tsunami extends Chant
 					Chant A=(Chant)CMClass.getAbility("Chant_Flood");
 					if(A!=null)
 					{
-						if(mobR.fetchEffect(A.ID())==null)
+						if(R2.fetchEffect(A.ID())==null)
 						{
-							int oldAtmo=mobR.getAtmosphereCode();
-							Chant A1=(Chant)A.maliciousAffect(mob,mobR,asLevel,0,-1);
+							int oldAtmo=R2.getAtmosphereCode();
+							Chant A1=(Chant)A.maliciousAffect(mob,R2,asLevel,0,-1);
 							if(A1!=null)
 							{
-								A1.setTickDownRemaining(A1.getTickDownRemaining() / 5);
+								A1.setTickDownRemaining(A1.getTickDownRemaining()/2);
 								A1.setMiscText("ATMOSPHERE="+oldAtmo);
-								mobR.setAtmosphere(newAtmosphere);
+								R2.setAtmosphere(newAtmosphere);
 							}
 						}
 					}

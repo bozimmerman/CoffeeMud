@@ -8,6 +8,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.CMMsg.CheckedMsgResponse;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -37,6 +38,7 @@ public interface TrackingLibrary extends CMLibrary
 	public int trackNextDirectionFromHere(List<Room> theTrail, Room location, boolean openOnly);
 	public void stopTracking(MOB mob);
 	public boolean makeFall(Physical P, Room room, int avg);
+	public CheckedMsgResponse isOkWaterSurfaceAffect(final Room room, final CMMsg msg);
 	public int radiatesFromDir(Room room, List<Room> rooms);
 	public void getRadiantRooms(Room room, List<Room> rooms, TrackingFlags flags, Room radiateTo, int maxDepth, Set<Room> ignoreRooms);
 	public List<Room> getRadiantRooms(final Room room, final RFilters filters, final int maxDepth);

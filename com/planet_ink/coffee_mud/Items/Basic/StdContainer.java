@@ -459,7 +459,7 @@ public class StdContainer extends StdItem implements Container
 				switch((int)CMath.pow(2,i))
 				{
 				case CONTAIN_LIQUID:
-					if((I.material()&RawMaterial.MATERIAL_LIQUID)>0)
+					if((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID)
 						return true;
 					break;
 				case CONTAIN_COINS:

@@ -125,6 +125,27 @@ public class Chant_Flood extends Chant
 		return super.castingQuality(mob,target);
 	}
 
+	@Override
+	public boolean tick(Tickable ticking, int tickID)
+	{
+		if(affected instanceof Room)
+		{
+			final Room R=(Room)affected;
+			final MOB invoker=invoker();
+			for(final Enumeration<MOB> r=R.inhabitants();r.hasMoreElements();)
+			{
+				final MOB M=r.nextElement();
+				if((M!=null)
+				&&(M!=invoker)
+				&&(!M.amDead())
+				&&(M.location()!=null)
+				&&(!CMLib.flags().canBreatheHere(M, M.location())))
+					CMLib.combat().postRevengeAttack(M, invoker);
+			}
+		}
+		return super.tick(ticking,tickID);
+	}
+
 	public int getWaterRoomDir(Room mobR)
 	{
 		for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
@@ -152,16 +173,36 @@ public class Chant_Flood extends Chant
 	}
 
 	@Override
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
+	{
+		if(affected instanceof Room)
+		{
+			switch(CMLib.tracking().isOkWaterSurfaceAffect((Room)affected,msg))
+			{
+			case CANCEL:
+				return false;
+			case FORCEDOK:
+				return true;
+			default:
+			case CONTINUE:
+				return super.okMessage(myHost,msg);
+			}
+		}
+		return super.okMessage(myHost,msg);
+	}
+
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		affectableStats.addAmbiance("Flooded!");
-		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SWIMMING);
+		if(affected instanceof Room)
+			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SWIMMING);
 	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		final Room mobR=mob.location();
+		final Room mobR=(givenTarget instanceof Room) ? (Room)givenTarget : mob.location();
 		if(mobR==null)
 			return false;
 		if((mobR.domainType()&Room.INDOORS)==0)
@@ -176,7 +217,7 @@ public class Chant_Flood extends Chant
 		if(CMLib.flags().isWateryRoom(mobR))
 		{
 			fromDir="right here";
-			if((mobR.getAtmosphere()&RawMaterial.MATERIAL_LIQUID)>0)
+			if((mobR.getAtmosphere()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID)
 				newAtmosphere = mobR.getAtmosphere();
 		}
 		else
@@ -215,7 +256,7 @@ public class Chant_Flood extends Chant
 			Room R=mobR.getRoomInDir(d);
 			if(R!=null)
 			{
-				if((R.getAtmosphere()&RawMaterial.MATERIAL_LIQUID)>0)
+				if((R.getAtmosphere()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID)
 				{
 					newAtmosphere =R.getAtmosphere();
 					break;
@@ -223,7 +264,7 @@ public class Chant_Flood extends Chant
 				R=R.getRoomInDir(d);
 				if(R!=null)
 				{
-					if((R.getAtmosphere()&RawMaterial.MATERIAL_LIQUID)>0)
+					if((R.getAtmosphere()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID)
 					{
 						newAtmosphere =R.getAtmosphere();
 						break;

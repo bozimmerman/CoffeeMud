@@ -46,6 +46,7 @@ public class WaterSurface extends StdRoom implements Drink
 	{
 		super();
 		name="the water";
+		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_SWIMMING);
 		basePhyStats.setWeight(2);
 		recoverPhyStats();
 		climask=Places.CLIMASK_WET;
@@ -171,95 +172,16 @@ public class WaterSurface extends StdRoom implements Drink
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		switch(WaterSurface.isOkWaterSurfaceAffect(this,msg))
+		switch(CMLib.tracking().isOkWaterSurfaceAffect(this,msg))
 		{
-		case -1:
+		case CANCEL:
 			return false;
-		case 1:
+		case FORCEDOK:
 			return true;
+		default:
+		case CONTINUE:
+			return super.okMessage(myHost,msg);
 		}
-		return super.okMessage(myHost,msg);
-	}
-
-	public static int isOkWaterSurfaceAffect(Room room, CMMsg msg)
-	{
-		if(CMLib.flags().isSleeping(room))
-			return 0;
-
-		if(((msg.targetMinor()==CMMsg.TYP_LEAVE)
-			||(msg.targetMinor()==CMMsg.TYP_ENTER)
-			||(msg.targetMinor()==CMMsg.TYP_FLEE))
-		&&(msg.amITarget(room))
-		&&(msg.sourceMinor()!=CMMsg.TYP_RECALL)
-		&&((msg.targetMinor()==CMMsg.TYP_ENTER)
-		   ||(!(msg.tool() instanceof Ability))
-		   ||(!CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_TRANSPORTING)))
-		&&(!CMLib.flags().isFalling(msg.source()))
-		&&(!CMLib.flags().isInFlight(msg.source()))
-		&&(!CMLib.flags().isWaterWorthy(msg.source())))
-		{
-			final MOB mob=msg.source();
-			boolean hasBoat=false;
-			if((msg.tool() instanceof Exit)
-			&&(msg.targetMinor()==CMMsg.TYP_LEAVE))
-			{
-				int dir=CMLib.map().getExitDir(room, (Exit)msg.tool());
-				if(dir >=0)
-				{
-					final Room R=room.getRoomInDir(dir);
-					if((R!=null)
-					&&(R.getArea() instanceof BoardableShip))
-						hasBoat=true;
-				}
-			}
-			
-			for(int i=0;i<mob.numItems();i++)
-			{
-				final Item I=mob.getItem(i);
-				if((I!=null)&&(I instanceof Rideable)&&(((Rideable)I).rideBasis()==Rideable.RIDEABLE_WATER))
-				{
-					hasBoat = true;
-					break;
-				}
-			}
-			if((!CMLib.flags().isWaterWorthy(mob))
-			&&(!hasBoat)
-			&&(!CMLib.flags().isInFlight(mob)))
-			{
-				mob.tell(CMLib.lang().L("You need to swim or ride a boat that way."));
-				return -1;
-			}
-			else
-			if(CMLib.flags().isSwimming(mob))
-			{
-				if(mob.phyStats().weight()>Math.round(CMath.mul(mob.maxCarry(),0.50)))
-				{
-					mob.tell(CMLib.lang().L("You are too encumbered to swim."));
-					return -1;
-				}
-			}
-		}
-		else
-		if(((msg.sourceMinor()==CMMsg.TYP_SIT)||(msg.sourceMinor()==CMMsg.TYP_SLEEP))
-		&&(!(msg.target() instanceof Exit))
-		&&((msg.source().riding()==null)||(!CMLib.flags().isSwimming(msg.source().riding()))))
-		{
-			msg.source().tell(CMLib.lang().L("You cannot rest here."));
-			return -1;
-		}
-		else
-		if(msg.amITarget(room)
-		&&(msg.targetMinor()==CMMsg.TYP_DRINK)
-		&&(room instanceof Drink))
-		{
-			if(((Drink)room).liquidType()==RawMaterial.RESOURCE_SALTWATER)
-			{
-				msg.source().tell(CMLib.lang().L("You don't want to be drinking saltwater."));
-				return -1;
-			}
-			return 1;
-		}
-		return 0;
 	}
 
 	@Override

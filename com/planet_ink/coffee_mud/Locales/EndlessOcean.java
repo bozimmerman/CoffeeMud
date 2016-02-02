@@ -77,14 +77,16 @@ public class EndlessOcean extends StdGrid
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		switch(WaterSurface.isOkWaterSurfaceAffect(this,msg))
+		switch(CMLib.tracking().isOkWaterSurfaceAffect(this,msg))
 		{
-		case -1:
+		case CANCEL:
 			return false;
-		case 1:
+		case FORCEDOK:
 			return true;
+		default:
+		case CONTINUE:
+			return super.okMessage(myHost,msg);
 		}
-		return super.okMessage(myHost,msg);
 	}
 
 	@Override

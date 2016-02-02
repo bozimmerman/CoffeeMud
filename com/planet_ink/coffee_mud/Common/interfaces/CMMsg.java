@@ -1446,4 +1446,18 @@ public interface CMMsg extends CMCommon
 	public static final int MSG_COMMANDFAIL=MASK_ALWAYS|TYP_COMMANDFAIL;
 	/** combined MAJOR and MINOR codes for useful event message type for a fail to target in a command */
 	public static final int MSG_COMMAND=MASK_ALWAYS|CMMsg.MASK_CNTRLMSG|TYP_COMMAND;
+	
+	/**
+	 * An enum to use for an external message check from inside 
+	 * an okMessage method.  Can force the caller to either immediate
+	 * return true, false, or check the parent.
+	 * @author Bo Zimmerman
+	 *
+	 */
+	public enum CheckedMsgResponse
+	{
+		FORCEDOK,
+		CANCEL,
+		CONTINUE
+	}
 }

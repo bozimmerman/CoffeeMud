@@ -8,6 +8,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.CMMsg.CheckedMsgResponse;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -1742,6 +1743,88 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		return false;
 	}
 	
+	@Override
+	public CheckedMsgResponse isOkWaterSurfaceAffect(final Room room, final CMMsg msg)
+	{
+		if(CMLib.flags().isSleeping(room))
+			return CheckedMsgResponse.CONTINUE;
+
+		if(((msg.targetMinor()==CMMsg.TYP_LEAVE)
+			||(msg.targetMinor()==CMMsg.TYP_ENTER)
+			||(msg.targetMinor()==CMMsg.TYP_FLEE))
+		&&(msg.amITarget(room))
+		&&(msg.sourceMinor()!=CMMsg.TYP_RECALL)
+		&&((msg.targetMinor()==CMMsg.TYP_ENTER)
+		   ||(!(msg.tool() instanceof Ability))
+		   ||(!CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_TRANSPORTING)))
+		&&(!CMLib.flags().isFalling(msg.source()))
+		&&(!CMLib.flags().isInFlight(msg.source()))
+		&&(!CMLib.flags().isWaterWorthy(msg.source())))
+		{
+			final MOB mob=msg.source();
+			boolean hasBoat=false;
+			if((msg.tool() instanceof Exit)
+			&&(msg.targetMinor()==CMMsg.TYP_LEAVE))
+			{
+				int dir=CMLib.map().getExitDir(room, (Exit)msg.tool());
+				if(dir >=0)
+				{
+					final Room R=room.getRoomInDir(dir);
+					if((R!=null)
+					&&(R.getArea() instanceof BoardableShip))
+						hasBoat=true;
+				}
+			}
+			
+			for(int i=0;i<mob.numItems();i++)
+			{
+				final Item I=mob.getItem(i);
+				if((I!=null)&&(I instanceof Rideable)&&(((Rideable)I).rideBasis()==Rideable.RIDEABLE_WATER))
+				{
+					hasBoat = true;
+					break;
+				}
+			}
+			if((!CMLib.flags().isWaterWorthy(mob))
+			&&(!hasBoat)
+			&&(!CMLib.flags().isInFlight(mob)))
+			{
+				mob.tell(CMLib.lang().L("You need to swim or ride a boat that way."));
+				return CheckedMsgResponse.CANCEL;
+			}
+			else
+			if(CMLib.flags().isSwimming(mob))
+			{
+				if(mob.phyStats().weight()>Math.round(CMath.mul(mob.maxCarry(),0.50)))
+				{
+					mob.tell(CMLib.lang().L("You are too encumbered to swim."));
+					return CheckedMsgResponse.CANCEL;
+				}
+			}
+		}
+		else
+		if(((msg.sourceMinor()==CMMsg.TYP_SIT)||(msg.sourceMinor()==CMMsg.TYP_SLEEP))
+		&&(!(msg.target() instanceof Exit))
+		&&((msg.source().riding()==null)||(!CMLib.flags().isSwimming(msg.source().riding()))))
+		{
+			msg.source().tell(CMLib.lang().L("You cannot rest here."));
+			return CheckedMsgResponse.CANCEL;
+		}
+		else
+		if(msg.amITarget(room)
+		&&(msg.targetMinor()==CMMsg.TYP_DRINK)
+		&&(room instanceof Drink))
+		{
+			if(((Drink)room).liquidType()==RawMaterial.RESOURCE_SALTWATER)
+			{
+				msg.source().tell(CMLib.lang().L("You don't want to be drinking saltwater."));
+				return CheckedMsgResponse.CANCEL;
+			}
+			return CheckedMsgResponse.FORCEDOK;
+		}
+		return CheckedMsgResponse.CONTINUE;
+	}
+
 	@Override
 	public void forceRecall(final MOB mob)
 	{
