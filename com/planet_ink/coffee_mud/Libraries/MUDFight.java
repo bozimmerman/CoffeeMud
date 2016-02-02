@@ -2384,6 +2384,43 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	}
 
 	@Override
+	public MOB getBreatheKiller(final MOB victim)
+	{
+		MOB victimKiller = victim.getVictim();
+		if(victimKiller != null)
+			return victimKiller;
+		final Room R=victim.location();
+		if(R!=null)
+		{
+			for(final Enumeration<Ability> a=R.effects();a.hasMoreElements();)
+			{
+				final Ability A=a.nextElement();
+				if((A!=null)
+				&&(A.invoker()!=null)
+				&&(A.invoker()!=victim))
+				{
+					if(A.abstractQuality()==Ability.QUALITY_MALICIOUS)
+						return A.invoker();
+					victimKiller = A.invoker();
+				}
+			}
+		}
+		for(final Enumeration<Ability> a=victim.personalEffects();a.hasMoreElements();)
+		{
+			final Ability A=a.nextElement();
+			if((A!=null)
+			&&(A.invoker()!=null)
+			&&(A.invoker()!=victimKiller))
+			{
+				if(A.abstractQuality()==Ability.QUALITY_MALICIOUS)
+					return A.invoker();
+				victimKiller = A.invoker();
+			}
+		}
+		return (victimKiller == null) ? victim : victimKiller;
+	}
+	
+	@Override
 	public boolean shutdown()
 	{
 		if(CMLib.threads().isTicking(this, TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK))

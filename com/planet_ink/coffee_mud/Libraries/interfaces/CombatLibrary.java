@@ -633,4 +633,13 @@ public interface CombatLibrary extends CMLibrary
 	 * @param killed the mob killed
 	 */
 	public void dispenseExperience(Set<MOB> killers, Set<MOB> dividers, MOB killed);
+	
+	/**
+	 * When a mob can't breathe, it actually takes some work to figure out if
+	 * anyone is to blame.  This method attempts to place the blame anywhere
+	 * but on the victim him or herself.
+	 * @param victim the one who can't breathe
+	 * @return the mob to blame
+	 */
+	public MOB getBreatheKiller(MOB victim);
 }
