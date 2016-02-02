@@ -531,11 +531,17 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
-	public Vector<JournalEntry> DBReadJournalMsgsNewerThan(String Journal, String to, long olderDate)
+	public List<JournalEntry> DBReadJournalMsgsNewerThan(String Journal, String to, long olderDate)
 	{
 		return JournalLoader.DBReadJournalMsgsNewerThan(Journal, to, olderDate);
 	}
 
+	@Override
+	public List<JournalEntry> DBReadJournalMsgsOlderThan(String Journal, String to, long newestDate)
+	{
+		return JournalLoader.DBReadJournalMsgsOlderThan(Journal, to, newestDate);
+	}
+	
 	@Override
 	public Vector<JournalEntry> DBReadJournalPageMsgs(String Journal, String parent, String searchStr, long newerDate, int limit)
 	{

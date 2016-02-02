@@ -920,7 +920,17 @@ public interface DatabaseEngine extends CMLibrary
 	 * @param olderDate
 	 * @return
 	 */
-	public Vector<JournalEntry> DBReadJournalMsgsNewerThan(String Journal, String to, long olderDate);
+	public List<JournalEntry> DBReadJournalMsgsNewerThan(String Journal, String to, long olderDate);
+
+	/**
+	 * Table category: DBJOURNALS
+	 * 
+	 * @param Journal
+	 * @param to
+	 * @param newestDate
+	 * @return
+	 */
+	public List<JournalEntry> DBReadJournalMsgsOlderThan(String Journal, String to, long newestDate);
 
 	/**
 	 * Table category: DBJOURNALS

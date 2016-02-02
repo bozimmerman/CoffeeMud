@@ -1396,7 +1396,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 			msg.data ("");
 			msg.to ("ALL");
 			// check for dups
-			final Vector<JournalEntry> chckEntries = CMLib.database().DBReadJournalMsgsNewerThan(forum.NAME(), "ALL", msg.date() - 1);
+			final List<JournalEntry> chckEntries = CMLib.database().DBReadJournalMsgsNewerThan(forum.NAME(), "ALL", msg.date() - 1);
 			for (final JournalEntry entry : chckEntries)
 			{
 				if ((entry.date() == msg.date()) 

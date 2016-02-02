@@ -601,6 +601,27 @@ public class DBConnection
 	}
 
 	/**
+	 * Returns the number of records in the given result set.
+	 * @param R the result set
+	 * @return the number of records
+	 */
+	public int getRecordCount(ResultSet R)
+	{
+		int recordCount=0;
+		try
+		{
+			R.last();
+			recordCount=R.getRow();
+			R.beforeFirst();
+		}
+		catch(final Exception e)
+		{
+			e.printStackTrace();
+		}
+		return recordCount;
+	}
+	
+	/**
 	 * known errors should not be a reason to report a dead state
 	 *
 	 * Usage: clearFailures();

@@ -128,8 +128,7 @@ public class DataLoader
 			playerID = DB.injectionClean(playerID);
 			section = DB.injectionClean(section);
 			R=D.query("SELECT * FROM CMPDAT WHERE CMPLID='"+playerID+"' AND CMSECT='"+section+"'");
-			while(R.next())
-				rows++;
+			rows = D.getRecordCount(R);
 		}
 		catch(final Exception sqle)
 		{

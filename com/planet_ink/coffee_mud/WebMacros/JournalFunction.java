@@ -153,7 +153,7 @@ public class JournalFunction extends StdWebMacro
 			msg.data("");
 			msg.to(to);
 			// check for dups
-			final Vector<JournalEntry> chckEntries = CMLib.database().DBReadJournalMsgsNewerThan(journalName, to, msg.date()-1);
+			final List<JournalEntry> chckEntries = CMLib.database().DBReadJournalMsgsNewerThan(journalName, to, msg.date()-1);
 			for(final JournalEntry entry : chckEntries)
 				if((entry.date() == msg.date())
 				&&(entry.from().equals(msg.from()))

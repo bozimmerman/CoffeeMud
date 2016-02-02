@@ -125,6 +125,8 @@ public class DBConnector
 
 	public int getRecordCount(DBConnection D, ResultSet R)
 	{
+		if(D!=null)
+			return D.getRecordCount(R);
 		int recordCount=0;
 		try
 		{

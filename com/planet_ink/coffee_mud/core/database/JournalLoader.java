@@ -58,19 +58,21 @@ public class JournalLoader
 			{
 				D=DB.DBFetch();
 				final ResultSet R=D.query("SELECT CMFROM,CMTONM FROM CMJRNL WHERE CMJRNL='"+journal+"'");
-				while(R.next())
+				if((from==null)&&(to==null))
+					ct=D.getRecordCount(R);
+				else
 				{
-					if((from!=null)&&(!from.equalsIgnoreCase(DBConnections.getRes(R,"CMFROM"))))
-						continue;
-					if((to!=null)&&(!to.equalsIgnoreCase(DBConnections.getRes(R,"CMTONM"))))
-						continue;
-					ct++;
+					while(R.next())
+					{
+						if(((from==null)||(from.equalsIgnoreCase(DBConnections.getRes(R,"CMFROM"))))
+						&&((to==null)||(to.equalsIgnoreCase(DBConnections.getRes(R,"CMTONM")))))
+							ct++;
+					}
 				}
 			}
 			catch(final Exception sqle)
 			{
 				Log.errOut("Journal",sqle);
-				return ct;
 			}
 			finally
 			{
@@ -362,7 +364,7 @@ public class JournalLoader
 		return journalV;
 	}
 
-	public Vector<JournalEntry> DBReadJournalMsgsNewerThan(String journal, String to, long olderDate)
+	public List<JournalEntry> DBReadJournalMsgsNewerThan(String journal, String to, long olderDate)
 	{
 		journal	= DB.injectionClean(journal);
 		to		= DB.injectionClean(to);
@@ -377,6 +379,69 @@ public class JournalLoader
 				sql += " AND CMJRNL='"+journal+"'";
 			if(to != null) 
 				sql += " AND CMTONM='"+to+"'";
+			sql += "ORDER BY CMUPTM ASC";
+			final ResultSet R=D.query(sql);
+			int cardinal=0;
+			while(R.next())
+			{
+				final JournalEntry entry = DBReadJournalEntry(R);
+				entry.cardinal(++cardinal);
+				journalV.addElement(entry);
+			}
+		}
+		catch(final Exception sqle)
+		{
+			Log.errOut("Journal",sqle);
+			return null;
+		}
+		finally
+		{
+			DB.DBDone(D);
+		}
+		Collections.sort(journalV);
+		return journalV;
+	}
+	
+	public List<JournalEntry> makeJournalEntryList(final String journalID, final ResultSet R) throws SQLException
+	{
+		List<String> ids = new ArrayList<String>();
+		while(R.next())
+			ids.add(R.getString("CMJKEY"));
+		R.close();
+		return new FullConvertingList<String,JournalEntry>(ids, new FullConverter<String,JournalEntry>()
+		{
+			@Override
+			public JournalEntry convert(int cardinal, String obj)
+			{
+				final JournalEntry j=DBReadJournalEntry(journalID, obj);
+				j.cardinal(cardinal);
+				return j;
+			}
+
+			@Override
+			public String reverseConvert(JournalEntry obj)
+			{
+				return obj==null ? "" : obj.key();
+			}
+		});
+	}
+
+	public List<JournalEntry> DBReadJournalMsgsOlderThan(String journal, String to, long newestDate)
+	{
+		journal	= DB.injectionClean(journal);
+		to		= DB.injectionClean(to);
+
+		final Vector<JournalEntry> journalV=new Vector<JournalEntry>();
+		DBConnection D=null;
+		try
+		{
+			D=DB.DBFetch();
+			String sql="SELECT * FROM CMJRNL WHERE CMUPTM < " + newestDate;
+			if(journal!=null) 
+				sql += " AND CMJRNL='"+journal+"'";
+			if(to != null) 
+				sql += " AND CMTONM='"+to+"'";
+			sql += "ORDER BY CMUPTM ASC";
 			final ResultSet R=D.query(sql);
 			int cardinal=0;
 			while(R.next())
