@@ -68,9 +68,10 @@ public class MOTD extends StdCommand
 		}
 		else
 			commands=DEFAULT_CMD;
-		final String parm=CMParms.combine(commands,1);
+		final String parm=CMParms.combine(commands,1).toUpperCase();
+		final boolean oldOk = "PREVIOUS".startsWith(parm) || parm.equals("OLD"); 
 		if((mob.playerStats()!=null)
-		&&(parm.equalsIgnoreCase("AGAIN")||parm.equalsIgnoreCase("NEW")))
+		&&(parm.equals("AGAIN")||parm.equals("NEW")||oldOk))
 		{
 			final StringBuffer buf=new StringBuffer("");
 			try
@@ -95,7 +96,7 @@ public class MOTD extends StdCommand
 					final String subject=entry.subj();
 					String message=entry.msg();
 					final long compdate=entry.update();
-					if(compdate>mob.playerStats().getLastDateTime())
+					if((compdate>mob.playerStats().getLastDateTime())||(oldOk))
 					{
 						boolean allMine=to.equalsIgnoreCase(mob.Name())
 										||from.equalsIgnoreCase(mob.Name());
@@ -222,6 +223,7 @@ public class MOTD extends StdCommand
 
 				final List<Quest> qQVec=CMLib.quests().getPlayerPersistantQuests(mob);
 				if(mob.session()!=null)
+				{
 					if(buf.length()>0)
 					{
 						if(qQVec.size()>0)
@@ -233,13 +235,14 @@ public class MOTD extends StdCommand
 					if(qQVec.size()>0)
 						buf.append(L("\n\r^HYou are on @x1 quest(s).  Enter QUESTS to see them!.^?^.\n\r",""+qQVec.size()));
 					else
-					if(CMParms.combine(commands,1).equalsIgnoreCase("AGAIN"))
+					if(parm.equals("AGAIN"))
 						mob.session().println(L("No @x1 to re-read.",what));
+				}
 			}
 			catch(final HTTPRedirectException e){}
 			return false;
 		}
-		if(parm.equalsIgnoreCase("ON"))
+		if(parm.equals("ON"))
 		{
 			if(mob.isAttributeSet(MOB.Attrib.DAILYMESSAGE))
 			{
@@ -252,7 +255,7 @@ public class MOTD extends StdCommand
 			}
 		}
 		else
-		if(parm.equalsIgnoreCase("OFF"))
+		if(parm.equals("OFF"))
 		{
 			if(!mob.isAttributeSet(MOB.Attrib.DAILYMESSAGE))
 			{
@@ -266,7 +269,7 @@ public class MOTD extends StdCommand
 		}
 		else
 		{
-			mob.tell(L("'@x1' is not a valid parameter.  Try ON, OFF, or AGAIN.",parm));
+			mob.tell(L("'@x1' is not a valid parameter.  Try ON, OFF, PREVIOUS, or AGAIN.",parm));
 		}
 		return false;
 	}
