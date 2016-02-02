@@ -3608,6 +3608,8 @@ public class StdMOB implements MOB
 		if ((item != null) && (!item.amDestroyed()))
 		{
 			item.setOwner(this);
+			possWieldedItem	= null;
+			possHeldItem	= null;
 			inventory.addElement(item);
 			item.recoverPhyStats();
 		}
