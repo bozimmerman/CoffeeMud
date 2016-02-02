@@ -412,10 +412,21 @@ public class Druid_ShapeShift extends StdAbility
 			final int raceLevel=getRaceLevel(mob);
 			for(int i1=raceLevel;i1>=0;i1--)
 			{
-				if(CMLib.english().containsString(shapes[i1][myRaceCode],parm))
+				if(shapes[i1][myRaceCode].equalsIgnoreCase(parm))
 				{
 					parm="";
 					this.myRaceLevel=i1;
+				}
+			}
+			if(parm.length()>0)
+			{
+				for(int i1=raceLevel;i1>=0;i1--)
+				{
+					if(CMLib.english().containsString(shapes[i1][myRaceCode],parm))
+					{
+						parm="";
+						this.myRaceLevel=i1;
+					}
 				}
 			}
 		}
