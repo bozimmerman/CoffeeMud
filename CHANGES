@@ -37,6 +37,7 @@
   35. Added the rest of the Tech resource types .. mind your items with custom resource defs!
   36. Some new tech power generator types created, as well as a new fuelless engine type and options.
   37. New tech component: Light Switch 
+  38. EMAIL BOX supports message limits
 # Build 5.9.1 Released 01/04/2016
    1. "Who accounts", used by an archon, can quickly list the account name of each player online.
    2. New Achievement event "GOTITEM", and new rewards (see new stats below and achievements.ini)
