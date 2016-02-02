@@ -67,6 +67,7 @@ public class GenLightSwitch extends GenElecCompItem
 			phyStats().setDisposition(phyStats().disposition()|PhyStats.IS_GLOWING);
 	}
 
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected, affectableStats);
@@ -94,7 +95,7 @@ public class GenLightSwitch extends GenElecCompItem
 		if(R!=null)
 		{
 			R.recoverPhyStats();
-			if((goAhead)&&(R.displayText().length()>0))
+			if((activated() == goAhead)&&(displayText().length()>0)&&(CMLib.flags().isSeeable(this)))
 			{
 				final Stack<Room> switchStack = new Stack<Room>();
 				final CMMsg oMsg = (CMMsg)msg.copyOf();
@@ -116,10 +117,11 @@ public class GenLightSwitch extends GenElecCompItem
 						final Item I=R.getItem(i);
 						if((I instanceof GenLightSwitch)
 						&&(I!=this)
-						&&(I.displayText().length()==0)
+						&&((I.displayText().length()==0)||(!CMLib.flags().isSeeable(I)))
 						&&(!((GenLightSwitch)I).activated()))
 						{
 							oMsg.setTarget(I);
+							didAnything=true;
 							if(R.okMessage(host, oMsg))
 								R.sendOthers(oMsg.source(), oMsg);
 						}
