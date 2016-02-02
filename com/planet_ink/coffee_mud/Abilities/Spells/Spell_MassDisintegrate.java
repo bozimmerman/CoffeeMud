@@ -35,14 +35,43 @@ import java.util.*;
 
 public class Spell_MassDisintegrate extends Spell
 {
-	@Override public String ID() { return "Spell_MassDisintegrate"; }
-	private final static String localizedName = CMLib.lang().L("Mass Disintegrate");
-	@Override public String name() { return localizedName; }
-	@Override public int maxRange(){return adjustedMaxInvokerRange(2);}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
-	@Override public int overrideMana(){return 200;}
+	@Override
+	public String ID()
+	{
+		return "Spell_MassDisintegrate";
+	}
 
+	private final static String localizedName = CMLib.lang().L("Mass Disintegrate");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int maxRange()
+	{
+		return adjustedMaxInvokerRange(2);
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL | Ability.DOMAIN_EVOCATION;
+	}
+
+	@Override
+	public int overrideMana()
+	{
+		return 200;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -81,7 +110,9 @@ public class Spell_MassDisintegrate extends Spell
 		{
 			if(avgLevel <= 0)
 				avgLevel = 1;
+			int failChance=0;
 			if(mob.location().show(mob,null,this,somanticCastCode(mob,null,auto),auto?L("Something is happening!"):L("^S<S-NAME> wave(s) <S-HIS-HER> arms and utter(s) a trecherous spell!^?")))
+			{
 				for (final Object element : h)
 				{
 					final MOB target=(MOB)element;
@@ -94,11 +125,18 @@ public class Spell_MassDisintegrate extends Spell
 							if(msg.value()<=0)
 							{
 								if(target.curState().getHitPoints()>0)
-									CMLib.combat().postDamage(mob,target,this,target.curState().getHitPoints()*100,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,("^SThe spell <DAMAGE> <T-NAME>!^?")+CMLib.protocol().msp("spelldam2.wav",40));
+								{
+									if(CMLib.dice().rollPercentage()>failChance)
+										CMLib.combat().postDamage(mob,target,this,target.curState().getHitPoints()*100,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,("^SThe spell <DAMAGE> <T-NAME>!^?")+CMLib.protocol().msp("spelldam2.wav",40));
+									else
+										CMLib.combat().postDamage(mob,target,this,target.curState().getHitPoints()/2,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,("^SThe spell <DAMAGE> <T-NAME>!^?")+CMLib.protocol().msp("spelldam2.wav",40));
+									failChance+=5;
+								}
 							}
 						}
 					}
 				}
+			}
 			mob.location().recoverRoomStats();
 			final Vector<Item> V=new Vector<Item>();
 			for(int i=mob.location().numItems()-1;i>=0;i--)
