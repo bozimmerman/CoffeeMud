@@ -1285,6 +1285,8 @@ public class StdMOB implements MOB
 			tell(L("(You are asleep)"));
 		else
 			CMLib.commands().postLook(this, true);
+		possWieldedItem= null;
+		possHeldItem = null;
 		inventory.trimToSize();
 		abilitys.trimToSize();
 		affects.trimToSize();
@@ -3608,8 +3610,6 @@ public class StdMOB implements MOB
 		if ((item != null) && (!item.amDestroyed()))
 		{
 			item.setOwner(this);
-			possWieldedItem	= null;
-			possHeldItem	= null;
 			inventory.addElement(item);
 			item.recoverPhyStats();
 		}
