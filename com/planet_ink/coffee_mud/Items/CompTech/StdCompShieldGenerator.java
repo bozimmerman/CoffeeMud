@@ -19,6 +19,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.lang.ref.WeakReference;
 import java.util.*;
 
 /*
@@ -52,6 +53,14 @@ public class StdCompShieldGenerator extends StdElecCompItem implements ShipCompo
 	
 	private volatile long lastPowerConsumption=0;
 	private volatile long powerSetting=Integer.MAX_VALUE;
+	private volatile WeakReference<SpaceShip> myShip = null;
+	
+	@Override
+	public void setOwner(ItemPossessor container)
+	{
+		super.setOwner(container);
+		myShip = null;
+	}
 
 	/**
 	 * The maximum range of objects that this sensor can detect
@@ -66,6 +75,52 @@ public class StdCompShieldGenerator extends StdElecCompItem implements ShipCompo
 	public int powerNeeds()
 	{
 		return (int) Math.min((int) Math.min(powerCapacity,powerSetting) - power, maxRechargePer);
+	}
+	
+	protected synchronized SpaceShip getMyShip()
+	{
+		if(myShip == null)
+		{
+			final Area area = CMLib.map().areaLocation(this);
+			if(area instanceof SpaceShip)
+				myShip = new WeakReference<SpaceShip>((SpaceShip)area);
+			else
+				myShip = new WeakReference<SpaceShip>(null);
+		}
+		return myShip.get();
+	}
+	
+	@Override
+	public boolean okMessage(Environmental host, CMMsg msg)
+	{
+		if(!super.okMessage(host, msg))
+			return false;
+		final SpaceShip ship = getMyShip(); 
+		if(msg.target() == ship)
+		{
+			switch(msg.targetMinor())
+			{
+			case CMMsg.TYP_DAMAGE: // laser, energy, some other kind of directed damage
+			{
+				if((msg.value() > 1)&&(this.lastPowerConsumption>0))
+				{
+					//final int dmg = msg.value();
+					// some shields actually mitigate this!
+				}
+				break;
+			}
+			case CMMsg.TYP_WEAPONATTACK: // kinetic damage taken to the outside of the ship, collissions end up here
+			{
+				if((msg.value() > 1)&&(this.lastPowerConsumption>0))
+				{
+					//final int dmg = msg.value();
+					// some shields actually mitigate this!
+				}
+				break;
+			}
+			}
+		}
+		return true;
 	}
 
 	@Override
@@ -126,26 +181,6 @@ public class StdCompShieldGenerator extends StdElecCompItem implements ShipCompo
 				break;
 			}
 		}
-		final Area area = CMLib.map().areaLocation(this);
-		if((area instanceof SpaceShip)
-		&&(msg.target() == ((SpaceShip)area).getShipItem()))
-		{
-			switch(msg.targetMinor())
-			{
-			case CMMsg.TYP_WEAPONATTACK: // kinetic damage taken to the outside of the ship, collissions end up here
-			{
-				final SpaceShip ship = (SpaceShip)area;
-				final long myMass=ship.getMass();
-				if((msg.value() > 1)&&(myMass>0))
-				{
-					final int dmg = msg.value();
-					// some shields actually mitigate this!
-				}
-				break;
-			}
-			}
-		}
-			
 	}
 
 	@Override

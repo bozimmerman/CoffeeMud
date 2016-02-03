@@ -146,7 +146,8 @@ public interface Technical
 		ACCELLLERATION(ShipEngine.ThrustPort.class, Integer.class, Boolean.class),
 		COMPONENTFAILURE(Technical.TechType.class, String[].class),
 		SENSE(),
-		AIRREFRESH(Double.class, Integer.class), ;
+		AIRREFRESH(Double.class, Integer.class), 
+		POWERSET(Long.class);
 		private final Class<?>[]	parms;
 
 		private TechCommand(Class<?>... parms)

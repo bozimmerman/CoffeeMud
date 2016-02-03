@@ -276,6 +276,18 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 				}
 				break;
 			}
+			case CMMsg.TYP_DAMAGE: // some other form of energy or radiation damage to the ship
+			{
+				if(msg.value() > 1)
+				{
+					//TODO: damage internal components of the ship.
+					// this sort of damage tends to rip through the hull, or send particles through
+					// it into various systems.  radiation also tends to damage particular systems.
+					// this might be the time to think ahead to how weapons might be targeted at
+					// particular subsystems.
+				}
+				break;
+			}
 			case CMMsg.TYP_COLLISION:
 			{
 				final MOB mob=msg.source();
