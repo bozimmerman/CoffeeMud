@@ -202,11 +202,11 @@ public class MOTD extends StdCommand
 				if(CJseparator)
 					buf.append("\n\r--------------------------------------\n\r");
 
-				if((!mob.isAttributeSet(MOB.Attrib.AUTOFORWARD))
+				if((mob.isAttributeSet(MOB.Attrib.AUTOFORWARD))
 				&&(CMProps.getVar(CMProps.Str.MAILBOX).length()>0))
 				{
-					final List<JournalEntry> msgs=CMLib.database().DBReadJournalMsgs(CMProps.getVar(CMProps.Str.MAILBOX), true);
-					int mymsgs=0;
+					final String[] queries=new String[] { mob.Name(),"ALL","MASK=%" };
+					final List<JournalEntry> msgs=CMLib.database().DBReadJournalMsgs(CMProps.getVar(CMProps.Str.MAILBOX), false, max, queries);
 					for(int num=0;num<msgs.size();num++)
 					{
 						final JournalEntry thismsg=msgs.get(num);
@@ -214,10 +214,11 @@ public class MOTD extends StdCommand
 						if(to.equalsIgnoreCase("all")
 						||to.equalsIgnoreCase(mob.Name())
 						||(to.toUpperCase().trim().startsWith("MASK=")&&CMLib.masking().maskCheck(to.trim().substring(5),mob,true)))
-							mymsgs++;
+						{
+							buf.append(L("\n\r^ZYou have mail waiting. Enter 'EMAIL BOX' to read.^?^.\n\r"));
+							break;
+						}
 					}
-					if(mymsgs>0)
-						buf.append(L("\n\r^ZYou have mail waiting. Enter 'EMAIL BOX' to read.^?^.\n\r"));
 				}
 
 				if((CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.CMDPLAYERS))

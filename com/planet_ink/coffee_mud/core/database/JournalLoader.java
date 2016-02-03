@@ -478,6 +478,51 @@ public class JournalLoader
 		}
 	}
 
+	public List<JournalEntry> DBReadJournalMsgs(String journal, boolean ascending, int limit, String[] tos)
+	{
+		journal = DB.injectionClean(journal);
+
+		if(journal==null) 
+			return new Vector<JournalEntry>();
+		synchronized(journal.toUpperCase().intern())
+		{
+			//Resources.submitResource("JOURNAL_"+journal);
+			DBConnection D=null;
+			try
+			{
+				D=DB.DBFetch();
+				String sql="SELECT CMJKEY FROM CMJRNL WHERE CMJRNL='"+journal+"'";
+				if((tos != null)&&(tos.length>0))
+				{
+					StringBuilder orBox = new StringBuilder("");
+					for(String to : tos)
+					{
+						if(orBox.length()>0)
+							orBox.append(" OR");
+						to = DB.injectionClean(to);
+						if(to.indexOf('%')>=0)
+							orBox.append(" CMTONM LIKE '"+to+"'");
+						else
+							orBox.append(" CMTONM = '"+to+"'");
+					}
+					sql +=" AND ("+orBox.toString()+")";
+				}
+				sql +=" ORDER BY CMUPTM ";
+				sql += ascending ? "ASC" : "DESC";
+				return this.makeJournalEntryList(journal,D.query(sql), limit);
+			}
+			catch(final Exception sqle)
+			{
+				Log.errOut("Journal",sqle);
+				return null;
+			}
+			finally
+			{
+				DB.DBDone(D);
+			}
+		}
+	}
+
 	public JournalEntry DBReadJournalEntry(String journal, String key)
 	{
 		journal	= DB.injectionClean(journal);

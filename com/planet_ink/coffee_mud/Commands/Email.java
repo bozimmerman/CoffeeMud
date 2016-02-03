@@ -61,12 +61,19 @@ public class Email extends StdCommand
 				mob.tell(L("A mailbox has not been defined by this muds administrators, so mail can be neither sent, or received."));
 				return false;
 			}
+			int max=10;
+			if((commands.get(1).equalsIgnoreCase("BOX") && (commands.size()>2)) && (CMath.isInteger(commands.get(commands.size()-1))))
+			{
+				max=CMath.s_int(commands.get(commands.size()-1));
+				commands.remove(commands.size()-1);
+			}
 			final String name=CMParms.combine(commands,1);
 			if(name.equalsIgnoreCase("BOX"))
 			{
 				final String journalName=CMProps.getVar(CMProps.Str.MAILBOX);
-				final List<JournalEntry> msgs=CMLib.database().DBReadJournalMsgs(journalName, true);
-				for(int num=msgs.size()-1;num>=0;num--)
+				final String[] queries=new String[] { mob.Name(),"ALL","MASK=%" };
+				final List<JournalEntry> msgs=CMLib.database().DBReadJournalMsgs(journalName, false, max, queries);
+				for(int num=0;num<msgs.size();num++)
 				{
 					final JournalEntry thismsg=msgs.get(num);
 					final String to=thismsg.to();
@@ -87,7 +94,10 @@ public class Email extends StdCommand
 					};
 				while((mob.session()!=null)&&(!mob.session().isStopped()))
 				{
-					StringBuffer messages=new StringBuffer("^X"+CMStrings.padCenter(mob.Name()+"'s MailBox",cols[0])+"^?^.\n\r");
+					StringBuffer messages=new StringBuffer("^X"+CMStrings.padCenter(mob.Name()+"'s MailBox",cols[0])+"^?^.");
+					if(msgs.size()==max)
+						messages.append(L(" (Newest @x1 messages)",""+max));
+					messages.append("\n\r");
 					messages.append("^X### "+CMStrings.padRight(L("From"),cols[1])+" "+CMStrings.padRight(L("Date"),cols[2])+" Subject^?^.\n\r");
 					for(int num=0;num<msgs.size();num++)
 					{
