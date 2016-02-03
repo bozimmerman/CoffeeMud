@@ -247,10 +247,11 @@ public class Druid_MyPlants extends StdAbility
 		final Vector<Item> V=new Vector<Item>();
 		if(rooms == null)
 			return V;
-		try
+		for(int i=0;i<myPlants.size();i++)
 		{
-			for(Item I : myPlants)
+			try
 			{
+				Item I=myPlants.get(i);
 				if(I!=null)
 				{
 					final Room R=CMLib.map().roomLocation(I);
@@ -258,9 +259,9 @@ public class Druid_MyPlants extends StdAbility
 						V.addElement(I);
 				}
 			}
-		}
-		catch (final NoSuchElementException e)
-		{
+			catch(IndexOutOfBoundsException e)
+			{
+			}
 		}
 		return myPlants;
 	}
@@ -269,10 +270,11 @@ public class Druid_MyPlants extends StdAbility
 	{
 		final List<Item> myPlants = getMyPlants(mob);
 		final Vector<Room> V=new Vector<Room>();
-		try
+		for(int i=0;i<myPlants.size();i++)
 		{
-			for(Item I : myPlants)
+			try
 			{
+				Item I=myPlants.get(i);
 				if(I!=null)
 				{
 					final Room R=CMLib.map().roomLocation(I);
@@ -280,9 +282,9 @@ public class Druid_MyPlants extends StdAbility
 						V.addElement(R);
 				}
 			}
-		}
-		catch (final NoSuchElementException e)
-		{
+			catch(IndexOutOfBoundsException e)
+			{
+			}
 		}
 		return V;
 	}
