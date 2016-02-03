@@ -35,23 +35,41 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 */
 public class GenElecWeapon extends StdElecWeapon
 {
-	@Override public String ID(){	return "GenElecWeapon";}
+	@Override
+	public String ID()
+	{
+		return "GenElecWeapon";
+	}
+
 	protected String	readableText="";
 	public GenElecWeapon()
 	{
 		super();
 	}
 
-	@Override public boolean isGeneric(){return true;}
-
+	@Override
+	public boolean isGeneric()
+	{
+		return true;
+	}
 
 	@Override
 	public String text()
 	{
-		return CMLib.coffeeMaker().getPropertiesStr(this,false);
+		return CMLib.coffeeMaker().getPropertiesStr(this, false);
 	}
-	@Override public String readableText(){return readableText;}
-	@Override public void setReadableText(String text){readableText=text;}
+
+	@Override
+	public String readableText()
+	{
+		return readableText;
+	}
+
+	@Override
+	public void setReadableText(String text)
+	{
+		readableText = text;
+	}
 
 	@Override
 	public void setMiscText(String newText)
@@ -60,8 +78,10 @@ public class GenElecWeapon extends StdElecWeapon
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
 		recoverPhyStats();
 	}
+
 	private final static String[] MYCODES={"MINRANGE","MAXRANGE","WEAPONTYPE","WEAPONCLASS",
 							  			   "POWERCAP","ACTIVATED","POWERREM","MANUFACTURER"};
+
 	@Override
 	public String getStat(String code)
 	{
@@ -69,18 +89,27 @@ public class GenElecWeapon extends StdElecWeapon
 			return CMLib.coffeeMaker().getGenItemStat(this,code);
 		switch(getCodeNum(code))
 		{
-		case 0: return ""+minRange();
-		case 1: return ""+maxRange();
-		case 2: return ""+weaponDamageType();
-		case 3: return ""+weaponClassification();
-		case 4: return ""+powerCapacity();
-		case 5: return ""+activated();
-		case 6: return ""+powerRemaining();
-		case 7: return ""+getManufacturerName();
+		case 0:
+			return "" + minRange();
+		case 1:
+			return "" + maxRange();
+		case 2:
+			return "" + weaponDamageType();
+		case 3:
+			return "" + weaponClassification();
+		case 4:
+			return "" + powerCapacity();
+		case 5:
+			return "" + activated();
+		case 6:
+			return "" + powerRemaining();
+		case 7:
+			return "" + getManufacturerName();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
 	}
+
 	@Override
 	public void setStat(String code, String val)
 	{
@@ -89,19 +118,36 @@ public class GenElecWeapon extends StdElecWeapon
 		else
 		switch(getCodeNum(code))
 		{
-		case 0: setRanges(CMath.s_parseIntExpression(val),maxRange()); break;
-		case 1: setRanges(minRange(),CMath.s_parseIntExpression(val)); break;
-		case 2: setWeaponDamageType(CMath.s_parseListIntExpression(Weapon.TYPE_DESCS,val)); break;
-		case 3: setWeaponClassification(CMath.s_parseListIntExpression(Weapon.CLASS_DESCS, val)); break;
-		case 4: setPowerCapacity(CMath.s_parseLongExpression(val)); break;
-		case 5: activate(CMath.s_bool(val)); break;
-		case 6: setPowerRemaining(CMath.s_parseLongExpression(val)); break;
-		case 7: setManufacturerName(val); break;
+		case 0:
+			setRanges(CMath.s_parseIntExpression(val), maxRange());
+			break;
+		case 1:
+			setRanges(minRange(), CMath.s_parseIntExpression(val));
+			break;
+		case 2:
+			setWeaponDamageType(CMath.s_parseListIntExpression(Weapon.TYPE_DESCS, val));
+			break;
+		case 3:
+			setWeaponClassification(CMath.s_parseListIntExpression(Weapon.CLASS_DESCS, val));
+			break;
+		case 4:
+			setPowerCapacity(CMath.s_parseLongExpression(val));
+			break;
+		case 5:
+			activate(CMath.s_bool(val));
+			break;
+		case 6:
+			setPowerRemaining(CMath.s_parseLongExpression(val));
+			break;
+		case 7:
+			setManufacturerName(val);
+			break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;
 		}
 	}
+
 	@Override
 	protected int getCodeNum(String code)
 	{
@@ -110,7 +156,9 @@ public class GenElecWeapon extends StdElecWeapon
 				return i;
 		return -1;
 	}
+
 	private static String[] codes=null;
+
 	@Override
 	public String[] getStatCodes()
 	{
@@ -126,6 +174,7 @@ public class GenElecWeapon extends StdElecWeapon
 			codes[i]=MYCODES[x];
 		return codes;
 	}
+
 	@Override
 	public boolean sameAs(Environmental E)
 	{
@@ -133,8 +182,10 @@ public class GenElecWeapon extends StdElecWeapon
 			return false;
 		final String[] codes=getStatCodes();
 		for(int i=0;i<codes.length;i++)
+		{
 			if(!E.getStat(codes[i]).equals(getStat(codes[i])))
 				return false;
+		}
 		return true;
 	}
 }

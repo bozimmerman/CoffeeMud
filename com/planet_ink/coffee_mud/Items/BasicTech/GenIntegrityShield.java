@@ -48,17 +48,17 @@ public class GenIntegrityShield extends GenPersonalShield
 	@Override
 	protected String fieldOnStr(MOB viewerM)
 	{
-		return (owner() instanceof MOB)?
+		return L((owner() instanceof MOB)?
 			"An integrity field surrounds <O-NAME>.":
-			"An integrity field surrounds <T-NAME>.";
+			"An integrity field surrounds <T-NAME>.");
 	}
 
 	@Override
 	protected String fieldDeadStr(MOB viewerM)
 	{
-		return (owner() instanceof MOB)?
+		return L((owner() instanceof MOB)?
 			"The integrity field around <O-NAME> flickers and dies out.":
-			"The integrity field around <T-NAME> flickers and dies out.";
+			"The integrity field around <T-NAME> flickers and dies out.");
 	}
 
 	@Override
@@ -70,10 +70,10 @@ public class GenIntegrityShield extends GenPersonalShield
 			{
 				final String s="^F"+((Weapon)msg.tool()).hitString(0)+"^N";
 				if(s.indexOf("<DAMAGE> <T-HIM-HER>")>0)
-					mob.location().show(msg.source(),msg.target(),msg.tool(),CMMsg.MSG_OK_VISUAL,CMStrings.replaceAll(s, "<DAMAGE>", "it is neutralized by the shield around"));
+					mob.location().show(msg.source(),msg.target(),msg.tool(),CMMsg.MSG_OK_VISUAL,CMStrings.replaceAll(s, "<DAMAGE>", L("it is neutralized by the shield around")));
 				else
 				if(s.indexOf("<DAMAGES> <T-HIM-HER>")>0)
-					mob.location().show(msg.source(),msg.target(),msg.tool(),CMMsg.MSG_OK_VISUAL,CMStrings.replaceAll(s, "<DAMAGES>", "is neutralized by the shield around"));
+					mob.location().show(msg.source(),msg.target(),msg.tool(),CMMsg.MSG_OK_VISUAL,CMStrings.replaceAll(s, "<DAMAGES>", L("is neutralized by the shield around")));
 				else
 					mob.location().show(mob,msg.source(),msg.tool(),CMMsg.MSG_OK_VISUAL,L("The field around <S-NAME> neutralizes the <O-NAMENOART> damage."));
 			}

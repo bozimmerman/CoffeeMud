@@ -49,17 +49,17 @@ public class GenEclipseField extends GenTickerShield
 	@Override
 	protected String fieldOnStr(MOB viewerM)
 	{
-		return (owner() instanceof MOB)?
+		return L((owner() instanceof MOB)?
 			"An eclipsing field surrounds <O-NAME>.":
-			"An eclipsing field surrounds <T-NAME>.";
+			"An eclipsing field surrounds <T-NAME>.");
 	}
 
 	@Override
 	protected String fieldDeadStr(MOB viewerM)
 	{
-		return (owner() instanceof MOB)?
+		return L((owner() instanceof MOB)?
 			"The eclipsing field around <O-NAME> flickers and dies out as <O-HE-SHE> fade(s) back into view.":
-			"The eclipsing field around <T-NAME> flickers and dies out as <T-HE-SHE> fade(s) back into view.";
+			"The eclipsing field around <T-NAME> flickers and dies out as <T-HE-SHE> fade(s) back into view.");
 	}
 
 	@Override

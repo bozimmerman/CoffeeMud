@@ -51,7 +51,17 @@ public class StdElecWeapon extends StdElecItem implements Weapon, Electronics
 	protected ModeType	mode 					= ModeType.NORMAL;
 	protected ModeType[]modeTypes 				= new ModeType[]{ ModeType.NORMAL };
 
-	protected enum ModeType { STUN, NORMAL, KILL, DISINTEGRATE, MAIM, DISRUPT, LASER, SONIC }
+	protected enum ModeType
+	{
+		STUN,
+		NORMAL,
+		KILL,
+		DISINTEGRATE,
+		MAIM,
+		DISRUPT,
+		LASER,
+		SONIC
+	}
 
 	public StdElecWeapon()
 	{

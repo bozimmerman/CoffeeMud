@@ -65,11 +65,34 @@ public class StdTriCorder extends StdElecContainer implements Electronics.Comput
 		recoverPhyStats();
 	}
 
-	@Override public TechType panelType(){return TechType.PERSONAL_SOFTWARE;}
-	@Override public void setPanelType(TechType type){ }
-	@Override public void setActiveMenu(String internalName) { currentMenu=internalName; }
-	@Override public String getActiveMenu() { return currentMenu; }
-	@Override public TechType getTechType() { return TechType.PERSONAL_SENSOR; }
+	@Override
+	public TechType panelType()
+	{
+		return TechType.PERSONAL_SOFTWARE;
+	}
+
+	@Override
+	public void setPanelType(TechType type)
+	{
+	}
+
+	@Override
+	public void setActiveMenu(String internalName)
+	{
+		currentMenu = internalName;
+	}
+
+	@Override
+	public String getActiveMenu()
+	{
+		return currentMenu;
+	}
+
+	@Override
+	public TechType getTechType()
+	{
+		return TechType.PERSONAL_SENSOR;
+	}
 
 	@Override
 	public boolean canContain(Item I)

@@ -60,16 +60,16 @@ public class StdPersonalShield extends StdElecItem implements Armor
 
 	protected String fieldOnStr(MOB viewerM)
 	{
-		return (owner() instanceof MOB)?
+		return L((owner() instanceof MOB)?
 			"A field of energy surrounds <O-NAME>.":
-			"A field of energy surrounds <T-NAME>.";
+			"A field of energy surrounds <T-NAME>.");
 	}
 
 	protected String fieldDeadStr(MOB viewerM)
 	{
-		return (owner() instanceof MOB)?"" +
+		return L((owner() instanceof MOB)?"" +
 			"The field around <O-NAME> flickers and dies out.":
-			"The field around <T-NAME> flickers and dies out.";
+			"The field around <T-NAME> flickers and dies out.");
 	}
 
 	@Override public TechType getTechType() { return TechType.PERSONAL_SHIELD; }
@@ -82,10 +82,10 @@ public class StdPersonalShield extends StdElecItem implements Armor
 			{
 				final String s="^F"+((Weapon)msg.tool()).hitString(0)+"^N";
 				if(s.indexOf("<DAMAGE> <T-HIM-HER>")>0)
-					mob.location().show(msg.source(),msg.target(),msg.tool(),CMMsg.MSG_OK_VISUAL,CMStrings.replaceAll(s, "<DAMAGE>", "it reflects off the shield around"));
+					mob.location().show(msg.source(),msg.target(),msg.tool(),CMMsg.MSG_OK_VISUAL,CMStrings.replaceAll(s, "<DAMAGE>", L("it reflects off the shield around")));
 				else
 				if(s.indexOf("<DAMAGES> <T-HIM-HER>")>0)
-					mob.location().show(msg.source(),msg.target(),msg.tool(),CMMsg.MSG_OK_VISUAL,CMStrings.replaceAll(s, "<DAMAGES>", "reflects off the shield around"));
+					mob.location().show(msg.source(),msg.target(),msg.tool(),CMMsg.MSG_OK_VISUAL,CMStrings.replaceAll(s, "<DAMAGES>", L("reflects off the shield around")));
 				else
 					mob.location().show(mob,msg.source(),msg.tool(),CMMsg.MSG_OK_VISUAL,L("The field around <S-NAME> reflects the <O-NAMENOART> damage."));
 			}
@@ -243,10 +243,29 @@ public class StdPersonalShield extends StdElecItem implements Armor
 		super.executeMsg(host, msg);
 	}
 
-	@Override public short getClothingLayer(){return layer;}
-	@Override public void setClothingLayer(short newLayer){layer=newLayer;}
-	@Override public short getLayerAttributes(){return layerAttributes;}
-	@Override public void setLayerAttributes(short newAttributes){layerAttributes=newAttributes;}
+	@Override
+	public short getClothingLayer()
+	{
+		return layer;
+	}
+
+	@Override
+	public void setClothingLayer(short newLayer)
+	{
+		layer = newLayer;
+	}
+
+	@Override
+	public short getLayerAttributes()
+	{
+		return layerAttributes;
+	}
+
+	@Override
+	public void setLayerAttributes(short newAttributes)
+	{
+		layerAttributes = newAttributes;
+	}
 
 	@Override
 	public boolean canWear(MOB mob, long where)

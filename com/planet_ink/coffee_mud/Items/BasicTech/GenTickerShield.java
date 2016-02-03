@@ -37,7 +37,11 @@ import java.util.*;
 public class GenTickerShield extends StdElecItem implements Armor
 {
 
-	@Override public String ID(){	return "GenTickerShield";}
+	@Override
+	public String ID()
+	{
+		return "GenTickerShield";
+	}
 
 	short layer=0;
 	short layerAttributes=0;
@@ -60,11 +64,21 @@ public class GenTickerShield extends StdElecItem implements Armor
 		super.setPowerRemaining(100);
 	}
 
-	protected String fieldOnStr(MOB viewerM) { return "A field surrounds <O-NAME>."; }
+	protected String fieldOnStr(MOB viewerM)
+	{
+		return L("A field surrounds <O-NAME>.");
+	}
 
-	protected String fieldDeadStr(MOB viewerM) { return "The around <S-NAME> flickers and dies out as <S-HE-SHE> fade(s) back into view."; }
+	protected String fieldDeadStr(MOB viewerM)
+	{
+		return L("The around <S-NAME> flickers and dies out as <S-HE-SHE> fade(s) back into view.");
+	}
 
-	@Override public TechType getTechType() { return TechType.PERSONAL_SHIELD; }
+	@Override
+	public TechType getTechType()
+	{
+		return TechType.PERSONAL_SHIELD;
+	}
 
 	@Override
 	public void setOwner(ItemPossessor owner)
@@ -195,10 +209,29 @@ public class GenTickerShield extends StdElecItem implements Armor
 	}
 
 
-	@Override public short getClothingLayer(){return layer;}
-	@Override public void setClothingLayer(short newLayer){layer=newLayer;}
-	@Override public short getLayerAttributes(){return layerAttributes;}
-	@Override public void setLayerAttributes(short newAttributes){layerAttributes=newAttributes;}
+	@Override
+	public short getClothingLayer()
+	{
+		return layer;
+	}
+
+	@Override
+	public void setClothingLayer(short newLayer)
+	{
+		layer = newLayer;
+	}
+
+	@Override
+	public short getLayerAttributes()
+	{
+		return layerAttributes;
+	}
+
+	@Override
+	public void setLayerAttributes(short newAttributes)
+	{
+		layerAttributes = newAttributes;
+	}
 
 	@Override
 	public boolean canWear(MOB mob, long where)
@@ -210,16 +243,29 @@ public class GenTickerShield extends StdElecItem implements Armor
 		return mob.freeWearPositions(where,getClothingLayer(),getLayerAttributes())>0;
 	}
 
-	@Override public boolean isGeneric(){return true;}
+	@Override
+	public boolean isGeneric()
+	{
+		return true;
+	}
 
 	@Override
 	public String text()
 	{
-		return CMLib.coffeeMaker().getPropertiesStr(this,false);
+		return CMLib.coffeeMaker().getPropertiesStr(this, false);
 	}
 
-	@Override public String readableText(){return readableText;}
-	@Override public void setReadableText(String text){readableText=text;}
+	@Override
+	public String readableText()
+	{
+		return readableText;
+	}
+
+	@Override
+	public void setReadableText(String text)
+	{
+		readableText = text;
+	}
 
 	@Override
 	public void setMiscText(String newText)
@@ -237,12 +283,18 @@ public class GenTickerShield extends StdElecItem implements Armor
 			return CMLib.coffeeMaker().getGenItemStat(this,code);
 		switch(getCodeNum(code))
 		{
-		case 0: return ""+powerCapacity();
-		case 1: return ""+activated();
-		case 2: return ""+powerRemaining();
-		case 3: return ""+getManufacturerName();
-		case 4: return ""+getClothingLayer();
-		case 5: return ""+getLayerAttributes();
+		case 0:
+			return "" + powerCapacity();
+		case 1:
+			return "" + activated();
+		case 2:
+			return "" + powerRemaining();
+		case 3:
+			return "" + getManufacturerName();
+		case 4:
+			return "" + getClothingLayer();
+		case 5:
+			return "" + getLayerAttributes();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -255,12 +307,24 @@ public class GenTickerShield extends StdElecItem implements Armor
 		else
 		switch(getCodeNum(code))
 		{
-		case 0: setPowerCapacity(CMath.s_parseLongExpression(val)); break;
-		case 1: activate(CMath.s_bool(val)); break;
-		case 2: setPowerRemaining(CMath.s_parseLongExpression(val)); break;
-		case 3: setManufacturerName(val); break;
-		case 4: setClothingLayer((short)CMath.s_parseIntExpression(val)); break;
-		case 5: setLayerAttributes((short)CMath.s_parseListLongExpression(Armor.LAYERMASK_DESCS,val)); break;
+			case 0:
+				setPowerCapacity(CMath.s_parseLongExpression(val));
+				break;
+			case 1:
+				activate(CMath.s_bool(val));
+				break;
+			case 2:
+				setPowerRemaining(CMath.s_parseLongExpression(val));
+				break;
+			case 3:
+				setManufacturerName(val);
+				break;
+			case 4:
+				setClothingLayer((short) CMath.s_parseIntExpression(val));
+				break;
+			case 5:
+				setLayerAttributes((short) CMath.s_parseListLongExpression(Armor.LAYERMASK_DESCS, val));
+				break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;

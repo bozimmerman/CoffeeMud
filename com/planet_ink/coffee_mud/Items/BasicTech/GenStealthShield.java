@@ -49,17 +49,17 @@ public class GenStealthShield extends GenTickerShield
 	@Override
 	protected String fieldOnStr(MOB viewerM)
 	{
-		return (owner() instanceof MOB)?
+		return L((owner() instanceof MOB)?
 			"A stealth field surrounds <O-NAME>.":
-			"A stealth field surrounds <T-NAME>.";
+			"A stealth field surrounds <T-NAME>.");
 	}
 
 	@Override
 	protected String fieldDeadStr(MOB viewerM)
 	{
-		return (owner() instanceof MOB)?
+		return L((owner() instanceof MOB)?
 			"The stealth field around <O-NAME> flickers and dies out as <O-HE-SHE> fade(s) back into view.":
-			"The stealth field around <T-NAME> flickers and dies out as <T-HE-SHE> fade(s) back into view.";
+			"The stealth field around <T-NAME> flickers and dies out as <T-HE-SHE> fade(s) back into view.");
 	}
 
 	@Override

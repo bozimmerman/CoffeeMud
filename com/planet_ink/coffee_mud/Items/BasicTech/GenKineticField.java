@@ -48,17 +48,17 @@ public class GenKineticField extends GenPersonalShield
 	@Override
 	protected String fieldOnStr(MOB viewerM)
 	{
-		return (owner() instanceof MOB)?
+		return L((owner() instanceof MOB)?
 			"An powerful energy field surrounds <O-NAME>.":
-			"An powerful energy field surrounds <T-NAME>.";
+			"An powerful energy field surrounds <T-NAME>.");
 	}
 
 	@Override
 	protected String fieldDeadStr(MOB viewerM)
 	{
-		return (owner() instanceof MOB)?
+		return L((owner() instanceof MOB)?
 			"The powerful energy field around <O-NAME> flickers and dies out.":
-			"The powerful energy field around <T-NAME> flickers and dies out.";
+			"The powerful energy field around <T-NAME> flickers and dies out.");
 	}
 
 	@Override
@@ -71,10 +71,10 @@ public class GenKineticField extends GenPersonalShield
 			{
 				final String s="^F"+((Weapon)msg.tool()).hitString(0)+"^N";
 				if(s.indexOf("<DAMAGE> <T-HIM-HER>")>0)
-					mob.location().show(msg.source(),msg.target(),msg.tool(),CMMsg.MSG_OK_VISUAL,CMStrings.replaceAll(s, "<DAMAGE>", "it`s stopped by the shield around"));
+					mob.location().show(msg.source(),msg.target(),msg.tool(),CMMsg.MSG_OK_VISUAL,CMStrings.replaceAll(s, "<DAMAGE>", L("it`s stopped by the shield around")));
 				else
 				if(s.indexOf("<DAMAGES> <T-HIM-HER>")>0)
-					mob.location().show(msg.source(),msg.target(),msg.tool(),CMMsg.MSG_OK_VISUAL,CMStrings.replaceAll(s, "<DAMAGES>", "is stopped by the shield around"));
+					mob.location().show(msg.source(),msg.target(),msg.tool(),CMMsg.MSG_OK_VISUAL,CMStrings.replaceAll(s, "<DAMAGES>", L("is stopped by the shield around")));
 				else
 					mob.location().show(mob,msg.source(),msg.tool(),CMMsg.MSG_OK_VISUAL,L("The field around <S-NAME> stops the <O-NAMENOART> damage."));
 			}

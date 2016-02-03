@@ -48,17 +48,17 @@ public class GenDeflectionShield extends GenPersonalShield
 	@Override
 	protected String fieldOnStr(MOB viewerM)
 	{
-		return (owner() instanceof MOB)?
+		return L((owner() instanceof MOB)?
 			"A deflectant field of energy surrounds <O-NAME>.":
-			"A deflectant field of energy surrounds <T-NAME>.";
+			"A deflectant field of energy surrounds <T-NAME>.");
 	}
 
 	@Override
 	protected String fieldDeadStr(MOB viewerM)
 	{
-		return (owner() instanceof MOB)?
+		return L((owner() instanceof MOB)?
 			"The deflection field around <O-NAME> flickers and dies out.":
-			"The deflection field around <T-NAME> flickers and dies out.";
+			"The deflection field around <T-NAME> flickers and dies out.");
 	}
 
 	@Override
@@ -70,10 +70,10 @@ public class GenDeflectionShield extends GenPersonalShield
 			{
 				final String s="^F"+((Weapon)msg.tool()).hitString(0)+"^N";
 				if(s.indexOf("<DAMAGE> <T-HIM-HER>")>0)
-					mob.location().show(msg.source(),msg.target(),msg.tool(),CMMsg.MSG_OK_VISUAL,CMStrings.replaceAll(s, "<DAMAGE>", "it deflects off the shield around"));
+					mob.location().show(msg.source(),msg.target(),msg.tool(),CMMsg.MSG_OK_VISUAL,CMStrings.replaceAll(s, "<DAMAGE>", L("it deflects off the shield around")));
 				else
 				if(s.indexOf("<DAMAGES> <T-HIM-HER>")>0)
-					mob.location().show(msg.source(),msg.target(),msg.tool(),CMMsg.MSG_OK_VISUAL,CMStrings.replaceAll(s, "<DAMAGES>", "deflects off the shield around"));
+					mob.location().show(msg.source(),msg.target(),msg.tool(),CMMsg.MSG_OK_VISUAL,CMStrings.replaceAll(s, "<DAMAGES>", L("deflects off the shield around")));
 				else
 					mob.location().show(mob,msg.source(),msg.tool(),CMMsg.MSG_OK_VISUAL,L("The field around <S-NAME> deflects the <O-NAMENOART> damage."));
 			}

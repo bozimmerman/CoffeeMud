@@ -48,17 +48,17 @@ public class GenMutingField extends GenPersonalShield
 	@Override
 	protected String fieldOnStr(MOB viewerM)
 	{
-		return (owner() instanceof MOB)?
+		return L((owner() instanceof MOB)?
 			"An dense field surrounds <O-NAME>.":
-			"An dense field surrounds <T-NAME>.";
+			"An dense field surrounds <T-NAME>.");
 	}
 
 	@Override
 	protected String fieldDeadStr(MOB viewerM)
 	{
-		return (owner() instanceof MOB)?
+		return L((owner() instanceof MOB)?
 			"The dense field around <O-NAME> flickers and dies out.":
-			"The dense field around <T-NAME> flickers and dies out.";
+			"The dense field around <T-NAME> flickers and dies out.");
 	}
 
 	@Override
@@ -71,10 +71,10 @@ public class GenMutingField extends GenPersonalShield
 			{
 				final String s="^F"+((Weapon)msg.tool()).hitString(0)+"^N";
 				if(s.indexOf("<DAMAGE> <T-HIM-HER>")>0)
-					mob.location().show(msg.source(),msg.target(),msg.tool(),CMMsg.MSG_OK_VISUAL,CMStrings.replaceAll(s, "<DAMAGE>", "it`s absorbed by the shield around"));
+					mob.location().show(msg.source(),msg.target(),msg.tool(),CMMsg.MSG_OK_VISUAL,CMStrings.replaceAll(s, "<DAMAGE>", L("it`s absorbed by the shield around")));
 				else
 				if(s.indexOf("<DAMAGES> <T-HIM-HER>")>0)
-					mob.location().show(msg.source(),msg.target(),msg.tool(),CMMsg.MSG_OK_VISUAL,CMStrings.replaceAll(s, "<DAMAGES>", "is absorbed by the shield around"));
+					mob.location().show(msg.source(),msg.target(),msg.tool(),CMMsg.MSG_OK_VISUAL,CMStrings.replaceAll(s, "<DAMAGES>", L("is absorbed by the shield around")));
 				else
 					mob.location().show(mob,msg.source(),msg.tool(),CMMsg.MSG_OK_VISUAL,L("The field around <S-NAME> absorbs the <O-NAMENOART> damage."));
 			}

@@ -42,9 +42,9 @@ public class StdElecPanel extends StdElecContainer implements Electronics.ElecPa
 		return "StdElecPanel";
 	}
 
-	protected volatile int powerNeeds=0;
-	protected volatile String circuitKey=null;
-	protected TechType panelType=TechType.ANY;
+	protected volatile int		powerNeeds	= 0;
+	protected volatile String	circuitKey	= null;
+	protected TechType			panelType	= TechType.ANY;
 
 	public StdElecPanel()
 	{

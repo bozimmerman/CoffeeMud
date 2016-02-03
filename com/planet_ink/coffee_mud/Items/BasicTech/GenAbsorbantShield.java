@@ -48,17 +48,17 @@ public class GenAbsorbantShield extends GenPersonalShield
 	@Override
 	protected String fieldOnStr(MOB viewerM)
 	{
-		return (owner() instanceof MOB)?
+		return L((owner() instanceof MOB)?
 			"A sparkling field of energy surrounds <O-NAME>.":
-			"A sparkling field of energy surrounds <T-NAME>.";
+			"A sparkling field of energy surrounds <T-NAME>.");
 	}
 
 	@Override
 	protected String fieldDeadStr(MOB viewerM)
 	{
-		return (owner() instanceof MOB)?
+		return L((owner() instanceof MOB)?
 			"The sparkling field around <O-NAME> flickers and dies out.":
-			"The sparkling field around <T-NAME> flickers and dies out.";
+			"The sparkling field around <T-NAME> flickers and dies out.");
 	}
 
 	@Override
