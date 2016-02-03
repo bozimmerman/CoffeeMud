@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Items.ShipTech;
+package com.planet_ink.coffee_mud.Items.CompTech;
 import com.planet_ink.coffee_mud.Items.Basic.StdContainer;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
@@ -21,7 +21,7 @@ import java.lang.ref.WeakReference;
 import java.util.*;
 
 /*
-   Copyright 2016-2016 Bo Zimmerman
+   Copyright 2013-2016 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -35,35 +35,29 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class StdCompFuellessGenerator extends StdElecCompItem implements Electronics.PowerGenerator
+public class StdCompGenerator extends StdCompFuelConsumer implements Electronics.PowerGenerator
 {
 	@Override
 	public String ID()
 	{
-		return "StdCompFuellessGenerator";
+		return "StdCompGenerator";
 	}
 
-	public StdCompFuellessGenerator()
+	public StdCompGenerator()
 	{
 		super();
 		setName("a generator");
 		setDisplayText("a generator sits here.");
-		setDescription("If you put the right place, under the right circumstances, I'll bet it makes power.");
+		setDescription("If you put the right fuel in it, I'll bet it makes power.");
 
 		material=RawMaterial.RESOURCE_STEEL;
 		setPowerCapacity(1000);
 		setPowerRemaining(0);
 		baseGoldValue=0;
-		basePhyStats.setWeight(500);
 		recoverPhyStats();
 	}
 
 	protected int   generatedAmtPerTick = 1;
-
-	protected int getAdjustedGeneratedAmountPerTick()
-	{
-		return generatedAmtPerTick;
-	}
 
 	@Override
 	public int getGeneratedAmountPerTick()
@@ -83,11 +77,6 @@ public class StdCompFuellessGenerator extends StdElecCompItem implements Electro
 		return TechType.SHIP_GENERATOR;
 	}
 
-	protected boolean canGenerateRightNow()
-	{
-		return true;
-	}
-	
 	@Override
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
@@ -97,15 +86,19 @@ public class StdCompFuellessGenerator extends StdElecCompItem implements Electro
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_GET:
+				clearFuelCache();
 				break;
 			case CMMsg.TYP_INSTALL:
+				clearFuelCache();
 				break;
 			case CMMsg.TYP_ACTIVATE:
+				clearFuelCache();
 				if((msg.source().location()!=null)&&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG)))
 					msg.source().location().show(msg.source(), this, CMMsg.MSG_OK_VISUAL, L("<S-NAME> power(s) up <T-NAME>."));
 				this.activate(true);
 				break;
 			case CMMsg.TYP_DEACTIVATE:
+				clearFuelCache();
 				if((msg.source().location()!=null)&&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG)))
 					msg.source().location().show(msg.source(), this, CMMsg.MSG_OK_VISUAL, L("<S-NAME> shut(s) down <T-NAME>."));
 				this.activate(false);
@@ -115,14 +108,13 @@ public class StdCompFuellessGenerator extends StdElecCompItem implements Electro
 					msg.source().tell(L("@x1 is currently @x2",name(),(activated()?"delivering power.\n\r":"deactivated/shut down.\n\r")));
 				return;
 			case CMMsg.TYP_POWERCURRENT:
-				if((msg.value()==0) && (activated()))
+				if((msg.value()==0)  && (activated()))
 				{
 					if((((powerCapacity() - powerRemaining()) >= getGeneratedAmountPerTick())
 						||(powerRemaining() < getGeneratedAmountPerTick()))
-					&&(Math.random()<getFinalManufacturer().getReliabilityPct())
-					&&(this.canGenerateRightNow()))
+					&&(Math.random()<getFinalManufacturer().getReliabilityPct()))
 					{
-						double generatedAmount = getAdjustedGeneratedAmountPerTick();
+						double generatedAmount = getGeneratedAmountPerTick();
 						generatedAmount *= this.getComputedEfficiency() * this.getFinalManufacturer().getEfficiencyPct();
 						long newAmount=powerRemaining() + Math.round(generatedAmount);
 						if(newAmount > powerCapacity())
@@ -138,9 +130,8 @@ public class StdCompFuellessGenerator extends StdElecCompItem implements Electro
 	@Override
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof StdCompFuellessGenerator))
+		if(!(E instanceof StdCompGenerator))
 			return false;
 		return super.sameAs(E);
 	}
-
 }

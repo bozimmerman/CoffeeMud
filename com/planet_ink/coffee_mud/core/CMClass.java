@@ -144,7 +144,7 @@ public class CMClass extends ClassLoader
 	/** stat constant for misc tech type objects */
 	TECH("com.planet_ink.coffee_mud.Items.interfaces.Electronics"),
 	/** stat constant for misc tech type objects */
-	SHIPTECH("com.planet_ink.coffee_mud.Items.interfaces.ShipComponent"),
+	COMPTECH("com.planet_ink.coffee_mud.Items.interfaces.ShipComponent"),
 	/** stat constant for misc tech type objects */
 	SOFTWARE("com.planet_ink.coffee_mud.Items.interfaces.Software"),
 	/** stat constant for webmacros type objects */
@@ -169,7 +169,7 @@ public class CMClass extends ClassLoader
 		CMObjectType.CLANITEM,
 		CMObjectType.MISCMAGIC,
 		CMObjectType.TECH,
-		CMObjectType.SHIPTECH,
+		CMObjectType.COMPTECH,
 		CMObjectType.SOFTWARE,
 		CMObjectType.WEAPON
 	};
@@ -330,7 +330,7 @@ public class CMClass extends ClassLoader
 				return O instanceof CMLibrary;
 			case SOFTWARE: 
 				return O instanceof Software;
-			case SHIPTECH: 
+			case COMPTECH: 
 				return O instanceof ShipComponent;
 		}
 		return false;
@@ -385,7 +385,7 @@ public class CMClass extends ClassLoader
 				return CMClass.getCommon(ID);
 			case LIBRARY: 
 				return CMClass.getLibrary(ID);
-			case SHIPTECH: 
+			case COMPTECH: 
 				return CMClass.getTech(ID);
 			case SOFTWARE: 
 				return CMClass.getTech(ID);
@@ -440,7 +440,7 @@ public class CMClass extends ClassLoader
 		if(O instanceof Software)
 			return CMObjectType.SOFTWARE;
 		if(O instanceof ShipComponent)
-			return CMObjectType.SHIPTECH;
+			return CMObjectType.COMPTECH;
 		if(O instanceof Electronics)
 			return CMObjectType.TECH;
 		return null;
@@ -535,7 +535,7 @@ public class CMClass extends ClassLoader
 			return c().common;
 		case LIBRARY: 
 			return c().libraries;
-		case SHIPTECH: 
+		case COMPTECH: 
 			return c().tech;
 		case SOFTWARE: 
 			return c().tech;
@@ -2742,7 +2742,7 @@ public class CMClass extends ClassLoader
 				Vector<Electronics> tempV;
 				c.tech=loadVectorListToObj(prefix+"Items/BasicTech/",page.getStr("TECH"),CMObjectType.TECH.ancestorName);
 
-				tempV=loadVectorListToObj(prefix+"Items/ShipTech/",page.getStr("SHIPTECH"),CMObjectType.SHIPTECH.ancestorName);
+				tempV=loadVectorListToObj(prefix+"Items/CompTech/",page.getStr("COMPTECH"),CMObjectType.COMPTECH.ancestorName);
 				if(tempV.size()>0)
 					c.tech.addAll(tempV);
 				tempV=loadVectorListToObj(prefix+"Items/Software/",page.getStr("SOFTWARE"),CMObjectType.SOFTWARE.ancestorName);

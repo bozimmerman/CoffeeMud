@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Items.ShipTech;
+package com.planet_ink.coffee_mud.Items.CompTech;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -11,7 +11,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechType;
-import com.planet_ink.coffee_mud.Libraries.interfaces.GenericBuilder;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -33,78 +33,85 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class GenCompEnviroSystem extends GenElecCompItem
+public class StdCompBattery extends StdElecCompItem implements Electronics.PowerSource, ShipComponent
 {
 	@Override
 	public String ID()
 	{
-		return "GenCompEnviroSystem";
+		return "StdCompBattery";
 	}
 
-	protected final static int ENVIRO_TICKS=7;
-	
-	
-	protected int	tickDown	= ENVIRO_TICKS;
-	protected int	airResource	= RawMaterial.RESOURCE_AIR;
-
-	public GenCompEnviroSystem()
+	public StdCompBattery()
 	{
 		super();
-		setName("a generic environment system");
-		setDisplayText("a generic environment system sits here.");
+		setName("a battery");
+		basePhyStats.setWeight(2);
+		setDisplayText("a battery sits here.");
 		setDescription("");
+		baseGoldValue=5;
+		basePhyStats().setLevel(1);
+		recoverPhyStats();
+		setMaterial(RawMaterial.RESOURCE_STEEL);
+		super.activate(true);
+		super.setPowerCapacity(1000);
+		super.setPowerRemaining(1000);
 	}
 
 	@Override
 	public TechType getTechType()
 	{
-		return TechType.SHIP_ENVIRO_CONTROL;
+		return TechType.SHIP_POWER;
 	}
 
 	@Override
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void setMiscText(String newText)
 	{
-		super.executeMsg(myHost, msg);
+		if(CMath.isInteger(newText))
+			this.setPowerCapacity(CMath.s_int(newText));
+		super.setMiscText(newText);
+	}
+
+	@Override
+	public boolean sameAs(Environmental E)
+	{
+		if(!(E instanceof StdCompBattery))
+			return false;
+		return super.sameAs(E);
+	}
+
+	@Override
+	public void executeMsg(Environmental host, CMMsg msg)
+	{
 		if(msg.amITarget(this))
 		{
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_LOOK:
+				super.executeMsg(host, msg);
 				if(CMLib.flags().canBeSeenBy(this, msg.source()))
-					msg.source().tell(L("@x1 is currently @x2",name(),(activated()?"operating.\n\r":"deactivated/disconnected.\n\r")));
+					msg.source().tell(L("@x1 is currently @x2",name(),(activated()?"delivering power.\n\r":"deactivated/disconnected.\n\r")));
 				return;
 			case CMMsg.TYP_POWERCURRENT:
-				if(activated())
+				if(activated()
+				&& ((Math.random() > super.getInstalledFactor())
+					||(Math.random() > super.getFinalManufacturer().getReliabilityPct())
+					||((subjectToWearAndTear())&&(usesRemaining()<=100)&&(Math.random()>CMath.div(usesRemaining(), 100))))
+				&& (Math.random() > 0.99))
 				{
-					if(--tickDown <=0)
+					final Room R=CMLib.map().roomLocation(this);
+					if(R!=null)
 					{
-						tickDown=ENVIRO_TICKS;
-						final SpaceObject obj=CMLib.map().getSpaceObject(this, true);
-						if(obj instanceof SpaceShip)
-						{
-							final SpaceShip ship=(SpaceShip)obj;
-							final Area A=ship.getShipArea();
-							double pct= Math.min(super.getInstalledFactor(),1.0)
-									  * Math.min(super.getFinalManufacturer().getReliabilityPct(),1.0);
-							if(subjectToWearAndTear())
-								pct=pct*CMath.div(usesRemaining(),100);
-							final String code=Technical.TechCommand.AIRREFRESH.makeCommand(Double.valueOf(pct),Integer.valueOf(airResource));
-							final CMMsg msg2=CMClass.getMsg(msg.source(), ship, me, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
-							if(A.okMessage(msg2.source(), msg2))
-								A.executeMsg(msg2.source(), msg2);
-						}
+						// malfunction!
+						final CMMsg msg2=CMClass.getMsg(msg.source(), this, null, CMMsg.NO_EFFECT, null, CMMsg.MSG_DEACTIVATE|CMMsg.MASK_CNTRLMSG, "", CMMsg.NO_EFFECT,null);
+						if(R.okMessage(msg.source(), msg2))
+							R.send(msg.source(), msg2);
 					}
+					else
+						activate(false);
 				}
 				break;
 			}
 		}
-	}
-	
-	@Override
-	public boolean sameAs(Environmental E)
-	{
-		if(!(E instanceof GenCompEnviroSystem))
-			return false;
-		return super.sameAs(E);
+		super.executeMsg(host, msg);
 	}
 }

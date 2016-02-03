@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Items.ShipTech;
+package com.planet_ink.coffee_mud.Items.CompTech;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -10,12 +10,13 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
-import com.planet_ink.coffee_mud.Libraries.interfaces.GenericBuilder;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
+
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 /*
    Copyright 2013-2016 Bo Zimmerman
@@ -32,20 +33,28 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class GenElecCompItem extends StdElecCompItem
+public class GenShipPanel extends StdCompPanel
 {
 	@Override
 	public String ID()
 	{
-		return "GenElecCompItem";
+		return "GenShipPanel";
 	}
 
-	public GenElecCompItem()
+	protected String	readableText	= "";
+
+	public GenShipPanel()
 	{
 		super();
-		setName("a generic ship component");
-		setDisplayText("a generic ship component sits here.");
+		setName("an engineering panel");
+		basePhyStats.setWeight(2);
+		setDisplayText("an engineering panel is mounted here.");
 		setDescription("");
+		baseGoldValue=5;
+		setCapacity(25000);
+		basePhyStats().setLevel(1);
+		recoverPhyStats();
+		setMaterial(RawMaterial.RESOURCE_STEEL);
 	}
 
 	@Override
@@ -57,7 +66,19 @@ public class GenElecCompItem extends StdElecCompItem
 	@Override
 	public String text()
 	{
-		return CMLib.coffeeMaker().getPropertiesStr(this,false);
+		return CMLib.coffeeMaker().getPropertiesStr(this, false);
+	}
+
+	@Override
+	public String readableText()
+	{
+		return readableText;
+	}
+
+	@Override
+	public void setReadableText(String text)
+	{
+		readableText = text;
 	}
 
 	@Override
@@ -68,7 +89,8 @@ public class GenElecCompItem extends StdElecCompItem
 		recoverPhyStats();
 	}
 
-	private final static String[] MYCODES={"POWERCAP","ACTIVATED","POWERREM","MANUFACTURER","INSTFACT"};
+	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY", "CONTAINTYPES","RESETTIME",
+										   "POWERCAP", "ACTIVATED","POWERREM","PANTYPE","DEFCLOSED","DEFLOCKED"};
 	
 	@Override
 	public String getStat(String code)
@@ -78,19 +100,32 @@ public class GenElecCompItem extends StdElecCompItem
 		switch(getCodeNum(code))
 		{
 		case 0:
-			return "" + powerCapacity();
+			return "" + hasALock();
 		case 1:
-			return "" + activated();
+			return "" + hasADoor();
 		case 2:
-			return "" + powerRemaining();
+			return "" + capacity();
 		case 3:
-			return "" + getManufacturerName();
+			return "" + containTypes();
 		case 4:
-			return "" + getInstalledFactor();
+			return "" + openDelayTicks();
+		case 5:
+			return "" + powerCapacity();
+		case 6:
+			return "" + activated();
+		case 7:
+			return "" + powerRemaining();
+		case 8:
+			return "" + panelType();
+		case 9:
+			return "" + defaultsClosed();
+		case 10:
+			return "" + defaultsLocked();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
 	}
+	
 	@Override
 	public void setStat(String code, String val)
 	{
@@ -100,45 +135,66 @@ public class GenElecCompItem extends StdElecCompItem
 		switch(getCodeNum(code))
 		{
 		case 0:
-			setPowerCapacity(CMath.s_parseLongExpression(val));
+			setDoorsNLocks(hasADoor(), isOpen(), defaultsClosed(), CMath.s_bool(val), false, CMath.s_bool(val) && defaultsLocked());
 			break;
 		case 1:
-			activate(CMath.s_bool(val));
+			setDoorsNLocks(CMath.s_bool(val), isOpen(), CMath.s_bool(val) && defaultsClosed(), hasALock(), isLocked(), defaultsLocked());
 			break;
 		case 2:
-			setPowerRemaining(CMath.s_parseLongExpression(val));
+			setCapacity(CMath.s_parseIntExpression(val));
 			break;
 		case 3:
-			setManufacturerName(val);
+			setContainTypes(CMath.s_parseBitLongExpression(Container.CONTAIN_DESCS, val));
 			break;
 		case 4:
-			setInstalledFactor(CMath.s_float(val));
+			setOpenDelayTicks(CMath.s_parseIntExpression(val));
+			break;
+		case 5:
+			setPowerCapacity(CMath.s_parseLongExpression(val));
+			break;
+		case 6:
+			activate(CMath.s_bool(val));
+			break;
+		case 7:
+			setPowerRemaining(CMath.s_parseLongExpression(val));
+			break;
+		case 8: 
+			try
+			{
+				setPanelType(TechType.valueOf(val.toUpperCase().trim()));
+			}
+			catch (final Exception e)
+			{
+			}
+			break;
+		case 9:
+			setDoorsNLocks(hasADoor(), isOpen(), CMath.s_bool(val), hasALock(), isLocked(), defaultsLocked());
+			break;
+		case 10:
+			setDoorsNLocks(hasADoor(), isOpen(), defaultsClosed(), hasALock(), isLocked(), CMath.s_bool(val));
 			break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;
 		}
 	}
-	
 	@Override
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<MYCODES.length;i++)
-		{
 			if(code.equalsIgnoreCase(MYCODES[i]))
 				return i;
-		}
 		return -1;
 	}
-	
-	private static String[] codes=null;
-	
+
+	private static String[]	codes	= null;
+
 	@Override
 	public String[] getStatCodes()
 	{
 		if(codes!=null)
 			return codes;
-		final String[] MYCODES=CMProps.getStatCodesList(GenElecCompItem.MYCODES,this);
+		final String[] MYCODES=CMProps.getStatCodesList(GenShipPanel.MYCODES,this);
 		final String[] superCodes=CMParms.toStringArray(GenericBuilder.GenItemCode.values());
 		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;
@@ -152,7 +208,7 @@ public class GenElecCompItem extends StdElecCompItem
 	@Override
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof GenElecCompItem))
+		if(!(E instanceof GenShipPanel))
 			return false;
 		final String[] theCodes=getStatCodes();
 		for(int i=0;i<theCodes.length;i++)

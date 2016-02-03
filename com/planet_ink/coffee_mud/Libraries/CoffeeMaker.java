@@ -1653,7 +1653,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				if (!(item instanceof Technical))
 					return buf;
 				break;
-			case SHIPTECH:
+			case COMPTECH:
 				if (!(item instanceof ShipComponent))
 					return buf;
 				break;

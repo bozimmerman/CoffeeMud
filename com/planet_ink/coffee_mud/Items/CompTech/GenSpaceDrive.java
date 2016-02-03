@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Items.ShipTech;
+package com.planet_ink.coffee_mud.Items.CompTech;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.ShipComponent.ShipEngine.ThrustPort;
 import com.planet_ink.coffee_mud.Libraries.interfaces.GenericBuilder;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -32,21 +33,21 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class GenFuellessGenerator extends StdCompFuellessGenerator
+public class GenSpaceDrive extends StdShipFuellessThruster
 {
 	@Override
 	public String ID()
 	{
-		return "GenFuellessGenerator";
+		return "GenSpaceDrive";
 	}
 
 	protected String readableText="";
 	
-	public GenFuellessGenerator()
+	public GenSpaceDrive()
 	{
 		super();
-		setName("a power generator");
-		setDisplayText("a power generator sits here.");
+		setName("a space drive");
+		setDisplayText("a space drive sits here.");
 		setDescription("");
 	}
 	
@@ -82,7 +83,8 @@ public class GenFuellessGenerator extends StdCompFuellessGenerator
 		recoverPhyStats();
 	}
 
-	private final static String[] MYCODES={"POWERCAP","POWERREM","GENAMTPER","ACTIVATED","MANUFACTURER","INSTFACT"};
+	private final static String[] MYCODES={"POWERCAP","POWERREM","MAXTHRUST","ACTIVATED","MANUFACTURER","INSTFACT",
+										   "SPECIMPL","FUELEFF","MINTHRUST","ISCONST","AVAILPORTS"};
 	
 	@Override
 	public String getStat(String code)
@@ -96,13 +98,23 @@ public class GenFuellessGenerator extends StdCompFuellessGenerator
 		case 1:
 			return "" + powerRemaining();
 		case 2:
-			return "" + getGeneratedAmountPerTick();
+			return "" + getMaxThrust();
 		case 3:
 			return "" + activated();
 		case 4:
 			return "" + getManufacturerName();
 		case 5:
 			return "" + getInstalledFactor();
+		case 6:
+			return "" + getSpecificImpulse();
+		case 7:
+			return "" + Math.round(getFuelEfficiency() * 100);
+		case 8:
+			return "" + getMinThrust();
+		case 9:
+			return "" + isConstantThruster();
+		case 10:
+			return CMParms.toListString(getAvailPorts());
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -123,7 +135,7 @@ public class GenFuellessGenerator extends StdCompFuellessGenerator
 			setPowerCapacity(CMath.s_parseLongExpression(val));
 			break;
 		case 2:
-			setGeneratedAmountPerTick(CMath.s_parseIntExpression(val));
+			setMaxThrust(CMath.s_parseIntExpression(val));
 			break;
 		case 3:
 			activate(CMath.s_bool(val));
@@ -133,6 +145,21 @@ public class GenFuellessGenerator extends StdCompFuellessGenerator
 			break;
 		case 5:
 			setInstalledFactor(CMath.s_float(val));
+			break;
+		case 6:
+			setSpecificImpulse(CMath.s_parseLongExpression(val));
+			break;
+		case 7:
+			setFuelEfficiency(CMath.s_parseMathExpression(val) / 100.0);
+			break;
+		case 8:
+			setMinThrust(CMath.s_parseIntExpression(val));
+			break;
+		case 9:
+			this.setConstantThruster(CMath.s_bool(val));
+			break;
+		case 10:
+			this.setAvailPorts(CMParms.parseEnumList(ThrustPort.class, val, ',').toArray(new ThrustPort[0]));
 			break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
@@ -158,7 +185,7 @@ public class GenFuellessGenerator extends StdCompFuellessGenerator
 	{
 		if(codes!=null)
 			return codes;
-		final String[] MYCODES=CMProps.getStatCodesList(GenFuellessGenerator.MYCODES,this);
+		final String[] MYCODES=CMProps.getStatCodesList(GenSpaceDrive.MYCODES,this);
 		final String[] superCodes=CMParms.toStringArray(GenericBuilder.GenItemCode.values());
 		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;
@@ -172,7 +199,7 @@ public class GenFuellessGenerator extends StdCompFuellessGenerator
 	@Override
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof GenFuellessGenerator))
+		if(!(E instanceof GenSpaceDrive))
 			return false;
 		final String[] theCodes=getStatCodes();
 		for(int i=0;i<theCodes.length;i++)

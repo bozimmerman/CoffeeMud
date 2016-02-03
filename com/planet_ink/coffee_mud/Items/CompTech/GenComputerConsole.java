@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Items.ShipTech;
+package com.planet_ink.coffee_mud.Items.CompTech;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -10,12 +10,13 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
-import com.planet_ink.coffee_mud.Libraries.interfaces.GenericBuilder;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
+
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 /*
    Copyright 2013-2016 Bo Zimmerman
@@ -32,22 +33,17 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class GenCompGenerator extends StdCompGenerator
+public class GenComputerConsole extends StdComputerConsole
 {
 	@Override
 	public String ID()
 	{
-		return "GenCompGenerator";
+		return "GenComputerConsole";
 	}
 
-	protected String readableText="";
-	
-	public GenCompGenerator()
+	public GenComputerConsole()
 	{
 		super();
-		setName("a generic generator");
-		setDisplayText("a generic generator sits here.");
-		setDescription("");
 	}
 
 	@Override
@@ -63,15 +59,8 @@ public class GenCompGenerator extends StdCompGenerator
 	}
 
 	@Override
-	public String readableText()
-	{
-		return readableText;
-	}
-
-	@Override
 	public void setReadableText(String text)
 	{
-		readableText = text;
 	}
 
 	@Override
@@ -79,12 +68,12 @@ public class GenCompGenerator extends StdCompGenerator
 	{
 		miscText="";
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
+		basePhyStats.setSensesMask(basePhyStats.sensesMask()|PhyStats.SENSE_ITEMREADABLE);
 		recoverPhyStats();
 	}
-
-	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES","RESETTIME",
-										   "POWERCAP","CONSUMEDTYPES","POWERREM","GENAMTPER","ACTIVATED",
-										   "MANUFACTURER","INSTFACT","DEFCLOSED","DEFLOCKED"};
+	
+	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES","RESETTIME","RIDEBASIS","MOBSHELD",
+										   "POWERCAP","ACTIVATED","POWERREM","MANUFACTURER","INSTFACT","DEFCLOSED","DEFLOCKED"};
 	
 	@Override
 	public String getStat(String code)
@@ -104,24 +93,15 @@ public class GenCompGenerator extends StdCompGenerator
 		case 4:
 			return "" + openDelayTicks();
 		case 5:
-			return "" + powerCapacity();
+			return "" + rideBasis();
 		case 6:
-		{
-			final StringBuilder str=new StringBuilder("");
-			for(int i=0;i<getConsumedFuelTypes().length;i++)
-			{
-				if(i>0)
-					str.append(", ");
-				str.append(RawMaterial.CODES.NAME(getConsumedFuelTypes()[i]));
-			}
-			return str.toString();
-		}
+			return "" + riderCapacity();
 		case 7:
-			return "" + powerRemaining();
+			return "" + powerCapacity();
 		case 8:
-			return "" + getGeneratedAmountPerTick();
-		case 9:
 			return "" + activated();
+		case 9:
+			return "" + powerRemaining();
 		case 10:
 			return "" + getManufacturerName();
 		case 11:
@@ -134,7 +114,6 @@ public class GenCompGenerator extends StdCompGenerator
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
 	}
-	
 	@Override
 	public void setStat(String code, String val)
 	{
@@ -143,57 +122,48 @@ public class GenCompGenerator extends StdCompGenerator
 		else
 		switch(getCodeNum(code))
 		{
-			case 0:
-				setDoorsNLocks(hasADoor(), isOpen(), defaultsClosed(), CMath.s_bool(val), false, CMath.s_bool(val) && defaultsLocked());
-				break;
-			case 1:
-				setDoorsNLocks(CMath.s_bool(val), isOpen(), CMath.s_bool(val) && defaultsClosed(), hasALock(), isLocked(), defaultsLocked());
-				break;
-			case 2:
-				setCapacity(CMath.s_parseIntExpression(val));
-				break;
-			case 3:
-				setContainTypes(CMath.s_parseBitLongExpression(Container.CONTAIN_DESCS, val));
-				break;
-			case 4:
-				setOpenDelayTicks(CMath.s_parseIntExpression(val));
-				break;
-			case 5:
-				setPowerCapacity(CMath.s_parseLongExpression(val));
-				break;
-		case 6:{
-				final List<String> mats = CMParms.parseCommas(val,true);
-				final int[] newMats = new int[mats.size()];
-				for(int x=0;x<mats.size();x++)
-				{
-					final int rsccode = RawMaterial.CODES.FIND_CaseSensitive(mats.get(x).trim());
-					if(rsccode > 0)
-						newMats[x] = rsccode;
-				}
-				super.setConsumedFuelType(newMats);
-				break;
-			   }
-			case 7:
-				setPowerCapacity(CMath.s_parseLongExpression(val));
-				break;
-			case 8:
-				setGeneratedAmountPerTick(CMath.s_parseIntExpression(val));
-				break;
-			case 9:
-				activate(CMath.s_bool(val));
-				break;
-			case 10:
-				setManufacturerName(val);
-				break;
-			case 11:
-				setInstalledFactor(CMath.s_float(val));
-				break;
-			case 12:
-				setDoorsNLocks(hasADoor(), isOpen(), CMath.s_bool(val), hasALock(), isLocked(), defaultsLocked());
-				break;
-			case 13:
-				setDoorsNLocks(hasADoor(), isOpen(), defaultsClosed(), hasALock(), isLocked(), CMath.s_bool(val));
-				break;
+		case 0:
+			setDoorsNLocks(hasADoor(), isOpen(), defaultsClosed(), CMath.s_bool(val), false, CMath.s_bool(val) && defaultsLocked());
+			break;
+		case 1:
+			setDoorsNLocks(CMath.s_bool(val), isOpen(), CMath.s_bool(val) && defaultsClosed(), hasALock(), isLocked(), defaultsLocked());
+			break;
+		case 2:
+			setCapacity(CMath.s_parseIntExpression(val));
+			break;
+		case 3:
+			setContainTypes(CMath.s_parseBitLongExpression(Container.CONTAIN_DESCS, val));
+			break;
+		case 4:
+			setOpenDelayTicks(CMath.s_parseIntExpression(val));
+			break;
+		case 5:
+			setRideBasis(CMath.s_parseListIntExpression(Rideable.RIDEABLE_DESCS, val));
+			break;
+		case 6:
+			setRiderCapacity(CMath.s_parseIntExpression(val));
+			break;
+		case 7:
+			setPowerCapacity(CMath.s_parseLongExpression(val));
+			break;
+		case 8:
+			activate(CMath.s_bool(val));
+			break;
+		case 9:
+			setPowerRemaining(CMath.s_parseLongExpression(val));
+			break;
+		case 10:
+			setManufacturerName(val);
+			break;
+		case 11:
+			setInstalledFactor(CMath.s_float(val));
+			break;
+		case 12:
+			setDoorsNLocks(hasADoor(), isOpen(), CMath.s_bool(val), hasALock(), isLocked(), defaultsLocked());
+			break;
+		case 13:
+			setDoorsNLocks(hasADoor(), isOpen(), defaultsClosed(), hasALock(), isLocked(), CMath.s_bool(val));
+			break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;
@@ -218,7 +188,7 @@ public class GenCompGenerator extends StdCompGenerator
 	{
 		if(codes!=null)
 			return codes;
-		final String[] MYCODES=CMProps.getStatCodesList(GenCompGenerator.MYCODES,this);
+		final String[] MYCODES=CMProps.getStatCodesList(GenComputerConsole.MYCODES,this);
 		final String[] superCodes=CMParms.toStringArray(GenericBuilder.GenItemCode.values());
 		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;
@@ -232,12 +202,12 @@ public class GenCompGenerator extends StdCompGenerator
 	@Override
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof GenCompGenerator))
+		if(!(E instanceof GenComputerConsole))
 			return false;
-		final String[] theCodes=getStatCodes();
-		for(int i=0;i<theCodes.length;i++)
+		final String[] codes=getStatCodes();
+		for(int i=0;i<codes.length;i++)
 		{
-			if(!E.getStat(theCodes[i]).equals(getStat(theCodes[i])))
+			if(!E.getStat(codes[i]).equals(getStat(codes[i])))
 				return false;
 		}
 		return true;

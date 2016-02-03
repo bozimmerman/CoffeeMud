@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Items.ShipTech;
+package com.planet_ink.coffee_mud.Items.CompTech;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -32,48 +32,29 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class GenSolarGenerator extends GenFuellessGenerator
+public class GenBussardCollector extends GenFuellessGenerator
 {
 	@Override
 	public String ID()
 	{
-		return "GenSolarGenerator";
+		return "GenBussardCollector";
 	}
 
-	public GenSolarGenerator()
+	public GenBussardCollector()
 	{
 		super();
-		setName("a solar generator");
-		setDisplayText("a solar generator sits here.");
+		setName("a bussard collector generator");
+		setDisplayText("a bussard collector generator sits here.");
 		setDescription("");
 	}
 
 	@Override
 	protected boolean canGenerateRightNow()
 	{
-		if(activated())
+		final Area A=CMLib.map().areaLocation(this);
+		if(A instanceof SpaceShip)
 		{
-			final Area A=CMLib.map().areaLocation(this);
-			if(A instanceof SpaceShip)
-			{
-				final Room dockRoom=((SpaceShip)A).getIsDocked();
-				if(dockRoom!=null) 
-					return (dockRoom.getArea()!=null) && (dockRoom.getArea().getClimateObj().canSeeTheSun(dockRoom));
-				final SpaceObject obj = ((SpaceShip)A).getShipSpaceObject();
-				final List<SpaceObject> objs = CMLib.map().getSpaceObjectsWithin(obj, obj.radius(), SpaceObject.Distance.SolarSystemDiameter.dm);
-				for(final SpaceObject o : objs)
-				{
-					if((o instanceof Physical)
-					&&(!CMLib.flags().isLightSource((Physical)o)))
-						continue;
-					if(o.radius() >= (SpaceObject.Distance.StarDRadius.dm / 2)
-					&&(o.getMass() >= (o.radius() * SpaceObject.MULTIPLIER_STAR_MASS)))
-						return true;
-				}
-			}
-			else
-			if((A!=null) && (A.getClimateObj().canSeeTheSun(CMLib.map().roomLocation(this))))
-				return true;
+			return ((SpaceShip)A).speed() > SpaceObject.VELOCITY_SUBLIGHT;
 		}
 		return false;
 	}
@@ -81,7 +62,7 @@ public class GenSolarGenerator extends GenFuellessGenerator
 	@Override
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof GenSolarGenerator))
+		if(!(E instanceof GenBussardCollector))
 			return false;
 		return super.sameAs(E);
 	}

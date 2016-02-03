@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Items.ShipTech;
+package com.planet_ink.coffee_mud.Items.CompTech;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -10,13 +10,13 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.ShipComponent.ShipEngine.ThrustPort;
+import com.planet_ink.coffee_mud.Libraries.interfaces.GenericBuilder;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
-
-import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 /*
    Copyright 2013-2016 Bo Zimmerman
@@ -33,28 +33,22 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class GenShipPanel extends StdCompPanel
+public class GenShipEngine extends StdShipEngine
 {
 	@Override
 	public String ID()
 	{
-		return "GenShipPanel";
+		return "GenShipEngine";
 	}
 
 	protected String	readableText	= "";
 
-	public GenShipPanel()
+	public GenShipEngine()
 	{
 		super();
-		setName("an engineering panel");
-		basePhyStats.setWeight(2);
-		setDisplayText("an engineering panel is mounted here.");
+		setName("a generic ship engine");
+		setDisplayText("a generic ship engine sits here.");
 		setDescription("");
-		baseGoldValue=5;
-		setCapacity(25000);
-		basePhyStats().setLevel(1);
-		recoverPhyStats();
-		setMaterial(RawMaterial.RESOURCE_STEEL);
 	}
 
 	@Override
@@ -66,7 +60,7 @@ public class GenShipPanel extends StdCompPanel
 	@Override
 	public String text()
 	{
-		return CMLib.coffeeMaker().getPropertiesStr(this, false);
+		return CMLib.coffeeMaker().getPropertiesStr(this,false);
 	}
 
 	@Override
@@ -89,9 +83,10 @@ public class GenShipPanel extends StdCompPanel
 		recoverPhyStats();
 	}
 
-	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY", "CONTAINTYPES","RESETTIME",
-										   "POWERCAP", "ACTIVATED","POWERREM","PANTYPE","DEFCLOSED","DEFLOCKED"};
-	
+	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES","RESETTIME",
+										   "POWERCAP","CONSUMEDTYPES","POWERREM","GENAMTPER","ACTIVATED",
+										   "MANUFACTURER","INSTFACT","DEFCLOSED","DEFLOCKED",
+										   "MAXTHRUST","SPECIMPL","FUELEFF","MINTHRUST","ISCONST","AVAILPORTS"};
 	@Override
 	public String getStat(String code)
 	{
@@ -112,20 +107,46 @@ public class GenShipPanel extends StdCompPanel
 		case 5:
 			return "" + powerCapacity();
 		case 6:
-			return "" + activated();
+		{
+			final StringBuilder str=new StringBuilder("");
+			for(int i=0;i<getConsumedFuelTypes().length;i++)
+			{
+				if(i>0)
+					str.append(", ");
+				str.append(RawMaterial.CODES.NAME(getConsumedFuelTypes()[i]));
+			}
+			return str.toString();
+		}
 		case 7:
 			return "" + powerRemaining();
 		case 8:
-			return "" + panelType();
+			return "" + getGeneratedAmountPerTick();
 		case 9:
-			return "" + defaultsClosed();
+			return "" + activated();
 		case 10:
+			return "" + getManufacturerName();
+		case 11:
+			return "" + getInstalledFactor();
+		case 12:
+			return "" + defaultsClosed();
+		case 13:
 			return "" + defaultsLocked();
+		case 14:
+			return "" + getMaxThrust();
+		case 15:
+			return "" + getSpecificImpulse();
+		case 16:
+			return "" + Math.round(getFuelEfficiency() * 100);
+		case 17:
+			return "" + getMinThrust();
+		case 18:
+			return "" + isConstantThruster();
+		case 19:
+			return CMParms.toListString(getAvailPorts());
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
 	}
-	
 	@Override
 	public void setStat(String code, String val)
 	{
@@ -153,25 +174,56 @@ public class GenShipPanel extends StdCompPanel
 			setPowerCapacity(CMath.s_parseLongExpression(val));
 			break;
 		case 6:
-			activate(CMath.s_bool(val));
-			break;
+			{
+				final List<String> mats = CMParms.parseCommas(val,true);
+				final int[] newMats = new int[mats.size()];
+				for(int x=0;x<mats.size();x++)
+				{
+					final int rsccode = RawMaterial.CODES.FIND_CaseSensitive(mats.get(x).trim());
+					if(rsccode > 0)
+						newMats[x] = rsccode;
+				}
+				super.setConsumedFuelType(newMats);
+				break;
+			}
 		case 7:
-			setPowerRemaining(CMath.s_parseLongExpression(val));
+			setPowerCapacity(CMath.s_parseLongExpression(val));
 			break;
-		case 8: 
-			try
-			{
-				setPanelType(TechType.valueOf(val.toUpperCase().trim()));
-			}
-			catch (final Exception e)
-			{
-			}
+		case 8:
+			setGeneratedAmountPerTick(CMath.s_parseIntExpression(val));
 			break;
 		case 9:
-			setDoorsNLocks(hasADoor(), isOpen(), CMath.s_bool(val), hasALock(), isLocked(), defaultsLocked());
+			activate(CMath.s_bool(val));
 			break;
 		case 10:
+			setManufacturerName(val);
+			break;
+		case 11:
+			setInstalledFactor(CMath.s_float(val));
+			break;
+		case 12:
+			setDoorsNLocks(hasADoor(), isOpen(), CMath.s_bool(val), hasALock(), isLocked(), defaultsLocked());
+			break;
+		case 13:
 			setDoorsNLocks(hasADoor(), isOpen(), defaultsClosed(), hasALock(), isLocked(), CMath.s_bool(val));
+			break;
+		case 14:
+			setMaxThrust(CMath.s_parseIntExpression(val));
+			break;
+		case 15:
+			setSpecificImpulse(CMath.s_parseLongExpression(val));
+			break;
+		case 16:
+			setFuelEfficiency(CMath.s_parseMathExpression(val) / 100.0);
+			break;
+		case 17:
+			setMinThrust(CMath.s_parseIntExpression(val));
+			break;
+		case 18:
+			setConstantThruster(CMath.s_bool(val));
+			break;
+		case 19:
+			this.setAvailPorts(CMParms.parseEnumList(ThrustPort.class, val, ',').toArray(new ThrustPort[0]));
 			break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
@@ -182,8 +234,10 @@ public class GenShipPanel extends StdCompPanel
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<MYCODES.length;i++)
+		{
 			if(code.equalsIgnoreCase(MYCODES[i]))
 				return i;
+		}
 		return -1;
 	}
 
@@ -194,7 +248,7 @@ public class GenShipPanel extends StdCompPanel
 	{
 		if(codes!=null)
 			return codes;
-		final String[] MYCODES=CMProps.getStatCodesList(GenShipPanel.MYCODES,this);
+		final String[] MYCODES=CMProps.getStatCodesList(GenShipEngine.MYCODES,this);
 		final String[] superCodes=CMParms.toStringArray(GenericBuilder.GenItemCode.values());
 		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;
@@ -208,7 +262,7 @@ public class GenShipPanel extends StdCompPanel
 	@Override
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof GenShipPanel))
+		if(!(E instanceof GenShipEngine))
 			return false;
 		final String[] theCodes=getStatCodes();
 		for(int i=0;i<theCodes.length;i++)

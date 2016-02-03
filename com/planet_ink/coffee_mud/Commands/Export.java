@@ -279,11 +279,11 @@ public class Export extends StdCommand
 			type=CMObjectType.CLANITEM;
 		}
 		else
-		if(subType.equalsIgnoreCase("SHIPTECH"))
+		if(subType.equalsIgnoreCase("COMPTECH"))
 		{
 			if(fileNameCode==2)
-				fileName[0]=fileName[0]+"/shiptech";
-			type=CMObjectType.SHIPTECH;
+				fileName[0]=fileName[0]+"/comptech";
+			type=CMObjectType.COMPTECH;
 		}
 		else
 		if(subType.equalsIgnoreCase("SOFTWARE"))

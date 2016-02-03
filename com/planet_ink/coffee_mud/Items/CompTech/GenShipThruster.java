@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Items.ShipTech;
+package com.planet_ink.coffee_mud.Items.CompTech;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -10,7 +10,6 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
-import com.planet_ink.coffee_mud.Items.interfaces.ShipComponent.ShipEngine.ThrustPort;
 import com.planet_ink.coffee_mud.Libraries.interfaces.GenericBuilder;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -33,21 +32,22 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class GenShipEngine extends StdShipEngine
+public class GenShipThruster extends StdShipThruster
 {
 	@Override
 	public String ID()
 	{
-		return "GenShipEngine";
+		return "GenShipThruster";
 	}
+	
+	protected String readableText="";
 
-	protected String	readableText	= "";
-
-	public GenShipEngine()
+	public GenShipThruster()
 	{
 		super();
-		setName("a generic ship engine");
-		setDisplayText("a generic ship engine sits here.");
+		setName("a generic thruster");
+		basePhyStats.setWeight(5000);
+		setDisplayText("a generic thruster sits here.");
 		setDescription("");
 	}
 
@@ -74,7 +74,7 @@ public class GenShipEngine extends StdShipEngine
 	{
 		readableText = text;
 	}
-
+	
 	@Override
 	public void setMiscText(String newText)
 	{
@@ -84,9 +84,11 @@ public class GenShipEngine extends StdShipEngine
 	}
 
 	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES","RESETTIME",
-										   "POWERCAP","CONSUMEDTYPES","POWERREM","GENAMTPER","ACTIVATED",
-										   "MANUFACTURER","INSTFACT","DEFCLOSED","DEFLOCKED",
-										   "MAXTHRUST","SPECIMPL","FUELEFF","MINTHRUST","ISCONST","AVAILPORTS"};
+										   "POWERCAP","POWERREM","CONSUMEDTYPES","MAXTHRUST","ACTIVATED",
+										   "MANUFACTURER", "INSTFACT","DEFCLOSED","DEFLOCKED",
+										   "SPECIMPL","FUELEFF","MINTHRUST","ISCONST","AVAILPORTS"};
+	
+	
 	@Override
 	public String getStat(String code)
 	{
@@ -107,6 +109,8 @@ public class GenShipEngine extends StdShipEngine
 		case 5:
 			return "" + powerCapacity();
 		case 6:
+			return "" + powerRemaining();
+		case 7:
 		{
 			final StringBuilder str=new StringBuilder("");
 			for(int i=0;i<getConsumedFuelTypes().length;i++)
@@ -117,10 +121,8 @@ public class GenShipEngine extends StdShipEngine
 			}
 			return str.toString();
 		}
-		case 7:
-			return "" + powerRemaining();
 		case 8:
-			return "" + getGeneratedAmountPerTick();
+			return "" + getMaxThrust();
 		case 9:
 			return "" + activated();
 		case 10:
@@ -132,21 +134,20 @@ public class GenShipEngine extends StdShipEngine
 		case 13:
 			return "" + defaultsLocked();
 		case 14:
-			return "" + getMaxThrust();
-		case 15:
 			return "" + getSpecificImpulse();
-		case 16:
+		case 15:
 			return "" + Math.round(getFuelEfficiency() * 100);
-		case 17:
+		case 16:
 			return "" + getMinThrust();
-		case 18:
+		case 17:
 			return "" + isConstantThruster();
-		case 19:
+		case 18:
 			return CMParms.toListString(getAvailPorts());
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
 	}
+	
 	@Override
 	public void setStat(String code, String val)
 	{
@@ -174,23 +175,23 @@ public class GenShipEngine extends StdShipEngine
 			setPowerCapacity(CMath.s_parseLongExpression(val));
 			break;
 		case 6:
-			{
-				final List<String> mats = CMParms.parseCommas(val,true);
-				final int[] newMats = new int[mats.size()];
-				for(int x=0;x<mats.size();x++)
-				{
-					final int rsccode = RawMaterial.CODES.FIND_CaseSensitive(mats.get(x).trim());
-					if(rsccode > 0)
-						newMats[x] = rsccode;
-				}
-				super.setConsumedFuelType(newMats);
-				break;
-			}
-		case 7:
-			setPowerCapacity(CMath.s_parseLongExpression(val));
+			setPowerRemaining(CMath.s_parseLongExpression(val));
 			break;
+		case 7:
+		{
+			final List<String> mats = CMParms.parseCommas(val,true);
+			final int[] newMats = new int[mats.size()];
+			for(int x=0;x<mats.size();x++)
+			{
+				final int rsccode = RawMaterial.CODES.FIND_CaseSensitive(mats.get(x).trim());
+				if(rsccode > 0)
+					newMats[x] = rsccode;
+			}
+			super.setConsumedFuelType(newMats);
+			break;
+		}
 		case 8:
-			setGeneratedAmountPerTick(CMath.s_parseIntExpression(val));
+			setMaxThrust(CMath.s_parseIntExpression(val));
 			break;
 		case 9:
 			activate(CMath.s_bool(val));
@@ -208,21 +209,18 @@ public class GenShipEngine extends StdShipEngine
 			setDoorsNLocks(hasADoor(), isOpen(), defaultsClosed(), hasALock(), isLocked(), CMath.s_bool(val));
 			break;
 		case 14:
-			setMaxThrust(CMath.s_parseIntExpression(val));
-			break;
-		case 15:
 			setSpecificImpulse(CMath.s_parseLongExpression(val));
 			break;
-		case 16:
+		case 15:
 			setFuelEfficiency(CMath.s_parseMathExpression(val) / 100.0);
 			break;
-		case 17:
+		case 16:
 			setMinThrust(CMath.s_parseIntExpression(val));
 			break;
-		case 18:
-			setConstantThruster(CMath.s_bool(val));
+		case 17:
+			this.setConstantThruster(CMath.s_bool(val));
 			break;
-		case 19:
+		case 18:
 			this.setAvailPorts(CMParms.parseEnumList(ThrustPort.class, val, ',').toArray(new ThrustPort[0]));
 			break;
 		default:
@@ -230,6 +228,7 @@ public class GenShipEngine extends StdShipEngine
 			break;
 		}
 	}
+	
 	@Override
 	protected int getCodeNum(String code)
 	{
@@ -248,7 +247,7 @@ public class GenShipEngine extends StdShipEngine
 	{
 		if(codes!=null)
 			return codes;
-		final String[] MYCODES=CMProps.getStatCodesList(GenShipEngine.MYCODES,this);
+		final String[] MYCODES=CMProps.getStatCodesList(GenShipThruster.MYCODES,this);
 		final String[] superCodes=CMParms.toStringArray(GenericBuilder.GenItemCode.values());
 		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;
@@ -262,7 +261,7 @@ public class GenShipEngine extends StdShipEngine
 	@Override
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof GenShipEngine))
+		if(!(E instanceof GenShipThruster))
 			return false;
 		final String[] theCodes=getStatCodes();
 		for(int i=0;i<theCodes.length;i++)

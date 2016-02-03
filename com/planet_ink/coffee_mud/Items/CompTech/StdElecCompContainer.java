@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Items.ShipTech;
+package com.planet_ink.coffee_mud.Items.CompTech;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -9,7 +9,7 @@ import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
-import com.planet_ink.coffee_mud.Items.BasicTech.StdElecItem;
+import com.planet_ink.coffee_mud.Items.BasicTech.StdElecContainer;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.ShipComponent.ShipEngine;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
@@ -34,25 +34,25 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class StdElecCompItem extends StdElecItem implements ShipComponent
+public class StdElecCompContainer extends StdElecContainer implements ShipComponent
 {
 	@Override
 	public String ID()
 	{
-		return "StdElecCompItem";
+		return "StdElecCompContainer";
 	}
 
 	protected float installedFactor = 1.0f;
 	protected volatile String circuitKey=null;
 
-	public StdElecCompItem()
+	public StdElecCompContainer()
 	{
 		super();
-		setName("an electric component");
-		setDisplayText("an electric component sits here.");
-		setDescription("");
-		baseGoldValue=50000;
+		setName("a component container");
 		basePhyStats.setWeight(500);
+		setDisplayText("a component container sits here.");
+		setDescription("");
+		baseGoldValue=500;
 		setUsesRemaining(100);
 		basePhyStats().setLevel(1);
 		recoverPhyStats();
@@ -68,19 +68,20 @@ public class StdElecCompItem extends StdElecItem implements ShipComponent
 	@Override
 	public void setInstalledFactor(float pct)
 	{
-		installedFactor = pct;
+		if ((pct >= 0.0) && (pct <= 2.0))
+			installedFactor = pct;
 	}
 
 	@Override
-	protected double getComputedEfficiency()
+	public boolean subjectToWearAndTear()
 	{
-		return super.getComputedEfficiency() * this.getInstalledFactor();
+		return true;
 	}
-	
+
 	@Override
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof StdElecCompItem))
+		if(!(E instanceof StdElecCompContainer))
 			return false;
 		return super.sameAs(E);
 	}
@@ -114,6 +115,45 @@ public class StdElecCompItem extends StdElecItem implements ShipComponent
 	}
 
 	@Override
+	protected double getComputedEfficiency()
+	{
+		return super.getComputedEfficiency() * this.getInstalledFactor();
+	}
+	
+	protected static boolean reportError(final Electronics me, final Software controlI, final MOB mob, final String literalMessage, final String controlMessage)
+	{
+		if((mob!=null) && (mob.location()==CMLib.map().roomLocation(me)) && (literalMessage!=null))
+			mob.tell(literalMessage);
+		if(controlMessage!=null)
+		{
+			if(controlI!=null)
+				controlI.addScreenMessage(controlMessage);
+			else
+			if((mob!=null)&&(me!=null))
+				mob.tell(CMLib.lang().L("A panel on @x1 reports '@x2'.",me.name(mob),controlMessage));
+		}
+		return false;
+	}
+
+	protected static final boolean isThisPanelActivated(Electronics.ElecPanel E)
+	{
+		if(!E.activated())
+			return false;
+		if(E.container() instanceof Electronics.ElecPanel)
+			return isThisPanelActivated((Electronics.ElecPanel)E.container());
+		return true;
+	}
+
+	public static final boolean isAllWiringConnected(Electronics E)
+	{
+		if(E instanceof Electronics.ElecPanel)
+			return isThisPanelActivated((Electronics.ElecPanel)E);
+		if(E.container() instanceof Electronics.ElecPanel)
+			return isThisPanelActivated((Electronics.ElecPanel)E.container());
+		return true;
+	}
+
+	@Override
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
 		if(msg.amITarget(this))
@@ -135,9 +175,7 @@ public class StdElecCompItem extends StdElecItem implements ShipComponent
 			case CMMsg.TYP_POWERCURRENT:
 				if((!(this instanceof Electronics.FuelConsumer))
 				&&(!(this instanceof Electronics.PowerGenerator))
-				&& activated()
-				&& (powerNeeds()>0)
-				&& (msg.value()>0))
+				&& activated() && (powerNeeds()>0) && (msg.value()>0))
 				{
 					double amtToTake=Math.min((double)powerNeeds(), (double)msg.value());
 					msg.setValue(msg.value()-(int)Math.round(amtToTake));
@@ -159,9 +197,6 @@ public class StdElecCompItem extends StdElecItem implements ShipComponent
 		{
 			switch(msg.targetMinor())
 			{
-			case CMMsg.TYP_DROP:
-				setInstalledFactor((float)CMath.div(msg.value(),100.0));
-				break;
 			case CMMsg.TYP_ACTIVATE:
 				if((msg.source().location()!=null)&&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG)))
 					msg.source().location().show(msg.source(), this, CMMsg.MSG_OK_VISUAL, L("<S-NAME> activate(s) <T-NAME>."));
@@ -218,25 +253,5 @@ public class StdElecCompItem extends StdElecItem implements ShipComponent
 		}
 		super.executeMsg(host, msg);
 	}
-
-	protected static boolean reportError(final Electronics me, final Software controlI, final MOB mob, final String literalMessage, final String controlMessage)
-	{
-		if((mob!=null) && (mob.location()==CMLib.map().roomLocation(me)) && (literalMessage!=null))
-			mob.tell(literalMessage);
-		if(controlMessage!=null)
-		{
-			if(controlI!=null)
-				controlI.addScreenMessage(controlMessage);
-			else
-			if((mob!=null)&&(me!=null))
-				mob.tell(CMLib.lang().L("A panel on @x1 reports '@x2'.",me.name(mob),controlMessage));
-		}
-		return false;
-	}
-
-	@Override
-	public boolean subjectToWearAndTear()
-	{
-		return true;
-	}
+	
 }

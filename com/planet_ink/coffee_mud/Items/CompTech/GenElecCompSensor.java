@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Items.ShipTech;
+package com.planet_ink.coffee_mud.Items.CompTech;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -10,16 +10,15 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.GenericBuilder;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-import com.planet_ink.coffee_mud.Libraries.interfaces.*;
-
 /*
-   Copyright 2013-2016 Bo Zimmerman
+   Copyright 2015-2016 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -33,17 +32,20 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class GenComputerConsole extends StdComputerConsole
+public class GenElecCompSensor extends StdElecCompSensor
 {
 	@Override
 	public String ID()
 	{
-		return "GenComputerConsole";
+		return "GenElecCompSensor";
 	}
 
-	public GenComputerConsole()
+	public GenElecCompSensor()
 	{
 		super();
+		setName("a generic ship sensor");
+		setDisplayText("a generic ship sensor sits here.");
+		setDescription("");
 	}
 
 	@Override
@@ -59,21 +61,14 @@ public class GenComputerConsole extends StdComputerConsole
 	}
 
 	@Override
-	public void setReadableText(String text)
-	{
-	}
-
-	@Override
 	public void setMiscText(String newText)
 	{
 		miscText="";
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
-		basePhyStats.setSensesMask(basePhyStats.sensesMask()|PhyStats.SENSE_ITEMREADABLE);
 		recoverPhyStats();
 	}
-	
-	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES","RESETTIME","RIDEBASIS","MOBSHELD",
-										   "POWERCAP","ACTIVATED","POWERREM","MANUFACTURER","INSTFACT","DEFCLOSED","DEFLOCKED"};
+
+	private final static String[] MYCODES={"POWERCAP","ACTIVATED","POWERREM","MANUFACTURER","INSTFACT"};
 	
 	@Override
 	public String getStat(String code)
@@ -83,37 +78,20 @@ public class GenComputerConsole extends StdComputerConsole
 		switch(getCodeNum(code))
 		{
 		case 0:
-			return "" + hasALock();
-		case 1:
-			return "" + hasADoor();
-		case 2:
-			return "" + capacity();
-		case 3:
-			return "" + containTypes();
-		case 4:
-			return "" + openDelayTicks();
-		case 5:
-			return "" + rideBasis();
-		case 6:
-			return "" + riderCapacity();
-		case 7:
 			return "" + powerCapacity();
-		case 8:
+		case 1:
 			return "" + activated();
-		case 9:
+		case 2:
 			return "" + powerRemaining();
-		case 10:
+		case 3:
 			return "" + getManufacturerName();
-		case 11:
+		case 4:
 			return "" + getInstalledFactor();
-		case 12:
-			return "" + defaultsClosed();
-		case 13:
-			return "" + defaultsLocked();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
 	}
+	
 	@Override
 	public void setStat(String code, String val)
 	{
@@ -123,46 +101,19 @@ public class GenComputerConsole extends StdComputerConsole
 		switch(getCodeNum(code))
 		{
 		case 0:
-			setDoorsNLocks(hasADoor(), isOpen(), defaultsClosed(), CMath.s_bool(val), false, CMath.s_bool(val) && defaultsLocked());
-			break;
-		case 1:
-			setDoorsNLocks(CMath.s_bool(val), isOpen(), CMath.s_bool(val) && defaultsClosed(), hasALock(), isLocked(), defaultsLocked());
-			break;
-		case 2:
-			setCapacity(CMath.s_parseIntExpression(val));
-			break;
-		case 3:
-			setContainTypes(CMath.s_parseBitLongExpression(Container.CONTAIN_DESCS, val));
-			break;
-		case 4:
-			setOpenDelayTicks(CMath.s_parseIntExpression(val));
-			break;
-		case 5:
-			setRideBasis(CMath.s_parseListIntExpression(Rideable.RIDEABLE_DESCS, val));
-			break;
-		case 6:
-			setRiderCapacity(CMath.s_parseIntExpression(val));
-			break;
-		case 7:
 			setPowerCapacity(CMath.s_parseLongExpression(val));
 			break;
-		case 8:
+		case 1:
 			activate(CMath.s_bool(val));
 			break;
-		case 9:
+		case 2:
 			setPowerRemaining(CMath.s_parseLongExpression(val));
 			break;
-		case 10:
+		case 3:
 			setManufacturerName(val);
 			break;
-		case 11:
+		case 4:
 			setInstalledFactor(CMath.s_float(val));
-			break;
-		case 12:
-			setDoorsNLocks(hasADoor(), isOpen(), CMath.s_bool(val), hasALock(), isLocked(), defaultsLocked());
-			break;
-		case 13:
-			setDoorsNLocks(hasADoor(), isOpen(), defaultsClosed(), hasALock(), isLocked(), CMath.s_bool(val));
 			break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
@@ -188,7 +139,7 @@ public class GenComputerConsole extends StdComputerConsole
 	{
 		if(codes!=null)
 			return codes;
-		final String[] MYCODES=CMProps.getStatCodesList(GenComputerConsole.MYCODES,this);
+		final String[] MYCODES=CMProps.getStatCodesList(GenElecCompSensor.MYCODES,this);
 		final String[] superCodes=CMParms.toStringArray(GenericBuilder.GenItemCode.values());
 		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;
@@ -202,12 +153,12 @@ public class GenComputerConsole extends StdComputerConsole
 	@Override
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof GenComputerConsole))
+		if(!(E instanceof GenElecCompSensor))
 			return false;
-		final String[] codes=getStatCodes();
-		for(int i=0;i<codes.length;i++)
+		final String[] theCodes=getStatCodes();
+		for(int i=0;i<theCodes.length;i++)
 		{
-			if(!E.getStat(codes[i]).equals(getStat(codes[i])))
+			if(!E.getStat(theCodes[i]).equals(getStat(theCodes[i])))
 				return false;
 		}
 		return true;

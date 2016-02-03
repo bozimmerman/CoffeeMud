@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Items.ShipTech;
+package com.planet_ink.coffee_mud.Items.CompTech;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2015-2016 Bo Zimmerman
+   Copyright 2013-2016 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -32,19 +32,19 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class GenElecCompSensor extends StdElecCompSensor
+public class GenElecCompItem extends StdElecCompItem
 {
 	@Override
 	public String ID()
 	{
-		return "GenElecCompSensor";
+		return "GenElecCompItem";
 	}
 
-	public GenElecCompSensor()
+	public GenElecCompItem()
 	{
 		super();
-		setName("a generic ship sensor");
-		setDisplayText("a generic ship sensor sits here.");
+		setName("a generic ship component");
+		setDisplayText("a generic ship component sits here.");
 		setDescription("");
 	}
 
@@ -91,7 +91,6 @@ public class GenElecCompSensor extends StdElecCompSensor
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
 	}
-	
 	@Override
 	public void setStat(String code, String val)
 	{
@@ -139,7 +138,7 @@ public class GenElecCompSensor extends StdElecCompSensor
 	{
 		if(codes!=null)
 			return codes;
-		final String[] MYCODES=CMProps.getStatCodesList(GenElecCompSensor.MYCODES,this);
+		final String[] MYCODES=CMProps.getStatCodesList(GenElecCompItem.MYCODES,this);
 		final String[] superCodes=CMParms.toStringArray(GenericBuilder.GenItemCode.values());
 		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;
@@ -153,7 +152,7 @@ public class GenElecCompSensor extends StdElecCompSensor
 	@Override
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof GenElecCompSensor))
+		if(!(E instanceof GenElecCompItem))
 			return false;
 		final String[] theCodes=getStatCodes();
 		for(int i=0;i<theCodes.length;i++)
