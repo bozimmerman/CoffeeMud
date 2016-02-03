@@ -101,7 +101,8 @@ public class DefaultPlayerStats implements PlayerStats
 
 	protected Map<String, AbilityMapping>		ableMap		= new SHashtable<String, AbilityMapping>();
 	protected Map<String, ExpertiseDefinition>	experMap	= new SHashtable<String, ExpertiseDefinition>();
-	protected TriadVector<Integer, Long, String>levelInfo	= new TriadVector<Integer, Long, String>();
+	
+	protected QuadVector<Integer, Long, String, Long>		levelInfo	= new QuadVector<Integer, Long, String, Long>();
 	
 	public DefaultPlayerStats()
 	{
@@ -123,7 +124,10 @@ public class DefaultPlayerStats implements PlayerStats
 		}
 	}
 
-	@Override public void initializeClass(){}
+	@Override
+	public void initializeClass()
+	{
+	}
 
 	@Override
 	public CMObject copyOf()
@@ -131,7 +135,7 @@ public class DefaultPlayerStats implements PlayerStats
 		try
 		{
 			final DefaultPlayerStats O=(DefaultPlayerStats)this.clone();
-			O.levelInfo=new TriadVector<Integer, Long, String>();
+			O.levelInfo=new QuadVector<Integer, Long, String, Long>();
 			O.levelInfo.addAll(levelInfo);
 			if(visitedRoomSet!=null)
 				O.visitedRoomSet=(RoomnumberSet)visitedRoomSet.copyOf();
@@ -924,19 +928,20 @@ public class DefaultPlayerStats implements PlayerStats
 			{
 				final String sStr=sets.get(ss);
 				final List<String> twin=CMParms.parseCommas(sStr,true);
-				if((twin.size()!=2)&&(twin.size()!=3))
+				if((twin.size()!=2)&&(twin.size()!=3)&&(twin.size()!=4))
 					continue;
 				if(CMath.s_int(twin.get(0))>=lastNum)
 				{
 					lastNum=CMath.s_int(twin.get(0));
 					levelInfo.addElement(Integer.valueOf(lastNum),
-											  Long.valueOf(CMath.s_long(twin.get(1))),
-											  (twin.size()>2)?(String)twin.get(2):"");
+										 Long.valueOf(CMath.s_long(twin.get(1))),
+										 (twin.size()>2)?(String)twin.get(2):"",
+										 (twin.size()>3)?Long.valueOf(CMath.s_long(twin.get(3))):Long.valueOf(0));
 				}
 			}
 		}
 		if(levelInfo.size()==0)
-			levelInfo.addElement(Integer.valueOf(0),Long.valueOf(System.currentTimeMillis()),"");
+			levelInfo.addElement(Integer.valueOf(0),Long.valueOf(System.currentTimeMillis()),"",Long.valueOf(0));
 		str = xmlLib.getValFromPieces(xml,"AREAS");
 		if(debug)
 			Log.debugOut("AREAS="+str);
@@ -1000,13 +1005,14 @@ public class DefaultPlayerStats implements PlayerStats
 	private String getLevelDateTimesStr()
 	{
 		if(levelInfo.size()==0)
-			levelInfo.add(Integer.valueOf(0),Long.valueOf(System.currentTimeMillis()),"");
+			levelInfo.add(Integer.valueOf(0),Long.valueOf(System.currentTimeMillis()),"",Long.valueOf(0));
 		final StringBuilder buf=new StringBuilder("");
 		for(int ss=0;ss<levelInfo.size();ss++)
 		{
 			buf.append(levelInfo.elementAtFirst(ss).toString()).append(",");
 			buf.append(levelInfo.elementAtSecond(ss).toString()).append(",");
-			buf.append(levelInfo.elementAtThird(ss)).append(";");
+			buf.append(levelInfo.elementAtThird(ss).toString()).append(",");
+			buf.append(levelInfo.elementAtFourth(ss).toString()).append(";");
 		}
 		return buf.toString();
 	}
@@ -1206,7 +1212,7 @@ public class DefaultPlayerStats implements PlayerStats
 	public long leveledDateTime(int level)
 	{
 		if(levelInfo.size()==0)
-			levelInfo.add(Integer.valueOf(0),Long.valueOf(System.currentTimeMillis()),"");
+			levelInfo.add(Integer.valueOf(0),Long.valueOf(System.currentTimeMillis()),"",Long.valueOf(0));
 		long lowest=levelInfo.elementAtSecond(0).longValue();
 		for(int l=1;l<levelInfo.size();l++)
 		{
@@ -1218,34 +1224,54 @@ public class DefaultPlayerStats implements PlayerStats
 	}
 
 	@Override
-	public void setLeveledDateTime(int level, Room R)
+	public long leveledMinutesPlayed(int level)
 	{
 		if(levelInfo.size()==0)
-			levelInfo.add(Integer.valueOf(0),Long.valueOf(System.currentTimeMillis()),"");
+			levelInfo.add(Integer.valueOf(0),Long.valueOf(System.currentTimeMillis()),"",Long.valueOf(0));
+		long age=levelInfo.elementAtFourth(0).longValue();
+		for(int l=1;l<levelInfo.size();l++)
+		{
+			if(level<levelInfo.elementAtFirst(l).intValue())
+				return age;
+			age=levelInfo.elementAtFourth(l).longValue();
+		}
+		return age;
+	}
+
+	@Override
+	public void setLeveledDateTime(int level, long ageHours, Room R)
+	{
+		if(levelInfo.size()==0)
+			levelInfo.add(Integer.valueOf(0),Long.valueOf(System.currentTimeMillis()),"",Long.valueOf(0));
 		long lastTime=0;
 		for(int l=0;l<levelInfo.size();l++)
 		{
-			final Triad<Integer, Long, String> triad = levelInfo.elementAt(l);
-			if(level==triad.first.intValue())
+			final Quad<Integer, Long, String, Long> quad = levelInfo.elementAt(l);
+			if(level==quad.first.intValue())
 			{
-				triad.second = Long.valueOf(System.currentTimeMillis());
-				triad.third = CMLib.map().getExtendedRoomID(R);
+				quad.second = Long.valueOf(System.currentTimeMillis());
+				quad.third = CMLib.map().getExtendedRoomID(R);
+				quad.fourth = Long.valueOf(ageHours);
 				return;
 			}
 			else
 			if((System.currentTimeMillis()-lastTime)<TimeManager.MILI_SECOND)
 				return;
 			else
-			if(level<triad.first.intValue())
+			if(level<quad.first.intValue())
 			{
-				levelInfo.insertElementAt(new Triad<Integer,Long,String>(Integer.valueOf(level),Long.valueOf(System.currentTimeMillis()),CMLib.map().getExtendedRoomID(R)),l);
+				levelInfo.insertElementAt(new Quad<Integer,Long,String,Long>(
+											Integer.valueOf(level),
+											Long.valueOf(System.currentTimeMillis()),
+											CMLib.map().getExtendedRoomID(R),
+											Long.valueOf(ageHours)),l);
 				return;
 			}
-			lastTime=triad.second.longValue();
+			lastTime=quad.second.longValue();
 		}
 		if((System.currentTimeMillis()-lastTime)<TimeManager.MILI_SECOND)
 			return;
-		levelInfo.addElement(Integer.valueOf(level),Long.valueOf(System.currentTimeMillis()),CMLib.map().getExtendedRoomID(R));
+		levelInfo.addElement(Integer.valueOf(level),Long.valueOf(System.currentTimeMillis()),CMLib.map().getExtendedRoomID(R),Long.valueOf(ageHours));
 	}
 
 	@Override

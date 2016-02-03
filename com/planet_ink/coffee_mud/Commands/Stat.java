@@ -16,6 +16,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /*
    Copyright 2004-2016 Bo Zimmerman
@@ -752,6 +753,7 @@ public class Stat  extends Skills
 						for(int level=0;level<=target.phyStats().level();level++)
 						{
 							final long dateTime=target.playerStats().leveledDateTime(level);
+							final long ageMinutes=target.playerStats().leveledMinutesPlayed(level);
 							if((dateTime>1529122205)&&(dateTime!=lastDateTime))
 							{
 								lastDateTime = dateTime;
@@ -759,7 +761,8 @@ public class Stat  extends Skills
 								 	str.append(CMStrings.padRight(L("Created"),8));
 								else
 								 	str.append(CMStrings.padRight(""+level,8));
-								str.append(CMLib.time().date2String(dateTime));
+								str.append(CMStrings.padRight(CMLib.time().date2String(dateTime),21));
+							 	str.append(""+CMLib.time().date2EllapsedTime(ageMinutes * 60000L,TimeUnit.MINUTES,true));
 								str.append("\n\r");
 							}
 						}

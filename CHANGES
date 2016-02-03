@@ -26,7 +26,7 @@
   25. New Aggressive/MobileAgressive flag: CHECKLEVEL, see help on those behaviors.
   26. Archon wands/staffs now have GAIN ability to grant spells
   27. Yet more Druid stuff: Sea Lore, Summon Chum, and Water Cover
-  28. New Druid sub-class: Mer
+  28. New Druid sub-class: Mer (skill-only at this point, but mostly tested and working)
   29. Golem races can now see in the dark.
   30. Shopkeepers will now include the size of bulk sales in devalue rates. 
   31. GMODIFY change parms ADDABILITY, ADDEFFECT, ADDBEHAVIOR now support parms in parenthesis ().
@@ -38,6 +38,7 @@
   36. Some new tech power generator types, and new fuelless engine type and options. Also, Light Switch!
   37. Internal: "ShipTech" Package renamed to "CompTech" to reflect reality that not all components are for ships.
   38. MOTD can now review previous news, and EMAIL BOX and MOTD PREVIOUS supports message limits
+  39. Total Minutes played now recorded along with time for Player Leveling Stats
 # Build 5.9.1 Released 01/04/2016
    1. "Who accounts", used by an archon, can quickly list the account name of each player online.
    2. New Achievement event "GOTITEM", and new rewards (see new stats below and achievements.ini)

@@ -60,6 +60,18 @@ public class AccountData extends StdWebMacro
 				return ""+CMLib.time().date2String(A.getLastDateTime());
 			if(parms.containsKey("EMAIL"))
 				return ""+A.getEmail();
+			if(parms.containsKey("BONUSLANGS"))
+				return ""+A.getBonusLanguageLimits();
+			if(parms.containsKey("BONUSCHARLIMIT"))
+				return ""+A.getBonusCharsLimit();
+			if(parms.containsKey("BONUSCHARONLINE"))
+				return ""+A.getBonusCharsOnlineLimit();
+			if(parms.containsKey("BONUSALLCOMMONSKILLS"))
+				return ""+A.getBonusCommonSkillLimits();
+			if(parms.containsKey("BONUSCRAFTINGSKILLS"))
+				return ""+A.getBonusCraftingSkillLimits();
+			if(parms.containsKey("BONUSNONCRAFTINGSKILLS"))
+				return ""+A.getBonusNonCraftingSkillLimits();
 			if(parms.containsKey("NOTES"))
 				return ""+A.getNotes();
 			if(parms.containsKey("TATTOOS"))

@@ -2011,9 +2011,15 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			c=mob.session().choose(L("Enter one to change, or ENTER when done:"),L("ABCDE\n"),"\n").toUpperCase();
 			switch(Character.toUpperCase(c.charAt(0)))
 			{
-			case 'A': CMLib.flags().setGettable(I,(CMath.bset(I.basePhyStats().sensesMask(),PhyStats.SENSE_ITEMNOTGET))); break;
-			case 'B': CMLib.flags().setDroppable(I,(CMath.bset(I.basePhyStats().sensesMask(),PhyStats.SENSE_ITEMNODROP))); break;
-			case 'C': CMLib.flags().setRemovable(I,(CMath.bset(I.basePhyStats().sensesMask(),PhyStats.SENSE_ITEMNOREMOVE))); break;
+			case 'A':
+				CMLib.flags().setGettable(I, (CMath.bset(I.basePhyStats().sensesMask(), PhyStats.SENSE_ITEMNOTGET)));
+				break;
+			case 'B':
+				CMLib.flags().setDroppable(I, (CMath.bset(I.basePhyStats().sensesMask(), PhyStats.SENSE_ITEMNODROP)));
+				break;
+			case 'C':
+				CMLib.flags().setRemovable(I, (CMath.bset(I.basePhyStats().sensesMask(), PhyStats.SENSE_ITEMNOREMOVE)));
+				break;
 			case 'D':
 			{
 				if((I.basePhyStats().sensesMask()&PhyStats.SENSE_UNLOCATABLE)>0)

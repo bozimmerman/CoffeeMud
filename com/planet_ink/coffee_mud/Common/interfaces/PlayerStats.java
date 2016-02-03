@@ -69,12 +69,22 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats
 	/**
 	 * The time, in milis since 1970, that the player gained the given level
 	 *
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#setLeveledDateTime(int, Room)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#setLeveledDateTime(int, int, Room)
 	 *
 	 * @param level the level to check for
 	 * @return the time, in milis since 1970, that the player gained the given level
 	 */
 	public long leveledDateTime(int level);
+
+	/**
+	 * The number of minutes played when the player gained the given level
+	 *
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#setLeveledDateTime(int, int, Room)
+	 *
+	 * @param level the level to check for
+	 * @return the minutes played before the player gained the given level
+	 */
+	public long leveledMinutesPlayed(int level);
 
 	/**
 	 * Notifies the player records that, at the moment this method was called,
@@ -83,9 +93,10 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#leveledDateTime(int)
 	 *
 	 * @param level the level to set up
+	 * @param ageHours the hours played at this point
 	 * @param R the room in which the level was gained
 	 */
-	public void setLeveledDateTime(int level, Room R);
+	public void setLeveledDateTime(int level, long ageHours, Room R);
 
 	/**
 	 * Returns a bitmask of channels turned on/off. (32 channels supported)

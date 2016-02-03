@@ -152,8 +152,8 @@ public class SongBird extends StdRace
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected, affectableStats);
-		if (!CMLib.flags().isSleeping(affected))
-			affectableStats.setDisposition(affectableStats.disposition() | PhyStats.IS_FLYING);
+		if((affectableStats.disposition() & (PhyStats.IS_SITTING|PhyStats.IS_SLEEPING))==0)
+			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_FLYING);
 	}
 
 	@Override

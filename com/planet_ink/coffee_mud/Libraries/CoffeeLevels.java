@@ -487,7 +487,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		theNews.append(baseLevelAdjuster(mob,1));
 		if(mob.playerStats()!=null)
 		{
-			mob.playerStats().setLeveledDateTime(mob.basePhyStats().level(),room);
+			mob.playerStats().setLeveledDateTime(mob.basePhyStats().level(),mob.getAgeMinutes(),room);
 			final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.DETAILEDLEVELS);
 			final List<String> channels2=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.LEVELS);
 			if(!CMLib.flags().isCloaked(mob))

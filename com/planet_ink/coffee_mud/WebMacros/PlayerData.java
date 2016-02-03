@@ -18,6 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.concurrent.TimeUnit;
 
 /*
    Copyright 2003-2016 Bo Zimmerman
@@ -121,152 +122,251 @@ public class PlayerData extends StdWebMacro
 		final StringBuffer str=new StringBuffer("");
 		switch(i)
 		{
-		case 0: str.append(M.Name()+", "); break;
-		case 1: str.append(M.description()+", "); break;
-		case 2:  if(M.playerStats()!=null)
-					str.append(CMLib.time().date2String(M.playerStats().getLastDateTime())+", ");
-				 break;
-		case 3: if(M.playerStats()!=null)
-					str.append(M.playerStats().getEmail()+", ");
-				break;
-		case 4: str.append(M.baseCharStats().getMyRace().name()+", "); break;
-		case 5: str.append(M.baseCharStats().getCurrentClass().name(M.baseCharStats().getCurrentClassLevel())+", "); break;
-		case 6: str.append(M.basePhyStats().level()+", "); break;
-		case 7: str.append(M.baseCharStats().displayClassLevel(M,true)+", "); break;
-		case 8: str.append(M.baseCharStats().getClassLevel(M.baseCharStats().getCurrentClass())+", "); break;
+		case 0:
+			str.append(M.Name() + ", ");
+			break;
+		case 1:
+			str.append(M.description() + ", ");
+			break;
+		case 2:
+			if (M.playerStats() != null)
+				str.append(CMLib.time().date2String(M.playerStats().getLastDateTime()) + ", ");
+			break;
+		case 3:
+			if (M.playerStats() != null)
+				str.append(M.playerStats().getEmail() + ", ");
+			break;
+		case 4:
+			str.append(M.baseCharStats().getMyRace().name() + ", ");
+			break;
+		case 5:
+			str.append(M.baseCharStats().getCurrentClass().name(M.baseCharStats().getCurrentClassLevel()) + ", ");
+			break;
+		case 6:
+			str.append(M.basePhyStats().level() + ", ");
+			break;
+		case 7:
+			str.append(M.baseCharStats().displayClassLevel(M, true) + ", ");
+			break;
+		case 8:
+			str.append(M.baseCharStats().getClassLevel(M.baseCharStats().getCurrentClass()) + ", ");
+			break;
 		case 9:
 		{
-				for(int c=M.charStats().numClasses()-1;c>=0;c--)
-				{
-					final CharClass C=M.charStats().getMyClass(c);
-					str.append(C.name(M.baseCharStats().getCurrentClassLevel())+" ("+M.charStats().getClassLevel(C)+") ");
-				}
-				str.append(", ");
-				break;
+			for(int c=M.charStats().numClasses()-1;c>=0;c--)
+			{
+				final CharClass C=M.charStats().getMyClass(c);
+				str.append(C.name(M.baseCharStats().getCurrentClassLevel())+" ("+M.charStats().getClassLevel(C)+") ");
+			}
+			str.append(", ");
+			break;
 		}
-		case 10: if(M.maxCarry()>(Integer.MAX_VALUE/3)) str.append("NA, "); else str.append(M.maxCarry()+", "); break;
-		case 11: str.append(CMStrings.capitalizeAndLower(CMStrings.removeColors(CMLib.combat().fightingProwessStr(M)))+", "); break;
-		case 12: str.append(CMStrings.capitalizeAndLower(CMStrings.removeColors(CMLib.combat().armorStr(M)))+", "); break;
-		case 13: str.append(CMLib.combat().adjustedDamage(M,null,null,0,false)+", "); break;
-		case 14: str.append(Math.round(CMath.div(M.getAgeMinutes(),60.0))+", "); break;
-		case 15: str.append(M.getPractices()+", "); break;
-		case 16: str.append(M.getExperience()+", "); break;
-		case 17: if(M.getExpNeededLevel()==Integer.MAX_VALUE)
-					str.append("N/A, ");
-				 else
-					str.append(M.getExpNextLevel()+", ");
-				 break;
-		case 18: str.append(M.getTrains()+", "); break;
-		case 19: str.append(CMLib.beanCounter().getMoney(M)+", "); break;
-		case 20: str.append(M.getWorshipCharID()+", "); break;
-		case 21: str.append(M.getLiegeID()+", "); break;
+		case 10:
+			if (M.maxCarry() > (Integer.MAX_VALUE / 3))
+				str.append("NA, ");
+			else
+				str.append(M.maxCarry() + ", ");
+			break;
+		case 11:
+			str.append(CMStrings.capitalizeAndLower(CMStrings.removeColors(CMLib.combat().fightingProwessStr(M))) + ", ");
+			break;
+		case 12:
+			str.append(CMStrings.capitalizeAndLower(CMStrings.removeColors(CMLib.combat().armorStr(M))) + ", ");
+			break;
+		case 13:
+			str.append(CMLib.combat().adjustedDamage(M, null, null, 0, false) + ", ");
+			break;
+		case 14:
+			str.append(Math.round(CMath.div(M.getAgeMinutes(), 60.0)) + ", ");
+			break;
+		case 15:
+			str.append(M.getPractices() + ", ");
+			break;
+		case 16:
+			str.append(M.getExperience() + ", ");
+			break;
+		case 17: 
+			if(M.getExpNeededLevel()==Integer.MAX_VALUE)
+				str.append("N/A, ");
+			else
+				str.append(M.getExpNextLevel()+", ");
+			break;
+		case 18:
+			str.append(M.getTrains() + ", ");
+			break;
+		case 19:
+			str.append(CMLib.beanCounter().getMoney(M) + ", ");
+			break;
+		case 20:
+			str.append(M.getWorshipCharID() + ", ");
+			break;
+		case 21:
+			str.append(M.getLiegeID() + ", ");
+			break;
 		case 22:
-		case 23: {
-					final StringBuilder buf=new StringBuilder("");
-					for(final Pair<Clan,Integer> p : M.clans())
-						buf.append(p.first.getName()).append(", ");
-					if(buf.length()>2)
-						str.append(buf.substring(0, buf.length()-2));
-				 }
-				 break;
-		case 24: str.append(M.fetchFaction(CMLib.factions().AlignID())+", ");
-				 break;
-		case 25: {
-					final Faction.FRange FR=CMLib.factions().getRange(CMLib.factions().AlignID(),M.fetchFaction(CMLib.factions().AlignID()));
-					if(FR!=null)
-						str.append(FR.name()+", ");
-					else
-						str.append(M.fetchFaction(CMLib.factions().AlignID()));
-					break;
-				}
-		case 26: str.append(M.getWimpHitPoint()+", "); break;
-		case 27: if(M.getStartRoom()!=null)
-					 str.append(M.getStartRoom().displayText()+", ");
-				 break;
-		case 28: if(M.location()!=null)
-					 str.append(M.location().displayText()+", ");
-				 break;
-		case 29: if(M.getStartRoom()!=null)
-					 str.append(M.getStartRoom().roomID()+", ");
-				 break;
-		case 30: if(M.location()!=null)
-					 str.append(M.location().roomID()+", ");
-				 break;
+		case 23: 
+		{
+			final StringBuilder buf = new StringBuilder("");
+			for (final Pair<Clan, Integer> p : M.clans())
+				buf.append(p.first.getName()).append(", ");
+			if (buf.length() > 2)
+				str.append(buf.substring(0, buf.length() - 2));
+			break;
+		}
+		case 24:
+			str.append(M.fetchFaction(CMLib.factions().AlignID()) + ", ");
+			break;
+		case 25:
+		{
+			final Faction.FRange FR=CMLib.factions().getRange(CMLib.factions().AlignID(),M.fetchFaction(CMLib.factions().AlignID()));
+			if(FR!=null)
+				str.append(FR.name()+", ");
+			else
+				str.append(M.fetchFaction(CMLib.factions().AlignID()));
+			break;
+		}
+		case 26:
+			str.append(M.getWimpHitPoint() + ", ");
+			break;
+		case 27: 
+			if(M.getStartRoom()!=null)
+				str.append(M.getStartRoom().displayText()+", ");
+			break;
+		case 28: 
+			if(M.location()!=null)
+				str.append(M.location().displayText()+", ");
+			break;
+		case 29: 
+			if(M.getStartRoom()!=null)
+				str.append(M.getStartRoom().roomID()+", ");
+			break;
+		case 30: 
+			if(M.location()!=null)
+				str.append(M.location().roomID()+", ");
+			break;
 		case 31:
 		{
-				for(int inv=0;inv<M.numItems();inv++)
-				{
-					final Item I=M.getItem(inv);
-					if((I!=null)&&(I.container()==null))
-						  str.append(I.name()+", ");
-				}
-				break;
+			for(int inv=0;inv<M.numItems();inv++)
+			{
+				final Item I=M.getItem(inv);
+				if((I!=null)&&(I.container()==null))
+					  str.append(I.name()+", ");
+			}
+			break;
 		}
-		case 32: str.append(M.basePhyStats().weight()+", "); break;
-		case 33: str.append(M.phyStats().weight()+", "); break;
-		case 34: str.append(CMStrings.capitalizeAndLower(M.baseCharStats().genderName())+", "); break;
-		case 35: if(M.playerStats()!=null)
-					 str.append(M.playerStats().getLastDateTime()+", ");
-				 break;
-		case 36: str.append(M.curState().getHitPoints()+", "); break;
-		case 37: str.append(M.curState().getMana()+", "); break;
-		case 38: str.append(M.curState().getMovement()+", "); break;
-		case 39: if(M.riding()!=null)
-					 str.append(M.riding().name()+", ");
-				 break;
-		case 40: str.append(M.basePhyStats().height()+", "); break;
-		case 41: if(!M.isMonster())
-					 str.append(M.session().getAddress()+", ");
-				 else
-				 if(M.playerStats()!=null)
-					 str.append(M.playerStats().getLastIP()+", ");
-				 break;
-		case 42:  str.append(M.getQuestPoint()+", "); break;
-		case 43: str.append(M.maxState().getHitPoints()+", "); break;
-		case 44: str.append(M.maxState().getMana()+", "); break;
-		case 45: str.append(M.maxState().getMovement()+", "); break;
-		case 46: str.append(M.rawImage()+", "); break;
-		case 47: str.append(M.maxItems()+", "); break;
+		case 32:
+			str.append(M.basePhyStats().weight() + ", ");
+			break;
+		case 33:
+			str.append(M.phyStats().weight() + ", ");
+			break;
+		case 34:
+			str.append(CMStrings.capitalizeAndLower(M.baseCharStats().genderName()) + ", ");
+			break;
+		case 35: 
+			if(M.playerStats()!=null)
+				 str.append(M.playerStats().getLastDateTime()+", ");
+			 break;
+		case 36:
+			str.append(M.curState().getHitPoints() + ", ");
+			break;
+		case 37:
+			str.append(M.curState().getMana() + ", ");
+			break;
+		case 38:
+			str.append(M.curState().getMovement() + ", ");
+			break;
+		case 39: 
+			if(M.riding()!=null)
+				 str.append(M.riding().name()+", ");
+			 break;
+		case 40:
+			str.append(M.basePhyStats().height() + ", ");
+			break;
+		case 41:
+		{
+			if(!M.isMonster())
+				str.append(M.session().getAddress()+", ");
+			else
+			if(M.playerStats()!=null)
+				str.append(M.playerStats().getLastIP()+", ");
+			break;
+		}
+		case 42:
+			str.append(M.getQuestPoint() + ", ");
+			break;
+		case 43:
+			str.append(M.maxState().getHitPoints() + ", ");
+			break;
+		case 44:
+			str.append(M.maxState().getMana() + ", ");
+			break;
+		case 45:
+			str.append(M.maxState().getMovement() + ", ");
+			break;
+		case 46:
+			str.append(M.rawImage() + ", ");
+			break;
+		case 47:
+			str.append(M.maxItems() + ", ");
+			break;
 		case 48:
 		{
-				 final String[] paths=CMLib.protocol().mxpImagePath(M.image());
-				 if(paths[0].length()>0)
-					 str.append(paths[0]+paths[1]+", ");
-				 break;
+			final String[] paths=CMLib.protocol().mxpImagePath(M.image());
+			if(paths[0].length()>0)
+				str.append(paths[0]+paths[1]+", ");
+			break;
 		}
-		case 49: if(CMLib.protocol().mxpImagePath(M.image())[0].length()>0)
-					str.append("true, ");
-				 else
-					 str.append("false, ");
-				 break;
+		case 49: 
+		{
+			if(CMLib.protocol().mxpImagePath(M.image())[0].length()>0)
+				str.append("true, ");
+			 else
+				 str.append("false, ");
+			 break;
+		}
 		case 50: if(M.playerStats()!=null)
 				 	str.append(M.playerStats().getNotes()+", ");
 				 break;
-		case 51: if(M.playerStats()!=null)
-				 {
-					long lastDateTime=-1;
-					for(int level=0;level<=M.phyStats().level();level++)
+		case 51:
+			if(M.playerStats()!=null)
+			 {
+				long lastDateTime=-1;
+				for(int level=0;level<=M.phyStats().level();level++)
+				{
+					final long dateTime=M.playerStats().leveledDateTime(level);
+					final long ageMinutes=M.playerStats().leveledMinutesPlayed(level);
+					if((dateTime>1529122205)&&(dateTime!=lastDateTime))
 					{
-						final long dateTime=M.playerStats().leveledDateTime(level);
-						if((dateTime>1529122205)&&(dateTime!=lastDateTime))
-						{
-							lastDateTime = dateTime;
-							str.append("<TR>");
-							if(level==0)
-							 	str.append("<TD><FONT COLOR=WHITE>Created</FONT></TD>");
-							else
-							 	str.append("<TD><FONT COLOR=WHITE>"+level+"</FONT></TD>");
-							str.append("<TD><FONT COLOR=WHITE>"+CMLib.time().date2String(dateTime)+"</FONT></TD></TR>");
-						}
+						lastDateTime = dateTime;
+						str.append("<TR>");
+						if(level==0)
+						 	str.append("<TD><FONT COLOR=WHITE>Created</FONT></TD>");
+						else
+						 	str.append("<TD><FONT COLOR=WHITE>"+level+"</FONT></TD>");
+						str.append("<TD><FONT COLOR=WHITE>"+CMLib.time().date2String(dateTime)+"</FONT></TD>");
+						str.append("<TD><FONT COLOR=WHITE>"+CMLib.time().date2EllapsedTime(ageMinutes * 60000L,TimeUnit.MINUTES,true)+"</FONT></TD>");
+						str.append("</TR>");
 					}
-					str.append(", ");
-				 }
-				 break;
-		case 52: str.append(M.basePhyStats().attackAdjustment()+", "); break;
-		case 53: str.append(M.basePhyStats().damage()+", "); break;
-		case 54: str.append(M.basePhyStats().armor()+", "); break;
-		case 55: str.append(M.phyStats().speed()+", "); break;
-		case 56: str.append(M.basePhyStats().speed()+", "); break;
+				}
+				str.append(", ");
+			 }
+			 break;
+		case 52:
+			str.append(M.basePhyStats().attackAdjustment() + ", ");
+			break;
+		case 53:
+			str.append(M.basePhyStats().damage() + ", ");
+			break;
+		case 54:
+			str.append(M.basePhyStats().armor() + ", ");
+			break;
+		case 55:
+			str.append(M.phyStats().speed() + ", ");
+			break;
+		case 56:
+			str.append(M.basePhyStats().speed() + ", ");
+			break;
 		case 57:
 		{
 			for(final Enumeration<String> x=M.expertises();x.hasMoreElements();)
@@ -323,7 +423,9 @@ public class PlayerData extends StdWebMacro
 			}
 			break;
 		}
-		case 62: str.append(CMProps.getBoolVar(CMProps.Bool.ACCOUNTEXPIRATION)?"true":"false"); break;
+		case 62:
+			str.append(CMProps.getBoolVar(CMProps.Bool.ACCOUNTEXPIRATION) ? "true" : "false");
+			break;
 		case 63:
 		{
 			if(M.playerStats()!=null)
@@ -335,7 +437,8 @@ public class PlayerData extends StdWebMacro
 			}
 			 break;
 		}
-		case 64: {
+		case 64: 
+		{
 			for(int f=0;f<M.numFollowers();f++)
 				str.append(M.fetchFollower(f).name()).append(", ");
 			//Vector<MOB> V=CMLib.database().DBScanFollowers(M);

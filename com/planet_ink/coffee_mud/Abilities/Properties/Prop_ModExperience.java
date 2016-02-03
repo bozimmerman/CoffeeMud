@@ -113,6 +113,8 @@ public class Prop_ModExperience extends Property
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
+		if(operation == null)
+			setMiscText(text());
 		if((msg.sourceMinor()==CMMsg.TYP_EXPCHANGE)
 		&&(operation != null)
 		&&((((msg.target()==affected)||(selfXP && (msg.source()==affected)))   &&(affected instanceof MOB))

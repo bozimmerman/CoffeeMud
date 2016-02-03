@@ -785,7 +785,7 @@ public class ItemData extends StdWebMacro
 						break;
 					case CONTENTSACCESS:
 						if(firstTime)
-							old=CMath.bset(I.basePhyStats().sensesMask(), PhyStats.SENSE_INSIDEACCESSIBLE)?"":"checked";
+							old=CMath.bset(I.basePhyStats().sensesMask(), PhyStats.SENSE_INSIDEACCESSIBLE)?"checked":"";
 						else
 						if(old.equals("on"))
 							old="checked";
@@ -793,7 +793,7 @@ public class ItemData extends StdWebMacro
 						break;
 					case BLENDEDVIEW:
 						if(firstTime)
-							old=CMath.bset(I.basePhyStats().sensesMask(), PhyStats.SENSE_ALWAYSCOMPRESSED)?"":"checked";
+							old=CMath.bset(I.basePhyStats().sensesMask(), PhyStats.SENSE_ALWAYSCOMPRESSED)?"checked":"";
 						else
 						if(old.equals("on"))
 							old="checked";

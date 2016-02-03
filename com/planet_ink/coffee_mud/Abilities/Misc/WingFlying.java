@@ -37,18 +37,69 @@ import java.util.*;
 
 public class WingFlying extends StdAbility implements HealthCondition
 {
-	@Override public String ID() { return "WingFlying"; }
+	@Override
+	public String ID()
+	{
+		return "WingFlying";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Winged Flight");
-	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "";}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	@Override public boolean putInCommandlist(){return false;}
-	private static final String[] triggerStrings =I(new String[] {"FLAP"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_RACIALABILITY;}
-	@Override public int usageType(){return USAGE_MOVEMENT;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public String displayText()
+	{
+		return "";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	public boolean putInCommandlist()
+	{
+		return false;
+	}
+
+	private static final String[] triggerStrings = I(new String[] { "FLAP" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL | Ability.DOMAIN_RACIALABILITY;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT;
+	}
 
 	@Override
 	public String getHealthConditionDesc()
@@ -56,6 +107,8 @@ public class WingFlying extends StdAbility implements HealthCondition
 		return "Weak Paralysis";
 	}
 
+	private volatile boolean isFlying = true;
+	
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
@@ -65,12 +118,24 @@ public class WingFlying extends StdAbility implements HealthCondition
 		if(!(affected instanceof MOB))
 			return;
 
-		if(!CMLib.flags().isSleeping(affected))
+		if((!CMLib.flags().isSleeping(affected))
+		&&(!CMLib.flags().isSitting(affected))
+		&&(isFlying))
 			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_FLYING);
 		else
 			affectableStats.setDisposition(CMath.unsetb(affectableStats.disposition(),PhyStats.IS_FLYING));
 	}
 
+	@Override
+	public void setMiscText(String newText)
+	{
+		super.setMiscText(newText);
+		if(newText.length()==0)
+			isFlying=true;
+		else
+			isFlying=CMParms.getParmBool(newText, "FLYING", true);
+	}
+	
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -117,6 +182,8 @@ public class WingFlying extends StdAbility implements HealthCondition
 				A=target.fetchEffect(ID());
 				if(A!=null)
 					A.makeLongLasting();
+				A.setMiscText("FLYING="+(!wasFlying));
+				target.location().recoverRoomStats();
 			}
 		}
 		else

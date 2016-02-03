@@ -65,6 +65,24 @@ public class GrinderAccounts
 				str=httpReq.getUrlParameter("NOTES");
 				if(str!=null)
 					A.setNotes(str);
+				str=httpReq.getUrlParameter("BONUSLANGS");
+				if(str != null)
+					A.setBonusLanguageLimits(CMath.s_int(str));
+				str=httpReq.getUrlParameter("BONUSCHARLIMIT");
+				if(str != null)
+					A.setBonusCharsLimit(CMath.s_int(str));
+				str=httpReq.getUrlParameter("BONUSCHARONLINE");
+				if(str != null)
+					A.setBonusCharsOnlineLimit(CMath.s_int(str));
+				str=httpReq.getUrlParameter("BONUSALLCOMMONSKILLS");
+				if(str != null)
+					A.setBonusCommonSkillLimits(CMath.s_int(str));
+				str=httpReq.getUrlParameter("BONUSCRAFTINGSKILLS");
+				if(str != null)
+					A.setBonusCraftingSkillLimits(CMath.s_int(str));
+				str=httpReq.getUrlParameter("BONUSNONCRAFTINGSKILLS");
+				if(str != null)
+					A.setBonusNonCraftingSkillLimits(CMath.s_int(str));
 				str=httpReq.getUrlParameter("TATTOOS");
 				if(str!=null)
 				{
