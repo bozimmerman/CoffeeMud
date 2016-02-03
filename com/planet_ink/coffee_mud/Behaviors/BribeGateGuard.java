@@ -218,22 +218,16 @@ public class BribeGateGuard extends StdBehavior
 		if(surviveReboot)
 		{
 			final List<JournalEntry> V = CMLib.database().DBReadJournalMsgs("BRIBEGATE_"+gates());
-			final Vector<JournalEntry> mine = new Vector<JournalEntry>();
 			for (int v = 0; v < V.size(); v++)
 			{
 				final JournalEntry V2 = V.get(v);
 				if ( ( V2.from()).equalsIgnoreCase(mob.Name()))
 				{
-					mine.addElement(V2);
-				}
-			}
-			for (int v = 0; v < mine.size(); v++)
-			{
-				final JournalEntry V2 = mine.elementAt(v);
-				final String fullName = V2.subj();
-				if (fullName.equals("COINS"))
-				{
-					CMLib.database().DBDeleteJournal("BRIBEGATE_"+gates(), V2.key());
+					final String fullName = V2.subj();
+					if (fullName.equals("COINS"))
+					{
+						CMLib.database().DBDeleteJournal("BRIBEGATE_"+gates(), V2.key());
+					}
 				}
 			}
 		}

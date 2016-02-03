@@ -866,7 +866,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * @param searchStr
 	 * @return
 	 */
-	public Vector<JournalEntry> DBSearchAllJournalEntries(String Journal, String searchStr);
+	public List<JournalEntry> DBSearchAllJournalEntries(String Journal, String searchStr);
 
 	/**
 	 * Table category: DBJOURNALS
@@ -902,7 +902,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * @param limit
 	 * @return
 	 */
-	public Vector<JournalEntry> DBReadJournalPageMsgs(String Journal, String parent, String searchStr, long newerDate, int limit);
+	public List<JournalEntry> DBReadJournalPageMsgs(String Journal, String parent, String searchStr, long newerDate, int limit);
 
 	/**
 	 * Table category: DBJOURNALS

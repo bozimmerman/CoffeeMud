@@ -83,10 +83,7 @@ public class CommandJournal extends StdCommand
 			return true;
 		}
 		final int count=CMath.s_int(second);
-		final List<JournalEntry> journal=CMLib.database().DBReadJournalMsgs(journalID);
-		int size=0;
-		if(journal!=null)
-			size=journal.size();
+		final int size=CMLib.database().DBCountJournal(journalID,null,null);
 		if(size<=0)
 		{
 			mob.tell(L("There are no @x1 listed at this time.",journalWord));
@@ -154,10 +151,7 @@ public class CommandJournal extends StdCommand
 			mob.tell(L("This feature has been disabled."));
 		else
 		{
-			final List<JournalEntry> journal=CMLib.database().DBReadJournalMsgs(journalID);
-			int size=0;
-			if(journal!=null)
-				size=journal.size();
+			int size=CMLib.database().DBCountJournal(journalID,null,null);
 			if(size<=0)
 				mob.tell(L("There are no @x1 listed at this time.",journalWord));
 			else

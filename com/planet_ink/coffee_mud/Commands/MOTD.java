@@ -68,6 +68,12 @@ public class MOTD extends StdCommand
 		}
 		else
 			commands=DEFAULT_CMD;
+		int max=5;
+		if((commands.size()>2)&&(CMath.isInteger(commands.get(commands.size()-1))))
+		{
+			max=CMath.s_int(commands.get(commands.size()-1));
+			commands.remove(commands.size()-1);
+		}
 		final String parm=CMParms.combine(commands,1).toUpperCase();
 		final boolean oldOk = "PREVIOUS".startsWith(parm) || parm.equals("OLD"); 
 		if((mob.playerStats()!=null)
@@ -84,12 +90,13 @@ public class MOTD extends StdCommand
 					buf.append(msg+"\n\r--------------------------------------\n\r");
 				}
 
-				final List<JournalEntry> journal=new LinkedList<JournalEntry>();
-				journal.addAll(CMLib.database().DBReadJournalMsgs("CoffeeMud News")); // deprecated
-				journal.addAll(CMLib.database().DBReadJournalMsgs("SYSTEM_NEWS"));
-				for(int which=0;which<journal.size();which++)
+				final MultiIterator<JournalEntry> journal=new MultiIterator<JournalEntry>();
+				journal.add(CMLib.database().DBReadJournalMsgs("CoffeeMud News").iterator()); // deprecated
+				journal.add(CMLib.database().DBReadJournalMsgs("SYSTEM_NEWS").iterator());
+				should read these descending, trim to the max, then iterate.
+				for(;journal.hasNext();)
 				{
-					final JournalEntry entry=journal.get(which);
+					final JournalEntry entry=journal.next();
 					final String from=entry.from();
 					final long last=entry.date();
 					String to=entry.to();

@@ -1345,7 +1345,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 						subj = subj.substring(11).trim();
 				}
 
-				final Vector<JournalEntry> journalEntries = CMLib.database().DBSearchAllJournalEntries(forum.NAME(), subj);
+				final List<JournalEntry> journalEntries = CMLib.database().DBSearchAllJournalEntries(forum.NAME(), subj);
 				if ((journalEntries != null) && (journalEntries.size() > 0))
 				{
 					JournalEntry WIN = null;

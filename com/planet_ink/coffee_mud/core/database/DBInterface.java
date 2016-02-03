@@ -525,7 +525,7 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
-	public Vector<JournalEntry> DBSearchAllJournalEntries(String Journal, String searchStr)
+	public List<JournalEntry> DBSearchAllJournalEntries(String Journal, String searchStr)
 	{
 		return JournalLoader.DBSearchAllJournalEntries(Journal, searchStr);
 	}
@@ -543,7 +543,7 @@ public class DBInterface implements DatabaseEngine
 	}
 	
 	@Override
-	public Vector<JournalEntry> DBReadJournalPageMsgs(String Journal, String parent, String searchStr, long newerDate, int limit)
+	public List<JournalEntry> DBReadJournalPageMsgs(String Journal, String parent, String searchStr, long newerDate, int limit)
 	{
 		return JournalLoader.DBReadJournalPageMsgs(Journal, parent, searchStr, newerDate, limit);
 	}

@@ -228,7 +228,7 @@ public class JournalLoader
 		return entry;
 	}
 
-	public Vector<JournalEntry> DBReadJournalPageMsgs(String journal, String parent, String searchStr, long newerDate, int limit)
+	public List<JournalEntry> DBReadJournalPageMsgs(String journal, String parent, String searchStr, long newerDate, int limit)
 	{
 		journal		= DB.injectionClean(journal);
 		parent		= DB.injectionClean(parent);
@@ -323,7 +323,7 @@ public class JournalLoader
 		return journalV;
 	}
 
-	public Vector<JournalEntry> DBSearchAllJournalEntries(String journal, String searchStr)
+	public List<JournalEntry> DBSearchAllJournalEntries(String journal, String searchStr)
 	{
 		journal		= DB.injectionClean(journal);
 		searchStr	= DB.injectionClean(searchStr);
@@ -369,25 +369,15 @@ public class JournalLoader
 		journal	= DB.injectionClean(journal);
 		to		= DB.injectionClean(to);
 
-		final Vector<JournalEntry> journalV=new Vector<JournalEntry>();
 		DBConnection D=null;
 		try
 		{
 			D=DB.DBFetch();
-			String sql="SELECT * FROM CMJRNL WHERE CMUPTM > " + olderDate;
-			if(journal!=null) 
-				sql += " AND CMJRNL='"+journal+"'";
+			String sql="SELECT CMJKEY FROM CMJRNL WHERE CMUPTM > " + olderDate+" AND CMJRNL='"+journal+"'";
 			if(to != null) 
 				sql += " AND CMTONM='"+to+"'";
 			sql += "ORDER BY CMUPTM ASC";
-			final ResultSet R=D.query(sql);
-			int cardinal=0;
-			while(R.next())
-			{
-				final JournalEntry entry = DBReadJournalEntry(R);
-				entry.cardinal(++cardinal);
-				journalV.addElement(entry);
-			}
+			return this.makeJournalEntryList(journal, D.query(sql));
 		}
 		catch(final Exception sqle)
 		{
@@ -398,8 +388,6 @@ public class JournalLoader
 		{
 			DB.DBDone(D);
 		}
-		Collections.sort(journalV);
-		return journalV;
 	}
 	
 	public List<JournalEntry> makeJournalEntryList(final String journalID, final ResultSet R) throws SQLException
@@ -408,6 +396,7 @@ public class JournalLoader
 		while(R.next())
 			ids.add(R.getString("CMJKEY"));
 		R.close();
+		final String lastEntry = (ids.size()==0) ? "" : ids.get(ids.size()-1);
 		return new FullConvertingList<String,JournalEntry>(ids, new FullConverter<String,JournalEntry>()
 		{
 			@Override
@@ -415,6 +404,8 @@ public class JournalLoader
 			{
 				final JournalEntry j=DBReadJournalEntry(journalID, obj);
 				j.cardinal(cardinal);
+				if(j.key().equals(lastEntry))
+					j.lastEntry(true);
 				return j;
 			}
 
@@ -431,25 +422,16 @@ public class JournalLoader
 		journal	= DB.injectionClean(journal);
 		to		= DB.injectionClean(to);
 
-		final Vector<JournalEntry> journalV=new Vector<JournalEntry>();
 		DBConnection D=null;
 		try
 		{
 			D=DB.DBFetch();
-			String sql="SELECT * FROM CMJRNL WHERE CMUPTM < " + newestDate;
-			if(journal!=null) 
-				sql += " AND CMJRNL='"+journal+"'";
+			String sql="SELECT CMJKEY FROM CMJRNL WHERE CMUPTM < " + newestDate + " AND CMJRNL='"+journal+"'";
 			if(to != null) 
 				sql += " AND CMTONM='"+to+"'";
 			sql += "ORDER BY CMUPTM ASC";
 			final ResultSet R=D.query(sql);
-			int cardinal=0;
-			while(R.next())
-			{
-				final JournalEntry entry = DBReadJournalEntry(R);
-				entry.cardinal(++cardinal);
-				journalV.addElement(entry);
-			}
+			return makeJournalEntryList(journal,R);
 		}
 		catch(final Exception sqle)
 		{
@@ -460,11 +442,9 @@ public class JournalLoader
 		{
 			DB.DBDone(D);
 		}
-		Collections.sort(journalV);
-		return journalV;
 	}
 
-	public Vector<JournalEntry> DBReadJournalMsgs(String journal)
+	public List<JournalEntry> DBReadJournalMsgs(String journal)
 	{
 		journal = DB.injectionClean(journal);
 
@@ -472,21 +452,13 @@ public class JournalLoader
 			return new Vector<JournalEntry>();
 		synchronized(journal.toUpperCase().intern())
 		{
-			final Vector<JournalEntry> journalV=new Vector<JournalEntry>();
 			//Resources.submitResource("JOURNAL_"+journal);
 			DBConnection D=null;
 			try
 			{
 				D=DB.DBFetch();
-				final String sql="SELECT * FROM CMJRNL WHERE CMJRNL='"+journal+"'";
-				final ResultSet R=D.query(sql);
-				int cardinal=0;
-				while(R.next())
-				{
-					final JournalEntry entry = DBReadJournalEntry(R);
-					entry.cardinal(++cardinal);
-					journalV.addElement(entry);
-				}
+				final String sql="SELECT CMJKEY FROM CMJRNL WHERE CMJRNL='"+journal+"' ORDER BY CMUPTM ASC";
+				return this.makeJournalEntryList(journal,D.query(sql));
 			}
 			catch(final Exception sqle)
 			{
@@ -497,8 +469,6 @@ public class JournalLoader
 			{
 				DB.DBDone(D);
 			}
-			Collections.sort(journalV);
-			return journalV;
 		}
 	}
 

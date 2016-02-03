@@ -623,22 +623,15 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 				if((num!=null)&&(CMath.isNumber(num))&&(CMath.s_double(num)>0.0))
 				{
 					setThreadStatus(serviceClient,"updating journal "+CMJ.NAME());
-					final List<JournalEntry> items=CMLib.database().DBReadJournalMsgs(CMJ.JOURNAL_NAME());
-					if(items!=null)
+					final long expirationDate = System.currentTimeMillis() - Math.round(CMath.mul(TimeManager.MILI_DAY,CMath.s_double(num)));
+					final List<JournalEntry> items=CMLib.database().DBReadJournalMsgsOlderThan(CMJ.JOURNAL_NAME(),null,expirationDate);
+					for(int i=items.size()-1;i>=0;i--)
 					{
-						for(int i=items.size()-1;i>=0;i--)
-						{
-							final JournalEntry entry=items.get(i);
-							long compdate=entry.update();
-							compdate=compdate+Math.round(CMath.mul(TimeManager.MILI_DAY,CMath.s_double(num)));
-							if(System.currentTimeMillis()>compdate)
-							{
-								final String from=entry.from();
-								final String message=entry.msg();
-								Log.sysOut(Thread.currentThread().getName(),"Expired "+CMJ.NAME()+" from "+from+": "+message);
-								CMLib.database().DBDeleteJournal(CMJ.JOURNAL_NAME(),entry.key());
-							}
-						}
+						final JournalEntry entry=items.get(i);
+						final String from=entry.from();
+						final String message=entry.msg();
+						Log.sysOut(Thread.currentThread().getName(),"Expired "+CMJ.NAME()+" from "+from+": "+message);
+						CMLib.database().DBDeleteJournal(CMJ.JOURNAL_NAME(),entry.key());
 					}
 					setThreadStatus(serviceClient,"command journal sweeping");
 				}
@@ -653,22 +646,17 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 				if((num!=null)&&(CMath.isNumber(num))&&(CMath.s_double(num)>0.0))
 				{
 					setThreadStatus(serviceClient,"updating journal "+FMJ.NAME());
-					final List<JournalEntry> items=CMLib.database().DBReadJournalMsgs(FMJ.NAME());
-					if(items!=null)
+					final long expirationDate = System.currentTimeMillis() - Math.round(CMath.mul(TimeManager.MILI_DAY,CMath.s_double(num)));
+					final List<JournalEntry> items=CMLib.database().DBReadJournalMsgsOlderThan(FMJ.NAME(),null,expirationDate);
 					for(int i=items.size()-1;i>=0;i--)
 					{
 						final JournalEntry entry=items.get(i);
 						if(!CMath.bset(entry.attributes(), JournalEntry.ATTRIBUTE_PROTECTED))
 						{
-							long compdate=entry.update();
-							compdate=compdate+Math.round(CMath.mul(TimeManager.MILI_DAY,CMath.s_double(num)));
-							if(System.currentTimeMillis()>compdate)
-							{
-								final String from=entry.from();
-								final String message=entry.msg();
-								Log.debugOut(Thread.currentThread().getName(),"Expired "+FMJ.NAME()+" from "+from+": "+message);
-								CMLib.database().DBDeleteJournal(FMJ.NAME(),entry.key());
-							}
+							final String from=entry.from();
+							final String message=entry.msg();
+							Log.debugOut(Thread.currentThread().getName(),"Expired "+FMJ.NAME()+" from "+from+": "+message);
+							CMLib.database().DBDeleteJournal(FMJ.NAME(),entry.key());
 						}
 					}
 					setThreadStatus(serviceClient,"forum journal sweeping");

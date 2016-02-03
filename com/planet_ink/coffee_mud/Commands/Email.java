@@ -66,6 +66,19 @@ public class Email extends StdCommand
 			{
 				final String journalName=CMProps.getVar(CMProps.Str.MAILBOX);
 				final List<JournalEntry> msgs=CMLib.database().DBReadJournalMsgs(journalName);
+				final List<JournalEntry> mymsgs=new Vector<JournalEntry>();
+				for(int num=0;num<msgs.size();num++)
+				{
+					final JournalEntry thismsg=msgs.get(num);
+					final String to=thismsg.to();
+					if(to.equalsIgnoreCase("ALL")
+					||to.equalsIgnoreCase(mob.Name())
+					||(to.toUpperCase().trim().startsWith("MASK=")&&CMLib.masking().maskCheck(to.trim().substring(5),mob,true)))
+					{
+						mymsgs.add(thismsg);
+					}
+				}
+				
 				final int[] cols={
 						CMLib.lister().fixColWidth(48,mob.session()),
 						CMLib.lister().fixColWidth(15,mob.session()),
@@ -73,24 +86,16 @@ public class Email extends StdCommand
 					};
 				while((mob.session()!=null)&&(!mob.session().isStopped()))
 				{
-					final Vector<JournalEntry> mymsgs=new Vector<JournalEntry>();
 					StringBuffer messages=new StringBuffer("^X"+CMStrings.padCenter(mob.Name()+"'s MailBox",cols[0])+"^?^.\n\r");
 					messages.append("^X### "+CMStrings.padRight(L("From"),cols[1])+" "+CMStrings.padRight(L("Date"),cols[2])+" Subject^?^.\n\r");
-					for(int num=0;num<msgs.size();num++)
+					for(int num=0;num<mymsgs.size();num++)
 					{
-						final JournalEntry thismsg=msgs.get(num);
-						final String to=thismsg.to();
-						if(to.equalsIgnoreCase("ALL")
-						||to.equalsIgnoreCase(mob.Name())
-						||(to.toUpperCase().trim().startsWith("MASK=")&&CMLib.masking().maskCheck(to.trim().substring(5),mob,true)))
-						{
-							mymsgs.add(thismsg);
-							messages.append(CMStrings.padRight(""+mymsgs.size(),4)
-									+CMStrings.padRight((thismsg.from()),cols[1])+" "
-									+CMStrings.padRight(CMLib.time().date2String(thismsg.date()),cols[2])+" "
-									+(thismsg.subj())
-									+"\n\r");
-						}
+						final JournalEntry thismsg=mymsgs.get(num);
+						messages.append(CMStrings.padRight(""+(num+1),4)
+								+CMStrings.padRight((thismsg.from()),cols[1])+" "
+								+CMStrings.padRight(CMLib.time().date2String(thismsg.date()),cols[2])+" "
+								+(thismsg.subj())
+								+"\n\r");
 					}
 					if((mymsgs.size()==0)
 					||(CMath.bset(metaFlags,MUDCmdProcessor.METAFLAG_POSSESSED))
@@ -168,7 +173,7 @@ public class Email extends StdCommand
 						if(s.equalsIgnoreCase("D"))
 						{
 							CMLib.database().DBDeleteJournal(journalName,key);
-							msgs.remove(thismsg);
+							mymsgs.remove(thismsg);
 							mob.tell(L("Deleted."));
 							break;
 						}
