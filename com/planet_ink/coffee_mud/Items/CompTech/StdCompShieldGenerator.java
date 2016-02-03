@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Items.CompTech;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -48,6 +49,9 @@ public class StdCompShieldGenerator extends StdElecCompItem implements ShipCompo
 	{
 		return Technical.TechType.SHIP_SHIELD;
 	}
+	
+	private volatile long lastPowerConsumption=0;
+	private volatile long powerSetting=Integer.MAX_VALUE;
 
 	/**
 	 * The maximum range of objects that this sensor can detect
@@ -56,6 +60,12 @@ public class StdCompShieldGenerator extends StdElecCompItem implements ShipCompo
 	protected long getSensorMaxRange()
 	{
 		return SpaceObject.Distance.Parsec.dm;
+	}
+
+	@Override
+	public int powerNeeds()
+	{
+		return (int) Math.min((int) Math.min(powerCapacity,powerSetting) - power, maxRechargePer);
 	}
 
 	@Override
@@ -81,20 +91,61 @@ public class StdCompShieldGenerator extends StdElecCompItem implements ShipCompo
 					if(parms==null)
 						reportError(this, controlI, mob, lang.L("@x1 did not respond.",me.name(mob)), lang.L("Failure: @x1: control syntax failure.",me.name(mob)));
 					else
-					if(command == TechCommand.SENSE)
+					if(command == TechCommand.POWERSET)
 					{
+						powerSetting=((Long)parms[0]).intValue();
+						if(powerSetting<0)
+							powerSetting=0;
+						else
+						if(powerSetting > powerCapacity())
+							powerSetting = powerCapacity();
 					}
 					else
 						reportError(this, controlI, mob, lang.L("@x1 refused to respond.",me.name(mob)), lang.L("Failure: @x1: control command failure.",me.name(mob)));
 				}
 				break;
 			}
+			case CMMsg.TYP_POWERCURRENT:
+				// shields should constantly consume what they have
+				if(activated())
+				{
+					this.lastPowerConsumption = this.power;
+					this.power = 0;
+				}
+				else
+				{
+					this.lastPowerConsumption = 0;
+					this.power = 0;
+				}
+				break;
 			case CMMsg.TYP_DEACTIVATE:
 				this.activate(false);
+				this.lastPowerConsumption = 0;
+				this.power = 0;
 				//TODO:what does the ship need to know?
 				break;
 			}
 		}
+		final Area area = CMLib.map().areaLocation(this);
+		if((area instanceof SpaceShip)
+		&&(msg.target() == ((SpaceShip)area).getShipItem()))
+		{
+			switch(msg.targetMinor())
+			{
+			case CMMsg.TYP_WEAPONATTACK: // kinetic damage taken to the outside of the ship, collissions end up here
+			{
+				final SpaceShip ship = (SpaceShip)area;
+				final long myMass=ship.getMass();
+				if((msg.value() > 1)&&(myMass>0))
+				{
+					final int dmg = msg.value();
+					// some shields actually mitigate this!
+				}
+				break;
+			}
+			}
+		}
+			
 	}
 
 	@Override
