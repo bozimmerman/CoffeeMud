@@ -260,7 +260,7 @@ public class StdJournal extends StdItem
 											mob.tell(L("The journal '@x1' does not presently exist.  Aborted.",journal));
 										else
 										{
-											final List<JournalEntry> journal2=CMLib.database().DBReadJournalMsgs(Name());
+											final List<JournalEntry> journal2=CMLib.database().DBReadJournalMsgs(Name(), true);
 											final JournalEntry entry2=journal2.get(which-1);
 											CMLib.database().DBDeleteJournal(Name(),entry2.key());
 											CMLib.database().DBWriteJournal(realName,
@@ -427,7 +427,7 @@ public class StdJournal extends StdItem
 	public JournalEntry DBRead(MOB reader, String Journal, int which, long lastTimeDate, boolean newOnly, boolean all)
 	{
 		final StringBuffer buf=new StringBuffer("");
-		final List<JournalEntry> journal=CMLib.database().DBReadJournalMsgs(Journal);
+		final List<JournalEntry> journal=CMLib.database().DBReadJournalMsgs(Journal, true);
 		final boolean shortFormat=readableText().toUpperCase().indexOf("SHORTLIST")>=0;
 		if((which<0)||(journal==null)||(which>=journal.size()))
 		{

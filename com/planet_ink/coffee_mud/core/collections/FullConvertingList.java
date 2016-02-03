@@ -19,7 +19,7 @@ import java.util.*;
 public class FullConvertingList<L,K> implements List<K>
 {
 	private final List<L> list;
-	private FullConverter<L, K> converter;
+	private final FullConverter<L, K> converter;
 
 	public FullConvertingList(List<L> l, FullConverter<L, K> conv)
 	{
@@ -70,6 +70,8 @@ public class FullConvertingList<L,K> implements List<K>
 	@Override
 	public boolean contains(Object arg0)
 	{
+		if(list.contains(arg0))
+			return true;
 		return list.contains(converter.reverseConvert((K)arg0));
 	}
 
@@ -81,7 +83,8 @@ public class FullConvertingList<L,K> implements List<K>
 			return false;
 		for(Object o : arg0)
 		{
-			if(!list.contains(converter.reverseConvert((K)o)))
+			if((!list.contains(arg0))
+			&&(!list.contains(converter.reverseConvert((K)o))))
 				return false;
 		}
 		return true;
@@ -97,7 +100,10 @@ public class FullConvertingList<L,K> implements List<K>
 	@Override
 	public int indexOf(Object arg0)
 	{
-		return list.indexOf(converter.reverseConvert((K)arg0));
+		int x=list.indexOf(arg0);
+		if(x<0)
+			return list.indexOf(converter.reverseConvert((K)arg0));
+		return x;
 	}
 
 	@Override
@@ -116,7 +122,11 @@ public class FullConvertingList<L,K> implements List<K>
 	@Override
 	public int lastIndexOf(Object arg0)
 	{
-		return list.lastIndexOf(converter.reverseConvert((K)arg0));
+		int x=list.lastIndexOf(arg0);
+		if(x<0)
+			return list.lastIndexOf(converter.reverseConvert((K)arg0));
+		else
+			return x;
 	}
 
 	@Override
@@ -135,6 +145,8 @@ public class FullConvertingList<L,K> implements List<K>
 	@Override
 	public boolean remove(Object arg0)
 	{
+		if(list.contains(arg0))
+			return list.remove(arg0);
 		return list.remove(converter.reverseConvert((K)arg0));
 	}
 
@@ -144,7 +156,6 @@ public class FullConvertingList<L,K> implements List<K>
 		return converter.convert(arg0, list.remove(arg0));
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public boolean removeAll(Collection<?> arg0)
 	{
@@ -152,7 +163,7 @@ public class FullConvertingList<L,K> implements List<K>
 			return false;
 		boolean didAll = true;
 		for(Object o : arg0)
-			didAll = list.remove(converter.reverseConvert((K)o)) && didAll;
+			didAll = remove(o) && didAll;
 		return didAll;
 	}
 

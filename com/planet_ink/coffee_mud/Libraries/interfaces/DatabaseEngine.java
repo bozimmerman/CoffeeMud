@@ -908,10 +908,21 @@ public interface DatabaseEngine extends CMLibrary
 	 * Table category: DBJOURNALS
 	 * 
 	 * @param Journal
+	 * @param ascending TODO
 	 * @return
 	 */
-	public List<JournalEntry> DBReadJournalMsgs(String Journal);
+	public List<JournalEntry> DBReadJournalMsgs(String Journal, boolean ascending);
 
+	/**
+	 * Table category: DBJOURNALS
+	 * 
+	 * @param Journal
+	 * @param ascending
+	 * @param limit
+	 * @return
+	 */
+	public List<JournalEntry> DBReadJournalMsgs(String Journal, boolean ascending, int limit);
+	
 	/**
 	 * Table category: DBJOURNALS
 	 * 

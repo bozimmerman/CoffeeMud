@@ -519,9 +519,15 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
-	public List<JournalEntry> DBReadJournalMsgs(String Journal)
+	public List<JournalEntry> DBReadJournalMsgs(String Journal, boolean ascending)
 	{
-		return JournalLoader.DBReadJournalMsgs(Journal);
+		return JournalLoader.DBReadJournalMsgs(Journal, ascending, Integer.MAX_VALUE);
+	}
+
+	@Override
+	public List<JournalEntry> DBReadJournalMsgs(String Journal, boolean ascending, int limit)
+	{
+		return JournalLoader.DBReadJournalMsgs(Journal, ascending, limit);
 	}
 
 	@Override

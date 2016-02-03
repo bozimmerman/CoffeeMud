@@ -90,13 +90,16 @@ public class MOTD extends StdCommand
 					buf.append(msg+"\n\r--------------------------------------\n\r");
 				}
 
-				final MultiIterator<JournalEntry> journal=new MultiIterator<JournalEntry>();
-				journal.add(CMLib.database().DBReadJournalMsgs("CoffeeMud News").iterator()); // deprecated
-				journal.add(CMLib.database().DBReadJournalMsgs("SYSTEM_NEWS").iterator());
-				should read these descending, trim to the max, then iterate.
-				for(;journal.hasNext();)
+				final MultiList<JournalEntry> multiJournal=new MultiList<JournalEntry>();
+				multiJournal.addAll(CMLib.database().DBReadJournalMsgs("SYSTEM_NEWS", false, max));
+				if(max>multiJournal.size())
+					multiJournal.addAll(CMLib.database().DBReadJournalMsgs("CoffeeMud News", false, max-multiJournal.size())); // deprecated
+				final ReverseFakeIterator<JournalEntry> entries = new ReverseFakeIterator<JournalEntry>(multiJournal);
+				
+				//should read these descending, trim to the max, then iterate.
+				for(;entries.hasNext() && (max>=0); max--)
 				{
-					final JournalEntry entry=journal.next();
+					final JournalEntry entry=entries.next();
 					final String from=entry.from();
 					final long last=entry.date();
 					String to=entry.to();
@@ -181,7 +184,7 @@ public class MOTD extends StdCommand
 				for(int cj=0;cj<myEchoableCommandJournals.size();cj++)
 				{
 					final JournalsLibrary.CommandJournal CMJ=myEchoableCommandJournals.get(cj);
-					final List<JournalEntry> items=CMLib.database().DBReadJournalMsgs("SYSTEM_"+CMJ.NAME()+"S");
+					final List<JournalEntry> items=CMLib.database().DBReadJournalMsgs("SYSTEM_"+CMJ.NAME()+"S", true);
 					if(items!=null)
 					for(int i=0;i<items.size();i++)
 					{
@@ -202,7 +205,7 @@ public class MOTD extends StdCommand
 				if((!mob.isAttributeSet(MOB.Attrib.AUTOFORWARD))
 				&&(CMProps.getVar(CMProps.Str.MAILBOX).length()>0))
 				{
-					final List<JournalEntry> msgs=CMLib.database().DBReadJournalMsgs(CMProps.getVar(CMProps.Str.MAILBOX));
+					final List<JournalEntry> msgs=CMLib.database().DBReadJournalMsgs(CMProps.getVar(CMProps.Str.MAILBOX), true);
 					int mymsgs=0;
 					for(int num=0;num<msgs.size();num++)
 					{
@@ -236,7 +239,11 @@ public class MOTD extends StdCommand
 						if(qQVec.size()>0)
 							buf.append(L("\n\r^HYou are on @x1 quest(s).  Enter QUESTS to see them!.^?^.\n\r",""+qQVec.size()));
 						mob.session().wraplessPrintln("\n\r--------------------------------------\n\r"+buf.toString());
-						if(pause){ mob.session().prompt(L("\n\rPress ENTER: "),10000); mob.session().println("\n\r");}
+						if (pause)
+						{
+							mob.session().prompt(L("\n\rPress ENTER: "), 10000);
+							mob.session().println("\n\r");
+						}
 					}
 					else
 					if(qQVec.size()>0)
@@ -293,8 +300,8 @@ public class MOTD extends StdCommand
 				branchName=branchName.substring(0,x);
 		}
 		if(ct[0]>0)
-			return whom+" "+ct[0]+" new of "+ct[1]+" items at the "+branchName+" branch of the "+P.postalChain()+" post office.";
-		return whom+" "+ct[1]+" items still waiting at the "+branchName+" branch of the "+P.postalChain()+" post office.";
+			return L("@x1  @x2 new of @x3 items at the @x4 branch of the @x5 post office.",whom,""+ct[0],""+ct[1],branchName,P.postalChain());
+		return L("@x1 @x2 items still waiting at the @x3 branch of the @x4 post office.",whom,""+ct[1],branchName,P.postalChain());
 	}
 
 	private Map<PostOffice,int[]> getPostalResults(List<PlayerData> mailData, long newTimeDate)

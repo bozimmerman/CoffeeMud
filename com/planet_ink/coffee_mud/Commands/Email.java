@@ -65,9 +65,8 @@ public class Email extends StdCommand
 			if(name.equalsIgnoreCase("BOX"))
 			{
 				final String journalName=CMProps.getVar(CMProps.Str.MAILBOX);
-				final List<JournalEntry> msgs=CMLib.database().DBReadJournalMsgs(journalName);
-				final List<JournalEntry> mymsgs=new Vector<JournalEntry>();
-				for(int num=0;num<msgs.size();num++)
+				final List<JournalEntry> msgs=CMLib.database().DBReadJournalMsgs(journalName, true);
+				for(int num=msgs.size()-1;num>=0;num--)
 				{
 					final JournalEntry thismsg=msgs.get(num);
 					final String to=thismsg.to();
@@ -75,8 +74,10 @@ public class Email extends StdCommand
 					||to.equalsIgnoreCase(mob.Name())
 					||(to.toUpperCase().trim().startsWith("MASK=")&&CMLib.masking().maskCheck(to.trim().substring(5),mob,true)))
 					{
-						mymsgs.add(thismsg);
+						// keep this one
 					}
+					else
+						msgs.remove(num);
 				}
 				
 				final int[] cols={
@@ -88,16 +89,16 @@ public class Email extends StdCommand
 				{
 					StringBuffer messages=new StringBuffer("^X"+CMStrings.padCenter(mob.Name()+"'s MailBox",cols[0])+"^?^.\n\r");
 					messages.append("^X### "+CMStrings.padRight(L("From"),cols[1])+" "+CMStrings.padRight(L("Date"),cols[2])+" Subject^?^.\n\r");
-					for(int num=0;num<mymsgs.size();num++)
+					for(int num=0;num<msgs.size();num++)
 					{
-						final JournalEntry thismsg=mymsgs.get(num);
+						final JournalEntry thismsg=msgs.get(num);
 						messages.append(CMStrings.padRight(""+(num+1),4)
 								+CMStrings.padRight((thismsg.from()),cols[1])+" "
 								+CMStrings.padRight(CMLib.time().date2String(thismsg.date()),cols[2])+" "
 								+(thismsg.subj())
 								+"\n\r");
 					}
-					if((mymsgs.size()==0)
+					if((msgs.size()==0)
 					||(CMath.bset(metaFlags,MUDCmdProcessor.METAFLAG_POSSESSED))
 					||(CMath.bset(metaFlags,MUDCmdProcessor.METAFLAG_AS)))
 					{
@@ -125,12 +126,12 @@ public class Email extends StdCommand
 					if((!CMath.isInteger(s))||(mob.session().isStopped()))
 						return false;
 					final int num=CMath.s_int(s);
-					if((num<=0)||(num>mymsgs.size()))
+					if((num<=0)||(num>msgs.size()))
 						mob.tell(L("That is not a valid number."));
 					else
 					while((mob.session()!=null)&&(!mob.session().isStopped()))
 					{
-						final JournalEntry thismsg=mymsgs.get(num-1);
+						final JournalEntry thismsg=msgs.get(num-1);
 						final String key=thismsg.key();
 						final String from=thismsg.from();
 						final String date=CMLib.time().date2String(thismsg.date());
@@ -173,7 +174,7 @@ public class Email extends StdCommand
 						if(s.equalsIgnoreCase("D"))
 						{
 							CMLib.database().DBDeleteJournal(journalName,key);
-							mymsgs.remove(thismsg);
+							msgs.remove(thismsg);
 							mob.tell(L("Deleted."));
 							break;
 						}

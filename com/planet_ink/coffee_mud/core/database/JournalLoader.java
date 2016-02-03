@@ -392,8 +392,13 @@ public class JournalLoader
 	
 	public List<JournalEntry> makeJournalEntryList(final String journalID, final ResultSet R) throws SQLException
 	{
+		return makeJournalEntryList(journalID, R, Long.MAX_VALUE);
+	}
+	
+	public List<JournalEntry> makeJournalEntryList(final String journalID, final ResultSet R, long limit) throws SQLException
+	{
 		List<String> ids = new ArrayList<String>();
-		while(R.next())
+		while(R.next() && (--limit>=0))
 			ids.add(R.getString("CMJKEY"));
 		R.close();
 		final String lastEntry = (ids.size()==0) ? "" : ids.get(ids.size()-1);
@@ -444,7 +449,7 @@ public class JournalLoader
 		}
 	}
 
-	public List<JournalEntry> DBReadJournalMsgs(String journal)
+	public List<JournalEntry> DBReadJournalMsgs(String journal, boolean ascending, long limit)
 	{
 		journal = DB.injectionClean(journal);
 
@@ -457,8 +462,9 @@ public class JournalLoader
 			try
 			{
 				D=DB.DBFetch();
-				final String sql="SELECT CMJKEY FROM CMJRNL WHERE CMJRNL='"+journal+"' ORDER BY CMUPTM ASC";
-				return this.makeJournalEntryList(journal,D.query(sql));
+				String sql="SELECT CMJKEY FROM CMJRNL WHERE CMJRNL='"+journal+"' ORDER BY CMUPTM ";
+				sql += ascending ? "ASC" : "DESC";
+				return this.makeJournalEntryList(journal,D.query(sql), limit);
 			}
 			catch(final Exception sqle)
 			{

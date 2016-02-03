@@ -44,6 +44,16 @@ public class JournalInfo extends StdWebMacro
 			return null;
 		if(key==null)
 			return null;
+		if((key != null)&&(key.length()>0))
+		{
+			int index = msgs.indexOf(key);
+			if(index >=0)
+			{
+				if(index<msgs.size())
+					return msgs.get(index);
+				return null;
+			}
+		}
 		for (final JournalEntry entry : msgs)
 		{
 			if(entry.key().equalsIgnoreCase(key))
@@ -81,7 +91,7 @@ public class JournalInfo extends StdWebMacro
 		if(msgs==null)
 		{
 			if((page==null)||(page.length()==0))
-				msgs=CMLib.database().DBReadJournalMsgs(journalName);
+				msgs=CMLib.database().DBReadJournalMsgs(journalName, true);
 			else
 			{
 				final JournalsLibrary.JournalSummaryStats stats = CMLib.journals().getJournalStats(forumJournal);
@@ -123,6 +133,16 @@ public class JournalInfo extends StdWebMacro
 	{
 		if(info==null)
 			return null;
+		if((key != null)&&(key.length()>0))
+		{
+			int index = info.indexOf(key);
+			if(index >=0)
+			{
+				if(index<info.size()-1)
+					return info.get(index+1);
+				return null;
+			}
+		}
 		for(final Iterator<JournalEntry> e=info.iterator();e.hasNext();)
 		{
 			final JournalEntry entry = e.next();

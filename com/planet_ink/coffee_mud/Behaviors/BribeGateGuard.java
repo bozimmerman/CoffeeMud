@@ -146,7 +146,7 @@ public class BribeGateGuard extends StdBehavior
 		// return the balance in int form
 		if(surviveReboot)
 		{
-			final List<JournalEntry> V =CMLib.database().DBReadJournalMsgs("BRIBEGATE_"+gates());
+			final List<JournalEntry> V =CMLib.database().DBReadJournalMsgs("BRIBEGATE_"+gates(), true);
 			final Vector<JournalEntry> mine = new Vector<JournalEntry>();
 			for (int v = 0; v < V.size(); v++)
 			{
@@ -217,7 +217,7 @@ public class BribeGateGuard extends StdBehavior
 		// kill the journal entries for that mob
 		if(surviveReboot)
 		{
-			final List<JournalEntry> V = CMLib.database().DBReadJournalMsgs("BRIBEGATE_"+gates());
+			final List<JournalEntry> V = CMLib.database().DBReadJournalMsgs("BRIBEGATE_"+gates(), true);
 			for (int v = 0; v < V.size(); v++)
 			{
 				final JournalEntry V2 = V.get(v);

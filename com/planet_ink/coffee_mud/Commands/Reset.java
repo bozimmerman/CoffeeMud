@@ -776,7 +776,7 @@ public class Reset extends StdCommand
 			}
 			if(mob.session().confirm(L("Inspect and update all COIN objects in player bank accounts?"), L("N")))
 			{
-				final List<JournalEntry> V=CMLib.database().DBReadJournalMsgs(bank);
+				final List<JournalEntry> V=CMLib.database().DBReadJournalMsgs(bank, true);
 				for(int v=0;v<V.size();v++)
 				{
 					final JournalEntry V2=V.get(v);
