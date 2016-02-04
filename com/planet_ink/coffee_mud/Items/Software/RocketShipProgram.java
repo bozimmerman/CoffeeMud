@@ -249,7 +249,7 @@ public class RocketShipProgram extends GenShipProgram
 				if(orb instanceof Area)
 				{
 					final long distance=CMLib.map().getDistanceFrom(shipSpaceObject, orb);
-					if((distance > orb.radius())&&((distance-orb.radius()) < orb.radius()*SpaceObject.MULTIPLIER_GRAVITY_RADIUS))
+					if((distance > orb.radius())&&(distance < (orb.radius()*SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS)))
 						altitudePlanet=orb; // since they are sorted, this would be the nearest.
 					if((distance > orb.radius()*SpaceObject.MULTIPLIER_ORBITING_RADIUS_MIN)&&(distance<orb.radius()*SpaceObject.MULTIPLIER_ORBITING_RADIUS_MAX))
 						orbitingPlanet=orb; // since they are sorted, this would be the nearest.

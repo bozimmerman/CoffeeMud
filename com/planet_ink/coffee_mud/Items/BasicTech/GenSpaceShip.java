@@ -55,7 +55,7 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 	public double 			speed			= 0;
 	protected SpaceObject	spaceTarget 	= null;
 	protected double[]		facing			= new double[2];
-	protected Boolean		inAirFlag		= Boolean.FALSE;
+	protected Set<ShipFlag>	shipFlags		= new SHashSet<ShipFlag>();
 
 	public GenSpaceShip()
 	{
@@ -224,7 +224,7 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 										if((getIsDocked()!=null) && (amount > SpaceObject.ACCELLERATION_G))
 											unDock(true);
 										// this will move it, but will also update speed and direction -- all good!
-										final double inAirFactor=inAirFlag.booleanValue()?(1.0-getOMLCoeff()):1.0;
+										final double inAirFactor=(shipFlags.contains(ShipFlag.IN_THE_AIR))?(1.0-getOMLCoeff()):1.0;
 										//TODO: calculate inertia gforce damage here, and send the message
 										if(isConst)
 										{
@@ -506,11 +506,24 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 	}
 
 	@Override
-	public Boolean getSetAirFlag(final Boolean setInAirFlag)
+	public void setShipFlag(final ShipFlag flag, final boolean setFlag)
 	{
-		if((setInAirFlag != null) && (setInAirFlag != this.inAirFlag))
-			this.inAirFlag = setInAirFlag;
-		return this.inAirFlag;
+		if(shipFlags.contains(flag))
+		{
+			if(!setFlag)
+				shipFlags.remove(flag);
+		}
+		else
+		{
+			if(setFlag)
+				shipFlags.add(flag);
+		}
+	}
+	
+	@Override
+	public boolean getShipFlag(final ShipFlag flag)
+	{
+		return shipFlags.contains(flag);
 	}
 
 	@Override

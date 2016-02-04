@@ -45,16 +45,16 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 	protected static Climate climateObj=null;
 
 	protected volatile int	mass			= -1;
-	protected SpaceObject	spaceSource 	= null;
-	protected TimeClock 	localClock  	= (TimeClock)CMClass.getCommon("DefaultTimeClock");
-	protected int			atmosphere		= RawMaterial.RESOURCE_AIR; // at least for awhile...
-	protected long 			radius			= 50;
-	protected double		omlCoeff		= SpaceObject.ATMOSPHERIC_DRAG_STREAMLINE + ((SpaceObject.ATMOSPHERIC_DRAG_BRICK-SpaceObject.ATMOSPHERIC_DRAG_STREAMLINE)/2.0);
-	protected volatile long nextStaleCheck	= System.currentTimeMillis() + STALE_AIR_INTERVAL;
-	protected volatile long nextStaleWarn	= System.currentTimeMillis() + (60 * 1000);
-
-	protected Set<String> 				staleAirList	= new HashSet<String>();
-
+	protected SpaceObject	spaceSource		= null;
+	protected TimeClock		localClock		= (TimeClock) CMClass.getCommon("DefaultTimeClock");
+	protected int			atmosphere		= RawMaterial.RESOURCE_AIR;
+	protected long			radius			= 50;
+	protected double		omlCoeff		= SpaceObject.ATMOSPHERIC_DRAG_STREAMLINE + ((SpaceObject.ATMOSPHERIC_DRAG_BRICK - SpaceObject.ATMOSPHERIC_DRAG_STREAMLINE) / 2.0);
+	protected volatile long	nextStaleCheck	= System.currentTimeMillis() + STALE_AIR_INTERVAL;
+	protected volatile long	nextStaleWarn	= System.currentTimeMillis() + (60 * 1000);
+	protected Set<String> 	staleAirList	= new HashSet<String>();
+	protected Ability 		gravityFloaterA = null;
+	
 	@Override
 	public String ID()
 	{
@@ -241,9 +241,16 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 	}
 
 	@Override
-	public Boolean getSetAirFlag(final Boolean setInAirFlag)
+	public void setShipFlag(final ShipFlag flag, final boolean setShipFlag)
 	{
-		return (shipItem instanceof SpaceShip) ? ((SpaceShip) shipItem).getSetAirFlag(setInAirFlag) : Boolean.FALSE;
+		if(shipItem instanceof SpaceShip) 
+			((SpaceShip) shipItem).setShipFlag(flag,setShipFlag);
+	}
+
+	@Override
+	public boolean getShipFlag(final ShipFlag flag)
+	{
+		return (shipItem instanceof SpaceShip) ? ((SpaceShip) shipItem).getShipFlag(flag) : false;
 	}
 
 	@Override
@@ -443,6 +450,30 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 				break;
 			}
 		}
+		else
+		{
+			switch(msg.targetMinor())
+			{
+			case CMMsg.TYP_DROP:
+				if(msg.target() instanceof Item)
+				{
+					if(this.getShipFlag(ShipFlag.NO_GRAVITY))
+					{
+						final Item I=(Item)msg.target();
+						msg.addTrailerRunnable(new Runnable(){
+							@Override
+							public void run()
+							{
+								final Ability floater = getGravityFloat();
+								if(floater != null)
+									floater.invoke(floater.invoker(), I, false, 0);
+							}
+						});
+					}
+				}
+				break;
+			}
+		}
 	}
 
 	public int[] addMaskAndReturn(int[] one, int[] two)
@@ -515,7 +546,84 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 				R.setAtmosphere(RawMaterial.RESOURCE_NOTHING); // WE NOW HAVE A VACUUM HERE!!!
 		}
 	}
-
+	
+	
+	protected Ability getGravityFloat()
+	{
+		if(gravityFloaterA == null)
+		{
+			gravityFloaterA=CMClass.getAbility("GravityFloat");
+			if(gravityFloaterA != null)
+			{
+				MOB M=CMClass.getMOB("StdMOB");
+				M.setName(Name());
+				M.setLocation(this.getRandomProperRoom());
+				gravityFloaterA.setInvoker(M);
+			}
+		}
+		return gravityFloaterA;
+	}
+	
+	protected void doGravityChanges()
+	{
+		boolean gravStatus = getShipFlag(ShipFlag.IN_THE_AIR);
+		if(gravStatus != getShipFlag(ShipFlag.NO_GRAVITY))
+		{
+			final Ability floater = getGravityFloat();
+			if(floater != null)
+			{
+				final SpaceObject spaceObject=getShipSpaceObject();
+				final String code=Technical.TechCommand.GRAVITYCHANGE.makeCommand(Boolean.valueOf(gravStatus));
+				final String msgStr;
+				if(gravStatus)
+					msgStr=L("You feel the pull of gravity returning.");
+				else
+					msgStr=L("You no longer feel the pull of gravity.");
+				final CMMsg msg=CMClass.getMsg(floater.invoker(), spaceObject, me, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.MSG_QUIETMOVEMENT,msgStr);
+				boolean cancelled = false;
+				for(final Enumeration<Room> r=getProperMap();r.hasMoreElements();)
+				{
+					final Room R=r.nextElement();
+					if(R!=null)
+					{
+						if(!R.okMessage(msg.source(), msg))
+							cancelled=true;
+					}
+				}
+				setShipFlag(ShipFlag.NO_GRAVITY, gravStatus);
+				if(cancelled)
+				{
+					return;
+				}
+				for(final Enumeration<Room> r=getProperMap();r.hasMoreElements();)
+				{
+					final Room R=r.nextElement();
+					if(R!=null)
+						R.send(floater.invoker(), msg);
+				}
+				for(final Enumeration<Room> r=getProperMap();r.hasMoreElements();)
+				{
+					final Room R=r.nextElement();
+					if(R!=null)
+					{
+						for(int i=0;i<R.numInhabitants();i++)
+						{
+							final MOB M=R.fetchInhabitant(i);
+							if(M!=null)
+								floater.invoke(floater.invoker(), M, gravStatus, 0);
+						}
+						for(int i=0;i<R.numItems();i++)
+						{
+							final Item I=R.getItem(i);
+							if(I!=null)
+								floater.invoke(floater.invoker(), I, gravStatus, 0);
+						}
+					}
+				}
+			}
+		}
+	}
+	
 	protected void doAtmosphereChanges()
 	{
 		final Set<Room> doneRooms=new HashSet<Room>();
@@ -569,6 +677,7 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 		if(tickID==Tickable.TICKID_AREA)
 		{
 			doAtmosphereChanges();
+			doGravityChanges();
 		}
 		tickStatus=Tickable.STATUS_NOT;
 		return true;

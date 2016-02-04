@@ -519,15 +519,18 @@ public class StdAbility implements Ability
 
 	@Override
 	public void setName(String newName)
-	{}
+	{
+	}
 
 	@Override
 	public void setDisplayText(String newDisplayText)
-	{}
+	{
+	}
 
 	@Override
 	public void setDescription(String newDescription)
-	{}
+	{
+	}
 
 	@Override
 	public int abilityCode()
@@ -537,7 +540,8 @@ public class StdAbility implements Ability
 
 	@Override
 	public void setAbilityCode(int newCode)
-	{}
+	{
+	}
 
 	@Override
 	public List<String> externalFiles()
@@ -1075,16 +1079,19 @@ public class StdAbility implements Ability
 	}
 
 	@Override
-	public void affectPhyStats(Physical affectedEnv, PhyStats affectableStats)
-	{}
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
+	{
+	}
 
 	@Override
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
-	{}
+	{
+	}
 
 	@Override
 	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
-	{}
+	{
+	}
 
 	@Override
 	public MOB invoker()

@@ -147,7 +147,8 @@ public interface Technical
 		COMPONENTFAILURE(Technical.TechType.class, String[].class),
 		SENSE(),
 		AIRREFRESH(Double.class, Integer.class), 
-		POWERSET(Long.class);
+		POWERSET(Long.class),
+		GRAVITYCHANGE(Boolean.class);
 		private final Class<?>[]	parms;
 
 		private TechCommand(Class<?>... parms)

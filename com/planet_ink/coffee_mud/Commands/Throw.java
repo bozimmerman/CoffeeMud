@@ -35,10 +35,17 @@ import java.util.*;
 
 public class Throw extends StdCommand
 {
-	public Throw(){}
+	public Throw()
+	{
+	}
 
-	private final String[] access=I(new String[]{"THROW","TOSS"});
-	@Override public String[] getAccessWords(){return access;}
+	private final String[]	access	= I(new String[] { "THROW", "TOSS" });
+
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
@@ -118,11 +125,13 @@ public class Throw extends StdCommand
 					{
 						final List<Ability> V=((SpellHolder)item).getSpells();
 						for(int v=0;v<V.size();v++)
+						{
 							if(V.get(v).abstractQuality()==Ability.QUALITY_MALICIOUS)
 							{
 								targetMsg=CMMsg.MSG_WEAPONATTACK;
 								break;
 							}
+						}
 					}
 				}
 				final CMMsg msg=CMClass.getMsg(mob,target,item,CMMsg.MSG_THROW,targetMsg,CMMsg.MSG_THROW,L("<S-NAME> throw(s) <O-NAME> at <T-NAMESELF>."));
@@ -146,9 +155,23 @@ public class Throw extends StdCommand
 		}
 		return false;
 	}
-	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandCombatActionCost(ID());}
-	@Override public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandActionCost(ID());}
-	@Override public boolean canBeOrdered(){return true;}
 
+	@Override
+	public double combatActionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandCombatActionCost(ID());
+	}
+
+	@Override
+	public double actionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandActionCost(ID());
+	}
+
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 
 }

@@ -38,12 +38,35 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 public interface SpaceShip extends SpaceObject, BoardableShip
 {
 	/**
-	 * Sets and/or gets the in-air flag, letting the ship know if it is
-	 * currently undergoing atmospheric shear.
-	 * @param setInAirFlag null, or TRUE/FALSE to change the existing value
-	 * @return the current in-air flag
+	 * 
+	 * @author Bo Zimmerman
+	 *
 	 */
-	public Boolean getSetAirFlag(final Boolean setInAirFlag);
+	public enum ShipFlag
+	{
+		IN_THE_AIR,
+		NO_GRAVITY
+	}
+
+	/**
+	 * Sets one of the ship flags
+	 * @see SpaceShip.ShipFlag
+	 * @see SpaceShip#getShipFlag(ShipFlag)
+	 * 
+	 * @param flag the flag to set or clear
+	 * @param flagValue the flag value
+	 */
+	public void setShipFlag(final ShipFlag flag, final boolean flagValue);
+	
+	/**
+	 * Gets one of the ship flags
+	 * @see SpaceShip.ShipFlag
+	 * @see SpaceShip#setShipFlag(ShipFlag, boolean)
+	 * 
+	 * @param flag the flag to set or clear
+	 * @return flagValue the flag value
+	 */
+	public boolean getShipFlag(final ShipFlag flag);
 
 	/**
 	 * Space ships are unique in having an Item stand-in for planet-side access,

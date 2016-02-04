@@ -391,7 +391,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 					CMLib.map().moveSpaceObject(O);
 					cube=cube.expand(O.direction(),(long)speed);
 				}
-				Boolean inAirFlag = Boolean.FALSE;
+				boolean inAirFlag = false;
 				final List<SpaceObject> cOs=CMLib.map().getSpaceObjectsWithin(O, 0, SpaceObject.Distance.LightMinute.dm);
 				final long oMass = O.getMass();
 				for(final SpaceObject cO : cOs)
@@ -401,7 +401,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 						if(((cO instanceof Area)||(cO.getMass() >= asteroidMass))
 						&&(oMass < moonletMass))
 						{
-							if((CMLib.map().getDistanceFrom(O, cO)-cO.radius())<=(cO.radius()*SpaceObject.MULTIPLIER_GRAVITY_RADIUS))
+							if((CMLib.map().getDistanceFrom(O, cO))<(cO.radius()*SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS))
 							{
 								final double[] directionTo=CMLib.map().getDirection(O, cO);
 								// can this cause slip-through?
@@ -410,7 +410,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 									Log.debugOut("SpaceShip "+O.name()+" is gravitating "+(SpaceObject.ACCELLERATION_G * mass)+" towards " +cO.Name());
 								CMLib.map().moveSpaceObject(O, directionTo, SpaceObject.ACCELLERATION_G * mass); 
 								cube=cube.expand(directionTo,SpaceObject.ACCELLERATION_G * mass);
-								inAirFlag = Boolean.TRUE;
+								inAirFlag = true;
 							}
 						}
 						if((cO.getBounds().intersects(cube))
@@ -428,7 +428,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 				}
 				if(S!=null)
 				{
-					S.getSetAirFlag(inAirFlag);
+					S.setShipFlag(SpaceShip.ShipFlag.IN_THE_AIR,inAirFlag);
 				}
 			}
 		}
