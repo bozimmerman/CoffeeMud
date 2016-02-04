@@ -496,6 +496,7 @@ public class StdJournal extends StdItem
 					selections.addElement(selection);
 				}
 			}
+			//TODO: for god sake, do these calculations above so we aren't reading Every Damn Message!
 			int numToAdd=CMProps.getIntVar(CMProps.Int.JOURNALLIMIT);
 			if((numToAdd==0)||(all))
 				numToAdd=Integer.MAX_VALUE;
