@@ -181,8 +181,10 @@ public class WingFlying extends StdAbility implements HealthCondition
 				beneficialAffect(mob,target,asLevel,9999);
 				A=target.fetchEffect(ID());
 				if(A!=null)
+				{
 					A.makeLongLasting();
-				A.setMiscText("FLYING="+(!wasFlying));
+					A.setMiscText("FLYING="+(!wasFlying));
+				}
 				target.location().recoverRoomStats();
 			}
 		}
