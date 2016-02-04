@@ -459,10 +459,41 @@ public class StdJournal extends StdItem
 				fakeEntry.from(entry.from());
 				fakeEntry.subj(entry.subj());
 			}
-			final Vector<CharSequence> selections=new Vector<CharSequence>();
-			for(int j=0;j<journal.size();j++)
+			int numToAdd=CMProps.getIntVar(CMProps.Int.JOURNALLIMIT);
+			if((numToAdd==0)||(all))
+				numToAdd=Integer.MAX_VALUE;
+			final ArrayList<Integer> finalEntries = new ArrayList<Integer>();
+			for(int j=journal.size()-1;j>=0;j--)
 			{
 				final JournalEntry entry=journal.get(j);
+				final String from=entry.from();
+				final String to=entry.to();
+				// message is 5, but dont matter.
+				final long compdate=entry.update();
+				boolean mayRead=(to.equals("ALL")
+								||to.equalsIgnoreCase(reader.Name())
+								||from.equalsIgnoreCase(reader.Name()));
+				if((to.toUpperCase().trim().startsWith("MASK="))&&(CMLib.masking().maskCheck(to.trim().substring(5),reader,true)))
+					mayRead=true;
+				if(mayRead)
+				{
+					if((compdate<=lastTimeDate)&&(newOnly))
+						continue;
+					if (numToAdd == 0)
+						break;
+					numToAdd--;
+					finalEntries.add(Integer.valueOf(j));
+					fakeEntry.key(entry.key());
+					fakeEntry.from(entry.from());
+					fakeEntry.subj(entry.subj());
+					fakeEntry.cardinal(entry.cardinal());
+				}
+			}
+			final ArrayList<CharSequence> selections=new ArrayList<CharSequence>();
+			for(int j=finalEntries.size()-1;j>=0;j--)
+			{
+				final Integer J = finalEntries.get(j);
+				final JournalEntry entry=journal.get(J.intValue());
 				final String from=entry.from();
 				final long date=entry.date();
 				String to=entry.to();
@@ -470,60 +501,29 @@ public class StdJournal extends StdItem
 				// message is 5, but dont matter.
 				final long compdate=entry.update();
 				final StringBuffer selection=new StringBuffer("");
-				boolean mayRead=(to.equals("ALL")
-								||to.equalsIgnoreCase(reader.Name())
-								||from.equalsIgnoreCase(reader.Name()));
-				if((to.toUpperCase().trim().startsWith("MASK="))&&(CMLib.masking().maskCheck(to.trim().substring(5),reader,true)))
-				{
-					mayRead=true;
+				if(compdate>lastTimeDate)
+					selection.append("*");
+				else
+					selection.append(" ");
+				if(to.toUpperCase().trim().startsWith("MASK="))
 					to=CMLib.masking().maskDesc(to.trim().substring(5),true);
-				}
-				if(mayRead)
-				{
-					if(compdate>lastTimeDate)
-						selection.append("*");
-					else
-					if(newOnly)
-						continue;
-					else
-						selection.append(" ");
-					selection.append("^<JRNL \""+CMStrings.removeColors(name())+"\"^>"+CMStrings.padRight((j+1)+"",4)+"^</JRNL^>) "
-								   +((shortFormat)?"":""
-								   +CMStrings.padRight(from,10)+" "
-								   +CMStrings.padRight(to,10)+" ")
-								   +CMStrings.padRight(CMLib.time().date2String(date),19)+" "
-								   +CMStrings.padRight(subject,25+(shortFormat?22:0))+"\n\r");
-					selections.addElement(selection);
-				}
-			}
-			//TODO: for god sake, do these calculations above so we aren't reading Every Damn Message!
-			int numToAdd=CMProps.getIntVar(CMProps.Int.JOURNALLIMIT);
-			if((numToAdd==0)||(all))
-				numToAdd=Integer.MAX_VALUE;
-			for(int v=selections.size()-1;v>=0;v--)
-			{
-				if (numToAdd == 0)
-				{
-					selections.setElementAt("", v);
-					continue;
-				}
-				final StringBuffer str = (StringBuffer) selections.elementAt(v);
-				if ((newOnly) && (str.charAt(0) != '*'))
-				{
-					selections.setElementAt("", v);
-					continue;
-				}
-				numToAdd--;
+				selection.append("^<JRNL \""+CMStrings.removeColors(name())+"\"^>"+CMStrings.padRight((J.intValue()+1)+"",4)+"^</JRNL^>) "
+							   +((shortFormat)?"":""
+							   +CMStrings.padRight(from,10)+" "
+							   +CMStrings.padRight(to,10)+" ")
+							   +CMStrings.padRight(CMLib.time().date2String(date),19)+" "
+							   +CMStrings.padRight(subject,25+(shortFormat?22:0))+"\n\r");
+				selections.add(selection);
 			}
 			boolean notify=false;
 			for(int v=0;v<selections.size();v++)
 			{
-				if(!(selections.elementAt(v) instanceof StringBuffer))
+				if(!(selections.get(v) instanceof StringBuffer))
 				{
 					notify=true;
 					continue;
 				}
-				buf.append((StringBuffer)selections.elementAt(v));
+				buf.append((StringBuffer)selections.get(v));
 			}
 			if(notify)
 				buf.append(L("\n\rUse READ ALL [JOURNAL] to see missing entries."));
@@ -540,6 +540,7 @@ public class StdJournal extends StdItem
 			fakeEntry.key(entry.key());
 			fakeEntry.from(entry.from());
 			fakeEntry.subj(entry.subj());
+			fakeEntry.cardinal(entry.cardinal());
 
 			boolean allMine=(to.equalsIgnoreCase(reader.Name())
 							||from.equalsIgnoreCase(reader.Name()));
