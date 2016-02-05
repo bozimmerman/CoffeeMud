@@ -165,7 +165,8 @@ public class ColorSet extends StdCommand
 		// ever.  If you don't believe me, spend another few hours trying it.
 		for(Color C : Color.values())
 		{
-			if(C.isBasicColor() && (Character.isUpperCase(C.getCodeChar())))
+			if((C.isBasicColor() && (Character.isUpperCase(C.getCodeChar())))
+			||(C.getCodeChar()=='K')) // black is ok for bg color
 			{
 				allBackgroundColorsList.add(Character.toString(C.getCodeChar()));
 			}
