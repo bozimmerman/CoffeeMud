@@ -49,8 +49,6 @@ public class Lich extends Skeleton
 		return localizedStaticName;
 	}
 
-	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
-
 	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
@@ -58,6 +56,8 @@ public class Lich extends Skeleton
 		affectableStats.setStat(CharStats.STAT_CONSTITUTION,affectableStats.getStat(CharStats.STAT_CONSTITUTION)-4);
 		affectableStats.setStat(CharStats.STAT_CHARISMA,affectableStats.getStat(CharStats.STAT_CHARISMA)+6);
 	}
+
+	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
 
 	@Override
 	public List<RawMaterial> myResources()
