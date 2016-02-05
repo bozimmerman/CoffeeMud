@@ -38,27 +38,42 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Patroller extends ActiveTicker
 {
-	@Override public String ID(){return "Patroller";}
-	@Override protected int canImproveCode(){return Behavior.CAN_MOBS|Behavior.CAN_ITEMS;}
-	@Override public long flags(){return Behavior.FLAG_MOBILITY;}
+	@Override
+	public String ID()
+	{
+		return "Patroller";
+	}
 
-	protected int step=0;
-	protected int diameter=20;
-	protected boolean rideOk=false;
-	protected boolean rideOnly=false;
-	protected List<Room> correction=null;
-	protected List<String> cachedSteps=null;
-	protected int tickStatus=Tickable.STATUS_NOT;
+	@Override
+	protected int canImproveCode()
+	{
+		return Behavior.CAN_MOBS | Behavior.CAN_ITEMS;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Behavior.FLAG_MOBILITY;
+	}
+
+	protected int			step		= 0;
+	protected int			diameter	= 20;
+	protected boolean		rideOk		= false;
+	protected boolean		rideOnly	= false;
+	protected List<Room>	correction	= null;
+	protected List<String>	cachedSteps	= null;
+	protected int			tickStatus	= Tickable.STATUS_NOT;
+	protected volatile int	rideCheckCt	= 0;
+
 	protected WeakReference<Room> startRoom=new WeakReference<Room>(null);
-
-	protected volatile int rideCheckCt = 0;
-
+	
 	@Override
 	public String accountForYourself()
 	{
 		return "regular patrolling";
 	}
 
+	
 	public Patroller()
 	{
 		super();
@@ -77,7 +92,6 @@ public class Patroller extends ActiveTicker
 		diameter=CMParms.getParmInt(newParms,"diameter",20);
 		cachedSteps = null;
 	}
-
 
 	protected List<String> getSteps()
 	{
@@ -140,7 +154,12 @@ public class Patroller extends ActiveTicker
 		return super.okMessage(host,msg);
 	}
 
-	@Override public int getTickStatus(){	return tickStatus;}
+	@Override
+	public int getTickStatus()
+	{
+		return tickStatus;
+	}
+
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -151,12 +170,34 @@ public class Patroller extends ActiveTicker
 			startRoom=new WeakReference<Room>(CMLib.map().roomLocation((Physical)ticking));
 		if(canAct(ticking,tickID))
 		{
-			Vector<Rider> riders=null;
+			tickStatus=Tickable.STATUS_MISC+0;
+			if(!rideOk)
+			{
+				if(((ticking instanceof Rideable)
+					&&(((Rideable)ticking).numRiders()>0))
+				||((ticking instanceof MOB)
+					&&(((MOB)ticking).amFollowing()!=null)
+					&&(((MOB)ticking).location()==((MOB)ticking).amFollowing().location())))
+				{
+					tickStatus=Tickable.STATUS_NOT;
+					return true;
+				}
+			}
+			if((ticking instanceof Physical)
+			&&(!CMLib.flags().canTrack((Physical)ticking)) 
+			&& (CMLib.dice().roll(1,100,0)>1))
+			{
+				tickStatus=Tickable.STATUS_NOT;
+				return true;
+			}
+			
+			tickStatus=Tickable.STATUS_MISC+1;
+			ArrayList<Rider> riders=null;
 			if(ticking instanceof Rideable)
 			{
-				riders=new Vector<Rider>();
+				riders=new ArrayList<Rider>(((Rideable)ticking).numRiders());
 				for(int i=0;i<((Rideable)ticking).numRiders();i++)
-					riders.addElement(((Rideable)ticking).fetchRider(i));
+					riders.add(((Rideable)ticking).fetchRider(i));
 			}
 
 			tickStatus=Tickable.STATUS_START;
@@ -190,23 +231,6 @@ public class Patroller extends ActiveTicker
 				tickStatus=Tickable.STATUS_NOT;
 				return true;
 			}
-
-			tickStatus=Tickable.STATUS_MISC+0;
-			if(!rideOk)
-			{
-				if(((ticking instanceof Rideable)&&(((Rideable)ticking).numRiders()>0))
-				||((ticking instanceof MOB)&&(((MOB)ticking).amFollowing()!=null)&&(((MOB)ticking).location()==((MOB)ticking).amFollowing().location())))
-				{
-					tickStatus=Tickable.STATUS_NOT;
-					return true;
-				}
-			}
-			if((ticking instanceof Physical)&&(!CMLib.flags().canTrack((Physical)ticking)) && (CMLib.dice().roll(1,100,0)>1))
-			{
-				tickStatus=Tickable.STATUS_NOT;
-				return true;
-			}
-			tickStatus=Tickable.STATUS_MISC+1;
 
 			Room thatRoom=null;
 			final List<String> steps=getSteps();
@@ -405,7 +429,7 @@ public class Patroller extends ActiveTicker
 					final Exit opExit=thatRoom.getReverseExit(direction);
 					for(int i=0;i<riders.size();i++)
 					{
-						final Rider R=riders.elementAt(i);
+						final Rider R=riders.get(i);
 						if(R instanceof MOB)
 						{
 							tickStatus=Tickable.STATUS_MISC+16;
@@ -469,7 +493,7 @@ public class Patroller extends ActiveTicker
 					if(riders!=null)
 					for(int i=0;i<riders.size();i++)
 					{
-						final Rider R=riders.elementAt(i);
+						final Rider R=riders.get(i);
 						if(CMLib.map().roomLocation(R)!=thatRoom)
 						{
 							if((((Rideable)ticking).rideBasis()!=Rideable.RIDEABLE_SIT)
