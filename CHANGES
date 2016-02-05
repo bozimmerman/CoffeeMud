@@ -39,6 +39,7 @@
   37. Internal: "ShipTech" Package renamed to "CompTech" to reflect reality that not all components are for ships.
   38. MOTD can now review previous news, and EMAIL BOX and MOTD PREVIOUS supports message limits
   39. Total Minutes played now recorded along with time for Player Leveling Stats
+  40. ColorSet can be used to set any channel color now.
 # Build 5.9.1 Released 01/04/2016
    1. "Who accounts", used by an archon, can quickly list the account name of each player online.
    2. New Achievement event "GOTITEM", and new rewards (see new stats below and achievements.ini)

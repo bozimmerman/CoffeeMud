@@ -606,7 +606,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 			final String ichan=item.substring(y2+1).trim();
 			item=item.substring(0,y1);
 			String nameStr=item.toUpperCase().trim();
-			final String[] colorOverride=new String[]{""};
+			final String[] colorOverride=new String[]{"",""};
 			String maskStr=parseOutFlags(lvl,flags,colorOverride);
 			String imc2Name=ichan;
 			final CMChannel chan = this.createNewChannel(nameStr, "", imc2Name, maskStr, flags, colorOverride[0], colorOverride[1]);
