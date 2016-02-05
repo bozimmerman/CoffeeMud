@@ -913,12 +913,12 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 							break;
 						case ColorLibrary.COLORCODE_FANSI256:
 						case ColorLibrary.COLORCODE_BANSI256:
-						if(x < srchC.length-4)
-							x+=4;
-						break;
+							if(x < srchC.length-4)
+								x+=4;
+							break;
 						default:
-						x++;
-						break;
+							x++;
+							break;
 						}
 					}
 					break;
