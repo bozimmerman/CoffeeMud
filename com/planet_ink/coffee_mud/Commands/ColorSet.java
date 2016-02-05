@@ -98,11 +98,13 @@ public class ColorSet extends StdCommand
 					callBack.setInput("-1");
 					if(this.input.length()>0)
 					{
-						for(int ii=0;ii<set.length;ii++)
+						for(int c=0;c<Color.values().length;c++)
 						{
-							if(Color.values()[ii].name().toUpperCase().startsWith(this.input.toUpperCase()))
+							final Color C=Color.values()[c];
+							if((C.name().toUpperCase().startsWith(this.input.toUpperCase()))
+							&&(CMParms.contains(set, ""+C.getCodeChar())))
 							{
-								callBack.setInput(""+ii);
+								callBack.setInput(""+c);
 								break;
 							}
 						}
@@ -154,22 +156,32 @@ public class ColorSet extends StdCommand
 			return false;
 		}
 		
-		List<String> allExtendedColorsList = new ArrayList<String>();
-		List<String> allBasicColorsList = new ArrayList<String>();
+		final List<String> allBackgroundColorsList = new ArrayList<String>();
+		final List<String> allBasicColorsList = new ArrayList<String>();
+		final List<String> allForegroundColorsList = new ArrayList<String>();
+		// ok future bo.  We store the bg + fg channel colors as a single
+		// ansi code.  When stored in this way, there are limitations on the
+		// use of bold, which means only dark backgrounds and light foregrounds
+		// ever.  If you don't believe me, spend another few hours trying it.
 		for(Color C : Color.values())
 		{
-			if(C.isExtendedColor())
+			if(C.isBasicColor() && (Character.isUpperCase(C.getCodeChar())))
 			{
-				allExtendedColorsList.add(Character.toString(C.getCodeChar()));
-				if(C.isBasicColor())
-				{
-					allBasicColorsList.add(Character.toString(C.getCodeChar()));
-				}
+				allBackgroundColorsList.add(Character.toString(C.getCodeChar()));
+			}
+			if(C.isBasicColor())
+			{
+				allBasicColorsList.add(Character.toString(C.getCodeChar()));
+			}
+			if(C.isBasicColor() && (Character.isLowerCase(C.getCodeChar())))
+			{
+				allForegroundColorsList.add(Character.toString(C.getCodeChar()));
 			}
 		}
 		
-		final String[] COLOR_ALLEXTENDEDCOLORCODELETTERS = allExtendedColorsList.toArray(new String[allExtendedColorsList.size()]);
+		final String[] COLOR_ALLBACKGROUNDCOLORCODELETTERS = allBackgroundColorsList.toArray(new String[allBackgroundColorsList.size()]);
 		final String[] COLOR_ALLBASICCOLORCODELETTERS = allBasicColorsList.toArray(new String[allBasicColorsList.size()]);
+		final String[] COLOR_ALLFOREGROUNDCOLORCODELETTERS = allForegroundColorsList.toArray(new String[allForegroundColorsList.size()]);
 		
 		if(clookup[0]==null)
 			return false;
@@ -268,7 +280,7 @@ public class ColorSet extends StdCommand
 						for(int ii=0;ii<Color.values().length;ii++)
 						{
 							Color C = Color.values()[ii];
-							if(C.isBasicColor())
+							if(allBasicColorsList.contains(""+C.getCodeChar()))
 							{
 								if(ii>0)
 									buf.append(", ");
@@ -309,8 +321,7 @@ public class ColorSet extends StdCommand
 						boolean first=true;
 						for(Color C : Color.values())
 						{
-							if(C.isExtendedColor()
-							&& Character.isUpperCase(C.getCodeChar()))
+							if(allBackgroundColorsList.contains(Character.toString(C.getCodeChar())))
 							{
 								if(first)
 									first=false; else buf.append(", ");
@@ -324,8 +335,7 @@ public class ColorSet extends StdCommand
 						first=true;
 						for(Color C : Color.values())
 						{
-							if((C.isBasicColor())
-							&&(Character.isLowerCase(C.getCodeChar())))
+							if(allForegroundColorsList.contains(Character.toString(C.getCodeChar())))
 							{
 								if(first)
 									first=false; else buf.append(", ");
@@ -333,7 +343,7 @@ public class ColorSet extends StdCommand
 							}
 						}
 						session.println(buf.toString()+"^N");
-						pickColor(mob,COLOR_ALLEXTENDEDCOLORCODELETTERS,new InputCallback(InputCallback.Type.PROMPT,"")
+						pickColor(mob,COLOR_ALLBACKGROUNDCOLORCODELETTERS,new InputCallback(InputCallback.Type.PROMPT,"")
 						{
 							@Override
 							public void showPrompt()
@@ -349,14 +359,14 @@ public class ColorSet extends StdCommand
 							@Override public void callBack()
 							{
 								final int colorNum1=CMath.s_int(this.input);
-								if((colorNum1<0)||(!Character.isUpperCase(Color.values()[colorNum1].getCodeChar())))
+								if(colorNum1<0)
 								{
 									mob.tell(L("That is not a valid Background color!"));
 									session.prompt(IC[0].reset());
 								}
 								else
 								{
-									pickColor(mob,COLOR_ALLBASICCOLORCODELETTERS,new InputCallback(InputCallback.Type.PROMPT,"")
+									pickColor(mob,COLOR_ALLFOREGROUNDCOLORCODELETTERS,new InputCallback(InputCallback.Type.PROMPT,"")
 									{
 										@Override
 										public void showPrompt()
@@ -369,14 +379,17 @@ public class ColorSet extends StdCommand
 										{
 										}
 
-										@Override public void callBack()
+										@Override 
+										public void callBack()
 										{
 											final int colorNum2=CMath.s_int(this.input);
-											if((colorNum2<0)||(Character.isUpperCase(Color.values()[colorNum2].getCodeChar())))
+											if(colorNum2<0)
 												mob.tell(L("That is not a valid Foreground color!"));
 											else
 											{
-												clookup[0][colorCodeNum]=CMLib.color().translateCMCodeToANSI("^"+Color.values()[colorNum1].getCodeChar()+"|^"+Color.values()[colorNum2].getCodeChar());
+												final char colorCode1 = Character.toLowerCase(Color.values()[colorNum1].getCodeChar());
+												final char colorCode2 = Color.values()[colorNum2].getCodeChar();
+												clookup[0][colorCodeNum]=CMLib.color().translateCMCodeToANSI("^"+colorCode1+"|^"+colorCode2);
 												makeColorChanges(theSet, pstats, session, clookup);
 											}
 											session.prompt(IC[0].reset());
