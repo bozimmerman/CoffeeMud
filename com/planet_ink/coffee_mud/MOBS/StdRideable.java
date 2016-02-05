@@ -365,12 +365,6 @@ public class StdRideable extends StdMOB implements Rideable
 				msg.source().tell(L("You cannot simply sit on @x1, try 'mount'.",name(msg.source())));
 				return false;
 			}
-			else
-			if((msg.source() instanceof Rideable)&&(!(msg.target() instanceof Exit)))
-			{
-				msg.source().tell(L("You are not allowed on @x1.",name(msg.source())));
-				return false;
-			}
 			break;
 		case CMMsg.TYP_SLEEP:
 			if(amRiding(msg.source()))
@@ -383,12 +377,6 @@ public class StdRideable extends StdMOB implements Rideable
 			if(msg.amITarget(this))
 			{
 				msg.source().tell(L("You cannot lie down on @x1.",name(msg.source())));
-				return false;
-			}
-			else
-			if((msg.source() instanceof Rideable)&&(msg.source()!=this))
-			{
-				msg.source().tell(L("You are not allowed on @x1.",name(msg.source())));
 				return false;
 			}
 			break;
@@ -426,7 +414,8 @@ public class StdRideable extends StdMOB implements Rideable
 						msg.source().tell(L("@x1 can not be mounted to @x2!",msg.tool().name(),name(msg.source())));
 					return false;
 				}
-				if((msg.tool() instanceof Rideable)&&(msg.tool() instanceof MOB))
+				if((msg.tool() instanceof Rideable)
+				&&(msg.tool() instanceof MOB))
 				{
 					msg.source().tell(L("@x1 is not allowed on @x2.",((MOB)msg.tool()).name(msg.source()),name(msg.source())));
 					return false;
