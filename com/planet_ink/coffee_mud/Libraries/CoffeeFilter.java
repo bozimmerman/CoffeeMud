@@ -1360,18 +1360,37 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 					break;
 					case '\033': // skip escapes
 					{
-						if((loop < buf.length()-1) && (buf.charAt(loop+1)=='['))
+						if((S!=null)&&(!S.getClientTelnetMode(Session.TELNET_ANSI)))
 						{
-							loop++; // added 2013, see comment below
-							char loopc=buf.charAt(loop);
-							while( (loop < buf.length()-1) && (loopc!='m') && (loopc!='z') )
+							int oldLoop=loop;
+							if((loop < buf.length()-1) && (buf.charAt(loop+1)=='['))
 							{
-								len++;
-								loop++;
-								loopc=buf.charAt(loop);
+								loop++; // added 2013, see comment below
+								char loopc=buf.charAt(loop);
+								while( (loop < buf.length()-1) && (loopc!='m') && (loopc!='z') )
+								{
+									loop++;
+									loopc=buf.charAt(loop);
+								}
+								buf.delete(oldLoop,loop+1);
+								loop=oldLoop;
 							}
-							//if(buf.charAt(loop)=='\033')
-							//	loop--; // force a retry of this char. 2013: why do this?  only possible if you didn't move, and this promises less moving!
+						}
+						else
+						{
+							if((loop < buf.length()-1) && (buf.charAt(loop+1)=='['))
+							{
+								loop++; // added 2013, see comment below
+								char loopc=buf.charAt(loop);
+								while( (loop < buf.length()-1) && (loopc!='m') && (loopc!='z') )
+								{
+									len++;
+									loop++;
+									loopc=buf.charAt(loop);
+								}
+								//if(buf.charAt(loop)=='\033')
+								//	loop--; // force a retry of this char. 2013: why do this?  only possible if you didn't move, and this promises less moving!
+							}
 						}
 						break;
 					}
