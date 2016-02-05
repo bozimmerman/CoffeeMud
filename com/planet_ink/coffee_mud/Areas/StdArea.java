@@ -1579,7 +1579,7 @@ public class StdArea implements Area
 			for(int i=0;i<R.numInhabitants();i++)
 			{
 				mob=R.fetchInhabitant(i);
-				if((mob!=null)&&(mob.isMonster()))
+				if((mob!=null)&&(mob.isMonster())&&(!CMLib.flags().isUnattackable(mob)))
 				{
 					final int lvl=mob.basePhyStats().level();
 					levelRanges.add(Integer.valueOf(lvl));
