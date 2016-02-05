@@ -903,7 +903,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				{
 				case '^':
 					x++;
-					if(tos<srchC.length)
+					if(x<srchC.length)
+					{
 						switch(srchC[x])
 						{
 						case ColorLibrary.COLORCODE_BACKGROUND:
@@ -919,6 +920,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 						x++;
 						break;
 						}
+					}
 					break;
 				case ',':
 				case '?':
