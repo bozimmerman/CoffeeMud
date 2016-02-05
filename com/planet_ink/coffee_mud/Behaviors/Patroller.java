@@ -176,8 +176,7 @@ public class Patroller extends ActiveTicker
 				if(((ticking instanceof Rideable)
 					&&(((Rideable)ticking).numRiders()>0))
 				||((ticking instanceof MOB)
-					&&(((MOB)ticking).amFollowing()!=null)
-					&&(((MOB)ticking).location()==((MOB)ticking).amFollowing().location())))
+					&&(((MOB)ticking).amFollowing()!=null)))
 				{
 					tickStatus=Tickable.STATUS_NOT;
 					return true;
