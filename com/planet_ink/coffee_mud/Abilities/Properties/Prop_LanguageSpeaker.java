@@ -95,8 +95,8 @@ public class Prop_LanguageSpeaker extends Property
 		if(((lang!=null)||(langStr.length()>0))
 		&&(doPlayers || mob.isMonster())
 		&&((!noMobs) || (!mob.isMonster()))
-		&&((!homeOnly) || (homeRoom==null) || (mobHomeRoom == homeRoom))
-		&&((!homeOnly) || (homeArea==null) || (mobHomeArea == homeArea))
+		&&((!homeOnly) || (mobHomeRoom == homeRoom))
+		&&((!homeOnly) || (mobHomeArea == homeArea))
 		&&(mob.fetchEffect(langStr)==null)
 		&&((mobMask==null) || CMLib.masking().maskCheck(mobMask,mob,true)))
 		{
