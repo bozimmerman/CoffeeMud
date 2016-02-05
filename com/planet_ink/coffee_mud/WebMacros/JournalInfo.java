@@ -42,17 +42,14 @@ public class JournalInfo extends StdWebMacro
 	{
 		if(msgs==null)
 			return null;
-		if(key==null)
+		if((key==null)||(key.length()==0))
 			return null;
-		if((key != null)&&(key.length()>0))
+		int index = msgs.indexOf(key);
+		if(index >=0)
 		{
-			int index = msgs.indexOf(key);
-			if(index >=0)
-			{
-				if(index<msgs.size())
-					return msgs.get(index);
-				return null;
-			}
+			if(index<msgs.size())
+				return msgs.get(index);
+			return null;
 		}
 		for (final JournalEntry entry : msgs)
 		{

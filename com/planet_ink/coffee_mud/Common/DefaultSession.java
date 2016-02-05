@@ -1284,16 +1284,25 @@ public class DefaultSession implements Session
 				clookup=CMLib.color().standardColorLookups();
 			else
 			{
-				String changes=pstats.getColorStr();
-				lastColorStr=changes;
+				lastColorStr=pstats.getColorStr();
 				clookup=CMLib.color().standardColorLookups().clone();
-				int x=changes.indexOf('#');
-				while(x>0)
+				List<String> changesList = CMParms.parseAny(pstats.getColorStr(), '#', true);
+				for(String change : changesList)
 				{
-					final String sub=changes.substring(0,x);
-					changes=changes.substring(x+1);
-					clookup[sub.charAt(0)]=CMLib.color().translateCMCodeToANSI(sub.substring(1));
-					x=changes.indexOf('#');
+					int subChar;
+					String subColor;
+					if(change.startsWith("(") && (change.indexOf(')')>0))
+					{
+						int x=change.indexOf(')');
+						subChar=CMath.s_int(change.substring(1,x));
+						subColor = change.substring(x+1);
+					}
+					else
+					{
+						subChar=change.charAt(0);
+						subColor=change.substring(1);
+					}
+					clookup[subChar]=CMLib.color().translateCMCodeToANSI(subColor);
 				}
 				for(int i=0;i<clookup.length;i++)
 				{

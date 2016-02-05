@@ -74,7 +74,7 @@ public class ChannelInfo extends StdWebMacro
 				if(parms.containsKey("NAME"))
 					str.append(C.name()).append(", ");
 				if(parms.containsKey("COLOROVERRIDE"))
-					str.append(C.colorOverride()).append(", ");
+					str.append(C.colorOverrideWords()).append(", ");
 				if(parms.containsKey("I3NAME"))
 					str.append(C.i3name()).append(", ");
 				if(parms.containsKey("IMC2NAME"))

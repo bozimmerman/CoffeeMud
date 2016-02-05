@@ -137,9 +137,9 @@ public class IMudInterface implements ImudServices, Serializable
 		else
 		if(channels.size()==0)
 		{
-			channels.add(CMLib.channels().createNewChannel("I3CHAT", "diku_chat", "", "", "", new HashSet<ChannelFlag>()));
-			channels.add(CMLib.channels().createNewChannel("I3GOSSIP", "diku_immortals", "", "", "", new HashSet<ChannelFlag>()));
-			channels.add(CMLib.channels().createNewChannel("GREET", "diku_code", "", "", "", new HashSet<ChannelFlag>()));
+			channels.add(CMLib.channels().createNewChannel("I3CHAT", "diku_chat", "", "", new HashSet<ChannelFlag>(), "",""));
+			channels.add(CMLib.channels().createNewChannel("I3GOSSIP", "diku_immortals", "", "", new HashSet<ChannelFlag>(), "",""));
+			channels.add(CMLib.channels().createNewChannel("GREET", "diku_code", "", "", new HashSet<ChannelFlag>(), "",""));
 		}
 		port=Port;
 	}
@@ -264,19 +264,13 @@ public class IMudInterface implements ImudServices, Serializable
 				   return;
 				if((ck.channel==null)||(ck.channel.length()==0))
 					return;
-				String channelColor="";
+				final String channelColor="^Q";
 				final int channelInt=CMLib.channels().getChannelIndex(channelName);
 				int channelCode=channelInt;
-				if(channelInt >= 0)
-				{
-					channelColor=CMLib.channels().getChannel(channelInt).colorOverride();
-				}
-				else
+				if(channelInt < 0)
 				{
 					channelCode=47;
 				}
-				if(channelColor.length()==0)
-					channelColor="^Q";
 				ck.message=fixColors(CMProps.applyINIFilter(ck.message,CMProps.Str.CHANNELFILTER));
 				if(ck.message_target!=null)
 					ck.message_target=fixColors(CMProps.applyINIFilter(ck.message_target,CMProps.Str.CHANNELFILTER));

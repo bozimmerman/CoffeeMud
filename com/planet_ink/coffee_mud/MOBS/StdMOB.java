@@ -24,6 +24,7 @@ import java.util.*;
 import java.util.Map.Entry;
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ChannelsLibrary.CMChannel;
 
 /*
    Copyright 2000-2016 Bo Zimmerman
@@ -831,7 +832,7 @@ public class StdMOB implements MOB
 	@Override
 	public int maxFollowers()
 	{
-		return ((int) Math.round(CMath.div(charStats().getStat(CharStats.STAT_CHARISMA) - 8, 4.0)) + 1);
+		return ((int) Math.round(CMath.div(charStats().getStat(CharStats.STAT_CHARISMA) - 5, 2.0)) + 1);
 	}
 
 	@Override
@@ -2911,6 +2912,20 @@ public class StdMOB implements MOB
 		tell(this, this, null, msg);
 	}
 
+	protected String fixChannelColors(final int channelCode, final String message)
+	{
+		final Session session = mySession;
+		if(session != null && session.getColorCodes()[128 + channelCode]!=null)
+			return CMStrings.replaceAll(message, ColorLibrary.SpecialColor.CHANNEL.getEscapeCode(), mySession.getColorCodes()[128 + channelCode]);
+		else
+		{
+			final CMChannel chan = CMLib.channels().getChannel(channelCode);
+			if((chan.colorOverrideANSICodes()!=null)&&(chan.colorOverrideANSICodes().length()>0))
+				return CMStrings.replaceAll(message, ColorLibrary.SpecialColor.CHANNEL.getEscapeCode(), chan.colorOverrideANSICodes());
+		}
+		return message;
+	}
+	
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -2996,90 +3011,108 @@ public class StdMOB implements MOB
 					setVictim((MOB) msg.target());
 				}
 			}
-
-			switch (msg.sourceMinor())
+			else
+			if (CMath.bset(msg.sourceMajor(), CMMsg.MASK_CHANNEL))
 			{
-			case CMMsg.TYP_LIFE:
-				CMLib.commands().handleComeToLife(this, msg);
-				break;
-			case CMMsg.TYP_PANIC:
-				CMLib.commands().postFlee(this, "");
-				break;
-			case CMMsg.TYP_EXPCHANGE:
-				CMLib.leveler().handleExperienceChange(msg);
-				break;
-			case CMMsg.TYP_FACTIONCHANGE:
-				if (msg.othersMessage() != null)
+				int channelCode;
+				if(CMath.bset(msg.othersMajor(), CMMsg.MASK_CHANNEL))
+					channelCode = msg.othersMinor() - CMMsg.TYP_CHANNEL;
+				else
+				if(CMath.bset(msg.targetMajor(), CMMsg.MASK_CHANNEL))
+					channelCode = msg.targetMinor() - CMMsg.TYP_CHANNEL;
+				else
 				{
-					if ((msg.value() == Integer.MAX_VALUE) || (msg.value() == Integer.MIN_VALUE))
-						removeFaction(msg.othersMessage());
-					else
-						adjustFaction(msg.othersMessage(), msg.value());
+					tell(srcM, msg.target(), msg.tool(), msg.sourceMessage());
+					return;
 				}
-				break;
-			case CMMsg.TYP_DEATH:
-				CMLib.combat().handleDeath(msg);
-				break;
-			case CMMsg.TYP_REBUKE:
-				if (((msg.target() == null) && (getLiegeID().length() > 0))
-				|| ((msg.target() != null) && (msg.target().Name().equals(getLiegeID())) && (!isMarriedToLiege())))
-					setLiegeID("");
-				tell(this, msg.target(), msg.tool(), msg.sourceMessage());
-				break;
-			case CMMsg.TYP_SERVE:
-				if ((msg.target() != null) && (!(msg.target() instanceof Deity)))
-					setLiegeID(msg.target().Name());
-				tell(this, msg.target(), msg.tool(), msg.sourceMessage());
-				break;
-			case CMMsg.TYP_LOOK:
-			case CMMsg.TYP_EXAMINE:
-				if (msg.target() == this)
-					CMLib.commands().handleBeingLookedAt(msg);
-				break;
-			case CMMsg.TYP_READ:
-				if ((CMLib.flags().canBeSeenBy(this, srcM)) && (msg.amITarget(this)))
-					srcM.tell(L("There is nothing written on @x1",name(srcM)));
-				break;
-			case CMMsg.TYP_SIT:
-				CMLib.commands().handleSit(msg);
-				break;
-			case CMMsg.TYP_SLEEP:
-				CMLib.commands().handleSleep(msg);
-				break;
-			case CMMsg.TYP_QUIT:
-				tell(srcM, msg.target(), msg.tool(), msg.sourceMessage());
-				break;
-			case CMMsg.TYP_STAND:
-				CMLib.commands().handleStand(msg);
-				break;
-			case CMMsg.TYP_RECALL:
-				CMLib.commands().handleRecall(msg);
-				break;
-			case CMMsg.TYP_FOLLOW:
-				if (msg.target() instanceof MOB)
+				tell(srcM, msg.target(), msg.tool(), fixChannelColors(channelCode,msg.sourceMessage()));
+			}
+			else
+			{
+				switch (msg.sourceMinor())
 				{
-					setFollowing((MOB) msg.target());
+				case CMMsg.TYP_LIFE:
+					CMLib.commands().handleComeToLife(this, msg);
+					break;
+				case CMMsg.TYP_PANIC:
+					CMLib.commands().postFlee(this, "");
+					break;
+				case CMMsg.TYP_EXPCHANGE:
+					CMLib.leveler().handleExperienceChange(msg);
+					break;
+				case CMMsg.TYP_FACTIONCHANGE:
+					if (msg.othersMessage() != null)
+					{
+						if ((msg.value() == Integer.MAX_VALUE) || (msg.value() == Integer.MIN_VALUE))
+							removeFaction(msg.othersMessage());
+						else
+							adjustFaction(msg.othersMessage(), msg.value());
+					}
+					break;
+				case CMMsg.TYP_DEATH:
+					CMLib.combat().handleDeath(msg);
+					break;
+				case CMMsg.TYP_REBUKE:
+					if (((msg.target() == null) && (getLiegeID().length() > 0))
+					|| ((msg.target() != null) && (msg.target().Name().equals(getLiegeID())) && (!isMarriedToLiege())))
+						setLiegeID("");
+					tell(this, msg.target(), msg.tool(), msg.sourceMessage());
+					break;
+				case CMMsg.TYP_SERVE:
+					if ((msg.target() != null) && (!(msg.target() instanceof Deity)))
+						setLiegeID(msg.target().Name());
+					tell(this, msg.target(), msg.tool(), msg.sourceMessage());
+					break;
+				case CMMsg.TYP_LOOK:
+				case CMMsg.TYP_EXAMINE:
+					if (msg.target() == this)
+						CMLib.commands().handleBeingLookedAt(msg);
+					break;
+				case CMMsg.TYP_READ:
+					if ((CMLib.flags().canBeSeenBy(this, srcM)) && (msg.amITarget(this)))
+						srcM.tell(L("There is nothing written on @x1",name(srcM)));
+					break;
+				case CMMsg.TYP_SIT:
+					CMLib.commands().handleSit(msg);
+					break;
+				case CMMsg.TYP_SLEEP:
+					CMLib.commands().handleSleep(msg);
+					break;
+				case CMMsg.TYP_QUIT:
 					tell(srcM, msg.target(), msg.tool(), msg.sourceMessage());
+					break;
+				case CMMsg.TYP_STAND:
+					CMLib.commands().handleStand(msg);
+					break;
+				case CMMsg.TYP_RECALL:
+					CMLib.commands().handleRecall(msg);
+					break;
+				case CMMsg.TYP_FOLLOW:
+					if (msg.target() instanceof MOB)
+					{
+						setFollowing((MOB) msg.target());
+						tell(srcM, msg.target(), msg.tool(), msg.sourceMessage());
+					}
+					break;
+				case CMMsg.TYP_NOFOLLOW:
+					setFollowing(null);
+					tell(srcM, msg.target(), msg.tool(), msg.sourceMessage());
+					break;
+				case CMMsg.TYP_WEAR:
+				case CMMsg.TYP_HOLD:
+				case CMMsg.TYP_WIELD:
+				case CMMsg.TYP_REMOVE:
+					possWieldedItem = null;
+					possHeldItem = null;
+					tell(srcM, msg.target(), msg.tool(), msg.sourceMessage());
+					break;
+				default:
+					// you pretty much always know what you are doing, if you can do
+					// it.
+					if (!CMath.bset(msg.sourceMajor(), CMMsg.MASK_CNTRLMSG))
+						tell(srcM, msg.target(), msg.tool(), msg.sourceMessage());
+					break;
 				}
-				break;
-			case CMMsg.TYP_NOFOLLOW:
-				setFollowing(null);
-				tell(srcM, msg.target(), msg.tool(), msg.sourceMessage());
-				break;
-			case CMMsg.TYP_WEAR:
-			case CMMsg.TYP_HOLD:
-			case CMMsg.TYP_WIELD:
-			case CMMsg.TYP_REMOVE:
-				possWieldedItem = null;
-				possHeldItem = null;
-				tell(srcM, msg.target(), msg.tool(), msg.sourceMessage());
-				break;
-			default:
-				// you pretty much always know what you are doing, if you can do
-				// it.
-				if (!CMath.bset(msg.sourceMajor(), CMMsg.MASK_CNTRLMSG))
-					tell(srcM, msg.target(), msg.tool(), msg.sourceMessage());
-				break;
 			}
 		}
 		else
@@ -3119,7 +3152,7 @@ public class StdMOB implements MOB
 					if ((playerStats() != null)
 					&& (!this.isAttributeSet(MOB.Attrib.QUIET))
 					&& (!CMath.isSet(playerStats().getChannelMask(), channelCode)))
-						tell(srcM, msg.target(), msg.tool(), msg.targetMessage());
+						tell(srcM, msg.target(), msg.tool(), fixChannelColors(channelCode,msg.targetMessage()));
 				}
 				break;
 			}
@@ -3180,7 +3213,7 @@ public class StdMOB implements MOB
 				if ((playerStats() != null)
 				&& (!this.isAttributeSet(MOB.Attrib.QUIET))
 				&& (!CMath.isSet(playerStats().getChannelMask(), channelCode)))
-					tell(srcM, msg.target(), msg.tool(), msg.othersMessage());
+					tell(srcM, msg.target(), msg.tool(), fixChannelColors(channelCode,msg.othersMessage()));
 			}
 			else
 			if ((CMath.bset(othersMajor, CMMsg.MASK_SOUND)) && (!asleep) && (canhearsrc))

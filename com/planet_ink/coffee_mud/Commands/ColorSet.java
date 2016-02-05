@@ -113,15 +113,23 @@ public class ColorSet extends StdCommand
 		}
 	}
 
-	public void makeColorChanges(final String[][] theSet, final PlayerStats pstats, final Session session, final String[][] clookup)
+	public void makeColorChanges(final List<Pair<String,Integer>> theSet, final PlayerStats pstats, final Session session, final String[][] clookup)
 	{
 		String newChanges="";
 		final String[] common=CMLib.color().standardColorLookups();
-		for (final String[] element : theSet)
+		for (final Pair<String,Integer> element : theSet)
 		{
-			final char c=element[1].charAt(0);
-			if(!clookup[0][c].equals(common[c]))
-				newChanges+=c+CMLib.color().translateANSItoCMCode(clookup[0][c])+"#";
+			final int c=element.second.intValue();
+			if(c<128)
+			{
+				if(!clookup[0][c].equals(common[c]))
+					newChanges+=((char)c)+CMLib.color().translateANSItoCMCode(clookup[0][c])+"#";
+			}
+			else
+			{
+				if(!clookup[0][c].equals(common['Q']))
+					newChanges+="("+c+")"+CMLib.color().translateANSItoCMCode(clookup[0][c])+"#";
+			}
 		}
 		pstats.setColorStr(newChanges);
 		clookup[0]=session.getColorCodes().clone();
@@ -165,24 +173,28 @@ public class ColorSet extends StdCommand
 		
 		if(clookup[0]==null)
 			return false;
-		final
-		String[][] theSet={{"Normal Text","N"},
-						   {"Highlighted Text","H"},
-						   {"Your Fight Text","f"},
-						   {"Fighting You Text","e"},
-						   {"Other Fight Text","F"},
-						   {"Spells","S"},
-						   {"Emotes","E"},
-						   {"Says","T"},
-						   {"Tells","t"},
-						   {"Room Titles","O"},
-						   {"Room Descriptions","L"},
-						   {"Weather","J"},
-						   {"Doors","d"},
-						   {"Items","I"},
-						   {"MOBs","M"},
-						   {"Channel Colors","Q"}
-		};
+		final List<Pair<String,Integer>> theSet= new ArrayList<Pair<String,Integer>>();
+		theSet.add(new Pair<String,Integer>("Normal Text",Integer.valueOf('N')));
+		theSet.add(new Pair<String,Integer>("Highlighted Text",Integer.valueOf('H')));
+		theSet.add(new Pair<String,Integer>("Your Fight Text",Integer.valueOf('f')));
+		theSet.add(new Pair<String,Integer>("Fighting You Text",Integer.valueOf('e')));
+		theSet.add(new Pair<String,Integer>("Other Fight Text",Integer.valueOf('F')));
+		theSet.add(new Pair<String,Integer>("Spells",Integer.valueOf('S')));
+		theSet.add(new Pair<String,Integer>("Emotes",Integer.valueOf('E')));
+		theSet.add(new Pair<String,Integer>("Says",Integer.valueOf('T')));
+		theSet.add(new Pair<String,Integer>("Tells",Integer.valueOf('t')));
+		theSet.add(new Pair<String,Integer>("Room Titles",Integer.valueOf('O')));
+		theSet.add(new Pair<String,Integer>("Room Descriptions",Integer.valueOf('L')));
+		theSet.add(new Pair<String,Integer>("Weather",Integer.valueOf('J')));
+		theSet.add(new Pair<String,Integer>("Doors",Integer.valueOf('d')));
+		theSet.add(new Pair<String,Integer>("Items",Integer.valueOf('I')));
+		theSet.add(new Pair<String,Integer>("MOBs",Integer.valueOf('M')));
+		theSet.add(new Pair<String,Integer>("Channel Colors",Integer.valueOf('Q')));
+		for(int i=0;i<CMLib.channels().getNumChannels();i++)
+		{
+			if((clookup[0][128+i]!=null)&&(clookup[0][128+i].length()>0))
+				theSet.add(new Pair<String,Integer>(CMLib.channels().getChannelNames()[i],Integer.valueOf(128+i)));
+		}
 
 		final InputCallback[] IC=new InputCallback[1];
 		IC[0]=new InputCallback(InputCallback.Type.PROMPT,"")
@@ -191,14 +203,14 @@ public class ColorSet extends StdCommand
 			public void showPrompt()
 			{
 				final StringBuffer buf=new StringBuffer("");
-				for(int i=0;i<theSet.length;i++)
+				for(int i=0;i<theSet.size();i++)
 				{
-					buf.append("\n\r^H"+CMStrings.padLeft(""+(i+1),2)+"^N) "+CMStrings.padRight(theSet[i][0],20)+": ");
-					buf.append(colorDescription(clookup[0][theSet[i][1].charAt(0)]));
+					buf.append("\n\r^H"+CMStrings.padLeft(""+(i+1),2)+"^N) "+CMStrings.padRight(theSet.get(i).first,20)+": ");
+					buf.append(colorDescription(clookup[0][theSet.get(i).second.intValue()]));
 					buf.append("^N");
 				}
 				session.println(buf.toString());
-				session.promptPrint(L("Enter Number or RETURN: "));
+				session.promptPrint(L("Enter Number, channel name, or RETURN: "));
 			}
 
 			@Override
@@ -210,17 +222,47 @@ public class ColorSet extends StdCommand
 			{
 				if(input.trim().length()==0)
 					return;
-				final int num=CMath.s_int(input.trim())-1;
+				if(!CMath.isInteger(input.trim()))
+				{
+					String potChannelName = CMLib.channels().findChannelName(input.trim());
+					if(potChannelName != null) 
+					{
+						int code = CMLib.channels().getChannelIndex(potChannelName);
+						if(code >=0)
+						{
+							Pair<String,Integer> newEntry = null;
+							for(int x=0;x<theSet.size();x++)
+							{
+								final Pair<String,Integer> entry = theSet.get(x);
+								if(entry.first.equals(potChannelName))
+								{
+									newEntry = entry;
+									input = ""+(x+1);
+								}
+							}
+							if(newEntry == null)
+							{
+								newEntry = new Pair<String,Integer>(potChannelName,Integer.valueOf(128+code));
+								clookup[0][128+code]=clookup[0]['Q'];
+								theSet.add(newEntry);
+								input = ""+theSet.size();
+							}
+						}
+					}
+				}
 				if(input.trim().length()==0)
 					return;
-				if((num<0)||(num>=theSet.length))
+				final int num=CMath.s_int(input.trim())-1;
+				if((num<0)
+				||(num>=theSet.size()))
 					mob.tell(L("That is not a valid entry!"));
 				else
 				{
 					final StringBuffer buf=new StringBuffer("");
-					buf.append("\n\r\n\r^c"+CMStrings.padLeft(""+(num+1),2)+"^N) "+CMStrings.padRight(theSet[num][0],20)+": ");
-					buf.append(colorDescription(clookup[0][theSet[num][1].charAt(0)]));
-					if(theSet[num][1].charAt(0)!='Q')
+					buf.append("\n\r\n\r^c"+CMStrings.padLeft(""+(num+1),2)+"^N) "+CMStrings.padRight(theSet.get(num).first,20)+": ");
+					final int colorCodeNum = theSet.get(num).second.intValue();
+					buf.append(colorDescription(clookup[0][colorCodeNum]));
+					if((colorCodeNum!='Q') && (colorCodeNum < 128))
 					{
 						buf.append(L("^N\n\rAvailable Colors: "));
 						for(int ii=0;ii<Color.values().length;ii++)
@@ -254,7 +296,7 @@ public class ColorSet extends StdCommand
 									mob.tell(L("That is not a valid color!"));
 								else
 								{
-									clookup[0][theSet[num][1].charAt(0)]=clookup[0][Color.values()[colorNum].getCodeChar()];
+									clookup[0][colorCodeNum]=clookup[0][Color.values()[colorNum].getCodeChar()];
 									makeColorChanges(theSet, pstats, session, clookup);
 								}
 								session.prompt(IC[0].reset());
@@ -334,7 +376,7 @@ public class ColorSet extends StdCommand
 												mob.tell(L("That is not a valid Foreground color!"));
 											else
 											{
-												clookup[0][theSet[num][1].charAt(0)]=CMLib.color().translateCMCodeToANSI("^"+Color.values()[colorNum1].getCodeChar()+"|^"+Color.values()[colorNum2].getCodeChar());
+												clookup[0][colorCodeNum]=CMLib.color().translateCMCodeToANSI("^"+Color.values()[colorNum1].getCodeChar()+"|^"+Color.values()[colorNum2].getCodeChar());
 												makeColorChanges(theSet, pstats, session, clookup);
 											}
 											session.prompt(IC[0].reset());

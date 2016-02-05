@@ -162,7 +162,7 @@ public final class IMC2Driver extends Thread {
 			String name=(String)e.nextElement();
 			String mask=(String)chan_mask.get(name);
 			String imc2Name=(String)chan_conf.get(name);
-			final CMChannel chan=CMLib.channels().createNewChannel(name, "", imc2Name, mask, "",new HashSet<ChannelFlag>());
+			final CMChannel chan=CMLib.channels().createNewChannel(name, "", imc2Name, mask, new HashSet<ChannelFlag>(),"","");
 			map.add(chan);
 		}
 		return map;
@@ -1121,9 +1121,7 @@ public final class IMC2Driver extends Thread {
 		final int channelInt=CMLib.channels().getChannelIndex(channelName);
 		if(channelInt<0)
 			return;
-		String channelColor=CMLib.channels().getChannel(channelInt).colorOverride();
-		if(channelColor.length()==0)
-			channelColor="^Q";
+		final String channelColor="^Q";
 		final MOB mob=CMClass.getFactoryMOB();
 		mob.setName(from);
 		mob.setLocation(CMClass.getLocale("StdRoom"));

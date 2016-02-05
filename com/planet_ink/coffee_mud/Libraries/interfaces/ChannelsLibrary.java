@@ -280,12 +280,13 @@ public interface ChannelsLibrary extends CMLibrary
 	 * @param i3Name empty string, or the mapped name of the i3 channel
 	 * @param imc2Name empty string, or the mapped name of the imc2 channel
 	 * @param mask the zapper mask for who may read the channel
-	 * @param colorOverride empty string for default, or the color code for this channel
 	 * @param flags
+	 * @param colorOverride empty string for default, or the color code for this channel
 	 * @return the newly created channel object
 	 */
 	public CMChannel createNewChannel(final String name, final String i3Name, final String imc2Name, 
-									  final String mask, final String colorOverride, final Set<ChannelFlag> flags);
+									  final String mask, final Set<ChannelFlag> flags, 
+									  final String colorOverrideANSI, final String colorOverrideWords);
 
 	/**
 	 * Basic Channel definition
@@ -322,12 +323,20 @@ public interface ChannelsLibrary extends CMLibrary
 		public String mask();
 		
 		/**
-		 * Empty string, or a color code to override the
+		 * Empty string, or a color ansi codes to override the
 		 * default channel color
 		 * @see ColorLibrary
-		 * @return Empty string, or a color code to override
+		 * @return Empty string, or a color ansi codes to override
 		 */
-		public String colorOverride();
+		public String colorOverrideANSICodes();
+		
+		/**
+		 * Empty string, or a color code words to override the
+		 * default channel color
+		 * @see ColorLibrary
+		 * @return Empty string, or a color code words to override
+		 */
+		public String colorOverrideWords();
 		
 		/**
 		 * The channel flags for this channel.

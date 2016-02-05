@@ -330,9 +330,7 @@ public class DefaultSocial implements Social
 	@Override
 	public CMMsg makeChannelMsg(MOB mob, int channelInt, String channelName, List<String> commands, boolean makeTarget)
 	{
-		String channelColor = CMLib.channels().getChannel(channelInt).colorOverride();
-		if (channelColor.length() == 0)
-			channelColor = "^Q";
+		final String channelColor = "^Q";
 		final String str = makeTarget ? "" : (channelColor + "^<CHANNEL \"" + channelName + "\"^>[" + channelName + "] ");
 		final String end = makeTarget ? "" : "^</CHANNEL^>^N^.";
 		return makeMessage(mob, str, end, CMMsg.MASK_CHANNEL, CMMsg.MASK_CHANNEL | (CMMsg.TYP_CHANNEL + channelInt), commands, channelName, makeTarget);

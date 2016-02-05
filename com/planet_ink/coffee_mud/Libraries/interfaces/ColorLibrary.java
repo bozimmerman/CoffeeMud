@@ -236,13 +236,15 @@ public interface ColorLibrary extends CMLibrary
 		WEATHER('J')
 		;
 		
-		private final char		code;
+		private final char		cchar;
 		private final String	underStr;
+		private final String	escapeCode;
 		
-		private SpecialColor(char escapeCode)
+		private SpecialColor(char escapeChar)
 		{
-			this.code = escapeCode;
+			this.cchar = escapeChar;
 			this.underStr = name().replace('_', '-');
+			this.escapeCode = "^"+cchar;
 		}
 		
 		/**
@@ -251,7 +253,16 @@ public interface ColorLibrary extends CMLibrary
 		 */
 		public final char getCodeChar()
 		{
-			return code;
+			return cchar;
+		}
+		
+		/**
+		 * Returns the FULL ^ color code
+		 * @return the FULL ^ color code
+		 */
+		public final String getEscapeCode()
+		{
+			return escapeCode;
 		}
 		
 		/**

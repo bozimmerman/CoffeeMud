@@ -65,17 +65,19 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 
 	public CMChannel createNewChannel(final String name)
 	{
-		return createNewChannel(name, "", "", "", "", new HashSet<ChannelFlag>());
+		return createNewChannel(name, "", "", "", new HashSet<ChannelFlag>(), "", "");
 	}
 	
-	public CMChannel createNewChannel(final String name, final String mask, final String colorOverride, final Set<ChannelFlag> flags)
+	public CMChannel createNewChannel(final String name, final String mask, final Set<ChannelFlag> flags, 
+									  final String colorOverrideANSI, final String colorOverrideWords)
 	{
-		return createNewChannel(name, "", "", mask, colorOverride, flags);
+		return createNewChannel(name, "", "", mask, flags, colorOverrideANSI, colorOverrideWords);
 	}
 	
 	@Override
 	public CMChannel createNewChannel(final String name, final String i3Name, final String imc2Name, 
-									  final String mask, final String colorOverride, final Set<ChannelFlag> flags)
+									  final String mask, final Set<ChannelFlag> flags, 
+									  final String colorOverrideANSI, final String colorOverrideWords)
 	{
 		final SLinkedList<ChannelMsg> queue = new SLinkedList<ChannelMsg>(); 
 		return new CMChannel()
@@ -105,11 +107,17 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 			}
 
 			@Override
-			public String colorOverride()
+			public String colorOverrideANSICodes()
 			{
-				return colorOverride;
+				return colorOverrideANSI;
 			}
-
+			
+			@Override
+			public String colorOverrideWords()
+			{
+				return colorOverrideWords;
+			}
+			
 			@Override
 			public Set<ChannelFlag> flags()
 			{
@@ -501,7 +509,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 						colorOverride[0]=colorOverride[0]+C.getANSICode();
 					else
 						colorOverride[0]=C.getANSICode()+colorOverride[0];
-					colorOverride[1]+=" "+C.getANSICode();
+					colorOverride[1]+=" "+s;
 				}
 			}
 		}
@@ -538,7 +546,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 				final Set<ChannelFlag> flags = new HashSet<ChannelFlag>();
 				String mask=parseOutFlags(item.substring(x+1).trim(),flags,colorOverride);
 				item=item.substring(0,x);
-				chan = this.createNewChannel(item.toUpperCase().trim(), mask, colorOverride[0], flags);
+				chan = this.createNewChannel(item.toUpperCase().trim(), mask, flags, colorOverride[0], colorOverride[1]);
 			}
 			else
 				chan = this.createNewChannel(item.toUpperCase().trim());
@@ -568,11 +576,10 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 			item=item.substring(0,y1);
 			final Set<ChannelFlag> flags = new HashSet<ChannelFlag>();
 			String nameStr=item.toUpperCase().trim();
-			final String[] colorOverride=new String[]{""};
+			final String[] colorOverride=new String[]{"",""};
 			String maskStr=parseOutFlags(lvl,flags,colorOverride);
-			String colorOverrideStr=colorOverride[0];
 			String i3nameStr=ichan;
-			final CMChannel chan = this.createNewChannel(nameStr, i3nameStr, "", maskStr, colorOverrideStr, flags);
+			final CMChannel chan = this.createNewChannel(nameStr, i3nameStr, "", maskStr, flags, colorOverride[0], colorOverride[1]);
 			channelList.add(chan);
 		}
 		while(imc2list.length()>0)
@@ -601,9 +608,8 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 			String nameStr=item.toUpperCase().trim();
 			final String[] colorOverride=new String[]{""};
 			String maskStr=parseOutFlags(lvl,flags,colorOverride);
-			String colorOverrideStr=colorOverride[0];
 			String imc2Name=ichan;
-			final CMChannel chan = this.createNewChannel(nameStr, "", imc2Name, maskStr, colorOverrideStr, flags);
+			final CMChannel chan = this.createNewChannel(nameStr, "", imc2Name, maskStr, flags, colorOverride[0], colorOverride[1]);
 			channelList.add(chan);
 		}
 		baseChannelNames=new String[channelList.size()];
@@ -662,9 +668,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		final CMChannel chan=getChannel(channelInt);
 		final Set<ChannelFlag> flags=chan.flags();
 		channelName=chan.name();
-		String channelColor=chan.colorOverride();
-		if(channelColor.length()==0)
-			channelColor="^Q";
+		final String channelColor="^Q";
 
 		CMMsg msg=null;
 		if(systemMsg)
@@ -672,7 +676,10 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 			String str="["+channelName+"] '"+message+"'^</CHANNEL^>^?^.";
 			if((!mob.name().startsWith("^"))||(mob.name().length()>2))
 				str="<S-NAME> "+str;
-			msg=CMClass.getMsg(mob,null,null,CMMsg.MASK_CHANNEL|CMMsg.MASK_ALWAYS|CMMsg.MSG_SPEAK,channelColor+"^<CHANNEL \""+channelName+"\"^>"+str,CMMsg.NO_EFFECT,null,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),channelColor+"^<CHANNEL \""+channelName+"\"^>"+str);
+			msg=CMClass.getMsg(mob,null,null,
+					CMMsg.MASK_CHANNEL|CMMsg.MASK_ALWAYS|CMMsg.MSG_SPEAK,channelColor+"^<CHANNEL \""+channelName+"\"^>"+str,
+					CMMsg.NO_EFFECT,null,
+					CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),channelColor+"^<CHANNEL \""+channelName+"\"^>"+str);
 		}
 		else
 		if(message.startsWith(",")
@@ -696,11 +703,19 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 					msgstr=" "+msgstr.trim();
 				final String srcstr="^<CHANNEL \""+channelName+"\"^>["+channelName+"] "+mob.name()+msgstr+"^</CHANNEL^>^N^.";
 				final String reststr="^<CHANNEL \""+channelName+"\"^>["+channelName+"] <S-NAME>"+msgstr+"^</CHANNEL^>^N^.";
-				msg=CMClass.getMsg(mob,null,null,CMMsg.MASK_CHANNEL|CMMsg.MASK_ALWAYS|CMMsg.MSG_SPEAK,channelColor+""+srcstr,CMMsg.NO_EFFECT,null,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),channelColor+reststr);
+				msg=CMClass.getMsg(mob,null,null,
+						CMMsg.MASK_CHANNEL|CMMsg.MASK_ALWAYS|CMMsg.MSG_SPEAK,channelColor+""+srcstr,
+						CMMsg.NO_EFFECT,null,
+						CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),channelColor+reststr);
 			}
 		}
 		else
-			msg=CMClass.getMsg(mob,null,null,CMMsg.MASK_CHANNEL|CMMsg.MASK_ALWAYS|CMMsg.MSG_SPEAK,L("@x1^<CHANNEL \"@x2\"^>You @x3 '@x4'^</CHANNEL^>^N^.",channelColor,channelName,channelName,message),CMMsg.NO_EFFECT,null,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),L("@x1^<CHANNEL \"@x2\"^><S-NAME> @x3S '@x4'^</CHANNEL^>^N^.",channelColor,channelName,channelName,message));
+		{
+			msg=CMClass.getMsg(mob,null,null,
+					CMMsg.MASK_CHANNEL|CMMsg.MASK_ALWAYS|CMMsg.MSG_SPEAK,L("@x1^<CHANNEL \"@x2\"^>You @x3 '@x4'^</CHANNEL^>^N^.",channelColor,channelName,channelName,message),
+					CMMsg.NO_EFFECT,null,
+					CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),L("@x1^<CHANNEL \"@x2\"^><S-NAME> @x3S '@x4'^</CHANNEL^>^N^.",channelColor,channelName,channelName,message));
+		}
 		if((chan.flags().contains(ChannelsLibrary.ChannelFlag.ACCOUNTOOC)
 			||(chan.flags().contains(ChannelsLibrary.ChannelFlag.ACCOUNTOOCNOADMIN) && (!CMSecurity.isStaff(mob))))
 		&&(pStats!=null)
