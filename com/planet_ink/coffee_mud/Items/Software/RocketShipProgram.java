@@ -108,15 +108,17 @@ public class RocketShipProgram extends GenShipProgram
 
 	protected synchronized List<ShipEngine> getEngines()
 	{
+		List<ShipEngine> engines = this.engines;
 		if(engines == null)
 		{
 			engines=new Vector<ShipEngine>(1);
 			final List<ShipComponent> stuff=getShipComponents();
 			for(final Electronics E : stuff)
 			{
-				if(E instanceof ShipComponent.ShipEngine)
-					engines.add((ShipComponent.ShipEngine)E);
+				if(E instanceof ShipEngine)
+					engines.add((ShipEngine)E);
 			}
+			this.engines = engines;
 		}
 		return engines;
 	}
@@ -502,6 +504,7 @@ public class RocketShipProgram extends GenShipProgram
 					super.addScreenMessage(L("Error: Unknown engine name or command word '"+uword+"'.   Try HELP."));
 					return;
 				}
+				E=engineE;
 				int amount=0;
 				ShipEngine.ThrustPort portDir=ShipEngine.ThrustPort.AFT;
 				if(parsed.size()>3)
