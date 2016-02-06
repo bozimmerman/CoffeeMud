@@ -44,14 +44,23 @@ public class Dismount extends StdCommand
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
+		final String cmdWord = commands.size()> 0 ? commands.get(0): "";
 		Vector<String> origCmds=new XVector<String>(commands);
 		commands.remove(0);
 		if(commands.size()==0)
 		{
 			if(mob.riding()==null)
 			{
-				CMLib.commands().doCommandFail(mob,origCmds,L("But you aren't riding anything?!"));
-				return false;
+				if(cmdWord.startsWith("L"))
+				{
+					CMLib.commands().doCommandFail(mob,origCmds,L("Which way? Try EXITS."));
+					return false;
+				}
+				else
+				{
+					CMLib.commands().doCommandFail(mob,origCmds,L("But you aren't riding anything?!"));
+					return false;
+				}
 			}
 			final CMMsg msg=CMClass.getMsg(mob,mob.riding(),null,CMMsg.MSG_DISMOUNT,L("<S-NAME> @x1 <T-NAMESELF>.",mob.riding().dismountString(mob)));
 			if(mob.location().okMessage(mob,msg))
