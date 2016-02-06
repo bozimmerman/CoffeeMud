@@ -1362,7 +1362,10 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 					final Vector<String> list=new Vector<String>();
 					awarenessA.invoke(mob, list, mobLocR, true, CMProps.getIntVar(CMProps.Int.AWARERANGE));
 					for(final String o : list)
-						sess.colorOnlyPrintln(o, true);
+					{
+						sess.setIdleTimers();
+						sess.colorOnlyPrintln(o, true); // the zero turns off stack
+					}
 					sess.colorOnlyPrintln("\n\r", true);
 				}
 			}

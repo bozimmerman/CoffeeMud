@@ -201,6 +201,7 @@ public class Skill_RegionalAwareness extends StdSkill
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
+		final Session sess = mob.session();
 		if(auto && (givenTarget instanceof Room) && (asLevel>0))
 		{
 			final String[] miniMap=getMiniMap((Room)givenTarget, asLevel, false);
@@ -210,9 +211,14 @@ public class Skill_RegionalAwareness extends StdSkill
 					commands.add(s);
 			}
 			else
-			for(final String s : miniMap)
-				if(mob.session()!=null)
-					mob.session().colorOnlyPrintln(s);
+			if(sess != null)
+			{
+				for(final String s : miniMap)
+				{
+					sess.setIdleTimers();
+					sess.colorOnlyPrintln(s);
+				}
+			}
 			return true;
 		}
 
@@ -240,9 +246,14 @@ public class Skill_RegionalAwareness extends StdSkill
 			{
 				mob.location().send(mob,msg);
 				final String[] miniMap=getMiniMap(mob.location(), 2+(adjustedLevel(mob,asLevel)/10), true);
-				for(final String s : miniMap)
-					if(mob.session()!=null)
-						mob.session().colorOnlyPrintln(s+"\n\r");
+				if(sess != null)
+				{
+					for(final String s : miniMap)
+					{
+						sess.setIdleTimers(); // prevents spam block
+						sess.colorOnlyPrintln(s+"\n\r");
+					}
+				}
 			}
 		}
 		else

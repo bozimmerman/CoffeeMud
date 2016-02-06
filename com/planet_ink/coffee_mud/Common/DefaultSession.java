@@ -131,6 +131,7 @@ public class DefaultSession implements Session
 	protected long			 lastKeystroke		 = 0;
 	protected long			 lastIACIn		 	 = System.currentTimeMillis();
 	protected long			 promptLastShown	 = 0;
+	protected char 			 threadGroupChar	 = '\0';
 	protected volatile long  lastWriteTime		 = System.currentTimeMillis();
 	protected boolean		 debugStrInput		 = true;
 	protected boolean		 debugBinOutput		 = false;
@@ -139,14 +140,61 @@ public class DefaultSession implements Session
 
 	protected volatile InputCallback inputCallback  = null;
 
-	@Override public String ID(){return "DefaultSession";}
-	@Override public String name() { return ID();}
-	@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(final Exception e){return new DefaultSession();}}
-	@Override public void initializeClass(){}
-	@Override public boolean isFake() { return false;}
-	@Override public CMObject copyOf(){ try{ final Object O=this.clone(); return (CMObject)O;}catch(final Exception e){return newInstance();} }
-	@Override public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
-	public char threadGroupChar = '\0';
+	@Override
+	public String ID()
+	{
+		return "DefaultSession";
+	}
+
+	@Override
+	public String name()
+	{
+		return ID();
+	}
+
+	@Override
+	public CMObject newInstance()
+	{
+		try
+		{
+			return getClass().newInstance();
+		}
+		catch (final Exception e)
+		{
+			return new DefaultSession();
+		}
+	}
+
+	@Override
+	public void initializeClass()
+	{
+	}
+
+	@Override
+	public boolean isFake()
+	{
+		return false;
+	}
+
+	@Override
+	public CMObject copyOf()
+	{
+		try
+		{
+			final Object O = this.clone();
+			return (CMObject) O;
+		}
+		catch (final Exception e)
+		{
+			return newInstance();
+		}
+	}
+
+	@Override
+	public int compareTo(CMObject o)
+	{
+		return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));
+	}
 
 	public DefaultSession()
 	{
@@ -3027,6 +3075,8 @@ public class DefaultSession implements Session
 	@Override
 	public void setIdleTimers()
 	{
+		this.lastStr=""; // also resets spam counter
+		this.spamStack=0;
 		lastKeystroke=System.currentTimeMillis();
 		lastWriteTime=System.currentTimeMillis();
 	}
