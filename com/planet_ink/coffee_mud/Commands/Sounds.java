@@ -45,11 +45,26 @@ public class Sounds extends StdCommand
 	{
 		if(!mob.isMonster())
 		{
+			if((commands!=null)
+			&&(commands.size()>1)
+			&&(commands.get(1).toUpperCase().equals("OFF")))
+			{
+				final Command C=CMClass.getCommand("NoSounds");
+				if(C!=null)
+				{
+					return C.execute(mob, commands, metaFlags);
+				}
+			}
+			
 			boolean force=false;
 			if(commands != null)
+			{
 				for(final Object o : commands)
+				{
 					if(o.toString().equalsIgnoreCase("force"))
 						force=true;
+				}
+			}
 			final Session session=mob.session();
 			if((!mob.isAttributeSet(MOB.Attrib.SOUND))
 			||(!session.getClientTelnetMode(Session.TELNET_MSP)))

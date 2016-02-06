@@ -22,6 +22,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import com.jcraft.jzlib.*;
 
+import java.awt.Color;
 import java.io.*;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -635,6 +636,23 @@ public class DefaultSession implements Session
 		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET))
 			Log.debugOut("Negotiate-Sent: "+Session.TELNET_DESCS[telnetCode]);
 	}
+	
+	private void mushClientTurnOffMXPFix()
+	{
+		try
+		{
+			// i don't know why this works, but it does
+			clearInputBuffer(500);
+			Command C=CMClass.getCommand("MXP");
+			C.execute(mob, new XVector<String>("MXP","QUIET"), 0);
+			clearInputBuffer(500);
+			C=CMClass.getCommand("NOMXP");
+			C.execute(mob, new XVector<String>("NOMXP","QUIET"), 0);
+		}
+		catch(Exception e)
+		{
+		}
+	}
 
 	@Override
 	public void initTelnetMode(int attributesBitmap)
@@ -647,6 +665,8 @@ public class DefaultSession implements Session
 		{ 
 			changeTelnetMode(TELNET_MXP,!getClientTelnetMode(TELNET_MXP)); 
 			changedSomething=true;
+			if((!mxpSet)&&(getTerminalType()!=null)&&(getTerminalType().equals("mushclient")))
+				mushClientTurnOffMXPFix();
 		}
 		final boolean mspSet=(!CMSecurity.isDisabled(CMSecurity.DisFlag.MSP))&&CMath.bset(attributesBitmap,MOB.Attrib.SOUND.getBitCode());
 		if(mspSet!=getClientTelnetMode(TELNET_MSP))
@@ -654,12 +674,8 @@ public class DefaultSession implements Session
 			changeTelnetMode(TELNET_MSP,!getClientTelnetMode(TELNET_MSP)); 
 			changedSomething=true;
 		}
-		try
-		{
-			if(changedSomething) 
-				blockingIn(500, true);
-		}
-		catch(final Exception e){}
+		if(changedSomething) 
+			clearInputBuffer(500);
 	}
 
 	@Override 
@@ -1895,6 +1911,17 @@ public class DefaultSession implements Session
 		return 1;
 	}
 
+	protected void clearInputBuffer(long maxTime)
+	{
+		try
+		{
+			blockingIn(maxTime, true);
+		}
+		catch(Exception e)
+		{
+		}
+	}
+	
 	@Override
 	public String blockingIn(long maxTime, boolean filter)
 		throws IOException

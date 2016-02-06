@@ -45,6 +45,24 @@ public class MXP extends StdCommand
 	{
 		if(!mob.isMonster())
 		{
+			boolean doCodeResend = true;
+			if((commands!=null)&&(commands.size()>1))
+			{
+				if(commands.get(1).toUpperCase().equals("OFF"))
+				{
+					final Command C=CMClass.getCommand("NOMXP");
+					if(C!=null)
+					{
+						return C.execute(mob, commands, metaFlags);
+					}
+				}
+				else
+				if(commands.get(1).toUpperCase().equals("QUIET"))
+				{
+					doCodeResend=false;
+				}
+			}
+			
 			if((!mob.isAttributeSet(MOB.Attrib.MXP))
 			||(!mob.session().getClientTelnetMode(Session.TELNET_MXP)))
 			{
@@ -53,15 +71,24 @@ public class MXP extends StdCommand
 					mob.session().negotiateTelnetMode(Session.TELNET_MXP);
 				for(int i=0;((i<5)&&(!mob.session().getClientTelnetMode(Session.TELNET_MXP)));i++)
 				{
-					try{mob.session().prompt("",250);}catch(final Exception e){}
+					try
+					{
+						mob.session().prompt("", 250);
+					}
+					catch (final Exception e)
+					{
+					}
 				}
 				if(mob.session().getClientTelnetMode(Session.TELNET_MXP))
 				{
 					mob.setAttribute(MOB.Attrib.MXP,true);
-					final StringBuffer mxpText=Resources.getFileResource("text/mxp.txt",true);
-					if(mxpText!=null)
-						mob.session().rawOut("\033[6z\n\r"+mxpText.toString()+"\n\r");
-					mob.tell(L("MXP codes enabled.\n\r"));
+					if(doCodeResend)
+					{
+						final StringBuffer mxpText=Resources.getFileResource("text/mxp.txt",true);
+						if(mxpText!=null)
+							mob.session().rawOut("\033[6z\n\r"+mxpText.toString()+"\n\r");
+						mob.tell(L("MXP codes enabled.\n\r"));
+					}
 				}
 				else
 					mob.tell(L("Your client does not appear to support MXP."));

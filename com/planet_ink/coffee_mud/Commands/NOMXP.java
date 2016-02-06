@@ -45,6 +45,13 @@ public class NOMXP extends StdCommand
 	{
 		if(!mob.isMonster())
 		{
+			boolean quiet=false;
+			if((commands!=null)
+			&&(commands.size()>1)
+			&&(commands.get(1).toUpperCase().equals("QUIET")))
+			{
+				quiet=true;
+			}
 			if((mob.isAttributeSet(MOB.Attrib.MXP))
 			||(mob.session().getClientTelnetMode(Session.TELNET_MXP)))
 			{
@@ -53,7 +60,8 @@ public class NOMXP extends StdCommand
 				mob.setAttribute(MOB.Attrib.MXP,false);
 				mob.session().changeTelnetMode(Session.TELNET_MXP,false);
 				mob.session().setClientTelnetMode(Session.TELNET_MXP,false);
-				mob.tell(L("MXP codes are disabled.\n\r"));
+				if(!quiet)
+					mob.tell(L("MXP codes are disabled.\n\r"));
 			}
 			else
 				mob.tell(L("MXP codes are already disabled.\n\r"));

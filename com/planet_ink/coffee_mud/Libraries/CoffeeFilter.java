@@ -35,9 +35,14 @@ import java.util.*;
 */
 public class CoffeeFilter extends StdLibrary implements TelnetFilter
 {
-	@Override public String ID(){return "CoffeeFilter";}
-	private Hashtable<String,Pronoun> tagTable=null;
-	private ColorState normalColor = null;
+	@Override
+	public String ID()
+	{
+		return "CoffeeFilter";
+	}
+
+	private Hashtable<String, Pronoun>	tagTable	= null;
+	private ColorState					normalColor	= null;
 
 	@Override
 	public void initializeClass()

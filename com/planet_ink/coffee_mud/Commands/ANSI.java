@@ -44,6 +44,17 @@ public class ANSI extends StdCommand
 	{
 		if(!mob.isMonster())
 		{
+			if((commands!=null)
+			&&(commands.size()>1)
+			&&(commands.get(1).toUpperCase().equals("OFF")))
+			{
+				final Command C=CMClass.getCommand("NOANSI");
+				if(C!=null)
+				{
+					return C.execute(mob, commands, metaFlags);
+				}
+			}
+			
 			PlayerAccount acct = null;
 			if(mob.playerStats()!=null)
 				acct = mob.playerStats().getAccount();
