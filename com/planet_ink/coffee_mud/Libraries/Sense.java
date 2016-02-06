@@ -1014,6 +1014,12 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	}
 
 	@Override
+	public boolean isFloatingFreely(Physical P)
+	{
+		return ((P.fetchEffect("GravityFloat")!=null)&&(P.phyStats().isAmbiance(L("Floating"))));
+	}
+	
+	@Override
 	public int getHideScore(Physical seen)
 	{
 		if((seen!=null)&&(isHidden(seen)))

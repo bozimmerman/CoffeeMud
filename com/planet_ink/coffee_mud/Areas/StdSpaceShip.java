@@ -455,11 +455,13 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_DROP:
-				if(msg.target() instanceof Item)
+			case CMMsg.TYP_THROW:
+				if((msg.target() instanceof Item)
+				||(msg.tool() instanceof Item))
 				{
 					if(this.getShipFlag(ShipFlag.NO_GRAVITY))
 					{
-						final Item I=(Item)msg.target();
+						final Item I=(msg.target() instanceof Item) ? (Item)msg.target(): (Item)msg.tool();
 						msg.addTrailerRunnable(new Runnable(){
 							@Override
 							public void run()

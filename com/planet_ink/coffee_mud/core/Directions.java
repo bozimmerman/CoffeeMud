@@ -101,6 +101,18 @@ public class Directions
 
 	private static final String[] DIRECTION_CHARS= { "N","S","E","W","U","D","V","NE","NW","SE","SW" };
 
+	private static final String[] DIRECTIONS_COMPASS_UPPER_INDEXED=
+	{
+		"NORTH","SOUTH","EAST","WEST","UP","DOWN","THERE","NORTHEAST","NORTHWEST","SOUTHEAST","SOUTHWEST"
+	};
+
+
+	private static final String[] DIRECTIONS_SHIP_UPPER_INDEXED=
+	{
+		"FOREWARD","AFT","STARBOARD","PORT","ABOVE","BELOW","THERE","FOREWARD STARBOARD","FOREWARD PORT","AFT STARBOARD","AFT PORT"
+	};
+	
+	
 	private static final Object[][] DIRECTIONS_COMPASS_CHART=
 	{
 		{"UP",Integer.valueOf(UP)},
@@ -295,6 +307,24 @@ public class Directions
 		return "";
 	}
 
+
+	/**
+	 * Given the direction code, returns the formal name of that direction, capitalized.
+	 * @param code the direction code
+	 * @return the name of that direction, capitalized
+	 */
+	public static final String getUpperDirectionName(final int code, boolean useShip)
+	{
+		if((code>=0)&&(code<NUM_DIRECTIONS()))
+		{
+			if(useShip)
+				return DIRECTIONS_COMPASS_UPPER_INDEXED[code];
+			else
+				return DIRECTIONS_SHIP_UPPER_INDEXED[code];
+		}
+		return "";
+	}
+	
 	/**
 	 * Given the direction code, returns the ship-talk name of that direction, capitalized.
 	 * @param code the direction code
@@ -359,8 +389,10 @@ public class Directions
 		{
 			final String upDir=theDir.toUpperCase();
 			for(int i=0;i<NUM_DIRECTIONS();i++)
+			{
 				if(upDir.startsWith(DIRECTION_CHARS[i]))
 					return i;
+			}
 		}
 		return code;
 	}
@@ -395,8 +427,10 @@ public class Directions
 		{
 			final String upDir=theDir.toUpperCase();
 			for(int i=0;i<NUM_DIRECTIONS();i++)
+			{
 				if(upDir.startsWith(DIRECTION_CHARS[i]))
 					return i;
+			}
 		}
 		return code;
 	}
@@ -416,9 +450,11 @@ public class Directions
 			return -1;
 		final String upDir=theDir.toUpperCase();
 		for (final Object[] element : DIRECTIONS_FULL_CHART)
+		{
 			if((element[0].toString().startsWith(upDir))
 			&&(((Integer)element[1]).intValue()<NUM_DIRECTIONS()))
 				return ((Integer)element[1]).intValue();
+		}
 		return -1;
 	}
 
@@ -437,9 +473,11 @@ public class Directions
 			return -1;
 		final String upDir=theDir.toUpperCase();
 		for (final Object[] element : DIRECTIONS_COMPASS_CHART)
+		{
 			if((element[0].toString().startsWith(upDir))
 			&&(((Integer)element[1]).intValue()<NUM_DIRECTIONS()))
 				return ((Integer)element[1]).intValue();
+		}
 		return -1;
 	}
 
@@ -458,9 +496,11 @@ public class Directions
 			return -1;
 		final String upDir=theDir.toUpperCase();
 		for (final Object[] element : DIRECTIONS_SHIP_CHART)
+		{
 			if((element[0].toString().startsWith(upDir))
 			&&(((Integer)element[1]).intValue()<NUM_DIRECTIONS()))
 				return ((Integer)element[1]).intValue();
+		}
 		return -1;
 	}
 
@@ -477,14 +517,34 @@ public class Directions
 	{
 		switch(direction)
 		{
-		case Directions.NORTH: y--; break;
-		case Directions.SOUTH: y++; break;
-		case Directions.EAST: x++; break;
-		case Directions.WEST: x--; break;
-		case Directions.NORTHEAST: x++; y--; break;
-		case Directions.NORTHWEST: x--; y--; break;
-		case Directions.SOUTHEAST: x++; y++; break;
-		case Directions.SOUTHWEST: x--; y++; break;
+		case Directions.NORTH:
+			y--;
+			break;
+		case Directions.SOUTH:
+			y++;
+			break;
+		case Directions.EAST:
+			x++;
+			break;
+		case Directions.WEST:
+			x--;
+			break;
+		case Directions.NORTHEAST:
+			x++;
+			y--;
+			break;
+		case Directions.NORTHWEST:
+			x--;
+			y--;
+			break;
+		case Directions.SOUTHEAST:
+			x++;
+			y++;
+			break;
+		case Directions.SOUTHWEST:
+			x--;
+			y++;
+			break;
 		}
 		final int[] xy=new int[2];
 		xy[0]=x;

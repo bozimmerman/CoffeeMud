@@ -654,6 +654,16 @@ public interface CMFlagLibrary extends CMLibrary
 	 */
 	public boolean isFlying(Physical P);
 
+	
+	/**
+	 * Returns whether the given item, mob, whatever is
+	 * floating freely and uncontrolled, as when not
+	 * under gravity.
+	 * @param P the item, mob, whatever to check
+	 * @return true if it is floating, false otherwise
+	 */
+	public boolean isFloatingFreely(Physical P);
+	
 	/**
 	 * Returns whether the given item, mob, whatever is 
 	 * climbing.

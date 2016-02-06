@@ -88,8 +88,15 @@ public class Throw extends StdCommand
 			||(mob.location().getExitInDir(dir)==null)
 			||(!mob.location().getExitInDir(dir).isOpen()))
 			{
-				CMLib.commands().doCommandFail(mob,origCmds,L("You can't throw anything that way!"));
-				return false;
+				if(CMLib.flags().isFloatingFreely(mob))
+				{
+					target=mob.location();
+				}
+				else
+				{
+					CMLib.commands().doCommandFail(mob,origCmds,L("You can't throw anything that way!"));
+					return false;
+				}
 			}
 			final boolean amOutside=((mob.location().domainType()&Room.INDOORS)==0);
 			final boolean isOutside=((((Room)target).domainType()&Room.INDOORS)==0);
@@ -147,10 +154,18 @@ public class Throw extends StdCommand
 			final String fromDir=useShipDirs?Directions.getFromShipDirectionName(opDir):Directions.getFromCompassDirectionName(opDir);
 			final CMMsg msg=CMClass.getMsg(mob,target,item,CMMsg.MSG_THROW,L("<S-NAME> throw(s) <O-NAME> @x1.",inDir.toLowerCase()));
 			final CMMsg msg2=CMClass.getMsg(mob,target,item,CMMsg.MSG_THROW,L("<O-NAME> fl(ys) in from @x1.",fromDir.toLowerCase()));
-			if(mob.location().okMessage(mob,msg)&&((Room)target).okMessage(mob,msg2))
+			if(mob.location()==target)
 			{
-				mob.location().send(mob,msg);
-				((Room)target).sendOthers(mob,msg2);
+				if(mob.location().okMessage(mob,msg))
+					mob.location().send(mob,msg);
+			}
+			else
+			{
+				if(mob.location().okMessage(mob,msg)&&((Room)target).okMessage(mob,msg2))
+				{
+					mob.location().send(mob,msg);
+					((Room)target).sendOthers(mob,msg2);
+				}
 			}
 		}
 		return false;

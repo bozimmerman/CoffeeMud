@@ -139,6 +139,11 @@ public class Skill_Swim extends StdSkill
 				return false;
 			}
 			final Room r=mob.location().getRoomInDir(dirCode);
+			if(CMLib.flags().isFloatingFreely(mob))
+			{
+				// swimming in no grav is OK
+			}
+			else
 			if(!placeToSwim(mob.location()))
 			{
 				if(!placeToSwim(r))

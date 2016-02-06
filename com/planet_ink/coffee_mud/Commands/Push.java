@@ -35,10 +35,17 @@ import java.util.*;
 
 public class Push extends Go
 {
-	public Push(){}
+	public Push()
+	{
+	}
 
-	private final String[] access=I(new String[]{"PUSH"});
-	@Override public String[] getAccessWords(){return access;}
+	private final String[]	access	= I(new String[] { "PUSH" });
+
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
@@ -58,10 +65,18 @@ public class Push extends Go
 				||(mob.location().getExitInDir(dirCode)==null)
 				||(!mob.location().getExitInDir(dirCode).isOpen()))
 				{
-					CMLib.commands().doCommandFail(mob,origCmds,L("You can't push anything that way."));
-					return false;
+					if(CMLib.flags().isFloatingFreely(mob))
+					{
+						E=mob.location();
+					}
+					else
+					{
+						CMLib.commands().doCommandFail(mob,origCmds,L("You can't push anything that way."));
+						return false;
+					}
 				}
-				E=mob.location().getRoomInDir(dirCode);
+				else
+					E=mob.location().getRoomInDir(dirCode);
 				dir=" "+(((mob.location() instanceof BoardableShip)||(mob.location().getArea() instanceof BoardableShip))?
 						Directions.getShipDirectionName(dirCode):Directions.getDirectionName(dirCode));
 				commands.remove(commands.size()-1);
@@ -90,7 +105,7 @@ public class Push extends Go
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			if((dir.length()>0)&&(msg.tool() instanceof Room))
+			if((dir.length()>0)&&(msg.tool() instanceof Room)&&(msg.tool()!=mob.location()))
 			{
 				final Room R=(Room)msg.tool();
 				if(R.okMessage(mob,msg))
@@ -113,9 +128,23 @@ public class Push extends Go
 		}
 		return false;
 	}
-	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandCombatActionCost(ID());}
-	@Override public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandActionCost(ID());}
-	@Override public boolean canBeOrdered(){return true;}
 
+	@Override
+	public double combatActionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandCombatActionCost(ID());
+	}
+
+	@Override
+	public double actionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandActionCost(ID());
+	}
+
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 
 }

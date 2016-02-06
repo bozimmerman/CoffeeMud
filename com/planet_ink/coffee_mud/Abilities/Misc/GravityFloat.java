@@ -53,6 +53,8 @@ public class GravityFloat extends StdAbility
 	}
 
 	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Floating)");
+	
+	private volatile boolean flyingAllowed = false;
 
 	@Override
 	public String displayText()
@@ -94,6 +96,7 @@ public class GravityFloat extends StdAbility
 				{
 					gravA.unInvoke();
 					P.delEffect(gravA);
+					P.recoverPhyStats();
 				}
 			}
 			else
@@ -103,8 +106,18 @@ public class GravityFloat extends StdAbility
 					Ability gravityA=(Ability)copyOf();
 					if(gravityA != null)
 					{
-						P.addNonUninvokableEffect(gravityA);
-						gravityA.setSavable(false);
+						final Room R=CMLib.map().roomLocation(P);
+						if(R!=null)
+						{
+							final CMMsg msg=CMClass.getMsg(CMClass.getFactoryMOB("gravity", 1, R),P,gravityA,CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,null);
+							if(P.okMessage(P, msg))
+							{
+								P.executeMsg(P, msg);
+								P.addNonUninvokableEffect(gravityA);
+								gravityA.setSavable(false);
+								P.recoverPhyStats();
+							}
+						}
 					}
 				}
 			}
@@ -123,6 +136,7 @@ public class GravityFloat extends StdAbility
 				{
 					unInvoke();
 					P.delEffect(GravityFloat.this);
+					P.recoverPhyStats();
 				}
 			}
 		}
@@ -146,7 +160,65 @@ public class GravityFloat extends StdAbility
 	{
 		super.affectPhyStats(affected, affectableStats);
 		affectableStats.setWeight(1);
-		affectableStats.addAmbiance("Floating");
+		affectableStats.addAmbiance(L("Floating"));
+		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_FLYING);
+		affectableStats.addAmbiance("-FLYING");
+	}
+	
+	public void showFailedToMove(final MOB mob)
+	{
+		if(mob != null)
+		{
+			final Room R=mob.location();
+			if(R!=null)
+			{
+				switch(CMLib.dice().roll(1, 10, 0))
+				{
+				case 1:
+				case 2:
+				case 3:
+				case 4:
+				case 5:
+				case 6:
+				case 7:
+				case 8:
+				case 9:
+				default:
+				case 10:
+					R.show(mob, null,CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> flap(s) around trying to go somewhere, but makes no progress."));
+					break;
+				}
+			}
+		}
+	}
+	
+	public void showFailedToTouch(final MOB mob, Physical P)
+	{
+		if(mob != null)
+		{
+			final Room R=mob.location();
+			if(R!=null)
+			{
+				switch(CMLib.dice().roll(1, 10, 0))
+				{
+				case 1:
+				case 2:
+				case 3:
+				case 4:
+				case 5:
+					R.show(mob, P,CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> flap(s) around reaching for <T-NAME>, but <S-HE-SHE> floats away from it."));
+					break;
+				case 6:
+				case 7:
+				case 8:
+				case 9:
+				default:
+				case 10:
+					R.show(mob, P,CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> flap(s) around trying reach for <T-NAME>, but <T-HE-SHE> floats away."));
+					break;
+				}
+			}
+		}
 	}
 	
 	@Override
@@ -154,34 +226,147 @@ public class GravityFloat extends StdAbility
 	{
 		if(!super.okMessage(host, msg))
 			return false;
-		// TODO: getting, putting, are harder
-		// TODO: entering, leaving, mounting very difficult
-		// TODO: swimming should sorta work, if they try it
-		// TODO: pushing sometimes works
-		// TODO: gravity legs should develop over time...this turns into a saved ability with a score?
+		if((affected instanceof MOB)
+		&&(msg.source()==affected))
+		{
+			switch(msg.targetMinor())
+			{
+			case CMMsg.TYP_GET:
+			case CMMsg.TYP_PUT:
+			case CMMsg.TYP_OPEN:
+			case CMMsg.TYP_CLOSE:
+			case CMMsg.TYP_QUIETMOVEMENT:
+			case CMMsg.TYP_NOISYMOVEMENT:
+			case CMMsg.TYP_HANDS:
+				if(!CMath.bset(msg.sourceMajor(), CMMsg.MASK_ALWAYS))
+				{
+					if((msg.target() instanceof Item)
+					&&(!msg.source().isMine(msg.target()))
+					&&(CMLib.dice().rollPercentage()>20)
+					&&(msg.source().phyStats().isAmbiance(L("Floating"))))
+					{
+						showFailedToTouch(msg.source(),(Physical)msg.target());
+						return false;
+					}
+					if((msg.target() instanceof MOB)
+					&&(CMLib.dice().rollPercentage()>20)
+					&&(msg.source().phyStats().isAmbiance(L("Floating"))))
+					{
+						showFailedToTouch(msg.source(),(Physical)msg.target());
+						return false;
+					}
+				}
+				break;
+			case CMMsg.TYP_ENTER:
+			case CMMsg.TYP_LEAVE:
+			case CMMsg.TYP_MOUNT:
+			{
+				if(msg.source().phyStats().isAmbiance(L("Floating")) 
+				&& (!flyingAllowed)
+				&&(!CMath.bset(msg.sourceMajor(), CMMsg.MASK_ALWAYS)))
+				{
+					if(CMLib.flags().isSwimming(affected))
+					{
+						if(CMLib.dice().rollPercentage()>60)
+						{
+							showFailedToMove(msg.source());
+							return false;
+						}
+					}
+					else
+					if(CMLib.dice().rollPercentage()>20)
+					{
+						showFailedToMove(msg.source());
+						return false;
+					}
+				}
+				break;
+			}
+			}
+		}
 		return true;
 	}
 	
 	@Override
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
-		// TODO: throwing is a way to move from room to room now!
-		// TODO: pushing sometimes works
-		// TODO: gravity legs should develop over time...this turns into a saved ability with a score?
-		if(affected instanceof Item)
+		// IDEA: gravity legs should develop over time...this turns into a saved ability with a score?
+		if((affected instanceof Item)
+		&&(msg.target()==affected))
 		{
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_GET:
-				if(msg.target()==affected)
-					msg.addTrailerRunnable(checkStopFloating);
+				msg.addTrailerRunnable(checkStopFloating);
 				break;
 			}
 		}
 		else
-		if(affected instanceof MOB)
+		if((affected instanceof MOB)
+		&&(msg.source()==affected))
 		{
-			
+			switch(msg.sourceMinor())
+			{
+			case CMMsg.TYP_PUSH:
+				if((msg.target() instanceof Item)
+				&&(msg.source().location().isHere(msg.target())))
+				{
+					final Item pushedI=(Item)msg.target();
+					if((pushedI instanceof Rideable)
+					||(!CMLib.flags().isGettable(pushedI))
+					||(pushedI.phyStats().weight()>msg.source().phyStats().weight()))
+					{
+						// it will work
+					}
+					else
+					{
+						break; // won't work.
+					}
+				}
+				else
+				{
+					break; // won't work.
+				}
+				//$FALL-THROUGH$
+			case CMMsg.TYP_THROW:
+				if(msg.source().phyStats().isAmbiance(L("Floating")))
+				{
+					final String sourceMessage = CMStrings.removeColors(CMLib.english().stripPunctuation(msg.sourceMessage()));
+					final List<String> words=CMParms.parseSpaces(sourceMessage, true);
+					final Room R=msg.source().location();
+					final boolean useShip =((R instanceof BoardableShip)||(R.getArea() instanceof BoardableShip))?true:false;
+					int floatDir = -1;
+					for(int i=words.size()-1;(i>=0) && (floatDir<0);i--)
+					{
+						for(int dir : Directions.DISPLAY_CODES())
+						{
+							if(words.get(i).equals(Directions.getUpperDirectionName(dir, useShip)))
+							{
+								floatDir = Directions.getOpDirectionCode(dir);
+								break;
+							}
+						}
+					}
+					if((floatDir >=0)&&(R!=null))
+					{
+						final Room newRoom=R.getRoomInDir(floatDir);
+						final Exit E=R.getExitInDir(floatDir);
+						if((newRoom!=null)&&(E!=null)&&(E.isOpen()))
+						{
+							try
+							{
+								flyingAllowed=true;
+								CMLib.tracking().walk(msg.source(),floatDir,msg.source().isInCombat(),false,false,false);
+							}
+							finally
+							{
+								flyingAllowed=false;
+							}
+						}
+					}
+				}
+				break;
+			}
 		}
 	}
 	

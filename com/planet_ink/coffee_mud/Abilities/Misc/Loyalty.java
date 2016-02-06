@@ -37,18 +37,47 @@ import java.util.*;
 */
 public class Loyalty extends StdAbility
 {
-	@Override public String ID() { return "Loyalty"; }
-	private final static String localizedName = CMLib.lang().L("Loyalty");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
-	protected final static int INTERVAL = (2 * 60) / 4000;
-	protected String loyaltyName = "";
-	protected boolean teleport = false;
-	protected volatile boolean watchForMaster = true;
-	protected int checkDown = INTERVAL;
-	protected WeakReference<MOB> loyaltyPlayer = null;
-	
+	@Override
+	public String ID()
+	{
+		return "Loyalty";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Loyalty");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= "(Loyal to @x1)";
+
+	@Override
+	public String displayText()
+	{
+		return CMLib.lang().L(localizedStaticDisplay, loyaltyName);
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	protected final static int		INTERVAL		= (2 * 60) / 4000;
+	protected String				loyaltyName		= "";
+	protected boolean				teleport		= false;
+	protected volatile boolean		watchForMaster	= true;
+	protected int					checkDown		= INTERVAL;
+	protected WeakReference<MOB>	loyaltyPlayer	= null;
+
 	@Override
 	public void setMiscText(String newMiscText)
 	{
