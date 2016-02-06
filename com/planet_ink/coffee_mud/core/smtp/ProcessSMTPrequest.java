@@ -895,6 +895,17 @@ public class ProcessSMTPrequest implements Runnable
 									{
 										parmparms=parm.substring(x+1).trim();
 										parm=parm.substring(1,x);
+										if(parmparms.trim().length()>0)
+										{
+											if((parmparms.trim().toUpperCase().startsWith("SIZE="))
+											||(!CMath.isNumber(parmparms.trim().toUpperCase().substring(5))))
+											{
+												final int size=CMath.s_int(parmparms.trim().toUpperCase().substring(5));
+												if(size>server.getMaxMsgSize())
+													replyData=("552 String exceeds size limit. But you were nice to tell me!"+cr).getBytes();
+											}
+											//else replyData=("502 Parameters not supported... \""+parmparms+"\""+cr).getBytes(); // say nothing, see if that works.
+										}
 									}
 								}
 								else
@@ -903,19 +914,6 @@ public class ProcessSMTPrequest implements Runnable
 									replyData=("501 Syntax error in \""+parm+"\""+cr).getBytes();
 									error=true;
 								}
-								if(parmparms.trim().length()>0)
-								{
-									if((parmparms.trim().toUpperCase().startsWith("SIZE="))
-									||(!CMath.isNumber(parmparms.trim().toUpperCase().substring(5))))
-									{
-										final int size=CMath.s_int(parmparms.trim().toUpperCase().substring(5));
-										if(size>server.getMaxMsgSize())
-											replyData=("552 String exceeds size limit. But you were nice to tell me!"+cr).getBytes();
-									}
-									else
-										replyData=("502 Parameters not supported... \""+parmparms+"\""+cr).getBytes();
-								}
-								else
 								if(parm.indexOf('@')<0)
 									replyData=("550 "+parm+" user unknown."+cr).getBytes();
 								else
