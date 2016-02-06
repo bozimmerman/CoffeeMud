@@ -1,4 +1,5 @@
 package com.planet_ink.coffee_mud.core.collections;
+import java.lang.reflect.Method;
 import java.util.*;
 
 /*
@@ -20,11 +21,21 @@ public class FullConvertingList<L,K> implements List<K>
 {
 	private final List<L> list;
 	private final FullConverter<L, K> converter;
+	private Class<?> lClass = null;
+	private Class<?> kClass = null;
 
 	public FullConvertingList(List<L> l, FullConverter<L, K> conv)
 	{
 		list=l;
 		converter=conv;
+		for(Method M : conv.getClass().getMethods())
+		{
+			if(M.getName().equals("reverseConvert") && (M.getParameterTypes().length>0))
+			{
+				kClass = M.getReturnType();
+				lClass = M.getParameterTypes()[0];
+			}
+		}
 	}
 
 	@Override
@@ -37,6 +48,17 @@ public class FullConvertingList<L,K> implements List<K>
 	public void add(int arg0, K arg1)
 	{
 		list.add(arg0,converter.reverseConvert(arg1));
+	}
+	
+	protected Object convertToListType(final Object arg0)
+	{
+		if(arg0 == null)
+			return null;
+		if(arg0.getClass() == lClass)
+			return arg0;
+		if(arg0.getClass() == kClass)
+			return converter.reverseConvert((K)arg0);
+		return null;
 	}
 
 	@Override
@@ -66,16 +88,15 @@ public class FullConvertingList<L,K> implements List<K>
 		list.clear();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public boolean contains(Object arg0)
 	{
-		if(list.contains(arg0))
-			return true;
-		return list.contains(converter.reverseConvert((K)arg0));
+		final Object o = convertToListType(arg0);
+		if(o == null)
+			return false;
+		return list.contains(o);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public boolean containsAll(Collection<?> arg0)
 	{
@@ -83,8 +104,10 @@ public class FullConvertingList<L,K> implements List<K>
 			return false;
 		for(Object o : arg0)
 		{
-			if((!list.contains(arg0))
-			&&(!list.contains(converter.reverseConvert((K)o))))
+			o = convertToListType(o);
+			if(o == null)
+				return false;
+			if(!list.contains(o))
 				return false;
 		}
 		return true;
@@ -96,14 +119,15 @@ public class FullConvertingList<L,K> implements List<K>
 		return converter.convert(arg0,list.get(arg0));
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public int indexOf(Object arg0)
 	{
-		int x=list.indexOf(arg0);
-		if(x<0)
-			return list.indexOf(converter.reverseConvert((K)arg0));
-		return x;
+		if(list.size()==0)
+			return -1;
+		final Object o = convertToListType(arg0);
+		if(o == null)
+			return -1;
+		return list.indexOf(o);
 	}
 
 	@Override
@@ -118,15 +142,15 @@ public class FullConvertingList<L,K> implements List<K>
 		return new FullConvertingIterator<L, K>(list.iterator(),converter);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public int lastIndexOf(Object arg0)
 	{
-		int x=list.lastIndexOf(arg0);
-		if(x<0)
-			return list.lastIndexOf(converter.reverseConvert((K)arg0));
-		else
-			return x;
+		if(list.size()==0)
+			return -1;
+		final Object o = convertToListType(arg0);
+		if(o == null)
+			return -1;
+		return list.lastIndexOf(o);
 	}
 
 	@Override
@@ -141,13 +165,13 @@ public class FullConvertingList<L,K> implements List<K>
 		return new FullConvertingListIterator<L,K>(list.listIterator(arg0), converter);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public boolean remove(Object arg0)
 	{
-		if(list.contains(arg0))
-			return list.remove(arg0);
-		return list.remove(converter.reverseConvert((K)arg0));
+		final Object o = convertToListType(arg0);
+		if(o == null)
+			return false;
+		return list.remove(o);
 	}
 
 	@Override

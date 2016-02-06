@@ -108,13 +108,16 @@ public class DefaultCharStats implements CharStats
 	{
 		if(intoStats instanceof DefaultCharStats)
 		{
+			((DefaultCharStats)intoStats).breathables = breathables;
 			if(myClasses==null)
 				((DefaultCharStats)intoStats).myClasses=null;
 			else
 			if((((DefaultCharStats)intoStats).myClasses!=null)
 			&&(((DefaultCharStats)intoStats).myClasses.length==myClasses.length))
+			{
 				for(int i=0;i<myClasses.length;i++)
 					((DefaultCharStats)intoStats).myClasses[i]=myClasses[i];
+			}
 			else
 				((DefaultCharStats)intoStats).myClasses=myClasses.clone();
 			if(myLevels==null)
@@ -122,8 +125,10 @@ public class DefaultCharStats implements CharStats
 			else
 			if((((DefaultCharStats)intoStats).myLevels!=null)
 			&&(((DefaultCharStats)intoStats).myLevels.length==myLevels.length))
+			{
 				for(int i=0;i<myLevels.length;i++)
 					((DefaultCharStats)intoStats).myLevels[i]=myLevels[i];
+			}
 			else
 				((DefaultCharStats)intoStats).myLevels=myLevels.clone();
 			if(myRace!=null)
@@ -137,8 +142,10 @@ public class DefaultCharStats implements CharStats
 			else
 			if((((DefaultCharStats)intoStats).bodyAlterations!=null)
 			&&(((DefaultCharStats)intoStats).bodyAlterations.length==bodyAlterations.length))
+			{
 				for(int i=0;i<bodyAlterations.length;i++)
 					((DefaultCharStats)intoStats).bodyAlterations[i]=bodyAlterations[i];
+			}
 			else
 				((DefaultCharStats)intoStats).bodyAlterations=bodyAlterations.clone();
 			for(int i=0;i<stats.length;i++)
@@ -157,6 +164,7 @@ public class DefaultCharStats implements CharStats
 			intoStats.setDisplayClassLevel(displayClassLevel);
 			intoStats.setBodyPartsFromStringAfterRace(getBodyPartsAsString());
 			intoStats.setWearableRestrictionsBitmap(unwearableBitmap);
+			intoStats.setBreathables(breathables);
 		}
 	}
 

@@ -323,8 +323,20 @@ public class Mer extends StdCharClass
 	private final Map<int[],int[]> oldSets = new Hashtable<int[],int[]>(); 
 	
 	@Override
-	public void affectCharStats(MOB affected, CharStats affectableStats)
+	public void affectCharStats(final MOB affected, final CharStats affectableStats)
 	{
+		// this is necessary because the race happens AFTER the breathe is modified,
+		// so we're actually adding water breathing to baseStat race (human, whatever)
+		affected.eachEffect(new EachApplicable<Ability>(){
+			@Override
+			public void apply(Ability a)
+			{
+				if(a.ID().startsWith("Druid_ShapeShift")) {
+					a.affectCharStats(affected, affectableStats);
+				}
+			}
+		});
+		
 		if(!CMParms.contains(affectableStats.getBreathables(),breathableStuff))
 		{
 			final int[] newSet = oldSets.get(affectableStats.getBreathables());
