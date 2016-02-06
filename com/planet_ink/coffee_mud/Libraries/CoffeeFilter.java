@@ -669,7 +669,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 			case '^':
 				if(loop<buf.length()-1)
 					loop=convertEscape(CS, buf, loop);
-			break;
+				break;
 			default:
 				break;
 			}
@@ -1378,7 +1378,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 									loopc=buf.charAt(loop);
 								}
 								buf.delete(oldLoop,loop+1);
-								loop=oldLoop;
+								loop=oldLoop-1;
 							}
 						}
 						else
