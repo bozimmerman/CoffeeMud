@@ -152,11 +152,12 @@ public class GravityFloat extends StdAbility
 		if(!super.tick(ticking,tickID))
 			return false;
 
+		if(affected == null)
+			return false;
+		
 		if(tickID!=Tickable.TICKID_MOB)
 			return true;
 
-		if(affected == null)
-			return false;
 		checkStopFloating().run();
 		return (affected != null);
 	}
@@ -384,6 +385,8 @@ public class GravityFloat extends StdAbility
 		{
 			final Item I=(Item)P;
 			if((I.container()!=null)
+			||(!CMLib.flags().isGettable(I))
+			||(I instanceof Rideable)
 			||(I.owner() instanceof MOB)
 			||(I instanceof ShipComponent))
 			{

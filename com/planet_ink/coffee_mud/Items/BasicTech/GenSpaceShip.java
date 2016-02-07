@@ -226,9 +226,9 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 										// this will move it, but will also update speed and direction -- all good!
 										final double inAirFactor=(shipFlags.contains(ShipFlag.IN_THE_AIR))?(1.0-getOMLCoeff()):1.0;
 										//TODO: calculate inertia gforce damage here, and send the message
-										if(isConst)
+										if(!isConst)
 										{
-											// a constant thruster means the ship attains speed in one burst,
+											// a non-constant thruster means the ship attains speed in one burst,
 											// and slows in one burst as well.  It is therefore right and good
 											// to eliminate all speed, do a complicated gforce calc, and re-speed
 											this.setSpeed(0);

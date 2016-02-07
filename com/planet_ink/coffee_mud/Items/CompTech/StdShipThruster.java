@@ -354,7 +354,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipComponen
 				break;
 			case CMMsg.TYP_DEACTIVATE:
 				me.setThrust(0);
-				if(!me.isConstantThruster() && (me.activated()))
+				if(me.activated())
 				{
 					// when a constant thruster deactivates, all speed stops
 					final SpaceObject obj=CMLib.map().getSpaceObject(me, true);

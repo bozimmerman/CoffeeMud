@@ -588,7 +588,7 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 	
 	protected void doGravityChanges()
 	{
-		boolean gravStatus = getShipFlag(ShipFlag.IN_THE_AIR);
+		boolean gravStatus = getShipFlag(ShipFlag.IN_THE_AIR) || (this.getIsDocked()!=null);
 		if(gravStatus == getShipFlag(ShipFlag.NO_GRAVITY))
 		{
 			final Ability floater = getGravityFloat();
