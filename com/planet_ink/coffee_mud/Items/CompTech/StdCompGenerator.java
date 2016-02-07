@@ -110,9 +110,8 @@ public class StdCompGenerator extends StdCompFuelConsumer implements Electronics
 			case CMMsg.TYP_POWERCURRENT:
 				if((msg.value()==0)  && (activated()))
 				{
-					if((((powerCapacity() - powerRemaining()) >= getGeneratedAmountPerTick())
-						||(powerRemaining() < getGeneratedAmountPerTick()))
-					&&(Math.random()<getFinalManufacturer().getReliabilityPct()))
+					if(((powerCapacity() - powerRemaining()) >= getGeneratedAmountPerTick())
+					||(powerRemaining() < getGeneratedAmountPerTick()))
 					{
 						double generatedAmount = getGeneratedAmountPerTick();
 						generatedAmount *= this.getComputedEfficiency() * this.getFinalManufacturer().getEfficiencyPct();

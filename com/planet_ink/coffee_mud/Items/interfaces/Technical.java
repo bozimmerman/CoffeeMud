@@ -142,8 +142,8 @@ public interface Technical
 	 */
 	public static enum TechCommand
 	{
-		THRUST(ShipEngine.ThrustPort.class, Integer.class),
-		ACCELLLERATION(ShipEngine.ThrustPort.class, Integer.class, Boolean.class),
+		THRUST(ShipEngine.ThrustPort.class, Double.class),
+		ACCELLLERATION(ShipEngine.ThrustPort.class, Double.class, Boolean.class),
 		COMPONENTFAILURE(Technical.TechType.class, String[].class),
 		SENSE(),
 		AIRREFRESH(Double.class, Integer.class), 

@@ -197,7 +197,7 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 							if(command==Technical.TechCommand.ACCELLLERATION)
 							{
 								final ThrustPort dir=(ThrustPort)parms[0];
-								final int amount=((Integer)parms[1]).intValue();
+								final double amount=((Double)parms[1]).doubleValue();
 								final boolean isConst = ((Boolean)parms[2]).booleanValue();
 								if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
 									Log.debugOut("SpaceShip "+name()+" accellerates "+amount+" to the "+dir.toString());

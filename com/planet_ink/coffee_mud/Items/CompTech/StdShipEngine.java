@@ -45,7 +45,7 @@ public class StdShipEngine extends StdCompGenerator implements ShipComponent.Shi
 
 	protected int		maxThrust		= 8900000;
 	protected int		minThrust		= 0;
-	protected int		thrust			= 0;
+	protected double	thrust			= 0;
 	protected long		specificImpulse	= SpaceObject.VELOCITY_SUBLIGHT;
 	protected double	fuelEfficiency	= 0.33;
 	protected boolean	constantThrust	= true;
@@ -98,13 +98,13 @@ public class StdShipEngine extends StdCompGenerator implements ShipComponent.Shi
 	}
 
 	@Override
-	public int getThrust()
+	public double getThrust()
 	{
 		return thrust;
 	}
 
 	@Override
-	public void setThrust(int current)
+	public void setThrust(double current)
 	{
 		thrust = current;
 	}

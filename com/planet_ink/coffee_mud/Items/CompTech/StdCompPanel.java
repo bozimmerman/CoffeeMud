@@ -85,14 +85,6 @@ public class StdCompPanel extends StdElecCompContainer implements Electronics.El
 	}
 
 	@Override
-	public String displayText()
-	{
-		if(isOpen())
-			return name()+" is opened here.";
-		return "";
-	}
-
-	@Override
 	public boolean canContain(Item I)
 	{
 		if(!super.canContain(I))

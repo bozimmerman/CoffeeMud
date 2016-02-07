@@ -84,14 +84,6 @@ public class StdElecPanel extends StdElecContainer implements Electronics.ElecPa
 	}
 
 	@Override
-	public String displayText()
-	{
-		if(isOpen())
-			return name()+" is opened here.";
-		return "";
-	}
-
-	@Override
 	public boolean canContain(Item I)
 	{
 		if(!super.canContain(I))

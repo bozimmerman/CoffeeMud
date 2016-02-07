@@ -113,6 +113,7 @@ public class GravityFloat extends StdAbility
 							if(P.okMessage(P, msg))
 							{
 								P.executeMsg(P, msg);
+								R.showHappens(CMMsg.MSG_OK_VISUAL, P,"<S-NAME> start(s) floating around.");
 								P.addNonUninvokableEffect(gravityA);
 								gravityA.setSavable(false);
 								P.recoverPhyStats();
@@ -124,23 +125,26 @@ public class GravityFloat extends StdAbility
 		}
 	}
 	
-	private final Runnable checkStopFloating = new Runnable()
+	private final Runnable checkStopFloating()
 	{
-		@Override
-		public void run()
+		return new Runnable()
 		{
-			final Physical P = affected;
-			if(P!=null)
+			@Override
+			public void run()
 			{
-				if(confirmGravity(P, false))
+				final Physical P = affected;
+				if(P!=null)
 				{
-					unInvoke();
-					P.delEffect(GravityFloat.this);
-					P.recoverPhyStats();
+					if(confirmGravity(P, false))
+					{
+						unInvoke();
+						P.delEffect(GravityFloat.this);
+						P.recoverPhyStats();
+					}
 				}
 			}
-		}
-	};
+		};
+	}
 	
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
@@ -151,8 +155,10 @@ public class GravityFloat extends StdAbility
 		if(tickID!=Tickable.TICKID_MOB)
 			return true;
 
-		checkStopFloating.run();
-		return true;
+		if(affected == null)
+			return false;
+		checkStopFloating().run();
+		return (affected != null);
 	}
 	
 	@Override
@@ -185,7 +191,7 @@ public class GravityFloat extends StdAbility
 				case 9:
 				default:
 				case 10:
-					R.show(mob, null,CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> flap(s) around trying to go somewhere, but makes no progress."));
+					R.show(mob, null,CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> flap(s) around trying to go somewhere, but make(s) no progress."));
 					break;
 				}
 			}
@@ -206,7 +212,7 @@ public class GravityFloat extends StdAbility
 				case 3:
 				case 4:
 				case 5:
-					R.show(mob, P,CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> flap(s) around reaching for <T-NAME>, but <S-HE-SHE> floats away from it."));
+					R.show(mob, P,CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> flap(s) around reaching for <T-NAME>, but <S-HE-SHE> float(s) away from it."));
 					break;
 				case 6:
 				case 7:
@@ -214,7 +220,7 @@ public class GravityFloat extends StdAbility
 				case 9:
 				default:
 				case 10:
-					R.show(mob, P,CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> flap(s) around trying reach for <T-NAME>, but <T-HE-SHE> floats away."));
+					R.show(mob, P,CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> flap(s) around trying reach for <T-NAME>, but <T-HE-SHE> float(s) away."));
 					break;
 				}
 			}
@@ -260,10 +266,12 @@ public class GravityFloat extends StdAbility
 			case CMMsg.TYP_ENTER:
 			case CMMsg.TYP_LEAVE:
 			case CMMsg.TYP_MOUNT:
+			case CMMsg.TYP_SIT:
 			{
 				if(msg.source().phyStats().isAmbiance(L("Floating")) 
 				&& (!flyingAllowed)
-				&&(!CMath.bset(msg.sourceMajor(), CMMsg.MASK_ALWAYS)))
+				&&(!CMath.bset(msg.sourceMajor(), CMMsg.MASK_ALWAYS))
+				&&(msg.target()!=null))
 				{
 					if(CMLib.flags().isSwimming(affected))
 					{
@@ -297,7 +305,7 @@ public class GravityFloat extends StdAbility
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_GET:
-				msg.addTrailerRunnable(checkStopFloating);
+				msg.addTrailerRunnable(checkStopFloating());
 				break;
 			}
 		}

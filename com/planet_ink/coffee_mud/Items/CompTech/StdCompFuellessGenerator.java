@@ -119,7 +119,6 @@ public class StdCompFuellessGenerator extends StdElecCompItem implements Electro
 				{
 					if((((powerCapacity() - powerRemaining()) >= getGeneratedAmountPerTick())
 						||(powerRemaining() < getGeneratedAmountPerTick()))
-					&&(Math.random()<getFinalManufacturer().getReliabilityPct())
 					&&(this.canGenerateRightNow()))
 					{
 						double generatedAmount = getAdjustedGeneratedAmountPerTick();

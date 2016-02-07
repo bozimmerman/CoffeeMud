@@ -145,10 +145,10 @@ public interface ShipComponent extends Electronics
 		 * Gets the current amount of thrust being emitted by this ShipEngine,
 		 * typically only describing the AFT thrust, since all other thrust
 		 * is done in spurts.
-		 * @see ShipEngine#setThrust(int)
+		 * @see ShipEngine#setThrust(double)
 		 * @return the current amount of aft thrust
 		 */
-		public int getThrust();
+		public double getThrust();
 
 		/**
 		 * Gets the current amount of thrust being emitted by this ShipEngine,
@@ -157,7 +157,7 @@ public interface ShipComponent extends Electronics
 		 * @see ShipEngine#getThrust()
 		 * @param aftThrust the current amount of aft thrust
 		 */
-		public void setThrust(int aftThrust);
+		public void setThrust(double aftThrust);
 
 		/**
 		 * Specific Impulse has to do with the efficiency of conversion of

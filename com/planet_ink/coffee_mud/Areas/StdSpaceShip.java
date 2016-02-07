@@ -452,6 +452,26 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 		}
 		else
 		{
+			switch(msg.sourceMinor())
+			{
+			case CMMsg.TYP_STAND:
+			case CMMsg.TYP_DISMOUNT:
+			{
+				if(this.getShipFlag(ShipFlag.NO_GRAVITY))
+				{
+					msg.addTrailerRunnable(new Runnable(){
+						@Override
+						public void run()
+						{
+							final Ability floater = getGravityFloat();
+							if(floater != null)
+								floater.invoke(floater.invoker(), msg.source(), false, 0);
+						}
+					});
+				}
+				break;
+			}
+			}
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_DROP:
@@ -569,7 +589,7 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 	protected void doGravityChanges()
 	{
 		boolean gravStatus = getShipFlag(ShipFlag.IN_THE_AIR);
-		if(gravStatus != getShipFlag(ShipFlag.NO_GRAVITY))
+		if(gravStatus == getShipFlag(ShipFlag.NO_GRAVITY))
 		{
 			final Ability floater = getGravityFloat();
 			if(floater != null)
@@ -592,7 +612,7 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 							cancelled=true;
 					}
 				}
-				setShipFlag(ShipFlag.NO_GRAVITY, gravStatus);
+				setShipFlag(ShipFlag.NO_GRAVITY, !gravStatus);
 				if(cancelled)
 				{
 					return;

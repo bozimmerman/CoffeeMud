@@ -473,9 +473,7 @@ public class RocketShipProgram extends GenShipProgram
 				String code = null;
 				E=findEngineByName(rest);
 				if(E!=null)
-				{
-					code=Technical.TechCommand.THRUST.makeCommand(ShipEngine.ThrustPort.AFT,Integer.valueOf(1));
-				}
+					code=Technical.TechCommand.THRUST.makeCommand(ShipEngine.ThrustPort.AFT,Double.valueOf(.0000001));
 				else
 					E=findSensorByName(rest);
 				if(E==null)
@@ -505,7 +503,7 @@ public class RocketShipProgram extends GenShipProgram
 					return;
 				}
 				E=engineE;
-				int amount=0;
+				double amount=0;
 				ShipEngine.ThrustPort portDir=ShipEngine.ThrustPort.AFT;
 				if(parsed.size()>3)
 				{
@@ -517,12 +515,12 @@ public class RocketShipProgram extends GenShipProgram
 					super.addScreenMessage(L("Error: No thrust amount given."));
 					return;
 				}
-				if(!CMath.isInteger(parsed.get(parsed.size()-1)))
+				if(!CMath.isNumber(parsed.get(parsed.size()-1)))
 				{
 					super.addScreenMessage(L("Error: '@x1' is not a valid amount.",parsed.get(parsed.size()-1)));
 					return;
 				}
-				amount=CMath.s_int(parsed.get(parsed.size()-1));
+				amount=CMath.s_double(parsed.get(parsed.size()-1));
 				if(parsed.size()==3)
 				{
 					portDir=(ShipEngine.ThrustPort)CMath.s_valueOf(ShipEngine.ThrustPort.class, parsed.get(1).toUpperCase().trim());
@@ -557,7 +555,7 @@ public class RocketShipProgram extends GenShipProgram
 				}
 				if(amount > 0)
 				{
-					final String code=Technical.TechCommand.THRUST.makeCommand(portDir,Integer.valueOf(amount));
+					final String code=Technical.TechCommand.THRUST.makeCommand(portDir,Double.valueOf(amount));
 					msg=CMClass.getMsg(mob, engineE, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
 				}
 				else

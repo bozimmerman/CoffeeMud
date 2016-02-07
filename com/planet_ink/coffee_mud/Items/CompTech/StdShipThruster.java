@@ -46,7 +46,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipComponen
 
 	protected int		maxThrust		= 8900000;
 	protected int		minThrust		= 0;
-	protected int		thrust			= 0;
+	protected double	thrust			= 0;
 	protected long		specificImpulse	= SpaceObject.VELOCITY_SUBLIGHT;
 	protected double	fuelEfficiency	= 0.33;
 	protected boolean	constantThrust	= true;
@@ -105,13 +105,13 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipComponen
 	}
 
 	@Override
-	public int getThrust()
+	public double getThrust()
 	{
 		return thrust;
 	}
 
 	@Override
-	public void setThrust(int current)
+	public void setThrust(double current)
 	{
 		thrust = current;
 	}
@@ -259,7 +259,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipComponen
 		);
 	}
 	
-	public static boolean executeThrust(final ShipEngine me, final String circuitKey, final MOB mob, final Software controlI, final ShipEngine.ThrustPort portDir, final int amount)
+	public static boolean executeThrust(final ShipEngine me, final String circuitKey, final MOB mob, final Software controlI, final ShipEngine.ThrustPort portDir, final double amount)
 	{
 		final LanguageLibrary lang=CMLib.lang();
 		final SpaceObject obj=CMLib.map().getSpaceObject(me, true);
@@ -272,13 +272,13 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipComponen
 			return reportError(me, controlI, mob, lang.L("@x1 "+rumbleWord+"s loudly, but accomplishes nothing.",me.name(mob)), lang.L("Failure: @x1: exhaust control.",me.name(mob)));
 		if(!CMParms.contains(me.getAvailPorts(), portDir))
 			return reportError(me, controlI, mob, lang.L("@x1 "+rumbleWord+"s a little, but accomplishes nothing.",me.name(mob)), lang.L("Failure: @x1: port control.",me.name(mob)));
-		double thrust=Math.round(me.getInstalledFactor() * amount);
+		double thrust=me.getInstalledFactor() * amount;
 		if(thrust > me.getMaxThrust())
 			thrust=me.getMaxThrust();
-		thrust=(int)Math.round(manufacturer.getReliabilityPct() * thrust);
-		final int oldThrust = me.getThrust();
+		thrust=manufacturer.getReliabilityPct() * thrust;
+		final double oldThrust = me.getThrust();
 		if(portDir==ThrustPort.AFT) // when thrusting aft, the thrust is continual, so save it
-			me.setThrust(Math.round(amount)); // also, its always the intended amount, not the adjusted amount
+			me.setThrust(amount); // also, its always the intended amount, not the adjusted amount
 		
 		final int fuelToConsume=getFuelToConsume(me, manufacturer, thrust);
 		
@@ -294,7 +294,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipComponen
 		else
 			activeThrust = thrust;
 		
-		final long accelleration=Math.round(Math.ceil(activeThrust));
+		final double accelleration=activeThrust;
 		
 		if((amount > 1)&&((portDir!=ThrustPort.AFT) || (me.getThrust() > oldThrust)))
 			tellWholeShip(me,mob,CMMsg.MSG_NOISE,CMLib.lang().L("You feel a "+rumbleWord+" and hear the blast of @x1.",me.name(mob)));
@@ -308,7 +308,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipComponen
 		if(me.consumeFuel(fuelToConsume))
 		{
 			final SpaceObject spaceObject=ship.getShipSpaceObject();
-			final String code=Technical.TechCommand.ACCELLLERATION.makeCommand(portDir,Integer.valueOf((int)accelleration),Boolean.valueOf(me.isConstantThruster()));
+			final String code=Technical.TechCommand.ACCELLLERATION.makeCommand(portDir,Double.valueOf(accelleration),Boolean.valueOf(me.isConstantThruster()));
 			final CMMsg msg=CMClass.getMsg(mob, spaceObject, me, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
 			if(spaceObject.okMessage(mob, msg))
 			{
@@ -338,7 +338,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipComponen
 		if(parms==null)
 			return reportError(me, controlI, mob, lang.L("@x1 did not respond.",me.name(mob)), lang.L("Failure: @x1: control syntax failure.",me.name(mob)));
 		if(command == TechCommand.THRUST)
-			return executeThrust(me, circuitKey, mob, controlI, (ShipEngine.ThrustPort)parms[0],((Integer)parms[1]).intValue());
+			return executeThrust(me, circuitKey, mob, controlI, (ShipEngine.ThrustPort)parms[0],((Double)parms[1]).doubleValue());
 		return reportError(me, controlI, mob, lang.L("@x1 refused to respond.",me.name(mob)), lang.L("Failure: @x1: control command failure.",me.name(mob)));
 	}
 
@@ -363,7 +363,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipComponen
 						final MOB mob=msg.source();
 						final SpaceShip ship=(SpaceShip)obj;
 						final SpaceObject spaceObject=ship.getShipSpaceObject();
-						final String code=Technical.TechCommand.ACCELLLERATION.makeCommand(ThrustPort.AFT,Integer.valueOf(0),Boolean.valueOf(true));
+						final String code=Technical.TechCommand.ACCELLLERATION.makeCommand(ThrustPort.AFT,Double.valueOf(0),Boolean.valueOf(true));
 						final CMMsg msg2=CMClass.getMsg(mob, spaceObject, me, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
 						if(spaceObject.okMessage(mob, msg2))
 							spaceObject.executeMsg(mob, msg2);
@@ -383,7 +383,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipComponen
 						if(obj instanceof SpaceShip)
 						{
 							final SpaceObject ship=((SpaceShip)obj).getShipSpaceObject();
-							final String code=Technical.TechCommand.THRUST.makeCommand(ThrustPort.AFT,Integer.valueOf(me.getThrust()));
+							final String code=Technical.TechCommand.THRUST.makeCommand(ThrustPort.AFT,Double.valueOf(me.getThrust()));
 							final CMMsg msg2=CMClass.getMsg(msg.source(), me, null, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
 							if(me.owner() instanceof Room)
 							{

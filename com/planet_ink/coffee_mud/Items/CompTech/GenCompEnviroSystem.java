@@ -84,8 +84,7 @@ public class GenCompEnviroSystem extends GenElecCompItem
 						{
 							final SpaceShip ship=(SpaceShip)obj;
 							final Area A=ship.getShipArea();
-							double pct= Math.min(super.getInstalledFactor(),1.0)
-									  * Math.min(super.getFinalManufacturer().getReliabilityPct(),1.0);
+							double pct= 1.0;
 							if(subjectToWearAndTear())
 								pct=pct*CMath.div(usesRemaining(),100);
 							final String code=Technical.TechCommand.AIRREFRESH.makeCommand(Double.valueOf(pct),Integer.valueOf(airResource));
