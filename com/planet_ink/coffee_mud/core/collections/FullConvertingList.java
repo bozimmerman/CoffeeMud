@@ -50,6 +50,7 @@ public class FullConvertingList<L,K> implements List<K>
 		list.add(arg0,converter.reverseConvert(arg1));
 	}
 	
+	@SuppressWarnings("unchecked")
 	protected Object convertToListType(final Object arg0)
 	{
 		if(arg0 == null)

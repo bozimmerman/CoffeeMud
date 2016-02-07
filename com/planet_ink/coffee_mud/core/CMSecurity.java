@@ -2150,7 +2150,8 @@ public class CMSecurity
 		INPUT("All user input"),
 		SHUTDOWN("System Shutdown"),
 		SPACESHIP("Spaceships"),
-		SQLERRORS("SQL error traces")
+		SQLERRORS("SQL error traces"),
+		GMCP("GMCP Protocol")
 		;
 		private final String desc;
 

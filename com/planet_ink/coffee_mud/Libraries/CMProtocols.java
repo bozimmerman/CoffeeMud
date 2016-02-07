@@ -2232,7 +2232,9 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			}
 			catch(final Exception e)
 			{
-				Log.errOut("Error parsing GMCP Package: "+pkg);
+				Log.errOut("Error parsing GMCP Package: "+pkg+": "+e.getMessage());
+				if(CMSecurity.isDebugging(DbgFlag.GMCP))
+					Log.errOut(e);
 				return null;
 			}
 		}
