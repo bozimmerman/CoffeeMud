@@ -3647,11 +3647,18 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(behave.length()>0))
 		{
 			String behaviorstr="";
+			if((showFlag==showNumber)||(showFlag<=-999))
+				behaviorstr+="\n\r";
 			for(int b=0;b<M.playerStats().getTitles().size();b++)
 			{
 				final String B=M.playerStats().getTitles().get(b);
 				if(B!=null)
-					behaviorstr+=B+", ";
+				{
+					if((showFlag!=showNumber)&&(showFlag>-999))
+						behaviorstr+=B+", ";
+					else
+						behaviorstr+="  "+(b+1)+") "+B+"\n\r";
+				}
 			}
 			if(behaviorstr.length()>0)
 				behaviorstr=behaviorstr.substring(0,behaviorstr.length()-2);

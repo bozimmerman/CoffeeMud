@@ -35,16 +35,57 @@ import java.util.*;
 
 public class Chant_SummonMount extends Chant
 {
-	@Override public String ID() { return "Chant_SummonMount"; }
-	private final static String localizedName = CMLib.lang().L("Summon Mount");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Mount)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public long flags(){return Ability.FLAG_SUMMONING;}
+	@Override
+	public String ID()
+	{
+		return "Chant_SummonMount";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Summon Mount");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Mount)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT | Ability.DOMAIN_ANIMALAFFINITY;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_SUMMONING;
+	}
 
 	@Override
 	public void unInvoke()
@@ -91,7 +132,7 @@ public class Chant_SummonMount extends Chant
 				||((invoker!=null)
 					&&((mob.location()!=invoker.location())
 						||(!CMLib.flags().isInTheGame(invoker, true))
-						||((invoker.riding()!=null)&&(invoker.riding()!=affected)))))
+						||((invoker.riding() instanceof MOB)&&(invoker.riding()!=affected)))))
 				{
 					mob.delEffect(this);
 					mob.setFollowing(null);

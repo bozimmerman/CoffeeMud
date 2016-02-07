@@ -36,17 +36,63 @@ import java.util.*;
 
 public class Paladin_SummonMount extends StdAbility
 {
-	@Override public String ID() { return "Paladin_SummonMount"; }
-	private final static String localizedName = CMLib.lang().L("Call Mount");
-	@Override public String name() { return localizedName; }
-	@Override public String displayText() {return L("(Mount)");}
-	private static final String[] triggerStrings =I(new String[] {"CALLMOUNT"});
-	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
-	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_ANIMALAFFINITY;}
+	@Override
+	public String ID()
+	{
+		return "Paladin_SummonMount";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Call Mount");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public String displayText()
+	{
+		return L("(Mount)");
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "CALLMOUNT" });
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_SELF;
+	}
+
+	@Override
+	public int enchantQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL | Ability.DOMAIN_ANIMALAFFINITY;
+	}
 
 	@Override
 	public void unInvoke()
@@ -78,7 +124,7 @@ public class Paladin_SummonMount extends StdAbility
 				||((invoker!=null)
 					&&((mob.location()!=invoker.location())
 						||(!CMLib.flags().isInTheGame(invoker, true))
-						||((invoker.riding()!=null)&&(invoker.riding()!=affected)))))
+						||((invoker.riding() instanceof MOB)&&(invoker.riding()!=affected)))))
 				{
 					mob.delEffect(this);
 					if(mob.amDead())

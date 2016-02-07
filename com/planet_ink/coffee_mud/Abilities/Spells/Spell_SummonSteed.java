@@ -35,17 +35,63 @@ import java.util.*;
 
 public class Spell_SummonSteed extends Spell
 {
-	@Override public String ID() { return "Spell_SummonSteed"; }
-	private final static String localizedName = CMLib.lang().L("Summon Steed");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Summon Steed)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
-	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
-	@Override public long flags(){return Ability.FLAG_SUMMONING;}
+	@Override
+	public String ID()
+	{
+		return "Spell_SummonSteed";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Summon Steed");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Summon Steed)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_SELF;
+	}
+
+	@Override
+	public int enchantQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL | Ability.DOMAIN_CONJURATION;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_SUMMONING;
+	}
 
 	@Override
 	public void unInvoke()
@@ -77,7 +123,9 @@ public class Spell_SummonSteed extends Spell
 					||(mob.location()==null)
 					||(mob.amDead())
 					||((invoker!=null)
-						&&((mob.location()!=invoker.location())||(!CMLib.flags().isInTheGame(invoker, true))||(invoker.riding()!=affected))))
+						&&((mob.location()!=invoker.location())
+							||(!CMLib.flags().isInTheGame(invoker, true))
+							||((invoker.riding() instanceof MOB)&&(invoker.riding()!=affected)))))
 					{
 						mob.delEffect(this);
 						if(mob.amDead())
@@ -136,7 +184,8 @@ public class Spell_SummonSteed extends Spell
 				beneficialAffect(mob,target,asLevel,0);
 				if(squabble==null)
 				{
-					if (target.isInCombat()) target.makePeace(true);
+					if (target.isInCombat()) 
+						target.makePeace(true);
 					CMLib.commands().postFollow(target,mob,true);
 					invoker=mob;
 					if (target.amFollowing() != mob)
