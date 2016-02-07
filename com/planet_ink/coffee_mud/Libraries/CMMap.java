@@ -571,6 +571,13 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
+	public TechComponent.ShipDir getDirectionFromDir(double[] facing, double[] direction)
+	{
+		//TODO: this
+		return TechComponent.ShipDir.AFT;
+	}
+	
+	@Override
 	public double[] getDirection(SpaceObject FROM, SpaceObject TO)
 	{
 		final double[] dir=new double[2];
@@ -624,6 +631,21 @@ public class CMMap extends StdLibrary implements WorldMap
 							O.coordinates()[1]+Math.round(CMath.mul(O.speed(),y1)),
 							O.coordinates()[2]+Math.round(CMath.mul(O.speed(),z1)));
 		}
+	}
+
+	@Override
+	public long[] moveSpaceObject(final long[] coordinates, final double[] direction, long speed)
+	{
+		if(speed>0)
+		{
+			final double x1=Math.cos(direction[0])*Math.sin(direction[1]);
+			final double y1=Math.sin(direction[0])*Math.sin(direction[1]);
+			final double z1=Math.cos(direction[1]);
+			return new long[]{coordinates[0]+Math.round(CMath.mul(speed,x1)),
+							coordinates[1]+Math.round(CMath.mul(speed,y1)),
+							coordinates[2]+Math.round(CMath.mul(speed,z1))};
+		}
+		return coordinates;
 	}
 
 	@Override
@@ -1468,7 +1490,10 @@ public class CMMap extends StdLibrary implements WorldMap
 		return R;
 	}
 
-	public int numDeities() { return deitiesList.size(); }
+	public int numDeities()
+	{
+		return deitiesList.size();
+	}
 
 	protected void addDeity(Deity newOne)
 	{

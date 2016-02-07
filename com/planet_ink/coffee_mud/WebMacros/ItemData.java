@@ -13,7 +13,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.MoneyLibrary.MoneyDenomina
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
-import com.planet_ink.coffee_mud.Items.interfaces.TechComponent.ShipEngine.ThrustPort;
+import com.planet_ink.coffee_mud.Items.interfaces.TechComponent.ShipDir;
 import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechType;
 import com.planet_ink.coffee_mud.Items.interfaces.MusicalInstrument.InstrumentType;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;

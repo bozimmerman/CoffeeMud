@@ -10,7 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
-import com.planet_ink.coffee_mud.Items.interfaces.TechComponent.ShipEngine.ThrustPort;
+import com.planet_ink.coffee_mud.Items.interfaces.TechComponent.ShipDir;
 import com.planet_ink.coffee_mud.Libraries.interfaces.GenericBuilder;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -223,7 +223,7 @@ public class GenShipEngine extends StdShipEngine
 			setConstantThruster(CMath.s_bool(val));
 			break;
 		case 19:
-			this.setAvailPorts(CMParms.parseEnumList(ThrustPort.class, val, ',').toArray(new ThrustPort[0]));
+			this.setAvailPorts(CMParms.parseEnumList(TechComponent.ShipDir.class, val, ',').toArray(new TechComponent.ShipDir[0]));
 			break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);

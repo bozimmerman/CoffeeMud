@@ -14,7 +14,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
-import com.planet_ink.coffee_mud.Items.interfaces.TechComponent.ShipEngine.ThrustPort;
+import com.planet_ink.coffee_mud.Items.interfaces.TechComponent.ShipDir;
 import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechType;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -739,7 +739,7 @@ public class GrinderItems
 					break;
 				case AVAILPORTS:
 					if(I instanceof TechComponent.ShipEngine)
-						((TechComponent.ShipEngine)I).setAvailPorts(CMParms.parseEnumList(ThrustPort.class,old.toUpperCase(),',').toArray(new ThrustPort[0]));
+						((TechComponent.ShipEngine)I).setAvailPorts(CMParms.parseEnumList(TechComponent.ShipDir.class,old.toUpperCase(),',').toArray(new TechComponent.ShipDir[0]));
 					break;
 				case SPECIMPULSE:
 					if(I instanceof TechComponent.ShipEngine)

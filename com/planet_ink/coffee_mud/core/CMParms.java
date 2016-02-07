@@ -1863,6 +1863,38 @@ public class CMParms
 	}
 
 	/**
+	 * Converts the given long array to a string array by calling
+	 * Long.toString on all the long
+	 * @param O the longs to turn into a string array
+	 * @return the string array
+	 */
+	public final static String[] toStringArray(final long[] O)
+	{
+		if(O==null) 
+			return new String[0];
+		final String[] s=new String[O.length];
+		for(int o=0;o<O.length;o++)
+			s[o]=Long.toString(O[o]);
+		return s;
+	}
+
+	/**
+	 * Converts the given int array to a string array by calling
+	 * Integer.toString on all the long
+	 * @param O the ints to turn into a string array
+	 * @return the string array
+	 */
+	public final static String[] toStringArray(final int[] O)
+	{
+		if(O==null) 
+			return new String[0];
+		final String[] s=new String[O.length];
+		for(int o=0;o<O.length;o++)
+			s[o]=Integer.toString(O[o]);
+		return s;
+	}
+	
+	/**
 	 * Converts the given object list to a long array by calling
 	 * "toString()" on all the objects and then converting those to longs.
 	 * @param V the list to turn into a long array

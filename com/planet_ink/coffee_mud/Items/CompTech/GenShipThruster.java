@@ -221,7 +221,7 @@ public class GenShipThruster extends StdShipThruster
 			this.setConstantThruster(CMath.s_bool(val));
 			break;
 		case 18:
-			this.setAvailPorts(CMParms.parseEnumList(ThrustPort.class, val, ',').toArray(new ThrustPort[0]));
+			this.setAvailPorts(CMParms.parseEnumList(TechComponent.ShipDir.class, val, ',').toArray(new TechComponent.ShipDir[0]));
 			break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);

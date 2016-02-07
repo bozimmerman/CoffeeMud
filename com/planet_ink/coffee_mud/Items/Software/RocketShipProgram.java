@@ -12,8 +12,8 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.TechComponent.ShipDir;
 import com.planet_ink.coffee_mud.Items.interfaces.TechComponent.ShipEngine;
-import com.planet_ink.coffee_mud.Items.interfaces.TechComponent.ShipEngine.ThrustPort;
 import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechCommand;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -473,7 +473,7 @@ public class RocketShipProgram extends GenShipProgram
 				String code = null;
 				E=findEngineByName(rest);
 				if(E!=null)
-					code=Technical.TechCommand.THRUST.makeCommand(ShipEngine.ThrustPort.AFT,Double.valueOf(.0000001));
+					code=Technical.TechCommand.THRUST.makeCommand(TechComponent.ShipDir.AFT,Double.valueOf(.0000001));
 				else
 					E=findSensorByName(rest);
 				if(E==null)
@@ -504,7 +504,7 @@ public class RocketShipProgram extends GenShipProgram
 				}
 				E=engineE;
 				double amount=0;
-				ShipEngine.ThrustPort portDir=ShipEngine.ThrustPort.AFT;
+				TechComponent.ShipDir portDir=TechComponent.ShipDir.AFT;
 				if(parsed.size()>3)
 				{
 					super.addScreenMessage(L("Error: Too many parameters."));
@@ -523,7 +523,7 @@ public class RocketShipProgram extends GenShipProgram
 				amount=CMath.s_double(parsed.get(parsed.size()-1));
 				if(parsed.size()==3)
 				{
-					portDir=(ShipEngine.ThrustPort)CMath.s_valueOf(ShipEngine.ThrustPort.class, parsed.get(1).toUpperCase().trim());
+					portDir=(TechComponent.ShipDir)CMath.s_valueOf(TechComponent.ShipDir.class, parsed.get(1).toUpperCase().trim());
 					if(portDir!=null) 
 					{ 
 						if(!CMParms.contains(engineE.getAvailPorts(), portDir))
@@ -533,20 +533,20 @@ public class RocketShipProgram extends GenShipProgram
 						}
 					}
 					else
-					if("aft".startsWith(parsed.get(1).toLowerCase()) && CMParms.contains(engineE.getAvailPorts(), ThrustPort.AFT))
-						portDir=ShipEngine.ThrustPort.AFT;
+					if("aft".startsWith(parsed.get(1).toLowerCase()) && CMParms.contains(engineE.getAvailPorts(), TechComponent.ShipDir.AFT))
+						portDir=TechComponent.ShipDir.AFT;
 					else
-					if("port".startsWith(parsed.get(1).toLowerCase()) && CMParms.contains(engineE.getAvailPorts(), ThrustPort.PORT))
-						portDir=ShipEngine.ThrustPort.PORT;
+					if("port".startsWith(parsed.get(1).toLowerCase()) && CMParms.contains(engineE.getAvailPorts(), TechComponent.ShipDir.PORT))
+						portDir=TechComponent.ShipDir.PORT;
 					else
-					if("starboard".startsWith(parsed.get(1).toLowerCase()) && CMParms.contains(engineE.getAvailPorts(), ThrustPort.STARBOARD))
-						portDir=ShipEngine.ThrustPort.STARBOARD;
+					if("starboard".startsWith(parsed.get(1).toLowerCase()) && CMParms.contains(engineE.getAvailPorts(), TechComponent.ShipDir.STARBOARD))
+						portDir=TechComponent.ShipDir.STARBOARD;
 					else
-					if("ventral".startsWith(parsed.get(1).toLowerCase()) && CMParms.contains(engineE.getAvailPorts(), ThrustPort.VENTRAL))
-						portDir=ShipEngine.ThrustPort.VENTRAL;
+					if("ventral".startsWith(parsed.get(1).toLowerCase()) && CMParms.contains(engineE.getAvailPorts(), TechComponent.ShipDir.VENTRAL))
+						portDir=TechComponent.ShipDir.VENTRAL;
 					else
-					if("dorsel".startsWith(parsed.get(1).toLowerCase()) && CMParms.contains(engineE.getAvailPorts(), ThrustPort.DORSEL))
-						portDir=ShipEngine.ThrustPort.DORSEL;
+					if("dorsel".startsWith(parsed.get(1).toLowerCase()) && CMParms.contains(engineE.getAvailPorts(), TechComponent.ShipDir.DORSEL))
+						portDir=TechComponent.ShipDir.DORSEL;
 					else
 					{
 						super.addScreenMessage(L("Error: '@x1' is not a valid direction for that engine.  Try: @x2.",parsed.get(1),CMParms.toListString(engineE.getAvailPorts())));

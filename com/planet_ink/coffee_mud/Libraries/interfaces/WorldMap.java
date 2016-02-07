@@ -151,10 +151,12 @@ public interface WorldMap extends CMLibrary
 	public long getDistanceFrom(SpaceObject O1, SpaceObject O2);
 	public long getDistanceFrom(final long[] coord1, final long[] coord2);
 	public double[] getDirection(SpaceObject FROM, SpaceObject TO);
+	public TechComponent.ShipDir getDirectionFromDir(double[] facing, double[] direction);
 	public long[] getLocation(long[] oldLocation, double[] direction, long distance);
 	public void moveSpaceObject(SpaceObject O);
 	public void moveSpaceObject(SpaceObject O, long[] coords);
 	public void moveSpaceObject(SpaceObject O, double[] newDirection, long newAccelleration);
+	public long[] moveSpaceObject(final long[] coordinates, final double[] direction, long speed);
 	public SpaceObject getSpaceObject(CMObject o, boolean ignoreMobs);
 	public Enumeration<SpaceObject> getSpaceObjects();
 	public Enumeration<Entry<SpaceObject, List<WeakReference<TrackingVector<SpaceObject>>>>>  getSpaceObjectEntries();

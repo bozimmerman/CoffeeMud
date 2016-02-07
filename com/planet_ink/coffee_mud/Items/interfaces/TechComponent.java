@@ -13,7 +13,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
-import com.planet_ink.coffee_mud.Items.interfaces.TechComponent.ShipEngine.ThrustPort;
+import com.planet_ink.coffee_mud.Items.interfaces.TechComponent.ShipDir;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -57,6 +57,22 @@ public interface TechComponent extends Electronics
 	 */
 	public void setInstalledFactor(float pct);
 
+
+	/**
+	 * The ThrustPort enum is for the different thrust ports, denoting
+	 * the port, by its direction location.
+	 * @author Bo Zimmerman
+	 */
+	public enum ShipDir
+	{
+		AFT,
+		PORT,
+		VENTRAL,
+		DORSEL,
+		STARBOARD,
+		FORWARD
+	}
+	
 	/**
 	 * A ShipEngine is a special TechComponent that is often a fuel consumer, 
 	 * and which has special tracked attributes related to its ability to 
@@ -67,33 +83,18 @@ public interface TechComponent extends Electronics
 	public interface ShipEngine extends TechComponent
 	{
 		/**
-		 * The ThrustPort enum is for the different thrust ports, denoting
-		 * the port, by its direction location.
-		 * @author Bo Zimmerman
-		 */
-		public enum ThrustPort
-		{
-			AFT,
-			PORT,
-			VENTRAL,
-			DORSEL,
-			STARBOARD,
-			FORWARD
-		}
-
-		/**
 		 * Gets set of available thrust ports on this engine.
 		 * @see ShipEngine#setAvailPorts(Set<ThrustPort>)
 		 * @return the set of available thrust ports.
 		 */
-		public ThrustPort[] getAvailPorts();
+		public TechComponent.ShipDir[] getAvailPorts();
 
 		/**
 		 * Sets set of available thrust ports on this engine.
 		 * @see ShipEngine#getAvailPorts()
 		 * @param ports the set of available thrust ports.
 		 */
-		public void setAvailPorts(ThrustPort[] ports);
+		public void setAvailPorts(TechComponent.ShipDir[] ports);
 
 		/**
 		 * Gets the maximum amount of thrust that this engine can put out.

@@ -11,7 +11,6 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
-import com.planet_ink.coffee_mud.Items.interfaces.TechComponent.ShipEngine;
 import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechType;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -142,8 +141,8 @@ public interface Technical
 	 */
 	public static enum TechCommand
 	{
-		THRUST(ShipEngine.ThrustPort.class, Double.class),
-		ACCELLLERATION(ShipEngine.ThrustPort.class, Double.class, Boolean.class),
+		THRUST(TechComponent.ShipDir.class, Double.class),
+		ACCELLLERATION(TechComponent.ShipDir.class, Double.class, Boolean.class),
 		COMPONENTFAILURE(Technical.TechType.class, String[].class),
 		SENSE(),
 		AIRREFRESH(Double.class, Integer.class), 

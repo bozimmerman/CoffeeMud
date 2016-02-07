@@ -20,7 +20,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.ClanItem.ClanItemType;
 import com.planet_ink.coffee_mud.Items.interfaces.MusicalInstrument.InstrumentType;
-import com.planet_ink.coffee_mud.Items.interfaces.TechComponent.ShipEngine.ThrustPort;
+import com.planet_ink.coffee_mud.Items.interfaces.TechComponent.ShipDir;
 import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechType;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -8563,7 +8563,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				E.setConstantThruster(prompt(mob, E.isConstantThruster(), ++showNumber, showFlag, "Constant thrust"));
 				E.setSpecificImpulse(prompt(mob, E.getSpecificImpulse(), ++showNumber, showFlag, "Spec Impulse"));
 				E.setFuelEfficiency(prompt(mob, E.getFuelEfficiency()*100.0, ++showNumber, showFlag, "Fuel Effic. %")/100.0);
-				E.setAvailPorts(CMParms.parseEnumList(ThrustPort.class,prompt(mob, CMParms.toListString(E.getAvailPorts()), ++showNumber, showFlag, "Avail. ports").toUpperCase(),',').toArray(new ThrustPort[0]));
+				E.setAvailPorts(CMParms.parseEnumList(TechComponent.ShipDir.class,prompt(mob, CMParms.toListString(E.getAvailPorts()), ++showNumber, showFlag, "Avail. ports").toUpperCase(),',').toArray(new TechComponent.ShipDir[0]));
 			}
 			if(me instanceof TechComponent)
 			{

@@ -12,7 +12,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
-import com.planet_ink.coffee_mud.Items.interfaces.TechComponent.ShipEngine.ThrustPort;
+import com.planet_ink.coffee_mud.Items.interfaces.TechComponent.ShipDir;
 import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechType;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -2987,9 +2987,9 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			((TechComponent.ShipEngine)E).setConstantThruster(CMLib.xml().getBoolFromPieces(buf,"SSCONST",true));
 			final String portsStr = CMLib.xml().getValFromPieces(buf, "SSAPORTS", "");
 			if(portsStr.length()==0)
-				((TechComponent.ShipEngine)E).setAvailPorts(ThrustPort.values());
+				((TechComponent.ShipEngine)E).setAvailPorts(TechComponent.ShipDir.values());
 			else
-				((TechComponent.ShipEngine)E).setAvailPorts(CMParms.parseEnumList(ThrustPort.class, portsStr, ',').toArray(new ThrustPort[0]));
+				((TechComponent.ShipEngine)E).setAvailPorts(CMParms.parseEnumList(TechComponent.ShipDir.class, portsStr, ',').toArray(new TechComponent.ShipDir[0]));
 		}
 		if(E instanceof Electronics.PowerGenerator)
 		{

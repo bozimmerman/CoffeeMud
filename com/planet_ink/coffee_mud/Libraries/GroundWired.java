@@ -16,6 +16,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.Electronics.Computer;
 import com.planet_ink.coffee_mud.Items.interfaces.Electronics.ElecPanel;
 import com.planet_ink.coffee_mud.Items.interfaces.Electronics.PowerGenerator;
 import com.planet_ink.coffee_mud.Items.interfaces.Electronics.PowerSource;
+import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechCommand;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -417,12 +418,12 @@ public class GroundWired extends StdLibrary implements TechLibrary
 						&&((oMass < moonletMass)||(cO.getMass() < moonletMass)))
 						{
 							final MOB host=CMLib.map().deity();
-							CMMsg msg=CMClass.getMsg(host, O, cO, CMMsg.MSG_COLLISION, null);
+							CMMsg msg=CMClass.getMsg(host, O, cO, CMMsg.MSG_COLLISION,null);
 							if(O.okMessage(host, msg))
 								O.executeMsg(host, msg);
-							CMMsg msg2=CMClass.getMsg(host, cO, O, CMMsg.MSG_COLLISION, null);
-							if(cO.okMessage(host, msg2))
-								cO.executeMsg(host, msg2);
+							msg=CMClass.getMsg(host, cO, O, CMMsg.MSG_COLLISION,null);
+							if(cO.okMessage(host, msg))
+								cO.executeMsg(host, msg);
 						}
 					}
 				}

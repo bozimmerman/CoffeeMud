@@ -11,8 +11,8 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.TechComponent.ShipDir;
 import com.planet_ink.coffee_mud.Items.interfaces.TechComponent.ShipEngine;
-import com.planet_ink.coffee_mud.Items.interfaces.TechComponent.ShipEngine.ThrustPort;
 import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechType;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -51,7 +51,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements TechComponen
 	protected double	fuelEfficiency	= 0.33;
 	protected boolean	constantThrust	= true;
 	
-	protected ThrustPort[] ports 		= ThrustPort.values(); 
+	protected TechComponent.ShipDir[] ports 		= TechComponent.ShipDir.values(); 
 
 	public StdShipThruster()
 	{
@@ -177,7 +177,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements TechComponen
 	 * @return the set of available thrust ports.
 	 */
 	@Override
-	public ThrustPort[] getAvailPorts()
+	public TechComponent.ShipDir[] getAvailPorts()
 	{
 		return ports;
 	}
@@ -188,7 +188,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements TechComponen
 	 * @param ports the set of available thrust ports.
 	 */
 	@Override
-	public void setAvailPorts(ThrustPort[] ports)
+	public void setAvailPorts(TechComponent.ShipDir[] ports)
 	{
 		this.ports = ports;
 	}
@@ -259,7 +259,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements TechComponen
 		);
 	}
 	
-	public static boolean executeThrust(final ShipEngine me, final String circuitKey, final MOB mob, final Software controlI, final ShipEngine.ThrustPort portDir, final double amount)
+	public static boolean executeThrust(final ShipEngine me, final String circuitKey, final MOB mob, final Software controlI, final TechComponent.ShipDir portDir, final double amount)
 	{
 		final LanguageLibrary lang=CMLib.lang();
 		final SpaceObject obj=CMLib.map().getSpaceObject(me, true);
@@ -277,13 +277,13 @@ public class StdShipThruster extends StdCompFuelConsumer implements TechComponen
 			thrust=me.getMaxThrust();
 		thrust=manufacturer.getReliabilityPct() * thrust;
 		final double oldThrust = me.getThrust();
-		if(portDir==ThrustPort.AFT) // when thrusting aft, the thrust is continual, so save it
+		if(portDir==TechComponent.ShipDir.AFT) // when thrusting aft, the thrust is continual, so save it
 			me.setThrust(amount); // also, its always the intended amount, not the adjusted amount
 		
 		final int fuelToConsume=getFuelToConsume(me, manufacturer, thrust);
 		
 		final double activeThrust;
-		if(portDir==ThrustPort.AFT) // when thrusting aft, there's a smidgeon more power
+		if(portDir==TechComponent.ShipDir.AFT) // when thrusting aft, there's a smidgeon more power
 		{
 			activeThrust = (thrust * me.getSpecificImpulse() / ship.getMass());
 			if(activeThrust < me.getMinThrust())
@@ -296,7 +296,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements TechComponen
 		
 		final double accelleration=activeThrust;
 		
-		if((amount > 1)&&((portDir!=ThrustPort.AFT) || (me.getThrust() > oldThrust)))
+		if((amount > 1)&&((portDir!=TechComponent.ShipDir.AFT) || (me.getThrust() > oldThrust)))
 			tellWholeShip(me,mob,CMMsg.MSG_NOISE,CMLib.lang().L("You feel a "+rumbleWord+" and hear the blast of @x1.",me.name(mob)));
 		if(accelleration == 0)
 		{
@@ -338,7 +338,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements TechComponen
 		if(parms==null)
 			return reportError(me, controlI, mob, lang.L("@x1 did not respond.",me.name(mob)), lang.L("Failure: @x1: control syntax failure.",me.name(mob)));
 		if(command == TechCommand.THRUST)
-			return executeThrust(me, circuitKey, mob, controlI, (ShipEngine.ThrustPort)parms[0],((Double)parms[1]).doubleValue());
+			return executeThrust(me, circuitKey, mob, controlI, (TechComponent.ShipDir)parms[0],((Double)parms[1]).doubleValue());
 		return reportError(me, controlI, mob, lang.L("@x1 refused to respond.",me.name(mob)), lang.L("Failure: @x1: control command failure.",me.name(mob)));
 	}
 
@@ -363,7 +363,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements TechComponen
 						final MOB mob=msg.source();
 						final SpaceShip ship=(SpaceShip)obj;
 						final SpaceObject spaceObject=ship.getShipSpaceObject();
-						final String code=Technical.TechCommand.ACCELLLERATION.makeCommand(ThrustPort.AFT,Double.valueOf(0),Boolean.valueOf(true));
+						final String code=Technical.TechCommand.ACCELLLERATION.makeCommand(TechComponent.ShipDir.AFT,Double.valueOf(0),Boolean.valueOf(true));
 						final CMMsg msg2=CMClass.getMsg(mob, spaceObject, me, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
 						if(spaceObject.okMessage(mob, msg2))
 							spaceObject.executeMsg(mob, msg2);
@@ -377,13 +377,13 @@ public class StdShipThruster extends StdCompFuelConsumer implements TechComponen
 				final int fuelToConsume=(int)Math.round(CMath.ceiling(me.getThrust()*me.getFuelEfficiency()*Math.max(.33, Math.abs(2.0-manufacturer.getEfficiencyPct()))/getFuelDivisor()));
 				if(me.consumeFuel(fuelToConsume))
 				{
-					if((me.getThrust() > 0) && (me.isConstantThruster()) && (CMParms.contains(me.getAvailPorts(),ThrustPort.AFT)))
+					if((me.getThrust() > 0) && (me.isConstantThruster()) && (CMParms.contains(me.getAvailPorts(),TechComponent.ShipDir.AFT)))
 					{
 						final SpaceObject obj=CMLib.map().getSpaceObject(me, true);
 						if(obj instanceof SpaceShip)
 						{
 							final SpaceObject ship=((SpaceShip)obj).getShipSpaceObject();
-							final String code=Technical.TechCommand.THRUST.makeCommand(ThrustPort.AFT,Double.valueOf(me.getThrust()));
+							final String code=Technical.TechCommand.THRUST.makeCommand(TechComponent.ShipDir.AFT,Double.valueOf(me.getThrust()));
 							final CMMsg msg2=CMClass.getMsg(msg.source(), me, null, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
 							if(me.owner() instanceof Room)
 							{

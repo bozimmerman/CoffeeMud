@@ -17,8 +17,8 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.Session.InputCallback;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.TechComponent.ShipDir;
 import com.planet_ink.coffee_mud.Items.interfaces.TechComponent.ShipEngine;
-import com.planet_ink.coffee_mud.Items.interfaces.TechComponent.ShipEngine.ThrustPort;
 import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechCommand;
 import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechType;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -161,7 +161,7 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 		{
 			switch(msg.targetMinor())
 			{
-			case CMMsg.TYP_WEAPONATTACK:
+			case CMMsg.TYP_DAMAGE:
 			{
 				final double myMass=getMass();
 				final double hardness = RawMaterial.CODES.HARDNESS(material()) * SpaceObject.Distance.Kilometer.dm;
@@ -196,7 +196,7 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 						{
 							if(command==Technical.TechCommand.ACCELLLERATION)
 							{
-								final ThrustPort dir=(ThrustPort)parms[0];
+								final TechComponent.ShipDir dir=(TechComponent.ShipDir)parms[0];
 								final double amount=((Double)parms[1]).doubleValue();
 								final boolean isConst = ((Boolean)parms[2]).booleanValue();
 								if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
@@ -245,46 +245,66 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 					}
 				}
 				break;
-			case CMMsg.TYP_WEAPONATTACK: // kinetic damage taken to the outside of the ship
+			case CMMsg.TYP_DAMAGE: // kinetic damage taken to the outside of the ship
 			{
 				final long myMass=getMass();
-				if((msg.value() > 1)&&(myMass>0))
+				if((msg.value() > 0)&&(myMass>0))
 				{
-					final int dmg = msg.value();
-					if(dmg >= usesRemaining())
+					//TODO: apply non-collision damage to internal systems instead of hull
+					// only when there are no other systems to destroy do we apply damage
+					// to the hull.  Or perhaps only a small portions is applied to the hull.
+					//
+					// Use reliability to see if a system takes tiny damage on every hit, 
+					// even if it is not chosen to absorb any real damage.
+					int hullDamage=0;
+					final int baseDamage = msg.value();
+					switch(msg.sourceMinor())
 					{
-						msg.setOthersMessage(L("For a split second, you hear a loud crash and feel a jolt."));
+					case CMMsg.TYP_COLLISION:
+						hullDamage = msg.value();
+						break;
+					case CMMsg.TYP_ELECTRIC:
+					case CMMsg.TYP_ACID:
+					case CMMsg.TYP_COLD:
+					case CMMsg.TYP_FIRE:
+					case CMMsg.TYP_GAS:
+					case CMMsg.TYP_LASER:
+					case CMMsg.TYP_PARALYZE:
+					case CMMsg.TYP_POISON:
+					case CMMsg.TYP_SONIC:
+					case CMMsg.TYP_UNDEAD:
+					case CMMsg.TYP_WATER:
+						if(CMLib.dice().getRandomizer().nextDouble() + CMath.div(baseDamage,100) > this.getFinalManufacturer().getReliabilityPct())
+							hullDamage=1;
+						break;
+					}
+					if(hullDamage >= usesRemaining())
+					{
+						if(baseDamage>0)
+							msg.setOthersMessage(L("For a split second, you hear a loud deafening crash and feel an incredible jolt."));
+						else
+							msg.setOthersMessage(L("You hear a loud deafening crash and feel a massive jolt."));
 						sendAreaMessage(msg,false);
-						destroyThisShip();
+						if(hullDamage>0)
+							destroyThisShip();
 					}
 					else
 					{
 						
-						setUsesRemaining(usesRemaining() - Math.round(dmg));
-						if(dmg > 75)
+						if(hullDamage>0)
+							setUsesRemaining(usesRemaining() - hullDamage);
+						if(baseDamage > 75)
 							msg.setOthersMessage(L("You hear a booming crash and feel a crushing jolt."));
 						else
-						if(dmg > 50)
+						if(baseDamage > 50)
 							msg.setOthersMessage(L("You hear a loud crash and feel a hard jolt."));
 						else
-						if(dmg > 25)
+						if(baseDamage > 25)
 							msg.setOthersMessage(L("You hear a noise and feel a small jolt."));
 						else
 							msg.setOthersMessage(L("You hear a bump and feel a short rattle."));
 						sendAreaMessage(msg,false);
 					}
-				}
-				break;
-			}
-			case CMMsg.TYP_DAMAGE: // some other form of energy or radiation damage to the ship
-			{
-				if(msg.value() > 1)
-				{
-					//TODO: damage internal components of the ship.
-					// this sort of damage tends to rip through the hull, or send particles through
-					// it into various systems.  radiation also tends to damage particular systems.
-					// this might be the time to think ahead to how weapons might be targeted at
-					// particular subsystems.
 				}
 				break;
 			}
@@ -307,28 +327,27 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 				// this only works because Areas don't move.
 				// the only way to hit one is to be moving towards it.
 				if((previousSpeed > (SpaceObject.ACCELLERATION_DAMAGED))
-				&&(msg.tool() instanceof SpaceObject)
-				&&(((SpaceObject)msg.tool()).getMass() >= (myMass / 100))) // hitting tiny things don't matter
+				&&(msg.tool() instanceof SpaceObject))
 				{
 					SpaceObject O=(SpaceObject)msg.tool();
 					// This is technically wrong. Imagine taping a huge object from behind because you 
 					// are going just a tiny bit faster, even though you are both going very fast.
 					// However, the odds of that happening are nothing.  Forget it.
-					double absorbedDamage = (previousSpeed * myMass) + (O.speed() * O.getMass());
+					double absorbedDamage = Math.floor((previousSpeed * myMass) + (O.speed() * O.getMass()));
 					if(absorbedDamage > Integer.MAX_VALUE / 10)
 						absorbedDamage = Integer.MAX_VALUE / 10;
-					if(absorbedDamage > 1)
+					
+					// the item should modify the source message type, otherwise, all the damage is absorbed
+					// by the hull as collision damage.  Damage may be 0 here, and the weapon may generate more,
+					// or convert the collision damage into some other kind.
+					final CMMsg sMsg=(CMMsg)msg.copyOf();
+					sMsg.setTargetCode(CMMsg.MSG_DAMAGE);
+					sMsg.setValue((int)Math.round(absorbedDamage));
+					if(O.okMessage(O, sMsg)  && okMessage(this,sMsg))
 					{
-						// we've been -- hit? It's up to the item itself to see to it's own explosion or whatever
-						//TODO: might want to vary this message..
-						final CMMsg sMsg=CMClass.getMsg(msg.source(),this,O,CMMsg.MSG_WEAPONATTACK,null);
-						sMsg.setValue((int)Math.round(absorbedDamage));
-						if(O.okMessage(O, sMsg)  && okMessage(this,sMsg))
-						{
-							O.executeMsg(O, sMsg);
-							if(sMsg.value() > 1)
-								executeMsg(this,sMsg);
-						}
+						O.executeMsg(O, sMsg);
+						if(sMsg.value() > 0)
+							executeMsg(this,sMsg);
 					}
 				}
 
