@@ -989,12 +989,15 @@ public class ProcessSMTPrequest implements Runnable
 						if((cmdQueue.size()==0)&&(respQueue.size()>0))
 						{
 							// we should be looping through these .. why does ZD act so wierd?!
-							final byte [] resp=respQueue.getLast();
-							if(debug)
-								Log.debugOut(runnableName,"Reply: "+CMStrings.replaceAll(new String(resp),cr,"\\r\\n"));
-							// must insert a blank line before message body
-							sout.write(new String(resp));
-							sout.flush();
+							//final byte [] resp=respQueue.getLast();
+							for(byte[] resp : respQueue)
+							{
+								if(debug)
+									Log.debugOut(runnableName,"Reply: "+CMStrings.replaceAll(new String(resp),cr,"\\r\\n"));
+								// must insert a blank line before message body
+								sout.write(new String(resp));
+								sout.flush();
+							}
 							respQueue.clear();
 						}
 					}
