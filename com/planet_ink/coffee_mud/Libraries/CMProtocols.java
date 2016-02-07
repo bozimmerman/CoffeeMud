@@ -2241,6 +2241,8 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		catch (final MJSONException e)
 		{
 			Log.errOut("Error parsing GMCP JSON: "+e.getMessage());
+			if(CMSecurity.isDebugging(DbgFlag.GMCP))
+				Log.errOut("JSON: "+jsonData);
 			return null;
 		}
 	}
