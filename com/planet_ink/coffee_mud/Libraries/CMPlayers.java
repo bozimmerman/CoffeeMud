@@ -553,7 +553,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 				final PlayerStats pStats=mob.playerStats();
 				if(!mob.isMonster())
 				{
-					CMLib.factions().updatePlayerFactions(mob,mob.location());
+					CMLib.factions().updatePlayerFactions(mob,mob.location(), false);
 					setThreadStatus(serviceClient,"just saving "+mob.Name());
 					CMLib.database().DBUpdatePlayerMOBOnly(mob);
 					if((mob.Name().length()==0)||(pStats==null))

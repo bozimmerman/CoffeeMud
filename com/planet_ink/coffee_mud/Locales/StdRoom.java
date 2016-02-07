@@ -701,7 +701,7 @@ public class StdRoom implements Room
 				{
 					final Room R=mob.location();
 					if((R!=null)&&(R.getArea()!=getArea()))
-						CMLib.factions().updatePlayerFactions(mob,this);
+						CMLib.factions().updatePlayerFactions(mob,this,false);
 					giveASky(0);
 				}
 				break;

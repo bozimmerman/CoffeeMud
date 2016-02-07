@@ -1233,7 +1233,7 @@ public class StdMOB implements MOB
 			destroy();
 			return;
 		}
-		CMLib.factions().updatePlayerFactions(this, location());
+		CMLib.factions().updatePlayerFactions(this, location(), false);
 		if (tickStatus == Tickable.STATUS_NOT)
 		{
 			final boolean isImMobile=CMath.bset(phyStats.sensesMask(), PhyStats.CAN_NOT_MOVE);

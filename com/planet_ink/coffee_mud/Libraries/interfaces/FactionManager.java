@@ -63,7 +63,7 @@ public interface FactionManager extends CMLibrary, Tickable
 	public double getRangePercent(String factionID, int faction);
 	public int getTotal(String factionID);
 	public int getRandom(String factionID);
-	public void updatePlayerFactions(MOB mob, Room R);
+	public void updatePlayerFactions(MOB mob, Room R, boolean forceAutoCheck);
 	public String AlignID();
 	public void setAlignment(MOB mob, Faction.Align newAlignment);
 	public void setAlignmentOldRange(MOB mob, int oldRange);

@@ -297,7 +297,16 @@ public class Factions extends StdLibrary implements FactionManager
 		msg.append("+--------------------------------+-----------------------------------------+\n\r");
 		msg.append(L("| ^HFaction Name^N                   | ^HFaction INI Source File (Faction ID)^N    |\n\r"));
 		msg.append("+--------------------------------+-----------------------------------------+\n\r");
-		for(final Enumeration<Faction> e=factionSet.elements();e.hasMoreElements();)
+		final XVector<Faction> sorted = new XVector<Faction>(factionSet.elements());
+		Collections.sort(sorted,new Comparator<Faction>(){
+			@Override
+			public int compare(Faction o1, Faction o2)
+			{
+				return o1.name().compareTo(o2.name());
+			}
+			
+		});
+		for(final Enumeration<Faction> e=sorted.elements();e.hasMoreElements();)
 		{
 			final Faction f=e.nextElement();
 			msg.append("| ");
@@ -575,7 +584,7 @@ public class Factions extends StdLibrary implements FactionManager
 
 
 	@Override
-	public void updatePlayerFactions(MOB mob, Room R)
+	public void updatePlayerFactions(MOB mob, Room R, boolean forceAutoCheck)
 	{
 		if((mob==null)||(R==null))
 			return;
@@ -585,10 +594,13 @@ public class Factions extends StdLibrary implements FactionManager
 			for(final Enumeration<Faction> e=factions();e.hasMoreElements();)
 			{
 				F=e.nextElement();
-				if(((F.getInternalFlags()&Faction.IFLAG_IGNOREAUTO)==0)
-				&&(!F.hasFaction(mob))
-				&&(F.findAutoDefault(mob)!=Integer.MAX_VALUE))
-					mob.addFaction(F.factionID(),F.findAutoDefault(mob));
+				if(F!=null)
+				{
+					if(((forceAutoCheck || (F.getInternalFlags()&Faction.IFLAG_IGNOREAUTO)==0))
+					&&(!F.hasFaction(mob))
+					&&(F.findAutoDefault(mob)!=Integer.MAX_VALUE))
+						mob.addFaction(F.factionID(),F.findAutoDefault(mob));
+				}
 			}
 		}
 		final Faction[] Fs=getSpecialFactions(mob,R);
@@ -681,13 +693,15 @@ public class Factions extends StdLibrary implements FactionManager
 					for(int o=0;o<outSiders.size();o++)
 					{
 						CE=outSiders.elementAt(o);
-						if((CE.applies(mob,mob))&&(!CE.getFaction().hasFaction(mob)))
+						if((CE.applies(mob,mob))
+						&&(!CE.getFaction().hasFaction(mob)))
 							CE.getFaction().executeChange(mob,mob,CE);
 					}
 					for(int o=0;o<timers.size();o++)
 					{
 						CE=timers.elementAt(o);
-						if((CE.applies(mob,mob))&&(CE.getFaction().hasFaction(mob)))
+						if((CE.applies(mob,mob))
+						&&(CE.getFaction().hasFaction(mob)))
 							CE.getFaction().executeChange(mob,mob,CE);
 					}
 				}
