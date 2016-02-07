@@ -99,12 +99,13 @@ public interface SpaceShip extends SpaceObject, BoardableShip
 	public void setFacing(double[] dir);
 
 	/**
-	 * The orientation of the top of the object in radians.
+	 * The full 360 orientation of the top of the object in radians.
 	 * @return radian for the direction of orientation
 	 */
 	public double roll();
+
 	/**
-	 * Sets the orientation of the top of the object in radians.
+	 * Sets the full 360 orientation of the top of the object in radians.
 	 * @param dir radian for the direction of orientation
 	 */
 	public void setRoll(double dir);
