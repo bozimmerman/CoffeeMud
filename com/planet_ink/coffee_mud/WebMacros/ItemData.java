@@ -13,7 +13,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.MoneyLibrary.MoneyDenomina
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
-import com.planet_ink.coffee_mud.Items.interfaces.ShipComponent.ShipEngine.ThrustPort;
+import com.planet_ink.coffee_mud.Items.interfaces.TechComponent.ShipEngine.ThrustPort;
 import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechType;
 import com.planet_ink.coffee_mud.Items.interfaces.MusicalInstrument.InstrumentType;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -1145,11 +1145,11 @@ public class ItemData extends StdWebMacro
 							old=((PrivateProperty)I).getOwnerName();
 						str.append(old);
 						break;
-					case ISSHIPCOMPONENT:
-						str.append(I instanceof ShipComponent);
+					case ISTECHCOMPONENT:
+						str.append(I instanceof TechComponent);
 						break;
 					case ISSHIPENGINE:
-						str.append(I instanceof ShipComponent.ShipEngine);
+						str.append(I instanceof TechComponent.ShipEngine);
 						break;
 					case ISPANEL:
 						str.append((I instanceof Electronics.ElecPanel)&&(!(I instanceof Electronics.Computer)));
@@ -1197,32 +1197,32 @@ public class ItemData extends StdWebMacro
 							str.append((firstTime) ? (((Electronics)I).activated()?"CHECKED":"") : (old.equalsIgnoreCase("on")?"CHECKED":"")).append(", ");
 						break;
 					case ISCONSTTHRUST:
-						if(I instanceof ShipComponent.ShipEngine)
-							str.append((firstTime) ? (((ShipComponent.ShipEngine)I).isConstantThruster()?"CHECKED":"") : (old.equalsIgnoreCase("on")?"CHECKED":"")).append(", ");
+						if(I instanceof TechComponent.ShipEngine)
+							str.append((firstTime) ? (((TechComponent.ShipEngine)I).isConstantThruster()?"CHECKED":"") : (old.equalsIgnoreCase("on")?"CHECKED":"")).append(", ");
 						break;
 					case MAXTHRUST:
-						if(I instanceof ShipComponent.ShipEngine)
-							str.append((firstTime) ? (""+((ShipComponent.ShipEngine)I).getMaxThrust()) : old).append(", ");
+						if(I instanceof TechComponent.ShipEngine)
+							str.append((firstTime) ? (""+((TechComponent.ShipEngine)I).getMaxThrust()) : old).append(", ");
 						break;
 					case MINTHRUST:
-						if(I instanceof ShipComponent.ShipEngine)
-							str.append((firstTime) ? (""+((ShipComponent.ShipEngine)I).getMinThrust()) : old).append(", ");
+						if(I instanceof TechComponent.ShipEngine)
+							str.append((firstTime) ? (""+((TechComponent.ShipEngine)I).getMinThrust()) : old).append(", ");
 						break;
 					case AVAILPORTS:
-						if(I instanceof ShipComponent.ShipEngine)
-							str.append((firstTime) ? (""+CMParms.toListString(((ShipComponent.ShipEngine)I).getAvailPorts())) : old).append(", ");
+						if(I instanceof TechComponent.ShipEngine)
+							str.append((firstTime) ? (""+CMParms.toListString(((TechComponent.ShipEngine)I).getAvailPorts())) : old).append(", ");
 						break;
 					case SPECIMPULSE:
-						if(I instanceof ShipComponent.ShipEngine)
-							str.append((firstTime) ? (""+((ShipComponent.ShipEngine)I).getSpecificImpulse()) : old).append(", ");
+						if(I instanceof TechComponent.ShipEngine)
+							str.append((firstTime) ? (""+((TechComponent.ShipEngine)I).getSpecificImpulse()) : old).append(", ");
 						break;
 					case FUELEFFICIENCY:
-						if(I instanceof ShipComponent.ShipEngine)
-							str.append((firstTime) ? CMath.toPct(((ShipComponent.ShipEngine)I).getFuelEfficiency()) : old).append(", ");
+						if(I instanceof TechComponent.ShipEngine)
+							str.append((firstTime) ? CMath.toPct(((TechComponent.ShipEngine)I).getFuelEfficiency()) : old).append(", ");
 						break;
 					case INSTALLFACTOR:
-						if(I instanceof ShipComponent)
-							str.append((firstTime) ? CMath.toPct(((ShipComponent)I).getInstalledFactor()) : old).append(", ");
+						if(I instanceof TechComponent)
+							str.append((firstTime) ? CMath.toPct(((TechComponent)I).getInstalledFactor()) : old).append(", ");
 						break;
 					case PANELTYPE:
 						if(I instanceof Electronics.ElecPanel)

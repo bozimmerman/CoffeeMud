@@ -12,7 +12,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
-import com.planet_ink.coffee_mud.Items.interfaces.ShipComponent.ShipEngine.ThrustPort;
+import com.planet_ink.coffee_mud.Items.interfaces.TechComponent.ShipEngine.ThrustPort;
 import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechType;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -450,18 +450,18 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		{
 			text.append(CMLib.xml().convertXMLtoTag("SSPANELT",""+((Electronics.ElecPanel)E).panelType().name()));
 		}
-		if(E instanceof ShipComponent)
+		if(E instanceof TechComponent)
 		{
-			text.append(CMLib.xml().convertXMLtoTag("INSTF",""+((ShipComponent)E).getInstalledFactor()));
+			text.append(CMLib.xml().convertXMLtoTag("INSTF",""+((TechComponent)E).getInstalledFactor()));
 		}
-		if(E instanceof ShipComponent.ShipEngine)
+		if(E instanceof TechComponent.ShipEngine)
 		{
-			text.append(CMLib.xml().convertXMLtoTag("SSTHRUST",""+((ShipComponent.ShipEngine)E).getMaxThrust()));
-			text.append(CMLib.xml().convertXMLtoTag("SSIMPL",""+((ShipComponent.ShipEngine)E).getSpecificImpulse()));
-			text.append(CMLib.xml().convertXMLtoTag("SSFEFF",""+((ShipComponent.ShipEngine)E).getFuelEfficiency()));
-			text.append(CMLib.xml().convertXMLtoTag("SSNTHRUST",""+((ShipComponent.ShipEngine)E).getMinThrust()));
-			text.append(CMLib.xml().convertXMLtoTag("SSCONST",""+((ShipComponent.ShipEngine)E).isConstantThruster()));
-			text.append(CMLib.xml().convertXMLtoTag("SSAPORTS",CMParms.toListString(((ShipComponent.ShipEngine)E).getAvailPorts())));
+			text.append(CMLib.xml().convertXMLtoTag("SSTHRUST",""+((TechComponent.ShipEngine)E).getMaxThrust()));
+			text.append(CMLib.xml().convertXMLtoTag("SSIMPL",""+((TechComponent.ShipEngine)E).getSpecificImpulse()));
+			text.append(CMLib.xml().convertXMLtoTag("SSFEFF",""+((TechComponent.ShipEngine)E).getFuelEfficiency()));
+			text.append(CMLib.xml().convertXMLtoTag("SSNTHRUST",""+((TechComponent.ShipEngine)E).getMinThrust()));
+			text.append(CMLib.xml().convertXMLtoTag("SSCONST",""+((TechComponent.ShipEngine)E).isConstantThruster()));
+			text.append(CMLib.xml().convertXMLtoTag("SSAPORTS",CMParms.toListString(((TechComponent.ShipEngine)E).getAvailPorts())));
 		}
 		if(E instanceof Electronics.PowerGenerator)
 		{
@@ -1654,7 +1654,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					return buf;
 				break;
 			case COMPTECH:
-				if (!(item instanceof ShipComponent))
+				if (!(item instanceof TechComponent))
 					return buf;
 				break;
 			case SOFTWARE:
@@ -2974,22 +2974,22 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			if(type != null)
 				((Electronics.ElecPanel)E).setPanelType(type);
 		}
-		if(E instanceof ShipComponent)
+		if(E instanceof TechComponent)
 		{
-			((ShipComponent)E).setInstalledFactor((float)CMLib.xml().getDoubleFromPieces(buf,"INSTF"));
+			((TechComponent)E).setInstalledFactor((float)CMLib.xml().getDoubleFromPieces(buf,"INSTF"));
 		}
-		if(E instanceof ShipComponent.ShipEngine)
+		if(E instanceof TechComponent.ShipEngine)
 		{
-			((ShipComponent.ShipEngine)E).setMaxThrust(CMLib.xml().getIntFromPieces(buf,"SSTHRUST"));
-			((ShipComponent.ShipEngine)E).setSpecificImpulse(CMLib.xml().getIntFromPieces(buf,"SSIMPL"));
-			((ShipComponent.ShipEngine)E).setFuelEfficiency(CMLib.xml().getDoubleFromPieces(buf,"SSFEFF"));
-			((ShipComponent.ShipEngine)E).setMinThrust(CMLib.xml().getIntFromPieces(buf,"SSNTHRUST"));
-			((ShipComponent.ShipEngine)E).setConstantThruster(CMLib.xml().getBoolFromPieces(buf,"SSCONST",true));
+			((TechComponent.ShipEngine)E).setMaxThrust(CMLib.xml().getIntFromPieces(buf,"SSTHRUST"));
+			((TechComponent.ShipEngine)E).setSpecificImpulse(CMLib.xml().getIntFromPieces(buf,"SSIMPL"));
+			((TechComponent.ShipEngine)E).setFuelEfficiency(CMLib.xml().getDoubleFromPieces(buf,"SSFEFF"));
+			((TechComponent.ShipEngine)E).setMinThrust(CMLib.xml().getIntFromPieces(buf,"SSNTHRUST"));
+			((TechComponent.ShipEngine)E).setConstantThruster(CMLib.xml().getBoolFromPieces(buf,"SSCONST",true));
 			final String portsStr = CMLib.xml().getValFromPieces(buf, "SSAPORTS", "");
 			if(portsStr.length()==0)
-				((ShipComponent.ShipEngine)E).setAvailPorts(ThrustPort.values());
+				((TechComponent.ShipEngine)E).setAvailPorts(ThrustPort.values());
 			else
-				((ShipComponent.ShipEngine)E).setAvailPorts(CMParms.parseEnumList(ThrustPort.class, portsStr, ',').toArray(new ThrustPort[0]));
+				((TechComponent.ShipEngine)E).setAvailPorts(CMParms.parseEnumList(ThrustPort.class, portsStr, ',').toArray(new ThrustPort[0]));
 		}
 		if(E instanceof Electronics.PowerGenerator)
 		{

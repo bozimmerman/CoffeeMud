@@ -844,13 +844,13 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				image=getHashedMXPImage(H,"ELECPANEL");
 		}
 		else
-		if(O instanceof ShipComponent)
+		if(O instanceof TechComponent)
 		{
-			final String key = "SHIPCOMP_"+((ShipComponent)O).ID().toUpperCase();
+			final String key = "SHIPCOMP_"+((TechComponent)O).ID().toUpperCase();
 			if(H.containsKey(key))
 				image=getHashedMXPImage(H,key);
 			else
-				image=getHashedMXPImage(H,((ShipComponent) O).getTechType().toString());
+				image=getHashedMXPImage(H,((TechComponent) O).getTechType().toString());
 			if(image==null)
 				image=getHashedMXPImage(H,"SHIPCOMP_*");
 		}

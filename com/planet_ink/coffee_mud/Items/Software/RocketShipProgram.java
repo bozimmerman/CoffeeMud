@@ -12,8 +12,8 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
-import com.planet_ink.coffee_mud.Items.interfaces.ShipComponent.ShipEngine;
-import com.planet_ink.coffee_mud.Items.interfaces.ShipComponent.ShipEngine.ThrustPort;
+import com.planet_ink.coffee_mud.Items.interfaces.TechComponent.ShipEngine;
+import com.planet_ink.coffee_mud.Items.interfaces.TechComponent.ShipEngine.ThrustPort;
 import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechCommand;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -52,8 +52,8 @@ public class RocketShipProgram extends GenShipProgram
 	protected String noActivationMenu="^rNo engine systems found.\n\r";
 
 	protected volatile List<ShipEngine>		engines				= null;
-	protected volatile List<ShipComponent>	sensors				= null;
-	protected volatile List<ShipComponent>	components			= null;
+	protected volatile List<TechComponent>	sensors				= null;
+	protected volatile List<TechComponent>	components			= null;
 	
 	protected final List<CMObject> sensorReport = new LinkedList<CMObject>();
 
@@ -88,19 +88,19 @@ public class RocketShipProgram extends GenShipProgram
 		return this.getActivationMenu();
 	}
 
-	protected synchronized List<ShipComponent> getComponent(final TechType type)
+	protected synchronized List<TechComponent> getComponent(final TechType type)
 	{
-		List<ShipComponent> components;
+		List<TechComponent> components;
 		if(circuitKey.length()==0)
-			return components=new Vector<ShipComponent>(0);
+			return components=new Vector<TechComponent>(0);
 		else
 		{
 			final List<Electronics> electronics=CMLib.tech().getMakeRegisteredElectronics(circuitKey);
-			components=new Vector<ShipComponent>(1);
+			components=new Vector<TechComponent>(1);
 			for(final Electronics E : electronics)
 			{
-				if ((E instanceof ShipComponent) && (E.getTechType()== type))
-					components.add((ShipComponent)E);
+				if ((E instanceof TechComponent) && (E.getTechType()== type))
+					components.add((TechComponent)E);
 			}
 		}
 		return components;
@@ -112,7 +112,7 @@ public class RocketShipProgram extends GenShipProgram
 		if(engines == null)
 		{
 			engines=new Vector<ShipEngine>(1);
-			final List<ShipComponent> stuff=getShipComponents();
+			final List<TechComponent> stuff=getTechComponents();
 			for(final Electronics E : stuff)
 			{
 				if(E instanceof ShipEngine)
@@ -123,33 +123,33 @@ public class RocketShipProgram extends GenShipProgram
 		return engines;
 	}
 
-	protected synchronized List<ShipComponent> getShipComponents()
+	protected synchronized List<TechComponent> getTechComponents()
 	{
 		if(components == null)
 		{
 			if(circuitKey.length()==0)
-				components=new Vector<ShipComponent>(0);
+				components=new Vector<TechComponent>(0);
 			else
 			{
 				final List<Electronics> electronics=CMLib.tech().getMakeRegisteredElectronics(circuitKey);
-				components=new Vector<ShipComponent>(1);
+				components=new Vector<TechComponent>(1);
 				for(final Electronics E : electronics)
 				{
-					if(E instanceof ShipComponent)
-						components.add((ShipComponent)E);
+					if(E instanceof TechComponent)
+						components.add((TechComponent)E);
 				}
 			}
 		}
 		return components;
 	}
 
-	protected synchronized List<ShipComponent> getShipSensors()
+	protected synchronized List<TechComponent> getShipSensors()
 	{
 		if(sensors == null)
 		{
-			final List<ShipComponent> stuff=getShipComponents();
-			sensors=new Vector<ShipComponent>(1);
-			for(final ShipComponent E : stuff)
+			final List<TechComponent> stuff=getTechComponents();
+			sensors=new Vector<TechComponent>(1);
+			for(final TechComponent E : stuff)
 			{
 				if(E.getTechType()==TechType.SHIP_SENSOR)
 					sensors.add(E);
@@ -170,7 +170,7 @@ public class RocketShipProgram extends GenShipProgram
 		return isCommandString(word, false);
 	}
 
-	protected ShipComponent findComponentByName(List<? extends ShipComponent> list, String prefix, String name)
+	protected TechComponent findComponentByName(List<? extends TechComponent> list, String prefix, String name)
 	{
 		if(list.size()==0)
 			return null;
@@ -185,9 +185,9 @@ public class RocketShipProgram extends GenShipProgram
 				return list.get(num-1);
 			return null;
 		}
-		ShipComponent E=(ShipComponent)CMLib.english().fetchEnvironmental(list, name, true);
+		TechComponent E=(TechComponent)CMLib.english().fetchEnvironmental(list, name, true);
 		if(E==null)
-			E=(ShipComponent)CMLib.english().fetchEnvironmental(list, name, false);
+			E=(TechComponent)CMLib.english().fetchEnvironmental(list, name, false);
 		return E;
 	}
 
@@ -196,7 +196,7 @@ public class RocketShipProgram extends GenShipProgram
 		return (ShipEngine)findComponentByName(getEngines(), "ENGINE", name);
 	}
 
-	protected ShipComponent findSensorByName(String name)
+	protected TechComponent findSensorByName(String name)
 	{
 		return findComponentByName(getShipSensors(), "SENSOR", name);
 	}
@@ -293,12 +293,12 @@ public class RocketShipProgram extends GenShipProgram
 		}
 		str.append("^N\n\r");
 
-		final List<ShipComponent> sensors = this.getShipSensors();
+		final List<TechComponent> sensors = this.getShipSensors();
 		if(sensors.size()>0)
 		{
 			str.append("^X").append(CMStrings.centerPreserve(L(" -- Sensors -- "),60)).append("^.^N\n\r");
 			int sensorNumber=1;
-			for(final ShipComponent sensor : sensors)
+			for(final TechComponent sensor : sensors)
 			{
 				str.append("^H").append(CMStrings.padRight(L("SENSOR@x1",""+sensorNumber),9));
 				str.append(CMStrings.padRight(sensor.activated()?L("^gACTIVE"):L("^rINACTIVE"),9));
@@ -355,12 +355,12 @@ public class RocketShipProgram extends GenShipProgram
 		}
 		
 		final List<ShipEngine> engines = getEngines();
-		final List<ShipComponent> components = getShipComponents();
+		final List<TechComponent> components = getTechComponents();
 		if(components.size()> engines.size() + sensors.size())
 		{
 			str.append("^X").append(CMStrings.centerPreserve(L(" -- Other Systems -- "),60)).append("^.^N\n\r");
 			int systemNumber=1;
-			for(final ShipComponent component : components)
+			for(final TechComponent component : components)
 			{
 				if((!engines.contains(component))
 				&&(!sensors.contains(component)))
@@ -478,8 +478,8 @@ public class RocketShipProgram extends GenShipProgram
 					E=findSensorByName(rest);
 				if(E==null)
 				{
-					final List<ShipComponent> others = new ArrayList<ShipComponent>();
-					for(ShipComponent component : getShipComponents())
+					final List<TechComponent> others = new ArrayList<TechComponent>();
+					for(TechComponent component : getTechComponents())
 					{
 						if((!getEngines().contains(component))&&(!getShipSensors().contains(component)))
 							others.add(component);

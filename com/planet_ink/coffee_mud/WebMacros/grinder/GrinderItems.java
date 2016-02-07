@@ -14,7 +14,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
-import com.planet_ink.coffee_mud.Items.interfaces.ShipComponent.ShipEngine.ThrustPort;
+import com.planet_ink.coffee_mud.Items.interfaces.TechComponent.ShipEngine.ThrustPort;
 import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechType;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -66,7 +66,7 @@ public class GrinderItems
 		CATACAT,ISPORTAL,PUTSTR,MOUNTSTR,DISMOUNTSTR,
 		DEFAULTSCLOSED,DEFAULTSLOCKED,ISWEARANDTEAR,
 		ISBOARDABLEITEM, ISPRIVATEPROPERTY, OWNER, 
-		ISSHIPCOMPONENT,ISSHIPENGINE,ISPANEL,ISFUELCONSUMER,ISPOWERGENERATION,
+		ISTECHCOMPONENT,ISSHIPENGINE,ISPANEL,ISFUELCONSUMER,ISPOWERGENERATION,
 		MANUFACTURER,POWCAPACITY,POWREMAINING,ACTIVATED,
 		MAXTHRUST,SPECIMPULSE,FUELEFFICIENCY,INSTALLFACTOR,
 		PANELTYPE,GENAMTPERTICK,CONSUMEDMATS,AREAXML,RECIPESKILLHELP,
@@ -703,7 +703,7 @@ public class GrinderItems
 					if(I instanceof Container)
 						((Container)I).setDoorsNLocks(((Container)I).hasADoor(),((Container)I).isOpen(),((Container)I).defaultsClosed(),((Container)I).hasALock(),((Container)I).hasALock(),old.equals("on"));
 					break;
-				case ISSHIPCOMPONENT:
+				case ISTECHCOMPONENT:
 				case ISSHIPENGINE:
 				case ISPANEL:
 				case ISFUELCONSUMER:
@@ -726,32 +726,32 @@ public class GrinderItems
 						((Electronics)I).activate(old.equalsIgnoreCase("on"));
 					break;
 				case ISCONSTTHRUST:
-					if(I instanceof ShipComponent.ShipEngine)
-						((ShipComponent.ShipEngine)I).setConstantThruster(old.equalsIgnoreCase("on"));
+					if(I instanceof TechComponent.ShipEngine)
+						((TechComponent.ShipEngine)I).setConstantThruster(old.equalsIgnoreCase("on"));
 					break;
 				case MAXTHRUST:
-					if(I instanceof ShipComponent.ShipEngine)
-						((ShipComponent.ShipEngine)I).setMaxThrust(CMath.s_int(old));
+					if(I instanceof TechComponent.ShipEngine)
+						((TechComponent.ShipEngine)I).setMaxThrust(CMath.s_int(old));
 					break;
 				case MINTHRUST:
-					if(I instanceof ShipComponent.ShipEngine)
-						((ShipComponent.ShipEngine)I).setMinThrust(CMath.s_int(old));
+					if(I instanceof TechComponent.ShipEngine)
+						((TechComponent.ShipEngine)I).setMinThrust(CMath.s_int(old));
 					break;
 				case AVAILPORTS:
-					if(I instanceof ShipComponent.ShipEngine)
-						((ShipComponent.ShipEngine)I).setAvailPorts(CMParms.parseEnumList(ThrustPort.class,old.toUpperCase(),',').toArray(new ThrustPort[0]));
+					if(I instanceof TechComponent.ShipEngine)
+						((TechComponent.ShipEngine)I).setAvailPorts(CMParms.parseEnumList(ThrustPort.class,old.toUpperCase(),',').toArray(new ThrustPort[0]));
 					break;
 				case SPECIMPULSE:
-					if(I instanceof ShipComponent.ShipEngine)
-						((ShipComponent.ShipEngine)I).setSpecificImpulse(CMath.s_long(old));
+					if(I instanceof TechComponent.ShipEngine)
+						((TechComponent.ShipEngine)I).setSpecificImpulse(CMath.s_long(old));
 					break;
 				case FUELEFFICIENCY:
-					if(I instanceof ShipComponent.ShipEngine)
-						((ShipComponent.ShipEngine)I).setFuelEfficiency(CMath.s_pct(old));
+					if(I instanceof TechComponent.ShipEngine)
+						((TechComponent.ShipEngine)I).setFuelEfficiency(CMath.s_pct(old));
 					break;
 				case INSTALLFACTOR:
-					if(I instanceof ShipComponent)
-						((ShipComponent)I).setInstalledFactor((float)CMath.s_pct(old));
+					if(I instanceof TechComponent)
+						((TechComponent)I).setInstalledFactor((float)CMath.s_pct(old));
 					break;
 				case PANELTYPE:
 					if(I instanceof Electronics.ElecPanel)

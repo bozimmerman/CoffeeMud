@@ -144,7 +144,7 @@ public class CMClass extends ClassLoader
 	/** stat constant for misc tech type objects */
 	TECH("com.planet_ink.coffee_mud.Items.interfaces.Electronics"),
 	/** stat constant for misc tech type objects */
-	COMPTECH("com.planet_ink.coffee_mud.Items.interfaces.ShipComponent"),
+	COMPTECH("com.planet_ink.coffee_mud.Items.interfaces.TechComponent"),
 	/** stat constant for misc tech type objects */
 	SOFTWARE("com.planet_ink.coffee_mud.Items.interfaces.Software"),
 	/** stat constant for webmacros type objects */
@@ -331,7 +331,7 @@ public class CMClass extends ClassLoader
 			case SOFTWARE: 
 				return O instanceof Software;
 			case COMPTECH: 
-				return O instanceof ShipComponent;
+				return O instanceof TechComponent;
 		}
 		return false;
 	}
@@ -439,7 +439,7 @@ public class CMClass extends ClassLoader
 			return CMObjectType.ITEM;
 		if(O instanceof Software)
 			return CMObjectType.SOFTWARE;
-		if(O instanceof ShipComponent)
+		if(O instanceof TechComponent)
 			return CMObjectType.COMPTECH;
 		if(O instanceof Electronics)
 			return CMObjectType.TECH;

@@ -388,7 +388,7 @@ public class GravityFloat extends StdAbility
 			||(!CMLib.flags().isGettable(I))
 			||(I instanceof Rideable)
 			||(I.owner() instanceof MOB)
-			||(I instanceof ShipComponent))
+			||(I instanceof TechComponent))
 			{
 				if(!hasGravity)
 					hasGravity=true;

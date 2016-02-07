@@ -33,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class StdCompBattery extends StdElecCompItem implements Electronics.PowerSource, ShipComponent
+public class StdCompBattery extends StdElecCompItem implements Electronics.PowerSource, TechComponent
 {
 	@Override
 	public String ID()

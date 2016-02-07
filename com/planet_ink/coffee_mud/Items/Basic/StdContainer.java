@@ -534,7 +534,7 @@ public class StdContainer extends StdItem implements Container
 						return true;
 					break;
 				case CONTAIN_SSCOMPONENTS:
-					if(I instanceof ShipComponent)
+					if(I instanceof TechComponent)
 						return true;
 					break;
 				}

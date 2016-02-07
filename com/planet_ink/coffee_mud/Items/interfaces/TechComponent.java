@@ -13,7 +13,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
-import com.planet_ink.coffee_mud.Items.interfaces.ShipComponent.ShipEngine.ThrustPort;
+import com.planet_ink.coffee_mud.Items.interfaces.TechComponent.ShipEngine.ThrustPort;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -35,36 +35,36 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    limitations under the License.
  */
 /**
- * A ShipComponent is a type of electronics item that must be installed into
- * a space ship into a ship panel that can accept it.
+ * A TechComponent is a type of electronics item that must be installed into
+ * a panel that can accept it.  Typically for space ships.
  * 
  * @author Bo Zimmerman
  *
  */
-public interface ShipComponent extends Electronics
+public interface TechComponent extends Electronics
 {
 	/**
 	 * The installed factor is how well the equipment was installed. 0-1.0
-	 * @see ShipComponent#setInstalledFactor(float)
+	 * @see TechComponent#setInstalledFactor(float)
 	 * @return installed factor is how well the equipment was installed. 0-1.0
 	 */
 	public float getInstalledFactor();
 
 	/**
 	 * The installed factor is how well the equipment was installed. 0-1.0
-	 * @see ShipComponent#getInstalledFactor()
+	 * @see TechComponent#getInstalledFactor()
 	 * @param pct installed factor is how well the equipment was installed. 0-1.0
 	 */
 	public void setInstalledFactor(float pct);
 
 	/**
-	 * A ShipEngine is a special ShipComponent that is also a fuel consumer, 
+	 * A ShipEngine is a special TechComponent that is often a fuel consumer, 
 	 * and which has special tracked attributes related to its ability to 
-	 * propel a ship and consume fuel.
+	 * propel a ship and, usually, consume fuel.
 	 * @author Bo Zimmerman
 	 *
 	 */
-	public interface ShipEngine extends ShipComponent
+	public interface ShipEngine extends TechComponent
 	{
 		/**
 		 * The ThrustPort enum is for the different thrust ports, denoting

@@ -364,7 +364,7 @@ public class AstroEngineering extends TechSkill
 			mob.tell(L("That's not an electronics item."));
 			return false;
 		}
-		if(!(targetItem instanceof ShipComponent))
+		if(!(targetItem instanceof TechComponent))
 		{
 			mob.tell(L("That's not a space ship component."));
 			return false;
@@ -400,10 +400,10 @@ public class AstroEngineering extends TechSkill
 				mob.tell(mob,targetItem,null,L("<T-NAME> must be repaired first!"));
 				return false;
 			}
-			if(targetItem instanceof ShipComponent)
+			if(targetItem instanceof TechComponent)
 			{
-				if(((ShipComponent)targetItem).getInstalledFactor()>1.0)
-					minTicks+=(int)Math.round((((ShipComponent)targetItem).getInstalledFactor()-1.0)*0.01);
+				if(((TechComponent)targetItem).getInstalledFactor()>1.0)
+					minTicks+=(int)Math.round((((TechComponent)targetItem).getInstalledFactor()-1.0)*0.01);
 			}
 		}
 		for(final Enumeration<Ability> a=mob.personalEffects();a.hasMoreElements();)

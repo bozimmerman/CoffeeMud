@@ -34,7 +34,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class StdCompPanel extends StdElecCompContainer implements Electronics.ElecPanel, ShipComponent
+public class StdCompPanel extends StdElecCompContainer implements Electronics.ElecPanel, TechComponent
 {
 	@Override
 	public String ID()
@@ -135,14 +135,14 @@ public class StdCompPanel extends StdElecCompContainer implements Electronics.El
 				if(CMSecurity.isAllowed(msg.source(), msg.source().location(), CMSecurity.SecFlag.CMDITEMS))
 					break; // let admins go ahead and put stuff
 				else
-				if(msg.tool() instanceof ShipComponent)
+				if(msg.tool() instanceof TechComponent)
 				{
 					if(msg.value()<=0)
 					{
 						final Ability installA=msg.source().fetchAbility("AstroEngineering");
 						if(installA==null)
 						{
-							msg.source().tell(L("You don't know how to install @x1 into @x2.",((ShipComponent)msg.tool()).name(msg.source()),name(msg.source())));
+							msg.source().tell(L("You don't know how to install @x1 into @x2.",((TechComponent)msg.tool()).name(msg.source()),name(msg.source())));
 							return false;
 						}
 						else
@@ -156,7 +156,7 @@ public class StdCompPanel extends StdElecCompContainer implements Electronics.El
 			case CMMsg.TYP_INSTALL:
 				if(msg.value()<=0)
 				{
-					msg.source().tell(L("You failed to install @x1 into @x2.",((ShipComponent)msg.tool()).name(msg.source()),name(msg.source())));
+					msg.source().tell(L("You failed to install @x1 into @x2.",((TechComponent)msg.tool()).name(msg.source()),name(msg.source())));
 					return false;
 				}
 				break;
@@ -173,16 +173,16 @@ public class StdCompPanel extends StdElecCompContainer implements Electronics.El
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_PUT:
-				if(msg.tool() instanceof ShipComponent)
-					((ShipComponent)msg.tool()).setInstalledFactor(CMSecurity.isAllowed(msg.source(), msg.source().location(), CMSecurity.SecFlag.CMDITEMS)?1.0f:0.0f);
+				if(msg.tool() instanceof TechComponent)
+					((TechComponent)msg.tool()).setInstalledFactor(CMSecurity.isAllowed(msg.source(), msg.source().location(), CMSecurity.SecFlag.CMDITEMS)?1.0f:0.0f);
 				break;
 			case CMMsg.TYP_INSTALL:
-				if((msg.tool() instanceof ShipComponent)&&(msg.value()>=0))
+				if((msg.tool() instanceof TechComponent)&&(msg.value()>=0))
 				{
 					if(msg.value()<=0)
-						((ShipComponent)msg.tool()).setInstalledFactor((float)1.0);
+						((TechComponent)msg.tool()).setInstalledFactor((float)1.0);
 					else
-						((ShipComponent)msg.tool()).setInstalledFactor((float)CMath.div(msg.value(), 100.0));
+						((TechComponent)msg.tool()).setInstalledFactor((float)CMath.div(msg.value(), 100.0));
 					CMMsg msg2=(CMMsg)msg.copyOf();
 					msg2.setTargetCode(CMMsg.MSG_PUT);
 					msg2.setSourceCode(CMMsg.MSG_PUT);

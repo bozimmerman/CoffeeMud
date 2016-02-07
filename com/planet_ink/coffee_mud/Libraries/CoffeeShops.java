@@ -174,8 +174,8 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 							final Item I2=i.nextElement();
 							if(I2.displayText().length()>0)
 							{
-								if(I2 instanceof ShipComponent)
-									str.append(L("\n\r"+CMStrings.padRight(((ShipComponent)I2).getTechType().getShortDisplayName(),11)+": @x1",getSellableElectronicsName(viewerM,(Electronics)I2)));
+								if(I2 instanceof TechComponent)
+									str.append(L("\n\r"+CMStrings.padRight(((TechComponent)I2).getTechType().getShortDisplayName(),11)+": @x1",getSellableElectronicsName(viewerM,(Electronics)I2)));
 								else
 									miscItems.add(I2.name(viewerM));
 							}

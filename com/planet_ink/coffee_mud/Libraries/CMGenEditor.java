@@ -20,7 +20,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.ClanItem.ClanItemType;
 import com.planet_ink.coffee_mud.Items.interfaces.MusicalInstrument.InstrumentType;
-import com.planet_ink.coffee_mud.Items.interfaces.ShipComponent.ShipEngine.ThrustPort;
+import com.planet_ink.coffee_mud.Items.interfaces.TechComponent.ShipEngine.ThrustPort;
 import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechType;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -8232,9 +8232,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				E.setPowerRemaining(prompt(mob, E.powerRemaining(), ++showNumber, showFlag, "Pow Remaining"));
 				E.activate(prompt(mob, E.activated(), ++showNumber, showFlag, "Activated"));
 			}
-			if(me instanceof ShipComponent)
+			if(me instanceof TechComponent)
 			{
-				final ShipComponent E=(ShipComponent)me;
+				final TechComponent E=(TechComponent)me;
 				E.setInstalledFactor((float)prompt(mob, E.getInstalledFactor(), ++showNumber, showFlag, L("Installed Factor")));
 			}
 			if(me instanceof PackagedItems)
@@ -8555,9 +8555,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				final Electronics.FuelConsumer E=(Electronics.FuelConsumer)me;
 				genConsumedMaterials(mob, E, ++showNumber, showFlag);
 			}
-			if(me instanceof ShipComponent.ShipEngine)
+			if(me instanceof TechComponent.ShipEngine)
 			{
-				final ShipComponent.ShipEngine E=(ShipComponent.ShipEngine)me;
+				final TechComponent.ShipEngine E=(TechComponent.ShipEngine)me;
 				E.setMinThrust(prompt(mob, E.getMinThrust(), ++showNumber, showFlag, "Min thrust"));
 				E.setMaxThrust(prompt(mob, E.getMaxThrust(), ++showNumber, showFlag, "Max thrust"));
 				E.setConstantThruster(prompt(mob, E.isConstantThruster(), ++showNumber, showFlag, "Constant thrust"));
@@ -8565,9 +8565,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				E.setFuelEfficiency(prompt(mob, E.getFuelEfficiency()*100.0, ++showNumber, showFlag, "Fuel Effic. %")/100.0);
 				E.setAvailPorts(CMParms.parseEnumList(ThrustPort.class,prompt(mob, CMParms.toListString(E.getAvailPorts()), ++showNumber, showFlag, "Avail. ports").toUpperCase(),',').toArray(new ThrustPort[0]));
 			}
-			if(me instanceof ShipComponent)
+			if(me instanceof TechComponent)
 			{
-				final ShipComponent E=(ShipComponent)me;
+				final TechComponent E=(TechComponent)me;
 				E.setInstalledFactor((float)prompt(mob, E.getInstalledFactor(), ++showNumber, showFlag, "Installed Factor"));
 			}
 			if(!(me instanceof Electronics))
