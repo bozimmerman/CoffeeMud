@@ -187,9 +187,12 @@ public class PresenceReaction extends StdAbility
 	protected synchronized boolean shutdownPresence(MOB affected)
 	{
 		final Room R=affected.location();
-		if(((R==null)||(reactToM==null)||(!R.isInhabitant(reactToM))))
+		final MOB M=(MOB)super.affected;
+		if((R==null)
+		||(reactToM==null)
+		||(!R.isInhabitant(reactToM))
+		||((affected.amFollowing()!=null)&&(!affected.amFollowing().isMonster())))
 		{
-			final MOB M=(MOB)super.affected;
 			for(final CMObject O : managed)
 			{
 				if((O!=null)&&(O.ID().equals("Mood")))
@@ -317,7 +320,8 @@ public class PresenceReaction extends StdAbility
 			||(affected.amDestroyed())
 			||(reactToM.amDestroyed())
 			||(!CMLib.flags().isInTheGame(affected, true))
-			||(!CMLib.flags().isInTheGame(reactToM, true)))
+			||(!CMLib.flags().isInTheGame(reactToM, true))
+			||((affected.amFollowing()!=null)&&(!affected.amFollowing().isMonster())))
 				return shutdownPresence(affected);
 			initializeAllManaged(affected);
 			for(final CMObject O : managed)

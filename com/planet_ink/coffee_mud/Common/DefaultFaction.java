@@ -2193,6 +2193,9 @@ public class DefaultFaction implements Faction, MsgListener
 			if((!CMLib.flags().canBeSeenBy(myHost, M))
 			&&(!CMLib.flags().canBeHeardMovingBy(myHost,M)))
 				return null;
+			if((M.amUltimatelyFollowing()!=null)
+			&&(!M.amUltimatelyFollowing().isMonster()))
+				return null;
 			Vector<String> myReactions=null;
 			List<Faction.FReactionItem> tempReactSet=null;
 			for(int d=0;d<currentReactionSets.size();d++)
@@ -2253,9 +2256,7 @@ public class DefaultFaction implements Faction, MsgListener
 							M=R.fetchInhabitant(m);
 							if((M!=null)
 							&&(M!=myHost)
-							&&(M.isMonster())
-							&&(msg.source().amFollowing()!=M)
-							&&(M.amFollowing()!=msg.source()))
+							&&(M.isMonster())) // follow checks are in setPresenceReaction
 							{
 								A=setPresenceReaction(M,msg.source());
 								if(A!=null) // means yes, we are using light, and yes, heres a reaction to add
@@ -2269,10 +2270,9 @@ public class DefaultFaction implements Faction, MsgListener
 					&&(msg.target()==CMLib.map().roomLocation(myHost))
 					&&(myHost instanceof Physical))
 					{
-						if((!(myHost instanceof MOB))
-						||(((msg.source().amFollowing()!=myHost)
-							&&(((MOB)myHost).amFollowing()!=msg.source()))))
+						if(!(myHost instanceof MOB))
 						{
+							// follow checks are in setPresenceReaction
 							final Ability A=setPresenceReaction(msg.source(),(Physical)myHost);
 							if(A!=null){ // means yes, we are using light, and yes, heres a reaction to add
 								lightPresenceAbilities = Arrays.copyOf(lightPresenceAbilities, lightPresenceAbilities.length+1);
@@ -2294,7 +2294,9 @@ public class DefaultFaction implements Faction, MsgListener
 						for(int m=0;m<R.numInhabitants();m++)
 						{
 							M=R.fetchInhabitant(m);
-							if((M!=null)&&(M!=myHost)&&(M.isMonster()))
+							if((M!=null)
+							&&(M!=myHost)
+							&&(M.isMonster()))
 								presenceReactionPrototype.invoke(M,new Vector<String>(),null,true,0); // this shuts it down
 						}
 						lightPresenceAbilities=new Ability[0];
@@ -2338,14 +2340,20 @@ public class DefaultFaction implements Faction, MsgListener
 			if(noListeners)
 				return true;
 			for(final Ability A : myEffects)
+			{
 				if(!A.okMessage(myHost, msg))
 					return false;
+			}
 			for(final Behavior B : myBehaviors)
+			{
 				if(!B.okMessage(myHost, msg))
 					return false;
+			}
 			for(final Ability A : lightPresenceAbilities)
+			{
 				if(!A.okMessage(A.invoker(), msg))
 					return false;
+			}
 			return true;
 		}
 		
@@ -2355,14 +2363,20 @@ public class DefaultFaction implements Faction, MsgListener
 			if(noTickers)
 				return true;
 			for(final Ability A : myEffects)
+			{
 				if(!A.tick(ticking, tickID))
 					return false;
+			}
 			for(final Behavior B : myBehaviors)
+			{
 				if(!B.tick(ticking, tickID))
 					return false;
+			}
 			for(final Ability A : lightPresenceAbilities)
+			{
 				if(!A.tick(A.invoker(), tickID))
 					return false;
+			}
 			return true;
 		}
 	}
@@ -2423,7 +2437,12 @@ public class DefaultFaction implements Faction, MsgListener
 			mask=str;
 			compiledMask=CMLib.masking().maskCompile(str);
 		}
-		@Override public String toString(){ return gainF+";"+lossF+";"+mask; }
+
+		@Override
+		public String toString()
+		{
+			return gainF + ";" + lossF + ";" + mask;
+		}
 	}
 
 	public class DefaultFactionReactionItem implements Faction.FReactionItem
