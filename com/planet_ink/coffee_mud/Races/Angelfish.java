@@ -53,7 +53,6 @@ public class Angelfish extends Fish
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		affectableStats.setSpeed(affectableStats.speed() + 2.0);
+		affectableStats.setSpeed(affectableStats.speed() + 1.0);
 	}
-
 }
