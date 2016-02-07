@@ -32,8 +32,9 @@ public class FullConvertingList<L,K> implements List<K>
 		{
 			if(M.getName().equals("reverseConvert") && (M.getParameterTypes().length>0))
 			{
-				kClass = M.getReturnType();
-				lClass = M.getParameterTypes()[0];
+				lClass = M.getReturnType();
+				kClass = M.getParameterTypes()[0];
+				break;
 			}
 		}
 	}
@@ -55,9 +56,9 @@ public class FullConvertingList<L,K> implements List<K>
 	{
 		if(arg0 == null)
 			return null;
-		if(arg0.getClass() == lClass)
+		if(lClass.isAssignableFrom(arg0.getClass()))
 			return arg0;
-		if(arg0.getClass() == kClass)
+		if(kClass.isAssignableFrom(arg0.getClass()))
 			return converter.reverseConvert((K)arg0);
 		return null;
 	}
