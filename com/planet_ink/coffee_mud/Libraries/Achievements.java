@@ -1795,8 +1795,14 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						{
 							Room R=CMLib.map().getRoom(s);
 							if(R==null)
-								return "Error: Missing or invalid ROOMID: "+s+"!";
-							roomIDs.add(CMLib.map().getExtendedRoomID(R));
+							{
+								if(CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+									return "Error: Missing or invalid ROOMID: "+s+"!";
+								else
+									roomIDs.add(s);
+							}
+							else
+								roomIDs.add(CMLib.map().getExtendedRoomID(R));
 						}
 					}
 					if(roomIDs.size()==0)
