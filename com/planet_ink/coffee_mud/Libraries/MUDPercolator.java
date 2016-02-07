@@ -463,7 +463,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			@Override
 			public String attempt() throws CMException, PostProcessException 
 			{
-				final String author = findOptionalString(A,null,"AREA_","author",piece,this.defined);
+				final String author = findOptionalString(A,null,"AREA_","author",piece,this.defined, false);
 				if(author != null)
 				{
 					A.setAuthorID(author);
@@ -476,7 +476,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			@Override
 			public String attempt() throws CMException, PostProcessException 
 			{
-				final String description = findOptionalString(A,null,"AREA_","description",piece,this.defined);
+				final String description = findOptionalString(A,null,"AREA_","description",piece,this.defined, false);
 				if(description != null)
 				{
 					A.setDescription(description);
@@ -1074,7 +1074,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		return list;
 	}
 
-	protected String fillOutStatCode(final Modifiable E, final List<String> ignoreStats, final String defPrefix, final String stat, final XMLTag piece, final Map<String,Object> defined)
+	protected String fillOutStatCode(final Modifiable E, final List<String> ignoreStats, final String defPrefix, final String stat, final XMLTag piece, final Map<String,Object> defined, final boolean debug)
 	{
 		if(!ignoreStats.contains(stat.toUpperCase().trim()))
 		{
@@ -1086,9 +1086,9 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					{
 						String value;
 						if((E instanceof MOB) && (stat.equals("ABILITY")))
-							value = findOptionalString(E,ignoreStats,defPrefix,"HPMOD",piece,this.defined);
+							value = findOptionalString(E,ignoreStats,defPrefix,"HPMOD",piece,this.defined, debug);
 						else
-							value = findOptionalString(E,ignoreStats,defPrefix,stat,piece,this.defined);
+							value = findOptionalString(E,ignoreStats,defPrefix,stat,piece,this.defined, debug);
 						if(value != null)
 						{
 							E.setStat(stat, value);
@@ -1113,7 +1113,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		final String[] statCodes = E.getStatCodes();
 		for (final String stat : statCodes)
 		{
-			fillOutStatCode(E,ignoreStats,defPrefix,stat,piece,defined);
+			fillOutStatCode(E,ignoreStats,defPrefix,stat,piece,defined, false);
 		}
 	}
 
@@ -1146,7 +1146,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 
 	protected boolean fillOutCopyCodes(final Modifiable E, List<String> ignoreStats, String defPrefix, XMLTag piece, Map<String,Object> defined) throws CMException
 	{
-		final String copyStatID = findOptionalStringNow(E,ignoreStats,defPrefix,"COPYOF",piece,defined);
+		final String copyStatID = findOptionalStringNow(E,ignoreStats,defPrefix,"COPYOF",piece,defined, false);
 		if(copyStatID!=null)
 		{
 			final List<String> V=CMParms.parseCommas(copyStatID,true);
@@ -1220,12 +1220,14 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			if(M.isGeneric())
 			{
 				copyFilled = fillOutCopyCodes(M,ignoreStats,"MOB_",piece,defined);
-				String name = fillOutStatCode(M,ignoreStats,"MOB_","NAME",piece,defined);
+				String name = fillOutStatCode(M,ignoreStats,"MOB_","NAME",piece,defined, false);
 				if((!copyFilled) && ((name == null)||(name.length()==0)))
-					name = fillOutStatCode(M,ignoreStats,"MOB_","NAME",piece,defined);
+					name = fillOutStatCode(M,ignoreStats,"MOB_","NAME",piece,defined, false);
 				if((!copyFilled) && ((name == null)||(name.length()==0)))
 				{
-					throw new CMException("Unable to build a mob without a name, Data: "+CMParms.toKeyValueSlashListString(piece.parms())+":"+CMStrings.limit(piece.value(),100));
+					name = fillOutStatCode(M,ignoreStats,"MOB_","NAME",piece,defined, true);
+					if((!copyFilled) && ((name == null)||(name.length()==0)))
+						throw new CMException("Unable to build a mob without a name, Data: "+CMParms.toKeyValueSlashListString(piece.parms())+":"+CMStrings.limit(piece.value(),100));
 				}
 				if((name != null)&&(name.length()>0))
 					M.setName(name);
@@ -1240,7 +1242,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			@Override
 			public String attempt() throws CMException, PostProcessException 
 			{
-				String value = findOptionalString(mob,ignoreStats,"MOB_","LEVEL",piece,this.defined);
+				String value = findOptionalString(mob,ignoreStats,"MOB_","LEVEL",piece,this.defined, false);
 				if((value != null)&&(value.length()>0))
 				{
 					mob.setStat("LEVEL",value);
@@ -1256,7 +1258,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			@Override
 			public String attempt() throws CMException, PostProcessException 
 			{
-				String value = findOptionalString(mob,ignoreStats,"MOB_","GENDER",piece,this.defined);
+				String value = findOptionalString(mob,ignoreStats,"MOB_","GENDER",piece,this.defined, false);
 				if((value != null)&&(value.length()>0))
 				{
 					mob.baseCharStats().setStat(CharStats.STAT_GENDER,value.charAt(0));
@@ -1268,7 +1270,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					@Override
 					public String attempt() throws CMException, PostProcessException 
 					{
-						String value = findOptionalString(mob,ignoreStats,"MOB_","RACE",piece,this.defined);
+						String value = findOptionalString(mob,ignoreStats,"MOB_","RACE",piece,this.defined, false);
 						if((value != null)&&(value.length()>0))
 						{
 							mob.setStat("RACE",value);
@@ -1691,7 +1693,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					throw new CMException("Unable to metacraft with malformed class Data: "+CMParms.toKeyValueSlashListString(piece.parms())+":"+CMStrings.limit(piece.value(),100));
 			}
 
-			final String materialStr = findOptionalStringNow(null,null,null,"material",piece,defined);
+			final String materialStr = findOptionalStringNow(null,null,null,"material",piece,defined, false);
 			int material=-1;
 			if(materialStr!=null)
 				 material = RawMaterial.CODES.FIND_IgnoreCase(materialStr);
@@ -1838,8 +1840,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				addDefinition("ITEM_CLASS",I.ID(),defined);
 				addDefinition("ITEM_NAME",I.Name(),defined); // define so we can mess with it
 				addDefinition("ITEM_LEVEL",""+I.basePhyStats().level(),defined); // define so we can mess with it
-				fillOutStatCode(I,ignoreStats,"ITEM_","NAME",piece,defined);
-				fillOutStatCode(I,ignoreStats,"ITEM_","LEVEL",piece,defined);
+				fillOutStatCode(I,ignoreStats,"ITEM_","NAME",piece,defined, false);
+				fillOutStatCode(I,ignoreStats,"ITEM_","LEVEL",piece,defined, false);
 			}
 			ignoreStats.addAll(Arrays.asList(new String[]{"CLASS","MATERIAL","NAME","LEVEL"}));
 		}
@@ -1870,7 +1872,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			if(I.isGeneric())
 			{
 				final boolean filledOut = fillOutCopyCodes(I,ignoreStats,"ITEM_",piece,defined);
-				final String name = fillOutStatCode(I,ignoreStats,"ITEM_","NAME",piece,defined);
+				final String name = fillOutStatCode(I,ignoreStats,"ITEM_","NAME",piece,defined, false);
 				if((!filledOut) && ((name == null)||(name.length()==0)))
 					throw new CMException("Unable to build an item without a name, Data: "+CMParms.toKeyValueSlashListString(piece.parms())+":"+CMStrings.limit(piece.value(),100));
 				if((name != null)&&(name.length()>0))
@@ -2026,7 +2028,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			@Override
 			public String attempt() throws CMException, PostProcessException 
 			{
-				final String value = findOptionalString(E,null,null,"PARMS",piece,this.defined);
+				final String value = findOptionalString(E,null,null,"PARMS",piece,this.defined, false);
 				if(value != null)
 					aA.setMiscText(value);
 				return value;
@@ -2048,7 +2050,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			@Override
 			public String attempt() throws CMException, PostProcessException 
 			{
-				final String value = findOptionalString(E,null,null,"PARMS",piece,this.defined);
+				final String value = findOptionalString(E,null,null,"PARMS",piece,this.defined, false);
 				if(value != null)
 					bB.setParms(value);
 				return value;
@@ -2081,25 +2083,25 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				defined.put(prefix+"CLASS", classID);
 				final AbilityMapping mapA=CMLib.ableMapper().newAbilityMapping().ID(classID);
 				String value;
-				value=findOptionalStringNow(E, null, prefix, "PARMS", valPiece, defined);
+				value=findOptionalStringNow(E, null, prefix, "PARMS", valPiece, defined, false);
 				if(value != null)
 				{
 					mapA.defaultParm(value);
 					defined.put(prefix+"PARMS", value);
 				}
-				value=findOptionalStringNow(E, null, prefix, "PROFF", valPiece, defined);
+				value=findOptionalStringNow(E, null, prefix, "PROFF", valPiece, defined, false);
 				if(value != null)
 				{
 					mapA.defaultProficiency(CMath.parseIntExpression(value));
 					defined.put(prefix+"PROFF", Integer.valueOf(mapA.defaultProficiency()));
 				}
-				value=findOptionalStringNow(E, null, prefix, "LEVEL", valPiece, defined);
+				value=findOptionalStringNow(E, null, prefix, "LEVEL", valPiece, defined, false);
 				if(value != null)
 				{
 					mapA.qualLevel(CMath.parseIntExpression(value));
 					defined.put(prefix+"LEVEL", Integer.valueOf(mapA.qualLevel()));
 				}
-				value=findOptionalStringNow(E, null, prefix, "QUALIFY", valPiece, defined);
+				value=findOptionalStringNow(E, null, prefix, "QUALIFY", valPiece, defined, false);
 				if(value != null)
 				{
 					mapA.autoGain(!CMath.s_bool(value));
@@ -2150,7 +2152,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		for(String stat : R.getStatCodes())
 			try
 			{
-				if(findOptionalString(null, null, null, stat, piece, defined)!=null)
+				if(findOptionalString(null, null, null, stat, piece, defined, false)!=null)
 					numStatsFound++;
 			}
 			catch(PostProcessException pe)
@@ -2252,19 +2254,21 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		else defined.put(definition, def+","+value);
 	}
 
-	protected String findOptionalStringNow(Modifiable E, List<String> ignoreStats, String defPrefix, String tagName, XMLTag piece, Map<String,Object> defined)
+	protected String findOptionalStringNow(Modifiable E, List<String> ignoreStats, String defPrefix, String tagName, XMLTag piece, Map<String,Object> defined, boolean debug)
 	{
 		try
 		{
-			return findOptionalString(E,ignoreStats,defPrefix,tagName, piece, defined);
+			return findOptionalString(E,ignoreStats,defPrefix,tagName, piece, defined, false);
 		}
 		catch(final PostProcessException x)
 		{
+			if(debug)
+				Log.errOut(x);
 			return null;
 		}
 	}
 
-	protected String findOptionalString(Modifiable E, List<String> ignoreStats, String defPrefix, String tagName, XMLTag piece, Map<String,Object> defined) throws PostProcessException
+	protected String findOptionalString(Modifiable E, List<String> ignoreStats, String defPrefix, String tagName, XMLTag piece, Map<String,Object> defined, boolean debug) throws PostProcessException
 	{
 		try
 		{
@@ -2272,6 +2276,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		}
 		catch(final CMException x)
 		{
+			if(debug)
+				Log.errOut(x);
 			return null;
 		}
 	}
@@ -2564,7 +2570,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 						XMLTag newPiece=piece;
 						while((newPiece.parent()!=null)&&(newPiece.tag().equals(piece.tag())))
 							newPiece=newPiece.parent();
-						fillOutStatCode(E, ignoreStats, defPrefix, id.var.substring(defPrefix.length()), newPiece, defined);
+						fillOutStatCode(E, ignoreStats, defPrefix, id.var.substring(defPrefix.length()), newPiece, defined, false);
 					}
 					String value=findString(E,ignoreStats,defPrefix,id.var, piece, defined);
 					if(CMath.isMathExpression(value))
@@ -3016,14 +3022,14 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					if((E.isStat(preValue))
 					&&((ignoreStats==null)||(!ignoreStats.contains(preValue.toUpperCase()))))
 					{
-						val=fillOutStatCode(E,ignoreStats,defPrefix,preValue,piece,defined);
+						val=fillOutStatCode(E,ignoreStats,defPrefix,preValue,piece,defined, false);
 						XMLTag statPiece=piece;
 						while((val == null)
 						&&(statPiece.parent()!=null)
 						&&(!(defPrefix.startsWith(statPiece.tag())&&(!defPrefix.startsWith(statPiece.parent().tag())))))
 						{
 							statPiece=statPiece.parent();
-							val=fillOutStatCode(E,ignoreStats,defPrefix,preValue,statPiece,defined);
+							val=fillOutStatCode(E,ignoreStats,defPrefix,preValue,statPiece,defined, false);
 						}
 						if((ignoreStats!=null)&&(val!=null))
 							ignoreStats.add(preValue.toUpperCase());
