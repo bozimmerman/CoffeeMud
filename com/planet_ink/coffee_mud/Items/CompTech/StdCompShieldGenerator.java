@@ -174,7 +174,6 @@ public class StdCompShieldGenerator extends StdElecCompItem implements TechCompo
 					{
 						//TODO: finish
 					}
-					
 				}
 				break;
 			}

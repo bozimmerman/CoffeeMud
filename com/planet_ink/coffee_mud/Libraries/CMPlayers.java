@@ -1136,7 +1136,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			{
 				tickStatus=Tickable.STATUS_ALIVE;
 				isDebugging=CMSecurity.isDebugging(DbgFlag.PLAYERTHREAD);
-				if(checkDatabase())
+				if(checkDatabase() && CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 				{
 					setThreadStatus(serviceClient,"not saving players");
 					if((!CMSecurity.isDisabled(CMSecurity.DisFlag.SAVETHREAD))

@@ -2396,7 +2396,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 	@Override
 	public void possiblyBumpAchievement(final MOB mob, final Event E, int bumpNum, Object... parms)
 	{
-		if((mob != null)&&(E!=null)&&(!mob.isMonster()))
+		if((mob != null)&&(E!=null)&&(!mob.isMonster())&&(CMProps.getBoolVar(CMProps.Bool.MUDSTARTED)))
 		{
 			ensureAchievementsLoaded();
 			final PlayerStats pStats = mob.playerStats();
@@ -3041,7 +3041,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 	@Override
 	public boolean evaluateAchievements(final MOB mob)
 	{
-		if(mob==null)
+		if((mob==null)||(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED)))
 			return false;
 		final PlayerStats P=mob.playerStats();
 		if(P==null)
