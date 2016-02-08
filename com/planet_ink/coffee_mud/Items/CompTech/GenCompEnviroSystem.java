@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Items.CompTech;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -87,6 +88,8 @@ public class GenCompEnviroSystem extends GenElecCompItem
 							double pct= 1.0;
 							if(subjectToWearAndTear())
 								pct=pct*CMath.div(usesRemaining(),100);
+							if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
+								Log.debugOut("Refreshing the air in "+ship.Name());
 							final String code=Technical.TechCommand.AIRREFRESH.makeCommand(Double.valueOf(pct),Integer.valueOf(airResource));
 							final CMMsg msg2=CMClass.getMsg(msg.source(), ship, me, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
 							if(A.okMessage(msg2.source(), msg2))

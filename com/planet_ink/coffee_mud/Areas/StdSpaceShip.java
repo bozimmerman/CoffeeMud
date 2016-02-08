@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Areas;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.core.interfaces.BoundedObject;
 import com.planet_ink.coffee_mud.core.interfaces.BoundedObject.BoundedCube;
@@ -42,6 +43,8 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 {
 	private static final long STALE_AIR_INTERVAL = 5 * 60 * 1000;
 
+	private static final long STALE_WARN_INTERVAL = 5 * 30 * 1000;
+	
 	protected static Climate climateObj=null;
 
 	protected volatile int	mass			= -1;
@@ -51,7 +54,7 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 	protected long			radius			= 50;
 	protected double		omlCoeff		= SpaceObject.ATMOSPHERIC_DRAG_STREAMLINE + ((SpaceObject.ATMOSPHERIC_DRAG_BRICK - SpaceObject.ATMOSPHERIC_DRAG_STREAMLINE) / 2.0);
 	protected volatile long	nextStaleCheck	= System.currentTimeMillis() + STALE_AIR_INTERVAL;
-	protected volatile long	nextStaleWarn	= System.currentTimeMillis() + (60 * 1000);
+	protected volatile long	nextStaleWarn	= System.currentTimeMillis() + STALE_WARN_INTERVAL;
 	protected Set<String> 	staleAirList	= new HashSet<String>();
 	protected Ability 		gravityFloaterA = null;
 	
@@ -443,6 +446,8 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 									for(final Pair<Room,Integer> p  : shipExitCache)
 										changeRoomAir(p.first,null,atmoResource);
 								}
+								if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
+									Log.debugOut("Refreshed the air in "+Name()+", stale rooms: "+staleAirList.size());
 							}
 						}
 					}
@@ -663,7 +668,7 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 		}
 		if((System.currentTimeMillis() > nextStaleWarn)&&(staleAirList.size()>0))
 		{
-			nextStaleWarn = System.currentTimeMillis() + (60 * 1000);
+			nextStaleWarn = System.currentTimeMillis() + STALE_WARN_INTERVAL;
 			for(final Enumeration<Room> r=getProperMap();r.hasMoreElements();)
 			{
 				final Room R=r.nextElement();
@@ -686,7 +691,13 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 		}
 		if(System.currentTimeMillis() >= nextStaleCheck)
 		{
+			int numStaleRooms = staleAirList.size();
 			doStaleCheck();
+			if(staleAirList.size()>numStaleRooms)
+				nextStaleWarn = System.currentTimeMillis() + STALE_WARN_INTERVAL;
+			if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
+				Log.debugOut("Used up the air in "+Name()+", stale rooms: "+staleAirList.size());
+			
 		}
 	}
 
