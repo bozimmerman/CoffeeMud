@@ -3011,7 +3011,7 @@ public class StdMOB implements MOB
 					setVictim((MOB) msg.target());
 				}
 			}
-			else
+
 			if (CMath.bset(msg.sourceMajor(), CMMsg.MASK_CHANNEL))
 			{
 				int channelCode;
