@@ -35,7 +35,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class MasterDistilling extends Baking
+public class MasterDistilling extends Distilling
 {
 	private String cookingID="";
 	@Override public String ID() { return "MasterDistilling"+cookingID; }
@@ -53,7 +53,6 @@ public class MasterDistilling extends Baking
 	@Override protected int baseYield() { return 2; }
 
 	@Override
-	
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		try

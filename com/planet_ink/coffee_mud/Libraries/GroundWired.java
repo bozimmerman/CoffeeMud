@@ -485,6 +485,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 		}
 		long remainingPowerToDistribute=0;
 		long availablePowerToDistribute=0;
+		long availablePowerFromBatteries=0;
 		for(final PowerGenerator G : generators)
 		{
 			if(G.activated())
@@ -502,6 +503,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 				if(debugging)
 					Log.debugOut("Current "+key+": PowerSource: "+B.Name()+" generated "+B.powerRemaining());
 				availablePowerToDistribute+=B.powerRemaining();
+				availablePowerFromBatteries+=B.powerRemaining();
 				B.setPowerRemaining(0);
 			}
 		}
@@ -564,6 +566,46 @@ public class GroundWired extends StdLibrary implements TechLibrary
 					remainingPowerToDistribute-=(powerMsg.value()<0)?powerToTake:(powerToTake-powerMsg.value());
 				}
 			}
+
+			// first restore what was taken from batteries!
+			long amountToGiveBackToBatteriesFreely = remainingPowerToDistribute;
+			if(amountToGiveBackToBatteriesFreely > availablePowerFromBatteries)
+				amountToGiveBackToBatteriesFreely = availablePowerFromBatteries;
+			remainingPowerToDistribute -= amountToGiveBackToBatteriesFreely;
+			boolean batteryStuffToDo=true;
+			while(batteryStuffToDo)
+			{
+				batteryStuffToDo=false;
+				int batteriesLeft=0;
+				for(final PowerSource E : batteries)
+				{
+					if(E.activated() && E.powerRemaining() < E.powerCapacity())
+						batteriesLeft++;
+				}
+				if(batteriesLeft>0)
+				{
+					for(final PowerSource E : batteries)
+					{
+						if(E.activated() && (E.powerRemaining() < E.powerCapacity()))
+						{
+							long amountToDistribute=(int)(amountToGiveBackToBatteriesFreely/batteriesLeft);
+							if(amountToDistribute > (E.powerCapacity() - E.powerRemaining()))
+								amountToDistribute = (E.powerCapacity() - E.powerRemaining());
+							if(amountToDistribute>0)
+							{
+								E.setPowerRemaining(E.powerRemaining() + amountToDistribute);
+								if(debugging)
+									Log.debugOut("Current "+key+": Battery: "+E.Name()+": Power reimbursed: "+amountToDistribute+", now="+E.powerRemaining());
+								amountToGiveBackToBatteriesFreely -= amountToDistribute;
+								batteryStuffToDo=true;
+							}
+							batteriesLeft--;
+						}
+					}
+				}
+			}
+			remainingPowerToDistribute += amountToGiveBackToBatteriesFreely;
+			// then do any recharging
 			int batteriesLeft=batteries.size();
 			for(final PowerSource E : batteries)
 			{
@@ -575,11 +617,12 @@ public class GroundWired extends StdLibrary implements TechLibrary
 				{
 					R.send(powerMsg.source(), powerMsg);
 					if(debugging)
-						Log.debugOut("Current "+key+": Panel: "+E.Name()+": Power reimbursed: "+amountToDistribute+": "+powerMsg.value()+", now="+E.powerRemaining());
+						Log.debugOut("Current "+key+": Battery: "+E.Name()+": Power charged: "+amountToDistribute+": "+powerMsg.value()+", now="+E.powerRemaining());
 				}
 				batteriesLeft--;
 				remainingPowerToDistribute-=(powerMsg.value()<0)?amountToDistribute:(amountToDistribute-powerMsg.value());
 			}
+			// finally, generators get whats left over
 			if(generators.size()>0)
 			{
 				final int amountLeftOver=(int)((availablePowerToDistribute-remainingPowerToDistribute)/generators.size());
@@ -589,7 +632,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 					{
 						G.setPowerRemaining(amountLeftOver>G.powerCapacity()?G.powerCapacity():amountLeftOver);
 						if(debugging)
-							Log.debugOut("Current "+key+": Panel: "+G.Name()+": Power reimbursed: "+amountLeftOver+": "+G.powerRemaining());
+							Log.debugOut("Current "+key+": generator: "+G.Name()+": Power reimbursed: "+amountLeftOver+": "+G.powerRemaining());
 					}
 				}
 			}
