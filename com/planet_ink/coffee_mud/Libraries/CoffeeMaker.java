@@ -446,30 +446,36 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			text.append(CMLib.xml().convertXMLtoTag("MANUFACT", ((Electronics)E).getManufacturerName()));
 
 		}
-		if(E instanceof Electronics.ElecPanel)
+		if(E instanceof ElecPanel)
 		{
-			text.append(CMLib.xml().convertXMLtoTag("SSPANELT",""+((Electronics.ElecPanel)E).panelType().name()));
+			text.append(CMLib.xml().convertXMLtoTag("SSPANELT",""+((ElecPanel)E).panelType().name()));
 		}
 		if(E instanceof TechComponent)
 		{
 			text.append(CMLib.xml().convertXMLtoTag("INSTF",""+((TechComponent)E).getInstalledFactor()));
 		}
-		if(E instanceof TechComponent.ShipEngine)
+		if(E instanceof ShipEngine)
 		{
-			text.append(CMLib.xml().convertXMLtoTag("SSTHRUST",""+((TechComponent.ShipEngine)E).getMaxThrust()));
-			text.append(CMLib.xml().convertXMLtoTag("SSIMPL",""+((TechComponent.ShipEngine)E).getSpecificImpulse()));
-			text.append(CMLib.xml().convertXMLtoTag("SSFEFF",""+((TechComponent.ShipEngine)E).getFuelEfficiency()));
-			text.append(CMLib.xml().convertXMLtoTag("SSNTHRUST",""+((TechComponent.ShipEngine)E).getMinThrust()));
-			text.append(CMLib.xml().convertXMLtoTag("SSCONST",""+((TechComponent.ShipEngine)E).isConstantThruster()));
-			text.append(CMLib.xml().convertXMLtoTag("SSAPORTS",CMParms.toListString(((TechComponent.ShipEngine)E).getAvailPorts())));
+			text.append(CMLib.xml().convertXMLtoTag("SSTHRUST",""+((ShipEngine)E).getMaxThrust()));
+			text.append(CMLib.xml().convertXMLtoTag("SSIMPL",""+((ShipEngine)E).getSpecificImpulse()));
+			text.append(CMLib.xml().convertXMLtoTag("SSFEFF",""+((ShipEngine)E).getFuelEfficiency()));
+			text.append(CMLib.xml().convertXMLtoTag("SSNTHRUST",""+((ShipEngine)E).getMinThrust()));
+			text.append(CMLib.xml().convertXMLtoTag("SSCONST",""+((ShipEngine)E).isConstantThruster()));
+			text.append(CMLib.xml().convertXMLtoTag("SSAPORTS",CMParms.toListString(((ShipEngine)E).getAvailPorts())));
 		}
-		if(E instanceof Electronics.PowerGenerator)
+		if(E instanceof ShipShieldGenerator)
 		{
-			text.append(CMLib.xml().convertXMLtoTag("EGENAMT",""+((Electronics.PowerGenerator)E).getGeneratedAmountPerTick()));
+			text.append(CMLib.xml().convertXMLtoTag("SSPDIRS",""+((ShipShieldGenerator)E).getPermittedNumDirections()));
+			text.append(CMLib.xml().convertXMLtoTag("SSAPORTS",""+CMParms.toListString(((ShipShieldGenerator)E).getPermittedDirections())));
+			text.append(CMLib.xml().convertXMLtoTag("SSMTYPES",""+CMParms.toListString(((ShipShieldGenerator)E).getShieldedMsgTypes())));
 		}
-		if(E instanceof Electronics.FuelConsumer)
+		if(E instanceof PowerGenerator)
 		{
-			text.append(CMLib.xml().convertXMLtoTag("ECONSTYP",CMParms.toListString(((Electronics.FuelConsumer)E).getConsumedFuelTypes())));
+			text.append(CMLib.xml().convertXMLtoTag("EGENAMT",""+((PowerGenerator)E).getGeneratedAmountPerTick()));
+		}
+		if(E instanceof FuelConsumer)
+		{
+			text.append(CMLib.xml().convertXMLtoTag("ECONSTYP",CMParms.toListString(((FuelConsumer)E).getConsumedFuelTypes())));
 		}
 		if(E instanceof Recipe)
 		{
@@ -2967,41 +2973,47 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			((Electronics)E).activate(CMLib.xml().getBoolFromPieces(buf, "EACT"));
 			((Electronics)E).setManufacturerName(CMLib.xml().getValFromPieces(buf, "MANUFACT"));
 		}
-		if(E instanceof Electronics.ElecPanel)
+		if(E instanceof ElecPanel)
 		{
 			final String panelType=CMLib.xml().getValFromPieces(buf,"SSPANELT");
 			final Technical.TechType type = (Technical.TechType)CMath.s_valueOf(Technical.TechType.class, panelType);
 			if(type != null)
-				((Electronics.ElecPanel)E).setPanelType(type);
+				((ElecPanel)E).setPanelType(type);
 		}
 		if(E instanceof TechComponent)
 		{
 			((TechComponent)E).setInstalledFactor((float)CMLib.xml().getDoubleFromPieces(buf,"INSTF"));
 		}
-		if(E instanceof TechComponent.ShipEngine)
+		if(E instanceof ShipEngine)
 		{
-			((TechComponent.ShipEngine)E).setMaxThrust(CMLib.xml().getIntFromPieces(buf,"SSTHRUST"));
-			((TechComponent.ShipEngine)E).setSpecificImpulse(CMLib.xml().getIntFromPieces(buf,"SSIMPL"));
-			((TechComponent.ShipEngine)E).setFuelEfficiency(CMLib.xml().getDoubleFromPieces(buf,"SSFEFF"));
-			((TechComponent.ShipEngine)E).setMinThrust(CMLib.xml().getIntFromPieces(buf,"SSNTHRUST"));
-			((TechComponent.ShipEngine)E).setConstantThruster(CMLib.xml().getBoolFromPieces(buf,"SSCONST",true));
+			((ShipEngine)E).setMaxThrust(CMLib.xml().getIntFromPieces(buf,"SSTHRUST"));
+			((ShipEngine)E).setSpecificImpulse(CMLib.xml().getIntFromPieces(buf,"SSIMPL"));
+			((ShipEngine)E).setFuelEfficiency(CMLib.xml().getDoubleFromPieces(buf,"SSFEFF"));
+			((ShipEngine)E).setMinThrust(CMLib.xml().getIntFromPieces(buf,"SSNTHRUST"));
+			((ShipEngine)E).setConstantThruster(CMLib.xml().getBoolFromPieces(buf,"SSCONST",true));
 			final String portsStr = CMLib.xml().getValFromPieces(buf, "SSAPORTS", "");
 			if(portsStr.length()==0)
-				((TechComponent.ShipEngine)E).setAvailPorts(TechComponent.ShipDir.values());
+				((ShipEngine)E).setAvailPorts(TechComponent.ShipDir.values());
 			else
-				((TechComponent.ShipEngine)E).setAvailPorts(CMParms.parseEnumList(TechComponent.ShipDir.class, portsStr, ',').toArray(new TechComponent.ShipDir[0]));
+				((ShipEngine)E).setAvailPorts(CMParms.parseEnumList(TechComponent.ShipDir.class, portsStr, ',').toArray(new TechComponent.ShipDir[0]));
 		}
-		if(E instanceof Electronics.PowerGenerator)
+		if(E instanceof ShipShieldGenerator)
 		{
-			((Electronics.PowerGenerator)E).setGeneratedAmountPerTick(CMLib.xml().getIntFromPieces(buf,"EGENAMT"));
+			((ShipShieldGenerator)E).setPermittedNumDirections(CMLib.xml().getIntFromPieces(buf,"SSPDIRS"));
+			((ShipShieldGenerator)E).setPermittedDirections(CMParms.parseEnumList(TechComponent.ShipDir.class, CMLib.xml().getValFromPieces(buf,"SSAPORTS"), ',').toArray(new TechComponent.ShipDir[0]));
+			((ShipShieldGenerator)E).setShieldedMsgTypes(CMParms.parseIntList(CMLib.xml().getValFromPieces(buf,"SSMTYPES"),','));
 		}
-		if(E instanceof Electronics.FuelConsumer)
+		if(E instanceof PowerGenerator)
+		{
+			((PowerGenerator)E).setGeneratedAmountPerTick(CMLib.xml().getIntFromPieces(buf,"EGENAMT"));
+		}
+		if(E instanceof FuelConsumer)
 		{
 			final List<String> mats = CMParms.parseCommas(CMLib.xml().getValFromPieces(buf,"ECONSTYP"),true);
 			final int[] newMats = new int[mats.size()];
 			for(int x=0;x<mats.size();x++)
 				newMats[x]=CMath.s_int(mats.get(x).trim());
-			((Electronics.FuelConsumer)E).setConsumedFuelType(newMats);
+			((FuelConsumer)E).setConsumedFuelType(newMats);
 		}
 		if(E instanceof Coins)
 		{

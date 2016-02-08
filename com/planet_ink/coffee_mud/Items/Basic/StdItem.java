@@ -1398,7 +1398,7 @@ public class StdItem implements Item
 			break;
 		case CMMsg.TYP_WRITE:
 			if(((isReadable())&&(!(this instanceof Scroll)))
-			||(this instanceof Electronics.ElecPanel)
+			||(this instanceof ElecPanel)
 			||(this instanceof Software))
 			{
 				if(msg.targetMessage().trim().isEmpty())

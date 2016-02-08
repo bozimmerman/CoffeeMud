@@ -12,10 +12,6 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
-import com.planet_ink.coffee_mud.Items.interfaces.Electronics.Computer;
-import com.planet_ink.coffee_mud.Items.interfaces.Electronics.ElecPanel;
-import com.planet_ink.coffee_mud.Items.interfaces.Electronics.PowerGenerator;
-import com.planet_ink.coffee_mud.Items.interfaces.Electronics.PowerSource;
 import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechCommand;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
@@ -253,7 +249,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 		return serviceClient;
 	}
 	
-	protected final static Iterator<Electronics.Computer> emptyComputerIterator= new Iterator<Electronics.Computer>()
+	protected final static Iterator<Computer> emptyComputerIterator= new Iterator<Computer>()
 	{
 		@Override
 		public boolean hasNext()
@@ -297,41 +293,41 @@ public class GroundWired extends StdLibrary implements TechLibrary
 		@Override 
 		public boolean passesFilter(WeakReference<Electronics> obj)
 		{
-			return obj.get() instanceof Electronics.Computer;
+			return obj.get() instanceof Computer;
 		}
 	};
 
-	protected final static Converter<WeakReference<Electronics>,Electronics.Computer> computerConverter=new Converter<WeakReference<Electronics>,Electronics.Computer>()
+	protected final static Converter<WeakReference<Electronics>,Computer> computerConverter=new Converter<WeakReference<Electronics>,Computer>()
 	{
 		@Override
-		public Electronics.Computer convert(WeakReference<Electronics> obj)
+		public Computer convert(WeakReference<Electronics> obj)
 		{
-			return (Electronics.Computer) obj.get();
+			return (Computer) obj.get();
 		}
 	};
 
-	protected final static Converter<Electronics.Computer,Room> computerRoomConverter=new Converter<Electronics.Computer,Room>()
+	protected final static Converter<Computer,Room> computerRoomConverter=new Converter<Computer,Room>()
 	{
 		@Override
-		public Room convert(Electronics.Computer obj)
+		public Room convert(Computer obj)
 		{
 			return CMLib.map().roomLocation(obj);
 		}
 	};
 
 	@Override
-	public synchronized Iterator<Electronics.Computer> getComputers(String key)
+	public synchronized Iterator<Computer> getComputers(String key)
 	{
 		final LinkedList<WeakReference<Electronics>> oldSet=sets.get(key.toLowerCase());
 		if(oldSet==null)
 			return emptyComputerIterator;
-		return new ConvertingIterator<WeakReference<Electronics>,Electronics.Computer>(new FilteredIterator<WeakReference<Electronics>>(oldSet.iterator(), computerFilterer),computerConverter);
+		return new ConvertingIterator<WeakReference<Electronics>,Computer>(new FilteredIterator<WeakReference<Electronics>>(oldSet.iterator(), computerFilterer),computerConverter);
 	}
 
 	@Override
 	public synchronized Iterator<Room> getComputerRooms(String key)
 	{
-		return new FilteredIterator<Room>(new ConvertingIterator<Electronics.Computer,Room>(getComputers(key),computerRoomConverter), new Filterer<Room>()
+		return new FilteredIterator<Room>(new ConvertingIterator<Computer,Room>(getComputers(key),computerRoomConverter), new Filterer<Room>()
 		{
 			private final Set<Room> done=new HashSet<Room>();
 			@Override 

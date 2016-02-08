@@ -34,7 +34,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class StdTriCorder extends StdElecContainer implements Electronics.Computer
+public class StdTriCorder extends StdElecContainer implements Computer
 {
 	@Override public String ID(){	return "StdTriCorder";}
 
@@ -412,7 +412,7 @@ public class StdTriCorder extends StdElecContainer implements Electronics.Comput
 			}
 		}
 		else
-		if((msg.source()==this.lastReader)&&(msg.targetMinor()==CMMsg.TYP_READ)&&(msg.target() instanceof Electronics.ElecPanel))
+		if((msg.source()==this.lastReader)&&(msg.targetMinor()==CMMsg.TYP_READ)&&(msg.target() instanceof ElecPanel))
 			this.lastReader=null; // whats this do?
 		super.executeMsg(host,msg);
 	}

@@ -34,7 +34,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class StdElecPanel extends StdElecContainer implements Electronics.ElecPanel
+public class StdElecPanel extends StdElecContainer implements ElecPanel
 {
 	@Override
 	public String ID()
@@ -218,7 +218,7 @@ public class StdElecPanel extends StdElecContainer implements Electronics.ElecPa
 				for(int i=contents.size()-1;i>=0;i--)
 				{
 					final Item I=contents.get(i);
-					if((I instanceof Electronics)&&(!(I instanceof Electronics.PowerSource))&&(!(I instanceof Electronics.PowerGenerator)))
+					if((I instanceof Electronics)&&(!(I instanceof PowerSource))&&(!(I instanceof PowerGenerator)))
 						totalPowerReq+=((((Electronics)I).powerNeeds()<=0)?1.0:((Electronics)I).powerNeeds());
 				}
 				if(totalPowerReq>0.0)
@@ -226,7 +226,7 @@ public class StdElecPanel extends StdElecContainer implements Electronics.ElecPa
 					for(int i=contents.size()-1;i>=0;i--)
 					{
 						final Item I=contents.get(i);
-						if((I instanceof Electronics)&&(!(I instanceof Electronics.PowerSource))&&(!(I instanceof Electronics.PowerGenerator)))
+						if((I instanceof Electronics)&&(!(I instanceof PowerSource))&&(!(I instanceof PowerGenerator)))
 						{
 							int powerToTake=0;
 							if(powerRemaining>0)

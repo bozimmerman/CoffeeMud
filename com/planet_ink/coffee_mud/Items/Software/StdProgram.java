@@ -151,20 +151,20 @@ public class StdProgram extends StdItem implements Software
 
 	protected void forceUpMenu()
 	{
-		if((container() instanceof Electronics.Computer)&&(((Electronics.Computer)container()).getActiveMenu().equals(getInternalName())))
-			((Electronics.Computer)container()).setActiveMenu(getParentMenu());
+		if((container() instanceof Computer)&&(((Computer)container()).getActiveMenu().equals(getInternalName())))
+			((Computer)container()).setActiveMenu(getParentMenu());
 	}
 
 	protected void forceNewMessageScan()
 	{
-		if(container() instanceof Electronics.Computer)
-			((Electronics.Computer)container()).forceReadersSeeNew();
+		if(container() instanceof Computer)
+			((Computer)container()).forceReadersSeeNew();
 	}
 
 	protected void forceNewMenuRead()
 	{
-		if(container() instanceof Electronics.Computer)
-			((Electronics.Computer)container()).forceReadersMenu();
+		if(container() instanceof Computer)
+			((Computer)container()).forceReadersMenu();
 	}
 
 	public boolean checkActivate(MOB mob, String message)

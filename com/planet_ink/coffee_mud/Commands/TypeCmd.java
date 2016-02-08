@@ -46,7 +46,7 @@ public class TypeCmd extends Go
 	{
 		Vector<String> origCmds=new XVector<String>(commands);
 		final Room R=mob.location();
-		final boolean consoleMode=(mob.riding() instanceof Electronics.Computer);
+		final boolean consoleMode=(mob.riding() instanceof Computer);
 		if((commands.size()<=1)||(R==null))
 		{
 			if(consoleMode)

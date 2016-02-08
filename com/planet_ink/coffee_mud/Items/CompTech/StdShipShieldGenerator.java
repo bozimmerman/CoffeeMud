@@ -13,7 +13,6 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.BasicTech.StdElecItem;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
-import com.planet_ink.coffee_mud.Items.interfaces.TechComponent.ShipEngine;
 import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechCommand;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -39,12 +38,12 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class StdCompShieldGenerator extends StdElecCompItem implements TechComponent
+public class StdShipShieldGenerator extends StdElecCompItem implements ShipShieldGenerator
 {
 	@Override
 	public String ID()
 	{
-		return "StdElecCompSensor";
+		return "StdShipShieldGenerator";
 	}
 
 	@Override
@@ -53,6 +52,9 @@ public class StdCompShieldGenerator extends StdElecCompItem implements TechCompo
 		return Technical.TechType.SHIP_SHIELD;
 	}
 	
+	private ShipDir[] 		allPossDirs		= ShipDir.values();
+	private int				numPermitDirs 	= ShipDir.values().length;
+	private int[]			shieldedMsgTypes= AVAIL_DAMAGE_TYPES;
 	private volatile long	lastPowerConsumption = 0;
 	private volatile long	powerSetting		 = Integer.MAX_VALUE;
 	
@@ -85,16 +87,42 @@ public class StdCompShieldGenerator extends StdElecCompItem implements TechCompo
 		return myShip.get();
 	}
 	
-	protected ShipDir[] getPermittedDirections()
+	@Override
+	public void setPermittedDirections(ShipDir[] newPossDirs)
 	{
-		return ShipDir.values();
+		this.allPossDirs = newPossDirs;
 	}
 	
-	protected int getPermittedNumDirections()
+	@Override
+	public ShipDir[] getPermittedDirections()
 	{
-		return ShipDir.values().length;
+		return allPossDirs;
+	}
+
+	@Override
+	public void setPermittedNumDirections(int numDirs)
+	{
+		this.numPermitDirs = numDirs;
 	}
 	
+	@Override
+	public int getPermittedNumDirections()
+	{
+		return numPermitDirs;
+	}
+	
+	@Override
+	public void setShieldedMsgTypes(int[] newTypes)
+	{
+		this.shieldedMsgTypes = newTypes;
+	}
+	
+	@Override
+	public int[] getShieldedMsgTypes()
+	{
+		return shieldedMsgTypes;
+	}
+
 	protected ShipDir[] getCurrentCoveredDirections()
 	{
 		if(this.currCoverage == null)
@@ -108,12 +136,15 @@ public class StdCompShieldGenerator extends StdElecCompItem implements TechCompo
 				int centralIndex = CMLib.dice().roll(1, numDirs, -1);
 				List<ShipDir> theDirs = new ArrayList<ShipDir>(numDirs);
 				int offset = 0;
+				final List<ShipDir> permittedDirs = new XVector<ShipDir>(permitted);
+				permittedDirs.addAll(Arrays.asList(permitted));
+				permittedDirs.addAll(Arrays.asList(permitted));
 				while(theDirs.size() < numDirs)
 				{
-					if(!theDirs.contains(permitted[centralIndex+offset]))
-						theDirs.add(permitted[centralIndex+offset]);
-					if(!theDirs.contains(permitted[centralIndex-offset]))
-						theDirs.add(permitted[centralIndex-offset]);
+					if(!theDirs.contains(permittedDirs.get(centralIndex+offset)))
+						theDirs.add(permittedDirs.get(centralIndex+offset));
+					if(!theDirs.contains(permittedDirs.get(centralIndex-offset)))
+						theDirs.add(permittedDirs.get(centralIndex-offset));
 					offset+=1;
 				}
 				currCoverage = theDirs.toArray(new ShipDir[theDirs.size()]);
@@ -128,7 +159,9 @@ public class StdCompShieldGenerator extends StdElecCompItem implements TechCompo
 		if(!super.okMessage(host, msg))
 			return false;
 		final SpaceShip ship = getMyShip(); 
-		if(msg.target() == ship)
+		if((msg.target() == ship)
+		&&(activated())
+		&&(CMParms.contains(this.getShieldedMsgTypes(), msg.sourceMinor())))
 		{
 			switch(msg.targetMinor())
 			{
@@ -183,7 +216,10 @@ public class StdCompShieldGenerator extends StdElecCompItem implements TechCompo
 							int newVal = (int)Math.round(msg.value() - CMath.mul(msg.value(), pctShields * efficiency * wearAndTear));
 							int shieldDamage = (int)Math.round(50.0 * shieldHurtMultiplier * (1.0-pctShields) * (1.0-reliability));
 							if(shieldDamage > usesRemaining())
+							{
 								setUsesRemaining(0);
+								//TODO: deactivate -- and notify control system?
+							}
 							else
 								setUsesRemaining(usesRemaining()-shieldDamage);
 							msg.setValue(newVal);
@@ -208,29 +244,71 @@ public class StdCompShieldGenerator extends StdElecCompItem implements TechCompo
 			case CMMsg.TYP_ACTIVATE:
 			{
 				final LanguageLibrary lang=CMLib.lang();
-				final String[] parts=msg.targetMessage().split(" ");
-				final TechCommand command=TechCommand.findCommand(parts);
 				final Software controlI=(msg.tool() instanceof Software)?((Software)msg.tool()):null;
 				final MOB mob=msg.source();
-				if(command==null)
-					reportError(this, controlI, mob, lang.L("@x1 does not respond.",me.name(mob)), lang.L("Failure: @x1: control failure.",me.name(mob)));
+				if(msg.targetMessage()==null)
+				{
+					powerSetting = powerCapacity();
+				}
 				else
 				{
-					final Object[] parms=command.confirmAndTranslate(parts);
-					if(parms==null)
-						reportError(this, controlI, mob, lang.L("@x1 did not respond.",me.name(mob)), lang.L("Failure: @x1: control syntax failure.",me.name(mob)));
+					final String[] parts=msg.targetMessage().split(" ");
+					final TechCommand command=TechCommand.findCommand(parts);
+					if(command==null)
+						reportError(this, controlI, mob, lang.L("@x1 does not respond.",me.name(mob)), lang.L("Failure: @x1: control failure.",me.name(mob)));
 					else
-					if(command == TechCommand.POWERSET)
 					{
-						powerSetting=((Long)parms[0]).intValue();
-						if(powerSetting<0)
-							powerSetting=0;
+						final Object[] parms=command.confirmAndTranslate(parts);
+						if(parms==null)
+							reportError(this, controlI, mob, lang.L("@x1 did not respond.",me.name(mob)), lang.L("Failure: @x1: control syntax failure.",me.name(mob)));
 						else
-						if(powerSetting > powerCapacity())
-							powerSetting = powerCapacity();
+						if(command == TechCommand.POWERSET)
+						{
+							powerSetting=((Long)parms[0]).intValue();
+							if(powerSetting<0)
+								powerSetting=0;
+							else
+							if(powerSetting > powerCapacity())
+								powerSetting = powerCapacity();
+						}
+						else
+						if(command == TechCommand.SHIELDSET)
+						{
+							ShipDir centerDir = (ShipDir)parms[0];
+							int centralIndex = CMParms.indexOf(this.getPermittedDirections(),centerDir);
+							if(centralIndex < 0)
+								reportError(this, controlI, mob, lang.L("@x1 did not respond.",me.name(mob)), lang.L("Failure: @x1: control port failure.",me.name(mob)));
+							else
+							{
+								int numDirs = ((Integer)parms[1]).intValue();
+								if(numDirs > this.getPermittedNumDirections())
+									numDirs = this.getPermittedNumDirections();
+								if(numDirs >= this.getPermittedDirections().length)
+									currCoverage = getPermittedDirections();
+								else
+								{
+									final List<ShipDir> permittedDirs = new XVector<ShipDir>(this.getPermittedDirections());
+									permittedDirs.addAll(Arrays.asList(this.getPermittedDirections()));
+									permittedDirs.addAll(Arrays.asList(this.getPermittedDirections()));
+									centralIndex += this.getPermittedDirections().length;
+									final List<ShipDir> theDirs = new ArrayList<ShipDir>(numDirs);
+									int offset = 0;
+									while(theDirs.size() < numDirs)
+									{
+										if(!theDirs.contains(permittedDirs.get(centralIndex+offset)))
+											theDirs.add(permittedDirs.get(centralIndex+offset));
+										if(!theDirs.contains(permittedDirs.get(centralIndex-offset)))
+											theDirs.add(permittedDirs.get(centralIndex-offset));
+										offset+=1;
+									}
+									currCoverage = theDirs.toArray(new ShipDir[theDirs.size()]);
+								}
+							}
+							
+						}
+						else
+							reportError(this, controlI, mob, lang.L("@x1 refused to respond.",me.name(mob)), lang.L("Failure: @x1: control command failure.",me.name(mob)));
 					}
-					else
-						reportError(this, controlI, mob, lang.L("@x1 refused to respond.",me.name(mob)), lang.L("Failure: @x1: control command failure.",me.name(mob)));
 				}
 				break;
 			}
@@ -260,7 +338,7 @@ public class StdCompShieldGenerator extends StdElecCompItem implements TechCompo
 	@Override
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof StdCompShieldGenerator))
+		if(!(E instanceof StdShipShieldGenerator))
 			return false;
 		return super.sameAs(E);
 	}

@@ -99,7 +99,7 @@ public class Deactivate extends StdCommand
 			}
 			if((!(E instanceof Electronics))||(E instanceof Software))
 				E=null;
-			if((E==null)&&(mob.riding() instanceof Electronics.Computer))
+			if((E==null)&&(mob.riding() instanceof Computer))
 			{
 				E=mob.riding();
 				item=(Item)E;

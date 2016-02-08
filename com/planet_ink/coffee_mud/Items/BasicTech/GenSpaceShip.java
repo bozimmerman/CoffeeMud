@@ -18,7 +18,6 @@ import com.planet_ink.coffee_mud.Common.interfaces.Session.InputCallback;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.TechComponent.ShipDir;
-import com.planet_ink.coffee_mud.Items.interfaces.TechComponent.ShipEngine;
 import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechCommand;
 import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechType;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -447,7 +446,7 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 		final List<Electronics> electronics=CMLib.tech().getMakeRegisteredElectronics(CMLib.tech().getElectronicsKey(getShipArea()));
 		for(final Electronics E : electronics)
 		{
-			if(E instanceof TechComponent.ShipEngine)
+			if(E instanceof ShipEngine)
 			{
 				final CMMsg msg=CMClass.getMsg(mob, E, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_DEACTIVATE, null, CMMsg.NO_EFFECT,null);
 				if(E.okMessage(mob, msg))
@@ -503,7 +502,7 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 			List<Electronics> electronics = CMLib.tech().getMakeRegisteredElectronics(CMLib.tech().getElectronicsKey(ship));
 			for(final Electronics E : electronics)
 			{
-				if(E instanceof Electronics.Computer)
+				if(E instanceof Computer)
 				{
 					if(E.owner() instanceof Room)
 					{

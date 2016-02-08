@@ -70,7 +70,9 @@ public class GrinderItems
 		MANUFACTURER,POWCAPACITY,POWREMAINING,ACTIVATED,
 		MAXTHRUST,SPECIMPULSE,FUELEFFICIENCY,INSTALLFACTOR,
 		PANELTYPE,GENAMTPERTICK,CONSUMEDMATS,AREAXML,RECIPESKILLHELP,
-		MINTHRUST,ISCONSTTHRUST,AVAILPORTS,CONTENTSACCESS,BLENDEDVIEW;
+		MINTHRUST,ISCONSTTHRUST,AVAILPORTS,CONTENTSACCESS,BLENDEDVIEW,
+		ISSHIPSHIELD,SSHIELDNUMPORTS,SSHIELDPORTS,SSHIELDMTYPES,
+		;
 		public boolean isGenField;
 		private ItemDataField(boolean isGeneric)
 		{
@@ -708,6 +710,7 @@ public class GrinderItems
 				case ISPANEL:
 				case ISFUELCONSUMER:
 				case ISPOWERGENERATION:
+				case ISSHIPSHIELD:
 					break;
 				case MANUFACTURER:
 					if(I instanceof Electronics)
@@ -725,48 +728,78 @@ public class GrinderItems
 					if(I instanceof Electronics)
 						((Electronics)I).activate(old.equalsIgnoreCase("on"));
 					break;
+				case SSHIELDNUMPORTS:
+					if(I instanceof ShipShieldGenerator)
+						((ShipShieldGenerator)I).setPermittedNumDirections(CMath.s_int(old));
+					break;
+				case SSHIELDPORTS:
+					if(I instanceof ShipShieldGenerator)
+						((ShipShieldGenerator)I).setPermittedDirections(CMParms.parseEnumList(TechComponent.ShipDir.class,old.toUpperCase(),',').toArray(new TechComponent.ShipDir[0]));
+					break;
+				case SSHIELDMTYPES:
+					if(I instanceof ShipShieldGenerator)
+					{
+						final Set<Integer> msgTypes=new TreeSet<Integer>(); 
+						if(httpReq.isUrlParameter("SSHIELDMTYPES"))
+						{
+							msgTypes.add(Integer.valueOf(CMath.s_int(httpReq.getUrlParameter("SSHIELDMTYPES"))));
+							for(int i=1;;i++)
+							{
+								if(httpReq.isUrlParameter("SSHIELDMTYPES"+(Integer.toString(i))))
+									msgTypes.add(Integer.valueOf(CMath.s_int(httpReq.getUrlParameter("SSHIELDMTYPES"+(Integer.toString(i))))));
+								else
+									break;
+							}
+						}
+						final int[] types=new int[msgTypes.size()];
+						final Integer[] TYPES=msgTypes.toArray(new Integer[0]);
+						for(int i=0;i<types.length;i++)
+							types[i]=TYPES[i].intValue();
+						((ShipShieldGenerator)I).setShieldedMsgTypes(types);
+					}
+					break;
 				case ISCONSTTHRUST:
-					if(I instanceof TechComponent.ShipEngine)
-						((TechComponent.ShipEngine)I).setConstantThruster(old.equalsIgnoreCase("on"));
+					if(I instanceof ShipEngine)
+						((ShipEngine)I).setConstantThruster(old.equalsIgnoreCase("on"));
 					break;
 				case MAXTHRUST:
-					if(I instanceof TechComponent.ShipEngine)
-						((TechComponent.ShipEngine)I).setMaxThrust(CMath.s_int(old));
+					if(I instanceof ShipEngine)
+						((ShipEngine)I).setMaxThrust(CMath.s_int(old));
 					break;
 				case MINTHRUST:
-					if(I instanceof TechComponent.ShipEngine)
-						((TechComponent.ShipEngine)I).setMinThrust(CMath.s_int(old));
+					if(I instanceof ShipEngine)
+						((ShipEngine)I).setMinThrust(CMath.s_int(old));
 					break;
 				case AVAILPORTS:
-					if(I instanceof TechComponent.ShipEngine)
-						((TechComponent.ShipEngine)I).setAvailPorts(CMParms.parseEnumList(TechComponent.ShipDir.class,old.toUpperCase(),',').toArray(new TechComponent.ShipDir[0]));
+					if(I instanceof ShipEngine)
+						((ShipEngine)I).setAvailPorts(CMParms.parseEnumList(TechComponent.ShipDir.class,old.toUpperCase(),',').toArray(new TechComponent.ShipDir[0]));
 					break;
 				case SPECIMPULSE:
-					if(I instanceof TechComponent.ShipEngine)
-						((TechComponent.ShipEngine)I).setSpecificImpulse(CMath.s_long(old));
+					if(I instanceof ShipEngine)
+						((ShipEngine)I).setSpecificImpulse(CMath.s_long(old));
 					break;
 				case FUELEFFICIENCY:
-					if(I instanceof TechComponent.ShipEngine)
-						((TechComponent.ShipEngine)I).setFuelEfficiency(CMath.s_pct(old));
+					if(I instanceof ShipEngine)
+						((ShipEngine)I).setFuelEfficiency(CMath.s_pct(old));
 					break;
 				case INSTALLFACTOR:
 					if(I instanceof TechComponent)
 						((TechComponent)I).setInstalledFactor((float)CMath.s_pct(old));
 					break;
 				case PANELTYPE:
-					if(I instanceof Electronics.ElecPanel)
+					if(I instanceof ElecPanel)
 					{
 						TechType type=(TechType)CMath.s_valueOf(TechType.class,httpReq.getUrlParameter("PANELTYPE"));
 						if(type != null)
-							((Electronics.ElecPanel)I).setPanelType(type);
+							((ElecPanel)I).setPanelType(type);
 					}
 					break;
 				case GENAMTPERTICK:
-					if(I instanceof Electronics.PowerGenerator)
-						((Electronics.PowerGenerator)I).setGeneratedAmountPerTick(CMath.s_int(old));
+					if(I instanceof PowerGenerator)
+						((PowerGenerator)I).setGeneratedAmountPerTick(CMath.s_int(old));
 					break;
 				case CONSUMEDMATS:
-					if(I instanceof Electronics.FuelConsumer)
+					if(I instanceof FuelConsumer)
 					{
 						final Set<Integer> consumedFuel=new TreeSet<Integer>(); 
 						if(httpReq.isUrlParameter("CONSUMEDMATS"))
@@ -782,7 +815,7 @@ public class GrinderItems
 						final Integer[] MATS=consumedFuel.toArray(new Integer[0]);
 						for(int i=0;i<mats.length;i++)
 							mats[i]=MATS[i].intValue();
-						((Electronics.FuelConsumer)I).setConsumedFuelType(mats);
+						((FuelConsumer)I).setConsumedFuelType(mats);
 					}
 					break;
 				case AREAXML:

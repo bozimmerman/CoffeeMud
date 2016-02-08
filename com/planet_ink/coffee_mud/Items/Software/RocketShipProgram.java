@@ -13,7 +13,6 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.TechComponent.ShipDir;
-import com.planet_ink.coffee_mud.Items.interfaces.TechComponent.ShipEngine;
 import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechCommand;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -387,10 +386,10 @@ public class RocketShipProgram extends GenShipProgram
 			{
 				str.append("^H").append(CMStrings.padRight(L("ENGINE@x1",""+engineNumber),9));
 				str.append(CMStrings.padRight(engine.activated()?L("^gACTIVE"):L("^rINACTIVE"),9));
-				if(engine instanceof Electronics.FuelConsumer)
+				if(engine instanceof FuelConsumer)
 				{
 					str.append("^H").append(CMStrings.padRight(L("Fuel"),5));
-					str.append("^N").append(CMStrings.padRight(Long.toString(((Electronics.FuelConsumer)engine).getFuelRemaining()),11));
+					str.append("^N").append(CMStrings.padRight(Long.toString(((FuelConsumer)engine).getFuelRemaining()),11));
 				}
 				else
 				{
@@ -658,7 +657,20 @@ public class RocketShipProgram extends GenShipProgram
 				}
 				break;
 			}
+			case CMMsg.TYP_DEACTIVATE:
+			{
+				break;
 			}
+			}
+		}
+		if((container() instanceof Computer)
+		&&(msg.target() == container())
+		&&(msg.targetMinor() == CMMsg.TYP_DEACTIVATE))
+		{
+			this.components = null;
+			this.engines = null;
+			this.sensors = null;
+			this.sensorReport.clear();
 		}
 		super.executeMsg(host,msg);
 	}

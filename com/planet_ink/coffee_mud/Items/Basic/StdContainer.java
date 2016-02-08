@@ -159,7 +159,7 @@ public class StdContainer extends StdItem implements Container
 							if(!hasContent())
 								mob.tell(L("@x1 is too small.",name()));
 							else
-							if((newitem instanceof Software) && (this instanceof Electronics.Computer))
+							if((newitem instanceof Software) && (this instanceof Computer))
 								mob.tell(L("@x1 is out of memory.",name()));
 							else
 								mob.tell(L("@x1 is full.",name()));

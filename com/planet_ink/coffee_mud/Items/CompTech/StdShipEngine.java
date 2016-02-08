@@ -11,7 +11,6 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.TechComponent.ShipDir;
-import com.planet_ink.coffee_mud.Items.interfaces.TechComponent.ShipEngine;
 import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechType;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -35,7 +34,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class StdShipEngine extends StdCompGenerator implements TechComponent.ShipEngine
+public class StdShipEngine extends StdCompGenerator implements ShipEngine
 {
 	@Override
 	public String ID()

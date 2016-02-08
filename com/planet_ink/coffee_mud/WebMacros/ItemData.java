@@ -1149,16 +1149,19 @@ public class ItemData extends StdWebMacro
 						str.append(I instanceof TechComponent);
 						break;
 					case ISSHIPENGINE:
-						str.append(I instanceof TechComponent.ShipEngine);
+						str.append(I instanceof ShipEngine);
+						break;
+					case ISSHIPSHIELD:
+						str.append(I instanceof ShipShieldGenerator);
 						break;
 					case ISPANEL:
-						str.append((I instanceof Electronics.ElecPanel)&&(!(I instanceof Electronics.Computer)));
+						str.append((I instanceof ElecPanel)&&(!(I instanceof Computer)));
 						break;
 					case ISFUELCONSUMER:
-						str.append(I instanceof Electronics.FuelConsumer);
+						str.append(I instanceof FuelConsumer);
 						break;
 					case ISPOWERGENERATION:
-						str.append(I instanceof Electronics.PowerGenerator);
+						str.append(I instanceof PowerGenerator);
 						break;
 					case MANUFACTURER:
 						if(I instanceof Electronics)
@@ -1196,38 +1199,79 @@ public class ItemData extends StdWebMacro
 						if(I instanceof Electronics)
 							str.append((firstTime) ? (((Electronics)I).activated()?"CHECKED":"") : (old.equalsIgnoreCase("on")?"CHECKED":"")).append(", ");
 						break;
+					case SSHIELDNUMPORTS:
+						if(I instanceof ShipShieldGenerator)
+							str.append((firstTime) ? (""+((ShipShieldGenerator)I).getPermittedNumDirections()) : old).append(", ");
+						break;
+					case SSHIELDPORTS:
+						if(I instanceof ShipShieldGenerator)
+							str.append((firstTime) ? (""+CMParms.toListString(((ShipShieldGenerator)I).getPermittedDirections())) : old).append(", ");
+						break;
+					case SSHIELDMTYPES:
+						if(I instanceof ShipShieldGenerator)
+						{
+							final Set<Integer> msgTypes=new TreeSet<Integer>(); 
+							if(firstTime)
+							{
+								for(int typ : ((ShipShieldGenerator)I).getShieldedMsgTypes())
+									msgTypes.add(Integer.valueOf(typ));
+							}
+							else
+							{
+								if(httpReq.isUrlParameter("SSHIELDMTYPES"))
+								{
+									msgTypes.add(Integer.valueOf(CMath.s_int(httpReq.getUrlParameter("SSHIELDMTYPES"))));
+									for(int i=1;;i++)
+									{
+										if(httpReq.isUrlParameter("SSHIELDMTYPES"+(Integer.toString(i))))
+											msgTypes.add(Integer.valueOf(CMath.s_int(httpReq.getUrlParameter("SSHIELDMTYPES"+(Integer.toString(i))))));
+										else
+											break;
+									}
+								}
+							}
+							for(final int r : ShipShieldGenerator.AVAIL_DAMAGE_TYPES)
+							{
+								str.append("<OPTION VALUE=\""+r+"\"");
+								if(msgTypes.contains(Integer.valueOf(r)))
+									str.append(" SELECTED");
+								str.append(">"+CMMsg.TYPE_DESCS[r]);
+							}
+						}
+						str.append(", ");
+						break;
 					case ISCONSTTHRUST:
-						if(I instanceof TechComponent.ShipEngine)
-							str.append((firstTime) ? (((TechComponent.ShipEngine)I).isConstantThruster()?"CHECKED":"") : (old.equalsIgnoreCase("on")?"CHECKED":"")).append(", ");
+						if(I instanceof ShipEngine)
+							str.append((firstTime) ? (((ShipEngine)I).isConstantThruster()?"CHECKED":"") : (old.equalsIgnoreCase("on")?"CHECKED":"")).append(", ");
 						break;
 					case MAXTHRUST:
-						if(I instanceof TechComponent.ShipEngine)
-							str.append((firstTime) ? (""+((TechComponent.ShipEngine)I).getMaxThrust()) : old).append(", ");
+						if(I instanceof ShipEngine)
+							str.append((firstTime) ? (""+((ShipEngine)I).getMaxThrust()) : old).append(", ");
 						break;
 					case MINTHRUST:
-						if(I instanceof TechComponent.ShipEngine)
-							str.append((firstTime) ? (""+((TechComponent.ShipEngine)I).getMinThrust()) : old).append(", ");
+						if(I instanceof ShipEngine)
+							str.append((firstTime) ? (""+((ShipEngine)I).getMinThrust()) : old).append(", ");
 						break;
 					case AVAILPORTS:
-						if(I instanceof TechComponent.ShipEngine)
-							str.append((firstTime) ? (""+CMParms.toListString(((TechComponent.ShipEngine)I).getAvailPorts())) : old).append(", ");
+						if(I instanceof ShipEngine)
+							str.append((firstTime) ? (""+CMParms.toListString(((ShipEngine)I).getAvailPorts())) : old).append(", ");
 						break;
 					case SPECIMPULSE:
-						if(I instanceof TechComponent.ShipEngine)
-							str.append((firstTime) ? (""+((TechComponent.ShipEngine)I).getSpecificImpulse()) : old).append(", ");
+						if(I instanceof ShipEngine)
+							str.append((firstTime) ? (""+((ShipEngine)I).getSpecificImpulse()) : old).append(", ");
 						break;
 					case FUELEFFICIENCY:
-						if(I instanceof TechComponent.ShipEngine)
-							str.append((firstTime) ? CMath.toPct(((TechComponent.ShipEngine)I).getFuelEfficiency()) : old).append(", ");
+						if(I instanceof ShipEngine)
+							str.append((firstTime) ? CMath.toPct(((ShipEngine)I).getFuelEfficiency()) : old).append(", ");
 						break;
 					case INSTALLFACTOR:
 						if(I instanceof TechComponent)
 							str.append((firstTime) ? CMath.toPct(((TechComponent)I).getInstalledFactor()) : old).append(", ");
 						break;
 					case PANELTYPE:
-						if(I instanceof Electronics.ElecPanel)
+						if(I instanceof ElecPanel)
 						{
-							TechType type=((Electronics.ElecPanel)I).panelType();
+							TechType type=((ElecPanel)I).panelType();
 							if(httpReq.isUrlParameter("PANELTYPE"))
 								type=(TechType)CMath.s_valueOf(TechType.class,httpReq.getUrlParameter("PANELTYPE"));
 							for(TechType t : TechType.values())
@@ -1241,16 +1285,16 @@ public class ItemData extends StdWebMacro
 						str.append(", ");
 						break;
 					case GENAMTPERTICK:
-						if(I instanceof Electronics.PowerGenerator)
-							str.append((firstTime) ? (""+((Electronics.PowerGenerator)I).getGeneratedAmountPerTick()) : old).append(", ");
+						if(I instanceof PowerGenerator)
+							str.append((firstTime) ? (""+((PowerGenerator)I).getGeneratedAmountPerTick()) : old).append(", ");
 						break;
 					case CONSUMEDMATS:
-						if(I instanceof Electronics.FuelConsumer)
+						if(I instanceof FuelConsumer)
 						{
 							final Set<Integer> consumedFuel=new TreeSet<Integer>(); 
 							if(firstTime)
 							{
-								for(int mat : ((Electronics.FuelConsumer)I).getConsumedFuelTypes())
+								for(int mat : ((FuelConsumer)I).getConsumedFuelTypes())
 									consumedFuel.add(Integer.valueOf(mat));
 							}
 							else

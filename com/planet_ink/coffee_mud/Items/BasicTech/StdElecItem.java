@@ -62,21 +62,21 @@ public class StdElecItem extends StdItem implements Electronics
 		recoverPhyStats();
 	}
 
-	protected static final boolean isThisPanelActivated(Electronics.ElecPanel E)
+	protected static final boolean isThisPanelActivated(ElecPanel E)
 	{
 		if (!E.activated())
 			return false;
-		if (E.container() instanceof Electronics.ElecPanel)
-			return isThisPanelActivated((Electronics.ElecPanel) E.container());
+		if (E.container() instanceof ElecPanel)
+			return isThisPanelActivated((ElecPanel) E.container());
 		return true;
 	}
 
 	public static final boolean isAllWiringConnected(Electronics E)
 	{
-		if (E instanceof Electronics.ElecPanel)
-			return isThisPanelActivated((Electronics.ElecPanel) E);
-		if (E.container() instanceof Electronics.ElecPanel)
-			return isThisPanelActivated((Electronics.ElecPanel) E.container());
+		if (E instanceof ElecPanel)
+			return isThisPanelActivated((ElecPanel) E);
+		if (E.container() instanceof ElecPanel)
+			return isThisPanelActivated((ElecPanel) E.container());
 		return true;
 	}
 

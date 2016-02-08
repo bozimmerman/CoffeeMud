@@ -11,7 +11,6 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.BasicTech.StdElecItem;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
-import com.planet_ink.coffee_mud.Items.interfaces.TechComponent.ShipEngine;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -133,8 +132,8 @@ public class StdElecCompItem extends StdElecItem implements TechComponent
 			case CMMsg.TYP_LOOK:
 				break;
 			case CMMsg.TYP_POWERCURRENT:
-				if((!(this instanceof Electronics.FuelConsumer))
-				&&(!(this instanceof Electronics.PowerGenerator))
+				if((!(this instanceof FuelConsumer))
+				&&(!(this instanceof PowerGenerator))
 				&& activated()
 				&& (powerNeeds()>0)
 				&& (msg.value()>0))

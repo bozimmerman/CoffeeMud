@@ -302,7 +302,7 @@ public class AstroEngineering extends TechSkill
 					mob.tell(L("You don't see '@x1' here.",panelName));
 					return false;
 				}
-				if(!(targetPanel instanceof Electronics.ElecPanel))
+				if(!(targetPanel instanceof ElecPanel))
 				{
 					mob.tell(L("That's not an electronics panel."));
 					return false;

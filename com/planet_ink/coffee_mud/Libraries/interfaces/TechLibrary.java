@@ -11,7 +11,6 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
-import com.planet_ink.coffee_mud.Items.interfaces.Electronics.ElecPanel;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -165,7 +164,7 @@ public interface TechLibrary extends CMLibrary
 	 * @param key the circuit key
 	 * @return an iterator of computers
 	 */
-	public Iterator<Electronics.Computer> getComputers(String key);
+	public Iterator<Computer> getComputers(String key);
 
 	/**
 	 * Returns a random gaussian-distributed tech level from the

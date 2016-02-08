@@ -811,7 +811,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				image=getHashedMXPImage(H,"SCROLL_*");
 		}
 		else
-		if(O instanceof Electronics.PowerGenerator)
+		if(O instanceof PowerGenerator)
 		{
 			final String key = "POWERGENERATOR_"+((Electronics)O).ID().toUpperCase();
 			if(H.containsKey(key))
@@ -820,7 +820,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				image=getHashedMXPImage(H,"POWERGENERATOR");
 		}
 		else
-		if(O instanceof Electronics.PowerSource)
+		if(O instanceof PowerSource)
 		{
 			final String key = "POWERSOURCE_"+((Electronics)O).ID().toUpperCase();
 			if(H.containsKey(key))
@@ -829,17 +829,17 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				image=getHashedMXPImage(H,"POWERSOURCE");
 		}
 		else
-		if(O instanceof Electronics.ElecPanel)
+		if(O instanceof ElecPanel)
 		{
 			final String key = "ELECPANEL_"+((Electronics)O).ID().toUpperCase();
 			if(H.containsKey(key))
 				image=getHashedMXPImage(H,key);
 			else
-			if(H.containsKey(((Electronics.ElecPanel) O).panelType().toString()))
-				image=getHashedMXPImage(H,((Electronics.ElecPanel) O).panelType().toString());
+			if(H.containsKey(((ElecPanel) O).panelType().toString()))
+				image=getHashedMXPImage(H,((ElecPanel) O).panelType().toString());
 			else
-			if(H.containsKey(((Electronics.ElecPanel) O).getTechType().toString()))
-				image=getHashedMXPImage(H,((Electronics.ElecPanel) O).getTechType().toString());
+			if(H.containsKey(((ElecPanel) O).getTechType().toString()))
+				image=getHashedMXPImage(H,((ElecPanel) O).getTechType().toString());
 			else
 				image=getHashedMXPImage(H,"ELECPANEL");
 		}

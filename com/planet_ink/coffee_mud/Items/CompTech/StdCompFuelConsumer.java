@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class StdCompFuelConsumer extends StdElecCompContainer implements Electronics.FuelConsumer
+public class StdCompFuelConsumer extends StdElecCompContainer implements FuelConsumer
 {
 	@Override
 	public String ID()

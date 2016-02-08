@@ -32,22 +32,20 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class GenCompBattery extends StdCompBattery implements PowerSource
+public class GenShipShieldGenerator extends StdShipShieldGenerator
 {
 	@Override
 	public String ID()
 	{
-		return "GenCompBattery";
+		return "GenShipShieldGenerator";
 	}
 
-	public GenCompBattery()
+	public GenShipShieldGenerator()
 	{
 		super();
-		setName("a generic battery");
-		setDisplayText("a generic battery sits here.");
+		setName("a generic ship shield generator");
+		setDisplayText("a generic ship shield generator sits here.");
 		setDescription("");
-		super.setPowerCapacity(1000);
-		super.setPowerRemaining(1000);
 	}
 
 	@Override
@@ -70,7 +68,8 @@ public class GenCompBattery extends StdCompBattery implements PowerSource
 		recoverPhyStats();
 	}
 
-	private final static String[] MYCODES={"POWERCAP","ACTIVATED","POWERREM","MANUFACTURER","INSTFACT"};
+	private final static String[] MYCODES={"POWERCAP","ACTIVATED","POWERREM","MANUFACTURER","INSTFACT",
+										   "SSHIELDNUMPORTS","SSHIELDPORTS","SSHIELDMTYPES"};
 	
 	@Override
 	public String getStat(String code)
@@ -89,6 +88,21 @@ public class GenCompBattery extends StdCompBattery implements PowerSource
 			return "" + getManufacturerName();
 		case 4:
 			return "" + getInstalledFactor();
+		case 5:
+			return "" + getPermittedNumDirections();
+		case 6:
+			return CMParms.toListString(getPermittedDirections());
+		case 7:
+		{
+			final StringBuilder str=new StringBuilder("");
+			for(int i=0;i<this.getShieldedMsgTypes().length;i++)
+			{
+				if(i>0)
+					str.append(", ");
+				str.append(CMMsg.TYPE_DESCS[getShieldedMsgTypes()[i]]);
+			}
+			return str.toString();
+		}
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -101,26 +115,46 @@ public class GenCompBattery extends StdCompBattery implements PowerSource
 		else
 		switch(getCodeNum(code))
 		{
-			case 0:
-				setPowerCapacity(CMath.s_parseLongExpression(val));
-				break;
-			case 1:
-				activate(CMath.s_bool(val));
-				break;
-			case 2:
-				setPowerRemaining(CMath.s_parseLongExpression(val));
-				break;
-			case 3:
-				setManufacturerName(val);
-				break;
-			case 4:
-				setInstalledFactor(CMath.s_float(val));
-				break;
+		case 0:
+			setPowerCapacity(CMath.s_parseLongExpression(val));
+			break;
+		case 1:
+			activate(CMath.s_bool(val));
+			break;
+		case 2:
+			setPowerRemaining(CMath.s_parseLongExpression(val));
+			break;
+		case 3:
+			setManufacturerName(val);
+			break;
+		case 4:
+			setInstalledFactor(CMath.s_float(val));
+			break;
+		case 5:
+			setPermittedNumDirections(CMath.s_int(val));
+			break;
+		case 6:
+			this.setPermittedDirections(CMParms.parseEnumList(TechComponent.ShipDir.class, val, ',').toArray(new TechComponent.ShipDir[0]));
+			break;
+		case 7:
+		{
+			final List<String> types = CMParms.parseCommas(val.toUpperCase(),true);
+			final int[] newTypes = new int[types.size()];
+			for(int x=0;x<types.size();x++)
+			{
+				final int typCode = CMParms.indexOf(CMMsg.TYPE_DESCS, types.get(x).trim());
+				if(typCode > 0)
+					newTypes[x] = typCode;
+			}
+			super.setShieldedMsgTypes(newTypes);
+			break;
+		}
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;
 		}
 	}
+	
 	@Override
 	protected int getCodeNum(String code)
 	{
@@ -139,7 +173,7 @@ public class GenCompBattery extends StdCompBattery implements PowerSource
 	{
 		if(codes!=null)
 			return codes;
-		final String[] MYCODES=CMProps.getStatCodesList(GenCompBattery.MYCODES,this);
+		final String[] MYCODES=CMProps.getStatCodesList(GenShipShieldGenerator.MYCODES,this);
 		final String[] superCodes=CMParms.toStringArray(GenericBuilder.GenItemCode.values());
 		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;
@@ -153,7 +187,7 @@ public class GenCompBattery extends StdCompBattery implements PowerSource
 	@Override
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof GenCompBattery))
+		if(!(E instanceof GenShipShieldGenerator))
 			return false;
 		final String[] theCodes=getStatCodes();
 		for(int i=0;i<theCodes.length;i++)

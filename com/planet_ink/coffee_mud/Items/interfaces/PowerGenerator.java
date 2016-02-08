@@ -1,7 +1,4 @@
 package com.planet_ink.coffee_mud.Items.interfaces;
-
-import java.util.Set;
-
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -13,14 +10,13 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
-import com.planet_ink.coffee_mud.Items.interfaces.TechComponent.ShipDir;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 /*
-   Copyright 2004-2016 Bo Zimmerman
+   Copyright 2003-2016 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -33,43 +29,34 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
- */
+*/
 /**
- * A TechComponent is a type of electronics item that must be installed into
- * a panel that can accept it.  Typically for space ships.
- * 
+ * An interface that combines both a PowerSource and and FuelConsumer
+ * to produce a Power Generator, or converter from fuel to electricity.
+ * @see FuelConsumer
+ * @see PowerSource
  * @author Bo Zimmerman
  *
  */
-public interface TechComponent extends Electronics
+public interface PowerGenerator extends PowerSource
 {
 	/**
-	 * The installed factor is how well the equipment was installed. 0-1.0
-	 * @see TechComponent#setInstalledFactor(float)
-	 * @return installed factor is how well the equipment was installed. 0-1.0
+	 * Gets the amount of power generated every tick.  This is fed into
+	 * the Electronics capacitance.
+	 * @see Electronics#powerCapacity()
+	 * @see Electronics#powerRemaining()
+	 * @see PowerGenerator#setGeneratedAmountPerTick(int)
+	 * @return the amount of power generated every tick
 	 */
-	public float getInstalledFactor();
-
+	public int getGeneratedAmountPerTick();
+	
 	/**
-	 * The installed factor is how well the equipment was installed. 0-1.0
-	 * @see TechComponent#getInstalledFactor()
-	 * @param pct installed factor is how well the equipment was installed. 0-1.0
+	 * Sets the amount of power generated every tick.  This is fed into
+	 * the Electronics capacitance.
+	 * @see Electronics#powerCapacity()
+	 * @see Electronics#powerRemaining()
+	 * @see PowerGenerator#getGeneratedAmountPerTick()
+	 * @param amt the amount of power generated every tick
 	 */
-	public void setInstalledFactor(float pct);
-
-
-	/**
-	 * The ThrustPort enum is for the different thrust ports, denoting
-	 * the port, by its direction location.
-	 * @author Bo Zimmerman
-	 */
-	public enum ShipDir
-	{
-		AFT,
-		PORT,
-		VENTRAL,
-		DORSEL,
-		STARBOARD,
-		FORWARD
-	}
+	public void setGeneratedAmountPerTick(int amt);
 }

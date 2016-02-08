@@ -750,7 +750,33 @@ public class CMParms
 		return finalLst;
 	}
 
-	
+	/**
+	 * Parses the given string comma-delimited for an int array
+	 * @param s the string to parse
+	 * @param delim the delimiter to use
+	 * @return the list of parsed ints
+	 */
+	public final static int[] parseIntList(final String s, char delim)
+	{
+		final List<String> lst = parseAny(s,delim,true);
+		final List<Integer> finalLst=new ArrayList<Integer>(lst.size());
+		for(final String entry : lst)
+		{
+			try
+			{
+				if(entry.trim().length()>0)
+					finalLst.add(Integer.valueOf(Integer.parseInt(entry.trim())));
+			}
+			catch(final Exception e)
+			{
+			}
+		}
+		final int[] array = new int[finalLst.size()];
+		for(int i=0;i<finalLst.size();i++)
+			array[i]=finalLst.get(i).intValue();
+		return array;
+	}
+
 	/**
 	 * Parses the given string period-delimited.
 	 * @param s the string to parse

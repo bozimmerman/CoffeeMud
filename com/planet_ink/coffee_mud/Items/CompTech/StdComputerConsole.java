@@ -35,7 +35,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class StdComputerConsole extends StdRideable implements TechComponent, Electronics.Computer, Electronics.ElecPanel
+public class StdComputerConsole extends StdRideable implements TechComponent, Computer, ElecPanel
 {
 	@Override
 	public String ID()
@@ -605,7 +605,7 @@ public class StdComputerConsole extends StdRideable implements TechComponent, El
 		}
 		else
 		if((msg.source()==this.lastReader)
-		&&(msg.target() instanceof Electronics.ElecPanel)
+		&&(msg.target() instanceof ElecPanel)
 		&&(msg.targetMinor()==CMMsg.TYP_READ))
 			this.lastReader=null;
 		super.executeMsg(host,msg);

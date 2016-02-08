@@ -792,7 +792,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genAuthor(MOB mob, Area A, int showNumber, int showFlag) throws IOException
 	{   A.setAuthorID(prompt(mob,A.getAuthorID(),showNumber,showFlag,"Author",true,false,"Area Author's Name"));}
 
-	protected void genPanelType(MOB mob, Electronics.ElecPanel S, int showNumber, int showFlag)
+	protected void genPanelType(MOB mob, ElecPanel S, int showNumber, int showFlag)
 	throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber))
@@ -810,7 +810,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			{
 				if(newName.equalsIgnoreCase("?"))
 				{
-					mob.tell(L("Component Types: @x1",CMParms.toListString(Electronics.ElecPanel.PANELTYPES)));
+					mob.tell(L("Component Types: @x1",CMParms.toListString(ElecPanel.PANELTYPES)));
 					continueThis=true;
 				}
 				else
@@ -1655,7 +1655,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		if((showFlag>0)&&(showFlag!=showNumber))
 			return;
 
-		if(E instanceof Electronics.Computer)
+		if(E instanceof Computer)
 			return;
 
 		if((E instanceof Wand)
@@ -1687,7 +1687,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		if((showFlag>0)&&(showFlag!=showNumber))
 			return;
 
-		if(E instanceof Electronics.Computer)
+		if(E instanceof Computer)
 			return;
 
 		if(E.isReadable()
@@ -3078,7 +3078,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		}
 	}
 
-	protected void genConsumedMaterials(MOB mob, Electronics.FuelConsumer E, int showNumber, int showFlag) throws IOException
+	protected void genConsumedMaterials(MOB mob, FuelConsumer E, int showNumber, int showFlag) throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber))
 			return;
@@ -3131,6 +3131,65 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				}
 				else
 					mob.tell(L("Unknown resource: '@x1'.  Use ? for a list.",newType));
+			}
+		}
+	}
+
+	protected void genMessageTypes(MOB mob, ShipShieldGenerator E, int showNumber, int showFlag) throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
+		boolean q=false;
+		final Session S=mob.session();
+		while((S!=null)&&(!S.isStopped())&&(!q))
+		{
+			final StringBuilder str=new StringBuilder("");
+			for(int i=0;i<E.getShieldedMsgTypes().length;i++)
+			{
+				if(i>0)
+					str.append(", ");
+				str.append(CMMsg.TYPE_DESCS[E.getShieldedMsgTypes()[i]]);
+			}
+			mob.tell(L("@x1. Shielded Types: '@x2'.",""+showNumber,str.toString()));
+			if((showFlag!=showNumber)&&(showFlag>-999))
+				return;
+			final String newType=mob.session().prompt(L("Enter a type to add/remove (?)\n\r:"),"");
+			if((newType==null)||(newType.length()==0))
+				return;
+			else
+			if(newType.equals("?"))
+			{
+				final StringBuffer say=new StringBuffer("");
+				for(final String codeName : CMMsg.TYPE_DESCS)
+					say.append(codeName+", ");
+				mob.tell(say.toString().substring(0,say.length()-2));
+				q=false;
+			}
+			else
+			{
+				q=true;
+				final int newValue=CMParms.indexOf(CMMsg.TYPE_DESCS, newType.toUpperCase().trim());
+				if(newValue>=0)
+				{
+					if(CMParms.contains(E.getShieldedMsgTypes(), newValue))
+					{
+						final int[] newSet=new int[E.getShieldedMsgTypes().length-1];
+						for(int o=0,n=0;o<E.getShieldedMsgTypes().length;o++)
+						{
+							if(E.getShieldedMsgTypes()[o]!=newValue)
+								newSet[n++]=E.getShieldedMsgTypes()[o];
+						}
+						E.setShieldedMsgTypes(newSet);
+					}
+					else
+					{
+						final int[] newSet=Arrays.copyOf(E.getShieldedMsgTypes(),E.getShieldedMsgTypes().length+1);
+						newSet[newSet.length-1]=newValue;
+						E.setShieldedMsgTypes(newSet);
+					}
+				}
+				else
+					mob.tell(L("Unknown type: '@x1'.  Use ? for a list.",newType));
 			}
 		}
 	}
@@ -8244,6 +8303,23 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				final TechComponent E=(TechComponent)me;
 				E.setInstalledFactor((float)prompt(mob, E.getInstalledFactor(), ++showNumber, showFlag, L("Installed Factor")));
 			}
+			if(me instanceof ShipEngine)
+			{
+				final ShipEngine E=(ShipEngine)me;
+				E.setMinThrust(prompt(mob, E.getMinThrust(), ++showNumber, showFlag, "Min thrust"));
+				E.setMaxThrust(prompt(mob, E.getMaxThrust(), ++showNumber, showFlag, "Max thrust"));
+				E.setConstantThruster(prompt(mob, E.isConstantThruster(), ++showNumber, showFlag, "Constant thrust"));
+				E.setSpecificImpulse(prompt(mob, E.getSpecificImpulse(), ++showNumber, showFlag, "Spec Impulse"));
+				E.setFuelEfficiency(prompt(mob, E.getFuelEfficiency()*100.0, ++showNumber, showFlag, "Fuel Effic. %")/100.0);
+				E.setAvailPorts(CMParms.parseEnumList(TechComponent.ShipDir.class,prompt(mob, CMParms.toListString(E.getAvailPorts()), ++showNumber, showFlag, "Avail. ports").toUpperCase(),',').toArray(new TechComponent.ShipDir[0]));
+			}
+			if(me instanceof ShipShieldGenerator)
+			{
+				final ShipShieldGenerator E=(ShipShieldGenerator)me;
+				E.setPermittedNumDirections(prompt(mob, E.getPermittedNumDirections(), ++showNumber, showFlag, "Max Ports"));
+				E.setPermittedDirections(CMParms.parseEnumList(TechComponent.ShipDir.class,prompt(mob, CMParms.toListString(E.getPermittedDirections()), ++showNumber, showFlag, "Avail. ports").toUpperCase(),',').toArray(new TechComponent.ShipDir[0]));
+				genMessageTypes(mob, E, ++showNumber, showFlag);
+			}
 			if(me instanceof PackagedItems)
 				((PackagedItems)me).setNumberOfItemsInPackage(prompt(mob,((PackagedItems)me).numberOfItemsInPackage(),++showNumber,showFlag,"Number of items in the package"));
 			genGettable(mob,me,++showNumber,showFlag);
@@ -8550,21 +8626,21 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				E.setPowerRemaining(prompt(mob, E.powerRemaining(), ++showNumber, showFlag, "Pow Remaining"));
 				E.activate(prompt(mob, E.activated(), ++showNumber, showFlag, "Activated"));
 			}
-			if((me instanceof Electronics.ElecPanel)&&(!(me instanceof Electronics.Computer)))
-				genPanelType(mob,(Electronics.ElecPanel)me,++showNumber,showFlag);
-			if(me instanceof Electronics.PowerGenerator)
+			if((me instanceof ElecPanel)&&(!(me instanceof Computer)))
+				genPanelType(mob,(ElecPanel)me,++showNumber,showFlag);
+			if(me instanceof PowerGenerator)
 			{
-				final Electronics.PowerGenerator E=(Electronics.PowerGenerator)me;
+				final PowerGenerator E=(PowerGenerator)me;
 				E.setGeneratedAmountPerTick(prompt(mob, E.getGeneratedAmountPerTick(), ++showNumber, showFlag, "Gen Amt/Tick"));
 			}
-			if(me instanceof Electronics.FuelConsumer)
+			if(me instanceof FuelConsumer)
 			{
-				final Electronics.FuelConsumer E=(Electronics.FuelConsumer)me;
+				final FuelConsumer E=(FuelConsumer)me;
 				genConsumedMaterials(mob, E, ++showNumber, showFlag);
 			}
-			if(me instanceof TechComponent.ShipEngine)
+			if(me instanceof ShipEngine)
 			{
-				final TechComponent.ShipEngine E=(TechComponent.ShipEngine)me;
+				final ShipEngine E=(ShipEngine)me;
 				E.setMinThrust(prompt(mob, E.getMinThrust(), ++showNumber, showFlag, "Min thrust"));
 				E.setMaxThrust(prompt(mob, E.getMaxThrust(), ++showNumber, showFlag, "Max thrust"));
 				E.setConstantThruster(prompt(mob, E.isConstantThruster(), ++showNumber, showFlag, "Constant thrust"));

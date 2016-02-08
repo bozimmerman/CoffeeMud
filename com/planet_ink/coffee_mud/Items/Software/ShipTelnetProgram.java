@@ -276,7 +276,7 @@ public class ShipTelnetProgram extends GenShipProgram implements ArchonOnly
 	{
 		if (value > 0)
 			fillWithData();
-		if ((container() instanceof Electronics.Computer) && (((Electronics.Computer) container()).getCurrentReaders().size() == 0))
+		if ((container() instanceof Computer) && (((Computer) container()).getCurrentReaders().size() == 0))
 		{
 			this.shutdown();
 		}

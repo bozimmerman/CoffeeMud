@@ -12,7 +12,6 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.TechComponent.ShipDir;
-import com.planet_ink.coffee_mud.Items.interfaces.TechComponent.ShipEngine;
 import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechType;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -36,7 +35,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class StdShipThruster extends StdCompFuelConsumer implements TechComponent.ShipEngine
+public class StdShipThruster extends StdCompFuelConsumer implements ShipEngine
 {
 	@Override
 	public String ID()
@@ -235,9 +234,9 @@ public class StdShipThruster extends StdCompFuelConsumer implements TechComponen
 
 	protected static void sendComputerMessage(final ShipEngine me, final String circuitKey, final MOB mob, final Item controlI, final String code)
 	{
-		for(final Iterator<Electronics.Computer> c=CMLib.tech().getComputers(circuitKey);c.hasNext();)
+		for(final Iterator<Computer> c=CMLib.tech().getComputers(circuitKey);c.hasNext();)
 		{
-			final Electronics.Computer C=c.next();
+			final Computer C=c.next();
 			if((controlI==null)||(C!=controlI.owner()))
 			{
 				final CMMsg msg2=CMClass.getMsg(mob, C, me, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
@@ -330,16 +329,24 @@ public class StdShipThruster extends StdCompFuelConsumer implements TechComponen
 		final LanguageLibrary lang=CMLib.lang();
 		final Software controlI=(msg.tool() instanceof Software)?((Software)msg.tool()):null;
 		final MOB mob=msg.source();
-		final String[] parts=msg.targetMessage().split(" ");
-		final TechCommand command=TechCommand.findCommand(parts);
-		if(command==null)
-			return reportError(me, controlI, mob, lang.L("@x1 does not respond.",me.name(mob)), lang.L("Failure: @x1: control failure.",me.name(mob)));
-		final Object[] parms=command.confirmAndTranslate(parts);
-		if(parms==null)
-			return reportError(me, controlI, mob, lang.L("@x1 did not respond.",me.name(mob)), lang.L("Failure: @x1: control syntax failure.",me.name(mob)));
-		if(command == TechCommand.THRUST)
-			return executeThrust(me, circuitKey, mob, controlI, (TechComponent.ShipDir)parms[0],((Double)parms[1]).doubleValue());
-		return reportError(me, controlI, mob, lang.L("@x1 refused to respond.",me.name(mob)), lang.L("Failure: @x1: control command failure.",me.name(mob)));
+		if(msg.targetMessage()==null)
+		{
+			me.setThrust(0);
+			return true;
+		}
+		else
+		{
+			final String[] parts=msg.targetMessage().split(" ");
+			final TechCommand command=TechCommand.findCommand(parts);
+			if(command==null)
+				return reportError(me, controlI, mob, lang.L("@x1 does not respond.",me.name(mob)), lang.L("Failure: @x1: control failure.",me.name(mob)));
+			final Object[] parms=command.confirmAndTranslate(parts);
+			if(parms==null)
+				return reportError(me, controlI, mob, lang.L("@x1 did not respond.",me.name(mob)), lang.L("Failure: @x1: control syntax failure.",me.name(mob)));
+			if(command == TechCommand.THRUST)
+				return executeThrust(me, circuitKey, mob, controlI, (TechComponent.ShipDir)parms[0],((Double)parms[1]).doubleValue());
+			return reportError(me, controlI, mob, lang.L("@x1 refused to respond.",me.name(mob)), lang.L("Failure: @x1: control command failure.",me.name(mob)));
+		}
 	}
 
 	public static void executeThrusterMsg(ShipEngine me, Environmental myHost, String circuitKey, CMMsg msg)
