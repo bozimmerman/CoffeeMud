@@ -64,6 +64,13 @@ public class StdCompBattery extends StdElecCompItem implements PowerSource, Tech
 	}
 
 	@Override
+	public void setPowerCapacity(long capacity)
+	{
+		powerCapacity = capacity;
+		super.maxRechargePer = capacity / 10;
+	}
+
+	@Override
 	public void setMiscText(String newText)
 	{
 		if(CMath.isInteger(newText))

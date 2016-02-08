@@ -75,6 +75,13 @@ public class StdShipShieldGenerator extends StdElecCompItem implements ShipShiel
 		return (int) Math.min((int) Math.min(powerCapacity,powerSetting) - power, maxRechargePer);
 	}
 	
+	@Override
+	public void setPowerCapacity(long capacity)
+	{
+		powerCapacity = capacity;
+		super.maxRechargePer = capacity / 10;
+	}
+
 	protected synchronized SpaceShip getMyShip()
 	{
 		if(myShip == null)

@@ -43,7 +43,7 @@ public class StdElecItem extends StdItem implements Electronics
 		return "StdElecItem";
 	}
 	
-	protected int			maxRechargePer	= Integer.MAX_VALUE;
+	protected long			maxRechargePer	= Long.MAX_VALUE;
 	protected long			powerCapacity	= 100;
 	protected long			power			= 100;
 	protected boolean		activated		= false;
