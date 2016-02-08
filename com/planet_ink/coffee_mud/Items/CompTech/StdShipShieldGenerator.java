@@ -14,6 +14,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.BasicTech.StdElecItem;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechCommand;
+import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechType;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -215,13 +216,13 @@ public class StdShipShieldGenerator extends StdElecCompItem implements ShipShiel
 								wearAndTear =CMath.div(this.usesRemaining(), 100);
 							int newVal = (int)Math.round(msg.value() - CMath.mul(msg.value(), pctShields * efficiency * wearAndTear));
 							int shieldDamage = (int)Math.round(50.0 * shieldHurtMultiplier * (1.0-pctShields) * (1.0-reliability));
-							if(shieldDamage > usesRemaining())
+							if(shieldDamage > 0)
 							{
-								setUsesRemaining(0);
-								//TODO: deactivate -- and notify control system?
+								CMMsg msg2=(CMMsg)msg.copyOf();
+								msg2.setValue(shieldDamage);
+								msg2.setTarget(this);
+								sendLocalMessage(msg2);
 							}
-							else
-								setUsesRemaining(usesRemaining()-shieldDamage);
 							msg.setValue(newVal);
 						}
 					}
@@ -233,6 +234,21 @@ public class StdShipShieldGenerator extends StdElecCompItem implements ShipShiel
 		return true;
 	}
 
+	protected static void sendComputerMessage(final ShipShieldGenerator me, final String circuitKey, final MOB mob, final Item controlI, final String code)
+	{
+		for(final Iterator<Computer> c=CMLib.tech().getComputers(circuitKey);c.hasNext();)
+		{
+			final Computer C=c.next();
+			if((controlI==null)||(C!=controlI.owner()))
+			{
+				final CMMsg msg2=CMClass.getMsg(mob, C, me, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
+				if(C.okMessage(mob, msg2))
+					C.executeMsg(mob, msg2);
+			}
+		}
+	}
+	
+	
 	@Override
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
@@ -241,6 +257,24 @@ public class StdShipShieldGenerator extends StdElecCompItem implements ShipShiel
 		{
 			switch(msg.targetMinor())
 			{
+			case CMMsg.TYP_DAMAGE:
+			{
+				if(this.subjectToWearAndTear() && (this.usesRemaining()<100) && (msg.value()>0))
+				{
+					int shieldDamage = msg.value();
+					if(shieldDamage > usesRemaining())
+					{
+						setUsesRemaining(0);
+						CMMsg msg2=CMClass.getMsg(msg.source(), this, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_DEACTIVATE|CMMsg.MASK_CNTRLMSG, "", CMMsg.NO_EFFECT,null);
+						this.sendLocalMessage(msg2);
+						final String code=Technical.TechCommand.COMPONENTFAILURE.makeCommand(TechType.SHIP_SHIELD, "Failure: "+me.name()+": shield_failure.");
+						sendComputerMessage(this,circuitKey,msg.source(),null,code);
+					}
+					else
+						setUsesRemaining(usesRemaining()-shieldDamage);
+				}
+				break;
+			}
 			case CMMsg.TYP_ACTIVATE:
 			{
 				final LanguageLibrary lang=CMLib.lang();

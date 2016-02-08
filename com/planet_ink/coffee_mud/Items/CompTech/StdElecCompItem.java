@@ -112,6 +112,18 @@ public class StdElecCompItem extends StdElecItem implements TechComponent
 		}
 	}
 
+	protected void sendLocalMessage(CMMsg msg)
+	{
+		if(owner() instanceof Room)
+		{
+			if(((Room)owner()).okMessage(msg.source(), msg))
+				((Room)owner()).send(msg.source(), msg);
+		}
+		else
+		if(okMessage(msg.source(), msg))
+			executeMsg(msg.source(), msg);
+	}
+	
 	@Override
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
