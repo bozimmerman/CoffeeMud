@@ -471,8 +471,9 @@ public class GroundWired extends StdLibrary implements TechLibrary
 		return true;
 	}
 
-	protected void processElectricCurrents(final List<PowerGenerator> generators, final List<PowerSource> batteries, final List<ElecPanel> panels) throws Exception
+	protected void processElectricCurrents(final String key, final List<PowerGenerator> generators, final List<PowerSource> batteries, final List<ElecPanel> panels) throws Exception
 	{
+		final boolean debugging = CMSecurity.isDebugging(DbgFlag.ELECTRICTHREAD);
 		final CMMsg powerMsg=getPowerMsg(0);
 		for(final PowerGenerator E : generators)
 		{
@@ -485,15 +486,24 @@ public class GroundWired extends StdLibrary implements TechLibrary
 		long remainingPowerToDistribute=0;
 		long availablePowerToDistribute=0;
 		for(final PowerGenerator G : generators)
+		{
 			if(G.activated())
 			{
 				availablePowerToDistribute+=G.powerRemaining();
+				if(debugging)
+					Log.debugOut("Current "+key+": Generator: "+G.Name()+" generated "+availablePowerToDistribute);
 				G.setPowerRemaining(0);
 			}
+		}
 		for(final PowerSource B : batteries)
 		{
 			if(B.activated())
+			{
+				if(debugging)
+					Log.debugOut("Current "+key+": PowerSource: "+B.Name()+" generated "+B.powerRemaining());
 				availablePowerToDistribute+=B.powerRemaining();
+				B.setPowerRemaining(0);
+			}
 		}
 		if(availablePowerToDistribute==0)
 		{
@@ -503,7 +513,11 @@ public class GroundWired extends StdLibrary implements TechLibrary
 				powerMsg.setValue(0);
 				final Room R=CMLib.map().roomLocation(E);
 				if((R!=null)&&(R.okMessage(powerMsg.source(), powerMsg)))
+				{
 					R.send(powerMsg.source(), powerMsg);
+					if(debugging)
+						Log.debugOut("Current "+key+": Panel: "+E.Name()+" emer current "+powerMsg.value());
+				}
 			}
 			for(final PowerSource E : batteries)
 			{
@@ -511,7 +525,11 @@ public class GroundWired extends StdLibrary implements TechLibrary
 				powerMsg.setValue(0);
 				final Room R=CMLib.map().roomLocation(E);
 				if((R!=null)&&(R.okMessage(powerMsg.source(), powerMsg)))
+				{
 					R.send(powerMsg.source(), powerMsg);
+					if(debugging)
+						Log.debugOut("Current "+key+": PowerSource: "+E.Name()+" emer current "+powerMsg.value());
+				}
 			}
 		}
 		else
@@ -520,6 +538,8 @@ public class GroundWired extends StdLibrary implements TechLibrary
 			double totalPowerNeeded=0.0;
 			for(final ElecPanel E : panels)
 				totalPowerNeeded+=((E.powerNeeds()<=0)?1.0:E.powerNeeds());
+			if(debugging)
+				Log.debugOut("Current "+key+": All power needed: "+totalPowerNeeded);
 			if(totalPowerNeeded>0.0)
 			{
 				for(final ElecPanel E : panels)
@@ -536,7 +556,11 @@ public class GroundWired extends StdLibrary implements TechLibrary
 					powerMsg.setValue(powerToTake);
 					final Room R=CMLib.map().roomLocation(E);
 					if((R!=null)&&(R.okMessage(powerMsg.source(), powerMsg)))
+					{
 						R.send(powerMsg.source(), powerMsg);
+						if(debugging)
+							Log.debugOut("Current "+key+": Panel: "+E.Name()+": Power taken: "+(powerToTake -powerMsg.value()));
+					}
 					remainingPowerToDistribute-=(powerMsg.value()<0)?powerToTake:(powerToTake-powerMsg.value());
 				}
 			}
@@ -548,7 +572,11 @@ public class GroundWired extends StdLibrary implements TechLibrary
 				powerMsg.setValue(amountToDistribute<0?0:amountToDistribute);
 				final Room R=CMLib.map().roomLocation(E);
 				if((R!=null)&&(R.okMessage(powerMsg.source(), powerMsg)))
+				{
 					R.send(powerMsg.source(), powerMsg);
+					if(debugging)
+						Log.debugOut("Current "+key+": Panel: "+E.Name()+": Power reimbursed: "+amountToDistribute+": "+powerMsg.value()+", now="+E.powerRemaining());
+				}
 				batteriesLeft--;
 				remainingPowerToDistribute-=(powerMsg.value()<0)?amountToDistribute:(amountToDistribute-powerMsg.value());
 			}
@@ -556,8 +584,14 @@ public class GroundWired extends StdLibrary implements TechLibrary
 			{
 				final int amountLeftOver=(int)((availablePowerToDistribute-remainingPowerToDistribute)/generators.size());
 				for(final PowerGenerator G : generators)
+				{
 					if(G.activated())
+					{
 						G.setPowerRemaining(amountLeftOver>G.powerCapacity()?G.powerCapacity():amountLeftOver);
+						if(debugging)
+							Log.debugOut("Current "+key+": Panel: "+G.Name()+": Power reimbursed: "+amountLeftOver+": "+G.powerRemaining());
+					}
+				}
 			}
 		}
 	}
@@ -647,7 +681,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 			if((A!=null)&&(A.getAreaState()!=Area.State.ACTIVE))
 				return;
 
-			processElectricCurrents(generators, batteries, panels);
+			processElectricCurrents(key, generators, batteries, panels);
 		}
 		catch(final Exception e)
 		{
@@ -710,7 +744,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 		{
 			final List<ElecPanel> finalPanel=new XVector<ElecPanel>(E);
 			final List<PowerSource> finalBatteries=new XVector<PowerSource>(battery);
-			processElectricCurrents(emptyGeneratorList, finalBatteries, finalPanel);
+			processElectricCurrents(key,emptyGeneratorList, finalBatteries, finalPanel);
 			return true;
 		}
 		catch(final Exception e)

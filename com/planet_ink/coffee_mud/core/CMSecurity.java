@@ -2151,7 +2151,8 @@ public class CMSecurity
 		SHUTDOWN("System Shutdown"),
 		SPACESHIP("Spaceships"),
 		SQLERRORS("SQL error traces"),
-		GMCP("GMCP Protocol")
+		GMCP("GMCP Protocol"),
+		ELECTRICTHREAD("Electric currents")
 		;
 		private final String desc;
 
