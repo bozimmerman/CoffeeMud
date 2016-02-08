@@ -70,7 +70,7 @@ public class GenCompBattery extends StdCompBattery implements PowerSource
 		recoverPhyStats();
 	}
 
-	private final static String[] MYCODES={"POWERCAP","ACTIVATED","POWERREM","MANUFACTURER","INSTFACT"};
+	private final static String[] MYCODES={"POWERCAP","ACTIVATED","POWERREM","MANUFACTURER","INSTFACT","RECHRATE"};
 	
 	@Override
 	public String getStat(String code)
@@ -89,6 +89,8 @@ public class GenCompBattery extends StdCompBattery implements PowerSource
 			return "" + getManufacturerName();
 		case 4:
 			return "" + getInstalledFactor();
+		case 5:
+			return "" + getRechargeRate();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -101,21 +103,24 @@ public class GenCompBattery extends StdCompBattery implements PowerSource
 		else
 		switch(getCodeNum(code))
 		{
-			case 0:
-				setPowerCapacity(CMath.s_parseLongExpression(val));
-				break;
-			case 1:
-				activate(CMath.s_bool(val));
-				break;
-			case 2:
-				setPowerRemaining(CMath.s_parseLongExpression(val));
-				break;
-			case 3:
-				setManufacturerName(val);
-				break;
-			case 4:
-				setInstalledFactor(CMath.s_float(val));
-				break;
+		case 0:
+			setPowerCapacity(CMath.s_parseLongExpression(val));
+			break;
+		case 1:
+			activate(CMath.s_bool(val));
+			break;
+		case 2:
+			setPowerRemaining(CMath.s_parseLongExpression(val));
+			break;
+		case 3:
+			setManufacturerName(val);
+			break;
+		case 4:
+			setInstalledFactor((float)CMath.s_parseMathExpression(val));
+			break;
+		case 5:
+			setRechargeRate(CMath.s_parseLongExpression(val));
+			break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;

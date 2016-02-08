@@ -68,7 +68,7 @@ public class GenElecCompItem extends StdElecCompItem
 		recoverPhyStats();
 	}
 
-	private final static String[] MYCODES={"POWERCAP","ACTIVATED","POWERREM","MANUFACTURER","INSTFACT"};
+	private final static String[] MYCODES={"POWERCAP","ACTIVATED","POWERREM","MANUFACTURER","INSTFACT","RECHRATE"};
 	
 	@Override
 	public String getStat(String code)
@@ -87,6 +87,8 @@ public class GenElecCompItem extends StdElecCompItem
 			return "" + getManufacturerName();
 		case 4:
 			return "" + getInstalledFactor();
+		case 5:
+			return "" + getRechargeRate();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -112,7 +114,10 @@ public class GenElecCompItem extends StdElecCompItem
 			setManufacturerName(val);
 			break;
 		case 4:
-			setInstalledFactor(CMath.s_float(val));
+			setInstalledFactor((float)CMath.parseMathExpression(val));
+			break;
+		case 5:
+			setRechargeRate(CMath.parseLongExpression(val));
 			break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);

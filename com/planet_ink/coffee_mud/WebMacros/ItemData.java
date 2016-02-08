@@ -1268,6 +1268,10 @@ public class ItemData extends StdWebMacro
 						if(I instanceof TechComponent)
 							str.append((firstTime) ? CMath.toPct(((TechComponent)I).getInstalledFactor()) : old).append(", ");
 						break;
+					case RECHARGERATE:
+						if(I instanceof TechComponent)
+							str.append((firstTime) ? CMath.toPct(((TechComponent)I).getRechargeRate()) : old).append(", ");
+						break;
 					case PANELTYPE:
 						if(I instanceof ElecPanel)
 						{

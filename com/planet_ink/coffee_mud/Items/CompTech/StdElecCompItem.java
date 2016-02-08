@@ -41,8 +41,10 @@ public class StdElecCompItem extends StdElecItem implements TechComponent
 		return "StdElecCompItem";
 	}
 
-	protected float installedFactor = 1.0f;
-	protected volatile String circuitKey=null;
+	protected long				maxRechargePer	= 0;
+
+	protected float				installedFactor	= 1.0f;
+	protected volatile String	circuitKey		= null;
 
 	public StdElecCompItem()
 	{
@@ -56,6 +58,7 @@ public class StdElecCompItem extends StdElecItem implements TechComponent
 		basePhyStats().setLevel(1);
 		recoverPhyStats();
 		setMaterial(RawMaterial.RESOURCE_STEEL);
+		setRechargeRate(powerCapacity());
 	}
 
 	@Override
@@ -68,6 +71,24 @@ public class StdElecCompItem extends StdElecItem implements TechComponent
 	public void setInstalledFactor(float pct)
 	{
 		installedFactor = pct;
+	}
+
+	@Override
+	public void setRechargeRate(long amtPer)
+	{
+		this.maxRechargePer = amtPer;
+	}
+
+	@Override
+	public long getRechargeRate()
+	{
+		return maxRechargePer;
+	}
+	
+	@Override
+	public int powerNeeds()
+	{
+		return (int)Math.min((powerCapacity - power), getRechargeRate());
 	}
 
 	@Override

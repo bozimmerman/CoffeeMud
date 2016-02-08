@@ -8302,6 +8302,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			{
 				final TechComponent E=(TechComponent)me;
 				E.setInstalledFactor((float)prompt(mob, E.getInstalledFactor(), ++showNumber, showFlag, L("Installed Factor")));
+				E.setRechargeRate(prompt(mob, E.getRechargeRate(), ++showNumber, showFlag, L("Pwr Recharge Rate")));
 			}
 			if(me instanceof ShipEngine)
 			{
@@ -8652,6 +8653,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			{
 				final TechComponent E=(TechComponent)me;
 				E.setInstalledFactor((float)prompt(mob, E.getInstalledFactor(), ++showNumber, showFlag, "Installed Factor"));
+				E.setRechargeRate(prompt(mob, E.getRechargeRate(), ++showNumber, showFlag, L("Pwr Recharge Rate")));
 			}
 			if(!(me instanceof Electronics))
 			{

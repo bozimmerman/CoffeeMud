@@ -84,7 +84,7 @@ public class GenSpaceDrive extends StdShipFuellessThruster
 	}
 
 	private final static String[] MYCODES={"POWERCAP","POWERREM","MAXTHRUST","ACTIVATED","MANUFACTURER","INSTFACT",
-										   "SPECIMPL","FUELEFF","MINTHRUST","ISCONST","AVAILPORTS"};
+										   "SPECIMPL","FUELEFF","MINTHRUST","ISCONST","AVAILPORTS","RECHRATE"};
 	
 	@Override
 	public String getStat(String code)
@@ -115,6 +115,8 @@ public class GenSpaceDrive extends StdShipFuellessThruster
 			return "" + isConstantThruster();
 		case 10:
 			return CMParms.toListString(getAvailPorts());
+		case 11:
+			return "" + getRechargeRate();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -144,7 +146,7 @@ public class GenSpaceDrive extends StdShipFuellessThruster
 			setManufacturerName(val);
 			break;
 		case 5:
-			setInstalledFactor(CMath.s_float(val));
+			setInstalledFactor((float)CMath.s_parseMathExpression(val));
 			break;
 		case 6:
 			setSpecificImpulse(CMath.s_parseLongExpression(val));
@@ -160,6 +162,9 @@ public class GenSpaceDrive extends StdShipFuellessThruster
 			break;
 		case 10:
 			this.setAvailPorts(CMParms.parseEnumList(TechComponent.ShipDir.class, val, ',').toArray(new TechComponent.ShipDir[0]));
+			break;
+		case 11:
+			setRechargeRate(CMath.s_parseLongExpression(val));
 			break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);

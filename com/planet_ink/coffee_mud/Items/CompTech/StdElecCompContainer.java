@@ -41,8 +41,10 @@ public class StdElecCompContainer extends StdElecContainer implements TechCompon
 		return "StdElecCompContainer";
 	}
 
-	protected float installedFactor = 1.0f;
-	protected volatile String circuitKey=null;
+	protected long				maxRechargePer	= 0;
+
+	protected float				installedFactor	= 1.0f;
+	protected volatile String	circuitKey		= null;
 
 	public StdElecCompContainer()
 	{
@@ -56,6 +58,7 @@ public class StdElecCompContainer extends StdElecContainer implements TechCompon
 		basePhyStats().setLevel(1);
 		recoverPhyStats();
 		setMaterial(RawMaterial.RESOURCE_STEEL);
+		this.setRechargeRate(this.powerCapacity());
 	}
 
 	@Override
@@ -83,6 +86,24 @@ public class StdElecCompContainer extends StdElecContainer implements TechCompon
 		if(!(E instanceof StdElecCompContainer))
 			return false;
 		return super.sameAs(E);
+	}
+
+	@Override
+	public void setRechargeRate(long amtPer)
+	{
+		this.maxRechargePer = amtPer;
+	}
+
+	@Override
+	public long getRechargeRate()
+	{
+		return maxRechargePer;
+	}
+	
+	@Override
+	public int powerNeeds()
+	{
+		return (int)Math.min((powerCapacity - power), getRechargeRate());
 	}
 
 	@Override

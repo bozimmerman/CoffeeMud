@@ -86,7 +86,8 @@ public class GenShipEngine extends StdShipEngine
 	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES","RESETTIME",
 										   "POWERCAP","CONSUMEDTYPES","POWERREM","GENAMTPER","ACTIVATED",
 										   "MANUFACTURER","INSTFACT","DEFCLOSED","DEFLOCKED",
-										   "MAXTHRUST","SPECIMPL","FUELEFF","MINTHRUST","ISCONST","AVAILPORTS"};
+										   "MAXTHRUST","SPECIMPL","FUELEFF","MINTHRUST","ISCONST","AVAILPORTS",
+										   "RECHRATE"};
 	@Override
 	public String getStat(String code)
 	{
@@ -143,6 +144,8 @@ public class GenShipEngine extends StdShipEngine
 			return "" + isConstantThruster();
 		case 19:
 			return CMParms.toListString(getAvailPorts());
+		case 20:
+			return "" + getRechargeRate();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -199,7 +202,7 @@ public class GenShipEngine extends StdShipEngine
 			setManufacturerName(val);
 			break;
 		case 11:
-			setInstalledFactor(CMath.s_float(val));
+			setInstalledFactor((float)CMath.s_parseMathExpression(val));
 			break;
 		case 12:
 			setDoorsNLocks(hasADoor(), isOpen(), CMath.s_bool(val), hasALock(), isLocked(), defaultsLocked());
@@ -224,6 +227,9 @@ public class GenShipEngine extends StdShipEngine
 			break;
 		case 19:
 			this.setAvailPorts(CMParms.parseEnumList(TechComponent.ShipDir.class, val, ',').toArray(new TechComponent.ShipDir[0]));
+			break;
+		case 20:
+			setRechargeRate(CMath.s_parseLongExpression(val));
 			break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);

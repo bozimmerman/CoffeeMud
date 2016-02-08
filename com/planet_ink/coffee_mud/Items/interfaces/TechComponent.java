@@ -57,7 +57,24 @@ public interface TechComponent extends Electronics
 	 */
 	public void setInstalledFactor(float pct);
 
+	/**
+	 * Sets the amount of the capacity of this component that can gain
+	 * power every time a power current is received.
+	 * @see TechComponent#getRechargeRate()
+	 * 
+	 * @param amtPer the amount of capacity per tick
+	 */
+	public void setRechargeRate(long amtPer);
 
+	/**
+	 * Gets the amount of the capacity of this component that can gain
+	 * power every time a power current is received.
+	 * @see TechComponent#setRechargeRate(long)
+	 * 
+	 * @return amtPer the amount of capacity per tick
+	 */
+	public long getRechargeRate();
+	
 	/**
 	 * The ThrustPort enum is for the different thrust ports, denoting
 	 * the port, by its direction location.

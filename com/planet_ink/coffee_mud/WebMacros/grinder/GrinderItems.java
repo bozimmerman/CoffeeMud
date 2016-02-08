@@ -72,6 +72,7 @@ public class GrinderItems
 		PANELTYPE,GENAMTPERTICK,CONSUMEDMATS,AREAXML,RECIPESKILLHELP,
 		MINTHRUST,ISCONSTTHRUST,AVAILPORTS,CONTENTSACCESS,BLENDEDVIEW,
 		ISSHIPSHIELD,SSHIELDNUMPORTS,SSHIELDPORTS,SSHIELDMTYPES,
+		RECHARGERATE
 		;
 		public boolean isGenField;
 		private ItemDataField(boolean isGeneric)
@@ -785,6 +786,10 @@ public class GrinderItems
 				case INSTALLFACTOR:
 					if(I instanceof TechComponent)
 						((TechComponent)I).setInstalledFactor((float)CMath.s_pct(old));
+					break;
+				case RECHARGERATE:
+					if(I instanceof TechComponent)
+						((TechComponent)I).setRechargeRate(CMath.s_long(old));
 					break;
 				case PANELTYPE:
 					if(I instanceof ElecPanel)

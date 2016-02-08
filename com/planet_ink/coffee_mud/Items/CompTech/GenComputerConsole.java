@@ -73,7 +73,8 @@ public class GenComputerConsole extends StdComputerConsole
 	}
 	
 	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES","RESETTIME","RIDEBASIS","MOBSHELD",
-										   "POWERCAP","ACTIVATED","POWERREM","MANUFACTURER","INSTFACT","DEFCLOSED","DEFLOCKED"};
+										   "POWERCAP","ACTIVATED","POWERREM","MANUFACTURER","INSTFACT","DEFCLOSED","DEFLOCKED",
+										   "RECHRATE"};
 	
 	@Override
 	public String getStat(String code)
@@ -110,6 +111,8 @@ public class GenComputerConsole extends StdComputerConsole
 			return "" + defaultsClosed();
 		case 13:
 			return "" + defaultsLocked();
+		case 14:
+			return "" + getRechargeRate();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -156,13 +159,16 @@ public class GenComputerConsole extends StdComputerConsole
 			setManufacturerName(val);
 			break;
 		case 11:
-			setInstalledFactor(CMath.s_float(val));
+			setInstalledFactor((float)CMath.s_parseMathExpression(val));
 			break;
 		case 12:
 			setDoorsNLocks(hasADoor(), isOpen(), CMath.s_bool(val), hasALock(), isLocked(), defaultsLocked());
 			break;
 		case 13:
 			setDoorsNLocks(hasADoor(), isOpen(), defaultsClosed(), hasALock(), isLocked(), CMath.s_bool(val));
+			break;
+		case 14:
+			setRechargeRate(CMath.s_parseLongExpression(val));
 			break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);

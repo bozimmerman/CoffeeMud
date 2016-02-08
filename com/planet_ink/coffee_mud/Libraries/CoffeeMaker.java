@@ -453,6 +453,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		if(E instanceof TechComponent)
 		{
 			text.append(CMLib.xml().convertXMLtoTag("INSTF",""+((TechComponent)E).getInstalledFactor()));
+			text.append(CMLib.xml().convertXMLtoTag("RECHRATE",""+((TechComponent)E).getRechargeRate()));
 		}
 		if(E instanceof ShipEngine)
 		{
@@ -2983,6 +2984,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		if(E instanceof TechComponent)
 		{
 			((TechComponent)E).setInstalledFactor((float)CMLib.xml().getDoubleFromPieces(buf,"INSTF"));
+			((TechComponent)E).setRechargeRate(CMLib.xml().getLongFromPieces(buf,"INSTF",((TechComponent)E).powerCapacity()));
 		}
 		if(E instanceof ShipEngine)
 		{

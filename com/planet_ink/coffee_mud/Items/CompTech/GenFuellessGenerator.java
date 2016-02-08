@@ -82,7 +82,7 @@ public class GenFuellessGenerator extends StdCompFuellessGenerator
 		recoverPhyStats();
 	}
 
-	private final static String[] MYCODES={"POWERCAP","POWERREM","GENAMTPER","ACTIVATED","MANUFACTURER","INSTFACT"};
+	private final static String[] MYCODES={"POWERCAP","POWERREM","GENAMTPER","ACTIVATED","MANUFACTURER","INSTFACT","RECHRATE"};
 	
 	@Override
 	public String getStat(String code)
@@ -103,6 +103,8 @@ public class GenFuellessGenerator extends StdCompFuellessGenerator
 			return "" + getManufacturerName();
 		case 5:
 			return "" + getInstalledFactor();
+		case 6:
+			return "" + getRechargeRate();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -132,7 +134,10 @@ public class GenFuellessGenerator extends StdCompFuellessGenerator
 			setManufacturerName(val);
 			break;
 		case 5:
-			setInstalledFactor(CMath.s_float(val));
+			setInstalledFactor((float)CMath.s_parseMathExpression(val));
+			break;
+		case 6:
+			setRechargeRate(CMath.s_parseLongExpression(val));
 			break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
