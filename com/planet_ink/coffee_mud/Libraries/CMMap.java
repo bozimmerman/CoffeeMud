@@ -19,6 +19,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.TechComponent.ShipDir;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -571,10 +572,34 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
-	public TechComponent.ShipDir getDirectionFromDir(double[] facing, double[] direction)
+	public TechComponent.ShipDir getDirectionFromDir(double[] facing, double roll, double[] direction)
 	{
-		//TODO: this
-		return TechComponent.ShipDir.AFT;
+
+		double yD = ((Math.toDegrees(facing[0]) % 360.0) - (Math.toDegrees(facing[0]) % 360.0)) % 360.0;
+		if(yD < 0)
+			yD = 360.0 + yD;
+		double pD = ((Math.toDegrees(facing[1]) % 180.0) - (Math.toDegrees(direction[1]) % 180.0)) % 180.0;
+		if(pD < 0)
+			pD = 180.0 + pD;
+		double rD = (yD + (Math.toDegrees(roll) % 360.0)) % 360.0;
+		if(rD < 0)
+			rD = 360.0 + rD;
+		if(pD<45 || pD > 135)
+		{
+			if(yD < 45.0 || yD > 315.0)
+				return ShipDir.AFT;
+			if(yD> 135.0 && yD < 225.0)
+				return ShipDir.FORWARD;
+		}
+		if(rD >= 315.0 || rD<45.0)
+			return ShipDir.DORSEL;
+		if(rD >= 45.0 && rD <135.0)
+			return ShipDir.STARBOARD;
+		if(rD >= 135.0 && rD <225.0)
+			return ShipDir.VENTRAL;
+		if(rD >= 225.0 && rD <315.0)
+			return ShipDir.PORT;
+		return ShipDir.AFT;
 	}
 	
 	@Override

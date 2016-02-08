@@ -146,33 +146,48 @@ public class StdCompShieldGenerator extends StdElecCompItem implements TechCompo
 					if(weaponO.knownSource() != null)
 					{
 						final double[] directionToMe = CMLib.map().getDirection(weaponO.knownSource(), ship);
-						final ShipDir dir = CMLib.map().getDirectionFromDir(ship.facing(), directionToMe);
+						final ShipDir dir = CMLib.map().getDirectionFromDir(ship.facing(), ship.roll(), directionToMe);
 						absorbs = CMParms.contains(getCurrentCoveredDirections(), dir);
 					}
 
-					int shieldHurtConsumption = msg.value();
-					// this shield can handle it, do deal out any tech-diff adjustments
-					if(msg.tool() instanceof Technical)
-					{
-						if(this.techLevel() > ((Technical)msg.tool()).techLevel())
-						{
-							double pct = 1.0 - CMath.div(this.techLevel() - ((Technical)msg.tool()).techLevel(),10.0);
-							if(pct <= 0)
-							{
-								shieldHurtConsumption = 0;
-								msg.setValue((int)Math.round(msg.value() * 0.05));
-							}
-							else
-							{
-								shieldHurtConsumption = (int)Math.round(shieldHurtConsumption * pct);
-								msg.setValue((int)Math.round(msg.value() * pct));
-							}
-						}
-					}
-					// next do actual shield-based mitigations
 					if(absorbs)
 					{
-						//TODO: finish
+						double shieldHurtMultiplier = 1.0;
+						// this shield can handle it, do deal out any tech-diff adjustments
+						if(msg.tool() instanceof Technical)
+						{
+							if(this.techLevel() > ((Technical)msg.tool()).techLevel())
+							{
+								double pct = 1.0 - CMath.div(this.techLevel() - ((Technical)msg.tool()).techLevel(),10.0);
+								if(pct <= 0)
+								{
+									shieldHurtMultiplier = 0.0;
+									msg.setValue((int)Math.round(msg.value() * 0.05));
+								}
+								else
+								{
+									shieldHurtMultiplier = pct;
+									msg.setValue((int)Math.round(msg.value() * pct));
+								}
+							}
+						}
+						// next do actual shield-based mitigations
+						if(msg.value() > 0)
+						{
+							double pctShields = CMath.div(lastPowerConsumption,powerCapacity());
+							double efficiency = this.getFinalManufacturer().getEfficiencyPct();
+							double reliability = this.getFinalManufacturer().getReliabilityPct();
+							double wearAndTear = 1.0;
+							if(this.subjectToWearAndTear() && this.usesRemaining()<100)
+								wearAndTear =CMath.div(this.usesRemaining(), 100);
+							int newVal = (int)Math.round(msg.value() - CMath.mul(msg.value(), pctShields * efficiency * wearAndTear));
+							int shieldDamage = (int)Math.round(50.0 * shieldHurtMultiplier * (1.0-pctShields) * (1.0-reliability));
+							if(shieldDamage > usesRemaining())
+								setUsesRemaining(0);
+							else
+								setUsesRemaining(usesRemaining()-shieldDamage);
+							msg.setValue(newVal);
+						}
 					}
 				}
 				break;
