@@ -91,7 +91,7 @@ public class StdCompPanel extends StdElecCompContainer implements ElecPanel, Tec
 			return false;
 		if((I instanceof Technical)&&(panelType()==((Technical)I).getTechType()))
 			return true;
-		return true;
+		return false;
 	}
 
 	@Override

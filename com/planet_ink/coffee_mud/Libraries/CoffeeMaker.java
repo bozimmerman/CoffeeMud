@@ -448,7 +448,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		}
 		if(E instanceof ElecPanel)
 		{
-			text.append(CMLib.xml().convertXMLtoTag("SSPANELT",""+((ElecPanel)E).panelType().name()));
+			if(((ElecPanel)E).panelType()!=null)
+				text.append(CMLib.xml().convertXMLtoTag("SSPANELT",""+((ElecPanel)E).panelType().name()));
 		}
 		if(E instanceof TechComponent)
 		{

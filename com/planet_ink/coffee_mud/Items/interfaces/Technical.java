@@ -50,6 +50,7 @@ public interface Technical
 	{
 		ANY("Any", "Tech"),
 		GIZMO("Gizmo", "Gizmo"),
+		CONTROL_PANEL("Control Panel","Controls"),
 		PERSONAL_WEAPON("Personal Weapon", "Weapon"),
 		PERSONAL_SENSOR("Portable Sensor", "Sensor"),
 		PERSONAL_SHIELD("Personal Shield", "Shield"),
@@ -69,7 +70,8 @@ public interface Technical
 		SHIP_GENERATOR("Ship Power Generator", "Generator"),
 		SHIP_DAMPENER("Ship Inertial Dampener", "Inertial"),
 		SHIP_TRACTOR("Ship Tractor", "Tractor"),
-		SHIP_REPLICATOR("Ship Food Replicator", "Replicat.");
+		SHIP_REPLICATOR("Ship Food Replicator", "Replicat.")
+		;
 		private final String	friendlyName;
 		private final String	shortFriendlyName;
 

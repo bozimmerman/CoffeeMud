@@ -116,7 +116,7 @@ public class GenShipPanel extends StdCompPanel
 		case 7:
 			return "" + powerRemaining();
 		case 8:
-			return "" + panelType();
+			return "" + panelType().name();
 		case 9:
 			return "" + defaultsClosed();
 		case 10:

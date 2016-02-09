@@ -41,7 +41,7 @@ public class StdElecCompItem extends StdElecItem implements TechComponent
 		return "StdElecCompItem";
 	}
 
-	protected long				maxRechargePer	= 0;
+	protected long				maxRechargePer	= 10;
 
 	protected float				installedFactor	= 1.0f;
 	protected volatile String	circuitKey		= null;
@@ -153,7 +153,7 @@ public class StdElecCompItem extends StdElecItem implements TechComponent
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_ACTIVATE:
-				if(!isAllWiringConnected(this))
+				if((!isAllWiringConnected(this))&&(!(this instanceof ElecPanel)))
 				{
 					if(!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG))
 						msg.source().tell(L("The panel containing @x1 is not activated or connected.",name()));
@@ -194,13 +194,13 @@ public class StdElecCompItem extends StdElecItem implements TechComponent
 			case CMMsg.TYP_DROP:
 				setInstalledFactor((float)CMath.div(msg.value(),100.0));
 				break;
-			case CMMsg.TYP_ACTIVATE:
-				if((msg.source().location()!=null)&&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG)))
+			case CMMsg.TYP_ACTIVATE: // sometimes one triggers many acts in other places, but you don't want many msgs.
+				if((msg.source().location() != null)&&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG)))
 					msg.source().location().show(msg.source(), this, CMMsg.MSG_OK_VISUAL, L("<S-NAME> activate(s) <T-NAME>."));
 				this.activate(true);
 				break;
 			case CMMsg.TYP_DEACTIVATE:
-				if((msg.source().location()!=null)&&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG)))
+				if((msg.source().location() != null)&&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG)))
 					msg.source().location().show(msg.source(), this, CMMsg.MSG_OK_VISUAL, L("<S-NAME> deactivate(s) <T-NAME>."));
 				this.activate(false);
 				break;

@@ -835,6 +835,9 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			if(H.containsKey(key))
 				image=getHashedMXPImage(H,key);
 			else
+			if(((ElecPanel) O).panelType()==null)
+				image=getHashedMXPImage(H,"ELECPANEL");
+			else
 			if(H.containsKey(((ElecPanel) O).panelType().toString()))
 				image=getHashedMXPImage(H,((ElecPanel) O).panelType().toString());
 			else

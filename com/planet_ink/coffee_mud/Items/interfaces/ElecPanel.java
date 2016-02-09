@@ -39,7 +39,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  * @author Bo Zimmerman
  *
  */
-public interface ElecPanel extends Electronics, Container
+public interface ElecPanel extends Electronics
 {
 	/**
 	 * A list of TechType objects denoting what the
@@ -60,7 +60,7 @@ public interface ElecPanel extends Electronics, Container
 		TechType.SHIP_ENVIRO_CONTROL,
 		TechType.SHIP_GENERATOR,
 		TechType.SHIP_DAMPENER,
-		TechType.SHIP_TRACTOR
+		TechType.SHIP_TRACTOR,
 	};
 	
 	/**

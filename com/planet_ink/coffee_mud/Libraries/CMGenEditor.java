@@ -797,6 +797,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	{
 		if((showFlag>0)&&(showFlag!=showNumber))
 			return;
+		if(S.panelType()==null)
+			return;
 		final String componentType=CMStrings.capitalizeAndLower(S.panelType().name().toLowerCase());
 		mob.tell(L("@x1. Panel Type: '@x2'.",""+showNumber,componentType));
 		if((showFlag!=showNumber)&&(showFlag>-999))
@@ -2008,7 +2010,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				mob.session().println(L("    F) Is Two-Handed : @x1",""+I.rawLogicalAnd()));
 			if((showFlag!=showNumber)&&(showFlag>-999))
 				return;
-			c=mob.session().choose(L("Enter one to change, or ENTER when done:"),L("ABCDE\n"),"\n").toUpperCase();
+			c=mob.session().choose(L("Enter one to change, or ENTER when done:"),L("ABCDEF\n"),"\n").toUpperCase();
 			switch(Character.toUpperCase(c.charAt(0)))
 			{
 			case 'A':
@@ -8298,6 +8300,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				E.setPowerRemaining(prompt(mob, E.powerRemaining(), ++showNumber, showFlag, "Pow Remaining"));
 				E.activate(prompt(mob, E.activated(), ++showNumber, showFlag, "Activated"));
 			}
+			if((me instanceof ElecPanel)&&(!(me instanceof Computer)))
+				genPanelType(mob,(ElecPanel)me,++showNumber,showFlag);
 			if(me instanceof TechComponent)
 			{
 				final TechComponent E=(TechComponent)me;
