@@ -902,9 +902,29 @@ public class CMProps extends Properties
 			return p().sysVars[varNum.ordinal()];
 		}
 		catch(final Exception t) 
-		{ return ""; }
+		{
+			return "";
+		}
 	}
 
+	/**
+	 * Retreive one of the pre-processed coffeemud.ini entries for
+	 * this prop object
+	 * @param varNum the Str enum of the entry to get
+	 * @return the value of the property.
+	 */
+	public final String getStr(final Str varNum)
+	{
+		try 
+		{ 
+			return sysVars[varNum.ordinal()];
+		}
+		catch(final Exception t) 
+		{
+			return "";
+		}
+	}
+	
 	/**
 	 * Retreive one of the pre-processed coffeemud.ini entries for
 	 * the callers thread group.
@@ -923,6 +943,24 @@ public class CMProps extends Properties
 		}
 	}
 
+	/**
+	 * Retreive one of the pre-processed coffeemud.ini entries for
+	 * theis props object.
+	 * @param varNum the Int enum of the entry to get
+	 * @return the value of the property.
+	 */
+	public final int getInt(final Int varNum)
+	{
+		try 
+		{ 
+			return sysInts[varNum.ordinal()].intValue(); 
+		}
+		catch(final Exception t) 
+		{
+			return -1;
+		}
+	}
+	
 	/**
 	 * Retreive one of the pre-processed coffeemud.ini lists for
 	 * the callers thread group.
@@ -982,6 +1020,24 @@ public class CMProps extends Properties
 		try 
 		{ 
 			return p().sysBools[varNum.ordinal()].booleanValue(); 
+		}
+		catch(final Exception t) 
+		{
+			return false;
+		}
+	}
+
+	/**
+	 * Retreive one of the pre-processed coffeemud.ini entries for
+	 * this prop object.
+	 * @param varNum the Bool enum of the entry to get
+	 * @return the value of the property.
+	 */
+	public final boolean getBool(final Bool varNum)
+	{
+		try 
+		{ 
+			return sysBools[varNum.ordinal()].booleanValue(); 
 		}
 		catch(final Exception t) 
 		{
@@ -2318,6 +2374,15 @@ public class CMProps extends Properties
 		return p().TIME_TICK;
 	}
 
+	/**
+	 * Returns the amount of milliseconds per mud tick.
+	 * @return the amount of milliseconds per mud tick.
+	 */
+	public final long tickMillis()
+	{
+		return TIME_TICK;
+	}
+	
 	/**
 	 * Returns the amount of milliseconds per mud tick, as a double.
 	 * @return the amount of milliseconds per mud tick, as a double.

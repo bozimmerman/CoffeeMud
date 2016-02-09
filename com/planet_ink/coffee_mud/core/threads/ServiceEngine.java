@@ -1344,20 +1344,25 @@ public class ServiceEngine implements ThreadEngine
 	{
 		while(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 			CMLib.s_sleep(1000);
-		while(!CMProps.getBoolVar(CMProps.Bool.MUDSHUTTINGDOWN))
+		final CMProps props = CMProps.instance();
+		final CMProps.Bool MUDSHUTTINGDOWN=CMProps.Bool.MUDSHUTTINGDOWN;
+		while(!props.getBool(MUDSHUTTINGDOWN))
 		{
 			try
 			{
-				while(isAllSuspended() && (!CMProps.getBoolVar(CMProps.Bool.MUDSHUTTINGDOWN)))
+				while(isAllSuspended() && (!props.getBool(MUDSHUTTINGDOWN)))
 				{
 					if((unsuspendedRunnables!=null)&&(unsuspendedRunnables.length>0))
 					{
 						Thread.sleep(100);
 						for(CMRunnable runnable : unsuspendedRunnables)
 						{
-							try {
+							try 
+							{
 								runnable.run();
-							} catch(Exception e) {
+							} 
+							catch(Exception e) 
+							{
 								Log.errOut(e);
 							}
 						}
@@ -1366,8 +1371,8 @@ public class ServiceEngine implements ThreadEngine
 						Thread.sleep(2000);
 				}
 				final long now=System.currentTimeMillis();
-				globalTickID = (now - globalStartTime) / CMProps.getTickMillis();
-				long nextWake=System.currentTimeMillis() + 3600000;
+				globalTickID = (now - globalStartTime) / props.tickMillis();
+				long nextWake=now + 3600000;
 				if(this.schedTicks.size() > 0)
 				{
 					final List<CMRunnable> runThese = new LinkedList<CMRunnable>();
