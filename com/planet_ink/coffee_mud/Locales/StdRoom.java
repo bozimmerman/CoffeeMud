@@ -532,9 +532,10 @@ public class StdRoom implements Room
 				{
 					if((d!=Directions.UP)&&(d!=Directions.DOWN))
 					{
-						final Room thatRoom=rawDoors()[d];
+						Room thatRoom=rawDoors()[d];
 						if((thatRoom!=null)&&(getRawExit(d)!=null))
 						{
+							thatRoom=CMLib.map().getRoom(thatRoom);
 							thatRoom.giveASky(depth+1);
 							final Room thatSky=thatRoom.rawDoors()[Directions.UP];
 							if((thatSky!=null)
