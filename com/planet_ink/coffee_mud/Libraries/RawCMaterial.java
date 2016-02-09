@@ -651,6 +651,14 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 			break;
 		}
 		}
+		switch(myResource)
+		{
+		case RawMaterial.RESOURCE_SALT:
+			I=(RawMaterial)CMClass.getItem("GenFoodResource");
+			break;
+		default:
+			break;
+		}
 		if(I!=null)
 		{
 			if((fullName!=null)&&(fullName.length()>0))
