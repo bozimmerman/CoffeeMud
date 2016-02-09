@@ -766,7 +766,7 @@ public class StdMOB implements MOB
 		if (location() != null)
 			location().affectPhyStats(this, phyStats);
 		if(getMoney()>0)
-			phyStats().setWeight(phyStats().weight() + (int) Math.round(CMath.div(getMoney(), 100.0)));
+			phyStats().setWeight(phyStats().weight() + (getMoney()/100));
 		final Rideable riding = riding();
 		if (riding != null)
 			riding.affectPhyStats(this, phyStats);
