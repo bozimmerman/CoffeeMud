@@ -42,6 +42,7 @@
   40. ColorSet can be used to set any channel color now.
   41. Unattackable mobs no longer count in area statistics.
   42. Space Ship Shield generator done, mudgrinder and cl editor included.
+  43. New resources added: salt and spice
 # Build 5.9.1 Released 01/04/2016
    1. "Who accounts", used by an archon, can quickly list the account name of each player online.
    2. New Achievement event "GOTITEM", and new rewards (see new stats below and achievements.ini)

@@ -533,6 +533,8 @@ public interface RawMaterial extends Item
 	public final static int	RESOURCE_DENIM			= MATERIAL_CLOTH | 200;
 	public final static int	RESOURCE_DILITHIUM		= MATERIAL_PRECIOUS | 201;
 	public final static int	RESOURCE_TAR			= MATERIAL_LIQUID | 202;
+	public final static int	RESOURCE_SALT			= MATERIAL_ROCK | 203;
+	public final static int	RESOURCE_SPICE			= MATERIAL_VEGETATION | 204;
 	
 	public final static int	RESOURCE_MASK			= 255;
 
@@ -760,6 +762,8 @@ public interface RawMaterial extends Item
 		DENIM(RESOURCE_DENIM			, 15,   0, 2, 745, "", "", null),
 		DILITHIUM(RESOURCE_DILITHIUM	, 5000, 0, 7, 5010, "", "", null),
 		TAR(RESOURCE_TAR				, 10,   15, 2, 1280, "strong oily", "", null),
+		SALT(RESOURCE_SALT, 10, 20, 5, 750, "", "", null),
+		SPICE(RESOURCE_SPICE, 100, 5, 1, 750, "spicy smell", "", null),
 		
 		;//code, 						  v, freq, h, b, smell, effects, ResourceFlag flags
 		public final int			code, value, frequency, hardness, bouancy;

@@ -55,7 +55,8 @@ public class UnderSaltWater extends UnderWater
 		Integer.valueOf(RawMaterial.RESOURCE_SAND),
 		Integer.valueOf(RawMaterial.RESOURCE_CLAY),
 		Integer.valueOf(RawMaterial.RESOURCE_PEARL),
-		Integer.valueOf(RawMaterial.RESOURCE_LIMESTONE)
+		Integer.valueOf(RawMaterial.RESOURCE_LIMESTONE),
+		Integer.valueOf(RawMaterial.RESOURCE_SALT)
 	};
 	public static final List<Integer>	roomResources	= new Vector<Integer>(Arrays.asList(resourceList));
 
