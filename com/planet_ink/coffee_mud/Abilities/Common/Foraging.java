@@ -141,6 +141,7 @@ public class Foraging extends GatheringSkill
 		if((!confirmPossibleMaterialLocation(RawMaterial.MATERIAL_VEGETATION,mob.location()))
 		&&(!confirmPossibleMaterialLocation(RawMaterial.RESOURCE_HEMP,mob.location()))
 		&&(!confirmPossibleMaterialLocation(RawMaterial.RESOURCE_SILK,mob.location()))
+		&&(!confirmPossibleMaterialLocation(RawMaterial.RESOURCE_SALT,mob.location()))
 		&&(!confirmPossibleMaterialLocation(RawMaterial.RESOURCE_COTTON,mob.location())))
 		{
 			commonTell(mob,L("You don't think this is a good place to forage."));
@@ -152,6 +153,7 @@ public class Foraging extends GatheringSkill
 		if((proficiencyCheck(mob,0,auto))
 		   &&(((resourceType&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_VEGETATION)
 			  ||(resourceType==RawMaterial.RESOURCE_HEMP)
+			  ||(resourceType==RawMaterial.RESOURCE_SALT)
 			  ||(resourceType==RawMaterial.RESOURCE_SILK)
 			  ||(resourceType==RawMaterial.RESOURCE_COTTON)))
 		{
