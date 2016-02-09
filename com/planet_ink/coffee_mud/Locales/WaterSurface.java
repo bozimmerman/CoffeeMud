@@ -119,10 +119,11 @@ public class WaterSurface extends StdRoom implements Drink
 			sea.setRawExit(Directions.UP,upE);
 			for(int dir : Directions.CODES())
 			{
-				final Room thatRoom=rawDoors()[dir];
+				Room thatRoom=rawDoors()[dir];
 				Room thatSea=null;
 				if((thatRoom!=null)&&(getRawExit(dir)!=null))
 				{
+					thatRoom=CMLib.map().getRoom(thatRoom);
 					thatRoom.giveASky(depth+1);
 					thatSea=thatRoom.rawDoors()[Directions.DOWN];
 				}
