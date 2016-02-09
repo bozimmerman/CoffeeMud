@@ -772,37 +772,42 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			final CharStats charStats=mob.charStats();
 			final CharState curState=mob.curState();
 			final CharState maxState=mob.maxState();
-			final boolean isSleeping=(CMLib.flags().isSleeping(mob));
-			final boolean isSittingOrRiding=(!isSleeping) && ((CMLib.flags().isSitting(mob))||(mob.riding()!=null));
-			final boolean isFlying=(!isSleeping) && (!isSittingOrRiding) && CMLib.flags().isFlying(mob);
-			final boolean isSwimming=(!isSleeping) && (!isSittingOrRiding) && (!isFlying) && CMLib.flags().isSwimming(mob);
-			final double[] vals=new double[]{
-				charStats.getStat(CharStats.STAT_CONSTITUTION),
-				mob.phyStats().level(),
-				(curState.getHunger()<1)?1.0:0.0,
-				(curState.getThirst()<1)?1.0:0.0,
-				(curState.getFatigue()>CharState.FATIGUED_MILLIS)?1.0:0.0,
-				isSleeping?1.0:0.0,
-				isSittingOrRiding?1.0:0.0,
-				isFlying?1.0:0.0,
-				isSwimming?1.0:0.0
-			};
-			final double hpGain = CMath.parseMathExpression(stateHitPointRecoverFormula, vals, 0.0);
-
-			if((hpGain>0)&&(!CMLib.flags().isGolem(mob)))
-				curState.adjHitPoints((int)Math.round(hpGain),maxState);
-
-			vals[0]=((charStats.getStat(CharStats.STAT_INTELLIGENCE)+charStats.getStat(CharStats.STAT_WISDOM)));
-			final double manaGain = CMath.parseMathExpression(stateManaRecoverFormula, vals, 0.0);
-
-			if(manaGain>0)
-				curState.adjMana((int)Math.round(manaGain),maxState);
-
-			vals[0]=charStats.getStat(CharStats.STAT_STRENGTH);
-			final double moveGain = CMath.parseMathExpression(this.stateMovesRecoverFormula, vals, 0.0);
-
-			if(moveGain>0)
-				curState.adjMovement((int)Math.round(moveGain),maxState);
+			if((curState.getHitPoints()<maxState.getHitPoints())
+			||(curState.getMana()<maxState.getMana())
+			||(curState.getMovement()<maxState.getMovement()))
+			{
+				final boolean isSleeping=(CMLib.flags().isSleeping(mob));
+				final boolean isSittingOrRiding=(!isSleeping) && ((CMLib.flags().isSitting(mob))||(mob.riding()!=null));
+				final boolean isFlying=(!isSleeping) && (!isSittingOrRiding) && CMLib.flags().isFlying(mob);
+				final boolean isSwimming=(!isSleeping) && (!isSittingOrRiding) && (!isFlying) && CMLib.flags().isSwimming(mob);
+				final double[] vals=new double[]{
+					charStats.getStat(CharStats.STAT_CONSTITUTION),
+					mob.phyStats().level(),
+					(curState.getHunger()<1)?1.0:0.0,
+					(curState.getThirst()<1)?1.0:0.0,
+					(curState.getFatigue()>CharState.FATIGUED_MILLIS)?1.0:0.0,
+					isSleeping?1.0:0.0,
+					isSittingOrRiding?1.0:0.0,
+					isFlying?1.0:0.0,
+					isSwimming?1.0:0.0
+				};
+				final double hpGain = CMath.parseMathExpression(stateHitPointRecoverFormula, vals, 0.0);
+	
+				if((hpGain>0)&&(!CMLib.flags().isGolem(mob)))
+					curState.adjHitPoints((int)Math.round(hpGain),maxState);
+	
+				vals[0]=((charStats.getStat(CharStats.STAT_INTELLIGENCE)+charStats.getStat(CharStats.STAT_WISDOM)));
+				final double manaGain = CMath.parseMathExpression(stateManaRecoverFormula, vals, 0.0);
+	
+				if(manaGain>0)
+					curState.adjMana((int)Math.round(manaGain),maxState);
+	
+				vals[0]=charStats.getStat(CharStats.STAT_STRENGTH);
+				final double moveGain = CMath.parseMathExpression(this.stateMovesRecoverFormula, vals, 0.0);
+	
+				if(moveGain>0)
+					curState.adjMovement((int)Math.round(moveGain),maxState);
+			}
 		}
 	}
 
