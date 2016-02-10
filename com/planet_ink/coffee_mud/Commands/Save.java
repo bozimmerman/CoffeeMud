@@ -82,7 +82,7 @@ public class Save extends StdCommand
 			{
 				int[] counts = CMLib.database().DBCountRoomMobsItems(room.roomID());
 				int mobCountDiff = 0;
-				if((taskCode == SaveTask.ALL) || (taskCode == SaveTask.ITEMS))
+				if((taskCode == SaveTask.ALL) || (taskCode == SaveTask.MOBS))
 					mobCountDiff= counts[0] - this.numSavableInhabitants(room);
 				int itemCountDiff = 0;
 				if((taskCode == SaveTask.ALL) || (taskCode == SaveTask.ITEMS))
