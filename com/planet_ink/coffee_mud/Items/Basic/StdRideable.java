@@ -161,7 +161,8 @@ public class StdRideable extends StdContainer implements Rideable
 	{
 		if(mob!=null)
 			while(riders.remove(mob))
-				{}
+				{
+				}
 	}
 
 	@Override

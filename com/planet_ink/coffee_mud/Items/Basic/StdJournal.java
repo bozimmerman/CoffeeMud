@@ -170,11 +170,17 @@ public class StdJournal extends StdItem
 									prompt+="^<MENU^>E^</MENU^>)mail "; cmds+="E";
 								if(msg.value()>0){ prompt+="S)top "; cmds+="S";}
 								else
-								{ prompt+="^<MENU^>N^</MENU^>)ext "; cmds+="N";}
+								{
+									prompt+="^<MENU^>N^</MENU^>)ext ";
+									cmds+="N";
+								}
 								if(mineAble){ prompt+="^<MENU^>D^</MENU^>)elete "; cmds+="D";}
 								if((admin)
 								||(CMSecurity.isAllowed(msg.source(),msg.source().location(),CMSecurity.SecFlag.JOURNALS)))
-								{ prompt+="^<MENU^>T^</MENU^>)ransfer "; cmds+="T";}
+								{
+									prompt+="^<MENU^>T^</MENU^>)ransfer ";
+									cmds+="T";
+								}
 								prompt+="or RETURN: ";
 								final String s=mob.session().choose(prompt,cmds+"\n","\n");
 								if(s.equalsIgnoreCase("S"))

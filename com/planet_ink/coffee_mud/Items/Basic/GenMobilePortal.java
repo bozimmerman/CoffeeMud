@@ -92,11 +92,17 @@ public class GenMobilePortal extends GenPortal implements Rideable, Exit
 						if(((myStationaryPortal==null)||(myStationaryPortal.amDestroyed()))&&(secretIdentity().length()>0))
 						for(int i=0;i<choices.size();i++)
 							if(choices.elementAt(i).secretIdentity().equals(secretIdentity()))
-							{ myStationaryPortal=(StdPortal)choices.elementAt(i); break;}
+							{
+								myStationaryPortal=(StdPortal)choices.elementAt(i);
+								break;
+							}
 						if((myStationaryPortal==null)||(myStationaryPortal.amDestroyed()))
 						for(int i=0;i<choices.size();i++)
 							if(choices.elementAt(i).Name().equals(Name()))
-							{ myStationaryPortal=(StdPortal)choices.elementAt(i); break;}
+							{
+								myStationaryPortal=(StdPortal)choices.elementAt(i);
+								break;
+							}
 						if((myStationaryPortal==null)||(myStationaryPortal.amDestroyed()))
 							myStationaryPortal=(StdPortal)choices.firstElement();
 					}

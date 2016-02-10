@@ -373,8 +373,8 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 			nextRoom=grid[x][y];	
 		}
 		catch(final Exception t)
-		{}
-
+		{
+		}
 		if(nextRoom==null)
 		{
 			if((room.r!=null)&&(room.r.getRoomInDir(dirCode)==null))
