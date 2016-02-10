@@ -134,6 +134,7 @@ public interface JournalsLibrary extends CMLibrary
 		READ,
 		POST,
 		REPLY,
-		ADMIN;
+		ADMIN,
+		SORTBY;
 	}
 }

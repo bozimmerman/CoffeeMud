@@ -196,7 +196,7 @@ public class StdBook extends StdItem
 	{
 		final StringBuffer buf=new StringBuffer("");
 		final Triad<String,String,StringBuffer> reply=new Triad<String,String,StringBuffer>("","",new StringBuffer(""));
-		final List<JournalEntry> journal=CMLib.database().DBReadJournalMsgs(Journal, true);
+		final List<JournalEntry> journal=CMLib.database().DBReadJournalMsgsByCreateDate(Journal, true);
 		if((which<0)||(journal==null)||(which>=journal.size()))
 		{
 			buf.append(L("\n\rTable of Contents\n\r"));

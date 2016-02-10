@@ -114,7 +114,7 @@ public class CommandJournal extends StdCommand
 			mob.tell(L("@x1 is not a journal",rest));
 			return true;
 		}
-		final List<JournalEntry> journal2=CMLib.database().DBReadJournalMsgs(journalID, true);
+		final List<JournalEntry> journal2=CMLib.database().DBReadJournalMsgsByUpdateDate(journalID, true);
 		final JournalEntry entry2=journal2.get(count-1);
 		final String from2=entry2.from();
 		final String to=entry2.to();

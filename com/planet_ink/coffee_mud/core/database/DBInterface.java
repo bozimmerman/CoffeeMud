@@ -471,15 +471,15 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
-	public void DBUpdateJournal(String Journal, JournalEntry entry)
+	public void DBUpdateJournal(String journalID, JournalEntry entry)
 	{
-		JournalLoader.DBUpdateJournal(Journal, entry);
+		JournalLoader.DBUpdateJournal(journalID, entry);
 	}
 
 	@Override
-	public void DBUpdateJournalStats(String Journal, JournalsLibrary.JournalSummaryStats stats)
+	public void DBUpdateJournalStats(String journalID, JournalsLibrary.JournalSummaryStats stats)
 	{
-		JournalLoader.DBUpdateJournalStats(Journal, stats);
+		JournalLoader.DBUpdateJournalStats(journalID, stats);
 	}
 
 	@Override
@@ -495,9 +495,9 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
-	public void DBDeleteJournal(String Journal, String msgKeyOrNull)
+	public void DBDeleteJournal(String journalID, String msgKeyOrNull)
 	{
-		JournalLoader.DBDelete(Journal, msgKeyOrNull);
+		JournalLoader.DBDelete(journalID, msgKeyOrNull);
 	}
 
 	@Override
@@ -507,9 +507,9 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
-	public JournalEntry DBReadJournalEntry(String Journal, String Key)
+	public JournalEntry DBReadJournalEntry(String journalID, String Key)
 	{
-		return JournalLoader.DBReadJournalEntry(Journal, Key);
+		return JournalLoader.DBReadJournalEntry(journalID, Key);
 	}
 
 	@Override
@@ -519,92 +519,110 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
-	public List<JournalEntry> DBReadJournalMsgs(String Journal, boolean ascending)
+	public List<JournalEntry> DBReadJournalMsgsByUpdateDate(String journalID, boolean ascending)
 	{
-		return JournalLoader.DBReadJournalMsgs(Journal, ascending, Integer.MAX_VALUE);
+		return JournalLoader.DBReadJournalMsgsSorted(journalID, ascending, Integer.MAX_VALUE, true);
 	}
 
 	@Override
-	public List<JournalEntry> DBReadJournalMsgs(String Journal, boolean ascending, int limit)
+	public List<JournalEntry> DBReadJournalMsgsByUpdateDate(String journalID, boolean ascending, int limit)
 	{
-		return JournalLoader.DBReadJournalMsgs(Journal, ascending, limit);
+		return JournalLoader.DBReadJournalMsgsSorted(journalID, ascending, limit, true);
 	}
 
 	@Override
-	public List<JournalEntry> DBReadJournalMsgs(String Journal, boolean ascending, int limit, String[] tos)
+	public List<JournalEntry> DBReadJournalMsgsByUpdateDate(String journalID, boolean ascending, int limit, String[] tos)
 	{
-		return JournalLoader.DBReadJournalMsgs(Journal, ascending, limit, tos);
+		return JournalLoader.DBReadJournalMsgsSorted(journalID, ascending, limit, tos, true);
 	}
 
 	@Override
-	public List<JournalEntry> DBSearchAllJournalEntries(String Journal, String searchStr)
+	public List<JournalEntry> DBReadJournalMsgsByCreateDate(String journalID, boolean ascending)
 	{
-		return JournalLoader.DBSearchAllJournalEntries(Journal, searchStr);
+		return JournalLoader.DBReadJournalMsgsSorted(journalID, ascending, Integer.MAX_VALUE, false);
 	}
 
 	@Override
-	public List<JournalEntry> DBReadJournalMsgsNewerThan(String Journal, String to, long olderDate)
+	public List<JournalEntry> DBReadJournalMsgsByCreateDate(String journalID, boolean ascending, int limit)
 	{
-		return JournalLoader.DBReadJournalMsgsNewerThan(Journal, to, olderDate);
+		return JournalLoader.DBReadJournalMsgsSorted(journalID, ascending, limit, false);
 	}
 
 	@Override
-	public List<JournalEntry> DBReadJournalMsgsOlderThan(String Journal, String to, long newestDate)
+	public List<JournalEntry> DBReadJournalMsgsByCreateDate(String journalID, boolean ascending, int limit, String[] tos)
 	{
-		return JournalLoader.DBReadJournalMsgsOlderThan(Journal, to, newestDate);
+		return JournalLoader.DBReadJournalMsgsSorted(journalID, ascending, limit, tos, false);
+	}
+
+	@Override
+	public List<JournalEntry> DBSearchAllJournalEntries(String journalID, String searchStr)
+	{
+		return JournalLoader.DBSearchAllJournalEntries(journalID, searchStr);
+	}
+
+	@Override
+	public List<JournalEntry> DBReadJournalMsgsNewerThan(String journalID, String to, long olderDate)
+	{
+		return JournalLoader.DBReadJournalMsgsNewerThan(journalID, to, olderDate);
+	}
+
+	@Override
+	public List<JournalEntry> DBReadJournalMsgsOlderThan(String journalID, String to, long newestDate)
+	{
+		return JournalLoader.DBReadJournalMsgsOlderThan(journalID, to, newestDate);
 	}
 	
 	@Override
-	public List<JournalEntry> DBReadJournalPageMsgs(String Journal, String parent, String searchStr, long newerDate, int limit)
+	public List<JournalEntry> DBReadJournalPageMsgs(String journalID, String parent, String searchStr, long newerDate, int limit)
 	{
-		return JournalLoader.DBReadJournalPageMsgs(Journal, parent, searchStr, newerDate, limit);
+		return JournalLoader.DBReadJournalPageMsgs(journalID, parent, searchStr, newerDate, limit);
 	}
 
 	@Override
-	public int DBCountJournal(String Journal, String from, String to)
+	public int DBCountJournal(String journalID, String from, String to)
 	{
-		return JournalLoader.DBCount(Journal, from, to);
+		return JournalLoader.DBCount(journalID, from, to);
 	}
 
 	@Override
-	public long[] DBJournalLatestDateNewerThan(String Journal, String to, long olderTime)
+	public long[] DBJournalLatestDateNewerThan(String journalID, String to, long olderTime)
 	{
-		return JournalLoader.DBJournalLatestDateNewerThan(Journal, to, olderTime);
+		return JournalLoader.DBJournalLatestDateNewerThan(journalID, to, olderTime);
 	}
 
 	@Override
-	public void DBWriteJournal(String Journal, JournalEntry entry)
+	public void DBWriteJournal(String journalID, JournalEntry entry)
 	{
-		JournalLoader.DBWrite(Journal, entry);
+		JournalLoader.DBWrite(journalID, entry);
 	}
 
 	@Override
-	public void DBWriteJournal(String Journal, String from, String to, String subject, String message)
+	public void DBWriteJournal(String journalID, String from, String to, String subject, String message)
 	{
-		JournalLoader.DBWrite(Journal, from, to, subject, message);
+		JournalLoader.DBWrite(journalID, from, to, subject, message);
 	}
 
 	@Override
-	public void DBWriteJournalEmail(String MailBox, String journalSource, String from, String to, String subject, String message)
+	public void DBWriteJournalEmail(String mailBoxID, String journalSource, String from, String to, String subject, String message)
 	{
-		JournalLoader.DBWrite(MailBox, journalSource, from, to, subject, message);
+		JournalLoader.DBWrite(mailBoxID, journalSource, from, to, subject, message);
 	}
 
 	@Override
-	public void DBWriteJournalChild(String Journal, String journalSource, String from, String to, String parentKey, String subject, String message)
+	public void DBWriteJournalChild(String journalID, String journalSource, String from, String to, String parentKey, String subject, String message)
 	{
-		JournalLoader.DBWrite(Journal, journalSource, from, to, parentKey, subject, message);
+		JournalLoader.DBWrite(journalID, journalSource, from, to, parentKey, subject, message);
 	}
 
-	public void DBWrite(String Journal, JournalEntry entry)
+	public void DBWrite(String journalID, JournalEntry entry)
 	{
-		JournalLoader.DBWrite(Journal, entry);
+		JournalLoader.DBWrite(journalID, entry);
 	}
 
 	@Override
-	public void DBWriteJournalReply(String Journal, String key, String from, String to, String subject, String message)
+	public void DBWriteJournalReply(String journalID, String key, String from, String to, String subject, String message)
 	{
-		JournalLoader.DBWriteJournalReply(Journal, key, from, to, subject, message);
+		JournalLoader.DBWriteJournalReply(journalID, key, from, to, subject, message);
 	}
 
 	@Override

@@ -551,7 +551,7 @@ public class SMTPserver extends Thread implements Tickable
 			{
 				if((mailboxName()!=null)&&(mailboxName().length()>0))
 				{
-					final List<JournalEntry> emails=CMLib.database().DBReadJournalMsgs(mailboxName(), true);
+					final List<JournalEntry> emails=CMLib.database().DBReadJournalMsgsByUpdateDate(mailboxName(), true);
 					if(emails!=null)
 					for(final JournalEntry mail : emails)
 					{

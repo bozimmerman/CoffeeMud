@@ -1914,7 +1914,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 	{
 		final Vector<AuctionData> auctions=new Vector<AuctionData>();
 		final String house="SYSTEM_AUCTIONS_"+auctionHouse.toUpperCase().trim();
-		final List<JournalEntry> otherAuctions=CMLib.database().DBReadJournalMsgs(house, true);
+		final List<JournalEntry> otherAuctions=CMLib.database().DBReadJournalMsgsByUpdateDate(house, true);
 		for(int o=0;o<otherAuctions.size();o++)
 		{
 			final JournalEntry auctionData=otherAuctions.get(o);

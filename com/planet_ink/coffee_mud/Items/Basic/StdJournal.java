@@ -260,7 +260,11 @@ public class StdJournal extends StdItem
 											mob.tell(L("The journal '@x1' does not presently exist.  Aborted.",journal));
 										else
 										{
-											final List<JournalEntry> journal2=CMLib.database().DBReadJournalMsgs(Name(), true);
+											final List<JournalEntry> journal2;
+											if(!getSortBy().toUpperCase().startsWith("CREAT"))
+												journal2=CMLib.database().DBReadJournalMsgsByUpdateDate(Name(), true);
+											else
+												journal2=CMLib.database().DBReadJournalMsgsByCreateDate(Name(), true);
 											final JournalEntry entry2=journal2.get(which-1);
 											CMLib.database().DBDeleteJournal(Name(),entry2.key());
 											CMLib.database().DBWriteJournal(realName,
@@ -427,7 +431,12 @@ public class StdJournal extends StdItem
 	public JournalEntry DBRead(MOB reader, String Journal, int which, long lastTimeDate, boolean newOnly, boolean all)
 	{
 		final StringBuffer buf=new StringBuffer("");
-		final List<JournalEntry> journal=CMLib.database().DBReadJournalMsgs(Journal, true);
+		final List<JournalEntry> journal;
+		final boolean useCreateDate=getSortBy().toUpperCase().startsWith("CREAT");
+		if(useCreateDate)
+			journal=CMLib.database().DBReadJournalMsgsByCreateDate(Journal, true);
+		else
+			journal=CMLib.database().DBReadJournalMsgsByUpdateDate(Journal, true);
 		final boolean shortFormat=readableText().toUpperCase().indexOf("SHORTLIST")>=0;
 		if((which<0)||(journal==null)||(which>=journal.size()))
 		{
@@ -603,6 +612,11 @@ public class StdJournal extends StdItem
 	private String getAdminReq()
 	{
 		return getParm("ADMIN");
+	}
+
+	private String getSortBy()
+	{
+		return getParm("SORTBY");
 	}
 
 	@Override

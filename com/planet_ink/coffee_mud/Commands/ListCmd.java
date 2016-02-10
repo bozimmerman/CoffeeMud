@@ -1144,7 +1144,7 @@ public class ListCmd extends StdCommand
 		}
 		if(journal==null)
 			return buf;
-		final List<JournalEntry> V=CMLib.database().DBReadJournalMsgs("SYSTEM_"+journal+"S", true);
+		final List<JournalEntry> V=CMLib.database().DBReadJournalMsgsByUpdateDate("SYSTEM_"+journal+"S", true);
 		final int COL_LEN1=CMLib.lister().fixColWidth(3.0,viewerS);
 		final int COL_LEN2=CMLib.lister().fixColWidth(10.0,viewerS);
 		if(V!=null)

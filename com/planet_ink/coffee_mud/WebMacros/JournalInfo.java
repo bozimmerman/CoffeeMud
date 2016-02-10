@@ -88,7 +88,7 @@ public class JournalInfo extends StdWebMacro
 		if(msgs==null)
 		{
 			if((page==null)||(page.length()==0))
-				msgs=CMLib.database().DBReadJournalMsgs(journalName, true);
+				msgs=CMLib.database().DBReadJournalMsgsByUpdateDate(journalName, true);
 			else
 			{
 				final JournalsLibrary.JournalSummaryStats stats = CMLib.journals().getJournalStats(forumJournal);

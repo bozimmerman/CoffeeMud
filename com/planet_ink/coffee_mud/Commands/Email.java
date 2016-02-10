@@ -72,7 +72,7 @@ public class Email extends StdCommand
 			{
 				final String journalName=CMProps.getVar(CMProps.Str.MAILBOX);
 				final String[] queries=new String[] { mob.Name(),"ALL","MASK=%" };
-				final List<JournalEntry> msgs=CMLib.database().DBReadJournalMsgs(journalName, false, max, queries);
+				final List<JournalEntry> msgs=CMLib.database().DBReadJournalMsgsByUpdateDate(journalName, false, max, queries);
 				for(int num=0;num<msgs.size();num++)
 				{
 					final JournalEntry thismsg=msgs.get(num);

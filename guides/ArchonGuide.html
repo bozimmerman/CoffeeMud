@@ -2627,19 +2627,26 @@ readable, so this field is
 really redundant. Therefore, it is now used as a field where you may
 set requirements for reading from and writing to the journa/book. If no
 requirements are mentioned, anyone may read from, write to, or reply
-it. A reading requirement is specified by putting READ= followed by
-some requirements. A reply requirement is specified by putting REPLY=
-followed by some requirements. A writing requirement is specified by
-putting WRITE= followed by some requirements. An optional
+it. <br>
+A reading requirement is specified by putting READ= followed by
+some requirements. <br>
+A reply requirement is specified by putting REPLY=
+followed by some requirements. <br>
+A writing requirement is specified by
+putting WRITE= followed by some requirements. <br>
+An optional
 administrative requirement is specified by putting ADMIN= followed by
-some requirements. The requirements for each of these settings can be
+some requirements. <br>
+The requirements for each of these settings can be
 seen by checking out the help entry for ZAPPERMASKS. The same mask
 criteria used for that property are also used for these options.
 &nbsp;You may also specify PRIVATE=TRUE here to designate the
 journal
 as a private diary, where messages can only be read by the person who
 wrote them, and you may specify MAILBOX=TRUE to turn the journal into a
-miniature mailbox, by prohibiting messages to ALL. &nbsp;The
+miniature mailbox, by prohibiting messages to ALL. &nbsp;Lastly, you
+can set SORTBY=CREATE to sort the messages by their creation date
+instead of their update time. &nbsp;The
 Journal
 supports all of these options, while the Book only supports READ,
 REPLY, and WRITE.</td>
@@ -5649,7 +5656,7 @@ container. </div>
     <div> misc text - The reading,
 writing, and replying requirements
 for the journal. The proper format is READ=REQUIREMENTS
-WRITE=REQUIREMENTS REPLY=REQUIREMENTS ADMIN=REQUIREMENTS. The
+WRITE=REQUIREMENTS REPLY=REQUIREMENTS ADMIN=REQUIREMENTS, etc... The
 REQUIREMENTS are as described above under the Assigned Readable Text
 field in the GenJournal entry. </div>
   </li>

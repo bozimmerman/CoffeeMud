@@ -911,7 +911,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * @param ascending TODO
 	 * @return
 	 */
-	public List<JournalEntry> DBReadJournalMsgs(String Journal, boolean ascending);
+	public List<JournalEntry> DBReadJournalMsgsByUpdateDate(String Journal, boolean ascending);
 
 	/**
 	 * Table category: DBJOURNALS
@@ -921,7 +921,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * @param limit
 	 * @return
 	 */
-	public List<JournalEntry> DBReadJournalMsgs(String Journal, boolean ascending, int limit);
+	public List<JournalEntry> DBReadJournalMsgsByUpdateDate(String Journal, boolean ascending, int limit);
 
 	/**
 	 * Table category: DBJOURNALS
@@ -931,8 +931,35 @@ public interface DatabaseEngine extends CMLibrary
 	 * @param tos
 	 * @return
 	 */
-	public List<JournalEntry> DBReadJournalMsgs(String Journal, boolean ascending, int limit, String[] tos);
+	public List<JournalEntry> DBReadJournalMsgsByUpdateDate(String Journal, boolean ascending, int limit, String[] tos);
 	
+	/**
+	 * 
+	 * @param journalID
+	 * @param ascending
+	 * @return
+	 */
+	public List<JournalEntry> DBReadJournalMsgsByCreateDate(String journalID, boolean ascending);
+
+	/**
+	 * 
+	 * @param journalID
+	 * @param ascending
+	 * @param limit
+	 * @return
+	 */
+	public List<JournalEntry> DBReadJournalMsgsByCreateDate(String journalID, boolean ascending, int limit);
+
+	/**
+	 * 
+	 * @param journalID
+	 * @param ascending
+	 * @param limit
+	 * @param tos
+	 * @return
+	 */
+	public List<JournalEntry> DBReadJournalMsgsByCreateDate(String journalID, boolean ascending, int limit, String[] tos);
+
 	/**
 	 * Table category: DBJOURNALS
 	 * 

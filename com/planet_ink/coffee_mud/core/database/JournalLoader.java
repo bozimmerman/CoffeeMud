@@ -328,7 +328,6 @@ public class JournalLoader
 		journal		= DB.injectionClean(journal);
 		searchStr	= DB.injectionClean(searchStr);
 
-		final Vector<JournalEntry> journalV=new Vector<JournalEntry>();
 		DBConnection D=null;
 		try
 		{
@@ -338,19 +337,7 @@ public class JournalLoader
 				sql += " ORDER BY CMUPTM";
 				sql += " ASC";
 
-			final ResultSet R=D.query(sql);
-			int cardinal=0;
-			JournalEntry entry;
-			while(R.next())
-			{
-				entry = DBReadJournalEntry(R);
-				entry.cardinal(++cardinal);
-				journalV.addElement(entry);
-			}
-			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMJRNL))
-				Log.debugOut("JournalLoader","Query ("+journalV.size()+"): "+sql);
-			if((journalV.size()>0)&&(!R.next()))
-				journalV.lastElement().lastEntry(true);
+			return this.makeJournalEntryList(journal,D.query(sql), 100);
 		}
 		catch(final Exception sqle)
 		{
@@ -361,7 +348,6 @@ public class JournalLoader
 		{
 			DB.DBDone(D);
 		}
-		return journalV;
 	}
 
 	public List<JournalEntry> DBReadJournalMsgsNewerThan(String journal, String to, long olderDate)
@@ -449,7 +435,7 @@ public class JournalLoader
 		}
 	}
 
-	public List<JournalEntry> DBReadJournalMsgs(String journal, boolean ascending, long limit)
+	public List<JournalEntry> DBReadJournalMsgsSorted(String journal, boolean ascending, long limit, boolean useUpdateSort)
 	{
 		journal = DB.injectionClean(journal);
 
@@ -462,7 +448,7 @@ public class JournalLoader
 			try
 			{
 				D=DB.DBFetch();
-				String sql="SELECT CMJKEY FROM CMJRNL WHERE CMJRNL='"+journal+"' ORDER BY CMUPTM ";
+				String sql="SELECT CMJKEY FROM CMJRNL WHERE CMJRNL='"+journal+"' ORDER BY "+(useUpdateSort?"CMUPTM ":"CMDATE ");
 				sql += ascending ? "ASC" : "DESC";
 				return this.makeJournalEntryList(journal,D.query(sql), limit);
 			}
@@ -478,7 +464,7 @@ public class JournalLoader
 		}
 	}
 
-	public List<JournalEntry> DBReadJournalMsgs(String journal, boolean ascending, int limit, String[] tos)
+	public List<JournalEntry> DBReadJournalMsgsSorted(String journal, boolean ascending, int limit, String[] tos, boolean useUpdateSort)
 	{
 		journal = DB.injectionClean(journal);
 
@@ -507,7 +493,7 @@ public class JournalLoader
 					}
 					sql +=" AND ("+orBox.toString()+")";
 				}
-				sql +=" ORDER BY CMUPTM ";
+				sql +=" ORDER BY "+(useUpdateSort?"CMUPTM ":"CMDATE ");
 				sql += ascending ? "ASC" : "DESC";
 				return this.makeJournalEntryList(journal,D.query(sql), limit);
 			}

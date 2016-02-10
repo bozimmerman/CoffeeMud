@@ -91,9 +91,9 @@ public class MOTD extends StdCommand
 				}
 
 				final MultiList<JournalEntry> multiJournal=new MultiList<JournalEntry>();
-				multiJournal.addAll(CMLib.database().DBReadJournalMsgs("SYSTEM_NEWS", false, max));
+				multiJournal.addAll(CMLib.database().DBReadJournalMsgsByUpdateDate("SYSTEM_NEWS", false, max));
 				if(max>multiJournal.size())
-					multiJournal.addAll(CMLib.database().DBReadJournalMsgs("CoffeeMud News", false, max-multiJournal.size())); // deprecated
+					multiJournal.addAll(CMLib.database().DBReadJournalMsgsByUpdateDate("CoffeeMud News", false, max-multiJournal.size())); // deprecated
 				final ReverseFakeIterator<JournalEntry> entries = new ReverseFakeIterator<JournalEntry>(multiJournal);
 				
 				//should read these descending, trim to the max, then iterate.
@@ -184,7 +184,7 @@ public class MOTD extends StdCommand
 				for(int cj=0;cj<myEchoableCommandJournals.size();cj++)
 				{
 					final JournalsLibrary.CommandJournal CMJ=myEchoableCommandJournals.get(cj);
-					final List<JournalEntry> items=CMLib.database().DBReadJournalMsgs("SYSTEM_"+CMJ.NAME()+"S", true);
+					final List<JournalEntry> items=CMLib.database().DBReadJournalMsgsByUpdateDate("SYSTEM_"+CMJ.NAME()+"S", true);
 					if(items!=null)
 					for(int i=0;i<items.size();i++)
 					{
@@ -206,7 +206,7 @@ public class MOTD extends StdCommand
 				&&(CMProps.getVar(CMProps.Str.MAILBOX).length()>0))
 				{
 					final String[] queries=new String[] { mob.Name(),"ALL","MASK=%" };
-					final List<JournalEntry> msgs=CMLib.database().DBReadJournalMsgs(CMProps.getVar(CMProps.Str.MAILBOX), false, max, queries);
+					final List<JournalEntry> msgs=CMLib.database().DBReadJournalMsgsByUpdateDate(CMProps.getVar(CMProps.Str.MAILBOX), false, max, queries);
 					for(int num=0;num<msgs.size();num++)
 					{
 						final JournalEntry thismsg=msgs.get(num);
