@@ -35,7 +35,12 @@ import java.util.*;
 */
 public class Waterskin extends StdDrink
 {
-	@Override public String ID(){	return "Waterskin";}
+	@Override
+	public String ID()
+	{
+		return "Waterskin";
+	}
+
 	public Waterskin()
 	{
 		super();

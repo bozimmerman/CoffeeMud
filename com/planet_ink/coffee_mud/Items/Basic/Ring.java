@@ -35,7 +35,12 @@ import java.util.*;
 */
 public class Ring extends StdItem
 {
-	@Override public String ID(){	return "Ring";}
+	@Override
+	public String ID()
+	{
+		return "Ring";
+	}
+
 	public Ring()
 	{
 		super();

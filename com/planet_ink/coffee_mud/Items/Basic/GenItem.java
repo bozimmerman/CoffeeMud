@@ -35,7 +35,12 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 */
 public class GenItem extends StdItem
 {
-	@Override public String ID(){    return "GenItem";}
+	@Override
+	public String ID()
+	{
+		return "GenItem";
+	}
+
 	protected String	readableText="";
 	public GenItem()
 	{
@@ -50,7 +55,11 @@ public class GenItem extends StdItem
 		setMaterial(RawMaterial.RESOURCE_OAK);
 	}
 
-	@Override public boolean isGeneric(){return true;}
+	@Override
+	public boolean isGeneric()
+	{
+		return true;
+	}
 
 	@Override
 	public String text()
@@ -58,8 +67,18 @@ public class GenItem extends StdItem
 		return CMLib.coffeeMaker().getPropertiesStr(this,false);
 	}
 
-	@Override public String readableText(){return readableText;}
-	@Override public void setReadableText(String text){readableText=text;}
+	@Override
+	public String readableText()
+	{
+		return readableText;
+	}
+
+	@Override
+	public void setReadableText(String text)
+	{
+		readableText=text;
+	}
+
 	@Override
 	public void setMiscText(String newText)
 	{
@@ -75,6 +94,7 @@ public class GenItem extends StdItem
 			return CMLib.coffeeMaker().getGenItemStat(this,code);
 		return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 	}
+
 	@Override
 	public void setStat(String code, String val)
 	{
@@ -82,6 +102,7 @@ public class GenItem extends StdItem
 			CMLib.coffeeMaker().setGenItemStat(this,code,val);
 		CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code,val);
 	}
+
 	private static String[] codes=null;
 	@Override
 	public String[] getStatCodes()
@@ -90,6 +111,7 @@ public class GenItem extends StdItem
 			codes=CMProps.getStatCodesList(CMParms.toStringArray(GenericBuilder.GenItemCode.values()),this);
 		return codes;
 	}
+
 	@Override
 	public boolean sameAs(Environmental E)
 	{
@@ -97,8 +119,10 @@ public class GenItem extends StdItem
 			return false;
 		final String[] theCodes=getStatCodes();
 		for(int i=0;i<theCodes.length;i++)
+		{
 			if(!E.getStat(theCodes[i]).equals(getStat(theCodes[i])))
 				return false;
+		}
 		return true;
 	}
 }

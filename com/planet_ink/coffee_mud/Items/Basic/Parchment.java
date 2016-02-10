@@ -33,7 +33,12 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class Parchment extends GenReadable
 {
-	@Override public String ID(){	return "Parchment";}
+	@Override
+	public String ID()
+	{
+		return "Parchment";
+	}
+
 	public Parchment()
 	{
 		super();

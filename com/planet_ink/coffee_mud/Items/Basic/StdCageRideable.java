@@ -35,7 +35,12 @@ import java.util.*;
 */
 public class StdCageRideable extends StdRideable
 {
-	@Override public String ID(){	return "StdCageRideable";}
+	@Override
+	public String ID()
+	{
+		return "StdCageRideable";
+	}
+
 	public StdCageRideable()
 	{
 		super();
@@ -68,8 +73,10 @@ public class StdCageRideable extends StdRideable
 			}
 			if(behaviors!=null)
 				for(final Behavior B : behaviors)
+				{
 					if(B!=null)
 						B.executeMsg(this,msg);
+				}
 
 			for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
 			{

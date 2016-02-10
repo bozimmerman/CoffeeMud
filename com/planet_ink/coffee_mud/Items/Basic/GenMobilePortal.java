@@ -38,7 +38,11 @@ import java.util.*;
 
 public class GenMobilePortal extends GenPortal implements Rideable, Exit
 {
-	@Override public String ID(){ return "GenMobilePortal";}
+	@Override
+	public String ID()
+	{
+		return "GenMobilePortal";
+	}
 
 	protected StdPortal myStationaryPortal=null;
 

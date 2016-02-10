@@ -72,8 +72,10 @@ public class GenRecipe extends GenReadable implements Recipe
 					str.append( L("The following recipes are for the @x1 skill:\n\r",A.name()));
 			}
 			else
+			{
 				if(A!=null)
 					str.append( L("The following recipe is for the @x1 skill:\n\r",A.name()));
+			}
 			if(A instanceof CraftorAbility)
 			{
 				final CraftorAbility C=(CraftorAbility)A;
@@ -229,12 +231,15 @@ public class GenRecipe extends GenReadable implements Recipe
 			break;
 		}
 	}
+
 	@Override
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<MYCODES.length;i++)
+		{
 			if(code.equalsIgnoreCase(MYCODES[i]))
 				return i;
+		}
 		return -1;
 	}
 

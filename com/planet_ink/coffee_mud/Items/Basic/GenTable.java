@@ -35,7 +35,11 @@ import java.util.*;
 */
 public class GenTable extends GenRideable
 {
-	@Override public String ID(){	return "GenTable";}
+	@Override
+	public String ID()
+	{
+		return "GenTable";
+	}
 
 	public GenTable()
 	{

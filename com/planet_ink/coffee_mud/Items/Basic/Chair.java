@@ -35,7 +35,12 @@ import java.util.*;
 */
 public class Chair extends StdRideable
 {
-	@Override public String ID(){	return "Chair";}
+	@Override
+	public String ID()
+	{
+		return "Chair";
+	}
+
 	protected String	readableText="";
 	public Chair()
 	{

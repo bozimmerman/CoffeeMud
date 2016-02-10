@@ -35,7 +35,12 @@ import java.util.*;
 */
 public class StdKey extends StdItem implements DoorKey
 {
-	@Override public String ID(){	return "StdKey";}
+	@Override
+	public String ID()
+	{
+		return "StdKey";
+	}
+
 	public StdKey()
 	{
 		super();
@@ -49,6 +54,15 @@ public class StdKey extends StdItem implements DoorKey
 	}
 
 
-	@Override public void setKey(String keyName){miscText=keyName;}
-	@Override public String getKey(){return miscText;}
+	@Override
+	public void setKey(String keyName)
+	{
+		miscText=keyName;
+	}
+
+	@Override
+	public String getKey()
+	{
+		return miscText;
+	}
 }

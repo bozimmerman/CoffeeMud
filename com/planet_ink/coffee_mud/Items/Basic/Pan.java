@@ -33,7 +33,12 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class Pan extends StdDrink
 {
-	@Override public String ID(){	return "Pan";}
+	@Override
+	public String ID()
+	{
+		return "Pan";
+	}
+
 	public Pan()
 	{
 		super();

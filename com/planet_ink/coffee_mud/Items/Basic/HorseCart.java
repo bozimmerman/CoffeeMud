@@ -33,7 +33,12 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class HorseCart extends StdRideable
 {
-	@Override public String ID(){	return "HorseCart";}
+	@Override
+	public String ID()
+	{
+		return "HorseCart";
+	}
+
 	public HorseCart()
 	{
 		super();

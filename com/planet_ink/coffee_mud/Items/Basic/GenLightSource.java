@@ -35,7 +35,12 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 */
 public class GenLightSource extends LightSource
 {
-	@Override public String ID(){	return "GenLightSource";}
+	@Override
+	public String ID()
+	{
+		return "GenLightSource";
+	}
+
 	protected String	readableText="";
 
 	public GenLightSource()
@@ -51,10 +56,23 @@ public class GenLightSource extends LightSource
 	}
 
 
-	@Override public void setDuration(int duration){readableText=""+duration;}
-	@Override public int getDuration(){return CMath.s_int(readableText);}
+	@Override
+	public void setDuration(int duration)
+	{
+		readableText=""+duration;
+	}
 
-	@Override public boolean isGeneric(){return true;}
+	@Override
+	public int getDuration()
+	{
+		return CMath.s_int(readableText);
+	}
+
+	@Override
+	public boolean isGeneric()
+	{
+		return true;
+	}
 
 	@Override
 	public String text()
@@ -62,8 +80,18 @@ public class GenLightSource extends LightSource
 		return CMLib.coffeeMaker().getPropertiesStr(this,false);
 	}
 
-	@Override public String readableText(){return readableText;}
-	@Override public void setReadableText(String text){readableText=text;}
+	@Override
+	public String readableText()
+	{
+		return readableText;
+	}
+
+	@Override
+	public void setReadableText(String text)
+	{
+		readableText=text;
+	}
+
 	@Override
 	public void setMiscText(String newText)
 	{
@@ -79,6 +107,7 @@ public class GenLightSource extends LightSource
 			return CMLib.coffeeMaker().getGenItemStat(this,code);
 		return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 	}
+
 	@Override
 	public void setStat(String code, String val)
 	{
@@ -86,6 +115,7 @@ public class GenLightSource extends LightSource
 			CMLib.coffeeMaker().setGenItemStat(this,code,val);
 		CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code,val);
 	}
+
 	private static String[] codes=null;
 	@Override
 	public String[] getStatCodes()
@@ -94,14 +124,17 @@ public class GenLightSource extends LightSource
 			codes=CMProps.getStatCodesList(CMParms.toStringArray(GenericBuilder.GenItemCode.values()),this);
 		return codes;
 	}
+
 	@Override
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof GenLightSource))
 			return false;
 		for(int i=0;i<getStatCodes().length;i++)
+		{
 			if(!E.getStat(getStatCodes()[i]).equals(getStat(getStatCodes()[i])))
 				return false;
+		}
 		return true;
 	}
 }

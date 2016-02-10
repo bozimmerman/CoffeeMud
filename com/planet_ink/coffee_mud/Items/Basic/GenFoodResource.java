@@ -36,7 +36,12 @@ import java.util.*;
 */
 public class GenFoodResource extends GenFood implements RawMaterial, Food
 {
-	@Override public String ID(){	return "GenFoodResource";}
+	@Override
+	public String ID()
+	{
+		return "GenFoodResource";
+	}
+
 	protected static Ability rot=null;
 
 	public GenFoodResource()
@@ -73,8 +78,18 @@ public class GenFoodResource extends GenFood implements RawMaterial, Food
 		rot.executeMsg(this,msg);
 	}
 
-	@Override public boolean rebundle(){return false;}//CMLib.materials().rebundle(this);}
-	@Override public void quickDestroy(){ CMLib.materials().quickDestroy(this);}
+	@Override
+	public boolean rebundle()
+	{
+		return false;
+		}//CMLib.materials().rebundle(this);
+	}
+
+	@Override
+	public void quickDestroy()
+	{
+		CMLib.materials().quickDestroy(this);
+	}
 
 	@Override
 	public boolean okMessage(Environmental host, CMMsg msg)
@@ -90,7 +105,17 @@ public class GenFoodResource extends GenFood implements RawMaterial, Food
 			return false;
 		return super.okMessage(host,msg);
 	}
+
 	protected String domainSource=null;
-	@Override public String domainSource(){return domainSource;}
-	@Override public void setDomainSource(String src){domainSource=src;}
+	@Override
+	public String domainSource()
+	{
+		return domainSource;
+	}
+
+	@Override
+	public void setDomainSource(String src)
+	{
+		domainSource=src;
+	}
 }

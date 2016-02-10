@@ -34,7 +34,11 @@ import java.util.*;
 */
 public class GasGiant extends GenSpaceBody
 {
-	@Override public String ID(){	return "GasGiant";}
+	@Override
+	public String ID()
+	{
+		return "GasGiant";
+	}
 	
 	public GasGiant()
 	{

@@ -36,7 +36,12 @@ import java.util.*;
 */
 public class Torch extends LightSource
 {
-	@Override public String ID(){	return "Torch";}
+	@Override
+	public String ID()
+	{
+		return "Torch";
+	}
+
 	public Torch()
 	{
 		super();

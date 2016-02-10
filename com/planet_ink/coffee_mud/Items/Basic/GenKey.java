@@ -36,7 +36,12 @@ import java.util.*;
 */
 public class GenKey extends GenItem implements DoorKey
 {
-	@Override public String ID(){	return "GenKey";}
+	@Override
+	public String ID()
+	{
+		return "GenKey";
+	}
+
 	public GenKey()
 	{
 		super();
@@ -47,8 +52,21 @@ public class GenKey extends GenItem implements DoorKey
 	}
 
 
-	@Override public boolean isGeneric(){return true;}
+	@Override
+	public boolean isGeneric()
+	{
+		return true;
+	}
 
-	@Override public void setKey(String keyName){readableText=keyName;}
-	@Override public String getKey(){return readableText;}
+	@Override
+	public void setKey(String keyName)
+	{
+		readableText=keyName;
+	}
+
+	@Override
+	public String getKey()
+	{
+		return readableText;
+	}
 }

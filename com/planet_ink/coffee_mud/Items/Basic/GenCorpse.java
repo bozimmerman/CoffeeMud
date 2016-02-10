@@ -34,5 +34,9 @@ import java.util.*;
 */
 public class GenCorpse extends Corpse
 {
-	@Override public String ID(){	return "GenCorpse";}
+	@Override
+	public String ID()
+	{
+		return "GenCorpse";
+	}
 }

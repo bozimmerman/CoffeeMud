@@ -35,7 +35,12 @@ import java.util.*;
 */
 public class GenPipe extends GenCigar
 {
-	@Override public String ID(){	return "GenPipe";}
+	@Override
+	public String ID()
+	{
+		return "GenPipe";
+	}
+
 	public GenPipe()
 	{
 		super();

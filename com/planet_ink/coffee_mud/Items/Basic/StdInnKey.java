@@ -35,7 +35,12 @@ import java.util.*;
 */
 public class StdInnKey extends StdKey implements InnKey
 {
-	@Override public String ID(){	return "StdInnKey";}
+	@Override
+	public String ID()
+	{
+		return "StdInnKey";
+	}
+
 	public ShopKeeper myShopkeeper=null;
 
 	public StdInnKey()
@@ -106,6 +111,7 @@ public class StdInnKey extends StdKey implements InnKey
 			destroy();
 		}
 	}
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{

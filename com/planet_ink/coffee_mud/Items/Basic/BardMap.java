@@ -35,7 +35,12 @@ import java.util.*;
 
 public class BardMap extends GenMap
 {
-	@Override public String ID(){	return "BardMap";}
+	@Override
+	public String ID()
+	{
+		return "BardMap";
+	}
+
 	public BardMap()
 	{
 		super();

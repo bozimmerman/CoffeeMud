@@ -215,6 +215,7 @@ public class StdItem implements Item
 	{
 		basePhyStats=(PhyStats)newStats.copyOf();
 	}
+
 	@Override
 	public CMObject newInstance()
 	{
@@ -229,7 +230,11 @@ public class StdItem implements Item
 		return new StdItem();
 	}
 	
-	@Override public boolean subjectToWearAndTear(){return false;}
+	@Override
+	public boolean subjectToWearAndTear()
+	{
+		return false;
+	}
 	
 	protected void cloneFix(Item I)
 	{
@@ -538,7 +543,12 @@ public class StdItem implements Item
 		return baseGoldValue()+(10*phyStats().ability());
 	}
 
-	@Override public int baseGoldValue(){return baseGoldValue;}
+	@Override
+	public int baseGoldValue()
+	{
+		return baseGoldValue;
+	}
+
 	@Override
 	public void setBaseValue(int newValue)
 	{
@@ -758,6 +768,7 @@ public class StdItem implements Item
 		else
 			return C.ultimateContainer(stopAtC);
 	}
+
 	@Override
 	public Container container()
 	{
@@ -931,8 +942,10 @@ public class StdItem implements Item
 			{
 				final StringBuilder locs=new StringBuilder("");
 				for(int i=0;i<codes.total();i++)
+				{
 					if((codes.get(i)&wearWhere)>0)
 						locs.append(", " + codes.name(i));
+				}
 				if(locs.length()==0)
 					mob.tell(L("You can't wear that there."));
 				else
@@ -1659,6 +1672,7 @@ public class StdItem implements Item
 		affects.addElement(to);
 		to.setAffectedOne(this);
 	}
+
 	@Override
 	public void addEffect(Ability to)
 	{
@@ -1671,6 +1685,7 @@ public class StdItem implements Item
 		affects.addElement(to);
 		to.setAffectedOne(this);
 	}
+
 	@Override
 	public void delEffect(Ability to)
 	{
@@ -1679,6 +1694,7 @@ public class StdItem implements Item
 		if(affects.remove(to))
 			to.setAffectedOne(null);
 	}
+
 	@Override
 	public void eachEffect(final EachApplicable<Ability> applier)
 	{
@@ -1699,6 +1715,7 @@ public class StdItem implements Item
 			}
 		}
 	}
+
 	@Override
 	public void delAllEffects(boolean unInvoke)
 	{
@@ -2026,6 +2043,7 @@ public class StdItem implements Item
 		}
 		return "";
 	}
+
 	@Override
 	public void setStat(String code, String val)
 	{
@@ -2086,6 +2104,7 @@ public class StdItem implements Item
 		}
 		return -1;
 	}
+
 	@Override
 	public boolean sameAs(Environmental E)
 	{

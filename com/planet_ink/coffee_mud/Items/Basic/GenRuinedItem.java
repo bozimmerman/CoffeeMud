@@ -34,7 +34,12 @@ import java.util.*;
 */
 public class GenRuinedItem extends GenItem
 {
-	@Override public String ID(){	return "GenRuinedItem";}
+	@Override
+	public String ID()
+	{
+		return "GenRuinedItem";
+	}
+
 	public GenRuinedItem()
 	{
 		super();

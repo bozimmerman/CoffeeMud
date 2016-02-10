@@ -36,7 +36,11 @@ import java.util.*;
 */
 public class OilFlask extends StdDrink
 {
-	@Override public String ID(){	return "OilFlask";}
+	@Override
+	public String ID()
+	{
+		return "OilFlask";
+	}
 
 
 	public OilFlask()

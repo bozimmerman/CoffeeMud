@@ -34,7 +34,12 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 */
 public class GenLawBook extends StdLawBook
 {
-	@Override public String ID(){	return "GenLawBook";}
+	@Override
+	public String ID()
+	{
+		return "GenLawBook";
+	}
+
 	protected String	readableText="";
 	public GenLawBook()
 	{
@@ -48,15 +53,30 @@ public class GenLawBook extends StdLawBook
 	}
 
 
-	@Override public boolean isGeneric(){return true;}
+	@Override
+	public boolean isGeneric()
+	{
+		return true;
+	}
+
 	@Override
 	public String text()
 	{
 		return CMLib.coffeeMaker().getPropertiesStr(this,false);
 	}
 
-	@Override public String readableText(){return readableText;}
-	@Override public void setReadableText(String text){readableText=text;}
+	@Override
+	public String readableText()
+	{
+		return readableText;
+	}
+
+	@Override
+	public void setReadableText(String text)
+	{
+		readableText=text;
+	}
+
 	@Override
 	public void setMiscText(String newText)
 	{
@@ -72,6 +92,7 @@ public class GenLawBook extends StdLawBook
 			return CMLib.coffeeMaker().getGenItemStat(this,code);
 		return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 	}
+
 	@Override
 	public void setStat(String code, String val)
 	{
@@ -79,6 +100,7 @@ public class GenLawBook extends StdLawBook
 			CMLib.coffeeMaker().setGenItemStat(this,code,val);
 		CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code,val);
 	}
+
 	private static String[] codes=null;
 	@Override
 	public String[] getStatCodes()
@@ -87,6 +109,7 @@ public class GenLawBook extends StdLawBook
 			codes=CMProps.getStatCodesList(CMParms.toStringArray(GenericBuilder.GenItemCode.values()),this);
 		return codes;
 	}
+
 	@Override
 	public boolean sameAs(Environmental E)
 	{

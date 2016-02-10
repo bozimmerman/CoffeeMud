@@ -33,7 +33,12 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class HoleInTheGround extends StdContainer
 {
-	@Override public String ID(){	return "HoleInTheGround";}
+	@Override
+	public String ID()
+	{
+		return "HoleInTheGround";
+	}
+
 	public HoleInTheGround()
 	{
 		super();

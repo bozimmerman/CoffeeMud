@@ -35,7 +35,12 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 */
 public class GenRideable extends StdRideable
 {
-	@Override public String ID(){	return "GenRideable";}
+	@Override
+	public String ID()
+	{
+		return "GenRideable";
+	}
+
 	protected String readableText="";
 	public GenRideable()
 	{

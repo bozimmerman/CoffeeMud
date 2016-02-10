@@ -35,7 +35,12 @@ import java.util.*;
 */
 public class GenFountain extends GenWater
 {
-	@Override public String ID(){	return "GenFountain";}
+	@Override
+	public String ID()
+	{
+		return "GenFountain";
+	}
+
 	public GenFountain()
 	{
 		super();

@@ -35,7 +35,11 @@ import java.util.*;
 */
 public class GenChair extends GenRideable
 {
-	@Override public String ID(){	return "GenChair";}
+	@Override
+	public String ID()
+	{
+		return "GenChair";
+	}
 
 	public GenChair()
 	{

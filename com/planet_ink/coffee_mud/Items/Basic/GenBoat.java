@@ -35,7 +35,11 @@ import java.util.*;
 */
 public class GenBoat extends GenRideable
 {
-	@Override public String ID(){	return "GenBoat";}
+	@Override
+	public String ID()
+	{
+		return "GenBoat";
+	}
 
 	public GenBoat()
 	{

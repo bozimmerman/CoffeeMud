@@ -37,7 +37,12 @@ import java.io.IOException;
 
 public class StdLawBook extends StdItem
 {
-	@Override public String ID(){	return "StdLawBook";}
+	@Override
+	public String ID()
+	{
+		return "StdLawBook";
+	}
+
 	public StdLawBook()
 	{
 		super();
@@ -216,6 +221,7 @@ public class StdLawBook extends StdItem
 			   +CMStrings.padRight(((flags.length()==0)?"":flags),24)+" "
 			   +bits[Law.BIT_SENTENCE];
 	}
+
 	public String shortLawHeader()
 	{
 		return CMStrings.padRight(L("Crime"),19)+" "

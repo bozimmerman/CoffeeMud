@@ -34,7 +34,11 @@ import java.util.*;
 */
 public class Moonlet extends GenSpaceBody
 {
-	@Override public String ID(){	return "Moonlet";}
+	@Override
+	public String ID()
+	{
+		return "Moonlet";
+	}
 	
 	public Moonlet()
 	{

@@ -36,7 +36,12 @@ import java.util.*;
 */
 public class StdTub extends StdRideable implements Drink
 {
-	@Override public String ID(){	return "StdTub";}
+	@Override
+	public String ID()
+	{
+		return "StdTub";
+	}
+
 	protected int amountOfThirstQuenched=250;
 	protected int amountOfLiquidHeld=2000;
 	protected int amountOfLiquidRemaining=2000;
@@ -60,12 +65,42 @@ public class StdTub extends StdRideable implements Drink
 		recoverPhyStats();
 	}
 
-	@Override public long decayTime(){return decayTime;}
-	@Override public void setDecayTime(long time){decayTime=time;}
-	@Override public boolean disappearsAfterDrinking(){return disappearsAfterDrinking;}
-	@Override public int thirstQuenched(){return amountOfThirstQuenched;}
-	@Override public int liquidHeld(){return amountOfLiquidHeld;}
-	@Override public int liquidRemaining(){return amountOfLiquidRemaining;}
+	@Override
+	public long decayTime()
+	{
+		return decayTime;
+	}
+
+	@Override
+	public void setDecayTime(long time)
+	{
+		decayTime=time;
+	}
+
+	@Override
+	public boolean disappearsAfterDrinking()
+	{
+		return disappearsAfterDrinking;
+	}
+
+	@Override
+	public int thirstQuenched()
+	{
+		return amountOfThirstQuenched;
+	}
+
+	@Override
+	public int liquidHeld()
+	{
+		return amountOfLiquidHeld;
+	}
+
+	@Override
+	public int liquidRemaining()
+	{
+		return amountOfLiquidRemaining;
+	}
+
 	@Override
 	public int liquidType()
 	{
@@ -73,11 +108,30 @@ public class StdTub extends StdRideable implements Drink
 			return material();
 		return liquidType;
 	}
-	@Override public void setLiquidType(int newLiquidType){liquidType=newLiquidType;}
 
-	@Override public void setThirstQuenched(int amount){amountOfThirstQuenched=amount;}
-	@Override public void setLiquidHeld(int amount){amountOfLiquidHeld=amount;}
-	@Override public void setLiquidRemaining(int amount){amountOfLiquidRemaining=amount;}
+	@Override
+	public void setLiquidType(int newLiquidType)
+	{
+		liquidType=newLiquidType;
+	}
+
+	@Override
+	public void setThirstQuenched(int amount)
+	{
+		amountOfThirstQuenched=amount;
+	}
+
+	@Override
+	public void setLiquidHeld(int amount)
+	{
+		amountOfLiquidHeld=amount;
+	}
+
+	@Override
+	public void setLiquidRemaining(int amount)
+	{
+		amountOfLiquidRemaining=amount;
+	}
 
 	protected int getExtraLiquidResourceType()
 	{
@@ -122,6 +176,7 @@ public class StdTub extends StdRideable implements Drink
 		}
 		return "riding in";
 	}
+
 	@Override
 	public String putString(Rider R)
 	{
@@ -148,6 +203,7 @@ public class StdTub extends StdRideable implements Drink
 		}
 		return "board(s)";
 	}
+
 	@Override
 	public String dismountString(Rider R)
 	{
@@ -167,6 +223,7 @@ public class StdTub extends StdRideable implements Drink
 		}
 		return "disembark(s) from";
 	}
+
 	@Override
 	public String stateStringSubject(Rider R)
 	{

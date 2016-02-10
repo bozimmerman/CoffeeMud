@@ -34,7 +34,12 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class SmallChest extends LockableContainer
 {
-	@Override public String ID(){	return "SmallChest";}
+	@Override
+	public String ID()
+	{
+		return "SmallChest";
+	}
+
 	public SmallChest()
 	{
 		super();

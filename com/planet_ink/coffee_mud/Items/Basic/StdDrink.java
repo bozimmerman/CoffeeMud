@@ -297,8 +297,10 @@ public class StdDrink extends StdContainer implements Drink,Item
 							final List<Item> V = this.getContents();
 							Drink addHereI = null;
 							for(final Item I : V)
+							{
 								if((I instanceof Drink) && (I instanceof RawMaterial) && (I.Name().equals(thePuddle.Name())))
 									addHereI=(Drink)I;
+							}
 							if(addHereI==null)
 							{
 								addHereI=(Drink)thePuddle.copyOf();

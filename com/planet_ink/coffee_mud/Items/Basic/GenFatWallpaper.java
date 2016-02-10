@@ -35,13 +35,38 @@ import java.util.*;
 */
 public class GenFatWallpaper extends GenWallpaper
 {
-	@Override public String ID(){	return "GenFatWallpaper";}
+	@Override
+	public String ID()
+	{
+		return "GenFatWallpaper";
+	}
+
 	protected String	displayText="";
-	@Override public String displayText(){ return displayText;}
-	@Override public void setDisplayText(String newText){displayText=newText;}
+	@Override
+	public String displayText()
+	{
+		return displayText;
+	}
+
+	@Override
+	public void setDisplayText(String newText)
+	{
+		displayText=newText;
+	}
+
 	protected long expirationDate=0;
-	@Override public long expirationDate(){return expirationDate;}
-	@Override public void setExpirationDate(long time){expirationDate=time;}
+	@Override
+	public long expirationDate()
+	{
+		return expirationDate;
+	}
+
+	@Override
+	public void setExpirationDate(long time)
+	{
+		expirationDate=time;
+	}
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -54,6 +79,7 @@ public class GenFatWallpaper extends GenWallpaper
 			return false;
 		return true;
 	}
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -62,6 +88,7 @@ public class GenFatWallpaper extends GenWallpaper
 			destroy();
 		super.executeMsg(myHost,msg);
 	}
+
 	private static final String[] CODES={"DISPLAY"};
 	@Override
 	public String[] getStatCodes()
@@ -73,13 +100,17 @@ public class GenFatWallpaper extends GenWallpaper
 		codes[THINCODES.length]="DISPLAY";
 		return codes;
 	}
+
 	protected int getMyCodeNum(String code)
 	{
 		for(int i=0;i<CODES.length;i++)
+		{
 			if(code.equalsIgnoreCase(CODES[i]))
 				return i;
+		}
 		return -1;
 	}
+
 	@Override
 	public String getStat(String code)
 	{
@@ -92,6 +123,7 @@ public class GenFatWallpaper extends GenWallpaper
 		}
 		return "";
 	}
+
 	@Override
 	public void setStat(String code, String val)
 	{
@@ -103,6 +135,7 @@ public class GenFatWallpaper extends GenWallpaper
 		case 0: setDisplayText(val); break;
 		}
 	}
+
 	@Override
 	public boolean sameAs(Environmental E)
 	{

@@ -34,7 +34,12 @@ import java.util.*;
 */
 public class StdSmokable extends StdContainer implements Light
 {
-	@Override public String ID(){	return "StdSmokable";}
+	@Override
+	public String ID()
+	{
+		return "StdSmokable";
+	}
+
 	protected boolean lit=false;
 	protected long puffTicks=30000/CMProps.getTickMillis();
 	protected int baseDuration=200;
@@ -58,13 +63,47 @@ public class StdSmokable extends StdContainer implements Light
 		recoverPhyStats();
 	}
 
-	@Override public void setDuration(int duration){baseDuration=duration;}
-	@Override public int getDuration(){return baseDuration;}
-	@Override public boolean destroyedWhenBurnedOut(){return this.destroyedWhenBurnedOut;}
-	@Override public void setDestroyedWhenBurntOut(boolean truefalse){destroyedWhenBurnedOut=truefalse;}
-	@Override public boolean goesOutInTheRain(){return this.goesOutInTheRain;}
-	@Override public boolean isLit(){return lit;}
-	@Override public void light(boolean isLit){lit=isLit;}
+	@Override
+	public void setDuration(int duration)
+	{
+		baseDuration=duration;
+	}
+
+	@Override
+	public int getDuration()
+	{
+		return baseDuration;
+	}
+
+	@Override
+	public boolean destroyedWhenBurnedOut()
+	{
+		return this.destroyedWhenBurnedOut;
+	}
+
+	@Override
+	public void setDestroyedWhenBurntOut(boolean truefalse)
+	{
+		destroyedWhenBurnedOut=truefalse;
+	}
+
+	@Override
+	public boolean goesOutInTheRain()
+	{
+		return this.goesOutInTheRain;
+	}
+
+	@Override
+	public boolean isLit()
+	{
+		return lit;
+	}
+
+	@Override
+	public void light(boolean isLit)
+	{
+		lit=isLit;
+	}
 
 
 

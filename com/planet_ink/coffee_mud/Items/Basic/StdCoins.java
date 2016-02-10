@@ -35,8 +35,17 @@ import java.util.*;
 */
 public class StdCoins extends StdItem implements Coins
 {
-	@Override public String ID(){	return "StdCoins";}
-	@Override public int value(){	return phyStats().ability();}
+	@Override
+	public String ID()
+	{
+		return "StdCoins";
+	}
+
+	@Override
+	public int value()
+	{
+		return phyStats().ability();
+	}
 	double denomination=1.0;
 	String currency="";
 
@@ -50,13 +59,19 @@ public class StdCoins extends StdItem implements Coins
 		basePhyStats.setWeight(0);
 		recoverPhyStats();
 	}
-	@Override protected boolean abilityImbuesMagic(){return false;}
+
+	@Override
+	protected boolean abilityImbuesMagic()
+	{
+		return false;
+	}
 
 	@Override
 	public String Name()
 	{
 		return CMLib.beanCounter().getDenominationName(getCurrency(),getDenomination(),getNumberOfCoins());
 	}
+
 	@Override
 	public String displayText()
 	{
@@ -81,7 +96,13 @@ public class StdCoins extends StdItem implements Coins
 		}
 		setDescription(CMLib.beanCounter().getConvertableDescription(getCurrency(),getDenomination()));
 	}
-	@Override public long getNumberOfCoins(){return phyStats().ability();}
+
+	@Override
+	public long getNumberOfCoins()
+	{
+		return phyStats().ability();
+	}
+
 	@Override
 	public void setNumberOfCoins(long number)
 	{
@@ -91,15 +112,32 @@ public class StdCoins extends StdItem implements Coins
 			basePhyStats().setAbility(Integer.MAX_VALUE);
 		phyStats().setAbility(basePhyStats().ability());
 	}
-	@Override public double getDenomination(){return denomination;}
+
+	@Override
+	public double getDenomination()
+	{
+		return denomination;
+	}
+
 	@Override
 	public void setDenomination(double valuePerCoin)
 	{
 		denomination=valuePerCoin;
 		setMiscText(getCurrency()+"/"+valuePerCoin);
 	}
-	@Override public double getTotalValue(){return CMath.mul(getDenomination(),getNumberOfCoins());}
-	@Override public String getCurrency(){ return currency;}
+
+	@Override
+	public double getTotalValue()
+	{
+		return CMath.mul(getDenomination(),getNumberOfCoins());
+	}
+
+	@Override
+	public String getCurrency()
+	{
+		return currency;
+	}
+
 	@Override
 	public void setCurrency(String named)
 	{
@@ -124,6 +162,7 @@ public class StdCoins extends StdItem implements Coins
 			setCurrency("");
 		}
 	}
+
 	@Override
 	public void recoverPhyStats()
 	{

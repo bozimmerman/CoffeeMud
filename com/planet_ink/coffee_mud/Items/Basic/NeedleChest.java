@@ -33,7 +33,12 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class NeedleChest extends LargeChest
 {
-	@Override public String ID(){	return "NeedleChest";}
+	@Override
+	public String ID()
+	{
+		return "NeedleChest";
+	}
+
 	public NeedleChest()
 	{
 		super();

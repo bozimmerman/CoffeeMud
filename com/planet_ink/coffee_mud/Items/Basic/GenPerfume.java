@@ -35,7 +35,12 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 */
 public class GenPerfume extends StdPerfume
 {
-	@Override public String ID(){ return "GenPerfume"; }
+	@Override
+	public String ID()
+	{
+		return "GenPerfume";
+	}
+
 	protected String readableText="";
 
 	public GenPerfume()
@@ -49,7 +54,11 @@ public class GenPerfume extends StdPerfume
 	}
 
 
-	@Override public boolean isGeneric(){return true;}
+	@Override
+	public boolean isGeneric()
+	{
+		return true;
+	}
 
 	@Override
 	public String text()
@@ -67,10 +76,24 @@ public class GenPerfume extends StdPerfume
 		return CMath.s_int(readableText);
 	}
 
-	@Override public void setLiquidType(int newLiquidType){ readableText=""+newLiquidType; }
+	@Override
+	public void setLiquidType(int newLiquidType)
+	{
+		readableText=""+newLiquidType;
+	}
 
-	@Override public String readableText(){return readableText;}
-	@Override public void setReadableText(String text){readableText=text;}
+	@Override
+	public String readableText()
+	{
+		return readableText;
+	}
+
+	@Override
+	public void setReadableText(String text)
+	{
+		readableText=text;
+	}
+
 	@Override
 	public void setMiscText(String newText)
 	{
@@ -78,6 +101,7 @@ public class GenPerfume extends StdPerfume
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
 		recoverPhyStats();
 	}
+
 	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES","RESETTIME","QUENCHED","LIQUIDHELD","LIQUIDTYPE","SMELLLST","DEFCLOSED","DEFLOCKED"};
 	@Override
 	public String getStat(String code)
@@ -101,6 +125,7 @@ public class GenPerfume extends StdPerfume
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
 	}
+
 	@Override
 	public void setStat(String code, String val)
 	{
@@ -130,14 +155,18 @@ public class GenPerfume extends StdPerfume
 			break;
 		}
 	}
+
 	@Override
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<MYCODES.length;i++)
+		{
 			if(code.equalsIgnoreCase(MYCODES[i]))
 				return i;
+		}
 		return -1;
 	}
+
 	private static String[] codes=null;
 	@Override
 	public String[] getStatCodes()
@@ -154,6 +183,7 @@ public class GenPerfume extends StdPerfume
 			codes[i]=MYCODES[x];
 		return codes;
 	}
+
 	@Override
 	public boolean sameAs(Environmental E)
 	{
@@ -161,8 +191,10 @@ public class GenPerfume extends StdPerfume
 			return false;
 		final String[] codes=getStatCodes();
 		for(int i=0;i<codes.length;i++)
+		{
 			if(!E.getStat(codes[i]).equals(getStat(codes[i])))
 				return false;
+		}
 		return true;
 	}
 }

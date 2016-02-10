@@ -33,7 +33,12 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class Pot extends StdDrink
 {
-	@Override public String ID(){	return "Pot";}
+	@Override
+	public String ID()
+	{
+		return "Pot";
+	}
+
 	public Pot()
 	{
 		super();

@@ -35,7 +35,11 @@ import java.util.*;
 */
 public class GenBed extends GenRideable
 {
-	@Override public String ID(){	return "GenBed";}
+	@Override
+	public String ID()
+	{
+		return "GenBed";
+	}
 
 	public GenBed()
 	{

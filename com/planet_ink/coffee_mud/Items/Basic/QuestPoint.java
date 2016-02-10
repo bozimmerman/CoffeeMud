@@ -35,7 +35,12 @@ import java.util.*;
 */
 public class QuestPoint extends StdItem
 {
-	@Override public String ID(){	return "QuestPoint";}
+	@Override
+	public String ID()
+	{
+		return "QuestPoint";
+	}
+
 	public QuestPoint()
 	{
 		super();

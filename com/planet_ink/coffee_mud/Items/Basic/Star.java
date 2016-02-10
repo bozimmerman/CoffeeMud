@@ -34,7 +34,11 @@ import java.util.*;
 */
 public class Star extends GenSpaceBody
 {
-	@Override public String ID(){	return "Star";}
+	@Override
+	public String ID()
+	{
+		return "Star";
+	}
 	
 	public Star()
 	{

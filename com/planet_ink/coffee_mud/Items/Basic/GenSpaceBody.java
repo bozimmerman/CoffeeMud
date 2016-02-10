@@ -52,7 +52,11 @@ public class GenSpaceBody extends StdSpaceBody
 		setDescription("");
 	}
 	
-	@Override public boolean isGeneric(){return true;}
+	@Override
+	public boolean isGeneric()
+	{
+		return true;
+	}
 
 	@Override
 	public String text()
@@ -101,6 +105,7 @@ public class GenSpaceBody extends StdSpaceBody
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
 	}
+
 	@Override
 	public void setStat(String code, String val)
 	{

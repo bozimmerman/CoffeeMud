@@ -35,7 +35,12 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 */
 public class GenMap extends StdMap
 {
-	@Override public String ID(){	return "GenMap";}
+	@Override
+	public String ID()
+	{
+		return "GenMap";
+	}
+
 	protected String	readableText="";
 	public GenMap()
 	{
@@ -49,15 +54,30 @@ public class GenMap extends StdMap
 		recoverPhyStats();
 	}
 
-	@Override public boolean isGeneric(){return true;}
+	@Override
+	public boolean isGeneric()
+	{
+		return true;
+	}
 
 	@Override
 	public String text()
 	{
 		return CMLib.coffeeMaker().getPropertiesStr(this,false);
 	}
-	@Override public String readableText(){return readableText;}
-	@Override public String getMapArea(){return readableText;}
+
+	@Override
+	public String readableText()
+	{
+		return readableText;
+	}
+
+	@Override
+	public String getMapArea()
+	{
+		return readableText;
+	}
+
 	@Override
 	public void setMapArea(String mapName)
 	{
@@ -74,6 +94,7 @@ public class GenMap extends StdMap
 		setName(oldName);
 		setDescription(oldDesc);
 	}
+
 	@Override
 	public void setMiscText(String newText)
 	{
@@ -81,6 +102,7 @@ public class GenMap extends StdMap
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
 		recoverPhyStats();
 	}
+
 	@Override
 	public String getStat(String code)
 	{
@@ -88,6 +110,7 @@ public class GenMap extends StdMap
 			return CMLib.coffeeMaker().getGenItemStat(this,code);
 		return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 	}
+
 	@Override
 	public void setStat(String code, String val)
 	{
@@ -95,6 +118,7 @@ public class GenMap extends StdMap
 			CMLib.coffeeMaker().setGenItemStat(this,code,val);
 		CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code,val);
 	}
+
 	private static String[] codes=null;
 	@Override
 	public String[] getStatCodes()
@@ -103,14 +127,17 @@ public class GenMap extends StdMap
 			codes=CMProps.getStatCodesList(CMParms.toStringArray(GenericBuilder.GenItemCode.values()),this);
 		return codes;
 	}
+
 	@Override
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof GenMap))
 			return false;
 		for(int i=0;i<getStatCodes().length;i++)
+		{
 			if(!E.getStat(getStatCodes()[i]).equals(getStat(getStatCodes()[i])))
 				return false;
+		}
 		return true;
 	}
 }

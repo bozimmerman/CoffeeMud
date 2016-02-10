@@ -35,7 +35,12 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 */
 public class GenPortal extends StdPortal
 {
-	@Override public String ID(){    return "GenPortal";}
+	@Override
+	public String ID()
+	{
+		return "GenPortal";
+	}
+
 	protected String readableText="";
 	
 	protected String putString="in";
@@ -51,7 +56,11 @@ public class GenPortal extends StdPortal
 		recoverPhyStats();
 	}
 
-	@Override public boolean isGeneric(){return true;}
+	@Override
+	public boolean isGeneric()
+	{
+		return true;
+	}
 
 	@Override
 	public String text()
@@ -59,22 +68,48 @@ public class GenPortal extends StdPortal
 		return CMLib.coffeeMaker().getPropertiesStr(this,false);
 	}
 
-	@Override public String putString(Rider R){ return putString;}
-	@Override public String mountString(int commandType, Rider R){ return mountString;}
-	@Override public String dismountString(Rider R){	return dismountString;}
+	@Override
+	public String putString(Rider R)
+	{
+		return putString;
+	}
+
+	@Override
+	public String mountString(int commandType, Rider R)
+	{
+		return mountString;
+	}
+
+	@Override
+	public String dismountString(Rider R)
+	{
+		return dismountString;
+	}
 	
 	@Override
 	public String keyName()
 	{
 		return readableText;
 	}
+
 	@Override
 	public void setKeyName(String newKeyName)
 	{
 		readableText=newKeyName;
 	}
-	@Override public String readableText(){return readableText;}
-	@Override public void setReadableText(String text){readableText=text;}
+
+	@Override
+	public String readableText()
+	{
+		return readableText;
+	}
+
+	@Override
+	public void setReadableText(String text)
+	{
+		readableText=text;
+	}
+
 	@Override
 	public void setMiscText(String newText)
 	{
@@ -82,6 +117,7 @@ public class GenPortal extends StdPortal
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
 		recoverPhyStats();
 	}
+
 	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES","RESETTIME","RIDEBASIS","MOBSHELD","EXITNAME","CLOSEDTEXT",
 											"PUTSTR","MOUNTSTR","DISMOUNTSTR","DEFCLOSED","DEFLOCKED"};
 	@Override
@@ -109,6 +145,7 @@ public class GenPortal extends StdPortal
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
 	}
+
 	@Override
 	public void setStat(String code, String val)
 	{
@@ -136,14 +173,18 @@ public class GenPortal extends StdPortal
 			break;
 		}
 	}
+
 	@Override
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<MYCODES.length;i++)
+		{
 			if(code.equalsIgnoreCase(MYCODES[i]))
 				return i;
+		}
 		return -1;
 	}
+
 	private static String[] codes=null;
 	@Override
 	public String[] getStatCodes()
@@ -160,6 +201,7 @@ public class GenPortal extends StdPortal
 			codes[i]=MYCODES[x];
 		return codes;
 	}
+
 	@Override
 	public boolean sameAs(Environmental E)
 	{
@@ -167,8 +209,10 @@ public class GenPortal extends StdPortal
 			return false;
 		final String[] codes=getStatCodes();
 		for(int i=0;i<codes.length;i++)
+		{
 			if(!E.getStat(codes[i]).equals(getStat(codes[i])))
 				return false;
+		}
 		return true;
 	}
 }

@@ -36,7 +36,12 @@ import java.util.*;
 */
 public class Boat extends StdRideable
 {
-	@Override public String ID(){	return "Boat";}
+	@Override
+	public String ID()
+	{
+		return "Boat";
+	}
+
 	public Boat()
 	{
 		super();

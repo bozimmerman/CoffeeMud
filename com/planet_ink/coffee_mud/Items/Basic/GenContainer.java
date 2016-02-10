@@ -35,7 +35,12 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 */
 public class GenContainer extends StdContainer
 {
-	@Override public String ID(){	return "GenContainer";}
+	@Override
+	public String ID()
+	{
+		return "GenContainer";
+	}
+
 	protected String readableText = "";
 	public GenContainer()
 	{
@@ -49,19 +54,35 @@ public class GenContainer extends StdContainer
 		recoverPhyStats();
 	}
 
-	@Override public String readableText(){return readableText;}
-	@Override public void setReadableText(String text){readableText=text;}
+	@Override
+	public String readableText()
+	{
+		return readableText;
+	}
+
+	@Override
+	public void setReadableText(String text)
+	{
+		readableText=text;
+	}
+
 	@Override
 	public String keyName()
 	{
 		return readableText;
 	}
+
 	@Override
 	public void setKeyName(String newKeyName)
 	{
 		readableText=newKeyName;
 	}
-	@Override public boolean isGeneric(){return true;}
+
+	@Override
+	public boolean isGeneric()
+	{
+		return true;
+	}
 
 	@Override
 	public String text()
@@ -76,6 +97,7 @@ public class GenContainer extends StdContainer
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
 		recoverPhyStats();
 	}
+
 	private final static String[] MYCODES={"CLASS","HASLOCK","HASLID","CAPACITY","CONTAINTYPES","RESETTIME","DEFCLOSED","DEFLOCKED"};
 	@Override
 	public String getStat(String code)
@@ -96,6 +118,7 @@ public class GenContainer extends StdContainer
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
 	}
+
 	@Override
 	public void setStat(String code, String val)
 	{
@@ -117,14 +140,18 @@ public class GenContainer extends StdContainer
 			break;
 		}
 	}
+
 	@Override
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<MYCODES.length;i++)
+		{
 			if(code.equalsIgnoreCase(MYCODES[i]))
 				return i;
+		}
 		return -1;
 	}
+
 	private static String[] codes=null;
 	@Override
 	public String[] getStatCodes()
@@ -141,6 +168,7 @@ public class GenContainer extends StdContainer
 			codes[i]=MYCODES[x];
 		return codes;
 	}
+
 	@Override
 	public boolean sameAs(Environmental E)
 	{
@@ -148,8 +176,10 @@ public class GenContainer extends StdContainer
 			return false;
 		final String[] codes=getStatCodes();
 		for(int i=0;i<codes.length;i++)
+		{
 			if(!E.getStat(codes[i]).equals(getStat(codes[i])))
 				return false;
+		}
 		return true;
 	}
 }

@@ -36,7 +36,12 @@ import java.util.*;
 */
 public class Gem extends StdItem
 {
-	@Override public String ID(){	return "Gem";}
+	@Override
+	public String ID()
+	{
+		return "Gem";
+	}
+
 	public final static int QUARTZ 			= 0;
 	public final static int AZURITE			= 1;
 	public final static int BLOODSTONE		= 2;

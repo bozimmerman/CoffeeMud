@@ -35,7 +35,12 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public class StdPortal extends StdContainer implements Rideable, Exit
 {
-	@Override public String ID(){    return "StdPortal";}
+	@Override
+	public String ID()
+	{
+		return "StdPortal";
+	}
+
 	public StdPortal()
 	{
 		super();

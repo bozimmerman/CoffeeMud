@@ -35,7 +35,12 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 */
 public class GenCigar extends StdSmokable
 {
-	@Override public String ID(){	return "GenCigar";}
+	@Override
+	public String ID()
+	{
+		return "GenCigar";
+	}
+
 	protected String readableText = "";
 	public GenCigar()
 	{
@@ -50,19 +55,35 @@ public class GenCigar extends StdSmokable
 		recoverPhyStats();
 	}
 
-	@Override public String readableText(){return readableText;}
-	@Override public void setReadableText(String text){readableText=text;}
+	@Override
+	public String readableText()
+	{
+		return readableText;
+	}
+
+	@Override
+	public void setReadableText(String text)
+	{
+		readableText=text;
+	}
+
 	@Override
 	public String keyName()
 	{
 		return readableText;
 	}
+
 	@Override
 	public void setKeyName(String newKeyName)
 	{
 		readableText=newKeyName;
 	}
-	@Override public boolean isGeneric(){return true;}
+
+	@Override
+	public boolean isGeneric()
+	{
+		return true;
+	}
 
 	@Override
 	public String text()
@@ -77,6 +98,7 @@ public class GenCigar extends StdSmokable
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
 		recoverPhyStats();
 	}
+
 	@Override
 	public String getStat(String code)
 	{
@@ -84,6 +106,7 @@ public class GenCigar extends StdSmokable
 			return CMLib.coffeeMaker().getGenItemStat(this,code);
 		return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 	}
+
 	@Override
 	public void setStat(String code, String val)
 	{
@@ -91,6 +114,7 @@ public class GenCigar extends StdSmokable
 			CMLib.coffeeMaker().setGenItemStat(this,code,val);
 		CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code,val);
 	}
+
 	private static String[] codes=null;
 	@Override
 	public String[] getStatCodes()
@@ -99,14 +123,17 @@ public class GenCigar extends StdSmokable
 			codes=CMProps.getStatCodesList(CMParms.toStringArray(GenericBuilder.GenItemCode.values()),this);
 		return codes;
 	}
+
 	@Override
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof GenCigar))
 			return false;
 		for(int i=0;i<getStatCodes().length;i++)
+		{
 			if(!E.getStat(getStatCodes()[i]).equals(getStat(getStatCodes()[i])))
 				return false;
+		}
 		return true;
 	}
 }

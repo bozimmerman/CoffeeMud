@@ -35,7 +35,12 @@ import java.util.*;
 */
 public class Ration extends StdFood
 {
-	@Override public String ID(){	return "Ration";}
+	@Override
+	public String ID()
+	{
+		return "Ration";
+	}
+
 	public Ration()
 	{
 		super();

@@ -35,7 +35,11 @@ import java.util.*;
 */
 public class StdSpaceBody extends StdItem implements SpaceObject
 {
-	@Override public String ID(){	return "StdSpaceBody";}
+	@Override
+	public String ID()
+	{
+		return "StdSpaceBody";
+	}
 
 	protected long[]		coordinates	= new long[3];
 	protected long			radius;

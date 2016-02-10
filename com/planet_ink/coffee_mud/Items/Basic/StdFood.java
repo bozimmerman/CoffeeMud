@@ -35,7 +35,12 @@ import java.util.*;
 */
 public class StdFood extends StdItem implements Food
 {
-	@Override public String ID(){	return "StdFood";}
+	@Override
+	public String ID()
+	{
+		return "StdFood";
+	}
+
 	protected int amountOfNourishment=500;
 	protected int nourishmentPerBite=0;
 	protected long decayTime=0;
@@ -59,6 +64,7 @@ public class StdFood extends StdItem implements Food
 	{
 		return amountOfNourishment;
 	}
+
 	@Override
 	public void setNourishment(int amount)
 	{
@@ -70,14 +76,24 @@ public class StdFood extends StdItem implements Food
 	{
 		return nourishmentPerBite;
 	}
+
 	@Override
 	public void setBite(int amount)
 	{
 		nourishmentPerBite=amount;
 	}
 
-	@Override public long decayTime(){return decayTime;}
-	@Override public void setDecayTime(long time){decayTime=time;}
+	@Override
+	public long decayTime()
+	{
+		return decayTime;
+	}
+
+	@Override
+	public void setDecayTime(long time)
+	{
+		decayTime=time;
+	}
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)

@@ -36,7 +36,12 @@ import java.util.*;
 */
 public class Ring_Ornamental extends Ring
 {
-	@Override public String ID(){	return "Ring_Ornamental";}
+	@Override
+	public String ID()
+	{
+		return "Ring_Ornamental";
+	}
+
 	public final static int GOLD_RING 					= 0;
 	public final static int SILVER_RING					= 1;
 	public final static int COPPER_RING		  			= 2;

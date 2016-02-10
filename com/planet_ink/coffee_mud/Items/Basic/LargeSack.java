@@ -33,7 +33,12 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class LargeSack extends StdContainer
 {
-	@Override public String ID(){	return "LargeSack";}
+	@Override
+	public String ID()
+	{
+		return "LargeSack";
+	}
+
 	public LargeSack()
 	{
 		super();

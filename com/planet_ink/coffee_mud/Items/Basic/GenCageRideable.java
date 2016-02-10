@@ -34,7 +34,12 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 */
 public class GenCageRideable extends StdCageRideable
 {
-	@Override public String ID(){	return "GenCageRideable";}
+	@Override
+	public String ID()
+	{
+		return "GenCageRideable";
+	}
+
 	protected String	readableText="";
 	public GenCageRideable()
 	{
@@ -51,7 +56,11 @@ public class GenCageRideable extends StdCageRideable
 		recoverPhyStats();
 	}
 
-	@Override public boolean isGeneric(){return true;}
+	@Override
+	public boolean isGeneric()
+	{
+		return true;
+	}
 
 	@Override
 	public String text()
@@ -59,8 +68,18 @@ public class GenCageRideable extends StdCageRideable
 		return CMLib.coffeeMaker().getPropertiesStr(this,false);
 	}
 
-	@Override public String readableText(){return readableText;}
-	@Override public void setReadableText(String text){readableText=text;}
+	@Override
+	public String readableText()
+	{
+		return readableText;
+	}
+
+	@Override
+	public void setReadableText(String text)
+	{
+		readableText=text;
+	}
+
 	@Override
 	public void setMiscText(String newText)
 	{
@@ -68,6 +87,7 @@ public class GenCageRideable extends StdCageRideable
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
 		recoverPhyStats();
 	}
+
 	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES","RESETTIME","RIDEBASIS","MOBSHELD","DEFCLOSED","DEFLOCKED"};
 	@Override
 	public String getStat(String code)
@@ -112,14 +132,18 @@ public class GenCageRideable extends StdCageRideable
 			break;
 		}
 	}
+
 	@Override
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<MYCODES.length;i++)
+		{
 			if(code.equalsIgnoreCase(MYCODES[i]))
 				return i;
+		}
 		return -1;
 	}
+
 	private static String[] codes=null;
 	@Override
 	public String[] getStatCodes()
@@ -136,6 +160,7 @@ public class GenCageRideable extends StdCageRideable
 			codes[i]=MYCODES[x];
 		return codes;
 	}
+
 	@Override
 	public boolean sameAs(Environmental E)
 	{
@@ -143,8 +168,10 @@ public class GenCageRideable extends StdCageRideable
 			return false;
 		final String[] codes=getStatCodes();
 		for(int i=0;i<codes.length;i++)
+		{
 			if(!E.getStat(codes[i]).equals(getStat(codes[i])))
 				return false;
+		}
 		return true;
 	}
 

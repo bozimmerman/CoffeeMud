@@ -36,7 +36,12 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
 */
 public class GenCaged extends GenItem implements CagedAnimal
 {
-	@Override public String ID(){	return "GenCaged";}
+	@Override
+	public String ID()
+	{
+		return "GenCaged";
+	}
+
 	public GenCaged()
 	{
 		super();
@@ -49,9 +54,20 @@ public class GenCaged extends GenItem implements CagedAnimal
 		setMaterial(RawMaterial.RESOURCE_MEAT);
 		recoverPhyStats();
 	}
+
 	protected byte[]	readableText=null;
-	@Override public String readableText(){return readableText==null?"":CMLib.encoder().decompressString(readableText);}
-	@Override public void setReadableText(String text){readableText=(text.trim().length()==0)?null:CMLib.encoder().compressString(text);}
+	@Override
+	public String readableText()
+	{
+		return readableText==null?"":CMLib.encoder().decompressString(readableText);
+	}
+
+	@Override
+	public void setReadableText(String text)
+	{
+		readableText=(text.trim().length()==0)?null:CMLib.encoder().compressString(text);
+	}
+
 	@Override
 	public boolean cageMe(MOB M)
 	{
@@ -100,6 +116,7 @@ public class GenCaged extends GenItem implements CagedAnimal
 		}
 		super.executeMsg(myHost,msg);
 	}
+
 	@Override
 	public MOB unCageMe()
 	{
@@ -141,7 +158,13 @@ public class GenCaged extends GenItem implements CagedAnimal
 		}
 		return M;
 	}
-	@Override public String cageText(){ return CMLib.xml().restoreAngleBrackets(readableText());}
+
+	@Override
+	public String cageText()
+	{
+		return CMLib.xml().restoreAngleBrackets(readableText());
+	}
+
 	@Override
 	public void setCageText(String text)
 	{

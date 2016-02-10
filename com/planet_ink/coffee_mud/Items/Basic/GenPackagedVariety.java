@@ -36,7 +36,12 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
 */
 public class GenPackagedVariety extends GenItem implements PackagedItems
 {
-	@Override public String ID(){	return "GenPackagedVariety";}
+	@Override
+	public String ID()
+	{
+		return "GenPackagedVariety";
+	}
+
 	public GenPackagedVariety()
 	{
 		super();
@@ -49,10 +54,21 @@ public class GenPackagedVariety extends GenItem implements PackagedItems
 		setMaterial(RawMaterial.RESOURCE_WOOD);
 		recoverPhyStats();
 	}
+
 	protected byte[]	readableText=null;
 	protected int numberOfItemsInPackage = 0;
-	@Override public String readableText(){return readableText==null?"":CMLib.encoder().decompressString(readableText);}
-	@Override public void setReadableText(String text){readableText=(text.trim().length()==0)?null:CMLib.encoder().compressString(text);}
+	@Override
+	public String readableText()
+	{
+		return readableText==null?"":CMLib.encoder().decompressString(readableText);
+	}
+
+	@Override
+	public void setReadableText(String text)
+	{
+		readableText=(text.trim().length()==0)?null:CMLib.encoder().compressString(text);
+	}
+
 	@Override
 	public boolean packageMe(Item I, int number)
 	{
@@ -219,6 +235,7 @@ public class GenPackagedVariety extends GenItem implements PackagedItems
 	{
 		return CMLib.xml().restoreAngleBrackets(readableText());
 	}
+
 	@Override
 	public void setPackageText(String text)
 	{

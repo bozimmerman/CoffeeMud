@@ -36,7 +36,12 @@ import java.util.*;
 */
 public class GenReadable extends GenItem
 {
-	@Override public String ID(){	return "GenReadable";}
+	@Override
+	public String ID()
+	{
+		return "GenReadable";
+	}
+
 	public GenReadable()
 	{
 		super();
@@ -50,6 +55,16 @@ public class GenReadable extends GenItem
 	}
 
 
-	@Override public boolean isGeneric(){return true;}
-	@Override public void recoverPhyStats(){CMLib.flags().setReadable(this,true); super.recoverPhyStats();}
+	@Override
+	public boolean isGeneric()
+	{
+		return true;
+	}
+
+	@Override
+	public void recoverPhyStats()
+	{
+		CMLib.flags().setReadable(this,true);
+		super.recoverPhyStats();
+	}
 }

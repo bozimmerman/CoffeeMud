@@ -38,7 +38,12 @@ import java.io.IOException;
 
 public class StdBook extends StdItem
 {
-	@Override public String ID(){    return "StdBook";}
+	@Override
+	public String ID()
+	{
+		return "StdBook";
+	}
+
 	public StdBook()
 	{
 		super();

@@ -35,7 +35,12 @@ import java.util.*;
 */
 public class Spring extends StdDrink
 {
-	@Override public String ID(){	return "Spring";}
+	@Override
+	public String ID()
+	{
+		return "Spring";
+	}
+
 	public Spring()
 	{
 		super();

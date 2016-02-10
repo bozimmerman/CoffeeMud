@@ -200,6 +200,7 @@ public class LightSource extends StdItem implements Light
 				&&((room.getArea().getClimateObj().weatherType(room)==Climate.WEATHER_RAIN)
 				   ||(room.getArea().getClimateObj().weatherType(room)==Climate.WEATHER_THUNDERSTORM)));
 	}
+
 	public static boolean inTheWater(MOB mob, Room room)
 	{
 		if((room==null)||(mob==null))

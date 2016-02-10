@@ -35,7 +35,11 @@ import java.util.*;
 */
 public class GenAmmunition extends StdItem implements Ammunition
 {
-	@Override public String ID(){	return "GenAmmunition";}
+	@Override
+	public String ID()
+	{
+		return "GenAmmunition";
+	}
 	
 	protected String	readableText="";
 	
@@ -51,16 +55,30 @@ public class GenAmmunition extends StdItem implements Ammunition
 		recoverPhyStats();
 	}
 
-	@Override public boolean subjectToWearAndTear() { return false; }
+	@Override
+	public boolean subjectToWearAndTear()
+	{
+		return false;
+	}
 	
-	@Override public boolean isGeneric(){return true;}
+	@Override
+	public boolean isGeneric()
+	{
+		return true;
+	}
 
 	@Override
 	public String text()
 	{
 		return CMLib.coffeeMaker().getPropertiesStr(this,false);
 	}
-	@Override public String readableText(){return readableText;}
+
+	@Override
+	public String readableText()
+	{
+		return readableText;
+	}
+
 	@Override
 	public void setReadableText(String text)
 	{
@@ -68,8 +86,18 @@ public class GenAmmunition extends StdItem implements Ammunition
 			CMLib.flags().setReadable(this,false);
 		readableText=text;
 	}
-	@Override public String ammunitionType(){return readableText;}
-	@Override public void setAmmunitionType(String text){readableText=text;}
+
+	@Override
+	public String ammunitionType()
+	{
+		return readableText;
+	}
+
+	@Override
+	public void setAmmunitionType(String text)
+	{
+		readableText=text;
+	}
 
 	@Override
 	public int ammunitionRemaining()

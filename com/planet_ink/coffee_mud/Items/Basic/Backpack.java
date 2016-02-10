@@ -33,7 +33,12 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class Backpack extends CloseableContainer
 {
-	@Override public String ID(){	return "Backpack";}
+	@Override
+	public String ID()
+	{
+		return "Backpack";
+	}
+
 	public Backpack()
 	{
 		super();

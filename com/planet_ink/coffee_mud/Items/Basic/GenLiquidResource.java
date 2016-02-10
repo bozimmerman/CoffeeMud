@@ -36,7 +36,12 @@ import java.util.*;
 */
 public class GenLiquidResource extends GenDrink implements RawMaterial, Drink
 {
-	@Override public String ID(){	return "GenLiquidResource";}
+	@Override
+	public String ID()
+	{
+		return "GenLiquidResource";
+	}
+
 	public GenLiquidResource()
 	{
 		super();
@@ -49,6 +54,7 @@ public class GenLiquidResource extends GenDrink implements RawMaterial, Drink
 		setCapacity(0);
 		recoverPhyStats();
 	}
+
 	protected static Ability rot=null;
 
 	@Override

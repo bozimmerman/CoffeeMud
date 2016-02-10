@@ -35,7 +35,12 @@ import java.util.*;
 */
 public class GenMirror extends GenItem
 {
-	@Override public String ID(){	return "GenMirror";}
+	@Override
+	public String ID()
+	{
+		return "GenMirror";
+	}
+
 	protected boolean oncePerRound=false;
 	public GenMirror()
 	{
@@ -49,6 +54,7 @@ public class GenMirror extends GenItem
 		recoverPhyStats();
 		setMaterial(RawMaterial.RESOURCE_GLASS);
 	}
+
 	@Override
 	public String description()
 	{

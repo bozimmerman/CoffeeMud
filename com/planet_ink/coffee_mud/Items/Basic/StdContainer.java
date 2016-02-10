@@ -67,6 +67,7 @@ public class StdContainer extends StdItem implements Container
 	{
 		return capacity;
 	}
+
 	@Override
 	public void setCapacity(int newValue)
 	{
@@ -166,8 +167,10 @@ public class StdContainer extends StdItem implements Container
 							return false;
 						}
 						if((!msg.source().isMine(this))&&(msg.source().isMine(newitem)))
+						{
 							if(!CMLib.commands().postDrop(msg.source(),newitem,true,true,true))
 								return false;
+						}
 						return true;
 					}
 				}

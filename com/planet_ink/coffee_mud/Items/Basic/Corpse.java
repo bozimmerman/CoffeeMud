@@ -35,7 +35,12 @@ import java.util.*;
 */
 public class Corpse extends GenContainer implements DeadBody
 {
-	@Override public String ID(){	return "Corpse";}
+	@Override
+	public String ID()
+	{
+		return "Corpse";
+	}
+
 	protected CharStats 	charStats	= null;
 	protected String 		mobName		= "";
 	protected String 		mobDesc		= "";
@@ -64,6 +69,7 @@ public class Corpse extends GenContainer implements DeadBody
 		recoverPhyStats();
 		material=RawMaterial.RESOURCE_MEAT;
 	}
+
 	@Override
 	public void setMiscText(String newText)
 	{
@@ -79,6 +85,7 @@ public class Corpse extends GenContainer implements DeadBody
 			charStats=(CharStats)CMClass.getCommon("DefaultCharStats");
 		return charStats;
 	}
+
 	@Override
 	public void setCharStats(CharStats newStats)
 	{
@@ -114,30 +121,149 @@ public class Corpse extends GenContainer implements DeadBody
 		savedMOB=null;
 	}
 
-	@Override public String getMobName(){ return mobName;}
-	@Override public void setMobName(String newName){mobName=newName;}
-	@Override public String getMobDescription(){return mobDesc;}
-	@Override public void setMobDescription(String newDescription){mobDesc=newDescription;}
-	@Override public boolean getMobPKFlag(){return mobPKFlag;}
-	@Override public void setMobPKFlag(boolean truefalse){mobPKFlag=truefalse;}
-	@Override public int getMobHash() { return deadMobHash; }
-	@Override public void setMobHash(int newHash) { deadMobHash = newHash; }
-	@Override public String getKillerName(){return killerName;}
-	@Override public void setKillerName(String newName){killerName=newName;}
-	@Override public boolean isKillerPlayer(){return killerPlayer;}
-	@Override public void setIsKillerPlayer(boolean trueFalse){killerPlayer=trueFalse;}
-	@Override public boolean isPlayerCorpse(){return playerCorpse;}
-	@Override public void setIsPlayerCorpse(boolean truefalse){playerCorpse=truefalse;}
-	@Override public String getLastMessage(){return lastMessage;}
-	@Override public void setLastMessage(String lastMsg){lastMessage=lastMsg;}
-	@Override public Environmental getKillerTool(){return killingTool;}
-	@Override public void setKillerTool(Environmental tool){killingTool=tool;}
-	@Override public boolean isDestroyedAfterLooting(){return lootDestroy;}
-	@Override public void setIsDestroyAfterLooting(boolean truefalse){lootDestroy=truefalse;}
-	@Override public long getTimeOfDeath(){return timeOfDeath;}
-	@Override public void setTimeOfDeath(long time){timeOfDeath=time;}
-	@Override public void setSavedMOB(MOB mob){savedMOB=mob;}
-	@Override public MOB getSavedMOB(){return savedMOB;}
+	@Override
+	public String getMobName()
+	{
+		return mobName;
+	}
+
+	@Override
+	public void setMobName(String newName)
+	{
+		mobName=newName;
+	}
+
+	@Override
+	public String getMobDescription()
+	{
+		return mobDesc;
+	}
+
+	@Override
+	public void setMobDescription(String newDescription)
+	{
+		mobDesc=newDescription;
+	}
+
+	@Override
+	public boolean getMobPKFlag()
+	{
+		return mobPKFlag;
+	}
+
+	@Override
+	public void setMobPKFlag(boolean truefalse)
+	{
+		mobPKFlag=truefalse;
+	}
+
+	@Override
+	public int getMobHash()
+	{
+		return deadMobHash;
+	}
+
+	@Override
+	public void setMobHash(int newHash)
+	{
+		deadMobHash = newHash;
+	}
+
+	@Override
+	public String getKillerName()
+	{
+		return killerName;
+	}
+
+	@Override
+	public void setKillerName(String newName)
+	{
+		killerName=newName;
+	}
+
+	@Override
+	public boolean isKillerPlayer()
+	{
+		return killerPlayer;
+	}
+
+	@Override
+	public void setIsKillerPlayer(boolean trueFalse)
+	{
+		killerPlayer=trueFalse;
+	}
+
+	@Override
+	public boolean isPlayerCorpse()
+	{
+		return playerCorpse;
+	}
+
+	@Override
+	public void setIsPlayerCorpse(boolean truefalse)
+	{
+		playerCorpse=truefalse;
+	}
+
+	@Override
+	public String getLastMessage()
+	{
+		return lastMessage;
+	}
+
+	@Override
+	public void setLastMessage(String lastMsg)
+	{
+		lastMessage=lastMsg;
+	}
+
+	@Override
+	public Environmental getKillerTool()
+	{
+		return killingTool;
+	}
+
+	@Override
+	public void setKillerTool(Environmental tool)
+	{
+		killingTool=tool;
+	}
+
+	@Override
+	public boolean isDestroyedAfterLooting()
+	{
+		return lootDestroy;
+	}
+
+	@Override
+	public void setIsDestroyAfterLooting(boolean truefalse)
+	{
+		lootDestroy=truefalse;
+	}
+
+	@Override
+	public long getTimeOfDeath()
+	{
+		return timeOfDeath;
+	}
+
+	@Override
+	public void setTimeOfDeath(long time)
+	{
+		timeOfDeath=time;
+	}
+
+	@Override
+	public void setSavedMOB(MOB mob)
+	{
+		savedMOB=mob;
+	}
+
+	@Override
+	public MOB getSavedMOB()
+	{
+		return savedMOB;
+	}
 
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)

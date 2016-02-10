@@ -34,7 +34,11 @@ import java.util.*;
 */
 public class Asteroid extends GenSpaceBody
 {
-	@Override public String ID(){	return "Asteroid";}
+	@Override
+	public String ID()
+	{
+		return "Asteroid";
+	}
 	
 	public Asteroid()
 	{

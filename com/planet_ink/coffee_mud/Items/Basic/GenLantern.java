@@ -36,7 +36,12 @@ import java.util.*;
 */
 public class GenLantern extends GenLightSource
 {
-	@Override public String ID(){	return "GenLantern";}
+	@Override
+	public String ID()
+	{
+		return "GenLantern";
+	}
+
 	public static final int DURATION_TICKS=800;
 	public GenLantern()
 	{
@@ -54,7 +59,11 @@ public class GenLantern extends GenLightSource
 		recoverPhyStats();
 	}
 
-	@Override public boolean isGeneric(){return true;}
+	@Override
+	public boolean isGeneric()
+	{
+		return true;
+	}
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)

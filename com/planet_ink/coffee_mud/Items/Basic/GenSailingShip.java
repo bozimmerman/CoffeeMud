@@ -739,6 +739,7 @@ public class GenSailingShip extends StdBoardable
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
 	}
+
 	@Override
 	public void setStat(String code, String val)
 	{
@@ -798,6 +799,7 @@ public class GenSailingShip extends StdBoardable
 			break;
 		}
 	}
+
 	@Override
 	protected int getCodeNum(String code)
 	{

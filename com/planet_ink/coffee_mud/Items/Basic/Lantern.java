@@ -36,7 +36,12 @@ import java.util.*;
 */
 public class Lantern extends LightSource
 {
-	@Override public String ID(){	return "Lantern";}
+	@Override
+	public String ID()
+	{
+		return "Lantern";
+	}
+
 	public static final int DURATION_TICKS=800;
 	public Lantern()
 	{

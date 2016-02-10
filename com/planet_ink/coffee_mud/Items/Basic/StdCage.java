@@ -34,7 +34,12 @@ import java.util.*;
 */
 public class StdCage extends StdContainer
 {
-	@Override public String ID(){	return "StdCage";}
+	@Override
+	public String ID()
+	{
+		return "StdCage";
+	}
+
 	public StdCage()
 	{
 		super();

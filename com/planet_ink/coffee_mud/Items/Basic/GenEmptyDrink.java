@@ -35,7 +35,11 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 */
 public class GenEmptyDrink extends GenDrink
 {
-	@Override public String ID(){    return "GenEmptyDrink";}
+	@Override
+	public String ID()
+	{
+		return "GenEmptyDrink";
+	}
 
 
 	public GenEmptyDrink()

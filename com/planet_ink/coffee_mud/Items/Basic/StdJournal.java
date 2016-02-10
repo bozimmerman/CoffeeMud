@@ -37,7 +37,12 @@ import java.io.IOException;
 
 public class StdJournal extends StdItem
 {
-	@Override public String ID(){	return "StdJournal";}
+	@Override
+	public String ID()
+	{
+		return "StdJournal";
+	}
+
 	protected MOB lastReadTo=null;
 	protected long[] lastDateRead={-1,0};
 
