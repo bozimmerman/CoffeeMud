@@ -56,14 +56,8 @@ public class Spell_Summon extends Spell
 			final MOB mob=(MOB)affected;
 			if((!mob.amDead())&&(mob.location()!=null))
 			{
-				if((mob.amFollowing()!=null)
-				&&(mob.location().isInhabitant(mob.amFollowing())))
-					return;
-				if(mob.getStartRoom().getArea()!=mob.location().getArea())
-				{
-					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> <S-IS-ARE> drawn back into the summoning swirl."));
-					mob.getStartRoom().bringMobHere(mob,false);
-				}
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> <S-IS-ARE> drawn back into the summoning swirl."));
+				mob.getStartRoom().bringMobHere(mob,false);
 			}
 		}
 		super.unInvoke();

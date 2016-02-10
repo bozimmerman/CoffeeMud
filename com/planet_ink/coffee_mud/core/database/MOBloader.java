@@ -1346,9 +1346,9 @@ public class MOBloader
 			{
 				CMLib.catalog().updateCatalogIntegrity(thisMOB);
 				final String sql="INSERT INTO CMCHFO (CMUSERID, CMFONM, CMFOID, CMFOTX, CMFOLV, CMFOAB"
-				+") values ('"+mob.Name()+"',"+f+",'"+CMClass.classID(thisMOB)+"',?,"
-				+thisMOB.basePhyStats().level()+","+thisMOB.basePhyStats().ability()+")";
-				statements.add(new DBPreparedBatchEntry(sql,thisMOB.text()+" "));
+								+") values ('"+mob.Name()+"',"+f+",'"+CMClass.classID(thisMOB)+"',?,"
+								+thisMOB.basePhyStats().level()+","+thisMOB.basePhyStats().ability()+")";
+								statements.add(new DBPreparedBatchEntry(sql,thisMOB.text()+" "));
 			}
 		}
 		DB.updateWithClobs(statements);
