@@ -35,18 +35,54 @@ import java.util.*;
 
 public class Spell_Flameshield extends Spell
 {
-	@Override public String ID() { return "Spell_Flameshield"; }
-	private final static String localizedName = CMLib.lang().L("Flameshield");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Flameshield)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
-	@Override public long flags(){return Ability.FLAG_HEATING|Ability.FLAG_FIREBASED;}
-	final static String msgStr=CMLib.lang().L("The flame shield around <S-NAME> flares and <DAMAGES> <T-NAME>!");
-	protected long oncePerTickTime=0;
+	@Override
+	public String ID()
+	{
+		return "Spell_Flameshield";
+	}
 
+	private final static String	localizedName	= CMLib.lang().L("Flameshield");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Flameshield)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_OTHERS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL | Ability.DOMAIN_EVOCATION;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_HEATING | Ability.FLAG_FIREBASED;
+	}
+
+	final static String	msgStr			= CMLib.lang().L("The flame shield around <S-NAME> flares and <DAMAGES> <T-NAME>!");
+	protected long		oncePerTickTime	= 0;
 
 	@Override
 	public void unInvoke()

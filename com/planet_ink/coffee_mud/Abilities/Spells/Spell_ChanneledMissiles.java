@@ -36,17 +36,53 @@ import java.util.*;
 
 public class Spell_ChanneledMissiles extends Spell
 {
-	@Override public String ID() { return "Spell_ChanneledMissiles"; }
-	private final static String localizedName = CMLib.lang().L("Channeled Missiles");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Channeling Missile spell)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int maxRange(){return adjustedMaxInvokerRange(1);}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
+	@Override
+	public String ID()
+	{
+		return "Spell_ChanneledMissiles";
+	}
 
-	protected Runnable channelingClass = null;
+	private final static String	localizedName	= CMLib.lang().L("Channeled Missiles");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Channeling Missile spell)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int maxRange()
+	{
+		return adjustedMaxInvokerRange(1);
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL | Ability.DOMAIN_CONJURATION;
+	}
+
+	protected Runnable	channelingClass	= null;
 
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
@@ -188,7 +224,6 @@ public class Spell_ChanneledMissiles extends Spell
 		}
 		else
 			return maliciousFizzle(mob,target[0],L("<S-NAME> point(s) at <T-NAMESELF>, but fizzle(s) the spell."));
-
 
 		// return whether it worked
 		return success;

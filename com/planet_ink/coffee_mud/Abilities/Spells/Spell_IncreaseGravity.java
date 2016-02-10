@@ -35,24 +35,62 @@ import java.util.*;
 
 public class Spell_IncreaseGravity extends Spell
 {
-	@Override public String ID() { return "Spell_IncreaseGravity"; }
-	private final static String localizedName = CMLib.lang().L("Increase Gravity");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Gravity is Increased)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	@Override protected int canAffectCode(){return CAN_ROOMS|CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
-	protected Room theGravityRoom=null;
+	@Override
+	public String ID()
+	{
+		return "Spell_IncreaseGravity";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Increase Gravity");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Gravity is Increased)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_ROOMS | CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	protected Room	theGravityRoom	= null;
+
 	protected Room gravityRoom()
 	{
-		if(theGravityRoom!=null)
+		if (theGravityRoom != null)
 			return theGravityRoom;
-		if(affected instanceof Room)
-			theGravityRoom=(Room)affected;
+		if (affected instanceof Room)
+			theGravityRoom = (Room) affected;
 		return theGravityRoom;
 	}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL | Ability.DOMAIN_ALTERATION;
+	}
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
@@ -121,18 +159,21 @@ public class Spell_IncreaseGravity extends Spell
 		{
 		case CMMsg.TYP_ADVANCE:
 			{
-				msg.source().tell(L("You feel too heavy to advance."));
+				if(msg.source().charStats().getStat(CharStats.STAT_STRENGTH)<18)
+					msg.source().tell(L("You feel too heavy to advance."));
 				return false;
 			}
 		case CMMsg.TYP_RETREAT:
 			{
-				msg.source().tell(L("You feel too heavy to retreat."));
+				if(msg.source().charStats().getStat(CharStats.STAT_STRENGTH)<18)
+					msg.source().tell(L("You feel too heavy to retreat."));
 				return false;
 			}
 		case CMMsg.TYP_LEAVE:
 		case CMMsg.TYP_FLEE:
 			{
-				msg.source().tell(L("You feel too heavy to leave."));
+				if(msg.source().charStats().getStat(CharStats.STAT_STRENGTH)<18)
+					msg.source().tell(L("You feel too heavy to leave."));
 				return false;
 			}
 		}
@@ -168,7 +209,6 @@ public class Spell_IncreaseGravity extends Spell
 			mob.tell(mob,null,null,L("Gravity has already been increased here!"));
 			return false;
 		}
-
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 
