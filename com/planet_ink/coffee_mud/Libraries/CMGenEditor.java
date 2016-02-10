@@ -736,7 +736,10 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	}
 
 	protected void genImage(MOB mob, Environmental E, int showNumber, int showFlag) throws IOException
-	{   E.setImage(prompt(mob,E.rawImage(),showNumber,showFlag,"MXP Image filename",true,false,"This is the path/filename of your MXP image file for this object."));}
+	{
+		E.setImage(prompt(mob, E.rawImage(), showNumber, showFlag, "MXP Image filename", true, false, 
+				"This is the path/filename of your MXP image file for this object."));
+	}
 
 	protected void genCorpseData(MOB mob, DeadBody I, int showNumber, int showFlag)
 		throws IOException
@@ -790,7 +793,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	}
 
 	protected void genAuthor(MOB mob, Area A, int showNumber, int showFlag) throws IOException
-	{   A.setAuthorID(prompt(mob,A.getAuthorID(),showNumber,showFlag,"Author",true,false,"Area Author's Name"));}
+	{
+		A.setAuthorID(prompt(mob, A.getAuthorID(), showNumber, showFlag, "Author", true, false, "Area Author's Name"));
+	}
 
 	protected void genPanelType(MOB mob, ElecPanel S, int showNumber, int showFlag)
 	throws IOException
@@ -1200,7 +1205,10 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 								((GridLocale)R2).buildGrid();
 						}
 				}
-			}catch(final NoSuchElementException e){}
+			}
+			catch (final NoSuchElementException e)
+			{
+			}
 			try
 			{
 				for(final Enumeration<MOB> e=CMLib.players().players();e.hasMoreElements();)
@@ -1212,7 +1220,10 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					if(M.location()==oldR)
 						M.setLocation(R);
 				}
-			}catch(final NoSuchElementException e){}
+			}
+			catch (final NoSuchElementException e)
+			{
+			}
 			R.getArea().fillInAreaRoom(R);
 			for(int i=0;i<oldBehavsNEffects.size();i++)
 			{
@@ -1271,7 +1282,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 
 	@Override
 	public void genDescription(MOB mob, Environmental E, int showNumber, int showFlag) throws IOException
-	{   E.setDescription(prompt(mob,E.description(),showNumber,showFlag,"Description",true,true,null));}
+	{
+		E.setDescription(prompt(mob, E.description(), showNumber, showFlag, "Description", true, true, null));
+	}
 
 	protected void genNotes(MOB mob, MOB M, int showNumber, int showFlag) throws IOException
 	{
@@ -1391,6 +1404,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		else
 			mob.tell(L("(no change)"));
 	}
+
 	protected void genDoorName(MOB mob, Exit E, int showNumber, int showFlag)
 		throws IOException
 	{
@@ -2219,12 +2233,24 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			c=mob.session().choose(L("Enter one to change, or ENTER when done: "),L("RHCWDI\n"),"\n").toUpperCase();
 			switch(c.charAt(0))
 			{
-			case 'I': A.setClimateType(Places.CLIMASK_INHERIT); break;
-			case 'C': toggleClimateMask(A,Places.CLIMASK_COLD); break;
-			case 'H': toggleClimateMask(A,Places.CLIMASK_HOT); break;
-			case 'R': toggleClimateMask(A,Places.CLIMASK_WET); break;
-			case 'W': toggleClimateMask(A,Places.CLIMASK_WINDY); break;
-			case 'D': toggleClimateMask(A,Places.CLIMASK_DRY); break;
+			case 'I':
+				A.setClimateType(Places.CLIMASK_INHERIT);
+				break;
+			case 'C':
+				toggleClimateMask(A, Places.CLIMASK_COLD);
+				break;
+			case 'H':
+				toggleClimateMask(A, Places.CLIMASK_HOT);
+				break;
+			case 'R':
+				toggleClimateMask(A, Places.CLIMASK_WET);
+				break;
+			case 'W':
+				toggleClimateMask(A, Places.CLIMASK_WINDY);
+				break;
+			case 'D':
+				toggleClimateMask(A, Places.CLIMASK_DRY);
+				break;
 			}
 		}
 	}
@@ -2659,7 +2685,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		if(E.isGeneric())
 			genMiscSet(mob,E);
 		else
-		{   E.setMiscText(prompt(mob,E.text(),showNumber,showFlag,"Misc Text",true,false));}
+		{
+			E.setMiscText(prompt(mob, E.text(), showNumber, showFlag, "Misc Text", true, false));
+		}
 	}
 
 	protected void genTitleRoom(MOB mob, LandTitle L, int showNumber, int showFlag)
@@ -2688,7 +2716,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	}
 
 	public void genAbility(MOB mob, Physical P, int showNumber, int showFlag, String prompt) throws IOException
-	{ P.basePhyStats().setAbility(prompt(mob,P.basePhyStats().ability(),showNumber,showFlag,prompt)); }
+	{
+		P.basePhyStats().setAbility(prompt(mob, P.basePhyStats().ability(), showNumber, showFlag, prompt));
+	}
 
 	@Override
 	public void genAbility(MOB mob, Physical P, int showNumber, int showFlag) throws IOException
@@ -2910,22 +2940,34 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	}
 
 	protected void genDamage(MOB mob, Physical P, int showNumber, int showFlag) throws IOException
-	{ P.basePhyStats().setDamage(prompt(mob,P.basePhyStats().damage(),showNumber,showFlag,"Damage")); }
+	{
+		P.basePhyStats().setDamage(prompt(mob, P.basePhyStats().damage(), showNumber, showFlag, "Damage"));
+	}
 
 	protected void genBanker1(MOB mob, Banker M, int showNumber, int showFlag) throws IOException
-	{ M.setCoinInterest(prompt(mob,M.getCoinInterest(),showNumber,showFlag,"Coin Interest [% per real day]")); }
+	{
+		M.setCoinInterest(prompt(mob, M.getCoinInterest(), showNumber, showFlag, "Coin Interest [% per real day]"));
+	}
 
 	protected void genBanker2(MOB mob, Banker M, int showNumber, int showFlag) throws IOException
-	{ M.setItemInterest(prompt(mob,M.getItemInterest(),showNumber,showFlag,"Item Interest [% per real day]")); }
+	{
+		M.setItemInterest(prompt(mob, M.getItemInterest(), showNumber, showFlag, "Item Interest [% per real day]"));
+	}
 
 	protected void genBanker3(MOB mob, Banker M, int showNumber, int showFlag) throws IOException
-	{ M.setBankChain(prompt(mob,M.bankChain(),showNumber,showFlag,"Bank Chain",false,false)); }
+	{
+		M.setBankChain(prompt(mob, M.bankChain(), showNumber, showFlag, "Bank Chain", false, false));
+	}
 
 	protected void genBanker4(MOB mob, Banker M, int showNumber, int showFlag) throws IOException
-	{ M.setLoanInterest(prompt(mob,M.getLoanInterest(),showNumber,showFlag,"Loan Interest [% per mud month]")); }
+	{
+		M.setLoanInterest(prompt(mob, M.getLoanInterest(), showNumber, showFlag, "Loan Interest [% per mud month]"));
+	}
 
 	protected void genSpeed(MOB mob, Physical P, int showNumber, int showFlag) throws IOException
-	{ P.basePhyStats().setSpeed(prompt(mob,P.basePhyStats().speed(),showNumber,showFlag,"Actions/Attacks per tick")); }
+	{
+		P.basePhyStats().setSpeed(prompt(mob, P.basePhyStats().speed(), showNumber, showFlag, "Actions/Attacks per tick"));
+	}
 
 	protected void genArmor(MOB mob, Physical P, int showNumber, int showFlag) throws IOException
 	{
@@ -2986,6 +3028,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			AW.setAmmoCapacity(0);
 		}
 	}
+
 	protected void genWeaponRanges(MOB mob, Weapon W, int showNumber, int showFlag)
 		throws IOException
 	{
@@ -3300,6 +3343,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						{
 							final StringBuilder str=new StringBuilder("");
 							for(final int r : me.getBreathables())
+							{
 								if(r!=newValue)
 								{
 									if(str.length()>0)
@@ -3307,6 +3351,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 									else
 										str.append(r);
 								}
+							}
 							newList=str.toString();
 						}
 						mob.tell(L("You've removed @x1",RawMaterial.CODES.NAME(newValue)));
@@ -3354,8 +3399,10 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				q=true;
 				InstrumentType newValue=null;
 				for(InstrumentType type : MusicalInstrument.InstrumentType.values())
+				{
 					if(newType.equalsIgnoreCase(type.name()))
 						newValue=type;
+				}
 				if(newValue != null)
 					E.setInstrumentType(newValue);
 				else
@@ -3403,6 +3450,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		}
 		mob.tell(L("(no change)"));
 	}
+
 	protected void genFaction(MOB mob, MOB E, int showNumber, int showFlag)
 	throws IOException
 	{
@@ -3521,13 +3569,19 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	}
 
 	protected void genSecretIdentity(MOB mob, Item E, int showNumber, int showFlag) throws IOException
-	{ E.setSecretIdentity(prompt(mob,E.rawSecretIdentity(),showNumber,showFlag,"Secret Identity",true,false)); }
+	{
+		E.setSecretIdentity(prompt(mob, E.rawSecretIdentity(), showNumber, showFlag, "Secret Identity", true, false));
+	}
 
 	protected void genNourishment(MOB mob, Food E, int showNumber, int showFlag) throws IOException
-	{ E.setNourishment(prompt(mob,E.nourishment(),showNumber,showFlag,"Nourishment/Eat")); }
+	{
+		E.setNourishment(prompt(mob, E.nourishment(), showNumber, showFlag, "Nourishment/Eat"));
+	}
 
 	protected void genBiteSize(MOB mob, Food E, int showNumber, int showFlag) throws IOException
-	{ E.setBite(prompt(mob,E.bite(),showNumber,showFlag,"Bite/Eat (0=all)")); }
+	{
+		E.setBite(prompt(mob, E.bite(), showNumber, showFlag, "Bite/Eat (0=all)"));
+	}
 
 	protected void genRace(MOB mob, MOB M, int showNumber, int showFlag)
 		throws IOException
@@ -4018,7 +4072,6 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					else
 						affectstr+=", ";
 				}
-
 			}
 			if(affectstr.length()>0)
 				affectstr=affectstr.substring(0,affectstr.length()-2);
@@ -4117,8 +4170,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			}
 		}
 	}
+
 	protected void genRideable2(MOB mob, Rideable E, int showNumber, int showFlag) throws IOException
-	{ E.setRiderCapacity(prompt(mob,E.riderCapacity(),showNumber,showFlag,"Number of MOBs held")); }
+	{
+		E.setRiderCapacity(prompt(mob, E.riderCapacity(), showNumber, showFlag, "Number of MOBs held"));
+	}
 
 	protected void genShopkeeper1(MOB mob, ShopKeeper M, int showNumber, int showFlag)
 		throws IOException
@@ -4771,12 +4827,14 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					{
 						int oldNum=-1;
 						for(int m=0;m<membersCopy.size();m++)
+						{
 							if(behave.equalsIgnoreCase(membersCopy.get(m).name))
 							{
 								oldNum=members.size();
 								members.add(membersCopy.get(m));
 								break;
 							}
+						}
 						int index=oldNum;
 						if(index<0)
 						{
@@ -4858,16 +4916,24 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	}
 
 	protected void genDeity1(MOB mob, Deity E, int showNumber, int showFlag) throws IOException
-	{ E.setClericRequirements(prompt(mob,E.getClericRequirements(),showNumber,showFlag,"Cleric Requirements",false,false)); }
+	{
+		E.setClericRequirements(prompt(mob, E.getClericRequirements(), showNumber, showFlag, "Cleric Requirements", false, false));
+	}
 
 	protected void genDeity2(MOB mob, Deity E, int showNumber, int showFlag) throws IOException
-	{ E.setClericRitual(prompt(mob,E.getClericRitual(),showNumber,showFlag,"Cleric Ritual",false,false)); }
+	{
+		E.setClericRitual(prompt(mob, E.getClericRitual(), showNumber, showFlag, "Cleric Ritual", false, false));
+	}
 
 	protected void genDeity3(MOB mob, Deity E, int showNumber, int showFlag) throws IOException
-	{ E.setWorshipRequirements(prompt(mob,E.getWorshipRequirements(),showNumber,showFlag,"Worshiper Requirements",false,false)); }
+	{
+		E.setWorshipRequirements(prompt(mob, E.getWorshipRequirements(), showNumber, showFlag, "Worshiper Requirements", false, false));
+	}
 
 	protected void genDeity4(MOB mob, Deity E, int showNumber, int showFlag) throws IOException
-	{ E.setWorshipRitual(prompt(mob,E.getWorshipRitual(),showNumber,showFlag,"Worshiper Ritual",false,false)); }
+	{
+		E.setWorshipRitual(prompt(mob, E.getWorshipRitual(), showNumber, showFlag, "Worshiper Ritual", false, false));
+	}
 
 	protected void genDeity5(MOB mob, Deity E, int showNumber, int showFlag) throws IOException
 	{
@@ -5369,7 +5435,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	}
 
 	protected void genThirstQuenched(MOB mob, Drink E, int showNumber, int showFlag) throws IOException
-	{ E.setThirstQuenched(prompt(mob,E.thirstQuenched(),showNumber,showFlag,"Quenched/Drink")); }
+	{
+		E.setThirstQuenched(prompt(mob, E.thirstQuenched(), showNumber, showFlag, "Quenched/Drink"));
+	}
 
 	protected void genDrinkHeld(MOB mob, Drink E, int showNumber, int showFlag) throws IOException
 	{
@@ -5395,6 +5463,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		else
 			mob.tell(L("(no change)"));
 	}
+
 	protected void genArmorCode(MOB mob, CharClass E, int showNumber, int showFlag, String FieldDisp, String Field)
 		throws IOException
 	{
@@ -5413,6 +5482,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		else
 			mob.tell(L("(no change)"));
 	}
+
 	protected void genQualifications(MOB mob, CharClass E, int showNumber, int showFlag, String FieldDisp, String Field)
 		throws IOException
 	{
@@ -5433,8 +5503,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		else
 			mob.tell(L("(no change)"));
 	}
+
 	protected void genClanAccept(MOB mob, Clan E, int showNumber, int showFlag) throws IOException
-	{ E.setAcceptanceSettings(prompt(mob,E.getAcceptanceSettings(),showNumber,showFlag,"Clan Qualifications",false,false,CMLib.masking().maskHelp("\n","disallow"))); }
+	{
+		E.setAcceptanceSettings(prompt(mob, E.getAcceptanceSettings(), showNumber, showFlag, "Clan Qualifications", false, false, CMLib.masking().maskHelp("\n", "disallow")));
+	}
 
 	protected void genWeaponRestr(MOB mob, CharClass E, int showNumber, int showFlag, String FieldDisp, String FieldNum, String Field)
 		throws IOException
@@ -5550,8 +5623,6 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		else
 			mob.tell(L("(no change)"));
 	}
-
-
 
 	protected void genDisableFlags(MOB mob, Race E, int showNumber, int showFlag)
 	throws IOException
@@ -5756,7 +5827,6 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			mob.tell(L("(no change)"));
 	}
 
-
 	protected void genRaceBuddy(MOB mob, Race E, int showNumber, int showFlag, String prompt, String flag)
 		throws IOException
 	{
@@ -5926,6 +5996,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		else
 			mob.tell(L("(no change)"));
 	}
+
 	protected void genPStats(MOB mob, Race R, int showNumber, int showFlag)
 		throws IOException
 	{
@@ -6005,6 +6076,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			}
 		}
 	}
+
 	protected void genAState(MOB mob,
 						  Race R,
 						  String field,
@@ -6069,6 +6141,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			}
 		}
 	}
+
 	protected void genAStats(MOB mob, Race R, String Field, String FieldName, int showNumber, int showFlag)
 		throws IOException
 	{
@@ -6140,6 +6213,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	{
 		genPStats(mob,R,showNumber,showFlag,false);
 	}
+
 	protected void genPStats(MOB mob, CharClass R, int showNumber, int showFlag, boolean skipRejuv)
 		throws IOException
 	{
@@ -6221,12 +6295,13 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			}
 		}
 	}
+
 	protected void genAState(MOB mob,
-						  CharClass R,
-						  String field,
-						  String prompt,
-						  int showNumber,
-						  int showFlag)
+							 CharClass R,
+							 String field,
+							 String prompt,
+							 int showNumber,
+							 int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber))
@@ -6285,6 +6360,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			}
 		}
 	}
+
 	protected void genAStats(MOB mob, CharClass R, String Field, String FieldName, int showNumber, int showFlag)
 		throws IOException
 	{
@@ -6344,6 +6420,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			}
 		}
 	}
+
 	protected void genResources(MOB mob, Race E, int showNumber, int showFlag)
 		throws IOException
 	{
@@ -6363,8 +6440,14 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					I.recoverPhyStats();
 					boolean done=false;
 					for(int v=0;v<DV.size();v++)
+					{
 						if(I.sameAs((Environmental)DV.elementAt(v,1)))
-						{ DV.setElementAt(v,2,Integer.valueOf(((Integer)DV.elementAt(v,2)).intValue()+1)); done=true; break;}
+						{
+							DV.setElementAt(v, 2, Integer.valueOf(((Integer) DV.elementAt(v, 2)).intValue() + 1));
+							done = true;
+							break;
+						}
+					}
 					if(!done)
 						DV.addElement(I,Integer.valueOf(1));
 				}
@@ -6381,7 +6464,10 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					parts.append(I.name()+" ("+i+"), ");
 			}
 			if(parts.toString().endsWith(", "))
-			{parts.deleteCharAt(parts.length()-1);parts.deleteCharAt(parts.length()-1);}
+			{
+				parts.deleteCharAt(parts.length() - 1);
+				parts.deleteCharAt(parts.length() - 1);
+			}
 			mob.tell(L("@x1. Resources: @x2.",""+showNumber,parts.toString()));
 			if((showFlag!=showNumber)&&(showFlag>-999))
 				return;
@@ -6463,6 +6549,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			}
 		}
 	}
+
 	protected void genOutfit(MOB mob, Race E, int showNumber, int showFlag)
 		throws IOException
 	{
@@ -6494,8 +6581,13 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			{
 				int partNum=-1;
 				for(int i=0;i<V.size();i++)
+				{
 					if(CMLib.english().containsString(V.elementAt(i).name(),newName))
-					{ partNum=i; break;}
+					{
+						partNum = i;
+						break;
+					}
+				}
 				boolean updateList=false;
 				if(partNum<0)
 				{
@@ -6537,6 +6629,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			}
 		}
 	}
+
 	protected void genOutfit(MOB mob, CharClass E, int showNumber, int showFlag)
 		throws IOException
 	{
@@ -6568,8 +6661,13 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			{
 				int partNum=-1;
 				for(int i=0;i<V.size();i++)
+				{
 					if(CMLib.english().containsString(V.elementAt(i).name(),newName))
-					{ partNum=i; break;}
+					{
+						partNum = i;
+						break;
+					}
+				}
 				boolean updateList=false;
 				if(partNum<0)
 				{
@@ -6688,6 +6786,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			}
 		}
 	}
+
 	protected void genWeapon(MOB mob, Race E, int showNumber, int showFlag)
 		throws IOException
 	{
@@ -6879,11 +6978,13 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			{
 				int partNum=-1;
 				for(int i=0;i<ables.size();i++)
+				{
 					if(CMLib.english().containsString(ables.elementAt(i).ID(),newName))
 					{ 
 						partNum=i; 
 						break;
 					}
+				}
 				boolean updateList=false;
 				if(partNum<0)
 				{
@@ -7036,11 +7137,13 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			{
 				int partNum=-1;
 				for(int i=0;i<ables.size();i++)
+				{
 					if(CMLib.english().containsString(ables.elementAt(i).ID(),newName))
 					{ 
 						partNum=i; 
 						break;
 					}
+				}
 				boolean updateList=false;
 				if(partNum<0)
 				{
@@ -7494,7 +7597,10 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				}
 			}
 			if(parts.toString().endsWith(", "))
-			{parts.deleteCharAt(parts.length()-1);parts.deleteCharAt(parts.length()-1);}
+			{
+				parts.deleteCharAt(parts.length() - 1);
+				parts.deleteCharAt(parts.length() - 1);
+			}
 			mob.tell(L("@x1. Cultural Abilities: @x2.",""+showNumber,parts.toString()));
 			if((showFlag!=showNumber)&&(showFlag>-999))
 				return;
@@ -7506,8 +7612,13 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			{
 				int partNum=-1;
 				for(int i=0;i<ables.size();i++)
+				{
 					if(CMLib.english().containsString(ables.elementAt(i).ID(),newName))
-					{ partNum=i; break;}
+					{
+						partNum = i;
+						break;
+					}
+				}
 				boolean updateList=false;
 				if(partNum<0)
 				{
@@ -7659,8 +7770,16 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				}
 			}
 
-			if(showFlag<-900){ ok=true; break;}
-			if(showFlag>0){ showFlag=-1; continue;}
+			if (showFlag < -900)
+			{
+				ok = true;
+				break;
+			}
+			if (showFlag > 0)
+			{
+				showFlag = -1;
+				continue;
+			}
 			showFlag=CMath.s_int(mob.session().prompt(L("Edit which? "),""));
 			if(showFlag<=0)
 			{
@@ -7694,8 +7813,16 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			promptStatBool(mob, me,++showNumber, showFlag,"Is Shown", "ISPUBLIC");
 			promptStatCommaChoices(mob, me,CMParms.toListString(Clan.Function.values()),++showNumber, showFlag,"Powers", "FUNCTIONS",Clan.Function.values());
 
-			if(showFlag<-900){ ok=true; break;}
-			if(showFlag>0){ showFlag=-1; continue;}
+			if (showFlag < -900)
+			{
+				ok = true;
+				break;
+			}
+			if (showFlag > 0)
+			{
+				showFlag = -1;
+				continue;
+			}
 			showFlag=CMath.s_int(mob.session().prompt(L("Edit which? "),""));
 			if(showFlag<=0)
 			{
@@ -7807,8 +7934,16 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genDynamicAbilities(mob,me,"Clan & Char","clan",++showNumber,showFlag);
 			genDynamicEffects(mob,me,"Clan","clan",++showNumber,showFlag);
 
-			if(showFlag<-900){ ok=true; break;}
-			if(showFlag>0){ showFlag=-1; continue;}
+			if (showFlag < -900)
+			{
+				ok = true;
+				break;
+			}
+			if (showFlag > 0)
+			{
+				showFlag = -1;
+				continue;
+			}
 			showFlag=CMath.s_int(mob.session().prompt(L("Edit which? "),""));
 			if(showFlag<=0)
 			{
@@ -7865,8 +8000,16 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			promptStatStr(mob,me,"Enter a damage or healing formula. Use +-*/()?. @x1=caster level, @x2=target level.  Formula evaluates >0 for damage, <0 for healing. Requires Can Target!",++showNumber,showFlag,"Damage/Healing Formula","POSTCASTDAMAGE",true);
 			promptStatStr(mob,me,null,++showNumber,showFlag,"Help Text","HELP",true);
 
-			if(showFlag<-900){ ok=true; break;}
-			if(showFlag>0){ showFlag=-1; continue;}
+			if (showFlag < -900)
+			{
+				ok = true;
+				break;
+			}
+			if (showFlag > 0)
+			{
+				showFlag = -1;
+				continue;
+			}
 			showFlag=CMath.s_int(mob.session().prompt(L("Edit which? "),""));
 			if(showFlag<=0)
 			{
@@ -7934,8 +8077,16 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			}
 			promptStatStr(mob,me,null,++showNumber,showFlag,"Help Text","HELP",true);
 
-			if(showFlag<-900){ ok=true; break;}
-			if(showFlag>0){ showFlag=-1; continue;}
+			if (showFlag < -900)
+			{
+				ok = true;
+				break;
+			}
+			if (showFlag > 0)
+			{
+				showFlag = -1;
+				continue;
+			}
 			showFlag=CMath.s_int(mob.session().prompt(L("Edit which? "),""));
 			if(showFlag<=0)
 			{
@@ -8014,8 +8165,16 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			promptStatStr(mob,me,null,++showNumber,showFlag,"MSP file","SOUND",false);
 			promptStatStr(mob,me,null,++showNumber,showFlag,"Help Text","HELP",true);
 
-			if(showFlag<-900){ ok=true; break;}
-			if(showFlag>0){ showFlag=-1; continue;}
+			if (showFlag < -900)
+			{
+				ok = true;
+				break;
+			}
+			if (showFlag > 0)
+			{
+				showFlag = -1;
+				continue;
+			}
 			showFlag=CMath.s_int(mob.session().prompt(L("Edit which? "),""));
 			if(showFlag<=0)
 			{
@@ -8058,7 +8217,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		for (final String choice : choices)
 		{
 			if(newName.equalsIgnoreCase(choice))
-			{ newName=choice; found=true; break;}
+			{
+				newName = choice;
+				found = true;
+				break;
+			}
 		}
 		if(!found)
 		{
@@ -8103,7 +8266,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		for (final String choice : choices)
 		{
 			if(newName.equalsIgnoreCase(choice))
-			{ newName=choice; found=true; break;}
+			{
+				newName = choice;
+				found = true;
+				break;
+			}
 		}
 		if(!found)
 		{
@@ -8139,8 +8306,17 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genText(mob,decoded,null,null,++showNumber,showFlag,"Amount of component","AMOUNT");
 			genText(mob,decoded,null,allComponents,++showNumber,showFlag,"Type of component (?)","COMPONENTID");
 			genText(mob,decoded,null,CMLib.masking().maskHelp("\n","disallow"),++showNumber,showFlag,"Component applies-to mask (?)","MASK");
-			if(showFlag<-900){ ok=true; break;}
-			if(showFlag>0){ showFlag=-1; continue;}
+
+			if (showFlag < -900)
+			{
+				ok = true;
+				break;
+			}
+			if (showFlag > 0)
+			{
+				showFlag = -1;
+				continue;
+			}
 			showFlag=CMath.s_int(mob.session().prompt(L("Edit which? "),""));
 			if(showFlag<=0)
 			{
@@ -8204,8 +8380,17 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				}
 				break;
 			}
-			if(showFlag<-900){ ok=true; break;}
-			if(showFlag>0){ showFlag=-1; continue;}
+			
+			if (showFlag < -900)
+			{
+				ok = true;
+				break;
+			}
+			if (showFlag > 0)
+			{
+				showFlag = -1;
+				continue;
+			}
 			showFlag=CMath.s_int(mob.session().prompt(L("Edit which? "),""));
 			if(showFlag<=0)
 			{
@@ -8259,8 +8444,17 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genCulturalAbilities(mob,me,++showNumber,showFlag);
 			genDynamicEffects(mob,me,"Racial","char",++showNumber,showFlag);
 			genDynamicImmunitiess(mob,me,"Racial",++showNumber,showFlag);
-			if(showFlag<-900){ ok=true; break;}
-			if(showFlag>0){ showFlag=-1; continue;}
+
+			if (showFlag < -900)
+			{
+				ok = true;
+				break;
+			}
+			if (showFlag > 0)
+			{
+				showFlag = -1;
+				continue;
+			}
 			showFlag=CMath.s_int(mob.session().prompt(L("Edit which? "),""));
 			if(showFlag<=0)
 			{
@@ -8360,8 +8554,17 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genImage(mob,me,++showNumber,showFlag);
 			for(int x=me.getSaveStatIndex();x<me.getStatCodes().length;x++)
 				me.setStat(me.getStatCodes()[x],prompt(mob,me.getStat(me.getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(me.getStatCodes()[x])));
-			if(showFlag<-900){ ok=true; break;}
-			if(showFlag>0){ showFlag=-1; continue;}
+			
+			if (showFlag < -900)
+			{
+				ok = true;
+				break;
+			}
+			if (showFlag > 0)
+			{
+				showFlag = -1;
+				continue;
+			}
 			showFlag=CMath.s_int(mob.session().prompt(L("Edit which? "),""));
 			if(showFlag<=0)
 			{
@@ -8410,8 +8613,17 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genImage(mob,me,++showNumber,showFlag);
 			for(int x=me.getSaveStatIndex();x<me.getStatCodes().length;x++)
 				me.setStat(me.getStatCodes()[x],prompt(mob,me.getStat(me.getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(me.getStatCodes()[x])));
-			if(showFlag<-900){ ok=true; break;}
-			if(showFlag>0){ showFlag=-1; continue;}
+			
+			if (showFlag < -900)
+			{
+				ok = true;
+				break;
+			}
+			if (showFlag > 0)
+			{
+				showFlag = -1;
+				continue;
+			}
 			showFlag=CMath.s_int(mob.session().prompt(L("Edit which? "),""));
 			if(showFlag<=0)
 			{
@@ -8507,8 +8719,17 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genImage(mob,me,++showNumber,showFlag);
 			for(int x=me.getSaveStatIndex();x<me.getStatCodes().length;x++)
 				me.setStat(me.getStatCodes()[x],prompt(mob,me.getStat(me.getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(me.getStatCodes()[x])));
-			if(showFlag<-900){ ok=true; break;}
-			if(showFlag>0){ showFlag=-1; continue;}
+			
+			if (showFlag < -900)
+			{
+				ok = true;
+				break;
+			}
+			if (showFlag > 0)
+			{
+				showFlag = -1;
+				continue;
+			}
 			showFlag=CMath.s_int(mob.session().prompt(L("Edit which? "),""));
 			if(showFlag<=0)
 			{
@@ -8543,8 +8764,17 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				genBurnout(mob,(Light)me,++showNumber,showFlag);
 			for(int x=me.getSaveStatIndex();x<me.getStatCodes().length;x++)
 				me.setStat(me.getStatCodes()[x],prompt(mob,me.getStat(me.getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(me.getStatCodes()[x])));
-			if(showFlag<-900){ ok=true; break;}
-			if(showFlag>0){ showFlag=-1; continue;}
+			
+			if (showFlag < -900)
+			{
+				ok = true;
+				break;
+			}
+			if (showFlag > 0)
+			{
+				showFlag = -1;
+				continue;
+			}
 			showFlag=CMath.s_int(mob.session().prompt(L("Edit which? "),""));
 			if(showFlag<=0)
 			{
@@ -8589,8 +8819,17 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genImage(mob,me,++showNumber,showFlag);
 			for(int x=me.getSaveStatIndex();x<me.getStatCodes().length;x++)
 				me.setStat(me.getStatCodes()[x],prompt(mob,me.getStat(me.getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(me.getStatCodes()[x])));
-			if(showFlag<-900){ ok=true; break;}
-			if(showFlag>0){ showFlag=-1; continue;}
+
+			if (showFlag < -900)
+			{
+				ok = true;
+				break;
+			}
+			if (showFlag > 0)
+			{
+				showFlag = -1;
+				continue;
+			}
 			showFlag=CMath.s_int(mob.session().prompt(L("Edit which? "),""));
 			if(showFlag<=0)
 			{
@@ -8704,8 +8943,17 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genImage(mob,me,++showNumber,showFlag);
 			for(int x=me.getSaveStatIndex();x<me.getStatCodes().length;x++)
 				me.setStat(me.getStatCodes()[x],prompt(mob,me.getStat(me.getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(me.getStatCodes()[x])));
-			if(showFlag<-900){ ok=true; break;}
-			if(showFlag>0){ showFlag=-1; continue;}
+			
+			if (showFlag < -900)
+			{
+				ok = true;
+				break;
+			}
+			if (showFlag > 0)
+			{
+				showFlag = -1;
+				continue;
+			}
 			showFlag=CMath.s_int(mob.session().prompt(L("Edit which? "),""));
 			if(showFlag<=0)
 			{
@@ -8782,8 +9030,17 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genImage(mob,me,++showNumber,showFlag);
 			for(int x=me.getSaveStatIndex();x<me.getStatCodes().length;x++)
 				me.setStat(me.getStatCodes()[x],prompt(mob,me.getStat(me.getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(me.getStatCodes()[x])));
-			if(showFlag<-900){ ok=true; break;}
-			if(showFlag>0){ showFlag=-1; continue;}
+			
+			if (showFlag < -900)
+			{
+				ok = true;
+				break;
+			}
+			if (showFlag > 0)
+			{
+				showFlag = -1;
+				continue;
+			}
 			showFlag=CMath.s_int(mob.session().prompt(L("Edit which? "),""));
 			if(showFlag<=0)
 			{
@@ -8854,8 +9111,17 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genImage(mob,me,++showNumber,showFlag);
 			for(int x=me.getSaveStatIndex();x<me.getStatCodes().length;x++)
 				me.setStat(me.getStatCodes()[x],prompt(mob,me.getStat(me.getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(me.getStatCodes()[x])));
-			if(showFlag<-900){ ok=true; break;}
-			if(showFlag>0){ showFlag=-1; continue;}
+
+			if (showFlag < -900)
+			{
+				ok = true;
+				break;
+			}
+			if (showFlag > 0)
+			{
+				showFlag = -1;
+				continue;
+			}
 			showFlag=CMath.s_int(mob.session().prompt(L("Edit which? "),""));
 			if(showFlag<=0)
 			{
@@ -8902,8 +9168,17 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genImage(mob,me,++showNumber,showFlag);
 			for(int x=me.getSaveStatIndex();x<me.getStatCodes().length;x++)
 				me.setStat(me.getStatCodes()[x],prompt(mob,me.getStat(me.getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(me.getStatCodes()[x])));
-			if(showFlag<-900){ ok=true; break;}
-			if(showFlag>0){ showFlag=-1; continue;}
+			
+			if (showFlag < -900)
+			{
+				ok = true;
+				break;
+			}
+			if (showFlag > 0)
+			{
+				showFlag = -1;
+				continue;
+			}
 			showFlag=CMath.s_int(mob.session().prompt(L("Edit which? "),""));
 			if(showFlag<=0)
 			{
@@ -8951,8 +9226,17 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genImage(mob,me,++showNumber,showFlag);
 			for(int x=me.getSaveStatIndex();x<me.getStatCodes().length;x++)
 				me.setStat(me.getStatCodes()[x],prompt(mob,me.getStat(me.getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(me.getStatCodes()[x])));
-			if(showFlag<-900){ ok=true; break;}
-			if(showFlag>0){ showFlag=-1; continue;}
+			
+			if (showFlag < -900)
+			{
+				ok = true;
+				break;
+			}
+			if (showFlag > 0)
+			{
+				showFlag = -1;
+				continue;
+			}
 			showFlag=CMath.s_int(mob.session().prompt(L("Edit which? "),""));
 			if(showFlag<=0)
 			{
@@ -9066,8 +9350,17 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genImage(mob,me,++showNumber,showFlag);
 			for(int x=me.getSaveStatIndex();x<me.getStatCodes().length;x++)
 				me.setStat(me.getStatCodes()[x],prompt(mob,me.getStat(me.getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(me.getStatCodes()[x])));
-			if(showFlag<-900){ ok=true; break;}
-			if(showFlag>0){ showFlag=-1; continue;}
+			
+			if (showFlag < -900)
+			{
+				ok = true;
+				break;
+			}
+			if (showFlag > 0)
+			{
+				showFlag = -1;
+				continue;
+			}
 			showFlag=CMath.s_int(mob.session().prompt(L("Edit which? "),""));
 			if(showFlag<=0)
 			{
@@ -9196,8 +9489,17 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(me.playerStats()!=null)
 			for(int x=me.playerStats().getSaveStatIndex();x<me.playerStats().getStatCodes().length;x++)
 				me.playerStats().setStat(me.playerStats().getStatCodes()[x],prompt(mob,me.playerStats().getStat(me.playerStats().getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(me.playerStats().getStatCodes()[x])));
-			if(showFlag<-900){ ok=true; break;}
-			if(showFlag>0){ showFlag=-1; continue;}
+			
+			if (showFlag < -900)
+			{
+				ok = true;
+				break;
+			}
+			if (showFlag > 0)
+			{
+				showFlag = -1;
+				continue;
+			}
 			showFlag=CMath.s_int(mob.session().prompt(L("Edit which? "),""));
 			if(showFlag<=0)
 			{
@@ -9457,9 +9759,18 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genClanStatus(mob,C,++showNumber,showFlag);
 			C.setRivalrous(prompt(mob,C.isRivalrous(),++showNumber,showFlag,"Rivalrous Clan"));
 			genClanMembers(mob,C,++showNumber,showFlag);
+			
 			/*setClanRelations, votes?*/
-			if(showFlag<-900){ ok=true; break;}
-			if(showFlag>0){ showFlag=-1; continue;}
+			if (showFlag < -900)
+			{
+				ok = true;
+				break;
+			}
+			if (showFlag > 0)
+			{
+				showFlag = -1;
+				continue;
+			}
 			showFlag=CMath.s_int(mob.session().prompt(L("Edit which? "),""));
 			if(showFlag<=0)
 			{
@@ -9578,8 +9889,17 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genImage(mob,me,++showNumber,showFlag);
 			for(int x=me.getSaveStatIndex();x<me.getStatCodes().length;x++)
 				me.setStat(me.getStatCodes()[x],prompt(mob,me.getStat(me.getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(me.getStatCodes()[x])));
-			if(showFlag<-900){ ok=true; break;}
-			if(showFlag>0){ showFlag=-1; continue;}
+			
+			if (showFlag < -900)
+			{
+				ok = true;
+				break;
+			}
+			if (showFlag > 0)
+			{
+				showFlag = -1;
+				continue;
+			}
 			showFlag=CMath.s_int(mob.session().prompt(L("Edit which? "),""));
 			if(showFlag<=0)
 			{
@@ -9624,8 +9944,17 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genAffects(mob,R,++showNumber,showFlag);
 			for(int x=R.getSaveStatIndex();x<R.getStatCodes().length;x++)
 				R.setStat(R.getStatCodes()[x],prompt(mob,R.getStat(R.getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(R.getStatCodes()[x])));
-			if(showFlag<-900){ ok=true; break;}
-			if(showFlag>0){ showFlag=-1; continue;}
+			
+			if (showFlag < -900)
+			{
+				ok = true;
+				break;
+			}
+			if (showFlag > 0)
+			{
+				showFlag = -1;
+				continue;
+			}
 			showFlag=CMath.s_int(mob.session().prompt(L("Edit which? "),""));
 			if(showFlag<=0)
 			{
@@ -9684,8 +10013,17 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genTattoos(mob,A,++showNumber,showFlag);
 			for(int x=A.getSaveStatIndex();x<A.getStatCodes().length;x++)
 				A.setStat(A.getStatCodes()[x],prompt(mob,A.getStat(A.getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(A.getStatCodes()[x])));
-			if(showFlag<-900){ ok=true; break;}
-			if(showFlag>0){ showFlag=-1; continue;}
+			
+			if (showFlag < -900)
+			{
+				ok = true;
+				break;
+			}
+			if (showFlag > 0)
+			{
+				showFlag = -1;
+				continue;
+			}
 			showFlag=CMath.s_int(mob.session().prompt(L("Edit which? "),""));
 			if(showFlag<=0)
 			{
@@ -9711,8 +10049,16 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genAbility(mob,thang,++showNumber,showFlag);
 			genRejuv(mob,thang,++showNumber,showFlag);
 			genMiscText(mob,thang,++showNumber,showFlag);
-			if(showFlag<-900){ ok=true; break;}
-			if(showFlag>0){ showFlag=-1; continue;}
+			if (showFlag < -900)
+			{
+				ok = true;
+				break;
+			}
+			if (showFlag > 0)
+			{
+				showFlag = -1;
+				continue;
+			}
 			showFlag=CMath.s_int(mob.session().prompt(L("Edit which? "),""));
 			if(showFlag<=0)
 			{
@@ -9739,8 +10085,16 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genRejuv(mob,thang,++showNumber,showFlag);
 			genUses(mob,thang,++showNumber,showFlag);
 			genMiscText(mob,thang,++showNumber,showFlag);
-			if(showFlag<-900){ ok=true; break;}
-			if(showFlag>0){ showFlag=-1; continue;}
+			if (showFlag < -900)
+			{
+				ok = true;
+				break;
+			}
+			if (showFlag > 0)
+			{
+				showFlag = -1;
+				continue;
+			}
 			showFlag=CMath.s_int(mob.session().prompt(L("Edit which? "),""));
 			if(showFlag<=0)
 			{
@@ -9796,16 +10150,24 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			for(int x=myArea.getSaveStatIndex();x<myArea.getStatCodes().length;x++)
 				myArea.setStat(myArea.getStatCodes()[x],prompt(mob,myArea.getStat(myArea.getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(myArea.getStatCodes()[x])));
 			if((showFlag<=0)||((showFlag>=showNumber)&&(showFlag<=showNumber+7)))
-				mob.tell(L("*** Area Economics settings: "));
-				genCurrency(mob,myArea,++showNumber,showFlag);
-				genEconomics1(mob,myArea,++showNumber,showFlag);
-				genEconomics2(mob,myArea,++showNumber,showFlag);
-				genEconomics3(mob,myArea,++showNumber,showFlag);
-				genEconomics4(mob,myArea,++showNumber,showFlag);
-				genEconomics5(mob,myArea,++showNumber,showFlag);
-				genEconomics6(mob,myArea,++showNumber,showFlag);
-			if(showFlag<-900){ ok=true; break;}
-			if(showFlag>0){ showFlag=-1; continue;}
+			mob.tell(L("*** Area Economics settings: "));
+			genCurrency(mob,myArea,++showNumber,showFlag);
+			genEconomics1(mob,myArea,++showNumber,showFlag);
+			genEconomics2(mob,myArea,++showNumber,showFlag);
+			genEconomics3(mob,myArea,++showNumber,showFlag);
+			genEconomics4(mob,myArea,++showNumber,showFlag);
+			genEconomics5(mob,myArea,++showNumber,showFlag);
+			genEconomics6(mob,myArea,++showNumber,showFlag);
+			if (showFlag < -900)
+			{
+				ok = true;
+				break;
+			}
+			if (showFlag > 0)
+			{
+				showFlag = -1;
+				continue;
+			}
 			showFlag=CMath.s_int(mob.session().prompt(L("Edit which? "),""));
 			if(showFlag<=0)
 			{
@@ -9838,8 +10200,16 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			mapped.originalSkillPreReqList(prompt(mob,mapped.originalSkillPreReqList(),++showNumber,showFlag,"Required Skills (?): ", true, "Space delimited list of Ability IDs.  " +
 					"Put a required proficiency level in parenthesis after the Ability ID if desired.  " +
 					"For example: Skill_Write Skill_Trip Skill_Dirt(25) Hunting"));
-			if(showFlag<-900){ ok=true; break;}
-			if(showFlag>0){ showFlag=-1; continue;}
+			if (showFlag < -900)
+			{
+				ok = true;
+				break;
+			}
+			if (showFlag > 0)
+			{
+				showFlag = -1;
+				continue;
+			}
 			showFlag=CMath.s_int(mob.session().prompt(L("Edit which? "),""));
 			if(showFlag<=0)
 			{
@@ -9877,8 +10247,16 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				me.setMaxTechLevelDiff(me.getMinTechLevelDiff());
 			me.setManufactureredTypesList(promptCommaList(mob,me.getManufactureredTypesList(),++showNumber,showFlag,"Manufact. Types: ",
 					"Choices: "+CMParms.toListString(TechType.values()),CMEVAL_INSTANCE,TechType.values()));
-			if(showFlag<-900){ ok=true; break;}
-			if(showFlag>0){ showFlag=-1; continue;}
+			if (showFlag < -900)
+			{
+				ok = true;
+				break;
+			}
+			if (showFlag > 0)
+			{
+				showFlag = -1;
+				continue;
+			}
 			showFlag=CMath.s_int(mob.session().prompt(L("Edit which? "),""));
 			if(showFlag<=0)
 			{
