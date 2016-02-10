@@ -82,7 +82,7 @@ public class GenFoodResource extends GenFood implements RawMaterial, Food
 	public boolean rebundle()
 	{
 		return false;
-		}//CMLib.materials().rebundle(this);
+		//CMLib.materials().rebundle(this);
 	}
 
 	@Override
