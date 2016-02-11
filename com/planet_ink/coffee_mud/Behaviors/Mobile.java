@@ -205,10 +205,15 @@ public class Mobile extends ActiveTicker implements MobileBehavior
 															.plus(TrackingLibrary.TrackingFlag.AREAONLY)
 															.plus(TrackingLibrary.TrackingFlag.OPENONLY);
 				List<Room> choices=CMLib.tracking().getRadiantRooms(room, flags, 5);
-				if(choices.size()>0)
+				final Room oldRoom=room;
+				for(int i=0;i<choices.size();i++)
 				{
 					room=choices.get(CMLib.dice().roll(1, choices.size(), -1));
-					CMLib.tracking().wanderFromTo(mob, room, false);
+					if(okRoomForMe(mob,oldRoom,room,true))
+					{
+						CMLib.tracking().wanderFromTo(mob, room, false);
+						break;
+					}
 				}
 			}
 			else
