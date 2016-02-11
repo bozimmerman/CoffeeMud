@@ -1939,6 +1939,9 @@ public class CMProps extends Properties
 		setWhitelist(CMProps.WhiteList.LOGINS,getStr("WHITELISTLOGINS"));
 		setWhitelist(CMProps.WhiteList.NEWPLAYERS,getStr("WHITELISTIPSNEWPLAYERS"));
 
+		if(p().sysBools[Bool.MUDSHUTTINGDOWN.ordinal()]==null)
+			p().sysBools[Bool.MUDSHUTTINGDOWN.ordinal()]=Boolean.FALSE;
+		
 		for(final StrList strListVar : StrList.values())
 		{
 			final String list=getStr(strListVar.toString().toUpperCase().trim());
