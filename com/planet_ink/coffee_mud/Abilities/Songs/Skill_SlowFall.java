@@ -59,7 +59,7 @@ public class Skill_SlowFall extends BardSkill
 	{
 		if(affected!=null)
 		{
-			if((affected.fetchEffect("Falling")!=null)
+			if((CMath.bset(affected.phyStats().disposition(),PhyStats.IS_FALLING))
 			   &&((!(affected instanceof MOB))
 				  ||(((MOB)affected).fetchAbility(ID())==null)
 				  ||proficiencyCheck((MOB)affected,0,false)))
