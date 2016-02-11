@@ -35,19 +35,49 @@ import java.util.*;
 
 public class Spell_MirrorImage extends Spell
 {
-	@Override public String ID() { return "Spell_MirrorImage"; }
-	private final static String localizedName = CMLib.lang().L("Mirror Image");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Mirror Image spell)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
+	@Override
+	public String ID()
+	{
+		return "Spell_MirrorImage";
+	}
 
-	private final	Random randomizer = new Random(System.currentTimeMillis());
-	protected int numberOfImages = 0;
-	protected boolean notAgain=false;
+	private final static String	localizedName	= CMLib.lang().L("Mirror Image");
 
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Mirror Image spell)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_SELF;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL | Ability.DOMAIN_ILLUSION;
+	}
+
+	private final Random	randomizer		= new Random(System.currentTimeMillis());
+	protected int			numberOfImages	= 0;
+	protected boolean		notAgain		= false;
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
@@ -74,13 +104,14 @@ public class Spell_MirrorImage extends Spell
 			final int numberOfTargets = numberOfImages + intAdjustment;
 			if(randomizer.nextInt() % numberOfTargets >= intAdjustment)
 			{
-				if(mob.location().show(mob,msg.source(),CMMsg.MSG_NOISYMOVEMENT,L("<T-NAME> attack(s) a mirrored image!")))
+				if(mob.location().show(msg.source(),mob,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> attack(s) a mirrored image!")))
 					numberOfImages--;
 				return false;
 			}
 		}
 		return true;
 	}
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -113,8 +144,11 @@ public class Spell_MirrorImage extends Spell
 			}
 		}
 		else
-		if((msg.amITarget(mob.location())&&(!msg.amISource(mob))&&((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE)))
-		&&((CMLib.flags().canBeSeenBy(mob,msg.source()))&&(mob.displayText(msg.source()).length()>0)))
+		if((msg.amITarget(mob.location())
+		&&(!msg.amISource(mob))
+		&&((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE))
+		&&(CMLib.flags().canBeSeenBy(mob,msg.source()))
+		&&(mob.displayText(msg.source()).length()>0)))
 		{
 			final StringBuffer Say=new StringBuffer("");
 			final boolean compress=msg.source().isAttributeSet(MOB.Attrib.COMPRESS);
