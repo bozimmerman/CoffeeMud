@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.Areas.interfaces.Area;
 import com.planet_ink.coffee_mud.Common.interfaces.Clan;
 import com.planet_ink.coffee_mud.Items.interfaces.Item;
 import com.planet_ink.coffee_mud.Libraries.interfaces.CatalogLibrary;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ClanManager;
 import com.planet_ink.coffee_mud.Libraries.interfaces.WorldMap;
 import com.planet_ink.coffee_mud.Locales.interfaces.Room;
 import com.planet_ink.coffee_mud.MOBS.interfaces.MOB;
@@ -2135,12 +2136,13 @@ public class CMFile extends File
 		{
 			if((!F.exists())&&(F.getParent()!=null))
 			{
-				if(CMLib.clans()!=null)
+				final ClanManager clanLib = CMLib.clans();
+				if(clanLib!=null)
 				{
-					String templatePath = CMLib.clans().getClanWebTemplateDir(F.getAbsolutePath());
+					String templatePath = clanLib.getClanWebTemplateDir(F.getAbsolutePath());
 					if(templatePath==null)
 					{
-						templatePath = CMLib.clans().getClanWebTemplateDir(F.getParent());
+						templatePath = clanLib.getClanWebTemplateDir(F.getParent());
 						if(templatePath!=null)
 							templatePath += "/"+F.getName();
 					}
