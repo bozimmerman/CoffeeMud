@@ -2135,15 +2135,18 @@ public class CMFile extends File
 		{
 			if((!F.exists())&&(F.getParent()!=null))
 			{
-				String templatePath = CMLib.clans().getClanWebTemplateDir(F.getAbsolutePath());
-				if(templatePath==null)
+				if(CMLib.clans()!=null)
 				{
-					templatePath = CMLib.clans().getClanWebTemplateDir(F.getParent());
+					String templatePath = CMLib.clans().getClanWebTemplateDir(F.getAbsolutePath());
+					if(templatePath==null)
+					{
+						templatePath = CMLib.clans().getClanWebTemplateDir(F.getParent());
+						if(templatePath!=null)
+							templatePath += "/"+F.getName();
+					}
 					if(templatePath!=null)
-						templatePath += "/"+F.getName();
+						F=new CMFile(templatePath,null);
 				}
-				if(templatePath!=null)
-					F=new CMFile(templatePath,null);
 			}
 			return F;
 		}
