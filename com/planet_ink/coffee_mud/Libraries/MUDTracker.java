@@ -1158,8 +1158,8 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			if(!mob.isMonster())
 			{
 				final int expense = running
-										? CMProps.getIntVar(CMProps.Int.RUNCOST)
-										: CMProps.getIntVar(CMProps.Int.WALKCOST);
+									? CMProps.getIntVar(CMProps.Int.RUNCOST)
+									: CMProps.getIntVar(CMProps.Int.WALKCOST);
 				for(int i=0;i<expense;i++)
 					CMLib.combat().expendEnergy(mob,true);
 			}
@@ -1176,27 +1176,33 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 				mob.playerStats().adjHygiene(mob.location().pointsPerMove());
 		}
 
-		List<Rider> riders=null;
+		List<Rider> riders;
 		if(!noriders)
 		{
 			riders=ridersAhead(mob,(Room)leaveMsg.target(),(Room)enterMsg.target(),directionCode,flee, running);
 			if(riders==null)
 				return false;
 		}
-		List<CMMsg> enterTrailersSoFar=null;
-		List<CMMsg> leaveTrailersSoFar=null;
+		else
+			riders=null;
+		List<CMMsg> enterTrailersSoFar;
+		List<CMMsg> leaveTrailersSoFar;
 		if((leaveMsg.trailerMsgs()!=null)&&(leaveMsg.trailerMsgs().size()>0))
 		{
 			leaveTrailersSoFar=new LinkedList<CMMsg>();
 			leaveTrailersSoFar.addAll(leaveMsg.trailerMsgs());
 			leaveMsg.trailerMsgs().clear();
 		}
+		else
+			leaveTrailersSoFar=null;
 		if((enterMsg.trailerMsgs()!=null)&&(enterMsg.trailerMsgs().size()>0))
 		{
 			enterTrailersSoFar=new LinkedList<CMMsg>();
 			enterTrailersSoFar.addAll(enterMsg.trailerMsgs());
 			enterMsg.trailerMsgs().clear();
 		}
+		else
+			enterTrailersSoFar=null;
 		if(exit!=null)
 			exit.executeMsg(mob,enterMsg);
 		if(mob.location()!=null)
