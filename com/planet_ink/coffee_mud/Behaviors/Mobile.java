@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -194,32 +193,57 @@ public class Mobile extends ActiveTicker implements MobileBehavior
 		int tries=30;
 		while((--tries>0)&&(!CMLib.flags().canBreatheHere(mob, room))) // the fish exception
 		{
-			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+			if((room instanceof GridLocale)&&(room.getGridParent()==null))
 			{
-				final Room R=room.getRoomInDir(d);
-				if((R!=null)&&(okRoomForMe(mob,room,R,false)))
+				room = ((GridLocale)room).getRandomGridChild();
+				CMLib.tracking().wanderFromTo(mob, room, false);
+			}
+			else
+			if(CMLib.dice().rollPercentage()>50)
+			{
+				final TrackingLibrary.TrackingFlags flags = CMLib.tracking().newFlags()
+															.plus(TrackingLibrary.TrackingFlag.AREAONLY)
+															.plus(TrackingLibrary.TrackingFlag.OPENONLY);
+				List<Room> choices=CMLib.tracking().getRadiantRooms(room, flags, 5);
+				if(choices.size()>0)
 				{
-					CMLib.tracking().walk(mob, d, true, true);
-					if(mob.location()!=room)
+					room=choices.get(CMLib.dice().roll(1, choices.size(), -1));
+					CMLib.tracking().wanderFromTo(mob, room, false);
+				}
+			}
+			else
+			{
+				int dir=-1;
+				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+				{
+					final Room R=room.getRoomInDir(d);
+					if((R!=null)&&(okRoomForMe(mob,room,R,true)))
 					{
-						return true;
+						dir=d;
+						break;
+					}
+				}
+				if(dir>=0)
+					CMLib.tracking().walk(mob, dir, true, true);
+				else
+				{
+					for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+					{
+						final Room R=room.getRoomInDir(d);
+						if((R!=null)&&(okRoomForMe(mob,room,R,false)))
+						{
+							CMLib.tracking().walk(mob, d, true, true);
+							if(mob.location()!=room)
+							{
+								return true;
+							}
+						}
 					}
 				}
 			}
-			int dir=-1;
-			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
-			{
-				final Room R=room.getRoomInDir(d);
-				if((R!=null)&&(okRoomForMe(mob,room,R,true)))
-				{
-					dir=d;
-					break;
-				}
-			}
-			if(dir>=0)
-				CMLib.tracking().walk(mob, dir, true, true);
-			firstRun=true; // keep non-breathers in constant panic
 		}
+		if(tries<=0)
+			firstRun=true; // keep non-breathers in constant panic
 		return false;
 	}
 
