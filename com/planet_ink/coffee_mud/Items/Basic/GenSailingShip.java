@@ -46,11 +46,16 @@ public class GenSailingShip extends StdBoardable
 		return "GenSailingShip";
 	}
 
-	protected volatile int		 directionFacing = -1;
+	protected volatile int		 coarseDirection = -1;
 	protected volatile boolean	 anchorDown		 = true;
 	protected volatile int		 tickDown		 = -1;
 	protected final List<Integer>courseDirections= new Vector<Integer>();
-
+	
+	protected volatile int		 	directionFacing	 = 0;
+	protected volatile Room		 	shipCombatRoom	 = null;
+	protected PairList<Item,int[]>	coordinates		 = null;
+	protected final int[]			nextManeuver	 = null;  // 0=dir,1=num spots, 256 mask for change facing
+	
 	public GenSailingShip()
 	{
 		super();
@@ -109,7 +114,8 @@ public class GenSailingShip extends StdBoardable
 		STEER,
 		SAIL,
 		COURSE,
-		SET_COURSE
+		SET_COURSE,
+		MANEUVER,
 	}
 	
 	@Override
@@ -207,7 +213,7 @@ public class GenSailingShip extends StdBoardable
 						msg.source().tell(L("The ship has moved!"));
 						return false;
 					}
-					this.directionFacing=-1;
+					this.coarseDirection=-1;
 					int dir=Directions.getCompassDirectionCode(secondWord);
 					if(dir<0)
 					{
@@ -283,7 +289,7 @@ public class GenSailingShip extends StdBoardable
 						msg.source().tell(L("The ship has moved!"));
 						return false;
 					}
-					this.directionFacing=-1;
+					this.coarseDirection=-1;
 					final Room R=CMLib.map().roomLocation(this);
 					if(R==null)
 					{
@@ -325,6 +331,12 @@ public class GenSailingShip extends StdBoardable
 					if(anchorDown)
 						msg.source().tell(L("The anchor is down, so you won`t be moving anywhere."));
 					return false;
+				}
+				case MANEUVER:
+				{
+					//TODO: only once per combat tick!
+					// only if there's an object!
+					break;
 				}
 				}
 			}
@@ -403,7 +415,7 @@ public class GenSailingShip extends StdBoardable
 		{
 			if(amDestroyed())
 				return false;
-			if((!this.anchorDown) && (area != null) && (directionFacing != -1) && (--tickDown <=0))
+			if((!this.anchorDown) && (area != null) && (coarseDirection != -1) && (--tickDown <=0))
 			{
 				int speed=phyStats().ability();
 				if(speed <= 0)
@@ -412,17 +424,17 @@ public class GenSailingShip extends StdBoardable
 				
 				for(int s=0;s<speed;s++)
 				{
-					if(sail(directionFacing)!=-1)
+					if(sail(coarseDirection)!=-1)
 					{
 						if(this.courseDirections.size()>0)
 						{
 							final Integer newDir=this.courseDirections.remove(0);
-							directionFacing = newDir.intValue();
+							coarseDirection = newDir.intValue();
 						}
 					}
 					else
 					{
-						directionFacing=-1;
+						coarseDirection=-1;
 						break;
 					}
 				}
@@ -450,18 +462,29 @@ public class GenSailingShip extends StdBoardable
 					if(this.anchorDown)
 						msg.addTrailerMsg(CMClass.getMsg(msg.source(), null, null, CMMsg.MSG_OK_VISUAL, L("\n\r^HThe anchor on @x1 is lowered, holding her in place.^.^?",name(msg.source())), CMMsg.NO_EFFECT, null, CMMsg.NO_EFFECT, null));
 					else
-					if((this.directionFacing >= 0)&&(this.courseDirections.size()>0))
-						msg.addTrailerMsg(CMClass.getMsg(msg.source(), null, null, CMMsg.MSG_OK_VISUAL, L("\n\r^H@x1 is under full sail, traveling @x2^.^?",name(msg.source()), Directions.getDirectionName(directionFacing)), CMMsg.NO_EFFECT, null, CMMsg.NO_EFFECT, null));
+					if((this.coarseDirection >= 0)&&(this.courseDirections.size()>0))
+						msg.addTrailerMsg(CMClass.getMsg(msg.source(), null, null, CMMsg.MSG_OK_VISUAL, L("\n\r^H@x1 is under full sail, traveling @x2^.^?",name(msg.source()), Directions.getDirectionName(coarseDirection)), CMMsg.NO_EFFECT, null, CMMsg.NO_EFFECT, null));
 				}
 				break;
 			case CMMsg.TYP_LEAVE:
 			case CMMsg.TYP_ENTER:
-				if((!msg.source().Name().equals(Name()))
-				&&(owner() instanceof Room)
+				if((owner() instanceof Room)
 				&&(msg.target() instanceof Room)
-				&&(((Room)msg.target()).getArea()!=area)
-				&&(!getDestinationRoom().isHere(msg.tool())))
-					sendAreaMessage(CMClass.getMsg(msg.source(), msg.target(), msg.tool(), CMMsg.MSG_OK_VISUAL, null, null, L("^HOff the deck you see: ^N")+msg.othersMessage()), true);
+				&&(((Room)msg.target()).getArea()!=area))
+				{
+					if((msg.source().riding() instanceof GenSailingShip)
+					&&(msg.source().Name().equals(msg.source().riding().Name())))
+					{
+						//TODO: no matter if its me or someone else,
+						// the map needs creation or adjusting or nulling
+						// or something
+					}
+					if((!msg.source().Name().equals(Name()))
+					&&(!getDestinationRoom().isHere(msg.tool()))) // whats this second condition for?
+					{
+						sendAreaMessage(CMClass.getMsg(msg.source(), msg.target(), msg.tool(), CMMsg.MSG_OK_VISUAL, null, null, L("^HOff the deck you see: ^N")+msg.othersMessage()), true);
+					}
+				}
 				break;
 			}
 		}
@@ -520,6 +543,7 @@ public class GenSailingShip extends StdBoardable
 		final Room thisRoom=CMLib.map().roomLocation(this);
 		if(thisRoom != null)
 		{
+			directionFacing = direction;
 			final Room destRoom=thisRoom.getRoomInDir(direction);
 			final Exit exit=thisRoom.getExitInDir(direction);
 			if((destRoom!=null)&&(exit!=null))
@@ -541,7 +565,7 @@ public class GenSailingShip extends StdBoardable
 				mob.phyStats().setDisposition(mob.phyStats().disposition()|PhyStats.IS_SWIMMING);
 				try
 				{
-					this.directionFacing = -1;
+					this.coarseDirection = -1;
 					final CMMsg enterMsg=CMClass.getMsg(mob,destRoom,exit,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,L("<S-NAME> sail(s) in from @x1.",otherDirectionName));
 					final CMMsg leaveMsg=CMClass.getMsg(mob,thisRoom,opExit,CMMsg.MSG_LEAVE,null,CMMsg.MSG_LEAVE,null,CMMsg.MSG_LEAVE,L("<S-NAME> sail(s) @x1.",directionName));
 					if((exit.okMessage(mob,enterMsg))
@@ -616,12 +640,13 @@ public class GenSailingShip extends StdBoardable
 	
 	protected boolean steer(final MOB mob, final Room R, final int dir)
 	{
+		directionFacing = dir;
 		CMMsg msg2=CMClass.getMsg(mob, CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> change(s) coarse, steering @x1 @x2.",name(mob),Directions.getDirectionName(dir)));
 		if((R.okMessage(mob, msg2) && this.okAreaMessage(msg2, true)))
 		{
 			R.send(mob, msg2); // this lets the source know, i guess
 			this.sendAreaMessage(msg2, true); // this just sends to "others"
-			this.directionFacing=dir;
+			this.coarseDirection=dir;
 			return true;
 		}
 		return false;
@@ -629,12 +654,13 @@ public class GenSailingShip extends StdBoardable
 	
 	protected boolean sail(final MOB mob, final Room R, final int dir)
 	{
+		directionFacing = dir;
 		CMMsg msg2=CMClass.getMsg(mob, R, R.getExitInDir(dir), CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> sail(s) @x1 @x2.",name(mob),Directions.getDirectionName(dir)));
 		if((R.okMessage(mob, msg2) && this.okAreaMessage(msg2, true)))
 		{
 			R.send(mob, msg2); // this lets the source know, i guess
 			this.sendAreaMessage(msg2, true); // this just sends to "others"
-			this.directionFacing=dir;
+			this.coarseDirection=dir;
 			return true;
 		}
 		return false;
