@@ -21,9 +21,9 @@ import java.util.concurrent.atomic.AtomicLong;
 */
 public class WeakArrayList<T> extends AbstractList<T>
 {
-	private ArrayList<WeakReference<T>>	list;
-	private AtomicBoolean				needsCleaning	= new AtomicBoolean(false);
-	private AtomicLong					lastCleaning	= new AtomicLong(0);
+	private final ArrayList<WeakReference<T>>	list;
+	private final AtomicBoolean				needsCleaning	= new AtomicBoolean(false);
+	private final AtomicLong					lastCleaning	= new AtomicLong(0);
 	private static final long			cleanIntervalMs	= 30000;
 
 	public WeakArrayList()
@@ -99,13 +99,13 @@ public class WeakArrayList<T> extends AbstractList<T>
 		{
 			WeakReference<T> ref =it.next();
 			if (ref.get() == null)
-				list.remove(ref);
+				it.remove();
 		}
 		this.needsCleaning.set(false);
 		this.lastCleaning.set(System.currentTimeMillis());
 	}
 	
-	private Filterer<T> WeakFilterer = new Filterer<T>()
+	private final Filterer<T> WeakFilterer = new Filterer<T>()
 	{
 		@Override
 		public boolean passesFilter(T obj)
@@ -114,7 +114,7 @@ public class WeakArrayList<T> extends AbstractList<T>
 		}
 	};
 	
-	private Converter<WeakReference<T>, T> WeakConverter = new Converter<WeakReference<T>, T>()
+	private final Converter<WeakReference<T>, T> WeakConverter = new Converter<WeakReference<T>, T>()
 	{
 		@Override
 		public T convert(WeakReference<T> obj)

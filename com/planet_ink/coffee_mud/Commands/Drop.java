@@ -112,6 +112,9 @@ public class Drop extends StdCommand
 			return false;
 		}
 		commands.remove(0);
+		final Room R=mob.location();
+		if(R==null)
+			return false;
 
 		// uncommenting this allows dropping directly from containers
 		// "drop all sack" will no longer drop all of your "sack", but will drop
@@ -157,8 +160,8 @@ public class Drop extends StdCommand
 						return false;
 					}
 					final CMMsg newMsg=CMClass.getMsg(mob,dropThis,null,CMMsg.MSG_REMOVE,null);
-					if(mob.location().okMessage(mob,newMsg))
-						mob.location().send(mob,newMsg);
+					if(R.okMessage(mob,newMsg))
+						R.send(mob,newMsg);
 					else
 						return false;
 				}
@@ -185,8 +188,8 @@ public class Drop extends StdCommand
 			if(!I.amDestroyed())
 				drop(mob,I,false,true,false);
 		}
-		mob.location().recoverRoomStats();
-		mob.location().recoverRoomStats();
+		R.recoverRoomStats();
+		R.recoverRoomStats();
 		return false;
 	}
 

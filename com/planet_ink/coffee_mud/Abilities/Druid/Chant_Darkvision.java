@@ -37,14 +37,45 @@ import java.util.List;
 
 public class Chant_Darkvision extends Chant
 {
-	@Override public String ID() { return "Chant_Darkvision"; }
-	private final static String localizedName = CMLib.lang().L("Darkvision");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Darkvision)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override
+	public String ID()
+	{
+		return "Chant_Darkvision";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Darkvision");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Darkvision)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT | Ability.DOMAIN_DEEPMAGIC;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_SELF;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
@@ -90,6 +121,10 @@ public class Chant_Darkvision extends Chant
 			mob.tell(target,null,null,L("<S-NAME> already <S-HAS-HAVE> darkvision."));
 			return false;
 		}
+		
+		final Room R=mob.location();
+		if(R==null)
+			return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -100,9 +135,9 @@ public class Chant_Darkvision extends Chant
 		{
 			invoker=mob;
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<S-NAME> gain(s) darkvision!"):L("^S<S-NAME> chant(s) for darkvision!^?"));
-			if(mob.location().okMessage(mob,msg))
+			if(R.okMessage(mob,msg))
 			{
-				mob.location().send(mob,msg);
+				R.send(mob,msg);
 				beneficialAffect(mob,target,asLevel,0);
 			}
 		}
