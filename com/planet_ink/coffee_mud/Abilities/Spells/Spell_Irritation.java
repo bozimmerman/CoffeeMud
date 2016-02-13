@@ -35,13 +35,43 @@ import java.util.*;
 
 public class Spell_Irritation extends Spell
 {
-	@Override public String ID() { return "Spell_Irritation"; }
-	private final static String localizedName = CMLib.lang().L("Irritation");
-	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
+	@Override
+	public String ID()
+	{
+		return "Spell_Irritation";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Irritation");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL | Ability.DOMAIN_ENCHANTMENT;
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
@@ -90,8 +120,6 @@ public class Spell_Irritation extends Spell
 		}
 		else
 			maliciousFizzle(mob,target,L("<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, incanting but nothing happens."));
-
-
 		// return whether it worked
 		return success;
 	}

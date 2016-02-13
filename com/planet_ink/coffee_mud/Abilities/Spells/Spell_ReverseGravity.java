@@ -35,17 +35,65 @@ import java.util.*;
 
 public class Spell_ReverseGravity extends Spell
 {
-	@Override public String ID() { return "Spell_ReverseGravity"; }
-	private final static String localizedName = CMLib.lang().L("Reverse Gravity");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Gravity is Reversed)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return CAN_ROOMS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	protected Vector<Ability> childrenAffects=new Vector<Ability>();
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
-	@Override public long flags(){return Ability.FLAG_MOVING;}
+	@Override
+	public String ID()
+	{
+		return "Spell_ReverseGravity";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Reverse Gravity");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Gravity is Reversed)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_ROOMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	protected Vector<Ability>	childrenAffects	= new Vector<Ability>();
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL | Ability.DOMAIN_ALTERATION;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_MOVING;
+	}
+
+	@Override
+	public int overrideMana()
+	{
+		return Ability.COST_PCT+50;
+	}
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
@@ -53,38 +101,56 @@ public class Spell_ReverseGravity extends Spell
 		if(!super.tick(ticking,tickID))
 			return false;
 		else
-		if((affected!=null)&&(affected instanceof Room)&&(invoker!=null))
 		{
-			final Room room=(Room)affected;
-			for(int i=0;i<room.numInhabitants();i++)
+			final MOB invoker = this.invoker;
+			if((affected!=null)&&(affected instanceof Room)&&(invoker!=null))
 			{
-				final MOB inhab=room.fetchInhabitant(i);
-				if(!CMLib.flags().isInFlight(inhab))
+				final Room room=(Room)affected;
+				for(int i=0;i<room.numInhabitants();i++)
 				{
-					inhab.makePeace(true);
-					Ability A=CMClass.getAbility("Falling");
-					A.setAffectedOne(null);
-					A.setProficiency(100);
-					A.invoke(null,null,inhab,true,0);
-					A=inhab.fetchEffect("Falling");
-					if(A!=null)
-						childrenAffects.addElement(A);
+					final MOB inhab=room.fetchInhabitant(i);
+					if(!CMLib.flags().isInFlight(inhab))
+					{
+						int diff = invoker.phyStats().level() - inhab.phyStats().level();
+						if(diff > 0) // no bonus, only negatives
+							diff = 0;
+						if(CMLib.dice().rollPercentage()>(inhab.charStats().getSave(CharStats.STAT_SAVE_JUSTICE) - diff + inhab.charStats().getStat(CharStats.STAT_STRENGTH)))
+						{
+							inhab.makePeace(true);
+							Ability A=CMClass.getAbility("Falling");
+							A.setAffectedOne(null);
+							A.setProficiency(100);
+							A.invoke(null,null,inhab,true,0);
+							A=inhab.fetchEffect("Falling");
+							if(A!=null)
+								childrenAffects.addElement(A);
+						}
+						else
+						if(CMLib.flags().isWateryRoom(room))
+							room.showHappens(CMMsg.MSG_OK_VISUAL, inhab, L("<S-NAME> manage(s) to keep a grip on the water around <S-HIM-HER>"));
+						else
+						if(CMLib.flags().isAiryRoom(room))
+							room.showHappens(CMMsg.MSG_OK_VISUAL, inhab, L("<S-NAME> manage(s) to keep a grip on the air around <S-HIM-HER>"));
+						else
+							room.showHappens(CMMsg.MSG_OK_VISUAL, inhab, L("<S-NAME> manage(s) to keep a grip on the ground below <S-HIM-HER>"));
+					}
 				}
-			}
-			for(int i=0;i<room.numItems();i++)
-			{
-				final Item inhab=room.getItem(i);
-				if((inhab!=null)
-				&&(inhab.container()==null)
-				&&(!CMLib.flags().isInFlight(inhab.ultimateContainer(null))))
+				for(int i=0;i<room.numItems();i++)
 				{
-					Ability A=CMClass.getAbility("Falling");
-					A.setAffectedOne(room);
-					A.setProficiency(100);
-					A.invoke(null,null,inhab,true,0);
-					A=inhab.fetchEffect("Falling");
-					if(A!=null)
-						childrenAffects.addElement(A);
+					final Item inhab=room.getItem(i);
+					if((inhab!=null)
+					&&(inhab.container()==null)
+					&&(CMLib.flags().isGettable(inhab))
+					&&(!CMLib.flags().isInFlight(inhab.ultimateContainer(null))))
+					{
+						Ability A=CMClass.getAbility("Falling");
+						A.setAffectedOne(room);
+						A.setProficiency(100);
+						A.invoke(null,null,inhab,true,0);
+						A=inhab.fetchEffect("Falling");
+						if(A!=null)
+							childrenAffects.addElement(A);
+					}
 				}
 			}
 		}
@@ -156,7 +222,6 @@ public class Spell_ReverseGravity extends Spell
 			mob.tell(mob,null,null,L("Gravity has already been reversed here!"));
 			return false;
 		}
-
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 

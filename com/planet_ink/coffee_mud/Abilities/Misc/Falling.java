@@ -207,7 +207,9 @@ public class Falling extends StdAbility
 				else
 				{
 					mob.tell(L("\n\r\n\rYOU ARE FALLING @x1!!\n\r\n\r",addStr.toUpperCase()));
-					final int damage = CMLib.dice().roll(1,(int)Math.round(CMath.mul(CMath.mul(mob.maxState().getHitPoints(),0.1),CMath.div(mob.baseWeight(),150.0))),0);
+					int damage = CMLib.dice().roll(1,(int)Math.round(CMath.mul(CMath.mul(mob.maxState().getHitPoints(),0.1),CMath.div(mob.baseWeight(),150.0))),0);
+					if(damage > (mob.maxState().getHitPoints()/3))
+						damage = (mob.maxState().getHitPoints()/3);
 					damageToTake=reversed()?damage:(damageToTake+damage);
 				}
 				temporarilyDisable=true;

@@ -1517,6 +1517,20 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	}
 
 	@Override
+	public boolean isAiryRoom(Room R)
+	{
+		if(R==null)
+			return false;
+		switch(R.domainType())
+		{
+		case Room.DOMAIN_INDOORS_AIR:
+		case Room.DOMAIN_OUTDOORS_AIR:
+			return true;
+		}
+		return false;
+	}
+
+	@Override
 	public boolean isWateryRoom(Room R)
 	{
 		if(R==null)
@@ -1532,7 +1546,6 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		return ((R.getAtmosphere()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID)
 				||isSwimming(R);
 	}
-
 
 	/**
 	 * Returns whether the given room, whatever is 

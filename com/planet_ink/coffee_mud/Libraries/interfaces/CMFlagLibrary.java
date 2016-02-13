@@ -706,6 +706,14 @@ public interface CMFlagLibrary extends CMLibrary
 
 	/**
 	 * Returns whether the given room, whatever is 
+	 * airy, such as an in the air, or an open space.
+	 * @param R the room to check
+	 * @return true if it is airy, false otherwise
+	 */
+	public boolean isAiryRoom(Room R);
+	
+	/**
+	 * Returns whether the given room, whatever is 
 	 * watery, such as a water surface, underwater, etc.
 	 * @param R the room to check
 	 * @return true if it is watery, false otherwise
