@@ -581,7 +581,11 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 			final Pair<String,Integer> pair = mob.fetchExpertise(e.nextElement());
 			if(pair != null)
 			{
-				ExpertiseDefinition def=CMLib.expertises().findDefinition(pair.first,true);
+				ExpertiseDefinition def=CMLib.expertises().findDefinition(pair.first+pair.second.toString(),true);
+				if(def == null)
+					def=CMLib.expertises().findDefinition(pair.first+pair.second.toString(),false);
+				if(def == null)
+					 def=CMLib.expertises().findDefinition(pair.first,true);
 				if(def == null)
 					 def=CMLib.expertises().findDefinition(pair.first,false);
 				if(def != null)
