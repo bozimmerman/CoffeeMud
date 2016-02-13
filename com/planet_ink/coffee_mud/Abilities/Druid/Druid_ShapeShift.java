@@ -124,10 +124,10 @@ public class Druid_ShapeShift extends StdAbility
 								   "Feline form",
 								   "Canine form",
 								   "Bird form",
-								   "Snake form",
-								   "Bear form",
+								   "Reptile form",
+								   "Ursine form",
 								   "Insect form",
-								   "Monkey form",
+								   "Primate form",
 								   "Bovine form",
 								   "Fish form",
 								   "Sea Mammal form"};
