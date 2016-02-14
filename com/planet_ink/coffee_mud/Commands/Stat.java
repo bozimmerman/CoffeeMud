@@ -676,10 +676,11 @@ public class Stat  extends Skills
 					for(int q=0;q<CMLib.quests().numQuests();q++)
 					{
 						final Quest Q=CMLib.quests().fetchQuest(q);
-						if(Q.wasWinner(target.Name()))
+						final Long wonTime = Q.whenLastWon(target.Name());
+						if(wonTime != null)
 						{
 							final String name=Q.displayName().trim().length()>0?Q.displayName():Q.name();
-							won.append(" "+name+",");
+							won.append(" "+name+" on "+CMLib.time().date2String(wonTime.longValue())+" ,");
 						}
 					}
 					if(won.length()==0)

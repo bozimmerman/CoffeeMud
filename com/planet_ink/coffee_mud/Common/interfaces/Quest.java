@@ -16,6 +16,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.List;
+import java.util.Map;
 
 /*
    Copyright 2003-2016 Bo Zimmerman
@@ -464,6 +465,7 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#getWinnerStr()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#wasWinner(String)
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#setWinners(String)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#whenLastWon(String)
 	 * @param mobName the player name
 	 */
 	public void declareWinner(String mobName);
@@ -474,9 +476,10 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#getWinnerStr()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#wasWinner(String)
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#setWinners(String)
-	 * @return the names of all the winners of this quest
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#whenLastWon(String)
+	 * @return the names of all the winners of this quest and last time won
 	 */
-	public List<String> getWinners();
+	public Map<String, Long> getWinners();
 
 	/**
 	 * Returns a semicolon delimited string of all the winners of this quest
@@ -484,6 +487,7 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#getWinners()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#wasWinner(String)
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#setWinners(String)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#whenLastWon(String)
 	 * @return a semicolon delimited string of all the winners of this quest
 	 */
 	public String getWinnerStr();
@@ -494,11 +498,24 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#getWinners()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#getWinnerStr()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#setWinners(String)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#whenLastWon(String)
 	 * @param name the player name
 	 * @return true if a player of the given name has won this quest
 	 */
 	public boolean wasWinner(String name);
 
+	/**
+	 * Returns when a player of the given name last won this quest or null
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#declareWinner(String)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#getWinners()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#getWinnerStr()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#setWinners(String)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#wasWinner(String)
+	 * @param name the player name
+	 * @return true if a player of the given name has won this quest
+	 */
+	public Long whenLastWon(String name);
+	
 	/**
 	 * Sets the list of player names that have won this quest
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#declareWinner(String)

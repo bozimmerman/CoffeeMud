@@ -42,21 +42,42 @@ public class Questwins extends StdCommand
 	
 	public String getQuestsWonList(MOB mob, String pronoun)
 	{
-		final Vector<String> qVec=new Vector<String>();
+		final ArrayList<Quest> qVec=new ArrayList<Quest>();
 		for(int q=0;q<CMLib.quests().numQuests();q++)
 		{
 			final Quest Q=CMLib.quests().fetchQuest(q);
 			if(Q.wasWinner(mob.Name()))
 			{
-				final String name=Q.displayName().trim().length()>0?Q.displayName():Q.name();
-				if(!qVec.contains(name))
-					qVec.add(name);
+				if(!qVec.contains(Q))
+					qVec.add(Q);
 			}
 		}
-		Collections.sort(qVec);
+		Collections.sort(qVec,new Comparator<Quest>()
+		{
+			@Override
+			public int compare(Quest o1, Quest o2)
+			{
+				if(o1 == null)
+					return (o2==null) ? 0 : -1;
+				else
+				if(o2 == null)
+					return 1;
+				else
+				{
+					final String name1=o1.displayName().trim().length()>0?o1.displayName():o1.name();
+					final String name2=o2.displayName().trim().length()>0?o2.displayName():o2.name();
+					return name1.compareTo(name2);
+				}
+			}
+			
+		});
 		final StringBuffer msg=new StringBuffer(L("^HQuests @x1 listed as having won:^?^N\n\r",pronoun));
-		for(int i=0;i<qVec.size();i++)
-			msg.append((qVec.get(i))+"^N\n\r");
+		for(Quest Q : qVec)
+		{
+			final String name=Q.displayName().trim().length()>0?Q.displayName():Q.name();
+			final String time = CMLib.time().date2String(Q.whenLastWon(mob.Name()).longValue());
+			msg.append(CMStrings.padRight(time,20)+name+"^N\n\r");
+		}
 		return msg.toString();
 	}
 

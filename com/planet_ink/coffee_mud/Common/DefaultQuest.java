@@ -69,8 +69,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	public DVector 		internalFiles=null;
 	private int[] 		resetData=null;
 	
-	private final Map<String,Long> 	stepEllapsedTimes=new Hashtable<String,Long>();
-	protected SVector<String> 		winners=new SVector<String>();
+	protected final Map<String,Long> stepEllapsedTimes	= new Hashtable<String,Long>();
+	protected final Map<String,Long> winners			= new CaselessTreeMap<Long>();
 
 	// the unique name of the quest
 	@Override
@@ -3781,30 +3781,29 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		if(name.length()==0)
 			return;
 		final Quest Q=getMainQuestObject();
+		boolean wasWinner = false;
+		boolean removeMe = false;
 		if(name.startsWith("-"))
 		{
 			name=name.substring(1);
-			if(Q.wasWinner(name))
+			removeMe=true;
+		}
+		final Map<String,Long> V=Q.getWinners();
+		if(V.remove(name) != null)
+		{
+			wasWinner = true;
+		}
+		if(removeMe)
+		{
+			if(wasWinner)
 			{
-				final List<String> V=Q.getWinners();
-				for(int i=0;i<V.size();i++)
-				{
-					if(V.get(i).equalsIgnoreCase(name))
-					{
-						V.remove(i);
-						break;
-					}
-				}
 				CMLib.database().DBUpdateQuest(Q);
 			}
 		}
 		else
 		{
-			if(!Q.wasWinner(name))
-			{
-				Q.getWinners().add(name);
-				CMLib.database().DBUpdateQuest(Q);
-			}
+			Q.getWinners().put(name,Long.valueOf(System.currentTimeMillis()));
+			CMLib.database().DBUpdateQuest(Q);
 		}
 	}
 
@@ -3813,9 +3812,12 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	{
 		final Quest Q=getMainQuestObject();
 		final StringBuffer list=new StringBuffer("");
-		final List<String> V=Q.getWinners();
-		for(int i=0;i<V.size();i++)
-			list.append((V.get(i))+";");
+		final Map<String,Long> V=Q.getWinners();
+		for(String name : V.keySet())
+		{
+			final Long time=V.get(name);
+			list.append(name+"@"+time.longValue()+";");
+		}
 		return list.toString();
 	}
 
@@ -3823,25 +3825,29 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	public void setWinners(String list)
 	{
 		final Quest Q=getMainQuestObject();
-		final List<String> V=Q.getWinners();
+		final Map<String,Long> V=Q.getWinners();
 		V.clear();
-		list=list.trim();
-		int x=list.indexOf(';');
-		while(x>0)
+		final List<String> parts=CMParms.parseSemicolons(list, true);
+		for(String part : parts)
 		{
-			final String s=list.substring(0,x).trim();
-			list=list.substring(x+1).trim();
-			if(s.length()>0)
-				V.add(s);
-			x=list.indexOf(';');
+			if(part.trim().length()>0) 
+			{
+				final int x=part.indexOf('@');
+				Long time=Long.valueOf(0);
+				String name=part.trim();
+				if(x>0)
+				{
+					name=part.substring(0,x).trim();
+					time=Long.valueOf(CMath.s_long(part.substring(x+1).trim()));
+				}
+				V.put(name,time);
+			}
 		}
-		if(list.trim().length()>0)
-			V.add(list.trim());
 	}
 
 	// retreive the list of previous winners
 	@Override
-	public List<String> getWinners()
+	public Map<String, Long> getWinners()
 	{
 		final Quest Q=getMainQuestObject();
 		if(Q==this)
@@ -3851,23 +3857,25 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 
 	// was a previous winner
 	@Override
-	public boolean wasWinner(String name)
+	public boolean wasWinner(final String name)
 	{
-		if(name==null)
-			return false;
-		name=name.trim();
-		if(name.length()==0)
-			return false;
-		final Quest Q=getMainQuestObject();
-		final List<String> V=Q.getWinners();
-		for(int i=0;i<V.size();i++)
-		{
-			if(V.get(i).equalsIgnoreCase(name))
-				return true;
-		}
-		return false;
+		return whenLastWon(name) != null;
 	}
 
+	// was a previous winner
+	@Override
+	public Long whenLastWon(String name)
+	{
+		if(name==null)
+			return null;
+		name=name.trim();
+		if(name.length()==0)
+			return null;
+		final Quest Q=getMainQuestObject();
+		final Map<String,Long> V=Q.getWinners();
+		return V.get(name);
+	}
+	
 	// informational
 	@Override
 	public boolean running()
