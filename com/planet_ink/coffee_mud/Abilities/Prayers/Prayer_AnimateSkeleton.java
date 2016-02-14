@@ -36,14 +36,49 @@ import java.util.*;
 
 public class Prayer_AnimateSkeleton extends Prayer
 {
-	@Override public String ID() { return "Prayer_AnimateSkeleton"; }
-	private final static String localizedName = CMLib.lang().L("Animate Skeleton");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_DEATHLORE;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
-	@Override public long flags(){return Ability.FLAG_UNHOLY;}
-	@Override protected int canTargetCode(){return CAN_ITEMS;}
+	@Override
+	public String ID()
+	{
+		return "Prayer_AnimateSkeleton";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Animate Skeleton");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER | Ability.DOMAIN_DEATHLORE;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	public int enchantQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_UNHOLY;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_ITEMS;
+	}
 
 	public void makeSkeletonFrom(Room R, DeadBody body, MOB mob, int level)
 	{
@@ -114,6 +149,14 @@ public class Prayer_AnimateSkeleton extends Prayer
 		}
 		body.destroy();
 		newMOB.setStartRoom(null);
+		final Ability wanderHome=CMClass.findAbility("WanderHomeLater");
+		if(wanderHome != null)
+		{
+			int ticks=super.getMaliciousTickdownTime(mob, newMOB, 0, 0);
+			wanderHome.setMiscText("once=true destroy=true minticks="+ticks+" maxticks="+ticks);
+			wanderHome.startTickDown(mob, newMOB, ticks+100);
+			wanderHome.setSavable(false);
+		}
 		R.show(newMOB,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> begin(s) to rise!"));
 		R.recoverRoomStats();
 	}

@@ -36,14 +36,49 @@ import java.util.*;
 
 public class Prayer_AnimateGhast extends Prayer
 {
-	@Override public String ID() { return "Prayer_AnimateGhast"; }
-	private final static String localizedName = CMLib.lang().L("Animate Ghast");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_DEATHLORE;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
-	@Override public long flags(){return Ability.FLAG_UNHOLY;}
-	@Override protected int canTargetCode(){return CAN_ITEMS;}
+	@Override
+	public String ID()
+	{
+		return "Prayer_AnimateGhast";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Animate Ghast");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER | Ability.DOMAIN_DEATHLORE;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	public int enchantQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_UNHOLY;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_ITEMS;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -163,6 +198,14 @@ public class Prayer_AnimateGhast extends Prayer
 				body.destroy();
 				mob.location().show(newMOB,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> begin(s) to rise!"));
 				newMOB.setStartRoom(null);
+				final Ability wanderHome=CMClass.findAbility("WanderHomeLater");
+				if(wanderHome != null)
+				{
+					int ticks=super.getMaliciousTickdownTime(mob, newMOB, 0, 0);
+					wanderHome.setMiscText("once=true destroy=true minticks="+ticks+" maxticks="+ticks);
+					wanderHome.startTickDown(mob, newMOB, ticks+100);
+					wanderHome.setSavable(false);
+				}
 				mob.location().recoverRoomStats();
 			}
 		}

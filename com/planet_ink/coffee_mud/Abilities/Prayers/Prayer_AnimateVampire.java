@@ -36,15 +36,49 @@ import java.util.*;
 
 public class Prayer_AnimateVampire extends Prayer
 {
-	@Override public String ID() { return "Prayer_AnimateVampire"; }
-	private final static String localizedName = CMLib.lang().L("Animate Vampire");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_DEATHLORE;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
-	@Override public long flags(){return Ability.FLAG_UNHOLY;}
-	@Override protected int canTargetCode(){return CAN_ITEMS;}
+	@Override
+	public String ID()
+	{
+		return "Prayer_AnimateVampire";
+	}
 
+	private final static String	localizedName	= CMLib.lang().L("Animate Vampire");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER | Ability.DOMAIN_DEATHLORE;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	public int enchantQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_UNHOLY;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_ITEMS;
+	}
 
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
@@ -184,6 +218,14 @@ public class Prayer_AnimateVampire extends Prayer
 				}
 				body.destroy();
 				newMOB.setStartRoom(null);
+				final Ability wanderHome=CMClass.findAbility("WanderHomeLater");
+				if(wanderHome != null)
+				{
+					int ticks=super.getMaliciousTickdownTime(mob, newMOB, 0, 0);
+					wanderHome.setMiscText("once=true destroy=true minticks="+ticks+" maxticks="+ticks);
+					wanderHome.startTickDown(mob, newMOB, ticks+100);
+					wanderHome.setSavable(false);
+				}
 				mob.location().show(newMOB,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> begin(s) to rise!"));
 				mob.location().recoverRoomStats();
 			}
