@@ -35,16 +35,53 @@ import java.util.*;
 
 public class Spell_CauseStink extends Spell
 {
-	@Override public String ID() { return "Spell_CauseStink"; }
-	private final static String localizedName = CMLib.lang().L("Cause Stink");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Cause Stink)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
-	public int cycle=1;
+	@Override
+	public String ID()
+	{
+		return "Spell_CauseStink";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Cause Stink");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Cause Stink)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL | Ability.DOMAIN_TRANSMUTATION;
+	}
+
+	public int	cycle	= 1;
 
 	@Override
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
@@ -74,17 +111,40 @@ public class Spell_CauseStink extends Spell
 			String str=null;
 			switch(cycle++)
 			{
-			case 1: str=L("<S-NAME> emanates an unpleasant odor"); break;
-			case 2: str=L("<S-NAME> smells like <S-HE-SHE> hasn't bathed in a month!"); break;
-			case 3: str=L("<S-NAME> smells bad!"); break;
-			case 4: str=L("<S-NAME> <S-IS-ARE> giving off a horrid odor!"); break;
-			case 5: str=L("<S-NAME> really stinks!"); break;
-			case 6: str=L("Whew! <S-NAME> REALLY stinks!"); break;
-			case 7: str=L("<S-NAME> has an odor resembling that of a skunk!"); break;
-			case 8: str=L("<S-NAME> smells like a dead skunk!"); break;
-			case 9: str=L("<S-NAME> stinks horribly!"); break;
-			case 10: str=L("<S-NAME> seems very very stinky!"); cycle=1; break;
-			default: cycle=0; break;
+			case 1:
+				str = L("<S-NAME> emanate(s) an unpleasant odor");
+				break;
+			case 2:
+				str = L("<S-NAME> smell(s) like <S-HE-SHE> hasn't bathed in a month!");
+				break;
+			case 3:
+				str = L("<S-NAME> smell(s) bad!");
+				break;
+			case 4:
+				str = L("<S-NAME> <S-IS-ARE> giving off a horrid odor!");
+				break;
+			case 5:
+				str = L("<S-NAME> really stink(s)!");
+				break;
+			case 6:
+				str = L("Whew! <S-NAME> REALLY stink(s)!");
+				break;
+			case 7:
+				str = L("<S-NAME> <S-HAS-HAVE> an odor resembling that of a skunk!");
+				break;
+			case 8:
+				str = L("<S-NAME> smell(s) like a dead skunk!");
+				break;
+			case 9:
+				str = L("<S-NAME> stink(s) horribly!");
+				break;
+			case 10:
+				str = L("<S-NAME> seem(s) very very stinky!");
+				cycle = 1;
+				break;
+			default:
+				cycle = 0;
+				break;
 			}
 			if(str!=null)
 			{
