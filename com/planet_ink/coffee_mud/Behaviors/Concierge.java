@@ -65,7 +65,9 @@ public class Concierge extends StdBehavior
 	protected String	mountStr		= "";
 	protected int		maxRange		= 100;
 	
-	protected TrackingLibrary.TrackingFlags trackingFlags = CMLib.tracking().newFlags().plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS);
+	protected TrackingLibrary.TrackingFlags trackingFlags = CMLib.tracking().newFlags()
+															.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
+															.plus(TrackingLibrary.TrackingFlag.NOHOMES);
 	protected TrackingLibrary.TrackingFlags roomRadiusFlags = CMLib.tracking().newFlags();
 	
 	@Override
@@ -149,7 +151,7 @@ public class Concierge extends StdBehavior
 	
 	protected void resetFlags()
 	{
-		trackingFlags = CMLib.tracking().newFlags().plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS);
+		trackingFlags = CMLib.tracking().newFlags().plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS).plus(TrackingLibrary.TrackingFlag.NOHOMES);
 		roomRadiusFlags = CMLib.tracking().newFlags();
 	}
 	
