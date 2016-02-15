@@ -33,11 +33,20 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class CatalogItemNext extends StdWebMacro
 {
-	@Override public String name() { return "CatalogItemNext"; }
-	@Override public boolean isAdminMacro()   {return true;}
+	@Override
+	public String name()
+	{
+		return "CatalogItemNext";
+	}
+
+	@Override
+	public boolean isAdminMacro()
+	{
+		return true;
+	}
+
 	static final String[] DATA={
 								"CATALOG_ITEM_NAME",
 								"CATALOG_ITEM_USAGE",
@@ -57,15 +66,24 @@ public class CatalogItemNext extends StdWebMacro
 		final boolean dataRate=(data.getRate()>0.0);
 		switch(x)
 		{
-		case 0: return I.Name();
-		case 1: return ""+data.numReferences();
-		case 2: return ""+I.basePhyStats().level();
-		case 3: return I.ID();
-		case 4: return ""+I.baseGoldValue();
-		case 5: return (dataRate)?CMath.toPct(data.getRate()):"";
-		case 6: return (dataRate)?(data.getMaskStr()==null?"":data.getMaskStr()):"";
-		case 7: return (dataRate)?(""+data.getWhenLive()):"";
-		case 8: return ""+data.mostPopularArea();
+		case 0:
+			return I.Name();
+		case 1:
+			return "" + data.numReferences();
+		case 2:
+			return "" + I.basePhyStats().level();
+		case 3:
+			return I.ID();
+		case 4:
+			return "" + I.baseGoldValue();
+		case 5:
+			return (dataRate) ? CMath.toPct(data.getRate()) : "";
+		case 6:
+			return (dataRate) ? (data.getMaskStr() == null ? "" : data.getMaskStr()) : "";
+		case 7:
+			return (dataRate) ? ("" + data.getWhenLive()) : "";
+		case 8:
+			return "" + data.mostPopularArea();
 		default:
 			if((optionalColumn!=null)&&(optionalColumn.length()>0))
 			{
@@ -129,11 +147,13 @@ public class CatalogItemNext extends StdWebMacro
 				{
 					final Object[] sortifiable=new Object[names.length];
 					for(int s=0;s<names.length;s++)
+					{
 						sortifiable[s]=new Object[]{
 							names[s],
 							CMLib.catalog().getCatalogItem(names[s]),
 							CMLib.catalog().getCatalogItemData(names[s])};
-					Arrays.sort(sortifiable,new Comparator()
+					}
+					Arrays.sort(sortifiable,new Comparator<Object>()
 					{
 						@Override
 						public int compare(Object o1, Object o2)
