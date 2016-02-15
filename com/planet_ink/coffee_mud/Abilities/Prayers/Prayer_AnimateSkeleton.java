@@ -80,6 +80,31 @@ public class Prayer_AnimateSkeleton extends Prayer
 		return CAN_ITEMS;
 	}
 
+	private final static String	localizedDiplayText	= CMLib.lang().L("Newly animate dead");
+
+	@Override
+	public String displayText()
+	{
+		return localizedDiplayText;
+	}
+	
+	@Override
+	public void unInvoke()
+	{
+		final Physical P=affected;
+		super.unInvoke();
+		if((P instanceof MOB)&&(this.canBeUninvoked)&&(this.unInvoked))
+		{
+			if((!P.amDestroyed())&&(((MOB)P).amFollowing()==null))
+			{
+				final Room R=CMLib.map().roomLocation(P);
+				if(R!=null)
+					R.showHappens(CMMsg.MSG_OK_ACTION, P,L("<S-NAME> wander(s) off."));
+				P.destroy();
+			}
+		}
+	}
+
 	public void makeSkeletonFrom(Room R, DeadBody body, MOB mob, int level)
 	{
 		String race="a";
@@ -126,7 +151,7 @@ public class Prayer_AnimateSkeleton extends Prayer
 		newMOB.text();
 		newMOB.bringToLife(R,true);
 		CMLib.beanCounter().clearZeroMoney(newMOB,null);
-		R.showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> appears!"));
+		//R.showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> appears!"));
 		int it=0;
 		while(it<R.numItems())
 		{
@@ -149,15 +174,8 @@ public class Prayer_AnimateSkeleton extends Prayer
 		}
 		body.destroy();
 		newMOB.setStartRoom(null);
-		final Ability wanderHome=CMClass.findAbility("WanderHomeLater");
-		if(wanderHome != null)
-		{
-			int ticks=super.getMaliciousTickdownTime(mob, newMOB, 0, 0);
-			wanderHome.setMiscText("once=true destroy=true minticks="+ticks+" maxticks="+ticks);
-			wanderHome.startTickDown(mob, newMOB, ticks+100);
-			wanderHome.setSavable(false);
-		}
-		R.show(newMOB,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> begin(s) to rise!"));
+		beneficialAffect(mob,newMOB,0,0);
+		R.show(newMOB,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> begin(s) to rise!"));
 		R.recoverRoomStats();
 	}
 

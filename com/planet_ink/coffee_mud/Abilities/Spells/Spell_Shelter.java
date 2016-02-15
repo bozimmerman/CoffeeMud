@@ -38,16 +38,57 @@ import java.util.*;
 
 public class Spell_Shelter extends Spell
 {
-	@Override public String ID() { return "Spell_Shelter"; }
-	private final static String localizedName = CMLib.lang().L("Shelter");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(In a shelter)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
+	@Override
+	public String ID()
+	{
+		return "Spell_Shelter";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Shelter");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(In a shelter)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int enchantQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL | Ability.DOMAIN_CONJURATION;
+	}
 
 	public Room previousLocation=null;
 	public Room shelter=null;
@@ -171,7 +212,7 @@ public class Spell_Shelter extends Spell
 				{
 					final MOB follower=(MOB)element;
 					final CMMsg enterMsg=CMClass.getMsg(follower,newRoom,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,L("<S-NAME> appears out of nowhere."));
-					final CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,this,somanticCastCode(mob,newRoom,auto),L("<S-NAME> disappear(s) into oblivion."));
+					final CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,this,verbalCastCode(mob,newRoom,auto),L("<S-NAME> disappear(s) into oblivion."));
 					if(thisRoom.okMessage(follower,leaveMsg)&&newRoom.okMessage(follower,enterMsg))
 					{
 						if(follower.isInCombat())

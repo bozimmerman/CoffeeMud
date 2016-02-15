@@ -80,6 +80,31 @@ public class Prayer_AnimateZombie extends Prayer
 		return CAN_ITEMS;
 	}
 
+	private final static String	localizedDiplayText	= CMLib.lang().L("Newly animate dead");
+
+	@Override
+	public String displayText()
+	{
+		return localizedDiplayText;
+	}
+	
+	@Override
+	public void unInvoke()
+	{
+		final Physical P=affected;
+		super.unInvoke();
+		if((P instanceof MOB)&&(this.canBeUninvoked)&&(this.unInvoked))
+		{
+			if((!P.amDestroyed())&&(((MOB)P).amFollowing()==null))
+			{
+				final Room R=CMLib.map().roomLocation(P);
+				if(R!=null)
+					R.showHappens(CMMsg.MSG_OK_ACTION, P,L("<S-NAME> wander(s) off."));
+				P.destroy();
+			}
+		}
+	}
+
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -169,7 +194,7 @@ public class Prayer_AnimateZombie extends Prayer
 				newMOB.text();
 				newMOB.bringToLife(mob.location(),true);
 				CMLib.beanCounter().clearZeroMoney(newMOB,null);
-				newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> appears!"));
+				//newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> appears!"));
 				int it=0;
 				while(it<newMOB.location().numItems())
 				{
@@ -192,15 +217,8 @@ public class Prayer_AnimateZombie extends Prayer
 				}
 				body.destroy();
 				newMOB.setStartRoom(null);
-				final Ability wanderHome=CMClass.findAbility("WanderHomeLater");
-				if(wanderHome != null)
-				{
-					int ticks=super.getMaliciousTickdownTime(mob, newMOB, 0, 0);
-					wanderHome.setMiscText("once=true destroy=true minticks="+ticks+" maxticks="+ticks);
-					wanderHome.startTickDown(mob, newMOB, ticks+100);
-					wanderHome.setSavable(false);
-				}
-				mob.location().show(newMOB,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> begin(s) to rise!"));
+				beneficialAffect(mob,newMOB,0,0);
+				mob.location().show(newMOB,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> begin(s) to rise!"));
 				mob.location().recoverRoomStats();
 			}
 		}

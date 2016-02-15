@@ -16,7 +16,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -37,27 +36,55 @@ import java.util.*;
 
 public class WanderHomeLater extends StdAbility
 {
-	@Override public String ID() { return "WanderHomeLater"; }
-	private final static String localizedName = CMLib.lang().L("WanderHomeLater");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Waiting til you're clear to go home)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override
+	public String ID()
+	{
+		return "WanderHomeLater";
+	}
 
-	private boolean areaOk = false;
-	private boolean ignorePCs = false;
-	private boolean ignoreFollow = false;
-	private boolean once = false;
-	private int currentWait = 0;
-	private int minTicks = 0;
-	private int maxTicks = 0;
-	
+	private final static String	localizedName	= CMLib.lang().L("WanderHomeLater");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Waiting til you're clear to go home)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	private boolean	areaOk			= false;
+	private boolean	ignorePCs		= false;
+	private boolean	ignoreFollow	= false;
+	private boolean	once			= false;
+	private boolean	destroy			= false;
+	private int		currentWait		= 0;
+	private int		minTicks		= 0;
+	private int		maxTicks		= 0;
+
 	@Override
 	public void setMiscText(String newMiscText)
 	{
 		super.setMiscText(newMiscText);
 		areaOk=CMParms.getParmBool(newMiscText,"areaok", areaOk);
+		destroy=CMParms.getParmBool(newMiscText,"destroy", destroy);
 		ignorePCs=CMParms.getParmBool(newMiscText,"ignorepcs", ignorePCs);
 		ignoreFollow=CMParms.getParmBool(newMiscText,"ignorefollow", ignoreFollow);
 		once=CMParms.getParmBool(newMiscText,"once", once);
@@ -66,6 +93,23 @@ public class WanderHomeLater extends StdAbility
 		currentWait = minTicks + ((maxTicks <= minTicks)?0:CMLib.dice().roll(1, maxTicks-minTicks, 0));
 	}
 	
+	@Override
+	public void unInvoke()
+	{
+		final Physical P=affected;
+		super.unInvoke();
+		if((P!=null)&&(this.canBeUninvoked)&&(this.unInvoked))
+		{
+			if((!P.amDestroyed())&&(destroy))
+			{
+				final Room R=CMLib.map().roomLocation(P);
+				if(R!=null)
+					R.showHappens(CMMsg.MSG_OK_ACTION, P,L("<S-NAME> wander(s) off."));
+				P.destroy();
+			}
+		}
+	}
+
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
