@@ -17,7 +17,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
  */
-public class SHashtable<K, F> implements java.util.Map<K, F>, java.io.Serializable
+public class SHashtable<K, F> implements CMap<K, F>, java.io.Serializable
 {
 	private static final long	     serialVersionUID	= 6687178785122561993L;
 	private volatile Hashtable<K, F>	H;

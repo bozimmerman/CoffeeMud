@@ -27,7 +27,7 @@ import javax.naming.OperationNotSupportedException;
  * and removes by copying the underlying CopyOnWriteArrayList whenever those
  * operations are done.
  */
-public class SVector<T> extends CopyOnWriteArrayList<T> implements Serializable, Iterable<T>, Collection<T>, List<T>, RandomAccess
+public class SVector<T> extends CopyOnWriteArrayList<T> implements Serializable, Iterable<T>, Collection<T>, CList<T>, RandomAccess
 {
 	private static final long	serialVersionUID	= 6687178785122561992L;
 

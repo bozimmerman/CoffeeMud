@@ -42,44 +42,83 @@ import java.util.regex.Pattern;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class DefaultFaction implements Faction, MsgListener
 {
-	@Override public String ID(){return "DefaultFaction";}
-	@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(final Exception e){return new DefaultFaction();}}
-	@Override public void initializeClass(){}
-	@Override public CMObject copyOf(){try{return (CMObject)this.clone();}catch(final Exception e){return newInstance();}}
-	@Override public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
-	protected String	 ID="";
-	protected String	 name="";
-	protected String	 choiceIntro="";
-	protected long[]	 lastFactionDataChange=new long[1];
-	protected int   	 minimum=Integer.MIN_VALUE;
-	protected int   	 middle=0;
+	@Override
+	public String ID()
+	{
+		return "DefaultFaction";
+	}
+
+	@Override
+	public CMObject newInstance()
+	{
+		try
+		{
+			return getClass().newInstance();
+		}
+		catch (final Exception e)
+		{
+			return new DefaultFaction();
+		}
+	}
+
+	@Override
+	public void initializeClass()
+	{
+	}
+
+	@Override
+	public CMObject copyOf()
+	{
+		try
+		{
+			return (CMObject) this.clone();
+		}
+		catch (final Exception e)
+		{
+			return newInstance();
+		}
+	}
+
+	@Override
+	public int compareTo(CMObject o)
+	{
+		return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));
+	}
+
+	protected String	 ID					= "";
+	protected String	 name				= "";
+	protected String	 choiceIntro		= "";
+	protected long[]	 lastDataChange		= new long[1];
+	protected int   	 minimum			= Integer.MIN_VALUE;
+	protected int   	 middle				= 0;
 	protected int   	 difference;
-	protected int   	 maximum=Integer.MAX_VALUE;
-	protected int   	 highest=Integer.MAX_VALUE;
-	protected int   	 lowest=Integer.MIN_VALUE;
-	protected long  	 internalFlagBitmap=0;
-	protected String	 experienceFlag="";
-	protected boolean    useLightReactions=false;
-	protected boolean    isDisabled=false;
-	protected boolean    showInScore=false;
-	protected boolean    showInSpecialReported=false;
-	protected boolean    showInEditor=false;
-	protected boolean    showInFactionsCommand=true;
-	protected boolean    destroyed=false;
-	protected SVector<String>   					 defaults=new SVector<String>();
-	protected SVector<String>   					 autoDefaults=new SVector<String>();
-	protected SHashtable<String,FRange> 			 ranges=new SHashtable<String,FRange>();
-	protected PrioritizingLimitedMap<Integer,FRange> rangeRangeMap=new PrioritizingLimitedMap<Integer,FRange>(10,60000,600000,100);
-	protected SHashtable<String,String[]>   		 affBehavs=new SHashtable<String,String[]>();
-	protected double								 rateModifier=1.0;
-	protected SHashtable<String,FactionChangeEvent[]>changes=new SHashtable<String,FactionChangeEvent[]>();
-	protected SHashtable<String,FactionChangeEvent[]>abilityChangesCache=new SHashtable<String,FactionChangeEvent[]>();
-	protected SVector<Faction.FZapFactor>			 factors=new SVector<Faction.FZapFactor>();
-	protected SHashtable<String,Double> 			 relations=new SHashtable<String,Double>();
-	protected SVector<Faction.FAbilityUsage>		 abilityUsages=new SVector<Faction.FAbilityUsage>();
-	protected SVector<String>   					 choices=new SVector<String>();
-	protected SVector<Faction.FReactionItem>		 reactions=new SVector<Faction.FReactionItem>();
-	protected SHashtable<String,SVector<Faction.FReactionItem>> reactionHash=new SHashtable<String,SVector<Faction.FReactionItem>>();
+	protected int   	 maximum			= Integer.MAX_VALUE;
+	protected int   	 highest			= Integer.MAX_VALUE;
+	protected int   	 lowest				= Integer.MIN_VALUE;
+	protected long  	 internalFlagBitmap	= 0;
+	protected String	 experienceFlag		= "";
+	protected boolean    useLightReactions	= false;
+	protected boolean    isDisabled			= false;
+	protected boolean    showInScore		= false;
+	protected boolean    showInSpecialReport= false;
+	protected boolean    showInEditor		= false;
+	protected boolean    showInFacCommand	= true;
+	protected boolean    destroyed			= false;
+	
+	protected CList<String>   					 defaults			 = new SVector<String>();
+	protected CList<String>   					 autoDefaults		 = new SVector<String>();
+	protected CMap<String,FRange> 				 ranges				 = new SHashtable<String,FRange>();
+	protected Map<Integer,FRange> 				 rangeRangeMap		 = new PrioritizingLimitedMap<Integer,FRange>(10,60000,600000,100);
+	protected CMap<String,String[]>   			 affBehavs			 = new SHashtable<String,String[]>();
+	protected double							 rateModifier		 = 1.0;
+	protected CMap<String,FactionChangeEvent[]>	 changes			 = new SHashtable<String,FactionChangeEvent[]>();
+	protected CMap<String,FactionChangeEvent[]>	 abilityChangesCache = new SHashtable<String,FactionChangeEvent[]>();
+	protected CList<Faction.FZapFactor>			 factors			 = new SVector<Faction.FZapFactor>();
+	protected CMap<String,Double> 				 relations			 = new SHashtable<String,Double>();
+	protected CList<Faction.FAbilityUsage>		 abilityUsages		 = new SVector<Faction.FAbilityUsage>();
+	protected CList<String>   					 choices			 = new SVector<String>();
+	protected CList<Faction.FReactionItem>		 reactions			 = new SVector<Faction.FReactionItem>();
+	protected CMap<String,SVector<FReactionItem>>reactionHash		 = new SHashtable<String,SVector<Faction.FReactionItem>>();
 
 	@Override
 	public Enumeration<Faction.FReactionItem> reactions()
@@ -183,7 +222,7 @@ public class DefaultFaction implements Faction, MsgListener
 	@Override
 	public boolean showInSpecialReported()
 	{
-		return showInSpecialReported;
+		return showInSpecialReport;
 	}
 
 	@Override
@@ -195,7 +234,7 @@ public class DefaultFaction implements Faction, MsgListener
 	@Override
 	public boolean showInFactionsCommand()
 	{
-		return showInFactionsCommand;
+		return showInFacCommand;
 	}
 
 	@Override
@@ -309,7 +348,7 @@ public class DefaultFaction implements Faction, MsgListener
 	@Override
 	public void setShowInSpecialReported(boolean truefalse)
 	{
-		showInSpecialReported = truefalse;
+		showInSpecialReport = truefalse;
 	}
 
 	@Override
@@ -321,7 +360,7 @@ public class DefaultFaction implements Faction, MsgListener
 	@Override
 	public void setShowInFactionsCommand(boolean truefalse)
 	{
-		showInFactionsCommand = truefalse;
+		showInFacCommand = truefalse;
 	}
 
 	@Override
@@ -358,7 +397,7 @@ public class DefaultFaction implements Faction, MsgListener
 	public Faction.FAbilityUsage getAbilityUsage(int x)
 	{
 		return ((x>=0)&&(x<abilityUsages.size()))
-				?(Faction.FAbilityUsage)abilityUsages.elementAt(x)
+				?(Faction.FAbilityUsage)abilityUsages.get(x)
 				:null;
 	}
 	@Override
@@ -373,14 +412,14 @@ public class DefaultFaction implements Faction, MsgListener
 	@Override
 	public Faction.FZapFactor getFactor(int x)
 	{
-		return ((x >= 0) && (x < factors.size())) ? factors.elementAt(x) : null;
+		return ((x >= 0) && (x < factors.size())) ? factors.get(x) : null;
 	}
 
 	@Override
 	public Faction.FZapFactor addFactor(double gain, double loss, String mask)
 	{
 		final Faction.FZapFactor o=new DefaultFactionZapFactor(gain,loss,mask);
-		factors.addElement(o);
+		factors.add(o);
 		factors.trimToSize();
 		return o;
 	}
@@ -428,7 +467,7 @@ public class DefaultFaction implements Faction, MsgListener
 		difference=CMath.abs(maximum-minimum);
 		experienceFlag="EXTREME";
 		addRange("0;100;Sample Range;SAMPLE;");
-		defaults.addElement("0");
+		defaults.add("0");
 	}
 
 	@Override
@@ -455,8 +494,8 @@ public class DefaultFaction implements Faction, MsgListener
 			experienceFlag="NONE";
 		rateModifier=alignProp.getDouble("RATEMODIFIER");
 		showInScore=alignProp.getBoolean("SCOREDISPLAY");
-		showInFactionsCommand=alignProp.getBoolean("SHOWINFACTIONSCMD");
-		showInSpecialReported=alignProp.getBoolean("SPECIALREPORTED");
+		showInFacCommand=alignProp.getBoolean("SHOWINFACTIONSCMD");
+		showInSpecialReport=alignProp.getBoolean("SPECIALREPORTED");
 		showInEditor=alignProp.getBoolean("EDITALONE");
 		defaults=new SVector<String>(CMParms.parseSemicolons(alignProp.getStr("DEFAULT"),true));
 		autoDefaults =new SVector<String>(CMParms.parseSemicolons(alignProp.getStr("AUTODEFAULTS"),true));
@@ -548,7 +587,7 @@ public class DefaultFaction implements Faction, MsgListener
 		}
 		middle=minimum+(int)Math.round(CMath.div(maximum-minimum,2.0));
 		difference=CMath.abs(maximum-minimum);
-		lastFactionDataChange[0]=System.currentTimeMillis();
+		lastDataChange[0]=System.currentTimeMillis();
 		rangeRangeMap=new PrioritizingLimitedMap<Integer,FRange>(num*5,60000,600000,100);
 	}
 
@@ -575,9 +614,9 @@ public class DefaultFaction implements Faction, MsgListener
 		case TAG_SCOREDISPLAY:
 			return Boolean.toString(showInScore).toUpperCase();
 		case TAG_SHOWINFACTIONSCMD:
-			return Boolean.toString(showInFactionsCommand).toUpperCase();
+			return Boolean.toString(showInFacCommand).toUpperCase();
 		case TAG_SPECIALREPORTED:
-			return Boolean.toString(showInSpecialReported).toUpperCase();
+			return Boolean.toString(showInSpecialReport).toUpperCase();
 		case TAG_EDITALONE:
 			return Boolean.toString(showInEditor).toUpperCase();
 		case TAG_DEFAULT:
@@ -630,13 +669,13 @@ public class DefaultFaction implements Faction, MsgListener
 		{
 			if((numCall<0)||(numCall>=abilityUsages.size()))
 				return ""+abilityUsages.size();
-			return abilityUsages.elementAt(numCall).toString();
+			return abilityUsages.get(numCall).toString();
 		}
 		case TAG_FACTOR_:
 		{
 			if((numCall<0)||(numCall>=factors.size()))
 				return ""+factors.size();
-			return factors.elementAt(numCall).toString();
+			return factors.get(numCall).toString();
 		}
 		case TAG_RELATION_:
 		{
@@ -672,7 +711,7 @@ public class DefaultFaction implements Faction, MsgListener
 		{
 			if((numCall<0)||(numCall>=reactions.size()))
 				return ""+reactions.size();
-			final Faction.FReactionItem item = reactions.elementAt(numCall);
+			final Faction.FReactionItem item = reactions.get(numCall);
 			return item.toString();
 		}
 		case TAG_USELIGHTREACTIONS:
@@ -750,7 +789,7 @@ public class DefaultFaction implements Faction, MsgListener
 	{
 		final boolean b=affBehavs.remove(ID.toUpperCase().trim())!=null;
 		if(b)
-			lastFactionDataChange[0]=System.currentTimeMillis();
+			lastDataChange[0]=System.currentTimeMillis();
 		return b;
 	}
 
@@ -762,7 +801,7 @@ public class DefaultFaction implements Faction, MsgListener
 		if((CMClass.getBehavior(ID)==null)&&(CMClass.getAbility(ID)==null))
 			return false;
 		affBehavs.put(ID.toUpperCase().trim(),new String[]{parms,gainMask});
-		lastFactionDataChange[0]=System.currentTimeMillis();
+		lastDataChange[0]=System.currentTimeMillis();
 		return true;
 	}
 
@@ -783,7 +822,7 @@ public class DefaultFaction implements Faction, MsgListener
 		final boolean res = reactions.remove(item);
 		if(reactions.size()==0)
 			reactionHash.clear();
-		lastFactionDataChange[0]=System.currentTimeMillis();
+		lastDataChange[0]=System.currentTimeMillis();
 		return res;
 	}
 
@@ -803,7 +842,7 @@ public class DefaultFaction implements Faction, MsgListener
 		}
 		V.add(item);
 		reactions.add(item);
-		lastFactionDataChange[0]=System.currentTimeMillis();
+		lastDataChange[0]=System.currentTimeMillis();
 		return true;
 	}
 
@@ -2033,7 +2072,7 @@ public class DefaultFaction implements Faction, MsgListener
 		final Faction.FAbilityUsage usage=
 			(key==null)?new DefaultFaction.DefaultFactionAbilityUsage()
 					  : new DefaultFaction.DefaultFactionAbilityUsage(key);
-		abilityUsages.addElement(usage);
+		abilityUsages.add(usage);
 		abilityUsages.trimToSize();
 		return usage;
 	}
@@ -2185,7 +2224,7 @@ public class DefaultFaction implements Faction, MsgListener
 		@Override
 		public boolean requiresUpdating()
 		{
-			return lastFactionDataChange[0] > lastUpdated;
+			return lastDataChange[0] > lastUpdated;
 		}
 
 		private Ability setPresenceReaction(MOB M, Physical myHost)
