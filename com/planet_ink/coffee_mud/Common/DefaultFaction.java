@@ -105,20 +105,20 @@ public class DefaultFaction implements Faction, MsgListener
 	protected boolean    showInFacCommand	= true;
 	protected boolean    destroyed			= false;
 	
-	protected CList<String>   					 defaults			 = new SVector<String>();
-	protected CList<String>   					 autoDefaults		 = new SVector<String>();
-	protected CMap<String,FRange> 				 ranges				 = new SHashtable<String,FRange>();
-	protected Map<Integer,FRange> 				 rangeRangeMap		 = new PrioritizingLimitedMap<Integer,FRange>(10,60000,600000,100);
-	protected CMap<String,String[]>   			 affBehavs			 = new SHashtable<String,String[]>();
-	protected double							 rateModifier		 = 1.0;
-	protected CMap<String,FactionChangeEvent[]>	 changes			 = new SHashtable<String,FactionChangeEvent[]>();
-	protected CMap<String,FactionChangeEvent[]>	 abilityChangesCache = new SHashtable<String,FactionChangeEvent[]>();
-	protected CList<Faction.FZapFactor>			 factors			 = new SVector<Faction.FZapFactor>();
-	protected CMap<String,Double> 				 relations			 = new SHashtable<String,Double>();
-	protected CList<Faction.FAbilityUsage>		 abilityUsages		 = new SVector<Faction.FAbilityUsage>();
-	protected CList<String>   					 choices			 = new SVector<String>();
-	protected CList<Faction.FReactionItem>		 reactions			 = new SVector<Faction.FReactionItem>();
-	protected CMap<String,SVector<FReactionItem>>reactionHash		 = new SHashtable<String,SVector<Faction.FReactionItem>>();
+	protected CList<String>   					defaults		 = new SVector<String>();
+	protected CList<String>   					autoDefaults	 = new SVector<String>();
+	protected CMap<String,FRange> 				ranges			 = new SHashtable<String,FRange>();
+	protected Map<Integer,FRange> 				rangeRangeMap	 = new PrioritizingLimitedMap<Integer,FRange>(10,60000,600000,100);
+	protected CMap<String,String[]>   			affBehavs		 = new SHashtable<String,String[]>();
+	protected double							rateModifier	 = 1.0;
+	protected CMap<String,FactionChangeEvent[]>	changes			 = new SHashtable<String,FactionChangeEvent[]>();
+	protected CMap<String,FactionChangeEvent[]>	abilChangeCache	 = new SHashtable<String,FactionChangeEvent[]>();
+	protected CList<Faction.FZapFactor>			factors			 = new SVector<Faction.FZapFactor>();
+	protected CMap<String,Double> 				relations		 = new SHashtable<String,Double>();
+	protected CList<Faction.FAbilityUsage>		abilityUsages	 = new SVector<Faction.FAbilityUsage>();
+	protected CList<String>   					choices			 = new SVector<String>();
+	protected CList<Faction.FReactionItem>		reactions		 = new SVector<Faction.FReactionItem>();
+	protected CMap<String,CList<FReactionItem>>	reactionHash	 = new SHashtable<String,CList<Faction.FReactionItem>>();
 
 	@Override
 	public Enumeration<Faction.FReactionItem> reactions()
@@ -129,7 +129,7 @@ public class DefaultFaction implements Faction, MsgListener
 	@Override
 	public Enumeration<Faction.FReactionItem> reactions(String rangeName)
 	{
-		final SVector<Faction.FReactionItem> V=reactionHash.get(rangeName.toUpperCase().trim());
+		final CList<Faction.FReactionItem> V=reactionHash.get(rangeName.toUpperCase().trim());
 		if(V!=null)
 			return V.elements();
 		return new Vector<Faction.FReactionItem>().elements();
@@ -507,7 +507,7 @@ public class DefaultFaction implements Faction, MsgListener
 		relations=new SHashtable<String,Double>();
 		abilityUsages=new SVector<FAbilityUsage>();
 		reactions=new SVector<FReactionItem>();
-		reactionHash=new SHashtable<String,SVector<FReactionItem>>();
+		reactionHash=new SHashtable<String,CList<FReactionItem>>();
 		for(final Enumeration<Object> e=alignProp.keys();e.hasMoreElements();)
 		{
 			if(debug)
@@ -816,7 +816,7 @@ public class DefaultFaction implements Faction, MsgListener
 	@Override
 	public boolean delReaction(Faction.FReactionItem item)
 	{
-		final SVector<Faction.FReactionItem> V=reactionHash.get(item.rangeCodeName().toUpperCase().trim());
+		final CList<Faction.FReactionItem> V=reactionHash.get(item.rangeCodeName().toUpperCase().trim());
 		if(V!=null)
 			V.remove(item);
 		final boolean res = reactions.remove(item);
@@ -829,7 +829,7 @@ public class DefaultFaction implements Faction, MsgListener
 	@Override
 	public boolean addReaction(String range, String mask, String abilityID, String parms)
 	{
-		SVector<Faction.FReactionItem> V=reactionHash.get(range.toUpperCase().trim());
+		CList<Faction.FReactionItem> V=reactionHash.get(range.toUpperCase().trim());
 		final DefaultFactionReactionItem item = new DefaultFactionReactionItem();
 		item.setRangeName(range);
 		item.setPresentMOBMask(mask);
@@ -883,12 +883,12 @@ public class DefaultFaction implements Faction, MsgListener
 		if(key==null)
 			return null;
 		// Direct ability ID's
-		if(abilityChangesCache.containsKey(key.ID().toUpperCase()))
-			return abilityChangesCache.get(key.ID().toUpperCase());
+		if(abilChangeCache.containsKey(key.ID().toUpperCase()))
+			return abilChangeCache.get(key.ID().toUpperCase());
 		if(changes.containsKey(key.ID().toUpperCase()))
 		{
-			abilityChangesCache.put(key.ID().toUpperCase(), changes.get(key.ID().toUpperCase()));
-			return abilityChangesCache.get(key.ID().toUpperCase());
+			abilChangeCache.put(key.ID().toUpperCase(), changes.get(key.ID().toUpperCase()));
+			return abilChangeCache.get(key.ID().toUpperCase());
 		}
 		// By TYPE or FLAGS
 		FactionChangeEvent[] Cs =null;
@@ -909,7 +909,7 @@ public class DefaultFaction implements Faction, MsgListener
 			}
 		}
 		final FactionChangeEvent[] evs = events.toArray(new FactionChangeEvent[0]);
-		abilityChangesCache.put(key.ID().toUpperCase(), evs);
+		abilChangeCache.put(key.ID().toUpperCase(), evs);
 		return evs;
 	}
 
@@ -1530,7 +1530,7 @@ public class DefaultFaction implements Faction, MsgListener
 		}
 		else
 			event=new DefaultFaction.DefaultFactionChangeEvent(this,key);
-		abilityChangesCache.clear();
+		abilChangeCache.clear();
 		Faction.FactionChangeEvent[] events=changes.get(event.eventID().toUpperCase().trim());
 		if(events==null)
 			events=new Faction.FactionChangeEvent[0];
@@ -1563,13 +1563,13 @@ public class DefaultFaction implements Faction, MsgListener
 				nevents[ne1++]=event2;
 		}
 		if(done)
-			abilityChangesCache.clear();
+			abilChangeCache.clear();
 		return done;
 	}
 	@Override
 	public void clearChangeEvents()
 	{
-		abilityChangesCache.clear();
+		abilChangeCache.clear();
 		changes.clear();
 	}
 
@@ -1580,7 +1580,7 @@ public class DefaultFaction implements Faction, MsgListener
 		{
 			if(replaceEvents(e.nextElement(),event,true))
 			{
-				abilityChangesCache.clear();
+				abilChangeCache.clear();
 				return true;
 			}
 		}
@@ -1588,7 +1588,7 @@ public class DefaultFaction implements Faction, MsgListener
 		{
 			if(replaceEvents(e.nextElement(),event,false))
 			{
-				abilityChangesCache.clear();
+				abilChangeCache.clear();
 				return true;
 			}
 		}
@@ -2733,7 +2733,7 @@ public class DefaultFaction implements Faction, MsgListener
 		ranges.clear();
 		affBehavs.clear();
 		changes.clear();
-		abilityChangesCache.clear();
+		abilChangeCache.clear();
 		factors.clear();
 		relations.clear();
 		abilityUsages.clear();
