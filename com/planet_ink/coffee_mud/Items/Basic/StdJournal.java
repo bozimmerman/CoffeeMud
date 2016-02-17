@@ -598,7 +598,7 @@ public class StdJournal extends StdItem
 	{
 		if(readableText().length()==0)
 			return "";
-		final Map<String,String> h=CMParms.parseEQParms(readableText().toUpperCase(), new String[]{"READ","WRITE","REPLY","ADMIN","PRIVATE","MAILBOX"});
+		final Map<String,String> h=CMParms.parseEQParms(readableText().toUpperCase(), new String[]{"READ","WRITE","REPLY","ADMIN","PRIVATE","MAILBOX","SORTBY"});
 		String req=h.get(parmName.toUpperCase().trim());
 		if(req==null)
 			req="";
