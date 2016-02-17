@@ -1024,7 +1024,9 @@ public class CMMap extends StdLibrary implements WorldMap
 				}
 			}
 		}
-		catch(final java.util.NoSuchElementException x){}
+		catch (final java.util.NoSuchElementException x)
+		{
+		}
 		return null;
 	}
 
@@ -1111,7 +1113,10 @@ public class CMMap extends StdLibrary implements WorldMap
 				if((useTimer)&&((System.currentTimeMillis()-startTime)>maxTime))
 					return;
 			}
-		}catch(final NoSuchElementException nse){}
+		}
+		catch (final NoSuchElementException nse)
+		{
+		}
 	}
 
 	protected void findRoomsByDesc(MOB mob, Enumeration<Room> rooms, List<Room> foundRooms, String srchStr, boolean returnFirst, long maxTime)
@@ -1130,7 +1135,10 @@ public class CMMap extends StdLibrary implements WorldMap
 				if((useTimer)&&((System.currentTimeMillis()-startTime)>maxTime))
 					return;
 			}
-		}catch(final NoSuchElementException nse){}
+		}
+		catch (final NoSuchElementException nse)
+		{
+		}
 	}
 
 	@Override
@@ -1507,10 +1515,16 @@ public class CMMap extends StdLibrary implements WorldMap
 				{
 					final Area A=e.nextElement();
 					if(which<(total+A.properSize()))
-					{ R=A.getRandomProperRoom(); break;}
+					{
+						R = A.getRandomProperRoom();
+						break;
+					}
 					total+=A.properSize();
 				}
-			}catch(final NoSuchElementException e){}
+			}
+			catch (final NoSuchElementException e)
+			{
+			}
 		}
 		return R;
 	}
@@ -1585,6 +1599,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		{
 			private Enumeration<Room> cur = null;
 			private Enumeration<Area> cA = shipAreaEnumerator(inA);
+			
 			@Override
 			public boolean hasMoreElements()
 			{
@@ -1602,6 +1617,7 @@ public class CMMap extends StdLibrary implements WorldMap
 				}
 				return hasMore;
 			}
+
 			@Override
 			public Room nextElement()
 			{
@@ -1618,6 +1634,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		{
 			private volatile Area nextArea=null;
 			private volatile Enumeration<BoardableShip> shipsEnum=ships();
+
 			@Override
 			public boolean hasMoreElements()
 			{
@@ -1637,6 +1654,7 @@ public class CMMap extends StdLibrary implements WorldMap
 				}
 				return (nextArea != null);
 			}
+			
 			@Override
 			public Area nextElement()
 			{
@@ -1719,23 +1737,31 @@ public class CMMap extends StdLibrary implements WorldMap
 	public Auctioneer getAuctionHouse(String chain, String areaNameOrBranch)
 	{
 		for (final Auctioneer C : auctionHouseList)
+		{
 			if((C.auctionHouse().equalsIgnoreCase(chain))
 			&&(C.auctionHouse().equalsIgnoreCase(areaNameOrBranch)))
 				return C;
+		}
 
 		final Area A=findArea(areaNameOrBranch);
 		if(A==null)
 			return null;
 
 		for (final Auctioneer C : auctionHouseList)
+		{
 			if((C.auctionHouse().equalsIgnoreCase(chain))
 			&&(getStartArea(C)==A))
 				return C;
+		}
 
 		return null;
 	}
 
-	public int numBanks() { return bankList.size(); }
+	public int numBanks()
+	{
+		return bankList.size();
+	}
+
 	protected void addBank(Banker newOne)
 	{
 		if (!bankList.contains(newOne))
@@ -1749,33 +1775,43 @@ public class CMMap extends StdLibrary implements WorldMap
 	public Banker getBank(String chain, String areaNameOrBranch)
 	{
 		for (final Banker B : bankList)
+		{
 			if((B.bankChain().equalsIgnoreCase(chain))
 			&&(B.bankChain().equalsIgnoreCase(areaNameOrBranch)))
 				return B;
+		}
 
 		final Area A=findArea(areaNameOrBranch);
 		if(A==null)
 			return null;
 
 		for (final Banker B : bankList)
+		{
 			if((B.bankChain().equalsIgnoreCase(chain))
 			&&(getStartArea(B)==A))
 				return B;
+		}
 		return null;
 	}
 
-	@Override public Enumeration<Banker> banks() { return new IteratorEnumeration<Banker>(bankList.iterator());}
+	@Override
+	public Enumeration<Banker> banks()
+	{
+		return new IteratorEnumeration<Banker>(bankList.iterator());
+	}
 
 	@Override
 	public Iterator<String> bankChains(Area AreaOrNull)
 	{
 		final HashSet<String> H=new HashSet<String>();
 		for (final Banker B : bankList)
+		{
 			if((!H.contains(B.bankChain()))
 			&&((AreaOrNull==null)
 				||(getStartArea(B)==AreaOrNull)
 				||(AreaOrNull.isChild(getStartArea(B)))))
 					H.add(B.bankChain());
+		}
 		return H.iterator();
 	}
 
@@ -1880,13 +1916,17 @@ public class CMMap extends StdLibrary implements WorldMap
 		{
 			R=room.getRoomInDir(d);
 			if(R!=null)
+			{
 				for(int d1=Directions.NUM_DIRECTIONS()-1;d1>=0;d1--)
+				{
 					if(R.getRoomInDir(d1)==room)
 					{
 						if(R.getArea()==room.getArea())
 							return R;
 						otherChoices.addElement(R);
 					}
+				}
+			}
 		}
 		for(final Enumeration<Room> e=rooms();e.hasMoreElements();)
 		{
@@ -1894,12 +1934,14 @@ public class CMMap extends StdLibrary implements WorldMap
 			if(R==room)
 				continue;
 			for(int d1=Directions.NUM_DIRECTIONS()-1;d1>=0;d1--)
+			{
 				if(R.getRoomInDir(d1)==room)
 				{
 					if(R.getArea()==room.getArea())
 						return R;
 					otherChoices.addElement(R);
 				}
+			}
 		}
 		if(otherChoices.size()>0)
 			return otherChoices.firstElement();
