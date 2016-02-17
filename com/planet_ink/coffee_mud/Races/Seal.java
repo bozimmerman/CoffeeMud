@@ -179,6 +179,7 @@ public class Seal extends GiantFish
 		}
 		return naturalWeapon;
 	}
+
 	@Override
 	public List<RawMaterial> myResources()
 	{

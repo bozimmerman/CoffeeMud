@@ -154,6 +154,7 @@ public class Sheep extends StdRace
 		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,1);
 		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,1);
 	}
+
 	@Override
 	public Weapon myNaturalWeapon()
 	{

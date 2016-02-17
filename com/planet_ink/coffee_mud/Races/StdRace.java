@@ -576,6 +576,7 @@ public class StdRace implements Race
 	{
 		return "arrives";
 	}
+
 	@Override
 	public String leaveStr()
 	{
@@ -1277,7 +1278,8 @@ public class StdRace implements Race
 		for(int i=0;i<aging.length;i++)
 		{
 			if((aging[i]==Race.YEARS_AGE_LIVES_FOREVER)&&(race2.getAgingChart()[i]==Race.YEARS_AGE_LIVES_FOREVER))
-			{}
+			{
+			}
 			else
 			if(((aging[i]==Race.YEARS_AGE_LIVES_FOREVER)&&(race2.getAgingChart()[i]==0))
 			||((aging[i]==0)&&(race2.getAgingChart()[i]==Race.YEARS_AGE_LIVES_FOREVER)))
@@ -1309,7 +1311,8 @@ public class StdRace implements Race
 			if(wornCode != Wearable.IN_INVENTORY)
 			{
 				if((!CMath.bset(race1worn,wornCode))&&(!CMath.bset(race2worn,wornCode)))
-				{}
+				{
+				}
 				else
 				if(CMath.bset(race1worn,wornCode)&&CMath.bset(race2worn,wornCode))
 					finalWear=finalWear|wornCode;
@@ -1553,8 +1556,10 @@ public class StdRace implements Race
 		final PairVector<String,Integer> ables=new PairVector<String,Integer>();
 		if((culturalAbilityNames()!=null)
 		&&(culturalAbilityProficiencies()!=null))
+		{
 			for(int i=0;i<culturalAbilityNames().length;i++)
 				ables.addElement(culturalAbilityNames()[i],Integer.valueOf(culturalAbilityProficiencies()[i]));
+		}
 		return ables;
 	}
 
@@ -1823,6 +1828,7 @@ public class StdRace implements Race
 		}
 		return -1;
 	}
+
 	public boolean sameAs(Race E)
 	{
 		if(!(E instanceof StdRace))

@@ -829,6 +829,7 @@ public class GenRace extends StdRace
 		for(int i=this.getSaveStatIndex();i<getStatCodes().length;i++)
 			setStat(getStatCodes()[i],CMLib.xml().getValFromPieces(raceData, getStatCodes()[i]));
 	}
+
 	protected static String[] CODES={"ID","NAME","CAT","WEAR","VWEIGHT","BWEIGHT",
 									 "VHEIGHT","FHEIGHT","MHEIGHT","AVAIL","LEAVE",
 									 "ARRIVE","HEALTHRACE","BODY","ESTATS",
@@ -970,8 +971,10 @@ public class GenRace extends StdRace
 	public boolean tick(Tickable myChar, int tickID)
 	{
 		if(eventBuddy!=null)
+		{
 			if(!eventBuddy.tick(myChar,tickID))
 				return false;
+		}
 		return super.tick(myChar, tickID);
 	}
 

@@ -176,6 +176,7 @@ public class Tumbleweed extends StdRace
 		affectedMOB.curState().setHunger(affectableState.getHunger());
 		affectableState.setMovement(affectableState.getMovement()*2);
 	}
+
 	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{

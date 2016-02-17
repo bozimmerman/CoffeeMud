@@ -209,6 +209,7 @@ public class Goat extends StdRace
 				}
 		}
 	}
+
 	@Override
 	public String healthText(MOB viewer, MOB mob)
 	{
@@ -246,6 +247,7 @@ public class Goat extends StdRace
 		else
 			return L("^c@x1^c is in perfect health.^N",mob.name(viewer));
 	}
+
 	@Override
 	public List<RawMaterial> myResources()
 	{
@@ -267,6 +269,7 @@ public class Goat extends StdRace
 		}
 		return resources;
 	}
+
 	@Override
 	public DeadBody getCorpseContainer(MOB mob, Room room)
 	{

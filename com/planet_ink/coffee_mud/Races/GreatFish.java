@@ -173,6 +173,7 @@ public class GreatFish extends GiantFish
 		}
 		return naturalWeapon;
 	}
+
 	@Override
 	public List<RawMaterial> myResources()
 	{

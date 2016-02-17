@@ -126,16 +126,19 @@ public class GreatLizard extends StdRace
 		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,1);
 		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,3);
 	}
+
 	@Override
 	public String arriveStr()
 	{
 		return "crawls in";
 	}
+
 	@Override
 	public String leaveStr()
 	{
 		return "crawls";
 	}
+
 	@Override
 	public Weapon myNaturalWeapon()
 	{
@@ -149,6 +152,7 @@ public class GreatLizard extends StdRace
 		}
 		return naturalWeapon;
 	}
+
 	@Override
 	public String makeMobName(char gender, int age)
 	{
@@ -162,6 +166,7 @@ public class GreatLizard extends StdRace
 				return super.makeMobName(gender, age);
 		}
 	}
+
 	@Override
 	public String healthText(MOB viewer, MOB mob)
 	{
@@ -199,6 +204,7 @@ public class GreatLizard extends StdRace
 		else
 			return L("^c@x1^c is in perfect health.^N",mob.name(viewer));
 	}
+
 	@Override
 	public List<RawMaterial> myResources()
 	{
