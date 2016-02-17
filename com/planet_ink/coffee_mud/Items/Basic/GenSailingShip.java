@@ -331,13 +331,6 @@ public class GenSailingShip extends StdBoardable
 						msg.source().tell(L("The anchor is down, so you won`t be moving anywhere."));
 					return false;
 				}
-				
-				//case MANEUVER:
-				//{
-					//TODO: only once per combat tick!
-					// only if there's an object!
-				//	break;
-				//}
 				}
 			}
 			if(cmd != null)
