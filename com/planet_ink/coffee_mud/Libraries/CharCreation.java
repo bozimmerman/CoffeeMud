@@ -3566,15 +3566,6 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 					C.execute(mob,new XVector<String>("WIZINV"),0);
 			}
 			showTheNews(mob);
-			startRoom = mob.location();
-			if(startRoom==null)
-			{
-				Log.errOut("CharCreation",mob.name()+" has no location.. sending to start room");
-				startRoom = mob.getStartRoom();
-				if(startRoom == null)
-					startRoom = CMLib.map().getStartRoom(mob);
-
-			}
 			resetStats = false;
 		}
 		else
@@ -3606,7 +3597,15 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 					C.execute(mob,new XVector<String>("WIZINV"),0);
 			}
 			showTheNews(mob);
-			startRoom = mob.location();
+		}
+		startRoom = CMLib.map().getRoom(mob.location());
+		if(startRoom==null)
+		{
+			Log.debugOut("CharCreation",mob.name()+" has no/lost location.. sending to start room");
+			startRoom = CMLib.map().getRoom(mob.getStartRoom());
+			if(startRoom == null)
+				startRoom = CMLib.map().getStartRoom(mob);
+
 		}
 		return this.completeLogin(session, mob, startRoom, resetStats);
 	}
