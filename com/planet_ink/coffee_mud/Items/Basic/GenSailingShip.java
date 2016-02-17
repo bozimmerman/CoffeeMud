@@ -399,6 +399,22 @@ public class GenSailingShip extends StdBoardable
 				msg.source().tell(CMLib.lang().L("You'll need some assistance to board a ship from the water."));
 			return false;
 		}
+		else
+		if((msg.targetMinor()==CMMsg.TYP_COMMANDFAIL)
+		&&(msg.targetMessage()!=null)
+		&&(msg.targetMessage().length()>0))
+		{
+			if(Character.toUpperCase(msg.targetMessage().charAt(0))=='A')
+			{
+				List<String> parsedFail = CMParms.parse(msg.targetMessage());
+				String cmd=parsedFail.get(0).toUpperCase();
+				if("ATTACK".startsWith(cmd))
+				{
+					//TODO: get target and confirm that you can harass them
+					//TODO: possibly put self and target into tactical mode
+				}
+			}
+		}
 		if(!super.okMessage(myHost, msg))
 			return false;
 		return true;
