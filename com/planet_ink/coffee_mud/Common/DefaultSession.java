@@ -2197,17 +2197,19 @@ public class DefaultSession implements Session
 			return;
 		if(mob.playerStats()==null)
 			return;
-		final StringBuffer buf=new StringBuffer("");
+		final StringBuilder buf=new StringBuilder("");
 		if(getClientTelnetMode(Session.TELNET_MXP))
-			buf.append("^<!EN Hp '"+mob().curState().getHitPoints()
-					  +"'^>^<!EN MaxHp '"+mob().maxState().getHitPoints()
-					  +"'^>^<!EN Mana '"+mob().curState().getMana()
-					  +"'^>^<!EN MaxMana '"+mob().maxState().getMana()
-					  +"'^>^<!EN Move '"+mob().curState().getMovement()
-					  +"'^>^<!EN MaxMove '"+mob().maxState().getMovement()
-					  +"'^>^<!EN Exp '"+mob().getExperience()
-					  +"'^>^<!EN ExpNeed '"+mob().getExpNeededLevel()
-					  +"'^>^\n\r\n\r");
+		{
+			buf.append("^<!ENTITY Hp '").append(mob.curState().getHitPoints())
+				.append("'^>^<!ENTITY MaxHp '").append(mob.maxState().getHitPoints())
+				.append("'^>^<!ENTITY Mana '").append(mob.curState().getMana())
+				.append("'^>^<!ENTITY MaxMana '").append(mob.maxState().getMana())
+				.append("'^>^<!ENTITY Move '").append(mob.curState().getMovement())
+				.append("'^>^<!ENTITY MaxMove '").append(mob.maxState().getMovement())
+				.append("'^>^<!ENTITY Exp '").append(mob.getExperience())
+				.append("'^>^<!ENTITY ExpNeed '").append(mob.getExpNeededLevel())
+				.append("'^>^\n\r\n\r");
+		}
 		buf.append(CMLib.utensils().builtPrompt(mob));
 		promptPrint("^<Prompt^>"+buf.toString()+"^</Prompt^>^.^N");
 	}

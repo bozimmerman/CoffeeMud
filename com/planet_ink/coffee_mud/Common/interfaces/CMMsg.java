@@ -1383,7 +1383,7 @@ public interface CMMsg extends CMCommon
 	/** combined MAJOR and MINOR codes for useful event message type for a room reset event */
 	public static final int MSG_ROOMRESET=MASK_ALWAYS|TYP_ROOMRESET;
 	/** combined MAJOR and MINOR codes for useful event message type for a sniff event */
-	public static final int MSG_SNIFF=MASK_HANDS|TYP_SNIFF;
+	public static final int MSG_SNIFF=TYP_SNIFF;
 	/** combined MAJOR and MINOR codes for useful event message type for a activate event */
 	public static final int MSG_ACTIVATE=MASK_HANDS|TYP_ACTIVATE;
 	/** combined MAJOR and MINOR codes for useful event message type for a deactivate event */

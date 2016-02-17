@@ -1057,8 +1057,10 @@ public class DefaultFaction implements Faction, MsgListener
 	public double findFactor(MOB mob, boolean gain)
 	{
 		for(final Faction.FZapFactor factor : factors)
+		{
 			if(CMLib.masking().maskCheck(factor.compiledMOBMask(),mob,false))
 				return gain?factor.gainFactor():factor.lossFactor();
+		}
 		return 1.0;
 	}
 
@@ -1610,7 +1612,7 @@ public class DefaultFaction implements Faction, MsgListener
 		private boolean		selfTargetOK	= false;
 		private boolean		just100			= false;
 		private Object[]	stateVariables	= new Object[0];
-		private String		triggerParms	="";
+		private String		triggerParms	= "";
 		
 		private final Faction	myFaction;
 		

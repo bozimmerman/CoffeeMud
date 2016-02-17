@@ -35,10 +35,18 @@ import java.util.*;
 
 public class Sniff extends StdCommand
 {
-	public Sniff(){}
+	public Sniff()
+	{
+	}
 
-	private final String[] access=I(new String[]{"SNIFF","SMELL"});
-	@Override public String[] getAccessWords(){return access;}
+	private final String[]	access	= I(new String[] { "SNIFF", "SMELL" });
+
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
+
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
@@ -68,26 +76,33 @@ public class Sniff extends StdCommand
 			if(thisThang!=null)
 			{
 				String name=" <T-NAMESELF>";
+				int sniffCode = CMMsg.MSG_SNIFF;
  				if(thisThang instanceof Room)
 				{
 					if(thisThang==mob.location())
 						name=" around";
 				}
-				final CMMsg msg=CMClass.getMsg(mob,thisThang,null,CMMsg.MSG_SNIFF,textMsg+name+".");
+ 				else
+ 				{
+ 					sniffCode |= CMMsg.MASK_HANDS;
+ 				}
+				final CMMsg msg=CMClass.getMsg(mob,thisThang,null,sniffCode,textMsg+name+".");
 				if(mob.location().okMessage(mob,msg))
 					mob.location().send(mob,msg);
 			}
 			else
-				mob.tell(L("You don't see that here!"));
+				mob.tell(L("You don't smell that here!"));
 		}
 		else
 		{
 			if((commands!=null)&&(commands.size()>0))
+			{
 				if(commands.get(0).toUpperCase().startsWith("E"))
 				{
 					mob.tell(L("Sniff what?"));
 					return false;
 				}
+			}
 
 			final CMMsg msg=CMClass.getMsg(mob,mob.location(),null,CMMsg.MSG_SNIFF,(quiet?null:textMsg+" around."),CMMsg.MSG_SNIFF,(quiet?null:textMsg+" you."),CMMsg.MSG_SNIFF,(quiet?null:textMsg+" around."));
 			if(mob.location().okMessage(mob,msg))
@@ -95,9 +110,23 @@ public class Sniff extends StdCommand
 		}
 		return false;
 	}
-	@Override public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandActionCost(ID());}
-	@Override public double combatActionsCost(MOB mob, List<String> cmds){return 0.25;}
-	@Override public boolean canBeOrdered(){return true;}
 
+	@Override
+	public double actionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandActionCost(ID());
+	}
+
+	@Override
+	public double combatActionsCost(MOB mob, List<String> cmds)
+	{
+		return 0.25;
+	}
+
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 
 }
