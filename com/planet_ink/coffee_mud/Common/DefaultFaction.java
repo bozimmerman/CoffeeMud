@@ -39,7 +39,6 @@ import java.util.regex.Pattern;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class DefaultFaction implements Faction, MsgListener
 {
 	@Override
@@ -1198,11 +1197,13 @@ public class DefaultFaction implements Faction, MsgListener
 							}
 							eventC.setStateVariable(1,Long.valueOf(System.currentTimeMillis()+addTime.longValue()));
 							for(final MOB target : targets)
+							{
 								if(eventC.applies(msg.source(),target))
 								{
 									executeChange(msg.source(),target,eventC);
 									break;
 								}
+							}
 						}
 					}
 				}
@@ -2140,6 +2141,7 @@ public class DefaultFaction implements Faction, MsgListener
 			return myFaction;
 		}
 
+		@SuppressWarnings("unchecked")
 		@Override
 		public void setValue(int newValue)
 		{
@@ -2227,6 +2229,7 @@ public class DefaultFaction implements Faction, MsgListener
 			return lastDataChange[0] > lastUpdated;
 		}
 
+		@SuppressWarnings("unchecked")
 		private Ability setPresenceReaction(MOB M, Physical myHost)
 		{
 			if((!CMLib.flags().canBeSeenBy(myHost, M))
@@ -2243,7 +2246,7 @@ public class DefaultFaction implements Faction, MsgListener
 				{
 					if(myReactions==null)
 						myReactions=new Vector<String>();
-					tempReactSet=(List)currentReactionSets.elementAt(d,2);
+					tempReactSet=(List<Faction.FReactionItem>)currentReactionSets.elementAt(d,2);
 					for(final Faction.FReactionItem reactionItem : tempReactSet)
 						myReactions.add(reactionItem.reactionObjectID()+"="+reactionItem.parameters(myHost.Name()));
 				}
