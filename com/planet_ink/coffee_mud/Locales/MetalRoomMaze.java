@@ -35,7 +35,12 @@ import java.util.*;
 */
 public class MetalRoomMaze extends StdMaze
 {
-	@Override public String ID(){return "MetalRoomMaze";}
+	@Override
+	public String ID()
+	{
+		return "MetalRoomMaze";
+	}
+
 	public MetalRoomMaze()
 	{
 		super();
@@ -43,7 +48,16 @@ public class MetalRoomMaze extends StdMaze
 		recoverPhyStats();
 		climask=Places.CLIMASK_NORMAL;
 	}
-	@Override public int domainType(){return Room.DOMAIN_INDOORS_METAL;}
 
-	@Override public String getGridChildLocaleID(){return "MetalRoom";}
+	@Override
+	public int domainType()
+	{
+		return Room.DOMAIN_INDOORS_METAL;
+	}
+
+	@Override
+	public String getGridChildLocaleID()
+	{
+		return "MetalRoom";
+	}
 }

@@ -35,7 +35,12 @@ import java.util.*;
 */
 public class Woods extends StdRoom
 {
-	@Override public String ID(){return "Woods";}
+	@Override
+	public String ID()
+	{
+		return "Woods";
+	}
+
 	public Woods()
 	{
 		super();
@@ -43,7 +48,12 @@ public class Woods extends StdRoom
 		basePhyStats.setWeight(3);
 		recoverPhyStats();
 	}
-	@Override public int domainType(){return Room.DOMAIN_OUTDOORS_WOODS;}
+
+	@Override
+	public int domainType()
+	{
+		return Room.DOMAIN_OUTDOORS_WOODS;
+	}
 
 
 	@Override
@@ -97,5 +107,9 @@ public class Woods extends StdRoom
 		Integer.valueOf(RawMaterial.RESOURCE_FEATHERS),
 		Integer.valueOf(RawMaterial.RESOURCE_LEATHER)};
 	public static final List<Integer> roomResources=new Vector<Integer>(Arrays.asList(resourceList));
-	@Override public List<Integer> resourceChoices(){return Woods.roomResources;}
+	@Override
+	public List<Integer> resourceChoices()
+	{
+		return Woods.roomResources;
+	}
 }

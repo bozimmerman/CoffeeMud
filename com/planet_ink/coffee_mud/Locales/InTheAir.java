@@ -34,7 +34,12 @@ import java.util.*;
 */
 public class InTheAir extends StdRoom
 {
-	@Override public String ID(){return "InTheAir";}
+	@Override
+	public String ID()
+	{
+		return "InTheAir";
+	}
+
 	public InTheAir()
 	{
 		super();
@@ -42,7 +47,12 @@ public class InTheAir extends StdRoom
 		name="the sky";
 		recoverPhyStats();
 	}
-	@Override public int domainType(){return Room.DOMAIN_OUTDOORS_AIR;}
+
+	@Override
+	public int domainType()
+	{
+		return Room.DOMAIN_OUTDOORS_AIR;
+	}
 
 
 	@Override

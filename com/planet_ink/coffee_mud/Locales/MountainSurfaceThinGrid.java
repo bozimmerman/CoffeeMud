@@ -36,7 +36,12 @@ import java.util.*;
 */
 public class MountainSurfaceThinGrid extends StdThinGrid
 {
-	@Override public String ID(){return "MountainSurfaceThinGrid";}
+	@Override
+	public String ID()
+	{
+		return "MountainSurfaceThinGrid";
+	}
+
 	public MountainSurfaceThinGrid()
 	{
 		super();
@@ -44,7 +49,12 @@ public class MountainSurfaceThinGrid extends StdThinGrid
 		basePhyStats.setWeight(5);
 		recoverPhyStats();
 	}
-	@Override public int domainType(){return Room.DOMAIN_OUTDOORS_MOUNTAINS;}
+
+	@Override
+	public int domainType()
+	{
+		return Room.DOMAIN_OUTDOORS_MOUNTAINS;
+	}
 
 	@Override
 	public CMObject newInstance()
@@ -53,6 +63,16 @@ public class MountainSurfaceThinGrid extends StdThinGrid
 			return super.newInstance();
 		return new MountainSurfaceGrid().newInstance();
 	}
-	@Override public String getGridChildLocaleID(){return "MountainSurface";}
-	@Override public List<Integer> resourceChoices(){return Mountains.roomResources;}
+
+	@Override
+	public String getGridChildLocaleID()
+	{
+		return "MountainSurface";
+	}
+
+	@Override
+	public List<Integer> resourceChoices()
+	{
+		return Mountains.roomResources;
+	}
 }

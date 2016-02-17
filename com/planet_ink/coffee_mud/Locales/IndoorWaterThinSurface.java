@@ -35,7 +35,12 @@ import java.util.*;
 */
 public class IndoorWaterThinSurface extends IndoorWaterSurface
 {
-	@Override public String ID(){return "IndoorWaterThinSurface";}
+	@Override
+	public String ID()
+	{
+		return "IndoorWaterThinSurface";
+	}
+
 	public IndoorWaterThinSurface()
 	{
 		super();
@@ -44,10 +49,31 @@ public class IndoorWaterThinSurface extends IndoorWaterSurface
 		recoverPhyStats();
 		climask=Places.CLIMASK_WET;
 	}
-	@Override public int domainType(){return Room.DOMAIN_INDOORS_WATERSURFACE;}
-	@Override protected String UnderWaterLocaleID(){return "IndoorWaterThinGrid";}
-	@Override protected int UnderWaterDomainType(){return Room.DOMAIN_INDOORS_UNDERWATER;}
-	@Override protected boolean IsUnderWaterFatClass(Room thatSea){return (thatSea instanceof IndoorUnderWaterGrid)||(thatSea instanceof IndoorUnderWaterThinGrid);}
+
+	@Override
+	public int domainType()
+	{
+		return Room.DOMAIN_INDOORS_WATERSURFACE;
+	}
+
+	@Override
+	protected String UnderWaterLocaleID()
+	{
+		return "IndoorWaterThinGrid";
+	}
+
+	@Override
+	protected int UnderWaterDomainType()
+	{
+		return Room.DOMAIN_INDOORS_UNDERWATER;
+	}
+
+	@Override
+	protected boolean IsUnderWaterFatClass(Room thatSea)
+	{
+		return (thatSea instanceof IndoorUnderWaterGrid)||(thatSea instanceof IndoorUnderWaterThinGrid);
+	}
+
 	@Override
 	public CMObject newInstance()
 	{

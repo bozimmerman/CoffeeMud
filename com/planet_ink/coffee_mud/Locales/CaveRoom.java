@@ -35,7 +35,12 @@ import java.util.*;
 */
 public class CaveRoom extends StdRoom
 {
-	@Override public String ID(){return "CaveRoom";}
+	@Override
+	public String ID()
+	{
+		return "CaveRoom";
+	}
+
 	public CaveRoom()
 	{
 		super();
@@ -45,9 +50,19 @@ public class CaveRoom extends StdRoom
 		recoverPhyStats();
 		climask=Places.CLIMASK_NORMAL;
 	}
-	@Override public int domainType(){return Room.DOMAIN_INDOORS_CAVE;}
 
-	@Override public int maxRange(){return 5;}
+	@Override
+	public int domainType()
+	{
+		return Room.DOMAIN_INDOORS_CAVE;
+	}
+
+	@Override
+	public int maxRange()
+	{
+		return 5;
+	}
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -64,6 +79,7 @@ public class CaveRoom extends StdRoom
 		}
 		super.executeMsg(myHost,msg);
 	}
+
 	public static final Integer[] resourceList={
 		Integer.valueOf(RawMaterial.RESOURCE_GRANITE),
 		Integer.valueOf(RawMaterial.RESOURCE_OBSIDIAN),
@@ -98,5 +114,9 @@ public class CaveRoom extends StdRoom
 		Integer.valueOf(RawMaterial.RESOURCE_CITRINE),
 		Integer.valueOf(RawMaterial.RESOURCE_PLATINUM)};
 	public static final List<Integer> roomResources=new Vector<Integer>(Arrays.asList(resourceList));
-	@Override public List<Integer> resourceChoices(){return CaveRoom.roomResources;}
+	@Override
+	public List<Integer> resourceChoices()
+	{
+		return CaveRoom.roomResources;
+	}
 }

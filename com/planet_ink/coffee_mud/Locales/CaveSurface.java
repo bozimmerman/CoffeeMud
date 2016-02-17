@@ -35,7 +35,12 @@ import java.util.*;
 */
 public class CaveSurface extends ClimbableSurface
 {
-	@Override public String ID(){return "CaveSurface";}
+	@Override
+	public String ID()
+	{
+		return "CaveSurface";
+	}
+
 	public CaveSurface()
 	{
 		super();
@@ -44,8 +49,22 @@ public class CaveSurface extends ClimbableSurface
 		recoverPhyStats();
 		climask=Places.CLIMASK_NORMAL;
 	}
-	@Override public int domainType(){return Room.DOMAIN_INDOORS_CAVE;}
 
-	@Override public int maxRange(){return 5;}
-	@Override public List<Integer> resourceChoices(){return CaveRoom.roomResources;}
+	@Override
+	public int domainType()
+	{
+		return Room.DOMAIN_INDOORS_CAVE;
+	}
+
+	@Override
+	public int maxRange()
+	{
+		return 5;
+	}
+
+	@Override
+	public List<Integer> resourceChoices()
+	{
+		return CaveRoom.roomResources;
+	}
 }

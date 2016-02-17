@@ -35,7 +35,12 @@ import java.util.*;
 */
 public class CityStreet extends StdRoom
 {
-	@Override public String ID(){return "CityStreet";}
+	@Override
+	public String ID()
+	{
+		return "CityStreet";
+	}
+
 	public CityStreet()
 	{
 		super();
@@ -43,5 +48,10 @@ public class CityStreet extends StdRoom
 		basePhyStats.setWeight(1);
 		recoverPhyStats();
 	}
-	@Override public int domainType(){return Room.DOMAIN_OUTDOORS_CITY;}
+
+	@Override
+	public int domainType()
+	{
+		return Room.DOMAIN_OUTDOORS_CITY;
+	}
 }

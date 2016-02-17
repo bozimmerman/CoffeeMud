@@ -35,7 +35,12 @@ import java.util.*;
 */
 public class UnderWaterMaze extends StdMaze
 {
-	@Override public String ID(){return "UnderWaterMaze";}
+	@Override
+	public String ID()
+	{
+		return "UnderWaterMaze";
+	}
+
 	public UnderWaterMaze()
 	{
 		super();
@@ -45,11 +50,25 @@ public class UnderWaterMaze extends StdMaze
 		climask=Places.CLIMASK_WET;
 		atmosphere=RawMaterial.RESOURCE_FRESHWATER;
 	}
-	@Override public int domainType(){return Room.DOMAIN_OUTDOORS_UNDERWATER;}
-	@Override protected int baseThirst(){return 0;}
+
+	@Override
+	public int domainType()
+	{
+		return Room.DOMAIN_OUTDOORS_UNDERWATER;
+	}
+
+	@Override
+	protected int baseThirst()
+	{
+		return 0;
+	}
 
 
-	@Override public String getGridChildLocaleID(){return "UnderWater";}
+	@Override
+	public String getGridChildLocaleID()
+	{
+		return "UnderWater";
+	}
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
@@ -61,17 +80,24 @@ public class UnderWaterMaze extends StdMaze
 		}
 		return super.okMessage(myHost,msg);
 	}
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
 		UnderWater.sinkAffects(this,msg);
 	}
+
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SWIMMING);
 	}
-	@Override public List<Integer> resourceChoices(){return UnderWater.roomResources;}
+
+	@Override
+	public List<Integer> resourceChoices()
+	{
+		return UnderWater.roomResources;
+	}
 }

@@ -35,7 +35,12 @@ import java.util.*;
 */
 public class UnderWaterThinGrid extends StdThinGrid
 {
-	@Override public String ID(){return "UnderWaterThinGrid";}
+	@Override
+	public String ID()
+	{
+		return "UnderWaterThinGrid";
+	}
+
 	public UnderWaterThinGrid()
 	{
 		super();
@@ -59,8 +64,17 @@ public class UnderWaterThinGrid extends StdThinGrid
 		atmosphere=RawMaterial.RESOURCE_FRESHWATER;
 	}
 
-	@Override public int domainType(){return Room.DOMAIN_OUTDOORS_UNDERWATER;}
-	@Override protected int baseThirst(){return 0;}
+	@Override
+	public int domainType()
+	{
+		return Room.DOMAIN_OUTDOORS_UNDERWATER;
+	}
+
+	@Override
+	protected int baseThirst()
+	{
+		return 0;
+	}
 
 	@Override
 	public CMObject newInstance()
@@ -70,7 +84,11 @@ public class UnderWaterThinGrid extends StdThinGrid
 		return new UnderWaterGrid().newInstance();
 	}
 
-	@Override public String getGridChildLocaleID(){return "UnderWater";}
+	@Override
+	public String getGridChildLocaleID()
+	{
+		return "UnderWater";
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
@@ -78,7 +96,12 @@ public class UnderWaterThinGrid extends StdThinGrid
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SWIMMING);
 	}
-	@Override public List<Integer> resourceChoices(){return UnderWater.roomResources;}
+
+	@Override
+	public List<Integer> resourceChoices()
+	{
+		return UnderWater.roomResources;
+	}
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
@@ -90,12 +113,14 @@ public class UnderWaterThinGrid extends StdThinGrid
 		}
 		return super.okMessage(myHost,msg);
 	}
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
 		UnderWater.sinkAffects(this,msg);
 	}
+
 	@Override
 	protected void fillExitsOfGridRoom(Room R, int x, int y)
 	{

@@ -36,7 +36,12 @@ import java.util.*;
 */
 public class IndoorInTheAir extends StdRoom
 {
-	@Override public String ID(){return "IndoorInTheAir";}
+	@Override
+	public String ID()
+	{
+		return "IndoorInTheAir";
+	}
+
 	public IndoorInTheAir()
 	{
 		super();
@@ -44,7 +49,12 @@ public class IndoorInTheAir extends StdRoom
 		basePhyStats.setWeight(1);
 		recoverPhyStats();
 	}
-	@Override public int domainType(){return Room.DOMAIN_INDOORS_AIR;}
+
+	@Override
+	public int domainType()
+	{
+		return Room.DOMAIN_INDOORS_AIR;
+	}
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
@@ -53,6 +63,7 @@ public class IndoorInTheAir extends StdRoom
 			return false;
 		return InTheAir.isOkAirAffect(this,msg);
 	}
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{

@@ -36,7 +36,12 @@ import java.util.*;
 */
 public class DesertThinGrid extends StdThinGrid
 {
-	@Override public String ID(){return "DesertThinGrid";}
+	@Override
+	public String ID()
+	{
+		return "DesertThinGrid";
+	}
+
 	public DesertThinGrid()
 	{
 		super();
@@ -45,7 +50,12 @@ public class DesertThinGrid extends StdThinGrid
 		recoverPhyStats();
 		climask=Places.CLIMASK_HOT|CLIMASK_DRY;
 	}
-	@Override public int domainType(){return Room.DOMAIN_OUTDOORS_DESERT;}
+
+	@Override
+	public int domainType()
+	{
+		return Room.DOMAIN_OUTDOORS_DESERT;
+	}
 
 	@Override
 	public CMObject newInstance()
@@ -55,6 +65,15 @@ public class DesertThinGrid extends StdThinGrid
 		return new DesertGrid().newInstance();
 	}
 
-	@Override public String getGridChildLocaleID(){return "Desert";}
-	@Override public List<Integer> resourceChoices(){return Desert.roomResources;}
+	@Override
+	public String getGridChildLocaleID()
+	{
+		return "Desert";
+	}
+
+	@Override
+	public List<Integer> resourceChoices()
+	{
+		return Desert.roomResources;
+	}
 }

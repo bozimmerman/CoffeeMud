@@ -35,12 +35,22 @@ import java.util.*;
 */
 public class LargeStoneRoom extends StoneRoom
 {
-	@Override public String ID(){return "LargeStoneRoom";}
+	@Override
+	public String ID()
+	{
+		return "LargeStoneRoom";
+	}
+
 	public LargeStoneRoom()
 	{
 		super();
 		basePhyStats.setWeight(3);
 		recoverPhyStats();
 	}
-	@Override public int maxRange(){return 5;}
+
+	@Override
+	public int maxRange()
+	{
+		return 5;
+	}
 }

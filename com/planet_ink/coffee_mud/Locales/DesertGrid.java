@@ -35,7 +35,12 @@ import java.util.*;
 */
 public class DesertGrid extends StdGrid
 {
-	@Override public String ID(){return "DesertGrid";}
+	@Override
+	public String ID()
+	{
+		return "DesertGrid";
+	}
+
 	public DesertGrid()
 	{
 		super();
@@ -44,8 +49,22 @@ public class DesertGrid extends StdGrid
 		recoverPhyStats();
 		climask=Places.CLIMASK_HOT|CLIMASK_DRY;
 	}
-	@Override public int domainType(){return Room.DOMAIN_OUTDOORS_DESERT;}
 
-	@Override public String getGridChildLocaleID(){return "Desert";}
-	@Override public List<Integer> resourceChoices(){return Desert.roomResources;}
+	@Override
+	public int domainType()
+	{
+		return Room.DOMAIN_OUTDOORS_DESERT;
+	}
+
+	@Override
+	public String getGridChildLocaleID()
+	{
+		return "Desert";
+	}
+
+	@Override
+	public List<Integer> resourceChoices()
+	{
+		return Desert.roomResources;
+	}
 }

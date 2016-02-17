@@ -36,7 +36,12 @@ import java.util.*;
 */
 public class JungleThinGrid extends StdThinGrid
 {
-	@Override public String ID(){return "JungleThinGrid";}
+	@Override
+	public String ID()
+	{
+		return "JungleThinGrid";
+	}
+
 	public JungleThinGrid()
 	{
 		super();
@@ -45,7 +50,12 @@ public class JungleThinGrid extends StdThinGrid
 		recoverPhyStats();
 		climask=Places.CLIMASK_WET|CLIMASK_HOT;
 	}
-	@Override public int domainType(){return Room.DOMAIN_OUTDOORS_JUNGLE;}
+
+	@Override
+	public int domainType()
+	{
+		return Room.DOMAIN_OUTDOORS_JUNGLE;
+	}
 
 	@Override
 	public CMObject newInstance()
@@ -54,6 +64,16 @@ public class JungleThinGrid extends StdThinGrid
 			return super.newInstance();
 		return new JungleGrid().newInstance();
 	}
-	@Override public String getGridChildLocaleID(){return "Jungle";}
-	@Override public List<Integer> resourceChoices(){return Jungle.roomResources;}
+
+	@Override
+	public String getGridChildLocaleID()
+	{
+		return "Jungle";
+	}
+
+	@Override
+	public List<Integer> resourceChoices()
+	{
+		return Jungle.roomResources;
+	}
 }

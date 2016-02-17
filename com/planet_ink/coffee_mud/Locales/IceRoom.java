@@ -35,7 +35,12 @@ import java.util.*;
 */
 public class IceRoom extends StdRoom
 {
-	@Override public String ID(){return "IceRoom";}
+	@Override
+	public String ID()
+	{
+		return "IceRoom";
+	}
+
 	public IceRoom()
 	{
 		super();
@@ -43,5 +48,10 @@ public class IceRoom extends StdRoom
 		recoverPhyStats();
 		climask=Places.CLIMASK_COLD;
 	}
-	@Override public int domainType(){return Room.DOMAIN_INDOORS_STONE;}
+
+	@Override
+	public int domainType()
+	{
+		return Room.DOMAIN_INDOORS_STONE;
+	}
 }

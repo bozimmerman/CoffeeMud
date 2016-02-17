@@ -36,7 +36,12 @@ import java.util.*;
 */
 public class EndlessThinSky extends StdThinGrid
 {
-	@Override public String ID(){return "EndlessThinSky";}
+	@Override
+	public String ID()
+	{
+		return "EndlessThinSky";
+	}
+
 	protected boolean crossLinked=false;
 
 	public EndlessThinSky()
@@ -58,7 +63,12 @@ public class EndlessThinSky extends StdThinGrid
 			ysize=3;
 		}
 	}
-	@Override public int domainType(){return Room.DOMAIN_OUTDOORS_AIR;}
+
+	@Override
+	public int domainType()
+	{
+		return Room.DOMAIN_OUTDOORS_AIR;
+	}
 
 
 	@Override
@@ -77,13 +87,19 @@ public class EndlessThinSky extends StdThinGrid
 
 		return InTheAir.isOkAirAffect(this,msg);
 	}
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
 		InTheAir.airAffects(this,msg);
 	}
-	@Override public String getGridChildLocaleID(){return "InTheAir";}
+
+	@Override
+	public String getGridChildLocaleID()
+	{
+		return "InTheAir";
+	}
 
 	@Override
 	protected void fillExitsOfGridRoom(final Room R, final int x, final int y)

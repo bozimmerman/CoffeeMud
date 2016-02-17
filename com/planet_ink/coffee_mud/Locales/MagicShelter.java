@@ -35,7 +35,12 @@ import java.util.*;
 */
 public class MagicShelter extends StdRoom
 {
-	@Override public String ID(){return "MagicShelter";}
+	@Override
+	public String ID()
+	{
+		return "MagicShelter";
+	}
+
 	public MagicShelter()
 	{
 		super();
@@ -76,7 +81,12 @@ public class MagicShelter extends StdRoom
 		}
 		climask=Places.CLIMASK_NORMAL;
 	}
-	@Override public int domainType(){return Room.DOMAIN_INDOORS_MAGIC;}
+
+	@Override
+	public int domainType()
+	{
+		return Room.DOMAIN_INDOORS_MAGIC;
+	}
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)

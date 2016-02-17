@@ -35,7 +35,12 @@ import java.util.*;
 */
 public class SewerRoom extends StdRoom
 {
-	@Override public String ID(){return "SewerRoom";}
+	@Override
+	public String ID()
+	{
+		return "SewerRoom";
+	}
+
 	public SewerRoom()
 	{
 		super();
@@ -46,5 +51,10 @@ public class SewerRoom extends StdRoom
 		recoverPhyStats();
 		climask=Places.CLIMASK_WET;
 	}
-	@Override public int domainType(){return Room.DOMAIN_INDOORS_CAVE;}
+
+	@Override
+	public int domainType()
+	{
+		return Room.DOMAIN_INDOORS_CAVE;
+	}
 }

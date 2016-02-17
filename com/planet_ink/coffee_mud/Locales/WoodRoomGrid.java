@@ -35,7 +35,12 @@ import java.util.*;
 */
 public class WoodRoomGrid extends StdGrid
 {
-	@Override public String ID(){return "WoodRoomGrid";}
+	@Override
+	public String ID()
+	{
+		return "WoodRoomGrid";
+	}
+
 	public WoodRoomGrid()
 	{
 		super();
@@ -43,7 +48,16 @@ public class WoodRoomGrid extends StdGrid
 		recoverPhyStats();
 		climask=Places.CLIMASK_NORMAL;
 	}
-	@Override public int domainType(){return Room.DOMAIN_INDOORS_WOOD;}
 
-	@Override public String getGridChildLocaleID(){return "WoodRoom";}
+	@Override
+	public int domainType()
+	{
+		return Room.DOMAIN_INDOORS_WOOD;
+	}
+
+	@Override
+	public String getGridChildLocaleID()
+	{
+		return "WoodRoom";
+	}
 }

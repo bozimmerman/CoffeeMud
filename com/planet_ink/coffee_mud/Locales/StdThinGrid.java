@@ -37,7 +37,11 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class StdThinGrid extends StdRoom implements GridLocale
 {
-	@Override public String ID(){return "StdThinGrid";}
+	@Override
+	public String ID()
+	{
+		return "StdThinGrid";
+	}
 
 	protected String[] 			descriptions=new String[0];
 	protected String[] 			displayTexts=new String[0];
@@ -362,7 +366,8 @@ public class StdThinGrid extends StdRoom implements GridLocale
 			}
 		}
 		catch(final Exception x)
-		{}
+		{
+		}
 		return null;
 	}
 
@@ -521,7 +526,8 @@ public class StdThinGrid extends StdRoom implements GridLocale
 				}
 			}
 			catch(final Exception e)
-			{}
+			{
+			}
 		}
 		synchronized(R.basePhyStats())
 		{
@@ -823,9 +829,11 @@ public class StdThinGrid extends StdRoom implements GridLocale
 			}
 		}
 		catch(final Exception x)
-		{}
+		{
+		}
 		return "";
 	}
+
 	@Override
 	public int getGridChildX(Room loc)
 	{
@@ -861,7 +869,8 @@ public class StdThinGrid extends StdRoom implements GridLocale
 			}
 		}
 		catch(final Exception x)
-		{}
+		{
+		}
 		return -1;
 	}
 
@@ -987,6 +996,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 			break;
 		}
 	}
+
 	protected int getStdGridCodeNum(String code)
 	{
 		for(int i=0;i<MYCODES.length;i++)
@@ -996,6 +1006,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		}
 		return -1;
 	}
+
 	private static String[] codes=null;
 	
 	@Override

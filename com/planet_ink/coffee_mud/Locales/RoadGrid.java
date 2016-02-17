@@ -35,7 +35,12 @@ import java.util.*;
 */
 public class RoadGrid extends StdGrid
 {
-	@Override public String ID(){return "RoadGrid";}
+	@Override
+	public String ID()
+	{
+		return "RoadGrid";
+	}
+
 	public RoadGrid()
 	{
 		super();
@@ -43,8 +48,22 @@ public class RoadGrid extends StdGrid
 		basePhyStats.setWeight(1);
 		recoverPhyStats();
 	}
-	@Override public int domainType(){return Room.DOMAIN_OUTDOORS_PLAINS;}
 
-	@Override public String getGridChildLocaleID(){return "Road";}
-	@Override public List<Integer> resourceChoices(){return Road.roomResources;}
+	@Override
+	public int domainType()
+	{
+		return Room.DOMAIN_OUTDOORS_PLAINS;
+	}
+
+	@Override
+	public String getGridChildLocaleID()
+	{
+		return "Road";
+	}
+
+	@Override
+	public List<Integer> resourceChoices()
+	{
+		return Road.roomResources;
+	}
 }

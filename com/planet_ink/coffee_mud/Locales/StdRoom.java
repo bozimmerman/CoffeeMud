@@ -91,7 +91,8 @@ public class StdRoom implements Room
 	
 	@Override 
 	public void initializeClass()
-	{}
+	{
+	}
 	
 	@Override
 	public CMObject newInstance()
@@ -747,8 +748,10 @@ public class StdRoom implements Room
 					break;
 				case Room.DOMAIN_OUTDOORS_WATERSURFACE:
 				case Room.DOMAIN_OUTDOORS_UNDERWATER:
+				{
 					if(getRoomInDir(Directions.DOWN)==null)
 						break;
+				}
 				//$FALL-THROUGH$
 				default:
 					mob.tell(L("You can't really dig here."));
@@ -1151,6 +1154,7 @@ public class StdRoom implements Room
 	{
 		return phyStats;
 	}
+
 	@Override
 	public PhyStats basePhyStats()
 	{
@@ -1585,6 +1589,7 @@ public class StdRoom implements Room
 		}
 		return nextRoom;
 	}
+
 	@Override
 	public Exit getExitInDir(int direction)
 	{
@@ -2015,7 +2020,8 @@ public class StdRoom implements Room
 			return inhabitants.elementAt(i);
 		}
 		catch(final java.lang.ArrayIndexOutOfBoundsException x)
-		{}
+		{
+		}
 		return null;
 	}
 
@@ -2035,7 +2041,8 @@ public class StdRoom implements Room
 				}
 			}
 			catch(final ArrayIndexOutOfBoundsException e)
-			{}
+			{
+			}
 		}
 	}
 
@@ -2063,7 +2070,8 @@ public class StdRoom implements Room
 			inhabitants.clear();
 		}
 		catch(final Exception e)
-		{}
+		{
+		}
 	}
 
 	@Override
@@ -2248,7 +2256,8 @@ public class StdRoom implements Room
 			return contents.elementAt(i);
 		}
 		catch(final java.lang.ArrayIndexOutOfBoundsException x)
-		{}
+		{
+		}
 		return null;
 	}
 
@@ -2268,7 +2277,8 @@ public class StdRoom implements Room
 				}
 			}
 			catch(final ArrayIndexOutOfBoundsException e)
-			{}
+			{
+			}
 		}
 	}
 
@@ -2699,7 +2709,8 @@ public class StdRoom implements Room
 			}
 		}
 		catch(final ArrayIndexOutOfBoundsException e)
-		{}
+		{
+		}
 	}
 
 	@Override
@@ -2745,7 +2756,8 @@ public class StdRoom implements Room
 			return affects.elementAt(index);
 		}
 		catch(final java.lang.ArrayIndexOutOfBoundsException x)
-		{}
+		{
+		}
 		return null;
 	}
 
@@ -2831,7 +2843,8 @@ public class StdRoom implements Room
 			return behaviors.elementAt(index);
 		}
 		catch(final java.lang.ArrayIndexOutOfBoundsException x)
-		{}
+		{
+		}
 		return null;
 	}
 
@@ -2841,8 +2854,10 @@ public class StdRoom implements Room
 		if(behaviors==null)
 			return null;
 		for(final Behavior B : behaviors)
+		{
 			if(B.ID().equalsIgnoreCase(ID))
 				return B;
+		}
 		return null;
 	}
 
@@ -2861,7 +2876,8 @@ public class StdRoom implements Room
 			}
 		}
 		catch(final ArrayIndexOutOfBoundsException e)
-		{}
+		{
+		}
 	}
 
 	/** Manipulation of the scripts list */

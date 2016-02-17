@@ -35,7 +35,12 @@ import java.util.*;
 */
 public class WoodenDeck extends StdRoom
 {
-	@Override public String ID(){return "WoodenDeck";}
+	@Override
+	public String ID()
+	{
+		return "WoodenDeck";
+	}
+
 	public WoodenDeck()
 	{
 		super();
@@ -43,8 +48,17 @@ public class WoodenDeck extends StdRoom
 		basePhyStats.setWeight(1);
 		recoverPhyStats();
 	}
-	@Override public int domainType(){return Room.DOMAIN_OUTDOORS_CITY;}
+
+	@Override
+	public int domainType()
+	{
+		return Room.DOMAIN_OUTDOORS_CITY;
+	}
 
 	public static final List<Integer> roomResources=new Vector<Integer>(0);
-	@Override public List<Integer> resourceChoices(){return Road.roomResources;}
+	@Override
+	public List<Integer> resourceChoices()
+	{
+		return Road.roomResources;
+	}
 }

@@ -129,8 +129,10 @@ public class EndlessOcean extends StdGrid
 				if(rawDoors()[Directions.NORTHEAST]==null)
 				{
 					for (final Room[] element : subMap)
+					{
 						if(element[0]!=null)
 							linkRoom(element[0],subMap[xGridSize()/2][yGridSize()/2],Directions.NORTHEAST,ox,ox);
+					}
 					for(int i=0;i<subMap[0].length;i++)
 						if(subMap[subMap.length-1][i]!=null)
 							linkRoom(subMap[subMap.length-1][i],subMap[xGridSize()/2][yGridSize()/2],Directions.NORTHEAST,ox,ox);
@@ -138,8 +140,10 @@ public class EndlessOcean extends StdGrid
 				if(rawDoors()[Directions.NORTHWEST]==null)
 				{
 					for (final Room[] element : subMap)
+					{
 						if(element[0]!=null)
 							linkRoom(element[0],subMap[xGridSize()/2][yGridSize()/2],Directions.NORTHWEST,ox,ox);
+					}
 					for(int i=0;i<subMap[0].length;i++)
 						if(subMap[0][i]!=null)
 							linkRoom(subMap[0][i],subMap[xGridSize()/2][yGridSize()/2],Directions.NORTHWEST,ox,ox);
@@ -147,8 +151,10 @@ public class EndlessOcean extends StdGrid
 				if(rawDoors()[Directions.SOUTHWEST]==null)
 				{
 					for (final Room[] element : subMap)
+					{
 						if(element[yGridSize()-1]!=null)
 							linkRoom(element[yGridSize()-1],subMap[xGridSize()/2][yGridSize()/2],Directions.SOUTHWEST,ox,ox);
+					}
 					for(int i=0;i<subMap[0].length;i++)
 						if(subMap[0][i]!=null)
 							linkRoom(subMap[0][i],subMap[xGridSize()/2][yGridSize()/2],Directions.SOUTHWEST,ox,ox);
@@ -156,8 +162,10 @@ public class EndlessOcean extends StdGrid
 				if(rawDoors()[Directions.SOUTHEAST]==null)
 				{
 					for (final Room[] element : subMap)
+					{
 						if(element[yGridSize()-1]!=null)
 							linkRoom(element[yGridSize()-1],subMap[xGridSize()/2][yGridSize()/2],Directions.SOUTHEAST,ox,ox);
+					}
 					for(int i=0;i<subMap[0].length;i++)
 						if(subMap[subMap.length-1][i]!=null)
 							linkRoom(subMap[subMap.length-1][i],subMap[xGridSize()/2][yGridSize()/2],Directions.NORTHEAST,ox,ox);

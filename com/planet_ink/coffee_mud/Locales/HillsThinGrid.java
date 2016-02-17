@@ -36,7 +36,12 @@ import java.util.*;
 */
 public class HillsThinGrid extends StdThinGrid
 {
-	@Override public String ID(){return "HillsThinGrid";}
+	@Override
+	public String ID()
+	{
+		return "HillsThinGrid";
+	}
+
 	public HillsThinGrid()
 	{
 		super();
@@ -44,7 +49,12 @@ public class HillsThinGrid extends StdThinGrid
 		basePhyStats.setWeight(3);
 		recoverPhyStats();
 	}
-	@Override public int domainType(){return Room.DOMAIN_OUTDOORS_HILLS;}
+
+	@Override
+	public int domainType()
+	{
+		return Room.DOMAIN_OUTDOORS_HILLS;
+	}
 
 	@Override
 	public CMObject newInstance()
@@ -53,6 +63,16 @@ public class HillsThinGrid extends StdThinGrid
 			return super.newInstance();
 		return new HillsGrid().newInstance();
 	}
-	@Override public String getGridChildLocaleID(){return "Hills";}
-	@Override public List<Integer> resourceChoices(){return Hills.roomResources;}
+
+	@Override
+	public String getGridChildLocaleID()
+	{
+		return "Hills";
+	}
+
+	@Override
+	public List<Integer> resourceChoices()
+	{
+		return Hills.roomResources;
+	}
 }

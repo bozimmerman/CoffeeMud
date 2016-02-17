@@ -35,7 +35,12 @@ import java.util.*;
 */
 public class MetalRoom extends StdRoom
 {
-	@Override public String ID(){return "MetalRoom";}
+	@Override
+	public String ID()
+	{
+		return "MetalRoom";
+	}
+
 	public MetalRoom()
 	{
 		super();
@@ -44,5 +49,10 @@ public class MetalRoom extends StdRoom
 		recoverPhyStats();
 		climask=Places.CLIMASK_NORMAL;
 	}
-	@Override public int domainType(){return Room.DOMAIN_INDOORS_METAL;}
+
+	@Override
+	public int domainType()
+	{
+		return Room.DOMAIN_INDOORS_METAL;
+	}
 }

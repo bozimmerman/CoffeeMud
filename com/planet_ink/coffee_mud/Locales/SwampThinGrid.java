@@ -36,7 +36,12 @@ import java.util.*;
 */
 public class SwampThinGrid extends StdThinGrid
 {
-	@Override public String ID(){return "SwampThinGrid";}
+	@Override
+	public String ID()
+	{
+		return "SwampThinGrid";
+	}
+
 	public SwampThinGrid()
 	{
 		super();
@@ -45,7 +50,12 @@ public class SwampThinGrid extends StdThinGrid
 		recoverPhyStats();
 		climask=Places.CLIMASK_WET;
 	}
-	@Override public int domainType(){return Room.DOMAIN_OUTDOORS_SWAMP;}
+
+	@Override
+	public int domainType()
+	{
+		return Room.DOMAIN_OUTDOORS_SWAMP;
+	}
 
 	@Override
 	public CMObject newInstance()
@@ -54,6 +64,16 @@ public class SwampThinGrid extends StdThinGrid
 			return super.newInstance();
 		return new SwampGrid().newInstance();
 	}
-	@Override public String getGridChildLocaleID(){return "Swamp";}
-	@Override public List<Integer> resourceChoices(){return Swamp.roomResources;}
+
+	@Override
+	public String getGridChildLocaleID()
+	{
+		return "Swamp";
+	}
+
+	@Override
+	public List<Integer> resourceChoices()
+	{
+		return Swamp.roomResources;
+	}
 }

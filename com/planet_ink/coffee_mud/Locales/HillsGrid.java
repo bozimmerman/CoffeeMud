@@ -35,7 +35,12 @@ import java.util.*;
 */
 public class HillsGrid extends StdGrid
 {
-	@Override public String ID(){return "HillsGrid";}
+	@Override
+	public String ID()
+	{
+		return "HillsGrid";
+	}
+
 	public HillsGrid()
 	{
 		super();
@@ -43,8 +48,22 @@ public class HillsGrid extends StdGrid
 		basePhyStats.setWeight(3);
 		recoverPhyStats();
 	}
-	@Override public int domainType(){return Room.DOMAIN_OUTDOORS_HILLS;}
 
-	@Override public String getGridChildLocaleID(){return "Hills";}
-	@Override public List<Integer> resourceChoices(){return Hills.roomResources;}
+	@Override
+	public int domainType()
+	{
+		return Room.DOMAIN_OUTDOORS_HILLS;
+	}
+
+	@Override
+	public String getGridChildLocaleID()
+	{
+		return "Hills";
+	}
+
+	@Override
+	public List<Integer> resourceChoices()
+	{
+		return Hills.roomResources;
+	}
 }

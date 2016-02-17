@@ -35,7 +35,12 @@ import java.util.*;
 */
 public class SpacePort extends StdRoom implements LocationRoom
 {
-	@Override public String ID(){return "SpacePort";}
+	@Override
+	public String ID()
+	{
+		return "SpacePort";
+	}
+
 	protected double[] dirFromCore = new double[2];
 
 	public SpacePort()
@@ -45,7 +50,12 @@ public class SpacePort extends StdRoom implements LocationRoom
 		basePhyStats.setWeight(1);
 		recoverPhyStats();
 	}
-	@Override public int domainType(){return Room.DOMAIN_OUTDOORS_SPACEPORT;}
+
+	@Override
+	public int domainType()
+	{
+		return Room.DOMAIN_OUTDOORS_SPACEPORT;
+	}
 
 	@Override
 	public long[] coordinates()
@@ -55,11 +65,13 @@ public class SpacePort extends StdRoom implements LocationRoom
 			return CMLib.map().getLocation(planet.coordinates(),dirFromCore,planet.radius());
 		return new long[]{0,0,0};
 	}
+
 	@Override
 	public double[] getDirectionFromCore()
 	{
 		return dirFromCore;
 	}
+
 	@Override
 	public void setDirectionFromCore(double[] dir)
 	{
@@ -77,6 +89,7 @@ public class SpacePort extends StdRoom implements LocationRoom
 		default: return super.getStat(code);
 		}
 	}
+
 	@Override
 	public void setStat(String code, String val)
 	{
@@ -86,13 +99,17 @@ public class SpacePort extends StdRoom implements LocationRoom
 		default: super.setStat(code, val); break;
 		}
 	}
+
 	protected int getLocCodeNum(String code)
 	{
 		for(int i=0;i<MYCODES.length;i++)
+		{
 			if(code.equalsIgnoreCase(MYCODES[i]))
 				return i;
+		}
 		return -1;
 	}
+
 	private static String[] codes=null;
 	@Override
 	public String[] getStatCodes()

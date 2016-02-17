@@ -878,8 +878,10 @@ public class ThinRoom implements Room
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<CODES.length;i++)
+		{
 			if(code.equalsIgnoreCase(CODES[i]))
 				return i;
+		}
 		return -1;
 	}
 
@@ -892,6 +894,7 @@ public class ThinRoom implements Room
 		}
 		return "";
 	}
+
 	@Override
 	public void setStat(String code, String val)
 	{

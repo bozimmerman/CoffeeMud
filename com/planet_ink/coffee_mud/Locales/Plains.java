@@ -35,7 +35,12 @@ import java.util.*;
 */
 public class Plains extends StdRoom
 {
-	@Override public String ID(){return "Plains";}
+	@Override
+	public String ID()
+	{
+		return "Plains";
+	}
+
 	public Plains()
 	{
 		super();
@@ -43,7 +48,12 @@ public class Plains extends StdRoom
 		basePhyStats.setWeight(2);
 		recoverPhyStats();
 	}
-	@Override public int domainType(){return Room.DOMAIN_OUTDOORS_PLAINS;}
+
+	@Override
+	public int domainType()
+	{
+		return Room.DOMAIN_OUTDOORS_PLAINS;
+	}
 
 	public static final Integer[] resourceList={
 		Integer.valueOf(RawMaterial.RESOURCE_WHEAT),
@@ -71,5 +81,9 @@ public class Plains extends StdRoom
 		Integer.valueOf(RawMaterial.RESOURCE_LEATHER),
 		Integer.valueOf(RawMaterial.RESOURCE_WOOL)};
 	public static final List<Integer> roomResources=new Vector<Integer>(Arrays.asList(resourceList));
-	@Override public List<Integer> resourceChoices(){return Plains.roomResources;}
+	@Override
+	public List<Integer> resourceChoices()
+	{
+		return Plains.roomResources;
+	}
 }

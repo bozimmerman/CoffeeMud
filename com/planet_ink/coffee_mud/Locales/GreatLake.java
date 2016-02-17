@@ -35,7 +35,12 @@ import java.util.*;
 */
 public class GreatLake extends StdGrid
 {
-	@Override public String ID(){return "GreatLake";}
+	@Override
+	public String ID()
+	{
+		return "GreatLake";
+	}
+
 	public GreatLake()
 	{
 		super();
@@ -44,8 +49,22 @@ public class GreatLake extends StdGrid
 		recoverPhyStats();
 		climask=Places.CLIMASK_WET;
 	}
-	@Override public int domainType(){return Room.DOMAIN_OUTDOORS_WATERSURFACE;}
 
-	@Override public String getGridChildLocaleID(){return "WaterSurface";}
-	@Override public List<Integer> resourceChoices(){return UnderWater.roomResources;}
+	@Override
+	public int domainType()
+	{
+		return Room.DOMAIN_OUTDOORS_WATERSURFACE;
+	}
+
+	@Override
+	public String getGridChildLocaleID()
+	{
+		return "WaterSurface";
+	}
+
+	@Override
+	public List<Integer> resourceChoices()
+	{
+		return UnderWater.roomResources;
+	}
 }

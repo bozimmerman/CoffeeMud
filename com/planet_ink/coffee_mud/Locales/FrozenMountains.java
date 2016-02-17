@@ -35,7 +35,12 @@ import java.util.*;
 */
 public class FrozenMountains extends Mountains
 {
-	@Override public String ID(){return "FrozenMountains";}
+	@Override
+	public String ID()
+	{
+		return "FrozenMountains";
+	}
+
 	public FrozenMountains()
 	{
 		super();
@@ -43,5 +48,9 @@ public class FrozenMountains extends Mountains
 		climask=Places.CLIMASK_COLD;
 	}
 
-	@Override public List<Integer> resourceChoices(){return Mountains.roomResources;}
+	@Override
+	public List<Integer> resourceChoices()
+	{
+		return Mountains.roomResources;
+	}
 }

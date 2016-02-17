@@ -34,7 +34,12 @@ import java.util.*;
 */
 public class EndlessSky extends StdGrid
 {
-	@Override public String ID(){return "EndlessSky";}
+	@Override
+	public String ID()
+	{
+		return "EndlessSky";
+	}
+
 	protected boolean crossLinked=false;
 
 	public EndlessSky()
@@ -56,7 +61,12 @@ public class EndlessSky extends StdGrid
 			ysize=3;
 		}
 	}
-	@Override public int domainType(){return Room.DOMAIN_OUTDOORS_AIR;}
+
+	@Override
+	public int domainType()
+	{
+		return Room.DOMAIN_OUTDOORS_AIR;
+	}
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
@@ -66,13 +76,19 @@ public class EndlessSky extends StdGrid
 
 		return InTheAir.isOkAirAffect(this,msg);
 	}
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
 		InTheAir.airAffects(this,msg);
 	}
-	@Override public String getGridChildLocaleID(){return "InTheAir";}
+
+	@Override
+	public String getGridChildLocaleID()
+	{
+		return "InTheAir";
+	}
 
 	@Override
 	protected Room findCenterRoom(int dirCode)

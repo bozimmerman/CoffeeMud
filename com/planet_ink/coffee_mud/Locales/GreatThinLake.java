@@ -36,7 +36,12 @@ import java.util.*;
 */
 public class GreatThinLake extends StdThinGrid
 {
-	@Override public String ID(){return "GreatThinLake";}
+	@Override
+	public String ID()
+	{
+		return "GreatThinLake";
+	}
+
 	public GreatThinLake()
 	{
 		super();
@@ -45,7 +50,12 @@ public class GreatThinLake extends StdThinGrid
 		recoverPhyStats();
 		climask=Places.CLIMASK_WET;
 	}
-	@Override public int domainType(){return Room.DOMAIN_OUTDOORS_WATERSURFACE;}
+
+	@Override
+	public int domainType()
+	{
+		return Room.DOMAIN_OUTDOORS_WATERSURFACE;
+	}
 
 	@Override
 	public CMObject newInstance()
@@ -54,6 +64,16 @@ public class GreatThinLake extends StdThinGrid
 			return super.newInstance();
 		return new GreatLake().newInstance();
 	}
-	@Override public String getGridChildLocaleID(){return "WaterSurface";}
-	@Override public List<Integer> resourceChoices(){return UnderWater.roomResources;}
+
+	@Override
+	public String getGridChildLocaleID()
+	{
+		return "WaterSurface";
+	}
+
+	@Override
+	public List<Integer> resourceChoices()
+	{
+		return UnderWater.roomResources;
+	}
 }

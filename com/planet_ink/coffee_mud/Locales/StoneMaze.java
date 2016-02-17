@@ -35,7 +35,12 @@ import java.util.*;
 */
 public class StoneMaze extends StdMaze
 {
-	@Override public String ID(){return "StoneMaze";}
+	@Override
+	public String ID()
+	{
+		return "StoneMaze";
+	}
+
 	public StoneMaze()
 	{
 		super();
@@ -43,7 +48,16 @@ public class StoneMaze extends StdMaze
 		recoverPhyStats();
 		climask=Places.CLIMASK_NORMAL;
 	}
-	@Override public int domainType(){return Room.DOMAIN_INDOORS_STONE;}
 
-	@Override public String getGridChildLocaleID(){return "StoneRoom";}
+	@Override
+	public int domainType()
+	{
+		return Room.DOMAIN_INDOORS_STONE;
+	}
+
+	@Override
+	public String getGridChildLocaleID()
+	{
+		return "StoneRoom";
+	}
 }

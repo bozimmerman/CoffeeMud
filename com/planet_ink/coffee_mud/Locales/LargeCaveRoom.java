@@ -35,12 +35,22 @@ import java.util.*;
 */
 public class LargeCaveRoom extends CaveRoom
 {
-	@Override public String ID(){return "LargeCaveRoom";}
+	@Override
+	public String ID()
+	{
+		return "LargeCaveRoom";
+	}
+
 	public LargeCaveRoom()
 	{
 		super();
 		basePhyStats.setWeight(4);
 		recoverPhyStats();
 	}
-	@Override public int maxRange(){return 5;}
+
+	@Override
+	public int maxRange()
+	{
+		return 5;
+	}
 }

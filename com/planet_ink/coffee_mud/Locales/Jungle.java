@@ -35,7 +35,12 @@ import java.util.*;
 */
 public class Jungle extends StdRoom
 {
-	@Override public String ID(){return "Jungle";}
+	@Override
+	public String ID()
+	{
+		return "Jungle";
+	}
+
 	public Jungle()
 	{
 		super();
@@ -44,7 +49,12 @@ public class Jungle extends StdRoom
 		recoverPhyStats();
 		climask=Places.CLIMASK_WET|CLIMASK_HOT;
 	}
-	@Override public int domainType(){return Room.DOMAIN_OUTDOORS_JUNGLE;}
+
+	@Override
+	public int domainType()
+	{
+		return Room.DOMAIN_OUTDOORS_JUNGLE;
+	}
 
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
@@ -89,5 +99,9 @@ public class Jungle extends StdRoom
 		Integer.valueOf(RawMaterial.RESOURCE_FEATHERS)
 	};
 	public static final List<Integer> roomResources=new Vector<Integer>(Arrays.asList(resourceList));
-	@Override public List<Integer> resourceChoices(){return Jungle.roomResources;}
+	@Override
+	public List<Integer> resourceChoices()
+	{
+		return Jungle.roomResources;
+	}
 }

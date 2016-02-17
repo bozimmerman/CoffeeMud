@@ -35,7 +35,12 @@ import java.util.*;
 */
 public class StoneGrid extends StdGrid
 {
-	@Override public String ID(){return "StoneGrid";}
+	@Override
+	public String ID()
+	{
+		return "StoneGrid";
+	}
+
 	public StoneGrid()
 	{
 		super();
@@ -43,7 +48,16 @@ public class StoneGrid extends StdGrid
 		recoverPhyStats();
 		climask=Places.CLIMASK_NORMAL;
 	}
-	@Override public int domainType(){return Room.DOMAIN_INDOORS_STONE;}
 
-	@Override public String getGridChildLocaleID(){return "StoneRoom";}
+	@Override
+	public int domainType()
+	{
+		return Room.DOMAIN_INDOORS_STONE;
+	}
+
+	@Override
+	public String getGridChildLocaleID()
+	{
+		return "StoneRoom";
+	}
 }

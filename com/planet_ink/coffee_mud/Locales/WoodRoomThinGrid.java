@@ -36,7 +36,12 @@ import java.util.*;
 */
 public class WoodRoomThinGrid extends StdThinGrid
 {
-	@Override public String ID(){return "WoodRoomThinGrid";}
+	@Override
+	public String ID()
+	{
+		return "WoodRoomThinGrid";
+	}
+
 	public WoodRoomThinGrid()
 	{
 		super();
@@ -44,7 +49,12 @@ public class WoodRoomThinGrid extends StdThinGrid
 		recoverPhyStats();
 		climask=Places.CLIMASK_NORMAL;
 	}
-	@Override public int domainType(){return Room.DOMAIN_INDOORS_WOOD;}
+
+	@Override
+	public int domainType()
+	{
+		return Room.DOMAIN_INDOORS_WOOD;
+	}
 
 	@Override
 	public CMObject newInstance()
@@ -53,5 +63,10 @@ public class WoodRoomThinGrid extends StdThinGrid
 			return super.newInstance();
 		return new WoodRoomGrid().newInstance();
 	}
-	@Override public String getGridChildLocaleID(){return "WoodRoom";}
+
+	@Override
+	public String getGridChildLocaleID()
+	{
+		return "WoodRoom";
+	}
 }

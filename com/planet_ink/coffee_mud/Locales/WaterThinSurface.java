@@ -35,7 +35,12 @@ import java.util.*;
 */
 public class WaterThinSurface extends WaterSurface
 {
-	@Override public String ID(){return "WaterThinSurface";}
+	@Override
+	public String ID()
+	{
+		return "WaterThinSurface";
+	}
+
 	public WaterThinSurface()
 	{
 		super();
@@ -44,8 +49,19 @@ public class WaterThinSurface extends WaterSurface
 		recoverPhyStats();
 		climask=Places.CLIMASK_WET;
 	}
-	@Override public int domainType(){return Room.DOMAIN_OUTDOORS_WATERSURFACE;}
-	@Override protected String UnderWaterLocaleID(){return "UnderWaterThinGrid";}
+
+	@Override
+	public int domainType()
+	{
+		return Room.DOMAIN_OUTDOORS_WATERSURFACE;
+	}
+
+	@Override
+	protected String UnderWaterLocaleID()
+	{
+		return "UnderWaterThinGrid";
+	}
+
 	@Override
 	public CMObject newInstance()
 	{

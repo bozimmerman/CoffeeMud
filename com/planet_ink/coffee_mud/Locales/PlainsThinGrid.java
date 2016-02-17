@@ -36,14 +36,24 @@ import java.util.*;
 */
 public class PlainsThinGrid extends StdThinGrid
 {
-	@Override public String ID(){return "PlainsThinGrid";}
+	@Override
+	public String ID()
+	{
+		return "PlainsThinGrid";
+	}
+
 	public PlainsThinGrid()
 	{
 		super();
 		basePhyStats.setWeight(2);
 		recoverPhyStats();
 	}
-	@Override public int domainType(){return Room.DOMAIN_OUTDOORS_PLAINS;}
+
+	@Override
+	public int domainType()
+	{
+		return Room.DOMAIN_OUTDOORS_PLAINS;
+	}
 
 	@Override
 	public CMObject newInstance()
@@ -52,6 +62,16 @@ public class PlainsThinGrid extends StdThinGrid
 			return super.newInstance();
 		return new PlainsGrid().newInstance();
 	}
-	@Override public String getGridChildLocaleID(){return "Plains";}
-	@Override public List<Integer> resourceChoices(){return Plains.roomResources;}
+
+	@Override
+	public String getGridChildLocaleID()
+	{
+		return "Plains";
+	}
+
+	@Override
+	public List<Integer> resourceChoices()
+	{
+		return Plains.roomResources;
+	}
 }

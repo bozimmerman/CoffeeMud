@@ -35,7 +35,12 @@ import java.util.*;
 */
 public class CaveGrid extends StdGrid
 {
-	@Override public String ID(){return "CaveGrid";}
+	@Override
+	public String ID()
+	{
+		return "CaveGrid";
+	}
+
 	public CaveGrid()
 	{
 		super();
@@ -43,9 +48,28 @@ public class CaveGrid extends StdGrid
 		recoverPhyStats();
 		climask=Places.CLIMASK_NORMAL;
 	}
-	@Override public int domainType(){return Room.DOMAIN_INDOORS_CAVE;}
 
-	@Override public int maxRange(){return 5;}
-	@Override public String getGridChildLocaleID(){return "CaveRoom";}
-	@Override public List<Integer> resourceChoices(){return CaveRoom.roomResources;}
+	@Override
+	public int domainType()
+	{
+		return Room.DOMAIN_INDOORS_CAVE;
+	}
+
+	@Override
+	public int maxRange()
+	{
+		return 5;
+	}
+
+	@Override
+	public String getGridChildLocaleID()
+	{
+		return "CaveRoom";
+	}
+
+	@Override
+	public List<Integer> resourceChoices()
+	{
+		return CaveRoom.roomResources;
+	}
 }

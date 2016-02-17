@@ -35,11 +35,21 @@ import java.util.*;
 */
 public class SeaPort extends Shore
 {
-	@Override public String ID(){return "SeaPort";}
+	@Override
+	public String ID()
+	{
+		return "SeaPort";
+	}
+
 	public SeaPort()
 	{
 		super();
 		name="the sea port";
 	}
-	@Override public int domainType(){return Room.DOMAIN_OUTDOORS_SEAPORT;}
+
+	@Override
+	public int domainType()
+	{
+		return Room.DOMAIN_OUTDOORS_SEAPORT;
+	}
 }

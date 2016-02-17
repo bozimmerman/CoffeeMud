@@ -35,7 +35,12 @@ import java.util.*;
 */
 public class CaveMaze extends StdMaze
 {
-	@Override public String ID(){return "CaveMaze";}
+	@Override
+	public String ID()
+	{
+		return "CaveMaze";
+	}
+
 	public CaveMaze()
 	{
 		super();
@@ -43,9 +48,28 @@ public class CaveMaze extends StdMaze
 		recoverPhyStats();
 		climask=Places.CLIMASK_NORMAL;
 	}
-	@Override public int domainType(){return Room.DOMAIN_INDOORS_CAVE;}
 
-	@Override public int maxRange(){return 5;}
-	@Override public String getGridChildLocaleID(){return "CaveRoom";}
-	@Override public List<Integer> resourceChoices(){return CaveRoom.roomResources;}
+	@Override
+	public int domainType()
+	{
+		return Room.DOMAIN_INDOORS_CAVE;
+	}
+
+	@Override
+	public int maxRange()
+	{
+		return 5;
+	}
+
+	@Override
+	public String getGridChildLocaleID()
+	{
+		return "CaveRoom";
+	}
+
+	@Override
+	public List<Integer> resourceChoices()
+	{
+		return CaveRoom.roomResources;
+	}
 }

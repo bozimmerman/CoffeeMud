@@ -112,6 +112,7 @@ public class StdMaze extends StdGrid
 		}
 		return y;
 	}
+
 	protected int getX(int x, int dirCode)
 	{
 		switch(dirCode)

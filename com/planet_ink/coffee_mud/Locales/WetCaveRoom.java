@@ -35,13 +35,28 @@ import java.util.*;
 */
 public class WetCaveRoom extends CaveRoom
 {
-	@Override public String ID(){return "WetCaveRoom";}
+	@Override
+	public String ID()
+	{
+		return "WetCaveRoom";
+	}
+
 	public WetCaveRoom()
 	{
 		super();
 		recoverPhyStats();
 		climask=Places.CLIMASK_WET;
 	}
-	@Override public int maxRange(){return 5;}
-	@Override public List<Integer> resourceChoices(){return CaveRoom.roomResources;}
+
+	@Override
+	public int maxRange()
+	{
+		return 5;
+	}
+
+	@Override
+	public List<Integer> resourceChoices()
+	{
+		return CaveRoom.roomResources;
+	}
 }

@@ -35,7 +35,12 @@ import java.util.*;
 */
 public class MountainSurfaceGrid extends StdGrid
 {
-	@Override public String ID(){return "MountainSurfaceGrid";}
+	@Override
+	public String ID()
+	{
+		return "MountainSurfaceGrid";
+	}
+
 	public MountainSurfaceGrid()
 	{
 		super();
@@ -43,8 +48,22 @@ public class MountainSurfaceGrid extends StdGrid
 		basePhyStats.setWeight(5);
 		recoverPhyStats();
 	}
-	@Override public int domainType(){return Room.DOMAIN_OUTDOORS_MOUNTAINS;}
 
-	@Override public String getGridChildLocaleID(){return "MountainSurface";}
-	@Override public List<Integer> resourceChoices(){return Mountains.roomResources;}
+	@Override
+	public int domainType()
+	{
+		return Room.DOMAIN_OUTDOORS_MOUNTAINS;
+	}
+
+	@Override
+	public String getGridChildLocaleID()
+	{
+		return "MountainSurface";
+	}
+
+	@Override
+	public List<Integer> resourceChoices()
+	{
+		return Mountains.roomResources;
+	}
 }

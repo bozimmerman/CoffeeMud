@@ -35,15 +35,34 @@ import java.util.*;
 */
 public class PlainsGrid extends StdGrid
 {
-	@Override public String ID(){return "PlainsGrid";}
+	@Override
+	public String ID()
+	{
+		return "PlainsGrid";
+	}
+
 	public PlainsGrid()
 	{
 		super();
 		basePhyStats.setWeight(2);
 		recoverPhyStats();
 	}
-	@Override public int domainType(){return Room.DOMAIN_OUTDOORS_PLAINS;}
 
-	@Override public String getGridChildLocaleID(){return "Plains";}
-	@Override public List<Integer> resourceChoices(){return Plains.roomResources;}
+	@Override
+	public int domainType()
+	{
+		return Room.DOMAIN_OUTDOORS_PLAINS;
+	}
+
+	@Override
+	public String getGridChildLocaleID()
+	{
+		return "Plains";
+	}
+
+	@Override
+	public List<Integer> resourceChoices()
+	{
+		return Plains.roomResources;
+	}
 }

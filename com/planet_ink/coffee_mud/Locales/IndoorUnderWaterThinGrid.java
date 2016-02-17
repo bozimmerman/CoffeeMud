@@ -36,8 +36,21 @@ import java.util.*;
 */
 public class IndoorUnderWaterThinGrid extends UnderWaterThinGrid
 {
-	@Override public String ID(){return "IndoorUnderWaterThinGrid";}
+	@Override
+	public String ID()
+	{
+		return "IndoorUnderWaterThinGrid";
+	}
 
-	@Override public int domainType(){return Room.DOMAIN_INDOORS_UNDERWATER;}
-	@Override public String getGridChildLocaleID(){return "IndoorUnderWater";}
+	@Override
+	public int domainType()
+	{
+		return Room.DOMAIN_INDOORS_UNDERWATER;
+	}
+
+	@Override
+	public String getGridChildLocaleID()
+	{
+		return "IndoorUnderWater";
+	}
 }

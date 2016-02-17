@@ -933,6 +933,7 @@ public class StdGrid extends StdRoom implements GridLocale
 		return "";
 
 	}
+
 	@Override
 	public int getGridChildX(Room loc)
 	{
@@ -952,6 +953,7 @@ public class StdGrid extends StdRoom implements GridLocale
 		}
 		return -1;
 	}
+
 	@Override
 	public int getGridChildY(Room loc)
 	{

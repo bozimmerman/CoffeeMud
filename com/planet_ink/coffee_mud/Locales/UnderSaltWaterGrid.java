@@ -35,7 +35,12 @@ import java.util.*;
 */
 public class UnderSaltWaterGrid extends UnderWaterGrid
 {
-	@Override public String ID(){return "UnderSaltWaterGrid";}
+	@Override
+	public String ID()
+	{
+		return "UnderSaltWaterGrid";
+	}
+
 	public UnderSaltWaterGrid()
 	{
 		super();
@@ -47,11 +52,29 @@ public class UnderSaltWaterGrid extends UnderWaterGrid
 		climask=Places.CLIMASK_WET;
 		atmosphere=RawMaterial.RESOURCE_SALTWATER;
 	}
-	@Override public int domainType(){return Room.DOMAIN_OUTDOORS_UNDERWATER;}
-	@Override protected int baseThirst(){return 0;}
+
+	@Override
+	public int domainType()
+	{
+		return Room.DOMAIN_OUTDOORS_UNDERWATER;
+	}
+
+	@Override
+	protected int baseThirst()
+	{
+		return 0;
+	}
 
 
-	@Override public String getGridChildLocaleID(){return "UnderSaltWater";}
+	@Override
+	public String getGridChildLocaleID()
+	{
+		return "UnderSaltWater";
+	}
 
-	@Override public List<Integer> resourceChoices(){return UnderSaltWater.roomResources;}
+	@Override
+	public List<Integer> resourceChoices()
+	{
+		return UnderSaltWater.roomResources;
+	}
 }

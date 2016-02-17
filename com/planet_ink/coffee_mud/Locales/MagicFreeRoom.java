@@ -35,7 +35,12 @@ import java.util.*;
 */
 public class MagicFreeRoom extends StdRoom
 {
-	@Override public String ID(){return "MagicFreeRoom";}
+	@Override
+	public String ID()
+	{
+		return "MagicFreeRoom";
+	}
+
 	public MagicFreeRoom()
 	{
 		super();
@@ -44,5 +49,10 @@ public class MagicFreeRoom extends StdRoom
 		addEffect(CMClass.getAbility("Prop_MagicFreedom"));
 		climask=Places.CLIMASK_NORMAL;
 	}
-	@Override public int domainType(){return Room.DOMAIN_INDOORS_STONE;}
+
+	@Override
+	public int domainType()
+	{
+		return Room.DOMAIN_INDOORS_STONE;
+	}
 }

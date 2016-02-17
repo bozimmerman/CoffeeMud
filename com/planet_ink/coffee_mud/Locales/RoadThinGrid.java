@@ -36,7 +36,12 @@ import java.util.*;
 */
 public class RoadThinGrid extends StdThinGrid
 {
-	@Override public String ID(){return "RoadThinGrid";}
+	@Override
+	public String ID()
+	{
+		return "RoadThinGrid";
+	}
+
 	public RoadThinGrid()
 	{
 		super();
@@ -44,7 +49,12 @@ public class RoadThinGrid extends StdThinGrid
 		basePhyStats.setWeight(1);
 		recoverPhyStats();
 	}
-	@Override public int domainType(){return Room.DOMAIN_OUTDOORS_PLAINS;}
+
+	@Override
+	public int domainType()
+	{
+		return Room.DOMAIN_OUTDOORS_PLAINS;
+	}
 
 	@Override
 	public CMObject newInstance()
@@ -53,6 +63,16 @@ public class RoadThinGrid extends StdThinGrid
 			return super.newInstance();
 		return new RoadGrid().newInstance();
 	}
-	@Override public String getGridChildLocaleID(){return "Road";}
-	@Override public List<Integer> resourceChoices(){return Road.roomResources;}
+
+	@Override
+	public String getGridChildLocaleID()
+	{
+		return "Road";
+	}
+
+	@Override
+	public List<Integer> resourceChoices()
+	{
+		return Road.roomResources;
+	}
 }

@@ -35,7 +35,12 @@ import java.util.*;
 */
 public class Desert extends StdRoom
 {
-	@Override public String ID(){return "Desert";}
+	@Override
+	public String ID()
+	{
+		return "Desert";
+	}
+
 	public Desert()
 	{
 		super();
@@ -44,8 +49,18 @@ public class Desert extends StdRoom
 		recoverPhyStats();
 		climask=Places.CLIMASK_HOT|CLIMASK_DRY;
 	}
-	@Override public int domainType(){return Room.DOMAIN_OUTDOORS_DESERT;}
-	@Override protected int baseThirst(){return 4;}
+
+	@Override
+	public int domainType()
+	{
+		return Room.DOMAIN_OUTDOORS_DESERT;
+	}
+
+	@Override
+	protected int baseThirst()
+	{
+		return 4;
+	}
 
 	public static final Integer[] resourceList={
 		Integer.valueOf(RawMaterial.RESOURCE_CACTUS),
@@ -56,5 +71,9 @@ public class Desert extends StdRoom
 		Integer.valueOf(RawMaterial.RESOURCE_DATES)
 	};
 	public static final List<Integer> roomResources=new Vector<Integer>(Arrays.asList(resourceList));
-	@Override public List<Integer> resourceChoices(){return Desert.roomResources;}
+	@Override
+	public List<Integer> resourceChoices()
+	{
+		return Desert.roomResources;
+	}
 }

@@ -35,7 +35,12 @@ import java.util.*;
 */
 public class DesertMaze extends StdMaze
 {
-	@Override public String ID(){return "DesertMaze";}
+	@Override
+	public String ID()
+	{
+		return "DesertMaze";
+	}
+
 	public DesertMaze()
 	{
 		super();
@@ -43,9 +48,28 @@ public class DesertMaze extends StdMaze
 		recoverPhyStats();
 		climask=Places.CLIMASK_HOT|CLIMASK_DRY;
 	}
-	@Override public int domainType(){return Room.DOMAIN_OUTDOORS_DESERT;}
-	@Override protected int baseThirst(){return 4;}
 
-	@Override public String getGridChildLocaleID(){return "Desert";}
-	@Override public List<Integer> resourceChoices(){return Desert.roomResources;}
+	@Override
+	public int domainType()
+	{
+		return Room.DOMAIN_OUTDOORS_DESERT;
+	}
+
+	@Override
+	protected int baseThirst()
+	{
+		return 4;
+	}
+
+	@Override
+	public String getGridChildLocaleID()
+	{
+		return "Desert";
+	}
+
+	@Override
+	public List<Integer> resourceChoices()
+	{
+		return Desert.roomResources;
+	}
 }

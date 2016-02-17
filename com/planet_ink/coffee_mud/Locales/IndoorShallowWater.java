@@ -35,7 +35,12 @@ import java.util.*;
 */
 public class IndoorShallowWater extends ShallowWater implements Drink
 {
-	@Override public String ID(){return "IndoorShallowWater";}
+	@Override
+	public String ID()
+	{
+		return "IndoorShallowWater";
+	}
+
 	public IndoorShallowWater()
 	{
 		super();
@@ -43,8 +48,22 @@ public class IndoorShallowWater extends ShallowWater implements Drink
 		recoverPhyStats();
 		climask=Places.CLIMASK_WET;
 	}
-	@Override public int domainType(){return Room.DOMAIN_INDOORS_WATERSURFACE;}
-	@Override protected int baseThirst(){return 0;}
 
-	@Override public List<Integer> resourceChoices(){return CaveRoom.roomResources;}
+	@Override
+	public int domainType()
+	{
+		return Room.DOMAIN_INDOORS_WATERSURFACE;
+	}
+
+	@Override
+	protected int baseThirst()
+	{
+		return 0;
+	}
+
+	@Override
+	public List<Integer> resourceChoices()
+	{
+		return CaveRoom.roomResources;
+	}
 }

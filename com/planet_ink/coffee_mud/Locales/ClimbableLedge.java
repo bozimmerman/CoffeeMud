@@ -37,7 +37,12 @@ import java.util.*;
 */
 public class ClimbableLedge extends ClimbableSurface
 {
-	@Override public String ID(){return "ClimbableLedge";}
+	@Override
+	public String ID()
+	{
+		return "ClimbableLedge";
+	}
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{

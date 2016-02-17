@@ -36,7 +36,12 @@ import java.util.*;
 
 public class SewerMaze extends StdMaze
 {
-	@Override public String ID(){return "SewerMaze";}
+	@Override
+	public String ID()
+	{
+		return "SewerMaze";
+	}
+
 	public SewerMaze()
 	{
 		super();
@@ -46,8 +51,22 @@ public class SewerMaze extends StdMaze
 		recoverPhyStats();
 		climask=Places.CLIMASK_WET;
 	}
-	@Override public int domainType(){return Room.DOMAIN_INDOORS_CAVE;}
 
-	@Override public String getGridChildLocaleID(){return "SewerRoom";}
-	@Override public List<Integer> resourceChoices(){return new Vector<Integer>();}
+	@Override
+	public int domainType()
+	{
+		return Room.DOMAIN_INDOORS_CAVE;
+	}
+
+	@Override
+	public String getGridChildLocaleID()
+	{
+		return "SewerRoom";
+	}
+
+	@Override
+	public List<Integer> resourceChoices()
+	{
+		return new Vector<Integer>();
+	}
 }

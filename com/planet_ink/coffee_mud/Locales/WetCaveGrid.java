@@ -35,7 +35,12 @@ import java.util.*;
 */
 public class WetCaveGrid extends StdMaze
 {
-	@Override public String ID(){return "WetCaveGrid";}
+	@Override
+	public String ID()
+	{
+		return "WetCaveGrid";
+	}
+
 	public WetCaveGrid()
 	{
 		super();
@@ -43,9 +48,28 @@ public class WetCaveGrid extends StdMaze
 		recoverPhyStats();
 		climask=Places.CLIMASK_WET;
 	}
-	@Override public int domainType(){return Room.DOMAIN_INDOORS_CAVE;}
 
-	@Override public String getGridChildLocaleID(){return "WetCaveRoom";}
-	@Override public int maxRange(){return 5;}
-	@Override public List<Integer> resourceChoices(){return CaveRoom.roomResources;}
+	@Override
+	public int domainType()
+	{
+		return Room.DOMAIN_INDOORS_CAVE;
+	}
+
+	@Override
+	public String getGridChildLocaleID()
+	{
+		return "WetCaveRoom";
+	}
+
+	@Override
+	public int maxRange()
+	{
+		return 5;
+	}
+
+	@Override
+	public List<Integer> resourceChoices()
+	{
+		return CaveRoom.roomResources;
+	}
 }

@@ -35,15 +35,34 @@ import java.util.*;
 */
 public class OceanThinGrid extends StdThinGrid
 {
-	@Override public String ID(){return "OceanThinGrid";}
+	@Override
+	public String ID()
+	{
+		return "OceanThinGrid";
+	}
+
 	public OceanThinGrid()
 	{
 		super();
 		basePhyStats.setWeight(2);
 		recoverPhyStats();
 	}
-	@Override public int domainType(){return Room.DOMAIN_OUTDOORS_WATERSURFACE;}
 
-	@Override public String getGridChildLocaleID(){return "SaltWaterSurface";}
-	@Override public List<Integer> resourceChoices(){return Woods.roomResources;}
+	@Override
+	public int domainType()
+	{
+		return Room.DOMAIN_OUTDOORS_WATERSURFACE;
+	}
+
+	@Override
+	public String getGridChildLocaleID()
+	{
+		return "SaltWaterSurface";
+	}
+
+	@Override
+	public List<Integer> resourceChoices()
+	{
+		return Woods.roomResources;
+	}
 }

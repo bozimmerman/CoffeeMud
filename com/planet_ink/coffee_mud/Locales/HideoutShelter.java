@@ -35,7 +35,12 @@ import java.util.*;
 */
 public class HideoutShelter extends MagicShelter
 {
-	@Override public String ID(){return "HideoutShelter";}
+	@Override
+	public String ID()
+	{
+		return "HideoutShelter";
+	}
+
 	public HideoutShelter()
 	{
 		super();
@@ -77,5 +82,10 @@ public class HideoutShelter extends MagicShelter
 		}
 		climask=Places.CLIMASK_NORMAL;
 	}
-	@Override public int domainType(){return Room.DOMAIN_INDOORS_WOOD;}
+
+	@Override
+	public int domainType()
+	{
+		return Room.DOMAIN_INDOORS_WOOD;
+	}
 }

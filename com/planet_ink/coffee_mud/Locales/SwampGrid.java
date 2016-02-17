@@ -35,7 +35,12 @@ import java.util.*;
 */
 public class SwampGrid extends StdGrid
 {
-	@Override public String ID(){return "SwampGrid";}
+	@Override
+	public String ID()
+	{
+		return "SwampGrid";
+	}
+
 	public SwampGrid()
 	{
 		super();
@@ -44,8 +49,22 @@ public class SwampGrid extends StdGrid
 		recoverPhyStats();
 		climask=Places.CLIMASK_WET;
 	}
-	@Override public int domainType(){return Room.DOMAIN_OUTDOORS_SWAMP;}
 
-	@Override public String getGridChildLocaleID(){return "Swamp";}
-	@Override public List<Integer> resourceChoices(){return Swamp.roomResources;}
+	@Override
+	public int domainType()
+	{
+		return Room.DOMAIN_OUTDOORS_SWAMP;
+	}
+
+	@Override
+	public String getGridChildLocaleID()
+	{
+		return "Swamp";
+	}
+
+	@Override
+	public List<Integer> resourceChoices()
+	{
+		return Swamp.roomResources;
+	}
 }

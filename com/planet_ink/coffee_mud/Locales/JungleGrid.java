@@ -35,7 +35,12 @@ import java.util.*;
 */
 public class JungleGrid extends StdGrid
 {
-	@Override public String ID(){return "JungleGrid";}
+	@Override
+	public String ID()
+	{
+		return "JungleGrid";
+	}
+
 	public JungleGrid()
 	{
 		super();
@@ -44,8 +49,22 @@ public class JungleGrid extends StdGrid
 		recoverPhyStats();
 		climask=Places.CLIMASK_WET|CLIMASK_HOT;
 	}
-	@Override public int domainType(){return Room.DOMAIN_OUTDOORS_JUNGLE;}
 
-	@Override public String getGridChildLocaleID(){return "Jungle";}
-	@Override public List<Integer> resourceChoices(){return Jungle.roomResources;}
+	@Override
+	public int domainType()
+	{
+		return Room.DOMAIN_OUTDOORS_JUNGLE;
+	}
+
+	@Override
+	public String getGridChildLocaleID()
+	{
+		return "Jungle";
+	}
+
+	@Override
+	public List<Integer> resourceChoices()
+	{
+		return Jungle.roomResources;
+	}
 }

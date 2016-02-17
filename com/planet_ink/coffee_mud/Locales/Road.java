@@ -35,7 +35,12 @@ import java.util.*;
 */
 public class Road extends StdRoom
 {
-	@Override public String ID(){return "Road";}
+	@Override
+	public String ID()
+	{
+		return "Road";
+	}
+
 	public Road()
 	{
 		super();
@@ -43,7 +48,12 @@ public class Road extends StdRoom
 		basePhyStats.setWeight(1);
 		recoverPhyStats();
 	}
-	@Override public int domainType(){return Room.DOMAIN_OUTDOORS_PLAINS;}
+
+	@Override
+	public int domainType()
+	{
+		return Room.DOMAIN_OUTDOORS_PLAINS;
+	}
 
 	public static final Integer[] resourceList={
 		Integer.valueOf(RawMaterial.RESOURCE_STONE),
@@ -53,5 +63,9 @@ public class Road extends StdRoom
 		Integer.valueOf(RawMaterial.RESOURCE_CLAY),
 	};
 	public static final List<Integer> roomResources=new Vector<Integer>(Arrays.asList(resourceList));
-	@Override public List<Integer> resourceChoices(){return Road.roomResources;}
+	@Override
+	public List<Integer> resourceChoices()
+	{
+		return Road.roomResources;
+	}
 }

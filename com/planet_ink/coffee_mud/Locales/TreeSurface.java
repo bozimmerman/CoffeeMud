@@ -35,7 +35,12 @@ import java.util.*;
 */
 public class TreeSurface extends ClimbableSurface
 {
-	@Override public String ID(){return "TreeSurface";}
+	@Override
+	public String ID()
+	{
+		return "TreeSurface";
+	}
+
 	public TreeSurface()
 	{
 		super();
@@ -43,5 +48,10 @@ public class TreeSurface extends ClimbableSurface
 		basePhyStats.setWeight(4);
 		recoverPhyStats();
 	}
-	@Override public int domainType(){return Room.DOMAIN_OUTDOORS_WOODS;}
+
+	@Override
+	public int domainType()
+	{
+		return Room.DOMAIN_OUTDOORS_WOODS;
+	}
 }

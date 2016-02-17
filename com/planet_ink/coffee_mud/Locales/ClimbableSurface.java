@@ -35,7 +35,12 @@ import java.util.*;
 */
 public class ClimbableSurface extends StdRoom
 {
-	@Override public String ID(){return "ClimbableSurface";}
+	@Override
+	public String ID()
+	{
+		return "ClimbableSurface";
+	}
+
 	protected Ability climbA;
 	public ClimbableSurface()
 	{
@@ -50,7 +55,12 @@ public class ClimbableSurface extends StdRoom
 		}
 		recoverPhyStats();
 	}
-	@Override public int domainType(){return Room.DOMAIN_OUTDOORS_ROCKS;}
+
+	@Override
+	public int domainType()
+	{
+		return Room.DOMAIN_OUTDOORS_ROCKS;
+	}
 	
 	@Override
 	public CMObject copyOf()
