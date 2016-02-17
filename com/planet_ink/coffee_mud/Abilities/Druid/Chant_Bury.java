@@ -37,13 +37,43 @@ import java.util.*;
 
 public class Chant_Bury extends Chant
 {
-	@Override public String ID() { return "Chant_Bury"; }
-	private final static String localizedName = CMLib.lang().L("Earthfeed");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}
+	@Override
+	public String ID()
+	{
+		return "Chant_Bury";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Earthfeed");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT | Ability.DOMAIN_DEEPMAGIC;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_ITEMS;
+	}
 
 	public static Item getBody(Room R)
 	{
@@ -62,21 +92,25 @@ public class Chant_Bury extends Chant
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		if((mob.location().domainType()&Room.INDOORS)>0)
+		final Room R=mob.location();
+		if(R==null)
+			return false;
+		if(((R.domainType()&Room.INDOORS)>0)
+		&&(R.domainType()!=Room.DOMAIN_INDOORS_CAVE))
 		{
 			mob.tell(L("You must be outdoors for this chant to work."));
 			return false;
 		}
-		if((mob.location().domainType()==Room.DOMAIN_OUTDOORS_CITY)
-		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)
-		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
-		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_AIR)
-		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
+		if((R.domainType()==Room.DOMAIN_OUTDOORS_CITY)
+		   ||(R.domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)
+		   ||(R.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
+		   ||(R.domainType()==Room.DOMAIN_OUTDOORS_AIR)
+		   ||(R.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
 		{
 			mob.tell(L("This chant does not work here."));
 			return false;
 		}
-		Item hole=mob.location().findItem("HoleInTheGround");
+		Item hole=R.findItem("HoleInTheGround");
 		if((hole!=null)&&(!hole.text().equalsIgnoreCase(mob.Name())))
 		{
 			mob.tell(L("This chant will not work on this previously used burial ground."));
@@ -84,9 +118,9 @@ public class Chant_Bury extends Chant
 		}
 		Item target=null;
 		if((commands.size()==0)&&(!auto)&&(givenTarget==null))
-			target=getBody(mob.location());
+			target=getBody(R);
 		if(target==null)
-			target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);
+			target=getTarget(mob,R,givenTarget,commands,Wearable.FILTER_UNWORNONLY);
 		if(target==null)
 			return false;
 
@@ -113,25 +147,25 @@ public class Chant_Bury extends Chant
 		if(success)
 		{
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> bur(ys) <T-HIM-HERSELF>."):L("^S<S-NAME> chant(s) to <T-NAMESELF>, returning dust to dust.^?"));
-			if(mob.location().okMessage(mob,msg))
+			if(R.okMessage(mob,msg))
 			{
-				mob.location().send(mob,msg);
+				R.send(mob,msg);
 				if(CMLib.flags().isNeutral(mob))
 					mob.curState().adjMana(3*target.phyStats().level()+(3*target.phyStats().level()*getXLEVELLevel(mob)),mob.maxState());
 				if(hole==null)
 				{
-					final CMMsg holeMsg=CMClass.getMsg(mob, mob.location(),null,CMMsg.MSG_DIG|CMMsg.MASK_ALWAYS, null);
-					mob.location().send(mob,holeMsg);
-					hole=mob.location().findItem("HoleInTheGround");
+					final CMMsg holeMsg=CMClass.getMsg(mob, R,null,CMMsg.MSG_DIG|CMMsg.MASK_ALWAYS, null);
+					R.send(mob,holeMsg);
+					hole=R.findItem("HoleInTheGround");
 				}
 				hole.basePhyStats().setDisposition(hole.basePhyStats().disposition()|PhyStats.IS_HIDDEN);
 				hole.recoverPhyStats();
-				if(!mob.location().isContent(target))
-					mob.location().moveItemTo(hole, Expire.Player_Drop);
+				if(!R.isContent(target))
+					R.moveItemTo(hole, Expire.Player_Drop);
 				else
 					target.setContainer((Container)hole);
 				CMLib.flags().setGettable(target,false);
-				mob.location().recoverRoomStats();
+				R.recoverRoomStats();
 			}
 		}
 		else
