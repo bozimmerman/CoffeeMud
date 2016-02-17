@@ -35,7 +35,11 @@ import java.util.*;
 */
 public class Troll extends StdMOB
 {
-	@Override public String ID(){return "Troll";}
+	@Override
+	public String ID()
+	{
+		return "Troll";
+	}
 	Random randomizer = new Random();
 	int regDown=3;
 

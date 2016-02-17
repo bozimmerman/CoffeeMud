@@ -34,7 +34,12 @@ import java.util.*;
 */
 public class Raven extends StdMOB
 {
-	@Override public String ID(){return "Raven";}
+	@Override
+	public String ID()
+	{
+		return "Raven";
+	}
+
 	public Raven()
 	{
 		super();

@@ -34,7 +34,12 @@ import java.util.*;
 */
 public class HeavenlyServent extends StdMOB
 {
-	@Override public String ID(){return "HeavenlyServent";}
+	@Override
+	public String ID()
+	{
+		return "HeavenlyServent";
+	}
+
 	public HeavenlyServent()
 	{
 		super();

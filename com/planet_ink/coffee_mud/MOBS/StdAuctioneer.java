@@ -38,7 +38,11 @@ import java.util.*;
 */
 public class StdAuctioneer extends StdMOB implements Auctioneer
 {
-	@Override public String ID(){return "StdAuctioneer";}
+	@Override
+	public String ID()
+	{
+		return "StdAuctioneer";
+	}
 
 	protected double	timedListingPrice	= -1.0;
 	protected double	timedListingPct		= -1.0;

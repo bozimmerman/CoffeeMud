@@ -34,7 +34,12 @@ import java.util.*;
 */
 public class Vulture extends StdMOB
 {
-	@Override public String ID(){return "Vulture";}
+	@Override
+	public String ID()
+	{
+		return "Vulture";
+	}
+
 	public Vulture()
 	{
 		super();

@@ -39,7 +39,11 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 */
 public class StdFactoryMOB extends StdMOB
 {
-	@Override public String ID(){return "StdFactoryMOB";}
+	@Override
+	public String ID()
+	{
+		return "StdFactoryMOB";
+	}
 
 	@Override
 	public CMObject newInstance()

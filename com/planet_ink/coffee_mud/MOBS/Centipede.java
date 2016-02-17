@@ -35,7 +35,11 @@ import java.util.*;
 */
 public class Centipede extends StdMOB
 {
-	@Override public String ID(){return "Centipede";}
+	@Override
+	public String ID()
+	{
+		return "Centipede";
+	}
 
 	public Centipede()
 	{

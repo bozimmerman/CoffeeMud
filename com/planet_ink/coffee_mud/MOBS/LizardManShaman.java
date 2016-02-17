@@ -35,7 +35,12 @@ import java.util.*;
 */
 public class LizardManShaman extends LizardMan
 {
-	@Override public String ID(){return "LizardManShaman";}
+	@Override
+	public String ID()
+	{
+		return "LizardManShaman";
+	}
+
 	protected int spellDown=3;
 
 	public LizardManShaman()

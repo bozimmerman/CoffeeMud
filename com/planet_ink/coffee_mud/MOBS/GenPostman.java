@@ -34,7 +34,12 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 */
 public class GenPostman extends StdPostman
 {
-	@Override public String ID(){return "GenPostman";}
+	@Override
+	public String ID()
+	{
+		return "GenPostman";
+	}
+
 	private String PrejudiceFactors="";
 	private String postalChain="main";
 	private String IgnoreMask="";
@@ -47,7 +52,11 @@ public class GenPostman extends StdPostman
 		setDisplayText("A generic postman stands here.");
 	}
 
-	@Override public boolean isGeneric(){return true;}
+	@Override
+	public boolean isGeneric()
+	{
+		return true;
+	}
 
 	@Override
 	public String text()
@@ -59,12 +68,41 @@ public class GenPostman extends StdPostman
 		return super.text();
 	}
 
-	@Override public String prejudiceFactors(){return PrejudiceFactors;}
-	@Override public void setPrejudiceFactors(String factors){PrejudiceFactors=factors;}
-	@Override public String ignoreMask(){return IgnoreMask;}
-	@Override public void setIgnoreMask(String factors){IgnoreMask=factors;}
-	@Override public String postalChain(){return postalChain;}
-	@Override public void setPostalChain(String name){postalChain=name;}
+	@Override
+	public String prejudiceFactors()
+	{
+		return PrejudiceFactors;
+	}
+
+	@Override
+	public void setPrejudiceFactors(String factors)
+	{
+		PrejudiceFactors=factors;
+	}
+
+	@Override
+	public String ignoreMask()
+	{
+		return IgnoreMask;
+	}
+
+	@Override
+	public void setIgnoreMask(String factors)
+	{
+		IgnoreMask=factors;
+	}
+
+	@Override
+	public String postalChain()
+	{
+		return postalChain;
+	}
+
+	@Override
+	public void setPostalChain(String name)
+	{
+		postalChain=name;
+	}
 
 	@Override
 	public void setMiscText(String newText)
@@ -72,6 +110,7 @@ public class GenPostman extends StdPostman
 		super.setMiscText(newText);
 		CMLib.coffeeMaker().resetGenMOB(this,newText);
 	}
+
 	private final static String[] MYCODES={"WHATISELL",
 									 "PREJUDICE",
 									 "POSTCHAIN","POSTMIN","POSTLBS",
@@ -98,6 +137,7 @@ public class GenPostman extends StdPostman
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
 	}
+
 	@Override
 	public void setStat(String code, String val)
 	{
@@ -121,14 +161,18 @@ public class GenPostman extends StdPostman
 			break;
 		}
 	}
+
 	@Override
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<MYCODES.length;i++)
+		{
 			if(code.equalsIgnoreCase(MYCODES[i]))
 				return i;
+		}
 		return -1;
 	}
+
 	private static String[] codes=null;
 	@Override
 	public String[] getStatCodes()
@@ -145,6 +189,7 @@ public class GenPostman extends StdPostman
 			codes[i]=MYCODES[x];
 		return codes;
 	}
+
 	@Override
 	public boolean sameAs(Environmental E)
 	{
@@ -152,8 +197,10 @@ public class GenPostman extends StdPostman
 			return false;
 		final String[] codes=getStatCodes();
 		for(int i=0;i<codes.length;i++)
+		{
 			if(!E.getStat(codes[i]).equals(getStat(codes[i])))
 				return false;
+		}
 		return true;
 	}
 }

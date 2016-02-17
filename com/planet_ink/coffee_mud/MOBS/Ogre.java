@@ -34,7 +34,12 @@ import java.util.*;
 */
 public class Ogre extends StdMOB
 {
-	@Override public String ID(){return "Ogre";}
+	@Override
+	public String ID()
+	{
+		return "Ogre";
+	}
+
 	public Ogre()
 	{
 

@@ -34,7 +34,12 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 */
 public class GenHorse extends StdRideable
 {
-	@Override public String ID(){return "GenHorse";}
+	@Override
+	public String ID()
+	{
+		return "GenHorse";
+	}
+
 	public GenHorse()
 	{
 		super();

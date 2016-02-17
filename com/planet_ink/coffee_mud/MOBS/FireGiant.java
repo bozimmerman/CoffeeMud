@@ -34,7 +34,12 @@ import java.util.*;
 */
 public class FireGiant extends StdMOB
 {
-	@Override public String ID(){return "FireGiant";}
+	@Override
+	public String ID()
+	{
+		return "FireGiant";
+	}
+
 	public FireGiant()
 	{
 		super();

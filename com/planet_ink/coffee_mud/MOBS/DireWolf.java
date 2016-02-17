@@ -34,7 +34,12 @@ import java.util.*;
 */
 public class DireWolf extends StdMOB
 {
-	@Override public String ID(){return "DireWolf";}
+	@Override
+	public String ID()
+	{
+		return "DireWolf";
+	}
+
 	public DireWolf()
 	{
 		super();

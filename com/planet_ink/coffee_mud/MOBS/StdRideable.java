@@ -189,7 +189,8 @@ public class StdRideable extends StdMOB implements Rideable
 	{
 		if(mob!=null)
 			while(riders.remove(mob))
-				{}
+				{
+				}
 	}
 
 	@Override

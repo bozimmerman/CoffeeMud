@@ -34,7 +34,11 @@ import java.util.*;
 */
 public class Pegasus extends StdRideable
 {
-	@Override public String ID(){return "Pegasus";}
+	@Override
+	public String ID()
+	{
+		return "Pegasus";
+	}
 	Random randomizer = null;
 
 	public Pegasus()

@@ -34,7 +34,12 @@ import java.util.*;
 */
 public class AngryCitizen extends StdMOB
 {
-	@Override public String ID(){return "AngryCitizen";}
+	@Override
+	public String ID()
+	{
+		return "AngryCitizen";
+	}
+
 	public AngryCitizen()
 	{
 		super();

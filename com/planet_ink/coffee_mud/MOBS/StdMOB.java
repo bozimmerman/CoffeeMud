@@ -172,6 +172,7 @@ public class StdMOB implements MOB
 		{
 			super(me);
 		}
+
 		@Override
 		public void apply(T a) 
 		{
@@ -190,6 +191,7 @@ public class StdMOB implements MOB
 		{
 			this.me=me;
 		}
+
 		@Override
 		public void apply(T a) 
 		{
@@ -207,6 +209,7 @@ public class StdMOB implements MOB
 		{
 			this.me=me;
 		}
+
 		@Override
 		public void apply(T a) 
 		{
@@ -2666,8 +2669,10 @@ public class StdMOB implements MOB
 			if (CMath.bset(msg.targetMajor(), CMMsg.MASK_MALICIOUS))
 			{
 				if (Log.combatChannelOn())
+				{
 					Log.combatOut(srcM.Name() + ":" + Name() + ":" + CMMsg.TYPE_DESCS[msg.targetMinor()] + ":"
 						+ ((msg.tool() != null) ? msg.tool().Name() : "null"));
+				}
 
 				if ((msg.amISource(this))
 				&& (!msg.sourceMajor(CMMsg.MASK_ALWAYS))
@@ -3718,7 +3723,8 @@ public class StdMOB implements MOB
 			return inventory.elementAt(index);
 		}
 		catch (final java.lang.ArrayIndexOutOfBoundsException x)
-		{}
+		{
+		}
 		return null;
 	}
 
@@ -4129,7 +4135,8 @@ public class StdMOB implements MOB
 			}
 		}
 		catch (final java.lang.ArrayIndexOutOfBoundsException x)
-		{}
+		{
+		}
 		return null;
 	}
 
@@ -4218,6 +4225,7 @@ public class StdMOB implements MOB
 		}
 		return affects;
 	}
+
 	@Override
 	public Iterable<Pair<Clan, Integer>> clans()
 	{
@@ -4479,7 +4487,8 @@ public class StdMOB implements MOB
 			return behaviors.elementAt(index);
 		}
 		catch (final java.lang.ArrayIndexOutOfBoundsException x)
-		{}
+		{
+		}
 		return null;
 	}
 
@@ -4663,7 +4672,8 @@ public class StdMOB implements MOB
 			return scripts.elementAt(x);
 		}
 		catch (final Exception e)
-		{}
+		{
+		}
 		return null;
 	}
 

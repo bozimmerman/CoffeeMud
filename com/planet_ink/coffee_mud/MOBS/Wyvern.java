@@ -34,7 +34,12 @@ import java.util.*;
 */
 public class Wyvern extends StdMOB
 {
-	@Override public String ID(){return "Wyvern";}
+	@Override
+	public String ID()
+	{
+		return "Wyvern";
+	}
+
 	protected int stingDown=5;
 
 	public Wyvern()
@@ -97,6 +102,7 @@ public class Wyvern extends StdMOB
 		super.recoverCharStats();
 		charStats().setStat(CharStats.STAT_SAVE_POISON,charStats().getStat(CharStats.STAT_SAVE_POISON)+100);
 	}
+
 	protected boolean sting()
 	{
 		if (CMLib.flags().isAliveAwakeMobileUnbound(this,true)&&

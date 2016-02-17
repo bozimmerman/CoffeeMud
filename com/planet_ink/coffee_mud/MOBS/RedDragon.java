@@ -33,7 +33,12 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class RedDragon extends Dragon
 {
-	@Override public String ID(){return "RedDragon";}
+	@Override
+	public String ID()
+	{
+		return "RedDragon";
+	}
+
 	public RedDragon()
 	{
 		// ===== call the super class constructor

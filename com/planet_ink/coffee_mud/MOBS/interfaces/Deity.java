@@ -87,16 +87,19 @@ public interface Deity extends MOB
 			this.msgCode = msgCode;
 			this.shortName = shortName;
 		}
+
 		private RitualTrigger(int msgCode)
 		{
 			this.msgCode = msgCode;
 			this.shortName = name();
 		}
+
 		private RitualTrigger(String shortName)
 		{
 			this.msgCode = -999;
 			this.shortName = name();
 		}
+
 		private RitualTrigger()
 		{
 			this.msgCode = -999;

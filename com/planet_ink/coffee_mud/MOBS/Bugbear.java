@@ -35,7 +35,12 @@ import java.util.*;
 */
 public class Bugbear extends StdMOB
 {
-	@Override public String ID(){return "Bugbear";}
+	@Override
+	public String ID()
+	{
+		return "Bugbear";
+	}
+
 	public Bugbear()
 	{
 		super();

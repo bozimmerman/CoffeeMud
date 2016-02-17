@@ -34,7 +34,12 @@ import java.util.*;
 */
 public class CommonBat extends StdMOB
 {
-	@Override public String ID(){return "CommonBat";}
+	@Override
+	public String ID()
+	{
+		return "CommonBat";
+	}
+
 	public CommonBat()
 	{
 		super();

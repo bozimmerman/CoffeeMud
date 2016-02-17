@@ -239,6 +239,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 		}
 		return found;
 	}
+
 	@Override
 	public void emptyBox(String boxName)
 	{
@@ -661,8 +662,18 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 							final StdPostman me=this;
 							S.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0)
 							{
-								@Override public void showPrompt() { S.promptPrint(L("Address this to whom? "));}
-								@Override public void timedOut() { autoGive(me,msg.source(),(Item)msg.tool()); }
+								@Override
+								public void showPrompt()
+								{
+									S.promptPrint(L("Address this to whom? "));
+								}
+
+								@Override
+								public void timedOut()
+								{
+									autoGive(me,msg.source(),(Item)msg.tool());
+								}
+
 								@Override public void callBack()
 								{
 									if((this.input!=null)&&(this.input.length()>0)
@@ -680,7 +691,13 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 											@Override public void showPrompt() {
 												S.promptPrint(L("Postage on this will be @x1.\n\rWould you like to P)ay this now, or be C)harged on delivery (c/P)?",CMLib.beanCounter().nameCurrencyShort(me,amt)));
 											}
-											@Override public void timedOut() { autoGive(me,msg.source(),(Item)msg.tool()); }
+
+											@Override
+											public void timedOut()
+											{
+												autoGive(me,msg.source(),(Item)msg.tool());
+											}
+
 											@Override public void callBack()
 											{
 												final String choice=this.input.trim().toUpperCase();
@@ -688,8 +705,18 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 												{
 													S.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0)
 													{
-														@Override public void showPrompt() { S.promptPrint(L("Enter COD amount (@x1): ",CMLib.beanCounter().getDenominationName(CMLib.beanCounter().getCurrency(me),CMLib.beanCounter().getLowestDenomination(CMLib.beanCounter().getCurrency(me)))));}
-														@Override public void timedOut() { autoGive(me,msg.source(),(Item)msg.tool()); }
+														@Override
+														public void showPrompt()
+														{
+															S.promptPrint(L("Enter COD amount (@x1): ",CMLib.beanCounter().getDenominationName(CMLib.beanCounter().getCurrency(me),CMLib.beanCounter().getLowestDenomination(CMLib.beanCounter().getCurrency(me)))));
+														}
+
+														@Override
+														public void timedOut()
+														{
+															autoGive(me,msg.source(),(Item)msg.tool());
+														}
+
 														@Override public void callBack()
 														{
 															final String CODstr=this.input;

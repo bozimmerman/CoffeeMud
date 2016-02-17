@@ -35,7 +35,12 @@ import java.util.*;
 */
 public class GiantScorpion extends StdMOB
 {
-	@Override public String ID(){return "GiantScorpion";}
+	@Override
+	public String ID()
+	{
+		return "GiantScorpion";
+	}
+
 	public int stingDown=5;
 
 	public GiantScorpion()

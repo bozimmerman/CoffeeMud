@@ -34,7 +34,12 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 */
 public class GenBanker extends StdBanker
 {
-	@Override public String ID(){return "GenBanker";}
+	@Override
+	public String ID()
+	{
+		return "GenBanker";
+	}
+
 	protected String PrejudiceFactors="";
 	protected String bankChain="GenBank";
 	private String IgnoreMask="";
@@ -48,7 +53,11 @@ public class GenBanker extends StdBanker
 		basePhyStats().setAbility(11); // his only off-default
 	}
 
-	@Override public boolean isGeneric(){return true;}
+	@Override
+	public boolean isGeneric()
+	{
+		return true;
+	}
 
 	@Override
 	public String text()
@@ -60,12 +69,41 @@ public class GenBanker extends StdBanker
 		return super.text();
 	}
 
-	@Override public String prejudiceFactors(){return PrejudiceFactors;}
-	@Override public void setPrejudiceFactors(String factors){PrejudiceFactors=factors;}
-	@Override public String ignoreMask(){return IgnoreMask;}
-	@Override public void setIgnoreMask(String factors){IgnoreMask=factors;}
-	@Override public String bankChain(){return bankChain;}
-	@Override public void setBankChain(String name){bankChain=name;}
+	@Override
+	public String prejudiceFactors()
+	{
+		return PrejudiceFactors;
+	}
+
+	@Override
+	public void setPrejudiceFactors(String factors)
+	{
+		PrejudiceFactors=factors;
+	}
+
+	@Override
+	public String ignoreMask()
+	{
+		return IgnoreMask;
+	}
+
+	@Override
+	public void setIgnoreMask(String factors)
+	{
+		IgnoreMask=factors;
+	}
+
+	@Override
+	public String bankChain()
+	{
+		return bankChain;
+	}
+
+	@Override
+	public void setBankChain(String name)
+	{
+		bankChain=name;
+	}
 
 	@Override
 	public void setMiscText(String newText)
@@ -73,6 +111,7 @@ public class GenBanker extends StdBanker
 		super.setMiscText(newText);
 		CMLib.coffeeMaker().resetGenMOB(this,newText);
 	}
+
 	private final static String[] MYCODES={"WHATISELL","PREJUDICE","BANKCHAIN","COININT","ITEMINT","IGNOREMASK","LOANINT","PRICEMASKS"};
 	@Override
 	public String getStat(String code)
@@ -93,6 +132,7 @@ public class GenBanker extends StdBanker
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
 	}
+
 	@Override
 	public void setStat(String code, String val)
 	{
@@ -121,14 +161,18 @@ public class GenBanker extends StdBanker
 			break;
 		}
 	}
+
 	@Override
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<MYCODES.length;i++)
+		{
 			if(code.equalsIgnoreCase(MYCODES[i]))
 				return i;
+		}
 		return -1;
 	}
+
 	private static String[] codes=null;
 	@Override
 	public String[] getStatCodes()
@@ -145,6 +189,7 @@ public class GenBanker extends StdBanker
 			codes[i]=MYCODES[x];
 		return codes;
 	}
+
 	@Override
 	public boolean sameAs(Environmental E)
 	{
@@ -152,8 +197,10 @@ public class GenBanker extends StdBanker
 			return false;
 		final String[] codes=getStatCodes();
 		for(int i=0;i<codes.length;i++)
+		{
 			if(!E.getStat(codes[i]).equals(getStat(codes[i])))
 				return false;
+		}
 		return true;
 	}
 }

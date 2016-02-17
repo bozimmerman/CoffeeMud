@@ -34,7 +34,12 @@ import java.util.*;
 */
 public class FrostGiant extends StdMOB
 {
-	@Override public String ID(){return "FrostGiant";}
+	@Override
+	public String ID()
+	{
+		return "FrostGiant";
+	}
+
 	public FrostGiant()
 	{
 		super();

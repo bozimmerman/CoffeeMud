@@ -35,7 +35,12 @@ import java.util.*;
 */
 public class DrowWarrior extends DrowElf
 {
-	@Override public String ID(){return "DrowWarrior";}
+	@Override
+	public String ID()
+	{
+		return "DrowWarrior";
+	}
+
 	public int fightDown=2;
 	public int statCheck=3;
 

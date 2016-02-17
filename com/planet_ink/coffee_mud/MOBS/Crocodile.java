@@ -34,7 +34,12 @@ import java.util.*;
 */
 public class Crocodile extends StdMOB
 {
-	@Override public String ID(){return "Crocodile";}
+	@Override
+	public String ID()
+	{
+		return "Crocodile";
+	}
+
 	public Crocodile()
 	{
 		super();

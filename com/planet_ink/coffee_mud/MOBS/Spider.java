@@ -35,7 +35,11 @@ import java.util.*;
 */
 public class Spider extends StdMOB
 {
-	@Override public String ID(){return "Spider";}
+	@Override
+	public String ID()
+	{
+		return "Spider";
+	}
 
 	public Spider()
 	{

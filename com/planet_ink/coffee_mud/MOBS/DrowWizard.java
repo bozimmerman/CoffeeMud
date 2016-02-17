@@ -35,7 +35,12 @@ import java.util.*;
 */
 public class DrowWizard extends DrowElf
 {
-	@Override public String ID(){return "DrowWizard";}
+	@Override
+	public String ID()
+	{
+		return "DrowWizard";
+	}
+
 	public int spellDown=2;
 	private int magicResistance = 50;
 

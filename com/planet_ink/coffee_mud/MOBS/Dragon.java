@@ -35,7 +35,12 @@ import java.util.*;
 */
 public class Dragon extends StdMOB
 {
-	@Override public String ID(){return "Dragon";}
+	@Override
+	public String ID()
+	{
+		return "Dragon";
+	}
+
 	protected int breatheDown=4;
 	protected int swallowDown=5;
 	protected int digestDown=4;
@@ -468,6 +473,7 @@ public class Dragon extends StdMOB
 		super.recoverPhyStats();
 		setupDragonIfNecessary();
 	}
+
 	@Override
 	public void recoverCharStats()
 	{

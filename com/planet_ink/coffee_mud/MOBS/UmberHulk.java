@@ -35,7 +35,11 @@ import java.util.*;
 */
 public class UmberHulk extends StdMOB
 {
-	@Override public String ID(){return "UmberHulk";}
+	@Override
+	public String ID()
+	{
+		return "UmberHulk";
+	}
 	Random randomizer = new Random();
 	int confuseDown=3;
 
@@ -86,6 +90,7 @@ public class UmberHulk extends StdMOB
 		}
 		return super.tick(ticking,tickID);
 	}
+
 	public void addNaturalAbilities()
 	{
 		final Ability confuse=CMClass.getAbility("Spell_Confusion");
@@ -93,6 +98,7 @@ public class UmberHulk extends StdMOB
 			return;
 
 	}
+
 	protected boolean confuse()
 	{
 		if(this.location()==null)

@@ -34,7 +34,12 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 */
 public class GenAuctioneer extends StdAuctioneer
 {
-	@Override public String ID(){return "GenAuctioneer";}
+	@Override
+	public String ID()
+	{
+		return "GenAuctioneer";
+	}
+
 	private String PrejudiceFactors="";
 	private String auctionChain="";
 	private String IgnoreMask="";
@@ -47,7 +52,11 @@ public class GenAuctioneer extends StdAuctioneer
 		setDisplayText("A generic auctioneer stands here.");
 	}
 
-	@Override public boolean isGeneric(){return true;}
+	@Override
+	public boolean isGeneric()
+	{
+		return true;
+	}
 
 	@Override
 	public String text()
@@ -59,12 +68,41 @@ public class GenAuctioneer extends StdAuctioneer
 		return super.text();
 	}
 
-	@Override public String prejudiceFactors(){return PrejudiceFactors;}
-	@Override public void setPrejudiceFactors(String factors){PrejudiceFactors=factors;}
-	@Override public String ignoreMask(){return IgnoreMask;}
-	@Override public void setIgnoreMask(String factors){IgnoreMask=factors;}
-	@Override public String auctionHouse(){return auctionChain;}
-	@Override public void setAuctionHouse(String named){auctionChain=named;}
+	@Override
+	public String prejudiceFactors()
+	{
+		return PrejudiceFactors;
+	}
+
+	@Override
+	public void setPrejudiceFactors(String factors)
+	{
+		PrejudiceFactors=factors;
+	}
+
+	@Override
+	public String ignoreMask()
+	{
+		return IgnoreMask;
+	}
+
+	@Override
+	public void setIgnoreMask(String factors)
+	{
+		IgnoreMask=factors;
+	}
+
+	@Override
+	public String auctionHouse()
+	{
+		return auctionChain;
+	}
+
+	@Override
+	public void setAuctionHouse(String named)
+	{
+		auctionChain=named;
+	}
 
 	@Override
 	public void setMiscText(String newText)
@@ -72,6 +110,7 @@ public class GenAuctioneer extends StdAuctioneer
 		super.setMiscText(newText);
 		CMLib.coffeeMaker().resetGenMOB(this,newText);
 	}
+
 	private final static String[] MYCODES={"WHATISELL",
 										   "PREJUDICE",
 										   "AUCHOUSE","LIVEPRICE","TIMEPRICE",
@@ -99,6 +138,7 @@ public class GenAuctioneer extends StdAuctioneer
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
 	}
+
 	@Override
 	public void setStat(String code, String val)
 	{
@@ -129,14 +169,18 @@ public class GenAuctioneer extends StdAuctioneer
 			break;
 		}
 	}
+
 	@Override
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<MYCODES.length;i++)
+		{
 			if(code.equalsIgnoreCase(MYCODES[i]))
 				return i;
+		}
 		return -1;
 	}
+
 	private static String[] codes=null;
 	@Override
 	public String[] getStatCodes()
@@ -153,6 +197,7 @@ public class GenAuctioneer extends StdAuctioneer
 			codes[i]=MYCODES[x];
 		return codes;
 	}
+
 	@Override
 	public boolean sameAs(Environmental E)
 	{
@@ -160,8 +205,10 @@ public class GenAuctioneer extends StdAuctioneer
 			return false;
 		final String[] codes=getStatCodes();
 		for(int i=0;i<codes.length;i++)
+		{
 			if(!E.getStat(codes[i]).equals(getStat(codes[i])))
 				return false;
+		}
 		return true;
 	}
 }

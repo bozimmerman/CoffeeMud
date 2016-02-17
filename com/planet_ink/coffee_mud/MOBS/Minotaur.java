@@ -35,7 +35,12 @@ import java.util.*;
 */
 public class Minotaur extends StdMOB
 {
-	@Override public String ID(){return "Minotaur";}
+	@Override
+	public String ID()
+	{
+		return "Minotaur";
+	}
+
 	public Minotaur()
 	{
 		super();

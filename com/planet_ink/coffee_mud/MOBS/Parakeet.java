@@ -34,7 +34,12 @@ import java.util.*;
 */
 public class Parakeet extends StdMOB
 {
-	@Override public String ID(){return "Parakeet";}
+	@Override
+	public String ID()
+	{
+		return "Parakeet";
+	}
+
 	public Parakeet()
 	{
 		super();

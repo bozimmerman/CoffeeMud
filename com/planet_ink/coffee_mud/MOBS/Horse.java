@@ -34,7 +34,12 @@ import java.util.*;
 */
 public class Horse extends StdRideable
 {
-	@Override public String ID(){return "Horse";}
+	@Override
+	public String ID()
+	{
+		return "Horse";
+	}
+
 	public Horse()
 	{
 		super();

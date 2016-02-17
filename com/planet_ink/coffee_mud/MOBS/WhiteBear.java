@@ -34,7 +34,12 @@ import java.util.*;
 */
 public class WhiteBear extends BrownBear
 {
-	@Override public String ID(){return "WhiteBear";}
+	@Override
+	public String ID()
+	{
+		return "WhiteBear";
+	}
+
 	public WhiteBear()
 	{
 		super();

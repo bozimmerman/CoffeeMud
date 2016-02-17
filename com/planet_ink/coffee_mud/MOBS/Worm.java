@@ -35,7 +35,11 @@ import java.util.*;
 */
 public class Worm extends StdMOB
 {
-	@Override public String ID(){return "Worm";}
+	@Override
+	public String ID()
+	{
+		return "Worm";
+	}
 
 	public Worm()
 	{

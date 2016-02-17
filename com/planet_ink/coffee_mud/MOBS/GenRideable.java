@@ -34,7 +34,12 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 */
 public class GenRideable extends StdRideable
 {
-	@Override public String ID(){return "GenRideable";}
+	@Override
+	public String ID()
+	{
+		return "GenRideable";
+	}
+
 	public GenRideable()
 	{
 		super();
@@ -49,7 +54,11 @@ public class GenRideable extends StdRideable
 		recoverCharStats();
 	}
 
-	@Override public boolean isGeneric(){return true;}
+	@Override
+	public boolean isGeneric()
+	{
+		return true;
+	}
 
 	@Override
 	public String text()
@@ -67,6 +76,7 @@ public class GenRideable extends StdRideable
 		super.setMiscText(newText);
 		CMLib.coffeeMaker().resetGenMOB(this,newText);
 	}
+
 	private final static String[] MYCODES={"RIDEBASIS","MOBSHELD"};
 	@Override
 	public String getStat(String code)
@@ -81,6 +91,7 @@ public class GenRideable extends StdRideable
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
 	}
+
 	@Override
 	public void setStat(String code, String val)
 	{
@@ -96,14 +107,18 @@ public class GenRideable extends StdRideable
 			break;
 		}
 	}
+
 	@Override
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<MYCODES.length;i++)
+		{
 			if(code.equalsIgnoreCase(MYCODES[i]))
 				return i;
+		}
 		return -1;
 	}
+
 	private static String[] codes=null;
 	@Override
 	public String[] getStatCodes()
@@ -120,6 +135,7 @@ public class GenRideable extends StdRideable
 			codes[i]=MYCODES[x];
 		return codes;
 	}
+
 	@Override
 	public boolean sameAs(Environmental E)
 	{
@@ -127,8 +143,10 @@ public class GenRideable extends StdRideable
 			return false;
 		final String[] codes=getStatCodes();
 		for(int i=0;i<codes.length;i++)
+		{
 			if(!E.getStat(codes[i]).equals(getStat(codes[i])))
 				return false;
+		}
 		return true;
 	}
 }

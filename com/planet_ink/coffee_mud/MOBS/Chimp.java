@@ -34,7 +34,12 @@ import java.util.*;
 */
 public class Chimp extends StdMOB
 {
-	@Override public String ID(){return "Chimp";}
+	@Override
+	public String ID()
+	{
+		return "Chimp";
+	}
+
 	public Chimp()
 	{
 		super();

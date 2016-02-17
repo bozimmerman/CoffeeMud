@@ -35,7 +35,12 @@ import java.util.*;
 */
 public class Gnoll extends StdMOB
 {
-	@Override public String ID(){return "Gnoll";}
+	@Override
+	public String ID()
+	{
+		return "Gnoll";
+	}
+
 	public Gnoll()
 	{
 		super();

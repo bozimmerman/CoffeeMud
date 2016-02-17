@@ -34,7 +34,12 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 */
 public class GenDeity extends StdDeity
 {
-	@Override public String ID(){return "GenDeity";}
+	@Override
+	public String ID()
+	{
+		return "GenDeity";
+	}
+
 	public GenDeity()
 	{
 		super();
@@ -48,7 +53,11 @@ public class GenDeity extends StdDeity
 		recoverCharStats();
 	}
 
-	@Override public boolean isGeneric(){return true;}
+	@Override
+	public boolean isGeneric()
+	{
+		return true;
+	}
 
 	@Override
 	public String text()
@@ -66,6 +75,7 @@ public class GenDeity extends StdDeity
 		super.setMiscText(newText);
 		CMLib.coffeeMaker().resetGenMOB(this,newText);
 	}
+
 	private final static String[] MYCODES={"CLERREQ","CLERRIT","WORREQ","WORRIT","SVCRIT"};
 	@Override
 	public String getStat(String code)
@@ -83,6 +93,7 @@ public class GenDeity extends StdDeity
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
 	}
+
 	@Override
 	public void setStat(String code, String val)
 	{
@@ -101,14 +112,18 @@ public class GenDeity extends StdDeity
 			break;
 		}
 	}
+
 	@Override
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<MYCODES.length;i++)
+		{
 			if(code.equalsIgnoreCase(MYCODES[i]))
 				return i;
+		}
 		return -1;
 	}
+
 	private static String[] codes=null;
 	@Override
 	public String[] getStatCodes()
@@ -125,6 +140,7 @@ public class GenDeity extends StdDeity
 			codes[i]=MYCODES[x];
 		return codes;
 	}
+
 	@Override
 	public boolean sameAs(Environmental E)
 	{
@@ -132,8 +148,10 @@ public class GenDeity extends StdDeity
 			return false;
 		final String[] codes=getStatCodes();
 		for(int i=0;i<codes.length;i++)
+		{
 			if(!E.getStat(codes[i]).equals(getStat(codes[i])))
 				return false;
+		}
 		return true;
 	}
 }

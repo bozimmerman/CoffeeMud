@@ -34,7 +34,12 @@ import java.util.*;
 */
 public class MountainLion extends StdMOB
 {
-	@Override public String ID(){return "MountainLion";}
+	@Override
+	public String ID()
+	{
+		return "MountainLion";
+	}
+
 	public MountainLion()
 	{
 		super();

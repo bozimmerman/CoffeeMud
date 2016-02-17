@@ -34,7 +34,12 @@ import java.util.*;
 */
 public class Elephant extends StdMOB
 {
-	@Override public String ID(){return "Elephant";}
+	@Override
+	public String ID()
+	{
+		return "Elephant";
+	}
+
 	public Elephant()
 	{
 		super();

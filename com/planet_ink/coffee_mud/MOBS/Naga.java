@@ -34,7 +34,12 @@ import java.util.*;
 */
 public class Naga extends StdMOB
 {
-	@Override public String ID(){return "Naga";}
+	@Override
+	public String ID()
+	{
+		return "Naga";
+	}
+
 	public Naga()
 	{
 		super();

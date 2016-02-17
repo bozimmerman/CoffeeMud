@@ -34,7 +34,12 @@ import java.util.*;
 */
 public class Mouse extends StdMOB
 {
-	@Override public String ID(){return "Mouse";}
+	@Override
+	public String ID()
+	{
+		return "Mouse";
+	}
+
 	public Mouse()
 	{
 		super();

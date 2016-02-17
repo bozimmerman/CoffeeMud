@@ -34,7 +34,12 @@ import java.util.*;
 */
 public class BlackBear extends StdMOB
 {
-	@Override public String ID(){return "BlackBear";}
+	@Override
+	public String ID()
+	{
+		return "BlackBear";
+	}
+
 	public BlackBear()
 	{
 		super();

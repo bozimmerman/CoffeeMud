@@ -34,7 +34,12 @@ import java.util.*;
 */
 public class GardenSnake extends StdMOB
 {
-	@Override public String ID(){return "GardenSnake";}
+	@Override
+	public String ID()
+	{
+		return "GardenSnake";
+	}
+
 	public GardenSnake()
 	{
 		super();

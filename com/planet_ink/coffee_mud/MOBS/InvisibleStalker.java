@@ -34,7 +34,12 @@ import java.util.*;
 */
 public class InvisibleStalker extends StdMOB
 {
-	@Override public String ID(){return "InvisibleStalker";}
+	@Override
+	public String ID()
+	{
+		return "InvisibleStalker";
+	}
+
 	public InvisibleStalker()
 	{
 		super();

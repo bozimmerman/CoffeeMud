@@ -34,7 +34,12 @@ import java.util.*;
 */
 public class Assassin extends GenMob
 {
-	@Override public String ID(){return "Assassin";}
+	@Override
+	public String ID()
+	{
+		return "Assassin";
+	}
+
 	public Assassin()
 	{
 		super();

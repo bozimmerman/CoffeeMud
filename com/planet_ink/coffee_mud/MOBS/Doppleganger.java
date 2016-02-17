@@ -34,7 +34,12 @@ import java.util.*;
 */
 public class Doppleganger extends StdMOB
 {
-	@Override public String ID(){return "Doppleganger";}
+	@Override
+	public String ID()
+	{
+		return "Doppleganger";
+	}
+
 	protected MOB mimicing=null;
 	protected long ticksSinceMimicing=0;
 

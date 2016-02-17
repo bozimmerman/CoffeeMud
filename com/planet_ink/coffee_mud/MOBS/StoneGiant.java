@@ -34,7 +34,12 @@ import java.util.*;
 */
 public class StoneGiant extends StdMOB
 {
-	@Override public String ID(){return "StoneGiant";}
+	@Override
+	public String ID()
+	{
+		return "StoneGiant";
+	}
+
 	public StoneGiant()
 	{
 		super();

@@ -34,7 +34,12 @@ import java.util.*;
 */
 public class Hornet extends StdMOB
 {
-	@Override public String ID(){return "Hornet";}
+	@Override
+	public String ID()
+	{
+		return "Hornet";
+	}
+
 	public Hornet()
 	{
 		super();

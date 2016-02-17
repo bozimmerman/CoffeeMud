@@ -1172,6 +1172,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 			this.desc=desc;
 			this.bitCode=(int)Math.round(Math.pow(2,this.ordinal()));
 		}
+
 		private Attrib(boolean reversed)
 		{
 			this.autoReverse=reversed;

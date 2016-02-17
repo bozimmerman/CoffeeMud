@@ -34,7 +34,12 @@ import java.util.*;
 */
 public class LargeBat extends StdMOB
 {
-	@Override public String ID(){return "LargeBat";}
+	@Override
+	public String ID()
+	{
+		return "LargeBat";
+	}
+
 	public LargeBat()
 	{
 		super();

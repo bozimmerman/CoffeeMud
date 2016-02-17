@@ -34,7 +34,12 @@ import java.util.*;
 */
 public class Undead extends StdMOB
 {
-	@Override public String ID(){return "Undead";}
+	@Override
+	public String ID()
+	{
+		return "Undead";
+	}
+
 	public Undead()
 	{
 		super();

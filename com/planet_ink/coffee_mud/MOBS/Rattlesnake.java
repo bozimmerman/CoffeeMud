@@ -34,7 +34,12 @@ import java.util.*;
 */
 public class Rattlesnake extends StdMOB
 {
-	@Override public String ID(){return "Rattlesnake";}
+	@Override
+	public String ID()
+	{
+		return "Rattlesnake";
+	}
+
 	public Rattlesnake()
 	{
 		super();

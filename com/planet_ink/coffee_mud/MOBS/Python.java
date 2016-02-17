@@ -34,7 +34,12 @@ import java.util.*;
 */
 public class Python extends StdMOB
 {
-	@Override public String ID(){return "Python";}
+	@Override
+	public String ID()
+	{
+		return "Python";
+	}
+
 	public Python()
 	{
 		super();

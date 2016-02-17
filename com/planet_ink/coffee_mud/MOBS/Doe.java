@@ -34,7 +34,12 @@ import java.util.*;
 */
 public class Doe extends Deer
 {
-	@Override public String ID(){return "Doe";}
+	@Override
+	public String ID()
+	{
+		return "Doe";
+	}
+
 	public Doe()
 	{
 		super();

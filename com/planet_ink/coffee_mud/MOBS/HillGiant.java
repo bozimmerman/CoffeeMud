@@ -34,7 +34,12 @@ import java.util.*;
 */
 public class HillGiant extends StdMOB
 {
-	@Override public String ID(){return "HillGiant";}
+	@Override
+	public String ID()
+	{
+		return "HillGiant";
+	}
+
 	public HillGiant()
 	{
 		super();

@@ -34,7 +34,12 @@ import java.util.*;
 */
 public class Buffalo extends StdMOB
 {
-	@Override public String ID(){return "Buffalo";}
+	@Override
+	public String ID()
+	{
+		return "Buffalo";
+	}
+
 	public Buffalo()
 	{
 		super();

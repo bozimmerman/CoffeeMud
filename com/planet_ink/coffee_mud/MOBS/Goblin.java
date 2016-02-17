@@ -35,7 +35,11 @@ import java.util.*;
 */
 public class Goblin extends StdMOB
 {
-	@Override public String ID(){return "Goblin";}
+	@Override
+	public String ID()
+	{
+		return "Goblin";
+	}
 	Random randomizer = new Random(System.currentTimeMillis());
 	int birthType=0;
 

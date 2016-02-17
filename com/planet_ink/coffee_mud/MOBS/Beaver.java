@@ -34,7 +34,12 @@ import java.util.*;
 */
 public class Beaver extends StdMOB
 {
-	@Override public String ID(){return "Beaver";}
+	@Override
+	public String ID()
+	{
+		return "Beaver";
+	}
+
 	public Beaver()
 	{
 		super();

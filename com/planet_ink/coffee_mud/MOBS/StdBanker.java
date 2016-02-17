@@ -36,7 +36,11 @@ import java.util.*;
 */
 public class StdBanker extends StdShopKeeper implements Banker
 {
-	@Override public String ID(){return "StdBanker";}
+	@Override
+	public String ID()
+	{
+		return "StdBanker";
+	}
 
 	protected double coinInterest=-0.000;
 	protected double itemInterest=-0.0001;
@@ -68,7 +72,12 @@ public class StdBanker extends StdShopKeeper implements Banker
 		recoverCharStats();
 	}
 
-	@Override public void addSoldType(int mask){setWhatIsSoldMask(CMath.abs(mask));}
+	@Override
+	public void addSoldType(int mask)
+	{
+		setWhatIsSoldMask(CMath.abs(mask));
+	}
+
 	@Override
 	public void setWhatIsSoldMask(long newSellCode)
 	{
@@ -79,8 +88,17 @@ public class StdBanker extends StdShopKeeper implements Banker
 			whatIsSoldMask=ShopKeeper.DEAL_CLANBANKER;
 	}
 
-	@Override public String bankChain(){return text();}
-	@Override public void setBankChain(String name){setMiscText(name);}
+	@Override
+	public String bankChain()
+	{
+		return text();
+	}
+
+	@Override
+	public void setBankChain(String name)
+	{
+		setMiscText(name);
+	}
 
 	@Override
 	public void addDepositInventory(String depositorName, Item item, Item container)

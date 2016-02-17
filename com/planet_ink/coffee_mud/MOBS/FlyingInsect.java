@@ -35,7 +35,11 @@ import java.util.*;
 */
 public class FlyingInsect extends StdMOB
 {
-	@Override public String ID(){return "FlyingInsect";}
+	@Override
+	public String ID()
+	{
+		return "FlyingInsect";
+	}
 
 	public FlyingInsect()
 	{

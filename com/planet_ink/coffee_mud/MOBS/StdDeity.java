@@ -35,7 +35,11 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class StdDeity extends StdMOB implements Deity
 {
-	@Override public String ID(){return "StdDeity";}
+	@Override
+	public String ID()
+	{
+		return "StdDeity";
+	}
 
 	protected int 		xpwrath=100;
 	protected String 	clericReqs="";
@@ -101,7 +105,10 @@ public class StdDeity extends StdMOB implements Deity
 		public Ability power;
 		public boolean clericOnly;
 		public DeityPower(Ability A, boolean clericsOnly)
-		{ power=A; clericOnly=clericsOnly;}
+		{
+			power=A;
+			clericOnly=clericsOnly;
+		}
 	}
 
 	@Override
@@ -134,16 +141,19 @@ public class StdDeity extends StdMOB implements Deity
 	{
 		return clericReqs;
 	}
+
 	@Override
 	public void setClericRequirements(String reqs)
 	{
 		clericReqs=reqs;
 	}
+
 	@Override
 	public String getWorshipRequirements()
 	{
 		return worshipReqs;
 	}
+
 	@Override
 	public void setWorshipRequirements(String reqs)
 	{
@@ -157,12 +167,14 @@ public class StdDeity extends StdMOB implements Deity
 			return "SAY Bless me "+name();
 		return clericRitual;
 	}
+
 	@Override
 	public void setClericRitual(String ritual)
 	{
 		clericRitual=ritual;
 		parseTriggers(clericTriggers,ritual);
 	}
+
 	@Override
 	public String getWorshipRitual()
 	{
@@ -170,17 +182,20 @@ public class StdDeity extends StdMOB implements Deity
 			return "SAY Bless me "+name();
 		return worshipRitual;
 	}
+
 	@Override
 	public void setWorshipRitual(String ritual)
 	{
 		worshipRitual=ritual;
 		parseTriggers(worshipTriggers,ritual);
 	}
+
 	@Override
 	public String getServiceRitual()
 	{
 		return serviceRitual;
 	}
+
 	@Override
 	public void setServiceRitual(String ritual)
 	{
@@ -328,6 +343,7 @@ public class StdDeity extends StdMOB implements Deity
 	{
 		return L("The following may be clerics of @x1: @x2",name(),CMLib.masking().maskDesc(getClericRequirements()));
 	}
+
 	@Override
 	public String getClericTriggerDesc()
 	{
@@ -335,11 +351,13 @@ public class StdDeity extends StdMOB implements Deity
 			return L("The blessings of @x1 are placed upon @x2 clerics whenever the cleric does the following: @x3.",name(),charStats().hisher(),getTriggerDesc(clericTriggers));
 		return "";
 	}
+
 	@Override
 	public String getWorshipRequirementsDesc()
 	{
 		return L("The following are acceptable worshipers of @x1: @x2",name(),CMLib.masking().maskDesc(getWorshipRequirements()));
 	}
+
 	@Override
 	public String getWorshipTriggerDesc()
 	{
@@ -1070,8 +1088,10 @@ public class StdDeity extends StdMOB implements Deity
 		synchronized(services)
 		{
 			for(final WorshipService w : services)
+			{
 				if(w.room==room)
 					return;
+			}
 			final WorshipService service = new WorshipService();
 			service.room=room;
 			service.parishaners = parishaners;
@@ -1394,7 +1414,8 @@ public class StdDeity extends StdMOB implements Deity
 						executeMsg(this,CMClass.getMsg(M,null,null,CMMsg.MSG_OK_VISUAL,null));
 					}
 					catch(final Exception e)
-					{}
+					{
+					}
 				}
 			}
 		}
@@ -1414,6 +1435,7 @@ public class StdDeity extends StdMOB implements Deity
 		}
 		blessings.add(new DeityPower(to,clericOnly));
 	}
+
 	@Override
 	public void delBlessing(Ability to)
 	{
@@ -1425,11 +1447,13 @@ public class StdDeity extends StdMOB implements Deity
 				blessings.remove(P);
 		}
 	}
+
 	@Override
 	public int numBlessings()
 	{
 		return blessings.size();
 	}
+
 	@Override
 	public Ability fetchBlessing(int index)
 	{
@@ -1438,9 +1462,11 @@ public class StdDeity extends StdMOB implements Deity
 			return blessings.get(index).power;
 		}
 		catch(final java.lang.ArrayIndexOutOfBoundsException x)
-		{}
+		{
+		}
 		return null;
 	}
+
 	@Override
 	public boolean fetchBlessingCleric(int index)
 	{
@@ -1449,9 +1475,11 @@ public class StdDeity extends StdMOB implements Deity
 			return blessings.get(index).clericOnly;
 		}
 		catch(final java.lang.ArrayIndexOutOfBoundsException x)
-		{}
+		{
+		}
 		return false;
 	}
+
 	@Override
 	public boolean fetchBlessingCleric(String ID)
 	{
@@ -1464,6 +1492,7 @@ public class StdDeity extends StdMOB implements Deity
 		}
 		return false;
 	}
+
 	@Override
 	public Ability fetchBlessing(String ID)
 	{
@@ -1809,6 +1838,7 @@ public class StdDeity extends StdMOB implements Deity
 		}
 		curses.add(new DeityPower(to,clericOnly));
 	}
+
 	@Override
 	public void delCurse(Ability to)
 	{
@@ -1821,11 +1851,13 @@ public class StdDeity extends StdMOB implements Deity
 				curses.remove(a);
 		}
 	}
+
 	@Override
 	public int numCurses()
 	{
 		return curses.size();
 	}
+
 	@Override
 	public Ability fetchCurse(int index)
 	{
@@ -1834,9 +1866,11 @@ public class StdDeity extends StdMOB implements Deity
 			return curses.get(index).power;
 		}
 		catch(final java.lang.ArrayIndexOutOfBoundsException x)
-		{}
+		{
+		}
 		return null;
 	}
+
 	@Override
 	public Ability fetchCurse(String ID)
 	{
@@ -1864,9 +1898,11 @@ public class StdDeity extends StdMOB implements Deity
 			return curses.get(index).clericOnly;
 		}
 		catch(final java.lang.ArrayIndexOutOfBoundsException x)
-		{}
+		{
+		}
 		return false;
 	}
+
 	@Override
 	public boolean fetchCurseCleric(String ID)
 	{
@@ -1884,12 +1920,14 @@ public class StdDeity extends StdMOB implements Deity
 	{
 		return clericSin;
 	}
+
 	@Override
 	public void setClericSin(String ritual)
 	{
 		clericSin=ritual;
 		parseTriggers(clericCurseTriggers,ritual);
 	}
+
 	@Override
 	public String getClericSinDesc()
 	{
@@ -1903,12 +1941,14 @@ public class StdDeity extends StdMOB implements Deity
 	{
 		return worshipSin;
 	}
+
 	@Override
 	public void setWorshipSin(String ritual)
 	{
 		worshipSin=ritual;
 		parseTriggers(worshipCurseTriggers,ritual);
 	}
+
 	@Override
 	public String getWorshipSinDesc()
 	{
@@ -1933,16 +1973,19 @@ public class StdDeity extends StdMOB implements Deity
 		}
 		powers.add(to);
 	}
+
 	@Override
 	public void delPower(Ability to)
 	{
 		powers.remove(to);
 	}
+
 	@Override
 	public int numPowers()
 	{
 		return powers.size();
 	}
+
 	@Override
 	public Ability fetchPower(int index)
 	{
@@ -1951,9 +1994,11 @@ public class StdDeity extends StdMOB implements Deity
 			return powers.get(index);
 		}
 		catch(final java.lang.ArrayIndexOutOfBoundsException x)
-		{}
+		{
+		}
 		return null;
 	}
+
 	@Override
 	public Ability fetchPower(String ID)
 	{
@@ -1971,12 +2016,14 @@ public class StdDeity extends StdMOB implements Deity
 	{
 		return clericPowerup;
 	}
+
 	@Override
 	public void setClericPowerup(String ritual)
 	{
 		clericPowerup=ritual;
 		parseTriggers(clericPowerTriggers,ritual);
 	}
+
 	@Override
 	public String getClericPowerupDesc()
 	{

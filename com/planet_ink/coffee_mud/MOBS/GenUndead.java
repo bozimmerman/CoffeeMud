@@ -34,7 +34,12 @@ import java.util.*;
 */
 public class GenUndead extends GenMob
 {
-	@Override public String ID(){return "GenUndead";}
+	@Override
+	public String ID()
+	{
+		return "GenUndead";
+	}
+
 	protected final Race undeadRace;
 	public GenUndead()
 	{
@@ -74,6 +79,7 @@ public class GenUndead extends GenMob
 		if((charStats().getMyRace()!=undeadRace)&&(undeadRace!=null))
 			undeadRace.affectCharState(this, maxState);
 	}
+
 	@Override
 	public void recoverPhyStats()
 	{
@@ -107,6 +113,7 @@ public class GenUndead extends GenMob
 		if((charStats().getMyRace()!=undeadRace)&&(undeadRace!=null))
 			undeadRace.affectCharStats(this, charStats);
 	}
+
 	@Override
 	public DeadBody killMeDead(boolean createBody)
 	{
@@ -130,5 +137,9 @@ public class GenUndead extends GenMob
 		return body;
 	}
 
-	@Override public boolean isGeneric(){return true;}
+	@Override
+	public boolean isGeneric()
+	{
+		return true;
+	}
 }

@@ -34,7 +34,12 @@ import java.util.*;
 */
 public class Zombie extends Undead
 {
-	@Override public String ID(){return "Zombie";}
+	@Override
+	public String ID()
+	{
+		return "Zombie";
+	}
+
 	public Zombie()
 	{
 

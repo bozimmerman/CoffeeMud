@@ -35,7 +35,12 @@ import java.util.*;
 */
 public class DrowElf extends StdMOB
 {
-	@Override public String ID(){return "DrowElf";}
+	@Override
+	public String ID()
+	{
+		return "DrowElf";
+	}
+
 	public static final int MALE	= 0;
 	public static final int FEMALE	= 1;
 

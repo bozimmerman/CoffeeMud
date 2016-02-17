@@ -34,7 +34,12 @@ import java.util.*;
 */
 public class Skeleton extends Undead
 {
-	@Override public String ID(){return "Skeleton";}
+	@Override
+	public String ID()
+	{
+		return "Skeleton";
+	}
+
 	public Skeleton()
 	{
 
