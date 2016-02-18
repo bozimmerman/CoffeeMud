@@ -50,11 +50,11 @@ public class GenSailingShip extends StdBoardable
 	protected volatile boolean	 anchorDown		 = true;
 	protected volatile int		 tickDown		 = -1;
 	protected final List<Integer>courseDirections= new Vector<Integer>();
-	
+
 	protected volatile int		 	directionFacing	 = 0;
+	protected volatile Item			targetedShip	 = null;
 	protected volatile Room		 	shipCombatRoom	 = null;
 	protected PairList<Item,int[]>	coordinates		 = null;
-	protected final int[]			nextManeuver	 = null;  // 0=dir,1=num spots, 256 mask for change facing
 	
 	public GenSailingShip()
 	{
@@ -413,17 +413,105 @@ public class GenSailingShip extends StdBoardable
 		return true;
 	}
 
+	protected int[] getMagicCoords()
+	{
+		final int[] coords;
+		final int middle = (int)Math.round(Math.floor(phyStats().weight() / 2.0));
+		final int extreme = phyStats().weight()-1;
+		switch(this.directionFacing)
+		{
+		case Directions.NORTH:
+			coords = new int[] {middle,extreme};
+			break;
+		case Directions.SOUTH:
+			coords = new int[] {middle,0};
+			break;
+		case Directions.EAST:
+			coords = new int[] {0,middle};
+			break;
+		case Directions.WEST:
+			coords = new int[] {extreme,middle};
+			break;
+		case Directions.UP:
+			coords = new int[] {middle,middle};
+			break;
+		case Directions.DOWN:
+			coords = new int[] {middle,middle};
+			break;
+		case Directions.NORTHEAST:
+			coords = new int[] {0,extreme};
+			break;
+		case Directions.NORTHWEST:
+			coords = new int[] {extreme,extreme};
+			break;
+		case Directions.SOUTHEAST:
+			coords = new int[] {extreme,0};
+			break;
+		case Directions.SOUTHWEST:
+			coords = new int[] {0,0};
+			break;
+		default:
+			coords = new int[] {middle,middle};
+			break;
+		}
+		return coords;
+	}
+	
+	protected synchronized boolean amInTacticalMode()
+	{
+		final Item targetedShip = this.targetedShip;
+		final Room shipCombatRoom = this.shipCombatRoom;
+		if((targetedShip != null) 
+		&& (shipCombatRoom != null)
+		&& (shipCombatRoom.isContent(targetedShip))
+		&& (shipCombatRoom.isContent(this))
+		)
+		{
+			if(coordinates == null)
+			{
+				synchronized((""+shipCombatRoom + "_SHIP_TACTICAL").intern())
+				{
+					for(int i=0;i<shipCombatRoom.numItems();i++)
+					{
+						final Item I=shipCombatRoom.getItem(i);
+						if((I instanceof GenSailingShip)
+						&&(((GenSailingShip)I).coordinates != null))
+						{
+							this.coordinates = ((GenSailingShip)I).coordinates; 
+						}
+					}
+					if(coordinates == null)
+					{
+						this.coordinates = new SPairList<Item,int[]>();
+					}
+				}
+				if(!this.coordinates.containsFirst(this))
+				{
+					this.coordinates.add(new Pair<Item,int[]>(this,this.getMagicCoords()));
+				}
+			}
+			return true;
+		}
+		else
+		{
+			this.targetedShip = null;
+			this.shipCombatRoom = null;
+			this.coordinates = null;
+			return false;
+		}
+	}
+	
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
-		if(tickID == Tickable.TICKID_SPECIALCOMBAT)
-		{
-			
-		}
+		final int sailingTickID = amInTacticalMode() ? Tickable.TICKID_SPECIALCOMBAT : Tickable.TICKID_AREA;
 		if(tickID == Tickable.TICKID_AREA)
 		{
 			if(amDestroyed())
 				return false;
+		}
+		if(tickID == sailingTickID)
+		{
 			if((!this.anchorDown) && (area != null) && (coarseDirection != -1) && (--tickDown <=0))
 			{
 				int speed=phyStats().ability();
@@ -431,20 +519,32 @@ public class GenSailingShip extends StdBoardable
 					speed=1;
 				tickDown = -phyStats().ability();
 				
-				for(int s=0;s<speed;s++)
+				for(int s=0;s<speed && (coarseDirection>=0);s++)
 				{
-					if(sail(coarseDirection)!=-1)
+					switch(sail(coarseDirection))
+					{
+					case CANCEL:
+					{
+						coarseDirection=-1;
+						break;
+					}
+					case CONTINUE:
 					{
 						if(this.courseDirections.size()>0)
 						{
 							final Integer newDir=this.courseDirections.remove(0);
 							coarseDirection = newDir.intValue();
 						}
-					}
-					else
-					{
-						coarseDirection=-1;
+						else
+						{
+							coarseDirection = -1;
+						}
 						break;
+					}
+					case REPEAT:
+					{
+						break;
+					}
 					}
 				}
 			}
@@ -452,7 +552,6 @@ public class GenSailingShip extends StdBoardable
 		}
 		return super.tick(ticking, tickID);
 	}
-	
 
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
@@ -546,13 +645,60 @@ public class GenSailingShip extends StdBoardable
 		return null;
 	}
 
-
-	protected int sail(final int direction)
+	private static enum SailResult
+	{
+		CANCEL,
+		CONTINUE,
+		REPEAT
+	}
+	
+	protected SailResult sail(final int direction)
 	{
 		final Room thisRoom=CMLib.map().roomLocation(this);
 		if(thisRoom != null)
 		{
-			directionFacing = direction;
+			if(directionFacing < 0)
+			{
+				for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+				{
+					final Room R2=thisRoom.getRoomInDir(d);
+					if((R2!=null)
+					&&(thisRoom.getExitInDir(d)!=null)
+					&&(thisRoom.getExitInDir(d).isOpen())
+					&&(!CMLib.flags().isWateryRoom(R2)))
+					{
+						directionFacing = Directions.getOpDirectionCode(d);
+						break;
+					}
+				}
+				if(directionFacing < 0)
+					directionFacing = direction;
+			}
+			if(direction != directionFacing)
+			{
+				directionFacing = Directions.getGradualDirectionCode(directionFacing, direction);
+			}
+			if(amInTacticalMode())
+			{
+				if(directionFacing == direction)
+				{
+					//TODO: make a tactical move
+					//TODO: let everyone know you moved, on the ship and in other ships watching
+					//TODO: 
+					//TODO: 
+					//TODO: 
+					
+				}
+				else
+				{
+					announceToShip(L("<S-NAME> change(s) coarse, turning @x1.",Directions.getInDirectionName(direction)));
+					// need to tell everyone on other ships too
+				}
+			}
+			else
+			{
+				directionFacing = direction;
+			}
 			final Room destRoom=thisRoom.getRoomInDir(direction);
 			final Exit exit=thisRoom.getExitInDir(direction);
 			if((destRoom!=null)&&(exit!=null))
@@ -562,7 +708,7 @@ public class GenSailingShip extends StdBoardable
 				{
 					announceToShip(L("As there is no where to sail @x1, <S-NAME> meanders along the waves.",Directions.getInDirectionName(direction)));
 					courseDirections.clear();
-					return -1;
+					return SailResult.CANCEL;
 				}
 				final int oppositeDirectionFacing=Directions.getOpDirectionCode(direction);
 				final String directionName=Directions.getDirectionName(direction);
@@ -591,15 +737,14 @@ public class GenSailingShip extends StdBoardable
 							opExit.executeMsg(mob,leaveMsg);
 						destRoom.send(mob, enterMsg);
 						haveEveryoneLookOverBow();
-						return direction;
+						return SailResult.CONTINUE;
 					}
 					else
 					{
 						announceToShip(L("<S-NAME> can not seem to travel @x1.",Directions.getInDirectionName(direction)));
 						courseDirections.clear();
-						return -1;
+						return SailResult.CANCEL;
 					}
-						
 				}
 				finally
 				{
@@ -610,10 +755,10 @@ public class GenSailingShip extends StdBoardable
 			{
 				announceToShip(L("As there is no where to sail @x1, <S-NAME> meanders along the waves.",Directions.getInDirectionName(direction)));
 				courseDirections.clear();
-				return -1;
+				return SailResult.CANCEL;
 			}
 		}
-		return -1;
+		return SailResult.CANCEL;
 	}
 	
 	protected void haveEveryoneLookOverBow()

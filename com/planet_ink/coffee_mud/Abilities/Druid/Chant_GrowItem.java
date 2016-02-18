@@ -35,14 +35,49 @@ import java.util.*;
 
 public class Chant_GrowItem extends Chant
 {
-	@Override public String ID() { return "Chant_GrowItem"; }
-	private final static String localizedName = CMLib.lang().L("Grow Item");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override protected int overrideMana(){return 50;}
+	@Override
+	public String ID()
+	{
+		return "Chant_GrowItem";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Grow Item");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT | Ability.DOMAIN_PLANTGROWTH;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int overrideMana()
+	{
+		return 50;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)

@@ -66,36 +66,37 @@ public class Directions
 
 	private static final Directions[] dirs=new Directions[256];
 
-	public static final int NORTH=0;
-	public static final int SOUTH=1;
-	public static final int EAST=2;
-	public static final int WEST=3;
-	public static final int UP=4;
-	public static final int DOWN=5;
+	public static final int	NORTH		= 0;
+	public static final int	SOUTH		= 1;
+	public static final int	EAST		= 2;
+	public static final int	WEST		= 3;
+	public static final int	UP			= 4;
+	public static final int	DOWN		= 5;
 
-	public static final int GATE=6;
+	public static final int	GATE		= 6;
 
-	public static final int NORTHEAST=7;
-	public static final int NORTHWEST=8;
-	public static final int SOUTHEAST=9;
-	public static final int SOUTHWEST=10;
+	public static final int	NORTHEAST	= 7;
+	public static final int	NORTHWEST	= 8;
+	public static final int	SOUTHEAST	= 9;
+	public static final int	SOUTHWEST	= 10;
 
 	/* Display order directions.  Include up, down, and gate.  Include -1 to insert the other 4/8 */
-	private final static int[] DIRECTIONS_DISPLAY_ORDER_BASE={UP,-1,DOWN,GATE};
-	private final static int[] DIRECTIONS_7_BASE={NORTH,SOUTH,EAST,WEST};
-	private final static int[] DIRECTIONS_11_BASE={NORTH,SOUTH,EAST,WEST,NORTHEAST,NORTHWEST,SOUTHEAST,SOUTHWEST};
-	private final static String DIRECTION_7_LETTERS="N, S, E, W, U, D, or V";
-	private final static String DIRECTION_11_LETTERS="N, S, E, W, NE, NW, SE, SW, U, D, or V";
-	private final static String DIRECTION_7_NAMES="North, South, East, West, Up, or Down";
-	private final static String DIRECTION_11_NAMES="North, South, East, West, Northeast, Northwest, Southeast, Southwest, Up, or Down";
-	private final static String DIRECTION_7_SHIPNAMES="Foreward, Aft, Starboard, Port, Above, or Below";
-	private final static String DIRECTION_11_SHIPNAMES="Foreward, Aft, Starboard, Port, Foreward Starboard, Foreward Port, Aft Starboard, Aft Port, Above, or Below";
+	private final static int[]	DIRECTIONS_DISP_ORDER	= { UP, -1, DOWN, GATE };
+	private final static int[]	DIRECTIONS_7_BASE		= { NORTH, SOUTH, EAST, WEST };
+	private final static int[]	DIRECTIONS_11_BASE		= { NORTH, SOUTH, EAST, WEST, NORTHEAST, NORTHWEST, SOUTHEAST, SOUTHWEST };
+	private final static String	DIRECTION_7_LETTERS		= "N, S, E, W, U, D, or V";
+	private final static String	DIRECTION_11_LETTERS	= "N, S, E, W, NE, NW, SE, SW, U, D, or V";
+	private final static String	DIRECTION_7_NAMES		= "North, South, East, West, Up, or Down";
+	private final static String	DIRECTION_11_NAMES		= "North, South, East, West, Northeast, Northwest, Southeast, Southwest, Up, or Down";
+	private final static String	DIRECTION_7_SHIPNAMES	= "Foreward, Aft, Starboard, Port, Above, or Below";
+	private final static String	DIRECTION_11_SHIPNAMES	= "Foreward, Aft, Starboard, Port, Foreward Starboard, Foreward Port, "
+														+ "Aft Starboard, Aft Port, Above, or Below";
 
-	private int[] DIRECTIONS_CODES={NORTH,SOUTH,EAST,WEST};
-	private int[] DIRECTIONS_DISPLAY={UP,DOWN,NORTH,SOUTH,EAST,WEST,GATE};
-	private String DIRECTION_LETTERS=DIRECTION_7_LETTERS;
-	private String DIRECTION_NAMES=DIRECTION_7_NAMES;
-	private String DIRECTION_SHIPNAMES=DIRECTION_7_SHIPNAMES;
+	private int[]	DIRECTIONS_CODES	= { NORTH, SOUTH, EAST, WEST };
+	private int[]	DIRECTIONS_DISPLAY	= { UP, DOWN, NORTH, SOUTH, EAST, WEST, GATE };
+	private String	DIRECTION_LETTERS	= DIRECTION_7_LETTERS;
+	private String	DIRECTION_NAMES		= DIRECTION_7_NAMES;
+	private String	DIRECTION_SHIPNAMES	= DIRECTION_7_SHIPNAMES;
 
 	private int NUM_DIRECTIONS=7;
 
@@ -255,11 +256,11 @@ public class Directions
 		}
 		DIRECTIONS_DISPLAY = new int[100];
 		int index=0;
-		for(int i=0;i<Directions.DIRECTIONS_DISPLAY_ORDER_BASE.length;i++)
+		for(int i=0;i<Directions.DIRECTIONS_DISP_ORDER.length;i++)
 		{
-			if(Directions.DIRECTIONS_DISPLAY_ORDER_BASE[i] >= 0)
+			if(Directions.DIRECTIONS_DISP_ORDER[i] >= 0)
 			{
-				DIRECTIONS_DISPLAY[index++] = Directions.DIRECTIONS_DISPLAY_ORDER_BASE[i];
+				DIRECTIONS_DISPLAY[index++] = Directions.DIRECTIONS_DISP_ORDER[i];
 			}
 			else
 			{
@@ -768,6 +769,212 @@ public class Directions
 			return UP;
 		case GATE:
 			return GATE;
+		}
+		return -1;
+	}
+
+	/**
+	 * Returns the direction code next to the given curentCode that
+	 * moves towards the target direction code
+	 * @param curentCode the current direction code
+	 * @param targetCode the target direction code
+	 * @return the next direction code
+	 */
+	public static final int getGradualDirectionCode(final int curentCode, final int targetCode)
+	{
+		final boolean elevenDirections = Directions.NUM_DIRECTIONS() == 11;
+		switch(curentCode)
+		{
+		case NORTH:
+			switch(targetCode)
+			{
+			case NORTH:
+				return NORTH;
+			case SOUTH:
+				return elevenDirections ? NORTHEAST : EAST;
+			case WEST:
+				return elevenDirections ? NORTHWEST : WEST;
+			case EAST:
+				return elevenDirections ? NORTHEAST : EAST;
+			case NORTHEAST:
+				return NORTHEAST;
+			case NORTHWEST:
+				return NORTHWEST;
+			case SOUTHEAST:
+				return NORTHEAST;
+			case SOUTHWEST:
+				return NORTHWEST;
+			default:
+				break;
+			}
+			return targetCode;
+		case SOUTH:
+			switch(targetCode)
+			{
+			case NORTH:
+				return elevenDirections ? SOUTHWEST : WEST;
+			case SOUTH:
+				return SOUTH;
+			case WEST:
+				return elevenDirections ? SOUTHWEST : WEST;
+			case EAST:
+				return elevenDirections ? SOUTHEAST : EAST;
+			case NORTHEAST:
+				return SOUTHEAST;
+			case NORTHWEST:
+				return SOUTHWEST;
+			case SOUTHEAST:
+				return SOUTHEAST;
+			case SOUTHWEST:
+				return SOUTHWEST;
+			default:
+				break;
+			}
+			return targetCode;
+		case WEST:
+			switch(targetCode)
+			{
+			case NORTH:
+				return elevenDirections ? NORTHWEST : NORTH;
+			case SOUTH:
+				return elevenDirections ? SOUTHWEST : SOUTH;
+			case WEST:
+				return WEST;
+			case EAST:
+				return elevenDirections ? NORTHWEST : NORTH;
+			case NORTHEAST:
+				return elevenDirections ? NORTHWEST : NORTH;
+			case NORTHWEST:
+				return NORTHWEST;
+			case SOUTHEAST:
+				return elevenDirections ? SOUTHWEST : SOUTH;
+			case SOUTHWEST:
+				return SOUTHWEST;
+			default:
+				break;
+			}
+			return targetCode;
+		case EAST:
+			switch(targetCode)
+			{
+			case NORTH:
+				return elevenDirections ? NORTHEAST : NORTH;
+			case SOUTH:
+				return elevenDirections ? SOUTHEAST : SOUTH;
+			case WEST:
+				return elevenDirections ? SOUTHEAST : SOUTH;
+			case EAST:
+				return EAST;
+			case NORTHEAST:
+				return NORTHEAST;
+			case NORTHWEST:
+				return elevenDirections ? NORTHEAST : NORTH;
+			case SOUTHEAST:
+				return SOUTHEAST;
+			case SOUTHWEST:
+				return elevenDirections ? SOUTHEAST : SOUTH;
+			default:
+				break;
+			}
+			return targetCode;
+		case NORTHEAST:
+			switch(targetCode)
+			{
+			case NORTH:
+				return NORTH;
+			case SOUTH:
+				return EAST;
+			case WEST:
+				return NORTH;
+			case EAST:
+				return EAST;
+			case NORTHEAST:
+				return NORTHEAST;
+			case NORTHWEST:
+				return NORTH;
+			case SOUTHEAST:
+				return EAST;
+			case SOUTHWEST:
+				return EAST;
+			default:
+				break;
+			}
+			return targetCode;
+		case NORTHWEST:
+			switch(targetCode)
+			{
+			case NORTH:
+				return NORTH;
+			case SOUTH:
+				return WEST;
+			case WEST:
+				return WEST;
+			case EAST:
+				return NORTH;
+			case NORTHEAST:
+				return NORTH;
+			case NORTHWEST:
+				return NORTHWEST;
+			case SOUTHEAST:
+				return NORTH;
+			case SOUTHWEST:
+				return EAST;
+			default:
+				break;
+			}
+			return targetCode;
+		case SOUTHEAST:
+			switch(targetCode)
+			{
+			case NORTH:
+				return EAST;
+			case SOUTH:
+				return SOUTH;
+			case WEST:
+				return SOUTH;
+			case EAST:
+				return EAST;
+			case NORTHEAST:
+				return EAST;
+			case NORTHWEST:
+				return NORTH;
+			case SOUTHEAST:
+				return SOUTHEAST;
+			case SOUTHWEST:
+				return SOUTH;
+			default:
+				break;
+			}
+			return targetCode;
+		case SOUTHWEST:
+			switch(targetCode)
+			{
+			case NORTH:
+				return WEST;
+			case SOUTH:
+				return SOUTH;
+			case WEST:
+				return WEST;
+			case EAST:
+				return SOUTH;
+			case NORTHEAST:
+				return WEST;
+			case NORTHWEST:
+				return WEST;
+			case SOUTHEAST:
+				return SOUTH;
+			case SOUTHWEST:
+				return SOUTHWEST;
+			default:
+				break;
+			}
+			return targetCode;
+		case UP:
+			return targetCode;
+		case DOWN:
+			return targetCode;
+		case GATE:
+			return targetCode;
 		}
 		return -1;
 	}
