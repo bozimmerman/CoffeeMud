@@ -34,8 +34,13 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 */
 public class GenPill extends StdPill
 {
-	@Override public String ID(){	return "GenPill";}
-	protected String readableText="";
+	@Override
+	public String ID()
+	{
+		return "GenPill";
+	}
+
+	protected String	readableText	= "";
 
 	public GenPill()
 	{
@@ -52,14 +57,30 @@ public class GenPill extends StdPill
 		decayTime=0;
 	}
 
-	@Override public boolean isGeneric(){return true;}
-
+	@Override
+	public boolean isGeneric()
+	{
+		return true;
+	}
 
 	@Override
 	public String getSpellList()
-	{ return readableText;}
-	@Override public void setSpellList(String list){readableText=list;}
-	@Override public String readableText(){return readableText;}
+	{
+		return readableText;
+	}
+
+	@Override
+	public void setSpellList(String list)
+	{
+		readableText = list;
+	}
+
+	@Override
+	public String readableText()
+	{
+		return readableText;
+	}
+
 	@Override
 	public void setReadableText(String text)
 	{
@@ -80,7 +101,9 @@ public class GenPill extends StdPill
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
 		recoverPhyStats();
 	}
+	
 	private final static String[] MYCODES={"NOURISHMENT"};
+	
 	@Override
 	public String getStat(String code)
 	{
@@ -88,11 +111,13 @@ public class GenPill extends StdPill
 			return CMLib.coffeeMaker().getGenItemStat(this,code);
 		switch(getCodeNum(code))
 		{
-		case 0: return ""+nourishment();
+		case 0:
+			return "" + nourishment();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
 	}
+
 	@Override
 	public void setStat(String code, String val)
 	{
@@ -101,21 +126,28 @@ public class GenPill extends StdPill
 		else
 		switch(getCodeNum(code))
 		{
-		case 0: setNourishment(CMath.s_parseIntExpression(val)); break;
+		case 0:
+			setNourishment(CMath.s_parseIntExpression(val));
+			break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;
 		}
 	}
+
 	@Override
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<MYCODES.length;i++)
+		{
 			if(code.equalsIgnoreCase(MYCODES[i]))
 				return i;
+		}
 		return -1;
 	}
-	private static String[] codes=null;
+
+	private static String[]	codes	= null;
+
 	@Override
 	public String[] getStatCodes()
 	{
@@ -131,6 +163,7 @@ public class GenPill extends StdPill
 			codes[i]=MYCODES[x];
 		return codes;
 	}
+
 	@Override
 	public boolean sameAs(Environmental E)
 	{
@@ -138,8 +171,10 @@ public class GenPill extends StdPill
 			return false;
 		final String[] codes=getStatCodes();
 		for(int i=0;i<codes.length;i++)
+		{
 			if(!E.getStat(codes[i]).equals(getStat(codes[i])))
 				return false;
+		}
 		return true;
 	}
 }

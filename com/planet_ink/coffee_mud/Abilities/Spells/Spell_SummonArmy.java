@@ -35,16 +35,53 @@ import java.util.*;
 
 public class Spell_SummonArmy extends Spell
 {
-	@Override public String ID() { return "Spell_SummonArmy"; }
-	private final static String localizedName = CMLib.lang().L("Summon Army");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Monster Summoning)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
-	@Override public long flags(){return Ability.FLAG_SUMMONING;}
-	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
-	public boolean hasFought=false;
+	@Override
+	public String ID()
+	{
+		return "Spell_SummonArmy";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Summon Army");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Monster Summoning)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_SELF;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL | Ability.DOMAIN_CONJURATION;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_SUMMONING;
+	}
+
+	@Override
+	public int enchantQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	public boolean	hasFought	= false;
 
 	@Override
 	public void unInvoke()

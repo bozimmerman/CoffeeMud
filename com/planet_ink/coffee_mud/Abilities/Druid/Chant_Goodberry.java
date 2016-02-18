@@ -32,17 +32,45 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
-
 public class Chant_Goodberry extends Chant
 {
-	@Override public String ID() { return "Chant_Goodberry"; }
-	private final static String localizedName = CMLib.lang().L("Goodberry");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return CAN_ITEMS;}
+	@Override
+	public String ID()
+	{
+		return "Chant_Goodberry";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Goodberry");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT | Ability.DOMAIN_PLANTCONTROL;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_ITEMS;
+	}
 
 	public boolean checkDo(Item newTarget, Item originaltarget, Environmental owner)
 	{
@@ -58,6 +86,7 @@ public class Chant_Goodberry extends Chant
 			newItem.setDisplayText(newTarget.displayText());
 			newItem.setDescription(newTarget.description());
 			newItem.setMaterial(RawMaterial.RESOURCE_BERRIES);
+			newItem.setNourishment(0);
 			newItem.basePhyStats().setDisposition(PhyStats.IS_GLOWING);
 			newItem.setSpellList(";Prayer_CureLight;");
 			newItem.recoverPhyStats();
@@ -75,7 +104,10 @@ public class Chant_Goodberry extends Chant
 		return false;
 	}
 
-	public boolean isBerry(Item I) { return CMParms.contains(RawMaterial.CODES.BERRIES(),I.material()); }
+	public boolean isBerry(Item I)
+	{
+		return CMParms.contains(RawMaterial.CODES.BERRIES(), I.material());
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -109,6 +141,7 @@ public class Chant_Goodberry extends Chant
 				mob.location().send(mob,msg);
 				mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,L("<T-NAME> begin to glow!"));
 				if(owner instanceof MOB)
+				{
 					for(int i=0;i<((MOB)owner).numItems();i++)
 					{
 						final Item newTarget=((MOB)owner).getItem(i);
@@ -119,7 +152,9 @@ public class Chant_Goodberry extends Chant
 							i=-1;
 						}
 					}
+				}
 				if(owner instanceof Room)
+				{
 					for(int i=0;i<((Room)owner).numItems();i++)
 					{
 						final Item newTarget=((Room)owner).getItem(i);
@@ -130,6 +165,7 @@ public class Chant_Goodberry extends Chant
 							i=-1;
 						}
 					}
+				}
 			}
 		}
 		else

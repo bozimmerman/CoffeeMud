@@ -35,17 +35,63 @@ import java.util.*;
 
 public class Chant_SummonAnimal extends Chant
 {
-	@Override public String ID() { return "Chant_SummonAnimal"; }
-	private final static String localizedName = CMLib.lang().L("Summon Animal");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Animal Summoning)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;}
-	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public long flags(){return Ability.FLAG_SUMMONING;}
+	@Override
+	public String ID()
+	{
+		return "Chant_SummonAnimal";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Summon Animal");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Animal Summoning)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT | Ability.DOMAIN_ANIMALAFFINITY;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_SELF;
+	}
+
+	@Override
+	public int enchantQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_SUMMONING;
+	}
 
 	@Override
 	public void unInvoke()
@@ -66,7 +112,9 @@ public class Chant_SummonAnimal extends Chant
 		super.executeMsg(myHost,msg);
 		if((affected!=null)
 		&&(affected instanceof MOB)
-		&&(msg.amISource((MOB)affected)||msg.amISource(((MOB)affected).amFollowing())||(msg.source()==invoker()))
+		&&(msg.amISource((MOB)affected)
+			||msg.amISource(((MOB)affected).amFollowing())
+			||(msg.source()==invoker()))
 		&&(msg.sourceMinor()==CMMsg.TYP_QUIT))
 		{
 			unInvoke();
@@ -180,59 +228,143 @@ public class Chant_SummonAnimal extends Chant
 		// return whether it worked
 		return success;
 	}
+
 	public MOB determineMonster(MOB caster, int level)
 	{
 		MOB newMOB=null;
 		if(level>5)
-			level=level-5;
+			level=level-3;
 		else
 			level=1;
 		while(newMOB==null)
 		{
-			switch(CMLib.dice().rollPercentage())
+			switch(CMLib.dice().rollPercentage()/2)
 			{
-			case 1: newMOB=CMClass.getMOB("BlackBear"); break;
-			case 2: newMOB=CMClass.getMOB("BrownBear"); break;
-			case 3: newMOB=CMClass.getMOB("Buck"); break;
-			case 4: newMOB=CMClass.getMOB("Buffalo"); break;
-			case 5: newMOB=CMClass.getMOB("Bull"); break;
-			case 6: newMOB=CMClass.getMOB("Cat"); break;
-			case 7: newMOB=CMClass.getMOB("Cheetah"); break;
-			case 8: newMOB=CMClass.getMOB("Chicken"); break;
-			case 9: newMOB=CMClass.getMOB("Cobra"); break;
-			case 10: newMOB=CMClass.getMOB("CommonBat"); break;
-			case 11: newMOB=CMClass.getMOB("Cow"); break;
-			case 12: newMOB=CMClass.getMOB("Deer"); break;
-			case 13: newMOB=CMClass.getMOB("Doe"); break;
-			case 14: newMOB=CMClass.getMOB("Dog"); break;
-			case 15: newMOB=CMClass.getMOB("Falcon"); break;
-			case 16: newMOB=CMClass.getMOB("GardenSnake"); break;
-			case 17: newMOB=CMClass.getMOB("GiantBat"); break;
-			case 18: newMOB=CMClass.getMOB("GiantScorpion"); break;
-			case 19: newMOB=CMClass.getMOB("Jaguar"); break;
-			case 20: newMOB=CMClass.getMOB("LargeBat"); break;
-			case 21: newMOB=CMClass.getMOB("Lizard"); break;
-			case 22: newMOB=CMClass.getMOB("Panther"); break;
-			case 23: newMOB=CMClass.getMOB("Parakeet"); break;
-			case 24: newMOB=CMClass.getMOB("Pig"); break;
-			case 25: newMOB=CMClass.getMOB("Python"); break;
-			case 26: newMOB=CMClass.getMOB("Rattlesnake"); break;
-			case 27: newMOB=CMClass.getMOB("Sheep"); break;
-			case 28: newMOB=CMClass.getMOB("Tiger"); break;
-			case 29: newMOB=CMClass.getMOB("WildEagle"); break;
-			case 30: newMOB=CMClass.getMOB("Wolf"); break;
-			case 31: newMOB=CMClass.getMOB("Ape"); break;
-			case 32: newMOB=CMClass.getMOB("Chimp"); break;
-			case 33: newMOB=CMClass.getMOB("Duck"); break;
-			case 34: newMOB=CMClass.getMOB("Kitten"); break;
-			case 35: newMOB=CMClass.getMOB("Monkey"); break;
-			case 36: newMOB=CMClass.getMOB("Mouse"); break;
-			case 37: newMOB=CMClass.getMOB("Puppy"); break;
-			case 38: newMOB=CMClass.getMOB("Rabbit"); break;
-			case 39: newMOB=CMClass.getMOB("Rat"); break;
-			case 40: newMOB=CMClass.getMOB("Turtle"); break;
-			case 41: newMOB=CMClass.getMOB("Raven"); break;
-			default: break;
+			case 1:
+				newMOB = CMClass.getMOB("BlackBear");
+				break;
+			case 2:
+				newMOB = CMClass.getMOB("BrownBear");
+				break;
+			case 3:
+				newMOB = CMClass.getMOB("Buck");
+				break;
+			case 4:
+				newMOB = CMClass.getMOB("Buffalo");
+				break;
+			case 5:
+				newMOB = CMClass.getMOB("Bull");
+				break;
+			case 6:
+				newMOB = CMClass.getMOB("Cat");
+				break;
+			case 7:
+				newMOB = CMClass.getMOB("Cheetah");
+				break;
+			case 8:
+				newMOB = CMClass.getMOB("Chicken");
+				break;
+			case 9:
+				newMOB = CMClass.getMOB("Cobra");
+				break;
+			case 10:
+				newMOB = CMClass.getMOB("CommonBat");
+				break;
+			case 11:
+				newMOB = CMClass.getMOB("Cow");
+				break;
+			case 12:
+				newMOB = CMClass.getMOB("Deer");
+				break;
+			case 13:
+				newMOB = CMClass.getMOB("Doe");
+				break;
+			case 14:
+				newMOB = CMClass.getMOB("Dog");
+				break;
+			case 15:
+				newMOB = CMClass.getMOB("Falcon");
+				break;
+			case 16:
+				newMOB = CMClass.getMOB("GardenSnake");
+				break;
+			case 17:
+				newMOB = CMClass.getMOB("GiantBat");
+				break;
+			case 18:
+				newMOB = CMClass.getMOB("GiantScorpion");
+				break;
+			case 19:
+				newMOB = CMClass.getMOB("Jaguar");
+				break;
+			case 20:
+				newMOB = CMClass.getMOB("LargeBat");
+				break;
+			case 21:
+				newMOB = CMClass.getMOB("Lizard");
+				break;
+			case 22:
+				newMOB = CMClass.getMOB("Panther");
+				break;
+			case 23:
+				newMOB = CMClass.getMOB("Parakeet");
+				break;
+			case 24:
+				newMOB = CMClass.getMOB("Pig");
+				break;
+			case 25:
+				newMOB = CMClass.getMOB("Python");
+				break;
+			case 26:
+				newMOB = CMClass.getMOB("Rattlesnake");
+				break;
+			case 27:
+				newMOB = CMClass.getMOB("Sheep");
+				break;
+			case 28:
+				newMOB = CMClass.getMOB("Tiger");
+				break;
+			case 29:
+				newMOB = CMClass.getMOB("WildEagle");
+				break;
+			case 30:
+				newMOB = CMClass.getMOB("Wolf");
+				break;
+			case 31:
+				newMOB = CMClass.getMOB("Ape");
+				break;
+			case 32:
+				newMOB = CMClass.getMOB("Chimp");
+				break;
+			case 33:
+				newMOB = CMClass.getMOB("Duck");
+				break;
+			case 34:
+				newMOB = CMClass.getMOB("Kitten");
+				break;
+			case 35:
+				newMOB = CMClass.getMOB("Monkey");
+				break;
+			case 36:
+				newMOB = CMClass.getMOB("Mouse");
+				break;
+			case 37:
+				newMOB = CMClass.getMOB("Puppy");
+				break;
+			case 38:
+				newMOB = CMClass.getMOB("Rabbit");
+				break;
+			case 39:
+				newMOB = CMClass.getMOB("Rat");
+				break;
+			case 40:
+				newMOB = CMClass.getMOB("Turtle");
+				break;
+			case 41:
+				newMOB = CMClass.getMOB("Raven");
+				break;
+			default:
+				break;
 			}
 		}
 
@@ -247,8 +379,20 @@ public class Chant_SummonAnimal extends Chant
 		newMOB.recoverPhyStats();
 		newMOB.recoverMaxState();
 		newMOB.resetToMaxState();
-		return(newMOB);
-
-
+		
+		MOB genM = CMClass.getMOB("GenMob");
+		for(String stat : genM.getStatCodes())
+		{
+			genM.setStat(stat, CMLib.coffeeMaker().getGenMobStat(newMOB,stat));
+		}
+		genM.setLocation(caster.location());
+		CMLib.leveler().fillOutMOB(genM,genM.basePhyStats().level());
+		genM.setMoney(0);
+		genM.basePhyStats().setRejuv(PhyStats.NO_REJUV);
+		genM.recoverCharStats();
+		genM.recoverPhyStats();
+		genM.recoverMaxState();
+		genM.resetToMaxState();
+		return (genM);
 	}
 }
