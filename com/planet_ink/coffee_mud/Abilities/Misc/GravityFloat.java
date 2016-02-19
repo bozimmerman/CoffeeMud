@@ -343,6 +343,8 @@ public class GravityFloat extends StdAbility
 					final String sourceMessage = CMStrings.removeColors(CMLib.english().stripPunctuation(msg.sourceMessage()));
 					final List<String> words=CMParms.parseSpaces(sourceMessage, true);
 					final Room R=msg.source().location();
+					if(R==null)
+						break;
 					final boolean useShip =((R instanceof BoardableShip)||(R.getArea() instanceof BoardableShip))?true:false;
 					int floatDir = -1;
 					for(int i=words.size()-1;(i>=0) && (floatDir<0);i--)
@@ -356,7 +358,7 @@ public class GravityFloat extends StdAbility
 							}
 						}
 					}
-					if((floatDir >=0)&&(R!=null))
+					if(floatDir >=0)
 					{
 						final Room newRoom=R.getRoomInDir(floatDir);
 						final Exit E=R.getExitInDir(floatDir);
