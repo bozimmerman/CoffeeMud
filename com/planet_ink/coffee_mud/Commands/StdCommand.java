@@ -167,7 +167,17 @@ public class StdCommand implements Command
 	public double checkedActionsCost(final MOB mob, final List<String> cmds)
 	{
 		if(mob!=null)
-			return mob.isInCombat() ? combatActionsCost(mob,cmds) : actionsCost(mob,cmds);
+		{
+			if(mob.isInCombat())
+				return combatActionsCost(mob,cmds);
+			final Room R=mob.location();
+			if((R!=null)&&(R.getArea() instanceof BoardableShip))
+			{
+				final BoardableShip ship = (BoardableShip)R.getArea();
+				if(ship.isInCombat())
+					return combatActionsCost(mob,cmds);
+			}
+		}
 		return actionsCost(mob,cmds);
 	}
 

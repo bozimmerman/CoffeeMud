@@ -791,4 +791,9 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 		return (getOwnerName().length()==0);
 	}
 
+	@Override
+	public boolean isInCombat()
+	{
+		return false;
+	}
 }

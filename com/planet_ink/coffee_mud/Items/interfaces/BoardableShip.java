@@ -105,4 +105,10 @@ public interface BoardableShip extends Environmental
 	 * @return the official space version of this ship
 	 */
 	public Item getShipItem();
+	
+	/**
+	 * Returns whether this ship is currently engaged in combat.
+	 * @return true if the ship is in combat, false otherwise
+	 */
+	public boolean isInCombat();
 }

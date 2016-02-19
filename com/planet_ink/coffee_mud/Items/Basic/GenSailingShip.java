@@ -17,6 +17,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.MOB.Attrib;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
@@ -116,6 +117,32 @@ public class GenSailingShip extends StdBoardable
 		SAIL,
 		COURSE,
 		SET_COURSE
+	}
+	
+	protected boolean mayIAttack(final MOB mob, final Item item)
+	{
+		if((item instanceof BoardableShip) && (item instanceof PrivateProperty))
+		{
+			final PrivateProperty privop=(PrivateProperty)item;
+			// is this how we determine npc ships?
+			if((privop.getOwnerName() == null)||(privop.getOwnerName().length()==0)||(privop.getOwnerObject()==null))
+				return true;
+			if(((getOwnerName() == null)||(getOwnerName().length()==0)) && (mob.isMonster()))
+				return true;
+			if(CMSecurity.isASysOp(mob) && mob.isAttributeSet(Attrib.PLAYERKILL))
+				return true;
+			CMObject enemyOwner = privop.getOwnerObject();
+			if(enemyOwner instanceof MOB)
+				return mob.mayIFight((MOB)enemyOwner);
+			else
+			if(enemyOwner instanceof Clan)
+			{
+				enemyOwner = ((Clan)enemyOwner).getResponsibleMember();
+				if(enemyOwner != null)
+					return mob.mayIFight((MOB)enemyOwner);
+			}
+		}
+		return false;
 	}
 	
 	@Override
@@ -402,11 +429,48 @@ public class GenSailingShip extends StdBoardable
 			{
 				List<String> parsedFail = CMParms.parse(msg.targetMessage());
 				String cmd=parsedFail.get(0).toUpperCase();
-				if("ATTACK".startsWith(cmd))
+				if(("ATTACK".startsWith(cmd))&&(owner() instanceof Room))
 				{
-					//TODO: get target and confirm that you can harass them
-					//TODO: possibly put self and target into tactical mode
-					//TODO: also support ENGAGE <shipname> as an alternative to attack
+					final Room thisRoom = (Room)owner();
+					String rest = CMParms.combine(parsedFail,1);
+					final Item I=thisRoom.findItem(rest);
+					if((I instanceof BoardableShip)&&(I!=this))
+					{
+						if(!this.mayIAttack(msg.source(), I))
+						{
+							msg.source().tell(L("You are not permitted to attack @x1",I.name()));
+							return false;
+						}
+						final MOB mob = CMClass.getFactoryMOB(name(),phyStats().level(),thisRoom);
+						try
+						{
+							mob.setRiding(this);
+							mob.basePhyStats().setDisposition(mob.basePhyStats().disposition()|PhyStats.IS_SWIMMING);
+							mob.phyStats().setDisposition(mob.phyStats().disposition()|PhyStats.IS_SWIMMING);
+							final CMMsg maneuverMsg=CMClass.getMsg(mob,I,null,CMMsg.MSG_ADVANCE,null,CMMsg.MSG_ADVANCE,null,CMMsg.MSG_ADVANCE,L("<S-NAME> engage(s) @x1.",I.Name()));
+							if(thisRoom.okMessage(mob, maneuverMsg))
+							{
+								thisRoom.send(mob, maneuverMsg);
+								targetedShip	 = I;
+								shipCombatRoom	 = thisRoom;
+								if(I instanceof GenSailingShip)
+								{
+									final GenSailingShip otherI=(GenSailingShip)I;
+									if(otherI.targetedShip == null)
+										otherI.targetedShip = this;
+									otherI.shipCombatRoom = thisRoom;
+									otherI.amInTacticalMode(); // now he is in combat
+								}
+								amInTacticalMode(); // now he is in combat
+								//also support ENGAGE <shipname> as an alternative to attack?
+							}
+							return false;
+						}
+						finally
+						{
+							mob.destroy();
+						}
+					}
 				}
 			}
 		}
@@ -574,6 +638,11 @@ public class GenSailingShip extends StdBoardable
 					}
 				}
 			}
+			if(this.amInTacticalMode())
+			{
+				//TODO: iterate through weapons, see if they hit, send damage messages to the
+				// other sip
+			}
 			return true;
 		}
 		return super.tick(ticking, tickID);
@@ -618,6 +687,9 @@ public class GenSailingShip extends StdBoardable
 						sendAreaMessage(CMClass.getMsg(msg.source(), msg.target(), msg.tool(), CMMsg.MSG_OK_VISUAL, null, null, L("^HOff the deck you see: ^N")+msg.othersMessage()), true);
 					}
 				}
+				break;
+			case CMMsg.TYP_DAMAGE:
+				//TODO: take some damage
 				break;
 			}
 		}
@@ -1012,6 +1084,13 @@ public class GenSailingShip extends StdBoardable
 		return false;
 	}
 	
+	@Override
+	public boolean isInCombat()
+	{
+		return (targetedShip != null)
+			&& (shipCombatRoom != null);
+	}
+
 	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES","RESETTIME","RIDEBASIS","MOBSHELD",
 											"AREA","OWNER","PRICE","PUTSTR","MOUNTSTR","DISMOUNTSTR","DEFCLOSED","DEFLOCKED",
 											"EXITNAME"
