@@ -51,6 +51,7 @@ public class GenSailingShip extends StdBoardable
 	protected volatile int		 tickDown		 = -1;
 	protected final List<Integer>courseDirections= new Vector<Integer>();
 
+	protected volatile long			roomEntryTime	 = System.currentTimeMillis();
 	protected volatile int		 	directionFacing	 = 0;
 	protected volatile Item			targetedShip	 = null;
 	protected volatile Room		 	shipCombatRoom	 = null;
@@ -405,6 +406,7 @@ public class GenSailingShip extends StdBoardable
 				{
 					//TODO: get target and confirm that you can harass them
 					//TODO: possibly put self and target into tactical mode
+					//TODO: also support ENGAGE <shipname> as an alternative to attack
 				}
 			}
 		}
@@ -415,6 +417,7 @@ public class GenSailingShip extends StdBoardable
 
 	protected int[] getMagicCoords()
 	{
+		//TODO: these suck because, on surprise attack, all ships might be in the same square.
 		final int[] coords;
 		final int middle = (int)Math.round(Math.floor(phyStats().weight() / 2.0));
 		final int extreme = phyStats().weight()-1;
@@ -456,6 +459,25 @@ public class GenSailingShip extends StdBoardable
 		}
 		return coords;
 	}
+
+	protected synchronized void clearTacticalMode()
+	{
+		final Room shipCombatRoom = this.shipCombatRoom;
+		if(shipCombatRoom != null)
+		{
+			synchronized((""+shipCombatRoom + "_SHIP_TACTICAL").intern())
+			{
+				PairList<Item,int[]> coords = this.coordinates;
+				if(coords != null)
+				{
+					coords.removeFirst(this);
+				}
+			}
+		}
+		this.targetedShip = null;
+		this.shipCombatRoom = null;
+		this.coordinates = null;
+	}
 	
 	protected synchronized boolean amInTacticalMode()
 	{
@@ -485,9 +507,13 @@ public class GenSailingShip extends StdBoardable
 						this.coordinates = new SPairList<Item,int[]>();
 					}
 				}
-				if(!this.coordinates.containsFirst(this))
+				final PairList<Item,int[]> coords = this.coordinates;
+				if(coords != null)
 				{
-					this.coordinates.add(new Pair<Item,int[]>(this,this.getMagicCoords()));
+					if(!coords.containsFirst(this))
+					{
+						coords.add(new Pair<Item,int[]>(this,this.getMagicCoords()));
+					}
 				}
 			}
 			return true;
@@ -583,9 +609,8 @@ public class GenSailingShip extends StdBoardable
 					if((msg.source().riding() instanceof GenSailingShip)
 					&&(msg.source().Name().equals(msg.source().riding().Name())))
 					{
-						//TODO: no matter if its me or someone else,
-						// the map needs creation or adjusting or nulling
-						// or something
+						roomEntryTime = System.currentTimeMillis();
+						clearTacticalMode();
 					}
 					if((!msg.source().Name().equals(Name()))
 					&&(!getDestinationRoom().isHere(msg.tool()))) // whats this second condition for?
@@ -652,6 +677,72 @@ public class GenSailingShip extends StdBoardable
 		REPEAT
 	}
 	
+	protected int[] getCoordAdjustments(int[] newOnes)
+	{
+		final PairList<Item,int[]> coords = this.coordinates;
+		int[] lowests = new int[2];
+		if(coords != null)
+		{
+			if(newOnes != null)
+			{
+				if(newOnes[0] < lowests[0])
+					lowests[0]=newOnes[0];
+				if(newOnes[1] < lowests[1])
+					lowests[1]=newOnes[1];
+			}
+			for(int p=0;p<coords.size();p++)
+			{
+				try
+				{
+					Pair<Item,int[]> P = coords.get(p);
+					if((newOnes==null)||(P.first!=this))
+					{
+						if(P.second[0] < lowests[0])
+							lowests[0]=P.second[0];
+						if(P.second[1] < lowests[1])
+							lowests[1]=P.second[1];
+					}
+				}
+				catch(Exception e)
+				{
+				}
+			}
+		}
+		lowests[0]=-lowests[0];
+		lowests[1]=-lowests[1];
+		return lowests;
+	}
+	
+	protected int getTacticalDistance(int[] fromCoords)
+	{
+		final PairList<Item,int[]> coords = this.coordinates;
+		int lowest = phyStats().weight();
+		if(coords != null)
+		{
+			for(int p=0;p<coords.size();p++)
+			{
+				try
+				{
+					Pair<Item,int[]> P = coords.get(p);
+					if((P.second != fromCoords)
+					&&(this.shipCombatRoom != null)
+					&&(this.shipCombatRoom.isHere(P.first))
+					&&(P.first instanceof GenSailingShip)
+					&&(((GenSailingShip)P.first).targetedShip == this))
+					{
+						int distance = (int)Math.round(Math.ceil(Math.sqrt(Math.pow(P.second[0]-fromCoords[0],2.0) + Math.pow(P.second[1]-fromCoords[1],2.0))));
+						if(distance < lowest)
+							lowest=distance;
+					}
+				}
+				catch(Exception e)
+				{
+				}
+			}
+		}
+		return lowest;
+	}
+	
 	protected SailResult sail(final int direction)
 	{
 		final Room thisRoom=CMLib.map().roomLocation(this);
@@ -678,21 +769,70 @@ public class GenSailingShip extends StdBoardable
 			{
 				directionFacing = Directions.getGradualDirectionCode(directionFacing, direction);
 			}
+			int[] tacticalCoords = null;
 			if(amInTacticalMode())
 			{
-				if(directionFacing == direction)
+				int x=0;
+				try
 				{
-					//TODO: make a tactical move
-					//TODO: let everyone know you moved, on the ship and in other ships watching
-					//TODO: 
-					//TODO: 
-					//TODO: 
-					
+					while((x>=0)&&(this.coordinates!=null)&&(tacticalCoords==null))
+					{
+						x=this.coordinates.indexOfFirst(this);
+						Pair<Item,int[]> pair = (x>=0) ? this.coordinates.get(x) : null;
+						if(pair == null)
+							break;
+						else
+						if(pair.first != this)
+							x=this.coordinates.indexOfFirst(this);
+						else
+							tacticalCoords = pair.second;
+					}
 				}
-				else
+				catch(Exception e)
 				{
-					announceToShip(L("<S-NAME> change(s) coarse, turning @x1.",Directions.getInDirectionName(direction)));
-					// need to tell everyone on other ships too
+				}
+			}
+			if(tacticalCoords != null)
+			{
+				final MOB mob = CMClass.getFactoryMOB(name(),phyStats().level(),thisRoom);
+				try
+				{
+					mob.setRiding(this);
+					mob.basePhyStats().setDisposition(mob.basePhyStats().disposition()|PhyStats.IS_SWIMMING);
+					mob.phyStats().setDisposition(mob.phyStats().disposition()|PhyStats.IS_SWIMMING);
+					final String directionName = Directions.getDirectionName(direction);
+					if(directionFacing == direction)
+					{
+						final int oldDistance = this.getTacticalDistance(tacticalCoords);
+						final int[] newCoords = Arrays.copyOf(tacticalCoords, 2);
+						final int newDistance = this.getTacticalDistance(tacticalCoords);
+						if((newDistance <= oldDistance)||(newDistance < phyStats.weight()))
+						{
+							final int[] adj=this.getCoordAdjustments(newCoords);
+							final String coords = (newCoords[0]+adj[0])+","+(newCoords[1]+adj[1]);
+							final CMMsg maneuverMsg=CMClass.getMsg(mob,thisRoom,null,CMMsg.MSG_ADVANCE,null,CMMsg.MSG_ADVANCE,directionName,CMMsg.MSG_ADVANCE,L("<S-NAME> maneuver(s) @x1 to (@x2).",directionName,coords));
+							if(thisRoom.okMessage(mob, maneuverMsg))
+							{
+								thisRoom.send(mob, maneuverMsg);
+								tacticalCoords[0] = newCoords[0];
+								tacticalCoords[1] = newCoords[1];
+								return SailResult.CONTINUE;
+							}
+							return SailResult.REPEAT;
+						}
+						// else we get to make a real Sailing move!
+					}
+					else
+					{
+						final CMMsg maneuverMsg=CMClass.getMsg(mob,thisRoom,null,CMMsg.MSG_ADVANCE,directionName,CMMsg.MSG_ADVANCE,null,CMMsg.MSG_ADVANCE,L("<S-NAME> change(s) coarse, turning @x1.",directionName));
+						if(thisRoom.okMessage(mob, maneuverMsg))
+							thisRoom.send(mob, maneuverMsg);
+						return SailResult.REPEAT;
+					}
+				}
+				finally
+				{
+					mob.destroy();
 				}
 			}
 			else
