@@ -139,7 +139,11 @@ public class GenSailingShip extends StdBoardable
 			{
 				enemyOwner = ((Clan)enemyOwner).getResponsibleMember();
 				if(enemyOwner != null)
+				{
+					//TODO: make sure the ship is populated .. just because it belongs
+					// to a warring clan doesn't mean you can just sink it.
 					return mob.mayIFight((MOB)enemyOwner);
+				}
 			}
 		}
 		return false;
@@ -253,14 +257,18 @@ public class GenSailingShip extends StdBoardable
 						msg.source().tell(L("You are nowhere, so you won`t be moving anywhere."));
 						return false;
 					}
-					final Room targetRoom=R.getRoomInDir(dir);
-					final Exit targetExit=R.getExitInDir(dir);
-					if((targetRoom==null)||(targetExit==null)||(!targetExit.isOpen()))
+					if(!this.amInTacticalMode())
 					{
-						msg.source().tell(L("There doesn't look to be anything in that direction."));
-						return false;
+						final Room targetRoom=R.getRoomInDir(dir);
+						final Exit targetExit=R.getExitInDir(dir);
+						if((targetRoom==null)||(targetExit==null)||(!targetExit.isOpen()))
+						{
+							msg.source().tell(L("There doesn't look to be anything in that direction."));
+							return false;
+						}
+						steer(msg.source(),R, dir);
 					}
-					steer(msg.source(),R, dir);
+					//TODO: make a tactical STEER that adds to the coarse list for this tick
 					if(anchorDown)
 						msg.source().tell(L("The anchor is down, so you won`t be moving anywhere."));
 					return false;
@@ -289,13 +297,17 @@ public class GenSailingShip extends StdBoardable
 						msg.source().tell(L("You are nowhere, so you won`t be moving anywhere."));
 						return false;
 					}
-					final Room targetRoom=R.getRoomInDir(dir);
-					final Exit targetExit=R.getExitInDir(dir);
-					if((targetRoom==null)||(targetExit==null)||(!targetExit.isOpen()))
+					if(!this.amInTacticalMode())
 					{
-						msg.source().tell(L("There doesn't look to be anything in that direction."));
-						return false;
+						final Room targetRoom=R.getRoomInDir(dir);
+						final Exit targetExit=R.getExitInDir(dir);
+						if((targetRoom==null)||(targetExit==null)||(!targetExit.isOpen()))
+						{
+							msg.source().tell(L("There doesn't look to be anything in that direction."));
+							return false;
+						}
 					}
+					//TODO: make a tactical sail that's different.
 					if(anchorDown)
 					{
 						msg.source().tell(L("The anchor is down, so you won`t be moving anywhere."));
@@ -347,14 +359,18 @@ public class GenSailingShip extends StdBoardable
 						else
 							this.courseDirections.add(Integer.valueOf(dir));
 					}
-					final Room targetRoom=R.getRoomInDir(firstDir);
-					final Exit targetExit=R.getExitInDir(firstDir);
-					if((targetRoom==null)||(targetExit==null)||(!targetExit.isOpen()))
+					if(!this.amInTacticalMode())
 					{
-						msg.source().tell(L("There doesn't look to be anything in that direction."));
-						return false;
+						final Room targetRoom=R.getRoomInDir(firstDir);
+						final Exit targetExit=R.getExitInDir(firstDir);
+						if((targetRoom==null)||(targetExit==null)||(!targetExit.isOpen()))
+						{
+							msg.source().tell(L("There doesn't look to be anything in that direction."));
+							return false;
+						}
+						steer(msg.source(),R, firstDir);
 					}
-					steer(msg.source(),R, firstDir);
+					//TODO: make a tactical course that's different.
 					if(anchorDown)
 						msg.source().tell(L("The anchor is down, so you won`t be moving anywhere."));
 					return false;
@@ -1007,7 +1023,7 @@ public class GenSailingShip extends StdBoardable
 	protected boolean steer(final MOB mob, final Room R, final int dir)
 	{
 		directionFacing = dir;
-		CMMsg msg2=CMClass.getMsg(mob, CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> change(s) coarse, steering @x1 @x2.",name(mob),Directions.getDirectionName(dir)));
+		CMMsg msg2=CMClass.getMsg(mob, CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> change(s) course, steering @x1 @x2.",name(mob),Directions.getDirectionName(dir)));
 		if((R.okMessage(mob, msg2) && this.okAreaMessage(msg2, true)))
 		{
 			R.send(mob, msg2); // this lets the source know, i guess
