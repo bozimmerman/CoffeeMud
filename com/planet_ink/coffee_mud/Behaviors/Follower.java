@@ -35,14 +35,25 @@ import java.util.*;
 */
 public class Follower extends ActiveTicker
 {
-	@Override public String ID(){return "Follower";}
-	@Override protected int canImproveCode(){return Behavior.CAN_ITEMS|Behavior.CAN_MOBS;}
-	protected boolean realFollow=false;
-	protected boolean noFollowers=false;
-	protected boolean inventory=false;
-	protected int lastNumPeople=-1;
-	protected Room lastRoom=null;
-	protected MOB lastOwner=null;
+	@Override
+	public String ID()
+	{
+		return "Follower";
+	}
+
+	@Override
+	protected int canImproveCode()
+	{
+		return Behavior.CAN_ITEMS | Behavior.CAN_MOBS;
+	}
+
+	protected boolean	realFollow		= false;
+	protected boolean	noFollowers		= false;
+	protected boolean	inventory		= false;
+	protected int		lastNumPeople	= -1;
+	protected Room		lastRoom		= null;
+	protected MOB		lastOwner		= null;
+	protected String	name			= null;
 
 	int direction=-1;
 
@@ -65,6 +76,7 @@ public class Follower extends ActiveTicker
 		realFollow=V.contains("GROUP");
 		noFollowers=V.contains("NOFOLLOWERS");
 		inventory=V.contains("INVENTORY")||V.contains("INV");
+		name=CMParms.getParmStr(newParms, "NAME", "");
 	}
 
 	@Override
@@ -74,7 +86,7 @@ public class Follower extends ActiveTicker
 	}
 
 	@Override
-	public void executeMsg(Environmental affecting, CMMsg msg)
+	public void executeMsg(final Environmental affecting, CMMsg msg)
 	{
 		super.executeMsg(affecting,msg);
 
@@ -89,25 +101,78 @@ public class Follower extends ActiveTicker
 			if((!canFreelyBehaveNormal(affecting))||(realFollow))
 				return;
 
-			if((direction<0)
-			&&(msg.amITarget(((MOB)affecting).location()))
-			&&(CMLib.flags().canBeSeenBy(mob,(MOB)affecting))
-			&&(msg.othersMessage()!=null)
-			&&((msg.targetMinor()==CMMsg.TYP_LEAVE)
-			 ||(msg.targetMinor()==CMMsg.TYP_FLEE))
-			&&(CMLib.masking().maskCheck(getParms(),mob,false))
-			&&(CMLib.dice().rollPercentage()<chance))
+			if(maxTicks >= 0)
 			{
-				String directionWent=msg.othersMessage();
-				final int x=directionWent.lastIndexOf(' ');
-				if(x>=0)
+				if((direction<0)
+				&&(msg.amITarget(((MOB)affecting).location()))
+				&&(CMLib.flags().canBeSeenBy(mob,(MOB)affecting))
+				&&(msg.othersMessage()!=null)
+				&&((msg.targetMinor()==CMMsg.TYP_LEAVE)
+				 ||(msg.targetMinor()==CMMsg.TYP_FLEE))
+				&&((CMLib.masking().maskCheck(getParms(),mob,false))
+					||((name!=null)&&(name.length()>0)&&(mob.Name().equalsIgnoreCase(name))))
+				&&(CMLib.dice().rollPercentage()<=chance))
 				{
-					directionWent=directionWent.substring(x+1);
-					direction=Directions.getDirectionCode(directionWent);
+					String directionWent=msg.othersMessage();
+					final int x=directionWent.lastIndexOf(' ');
+					if(x>=0)
+					{
+						directionWent=directionWent.substring(x+1);
+						direction=Directions.getDirectionCode(directionWent);
+					}
+					else
+						direction=-1;
 				}
-				else
-					direction=-1;
 			}
+		}
+		
+		// handle instant moves
+		if((msg.target() instanceof Room)
+		&&(maxTicks<0)
+		&&((msg.targetMinor()==CMMsg.TYP_LEAVE)
+			||(msg.targetMinor()==CMMsg.TYP_FLEE)
+			||(msg.targetMinor()==CMMsg.TYP_RECALL)
+			||(msg.targetMinor()==CMMsg.TYP_ENTER))
+		&&((CMLib.masking().maskCheck(getParms(),mob,false))
+			||((name!=null)&&(name.length()>0)&&(mob.Name().equalsIgnoreCase(name))))
+		&&((!(affecting instanceof MOB))||CMLib.flags().canBeSeenBy(mob,(MOB)affecting))
+		&&(CMLib.dice().rollPercentage()<=chance))
+		{
+			final boolean[] scheduled = new boolean[]{false}; 
+			msg.addTrailerRunnable(new Runnable()
+			{
+				@Override
+				public void run()
+				{
+					if(!scheduled[0])
+					{
+						CMLib.threads().scheduleRunnable(this, 100);
+						scheduled[0]=true;
+					}
+					else
+					{
+						final Room R=CMLib.map().roomLocation(affecting);
+						if(mob.location() != R)
+						{
+							direction = CMLib.map().getRoomDir(R, mob.location());
+							if(direction<0)
+							{
+								if(affecting instanceof MOB)
+									mob.location().bringMobHere((MOB)affecting, true);
+								else
+								if(affecting instanceof Item)
+									mob.location().moveItemTo((Item)affecting);
+								
+							}
+						}
+						if(affecting instanceof MOB)
+							followingMOB((MOB)affecting);
+						else
+						if(affecting instanceof Item)
+							followingItem((Item)affecting);
+					}
+				}
+			});
 		}
 	}
 
@@ -125,6 +190,7 @@ public class Follower extends ActiveTicker
 				final MOB M=room.fetchInhabitant(i);
 				if((M!=null)
 				&&(M!=ticking)
+				&&((name == null)||(name.length()==0)||(name.equalsIgnoreCase(M.Name())))
 				&&(!CMSecurity.isAllowed(M,room,CMSecurity.SecFlag.CMDMOBS))
 				&&(!CMSecurity.isAllowed(M,room,CMSecurity.SecFlag.CMDROOMS))
 				&&(CMLib.masking().maskCheck(getParms(),M,false)))
@@ -149,6 +215,76 @@ public class Follower extends ActiveTicker
 		return true;
 	}
 
+	public void followingMOB(MOB mob)
+	{
+		if(!canFreelyBehaveNormal(mob))
+			return;
+		final Room room=mob.location();
+		if((noFollowers)&&(mob.numFollowers()>0))
+			return;
+		if(realFollow)
+		{
+			if(mob.amFollowing()==null)
+			{
+				final MOB M=pickRandomMOBHere(mob,room);
+				if(M!=null)
+					CMLib.commands().postFollow(mob,M,false);
+			}
+		}
+		else
+		if(direction>=0)
+		{
+			final Room otherRoom=room.getRoomInDir(direction);
+
+			if(otherRoom!=null)
+			{
+				if(!otherRoom.getArea().Name().equals(room.getArea().Name()))
+					direction=-1;
+			}
+			else
+				direction=-1;
+
+			if(direction<0)
+				return;
+
+			boolean move=true;
+			for(int m=0;m<room.numInhabitants();m++)
+			{
+				final MOB inhab=room.fetchInhabitant(m);
+				if((inhab!=null)
+				&&(CMSecurity.isAllowed(inhab,room,CMSecurity.SecFlag.CMDMOBS)
+				   ||CMSecurity.isAllowed(inhab,room,CMSecurity.SecFlag.CMDROOMS)))
+					move=false;
+			}
+			if(move)
+				CMLib.tracking().walk(mob,direction,false,false);
+			direction=-1;
+		}
+	}
+	
+	public void followingItem(Item I)
+	{
+		if(I.container()!=null)
+			I.setContainer(null);
+
+		final Room R=CMLib.map().roomLocation(I);
+		if(R==null)
+			return;
+
+		if(R!=lastOwner.location())
+			lastOwner.location().moveItemTo(I,ItemPossessor.Expire.Never,ItemPossessor.Move.Followers);
+		if((inventory)&&(R.isInhabitant(lastOwner)))
+		{
+			CMLib.commands().postGet(lastOwner,null,I,true);
+			if(!lastOwner.isMine(I))
+			{
+				lastOwner.moveItemTo(I);
+				if(lastOwner.location()!=null)
+					lastOwner.location().recoverRoomStats();
+			}
+		}
+	}
+	
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -174,84 +310,21 @@ public class Follower extends ActiveTicker
 			}
 		}
 
-		if(!canAct(ticking,tickID))
+		if((!canAct(ticking,tickID))||(maxTicks<0))
 			return true;
 
 		if(ticking instanceof MOB)
 		{
 			if(tickID!=Tickable.TICKID_MOB)
 				return true;
-			if(!canFreelyBehaveNormal(ticking))
-				return true;
-			final MOB mob=(MOB)ticking;
-			final Room room=mob.location();
-			if((noFollowers)&&(mob.numFollowers()>0))
-				return true;
-			if(realFollow)
-			{
-				if(mob.amFollowing()==null)
-				{
-					final MOB M=pickRandomMOBHere(mob,room);
-					if(M!=null)
-						CMLib.commands().postFollow(mob,M,false);
-				}
-			}
-			else
-			if(direction>=0)
-			{
-				final Room otherRoom=room.getRoomInDir(direction);
-
-				if(otherRoom!=null)
-				{
-					if(!otherRoom.getArea().Name().equals(room.getArea().Name()))
-						direction=-1;
-				}
-				else
-					direction=-1;
-
-				if(direction<0)
-					return true;
-
-				boolean move=true;
-				for(int m=0;m<room.numInhabitants();m++)
-				{
-					final MOB inhab=room.fetchInhabitant(m);
-					if((inhab!=null)
-					&&(CMSecurity.isAllowed(inhab,room,CMSecurity.SecFlag.CMDMOBS)
-					   ||CMSecurity.isAllowed(inhab,room,CMSecurity.SecFlag.CMDROOMS)))
-						move=false;
-				}
-				if(move)
-					CMLib.tracking().walk(mob,direction,false,false);
-				direction=-1;
-			}
+			followingMOB((MOB)ticking);
 		}
 		else
 		if((ticking instanceof Item)
 		&&(lastOwner!=null)
 		&&(lastOwner.location()!=null))
 		{
-			final Item I=(Item)ticking;
-			if(I.container()!=null)
-				I.setContainer(null);
-
-			final Room R=CMLib.map().roomLocation(I);
-			if(R==null)
-				return true;
-
-			if(R!=lastOwner.location())
-				lastOwner.location().moveItemTo(I,ItemPossessor.Expire.Never,ItemPossessor.Move.Followers);
-			if((inventory)&&(R.isInhabitant(lastOwner)))
-			{
-				CMLib.commands().postGet(lastOwner,null,I,true);
-				if(!lastOwner.isMine(I))
-				{
-					lastOwner.moveItemTo(I);
-					if(lastOwner.location()!=null)
-						lastOwner.location().recoverRoomStats();
-				}
-			}
-
+			followingItem((Item)ticking);
 		}
 		return true;
 	}
