@@ -939,7 +939,8 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 				for(final Enumeration<Area> e=CMLib.map().areas();e.hasMoreElements();)
 				{
 					final Area A=e.nextElement();
-					if(CMLib.english().containsString(A.name(),ahelpStr))
+					if((CMLib.english().containsString(A.name(),ahelpStr))
+					&&((forMOB==null)||(CMLib.flags().canAccess(forMOB, A))))
 					{
 						helpStr=A.name();
 						break;
