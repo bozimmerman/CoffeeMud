@@ -75,6 +75,7 @@ public class Follower extends ActiveTicker
 		super.setParms(newParms);
 		final Vector<String> V=CMParms.parse(newParms.toUpperCase());
 		realFollow=V.contains("GROUP");
+		wander=V.contains("WANDER");
 		noFollowers=V.contains("NOFOLLOWERS");
 		inventory=V.contains("INVENTORY")||V.contains("INV");
 		name=CMParms.getParmStr(newParms, "NAME", "");
@@ -86,6 +87,52 @@ public class Follower extends ActiveTicker
 		return "natural friendly following";
 	}
 
+	private class QuickFollowClass implements Runnable
+	{
+		private boolean			scheduled	= false;
+		private final MOB				mob;
+		private final Environmental	affecting;
+
+		public QuickFollowClass(final MOB mob, final Environmental affecting)
+		{
+			this.mob=mob;
+			this.affecting=affecting;
+		}
+		
+		@Override
+		public void run()
+		{
+			if(!scheduled)
+			{
+				CMLib.threads().scheduleRunnable(this, 100);
+				scheduled=true;
+			}
+			else
+			{
+				final Room R=CMLib.map().roomLocation(affecting);
+				if(mob.location() != R)
+				{
+					direction = CMLib.map().getRoomDir(R, mob.location());
+					if(direction<0)
+					{
+						if(affecting instanceof MOB)
+							mob.location().bringMobHere((MOB)affecting, true);
+						else
+						if(affecting instanceof Item)
+							mob.location().moveItemTo((Item)affecting);
+						
+					}
+				}
+				if(affecting instanceof MOB)
+					followingMOB((MOB)affecting);
+				else
+				if(affecting instanceof Item)
+					followingItem((Item)affecting);
+			}
+		}
+		
+	}
+	
 	@Override
 	public void executeMsg(final Environmental affecting, CMMsg msg)
 	{
@@ -139,41 +186,7 @@ public class Follower extends ActiveTicker
 		&&((!(affecting instanceof MOB))||CMLib.flags().canBeSeenBy(mob,(MOB)affecting))
 		&&(CMLib.dice().rollPercentage()<=chance))
 		{
-			final boolean[] scheduled = new boolean[]{false}; 
-			msg.addTrailerRunnable(new Runnable()
-			{
-				@Override
-				public void run()
-				{
-					if(!scheduled[0])
-					{
-						CMLib.threads().scheduleRunnable(this, 100);
-						scheduled[0]=true;
-					}
-					else
-					{
-						final Room R=CMLib.map().roomLocation(affecting);
-						if(mob.location() != R)
-						{
-							direction = CMLib.map().getRoomDir(R, mob.location());
-							if(direction<0)
-							{
-								if(affecting instanceof MOB)
-									mob.location().bringMobHere((MOB)affecting, true);
-								else
-								if(affecting instanceof Item)
-									mob.location().moveItemTo((Item)affecting);
-								
-							}
-						}
-						if(affecting instanceof MOB)
-							followingMOB((MOB)affecting);
-						else
-						if(affecting instanceof Item)
-							followingItem((Item)affecting);
-					}
-				}
-			});
+			msg.addTrailerRunnable(new QuickFollowClass(mob,affecting));
 		}
 	}
 
