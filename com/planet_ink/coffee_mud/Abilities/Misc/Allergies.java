@@ -119,8 +119,10 @@ public class Allergies extends StdAbility implements HealthCondition
 		final Vector<String> V=CMParms.parse(newText.toUpperCase().trim());
 		final RawMaterial.CODES codes = RawMaterial.CODES.instance();
 		for(int s=0;s<codes.total();s++)
+		{
 			if(V.contains(codes.names()[s]))
 				resourceAllergies.add(Integer.valueOf(codes.get(s)));
+		}
 		Race R=null;
 		for(final Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
 		{

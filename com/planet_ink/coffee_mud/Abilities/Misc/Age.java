@@ -407,11 +407,15 @@ public class Age extends StdAbility
 								if(M.basePhyStats().level()>highestParentLevel)
 									highestParentLevel=M.basePhyStats().level();
 								for(int i=0;i<M.baseCharStats().numClasses();i++)
+								{
 									if(M.baseCharStats().getClassLevel(M.baseCharStats().getMyClass(i))>highestBaseLevel)
 										highestBaseClass=M.baseCharStats().getMyClass(i).baseClass();
+								}
 								if(!newMan.clans().iterator().hasNext())
+								{
 									for(final Pair<Clan,Integer> p : CMLib.clans().findRivalrousClans(M))
 										newMan.setClan(p.first.clanID(),p.first.getAutoPosition());
+								}
 								if((M.getWorshipCharID().length()>0)&&(newMan.getWorshipCharID().length()==0))
 									newMan.setWorshipCharID(M.getWorshipCharID());
 								for(final Enumeration<Ability> a=M.abilities();a.hasMoreElements();)
@@ -439,8 +443,10 @@ public class Age extends StdAbility
 						}
 					}
 					if((!newMan.clans().iterator().hasNext())&&(liege!=null))
+					{
 						for(final Pair<Clan,Integer> p : CMLib.clans().findRivalrousClans(liege))
 							newMan.setClan(p.first.clanID(),p.first.getAutoPosition());
+					}
 					if(CMLib.clans().findRivalrousClan(newMan)!=null)
 					{
 						final Clan C = CMLib.clans().findRivalrousClan(newMan);
@@ -487,8 +493,10 @@ public class Age extends StdAbility
 					for(int  i : CharStats.CODES.BASECODES())
 						newMan.baseCharStats().setStat(i,baseStat);
 					if(highestParentLevel>=CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL))
+					{
 						for(int i=0;i<highestLegacyLevel+1;i++)
 							newMan.playerStats().addLegacyLevel(highestBaseClass);
+					}
 					final int bonusPoints=newMan.playerStats().getTotalLegacyLevels()+1;
 					final Ability reRollA=CMClass.getAbility("Prop_ReRollStats");
 					if(reRollA!=null)

@@ -166,6 +166,7 @@ public class PresenceReaction extends StdAbility
 				((StatsAffecting)O).affectPhyStats(affected, affectableStats);
 		}
 	}
+
 	@Override
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
 	{
@@ -175,6 +176,7 @@ public class PresenceReaction extends StdAbility
 				((StatsAffecting)O).affectCharStats(affectedMob, affectableStats);
 		}
 	}
+
 	@Override
 	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
 	{
@@ -184,6 +186,7 @@ public class PresenceReaction extends StdAbility
 				((StatsAffecting)O).affectCharState(affectedMob, affectableMaxState);
 		}
 	}
+
 	protected synchronized boolean shutdownPresence(MOB affected)
 	{
 		final Room R=affected.location();

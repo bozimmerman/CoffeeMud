@@ -647,7 +647,10 @@ public class QuestBound implements Ability
 			{
 				final Quest Q=CMLib.quests().fetchQuest(q);
 				if((Q!=null)&&(""+Q).equals(text()))
-				{ theQ=Q; break;}
+				{
+					theQ=Q;
+					break;
+				}
 			}
 			if((theQ==null)||(!theQ.running()))
 				affected.delEffect(this);

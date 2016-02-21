@@ -233,8 +233,10 @@ public class TemporaryAffects extends StdAbility
 			if(txt.startsWith("+"))
 				txt=txt.substring(1);
 			else
+			{
 				for(final Object[] A : affects)
 					unAffectAffected(A);
+			}
 
 			int x=txt.indexOf(' ');
 			if(x<0)
@@ -317,8 +319,10 @@ public class TemporaryAffects extends StdAbility
 		if(destroyIfNecessary())
 			return true;
 		for(final Object[] A : affects)
+		{
 			if(!((MsgListener)A[0]).okMessage(myHost, msg))
 				return false;
+		}
 		return true;
 	}
 

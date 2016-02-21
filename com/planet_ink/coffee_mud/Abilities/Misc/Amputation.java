@@ -237,8 +237,10 @@ public class Amputation extends StdAbility implements LimbDamage, HealthConditio
 		super.affectCharStats(affected,affectableStats);
 		affectedLimbNameSet();
 		for(int i=0;i<amputations.length;i++)
+		{
 			if(amputations[i]!=0)
 				affectableStats.alterBodypart(i,amputations[i]);
+		}
 		affectableStats.setWearableRestrictionsBitmap(badWearLocations);
 	}
 
@@ -411,8 +413,10 @@ public class Amputation extends StdAbility implements LimbDamage, HealthConditio
 				{
 					int num=0;
 					for(final String affectedLimb : affectedList)
+					{
 						if(Race.BODYPARTSTR[i].equalsIgnoreCase(affectedLimb))
 							num++;
+					}
 					for(int ii=num;ii<limbs[i];ii++)
 						V.add(Race.BODYPARTSTR[i].toLowerCase());
 				}
@@ -711,8 +715,13 @@ public class Amputation extends StdAbility implements LimbDamage, HealthConditio
 				{
 					final List<String> VN=completeLimbNameSet(target);
 					for(int i=0;i<VN.size();i++)
+					{
 						if(CMLib.english().containsString(VN.get(i),choice))
-						{ gone=VN.get(i); break;}
+						{
+							gone=VN.get(i);
+							break;
+						}
+					}
 					if(gone==null)
 						fakeLimb=null;
 				}
@@ -728,8 +737,13 @@ public class Amputation extends StdAbility implements LimbDamage, HealthConditio
 			if((choice.length()>0)&&(fakeLimb==null)&&(gone==null))
 			{
 				for(int i=0;i<VN.size();i++)
+				{
 					if(CMLib.english().containsString(VN.get(i),choice))
-					{ gone=VN.get(i); break;}
+					{
+						gone=VN.get(i);
+						break;
+					}
+				}
 				if(gone==null)
 				{
 					if(!auto)
