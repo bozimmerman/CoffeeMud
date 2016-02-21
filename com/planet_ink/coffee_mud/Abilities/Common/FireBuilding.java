@@ -191,6 +191,13 @@ public class FireBuilding extends CommonSkill
 				}
 				return false;
 			}
+			
+			if(CMLib.flags().isOnFire(lighting))
+			{
+				commonTell(mob,L("@x1 is already on fire!",lighting.name()));
+				return false;
+			}
+			
 			if(!(lighting instanceof RawMaterial))
 			{
 				final LandTitle t=CMLib.law().getLandTitle(mob.location());
