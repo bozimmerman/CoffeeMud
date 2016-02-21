@@ -37,19 +37,65 @@ import java.util.*;
 
 public class Undead_ColdTouch extends StdAbility
 {
-	int coldDown=3;
-	@Override public String ID() { return "Undead_ColdTouch"; }
-	private final static String localizedName = CMLib.lang().L("Cold Touch");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Cold and Weakened)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public boolean putInCommandlist(){return false;}
-	private static final String[] triggerStrings =I(new String[] {"COLDTOUCH"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode(){return Ability.ACODE_SKILL;}
+	@Override
+	public String ID()
+	{
+		return "Undead_ColdTouch";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Cold Touch");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Cold and Weakened)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public boolean putInCommandlist()
+	{
+		return false;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "COLDTOUCH" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL;
+	}
 
 	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)

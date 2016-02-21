@@ -37,15 +37,56 @@ import java.util.*;
 
 public class Age extends StdAbility
 {
-	@Override public String ID() { return "Age"; }
-	private final static String localizedName = CMLib.lang().L("Age");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return CAN_MOBS|CAN_ITEMS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public boolean putInCommandlist(){return false;}
-	@Override public int classificationCode(){return Ability.ACODE_PROPERTY;}
-	@Override public String accountForYourself(){return displayText();}
+	@Override
+	public String ID()
+	{
+		return "Age";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Age");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS | CAN_ITEMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public boolean putInCommandlist()
+	{
+		return false;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PROPERTY;
+	}
+
+	@Override
+	public String accountForYourself()
+	{
+		return displayText();
+	}
+
 	@Override
 	public String displayText()
 	{
@@ -67,11 +108,12 @@ public class Age extends StdAbility
 		else
 			return "("+years+" year(s) old)";
 	}
-	protected boolean norecurse=false;
-	protected Race myRace=null;
-	protected double divisor=0.0;
-	protected long lastSoiling=0;
-	protected long lastFollowCheck=0;
+	
+	protected boolean			norecurse		= false;
+	protected Race				myRace			= null;
+	protected double			divisor			= 0.0;
+	protected long				lastSoiling		= 0;
+	protected long				lastFollowCheck	= 0;
 
 	public final static String happyBabyEmoter="min=1 max=500 chance=100;makes goo goo noises.;loves its mommy.;loves its daddy.;smiles.;makes a spit bubble.;wiggles its toes.;chews on their finger.;holds up a finger.;stretches its little body.";
 	public final static String otherBabyEmoter="min=1 max=5 chance=10;wants its mommy.;wants its daddy.;cries.;doesnt like you.;cries for its mommy.;cries for its daddy.";
@@ -174,7 +216,6 @@ public class Age extends StdAbility
 		}
 		return following;
 	}
-
 
 	protected void doThang()
 	{
@@ -635,8 +676,6 @@ public class Age extends StdAbility
 				babe.text();
 			}
 		}
-
-
 		norecurse=false;
 	}
 
@@ -767,6 +806,7 @@ public class Age extends StdAbility
 		super.affectPhyStats(affected,affectableStats);
 		doThang();
 	}
+
 	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{

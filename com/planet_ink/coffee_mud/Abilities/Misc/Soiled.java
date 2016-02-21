@@ -216,21 +216,21 @@ public class Soiled extends StdAbility
 				String smell=null;
 				switch(CMLib.dice().roll(1,5,0))
 				{
-					case 1:
-						smell = L("<S-NAME> <S-IS-ARE> stinky!");
-						break;
-					case 2:
-						smell = L("<S-NAME> smells like poo.");
-						break;
-					case 3:
-						smell = L("<S-NAME> has soiled a diaper.");
-						break;
-					case 4:
-						smell = L("Whew! <S-NAME> stinks!");
-						break;
-					case 5:
-						smell = L("<S-NAME> must have let one go!");
-						break;
+				case 1:
+					smell = L("<S-NAME> <S-IS-ARE> stinky!");
+					break;
+				case 2:
+					smell = L("<S-NAME> smells like poo.");
+					break;
+				case 3:
+					smell = L("<S-NAME> has soiled a diaper.");
+					break;
+				case 4:
+					smell = L("Whew! <S-NAME> stinks!");
+					break;
+				case 5:
+					smell = L("<S-NAME> must have let one go!");
+					break;
 				}
 				if((smell!=null)
 				&&(CMLib.flags().isInTheGame(M,true)))

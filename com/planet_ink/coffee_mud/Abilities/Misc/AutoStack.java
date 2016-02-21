@@ -64,6 +64,12 @@ public class AutoStack extends StdAbility
 		return 0;
 	}
 
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PROPERTY;
+	}
+
 	protected final static int	INTERVAL				= (2 * 60) / 4000;
 
 	protected int				numberOfItemsToTrigger	= 1000;

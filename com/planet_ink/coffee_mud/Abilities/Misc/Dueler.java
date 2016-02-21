@@ -36,17 +36,28 @@ import java.util.*;
 
 public class Dueler extends StdAbility
 {
-	@Override public String ID() { return "Dueler"; }
-	private final static String localizedName = CMLib.lang().L("Dueler");
-	@Override public String name() { return localizedName; }
-	protected Dueler otherDueler = null;
-	protected MOB otherDuelPartner=null;
-	protected long lastTimeISawYou=System.currentTimeMillis();
-	protected boolean oldPVPStatus = false;
-	protected CharState oldCurState = null;
-	protected List<Ability> oldEffects = new LinkedList<Ability>();
-	protected Hashtable<Item,Item> oldEq = new Hashtable<Item,Item>();
-	protected int autoWimp=0;
+	@Override
+	public String ID()
+	{
+		return "Dueler";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Dueler");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	protected Dueler				otherDueler			= null;
+	protected MOB					otherDuelPartner	= null;
+	protected long					lastTimeISawYou		= System.currentTimeMillis();
+	protected boolean				oldPVPStatus		= false;
+	protected CharState				oldCurState			= null;
+	protected List<Ability>			oldEffects			= new LinkedList<Ability>();
+	protected Hashtable<Item, Item>	oldEq				= new Hashtable<Item, Item>();
+	protected int					autoWimp			= 0;
 
 	@Override
 	public String displayText()
@@ -55,8 +66,18 @@ public class Dueler extends StdAbility
 			return "(Dueling "+otherDueler.affecting().name()+")";
 		return "";
 	}
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
 
 	@Override
 	public void unInvoke()

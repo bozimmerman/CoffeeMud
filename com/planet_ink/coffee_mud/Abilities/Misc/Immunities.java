@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Abilities.Misc;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
@@ -38,22 +39,69 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 public class Immunities extends StdAbility
 {
-	@Override public String ID() { return "Immunities"; }
-	private final static String localizedName = CMLib.lang().L("Immunities");
-	@Override public String name() { return localizedName; }
-	protected String displayText="";
-	@Override public String displayText(){ return displayText;}
-	@Override protected int canAffectCode(){return CAN_MOBS|CAN_ROOMS|CAN_AREAS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	@Override public int classificationCode(){return Ability.ACODE_SKILL;}
-	@Override public boolean isAutoInvoked(){return true;}
-	@Override public boolean canBeUninvoked(){return canBeUninvoked;}
-	public int resistanceCode=0;
-	public boolean canBeUninvoked = false;
-	public HashSet<Integer> immunes=new HashSet<Integer>();
+	@Override
+	public String ID()
+	{
+		return "Immunities";
+	}
 
-	public static SHashtable<String,Integer> immunityTypes=new SHashtable<String,Integer>(new Object[][]
+	private final static String	localizedName	= CMLib.lang().L("Immunities");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	protected String	displayText	= "";
+
+	@Override
+	public String displayText()
+	{
+		return displayText;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS | CAN_ROOMS | CAN_AREAS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_SELF;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL;
+	}
+
+	@Override
+	public boolean isAutoInvoked()
+	{
+		return true;
+	}
+
+	@Override
+	public boolean canBeUninvoked()
+	{
+		return canBeUninvoked;
+	}
+
+	public int				resistanceCode	= 0;
+	public boolean			canBeUninvoked	= false;
+	public HashSet<Integer>	immunes			= new HashSet<Integer>();
+
+	public static Map<String,Integer> immunityTypes=new SHashtable<String,Integer>(new Object[][]
 	{
 		{"ACID",Integer.valueOf(CMMsg.TYP_ACID)},
 		{"WATER",Integer.valueOf(CMMsg.TYP_WATER)},
@@ -79,6 +127,7 @@ public class Immunities extends StdAbility
 		immunes.clear();
 		final Vector<String> immunities=CMParms.parse(text.toUpperCase());
 		for(final String v : immunities)
+		{
 			if(v.equalsIgnoreCase("ALL"))
 			{
 				for(final String key : immunityTypes.keySet())
@@ -87,6 +136,7 @@ public class Immunities extends StdAbility
 			else
 			if(immunityTypes.containsKey(v))
 				immunes.add(immunityTypes.get(v));
+		}
 	}
 
 	@Override
@@ -114,12 +164,12 @@ public class Immunities extends StdAbility
 	}
 
 	@Override
-	
 	public boolean invoke(MOB mob, List<String> commands, Physical target, boolean auto, int asLevel)
 	{
 		final StringBuilder immunes=new StringBuilder("");
 		int ticksOverride=0;
 		if(commands.size()>0)
+		{
 			for(final Object o : commands)
 			{
 				final String s=o.toString().toUpperCase();
@@ -132,6 +182,7 @@ public class Immunities extends StdAbility
 				if(immunityTypes.containsKey(s))
 					immunes.append(s).append(" ");
 			}
+		}
 		if(!super.invoke(mob, commands, target, auto, asLevel))
 			return false;
 		if(immunes.length()>0)

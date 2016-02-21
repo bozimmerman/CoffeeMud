@@ -36,11 +36,22 @@ import java.util.*;
 
 public class Pregnancy extends StdAbility implements HealthCondition
 {
-	@Override public String ID() { return "Pregnancy"; }
-	private final static String localizedName = CMLib.lang().L("Pregnancy");
-	@Override public String name() { return localizedName; }
-	protected long monthsRemaining=-1;
-	protected long daysRemaining=-1;
+	@Override
+	public String ID()
+	{
+		return "Pregnancy";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Pregnancy");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	protected long	monthsRemaining	= -1;
+	protected long	daysRemaining	= -1;
 
 	@Override
 	public String getHealthConditionDesc()
@@ -75,18 +86,64 @@ public class Pregnancy extends StdAbility implements HealthCondition
 			return "(is "+text+")";
 		return "";
 	}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	@Override public boolean putInCommandlist(){return false;}
-	private static final String[] triggerStrings =I(new String[] {"IMPREGNATE"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public boolean canBeUninvoked(){return false;}
-	@Override public boolean isAutoInvoked(){return false;}
-	@Override public boolean isSavable(){ return true; }
-	@Override public int classificationCode(){return Ability.ACODE_PROPERTY;}
-	protected int ticksInLabor=0;
+	
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
 
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	public boolean putInCommandlist()
+	{
+		return false;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "IMPREGNATE" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public boolean canBeUninvoked()
+	{
+		return false;
+	}
+
+	@Override
+	public boolean isAutoInvoked()
+	{
+		return false;
+	}
+
+	@Override
+	public boolean isSavable()
+	{
+		return true;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PROPERTY;
+	}
+
+	protected int	ticksInLabor	= 0;
 
 	@Override
 	public void executeMsg(Environmental host, CMMsg msg)
@@ -96,10 +153,12 @@ public class Pregnancy extends StdAbility implements HealthCondition
 		&&(CMLib.flags().canBeSeenBy(affected,msg.source()))
 		&&(affected instanceof MOB)
 		&&((daysRemaining>0)&&(monthsRemaining<=3)))
+		{
 			msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,
 										  CMMsg.MSG_OK_VISUAL,L("\n\r<S-NAME> <S-IS-ARE> obviously with child.\n\r"),
 										  CMMsg.NO_EFFECT,null,
 										  CMMsg.NO_EFFECT,null));
+		}
 		super.executeMsg(host,msg);
 	}
 

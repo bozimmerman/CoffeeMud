@@ -37,20 +37,68 @@ import java.util.*;
 
 public class Undead_EnergyDrain extends StdAbility
 {
-	@Override public String ID() { return "Undead_EnergyDrain"; }
-	private final static String localizedName = CMLib.lang().L("Energy Drain");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Drained of Energy)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public boolean putInCommandlist(){return false;}
-	private static final String[] triggerStrings =I(new String[] {"DRAINENERGY"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode(){return Ability.ACODE_SKILL;}
-	public int levelsDown=1;
-	public int direction=1;
+	@Override
+	public String ID()
+	{
+		return "Undead_EnergyDrain";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Energy Drain");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Drained of Energy)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public boolean putInCommandlist()
+	{
+		return false;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "DRAINENERGY" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL;
+	}
+
+	public int	levelsDown	= 1;
+	public int	direction	= 1;
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)

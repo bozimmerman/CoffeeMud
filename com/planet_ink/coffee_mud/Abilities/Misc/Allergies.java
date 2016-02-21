@@ -36,19 +36,65 @@ import java.util.*;
 
 public class Allergies extends StdAbility implements HealthCondition
 {
-	@Override public String ID() { return "Allergies"; }
-	private final static String localizedName = CMLib.lang().L("Allergies");
-	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "";}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
-	@Override public int classificationCode(){return Ability.ACODE_PROPERTY;}
-	@Override public boolean isAutoInvoked(){return true;}
-	@Override public boolean canBeUninvoked(){return false;}
-	protected Set<Integer> resourceAllergies=new HashSet<Integer>();
-	protected Set<Race> raceAllergies=new HashSet<Race>();
-	protected int allergicCheckDown=0;
+	@Override
+	public String ID()
+	{
+		return "Allergies";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Allergies");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public String displayText()
+	{
+		return "";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_SELF;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PROPERTY;
+	}
+
+	@Override
+	public boolean isAutoInvoked()
+	{
+		return true;
+	}
+
+	@Override
+	public boolean canBeUninvoked()
+	{
+		return false;
+	}
+
+	protected Set<Integer>	resourceAllergies	= new HashSet<Integer>();
+	protected Set<Race>		raceAllergies		= new HashSet<Race>();
+	protected int			allergicCheckDown	= 0;
 
 	@Override
 	public String getHealthConditionDesc()
@@ -210,29 +256,33 @@ public class Allergies extends StdAbility implements HealthCondition
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final Vector<String> allChoices=new Vector<String>();
+			final ArrayList<String> allChoices=new ArrayList<String>();
 			for(final int code : RawMaterial.CODES.ALL())
+			{
 				if(((code&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_LIQUID)
 				&&((code&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_ENERGY)
 				&&((code&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_GAS)
 				&&(code!=RawMaterial.RESOURCE_COTTON)
 				&&(code!=RawMaterial.RESOURCE_IRON)
 				&&(code!=RawMaterial.RESOURCE_WOOD))
-					allChoices.addElement(RawMaterial.CODES.NAME(code));
+					allChoices.add(RawMaterial.CODES.NAME(code));
+			}
 			Race R=null;
 			for(final Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
 			{
 				R=r.nextElement();
-				allChoices.addElement(R.ID().toUpperCase());
+				allChoices.add(R.ID().toUpperCase());
 			}
 			String allergies="";
 			if((choice.length()>0)&&(allChoices.contains(choice.toUpperCase())))
 				allergies=choice.toUpperCase();
 			else
 			for(int i=0;i<allChoices.size();i++)
+			{
 				if((CMLib.dice().roll(1,allChoices.size(),0)==1)
-				&&(!(allChoices.elementAt(i).equalsIgnoreCase(mob.charStats().getMyRace().ID().toUpperCase()))))
-					allergies+=" "+allChoices.elementAt(i);
+				&&(!(allChoices.get(i).equalsIgnoreCase(mob.charStats().getMyRace().ID().toUpperCase()))))
+					allergies+=" "+allChoices.get(i);
+			}
 			if(allergies.length()==0)
 				return false;
 

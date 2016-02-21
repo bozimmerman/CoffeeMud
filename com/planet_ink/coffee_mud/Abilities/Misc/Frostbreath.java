@@ -32,10 +32,31 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 public class Frostbreath extends Dragonbreath
 {
-	@Override public String ID() { return "Frostbreath"; }
-	private final static String localizedName = CMLib.lang().L("Frostbreath");
-	@Override public String name() { return localizedName; }
-	@Override public String text(){return "cold";}
-	private static final String[] triggerStrings =I(new String[] {"FROSTBREATH"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override
+	public String ID()
+	{
+		return "Frostbreath";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Frostbreath");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public String text()
+	{
+		return "cold";
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "FROSTBREATH" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
 }

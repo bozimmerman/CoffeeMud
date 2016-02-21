@@ -37,19 +37,66 @@ import java.util.*;
 
 public class SoundEcho extends StdAbility
 {
-	@Override public String ID() { return "SoundEcho"; }
-	private final static String localizedName = CMLib.lang().L("Sound Echo");
-	@Override public String name() { return localizedName; }
-	protected String displayText="";
-	@Override public String displayText(){ return displayText;}
-	@Override protected int canAffectCode(){return CAN_ROOMS|CAN_AREAS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	@Override public int classificationCode(){return Ability.ACODE_PROPERTY;}
-	@Override public boolean isAutoInvoked(){return true;}
-	@Override public boolean canBeUninvoked(){return false;}
+	@Override
+	public String ID()
+	{
+		return "SoundEcho";
+	}
 
-	public static MOB bmob=null;
+	private final static String	localizedName	= CMLib.lang().L("Sound Echo");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	protected String	displayText	= "";
+
+	@Override
+	public String displayText()
+	{
+		return displayText;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_ROOMS | CAN_AREAS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PROPERTY;
+	}
+
+	@Override
+	public boolean isAutoInvoked()
+	{
+		return true;
+	}
+
+	@Override
+	public boolean canBeUninvoked()
+	{
+		return false;
+	}
+
+	public static MOB	bmob	= null;
+
 	public synchronized MOB blindMOB()
 	{
 		if(bmob!=null)

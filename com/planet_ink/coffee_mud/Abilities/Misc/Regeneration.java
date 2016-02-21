@@ -38,23 +38,76 @@ import java.util.*;
 
 public class Regeneration extends StdAbility implements HealthCondition
 {
-	private static final int maxTickDown=3;
-	protected int regenTick=maxTickDown;
+	private static final int	maxTickDown	= 3;
+	protected int				regenTick	= maxTickDown;
 
-	@Override public String ID() { return "Regeneration"; }
-	private final static String localizedName = CMLib.lang().L("Stat Regeneration");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Stat Regeneration)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	@Override public boolean putInCommandlist(){return false;}
-	private static final String[] triggerStrings =I(new String[] {"REGENERATE"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public boolean canBeUninvoked(){return false;}
-	@Override public int classificationCode(){return Ability.ACODE_SKILL;}
-	protected int permanentDamage=0;
+	@Override
+	public String ID()
+	{
+		return "Regeneration";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Stat Regeneration");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Stat Regeneration)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_OTHERS;
+	}
+
+	@Override
+	public boolean putInCommandlist()
+	{
+		return false;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "REGENERATE" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public boolean canBeUninvoked()
+	{
+		return false;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL;
+	}
+
+	protected int	permanentDamage	= 0;
 
 	@Override
 	public String getHealthConditionDesc()
@@ -171,6 +224,7 @@ public class Regeneration extends StdAbility implements HealthCondition
 		super.affectCharState(mob,state);
 		state.setHitPoints(state.getHitPoints()-permanentDamage);
 	}
+
 	@Override
 	public void unInvoke()
 	{
@@ -204,8 +258,6 @@ public class Regeneration extends StdAbility implements HealthCondition
 				success=beneficialAffect(mob,target,asLevel,0)!=null;
 			}
 		}
-
 		return success;
-
 	}
 }

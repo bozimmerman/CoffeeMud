@@ -37,20 +37,51 @@ import java.util.*;
 
 public class Burning extends StdAbility
 {
-	@Override public String ID() { return "Burning"; }
-	private final static String localizedName = CMLib.lang().L("Burning");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Burning)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public long flags(){return Ability.FLAG_HEATING|Ability.FLAG_FIREBASED;}
-	
-	protected static final int FIREFLAG_WEATHERMASK = 255;
-	protected static final int FIREFLAG_PERSISTFLAGS = 256;
-	protected static final int FIREFLAG_DESTROYHOST = 512;
-	protected static final int FIREFLAG_NEVERDESTROYHOST = 1024;
-	
+	@Override
+	public String ID()
+	{
+		return "Burning";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Burning");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Burning)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ITEMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_HEATING | Ability.FLAG_FIREBASED;
+	}
+
+	protected static final int	FIREFLAG_WEATHERMASK		= 255;
+	protected static final int	FIREFLAG_PERSISTFLAGS		= 256;
+	protected static final int	FIREFLAG_DESTROYHOST		= 512;
+	protected static final int	FIREFLAG_NEVERDESTROYHOST	= 1024;
+
 	protected int abilityCode = 0;
 	
 	@Override
@@ -333,6 +364,7 @@ public class Burning extends StdAbility
 			final Item target=(Item)msg.tool();
 			if((target.owner()==container.owner())
 			&&(target.container()==container))
+			{
 				switch(container.material()&RawMaterial.MATERIAL_MASK)
 				{
 				case RawMaterial.MATERIAL_METAL:
@@ -346,6 +378,7 @@ public class Burning extends StdAbility
 				default:
 					break;
 				}
+			}
 			return ouch(msg.source());
 		}
 		return true;

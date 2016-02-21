@@ -36,18 +36,64 @@ import java.util.*;
 
 public class TemporaryImmunity extends StdAbility
 {
-	@Override public String ID() { return "TemporaryImmunity"; }
-	private final static String localizedName = CMLib.lang().L("Temporary Immunity");
-	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "";}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	@Override public int classificationCode(){return Ability.ACODE_SKILL;}
-	@Override public boolean canBeUninvoked(){return true;}
-	@Override public boolean isAutoInvoked(){return true;}
-	public final static long IMMUNITY_TIME=36000000;
-	protected final PairVector<String,Long> set=new PairVector<String,Long>();
+	@Override
+	public String ID()
+	{
+		return "TemporaryImmunity";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Temporary Immunity");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public String displayText()
+	{
+		return "";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_SELF;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PROPERTY;
+	}
+
+	@Override
+	public boolean canBeUninvoked()
+	{
+		return true;
+	}
+
+	@Override
+	public boolean isAutoInvoked()
+	{
+		return true;
+	}
+
+	public final static long					IMMUNITY_TIME	= 36000000;
+	protected final PairVector<String, Long>	set				= new PairVector<String, Long>();
 
 	public TemporaryImmunity()
 	{

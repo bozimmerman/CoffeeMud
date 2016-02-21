@@ -36,15 +36,25 @@ import java.util.*;
 
 public class BrokenLimbs extends StdAbility implements LimbDamage, HealthCondition
 {
-	@Override public String ID() { return "BrokenLimbs"; }
-	private final static String localizedName = CMLib.lang().L("Broken Limbs");
-	@Override public String name() { return localizedName; }
-	
-	protected int HEALING_TICKS = (int)((TimeManager.MILI_MINUTE * 10) / CMProps.getTickMillis());
-	protected List<String> brokenLimbsList=null;
-	private int[] brokenParts=new int[Race.BODY_PARTS];
-	private final Map<String,int[]> setBones = new STreeMap<String,int[]>();
-	
+	@Override
+	public String ID()
+	{
+		return "BrokenLimbs";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Broken Limbs");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	protected int						HEALING_TICKS	= (int) ((TimeManager.MILI_MINUTE * 10) / CMProps.getTickMillis());
+	protected List<String>				brokenLimbsList	= null;
+	private int[]						brokenParts		= new int[Race.BODY_PARTS];
+	private final Map<String, int[]>	setBones		= new STreeMap<String, int[]>();
+
 	@Override
 	public String displayText()
 	{
@@ -64,21 +74,57 @@ public class BrokenLimbs extends StdAbility implements LimbDamage, HealthConditi
 		}
 		return "(Broken "+CMLib.english().toEnglishStringList(limbConditionStrs)+")";
 	}
+
 	@Override
 	public String getHealthConditionDesc()
 	{
 		return "Broken "+CMLib.english().toEnglishStringList(affectedLimbNameSet());
 	}
 
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	@Override public boolean putInCommandlist(){return false;}
-	private static final String[] triggerStrings =I(new String[] {"BREAKLIMB"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_ANATOMY;}
-	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
-	
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	public boolean putInCommandlist()
+	{
+		return false;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "BREAKLIMB" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL | Ability.DOMAIN_ANATOMY;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT | USAGE_MANA;
+	}
+
 	public final static boolean[] validBrokens ={true,//antenea
 												 false,//eye
 												 false,//ear
@@ -606,11 +652,13 @@ public class BrokenLimbs extends StdAbility implements LimbDamage, HealthConditi
 			if(choice.length()>0)
 			{
 				for(int i=0;i<healthyLimbSet.size();i++)
+				{
 					if(CMLib.english().containsString(healthyLimbSet.get(i),choice))
 					{ 
 						brokeStr=healthyLimbSet.get(i); 
 						break;
 					}
+				}
 				if(brokeStr==null)
 				{
 					if(!auto)

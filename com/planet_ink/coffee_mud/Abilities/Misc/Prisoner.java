@@ -16,7 +16,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -37,13 +36,45 @@ import java.util.*;
 
 public class Prisoner extends StdAbility
 {
-	@Override public String ID() { return "Prisoner"; }
-	private final static String localizedName = CMLib.lang().L("Prisoner");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Prisoner's Geas)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override
+	public String ID()
+	{
+		return "Prisoner";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Prisoner");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Prisoner's Geas)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PROPERTY;
+	}
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
@@ -92,5 +123,12 @@ public class Prisoner extends StdAbility
 
 		if(canBeUninvoked())
 			mob.tell(L("Your sentence has been served."));
+	}
+	
+	@Override
+	public boolean invoke(MOB mob, List<String> commands, Physical target, boolean auto, int asLevel)
+	{
+		this.startTickDown(mob, target, 0);
+		return true;
 	}
 }

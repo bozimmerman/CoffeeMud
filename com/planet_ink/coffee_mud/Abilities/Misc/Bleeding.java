@@ -37,18 +37,56 @@ import java.util.*;
 
 public class Bleeding extends StdAbility implements HealthCondition
 {
-	@Override public String ID() { return "Bleeding"; }
-	private final static String localizedName = CMLib.lang().L("Bleeding");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Bleeding)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return CAN_ITEMS|Ability.CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
-	protected int hpToKeep=-1;
-	protected int lastDir=-1;
-	protected Room lastRoom=null;
+	@Override
+	public String ID()
+	{
+		return "Bleeding";
+	}
 
-	public double healthPct(MOB mob){ return CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints());}
+	private final static String	localizedName	= CMLib.lang().L("Bleeding");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Bleeding)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "MAKEBLEED" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_ITEMS | Ability.CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	protected int	hpToKeep	= -1;
+	protected int	lastDir		= -1;
+	protected Room	lastRoom	= null;
+
+	public double healthPct(MOB mob)
+	{
+		return CMath.div(mob.curState().getHitPoints(), mob.maxState().getHitPoints());
+	}
 
 	@Override
 	public String getHealthConditionDesc()
@@ -93,8 +131,10 @@ public class Bleeding extends StdAbility implements HealthCondition
 			final Room R=(Room)msg.target();
 			int dir=-1;
 			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+			{
 				if(msg.tool()==R.getReverseExit(d))
 					dir=d;
+			}
 			if((dir>=0)&&(R.findItem(null,"a trail of blood")==null))
 			{
 				final Item I=CMClass.getItem("GenFatWallpaper");
@@ -111,6 +151,7 @@ public class Bleeding extends StdAbility implements HealthCondition
 			lastRoom=R;
 		}
 	}
+
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{

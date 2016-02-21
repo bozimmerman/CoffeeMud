@@ -37,19 +37,33 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Injury extends StdAbility implements LimbDamage, HealthCondition
 {
-	@Override public String ID() { return "Injury"; }
-	private final static String localizedName = CMLib.lang().L("Injury");
-	@Override public String name() { return localizedName; }
+	@Override
+	public String ID()
+	{
+		return "Injury";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Injury");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
 
 	public PairVector<String,Integer>[] injuries=new PairVector[Race.BODY_PARTS];
-	protected CMMsg lastMsg=null;
-	protected String lastLoc=null;
-	public int lastHP=-1;
+	
+	protected CMMsg		lastMsg			= null;
+	protected String	lastLoc			= null;
+	public int			lastHP			= -1;
+	
 	//public final static String[] BODYPARTSTR={
 	//    "ANTENEA","EYE","EAR","HEAD","NECK","ARM","HAND","TORSO","LEG","FOOT",
 	//    "NOSE","GILL","MOUTH","WAIST","TAIL","WING"};
-	public final static int[] INJURYCHANCE={
-		3,3,3,11,3,12,5,35,13,5,3,0,0,3,3,3};
+	public final static int[] INJURYCHANCE=
+	{
+		3,3,3,11,3,12,5,35,13,5,3,0,0,3,3,3
+	};
 
 	@Override
 	public String getHealthConditionDesc()
@@ -60,6 +74,7 @@ public class Injury extends StdAbility implements LimbDamage, HealthCondition
 		try
 		{
 			if(injuries!=null)
+			{
 				for(int i=0;i<Race.BODY_PARTS;i++)
 				{
 					V=injuries[i];
@@ -90,8 +105,11 @@ public class Injury extends StdAbility implements LimbDamage, HealthCondition
 						buf.append(", "+wounds+O.first.toLowerCase()+" ("+dmg+"%)");
 					}
 				}
+			}
 		}
-		catch(final Exception e){}
+		catch (final Exception e)
+		{
+		}
 		if(buf.length()==0)
 			return "";
 		return buf.substring(1);
@@ -105,13 +123,48 @@ public class Injury extends StdAbility implements LimbDamage, HealthCondition
 			return "";
 		return "(Injuries:"+buf+")";
 	}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	@Override public boolean putInCommandlist(){return false;}
-	@Override public boolean canBeUninvoked(){return true;}
-	@Override public int classificationCode(){return Ability.ACODE_PROPERTY;}
-	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
+	
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	public boolean putInCommandlist()
+	{
+		return false;
+	}
+
+	@Override
+	public boolean canBeUninvoked()
+	{
+		return true;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PROPERTY;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT | USAGE_MANA;
+	}
 
 	@Override
 	public void unInvoke()
@@ -316,16 +369,20 @@ public class Injury extends StdAbility implements LimbDamage, HealthCondition
 		PairVector<String,Integer> V=null;
 		Pair<String,Integer> O=null;
 		if(injuries!=null)
+		{
 			for(int i=0;i<Race.BODY_PARTS;i++)
 			{
 				V=injuries[i];
 				if(V!=null)
+				{
 					for(int i2=0;i2<V.size();i2++)
 					{
 						O=V.elementAt(i2);
 						list.add(O.first.toLowerCase());
 					}
+				}
 			}
+		}
 		return list;
 	}
 
@@ -333,8 +390,11 @@ public class Injury extends StdAbility implements LimbDamage, HealthCondition
 	public void restoreLimb(String limbName)
 	{
 		for(int partNum=0;partNum<Race.BODY_PARTS;partNum++)
+		{
 			if(injuries[partNum]!=null)
+			{
 				for(Pair<String,Integer> part : injuries[partNum])
+				{
 					if(part.first.equalsIgnoreCase(limbName))
 					{
 						injuries[partNum].remove(part);
@@ -344,6 +404,9 @@ public class Injury extends StdAbility implements LimbDamage, HealthCondition
 							affected.delEffect(this);
 						return;
 					}
+				}
+			}
+		}
 	}
 	
 	@Override

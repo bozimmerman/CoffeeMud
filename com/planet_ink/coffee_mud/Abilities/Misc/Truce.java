@@ -36,19 +36,66 @@ import java.util.*;
 
 public class Truce extends StdAbility
 {
-	@Override public String ID() { return "Truce"; }
-	private final static String localizedName = CMLib.lang().L("Truce");
-	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "";}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	@Override public boolean putInCommandlist(){return false;}
-	private static final String[] triggerStrings =I(new String[] {"DECLARETRUCE"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode(){return Ability.ACODE_SKILL;}
-	public boolean truceWithAnyone=false;
-	public CMList<Pair<String,Long>> truces=new CMList<Pair<String,Long>>();
+	@Override
+	public String ID()
+	{
+		return "Truce";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Truce");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public String displayText()
+	{
+		return "";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	public boolean putInCommandlist()
+	{
+		return false;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "DECLARETRUCE" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL;
+	}
+
+	public boolean						truceWithAnyone	= false;
+	public CMList<Pair<String, Long>>	truces			= new CMList<Pair<String, Long>>();
 
 	@Override
 	public void setMiscText(String newMiscText)
@@ -102,6 +149,7 @@ public class Truce extends StdAbility
 		}
 		super.executeMsg(myHost, msg);
 	}
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{

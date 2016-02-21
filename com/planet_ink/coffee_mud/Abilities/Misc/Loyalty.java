@@ -79,6 +79,12 @@ public class Loyalty extends StdAbility
 	protected WeakReference<MOB>	loyaltyPlayer	= null;
 
 	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PROPERTY;
+	}
+
+	@Override
 	public void setMiscText(String newMiscText)
 	{
 		super.setMiscText(newMiscText);

@@ -36,9 +36,20 @@ import java.util.*;
 
 public class Amputation extends StdAbility implements LimbDamage, HealthCondition
 {
-	@Override public String ID() { return "Amputation"; }
-	private final static String localizedName = CMLib.lang().L("Amputation");
-	@Override public String name() { return localizedName; }
+	@Override
+	public String ID()
+	{
+		return "Amputation";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Amputation");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	@Override
 	public String displayText()
 	{
@@ -46,26 +57,69 @@ public class Amputation extends StdAbility implements LimbDamage, HealthConditio
 			return "";
 		return "(Missing your "+CMLib.english().toEnglishStringList(affectedLimbNameSet())+")";
 	}
+	
 	@Override
 	public String getHealthConditionDesc()
 	{
 		return "Missing "+CMLib.english().toEnglishStringList(affectedLimbNameSet());
 	}
 
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	@Override public boolean putInCommandlist(){return false;}
-	private static final String[] triggerStrings =I(new String[] {"AMPUTATE"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public boolean canBeUninvoked(){return false;}
-	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_ANATOMY;}
-	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
-	protected List<String> missingLimbs=null;
-	private int[] amputations=new int[Race.BODY_PARTS];
-	private long badWearLocations=0;
-	private static final long[] LEFT_LOCS={Wearable.WORN_LEFT_FINGER,Wearable.WORN_LEFT_WRIST};
-	private static final long[] RIGHT_LOCS={Wearable.WORN_RIGHT_FINGER,Wearable.WORN_RIGHT_WRIST};
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	public boolean putInCommandlist()
+	{
+		return false;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "AMPUTATE" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public boolean canBeUninvoked()
+	{
+		return false;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL | Ability.DOMAIN_ANATOMY;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT | USAGE_MANA;
+	}
+
+	protected List<String>			missingLimbs		= null;
+	private int[]					amputations			= new int[Race.BODY_PARTS];
+	private long					badWearLocations	= 0;
+	
+	private static final long[]		LEFT_LOCS			= { Wearable.WORN_LEFT_FINGER, Wearable.WORN_LEFT_WRIST };
+	private static final long[]		RIGHT_LOCS			= { Wearable.WORN_RIGHT_FINGER, Wearable.WORN_RIGHT_WRIST };
 
 	public final static boolean[] validamputees={true,//antenea
 												 true,//eye
@@ -116,10 +170,12 @@ public class Amputation extends StdAbility implements LimbDamage, HealthConditio
 			{
 				final String s=CMLib.utensils().niceCommaList(affectedLimbNameSet(),true);
 				if(s.length()>0)
+				{
 					msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,
 												  CMMsg.MSG_OK_VISUAL,L("\n\r@x1 is missing @x2 @x3.\n\r",M.name(msg.source()),M.charStats().hisher(),s),
 												  CMMsg.NO_EFFECT,null,
 												  CMMsg.NO_EFFECT,null));
+				}
 			}
 			if((msg.sourceMinor()==CMMsg.TYP_DEATH)&&(msg.amISource(M)))
 			{
@@ -200,8 +256,10 @@ public class Amputation extends StdAbility implements LimbDamage, HealthConditio
 		super.unInvoke();
 
 		if(canBeUninvoked())
+		{
 			if((mob.location()!=null)&&(!mob.amDead()))
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> limbs have been restored."));
+		}
 	}
 
 	public MOB getTarget(MOB mob, List<String> commands, Environmental givenTarget, boolean quiet)
@@ -492,7 +550,9 @@ public class Amputation extends StdAbility implements LimbDamage, HealthConditio
 			{
 				final int[] aff=extraamuputees[x];
 				if((aff.length>1)||(aff[0]>=0))
+				{
 					for (final int element : aff)
+					{
 						if(((affected instanceof MOB)&&(((MOB)affected).charStats().getBodyPart(element)>0))
 						||((affected instanceof DeadBody)&&(((DeadBody)affected).getSavedMOB() != null)&&(((DeadBody)affected).getSavedMOB().charStats().getBodyPart(element)>0)))
 						{
@@ -507,6 +567,8 @@ public class Amputation extends StdAbility implements LimbDamage, HealthConditio
 							if(!missingLimbs.contains(r))
 								theRest.add(r);
 						}
+					}
+				}
 			}
 			if(!theRest.contains(gone))
 				theRest.add(gone);

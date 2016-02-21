@@ -37,17 +37,64 @@ import java.util.*;
 
 public class Dragonbreath extends StdAbility
 {
-	@Override public String ID() { return "Dragonbreath"; }
-	private final static String localizedName = CMLib.lang().L("Dragonbreath");
-	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public int maxRange(){return adjustedMaxInvokerRange(10);}
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
-	@Override public boolean putInCommandlist(){return false;}
-	private static final String[] triggerStrings =I(new String[] {"DRAGONBREATH"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_RACIALABILITY;}
+	@Override
+	public String ID()
+	{
+		return "Dragonbreath";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Dragonbreath");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public int maxRange()
+	{
+		return adjustedMaxInvokerRange(10);
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	public boolean putInCommandlist()
+	{
+		return false;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "DRAGONBREATH" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL | Ability.DOMAIN_RACIALABILITY;
+	}
+
 	private final static String[][] DragonColors={
 		{"WHITE","c"},
 		{"BLACK","a"},
@@ -86,12 +133,24 @@ public class Dragonbreath extends StdAbility
 		{
 			int color=-1;
 			for(int i=0;i<DragonColors.length;i++)
+			{
 				if(CMLib.english().containsString(mob.Name(),DragonColors[i][0]))
-				{ color=i; break;}
+				{
+					color = i;
+					break;
+				}
+			}
 			if(color<0)
-			for(int i=0;i<DragonColors.length;i++)
-				if(CMLib.english().containsString(mob.displayText(),DragonColors[i][0]))
-				{ color=i; break;}
+			{
+				for(int i=0;i<DragonColors.length;i++)
+				{
+					if(CMLib.english().containsString(mob.displayText(),DragonColors[i][0]))
+					{
+						color = i;
+						break;
+					}
+				}
+			}
 			if(color<0)
 				colorc='f';
 			else
@@ -167,6 +226,7 @@ public class Dragonbreath extends StdAbility
 			if(text().length()==0)
 				setMiscText("");
 			if(R.show(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,auto?autoPhrase:castPhrase))
+			{
 				for (final Object element : h)
 				{
 					final MOB target=(MOB)element;
@@ -187,10 +247,10 @@ public class Dragonbreath extends StdAbility
 						CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_ALWAYS|CMMsg.MASK_SOUND|strikeType,WeaponType,L("^F^<FIGHT^>The @x1 <DAMAGE> <T-NAME>!^</FIGHT^>^?",stuffWord));
 					}
 				}
+			}
 		}
 		else
 			return maliciousFizzle(mob,null,puffPhrase);
-
 
 		// return whether it worked
 		return success;

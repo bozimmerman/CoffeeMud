@@ -36,15 +36,51 @@ import java.util.*;
 
 public class DiseaseCure extends StdAbility
 {
-	@Override public String ID() { return "DiseaseCure"; }
-	private final static String localizedName = CMLib.lang().L("A Cure");
-	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	@Override public String displayText(){ return "";}
-	@Override protected int canAffectCode(){return CAN_ITEMS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){return Ability.ACODE_SKILL;}
-	protected boolean processing=false;
+	@Override
+	public String ID()
+	{
+		return "DiseaseCure";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("A Cure");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_OTHERS;
+	}
+
+	@Override
+	public String displayText()
+	{
+		return "";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_ITEMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL;
+	}
+
+	protected boolean	processing	= false;
 
 	public List<Ability> returnOffensiveAffects(Physical fromMe)
 	{
@@ -75,6 +111,7 @@ public class DiseaseCure extends StdAbility
 					return;
 				processing=true;
 				if(msg.amITarget(myItem))
+				{
 					switch(msg.sourceMinor())
 					{
 					case CMMsg.TYP_DRINK:
@@ -99,6 +136,7 @@ public class DiseaseCure extends StdAbility
 						}
 						break;
 					}
+				}
 			}
 			processing=false;
 		}
