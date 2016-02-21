@@ -2163,6 +2163,8 @@ public class StdArea implements Area
 	{
 		if(!canChild(area))
 			return;
+		if(area.Name().equalsIgnoreCase(Name()))
+			return;
 		for(final Iterator<Area> i=getChildrenIterator(); i.hasNext();)
 		{
 			final Area A=i.next();
@@ -2267,6 +2269,8 @@ public class StdArea implements Area
 		derivedTheme=THEME_INHERIT;
 		if(!canParent(area))
 			return;
+		if(area.Name().equalsIgnoreCase(Name()))
+			return;
 		for(final Iterator<Area> i=getParentsIterator(); i.hasNext();)
 		{
 			final Area A=i.next();
@@ -2295,6 +2299,7 @@ public class StdArea implements Area
 		if(this instanceof BoardableShip)
 			return false;
 		if(children != null)
+		{
 			for (Area A : children)
 			{
 				if(A==area)
@@ -2302,6 +2307,7 @@ public class StdArea implements Area
 				if(!A.canParent(area))
 					return false;
 			}
+		}
 		return true;
 	}
 
