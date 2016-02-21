@@ -50,6 +50,7 @@ public class Follower extends ActiveTicker
 	protected boolean	realFollow		= false;
 	protected boolean	noFollowers		= false;
 	protected boolean	inventory		= false;
+	protected boolean	wander			= false;
 	protected int		lastNumPeople	= -1;
 	protected Room		lastRoom		= null;
 	protected MOB		lastOwner		= null;
@@ -238,7 +239,7 @@ public class Follower extends ActiveTicker
 
 			if(otherRoom!=null)
 			{
-				if(!otherRoom.getArea().Name().equals(room.getArea().Name()))
+				if((!wander)&&(!otherRoom.getArea().Name().equals(room.getArea().Name())))
 					direction=-1;
 			}
 			else
