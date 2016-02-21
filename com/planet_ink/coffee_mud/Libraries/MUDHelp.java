@@ -706,6 +706,12 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 		return getHelpText(helpStr,rHelpFile,forMOB,false);
 	}
 
+	protected final static String[] SKILL_PREFIXES = 
+	{
+		"SPELL_", "PRAYER_", "SONG_", "DANCE_", "PLAY_",
+		"CHANT_","BEHAVIOR_","POWER_","SKILL_","PROP_"
+	};
+	
 	@Override
 	public StringBuilder getHelpText(String helpStr, Properties rHelpFile, MOB forMOB, boolean noFix)
 	{
@@ -726,16 +732,19 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 		if(thisTag==null)
 			thisTag=rHelpFile.getProperty(helpStr);
 		boolean areaTag=(thisTag==null)&&helpStr.startsWith("AREAHELP_");
-		if(thisTag==null){thisTag=rHelpFile.getProperty("SPELL_"+helpStr); if(thisTag!=null) helpStr="SPELL_"+helpStr;}
-		if(thisTag==null){thisTag=rHelpFile.getProperty("PRAYER_"+helpStr); if(thisTag!=null) helpStr="PRAYER_"+helpStr;}
-		if(thisTag==null){thisTag=rHelpFile.getProperty("SONG_"+helpStr); if(thisTag!=null) helpStr="SONG_"+helpStr;}
-		if(thisTag==null){thisTag=rHelpFile.getProperty("DANCE_"+helpStr); if(thisTag!=null) helpStr="DANCE_"+helpStr;}
-		if(thisTag==null){thisTag=rHelpFile.getProperty("PLAY_"+helpStr); if(thisTag!=null) helpStr="PLAY_"+helpStr;}
-		if(thisTag==null){thisTag=rHelpFile.getProperty("CHANT_"+helpStr); if(thisTag!=null) helpStr="CHANT_"+helpStr;}
-		if(thisTag==null){thisTag=rHelpFile.getProperty("BEHAVIOR_"+helpStr); if(thisTag!=null) helpStr="BEHAVIOR_"+helpStr;}
-		if(thisTag==null){thisTag=rHelpFile.getProperty("POWER_"+helpStr); if(thisTag!=null) helpStr="POWER_"+helpStr;}
-		if(thisTag==null){thisTag=rHelpFile.getProperty("SKILL_"+helpStr); if(thisTag!=null) helpStr="SKILL_"+helpStr;}
-		if(thisTag==null){thisTag=rHelpFile.getProperty("PROP_"+helpStr); if(thisTag!=null) helpStr="PROP_"+helpStr;}
+		if(thisTag == null)
+		{
+			for(int i=0;i<SKILL_PREFIXES.length;i++)
+			{
+				final String prefix = SKILL_PREFIXES[i];
+				thisTag=rHelpFile.getProperty(prefix+helpStr); 
+				if(thisTag!=null) 
+				{
+					helpStr=prefix+helpStr;
+					break;
+				}
+			}
+		}
 
 		// specific calling out of a channel
 		if(helpStr.startsWith("CHANNEL_")||helpStr.startsWith("NOCHANNEL_"))
@@ -771,7 +780,8 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			for(final Enumeration<Area> e=CMLib.map().areas();e.hasMoreElements();)
 			{
 				final Area A=e.nextElement();
-				if(A.name().equalsIgnoreCase(ahelpStr))
+				if((A.name().equalsIgnoreCase(ahelpStr))
+				&&((forMOB==null)||(CMLib.flags().canAccess(forMOB, A))))
 				{
 					helpStr=A.name();
 					found=true;
