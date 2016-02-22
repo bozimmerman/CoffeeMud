@@ -219,7 +219,8 @@ public class ColorSet extends StdCommand
 				for(int i=0;i<theSet.size();i++)
 				{
 					buf.append("\n\r^H"+CMStrings.padLeft(""+(i+1),2)+"^N) "+CMStrings.padRight(theSet.get(i).first,20)+": ");
-					buf.append(colorDescription(clookup[0][theSet.get(i).second.intValue()]));
+					if(clookup[0][theSet.get(i).second.intValue()]!=null)
+						buf.append(colorDescription(clookup[0][theSet.get(i).second.intValue()]));
 					buf.append("^N");
 				}
 				session.println(buf.toString());
