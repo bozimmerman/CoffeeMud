@@ -2768,23 +2768,22 @@ public class CMParms
 	 * @param V the map of key/value pairs
 	 * @return a single string list of all the key=value pairs
 	 */
-	public final static String toEqListString(final Map<String,?> V)
+	public final static String toEqListString(final Map<?,?> V)
 	{
 		if((V==null)||(V.size()==0))
 		{
 			return "";
 		}
 		final StringBuilder s=new StringBuilder("");
-		for(final String KEY : V.keySet())
+		for(final Object KEY : V.keySet())
 		{
 			String val = V.get(KEY).toString();
 			if(val.indexOf(' ')>0)
 				val="\""+val+"\"";
-			s.append(KEY+"="+val+" ");
+			s.append(KEY.toString()+"="+val+" ");
 		}
 		return s.toString().trim();
 	}
-
 
 	/**
 	 * Flattens the given list by returning a new list will all of the
@@ -2886,6 +2885,27 @@ public class CMParms
 		for(int i=0;i<stringList.length;i++)
 		{
 			if(stringList[i].equalsIgnoreCase(str))
+				return i;
+		}
+		return -1;
+	}
+
+	/**
+	 * Returns the index of the given string in the given string array.
+	 * The search is case insensitive.
+	 * @param stringList the string array
+	 * @param str the string to search for
+	 * @return the index of the string in the list, or -1 if not found
+	 */
+	public final static int indexOfIgnoreCase(final Object[] stringList, final String str)
+	{
+		if(stringList==null) 
+			return -1;
+		if(str==null) 
+			return -1;
+		for(int i=0;i<stringList.length;i++)
+		{
+			if(stringList[i].toString().equalsIgnoreCase(str))
 				return i;
 		}
 		return -1;

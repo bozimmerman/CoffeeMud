@@ -411,6 +411,17 @@ public class CMProps extends Properties
 		NEWPLAYERS
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public static final Class<? extends Enum>[] PROP_CLASSES = new Class[]  
+	{
+		CMProps.Bool.class,
+		CMProps.Str.class,
+		CMProps.Int.class,
+		CMProps.ListFile.class,
+		CMProps.StrList.class,
+		CMProps.WhiteList.class,
+	};
+	
 	@SuppressWarnings("unchecked")
 	protected final Set<String>[]sysLstFileSet		= new Set[ListFile.values().length];
 	protected final String[]	 sysVars			= new String[Str.values().length];
@@ -908,6 +919,120 @@ public class CMProps extends Properties
 	}
 
 	/**
+	 * Returns whether the given string is a valid property name,
+	 * referring to the names of the various enums in the static
+	 * CMProps class.
+	 * @param varName the possible name of a property
+	 * @return true if it is some sort of prop enum, false otherwise
+	 */
+	@SuppressWarnings("rawtypes")
+	public static boolean isPropName(String varName)
+	{
+		if(varName == null)
+			return false;
+		varName = varName.toUpperCase().trim();
+		for(Class<? extends Enum> c : CMProps.PROP_CLASSES)
+		{
+			if(CMath.s_valueOf(c, varName) != null)
+				return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Returns a string representation of the given property, as best it can.
+	 * referring to the names of the various enums in the static
+	 * CMProps class.
+	 * If the given property name does not exist, a "" is returned.
+	 * @param varName the name of a property
+	 * @return the string value of that property
+	 */
+	@SuppressWarnings("rawtypes")
+	public static String getProp(String varName)
+	{
+		if(varName == null)
+			return "";
+		varName = varName.toUpperCase().trim();
+		for(Class<? extends Enum> c : CMProps.PROP_CLASSES)
+		{
+			if(CMath.s_valueOf(c, varName) != null)
+			{
+				if(c == Str.class)
+					return p().getStr((Str)CMath.s_valueOf(c, varName));
+				else
+				if(c == Int.class)
+					return ""+p().getInt((Int)CMath.s_valueOf(c, varName));
+				else
+				if(c == Bool.class)
+					return ""+p().getBool((Bool)CMath.s_valueOf(c, varName));
+				else
+				if(c == ListFile.class)
+					return ""+CMParms.toListString(CMProps.getListFileStringList((ListFile)CMath.s_valueOf(c, varName)));
+				else
+				if(c == StrList.class)
+					return ""+CMParms.toListString(CMProps.getListVar((StrList)CMath.s_valueOf(c, varName)));
+				else
+				if(c == WhiteList.class)
+					return ""+CMParms.toListString(p().whiteLists.get(CMath.s_valueOf(c, varName)));
+			}
+		}
+		return "";
+	}
+	
+	/**
+	 * Sets a property from a string representation of the given property, as best it can.
+	 * referring to the names of the various enums in the static
+	 * CMProps class.
+	 * If the given property name does not exist, false is returned.
+	 * @param varName the name of a property
+	 * @param value the string value of that property
+	 * @return true if it tried to set the property, false if it failed
+	 */
+	@SuppressWarnings("rawtypes")
+	public static boolean setProp(String varName, String value)
+	{
+		if(varName == null)
+			return false;
+		varName = varName.toUpperCase().trim();
+		for(Class<? extends Enum> c : CMProps.PROP_CLASSES)
+		{
+			if(CMath.s_valueOf(c, varName) != null)
+			{
+				if(c == Str.class)
+				{
+					p().sysVars[((Str)CMath.s_valueOf(c, varName)).ordinal()] = value;
+					return true;
+				}
+				else
+				if(c == Int.class)
+				{
+					p().sysInts[((Str)CMath.s_valueOf(c, varName)).ordinal()] = Integer.valueOf(CMath.s_int(value));
+					return true;
+				}
+				else
+				if(c == Bool.class)
+				{
+					p().sysBools[((Str)CMath.s_valueOf(c, varName)).ordinal()] = Boolean.valueOf(CMath.s_bool(value));
+					return true;
+				}
+				else
+				if(c == ListFile.class)
+					throw new java.lang.UnsupportedOperationException();
+				else
+				if(c == StrList.class)
+				{
+					p().sysLists[((StrList)CMath.s_valueOf(c, varName)).ordinal()] = CMParms.parseCommas(value,true).toArray(new String[0]);
+					return true;
+				}
+				else
+				if(c == WhiteList.class)
+					throw new java.lang.UnsupportedOperationException();
+			}
+		}
+		return false;
+	}
+	
+	/**
 	 * Retreive one of the pre-processed coffeemud.ini entries for
 	 * this prop object
 	 * @param varNum the Str enum of the entry to get
@@ -1183,7 +1308,7 @@ public class CMProps extends Properties
 			val="";
 		setUpLowVar(varNum,val.toUpperCase());
 	}
-
+	
 	/**
 	 * Sets one of the pre-processed coffeemud.ini entries for
 	 * the given properties object.
