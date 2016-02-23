@@ -95,7 +95,7 @@ public class Spell_InsectPlague extends Spell
 					CMLib.threads().deleteTick(A, -1);
 				}
 				else
-				if(CMath.bset(R.myResource(),RawMaterial.MATERIAL_VEGETATION))
+				if((R.myResource()>0)&&(CMath.bset(R.myResource(),RawMaterial.MATERIAL_VEGETATION)))
 				{
 					R.showHappens(CMMsg.MSG_OK_ACTION, L("A plague of insects consumed all the @x1 here.",RawMaterial.CODES.NAME(R.myResource()).toLowerCase()));
 					R.setResource(0);

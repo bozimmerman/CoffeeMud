@@ -148,11 +148,14 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 		{
 			childCheckDown=CMProps.getMillisPerMudHour()/CMProps.getTickMillis();
 			LinkedList<AreaInstanceChild> workList = new LinkedList<AreaInstanceChild>();
-			synchronized(instanceChildren)
+			final List<AreaInstanceChild> children = this.instanceChildren;
+			if(children == null)
+				return true;
+			synchronized(children)
 			{
-				for(int i=instanceChildren.size()-1;i>=0;i--)
+				for(int i=children.size()-1;i>=0;i--)
 				{
-					final AreaInstanceChild child = instanceChildren.get(i);
+					final AreaInstanceChild child = children.get(i);
 					final Area childA=child.A;
 					if(childA.getAreaState() != Area.State.ACTIVE)
 					{
@@ -179,9 +182,9 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 				}
 				if(!anyInside)
 				{
-					synchronized(instanceChildren)
+					synchronized(children)
 					{
-						instanceChildren.remove(child);
+						children.remove(child);
 					}
 					for(final WeakReference<MOB> wmob : V)
 					{
@@ -318,10 +321,13 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 				{
 					final List<WeakReference<MOB>> V=instanceChildren.elementAt(i).mobs;
 					for (final WeakReference<MOB> weakReference : V)
+					{
 						if(msg.source() == weakReference.get())
 						{
-							myDex=i; break;
+							myDex = i;
+							break;
 						}
+					}
 				}
 				final Set<MOB> grp = msg.source().getGroupMembers(new HashSet<MOB>());
 				for(int i=0;i<instanceChildren.size();i++)

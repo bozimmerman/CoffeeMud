@@ -1127,7 +1127,7 @@ public class ListCmd extends StdCommand
 		}
 		buf.append("\n\r");
 		buf.append(L("Small Group Areas:\t@x1",unlinkedGroups.toString()));
-		Log.sysOut("Lister",buf.toString());
+		//Log.sysOut("Lister",buf.toString());
 		return buf;
 	}
 

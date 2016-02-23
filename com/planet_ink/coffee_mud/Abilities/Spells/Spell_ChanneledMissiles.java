@@ -167,58 +167,61 @@ public class Spell_ChanneledMissiles extends Spell
 		{
 			final int numMissiles=((int)Math.round(Math.floor(CMath.div(adjustedLevel(mob,asLevel),10)))+1);
 			final Room R=target[0].location();
-			final CMMsg msg=CMClass.getMsg(mob,target[0],this,somanticCastCode(mob,target[0],auto),null);
-			if(R.okMessage(mob,msg))
+			if(R!=null)
 			{
-				R.send(mob,msg);
-				beneficialAffect(mob, mob, asLevel, CHAIN_LENGTH);
-				final Spell_ChanneledMissiles thisSpellA = (Spell_ChanneledMissiles)mob.fetchEffect(ID());
-				if(thisSpellA!=null)
+				final CMMsg msg=CMClass.getMsg(mob,target[0],this,somanticCastCode(mob,target[0],auto),null);
+				if(R.okMessage(mob,msg))
 				{
-					thisSpellA.channelingClass = new Runnable()
+					R.send(mob,msg);
+					beneficialAffect(mob, mob, asLevel, CHAIN_LENGTH);
+					final Spell_ChanneledMissiles thisSpellA = (Spell_ChanneledMissiles)mob.fetchEffect(ID());
+					if(thisSpellA!=null)
 					{
-						@Override
-						public void run()
+						thisSpellA.channelingClass = new Runnable()
 						{
-							for(int i=0;(i<numMissiles) && (target[0].location()==R);i++)
+							@Override
+							public void run()
 							{
-								final CMMsg msg=CMClass.getMsg(mob,target[0],thisSpellA,somanticCastCode(mob,target[0],auto),(i==0)?L((auto?"Magic missiles appear hurling full speed at <T-NAME>!":"^S<S-NAME> channel(s) magic missiles toward(s) <T-NAMESELF>!^?")+CMLib.protocol().msp("spelldam2.wav",40)):null);
-								if((mob.location()!=null)&&(mob.location().okMessage(mob,msg)))
+								for(int i=0;(i<numMissiles) && (target[0].location()==R);i++)
 								{
-									mob.location().send(mob,msg);
-									if(msg.value()<=0)
+									final CMMsg msg=CMClass.getMsg(mob,target[0],thisSpellA,somanticCastCode(mob,target[0],auto),(i==0)?L((auto?"Magic missiles appear hurling full speed at <T-NAME>!":"^S<S-NAME> channel(s) magic missiles toward(s) <T-NAMESELF>!^?")+CMLib.protocol().msp("spelldam2.wav",40)):null);
+									if((mob.location()!=null)&&(mob.location().okMessage(mob,msg)))
 									{
-										final int damage = CMLib.dice().roll(1,11,11);
-										if(target[0].location()==mob.location())
-											CMLib.combat().postDamage(mob,target[0],thisSpellA,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,L((i==0)?"^SThe missile ":"^SAnother missile ")+"<DAMAGE> <T-NAME>!^?");
+										mob.location().send(mob,msg);
+										if(msg.value()<=0)
+										{
+											final int damage = CMLib.dice().roll(1,11,11);
+											if(target[0].location()==mob.location())
+												CMLib.combat().postDamage(mob,target[0],thisSpellA,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,L((i==0)?"^SThe missile ":"^SAnother missile ")+"<DAMAGE> <T-NAME>!^?");
+										}
+									}
+									if((target[0]==null)||(target[0].amDead())||(target[0].location()!=R))
+									{
+										target[0]=thisSpellA.getTarget(mob,commands,givenTarget,true,false);
+										if(target[0]==null)
+											break;
+										if(target[0].amDead())
+											break;
 									}
 								}
 								if((target[0]==null)||(target[0].amDead())||(target[0].location()!=R))
 								{
-									target[0]=thisSpellA.getTarget(mob,commands,givenTarget,true,false);
-									if(target[0]==null)
-										break;
-									if(target[0].amDead())
-										break;
+									thisSpellA.channelingClass=null;
+									thisSpellA.unInvoke();
+									mob.recoverPhyStats();
 								}
+								else
+								{
+									if(mob.getVictim()==null)
+										mob.setVictim(target[0]);
+									if(target[0].getVictim()==null)
+										target[0].setVictim(mob);
+								}
+	
 							}
-							if((target[0]==null)||(target[0].amDead())||(target[0].location()!=R))
-							{
-								thisSpellA.channelingClass=null;
-								thisSpellA.unInvoke();
-								mob.recoverPhyStats();
-							}
-							else
-							{
-								if(mob.getVictim()==null)
-									mob.setVictim(target[0]);
-								if(target[0].getVictim()==null)
-									target[0].setVictim(mob);
-							}
-
-						}
-					};
-					thisSpellA.channelingClass.run();
+						};
+						thisSpellA.channelingClass.run();
+					}
 				}
 			}
 		}
