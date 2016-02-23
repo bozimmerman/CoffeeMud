@@ -3093,18 +3093,16 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	protected LoginResult charcrFactionNext(final LoginSessionImpl loginObj, final Session session)
 	{
 		final MOB mob=loginObj.mob;
-		loginObj.index++;
-		if(loginObj.index>=CMLib.factions().numFactions())
+		Faction F= null;
+		while((F==null)||(CMSecurity.isFactionDisabled(F.factionID())))
 		{
-			loginObj.state=LoginState.CHARCR_FACTIONDONE;
-			return null;
-		}
-		final Faction F=CMLib.factions().getFactionByNumber(loginObj.index);
-		if(F==null)
-		{
-			Log.errOut("CharCreation","Failure in Faction algorithm");
-			loginObj.state=LoginState.CHARCR_FACTIONDONE;
-			return null;
+			loginObj.index++;
+			if(loginObj.index>=CMLib.factions().numFactions())
+			{
+				loginObj.state=LoginState.CHARCR_FACTIONDONE;
+				return null;
+			}
+			F=CMLib.factions().getFactionByNumber(loginObj.index);
 		}
 		final List<Integer> mine=F.findChoices(mob);
 		final int defaultValue=F.findAutoDefault(mob);
