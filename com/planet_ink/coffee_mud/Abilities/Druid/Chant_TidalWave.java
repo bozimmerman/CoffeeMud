@@ -517,7 +517,7 @@ public class Chant_TidalWave extends Chant
 					}
 				}
 				R.recoverRoomStats();
-				R.show(mob,target,CMMsg.MSG_OK_ACTION,"<T-NAME> momentarily capsizes!");
+				R.show(mob,target,CMMsg.MSG_OK_ACTION,L("<T-NAME> momentarily capsizes!"));
 			}
 		}
 		else

@@ -113,7 +113,7 @@ public class GravityFloat extends StdAbility
 							if(P.okMessage(P, msg))
 							{
 								P.executeMsg(P, msg);
-								R.showHappens(CMMsg.MSG_OK_VISUAL, P,"<S-NAME> start(s) floating around.");
+								R.showHappens(CMMsg.MSG_OK_VISUAL, P,L("<S-NAME> start(s) floating around."));
 								P.addNonUninvokableEffect(gravityA);
 								gravityA.setSavable(false);
 								P.recoverPhyStats();

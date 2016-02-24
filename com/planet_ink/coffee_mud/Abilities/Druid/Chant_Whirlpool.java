@@ -286,7 +286,7 @@ public class Chant_Whirlpool extends Chant
 			if(target.okMessage(mob,msg))
 			{
 				target.send(mob,msg);
-				target.showHappens(CMMsg.MSG_OK_ACTION, "A MASSIVE WHIRLPOOL FORMS HERE!");
+				target.showHappens(CMMsg.MSG_OK_ACTION, L("A MASSIVE WHIRLPOOL FORMS HERE!"));
 				Chant_Whirlpool W=(Chant_Whirlpool)beneficialAffect(mob,target,asLevel,0);
 				if(W!=null)
 				{

@@ -2434,7 +2434,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				{
 					Pair<String[],String[]> codesFlags = CMAbleParms.getBuildingCodesNFlags();
 					String help=CMParms.combineWith(Arrays.asList(codesFlags.second), ',');
-					String newVal = CMLib.genEd().prompt(mob, oldVal, ++showNumber[0], showFlag, "Flags", true, help);
+					String newVal = CMLib.genEd().prompt(mob, oldVal, ++showNumber[0], showFlag, L("Flags"), true, help);
 					String[] newVals;
 					if(newVal.indexOf(',')>0)
 						newVals = CMParms.parseCommas(newVal.toUpperCase().trim(), true).toArray(new String[0]);
@@ -2549,11 +2549,11 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				{
 					String[] vals = this.fakeUserInput(oldVal);
 					StringBuilder newVal = new StringBuilder("");
-					newVal.append(CMLib.genEd().prompt(mob, vals[0], ++showNumber[0], showFlag, "Exit Noun", true)).append("|");
-					newVal.append(CMLib.genEd().prompt(mob, vals[1], ++showNumber[0], showFlag, "Open Verb", true)).append("|");
-					newVal.append(CMLib.genEd().prompt(mob, vals[2], ++showNumber[0], showFlag, "Close Verb", true)).append("|");
-					newVal.append(CMLib.genEd().prompt(mob, vals[3], ++showNumber[0], showFlag, "Opened Text", true)).append("|");
-					newVal.append(CMLib.genEd().prompt(mob, vals[4], ++showNumber[0], showFlag, "Closed Text", true));
+					newVal.append(CMLib.genEd().prompt(mob, vals[0], ++showNumber[0], showFlag, L("Exit Noun"), true)).append("|");
+					newVal.append(CMLib.genEd().prompt(mob, vals[1], ++showNumber[0], showFlag, L("Open Verb"), true)).append("|");
+					newVal.append(CMLib.genEd().prompt(mob, vals[2], ++showNumber[0], showFlag, L("Close Verb"), true)).append("|");
+					newVal.append(CMLib.genEd().prompt(mob, vals[3], ++showNumber[0], showFlag, L("Opened Text"), true)).append("|");
+					newVal.append(CMLib.genEd().prompt(mob, vals[4], ++showNumber[0], showFlag, L("Closed Text"), true));
 					String s=newVal.toString();
 					while(s.endsWith("|"))
 						s=s.substring(0,s.length()-1);

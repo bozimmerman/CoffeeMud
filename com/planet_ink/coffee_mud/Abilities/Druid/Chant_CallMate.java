@@ -217,7 +217,7 @@ public class Chant_CallMate extends Chant
 				mob.location().send(mob,msg);
 				final MOB target = determineMonster(mob, mob.charStats().getMyRace());
 				beneficialAffect(mob,target,asLevel,Integer.MAX_VALUE / 2);
-				mob.location().show(target, null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> answers the call.");
+				mob.location().show(target, null,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> answers the call."));
 				CMLib.commands().postFollow(target,mob,false);
 				if(target.amFollowing()!=mob)
 					mob.tell(L("@x1 seems unwilling to follow you.",target.name(mob)));

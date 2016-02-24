@@ -102,7 +102,7 @@ public class Chant_FilterWater extends Chant
 			{
 				Room R=CMLib.map().roomLocation(affected);
 				if((R!=null)&&(invoker!=null))
-					R.show(invoker,affected,null,CMMsg.MSG_OK_VISUAL,"<T-NAME> revert(s) to its previous state.");
+					R.show(invoker,affected,null,CMMsg.MSG_OK_VISUAL,L("<T-NAME> revert(s) to its previous state."));
 			}
 			int x=splitMe.indexOf('~');
 			if(x>0)
@@ -216,7 +216,7 @@ public class Chant_FilterWater extends Chant
 							this.finalizeFreshness(mob, I, (Drink)I, asLevel);
 					}
 				}
-				mob.location().show(mob, target, CMMsg.MSG_OK_VISUAL, "<T-NAME> begin(s) to flow clean and clear!");
+				mob.location().show(mob, target, CMMsg.MSG_OK_VISUAL, L("<T-NAME> begin(s) to flow clean and clear!"));
 			}
 		}
 		else
