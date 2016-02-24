@@ -365,8 +365,10 @@ public class StdArea implements Area
 		synchronized(properRooms)
 		{
 			for(final Room R : properRooms.values())
+			{
 				if(R.roomID().length()>0)
 					set.add(R.roomID());
+			}
 		}
 		return set;
 	}
@@ -1362,7 +1364,9 @@ public class StdArea implements Area
 		{
 			return affects.elementAt(index);
 		}
-		catch(final java.lang.ArrayIndexOutOfBoundsException x){}
+		catch (final java.lang.ArrayIndexOutOfBoundsException x)
+		{
+		}
 		return null;
 	}
 	
@@ -1373,7 +1377,7 @@ public class StdArea implements Area
 		{
 			final Ability A=a.nextElement();
 			if((A!=null)&&(A.ID().equals(ID)))
-			   return A;
+				return A;
 		}
 		return null;
 	}
@@ -1384,8 +1388,10 @@ public class StdArea implements Area
 		if(A==this)
 			return true;
 		for(final Iterator<Area> i=getChildrenIterator();i.hasNext();)
+		{
 			if(i.next().inMyMetroArea(A))
 				return true;
+		}
 		return false;
 	}
 
@@ -1431,8 +1437,10 @@ public class StdArea implements Area
 		if(to==null)
 			return;
 		for(final Behavior B : behaviors)
+		{
 			if((B!=null)&&(B.ID().equals(to.ID())))
 				return;
+		}
 		to.startBehavior(this);
 		behaviors.addElement(to);
 	}
@@ -1880,8 +1888,10 @@ public class StdArea implements Area
 		{
 			metroRoomIDSet.add(roomID);
 			if(!CMath.bset(flags(),Area.FLAG_INSTANCE_CHILD))
+			{
 				for(final Iterator<Area> a=getParentsReverseIterator();a.hasNext();)
 					a.next().addMetroRoomnumber(roomID);
+			}
 		}
 	}
 	
@@ -1895,8 +1905,10 @@ public class StdArea implements Area
 		{
 			metroRoomIDSet.remove(roomID);
 			if(!CMath.bset(flags(),Area.FLAG_INSTANCE_CHILD))
+			{
 				for(final Iterator<Area> a=getParentsReverseIterator();a.hasNext();)
 					a.next().delMetroRoomnumber(roomID);
+			}
 		}
 	}
 	
@@ -1939,11 +1951,13 @@ public class StdArea implements Area
 			if(properRooms.containsValue(R))
 			{
 				for(final Map.Entry<String,Room> entry : properRooms.entrySet())
+				{
 					if(entry.getValue()==R)
 					{
 						properRooms.remove(entry.getKey());
 						delProperRoomnumber(entry.getKey());
 					}
+				}
 				delProperRoomnumber(R.roomID());
 				delMetroRoom(R);
 			}
@@ -1982,10 +1996,12 @@ public class StdArea implements Area
 		{
 			final Room R=(Room)e.nextElement();
 			if(R.roomID().length()>0)
+			{
 				if(R instanceof GridLocale)
 					num+=((GridLocale)R).xGridSize()*((GridLocale)R).yGridSize();
 				else
 					num++;
+			}
 		}
 		return num;
 	}
@@ -2140,8 +2156,10 @@ public class StdArea implements Area
 	public boolean isChild(Area area)
 	{
 		for(final Iterator<Area> i=getChildrenIterator(); i.hasNext();)
+		{
 			if(i.next().equals(area))
 				return true;
+		}
 		return false;
 	}
 
@@ -2193,6 +2211,7 @@ public class StdArea implements Area
 		if(area instanceof BoardableShip)
 			return false;
 		if(parents != null)
+		{
 			for (Area A : parents)
 			{
 				if(A==area)
@@ -2200,6 +2219,7 @@ public class StdArea implements Area
 				if(!A.canChild(area))
 					return false;
 			}
+		}
 		return true;
 	}
 
@@ -2399,6 +2419,7 @@ public class StdArea implements Area
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
 	}
+
 	@Override
 	public void setStat(String code, String val)
 	{

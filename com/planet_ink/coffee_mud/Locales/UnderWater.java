@@ -83,35 +83,6 @@ public class UnderWater extends StdRoom implements Drink
 			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SWIMMING);
 	}
 
-	public static void makeSink(Physical P, Room room, int avg)
-	{
-		if((P==null)||(room==null))
-			return;
-
-		Room R=room.getRoomInDir(Directions.DOWN);
-		if(avg>0)
-			R=room.getRoomInDir(Directions.UP);
-		if((R==null)
-		||((R.domainType()!=Room.DOMAIN_INDOORS_UNDERWATER)
-		   &&(R.domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)))
-			return;
-
-		if(((P instanceof MOB)&&(!CMLib.flags().isWaterWorthy(P))&&(!CMLib.flags().isInFlight(P))&&(P.phyStats().weight()>=1))
-		||((P instanceof Item)&&(!CMLib.flags().isInFlight(((Item)P).ultimateContainer(null)))&&(!CMLib.flags().isWaterWorthy(((Item)P).ultimateContainer(null)))))
-		{
-			if(P.fetchEffect("Sinking")==null)
-			{
-				final Ability sinking=CMClass.getAbility("Sinking");
-				if(sinking!=null)
-				{
-					sinking.setProficiency(avg);
-					sinking.setAffectedOne(room);
-					sinking.invoke(null,null,P,true,0);
-				}
-			}
-		}
-	}
-
 	public static void sinkAffects(final Room room, final CMMsg msg)
 	{
 		if(msg.amITarget(room)
@@ -193,7 +164,7 @@ public class UnderWater extends StdRoom implements Drink
 				A.setProficiency(avg);
 		}
 		for(final Physical P : needToSink)
-			makeSink(P,room,avg);
+			CMLib.tracking().makeSink(P,room,avg);
 	}
 
 	public static int isOkUnderWaterAffect(Room room, CMMsg msg)

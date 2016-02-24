@@ -788,7 +788,6 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		return true;
 	}
 
-
 	protected TriadVector<Integer,Integer,MaskingLibrary.CompiledZapperMask> parseLootPolicyFor(MOB mob)
 	{
 		if((mob==null)||(!mob.isMonster()))

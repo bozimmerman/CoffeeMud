@@ -38,6 +38,7 @@ public interface TrackingLibrary extends CMLibrary
 	public int trackNextDirectionFromHere(List<Room> theTrail, Room location, boolean openOnly);
 	public void stopTracking(MOB mob);
 	public boolean makeFall(Physical P, Room room, int avg);
+	public void makeSink(Physical P, Room room, int avg);
 	public CheckedMsgResponse isOkWaterSurfaceAffect(final Room room, final CMMsg msg);
 	public int radiatesFromDir(Room room, List<Room> rooms);
 	public void getRadiantRooms(Room room, List<Room> rooms, TrackingFlags flags, Room radiateTo, int maxDepth, Set<Room> ignoreRooms);

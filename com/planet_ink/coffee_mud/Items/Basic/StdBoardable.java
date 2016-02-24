@@ -507,6 +507,15 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 		return failed;
 	}
 	
+	protected static boolean securityCheck(final PrivateProperty P, final MOB mob)
+	{
+		return (P.getOwnerName().length()>0)
+			 &&(mob!=null)
+			 &&((mob.Name().equals(P.getOwnerName()))
+				||(mob.getLiegeID().equals(P.getOwnerName())&mob.isMarriedToLiege())
+				||(CMLib.clans().checkClanPrivilege(mob, P.getOwnerName(), Clan.Function.PROPERTY_OWNER)));
+	}
+
 	protected boolean securityCheck(final MOB mob)
 	{
 		return (getOwnerName().length()>0)

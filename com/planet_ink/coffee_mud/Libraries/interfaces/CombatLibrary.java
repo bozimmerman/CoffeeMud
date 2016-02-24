@@ -423,6 +423,17 @@ public interface CombatLibrary extends CMLibrary
 	public String standardHitWord(int type, int damage);
 
 	/**
+	 * Given the weapon type and percent of damage 0 to 1,
+	 * this method returns the hit/damage string from
+	 * the lists.ini file that matches.
+	 * @see com.planet_ink.coffee_mud.Items.interfaces.Weapon#TYPE_BASHING
+	 * @param type the weapon type
+	 * @param damage the percent of damage from 0.0 to 1.0
+	 * @return the hit/damage word
+	 */
+	public String standardHitWord(int type, double pct);
+
+	/**
 	 * Given the weapon type and classification and name,
 	 * this method returns either the fullly filled out weapon
 	 * miss string, or generic non-extended non-weapon miss string

@@ -1249,20 +1249,19 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	}
 
 	@Override
-	public String standardHitWord(int type, int damage)
+	public String standardHitWord(int type, double pct)
 	{
 		if((type<0)||(type>=Weapon.TYPE_DESCS.length))
 			type=Weapon.TYPE_BURSTING;
 		final int[] thresholds=CMProps.getListFileIntList(CMProps.ListFile.DAMAGE_WORDS_THRESHOLDS);
-		int damnCode=thresholds.length-2;
-		for(int i=0;i<thresholds.length;i++)
-		{
-			if (damage <= thresholds[i])
-			{
-				damnCode = i;
-				break;
-			}
-		}
+		int damnCode=(int)Math.round(pct * (thresholds.length-1));
+		if(damnCode > thresholds.length-1)
+			damnCode = thresholds.length-1;
+		return getStandardHitWordInternal(type, damnCode);
+	}
+	
+	protected String getStandardHitWordInternal(int type, int damnCode)
+	{
 		damnCode++; // always add 1 because index into hitwords is type=0, annoy=1;
 		final Object[][][] hitWords = CMProps.getListFileGrid(CMProps.ListFile.DAMAGE_WORDS);
 		if(hitWords != hitWordsChanged)
@@ -1301,6 +1300,24 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		if(damnCode>=HIT_WORDS.length)
 			damnCode=HIT_WORDS.length-1;
 		return (String)CMLib.dice().pick(HIT_WORDS[damnCode]);
+	}
+	
+	@Override
+	public String standardHitWord(int type, int damage)
+	{
+		if((type<0)||(type>=Weapon.TYPE_DESCS.length))
+			type=Weapon.TYPE_BURSTING;
+		final int[] thresholds=CMProps.getListFileIntList(CMProps.ListFile.DAMAGE_WORDS_THRESHOLDS);
+		int damnCode=thresholds.length-2;
+		for(int i=0;i<thresholds.length;i++)
+		{
+			if (damage <= thresholds[i])
+			{
+				damnCode = i;
+				break;
+			}
+		}
+		return getStandardHitWordInternal(type, damnCode);
 	}
 
 	@Override
