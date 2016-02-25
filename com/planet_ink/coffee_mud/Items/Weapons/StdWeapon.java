@@ -100,7 +100,7 @@ public class StdWeapon extends StdItem implements Weapon, AmmunitionWeapon
 		else
 		if(phyStats().ability()<0)
 			id=name()+" "+phyStats().ability()+((id.length()>0)?"\n":"")+id;
-		return id+"\n\rAttack: "+phyStats().attackAdjustment()+", Damage: "+phyStats().damage();
+		return id+L("\n\rAttack: @x1, Damage: @x2",""+phyStats().attackAdjustment(),""+phyStats().damage());
 	}
 
 	@Override
