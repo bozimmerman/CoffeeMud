@@ -1331,8 +1331,10 @@ public interface RawMaterial extends Item
 				mat = mat << 8;
 			final List<Integer> rscs = new Vector<Integer>();
 			for (final int rsc : c().allCodes)
+			{
 				if ((rsc & MATERIAL_MASK) == mat)
 					rscs.add(Integer.valueOf(rsc));
+			}
 			return rscs;
 		}
 
@@ -1518,8 +1520,10 @@ public interface RawMaterial extends Item
 				final int[] newberries = new int[berries.length - 1];
 				int n = 0;
 				for (final int berrie : berries)
+				{
 					if (berrie != resourceCode)
 						newberries[n++] = berrie;
+				}
 				berries = newberries;
 			}
 			if ((fish) && (!CMParms.contains(fishes, resourceCode)))
@@ -1532,8 +1536,10 @@ public interface RawMaterial extends Item
 				final int[] newfishes = new int[fishes.length - 1];
 				int n = 0;
 				for (final int fishe : fishes)
+				{
 					if (fishe != resourceCode)
 						newfishes[n++] = fishe;
+				}
 				fishes = newfishes;
 			}
 			smells[resourceIndex] = smell;
