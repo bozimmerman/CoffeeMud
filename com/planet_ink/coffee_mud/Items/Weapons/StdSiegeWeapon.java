@@ -1,5 +1,8 @@
 package com.planet_ink.coffee_mud.Items.Weapons;
-import com.planet_ink.coffee_mud.Items.Basic.StdItem;
+import java.util.Enumeration;
+import java.util.LinkedList;
+import java.util.List;
+
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -10,16 +13,16 @@ import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.Basic.StdRideable;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
-import java.util.*;
 
 
 /*
-   Copyright 2001-2016 Bo Zimmerman
+   Copyright 2016-2016 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -33,40 +36,47 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class StdWeapon extends StdItem implements Weapon, AmmunitionWeapon
+public class StdSiegeWeapon extends StdRideable implements AmmunitionWeapon
 {
 	@Override
 	public String ID()
 	{
-		return "StdWeapon";
+		return "StdSiegeWeapon";
 	}
 
-	protected int		weaponDamageType		= TYPE_NATURAL;
-	protected int		weaponClassification	= CLASS_NATURAL;
+	protected int		weaponDamageType		= TYPE_PIERCING;
+	protected int		weaponClassification	= CLASS_RANGED;
 	protected boolean	useExtendedMissString	= false;
 	protected int		minRange				= 0;
-	protected int		maxRange				= 0;
-	protected int		ammoCapacity			= 0;
-	protected long		lastReloadTime			= 0;
+	protected int		maxRange				= 10;
+	protected int		ammoCapacity			= 1;
 
-	public StdWeapon()
+	public StdSiegeWeapon()
 	{
 		super();
-
-		setName("weapon");
-		setDisplayText(" sits here.");
-		setDescription("This is a deadly looking weapon.");
-		wornLogicalAnd=false;
-		properWornBitmap=Wearable.WORN_HELD|Wearable.WORN_WIELD;
-		basePhyStats().setAttackAdjustment(0);
-		basePhyStats().setDamage(0);
+		setName("a siege weapon bow");
+		setDisplayText("a siege weapon is mounted here.");
+		setDescription("It looks like it might fire special ammunition");
 		basePhyStats().setAbility(0);
-		baseGoldValue=15;
-		material=RawMaterial.RESOURCE_STEEL;
-		setUsesRemaining(100);
+		basePhyStats().setLevel(0);
+		basePhyStats.setWeight(500);
+		basePhyStats().setAttackAdjustment(0);
+		basePhyStats().setDamage(20);
+		basePhyStats().setSensesMask(basePhyStats().sensesMask()|PhyStats.SENSE_ITEMNOTGET);
+		setAmmunitionType("spears");
+		setAmmoCapacity(1);
+		setAmmoRemaining(1);
+		baseGoldValue=15000;
 		recoverPhyStats();
+		minRange=1;
+		maxRange=10;
+		weaponDamageType=Weapon.TYPE_PIERCING;
+		material=RawMaterial.RESOURCE_WOOD;
+		weaponClassification=Weapon.CLASS_RANGED;
+		properWornBitmap=0;
+		wornLogicalAnd = false;
 	}
-
+	
 	@Override
 	public int weaponDamageType()
 	{
@@ -101,19 +111,6 @@ public class StdWeapon extends StdItem implements Weapon, AmmunitionWeapon
 		if(phyStats().ability()<0)
 			id=name()+" "+phyStats().ability()+((id.length()>0)?"\n":"")+id;
 		return id+"\n\rAttack: "+phyStats().attackAdjustment()+", Damage: "+phyStats().damage();
-	}
-
-	@Override
-	public void affectPhyStats(Physical affected, PhyStats affectableStats)
-	{
-		super.affectPhyStats(affected,affectableStats);
-		if(amWearingAt(Wearable.WORN_WIELD))
-		{
-			if(phyStats().attackAdjustment()!=0)
-				affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(phyStats().attackAdjustment()));
-			if(phyStats().damage()!=0)
-				affectableStats.setDamage(affectableStats.damage()+phyStats().damage());
-		}
 	}
 
 	@Override
@@ -211,53 +208,14 @@ public class StdWeapon extends StdItem implements Weapon, AmmunitionWeapon
 			msg.addTrailerMsg(CMClass.getMsg(msg.source(),this,CMMsg.MSG_DROP,null));
 
 		if((msg.targetMinor()==CMMsg.TYP_DAMAGE)
-		&&(msg.tool()==this)
-		&&(amWearingAt(Wearable.WORN_WIELD))
-		&&(weaponClassification()!=Weapon.CLASS_NATURAL)
-		&&(weaponDamageType()!=Weapon.TYPE_NATURAL)
-		&&(msg.target() instanceof MOB)
-		&&((msg.value())>0)
-		&&(owner() instanceof MOB)
-		&&(msg.amISource((MOB)owner())))
+		&&(msg.target()==this)
+		&&(msg.value()>0)
+		&&(subjectToWearAndTear())
+		&&((!CMLib.flags().isABonusItems(this))||(CMLib.dice().rollPercentage() > phyStats().level()))
+		&&((material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_ENERGY)
+		&&((material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_GAS))
 		{
-			final MOB ownerM=(MOB)owner();
-			final int hurt=(msg.value());
-			final MOB tmob=(MOB)msg.target();
-			if((hurt>(tmob.maxState().getHitPoints()/10)||(hurt>50))
-			&&(tmob.curState().getHitPoints()>hurt))
-			{
-				if((!tmob.isMonster())
-				   &&(CMLib.dice().rollPercentage()==1)
-				   &&(CMLib.dice().rollPercentage()>(tmob.charStats().getStat(CharStats.STAT_CONSTITUTION)*4))
-				   &&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
-				{
-					Ability A=null;
-					if(subjectToWearAndTear()
-					&&(usesRemaining()<25)
-					&&((material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_METAL))
-					{
-						if(CMLib.dice().rollPercentage()>50)
-							A=CMClass.getAbility("Disease_Lockjaw");
-						else
-							A=CMClass.getAbility("Disease_Tetanus");
-					}
-					else
-						A=CMClass.getAbility("Disease_Infection");
-
-					if((A!=null)&&(tmob.fetchEffect(A.ID())==null))
-						A.invoke(msg.source(),tmob,true,phyStats().level());
-				}
-			}
-
-			if((subjectToWearAndTear())
-			&&(CMLib.dice().rollPercentage()==1)
-			&&(msg.source().rangeToTarget()==0)
-			&&(CMLib.dice().rollPercentage()>((phyStats().level()/2)+(10*phyStats().ability())+(CMLib.flags().isABonusItems(this)?20:0)))
-			&&((material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_ENERGY)
-			&&((material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_GAS))
-			{
-				CMLib.combat().postItemDamage(ownerM, this, null, 1, CMMsg.TYP_JUSTICE, null);
-			}
+			CMLib.combat().postItemDamage(msg.source(), this, null, 1, CMMsg.TYP_JUSTICE, null);
 		}
 	}
 
@@ -275,41 +233,11 @@ public class StdWeapon extends StdItem implements Weapon, AmmunitionWeapon
 			if(ammunitionRemaining()>ammunitionCapacity())
 				setAmmoRemaining(ammunitionCapacity());
 			if(ammunitionRemaining()<=0)
-			{
-				if(lastReloadTime != msg.source().lastTickedDateTime())
-				{
-					msg.source().tell(L("@x1 is out of @x2.",name(),ammunitionType()));
-					if((msg.source().isMine(this))
-					&&(msg.source().location()!=null)
-					&&(CMLib.flags().isAliveAwakeMobile(msg.source(),true)))
-					{
-						lastReloadTime=msg.source().lastTickedDateTime();
-						if((!msg.source().isMonster())||inventoryAmmoCheck(msg.source()))
-							msg.source().enqueCommand(CMParms.parse("LOAD ALL \"$"+name()+"$\""), 0, 0);
-						else
-							msg.source().enqueCommand(CMParms.parse("REMOVE \"$"+name()+"$\""), 0, 0);
-					}
-				}
 				return false;
-			}
 			else
 				setUsesRemaining(usesRemaining()-1);
 		}
 		return true;
-	}
-
-	protected boolean inventoryAmmoCheck(MOB M)
-	{
-		if(M==null)
-			return false;
-		for(int i=0;i<M.numItems();i++)
-		{
-			final Item I=M.getItem(i);
-			if((I instanceof Ammunition)
-			&&(((Ammunition)I).ammunitionType().equalsIgnoreCase(ammunitionType())))
-				return true;
-		}
-		return false;
 	}
 
 	@Override
@@ -329,49 +257,13 @@ public class StdWeapon extends StdItem implements Weapon, AmmunitionWeapon
 			return name()+" looks slightly used ("+usesRemaining()+"%)";
 		else
 		if(usesRemaining()>=85)
-		{
-			switch(weaponClassification())
-			{
-			case Weapon.CLASS_AXE:
-			case Weapon.CLASS_DAGGER:
-			case Weapon.CLASS_EDGED:
-			case Weapon.CLASS_POLEARM:
-			case Weapon.CLASS_SWORD:
-				return name()+" is somewhat dull ("+usesRemaining()+"%)";
-			default:
-				 return name()+" is somewhat worn ("+usesRemaining()+"%)";
-			}
-		}
+			 return name()+" is somewhat worn ("+usesRemaining()+"%)";
 		else
 		if(usesRemaining()>=75)
-		{
-			switch(weaponClassification())
-			{
-			case Weapon.CLASS_AXE:
-			case Weapon.CLASS_DAGGER:
-			case Weapon.CLASS_EDGED:
-			case Weapon.CLASS_POLEARM:
-			case Weapon.CLASS_SWORD:
-				return name()+" is dull ("+usesRemaining()+"%)";
-			default:
-				 return name()+" is worn ("+usesRemaining()+"%)";
-			}
-		}
+			 return name()+" is worn ("+usesRemaining()+"%)";
 		else
 		if(usesRemaining()>50)
-		{
-			switch(weaponClassification())
-			{
-			case Weapon.CLASS_AXE:
-			case Weapon.CLASS_DAGGER:
-			case Weapon.CLASS_EDGED:
-			case Weapon.CLASS_POLEARM:
-			case Weapon.CLASS_SWORD:
-				return name()+" has some notches and chinks ("+usesRemaining()+"%)";
-			default:
-				return name()+" is damaged ("+usesRemaining()+"%)";
-			}
-		}
+			return name()+" is damaged ("+usesRemaining()+"%)";
 		else
 		if(usesRemaining()>25)
 			return name()+" is heavily damaged ("+usesRemaining()+"%)";
@@ -448,10 +340,8 @@ public class StdWeapon extends StdItem implements Weapon, AmmunitionWeapon
 		if(amount==Integer.MAX_VALUE)
 			amount=20;
 		setUsesRemaining(amount);
-		final ItemPossessor myOwner=owner;
 		if((oldAmount>0)
 		&&(amount==0)
-		&&(myOwner instanceof MOB)
 		&&(ammunitionCapacity()>0))
 		{
 			boolean recover=false;
@@ -511,5 +401,4 @@ public class StdWeapon extends StdItem implements Weapon, AmmunitionWeapon
 		if(myOwner!=null)
 			myOwner.recoverPhyStats();
 	}
-
 }

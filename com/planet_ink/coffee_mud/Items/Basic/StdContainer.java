@@ -40,15 +40,15 @@ public class StdContainer extends StdItem implements Container
 		return "StdContainer";
 	}
 	
-	protected boolean isLocked=false;
-	protected boolean hasALock=false;
-	protected boolean isOpen=true;
-	protected boolean hasALid=false;
-	protected boolean defaultsClosed=false;
-	protected boolean defaultsLocked=false;
-	protected int capacity=0;
-	protected long containType=0;
-	protected int openDelayTicks=30;
+	protected boolean	isLocked		= false;
+	protected boolean	hasALock		= false;
+	protected boolean	isOpen			= true;
+	protected boolean	hasALid			= false;
+	protected boolean	defaultsClosed	= false;
+	protected boolean	defaultsLocked	= false;
+	protected int		capacity		= 0;
+	protected long		containType		= 0;
+	protected int		openDelayTicks	= 30;
 
 	public StdContainer()
 	{

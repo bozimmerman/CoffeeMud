@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Items.Basic;
+package com.planet_ink.coffee_mud.Items.Weapons;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -19,7 +19,7 @@ import java.util.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 /*
-   Copyright 2003-2016 Bo Zimmerman
+   Copyright 2016-2016 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -33,26 +33,23 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class GenRideable extends StdRideable
+public class GenSiegeWeapon extends StdSiegeWeapon
 {
 	@Override
 	public String ID()
 	{
-		return "GenRideable";
+		return "GenSiegeWeapon";
 	}
 
 	protected String readableText="";
 
-	public GenRideable()
+	public GenSiegeWeapon()
 	{
 		super();
-		setName("a generic boat");
-		setDisplayText("a generic boat sits here.");
+		setName("a generic siege weapon");
+		setDisplayText("a generic siege weapon is mounted here.");
 		setDescription("");
-		basePhyStats().setWeight(2000);
-		rideBasis=Rideable.RIDEABLE_WATER;
 		setMaterial(RawMaterial.RESOURCE_OAK);
-		recoverPhyStats();
 	}
 
 	@Override
@@ -139,36 +136,36 @@ public class GenRideable extends StdRideable
 		else
 		switch(getCodeNum(code))
 		{
-			case 0:
-				setDoorsNLocks(hasADoor(), isOpen(), defaultsClosed(), CMath.s_bool(val), false, CMath.s_bool(val) && defaultsLocked());
-				break;
-			case 1:
-				setDoorsNLocks(CMath.s_bool(val), isOpen(), CMath.s_bool(val) && defaultsClosed(), hasALock(), isLocked(), defaultsLocked());
-				break;
-			case 2:
-				setCapacity(CMath.s_parseIntExpression(val));
-				break;
-			case 3:
-				setContainTypes(CMath.s_parseBitLongExpression(Container.CONTAIN_DESCS, val));
-				break;
-			case 4:
-				setOpenDelayTicks(CMath.s_parseIntExpression(val));
-				break;
-			case 5:
-				setRideBasis(CMath.s_parseListIntExpression(Rideable.RIDEABLE_DESCS, val));
-				break;
-			case 6:
-				setRiderCapacity(CMath.s_parseIntExpression(val));
-				break;
-			case 7:
-				setDoorsNLocks(hasADoor(), isOpen(), CMath.s_bool(val), hasALock(), isLocked(), defaultsLocked());
-				break;
-			case 8:
-				setDoorsNLocks(hasADoor(), isOpen(), defaultsClosed(), hasALock(), isLocked(), CMath.s_bool(val));
-				break;
-			default:
-			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
+		case 0:
+			setDoorsNLocks(hasADoor(), isOpen(), defaultsClosed(), CMath.s_bool(val), false, CMath.s_bool(val) && defaultsLocked());
 			break;
+		case 1:
+			setDoorsNLocks(CMath.s_bool(val), isOpen(), CMath.s_bool(val) && defaultsClosed(), hasALock(), isLocked(), defaultsLocked());
+			break;
+		case 2:
+			setCapacity(CMath.s_parseIntExpression(val));
+			break;
+		case 3:
+			setContainTypes(CMath.s_parseBitLongExpression(Container.CONTAIN_DESCS, val));
+			break;
+		case 4:
+			setOpenDelayTicks(CMath.s_parseIntExpression(val));
+			break;
+		case 5:
+			setRideBasis(CMath.s_parseListIntExpression(Rideable.RIDEABLE_DESCS, val));
+			break;
+		case 6:
+			setRiderCapacity(CMath.s_parseIntExpression(val));
+			break;
+		case 7:
+			setDoorsNLocks(hasADoor(), isOpen(), CMath.s_bool(val), hasALock(), isLocked(), defaultsLocked());
+			break;
+		case 8:
+			setDoorsNLocks(hasADoor(), isOpen(), defaultsClosed(), hasALock(), isLocked(), CMath.s_bool(val));
+			break;
+		default:
+			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
+		break;
 		}
 	}
 	
@@ -190,7 +187,7 @@ public class GenRideable extends StdRideable
 	{
 		if(codes!=null)
 			return codes;
-		final String[] MYCODES=CMProps.getStatCodesList(GenRideable.MYCODES,this);
+		final String[] MYCODES=CMProps.getStatCodesList(GenSiegeWeapon.MYCODES,this);
 		final String[] superCodes=CMParms.toStringArray(GenericBuilder.GenItemCode.values());
 		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;
@@ -204,7 +201,7 @@ public class GenRideable extends StdRideable
 	@Override
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof GenRideable))
+		if(!(E instanceof GenSiegeWeapon))
 			return false;
 		final String[] codes=getStatCodes();
 		for(int i=0;i<codes.length;i++)
