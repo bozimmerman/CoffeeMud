@@ -33,7 +33,12 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class ShieldWeapon extends StdWeapon implements Shield
 {
-	@Override public String ID(){	return "ShieldWeapon";}
+	@Override
+	public String ID()
+	{
+		return "ShieldWeapon";
+	}
+
 	public ShieldWeapon()
 	{
 		super();
@@ -66,6 +71,7 @@ public class ShieldWeapon extends StdWeapon implements Shield
 		weaponDamageType=Weapon.TYPE_BASHING;
 		recoverPhyStats();
 	}
+
 	public ShieldWeapon(Item shield)
 	{
 		super();

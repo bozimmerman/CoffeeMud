@@ -35,7 +35,12 @@ import java.util.*;
 */
 public class GenNet extends StdNet
 {
-	@Override public String ID(){	return "GenNet";}
+	@Override
+	public String ID()
+	{
+		return "GenNet";
+	}
+
 	protected String	readableText="";
 	public GenNet()
 	{
@@ -47,7 +52,11 @@ public class GenNet extends StdNet
 		recoverPhyStats();
 	}
 
-	@Override public boolean isGeneric(){return true;}
+	@Override
+	public boolean isGeneric()
+	{
+		return true;
+	}
 
 
 	@Override
@@ -55,8 +64,18 @@ public class GenNet extends StdNet
 	{
 		return CMLib.coffeeMaker().getPropertiesStr(this,false);
 	}
-	@Override public String readableText(){return readableText;}
-	@Override public void setReadableText(String text){readableText=text;}
+
+	@Override
+	public String readableText()
+	{
+		return readableText;
+	}
+
+	@Override
+	public void setReadableText(String text)
+	{
+		readableText=text;
+	}
 
 	@Override
 	public void setMiscText(String newText)

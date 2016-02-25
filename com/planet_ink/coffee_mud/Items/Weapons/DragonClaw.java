@@ -33,7 +33,12 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class DragonClaw extends Natural
 {
-	@Override public String ID(){	return "DragonClaw";}
+	@Override
+	public String ID()
+	{
+		return "DragonClaw";
+	}
+
 	public DragonClaw()
 	{
 		super();

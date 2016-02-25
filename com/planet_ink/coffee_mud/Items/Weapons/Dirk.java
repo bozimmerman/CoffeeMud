@@ -33,7 +33,12 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class Dirk extends Dagger
 {
-	@Override public String ID(){	return "Dirk";}
+	@Override
+	public String ID()
+	{
+		return "Dirk";
+	}
+
 	public Dirk()
 	{
 		super();

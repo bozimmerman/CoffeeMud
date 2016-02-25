@@ -34,7 +34,12 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class DaggerOfVenom extends Dagger
 {
-	@Override public String ID(){	return "DaggerOfVenom";}
+	@Override
+	public String ID()
+	{
+		return "DaggerOfVenom";
+	}
+
 	public DaggerOfVenom()
 	{
 		super();

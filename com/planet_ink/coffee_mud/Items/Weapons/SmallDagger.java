@@ -33,7 +33,12 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class SmallDagger extends Dagger
 {
-	@Override public String ID(){	return "SmallDagger";}
+	@Override
+	public String ID()
+	{
+		return "SmallDagger";
+	}
+
 	public SmallDagger()
 	{
 		super();

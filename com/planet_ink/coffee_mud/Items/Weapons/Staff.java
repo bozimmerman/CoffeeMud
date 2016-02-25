@@ -93,6 +93,7 @@ public class Staff extends StdWeapon implements Wand
 			miscText=theSpell.ID();
 		secretWord=StdWand.getWandWord(miscText);
 	}
+
 	@Override
 	public void setMiscText(String newText)
 	{

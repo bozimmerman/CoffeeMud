@@ -34,7 +34,12 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class StdLasso extends StdWeapon
 {
-	@Override public String ID(){	return "StdLasso";}
+	@Override
+	public String ID()
+	{
+		return "StdLasso";
+	}
+
 	public StdLasso()
 	{
 		super();

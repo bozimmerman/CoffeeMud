@@ -33,7 +33,12 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class BattleAxe extends Sword
 {
-	@Override public String ID(){	return "BattleAxe";}
+	@Override
+	public String ID()
+	{
+		return "BattleAxe";
+	}
+
 	public BattleAxe()
 	{
 		super();

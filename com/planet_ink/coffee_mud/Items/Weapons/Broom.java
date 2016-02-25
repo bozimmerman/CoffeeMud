@@ -33,7 +33,12 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class Broom extends Quarterstaff
 {
-	@Override public String ID(){	return "Broom";}
+	@Override
+	public String ID()
+	{
+		return "Broom";
+	}
+
 	public Broom()
 	{
 		super();

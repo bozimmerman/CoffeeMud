@@ -35,7 +35,12 @@ import java.util.*;
 */
 public class GenLasso extends StdLasso
 {
-	@Override public String ID(){	return "GenLasso";}
+	@Override
+	public String ID()
+	{
+		return "GenLasso";
+	}
+
 	protected String	readableText="";
 	public GenLasso()
 	{
@@ -47,7 +52,11 @@ public class GenLasso extends StdLasso
 		recoverPhyStats();
 	}
 
-	@Override public boolean isGeneric(){return true;}
+	@Override
+	public boolean isGeneric()
+	{
+		return true;
+	}
 
 
 	@Override
@@ -55,8 +64,18 @@ public class GenLasso extends StdLasso
 	{
 		return CMLib.coffeeMaker().getPropertiesStr(this,false);
 	}
-	@Override public String readableText(){return readableText;}
-	@Override public void setReadableText(String text){readableText=text;}
+
+	@Override
+	public String readableText()
+	{
+		return readableText;
+	}
+
+	@Override
+	public void setReadableText(String text)
+	{
+		readableText=text;
+	}
 
 	@Override
 	public void setMiscText(String newText)

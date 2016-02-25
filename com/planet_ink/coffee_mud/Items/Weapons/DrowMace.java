@@ -33,7 +33,12 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class DrowMace extends Mace
 {
-	@Override public String ID(){	return "DrowMace";}
+	@Override
+	public String ID()
+	{
+		return "DrowMace";
+	}
+
 	public DrowMace()
 	{
 		super();

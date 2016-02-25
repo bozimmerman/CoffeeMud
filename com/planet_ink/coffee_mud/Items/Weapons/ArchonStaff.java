@@ -39,7 +39,12 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 {
-	@Override public String ID(){    return "ArchonStaff";}
+	@Override
+	public String ID()
+	{
+		return "ArchonStaff";
+	}
+
 	private static Wand theWand=(Wand)CMClass.getMiscMagic("StdWand");
 	protected final static String[] MAGIC_WORDS={"LEVEL","RESTORE","REFRESH","BLAST","BURN"};
 
@@ -68,8 +73,16 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 		secretWord="REFRESH, RESTORE, BLAST, LEVEL X UP, LEVEL X DOWN, BURN";
 	}
 
-	@Override public int maxUses(){return Integer.MAX_VALUE;}
-	@Override public void setMaxUses(int newMaxUses){}
+	@Override
+	public int maxUses()
+	{
+		return Integer.MAX_VALUE;
+	}
+
+	@Override
+	public void setMaxUses(int newMaxUses)
+	{
+	}
 
 	@Override
 	public void setSpell(Ability theSpell)

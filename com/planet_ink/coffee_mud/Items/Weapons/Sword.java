@@ -35,7 +35,12 @@ import java.util.*;
 */
 public class Sword extends StdWeapon
 {
-	@Override public String ID(){	return "Sword";}
+	@Override
+	public String ID()
+	{
+		return "Sword";
+	}
+
 	public Sword()
 	{
 		super();

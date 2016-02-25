@@ -33,7 +33,12 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class Stiletto extends Dagger
 {
-	@Override public String ID(){	return "Stiletto";}
+	@Override
+	public String ID()
+	{
+		return "Stiletto";
+	}
+
 	public Stiletto()
 	{
 		super();

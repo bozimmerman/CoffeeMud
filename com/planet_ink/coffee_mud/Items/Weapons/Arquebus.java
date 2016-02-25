@@ -33,7 +33,12 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class Arquebus extends StdWeapon
 {
-	@Override public String ID(){	return "Arquebus";}
+	@Override
+	public String ID()
+	{
+		return "Arquebus";
+	}
+
 	public Arquebus()
 	{
 		super();

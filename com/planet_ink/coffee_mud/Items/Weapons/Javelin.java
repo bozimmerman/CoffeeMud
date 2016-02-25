@@ -33,7 +33,12 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class Javelin extends StdWeapon
 {
-	@Override public String ID(){	return "Javelin";}
+	@Override
+	public String ID()
+	{
+		return "Javelin";
+	}
+
 	public Javelin()
 	{
 		super();

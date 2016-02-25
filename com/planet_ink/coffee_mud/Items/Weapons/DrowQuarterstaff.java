@@ -33,7 +33,12 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class DrowQuarterstaff extends Mace
 {
-	@Override public String ID(){	return "DrowQuarterstaff";}
+	@Override
+	public String ID()
+	{
+		return "DrowQuarterstaff";
+	}
+
 	public DrowQuarterstaff()
 	{
 		super();

@@ -35,7 +35,12 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class Natural extends StdWeapon
 {
-	@Override public String ID(){	return "Natural";}
+	@Override
+	public String ID()
+	{
+		return "Natural";
+	}
+
 	public Natural()
 	{
 		super();

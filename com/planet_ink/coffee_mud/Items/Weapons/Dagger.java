@@ -33,7 +33,12 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class Dagger extends StdWeapon
 {
-	@Override public String ID(){	return "Dagger";}
+	@Override
+	public String ID()
+	{
+		return "Dagger";
+	}
+
 	public Dagger()
 	{
 		super();

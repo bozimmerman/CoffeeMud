@@ -33,7 +33,12 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class DrowSword extends Longsword
 {
-	@Override public String ID(){	return "DrowSword";}
+	@Override
+	public String ID()
+	{
+		return "DrowSword";
+	}
+
 	public DrowSword()
 	{
 		super();

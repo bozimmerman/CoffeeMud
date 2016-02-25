@@ -33,7 +33,12 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class StdBow extends StdWeapon
 {
-	@Override public String ID(){	return "StdBow";}
+	@Override
+	public String ID()
+	{
+		return "StdBow";
+	}
+
 	public StdBow()
 	{
 		super();

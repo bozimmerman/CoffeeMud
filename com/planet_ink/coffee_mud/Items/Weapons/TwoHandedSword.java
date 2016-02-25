@@ -33,7 +33,12 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class TwoHandedSword extends Sword
 {
-	@Override public String ID(){	return "TwoHandedSword";}
+	@Override
+	public String ID()
+	{
+		return "TwoHandedSword";
+	}
+
 	public TwoHandedSword()
 	{
 		super();

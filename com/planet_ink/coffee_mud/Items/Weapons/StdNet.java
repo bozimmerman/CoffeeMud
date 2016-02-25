@@ -34,7 +34,12 @@ import java.util.*;
 */
 public class StdNet extends StdWeapon
 {
-	@Override public String ID(){	return "StdNet";}
+	@Override
+	public String ID()
+	{
+		return "StdNet";
+	}
+
 	public StdNet()
 	{
 		super();

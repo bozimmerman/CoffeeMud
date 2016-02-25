@@ -33,7 +33,12 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class Glaive extends StdWeapon
 {
-	@Override public String ID(){	return "Glaive";}
+	@Override
+	public String ID()
+	{
+		return "Glaive";
+	}
+
 	public Glaive()
 	{
 		super();

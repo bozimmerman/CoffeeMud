@@ -33,7 +33,12 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class Mace extends StdWeapon
 {
-	@Override public String ID(){	return "Mace";}
+	@Override
+	public String ID()
+	{
+		return "Mace";
+	}
+
 	public Mace()
 	{
 		super();

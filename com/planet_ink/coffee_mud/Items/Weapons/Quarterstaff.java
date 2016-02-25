@@ -33,7 +33,12 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class Quarterstaff extends StdWeapon
 {
-	@Override public String ID(){	return "Quarterstaff";}
+	@Override
+	public String ID()
+	{
+		return "Quarterstaff";
+	}
+
 	public Quarterstaff()
 	{
 		super();

@@ -33,7 +33,12 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class StdSling extends StdWeapon
 {
-	@Override public String ID(){	return "StdSling";}
+	@Override
+	public String ID()
+	{
+		return "StdSling";
+	}
+
 	public StdSling()
 	{
 		super();

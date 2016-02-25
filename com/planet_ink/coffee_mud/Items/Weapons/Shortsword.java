@@ -33,7 +33,12 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class Shortsword extends Sword
 {
-	@Override public String ID(){	return "Shortsword";}
+	@Override
+	public String ID()
+	{
+		return "Shortsword";
+	}
+
 	public Shortsword()
 	{
 		super();

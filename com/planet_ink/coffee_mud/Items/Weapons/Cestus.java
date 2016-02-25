@@ -33,7 +33,12 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class Cestus extends StdWeapon
 {
-	@Override public String ID(){	return "Cestus";}
+	@Override
+	public String ID()
+	{
+		return "Cestus";
+	}
+
 	public Cestus()
 	{
 		super();

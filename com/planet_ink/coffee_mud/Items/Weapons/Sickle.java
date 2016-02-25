@@ -33,7 +33,12 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class Sickle extends StdWeapon
 {
-	@Override public String ID(){	return "Sickle";}
+	@Override
+	public String ID()
+	{
+		return "Sickle";
+	}
+
 	public Sickle()
 	{
 		super();

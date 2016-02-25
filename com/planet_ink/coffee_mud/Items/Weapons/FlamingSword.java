@@ -33,7 +33,12 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class FlamingSword extends Longsword
 {
-	@Override public String ID(){	return "FlamingSword";}
+	@Override
+	public String ID()
+	{
+		return "FlamingSword";
+	}
+
 	public FlamingSword()
 	{
 		super();

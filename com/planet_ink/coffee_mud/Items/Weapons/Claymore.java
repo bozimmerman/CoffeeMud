@@ -34,7 +34,12 @@ import java.util.*;
 */
 public class Claymore extends Sword
 {
-	@Override public String ID(){	return "Claymore";}
+	@Override
+	public String ID()
+	{
+		return "Claymore";
+	}
+
 	public final static int PLAIN					= 0;
 	public final static int QUALITY_WEAPON			= 1;
 	public final static int EXCEPTIONAL	  			= 2;

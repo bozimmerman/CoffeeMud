@@ -33,7 +33,12 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class Scimitar extends Sword
 {
-	@Override public String ID(){	return "Scimitar";}
+	@Override
+	public String ID()
+	{
+		return "Scimitar";
+	}
+
 	public Scimitar()
 	{
 		super();

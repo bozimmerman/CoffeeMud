@@ -33,7 +33,12 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class Rapier extends Sword
 {
-	@Override public String ID(){	return "Rapier";}
+	@Override
+	public String ID()
+	{
+		return "Rapier";
+	}
+
 	public Rapier()
 	{
 		super();

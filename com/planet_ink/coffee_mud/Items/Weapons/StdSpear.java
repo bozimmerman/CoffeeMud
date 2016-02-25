@@ -34,7 +34,12 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class StdSpear extends StdWeapon
 {
-	@Override public String ID(){	return "StdSpear";}
+	@Override
+	public String ID()
+	{
+		return "StdSpear";
+	}
+
 	public StdSpear()
 	{
 		super();

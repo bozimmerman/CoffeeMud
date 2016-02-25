@@ -33,7 +33,12 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class Sabre extends StdWeapon
 {
-	@Override public String ID(){	return "Sabre";}
+	@Override
+	public String ID()
+	{
+		return "Sabre";
+	}
+
 	public Sabre()
 	{
 		super();

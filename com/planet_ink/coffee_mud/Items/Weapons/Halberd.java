@@ -34,7 +34,12 @@ import java.util.*;
 */
 public class Halberd extends StdWeapon
 {
-	@Override public String ID(){	return "Halberd";}
+	@Override
+	public String ID()
+	{
+		return "Halberd";
+	}
+
 	public final static int PLAIN					= 0;
 	public final static int QUALITY_WEAPON			= 1;
 	public final static int EXCEPTIONAL	  			= 2;

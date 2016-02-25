@@ -33,7 +33,12 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class Katana extends Sword
 {
-	@Override public String ID(){	return "Katana";}
+	@Override
+	public String ID()
+	{
+		return "Katana";
+	}
+
 	public Katana()
 	{
 		super();

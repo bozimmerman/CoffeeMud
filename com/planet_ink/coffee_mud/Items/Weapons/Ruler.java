@@ -33,7 +33,12 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class Ruler extends Quarterstaff
 {
-	@Override public String ID(){	return "Ruler";}
+	@Override
+	public String ID()
+	{
+		return "Ruler";
+	}
+
 	public Ruler()
 	{
 		super();

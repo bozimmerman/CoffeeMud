@@ -34,7 +34,12 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class ThrowingStone extends StdWeapon
 {
-	@Override public String ID(){	return "ThrowingStone";}
+	@Override
+	public String ID()
+	{
+		return "ThrowingStone";
+	}
+
 	public ThrowingStone()
 	{
 		super();

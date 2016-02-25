@@ -35,7 +35,12 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 */
 public class GenWeapon extends StdWeapon
 {
-	@Override public String ID(){	return "GenWeapon";}
+	@Override
+	public String ID()
+	{
+		return "GenWeapon";
+	}
+
 	protected String	readableText="";
 	public GenWeapon()
 	{
@@ -56,7 +61,11 @@ public class GenWeapon extends StdWeapon
 		recoverPhyStats();
 	}
 
-	@Override public boolean isGeneric(){return true;}
+	@Override
+	public boolean isGeneric()
+	{
+		return true;
+	}
 
 
 	@Override
@@ -64,8 +73,18 @@ public class GenWeapon extends StdWeapon
 	{
 		return CMLib.coffeeMaker().getPropertiesStr(this,false);
 	}
-	@Override public String readableText(){return readableText;}
-	@Override public void setReadableText(String text){readableText=text;}
+
+	@Override
+	public String readableText()
+	{
+		return readableText;
+	}
+
+	@Override
+	public void setReadableText(String text)
+	{
+		readableText=text;
+	}
 
 	@Override
 	public void setMiscText(String newText)
@@ -74,6 +93,7 @@ public class GenWeapon extends StdWeapon
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
 		recoverPhyStats();
 	}
+
 	private final static String[] MYCODES={"MINRANGE","MAXRANGE","WEAPONTYPE","WEAPONCLASS",
 							  			   "AMMOTYPE","AMMOCAPACITY"};
 	@Override
@@ -93,6 +113,7 @@ public class GenWeapon extends StdWeapon
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
 	}
+
 	@Override
 	public void setStat(String code, String val)
 	{
@@ -112,14 +133,18 @@ public class GenWeapon extends StdWeapon
 			break;
 		}
 	}
+
 	@Override
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<MYCODES.length;i++)
+		{
 			if(code.equalsIgnoreCase(MYCODES[i]))
 				return i;
+		}
 		return -1;
 	}
+
 	private static String[] codes=null;
 	@Override
 	public String[] getStatCodes()
@@ -136,6 +161,7 @@ public class GenWeapon extends StdWeapon
 			codes[i]=MYCODES[x];
 		return codes;
 	}
+
 	@Override
 	public boolean sameAs(Environmental E)
 	{
@@ -143,8 +169,10 @@ public class GenWeapon extends StdWeapon
 			return false;
 		final String[] codes=getStatCodes();
 		for(int i=0;i<codes.length;i++)
+		{
 			if(!E.getStat(codes[i]).equals(getStat(codes[i])))
 				return false;
+		}
 		return true;
 	}
 }

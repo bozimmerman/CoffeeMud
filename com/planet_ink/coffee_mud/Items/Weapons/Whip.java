@@ -33,7 +33,12 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class Whip extends StdWeapon
 {
-	@Override public String ID(){	return "Whip";}
+	@Override
+	public String ID()
+	{
+		return "Whip";
+	}
+
 	public Whip()
 	{
 		super();

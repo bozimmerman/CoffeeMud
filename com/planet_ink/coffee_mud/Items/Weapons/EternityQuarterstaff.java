@@ -33,7 +33,12 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class EternityQuarterstaff extends Quarterstaff
 {
-	@Override public String ID(){	return "EternityQuarterstaff";}
+	@Override
+	public String ID()
+	{
+		return "EternityQuarterstaff";
+	}
+
 	public EternityQuarterstaff()
 	{
 		super();

@@ -35,7 +35,12 @@ import java.util.*;
 */
 public class GenSling extends StdSling
 {
-	@Override public String ID(){	return "GenSling";}
+	@Override
+	public String ID()
+	{
+		return "GenSling";
+	}
+
 	protected String	readableText="";
 	public GenSling()
 	{
@@ -47,7 +52,11 @@ public class GenSling extends StdSling
 		recoverPhyStats();
 	}
 
-	@Override public boolean isGeneric(){return true;}
+	@Override
+	public boolean isGeneric()
+	{
+		return true;
+	}
 
 
 	@Override
@@ -55,8 +64,18 @@ public class GenSling extends StdSling
 	{
 		return CMLib.coffeeMaker().getPropertiesStr(this,false);
 	}
-	@Override public String readableText(){return readableText;}
-	@Override public void setReadableText(String text){readableText=text;}
+
+	@Override
+	public String readableText()
+	{
+		return readableText;
+	}
+
+	@Override
+	public void setReadableText(String text)
+	{
+		readableText=text;
+	}
 
 	@Override
 	public void setMiscText(String newText)
