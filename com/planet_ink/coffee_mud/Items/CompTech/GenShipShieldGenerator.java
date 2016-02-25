@@ -109,6 +109,7 @@ public class GenShipShieldGenerator extends StdShipShieldGenerator
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
 	}
+
 	@Override
 	public void setStat(String code, String val)
 	{

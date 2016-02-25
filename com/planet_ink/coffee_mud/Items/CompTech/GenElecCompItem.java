@@ -93,6 +93,7 @@ public class GenElecCompItem extends StdElecCompItem
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
 	}
+
 	@Override
 	public void setStat(String code, String val)
 	{

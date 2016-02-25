@@ -64,6 +64,7 @@ public class StdShipEngine extends StdCompGenerator implements ShipEngine
 		recoverPhyStats();
 		setMaterial(RawMaterial.RESOURCE_STEEL);
 	}
+
 	@Override
 	public boolean sameAs(Environmental E)
 	{

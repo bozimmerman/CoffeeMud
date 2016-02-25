@@ -155,6 +155,7 @@ public class StdCompFuelConsumer extends StdElecCompContainer implements FuelCon
 		}
 		return fuelCache;
 	}
+
 	protected synchronized void clearFuelCache()
 	{
 		fuelCache=null;

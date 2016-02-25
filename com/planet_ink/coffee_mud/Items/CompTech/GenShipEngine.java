@@ -150,6 +150,7 @@ public class GenShipEngine extends StdShipEngine
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
 	}
+
 	@Override
 	public void setStat(String code, String val)
 	{
@@ -236,6 +237,7 @@ public class GenShipEngine extends StdShipEngine
 			break;
 		}
 	}
+
 	@Override
 	protected int getCodeNum(String code)
 	{

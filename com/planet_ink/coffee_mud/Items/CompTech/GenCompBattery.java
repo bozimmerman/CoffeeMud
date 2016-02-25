@@ -95,6 +95,7 @@ public class GenCompBattery extends StdCompBattery implements PowerSource
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
 	}
+
 	@Override
 	public void setStat(String code, String val)
 	{
@@ -126,6 +127,7 @@ public class GenCompBattery extends StdCompBattery implements PowerSource
 			break;
 		}
 	}
+
 	@Override
 	protected int getCodeNum(String code)
 	{

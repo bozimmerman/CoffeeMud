@@ -566,8 +566,10 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 						M.location().show(M, this, null, CMMsg.MASK_ALWAYS|CMMsg.TYP_OK_VISUAL, CMMsg.NO_EFFECT, CMMsg.NO_EFFECT, L("<T-NAME> says '^N\n\rUnknown deactivation command. Please read the screen for a menu of TYPEable commands.\n\r^.^N'"));
 					else
 					for(final CMMsg msg2 : msgs)
+					{
 						if(msg2.target().okMessage(M, msg2))
 							msg2.target().executeMsg(M, msg2);
+					}
 					if(readFlag)
 						forceReadersSeeNew();
 				}
