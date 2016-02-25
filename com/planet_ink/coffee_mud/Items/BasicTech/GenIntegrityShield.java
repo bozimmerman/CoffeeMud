@@ -35,7 +35,11 @@ import java.util.*;
 */
 public class GenIntegrityShield extends GenPersonalShield
 {
-	@Override public String ID(){	return "GenIntegrityShield";}
+	@Override
+	public String ID()
+	{
+		return "GenIntegrityShield";
+	}
 
 	public GenIntegrityShield()
 	{

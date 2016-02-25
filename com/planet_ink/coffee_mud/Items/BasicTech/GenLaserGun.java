@@ -35,7 +35,11 @@ import java.util.*;
 */
 public class GenLaserGun extends GenElecWeapon
 {
-	@Override public String ID(){	return "GenLaserGun";}
+	@Override
+	public String ID()
+	{
+		return "GenLaserGun";
+	}
 
 	public GenLaserGun()
 	{

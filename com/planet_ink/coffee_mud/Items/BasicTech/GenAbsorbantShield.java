@@ -34,7 +34,11 @@ import java.util.*;
 */
 public class GenAbsorbantShield extends GenPersonalShield
 {
-	@Override public String ID(){	return "GenAbsorbantShield";}
+	@Override
+	public String ID()
+	{
+		return "GenAbsorbantShield";
+	}
 
 	public GenAbsorbantShield()
 	{

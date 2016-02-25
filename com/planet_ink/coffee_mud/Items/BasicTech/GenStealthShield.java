@@ -36,7 +36,11 @@ import java.util.*;
 public class GenStealthShield extends GenTickerShield
 {
 
-	@Override public String ID(){	return "GenStealthShield";}
+	@Override
+	public String ID()
+	{
+		return "GenStealthShield";
+	}
 
 	public GenStealthShield()
 	{

@@ -105,6 +105,7 @@ public class GenPersonalShield extends StdPersonalShield
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
 	}
+
 	@Override
 	public void setStat(String code, String val)
 	{
@@ -165,6 +166,7 @@ public class GenPersonalShield extends StdPersonalShield
 			codes[i]=MYCODES[x];
 		return codes;
 	}
+
 	@Override
 	public boolean sameAs(Environmental E)
 	{

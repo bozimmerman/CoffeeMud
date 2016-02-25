@@ -123,6 +123,7 @@ public class GenElecPanel extends StdElecPanel
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
 	}
+
 	@Override
 	public void setStat(String code, String val)
 	{
@@ -177,6 +178,7 @@ public class GenElecPanel extends StdElecPanel
 			break;
 		}
 	}
+
 	@Override
 	protected int getCodeNum(String code)
 	{

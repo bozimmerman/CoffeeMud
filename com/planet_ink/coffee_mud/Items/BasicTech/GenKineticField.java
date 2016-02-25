@@ -35,7 +35,11 @@ import java.util.*;
 */
 public class GenKineticField extends GenPersonalShield
 {
-	@Override public String ID(){	return "GenKineticField";}
+	@Override
+	public String ID()
+	{
+		return "GenKineticField";
+	}
 
 	public GenKineticField()
 	{

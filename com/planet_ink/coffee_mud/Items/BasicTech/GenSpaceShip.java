@@ -45,7 +45,12 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 */
 public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 {
-	@Override public String ID(){	return "GenSpaceShip";}
+	@Override
+	public String ID()
+	{
+		return "GenSpaceShip";
+	}
+
 	protected Manufacturer	cachedManufact  = null;
 	protected String	 	manufacturer	= "RANDOM";
 	public long[]   		coordinates 	= new long[3];
@@ -782,6 +787,7 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
 	}
+
 	@Override
 	public void setStat(String code, String val)
 	{
@@ -879,8 +885,10 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<MYCODES.length;i++)
+		{
 			if(code.equalsIgnoreCase(MYCODES[i]))
 				return i;
+		}
 		return -1;
 	}
 

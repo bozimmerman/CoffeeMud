@@ -107,6 +107,7 @@ public class GenElecItem extends StdElecItem
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
 	}
+
 	@Override
 	public void setStat(String code, String val)
 	{
@@ -132,6 +133,7 @@ public class GenElecItem extends StdElecItem
 			break;
 		}
 	}
+
 	@Override
 	protected int getCodeNum(String code)
 	{

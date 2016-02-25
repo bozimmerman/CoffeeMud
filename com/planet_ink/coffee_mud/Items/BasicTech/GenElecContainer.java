@@ -123,6 +123,7 @@ public class GenElecContainer extends StdElecContainer
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
 	}
+
 	@Override
 	public void setStat(String code, String val)
 	{

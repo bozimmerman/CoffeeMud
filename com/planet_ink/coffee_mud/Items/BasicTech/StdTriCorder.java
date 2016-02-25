@@ -36,7 +36,11 @@ import java.util.*;
 */
 public class StdTriCorder extends StdElecContainer implements Computer
 {
-	@Override public String ID(){	return "StdTriCorder";}
+	@Override
+	public String ID()
+	{
+		return "StdTriCorder";
+	}
 
 	protected final static int POWER_RATE		= 4; // how often (in ticks) an activated tricorder loses a tick of power. at 1000 power, this is 1 hr/rate (4 hrs total)
 
@@ -108,8 +112,10 @@ public class StdTriCorder extends StdElecContainer implements Computer
 			final List<Item> list=getContents();
 			final LinkedList<Software> softwareList=new LinkedList<Software>();
 			for(final Item I : list)
+			{
 				if(I instanceof Software)
 					softwareList.add((Software)I);
+			}
 			nextSoftwareCheck=System.currentTimeMillis()+(10*1000);
 			software=softwareList;
 		}
@@ -368,8 +374,10 @@ public class StdTriCorder extends StdElecContainer implements Computer
 						M.location().show(M, this, null, CMMsg.MASK_ALWAYS|CMMsg.TYP_OK_VISUAL, CMMsg.NO_EFFECT, CMMsg.NO_EFFECT, L("<T-NAME> says '^N\n\rUnknown activation command. Please read the screen for a menu of TYPEable commands.\n\r^.^N'"));
 					else
 					for(final CMMsg msg2 : msgs)
+					{
 						if(msg2.target().okMessage(M, msg2))
 							msg2.target().executeMsg(M, msg2);
+					}
 					if(readFlag)
 						forceReadersSeeNew();
 				}
@@ -395,8 +403,10 @@ public class StdTriCorder extends StdElecContainer implements Computer
 						M.location().show(M, this, null, CMMsg.MASK_ALWAYS|CMMsg.TYP_OK_VISUAL, CMMsg.NO_EFFECT, CMMsg.NO_EFFECT, L("<T-NAME> says '^N\n\rUnknown deactivation command. Please read the screen for a menu of TYPEable commands.\n\r^.^N'"));
 					else
 					for(final CMMsg msg2 : msgs)
+					{
 						if(msg2.target().okMessage(M, msg2))
 							msg2.target().executeMsg(M, msg2);
+					}
 					if(readFlag)
 						forceReadersSeeNew();
 				}

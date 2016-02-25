@@ -35,7 +35,11 @@ import java.util.*;
 */
 public class GenDisruptor extends GenElecWeapon
 {
-	@Override public String ID(){	return "GenDisruptor";}
+	@Override
+	public String ID()
+	{
+		return "GenDisruptor";
+	}
 
 	protected int state=0;
 

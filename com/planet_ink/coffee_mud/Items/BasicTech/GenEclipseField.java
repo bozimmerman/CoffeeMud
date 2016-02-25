@@ -36,7 +36,11 @@ import java.util.*;
 public class GenEclipseField extends GenTickerShield
 {
 
-	@Override public String ID(){	return "GenEclipseField";}
+	@Override
+	public String ID()
+	{
+		return "GenEclipseField";
+	}
 
 	public GenEclipseField()
 	{

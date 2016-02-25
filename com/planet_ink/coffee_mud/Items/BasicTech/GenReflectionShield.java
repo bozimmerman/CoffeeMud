@@ -35,7 +35,11 @@ import java.util.*;
 */
 public class GenReflectionShield extends GenPersonalShield
 {
-	@Override public String ID(){	return "GenReflectionShield";}
+	@Override
+	public String ID()
+	{
+		return "GenReflectionShield";
+	}
 
 	public GenReflectionShield()
 	{

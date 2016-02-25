@@ -35,7 +35,11 @@ import java.util.*;
 */
 public class GenPhaser extends GenElecWeapon
 {
-	@Override public String ID(){	return "GenPhaser";}
+	@Override
+	public String ID()
+	{
+		return "GenPhaser";
+	}
 
 	public GenPhaser()
 	{

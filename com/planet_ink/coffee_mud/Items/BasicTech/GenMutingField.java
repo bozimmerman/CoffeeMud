@@ -35,7 +35,11 @@ import java.util.*;
 */
 public class GenMutingField extends GenPersonalShield
 {
-	@Override public String ID(){	return "GenMutingField";}
+	@Override
+	public String ID()
+	{
+		return "GenMutingField";
+	}
 
 	public GenMutingField()
 	{

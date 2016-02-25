@@ -36,7 +36,11 @@ import java.util.*;
 */
 public class StdPersonalShield extends StdElecItem implements Armor
 {
-	@Override public String ID(){	return "StdPersonalShield";}
+	@Override
+	public String ID()
+	{
+		return "StdPersonalShield";
+	}
 
 	short layer=0;
 	short layerAttributes=0;
@@ -72,7 +76,11 @@ public class StdPersonalShield extends StdElecItem implements Armor
 			"The field around <T-NAME> flickers and dies out.");
 	}
 
-	@Override public TechType getTechType() { return TechType.PERSONAL_SHIELD; }
+	@Override
+	public TechType getTechType()
+	{
+		return TechType.PERSONAL_SHIELD;
+	}
 
 	protected boolean doShield(MOB mob, CMMsg msg, double successFactor)
 	{
