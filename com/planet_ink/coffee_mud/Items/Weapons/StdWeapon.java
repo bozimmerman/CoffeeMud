@@ -326,7 +326,7 @@ public class StdWeapon extends StdItem implements Weapon, AmmunitionWeapon
 			return "";
 		else
 		if(usesRemaining()>=95)
-			return name()+" looks slightly used ("+usesRemaining()+"%)";
+			return L("@x1 looks slightly used (@x2%)",name(),""+usesRemaining());
 		else
 		if(usesRemaining()>=85)
 		{
@@ -337,9 +337,9 @@ public class StdWeapon extends StdItem implements Weapon, AmmunitionWeapon
 			case Weapon.CLASS_EDGED:
 			case Weapon.CLASS_POLEARM:
 			case Weapon.CLASS_SWORD:
-				return name()+" is somewhat dull ("+usesRemaining()+"%)";
+				return L("@x1 is somewhat dull (@x2%)",name(),""+usesRemaining());
 			default:
-				 return name()+" is somewhat worn ("+usesRemaining()+"%)";
+				 return L("@x1 is somewhat worn (@x2%)",name(),""+usesRemaining());
 			}
 		}
 		else
@@ -352,9 +352,9 @@ public class StdWeapon extends StdItem implements Weapon, AmmunitionWeapon
 			case Weapon.CLASS_EDGED:
 			case Weapon.CLASS_POLEARM:
 			case Weapon.CLASS_SWORD:
-				return name()+" is dull ("+usesRemaining()+"%)";
+				return L("@x1 is dull (@x2%)",name(),""+usesRemaining());
 			default:
-				 return name()+" is worn ("+usesRemaining()+"%)";
+				 return L("@x1 is worn (@x2%)",name(),""+usesRemaining());
 			}
 		}
 		else
@@ -367,16 +367,16 @@ public class StdWeapon extends StdItem implements Weapon, AmmunitionWeapon
 			case Weapon.CLASS_EDGED:
 			case Weapon.CLASS_POLEARM:
 			case Weapon.CLASS_SWORD:
-				return name()+" has some notches and chinks ("+usesRemaining()+"%)";
+				return L("@x1 has some notches and chinks (@x2%)",name(),""+usesRemaining());
 			default:
-				return name()+" is damaged ("+usesRemaining()+"%)";
+				return L("@x1 is damaged (@x2%)",name(),""+usesRemaining());
 			}
 		}
 		else
 		if(usesRemaining()>25)
-			return name()+" is heavily damaged ("+usesRemaining()+"%)";
+			return L("@x1 is heavily damaged (@x2%)",name(),""+usesRemaining());
 		else
-			return name()+" is so damaged, it is practically harmless ("+usesRemaining()+"%)";
+			return L("@x1 is so damaged, it is practically harmless (@x2%)",name(),""+usesRemaining());
 	}
 
 	@Override
