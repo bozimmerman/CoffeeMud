@@ -937,6 +937,9 @@ public class GenSailingShip extends StdBoardable
 						{
 							this.setUsesRemaining(0);
 							CMLib.tracking().makeSink(this, CMLib.map().roomLocation(this), 0);
+							//TODO: this ships should probably disappear at some point.
+							// make it expire so long as it remains sunk
+
 							/* announce unnecessary
 							final String sinkString = L("<O-NAME> start(s) sinking!");
 							this.announceActionToDeck(msg.source(), sinkString);
