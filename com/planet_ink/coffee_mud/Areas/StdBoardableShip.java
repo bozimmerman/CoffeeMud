@@ -103,6 +103,11 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 		return (shipItem != null) ? CMLib.map().areaLocation(shipItem) : null;
 	}
 	
+	protected Room getShipItemRoom()
+	{
+		return (shipItem != null) ? CMLib.map().roomLocation(shipItem) : null;
+	}
+	
 	@Override
 	public Climate getClimateObj()
 	{
@@ -168,8 +173,8 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	@Override 
 	public int getAtmosphereCode() 
 	{
-		final Area shipItemArea = getShipItemArea();
-		return (shipItemArea != null) ? shipItemArea.getAtmosphereCode() : CMLib.map().areas().nextElement().getAtmosphereCode();
+		final Room shipItemRoom = getShipItemRoom();
+		return (shipItemRoom != null) ? shipItemRoom.getAtmosphereCode() : CMLib.map().areas().nextElement().getAtmosphereCode();
 	}
 	
 	@Override
@@ -186,8 +191,8 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	@Override 
 	public int getAtmosphere()
 	{
-		final Area shipItemArea = getShipItemArea();
-		return (shipItemArea != null) ? shipItemArea.getAtmosphere() : CMLib.map().areas().nextElement().getAtmosphere();
+		final Room shipItemRoom = getShipItemRoom();
+		return (shipItemRoom != null) ? shipItemRoom.getAtmosphere() : CMLib.map().areas().nextElement().getAtmosphere();
 	}
 	
 	@Override
@@ -236,15 +241,15 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	@Override 
 	public int getClimateTypeCode()
 	{
-		final Area shipItemArea = getShipItemArea();
-		return (shipItemArea != null) ? shipItemArea.getClimateTypeCode() : CMLib.map().areas().nextElement().getClimateTypeCode();
+		final Room shipItemRoom = getShipItemRoom();
+		return (shipItemRoom != null) ? shipItemRoom.getClimateTypeCode() : CMLib.map().areas().nextElement().getClimateTypeCode();
 	}
 	
 	@Override 
 	public int getClimateType() 
 	{
-		final Area shipItemArea = getShipItemArea();
-		return (shipItemArea != null) ? shipItemArea.getClimateType() : CMLib.map().areas().nextElement().getClimateType();
+		final Room shipItemRoom = getShipItemRoom();
+		return (shipItemRoom != null) ? shipItemRoom.getClimateType() : CMLib.map().areas().nextElement().getClimateType();
 	}
 	
 	@Override
