@@ -1132,6 +1132,22 @@ public interface CMFlagLibrary extends CMLibrary
 	public List<Ability> domainAbilities(MOB M, int domain);
 
 	/**
+	 * Returns the list of effects that are on the given physical,
+	 * and were invoked by the given invoker.  The ability flag,
+	 * abilityCode, and domain are optional, and may be -1 to ignore.
+	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#DOMAIN_ABJURATION
+	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags()
+	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#ACODE_CHANT
+	 * @param invoker the invoker to search for, or null
+	 * @param P the object to check for effects, REQUIRED
+	 * @param flag -1, or an Ability Flag
+	 * @param abilityCode -1, or an ability Code
+	 * @param domain -1, or an ability domain
+	 * @return the list of effects that match 
+	 */
+	public List<Ability> matchedAffects(final MOB invoker, final Physical P, final long flag, final int abilityCode, final int domain);
+	
+	/**
 	 * Returns the ability type/code name for the given Ability.
 	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#ACODE_CHANT
 	 * @param A the Ability

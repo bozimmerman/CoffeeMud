@@ -1443,6 +1443,28 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	}
 	
 	@Override
+	public List<Ability> matchedAffects(final MOB invoker, final Physical P, final long flag, final int abilityCode, final int domain)
+	{
+		final Vector<Ability> V=new Vector<Ability>(1);
+		if(P!=null)
+		{
+			P.eachEffect(new EachApplicable<Ability>()
+			{
+				@Override
+				public void apply(Ability A)
+				{
+					if(((invoker==null)||(A.invoker()==invoker))
+					&&(((flag<0)||(A.flags()&flag)>0))
+					&&(((abilityCode<0)||((A.abilityCode()&Ability.ALL_ACODES)==abilityCode)))
+					&&(((domain<0)||((A.abilityCode()&Ability.ALL_DOMAINS)==domain))))
+						V.addElement(A);
+				}
+			});
+		}
+		return V;
+	}
+	
+	@Override
 	public List<Ability> flaggedAffects(final Physical P, final long flag)
 	{
 		return flaggedAnyAffects(P,flag);

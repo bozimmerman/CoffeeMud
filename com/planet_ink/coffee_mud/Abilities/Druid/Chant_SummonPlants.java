@@ -174,7 +174,11 @@ public class Chant_SummonPlants extends Chant
 	public Item buildMyThing(MOB mob, Room room)
 	{
 		final Area A=room.getArea();
-		final boolean bonusWorthy=(Druid_MyPlants.myPlant(room,mob,0)==null);
+		final boolean bonusWorthy=
+			  (Druid_MyPlants.myPlant(room,mob,0)==null)
+			&&((room.getGridParent()==null)
+				||(CMLib.flags().matchedAffects(mob,room.getGridParent(),-1,Ability.ACODE_CHANT,-1).size()==0));
+		
 		final List<Room> V=Druid_MyPlants.myAreaPlantRooms(mob,room.getArea());
 		int pct=0;
 		if(A.getAreaIStats()[Area.Stats.VISITABLE_ROOMS.ordinal()]>10)
@@ -228,17 +232,21 @@ public class Chant_SummonPlants extends Chant
 
 	public boolean rightPlace(MOB mob,boolean auto)
 	{
-		if((!auto)&&(mob.location().domainType()&Room.INDOORS)>0)
+		final Room R=mob.location();
+		if(R==null)
+			return false;
+		
+		if((!auto)&&(R.domainType()&Room.INDOORS)>0)
 		{
 			mob.tell(L("You must be outdoors for this chant to work."));
 			return false;
 		}
-
-		if((mob.location().domainType()==Room.DOMAIN_OUTDOORS_CITY)
-		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)
-		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
-		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_AIR)
-		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
+		
+		if((R.domainType()==Room.DOMAIN_OUTDOORS_CITY)
+		   ||(R.domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)
+		   ||(R.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
+		   ||(R.domainType()==Room.DOMAIN_OUTDOORS_AIR)
+		   ||(R.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
 		{
 			mob.tell(L("This magic will not work here."));
 			return false;
