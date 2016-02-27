@@ -3246,18 +3246,24 @@ public class CMMap extends StdLibrary implements WorldMap
 		final boolean debugMem = CMSecurity.isDebugging(CMSecurity.DbgFlag.SHUTDOWN);
 		for(Enumeration<Area> a=areasList.elements();a.hasMoreElements();)
 		{
-			try {
+			try 
+			{
 				final Area A = a.nextElement();
-				for(Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
+				if(A!=null)
 				{
-					try 
+					CMProps.setUpAllLowVar(CMProps.Str.MUDSTATUS,"Shutting down Map area '"+A.Name()+"'...");
+					for(Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
 					{
-						final Room R=r.nextElement();
-						A.delProperRoom(R);
-						R.destroy();
-					} 
-					catch(Exception e) 
-					{}
+						try 
+						{
+							final Room R=r.nextElement();
+							A.delProperRoom(R);
+							R.destroy();
+						} 
+						catch(Exception e) 
+						{
+						}
+					}
 				}
 				if(debugMem)
 				{
@@ -3274,12 +3280,18 @@ public class CMMap extends StdLibrary implements WorldMap
 						}
 						Thread.sleep(3000);
 					}
-					catch(final Exception e){}
+					catch (final Exception e)
+					{
+					}
 					final long free=Runtime.getRuntime().freeMemory()/1024;
 					final long total=Runtime.getRuntime().totalMemory()/1024;
-					Log.debugOut("Memory: CMMap: "+A.Name()+": "+(total-free)+"/"+total);
+					if(A!=null)
+						Log.debugOut("Memory: CMMap: "+A.Name()+": "+(total-free)+"/"+total);
 				}
-			} catch(Exception e) {}
+			}
+			catch (Exception e)
+			{
+			}
 		}
 		areasList.clear();
 		deitiesList.clear();
