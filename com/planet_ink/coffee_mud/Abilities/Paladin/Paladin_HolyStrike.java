@@ -115,7 +115,7 @@ public class Paladin_HolyStrike extends StdAbility
 		{
 			if(mob.location()!=null)
 				mob.location().show(msg.source(),msg.target(),CMMsg.MSG_OK_VISUAL, L("A blinding holy light from <O-NAME> comes down upon <T-NAME>!"));
-			msg.setValue(msg.value()*2);
+			msg.setValue((msg.value()*2)+super.getXLEVELLevel(invoker));
 			unInvoke();
 		}
 		return super.okMessage(myHost,msg);
