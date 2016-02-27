@@ -234,6 +234,28 @@ public interface CombatLibrary extends CMLibrary
 	public boolean postAttack(MOB attacker, MOB target, Item weapon);
 
 	/**
+	 * This method causes a mundane attack by the given attacking mob (which
+	 * may be a fake factory mob) on the given attacking ship against the
+	 * given target ship with the given siege weapon.
+	 * @param attacker the attacking agent mob
+	 * @param attackingShip the ship the attacker is on
+	 * @param target the targetk ship
+	 * @param weapon the siege weapon used
+	 * @return true if the attack succeeded, false if it failed
+	 */
+	public boolean postAttack(MOB attacker, Rideable attackingShip, Rideable target, Weapon weapon);
+	
+	/**
+	 * Returns whether the given attacking mob, on the given attacker ship, may attack the people and property
+	 * of the given defending ship.  
+	 * @param mob the agent attacker
+	 * @param attacker the attacking ship
+	 * @param defender the attacked ship
+	 * @return true if an attack is authorized, false otherwise
+	 */
+	public boolean mayIAttack(final MOB mob, final Rideable attacker, final Rideable defender);
+	
+	/**
 	 * Posts a message of healing from the given healer to the given
 	 * target using the given optional Ability tool.  There are no
 	 * optional parameters here, except the msg of course

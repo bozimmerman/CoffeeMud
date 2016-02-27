@@ -16,6 +16,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.MOB.Attrib;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
@@ -480,6 +481,85 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		}
 		final CMMsg msg=CMClass.getMsg(attacker,target,weapon,CMMsg.MSG_WEAPONATTACK,null);
 		final Room R=target.location();
+		if(R!=null)
+		{
+			if(R.okMessage(attacker,msg))
+			{
+				R.send(attacker,msg);
+				return msg.value()>0;
+			}
+		}
+		return false;
+	}
+
+	protected static boolean ownerSecurityCheck(final String ownerName, final MOB mob)
+	{
+		return (ownerName.length()>0)
+			 &&(mob!=null)
+			 &&((mob.Name().equals(ownerName))
+				||(mob.getLiegeID().equals(ownerName)&mob.isMarriedToLiege())
+				||(CMLib.clans().checkClanPrivilege(mob, ownerName, Clan.Function.PROPERTY_OWNER)));
+	}
+
+	@Override
+	public boolean mayIAttack(final MOB mob, final Rideable attacker, final Rideable defender)
+	{
+		final String attackerOwnerName = (attacker instanceof PrivateProperty) ? ((PrivateProperty)attacker).getOwnerName() : "";  
+		final String defenderOwnerName = (defender instanceof PrivateProperty) ? ((PrivateProperty)defender).getOwnerName() : "";  
+		// is this how we determine npc ships?
+		if((defenderOwnerName == null)||(defenderOwnerName.length()==0))
+			return true;
+		if(((attackerOwnerName == null)||(attackerOwnerName.length()==0)) 
+		&& (mob.isMonster()))
+			return true;
+		if(CMSecurity.isASysOp(mob) && mob.isAttributeSet(Attrib.PLAYERKILL))
+			return true;
+		if(defender instanceof BoardableShip)
+		{
+			final Area otherArea = ((BoardableShip)defender).getShipArea();
+			if(otherArea != null)
+			{
+				for(Enumeration<Room> r=otherArea.getProperMap();r.hasMoreElements();)
+				{
+					final Room R=r.nextElement();
+					if(R!=null)
+					{
+						for(Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
+						{
+							final MOB M=m.nextElement();
+							if((M!=null)
+							&&(ownerSecurityCheck(defenderOwnerName,M))
+							&&(mob.mayIFight(M)))
+							{
+								return true;
+							}
+						}
+					}
+				}
+			}
+		}
+		else
+		{
+			for(int i=0;i<defender.numRiders();i++)
+			{
+				Rider R=defender.fetchRider(i);
+				if((R instanceof MOB)
+				&&(mob.mayIFight((MOB)R)))
+				{
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	@Override
+	public boolean postAttack(MOB attacker, Rideable attackingShip, Rideable target, Weapon weapon)
+	{
+		if((attacker==null)||(!mayIAttack(attacker,attackingShip, target))||(weapon==null))
+			return false;
+		final CMMsg msg=CMClass.getMsg(attacker,target,weapon,CMMsg.MSG_WEAPONATTACK,null);
+		final Room R=CMLib.map().roomLocation(target);
 		if(R!=null)
 		{
 			if(R.okMessage(attacker,msg))

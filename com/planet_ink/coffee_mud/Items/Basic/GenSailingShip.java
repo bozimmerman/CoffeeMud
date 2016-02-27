@@ -52,7 +52,7 @@ public class GenSailingShip extends StdBoardable
 	protected final List<Integer>courseDirections= new Vector<Integer>();
 
 	protected volatile int		 	directionFacing	 = 0;
-	protected volatile Item			targetedShip	 = null;
+	protected volatile Rideable		targetedShip	 = null;
 	protected volatile Room		 	shipCombatRoom	 = null;
 	protected PairList<Item,int[]>	coordinates		 = null;
 	
@@ -117,43 +117,6 @@ public class GenSailingShip extends StdBoardable
 		SAIL,
 		COURSE,
 		SET_COURSE
-	}
-	
-	protected boolean mayIAttack(final MOB mob, final Item item)
-	{
-		if((item instanceof BoardableShip) && (item instanceof PrivateProperty))
-		{
-			final PrivateProperty privop=(PrivateProperty)item;
-			// is this how we determine npc ships?
-			if((privop.getOwnerName() == null)||(privop.getOwnerName().length()==0)||(privop.getOwnerObject()==null))
-				return true;
-			if(((getOwnerName() == null)||(getOwnerName().length()==0)) && (mob.isMonster()))
-				return true;
-			if(CMSecurity.isASysOp(mob) && mob.isAttributeSet(Attrib.PLAYERKILL))
-				return true;
-			final Area otherArea = ((BoardableShip)item).getShipArea();
-			if(otherArea != null)
-			{
-				for(Enumeration<Room> r=otherArea.getProperMap();r.hasMoreElements();)
-				{
-					final Room R=r.nextElement();
-					if(R!=null)
-					{
-						for(Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
-						{
-							final MOB M=m.nextElement();
-							if((M!=null)
-							&&(securityCheck(privop,M))
-							&&(mob.mayIFight(M)))
-							{
-								return true;
-							}
-						}
-					}
-				}
-			}
-		}
-		return false;
 	}
 	
 	protected void announceToDeck(final String msgStr)
@@ -607,9 +570,9 @@ public class GenSailingShip extends StdBoardable
 					final Room thisRoom = (Room)owner();
 					String rest = CMParms.combine(parsedFail,1);
 					final Item I=thisRoom.findItem(rest);
-					if((I instanceof BoardableShip)&&(I!=this))
+					if((I instanceof Rideable)&&(I!=this))
 					{
-						if(!this.mayIAttack(msg.source(), I))
+						if(!CMLib.combat().mayIAttack(msg.source(), this, (Rideable)I))
 						{
 							msg.source().tell(L("You are not permitted to attack @x1",I.name()));
 							return false;
@@ -624,7 +587,7 @@ public class GenSailingShip extends StdBoardable
 							if(thisRoom.okMessage(mob, maneuverMsg))
 							{
 								thisRoom.send(mob, maneuverMsg);
-								targetedShip	 = I;
+								targetedShip	 = (Rideable)I;
 								shipCombatRoom	 = thisRoom;
 								if(I instanceof GenSailingShip)
 								{
@@ -750,7 +713,7 @@ public class GenSailingShip extends StdBoardable
 	
 	protected synchronized boolean amInTacticalMode()
 	{
-		final Item targetedShip = this.targetedShip;
+		final Item targetedShip = (Item)this.targetedShip;
 		final Room shipCombatRoom = this.shipCombatRoom;
 		if((targetedShip != null) 
 		&& (shipCombatRoom != null)
@@ -851,14 +814,79 @@ public class GenSailingShip extends StdBoardable
 			}
 			if(this.amInTacticalMode())
 			{
-				final CMMsg msg=CMClass.getMsg(null, null, this, CMMsg.MSG_COMMAND, null, CMMsg.MSG_COMMAND, "SHIP_WEAPON_FIRE", CMMsg.NO_EFFECT,null);
-				this.sendAreaMessage(msg,false);
+				final List<Weapon> weapons = new LinkedList<Weapon>();
+				for(Enumeration<Room> r=this.getShipArea().getProperMap();r.hasMoreElements();)
+				{
+					try
+					{
+						final Room R=r.nextElement();
+						if(R!=null)
+						{
+							for(Enumeration<Item> i=R.items();i.hasMoreElements();)
+							{
+								try
+								{
+									final Item I=i.nextElement();
+									if(isAShipSiegeWeapon(I))
+										weapons.add((Weapon)I);
+								}
+								catch(NoSuchElementException ne)
+								{
+								}
+							}
+						}
+					}
+					catch(NoSuchElementException ne)
+					{
+					}
+				}
+				if(weapons.size()>0)
+				{
+					final MOB mob = CMClass.getFactoryMOB(name(),phyStats().level(),null);
+					try
+					{
+						mob.setRiding(this);
+						mob.basePhyStats().setDisposition(mob.basePhyStats().disposition()|PhyStats.IS_SWIMMING);
+						mob.phyStats().setDisposition(mob.phyStats().disposition()|PhyStats.IS_SWIMMING);
+						for(Weapon w : weapons)
+						{
+							final Room R=CMLib.map().roomLocation(w);
+							if(R!=null)
+							{
+								mob.setLocation(R);
+								//TODO: when LOAD is done on a weapon, remind the user that they need to aim
+								mob.setRangeToTarget(0); //TODO: AIM command will save offset-range in this class
+								CMLib.combat().postAttack(mob, this, this.targetedShip, w);
+							}
+						}
+					}
+					finally
+					{
+						mob.setRangeToTarget(0);
+						mob.destroy();
+					}
+					
+				}
 			}
 			return true;
 		}
 		return super.tick(ticking, tickID);
 	}
 
+	protected final boolean isAShipSiegeWeapon(Item I)
+	{
+		if((I instanceof AmmunitionWeapon)
+		&&(I instanceof Rideable)
+		&&(!CMLib.flags().isGettable(I))
+		&&(((AmmunitionWeapon)I).requiresAmmunition()))
+		{
+			if(((Rideable)I).riderCapacity() > 0)
+				return ((Rideable)I).numRiders() >= ((Rideable)I).riderCapacity();
+			return true;
+		}
+		return false;
+	}
+	
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
