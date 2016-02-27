@@ -35,19 +35,33 @@ import java.util.*;
 
 public class Mobile extends ActiveTicker implements MobileBehavior
 {
-	@Override public String ID(){return "Mobile";}
-	@Override protected int canImproveCode(){return Behavior.CAN_MOBS;}
-	@Override public long flags(){return Behavior.FLAG_MOBILITY;}
+	@Override
+	public String ID()
+	{
+		return "Mobile";
+	}
 
-	protected boolean wander=false;
-	protected boolean dooropen=false;
-	protected boolean firstRun=false;
-	protected int leash=0;
-	protected Map<Room,Integer> leashHash=null;
-	protected List<Integer> restrictedLocales=null;
-	protected int[] altStatusTaker=null;
-	protected int tickStatus=Tickable.STATUS_NOT;
-	protected int ticksSuspended=0;
+	@Override
+	protected int canImproveCode()
+	{
+		return Behavior.CAN_MOBS;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Behavior.FLAG_MOBILITY;
+	}
+
+	protected boolean				wander				= false;
+	protected boolean				dooropen			= false;
+	protected boolean				firstRun			= false;
+	protected int					leash				= 0;
+	protected Map<Room, Integer>	leashHash			= null;
+	protected List<Integer>			restrictedLocales	= null;
+	protected int[]					altStatusTaker		= null;
+	protected int					tickStatus			= Tickable.STATUS_NOT;
+	protected int					ticksSuspended		= 0;
 
 	@Override
 	public String accountForYourself()
@@ -308,5 +322,10 @@ public class Mobile extends ActiveTicker implements MobileBehavior
 		tickStatus=Tickable.STATUS_NOT;
 		return true;
 	}
-	@Override public void suspendMobility(int numTicks) { ticksSuspended=numTicks;}
+
+	@Override
+	public void suspendMobility(int numTicks)
+	{
+		ticksSuspended = numTicks;
+	}
 }

@@ -38,7 +38,7 @@ import java.util.List;
 /**
  * This is the base class for all tech items.
  */
-public interface Technical
+public interface Technical extends Item
 {
 
 	/**

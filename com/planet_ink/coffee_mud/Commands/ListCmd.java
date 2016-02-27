@@ -3483,90 +3483,116 @@ public class ListCmd extends StdCommand
 			s.wraplessPrintln(unlinkedExits(mob.session(), commands));
 			break;
 		case ITEMS:
+			s.println("^HBasic Item IDs:^N");
 			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.basicItems()).toString());
 			break;
 		case ARMOR:
+			s.println("^HArmor Item IDs:^N");
 			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.armor()).toString());
 			break;
 		case ENVRESOURCES:
 			s.wraplessPrintln(listEnvResources(mob.session(), rest));
 			break;
 		case WEAPONS:
+			s.println("^HWeapon Item IDs:^N");
 			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.weapons()).toString());
 			break;
 		case MOBS:
+			s.println("^HMOB IDs:^N");
 			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.mobTypes()).toString());
 			break;
 		case ROOMS:
+			s.println("^HRoom Locale IDs:^N");
 			s.wraplessPrintln(roomDetails(mob.session(), mob.location().getArea().getMetroMap(), mob.location()).toString());
 			break;
 		case AREA:
+			s.println("^HArea IDs:^N");
 			s.wraplessPrintln(roomTypes(mob, mob.location().getArea().getMetroMap(), mob.location(), commands).toString());
 			break;
 		case LOCALES:
+			s.println("^HRoom Class Locale IDs:^N");
 			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.locales()).toString());
+			s.println("^HDomain Locales include the following:^N");
+			s.wraplessPrintln(CMLib.lister().reallyList(mob, new IteratorEnumeration<String>(Arrays.asList(CMParms.combine(Room.DOMAIN_INDOORS_DESCS, Room.DOMAIN_OUTDOOR_DESCS)).iterator())).toString());
 			break;
 		case BEHAVIORS:
+			s.println("^HBehavior IDs:^N");
 			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.behaviors()).toString());
 			break;
 		case EXITS:
+			s.println("^HExit IDs:^N");
 			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.exits()).toString());
 			break;
 		case RACES:
+			s.println("^HRace IDs (Racial Category):^N");
 			s.wraplessPrintln(listRaces(s, CMClass.races(), rest).toString());
 			break;
 		case CLASSES:
+			s.println("^HCharacter Class IDs:^N");
 			s.wraplessPrintln(listCharClasses(s, CMClass.charClasses(), rest.equalsIgnoreCase("SHORT")).toString());
 			break;
 		case STAFF:
 			s.wraplessPrintln(listSubOps(mob.session()).toString());
 			break;
 		case SPELLS:
+			s.println("^HSpell Ability IDs:^N");
 			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.abilities(), Ability.ACODE_SPELL).toString());
 			break;
 		case SONGS:
+			s.println("^HSong Ability IDs:^N");
 			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.abilities(), Ability.ACODE_SONG).toString());
 			break;
 		case PRAYERS:
+			s.println("^HPrayer Ability IDs:^N");
 			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.abilities(), Ability.ACODE_PRAYER).toString());
 			break;
 		case PROPERTIES:
+			s.println("^HProperty Ability IDs:^N");
 			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.abilities(), Ability.ACODE_PROPERTY).toString());
 			break;
 		case THIEFSKILLS:
+			s.println("^HThief Skill Ability IDs:^N");
 			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.abilities(), Ability.ACODE_THIEF_SKILL).toString());
 			break;
 		case COMMON:
+			s.println("^HCommon Skill Ability IDs:^N");
 			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.abilities(), Ability.ACODE_COMMON_SKILL).toString());
 			break;
 		case JOURNALS:
 			s.println(listJournals(mob.session()).toString());
 			break;
 		case SKILLS:
+			s.println("^HSkill Ability IDs:^N");
 			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.abilities(), Ability.ACODE_SKILL).toString());
 			break;
 		case QUESTS:
 			s.println(listQuests(mob.session()).toString());
 			break;
 		case DISEASES:
+			s.println("^HDisease Ability IDs:^N");
 			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.abilities(), Ability.ACODE_DISEASE).toString());
 			break;
 		case POISONS:
+			s.println("^HPoison Ability IDs:^N");
 			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.abilities(), Ability.ACODE_POISON).toString());
 			break;
 		case LANGUAGES:
+			s.println("^HLanguage Ability IDs:^N");
 			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.abilities(), Ability.ACODE_LANGUAGE).toString());
 			break;
 		case TICKS:
 			s.println(listTicks(mob.session(), CMParms.combine(commands, 1)).toString());
 			break;
 		case MAGIC:
+			s.println("^HMagic Item IDs:^N");
 			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.miscMagic()).toString());
 			break;
 		case TECH:
+			s.println("^HTech Item IDs:^N");
 			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.tech()).toString());
 			break;
 		case CLANITEMS:
+			s.println("^HClan Item IDs:^N");
 			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.clanItems()).toString());
 			break;
 		case COMMANDJOURNAL:
@@ -3599,6 +3625,7 @@ public class ListCmd extends StdCommand
 			break;
 		}
 		case RACECATS:
+			s.println("^HRacial Categories:^N");
 			s.wraplessPrintln(listRaceCats(s, CMClass.races(), CMParms.containsIgnoreCase(commands, "SHORT")).toString());
 			break;
 		case LOG:
@@ -3623,9 +3650,11 @@ public class ListCmd extends StdCommand
 			s.wraplessPrintln(reallyFindOneWays(mob.session(), commands));
 			break;
 		case CHANTS:
+			s.println("^HChant Ability IDs:^N");
 			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.abilities(), Ability.ACODE_CHANT).toString());
 			break;
 		case SUPERPOWERS:
+			s.println("^HSuper Power Ability IDs:^N");
 			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.abilities(), Ability.ACODE_SUPERPOWER).toString());
 			break;
 		case COMPONENTS:
@@ -3721,13 +3750,15 @@ public class ListCmd extends StdCommand
 			listManufacturers(mob, commands);
 			break;
 		case TECHSKILLS:
+			s.println("^HTech Skill Ability IDs:^N");
 			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.abilities(), Ability.ACODE_TECH).toString());
 			break;
 		case SOFTWARE:
-			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.tech(new Filterer<Electronics>()
+			s.println("^HSoftware Item IDs:^N");
+			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.tech(new Filterer<Technical>()
 			{
 				@Override
-				public boolean passesFilter(Electronics obj)
+				public boolean passesFilter(Technical obj)
 				{
 					return obj instanceof Software;
 				}

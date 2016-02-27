@@ -34,23 +34,23 @@ import java.util.*;
 */
 public interface GenericEditor extends CMLibrary
 {
-	public void modifyArea(MOB mob, Area myArea, Set<Area> alsoUpdateAreas) throws IOException;
-	public Room modifyRoom(MOB mob, Room R) throws IOException;
-	public void modifyAccount(MOB mob, PlayerAccount A) throws IOException;
-	public void modifyStdItem(MOB mob, Item thang) throws IOException;
-	public void modifyStdMob(MOB mob, MOB thang) throws IOException;
-	public void modifyComponents(MOB mob, String componentID) throws IOException;
-	public void modifyClan(MOB mob, Clan C) throws IOException;
-	public void modifyGenAbility(MOB mob, Ability me) throws IOException;
-	public void modifyGenLanguage(MOB mob, Language me) throws IOException;
-	public void modifyManufacturer(MOB mob, Manufacturer me) throws IOException;
-	public void modifyGenCraftSkill(MOB mob, Ability me) throws IOException;
-	public void modifyGenClass(MOB mob, CharClass me) throws IOException;
-	public void modifyGenExit(MOB mob, Exit me) throws IOException;
-	public void modifyGenRace(MOB mob, Race me) throws IOException;
-	public void modifyPlayer(MOB mob, MOB me) throws IOException;
-	public void modifyGovernment(MOB mob, ClanGovernment me) throws IOException;
-	public AbilityMapper.AbilityMapping modifyAllQualifyEntry(MOB mob, String eachOrAll, Ability me) throws IOException;
+	public void modifyArea(MOB mob, Area myArea, Set<Area> alsoUpdateAreas, int showFlag) throws IOException;
+	public Room modifyRoom(MOB mob, Room R, int showFlag) throws IOException;
+	public void modifyAccount(MOB mob, PlayerAccount A, int showFlag) throws IOException;
+	public void modifyStdItem(MOB mob, Item thang, int showFlag) throws IOException;
+	public void modifyStdMob(MOB mob, MOB thang, int showFlag) throws IOException;
+	public void modifyComponents(MOB mob, String componentID, int showFlag) throws IOException;
+	public void modifyClan(MOB mob, Clan C, int showFlag) throws IOException;
+	public void modifyGenAbility(MOB mob, Ability me, int showFlag) throws IOException;
+	public void modifyGenLanguage(MOB mob, Language me, int showFlag) throws IOException;
+	public void modifyManufacturer(MOB mob, Manufacturer me, int showFlag) throws IOException;
+	public void modifyGenCraftSkill(MOB mob, Ability me, int showFlag) throws IOException;
+	public void modifyGenClass(MOB mob, CharClass me, int showFlag) throws IOException;
+	public void modifyGenExit(MOB mob, Exit me, int showFlag) throws IOException;
+	public void modifyGenRace(MOB mob, Race me, int showFlag) throws IOException;
+	public void modifyPlayer(MOB mob, MOB me, int showFlag) throws IOException;
+	public void modifyGovernment(MOB mob, ClanGovernment me, int showFlag) throws IOException;
+	public AbilityMapper.AbilityMapping modifyAllQualifyEntry(MOB mob, String eachOrAll, Ability me, int showFlag) throws IOException;
 
 	public Room changeRoomType(Room R, Room newRoom);
 	public void spells(MOB mob, List<Ability> V, int showNumber, int showFlag, boolean inParms) throws IOException;
@@ -62,7 +62,7 @@ public interface GenericEditor extends CMLibrary
 	public void genBehaviors(MOB mob, PhysicalAgent P, int showNumber, int showFlag) throws IOException;
 	public void genDescription(MOB mob, Environmental E, int showNumber, int showFlag) throws IOException;
 	public void genDisplayText(MOB mob, Environmental E, int showNumber, int showFlag) throws IOException;
-	public void genMiscSet(MOB mob, Environmental E) throws IOException;
+	public void genMiscSet(MOB mob, Environmental E, int showFlag) throws IOException;
 	public void genName(MOB mob, Environmental E, int showNumber, int showFlag) throws IOException;
 	public void genMiscText(MOB mob, Environmental E, int showNumber, int showFlag) throws IOException;
 

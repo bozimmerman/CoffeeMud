@@ -205,7 +205,7 @@ public class Modify extends StdCommand
 		if(command.equals("MISC"))
 		{
 			if(modItem.isGeneric())
-				CMLib.genEd().genMiscSet(mob,modItem);
+				CMLib.genEd().genMiscSet(mob,modItem,-1);
 			else
 				modItem.setMiscText(restStr);
 			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("@x1 shake(s) under the transforming power.",modItem.name()));
@@ -219,7 +219,7 @@ public class Modify extends StdCommand
 		else
 		if((command.length()==0)&&(modItem.isGeneric()))
 		{
-			CMLib.genEd().genMiscSet(mob,modItem);
+			CMLib.genEd().genMiscSet(mob,modItem,-1);
 			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("@x1 shake(s) under the transforming power.",modItem.name()));
 		}
 		else
@@ -268,7 +268,7 @@ public class Modify extends StdCommand
 		if(commands.size()==2)
 		{
 			final Room oldRoom=(Room)mob.location().copyOf();
-			final Room newRoom=CMLib.genEd().modifyRoom(mob,mob.location());
+			final Room newRoom=CMLib.genEd().modifyRoom(mob,mob.location(),-1);
 			if((!oldRoom.sameAs(newRoom))&&(!newRoom.amDestroyed()))
 			{
 				CMLib.database().DBUpdateRoom(newRoom);
@@ -466,7 +466,7 @@ public class Modify extends StdCommand
 		{
 			theAccount=mob.playerStats().getAccount();
 			oldName=theAccount.getAccountName();
-			CMLib.genEd().modifyAccount(mob,theAccount);
+			CMLib.genEd().modifyAccount(mob,theAccount,-1);
 		}
 		else
 		if(commands.size()<3)
@@ -486,7 +486,7 @@ public class Modify extends StdCommand
 				return;
 			}
 			oldName=theAccount.getAccountName();
-			CMLib.genEd().modifyAccount(mob,theAccount);
+			CMLib.genEd().modifyAccount(mob,theAccount,-1);
 			mob.location().recoverRoomStats();
 		}
 		Log.sysOut("Modify",mob.Name()+" modified account "+theAccount.getAccountName()+".");
@@ -528,13 +528,13 @@ public class Modify extends StdCommand
 		Resources.removeResource("HELP_"+myArea.Name().toUpperCase());
 		final Set<Area> alsoUpdateAreas=new HashSet<Area>();
 		if(commands.size()==2)
-			CMLib.genEd().modifyArea(mob,myArea,alsoUpdateAreas);
+			CMLib.genEd().modifyArea(mob,myArea,alsoUpdateAreas, -1);
 		else
 		if((commands.size()==3)&&(CMLib.map().getArea(commands.get(2))!=null))
 		{
 			myArea=CMLib.map().getArea(commands.get(2));
 			oldName=myArea.Name();
-			CMLib.genEd().modifyArea(mob,myArea,alsoUpdateAreas);
+			CMLib.genEd().modifyArea(mob,myArea,alsoUpdateAreas, -1);
 		}
 		else
 		{
@@ -957,7 +957,7 @@ public class Modify extends StdCommand
 		final Exit copyExit=(Exit)thisExit.copyOf();
 		if(thisExit.isGeneric() && (commands.size()<5))
 		{
-			CMLib.genEd().modifyGenExit(mob,thisExit);
+			CMLib.genEd().modifyGenExit(mob,thisExit,-1);
 			updateChangedExit(mob,mob.location(),thisExit,copyExit);
 			return;
 		}
@@ -975,7 +975,7 @@ public class Modify extends StdCommand
 		if(command.equalsIgnoreCase("text"))
 		{
 			if(thisExit.isGeneric())
-				CMLib.genEd().modifyGenExit(mob,thisExit);
+				CMLib.genEd().modifyGenExit(mob,thisExit,-1);
 			else
 				thisExit.setMiscText(restStr);
 		}
@@ -1022,7 +1022,7 @@ public class Modify extends StdCommand
 			return false;
 		}
 		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> wave(s) <S-HIS-HER> hands around all @x1s.",R.name()));
-		CMLib.genEd().modifyGenRace(mob,R);
+		CMLib.genEd().modifyGenRace(mob,R,-1);
 		CMLib.database().DBDeleteRace(R.ID());
 		CMLib.database().DBCreateRace(R.ID(),R.racialParms());
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("@x1's everywhere shake under the transforming power!",R.name()));
@@ -1061,7 +1061,7 @@ public class Modify extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 			return;
 		}
-		final AbilityMapper.AbilityMapping mapped = CMLib.genEd().modifyAllQualifyEntry(mob,eachOrAll.toUpperCase().trim(),A);
+		final AbilityMapper.AbilityMapping mapped = CMLib.genEd().modifyAllQualifyEntry(mob,eachOrAll.toUpperCase().trim(),A, -1);
 		map=CMLib.ableMapper().getAllQualifiesMap(null);
 		subMap=map.get(eachOrAll.toUpperCase().trim());
 		subMap.put(A.ID().toUpperCase().trim(), mapped);
@@ -1094,7 +1094,7 @@ public class Modify extends StdCommand
 			return false;
 		}
 		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> wave(s) <S-HIS-HER> hands around all @x1s.",C.name()));
-		CMLib.genEd().modifyGenClass(mob,C);
+		CMLib.genEd().modifyGenClass(mob,C,-1);
 		CMLib.database().DBDeleteClass(C.ID());
 		CMLib.database().DBCreateClass(C.ID(),C.classParms());
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("@x1's everywhere shake under the transforming power!",C.name()));
@@ -1138,7 +1138,7 @@ public class Modify extends StdCommand
 			return false;
 		}
 		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> wave(s) <S-HIS-HER> hands around all @x1s.",A.name()));
-		CMLib.genEd().modifyGenAbility(mob,A);
+		CMLib.genEd().modifyGenAbility(mob,A,-1);
 		CMLib.database().DBDeleteAbility(A.ID());
 		CMLib.database().DBCreateAbility(A.ID(),"GenAbility",A.getStat("ALLXML"));
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("@x1's everywhere shake under the transforming power!",A.name()));
@@ -1182,7 +1182,7 @@ public class Modify extends StdCommand
 			return false;
 		}
 		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> wave(s) <S-HIS-HER> hands around all @x1s.",A.name()));
-		CMLib.genEd().modifyGenLanguage(mob,(Language)A);
+		CMLib.genEd().modifyGenLanguage(mob,(Language)A,-1);
 		CMLib.database().DBDeleteAbility(A.ID());
 		CMLib.database().DBCreateAbility(A.ID(),"GenLanguage",A.getStat("ALLXML"));
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("@x1's everywhere shake under the transforming power!",A.name()));
@@ -1226,7 +1226,7 @@ public class Modify extends StdCommand
 			return false;
 		}
 		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> wave(s) <S-HIS-HER> hands around all @x1s.",A.name()));
-		CMLib.genEd().modifyGenCraftSkill(mob,A);
+		CMLib.genEd().modifyGenCraftSkill(mob,A,-1);
 		CMLib.database().DBDeleteAbility(A.ID());
 		CMLib.database().DBCreateAbility(A.ID(),"GenCraftSkill",A.getStat("ALLXML"));
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("@x1's everywhere shake under the transforming power!",A.name()));
@@ -1257,7 +1257,7 @@ public class Modify extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 			return;
 		}
-		CMLib.genEd().modifyComponents(mob,skillID);
+		CMLib.genEd().modifyComponents(mob,skillID,-1);
 		final String parms=CMLib.ableComponents().getAbilityComponentCodedString(skillID);
 		final String error=CMLib.ableComponents().addAbilityComponent(parms,CMLib.ableComponents().getAbilityComponentMap());
 		if(error!=null)
@@ -1363,7 +1363,7 @@ public class Modify extends StdCommand
 		final MOB copyMOB=(MOB)M.copyOf();
 		if(commands.size()<4)
 		{
-			CMLib.genEd().modifyPlayer(mob,M);
+			CMLib.genEd().modifyPlayer(mob,M,-1);
 			if(!copyMOB.sameAs(M))
 				Log.sysOut("Mobs",mob.Name()+" modified player "+M.Name()+".");
 		}
@@ -1485,7 +1485,7 @@ public class Modify extends StdCommand
 			return;
 		}
 
-		CMLib.genEd().modifyManufacturer(mob, manufacturer);
+		CMLib.genEd().modifyManufacturer(mob, manufacturer, -1);
 		CMLib.tech().updateManufacturer(manufacturer);
 		mob.location().recoverRoomStats();
 		Log.sysOut(mob.Name()+" modified manufacturer "+manufacturer.name()+".");
@@ -1565,7 +1565,7 @@ public class Modify extends StdCommand
 		if(command.equals("MISC"))
 		{
 			if(modMOB.isGeneric())
-				CMLib.genEd().genMiscSet(mob,modMOB);
+				CMLib.genEd().genMiscSet(mob,modMOB,-1);
 			else
 				modMOB.setMiscText(restStr);
 			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("@x1 shakes under the transforming power.",modMOB.name()));
@@ -2018,7 +2018,7 @@ public class Modify extends StdCommand
 				if(!mob.isMonster())
 				{
 					mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> wave(s) <S-HIS-HER> hands around @x1.",G.getName()));
-					CMLib.genEd().modifyGovernment(mob, G);
+					CMLib.genEd().modifyGovernment(mob, G,-1);
 					CMLib.clans().reSaveGovernmentsXML();
 					Log.sysOut("CreateEdit",mob.Name()+" modified Clan Government "+G.getName()+".");
 				}
@@ -2065,7 +2065,7 @@ public class Modify extends StdCommand
 				if(!mob.isMonster())
 				{
 					mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> wave(s) <S-HIS-HER> hands around @x1.",C.name()));
-					CMLib.genEd().modifyClan(mob,C);
+					CMLib.genEd().modifyClan(mob,C,-1);
 					Log.sysOut("CreateEdit",mob.Name()+" modified Clan "+C.name()+".");
 				}
 			}
@@ -2123,10 +2123,10 @@ public class Modify extends StdCommand
 				mob.location().showOthers(mob,thang,CMMsg.MSG_OK_ACTION,L("<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>."));
 				if(!thang.isGeneric())
 				{
-					CMLib.genEd().modifyStdItem(mob,(Item)thang);
+					CMLib.genEd().modifyStdItem(mob,(Item)thang,-1);
 				}
 				else
-					CMLib.genEd().genMiscSet(mob,thang);
+					CMLib.genEd().genMiscSet(mob,thang,-1);
 				((Item)thang).recoverPhyStats();
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("@x1 shake(s) under the transforming power.",thang.name()));
 				if(!copyItem.sameAs(thang))
@@ -2142,7 +2142,7 @@ public class Modify extends StdCommand
 				{
 					final MOB copyMOB=(MOB)thang.copyOf();
 					mob.location().showOthers(mob,thang,CMMsg.MSG_OK_ACTION,L("<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>."));
-					CMLib.genEd().modifyStdMob(mob,(MOB)thang);
+					CMLib.genEd().modifyStdMob(mob,(MOB)thang,-1);
 					if(!copyMOB.sameAs(thang))
 						Log.sysOut("CreateEdit",mob.Name()+" modified mob "+thang.Name()+" ("+thang.ID()+") in "+CMLib.map().getDescriptiveExtendedRoomID(((MOB)thang).location())+".");
 				}
@@ -2157,7 +2157,7 @@ public class Modify extends StdCommand
 				{
 					final MOB copyMOB=(MOB)thang.copyOf();
 					mob.location().showOthers(mob,thang,CMMsg.MSG_OK_ACTION,L("<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>."));
-					CMLib.genEd().genMiscSet(mob,thang);
+					CMLib.genEd().genMiscSet(mob,thang,-1);
 					if(!copyMOB.sameAs(thang))
 						Log.sysOut("CreateEdit",mob.Name()+" modified mob "+thang.Name()+" ("+thang.ID()+") in "+CMLib.map().getDescriptiveExtendedRoomID(((MOB)thang).location())+".");
 					copyMOB.destroy();
@@ -2240,7 +2240,7 @@ public class Modify extends StdCommand
 		final Object O = args[0];
 		if(O instanceof Environmental)
 		{
-			CMLib.genEd().genMiscSet(mob,(Environmental)O);
+			CMLib.genEd().genMiscSet(mob,(Environmental)O,-1);
 			if(O instanceof Physical)
 				((Physical)O).recoverPhyStats();
 			((Environmental)O).text();

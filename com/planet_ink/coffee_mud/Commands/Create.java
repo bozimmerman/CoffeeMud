@@ -86,7 +86,7 @@ public class Create extends StdCommand
 			if((thisExit.isGeneric())&&(reverseExit.isGeneric()))
 			{
 				thisExit=(Exit)reverseExit.copyOf();
-				CMLib.genEd().modifyGenExit(mob,thisExit);
+				CMLib.genEd().modifyGenExit(mob,thisExit,-1);
 			}
 		}
 
@@ -322,7 +322,7 @@ public class Create extends StdCommand
 		}
 
 		if((newItem.isGeneric())&&(doGenerica))
-			CMLib.genEd().genMiscSet(mob,newItem);
+			CMLib.genEd().genMiscSet(mob,newItem,-1);
 		if(newItem instanceof SpaceObject)
 		{
 			CMLib.database().DBCreateThisItem("SPACE", newItem);
@@ -361,7 +361,7 @@ public class Create extends StdCommand
 
 		manufacturer.setName(manufacturerID);
 		CMLib.tech().addManufacturer(manufacturer);
-		CMLib.genEd().modifyManufacturer(mob, manufacturer);
+		CMLib.genEd().modifyManufacturer(mob, manufacturer, -1);
 		mob.location().recoverRoomStats();
 		Log.sysOut(mob.Name()+" created manufacturer "+manufacturer.name()+".");
 	}
@@ -563,7 +563,7 @@ public class Create extends StdCommand
 		newMOB.recoverPhyStats();
 		mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("Suddenly, @x1 instantiates from the Java Plane.",newMOB.name()));
 		if((newMOB.isGeneric())&&(doGenerica))
-			CMLib.genEd().genMiscSet(mob,newMOB);
+			CMLib.genEd().genMiscSet(mob,newMOB,-1);
 		Log.sysOut("Mobs",mob.Name()+" created mob "+newMOB.Name()+".");
 	}
 
@@ -608,7 +608,7 @@ public class Create extends StdCommand
 			GR.setRacialParms("<RACE><ID>"+CMStrings.capitalizeAndLower(raceID)+"</ID><NAME>"+CMStrings.capitalizeAndLower(raceID)+"</NAME></RACE>");
 		}
 		CMClass.addRace(GR);
-		CMLib.genEd().modifyGenRace(mob,GR);
+		CMLib.genEd().modifyGenRace(mob,GR,-1);
 		CMLib.database().DBCreateRace(GR.ID(),GR.racialParms());
 		if(R!=null)
 			CMLib.utensils().swapRaces(GR,R);
@@ -720,7 +720,7 @@ public class Create extends StdCommand
 		final Vector<AbilityComponent> DV=new Vector<AbilityComponent>();
 		CMLib.ableComponents().getAbilityComponentMap().put(skillID.toUpperCase().trim(),DV);
 		DV.add(CMLib.ableComponents().createBlankAbilityComponent());
-		CMLib.genEd().modifyComponents(mob,skillID);
+		CMLib.genEd().modifyComponents(mob,skillID,-1);
 		final String parms=CMLib.ableComponents().getAbilityComponentCodedString(skillID);
 		final String error=CMLib.ableComponents().addAbilityComponent(parms,CMLib.ableComponents().getAbilityComponentMap());
 		if(error!=null)
@@ -841,7 +841,7 @@ public class Create extends StdCommand
 		}
 		final Ability CR=(Ability)CMClass.getAbility("GenAbility").copyOf();
 		CR.setStat("CLASS",classD);
-		CMLib.genEd().modifyGenAbility(mob,CR);
+		CMLib.genEd().modifyGenAbility(mob,CR,-1);
 		CMLib.database().DBCreateAbility(CR.ID(),"GenAbility",CR.getStat("ALLXML"));
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The skill of the world just increased!"));
 	}
@@ -916,7 +916,7 @@ public class Create extends StdCommand
 		}
 		final Language CR=(Language)CMClass.getAbility("GenLanguage").copyOf();
 		CR.setStat("CLASS",classD);
-		CMLib.genEd().modifyGenLanguage(mob,CR);
+		CMLib.genEd().modifyGenLanguage(mob,CR,-1);
 		CMLib.database().DBCreateAbility(CR.ID(),"GenLanguage",CR.getStat("ALLXML"));
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The skill of the world just increased!"));
 	}
@@ -946,7 +946,7 @@ public class Create extends StdCommand
 		}
 		final Ability CR=(Ability)CMClass.getAbility("GenCraftSkill").copyOf();
 		CR.setStat("CLASS",classD);
-		CMLib.genEd().modifyGenCraftSkill(mob,CR);
+		CMLib.genEd().modifyGenCraftSkill(mob,CR,-1);
 		CMLib.database().DBCreateAbility(CR.ID(),"GenCraftSkill",CR.getStat("ALLXML"));
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The skill of the world just increased!"));
 	}
@@ -983,7 +983,7 @@ public class Create extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 			return;
 		}
-		final AbilityMapper.AbilityMapping mapped = CMLib.genEd().modifyAllQualifyEntry(mob,eachOrAll.toUpperCase().trim(),A);
+		final AbilityMapper.AbilityMapping mapped = CMLib.genEd().modifyAllQualifyEntry(mob,eachOrAll.toUpperCase().trim(),A, -1);
 		map=CMLib.ableMapper().getAllQualifiesMap(null);
 		subMap=map.get(eachOrAll.toUpperCase().trim());
 		subMap.put(A.ID().toUpperCase().trim(), mapped);
@@ -1033,7 +1033,7 @@ public class Create extends StdCommand
 			CR.setClassParms("<CCLASS><ID>"+CMStrings.capitalizeAndLower(classD)+"</ID><NAME>"+CMStrings.capitalizeAndLower(classD)+"</NAME></CCLASS>");
 		}
 		CMClass.addCharClass(CR);
-		CMLib.genEd().modifyGenClass(mob,CR);
+		CMLib.genEd().modifyGenClass(mob,CR,-1);
 		CMLib.database().DBCreateClass(CR.ID(),CR.classParms());
 		if(C!=null)
 			CMLib.utensils().reloadCharClasses(C);
@@ -1493,7 +1493,7 @@ public class Create extends StdCommand
 				if(!mob.isMonster())
 				{
 					mob.tell(L("Government '@x1' created.",G.getName()));
-					CMLib.genEd().modifyGovernment(mob, G);
+					CMLib.genEd().modifyGovernment(mob, G,-1);
 					CMLib.clans().reSaveGovernmentsXML();
 					Log.sysOut("CreateEdit",mob.Name()+" created Clan Government "+G.getName()+".");
 				}

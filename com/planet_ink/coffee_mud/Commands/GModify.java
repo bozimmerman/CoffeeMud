@@ -419,11 +419,11 @@ public class GModify extends StdCommand
 		return didAnything;
 	}
 
-	public void addEnumeratedStatCodes(Enumeration<? extends Environmental> e, Set<String> allKnownFields, StringBuffer allFieldsMsg)
+	public void addEnumeratedStatCodes(Enumeration<? extends Modifiable> e, Set<String> allKnownFields, StringBuffer allFieldsMsg)
 	{
 		for(;e.hasMoreElements();)
 		{
-			final Environmental E=e.nextElement();
+			final Modifiable E=e.nextElement();
 			final String[] fields=E.getStatCodes();
 			for(int x=0;x<fields.length;x++)
 			{

@@ -46,31 +46,31 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		return "DefaultQuest";
 	}
 
-	protected String 	name="";
-	protected String 	author="";
-	protected String 	displayName="";
-	protected String 	startDate="";
-	protected int 		duration=450; // about 30 minutes
-	protected String 	rawScriptParameter="";
-	protected boolean 	durable=false;
-	protected int 		minWait=-1;
-	protected int 		minPlayers=-1;
-	protected String 	playerMask="";
-	protected int 		runLevel=-1;
-	protected int 		maxWait=-1;
-	protected int 		waitRemaining=-1;
-	protected int 		ticksRemaining=-1;
-	protected long 		lastStartDateTime=System.currentTimeMillis();
-	private boolean 	stoppingQuest=false;
-	protected int 		spawn=SPAWN_NO;
-	private QuestState 	questState=new QuestState();
-	private boolean 	copy=false;
-	private boolean 	suspended=false;
-	public DVector 		internalFiles=null;
-	private int[] 		resetData=null;
+	protected String	name				= "";
+	protected String	author				= "";
+	protected String	displayName			= "";
+	protected String	startDate			= "";
+	protected int		duration			= 450;// about		// 30	// minutes
+	protected String	rawScriptParameter	= "";
+	protected boolean	durable				= false;
+	protected int		minWait				= -1;
+	protected int		minPlayers			= -1;
+	protected String	playerMask			= "";
+	protected int		runLevel			= -1;
+	protected int		maxWait				= -1;
+	protected int		waitRemaining		= -1;
+	protected int		ticksRemaining		= -1;
+	protected long		lastStartDateTime	= System.currentTimeMillis();
+	private boolean		stoppingQuest		= false;
+	protected int		spawn				= SPAWN_NO;
+	private QuestState	questState			= new QuestState();
+	private boolean		copy				= false;
+	private boolean		suspended			= false;
+	public DVector		internalFiles		= null;
+	private int[]		resetData			= null;
 	
-	protected final Map<String,Long> stepEllapsedTimes	= new Hashtable<String,Long>();
-	protected final Map<String,Long> winners			= new CaselessTreeMap<Long>();
+	protected final Map<String,Long>	stepEllapsedTimes	= new Hashtable<String,Long>();
+	protected final Map<String,Long>	winners				= new CaselessTreeMap<Long>();
 
 	// the unique name of the quest
 	@Override
@@ -3964,16 +3964,19 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 
 		boolean allowedToRun=true;
 		if(runLevel()>=0)
-		for(int q=0;q<CMLib.quests().numQuests();q++)
 		{
-			final Quest Q=CMLib.quests().fetchQuest(q);
-			if((!Q.name().equals(name))
-			&&(Q.running())
-			&&(Q.duration()!=0)
-			&&(Q.runLevel()<=runLevel()))
+			for(int q=0;q<CMLib.quests().numQuests();q++)
 			{
-				allowedToRun = false;
-				break;
+				final Quest Q=CMLib.quests().fetchQuest(q);
+				if((!Q.name().equals(name))
+				&&(Q.running())
+				&&(Q.duration()!=0)
+				&&(Q.runLevel()<=runLevel())
+				&&(Q.runLevel()>=0))
+				{
+					allowedToRun = false;
+					break;
+				}
 			}
 		}
 		if(allowedToRun)
@@ -4563,6 +4566,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	}
 
 	private static final String VALID_ASTR_CODES="_&|";
+
 	private String modifyStringFromArgs(String s, List args)
 	{
 		int x=s.toUpperCase().indexOf('$');
@@ -4945,26 +4949,24 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	 */
 	public static class QuestState implements Cloneable
 	{
-		public MysteryData mysteryData=new MysteryData();
-		public List<MOB> loadedMobs=new Vector<MOB>();
-		public List<Item> loadedItems=new Vector<Item>();
-		public Area area=null;
-		public Room room=null;
-		public MOB mob=null;
-		public List<MOB> mobGroup=null;
-		public List<PhysicalAgent> reselectable=new Vector<PhysicalAgent>();
-		public List<Item> itemGroup=null;
-		public List<Room> roomGroup=null;
-		public Item item=null;
-		public Object envObject=null;
-		public boolean error=false;
-		public boolean done=false;
-		public boolean beQuiet=false;
-		public boolean autoStepAfterDuration=false;
-		public int preserveState=0;
-		public int lastLine=0;
-		public int startLine;
-		public SVector<PreservedQuestObject> worldObjects=new SVector<PreservedQuestObject>();
+		public MysteryData	mysteryData				= new MysteryData();
+		public List<MOB>	loadedMobs				= new Vector<MOB>();
+		public List<Item>	loadedItems				= new Vector<Item>();
+		public Area			area					= null;
+		public Room			room					= null;
+		public MOB			mob						= null;
+		public List<MOB>	mobGroup				= null;
+		public List<Item>	itemGroup				= null;
+		public List<Room>	roomGroup				= null;
+		public Item			item					= null;
+		public Object		envObject				= null;
+		public boolean		error					= false;
+		public boolean		done					= false;
+		public boolean		beQuiet					= false;
+		public boolean		autoStepAfterDuration	= false;
+		public int			preserveState			= 0;
+		public int			lastLine				= 0;
+		public int			startLine;
 		// contains a set of vectors, vectors are formatted as such:
 		// key 1=vector, below.  key 2=preserveState
 		// 0=environmental item/mob/etc
@@ -4974,8 +4976,10 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		//  1=Effect, 2=String (for an Effect modified)
 		//  1=Behavior (for an Behavior added)
 		//  1=Behavior, 2=String (for an Behavior modified)
-		public DVector addons=new DVector(2);
-		public STreeMap<String,String> vars=new STreeMap<String,String>();
+		public DVector						addons					= new DVector(2);
+		public Map<String, String>			vars					= new STreeMap<String, String>();
+		public List<PhysicalAgent>			reselectable			= new Vector<PhysicalAgent>();
+		public List<PreservedQuestObject>	worldObjects			= new SVector<PreservedQuestObject>();
 
 		public boolean isStat(String statName)
 		{

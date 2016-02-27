@@ -35,17 +35,54 @@ import java.util.*;
 
 public class Chant_PlantMaze extends Chant
 {
-	@Override public String ID() { return "Chant_PlantMaze"; }
-	private final static String localizedName = CMLib.lang().L("Plant Maze");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Plant Maze)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	@Override protected int canAffectCode(){return CAN_ROOMS;}
-	@Override protected int canTargetCode(){return CAN_ROOMS;}
-	Room oldRoom=null;
-	Item thePlants=null;
+	@Override
+	public String ID()
+	{
+		return "Chant_PlantMaze";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Plant Maze");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Plant Maze)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT | Ability.DOMAIN_PLANTGROWTH;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_ROOMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_ROOMS;
+	}
+
+	protected Room	oldRoom		= null;
+	protected Item	thePlants	= null;
 
 	@Override
 	public boolean tick(Tickable ticking,int tickID)

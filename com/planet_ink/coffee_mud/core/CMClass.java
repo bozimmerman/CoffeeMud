@@ -189,7 +189,7 @@ public class CMClass extends ClassLoader
 	protected XVector<Weapon>   		 weapons=new XVector<Weapon>();
 	protected XVector<Armor>			 armor=new XVector<Armor>();
 	protected XVector<MiscMagic>		 miscMagic=new XVector<MiscMagic>();
-	protected XVector<Electronics>  	 tech=new XVector<Electronics>();
+	protected XVector<Technical>  		 tech=new XVector<Technical>();
 	protected XVector<ClanItem> 		 clanItems=new XVector<ClanItem>();
 	protected XVector<Area> 			 areaTypes=new XVector<Area>();
 	protected XVector<Command>  		 commands=new XVector<Command>();
@@ -638,13 +638,13 @@ public class CMClass extends ClassLoader
 	 * An enumeration of all the stored misc Tech in this classloader for this thread
 	 * @return an enumeration of all the stored misc Tech in this classloader for this thread
 	 */
-	public static final Enumeration<Electronics>tech(){return c().tech.elements();}
+	public static final Enumeration<Technical>tech(){return c().tech.elements();}
 	/**
 	 * An enumeration of all the stored misc Tech in this classloader for this thread
 	 * @param f the filterer to help select which ones you want
 	 * @return an enumeration of all the stored misc Tech in this classloader for this thread
 	 */
-	public static final Enumeration<Electronics>tech(Filterer<Electronics> f){return new FilteredEnumeration<Electronics>(c().tech.elements(),f);}
+	public static final Enumeration<Technical>tech(Filterer<Technical> f){return new FilteredEnumeration<Technical>(c().tech.elements(),f);}
 	/**
 	 * An enumeration of all the stored clan Items in this classloader for this thread
 	 * @return an enumeration of all the stored clan Items in this classloader for this thread
