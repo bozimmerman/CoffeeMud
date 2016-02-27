@@ -3955,21 +3955,28 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
 				MOB M=null;
 				if(lastKnownLocation!=null)
-					M=lastKnownLocation.fetchInhabitant(CMath.s_int(arg1.trim())-1);
+				{
+					if(CMath.isInteger(arg1.trim()))
+						M=lastKnownLocation.fetchInhabitant(CMath.s_int(arg1.trim())-1);
+					else
+						M=lastKnownLocation.fetchInhabitant(arg1.trim());
+				}
 				Item which=null;
 				int ct=1;
 				if(M!=null)
-				for(int i=0;i<M.numItems();i++)
 				{
-					final Item I=M.getItem(i);
-					if((I!=null)&&(I.container()==null))
+					for(int i=0;i<M.numItems();i++)
 					{
-						if(ct==CMath.s_int(arg2.trim()))
+						final Item I=M.getItem(i);
+						if((I!=null)&&(I.container()==null))
 						{
-							which = I;
-							break;
+							if(ct==CMath.s_int(arg2.trim()))
+							{
+								which = I;
+								break;
+							}
+							ct++;
 						}
-						ct++;
 					}
 				}
 				if(which==null)
@@ -4027,8 +4034,13 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
 				MOB which=null;
 				if(lastKnownLocation!=null)
-					which=lastKnownLocation.fetchInhabitant(CMath.s_int(arg1.trim())-1);
-				int ct=1;
+				{
+					if(CMath.isInteger(arg1.trim()))
+						which=lastKnownLocation.fetchInhabitant(CMath.s_int(arg1.trim())-1);
+					else
+						which=lastKnownLocation.fetchInhabitant(arg1);
+				}
+				int ct=0;
 				if(which!=null)
 				{
 					for(int i=0;i<which.numItems();i++)
@@ -4049,7 +4061,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
 				Environmental which=null;
 				if(lastKnownLocation!=null)
-					which=lastKnownLocation.fetchInhabitant(CMath.s_int(arg1.trim())-1);
+				{
+					if(CMath.isInteger(arg1.trim()))
+						which=lastKnownLocation.fetchInhabitant(CMath.s_int(arg1.trim())-1);
+					else
+						which=lastKnownLocation.fetchInhabitant(arg1.trim());
+				}
 				if(which==null)
 					returnable=false;
 				else
@@ -6111,7 +6128,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				Environmental which=null;
 				if(lastKnownLocation!=null)
 				{
-					which=lastKnownLocation.fetchInhabitant(CMath.s_int(arg1.trim())-1);
+					if(CMath.isInteger(arg1.trim()))
+						which=lastKnownLocation.fetchInhabitant(CMath.s_int(arg1.trim())-1);
+					else
+						which=lastKnownLocation.fetchInhabitant(arg1.trim());
 					if(which!=null)
 					{
 						final Vector<MOB> list=new Vector<MOB>();
@@ -6277,7 +6297,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(funcParms,0));
 				MOB M=null;
 				if(lastKnownLocation!=null)
-					M=lastKnownLocation.fetchInhabitant(CMath.s_int(arg1.trim())-1);
+				{
+					if(CMath.isInteger(arg1.trim()))
+						M=lastKnownLocation.fetchInhabitant(CMath.s_int(arg1.trim())-1);
+					else
+						M=lastKnownLocation.fetchInhabitant(arg1.trim());
+				}
 				Item which=null;
 				int ct=1;
 				if(M!=null)
@@ -6305,14 +6330,21 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(funcParms));
 				MOB which=null;
 				if(lastKnownLocation!=null)
-					which=lastKnownLocation.fetchInhabitant(CMath.s_int(arg1.trim())-1);
-				int ct=1;
-				if(which!=null)
-				for(int i=0;i<which.numItems();i++)
 				{
-					final Item I=which.getItem(i);
-					if((I!=null)&&(I.container()==null))
-						ct++;
+					if(CMath.isInteger(arg1.trim()))
+						which=lastKnownLocation.fetchInhabitant(CMath.s_int(arg1.trim())-1);
+					else
+						which=lastKnownLocation.fetchInhabitant(arg1);
+				}
+				int ct=0;
+				if(which!=null)
+				{
+					for(int i=0;i<which.numItems();i++)
+					{
+						final Item I=which.getItem(i);
+						if((I!=null)&&(I.container()==null))
+							ct++;
+					}
 				}
 				results.append(""+ct);
 				break;
