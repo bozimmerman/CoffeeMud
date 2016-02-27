@@ -37,17 +37,63 @@ import java.util.*;
 
 public class Paladin_HolyStrike extends StdAbility
 {
-	@Override public String ID() { return "Paladin_HolyStrike"; }
-	private final static String localizedName = CMLib.lang().L("Holy Strike");
-	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =I(new String[] {"HOLYSTRIKE"});
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public String displayText(){return "";}
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_MARTIALLORE;}
-	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
+	@Override
+	public String ID()
+	{
+		return "Paladin_HolyStrike";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Holy Strike");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "HOLYSTRIKE" });
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public String displayText()
+	{
+		return "";
+	}
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL | Ability.DOMAIN_MARTIALLORE;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT | USAGE_MANA;
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)

@@ -2073,40 +2073,43 @@ public class Modify extends StdCommand
 		else
 		{
 			String allWord=CMParms.combine(commands,1);
-			final int x=allWord.indexOf('@');
+			Environmental thang=null;
 			MOB srchMob=mob;
 			Item srchContainer=null;
 			Room srchRoom=mob.location();
-			if(x>0)
+			if(allWord.length()>0)
 			{
-				final String rest=allWord.substring(x+1).trim();
-				allWord=allWord.substring(0,x).trim();
-				if(rest.equalsIgnoreCase("room"))
-					srchMob=null;
-				else
-				if(rest.length()>0)
+				final int x=allWord.indexOf('@');
+				if(x>0)
 				{
-					final MOB M=srchRoom.fetchInhabitant(rest);
-					if(M==null)
+					final String rest=allWord.substring(x+1).trim();
+					allWord=allWord.substring(0,x).trim();
+					if(rest.equalsIgnoreCase("room"))
+						srchMob=null;
+					else
+					if(rest.length()>0)
 					{
-						final Item I = srchRoom.findItem(null, rest);
-						if(I instanceof Container)
-							srchContainer=I;
+						final MOB M=srchRoom.fetchInhabitant(rest);
+						if(M==null)
+						{
+							final Item I = srchRoom.findItem(null, rest);
+							if(I instanceof Container)
+								srchContainer=I;
+							else
+							{
+								mob.tell(L("MOB or Container '@x1' not found.",rest));
+								mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+								return false;
+							}
+						}
 						else
 						{
-							mob.tell(L("MOB or Container '@x1' not found.",rest));
-							mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
-							return false;
+							srchMob=M;
+							srchRoom=null;
 						}
-					}
-					else
-					{
-						srchMob=M;
-						srchRoom=null;
 					}
 				}
 			}
-			Environmental thang=null;
 			if((srchMob!=null)&&(srchRoom!=null))
 				thang=srchRoom.fetchFromMOBRoomFavorsItems(srchMob,srchContainer,allWord,Wearable.FILTER_ANY);
 			else
