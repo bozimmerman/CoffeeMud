@@ -36,14 +36,37 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class BodyPiercing extends CommonSkill
 {
-	@Override public String ID() { return "BodyPiercing"; }
-	private final static String localizedName = CMLib.lang().L("Body Piercing");
-	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =I(new String[] {"BODYPIERCE","BODYPIERCING"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ARTISTIC; }
-	protected String writing="";
-	MOB target=null;
+	@Override
+	public String ID()
+	{
+		return "BodyPiercing";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Body Piercing");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "BODYPIERCE", "BODYPIERCING" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_COMMON_SKILL | Ability.DOMAIN_ARTISTIC;
+	}
+
+	protected String	writing	= "";
+	protected MOB		target	= null;
+
 	public BodyPiercing()
 	{
 		super();
@@ -80,7 +103,11 @@ public class BodyPiercing extends CommonSkill
 			if((target==null)
 			||(mob.location()!=target.location())
 			||(!CMLib.flags().canBeSeenBy(target,mob)))
-			{aborted=true; unInvoke(); return false;}
+			{
+				aborted = true;
+				unInvoke();
+				return false;
+			}
 		}
 		return super.tick(ticking,tickID);
 	}
@@ -140,6 +167,7 @@ public class BodyPiercing extends CommonSkill
 		for(int i=0;i<codes.total();i++)
 		{
 			for(int ii=0;ii<piercable.length;ii++)
+			{
 				if(codes.get(i)==piercable[ii])
 				{
 					for(int iii=0;iii<piercables[ii].length;iii++)
@@ -154,6 +182,7 @@ public class BodyPiercing extends CommonSkill
 					}
 					break;
 				}
+			}
 		}
 		if((partNum<0)||(wearLocName==null))
 		{

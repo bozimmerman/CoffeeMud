@@ -2631,6 +2631,9 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		final boolean current=stat.startsWith("CURRENT ")||stat.startsWith("CURRENT_");
 		if(current)
 			stat=stat.substring(8);
+		else
+		if(stat.startsWith("BASE ")||stat.startsWith("BASE_"))
+			stat=stat.substring(5);
 		if(P.basePhyStats().isStat(stat))
 			return true;
 		if(P instanceof MOB)
@@ -2669,6 +2672,9 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		final boolean current=stat.startsWith("CURRENT ")||stat.startsWith("CURRENT_");
 		if(current)
 			stat=stat.substring(8);
+		else
+		if(stat.startsWith("BASE ")||stat.startsWith("BASE_"))
+			stat=stat.substring(5);
 		if(P.basePhyStats().isStat(stat))
 			return (current)?P.phyStats().getStat(stat):P.basePhyStats().getStat(stat);
 		if(P instanceof MOB)
@@ -2753,6 +2759,9 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		final boolean current=stat.startsWith("CURRENT ")||stat.startsWith("CURRENT_");
 		if(current)
 			stat=stat.substring(8);
+		else
+		if(stat.startsWith("BASE ")||stat.startsWith("BASE_"))
+			stat=stat.substring(5);
 		if(P.basePhyStats().isStat(stat))
 		{
 			if(current)
@@ -2818,11 +2827,13 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		}
 		else
 		if(P instanceof Item)
+		{
 			if(getGenItemCodeNum(stat)>=0)
 			{
 				setGenItemStat((Item)P, stat, value);
 				return;
 			}
+		}
 	}
 
 	protected void setGenPropertiesStr(Environmental E, List<XMLTag> buf)

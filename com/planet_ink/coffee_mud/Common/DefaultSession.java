@@ -1344,11 +1344,11 @@ public class DefaultSession implements Session
 
 		if(!pstats.getColorStr().equals(lastColorStr))
 		{
+			lastColorStr=pstats.getColorStr();
 			if(pstats.getColorStr().length()==0)
 				clookup=CMLib.color().standardColorLookups();
 			else
 			{
-				lastColorStr=pstats.getColorStr();
 				clookup=CMLib.color().standardColorLookups().clone();
 				List<String> changesList = CMParms.parseAny(pstats.getColorStr(), '#', true);
 				for(String change : changesList)

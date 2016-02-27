@@ -122,6 +122,7 @@ public class Switch extends StdCommand
 				else
 				{
 					CMLib.login().showTheNews(target);
+					
 					Log.sysOut(mob.Name()+" switched login to: "+target.Name());
 				}
 			}
