@@ -747,7 +747,10 @@ public class MUD extends Thread implements MudHost
 			{
 				try
 				{
-					e.nextElement().shutdown();
+					final CMLibrary library = e.nextElement();
+					library.shutdown();
+					if(S!=null)
+						S.println(library.name()+" shut down.");
 				}
 				catch (final Exception ex)
 				{
@@ -774,6 +777,8 @@ public class MUD extends Thread implements MudHost
 				{
 					Log.errOut(ex);
 				}
+				if(S!=null)
+					S.println(lib.name()+" shut down.");
 				if(debugMem) shutdownMemReport(library.ID());
 			}
 		}
@@ -796,6 +801,8 @@ public class MUD extends Thread implements MudHost
 					{
 						Log.errOut(ex);
 					}
+					if(S!=null)
+						S.println(lib.name()+" shut down.");
 					if(debugMem) shutdownMemReport(library.ID());
 				}
 			}
