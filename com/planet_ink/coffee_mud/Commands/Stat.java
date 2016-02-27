@@ -503,7 +503,9 @@ public class Stat  extends Skills
 		{
 			try
 			{
-				final List<MOB> inhabs=CMLib.map().findInhabitants(CMLib.map().rooms(), mob,MOBname,100);
+				final List<MOB> inhabs=CMLib.map().findInhabitants(mob.location().getArea().getProperMap(), mob,MOBname,100);
+				if(inhabs.size()==0)
+					inhabs.addAll(CMLib.map().findInhabitants(CMLib.map().rooms(), mob,MOBname,100));
 				for(final MOB mob2 : inhabs)
 				{
 					final Room R=mob2.location();
@@ -520,6 +522,58 @@ public class Stat  extends Skills
 		}
 		if(target==null)
 			target=CMLib.players().getLoadPlayer(MOBname);
+		return target;
+	}
+	
+	protected Item getItemTarget(MOB mob, String itemName)
+	{
+		Item target=null;
+		if(target == null)
+			target=mob.findItem(itemName);
+		if(target == null)
+			target=mob.location().findItem(itemName);
+		if(target==null)
+		{
+			try
+			{
+				final List<Item> items=CMLib.map().findRoomItems(mob.location().getArea().getProperMap(), mob,itemName,true,100);
+				if(items.size()==0)
+					items.addAll(CMLib.map().findRoomItems(CMLib.map().rooms(), mob,itemName,true,100));
+				for(final Item item2 : items)
+				{
+					final Room R=CMLib.map().roomLocation(item2);
+					if(CMSecurity.isAllowed(mob,R,CMSecurity.SecFlag.STAT))
+					{
+						target=item2;
+						break;
+					}
+				}
+			}
+			catch (final NoSuchElementException nse)
+			{
+			}
+		}
+		if(target==null)
+		{
+			try
+			{
+				final List<Item> items=CMLib.map().findInventory(mob.location().getArea().getProperMap(), mob,itemName,100);
+				if(items.size()==0)
+					items.addAll(CMLib.map().findInventory(CMLib.map().rooms(), mob,itemName,100));
+				for(final Item item2 : items)
+				{
+					final Room R=CMLib.map().roomLocation(item2);
+					if(CMSecurity.isAllowed(mob,R,CMSecurity.SecFlag.STAT))
+					{
+						target=item2;
+						break;
+					}
+				}
+			}
+			catch (final NoSuchElementException nse)
+			{
+			}
+		}
 		return target;
 	}
 	
@@ -980,27 +1034,178 @@ public class Stat  extends Skills
 					if((target.playerStats()!=null)&&(CMProps.isUsingAccountSystem()))
 						str.append(L("\n\r^xMember of Account:^.^N ^w@x1^?",(target.playerStats().getAccount()!=null)?target.playerStats().getAccount().getAccountName():L("None"))).append("\n\r");
 					str.append(CMLib.commands().getScore(target));
+					if(target.playerStats()!=null)
+						CMLib.genEd().modifyPlayer(mob, target, -950);
+					else
+						CMLib.genEd().genMiscSet(mob, target, -950);
 				}
 			}
 		}
 		if((commands.size()>0)&&(str.length()==0))
 		{
-			final String MOBname=commands.get(commands.size()-1).toString();
+			String MOBname=commands.get(commands.size()-1).toString();
 			MOB M=mob;
 			if(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.STAT))
 			{
-				MOB target=this.getMOBTarget(mob, MOBname);
-				if((target!=null)
-				&&(((target.isMonster())&&(CMSecurity.isAllowed(mob, target.location(), CMSecurity.SecFlag.CMDMOBS)))
-					||((target.isPlayer())&&(CMSecurity.isAllowed(mob, target.location(), CMSecurity.SecFlag.CMDPLAYERS)))))
+				String firstWord = (commands.size()> 1) ? commands.get(0) : "";
+				String restWords = (commands.size() > 1) ? CMParms.combine(commands,1) : "";
+				MOBname = CMParms.combine(commands,0);
+				if(MOBname.equalsIgnoreCase("ROOM"))
 				{
-					M=target;
-					commands.remove(commands.size()-1);
+					CMLib.genEd().modifyRoom(mob, mob.location(), -950);
+					return true;
+				}
+				else
+				if(MOBname.equalsIgnoreCase("AREA"))
+				{
+					final Set<Area> alsoUpdateAreas=new HashSet<Area>();
+					CMLib.genEd().modifyArea(mob, mob.location().getArea(), alsoUpdateAreas, -950);
+					return true;
+				}
+				else
+				if(firstWord.equalsIgnoreCase("EXIT"))
+				{
+					Environmental itarget=getItemTarget(mob, MOBname);
+					if(itarget==null)
+					{
+						itarget=mob.location().fetchExit(MOBname);
+						return true;
+					}
+					mob.tell(L("You can't stat exit '@x1'!",restWords));
+					return false;
+				}
+				else
+				if(firstWord.equalsIgnoreCase("ITEM"))
+				{
+					Environmental itarget=getItemTarget(mob, restWords);
+					if(itarget!=null)
+					{
+						CMLib.genEd().genMiscSet(mob, itarget, -950);
+						return true;
+					}
+					mob.tell(L("You can't stat item '@x1'!",restWords));
+					return false;
+				}
+				else
+				if(firstWord.equalsIgnoreCase("ROOM"))
+				{
+					Environmental itarget = null;
+					try
+					{
+						final List<Room> rooms=CMLib.map().findRooms(mob.location().getArea().getProperMap(), mob,restWords,true,100);
+						if(rooms.size()==0)
+							rooms.addAll(CMLib.map().findRooms(mob.location().getArea().getProperMap(), mob,restWords,false,100));
+						if(rooms.size()==0)
+							rooms.addAll(CMLib.map().findRooms(CMLib.map().rooms(), mob,restWords,true,100));
+						if(rooms.size()==0)
+							rooms.addAll(CMLib.map().findRooms(CMLib.map().rooms(), mob,restWords,false,100));
+						for(final Room room : rooms)
+						{
+							final Room R=CMLib.map().roomLocation(room);
+							if(CMSecurity.isAllowed(mob,R,CMSecurity.SecFlag.STAT))
+							{
+								itarget=room;
+								break;
+							}
+						}
+					}
+					catch (final NoSuchElementException nse)
+					{
+					}
+					if(itarget != null)
+					{
+						CMLib.genEd().modifyRoom(mob, (Room)itarget, -950);
+						return true;
+					}
+					else
+					{
+						mob.tell(L("You can't stat room '@x1'!",restWords));
+						return false;
+					}
+				}
+				else
+				if(firstWord.equalsIgnoreCase("AREA"))
+				{
+					Environmental itarget = CMLib.map().findArea(restWords);
+					if(itarget != null)
+					{
+						final Set<Area> alsoUpdateAreas=new HashSet<Area>();
+						CMLib.genEd().modifyArea(mob, (Area)itarget, alsoUpdateAreas, -950);
+						return true;
+					}
+					mob.tell(L("You can't stat area '@x1'!",restWords));
+					return false;
 				}
 				else
 				{
-					mob.tell(L("You can't stat mob/player '@x1'!",MOBname));
-					return false;
+					MOBname=commands.get(commands.size()-1).toString();
+					MOB target=this.getMOBTarget(mob, MOBname);
+					if((target!=null)
+					&&(((target.isMonster())&&(CMSecurity.isAllowed(mob, target.location(), CMSecurity.SecFlag.CMDMOBS)))
+						||((target.isPlayer())&&(CMSecurity.isAllowed(mob, target.location(), CMSecurity.SecFlag.CMDPLAYERS)))))
+					{
+						M=target;
+						commands.remove(commands.size()-1);
+					}
+					else
+					{
+						MOBname = CMParms.combine(commands,0);
+						Environmental itarget=null;
+						if(itarget==null)
+							itarget=this.getItemTarget(mob, MOBname);
+						if(itarget==null)
+							itarget=mob.location().fetchExit(MOBname);
+						if(itarget!=null)
+						{
+							CMLib.genEd().genMiscSet(mob, itarget, -950);
+							return true;
+						}
+						else
+						{
+							itarget = CMLib.map().findArea(MOBname);
+							if(itarget != null)
+							{
+								final Set<Area> alsoUpdateAreas=new HashSet<Area>();
+								CMLib.genEd().modifyArea(mob, (Area)itarget, alsoUpdateAreas, -950);
+								return true;
+							}
+							else
+							{
+								try
+								{
+									final List<Room> rooms=CMLib.map().findRooms(mob.location().getArea().getProperMap(), mob,MOBname,true,100);
+									if(rooms.size()==0)
+										rooms.addAll(CMLib.map().findRooms(mob.location().getArea().getProperMap(), mob,MOBname,false,100));
+									if(rooms.size()==0)
+										rooms.addAll(CMLib.map().findRooms(CMLib.map().rooms(), mob,MOBname,true,100));
+									if(rooms.size()==0)
+										rooms.addAll(CMLib.map().findRooms(CMLib.map().rooms(), mob,MOBname,false,100));
+									for(final Room room : rooms)
+									{
+										final Room R=CMLib.map().roomLocation(room);
+										if(CMSecurity.isAllowed(mob,R,CMSecurity.SecFlag.STAT))
+										{
+											itarget=room;
+											break;
+										}
+									}
+								}
+								catch (final NoSuchElementException nse)
+								{
+								}
+								if(itarget != null)
+								{
+									CMLib.genEd().modifyRoom(mob, (Room)itarget, -950);
+									return true;
+								}
+								else
+								{
+									mob.tell(L("You can't stat mob/player/item/exit/whatever '@x1'!",MOBname));
+									return false;
+								}
+							}
+						}
+					}
 				}
 			}
 			
@@ -1168,7 +1373,7 @@ public class Stat  extends Skills
 					}
 				}
 				if(!found)
-					str.append(" *UKNOWN:"+thisStat+"* ");
+					str.append(" *UNKNOWN:"+thisStat+"* ");
 			}
 		}
 		if(!mob.isMonster())

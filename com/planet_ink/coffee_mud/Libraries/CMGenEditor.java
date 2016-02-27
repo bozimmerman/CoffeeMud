@@ -9488,22 +9488,25 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				ok=true;
 			}
 		}
-		me.recoverCharStats();
-		me.recoverMaxState();
-		me.recoverPhyStats();
-		me.resetToMaxState();
-		if(!oldName.equals(me.Name()))
+		if(showFlag >= -900)
 		{
-			if(mob.session()!=null)
-				mob.session().print(L("Changing player name..."));
-			CMLib.players().renamePlayer(me, oldName);
-			if(mob.session()!=null)
-				mob.session().println(".");
-			Log.sysOut("CMGenEditor",mob.Name()+" changed user "+oldName+" to "+me.name());
+			me.recoverCharStats();
+			me.recoverMaxState();
+			me.recoverPhyStats();
+			me.resetToMaxState();
+			if(!oldName.equals(me.Name()))
+			{
+				if(mob.session()!=null)
+					mob.session().print(L("Changing player name..."));
+				CMLib.players().renamePlayer(me, oldName);
+				if(mob.session()!=null)
+					mob.session().println(".");
+				Log.sysOut("CMGenEditor",mob.Name()+" changed user "+oldName+" to "+me.name());
+			}
+			Log.sysOut("CMGenEditor",mob.Name()+" edited user "+me.name());
+			CMLib.database().DBUpdatePlayer(me);
+			CMLib.database().DBUpdateFollowers(me);
 		}
-		Log.sysOut("CMGenEditor",mob.Name()+" edited user "+me.name());
-		CMLib.database().DBUpdatePlayer(me);
-		CMLib.database().DBUpdateFollowers(me);
 	}
 
 
