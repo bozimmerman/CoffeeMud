@@ -752,22 +752,84 @@ public class DefaultSession implements Session
 			lastColor=newColor;
 	}
 
-	@Override public long getTotalMillis(){ return milliTotal;}
-	@Override public long getIdleMillis(){ return System.currentTimeMillis()-lastKeystroke;}
-	@Override public long getTotalTicks(){ return tickTotal;}
-	@Override public long getMillisOnline(){ return System.currentTimeMillis()-onlineTime;}
+	@Override
+	public long getTotalMillis()
+	{
+		return milliTotal;
+	}
 
-	@Override public long getInputLoopTime(){ return lastLoopTop;}
-	@Override public void setInputLoopTime(){ lastLoopTop=System.currentTimeMillis();}
-	@Override public long getLastPKFight(){return lastPKFight;}
-	@Override public void setLastPKFight(){lastPKFight=System.currentTimeMillis();}
-	@Override public long getLastNPCFight(){return lastNPCFight;}
-	@Override public void setLastNPCFight(){lastNPCFight=System.currentTimeMillis();}
-	@Override public List<String> getLastMsgs(){return new XVector(prevMsgs);}
+	@Override
+	public long getIdleMillis()
+	{
+		return System.currentTimeMillis() - lastKeystroke;
+	}
 
-	@Override public String getTerminalType(){ return terminalType;}
-	@Override public MOB mob(){return mob;}
-	
+	@Override
+	public long getTotalTicks()
+	{
+		return tickTotal;
+	}
+
+	@Override
+	public long getMillisOnline()
+	{
+		return System.currentTimeMillis() - onlineTime;
+	}
+
+	@Override
+	public long getInputLoopTime()
+	{
+		return lastLoopTop;
+	}
+
+	@Override
+	public void setInputLoopTime()
+	{
+		lastLoopTop = System.currentTimeMillis();
+	}
+
+	@Override
+	public long getLastPKFight()
+	{
+		return lastPKFight;
+	}
+
+	@Override
+	public void setLastPKFight()
+	{
+		lastPKFight = System.currentTimeMillis();
+	}
+
+	@Override
+	public long getLastNPCFight()
+	{
+		return lastNPCFight;
+	}
+
+	@Override
+	public void setLastNPCFight()
+	{
+		lastNPCFight = System.currentTimeMillis();
+	}
+
+	@Override
+	public List<String> getLastMsgs()
+	{
+		return new XVector(prevMsgs);
+	}
+
+	@Override
+	public String getTerminalType()
+	{
+		return terminalType;
+	}
+
+	@Override
+	public MOB mob()
+	{
+		return mob;
+	}
+
 	@Override
 	public void setMob(MOB newmob)
 	{
@@ -809,7 +871,13 @@ public class DefaultSession implements Session
 	{
 		killFlag=truefalse;
 	}
-	@Override public List<String> getPreviousCMD(){return previousCmd;}
+
+	@Override
+	public List<String> getPreviousCMD()
+	{
+		return previousCmd;
+	}
+
 	@Override
 	public void setBeingSnoopedBy(Session session, boolean onOff)
 	{
@@ -859,7 +927,12 @@ public class DefaultSession implements Session
 			previousCmd.add((cmds.get(i)));
 	}
 
-	@Override public boolean isAfk(){return afkFlag;}
+	@Override
+	public boolean isAfk()
+	{
+		return afkFlag;
+	}
+
 	@Override
 	public void setAfkFlag(boolean truefalse)
 	{

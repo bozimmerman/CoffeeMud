@@ -856,6 +856,8 @@ public class GenSailingShip extends StdBoardable
 								mob.setLocation(R);
 								//TODO: when LOAD is done on a weapon, remind the user that they need to aim
 								mob.setRangeToTarget(0); //TODO: AIM command will save offset-range in this class
+								//TODO: determine whether it was aimed right before doing this
+								//TODO: set the msg.value() to 0 for a miss, 1 for a ship hit, >1 for a people hit
 								CMLib.combat().postAttack(mob, this, this.targetedShip, w);
 							}
 						}
@@ -942,6 +944,21 @@ public class GenSailingShip extends StdBoardable
 		{
 			switch(msg.targetMinor())
 			{
+			case CMMsg.TYP_WEAPONATTACK:
+				if(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
+				{
+					Weapon weapon=null;
+					if((msg.tool() instanceof Weapon))
+						weapon=(Weapon)msg.tool();
+					if((weapon!=null)&&(msg.source().riding()!=null))
+					{
+						final boolean isHit=msg.value()>0;
+						//TODO: if msg.value() == 1, then hit the ship
+						//TODO: if msg.value() > 1, then hit the people?
+						CMLib.combat().postWeaponAttackResult(msg.source(), msg.source().riding(), this, weapon, isHit);
+					}
+				}
+				break;
 			case CMMsg.TYP_DAMAGE:
 				if(msg.value() > 0)
 				{

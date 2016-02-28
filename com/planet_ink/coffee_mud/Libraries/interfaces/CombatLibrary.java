@@ -316,6 +316,20 @@ public interface CombatLibrary extends CMLibrary
 	 */
 	public void postWeaponAttackResult(MOB source, MOB target, Item item, boolean success);
 
+
+	/**
+	 * This method handles both a hit or a miss with a weapon between two
+	 * ships in combat.  The hit, obviously, posts damage, while the miss, 
+	 * posts a miss. replaceDataTag is called to ensure a proper damage word.
+	 * Generates a CMMsg message and sends it to the common room.
+	 * @see CombatLibrary#replaceDamageTag(String, int, int, View)
+	 * @param source the attacker
+	 * @param target the target
+	 * @param item the weapon used
+	 * @param success true if it was a hit with damage, false if it was a miss
+	 */
+	public void postWeaponAttackResult(MOB source, Rideable attacker, Rideable defender, Weapon weapon, boolean success);
+	
 	/**
 	 * This method handles an item taking damage.  If the item is subject
 	 * to wear and tear, it will take the amount of specific damage

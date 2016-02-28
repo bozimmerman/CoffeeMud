@@ -905,7 +905,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		if(item instanceof Weapon)
 		{
 			weapon=(Weapon)item;
-			damageInt=CMLib.combat().adjustedDamage(source,weapon,target,0,true);
+			damageInt=adjustedDamage(source,weapon,target,0,true);
 			damageType=weapon.weaponDamageType();
 		}
 		if(success)
@@ -963,6 +963,73 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			if(R!=null)
 			if(R.okMessage(source,msg) && (!source.amDead()) && (!source.amDestroyed()))
 				R.send(source,msg);
+		}
+	}
+
+	@Override
+	public void postWeaponAttackResult(MOB source, Rideable attacker, Rideable defender, Weapon weapon, boolean success)
+	{
+		if(source==null)
+			return;
+		if(!mayIAttack(source, attacker, defender))
+			return;
+		int damageInt=adjustedDamage(source,weapon,null,0,false);
+		int damageType=Weapon.TYPE_BASHING;
+		damageType=weapon.weaponDamageType();
+		final Room room=CMLib.map().roomLocation(attacker);
+		if(success)
+		{
+			// calculate Base Damage (with Strength bonus)
+			final String oldHitString="^F^<FIGHT^>"+((weapon!=null)?
+								weapon.hitString(damageInt):
+								standardHitString(Weapon.TYPE_NATURAL,Weapon.CLASS_BLUNT,damageInt,weapon.name()))+"^</FIGHT^>^?";
+			final CMMsg msg=CMClass.getMsg(source,
+									defender,
+									weapon,
+									CMMsg.MSG_OK_VISUAL,
+									CMMsg.MSG_DAMAGE,
+									CMMsg.MSG_OK_VISUAL,
+									oldHitString);
+			CMLib.color().fixSourceFightColor(msg);
+
+			msg.setValue(damageInt);
+			// why was there no okaffect here?
+			if((room!=null)&&(room.okMessage(source,msg)))
+			{
+				if(msg.targetMinor()==CMMsg.TYP_DAMAGE)
+				{
+					damageInt=msg.value();
+					msg.modify(msg.source(),
+							   msg.target(),
+							   msg.tool(),
+							   msg.sourceCode(),
+							   replaceDamageTag(msg.sourceMessage(),msg.value(),damageType,CMMsg.View.SOURCE),
+							   msg.targetCode(),
+							   replaceDamageTag(msg.targetMessage(),msg.value(),damageType,CMMsg.View.TARGET),
+							   msg.othersCode(),
+							   replaceDamageTag(msg.othersMessage(),msg.value(),damageType,CMMsg.View.OTHERS));
+				}
+				if((mayIAttack(source,attacker,defender))
+				&&(CMLib.map().roomLocation(attacker)==room)
+				&&(CMLib.map().roomLocation(defender)==room))
+					room.send(source,msg);
+			}
+		}
+		else
+		{
+			final String missString="^F^<FIGHT^>"+((weapon!=null)?
+								weapon.missString():
+								standardMissString(Weapon.TYPE_BASHING,Weapon.CLASS_BLUNT,weapon.name(),false))+"^</FIGHT^>^?";
+			final CMMsg msg=CMClass.getMsg(source,
+											defender,
+											weapon,
+											CMMsg.MSG_NOISYMOVEMENT,
+											missString);
+			CMLib.color().fixSourceFightColor(msg);
+			// why was there no okaffect here?
+			if(room!=null)
+			if(room.okMessage(source,msg))
+				room.send(source,msg);
 		}
 	}
 
@@ -2275,7 +2342,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 						mob.tell(L("YOU ARE DYING OF THIRST!"));
 					if(hungry)
 						mob.tell(L("YOU ARE DYING OF HUNGER!"));
-					CMLib.combat().postDeath(null,mob,null);
+					postDeath(null,mob,null);
 				}
 				else
 				if(ticksThirsty>CharState.DEATH_THIRST_TICKS-30)
