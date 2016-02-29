@@ -131,24 +131,30 @@ public class WanderHomeLater extends StdAbility
 			else
 			if(CMLib.flags().canActAtAll(M)
 			&&(!M.isInCombat())
-			&&(ignoreFollow || (M.amFollowing()==null))
-			&&(M.getStartRoom()!=null))
+			&&(ignoreFollow || (M.amFollowing()==null)))
 			{
-				final Room startRoom= M.getStartRoom();
-				final Room curRoom=M.location();
-				
-				if(areaOk && (startRoom != null) && (curRoom != null))
+				if(M.getStartRoom()!=null)
 				{
-					if(startRoom.getArea() == curRoom.getArea())
-						return super.tick(ticking, tickID);
+					final Room startRoom= M.getStartRoom();
+					final Room curRoom=M.location();
+					
+					if(areaOk && (startRoom != null) && (curRoom != null))
+					{
+						if(startRoom.getArea() == curRoom.getArea())
+							return super.tick(ticking, tickID);
+					}
+					
+					if(startRoom != curRoom)
+						CMLib.tracking().wanderAway(M, !ignorePCs, true);
+					if(once)
+					{
+						if(startRoom==M.location())
+							unInvoke();
+					}
 				}
-				
-				if(startRoom != curRoom)
-					CMLib.tracking().wanderAway(M, !ignorePCs, true);
-				if(once)
+				else
 				{
-					if(startRoom==M.location())
-						unInvoke();
+					unInvoke();
 				}
 			}
 		}
