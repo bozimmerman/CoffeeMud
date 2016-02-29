@@ -554,7 +554,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	}
 	
 	@Override
-	public boolean postAttack(MOB attacker, Rideable attackingShip, Rideable target, Weapon weapon)
+	public boolean postAttack(MOB attacker, Rideable attackingShip, Rideable target, Weapon weapon, boolean wasAHit)
 	{
 		if((attacker==null)||(!mayIAttack(attacker,attackingShip, target))||(weapon==null))
 			return false;
@@ -562,10 +562,11 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		final Room R=CMLib.map().roomLocation(target);
 		if(R!=null)
 		{
+			msg.setValue(wasAHit?1:0);
 			if(R.okMessage(attacker,msg))
 			{
 				R.send(attacker,msg);
-				return msg.value()>0;
+				return wasAHit;
 			}
 		}
 		return false;

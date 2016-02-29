@@ -241,9 +241,10 @@ public interface CombatLibrary extends CMLibrary
 	 * @param attackingShip the ship the attacker is on
 	 * @param target the targetk ship
 	 * @param weapon the siege weapon used
+	 * @param wasAHit TODO
 	 * @return true if the attack succeeded, false if it failed
 	 */
-	public boolean postAttack(MOB attacker, Rideable attackingShip, Rideable target, Weapon weapon);
+	public boolean postAttack(MOB attacker, Rideable attackingShip, Rideable target, Weapon weapon, boolean wasAHit);
 	
 	/**
 	 * Returns whether the given attacking mob, on the given attacker ship, may attack the people and property

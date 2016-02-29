@@ -51,10 +51,11 @@ public class GenSailingShip extends StdBoardable
 	protected volatile boolean	 anchorDown		 = true;
 	protected final List<Integer>courseDirections= new Vector<Integer>();
 
-	protected volatile int		 	directionFacing	 = 0;
-	protected volatile Rideable		targetedShip	 = null;
-	protected volatile Room		 	shipCombatRoom	 = null;
-	protected PairList<Item,int[]>	coordinates		 = null;
+	protected volatile int			directionFacing	= 0;
+	protected volatile Rideable		targetedShip	= null;
+	protected volatile Room			shipCombatRoom	= null;
+	protected PairList<Item,int[]>	coordinates		= null;
+	protected PairList<Weapon,int[]>aimings			= null;
 	
 	protected int maxHullPoints = -1;
 	
@@ -856,9 +857,10 @@ public class GenSailingShip extends StdBoardable
 								mob.setLocation(R);
 								//TODO: when LOAD is done on a weapon, remind the user that they need to aim
 								mob.setRangeToTarget(0); //TODO: AIM command will save offset-range in this class
+								boolean wasHit = false;//TODO: FIX
 								//TODO: determine whether it was aimed right before doing this
 								//TODO: set the msg.value() to 0 for a miss, 1 for a ship hit, >1 for a people hit
-								CMLib.combat().postAttack(mob, this, this.targetedShip, w);
+								CMLib.combat().postAttack(mob, this, this.targetedShip, w, wasHit);
 							}
 						}
 					}
