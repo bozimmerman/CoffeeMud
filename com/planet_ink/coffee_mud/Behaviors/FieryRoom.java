@@ -29,21 +29,23 @@ public class FieryRoom extends ActiveTicker
 	@Override
 	public String ID()
 	{
-		return "FieryRoom"; }
+		return "FieryRoom"; 
+	}
 
 	@Override
 	protected int canImproveCode()
 	{
-		return Behavior.CAN_ROOMS; }
+		return Behavior.CAN_ROOMS; 
+	}
 
-	private String newDisplay = "";
-	private String newDesc = "";
-	private int directDamage = 10;
-	private int eqChance = 0;
-	private int burnTicks = 12;
-	private boolean noStop = false;
-	private boolean noNpc = false;
-	private boolean noFireText = false;
+	private String		newDisplay		= "";
+	private String		newDesc			= "";
+	private int			directDamage	= 10;
+	private int			eqChance		= 0;
+	private int			burnTicks		= 12;
+	private boolean		noStop			= false;
+	private boolean		noNpc			= false;
+	private boolean		noFireText		= false;
 
 	private String[] FireTexts = {"The fire here crackles and burns."};
 
@@ -219,16 +221,19 @@ public class FieryRoom extends ActiveTicker
 	private static void roastRoom(Room which)
 	{
 		final MOB mob=CMLib.map().getFactoryMOB(which);
-		mob.setName(("fire"));
+		mob.setName(CMLib.lang().L("fire"));
 		for(int i=0;i<which.numItems();i++)
 		{
 			final Item target=which.getItem(i);
-			final Ability burn = CMClass.getAbility("Burning");
-			if((burn != null)&&(CMLib.dice().rollPercentage()>60))
+			if(target != null)
 			{
-				which.showHappens(CMMsg.MSG_OK_ACTION,CMLib.lang().L("@x1 begins to burn!",target.Name()));
-				burn.invoke(mob,target,true,0);
-				target.recoverPhyStats();
+				final Ability burn = CMClass.getAbility("Burning");
+				if((burn != null)&&(CMLib.dice().rollPercentage()>60))
+				{
+					which.showHappens(CMMsg.MSG_OK_ACTION,CMLib.lang().L("@x1 begins to burn!",target.Name()));
+					burn.invoke(mob,target,true,0);
+					target.recoverPhyStats();
+				}
 			}
 		}
 		mob.destroy();
