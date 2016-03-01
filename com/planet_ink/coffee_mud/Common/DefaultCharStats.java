@@ -38,8 +38,17 @@ import java.util.*;
 */
 public class DefaultCharStats implements CharStats
 {
-	@Override public String ID(){return "DefaultCharStats";}
-	@Override public String name() { return ID();}
+	@Override
+	public String ID()
+	{
+		return "DefaultCharStats";
+	}
+
+	@Override
+	public String name()
+	{
+		return ID();
+	}
 
 	@Override
 	public CMObject newInstance()
@@ -56,20 +65,24 @@ public class DefaultCharStats implements CharStats
 			return new DefaultCharStats();
 		}
 	}
-	@Override public void initializeClass(){}
+
+	@Override
+	public void initializeClass()
+	{
+	}
 
 	// competency characteristics
-	protected short[] 		stats=new short[CharStats.CODES.instance().total()];
-	protected CharClass[] 	myClasses=null;
-	protected Integer[] 	myLevels=null;
-	protected Race 			myRace;
-	protected String 		raceName=null;
-	protected String 		genderName=null;
-	protected String 		displayClassName=null;
-	protected String 		displayClassLevel=null;
-	protected short[] 		bodyAlterations=null;
-	protected long 			unwearableBitmap=0;
-	protected int[] 		breathables=null;
+	protected short[]		stats				= new short[CharStats.CODES.instance().total()];
+	protected CharClass[]	myClasses			= null;
+	protected Integer[]		myLevels			= null;
+	protected Race			myRace;
+	protected String		raceName			= null;
+	protected String		genderName			= null;
+	protected String		displayClassName	= null;
+	protected String		displayClassLevel	= null;
+	protected short[]		bodyAlterations		= null;
+	protected long			unwearableBitmap	= 0;
+	protected int[]			breathables			= null;
 
 	public DefaultCharStats()
 	{
@@ -196,6 +209,7 @@ public class DefaultCharStats implements CharStats
 		}
 		myClasses=classV.toArray(new CharClass[0]);
 	}
+
 	@Override
 	public void setMyLevels(String levels)
 	{
@@ -215,6 +229,7 @@ public class DefaultCharStats implements CharStats
 			levelV.add(Integer.valueOf(CMath.s_int(levels)));
 		myLevels=levelV.toArray(new Integer[0]);
 	}
+
 	@Override
 	public String getMyClassesStr()
 	{
@@ -227,6 +242,7 @@ public class DefaultCharStats implements CharStats
 			classStr=classStr.substring(1);
 		return classStr;
 	}
+
 	@Override
 	public String getMyLevelsStr()
 	{
@@ -239,8 +255,18 @@ public class DefaultCharStats implements CharStats
 			levelStr=levelStr.substring(1);
 		return levelStr;
 	}
-	@Override public long getWearableRestrictionsBitmap(){return unwearableBitmap|this.getMyRace().forbiddenWornBits();}
-	@Override public void setWearableRestrictionsBitmap(long bitmap){ unwearableBitmap=bitmap;}
+
+	@Override
+	public long getWearableRestrictionsBitmap()
+	{
+		return unwearableBitmap | this.getMyRace().forbiddenWornBits();
+	}
+
+	@Override
+	public void setWearableRestrictionsBitmap(long bitmap)
+	{
+		unwearableBitmap = bitmap;
+	}
 
 	@Override
 	public int numClasses()
@@ -249,12 +275,13 @@ public class DefaultCharStats implements CharStats
 			return 0;
 		return myClasses.length;
 	}
+
 	@Override
 	public int combinedSubLevels()
 	{
 		if((myClasses==null)
-		   ||(myLevels==null)
-		   ||(myClasses.length<2))
+		||(myLevels==null)
+		||(myClasses.length<2))
 			return 0;
 
 		int combined=0;
@@ -265,7 +292,7 @@ public class DefaultCharStats implements CharStats
 	public int combinedLevels()
 	{
 		if((myClasses==null)
-		   ||(myLevels==null))
+		||(myLevels==null))
 			return 0;
 
 		int combined=0;
@@ -273,7 +300,13 @@ public class DefaultCharStats implements CharStats
 			combined+=myLevels[i].intValue();
 		return combined;
 	}
-	@Override public void setDisplayClassName(String newName){displayClassName=newName;}
+
+	@Override
+	public void setDisplayClassName(String newName)
+	{
+		displayClassName = newName;
+	}
+
 	@Override
 	public String displayClassName()
 	{
@@ -281,7 +314,13 @@ public class DefaultCharStats implements CharStats
 			return displayClassName;
 		return getCurrentClass().name(getCurrentClassLevel());
 	}
-	@Override public void setDisplayClassLevel(String newLevel){displayClassLevel=newLevel;}
+
+	@Override
+	public void setDisplayClassLevel(String newLevel)
+	{
+		displayClassLevel = newLevel;
+	}
+
 	@Override
 	public String displayClassLevel(MOB mob, boolean shortForm)
 	{
@@ -326,8 +365,10 @@ public class DefaultCharStats implements CharStats
 		final StringBuffer str=new StringBuffer("");
 		final CharStats.CODES C = CharStats.CODES.instance();
 		for(final int x : C.all())
+		{
 			if((!C.isBase(x))&&(x!=CharStats.STAT_GENDER))
 				str.append(stats[x]+";");
+		}
 		return str.toString();
 	}
 
@@ -337,6 +378,7 @@ public class DefaultCharStats implements CharStats
 		final List<String> V=CMParms.parseSemicolons(str,false);
 		final CharStats.CODES C = CharStats.CODES.instance();
 		for(final int x : C.all())
+		{
 			if((!C.isBase(x))&&(x!=CharStats.STAT_GENDER)&&(V.size()>0))
 			{
 				final long val=CMath.s_long(V.remove(0));
@@ -344,6 +386,7 @@ public class DefaultCharStats implements CharStats
 					Log.errOut("Value out of range","Value out of range: "+val+" for "+x+" from "+str);
 				stats[x]=(short)val;
 			}
+		}
 	}
 
 	@Override
@@ -378,10 +421,12 @@ public class DefaultCharStats implements CharStats
 		if(myClasses==null)
 			return -1;
 		for(int i=0;i<myClasses.length;i++)
+		{
 			if((myClasses[i]!=null)
 			&&(myClasses[i].ID().equals(aClass))
 			&&(i<myLevels.length))
-			   return myLevels[i].intValue();
+				return myLevels[i].intValue();
+		}
 		return -1;
 	}
 
@@ -391,10 +436,12 @@ public class DefaultCharStats implements CharStats
 		if((myClasses==null)||(aClass==null))
 			return -1;
 		for(int i=0;i<myClasses.length;i++)
+		{
 			if((myClasses[i]!=null)
 			&&(myClasses[i].ID().equals(aClass.ID()))
 			&&(i<myLevels.length))
-			   return myLevels[i].intValue();
+				return myLevels[i].intValue();
+		}
 		return -1;
 	}
 
@@ -522,7 +569,11 @@ public class DefaultCharStats implements CharStats
 		return myClasses[myClasses.length-1];
 	}
 
-	@Override public Collection<CharClass> getCharClasses() { return Arrays.asList(myClasses);}
+	@Override
+	public Collection<CharClass> getCharClasses()
+	{
+		return Arrays.asList(myClasses);
+	}
 
 	@Override
 	public int getCurrentClassLevel()
@@ -556,6 +607,7 @@ public class DefaultCharStats implements CharStats
 	{
 		breathables=newArray;
 	}
+
 	@Override
 	public int getBodyPart(int racialPartNumber)
 	{
@@ -600,6 +652,7 @@ public class DefaultCharStats implements CharStats
 			return 0;
 		return bodyAlterations[racialPartNumber];
 	}
+
 	@Override
 	public void alterBodypart(int racialPartNumber, int deviation)
 	{
@@ -712,90 +765,114 @@ public class DefaultCharStats implements CharStats
 			return genderName;
 		switch(getStat(STAT_GENDER))
 		{
-		case 'M': return "male";
-		case 'F': return "female";
-		default: return "neuter";
+		case 'M':
+			return CMLib.lang().L("male");
+		case 'F':
+			return CMLib.lang().L("female");
+		default:
+			return CMLib.lang().L("neuter");
 		}
 	}
+
 	@Override
 	public String himher()
 	{
-		char c=(char)getStat(STAT_GENDER);
-		if((genderName!=null)&&(genderName.length()>0))
-			c=Character.toUpperCase(genderName.charAt(0));
+		final char c=((genderName!=null)&&(genderName.length()>0))
+					? Character.toUpperCase(genderName.charAt(0)) 
+					: (char)getStat(STAT_GENDER);
 		switch(c)
 		{
-		case 'M': return "him";
-		case 'F': return "her";
-		default: return "it";
+		case 'M':
+			return CMLib.lang().L("him");
+		case 'F':
+			return CMLib.lang().L("her");
+		default:
+			return CMLib.lang().L("it");
 		}
 	}
 
 	@Override
 	public String hisher()
 	{
-		char c=(char)getStat(STAT_GENDER);
-		if((genderName!=null)&&(genderName.length()>0))
-			c=Character.toUpperCase(genderName.charAt(0));
+		final char c=((genderName!=null)&&(genderName.length()>0))
+					? Character.toUpperCase(genderName.charAt(0)) 
+					: (char)getStat(STAT_GENDER);
 		switch(c)
 		{
-		case 'M': return "his";
-		case 'F': return "her";
-		default: return "its";
+		case 'M':
+			return CMLib.lang().L("his");
+		case 'F':
+			return CMLib.lang().L("her");
+		default:
+			return CMLib.lang().L("its");
 		}
 	}
 
 	@Override
 	public String heshe()
 	{
-		char c=(char)getStat(STAT_GENDER);
-		if((genderName!=null)&&(genderName.length()>0))
-			c=Character.toUpperCase(genderName.charAt(0));
+		final char c=((genderName!=null)&&(genderName.length()>0))
+					? Character.toUpperCase(genderName.charAt(0)) 
+					: (char)getStat(STAT_GENDER);
 		switch(c)
 		{
-		case 'M': return "he";
-		case 'F': return "she";
-		default: return "it";
+		case 'M':
+			return CMLib.lang().L("he");
+		case 'F':
+			return CMLib.lang().L("she");
+		default:
+			return CMLib.lang().L("it");
 		}
 	}
+
 	@Override
 	public String sirmadam()
 	{
-		char c=(char)getStat(STAT_GENDER);
-		if((genderName!=null)&&(genderName.length()>0))
-			c=Character.toUpperCase(genderName.charAt(0));
+		final char c=((genderName!=null)&&(genderName.length()>0))
+					? Character.toUpperCase(genderName.charAt(0)) 
+					: (char)getStat(STAT_GENDER);
 		switch(c)
 		{
-		case 'M': return "sir";
-		case 'F': return "madam";
-		default: return "sir";
+		case 'M':
+			return CMLib.lang().L("sir");
+		case 'F':
+			return CMLib.lang().L("madam");
+		default:
+			return CMLib.lang().L("sir");
 		}
 	}
+
 	@Override
 	public String SirMadam()
 	{
-		char c=(char)getStat(STAT_GENDER);
-		if((genderName!=null)&&(genderName.length()>0))
-			c=Character.toUpperCase(genderName.charAt(0));
+		final char c=((genderName!=null)&&(genderName.length()>0))
+					? Character.toUpperCase(genderName.charAt(0)) 
+					: (char)getStat(STAT_GENDER);
 		switch(c)
 		{
-		case 'M': return "Sir";
-		case 'F': return "Madam";
-		default: return "Sir";
+		case 'M':
+			return CMLib.lang().L("Sir");
+		case 'F':
+			return CMLib.lang().L("Madam");
+		default:
+			return CMLib.lang().L("Sir");
 		}
 	}
 
 	@Override
 	public String HeShe()
 	{
-		char c=(char)getStat(STAT_GENDER);
-		if((genderName!=null)&&(genderName.length()>0))
-			c=Character.toUpperCase(genderName.charAt(0));
+		final char c=((genderName!=null)&&(genderName.length()>0))
+					? Character.toUpperCase(genderName.charAt(0)) 
+					: (char)getStat(STAT_GENDER);
 		switch(c)
 		{
-		case 'M': return "He";
-		case 'F': return "She";
-		default: return "It";
+		case 'M':
+			return CMLib.lang().L("He");
+		case 'F':
+			return CMLib.lang().L("She");
+		default:
+			return CMLib.lang().L("It");
 		}
 	}
 
@@ -887,12 +964,24 @@ public class DefaultCharStats implements CharStats
 	{
 		final String[] DESCS = CODES.DESCS();
 		for(final int i : CharStats.CODES.ALLCODES())
+		{
 			if(DESCS[i].startsWith(abilityName))
 				return i;
+		}
 		return -1;
 	}
-	@Override public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
-	@Override public int getSaveStatIndex() { return getStatCodes().length;}
+
+	@Override
+	public int compareTo(CMObject o)
+	{
+		return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));
+	}
+
+	@Override
+	public int getSaveStatIndex()
+	{
+		return getStatCodes().length;
+	}
 
 	@Override
 	public String getStat(String abilityName)
@@ -903,13 +992,25 @@ public class DefaultCharStats implements CharStats
 
 		final String[] DESCS=CODES.DESCS();
 		for(final int i : CharStats.CODES.ALLCODES())
+		{
 			if(DESCS[i].startsWith(abilityName))
 				return Integer.toString(getStat(i));
+		}
 		return null;
 	}
 
-	@Override public String[] getStatCodes() { return CharStats.CODES.NAMES();}
-	@Override public boolean isStat(String code) { return CMParms.containsIgnoreCase(getStatCodes(),code);}
+	@Override
+	public String[] getStatCodes()
+	{
+		return CharStats.CODES.NAMES();
+	}
+
+	@Override
+	public boolean isStat(String code)
+	{
+		return CMParms.containsIgnoreCase(getStatCodes(), code);
+	}
+
 	@Override
 	public void setStat(String code, String val)
 	{
@@ -918,10 +1019,12 @@ public class DefaultCharStats implements CharStats
 			setStat(dex,CMath.s_parseIntExpression(val));
 		else
 		for(final int i : CharStats.CODES.ALLCODES())
+		{
 			if(CODES.DESC(i).startsWith(code))
 			{
 				setStat(dex,CMath.s_parseIntExpression(val));
 				return;
 			}
+		}
 	}
 }
