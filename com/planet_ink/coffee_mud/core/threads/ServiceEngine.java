@@ -327,7 +327,23 @@ public class ServiceEngine implements ThreadEngine
 		}
 		return foundOne;
 	}
-	
+
+	@Override
+	public long msToNextTick(Tickable E, int tickID)
+	{
+		for(final Iterator<TickableGroup> e=tickGroups();e.hasNext();)
+		{
+			final TickableGroup almostTock=e.next();
+			final Iterator<TickClient> set=almostTock.getTickSet(E,tickID);
+			if(set.hasNext())
+			{
+				TickClient client = set.next();
+				return client.getTimeMSToNextTick();
+			}
+		}
+		return -1;
+	}
+
 	@Override
 	public boolean isTicking(Tickable E, int tickID)
 	{

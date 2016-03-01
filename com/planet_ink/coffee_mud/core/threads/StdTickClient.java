@@ -1,4 +1,5 @@
 package com.planet_ink.coffee_mud.core.threads;
+import com.planet_ink.coffee_mud.core.CMProps;
 import com.planet_ink.coffee_mud.core.Log;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 
@@ -20,16 +21,16 @@ import com.planet_ink.coffee_mud.core.interfaces.*;
 */
 public class StdTickClient implements TickClient
 {
-	public final Tickable  clientObject;
-	public final int 	   tickID;
-	public final int 	   reTickDown;
-	public volatile int    tickDown=0;
-	public boolean 		   suspended=false;
-	public volatile long   lastStart=0;
-	public volatile long   lastStop=0;
-	public volatile long   milliTotal=0;
-	public volatile int	   tickTotal=0;
-	public volatile String status = null;
+	public final Tickable	clientObject;
+	public final int		tickID;
+	public final int		reTickDown;
+	public volatile int		tickDown	= 0;
+	public boolean			suspended	= false;
+	public volatile long	lastStart	= 0;
+	public volatile long	lastStop	= 0;
+	public volatile long	milliTotal	= 0;
+	public volatile int		tickTotal	= 0;
+	public volatile String	status		= null;
 
 	public StdTickClient(Tickable newClientObject, int newTickDown, int newTickID)
 	{
@@ -85,7 +86,6 @@ public class StdTickClient implements TickClient
 		if(T==null)
 			return "Awake";
 		return "Awake ("+T.getTickStatus()+")";
-
 	}
 
 	@Override
@@ -127,6 +127,17 @@ public class StdTickClient implements TickClient
 	}
 
 	@Override
+	public long getTimeMSToNextTick()
+	{
+		if(isSuspended() || isAwake())
+			return -1;
+		long msToGo = CMProps.getTickMillis() - (System.currentTimeMillis() - lastStop);
+		if(tickDown > 0)
+			msToGo += (CMProps.getTickMillis() + tickDown);
+		return msToGo;
+	}
+	
+	@Override
 	public boolean tickTicker(boolean forceTickDown)
 	{
 		try
@@ -160,17 +171,45 @@ public class StdTickClient implements TickClient
 		return false;
 	}
 
-	@Override public long getLastStartTime() { return lastStart; }
+	@Override
+	public long getLastStartTime()
+	{
+		return lastStart;
+	}
 
-	@Override public long getLastStopTime() { return lastStop; }
+	@Override
+	public long getLastStopTime()
+	{
+		return lastStop;
+	}
 
-	@Override public long getMilliTotal() { return milliTotal; }
+	@Override
+	public long getMilliTotal()
+	{
+		return milliTotal;
+	}
 
-	@Override public long getTickTotal() { return tickTotal; }
+	@Override
+	public long getTickTotal()
+	{
+		return tickTotal;
+	}
 
-	@Override public boolean isAwake() { return lastStop < lastStart; }
+	@Override
+	public boolean isAwake()
+	{
+		return lastStop < lastStart;
+	}
 
-	@Override public boolean isSuspended() { return suspended; }
+	@Override
+	public boolean isSuspended()
+	{
+		return suspended;
+	}
 
-	@Override public void setSuspended(boolean trueFalse) { suspended = trueFalse; }
+	@Override
+	public void setSuspended(boolean trueFalse)
+	{
+		suspended = trueFalse;
+	}
 }

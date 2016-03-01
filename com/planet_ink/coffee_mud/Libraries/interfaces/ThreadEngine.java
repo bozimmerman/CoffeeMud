@@ -51,6 +51,7 @@ public interface ThreadEngine extends CMLibrary, Runnable
 	public void tickAllTickers(Room here);
 	public void rejuv(Room here, int tickID);
 	public String systemReport(String itemCode);
+	public long msToNextTick(Tickable E, int tickID);
 	public boolean isTicking(Tickable E, int tickID);
 	public  Iterator<TickableGroup> tickGroups();
 	public String getTickStatusSummary(Tickable obj);
