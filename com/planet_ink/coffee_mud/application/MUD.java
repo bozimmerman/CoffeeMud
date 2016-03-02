@@ -748,9 +748,11 @@ public class MUD extends Thread implements MudHost
 				try
 				{
 					final CMLibrary library = e.nextElement();
+					if(S!=null)
+						S.print(library.name()+"...");
 					library.shutdown();
 					if(S!=null)
-						S.println(library.name()+" shut down.");
+						S.println("shut down.");
 				}
 				catch (final Exception ex)
 				{
@@ -768,18 +770,21 @@ public class MUD extends Thread implements MudHost
 			CMProps.setUpAllLowVar(CMProps.Str.MUDSTATUS,"Shutting down "+CMStrings.capitalizeAndLower(lib.name())+"...");
 			for(final Enumeration<CMLibrary> e=CMLib.libraries(lib);e.hasMoreElements();)
 			{
-				final CMLibrary library=e.nextElement();
 				try
 				{
+					final CMLibrary library=e.nextElement();
+					if(S!=null)
+						S.print(library.name()+"...");
 					library.shutdown();
+					if(S!=null)
+						S.println("shut down.");
+					if(debugMem) 
+						shutdownMemReport(library.ID());
 				}
 				catch (final Exception ex)
 				{
 					Log.errOut(ex);
 				}
-				if(S!=null)
-					S.println(lib.name()+" shut down.");
-				if(debugMem) shutdownMemReport(library.ID());
 			}
 		}
 		for(final CMLib.Library lib : CMLib.Library.values())
@@ -792,18 +797,20 @@ public class MUD extends Thread implements MudHost
 				CMProps.setUpAllLowVar(CMProps.Str.MUDSTATUS,"Shutting down "+CMStrings.capitalizeAndLower(lib.name())+"...");
 				for(final Enumeration<CMLibrary> e=CMLib.libraries(lib);e.hasMoreElements();)
 				{
-					final CMLibrary library=e.nextElement();
 					try
 					{
+						final CMLibrary library=e.nextElement();
+						if(S!=null)
+							S.print(library.name()+"...");
 						library.shutdown();
+						if(S!=null)
+							S.println("shut down.");
+						if(debugMem) shutdownMemReport(library.ID());
 					}
 					catch (final Exception ex)
 					{
 						Log.errOut(ex);
 					}
-					if(S!=null)
-						S.println(lib.name()+" shut down.");
-					if(debugMem) shutdownMemReport(library.ID());
 				}
 			}
 		}
