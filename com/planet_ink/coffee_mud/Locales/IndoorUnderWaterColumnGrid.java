@@ -16,10 +16,11 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 
+
 import java.util.*;
 
 /*
-   Copyright 2002-2016 Bo Zimmerman
+   Copyright 2016-2016 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -33,45 +34,23 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class IndoorWaterSurface extends WaterSurface implements Drink
+public class IndoorUnderWaterColumnGrid extends UnderWaterColumnGrid
 {
 	@Override
 	public String ID()
 	{
-		return "IndoorWaterSurface";
-	}
-
-	public IndoorWaterSurface()
-	{
-		super();
-		name="the water";
-		recoverPhyStats();
-		climask=Places.CLIMASK_WET;
+		return "IndoorUnderWaterColumnGrid";
 	}
 
 	@Override
 	public int domainType()
 	{
-		return Room.DOMAIN_INDOORS_WATERSURFACE;
-	}
-
-	@Override
-	protected String UnderWaterLocaleID()
-	{
-		return "IndoorUnderWaterGrid";
-	}
-
-	@Override
-	protected int UnderWaterDomainType()
-	{
 		return Room.DOMAIN_INDOORS_UNDERWATER;
 	}
 
 	@Override
-	protected boolean IsUnderWaterFatClass(Room thatSea)
+	public String getGridChildLocaleID()
 	{
-		return (thatSea instanceof IndoorUnderWaterGrid)
-			 ||(thatSea instanceof IndoorUnderWaterThinGrid)
-			 ||(thatSea instanceof IndoorUnderWaterColumnGrid);
+		return "IndoorUnderWater";
 	}
 }

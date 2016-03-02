@@ -81,7 +81,9 @@ public class WaterSurface extends StdRoom implements Drink
 
 	protected boolean IsUnderWaterFatClass(Room thatSea)
 	{
-		return (thatSea instanceof UnderWaterGrid) || (thatSea instanceof UnderWaterThinGrid);
+		return (thatSea instanceof UnderWaterGrid) 
+			|| (thatSea instanceof UnderWaterThinGrid)
+			|| (thatSea instanceof UnderWaterColumnGrid);
 	}
 
 	@Override

@@ -289,7 +289,7 @@ RAND_PROG 99
 		mpsetvar $@i $QUEST_ID_CURED 'TRUE'
 		mpargset $1 ''
 		for $0 = 1 to '$%NUMMOBSROOM(*)%'
-		   if VAR($%ROOMMOB($0)% $QUEST_ID_COUNT != '')
+		   if VAR('$%ROOMMOB($0)%' $QUEST_ID_COUNT != '')
 		   		mpargset $1 $%ROOMMOB($0)%
 		   endif
 		next

@@ -33,15 +33,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class IndoorWaterSurface extends WaterSurface implements Drink
+public class IndoorWaterSurfaceColumn extends WaterSurfaceColumn implements Drink
 {
 	@Override
 	public String ID()
 	{
-		return "IndoorWaterSurface";
+		return "IndoorWaterSurfaceColumn";
 	}
 
-	public IndoorWaterSurface()
+	public IndoorWaterSurfaceColumn()
 	{
 		super();
 		name="the water";
@@ -58,20 +58,12 @@ public class IndoorWaterSurface extends WaterSurface implements Drink
 	@Override
 	protected String UnderWaterLocaleID()
 	{
-		return "IndoorUnderWaterGrid";
+		return "IndoorUnderWaterColumnGrid";
 	}
 
 	@Override
 	protected int UnderWaterDomainType()
 	{
 		return Room.DOMAIN_INDOORS_UNDERWATER;
-	}
-
-	@Override
-	protected boolean IsUnderWaterFatClass(Room thatSea)
-	{
-		return (thatSea instanceof IndoorUnderWaterGrid)
-			 ||(thatSea instanceof IndoorUnderWaterThinGrid)
-			 ||(thatSea instanceof IndoorUnderWaterColumnGrid);
 	}
 }

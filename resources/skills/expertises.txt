@@ -171,7 +171,7 @@ HELP_=<EXPERTISE>The ability to use wield higher level blunt-class weapons.
 EDGEDSTRIKE@x1=Edged Striking @x2,10,LEVEL,-SKILL +Specialization_EdgedWeapon,-MAXCLASSLEVEL +>={24+(5*@x1)},+DEX {15+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to hit more often when using an edged-class weapon.
 
-EDGESLICE@x1=Edged Bashing @x2,10,X1,-SKILL +Specialization_EdgedWeapon,-MAXCLASSLEVEL +>={27+(5*@x1)},+STR {15+@x1},0,1,0,0,0
+EDGESLICE@x1=Edged Slashing @x2,10,X1,-SKILL +Specialization_EdgedWeapon,-MAXCLASSLEVEL +>={27+(5*@x1)},+STR {15+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to do more damage when using a slashing/slicing-type edged-class weapon.
 
 EDGEPIERCE@x1=Edged Piercing @x2,10,X2,-SKILL +Specialization_EdgedWeapon,-MAXCLASSLEVEL +>={27+(5*@x1)},+STR {15+@x1},0,1,0,0,0

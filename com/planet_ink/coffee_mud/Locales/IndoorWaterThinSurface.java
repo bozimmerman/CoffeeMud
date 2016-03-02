@@ -71,7 +71,9 @@ public class IndoorWaterThinSurface extends IndoorWaterSurface
 	@Override
 	protected boolean IsUnderWaterFatClass(Room thatSea)
 	{
-		return (thatSea instanceof IndoorUnderWaterGrid)||(thatSea instanceof IndoorUnderWaterThinGrid);
+		return (thatSea instanceof IndoorUnderWaterGrid)
+			 ||(thatSea instanceof IndoorUnderWaterThinGrid)
+			 ||(thatSea instanceof IndoorUnderWaterColumnGrid);
 	}
 
 	@Override

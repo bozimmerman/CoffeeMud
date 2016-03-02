@@ -60,7 +60,9 @@ public class SaltWaterSurface extends WaterSurface
 	@Override
 	protected boolean IsUnderWaterFatClass(Room thatSea)
 	{
-		return (thatSea instanceof UnderSaltWaterGrid) || (thatSea instanceof UnderSaltWaterThinGrid);
+		return (thatSea instanceof UnderSaltWaterGrid)
+			|| (thatSea instanceof UnderSaltWaterThinGrid)
+			|| (thatSea instanceof UnderSaltWaterColumnGrid);
 	}
 
 	@Override

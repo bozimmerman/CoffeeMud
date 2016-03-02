@@ -2702,7 +2702,7 @@ depth of 10.</p>
 expressions can be literal numbers as shown
 above, or any expression which might evaluate to a number, such as $%
 syntax. Here's an example of what I mean:</p>
-      <pre>for $0 = 1 to '$%NUMMOBSROOM(*)%'<br /> mpecho $%ROOMMOB($0)% is here.<br />next<br /></pre>
+      <pre>for $0 = 1 to '$%NUMMOBSROOM(*)%'<br /> mpecho '$%ROOMMOB($0)%' is here.<br />next<br /></pre>
       <p>You'll see that the
 NUMMOBSROOM() function is used here to
 return the number of mobs in the room, so we can count them. Each one

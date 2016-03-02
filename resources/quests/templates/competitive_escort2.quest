@@ -246,7 +246,7 @@ SPEECH_PROG p i accept
 				for $0 = 1 to '$%NUMMOBSROOM(*)%'
 				   if QUESTMOB('$%ROOMMOB($0)%' *) AND EVAL('$%ROOMMOB($0)%' != $i)
 				   		mpforce '$%ROOMMOB($0)%' follow $n
-				   		if !isfollow($%ROOMMOB($0)%)
+				   		if !isfollow('$%ROOMMOB($0)%')
 				   			mpforce '$%ROOMMOB($0)%' say I can't follow $n
 				   		else
 							mpsetvar $i $QUEST_ID_ACCEPTED $n
@@ -271,15 +271,15 @@ QUEST_TIME_PROG * 1
 
 DEATH_PROG 99
 	IF EVAL('$f' != '') 
-		mpechoat $f ^x$n has died.  You've failed the escort quest.^.^N
+		mpechoat $f ^x$i has died.  You've failed the escort quest.^.^N
 	else
-		mpecho ^x$n has died.  You've failed the escort quest.^.^N
+		mpecho ^x$i has died.  You've failed the escort quest.^.^N
 	ENDIF
 	mpendquest *
 ~
 
 RAND_PROG 99
-	IF  INROOM($i == '${1 *}')
+	IF  ISHERE(${1 *})
 		RETURN
 	ENDIF
 	IF EVAL('$f' == '')

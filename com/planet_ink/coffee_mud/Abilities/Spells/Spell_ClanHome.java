@@ -35,14 +35,49 @@ import java.util.*;
 
 public class Spell_ClanHome extends Spell
 {
-	@Override public String ID() { return "Spell_ClanHome"; }
-	private final static String localizedName = CMLib.lang().L("Clan Home");
-	@Override public String name() { return localizedName; }
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
-	@Override public long flags(){return Ability.FLAG_TRANSPORTING|Ability.FLAG_CLANMAGIC;}
-	@Override protected boolean disregardsArmorCheck(MOB mob){return true;}
+	@Override
+	public String ID()
+	{
+		return "Spell_ClanHome";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Clan Home");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL | Ability.DOMAIN_CONJURATION;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_TRANSPORTING | Ability.FLAG_CLANMAGIC;
+	}
+
+	@Override
+	protected boolean disregardsArmorCheck(MOB mob)
+	{
+		return true;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
