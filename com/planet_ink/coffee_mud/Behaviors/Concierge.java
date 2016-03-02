@@ -471,6 +471,7 @@ public class Concierge extends StdBehavior
 		&&(thingsToSay.size()>0)
 		&&(canFreelyBehaveNormal(ticking))||(!(ticking instanceof MOB)))
 		{
+			final Room R=CMLib.map().roomLocation((Environmental)ticking);
 			synchronized(thingsToSay)
 			{
 				while(thingsToSay.size()>0)
@@ -479,7 +480,8 @@ public class Concierge extends StdBehavior
 					final MOB observer=getTalker((Environmental)ticking,source.location());
 					final String msg=thingsToSay.get(0).second;
 					thingsToSay.removeElementAt(0);
-					CMLib.commands().postSay(observer,source,msg,true,false);
+					if((R!=null)&&((source==null)||(R.isHere(source))))
+						CMLib.commands().postSay(observer,source,msg,true,false);
 				}
 			}
 		}
