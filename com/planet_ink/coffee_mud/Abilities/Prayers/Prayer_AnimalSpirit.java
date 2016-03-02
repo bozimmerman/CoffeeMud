@@ -37,18 +37,69 @@ import java.util.*;
 
 public class Prayer_AnimalSpirit extends Prayer
 {
-	@Override public String ID() { return "Prayer_AnimalSpirit"; }
-	private final static String localizedName = CMLib.lang().L("Animal Spirit");
-	@Override public String name() { return localizedName; }
-	@Override public String displayText() { return getAnimalSpirit().getAffectText(); }
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
-	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
-	private static final String[] triggerStrings =I(new String[] {"ANIMALSPIRIT"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public boolean isAutoInvoked(){return true;}
-	@Override public boolean canBeUninvoked(){return false;}
+	@Override
+	public String ID()
+	{
+		return "Prayer_AnimalSpirit";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Animal Spirit");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public String displayText()
+	{
+		return getAnimalSpirit().getAffectText();
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER | Ability.DOMAIN_COMMUNING;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_SELF;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "ANIMALSPIRIT" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public boolean isAutoInvoked()
+	{
+		return true;
+	}
+
+	@Override
+	public boolean canBeUninvoked()
+	{
+		return false;
+	}
 
 	private AnimalSpirit spirit = AnimalSpirit.None; 
 	

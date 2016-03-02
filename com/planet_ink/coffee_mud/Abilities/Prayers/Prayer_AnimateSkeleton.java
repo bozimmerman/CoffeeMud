@@ -105,6 +105,21 @@ public class Prayer_AnimateSkeleton extends Prayer
 		}
 	}
 
+	@Override
+	public boolean tick(Tickable ticking, int tickID)
+	{
+		int tickSet = super.tickDown;
+		if(!super.tick(ticking, tickID))
+			return false;
+		if(ticking instanceof MOB)
+		{
+			final MOB mob=(MOB)ticking;
+			if(mob.amFollowing() != null)
+				super.tickDown = tickSet;
+		}
+		return true;
+	}
+	
 	public void makeSkeletonFrom(Room R, DeadBody body, MOB mob, int level)
 	{
 		String race="a";

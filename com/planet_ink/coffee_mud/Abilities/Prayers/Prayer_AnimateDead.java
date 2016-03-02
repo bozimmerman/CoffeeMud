@@ -106,6 +106,21 @@ public class Prayer_AnimateDead extends Prayer
 	}
 
 	@Override
+	public boolean tick(Tickable ticking, int tickID)
+	{
+		int tickSet = super.tickDown;
+		if(!super.tick(ticking, tickID))
+			return false;
+		if(ticking instanceof MOB)
+		{
+			final MOB mob=(MOB)ticking;
+			if(mob.amFollowing() != null)
+				super.tickDown = tickSet;
+		}
+		return true;
+	}
+	
+	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_UNWORNONLY);

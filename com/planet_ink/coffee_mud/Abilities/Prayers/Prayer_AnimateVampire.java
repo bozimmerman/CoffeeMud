@@ -106,6 +106,21 @@ public class Prayer_AnimateVampire extends Prayer
 	}
 
 	@Override
+	public boolean tick(Tickable ticking, int tickID)
+	{
+		int tickSet = super.tickDown;
+		if(!super.tick(ticking, tickID))
+			return false;
+		if(ticking instanceof MOB)
+		{
+			final MOB mob=(MOB)ticking;
+			if(mob.amFollowing() != null)
+				super.tickDown = tickSet;
+		}
+		return true;
+	}
+	
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if(affected instanceof MOB)
