@@ -555,16 +555,16 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 					R.clearSky();
 					R.rawDoors()[Directions.DOWN]=R2;
 					R.setRawExit(Directions.DOWN,CMClass.getExit("Open"));
-					final LandTitle title=CMLib.law().getLandTitle(R);
-					if((title!=null)&&(CMLib.law().getLandTitle(R2)==null))
+					final LandTitle titleA=CMLib.law().getLandTitle(R);
+					if((titleA!=null)&&(CMLib.law().getLandTitle(R2)==null))
 					{
-						final LandTitle A2=(LandTitle)title.copyOf();
+						final LandTitle A2=(LandTitle)titleA.copyOf();
 						R2.addNonUninvokableEffect((Ability)A2);
 					}
-					final Ability capacity = R.fetchEffect("Prop_ReqCapacity");
-					if(capacity != null)
+					final Ability capacityA = R.fetchEffect("Prop_ReqCapacity");
+					if(capacityA != null)
 					{
-						final LandTitle A2=(LandTitle)capacity.copyOf();
+						final LandTitle A2=(LandTitle)capacityA.copyOf();
 						R2.addNonUninvokableEffect((Ability)A2);
 					}
 					if(CMSecurity.isDebugging(CMSecurity.DbgFlag.PROPERTY))
