@@ -558,8 +558,13 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 					final LandTitle title=CMLib.law().getLandTitle(R);
 					if((title!=null)&&(CMLib.law().getLandTitle(R2)==null))
 					{
-						final LandTitle A2=(LandTitle)title.newInstance();
-						A2.setPrice(title.getPrice());
+						final LandTitle A2=(LandTitle)title.copyOf();
+						R2.addNonUninvokableEffect((Ability)A2);
+					}
+					final Ability capacity = R.fetchEffect("Prop_ReqCapacity");
+					if(capacity != null)
+					{
+						final LandTitle A2=(LandTitle)capacity.copyOf();
 						R2.addNonUninvokableEffect((Ability)A2);
 					}
 					if(CMSecurity.isDebugging(CMSecurity.DbgFlag.PROPERTY))
