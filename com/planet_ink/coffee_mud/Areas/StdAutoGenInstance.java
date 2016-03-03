@@ -40,17 +40,26 @@ import java.util.*;
 */
 public class StdAutoGenInstance extends StdArea implements AutoGenArea
 {
-	@Override public String ID(){    return "StdAutoGenInstance";}
+	@Override
+	public String ID()
+	{
+		return "StdAutoGenInstance";
+	}
 
-	private long flags=Area.FLAG_INSTANCE_PARENT;
-	@Override public long flags(){return flags;}
+	private long	flags	= Area.FLAG_INSTANCE_PARENT;
 
-	protected SVector<AreaInstanceChild> instanceChildren = new SVector<AreaInstanceChild>();
-	protected volatile int instanceCounter=0;
-	protected long childCheckDown=CMProps.getMillisPerMudHour()/CMProps.getTickMillis();
-	protected WeakReference<Area> parentArea = null;
-	protected String filePath = "randareas/example.xml";
-	protected Map<String, String> varMap = new Hashtable<String, String>(1);
+	@Override
+	public long flags()
+	{
+		return flags;
+	}
+
+	protected CList<AreaInstanceChild>	instanceChildren= new SVector<AreaInstanceChild>();
+	protected volatile int				instanceCounter	= 0;
+	protected long						childCheckDown	= CMProps.getMillisPerMudHour() / CMProps.getTickMillis();
+	protected WeakReference<Area>		parentArea		= null;
+	protected String					filePath		= "randareas/example.xml";
+	protected Map<String, String>		varMap			= new Hashtable<String, String>(1);
 
 	protected String getStrippedRoomID(String roomID)
 	{
@@ -86,12 +95,14 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 		return parentA;
 	}
 
-	@Override public int getPercentRoomsCached()
+	@Override 
+	public int getPercentRoomsCached()
 	{
 		return (getParentArea()==null)?0:100;
 	}
 
-	@Override public int[] getAreaIStats()
+	@Override 
+	public int[] getAreaIStats()
 	{
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 			return emptyStats;
@@ -245,8 +256,8 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 						{
 							for(int i=parentA.instanceChildren.size()-1;i>=0;i--)
 							{
-								final List<WeakReference<MOB>> V=parentA.instanceChildren.elementAt(i).mobs;
-								if(parentA.instanceChildren.elementAt(i).A==this)
+								final List<WeakReference<MOB>> V=parentA.instanceChildren.get(i).mobs;
+								if(parentA.instanceChildren.get(i).A==this)
 								{
 									for(final WeakReference<MOB> wM : V)
 									{
@@ -319,7 +330,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 				int myDex=-1;
 				for(int i=0;i<instanceChildren.size();i++)
 				{
-					final List<WeakReference<MOB>> V=instanceChildren.elementAt(i).mobs;
+					final List<WeakReference<MOB>> V=instanceChildren.get(i).mobs;
 					for (final WeakReference<MOB> weakReference : V)
 					{
 						if(msg.source() == weakReference.get())
@@ -334,7 +345,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 				{
 					if(i!=myDex)
 					{
-						final List<WeakReference<MOB>> V=instanceChildren.elementAt(i).mobs;
+						final List<WeakReference<MOB>> V=instanceChildren.get(i).mobs;
 						for(int v=V.size()-1;v>=0;v--)
 						{
 							final WeakReference<MOB> wmob=V.get(v);
@@ -350,7 +361,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 								}
 								else
 								if((CMLib.flags().isInTheGame(M,true))
-								&&(M.location().getArea()!=instanceChildren.elementAt(i).A))
+								&&(M.location().getArea()!=instanceChildren.get(i).A))
 								{
 									V.remove(M);
 									instanceChildren.get(myDex).mobs.add(new WeakReference<MOB>(M));
@@ -551,6 +562,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 	}
 
 	private final static String[] MYCODES={"GENERATIONFILEPATH","OTHERVARS"};
+
 	@Override
 	public String getStat(String code)
 	{
@@ -559,9 +571,12 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 		else
 		switch(getCodeNum(code))
 		{
-		case 0: return this.getGeneratorXmlPath();
-		case 1: return CMParms.toEqListString(this.getAutoGenVariables());
-		default: break;
+			case 0:
+				return this.getGeneratorXmlPath();
+			case 1:
+				return CMParms.toEqListString(this.getAutoGenVariables());
+			default:
+				break;
 		}
 		return "";
 	}
@@ -574,20 +589,30 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 		else
 		switch(getCodeNum(code))
 		{
-		case 0: setGeneratorXmlPath(val); break;
-		case 1: setAutoGenVariables(val); break;
-		default: break;
+			case 0:
+				setGeneratorXmlPath(val);
+				break;
+			case 1:
+				setAutoGenVariables(val);
+				break;
+			default:
+				break;
 		}
 	}
+
 	@Override
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<MYCODES.length;i++)
+		{
 			if(code.equalsIgnoreCase(MYCODES[i]))
 				return i;
+		}
 		return -1;
 	}
+
 	private static String[] codes=null;
+
 	@Override
 	public String[] getStatCodes()
 	{
@@ -603,6 +628,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 			codes[i]=MYCODES[x];
 		return codes;
 	}
+
 	@Override
 	public boolean sameAs(Environmental E)
 	{
@@ -610,14 +636,40 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 			return false;
 		final String[] codes=getStatCodes();
 		for(int i=0;i<codes.length;i++)
+		{
 			if(!E.getStat(codes[i]).equals(getStat(codes[i])))
 				return false;
+		}
 		return true;
 	}
 
-	@Override public String getGeneratorXmlPath() { return filePath;}
-	@Override public Map<String, String> getAutoGenVariables() { return varMap;}
-	@Override public void setGeneratorXmlPath(String path) { filePath=path;}
-	@Override public void setAutoGenVariables(Map<String, String> vars) { varMap = vars;}
-	@Override public void setAutoGenVariables(String vars) { setAutoGenVariables(CMParms.parseEQParms(vars)); }
+	@Override
+	public String getGeneratorXmlPath()
+	{
+		return filePath;
+	}
+
+	@Override
+	public Map<String, String> getAutoGenVariables()
+	{
+		return varMap;
+	}
+
+	@Override
+	public void setGeneratorXmlPath(String path)
+	{
+		filePath = path;
+	}
+
+	@Override
+	public void setAutoGenVariables(Map<String, String> vars)
+	{
+		varMap = vars;
+	}
+
+	@Override
+	public void setAutoGenVariables(String vars)
+	{
+		setAutoGenVariables(CMParms.parseEQParms(vars));
+	}
 }

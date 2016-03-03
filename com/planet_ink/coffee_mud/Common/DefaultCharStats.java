@@ -955,6 +955,7 @@ public class DefaultCharStats implements CharStats
 	{
 		if((value>Short.MAX_VALUE)||(value<Short.MIN_VALUE))
 			Log.errOut("Value out of range",new CMException("Value out of range: "+value+" for "+abilityCode));
+		else
 		if(abilityCode<stats.length)
 			stats[abilityCode]=(short)value;
 	}

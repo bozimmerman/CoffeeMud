@@ -36,12 +36,29 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Reset extends StdCommand
 {
-	public Reset(){}
+	public Reset()
+	{
+	}
 
-	private final String[] access=I(new String[]{"RESET"});
-	@Override public boolean canBeOrdered(){return true;}
-	@Override public String[] getAccessWords(){return access;}
-	@Override public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.RESET);}
+	private final String[]	access	= I(new String[] { "RESET" });
+
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
+
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
+
+	@Override
+	public boolean securityCheck(MOB mob)
+	{
+		return CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.RESET);
+	}
 
 	public int resetAreaOramaManaI(MOB mob, Item I, Hashtable<String,Integer> rememberI, String lead)
 		throws java.io.IOException
@@ -243,6 +260,7 @@ public class Reset extends StdCommand
 			return null;
 		return warning.toString();
 	}
+
 	public String resetWarning(MOB mob, Room R)
 	{
 		if((mob==null)||(R==null))
@@ -371,12 +389,20 @@ public class Reset extends StdCommand
 		if(s.equalsIgnoreCase("room"))
 		{
 			final String warning=resetWarning(mob, mob.location());
-			if((mob.session()==null)||(warning==null)||(mob.session().confirm(L("@x1\n\rReset the contents of the room '@x2', OK (Y/n)?",warning,mob.location().displayText(mob)),"Y")))
+			if((mob.session()==null)
+			||(warning==null)
+			||(mob.session().confirm(L("@x1\n\rReset the contents of the room '@x2', OK (Y/n)?",warning,mob.location().displayText(mob)),"Y")))
 			{
 				for(final Session S : CMLib.sessions().localOnlineIterable())
-					if((S!=null)&&(S.mob()!=null)&&(S.mob().location()!=null)&&(S.mob().location()==mob.location()))
+				{
+					if((S!=null)
+					&&(S.mob()!=null)
+					&&(S.mob().location()!=null)
+					&&(S.mob().location()==mob.location()))
 						S.mob().tell(mob,null,null,L("<S-NAME> order(s) this room to normalcy."));
+				}
 				CMLib.map().resetRoom(mob.location(), true);
+				mob.location().giveASky(0);
 				mob.tell(L("Done."));
 			}
 			else
@@ -486,8 +512,10 @@ public class Reset extends StdCommand
 				if((mob.session()==null)||(mob.session().confirm(L("Reset the contents of the area '@x1', OK (Y/n)?",A.name()),"Y")))
 				{
 					for(final Session S : CMLib.sessions().localOnlineIterable())
+					{
 						if((S!=null)&&(S.mob()!=null)&&(S.mob().location()!=null)&&(A.inMyMetroArea(S.mob().location().getArea())))
 							S.mob().tell(mob,null,null,L("<S-NAME> order(s) this area to normalcy."));
+					}
 					CMLib.map().resetArea(A);
 					mob.tell(L("Done."));
 				}
@@ -547,13 +575,18 @@ public class Reset extends StdCommand
 								R2=CMLib.map().getRoom(R2);
 								if(R2!=R)
 								for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+								{
 									if(R2.rawDoors()[d]==R)
 									{
 										CMLib.database().DBUpdateExits(R2);
 										break;
 									}
+								}
 							}
-						}catch(final NoSuchElementException nse){}
+						}
+						catch (final NoSuchElementException nse)
+						{
+						}
 						if(R instanceof GridLocale)
 							R.getArea().fillInAreaRoom(R);
 						somethingDone=true;
@@ -592,13 +625,18 @@ public class Reset extends StdCommand
 								R2=CMLib.map().getRoom(R2);
 								if(R2!=R)
 								for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+								{
 									if(R2.rawDoors()[d]==R)
 									{
 										CMLib.database().DBUpdateExits(R2);
 										break;
 									}
+								}
 							}
-						}catch(final NoSuchElementException nse){}
+						}
+						catch (final NoSuchElementException nse)
+						{
+						}
 						if(R instanceof GridLocale)
 							R.getArea().fillInAreaRoom(R);
 						somethingDone=true;
@@ -806,11 +844,13 @@ public class Reset extends StdCommand
 				mob.session().print(L("working..."));
 				StringBuffer recordedChanges=null;
 				for(int i=1;i<commands.size();i++)
+				{
 					if(commands.get(i).equalsIgnoreCase("NOSAVE"))
 					{
 						recordedChanges=new StringBuffer("");
 						break;
 					}
+				}
 				final Vector<Room> rooms=new Vector<Room>();
 				if(s.toUpperCase().startsWith("ROOM"))
 					rooms.add(mob.location());
@@ -821,7 +861,10 @@ public class Reset extends StdCommand
 					{
 						for(final Enumeration<Room> e=mob.location().getArea().getCompleteMap();e.hasMoreElements();)
 							rooms.add(e.nextElement());
-					}catch(final NoSuchElementException nse){}
+					}
+					catch (final NoSuchElementException nse)
+					{
+					}
 				}
 				else
 				if(s.toUpperCase().startsWith("CATALOG"))
@@ -837,7 +880,10 @@ public class Reset extends StdCommand
 								CMLib.catalog().updateCatalog(M);
 							}
 						}
-					}catch(final NoSuchElementException nse){}
+					}
+					catch (final NoSuchElementException nse)
+					{
+					}
 				}
 				else
 				if(s.toUpperCase().startsWith("WORLD"))
@@ -849,17 +895,22 @@ public class Reset extends StdCommand
 							final Area A=(Area)e.nextElement();
 							boolean skip=false;
 							for(int i=1;i<commands.size();i++)
+							{
 								if(commands.get(i).equalsIgnoreCase(A.Name())||rest.equalsIgnoreCase(A.Name()))
 								{
 									skip=true;
 									break;
 								}
+							}
 							if(skip)
 								continue;
 							for(final Enumeration<Room> r=A.getCompleteMap();r.hasMoreElements();)
 								rooms.add(r.nextElement());
 						}
-					}catch(final NoSuchElementException nse){}
+					}
+					catch (final NoSuchElementException nse)
+					{
+					}
 				}
 				else
 				{
@@ -941,7 +992,10 @@ public class Reset extends StdCommand
 						}
 						mob.session().print(".");
 					}
-				}catch(final NoSuchElementException nse){}
+				}
+				catch (final NoSuchElementException nse)
+				{
+				}
 				mob.session().println(L("done!"));
 			}
 		}
@@ -1195,11 +1249,13 @@ public class Reset extends StdCommand
 				mob.session().print(L("working..."));
 				StringBuffer recordedChanges=null;
 				for(int i=1;i<commands.size();i++)
+				{
 					if(commands.get(i).equalsIgnoreCase("NOSAVE"))
 					{
 						recordedChanges=new StringBuffer("");
 						break;
 					}
+				}
 	
 				final Vector<Room> rooms=new Vector<Room>();
 				if(s.toUpperCase().startsWith("ROOM"))
@@ -1230,7 +1286,10 @@ public class Reset extends StdCommand
 								CMLib.catalog().updateCatalog(I);
 							}
 						}
-					}catch(final NoSuchElementException nse){}
+					}
+					catch (final NoSuchElementException nse)
+					{
+					}
 				}
 				else
 				if(s.toUpperCase().startsWith("WORLD"))
@@ -1242,18 +1301,23 @@ public class Reset extends StdCommand
 							final Area A=(Area)e.nextElement();
 							boolean skip=false;
 							for(int i=1;i<commands.size();i++)
+							{
 								if(commands.get(i).equalsIgnoreCase(A.Name())||rest.equalsIgnoreCase(A.Name()))
 								{
 									skip=true;
 									commands.remove(i);
 									break;
 								}
+							}
 							if(skip)
 								continue;
 							for(final Enumeration<Room> r=A.getCompleteMap();r.hasMoreElements();)
 								rooms.add(r.nextElement());
 						}
-					}catch(final NoSuchElementException nse){}
+					}
+					catch (final NoSuchElementException nse)
+					{
+					}
 				}
 				else
 				{
@@ -1373,7 +1437,10 @@ public class Reset extends StdCommand
 					else
 						M.playerStats().unVisit(M.location());
 				}
-			}catch(final NoSuchElementException nse){}
+			}
+			catch (final NoSuchElementException nse)
+			{
+			}
 		}
 		else
 		if(s.equalsIgnoreCase("arearacemat")&&(CMSecurity.isASysOp(mob)))
@@ -1388,179 +1455,189 @@ public class Reset extends StdCommand
 				final Hashtable<String,Race> rememberM=new Hashtable<String,Race>();
 				try
 				{
-				for(final Enumeration<Room> r=A.getCompleteMap();r.hasMoreElements();)
-				{
-					Room R=r.nextElement();
-					if(R.roomID().length()>0)
-					synchronized(("SYNC"+R.roomID()).intern())
+					for(final Enumeration<Room> r=A.getCompleteMap();r.hasMoreElements();)
 					{
-						R=CMLib.map().getRoom(R);
-						CMLib.map().resetRoom(R, true);
-						boolean somethingDone=false;
-						mob.tell(R.roomID()+"/"+R.name()+"/"+R.displayText()+"--------------------");
-						for(int i=R.numItems()-1;i>=0;i--)
+						Room R=r.nextElement();
+						if(R.roomID().length()>0)
+						synchronized(("SYNC"+R.roomID()).intern())
 						{
-							final Item I=R.getItem(i);
-							if(I.ID().equalsIgnoreCase("GenWallpaper"))
-								continue;
-							final int returned=resetAreaOramaManaI(mob,I,rememberI," ");
-							if(returned<0)
+							R=CMLib.map().getRoom(R);
+							CMLib.map().resetRoom(R, true);
+							boolean somethingDone=false;
+							mob.tell(R.roomID()+"/"+R.name()+"/"+R.displayText()+"--------------------");
+							for(int i=R.numItems()-1;i>=0;i--)
 							{
-								R.delItem(I);
-								somethingDone=true;
-								mob.tell(L(" deleted"));
-							}
-							else
-							if(returned>0)
-								somethingDone=true;
-						}
-						if(somethingDone)
-							CMLib.database().DBUpdateItems(R);
-						somethingDone=false;
-						for(int m=0;m<R.numInhabitants();m++)
-						{
-							final MOB M=R.fetchInhabitant(m);
-							if(M==mob)
-								continue;
-							if(!M.isSavable())
-								continue;
-							Race R2=rememberM.get(M.Name());
-							if(R2!=null)
-							{
-								if(M.charStats().getMyRace()==R2)
-									mob.tell(L(" @x1 still @x2",M.Name(),R2.name()));
-								else
-								{
-									M.baseCharStats().setMyRace(R2);
-									R2.setHeightWeight(M.basePhyStats(),(char)M.baseCharStats().getStat(CharStats.STAT_GENDER));
-									M.recoverCharStats();
-									M.recoverPhyStats();
-									mob.tell(L(" @x1 Changed to @x2",M.Name(),R2.ID()));
-									somethingDone=true;
-								}
-							}
-							else
-							while(true)
-							{
-								final String str=mob.session().prompt(" "+M.Name()+"/"+M.charStats().getMyRace().ID(),"");
-								if(str.length()==0)
-								{
-									rememberM.put(M.name(),M.baseCharStats().getMyRace());
-									break;
-								}
-								if(str.equals("?"))
-									mob.tell(M.Name()+"/"+M.displayText()+"/"+M.description());
-								else
-								{
-									R2=CMClass.getRace(str);
-									if(R2==null)
-									{
-										String poss="";
-										if(poss.length()==0)
-										for(final Enumeration e=CMClass.races();e.hasMoreElements();)
-										{
-											final Race R3=(Race)e.nextElement();
-											if(R3.ID().toUpperCase().startsWith(str.toUpperCase()))
-											   poss=R3.name();
-										}
-										if(poss.length()==0)
-										for(final Enumeration e=CMClass.races();e.hasMoreElements();)
-										{
-											final Race R3=(Race)e.nextElement();
-											if(R3.ID().toUpperCase().indexOf(str.toUpperCase())>=0)
-											   poss=R3.name();
-										}
-										if(poss.length()==0)
-										for(final Enumeration e=CMClass.races();e.hasMoreElements();)
-										{
-											final Race R3=(Race)e.nextElement();
-											if(R3.name().toUpperCase().startsWith(str.toUpperCase()))
-											   poss=R3.name();
-										}
-										if(poss.length()==0)
-										for(final Enumeration e=CMClass.races();e.hasMoreElements();)
-										{
-											final Race R3=(Race)e.nextElement();
-											if(R3.name().toUpperCase().indexOf(str.toUpperCase())>=0)
-											   poss=R3.name();
-										}
-										mob.tell(L(" '@x1' is not a valid race.  Try '@x2'.",str,poss));
-										continue;
-									}
-									mob.tell(L(" Changed to @x1",R2.ID()));
-									M.baseCharStats().setMyRace(R2);
-									R2.setHeightWeight(M.basePhyStats(),(char)M.baseCharStats().getStat(CharStats.STAT_GENDER));
-									M.recoverCharStats();
-									M.recoverPhyStats();
-									rememberM.put(M.name(),M.baseCharStats().getMyRace());
-									somethingDone=true;
-									break;
-								}
-							}
-							for(int i=M.numItems()-1;i>=0;i--)
-							{
-								final Item I=M.getItem(i);
-								final int returned=resetAreaOramaManaI(mob,I,rememberI,"   ");
+								final Item I=R.getItem(i);
+								if(I.ID().equalsIgnoreCase("GenWallpaper"))
+									continue;
+								final int returned=resetAreaOramaManaI(mob,I,rememberI," ");
 								if(returned<0)
 								{
-									M.delItem(I);
+									R.delItem(I);
 									somethingDone=true;
-									mob.tell(L("   deleted"));
+									mob.tell(L(" deleted"));
 								}
 								else
 								if(returned>0)
 									somethingDone=true;
 							}
-							final ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(M);
-							if(SK!=null)
+							if(somethingDone)
+								CMLib.database().DBUpdateItems(R);
+							somethingDone=false;
+							for(int m=0;m<R.numInhabitants();m++)
 							{
-								for(final Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
+								final MOB M=R.fetchInhabitant(m);
+								if(M==mob)
+									continue;
+								if(!M.isSavable())
+									continue;
+								Race R2=rememberM.get(M.Name());
+								if(R2!=null)
 								{
-									final Environmental E=i.next();
-									if(E instanceof Item)
+									if(M.charStats().getMyRace()==R2)
+										mob.tell(L(" @x1 still @x2",M.Name(),R2.name()));
+									else
 									{
-										final Item I=(Item)E;
-										final int returned=resetAreaOramaManaI(mob,I,rememberI," - ");
-										if(returned<0)
+										M.baseCharStats().setMyRace(R2);
+										R2.setHeightWeight(M.basePhyStats(),(char)M.baseCharStats().getStat(CharStats.STAT_GENDER));
+										M.recoverCharStats();
+										M.recoverPhyStats();
+										mob.tell(L(" @x1 Changed to @x2",M.Name(),R2.ID()));
+										somethingDone=true;
+									}
+								}
+								else
+								while(true)
+								{
+									final String str=mob.session().prompt(" "+M.Name()+"/"+M.charStats().getMyRace().ID(),"");
+									if(str.length()==0)
+									{
+										rememberM.put(M.name(),M.baseCharStats().getMyRace());
+										break;
+									}
+									if(str.equals("?"))
+										mob.tell(M.Name()+"/"+M.displayText()+"/"+M.description());
+									else
+									{
+										R2=CMClass.getRace(str);
+										if(R2==null)
 										{
-											SK.getShop().delAllStoreInventory(I);
-											somethingDone=true;
-											mob.tell(L("   deleted"));
+											String poss="";
+											if(poss.length()==0)
+											{
+												for(final Enumeration e=CMClass.races();e.hasMoreElements();)
+												{
+													final Race R3=(Race)e.nextElement();
+													if(R3.ID().toUpperCase().startsWith(str.toUpperCase()))
+													   poss=R3.name();
+												}
+											}
+											if(poss.length()==0)
+											{
+												for(final Enumeration e=CMClass.races();e.hasMoreElements();)
+												{
+													final Race R3=(Race)e.nextElement();
+													if(R3.ID().toUpperCase().indexOf(str.toUpperCase())>=0)
+													   poss=R3.name();
+												}
+											}
+											if(poss.length()==0)
+											{
+												for(final Enumeration e=CMClass.races();e.hasMoreElements();)
+												{
+													final Race R3=(Race)e.nextElement();
+													if(R3.name().toUpperCase().startsWith(str.toUpperCase()))
+													   poss=R3.name();
+												}
+											}
+											if(poss.length()==0)
+											{
+												for(final Enumeration e=CMClass.races();e.hasMoreElements();)
+												{
+													final Race R3=(Race)e.nextElement();
+													if(R3.name().toUpperCase().indexOf(str.toUpperCase())>=0)
+													   poss=R3.name();
+												}
+											}
+											mob.tell(L(" '@x1' is not a valid race.  Try '@x2'.",str,poss));
+											continue;
 										}
-										else
-										if(returned>0)
+										mob.tell(L(" Changed to @x1",R2.ID()));
+										M.baseCharStats().setMyRace(R2);
+										R2.setHeightWeight(M.basePhyStats(),(char)M.baseCharStats().getStat(CharStats.STAT_GENDER));
+										M.recoverCharStats();
+										M.recoverPhyStats();
+										rememberM.put(M.name(),M.baseCharStats().getMyRace());
+										somethingDone=true;
+										break;
+									}
+								}
+								for(int i=M.numItems()-1;i>=0;i--)
+								{
+									final Item I=M.getItem(i);
+									final int returned=resetAreaOramaManaI(mob,I,rememberI,"   ");
+									if(returned<0)
+									{
+										M.delItem(I);
+										somethingDone=true;
+										mob.tell(L("   deleted"));
+									}
+									else
+									if(returned>0)
+										somethingDone=true;
+								}
+								final ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(M);
+								if(SK!=null)
+								{
+									for(final Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
+									{
+										final Environmental E=i.next();
+										if(E instanceof Item)
 										{
-											somethingDone=true;
-											final int numInStock=SK.getShop().numberInStock(I);
-											final int stockPrice=SK.getShop().stockPrice(I);
-											SK.getShop().delAllStoreInventory(I);
-											SK.getShop().addStoreInventory(I,numInStock,stockPrice);
+											final Item I=(Item)E;
+											final int returned=resetAreaOramaManaI(mob,I,rememberI," - ");
+											if(returned<0)
+											{
+												SK.getShop().delAllStoreInventory(I);
+												somethingDone=true;
+												mob.tell(L("   deleted"));
+											}
+											else
+											if(returned>0)
+											{
+												somethingDone=true;
+												final int numInStock=SK.getShop().numberInStock(I);
+												final int stockPrice=SK.getShop().stockPrice(I);
+												SK.getShop().delAllStoreInventory(I);
+												SK.getShop().addStoreInventory(I,numInStock,stockPrice);
+											}
 										}
 									}
 								}
-							}
-							if(M.fetchAbility("Chopping")!=null)
-							{
-								somethingDone=true;
-								M.delAbility(M.fetchAbility("Chopping"));
-							}
-							for(final Enumeration<Behavior> e=M.behaviors();e.hasMoreElements();)
-							{
-								final Behavior B=e.nextElement();
-								if((B.ID().equalsIgnoreCase("Mobile"))
-								&&(B.getParms().trim().length()>0))
+								if(M.fetchAbility("Chopping")!=null)
 								{
 									somethingDone=true;
-									B.setParms("");
+									M.delAbility(M.fetchAbility("Chopping"));
+								}
+								for(final Enumeration<Behavior> e=M.behaviors();e.hasMoreElements();)
+								{
+									final Behavior B=e.nextElement();
+									if((B.ID().equalsIgnoreCase("Mobile"))
+									&&(B.getParms().trim().length()>0))
+									{
+										somethingDone=true;
+										B.setParms("");
+									}
 								}
 							}
+							if(somethingDone)
+								CMLib.database().DBUpdateMOBs(R);
 						}
-						if(somethingDone)
-							CMLib.database().DBUpdateMOBs(R);
 					}
 				}
+				catch (final java.io.IOException e)
+				{
 				}
-				catch(final java.io.IOException e){}
 				if(A.getAreaState()!=Area.State.ACTIVE)
 					A.setAreaState(Area.State.ACTIVE);
 				mob.tell(L("Done."));

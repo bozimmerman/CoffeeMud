@@ -40,7 +40,10 @@ import java.util.*;
 
 public class Generate extends StdCommand
 {
-	public Generate(){}
+	public Generate()
+	{
+	}
+
 	private static final SHashtable<String,CMClass.CMObjectType> OBJECT_TYPES=new SHashtable<String,CMClass.CMObjectType>(new Object[][]{
 			{"STRING",CMClass.CMObjectType.LIBRARY},
 			{"AREA",CMClass.CMObjectType.AREA},
@@ -49,10 +52,15 @@ public class Generate extends StdCommand
 			{"ITEM",CMClass.CMObjectType.ITEM},
 	});
 
-	private final String[] access=I(new String[]{"GENERATE"});
-	@Override public String[] getAccessWords(){return access;}
+	private final String[]	access	= I(new String[] { "GENERATE" });
 
-	public void createNewPlace(MOB mob, Room oldR, Room R, int direction)
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
+
+	public void createNewPlace(MOB mob, Room oldR, Room R, int direction, boolean save)
 	{
 		if(R.roomID().length()==0)
 		{
@@ -72,7 +80,8 @@ public class Generate extends StdCommand
 			R.setRawExit(opDir, E);
 			R.rawDoors()[opDir]=oldR;
 		}
-		CMLib.database().DBUpdateExits(oldR);
+		if(save)
+			CMLib.database().DBUpdateExits(oldR);
 		final String dirName=((R instanceof BoardableShip)||(R.getArea() instanceof BoardableShip))?
 				Directions.getShipDirectionName(direction):Directions.getDirectionName(direction);
 		oldR.showHappens(CMMsg.MSG_OK_VISUAL,L("A new place materializes to the @x1",dirName));
@@ -82,6 +91,15 @@ public class Generate extends StdCommand
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
+		boolean save=true;
+		if(commands.size()>1)
+		{
+			if(commands.get(1).equalsIgnoreCase("nosave"))
+			{
+				save=false;
+				commands.remove(1);
+			}
+		}
 		if(commands.size()<3)
 		{
 			mob.tell(L("Generate what? Try GENERATE [TYPE] [ID] (FROM [DATA_FILE_PATH]) ([VAR=VALUE]..) [DIRECTION]"));
@@ -258,12 +276,15 @@ public class Generate extends StdCommand
 				if(V.get(v) instanceof Room)
 				{
 					final Room R=(Room)V.get(v);
-					createNewPlace(mob,mob.location(),R,direction);
+					createNewPlace(mob,mob.location(),R,direction,save);
 					CMLib.percolator().postProcess(definedIDs);
-					CMLib.database().DBCreateRoom(R);
-					CMLib.database().DBUpdateExits(R);
-					CMLib.database().DBUpdateItems(R);
-					CMLib.database().DBUpdateMOBs(R);
+					if(save)
+					{
+						CMLib.database().DBCreateRoom(R);
+						CMLib.database().DBUpdateExits(R);
+						CMLib.database().DBUpdateItems(R);
+						CMLib.database().DBUpdateMOBs(R);
+					}
 					Log.sysOut("Generate",mob.Name()+" generated room "+R.roomID());
 				}
 				else
@@ -271,22 +292,26 @@ public class Generate extends StdCommand
 				{
 					final Area A=(Area)V.get(v);
 					CMLib.map().addArea(A);
-					CMLib.database().DBCreateArea(A);
+					if(save)
+						CMLib.database().DBCreateArea(A);
 					Room R=A.getRoom(A.Name()+"#0");
 					if(R==null)
 						R=A.getFilledProperMap().nextElement();
-					createNewPlace(mob,mob.location(),R,direction);
+					createNewPlace(mob,mob.location(),R,direction,save);
 					CMLib.percolator().postProcess(definedIDs);
-					mob.tell(L("Saving remaining rooms for area '@x1'...",A.name()));
-					for(final Enumeration<Room> e=A.getFilledProperMap();e.hasMoreElements();)
+					if(save)
 					{
-						R=e.nextElement();
-						CMLib.database().DBCreateRoom(R);
-						CMLib.database().DBUpdateExits(R);
-						CMLib.database().DBUpdateItems(R);
-						CMLib.database().DBUpdateMOBs(R);
+						mob.tell(L("Saving remaining rooms for area '@x1'...",A.name()));
+						for(final Enumeration<Room> e=A.getFilledProperMap();e.hasMoreElements();)
+						{
+							R=e.nextElement();
+							CMLib.database().DBCreateRoom(R);
+							CMLib.database().DBUpdateExits(R);
+							CMLib.database().DBUpdateItems(R);
+							CMLib.database().DBUpdateMOBs(R);
+						}
+						mob.tell(L("Done saving remaining rooms for area '@x1'",A.name()));
 					}
-					mob.tell(L("Done saving remaining rooms for area '@x1'",A.name()));
 					Log.sysOut("Generate",mob.Name()+" generated area "+A.name());
 				}
 			}
@@ -302,7 +327,15 @@ public class Generate extends StdCommand
 		return true;
 	}
 
-	@Override public boolean canBeOrdered(){return false;}
+	@Override
+	public boolean canBeOrdered()
+	{
+		return false;
+	}
 
-	@Override public boolean securityCheck(MOB mob){return CMSecurity.isAllowedAnywhere(mob,CMSecurity.SecFlag.CMDAREAS);}
+	@Override
+	public boolean securityCheck(MOB mob)
+	{
+		return CMSecurity.isAllowedAnywhere(mob, CMSecurity.SecFlag.CMDAREAS);
+	}
 }

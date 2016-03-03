@@ -325,6 +325,42 @@ public class Test extends StdCommand
 				mob.tell(str.toString());
 			}
 			else
+			if(what.equalsIgnoreCase("ratspercolator"))
+			{
+				Command C=CMClass.getCommand("Generate");
+				if((commands.size()<3)||(!CMath.isInteger(commands.get(2))))
+				{
+					mob.tell("You need an number of iterations first, I'm afraid");
+					return false;
+				}
+				int iterations=CMath.s_int(commands.remove(2));
+				final String theRest=CMParms.combine(commands,2).toUpperCase();
+				commands.set(0, "GENERATE");
+				commands.remove(1);
+				String areaName = CMParms.getParmStr(theRest, "AREANAME", "");
+				if(areaName.length()==0)
+				{
+					mob.tell("You need an area name, I'm afraid");
+					return false;
+				}
+				
+				for(int i=0;i<iterations;i++)
+				{
+					mob.tell(L("Generate #@x1: Working...",""+i));
+					final XVector<String> cmds2=new XVector<String>(commands);
+					C.execute(mob, cmds2, metaFlags);
+					
+					Area A=CMLib.map().getArea(areaName);
+					if(A==null)
+					{
+						mob.tell("Fail!");
+						break;
+					}
+					CMLib.map().obliterateArea(A);
+					mob.tell(L("Generate #@x1: Complete!",""+i));
+				}
+			}
+			else
 			if(what.equalsIgnoreCase("timsdeconstruction"))
 			{
 				mob.tell(L("Checking..."));
