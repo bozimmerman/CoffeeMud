@@ -9,6 +9,8 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.Level;
@@ -59,6 +61,7 @@ public class HTTPReader implements HTTPIOHandler, ProtocolHandler, Runnable
 {
 	private static final AtomicLong 	idCounter		 = new AtomicLong(0);
 	
+	private final Semaphore				readSemaphore	 = new Semaphore(1);
 	private volatile AtomicBoolean 		isRunning 		 = new AtomicBoolean(false); // the request is currently getting active thread/read time
 	private volatile boolean 	 		closeMe 		 = false; // the request is closed, along with its channel
 	private volatile boolean 	 		closeRequested 	 = false; // the request is closed, along with its channel
@@ -861,69 +864,48 @@ public class HTTPReader implements HTTPIOHandler, ProtocolHandler, Runnable
 	@Override
 	public void run()
 	{
-		synchronized(this) // don't let mulitple readers in at the same time, ever.
+		try
 		{
-			isRunning.set(true); // for record keeping purposes
-			idleTime.set(0);
-			try // begin of the IO error handling and record integrity block
+			int timeoutSeconds = config.getMaxThreadTimeoutSecs();
+			if(timeoutSeconds <= 0)
+				timeoutSeconds = 3600;
+			if(!this.readSemaphore.tryAcquire(timeoutSeconds, TimeUnit.SECONDS)) // don't let mulitple readers in at the same time, ever.
+				return;
+		}
+		catch (InterruptedException e1)
+		{
+			return;
+		}
+		isRunning.set(true); // for record keeping purposes
+		idleTime.set(0);
+		try // begin of the IO error handling and record integrity block
+		{
+			int bytesRead=0; // read bytes until we can't any more
+			boolean announcedAlready=!isDebugging;
+			final boolean accessLogging = config.getLogger().isLoggable(Level.FINE);
+			final StringBuilder accessLog = ( accessLogging )? new StringBuilder() : null;
+			try // begin of the http exception handling block
 			{
-				int bytesRead=0; // read bytes until we can't any more
-				boolean announcedAlready=!isDebugging;
-				final boolean accessLogging = config.getLogger().isLoggable(Level.FINE);
-				final StringBuilder accessLog = ( accessLogging )? new StringBuilder() : null;
-				try // begin of the http exception handling block
+				while (!closeMe && (( bytesRead = readBytesFromClient(currentReq.getBuffer())) > 0) )
 				{
-					while (!closeMe && (( bytesRead = readBytesFromClient(currentReq.getBuffer())) > 0) )
+					if(!announcedAlready)
 					{
-						if(!announcedAlready)
+						config.getLogger().finer("Processing handler '"+name+"'");
+						announcedAlready=true;
+					}
+					final DataBuffers bufs = protocolHandler.processBuffer(currentReq, currentReq.getBuffer()); // process any data received
+					if((bufs != null) && (bufs.getLength() > 0))
+						writeBytesToChannel(bufs);
+					if(currentReq.isFinished()) // if the request was completed, generate output!
+					{
+						if((accessLog != null)&&(bufs != null))
 						{
-							config.getLogger().finer("Processing handler '"+name+"'");
-							announcedAlready=true;
+							accessLog.append(Log.makeLogEntry(Log.Type.access, Thread.currentThread().getName(), 
+								currentReq.getClientAddress().getHostAddress()
+								+" "+currentReq.getHost()+":"+currentReq.getClientPort()
+								+" \""+currentReq.getFullRequest()+" \" "+lastHttpStatus+" "+bufs.getLength())).append("\n");
 						}
-						final DataBuffers bufs = protocolHandler.processBuffer(currentReq, currentReq.getBuffer()); // process any data received
-						if((bufs != null) && (bufs.getLength() > 0))
-							writeBytesToChannel(bufs);
-						if(currentReq.isFinished()) // if the request was completed, generate output!
-						{
-							if((accessLog != null)&&(bufs != null))
-							{
-								accessLog.append(Log.makeLogEntry(Log.Type.access, Thread.currentThread().getName(), 
-									currentReq.getClientAddress().getHostAddress()
-									+" "+currentReq.getHost()+":"+currentReq.getClientPort()
-									+" \""+currentReq.getFullRequest()+" \" "+lastHttpStatus+" "+bufs.getLength())).append("\n");
-							}
-							// after output, prepare for a second request on this channel
-							final String closeHeader = currentReq.getHeader(HTTPHeader.Common.CONNECTION.lowerCaseName()); 
-							if((closeHeader != null) && (closeHeader.trim().equalsIgnoreCase("close")))
-								closeRequested = true;
-							else
-							{
-								currentReq=new CWHTTPRequest(currentReq);
-								currentState=ParseState.REQ_INLINE;
-							}
-						}
-					}
-				}
-				catch(final HTTPException me) // if an exception is generated, go ahead and send it out
-				{
-					final DataBuffers bufs=me.generateOutput(currentReq);
-					writeBytesToChannel(bufs);
-					if(me.getStatus() == HTTPStatus.S101_SWITCHING_PROTOCOLS)
-					{
-						if(me.getNewProtocolHandler() != null)
-							this.protocolHandler = me.getNewProtocolHandler();
-					}
-					if(accessLog != null)
-					{
-						accessLog.append(Log.makeLogEntry(Log.Type.access, Thread.currentThread().getName(), 
-							currentReq.getClientAddress().getHostAddress()
-							+" "+currentReq.getHost()+":"+currentReq.getClientPort()
-							+" \""+currentReq.getFullRequest()+"\" "+me.getStatus().getStatusCode()+" "+bufs.getLength())).append("\n");
-					}
-					// have to assume any exception caused
-					// before a finish is malformed and needs a closed connection.
-					if(currentReq.isFinished())
-					{
+						// after output, prepare for a second request on this channel
 						final String closeHeader = currentReq.getHeader(HTTPHeader.Common.CONNECTION.lowerCaseName()); 
 						if((closeHeader != null) && (closeHeader.trim().equalsIgnoreCase("close")))
 							closeRequested = true;
@@ -933,51 +915,82 @@ public class HTTPReader implements HTTPIOHandler, ProtocolHandler, Runnable
 							currentState=ParseState.REQ_INLINE;
 						}
 					}
+				}
+			}
+			catch(final HTTPException me) // if an exception is generated, go ahead and send it out
+			{
+				final DataBuffers bufs=me.generateOutput(currentReq);
+				writeBytesToChannel(bufs);
+				if(me.getStatus() == HTTPStatus.S101_SWITCHING_PROTOCOLS)
+				{
+					if(me.getNewProtocolHandler() != null)
+						this.protocolHandler = me.getNewProtocolHandler();
+				}
+				if(accessLog != null)
+				{
+					accessLog.append(Log.makeLogEntry(Log.Type.access, Thread.currentThread().getName(), 
+						currentReq.getClientAddress().getHostAddress()
+						+" "+currentReq.getHost()+":"+currentReq.getClientPort()
+						+" \""+currentReq.getFullRequest()+"\" "+me.getStatus().getStatusCode()+" "+bufs.getLength())).append("\n");
+				}
+				// have to assume any exception caused
+				// before a finish is malformed and needs a closed connection.
+				if(currentReq.isFinished())
+				{
+					final String closeHeader = currentReq.getHeader(HTTPHeader.Common.CONNECTION.lowerCaseName()); 
+					if((closeHeader != null) && (closeHeader.trim().equalsIgnoreCase("close")))
+						closeRequested = true;
 					else
-						closeChannels();
-				}
-				finally
-				{
-					if((accessLogging)&&(accessLog!=null)&&(accessLog.length()>1))
 					{
-						if(config.getLogger().getClass().equals(Log.class))
-							((Log)config.getLogger()).rawStandardOut(Type.access,accessLog.substring(0,accessLog.length()-1),Integer.MIN_VALUE);
-						else
-							config.getLogger().fine(accessLog.substring(0,accessLog.length()-1));
+						currentReq=new CWHTTPRequest(currentReq);
+						currentState=ParseState.REQ_INLINE;
 					}
 				}
-				handleWrites();
-				 // if eof is reached, close this channel and mark it for deletion by the web server
-				if(!closeMe)
-				{
-					if ((bytesRead < 0) 
-					|| (!chan.isConnected()) 
-					|| (!chan.isOpen())
-					|| (closeRequested && (writeables.size()==0)))
-					{
-						closeChannels();
-						currentState=ParseState.DONE;
-					}
-				}
-				
-			}
-			catch(final IOException e)
-			{
-				if(isDebugging) config.getLogger().finer("Closing "+getName()+" due to: "+e.getClass().getName()+": "+e.getMessage());
-				closeChannels();
-				currentState=ParseState.DONE; // a common case when client closes first
-			}
-			catch(final Exception e)
-			{
-				closeChannels();
-				currentState=ParseState.DONE;
-				config.getLogger().throwing("", "", e);
+				else
+					closeChannels();
 			}
 			finally
 			{
-				idleTime.set(System.currentTimeMillis());
-				isRunning.set(false);
+				if((accessLogging)&&(accessLog!=null)&&(accessLog.length()>1))
+				{
+					if(config.getLogger().getClass().equals(Log.class))
+						((Log)config.getLogger()).rawStandardOut(Type.access,accessLog.substring(0,accessLog.length()-1),Integer.MIN_VALUE);
+					else
+						config.getLogger().fine(accessLog.substring(0,accessLog.length()-1));
+				}
 			}
+			handleWrites();
+			 // if eof is reached, close this channel and mark it for deletion by the web server
+			if(!closeMe)
+			{
+				if ((bytesRead < 0) 
+				|| (!chan.isConnected()) 
+				|| (!chan.isOpen())
+				|| (closeRequested && (writeables.size()==0)))
+				{
+					closeChannels();
+					currentState=ParseState.DONE;
+				}
+			}
+			
+		}
+		catch(final IOException e)
+		{
+			if(isDebugging) config.getLogger().finer("Closing "+getName()+" due to: "+e.getClass().getName()+": "+e.getMessage());
+			closeChannels();
+			currentState=ParseState.DONE; // a common case when client closes first
+		}
+		catch(final Exception e)
+		{
+			closeChannels();
+			currentState=ParseState.DONE;
+			config.getLogger().throwing("", "", e);
+		}
+		finally
+		{
+			this.readSemaphore.release();
+			idleTime.set(System.currentTimeMillis());
+			isRunning.set(false);
 		}
 	}
 }
