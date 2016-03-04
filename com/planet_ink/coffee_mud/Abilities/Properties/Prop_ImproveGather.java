@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZapperMask;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -34,17 +35,33 @@ import java.util.*;
 */
 public class Prop_ImproveGather extends Property
 {
-	@Override public String ID() { return "Prop_ImproveGather"; }
-	@Override public String name(){ return "Improve Gathering Skills";}
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_AREAS|Ability.CAN_ROOMS;}
-	protected MaskingLibrary.CompiledZapperMask   mask = null;
-	protected String[] improves=new String[] {"ALL"};
-	protected int improvement=2;
+	@Override
+	public String ID()
+	{
+		return "Prop_ImproveGather";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Improve Gathering Skills";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS | Ability.CAN_ITEMS | Ability.CAN_AREAS | Ability.CAN_ROOMS;
+	}
+
+	protected CompiledZapperMask	mask		= null;
+	protected String[]				improves	= new String[] { "ALL" };
+	protected int					improvement	= 2;
 
 	@Override
 	public String accountForYourself()
-	{ return "Improves common skills "+CMParms.toListString(improves)+". Gain: "+improvement; }
-
+	{
+		return "Improves common skills " + CMParms.toListString(improves) + ". Gain: " + improvement;
+	}
 
 	@Override
 	public void setMiscText(String newText)

@@ -166,7 +166,7 @@ public class Chant_PlantSelf extends Chant
 		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_AIR)
 		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
 		{
-			mob.tell(L("This magic will not work here."));
+			mob.tell(L("This magic wonly works in fertile soil."));
 			return false;
 		}
 

@@ -6,8 +6,8 @@ Short War Bow	25	120	12	1456	GenBow	arrows	20	24	3
 Long War Bow	35	160	18	2779	GenBow	arrows	20	32	5		
 Giant Bow	38	200	150	1203	GenBow	arrows	20	48	7		
 Siege Bow	58	250	30	3133	GenBow	arrows	20	50	9		
-Recurse Bow	68	350	50	3100	GenBow	arrows	20	68	6	LEATHER	
-Long Recurse Bow	78	400	60	3533	GenBow	arrows	20	78	7	LEATHER	
+Recurve Bow	68	350	50	3100	GenBow	arrows	20	68	6	LEATHER	
+Long Recurve Bow	78	400	60	3533	GenBow	arrows	20	78	7	LEATHER	
 Masterwork Bow	88	650	80	5000	GenBow	arrows	20	78	9		
 Quiver of 50 Arrows	5	40	5	25	GenAmmunition	arrows	50			METAL	
 Quiver of 100 Arrows	10	60	10	50	GenAmmunition	arrows	100			METAL	
