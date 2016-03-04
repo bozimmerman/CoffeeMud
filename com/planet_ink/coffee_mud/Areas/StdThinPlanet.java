@@ -36,7 +36,11 @@ import java.util.*;
 */
 public class StdThinPlanet extends StdThinArea implements SpaceObject
 {
-	@Override public String ID(){	return "StdThinPlanet";}
+	@Override
+	public String ID()
+	{
+		return "StdThinPlanet";
+	}
 
 	protected long[]	coordinates	= new long[3];
 	protected double[]	direction	= new double[2];
@@ -61,9 +65,17 @@ public class StdThinPlanet extends StdThinArea implements SpaceObject
 		return O;
 	}
 
-	@Override public TimeClock getTimeObj(){return myClock;}
+	@Override
+	public TimeClock getTimeObj()
+	{
+		return myClock;
+	}
 
-	@Override public long getMass() { return radius * MULTIPLIER_PLANET_MASS;}
+	@Override
+	public long getMass()
+	{
+		return radius * MULTIPLIER_PLANET_MASS;
+	}
 
 	@Override
 	public void addChild(Area area)
@@ -74,28 +86,82 @@ public class StdThinPlanet extends StdThinArea implements SpaceObject
 			cA.nextElement().setTimeObj(getTimeObj());
 	}
 
-	@Override public long[] coordinates(){return coordinates;}
-	@Override public void setCoords(long[] coords)
+	@Override
+	public long[] coordinates()
+	{
+		return coordinates;
+	}
+
+	@Override 
+	public void setCoords(long[] coords)
 	{
 		if((coords!=null)&&(coords.length==3))
 			CMLib.map().moveSpaceObject(this,coords);
 	}
-	@Override public double[] direction(){return direction;}
-	@Override public void setDirection(double[] dir){direction=dir;}
-	@Override public double speed(){return 0;}
-	@Override public void setSpeed(double v){}
-	@Override public long radius() { return radius; }
-	@Override public void setRadius(long radius) { this.radius=radius; }
-	@Override public void setName(String newName)
+
+	@Override
+	public double[] direction()
+	{
+		return direction;
+	}
+
+	@Override
+	public void setDirection(double[] dir)
+	{
+		direction = dir;
+	}
+
+	@Override
+	public double speed()
+	{
+		return 0;
+	}
+
+	@Override
+	public void setSpeed(double v)
+	{
+	}
+
+	@Override
+	public long radius()
+	{
+		return radius;
+	}
+
+	@Override
+	public void setRadius(long radius)
+	{
+		this.radius = radius;
+	}
+
+	@Override 
+	public void setName(String newName)
 	{
 		super.setName(newName);
 		myClock.setLoadName(newName);
 	}
 
-	@Override public SpaceObject knownTarget(){return null;}
-	@Override public void setKnownTarget(SpaceObject O){}
-	@Override public SpaceObject knownSource(){return null;}
-	@Override public void setKnownSource(SpaceObject O){}
+	@Override
+	public SpaceObject knownTarget()
+	{
+		return null;
+	}
+
+	@Override
+	public void setKnownTarget(SpaceObject O)
+	{
+	}
+
+	@Override
+	public SpaceObject knownSource()
+	{
+		return null;
+	}
+
+	@Override
+	public void setKnownSource(SpaceObject O)
+	{
+	}
 
 	@Override
 	public BoundedCube getBounds()
