@@ -524,7 +524,8 @@ public class CMStrings
 		||(thisStr==null)
 		||(withThisStr==null)
 		||(str.length()==0)
-		||(thisStr.length()==0))
+		||(thisStr.length()==0)
+		||(thisStr.equals(withThisStr)))
 		{
 			return str;
 		}
@@ -535,6 +536,8 @@ public class CMStrings
 				if(str.substring(i).startsWith(thisStr))
 				{
 					str=str.substring(0,i)+withThisStr+str.substring(i+thisStr.length());
+					if(withThisStr.length()>1)
+						i+= withThisStr.length()-1;
 				}
 			}
 		}
