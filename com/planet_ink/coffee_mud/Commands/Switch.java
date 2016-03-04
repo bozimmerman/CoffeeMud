@@ -63,6 +63,12 @@ public class Switch extends StdCommand
 			mob.tell(L("You are a mob! Go away!"));
 			return false;
 		}
+		boolean sysopOverride = false;
+		if((commands.size()>2)&&(commands.get(1).equals("override"))&&(CMSecurity.isASysOp(mob)))
+		{
+			sysopOverride = true;
+			commands.remove(1);
+		}
 		final String MOBname=CMParms.combine(commands,1);
 		MOB target=CMLib.players().getPlayer(MOBname);
 		boolean resetStats = false;
@@ -82,10 +88,13 @@ public class Switch extends StdCommand
 			return false;
 		}
 		final PlayerStats targetPStats = target.playerStats();
-		if((targetPStats.getAccount() == null) || (targetPStats.getAccount() != mobPStats.getAccount()))
+		if(!sysopOverride)
 		{
-			mob.tell(L("You are not allowed to switch to '@x1'.",MOBname));
-			return false;
+			if((targetPStats.getAccount() == null) || (targetPStats.getAccount() != mobPStats.getAccount()))
+			{
+				mob.tell(L("You are not allowed to switch to '@x1'.",MOBname));
+				return false;
+			}
 		}
 		final Session s2=target.session();
 		if((s2 != null)&&(CMLib.flags().isInTheGame(target, true)))
