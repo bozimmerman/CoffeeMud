@@ -868,7 +868,7 @@ public class HTTPReader implements HTTPIOHandler, ProtocolHandler, Runnable
 		{
 			int timeoutSeconds = config.getMaxThreadTimeoutSecs();
 			if(timeoutSeconds <= 0)
-				timeoutSeconds = 3600;
+				timeoutSeconds = Integer.MAX_VALUE;
 			if(!this.readSemaphore.tryAcquire(timeoutSeconds, TimeUnit.SECONDS)) // don't let mulitple readers in at the same time, ever.
 				return;
 		}
