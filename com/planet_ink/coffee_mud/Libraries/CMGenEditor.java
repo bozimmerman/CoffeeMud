@@ -879,8 +879,17 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			return;
 		final TimeClock TC=A.getTimeObj();
 		StringBuffer report=new StringBuffer("");
+		boolean usingParent = false;
+		for(Enumeration<Area> a=A.getParents();a.hasMoreElements();)
+		{
+			if(a.nextElement().getTimeObj() == A.getTimeObj())
+				usingParent=true;
+		}
 		if(TC==CMLib.time().globalClock())
 			report.append("Default -- Can't be changed.");
+		else
+		if(usingParent)
+			report.append("Inherited -- Can't be changed.");
 		else
 		{
 			report.append(TC.getHoursInDay()+" hrs-day/");
@@ -888,7 +897,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			report.append(TC.getMonthsInYear()+" mnths-yr");
 		}
 		mob.tell(L("@x1. Calendar: '@x2'.",""+showNumber,report.toString()));
-		if(TC==CMLib.time().globalClock())
+		if(TC==CMLib.time().globalClock() || usingParent)
 			return;
 		if((showFlag!=showNumber)&&(showFlag>-999))
 			return;
