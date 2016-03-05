@@ -36,17 +36,49 @@ import java.util.*;
 
 public class Mining extends GatheringSkill
 {
-	@Override public String ID() { return "Mining"; }
-	private final static String localizedName = CMLib.lang().L("Mining");
-	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =I(new String[] {"MINE","MINING"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode(){return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_GATHERINGSKILL;}
-	@Override protected boolean allowedWhileMounted(){return false;}
-	@Override public String supportedResourceString(){return "GLASS|PRECIOUS|SAND|ROCK|METAL|MITHRIL";}
+	@Override
+	public String ID()
+	{
+		return "Mining";
+	}
 
-	protected Item found=null;
-	protected String foundShortName="";
+	private final static String	localizedName	= CMLib.lang().L("Mining");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "MINE", "MINING" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_COMMON_SKILL | Ability.DOMAIN_GATHERINGSKILL;
+	}
+
+	@Override
+	protected boolean allowedWhileMounted()
+	{
+		return false;
+	}
+
+	@Override
+	public String supportedResourceString()
+	{
+		return "GLASS|PRECIOUS|SAND|ROCK|METAL|MITHRIL";
+	}
+
+	protected Item		found			= null;
+	protected String	foundShortName	= "";
+
 	public Mining()
 	{
 		super();
@@ -58,7 +90,12 @@ public class Mining extends GatheringSkill
 	{
 		return getDuration(50,mob,level,15);
 	}
-	@Override protected int baseYield() { return 1; }
+
+	@Override
+	protected int baseYield()
+	{
+		return 1;
+	}
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
@@ -96,7 +133,7 @@ public class Mining extends GatheringSkill
 				final MOB mob=(MOB)affected;
 				if((found!=null)&&(!aborted))
 				{
-					int amount=CMLib.dice().roll(1,3,0);
+					int amount=CMLib.dice().roll(1,5,0);
 					if(((found.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_ROCK)
 					&&(found.material()!=RawMaterial.RESOURCE_COAL))
 						amount=CMLib.dice().roll(1,25,0);
