@@ -37,14 +37,49 @@ import java.util.*;
 
 public class Chant_SummonWind extends Chant
 {
-	@Override public String ID() { return "Chant_SummonWind"; }
-	private final static String localizedName = CMLib.lang().L("Summon Wind");
-	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;}
-	@Override public long flags(){return Ability.FLAG_WEATHERAFFECTING;}
+	@Override
+	public String ID()
+	{
+		return "Chant_SummonWind";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Summon Wind");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT | Ability.DOMAIN_WEATHER_MASTERY;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_WEATHERAFFECTING;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
