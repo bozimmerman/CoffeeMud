@@ -1,6 +1,6 @@
-Bronze	1	40	1	1	GenEnvResource	TIN	COPPER
-Steel	15	120	1	1	GenEnvResource	IRON	COAL
-Brass	10	40	1	1	GenEnvResource	ZINC	COPPER
-Spidersteel	20	120	1	1	GenEnvResource	SILK	MITHRIL
-Adamantite	30	250	1	1	GenEnvResource	MITHRIL	STEEL
-Atlantite	40	200	1	1	GenEnvResource	MITHRIL	SEAWEED
+Bronze	1	40	1	1	GenResource	TIN	COPPER
+Steel	15	120	1	1	GenResource	IRON	COAL
+Brass	10	40	1	1	GenResource	ZINC	COPPER
+Spidersteel	20	120	1	1	GenResource	SILK	MITHRIL
+Adamantite	30	250	1	1	GenResource	MITHRIL	STEEL
+Atlantite	40	200	1	1	GenResource	MITHRIL	SEAWEED

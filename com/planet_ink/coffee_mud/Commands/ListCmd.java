@@ -78,6 +78,15 @@ public class ListCmd extends StdCommand
 		}
 	};
 
+	private static Filterer<Area> allAreaFilter=new Filterer<Area>()
+	{
+		@Override
+		public boolean passesFilter(Area obj)
+		{
+			return (!(obj instanceof SpaceShip));
+		}
+	};
+
 	private static Filterer<Area> mundaneAreaFilter=new Filterer<Area>()
 	{
 		@Override
@@ -2985,6 +2994,7 @@ public class ListCmd extends StdCommand
 		ALLQUALIFYS("ALLQUALIFYS",new SecFlag[]{SecFlag.CMDABILITIES,SecFlag.LISTADMIN}),
 		NEWS("NEWS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.JOURNALS,SecFlag.NEWS}),
 		AREAS("AREAS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDAREAS,SecFlag.CMDROOMS}),
+		TIMEZONES("TIMEZONES",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDAREAS,SecFlag.CMDROOMS}),
 		SESSIONS("SESSIONS",new SecFlag[]{SecFlag.SESSIONS}),
 		WORLD("WORLD",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDAREAS,SecFlag.CMDROOMS}),
 		PLANETS("PLANETS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDAREAS,SecFlag.CMDROOMS}),
@@ -2997,7 +3007,7 @@ public class ListCmd extends StdCommand
 		EXPIRED("EXPIRED",new SecFlag[]{SecFlag.CMDPLAYERS}),
 		SQL("SQL",new SecFlag[]{SecFlag.CMDDATABASE}),
 		SHIPS("SHIPS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDAREAS,SecFlag.CMDPLAYERS}),
-		FILEUSE("FILEUSE",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDAREAS})
+		FILEUSE("FILEUSE",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDAREAS}),
 		;
 		public String[]			   cmd;
 		public CMSecurity.SecGroup flags;
@@ -3204,6 +3214,79 @@ public class ListCmd extends StdCommand
 			mob.session().rawPrint(str.toString());
 	}
 
+	public void listTimeZones(MOB mob, List<String> commands, Filterer<Area> filter)
+	{
+		if(mob==null)
+			return;
+		Map<TimeClock,List<Area>> timeMap = new Hashtable<TimeClock,List<Area>>();
+		Map<TimeClock,Pair<String,int[]>> topClockerMap = new Hashtable<TimeClock,Pair<String,int[]>>();
+		int numCols = 3;
+		final int colWidth=CMLib.lister().fixColWidth(Math.round(Math.floor(78.0-numCols))/numCols,mob);
+		
+		Map<Area,int[]> parentageCounts = new Hashtable<Area,int[]>();
+		for(final Enumeration<Area> as=CMLib.map().areas();as.hasMoreElements();)
+			parentageCounts.put(as.nextElement(),new int[1]);
+		Stack<Area> parentStack = new Stack<Area>();
+		for(final Enumeration<Area> as=CMLib.map().areas();as.hasMoreElements();)
+		{
+			final Area A=as.nextElement();
+			if((filter!=null)&&(!filter.passesFilter(A)))
+				continue;
+			for(Enumeration<Area> pa=A.getParents();pa.hasMoreElements();)
+				parentStack.add(pa.nextElement());
+			while(parentStack.size()>0)
+			{
+				Area pA=parentStack.pop();
+				for(Enumeration<Area> pa=pA.getParents();pa.hasMoreElements();)
+					parentStack.add(pa.nextElement());
+				parentageCounts.get(pA)[0]++;
+			}
+		}
+		
+		for(final Enumeration<Area> as=CMLib.map().areas();as.hasMoreElements();)
+		{
+			final Area A=as.nextElement();
+			if((filter!=null)&&(!filter.passesFilter(A)))
+				continue;
+			TimeClock C=A.getTimeObj();
+			if(!timeMap.containsKey(C))
+			{
+				timeMap.put(C, new LinkedList<Area>());
+				topClockerMap.put(C, new Pair<String,int[]>(A.Name(),new int[1]));
+			}
+			timeMap.get(C).add(A);
+			int[] parentageCount = parentageCounts.get(A);
+			Pair<String,int[]> topCount = topClockerMap.get(C);
+			if(parentageCount[0] > topCount.second[0])
+			{
+				topCount.first = A.Name();
+				topCount.second = parentageCount;
+			}
+		}
+
+		StringBuilder str=new StringBuilder("");
+		for(TimeClock C : timeMap.keySet())
+		{
+			String topName = topClockerMap.get(C).first;
+			str.append(L("\n\r^HTime Zone: ^N@x1\n\r",topName));
+			int col =0;
+			for(Area A : timeMap.get(C))
+			{
+				col++;
+				if(col >= numCols)
+				{
+					str.append("\n\r");
+					col=0;
+				}
+				str.append(CMStrings.padRight(A.name(), colWidth));
+			}
+			str.append("\n\r");
+		}
+		final Session S=mob.session();
+		if(S!=null)
+			S.colorOnlyPrint(str.toString(), true);
+	}
+	
 	public void listAreas(MOB mob, List<String> commands, Filterer<Area> filter)
 	{
 		if(mob==null)
@@ -3728,6 +3811,9 @@ public class ListCmd extends StdCommand
 			break;
 		case AREAS:
 			listAreas(mob, commands, mundaneAreaFilter);
+			break;
+		case TIMEZONES:
+			listTimeZones(mob, commands, allAreaFilter);
 			break;
 		case SESSIONS:
 		{

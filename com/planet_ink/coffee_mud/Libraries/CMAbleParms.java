@@ -1316,6 +1316,25 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					return ""+(10 + (I.basePhyStats().level()/2));
 				}
 			},
+			new AbilityParmEditorImpl("FUTURE_USE","Future Use",ParmType.STRINGORNULL)
+			{
+				@Override
+				public void createChoices()
+				{
+				}
+	
+				@Override
+				public String defaultValue()
+				{
+					return "1";
+				}
+	
+				@Override
+				public String convertFromItem(final ItemCraftor A, final Item I)
+				{
+					return "1";
+				}
+			},
 			new AbilityParmEditorImpl("AMOUNT_MATERIAL_REQUIRED","Amt",ParmType.NUMBER)
 			{
 				@Override

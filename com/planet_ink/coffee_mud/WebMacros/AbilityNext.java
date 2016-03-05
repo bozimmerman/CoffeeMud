@@ -35,7 +35,11 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class AbilityNext extends StdWebMacro
 {
-	@Override public String name() { return "AbilityNext"; }
+	@Override
+	public String name()
+	{
+		return "AbilityNext";
+	}
 
 	@Override
 	@SuppressWarnings("unchecked")
@@ -61,8 +65,10 @@ public class AbilityNext extends StdWebMacro
 		{
 			final List<String> V=CMParms.parseSquiggles(flagString.toUpperCase());
 			for(int i=0;i<Ability.FLAG_DESCS.length;i++)
+			{
 				if(V.contains(Ability.FLAG_DESCS[i]))
 					flags=flags|(CMath.pow(2,i));
+			}
 		}
 
 		String lastID="";
@@ -85,7 +91,6 @@ public class AbilityNext extends StdWebMacro
 			}
 		}
 
-
 		final Enumeration<Ability> a;
 		if(!parms.containsKey("SORTEDBYNAME"))
 			a=CMClass.abilities();
@@ -100,7 +105,8 @@ public class AbilityNext extends StdWebMacro
 			final Ability[] aaray=fullList.toArray(new Ability[0]);
 			Arrays.sort(aaray, new Comparator<Ability>()
 			{
-				@Override public int compare(Ability o1, Ability o2)
+				@Override 
+				public int compare(Ability o1, Ability o2)
 				{
 					return o1.Name().compareToIgnoreCase(o2.Name());
 				}
@@ -119,11 +125,13 @@ public class AbilityNext extends StdWebMacro
 				okToShow=A.isGeneric();
 			else
 			if(parmsEditable)
+			{
 				okToShow=((A instanceof CraftorAbility)
-					   &&(((CraftorAbility)A).parametersFile()!=null)
-					   &&(((CraftorAbility)A).parametersFile().length()>0)
-					   &&(((CraftorAbility)A).parametersFormat()!=null)
-					   &&(((CraftorAbility)A).parametersFormat().length()>0));
+						&&(((CraftorAbility)A).parametersFile()!=null)
+						&&(((CraftorAbility)A).parametersFile().length()>0)
+						&&(((CraftorAbility)A).parametersFormat()!=null)
+						&&(((CraftorAbility)A).parametersFormat().length()>0));
+			}
 
 			if((className!=null)&&(className.length()>0))
 			{
@@ -163,7 +171,7 @@ public class AbilityNext extends StdWebMacro
 			if(okToShow)
 			{
 				if((domainFlag)&&(!domain.equalsIgnoreCase(Ability.DOMAIN_DESCS[(A.classificationCode()&Ability.ALL_DOMAINS)>>5])))
-				   okToShow=false;
+					okToShow=false;
 				if(containsACodeMask&&(!parms.containsKey(Ability.ACODE_DESCS[classType])))
 					okToShow=false;
 			}

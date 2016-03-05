@@ -211,7 +211,8 @@ public class Areas extends StdCommand
 						{
 							if(!CMStrings.parseStringExpression(expression, H,false))
 								continue;
-						}catch(final Exception e)
+						}
+						catch(final Exception e)
 						{
 							if(mob!=null)
 								mob.tell(L("There was an error in your AREA qualifier parameters. See help on AREA for more information. The error was: @x1",e.getMessage()));

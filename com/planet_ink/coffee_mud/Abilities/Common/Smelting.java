@@ -36,15 +36,41 @@ import java.util.*;
 */
 
 
-public class Smelting extends CraftingSkill
+public class Smelting extends CraftingSkill implements CraftorAbility
 {
-	@Override public String ID() { return "Smelting"; }
-	private final static String localizedName = CMLib.lang().L("Smelting");
-	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =I(new String[] {"SMELT","SMELTING"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public String supportedResourceString(){return "METAL|MITHRIL";}
-	public String parametersFormat(){ return "ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\t\t\t\tRESOURCE_NAME\tRESOURCE_NAME";}
+	@Override
+	public String ID()
+	{
+		return "Smelting";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Smelting");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "SMELT", "SMELTING" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public String supportedResourceString()
+	{
+		return "METAL|MITHRIL";
+	}
+
+	@Override
+	public String parametersFormat()
+	{
+		return "ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tFUTURE_USE\tFUTURE_USE\tITEM_CLASS_ID\tRESOURCE_NAME\tRESOURCE_NAME";
+	}
 
 	//protected static final int RCP_FINALNAME=0;
 	//protected static final int RCP_LEVEL=1;
@@ -74,8 +100,23 @@ public class Smelting extends CraftingSkill
 		return super.tick(ticking,tickID);
 	}
 
-	@Override public String parametersFile(){ return "smelting.txt";}
-	@Override protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
+	@Override
+	public String parametersFile()
+	{
+		return "smelting.txt";
+	}
+
+	@Override
+	protected List<List<String>> loadRecipes()
+	{
+		return super.loadRecipes(parametersFile());
+	}
+
+	@Override
+	public String getDecodedComponentsDescription(MOB mob, List<String> recipe)
+	{
+		return "1";
+	}
 
 	@Override
 	public void unInvoke()
@@ -130,10 +171,10 @@ public class Smelting extends CraftingSkill
 				mask="";
 			}
 			final int[] cols={
-					CMLib.lister().fixColWidth(20,mob.session()),
-					CMLib.lister().fixColWidth(3,mob.session()),
-					CMLib.lister().fixColWidth(16,mob.session())
-				};
+				CMLib.lister().fixColWidth(20,mob.session()),
+				CMLib.lister().fixColWidth(3,mob.session()),
+				CMLib.lister().fixColWidth(16,mob.session())
+			};
 			final StringBuffer buf=new StringBuffer(L("@x1 @x2 @x3 Metal #2\n\r",CMStrings.padRight(L("Item"),cols[0]),CMStrings.padRight(L("Lvl"),cols[1]),CMStrings.padRight(L("Metal #1"),cols[2])));
 			for(int r=0;r<recipes.size();r++)
 			{

@@ -4,110 +4,115 @@
 @if?!CheckAuthCode?AUTH_CMDRECIPES=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
 <html>
 <head>
-    <link rel="grinder icon" href="/images/grinder.ico" >
-    <title>Skill Recipe Lists</title>
-    <script language=JavaScript>
-    <!--
-        function Recipe(rownum)
-        {
-            if(rownum>=0 || window.confirm('Create a new recipe?'))
-            {
-	            var recipeid=document.RESOURCES.ABILITY.value+'&ABILITYRECIPEROW='+rownum;
-	            if(rownum<0)
-	            {
-	            	if((document.RESOURCES.NEWCLASSFIELD) && (document.RESOURCES.NEWCLASSFIELD.value != ''))
-	            		recipeid +='&CLASSFIELD='+document.RESOURCES.NEWCLASSFIELD.value;
-	            	else
-	            		recipeid +='&CLASSFIELD='+document.RESOURCES.NEWCLASSFIELD1.value;
-	            }
-                var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=550,width=750,alwaysRaised=yes,dependent=yes";
-                w=window.open("recipe.cmvp?AUTH=@Authenticate?AUTH@&ABILITY="+recipeid,
-                	"Recipe",strFeatures, false);
-            }
-        }
-        function Select(val)
-        {
-        	Recipe(val);
-        }
-        function AddRecipe() 
-        {
-        	if(document.RESOURCES.ABILITY.selectedIndex<=0)
-        	{
-        		if(window.alert) alert('You must select a skill first.');
-        		return;
-        	}
-        	Recipe(-1);
-        }
-        function Clicked(action)
-        {
-            document.RESOURCES.action=action;
-            document.RESOURCES.submit();
-        }
-        function Refresh()
-        {
-            document.RESOURCES.action='recipes.cmvp';
-            document.RESOURCES.submit();
-        }
-    //-->
-    </script>
+	<link rel="grinder icon" href="/images/grinder.ico" >
+	<title>Skill Recipe Lists</title>
+	<script language=JavaScript>
+	<!--
+		function Recipe(rownum)
+		{
+			if(rownum>=0 || window.confirm('Create a new recipe?'))
+			{
+				var recipeid=document.RESOURCES.ABILITY.value+'&ABILITYRECIPEROW='+rownum;
+				if(rownum<0)
+				{
+					if((document.RESOURCES.NEWCLASSFIELD) && (document.RESOURCES.NEWCLASSFIELD.value != ''))
+						recipeid +='&CLASSFIELD='+document.RESOURCES.NEWCLASSFIELD.value;
+					else
+						recipeid +='&CLASSFIELD='+document.RESOURCES.NEWCLASSFIELD1.value;
+				}
+				var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=550,width=750,alwaysRaised=yes,dependent=yes";
+				w=window.open("recipe.cmvp?AUTH=@Authenticate?AUTH@&ABILITY="+recipeid,
+					"Recipe",strFeatures, false);
+			}
+		}
+		function Select(val)
+		{
+			Recipe(val);
+		}
+		function AddRecipe() 
+		{
+			if(document.RESOURCES.ABILITY.selectedIndex<=0)
+			{
+				if(window.alert) alert('You must select a skill first.');
+				return;
+			}
+			Recipe(-1);
+		}
+		function Clicked(action)
+		{
+			document.RESOURCES.action=action;
+			document.RESOURCES.submit();
+		}
+		function Refresh()
+		{
+			document.RESOURCES.action='recipes.cmvp';
+			document.RESOURCES.submit();
+		}
+	//-->
+	</script>
 </head>
 <body BGCOLOR=BLACK>
-    <TABLE WIDTH=100% BORDER=0>
-    <TR>
-    <TD WIDTH=33% ALIGN=LEFT VALIGN=TOP></TD>
-    <TD WIDTH=33% ALIGN=CENTER VALIGN=TOP><IMG SRC="/grinder/images/grinder.gif" WIDTH=78 HEIGHT=122 ALT="" BORDER="0"></TD>
-    <TD WIDTH=33% ALIGN=RIGHT VALIGN=TOP>
-        <TABLE WIDTH=50% BORDER=1>
-        <TR><TD BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK SIZE=-1><B>Menu</B></FONT></TD></TR>
-        <TR><TD><a href="javascript:Clicked('/grinder/loggedin.cmvp');"><FONT COLOR=WHITE SIZE=-1><B>MUDGrinder Menu</B></FONT></A></TD></TR>
-        <TR><TD><a href="javascript:Clicked('/grinder/abilities.cmvp');"><FONT COLOR=WHITE SIZE=-1><B>Abilities Manager</B></FONT></A></TD></TR>
-        <TR><TD><a href="javascript:Clicked('/grinder/allqualifys.cmvp');"><FONT COLOR=WHITE SIZE=-1><B>All-Qualifies List</B></FONT></A></TD></TR>
-        @if?CheckAuthCode?AUTH_CMDCOMPONENTS=true@
-          <TR><TD><a href="javascript:Clicked('/grinder/components.cmvp');"><FONT COLOR=WHITE SIZE=-1><B>Skill Components</B></FONT></A></TD></TR>
-        @endif@
-        <TR><TD><a href="javascript:Refresh();"><FONT COLOR=WHITE SIZE=-1><B>Refresh Page</B></FONT></A></TD></TR>
-        </TABLE>
-    </TD>
-    </TR>
-    </TABLE>
+	<TABLE WIDTH=100% BORDER=0>
+	<TR>
+	<TD WIDTH=33% ALIGN=LEFT VALIGN=TOP></TD>
+	<TD WIDTH=33% ALIGN=CENTER VALIGN=TOP><IMG SRC="/grinder/images/grinder.gif" WIDTH=78 HEIGHT=122 ALT="" BORDER="0"></TD>
+	<TD WIDTH=33% ALIGN=RIGHT VALIGN=TOP>
+		<TABLE WIDTH=50% BORDER=1>
+		<TR><TD BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK SIZE=-1><B>Menu</B></FONT></TD></TR>
+		<TR><TD><a href="javascript:Clicked('/grinder/loggedin.cmvp');"><FONT COLOR=WHITE SIZE=-1><B>MUDGrinder Menu</B></FONT></A></TD></TR>
+		<TR><TD><a href="javascript:Clicked('/grinder/abilities.cmvp');"><FONT COLOR=WHITE SIZE=-1><B>Abilities Manager</B></FONT></A></TD></TR>
+		<TR><TD><a href="javascript:Clicked('/grinder/allqualifys.cmvp');"><FONT COLOR=WHITE SIZE=-1><B>All-Qualifies List</B></FONT></A></TD></TR>
+		@if?CheckAuthCode?AUTH_CMDCOMPONENTS=true@
+			<TR><TD><a href="javascript:Clicked('/grinder/components.cmvp');"><FONT COLOR=WHITE SIZE=-1><B>Skill Components</B></FONT></A></TD></TR>
+		@endif@
+		<TR><TD><a href="javascript:Refresh();"><FONT COLOR=WHITE SIZE=-1><B>Refresh Page</B></FONT></A></TD></TR>
+		</TABLE>
+	</TD>
+	</TR>
+	</TABLE>
 	<FORM  ACCEPT-CHARSET="UTF-8" NAME=RESOURCES TARGET=_top METHOD=POST ACTION="recipes.cmvp">
 	<INPUT TYPE=HIDDEN NAME=NEWCLASSFIELD1 VALUE="">
 	<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 	@AddRequestParameter?THISABILITY=@@AbilityID@@ @
 	<FONT COLOR=YELLOW><B>Common Skill:
-	<SELECT NAME=ABILITY ONCHANGE="Refresh();">
-	<OPTION @if?CheckReqParm?THISABILITY=@SELECTED@endif@ VALUE="">Select a skill
-	@AbilityNext?RESET@	@loop@ @AbilityNext?PARMSEDITABLE&UNQUALIFIEDOK@ <OPTION VALUE=@AbilityID@ @if?CheckReqParm?THISABILITY=@@AbilityID@@ @SELECTED@endif@>@AbilityName@ @back@
-	</SELECT></B></FONT>
+		<SELECT NAME=ABILITY ONCHANGE="Refresh();">
+			<OPTION @if?CheckReqParm?THISABILITY=@SELECTED@endif@ VALUE="">Select a skill
+			@AbilityNext?RESET@	
+			@loop@ 
+				@AbilityNext?PARMSEDITABLE&UNQUALIFIEDOK@ 
+				<OPTION VALUE=@AbilityID@ @if?CheckReqParm?THISABILITY=@@AbilityID@@ @SELECTED@endif@>@AbilityName@ 
+			@back@
+		</SELECT>
+	</B></FONT>
 	<CENTER>
 	@AddRequestParameter?ABILITY=@@RequestParameter?THISABILITY@@ @
 	@RequestParameter?ABILITY@
 	@if?CheckReqParm?ABILITY=@ @else@
-	    <TABLE WIDTH=100% BORDER=1>
-		    <TR><TD WIDTH=100% BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud @MudServerVersion@ Recipe Manager</H2></FONT></TD></TR>
-		    <TR>
-		    <TD WIDTH=100%>@AbilityRecipeData?TABLE&HFONT=COLOR=YELLOW><B&FONT=COLOR=WHITE SIZE=-1@</TD>
-		    </TR>
-		    <TR>
-		    <TD COLSPAN=4><FONT COLOR=WHITE><B>Create New:
-		    @AbilityRecipeData?ADDROW&NOSELECT@
-		    <INPUT TYPE=BUTTON NAME=Add Value=Add ONCLICK="AddRecipe()">
-		    </B></FONT></TD>
-		    </TR>
-	    </TABLE>
-	    <P>
-	    <TABLE WIDTH=100% BORDER=0>
-		    <TR>
-		    <TD WIDTH=33% ALIGN=CENTER>
-		    </TD>
-		    <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=REFRESH VALUE="Refresh" ONCLICK="Refresh();"></TD>
-		    <TD WIDTH=33% ALIGN=CENTER>
-		    </TD>
-		    </TR>
-	    </TABLE>
+		<TABLE WIDTH=100% BORDER=1>
+			<TR><TD WIDTH=100% BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud @MudServerVersion@ Recipe Manager</H2></FONT></TD></TR>
+			<TR>
+			<TD WIDTH=100%>@AbilityRecipeData?TABLE&HFONT=COLOR=YELLOW><B&FONT=COLOR=WHITE SIZE=-1@</TD>
+			</TR>
+			<TR>
+			<TD COLSPAN=4><FONT COLOR=WHITE><B>Create New:
+			@AbilityRecipeData?ADDROW&NOSELECT@
+			<INPUT TYPE=BUTTON NAME=Add Value=Add ONCLICK="AddRecipe()">
+			</B></FONT></TD>
+			</TR>
+		</TABLE>
+		<P>
+		<TABLE WIDTH=100% BORDER=0>
+			<TR>
+			<TD WIDTH=33% ALIGN=CENTER>
+			</TD>
+			<TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=REFRESH VALUE="Refresh" ONCLICK="Refresh();"></TD>
+			<TD WIDTH=33% ALIGN=CENTER>
+			</TD>
+			</TR>
+		</TABLE>
 	@endif@
-    <CENTER>
-    </CENTER>
+	<CENTER>
+	</CENTER>
 </FORM>
 </BODY>
 </HTML>
