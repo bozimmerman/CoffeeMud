@@ -35,8 +35,17 @@ import java.util.*;
 */
 public class QuestData extends StdWebMacro
 {
-	@Override public String name() { return "QuestData"; }
-	@Override public boolean isAdminMacro()	{return true;}
+	@Override
+	public String name()
+	{
+		return "QuestData";
+	}
+
+	@Override
+	public boolean isAdminMacro()
+	{
+		return true;
+	}
 
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
@@ -107,7 +116,7 @@ public class QuestData extends StdWebMacro
 					final CMFile F=new CMFile(Resources.makeFileResourceName(fileName),null,CMFile.FLAG_LOGERRORS);
 					if((F.exists())&&(F.canRead()))
 						script=F.text();
-					script=new StringBuffer(CMStrings.replaceAll(script.toString(),"\n\r","\n"));
+					script=new StringBuffer(script.toString().replaceAll("\n\r","\n"));
 				}
 				script=new StringBuffer(CMStrings.replaceAll(script.toString(),"&","&amp;"));
 				String postFix="";

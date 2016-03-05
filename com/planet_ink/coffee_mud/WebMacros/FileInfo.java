@@ -109,7 +109,7 @@ public class FileInfo extends StdWebMacro
 			if(parms.containsKey("TEXTDATA"))
 			{
 				String s=F.text().toString();
-				s=CMStrings.replaceAll(s,"\n\r","\n");
+				s=s.replaceAll("\n\r","\n");
 				s=CMStrings.replaceAll(s,"&","&amp;");
 				s=CMStrings.replaceAll(s,"@","&#64;");
 				s=CMStrings.replaceAll(s,"<","&lt;");

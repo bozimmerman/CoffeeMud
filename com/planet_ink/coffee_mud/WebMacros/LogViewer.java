@@ -35,14 +35,23 @@ import java.util.*;
 */
 public class LogViewer extends StdWebMacro
 {
-	@Override public String name() { return "LogViewer"; }
-	@Override public boolean isAdminMacro()	{return true;}
+	@Override
+	public String name()
+	{
+		return "LogViewer";
+	}
+
+	@Override
+	public boolean isAdminMacro()
+	{
+		return true;
+	}
 
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
 	{
 		String s=Log.instance().getLog().toString();
-		s=CMStrings.replaceAll(s,"\n\r","\n");
+		s=s.replaceAll("\n\r", "\n");
 		return clearWebMacros("<PRE>"+s+"</PRE>");
 	}
 }

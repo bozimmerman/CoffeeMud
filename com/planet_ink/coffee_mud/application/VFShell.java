@@ -356,7 +356,7 @@ public class VFShell
 							{
 								try
 								{
-									bout.write(CMStrings.replaceAll(CMStrings.removeColors(msg), "\n\r", "\n").getBytes());
+									bout.write(CMStrings.removeColors(msg).replaceAll("\n\r", "\n").getBytes());
 								}
 								catch (final Exception e)
 								{
