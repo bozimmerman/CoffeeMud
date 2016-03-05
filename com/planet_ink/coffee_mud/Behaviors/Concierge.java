@@ -56,6 +56,12 @@ public class Concierge extends StdBehavior
 	
 	protected static final String defaultGreeting = "Need directions? Just name the place and I'll name the price! Append words like noswim, noclimb, nofly, nolocks and nocrawl to narrow the focus.";
 	
+	protected final static TrackingLibrary.TrackingFlags defaultTrackingFlags	= CMLib.tracking().newFlags()
+																				.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
+																				.plus(TrackingLibrary.TrackingFlag.NOHOMES)
+																				.plus(TrackingLibrary.TrackingFlag.NOHIDDENAREAS);
+	protected final static TrackingLibrary.TrackingFlags defaultRoomRadiusFlags	= CMLib.tracking().newFlags();
+	
 	protected double	basePrice		= 0.0;
 	protected double	perRoomPrice	= 0.0;
 	protected String	talkerName		= "";
@@ -65,10 +71,8 @@ public class Concierge extends StdBehavior
 	protected String	mountStr		= "";
 	protected int		maxRange		= 100;
 	
-	protected TrackingLibrary.TrackingFlags trackingFlags = CMLib.tracking().newFlags()
-															.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
-															.plus(TrackingLibrary.TrackingFlag.NOHOMES);
-	protected TrackingLibrary.TrackingFlags roomRadiusFlags = CMLib.tracking().newFlags();
+	protected TrackingLibrary.TrackingFlags trackingFlags	= CMLib.tracking().newFlags().plus(defaultTrackingFlags);
+	protected TrackingLibrary.TrackingFlags roomRadiusFlags = CMLib.tracking().newFlags().plus(defaultRoomRadiusFlags);
 	
 	@Override
 	public String accountForYourself()
@@ -151,8 +155,8 @@ public class Concierge extends StdBehavior
 	
 	protected void resetFlags()
 	{
-		trackingFlags = CMLib.tracking().newFlags().plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS).plus(TrackingLibrary.TrackingFlag.NOHOMES);
-		roomRadiusFlags = CMLib.tracking().newFlags();
+		trackingFlags	= CMLib.tracking().newFlags().plus(defaultTrackingFlags);
+		roomRadiusFlags = CMLib.tracking().newFlags().plus(defaultRoomRadiusFlags);
 	}
 	
 	@Override

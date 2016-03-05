@@ -46,12 +46,12 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		return "MUDTracker";
 	}
 
-	protected Hashtable<Integer,Vector<String>> directionCommandSets= new Hashtable<Integer,Vector<String>>();
-	protected Hashtable<Integer,Vector<String>> openCommandSets		= new Hashtable<Integer,Vector<String>>();
-	protected Hashtable<Integer,Vector<String>> closeCommandSets	= new Hashtable<Integer,Vector<String>>();
-	protected Hashtable<TrackingFlags,RFilters> trackingFilters		= new Hashtable<TrackingFlags,RFilters>();
-	protected static final TrackingFlags		EMPTY_FLAGS			= new DefaultTrackingFlags();
-	protected static final RFilters				EMPTY_FILTERS		= new DefaultRFilters();
+	protected Map<Integer,List<String>>		directionCommandSets= new Hashtable<Integer,List<String>>();
+	protected Map<Integer,List<String>>		openCommandSets		= new Hashtable<Integer,List<String>>();
+	protected Map<Integer,List<String>>		closeCommandSets	= new Hashtable<Integer,List<String>>();
+	protected Map<TrackingFlags,RFilters>	trackingFilters		= new Hashtable<TrackingFlags,RFilters>();
+	protected static final TrackingFlags	EMPTY_FLAGS			= new DefaultTrackingFlags();
+	protected static final RFilters			EMPTY_FILTERS		= new DefaultRFilters();
 
 	protected static class RFilterNode
 	{
@@ -140,9 +140,15 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		{
 			return hashCode;
 		}
+		@Override
+		public TrackingFlags plus(TrackingFlags flags)
+		{
+			addAll(flags);
+			return this;
+		}
 	}
 	
-	protected Vector<String> getDirectionCommandSet(int direction)
+	protected List<String> getDirectionCommandSet(int direction)
 	{
 		final Integer dir=Integer.valueOf(direction);
 		if(!directionCommandSets.containsKey(dir))
@@ -153,7 +159,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		return directionCommandSets.get(dir);
 	}
 
-	protected Vector<String> getOpenCommandSet(int direction)
+	protected List<String> getOpenCommandSet(int direction)
 	{
 		final Integer dir=Integer.valueOf(direction);
 		if(!directionCommandSets.containsKey(dir))
@@ -164,7 +170,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		return directionCommandSets.get(dir);
 	}
 
-	protected Vector<String> getCloseCommandSet(int direction)
+	protected List<String> getCloseCommandSet(int direction)
 	{
 		final Integer dir=Integer.valueOf(direction);
 		if(!directionCommandSets.containsKey(dir))
@@ -230,34 +236,36 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			Room R=null;
 			int index=radiant.size()-2;
 			if(destRoom!=location)
-			while(index>=0)
 			{
-				int best=-1;
-				for(int i=index;i>=0;i--)
+				while(index>=0)
 				{
-					R=radiant.get(i);
-					for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+					int best=-1;
+					for(int i=index;i>=0;i--)
 					{
-						if((R.getRoomInDir(d)==thisTrail.get(thisTrail.size()-1))
-						&&(R.getExitInDir(d)!=null)
-						&&(!tried.contains(R)))
-							best=i;
+						R=radiant.get(i);
+						for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+						{
+							if((R.getRoomInDir(d)==thisTrail.get(thisTrail.size()-1))
+							&&(R.getExitInDir(d)!=null)
+							&&(!tried.contains(R)))
+								best=i;
+						}
 					}
-				}
-				if(best>=0)
-				{
-					R=radiant.get(best);
-					thisTrail.add(R);
-					tried.add(R);
-					if(R==location)
+					if(best>=0)
+					{
+						R=radiant.get(best);
+						thisTrail.add(R);
+						tried.add(R);
+						if(R==location)
+							break;
+						index=best-1;
+					}
+					else
+					{
+						thisTrail.clear();
+						thisTrail=null;
 						break;
-					index=best-1;
-				}
-				else
-				{
-					thisTrail.clear();
-					thisTrail=null;
-					break;
+					}
 				}
 			}
 			return thisTrail;
@@ -653,7 +661,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		   &&(mob.fetchAbility("Skill_Swim")!=null))
 		{
 			final Ability A=mob.fetchAbility("Skill_Swim");
-			final Vector<String> V=getDirectionCommandSet(direction);
+			final List<String> V=getDirectionCommandSet(direction);
 			if(A.proficiency()<50)
 				A.setProficiency(CMLib.dice().roll(1,50,A.adjustedLevel(mob,0)*15));
 			final CharState oldState=(CharState)mob.curState().copyOf();
@@ -670,7 +678,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			Ability A=mob.fetchAbility("Skill_Climb");
 			if(A==null )
 				A=mob.fetchAbility("Power_SuperClimb");
-			final Vector<String> V=getDirectionCommandSet(direction);
+			final List<String> V=getDirectionCommandSet(direction);
 			if(A.proficiency()<50)
 				A.setProficiency(CMLib.dice().roll(1,50,A.adjustedLevel(mob,0)*15));
 			final CharState oldState=(CharState)mob.curState().copyOf();
@@ -682,7 +690,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		if((mob.fetchAbility("Thief_Sneak")!=null)&&(sneakIfAble))
 		{
 			final Ability A=mob.fetchAbility("Thief_Sneak");
-			final Vector<String> V=getDirectionCommandSet(direction);
+			final List<String> V=getDirectionCommandSet(direction);
 			if(A.proficiency()<50)
 			{
 				A.setProficiency(CMLib.dice().roll(1,50,A.adjustedLevel(mob,0)*15));

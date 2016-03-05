@@ -87,6 +87,8 @@ public interface TrackingLibrary extends CMLibrary
 	public static interface TrackingFlags extends Set<TrackingFlag>
 	{
 		public TrackingFlags plus(TrackingFlag flag);
+		
+		public TrackingFlags plus(TrackingFlags flags);
 	}
 
 	public static enum TrackingFlag
@@ -121,6 +123,15 @@ public interface TrackingLibrary extends CMLibrary
 			public boolean isFilteredOut(Room hostR, final Room R, final Exit E, final int dir)
 			{
 				return (R!=null)&&(hostR!=null)&&(hostR.getArea()!=R.getArea());
+			}
+		}),
+		NOHIDDENAREAS(new RFilter()
+		{
+			@Override
+			public boolean isFilteredOut(Room hostR, final Room R, final Exit E, final int dir)
+			{
+				return ((R!=null)&&(CMLib.flags().isHidden(R))) 
+					|| ((R!=null)&&(R.getArea()!=null)&&(CMLib.flags().isHidden(R.getArea())));
 			}
 		}),
 		NOEMPTYGRIDS(new RFilter()
