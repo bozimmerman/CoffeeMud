@@ -282,7 +282,7 @@ public class StdArea implements Area
 		if(myClock==null)
 		{
 			if((this.parents != null)&&(this.parents.size()>0))
-				myClock=this.parents.get(0).getTimeObj();
+				myClock=this.parents.iterator().next().getTimeObj();
 			myClock=CMLib.time().globalClock();
 		}
 		return myClock;
