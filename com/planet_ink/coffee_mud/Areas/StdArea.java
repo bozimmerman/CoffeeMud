@@ -269,13 +269,22 @@ public class StdArea implements Area
 	public void setTimeObj(TimeClock obj)
 	{
 		myClock = obj;
+		for(final Iterator<Area> i=getChildrenIterator(); i.hasNext();)
+		{
+			final Area A=i.next();
+			A.setTimeObj(obj);
+		}
 	}
 	
 	@Override
 	public TimeClock getTimeObj()
 	{
 		if(myClock==null)
+		{
+			if((this.parents != null)&&(this.parents.size()>0))
+				myClock=this.parents.get(0).getTimeObj();
 			myClock=CMLib.time().globalClock();
+		}
 		return myClock;
 	}
 
