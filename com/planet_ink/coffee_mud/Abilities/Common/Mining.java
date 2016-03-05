@@ -133,7 +133,11 @@ public class Mining extends GatheringSkill
 				final MOB mob=(MOB)affected;
 				if((found!=null)&&(!aborted))
 				{
-					int amount=CMLib.dice().roll(1,5,0);
+					int amount;
+					if(RawMaterial.CODES.VALUE(found.material())>=50)
+						amount=CMLib.dice().roll(1,4,0);
+					else
+						amount=CMLib.dice().roll(1,6,0);
 					if(((found.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_ROCK)
 					&&(found.material()!=RawMaterial.RESOURCE_COAL))
 						amount=CMLib.dice().roll(1,25,0);
