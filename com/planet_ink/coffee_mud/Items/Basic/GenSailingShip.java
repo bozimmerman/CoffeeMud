@@ -198,6 +198,12 @@ public class GenSailingShip extends StdBoardable
 		announceActionToDeckOrUnderdeck(mob,msg, 0);
 	}
 	
+	protected void announceActionToDeck(final MOB mob, final Environmental target, final Environmental tool, final String msgStr)
+	{
+		final CMMsg msg=CMClass.getMsg(mob, target, tool, CMMsg.MSG_OK_ACTION, msgStr);
+		announceActionToDeckOrUnderdeck(mob,msg, 0);
+	}
+	
 	protected void announceActionToUnderDeck(final MOB mob, final String msgStr)
 	{
 		final CMMsg msg=CMClass.getMsg(mob, CMMsg.MSG_OK_ACTION, msgStr);
@@ -1007,7 +1013,6 @@ public class GenSailingShip extends StdBoardable
 							if(R!=null)
 							{
 								mob.setLocation(R);
-								//TODO: when LOAD is done on a weapon, remind the user that they need to aim
 								//mob.setRangeToTarget(0);
 								int index = aimings.indexOfFirst(w);
 								if(index >= 0)
@@ -1117,8 +1122,58 @@ public class GenSailingShip extends StdBoardable
 					if((weapon!=null)&&(msg.source().riding()!=null))
 					{
 						final boolean isHit=msg.value()>0;
-						//TODO: if msg.value() > 1, then hit the people -- put that in the weapon I suppose
-						CMLib.combat().postWeaponAttackResult(msg.source(), msg.source().riding(), this, weapon, isHit);
+						if(isHit && this.isAShipSiegeWeapon(weapon) 
+						&& (((AmmunitionWeapon)weapon).ammunitionCapacity() > 1))
+						{
+							int shotsRemaining = ((AmmunitionWeapon)weapon).ammunitionRemaining() + 1;
+							((AmmunitionWeapon)weapon).setAmmoRemaining(0);
+							final Area A=this.getShipArea();
+							ArrayList<Pair<MOB,Room>> targets = new ArrayList<Pair<MOB,Room>>(5);
+							if(A!=null)
+							{
+								for(Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
+								{
+									final Room R=r.nextElement();
+									if((R!=null)&&((R.domainType()&Room.INDOORS)==0))
+									{
+										for(Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
+											targets.add(new Pair<MOB,Room>(m.nextElement(),R));
+									}
+								}
+							}
+							final int chanceToHit = targets.size() * 20;
+							final Room oldRoom=msg.source().location();
+							try
+							{
+								while(shotsRemaining-- > 0)
+								{
+									final Pair<MOB,Room> randomPair = (targets.size()>0)? targets.get(CMLib.dice().roll(1,targets.size(),-1)) : null;
+									if((CMLib.dice().rollPercentage() < chanceToHit)&&(randomPair != null))
+									{
+										msg.source().setLocation(randomPair.second);
+										double pctLoss = CMath.div(msg.value(), maxHullPoints);
+										int pointsLost = (int)Math.round(pctLoss * msg.source().maxState().getHitPoints());
+										CMLib.combat().postWeaponDamage(msg.source(), randomPair.first, weapon, pointsLost);
+									}
+									else
+									if(randomPair != null)
+									{
+										msg.source().setLocation(randomPair.second);
+										CMLib.combat().postWeaponAttackResult(msg.source(), randomPair.first, weapon, false);
+									}
+									else
+									{
+										this.announceActionToDeck(msg.source(), msg.target(), weapon, weapon.missString());
+									}
+								}
+							}
+							finally
+							{
+								msg.source().setLocation(oldRoom);
+							}
+						}
+						else
+							CMLib.combat().postWeaponAttackResult(msg.source(), msg.source().riding(), this, weapon, isHit);
 					}
 				}
 				break;
@@ -1133,7 +1188,6 @@ public class GenSailingShip extends StdBoardable
 					int pointsLost = (int)Math.round(pctLoss * maxHullPoints);
 					if(pointsLost > 0)
 					{
-						//TODO: this stuff goes in the weapon, I guess .. this is so spells can do stuff too.
 						int weaponType = (msg.tool() instanceof Weapon) ? ((Weapon)msg.tool()).weaponDamageType() : Weapon.TYPE_BASHING;
 						final String hitWord = CMLib.combat().standardHitWord(weaponType, pctLoss);
 						final String msgStr = (msg.targetMessage() == null) ? L("<O-NAME> fired from <S-NAME> hits and @x1 the ship.",hitWord) : msg.targetMessage();
@@ -1145,15 +1199,30 @@ public class GenSailingShip extends StdBoardable
 						{
 							this.setUsesRemaining(0);
 							CMLib.tracking().makeSink(this, CMLib.map().roomLocation(this), 0);
-							//TODO: this ships should probably disappear at some point.
-							// make it expire so long as it remains sunk
-
-							/* announce unnecessary
 							final String sinkString = L("<O-NAME> start(s) sinking!");
-							this.announceActionToDeck(msg.source(), sinkString);
 							this.announceActionToUnderDeck(msg.source(), sinkString);
-							*/
-							//TODO: do ... xp?
+							
+							if(msg.source().riding() instanceof BoardableShip)
+							{
+								final Area A=this.getShipArea();
+								if(A!=null)
+								{
+									for(final Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
+									{
+										final Room R=r.nextElement();
+										if(R!=null)
+										{
+											for(Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
+											{
+												final MOB M=m.nextElement();
+												CMLib.leveler().postExperience(M, null, null, 500, false);
+											}
+										}
+									}
+								}
+							}
+							else
+								CMLib.leveler().postExperience(msg.source(), null, null, 500, false);
 						}
 						else
 						{
@@ -1164,6 +1233,45 @@ public class GenSailingShip extends StdBoardable
 				break;
 			}
 		}
+		else
+		if(msg.target() instanceof AmmunitionWeapon)
+		{
+			switch(msg.targetMinor())
+			{
+			case CMMsg.TYP_RELOAD:
+				if((msg.tool() instanceof Ammunition)
+				&&(this.isAShipSiegeWeapon((Item)msg.target())))
+				{
+					final MOB tellM=msg.source();
+					final Item I= (Item)msg.target();
+					msg.addTrailerRunnable(new Runnable()
+					{
+						@Override
+						public void run()
+						{
+							tellM.tell(L("@x1 is now loaded. Don't forget to aim.",I.name()));
+						}
+					});
+				}
+				break;
+			}
+		}
+	}
+	
+	@Override
+	public long expirationDate()
+	{
+		final Room R=CMLib.map().roomLocation(this);
+		if(R==null)
+			return 0;
+		if(CMLib.flags().isUnderWateryRoom(R))
+		{
+			if(dispossessionTime == 0)
+				setExpirationDate(System.currentTimeMillis()+(CMProps.getIntVar(CMProps.Int.EXPIRE_PLAYER_DROP) * TimeManager.MILI_MINUTE));
+		}
+		else
+			dispossessionTime = 0;
+		return super.expirationDate();
 	}
 
 	@Override
@@ -1188,24 +1296,17 @@ public class GenSailingShip extends StdBoardable
 			}
 			for(final Room R2 : rooms)
 			{
-				if(CMLib.flags().isWaterySurfaceRoom(R2))
+				if(CMLib.flags().isDeepWaterySurfaceRoom(R2))
 				{
-					final Room underWaterR=R2.getRoomInDir(Directions.DOWN);
-					if((underWaterR!=null)
-					&&(CMLib.flags().isUnderWateryRoom(underWaterR))
-					&&(R.getExitInDir(Directions.DOWN)!=null)
-					&&(R.getExitInDir(Directions.DOWN).isOpen()))
+					for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
 					{
-						for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
-						{
-							final Room adjacentR = R2.getRoomInDir(d);
-							final Exit adjacentE = R2.getExitInDir(d);
-							if((adjacentR!=null)
-							&&(adjacentE!=null)
-							&&(adjacentE.isOpen())
-							&&(!CMLib.flags().isWateryRoom(adjacentR)))
-								return adjacentR;
-						}
+						final Room adjacentR = R2.getRoomInDir(d);
+						final Exit adjacentE = R2.getExitInDir(d);
+						if((adjacentR!=null)
+						&&(adjacentE!=null)
+						&&(adjacentE.isOpen())
+						&&(!CMLib.flags().isWateryRoom(adjacentR)))
+							return adjacentR;
 					}
 				}
 			}
@@ -1390,7 +1491,7 @@ public class GenSailingShip extends StdBoardable
 			final Exit exit=thisRoom.getExitInDir(direction);
 			if((destRoom!=null)&&(exit!=null))
 			{
-				if((destRoom.domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE)
+				if((!CMLib.flags().isDeepWaterySurfaceRoom(destRoom))
 				&&(destRoom.domainType()!=Room.DOMAIN_OUTDOORS_SEAPORT))
 				{
 					announceToShip(L("As there is no where to sail @x1, <S-NAME> meanders along the waves.",Directions.getInDirectionName(direction)));
@@ -1528,7 +1629,7 @@ public class GenSailingShip extends StdBoardable
 		for(final Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
 		{
 			final Room R=r.nextElement();
-			if((R!=null)&&(R.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)&&(CMLib.map().getExtendedRoomID(R).length()>0))
+			if((R!=null)&& CMLib.flags().isDeepWaterySurfaceRoom(R) &&(CMLib.map().getExtendedRoomID(R).length()>0))
 				return R;
 		}
 		return null;

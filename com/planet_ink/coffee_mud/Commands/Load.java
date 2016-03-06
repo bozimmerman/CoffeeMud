@@ -37,10 +37,17 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Load extends StdCommand
 {
-	public Load(){}
+	public Load()
+	{
+	}
 
-	private final String[] access=I(new String[]{"LOAD"});
-	@Override public String[] getAccessWords(){return access;}
+	private final String[]	access	= I(new String[] { "LOAD" });
+
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
 	public final String[] combine(final String[] set1, final CMClass.CMObjectType[] set2)
 	{
@@ -83,12 +90,22 @@ public class Load extends StdCommand
 		String name=CMParms.combine(commands,2);
 		if(tryArchon)
 		{
-			final Item I=mob.fetchWieldedItem();
+			Item I=mob.fetchWieldedItem();
 			if((I instanceof AmmunitionWeapon)&&((AmmunitionWeapon)I).requiresAmmunition())
 				tryArchon=false;
+			else
+			{
+				I=mob.location().findItem(null, name);
+				if((I instanceof AmmunitionWeapon)
+				&&(((AmmunitionWeapon)I).requiresAmmunition())
+				&&((!CMLib.flags().isGettable(I))||(I.phyStats().weight()>300)))
+					tryArchon=false;
+			}
 			for(final String aList : ARCHON_LIST)
+			{
 				if(what.equalsIgnoreCase(aList))
 					tryArchon=true;
+			}
 		}
 		if(!tryArchon)
 		{
@@ -112,6 +129,8 @@ public class Load extends StdCommand
 			{
 				commands.remove(0);
 				final List<Item> baseItems=CMLib.english().fetchItemList(mob,mob,null,commands,Wearable.FILTER_ANY,false);
+				if(baseItems.size()==0)
+					baseItems.addAll(mob.location().findItems(null,CMParms.combine(commands,0)));
 				final List<AmmunitionWeapon> items=new XVector<AmmunitionWeapon>();
 				for (Item I : baseItems)
 				{
@@ -267,8 +286,27 @@ public class Load extends StdCommand
 		return false;
 	}
 
-	@Override public boolean canBeOrdered(){return true;}
-	@Override public boolean securityCheck(MOB mob){return super.securityCheck(mob);}
-	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandCombatActionCost(ID());}
-	@Override public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandActionCost(ID());}
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
+
+	@Override
+	public boolean securityCheck(MOB mob)
+	{
+		return super.securityCheck(mob);
+	}
+
+	@Override
+	public double combatActionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandCombatActionCost(ID());
+	}
+
+	@Override
+	public double actionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandActionCost(ID());
+	}
 }

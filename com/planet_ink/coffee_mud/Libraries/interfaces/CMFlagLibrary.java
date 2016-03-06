@@ -737,6 +737,15 @@ public interface CMFlagLibrary extends CMLibrary
 	public boolean isUnderWateryRoom(Room R);
 
 	/**
+	 * Returns whether the given room, whatever is 
+	 * the surface of deep water, such as a water surface, etc.
+	 * with an underwater room
+	 * @param R the room to check
+	 * @return true if it is water surfacy, false otherwise
+	 */
+	public boolean isDeepWaterySurfaceRoom(Room R);
+	
+	/**
 	 * Returns whether the given item, mob, whatever is 
 	 * marked as falling.
 	 * @param P the item, mob, whatever to check

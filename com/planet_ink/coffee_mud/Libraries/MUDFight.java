@@ -892,6 +892,53 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		}
 	}
 
+	@Override
+	public void postWeaponDamage(MOB source, MOB target, Item item, int damageInt)
+	{
+		int damageType=Weapon.TYPE_BASHING;
+		Weapon weapon=null;
+		if(item instanceof Weapon)
+		{
+			weapon=(Weapon)item;
+			damageType=weapon.weaponDamageType();
+		}
+		// calculate Base Damage (with Strength bonus)
+		final String oldHitString="^F^<FIGHT^>"+((weapon!=null)?
+							weapon.hitString(damageInt):
+							standardHitString(Weapon.TYPE_NATURAL,Weapon.CLASS_BLUNT,damageInt,item.name()))+"^</FIGHT^>^?";
+		final CMMsg msg=CMClass.getMsg(source,
+								target,
+								item,
+								CMMsg.MSG_OK_VISUAL,
+								CMMsg.MSG_DAMAGE,
+								CMMsg.MSG_OK_VISUAL,
+								oldHitString);
+		CMLib.color().fixSourceFightColor(msg);
+
+		msg.setValue(damageInt);
+		// why was there no okaffect here?
+		final Room room=source.location();
+		if((room!=null)&&(room.okMessage(source,msg)))
+		{
+			if(msg.targetMinor()==CMMsg.TYP_DAMAGE)
+			{
+				damageInt=msg.value();
+				msg.modify(msg.source(),
+						   msg.target(),
+						   msg.tool(),
+						   msg.sourceCode(),
+						   replaceDamageTag(msg.sourceMessage(),msg.value(),damageType,CMMsg.View.SOURCE),
+						   msg.targetCode(),
+						   replaceDamageTag(msg.targetMessage(),msg.value(),damageType,CMMsg.View.TARGET),
+						   msg.othersCode(),
+						   replaceDamageTag(msg.othersMessage(),msg.value(),damageType,CMMsg.View.OTHERS));
+			}
+			if((source.mayIFight(target))
+			&&(source.location()==room)
+			&&(target.location()==room))
+				room.send(source,msg);
+		}
+	}
 
 	@Override
 	public void postWeaponAttackResult(MOB source, MOB target, Item item, boolean success)
@@ -901,53 +948,14 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		if(!source.mayIFight(target))
 			return;
 		Weapon weapon=null;
-		int damageInt=0;
-		int damageType=Weapon.TYPE_BASHING;
+		int damageInt = 0;
 		if(item instanceof Weapon)
 		{
 			weapon=(Weapon)item;
 			damageInt=adjustedDamage(source,weapon,target,0,true);
-			damageType=weapon.weaponDamageType();
 		}
 		if(success)
-		{
-			// calculate Base Damage (with Strength bonus)
-			final String oldHitString="^F^<FIGHT^>"+((weapon!=null)?
-								weapon.hitString(damageInt):
-								standardHitString(Weapon.TYPE_NATURAL,Weapon.CLASS_BLUNT,damageInt,item.name()))+"^</FIGHT^>^?";
-			final CMMsg msg=CMClass.getMsg(source,
-									target,
-									item,
-									CMMsg.MSG_OK_VISUAL,
-									CMMsg.MSG_DAMAGE,
-									CMMsg.MSG_OK_VISUAL,
-									oldHitString);
-			CMLib.color().fixSourceFightColor(msg);
-
-			msg.setValue(damageInt);
-			// why was there no okaffect here?
-			final Room room=source.location();
-			if((room!=null)&&(room.okMessage(source,msg)))
-			{
-				if(msg.targetMinor()==CMMsg.TYP_DAMAGE)
-				{
-					damageInt=msg.value();
-					msg.modify(msg.source(),
-							   msg.target(),
-							   msg.tool(),
-							   msg.sourceCode(),
-							   replaceDamageTag(msg.sourceMessage(),msg.value(),damageType,CMMsg.View.SOURCE),
-							   msg.targetCode(),
-							   replaceDamageTag(msg.targetMessage(),msg.value(),damageType,CMMsg.View.TARGET),
-							   msg.othersCode(),
-							   replaceDamageTag(msg.othersMessage(),msg.value(),damageType,CMMsg.View.OTHERS));
-				}
-				if((source.mayIFight(target))
-				&&(source.location()==room)
-				&&(target.location()==room))
-					room.send(source,msg);
-			}
-		}
+			postWeaponDamage(source,target,item,damageInt);
 		else
 		{
 			final String missString="^F^<FIGHT^>"+((weapon!=null)?
