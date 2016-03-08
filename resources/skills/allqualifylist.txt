@@ -83,6 +83,7 @@
 10 Smelting REQUIRES=Blacksmithing MASK=+CON 12
 10 Speculate MASK=+WIS 10
 10 Shipwright REQUIRES=Carpentry MASK=+WIS 12
+10 Siegecraft REQUIRES=Carpentry MASK=+STR 12
 10 Wainwrighting REQUIRES=Carpentry MASK=+INT 12
 10 JewelMaking REQUIRES=Blacksmithing Pottery MASK=+WIS 16
 10 LockSmith REQUIRES=Blacksmithing MASK=+DEX 14

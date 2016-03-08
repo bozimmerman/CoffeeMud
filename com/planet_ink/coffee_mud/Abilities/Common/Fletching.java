@@ -40,12 +40,34 @@ import java.util.*;
 
 public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, MendingSkill
 {
-	@Override public String ID() { return "Fletching"; }
-	private final static String localizedName = CMLib.lang().L("Fletching");
-	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =I(new String[] {"FLETCH","FLETCHING"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public String supportedResourceString(){return "WOODEN";}
+	@Override
+	public String ID()
+	{
+		return "Fletching";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Fletching");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "FLETCH", "FLETCHING" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public String supportedResourceString()
+	{
+		return "WOODEN";
+	}
+
 	@Override
 	public String parametersFormat(){ return
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\t"
@@ -55,18 +77,27 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 	//protected static final int RCP_FINALNAME=0;
 	//protected static final int RCP_LEVEL=1;
 	//protected static final int RCP_TICKS=2;
-	protected static final int RCP_WOOD=3;
-	protected static final int RCP_VALUE=4;
-	protected static final int RCP_CLASSTYPE=5;
-	protected static final int RCP_AMMOTYPE=6;
-	protected static final int RCP_AMOCAPACITY=7;
-	protected static final int RCP_ARMORDMG=8;
-	protected static final int RCP_MAXRANGE=9;
-	protected static final int RCP_EXTRAREQ=10;
-	protected static final int RCP_SPELL=11;
+	protected static final int	RCP_WOOD		= 3;
+	protected static final int	RCP_VALUE		= 4;
+	protected static final int	RCP_CLASSTYPE	= 5;
+	protected static final int	RCP_AMMOTYPE	= 6;
+	protected static final int	RCP_AMOCAPACITY	= 7;
+	protected static final int	RCP_ARMORDMG	= 8;
+	protected static final int	RCP_MAXRANGE	= 9;
+	protected static final int	RCP_EXTRAREQ	= 10;
+	protected static final int	RCP_SPELL		= 11;
 
-	@Override public String parametersFile(){ return "fletching.txt";}
-	@Override protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
+	@Override
+	public String parametersFile()
+	{
+		return "fletching.txt";
+	}
+
+	@Override
+	protected List<List<String>> loadRecipes()
+	{
+		return super.loadRecipes(parametersFile());
+	}
 
 	@Override
 	public void unInvoke()
@@ -148,7 +179,12 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 		return false;
 	}
 
-	@Override public boolean supportsMending(Physical item){ return canMend(null,item,true);}
+	@Override
+	public boolean supportsMending(Physical item)
+	{
+		return canMend(null, item, true);
+	}
+
 	@Override
 	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
 	{
@@ -158,7 +194,7 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 		||(!mayICraft((Item)E)))
 		{
 			if(!quiet)
-				commonTell(mob,L("That's not a fletched item."));
+				commonTell(mob,L("That's not a @x1 item.",name()));
 			return false;
 		}
 		return true;
@@ -176,6 +212,30 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 		return autoGenInvoke(mob,commands,givenTarget,auto,asLevel,0,false,new Vector<Item>(0));
 	}
 	
+	protected int getOtherRscAmtRequired(final MOB mob, String req)
+	{
+		if((req == null)||(req.trim().length()==0))
+			return 0;
+		return 1;
+	}
+	
+	protected String getOtherRscRequired(String req)
+	{
+		if((req == null)||(req.trim().length()==0))
+			return "";
+		return req;
+	}
+	
+	protected String commandWord()
+	{
+		return triggerStrings()[0].toLowerCase();
+	}
+
+	protected int getNumberOfColumns()
+	{
+		return 2;
+	}
+	
 	@Override
 	protected boolean autoGenInvoke(final MOB mob, List<String> commands, Physical givenTarget, final boolean auto, 
 								 final int asLevel, int autoGenerate, boolean forceLevels, List<Item> crafted)
@@ -187,7 +247,7 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,L("Make what? Enter \"fletch list\" for a list, \"fletch scan\", \"fletch learn <item>\", \"fletch mend <item>\", or \"fletch stop\" to cancel."));
+			commonTell(mob,L("Make what? Enter \"@x1 list\" for a list, \"@x1 scan\", \"@x1 learn <item>\", \"@x1 mend <item>\", or \"@x1 stop\" to cancel.",commandWord()));
 			return false;
 		}
 		if((!auto)
@@ -213,14 +273,14 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 				allFlag=true;
 				mask="";
 			}
+			final int toggleTop=getNumberOfColumns();
 			int toggler=1;
-			final int toggleTop=2;
 			final StringBuffer buf=new StringBuffer("");
 			final int[] cols={
-					CMLib.lister().fixColWidth(27,mob.session()),
-					CMLib.lister().fixColWidth(3,mob.session()),
-					CMLib.lister().fixColWidth(5,mob.session())
-				};
+				CMLib.lister().fixColWidth(27,mob.session()),
+				CMLib.lister().fixColWidth(3,mob.session()),
+				CMLib.lister().fixColWidth(5,mob.session())
+			};
 			for(int r=0;r<toggleTop;r++)
 				buf.append((r>0?" ":"")+CMStrings.padRight(L("Item"),cols[0])+" "+CMStrings.padRight(L("Lvl"),cols[1])+" "+CMStrings.padRight(L("Wood"),cols[2]));
 			buf.append("\n\r");
@@ -241,7 +301,10 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 					if(((level<=xlevel(mob))||allFlag)
 					&&((mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
 					{
-						buf.append(CMStrings.padRight(item,cols[0])+" "+CMStrings.padRight(""+level,cols[1])+" "+CMStrings.padRightPreserve(""+wood,cols[2])+((toggler!=toggleTop)?" ":"\n\r"));
+						buf.append(CMStrings.padRight(item,cols[0])+" "+
+									CMStrings.padRight(""+level,cols[1])+" "+
+									CMStrings.padRightPreserve(""+wood,cols[2])+
+									((toggler!=toggleTop)?" ":"\n\r"));
 						if(++toggler>toggleTop)
 							toggler=1;
 					}
@@ -307,7 +370,7 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 			}
 			if(foundRecipe==null)
 			{
-				commonTell(mob,L("You don't know how to make a '@x1'.  Try \"fletch list\" for a list.",recipeName));
+				commonTell(mob,L("You don't know how to make a '@x1'.  Try \"@x2 list\" for a list.",recipeName,commandWord()));
 				return false;
 			}
 
@@ -320,14 +383,15 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 
 			if((amount>woodRequired)&&(woodRequired>0))
 				woodRequired=amount;
-			final String otherRequired=foundRecipe.get(RCP_EXTRAREQ);
+			final String otherRequired=getOtherRscRequired(foundRecipe.get(RCP_EXTRAREQ));
+			final int otherAmtRequired=getOtherRscAmtRequired(mob,foundRecipe.get(RCP_EXTRAREQ));
 			final int[] pm={RawMaterial.MATERIAL_WOODEN};
 			final int[][] data=fetchFoundResourceData(mob,
-												woodRequired,"wood",pm,
-												(otherRequired.length()>0)?1:0,otherRequired,null,
-												false,
-												autoGenerate,
-												enhancedTypes);
+													  woodRequired,"wood",pm,
+													  otherAmtRequired,otherRequired,null,
+													  false,
+													  autoGenerate,
+													  enhancedTypes);
 			if(data==null)
 				return false;
 			fixDataForComponents(data,componentsFoundList);
@@ -418,7 +482,6 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 			buildingI.text();
 			buildingI.recoverPhyStats();
 		}
-
 
 		messedUp=!proficiencyCheck(mob,0,auto);
 
