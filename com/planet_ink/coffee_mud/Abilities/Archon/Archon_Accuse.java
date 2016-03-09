@@ -180,7 +180,7 @@ public class Archon_Accuse extends ArchonSkill
 		{
 			Map<MOB,MOB> oldFightState = super.saveCombatState(mob, true);
 			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),
-									auto?L("<T-NAME> <T-IS-ARE> accused of @x1!",crimeDesc):
+									(auto || (!announce))?L("<T-NAME> <T-IS-ARE> accused of @x1!",crimeDesc):
 										 L("^F**<S-NAME> accuse(s) <T-NAMESELF> of @x1!^?",crimeDesc));
 			CMLib.color().fixSourceFightColor(msg);
 			if(target.location().okMessage(mob,msg))
