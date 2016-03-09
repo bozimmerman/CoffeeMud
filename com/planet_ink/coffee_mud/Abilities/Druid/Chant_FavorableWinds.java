@@ -21,7 +21,7 @@ import java.util.List;
 
 
 /*
-   Copyright 2003-2016 Bo Zimmerman
+   Copyright 2016-2016 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
