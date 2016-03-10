@@ -18,7 +18,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2003-2016 Bo Zimmerman
 
@@ -36,11 +35,31 @@ import java.util.*;
 */
 public class Play_Tempo extends Play
 {
-	@Override public String ID() { return "Play_Tempo"; }
-	private final static String localizedName = CMLib.lang().L("Tempo");
-	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	@Override protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
+	@Override
+	public String ID()
+	{
+		return "Play_Tempo";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Tempo");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_OTHERS;
+	}
+
+	@Override
+	protected boolean HAS_QUANTITATIVE_ASPECT()
+	{
+		return false;
+	}
 
 	@Override
 	public int castingQuality(MOB mob, Physical target)

@@ -35,14 +35,45 @@ import java.util.*;
 
 public class Spell_FoolsGold extends Spell
 {
-	@Override public String ID() { return "Spell_FoolsGold"; }
-	private final static String localizedName = CMLib.lang().L("Fools Gold");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return CAN_ITEMS;}
-	@Override protected int canTargetCode(){return 0;}
-	boolean destroyOnNextTick=false;
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override
+	public String ID()
+	{
+		return "Spell_FoolsGold";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Fools Gold");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_ITEMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	boolean	destroyOnNextTick	= false;
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL | Ability.DOMAIN_ILLUSION;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
@@ -104,6 +135,7 @@ public class Spell_FoolsGold extends Spell
 					break;
 				}
 				gold.basePhyStats().setWeight(0);
+				gold.basePhyStats().setDisposition(gold.basePhyStats().disposition()|PhyStats.IS_BONUS);
 				gold.recoverPhyStats();
 				mob.addItem(gold);
 				mob.location().show(mob,null,gold,CMMsg.MSG_OK_ACTION,L("Suddenly, <S-NAME> hold(s) <O-NAME>."));

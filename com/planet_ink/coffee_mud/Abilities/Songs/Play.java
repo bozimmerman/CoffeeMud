@@ -34,34 +34,110 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Play extends StdAbility
 {
-	@Override public String ID() { return "Play"; }
-	private final static String localizedName = CMLib.lang().L("a song played");
-	@Override public String name() { return localizedName; }
-	@Override public String displayText() { return "("+songOf()+")"; }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	private static final String[] triggerStrings =I(new String[] {"PLAY","PL","PLA"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode(){return Ability.ACODE_SONG|Ability.DOMAIN_PLAYING;}
-	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
-	protected boolean maliciousButNotAggressiveFlag(){return false;}
-	@Override public int maxRange(){return adjustedMaxInvokerRange(2);}
+	@Override
+	public String ID()
+	{
+		return "Play";
+	}
 
-	protected InstrumentType requiredInstrumentType(){return InstrumentType.OTHER_INSTRUMENT_TYPE;}
-	protected boolean skipStandardSongInvoke(){return false;}
-	protected boolean mindAttack(){return abstractQuality()==Ability.QUALITY_MALICIOUS;}
-	protected boolean skipStandardSongTick(){return false;}
-	protected boolean persistantSong(){return true;}
-	protected String songOf(){return name();}
-	protected boolean HAS_QUANTITATIVE_ASPECT(){return true;}
+	private final static String	localizedName	= CMLib.lang().L("a song played");
 
-	protected MusicalInstrument instrument=null;
-	protected long timeOut=0;
-	protected Vector<Room> commonRoomSet=null;
-	protected Room originRoom=null;
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public String displayText()
+	{
+		return "(" + songOf() + ")";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "PLAY", "PL", "PLA" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	protected MusicalInstrument	instrument		= null;
+	protected long				timeOut			= 0;
+	protected Vector<Room>		commonRoomSet	= null;
+	protected Room				originRoom		= null;
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SONG | Ability.DOMAIN_PLAYING;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT | USAGE_MANA;
+	}
+
+	protected boolean maliciousButNotAggressiveFlag()
+	{
+		return false;
+	}
+
+	@Override
+	public int maxRange()
+	{
+		return adjustedMaxInvokerRange(2);
+	}
+
+	protected InstrumentType requiredInstrumentType()
+	{
+		return InstrumentType.OTHER_INSTRUMENT_TYPE;
+	}
+
+	protected boolean skipStandardSongInvoke()
+	{
+		return false;
+	}
+
+	protected boolean mindAttack()
+	{
+		return abstractQuality() == Ability.QUALITY_MALICIOUS;
+	}
+
+	protected boolean skipStandardSongTick()
+	{
+		return false;
+	}
+
+	protected boolean persistantSong()
+	{
+		return true;
+	}
+
+	protected String songOf()
+	{
+		return name();
+	}
+
+	protected boolean HAS_QUANTITATIVE_ASPECT()
+	{
+		return true;
+	}
 
 	public String instrumentName()
 	{
@@ -103,9 +179,11 @@ public class Play extends StdAbility
 		if((I==null)||(mob==null))
 			return false;
 		if(I instanceof Rideable)
+		{
 			return (((Rideable)I).amRiding(mob)
 					&&(mob.fetchFirstWornItem(Wearable.WORN_WIELD)==null)
 					&&(mob.fetchHeldItem()==null));
+		}
 		return mob.isMine(I)&&(!I.amWearingAt(Wearable.IN_INVENTORY));
 	}
 
@@ -219,6 +297,7 @@ public class Play extends StdAbility
 	protected void unplayAll(MOB mob, MOB invoker)
 	{
 		if(mob!=null)
+		{
 			for(int a=mob.numEffects()-1;a>=0;a--)
 			{
 				final Ability A=mob.fetchEffect(a);
@@ -226,11 +305,13 @@ public class Play extends StdAbility
 				&&((invoker==null)||(A.invoker()==null)||(A.invoker()==invoker)))
 					((Play)A).unplayMe(mob,invoker);
 			}
+		}
 	}
 
 	protected void unplayAllByThis(MOB mob, MOB invoker)
 	{
 		if(mob!=null)
+		{
 			for(int a=mob.numEffects()-1;a>=0;a--)
 			{
 				final Ability A=mob.fetchEffect(a);
@@ -239,6 +320,7 @@ public class Play extends StdAbility
 				&&((invoker==null)||(A.invoker()==null)||(A.invoker()==invoker)))
 					((Play)A).unplayMe(mob,invoker);
 			}
+		}
 	}
 
 	protected boolean unplayMe(MOB mob, MOB invoker)
@@ -251,8 +333,10 @@ public class Play extends StdAbility
 		{
 			final Play P=(Play)A;
 			if(P.timeOut==0)
+			{
 				P.timeOut = System.currentTimeMillis()
 						  + (CMProps.getTickMillis() * (((invoker()!=null)&&(invoker()!=mob))?super.getXTIMELevel(invoker()):0));
+			}
 			if(System.currentTimeMillis() >= P.timeOut)
 			{
 				A.unInvoke();
@@ -283,7 +367,10 @@ public class Play extends StdAbility
 			&&(I instanceof MusicalInstrument)
 			&&(I.container()==null)
 			&&(usingInstrument((MusicalInstrument)I,mob)))
-			{ instrument=(MusicalInstrument)I; break;}
+			{
+				instrument = (MusicalInstrument) I;
+				break;
+			}
 		}
 		if(instrument==null)
 		{
@@ -312,7 +399,7 @@ public class Play extends StdAbility
 		}
 		final int depth=super.getXMAXRANGELevel(invoker());
 		if(depth==0)
-			return new XVector(invoker().location());
+			return new XVector<Room>(invoker().location());
 		final Vector<Room> rooms=new Vector<Room>();
 		// needs to be area-only, because of the aggro-tracking rule
 		TrackingLibrary.TrackingFlags flags;
@@ -415,14 +502,19 @@ public class Play extends StdAbility
 				instrument=(MusicalInstrument)mob.riding();
 			}
 			if(instrument==null)
-			for(int i=0;i<mob.numItems();i++)
 			{
-				final Item I=mob.getItem(i);
-				if((I!=null)
-				&&(I instanceof MusicalInstrument)
-				&&(I.container()==null)
-				&&(usingInstrument((MusicalInstrument)I,mob)))
-				{ instrument=(MusicalInstrument)I; break;}
+				for(int i=0;i<mob.numItems();i++)
+				{
+					final Item I=mob.getItem(i);
+					if((I!=null)
+					&&(I instanceof MusicalInstrument)
+					&&(I.container()==null)
+					&&(usingInstrument((MusicalInstrument)I,mob)))
+					{
+						instrument = (MusicalInstrument) I;
+						break;
+					}
+				}
 			}
 			if(instrument==null)
 			{
