@@ -1299,7 +1299,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 			}
 			if(CMLib.law().isHomeRoomUpstairs(mob.location()))
 			{
-				commonTell(mob,L("You can't demolish upstairs ceilings.  Try demolishing the room."));
+				commonTell(mob,L("You can't demolish a ceiling in an upstairs room.  Try demolishing the room."));
 				return false;
 			}
 			dir=-1;
