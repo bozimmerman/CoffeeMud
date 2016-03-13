@@ -37,15 +37,52 @@ import java.util.*;
 
 public class Spell_FlamingSword extends Spell
 {
-	@Override public String ID() { return "Spell_FlamingSword"; }
-	private final static String localizedName = CMLib.lang().L("Flaming Sword");
-	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "";}
-	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
-	@Override protected int canAffectCode(){return CAN_ITEMS;}
-	@Override protected int canTargetCode(){return CAN_ITEMS;}
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
+	@Override
+	public String ID()
+	{
+		return "Spell_FlamingSword";
+	}
 
+	private final static String	localizedName	= CMLib.lang().L("Flaming Sword");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public String displayText()
+	{
+		return "";
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_SELF;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_ITEMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_ITEMS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL | Ability.DOMAIN_CONJURATION;
+	}
+
+	private volatile boolean noRecurse = false;
+	
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
@@ -63,20 +100,29 @@ public class Spell_FlamingSword extends Spell
 		&&(msg.target() instanceof MOB)
 		&&(affected instanceof Item)
 		&&(!((MOB)msg.target()).amDead())
-		&&(msg.source()==((Item)affected).owner()))
+		&&(msg.source()==((Item)affected).owner())
+		&&(!noRecurse))
 		{
-			final Room room=msg.source().location();
-			final CMMsg msg2=CMClass.getMsg(msg.source(),msg.target(),affected,
-					CMMsg.MSG_OK_ACTION,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_FIRE,CMMsg.MSG_NOISYMOVEMENT,null);
-			if((room!=null) && (room.okMessage(msg.source(),msg2)))
+			try
 			{
-				room.send(msg.source(), msg2);
-				if(msg2.value()<=0)
+				noRecurse=true;
+				final Room room=msg.source().location();
+				final CMMsg msg2=CMClass.getMsg(msg.source(),msg.target(),affected,
+						CMMsg.MSG_OK_ACTION,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_FIRE,CMMsg.MSG_NOISYMOVEMENT,null);
+				if((room!=null) && (room.okMessage(msg.source(),msg2)))
 				{
-					final int flameDamage = CMLib.dice().roll(1, (2+affected.basePhyStats().level())/2, 1);
-					CMLib.combat().postDamage(msg.source(),(MOB)msg.target(),null,flameDamage,
-							CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,name()+" <DAMAGE> <T-NAME>!");
+					room.send(msg.source(), msg2);
+					if(msg2.value()<=0)
+					{
+						final int flameDamage = CMLib.dice().roll(1, (2+affected.basePhyStats().level())/2, 1);
+						CMLib.combat().postDamage(msg.source(),(MOB)msg.target(),null,flameDamage,
+								CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,name()+" <DAMAGE> <T-NAME>!");
+					}
 				}
+			}
+			finally
+			{
+				noRecurse=false;
 			}
 		}
 	}
