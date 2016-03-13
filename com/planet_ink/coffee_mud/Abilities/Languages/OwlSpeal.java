@@ -35,15 +35,27 @@ import java.util.*;
 
 public class OwlSpeal extends AnimalSpeak
 {
-	@Override public String ID() { return "OwlSpeal"; }
+	@Override
+	public String ID()
+	{
+		return "OwlSpeal";
+	}
+
 	private final static String localizedName = CMLib.lang().L("OwlSpeal");
-	@Override public String name() { return localizedName; }
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
 
 	private final static String[] animalSounds=
 	{
-	"hoot","hoot","hoot","hoot","hoot","hoot","hoot","hoot","hoot","hoot","scream","screech","shriek"
+		"hoot","hoot","hoot","hoot","hoot","hoot","hoot","hoot","hoot","hoot","scream","screech","shriek"
 	};
-	protected String[] getSounds() {
+	
+	@Override
+	protected String[] getSounds() 
+	{
 		return animalSounds;
 	}
 }

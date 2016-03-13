@@ -36,15 +36,26 @@ import java.util.*;
 // just a mix of all the underworld languages
 public class Undercommon extends StdLanguage
 {
-	@Override public String ID() { return "Undercommon"; }
+	@Override
+	public String ID()
+	{
+		return "Undercommon";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Undercommon");
-	@Override public String name() { return localizedName; }
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	public static List<String[]> wordLists=null;
 	private static Drowish drowish = new Drowish();
 	public Undercommon()
 	{
 		super();
 	}
+
 	@Override
 	public List<String[]> translationVector(String language)
 	{
@@ -66,6 +77,7 @@ public class Undercommon extends StdLanguage
 		}
 		return wordLists;
 	}
+
 	@Override
 	public boolean translatesLanguage(String language)
 	{
@@ -75,14 +87,17 @@ public class Undercommon extends StdLanguage
 				|| "Drowish".equalsIgnoreCase(language)
 				|| "Gnomish".equalsIgnoreCase(language);
 	}
+
 	@Override
-	public int getProficiency(String language) {
+	public int getProficiency(String language) 
+	{
 		if(ID().equalsIgnoreCase(language))
 			return proficiency();
 		if(translatesLanguage(language))
 			return proficiency() / 5;
 		return 0;
 	}
+
 	@Override
 	public Map<String, String> translationHash(String language)
 	{

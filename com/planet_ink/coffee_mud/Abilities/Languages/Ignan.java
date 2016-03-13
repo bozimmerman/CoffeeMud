@@ -19,19 +19,31 @@ import java.util.*;
 
 public class Ignan extends StdLanguage
 {
-	@Override public String ID() { return "Ignan"; }
+	@Override
+	public String ID()
+	{
+		return "Ignan";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Ignan");
-	@Override public String name() { return localizedName; }
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	public static List<String[]> wordLists=null;
 	public Ignan()
 	{
 		super();
 	}
+
 	@Override
 	public CMObject newInstance()
 	{
 		return new Ignan();
 	}
+
 	@Override
 	public List<String[]> translationVector(String language)
 	{
@@ -53,6 +65,7 @@ public class Ignan extends StdLanguage
 		}
 		return wordLists;
 	}
+
 	private static final Hashtable<String,String> hashwords=new Hashtable<String,String>();
 	@Override
 	public Map<String, String> translationHash(String language)

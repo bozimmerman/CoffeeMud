@@ -35,10 +35,25 @@ import java.util.*;
 
 public class SignLanguage extends StdLanguage
 {
-	@Override public String ID() { return "SignLanguage"; }
+	@Override
+	public String ID()
+	{
+		return "SignLanguage";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Sign Language");
-	@Override public String name() { return localizedName; }
-	@Override public String writtenName() { return "Braille";}
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public String writtenName()
+	{
+		return "Braille";
+	}
+
 	public static List<String[]> wordLists=null;
 	public SignLanguage()
 	{
@@ -111,13 +126,33 @@ public class SignLanguage extends StdLanguage
 		String verb = "sign(s)";
 		switch(CMLib.dice().roll(1, 20, 0))
 		{
-		case 1: case 2: case 3: case 4: case 5: verb=L("gesture(s)"); break;
-		case 6: verb=L("wave(s)"); break;
-		case 7: case 8: verb=L("gesticulate(s)"); break;
-		case 9: verb=L("wave(s) <S-HIS-HER> fingers"); break;
-		case 10: verb=L("wiggle(s) <S-HIS-HER> hands"); break;
-		case 11: case 12: verb=L("wave(s) <S-HIS-HER> hands"); break;
-		case 13: verb=L("wiggle(s) <S-HIS-HER> fingers"); break;
+		case 1:
+		case 2:
+		case 3:
+		case 4:
+		case 5:
+			verb = L("gesture(s)");
+			break;
+		case 6:
+			verb = L("wave(s)");
+			break;
+		case 7:
+		case 8:
+			verb = L("gesticulate(s)");
+			break;
+		case 9:
+			verb = L("wave(s) <S-HIS-HER> fingers");
+			break;
+		case 10:
+			verb = L("wiggle(s) <S-HIS-HER> hands");
+			break;
+		case 11:
+		case 12:
+			verb = L("wave(s) <S-HIS-HER> hands");
+			break;
+		case 13:
+			verb = L("wiggle(s) <S-HIS-HER> fingers");
+			break;
 		}
 		final String oldStartFullMsg = startFullMsg;
 		startFullMsg = CMStrings.replaceFirstWord(startFullMsg, "tell(s)", verb);

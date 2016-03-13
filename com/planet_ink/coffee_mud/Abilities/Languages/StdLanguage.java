@@ -38,36 +38,123 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class StdLanguage extends StdAbility implements Language
 {
-	@Override public String ID() { return "StdLanguage"; }
-	private final static String localizedName = CMLib.lang().L("Languages");
-	@Override public String name() { return localizedName; }
-	@Override public String writtenName() { return name();}
-	private static final String[] triggerStrings =I(new String[] {"SPEAK"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public boolean isAutoInvoked(){return true;}
-	@Override public boolean canBeUninvoked(){return false;}
-	@Override protected ExpertiseLibrary.SkillCostDefinition getRawTrainingCost() { return CMProps.getLangSkillGainCost(ID()); }
-	@Override public int classificationCode(){return Ability.ACODE_LANGUAGE;}
-	protected static final String CANCEL_WORD="CANCEL";
-
-	private static Hashtable<String,String> emptyHash=new Hashtable<String,String>();
-	private static Vector<String[]> emptyVector=new Vector<String[]>();
-	protected boolean spoken=false;
-	private final static String consonants="bcdfghjklmnpqrstvwxz";
-	private final static String vowels="aeiouy";
-	@Override public boolean beingSpoken(String language){return spoken;}
-	@Override public void setBeingSpoken(String language, boolean beingSpoken){spoken=beingSpoken;}
-	@Override public Map<String, String> translationHash(String language){ return emptyHash; }
-	@Override public List<String[]> translationVector(String language){ return emptyVector; }
-
-	@Override public List<String> languagesSupported() {return new XVector(ID());}
-	@Override public boolean translatesLanguage(String language) { return ID().equalsIgnoreCase(language);}
 	@Override
-	public int getProficiency(String language) {
-		if(ID().equalsIgnoreCase(language))
+	public String ID()
+	{
+		return "StdLanguage";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Languages");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public String writtenName()
+	{
+		return name();
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "SPEAK" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_SELF;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public boolean isAutoInvoked()
+	{
+		return true;
+	}
+
+	@Override
+	public boolean canBeUninvoked()
+	{
+		return false;
+	}
+
+	@Override
+	protected ExpertiseLibrary.SkillCostDefinition getRawTrainingCost()
+	{
+		return CMProps.getLangSkillGainCost(ID());
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_LANGUAGE;
+	}
+
+	protected static final String		CANCEL_WORD	= "CANCEL";
+	private static Map<String, String>	emptyHash	= new Hashtable<String, String>();
+	private static List<String[]>		emptyVector	= new Vector<String[]>();
+	protected boolean					spoken		= false;
+	private final static String			consonants	= "bcdfghjklmnpqrstvwxz";
+	private final static String			vowels		= "aeiouy";
+
+	@Override
+	public boolean beingSpoken(String language)
+	{
+		return spoken;
+	}
+
+	@Override
+	public void setBeingSpoken(String language, boolean beingSpoken)
+	{
+		spoken = beingSpoken;
+	}
+
+	@Override
+	public Map<String, String> translationHash(String language)
+	{
+		return emptyHash;
+	}
+
+	@Override
+	public List<String[]> translationVector(String language)
+	{
+		return emptyVector;
+	}
+
+	@Override
+	public List<String> languagesSupported()
+	{
+		return new XVector(ID());
+	}
+
+	@Override
+	public boolean translatesLanguage(String language)
+	{
+		return ID().equalsIgnoreCase(language);
+	}
+
+	@Override
+	public int getProficiency(String language)
+	{
+		if (ID().equalsIgnoreCase(language))
 			return proficiency();
 		return 0;
 	}
@@ -92,12 +179,14 @@ public class StdLanguage extends StdAbility implements Language
 		}
 		return s.toString();
 	}
+
 	protected char fixCase(char like,char make)
 	{
 		if(Character.isUpperCase(like))
 			return Character.toUpperCase(make);
 		return Character.toLowerCase(make);
 	}
+
 	@Override
 	public String translate(String language, String word)
 	{
@@ -110,7 +199,13 @@ public class StdLanguage extends StdAbility implements Language
 		if(translationVector.size()>0)
 		{
 			String[] choices=null;
-			try{ choices=translationVector.get(word.length()-1);}catch(final Exception e){}
+			try
+			{
+				choices = translationVector.get(word.length() - 1);
+			}
+			catch (final Exception e)
+			{
+			}
 			if(choices==null)
 				choices=translationVector.get(translationVector.size()-1);
 			return choices[CMath.abs(word.toLowerCase().hashCode()) % choices.length];
@@ -168,24 +263,50 @@ public class StdLanguage extends StdAbility implements Language
 			{
 			case -1:
 				if(Character.isLetter(c))
-				{ state=0; end++;}
+				{
+					state = 0;
+					end++;
+				}
 				else
-				{ newStr.append(c); end++;start=end;}
+				{
+					newStr.append(c);
+					end++;
+					start = end;
+				}
 				break;
 			case 0:
 				if(Character.isLetter(c))
-				{ end++;}
+					end++;
 				else
 				if(Character.isDigit(c))
-				{ newStr.append(str.substring(start,end+1)); end++; start=end; state=1; }
+				{
+					newStr.append(str.substring(start, end + 1));
+					end++;
+					start = end;
+					state = 1;
+				}
 				else
-				{ newStr.append(translate(language,str.substring(start,end))+c); end++; start=end; state=-1; }
+				{
+					newStr.append(translate(language, str.substring(start, end)) + c);
+					end++;
+					start = end;
+					state = -1;
+				}
 				break;
 			case 1:
 				if(Character.isLetterOrDigit(c))
-				{ newStr.append(c); end++; start=end;}
+				{
+					newStr.append(c);
+					end++;
+					start = end;
+				}
 				else
-				{ newStr.append(c); end++; start=end; state=-1; }
+				{
+					newStr.append(c);
+					end++;
+					start = end;
+					state = -1;
+				}
 				break;
 			}
 		}
@@ -204,7 +325,7 @@ public class StdLanguage extends StdAbility implements Language
 			if((A instanceof Language)
 			&& ((Language)A).translatesLanguage(id)
 			&& ((winner==null)
-					||((Language)A).getProficiency(id) > winner.getProficiency(id)))
+				||((Language)A).getProficiency(id) > winner.getProficiency(id)))
 			{
 				winner = (Language)A;
 			}
@@ -230,14 +351,14 @@ public class StdLanguage extends StdAbility implements Language
 			if(numToMess>0)
 				smsg=messChars(ID(),smsg,numToMess);
 			msg.modify(msg.source(),
-						  msg.target(),
-						  this,
-						  msg.sourceCode(),
-						  CMStrings.substituteSayInMessage(msg.sourceMessage(),smsg),
-						  msg.targetCode(),
-						  msg.targetMessage(),
-						  msg.othersCode(),
-						  msg.othersMessage());
+					   msg.target(),
+					   this,
+					   msg.sourceCode(),
+					   CMStrings.substituteSayInMessage(msg.sourceMessage(),smsg),
+					   msg.targetCode(),
+					   msg.targetMessage(),
+					   msg.othersCode(),
+					   msg.othersMessage());
 		}
 		return true;
 	}
@@ -246,14 +367,14 @@ public class StdLanguage extends StdAbility implements Language
 	{
 		str=scrambleAll(ID(),str,numToMess);
 		msg.modify(msg.source(),
-					  msg.target(),
-					  this,
-					  msg.sourceCode(),
-					  msg.sourceMessage(),
-					  msg.targetCode(),
-					  CMStrings.substituteSayInMessage(msg.targetMessage(),str),
-					  msg.othersCode(),
-					  CMStrings.substituteSayInMessage(msg.othersMessage(),str));
+				   msg.target(),
+				   this,
+				   msg.sourceCode(),
+				   msg.sourceMessage(),
+				   msg.targetCode(),
+				   CMStrings.substituteSayInMessage(msg.targetMessage(),str),
+				   msg.othersCode(),
+				   CMStrings.substituteSayInMessage(msg.othersMessage(),str));
 		return true;
 	}
 
@@ -381,7 +502,8 @@ public class StdLanguage extends StdAbility implements Language
 			&&(!(A instanceof Common))
 			&&(!culturalAbilities.contains(A.ID())))
 			{
-				if((CMLib.ableMapper().getQualifyingLevel(C.ID(), false, A.ID())>=0)||(culturalAbilities.contains(A.ID().toLowerCase())))
+				if((CMLib.ableMapper().getQualifyingLevel(C.ID(), false, A.ID())>=0)
+				||(culturalAbilities.contains(A.ID().toLowerCase())))
 					continue;
 				numLanguages++;
 			}
@@ -533,8 +655,10 @@ public class StdLanguage extends StdAbility implements Language
 				if(numToMess>0)
 					str=messChars(ID(),str,numToMess);
 				if(!translateChannelMessage(msg,str))
+				{
 					if(!translateTargetMessage(msg,str))
 						translateOthersMessage(msg, str);
+				}
 			}
 		}
 		else

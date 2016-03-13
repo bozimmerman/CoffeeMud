@@ -35,14 +35,25 @@ import java.util.*;
 
 public class Goblinese extends StdLanguage
 {
-	@Override public String ID() { return "Goblinese"; }
+	@Override
+	public String ID()
+	{
+		return "Goblinese";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Goblinese");
-	@Override public String name() { return localizedName; }
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	public static List<String[]> wordLists=null;
 	public Goblinese()
 	{
 		super();
 	}
+
 	@Override
 	public List<String[]> translationVector(String language)
 	{
@@ -66,6 +77,7 @@ public class Goblinese extends StdLanguage
 	}
 
 	private static final Hashtable<String,String> hashwords=new Hashtable<String,String>();
+	
 	@Override
 	public Map<String, String> translationHash(String language)
 	{

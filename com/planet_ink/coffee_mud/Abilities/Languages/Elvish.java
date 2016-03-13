@@ -35,14 +35,25 @@ import java.util.*;
 
 public class Elvish extends StdLanguage
 {
-	@Override public String ID() { return "Elvish"; }
+	@Override
+	public String ID()
+	{
+		return "Elvish";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Elvish");
-	@Override public String name() { return localizedName; }
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	public static List<String[]> wordLists=null;
 	public Elvish()
 	{
 		super();
 	}
+
 	@Override
 	public List<String[]> translationVector(String language)
 	{
@@ -64,6 +75,7 @@ public class Elvish extends StdLanguage
 		}
 		return wordLists;
 	}
+
 	private static final Hashtable<String,String> hashwords=new Hashtable<String,String>();
 	@Override
 	public Map<String, String> translationHash(String language)

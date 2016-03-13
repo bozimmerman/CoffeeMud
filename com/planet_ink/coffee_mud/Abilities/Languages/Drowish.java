@@ -35,14 +35,25 @@ import java.util.*;
 
 public class Drowish extends StdLanguage
 {
-	@Override public String ID() { return "Drowish"; }
+	@Override
+	public String ID()
+	{
+		return "Drowish";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Drowish");
-	@Override public String name() { return localizedName; }
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	public static List<String[]> wordLists=null;
 	public Drowish()
 	{
 		super();
 	}
+
 	@Override
 	public List<String[]> translationVector(String language)
 	{
@@ -64,6 +75,7 @@ public class Drowish extends StdLanguage
 		}
 		return wordLists;
 	}
+
 	private static final Hashtable<String,String> hashwords=new Hashtable<String,String>();
 	@Override
 	public Map<String, String> translationHash(String language)

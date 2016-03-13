@@ -35,14 +35,25 @@ import java.util.*;
 
 public class Gigantic extends StdLanguage
 {
-	@Override public String ID() { return "Gigantic"; }
+	@Override
+	public String ID()
+	{
+		return "Gigantic";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Gigantic");
-	@Override public String name() { return localizedName; }
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	public static List<String[]> wordLists=null;
 	public Gigantic()
 	{
 		super();
 	}
+
 	@Override
 	public List<String[]> translationVector(String language)
 	{
@@ -64,6 +75,7 @@ public class Gigantic extends StdLanguage
 		}
 		return wordLists;
 	}
+
 	public String tup(String msg)
 	{
 		if(msg==null)
@@ -92,6 +104,7 @@ public class Gigantic extends StdLanguage
 	}
 
 	private static final Hashtable<String,String> hashwords=new Hashtable<String,String>();
+
 	@Override
 	public Map<String, String> translationHash(String language)
 	{
@@ -186,5 +199,5 @@ public class Gigantic extends StdLanguage
 		hashwords.put("YOUR","ar");
 		hashwords.put("YOURS","tar");
 		return hashwords;
-		}
+	}
 }

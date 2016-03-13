@@ -35,15 +35,27 @@ import java.util.*;
 
 public class BatSpeak extends AnimalSpeak
 {
-	@Override public String ID() { return "BatSpeak"; }
+	@Override
+	public String ID()
+	{
+		return "BatSpeak";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Bat Speak");
-	@Override public String name() { return localizedName; }
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
 	
 	private final static String[] animalSounds=
 	{
 		"screech","screeech","screeeeech"
 	};
-	protected String[] getSounds() {
+	
+	@Override
+	protected String[] getSounds() 
+	{
 		return animalSounds;
 	}
 }

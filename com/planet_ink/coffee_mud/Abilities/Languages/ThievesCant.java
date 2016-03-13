@@ -42,16 +42,29 @@ import java.util.*;
 
 public class ThievesCant extends StdLanguage
 {
-	@Override public String ID() { return "ThievesCant"; }
+	@Override
+	public String ID()
+	{
+		return "ThievesCant";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Thieves Cant");
-	@Override public String name() { return localizedName; }
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	public static List<String[]> wordLists=null;
 	private static boolean mapped=false;
 	public ThievesCant()
 	{
 		super();
-		if(!mapped){mapped=true;
-				CMLib.ableMapper().addCharAbilityMapping("Bard",10,ID(),false);}
+		if (!mapped)
+		{
+			mapped = true;
+			CMLib.ableMapper().addCharAbilityMapping("Bard", 10, ID(), false);
+		}
 	}
 
 	@Override
@@ -75,6 +88,7 @@ public class ThievesCant extends StdLanguage
 		}
 		return wordLists;
 	}
+
 	private static final Hashtable<String,String> hashwords=new Hashtable<String,String>();
 	@Override
 	public Map<String, String> translationHash(String language)
@@ -272,5 +286,5 @@ public class ThievesCant extends StdLanguage
 		hashwords.put("HEAVY","fat lady");
 		hashwords.put("LIGHT","thin woman");
 		return hashwords;
-		}
+	}
 }

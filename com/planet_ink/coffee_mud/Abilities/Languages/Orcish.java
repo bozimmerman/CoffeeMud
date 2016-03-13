@@ -35,14 +35,25 @@ import java.util.*;
 
 public class Orcish extends StdLanguage
 {
-	@Override public String ID() { return "Orcish"; }
+	@Override
+	public String ID()
+	{
+		return "Orcish";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Orcish");
-	@Override public String name() { return localizedName; }
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	public static List<String[]> wordLists=null;
 	public Orcish()
 	{
 		super();
 	}
+
 	@Override
 	public List<String[]> translationVector(String language)
 	{

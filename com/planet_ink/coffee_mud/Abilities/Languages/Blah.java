@@ -35,16 +35,30 @@ import java.util.*;
 
 public class Blah extends StdLanguage
 {
-	@Override public String ID() { return "Blah"; }
+	@Override
+	public String ID()
+	{
+		return "Blah";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Blah");
-	@Override public String name() { return localizedName; }
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	public static List<String[]> wordLists=null;
 	private static boolean mapped=false;
+	
 	public Blah()
 	{
 		super();
-		if(!mapped){mapped=true;
-					CMLib.ableMapper().addCharAbilityMapping("Archon",1,ID(),false);}
+		if (!mapped)
+		{
+			mapped = true;
+			CMLib.ableMapper().addCharAbilityMapping("Archon", 1, ID(), false);
+		}
 	}
 
 	@Override

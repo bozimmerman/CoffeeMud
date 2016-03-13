@@ -35,19 +35,33 @@ import java.util.*;
 
 public class Fey extends StdLanguage
 {
-	@Override public String ID() { return "Fey"; }//Based on Gevey from http://www.kalieda.org/gevey/lexicon.html
-	private final static String localizedName = CMLib.lang().L("Fey");
-	@Override public String name() { return localizedName; }
+	//Based on Gevey from http://www.kalieda.org/gevey/lexicon.html
+	@Override
+	public String ID()
+	{
+		return "Fey";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Fey");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	public static List<String[]> wordLists=null;
 	public Fey()
 	{
 		super();
 	}
+
 	@Override
 	public CMObject newInstance()
 	{
 		return new Fey();
 	}
+
 	@Override
 	public List<String[]> translationVector(String language)
 	{
@@ -69,6 +83,7 @@ public class Fey extends StdLanguage
 		}
 		return wordLists;
 	}
+
 	private static final Hashtable<String,String> hashwords=new Hashtable<String,String>();
 	@Override
 	public Map<String, String> translationHash(String language)

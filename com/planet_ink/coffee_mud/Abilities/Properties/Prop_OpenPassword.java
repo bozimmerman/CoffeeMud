@@ -35,13 +35,51 @@ import java.util.*;
 */
 public class Prop_OpenPassword extends Property
 {
-	@Override public String ID() { return "Prop_OpenPassword"; }
-	@Override public String name(){ return "Opening Password";}
-	@Override protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_EXITS;}
+	@Override
+	public String ID()
+	{
+		return "Prop_OpenPassword";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Opening Password";
+	}
+
+	private String password = "";
+	private String languageID = "";
+
+	@Override
+	public void setMiscText(String newMiscText)
+	{
+		int x=newMiscText.indexOf(';');
+		if(x>0)
+		{
+			password=newMiscText.substring(x+1).trim();
+			languageID=newMiscText.substring(0,x);
+			if(!(CMClass.getAbility(languageID) instanceof Language))
+			{
+				if(affected != null)
+					Log.errOut("Prop_OpenPassword on "+affected.Name()+" has invalid languageID: "+affected.Name());
+			}
+		}
+		else
+			password=newMiscText;
+		super.setMiscText(newMiscText);
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ITEMS | Ability.CAN_EXITS;
+	}
 
 	@Override
 	public String accountForYourself()
-	{ return "";	}
+	{
+		return "";
+	}
 
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
@@ -49,7 +87,9 @@ public class Prop_OpenPassword extends Property
 		if((msg.sourceMinor()==CMMsg.TYP_SPEAK)
 		&&(affected!=null)
 		&&(msg.sourceMessage()!=null)
-		&&((msg.sourceMajor()&CMMsg.MASK_MAGIC)==0))
+		&&((msg.sourceMajor()&CMMsg.MASK_MAGIC)==0)
+		&&((languageID.trim().length()==0)
+			||((msg.tool()!=null)&&(msg.tool().ID().equalsIgnoreCase(languageID)))))
 		{
 			final int start=msg.sourceMessage().indexOf("\'");
 			final int end=msg.sourceMessage().lastIndexOf("\'");
@@ -57,8 +97,8 @@ public class Prop_OpenPassword extends Property
 			{
 				final String str=msg.sourceMessage().substring(start+1,end).trim();
 				final MOB mob=msg.source();
-				if(str.equalsIgnoreCase(text())
-				&&(text().length()>0)
+				if(str.equalsIgnoreCase(password)
+				&&(password.length()>0)
 				&&(mob.location()!=null))
 				{
 					final Room R=mob.location();
@@ -69,8 +109,13 @@ public class Prop_OpenPassword extends Property
 						{
 							int dirCode=-1;
 							for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+							{
 								if(R.getExitInDir(d)==E)
-								{ dirCode=d; break;}
+								{
+									dirCode = d;
+									break;
+								}
+							}
 							if(dirCode>=0)
 							{
 								CMMsg msg2=CMClass.getMsg(mob,E,null,CMMsg.MSG_UNLOCK,null);

@@ -36,17 +36,43 @@ import java.util.*;
 
 public class Common extends StdLanguage
 {
-	@Override public String ID() { return "Common"; }
+	@Override
+	public String ID()
+	{
+		return "Common";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Common");
-	@Override public String name() { return localizedName; }
-	@Override public boolean isAutoInvoked(){return false;}
-	@Override public boolean canBeUninvoked(){return canBeUninvoked;}
+	
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public boolean isAutoInvoked()
+	{
+		return false;
+	}
+
+	@Override
+	public boolean canBeUninvoked()
+	{
+		return canBeUninvoked;
+	}
+
 	public Common()
 	{
 		super();
 		proficiency=100;
 	}
-	@Override public int proficiency(){return 100;}
+
+	@Override
+	public int proficiency()
+	{
+		return 100;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -56,12 +82,13 @@ public class Common extends StdLanguage
 		{
 			final Ability A=a.nextElement();
 			if((A!=null)&&(A instanceof Language))
+			{
 				if(((Language)A).beingSpoken(ID()))
 				{
 					anythingDone=true;
 					((Language)A).setBeingSpoken(ID(),false);
 				}
-
+			}
 		}
 		isAnAutoEffect=false;
 		if(!auto)

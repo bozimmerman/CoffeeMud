@@ -35,15 +35,27 @@ import java.util.*;
 
 public class BirdSpeak extends AnimalSpeak
 {
-	@Override public String ID() { return "BirdSpeak"; }
+	@Override
+	public String ID()
+	{
+		return "BirdSpeak";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Bird Speak");
-	@Override public String name() { return localizedName; }
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
 
 	private final static String[] animalSounds=
 	{
-	"chirrup","chirp","twitter","tweet","sing","whistle"
+		"chirrup","chirp","twitter","tweet","sing","whistle"
 	};
-	protected String[] getSounds() {
+	
+	@Override
+	protected String[] getSounds() 
+	{
 		return animalSounds;
 	}
 }
