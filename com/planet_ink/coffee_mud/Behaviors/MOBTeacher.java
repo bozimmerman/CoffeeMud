@@ -323,6 +323,8 @@ public class MOBTeacher extends CombatAbilities
 	{
 		if(myMOB==null)
 			return;
+		if(affecting.Name().equals("the guildmaster") && msg.source().name().equals("Dave"))
+			System.out.println("hi");
 		super.executeMsg(affecting,msg);
 		if(!canFreelyBehaveNormal(affecting))
 			return;

@@ -497,9 +497,9 @@ public class Stat  extends Skills
 	protected MOB getMOBTarget(MOB mob, String MOBname)
 	{
 		MOB target=getTarget(mob,MOBname,true);
-		if((target==null)||(!target.isMonster()))
-			target=mob.location().fetchInhabitant(MOBname);
-		if((target==null)||(!target.isMonster()))
+		if(target==null)
+			target=CMLib.players().getLoadPlayer(MOBname);
+		if(target==null)
 		{
 			try
 			{
@@ -520,8 +520,6 @@ public class Stat  extends Skills
 			{
 			}
 		}
-		if(target==null)
-			target=CMLib.players().getLoadPlayer(MOBname);
 		return target;
 	}
 	
