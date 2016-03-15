@@ -257,7 +257,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 				final Room pdR=R.getRoomInDir(Directions.DOWN);
 				if((pdR!=null)
 				&&(pdR.domainType() != Room.DOMAIN_INDOORS_CAVE)
-				&&(isHomePeerRoom(R.getRoomInDir(Directions.DOWN))))
+				&&(isHomePeerRoom(pdR)))
 					return true;
 			}
 		}
