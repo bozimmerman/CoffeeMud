@@ -1815,6 +1815,51 @@ public class ListCmd extends StdCommand
 		return buf;
 	}
 
+	public StringBuilder listQuestWinners(Session viewerS, String rest)
+	{
+		final StringBuilder buf=new StringBuilder("");
+		if(CMLib.quests().numQuests()==0)
+			buf.append(L("No quests loaded."));
+		else
+		{
+			buf.append("\n\r^xQuest Winners Report:^.^N\n\r");
+			final int COL_LEN1=CMLib.lister().fixColWidth(5.0,viewerS);
+			final int COL_LEN2=CMLib.lister().fixColWidth(30.0,viewerS);
+			final int COL_LEN3=CMLib.lister().fixColWidth(40.0,viewerS);
+			buf.append("\n\r^x"+CMStrings.padRight("#",COL_LEN1)+CMStrings.padRight(L("Name"),COL_LEN2)+" Winners"+CMStrings.padRight(" ",COL_LEN3-7)+"^.^N\n\r");
+			for(int i=0;i<CMLib.quests().numQuests();i++)
+			{
+				final Quest Q=CMLib.quests().fetchQuest(i);
+				if((Q!=null)
+				&&((rest==null)
+					||(rest.trim().length()==0)
+					||(CMLib.english().containsString(Q.name(), rest))
+					||(CMLib.english().containsString(Q.displayName(), rest))))
+				{
+					buf.append(CMStrings.padRight(""+(i+1),COL_LEN1)+CMStrings.padRight("^<LSTQUEST^>"+Q.name()+"^</LSTQUEST^>",COL_LEN2)+" ");
+					Map<String,Long> winners = Q.getWinners();
+					Iterator<String> ni=winners.keySet().iterator();
+					if(ni.hasNext())
+					{
+						String name = ni.next();
+						String time = CMLib.time().date2String(Q.whenLastWon(name).longValue());
+						buf.append(CMStrings.padRight(name+" @ "+time, COL_LEN3));
+						for(;ni.hasNext();)
+						{
+							name = ni.next();
+							time = CMLib.time().date2String(Q.whenLastWon(name).longValue());
+							buf.append("^N\n\r");
+							buf.append(CMStrings.padRight(" ",COL_LEN1)+CMStrings.padRight(" ",COL_LEN2)+" ");
+							buf.append(CMStrings.padRight(name+" @ "+time, COL_LEN3));
+						}
+					}
+					buf.append("^N\n\r");
+				}
+			}
+		}
+		return buf;
+	}
+
 	public StringBuilder listJournals(Session viewerS)
 	{
 		final StringBuilder buf=new StringBuilder("");
@@ -3053,6 +3098,7 @@ public class ListCmd extends StdCommand
 		JOURNALS("JOURNALS",new SecFlag[]{SecFlag.JOURNALS}),
 		SKILLS("SKILLS",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES,SecFlag.CMDABILITIES}),
 		QUESTS("QUESTS",new SecFlag[]{SecFlag.CMDQUESTS}),
+		QUESTWINNERS("QUESTWINNERS",new SecFlag[]{SecFlag.CMDQUESTS}),
 		DISEASES("DISEASES",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES,SecFlag.CMDABILITIES}),
 		POISONS("POISONS",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES,SecFlag.CMDABILITIES}),
 		LANGUAGES("LANGUAGES",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES,SecFlag.CMDABILITIES}),
@@ -3761,6 +3807,9 @@ public class ListCmd extends StdCommand
 			break;
 		case QUESTS:
 			s.println(listQuests(mob.session()).toString());
+			break;
+		case QUESTWINNERS:
+			s.println(listQuestWinners(mob.session(),rest).toString());
 			break;
 		case DISEASES:
 			s.println("^HDisease Ability IDs:^N");

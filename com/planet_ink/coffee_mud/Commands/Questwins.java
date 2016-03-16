@@ -35,11 +35,18 @@ import java.util.*;
 
 public class Questwins extends StdCommand
 {
-	public Questwins(){}
+	public Questwins()
+	{
+	}
 
-	private final String[] access=I(new String[]{"QUESTS","QUESTWINS"});
-	@Override public String[] getAccessWords(){return access;}
-	
+	private final String[]	access	= I(new String[] { "QUESTS", "QUESTWINS" });
+
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
+
 	public String getQuestsWonList(MOB mob, String pronoun)
 	{
 		final ArrayList<Quest> qVec=new ArrayList<Quest>();
@@ -97,7 +104,7 @@ public class Questwins extends StdCommand
 			msg.append((qVec.get(i))+"^N\n\r");
 		return msg.toString();
 	}
-	
+
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
@@ -206,8 +213,24 @@ public class Questwins extends StdCommand
 			}
 			if(foundS==null)
 			{
-				mob.tell(L("You have not accepted a quest called '@x1'.  Enter QUESTS for a list.",rest));
-				return false;
+				if(admin)
+				{
+					Map<String,Long> winners = Q.getWinners();
+					final StringBuffer msg=new StringBuffer(L("^HWinners of Quest '@x1':^?^N\n\r",Q.name()));
+					for(String name : winners.keySet())
+					{
+						final String time = CMLib.time().date2String(Q.whenLastWon(name).longValue());
+						msg.append(CMStrings.padRight(time,20)+name+"^N\n\r");
+					}
+					if(mob.session()!=null)
+						mob.session().colorOnlyPrintln(msg.toString());
+					return true;
+				}
+				else
+				{
+					mob.tell(L("You have not accepted a quest called '@x1'.  Enter QUESTS for a list.",rest));
+					return false;
+				}
 			}
 			String name=Q.displayName().trim().length()>0?Q.displayName():Q.name();
 			if(!Q.name().equals(name))
@@ -246,7 +269,10 @@ public class Questwins extends StdCommand
 		return false;
 	}
 
-	@Override public boolean canBeOrdered(){return true;}
-
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 
 }
