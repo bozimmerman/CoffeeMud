@@ -2191,7 +2191,9 @@ command!</p>
 - Either a&nbsp;number of
 ticks, or a formula, or a number followed by the word minutes, seconds,
 hours, days, mudhours, or muddays to minimally wait between auto-starts
-of the quest. Required for scheduled quests.</p>
+of the quest. This works in conjucton with SET INTERVAL. &nbsp;The full
+wait time between quest starts is WAIT + (random number between 1 and
+INTERVAL).&nbsp; Required for scheduled quests.</p>
       <p><span style="color: rgb(51, 102, 102);">SET INTERVAL</span> <span
  style="color: rgb(102, 51, 102);">[#TICKS/TIME]</span>
 -&nbsp;Either a
@@ -2199,7 +2201,9 @@ number of ticks (1-#TICKS), or a formula, or a number followed by the
 word minutes, seconds, hours, days, mudhours, or muddays to
 additionally wait up to, after the official WAIT period above has
 ellapsed, before&nbsp;starting the scheduled quest.&nbsp;
-Required for
+This works in conjucton with SET WAIT. &nbsp;The full wait time between
+quest starts is WAIT + (random number between 1 and INTERVAL). &nbsp;Required
+for
 scheduled quests.</p>
       <span style="color: rgb(51, 102, 102);"></span>
       <p style="color: rgb(51, 0, 0);"><span
