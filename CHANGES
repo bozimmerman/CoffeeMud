@@ -5,6 +5,9 @@
    4. New Locales: WaterSurfaceColumn and UnderWaterColumnGrid, and Salt water varieties.
    5. LIST TIMEZONES can now show all your areas grouped by common calendar.
    6. Smelting recipes are now editable from MG and CL.
+   7. Prop_OpenPassword can now have a language qualifier
+   8. LIST AREA SHOPS will now show local shop inventories with prices
+   
 
 # Build 5.9.2 Released 02/09/2016
    1. Apprentice now gets bonus common skill.
