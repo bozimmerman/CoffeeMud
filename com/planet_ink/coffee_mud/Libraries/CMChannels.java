@@ -46,6 +46,8 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 	public String[]			baseChannelNames= new String[0];
 	public List<CMChannel>	channelList		= new Vector<CMChannel>();
 	
+	protected Language		commonLang		= null;
+	
 	public final static List<ChannelMsg> emptyQueue=new ReadOnlyList<ChannelMsg>(new Vector<ChannelMsg>(1));
 	public final static Set<ChannelFlag> emptyFlags=new ReadOnlySet<ChannelFlag>(new HashSet<ChannelFlag>(1));
 
@@ -730,6 +732,9 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 			if(msg.othersMessage()!=null)
 				msg.setOthersMessage(CMStrings.replaceAll(msg.othersMessage(), "<S-NAME>", accountName));
 		}
+		if(chan.flags().contains(ChannelsLibrary.ChannelFlag.NOLANGUAGE))
+			msg.setTool(getCommonLanguage());
+		
 		final Room R=mob.location();
 		CMLib.commands().monitorGlobalMessage(R, msg);
 		if((R!=null)
@@ -745,6 +750,16 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 			CMLib.intermud().i3channel(mob,channelName,message);
 	}
 
+	protected Language getCommonLanguage()
+	{
+		if(commonLang==null)
+		{
+			commonLang = (Language)CMClass.getAbility("Common");
+		}
+		return commonLang;
+		
+	}
+	
 	@Override
 	public boolean activate()
 	{

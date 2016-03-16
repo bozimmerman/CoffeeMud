@@ -412,6 +412,7 @@ public interface ChannelsLibrary extends CMLibrary
 		ACCOUNTOOC,
 		NOBACKLOG,
 		ACHIEVEMENTS,
-		ACCOUNTOOCNOADMIN
+		ACCOUNTOOCNOADMIN,
+		NOLANGUAGE,
 	}
 }
