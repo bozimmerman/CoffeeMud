@@ -45,13 +45,19 @@ import java.util.concurrent.TimeUnit;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class ListCmd extends StdCommand
 {
-	public ListCmd(){}
+	public ListCmd()
+	{
+	}
 
-	private final String[] access=I(new String[]{"LIST"});
-	@Override public String[] getAccessWords(){return access;}
+	private final String[]	access	= I(new String[] { "LIST" });
+
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
 	private static class WorldFilter implements Filterer<Area>
 	{
@@ -175,7 +181,7 @@ public class ListCmd extends StdCommand
 		return lines;
 	}
 
-	public StringBuilder roomExpires(Session viewerS, Enumeration these, Room likeRoom)
+	public StringBuilder roomExpires(Session viewerS, Enumeration<Room> these, Room likeRoom)
 	{
 		final StringBuilder lines=new StringBuilder("The time is: "+CMLib.time().date2String(System.currentTimeMillis())+"\n\r\n\r");
 		if(!these.hasMoreElements())
@@ -184,9 +190,9 @@ public class ListCmd extends StdCommand
 			return lines;
 		Room thisThang=null;
 		String thisOne=null;
-		for(final Enumeration r=these;r.hasMoreElements();)
+		for(final Enumeration<Room> r=these;r.hasMoreElements();)
 		{
-			thisThang=(Room)r.nextElement();
+			thisThang=r.nextElement();
 			thisOne=thisThang.roomID();
 			if((thisOne.length()>0)&&(thisThang.getArea().Name().equals(likeRoom.getArea().Name())))
 			{
@@ -201,6 +207,7 @@ public class ListCmd extends StdCommand
 		lines.append("\n\r");
 		return lines;
 	}
+
 	public StringBuilder roomPropertyDetails(Session viewerS, Area A, String rest)
 	{
 		if(rest.trim().length()==0)
@@ -221,7 +228,7 @@ public class ListCmd extends StdCommand
 			return new StringBuilder("Illegal parameters... try LIST REALESTATE AREA/WORLD (USERNAME/CLANNAME)");
 	}
 
-	public StringBuilder roomPropertyDetails(Session viewerS, Enumeration these, String owner)
+	public StringBuilder roomPropertyDetails(Session viewerS, Enumeration<Room> these, String owner)
 	{
 		final StringBuilder lines=new StringBuilder("");
 		if(!these.hasMoreElements())
@@ -229,9 +236,9 @@ public class ListCmd extends StdCommand
 		LandTitle t=null;
 		Room thisThang=null;
 		String thisOne=null;
-		for(final Enumeration r=these;r.hasMoreElements();)
+		for(final Enumeration<Room> r=these;r.hasMoreElements();)
 		{
-			thisThang=(Room)r.nextElement();
+			thisThang=r.nextElement();
 			t=CMLib.law().getLandTitle(thisThang);
 			if(t!=null)
 			{
@@ -686,9 +693,9 @@ public class ListCmd extends StdCommand
 		{
 			Room thisThang=null;
 			String thisOne=null;
-			for(final Enumeration r=these;r.hasMoreElements();)
+			for(final Enumeration<Room> r=these;r.hasMoreElements();)
 			{
-				thisThang=(Room)r.nextElement();
+				thisThang=r.nextElement();
 				thisOne=thisThang.roomID();
 				if((thisOne.length()>0)&&(thisThang.getArea().Name().equals(likeRoom.getArea().Name())))
 					lines.append(CMStrings.padRightPreserve(thisOne,30)+": "+thisThang.ID()+"\n\r");
@@ -707,7 +714,7 @@ public class ListCmd extends StdCommand
 		return roomResources(viewerS, these.elements(),likeRoom);
 	}
 	
-	public StringBuilder roomResources(Session viewerS, Enumeration these, Room likeRoom)
+	public StringBuilder roomResources(Session viewerS, Enumeration<Room> these, Room likeRoom)
 	{
 		final int COL_LEN1=CMLib.lister().fixColWidth(30.0,viewerS);
 		final int COL_LEN2=CMLib.lister().fixColWidth(15.0,viewerS);
@@ -720,9 +727,9 @@ public class ListCmd extends StdCommand
 			return lines;
 		Room thisThang=null;
 		String thisOne=null;
-		for(final Enumeration r=these;r.hasMoreElements();)
+		for(final Enumeration<Room> r=these;r.hasMoreElements();)
 		{
-			thisThang=(Room)r.nextElement();
+			thisThang=r.nextElement();
 			thisOne=thisThang.roomID();
 			if((thisOne.length()>0)&&(thisThang.getArea().Name().equals(likeRoom.getArea().Name())))
 			{
@@ -738,7 +745,7 @@ public class ListCmd extends StdCommand
 		return lines;
 	}
 
-	public StringBuilder areaConquests(Session viewerS, Enumeration these)
+	public StringBuilder areaConquests(Session viewerS, Enumeration<Area> these)
 	{
 		final int COL_LEN1=CMLib.lister().fixColWidth(26.0,viewerS);
 		final int COL_LEN2=CMLib.lister().fixColWidth(40.0,viewerS);
@@ -749,9 +756,9 @@ public class ListCmd extends StdCommand
 			return lines;
 		Area thisThang=null;
 		String thisOne=null;
-		for(final Enumeration r=these;r.hasMoreElements();)
+		for(final Enumeration<Area> r=these;r.hasMoreElements();)
 		{
-			thisThang=(Area)r.nextElement();
+			thisThang=r.nextElement();
 			thisOne=thisThang.name();
 			if(thisOne.length()>0)
 			{
@@ -835,7 +842,6 @@ public class ListCmd extends StdCommand
 		}
 	}
 
-
 	public StringBuilder listThreads(Session viewerS, MOB mob, boolean ignoreZeroTickThreads, boolean extend)
 	{
 		final StringBuilder lines=new StringBuilder("^xStatus|Name                 ^.^?\n\r");
@@ -846,7 +852,6 @@ public class ListCmd extends StdCommand
 				topTG = topTG.getParent();
 			if (topTG != null)
 				dumpThreadGroup(viewerS,lines,topTG,ignoreZeroTickThreads, extend);
-
 		}
 		catch (final Exception e)
 		{
@@ -916,14 +921,22 @@ public class ListCmd extends StdCommand
 		Room R=null;
 		WorldMap.LocatedPair LP=null;
 		PhysicalAgent AE=null;
-		for(final Enumeration e=CMLib.map().areas();e.hasMoreElements();)
+		for(final Enumeration<Area> e=CMLib.map().areas();e.hasMoreElements();)
 		{
-			A=(Area)e.nextElement(); if(A==null) continue;
+			A=e.nextElement(); 
+			if(A==null) 
+				continue;
 			for(final Enumeration<WorldMap.LocatedPair> ae=CMLib.map().scriptHosts(A);ae.hasMoreElements();)
 			{
-				LP=ae.nextElement(); if(LP==null) continue;
-				AE=LP.obj(); if(AE==null) continue;
-				R=LP.room(); if(R==null) R=CMLib.map().getStartRoom(AE);
+				LP=ae.nextElement(); 
+				if(LP==null) 
+					continue;
+				AE=LP.obj(); 
+				if(AE==null) 
+					continue;
+				R=LP.room(); 
+				if(R==null) 
+					R=CMLib.map().getStartRoom(AE);
 
 				if((AE instanceof Area)||(AE instanceof Exit))
 				{
@@ -1083,9 +1096,9 @@ public class ListCmd extends StdCommand
 			int numMobs=0;
 			int totalAlignment=0;
 			int totalLevels=0;
-			for(final Enumeration r=A.getCompleteMap();r.hasMoreElements();)
+			for(final Enumeration<Room> r=A.getCompleteMap();r.hasMoreElements();)
 			{
-				final Room R=(Room)r.nextElement();
+				final Room R=r.nextElement();
 				if(R.roomID().length()>0)
 				{
 					List<Room> myVec=null;
@@ -1160,9 +1173,9 @@ public class ListCmd extends StdCommand
 			final StringBuilder ext=new StringBuilder("links ");
 			List<Area> myVec=null;
 			List<Area> clearVec=null;
-			for(final Enumeration r=A.getCompleteMap();r.hasMoreElements();)
+			for(final Enumeration<Room> r=A.getCompleteMap();r.hasMoreElements();)
 			{
-				final Room R=(Room)r.nextElement();
+				final Room R=r.nextElement();
 				if(R.roomID().length()>0)
 				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 				{
@@ -1475,8 +1488,12 @@ public class ListCmd extends StdCommand
 		head.append(CMStrings.padRight(L("Last"),COL_LEN2)+" ");
 		switch(sortBy)
 		{
-			default : head.append(CMStrings.padRight(L("E-Mail"),COL_LEN3)+" "); break;
-			case 7: head.append(CMStrings.padRight(L("IP Address"),COL_LEN3)+" "); break;
+		default:
+			head.append(CMStrings.padRight(L("E-Mail"), COL_LEN3) + " ");
+			break;
+		case 7:
+			head.append(CMStrings.padRight(L("IP Address"), COL_LEN3) + " ");
+			break;
 		}
 
 		head.append("] Characters^.^N\n\r");
@@ -1623,8 +1640,12 @@ public class ListCmd extends StdCommand
 			}
 			switch(showBy)
 			{
-			default: line.append(CMStrings.padRight(U.getEmail(),COL_LEN3)+" "); break;
-			case 7: line.append(CMStrings.padRight(U.getLastIP(),COL_LEN3)+" "); break;
+			default:
+				line.append(CMStrings.padRight(U.getEmail(), COL_LEN3) + " ");
+				break;
+			case 7:
+				line.append(CMStrings.padRight(U.getLastIP(), COL_LEN3) + " ");
+				break;
 			}
 			line.append("] ");
 			final int len = line.length();
@@ -1645,7 +1666,7 @@ public class ListCmd extends StdCommand
 		mob.tell(head.toString());
 	}
 
-	public StringBuilder listRaces(Session viewerS, Enumeration these, String rest)
+	public StringBuilder listRaces(Session viewerS, Enumeration<Race> these, String rest)
 	{
 		final List<String> parms=CMParms.parse(rest.toUpperCase());
 		final boolean shortList=parms.contains("SHORT");
@@ -1660,9 +1681,9 @@ public class ListCmd extends StdCommand
 		if(shortList)
 		{
 			final Vector<String> raceNames=new Vector<String>();
-			for(final Enumeration e=these;e.hasMoreElements();)
+			for(final Enumeration<Race> e=these;e.hasMoreElements();)
 			{
-				final Race R=(Race)e.nextElement();
+				final Race R=e.nextElement();
 				if((restRest.length()==0)
 				||(CMLib.english().containsString(R.ID(), restRest))
 				||(CMLib.english().containsString(R.name(), restRest))
@@ -1672,9 +1693,9 @@ public class ListCmd extends StdCommand
 			lines.append(CMParms.toListString(raceNames));
 		}
 		else
-		for(final Enumeration e=these;e.hasMoreElements();)
+		for(final Enumeration<Race> e=these;e.hasMoreElements();)
 		{
-			final Race R=(Race)e.nextElement();
+			final Race R=e.nextElement();
 			if((restRest.length()==0)
 			||(CMLib.english().containsString(R.ID(), restRest))
 			||(CMLib.english().containsString(R.name(), restRest))
@@ -1693,7 +1714,8 @@ public class ListCmd extends StdCommand
 		lines.append("\n\r");
 		return lines;
 	}
-	public StringBuilder listCharClasses(Session viewerS, Enumeration these, boolean shortList)
+
+	public StringBuilder listCharClasses(Session viewerS, Enumeration<CharClass> these, boolean shortList)
 	{
 		final StringBuilder lines=new StringBuilder("");
 		if(!these.hasMoreElements())
@@ -1703,14 +1725,14 @@ public class ListCmd extends StdCommand
 		if(shortList)
 		{
 			final Vector<String> classNames=new Vector<String>();
-			for(final Enumeration e=these;e.hasMoreElements();)
-				classNames.add(((CharClass)e.nextElement()).ID());
+			for(final Enumeration<CharClass> e=these;e.hasMoreElements();)
+				classNames.add(e.nextElement().ID());
 			lines.append(CMParms.toListString(classNames));
 		}
 		else
-		for(final Enumeration e=these;e.hasMoreElements();)
+		for(final Enumeration<CharClass> e=these;e.hasMoreElements();)
 		{
-			final CharClass thisThang=(CharClass)e.nextElement();
+			final CharClass thisThang=e.nextElement();
 			if(++column>2)
 			{
 				lines.append("\n\r");
@@ -1723,7 +1745,8 @@ public class ListCmd extends StdCommand
 		lines.append("\n\r");
 		return lines;
 	}
-	public StringBuilder listRaceCats(Session viewerS, Enumeration these, boolean shortList)
+
+	public StringBuilder listRaceCats(Session viewerS, Enumeration<Race> these, boolean shortList)
 	{
 		final StringBuilder lines=new StringBuilder("");
 		if(!these.hasMoreElements())
@@ -1732,20 +1755,22 @@ public class ListCmd extends StdCommand
 		final Vector<String> raceCats=new Vector<String>();
 		Race R=null;
 		final int COL_LEN=CMLib.lister().fixColWidth(25.0,viewerS);
-		for(final Enumeration e=these;e.hasMoreElements();)
+		for(final Enumeration<Race> e=these;e.hasMoreElements();)
 		{
-			R=(Race)e.nextElement();
+			R=e.nextElement();
 			if(!raceCats.contains(R.racialCategory()))
 				raceCats.add(R.racialCategory());
 		}
-		final Object[] sortedB=(new TreeSet(raceCats)).toArray();
+		final Object[] sortedB=(new TreeSet<String>(raceCats)).toArray();
 		if(shortList)
 		{
 			final String[] sortedC=new String[sortedB.length];
 			for(int i=0;i<sortedB.length;i++)
 				sortedC[i]=(String)sortedB[i];
 			lines.append(CMParms.toListString(sortedC));
-		} else
+		} 
+		else
+		{
 			for (final Object element : sortedB)
 			{
 				final String raceCat=(String)element;
@@ -1756,6 +1781,7 @@ public class ListCmd extends StdCommand
 				}
 				lines.append(CMStrings.padRight(raceCat,COL_LEN));
 			}
+		}
 		lines.append("\n\r");
 		return lines;
 	}
@@ -1782,7 +1808,6 @@ public class ListCmd extends StdCommand
 						String minsLeft="("+Q.minsRemaining()+" mins left)";
 						if(Q.duration()==0)
 							minsLeft="(Eternal)";
-
 						if(Q.isCopy())
 							buf.append(L("copy running @x1",minsLeft));
 						else
@@ -1902,12 +1927,16 @@ public class ListCmd extends StdCommand
 			if(y>=0)
 				finalCol=lastWord;
 			else
-			for(final String w : validCols)
-				if(w.endsWith(lastWord))
+			{
+				for(final String w : validCols)
 				{
-					lastWord=w;
-					finalCol=lastWord;
+					if(w.endsWith(lastWord))
+					{
+						lastWord=w;
+						finalCol=lastWord;
+					}
 				}
+			}
 			if(!finalCol.equals(lastWord))
 				return new StringBuilder("Invalid column: '"+lastWord+"'.  Valid cols are: "+CMParms.toListString(validCols));
 			else
@@ -2024,14 +2053,19 @@ public class ListCmd extends StdCommand
 			{
 				final Room R=r.nextElement();
 				if(R.roomID().length()>0)
+				{
 					for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 					{
 						final Room R2=R.rawDoors()[d];
 						if((R2!=null)&&(R2.rawDoors()[Directions.getOpDirectionCode(d)]!=R))
 							str.append(L("@x1: @x2 to @x3\n\r",CMStrings.padRight(R.roomID(),30),Directions.getDirectionName(d),R2.roomID()));
 					}
+				}
 			}
-		}catch(final NoSuchElementException e){}
+		}
+		catch (final NoSuchElementException e)
+		{
+		}
 		if(str.length()==0)
 			str.append(L("None!"));
 		if(CMParms.combine(commands,1).equalsIgnoreCase("log"))
@@ -2056,7 +2090,10 @@ public class ListCmd extends StdCommand
 						str.append(L("@x1: @x2 to @x3 (@x4)\n\r",CMStrings.padRight(R.roomID(),30),Directions.getDirectionName(d),E2.temporaryDoorLink(),E2.displayText()));
 				}
 			}
-		}catch(final NoSuchElementException e){}
+		}
+		catch (final NoSuchElementException e)
+		{
+		}
 		if(str.length()==0)
 			str.append(L("None!"));
 		if(CMParms.combine(commands,1).equalsIgnoreCase("log"))
@@ -2064,6 +2101,7 @@ public class ListCmd extends StdCommand
 		return str.toString();
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public String listResources(MOB mob, String parm)
 	{
 		final Iterator<String> keyIter=Resources.findResourceKeys(parm);
@@ -2153,10 +2191,12 @@ public class ListCmd extends StdCommand
 		sightingsDV.sortBy(2);
 		final StringBuilder str=new StringBuilder("^HHelp entries, sorted by popularity: ^N\n\r");
 		for(int d=0;d<sightingsDV.size();d++)
+		{
 			str.append("^w"+CMStrings.padRight(sightingsDV.get(d,2).toString(),4))
 			   .append(" ")
 			   .append(sightingsDV.get(d,1).toString())
 			   .append("\n\r");
+		}
 		return str.toString()+"^N";
 	}
 
@@ -2205,6 +2245,7 @@ public class ListCmd extends StdCommand
 		}
 		return str.toString();
 	}
+
 	public String listMaterials()
 	{
 		return CMParms.toListString(RawMaterial.Material.values());
@@ -2240,11 +2281,21 @@ public class ListCmd extends StdCommand
 			number=Math.round(number/1000);
 			switch(c)
 			{
-			case 'd': c='k'; break;
-			case 'k': c='m'; break;
-			case 'm': c='b'; break;
-			case 'b': c='t'; break;
-			case 't': c='q'; break;
+			case 'd':
+				c = 'k';
+				break;
+			case 'k':
+				c = 'm';
+				break;
+			case 'm':
+				c = 'b';
+				break;
+			case 'b':
+				c = 't';
+				break;
+			case 't':
+				c = 'q';
+				break;
 			}
 			s=""+number+Character.toString(c);
 		}
@@ -2260,24 +2311,39 @@ public class ListCmd extends StdCommand
 		String listWhat=commands.get(0).toString().toUpperCase().trim();
 		Filterer<SpaceObject> filter=null;
 		for(final SpaceFilterCode code : SpaceFilterCode.values())
+		{
 			if(code.toString().toUpperCase().startsWith(listWhat))
 			{
-				filter=new Filterer<SpaceObject>(){
-					@Override public boolean passesFilter(SpaceObject obj)
+				filter=new Filterer<SpaceObject>()
+				{
+					@Override
+					public boolean passesFilter(SpaceObject obj)
 					{
 						switch(code)
 						{
-						case SPACE: return true;
-						case BODIES: return (obj instanceof Area) && (!(obj instanceof SpaceShip)) && (obj.radius() > (SpaceObject.Distance.MoonRadius.dm+10000L));
-						case SHIPS: return (obj instanceof SpaceShip);
-						case STARS: return (obj instanceof Physical) && (!(obj instanceof SpaceShip)) && CMLib.flags().isOnFire((Physical)obj);
-						case MOONS: return (obj instanceof Area) && (!(obj instanceof SpaceShip)) && (obj.radius() <= (SpaceObject.Distance.MoonRadius.dm+10000L));
+						case SPACE:
+							return true;
+						case BODIES:
+							return (obj instanceof Area) 
+								&& (!(obj instanceof SpaceShip)) 
+								&& (obj.radius() > (SpaceObject.Distance.MoonRadius.dm + 10000L));
+						case SHIPS:
+							return (obj instanceof SpaceShip);
+						case STARS:
+							return (obj instanceof Physical) 
+								&& (!(obj instanceof SpaceShip)) 
+								&& CMLib.flags().isOnFire((Physical) obj);
+						case MOONS:
+							return (obj instanceof Area) 
+								&& (!(obj instanceof SpaceShip)) 
+								&& (obj.radius() <= (SpaceObject.Distance.MoonRadius.dm + 10000L));
 						}
 						return false;
 					}
 				};
 				break;
 			}
+		}
 		
 		if((commands.size()<=1)
 		||(filter==null)
@@ -2417,52 +2483,86 @@ public class ListCmd extends StdCommand
 						int dex=CMParms.indexOf(sortcols, commands.get(x).toString().toUpperCase());
 						switch(dex)
 						{
-						case 0: Collections.sort(objs, new Comparator<SpaceObject>(){
-							@Override public int compare(SpaceObject o1, SpaceObject o2)
+						case 0:
+							Collections.sort(objs, new Comparator<SpaceObject>()
 							{
-								return getSpaceObjectType(o1).compareTo(getSpaceObjectType(o2));
-							}});
+								@Override
+								public int compare(SpaceObject o1, SpaceObject o2)
+								{
+									return getSpaceObjectType(o1).compareTo(getSpaceObjectType(o2));
+								}
+							});
 							break;
-						case 1: Collections.sort(objs, new Comparator<SpaceObject>(){
-							@Override public int compare(SpaceObject o1, SpaceObject o2)
+						case 1:
+							Collections.sort(objs, new Comparator<SpaceObject>()
 							{
-								return Long.valueOf(o1==null?0:o1.radius()).compareTo(Long.valueOf(o2==null?0:o2.radius()));
-							}});
+								@Override
+								public int compare(SpaceObject o1, SpaceObject o2)
+								{
+									return Long.valueOf(o1 == null ? 0 : o1.radius()).compareTo(Long.valueOf(o2 == null ? 0 : o2.radius()));
+								}
+							});
 							break;
-						case 3: Collections.sort(objs, new Comparator<SpaceObject>(){
-							@Override public int compare(SpaceObject o1, SpaceObject o2)
+						case 3:
+							Collections.sort(objs, new Comparator<SpaceObject>()
 							{
-								return Double.valueOf(o1==null?0:o1.speed()).compareTo(Double.valueOf(o2==null?0:o2.speed()));
-							}});
+								@Override
+								public int compare(SpaceObject o1, SpaceObject o2)
+								{
+									return Double.valueOf(o1 == null ? 0 : o1.speed()).compareTo(Double.valueOf(o2 == null ? 0 : o2.speed()));
+								}
+							});
 							break;
-						case 4: Collections.sort(objs, new Comparator<SpaceObject>(){
-							@Override public int compare(SpaceObject o1, SpaceObject o2)
+						case 4:
+							Collections.sort(objs, new Comparator<SpaceObject>()
 							{
-								return Long.valueOf(o1==null?0:o1.getMass()).compareTo(Long.valueOf(o2==null?0:o2.getMass()));
-							}});
+								@Override
+								public int compare(SpaceObject o1, SpaceObject o2)
+								{
+									return Long.valueOf(o1 == null ? 0 : o1.getMass()).compareTo(Long.valueOf(o2 == null ? 0 : o2.getMass()));
+								}
+							});
 							break;
-						case 5: Collections.sort(objs, new Comparator<SpaceObject>(){
-							@Override public int compare(SpaceObject o1, SpaceObject o2)
+						case 5:
+							Collections.sort(objs, new Comparator<SpaceObject>()
 							{
-								return (o1==null?"":o1.name()).compareToIgnoreCase(o2==null?"":o2.name());
-							}});
+								@Override
+								public int compare(SpaceObject o1, SpaceObject o2)
+								{
+									return (o1==null?"":o1.name()).compareToIgnoreCase(o2==null?"":o2.name());
+								}
+							});
 							break;
-						case 8: b[0]=new int[]{2,0,1}; 
+						case 8:
+							b[0] = new int[] { 2, 0, 1 };
 							//$FALL-THROUGH$
-						case 7: if(x==7) b[0]=new int[]{1,2,0}; 
+						case 7:
+							if (x == 7)
+								b[0] = new int[] { 1, 2, 0 };
 							//$FALL-THROUGH$
 						case 6: 
 							//$FALL-THROUGH$
-						case 2: Collections.sort(objs, new Comparator<SpaceObject>(){
-							@Override public int compare(SpaceObject o1, SpaceObject o2)
+						case 2:
+							Collections.sort(objs, new Comparator<SpaceObject>()
 							{
-								int i=Long.valueOf(o1==null?Long.MIN_VALUE:o1.coordinates()[b[0][0]]).compareTo(Long.valueOf(o2==null?Long.MIN_VALUE:o2.coordinates()[b[0][0]]));
-								if(i!=0)
-									i=Long.valueOf(o1==null?Long.MIN_VALUE:o1.coordinates()[b[0][1]]).compareTo(Long.valueOf(o2==null?Long.MIN_VALUE:o2.coordinates()[b[0][1]]));
-								if(i!=0)
-									i=Long.valueOf(o1==null?Long.MIN_VALUE:o1.coordinates()[b[0][2]]).compareTo(Long.valueOf(o2==null?Long.MIN_VALUE:o2.coordinates()[b[0][2]]));
-								return i;
-							}});
+								@Override
+								public int compare(SpaceObject o1, SpaceObject o2)
+								{
+									int i = Long.valueOf(o1 == null ? Long.MIN_VALUE : o1.coordinates()[b[0][0]])
+											.compareTo(Long.valueOf(o2 == null ? Long.MIN_VALUE : o2.coordinates()[b[0][0]]));
+									if (i != 0)
+									{
+										i = Long.valueOf(o1 == null ? Long.MIN_VALUE : o1.coordinates()[b[0][1]])
+											.compareTo(Long.valueOf(o2 == null ? Long.MIN_VALUE : o2.coordinates()[b[0][1]]));
+									}
+									if (i != 0)
+									{
+										i = Long.valueOf(o1 == null ? Long.MIN_VALUE : o1.coordinates()[b[0][2]])
+											.compareTo(Long.valueOf(o2 == null ? Long.MIN_VALUE : o2.coordinates()[b[0][2]]));
+									}
+									return i;
+								}
+							});
 							break;
 						}
 					}
@@ -2571,9 +2671,9 @@ public class ListCmd extends StdCommand
 				str.append(CMStrings.padRight(""+RawMaterial.CODES.FREQUENCY(i),COL_LEN4+1));
 				str.append(CMStrings.padRight(""+RawMaterial.CODES.HARDNESS(i),COL_LEN5+1));
 				StringBuilder locales=new StringBuilder("");
-				for(final Enumeration e=CMClass.locales();e.hasMoreElements();)
+				for(final Enumeration<Room> e=CMClass.locales();e.hasMoreElements();)
 				{
-					final Room R=(Room)e.nextElement();
+					final Room R=e.nextElement();
 					if(!(R instanceof GridLocale))
 						if((R.resourceChoices()!=null)&&(R.resourceChoices().contains(Integer.valueOf(i))))
 							locales.append(R.ID()+" ");
@@ -2675,9 +2775,9 @@ public class ListCmd extends StdCommand
 	{
 		final StringBuilder buf=new StringBuilder("^xAll Defined Expertise Codes: ^N\n\r");
 		final int COL_LEN=CMLib.lister().fixColWidth(20.0,viewerS);
-		for(final Enumeration e=CMLib.expertises().definitions();e.hasMoreElements();)
+		for(final Enumeration<ExpertiseLibrary.ExpertiseDefinition> e=CMLib.expertises().definitions();e.hasMoreElements();)
 		{
-			final ExpertiseLibrary.ExpertiseDefinition def=(ExpertiseLibrary.ExpertiseDefinition)e.nextElement();
+			final ExpertiseLibrary.ExpertiseDefinition def=e.nextElement();
 			buf.append(CMStrings.padRight("^Z"+def.ID(),COL_LEN)+"^?: "
 					  +CMStrings.padRight(def.name(),COL_LEN)+": "
 					  +CMLib.masking().maskDesc(def.allRequirements())+"\n\r");
@@ -2690,9 +2790,9 @@ public class ListCmd extends StdCommand
 	public String listTitles(Session viewerS)
 	{
 		final StringBuilder buf=new StringBuilder("^xAll Defined Auto-Titles: ^N\n\r");
-		for(final Enumeration e=CMLib.titles().autoTitles();e.hasMoreElements();)
+		for(final Enumeration<String> e=CMLib.titles().autoTitles();e.hasMoreElements();)
 		{
-			final String title=(String)e.nextElement();
+			final String title=e.nextElement();
 			final String maskDesc=CMLib.masking().maskDesc(CMLib.titles().getAutoTitleMask(title));
 			buf.append(CMStrings.padRight(title,30)+": "+maskDesc+"\n\r");
 		}
@@ -2797,20 +2897,22 @@ public class ListCmd extends StdCommand
 		return str.toString();
 	}
 
-	public String listClanGovernments(Session viewerS, List commands)
+	public String listClanGovernments(Session viewerS, List<String> commands)
 	{
 		final StringBuilder buf=new StringBuilder("^xAll Clan Governments: ^N\n\r");
 		int glen=0;
 		for(final ClanGovernment G : CMLib.clans().getStockGovernments())
+		{
 			if(G.getName().length()>glen)
 				glen=G.getName().length();
+		}
 		final int SCREEN_LEN=CMLib.lister().fixColWidth(78.0,viewerS);
 		for(final ClanGovernment G : CMLib.clans().getStockGovernments())
 			buf.append(CMStrings.padRight(G.getName(),glen)+": "+CMStrings.limit(G.getShortDesc(),SCREEN_LEN-glen-2)+"\n\r");
 		return buf.toString();
 	}
 
-	public String listClans(Session viewerS, List commands)
+	public String listClans(Session viewerS, List<String> commands)
 	{
 		final StringBuilder buf=new StringBuilder("^xAll Clans: ^N\n\r");
 		int clen=0;
@@ -2832,13 +2934,13 @@ public class ListCmd extends StdCommand
 	public StringBuilder listContent(MOB mob, List<String> commands)
 	{
 		commands.remove(0);
-		Enumeration roomsToDo=null;
+		Enumeration<Room> roomsToDo=null;
 		final String rest=CMParms.combine(commands,0);
 		if(rest.equalsIgnoreCase("area"))
 			roomsToDo=mob.location().getArea().getMetroMap();
 		else
 		if(rest.trim().length()==0)
-			roomsToDo=new XVector(mob.location()).elements();
+			roomsToDo=new XVector<Room>(mob.location()).elements();
 		else
 		{
 			final Area A=CMLib.map().findArea(rest);
@@ -2848,7 +2950,7 @@ public class ListCmd extends StdCommand
 			{
 				final Room R=CMLib.map().getRoom(rest);
 				if(R!=null)
-					roomsToDo=new XVector(mob.location()).elements();
+					roomsToDo=new XVector<Room>(mob.location()).elements();
 				else
 					return new StringBuilder("There's no such place as '"+rest+"'");
 			}
@@ -2861,7 +2963,7 @@ public class ListCmd extends StdCommand
 		final int SCREEN_LEN3=CMLib.lister().fixColWidth(3.0,mob);
 		for(;roomsToDo.hasMoreElements();)
 		{
-			R=(Room)roomsToDo.nextElement();
+			R=roomsToDo.nextElement();
 			if(R.roomID().length()==0)
 				continue;
 			TR=CMLib.database().DBReadRoom(CMLib.map().getExtendedRoomID(R),false);
@@ -2884,20 +2986,24 @@ public class ListCmd extends StdCommand
 					{
 						final Item I=M.getItem(i);
 						if(I!=null)
+						{
 							buf.append("    ^I"+CMStrings.padRight(I.ID(),SCREEN_LEN1)
 									+": "+CMStrings.padRight((I.displayText().length()>0?I.displayText():I.Name()),SCREEN_LEN2)+": "
 									+CMStrings.padRight(I.phyStats().level()+"",SCREEN_LEN3)+": "
 									+"^N"+((I.container()!=null)?I.Name():"")+"\n\r");
+						}
 					}
 				}
 				for(int i=0;i<TR.numItems();i++)
 				{
 					final Item I=TR.getItem(i);
 					if(I!=null)
+					{
 						buf.append("^I"+CMStrings.padRight(I.ID(),SCREEN_LEN1)+": "
 								+CMStrings.padRight((I.displayText().length()>0?I.displayText():I.Name()),SCREEN_LEN2)+": "
 								+CMStrings.padRight(I.phyStats().level()+"",SCREEN_LEN3)+": "
 								+"^N"+((I.container()!=null)?I.Name():"")+"\n\r");
+					}
 				}
 				TR.destroy();
 			}
@@ -2981,10 +3087,12 @@ public class ListCmd extends StdCommand
 			{
 				mob.session().safeRawPrintln(line);
 				if((pageBreak>0)&&(lineNum>=pageBreak))
+				{
 					if(!pause(mob.session()))
 						break;
 					else
 						lineNum=0;
+				}
 				lineNum++;
 				line=log.nextLine();
 			}
@@ -2992,10 +3100,10 @@ public class ListCmd extends StdCommand
 			return;
 		}
 
-		int start=0;
-		final int logSize=Log.instance().numLines();
-		int end=logSize;
-		final Log.LogReader log=Log.instance().getLogReader();
+		int start = 0;
+		final int logSize = Log.instance().numLines();
+		int end = logSize;
+		final Log.LogReader log = Log.instance().getLogReader();
 
 		for(int i=1;i<commands.size();i++)
 		{
@@ -3061,10 +3169,12 @@ public class ListCmd extends StdCommand
 			{
 				mob.session().safeRawPrintln(line);
 				if((pageBreak>0)&&(shownLineNum>=pageBreak))
+				{
 					if(!pause(mob.session()))
 						break;
 					else
 						shownLineNum=0;
+				}
 				shownLineNum++;
 			}
 			lineNum++;
@@ -3187,7 +3297,11 @@ public class ListCmd extends StdCommand
 				if(s.startsWith("qu")||s.startsWith("ex")||s.equals("x"))
 					return false;
 			}
-		}catch(final Exception e){return false;}
+		}
+		catch (final Exception e)
+		{
+			return false;
+		}
 		return !sess.isStopped();
 	}
 
@@ -3226,14 +3340,24 @@ public class ListCmd extends StdCommand
 
 	private enum ListAreaStats
 	{
-		NAME("Name",30), AUTHOR("Auth",15), DESCRIPTION("Desc",50), ROOMS("Rooms",6), STATE("State",10), HIDDEN("Hiddn",6);
-		public String shortName;
-		public Integer len;
+		NAME("Name", 30),
+		AUTHOR("Auth", 15),
+		DESCRIPTION("Desc", 50),
+		ROOMS("Rooms", 6),
+		STATE("State", 10),
+		HIDDEN("Hiddn", 6)
+		;
+
+		public String	shortName;
+		public Integer	len;
+
 		private ListAreaStats(String shortName, int len)
 		{
 			this.shortName=shortName;
 			this.len=Integer.valueOf(len);
 		}
+
+		@SuppressWarnings("rawtypes")
 		public Comparable getFromArea(Area A)
 		{
 			switch(this)
@@ -3256,6 +3380,7 @@ public class ListCmd extends StdCommand
 		}
 	}
 
+	@SuppressWarnings("rawtypes")
 	public Comparable getAreaStatFromSomewhere(Area A, String stat)
 	{
 		if(A==null)
@@ -3545,7 +3670,9 @@ public class ListCmd extends StdCommand
 					continue;
 				sorted.add(A);
 			}
-			Collections.sort(sorted,new Comparator<Area>(){
+			Collections.sort(sorted,new Comparator<Area>()
+			{
+				@SuppressWarnings({ "rawtypes", "unchecked" })
 				@Override
 				public int compare(Area arg0, Area arg1) 
 				{
@@ -3976,10 +4103,8 @@ public class ListCmd extends StdCommand
 			listTimeZones(mob, commands, allAreaFilter);
 			break;
 		case SESSIONS:
-		{
 			listSessions(mob, commands);
 			break;
-		}
 		case WORLD:
 			listAreas(mob, commands, new WorldFilter(mob.location()));
 			break;
@@ -4058,9 +4183,16 @@ public class ListCmd extends StdCommand
 			final List<Environmental> V2=CMLib.coffeeShops().getAllShopkeepers(mob.location(),mob);
 			Environmental shopkeeper=CMLib.english().fetchEnvironmental(V2,what,false);
 			if((shopkeeper==null)&&(what.equals("shop")||what.equals("the shop")))
+			{
 				for(int v=0;v<V2.size();v++)
+				{
 					if(V2.get(v) instanceof Area)
-					{ shopkeeper=V2.get(v); break;}
+					{
+						shopkeeper = V2.get(v);
+						break;
+					}
+				}
+			}
 			if((shopkeeper!=null)
 			&&(CMLib.coffeeShops().getShopKeeper(shopkeeper)!=null)
 			&&(CMLib.flags().canBeSeenBy(shopkeeper,mob)))
@@ -4098,7 +4230,10 @@ public class ListCmd extends StdCommand
 		return false;
 	}
 
-	@Override public boolean canBeOrdered(){return true;}
-
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 
 }
