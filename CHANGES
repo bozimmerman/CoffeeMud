@@ -9,6 +9,7 @@
    8. LIST AREA SHOPS will now show local shop inventories with prices
    9. Archon QUESTS [QUEST NAME] and LIST QUESTWINNERS can now show all winners of quests.
   10. New CHANNEL flag: NOLANGUAGE, to turn off foreign languages when using the channel.
+  11. LIST QUESTNAMES can show a map between quest names (ids) and display names.
 
 # Build 5.9.2 Released 02/09/2016
    1. Apprentice now gets bonus common skill.

@@ -1840,6 +1840,31 @@ public class ListCmd extends StdCommand
 		return buf;
 	}
 
+	public StringBuilder listQuestNames(Session viewerS)
+	{
+		final StringBuilder buf=new StringBuilder("");
+		if(CMLib.quests().numQuests()==0)
+			buf.append(L("No quests loaded."));
+		else
+		{
+			buf.append("\n\r^xQuest Names Report:^.^N\n\r");
+			final int COL_LEN1=CMLib.lister().fixColWidth(5.0,viewerS);
+			final int COL_LEN2=CMLib.lister().fixColWidth(30.0,viewerS);
+			buf.append("\n\r^x"+CMStrings.padRight("#",COL_LEN1)+CMStrings.padRight(L("Name"),COL_LEN2)+" Display Name^.^N\n\r");
+			for(int i=0;i<CMLib.quests().numQuests();i++)
+			{
+				final Quest Q=CMLib.quests().fetchQuest(i);
+				if(Q!=null)
+				{
+					buf.append(CMStrings.padRight(""+(i+1),COL_LEN1)+CMStrings.padRight("^<LSTQUEST^>"+Q.name()+"^</LSTQUEST^>",COL_LEN2)+" ");
+					buf.append(Q.displayName());
+					buf.append("^N\n\r");
+				}
+			}
+		}
+		return buf;
+	}
+
 	public StringBuilder listQuestWinners(Session viewerS, String rest)
 	{
 		final StringBuilder buf=new StringBuilder("");
@@ -3209,6 +3234,7 @@ public class ListCmd extends StdCommand
 		SKILLS("SKILLS",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES,SecFlag.CMDABILITIES}),
 		QUESTS("QUESTS",new SecFlag[]{SecFlag.CMDQUESTS}),
 		QUESTWINNERS("QUESTWINNERS",new SecFlag[]{SecFlag.CMDQUESTS}),
+		QUESTNAMES("QUESTNAMES",new SecFlag[]{SecFlag.CMDQUESTS}),
 		DISEASES("DISEASES",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES,SecFlag.CMDABILITIES}),
 		POISONS("POISONS",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES,SecFlag.CMDABILITIES}),
 		LANGUAGES("LANGUAGES",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES,SecFlag.CMDABILITIES}),
@@ -3934,6 +3960,9 @@ public class ListCmd extends StdCommand
 			break;
 		case QUESTS:
 			s.println(listQuests(mob.session()).toString());
+			break;
+		case QUESTNAMES:
+			s.println(listQuestNames(mob.session()).toString());
 			break;
 		case QUESTWINNERS:
 			s.println(listQuestWinners(mob.session(),rest).toString());
