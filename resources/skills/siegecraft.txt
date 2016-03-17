@@ -1,11 +1,11 @@
-Ballista	15	75	300	2500	GenSiegeWeapon	ballista-bolt	1	15	5	LEATHER	
-Multishot Ballista	18	80	400	3000	GenSiegeWeapon	ballista-arrow	3	15	5	LEATHER	
-Catapult	20	60	300	2000	GenSiegeWeapon	catapult-boulder	1	20	6		
-Multishot Catapult	25	70	400	2500	GenSiegeWeapon	catapult-stones	3	20	6		
-Trebuchet	30	80	500	4000	GenSiegeWeapon	trebuchet-boulder	1	35	8	METAL	
-Multishot Trebuchet	40	90	600	5000	GenSiegeWeapon	trebuchet-shot	3	35	8	METAL	
-Heavy Ballista	25	100	450	5000	GenSiegeWeapon	ballista-bolt	1	30	10	LEATHER	
-Ramming Prow	35	70	250	5000	GenSiegeWeapon		0	40	1		
+Ballista	15	75	500	2500	GenSiegeWeapon	ballista-bolt	1	15	5	LEATHER	
+Multishot Ballista	18	80	600	3000	GenSiegeWeapon	ballista-arrow	3	15	5	LEATHER	
+Catapult	20	60	500	2000	GenSiegeWeapon	catapult-boulder	1	20	6		
+Multishot Catapult	25	70	600	2500	GenSiegeWeapon	catapult-stones	3	20	6		
+Trebuchet	30	80	700	4000	GenSiegeWeapon	trebuchet-boulder	1	35	8	METAL	
+Multishot Trebuchet	40	90	800	5000	GenSiegeWeapon	trebuchet-shot	3	35	8	METAL	
+Heavy Ballista	25	100	650	5000	GenSiegeWeapon	ballista-bolt	1	30	10	LEATHER	
+Ramming Prow	35	70	550	5000	GenSiegeWeapon		0	40	1		
 Ballista Bolt	5	5	5	5	GenAmmunition	ballista-bolt	1			METAL	
 Ballista Flaming Bolt	7	10	5	10	GenAmmunition	ballista-bolt	1			LAMP OIL	Burning
 Ballista Multishot Arrow	9	10	10	10	GenAmmunition	ballista-arrow	3			METAL	

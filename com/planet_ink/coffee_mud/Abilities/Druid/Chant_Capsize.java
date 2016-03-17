@@ -100,7 +100,10 @@ public class Chant_Capsize extends Chant
 						for(Enumeration<Item> i=R.items();i.hasMoreElements();)
 						{
 							Item I2=i.nextElement();
-							if((I2!=null)&&(I2.container()==null)&&(CMLib.flags().isGettable(I2)))
+							if((I2!=null)
+							&&(I2.container()==null)
+							&&(CMLib.flags().isGettable(I2))
+							&&(I2.basePhyStats().weight()>=500))
 							{
 								items.add(I2);
 							}

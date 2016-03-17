@@ -62,7 +62,7 @@ public class StdSiegeWeapon extends StdRideable implements AmmunitionWeapon
 		basePhyStats.setWeight(500);
 		basePhyStats().setAttackAdjustment(0);
 		basePhyStats().setDamage(20);
-		basePhyStats().setSensesMask(basePhyStats().sensesMask()|PhyStats.SENSE_ITEMNOTGET);
+		//basePhyStats().setSensesMask(basePhyStats().sensesMask()|PhyStats.SENSE_ITEMNOTGET);
 		setAmmunitionType("spears");
 		setAmmoCapacity(1);
 		setAmmoRemaining(1);

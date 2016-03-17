@@ -1052,7 +1052,7 @@ public class GenSailingShip extends StdBoardable
 	{
 		if((I instanceof AmmunitionWeapon)
 		&&(I instanceof Rideable)
-		&&(!CMLib.flags().isGettable(I))
+		&&((!CMLib.flags().isGettable(I))||(I.basePhyStats().weight()>=250))
 		&&(((AmmunitionWeapon)I).requiresAmmunition()))
 			return true;
 		return false;
