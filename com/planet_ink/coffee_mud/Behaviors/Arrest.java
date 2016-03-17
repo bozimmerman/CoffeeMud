@@ -40,15 +40,34 @@ import java.io.ByteArrayOutputStream;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Arrest extends StdBehavior implements LegalBehavior
 {
-	@Override public String ID(){return "Arrest";}
-	@Override public long flags(){return Behavior.FLAG_LEGALBEHAVIOR;}
-	@Override protected int canImproveCode(){return Behavior.CAN_AREAS;}
-	protected String lastAreaName=null;
+	@Override
+	public String ID()
+	{
+		return "Arrest";
+	}
 
-	protected boolean loadAttempt=false;
-	protected Hashtable<MOB,Double> finesAssessed=new Hashtable<MOB,Double>();
+	@Override
+	public long flags()
+	{
+		return Behavior.FLAG_LEGALBEHAVIOR;
+	}
 
-	@Override public boolean isFullyControlled(){return true;}
+	@Override
+	protected int canImproveCode()
+	{
+		return Behavior.CAN_AREAS;
+	}
+
+	protected String			lastAreaName	= null;
+
+	protected boolean			loadAttempt		= false;
+	protected Map<MOB, Double>	finesAssessed	= new Hashtable<MOB, Double>();
+
+	@Override
+	public boolean isFullyControlled()
+	{
+		return true;
+	}
 
 	protected String getLawParms()
 	{
@@ -131,7 +150,8 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		if((W!=null)&&((W.arrestingOfficer()==null)||(W.arrestingOfficer().location()!=accused.location())))
 		{
 			W.setArrestingOfficer(myArea,officer);
-			CMLib.commands().postSay(W.arrestingOfficer(),W.criminal(),L("You are under arrest @x1! Sit down on the ground immediately!",restOfCharges(laws,W.criminal())),false,false);
+			CMLib.commands().postSay(W.arrestingOfficer(),W.criminal(),
+					L("You are under arrest @x1! Sit down on the ground immediately!",restOfCharges(laws,W.criminal())),false,false);
 			W.setState(Law.STATE_ARRESTING);
 			return true;
 		}
@@ -320,7 +340,8 @@ public class Arrest extends StdBehavior implements LegalBehavior
 					accuser=W.victim();
 				if(accuser==null)
 					accuser=W.criminal();
-				final CMMsg msg=CMClass.getMsg(accuser, W.criminal(), W.victim(), CMMsg.MASK_ALWAYS|CMMsg.MSG_LEGALWARRANT, CMMsg.MSG_LEGALWARRANT, CMMsg.MSG_LEGALWARRANT, W.crime());
+				final CMMsg msg=CMClass.getMsg(accuser, W.criminal(), W.victim(), 
+						CMMsg.MASK_ALWAYS|CMMsg.MSG_LEGALWARRANT, CMMsg.MSG_LEGALWARRANT, CMMsg.MSG_LEGALWARRANT, W.crime());
 				if(R.okMessage(W.criminal(),msg))
 					R.send(W.criminal(), msg);
 				else
@@ -632,12 +653,14 @@ public class Arrest extends StdBehavior implements LegalBehavior
 			return M;
 
 		if(R!=null)
-		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
-			final Room R2=R.getRoomInDir(d);
-			M=getAWitnessHere(R2,accused);
-			if(M!=null)
-				return M;
+			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+			{
+				final Room R2=R.getRoomInDir(d);
+				M=getAWitnessHere(R2,accused);
+				if(M!=null)
+					return M;
+			}
 		}
 		return null;
 	}
@@ -650,7 +673,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		{
 			if((laws.officerNames().size()<=0)
 			||(laws.officerNames().get(0).equals("@")))
-			   return false;
+				return false;
 			for(int i=0;i<laws.officerNames().size();i++)
 			{
 				if((CMLib.english().containsString(M.displayText(),laws.officerNames().get(i))
@@ -765,8 +788,8 @@ public class Arrest extends StdBehavior implements LegalBehavior
 			if(msg.sourceMessage().indexOf("<T-NAME>")<0)
 				return false;
 			if((criminal.name().toUpperCase().equals(criminal.Name().toUpperCase()))
-				||(criminal.name().toUpperCase().startsWith(criminal.Name().toUpperCase()+" "))
-				||(criminal.name().toUpperCase().endsWith(" "+criminal.Name().toUpperCase())))
+			||(criminal.name().toUpperCase().startsWith(criminal.Name().toUpperCase()+" "))
+			||(criminal.name().toUpperCase().endsWith(" "+criminal.Name().toUpperCase())))
 				return true;
 		}
 		return true;
@@ -1200,10 +1223,12 @@ public class Arrest extends StdBehavior implements LegalBehavior
 				}
 			}
 			else
-			for(int i=0;(W=laws.getWarrant(mob,i))!=null;i++)
 			{
-				if(W.criminal()==mob)
-					V.addElement(W);
+				for(int i=0;(W=laws.getWarrant(mob,i))!=null;i++)
+				{
+					if(W.criminal()==mob)
+						V.addElement(W);
+				}
 			}
 		}
 		for(final LegalWarrant W : V)
@@ -1261,7 +1286,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		switch(highestCrimeAction(laws,W,W.criminal())&Law.PUNISHMENT_MASK)
 		{
 		case Law.PUNISHMENT_WARN:
-			{
+		{
 			if((judge==null)&&(officer!=null))
 				judge=officer;
 			final StringBuffer str=new StringBuffer("");
@@ -1282,11 +1307,11 @@ public class Arrest extends StdBehavior implements LegalBehavior
 			if((laws.getMessage(Law.MSG_WARNING).length()>0)&&(!CMath.bset(W.punishment(),Law.PUNISHMENTMASK_DETAIN)))
 				str.append(laws.getMessage(Law.MSG_WARNING)+"  ");
 			CMLib.commands().postSay(judge,criminal,str.toString(),false,false);
-			}
 			totallyDone=true;
 			break;
+		}
 		case Law.PUNISHMENT_THREATEN:
-			{
+		{
 			if((judge==null)&&(officer!=null))
 				judge=officer;
 			final StringBuffer str=new StringBuffer("");
@@ -1307,9 +1332,9 @@ public class Arrest extends StdBehavior implements LegalBehavior
 			if((laws.getMessage(Law.MSG_THREAT).length()>0)&&(!CMath.bset(W.punishment(),Law.PUNISHMENTMASK_DETAIN)))
 				str.append(laws.getMessage(Law.MSG_THREAT)+"  ");
 			CMLib.commands().postSay(judge,criminal,str.toString(),false,false);
-			}
 			totallyDone=true;
 			break;
+		}
 		case Law.PUNISHMENT_PAROLE1:
 			if(judge!=null)
 			{
@@ -1517,7 +1542,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 					{
 						if(CMSecurity.isDebugging(CMSecurity.DbgFlag.ARREST))
 							Log.debugOut("ARREST","("+lastAreaName+"): "+criminalM.name()+", data: "+crimeLocs+"->"+crimeFlags+"->"+crime+"->"+sentence+"* Witness required, but not present.");
-					   return false;
+						return false;
 					}
 				}
 				else
@@ -1635,7 +1660,10 @@ public class Arrest extends StdBehavior implements LegalBehavior
 				}
 				else
 				if(CMLib.english().containsString(display,str))
-				{ aCrime=true; break;}
+				{
+					aCrime = true;
+					break;
+				}
 			}
 			if(!aCrime)
 			{
@@ -2378,8 +2406,8 @@ public class Arrest extends StdBehavior implements LegalBehavior
 					unCuff(W.criminal());
 					W.setArrestingOfficer(myArea,null);
 				}
+				break;
 			}
-			break;
 		case Law.STATE_ARRESTING:
 			{
 				W.setTravelAttemptTime(0);

@@ -771,16 +771,18 @@ public class DefaultLawSet implements Law
 	{
 		final String[] copKillerInfo=basicCrimes().get("MURDER");
 		if(copKillerInfo!=null)
-		for(int i=0;i<warrants.size();i++)
 		{
-			final LegalWarrant W=warrants.elementAt(i);
-			if((W.criminal()==mob)
-			&&(W.crime().equals(copKillerInfo[Law.BIT_CRIMENAME]))
-			&&(W.victim()!=null)
-			&&(behav!=null)
-			&&(behav.isStillACrime(W,false))
-			&&(behav.isAnyOfficer(A,W.victim())))
-				return W;
+			for(int i=0;i<warrants.size();i++)
+			{
+				final LegalWarrant W=warrants.elementAt(i);
+				if((W.criminal()==mob)
+				&&(W.crime().equals(copKillerInfo[Law.BIT_CRIMENAME]))
+				&&(W.victim()!=null)
+				&&(behav!=null)
+				&&(behav.isStillACrime(W,false))
+				&&(behav.isAnyOfficer(A,W.victim())))
+					return W;
+			}
 		}
 		return null;
 	}

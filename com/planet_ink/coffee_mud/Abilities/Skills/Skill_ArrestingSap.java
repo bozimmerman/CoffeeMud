@@ -229,18 +229,20 @@ public class Skill_ArrestingSap extends StdSkill implements HealthCondition
 		if(auto)
 		{
 			if(commands!=null)
-			for(int c=commands.size()-1;c>=0;c--)
 			{
-				if(CMath.isInteger(commands.get(c)))
+				for(int c=commands.size()-1;c>=0;c--)
 				{
-					ticks=CMath.s_int(commands.get(c));
-					commands.remove(c);
-				}
-				else
-				if(commands.get(c).equalsIgnoreCase("SAFELY"))
-				{
-					safety=true;
-					commands.remove(c);
+					if(CMath.isInteger(commands.get(c)))
+					{
+						ticks=CMath.s_int(commands.get(c));
+						commands.remove(c);
+					}
+					else
+					if(commands.get(c).equalsIgnoreCase("SAFELY"))
+					{
+						safety=true;
+						commands.remove(c);
+					}
 				}
 			}
 		}
