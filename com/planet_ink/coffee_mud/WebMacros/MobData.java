@@ -864,12 +864,10 @@ public class MobData extends StdWebMacro
 				else
 					str.append("<OPTION SELECTED VALUE=\""+O.ID()+"\">"+O.Name()+" ("+O.ID()+")");
 				str.append("</SELECT>");
-				/*
 				if(RoomData.getItemCache().contains(O))
 					str.append("<INPUT TYPE=BUTTON NAME=EDITITEM"+(i+1)+" VALUE=Edit ONCLICK=\"EditItem('"+RoomData.getItemCode(RoomData.getItemCache(),(Item)O)+"');\">");
 				if(RoomData.getMOBCache().contains(O))
 					str.append("<INPUT TYPE=BUTTON NAME=EDITMOB"+(i+1)+" VALUE=Edit ONCLICK=\"EditMob('"+RoomData.getMOBCode(RoomData.getMOBCache(),(MOB)O)+"');\">");
-				*/
 				str.append("</TD><TD WIDTH=30%><TABLE WIDTH=100% CELLPADDING=0 CELLSPACING=0><TR><TD WIDTH=50%>Stock:</TD>");
 				str.append("<TD WIDTH=50%><INPUT TYPE=TEXT SIZE=5 NAME=SDATA"+(i+1)+" VALUE=\""+theparm+"\"></TD></TR>");
 				if((theprice==null)||(theprice.equals("null")))

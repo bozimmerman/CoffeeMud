@@ -761,7 +761,8 @@ public class StdRoom implements Room
 			default:
 				if(((msg.targetMajor(CMMsg.MASK_HANDS))||(msg.targetMajor(CMMsg.MASK_MOUTH)))
 				&&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_MAGIC))
-				&&(msg.targetMinor()!=CMMsg.TYP_THROW))
+				&&(msg.targetMinor()!=CMMsg.TYP_THROW)
+				&&(isInhabitant(msg.source())))
 				{
 					mob.tell(L("You can't do that here."));
 					return false;
@@ -3085,7 +3086,8 @@ public class StdRoom implements Room
 		final String[] codes = getStatCodes();
 		for (int i = 0; i < codes.length; i++)
 		{
-			if (!E.getStat(codes[i]).equals(getStat(codes[i])))
+			if((!E.getStat(codes[i]).equals(getStat(codes[i])))
+			&&(!codes[i].equals("ATMOSPHERE")))
 				return false;
 		}
 		return true;

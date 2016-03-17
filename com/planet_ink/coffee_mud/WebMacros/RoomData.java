@@ -148,6 +148,7 @@ public class RoomData extends StdWebMacro
 	{
 		if(M==null)
 			return getItemFromCode(getItemCache(),code);
+		String origCode=code;
 		for(int i=0;i<M.numItems();i++)
 		{
 			if(getItemCode(M,M.getItem(i)).equals(code))
@@ -159,6 +160,31 @@ public class RoomData extends StdWebMacro
 		{
 			if(getItemCode(M,M.getItem(i)).startsWith(code))
 				return M.getItem(i);
+		}
+		if(M instanceof ShopKeeper)
+		{
+			CoffeeShop shop=((ShopKeeper)M).getShop();
+			code=origCode;
+			for(Iterator<Environmental> i=shop.getStoreInventory();i.hasNext();)
+			{
+				Environmental E=i.next();
+				if(E instanceof Item)
+				{
+					if(getItemCode(M,(Item)E).equals(code))
+						return (Item)E;
+				}
+			}
+			if(code.length()>2)
+				code=code.substring(0,code.length()-2);
+			for(Iterator<Environmental> i=shop.getStoreInventory();i.hasNext();)
+			{
+				Environmental E=i.next();
+				if(E instanceof Item)
+				{
+					if(getItemCode(M,(Item)E).startsWith(code))
+						return (Item)E;
+				}
+			}
 		}
 		return null;
 	}

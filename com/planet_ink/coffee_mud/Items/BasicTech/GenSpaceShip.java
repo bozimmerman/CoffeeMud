@@ -918,9 +918,51 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 		final String[] codes=getStatCodes();
 		for(int i=0;i<codes.length;i++)
 		{
-			if(!E.getStat(codes[i]).equals(getStat(codes[i])))
+			if((!E.getStat(codes[i]).equals(getStat(codes[i])))
+			&&(!codes[i].equals("AREA")))
 				return false;
 		}
+		Area eA = ((GenSpaceShip)E).getShipArea();
+		Area A = this.getShipArea();
+		Enumeration<Room> er = eA.getProperMap();
+		Enumeration<Room> r = A.getProperMap();
+		for(;r.hasMoreElements();)
+		{
+			final Room R=r.nextElement();
+			if(!er.hasMoreElements())
+				return false;
+			final Room eR = er.nextElement();
+			if(!R.sameAs(eR))
+				return false;
+			Enumeration<Item> i=R.items();
+			Enumeration<Item> ei = eR.items();
+			for(;i.hasMoreElements();)
+			{
+				final Item I=i.nextElement();
+				if(!ei.hasMoreElements())
+					return false;
+				final Item eI=ei.nextElement();
+				if(!I.sameAs(eI))
+					return false;
+			}
+			if(ei.hasMoreElements())
+				return false;
+			Enumeration<MOB> m=R.inhabitants();
+			Enumeration<MOB> em = eR.inhabitants();
+			for(;m.hasMoreElements();)
+			{
+				final MOB M=m.nextElement();
+				if(!em.hasMoreElements())
+					return false;
+				final MOB eM=em.nextElement();
+				if(!M.sameAs(eM))
+					return false;
+			}
+			if(em.hasMoreElements())
+				return false;
+		}
+		if(er.hasMoreElements())
+			return false;
 		return true;
 	}
 }

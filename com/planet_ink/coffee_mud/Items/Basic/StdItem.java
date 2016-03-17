@@ -1399,6 +1399,10 @@ public class StdItem implements Item
 			if(this instanceof Drink)
 				return true;
 			break;
+		case CMMsg.TYP_ADVANCE:
+			if(this instanceof BoardableShip)
+				return true;
+			break;
 		case CMMsg.TYP_ACTIVATE:
 		case CMMsg.TYP_POWERCURRENT:
 		case CMMsg.TYP_DEACTIVATE:

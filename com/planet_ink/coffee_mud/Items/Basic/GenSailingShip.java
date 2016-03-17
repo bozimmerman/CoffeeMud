@@ -275,7 +275,7 @@ public class GenSailingShip extends StdBoardable
 					if(result  == Boolean.TRUE)
 					{
 						if(this.targetedShip != null)
-							msg.source().tell(L("You are now targeting ",this.targetedShip.Name()));
+							msg.source().tell(L("You are now targeting @x1.",this.targetedShip.Name()));
 						tellTargetedShipInfo(msg.source());
 					}
 					else
@@ -721,6 +721,16 @@ public class GenSailingShip extends StdBoardable
 				}
 			}
 		}
+		else
+		if((msg.targetMinor()==CMMsg.TYP_LEAVE)
+		&&(msg.target() == owner())
+		&&(msg.source().riding() != null)
+		&&(this.targetedShip == msg.source().riding())
+		&&(CMLib.flags().isWaterWorthy(msg.source().riding())))
+		{
+			msg.source().tell(L("Your small vessel can not get away during combat."));
+			return false;
+		}
 		if(!super.okMessage(myHost, msg))
 			return false;
 		return true;
@@ -771,13 +781,14 @@ public class GenSailingShip extends StdBoardable
 
 	protected int[] getMagicCoords()
 	{
+		final Room R=CMLib.map().roomLocation(this);
 		final int[] coords;
-		final int middle = (int)Math.round(Math.floor(phyStats().weight() / 2.0));
-		final int extreme = phyStats().weight()-1;
+		final int middle = (int)Math.round(Math.floor(R.phyStats().weight() / 2.0));
+		final int extreme = R.phyStats().weight()-1;
 		final int midDiff = (middle > 0) ? CMLib.dice().roll(1, middle, -1) : 0;
 		final int midDiff2 = (middle > 0) ? CMLib.dice().roll(1, middle, -1) : 0;
-		final int extremeRandom = (extreme > 0) ? CMLib.dice().roll(1, phyStats().weight(), -1) : 0;
-		final int extremeRandom2 = (extreme > 0) ? CMLib.dice().roll(1, phyStats().weight(), -1) : 0;
+		final int extremeRandom = (extreme > 0) ? CMLib.dice().roll(1, R.phyStats().weight(), -1) : 0;
+		final int extremeRandom2 = (extreme > 0) ? CMLib.dice().roll(1, R.phyStats().weight(), -1) : 0;
 		switch(this.directionFacing)
 		{
 		case Directions.NORTH:
