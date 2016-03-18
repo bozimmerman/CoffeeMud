@@ -1940,11 +1940,12 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		&&(msg.tool() instanceof MOB)
 		&&(laws.basicCrimes().containsKey("MURDER"))
 		&&((!msg.source().isMonster())
-			||(!isTroubleMaker(msg.source()))))
+			||(!isTroubleMaker(msg.source())))
+			||(this.isAnyKindOfOfficer(laws, msg.source())))
 		{
 			final MOB criminal=(MOB)msg.tool();
 			this.fillOutMurderWarrant(laws, myArea, criminal, msg.source());
-			if(criminal.isMonster())
+			if(criminal.isMonster() && (isAnyKindOfOfficer(laws, msg.source())))
 			{
 				MOB leaderM = criminal.amUltimatelyFollowing();
 				if((leaderM != null) && (leaderM != criminal) && (!leaderM.isMonster()))
