@@ -1856,6 +1856,28 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		}
 	}
 
+	private void fillOutMurderWarrant(Law laws, Area myArea, MOB criminal, MOB victim)
+	{
+		for(final LegalWarrant W : laws.warrants())
+		{
+			if((W.victim()!=null)
+			&&(W.criminal()!=null)
+			&&(W.victim()==victim)
+			&&(!CMath.bset(W.punishment(),Law.PUNISHMENTMASK_SEPARATE))
+			&&(W.criminal()==criminal))
+				laws.warrants().remove(W);
+		}
+		final String[] bits=laws.basicCrimes().get("MURDER");
+		fillOutWarrant(criminal,
+					   laws,
+					   myArea,
+					   victim,
+					   bits[Law.BIT_CRIMELOCS],
+					   bits[Law.BIT_CRIMEFLAGS],
+					   bits[Law.BIT_CRIMENAME],
+					   bits[Law.BIT_SENTENCE],
+					   bits[Law.BIT_WARNMSG]);
+	}
 
 	@Override
 	public void executeMsg(Environmental affecting, CMMsg msg)
@@ -1917,28 +1939,17 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		if((msg.sourceMinor()==CMMsg.TYP_DEATH)
 		&&(msg.tool() instanceof MOB)
 		&&(laws.basicCrimes().containsKey("MURDER"))
-		&&((!msg.source().isMonster())||(!isTroubleMaker(msg.source()))))
+		&&((!msg.source().isMonster())
+			||(!isTroubleMaker(msg.source()))))
 		{
 			final MOB criminal=(MOB)msg.tool();
-			for(final LegalWarrant W : laws.warrants())
+			this.fillOutMurderWarrant(laws, myArea, criminal, msg.source());
+			if(criminal.isMonster())
 			{
-				if((W.victim()!=null)
-				&&(W.criminal()!=null)
-				&&(W.victim()==msg.source())
-				&&(!CMath.bset(W.punishment(),Law.PUNISHMENTMASK_SEPARATE))
-				&&(W.criminal()==criminal))
-					laws.warrants().remove(W);
+				MOB leaderM = criminal.amUltimatelyFollowing();
+				if((leaderM != null) && (leaderM != criminal) && (!leaderM.isMonster()))
+					this.fillOutMurderWarrant(laws, myArea, leaderM, msg.source());
 			}
-			final String[] bits=laws.basicCrimes().get("MURDER");
-			fillOutWarrant(criminal,
-						   laws,
-						   myArea,
-						   msg.source(),
-						   bits[Law.BIT_CRIMELOCS],
-						   bits[Law.BIT_CRIMEFLAGS],
-						   bits[Law.BIT_CRIMENAME],
-						   bits[Law.BIT_SENTENCE],
-						   bits[Law.BIT_WARNMSG]);
 			return;
 		}
 
