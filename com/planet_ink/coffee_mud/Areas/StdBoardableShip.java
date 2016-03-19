@@ -722,7 +722,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 					msg.source().session().print(L("^HOff the bow you see: ^N"));
 				final CMMsg msg2=CMClass.getMsg(msg.source(), R, msg.tool(), msg.sourceCode(), null, msg.targetCode(), null, msg.othersCode(), null);
 				if((msg.source().isAttributeSet(MOB.Attrib.AUTOEXITS))&&(CMProps.getIntVar(CMProps.Int.EXVIEW)!=1))
-					msg2.addTrailerMsg(CMClass.getMsg(msg.source(),R,null,CMMsg.MSG_LOOK_EXITS,null).setValue(CMMsg.MASK_OPTIMIZE));
+					msg2.addTrailerMsg(CMClass.getMsg(msg.source(),R,null,CMMsg.MSG_LOOK_EXITS,null));
 				if(R.okMessage(msg.source(), msg))
 					R.send(msg.source(),msg2);
 			}

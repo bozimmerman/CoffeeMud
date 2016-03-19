@@ -62,6 +62,12 @@ public class IndoorShallowWater extends ShallowWater implements Drink
 	}
 
 	@Override
+	public int maxRange()
+	{
+		return 5;
+	}
+
+	@Override
 	public List<Integer> resourceChoices()
 	{
 		return CaveRoom.roomResources;

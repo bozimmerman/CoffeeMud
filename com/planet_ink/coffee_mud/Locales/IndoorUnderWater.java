@@ -52,6 +52,12 @@ public class IndoorUnderWater extends StdRoom implements Drink
 	}
 
 	@Override
+	public int maxRange()
+	{
+		return 5;
+	}
+	
+	@Override
 	public int domainType()
 	{
 		return Room.DOMAIN_INDOORS_UNDERWATER;

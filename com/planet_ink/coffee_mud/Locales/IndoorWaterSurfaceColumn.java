@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -65,5 +64,11 @@ public class IndoorWaterSurfaceColumn extends WaterSurfaceColumn implements Drin
 	protected int UnderWaterDomainType()
 	{
 		return Room.DOMAIN_INDOORS_UNDERWATER;
+	}
+	
+	@Override
+	public int maxRange()
+	{
+		return 5;
 	}
 }

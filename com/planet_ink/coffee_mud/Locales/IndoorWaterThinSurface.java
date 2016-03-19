@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -74,6 +73,12 @@ public class IndoorWaterThinSurface extends IndoorWaterSurface
 		return (thatSea instanceof IndoorUnderWaterGrid)
 			 ||(thatSea instanceof IndoorUnderWaterThinGrid)
 			 ||(thatSea instanceof IndoorUnderWaterColumnGrid);
+	}
+
+	@Override
+	public int maxRange()
+	{
+		return 5;
 	}
 
 	@Override
