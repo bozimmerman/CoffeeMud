@@ -385,6 +385,15 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	public Room getRoomInDir(int direction);
 	
 	/**
+	 * Returns the maximum range for ranged weapons in this room.
+	 * It also determines the size of a room in ship combat.
+	 * Typically 1-10;
+	 * @return the maximum range
+	 */
+	@Override
+	public int maxRange();
+	
+	/**
 	 * This method is called by an adjoining room to resolve this room to its
 	 * final object.  There's no reason to call it from the "outside".
 	 * @param fromRoom the room being traveled from

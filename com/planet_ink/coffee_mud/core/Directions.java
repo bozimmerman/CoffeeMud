@@ -202,7 +202,7 @@ public class Directions
 	 */
 	public static final String LETTERS()
 	{
-		return d().DIRECTION_LETTERS;
+		return CMLib.lang().L(d().DIRECTION_LETTERS);
 	}
 
 	/**
@@ -211,7 +211,7 @@ public class Directions
 	 */
 	public static final String NAMES_LIST()
 	{
-		return d().DIRECTION_NAMES;
+		return CMLib.lang().L(d().DIRECTION_NAMES);
 	}
 
 	/**
@@ -220,7 +220,7 @@ public class Directions
 	 */
 	public static final String SHIP_NAMES_LIST()
 	{
-		return d().DIRECTION_SHIPNAMES;
+		return CMLib.lang().L(d().DIRECTION_SHIPNAMES);
 	}
 
 	/**
@@ -283,27 +283,27 @@ public class Directions
 		switch(code)
 		{
 			case NORTH:
-				return "North";
+				return CMLib.lang().L("North");
 			case SOUTH:
-				return "South";
+				return CMLib.lang().L("South");
 			case EAST:
-				return "East";
+				return CMLib.lang().L("East");
 			case WEST:
-				return "West";
+				return CMLib.lang().L("West");
 			case UP:
-				return "Up";
+				return CMLib.lang().L("Up");
 			case DOWN:
-				return "Down";
+				return CMLib.lang().L("Down");
 			case GATE:
-				return "There";
+				return CMLib.lang().L("There");
 			case NORTHEAST:
-				return "Northeast";
+				return CMLib.lang().L("Northeast");
 			case NORTHWEST:
-				return "Northwest";
+				return CMLib.lang().L("Northwest");
 			case SOUTHEAST:
-				return "Southeast";
+				return CMLib.lang().L("Southeast");
 			case SOUTHWEST:
-				return "Southwest";
+				return CMLib.lang().L("Southwest");
 		}
 		return "";
 	}
@@ -336,27 +336,27 @@ public class Directions
 		switch(code)
 		{
 			case NORTH:
-				return "Foreward";
+				return CMLib.lang().L("Foreward");
 			case SOUTH:
-				return "Aft";
+				return CMLib.lang().L("Aft");
 			case EAST:
-				return "Starboard";
+				return CMLib.lang().L("Starboard");
 			case WEST:
-				return "Portside";
+				return CMLib.lang().L("Portside");
 			case UP:
-				return "Above";
+				return CMLib.lang().L("Above");
 			case DOWN:
-				return "Below";
+				return CMLib.lang().L("Below");
 			case GATE:
-				return "There";
+				return CMLib.lang().L("There");
 			case NORTHEAST:
-				return "Fore Starboard";
+				return CMLib.lang().L("Fore Starboard");
 			case NORTHWEST:
-				return "Fore Portside";
+				return CMLib.lang().L("Fore Portside");
 			case SOUTHEAST:
-				return "Aft Starboard";
+				return CMLib.lang().L("Aft Starboard");
 			case SOUTHWEST:
-				return "Aft Portside";
+				return CMLib.lang().L("Aft Portside");
 		}
 		return "";
 	}
@@ -565,27 +565,27 @@ public class Directions
 		switch(code)
 		{
 		case NORTH:
-			return "the north";
+			return CMLib.lang().L("the north");
 		case SOUTH:
-			return "the south";
+			return CMLib.lang().L("the south");
 		case EAST:
-			return "the east";
+			return CMLib.lang().L("the east");
 		case WEST:
-			return "the west";
+			return CMLib.lang().L("the west");
 		case UP:
-			return "above";
+			return CMLib.lang().L("above");
 		case DOWN:
-			return "below";
+			return CMLib.lang().L("below");
 		case GATE:
-			return "out of nowhere";
+			return CMLib.lang().L("out of nowhere");
 		case NORTHEAST:
-			return "the northeast";
+			return CMLib.lang().L("the northeast");
 		case NORTHWEST:
-			return "the northwest";
+			return CMLib.lang().L("the northwest");
 		case SOUTHEAST:
-			return "the southeast";
+			return CMLib.lang().L("the southeast");
 		case SOUTHWEST:
-			return "the southwest";
+			return CMLib.lang().L("the southwest");
 		}
 		return "";
 	}
@@ -600,27 +600,27 @@ public class Directions
 		switch(code)
 		{
 		case NORTH:
-			return "north of";
+			return CMLib.lang().L("north of");
 		case SOUTH:
-			return "south of";
+			return CMLib.lang().L("south of");
 		case EAST:
-			return "east of";
+			return CMLib.lang().L("east of");
 		case WEST:
-			return "west of";
+			return CMLib.lang().L("west of");
 		case UP:
-			return "above";
+			return CMLib.lang().L("above");
 		case DOWN:
-			return "below";
+			return CMLib.lang().L("below");
 		case GATE:
 			return "";
 		case NORTHEAST:
-			return "northeast of";
+			return CMLib.lang().L("northeast of");
 		case NORTHWEST:
-			return "northwest of";
+			return CMLib.lang().L("northwest of");
 		case SOUTHEAST:
-			return "southeast of";
+			return CMLib.lang().L("southeast of");
 		case SOUTHWEST:
-			return "southwest of";
+			return CMLib.lang().L("southwest of");
 		}
 		return "";
 	}
@@ -636,27 +636,27 @@ public class Directions
 		switch(code)
 		{
 		case NORTH:
-			return "foreward";
+			return CMLib.lang().L("foreward");
 		case SOUTH:
-			return "aft";
+			return CMLib.lang().L("aft");
 		case EAST:
-			return "starboard";
+			return CMLib.lang().L("starboard");
 		case WEST:
-			return "portside";
+			return CMLib.lang().L("portside");
 		case UP:
-			return "above";
+			return CMLib.lang().L("above");
 		case DOWN:
-			return "below";
+			return CMLib.lang().L("below");
 		case GATE:
-			return "out of nowhere";
+			return CMLib.lang().L("out of nowhere");
 		case NORTHEAST:
-			return "forward starboard";
+			return CMLib.lang().L("forward starboard");
 		case NORTHWEST:
-			return "forward portside";
+			return CMLib.lang().L("forward portside");
 		case SOUTHEAST:
-			return "aft starboard";
+			return CMLib.lang().L("aft starboard");
 		case SOUTHWEST:
-			return "aft portside";
+			return CMLib.lang().L("aft portside");
 		}
 		return "";
 	}
@@ -674,27 +674,27 @@ public class Directions
 		switch(code)
 		{
 		case NORTH:
-			return "to the north";
+			return CMLib.lang().L("to the north");
 		case SOUTH:
-			return "to the south";
+			return CMLib.lang().L("to the south");
 		case EAST:
-			return "to the east";
+			return CMLib.lang().L("to the east");
 		case WEST:
-			return "to the west";
+			return CMLib.lang().L("to the west");
 		case NORTHEAST:
-			return "to the northeast";
+			return CMLib.lang().L("to the northeast");
 		case NORTHWEST:
-			return "to the northwest";
+			return CMLib.lang().L("to the northwest");
 		case SOUTHEAST:
-			return "to the southeast";
+			return CMLib.lang().L("to the southeast");
 		case SOUTHWEST:
-			return "to the southwest";
+			return CMLib.lang().L("to the southwest");
 		case UP:
-			return "above you";
+			return CMLib.lang().L("above you");
 		case DOWN:
-			return "below";
+			return CMLib.lang().L("below");
 		case GATE:
-			return "there";
+			return CMLib.lang().L("there");
 		}
 		return "";
 	}
@@ -712,27 +712,27 @@ public class Directions
 		switch(code)
 		{
 		case NORTH:
-			return "to foreward";
+			return CMLib.lang().L("to foreward");
 		case SOUTH:
-			return "to aft";
+			return CMLib.lang().L("to aft");
 		case EAST:
-			return "to starboard";
+			return CMLib.lang().L("to starboard");
 		case WEST:
-			return "to portside";
+			return CMLib.lang().L("to portside");
 		case NORTHEAST:
-			return "to forward starboard";
+			return CMLib.lang().L("to forward starboard");
 		case NORTHWEST:
-			return "to forward port";
+			return CMLib.lang().L("to forward port");
 		case SOUTHEAST:
-			return "to aft starboard";
+			return CMLib.lang().L("to aft starboard");
 		case SOUTHWEST:
-			return "to aft portside";
+			return CMLib.lang().L("to aft portside");
 		case UP:
-			return "above you";
+			return CMLib.lang().L("above you");
 		case DOWN:
-			return "below";
+			return CMLib.lang().L("below");
 		case GATE:
-			return "there";
+			return CMLib.lang().L("there");
 		}
 		return "";
 	}

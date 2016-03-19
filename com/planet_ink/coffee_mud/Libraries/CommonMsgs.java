@@ -1718,7 +1718,14 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			if(longlook)
 			{
 				final Command C=CMClass.getCommand("Consider");
-				try{if(C!=null)C.executeInternal(viewermob,0,viewedmob);}catch(final java.io.IOException e){}
+				try
+				{
+					if (C != null)
+						C.executeInternal(viewermob, 0, viewedmob);
+				}
+				catch (final java.io.IOException e)
+				{
+				}
 			}
 		}
 	}
@@ -1999,11 +2006,21 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 					buf.append("^U^<EX^>" + Dir+"^</EX^>:^.^N ^u"+Say+"^.^N\n\r");
 			}
 		}
+		boolean noBoardableShips = false;
+		if((mob.location() != room)
+		&&(mob.location() != null)
+		&&(mob.location().getArea()!=room.getArea())
+		&&(mob.location().getArea() instanceof BoardableShip))
+			noBoardableShips = true;
+		
 		Item I=null;
 		for(int i=0;i<room.numItems();i++)
 		{
 			I=room.getItem(i);
-			if((I instanceof Exit)&&(((Exit)I).doorName().length()>0)&&(I.container()==null))
+			if((I instanceof Exit)
+			&&(((Exit)I).doorName().length()>0)
+			&&(I.container()==null)
+			&&((!(I instanceof BoardableShip))||(!noBoardableShips)))
 			{
 				final StringBuilder Say=((Exit)I).viewableText(mob, room);
 				if(Say.length()>0)
@@ -2028,18 +2045,27 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			return;
 
 		final boolean useShipNames=((room instanceof BoardableShip)||(room.getArea() instanceof BoardableShip));
-		final StringBuilder buf=new StringBuilder("^D[Exits: ");
+		final StringBuilder buf=new StringBuilder(L("^D[Exits: "));
 		for(int d : Directions.DISPLAY_CODES())
 		{
 			final Exit exit=room.getExitInDir(d);
 			if((exit!=null)&&(exit.viewableText(mob, room.getRoomInDir(d)).length()>0))
 				buf.append("^<EX^>"+(useShipNames?Directions.getShipDirectionName(d):Directions.getDirectionName(d))+"^</EX^> ");
 		}
+		boolean noBoardableShips = false;
+		if((mob.location() != room)
+		&&(mob.location() != null)
+		&&(mob.location().getArea()!=room.getArea())
+		&&(mob.location().getArea() instanceof BoardableShip))
+			noBoardableShips = true;
 		Item I=null;
 		for(int i=0;i<room.numItems();i++)
 		{
 			I=room.getItem(i);
-			if((I instanceof Exit)&&(I.container()==null)&&(((Exit)I).viewableText(mob, room).length()>0))
+			if((I instanceof Exit)
+			&&(I.container()==null)
+			&&(((Exit)I).viewableText(mob, room).length()>0)
+			&&((!(I instanceof BoardableShip))||(!noBoardableShips)))
 				buf.append("^<MEX^>"+((Exit)I).doorName()+"^</MEX^> ");
 		}
 		mob.tell(buf.toString().trim()+"]^.^N");

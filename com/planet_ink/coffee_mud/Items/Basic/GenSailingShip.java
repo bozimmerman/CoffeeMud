@@ -567,7 +567,7 @@ public class GenSailingShip extends StdBoardable
 								final Exit targetExit=R.getExitInDir(dir);
 								if((targetRoom==null)||(targetExit==null)||(!targetExit.isOpen()))
 								{
-									if((coordinates == null) || (getTacticalDistance(coordinates) >= phyStats().weight()))
+									if((coordinates == null) || (getTacticalDistance(coordinates) >= R.maxRange()))
 									{
 										msg.source().tell(L("There doesn't look to be anywhere you can sail in that direction."));
 										return false;
@@ -783,12 +783,12 @@ public class GenSailingShip extends StdBoardable
 	{
 		final Room R=CMLib.map().roomLocation(this);
 		final int[] coords;
-		final int middle = (int)Math.round(Math.floor(R.phyStats().weight() / 2.0));
-		final int extreme = R.phyStats().weight()-1;
+		final int middle = (int)Math.round(Math.floor(R.maxRange() / 2.0));
+		final int extreme = R.maxRange()-1;
 		final int midDiff = (middle > 0) ? CMLib.dice().roll(1, middle, -1) : 0;
 		final int midDiff2 = (middle > 0) ? CMLib.dice().roll(1, middle, -1) : 0;
-		final int extremeRandom = (extreme > 0) ? CMLib.dice().roll(1, R.phyStats().weight(), -1) : 0;
-		final int extremeRandom2 = (extreme > 0) ? CMLib.dice().roll(1, R.phyStats().weight(), -1) : 0;
+		final int extremeRandom = (extreme > 0) ? CMLib.dice().roll(1, R.maxRange(), -1) : 0;
+		final int extremeRandom2 = (extreme > 0) ? CMLib.dice().roll(1, R.maxRange(), -1) : 0;
 		switch(this.directionFacing)
 		{
 		case Directions.NORTH:
@@ -1371,7 +1371,7 @@ public class GenSailingShip extends StdBoardable
 	protected int getTacticalDistance(int[] fromCoords)
 	{
 		final PairList<Item,int[]> coords = this.coordinates;
-		int lowest = phyStats().weight();
+		int lowest = CMLib.map().roomLocation(this).maxRange();
 		if(coords != null)
 		{
 			for(int p=0;p<coords.size();p++)
@@ -1463,7 +1463,7 @@ public class GenSailingShip extends StdBoardable
 						final int oldDistance = this.getTacticalDistance(tacticalCoords);
 						final int[] newCoords = Arrays.copyOf(tacticalCoords, 2);
 						final int newDistance = this.getTacticalDistance(tacticalCoords);
-						if((newDistance <= oldDistance)||(newDistance < phyStats.weight()))
+						if((newDistance <= oldDistance)||(newDistance < thisRoom.maxRange()))
 						{
 							final int[] adj=this.getCoordAdjustments(newCoords);
 							final String coords = (newCoords[0]+adj[0])+","+(newCoords[1]+adj[1]);

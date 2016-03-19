@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -53,6 +52,12 @@ public class IndoorWaterSurface extends WaterSurface implements Drink
 	public int domainType()
 	{
 		return Room.DOMAIN_INDOORS_WATERSURFACE;
+	}
+
+	@Override
+	public int maxRange()
+	{
+		return 5;
 	}
 
 	@Override
