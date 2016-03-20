@@ -254,16 +254,35 @@ public class Undead extends StdRace
 		return super.okMessage(myHost,msg);
 	}
 
+	private static final int[] UNDEAD_SAVE_STATS = new int[]
+	{
+		CharStats.STAT_SAVE_POISON,
+		CharStats.STAT_SAVE_MIND,
+		CharStats.STAT_SAVE_GAS,
+		CharStats.STAT_SAVE_PARALYSIS,
+		CharStats.STAT_SAVE_UNDEAD,
+		CharStats.STAT_SAVE_DISEASE
+		
+	};
+	
 	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setStat(CharStats.STAT_SAVE_POISON,affectableStats.getStat(CharStats.STAT_SAVE_POISON)+100);
-		affectableStats.setStat(CharStats.STAT_SAVE_MIND,affectableStats.getStat(CharStats.STAT_SAVE_MIND)+100);
-		affectableStats.setStat(CharStats.STAT_SAVE_GAS,affectableStats.getStat(CharStats.STAT_SAVE_GAS)+100);
-		affectableStats.setStat(CharStats.STAT_SAVE_PARALYSIS,affectableStats.getStat(CharStats.STAT_SAVE_PARALYSIS)+100);
-		affectableStats.setStat(CharStats.STAT_SAVE_UNDEAD,affectableStats.getStat(CharStats.STAT_SAVE_UNDEAD)+100);
-		affectableStats.setStat(CharStats.STAT_SAVE_DISEASE,affectableStats.getStat(CharStats.STAT_SAVE_DISEASE)+100);
+		int statDex = 0;
+		try
+		{
+			for(;statDex<UNDEAD_SAVE_STATS.length;statDex++)
+			{
+				final int stat = UNDEAD_SAVE_STATS[statDex];
+				affectableStats.setStat(stat,affectableStats.getStat(stat)+100);
+			}
+		}
+		catch(IllegalArgumentException x) //TODO: DELME
+		{
+			int oldStat = affectableStats.getStat(UNDEAD_SAVE_STATS[statDex]);
+			Log.errOut("Failed to bump stat "+CharStats.CODES.NAME(UNDEAD_SAVE_STATS[statDex])+" from "+oldStat);
+		}
 	}
 
 	@Override
