@@ -891,6 +891,12 @@ public class StdMOB implements MOB
 		{
 			Log.errOut("Char Stat Out of Range: "+Name()+": "+CMLib.map().getDescriptiveExtendedRoomID(location()));
 			Log.errOut(x);
+			if(isMonster())
+			{
+				Log.errOut("It's a mob -- killing it.");
+				destroy();
+			}
+			return;
 		}
 		baseCharStats.getMyRace().agingAffects(this, baseCharStats, charStats);
 		eachEffect(affectCharStats);
