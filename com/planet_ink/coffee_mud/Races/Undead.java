@@ -282,6 +282,7 @@ public class Undead extends StdRace
 		{
 			int oldStat = affectableStats.getStat(UNDEAD_SAVE_STATS[statDex]);
 			Log.errOut("Failed to bump stat "+CharStats.CODES.NAME(UNDEAD_SAVE_STATS[statDex])+" from "+oldStat);
+			throw x;
 		}
 	}
 
