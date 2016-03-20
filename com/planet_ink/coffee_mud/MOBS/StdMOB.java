@@ -895,8 +895,8 @@ public class StdMOB implements MOB
 			{
 				Log.errOut("It's a mob -- killing it.");
 				destroy();
+				return;
 			}
-			return;
 		}
 		baseCharStats.getMyRace().agingAffects(this, baseCharStats, charStats);
 		eachEffect(affectCharStats);
