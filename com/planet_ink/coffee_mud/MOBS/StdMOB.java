@@ -5,6 +5,8 @@ import com.planet_ink.coffee_mud.core.interfaces.EachApplicable.ApplyAffectPhySt
 import com.planet_ink.coffee_mud.core.interfaces.ItemPossessor.Move;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.core.exceptions.CMException;
+import com.planet_ink.coffee_mud.core.exceptions.CharStatOutOfRangeException;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -881,7 +883,15 @@ public class StdMOB implements MOB
 		final int num = charStats.numClasses();
 		for (int c = 0; c < num; c++)
 			charStats.getMyClass(c).affectCharStats(this, charStats);
-		charStats.getMyRace().affectCharStats(this, charStats);
+		try
+		{
+			charStats.getMyRace().affectCharStats(this, charStats);
+		}
+		catch(IllegalArgumentException x) //TODO: DELME
+		{
+			Log.errOut("Char Stat Out of Range: "+Name()+": "+CMLib.map().getDescriptiveExtendedRoomID(location()));
+			Log.errOut(x);
+		}
 		baseCharStats.getMyRace().agingAffects(this, baseCharStats, charStats);
 		eachEffect(affectCharStats);
 		eachItem(affectCharStats);

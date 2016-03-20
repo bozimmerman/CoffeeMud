@@ -2532,6 +2532,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		for(final Enumeration<BoardableShip> s = CMLib.map().ships();s.hasMoreElements();)
 		{
 			final BoardableShip ship = s.nextElement();
+			ship.tick(ship, Tickable.TICKID_SPECIALMANEUVER);
 			ship.tick(ship, Tickable.TICKID_SPECIALCOMBAT);
 		}
 	}

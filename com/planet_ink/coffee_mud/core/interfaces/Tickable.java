@@ -124,7 +124,9 @@ public interface Tickable extends CMObject
 	/** the tickid for a system support task*/
 	public final static int TICKID_SUPPORT=23;
 	/** the tickid for an special combat service*/
-	public final static int TICKID_SPECIALCOMBAT=24;
+	public final static int TICKID_SPECIALMANEUVER=24;
+	/** the tickid for an special combat service*/
+	public final static int TICKID_SPECIALCOMBAT=25;
 
 	/** a tick status constant representing  the state of waiting for tick access */
 	public static int STATUS_NOT=0;

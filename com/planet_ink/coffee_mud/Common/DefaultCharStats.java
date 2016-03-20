@@ -953,8 +953,8 @@ public class DefaultCharStats implements CharStats
 	@Override
 	public void setStat(int abilityCode, int value)
 	{
-		if((value>Short.MAX_VALUE)||(value<Short.MIN_VALUE))
-			Log.errOut("Value out of range",new CMException("Value out of range: "+value+" for "+abilityCode));
+		if((value>Short.MAX_VALUE)||(value<Short.MIN_VALUE))  //TODO: DELME
+			throw new IllegalArgumentException("Value out of range: "+value+" for "+abilityCode);
 		else
 		if(abilityCode<stats.length)
 			stats[abilityCode]=(short)value;

@@ -703,7 +703,9 @@ public class StdItem implements Item
 		if(destroyed)
 			return false;
 		tickStatus=Tickable.STATUS_START;
-		if(tickID==Tickable.TICKID_ITEM_BEHAVIOR)
+		switch(tickID)
+		{
+		case Tickable.TICKID_ITEM_BEHAVIOR:
 		{
 			tickStatus=Tickable.STATUS_BEHAVIOR;
 			if(numBehaviors()>0)
@@ -731,9 +733,14 @@ public class StdItem implements Item
 			}
 			if((numBehaviors()==0)&&(numScripts()==0))
 				return false;
+			break;
 		}
-		else
-		if((tickID!=Tickable.TICKID_CLANITEM)&&(tickID!=Tickable.TICKID_ELECTRONICS))
+		case Tickable.TICKID_CLANITEM:
+		case Tickable.TICKID_ELECTRONICS:
+		case Tickable.TICKID_SPECIALCOMBAT:
+		case Tickable.TICKID_SPECIALMANEUVER:
+			break;
+		default:
 		{
 			tickStatus=Tickable.STATUS_AFFECT;
 			if(numEffects()>0)
@@ -748,6 +755,8 @@ public class StdItem implements Item
 					} 
 				});
 			}
+			break;
+		}
 		}
 		tickStatus=Tickable.STATUS_NOT;
 		return !amDestroyed();

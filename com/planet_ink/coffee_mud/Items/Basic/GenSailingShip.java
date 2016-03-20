@@ -210,7 +210,7 @@ public class GenSailingShip extends StdBoardable
 		announceActionToDeckOrUnderdeck(mob,msg, Room.INDOORS);
 	}
 
-	protected void tellTargetedShipInfo(final MOB mob)
+	protected String getTargetedShipInfo()
 	{
 		if((this.targetedShip != null)&&(this.targetedShip instanceof GenSailingShip))
 		{
@@ -222,9 +222,10 @@ public class GenSailingShip extends StdBoardable
 				final String dir=Directions.getDirectionName(targetShip.directionFacing);
 				final String speed=""+targetShip.getShipSpeed();
 				final String dirFromYou = Directions.getDirectionName(Directions.getRelativeDirection(getMyCoords(), targetCoords));
-				mob.tell(L("@x1 is @x2 of you sailing @x3 at a speed of @x4 and a distance of @x5.",targetShip.name(),dirFromYou,dir,speed,dist));
+				return L("@x1 is @x2 of you sailing @x3 at a speed of @x4 and a distance of @x5.",targetShip.name(),dirFromYou,dir,speed,dist);
 			}
 		}
+		return "";
 	}
 
 	protected int getShipSpeed()
@@ -277,7 +278,7 @@ public class GenSailingShip extends StdBoardable
 					{
 						if(this.targetedShip != null)
 							msg.source().tell(L("You are now targeting @x1.",this.targetedShip.Name()));
-						tellTargetedShipInfo(msg.source());
+						msg.source().tell(getTargetedShipInfo());
 					}
 					else
 					if(result  == Boolean.FALSE)
@@ -301,8 +302,8 @@ public class GenSailingShip extends StdBoardable
 					}
 					if(cmds.size()<3)
 					{
-						tellTargetedShipInfo(msg.source());
 						msg.source().tell(L("Aim what weapon how far ahead?"));
+						msg.source().tell(getTargetedShipInfo());
 						return false;
 					}
 					String leadStr = cmds.remove(cmds.size()-1);
@@ -717,7 +718,7 @@ public class GenSailingShip extends StdBoardable
 					else
 					if(result == Boolean.TRUE)
 					{
-						tellTargetedShipInfo(msg.source());
+						msg.source().tell(getTargetedShipInfo());
 					}
 				}
 			}
@@ -935,7 +936,7 @@ public class GenSailingShip extends StdBoardable
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
-		final int sailingTickID = amInTacticalMode() ? Tickable.TICKID_SPECIALCOMBAT : Tickable.TICKID_AREA;
+		final int sailingTickID = amInTacticalMode() ? Tickable.TICKID_SPECIALMANEUVER : Tickable.TICKID_AREA;
 		if(tickID == Tickable.TICKID_AREA)
 		{
 			if(amDestroyed())
@@ -977,7 +978,25 @@ public class GenSailingShip extends StdBoardable
 					}
 					}
 				}
+				if(tickID == Tickable.TICKID_SPECIALMANEUVER)
+				{
+					PairList<Item,int[]> coords = this.coordinates;
+					if(coords != null)
+					{
+						for(Iterator<Item> i= coords.firstIterator(); i.hasNext();)
+						{
+							Item I=i.next();
+							if((I instanceof GenSailingShip)
+							&&(((GenSailingShip)I).targetedShip == this))
+								((GenSailingShip)I).announceToDeck(this.getTargetedShipInfo());
+						}
+					}
+				}
+				
 			}
+		}
+		if(tickID == Tickable.TICKID_SPECIALCOMBAT)
+		{
 			if(this.amInTacticalMode())
 			{
 				final List<Weapon> weapons = new LinkedList<Weapon>();
@@ -1044,7 +1063,6 @@ public class GenSailingShip extends StdBoardable
 					
 				}
 			}
-			return true;
 		}
 		return super.tick(ticking, tickID);
 	}
@@ -1472,7 +1490,6 @@ public class GenSailingShip extends StdBoardable
 						final int newDistance = this.getTacticalDistance(tacticalCoords);
 						if((newDistance <= oldDistance)||(newDistance < thisRoom.maxRange()))
 						{
-							//TODO: the thing below does nothing, especially not moving the damn coords in the directions!
 							final int[] newCoords = Directions.adjustXYByDirections(tacticalCoords[0], tacticalCoords[1], direction);
 							final int[] adj=this.getCoordAdjustments(newCoords);
 							final String coords = (newCoords[0]+adj[0])+","+(newCoords[1]+adj[1]);
