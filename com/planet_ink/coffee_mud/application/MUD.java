@@ -480,9 +480,9 @@ public class MUD extends Thread implements MudHost
 						// important! shutdown their affects!
 						for(int a=M.numAllEffects()-1;a>=0;a--) // reverse enumeration
 						{
-							final Ability A=M.fetchEffect(a);
 							try
 							{
+								final Ability A=M.fetchEffect(a);
 								if((A!=null)&&(A.canBeUninvoked()))
 									A.unInvoke();
 								if((A!=null)&&(!A.isSavable()))
