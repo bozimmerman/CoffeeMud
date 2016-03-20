@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.core;
 import java.util.Arrays;
 
 import com.planet_ink.coffee_mud.Items.interfaces.SpaceShip;
+import com.planet_ink.coffee_mud.Libraries.interfaces.LanguageLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.Room;
 
 /*
@@ -202,7 +203,7 @@ public class Directions
 	 */
 	public static final String LETTERS()
 	{
-		return CMLib.lang().L(d().DIRECTION_LETTERS);
+		return L(d().DIRECTION_LETTERS);
 	}
 
 	/**
@@ -211,7 +212,7 @@ public class Directions
 	 */
 	public static final String NAMES_LIST()
 	{
-		return CMLib.lang().L(d().DIRECTION_NAMES);
+		return L(d().DIRECTION_NAMES);
 	}
 
 	/**
@@ -220,7 +221,7 @@ public class Directions
 	 */
 	public static final String SHIP_NAMES_LIST()
 	{
-		return CMLib.lang().L(d().DIRECTION_SHIPNAMES);
+		return L(d().DIRECTION_SHIPNAMES);
 	}
 
 	/**
@@ -283,27 +284,27 @@ public class Directions
 		switch(code)
 		{
 			case NORTH:
-				return CMLib.lang().L("North");
+				return L("North");
 			case SOUTH:
-				return CMLib.lang().L("South");
+				return L("South");
 			case EAST:
-				return CMLib.lang().L("East");
+				return L("East");
 			case WEST:
-				return CMLib.lang().L("West");
+				return L("West");
 			case UP:
-				return CMLib.lang().L("Up");
+				return L("Up");
 			case DOWN:
-				return CMLib.lang().L("Down");
+				return L("Down");
 			case GATE:
-				return CMLib.lang().L("There");
+				return L("There");
 			case NORTHEAST:
-				return CMLib.lang().L("Northeast");
+				return L("Northeast");
 			case NORTHWEST:
-				return CMLib.lang().L("Northwest");
+				return L("Northwest");
 			case SOUTHEAST:
-				return CMLib.lang().L("Southeast");
+				return L("Southeast");
 			case SOUTHWEST:
-				return CMLib.lang().L("Southwest");
+				return L("Southwest");
 		}
 		return "";
 	}
@@ -336,27 +337,27 @@ public class Directions
 		switch(code)
 		{
 			case NORTH:
-				return CMLib.lang().L("Foreward");
+				return L("Foreward");
 			case SOUTH:
-				return CMLib.lang().L("Aft");
+				return L("Aft");
 			case EAST:
-				return CMLib.lang().L("Starboard");
+				return L("Starboard");
 			case WEST:
-				return CMLib.lang().L("Portside");
+				return L("Portside");
 			case UP:
-				return CMLib.lang().L("Above");
+				return L("Above");
 			case DOWN:
-				return CMLib.lang().L("Below");
+				return L("Below");
 			case GATE:
-				return CMLib.lang().L("There");
+				return L("There");
 			case NORTHEAST:
-				return CMLib.lang().L("Fore Starboard");
+				return L("Fore Starboard");
 			case NORTHWEST:
-				return CMLib.lang().L("Fore Portside");
+				return L("Fore Portside");
 			case SOUTHEAST:
-				return CMLib.lang().L("Aft Starboard");
+				return L("Aft Starboard");
 			case SOUTHWEST:
-				return CMLib.lang().L("Aft Portside");
+				return L("Aft Portside");
 		}
 		return "";
 	}
@@ -565,27 +566,27 @@ public class Directions
 		switch(code)
 		{
 		case NORTH:
-			return CMLib.lang().L("the north");
+			return L("the north");
 		case SOUTH:
-			return CMLib.lang().L("the south");
+			return L("the south");
 		case EAST:
-			return CMLib.lang().L("the east");
+			return L("the east");
 		case WEST:
-			return CMLib.lang().L("the west");
+			return L("the west");
 		case UP:
-			return CMLib.lang().L("above");
+			return L("above");
 		case DOWN:
-			return CMLib.lang().L("below");
+			return L("below");
 		case GATE:
-			return CMLib.lang().L("out of nowhere");
+			return L("out of nowhere");
 		case NORTHEAST:
-			return CMLib.lang().L("the northeast");
+			return L("the northeast");
 		case NORTHWEST:
-			return CMLib.lang().L("the northwest");
+			return L("the northwest");
 		case SOUTHEAST:
-			return CMLib.lang().L("the southeast");
+			return L("the southeast");
 		case SOUTHWEST:
-			return CMLib.lang().L("the southwest");
+			return L("the southwest");
 		}
 		return "";
 	}
@@ -600,27 +601,27 @@ public class Directions
 		switch(code)
 		{
 		case NORTH:
-			return CMLib.lang().L("north of");
+			return L("north of");
 		case SOUTH:
-			return CMLib.lang().L("south of");
+			return L("south of");
 		case EAST:
-			return CMLib.lang().L("east of");
+			return L("east of");
 		case WEST:
-			return CMLib.lang().L("west of");
+			return L("west of");
 		case UP:
-			return CMLib.lang().L("above");
+			return L("above");
 		case DOWN:
-			return CMLib.lang().L("below");
+			return L("below");
 		case GATE:
 			return "";
 		case NORTHEAST:
-			return CMLib.lang().L("northeast of");
+			return L("northeast of");
 		case NORTHWEST:
-			return CMLib.lang().L("northwest of");
+			return L("northwest of");
 		case SOUTHEAST:
-			return CMLib.lang().L("southeast of");
+			return L("southeast of");
 		case SOUTHWEST:
-			return CMLib.lang().L("southwest of");
+			return L("southwest of");
 		}
 		return "";
 	}
@@ -636,27 +637,27 @@ public class Directions
 		switch(code)
 		{
 		case NORTH:
-			return CMLib.lang().L("foreward");
+			return L("foreward");
 		case SOUTH:
-			return CMLib.lang().L("aft");
+			return L("aft");
 		case EAST:
-			return CMLib.lang().L("starboard");
+			return L("starboard");
 		case WEST:
-			return CMLib.lang().L("portside");
+			return L("portside");
 		case UP:
-			return CMLib.lang().L("above");
+			return L("above");
 		case DOWN:
-			return CMLib.lang().L("below");
+			return L("below");
 		case GATE:
-			return CMLib.lang().L("out of nowhere");
+			return L("out of nowhere");
 		case NORTHEAST:
-			return CMLib.lang().L("forward starboard");
+			return L("forward starboard");
 		case NORTHWEST:
-			return CMLib.lang().L("forward portside");
+			return L("forward portside");
 		case SOUTHEAST:
-			return CMLib.lang().L("aft starboard");
+			return L("aft starboard");
 		case SOUTHWEST:
-			return CMLib.lang().L("aft portside");
+			return L("aft portside");
 		}
 		return "";
 	}
@@ -674,27 +675,27 @@ public class Directions
 		switch(code)
 		{
 		case NORTH:
-			return CMLib.lang().L("to the north");
+			return L("to the north");
 		case SOUTH:
-			return CMLib.lang().L("to the south");
+			return L("to the south");
 		case EAST:
-			return CMLib.lang().L("to the east");
+			return L("to the east");
 		case WEST:
-			return CMLib.lang().L("to the west");
+			return L("to the west");
 		case NORTHEAST:
-			return CMLib.lang().L("to the northeast");
+			return L("to the northeast");
 		case NORTHWEST:
-			return CMLib.lang().L("to the northwest");
+			return L("to the northwest");
 		case SOUTHEAST:
-			return CMLib.lang().L("to the southeast");
+			return L("to the southeast");
 		case SOUTHWEST:
-			return CMLib.lang().L("to the southwest");
+			return L("to the southwest");
 		case UP:
-			return CMLib.lang().L("above you");
+			return L("above you");
 		case DOWN:
-			return CMLib.lang().L("below");
+			return L("below");
 		case GATE:
-			return CMLib.lang().L("there");
+			return L("there");
 		}
 		return "";
 	}
@@ -712,27 +713,27 @@ public class Directions
 		switch(code)
 		{
 		case NORTH:
-			return CMLib.lang().L("to foreward");
+			return L("to foreward");
 		case SOUTH:
-			return CMLib.lang().L("to aft");
+			return L("to aft");
 		case EAST:
-			return CMLib.lang().L("to starboard");
+			return L("to starboard");
 		case WEST:
-			return CMLib.lang().L("to portside");
+			return L("to portside");
 		case NORTHEAST:
-			return CMLib.lang().L("to forward starboard");
+			return L("to forward starboard");
 		case NORTHWEST:
-			return CMLib.lang().L("to forward port");
+			return L("to forward port");
 		case SOUTHEAST:
-			return CMLib.lang().L("to aft starboard");
+			return L("to aft starboard");
 		case SOUTHWEST:
-			return CMLib.lang().L("to aft portside");
+			return L("to aft portside");
 		case UP:
-			return CMLib.lang().L("above you");
+			return L("above you");
 		case DOWN:
-			return CMLib.lang().L("below");
+			return L("below");
 		case GATE:
-			return CMLib.lang().L("there");
+			return L("there");
 		}
 		return "";
 	}
@@ -993,4 +994,89 @@ public class Directions
 		final int code=getDirectionCode(theDir);
 		return getOpDirectionCode(code);
 	}
+
+	/**
+	 * Returns the cardinal direction from the FROM point on a graph to the
+	 * TO point, where the points are X, then Y, with the northwest corner
+	 * being 0,0.
+	 * @param xyFrom the starting point
+	 * @param xyTo the target point
+	 * @return the direction from the start to target
+	 */
+	public static final int getRelativeDirection(int[] xyFrom, int[] xyTo)
+	{
+		return getRelativeDirection(xyFrom,xyTo,Directions.NUM_DIRECTIONS()!=11);
+	}
+	
+	/**
+	 * Returns the cardinal direction from the FROM point on a graph to the
+	 * TO point, where the points are X, then Y, with the northwest corner
+	 * being 0,0.
+	 * @param xyFrom the starting point
+	 * @param xyTo the target point
+	 * @param useBase4 true to use NSEW, false to use NORTHEAST, etc.
+	 * @return the direction from the start to target
+	 */
+	public static final int getRelativeDirection(int[] xyFrom, int[] xyTo, boolean useBase4)
+	{
+		double x =  xyTo[0] - xyFrom[0];
+		double y =  xyTo[1] - xyFrom[1];
+		double rads = Math.atan2(x,y);
+		int dir= (int)Math.round(rads * 180.0 / Math.PI);
+		if(useBase4)
+		{
+			if((dir < -135)||(dir > 135))
+				return Directions.NORTH;
+			else
+			if(dir < -45)
+				return Directions.WEST;
+			else
+			if(dir > 45)
+				return Directions.EAST;
+			else
+				return Directions.SOUTH;
+		}
+		else
+		{
+			if((dir < -157)||(dir > 157))
+				return Directions.NORTH;
+			else
+			if(dir < -112)
+				return Directions.NORTHWEST;
+			else
+			if(dir < -67)
+				return Directions.WEST;
+			else
+			if(dir < -22)
+				return Directions.SOUTHWEST;
+			else
+			if(dir > 112)
+				return Directions.NORTHEAST;
+			else
+			if(dir > 67)
+				return Directions.EAST;
+			else
+			if(dir > 22)
+				return Directions.SOUTHEAST;
+			else
+				return Directions.SOUTH;
+		}
+	}
+	
+	
+	/**
+	 * An optional localization pass-through for direction names.
+	 * @param str the string to localize
+	 * @param xs any variables
+	 * @return the localized string
+	 */
+	@SuppressWarnings("static-access")
+	private static final String L(final String str, final String ... xs)
+	{
+		final LanguageLibrary lib = CMLib.initialize().lang();
+		if(lib != null)
+			return lib.L(str, xs);
+		return str;
+	}
+
 }

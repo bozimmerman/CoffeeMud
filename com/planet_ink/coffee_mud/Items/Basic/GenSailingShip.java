@@ -221,7 +221,8 @@ public class GenSailingShip extends StdBoardable
 				final String dist = ""+this.getTacticalDistance(targetCoords);
 				final String dir=Directions.getDirectionName(targetShip.directionFacing);
 				final String speed=""+targetShip.getShipSpeed();
-				mob.tell(L("@x1 is sailing @x2 at a speed of @x3 and a distance of @x4.",targetShip.name(),dir,speed,dist));
+				final String dirFromYou = Directions.getDirectionName(Directions.getRelativeDirection(getMyCoords(), targetCoords));
+				mob.tell(L("@x1 is @x2 of you sailing @x3 at a speed of @x4 and a distance of @x5.",targetShip.name(),dirFromYou,dir,speed,dist));
 			}
 		}
 	}
@@ -1074,6 +1075,13 @@ public class GenSailingShip extends StdBoardable
 	{
 		super.executeMsg(myHost,msg);
 
+		if(((msg.sourceMajor(CMMsg.MASK_SOUND))||(msg.sourceMajor(CMMsg.MASK_MOVE)))
+		&&(msg.source().location()==owner())
+		&&((msg.source().riding()!=this)))
+		{
+			this.sendAreaMessage(msg, true);
+		}
+		
 		if((msg.target() instanceof Room)
 		&&(msg.target() == owner()))
 		{
@@ -1461,10 +1469,11 @@ public class GenSailingShip extends StdBoardable
 					if(directionFacing == direction)
 					{
 						final int oldDistance = this.getTacticalDistance(tacticalCoords);
-						final int[] newCoords = Arrays.copyOf(tacticalCoords, 2);
 						final int newDistance = this.getTacticalDistance(tacticalCoords);
 						if((newDistance <= oldDistance)||(newDistance < thisRoom.maxRange()))
 						{
+							//TODO: the thing below does nothing, especially not moving the damn coords in the directions!
+							final int[] newCoords = Directions.adjustXYByDirections(tacticalCoords[0], tacticalCoords[1], direction);
 							final int[] adj=this.getCoordAdjustments(newCoords);
 							final String coords = (newCoords[0]+adj[0])+","+(newCoords[1]+adj[1]);
 							final CMMsg maneuverMsg=CMClass.getMsg(mob,thisRoom,null,CMMsg.MSG_ADVANCE,null,CMMsg.MSG_ADVANCE,directionName,
