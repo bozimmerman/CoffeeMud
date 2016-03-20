@@ -281,7 +281,7 @@ public class Undead extends StdRace
 		catch(IllegalArgumentException x) //TODO: DELME
 		{
 			int oldStat = affectableStats.getStat(UNDEAD_SAVE_STATS[statDex]);
-			Log.errOut("Failed to bump stat "+CharStats.CODES.NAME(UNDEAD_SAVE_STATS[statDex])+" from "+oldStat);
+			Log.errOut("Failed to bump stat "+CharStats.CODES.NAME(UNDEAD_SAVE_STATS[statDex])+" from "+oldStat+"/"+affectedMOB.baseCharStats().getStat(UNDEAD_SAVE_STATS[statDex]));
 			throw x;
 		}
 	}
