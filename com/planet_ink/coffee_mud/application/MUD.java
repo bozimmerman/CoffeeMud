@@ -499,7 +499,16 @@ public class MUD extends Thread implements MudHost
 			try
 			{
 				for(final Enumeration<CMLibrary> e=CMLib.libraries(CMLib.Library.PLAYERS);e.hasMoreElements();)
-					((PlayerLibrary)e.nextElement()).savePlayers();
+				{
+					try
+					{
+						((PlayerLibrary)e.nextElement()).savePlayers();
+					}
+					catch (final Exception ex)
+					{
+						Log.errOut(ex);
+					}
+				}
 			}
 			catch (final Exception ex)
 			{
