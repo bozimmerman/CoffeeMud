@@ -98,7 +98,7 @@ public class Load extends StdCommand
 				I=mob.location().findItem(null, name);
 				if((I instanceof AmmunitionWeapon)
 				&&(((AmmunitionWeapon)I).requiresAmmunition())
-				&&((!CMLib.flags().isGettable(I))||(I.phyStats().weight()>300)))
+				&&((AmmunitionWeapon)I).isFreeStanding())
 					tryArchon=false;
 			}
 			for(final String aList : ARCHON_LIST)
@@ -129,13 +129,19 @@ public class Load extends StdCommand
 			{
 				commands.remove(0);
 				final List<Item> baseItems=CMLib.english().fetchItemList(mob,mob,null,commands,Wearable.FILTER_ANY,false);
-				if(baseItems.size()==0)
-					baseItems.addAll(mob.location().findItems(null,CMParms.combine(commands,0)));
+				baseItems.addAll(mob.location().findItems(null,CMParms.combine(commands,0)));
 				final List<AmmunitionWeapon> items=new XVector<AmmunitionWeapon>();
 				for (Item I : baseItems)
 				{
-					if((I instanceof AmmunitionWeapon)&&((AmmunitionWeapon)I).requiresAmmunition())
-						items.add((AmmunitionWeapon)I);
+					if((I instanceof AmmunitionWeapon)
+					&&((AmmunitionWeapon)I).requiresAmmunition())
+					{
+						if(mob.isMine(I))
+							items.add((AmmunitionWeapon)I);
+						else
+						if(((AmmunitionWeapon)I).isFreeStanding())
+							items.add((AmmunitionWeapon)I);
+					}
 				}
 				boolean doneOne=false;
 				if(baseItems.size()==0)
@@ -148,22 +154,22 @@ public class Load extends StdCommand
 				{
 					Ammunition ammunition = getNextAmmunition(W.ammunitionType(),ammos);
 					if(ammunition==null)
-					{
 						mob.tell(L("You are all out of @x1.",W.ammunitionType()));
-					}
 					else
-					while((ammunition != null)
-					&&((W.ammunitionRemaining() < W.ammunitionCapacity())||(!doneOne)))
 					{
-						final CMMsg newMsg=CMClass.getMsg(mob,W,ammunition,CMMsg.MSG_RELOAD,L("<S-NAME> reload(s) <T-NAME> with <O-NAME>."));
-						if(mob.location().okMessage(mob,newMsg))
+						while((ammunition != null)
+						&&((W.ammunitionRemaining() < W.ammunitionCapacity())||(!doneOne)))
 						{
-							doneOne=true;
-							mob.location().send(mob,newMsg);
-							ammunition = getNextAmmunition(W.ammunitionType(),ammos);
+							final CMMsg newMsg=CMClass.getMsg(mob,W,ammunition,CMMsg.MSG_RELOAD,L("<S-NAME> reload(s) <T-NAME> with <O-NAME>."));
+							if(mob.location().okMessage(mob,newMsg))
+							{
+								doneOne=true;
+								mob.location().send(mob,newMsg);
+								ammunition = getNextAmmunition(W.ammunitionType(),ammos);
+							}
+							else
+								break;
 						}
-						else
-							break;
 					}
 				}
 			}

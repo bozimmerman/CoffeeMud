@@ -423,6 +423,12 @@ public class StdWeapon extends StdItem implements Weapon, AmmunitionWeapon
 	}
 
 	@Override
+	public boolean isFreeStanding()
+	{
+		return false;
+	}
+
+	@Override
 	public void setAmmunitionType(String ammo)
 	{
 		if(!(this instanceof Wand))

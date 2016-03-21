@@ -102,6 +102,12 @@ public class StdSiegeWeapon extends StdRideable implements AmmunitionWeapon
 	}
 
 	@Override
+	public boolean isFreeStanding()
+	{
+		return true;
+	}
+
+	@Override
 	public String secretIdentity()
 	{
 		String id=super.secretIdentity();
