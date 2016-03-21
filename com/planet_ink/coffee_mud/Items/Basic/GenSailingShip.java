@@ -47,10 +47,9 @@ public class GenSailingShip extends StdBoardable
 		return "GenSailingShip";
 	}
 
-	protected volatile int		 courseDirection = -1;
-	protected volatile boolean	 anchorDown		 = true;
-	protected final List<Integer>courseDirections= new Vector<Integer>();
-
+	protected volatile int			courseDirection	= -1;
+	protected volatile boolean		anchorDown		= true;
+	protected final List<Integer>	courseDirections= new Vector<Integer>();
 	protected volatile int			directionFacing	= 0;
 	protected volatile Rideable		targetedShip	= null;
 	protected volatile Room			shipCombatRoom	= null;
