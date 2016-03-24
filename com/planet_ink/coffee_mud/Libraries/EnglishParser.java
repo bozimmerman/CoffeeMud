@@ -1567,11 +1567,11 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		if(CMath.isInteger(itemID))
 		{
 			gold=CMath.s_long(itemID);
-			final double totalAmount=CMLib.beanCounter().getTotalAbsoluteValue(mob,currency);
-			double bestDenomination=CMLib.beanCounter().getBestDenomination(currency,(int)gold,totalAmount);
+			//final double totalAmount=CMLib.beanCounter().getTotalAbsoluteValue(mob,currency);
+			double bestDenomination=CMLib.beanCounter().getBestDenomination(currency,(int)gold,gold);
 			if(bestDenomination==0.0)
 			{
-				bestDenomination=CMLib.beanCounter().getBestDenomination(null,(int)gold,totalAmount);
+				bestDenomination=CMLib.beanCounter().getBestDenomination(null,(int)gold,gold);
 				if(bestDenomination>0.0)
 					currency=null;
 			}

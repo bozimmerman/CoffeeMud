@@ -205,6 +205,11 @@ public class Mobile extends ActiveTicker implements MobileBehavior
 	public boolean emergencyMove(MOB mob, Room room)
 	{
 		int tries=30;
+		if(!room.getMobility())
+		{
+			firstRun=true;
+			return false;
+		}
 		while((--tries>0)&&(!CMLib.flags().canBreatheHere(mob, room))) // the fish exception
 		{
 			if((room instanceof GridLocale)&&(room.getGridParent()==null))

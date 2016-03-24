@@ -2260,12 +2260,21 @@ public class CMMap extends StdLibrary implements WorldMap
 	{
 		if(room==null) 
 			return;
-		MOB M=null;
+		// this will empty grid rooms so that
+		// the code below can delete them or whatever.
+		if(room instanceof GridLocale)
+		{
+			for(final Iterator<Room> r=((GridLocale)room).getExistingRooms();r.hasNext();)
+				emptyRoom(r.next(), toRoom, clearPlayers);
+		}
+		// this will empty skys and underwater of mobs so that
+		// the code below can delete them or whatever.
+		room.clearSky();
 		if(toRoom != null)
 		{
 			for(final Enumeration<MOB> i=room.inhabitants();i.hasMoreElements();)
 			{
-				M=i.nextElement();
+				final MOB M=i.nextElement();
 				if(M!=null)
 					toRoom.bringMobHere(M,false);
 			}
@@ -2275,22 +2284,23 @@ public class CMMap extends StdLibrary implements WorldMap
 		{
 			for(final Enumeration<MOB> i=room.inhabitants();i.hasMoreElements();)
 			{
-				M=i.nextElement();
+				final MOB M=i.nextElement();
 				if((M!=null) && (M.isPlayer()))
 					M.getStartRoom().bringMobHere(M,true);
 			}
 		}
 		for(final Enumeration<MOB> i=room.inhabitants();i.hasMoreElements();)
 		{
-			M=i.nextElement();
+			final MOB M=i.nextElement();
 			if((M!=null)
 			&&(!M.isPlayer())
 			&&(M.isSavable())
 			&&((M.amFollowing()==null)||(!M.amFollowing().isPlayer())))
 			{
-				if((M.getStartRoom()==null)
-				||(M.getStartRoom()==room)
-				||(M.getStartRoom().ID().length()==0))
+				final Room startRoom = M.getStartRoom();
+				if((startRoom==null)
+				||(startRoom==room)
+				||(startRoom.ID().length()==0))
 					M.destroy();
 				else
 					M.getStartRoom().bringMobHere(M,false);
@@ -2328,8 +2338,10 @@ public class CMMap extends StdLibrary implements WorldMap
 		room.clearSky();
 		CMLib.threads().clearDebri(room,0);
 		if(room instanceof GridLocale)
+		{
 			for(final Iterator<Room> r=((GridLocale)room).getExistingRooms();r.hasNext();)
 				emptyRoom(r.next(), toRoom, clearPlayers);
+		}
 	}
 
 	@Override
@@ -2384,27 +2396,33 @@ public class CMMap extends StdLibrary implements WorldMap
 			if((rebuildGrids)&&(room instanceof GridLocale))
 				((GridLocale)room).clearGrid(null);
 			final boolean mobile=room.getMobility();
-			room.toggleMobility(false);
-			if(resetMsg==null)
-				resetMsg=CMClass.getMsg(CMClass.sampleMOB(),room,CMMsg.MSG_ROOMRESET,null);
-			resetMsg.setTarget(room);
-			room.executeMsg(room,resetMsg);
-			if(room.isSavable())
-				emptyRoom(room,null,false);
-			for(final Enumeration<Ability> a=room.effects();a.hasMoreElements();)
+			try
 			{
-				final Ability A=a.nextElement();
-				if((A!=null)&&(A.canBeUninvoked()))
-					A.unInvoke();
+				room.toggleMobility(false);
+				if(resetMsg==null)
+					resetMsg=CMClass.getMsg(CMClass.sampleMOB(),room,CMMsg.MSG_ROOMRESET,null);
+				resetMsg.setTarget(room);
+				room.executeMsg(room,resetMsg);
+				if(room.isSavable())
+					emptyRoom(room,null,false);
+				for(final Enumeration<Ability> a=room.effects();a.hasMoreElements();)
+				{
+					final Ability A=a.nextElement();
+					if((A!=null)&&(A.canBeUninvoked()))
+						A.unInvoke();
+				}
+				if(room.isSavable())
+				{
+					CMLib.database().DBReReadRoomData(room);
+					CMLib.database().DBReadContent(room.roomID(),room,true);
+				}
+				room.startItemRejuv();
+				room.setResource(-1);
 			}
-			if(room.isSavable())
+			finally
 			{
-				CMLib.database().DBReReadRoomData(room);
-				CMLib.database().DBReadContent(room.roomID(),room,true);
+				room.toggleMobility(mobile);
 			}
-			room.startItemRejuv();
-			room.setResource(-1);
-			room.toggleMobility(mobile);
 		}
 	}
 

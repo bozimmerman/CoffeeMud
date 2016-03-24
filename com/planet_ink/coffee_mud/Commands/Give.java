@@ -37,8 +37,14 @@ public class Give extends StdCommand
 {
 	public Give(){}
 
-	private final String[] access=I(new String[]{"GIVE","GI"});
-	@Override public String[] getAccessWords(){return access;}
+	private final String[]	access	= I(new String[] { "GIVE", "GI" });
+
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
+
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
@@ -73,11 +79,20 @@ public class Give extends StdCommand
 		String thingToGive=CMParms.combine(commands,0);
 		int addendum=1;
 		String addendumStr="";
-		final Vector<Item> V=new Vector<Item>();
-		boolean allFlag=(commands.size()>0)?commands.get(0).equalsIgnoreCase("all"):false;
-		if(thingToGive.toUpperCase().startsWith("ALL.")){ allFlag=true; thingToGive="ALL "+thingToGive.substring(4);}
-		if(thingToGive.toUpperCase().endsWith(".ALL")){ allFlag=true; thingToGive="ALL "+thingToGive.substring(0,thingToGive.length()-4);}
-		final boolean onlyGoldFlag=mob.hasOnlyGoldInInventory();
+		final Vector<Item> V = new Vector<Item>();
+		boolean allFlag = (commands.size() > 0) ? commands.get(0).equalsIgnoreCase("all") : false;
+		if (thingToGive.toUpperCase().startsWith("ALL."))
+		{
+			allFlag = true;
+			thingToGive = "ALL " + thingToGive.substring(4);
+		}
+		if (thingToGive.toUpperCase().endsWith(".ALL"))
+		{
+			allFlag = true;
+			thingToGive = "ALL " + thingToGive.substring(0, thingToGive.length() - 4);
+		}
+		
+		final boolean onlyGoldFlag = mob.hasOnlyGoldInInventory();
 		Item giveThis=CMLib.english().bestPossibleGold(mob,null,thingToGive);
 		if(giveThis!=null)
 		{
@@ -112,7 +127,10 @@ public class Give extends StdCommand
 						return false;
 				}
 			}
-			if((allFlag)&&(!onlyGoldFlag)&&(giveThis instanceof Coins)&&(thingToGive.equalsIgnoreCase("all")))
+			if((allFlag)
+			&&(!onlyGoldFlag)
+			&&(giveThis instanceof Coins)
+			&&(thingToGive.equalsIgnoreCase("all")))
 				giveThis=null;
 			else
 			{
@@ -140,9 +158,23 @@ public class Give extends StdCommand
 		}
 		return false;
 	}
-	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandCombatActionCost(ID());}
-	@Override public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandActionCost(ID());}
-	@Override public boolean canBeOrdered(){return true;}
 
+	@Override
+	public double combatActionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandCombatActionCost(ID());
+	}
+
+	@Override
+	public double actionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandActionCost(ID());
+	}
+
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 
 }

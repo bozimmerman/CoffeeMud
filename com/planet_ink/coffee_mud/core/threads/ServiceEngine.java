@@ -1059,6 +1059,7 @@ public class ServiceEngine implements ThreadEngine
 			almostTock=e.next();
 			roomSet=almostTock.getLocalItems(taskCode,room);
 			if(roomSet!=null)
+			{
 				for(;roomSet.hasNext();)
 				{
 					C=roomSet.next();
@@ -1079,6 +1080,7 @@ public class ServiceEngine implements ThreadEngine
 						}
 					}
 				}
+			}
 		}
 	}
 
