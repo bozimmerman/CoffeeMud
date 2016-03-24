@@ -1977,8 +1977,6 @@ public class StdRoom implements Room
 	@Override
 	public void addInhabitant(MOB mob)
 	{
-if(roomID().equals("New Area#102"))
-	System.out.println(mob.name()+": "+mob);
 		inhabitants.addElement(mob);
 	}
 
