@@ -268,7 +268,7 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 								R2.addNonUninvokableEffect((Ability)cap.copyOf());
 							CMLib.database().DBCreateRoom(R2);
 							if(newTitle!=null)
-								CMLib.law().colorRoomForSale(R2,newTitle.rentalProperty(),true);
+								CMLib.law().colorRoomForSale(R2,newTitle,true);
 							R2.getArea().fillInAreaRoom(R2);
 							CMLib.database().DBUpdateExits(R2);
 							didAnything=true;

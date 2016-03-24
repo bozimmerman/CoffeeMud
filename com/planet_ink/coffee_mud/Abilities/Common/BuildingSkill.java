@@ -772,7 +772,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 			CMLib.database().DBCreateRoom(newRoom);
 			if(newTitle!=null)
 			{
-				CMLib.law().colorRoomForSale(newRoom, newTitle.rentalProperty(), true);
+				CMLib.law().colorRoomForSale(newRoom, newTitle, true);
 				newTitle.updateLot(null);
 			}
 			newRoom.getArea().fillInAreaRoom(newRoom);

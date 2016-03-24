@@ -1,6 +1,8 @@
 package com.planet_ink.coffee_mud.core;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import com.planet_ink.coffee_mud.Items.interfaces.SpaceShip;
 import com.planet_ink.coffee_mud.Libraries.interfaces.LanguageLibrary;
@@ -93,8 +95,8 @@ public class Directions
 	private final static String DEFAULT_FROM_DIR_LIST_COMPASS	= "the north,the south,the east,the west,above,below,out of nowhere,the northeast,the northwest,the southeast,the southwest";
 	private final static String DEFAULT_FROM_DIR_LIST_SHIP		= "foreward,aft,starboard,portside,above,below,out of nowhere,forward starboard,forward portside,aft starboard,aft portside";
 	private final static String DEFAULT_OF_DIR_LIST_COMPASS		= "north of,south of,east of,west of,above,below,,northeast of,northwest of,southeast of,southwest of";
-	private final static String DEFAULT_TO_DIR_LIST_COMPASS		= "to the north,to the south,to the east,to the west,to the northeast,to the northwest,to the southeast,to the southwest,above you,below,there";
-	private final static String DEFAULT_TO_DIR_LIST_SHIP		= "to foreward,to aft,to starboard,to portside,to forward starboard,to forward port,to aft starboard,to aft portside,above you,below,there";
+	private final static String DEFAULT_TO_DIR_LIST_COMPASS		= "to the north,to the south,to the east,to the west,above you,below,there,to the northeast,to the northwest,to the southeast,to the southwest";
+	private final static String DEFAULT_TO_DIR_LIST_SHIP		= "to foreward,to aft,to starboard,to portside,above you,below,there,to forward starboard,to forward port,to aft starboard,to aft portside";
 	private static final String DEFAULT_DIRECTION_CHARS			= "N,S,E,W,U,D,V,NE,NW,SE,SW";
 
 	/* Display order directions.  Include up, down, and gate.  Include -1 to insert the other 4/8 */
@@ -128,7 +130,7 @@ public class Directions
 	
 	private int NUM_DIRECTIONS=7;
 
-	private static final Object[][] DIRECTIONS_COMPASS_CHART=
+	private Object[][] DIRECTIONS_COMPASS_CHART=
 	{
 		{"UP",Integer.valueOf(UP)},
 		{"ABOVE",Integer.valueOf(UP)},
@@ -152,7 +154,7 @@ public class Directions
 		{"VORTEX",Integer.valueOf(GATE)},
 	};
 
-	private static final Object[][] DIRECTIONS_SHIP_CHART=
+	private Object[][] DIRECTIONS_SHIP_CHART=
 	{
 		{"ABOVE",Integer.valueOf(UP)},
 		{"FOREWARD",Integer.valueOf(NORTH)},
@@ -181,7 +183,7 @@ public class Directions
 		return result;
 	}
 
-	private static final Object[][] DIRECTIONS_FULL_CHART=concat(DIRECTIONS_COMPASS_CHART, DIRECTIONS_SHIP_CHART);
+	private Object[][] DIRECTIONS_FULL_CHART=concat(DIRECTIONS_COMPASS_CHART, DIRECTIONS_SHIP_CHART);
 
 	/**
 	 * Returns the total number of permitted exit directions, either 7 or 11
@@ -248,10 +250,20 @@ public class Directions
 	}
 
 	/**
+	 * An interface to a translator for the direction words in this class
+	 * @author Bo Zimmerman
+	 *
+	 */
+	public static interface DirectionWordTranslator
+	{
+		public String translate(String string);
+	}
+	
+	/**
 	 * Reinitializes this direction object with a new number-of-directions.
 	 * @param dirs the number of directions, either 7 or 11
 	 */
-	public final void reInitialize(final int dirs)
+	public final void reInitialize(final int dirs, final DirectionWordTranslator translator)
 	{
 		NUM_DIRECTIONS=dirs;
 		if(dirs<11)
@@ -286,31 +298,74 @@ public class Directions
 		}
 		DIRECTIONS_DISPLAY = Arrays.copyOf(DIRECTIONS_DISPLAY, index);
 		
-		LanguageLibrary lib = CMLib.lang();
 		try
 		{
-			DIRECTION_7_LETTERS=lib.L(DEFAULT_DIRECTION_7_LETTERS);
-			DIRECTION_11_LETTERS=lib.L(DEFAULT_DIRECTION_11_LETTERS);
-			DIRECTION_7_NAMES=lib.L(DEFAULT_DIRECTION_7_NAMES);
-			DIRECTION_11_NAMES=lib.L(DEFAULT_DIRECTION_11_NAMES);
-			DIRECTION_7_SHIPNAMES=lib.L(DEFAULT_DIRECTION_7_SHIPNAMES);
-			DIRECTION_11_SHIPNAMES=lib.L(DEFAULT_DIRECTION_11_SHIPNAMES);
-			DIRECTIONS_COMPASS_UPPER_INDEXED=lib.L(DEFAULT_DIRECTIONS_LIST_COMPASS).toUpperCase().split(",");
-			DIRECTIONS_SHIP_UPPER_INDEXED=lib.L(DEFAULT_DIRECTIONS_LIST_SHIP).toUpperCase().split(",");
-			DIRECTIONS_COMPASS_INDEXED=lib.L(DEFAULT_DIRECTIONS_LIST_COMPASS).split(",");
-			DIRECTIONS_SHIP_INDEXED=lib.L(DEFAULT_DIRECTIONS_LIST_SHIP).split(",");
-			DIRECTIONS_COMPASS_FROM_INDEXED	= lib.L(DEFAULT_FROM_DIR_LIST_COMPASS).split(",");
-			DIRECTIONS_SHIP_FROM_INDEXED = lib.L(DEFAULT_FROM_DIR_LIST_SHIP).split(",");
-			DIRECTIONS_COMPASS_OF_INDEXED = lib.L(DEFAULT_OF_DIR_LIST_COMPASS).split(",");
-			DIRECTIONS_COMPASS_TO_INDEXED = lib.L(DEFAULT_TO_DIR_LIST_COMPASS).split(",");
-			DIRECTIONS_SHIP_TO_INDEXED = lib.L(DEFAULT_TO_DIR_LIST_SHIP).split(",");
-			DIRECTION_CHARS = lib.L(DEFAULT_DIRECTION_CHARS).split(",");
+			DIRECTION_7_LETTERS=translator.translate(DEFAULT_DIRECTION_7_LETTERS);
+			DIRECTION_11_LETTERS=translator.translate(DEFAULT_DIRECTION_11_LETTERS);
+			DIRECTION_7_NAMES=translator.translate(DEFAULT_DIRECTION_7_NAMES);
+			DIRECTION_11_NAMES=translator.translate(DEFAULT_DIRECTION_11_NAMES);
+			DIRECTION_7_SHIPNAMES=translator.translate(DEFAULT_DIRECTION_7_SHIPNAMES);
+			DIRECTION_11_SHIPNAMES=translator.translate(DEFAULT_DIRECTION_11_SHIPNAMES);
+			DIRECTIONS_COMPASS_UPPER_INDEXED=translator.translate(DEFAULT_DIRECTIONS_LIST_COMPASS).toUpperCase().split(",");
+			DIRECTIONS_SHIP_UPPER_INDEXED=translator.translate(DEFAULT_DIRECTIONS_LIST_SHIP).toUpperCase().split(",");
+			DIRECTIONS_COMPASS_INDEXED=translator.translate(DEFAULT_DIRECTIONS_LIST_COMPASS).split(",");
+			DIRECTIONS_SHIP_INDEXED=translator.translate(DEFAULT_DIRECTIONS_LIST_SHIP).split(",");
+			DIRECTIONS_COMPASS_FROM_INDEXED	= translator.translate(DEFAULT_FROM_DIR_LIST_COMPASS).split(",");
+			DIRECTIONS_SHIP_FROM_INDEXED = translator.translate(DEFAULT_FROM_DIR_LIST_SHIP).split(",");
+			DIRECTIONS_COMPASS_OF_INDEXED = translator.translate(DEFAULT_OF_DIR_LIST_COMPASS).split(",");
+			DIRECTIONS_COMPASS_TO_INDEXED = translator.translate(DEFAULT_TO_DIR_LIST_COMPASS).split(",");
+			DIRECTIONS_SHIP_TO_INDEXED = translator.translate(DEFAULT_TO_DIR_LIST_SHIP).split(",");
+			DIRECTION_CHARS = translator.translate(DEFAULT_DIRECTION_CHARS).split(",");
+			List<Object[]> newChart = new ArrayList<Object[]>();
+			newChart.add(new Object[]{DIRECTIONS_COMPASS_UPPER_INDEXED[UP],Integer.valueOf(UP)});
+			newChart.add(new Object[]{DIRECTIONS_SHIP_UPPER_INDEXED[UP],Integer.valueOf(UP)});
+			newChart.add(new Object[]{DIRECTIONS_COMPASS_UPPER_INDEXED[NORTH],Integer.valueOf(NORTH)});
+			newChart.add(new Object[]{DIRECTIONS_COMPASS_UPPER_INDEXED[SOUTH],Integer.valueOf(SOUTH)});
+			newChart.add(new Object[]{DIRECTIONS_COMPASS_UPPER_INDEXED[EAST],Integer.valueOf(EAST)});
+			newChart.add(new Object[]{DIRECTIONS_COMPASS_UPPER_INDEXED[WEST],Integer.valueOf(WEST)});
+			newChart.add(new Object[]{DIRECTIONS_COMPASS_UPPER_INDEXED[NORTHEAST],Integer.valueOf(NORTHEAST)});
+			newChart.add(new Object[]{DIRECTIONS_COMPASS_UPPER_INDEXED[NORTHWEST],Integer.valueOf(NORTHWEST)});
+			newChart.add(new Object[]{DIRECTIONS_COMPASS_UPPER_INDEXED[SOUTHWEST],Integer.valueOf(SOUTHWEST)});
+			newChart.add(new Object[]{DIRECTIONS_COMPASS_UPPER_INDEXED[SOUTHEAST],Integer.valueOf(SOUTHEAST)});
+			newChart.add(new Object[]{DIRECTION_CHARS[NORTHEAST],Integer.valueOf(NORTHEAST)});
+			newChart.add(new Object[]{DIRECTION_CHARS[NORTHWEST],Integer.valueOf(NORTHWEST)});
+			newChart.add(new Object[]{DIRECTION_CHARS[SOUTHWEST],Integer.valueOf(SOUTHWEST)});
+			newChart.add(new Object[]{DIRECTION_CHARS[SOUTHEAST],Integer.valueOf(SOUTHEAST)});
+			newChart.add(new Object[]{DIRECTIONS_COMPASS_UPPER_INDEXED[DOWN],Integer.valueOf(DOWN)});
+			newChart.add(new Object[]{DIRECTIONS_SHIP_UPPER_INDEXED[DOWN],Integer.valueOf(DOWN)});
+			newChart.add(new Object[]{translator.translate("NOWHERE"),Integer.valueOf(GATE)});
+			newChart.add(new Object[]{translator.translate("HERE"),Integer.valueOf(GATE)});
+			newChart.add(new Object[]{translator.translate("THERE"),Integer.valueOf(GATE)});
+			newChart.add(new Object[]{translator.translate("VORTEX"),Integer.valueOf(GATE)});
+			DIRECTIONS_COMPASS_CHART = newChart.toArray(new Object[0][]);
+			newChart.clear();
+			newChart.add(new Object[]{DIRECTIONS_SHIP_UPPER_INDEXED[UP],Integer.valueOf(UP)});
+			newChart.add(new Object[]{DIRECTIONS_SHIP_UPPER_INDEXED[NORTH],Integer.valueOf(NORTH)});
+			newChart.add(new Object[]{DIRECTIONS_SHIP_UPPER_INDEXED[SOUTH],Integer.valueOf(SOUTH)});
+			newChart.add(new Object[]{DIRECTIONS_SHIP_UPPER_INDEXED[EAST],Integer.valueOf(EAST)});
+			newChart.add(new Object[]{DIRECTIONS_SHIP_UPPER_INDEXED[WEST],Integer.valueOf(WEST)});
+			newChart.add(new Object[]{CMStrings.replaceAll(DIRECTIONS_SHIP_UPPER_INDEXED[NORTHEAST]," ",""),Integer.valueOf(NORTHEAST)});
+			newChart.add(new Object[]{CMStrings.replaceAll(DIRECTIONS_SHIP_UPPER_INDEXED[NORTHWEST]," ",""),Integer.valueOf(NORTHWEST)});
+			newChart.add(new Object[]{CMStrings.replaceAll(DIRECTIONS_SHIP_UPPER_INDEXED[SOUTHWEST]," ",""),Integer.valueOf(SOUTHWEST)});
+			newChart.add(new Object[]{CMStrings.replaceAll(DIRECTIONS_SHIP_UPPER_INDEXED[SOUTHEAST]," ",""),Integer.valueOf(SOUTHEAST)});
+			newChart.add(new Object[]{translator.translate("FP"),Integer.valueOf(NORTHWEST)});
+			newChart.add(new Object[]{translator.translate("FS"),Integer.valueOf(NORTHEAST)});
+			newChart.add(new Object[]{translator.translate("AP"),Integer.valueOf(SOUTHWEST)});
+			newChart.add(new Object[]{translator.translate("AS"),Integer.valueOf(SOUTHEAST)});
+			newChart.add(new Object[]{DIRECTIONS_SHIP_UPPER_INDEXED[DOWN],Integer.valueOf(DOWN)});
+			newChart.add(new Object[]{translator.translate("NOWHERE"),Integer.valueOf(GATE)});
+			newChart.add(new Object[]{translator.translate("HERE"),Integer.valueOf(GATE)});
+			newChart.add(new Object[]{translator.translate("THERE"),Integer.valueOf(GATE)});
+			newChart.add(new Object[]{translator.translate("VORTEX"),Integer.valueOf(GATE)});
+			DIRECTIONS_SHIP_CHART = newChart.toArray(new Object[0][]);
+			
+			DIRECTIONS_FULL_CHART=concat(DIRECTIONS_COMPASS_CHART, DIRECTIONS_SHIP_CHART);
 		}
 		catch(Exception e)
 		{
 		}
 	}
-
+	
 	/**
 	 * Given the direction code, returns the formal name of that direction, capitalized.
 	 * @param code the direction code

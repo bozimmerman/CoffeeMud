@@ -605,13 +605,13 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	
 
 	@Override
-	public void colorRoomForSale(Room R, boolean rental, boolean reset)
+	public void colorRoomForSale(Room R, LandTitle title, boolean reset)
 	{
 		synchronized(("SYNC"+R.roomID()).intern())
 		{
 			R=CMLib.map().getRoom(R);
-			final String theStr=CMLib.lang().L(rental?RENTSTR:SALESTR);
-			final String otherStr=CMLib.lang().L(rental?SALESTR:RENTSTR);
+			final String theStr=CMLib.lang().L(title.rentalProperty()?RENTSTR:SALESTR);
+			final String otherStr=CMLib.lang().L(title.rentalProperty()?SALESTR:RENTSTR);
 			int x=R.description().indexOf(otherStr);
 			while(x>=0)
 			{
@@ -650,8 +650,15 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 				I=CMClass.getItem("GenWallpaper");
 				CMLib.flags().setReadable(I,true);
 				I.setName(("id"));
-				I.setReadableText(CMLib.lang().L("This room is "+CMLib.map().getExtendedRoomID(R)));
-				I.setDescription(CMLib.lang().L("This room is @x1",CMLib.map().getExtendedRoomID(R)));
+				StringBuilder txt = new StringBuilder("");
+				int size = title.getAllTitledRooms().size();
+				txt.append(CMLib.lang().L("This room is @x1.  ",CMLib.map().getExtendedRoomID(R)));
+				if(size > 1)
+					txt.append(CMLib.lang().L("There are @x1 rooms in this lot.  ",""+size));
+				if(!title.allowsExpansionConstruction())
+					txt.append(L("The size of this lot is not expandable."));
+				I.setReadableText(txt.toString());
+				I.setDescription(txt.toString());
 				R.addItem(I);
 				CMLib.database().DBUpdateItems(R);
 			}

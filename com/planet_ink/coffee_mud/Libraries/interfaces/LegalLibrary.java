@@ -63,7 +63,7 @@ public interface LegalLibrary extends CMLibrary
 	public Area getLegalObject(Room R);
 	public String getLandOwnerName(Room room);
 	public String getPropertyOwnerName(Room room);
-	public void colorRoomForSale(Room R, boolean rental, boolean reset);
+	public void colorRoomForSale(Room R, LandTitle title, boolean reset);
 
 	public LandTitle getLandTitle(Area area);
 	public LandTitle getLandTitle(Room room);

@@ -143,6 +143,19 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		str.append(L(" Here is some information for you:"));
 		if(E instanceof Physical)
 			str.append("\n\rLevel      : "+((Physical)E).phyStats().level());
+		if(E instanceof LandTitle)
+		{
+			final LandTitle T=(LandTitle)E;
+			str.append(L("\n\rSize       : ")+L("@x1 room(s)",""+T.getAllTitledRooms().size()));
+			StringBuilder features = new StringBuilder("");
+			if(T.allowsExpansionConstruction())
+				features.append(L(" expandable"));
+			if(T.rentalProperty())
+				features.append(L(" rental"));
+			// this space intentionally left with dynamic string
+			str.append(L("\n\rFeatures   :"+features.toString()));
+		}
+		else
 		if(E instanceof Item)
 		{
 			final Item I=(Item)E;

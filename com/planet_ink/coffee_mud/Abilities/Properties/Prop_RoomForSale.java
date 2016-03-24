@@ -443,7 +443,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 					CMLib.database().DBUpdateItems(R);
 				if(updateRoom)
 					CMLib.database().DBUpdateRoom(R);
-				CMLib.law().colorRoomForSale(R,T.rentalProperty(),resetRoomName);
+				CMLib.law().colorRoomForSale(R,T,resetRoomName);
 				return -1;
 			}
 
