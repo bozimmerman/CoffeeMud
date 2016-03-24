@@ -1,20 +1,20 @@
-Ballista	15	75	500	2500	GenSiegeWeapon	ballista-bolt	1	15	5	LEATHER	
-Multishot Ballista	18	80	600	3000	GenSiegeWeapon	ballista-arrow	3	15	5	LEATHER	
-Catapult	20	60	500	2000	GenSiegeWeapon	catapult-boulder	1	20	6		
+Ballista	15	75	500	2500	GenSiegeWeapon	ballista-bolts	1	15	5	LEATHER	
+Multishot Ballista	18	80	600	3000	GenSiegeWeapon	ballista-arrows	3	15	5	LEATHER	
+Catapult	20	60	500	2000	GenSiegeWeapon	catapult-boulders	1	20	6		
 Multishot Catapult	25	70	600	2500	GenSiegeWeapon	catapult-stones	3	20	6		
-Trebuchet	30	80	700	4000	GenSiegeWeapon	trebuchet-boulder	1	35	8	METAL	
-Multishot Trebuchet	40	90	800	5000	GenSiegeWeapon	trebuchet-shot	3	35	8	METAL	
-Heavy Ballista	25	100	650	5000	GenSiegeWeapon	ballista-bolt	1	30	10	LEATHER	
+Trebuchet	30	80	700	4000	GenSiegeWeapon	trebuchet-boulders	1	35	8	METAL	
+Multishot Trebuchet	40	90	800	5000	GenSiegeWeapon	trebuchet-shots	3	35	8	METAL	
+Heavy Ballista	25	100	650	5000	GenSiegeWeapon	ballista-bolts	1	30	10	LEATHER	
 Ramming Prow	35	70	550	5000	GenSiegeWeapon		0	40	1		
-Ballista Bolt	5	5	5	5	GenAmmunition	ballista-bolt	1			METAL	
-Ballista Flaming Bolt	7	10	5	10	GenAmmunition	ballista-bolt	1			LAMP OIL	Burning
-Ballista Multishot Arrow	9	10	10	10	GenAmmunition	ballista-arrow	3			METAL	
-Catapult Boulder	10	5	(onground:consumed:25:rock:)	5	GenAmmunition	catapult-boulder	1				
-Catapult Flaming Pitch Boulder	12	10	(onground:consumed:10:rock:)	25	GenAmmunition	catapult-boulder	1			LAMP OIL	Burning
+Ballista Bolt	5	5	5	5	GenAmmunition	ballista-bolts	1			METAL	
+Ballista Flaming Bolt	7	10	5	10	GenAmmunition	ballista-bolts	1			LAMP OIL	Burning
+Ballista Multishot Arrow	9	10	10	10	GenAmmunition	ballista-arrows	3			METAL	
+Catapult Boulder	10	5	(onground:consumed:25:rock:)	5	GenAmmunition	catapult-boulders	1				
+Catapult Flaming Pitch Boulder	12	10	(onground:consumed:10:rock:)	25	GenAmmunition	catapult-boulders	1			LAMP OIL	Burning
 Catapult Multishot Stones	14	3	(onground:consumed:25:rock:)	5	GenAmmunition	catapult-stones	3				
 Catapult Disease Stones	18	15	(onground:consumed:10:rock:)	50	GenAmmunition	catapult-stones	3				
-Trebuchet Boulder	20	10	(onground:consumed:50:rock:)	5	GenAmmunition	trebuchet-boulder	1				
+Trebuchet Boulder	20	10	(onground:consumed:50:rock:)	5	GenAmmunition	trebuchet-boulders	1				
 Trebuchet Rockshot Stones	22	5	(onground:consumed:50:rock:)	5	GenAmmunition	catapult-stones	3				
-Trebuchet Flaming Pitch Boulder	24	10	(onground:consumed:20:rock:)	50	GenAmmunition	catapult-boulder	1			LAMP OIL	Burning
+Trebuchet Flaming Pitch Boulder	24	10	(onground:consumed:20:rock:)	50	GenAmmunition	catapult-boulders	1			LAMP OIL	Burning
 Trebuchet Disease Stones	28	15	(onground:consumed:20:rock:)	100	GenAmmunition	catapult-stones	3				
 Grapples	5	10	(onground:consumed:10:metal:)	25	GenSiegeWeapon		0	0	1		
