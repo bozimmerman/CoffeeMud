@@ -136,7 +136,7 @@ public class Chant_SiftWrecks extends Chant
 									msgStr.append(" here? ");
 								else
 								for(Integer dirI : trailToThisRoom)
-									msgStr.append(Directions.getDirectionChar(dirI.intValue())).append(" ");
+									msgStr.append(CMLib.directions().getDirectionChar(dirI.intValue())).append(" ");
 								msgStr.append("\n\r");
 							}
 						}

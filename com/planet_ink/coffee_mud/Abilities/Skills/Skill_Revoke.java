@@ -65,7 +65,7 @@ public class Skill_Revoke extends StdSkill
 			target=mob;
 		else
 		{
-			final int dir=Directions.getGoodDirectionCode(whatToRevoke);
+			final int dir=CMLib.directions().getGoodDirectionCode(whatToRevoke);
 			if(dir>=0)
 				target=mob.location().getExitInDir(dir);
 			else

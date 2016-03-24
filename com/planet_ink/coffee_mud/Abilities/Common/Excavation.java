@@ -96,7 +96,7 @@ public class Excavation extends BuildingSkill
 	{
 		final Building doingCode = Building.valueOf(recipe[DAT_BUILDCODE]);
 		if(doingCode == Building.EXCAVATE)
-			return L("excavating the "+recipe[DAT_DESC],Directions.getInDirectionName(dir).toLowerCase());
+			return L("excavating the "+recipe[DAT_DESC],CMLib.directions().getInDirectionName(dir).toLowerCase());
 		else
 			return super.establishVerb(mob, recipe);
 	}

@@ -79,7 +79,7 @@ public class Chant_Farsight extends Chant
 
 						if((exit!=null)&&(room!=null)&&(CMLib.flags().canBeSeenBy(exit,mob)&&(exit.isOpen())))
 						{
-							mob.tell("^D" + CMStrings.padRight(Directions.getDirectionName(d),5)+":^.^N ^d"+exit.viewableText(mob, room)+"^N");
+							mob.tell("^D" + CMStrings.padRight(CMLib.directions().getDirectionName(d),5)+":^.^N ^d"+exit.viewableText(mob, room)+"^N");
 							exit=room.getExitInDir(d);
 							room=room.getRoomInDir(d);
 							if((exit!=null)&&(room!=null)&&(CMLib.flags().canBeSeenBy(exit,mob)&&(exit.isOpen())))
@@ -99,7 +99,7 @@ public class Chant_Farsight extends Chant
 				while(commands.size()>0)
 				{
 					final String whatToOpen=commands.get(0);
-					int dirCode=Directions.getGoodDirectionCode(whatToOpen);
+					int dirCode=CMLib.directions().getGoodDirectionCode(whatToOpen);
 					final Exit exit;
 					final Room room;
 					if(dirCode < 0)

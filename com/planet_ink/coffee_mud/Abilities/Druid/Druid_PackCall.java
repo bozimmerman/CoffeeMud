@@ -232,7 +232,7 @@ public class Druid_PackCall extends StdAbility
 					final int dir=choices.elementAt(CMLib.dice().roll(1,choices.size(),-1)).intValue();
 					if(newMOB.getVictim()!=victim)
 						newMOB.setVictim(victim);
-					newMOB.location().showOthers(newMOB,victim,CMMsg.MSG_OK_ACTION,L("<S-NAME> arrive(s) @x1 and attack(s) <T-NAMESELF>!",Directions.getFromCompassDirectionName(dir)));
+					newMOB.location().showOthers(newMOB,victim,CMMsg.MSG_OK_ACTION,L("<S-NAME> arrive(s) @x1 and attack(s) <T-NAMESELF>!",CMLib.directions().getFromCompassDirectionName(dir)));
 					newMOB.setStartRoom(null); // keep before postFollow for Conquest
 					CMLib.commands().postFollow(newMOB,mob,true);
 					if(newMOB.amFollowing()!=mob)

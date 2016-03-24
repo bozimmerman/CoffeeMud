@@ -109,7 +109,7 @@ public class Chant_FindMate extends Chant
 			else
 			if(nextDirection>=0)
 			{
-				mob.tell(L("You want to continue @x1.",Directions.getDirectionName(nextDirection)));
+				mob.tell(L("You want to continue @x1.",CMLib.directions().getDirectionName(nextDirection)));
 				final Room nextRoom=mob.location().getRoomInDir(nextDirection);
 				if((nextRoom!=null)&&(nextRoom.getArea()==mob.location().getArea()))
 				{

@@ -54,7 +54,7 @@ public class Spell_Shove extends Spell
 		int dir=-1;
 		if(commands.size()>0)
 		{
-			dir=Directions.getGoodDirectionCode(commands.get(commands.size()-1));
+			dir=CMLib.directions().getGoodDirectionCode(commands.get(commands.size()-1));
 			commands.remove(commands.size()-1);
 		}
 		if(dir<0)
@@ -101,8 +101,8 @@ public class Spell_Shove extends Spell
 					target.makePeace(true);
 					final Room newRoom=mob.location().getRoomInDir(dir);
 					final Room thisRoom=mob.location();
-					final CMMsg enterMsg=CMClass.getMsg(target,newRoom,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,L("<S-NAME> fly(s) in from @x1.",Directions.getFromCompassDirectionName(Directions.getOpDirectionCode(dir))));
-					final CMMsg leaveMsg=CMClass.getMsg(target,thisRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,L("<S-NAME> <S-IS-ARE> shoved forcefully into the air and out @x1.",Directions.getInDirectionName(dir)));
+					final CMMsg enterMsg=CMClass.getMsg(target,newRoom,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,L("<S-NAME> fly(s) in from @x1.",CMLib.directions().getFromCompassDirectionName(Directions.getOpDirectionCode(dir))));
+					final CMMsg leaveMsg=CMClass.getMsg(target,thisRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,L("<S-NAME> <S-IS-ARE> shoved forcefully into the air and out @x1.",CMLib.directions().getInDirectionName(dir)));
 					if(thisRoom.okMessage(target,leaveMsg)&&newRoom.okMessage(target,enterMsg))
 					{
 						thisRoom.send(target,leaveMsg);

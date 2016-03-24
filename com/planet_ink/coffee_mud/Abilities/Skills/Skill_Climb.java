@@ -59,7 +59,7 @@ public class Skill_Climb extends StdSkill
 		int dirCode=-1;
 		Physical target=givenTarget;
 		if(target==null)
-			dirCode = Directions.getGoodDirectionCode(CMParms.combine(commands,0));
+			dirCode = CMLib.directions().getGoodDirectionCode(CMParms.combine(commands,0));
 		if(dirCode<0)
 		{
 			if(target == null)

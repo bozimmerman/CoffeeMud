@@ -158,7 +158,7 @@ public class Spell_CauseStink extends Spell
 					final Room R=room.getRoomInDir(d);
 					if((R!=null)&&(R.numPCInhabitants()>0))
 					{
-						final CMMsg msg2=CMClass.getMsg(mob,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_AROMA,L("There is a very bad smell coming from @x1.",Directions.getFromCompassDirectionName(Directions.getOpDirectionCode(d))));
+						final CMMsg msg2=CMClass.getMsg(mob,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_AROMA,L("There is a very bad smell coming from @x1.",CMLib.directions().getFromCompassDirectionName(Directions.getOpDirectionCode(d))));
 						if(room.okMessage(mob, msg2) && R.okMessage(mob, msg2))
 						{
 							R.send(mob, msg2);

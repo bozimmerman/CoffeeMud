@@ -181,7 +181,7 @@ public class Say extends StdCommand
 				{
 					if(theCommand.equals("YELL"))
 					{
-						final int dir=Directions.getGoodCompassDirectionCode(whom);
+						final int dir=CMLib.directions().getGoodCompassDirectionCode(whom);
 						if(dir >=0)
 						{
 							commands.remove(1);
@@ -192,7 +192,7 @@ public class Say extends StdCommand
 								final Exit E2=R.getExitInDir(dir);
 								if(R2!=null)
 								{
-									theWordSuffix=" "+Directions.getDirectionName(dir);
+									theWordSuffix=" "+CMLib.directions().getDirectionName(dir);
 									yellRooms.add(R2);
 									if((E2!=null)&&(E2.isOpen()))
 									{
@@ -313,7 +313,7 @@ public class Say extends StdCommand
 					int opDirCode=-1;
 					if(dirCode>=0)
 						opDirCode=Directions.getOpDirectionCode(dirCode);
-					final String inDirName=(dirCode<0)?"":(useShipDirs?Directions.getShipInDirectionName(opDirCode):Directions.getInDirectionName(opDirCode));
+					final String inDirName=(dirCode<0)?"":(useShipDirs?CMLib.directions().getShipInDirectionName(opDirCode):CMLib.directions().getInDirectionName(opDirCode));
 					msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_SPEAK,L("^TYou hear someone yell '@x1' @x2^?",combinedCommands,inDirName));
 					if((R2.okMessage(mob,msg))
 					&&((tool==null)||(tool.okMessage(mob,msg))))

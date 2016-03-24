@@ -242,7 +242,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 
 	protected void notifyMessUp(final MOB mob, final String[] recipe)
 	{
-		commonTell(mob,L("You've ruined the "+recipe[DAT_DESC]+"!",Directions.getDirectionName(dir)));
+		commonTell(mob,L("You've ruined the "+recipe[DAT_DESC]+"!",CMLib.directions().getDirectionName(dir)));
 	}
 	
 	protected void demolishRoom(MOB mob, Room room)
@@ -394,7 +394,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 		synchronized(("SYNC"+room.roomID()).intern())
 		{
 			R=CMLib.map().getRoom(R);
-			extraProp=CMStrings.replaceAll(extraProp, "@dir", Directions.getDirectionName(dir));
+			extraProp=CMStrings.replaceAll(extraProp, "@dir", CMLib.directions().getDirectionName(dir));
 			addEffects(R,R,extraProp);
 		}
 		return R;
@@ -417,7 +417,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 		synchronized(("SYNC"+R.roomID()).intern())
 		{
 			R=CMLib.map().getRoom(R);
-			extraProp=CMStrings.replaceAll(extraProp, "@dir", Directions.getDirectionName(dir));
+			extraProp=CMStrings.replaceAll(extraProp, "@dir", CMLib.directions().getDirectionName(dir));
 			removeEffects(R,extraProp);
 		}
 		return R;
@@ -697,7 +697,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 			if(newRoom.roomID().length()==0)
 			{
 				String verbDesc = recipe[DAT_DESC];
-				commonTell(mob,L("You've failed to build the "+verbDesc+"!",Directions.getDirectionName(dir)));
+				commonTell(mob,L("You've failed to build the "+verbDesc+"!",CMLib.directions().getDirectionName(dir)));
 				return null;
 			}
 			newRoom.setArea(room.getArea());
@@ -733,16 +733,16 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 			{
 				newExit=CMClass.getExit("GenExit");
 				newExit.setName(L("a passageway"));
-				newExit.setDescription(L(desc,Directions.getDirectionName(dir),""+newFloorNum+CMath.numAppendage(newFloorNum)));
-				newExit.setDisplayText(L(desc,Directions.getDirectionName(dir),""+newFloorNum+CMath.numAppendage(newFloorNum)));
+				newExit.setDescription(L(desc,CMLib.directions().getDirectionName(dir),""+newFloorNum+CMath.numAppendage(newFloorNum)));
+				newExit.setDisplayText(L(desc,CMLib.directions().getDirectionName(dir),""+newFloorNum+CMath.numAppendage(newFloorNum)));
 				addEffects(newExit, room.getRoomInDir(dir),addParms);
 				newExit.recoverPhyStats();
 				newExit.text();
 
 				returnExit=CMClass.getExit("GenExit");
 				returnExit.setName(L("a passageway"));
-				returnExit.setDescription(L(desc,Directions.getDirectionName(opDir),""+curFloorNum+CMath.numAppendage(curFloorNum)));
-				returnExit.setDisplayText(L(desc,Directions.getDirectionName(opDir),""+curFloorNum+CMath.numAppendage(curFloorNum)));
+				returnExit.setDescription(L(desc,CMLib.directions().getDirectionName(opDir),""+curFloorNum+CMath.numAppendage(curFloorNum)));
+				returnExit.setDisplayText(L(desc,CMLib.directions().getDirectionName(opDir),""+curFloorNum+CMath.numAppendage(curFloorNum)));
 				addEffects(returnExit, room.getRoomInDir(dir),addParms);
 				returnExit.recoverPhyStats();
 				returnExit.text();
@@ -1096,10 +1096,10 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 					verb=L("demolishing the roof");
 			}
 			else
-				verb=L("demolishing the wall @x1",Directions.getInDirectionName(dir).toLowerCase());
+				verb=L("demolishing the wall @x1",CMLib.directions().getInDirectionName(dir).toLowerCase());
 		}
 		else
-			verb = L("building the "+recipe[DAT_DESC],Directions.getInDirectionName(dir).toLowerCase());
+			verb = L("building the "+recipe[DAT_DESC],CMLib.directions().getInDirectionName(dir).toLowerCase());
 		return verb;
 	}
 
@@ -1277,7 +1277,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 			return false;
 		}
 		final String dirName=commands.get(commands.size()-1);
-		dir=Directions.getGoodDirectionCode(dirName);
+		dir=CMLib.directions().getGoodDirectionCode(dirName);
 		
 		if((doingCode == Building.DEMOLISH)&&(dirName.equalsIgnoreCase("roof"))||(dirName.equalsIgnoreCase("ceiling")))
 		{
@@ -1587,12 +1587,12 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 				commonTell(mob,L("You must specify an exit direction or the word room, followed by a description for it."));
 				return false;
 			}
-			if(Directions.getGoodDirectionCode(commands.get(1))>=0)
+			if(CMLib.directions().getGoodDirectionCode(commands.get(1))>=0)
 			{
-				dir=Directions.getGoodDirectionCode(commands.get(1));
+				dir=CMLib.directions().getGoodDirectionCode(commands.get(1));
 				if(mob.location().getExitInDir(dir)==null)
 				{
-					commonTell(mob,L("There is no exit @x1 to describe.",Directions.getInDirectionName(dir)));
+					commonTell(mob,L("There is no exit @x1 to describe.",CMLib.directions().getInDirectionName(dir)));
 					return false;
 				}
 				commands.remove(1);

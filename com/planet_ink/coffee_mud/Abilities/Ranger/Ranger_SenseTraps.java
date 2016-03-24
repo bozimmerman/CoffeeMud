@@ -55,7 +55,7 @@ public class Ranger_SenseTraps extends StdAbility
 		if(CMLib.utensils().fetchMyTrap(P)!=null)
 		{
 			if(dir >= 0)
-				return L("To the @x1, @x2 is trapped.\n\r",Directions.getDirectionName(dir),P.name(viewer));
+				return L("To the @x1, @x2 is trapped.\n\r",CMLib.directions().getDirectionName(dir),P.name(viewer));
 			else
 				return L("@x1 is trapped.\n\r",P.name(viewer));
 		}

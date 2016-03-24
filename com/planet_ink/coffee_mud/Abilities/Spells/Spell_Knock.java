@@ -65,12 +65,12 @@ public class Spell_Knock extends Spell
 				}
 			}
 			if(theDir>=0)
-				commands.add(Directions.getDirectionName(theDir));
+				commands.add(CMLib.directions().getDirectionName(theDir));
 		}
 
 		final String whatToOpen=CMParms.combine(commands,0);
 		Physical openThis=givenTarget;
-		final int dirCode=Directions.getGoodDirectionCode(whatToOpen);
+		final int dirCode=CMLib.directions().getGoodDirectionCode(whatToOpen);
 		if(dirCode>=0)
 			openThis=R.getExitInDir(dirCode);
 		if(openThis==null)

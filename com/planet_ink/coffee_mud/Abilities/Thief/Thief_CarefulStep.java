@@ -56,7 +56,7 @@ public class Thief_CarefulStep extends ThiefSkill
 			String dir=CMParms.combine(commands,0);
 			if(commands.size()>0)
 				dir=commands.get(commands.size()-1);
-			final int dirCode=Directions.getGoodDirectionCode(dir);
+			final int dirCode=CMLib.directions().getGoodDirectionCode(dir);
 			if(dirCode<0)
 			{
 				mob.tell(L("Step where?"));
@@ -73,7 +73,7 @@ public class Thief_CarefulStep extends ThiefSkill
 				mob.tell(L("Step where?"));
 				return false;
 			}
-			final CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MSG_OK_VISUAL:CMMsg.MSG_DELICATE_HANDS_ACT,L("<S-NAME> start(s) walking carefully @x1.",Directions.getDirectionName(dirCode)));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MSG_OK_VISUAL:CMMsg.MSG_DELICATE_HANDS_ACT,L("<S-NAME> start(s) walking carefully @x1.",CMLib.directions().getDirectionName(dirCode)));
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 			else
@@ -87,7 +87,7 @@ public class Thief_CarefulStep extends ThiefSkill
 		String dir=CMParms.combine(commands,0);
 		if(commands.size()>0)
 			dir=commands.get(commands.size()-1);
-		final int dirCode=Directions.getGoodDirectionCode(dir);
+		final int dirCode=CMLib.directions().getGoodDirectionCode(dir);
 		if(!preInvoke(mob,commands,givenTarget,auto,asLevel,0,0.0))
 			return false;
 
@@ -98,7 +98,7 @@ public class Thief_CarefulStep extends ThiefSkill
 			return false;
 
 		boolean success=false;
-		final CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MSG_OK_VISUAL:CMMsg.MSG_DELICATE_HANDS_ACT,L("<S-NAME> walk(s) carefully @x1.",Directions.getDirectionName(dirCode)));
+		final CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MSG_OK_VISUAL:CMMsg.MSG_DELICATE_HANDS_ACT,L("<S-NAME> walk(s) carefully @x1.",CMLib.directions().getDirectionName(dirCode)));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

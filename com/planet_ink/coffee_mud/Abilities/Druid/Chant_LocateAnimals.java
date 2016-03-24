@@ -81,7 +81,7 @@ public class Chant_LocateAnimals extends Chant
 			else
 			if(nextDirection>=0)
 			{
-				mob.tell(L("The trail seems to continue @x1.",Directions.getDirectionName(nextDirection)));
+				mob.tell(L("The trail seems to continue @x1.",CMLib.directions().getDirectionName(nextDirection)));
 				nextDirection=-2;
 			}
 

@@ -172,7 +172,7 @@ public class Thief_Safehouse extends ThiefSkill
 				{
 					if((dir<0)||(dir>=Directions.NUM_DIRECTIONS())||(target==null))
 						break;
-					trail.append(Directions.getDirectionName(dir));
+					trail.append(CMLib.directions().getDirectionName(dir));
 					if(target.getRoomInDir(dir)!=R)
 						trail.append(", ");
 					target=target.getRoomInDir(dir);

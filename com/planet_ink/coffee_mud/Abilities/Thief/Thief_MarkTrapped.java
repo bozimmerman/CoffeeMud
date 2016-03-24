@@ -85,7 +85,7 @@ public class Thief_MarkTrapped extends ThiefSkill
 			mob.tell(L("What item would you like to mark as trapped?"));
 			return false;
 		}
-		final int dir=Directions.getGoodDirectionCode(CMParms.combine(commands,0));
+		final int dir=CMLib.directions().getGoodDirectionCode(CMParms.combine(commands,0));
 		Physical item=givenTarget;
 		if((dir>=0)
 		&&(item==null)

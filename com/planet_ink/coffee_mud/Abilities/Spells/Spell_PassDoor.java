@@ -89,10 +89,10 @@ public class Spell_PassDoor extends Spell
 				}
 			}
 			if(theDir>=0)
-				commands.add(Directions.getDirectionName(theDir));
+				commands.add(CMLib.directions().getDirectionName(theDir));
 		}
 		final String whatToOpen=CMParms.combine(commands,0);
-		final int dirCode=Directions.getGoodDirectionCode(whatToOpen);
+		final int dirCode=CMLib.directions().getGoodDirectionCode(whatToOpen);
 		if(!auto)
 		{
 			if(dirCode<0)
@@ -125,7 +125,7 @@ public class Spell_PassDoor extends Spell
 
 		if((!success)
 		||(mob.fetchEffect(ID())!=null))
-			beneficialVisualFizzle(mob,null,L("<S-NAME> walk(s) @x1, but go(es) no further.",Directions.getDirectionName(dirCode)));
+			beneficialVisualFizzle(mob,null,L("<S-NAME> walk(s) @x1, but go(es) no further.",CMLib.directions().getDirectionName(dirCode)));
 		else
 		if(auto)
 		{
@@ -139,7 +139,7 @@ public class Spell_PassDoor extends Spell
 		}
 		else
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,null,verbalCastCode(mob,null,auto),L("^S<S-NAME> shimmer(s) and pass(es) @x1.^?",Directions.getDirectionName(dirCode)));
+			final CMMsg msg=CMClass.getMsg(mob,null,null,verbalCastCode(mob,null,auto),L("^S<S-NAME> shimmer(s) and pass(es) @x1.^?",CMLib.directions().getDirectionName(dirCode)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

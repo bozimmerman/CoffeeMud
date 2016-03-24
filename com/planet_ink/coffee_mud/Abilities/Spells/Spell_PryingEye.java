@@ -121,7 +121,7 @@ public class Spell_PryingEye extends Spell
 		final List<Integer> directions=new LinkedList<Integer>();
 		for(final Object o : commands)
 		{
-			final int dir=Directions.getDirectionCode(o.toString());
+			final int dir=CMLib.directions().getDirectionCode(o.toString());
 			if(dir<0)
 			{
 				mob.tell(L("'@x1' is not a valid direction.",o.toString()));

@@ -227,7 +227,7 @@ public class Chant_SenseWater extends Chant
 					if(d>=Directions.NUM_DIRECTIONS())
 						last="here";
 					else
-						last=Directions.getFromCompassDirectionName(d);
+						last=CMLib.directions().getFromCompassDirectionName(d);
 				}
 			}
 		}

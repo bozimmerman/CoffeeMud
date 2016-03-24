@@ -88,11 +88,11 @@ public class Thief_StrategicRetreat extends ThiefSkill
 					if(directions.size()>0)
 					{
 						directionCode=directions.elementAt(CMLib.dice().roll(1,directions.size(),-1)).intValue();
-						where=Directions.getDirectionName(directionCode);
+						where=CMLib.directions().getDirectionName(directionCode);
 					}
 				}
 				else
-					directionCode=Directions.getGoodDirectionCode(where);
+					directionCode=CMLib.directions().getGoodDirectionCode(where);
 				if(directionCode<0)
 				{
 					mob.tell(L("Flee where?!"));

@@ -72,7 +72,7 @@ public class Open extends StdCommand
 					if((opE!=null)&&(opE.isOpen())&&(((Exit)openThis).isOpen()))
 					{
 						final boolean useShipDirs=(opR instanceof BoardableShip)||(opR.getArea() instanceof BoardableShip);
-						final String inDirName=useShipDirs?Directions.getShipInDirectionName(opCode):Directions.getInDirectionName(opCode);
+						final String inDirName=useShipDirs?CMLib.directions().getShipInDirectionName(opCode):CMLib.directions().getInDirectionName(opCode);
 						opR.showHappens(CMMsg.MSG_OK_ACTION,L("@x1 @x2 opens.",opE.name(),inDirName));
 					}
 					return true;
@@ -100,7 +100,7 @@ public class Open extends StdCommand
 			return false;
 		}
 		Environmental openThis=null;
-		final int dirCode=Directions.getGoodDirectionCode(whatToOpen);
+		final int dirCode=CMLib.directions().getGoodDirectionCode(whatToOpen);
 		if(dirCode>=0)
 			openThis=mob.location().getExitInDir(dirCode);
 		if(openThis==null)

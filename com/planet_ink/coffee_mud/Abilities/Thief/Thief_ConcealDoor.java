@@ -122,10 +122,10 @@ public class Thief_ConcealDoor extends ThiefSkill
 		}
 		Environmental chkE=null;
 		final String typed=CMParms.combine(commands,0);
-		if(Directions.getGoodDirectionCode(typed)<0)
+		if(CMLib.directions().getGoodDirectionCode(typed)<0)
 			chkE=mob.location().fetchFromMOBRoomItemExit(mob,null,typed,Wearable.FILTER_WORNONLY);
 		else
-			chkE=mob.location().getExitInDir(Directions.getGoodDirectionCode(typed));
+			chkE=mob.location().getExitInDir(CMLib.directions().getGoodDirectionCode(typed));
 		if((!(chkE instanceof Exit))||(!CMLib.flags().canBeSeenBy(chkE,mob)))
 		{
 			mob.tell(L("You don't see any doors called '@x1' here.",typed));

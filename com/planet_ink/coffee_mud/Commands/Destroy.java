@@ -284,7 +284,7 @@ public class Destroy extends StdCommand
 			}
 		}
 		final String roomdir=CMParms.combine(commands,2);
-		final int direction=Directions.getGoodDirectionCode(roomdir);
+		final int direction=CMLib.directions().getGoodDirectionCode(roomdir);
 		Room deadRoom=null;
 		if(!thecmd.equalsIgnoreCase("UNLINK"))
 			deadRoom=CMLib.map().getRoom(roomdir);
@@ -378,9 +378,9 @@ public class Destroy extends StdCommand
 			}
 			mob.location().getArea().fillInAreaRoom(mob.location());
 			final boolean useShipDirs=(mob.location() instanceof BoardableShip)||(mob.location().getArea() instanceof BoardableShip);
-			final String inDirName=useShipDirs?Directions.getShipDirectionName(direction):Directions.getDirectionName(direction);
+			final String inDirName=useShipDirs?CMLib.directions().getDirectionName(direction):CMLib.directions().getDirectionName(direction);
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("A wall of inhibition falls @x1.",inDirName));
-			final String dirName=useShipDirs?Directions.getShipDirectionName(direction):Directions.getDirectionName(direction);
+			final String dirName=useShipDirs?CMLib.directions().getDirectionName(direction):CMLib.directions().getDirectionName(direction);
 			Log.sysOut("Rooms",mob.Name()+" unlinked direction "+dirName+" from room "+mob.location().roomID()+".");
 		}
 	}
@@ -400,7 +400,7 @@ public class Destroy extends StdCommand
 			return;
 		}
 
-		final int direction=Directions.getGoodDirectionCode((commands.get(2)));
+		final int direction=CMLib.directions().getGoodDirectionCode((commands.get(2)));
 		if(direction<0)
 		{
 			mob.tell(L("You have failed to specify a direction.  Try @x1.\n\r",Directions.LETTERS()));
@@ -421,7 +421,7 @@ public class Destroy extends StdCommand
 			((GridLocale)mob.location()).buildGrid();
 		final boolean useShipDirs=(mob.location() instanceof BoardableShip)||(mob.location().getArea() instanceof BoardableShip);
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("A wall of inhibition falls @x1.",
-				(useShipDirs?Directions.getShipInDirectionName(direction):Directions.getInDirectionName(direction))));
+				(useShipDirs?CMLib.directions().getShipInDirectionName(direction):CMLib.directions().getInDirectionName(direction))));
 		Log.sysOut("Exits",mob.location().roomID()+" exits destroyed by "+mob.Name()+".");
 	}
 
@@ -1693,7 +1693,7 @@ public class Destroy extends StdCommand
 				}
 				else
 				{
-					if(Directions.getGoodDirectionCode(allWord)>=0)
+					if(CMLib.directions().getGoodDirectionCode(allWord)>=0)
 					{
 						commands=new Vector<String>();
 						commands.add("DESTROY");

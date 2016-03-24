@@ -77,9 +77,9 @@ public class WaterCurrents extends ActiveTicker
 				this.doBoats=true;
 			else
 			{
-				final int dir=Directions.getGoodDirectionCode(str);
+				final int dir=CMLib.directions().getGoodDirectionCode(str);
 				if(dir>=0)
-					dirs=dirs+Directions.getDirectionChar(dir);
+					dirs=dirs+CMLib.directions().getDirectionChar(dir);
 			}
 		}
 		if(dirs.length()==0)
@@ -137,7 +137,7 @@ public class WaterCurrents extends ActiveTicker
 			Room R2=null;
 			for(int dl=0;dl<dirs.length();dl++)
 			{
-				dir=Directions.getDirectionCode(""+dirs.charAt(dl));
+				dir=CMLib.directions().getDirectionCode(""+dirs.charAt(dl));
 				if(dir>=0)
 				{
 					R2=R.getRoomInDir(dir);
@@ -163,13 +163,13 @@ public class WaterCurrents extends ActiveTicker
 					{
 						M=(MOB)todo.elementAt(m);
 						final CMMsg themsg=CMClass.getMsg(srcM,M,new AWaterCurrent(),CMMsg.MSG_OK_ACTION,L("<T-NAME> <T-IS-ARE> swept @x1 by the current.",
-								Directions.getDirectionName(dir).toLowerCase()));
+								CMLib.directions().getDirectionName(dir).toLowerCase()));
 						if(R.okMessage(M,themsg))
 						{
 							R.send(M,themsg);
 							R2.bringMobHere(M,false);
 							R2.showOthers(srcM,M,new AWaterCurrent(),CMMsg.MSG_OK_ACTION,L("<T-NAME> <T-IS-ARE> swept in from @x1 by the current.",
-									Directions.getFromCompassDirectionName(Directions.getOpDirectionCode(dir)).toLowerCase()));
+									CMLib.directions().getFromCompassDirectionName(Directions.getOpDirectionCode(dir)).toLowerCase()));
 							CMLib.commands().postLook(M,true);
 						}
 					}
@@ -178,7 +178,7 @@ public class WaterCurrents extends ActiveTicker
 					{
 						I=(Item)todo.elementAt(m);
 						if(R.show(srcM,I,new AWaterCurrent(),CMMsg.MSG_OK_ACTION,L("@x1 is swept @x2 by the current.",
-								I.name(),Directions.getDirectionName(dir).toLowerCase())))
+								I.name(),CMLib.directions().getDirectionName(dir).toLowerCase())))
 						{
 							if(I instanceof BoardableShip)
 							{
@@ -186,12 +186,12 @@ public class WaterCurrents extends ActiveTicker
 								{
 									final Room R3=r.nextElement();
 									if((R3!=null)&&((R3.domainType()&Room.INDOORS)==0))
-										R3.showHappens(CMMsg.MSG_OK_ACTION, L("@x1 is swept @x2 by the current.",I.name(),Directions.getDirectionName(dir).toLowerCase()));
+										R3.showHappens(CMMsg.MSG_OK_ACTION, L("@x1 is swept @x2 by the current.",I.name(),CMLib.directions().getDirectionName(dir).toLowerCase()));
 								}
 							}
 							R2.moveItemTo(I,ItemPossessor.Expire.Player_Drop);
 							R2.showOthers(srcM,I,new AWaterCurrent(),CMMsg.MSG_OK_ACTION,L("@x1 is swept in from @x2 by the current.",
-									I.name(),Directions.getFromCompassDirectionName(Directions.getOpDirectionCode(dir)).toLowerCase()));
+									I.name(),CMLib.directions().getFromCompassDirectionName(Directions.getOpDirectionCode(dir)).toLowerCase()));
 						}
 					}
 				}

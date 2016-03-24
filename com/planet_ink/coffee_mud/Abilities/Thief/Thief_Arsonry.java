@@ -54,7 +54,7 @@ public class Thief_Arsonry extends ThiefSkill
 			return false;
 		}
 		final String str=CMParms.combine(commands,0);
-		final int dir=Directions.getGoodDirectionCode(str);
+		final int dir=CMLib.directions().getGoodDirectionCode(str);
 		Room targetRoom=null;
 		Physical target=null;
 		if(dir>=0)

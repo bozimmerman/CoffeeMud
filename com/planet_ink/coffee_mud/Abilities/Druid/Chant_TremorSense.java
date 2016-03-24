@@ -139,7 +139,7 @@ public class Chant_TremorSense extends Chant
 				{
 					final int dir=CMLib.tracking().radiatesFromDir((Room)affected,rooms);
 					if(dir>=0)
-						invoker.tell(L("You feel footsteps @x1",Directions.getInDirectionName(dir)));
+						invoker.tell(L("You feel footsteps @x1",CMLib.directions().getInDirectionName(dir)));
 				}
 			}
 			else
@@ -153,7 +153,7 @@ public class Chant_TremorSense extends Chant
 				{
 					final int dir=CMLib.tracking().radiatesFromDir((Room)affected,rooms);
 					if(dir>=0)
-						invoker.tell(L("You feel a ferocious rumble @x1",Directions.getInDirectionName(dir)));
+						invoker.tell(L("You feel a ferocious rumble @x1",CMLib.directions().getInDirectionName(dir)));
 				}
 			}
 		}

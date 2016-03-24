@@ -101,7 +101,7 @@ public class Thief_SenseLaw extends ThiefSkill
 					{
 						V=getLawMen(mob.location().getArea(),R,B);
 						if((V!=null)&&(V.size()>0))
-							buf.append(L("There is an officer of the law @x1.  ",Directions.getInDirectionName(d)));
+							buf.append(L("There is an officer of the law @x1.  ",CMLib.directions().getInDirectionName(d)));
 					}
 				}
 				if((buf.length()>0)

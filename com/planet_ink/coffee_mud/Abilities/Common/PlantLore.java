@@ -117,14 +117,14 @@ public class PlantLore extends CommonSkill
 										isAdjacent=d;
 								}
 								if(isAdjacent>=0)
-									str.append(L("There looks like @x1 @x2.\n\r",resourceStr.toLowerCase(),Directions.getInDirectionName(isAdjacent)));
+									str.append(L("There looks like @x1 @x2.\n\r",resourceStr.toLowerCase(),CMLib.directions().getInDirectionName(isAdjacent)));
 								else
 								{
 									int d=CMLib.tracking().radiatesFromDir(R,V);
 									if(d>=0)
 									{
 										d=Directions.getOpDirectionCode(d);
-										str.append(L("There looks like @x1 far @x2.\n\r",resourceStr.toLowerCase(),Directions.getInDirectionName(d)));
+										str.append(L("There looks like @x1 far @x2.\n\r",resourceStr.toLowerCase(),CMLib.directions().getInDirectionName(d)));
 									}
 								}
 

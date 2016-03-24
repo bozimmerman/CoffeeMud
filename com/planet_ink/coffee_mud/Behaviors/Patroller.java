@@ -122,9 +122,9 @@ public class Patroller extends ActiveTicker
 				s=V.elementAt(i);
 				if(s.equalsIgnoreCase("RESTART")||s.equalsIgnoreCase("REPEAT"))
 					break;
-				final int dir=Directions.getGoodDirectionCode(s);
+				final int dir=CMLib.directions().getGoodDirectionCode(s);
 				if(dir>=0)
-					V.addElement(Directions.getDirectionName(Directions.getOpDirectionCode(dir)));
+					V.addElement(CMLib.directions().getDirectionName(Directions.getOpDirectionCode(dir)));
 				else
 				if(i<(V.size()-1))
 					V.addElement(V.elementAt(i));
@@ -257,7 +257,7 @@ public class Patroller extends ActiveTicker
 			}
 
 			tickStatus=Tickable.STATUS_MISC+3;
-			int direction=Directions.getGoodDirectionCode(nxt);
+			int direction=CMLib.directions().getGoodDirectionCode(nxt);
 			if(direction<0)
 			{
 				if(CMLib.map().getExtendedRoomID(thisRoom).toUpperCase().endsWith(nxt.toUpperCase()))
@@ -479,7 +479,7 @@ public class Patroller extends ActiveTicker
 				}
 
 				tickStatus=Tickable.STATUS_MISC+17;
-				thisRoom.showHappens(CMMsg.MSG_OK_ACTION,I,L("<S-NAME> goes @x1.",Directions.getDirectionName(direction)));
+				thisRoom.showHappens(CMMsg.MSG_OK_ACTION,I,L("<S-NAME> goes @x1.",CMLib.directions().getDirectionName(direction)));
 				tickStatus=Tickable.STATUS_MISC+18;
 				if(thatRoom!=null)
 					thatRoom.moveItemTo(I);
@@ -487,7 +487,7 @@ public class Patroller extends ActiveTicker
 				if((I.owner()==thatRoom)&&(thatRoom!=null))
 				{
 					tickStatus=Tickable.STATUS_MISC+20;
-					thatRoom.showHappens(CMMsg.MSG_OK_ACTION,I,L("<S-NAME> arrives from @x1.",Directions.getFromCompassDirectionName(Directions.getOpDirectionCode(direction))));
+					thatRoom.showHappens(CMMsg.MSG_OK_ACTION,I,L("<S-NAME> arrives from @x1.",CMLib.directions().getFromCompassDirectionName(Directions.getOpDirectionCode(direction))));
 					tickStatus=Tickable.STATUS_MISC+21;
 					if(riders!=null)
 					for(int i=0;i<riders.size();i++)
@@ -570,7 +570,7 @@ public class Patroller extends ActiveTicker
 				if(A!=null)
 				{
 					final Vector<String> V=new Vector<String>();
-					V.add(Directions.getDirectionName(direction));
+					V.add(CMLib.directions().getDirectionName(direction));
 					if(A.proficiency()<50)
 					{
 						A.setProficiency(CMLib.dice().roll(1,50,A.adjustedLevel(mob,0)*15));

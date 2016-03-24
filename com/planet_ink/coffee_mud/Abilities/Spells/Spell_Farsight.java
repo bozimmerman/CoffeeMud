@@ -70,7 +70,7 @@ public class Spell_Farsight extends Spell
 
 						if((exit!=null)&&(room!=null)&&(CMLib.flags().canBeSeenBy(exit,mob)&&(exit.isOpen())))
 						{
-							mob.tell("^D" + CMStrings.padRight(Directions.getDirectionName(d),5)+":^.^N ^d"+exit.viewableText(mob, room)+"^N");
+							mob.tell("^D" + CMStrings.padRight(CMLib.directions().getDirectionName(d),5)+":^.^N ^d"+exit.viewableText(mob, room)+"^N");
 							exit=room.getExitInDir(d);
 							room=room.getRoomInDir(d);
 							if((exit!=null)&&(room!=null)&&(CMLib.flags().canBeSeenBy(exit,mob)&&(exit.isOpen())))
@@ -90,7 +90,7 @@ public class Spell_Farsight extends Spell
 				while(commands.size()>0)
 				{
 					final String whatToOpen=commands.get(0);
-					final int dirCode=Directions.getGoodDirectionCode(whatToOpen);
+					final int dirCode=CMLib.directions().getGoodDirectionCode(whatToOpen);
 					if(limit<=0)
 					{
 						mob.tell(L("Your sight has reached its limit."));

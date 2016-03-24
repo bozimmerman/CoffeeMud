@@ -82,7 +82,7 @@ public class Chopping extends GatheringSkill
 					if(d<0)
 						str.append(L("You might try elsewhere."));
 					else
-						str.append(L("You might try @x1.",Directions.getInDirectionName(d)));
+						str.append(L("You might try @x1.",CMLib.directions().getInDirectionName(d)));
 					commonTell(mob,str.toString());
 					unInvoke();
 				}

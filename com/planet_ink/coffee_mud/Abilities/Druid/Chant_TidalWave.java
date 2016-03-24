@@ -388,7 +388,7 @@ public class Chant_TidalWave extends Chant
 				mob.tell(L("There is no water nearby to call in a tidal wave from."));
 				return false;
 			}
-			fromDir=Directions.getFromCompassDirectionName(waterDir);
+			fromDir=CMLib.directions().getFromCompassDirectionName(waterDir);
 		}
 		
 		if((waterDir >=0)&&(possibleWashDirs!=null))
@@ -398,14 +398,14 @@ public class Chant_TidalWave extends Chant
 			if(possibleWashDirs.contains(Integer.valueOf(opWaterDir)))
 			{
 				washRoom = R.getRoomInDir(opWaterDir);
-				washDirection=Directions.getDirectionName(opWaterDir);
+				washDirection=CMLib.directions().getDirectionName(opWaterDir);
 			}
 			else
 			if(possibleWashDirs.size()>0)
 			{
 				int washDirDir=possibleWashDirs.get(CMLib.dice().roll(1, possibleWashDirs.size(), -1)).intValue();
 				washRoom = R.getRoomInDir(washDirDir);
-				washDirection=Directions.getDirectionName(washDirDir);
+				washDirection=CMLib.directions().getDirectionName(washDirDir);
 			}
 		}
 		

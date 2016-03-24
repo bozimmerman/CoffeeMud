@@ -376,8 +376,8 @@ public class Emoter extends ActiveTicker
 					if((R!=null)&&(E!=null)&&(E.isOpen()))
 					{
 						final String inDir=((R instanceof BoardableShip)||(R.getArea() instanceof BoardableShip))?
-								Directions.getShipInDirectionName(Directions.getOpDirectionCode(d)):
-									Directions.getInDirectionName(Directions.getOpDirectionCode(d));
+								CMLib.directions().getShipInDirectionName(Directions.getOpDirectionCode(d)):
+									CMLib.directions().getInDirectionName(Directions.getOpDirectionCode(d));
 						emoter.setName(L("something @x1",inDir));
 						emoteHere(R,emoter,emote,null,true);
 					}

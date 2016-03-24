@@ -100,7 +100,7 @@ public class Thief_RemoveTraps extends ThiefSkill
 	{
 		final String whatTounlock=CMParms.combine(commands,0);
 		Physical unlockThis=null;
-		int dirCode=Directions.getGoodDirectionCode(whatTounlock);
+		int dirCode=CMLib.directions().getGoodDirectionCode(whatTounlock);
 		final Room R=mob.location();
 		Room nextRoom=null;
 		if(dirCode>=0)

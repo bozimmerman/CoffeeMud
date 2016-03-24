@@ -103,11 +103,11 @@ public class Flee extends Go
 				if(directions.size()>0)
 				{
 					directionCode=directions.get(CMLib.dice().roll(1,directions.size(),-1)).intValue();
-					direction=Directions.getDirectionName(directionCode);
+					direction=CMLib.directions().getDirectionName(directionCode);
 				}
 			}
 			else
-				directionCode=Directions.getGoodDirectionCode(direction);
+				directionCode=CMLib.directions().getGoodDirectionCode(direction);
 			if(directionCode<0)
 			{
 				CMLib.commands().doCommandFail(mob,origCmds,L("Flee where?!"));

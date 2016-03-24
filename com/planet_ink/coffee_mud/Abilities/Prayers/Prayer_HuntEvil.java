@@ -82,7 +82,7 @@ public class Prayer_HuntEvil extends Prayer
 			else
 			if(nextDirection>=0)
 			{
-				mob.tell(L("The hunt seems to continue @x1.",Directions.getDirectionName(nextDirection)));
+				mob.tell(L("The hunt seems to continue @x1.",CMLib.directions().getDirectionName(nextDirection)));
 				nextDirection=-2;
 			}
 

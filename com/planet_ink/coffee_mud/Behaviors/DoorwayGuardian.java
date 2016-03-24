@@ -90,7 +90,7 @@ public class DoorwayGuardian extends StdBehavior
 			}
 			else
 			{
-				final int dir=Directions.getGoodDirectionCode(s);
+				final int dir=CMLib.directions().getGoodDirectionCode(s);
 				if(dir>=0)
 				{
 					dirs.addElement(Integer.valueOf(dir));

@@ -284,7 +284,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	@Override
 	public Room buildRoom(XMLTag piece, Map<String,Object> defined, Exit[] exits, int direction) throws CMException
 	{
-		addDefinition("DIRECTION",Directions.getDirectionName(direction).toLowerCase(),defined);
+		addDefinition("DIRECTION",CMLib.directions().getDirectionName(direction).toLowerCase(),defined);
 
 		final String classID = findStringNow("class",piece,defined);
 		final Room R = CMClass.getLocale(classID);
@@ -328,19 +328,19 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		for(int dir=0;dir<Directions.NUM_DIRECTIONS();dir++)
 		{
 			Exit E=exits[dir];
-			if((E==null)&&(defined.containsKey("ROOMLINK_"+Directions.getDirectionChar(dir).toUpperCase())))
+			if((E==null)&&(defined.containsKey("ROOMLINK_"+CMLib.directions().getDirectionChar(dir).toUpperCase())))
 			{
-				defined.put("ROOMLINK_DIR",Directions.getDirectionChar(dir).toUpperCase());
+				defined.put("ROOMLINK_DIR",CMLib.directions().getDirectionChar(dir).toUpperCase());
 				final Exit E2=findExit(R,piece, defined);
 				if(E2!=null)
 					E=E2;
 				defined.remove("ROOMLINK_DIR");
 				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
-					Log.debugOut("MUDPercolator","EXIT:NEW:"+((E==null)?"null":E.ID())+":DIR="+Directions.getDirectionChar(dir).toUpperCase()+":ROOM="+R.getStat("DISPLAY"));
+					Log.debugOut("MUDPercolator","EXIT:NEW:"+((E==null)?"null":E.ID())+":DIR="+CMLib.directions().getDirectionChar(dir).toUpperCase()+":ROOM="+R.getStat("DISPLAY"));
 			}
 			else
-			if((CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))&&defined.containsKey("ROOMLINK_"+Directions.getDirectionChar(dir).toUpperCase()))
-				Log.debugOut("MUDPercolator","EXIT:OLD:"+((E==null)?"null":E.ID())+":DIR="+Directions.getDirectionChar(dir).toUpperCase()+":ROOM="+R.getStat("DISPLAY"));
+			if((CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))&&defined.containsKey("ROOMLINK_"+CMLib.directions().getDirectionChar(dir).toUpperCase()))
+				Log.debugOut("MUDPercolator","EXIT:OLD:"+((E==null)?"null":E.ID())+":DIR="+CMLib.directions().getDirectionChar(dir).toUpperCase()+":ROOM="+R.getStat("DISPLAY"));
 			R.setRawExit(dir, E);
 			R.startItemRejuv();
 		}
@@ -443,7 +443,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 
 	protected Area buildArea(final XMLTag piece, final Map<String,Object> defined, int direction) throws CMException
 	{
-		defined.put("DIRECTION",Directions.getDirectionName(direction).toLowerCase());
+		defined.put("DIRECTION",CMLib.directions().getDirectionName(direction).toLowerCase());
 
 		final String classID = findStringNow("class",piece,defined);
 		final Area A = CMClass.getAreaType(classID);
@@ -801,11 +801,11 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			{
 				final int opDir=Directions.getOpDirectionCode(linkDir.intValue());
 				exits[linkDir.intValue()]=linkNode.room().getExitInDir(opDir);
-				groupDefined.put("ROOMTITLE_"+Directions.getDirectionChar(linkDir.intValue()).toUpperCase(),linkNode.room().displayText(null));
+				groupDefined.put("ROOMTITLE_"+CMLib.directions().getDirectionChar(linkDir.intValue()).toUpperCase(),linkNode.room().displayText(null));
 			}
-			groupDefined.put("NODETYPE_"+Directions.getDirectionChar(linkDir.intValue()).toUpperCase(),linkNode.type().name());
-			//else groupDefined.put("ROOMTITLE_"+Directions.getDirectionChar(linkDir.intValue()).toUpperCase(),"");
-			groupDefined.put("ROOMLINK_"+Directions.getDirectionChar(linkDir.intValue()).toUpperCase(),"true");
+			groupDefined.put("NODETYPE_"+CMLib.directions().getDirectionChar(linkDir.intValue()).toUpperCase(),linkNode.type().name());
+			//else groupDefined.put("ROOMTITLE_"+CMLib.directions().getDirectionChar(linkDir.intValue()).toUpperCase(),"");
+			groupDefined.put("ROOMLINK_"+CMLib.directions().getDirectionChar(linkDir.intValue()).toUpperCase(),"true");
 		}
 		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
 		{
@@ -834,9 +834,9 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			groupDefined.remove("ROOMTAG_"+key.toString().toUpperCase());
 		for(final Integer linkDir : node.links().keySet())
 		{
-			groupDefined.remove("NODETYPE_"+Directions.getDirectionChar(linkDir.intValue()).toUpperCase());
-			groupDefined.remove("ROOMLINK_"+Directions.getDirectionChar(linkDir.intValue()).toUpperCase());
-			groupDefined.remove("ROOMTITLE_"+Directions.getDirectionChar(linkDir.intValue()).toUpperCase());
+			groupDefined.remove("NODETYPE_"+CMLib.directions().getDirectionChar(linkDir.intValue()).toUpperCase());
+			groupDefined.remove("ROOMLINK_"+CMLib.directions().getDirectionChar(linkDir.intValue()).toUpperCase());
+			groupDefined.remove("ROOMTITLE_"+CMLib.directions().getDirectionChar(linkDir.intValue()).toUpperCase());
 		}
 		return R;
 	}
@@ -2400,7 +2400,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 						final Room R2=R.getRoomInDir(d);
 						foundOne=(R2!=null) || foundOne;
 						if((R2!=null) && (R2.roomID().length()>0) && (R.getArea()!=R2.getArea()))
-							return Directions.getDirectionName(d);
+							return CMLib.directions().getDirectionName(d);
 					}
 					if(!foundOne)
 						throw new PostProcessException("No exits at all on on object "+R.roomID()+" in variable '"+tagName+"'");
@@ -2934,11 +2934,11 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 						if(parts[p].equals("AREA"))
 							E3=CMLib.map().areaLocation(E2);
 						else
-						if(Directions.getDirectionCode(parts[p])>=0)
+						if(CMLib.directions().getDirectionCode(parts[p])>=0)
 						{
 							if(R==null)
 								throw new PostProcessException("Unknown room on object "+E2.ID()+" in variable '"+V.var+"'");
-							final int dir=Directions.getDirectionCode(parts[p]);
+							final int dir=CMLib.directions().getDirectionCode(parts[p]);
 							E3=R.getRoomInDir(dir);
 						}
 						else

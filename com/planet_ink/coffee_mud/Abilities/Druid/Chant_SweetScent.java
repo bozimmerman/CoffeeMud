@@ -114,7 +114,7 @@ public class Chant_SweetScent extends Chant
 								&&((!M.isMonster())||(CMLib.flags().isMobile(M)))
 								&&(CMLib.flags().canSmell(M)))
 								{
-									M.tell(M,null,null,L("You smell something irresistable @x1.",Directions.getInDirectionName(dir)));
+									M.tell(M,null,null,L("You smell something irresistable @x1.",CMLib.directions().getInDirectionName(dir)));
 									if(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.STAT_SAVE_MIND))
 										CMLib.tracking().walk(M,dir,false,false);
 								}

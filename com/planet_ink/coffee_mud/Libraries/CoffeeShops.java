@@ -1067,7 +1067,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			if((R.getExitInDir(d)!=null)&&(R.getExitInDir(d).keyName().equals(keyNum)))
 			{
 				final String dirName=((R instanceof BoardableShip)||(R.getArea() instanceof BoardableShip))?
-						Directions.getShipDirectionName(d):Directions.getDirectionName(d);
+						CMLib.directions().getDirectionName(d):CMLib.directions().getDirectionName(d);
 				if(addThis.length()>0)
 					return addThis+" and to the "+dirName.toLowerCase();
 				return "to the "+dirName.toLowerCase();

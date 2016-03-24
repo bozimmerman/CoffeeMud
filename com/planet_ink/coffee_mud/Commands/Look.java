@@ -115,7 +115,7 @@ public class Look extends StdCommand
 			Environmental lookingTool=null;
 			if(thisThang==null)
 			{
-				dirCode=Directions.getGoodDirectionCode(ID);
+				dirCode=CMLib.directions().getGoodDirectionCode(ID);
 				if(dirCode>=0)
 				{
 					final Room room=R.getRoomInDir(dirCode);
@@ -142,7 +142,7 @@ public class Look extends StdCommand
 					else
 					if(dirCode>=0)
 						name=((R instanceof BoardableShip)||(R.getArea() instanceof BoardableShip))?
-								Directions.getShipDirectionName(dirCode):Directions.getDirectionName(dirCode);
+								CMLib.directions().getDirectionName(dirCode):CMLib.directions().getDirectionName(dirCode);
 				}
 				final CMMsg msg=CMClass.getMsg(mob,thisThang,lookingTool,CMMsg.MSG_LOOK,textMsg+name+".");
 				if((thisThang instanceof Room)&&(mob.isAttributeSet(MOB.Attrib.AUTOEXITS))&&(CMProps.getIntVar(CMProps.Int.EXVIEW)!=1))

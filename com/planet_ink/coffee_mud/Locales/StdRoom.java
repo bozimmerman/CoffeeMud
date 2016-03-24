@@ -2078,7 +2078,7 @@ public class StdRoom implements Room
 	@Override
 	public Exit fetchExit(String itemID)
 	{
-		int dir=Directions.getGoodDirectionCode(itemID);
+		int dir=CMLib.directions().getGoodDirectionCode(itemID);
 		Exit E=null;
 		if(dir >= 0)
 			E=getExitInDir(dir);
@@ -2301,9 +2301,9 @@ public class StdRoom implements Room
 				if(exits[e]==E)
 				{
 					if((this instanceof BoardableShip)||(this.getArea() instanceof BoardableShip))
-						return Directions.getShipDirectionName(e);
+						return CMLib.directions().getDirectionName(e);
 					else
-						return Directions.getDirectionName(e);
+						return CMLib.directions().getDirectionName(e);
 				}
 			}
 			return E.Name();
@@ -2456,7 +2456,7 @@ public class StdRoom implements Room
 			thingName=newThingName;
 		final Item goodLocation=null;
 		PhysicalAgent found=null;
-		final int dirCode = Directions.getGoodDirectionCode(thingName);
+		final int dirCode = CMLib.directions().getGoodDirectionCode(thingName);
 		final int[] contextNumber=new int[]{0};
 		if(dirCode>=0)
 			found=getRoomInDir(dirCode);
@@ -2598,7 +2598,7 @@ public class StdRoom implements Room
 			for(int d=0;d<exits.length;d++)
 			{
 				if((exits[d]!=null)
-				&&(thingName.equalsIgnoreCase(inShip?Directions.getShipDirectionName(d):Directions.getDirectionName(d))))
+				&&(thingName.equalsIgnoreCase(inShip?CMLib.directions().getDirectionName(d):CMLib.directions().getDirectionName(d))))
 					return getExitInDir(d);
 			}
 		}

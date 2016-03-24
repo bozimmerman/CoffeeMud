@@ -45,7 +45,7 @@ public class Aft extends Go
 		int direction=Directions.SOUTH;
 		if((commands!=null)&&(commands.size()>1))
 		{
-			final int nextDir=Directions.getDirectionCode(commands.get(2));
+			final int nextDir=CMLib.directions().getDirectionCode(commands.get(2));
 			if(nextDir == Directions.EAST)
 				direction=Directions.SOUTHEAST;
 			else

@@ -172,7 +172,7 @@ public class Thief_Listen extends ThiefSkill
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final String whom=CMParms.combine(commands,0);
-		final int dirCode=Directions.getGoodDirectionCode(whom);
+		final int dirCode=CMLib.directions().getGoodDirectionCode(whom);
 		if(!CMLib.flags().canHear(mob))
 		{
 			mob.tell(L("You don't hear anything."));
@@ -208,7 +208,7 @@ public class Thief_Listen extends ThiefSkill
 			return false;
 
 		boolean success=false;
-		final CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MSG_OK_ACTION:(CMMsg.MSG_DELICATE_SMALL_HANDS_ACT),CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,L("<S-NAME> listen(s)@x1.",((dirCode<0)?"":" "+Directions.getDirectionName(dirCode))));
+		final CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MSG_OK_ACTION:(CMMsg.MSG_DELICATE_SMALL_HANDS_ACT),CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,L("<S-NAME> listen(s)@x1.",((dirCode<0)?"":" "+CMLib.directions().getDirectionName(dirCode))));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

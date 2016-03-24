@@ -121,9 +121,9 @@ public class Go extends StdCommand
 		if(direction<0)
 		{
 			if(mob.isMonster())
-				direction=Directions.getGoodDirectionCode(whereStr);
+				direction=CMLib.directions().getGoodDirectionCode(whereStr);
 			else
-				direction=(inAShip)?Directions.getGoodShipDirectionCode(whereStr):Directions.getGoodCompassDirectionCode(whereStr);
+				direction=(inAShip)?CMLib.directions().getGoodShipDirectionCode(whereStr):CMLib.directions().getGoodCompassDirectionCode(whereStr);
 		}
 		if(direction<0)
 		{
@@ -177,9 +177,9 @@ public class Go extends StdCommand
 				}
 
 				if(mob.isMonster())
-					direction=Directions.getGoodDirectionCode(s);
+					direction=CMLib.directions().getGoodDirectionCode(s);
 				else
-					direction=(inAShip)?Directions.getGoodShipDirectionCode(s):Directions.getGoodCompassDirectionCode(s);
+					direction=(inAShip)?CMLib.directions().getGoodShipDirectionCode(s):CMLib.directions().getGoodCompassDirectionCode(s);
 				if(direction>=0)
 				{
 					doneAnything=true;
@@ -194,7 +194,7 @@ public class Go extends StdCommand
 						{
 							final Vector<String> V=new Vector<String>();
 							V.add(doing);
-							V.add(inAShip?Directions.getShipDirectionName(direction):Directions.getDirectionName(direction));
+							V.add(inAShip?CMLib.directions().getDirectionName(direction):CMLib.directions().getDirectionName(direction));
 							mob.enqueCommand(V,metaFlags,0);
 						}
 					}

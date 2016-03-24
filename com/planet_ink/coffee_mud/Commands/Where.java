@@ -246,7 +246,7 @@ public class Where extends StdCommand
 										||(E.hasADoor() && (E.doorName().length()>0)&& CMLib.english().containsString(E.doorName(),who))
 										||(CMLib.english().containsString(E.viewableText(mob,R).toString(),who))))
 									{
-										lines.append("^!"+CMStrings.padRight(Directions.getDirectionName(d),17)+"^N| ");
+										lines.append("^!"+CMStrings.padRight(CMLib.directions().getDirectionName(d),17)+"^N| ");
 										lines.append(" (^<LSTROOMID^>"+CMLib.map().getDescriptiveExtendedRoomID(R)+"^</LSTROOMID^>)");
 										lines.append("\n\r");
 									}

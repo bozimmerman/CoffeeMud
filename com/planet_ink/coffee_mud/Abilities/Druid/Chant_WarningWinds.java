@@ -143,10 +143,10 @@ public class Chant_WarningWinds extends Chant
 									far="";
 							dir=Directions.getOpDirectionCode(dir);
 							if(fighting)
-								((MOB)affected).tell(L("The winds tell of fighting @x1@x2.",far,Directions.getInDirectionName(dir)));
+								((MOB)affected).tell(L("The winds tell of fighting @x1@x2.",far,CMLib.directions().getInDirectionName(dir)));
 							else
 							if(enemy)
-								((MOB)affected).tell(L("The winds tell of enemies @x1@x2.",far,Directions.getInDirectionName(dir)));
+								((MOB)affected).tell(L("The winds tell of enemies @x1@x2.",far,CMLib.directions().getInDirectionName(dir)));
 						}
 					}
 				}

@@ -59,7 +59,7 @@ public class Enter extends Go
 		}
 		Environmental enterThis=null;
 		final String enterWhat=CMParms.combine(commands,1);
-		int dir=Directions.getGoodDirectionCode(enterWhat.toUpperCase());
+		int dir=CMLib.directions().getGoodDirectionCode(enterWhat.toUpperCase());
 		final Room R=mob.location();
 		if(dir<0)
 		{

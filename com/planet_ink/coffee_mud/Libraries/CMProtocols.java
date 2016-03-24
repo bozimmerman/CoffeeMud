@@ -1384,7 +1384,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 						final String roomID=CMLib.map().getExtendedRoomID(R2);
 						if(roomID.length()>0)
 						{
-							buf.write(Session.MSDP_VAR);buf.write(Directions.getDirectionChar(d).getBytes(Session.MSDP_CHARSET));
+							buf.write(Session.MSDP_VAR);buf.write(CMLib.directions().getDirectionChar(d).getBytes(Session.MSDP_CHARSET));
 							buf.write(Session.MSDP_VAL);
 							buf.write(Integer.toString(roomID.hashCode()).getBytes(Session.MSDP_CHARSET));
 						}
@@ -1434,7 +1434,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 						final String roomID=CMLib.map().getExtendedRoomID(R2);
 						if(roomID.length()>0)
 						{
-							buf.write(Session.MSDP_VAR);buf.write(Directions.getDirectionChar(d).getBytes(Session.MSDP_CHARSET));
+							buf.write(Session.MSDP_VAR);buf.write(CMLib.directions().getDirectionChar(d).getBytes(Session.MSDP_CHARSET));
 							buf.write(Session.MSDP_VAL);
 							buf.write(Integer.toString(roomID.hashCode()).getBytes(Session.MSDP_CHARSET));
 						}
@@ -2076,7 +2076,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 									{
 										if(comma)
 											doc.append(","); comma=true;
-										doc.append("\""+Directions.getDirectionChar(d)+"\":").append(room2ID.hashCode());
+										doc.append("\""+CMLib.directions().getDirectionChar(d)+"\":").append(room2ID.hashCode());
 									}
 								}
 							}

@@ -1411,23 +1411,23 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			if(continues.size()==1)
 			{
 				if(useShipNames)
-					str.append(Directions.getShipInDirectionName(continues.firstElement().intValue())+".");
+					str.append(CMLib.directions().getShipInDirectionName(continues.firstElement().intValue())+".");
 				else
-					str.append(Directions.getInDirectionName(continues.firstElement().intValue())+".");
+					str.append(CMLib.directions().getInDirectionName(continues.firstElement().intValue())+".");
 			}
 			else
 			{
 				for(int i=0;i<continues.size()-1;i++)
 				{
 					if(useShipNames)
-						str.append(Directions.getShipDirectionName(continues.elementAt(i).intValue()).toLowerCase().trim()+", ");
+						str.append(CMLib.directions().getDirectionName(continues.elementAt(i).intValue()).toLowerCase().trim()+", ");
 					else
-						str.append(Directions.getDirectionName(continues.elementAt(i).intValue()).toLowerCase().trim()+", ");
+						str.append(CMLib.directions().getDirectionName(continues.elementAt(i).intValue()).toLowerCase().trim()+", ");
 				}
 				if(useShipNames)
-					str.append("and "+Directions.getShipInDirectionName(continues.lastElement().intValue()).trim()+".");
+					str.append("and "+CMLib.directions().getShipInDirectionName(continues.lastElement().intValue()).trim()+".");
 				else
-					str.append("and "+Directions.getInDirectionName(continues.lastElement().intValue()).trim()+".");
+					str.append("and "+CMLib.directions().getInDirectionName(continues.lastElement().intValue()).trim()+".");
 			}
 		}
 		final boolean style=CMLib.dice().rollPercentage()>50;
@@ -1454,7 +1454,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		if(exit == null)
 			return "";
 		final boolean useShipDirs=(room instanceof BoardableShip)||(room.getArea() instanceof BoardableShip);
-		final String inDirName=useShipDirs?Directions.getShipInDirectionName(dir):Directions.getInDirectionName(dir);
+		final String inDirName=useShipDirs?CMLib.directions().getShipInDirectionName(dir):CMLib.directions().getInDirectionName(dir);
 		if(style)
 			return inDirName   + " is " +exit.viewableText(mob, room.getRoomInDir(dir));
 		else
@@ -1997,7 +1997,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				Say.append(room2.roomID()+" via NULL");
 			if(Say.length()>0)
 			{
-				Dir=CMStrings.padRightPreserve(useShipNames?Directions.getShipDirectionName(d):Directions.getDirectionName(d),5);
+				Dir=CMStrings.padRightPreserve(useShipNames?CMLib.directions().getDirectionName(d):CMLib.directions().getDirectionName(d),5);
 				if((mob.playerStats()!=null)
 				&&(room2!=null)
 				&&(mob.playerStats().hasVisited(room2)))
@@ -2050,7 +2050,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		{
 			final Exit exit=room.getExitInDir(d);
 			if((exit!=null)&&(exit.viewableText(mob, room.getRoomInDir(d)).length()>0))
-				buf.append("^<EX^>"+(useShipNames?Directions.getShipDirectionName(d):Directions.getDirectionName(d))+"^</EX^> ");
+				buf.append("^<EX^>"+(useShipNames?CMLib.directions().getDirectionName(d):CMLib.directions().getDirectionName(d))+"^</EX^> ");
 		}
 		boolean noBoardableShips = false;
 		if((mob.location() != room)

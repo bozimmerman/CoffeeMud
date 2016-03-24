@@ -220,7 +220,7 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 					final int dir=CMLib.tracking().radiatesFromDir(R,rooms);
 					if(dir>=0)
 					{
-						R.showHappens(CMMsg.MSG_NOISE,L("You hear a loud alarm @x1.",Directions.getInDirectionName(dir)));
+						R.showHappens(CMMsg.MSG_NOISE,L("You hear a loud alarm @x1.",CMLib.directions().getInDirectionName(dir)));
 						for(int i=0;i<R.numInhabitants();i++)
 						{
 							final MOB M=R.fetchInhabitant(i);
@@ -251,7 +251,7 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 	{
 		final String whatToalarm=CMParms.combine(commands,0);
 		Exit alarmThis=null;
-		final int dirCode=Directions.getGoodDirectionCode(whatToalarm);
+		final int dirCode=CMLib.directions().getGoodDirectionCode(whatToalarm);
 		if(dirCode>=0)
 			alarmThis=mob.location().getExitInDir(dirCode);
 		if((alarmThis==null)||(!alarmThis.hasADoor()))

@@ -452,7 +452,7 @@ public class ListCmd extends StdCommand
 								||((E.doorName().length()>0)&& CMLib.english().containsString(E.doorName(),rest))
 								||(CMLib.english().containsString(E.viewableText(mob,R).toString(),rest))))
 							{
-								lines.append("^!"+CMStrings.padRight(Directions.getDirectionName(d),17)+"^N| ");
+								lines.append("^!"+CMStrings.padRight(CMLib.directions().getDirectionName(d),17)+"^N| ");
 								lines.append(" (^<LSTROOMID^>"+CMLib.map().getDescriptiveExtendedRoomID(R)+"^</LSTROOMID^>)");
 								lines.append("\n\r");
 							}
@@ -1182,7 +1182,7 @@ public class ListCmd extends StdCommand
 					final Room R2=R.rawDoors()[d];
 					if((R2!=null)&&(R2.getArea()!=R.getArea()))
 					{
-						ext.append(Directions.getDirectionName(d)+" to "+R2.getArea().name()+" ("+R.roomID()+"/"+R2.roomID()+") ");
+						ext.append(CMLib.directions().getDirectionName(d)+" to "+R2.getArea().name()+" ("+R.roomID()+"/"+R2.roomID()+") ");
 						for(int g=0;g<areaLinkGroups.size();g++)
 						{
 							final List<Area> G=areaLinkGroups.get(g);
@@ -2083,7 +2083,7 @@ public class ListCmd extends StdCommand
 					{
 						final Room R2=R.rawDoors()[d];
 						if((R2!=null)&&(R2.rawDoors()[Directions.getOpDirectionCode(d)]!=R))
-							str.append(L("@x1: @x2 to @x3\n\r",CMStrings.padRight(R.roomID(),30),Directions.getDirectionName(d),R2.roomID()));
+							str.append(L("@x1: @x2 to @x3\n\r",CMStrings.padRight(R.roomID(),30),CMLib.directions().getDirectionName(d),R2.roomID()));
 					}
 				}
 			}
@@ -2112,7 +2112,7 @@ public class ListCmd extends StdCommand
 					final Room R2=R.rawDoors()[d];
 					final Exit E2=R.getRawExit(d);
 					if((R2==null)&&(E2!=null))
-						str.append(L("@x1: @x2 to @x3 (@x4)\n\r",CMStrings.padRight(R.roomID(),30),Directions.getDirectionName(d),E2.temporaryDoorLink(),E2.displayText()));
+						str.append(L("@x1: @x2 to @x3 (@x4)\n\r",CMStrings.padRight(R.roomID(),30),CMLib.directions().getDirectionName(d),E2.temporaryDoorLink(),E2.displayText()));
 				}
 			}
 		}
@@ -3213,6 +3213,7 @@ public class ListCmd extends StdCommand
 		UNLINKEDEXITS("UNLINKEDEXITS",new SecFlag[]{SecFlag.CMDEXITS,SecFlag.CMDROOMS,SecFlag.CMDAREAS}),
 		ITEMS("ITEMS",new SecFlag[]{SecFlag.CMDITEMS}),
 		ARMOR("ARMOR",new SecFlag[]{SecFlag.CMDITEMS}),
+		ABILITYDOMAINS("ABILITYDOMAINS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDABILITIES}),
 		ENVRESOURCES("ENVRESOURCES",new SecFlag[]{SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS}),
 		WEAPONS("WEAPONS",new SecFlag[]{SecFlag.CMDITEMS}),
 		MOBS("MOBS",new SecFlag[]{SecFlag.CMDMOBS}),
@@ -4175,6 +4176,9 @@ public class ListCmd extends StdCommand
 			break;
 		case SHIPS:
 			listShips(mob, commands);
+			break;
+		case ABILITYDOMAINS:
+			s.wraplessPrintln(CMParms.toListString(Ability.DOMAIN_DESCS));
 			break;
 		}
 	}

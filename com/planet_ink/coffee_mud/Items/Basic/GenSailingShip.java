@@ -219,9 +219,9 @@ public class GenSailingShip extends StdBoardable
 			if(targetCoords != null)
 			{
 				final String dist = ""+this.getTacticalDistance(targetShip);
-				final String dir=Directions.getDirectionName(targetShip.directionFacing);
+				final String dir=CMLib.directions().getDirectionName(targetShip.directionFacing);
 				final String speed=""+targetShip.getShipSpeed();
-				final String dirFromYou = Directions.getDirectionName(Directions.getRelativeDirection(getMyCoords(), targetCoords));
+				final String dirFromYou = CMLib.directions().getDirectionName(Directions.getRelativeDirection(getMyCoords(), targetCoords));
 				return L("@x1 is @x2 of you sailing @x3 at a speed of @x4 and a distance of @x5.",targetShip.name(),dirFromYou,dir,speed,dist);
 			}
 		}
@@ -436,7 +436,7 @@ public class GenSailingShip extends StdBoardable
 						return false;
 					}
 					this.courseDirection=-1;
-					int dir=Directions.getCompassDirectionCode(secondWord);
+					int dir=CMLib.directions().getCompassDirectionCode(secondWord);
 					if(dir<0)
 					{
 						msg.source().tell(L("Steer the ship which direction?"));
@@ -488,7 +488,7 @@ public class GenSailingShip extends StdBoardable
 					}
 					if(!this.amInTacticalMode())
 					{
-						int dir=Directions.getCompassDirectionCode(secondWord);
+						int dir=CMLib.directions().getCompassDirectionCode(secondWord);
 						if(dir<0)
 						{
 							msg.source().tell(L("Sail the ship which direction?"));
@@ -543,7 +543,7 @@ public class GenSailingShip extends StdBoardable
 					if(amInTacticalMode())
 					{
 						final int speed=getShipSpeed();
-						final String dirFacingName = Directions.getDirectionName(directionFacing);
+						final String dirFacingName = CMLib.directions().getDirectionName(directionFacing);
 						if(dirIndex >= cmds.size())
 						{
 							msg.source().tell(L("Your ship is currently sailing @x1. To set a course, you must specify up to @x2 directions of travel, "
@@ -556,7 +556,7 @@ public class GenSailingShip extends StdBoardable
 						for(;dirIndex<cmds.size();dirIndex++)
 						{
 							final String dirWord=cmds.get(dirIndex);
-							int dir=Directions.getCompassDirectionCode(dirWord);
+							int dir=CMLib.directions().getCompassDirectionCode(dirWord);
 							if(dir<0)
 							{
 								msg.source().tell(L("@x1 is not a valid direction.",dirWord));
@@ -585,13 +585,13 @@ public class GenSailingShip extends StdBoardable
 							{
 								msg.source().tell(L("Your course includes a change of direction, from @x1 to @x2.  "
 												+ "In tactical maneuvers, a changes of direction must be at the end of the course settings.", 
-												dirFacingName,Directions.getDirectionName(otherDir)));
+												dirFacingName,CMLib.directions().getDirectionName(otherDir)));
 								return false;
 							}
 							else
 							if(dir != directionFacing)
 								otherDir = dir;
-							dirNames.add(Directions.getDirectionName(dir).toLowerCase());
+							dirNames.add(CMLib.directions().getDirectionName(dir).toLowerCase());
 							this.courseDirections.add(Integer.valueOf(dir));
 						}
 						if(this.courseDirections.size()>0)
@@ -609,7 +609,7 @@ public class GenSailingShip extends StdBoardable
 						for(;dirIndex<cmds.size();dirIndex++)
 						{
 							final String dirWord=cmds.get(dirIndex);
-							int dir=Directions.getCompassDirectionCode(dirWord);
+							int dir=CMLib.directions().getCompassDirectionCode(dirWord);
 							if(dir<0)
 							{
 								msg.source().tell(L("@x1 is not a valid direction.",dirWord));
@@ -663,7 +663,7 @@ public class GenSailingShip extends StdBoardable
 			{
 			case SAIL:
 			{
-				int dir=Directions.getCompassDirectionCode(secondWord);
+				int dir=CMLib.directions().getCompassDirectionCode(secondWord);
 				if(dir<0)
 					return false;
 				final Room R=CMLib.map().roomLocation(this);
@@ -1120,7 +1120,7 @@ public class GenSailingShip extends StdBoardable
 					if((this.courseDirection >= 0)&&(this.courseDirections.size()>0))
 					{
 						msg.addTrailerMsg(CMClass.getMsg(msg.source(), null, null, 
-								CMMsg.MSG_OK_VISUAL, L("\n\r^H@x1 is under full sail, traveling @x2^.^?",name(msg.source()), Directions.getDirectionName(courseDirection)), 
+								CMMsg.MSG_OK_VISUAL, L("\n\r^H@x1 is under full sail, traveling @x2^.^?",name(msg.source()), CMLib.directions().getDirectionName(courseDirection)), 
 								CMMsg.NO_EFFECT, null, CMMsg.NO_EFFECT, null));
 					}
 				}
@@ -1470,7 +1470,7 @@ public class GenSailingShip extends StdBoardable
 			if(direction != directionFacing)
 			{
 				// because of the 'you can only turn on last move' rule, this is unimportant.
-				//directionFacing = Directions.getGradualDirectionCode(directionFacing, direction);
+				//directionFacing = CMLib.directions().getGradualDirectionCode(directionFacing, direction);
 				directionFacing = direction;
 			}
 			int[] tacticalCoords = null;
@@ -1504,7 +1504,7 @@ public class GenSailingShip extends StdBoardable
 					mob.setRiding(this);
 					mob.basePhyStats().setDisposition(mob.basePhyStats().disposition()|PhyStats.IS_SWIMMING);
 					mob.phyStats().setDisposition(mob.phyStats().disposition()|PhyStats.IS_SWIMMING);
-					final String directionName = Directions.getDirectionName(direction);
+					final String directionName = CMLib.directions().getDirectionName(direction);
 					if(directionFacing == direction)
 					{
 						final int[] newCoords = Directions.adjustXYByDirections(tacticalCoords[0], tacticalCoords[1], direction);
@@ -1551,13 +1551,13 @@ public class GenSailingShip extends StdBoardable
 				if((!CMLib.flags().isDeepWaterySurfaceRoom(destRoom))
 				&&(destRoom.domainType()!=Room.DOMAIN_OUTDOORS_SEAPORT))
 				{
-					announceToShip(L("As there is no where to sail @x1, <S-NAME> meanders along the waves.",Directions.getInDirectionName(direction)));
+					announceToShip(L("As there is no where to sail @x1, <S-NAME> meanders along the waves.",CMLib.directions().getInDirectionName(direction)));
 					courseDirections.clear();
 					return SailResult.CANCEL;
 				}
 				final int oppositeDirectionFacing=Directions.getOpDirectionCode(direction);
-				final String directionName=Directions.getDirectionName(direction);
-				final String otherDirectionName=Directions.getDirectionName(oppositeDirectionFacing);
+				final String directionName=CMLib.directions().getDirectionName(direction);
+				final String otherDirectionName=CMLib.directions().getDirectionName(oppositeDirectionFacing);
 				final Exit opExit=thisRoom.getExitInDir(oppositeDirectionFacing);
 				final MOB mob = CMClass.getFactoryMOB(name(),phyStats().level(),CMLib.map().roomLocation(this));
 				mob.setRiding(this);
@@ -1586,7 +1586,7 @@ public class GenSailingShip extends StdBoardable
 					}
 					else
 					{
-						announceToShip(L("<S-NAME> can not seem to travel @x1.",Directions.getInDirectionName(direction)));
+						announceToShip(L("<S-NAME> can not seem to travel @x1.",CMLib.directions().getInDirectionName(direction)));
 						courseDirections.clear();
 						return SailResult.CANCEL;
 					}
@@ -1598,7 +1598,7 @@ public class GenSailingShip extends StdBoardable
 			}
 			else
 			{
-				announceToShip(L("As there is no where to sail @x1, <S-NAME> meanders along the waves.",Directions.getInDirectionName(direction)));
+				announceToShip(L("As there is no where to sail @x1, <S-NAME> meanders along the waves.",CMLib.directions().getInDirectionName(direction)));
 				courseDirections.clear();
 				return SailResult.CANCEL;
 			}
@@ -1640,7 +1640,7 @@ public class GenSailingShip extends StdBoardable
 	protected boolean steer(final MOB mob, final Room R, final int dir)
 	{
 		directionFacing = dir;
-		CMMsg msg2=CMClass.getMsg(mob, CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> change(s) course, steering @x1 @x2.",name(mob),Directions.getDirectionName(dir)));
+		CMMsg msg2=CMClass.getMsg(mob, CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> change(s) course, steering @x1 @x2.",name(mob),CMLib.directions().getDirectionName(dir)));
 		if((R.okMessage(mob, msg2) && this.okAreaMessage(msg2, true)))
 		{
 			R.send(mob, msg2); // this lets the source know, i guess
@@ -1654,7 +1654,7 @@ public class GenSailingShip extends StdBoardable
 	protected boolean sail(final MOB mob, final Room R, final int dir)
 	{
 		directionFacing = dir;
-		CMMsg msg2=CMClass.getMsg(mob, R, R.getExitInDir(dir), CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> sail(s) @x1 @x2.",name(mob),Directions.getDirectionName(dir)));
+		CMMsg msg2=CMClass.getMsg(mob, R, R.getExitInDir(dir), CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> sail(s) @x1 @x2.",name(mob),CMLib.directions().getDirectionName(dir)));
 		if((R.okMessage(mob, msg2) && this.okAreaMessage(msg2, true)))
 		{
 			R.send(mob, msg2); // this lets the source know, i guess

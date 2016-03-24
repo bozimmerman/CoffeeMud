@@ -96,7 +96,7 @@ public class Prayer_Position extends Prayer
 		{
 			final Room R=trailV.elementAt(s);
 			final Room RA=trailV.elementAt(s-1);
-			theDirTrail.addElement(Character.toString(Directions.getDirectionName(getRoomDirection(R,RA,empty)).charAt(0))+" ");
+			theDirTrail.addElement(Character.toString(CMLib.directions().getDirectionName(getRoomDirection(R,RA,empty)).charAt(0))+" ");
 		}
 		final StringBuffer theTrail=new StringBuffer("");
 		char lastDir='\0';

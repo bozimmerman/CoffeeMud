@@ -124,7 +124,7 @@ public class Thief_Assassinate extends ThiefSkill
 			else
 			if(nextDirection>=0)
 			{
-				mob.tell(L("The trail seems to continue @x1.",Directions.getDirectionName(nextDirection)));
+				mob.tell(L("The trail seems to continue @x1.",CMLib.directions().getDirectionName(nextDirection)));
 				if(mob.isMonster())
 				{
 					final Room nextRoom=room.getRoomInDir(nextDirection);
@@ -138,7 +138,7 @@ public class Thief_Assassinate extends ThiefSkill
 								final int dir=nextDirection;
 								nextDirection=-2;
 								final Vector<String> V=new Vector<String>();
-								V.addElement(Directions.getDirectionName(dir));
+								V.addElement(CMLib.directions().getDirectionName(dir));
 								A.invoke(mob,V,null,false,0);
 							}
 							else

@@ -52,7 +52,7 @@ public class Thief_Sneak extends ThiefSkill
 		String dir=CMParms.combine(commands,0);
 		if(commands.size()>0)
 			dir=commands.get(commands.size()-1);
-		final int dirCode=Directions.getGoodDirectionCode(dir);
+		final int dirCode=CMLib.directions().getGoodDirectionCode(dir);
 		if(dirCode<0)
 		{
 			mob.tell(L("Sneak where?"));
@@ -72,7 +72,7 @@ public class Thief_Sneak extends ThiefSkill
 			return false;
 
 		boolean success=false;
-		final CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MSG_OK_VISUAL:CMMsg.MSG_DELICATE_HANDS_ACT,L("You quietly sneak @x1.",Directions.getDirectionName(dirCode)),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
+		final CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MSG_OK_VISUAL:CMMsg.MSG_DELICATE_HANDS_ACT,L("You quietly sneak @x1.",CMLib.directions().getDirectionName(dirCode)),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

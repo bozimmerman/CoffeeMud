@@ -834,10 +834,10 @@ public class GrinderFlatMap
 		||(room.doors==null)
 		||(d>=room.doors.length)) return "";
 		final GrinderDir dir=room.doors[d];
-		String dirLetter=""+Directions.getDirectionChar(d);
+		String dirLetter=""+CMLib.directions().getDirectionChar(d);
 		GrinderRoom roomPointer=null;
 		if((dir==null)||(dir.room.length()==0))
-			return "<a href=\"javascript:EC('"+Directions.getDirectionName(d)+"','"+room.roomID+"');\"><IMG BORDER=0 SRC=\"images/E"+dirLetter+".gif\"></a>";
+			return "<a href=\"javascript:EC('"+CMLib.directions().getDirectionName(d)+"','"+room.roomID+"');\"><IMG BORDER=0 SRC=\"images/E"+dirLetter+".gif\"></a>";
 		else
 		if((d==Directions.UP)||(d==Directions.DOWN))
 		{
@@ -848,7 +848,7 @@ public class GrinderFlatMap
 		else
 			roomPointer=getRoomInDir(room,d);
 
-		final String dirName=Directions.getDirectionName(d);
+		final String dirName=CMLib.directions().getDirectionName(d);
 		if((dir.room.length()>0)&&((roomPointer==null)||(!roomPointer.roomID.equals(dir.room))))
 			dirLetter+="R";
 		final String theRest=".gif\" BORDER=0 ALT=\""+dirName+" to "+dir.room+"\"></a>";

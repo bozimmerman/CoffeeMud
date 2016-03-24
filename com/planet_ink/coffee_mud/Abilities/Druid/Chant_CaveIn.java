@@ -112,7 +112,7 @@ public class Chant_CaveIn extends Chant
 		else
 		if((commands.size()>0)&&(givenTarget==null))
 		{
-			final int dir=Directions.getGoodDirectionCode(CMParms.combine(commands,0));
+			final int dir=CMLib.directions().getGoodDirectionCode(CMParms.combine(commands,0));
 			if((dir>=0)&&(dir!=Directions.UP)&&(mob.location().getExitInDir(dir)!=null))
 				target=mob.location().getExitInDir(dir);
 		}

@@ -55,7 +55,7 @@ public class Power_SuperClimb extends SuperPower
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		final int dirCode=Directions.getDirectionCode(CMParms.combine(commands,0));
+		final int dirCode=CMLib.directions().getDirectionCode(CMParms.combine(commands,0));
 		if(dirCode<0)
 		{
 			mob.tell(L("Climb where?"));

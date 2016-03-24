@@ -248,7 +248,7 @@ public class Chant_HighTide extends Chant
 		{
 			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),
 					L(auto?"The tide rushes in from @x1":
-						"^S<S-NAME> chant(s) thunderously as the tide rushes in tide rushes in from @x1.^?",Directions.getFromCompassDirectionName(waterDir))+CMLib.protocol().msp("earthquake.wav",40)))
+						"^S<S-NAME> chant(s) thunderously as the tide rushes in tide rushes in from @x1.^?",CMLib.directions().getFromCompassDirectionName(waterDir))+CMLib.protocol().msp("earthquake.wav",40)))
 			{
 				for (final Object element : h)
 				{

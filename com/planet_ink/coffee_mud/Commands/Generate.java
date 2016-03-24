@@ -83,7 +83,7 @@ public class Generate extends StdCommand
 		if(save)
 			CMLib.database().DBUpdateExits(oldR);
 		final String dirName=((R instanceof BoardableShip)||(R.getArea() instanceof BoardableShip))?
-				Directions.getShipDirectionName(direction):Directions.getDirectionName(direction);
+				CMLib.directions().getDirectionName(direction):CMLib.directions().getDirectionName(direction);
 		oldR.showHappens(CMMsg.MSG_OK_VISUAL,L("A new place materializes to the @x1",dirName));
 	}
 
@@ -148,7 +148,7 @@ public class Generate extends StdCommand
 		if((codeI==CMClass.CMObjectType.AREA)||(codeI==CMClass.CMObjectType.LOCALE))
 		{
 			final String possDir=commands.get(commands.size()-1);
-			direction = Directions.getGoodDirectionCode(possDir);
+			direction = CMLib.directions().getGoodDirectionCode(possDir);
 			if(direction<0)
 			{
 				mob.tell(L("When creating an area or room, the LAST parameter to this command must be a direction to link to this room by."));
@@ -157,7 +157,7 @@ public class Generate extends StdCommand
 			if(mob.location().getRoomInDir(direction)!=null)
 			{
 				final String dirName=((mob.location() instanceof BoardableShip)||(mob.location().getArea() instanceof BoardableShip))?
-						Directions.getShipDirectionName(direction):Directions.getDirectionName(direction);
+						CMLib.directions().getDirectionName(direction):CMLib.directions().getDirectionName(direction);
 				mob.tell(L("A room already exists in direction @x1. Action aborted.",dirName));
 				return false;
 			}
@@ -215,7 +215,7 @@ public class Generate extends StdCommand
 			case AREA:
 				CMLib.percolator().preDefineReward(piece, definedIDs);
 				CMLib.percolator().defineReward(piece,definedIDs);
-				definedIDs.put("ROOMTAG_NODEGATEEXIT", Directions.getDirectionName(Directions.getOpDirectionCode(direction)));
+				definedIDs.put("ROOMTAG_NODEGATEEXIT", CMLib.directions().getDirectionName(Directions.getOpDirectionCode(direction)));
 				definedIDs.put("ROOMTAG_GATEEXITROOM", mob.location());
 				final Area A=CMLib.percolator().findArea(piece, definedIDs, direction);
 				if(A!=null)
@@ -231,7 +231,7 @@ public class Generate extends StdCommand
 				final Exit[] exits=new Exit[Directions.NUM_DIRECTIONS()];
 				CMLib.percolator().preDefineReward(piece, definedIDs);
 				CMLib.percolator().defineReward(piece,definedIDs);
-				definedIDs.put("ROOMTAG_NODEGATEEXIT", Directions.getDirectionName(Directions.getOpDirectionCode(direction)));
+				definedIDs.put("ROOMTAG_NODEGATEEXIT", CMLib.directions().getDirectionName(Directions.getOpDirectionCode(direction)));
 				definedIDs.put("ROOMTAG_GATEEXITROOM", mob.location());
 				final Room R=CMLib.percolator().buildRoom(piece, definedIDs, exits, direction);
 				if(R!=null)

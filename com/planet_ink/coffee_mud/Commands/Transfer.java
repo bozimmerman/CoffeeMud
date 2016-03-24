@@ -215,8 +215,8 @@ public class Transfer extends At
 		if(CMLib.map().getRoom(cmd.toString())!=null)
 			room=CMLib.map().getRoom(cmd.toString());
 		else
-		if(Directions.getDirectionCode(cmd.toString())>=0)
-			room=mob.location().getRoomInDir(Directions.getDirectionCode(cmd.toString()));
+		if(CMLib.directions().getDirectionCode(cmd.toString())>=0)
+			room=mob.location().getRoomInDir(CMLib.directions().getDirectionCode(cmd.toString()));
 		else
 			room=CMLib.map().findWorldRoomLiberally(mob,cmd.toString(),"RIPME",100,120000);
 

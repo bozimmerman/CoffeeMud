@@ -121,12 +121,12 @@ public class Song_Flight extends Song
 										{
 											if(thisExit.isOpen())
 											{
-												direction=Directions.getDirectionName(d);
+												direction=CMLib.directions().getDirectionName(d);
 												break;
 											}
 										}
 									}
-									directionCode=Directions.getDirectionCode(direction);
+									directionCode=CMLib.directions().getDirectionCode(direction);
 									if(directionCode<0)
 									{
 										mob.tell(L("Flee where?!"));

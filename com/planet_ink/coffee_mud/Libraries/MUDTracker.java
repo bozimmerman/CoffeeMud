@@ -153,7 +153,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		final Integer dir=Integer.valueOf(direction);
 		if(!directionCommandSets.containsKey(dir))
 		{
-			final Vector<String> V=new ReadOnlyVector<String>(Directions.getDirectionName(direction));
+			final Vector<String> V=new ReadOnlyVector<String>(CMLib.directions().getDirectionName(direction));
 			directionCommandSets.put(dir, V);
 		}
 		return directionCommandSets.get(dir);
@@ -164,7 +164,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		final Integer dir=Integer.valueOf(direction);
 		if(!directionCommandSets.containsKey(dir))
 		{
-			final Vector<String> V=new ReadOnlyVector<String>(CMParms.parse("OPEN "+Directions.getDirectionName(direction)));
+			final Vector<String> V=new ReadOnlyVector<String>(CMParms.parse("OPEN "+CMLib.directions().getDirectionName(direction)));
 			directionCommandSets.put(dir, V);
 		}
 		return directionCommandSets.get(dir);
@@ -175,7 +175,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		final Integer dir=Integer.valueOf(direction);
 		if(!directionCommandSets.containsKey(dir))
 		{
-			final Vector<String> V=new ReadOnlyVector<String>(CMParms.parse("CLOSE "+Directions.getDirectionName(direction)));
+			final Vector<String> V=new ReadOnlyVector<String>(CMParms.parse("CLOSE "+CMLib.directions().getDirectionName(direction)));
 			directionCommandSets.put(dir, V);
 		}
 		return directionCommandSets.get(dir);
@@ -841,7 +841,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			else
 			{
 				final String inDir=((toHere instanceof BoardableShip)||(toHere.getArea() instanceof BoardableShip))?
-						Directions.getShipDirectionName(dir):Directions.getDirectionName(dir);
+						CMLib.directions().getDirectionName(dir):CMLib.directions().getDirectionName(dir);
 				toHere.show(M,null,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> wanders in from @x1.",inDir));
 			}
 			toHere.executeMsg(M, enterMsg);
@@ -865,7 +865,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		else
 		{
 			final String inDir=((toHere instanceof BoardableShip)||(toHere.getArea() instanceof BoardableShip))?
-					Directions.getShipDirectionName(dir):Directions.getDirectionName(dir);
+					CMLib.directions().getDirectionName(dir):CMLib.directions().getDirectionName(dir);
 			toHere.show(M,null,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> wanders in from @x1.",inDir));
 		}
 		toHere.bringMobHere(M,true);
@@ -944,7 +944,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 						if(rMOB.riding()!=null)
 						{
 							final String inDir=((sourceRoom instanceof BoardableShip)||(sourceRoom.getArea() instanceof BoardableShip))?
-									Directions.getShipDirectionName(directionCode):Directions.getDirectionName(directionCode);
+									CMLib.directions().getDirectionName(directionCode):CMLib.directions().getDirectionName(directionCode);
 							rMOB.tell(L("You ride @x1 @x2.",rMOB.riding().name(),inDir));
 						}
 						if(!move(rMOB,directionCode,flee,false,true,false,running))
@@ -1031,7 +1031,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			&&((sourceRoom).isInhabitant((MOB)riding)))
 			{
 				final String inDir=((sourceRoom instanceof BoardableShip)||(sourceRoom.getArea() instanceof BoardableShip))?
-						Directions.getShipDirectionName(directionCode):Directions.getDirectionName(directionCode);
+						CMLib.directions().getDirectionName(directionCode):CMLib.directions().getDirectionName(directionCode);
 				((MOB)riding).tell(L("You are ridden @x1.",inDir));
 				if(!move(((MOB)riding),directionCode,false,false,true,false,running))
 				{
@@ -1096,15 +1096,15 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			mob.tell(L("You can't go that way."));
 			final Session sess=mob.session();
 			if((sess!=null)&&(sess.getClientTelnetMode(Session.TELNET_GMCP)))
-				sess.sendGMCPEvent("room.wrongdir", "\""+Directions.getDirectionChar(directionCode)+"\"");
+				sess.sendGMCPEvent("room.wrongdir", "\""+CMLib.directions().getDirectionChar(directionCode)+"\"");
 			return false;
 		}
 
 		final Exit opExit=thisRoom.getReverseExit(directionCode);
 		final boolean useShipDirs=((thisRoom instanceof BoardableShip)||(thisRoom.getArea() instanceof BoardableShip));
 		final int opDir=Directions.getOpDirectionCode(directionCode);
-		final String dirName=useShipDirs?Directions.getShipDirectionName(directionCode):Directions.getDirectionName(directionCode);
-		final String fromDir=useShipDirs?Directions.getFromShipDirectionName(opDir):Directions.getFromCompassDirectionName(opDir);
+		final String dirName=useShipDirs?CMLib.directions().getDirectionName(directionCode):CMLib.directions().getDirectionName(directionCode);
+		final String fromDir=useShipDirs?CMLib.directions().getFromShipDirectionName(opDir):CMLib.directions().getFromCompassDirectionName(opDir);
 		final String directionName=(directionCode==Directions.GATE)&&(exit!=null)?"through "+exit.name():dirName;
 		final String otherDirectionName=(Directions.getOpDirectionCode(directionCode)==Directions.GATE)&&(exit!=null)?exit.name():fromDir;
 
@@ -1263,7 +1263,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 							else
 							{
 								final String inDir=((thisRoom instanceof BoardableShip)||(thisRoom.getArea() instanceof BoardableShip))?
-										Directions.getShipDirectionName(directionCode):Directions.getDirectionName(directionCode);
+										CMLib.directions().getDirectionName(directionCode):CMLib.directions().getDirectionName(directionCode);
 								follower.tell(L("You follow @x1 @x2.",mob.name(follower),inDir));
 								boolean tryStand=false;
 								if(CMLib.flags().isSitting(mob))
@@ -1366,11 +1366,11 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			}
 		}
 
-		thisRoom.showHappens(CMMsg.MSG_OK_ACTION,I,L("<S-NAME> goes @x1.",Directions.getDirectionName(directionCode)));
+		thisRoom.showHappens(CMMsg.MSG_OK_ACTION,I,L("<S-NAME> goes @x1.",CMLib.directions().getDirectionName(directionCode)));
 		thatRoom.moveItemTo(I);
 		if(I.owner()==thatRoom)
 		{
-			thatRoom.showHappens(CMMsg.MSG_OK_ACTION,I,L("<S-NAME> arrives from @x1.",Directions.getFromCompassDirectionName(Directions.getOpDirectionCode(directionCode))));
+			thatRoom.showHappens(CMMsg.MSG_OK_ACTION,I,L("<S-NAME> arrives from @x1.",CMLib.directions().getFromCompassDirectionName(Directions.getOpDirectionCode(directionCode))));
 			if(riders!=null)
 			{
 				for(int i=0;i<riders.size();i++)
@@ -1409,7 +1409,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 	@Override
 	public int findExitDir(MOB mob, Room R, String desc)
 	{
-		int dir=Directions.getGoodDirectionCode(desc);
+		int dir=CMLib.directions().getGoodDirectionCode(desc);
 		if(dir<0)
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
@@ -1625,7 +1625,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		{
 			final Room R=trailV.get(s);
 			final Room RA=trailV.get(s-1);
-			theDirTrail.add(Directions.getDirectionChar(getRoomDirection(R,RA,empty))+" ");
+			theDirTrail.add(CMLib.directions().getDirectionChar(getRoomDirection(R,RA,empty))+" ");
 		}
 		final StringBuffer theTrail=new StringBuffer("");
 		if(confirm)
@@ -1672,7 +1672,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 				}
 			}
 			final Room R=trailV.get(1);
-			theTrail.append("\n\r"+CMStrings.padRight(L("From"),30)+": "+Directions.getDirectionName(getRoomDirection(R,R2,empty))+" <- "+R.roomID());
+			theTrail.append("\n\r"+CMStrings.padRight(L("From"),30)+": "+CMLib.directions().getDirectionName(getRoomDirection(R,R2,empty))+" <- "+R.roomID());
 			theTrail.append("\n\r"+CMStrings.padRight(L("Room"),30)+": "+R.displayText()+"/"+R.description());
 			theTrail.append("\n\r\n\r");
 		}

@@ -863,7 +863,7 @@ public class StdAbility implements Ability
 				||targetName.equalsIgnoreCase("place")))
 				target=R;
 			int dir=-1;
-			if((target==null)&&((dir=Directions.getGoodDirectionCode(targetName))>=0))
+			if((target==null)&&((dir=CMLib.directions().getGoodDirectionCode(targetName))>=0))
 				target=R.getExitInDir(dir);
 			if((target==null)&&(checkOthersInventory))
 			{

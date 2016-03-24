@@ -1,8 +1,8 @@
 package com.planet_ink.coffee_mud.Libraries.layouts;
 import java.util.*;
 import java.text.*;
-import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.*;
 
+import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.*;
 import com.planet_ink.coffee_mud.core.Directions;
 
 /*
@@ -23,12 +23,15 @@ import com.planet_ink.coffee_mud.core.Directions;
 
 public class LayoutTester
 {
+	
+	private final static String[] DEFAULT_DIRECTIONS_LIST_COMPASS	= "North,South,East,West,Up,Down,There,Northeast,Northwest,Southeast,Southwest".split(",");
+	
 	public static void draw(LayoutManager layout, int size, int dir)
 	{
 		final List<LayoutNode> V=layout.generate(size, dir);
 		final LayoutNode firstNode = (V.size()==0) ? null : V.get(0);
 
-		System.out.println("Layout "+layout.name()+", size="+V.size()+", dir="+Directions.getDirectionName(dir)+": "+continuityCheck(V));
+		System.out.println("Layout "+layout.name()+", size="+V.size()+", dir="+DEFAULT_DIRECTIONS_LIST_COMPASS[dir]+": "+continuityCheck(V));
 		long lowestX=Long.MAX_VALUE;
 		long lowestY=Long.MAX_VALUE;
 		long highestX=Long.MIN_VALUE;

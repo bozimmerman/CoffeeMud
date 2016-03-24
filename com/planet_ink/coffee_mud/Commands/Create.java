@@ -58,7 +58,7 @@ public class Create extends StdCommand
 			return;
 		}
 
-		final int direction=Directions.getGoodDirectionCode((commands.get(2)));
+		final int direction=CMLib.directions().getGoodDirectionCode((commands.get(2)));
 		if(direction<0)
 		{
 			mob.tell(L("You have failed to specify a direction.  Try @x1.\n\r",Directions.LETTERS()));
@@ -96,7 +96,7 @@ public class Create extends StdCommand
 		if(mob.location() instanceof GridLocale)
 			((GridLocale)mob.location()).buildGrid();
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("Suddenly a portal opens up @x1.\n\r",
-				(useShipDirs?Directions.getShipInDirectionName(direction):Directions.getInDirectionName(direction))));
+				(useShipDirs?CMLib.directions().getShipInDirectionName(direction):CMLib.directions().getInDirectionName(direction))));
 		CMLib.database().DBUpdateExits(mob.location());
 		if((reverseExit!=null)&&(opExit!=null)&&(opRoom!=null))
 		{
@@ -415,7 +415,7 @@ public class Create extends StdCommand
 			return;
 		}
 
-		final int direction=Directions.getGoodDirectionCode((commands.get(2)));
+		final int direction=CMLib.directions().getGoodDirectionCode((commands.get(2)));
 		if(direction<0)
 		{
 			mob.tell(L("You have failed to specify a direction.  Try @x1.\n\r",Directions.LETTERS()));
@@ -1530,7 +1530,7 @@ public class Create extends StdCommand
 					execute(mob,commands,metaFlags);
 				}
 				else
-				if((lastWord!=null)&&(Directions.getGoodDirectionCode(lastWord)>=0))
+				if((lastWord!=null)&&(CMLib.directions().getGoodDirectionCode(lastWord)>=0))
 				{
 					commands.remove(commands.size()-1);
 					allWord=CMParms.combine(commands,1);

@@ -106,10 +106,10 @@ public class Thief_ConcealWalkway extends ThiefSkill
 		}
 		Environmental chkE=null;
 		final String typed=CMParms.combine(commands,0);
-		if(Directions.getGoodDirectionCode(typed)<0)
+		if(CMLib.directions().getGoodDirectionCode(typed)<0)
 			chkE=mob.location().fetchFromMOBRoomItemExit(mob,null,typed,Wearable.FILTER_WORNONLY);
 		else
-			chkE=mob.location().getExitInDir(Directions.getGoodDirectionCode(typed));
+			chkE=mob.location().getExitInDir(CMLib.directions().getGoodDirectionCode(typed));
 		int direction=-1;
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 			if(mob.location().getExitInDir(d)==chkE)

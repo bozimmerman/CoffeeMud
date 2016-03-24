@@ -6704,14 +6704,14 @@ public class Import extends StdCommand
 	
 							}
 							if((linkRoom==null)&&(R.rawDoors()[dirCode]!=null))
-								returnAnError(session,"Room: "+R.roomID()+" re-linked "+Directions.getDirectionName(dirCode)+"ward to unknown room #"+linkRoomID+", area="+areaName,compileErrors,commands);
+								returnAnError(session,"Room: "+R.roomID()+" re-linked "+CMLib.directions().getDirectionName(dirCode)+"ward to unknown room #"+linkRoomID+", area="+areaName,compileErrors,commands);
 							R.rawDoors()[dirCode]=linkRoom;
 							if((linkRoom==null)&&(linkRoomID>=0))
 							{
 								if(multiArea)
 									laterLinks.put((R.roomID()+"/"+dirCode),"#"+linkRoomID);
 								else
-									returnAnError(session,"Room: "+R.roomID()+" links "+Directions.getDirectionName(dirCode)+"ward to unknown room #"+linkRoomID+", area="+areaName,compileErrors,commands);
+									returnAnError(session,"Room: "+R.roomID()+" links "+CMLib.directions().getDirectionName(dirCode)+"ward to unknown room #"+linkRoomID+", area="+areaName,compileErrors,commands);
 							}
 						}
 						else
@@ -7393,7 +7393,7 @@ public class Import extends StdCommand
 					}
 					final Room TR=getRoom(doneRooms,doneRooms,"NOAREA",dcode);
 					if((RR==null)&&(TR==null))
-						returnAnError(session,"Room "+R1.roomID()+" links to unknown room "+dcode+" in direction "+Directions.getDirectionName(dir)+".",compileErrors,commands);
+						returnAnError(session,"Room "+R1.roomID()+" links to unknown room "+dcode+" in direction "+CMLib.directions().getDirectionName(dir)+".",compileErrors,commands);
 					else
 					if(RR==null)
 					{

@@ -1399,8 +1399,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				case 'X':
 					if (lastKnownLocation != null)
 					{
-						if ((str.length() > 2) && (Directions.getGoodDirectionCode("" + str.charAt(2)) >= 0))
-							return lastKnownLocation.getExitInDir(Directions.getGoodDirectionCode("" + str.charAt(2)));
+						if ((str.length() > 2) && (CMLib.directions().getGoodDirectionCode("" + str.charAt(2)) >= 0))
+							return lastKnownLocation.getExitInDir(CMLib.directions().getGoodDirectionCode("" + str.charAt(2)));
 						int i = 0;
 						Exit E = null;
 						while (((++i) < 100) || (E != null))
@@ -1703,9 +1703,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						middle = "";
 						Exit E = null;
 						int dir = -1;
-						if ((t < varifyable.length() - 2) && (Directions.getGoodDirectionCode("" + varifyable.charAt(t + 2)) >= 0))
+						if ((t < varifyable.length() - 2) && (CMLib.directions().getGoodDirectionCode("" + varifyable.charAt(t + 2)) >= 0))
 						{
-							dir = Directions.getGoodDirectionCode("" + varifyable.charAt(t + 2));
+							dir = CMLib.directions().getGoodDirectionCode("" + varifyable.charAt(t + 2));
 							E = lastKnownLocation.getExitInDir(dir);
 						}
 						else
@@ -1720,7 +1720,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						if ((dir >= 0) && (E != null))
 						{
 							if (c == 'x')
-								middle = Directions.getDirectionName(dir);
+								middle = CMLib.directions().getDirectionName(dir);
 							else
 								middle = E.name();
 						}
@@ -3087,7 +3087,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 59: // isopen
 			{
 				final String arg1=CMParms.cleanBit(funcParms);
-				final int dir=Directions.getGoodDirectionCode(arg1);
+				final int dir=CMLib.directions().getGoodDirectionCode(arg1);
 				returnable=false;
 				if(dir<0)
 				{
@@ -3110,7 +3110,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 60: // islocked
 			{
 				final String arg1=CMParms.cleanBit(funcParms);
-				final int dir=Directions.getGoodDirectionCode(arg1);
+				final int dir=CMLib.directions().getGoodDirectionCode(arg1);
 				returnable=false;
 				if(dir<0)
 				{
@@ -5599,7 +5599,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 59: // isopen
 			{
 				final String arg1=CMParms.cleanBit(funcParms);
-				final int dir=Directions.getGoodDirectionCode(arg1);
+				final int dir=CMLib.directions().getGoodDirectionCode(arg1);
 				boolean returnable=false;
 				if(dir<0)
 				{
@@ -5623,7 +5623,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 60: // islocked
 			{
 				final String arg1=CMParms.cleanBit(funcParms);
-				final int dir=Directions.getGoodDirectionCode(arg1);
+				final int dir=CMLib.directions().getGoodDirectionCode(arg1);
 				if(dir<0)
 				{
 					final Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);

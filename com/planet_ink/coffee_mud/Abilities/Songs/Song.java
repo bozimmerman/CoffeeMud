@@ -283,7 +283,7 @@ public class Song extends StdAbility
 		{
 			final int dir=this.getCorrectDirToOriginRoom(R,v);
 			if(dir>=0)
-				msgStr=L("^SYou hear the @x1 being sung @x2!^?",songOf(),Directions.getInDirectionName(dir));
+				msgStr=L("^SYou hear the @x1 being sung @x2!^?",songOf(),CMLib.directions().getInDirectionName(dir));
 			else
 				msgStr=L("^SYou hear the @x1 being sung nearby!^?",songOf());
 		}

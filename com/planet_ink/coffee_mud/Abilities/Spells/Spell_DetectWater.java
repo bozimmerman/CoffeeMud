@@ -224,7 +224,7 @@ public class Spell_DetectWater extends Spell
 					if(d>=Directions.NUM_DIRECTIONS())
 						last="here";
 					else
-						last=Directions.getFromCompassDirectionName(d);
+						last=CMLib.directions().getFromCompassDirectionName(d);
 				}
 			}
 		}

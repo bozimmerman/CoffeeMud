@@ -93,11 +93,11 @@ public class Play_Retreat extends Play
 				if(directions.size()>0)
 				{
 					directionCode=directions.elementAt(CMLib.dice().roll(1,directions.size(),-1)).intValue();
-					where=Directions.getDirectionName(directionCode);
+					where=CMLib.directions().getDirectionName(directionCode);
 				}
 			}
 			else
-				directionCode=Directions.getGoodDirectionCode(where);
+				directionCode=CMLib.directions().getGoodDirectionCode(where);
 		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

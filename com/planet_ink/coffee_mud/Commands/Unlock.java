@@ -52,7 +52,7 @@ public class Unlock extends StdCommand
 			return false;
 		}
 		Environmental unlockThis=null;
-		int dirCode=Directions.getGoodDirectionCode(whatTounlock);
+		int dirCode=CMLib.directions().getGoodDirectionCode(whatTounlock);
 		if(dirCode>=0)
 			unlockThis=mob.location().getExitInDir(dirCode);
 		if(unlockThis==null)
@@ -92,7 +92,7 @@ public class Unlock extends StdCommand
 					&&(!((Exit)unlockThis).isLocked()))
 					{
 						final boolean useShipDirs=(opR instanceof BoardableShip)||(opR.getArea() instanceof BoardableShip);
-						final String inDirName=useShipDirs?Directions.getShipInDirectionName(opCode):Directions.getInDirectionName(opCode);
+						final String inDirName=useShipDirs?CMLib.directions().getShipInDirectionName(opCode):CMLib.directions().getInDirectionName(opCode);
 						opR.showHappens(CMMsg.MSG_OK_ACTION,L("@x1 @x2 is unlocked from the other side.",opE.name(),inDirName));
 					}
 				}

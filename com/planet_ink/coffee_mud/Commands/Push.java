@@ -58,7 +58,7 @@ public class Push extends Go
 		Environmental E=null;
 		if(commands.size()>1)
 		{
-			dirCode=Directions.getGoodDirectionCode(commands.get(commands.size()-1));
+			dirCode=CMLib.directions().getGoodDirectionCode(commands.get(commands.size()-1));
 			if(dirCode>=0)
 			{
 				if((mob.location().getRoomInDir(dirCode)==null)
@@ -78,13 +78,13 @@ public class Push extends Go
 				else
 					E=mob.location().getRoomInDir(dirCode);
 				dir=" "+(((mob.location() instanceof BoardableShip)||(mob.location().getArea() instanceof BoardableShip))?
-						Directions.getShipDirectionName(dirCode):Directions.getDirectionName(dirCode));
+						CMLib.directions().getDirectionName(dirCode):CMLib.directions().getDirectionName(dirCode));
 				commands.remove(commands.size()-1);
 			}
 		}
 		if(dir.length()==0)
 		{
-			dirCode=Directions.getGoodDirectionCode(commands.get(commands.size()-1));
+			dirCode=CMLib.directions().getGoodDirectionCode(commands.get(commands.size()-1));
 			if(dirCode>=0)
 				pushThis=mob.location().getExitInDir(dirCode);
 		}

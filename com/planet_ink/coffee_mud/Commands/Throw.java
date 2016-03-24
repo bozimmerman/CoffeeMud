@@ -77,7 +77,7 @@ public class Throw extends StdCommand
 			return false;
 		}
 
-		final int dir=Directions.getGoodDirectionCode(str);
+		final int dir=CMLib.directions().getGoodDirectionCode(str);
 		Environmental target=null;
 		if(dir<0)
 			target=mob.location().fetchInhabitant(str);
@@ -150,8 +150,8 @@ public class Throw extends StdCommand
 		{
 			final boolean useShipDirs=((mob.location() instanceof BoardableShip)||(mob.location().getArea() instanceof BoardableShip));
 			final int opDir=Directions.getOpDirectionCode(dir);
-			final String inDir=useShipDirs?Directions.getShipInDirectionName(dir):Directions.getInDirectionName(dir);
-			final String fromDir=useShipDirs?Directions.getFromShipDirectionName(opDir):Directions.getFromCompassDirectionName(opDir);
+			final String inDir=useShipDirs?CMLib.directions().getShipInDirectionName(dir):CMLib.directions().getInDirectionName(dir);
+			final String fromDir=useShipDirs?CMLib.directions().getFromShipDirectionName(opDir):CMLib.directions().getFromCompassDirectionName(opDir);
 			final CMMsg msg=CMClass.getMsg(mob,target,item,CMMsg.MSG_THROW,L("<S-NAME> throw(s) <O-NAME> @x1.",inDir.toLowerCase()));
 			final CMMsg msg2=CMClass.getMsg(mob,target,item,CMMsg.MSG_THROW,L("<O-NAME> fl(ys) in from @x1.",fromDir.toLowerCase()));
 			if(mob.location()==target)

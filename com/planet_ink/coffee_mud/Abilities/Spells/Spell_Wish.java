@@ -622,7 +622,7 @@ public class Spell_Wish extends Spell
 			if(validStart)
 			{
 				Room newRoom=null;
-				final int dir=Directions.getGoodDirectionCode(wishV.lastElement());
+				final int dir=CMLib.directions().getGoodDirectionCode(wishV.lastElement());
 				if(dir>=0)
 					newRoom=mob.location().getRoomInDir(dir);
 				if(newRoom==null)

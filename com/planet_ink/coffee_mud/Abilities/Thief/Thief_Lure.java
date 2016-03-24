@@ -203,13 +203,13 @@ public class Thief_Lure extends ThiefSkill implements Trap
 		}
 		String str=commands.get(commands.size()-1);
 		commands.remove(commands.size()-1);
-		final int dirCode=Directions.getGoodDirectionCode(str);
+		final int dirCode=CMLib.directions().getGoodDirectionCode(str);
 		if((dirCode<0)||(mob.location()==null)||(mob.location().getRoomInDir(dirCode)==null)||(mob.location().getExitInDir(dirCode)==null))
 		{
 			mob.tell(L("'@x1' is not a valid direction.",str));
 			return false;
 		}
-		final String direction=Directions.getInDirectionName(dirCode);
+		final String direction=CMLib.directions().getInDirectionName(dirCode);
 
 		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null)

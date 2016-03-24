@@ -945,7 +945,7 @@ public class CMMap extends StdLibrary implements WorldMap
 				{
 					final String attachedRoomID = getExtendedRoomID(attachedRoom);
 					if(attachedRoomID.length()>0)
-						return Directions.getFromCompassDirectionName(Directions.getOpDirectionCode(dir))+" "+attachedRoomID;
+						return CMLib.directions().getFromCompassDirectionName(Directions.getOpDirectionCode(dir))+" "+attachedRoomID;
 				}
 			}
 		}
@@ -2660,7 +2660,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		final long startTime = System.currentTimeMillis();
 		if(searchRooms)
 		{
-			final int dirCode=Directions.getGoodDirectionCode(cmd);
+			final int dirCode=CMLib.directions().getGoodDirectionCode(cmd);
 			if((dirCode>=0)&&(curRoom!=null))
 				room=addWorldRoomsLiberally(rooms,curRoom.rawDoors()[dirCode]);
 			if(room==null)

@@ -132,7 +132,7 @@ public class Skill_Swim extends StdSkill
 	{
 		if(secondsElapsed==0)
 		{
-			final int dirCode=Directions.getDirectionCode(CMParms.combine(commands,0));
+			final int dirCode=CMLib.directions().getDirectionCode(CMParms.combine(commands,0));
 			if(dirCode<0)
 			{
 				mob.tell(L("Swim where?"));
@@ -168,7 +168,7 @@ public class Skill_Swim extends StdSkill
 				mob.tell(L("You need to get off @x1 first!",mob.riding().name()));
 				return false;
 			}
-			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> start(s) swimming @x1.",Directions.getDirectionName(dirCode)));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> start(s) swimming @x1.",CMLib.directions().getDirectionName(dirCode)));
 			final Room R=mob.location();
 			if((R!=null)&&(R.okMessage(mob,msg)))
 				R.send(mob,msg);
@@ -181,7 +181,7 @@ public class Skill_Swim extends StdSkill
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		final int dirCode=Directions.getDirectionCode(CMParms.combine(commands,0));
+		final int dirCode=CMLib.directions().getDirectionCode(CMParms.combine(commands,0));
 		if(!preInvoke(mob,commands,givenTarget,auto,asLevel,0,0.0))
 			return false;
 
