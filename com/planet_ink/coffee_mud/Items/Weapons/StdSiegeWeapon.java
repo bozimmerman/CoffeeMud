@@ -70,6 +70,7 @@ public class StdSiegeWeapon extends StdRideable implements AmmunitionWeapon
 		recoverPhyStats();
 		minRange=1;
 		maxRange=10;
+		setRiderCapacity(0);
 		weaponDamageType=Weapon.TYPE_PIERCING;
 		material=RawMaterial.RESOURCE_WOOD;
 		weaponClassification=Weapon.CLASS_RANGED;

@@ -8988,6 +8988,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genWeaponType(mob,me,++showNumber,showFlag);
 			genWeaponClassification(mob,me,++showNumber,showFlag);
 			genWeaponRanges(mob,me,++showNumber,showFlag);
+			if(me instanceof Rideable)
+			{
+				genRideable1(mob,(Rideable)me,++showNumber,showFlag);
+				genRideable2(mob,(Rideable)me,++showNumber,showFlag);
+			}
 			if(me instanceof Wand)
 			{
 				genReadable1(mob,me,++showNumber,showFlag);

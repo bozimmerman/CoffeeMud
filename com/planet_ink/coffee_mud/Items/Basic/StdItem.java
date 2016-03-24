@@ -1075,6 +1075,11 @@ public class StdItem implements Item
 			if(this instanceof Technical)
 				return true;
 			break;
+		case CMMsg.TYP_DAMAGE:
+		case CMMsg.TYP_WEAPONATTACK:
+			if(this instanceof BoardableShip)
+				return true;
+			break;
 		case CMMsg.TYP_EXPIRE:
 		case CMMsg.TYP_LOOK:
 		case CMMsg.TYP_EXAMINE:
