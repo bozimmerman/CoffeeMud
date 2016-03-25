@@ -1036,8 +1036,8 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 											missString);
 			CMLib.color().fixSourceFightColor(msg);
 			// why was there no okaffect here?
-			if(room!=null)
-			if(room.okMessage(source,msg))
+			if((room!=null)
+			&&(room.okMessage(source,msg)))
 				room.send(source,msg);
 		}
 	}

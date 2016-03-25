@@ -278,7 +278,10 @@ public class StdWeapon extends StdItem implements Weapon, AmmunitionWeapon
 			{
 				if(lastReloadTime != msg.source().lastTickedDateTime())
 				{
-					msg.source().tell(L("@x1 is out of @x2.",name(),ammunitionType()));
+					if(msg.source().isMonster() && (owner() instanceof Room))
+						((Room)owner()).showHappens(CMMsg.MSG_OK_VISUAL, L("@x1 is out of @x2.",name(),ammunitionType()));
+					else
+						msg.source().tell(L("@x1 is out of @x2.",name(),ammunitionType()));
 					if((msg.source().isMine(this))
 					&&(msg.source().location()!=null)
 					&&(CMLib.flags().isAliveAwakeMobile(msg.source(),true)))

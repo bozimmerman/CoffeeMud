@@ -549,6 +549,23 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 		}
 	}
 	
+	protected boolean confirmAreaMessage(final CMMsg msg, boolean outdoorOnly)
+	{
+		final Area ship=getShipArea();
+		if(ship!=null)
+		{
+			for(final Enumeration<Room> r = ship.getProperMap(); r.hasMoreElements();)
+			{
+				final Room R=r.nextElement();
+				if((!outdoorOnly)||((R.domainType()&Room.INDOORS)==0))
+				{
+					if(!R.okMessage(msg.source(), msg))
+						return false;
+				}
+			}
+		}
+		return true;
+	}
 	
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
