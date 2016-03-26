@@ -1290,6 +1290,8 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			if(totalWeight<=0)
 				return true;
 
+			if(isFalling(P))
+				return false;
 			return (totalFloatilla/totalWeight)<=1000;
 		}
 		return false;

@@ -991,7 +991,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			// calculate Base Damage (with Strength bonus)
 			final String oldHitString="^F^<FIGHT^>"+((weapon!=null)?
 								weapon.hitString(damageInt):
-								standardHitString(Weapon.TYPE_NATURAL,Weapon.CLASS_BLUNT,damageInt,weapon.name()))+"^</FIGHT^>^?";
+								standardHitString(Weapon.TYPE_NATURAL,Weapon.CLASS_BLUNT,(int)Math.round(Math.pow(2,damageInt)),weapon.name()))+"^</FIGHT^>^?";
 			final CMMsg msg=CMClass.getMsg(source,
 									defender,
 									weapon,

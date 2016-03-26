@@ -80,6 +80,8 @@ public class GenSailingShip extends StdBoardable
 		super.recoverPhyStats();
 		if(usesRemaining()>0)
 			phyStats().setDisposition(phyStats().disposition()|PhyStats.IS_SWIMMING);
+		else
+			phyStats().setDisposition(phyStats().disposition()|PhyStats.IS_FALLING);
 	}
 	
 	@Override
@@ -396,11 +398,10 @@ public class GenSailingShip extends StdBoardable
 					else
 					if(R!=null)
 					{
-						CMMsg msg2=CMClass.getMsg(msg.source(), CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> raise(s) anchor."));
+						CMMsg msg2=CMClass.getMsg(msg.source(), this, null, CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> raise(s) anchor on <T-NAME>."));
 						if((R.okMessage(msg.source(), msg2) && this.okAreaMessage(msg2, true)))
 						{
 							R.send(msg.source(), msg2);
-							this.sendAreaMessage(msg2, true);
 							anchorDown=false;
 						}
 					}
@@ -424,7 +425,7 @@ public class GenSailingShip extends StdBoardable
 					else
 					if(R!=null)
 					{
-						CMMsg msg2=CMClass.getMsg(msg.source(), CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> lower(s) anchor."));
+						CMMsg msg2=CMClass.getMsg(msg.source(), this, null, CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> lower(s) anchor on <T-NAME>."));
 						if((R.okMessage(msg.source(), msg2) && this.okAreaMessage(msg2, true)))
 						{
 							R.send(msg.source(), msg2);
@@ -1031,6 +1032,12 @@ public class GenSailingShip extends StdBoardable
 		{
 			if(this.amInTacticalMode())
 			{
+				Rideable target = this.targetedShip;
+				if(target != null)
+				{
+					StringBuilder str=new StringBuilder("");
+					//TODO: condition
+				}
 				final List<Weapon> weapons = new LinkedList<Weapon>();
 				for(Enumeration<Room> r=this.getShipArea().getProperMap();r.hasMoreElements();)
 				{
@@ -1263,13 +1270,13 @@ public class GenSailingShip extends StdBoardable
 						if(pointsLost >= this.usesRemaining())
 						{
 							this.setUsesRemaining(0);
-							this.recoverPhyStats();
+							this.recoverPhyStats(); // takes away the swimmability!
 							final Room shipR=CMLib.map().roomLocation(this);
 							if(shipR!=null)
 							{
 								CMLib.tracking().makeSink(this, shipR, 0);
-								final String sinkString = L("<O-NAME> start(s) sinking!");
-								shipR.show(msg.source(), null, CMMsg.MSG_OK_ACTION, sinkString);
+								final String sinkString = L("<T-NAME> start(s) sinking!");
+								shipR.show(msg.source(), this, CMMsg.MSG_OK_ACTION, sinkString);
 								this.announceActionToUnderDeck(msg.source(), sinkString);
 							}
 							

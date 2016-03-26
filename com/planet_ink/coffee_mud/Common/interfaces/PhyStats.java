@@ -547,7 +547,7 @@ public interface PhyStats extends CMCommon, Modifiable
 	public final static int IS_GLOWING=8192;
 	/** a bit setting, as from disposition(), flagging this object as climbing */
 	public final static int IS_CLIMBING=16384;
-	/** a bit setting, as from disposition(), flagging this object as falling */
+	/** a bit setting, as from disposition(), flagging this object as falling (or sinking) */
 	public final static int IS_FALLING=32768;
 	/** a bit setting, as from disposition(), flagging this object as being a lightsource, which is NOT an ambiance, but is contageous */
 	public final static int IS_LIGHTSOURCE=65536;

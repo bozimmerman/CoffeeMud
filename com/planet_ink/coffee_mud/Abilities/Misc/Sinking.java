@@ -211,7 +211,7 @@ public class Sinking extends StdAbility
 
 			if((room==null)
 			||((room!=null)&&(!room.isContent(item)))
-			||(!CMLib.flags().isGettable(item)))
+			||((!CMLib.flags().isGettable(item)&&(!(item instanceof BoardableShip)))))
 			{
 				unInvoke();
 				return false;
