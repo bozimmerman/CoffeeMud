@@ -63,7 +63,6 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 		basePhyStats.setWeight(20);
 		setDescription("");
 		baseGoldValue=5;
-		setUsesRemaining(100);
 		containType=Container.CONTAIN_SSCOMPONENTS;
 		rideBasis=Rideable.RIDEABLE_TABLE;
 		riderCapacity=1;

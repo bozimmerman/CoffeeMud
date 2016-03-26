@@ -55,8 +55,15 @@ public class StdRideable extends StdContainer implements Rideable
 		recoverPhyStats();
 		capacity=3000;
 		material=RawMaterial.RESOURCE_OAK;
+		setUsesRemaining(100);
 	}
 
+	@Override
+	public boolean subjectToWearAndTear()
+	{
+		return (rideBasis() == Rideable.RIDEABLE_WATER);
+	}
+	
 	@Override
 	public void destroy()
 	{
