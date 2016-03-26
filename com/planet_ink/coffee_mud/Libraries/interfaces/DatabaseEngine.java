@@ -480,31 +480,39 @@ public interface DatabaseEngine extends CMLibrary
 
 	/**
 	 * Table category: DBPLAYERS
-	 * 
-	 * @param account
+	 * Inserts a new row into the account record in the
+	 * database.  Only works the first time for a given
+	 * account name
+	 * @param account the account to insert
 	 */
 	public void DBCreateAccount(PlayerAccount account);
 
 	/**
 	 * Table category: DBPLAYERS
-	 * 
-	 * @param account
+	 * Removes only the given account from the database.
+	 * Does not delete players or any player data.
+	 * @param account the account to delete
 	 */
 	public void DBDeleteAccount(PlayerAccount account);
 
 	/**
 	 * Table category: DBPLAYERS
-	 * 
-	 * @param Login
-	 * @return
+	 * Loads an account with the given name from the 
+	 * database, populates a playeraccount object,
+	 * and returns it. Does not load players, only
+	 * the account record.
+	 * @param Login the name of the account to load
+	 * @return the player account object
 	 */
 	public PlayerAccount DBReadAccount(String Login);
 
 	/**
 	 * Table category: DBPLAYERS
-	 * 
-	 * @param mask
-	 * @return
+	 * Populates and returns a list of player account
+	 * objects that match the given lowercase substring.
+	 * Does this by doing a full scan. :/
+	 * @param mask lowercase substring to search for or null
+	 * @return the list of playeraccount objects
 	 */
 	public List<PlayerAccount> DBListAccounts(String mask);
 
@@ -614,32 +622,39 @@ public interface DatabaseEngine extends CMLibrary
 
 	/**
 	 * Table category: DBPLAYERS
-	 * 
-	 * @param name
-	 * @return
+	 * Reads and populates a player MOB object
+	 * from the database. Does not include 
+	 * followers, but does items and abilities.
+	 * @param name the name of the player
+	 * @return the player mob object, or null
 	 */
 	public MOB DBReadPlayer(String name);
 
 	/**
 	 * Table category: DBPLAYERS
-	 * 
-	 * @param oldName
-	 * @param newName
+	 * Renames all player records belonging to the old
+	 * name to the new name.  Does nothing to existing
+	 * cached objects, and the new name better not already
+	 * exist!
+	 * @param oldName the previous existing name in the db
+	 * @param newName the new name to change them to
 	 */
 	public void DBPlayerNameChange(String oldName, String newName);
 
 	/**
 	 * Table category: DBPLAYERS
-	 * 
-	 * @param mob
+	 * Updates the email address of the given player in the 
+	 * database.  Does not update the account system.
+	 * @param mob the mob containing the email addy to change
 	 */
 	public void DBUpdateEmail(MOB mob);
 
 	/**
 	 * Table category: DBPLAYERS
-	 * 
-	 * @param name
-	 * @param password
+	 * Updates the password of the given player in the 
+	 * database.  Does not update the account system.
+	 * @param name the mob name containing the pw to change
+	 * @param password the new password string
 	 */
 	public void DBUpdatePassword(String name, String password);
 
