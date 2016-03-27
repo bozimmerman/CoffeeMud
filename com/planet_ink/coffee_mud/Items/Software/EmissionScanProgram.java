@@ -42,12 +42,16 @@ import java.util.*;
 */
 public class EmissionScanProgram extends GenSoftware
 {
-	@Override public String ID(){	return "EmissionScanProgram";}
+	@Override
+	public String ID()
+	{
+		return "EmissionScanProgram";
+	}
 
-	protected final static short AUTO_TICKDOWN=4;
+	protected final static short	AUTO_TICKDOWN		= 4;
 
-	protected boolean activated=false;
-	protected short activatedTickdown=AUTO_TICKDOWN;
+	protected boolean				activated			= false;
+	protected short					activatedTickdown	= AUTO_TICKDOWN;
 
 	public EmissionScanProgram()
 	{
@@ -60,8 +64,17 @@ public class EmissionScanProgram extends GenSoftware
 		recoverPhyStats();
 	}
 
-	@Override public String getParentMenu() { return ""; }
-	@Override public String getInternalName() { return "";}
+	@Override
+	public String getParentMenu()
+	{
+		return "";
+	}
+
+	@Override
+	public String getInternalName()
+	{
+		return "";
+	}
 
 	public boolean isEmitting(Item I)
 	{

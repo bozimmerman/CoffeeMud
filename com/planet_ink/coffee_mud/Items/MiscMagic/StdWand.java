@@ -36,7 +36,12 @@ import java.util.*;
 
 public class StdWand extends StdItem implements Wand
 {
-	@Override public String ID(){    return "StdWand";}
+	@Override
+	public String ID()
+	{
+		return "StdWand";
+	}
+
 	protected String secretWord=CMProps.getAnyListFileValue(CMProps.ListFile.MAGIC_WORDS);
 
 	public StdWand()
@@ -55,8 +60,16 @@ public class StdWand extends StdItem implements Wand
 		recoverPhyStats();
 	}
 
-	@Override public int maxUses(){return Integer.MAX_VALUE;}
-	@Override public void setMaxUses(int newMaxUses){}
+	@Override
+	public int maxUses()
+	{
+		return Integer.MAX_VALUE;
+	}
+
+	@Override
+	public void setMaxUses(int newMaxUses)
+	{
+	}
 
 	public static boolean useTheWand(Ability A, MOB mob, int level)
 	{
@@ -145,7 +158,10 @@ public class StdWand extends StdItem implements Wand
 
 	public static boolean checkWave(MOB mob, String message, Wand me)
 	{
-		return (mob.isMine(me)) && (message!=null) && (!me.amWearingAt(Wearable.IN_INVENTORY)) && (message.toUpperCase().indexOf(me.magicWord().toUpperCase()) >= 0);
+		return (mob.isMine(me)) 
+				&& (message!=null) 
+				&& (!me.amWearingAt(Wearable.IN_INVENTORY)) 
+				&& (message.toUpperCase().indexOf(me.magicWord().toUpperCase()) >= 0);
 	}
 
 	public static void waveIfAble(MOB mob, Physical afftarget, String message, Wand me)
@@ -237,42 +253,67 @@ public class StdWand extends StdItem implements Wand
 		super.executeMsg(myHost,msg);
 	}
 
-	@Override public String magicWord(){return secretWord;}
-
+	@Override
+	public String magicWord()
+	{
+		return secretWord;
+	}
 
 	protected static String[] CODES={"CLASS","LEVEL","ABILITY","TEXT"};
+
 	@Override
 	public String getStat(String code)
 	{
 		switch(getCodeNum(code))
 		{
-		case 0: return ID();
-		case 1: return ""+basePhyStats().ability();
-		case 2: return ""+basePhyStats().level();
-		case 3: return text();
+		case 0:
+			return ID();
+		case 1:
+			return "" + basePhyStats().ability();
+		case 2:
+			return "" + basePhyStats().level();
+		case 3:
+			return text();
 		}
 		return "";
 	}
+
 	@Override
 	public void setStat(String code, String val)
 	{
 		switch(getCodeNum(code))
 		{
-		case 0: return;
-		case 1: basePhyStats().setLevel(CMath.s_parseIntExpression(val)); break;
-		case 2: basePhyStats().setAbility(CMath.s_parseIntExpression(val)); break;
-		case 3: setMiscText(val); break;
+		case 0:
+			return;
+		case 1:
+			basePhyStats().setLevel(CMath.s_parseIntExpression(val));
+			break;
+		case 2:
+			basePhyStats().setAbility(CMath.s_parseIntExpression(val));
+			break;
+		case 3:
+			setMiscText(val);
+			break;
 		}
 	}
-	@Override public String[] getStatCodes(){return CODES;}
+
+	@Override
+	public String[] getStatCodes()
+	{
+		return CODES;
+	}
+
 	@Override
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<CODES.length;i++)
+		{
 			if(code.equalsIgnoreCase(CODES[i]))
 				return i;
+		}
 		return -1;
 	}
+
 	@Override
 	public boolean sameAs(Environmental E)
 	{
@@ -280,8 +321,10 @@ public class StdWand extends StdItem implements Wand
 			return false;
 		final String[] codes=getStatCodes();
 		for(int i=0;i<codes.length;i++)
+		{
 			if(!E.getStat(codes[i]).equals(getStat(codes[i])))
 				return false;
+		}
 		return true;
 	}
 }

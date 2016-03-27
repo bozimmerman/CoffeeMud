@@ -34,8 +34,14 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 */
 public class GenWand extends StdWand
 {
-	@Override public String ID(){	return "GenWand";}
-	protected String readableText="";
+	@Override
+	public String ID()
+	{
+		return "GenWand";
+	}
+
+	protected String	readableText	= "";
+	protected int		maxUses			= Integer.MAX_VALUE;
 
 	public GenWand()
 	{
@@ -53,7 +59,11 @@ public class GenWand extends StdWand
 		recoverPhyStats();
 	}
 
-	@Override public boolean isGeneric(){return true;}
+	@Override
+	public boolean isGeneric()
+	{
+		return true;
+	}
 
 	@Override
 	public void setSpell(Ability theSpell)
@@ -63,6 +73,7 @@ public class GenWand extends StdWand
 			readableText=theSpell.ID();
 		secretWord=StdWand.getWandWord(readableText);
 	}
+
 	@Override
 	public Ability getSpell()
 	{
@@ -82,9 +93,17 @@ public class GenWand extends StdWand
 		secretWord = StdWand.getWandWord(readableText);
 	}
 
-	protected int maxUses=Integer.MAX_VALUE;
-	@Override public int maxUses(){return maxUses;}
-	@Override public void setMaxUses(int newMaxUses){maxUses=newMaxUses;}
+	@Override
+	public int maxUses()
+	{
+		return maxUses;
+	}
+
+	@Override
+	public void setMaxUses(int newMaxUses)
+	{
+		maxUses = newMaxUses;
+	}
 
 	@Override
 	public String text()
@@ -107,6 +126,7 @@ public class GenWand extends StdWand
 			return CMLib.coffeeMaker().getGenItemStat(this,code);
 		return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 	}
+
 	@Override
 	public void setStat(String code, String val)
 	{
@@ -114,7 +134,9 @@ public class GenWand extends StdWand
 			CMLib.coffeeMaker().setGenItemStat(this,code,val);
 		CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code,val);
 	}
+
 	private static String[] codes=null;
+
 	@Override
 	public String[] getStatCodes()
 	{
@@ -122,14 +144,17 @@ public class GenWand extends StdWand
 			codes=CMProps.getStatCodesList(CMParms.toStringArray(GenericBuilder.GenItemCode.values()),this);
 		return codes;
 	}
+
 	@Override
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof GenWand))
 			return false;
 		for(int i=0;i<getStatCodes().length;i++)
+		{
 			if(!E.getStat(getStatCodes()[i]).equals(getStat(getStatCodes()[i])))
 				return false;
+		}
 		return true;
 	}
 }

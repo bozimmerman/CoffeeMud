@@ -36,7 +36,12 @@ import java.util.*;
 */
 public class RingOfFortitude extends Ring_Protection implements MiscMagic
 {
-	@Override public String ID(){	return "RingOfFortitude";}
+	@Override
+	public String ID()
+	{
+		return "RingOfFortitude";
+	}
+
 	public RingOfFortitude()
 	{
 		super();

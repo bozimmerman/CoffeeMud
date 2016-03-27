@@ -35,7 +35,12 @@ import java.util.*;
 */
 public class ArchonJournal extends StdJournal implements ArchonOnly, MiscMagic
 {
-	@Override public String ID(){	return "ArchonJournal";}
+	@Override
+	public String ID()
+	{
+		return "ArchonJournal";
+	}
+
 	public ArchonJournal()
 	{
 		super();

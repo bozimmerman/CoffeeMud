@@ -36,7 +36,12 @@ import java.util.Vector;
 
 public class BagOfEndlessness extends BagOfHolding implements ArchonOnly
 {
-	@Override public String ID(){	return "BagOfEndlessness";}
+	@Override
+	public String ID()
+	{
+		return "BagOfEndlessness";
+	}
+
 	public BagOfEndlessness()
 	{
 		super();

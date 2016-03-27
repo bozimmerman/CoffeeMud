@@ -34,7 +34,12 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 */
 public class GenPlayingCard extends StdPlayingCard
 {
-	@Override public String ID(){	return "GenPlayingCard";}
+	@Override
+	public String ID()
+	{
+		return "GenPlayingCard";
+	}
+
 	protected String readableText="";
 
 	public GenPlayingCard()
@@ -42,10 +47,23 @@ public class GenPlayingCard extends StdPlayingCard
 		super();
 	}
 
-	@Override public boolean isGeneric(){return true;}
+	@Override
+	public boolean isGeneric()
+	{
+		return true;
+	}
 
-	@Override public String readableText(){return readableText;}
-	@Override public void setReadableText(String text){ readableText=text;}
+	@Override
+	public String readableText()
+	{
+		return readableText;
+	}
+
+	@Override
+	public void setReadableText(String text)
+	{
+		readableText = text;
+	}
 
 	@Override
 	public String text()
@@ -68,6 +86,7 @@ public class GenPlayingCard extends StdPlayingCard
 			return CMLib.coffeeMaker().getGenItemStat(this,code);
 		return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 	}
+	
 	@Override
 	public void setStat(String code, String val)
 	{
@@ -75,7 +94,9 @@ public class GenPlayingCard extends StdPlayingCard
 			CMLib.coffeeMaker().setGenItemStat(this,code,val);
 		CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code,val);
 	}
+	
 	private static String[] codes=null;
+	
 	@Override
 	public String[] getStatCodes()
 	{
@@ -89,8 +110,10 @@ public class GenPlayingCard extends StdPlayingCard
 		if(!(E instanceof GenPlayingCard))
 			return false;
 		for(int i=0;i<getStatCodes().length;i++)
+		{
 			if(!E.getStat(getStatCodes()[i]).equals(getStat(getStatCodes()[i])))
 				return false;
+		}
 		return true;
 	}
 }

@@ -53,7 +53,12 @@ import java.util.*;
 */
 public class StdPlayingCard extends StdItem implements MiscMagic, PlayingCard
 {
-	@Override public String ID(){	return "StdPlayingCard";}
+	@Override
+	public String ID()
+	{
+		return "StdPlayingCard";
+	}
+
 	protected int oldAbility=0;
 
 	public StdPlayingCard()
@@ -66,18 +71,49 @@ public class StdPlayingCard extends StdItem implements MiscMagic, PlayingCard
 		setBaseValue(0);
 		recoverPhyStats();
 	}
-	@Override protected boolean abilityImbuesMagic(){return false;}
+
+	@Override
+	protected boolean abilityImbuesMagic()
+	{
+		return false;
+	}
 
 	// the encoded suit
-	@Override public int getBitEncodedSuit(){return phyStats().ability()&(16+32);}
+	@Override
+	public int getBitEncodedSuit()
+	{
+		return phyStats().ability() & (16 + 32);
+	}
+
 	// the encoded value from 2-14
-	@Override public int getBitEncodedValue(){return phyStats().ability()&(1+2+4+8);}
+	@Override
+	public int getBitEncodedValue()
+	{
+		return phyStats().ability() & (1 + 2 + 4 + 8);
+	}
+
 	// whether the card is face up
-	@Override public boolean isFaceUp(){return (phyStats().ability()&64)==64;}
+	@Override
+	public boolean isFaceUp()
+	{
+		return (phyStats().ability() & 64) == 64;
+	}
+
 	// set the card face up by turning on bit 64
-	@Override public void turnFaceUp(){ basePhyStats().setAbility(basePhyStats().ability()|64); recoverPhyStats();}
+	@Override
+	public void turnFaceUp()
+	{
+		basePhyStats().setAbility(basePhyStats().ability() | 64);
+		recoverPhyStats();
+	}
+
 	// set the card face down by turning off bits 64 and up.
-	@Override public void turnFaceDown(){ basePhyStats().setAbility(basePhyStats().ability()&(63)); recoverPhyStats();}
+	@Override
+	public void turnFaceDown()
+	{
+		basePhyStats().setAbility(basePhyStats().ability() & (63));
+		recoverPhyStats();
+	}
 
 	// return the suit of this card as a single letter string
 	@Override
@@ -85,10 +121,14 @@ public class StdPlayingCard extends StdItem implements MiscMagic, PlayingCard
 	{
 		switch(getBitEncodedSuit())
 		{
-		case 0: return "S";
-		case 16: return "C";
-		case 32: return "H";
-		case 48: return "D";
+		case 0:
+			return "S";
+		case 16:
+			return "C";
+		case 32:
+			return "H";
+		case 48:
+			return "D";
 		}
 		return " ";
 	}
@@ -100,11 +140,24 @@ public class StdPlayingCard extends StdItem implements MiscMagic, PlayingCard
 	{
 		switch(getBitEncodedValue())
 		{
-			case 1: case 14: return "A";
-			case 11: return "J";
-			case 12: return "Q";
-			case 13: return "K";
-			case 2:case 3:case 4:case 5:case 6:case 7:case 8:case 9:case 10:
+		case 1:
+		case 14:
+			return "A";
+		case 11:
+			return "J";
+		case 12:
+			return "Q";
+		case 13:
+			return "K";
+		case 2:
+		case 3:
+		case 4:
+		case 5:
+		case 6:
+		case 7:
+		case 8:
+		case 9:
+		case 10:
 				return ""+getBitEncodedValue();
 		}
 		return "0";
@@ -120,20 +173,34 @@ public class StdPlayingCard extends StdItem implements MiscMagic, PlayingCard
 		value=value&(1+2+4+8);
 		switch(value)
 		{
-		case 1: return "ace";
-		case 2: return "two";
-		case 3: return "three";
-		case 4: return "four";
-		case 5: return "five";
-		case 6: return "six";
-		case 7: return "seven";
-		case 8: return "eight";
-		case 9: return "nine";
-		case 10: return "ten";
-		case 11: return "jack";
-		case 12: return "queen";
-		case 13: return "king";
-		case 14: return "ace";
+		case 1:
+			return "ace";
+		case 2:
+			return "two";
+		case 3:
+			return "three";
+		case 4:
+			return "four";
+		case 5:
+			return "five";
+		case 6:
+			return "six";
+		case 7:
+			return "seven";
+		case 8:
+			return "eight";
+		case 9:
+			return "nine";
+		case 10:
+			return "ten";
+		case 11:
+			return "jack";
+		case 12:
+			return "queen";
+		case 13:
+			return "king";
+		case 14:
+			return "ace";
 		}
 		return "Unknown";
 	}
@@ -149,11 +216,16 @@ public class StdPlayingCard extends StdItem implements MiscMagic, PlayingCard
 		value=value&(1+2+4+8);
 		switch(value)
 		{
-		case 1: return "ace";
-		case 11: return "jack";
-		case 12: return "queen";
-		case 13: return "king";
-		case 14: return "ace";
+		case 1:
+			return "ace";
+		case 11:
+			return "jack";
+		case 12:
+			return "queen";
+		case 13:
+			return "king";
+		case 14:
+			return "ace";
 		default:
 			return ""+value;
 		}
@@ -169,10 +241,14 @@ public class StdPlayingCard extends StdItem implements MiscMagic, PlayingCard
 		suit=suit&(16+32);
 		switch(suit)
 		{
-		case 0: return "^pspades^?";
-		case 16: return "^pclubs^p";
-		case 32: return "^rhearts^?";
-		case 48: return "^rdiamonds^?";
+		case 0:
+			return "^pspades^?";
+		case 16:
+			return "^pclubs^p";
+		case 32:
+			return "^rhearts^?";
+		case 48:
+			return "^rdiamonds^?";
 		}
 		return "";
 	}

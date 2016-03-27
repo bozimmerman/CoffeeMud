@@ -34,7 +34,12 @@ import java.util.*;
 */
 public class Wand_Nourishment extends StdWand
 {
-	@Override public String ID(){	return "Wand_Nourishment";}
+	@Override
+	public String ID()
+	{
+		return "Wand_Nourishment";
+	}
+
 	public Wand_Nourishment()
 	{
 		super();
@@ -75,11 +80,15 @@ public class Wand_Nourishment extends StdWand
 				if((mob.isMine(this))
 				&&(!amWearingAt(Wearable.IN_INVENTORY))
 				&&(msg.targetMessage()!=null))
+				{
 					if(msg.targetMessage().toUpperCase().indexOf("SHAZAM")>=0)
+					{
 						if(mob.curState().adjHunger(50,mob.maxState().maxHunger(mob.baseWeight())))
 							mob.tell(L("You are full."));
 						else
 							mob.tell(L("You feel nourished."));
+					}
+				}
 				return;
 			default:
 				break;

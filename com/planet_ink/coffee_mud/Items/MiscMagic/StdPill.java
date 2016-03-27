@@ -38,8 +38,13 @@ import java.util.*;
 
 public class StdPill extends StdFood implements Pill
 {
-	@Override public String ID(){	return "StdPill";}
-	protected Ability theSpell;
+	@Override
+	public String ID()
+	{
+		return "StdPill";
+	}
+
+	protected Ability	theSpell;
 
 	public StdPill()
 	{
@@ -87,8 +92,15 @@ public class StdPill extends StdFood implements Pill
 
 	@Override
 	public String getSpellList()
-	{ return miscText;}
-	@Override public void setSpellList(String list){miscText=list;}
+	{
+		return miscText;
+	}
+
+	@Override
+	public void setSpellList(String list)
+	{
+		miscText = list;
+	}
 
 	public static Vector<Ability> getSpells(SpellHolder me)
 	{
@@ -117,7 +129,11 @@ public class StdPill extends StdFood implements Pill
 		return theSpells;
 	}
 
-	@Override public List<Ability> getSpells(){ return getSpells(this);}
+	@Override
+	public List<Ability> getSpells()
+	{
+		return getSpells(this);
+	}
 
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)

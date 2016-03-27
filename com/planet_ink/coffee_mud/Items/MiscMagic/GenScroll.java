@@ -34,7 +34,12 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 */
 public class GenScroll extends StdScroll
 {
-	@Override public String ID(){	return "GenScroll";}
+	@Override
+	public String ID()
+	{
+		return "GenScroll";
+	}
+
 	protected String readableText="";
 
 	public GenScroll()
@@ -52,17 +57,34 @@ public class GenScroll extends StdScroll
 	}
 
 
-	@Override public boolean isGeneric(){return true;}
+	@Override
+	public boolean isGeneric()
+	{
+		return true;
+	}
 
 	@Override
 	public String getSpellList()
-	{ return readableText;}
-	@Override public void setSpellList(String list){readableText=list;}
-	@Override public String readableText(){return readableText;}
+	{
+		return readableText;
+	}
+
+	@Override
+	public void setSpellList(String list)
+	{
+		readableText = list;
+	}
+
+	@Override
+	public String readableText()
+	{
+		return readableText;
+	}
+
 	@Override
 	public void setReadableText(String text)
 	{
-		readableText=text;
+		readableText = text;
 		setSpellList(readableText);
 	}
 
@@ -87,6 +109,7 @@ public class GenScroll extends StdScroll
 			return CMLib.coffeeMaker().getGenItemStat(this,code);
 		return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 	}
+
 	@Override
 	public void setStat(String code, String val)
 	{
@@ -94,7 +117,9 @@ public class GenScroll extends StdScroll
 			CMLib.coffeeMaker().setGenItemStat(this,code,val);
 		CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code,val);
 	}
+
 	private static String[] codes=null;
+
 	@Override
 	public String[] getStatCodes()
 	{
@@ -102,14 +127,17 @@ public class GenScroll extends StdScroll
 			codes=CMProps.getStatCodesList(CMParms.toStringArray(GenericBuilder.GenItemCode.values()),this);
 		return codes;
 	}
+
 	@Override
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof GenScroll))
 			return false;
 		for(int i=0;i<getStatCodes().length;i++)
+		{
 			if(!E.getStat(getStatCodes()[i]).equals(getStat(getStatCodes()[i])))
 				return false;
+		}
 		return true;
 	}
 }

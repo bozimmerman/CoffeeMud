@@ -36,7 +36,12 @@ import java.util.*;
 */
 public class ManualArchon extends StdItem implements MiscMagic,ArchonOnly
 {
-	@Override public String ID(){    return "ManualArchon";}
+	@Override
+	public String ID()
+	{
+		return "ManualArchon";
+	}
+
 	public ManualArchon()
 	{
 		super();

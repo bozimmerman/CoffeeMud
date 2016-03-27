@@ -103,12 +103,18 @@ public class GenBoffWeapon extends StdBoffWeapon
 			return CMLib.coffeeMaker().getGenItemStat(this,code);
 		switch(getCodeNum(code))
 		{
-		case 0: return ""+minRange();
-		case 1: return ""+maxRange();
-		case 2: return ""+weaponDamageType();
-		case 3: return ""+weaponClassification();
-		case 4: return ammunitionType();
-		case 5: return ""+ammunitionCapacity();
+		case 0:
+			return "" + minRange();
+		case 1:
+			return "" + maxRange();
+		case 2:
+			return "" + weaponDamageType();
+		case 3:
+			return "" + weaponClassification();
+		case 4:
+			return ammunitionType();
+		case 5:
+			return "" + ammunitionCapacity();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -122,12 +128,24 @@ public class GenBoffWeapon extends StdBoffWeapon
 		else
 		switch(getCodeNum(code))
 		{
-		case 0: setRanges(CMath.s_parseIntExpression(val),maxRange()); break;
-		case 1: setRanges(minRange(),CMath.s_parseIntExpression(val)); break;
-		case 2: setWeaponDamageType(CMath.s_parseListIntExpression(Weapon.TYPE_DESCS,val)); break;
-		case 3: setWeaponClassification(CMath.s_parseListIntExpression(Weapon.CLASS_DESCS,val)); break;
-		case 4: setAmmunitionType(val); break;
-		case 5: setAmmoCapacity(CMath.s_parseIntExpression(val)); break;
+		case 0:
+			setRanges(CMath.s_parseIntExpression(val), maxRange());
+			break;
+		case 1:
+			setRanges(minRange(), CMath.s_parseIntExpression(val));
+			break;
+		case 2:
+			setWeaponDamageType(CMath.s_parseListIntExpression(Weapon.TYPE_DESCS, val));
+			break;
+		case 3:
+			setWeaponClassification(CMath.s_parseListIntExpression(Weapon.CLASS_DESCS, val));
+			break;
+		case 4:
+			setAmmunitionType(val);
+			break;
+		case 5:
+			setAmmoCapacity(CMath.s_parseIntExpression(val));
+			break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;

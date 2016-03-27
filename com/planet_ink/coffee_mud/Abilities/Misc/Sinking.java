@@ -236,11 +236,31 @@ public class Sinking extends StdAbility
 			final Room nextRoom=room.getRoomInDir(direction);
 			if((nextRoom!=null)&&(canSinkFrom(room,direction)))
 			{
-				room.show(invoker,null,item,CMMsg.MSG_OK_ACTION,L("<O-NAME> sinks @x1.",addStr));
-				nextRoom.moveItemTo(item,ItemPossessor.Expire.Player_Drop);
-				room=nextRoom;
-				nextRoom.show(invoker,null,item,CMMsg.MSG_OK_ACTION,L("<O-NAME> sinks in from @x1.",(reversed()?L("below"):L("above"))));
-				return true;
+				final MOB mob;
+				if((item instanceof Rideable)&&(item instanceof BoardableShip))
+				{
+					mob = CMClass.getFactoryMOB(item.name(),item.phyStats().level(),room);
+					mob.setRiding((Rideable)item);
+				}
+				else
+					mob = invoker;
+				try
+				{
+					room.show(mob,null,item,CMMsg.MSG_OK_ACTION,L("<O-NAME> sinks @x1.",addStr));
+					nextRoom.moveItemTo(item,ItemPossessor.Expire.Player_Drop);
+					room=nextRoom;
+					nextRoom.show(mob,null,item,CMMsg.MSG_OK_ACTION,L("<O-NAME> sinks in from @x1.",(reversed()?L("below"):L("above"))));
+					return true;
+				}
+				finally
+				{
+					if((mob != invoker)
+					&&(mob.isMonster())
+					&&(mob.Name().equals(item.name())))
+						mob.destroy();
+				}
+				
+				
 			}
 			if(reversed())
 				return true;

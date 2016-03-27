@@ -35,7 +35,12 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class BagOfHolding extends SmallSack implements MiscMagic
 {
-	@Override public String ID(){	return "BagOfHolding";}
+	@Override
+	public String ID()
+	{
+		return "BagOfHolding";
+	}
+
 	public BagOfHolding()
 	{
 		super();
@@ -50,8 +55,6 @@ public class BagOfHolding extends SmallSack implements MiscMagic
 		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_BONUS);
 		recoverPhyStats();
 	}
-
-
 
 	@Override
 	public void executeMsg(Environmental host, CMMsg msg)

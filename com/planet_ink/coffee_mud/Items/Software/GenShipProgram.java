@@ -42,10 +42,14 @@ import java.util.*;
 */
 public class GenShipProgram extends GenSoftware
 {
-	@Override public String ID(){	return "GenShipProgram";}
+	@Override
+	public String ID()
+	{
+		return "GenShipProgram";
+	}
 
-	protected String circuitKey="";
-	protected String readableText="";
+	protected String	circuitKey		= "";
+	protected String	readableText	= "";
 
 	public GenShipProgram()
 	{
@@ -61,10 +65,23 @@ public class GenShipProgram extends GenSoftware
 		circuitKey=(key==null)?"":key;
 	}
 
-	@Override public TechType getTechType() { return TechType.SHIP_SOFTWARE; }
+	@Override
+	public TechType getTechType()
+	{
+		return TechType.SHIP_SOFTWARE;
+	}
 
-	@Override public String getParentMenu() { return ""; }
-	@Override public String getInternalName() { return "";}
+	@Override
+	public String getParentMenu()
+	{
+		return "";
+	}
+
+	@Override
+	public String getInternalName()
+	{
+		return "";
+	}
 
 	@Override
 	public boolean isActivationString(String word)

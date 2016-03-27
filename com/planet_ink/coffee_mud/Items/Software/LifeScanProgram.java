@@ -42,7 +42,11 @@ import java.util.*;
 */
 public class LifeScanProgram extends GenSoftware
 {
-	@Override public String ID(){	return "LifeScanProgram";}
+	@Override
+	public String ID()
+	{
+		return "LifeScanProgram";
+	}
 
 	protected final static short AUTO_TICKDOWN=4;
 
@@ -60,8 +64,17 @@ public class LifeScanProgram extends GenSoftware
 		recoverPhyStats();
 	}
 
-	@Override public String getParentMenu() { return ""; }
-	@Override public String getInternalName() { return "";}
+	@Override
+	public String getParentMenu()
+	{
+		return "";
+	}
+
+	@Override
+	public String getInternalName()
+	{
+		return "";
+	}
 
 	public boolean isAlive(MOB M)
 	{

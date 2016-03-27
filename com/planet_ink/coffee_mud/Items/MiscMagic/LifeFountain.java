@@ -16,8 +16,8 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
+import java.util.concurrent.atomic.AtomicLong;
 
 /*
    Copyright 2003-2016 Bo Zimmerman
@@ -37,9 +37,14 @@ import java.util.*;
 
 public class LifeFountain extends StdDrink implements MiscMagic
 {
-	@Override public String ID(){	return "LifeFountain";}
+	@Override
+	public String ID()
+	{
+		return "LifeFountain";
+	}
 
 	private final Hashtable<MOB,Long> lastDrinks=new Hashtable<MOB,Long>();
+	private final AtomicLong lastCheck = new AtomicLong(0);
 
 	public LifeFountain()
 	{
@@ -90,8 +95,31 @@ public class LifeFountain extends StdDrink implements MiscMagic
 			case CMMsg.TYP_DRINK:
 				if((msg.sourceMessage()==null)&&(msg.othersMessage()==null))
 				{
+					synchronized(lastDrinks)
+					{
+						if(lastCheck.get() < (System.currentTimeMillis()-16000))
+						{
+							lastCheck.set(System.currentTimeMillis());
+							List<MOB> delList = null;
+							for(MOB M : lastDrinks.keySet())
+							{
+								Long time = lastDrinks.get(M);
+								if(time.longValue()<(System.currentTimeMillis()-16000))
+								{
+									if(delList == null)
+										delList = new LinkedList<MOB>();
+									delList.add(M);
+								}
+							}
+							if(delList != null)
+							{
+								for(MOB M : delList)
+									lastDrinks.remove(M);
+							}
+						}
+					}
 					Long time=lastDrinks.get(msg.source());
-					if((time==null)||(time.longValue()<(System.currentTimeMillis()-16000)))
+					if(time==null)
 					{
 						Ability A=CMClass.getAbility("Prayer_CureLight");
 						if(A!=null)

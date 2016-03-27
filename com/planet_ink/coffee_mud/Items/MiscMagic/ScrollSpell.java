@@ -35,7 +35,12 @@ import java.util.*;
 */
 public class ScrollSpell extends StdScroll
 {
-	@Override public String ID(){	return "ScrollSpell";}
+	@Override
+	public String ID()
+	{
+		return "ScrollSpell";
+	}
+
 	public ScrollSpell()
 	{
 		super();

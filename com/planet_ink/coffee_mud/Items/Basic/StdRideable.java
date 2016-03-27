@@ -324,10 +324,12 @@ public class StdRideable extends StdContainer implements Rideable
 	public void recoverPhyStats()
 	{
 		super.recoverPhyStats();
-		if(rideBasis==Rideable.RIDEABLE_AIR)
+		if((rideBasis==Rideable.RIDEABLE_AIR)
+		&&((!subjectToWearAndTear())||(usesRemaining()>0)))
 			phyStats().setDisposition(phyStats().disposition()|PhyStats.IS_FLYING);
 		else
-		if(rideBasis==Rideable.RIDEABLE_WATER)
+		if((rideBasis==Rideable.RIDEABLE_WATER)
+		&&((!subjectToWearAndTear())||(usesRemaining()>0)))
 			phyStats().setDisposition(phyStats().disposition()|PhyStats.IS_SWIMMING);
 	}
 

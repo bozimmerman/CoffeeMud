@@ -1132,7 +1132,9 @@ public class GenSailingShip extends StdBoardable
 	{
 		super.executeMsg(myHost,msg);
 
-		if((msg.source().riding()==this)||(msg.othersMessage()==null))
+		if((msg.source().riding()==this)
+		||(msg.othersMessage()==null)
+		)
 			this.sendAreaMessage(msg, true);
 		else
 		{

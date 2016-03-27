@@ -35,8 +35,14 @@ import java.util.*;
 */
 public class GoodyBag extends BagOfEndlessness implements ArchonOnly
 {
-	@Override public String ID(){	return "GoodyBag";}
-	boolean alreadyFilled=false;
+	@Override
+	public String ID()
+	{
+		return "GoodyBag";
+	}
+
+	boolean	alreadyFilled	= false;
+
 	public GoodyBag()
 	{
 		super();

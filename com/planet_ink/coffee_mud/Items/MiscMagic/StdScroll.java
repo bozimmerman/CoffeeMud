@@ -38,7 +38,12 @@ import java.util.*;
 
 public class StdScroll extends StdItem implements MiscMagic, Scroll
 {
-	@Override public String ID(){	return "StdScroll";}
+	@Override
+	public String ID()
+	{
+		return "StdScroll";
+	}
+
 	protected String readableScrollBy=null;
 
 	public StdScroll()
@@ -56,12 +61,17 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 		recoverPhyStats();
 	}
 
-
-
 	@Override
 	public String getSpellList()
-	{ return miscText;}
-	@Override public void setSpellList(String list){miscText=list;}
+	{
+		return miscText;
+	}
+
+	@Override
+	public void setSpellList(String list)
+	{
+		miscText = list;
+	}
 
 	@Override
 	public int value()
@@ -260,18 +270,34 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 		miscText=newText;
 		setSpellList(newText);
 	}
-	@Override public boolean isReadableScrollBy(String name){return (readableScrollBy!=null) && (readableScrollBy.equalsIgnoreCase(name));}
-	@Override public void setReadableScrollBy(String name){readableScrollBy=name;}
-	protected static String[] CODES={"CLASS","LEVEL","ABILITY","TEXT"};
+	
+	@Override
+	public boolean isReadableScrollBy(String name)
+	{
+		return (readableScrollBy != null) && (readableScrollBy.equalsIgnoreCase(name));
+	}
+
+	@Override
+	public void setReadableScrollBy(String name)
+	{
+		readableScrollBy = name;
+	}
+
+	protected static String[]	CODES	= { "CLASS", "LEVEL", "ABILITY", "TEXT" };
+
 	@Override
 	public String getStat(String code)
 	{
 		switch(getCodeNum(code))
 		{
-		case 0: return ID();
-		case 1: return ""+basePhyStats().ability();
-		case 2: return ""+basePhyStats().level();
-		case 3: return text();
+		case 0:
+			return ID();
+		case 1:
+			return "" + basePhyStats().ability();
+		case 2:
+			return "" + basePhyStats().level();
+		case 3:
+			return text();
 		}
 		return "";
 	}
@@ -280,21 +306,37 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 	{
 		switch(getCodeNum(code))
 		{
-		case 0: return;
-		case 1: basePhyStats().setLevel(CMath.s_parseIntExpression(val)); break;
-		case 2: basePhyStats().setAbility(CMath.s_parseIntExpression(val)); break;
-		case 3: setMiscText(val); break;
+		case 0:
+			return;
+		case 1:
+			basePhyStats().setLevel(CMath.s_parseIntExpression(val));
+			break;
+		case 2:
+			basePhyStats().setAbility(CMath.s_parseIntExpression(val));
+			break;
+		case 3:
+			setMiscText(val);
+			break;
 		}
 	}
-	@Override public String[] getStatCodes(){return CODES;}
+
+	@Override
+	public String[] getStatCodes()
+	{
+		return CODES;
+	}
+
 	@Override
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<CODES.length;i++)
+		{
 			if(code.equalsIgnoreCase(CODES[i]))
 				return i;
+		}
 		return -1;
 	}
+
 	@Override
 	public boolean sameAs(Environmental E)
 	{
@@ -302,8 +344,10 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 			return false;
 		final String[] codes=getStatCodes();
 		for(int i=0;i<codes.length;i++)
+		{
 			if(!E.getStat(codes[i]).equals(getStat(codes[i])))
 				return false;
+		}
 		return true;
 	}
 }

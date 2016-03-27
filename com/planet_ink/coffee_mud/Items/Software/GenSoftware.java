@@ -41,7 +41,11 @@ import java.util.*;
 */
 public class GenSoftware extends StdProgram
 {
-	@Override public String ID(){	return "GenSoftware";}
+	@Override
+	public String ID()
+	{
+		return "GenSoftware";
+	}
 
 	protected String readableText="";
 
@@ -53,7 +57,11 @@ public class GenSoftware extends StdProgram
 		setDescription("It appears to be a tricorder minidisk software program.");
 	}
 
-	@Override public boolean isGeneric(){return true;}
+	@Override
+	public boolean isGeneric()
+	{
+		return true;
+	}
 
 	@Override
 	public String text()
@@ -61,8 +69,18 @@ public class GenSoftware extends StdProgram
 		return CMLib.coffeeMaker().getPropertiesStr(this,false);
 	}
 
-	@Override public String readableText(){return readableText;}
-	@Override public void setReadableText(String text){readableText=text;}
+	@Override
+	public String readableText()
+	{
+		return readableText;
+	}
+
+	@Override
+	public void setReadableText(String text)
+	{
+		readableText = text;
+	}
+
 	@Override
 	public void setMiscText(String newText)
 	{
@@ -100,8 +118,10 @@ public class GenSoftware extends StdProgram
 			return false;
 		final String[] theCodes=getStatCodes();
 		for(int i=0;i<theCodes.length;i++)
+		{
 			if(!E.getStat(theCodes[i]).equals(getStat(theCodes[i])))
 				return false;
+		}
 		return true;
 	}
 }
