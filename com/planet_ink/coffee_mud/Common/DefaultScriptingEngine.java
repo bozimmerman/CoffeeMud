@@ -10808,12 +10808,20 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		if((t[1].length()==0)
 		||(t[1].equals("ALL"))
 		||(t[1].equals("P")
-			&&(t.length>2)
+			&&(t.length==3)
 			&&((t[2].equalsIgnoreCase(NAME))
 				||(t[2].equalsIgnoreCase("ALL")))))
 			return t[1];
 		for(int i=1;i<t.length;i++)
 		{
+			if(t[i].equals("P") && (i < t.length-1))
+			{
+				if( t[i+1].equalsIgnoreCase(NAME)
+				|| t[i+1].equalsIgnoreCase("ALL"))
+					return t[i];
+				i++;
+			}
+			else
 			if(((" "+NAME+" ").indexOf(" "+t[i]+" ")>=0)
 			||(E.ID().equalsIgnoreCase(t[i]))
 			||(t[i].equalsIgnoreCase("ALL")))
