@@ -10809,8 +10809,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		||(t[1].equals("ALL"))
 		||(t[1].equals("P")
 			&&(t.length>2)
-			&&((t[2].indexOf(NAME)>=0)
-				||(E.ID().equalsIgnoreCase(t[2]))
+			&&((t[2].equalsIgnoreCase(NAME))
 				||(t[2].equalsIgnoreCase("ALL")))))
 			return t[1];
 		for(int i=1;i<t.length;i++)
