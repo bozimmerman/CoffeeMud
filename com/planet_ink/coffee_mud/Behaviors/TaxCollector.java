@@ -37,17 +37,32 @@ import java.util.*;
 
 public class TaxCollector extends StdBehavior
 {
-	@Override public String ID(){return "TaxCollector";}
-	@Override protected int canImproveCode(){return Behavior.CAN_MOBS;}
-	protected DVector demanded=null;
-	protected DVector paid=null;
-	protected long waitTime=1000*60*2;
-	protected long graceTime=1000*60*60;
-	protected int lastMonthChecked=-1;
-	protected List<LandTitle> taxableProperties=new Vector<LandTitle>();
-	protected Set<String> peopleWhoOwe=new HashSet<String>();
-	protected String treasuryRoomID=null;
-	protected Container treasuryContainer=null;
+	@Override
+	public String ID()
+	{
+		return "TaxCollector";
+	}
+
+	@Override
+	protected int canImproveCode()
+	{
+		return Behavior.CAN_MOBS;
+	}
+
+	protected DVector			demanded			= null;
+	protected DVector			paid				= null;
+	protected long				waitTime			= 1000 * 60 * 2;
+	protected long				graceTime			= 1000 * 60 * 60;
+	protected int				lastMonthChecked	= -1;
+	protected List<LandTitle>	taxableProperties	= new Vector<LandTitle>();
+	protected Set<String>		peopleWhoOwe		= new HashSet<String>();
+	protected String			treasuryRoomID		= null;
+	protected Container			treasuryContainer	= null;
+
+	public final static int		OWE_TOTAL			= 0;
+	public final static int		OWE_CITIZENTAX		= 1;
+	public final static int		OWE_BACKTAXES		= 2;
+	public final static int		OWE_FINES			= 3;
 
 	@Override
 	public String accountForYourself()
@@ -65,16 +80,13 @@ public class TaxCollector extends StdBehavior
 		graceTime=CMParms.getParmInt(newParms,"GRACE",1000*60*60);
 	}
 
-	public final static int OWE_TOTAL=0;
-	public final static int OWE_CITIZENTAX=1;
-	public final static int OWE_BACKTAXES=2;
-	public final static int OWE_FINES=3;
-
 	protected boolean belongsToAnOweingClan(MOB M)
 	{
 		for(final String clanID : peopleWhoOwe)
+		{
 			if(M.getClanRole(clanID)!=null)
 				return true;
+		}
 		return false;
 	}
 
@@ -384,7 +396,6 @@ public class TaxCollector extends StdBehavior
 							V.addElement(""+Math.round(owe[OWE_TOTAL]));
 							V.addElement(mob.name());
 							M.doCommand(V,MUDCmdProcessor.METAFLAG_FORCED);
-
 						}
 					}
 				}
