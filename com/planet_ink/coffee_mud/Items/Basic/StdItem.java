@@ -1077,7 +1077,8 @@ public class StdItem implements Item
 			break;
 		case CMMsg.TYP_DAMAGE:
 		case CMMsg.TYP_WEAPONATTACK:
-			if(this instanceof BoardableShip)
+			if((this instanceof BoardableShip)
+			||((this instanceof Rideable)||(((Rideable)this).rideBasis()==Rideable.RIDEABLE_WATER)))
 				return true;
 			break;
 		case CMMsg.TYP_EXPIRE:
@@ -1414,7 +1415,8 @@ public class StdItem implements Item
 				return true;
 			break;
 		case CMMsg.TYP_ADVANCE:
-			if(this instanceof BoardableShip)
+			if((this instanceof BoardableShip)
+			||((this instanceof Rideable)||(((Rideable)this).rideBasis()==Rideable.RIDEABLE_WATER)))
 				return true;
 			break;
 		case CMMsg.TYP_ACTIVATE:

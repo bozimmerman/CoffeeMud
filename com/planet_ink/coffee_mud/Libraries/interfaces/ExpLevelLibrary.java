@@ -64,6 +64,14 @@ public interface ExpLevelLibrary extends CMLibrary
 	public void unLevel(MOB mob);
 
 	/**
+	 * If the given item is a boardable, this method will post the given
+	 * amount of experience to all abord.
+	 * @param possibleShip the ship to give experience to
+	 * @return true if experience is posted, false otherwise
+	 */
+	public boolean postExperienceToAllAboard(Physical possibleShip, int amount);
+	
+	/**
 	 * This method fills in combat and rejuvenation related stats for the given
 	 * mob of their current base class at the given level. This method should
 	 * create a mob for the caller if mob==null.

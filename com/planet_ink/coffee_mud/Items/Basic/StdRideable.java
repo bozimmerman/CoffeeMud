@@ -324,13 +324,21 @@ public class StdRideable extends StdContainer implements Rideable
 	public void recoverPhyStats()
 	{
 		super.recoverPhyStats();
-		if((rideBasis==Rideable.RIDEABLE_AIR)
-		&&((!subjectToWearAndTear())||(usesRemaining()>0)))
-			phyStats().setDisposition(phyStats().disposition()|PhyStats.IS_FLYING);
+		if(rideBasis==Rideable.RIDEABLE_AIR)
+		{
+			if((!subjectToWearAndTear())||(usesRemaining()>0))
+				phyStats().setDisposition(phyStats().disposition()|PhyStats.IS_FLYING);
+			else
+				phyStats().setDisposition(phyStats().disposition()|PhyStats.IS_FALLING);
+		}
 		else
-		if((rideBasis==Rideable.RIDEABLE_WATER)
-		&&((!subjectToWearAndTear())||(usesRemaining()>0)))
-			phyStats().setDisposition(phyStats().disposition()|PhyStats.IS_SWIMMING);
+		if(rideBasis==Rideable.RIDEABLE_WATER)
+		{
+			if((!subjectToWearAndTear())||(usesRemaining()>0))
+				phyStats().setDisposition(phyStats().disposition()|PhyStats.IS_SWIMMING);
+			else
+				phyStats().setDisposition(phyStats().disposition()|PhyStats.IS_FALLING);
+		}
 	}
 
 	@Override
@@ -747,6 +755,111 @@ public class StdRideable extends StdContainer implements Rideable
 					msg.source().setRiding(this);
 					if(msg.source().location()!=null)
 						msg.source().location().recoverRoomStats();
+				}
+			}
+			break;
+		case CMMsg.TYP_WEAPONATTACK:
+			if(msg.target()==this)
+			{
+				Weapon weapon=null;
+				if((msg.tool() instanceof Weapon))
+					weapon=(Weapon)msg.tool();
+				if((weapon!=null)&&(msg.source().riding()!=null))
+				{
+					final boolean isHit=msg.value()>0;
+					if(isHit && CMLib.combat().isAShipSiegeWeapon(weapon) 
+					&& (((AmmunitionWeapon)weapon).ammunitionCapacity() > 1))
+					{
+						int shotsRemaining = ((AmmunitionWeapon)weapon).ammunitionRemaining() + 1;
+						((AmmunitionWeapon)weapon).setAmmoRemaining(0);
+						ArrayList<Pair<MOB,Room>> targets = new ArrayList<Pair<MOB,Room>>(5);
+						final Room R=CMLib.map().roomLocation(this);
+						if((R!=null)&&((R.domainType()&Room.INDOORS)==0))
+						{
+							for(Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
+							{
+								final MOB M=m.nextElement();
+								if((M!=null)&&(M.riding()==this))
+									targets.add(new Pair<MOB,Room>(M,R));
+							}
+						}
+						final int chanceToHit = targets.size() * 20;
+						final Room oldRoom=msg.source().location();
+						try
+						{
+							while(shotsRemaining-- > 0)
+							{
+								final Pair<MOB,Room> randomPair = (targets.size()>0)? targets.get(CMLib.dice().roll(1,targets.size(),-1)) : null;
+								if((CMLib.dice().rollPercentage() < chanceToHit)&&(randomPair != null))
+								{
+									msg.source().setLocation(randomPair.second);
+									double pctLoss = CMath.div(msg.value(), phyStats().level());
+									int pointsLost = (int)Math.round(pctLoss * msg.source().maxState().getHitPoints());
+									CMLib.combat().postWeaponDamage(msg.source(), randomPair.first, weapon, pointsLost);
+								}
+								else
+								if(randomPair != null)
+								{
+									msg.source().setLocation(randomPair.second);
+									CMLib.combat().postWeaponAttackResult(msg.source(), randomPair.first, weapon, false);
+								}
+								else
+								if(R!=null)
+								{
+									final CMMsg missMsg=CMClass.getMsg(msg.source(), msg.target(), weapon, CMMsg.MSG_OK_ACTION, weapon.missString());
+									if(R.okMessage(msg.source(), missMsg))
+										R.send(msg.source(), missMsg);
+								}
+							}
+						}
+						finally
+						{
+							msg.source().setLocation(oldRoom);
+						}
+					}
+					else
+						CMLib.combat().postWeaponAttackResult(msg.source(), msg.source().riding(), this, weapon, isHit);
+				}
+			}
+			break;
+		case CMMsg.TYP_DAMAGE:
+			if((msg.target()==this) && (msg.value() > 0))
+			{
+				int level = phyStats().level();
+				if(level < 10)
+					level = 10;
+				double pctLoss = CMath.div(msg.value(), level) * 10.0; // siege weapons against rideables is harsh
+				int pointsLost = (int)Math.round(pctLoss * level);
+				if(pointsLost > 0)
+				{
+					int weaponType = (msg.tool() instanceof Weapon) ? ((Weapon)msg.tool()).weaponDamageType() : Weapon.TYPE_BASHING;
+					final String hitWord = CMLib.combat().standardHitWord(weaponType, pctLoss);
+					final String msgStr = (msg.targetMessage() == null) ? L("<O-NAME> fired from <S-NAME> hits and @x1 the ship.",hitWord) : msg.targetMessage();
+					final CMMsg deckHitMsg=CMClass.getMsg(msg.source(), this, msg.tool(),CMMsg.MSG_OK_ACTION, msgStr);
+					final Room targetRoom=CMLib.map().roomLocation(this);
+					if(targetRoom.okMessage(msg.source(), deckHitMsg))
+						targetRoom.send(msg.source(), deckHitMsg);
+					final CMMsg underdeckHitMsg=CMClass.getMsg(msg.source(), this, msg.tool(),CMMsg.MSG_OK_ACTION, L("Something hits and @x1 the ship.",hitWord));
+					if(targetRoom.okMessage(msg.source(), underdeckHitMsg))
+						targetRoom.send(msg.source(), underdeckHitMsg);
+					if(pointsLost >= this.usesRemaining())
+					{
+						this.setUsesRemaining(0);
+						this.recoverPhyStats(); // takes away the swimmability!
+						final Room shipR=CMLib.map().roomLocation(this);
+						if(shipR!=null)
+						{
+							CMLib.tracking().makeSink(this, shipR, 0);
+							final String sinkString = L("<T-NAME> start(s) sinking!");
+							shipR.show(msg.source(), this, CMMsg.MSG_OK_ACTION, sinkString);
+						}
+						if(!CMLib.leveler().postExperienceToAllAboard(msg.source().riding(), 500))
+							CMLib.leveler().postExperience(msg.source(), null, null, 500, false);
+					}
+					else
+					{
+						this.setUsesRemaining(this.usesRemaining() - pointsLost);
+					}
 				}
 			}
 			break;

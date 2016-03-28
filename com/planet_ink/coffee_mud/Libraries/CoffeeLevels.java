@@ -752,5 +752,32 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 				loseExperience(mob,-msg.value());
 		}
 	}
+	
+	@Override
+	public boolean postExperienceToAllAboard(Physical possibleShip, int amount)
+	{
+		boolean posted = false;
+		if(possibleShip instanceof BoardableShip)
+		{
+			final Area A=((BoardableShip)possibleShip).getShipArea();
+			if(A!=null)
+			{
+				posted = true;
+				for(final Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
+				{
+					final Room R=r.nextElement();
+					if(R!=null)
+					{
+						for(Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
+						{
+							final MOB M=m.nextElement();
+							posted = CMLib.leveler().postExperience(M, null, null, amount, false) && posted;
+						}
+					}
+				}
+			}
+		}
+		return posted;
+	}
 
 }

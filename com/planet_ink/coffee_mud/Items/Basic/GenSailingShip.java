@@ -173,6 +173,8 @@ public class GenSailingShip extends StdBoardable
 		}
 	}
 	
+	//TODO: fix exits so you can always get into the ocean from the deck
+	
 	protected void announceActionToDeckOrUnderdeck(final MOB mob, final CMMsg msg, int INDOORS)
 	{
 		final Area A=this.getShipArea();
@@ -338,7 +340,7 @@ public class GenSailingShip extends StdBoardable
 							msg.source().tell(L("You don't see any seige weapon called '@x1' here.",leadStr));
 							return false;
 						}
-						if(!isAShipSiegeWeapon(I))
+						if(!CMLib.combat().isAShipSiegeWeapon(I))
 						{
 							msg.source().tell(L("@x1 is not a useable siege weapon.",leadStr));
 							return false;
@@ -1032,12 +1034,6 @@ public class GenSailingShip extends StdBoardable
 		{
 			if(this.amInTacticalMode())
 			{
-				Rideable target = this.targetedShip;
-				if(target != null)
-				{
-					StringBuilder str=new StringBuilder("");
-					//TODO: condition
-				}
 				final List<Weapon> weapons = new LinkedList<Weapon>();
 				for(Enumeration<Room> r=this.getShipArea().getProperMap();r.hasMoreElements();)
 				{
@@ -1108,7 +1104,7 @@ public class GenSailingShip extends StdBoardable
 
 	protected final boolean isAShipSiegeWeaponReadyToFire(Item I)
 	{
-		if(isAShipSiegeWeapon(I))
+		if(CMLib.combat().isAShipSiegeWeapon(I))
 		{
 			if(((Rideable)I).riderCapacity() > 0)
 				return ((Rideable)I).numRiders() >= ((Rideable)I).riderCapacity();
@@ -1117,30 +1113,28 @@ public class GenSailingShip extends StdBoardable
 		return false;
 	}
 	
-	protected final boolean isAShipSiegeWeapon(Item I)
-	{
-		if((I instanceof AmmunitionWeapon)
-		&&(I instanceof Rideable)
-		&&((AmmunitionWeapon)I).isFreeStanding()
-		&&(((AmmunitionWeapon)I).requiresAmmunition()))
-			return true;
-		return false;
-	}
-	
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
 
-		if((msg.source().riding()==this)
-		||(msg.othersMessage()==null)
-		)
-			this.sendAreaMessage(msg, true);
-		else
+		switch(msg.sourceMinor())
 		{
-			final CMMsg msg2=(CMMsg)msg.copyOf();
-			msg2.setOthersMessage(L("^HOff the deck you see: ^N")+msg.othersMessage());
-			sendAreaMessage(msg2, true);
+		case CMMsg.TYP_HUH:
+		case CMMsg.TYP_COMMANDFAIL:
+		case CMMsg.TYP_COMMAND:
+			break;
+		default:
+			if((msg.source().riding()==this)
+			||(msg.othersMessage()==null)
+			)
+				this.sendAreaMessage(msg, true);
+			else
+			{
+				final CMMsg msg2=(CMMsg)msg.copyOf();
+				msg2.setOthersMessage(L("^HOff the deck you see: ^N")+msg.othersMessage());
+				sendAreaMessage(msg2, true);
+			}
 		}
 		
 		if((msg.target() instanceof Room)
@@ -1152,19 +1146,54 @@ public class GenSailingShip extends StdBoardable
 			case CMMsg.TYP_EXAMINE:
 				if((CMLib.map().areaLocation(msg.source())==area))
 				{
+					StringBuilder visualCondition = new StringBuilder("");
 					if(this.anchorDown)
-					{
-						msg.addTrailerMsg(CMClass.getMsg(msg.source(), null, null, 
-								CMMsg.MSG_OK_VISUAL, L("\n\r^HThe anchor on @x1 is lowered, holding her in place.^.^?",name(msg.source())), 
-								CMMsg.NO_EFFECT, null, CMMsg.NO_EFFECT, null));
-					}
+						visualCondition.append(L("\n\r^HThe anchor on @x1 is lowered, holding her in place.^.^?",name(msg.source())));
 					else
 					if((this.courseDirection >= 0)&&(this.courseDirections.size()>0))
+						visualCondition.append(L("\n\r^H@x1 is under full sail, traveling @x2^.^?",name(msg.source()), CMLib.directions().getDirectionName(courseDirection)));
+					if(this.subjectToWearAndTear() && (usesRemaining() <= 100))
 					{
-						msg.addTrailerMsg(CMClass.getMsg(msg.source(), null, null, 
-								CMMsg.MSG_OK_VISUAL, L("\n\r^H@x1 is under full sail, traveling @x2^.^?",name(msg.source()), CMLib.directions().getDirectionName(courseDirection)), 
-								CMMsg.NO_EFFECT, null, CMMsg.NO_EFFECT, null));
+						final double pct=(CMath.div(usesRemaining(),100.0));
+
+						if(pct<=0.0)
+							visualCondition.append(L("\n\r^r@x1^r is SINKING!^N",name(msg.source())));
+						else
+						if(pct<.10)
+							visualCondition.append(L("\n\r^r@x1^r is near destruction!^N",name(msg.source())));
+						else
+						if(pct<.20)
+							visualCondition.append(L("\n\r^r@x1^r is massively splintered and damaged.^N",name(msg.source())));
+						else
+						if(pct<.30)
+							visualCondition.append(L("\n\r^r@x1^r is extremely splintered and damaged.^N",name(msg.source())));
+						else
+						if(pct<.40)
+							visualCondition.append(L("\n\r^y@x1^y is very splintered and damaged.^N",name(msg.source())));
+						else
+						if(pct<.50)
+							visualCondition.append(L("\n\r^y@x1^y is splintered and damaged.^N",name(msg.source())));
+						else
+						if(pct<.60)
+							visualCondition.append(L("\n\r^p@x1^p is splintered and slightly damaged.^N",name(msg.source())));
+						else
+						if(pct<.70)
+							visualCondition.append(L("\n\r^p@x1^p is showing large splinters.^N",name(msg.source())));
+						else
+						if(pct<.80)
+							visualCondition.append(L("\n\r^g@x1^g is showing some splinters.^N",name(msg.source())));
+						else
+						if(pct<.90)
+							visualCondition.append(L("\n\r^g@x1^g is showing small splinters.^N",name(msg.source())));
+						else
+						if(pct<.99)
+							visualCondition.append(L("\n\r^g@x1^g is no longer in perfect condition.^N",name(msg.source())));
+						else
+							visualCondition.append(L("\n\r^c@x1^c is in perfect condition.^N",name(msg.source())));
 					}
+					msg.addTrailerMsg(CMClass.getMsg(msg.source(), null, null, 
+							CMMsg.MSG_OK_VISUAL, visualCondition.toString(), 
+							CMMsg.NO_EFFECT, null, CMMsg.NO_EFFECT, null));
 				}
 				break;
 			case CMMsg.TYP_LEAVE:
@@ -1196,7 +1225,7 @@ public class GenSailingShip extends StdBoardable
 					if((weapon!=null)&&(msg.source().riding()!=null))
 					{
 						final boolean isHit=msg.value()>0;
-						if(isHit && this.isAShipSiegeWeapon(weapon) 
+						if(isHit && CMLib.combat().isAShipSiegeWeapon(weapon) 
 						&& (((AmmunitionWeapon)weapon).ammunitionCapacity() > 1))
 						{
 							int shotsRemaining = ((AmmunitionWeapon)weapon).ammunitionRemaining() + 1;
@@ -1264,7 +1293,7 @@ public class GenSailingShip extends StdBoardable
 					{
 						int weaponType = (msg.tool() instanceof Weapon) ? ((Weapon)msg.tool()).weaponDamageType() : Weapon.TYPE_BASHING;
 						final String hitWord = CMLib.combat().standardHitWord(weaponType, pctLoss);
-						final String msgStr = (msg.targetMessage() == null) ? L("<O-NAME> fired from <S-NAME> hits and @x1 the ship.",hitWord) : msg.targetMessage();
+						final String msgStr = (msg.targetMessage() == null) ? L("<O-NAME> fired from <S-NAME> hits and @x1 @x2.",hitWord,name()) : msg.targetMessage();
 						final CMMsg deckHitMsg=CMClass.getMsg(msg.source(), this, msg.tool(),CMMsg.MSG_OK_ACTION, msgStr);
 						this.announceActionToDeckOrUnderdeck(msg.source(), deckHitMsg, 0);
 						final CMMsg underdeckHitMsg=CMClass.getMsg(msg.source(), this, msg.tool(),CMMsg.MSG_OK_ACTION, L("Something hits and @x1 the ship.",hitWord));
@@ -1282,26 +1311,7 @@ public class GenSailingShip extends StdBoardable
 								this.announceActionToUnderDeck(msg.source(), sinkString);
 							}
 							
-							if(msg.source().riding() instanceof BoardableShip)
-							{
-								final Area A=this.getShipArea();
-								if(A!=null)
-								{
-									for(final Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
-									{
-										final Room R=r.nextElement();
-										if(R!=null)
-										{
-											for(Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
-											{
-												final MOB M=m.nextElement();
-												CMLib.leveler().postExperience(M, null, null, 500, false);
-											}
-										}
-									}
-								}
-							}
-							else
+							if(!CMLib.leveler().postExperienceToAllAboard(msg.source().riding(), 500))
 								CMLib.leveler().postExperience(msg.source(), null, null, 500, false);
 							this.clearTacticalMode();
 						}
@@ -1321,7 +1331,7 @@ public class GenSailingShip extends StdBoardable
 			{
 			case CMMsg.TYP_RELOAD:
 				if((msg.tool() instanceof Ammunition)
-				&&(this.isAShipSiegeWeapon((Item)msg.target())))
+				&&(CMLib.combat().isAShipSiegeWeapon((Item)msg.target())))
 				{
 					final MOB tellM=msg.source();
 					final Item I= (Item)msg.target();

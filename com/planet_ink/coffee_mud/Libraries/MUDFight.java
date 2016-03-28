@@ -507,7 +507,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		final String attackerOwnerName = (attacker instanceof PrivateProperty) ? ((PrivateProperty)attacker).getOwnerName() : "";  
 		final String defenderOwnerName = (defender instanceof PrivateProperty) ? ((PrivateProperty)defender).getOwnerName() : "";  
 		// is this how we determine npc ships?
-		if((defenderOwnerName == null)||(defenderOwnerName.length()==0))
+		if(((defenderOwnerName == null)||(defenderOwnerName.length()==0))&&(defender instanceof PrivateProperty))
 			return true;
 		if(((attackerOwnerName == null)||(attackerOwnerName.length()==0)) 
 		&& (mob.isMonster()))
@@ -544,12 +544,24 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			{
 				Rider R=defender.fetchRider(i);
 				if((R instanceof MOB)
-				&&(mob.mayIFight((MOB)R)))
+				&&(!mob.mayIFight((MOB)R)))
 				{
-					return true;
+					return false;
 				}
 			}
+			return true;
 		}
+		return false;
+	}
+	
+	@Override
+	public final boolean isAShipSiegeWeapon(Item I)
+	{
+		if((I instanceof AmmunitionWeapon)
+		&&(I instanceof Rideable)
+		&&((AmmunitionWeapon)I).isFreeStanding()
+		&&(((AmmunitionWeapon)I).requiresAmmunition()))
+			return true;
 		return false;
 	}
 	

@@ -704,4 +704,12 @@ public interface CombatLibrary extends CMLibrary
 	 * @return the mob to blame
 	 */
 	public MOB getBreatheKiller(MOB victim);
+	
+	/**
+	 * Returns whether the given item is classified as a ammunition
+	 * firing siege weapon, as used on a sailing ship.
+	 * @param I the item to check
+	 * @return true if its a siege weapon, false otherwise
+	 */
+	public boolean isAShipSiegeWeapon(Item I);
 }
