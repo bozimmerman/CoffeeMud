@@ -49,7 +49,7 @@ public class StdRideable extends StdContainer implements Rideable
 	{
 		super();
 		setName("a boat");
-		setDisplayText("a boat is docked here.");
+		setDisplayText("a boat is here.");
 		setDescription("Looks like a boat");
 		basePhyStats().setWeight(2000);
 		recoverPhyStats();
@@ -693,10 +693,26 @@ public class StdRideable extends StdContainer implements Rideable
 		{
 		case CMMsg.TYP_LOOK:
 		case CMMsg.TYP_EXAMINE:
-			if((msg.target()==this)
-			&&(numRiders()>0)
-			&&(CMLib.flags().canBeSeenBy(this,msg.source())))
-				msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_OK_VISUAL,displayText(),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+			if(msg.target()==this)
+			{
+				if((numRiders()>0)
+				&&(CMLib.flags().canBeSeenBy(this,msg.source())))
+					msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_OK_VISUAL,displayText(),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+				if((this.subjectToWearAndTear())
+				&& (this.rideBasis() == Rideable.RIDEABLE_WATER)
+				&& (CMath.bset(material(), RawMaterial.MATERIAL_WOODEN)))
+				{
+					StringBuilder visualCondition = new StringBuilder("");
+					if(this.subjectToWearAndTear() && (usesRemaining() <= 100))
+					{
+						final double pct=(CMath.div(usesRemaining(),100.0));
+						GenSailingShip.appendCondition(visualCondition,pct,CMStrings.capitalizeFirstLetter(name(msg.source())));
+					}
+					msg.addTrailerMsg(CMClass.getMsg(msg.source(), null, null, 
+							CMMsg.MSG_OK_VISUAL, visualCondition.toString(), 
+							CMMsg.NO_EFFECT, null, CMMsg.NO_EFFECT, null));
+				}
+			}
 			break;
 		case CMMsg.TYP_DISMOUNT:
 			if(msg.tool() instanceof Rider)

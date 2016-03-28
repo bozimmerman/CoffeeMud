@@ -66,6 +66,7 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 		myUses=100;
 		this.doorName="gangplank";
 		basePhyStats().setWeight(10000);
+		super.setCapacity(0);
 		setUsesRemaining(100);
 		recoverPhyStats();
 		CMLib.flags().setGettable(this, false);

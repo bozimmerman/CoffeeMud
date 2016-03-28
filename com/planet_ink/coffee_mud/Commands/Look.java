@@ -37,8 +37,13 @@ public class Look extends StdCommand
 {
 	public Look(){}
 
-	private final String[] access=I(new String[]{"LOOK","LOO","LO","L"});
-	@Override public String[] getAccessWords(){return access;}
+	private final String[]	access	= I(new String[] { "LOOK", "LOO", "LO", "L" });
+
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
@@ -161,11 +166,13 @@ public class Look extends StdCommand
 		else
 		{
 			if((commands!=null)&&(commands.size()>0))
+			{
 				if(commands.get(0).toUpperCase().startsWith("E"))
 				{
 					CMLib.commands().doCommandFail(mob,origCmds,L("Examine what?"));
 					return false;
 				}
+			}
 
 			final CMMsg msg=CMClass.getMsg(mob,R,null,CMMsg.MSG_LOOK,(quiet?null:textMsg+"around."),CMMsg.MSG_LOOK,(quiet?null:textMsg+"at you."),CMMsg.MSG_LOOK,(quiet?null:textMsg+"around."));
 			if((mob.isAttributeSet(MOB.Attrib.AUTOEXITS))&&(CMProps.getIntVar(CMProps.Int.EXVIEW)!=1)&&(CMLib.flags().canBeSeenBy(R,mob)))
@@ -181,5 +188,9 @@ public class Look extends StdCommand
 		return false;
 	}
 
-	@Override public boolean canBeOrdered(){return true;}
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 }

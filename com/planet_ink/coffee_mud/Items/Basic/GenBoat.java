@@ -45,7 +45,7 @@ public class GenBoat extends GenRideable
 	{
 		super();
 		setName("a boat");
-		setDisplayText("a boat is docked here.");
+		setDisplayText("a boat is here.");
 		setDescription("Looks like a boat");
 		rideBasis=Rideable.RIDEABLE_WATER;
 		material=RawMaterial.RESOURCE_OAK;

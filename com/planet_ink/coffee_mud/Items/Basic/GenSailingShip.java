@@ -709,11 +709,13 @@ public class GenSailingShip extends StdBoardable
 			return false;
 		}
 		else
-		if((msg.targetMinor()==CMMsg.TYP_COMMANDFAIL)
+		if((msg.sourceMinor()==CMMsg.TYP_COMMANDFAIL)
 		&&(msg.targetMessage()!=null)
 		&&(msg.targetMessage().length()>0))
 		{
-			if(Character.toUpperCase(msg.targetMessage().charAt(0))=='A')
+			switch(Character.toUpperCase(msg.targetMessage().charAt(0)))
+			{
+			case 'A':
 			{
 				List<String> parsedFail = CMParms.parse(msg.targetMessage());
 				String cmd=parsedFail.get(0).toUpperCase();
@@ -733,8 +735,36 @@ public class GenSailingShip extends StdBoardable
 					if(result == Boolean.TRUE)
 					{
 						msg.source().tell(getTargetedShipInfo());
+						return false;
 					}
 				}
+				break;
+			}
+			case 'E':
+			case 'L':
+			{
+				List<String> parsedFail = CMParms.parse(msg.targetMessage());
+				String cmd=parsedFail.get(0).toUpperCase();
+				if(("LOOK".startsWith(cmd)||"LLOOK".startsWith(cmd)||"EXAMINE".startsWith(cmd))
+				&&(owner() instanceof Room))
+				{
+					final int msgType = "EXAMINE".startsWith(cmd) ? CMMsg.MSG_EXAMINE : CMMsg.MSG_LOOK;
+					final Room R = (Room)owner();
+					String rest = CMParms.combine(parsedFail,1);
+					final Item I = R.findItem(null, rest);
+					if((I instanceof GenSailingShip)
+					||((I instanceof Rideable)&&(((Rideable)I).rideBasis()==Rideable.RIDEABLE_WATER)))
+					{
+						final CMMsg lookMsg=CMClass.getMsg(msg.source(),I,null,msgType,null,msgType,null,msgType,null);
+						if(R.okMessage(msg.source(),lookMsg))
+						{
+							R.send(msg.source(),lookMsg);
+							return false;
+						}
+					}
+				}
+				break;
+			}
 			}
 		}
 		else
@@ -1113,6 +1143,49 @@ public class GenSailingShip extends StdBoardable
 		return false;
 	}
 	
+	protected static String staticL(final String str, final String... xs)
+	{
+		return CMLib.lang().fullSessionTranslation(str, xs);
+	}
+
+	public static void appendCondition(StringBuilder visualCondition, double pct, String name)
+	{
+		if(pct<=0.0)
+			visualCondition.append(staticL("\n\r^r@x1^r is SINKING!^N",name));
+		else
+		if(pct<.10)
+			visualCondition.append(staticL("\n\r^r@x1^r is near destruction!^N",name));
+		else
+		if(pct<.20)
+			visualCondition.append(staticL("\n\r^r@x1^r is massively splintered and damaged.^N",name));
+		else
+		if(pct<.30)
+			visualCondition.append(staticL("\n\r^r@x1^r is extremely splintered and damaged.^N",name));
+		else
+		if(pct<.40)
+			visualCondition.append(staticL("\n\r^y@x1^y is very splintered and damaged.^N",name));
+		else
+		if(pct<.50)
+			visualCondition.append(staticL("\n\r^y@x1^y is splintered and damaged.^N",name));
+		else
+		if(pct<.60)
+			visualCondition.append(staticL("\n\r^p@x1^p is splintered and slightly damaged.^N",name));
+		else
+		if(pct<.70)
+			visualCondition.append(staticL("\n\r^p@x1^p is showing large splinters.^N",name));
+		else
+		if(pct<.80)
+			visualCondition.append(staticL("\n\r^g@x1^g is showing some splinters.^N",name));
+		else
+		if(pct<.90)
+			visualCondition.append(staticL("\n\r^g@x1^g is showing small splinters.^N",name));
+		else
+		if(pct<.99)
+			visualCondition.append(staticL("\n\r^g@x1^g is no longer in perfect condition.^N",name));
+		else
+			visualCondition.append(staticL("\n\r^c@x1^c is in perfect condition.^N",name));
+	}
+	
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -1137,6 +1210,32 @@ public class GenSailingShip extends StdBoardable
 			}
 		}
 		
+		if(msg.target() == this)
+		{
+			switch(msg.targetMinor())
+			{
+			case CMMsg.TYP_LOOK:
+			case CMMsg.TYP_EXAMINE:
+				StringBuilder visualCondition = new StringBuilder("");
+				if(this.anchorDown)
+					visualCondition.append(L("^HThe anchor on @x1 is lowered, holding her in place.^.^?",name(msg.source())));
+				else
+				if((this.courseDirection >= 0)&&(this.courseDirections.size()>0))
+					visualCondition.append(L("^H@x1 is under full sail, traveling @x2^.^?",CMStrings.capitalizeFirstLetter(name(msg.source())), CMLib.directions().getDirectionName(courseDirection)));
+				if(this.subjectToWearAndTear() && (usesRemaining() <= 100))
+				{
+					final double pct=(CMath.div(usesRemaining(),100.0));
+					appendCondition(visualCondition,pct,name(msg.source()));
+				}
+				msg.addTrailerMsg(CMClass.getMsg(msg.source(), null, null, 
+						CMMsg.MSG_OK_VISUAL, visualCondition.toString(), 
+						CMMsg.NO_EFFECT, null, CMMsg.NO_EFFECT, null));
+				break;
+			default:
+				break;
+			}
+		}
+		
 		if((msg.target() instanceof Room)
 		&&(msg.target() == owner()))
 		{
@@ -1155,41 +1254,7 @@ public class GenSailingShip extends StdBoardable
 					if(this.subjectToWearAndTear() && (usesRemaining() <= 100))
 					{
 						final double pct=(CMath.div(usesRemaining(),100.0));
-
-						if(pct<=0.0)
-							visualCondition.append(L("\n\r^r@x1^r is SINKING!^N",name(msg.source())));
-						else
-						if(pct<.10)
-							visualCondition.append(L("\n\r^r@x1^r is near destruction!^N",name(msg.source())));
-						else
-						if(pct<.20)
-							visualCondition.append(L("\n\r^r@x1^r is massively splintered and damaged.^N",name(msg.source())));
-						else
-						if(pct<.30)
-							visualCondition.append(L("\n\r^r@x1^r is extremely splintered and damaged.^N",name(msg.source())));
-						else
-						if(pct<.40)
-							visualCondition.append(L("\n\r^y@x1^y is very splintered and damaged.^N",name(msg.source())));
-						else
-						if(pct<.50)
-							visualCondition.append(L("\n\r^y@x1^y is splintered and damaged.^N",name(msg.source())));
-						else
-						if(pct<.60)
-							visualCondition.append(L("\n\r^p@x1^p is splintered and slightly damaged.^N",name(msg.source())));
-						else
-						if(pct<.70)
-							visualCondition.append(L("\n\r^p@x1^p is showing large splinters.^N",name(msg.source())));
-						else
-						if(pct<.80)
-							visualCondition.append(L("\n\r^g@x1^g is showing some splinters.^N",name(msg.source())));
-						else
-						if(pct<.90)
-							visualCondition.append(L("\n\r^g@x1^g is showing small splinters.^N",name(msg.source())));
-						else
-						if(pct<.99)
-							visualCondition.append(L("\n\r^g@x1^g is no longer in perfect condition.^N",name(msg.source())));
-						else
-							visualCondition.append(L("\n\r^c@x1^c is in perfect condition.^N",name(msg.source())));
+						appendCondition(visualCondition,pct,name(msg.source()));
 					}
 					msg.addTrailerMsg(CMClass.getMsg(msg.source(), null, null, 
 							CMMsg.MSG_OK_VISUAL, visualCondition.toString(), 
