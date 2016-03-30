@@ -46,6 +46,18 @@ public class GenSailingShip extends StdBoardable
 	{
 		return "GenSailingShip";
 	}
+	
+	//TODO:DO!
+	/**
+do steer and sail for combat
+getting wierd spam when i look at another ship :(
+unload impl for siege weapons
+Push ammunition needed into siege weapon desc, and change names of siegecraft ammo items
+ -- multishot bolts, multishot stones ok
+course north east does not say anything about the turn
+ability to jump overboard
+sunks ships aren't expiring.
+	 */
 
 	protected volatile int			courseDirection	= -1;
 	protected volatile boolean		anchorDown		= true;
