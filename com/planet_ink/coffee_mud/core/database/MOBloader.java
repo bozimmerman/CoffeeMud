@@ -702,7 +702,7 @@ public class MOBloader
 		return DV;
 	}
 
-	public List<MOB> DBScanFollowers(MOB mob)
+	public List<MOB> DBScanFollowers(String mobName)
 	{
 		DBConnection D=null;
 		final Vector<MOB> V=new Vector<MOB>();
@@ -710,7 +710,7 @@ public class MOBloader
 		try
 		{
 			D=DB.DBFetch();
-			final ResultSet R=D.query("SELECT * FROM CMCHFO WHERE CMUSERID='"+mob.Name()+"'");
+			final ResultSet R=D.query("SELECT * FROM CMCHFO WHERE CMUSERID='"+mobName+"'");
 			while(R.next())
 			{
 				final String MOBID=DBConnections.getRes(R,"CMFOID");
@@ -747,7 +747,7 @@ public class MOBloader
 		Room location=mob.location();
 		if(location==null)
 			location=mob.getStartRoom();
-		final List<MOB> V=DBScanFollowers(mob);
+		final List<MOB> V=DBScanFollowers(mob.Name());
 		for(int v=0;v<V.size();v++)
 		{
 			final MOB newMOB=V.get(v);
@@ -1376,62 +1376,10 @@ public class MOBloader
 		DB.update("UPDATE CMPDAT SET CMPLID='"+newName+"' WHERE CMPLID='"+oldName+"'");
 	}
 
-	public void DBDelete(MOB mob, boolean deleteAssets)
+	public void DBDelete(String mobName)
 	{
-		if(mob.Name().length()==0)
-			return;
-		final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.PLAYERPURGES);
-		for(int i=0;i<channels.size();i++)
-			CMLib.commands().postChannel(channels.get(i),mob.clans(),CMLib.lang().fullSessionTranslation("@x1 has just been deleted.",mob.Name()),true);
-		CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_PURGES);
-		DB.update("DELETE FROM CMCHAR WHERE CMUSERID='"+mob.Name()+"'");
-		DB.update("DELETE FROM CMCHCL WHERE CMUSERID='"+mob.Name()+"'");
-		mob.delAllItems(false);
-		for(int i=0;i<mob.numItems();i++)
-		{
-			final Item I=mob.getItem(i);
-			if(I!=null)
-				I.setContainer(null);
-		}
-		mob.delAllItems(false);
-		DBUpdateItems(mob);
-		while(mob.numFollowers()>0)
-		{
-			final MOB follower=mob.fetchFollower(0);
-			if(follower!=null)
-				follower.setFollowing(null);
-		}
-		if(deleteAssets)
-		{
-			DBUpdateFollowers(mob);
-		}
-		mob.delAllAbilities();
-		DBUpdateAbilities(mob);
-		if(deleteAssets)
-		{
-			CMLib.database().DBDeletePlayerJournals(mob.Name());
-			CMLib.database().DBDeletePlayerData(mob.Name());
-		}
-		final PlayerStats pstats = mob.playerStats();
-		if(pstats!=null)
-		{
-			final PlayerAccount account = pstats.getAccount();
-			if(account != null)
-			{
-				account.delPlayer(mob);
-				DBUpdateAccount(account);
-				account.setLastUpdated(System.currentTimeMillis());
-			}
-		}
-		if(deleteAssets)
-		{
-			for(int q=0;q<CMLib.quests().numQuests();q++)
-			{
-				final Quest Q=CMLib.quests().fetchQuest(q);
-				if(Q.wasWinner(mob.Name()))
-					Q.declareWinner("-"+mob.Name());
-			}
-		}
+		DB.update("DELETE FROM CMCHAR WHERE CMUSERID='"+mobName+"'");
+		DB.update("DELETE FROM CMCHCL WHERE CMUSERID='"+mobName+"'");
 	}
 
 	public void DBUpdateAbilities(MOB mob)
@@ -1720,17 +1668,14 @@ public class MOBloader
 		return thinPlayer;
 	}
 
-	public String[] DBFetchEmailData(String name)
+	public Pair<String, Boolean> DBFetchEmailData(String name)
 	{
-		final String[] data=new String[2];
 		for(final Enumeration<MOB> e=CMLib.players().players();e.hasMoreElements();)
 		{
 			final MOB M=e.nextElement();
 			if((M.Name().equalsIgnoreCase(name))&&(M.playerStats()!=null))
 			{
-				data[0]=M.playerStats().getEmail();
-				data[1]=""+M.isAttributeSet(MOB.Attrib.AUTOFORWARD);
-				return data;
+				return new Pair<String,Boolean>(M.playerStats().getEmail(),Boolean.valueOf(M.isAttributeSet(MOB.Attrib.AUTOFORWARD)));
 			}
 		}
 		DBConnection D=null;
@@ -1743,9 +1688,7 @@ public class MOBloader
 				// String username=DB.getRes(R,"CMUSERID");
 				final int btmp=CMath.s_int(DB.getRes(R,"CMBTMP"));
 				final String temail=DB.getRes(R,"CMEMAL");
-				data[0]=temail;
-				data[1]=""+((btmp&MOB.Attrib.AUTOFORWARD.getBitCode())!=0);
-				return data;
+				return new Pair<String,Boolean>(temail,Boolean.valueOf((btmp&MOB.Attrib.AUTOFORWARD.getBitCode())!=0));
 			}
 		}
 		catch(final Exception sqle)
@@ -1780,6 +1723,7 @@ public class MOBloader
 			if((R==null)||(!R.next()))
 				R=D.query("SELECT * FROM CMCHAR");
 			if(R!=null)
+			{
 				while(R.next())
 				{
 					final String username=DB.getRes(R,"CMUSERID");
@@ -1789,6 +1733,7 @@ public class MOBloader
 						return username;
 					}
 				}
+			}
 		}
 		catch(final Exception sqle)
 		{

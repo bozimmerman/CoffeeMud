@@ -261,7 +261,7 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
-	public String[] DBFetchEmailData(String name)
+	public Pair<String, Boolean> DBFetchEmailData(String name)
 	{
 		return MOBloader.DBFetchEmailData(name);
 	}
@@ -776,15 +776,15 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
-	public List<MOB> DBScanFollowers(MOB mob)
+	public List<MOB> DBScanFollowers(String mobName)
 	{
-		return MOBloader.DBScanFollowers(mob);
+		return MOBloader.DBScanFollowers(mobName);
 	}
 
 	@Override
-	public void DBDeletePlayer(MOB mob, boolean deleteAssets)
+	public void DBDeletePlayer(String mobName)
 	{
-		MOBloader.DBDelete(mob, deleteAssets);
+		MOBloader.DBDelete(mobName);
 	}
 
 	@Override

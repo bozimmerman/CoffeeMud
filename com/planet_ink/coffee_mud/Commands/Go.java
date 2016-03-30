@@ -194,7 +194,7 @@ public class Go extends StdCommand
 						{
 							final Vector<String> V=new Vector<String>();
 							V.add(doing);
-							V.add(inAShip?CMLib.directions().getDirectionName(direction):CMLib.directions().getDirectionName(direction));
+							V.add(inAShip?CMLib.directions().getShipDirectionName(direction):CMLib.directions().getDirectionName(direction));
 							mob.enqueCommand(V,metaFlags,0);
 						}
 					}

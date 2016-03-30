@@ -378,9 +378,9 @@ public class Destroy extends StdCommand
 			}
 			mob.location().getArea().fillInAreaRoom(mob.location());
 			final boolean useShipDirs=(mob.location() instanceof BoardableShip)||(mob.location().getArea() instanceof BoardableShip);
-			final String inDirName=useShipDirs?CMLib.directions().getDirectionName(direction):CMLib.directions().getDirectionName(direction);
+			final String inDirName=useShipDirs?CMLib.directions().getShipDirectionName(direction):CMLib.directions().getDirectionName(direction);
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("A wall of inhibition falls @x1.",inDirName));
-			final String dirName=useShipDirs?CMLib.directions().getDirectionName(direction):CMLib.directions().getDirectionName(direction);
+			final String dirName=useShipDirs?CMLib.directions().getShipDirectionName(direction):CMLib.directions().getDirectionName(direction);
 			Log.sysOut("Rooms",mob.Name()+" unlinked direction "+dirName+" from room "+mob.location().roomID()+".");
 		}
 	}

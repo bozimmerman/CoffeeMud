@@ -505,7 +505,59 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		PlayerStats pStats = deadMOB.playerStats();
 		if(pStats != null)
 			pStats.getExtItems().delAllItems(true);
-		CMLib.database().DBDeletePlayer(deadMOB, deleteAssets);
+		final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.PLAYERPURGES);
+		for(int i=0;i<channels.size();i++)
+			CMLib.commands().postChannel(channels.get(i),deadMOB.clans(),CMLib.lang().fullSessionTranslation("@x1 has just been deleted.",deadMOB.Name()),true);
+		CMLib.coffeeTables().bump(deadMOB,CoffeeTableRow.STAT_PURGES);
+		
+		CMLib.database().DBDeletePlayer(deadMOB.Name());
+		deadMOB.delAllItems(false);
+		for(int i=0;i<deadMOB.numItems();i++)
+		{
+			final Item I=deadMOB.getItem(i);
+			if(I!=null)
+				I.setContainer(null);
+		}
+		deadMOB.delAllItems(false);
+		CMLib.database().DBUpdatePlayerItems(deadMOB);
+		while(deadMOB.numFollowers()>0)
+		{
+			final MOB follower=deadMOB.fetchFollower(0);
+			if(follower!=null)
+				follower.setFollowing(null);
+		}
+		if(deleteAssets)
+		{
+			CMLib.database().DBUpdateFollowers(deadMOB);
+		}
+		deadMOB.delAllAbilities();
+		CMLib.database().DBUpdatePlayerAbilities(deadMOB);
+		if(deleteAssets)
+		{
+			CMLib.database().DBDeletePlayerJournals(deadMOB.Name());
+			CMLib.database().DBDeletePlayerData(deadMOB.Name());
+		}
+		final PlayerStats pstats = deadMOB.playerStats();
+		if(pstats!=null)
+		{
+			final PlayerAccount account = pstats.getAccount();
+			if(account != null)
+			{
+				account.delPlayer(deadMOB);
+				CMLib.database().DBUpdateAccount(account);
+				account.setLastUpdated(System.currentTimeMillis());
+			}
+		}
+		if(deleteAssets)
+		{
+			for(int q=0;q<CMLib.quests().numQuests();q++)
+			{
+				final Quest Q=CMLib.quests().fetchQuest(q);
+				if(Q.wasWinner(deadMOB.Name()))
+					Q.declareWinner("-"+deadMOB.Name());
+			}
+		}
+		
 		if(deadMOB.session()!=null)
 			deadMOB.session().stopSession(false,false,false);
 		Log.sysOut(deadMOB.name()+" has been deleted.");

@@ -127,10 +127,10 @@ public class EmissionScanProgram extends GenSoftware
 			}
 			final int dir=dirBuilder.charAt(d)-'a';
 			if(numDone==0)
-				str.append(" ").append(locDesc).append(useShipDirs?CMLib.directions().getDirectionName(dir):CMLib.directions().getDirectionName(dir));
+				str.append(" ").append(locDesc).append(useShipDirs?CMLib.directions().getShipDirectionName(dir):CMLib.directions().getDirectionName(dir));
 			else
 			if(numDone<numTotal-1)
-				str.append(", ").append(locDesc).append(useShipDirs?CMLib.directions().getDirectionName(dir):CMLib.directions().getDirectionName(dir));
+				str.append(", ").append(locDesc).append(useShipDirs?CMLib.directions().getShipDirectionName(dir):CMLib.directions().getDirectionName(dir));
 			else
 				str.append(", and then ").append(locDesc).append(useShipDirs?CMLib.directions().getShipInDirectionName(dir):CMLib.directions().getInDirectionName(dir));
 			numDone++;

@@ -147,7 +147,7 @@ public class Look extends StdCommand
 					else
 					if(dirCode>=0)
 						name=((R instanceof BoardableShip)||(R.getArea() instanceof BoardableShip))?
-								CMLib.directions().getDirectionName(dirCode):CMLib.directions().getDirectionName(dirCode);
+								CMLib.directions().getShipDirectionName(dirCode):CMLib.directions().getDirectionName(dirCode);
 				}
 				final CMMsg msg=CMClass.getMsg(mob,thisThang,lookingTool,CMMsg.MSG_LOOK,textMsg+name+".");
 				if((thisThang instanceof Room)&&(mob.isAttributeSet(MOB.Attrib.AUTOEXITS))&&(CMProps.getIntVar(CMProps.Int.EXVIEW)!=1))

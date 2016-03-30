@@ -1420,7 +1420,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				for(int i=0;i<continues.size()-1;i++)
 				{
 					if(useShipNames)
-						str.append(CMLib.directions().getDirectionName(continues.elementAt(i).intValue()).toLowerCase().trim()+", ");
+						str.append(CMLib.directions().getShipDirectionName(continues.elementAt(i).intValue()).toLowerCase().trim()+", ");
 					else
 						str.append(CMLib.directions().getDirectionName(continues.elementAt(i).intValue()).toLowerCase().trim()+", ");
 				}
@@ -1997,7 +1997,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				Say.append(room2.roomID()+" via NULL");
 			if(Say.length()>0)
 			{
-				Dir=CMStrings.padRightPreserve(useShipNames?CMLib.directions().getDirectionName(d):CMLib.directions().getDirectionName(d),5);
+				Dir=CMStrings.padRightPreserve(useShipNames?CMLib.directions().getShipDirectionName(d):CMLib.directions().getDirectionName(d),5);
 				if((mob.playerStats()!=null)
 				&&(room2!=null)
 				&&(mob.playerStats().hasVisited(room2)))
@@ -2050,7 +2050,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		{
 			final Exit exit=room.getExitInDir(d);
 			if((exit!=null)&&(exit.viewableText(mob, room.getRoomInDir(d)).length()>0))
-				buf.append("^<EX^>"+(useShipNames?CMLib.directions().getDirectionName(d):CMLib.directions().getDirectionName(d))+"^</EX^> ");
+				buf.append("^<EX^>"+(useShipNames?CMLib.directions().getShipDirectionName(d):CMLib.directions().getDirectionName(d))+"^</EX^> ");
 		}
 		boolean noBoardableShips = false;
 		if((mob.location() != room)

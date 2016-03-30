@@ -114,6 +114,7 @@ public class GenSailingShip extends StdBoardable
 	private enum SailingCommand
 	{
 		RAISE_ANCHOR,
+		WEIGH_ANCHOR,
 		LOWER_ANCHOR,
 		STEER,
 		SAIL,
@@ -382,6 +383,7 @@ public class GenSailingShip extends StdBoardable
 					}
 					break;
 				}
+				case WEIGH_ANCHOR:
 				case RAISE_ANCHOR:
 				{
 					if(!securityCheck(msg.source()))
@@ -1053,7 +1055,7 @@ public class GenSailingShip extends StdBoardable
 							Item I=i.next();
 							if((I instanceof GenSailingShip)
 							&&(((GenSailingShip)I).targetedShip == this))
-								((GenSailingShip)I).announceToDeck(this.getTargetedShipInfo());
+								((GenSailingShip)I).announceToDeck(((GenSailingShip)I).getTargetedShipInfo());
 						}
 					}
 				}
@@ -1113,7 +1115,7 @@ public class GenSailingShip extends StdBoardable
 								int index = aimings.indexOfFirst(w);
 								if(index >= 0)
 								{
-									int[] coordsAimedAt = aimings.getSecond(index);
+									int[] coordsAimedAt = aimings.remove(index).second;
 									boolean wasHit = Arrays.equals(coordsAimedAt, coordsToHit);
 									CMLib.combat().postAttack(mob, this, this.targetedShip, w, wasHit);
 								}

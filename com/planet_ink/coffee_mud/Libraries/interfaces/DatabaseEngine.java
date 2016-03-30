@@ -660,65 +660,86 @@ public interface DatabaseEngine extends CMLibrary
 
 	/**
 	 * Table category: DBPLAYERS
-	 * 
-	 * @param name
-	 * @return
+	 * Returns the email address and autoforward flag for the
+	 * player with the given name.  Does not check accounts.
+	 * Does, however, check the cache, so its not necessarily
+	 * a db check.
+	 * @param name the name of the player to get info for
+	 * @return the email address and autoforward flag
 	 */
-	public String[] DBFetchEmailData(String name);
+	public Pair<String, Boolean> DBFetchEmailData(String name);
 
 	/**
 	 * Table category: DBPLAYERS
-	 * 
-	 * @param email
-	 * @return
+	 * Returns the name of the player with the given email
+	 * address.
+	 * @param email the email address to look for
+	 * @return the name of the player, or null if not found
 	 */
 	public String DBPlayerEmailSearch(String email);
 
 	/**
 	 * Table category: DBPLAYERS
-	 * 
-	 * @return
+	 * Returns the list of all characters as thinplayer
+	 * objects.  This is the whole bloody list.
+	 * @see PlayerLibrary.ThinPlayer
+	 * @return the list of all players
 	 */
 	public List<PlayerLibrary.ThinPlayer> getExtendedUserList();
 
 	/**
 	 * Table category: DBPLAYERS
-	 * 
-	 * @param name
-	 * @return
+	 * Returns a ThinPlayer object with information about the 
+	 * character with the given name.
+	 * @see PlayerLibrary.ThinPlayer
+	 * @param name the name of the character to return.
+	 * @return the thin player of this user, or null if not found
 	 */
 	public PlayerLibrary.ThinPlayer getThinUser(String name);
 
 	/**
 	 * Table category: DBPLAYERS
-	 * 
-	 * @return
+	 * Returns a list of all the characters in the database.
+	 * Each and every one.
+	 * @return the list of all character names
 	 */
 	public List<String> getUserList();
 
 	/**
 	 * Table category: DBPLAYERS
-	 * 
-	 * @param mob
-	 * @return
+	 * Queries and creates mob objects for all the followers of
+	 * the player with the given name and returns the list.
+	 * It does not bring them to life, add to to any mob,
+	 * or start them ticking.  It just makes and returns the
+	 * mob objects.
+	 * @see DatabaseEngine#DBReadFollowers(MOB, boolean)
+	 * @param mobName the name of the mob to return
+	 * @return the list of follower mob objects
 	 */
-	public List<MOB> DBScanFollowers(MOB mob);
+	public List<MOB> DBScanFollowers(String mobName);
 
 	/**
 	 * Table category: DBPLAYERS
-	 * 
-	 * @param mob
-	 * @param bringToLife
+	 * Loads the followers of the given mob and optionally
+	 * brings them to life. This will query and create the
+	 * follower mob objects, add them to the given mob
+	 * at the very least.
+	 * @see DatabaseEngine#DBScanFollowers(String)
+	 * @param mob the mob whose players to load
+	 * @param bringToLife true to bring them to life, false not
 	 */
 	public void DBReadFollowers(MOB mob, boolean bringToLife);
 
 	/**
 	 * Table category: DBPLAYERS
-	 * 
-	 * @param mob
-	 * @param deleteAssets
+	 * Removes the character and clan affiliation records
+	 * from the database and nothing else.  Not abilities, or
+	 * items, or followers, or anything else... there are
+	 * other methods for that.  This just does in the char
+	 * record and clan affiliation.
+	 * @param mobName the mob to delete
 	 */
-	public void DBDeletePlayer(MOB mob, boolean deleteAssets);
+	public void DBDeletePlayer(String mobName);
 
 	/**
 	 * Table category: DBPLAYERS

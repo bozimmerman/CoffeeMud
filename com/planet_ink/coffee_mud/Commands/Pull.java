@@ -68,7 +68,7 @@ public class Pull extends Go
 				}
 				E=mob.location().getRoomInDir(dirCode);
 				dir=" "+(((mob.location() instanceof BoardableShip)||(mob.location().getArea() instanceof BoardableShip))?
-						CMLib.directions().getDirectionName(dirCode):CMLib.directions().getDirectionName(dirCode));
+						CMLib.directions().getShipDirectionName(dirCode):CMLib.directions().getDirectionName(dirCode));
 				commands.remove(commands.size()-1);
 			}
 		}

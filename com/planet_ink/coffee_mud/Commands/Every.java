@@ -234,7 +234,7 @@ public class Every extends StdCommand
 						if((E!=null)
 						&&((mask==null)||(CMLib.masking().maskCheck(mask, E, true))))
 						{
-							mob.doCommand(makeNewCommands(commands,inAShip ? CMLib.directions().getDirectionName(d) : CMLib.directions().getDirectionName(d)),metaFlags);
+							mob.doCommand(makeNewCommands(commands,inAShip ? CMLib.directions().getShipDirectionName(d) : CMLib.directions().getDirectionName(d)),metaFlags);
 						}
 					}
 				}

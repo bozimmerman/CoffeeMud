@@ -125,7 +125,7 @@ public class Examine extends StdCommand
 					else
 					if(dirCode>=0)
 						name=((R instanceof BoardableShip)||(R.getArea() instanceof BoardableShip))?
-							CMLib.directions().getDirectionName(dirCode):CMLib.directions().getDirectionName(dirCode);
+							CMLib.directions().getShipDirectionName(dirCode):CMLib.directions().getDirectionName(dirCode);
 				}
 				final CMMsg msg=CMClass.getMsg(mob,thisThang,null,CMMsg.MSG_EXAMINE,L("@x1@x2 closely.",textMsg,name));
 				if(R.okMessage(mob,msg))

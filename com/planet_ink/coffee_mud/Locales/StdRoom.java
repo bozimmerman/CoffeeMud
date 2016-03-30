@@ -2301,7 +2301,7 @@ public class StdRoom implements Room
 				if(exits[e]==E)
 				{
 					if((this instanceof BoardableShip)||(this.getArea() instanceof BoardableShip))
-						return CMLib.directions().getDirectionName(e);
+						return CMLib.directions().getShipDirectionName(e);
 					else
 						return CMLib.directions().getDirectionName(e);
 				}
@@ -2598,7 +2598,7 @@ public class StdRoom implements Room
 			for(int d=0;d<exits.length;d++)
 			{
 				if((exits[d]!=null)
-				&&(thingName.equalsIgnoreCase(inShip?CMLib.directions().getDirectionName(d):CMLib.directions().getDirectionName(d))))
+				&&(thingName.equalsIgnoreCase(inShip?CMLib.directions().getShipDirectionName(d):CMLib.directions().getDirectionName(d))))
 					return getExitInDir(d);
 			}
 		}
