@@ -103,8 +103,11 @@ public class Chant_Capsize extends Chant
 							if((I2!=null)
 							&&(I2.container()==null)
 							&&(CMLib.flags().isGettable(I2))
-							&&(I2.basePhyStats().weight()>=500))
+							&&(I2.basePhyStats().weight()<750))
 							{
+								if((I2 instanceof AmmunitionWeapon)
+								&&(((AmmunitionWeapon)I2).isFreeStanding()))
+									continue;
 								items.add(I2);
 							}
 						}

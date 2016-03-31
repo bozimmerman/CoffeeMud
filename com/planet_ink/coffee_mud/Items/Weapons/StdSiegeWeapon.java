@@ -148,7 +148,7 @@ public class StdSiegeWeapon extends StdRideable implements AmmunitionWeapon
 				if(CMLib.flags().canBeSeenBy(this,msg.source()))
 				{
 					if(requiresAmmunition())
-						msg.source().tell(L("@x1 remaining: @x2/@x3.",ammunitionType(),""+ammunitionRemaining(),""+ammunitionCapacity()));
+						msg.source().tell(L("@x1 remaining: @x2/@x3.",CMStrings.capitalizeAndLower(ammunitionType()),""+ammunitionRemaining(),""+ammunitionCapacity()));
 					if((subjectToWearAndTear())&&(usesRemaining()<100))
 						msg.source().tell(weaponHealth());
 				}

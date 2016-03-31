@@ -51,9 +51,6 @@ public class GenSailingShip extends StdBoardable
 	/**
 do steer and sail for combat
 getting wierd spam when i look at another ship :(
-unload impl for siege weapons
-Push ammunition needed into siege weapon desc, and change names of siegecraft ammo items
- -- multishot bolts, multishot stones ok
 course north east does not say anything about the turn
 ability to jump overboard
 sunks ships aren't expiring.
@@ -1117,22 +1114,41 @@ sunks ships aren't expiring.
 						mob.setRiding(this);
 						mob.basePhyStats().setDisposition(mob.basePhyStats().disposition()|PhyStats.IS_SWIMMING);
 						mob.phyStats().setDisposition(mob.phyStats().disposition()|PhyStats.IS_SWIMMING);
+						int notLoaded = 0;
+						int notAimed = 0;
 						for(Weapon w : weapons)
 						{
 							final Room R=CMLib.map().roomLocation(w);
 							if(R!=null)
 							{
 								mob.setLocation(R);
-								//mob.setRangeToTarget(0);
-								int index = aimings.indexOfFirst(w);
-								if(index >= 0)
+								if((w instanceof AmmunitionWeapon)
+								&&(((AmmunitionWeapon)w).requiresAmmunition())
+								&&(((AmmunitionWeapon)w).ammunitionRemaining() <=0))
+									notLoaded++;
+								else
 								{
-									int[] coordsAimedAt = aimings.remove(index).second;
-									boolean wasHit = Arrays.equals(coordsAimedAt, coordsToHit);
-									CMLib.combat().postAttack(mob, this, this.targetedShip, w, wasHit);
+									//mob.setRangeToTarget(0);
+									int index = aimings.indexOfFirst(w);
+									if(index >= 0)
+									{
+										int[] coordsAimedAt = aimings.remove(index).second;
+										boolean wasHit = Arrays.equals(coordsAimedAt, coordsToHit);
+										CMLib.combat().postAttack(mob, this, this.targetedShip, w, wasHit);
+									}
+									else
+										notAimed++;
 								}
 							}
 						}
+						if((notLoaded > 0) && (notAimed > 0))
+							announceToDeck(L("@x1 of your weapons were not loaded, and @x2 were ready but not aimed.",""+notLoaded, ""+notAimed));
+						else
+						if(notLoaded > 0)
+							announceToDeck(L("@x1 of your weapons were not loaded.",""+notLoaded));
+						else
+						if(notAimed > 0)
+							announceToDeck(L("@x1 of your weapons were ready but not aimed.",""+notAimed));
 					}
 					finally
 					{
