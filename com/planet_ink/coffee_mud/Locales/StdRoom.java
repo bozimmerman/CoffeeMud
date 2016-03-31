@@ -571,6 +571,22 @@ public class StdRoom implements Room
 	}
 
 	@Override
+	public List<Room> getSky()
+	{
+		List<Room> skys = new Vector<Room>(1);
+		if(!skyedYet) 
+			return skys;
+		final Room skyGridRoom=rawDoors()[Directions.UP];
+		if(skyGridRoom!=null)
+		{
+			if(((skyGridRoom.roomID()==null)||(skyGridRoom.roomID().length()==0))
+			&&((skyGridRoom instanceof EndlessSky)||(skyGridRoom instanceof EndlessThinSky)))
+				skys.add(skyGridRoom);
+		}
+		return skys;
+	}
+	
+	@Override
 	public void clearSky()
 	{
 		if(!skyedYet) 

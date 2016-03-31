@@ -3340,7 +3340,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			Room R=null;
 			final List<Room> roomsToGo=new ArrayList<Room>();
 			final CMMsg expireMsg=CMClass.getMsg(expireM,R,null,CMMsg.MSG_EXPIRE,null);
-			for(final Enumeration<Room> r=rooms();r.hasMoreElements();)
+			for(final Enumeration<Room> r=roomsFilled();r.hasMoreElements();)
 			{
 				R=r.nextElement();
 				expireM.setLocation(R);

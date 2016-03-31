@@ -2067,23 +2067,18 @@ public class StdArea implements Area
 		final Enumeration<Room> r=getProperMap();
 		final Vector<Room> V=new Vector<Room>();
 		Room R=null;
-		Room R2=null;
 		for(;r.hasMoreElements();)
 		{
 			R=r.nextElement();
 			if(!V.contains(R))
 				V.addElement(R);
-			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+			for(final Room R2 : R.getSky())
 			{
-				R2=R.rawDoors()[d];
-				if((R2 != null)&&((R2.roomID().length()==0)))
-				{
-					if(R2 instanceof GridLocale)
-						V.addAll(((GridLocale)R2).getAllRooms());
-					else
-					if(!V.contains(R2))
-						V.add(R2);
-				}
+				if(R2 instanceof GridLocale)
+					V.addAll(((GridLocale)R2).getAllRoomsFilled());
+				else
+				if(!V.contains(R2))
+					V.add(R2);
 			}
 		}
 		return V.elements();

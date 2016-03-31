@@ -684,6 +684,30 @@ public class StdThinGrid extends StdRoom implements GridLocale
 	}
 
 	@Override
+	public List<Room> getAllRoomsFilled()
+	{
+		getRandomGridChild();
+		final Iterator<Room> r=new ConvertingList<ThinGridEntry,Room>(rooms,ThinGridEntryConverter.INSTANCE).iterator();
+		final Vector<Room> V=new Vector<Room>();
+		Room R=null;
+		for(;r.hasNext();)
+		{
+			R=r.next();
+			if(!V.contains(R))
+				V.addElement(R);
+			for(Room R2 : R.getSky())
+			{
+				if(R2 instanceof GridLocale)
+					V.addAll(((GridLocale)R2).getAllRoomsFilled());
+				else
+				if(!V.contains(R2))
+					V.add(R2);
+			}
+		}
+		return V;
+	}
+
+	@Override
 	public Iterator<Room> getExistingRooms()
 	{
 		return new ConvertingIterator<ThinGridEntry,Room>(rooms.iterator(),ThinGridEntryConverter.INSTANCE);

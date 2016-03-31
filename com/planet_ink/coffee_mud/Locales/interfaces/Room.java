@@ -309,6 +309,7 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	 * or underwater rooms in the ocean, this method will empty all of those rooms
 	 * of their content, and then destroy those rooms.
 	 * @see Room#giveASky(int)
+	 * @see Room#getSky()
 	 */
 	public void clearSky();
 	
@@ -317,9 +318,20 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	 * room, or underwater rooms in the ocean, this method will create those rooms
 	 * at the given left of depth.
 	 * @see Room#clearSky()
+	 * @see Room#getSky()
 	 * @param depth the diameter of the sky or underwater to create
 	 */
 	public void giveASky(int depth);
+	
+	/**
+	 * If this room requires attached temporary rooms, such as a sky in an outdoor
+	 * room, or underwater rooms in the ocean, this method will return any existing
+	 * one, or an empty list if none exist yet.
+	 * @see Room#clearSky()
+	 * @see Room#getSky()
+	 * @param depth the diameter of the sky or underwater to create
+	 */
+	public List<Room> getSky();
 	
 	/**
 	 * Returns the Area to which this room belongs.  Guarenteed to be non-null.

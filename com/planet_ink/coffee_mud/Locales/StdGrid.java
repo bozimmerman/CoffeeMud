@@ -357,6 +357,34 @@ public class StdGrid extends StdRoom implements GridLocale
 		return V;
 	}
 	
+	@Override
+	public List<Room> getAllRoomsFilled()
+	{
+		final Vector<Room> V=new Vector<Room>();
+		final Room[][] subMap=getBuiltGrid();
+		if(subMap!=null)
+		{
+			for (final Room[] element : subMap)
+			{
+				for(int y=0;y<element.length;y++)
+				{
+					Room R=element[y];
+					if(!V.contains(R))
+						V.addElement(R);
+					for(Room R2 : R.getSky())
+					{
+						if(R2 instanceof GridLocale)
+							V.addAll(((GridLocale)R2).getAllRoomsFilled());
+						else
+						if(!V.contains(R2))
+							V.add(R2);
+					}
+				}
+			}
+		}
+		return V;
+	}
+	
 	private static final Iterator<Room> emptyIterator = new Iterator<Room>()
 	{
 		@Override

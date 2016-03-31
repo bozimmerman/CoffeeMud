@@ -51,9 +51,7 @@ public class GenSailingShip extends StdBoardable
 	/**
 do steer and sail for combat
 getting wierd spam when i look at another ship :(
-course north east does not say anything about the turn
 ability to jump overboard
-sunks ships aren't expiring.
 	 */
 
 	protected volatile int			courseDirection	= -1;
@@ -182,8 +180,6 @@ sunks ships aren't expiring.
 				mob.destroy();
 		}
 	}
-	
-	//TODO: fix exits so you can always get into the ocean from the deck
 	
 	protected void announceActionToDeckOrUnderdeck(final MOB mob, final CMMsg msg, int INDOORS)
 	{
@@ -620,7 +616,7 @@ sunks ships aren't expiring.
 							this.courseDirections.add(Integer.valueOf(dir));
 						}
 						if(this.courseDirections.size()>0)
-							this.courseDirection = this.courseDirections.get(0).intValue();
+							this.courseDirection = this.courseDirections.remove(0).intValue();
 						
 						this.announceActionToDeck(msg.source(),L("<S-NAME> order(s) a course setting of @x1.",CMLib.english().toEnglishStringList(dirNames.toArray(new String[0]))));
 					}
@@ -1449,15 +1445,16 @@ sunks ships aren't expiring.
 	{
 		final Room R=CMLib.map().roomLocation(this);
 		if(R==null)
-			return 0;
+			dispossessionTime = 0;
+		else
 		if(CMLib.flags().isUnderWateryRoom(R))
 		{
 			if(dispossessionTime == 0)
-				setExpirationDate(System.currentTimeMillis()+(CMProps.getIntVar(CMProps.Int.EXPIRE_PLAYER_DROP) * TimeManager.MILI_MINUTE));
+				dispossessionTime = System.currentTimeMillis()+(CMProps.getIntVar(CMProps.Int.EXPIRE_PLAYER_DROP) * TimeManager.MILI_MINUTE);
 		}
 		else
 			dispossessionTime = 0;
-		return super.expirationDate();
+		return dispossessionTime;
 	}
 
 	@Override
@@ -1615,12 +1612,6 @@ sunks ships aren't expiring.
 				if(directionFacing < 0)
 					directionFacing = direction;
 			}
-			if(direction != directionFacing)
-			{
-				// because of the 'you can only turn on last move' rule, this is unimportant.
-				//directionFacing = CMLib.directions().getGradualDirectionCode(directionFacing, direction);
-				directionFacing = direction;
-			}
 			int[] tacticalCoords = null;
 			if(amInTacticalMode())
 			{
@@ -1679,7 +1670,10 @@ sunks ships aren't expiring.
 						final CMMsg maneuverMsg=CMClass.getMsg(mob,thisRoom,null,CMMsg.MSG_ADVANCE,directionName,CMMsg.MSG_ADVANCE,null,
 								CMMsg.MSG_ADVANCE,L("<S-NAME> change(s) coarse, turning @x1.",directionName));
 						if(thisRoom.okMessage(mob, maneuverMsg))
+						{
 							thisRoom.send(mob, maneuverMsg);
+							directionFacing = direction;
+						}
 						return SailResult.REPEAT;
 					}
 				}
