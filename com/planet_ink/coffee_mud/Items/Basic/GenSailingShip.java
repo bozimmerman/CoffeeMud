@@ -46,13 +46,6 @@ public class GenSailingShip extends StdBoardable
 	{
 		return "GenSailingShip";
 	}
-	
-	//TODO:DO!
-	/**
-do steer and sail for combat
-getting wierd spam when i look at another ship :(
-ability to jump overboard
-	 */
 
 	protected volatile int			courseDirection	= -1;
 	protected volatile boolean		anchorDown		= true;
@@ -469,6 +462,7 @@ ability to jump overboard
 						msg.source().tell(L("You are nowhere, so you won`t be moving anywhere."));
 						return false;
 					}
+					final String dirName = CMLib.directions().getDirectionName(dir);
 					if(!this.amInTacticalMode())
 					{
 						final Room targetRoom=R.getRoomInDir(dir);
@@ -478,16 +472,22 @@ ability to jump overboard
 							msg.source().tell(L("There doesn't look to be anything in that direction."));
 							return false;
 						}
-						steer(msg.source(),R, dir);
 					}
 					else
 					{
-						msg.source().tell(L("You can only STEER when not under a tactical threat.  Use COURSE to make tactical maneuvers."));
-						return false;
+						directionFacing = getDirectionFacing(dir);
+						if(dir == this.directionFacing)
+						{
+							msg.source().tell(L("Your ship is already sailing @x1.",dirName));
+							return false;
+						}
 					}
 					if(anchorDown)
+					{
 						msg.source().tell(L("The anchor is down, so you won`t be moving anywhere."));
-					return false;
+						return false;
+					}
+					break;
 				}
 				case SAIL:
 				{
@@ -507,14 +507,14 @@ ability to jump overboard
 						msg.source().tell(L("You are nowhere, so you won`t be moving anywhere."));
 						return false;
 					}
+					int dir=CMLib.directions().getCompassDirectionCode(secondWord);
+					if(dir<0)
+					{
+						msg.source().tell(L("Sail the ship which direction?"));
+						return false;
+					}
 					if(!this.amInTacticalMode())
 					{
-						int dir=CMLib.directions().getCompassDirectionCode(secondWord);
-						if(dir<0)
-						{
-							msg.source().tell(L("Sail the ship which direction?"));
-							return false;
-						}
 						final Room targetRoom=R.getRoomInDir(dir);
 						final Exit targetExit=R.getExitInDir(dir);
 						if((targetRoom==null)||(targetExit==null)||(!targetExit.isOpen()))
@@ -525,8 +525,13 @@ ability to jump overboard
 					}
 					else
 					{
-						msg.source().tell(L("You can only SAIL when not under a tactical threat.  Use COURSE to make tactical maneuvers."));
-						return false;
+						String dirName = CMLib.directions().getDirectionName(dir);
+						directionFacing = getDirectionFacing(dir);
+						if(dir != this.directionFacing)
+						{
+							msg.source().tell(L("When in tactical mode, your ship can only SAIL @x1.  Use COURSE for more complex maneuvers.",dirName));
+							return false;
+						}
 					}
 					if(anchorDown)
 					{
@@ -690,9 +695,44 @@ ability to jump overboard
 				final Room R=CMLib.map().roomLocation(this);
 				if(R==null)
 					return false;
-				this.courseDirections.clear(); // sail eliminates a course
-				this.courseDirections.add(Integer.valueOf(-1));
-				this.sail(msg.source(), R, dir);
+				if(!this.amInTacticalMode())
+				{
+					this.courseDirections.clear(); // sail eliminates a course
+					this.courseDirections.add(Integer.valueOf(-1));
+					this.sail(msg.source(), R, dir);
+				}
+				else
+				{
+					if(this.courseDirections.size()>0)
+						msg.source().tell(L("Your prior course has been overridden."));
+					this.courseDirections.clear();
+					this.courseDirections.add(Integer.valueOf(-1));
+					this.courseDirection = dir;
+					this.announceActionToDeck(msg.source(),L("<S-NAME> start(s) sailing @x1.",CMLib.directions().getDirectionName(dir)));
+				}
+				return false;
+			}
+			case STEER:
+			{
+				int dir=CMLib.directions().getCompassDirectionCode(secondWord);
+				if(dir<0)
+					return false;
+				final Room R=CMLib.map().roomLocation(this);
+				if(R==null)
+					return false;
+				if(!this.amInTacticalMode())
+				{
+					steer(msg.source(),R, dir);
+				}
+				else
+				{
+					if(this.courseDirections.size()>0)
+						msg.source().tell(L("Your prior tactical course has been overridden."));
+					this.courseDirections.clear();
+					this.courseDirections.add(Integer.valueOf(-1));
+					this.courseDirection = dir;
+					this.announceActionToDeck(msg.source(),L("<S-NAME> start(s) steering the ship @x1.",CMLib.directions().getDirectionName(dir)));
+				}
 				return false;
 			}
 			default:
@@ -1242,7 +1282,8 @@ ability to jump overboard
 			{
 			case CMMsg.TYP_LOOK:
 			case CMMsg.TYP_EXAMINE:
-				StringBuilder visualCondition = new StringBuilder("");
+			{
+				final StringBuilder visualCondition = new StringBuilder("");
 				if(this.anchorDown)
 					visualCondition.append(L("^HThe anchor on @x1 is lowered, holding her in place.^.^?",name(msg.source())));
 				else
@@ -1253,10 +1294,17 @@ ability to jump overboard
 					final double pct=(CMath.div(usesRemaining(),100.0));
 					appendCondition(visualCondition,pct,name(msg.source()));
 				}
-				msg.addTrailerMsg(CMClass.getMsg(msg.source(), null, null, 
-						CMMsg.MSG_OK_VISUAL, visualCondition.toString(), 
-						CMMsg.NO_EFFECT, null, CMMsg.NO_EFFECT, null));
+				Runnable R=new Runnable()
+				{
+					@Override
+					public void run()
+					{
+						msg.source().tell(visualCondition.toString());
+					}
+				};
+				msg.addTrailerRunnable(R);
 				break;
+			}
 			default:
 				break;
 			}
@@ -1589,13 +1637,13 @@ ability to jump overboard
 		}
 		return lowest;
 	}
-	
-	protected SailResult sail(final int direction)
+
+	protected int getDirectionFacing(final int direction)
 	{
 		final Room thisRoom=CMLib.map().roomLocation(this);
-		if(thisRoom != null)
+		if(directionFacing < 0)
 		{
-			if(directionFacing < 0)
+			if(thisRoom != null)
 			{
 				for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
 				{
@@ -1605,13 +1653,21 @@ ability to jump overboard
 					&&(thisRoom.getExitInDir(d).isOpen())
 					&&(!CMLib.flags().isWateryRoom(R2)))
 					{
-						directionFacing = Directions.getOpDirectionCode(d);
-						break;
+						return Directions.getOpDirectionCode(d);
 					}
 				}
-				if(directionFacing < 0)
-					directionFacing = direction;
 			}
+			return direction;
+		}
+		return directionFacing;
+	}
+	
+	protected SailResult sail(final int direction)
+	{
+		final Room thisRoom=CMLib.map().roomLocation(this);
+		if(thisRoom != null)
+		{
+			directionFacing = getDirectionFacing(direction);
 			int[] tacticalCoords = null;
 			if(amInTacticalMode())
 			{
@@ -1854,6 +1910,7 @@ ability to jump overboard
 			if(R2==null)
 				return false;
 			R2.moveItemTo(this);
+			this.dockHere(R2);
 			return true;
 		}
 		return false;

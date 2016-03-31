@@ -544,7 +544,8 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 			for(final Enumeration<Room> r = ship.getProperMap(); r.hasMoreElements();)
 			{
 				final Room R=r.nextElement();
-				if((!outdoorOnly)||((R.domainType()&Room.INDOORS)==0))
+				if(((!outdoorOnly)||((R.domainType()&Room.INDOORS)==0))
+				&&(R.roomID().length()>0))
 					R.sendOthers(msg.source(), msg);
 			}
 		}
