@@ -3438,7 +3438,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		setThreadStatus(serviceClient,"checking");
 		try
 		{
-			for(final Enumeration<Room> r=rooms();r.hasMoreElements();)
+			for(final Enumeration<Room> r=roomsFilled();r.hasMoreElements();)
 			{
 				final Room R=r.nextElement();
 				for(int m=0;m<R.numInhabitants();m++)
@@ -3457,14 +3457,21 @@ public class CMMap extends StdLibrary implements WorldMap
 								if(ticked)
 								{
 									// we have a dead group.. let the group handler deal with it.
-									Log.errOut(serviceClient.getName(),mob.name()+" in room "+R.roomID()+" unticked in dead group (Home="+wasFrom+") since: "+CMLib.time().date2String(mob.lastTickedDateTime())+".");
+									Log.errOut(serviceClient.getName(),mob.name()+" in room "+CMLib.map().getDescriptiveExtendedRoomID(R)
+											+" unticked in dead group (Home="+wasFrom+") since: "+CMLib.time().date2String(mob.lastTickedDateTime())+".");
 									continue;
 								}
 								else
-									Log.errOut(serviceClient.getName(),mob.name()+" in room "+R.roomID()+" unticked (is ticking="+(ticked)+", dead="+isDead+", Home="+wasFrom+") since: "+CMLib.time().date2String(mob.lastTickedDateTime())+"."+(ticked?"":"  This mob has been destroyed. May he rest in peace."));
+								{
+									Log.errOut(serviceClient.getName(),mob.name()+" in room "+CMLib.map().getDescriptiveExtendedRoomID(R)
+											+" unticked (is ticking="+(ticked)+", dead="+isDead+", Home="+wasFrom+") since: "+CMLib.time().date2String(mob.lastTickedDateTime())+"."+(ticked?"":"  This mob has been destroyed. May he rest in peace."));
+								}
 							}
 							else
-								Log.errOut(serviceClient.getName(),"Player "+mob.name()+" in room "+R.roomID()+" unticked (is ticking="+(ticked)+", dead="+isDead+", Home="+wasFrom+") since: "+CMLib.time().date2String(mob.lastTickedDateTime())+"."+(ticked?"":"  This mob has been put aside."));
+							{
+								Log.errOut(serviceClient.getName(),"Player "+mob.name()+" in room "+CMLib.map().getDescriptiveExtendedRoomID(R)
+										+" unticked (is ticking="+(ticked)+", dead="+isDead+", Home="+wasFrom+") since: "+CMLib.time().date2String(mob.lastTickedDateTime())+"."+(ticked?"":"  This mob has been put aside."));
+							}
 							setThreadStatus(serviceClient,"destroying unticked mob "+mob.name());
 							if(CMLib.players().getPlayer(mob.Name())==null)
 								mob.destroy();
