@@ -842,6 +842,42 @@ public class ListCmd extends StdCommand
 		}
 	}
 
+	protected Thread findThread(String name,ThreadGroup tGroup, boolean ignoreZeroTickThreads)
+	{
+		final int ac = tGroup.activeCount();
+		final int agc = tGroup.activeGroupCount();
+		final Thread tArray[] = new Thread [ac+1];
+		final ThreadGroup tgArray[] = new ThreadGroup [agc+1];
+
+		tGroup.enumerate(tArray,false);
+		tGroup.enumerate(tgArray,false);
+
+		for (int i = 0; i<ac; ++i)
+		{
+			if (tArray[i] != null)
+			{
+				if((ignoreZeroTickThreads)&&(!tArray[i].isAlive()))
+					continue;
+				if(tArray[i].getName().equalsIgnoreCase(name))
+					return tArray[i];
+			}
+		}
+
+		if (agc > 0)
+		{
+			for (int i = 0; i<agc; ++i)
+			{
+				if (tgArray[i] != null)
+				{
+					Thread T=findThread(name,tgArray[i],ignoreZeroTickThreads);
+					if(T!=null)
+						return T;
+				}
+			}
+		}
+		return null;
+	}
+
 	public StringBuilder listThreads(Session viewerS, MOB mob, boolean ignoreZeroTickThreads, boolean extend)
 	{
 		final StringBuilder lines=new StringBuilder("^xStatus|Name                 ^.^?\n\r");
@@ -852,6 +888,36 @@ public class ListCmd extends StdCommand
 				topTG = topTG.getParent();
 			if (topTG != null)
 				dumpThreadGroup(viewerS,lines,topTG,ignoreZeroTickThreads, extend);
+		}
+		catch (final Exception e)
+		{
+			lines.append ("\n\rBastards! Exception while listing threads: " + e.getMessage() + "\n\r");
+		}
+		return lines;
+
+	}
+
+	public StringBuilder listThread(Session viewerS, MOB mob, String threadname)
+	{
+		final StringBuilder lines=new StringBuilder("^xStatus|Name                 ^.^?\n\r");
+		try
+		{
+			ThreadGroup topTG = Thread.currentThread().getThreadGroup();
+			while (topTG != null && topTG.getParent() != null)
+				topTG = topTG.getParent();
+			if (topTG != null)
+			{
+				Thread T=findThread(threadname,topTG,false);
+				if(T==null)
+					lines.append(L("No thread named @x1 found. Try LIST THREADS.",threadname));
+				else
+				{
+					lines.append("\n\r^HThread: ^N"+T.getName()+"\n\r");
+					final java.lang.StackTraceElement[] s=T.getStackTrace();
+					for (final StackTraceElement element : s)
+						lines.append("\n   "+element.getClassName()+": "+element.getMethodName()+"("+element.getFileName()+": "+element.getLineNumber()+")");
+				}
+			}
 		}
 		catch (final Exception e)
 		{
@@ -3252,6 +3318,7 @@ public class ListCmd extends StdCommand
 		USERS("USERS",new SecFlag[]{SecFlag.CMDPLAYERS,SecFlag.STAT}),
 		LINKAGES("LINKAGES",new SecFlag[]{SecFlag.CMDAREAS}),
 		REPORTS("REPORTS",new SecFlag[]{SecFlag.LISTADMIN}),
+		THREAD("THREAD",new SecFlag[]{SecFlag.LISTADMIN}),
 		THREADS("THREADS",new SecFlag[]{SecFlag.LISTADMIN}),
 		RESOURCES("RESOURCES",new SecFlag[]{SecFlag.LOADUNLOAD}),
 		ONEWAYDOORS("ONEWAYDOORS",new SecFlag[]{SecFlag.CMDEXITS,SecFlag.CMDROOMS,SecFlag.CMDAREAS}),
@@ -4039,6 +4106,9 @@ public class ListCmd extends StdCommand
 			break;
 		case REPORTS:
 			s.println(listReports(mob.session(), mob).toString());
+			break;
+		case THREAD:
+			s.println(listThread(mob.session(), mob, rest).toString());
 			break;
 		case THREADS:
 			s.println(listThreads(mob.session(), mob, CMParms.containsIgnoreCase(commands, "SHORT"), CMParms.containsIgnoreCase(commands, "EXTEND")).toString());

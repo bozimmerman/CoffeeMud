@@ -1699,6 +1699,8 @@ public class CMFile extends File
 		{
 			path=absolutePath.substring(0,x);
 			name=absolutePath.substring(x+1);
+			if(name.equalsIgnoreCase("."))
+				name="";
 		}
 		return new String[]{absolutePath,path,name};
 	}
