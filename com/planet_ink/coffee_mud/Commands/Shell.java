@@ -279,6 +279,7 @@ public class Shell extends StdCommand
 			if(cmd>=0)
 				break;
 		}
+		final boolean killOnSession=((mob.session()!=null)&&(!mob.session().isStopped())); 
 		switch(cmd)
 		{
 		case 0: // directory
@@ -312,6 +313,8 @@ public class Shell extends StdCommand
 			}
 			for (final CMFile dir : dirs)
 			{
+				if(killOnSession && ((mob.session()==null)||(mob.session().isStopped())))
+					break;
 				final CMFile entry=dir;
 				if(!entry.isDirectory())
 				{
@@ -364,6 +367,8 @@ public class Shell extends StdCommand
 			final java.util.List<CMFile> ddirs=sortDirsUp(dirs);
 			for(final CMFile SF: ddirs)
 			{
+				if(killOnSession && ((mob.session()==null)||(mob.session().isStopped())))
+					break;
 				if ((SF == null) || (!SF.exists()))
 				{
 					mob.tell(L("^xError: source @x1 does not exist!^N", desc(SF)));
@@ -484,6 +489,8 @@ public class Shell extends StdCommand
 			final java.util.List<CMFile> ddirs=sortDirsDown(dirs);
 			for(int d=0;d<ddirs.size();d++)
 			{
+				if(killOnSession && ((mob.session()==null)||(mob.session().isStopped())))
+					break;
 				final CMFile CF=ddirs.get(d);
 				if((CF==null)||(!CF.exists()))
 				{
@@ -519,6 +526,8 @@ public class Shell extends StdCommand
 			}
 			for (final CMFile dir : dirs)
 			{
+				if(killOnSession && ((mob.session()==null)||(mob.session().isStopped())))
+					break;
 				final CMFile CF=dir;
 				if((CF==null)||(!CF.exists()))
 				{
@@ -573,6 +582,8 @@ public class Shell extends StdCommand
 			}
 			for (final CMFile dir : dirs)
 			{
+				if(killOnSession && ((mob.session()==null)||(mob.session().isStopped())))
+					break;
 				final CMFile entry=dir;
 				if(!entry.isDirectory())
 				{
@@ -611,6 +622,8 @@ public class Shell extends StdCommand
 			final Vector<CMFile> dirs2=new Vector<CMFile>();
 			for (final CMFile dir : dirs)
 			{
+				if(killOnSession && ((mob.session()==null)||(mob.session().isStopped())))
+					break;
 				final CMFile entry=dir;
 				if(!entry.isDirectory())
 				{
@@ -723,6 +736,8 @@ public class Shell extends StdCommand
 			java.util.List<CMFile> dirsLater=new Vector<CMFile>();
 			for(int d=0;d<ddirs.size();d++)
 			{
+				if(killOnSession && ((mob.session()==null)||(mob.session().isStopped())))
+					break;
 				final CMFile SF=ddirs.get(d);
 				if ((SF == null) || (!SF.exists()))
 				{
@@ -817,6 +832,8 @@ public class Shell extends StdCommand
 			dirsLater=sortDirsDown(dirsLater.toArray(new CMFile[0]));
 			for(int d=0;d<dirsLater.size();d++)
 			{
+				if(killOnSession && ((mob.session()==null)||(mob.session().isStopped())))
+					break;
 				final CMFile CF=dirsLater.get(d);
 				if((!CF.delete())&&(CF.exists()))
 				{
