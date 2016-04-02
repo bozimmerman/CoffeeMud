@@ -35,15 +35,37 @@ import java.util.*;
 
 public class Shearing extends CommonSkill
 {
-	@Override public String ID() { return "Shearing"; }
-	private final static String localizedName = CMLib.lang().L("Shearing");
-	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =I(new String[] {"SHEAR","SHEARING"});
-	@Override public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ANIMALAFFINITY; }
-	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override
+	public String ID()
+	{
+		return "Shearing";
+	}
 
-	private MOB sheep=null;
-	protected boolean failed=false;
+	private final static String	localizedName	= CMLib.lang().L("Shearing");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "SHEAR", "SHEARING" });
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_COMMON_SKILL | Ability.DOMAIN_ANIMALAFFINITY;
+	}
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	private MOB			sheep	= null;
+	protected boolean	failed	= false;
+
 	public Shearing()
 	{
 		super();
@@ -59,7 +81,12 @@ public class Shearing extends CommonSkill
 			duration=40;
 		return duration;
 	}
-	@Override protected int baseYield() { return 1; }
+
+	@Override
+	protected int baseYield()
+	{
+		return 1;
+	}
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
@@ -82,9 +109,11 @@ public class Shearing extends CommonSkill
 		{
 			final List<RawMaterial> V=M.charStats().getMyRace().myResources();
 			for(int v=0;v<V.size();v++)
+			{
 				if((V.get(v) != null)
 				&&(V.get(v).material()==RawMaterial.RESOURCE_WOOL))
 					wool.addElement(V.get(v));
+			}
 		}
 		return wool;
 	}
