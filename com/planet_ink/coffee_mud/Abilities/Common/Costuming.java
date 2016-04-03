@@ -37,21 +37,52 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Costuming extends EnhancedCraftingSkill implements ItemCraftor, MendingSkill
 {
-	@Override public String ID() { return "Costuming"; }
-	private final static String localizedName = CMLib.lang().L("Costuming");
-	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =I(new String[] {"COSTUME","COSTUMING"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public String supportedResourceString(){return "CLOTH";}
 	@Override
-	public String parametersFormat(){ return
-		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\t"
-		+"ITEM_CLASS_ID\tWEAPON_CLASS||CODED_WEAR_LOCATION||RIDE_BASIS\t"
-		+"CONTAINER_CAPACITY||WEAPON_HANDS_REQUIRED\tBASE_ARMOR_AMOUNT||BASE_DAMAGE\t"
-		+"CONTAINER_TYPE\tCODED_SPELL_LIST";}
+	public String ID()
+	{
+		return "Costuming";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Costuming");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "COSTUME", "COSTUMING" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public String supportedResourceString()
+	{
+		return "CLOTH";
+	}
+
+	@Override
+	public String parametersFormat()
+	{
+		return
+		  "ITEM_NAME\t"
+		+ "ITEM_LEVEL\t"
+		+ "BUILD_TIME_TICKS\t"
+		+ "MATERIALS_REQUIRED\t"
+		+ "ITEM_BASE_VALUE\t"
+		+ "ITEM_CLASS_ID\t"
+		+ "WEAPON_CLASS||CODED_WEAR_LOCATION||RIDE_BASIS\t"
+		+ "CONTAINER_CAPACITY||WEAPON_HANDS_REQUIRED\t"
+		+ "BASE_ARMOR_AMOUNT||BASE_DAMAGE\t"
+		+ "CONTAINER_TYPE\t"
+		+ "CODED_SPELL_LIST";
+	}
 
 	//protected static final int RCP_FINALNAME=0;
 	//protected static final int RCP_LEVEL=1;
@@ -76,8 +107,17 @@ public class Costuming extends EnhancedCraftingSkill implements ItemCraftor, Men
 		return super.tick(ticking,tickID);
 	}
 
-	@Override public String parametersFile(){ return "costume.txt";}
-	@Override protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
+	@Override
+	public String parametersFile()
+	{
+		return "costume.txt";
+	}
+
+	@Override
+	protected List<List<String>> loadRecipes()
+	{
+		return super.loadRecipes(parametersFile());
+	}
 
 	@Override
 	public double getItemWeightMultiplier(boolean bundling)
@@ -189,7 +229,12 @@ public class Costuming extends EnhancedCraftingSkill implements ItemCraftor, Men
 		return (isANativeItem(I.Name()));
 	}
 
-	@Override public boolean supportsMending(Physical item){ return canMend(null,item,true);}
+	@Override
+	public boolean supportsMending(Physical item)
+	{
+		return canMend(null, item, true);
+	}
+
 	@Override
 	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
 	{
@@ -218,7 +263,7 @@ public class Costuming extends EnhancedCraftingSkill implements ItemCraftor, Men
 	
 	@Override
 	protected boolean autoGenInvoke(final MOB mob, List<String> commands, Physical givenTarget, final boolean auto, 
-								 final int asLevel, int autoGenerate, boolean forceLevels, List<Item> crafted)
+								 	final int asLevel, int autoGenerate, boolean forceLevels, List<Item> crafted)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
@@ -244,11 +289,12 @@ public class Costuming extends EnhancedCraftingSkill implements ItemCraftor, Men
 		String startStr=null;
 		bundling=false;
 		int duration=4;
-		final int[] cols={
-				CMLib.lister().fixColWidth(27,mob.session()),
-				CMLib.lister().fixColWidth(3,mob.session()),
-				CMLib.lister().fixColWidth(6,mob.session())
-			};
+		final int[] cols=
+		{
+			CMLib.lister().fixColWidth(27,mob.session()),
+			CMLib.lister().fixColWidth(3,mob.session()),
+			CMLib.lister().fixColWidth(6,mob.session())
+		};
 		if(str.equalsIgnoreCase("list"))
 		{
 			String mask=CMParms.combine(commands,1);
@@ -394,14 +440,14 @@ public class Costuming extends EnhancedCraftingSkill implements ItemCraftor, Men
 			if(amount>woodRequired)
 				woodRequired=amount;
 			final String misctype=foundRecipe.get(RCP_MISCTYPE);
-			final int[] pm={RawMaterial.MATERIAL_CLOTH};
+			final int[] pm= { RawMaterial.MATERIAL_CLOTH };
 			bundling=misctype.equalsIgnoreCase("BUNDLE");
 			final int[][] data=fetchFoundResourceData(mob,
-												woodRequired,"cloth",pm,
-												0,null,null,
-												bundling,
-												autoGenerate,
-												enhancedTypes);
+													  woodRequired,"cloth",pm,
+													  0,null,null,
+													  bundling,
+													  autoGenerate,
+													  enhancedTypes);
 			if(data==null)
 				return false;
 			fixDataForComponents(data,componentsFoundList);
@@ -474,7 +520,6 @@ public class Costuming extends EnhancedCraftingSkill implements ItemCraftor, Men
 			buildingI.text();
 			buildingI.recoverPhyStats();
 		}
-
 
 		messedUp=!proficiencyCheck(mob,0,auto);
 

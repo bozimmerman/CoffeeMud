@@ -13,6 +13,7 @@
   12. LIST ABILITYDOMAINS will show a list of, well, ability domains
   13. ID on private property will now show size and features, as will VIEW of titles on shopkeepers.
   14. Scripting trigger matches P syntax now truly is Precise (noteable bug fix).
+  15. Conquerable will now transfer private property to conqueror, see new OWNERSHIP flag.
 # Build 5.9.2 Released 02/09/2016
    1. Apprentice now gets bonus common skill.
    2. Prop_ItemBinder can now bind to a group.
