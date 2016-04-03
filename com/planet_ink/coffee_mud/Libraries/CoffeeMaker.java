@@ -758,16 +758,23 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 	protected String unpackRoomFromXML(Area forceArea, List<XMLTag> xml, boolean andContent, boolean andSave)
 	{
 		Area myArea;
+		String areaName;
 		if(forceArea!=null)
+		{
 			myArea=forceArea;
+			areaName = forceArea.Name();
+		}
 		else
-			myArea=CMLib.map().getArea(CMLib.xml().getValFromPieces(xml,"RAREA"));
+		{
+			areaName = CMLib.xml().getValFromPieces(xml,"RAREA");
+			myArea=CMLib.map().getArea(areaName);
+		}
 		if(myArea==null)
-			return unpackErr("Room","null 'myArea'",xml);
+			return unpackErr("Room","null RAREA '"+areaName+"'",xml);
 		final String roomClass=CMLib.xml().getValFromPieces(xml,"RCLAS");
 		final Room newRoom=CMClass.getLocale(roomClass);
 		if(newRoom==null)
-			return unpackErr("Room","null 'newRoom'",xml);
+			return unpackErr("Room","null RCLAS '"+roomClass+"'",xml);
 		newRoom.setRoomID(CMLib.xml().getValFromPieces(xml,"ROOMID"));
 		if(newRoom.roomID().equals("NEW"))
 			newRoom.setRoomID(myArea.getNewRoomID(newRoom,-1));
@@ -783,7 +790,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		// now EXITS!
 		final List<XMLLibrary.XMLTag> xV=CMLib.xml().getContentsFromPieces(xml,"ROOMEXITS");
 		if(xV==null)
-			return unpackErr("Room","null 'xV' in room "+newRoom.roomID(),xml);
+			return unpackErr("Room","null 'ROOMEXITS' in room "+newRoom.roomID(),xml);
 		for(int x=0;x<xV.size();x++)
 		{
 			final XMLTag xblk=xV.get(x);
@@ -837,13 +844,14 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			{
 				final List<XMLLibrary.XMLTag> xxV=xblk.getContentsFromPieces("XEXIT");
 				if(xxV==null)
-					return unpackErr("Room","null 'xxV' in room "+newRoom.roomID(),xblk.contents());
+					return unpackErr("Room","null 'XEXIT' in room "+newRoom.roomID(),xblk.contents());
 				Exit exit=null;
 				if(xxV.size()>0)
 				{
-					exit=CMClass.getExit(CMLib.xml().getValFromPieces(xxV,"EXID"));
+					String exitID=CMLib.xml().getValFromPieces(xxV,"EXID");
+					exit=CMClass.getExit(exitID);
 					if(exit==null)
-						return unpackErr("Room","null 'exit' in room "+newRoom.roomID());
+						return unpackErr("Room","null EXID '"+exitID+"' in room "+newRoom.roomID());
 					exit.setTemporaryDoorLink("{{#"+newRoom.roomID()+"#}}");
 					exit.setMiscText(CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(xxV,"EXDAT")));
 					newRoom.setRawExit(dir,exit);
@@ -908,78 +916,80 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 
 			final List<XMLLibrary.XMLTag> cV=CMLib.xml().getContentsFromPieces(xml,"ROOMCONTENT");
 			if(cV==null)
-				return unpackErr("Room","null 'cV' in room "+newRoom.roomID(),xml);
+				return unpackErr("Room","null 'ROOMCONTENT' in room "+newRoom.roomID(),xml);
 			if(cV.size()>0)
 			{
 				final Map<MOB,String> mobRideTable=new Hashtable<MOB,String>();
 				final List<XMLLibrary.XMLTag> mV=CMLib.xml().getContentsFromPieces(cV,"ROOMMOBS");
 				if(mV!=null)
-					//return unpackErr("Room","null 'mV' in room "+newRoom.roomID());
-				for(int m=0;m<mV.size();m++)
 				{
-					final XMLTag mblk=mV.get(m);
-					if((!mblk.tag().equalsIgnoreCase("RMOB"))||(mblk.contents()==null))
-						return unpackErr("Room","bad 'mblk' in room "+newRoom.roomID(),mblk);
-					final String mClass=mblk.getValFromPieces("MCLAS");
-					final MOB newMOB=CMClass.getMOB(mClass);
-					if(newMOB==null)
-						return unpackErr("Room","null 'mClass': "+mClass+" in room "+newRoom.roomID());
-
-					// for rideables AND leaders now!
-					final String iden=mblk.getValFromPieces("MIDEN");
-					if((iden!=null)&&(iden.length()>0))
-						identTable.put(iden,newMOB);
-
-					newMOB.setMiscText(CMLib.xml().restoreAngleBrackets(mblk.getValFromPieces("MTEXT")));
-					newMOB.basePhyStats().setLevel(mblk.getIntFromPieces("MLEVL"));
-					newMOB.basePhyStats().setAbility(mblk.getIntFromPieces("MABLE"));
-					newMOB.basePhyStats().setRejuv(mblk.getIntFromPieces("MREJV"));
-					final String ride=mblk.getValFromPieces("MRIDE");
-					if((ride!=null)&&(ride.length()>0))
-						mobRideTable.put(newMOB,ride);
-					newMOB.setStartRoom(newRoom);
-					newMOB.setLocation(newRoom);
-					newMOB.recoverCharStats();
-					newMOB.recoverPhyStats();
-					newMOB.recoverMaxState();
-					newMOB.resetToMaxState();
-					newMOB.bringToLife(newRoom,true);
+					for(int m=0;m<mV.size();m++)
+					{
+						final XMLTag mblk=mV.get(m);
+						if((!mblk.tag().equalsIgnoreCase("RMOB"))||(mblk.contents()==null))
+							return unpackErr("Room","bad 'mblk' in room "+newRoom.roomID(),mblk);
+						final String mClass=mblk.getValFromPieces("MCLAS");
+						final MOB newMOB=CMClass.getMOB(mClass);
+						if(newMOB==null)
+							return unpackErr("Room","null 'mClass': "+mClass+" in room "+newRoom.roomID());
+	
+						// for rideables AND leaders now!
+						final String iden=mblk.getValFromPieces("MIDEN");
+						if((iden!=null)&&(iden.length()>0))
+							identTable.put(iden,newMOB);
+	
+						newMOB.setMiscText(CMLib.xml().restoreAngleBrackets(mblk.getValFromPieces("MTEXT")));
+						newMOB.basePhyStats().setLevel(mblk.getIntFromPieces("MLEVL"));
+						newMOB.basePhyStats().setAbility(mblk.getIntFromPieces("MABLE"));
+						newMOB.basePhyStats().setRejuv(mblk.getIntFromPieces("MREJV"));
+						final String ride=mblk.getValFromPieces("MRIDE");
+						if((ride!=null)&&(ride.length()>0))
+							mobRideTable.put(newMOB,ride);
+						newMOB.setStartRoom(newRoom);
+						newMOB.setLocation(newRoom);
+						newMOB.recoverCharStats();
+						newMOB.recoverPhyStats();
+						newMOB.recoverMaxState();
+						newMOB.resetToMaxState();
+						newMOB.bringToLife(newRoom,true);
+					}
 				}
 
 				final Map<Item,String> itemLocTable=new Hashtable<Item,String>();
 				final List<XMLLibrary.XMLTag> iV=CMLib.xml().getContentsFromPieces(cV,"ROOMITEMS");
 				if(iV!=null)
-					//return unpackErr("Room","null 'iV' in room "+newRoom.roomID());
-				for(int i=0;i<iV.size();i++)
 				{
-					final XMLTag iblk=iV.get(i);
-					if((!iblk.tag().equalsIgnoreCase("RITEM"))||(iblk.contents()==null))
-						return unpackErr("Room","bad 'iblk' in room "+newRoom.roomID(),iblk);
-					final String iClass=iblk.getValFromPieces("ICLAS");
-					final Item newItem=CMClass.getItem(iClass);
-					if(newItem instanceof ArchonOnly)
-						continue;
-					if(newItem==null)
-						return unpackErr("Room","null 'iClass': "+iClass+" in room "+newRoom.roomID(),iblk);
-					if((newItem instanceof Container)||(newItem instanceof Rideable))
+					for(int i=0;i<iV.size();i++)
 					{
-						final String iden=iblk.getValFromPieces("IIDEN");
-						if((iden!=null)&&(iden.length()>0))
-							identTable.put(iden,newItem);
+						final XMLTag iblk=iV.get(i);
+						if((!iblk.tag().equalsIgnoreCase("RITEM"))||(iblk.contents()==null))
+							return unpackErr("Room","bad 'iblk' in room "+newRoom.roomID(),iblk);
+						final String iClass=iblk.getValFromPieces("ICLAS");
+						final Item newItem=CMClass.getItem(iClass);
+						if(newItem instanceof ArchonOnly)
+							continue;
+						if(newItem==null)
+							return unpackErr("Room","null 'iClass': "+iClass+" in room "+newRoom.roomID(),iblk);
+						if((newItem instanceof Container)||(newItem instanceof Rideable))
+						{
+							final String iden=iblk.getValFromPieces("IIDEN");
+							if((iden!=null)&&(iden.length()>0))
+								identTable.put(iden,newItem);
+						}
+						final String iloc=iblk.getValFromPieces("ILOCA");
+						if(iloc.length()>0)
+							itemLocTable.put(newItem,iloc);
+						newItem.basePhyStats().setLevel(iblk.getIntFromPieces("ILEVL"));
+						newItem.basePhyStats().setAbility(iblk.getIntFromPieces("IABLE"));
+						newItem.basePhyStats().setRejuv(iblk.getIntFromPieces("IREJV"));
+						newItem.setUsesRemaining(iblk.getIntFromPieces("IUSES"));
+						newItem.setOwner(newRoom); // temporary measure to take care of behaviors
+						newItem.setMiscText(CMLib.xml().restoreAngleBrackets(iblk.getValFromPieces("ITEXT")));
+						newItem.setContainer(null);
+						newItem.recoverPhyStats();
+						newRoom.addItem(newItem);
+						newItem.recoverPhyStats();
 					}
-					final String iloc=iblk.getValFromPieces("ILOCA");
-					if(iloc.length()>0)
-						itemLocTable.put(newItem,iloc);
-					newItem.basePhyStats().setLevel(iblk.getIntFromPieces("ILEVL"));
-					newItem.basePhyStats().setAbility(iblk.getIntFromPieces("IABLE"));
-					newItem.basePhyStats().setRejuv(iblk.getIntFromPieces("IREJV"));
-					newItem.setUsesRemaining(iblk.getIntFromPieces("IUSES"));
-					newItem.setOwner(newRoom); // temporary measure to take care of behaviors
-					newItem.setMiscText(CMLib.xml().restoreAngleBrackets(iblk.getValFromPieces("ITEXT")));
-					newItem.setContainer(null);
-					newItem.recoverPhyStats();
-					newRoom.addItem(newItem);
-					newItem.recoverPhyStats();
 				}
 				for(final Item childI : itemLocTable.keySet())
 				{
@@ -1052,7 +1062,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			return error;
 		final List<XMLLibrary.XMLTag> areaData=CMLib.xml().getContentsFromPieces(xml,"AREA");
 		if(areaData==null)
-			return unpackErr("Fill","null 'aV'",xml);
+			return unpackErr("Fill","null 'AREA'",xml);
 		for(int a=0;a<areaData.size();a++)
 			area.add(areaData.get(a));
 		return "";
@@ -1166,7 +1176,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		fillCustomVectorFromXML(xml,custom,externalFiles);
 		final List<XMLLibrary.XMLTag> aV=CMLib.xml().getContentsFromPieces(xml,"AREAS");
 		if(aV==null)
-			return unpackErr("Areas","null 'aV'",xml);
+			return unpackErr("Areas","null 'AREAS'",xml);
 		for(int r=0;r<aV.size();r++)
 		{
 			final XMLTag ablk=aV.get(r);
@@ -1281,7 +1291,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		{
 			final List<XMLLibrary.XMLTag> rV=CMLib.xml().getContentsFromPieces(aV,"AROOMS");
 			if(rV==null)
-				return unpackErr("Area","null 'rV'",aV);
+				return unpackErr("Area","null 'AROOMS'",aV);
 			for(int r=0;r<rV.size();r++)
 			{
 				final XMLTag ablk=rV.get(r);
@@ -1315,7 +1325,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			throw new CMException(unpackErr("Area","null 'xml'"));
 		aV=CMLib.xml().getContentsFromPieces(aV,"AREA");
 		if(aV==null)
-			throw new CMException(unpackErr("Area","null 'aV'",aV));
+			throw new CMException(unpackErr("Area","null 'AREA'",aV));
 
 		final String areaClass=CMLib.xml().getValFromPieces(aV,"ACLAS");
 		final String areaName=CMLib.xml().getValFromPieces(aV,"ANAME");
@@ -1332,7 +1342,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		newArea.setMiscText(CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(aV,"ADATA")));
 		final List<XMLLibrary.XMLTag> rV=CMLib.xml().getContentsFromPieces(aV,"AROOMS");
 		if(rV==null)
-			throw new CMException(unpackErr("Area","null 'rV'",aV));
+			throw new CMException(unpackErr("Area","null 'AROOMS'",aV));
 		for(int r=0;r<rV.size();r++)
 		{
 			final XMLTag ablk=rV.get(r);
@@ -1762,7 +1772,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			return unpackErr("Items","null 'xml'");
 		final List<XMLLibrary.XMLTag> iV=CMLib.xml().getContentsFromPieces(xml,"ITEMS");
 		if(iV==null)
-			return unpackErr("Items","null 'iV' <ITEMS>",xml);
+			return unpackErr("Items","null 'ITEMS' <ITEMS>",xml);
 		for(int i=0;i<iV.size();i++)
 		{
 			final XMLTag iblk=iV.get(i);
@@ -1795,7 +1805,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			return unpackErr("MOBs","null 'xml'");
 		final List<XMLLibrary.XMLTag> mV=CMLib.xml().getContentsFromPieces(xml,"MOBS");
 		if(mV==null)
-			return unpackErr("MOBs","null 'mV'",xml);
+			return unpackErr("MOBs","null 'MOBS'",xml);
 		for(int m=0;m<mV.size();m++)
 		{
 			final XMLTag mblk=mV.get(m);
@@ -1882,7 +1892,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 						if(cataDataTag.parms().containsKey("NAME"))
 							set.put(CMLib.xml().restoreAngleBrackets(cataDataTag.parms().get("NAME")), catDat);
 						else
-							return unpackErr("CataDats","null 'name'");
+							return unpackErr("CataDats","null 'NAME'");
 					}
 				}
 			}

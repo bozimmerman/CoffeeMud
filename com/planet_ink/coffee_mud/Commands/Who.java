@@ -35,12 +35,19 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Who extends StdCommand
 {
-	public Who(){}
+	public Who()
+	{
+	}
 
-	private final String[] access=I(new String[]{"WHO","WH"});
-	@Override public String[] getAccessWords(){return access;}
-	
-	private final static Class[][] filterParameters=new Class[][]{{Boolean.class,Filterer.class}};
+	private final String[]	access	= I(new String[] { "WHO", "WH" });
+
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
+
+	private final static Class[][]	filterParameters	= new Class[][] { { Boolean.class, Filterer.class } };
 
 	public int[] getShortColWidths(MOB seer)
 	{
@@ -105,7 +112,7 @@ public class Who extends StdCommand
 	public String getWhoName(MOB seenM)
 	{
 		String name=null;
-		if(CMath.bset(seenM.phyStats().disposition(),PhyStats.IS_CLOAKED))
+		if(CMLib.flags().isCloaked(seenM))
 			name="("+(seenM.Name().equals(seenM.name())?seenM.titledName():seenM.name())+")";
 		else
 			name=(seenM.Name().equals(seenM.name())?seenM.titledName():seenM.name());
@@ -117,7 +124,7 @@ public class Who extends StdCommand
 	public boolean checkWho(MOB seerM, MOB seenM, Set<String> friends, Filterer<MOB> mobFilter)
 	{
 		if((seenM!=null)
-		&&((((seenM.phyStats().disposition()&PhyStats.IS_CLOAKED)==0)
+		&&(((!CMLib.flags().isCloaked(seenM))
 			||((CMSecurity.isAllowedAnywhere(seerM,CMSecurity.SecFlag.CLOAK)||CMSecurity.isAllowedAnywhere(seerM,CMSecurity.SecFlag.WIZINV))&&(seerM.phyStats().level()>=seenM.phyStats().level()))))
 		&&((friends==null)||(friends.contains(seenM.Name())||(friends.contains("All"))))
 		&&((mobFilter==null)||(mobFilter.passesFilter(seenM)))
@@ -199,9 +206,9 @@ public class Who extends StdCommand
 		&&(CMProps.isUsingAccountSystem()))
 		{
 			int[] colWidths = new int[]{
-					CMLib.lister().fixColWidth(20,mob.session()),
-					CMLib.lister().fixColWidth(40,mob.session())
-				};
+				CMLib.lister().fixColWidth(20,mob.session()),
+				CMLib.lister().fixColWidth(40,mob.session())
+			};
 			final StringBuilder msg=new StringBuilder("");
 			msg.append("^x[");
 			msg.append(CMStrings.padRight(L("Account"),colWidths[0]));
@@ -244,5 +251,10 @@ public class Who extends StdCommand
 			return getWho(mob,null,((Boolean)args[0]).booleanValue(),(Filterer)args[1]);
 		return Boolean.FALSE;
 	}
-	@Override public boolean canBeOrdered(){return true;}
+
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 }

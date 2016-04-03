@@ -37,8 +37,13 @@ public class Tell extends StdCommand
 {
 	public Tell(){}
 
-	private final String[] access=I(new String[]{"TELL","T"});
-	@Override public String[] getAccessWords(){return access;}
+	private final String[]	access	= I(new String[] { "TELL", "T" });
+
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
@@ -142,10 +147,12 @@ public class Tell extends StdCommand
 
 		if(targetM.isAttributeSet(MOB.Attrib.QUIET))
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("That person can not hear you."));
+			if(CMLib.flags().isCloaked(targetM))
+				CMLib.commands().doCommandFail(mob,origCmds,L("That person doesn't appear to be online."));
+			else
+				CMLib.commands().doCommandFail(mob,origCmds,L("That person can not hear you."));
 			return false;
 		}
-
 
 		final Session ts=targetM.session();
 		try
@@ -163,12 +170,24 @@ public class Tell extends StdCommand
 		if((targetM.session()!=null)&&(targetM.session().isAfk()))
 		{
 			mob.tell(targetM.session().getAfkMessage());
+			if(CMLib.flags().isCloaked(targetM))
+				CMLib.commands().doCommandFail(mob,origCmds,L("That person doesn't appear to be online."));
 		}
 		return false;
 	}
-	// the reason this is not 0ed is because of combat -- we want the players to use SAY, and pay for it when coordinating.
-	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandCombatActionCost(ID());}
-	@Override public boolean canBeOrdered(){return false;}
 
+	// the reason this is not 0ed is because of combat -- we want the players to
+	// use SAY, and pay for it when coordinating.
+	@Override
+	public double combatActionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandCombatActionCost(ID());
+	}
+
+	@Override
+	public boolean canBeOrdered()
+	{
+		return false;
+	}
 
 }

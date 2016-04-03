@@ -35,12 +35,37 @@ import java.util.*;
 
 public class Spell_DisenchantWand extends Spell
 {
-	@Override public String ID() { return "Spell_DisenchantWand"; }
-	private final static String localizedName = CMLib.lang().L("Disenchant Wand");
-	@Override public String name() { return localizedName; }
-	@Override protected int canTargetCode(){return CAN_ITEMS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;	}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override
+	public String ID()
+	{
+		return "Spell_DisenchantWand";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Disenchant Wand");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_ITEMS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL | Ability.DOMAIN_EVOCATION;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -74,7 +99,6 @@ public class Spell_DisenchantWand extends Spell
 		}
 		else
 			beneficialWordsFizzle(mob,target,L("<S-NAME> hold(s) <T-NAMESELF> and whisper(s), but nothing happens."));
-
 
 		// return whether it worked
 		return success;

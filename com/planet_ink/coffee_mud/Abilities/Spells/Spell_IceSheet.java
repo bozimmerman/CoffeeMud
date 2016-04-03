@@ -81,6 +81,8 @@ public class Spell_IceSheet extends Spell
 		return Ability.ACODE_SPELL | Ability.DOMAIN_CONJURATION;
 	}
 
+	private Item theSheet = null;
+	
 	@Override
 	public void unInvoke()
 	{
@@ -92,6 +94,11 @@ public class Spell_IceSheet extends Spell
 		final Room room=(Room)affected;
 		if(canBeUninvoked())
 			room.showHappens(CMMsg.MSG_OK_VISUAL, L("The ice sheet melts."));
+		if(theSheet != null)
+		{
+			theSheet.destroy();
+			theSheet = null;
+		}
 		super.unInvoke();
 	}
 
@@ -113,7 +120,8 @@ public class Spell_IceSheet extends Spell
 					return false;
 				}
 				else
-				if((msg.sourceMajor(CMMsg.MASK_MOVE)))
+				if(((msg.sourceMajor(CMMsg.MASK_MOVE)))
+				&&((theSheet!=null)&&(room.isContent(theSheet))))
 				{
 					if((!CMLib.flags().isInFlight(mob))
 					&&(CMLib.dice().rollPercentage()>((msg.source().charStats().getStat(CharStats.STAT_DEXTERITY)*3)+25)))
@@ -184,7 +192,15 @@ public class Spell_IceSheet extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				beneficialAffect(mob,mob.location(),asLevel,0);
+				Spell_IceSheet sheet=(Spell_IceSheet)beneficialAffect(mob,mob.location(),asLevel,0);
+				if(sheet != null)
+				{
+					sheet.theSheet = CMClass.getBasicItem("StdItem");
+					sheet.theSheet.setName("an ice sheet");
+					sheet.theSheet.setDisplayText("an enormous ice sheet covers the ground here");
+					CMLib.flags().setGettable(sheet.theSheet, false);
+					mob.location().addItem(sheet.theSheet);
+				}
 			}
 		}
 		else
