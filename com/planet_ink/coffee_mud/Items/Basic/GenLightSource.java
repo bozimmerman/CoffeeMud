@@ -60,12 +60,14 @@ public class GenLightSource extends LightSource
 	public void setDuration(int duration)
 	{
 		readableText=""+duration;
+		super.setDuration(duration);
 	}
 
 	@Override
 	public int getDuration()
 	{
-		return CMath.s_int(readableText);
+		durationTicks = CMath.s_int(readableText);
+		return super.getDuration();
 	}
 
 	@Override
