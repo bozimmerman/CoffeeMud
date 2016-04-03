@@ -35,15 +35,55 @@ import java.util.*;
 
 public class Spell_EnchantArrows extends Spell
 {
-	@Override public String ID() { return "Spell_EnchantArrows"; }
-	private final static String localizedName = CMLib.lang().L("Enchant Arrows");
-	@Override public String name() { return localizedName; }
-	@Override protected int canTargetCode(){return CAN_ITEMS;}
-	@Override protected int canAffectCode(){return CAN_ITEMS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
-	@Override protected int overrideMana(){return Ability.COST_ALL;}
-	@Override public long flags(){return Ability.FLAG_NOORDERING;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override
+	public String ID()
+	{
+		return "Spell_EnchantArrows";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Enchant Arrows");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_ITEMS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_ITEMS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL | Ability.DOMAIN_ENCHANTMENT;
+	}
+
+	@Override
+	protected int overrideMana()
+	{
+		return Ability.COST_ALL;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_NOORDERING;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
 
 	@Override
 	public void affectPhyStats(Physical host, PhyStats affectableStats)
@@ -59,7 +99,14 @@ public class Spell_EnchantArrows extends Spell
 		if(target==null)
 			return false;
 
-		if((!(target instanceof Ammunition))||(!((Ammunition)target).ammunitionType().equalsIgnoreCase("arrows")))
+		if((target instanceof Ammunition)
+		&&(((Ammunition)target).ammunitionType().equalsIgnoreCase("arrows")
+			||((Ammunition)target).ammunitionType().equalsIgnoreCase("bolts")
+			||((Ammunition)target).ammunitionType().equalsIgnoreCase("ballista-bolts")))
+		{
+			// this is what you can enchant
+		}
+		else
 		{
 			mob.tell(mob,target,null,L("You can't enchant <T-NAME> ith an Enchant Arrows spell!"));
 			return false;
@@ -86,17 +133,19 @@ public class Spell_EnchantArrows extends Spell
 				else
 				{
 					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("<T-NAME> glows!"));
-					if(A==null){ A=(Ability)copyOf(); target.addNonUninvokableEffect(A);}
+					if (A == null)
+					{
+						A = (Ability) copyOf();
+						target.addNonUninvokableEffect(A);
+					}
 					A.setMiscText(""+(CMath.s_int(A.text())+1));
 					target.recoverPhyStats();
 					mob.recoverPhyStats();
 				}
 			}
-
 		}
 		else
 			beneficialWordsFizzle(mob,target,L("<S-NAME> hold(s) <T-NAMESELF> tightly and whisper(s), but fail(s) to cast a spell."));
-
 
 		// return whether it worked
 		return success;
