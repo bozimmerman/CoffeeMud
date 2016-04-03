@@ -175,6 +175,7 @@ public class HTTPForwarder implements HTTPIOHandler, Runnable
 	 * @throws IOException
 	 */
 	@Override
+	@Deprecated
 	public int writeBlockingBytesToChannel(final DataBuffers buffers) throws IOException
 	{
 		synchronized(webServerChannel)

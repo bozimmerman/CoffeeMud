@@ -693,6 +693,7 @@ public class HTTPReader implements HTTPIOHandler, ProtocolHandler, Runnable
 	 * @throws IOException
 	 */
 	@Override
+	@Deprecated
 	public int writeBlockingBytesToChannel(final DataBuffers buffers) throws IOException
 	{
 		int written=0;
