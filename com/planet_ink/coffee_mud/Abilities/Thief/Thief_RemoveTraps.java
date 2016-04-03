@@ -136,7 +136,14 @@ public class Thief_RemoveTraps extends ThiefSkill
 			Room R2=null;
 			if(dirCode<0)
 			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
-				if(R.getExitInDir(d)==unlockThis){ dirCode=d; R2=R.getRoomInDir(d); break;}
+			{
+				if (R.getExitInDir(d) == unlockThis)
+				{
+					dirCode = d;
+					R2 = R.getRoomInDir(d);
+					break;
+				}
+			}
 			if((CMLib.law().doesOwnThisLand(mob,R))
 			||((R2!=null)&&(CMLib.law().doesOwnThisLand(mob,R2))))
 				permanent=true;
@@ -198,11 +205,13 @@ public class Thief_RemoveTraps extends ThiefSkill
 				{
 					for(int i=0;i<permSetV.size();i++)
 					{
-						if(theTrap!=null) {
+						if (theTrap != null)
+						{
 							theTrap.unInvoke();
 							permSetV.elementAt(i).delEffect(theTrap);
 						}
-						if(opTrap!=null) {
+						if (opTrap != null)
+						{
 							opTrap.unInvoke();
 							permSetV.elementAt(i).delEffect(opTrap);
 						}

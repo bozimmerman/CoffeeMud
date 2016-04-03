@@ -46,8 +46,18 @@ import java.util.regex.Pattern;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class DefaultScriptingEngine implements ScriptingEngine
 {
-	@Override public String ID(){return "DefaultScriptingEngine";}
-	@Override public String name(){return "Default Scripting Engine";}
+	@Override
+	public String ID()
+	{
+		return "DefaultScriptingEngine";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Default Scripting Engine";
+	}
+
 	protected static final Map<String,Integer>	funcH	= new Hashtable<String,Integer>();
 	protected static final Map<String,Integer>	methH	= new Hashtable<String,Integer>();
 	protected static final Map<String,Integer>	progH	= new Hashtable<String,Integer>();
@@ -1458,6 +1468,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				E=monster.findItem(str);
 			if(E==null) 
 				E=CMLib.players().getPlayer(str);
+			if((E==null)&&(source!=null))
+				E=source.findItem(str);
 			if(E instanceof PhysicalAgent)
 				return (PhysicalAgent)E;
 		}

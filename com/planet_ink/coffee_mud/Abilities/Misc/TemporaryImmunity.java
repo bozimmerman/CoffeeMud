@@ -94,12 +94,13 @@ public class TemporaryImmunity extends StdAbility
 
 	public final static long					IMMUNITY_TIME	= 36000000;
 	protected final PairVector<String, Long>	set				= new PairVector<String, Long>();
+	protected volatile int						tickUp			= 10;
 
 	public TemporaryImmunity()
 	{
 		super();
 
-		tickDown = 10;
+		tickUp = 10;
 	}
 
 	@Override
@@ -107,9 +108,9 @@ public class TemporaryImmunity extends StdAbility
 	{
 		if((affected instanceof MOB)
 		&&(tickID==Tickable.TICKID_MOB)
-		&&((--tickDown)==0))
+		&&((--tickUp)==0))
 		{
-			tickDown=10;
+			tickUp=10;
 			makeLongLasting();
 			for(int s=set.size()-1;s>=0;s--)
 			{
