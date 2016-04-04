@@ -996,14 +996,15 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			return;
 		int damageInt=adjustedDamage(source,weapon,null,0,false);
 		int damageType=Weapon.TYPE_BASHING;
-		damageType=weapon.weaponDamageType();
+		if(weapon != null)
+			damageType= weapon.weaponDamageType();
 		final Room room=CMLib.map().roomLocation(attacker);
 		if(success)
 		{
 			// calculate Base Damage (with Strength bonus)
 			final String oldHitString="^F^<FIGHT^>"+((weapon!=null)?
 								weapon.hitString(damageInt):
-								standardHitString(Weapon.TYPE_NATURAL,Weapon.CLASS_BLUNT,(int)Math.round(Math.pow(2,damageInt)),weapon.name()))+"^</FIGHT^>^?";
+								standardHitString(Weapon.TYPE_NATURAL,Weapon.CLASS_BLUNT,(int)Math.round(Math.pow(2,damageInt)),attacker.Name()))+"^</FIGHT^>^?";
 			final CMMsg msg=CMClass.getMsg(source,
 									defender,
 									weapon,
@@ -1040,7 +1041,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		{
 			final String missString="^F^<FIGHT^>"+((weapon!=null)?
 								weapon.missString():
-								standardMissString(Weapon.TYPE_BASHING,Weapon.CLASS_BLUNT,weapon.name(),false))+"^</FIGHT^>^?";
+								standardMissString(Weapon.TYPE_BASHING,Weapon.CLASS_BLUNT,attacker.name(),false))+"^</FIGHT^>^?";
 			final CMMsg msg=CMClass.getMsg(source,
 											defender,
 											weapon,

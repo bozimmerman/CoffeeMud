@@ -484,7 +484,7 @@ public class Concierge extends StdBehavior
 					final MOB observer=getTalker((Environmental)ticking,source.location());
 					final String msg=thingsToSay.get(0).second;
 					thingsToSay.removeElementAt(0);
-					if((R!=null)&&((source==null)||(R.isHere(source))))
+					if((R!=null)&&(R.isHere(source)))
 						CMLib.commands().postSay(observer,source,msg,true,false);
 				}
 			}

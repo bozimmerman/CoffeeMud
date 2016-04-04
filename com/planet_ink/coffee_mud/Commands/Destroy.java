@@ -558,7 +558,6 @@ public class Destroy extends StdCommand
 		return true;
 	}
 
-
 	public void areas(MOB mob, List<String> commands)
 		throws IOException
 	{

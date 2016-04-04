@@ -526,7 +526,7 @@ public class Stat  extends Skills
 	protected Item getItemTarget(MOB mob, String itemName)
 	{
 		Item target=null;
-		if(target == null)
+		//if(target == null)
 			target=mob.findItem(itemName);
 		if(target == null)
 			target=mob.location().findItem(itemName);
@@ -1149,7 +1149,7 @@ public class Stat  extends Skills
 					{
 						MOBname = CMParms.combine(commands,0);
 						Environmental itarget=null;
-						if(itarget==null)
+						//if(itarget==null)
 							itarget=this.getItemTarget(mob, MOBname);
 						if(itarget==null)
 							itarget=mob.location().fetchExit(MOBname);

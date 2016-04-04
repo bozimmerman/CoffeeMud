@@ -595,7 +595,7 @@ public class GenSailingShip extends StdBoardable
 								final Exit targetExit=R.getExitInDir(dir);
 								if((targetRoom==null)||(targetExit==null)||(!targetExit.isOpen()))
 								{
-									if((coordinates == null) || (getLowestTacticalDistanceFromThis() >= R.maxRange()))
+									if(getLowestTacticalDistanceFromThis() >= R.maxRange())
 									{
 										msg.source().tell(L("There doesn't look to be anywhere you can sail in that direction."));
 										return false;
