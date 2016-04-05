@@ -66,10 +66,4 @@ public class IndoorShallowWater extends ShallowWater implements Drink
 	{
 		return 5;
 	}
-
-	@Override
-	public List<Integer> resourceChoices()
-	{
-		return CaveRoom.roomResources;
-	}
 }

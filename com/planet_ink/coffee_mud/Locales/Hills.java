@@ -70,6 +70,7 @@ public class Hills extends StdRoom
 		Integer.valueOf(RawMaterial.RESOURCE_LEATHER),
 		Integer.valueOf(RawMaterial.RESOURCE_FEATHERS),
 		Integer.valueOf(RawMaterial.RESOURCE_MESQUITE),
+		Integer.valueOf(RawMaterial.RESOURCE_WOOL),
 		Integer.valueOf(RawMaterial.RESOURCE_EGGS),
 		Integer.valueOf(RawMaterial.RESOURCE_HERBS),
 		Integer.valueOf(RawMaterial.RESOURCE_POTATOES)

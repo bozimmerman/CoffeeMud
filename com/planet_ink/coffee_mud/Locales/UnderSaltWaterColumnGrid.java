@@ -53,4 +53,9 @@ public class UnderSaltWaterColumnGrid extends UnderWaterColumnGrid
 		return "UnderSaltWater";
 	}
 
+	@Override
+	public List<Integer> resourceChoices()
+	{
+		return UnderSaltWater.roomResources;
+	}
 }

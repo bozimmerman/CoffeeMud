@@ -65,9 +65,15 @@ public class SaltWaterSurface extends WaterSurface
 			|| (thatSea instanceof UnderSaltWaterColumnGrid);
 	}
 
+	public static final List<Integer>	roomResources	= new Vector<Integer>(Arrays.asList(UnderSaltWater.resourceList));
+	static
+	{
+		roomResources.add(Integer.valueOf(RawMaterial.RESOURCE_SALMON));
+	}
+	
 	@Override
 	public List<Integer> resourceChoices()
 	{
-		return UnderSaltWater.roomResources;
+		return roomResources;
 	}
 }
