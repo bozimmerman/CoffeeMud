@@ -45,7 +45,7 @@ public class Rattlesnake extends StdMOB
 		super();
 		username="a rattlesnake";
 		setDescription("A fearsome creature with long fangs and an effective warning for the unwary.");
-		setDisplayText("A rattlesnake shakes his tale at you furiously");
+		setDisplayText("A rattlesnake shakes its tail at you furiously");
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);
 		setMoney(0);
 
