@@ -1853,8 +1853,13 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		   &&(R.domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)))
 			return;
 
-		if(((P instanceof MOB)&&(!CMLib.flags().isWaterWorthy(P))&&(!CMLib.flags().isInFlight(P))&&(P.phyStats().weight()>=1))
-		||((P instanceof Item)&&(!CMLib.flags().isInFlight(((Item)P).ultimateContainer(null)))&&(!CMLib.flags().isWaterWorthy(((Item)P).ultimateContainer(null)))))
+		if(((P instanceof MOB)
+			&&(!CMLib.flags().isWaterWorthy(P))
+			&&(!CMLib.flags().isInFlight(P))
+			&&(P.phyStats().weight()>=1))
+		||((P instanceof Item)
+			&&(!CMLib.flags().isInFlight(((Item)P).ultimateContainer(null)))
+			&&(!CMLib.flags().isWaterWorthy(((Item)P).ultimateContainer(null)))))
 		{
 			if(P.fetchEffect("Sinking")==null)
 			{
@@ -1896,4 +1901,68 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 				recallRoom.bringMobHere(mob,mob.isMonster());
 		}
 	}
+	
+	@Override
+	public PairVector<Room,int[]> buildGridList(Room room, String ownerName, int maxDepth)
+	{
+		int depth=0;
+		PairVector<Room,int[]> rooms = new PairVector<Room,int[]>();
+		if(room==null)
+			return rooms;
+		if(rooms.contains(room))
+			return rooms;
+		final Set<Room> H=new HashSet<Room>(1000);
+		H.add(room);
+		rooms.add(new Pair<Room,int[]>(room,new int[]{0,0,0}));
+		int min=0;
+		int size=rooms.size();
+		int[] coords=null;
+		Room R1=null;
+		Room R=null;
+		LandTitle T = null;
+
+		int r=0;
+		int d=0;
+		while(depth<maxDepth)
+		{
+			for(r=min;r<size;r++)
+			{
+				R1=rooms.get(r).first;
+				coords=rooms.get(r).second;
+				for(d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+				{
+					R=R1.getRoomInDir(d); // exit doesn't matter because walls
+					if(R!=null)
+						T=CMLib.law().getLandTitle(R);
+					if((R==null)
+					||(T==null)
+					||(H.contains(R))
+					||(R.roomID().length()==0))
+						continue;
+					rooms.add(new Pair<Room,int[]>(R,Directions.adjustXYZByDirections(coords[0], coords[1], coords[2], d)));
+					H.add(R);
+				}
+			}
+			min=size;
+			size=rooms.size();
+			if(min==size)
+				return rooms;
+			depth++;
+		}
+		return rooms;
+	}
+	
+	@Override
+	public Room getCalculatedAdjacentRoom(PairVector<Room,int[]> rooms, Room R, int dir)
+	{
+		final int[] lookForCoords = Directions.adjustXYZByDirections(0, 0, 0, dir);
+		for(int i=0;i<rooms.size();i++)
+		{
+			if((Arrays.equals(lookForCoords, rooms.getSecond(i)))
+			&&(rooms.getFirst(i).rawDoors()[Directions.getOpDirectionCode(dir)]==null))
+				return rooms.getFirst(i);
+		}
+		return null;
+	}
+	
 }

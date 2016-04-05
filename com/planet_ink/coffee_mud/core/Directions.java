@@ -601,6 +601,62 @@ public class Directions
 	}
 
 	/**
+	 * Given an x and y and z coordinate, and a direction code, this method will return
+	 * an int array with 2 entries x, y, and z representing the changes to the given
+	 * x, y, and z after moving in that direction.
+	 * @param x the x coordinate
+	 * @param y the y coordinate
+	 * @param z the z coordinate
+	 * @param direction the direction code being travelled
+	 * @return the 3 dimensional int array with the new x, y, z
+	 */
+	public static final int[] adjustXYZByDirections(int x, int y, int z, final int direction)
+	{
+		switch(direction)
+		{
+		case Directions.NORTH:
+			y--;
+			break;
+		case Directions.SOUTH:
+			y++;
+			break;
+		case Directions.EAST:
+			x++;
+			break;
+		case Directions.WEST:
+			x--;
+			break;
+		case Directions.NORTHEAST:
+			x++;
+			y--;
+			break;
+		case Directions.NORTHWEST:
+			x--;
+			y--;
+			break;
+		case Directions.SOUTHEAST:
+			x++;
+			y++;
+			break;
+		case Directions.SOUTHWEST:
+			x--;
+			y++;
+			break;
+		case Directions.UP:
+			z--;
+			break;
+		case Directions.DOWN:
+			z++;
+			break;
+		}
+		final int[] xy=new int[3];
+		xy[0]=x;
+		xy[1]=y;
+		xy[2]=z;
+		return xy;
+	}
+
+	/**
 	 * Returns the proper english compass direction name to follow the preposition 
 	 * "from" when talking about something or someone coming FROM the given direction 
 	 * code.  Completes the following sentence: "Joe arrived from ..."

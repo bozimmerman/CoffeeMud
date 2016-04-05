@@ -71,6 +71,8 @@ public interface TrackingLibrary extends CMLibrary
 	public Rideable findALadder(MOB mob, Room room);
 	public void postMountLadder(MOB mob, Rideable ladder);
 	public TrackingFlags newFlags();
+	public Room getCalculatedAdjacentRoom(PairVector<Room,int[]> rooms, Room R, int dir);
+	public PairVector<Room,int[]> buildGridList(Room room, String ownerName, int maxDepth);
 
 	public static interface RFilter
 	{

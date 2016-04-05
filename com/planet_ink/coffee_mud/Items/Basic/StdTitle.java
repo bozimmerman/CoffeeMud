@@ -141,6 +141,25 @@ public class StdTitle extends StdItem implements LandTitle
 	}
 	
 	@Override
+	public void setGridLayout(boolean layout)
+	{
+		final LandTitle A=fetchALandTitle();
+		if(A==null)
+			return;
+		A.setGridLayout(layout);
+		A.updateTitle();
+	}
+	
+	@Override
+	public boolean gridLayout()
+	{
+		final LandTitle A=fetchALandTitle();
+		if(A==null)
+			return false;
+		return A.gridLayout();
+	}
+	
+	@Override
 	public boolean rentalProperty()
 	{
 		final LandTitle A=fetchALandTitle();

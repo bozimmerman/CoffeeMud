@@ -102,10 +102,11 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		return getAllTitledRooms();
 	}
 
-	protected void saveData(String owner, int price, boolean rental, int backTaxes)
+	protected void saveData(String owner, int price, boolean rental, int backTaxes, boolean grid)
 	{
 		setMiscText(owner+"/"
 				+(rental?"RENTAL ":"")
+				+(grid?"GRID ":"")
 				+((backTaxes>0)?"TAX"+backTaxes+"X ":"")
 				+price);
 	}
@@ -113,7 +114,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	@Override
 	public void setPrice(int price)
 	{
-		saveData(getOwnerName(), price, rentalProperty(), backTaxes());
+		saveData(getOwnerName(), price, rentalProperty(), backTaxes(), gridLayout());
 	}
 
 	@Override
@@ -142,7 +143,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	{
 		if((owner.length()==0)&&(getOwnerName().length()>0))
 			scheduleReset=true;
-		saveData(owner, getPrice(), rentalProperty(), backTaxes());
+		saveData(owner, getPrice(), rentalProperty(), backTaxes(), gridLayout());
 	}
 
 	@Override
@@ -161,7 +162,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	@Override
 	public void setBackTaxes(int tax)
 	{
-		saveData(getOwnerName(), getPrice(), rentalProperty(), tax);
+		saveData(getOwnerName(), getPrice(), rentalProperty(), tax, gridLayout());
 	}
 
 	@Override
@@ -177,7 +178,23 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	@Override
 	public void setRentalProperty(boolean truefalse)
 	{
-		saveData(getOwnerName(), getPrice(), truefalse, backTaxes());
+		saveData(getOwnerName(), getPrice(), truefalse, backTaxes(), gridLayout());
+	}
+
+	@Override
+	public boolean gridLayout()
+	{
+		final String upperText=text().toUpperCase();
+		final int dex=upperText.indexOf('/');
+		if(dex<0)
+			return upperText.indexOf("GRID")>=0;
+		return upperText.indexOf("GRID",dex)>0;
+	}
+
+	@Override
+	public void setGridLayout(boolean layout)
+	{
+		saveData(getOwnerName(), getPrice(), rentalProperty(), backTaxes(), layout);
 	}
 
 	// update title, since it may affect clusters, worries about ALL involved
@@ -575,10 +592,10 @@ public class Prop_RoomForSale extends Property implements LandTitle
 							if(needsToPay)
 							{
 								if(CMLib.beanCounter().modifyLocalBankGold(A,
-										owner,
-										CMLib.utensils().getFormattedDate(A)+":Withdrawal of "+rent+": Rent for "+ID,
-										CMLib.beanCounter().getCurrency(A),
-										(-rent)))
+									owner,
+									CMLib.utensils().getFormattedDate(A)+":Withdrawal of "+rent+": Rent for "+ID,
+									CMLib.beanCounter().getCurrency(A),
+									(-rent)))
 								{
 									lastMonth++;
 									if(lastMonth>A.getTimeObj().getMonthsInYear())

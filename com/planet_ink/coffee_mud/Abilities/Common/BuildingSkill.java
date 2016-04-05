@@ -498,9 +498,33 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 			{
 				if((R.rawDoors()[d]==null)
 				||(R.rawDoors()[d].roomID().length()>0))
+				{
 					if(room.getRawExit(d)!=null)
 						R.setRawExit(d, (Exit)room.getRawExit(d).copyOf());
+				}
 			}
+			LandTitle title = CMLib.law().getLandTitle(room);
+			if((title!=null)&&(title.gridLayout()))
+			{
+				final PairVector<Room,int[]> rooms=CMLib.tracking().buildGridList(R, title.getOwnerName(), 100);
+				for(int dir=0;dir<Directions.NUM_DIRECTIONS();dir++)
+				{
+					if(dir==Directions.GATE)
+						continue;
+					Room R3=R.getRoomInDir(dir);
+					if(R3 == null)
+					{
+						R3=CMLib.tracking().getCalculatedAdjacentRoom(rooms, R3, dir);
+						if(R3!=null)
+						{
+							R.rawDoors()[dir]=R3;
+							R3.rawDoors()[Directions.getOpDirectionCode(dir)]=R;
+							CMLib.database().DBUpdateExits(R3);
+						}
+					}
+				}
+			}
+			
 			R.clearSky();
 			R.startItemRejuv();
 			try
@@ -1398,6 +1422,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 				case Room.DOMAIN_INDOORS_METAL:
 				case Room.DOMAIN_INDOORS_STONE:
 				case Room.DOMAIN_INDOORS_WOOD:
+				{
 					int floorNumber = this.findFloorNumber(mob.location(), new HashSet<Room>(), 1);
 					if(floorNumber > 1)
 					{
@@ -1405,6 +1430,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 						return false;
 					}
 					break;
+				}
 				case Room.DOMAIN_OUTDOORS_AIR:
 				case Room.DOMAIN_OUTDOORS_UNDERWATER:
 				case Room.DOMAIN_OUTDOORS_WATERSURFACE:

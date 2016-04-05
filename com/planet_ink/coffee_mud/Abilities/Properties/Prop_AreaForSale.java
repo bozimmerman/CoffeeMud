@@ -217,6 +217,17 @@ public class Prop_AreaForSale extends Property implements LandTitle
 	}
 	
 	@Override
+	public boolean gridLayout()
+	{
+		return false;
+	}
+	
+	@Override
+	public void setGridLayout(boolean gridLayout)
+	{
+	}
+	
+	@Override
 	public void setLandPropertyID(String landID)
 	{
 	}

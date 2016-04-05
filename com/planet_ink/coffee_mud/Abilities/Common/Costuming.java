@@ -84,17 +84,17 @@ public class Costuming extends EnhancedCraftingSkill implements ItemCraftor, Men
 		+ "CODED_SPELL_LIST";
 	}
 
-	//protected static final int RCP_FINALNAME=0;
-	//protected static final int RCP_LEVEL=1;
-	//protected static final int RCP_TICKS=2;
-	protected static final int RCP_WOOD=3;
-	protected static final int RCP_VALUE=4;
-	protected static final int RCP_CLASSTYPE=5;
-	protected static final int RCP_MISCTYPE=6;
-	protected static final int RCP_CAPACITY=7;
-	protected static final int RCP_ARMORDMG=8;
-	protected static final int RCP_CONTAINMASK=9;
-	protected static final int RCP_SPELL=10;
+	// protected static final int RCP_FINALNAME=0;
+	// protected static final int RCP_LEVEL=1;
+	// protected static final int RCP_TICKS=2;
+	protected static final int	RCP_WOOD		= 3;
+	protected static final int	RCP_VALUE		= 4;
+	protected static final int	RCP_CLASSTYPE	= 5;
+	protected static final int	RCP_MISCTYPE	= 6;
+	protected static final int	RCP_CAPACITY	= 7;
+	protected static final int	RCP_ARMORDMG	= 8;
+	protected static final int	RCP_CONTAINMASK	= 9;
+	protected static final int	RCP_SPELL		= 10;
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
