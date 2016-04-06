@@ -4065,6 +4065,145 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				returnable=simpleEval(scripted,""+ct,arg3,arg2,"NUMITEMSMOB");
 				break;
 			}
+			case 101: // numitemsshop
+			{
+				if(tlen==1) 
+					tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
+				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
+				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
+				final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
+				PhysicalAgent which=null;
+				if(lastKnownLocation!=null)
+				{
+					if(CMath.isInteger(arg1.trim()))
+						which=lastKnownLocation.fetchInhabitant(CMath.s_int(arg1.trim())-1);
+					else
+						which=lastKnownLocation.fetchInhabitant(arg1);
+					if(which == null)
+						which=this.getArgumentItem(tt[t+0], source, monster, scripted, target, primaryItem, secondaryItem, msg, tmp);
+					if(which == null)
+						which=this.getArgumentMOB(tt[t+0], source, monster, target, primaryItem, secondaryItem, msg, tmp);
+				}
+				int ct=0;
+				if(which!=null)
+				{
+					ShopKeeper shopHere = CMLib.coffeeShops().getShopKeeper(which);
+					if((shopHere == null)&&(scripted instanceof Item))
+						shopHere=CMLib.coffeeShops().getShopKeeper(((Item)which).owner());
+					if((shopHere == null)&&(scripted instanceof MOB))
+						shopHere=CMLib.coffeeShops().getShopKeeper(((MOB)which).location());
+					if(shopHere == null)
+						shopHere=CMLib.coffeeShops().getShopKeeper(lastKnownLocation);
+					if(shopHere!=null)
+					{
+						CoffeeShop shop = shopHere.getShop();
+						if(shop != null)
+						{
+							for(Iterator<Environmental> i=shop.getStoreInventory();i.hasNext();i.next())
+							{
+								ct++;
+							}
+						}
+					}
+				}
+				returnable=simpleEval(scripted,""+ct,arg3,arg2,"NUMITEMSSHOP");
+				break;
+			}
+			case 100: // shopitem
+			{
+				if(tlen==1) 
+					tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
+				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
+				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
+				final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
+				PhysicalAgent where=null;
+				if(lastKnownLocation!=null)
+				{
+					if(CMath.isInteger(arg1.trim()))
+						where=lastKnownLocation.fetchInhabitant(CMath.s_int(arg1.trim())-1);
+					else
+						where=lastKnownLocation.fetchInhabitant(arg1.trim());
+					if(where == null)
+						where=this.getArgumentItem(tt[t+0], source, monster, scripted, target, primaryItem, secondaryItem, msg, tmp);
+					if(where == null)
+						where=this.getArgumentMOB(tt[t+0], source, monster, target, primaryItem, secondaryItem, msg, tmp);
+				}
+				Environmental which=null;
+				int ct=1;
+				if(where!=null)
+				{
+					ShopKeeper shopHere = CMLib.coffeeShops().getShopKeeper(where);
+					if((shopHere == null)&&(scripted instanceof Item))
+						shopHere=CMLib.coffeeShops().getShopKeeper(((Item)where).owner());
+					if((shopHere == null)&&(scripted instanceof MOB))
+						shopHere=CMLib.coffeeShops().getShopKeeper(((MOB)where).location());
+					if(shopHere == null)
+						shopHere=CMLib.coffeeShops().getShopKeeper(lastKnownLocation);
+					if(shopHere!=null)
+					{
+						CoffeeShop shop = shopHere.getShop();
+						if(shop != null)
+						{
+							for(Iterator<Environmental> i=shop.getStoreInventory();i.hasNext();)
+							{
+								Environmental E=i.next();
+								if(ct==CMath.s_int(arg2.trim()))
+								{
+									which = E;
+									break;
+								}
+								ct++;
+							}
+						}
+					}
+				}
+				if(which==null)
+					returnable=false;
+				else
+					returnable=(CMLib.english().containsString(which.name(),arg3)
+								||CMLib.english().containsString(which.Name(),arg3)
+								||CMLib.english().containsString(which.displayText(),arg3));
+				break;
+			}
+			case 102: // shophas
+			{
+				if(tlen==1) 
+					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
+				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
+				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
+				PhysicalAgent where=null;
+				if(lastKnownLocation!=null)
+				{
+					if(CMath.isInteger(arg1.trim()))
+						where=lastKnownLocation.fetchInhabitant(CMath.s_int(arg1.trim())-1);
+					else
+						where=lastKnownLocation.fetchInhabitant(arg1.trim());
+					if(where == null)
+						where=this.getArgumentItem(tt[t+0], source, monster, scripted, target, primaryItem, secondaryItem, msg, tmp);
+					if(where == null)
+						where=this.getArgumentMOB(tt[t+0], source, monster, target, primaryItem, secondaryItem, msg, tmp);
+				}
+				returnable=false;
+				if(where!=null)
+				{
+					ShopKeeper shopHere = CMLib.coffeeShops().getShopKeeper(where);
+					if((shopHere == null)&&(scripted instanceof Item))
+						shopHere=CMLib.coffeeShops().getShopKeeper(((Item)where).owner());
+					if((shopHere == null)&&(scripted instanceof MOB))
+						shopHere=CMLib.coffeeShops().getShopKeeper(((MOB)where).location());
+					if(shopHere == null)
+						shopHere=CMLib.coffeeShops().getShopKeeper(lastKnownLocation);
+					if(shopHere!=null)
+					{
+						CoffeeShop shop = shopHere.getShop();
+						if(shop != null)
+						{
+							returnable=shop.getStock(arg2.trim(), null) != null;
+						}
+					}
+				}
+				break;
+			}
 			case 43: // roommob
 			{
 				if(tlen==1)
@@ -6335,6 +6474,143 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				}
 				if(which!=null)
 					results.append(which.name());
+				break;
+			}
+			case 100: // shopitem
+			{
+				final String arg1raw=CMParms.getCleanBit(funcParms,0);
+				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,arg1raw);
+				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(funcParms,0));
+				PhysicalAgent where=null;
+				if(lastKnownLocation!=null)
+				{
+					if(CMath.isInteger(arg1.trim()))
+						where=lastKnownLocation.fetchInhabitant(CMath.s_int(arg1.trim())-1);
+					else
+						where=lastKnownLocation.fetchInhabitant(arg1.trim());
+					if(where == null)
+						where=this.getArgumentItem(arg1raw, source, monster, scripted, target, primaryItem, secondaryItem, msg, tmp);
+					if(where == null)
+						where=this.getArgumentMOB(arg1raw, source, monster, target, primaryItem, secondaryItem, msg, tmp);
+				}
+				Environmental which=null;
+				int ct=1;
+				if(where!=null)
+				{
+					ShopKeeper shopHere = CMLib.coffeeShops().getShopKeeper(where);
+					if((shopHere == null)&&(scripted instanceof Item))
+						shopHere=CMLib.coffeeShops().getShopKeeper(((Item)where).owner());
+					if((shopHere == null)&&(scripted instanceof MOB))
+						shopHere=CMLib.coffeeShops().getShopKeeper(((MOB)where).location());
+					if(shopHere == null)
+						shopHere=CMLib.coffeeShops().getShopKeeper(lastKnownLocation);
+					if(shopHere!=null)
+					{
+						CoffeeShop shop = shopHere.getShop();
+						if(shop != null)
+						{
+							for(Iterator<Environmental> i=shop.getStoreInventory();i.hasNext();)
+							{
+								Environmental E=i.next();
+								if(ct==CMath.s_int(arg2.trim()))
+								{
+									which = E;
+									break;
+								}
+								ct++;
+							}
+						}
+					}
+				}
+				if(which!=null)
+					results.append(which.name());
+				break;
+			}
+			case 101: // numitemsshop
+			{
+				String arg1raw = CMParms.cleanBit(funcParms);
+				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,arg1raw);
+				PhysicalAgent which=null;
+				if(lastKnownLocation!=null)
+				{
+					if(CMath.isInteger(arg1.trim()))
+						which=lastKnownLocation.fetchInhabitant(CMath.s_int(arg1.trim())-1);
+					else
+						which=lastKnownLocation.fetchInhabitant(arg1);
+					if(which == null)
+						which=this.getArgumentItem(arg1raw, source, monster, scripted, target, primaryItem, secondaryItem, msg, tmp);
+					if(which == null)
+						which=this.getArgumentMOB(arg1raw, source, monster, target, primaryItem, secondaryItem, msg, tmp);
+				}
+				int ct=0;
+				if(which!=null)
+				{
+					ShopKeeper shopHere = CMLib.coffeeShops().getShopKeeper(which);
+					if((shopHere == null)&&(scripted instanceof Item))
+						shopHere=CMLib.coffeeShops().getShopKeeper(((Item)which).owner());
+					if((shopHere == null)&&(scripted instanceof MOB))
+						shopHere=CMLib.coffeeShops().getShopKeeper(((MOB)which).location());
+					if(shopHere == null)
+						shopHere=CMLib.coffeeShops().getShopKeeper(lastKnownLocation);
+					if(shopHere!=null)
+					{
+						CoffeeShop shop = shopHere.getShop();
+						if(shop != null)
+						{
+							for(Iterator<Environmental> i=shop.getStoreInventory();i.hasNext();i.next())
+							{
+								ct++;
+							}
+						}
+					}
+				}
+				results.append(""+ct);
+				break;
+			}
+			case 102: // shophas
+			{
+				final String arg1raw=CMParms.getCleanBit(funcParms,0);
+				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,arg1raw);
+				PhysicalAgent where=null;
+				if(lastKnownLocation!=null)
+				{
+					if(CMath.isInteger(arg1.trim()))
+						where=lastKnownLocation.fetchInhabitant(CMath.s_int(arg1.trim())-1);
+					else
+						where=lastKnownLocation.fetchInhabitant(arg1.trim());
+					if(where == null)
+						where=this.getArgumentItem(arg1raw, source, monster, scripted, target, primaryItem, secondaryItem, msg, tmp);
+					if(where == null)
+						where=this.getArgumentMOB(arg1raw, source, monster, target, primaryItem, secondaryItem, msg, tmp);
+				}
+				if(where!=null)
+				{
+					ShopKeeper shopHere = CMLib.coffeeShops().getShopKeeper(where);
+					if((shopHere == null)&&(scripted instanceof Item))
+						shopHere=CMLib.coffeeShops().getShopKeeper(((Item)where).owner());
+					if((shopHere == null)&&(scripted instanceof MOB))
+						shopHere=CMLib.coffeeShops().getShopKeeper(((MOB)where).location());
+					if(shopHere == null)
+						shopHere=CMLib.coffeeShops().getShopKeeper(lastKnownLocation);
+					if(shopHere!=null)
+					{
+						CoffeeShop shop = shopHere.getShop();
+						if(shop != null)
+						{
+							int ct=0;
+							for(Iterator<Environmental> i=shop.getStoreInventory();i.hasNext();i.next())
+								ct++;
+							int which=CMLib.dice().roll(1, ct, -1);
+							for(Iterator<Environmental> i=shop.getStoreInventory();i.hasNext();)
+							{
+								if(which == ct)
+									results.append(i.next().Name());
+								else
+									i.next();
+							}
+						}
+					}
+				}
 				break;
 			}
 			case 48: // numitemsmob
@@ -8614,6 +8890,117 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						}
 					}
 					lastKnownLocation.recoverRoomStats();
+				}
+				break;
+			}
+			case 84: // mpoloadshop
+			{
+				// if not mob
+				ShopKeeper addHere = CMLib.coffeeShops().getShopKeeper(scripted);
+				if((addHere == null)&&(scripted instanceof Item))
+					addHere=CMLib.coffeeShops().getShopKeeper(((Item)scripted).owner());
+				if((addHere == null)&&(scripted instanceof MOB))
+					addHere=CMLib.coffeeShops().getShopKeeper(((MOB)scripted).location());
+				if(addHere == null)
+					addHere=CMLib.coffeeShops().getShopKeeper(lastKnownLocation);
+				if(addHere!=null)
+				{
+					if(tt==null)
+					{
+						tt=parseBits(script,si,"Cr");
+						if(tt==null)
+							return null;
+					}
+					String name=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[1]);
+					if(lastKnownLocation!=null)
+					{
+						final ArrayList<Environmental> Is=new ArrayList<Environmental>();
+						int price=-1;
+						if((price = name.indexOf(" PRICE="))>=0)
+						{
+							String rest = name.substring(price+7).trim();
+							name=name.substring(0,price).trim();
+							if(CMath.isInteger(rest))
+								price=CMath.s_int(rest);
+						}
+						Item I=CMClass.getItem(name);
+						if(I!=null)
+							Is.add(I);
+						else
+							findSomethingCalledThis(name,monster,lastKnownLocation,Is,false);
+						for(int i=0;i<Is.size();i++)
+						{
+							if(Is.get(i) instanceof Item)
+							{
+								I=(Item)Is.get(i);
+								if((I!=null)
+								&&(!(I instanceof ArchonOnly)))
+								{
+									I=(Item)I.copyOf();
+									I.recoverPhyStats();
+									CoffeeShop shop = addHere.getShop();
+									if(shop != null)
+										shop.addStoreInventory(I,1,price);
+									I.destroy();
+								}
+							}
+						}
+						lastKnownLocation.recoverRoomStats();
+					}
+				}
+				break;
+			}
+			case 85: // mpmloadshop
+			{
+				// if not mob
+				ShopKeeper addHere = CMLib.coffeeShops().getShopKeeper(scripted);
+				if((addHere == null)&&(scripted instanceof Item))
+					addHere=CMLib.coffeeShops().getShopKeeper(((Item)scripted).owner());
+				if((addHere == null)&&(scripted instanceof MOB))
+					addHere=CMLib.coffeeShops().getShopKeeper(((MOB)scripted).location());
+				if(addHere == null)
+					addHere=CMLib.coffeeShops().getShopKeeper(lastKnownLocation);
+				if(addHere!=null)
+				{
+					if(tt==null)
+					{
+						tt=parseBits(script,si,"Cr");
+						if(tt==null)
+							return null;
+					}
+					String name=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[1]);
+					int price=-1;
+					if((price = name.indexOf(" PRICE="))>=0)
+					{
+						String rest = name.substring(price+7).trim();
+						name=name.substring(0,price).trim();
+						if(CMath.isInteger(rest))
+							price=CMath.s_int(rest);
+					}
+					final ArrayList<Environmental> Ms=new ArrayList<Environmental>();
+					MOB m=CMClass.getMOB(name);
+					if(m!=null)
+						Ms.add(m);
+					if(lastKnownLocation!=null)
+					{
+						if(Ms.size()==0)
+							findSomethingCalledThis(name,monster,lastKnownLocation,Ms,true);
+						for(int i=0;i<Ms.size();i++)
+						{
+							if(Ms.get(i) instanceof MOB)
+							{
+								m=(MOB)((MOB)Ms.get(i)).copyOf();
+								m.text();
+								m.recoverPhyStats();
+								m.recoverCharStats();
+								m.resetToMaxState();
+								CoffeeShop shop = addHere.getShop();
+								if(shop != null)
+									shop.addStoreInventory(m,1,price);
+								m.destroy();
+							}
+						}
+					}
 				}
 				break;
 			}

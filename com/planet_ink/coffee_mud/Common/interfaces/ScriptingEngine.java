@@ -564,6 +564,9 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 		"WORNON", // 97
 		"CLANQUALIFIES", // 98
 		"HASACCTATTOO", // 99
+		"SHOPITEM", // 100
+		"NUMITEMSSHOP", // 101
+		"SHOPHAS" // 102
 	};
 
 	/** String list of all valid mobprog commands */
@@ -651,6 +654,8 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 		"MPSETCLAN", // 81
 		"MPRLOAD", // 82
 		"MPACCTATTOO", // 83
+		"MPOLOADSHOP", //84
+		"MPMLOADSHOP", //85
 	};
 
 	/** a list of some some extra stat codes for mobs*/

@@ -118,10 +118,12 @@
             <li><a href="#mplog">mplog</a></li>
             <li><a href="#mpm2i2m">mpm2i2m</a></li>
             <li><a href="#mpmload">mpmload</a></li>
+            <li><a href="#mpmloadshop">mpmloadshop</a></li>
             <li><a href="#mpmoney">mpmoney</a></li>
             <li><a href="#mpnotrigger">mpnotrigger</a></li>
             <li><a href="#mpoload">mpoload</a></li>
             <li><a href="#mpoloadroom">mpoloadroom</a></li>
+            <li><a href="#mpoloadshop">mpoloadshop</a></li>
             <li><a href="#mpopen">mpopen</a></li>
             <li><a href="#mppossess">mppossess</a></li>
             <li><a href="#mppracs">mppracs</a></li>
@@ -224,6 +226,7 @@
             <li><a href="#number">number</a></li>
             <li><a href="#numitemsmob">numitemsmob</a></li>
             <li><a href="#numitemsroom">numitemsroom</a></li>
+            <li><a href="#numitemsshop">numitemsshop</a></li>
             <li><a href="#nummobs">nummobs</a></li>
             <li><a href="#nummobsinarea">nummobsinarea</a></li>
             <li><a href="#nummobsroom">nummobsroom</a></li>
@@ -248,6 +251,8 @@
             <li><a href="#roomitem">roomitem</a></li>
             <li><a href="#roommob">roommob</a></li>
             <li><a href="#sex">sex</a></li>
+            <li><a href="#shophas">shophas</a></li>
+            <li><a href="#shopitem">shopitem</a></li>
             <li><a href="#stat">stat</a></li>
             <li><a href="#strcontains">strcontains</a></li>
             <li><a href="#strin">strin</a></li>
@@ -2333,6 +2338,11 @@ of items the given mob has.</td>
 of items in the room.</td>
           </tr>
           <tr>
+            <td>NUMITEMSSHOP([code])</td>
+            <td>Returns the number of items in the shop inventory of
+the given shop code.</td>
+          </tr>
+          <tr>
             <td>NUMMOBS([name])</td>
             <td>Returns the number
 of mobs in the world matching the
@@ -2483,6 +2493,16 @@ scripted monster.</td>
             <td>SEX([code])</td>
             <td>Returns the sex of
 the given mob.</td>
+          </tr>
+          <tr>
+            <td>SHOPHAS([code])</td>
+            <td>Returns a random item from the shop inventory of the
+given shopkeeper code</td>
+          </tr>
+          <tr>
+            <td>SHOPITEM([code] [integer number])</td>
+            <td>Returns the nth item from the shop inventory of the
+given shopkeeper code</td>
           </tr>
           <tr>
             <td>STAT([code] [stat
@@ -3417,8 +3437,32 @@ the item tag.</p>
 that this newly loaded mob may not
 have interacted with the world just yet, so having your mob, for
 example, mpforce it to kill $n will not work, since the new mob has no
-idea who $n is.<br />
-      </p>
+idea who $n is.</p>
+      <h3><a name="mpmloadshop">mpmloadshop</a></h3>
+      <p>Usage:</p>
+      <pre>mpmloadshop [mob name]<br />mpmloadshop [mob name] PRICE=[cost to buy]<br />mpmloadshop fromfile [cmare filename] [mob name]<br />mpmloadshop fromfile [cmare filename] any<br />mpmloadshop fromgenfile [random-gen xml filename] [mob name] [mob tag name] [id=value]...</pre>
+      <p>This command loads the
+mob designated by name into the current shopkeeper inventory.
+If you want the mob loaded somewhere besides the scripted shopkeeper
+the mpmloading
+mob script is on, you'll need to use the mpat command. The mob of that
+name will
+be searched for throughout the map, so if you want to make sure the mob
+is available for this command, he should be carefully hidden. The <span
+ style="font-weight: bold;">fromfile</span> syntax will
+allow you to load a mob from a cmare file created
+using the Archon EXPORT MOBS command. The <span
+ style="font-weight: bold;">fromgenfile</span> syntax will allow you to
+generate a random mob from
+a random-generation formatted xml file, with the&nbsp;mob
+name&nbsp;followed by
+the&nbsp;mob tag to search for, with optional id=value definitions
+after
+the item tag. &nbsp;The&nbsp;<span style="font-weight: bold;">PRICE=</span>
+syntax may be used at the end of ANY of the syntaxes to set the price
+of the mob, otherwise a default price will be used.</p>
+      <p>EXAMPLES:</p>
+      <pre>mpmloadshop the nasty bat PRICE=40<br />mpmloadshop fromfile mymobs.cmare the nasty bat<br />mpmloadshop fromfile mymobs.cmare any<br />mpmloadshop fromgenfile /resources/randareas/example.xml bee forest_mobs level_range=10 aggrochance=1<br /></pre>
       <h3><a name="mpmoney">mpmoney</a></h3>
       <p>Usage:</p>
       <pre>mpmoney [target] +[amount]<br />mpmoney [target] -[amount]<br /></pre>
@@ -3502,6 +3546,26 @@ a lot with this command. There is no
 max on items loaded in this way, so keep that in mind. Using this
 command along with the mppurge command can create shifting portals and
 the like.</p>
+      <h3><a name="mpoloadroom">mpoloadshop</a></h3>
+      <p>Usage:</p>
+      <pre>mpoloadshop [item name]<br />mpoloadshop [item name] PRICE=[price of item]<br />mpoloadshop fromfile [cmare filename] [item name]<br />mpoloadshop fromfile [cmare filename] any<br />mpoloadshop fromgenfile [random-gen xml filename] [item name] [item tag name] [id=value]...<br /></pre>
+      <p>This command loads an
+item of the designated name into the shopkeeper inventory of the
+scripted mob. If you want to load an item into another shops
+inventory, you must use the mpat command. The item of that name
+will be searched for throughout the map, so if you want to make sure
+the item is available for this command, it should be carefully hidden.
+The <b>fromfile</b>
+syntax will allow you to load an item from a cmare
+file created using the Archon EXPORT ITEMS command. The <span
+ style="font-weight: bold;">fromgenfile</span> syntax will allow you to
+generate a random item from
+a random-generation formatted xml file, with the item
+name&nbsp;followed by
+the item tag to search for, with optional id=value definitions after
+the item tag. Finally, the&nbsp;<b>price</b>
+syntax may be added to the end of the any of the others to designate
+the price of the item, otherwise a default value will be used.</p>
       <h3><a name="mpopen">mpopen</a></h3>
       <p>Usage:</p>
       <pre>mpopen [target]<br /></pre>
@@ -4720,6 +4784,15 @@ items not in a container. The '==' may also be any of the logical
 operators from above.</p>
       <p>EXAMPLES:</p>
       <pre>if numitemsroom( &gt; 10)<br /> mpecho There are more than 10 items in this room.<br />else<br /> mpecho There are 10 or less items in the room.<br />endif<br /></pre>
+      <h3><a name="numitemsshop">numitemsshop</a></h3>
+      <p>Usage:</p>
+      <pre>numitemsshop(shopkeeper == number)<br /></pre>
+      <p>This function compares
+the total number of items in the shopkeepers inventory to the number
+given. The
+'==' may also be any of the logical operators from above.</p>
+      <p>EXAMPLES:</p>
+      <pre>if numitemsshop($n &gt; 10)<br /> mpecho The shop has an inventory size greater than 10.<br />else<br /> mpecho The shop has an inventory size less than or equal to 10.<br />endif</pre>
       <h3><a name="nummobs">nummobs</a></h3>
       <p>Usage:</p>
       <pre>nummobs(name == number)<br />nummobs('MASK=zappermask' == number)<br /></pre>
@@ -4994,6 +5067,21 @@ given. The letter may be "M", "F", or "N". The '==' may also be another
 of the logical operators from above.</p>
       <p>EXAMPLES:</p>
       <pre>if sex($n == M)<br /> mpecho The actor triggering me is a male.<br />else<br /> mpecho The actor triggering me is not a male.<br />endif<br /><br />if sex($n != $%sex($n)%)<br /> mpecho The actor triggering me is not the same sex as me.<br />else<br /> mpecho The actor triggering me is the same sex as me.<br />endif<br /></pre>
+      <h3><a name="shophas">shophas</a></h3>
+      <p>Usage:</p>
+      <pre>shophas(character item)<br /></pre>
+      <p>This checks whether the shopkeeper has the given item in their
+shop inventory.</p>
+      <p>EXAMPLE:</p>
+      <pre>if shophas($n a long sword)<br /> mpecho This shop has a long sword for sale.<br />else<br /> mpecho The shop does not sell anything called 'a long sword'.<br />endif      <br /></pre>
+      <h3><a name="shopitem">shopitem</a></h3>
+      <p>Usage:</p>
+      <pre>shopitem(shopkeeper number keywords)<br /></pre>
+      <p>This infrequently used
+function checks whether the numberth
+item in the shopkeepers inventory has keywords in its name.</p>
+      <p>EXAMPLE:</p>
+      <pre>if shopitem($n 1 sword) or shopitem ($n $g.1 sword)<br /> mpecho Either the shops first item is a sword,<br /> mpecho or a shop item whose cardinality is represented by the code<br /> mpecho $g.1 is a sword.<br />else<br /> mpecho Neither of those shop items is a sword.<br />endif</pre>
       <h3><a name="stat">stat</a></h3>
       <p>Usage:</p>
       <pre>stat(target variable == value)<br /></pre>
