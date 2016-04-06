@@ -58,6 +58,7 @@ public class Remort extends StdCommand
 		LEVEL, 
 		ATTACK, 
 		DEFENSE,
+		DAMAGE,
 		SKILL,
 		SKILLSAT100,
 		FACTION,
@@ -95,6 +96,7 @@ public class Remort extends StdCommand
 		
 		final int[] newLevel = new int[]{1};
 		final int[] newMana = new int[]{CMProps.getIntVar(CMProps.Int.STARTMANA)};
+		final int[] newDamage = new int[]{0};
 		final int[] newHp = new int[]{CMProps.getIntVar(CMProps.Int.STARTHP)};
 		final int[] newMove = new int[]{CMProps.getIntVar(CMProps.Int.STARTMOVE)};
 		final int[] newAttack = new int[]{0};
@@ -225,6 +227,15 @@ public class Remort extends StdCommand
 					newMana[0] += total;
 					break;
 				}
+				case DAMAGE:
+				{
+					int total = 0;
+					if(pctAmount != 0)
+						total = (int)Math.round(CMath.mul(pctAmount, mob.basePhyStats().damage()));
+					total += flatAmount;
+					newDamage[0] += total;
+					break;
+				}
 				case MOVE:
 				{
 					int total = 0;
@@ -345,10 +356,11 @@ public class Remort extends StdCommand
 					mob.tell(L("Password incorrect."));
 				else
 				{
-					Log.sysOut("Retire","Remort: "+mob.Name());
+					Log.sysOut("Remort: "+mob.Name());
 					CMLib.achievements().possiblyBumpAchievement(mob, Event.REMORT, 1);
 					mob.basePhyStats().setLevel(1);
 					mob.basePhyStats().setArmor(newDefense[0]);
+					mob.basePhyStats().setDamage(newDamage[0]);
 					mob.basePhyStats().setAttackAdjustment(newAttack[0]);
 					mob.basePhyStats().setSpeed(1.0);
 					mob.baseState().setHitPoints(newHp[0]);
@@ -415,10 +427,15 @@ public class Remort extends StdCommand
 											for (final Enumeration<Ability> a = mob.personalEffects(); a.hasMoreElements();)
 											{
 												final Ability A = a.nextElement();
-												if ((A != null)&& (A.canBeUninvoked()))
+												if(A!=null)
 												{
-													A.unInvoke();
-													mob.delEffect(A);
+													if (A.canBeUninvoked()
+													||(A.isNowAnAutoEffect()))
+													{
+														A.unInvoke();
+														mob.delEffect(A);
+													}
+													
 												}
 											}
 											Ability oldFailSafeA=mob.fetchEffect(failsafeID);

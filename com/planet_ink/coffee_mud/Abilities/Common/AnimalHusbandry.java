@@ -36,15 +36,36 @@ import java.util.*;
 
 public class AnimalHusbandry extends CommonSkill
 {
-	@Override public String ID() { return "AnimalHusbandry"; }
-	private final static String localizedName = CMLib.lang().L("Animal Husbandry");
-	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =I(new String[] {"HUSBAND","ANIMALHUSBANDRY"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ANIMALAFFINITY; }
+	@Override
+	public String ID()
+	{
+		return "AnimalHusbandry";
+	}
 
-	protected MOB[] husbanding=null;
-	protected boolean messedUp=false;
+	private final static String	localizedName	= CMLib.lang().L("Animal Husbandry");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "HUSBAND", "ANIMALHUSBANDRY" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_COMMON_SKILL | Ability.DOMAIN_ANIMALAFFINITY;
+	}
+
+	protected MOB[]		husbanding	= null;
+	protected boolean	messedUp	= false;
 
 	public AnimalHusbandry()
 	{

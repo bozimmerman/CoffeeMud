@@ -38,10 +38,18 @@ import java.util.*;
 
 public class Retire extends StdCommand
 {
-	public Retire(){}
+	public Retire()
+	{
+	}
 
-	private final String[] access=I(new String[]{"RETIRE"});
-	@Override public String[] getAccessWords(){return access;}
+	private final String[]	access	= I(new String[] { "RETIRE" });
+
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
+
 	@Override
 	public boolean execute(final MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
@@ -56,39 +64,53 @@ public class Retire extends StdCommand
 		mob.tell(L("^HThis will delete your player from the system FOREVER!"));
 		session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",120000)
 		{
-			@Override public void showPrompt()
+			@Override
+			public void showPrompt()
 			{
 				session.promptPrint(L("If that's what you want, re-enter your password: "));
 			}
-			@Override public void timedOut() {}
-			@Override public void callBack()
+
+			@Override
+			public void timedOut()
 			{
-				if(input.trim().length()==0)
+			}
+
+			@Override
+			public void callBack()
+			{
+				if (input.trim().length() == 0)
 					return;
-				if(!pstats.matchesPassword(input.trim()))
+				if (!pstats.matchesPassword(input.trim()))
 					mob.tell(L("Password incorrect."));
 				else
 				{
-					if(CMSecurity.isDisabled(CMSecurity.DisFlag.RETIREREASON))
+					if (CMSecurity.isDisabled(CMSecurity.DisFlag.RETIREREASON))
 					{
-						Log.sysOut("Retire","Retired: "+mob.Name());
+						Log.sysOut("Retire", "Retired: " + mob.Name());
 						CMLib.achievements().possiblyBumpAchievement(mob, Event.RETIRE, 1);
-						CMLib.players().obliteratePlayer(mob,true,false);
+						CMLib.players().obliteratePlayer(mob, true, false);
 						session.logout(true);
 					}
 					else
-					session.prompt(new InputCallback(InputCallback.Type.PROMPT,"")
+					session.prompt(new InputCallback(InputCallback.Type.PROMPT, "")
 					{
-						@Override public void showPrompt()
+						@Override
+						public void showPrompt()
 						{
 							session.promptPrint(L("OK.  Please leave us a short message as to why you are deleting this character.  Your answers will be kept confidential, and are for administrative purposes only.\n\r: "));
 						}
-						@Override public void timedOut() {}
-						@Override public void callBack()
+
+						@Override
+						public void timedOut()
 						{
-							Log.sysOut("Retire","Retired: "+mob.Name()+": "+this.input);
+						}
+
+						@Override
+						public void callBack()
+						{
+							Log.sysOut("Retire", "Retired: " + mob.Name() + ": " + this.input);
 							CMLib.achievements().possiblyBumpAchievement(mob, Event.RETIRE, 1);
-							CMLib.players().obliteratePlayer(mob,true,false);
+							CMLib.players().obliteratePlayer(mob, true, false);
 							session.logout(true);
 						}
 					});
@@ -97,9 +119,23 @@ public class Retire extends StdCommand
 		});
 		return false;
 	}
-	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandCombatActionCost(ID());}
-	@Override public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandActionCost(ID());}
-	@Override public boolean canBeOrdered(){return false;}
 
+	@Override
+	public double combatActionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandCombatActionCost(ID());
+	}
+
+	@Override
+	public double actionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandActionCost(ID());
+	}
+
+	@Override
+	public boolean canBeOrdered()
+	{
+		return false;
+	}
 
 }
