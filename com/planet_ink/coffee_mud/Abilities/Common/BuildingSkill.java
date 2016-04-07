@@ -1410,7 +1410,6 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 
 		if(doingCode == Building.STAIRS)
 		{
-			dir=Directions.UP; // DELME
 			if((dir!=Directions.UP)&&(dir!=Directions.DOWN))
 			{
 				commonTell(mob,L("A valid direction in which to build must also be specified.  Try UP or DOWN."));
