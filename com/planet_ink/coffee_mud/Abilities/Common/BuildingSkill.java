@@ -1221,6 +1221,11 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 			commonTell(mob,buf.toString());
 			return true;
 		}
+		else
+		if(("SURVEY").startsWith(str.toUpperCase()))
+		{
+			//TODO: FINISH
+		}
 
 		designTitle="";
 		designDescription="";
