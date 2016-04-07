@@ -743,8 +743,12 @@ public interface DatabaseEngine extends CMLibrary
 
 	/**
 	 * Table category: DBPLAYERS
-	 * 
-	 * @param mob
+	 * Creates the character record for the given mob in
+	 * the CMCHAR table in the database, and updates
+	 * the account record if any.  Does not handle items,
+	 * followers, abilities, or anything else -- just the
+	 * base character record.
+	 * @param mob the character to create
 	 */
 	public void DBCreateCharacter(MOB mob);
 
