@@ -6569,7 +6569,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 102: // shophas
 			{
-				final String arg1raw=CMParms.getCleanBit(funcParms,0);
+				final String arg1raw=CMParms.cleanBit(funcParms);
 				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,arg1raw);
 				PhysicalAgent where=null;
 				if(lastKnownLocation!=null)
@@ -6601,6 +6601,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							for(Iterator<Environmental> i=shop.getStoreInventory();i.hasNext();i.next())
 								ct++;
 							int which=CMLib.dice().roll(1, ct, -1);
+							ct=0;
 							for(Iterator<Environmental> i=shop.getStoreInventory();i.hasNext();)
 							{
 								if(which == ct)
