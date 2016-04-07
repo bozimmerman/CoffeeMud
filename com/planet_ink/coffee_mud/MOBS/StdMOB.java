@@ -2300,7 +2300,13 @@ public class StdMOB implements MOB
 					&& (!((isInCombat()) && (msg.target() == victim)))
 					&& (CMath.bset(msg.targetMajor(), CMMsg.MASK_HANDS)))
 					{
-						srcM.tell(L("You don't see '@x1' here.",((Physical)msg.target()).name(this)));
+						if(msg.target() instanceof Physical)
+							srcM.tell(L("You don't see '@x1' here.",((Physical)msg.target()).name(this)));
+						else
+						if(msg.target()!=null)
+							srcM.tell(L("You don't see '@x1' here.",msg.target().name()));
+						else
+							srcM.tell(L("You don't see that here."));
 						return false;
 					}
 					if (!CMLib.flags().isAliveAwakeMobile(this, false))
