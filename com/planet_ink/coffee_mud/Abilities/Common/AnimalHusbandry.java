@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Abilities.Common;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.Abilities.Properties.Prop_StatTrainer;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -62,6 +63,14 @@ public class AnimalHusbandry extends CommonSkill
 	public int classificationCode()
 	{
 		return Ability.ACODE_COMMON_SKILL | Ability.DOMAIN_ANIMALAFFINITY;
+	}
+
+	@Override
+	public CMObject copyOf()
+	{
+		final AnimalHusbandry obj=(AnimalHusbandry)super.copyOf();
+		obj.husbanding=husbanding.clone();
+		return obj;
 	}
 
 	protected MOB[]		husbanding	= null;

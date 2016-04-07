@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Abilities.Properties;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.Abilities.Common.AnimalHusbandry;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -36,13 +37,32 @@ import java.util.*;
 
 public class Prop_EnterAdjuster extends Property implements TriggeredAffect
 {
-	@Override public String ID() { return "Prop_EnterAdjuster"; }
-	@Override public String name(){ return "Room entering adjuster";}
-	@Override protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ROOMS;}
+	@Override
+	public String ID()
+	{
+		return "Prop_EnterAdjuster";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Room entering adjuster";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_EXITS | Ability.CAN_ROOMS;
+	}
+
 	protected MaskingLibrary.CompiledZapperMask mask=CMLib.masking().createEmptyMask();
 	protected String[] parameters=new String[]{"",""};
 
-	@Override public long flags(){return Ability.FLAG_ADJUSTER;}
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_ADJUSTER;
+	}
 
 	@Override
 	public int triggerMask()

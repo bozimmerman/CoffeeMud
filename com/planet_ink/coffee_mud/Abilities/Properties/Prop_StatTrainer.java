@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Abilities.Properties;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.Abilities.Thief.Thief_KillLog;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -34,19 +35,53 @@ import java.util.*;
 */
 public class Prop_StatTrainer extends Property
 {
-	@Override public String ID() { return "Prop_StatTrainer"; }
-	@Override public String name(){ return "Good training MOB";}
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
-	protected static final int[] all25=new int[CharStats.CODES.instance().total()];
-	static { for(final int i : CharStats.CODES.BASECODES()) all25[i]=25;}
-	protected int[] stats=all25;
-	protected boolean noteach=false;
+	@Override
+	public String ID()
+	{
+		return "Prop_StatTrainer";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Good training MOB";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	protected static final int[]	all25	= new int[CharStats.CODES.instance().total()];
+	static
+	{
+		for (final int i : CharStats.CODES.BASECODES())
+			all25[i] = 25;
+	}
+	
+	@Override
+	public CMObject copyOf()
+	{
+		final Prop_StatTrainer obj=(Prop_StatTrainer)super.copyOf();
+		obj.stats=stats.clone();
+		return obj;
+	}
+
+	protected int[]		stats	= all25;
+	protected boolean	noteach	= false;
 
 	@Override
 	public String accountForYourself()
-	{ return "Stats Trainer";	}
+	{
+		return "Stats Trainer";
+	}
 
-	@Override public long flags(){return Ability.FLAG_ADJUSTER;}
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_ADJUSTER;
+	}
 
 	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
@@ -67,7 +102,9 @@ public class Prop_StatTrainer extends Property
 				noteach=true;
 			stats=new int[CharStats.CODES.TOTAL()];
 			for(final int i : CharStats.CODES.BASECODES())
+			{
 				stats[i]=CMParms.getParmInt(newMiscText, CMStrings.limit(CharStats.CODES.NAME(i),3), 25);
+			}
 		}
 	}
 
