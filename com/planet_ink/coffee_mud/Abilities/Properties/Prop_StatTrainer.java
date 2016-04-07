@@ -64,7 +64,10 @@ public class Prop_StatTrainer extends Property
 	public CMObject copyOf()
 	{
 		final Prop_StatTrainer obj=(Prop_StatTrainer)super.copyOf();
-		obj.stats=stats.clone();
+		if(stats!=null)
+			obj.stats=stats.clone();
+		else
+			obj.stats=null;
 		return obj;
 	}
 

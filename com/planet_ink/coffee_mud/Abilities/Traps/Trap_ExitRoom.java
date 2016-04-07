@@ -66,11 +66,15 @@ public class Trap_ExitRoom extends Trap_Trap
 
 	protected boolean mayNotLeave() { return true; }
 
-	@Override @SuppressWarnings({ "unchecked", "rawtypes" })
+	@Override 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public CMObject copyOf()
 	{
 		final Trap_ExitRoom obj=(Trap_ExitRoom)super.copyOf();
-		obj.safeDirs=(PairVector)safeDirs.clone();
+		if(safeDirs == null)
+			obj.safeDirs = null;
+		else
+			obj.safeDirs=(PairVector)safeDirs.clone();
 		return obj;
 	}
 

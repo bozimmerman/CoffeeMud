@@ -69,7 +69,10 @@ public class AnimalHusbandry extends CommonSkill
 	public CMObject copyOf()
 	{
 		final AnimalHusbandry obj=(AnimalHusbandry)super.copyOf();
-		obj.husbanding=husbanding.clone();
+		if(husbanding!=null)
+			obj.husbanding=husbanding.clone();
+		else
+			obj.husbanding=null;
 		return obj;
 	}
 
