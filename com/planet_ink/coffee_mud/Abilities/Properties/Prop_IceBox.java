@@ -27,9 +27,24 @@ import java.util.*;
 */
 public class Prop_IceBox extends Property
 {
-	@Override public String ID() { return "Prop_IceBox"; }
-	@Override public String name(){ return "Works like an ice box";}
-	@Override protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_ROOMS;}
+	@Override
+	public String ID()
+	{
+		return "Prop_IceBox";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Works like an ice box";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ITEMS | Ability.CAN_ROOMS;
+	}
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -46,14 +61,15 @@ public class Prop_IceBox extends Property
 			}
 			break;
 		case CMMsg.TYP_GET:
-			if((msg.target() instanceof Decayable)&&(msg.target() instanceof Item))
+			if((msg.target() instanceof Decayable)
+			&&(msg.target() instanceof Item))
 			{
 				if((affected instanceof Item)
 				&&(((Item)msg.target()).container()==affected))
-					((Decayable)msg.tool()).setDecayTime(0); // will cause a recalc on next msg
+					((Decayable)msg.target()).setDecayTime(0); // will cause a recalc on next msg
 				if((affected instanceof Room)
 				&&(((Item)msg.target()).owner()==affected))
-					((Decayable)msg.tool()).setDecayTime(0); // will cause a recalc on next msg
+					((Decayable)msg.target()).setDecayTime(0); // will cause a recalc on next msg
 			}
 			break;
 		case CMMsg.TYP_DROP:
