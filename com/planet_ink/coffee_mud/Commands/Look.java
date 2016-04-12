@@ -64,7 +64,9 @@ public class Look extends StdCommand
 			return false;
 		if((commands!=null)&&(commands.size()>1))
 		{
+			int dirCode=-1;
 			Environmental thisThang=null;
+			Environmental lookingTool=null;
 
 			if((commands.size()>2)&&(commands.get(1).equalsIgnoreCase("at")))
 				commands.remove(1);
@@ -85,6 +87,18 @@ public class Look extends StdCommand
 			if(ID.equalsIgnoreCase("SELF")||ID.equalsIgnoreCase("ME"))
 				thisThang=mob;
 
+			dirCode=CMLib.directions().getStrictDirectionCode(ID);
+			if(dirCode>=0)
+			{
+				final Room room=R.getRoomInDir(dirCode);
+				final Exit exit=R.getExitInDir(dirCode);
+				if((room!=null)&&(exit!=null))
+				{
+					thisThang=exit;
+					lookingTool=room;
+				}
+			}
+			
 			if(thisThang==null)
 				thisThang=R.fetchFromMOBRoomFavorsItems(mob,null,ID, noCoinFilter);
 			if(thisThang==null)
@@ -116,8 +130,6 @@ public class Look extends StdCommand
 					}
 				}
 			}
-			int dirCode=-1;
-			Environmental lookingTool=null;
 			if(thisThang==null)
 			{
 				dirCode=CMLib.directions().getGoodDirectionCode(ID);

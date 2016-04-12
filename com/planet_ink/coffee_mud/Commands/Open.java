@@ -35,10 +35,17 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Open extends StdCommand
 {
-	public Open(){}
+	public Open()
+	{
+	}
 
-	private final String[] access=I(new String[]{"OPEN","OP","O"});
-	@Override public String[] getAccessWords(){return access;}
+	private final String[]	access	= I(new String[] { "OPEN", "OP", "O" });
+
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
 	private final static Class[][] internalParameters=new Class[][]{{Environmental.class,Boolean.class}};
 
@@ -57,8 +64,13 @@ public class Open extends StdCommand
 
 				if(dirCode<0)
 				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+				{
 					if(mob.location().getExitInDir(d)==openThis)
-					{dirCode=d; break;}
+					{
+						dirCode = d;
+						break;
+					}
+				}
 				if((dirCode>=0)&&(mob.location().getRoomInDir(dirCode)!=null))
 				{
 					final Room opR=mob.location().getRoomInDir(dirCode);
@@ -123,9 +135,22 @@ public class Open extends StdCommand
 		return Boolean.valueOf(open(mob,(Environmental)args[0],((Environmental)args[0]).name(),-1,((Boolean)args[1]).booleanValue()));
 	}
 
-	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandCombatActionCost(ID());}
-	@Override public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandActionCost(ID());}
-	@Override public boolean canBeOrdered(){return true;}
+	@Override
+	public double combatActionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandCombatActionCost(ID());
+	}
 
+	@Override
+	public double actionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandActionCost(ID());
+	}
+
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 
 }

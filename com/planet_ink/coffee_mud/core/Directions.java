@@ -507,6 +507,33 @@ public class Directions
 	}
 
 	/**
+	 * Given a string which is supposed to be a direction name of any type,
+	 * this method will make a case-insensitive check against the given
+	 * string and return the direction it probably represents.  It
+	 * requires strict actual direction names, such as north, aft, below, up.
+	 * @param theDir the direction search string
+	 * @return the direction code it represents, or -1 if no match at ALL
+	 */
+	public int getStrictDirectionCode(final String theDir)
+	{
+		if(theDir.length()==0)
+			return -1;
+		final String upDir=theDir.toUpperCase();
+		for (final Object[] element : DIRECTIONS_FULL_CHART)
+		{
+			if((element[0].toString().equals(upDir))
+			&&(((Integer)element[1]).intValue()<NUM_DIRECTIONS()))
+				return ((Integer)element[1]).intValue();
+		}
+		for(int i=0;i<NUM_DIRECTIONS();i++)
+		{
+			if(upDir.equals(DIRECTION_CHARS[i]))
+				return i;
+		}
+		return -1;
+	}
+
+	/**
 	 * Given a string which is supposed to be a compass direction name,
 	 * this method will make a case-insensitive check against the given
 	 * string and return the direction it probably represents.  It gives
@@ -530,6 +557,34 @@ public class Directions
 	}
 
 	/**
+	 * Given a string which is supposed to be a compass direction name,
+	 * this method will make a case-insensitive check against the given
+	 * string and return the direction it probably represents.  It
+	 * requires actual direction names, such as north, south, etc, but
+	 * if all fail, it will try short letters, such as n, ne, etc.
+	 * @param theDir the direction search string
+	 * @return the direction code it represents, or -1 if no match at ALL
+	 */
+	public int getStrictCompassDirectionCode(final String theDir)
+	{
+		if(theDir.length()==0)
+			return -1;
+		final String upDir=theDir.toUpperCase();
+		for (final Object[] element : DIRECTIONS_COMPASS_CHART)
+		{
+			if((element[0].toString().equals(upDir))
+			&&(((Integer)element[1]).intValue()<NUM_DIRECTIONS()))
+				return ((Integer)element[1]).intValue();
+		}
+		for(int i=0;i<NUM_DIRECTIONS();i++)
+		{
+			if(upDir.equals(DIRECTION_CHARS[i]))
+				return i;
+		}
+		return -1;
+	}
+	
+	/**
 	 * Given a string which is technically supposed to be a ship-talk direction name,
 	 * this method will make a case-insensitive check against the given
 	 * string and return the direction it probably represents.  It gives
@@ -546,6 +601,28 @@ public class Directions
 		for (final Object[] element : DIRECTIONS_SHIP_CHART)
 		{
 			if((element[0].toString().startsWith(upDir))
+			&&(((Integer)element[1]).intValue()<NUM_DIRECTIONS()))
+				return ((Integer)element[1]).intValue();
+		}
+		return -1;
+	}
+
+	/**
+	 * Given a string which is technically supposed to be a ship-talk direction name,
+	 * this method will make a case-insensitive check against the given
+	 * string and return the direction it represents.  It requires
+	 * actual direction names, such as port and aft.
+	 * @param theDir the ship-talk direction search string
+	 * @return the direction code it represents, or -1 if no match at ALL
+	 */
+	public int getStrictShipDirectionCode(final String theDir)
+	{
+		if(theDir.length()==0)
+			return -1;
+		final String upDir=theDir.toUpperCase();
+		for (final Object[] element : DIRECTIONS_SHIP_CHART)
+		{
+			if((element[0].toString().equals(upDir))
 			&&(((Integer)element[1]).intValue()<NUM_DIRECTIONS()))
 				return ((Integer)element[1]).intValue();
 		}
