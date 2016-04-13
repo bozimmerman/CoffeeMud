@@ -127,13 +127,19 @@
 #Specify what the announcer says to people who have accepted the quest.  This 
 #should give some details about what is to be done.  You can leave this blank
 #if you like.  You may use the same sort of variables as were used in the greeting.
-#$QUEST_INSTRUCTIONSSTRING=($LONG_STRING)=What's the world coming to? Something was done to or for $TARGET at $WHEREHAPPENED on $WHENHAPPENED.  You should go there and starting asking the folks in nearby rooms about the suspects, and any other clues you gather.  Then come back here and announce WHO you think did it, and what their MOTIVE was.  No wrong guesses are allowed.  Questioning the people around that room will reveal all the clues you need.
+#$QUEST_INSTRUCTIONSSTRING=($LONG_STRING)=What's the world coming to? Something was done to or for $TARGET at $WHEREHAPPENED on $WHENHAPPENED.  You should go there and starting asking the folks in nearby rooms about the suspects, and any other clues you gather.  Then come back here and announce, one at a time, WHO you think did it, and what their MOTIVE was.  No wrong guesses are allowed.  Questioning the people around that room will reveal all the clues you need.
 #
 #Announcer announcement:
 #Select what type of annoucement the Announcer will make when the quest starts.
 #$QUEST_ANNOUNCEMENT_TYPE=$CHOOSE=YELL,QUESTCHAT,MPECHO,SAY
 #This is what the announcement says.  Leave it blank if you only want him to talk to people who enter the room with him.
 #$QUEST_ANNOUNCEMENT=($LONG_STRING)=We have a mystery that needs solving! Something was done to or for $TARGET at $WHEREHAPPENED on $WHENHAPPENED.  Come see me about it IMMEDIATELY!!
+#
+#Announcer solve instructions: 
+#Specify what the announcer says to people who have accepted the quest and are 
+#trying to solve it. This can be some more details about what is to be done.  You can leave this blank
+#if you like.  You may use the same sort of variables as were used in the greeting.
+#$QUEST_SOLVESTRING=($LONG_STRING)=So you think you have solved it, huh? OK, now give it to me slowly, one at a time, WHO did it, and what was their MOTIVE.
 #
 #!QUESTMAKER_PAGE Announcer completion announcements
 #Here's where you specify any special text said by the announcer regarding the end of your quest.
@@ -359,8 +365,14 @@ SPEECH_PROG p i accept
 	endif
 ~
 
+SPEECH_PROG solve
+	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and VAR($n $QUEST_ID_ACCEPTED != '')
+		sayto "$n" $QUEST_SOLVESTRING
+	endif
+~
+
 SPEECH_PROG all
-	if STRCONTAINS($g "i accept") OR EVAL($g == '')
+	if STRCONTAINS($g "i accept") OR STRCONTAINS($g "solve") OR EVAL($g == '')
 		RETURN
 	endif
 	
@@ -496,6 +508,7 @@ QUEST_TIME_PROG * -1
 	set room
 	set mob reselect $WITNESS_NAMES
 	take behavior MudChat
+	give behavior QuestChat +( victim | murder)\;9I heard about that.  Isn't it terrible?
 	give behavior QuestChat +( $|ARG2 |  $|ARG3 ::$ARG2_$ARG3)\;9$_ARG2 is a dork, but $ARG2 would not do anything for $ARG3.
 	give affect Spell_LedFoot
 </OPTION>
@@ -505,6 +518,7 @@ QUEST_TIME_PROG * -1
 	set room
 	set mob reselect $WITNESS_NAMES
 	take behavior MudChat
+	give behavior QuestChat +( victim | murder)\;9Yea, crying shame.
 	give behavior QuestChat +( $|ARG2 |  $|ARG3 ::$ARG2_$ARG3)\;9$_ARG2 was not one to be into $ARG3.
 	give affect Spell_LedFoot
 </OPTION>
@@ -514,6 +528,7 @@ QUEST_TIME_PROG * -1
 	set room
 	set mob reselect $WITNESS_NAMES
 	take behavior MudChat
+	give behavior QuestChat +( victim | murder)\;9It was such a waste.
 	give behavior QuestChat +( $|ARG2 |  $|ARG3 ::$ARG2_$ARG3)\;9I know $ARG2 well enough to know $ARG3 is not a motive.
 	give affect Spell_LedFoot
 </OPTION>
@@ -523,6 +538,7 @@ QUEST_TIME_PROG * -1
 	set room
 	set mob reselect $WITNESS_NAMES
 	take behavior MudChat
+	give behavior QuestChat +( victim | murder)\;9I heard all about it.
 	give behavior QuestChat +( $|ARG2 |  $|ARG3 ::$ARG2_$ARG3)\;9$_ARG2 thinks $ARG3 is immoral, he wouldn't do anything for that reason.
 	give affect Spell_LedFoot
 </OPTION>
@@ -532,6 +548,7 @@ QUEST_TIME_PROG * -1
 	set room
 	set mob reselect $WITNESS_NAMES
 	take behavior MudChat
+	give behavior QuestChat +( victim | murder)\;9Heard about that.  What can you do?
 	give behavior QuestChat +( $|ARG2 |  $|ARG3 ::$ARG2_$ARG3)\;9$_ARG2 never gets involved with $ARG3.
 	give affect Spell_LedFoot
 </OPTION>
@@ -541,6 +558,7 @@ QUEST_TIME_PROG * -1
 	set room
 	set mob reselect $WITNESS_NAMES
 	take behavior MudChat
+	give behavior QuestChat +( victim | murder)\;9What`s the world coming to, right?
 	give behavior QuestChat +( $|ARG2 |  $|ARG3 ::$ARG2_$ARG3)\;9$_ARG2 isn't ever into $ARG3.
 	give affect Spell_LedFoot
 </OPTION>
@@ -550,6 +568,7 @@ QUEST_TIME_PROG * -1
 	set room
 	set mob reselect $WITNESS_NAMES
 	take behavior MudChat
+	give behavior QuestChat +( victim | murder)\;9Damn shame.
 	give behavior QuestChat +( $|ARG2 |  $|ARG3 ::$ARG2_$ARG3)\;9$_ARG2 hates $ARG3, and never gets involved in it.
 	give affect Spell_LedFoot
 </OPTION>
@@ -559,6 +578,7 @@ QUEST_TIME_PROG * -1
 	set room
 	set mob reselect $WITNESS_NAMES
 	take behavior MudChat
+	give behavior QuestChat +( victim | murder)\;9Big news, right?
 	give behavior QuestChat +( $|ARG2 |  $|ARG3 ::$ARG2_$ARG3)\;9$_ARG2 would never do anything for $ARG3.
 	give affect Spell_LedFoot
 </OPTION>
@@ -568,6 +588,7 @@ QUEST_TIME_PROG * -1
 	set room
 	set mob reselect $WITNESS_NAMES
 	take behavior MudChat
+	give behavior QuestChat +( victim | murder)\;9OMG!!! I KNOW!!!
 	give behavior QuestChat +( $|ARG2 |  $|ARG3 ::$ARG2_$ARG3)\;9$ARG2 is too proud to do anything for $ARG3.
 	give affect Spell_LedFoot
 </OPTION>
@@ -577,6 +598,7 @@ QUEST_TIME_PROG * -1
 	set room
 	set mob reselect $WITNESS_NAMES
 	take behavior MudChat
+	give behavior QuestChat +( victim | murder)\;9Yea, who hasn`t heard about THAT already?
 	give behavior QuestChat +( $|ARG2 |  $|ARG3 ::$ARG2_$ARG3)\;9$ARG2 doesn't know $ARG3.
 	give affect Spell_LedFoot
 </OPTION>
@@ -586,6 +608,7 @@ QUEST_TIME_PROG * -1
 	set room
 	set mob reselect $WITNESS_NAMES
 	take behavior MudChat
+	give behavior QuestChat +( victim | murder)\;9Yea, never liked 'em anyway.
 	give behavior QuestChat +( $|ARG2 |  $|ARG3 ::$ARG2_$ARG3)\;9$ARG2 is too dumb to understand $ARG3.
 	give affect Spell_LedFoot
 </OPTION>
@@ -595,6 +618,7 @@ QUEST_TIME_PROG * -1
 	set room
 	set mob reselect $WITNESS_NAMES
 	take behavior MudChat
+	give behavior QuestChat +( victim | murder)\;9Yea, I hope they catch the killer.
 	give behavior QuestChat +( $|ARG2 |  $|ARG3 ::$ARG2_$ARG3)\;9$ARG3 is far too silly a motive for $ARG2.
 	give affect Spell_LedFoot
 </OPTION>
