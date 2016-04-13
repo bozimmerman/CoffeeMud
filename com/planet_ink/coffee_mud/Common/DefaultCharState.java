@@ -33,24 +33,50 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class DefaultCharState implements CharState
 {
-	@Override public String ID(){return "DefaultCharState";}
-	@Override public String name() { return ID();}
-	protected final static int[] DEFAULT_STATES={10,100,50,DEFAULT_HUNGER_FULL,DEFAULT_THIRST_FULL,0,0};
-	protected int[] states=DEFAULT_STATES.clone();
-	protected long Fatigue=0;
+	@Override
+	public String ID()
+	{
+		return "DefaultCharState";
+	}
 
-	public DefaultCharState(){}
+	@Override
+	public String name()
+	{
+		return ID();
+	}
 
-	@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(final Exception e){return new DefaultCharState();}}
+	protected final static int[]	DEFAULT_STATES	= { 10, 100, 50, DEFAULT_HUNGER_FULL, DEFAULT_THIRST_FULL, 0, 0 };
+	protected int[]					states			= DEFAULT_STATES.clone();
+	protected long					fatigue			= 0;
 
-	@Override public void initializeClass(){}
+	public DefaultCharState()
+	{
+	}
+
+	@Override
+	public CMObject newInstance()
+	{
+		try
+		{
+			return getClass().newInstance();
+		}
+		catch (final Exception e)
+		{
+			return new DefaultCharState();
+		}
+	}
+
+	@Override
+	public void initializeClass()
+	{
+	}
 
 	@Override
 	public void setAllValues(int def)
 	{
 		for(int i=0;i<states.length;i++)
 			states[i]=def;
-		Fatigue=def;
+		fatigue=def;
 	}
 
 	@Override
@@ -58,7 +84,7 @@ public class DefaultCharState implements CharState
 	{
 		for(int i=0;i<DEFAULT_STATES.length;i++)
 			states[i]=DEFAULT_STATES[i];
-		Fatigue=0;
+		fatigue=0;
 	}
 
 	@Override
@@ -68,7 +94,7 @@ public class DefaultCharState implements CharState
 		{
 			for(int i=0;i<states.length;i++)
 				((DefaultCharState)intoState).states[i]=states[i];
-			((DefaultCharState)intoState).Fatigue=Fatigue;
+			((DefaultCharState)intoState).fatigue=fatigue;
 		}
 		else
 		for(int i=0;i<getStatCodes().length;i++)
@@ -107,22 +133,22 @@ public class DefaultCharState implements CharState
 	@Override
 	public long getFatigue()
 	{
-		return Fatigue;
+		return fatigue;
 	}
 
 	@Override
 	public void setFatigue(long newVal)
 	{
-		Fatigue=newVal;
+		fatigue=newVal;
 	}
 
 	@Override
 	public boolean adjFatigue(final long byThisMuch, final CharState max)
 	{
-		Fatigue+=byThisMuch;
-		if(Fatigue<1)
+		fatigue+=byThisMuch;
+		if(fatigue<1)
 		{
-			Fatigue=0;
+			fatigue=0;
 			return false;
 		}
 		return true;
@@ -169,6 +195,7 @@ public class DefaultCharState implements CharState
 		}
 		return true;
 	}
+
 	@Override
 	public int maxHunger(int baseWeight)
 	{
@@ -239,7 +266,7 @@ public class DefaultCharState implements CharState
 	@Override
 	public String getCombatStats()
 	{
-		return "H"+states[STAT_HITPOINTS]+":M"+states[STAT_MANA]+":V"+states[STAT_MOVE]+":F"+Fatigue;
+		return "H"+states[STAT_HITPOINTS]+":M"+states[STAT_MANA]+":V"+states[STAT_MOVE]+":F"+fatigue;
 	}
 
 	@Override
@@ -303,22 +330,43 @@ public class DefaultCharState implements CharState
 	private final static String[] CODES={
 		"HITS","MANA","MOVE",
 		"HUNGER","THIRST","FATIGUE"};
-	@Override public int getSaveStatIndex(){return getStatCodes().length;}
-	@Override public String[] getStatCodes(){return CODES;}
-	@Override public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
+
+	@Override
+	public int getSaveStatIndex()
+	{
+		return getStatCodes().length;
+	}
+
+	@Override
+	public String[] getStatCodes()
+	{
+		return CODES;
+	}
+
+	@Override
+	public boolean isStat(String code)
+	{
+		return CMParms.indexOf(getStatCodes(), code.toUpperCase().trim()) >= 0;
+	}
+
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<CODES.length;i++)
+		{
 			if(code.equalsIgnoreCase(CODES[i]))
 				return i;
+		}
 		return -1;
 	}
+
 	@Override
 	public boolean sameAs(CharState E)
 	{
 		for(int i=0;i<CODES.length;i++)
+		{
 			if(!E.getStat(CODES[i]).equals(getStat(CODES[i])))
-			   return false;
+				return false;
+		}
 		return true;
 	}
 
@@ -327,12 +375,24 @@ public class DefaultCharState implements CharState
 	{
 		switch(getCodeNum(code))
 		{
-		case 0: setHitPoints(CMath.s_parseIntExpression(val)); break;
-		case 1: setMana(CMath.s_parseIntExpression(val)); break;
-		case 2: setMovement(CMath.s_parseIntExpression(val)); break;
-		case 3: setHunger(CMath.s_parseIntExpression(val)); break;
-		case 4: setThirst(CMath.s_parseIntExpression(val)); break;
-		case 5: setFatigue(CMath.s_parseIntExpression(val)); break;
+		case 0:
+			setHitPoints(CMath.s_parseIntExpression(val));
+			break;
+		case 1:
+			setMana(CMath.s_parseIntExpression(val));
+			break;
+		case 2:
+			setMovement(CMath.s_parseIntExpression(val));
+			break;
+		case 3:
+			setHunger(CMath.s_parseIntExpression(val));
+			break;
+		case 4:
+			setThirst(CMath.s_parseIntExpression(val));
+			break;
+		case 5:
+			setFatigue(CMath.s_parseIntExpression(val));
+			break;
 		}
 	}
 	@Override
@@ -340,13 +400,20 @@ public class DefaultCharState implements CharState
 	{
 		switch(getCodeNum(code))
 		{
-		case 0: return ""+getHitPoints();
-		case 1: return ""+getMana();
-		case 2: return ""+getMovement();
-		case 3: return ""+getHunger();
-		case 4: return ""+getThirst();
-		case 5: return ""+getFatigue();
-		default: return "";
+		case 0:
+			return "" + getHitPoints();
+		case 1:
+			return "" + getMana();
+		case 2:
+			return "" + getMovement();
+		case 3:
+			return "" + getHunger();
+		case 4:
+			return "" + getThirst();
+		case 5:
+			return "" + getFatigue();
+		default:
+			return "";
 		}
 	}
 
@@ -365,5 +432,10 @@ public class DefaultCharState implements CharState
 			return new DefaultCharState();
 		}
 	}
-	@Override public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+
+	@Override
+	public int compareTo(CMObject o)
+	{
+		return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));
+	}
 }
