@@ -694,6 +694,12 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 				product = (Environmental)product.copyOf();
 				((RawMaterial) product).basePhyStats().setWeight(1);
 				((RawMaterial) product).phyStats().setWeight(1);
+				int baseValue = ((RawMaterial) product).baseGoldValue();
+				if(baseValue > number)
+					((RawMaterial) product).setBaseValue( (int)Math.round(baseValue / number));
+				else
+				if(baseValue > 0)
+					((RawMaterial) product).setBaseValue( 1);
 			}
 			if(product==null)
 				return val;
