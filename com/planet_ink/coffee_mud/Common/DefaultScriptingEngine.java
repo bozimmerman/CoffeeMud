@@ -10105,7 +10105,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								// scripting guide calls for NO text -- empty is probably req tho
 								final CMMsg enterMsg=CMClass.getMsg(follower,newRoom,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER," "+CMLib.protocol().msp("appear.wav",10));
 								final CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,null,CMMsg.MSG_LEAVE," ");
-								if(thisRoom.okMessage(follower,leaveMsg)&&newRoom.okMessage(follower,enterMsg))
+								if((thisRoom!=null)
+								&&thisRoom.okMessage(follower,leaveMsg)
+								&&newRoom.okMessage(follower,enterMsg))
 								{
 									if(follower.isInCombat())
 									{

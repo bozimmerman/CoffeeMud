@@ -350,6 +350,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		}
 		fixMobStatsIfNecessary(mob,-1);
 		CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.LEVELSGAINED, -1, mob);
+		CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.CLASSLEVELSGAINED, -1, mob);
 	}
 
 	@Override
@@ -608,6 +609,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		mob.charStats().getMyRace().level(mob,newAbilityIDs);
 		
 		CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.LEVELSGAINED, 1, mob);
+		CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.CLASSLEVELSGAINED, 1, mob);
 	}
 
 	protected boolean fixMobStatsIfNecessary(MOB mob, int direction)

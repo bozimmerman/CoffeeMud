@@ -1811,6 +1811,130 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 			};
 			break;
+		case CLASSLEVELSGAINED:
+			A=new Achievement()
+			{
+				private int num = 0;
+				private CharClass charClass = null;
+				private MaskingLibrary.CompiledZapperMask playerMask = null;
+				
+				@Override
+				public Event getEvent()
+				{
+					return eventType;
+				}
+
+				@Override
+				public Agent getAgent()
+				{
+					return agent;
+				}
+
+				@Override
+				public String getTattoo()
+				{
+					return tattoo;
+				}
+
+				@Override
+				public int getTargetCount()
+				{
+					return num;
+				}
+
+				@Override
+				public boolean isTargetFloor()
+				{
+					return true;
+				}
+
+				@Override
+				public String getDisplayStr()
+				{
+					return displayStr;
+				}
+
+				@Override
+				public Award[] getRewards()
+				{
+					return rewardList;
+				}
+
+				@Override
+				public String getRawParmVal(String str)
+				{
+					return CMParms.getParmStr(params,str,"");
+				}
+
+				@Override
+				public Tracker getTracker(final int oldCount)
+				{
+					final Achievement me=this;
+					return new Tracker()
+					{
+						@Override
+						public Achievement getAchievement() 
+						{
+							return me;
+						}
+
+						@Override
+						public boolean isAchieved(MOB mob) 
+						{
+							return (getCount(mob) > num);
+						}
+
+						@Override
+						public int getCount(MOB mob)
+						{
+							if(mob == null)
+								return 0;
+							int classLevel = mob.charStats().getClassLevel(charClass);
+							if(classLevel < 0)
+								return 0;
+							return classLevel + 1;
+						}
+
+						@Override
+						public boolean testBump(MOB mob, int bumpNum, Object... parms)
+						{
+							if(((playerMask==null)||(CMLib.masking().maskCheck(playerMask, mob, true)))
+							&&(mob.charStats().getCurrentClass() == charClass))
+							{
+								return true;
+							}
+							return false;
+						}
+						
+					};
+				}
+				
+				@Override
+				public boolean isSavableTracker()
+				{
+					return true;
+				}
+				
+				@Override
+				public String parseParms(final String parms)
+				{
+					final String numStr=CMParms.getParmStr(parms, "NUM", "");
+					if(!CMath.isInteger(numStr))
+						return "Error: Missing or invalid NUM parameter: "+numStr+"!";
+					num=CMath.s_int(numStr);
+					String charClassID=CMStrings.deEscape(CMParms.getParmStr(parms, "CLASS", ""));
+					this.charClass = CMClass.getCharClass(charClassID);
+					if(this.charClass == null)
+						this.charClass = CMClass.findCharClass(charClassID);
+					if(this.charClass == null)
+						return "Error: Missing or invalid CLASS parameter: "+charClassID+"!";
+					String zapperMask=CMStrings.deEscape(CMParms.getParmStr(parms, "PLAYERMASK", ""));
+					if(zapperMask.trim().length()>0)
+						this.playerMask = CMLib.masking().getPreCompiledMask(zapperMask);
+					return "";
+				}
+			};
+			break;
 		case RETIRE:
 		case REMORT:
 		case LEVELSGAINED:

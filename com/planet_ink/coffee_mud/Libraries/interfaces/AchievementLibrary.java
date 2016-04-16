@@ -74,6 +74,7 @@ public interface AchievementLibrary extends CMLibrary
 		ACHIEVER("Completing Achievements",new String[]{"ACHIEVEMENTLIST"}), 
 		ROOMENTER("Entering a Room",new String[]{"ROOMID"}),
 		LEVELSGAINED("Gaining Levels",new String[]{"NUM","PLAYERMASK"}),
+		CLASSLEVELSGAINED("Gaining Class Levels",new String[]{"NUM","CLASS","PLAYERMASK"}),
 		TIMEPLAYED("Time Played",new String[]{"SECONDS","PLAYERMASK"}),
 		JUSTBE("Character State",new String[]{"PLAYERMASK"}),
 		DEATHS("Dieing",new String[]{"NUM","ZAPPERMASK","PLAYERMASK"}),

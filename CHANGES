@@ -16,6 +16,7 @@
   15. Conquerable will now transfer private property to conqueror, see new OWNERSHIP flag.
   16. Prop_Lot*ForSale and Prop_RoomPlus now support grid-connecting the walls of rooms for looping.
   17. New Scriptable commands: MPOLOADSHOP and MPMLOADSHOP, and funcs: SHOPHAS, SHOPITEM, NUMITEMSSHOP
+  18. New Achievements trigger: CLASSLEVELSGAINED -- several more achievements that use it also.
 
 # Build 5.9.2 Released 02/09/2016
    1. Apprentice now gets bonus common skill.
