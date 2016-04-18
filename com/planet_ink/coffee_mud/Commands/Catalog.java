@@ -35,10 +35,11 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Catalog extends StdCommand
 {
-	public Catalog(){}
+	public Catalog()
+	{
+	}
 
 	private final String[]	access	= I(new String[] { "CATALOG" });
 
@@ -218,11 +219,11 @@ public class Catalog extends StdCommand
 		return (Physical)data[0];
 	}
 
-	public Enumeration getRoomSet(MOB mob, String which)
+	public Enumeration<String> getRoomSet(MOB mob, String which)
 	{
-		Enumeration rooms=null;
+		Enumeration<String> rooms=null;
 		if(which.equalsIgnoreCase("ROOM"))
-			rooms=new XVector(CMLib.map().getExtendedRoomID(mob.location())).elements();
+			rooms=new XVector<String>(CMLib.map().getExtendedRoomID(mob.location())).elements();
 		else
 		if(which.equalsIgnoreCase("AREA"))
 			rooms=mob.location().getArea().getProperRoomnumbers().getRoomIDs();
@@ -303,20 +304,22 @@ public class Catalog extends StdCommand
 			if(checkUserRoomSetEntry(commands))
 			{
 				final String which=commands.get(0).toLowerCase();
-				final Enumeration rooms=getRoomSet(mob,which);
+				final Enumeration<String> rooms=getRoomSet(mob,which);
 				commands.remove(0);
 				final CatalogKind whatKind=getObjectType(commands);
 				final String type=whatKind.name().toLowerCase();
 
 				if((mob.session()!=null)
-				&&(mob.session().confirm(L("You are about to auto-catalog (room-reset and save) all @x1 @x2.\n\rThis command, if used improperly, may alter @x3 in this @x4.\n\rAre you absolutely sure (y/N)?",which,type,type,which),"N"))
-				&&((which.equalsIgnoreCase("ROOM"))||mob.session().confirm(L("I'm serious now.  You can't abort this, and it WILL modify stuff.\n\rHave you tested this command on small areas and know what you're doing?.\n\rAre you absolutely POSITIVELY sure (y/N)?"),"N")))
+				&&(mob.session().confirm(L("You are about to auto-catalog (room-reset and save) all @x1 @x2.\n\rThis command, if used improperly, "
+						+ "may alter @x3 in this @x4.\n\rAre you absolutely sure (y/N)?",which,type,type,which),"N"))
+				&&((which.equalsIgnoreCase("ROOM"))||mob.session().confirm(L("I'm serious now.  You can't abort this, and it WILL modify stuff.\n\r"
+						+ "Have you tested this command on small areas and know what you're doing?.\n\rAre you absolutely POSITIVELY sure (y/N)?"),"N")))
 				{
 					Physical P=null;
 					String roomID=null;
 					for(;rooms.hasMoreElements();)
 					{
-						roomID=(String)rooms.nextElement();
+						roomID=rooms.nextElement();
 						R=CMLib.coffeeMaker().makeNewRoomContent(CMLib.map().getRoom(roomID),false);
 						final List<CatalogLibrary.RoomContent> contents=CMLib.catalog().roomContent(R);
 						boolean dirty=false;
@@ -659,7 +662,7 @@ public class Catalog extends StdCommand
 				if(checkUserRoomSetEntry(commands))
 				{
 					final String which=commands.get(0).toLowerCase();
-					final Enumeration rooms=getRoomSet(mob,which);
+					final Enumeration<String> rooms=getRoomSet(mob,which);
 					commands.remove(0);
 
 					final CatalogKind whatKind=getObjectType(commands);
@@ -667,7 +670,7 @@ public class Catalog extends StdCommand
 					String roomID=null;
 					for(;rooms.hasMoreElements();)
 					{
-						roomID=(String)rooms.nextElement();
+						roomID=rooms.nextElement();
 						R=CMLib.map().getRoom(roomID);
 						if(db)
 							R=CMLib.coffeeMaker().makeNewRoomContent(R,false);
@@ -697,7 +700,7 @@ public class Catalog extends StdCommand
 									mob.tell(L("Error: Item @x1 in @x2 is falsely cataloged.",P.Name(),roomID));
 							}
 						}
-						if(db)
+						if(db && (R!=null))
 							R.destroy();
 					}
 				}
@@ -713,7 +716,7 @@ public class Catalog extends StdCommand
 				if(checkUserRoomSetEntry(commands))
 				{
 					final String which=commands.get(0).toLowerCase();
-					final Enumeration rooms=getRoomSet(mob,which);
+					final Enumeration<String> rooms=getRoomSet(mob,which);
 					commands.remove(0);
 
 					final CatalogKind whatKind=getObjectType(commands);
@@ -721,7 +724,7 @@ public class Catalog extends StdCommand
 					String roomID=null;
 					for(;rooms.hasMoreElements();)
 					{
-						roomID=(String)rooms.nextElement();
+						roomID=rooms.nextElement();
 						R=CMLib.map().getRoom(roomID);
 						if(R == null)
 							continue;
@@ -767,18 +770,19 @@ public class Catalog extends StdCommand
 				if(checkUserRoomSetEntry(commands))
 				{
 					final String which=commands.get(0).toLowerCase();
-					final Enumeration rooms=getRoomSet(mob,which);
+					final Enumeration<String> rooms=getRoomSet(mob,which);
 					commands.remove(0);
 					final CatalogKind whatKind=getObjectType(commands);
 					final String type=whatKind.name().toLowerCase();
 					if((mob.session()!=null)
-					&&(mob.session().confirm(L("You are about to auto-clean (and auto-save) all @x1 @x2.\n\rThis command, if used improperly, may alter @x3 in this @x4.\n\rAre you absolutely sure (y/N)?",which,type,type,which),"N")))
+					&&(mob.session().confirm(L("You are about to auto-clean (and auto-save) all @x1 @x2.\n\rThis command, if used improperly, may alter @x3 in this @x4.\n\r"
+							+ "Are you absolutely sure (y/N)?",which,type,type,which),"N")))
 					{
 						Physical P=null;
 						String roomID=null;
 						for(;rooms.hasMoreElements();)
 						{
-							roomID=(String)rooms.nextElement();
+							roomID=rooms.nextElement();
 							R=CMLib.coffeeMaker().makeNewRoomContent(CMLib.map().getRoom(roomID),false);
 							final List<CatalogLibrary.RoomContent> contents=CMLib.catalog().roomContent(R);
 							boolean dirty=false;
@@ -856,7 +860,8 @@ public class Catalog extends StdCommand
 			}
 		}
 		else
-			mob.tell(L("Catalog huh? Try CATALOG LIST (MOBS/ITEMS/CATEGORIES) (MASK), CATALOG [mob/item name], CATALOG DELETE [mob/item name], CATALOG EDIT [item name], CATALOG CATEGORY LIST/[category name]."));
+			mob.tell(L("Catalog huh? Try CATALOG LIST (MOBS/ITEMS/CATEGORIES) (MASK), CATALOG [mob/item name], CATALOG DELETE [mob/item name], "
+					+ "CATALOG EDIT [item name], CATALOG CATEGORY LIST/[category name]."));
 		return false;
 	}
 

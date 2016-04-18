@@ -1584,7 +1584,13 @@ public class StdItem implements Item
 			return;
 		myContainer=null;
 		CMLib.map().registerWorldObjectDestroyed(null,null,this);
-		try {CMLib.catalog().changeCatalogUsage(this,false);} catch(final Exception t){}
+		try
+		{
+			CMLib.catalog().changeCatalogUsage(this, false);
+		}
+		catch (final Exception t)
+		{
+		}
 		delAllEffects(true);
 		delAllBehaviors();
 		delAllScripts();
