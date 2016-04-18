@@ -35,16 +35,47 @@ import java.util.*;
 
 public class Spell_ImprovedPolymorph extends Spell
 {
-	@Override public String ID() { return "Spell_ImprovedPolymorph"; }
-	private final static String localizedName = CMLib.lang().L("Improved Polymorph");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Improved Polymorph)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
+	@Override
+	public String ID()
+	{
+		return "Spell_ImprovedPolymorph";
+	}
 
-	Race newRace=null;
+	private final static String	localizedName	= CMLib.lang().L("Improved Polymorph");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Improved Polymorph)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL | Ability.DOMAIN_TRANSMUTATION;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_OTHERS;
+	}
+
+	protected Race	newRace	= null;
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
@@ -85,8 +116,10 @@ public class Spell_ImprovedPolymorph extends Spell
 		final MOB mob=(MOB)affected;
 		super.unInvoke();
 		if(canBeUninvoked())
+		{
 			if((mob.location()!=null)&&(!mob.amDead()))
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> morph(s) back to <S-HIS-HER> normal form."));
+		}
 	}
 
 	@Override

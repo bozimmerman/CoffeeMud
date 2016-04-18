@@ -220,6 +220,24 @@ public class BodyPiercing extends CommonSkill
 			commonTell(mob,L("That location is already decorated."));
 			return false;
 		}
+		
+		if("REMOVE".equals(command) && (wornName != null))
+		{
+			if(wornName.toLowerCase().endsWith("s"))
+			{
+				if(target.findTattoo(wearLocName+":Pierced "+wornName.toLowerCase())==null)
+				{
+					commonTell(mob,L("There is no piercing there to heal.  Did you use the full body part name?"));
+					return false;
+				}
+			}
+			else
+			if(target.findTattoo(wearLocName+":A pierced "+wornName.toLowerCase())==null)
+			{
+				commonTell(mob,L("There is no piercing there to heal.  Did you use the full body part name?"));
+				return false;
+			}
+		}
 
 		if((!super.invoke(mob,commands,givenTarget,auto,asLevel))||(wornName==null))
 			return false;

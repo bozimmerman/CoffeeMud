@@ -434,7 +434,7 @@ public class WeatherAffects extends PuddleMaker
 				for(;r.hasMoreElements();)
 				{
 					final Room R=r.nextElement();
-					if(CMLib.map().hasASky(R))
+					if(CMLib.map().hasASky(R) && (R.numInhabitants() > 0))
 					{
 						for(int i=0;i<R.numInhabitants();i++)
 						{
@@ -537,12 +537,14 @@ public class WeatherAffects extends PuddleMaker
 					{
 						I=M.getItem(i);
 						if((I==null)||(I.amWearingAt(Wearable.IN_INVENTORY)))
-						   continue;
+							continue;
 						if(I.amWearingAt(Wearable.WORN_ABOUT_BODY))
 							coveredPlaces=coveredPlaces|Wearable.WORN_TORSO|Wearable.WORN_LEGS;
 						for (final long element : ALL_COVERED_SPOTS)
+						{
 							if(I.amWearingAt(element))
 								coveredPlaces=coveredPlaces|element;
+						}
 					}
 					if((coveredPlaces!=ALL_COVERED_CODE)&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
 					{
@@ -558,17 +560,21 @@ public class WeatherAffects extends PuddleMaker
 				{
 					long unfrostedPlaces=0;
 					for (final long element : ALL_FROST_SPOTS)
+					{
 						if(M.getWearPositions(element)==0)
 							unfrostedPlaces=unfrostedPlaces|element;
+					}
 					Item I=null;
 					for(int i=0;i<M.numItems();i++)
 					{
 						I=M.getItem(i);
 						if((I==null)||(I.amWearingAt(Wearable.IN_INVENTORY)))
-						   continue;
+							continue;
 						for (final long element : ALL_FROST_SPOTS)
+						{
 							if(I.amWearingAt(element))
 								unfrostedPlaces=unfrostedPlaces|element;
+						}
 					}
 					if((unfrostedPlaces!=ALL_FROST_CODE)&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
 					{
@@ -871,21 +877,25 @@ public class WeatherAffects extends PuddleMaker
 			{
 				final Item I=R.getRandomItem();
 				if((I!=null)&&(CMLib.flags().isGettable(I)))
-				switch(I.material()&RawMaterial.MATERIAL_MASK)
 				{
-				case RawMaterial.MATERIAL_CLOTH:
-				case RawMaterial.MATERIAL_LEATHER:
-				case RawMaterial.MATERIAL_PAPER:
-				case RawMaterial.MATERIAL_VEGETATION:
-				case RawMaterial.MATERIAL_WOODEN:
-				{
-					final Ability A2=CMClass.getAbility("Burning");
-					final MOB mob=CMLib.map().getFactoryMOB(R);
-					R.showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 spontaneously combusts in the seering heat!@x2",I.Name(),CMLib.protocol().msp("fire.wav",40)));
-					A2.invoke(mob,I,true,0);
-					mob.destroy();
-				}
-				break;
+					switch(I.material()&RawMaterial.MATERIAL_MASK)
+					{
+					case RawMaterial.MATERIAL_CLOTH:
+					case RawMaterial.MATERIAL_LEATHER:
+					case RawMaterial.MATERIAL_PAPER:
+					case RawMaterial.MATERIAL_VEGETATION:
+					case RawMaterial.MATERIAL_WOODEN:
+					{
+						final Ability A2=CMClass.getAbility("Burning");
+						final MOB mob=CMLib.map().getFactoryMOB(R);
+						R.showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 spontaneously combusts in the seering heat!@x2",I.Name(),CMLib.protocol().msp("fire.wav",40)));
+						A2.invoke(mob,I,true,0);
+						mob.destroy();
+						break;
+					}
+					default:
+						break;
+					}
 				}
 			}
 		}

@@ -411,7 +411,9 @@ public class StdCharClass implements CharClass
 			final int statCode=CharStats.CODES.findWhole(minReq.first, true);
 			if(statCode >= 0)
 			{
-				if(mob.baseCharStats().getStat(statCode) < minReq.second.intValue())
+				final CharStats cStats = (CharStats)mob.baseCharStats().copyOf();
+				cStats.getMyRace().affectCharStats(mob, cStats);
+				if(cStats.getStat(statCode) < minReq.second.intValue())
 				{
 					if(!quiet)
 						mob.tell(L("You need at least a @x1 @x2 to become a @x3.",minReq.second.toString(),CMStrings.capitalizeAndLower(CharStats.CODES.NAME(statCode)),name()));

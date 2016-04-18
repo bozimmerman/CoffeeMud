@@ -167,7 +167,7 @@ public class WaterCurrents extends ActiveTicker
 						if(R.okMessage(M,themsg))
 						{
 							R.send(M,themsg);
-							R2.bringMobHere(M,false);
+							R2.bringMobHere(M,true);
 							R2.showOthers(srcM,M,new AWaterCurrent(),CMMsg.MSG_OK_ACTION,L("<T-NAME> <T-IS-ARE> swept in from @x1 by the current.",
 									CMLib.directions().getFromCompassDirectionName(Directions.getOpDirectionCode(dir)).toLowerCase()));
 							CMLib.commands().postLook(M,true);
