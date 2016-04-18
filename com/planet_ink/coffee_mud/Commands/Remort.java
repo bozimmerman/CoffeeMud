@@ -366,6 +366,8 @@ public class Remort extends StdCommand
 					mob.baseState().setHitPoints(newHp[0]);
 					mob.baseState().setMana(newMana[0]);
 					mob.baseState().setMovement(newMove[0]);
+					for(int code : CharStats.CODES.SAVING_THROWS())
+						mob.baseCharStats().setStat(code, 0);
 					mob.delAllAbilities();
 					mob.delAllBehaviors();
 					mob.delAllScripts();
