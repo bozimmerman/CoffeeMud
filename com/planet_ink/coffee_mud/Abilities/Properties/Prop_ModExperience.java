@@ -35,18 +35,34 @@ import java.util.*;
 */
 public class Prop_ModExperience extends Property
 {
-	@Override public String ID() { return "Prop_ModExperience"; }
-	@Override public String name(){ return "Modifying Experience Gained";}
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_AREAS|Ability.CAN_ROOMS;}
-	protected String operationFormula = "";
-	protected boolean selfXP=false;
-	protected LinkedList<CMath.CompiledOperation> operation = null;
-	protected MaskingLibrary.CompiledZapperMask   mask = null;
+	@Override
+	public String ID()
+	{
+		return "Prop_ModExperience";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Modifying Experience Gained";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS | Ability.CAN_ITEMS | Ability.CAN_AREAS | Ability.CAN_ROOMS;
+	}
+
+	protected String								operationFormula	= "";
+	protected boolean								selfXP				= false;
+	protected LinkedList<CMath.CompiledOperation>	operation			= null;
+	protected MaskingLibrary.CompiledZapperMask		mask				= null;
 
 	@Override
 	public String accountForYourself()
-	{ return "Modifies experience gained: "+operationFormula;	}
-
+	{
+		return "Modifies experience gained: " + operationFormula;
+	}
 
 	public int translateAmount(int amount, String val)
 	{
