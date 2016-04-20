@@ -950,10 +950,12 @@ public class DefaultCharStats implements CharStats
 		}
 	}
 
+	private static final short SHORT_MAX_VALUE = Short.MAX_VALUE / 2;  //TODO: DELME
+	
 	@Override
 	public void setStat(int abilityCode, int value)
 	{
-		if((value>Short.MAX_VALUE)||(value<Short.MIN_VALUE))  //TODO: DELME
+		if((value>SHORT_MAX_VALUE)||(value<Short.MIN_VALUE))  //TODO: DELME
 			throw new IllegalArgumentException("Value out of range: "+value+" for "+abilityCode);
 		else
 		if(abilityCode<stats.length)
