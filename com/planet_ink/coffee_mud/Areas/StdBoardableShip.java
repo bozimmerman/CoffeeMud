@@ -112,7 +112,9 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	public Climate getClimateObj()
 	{
 		final Area shipItemArea = getShipItemArea();
-		return (shipItemArea != null) ? shipItemArea.getClimateObj() : CMLib.map().areas().nextElement().getClimateObj();
+		return ((shipItemArea != null) && (shipItemArea != this)) 
+				? shipItemArea.getClimateObj() 
+				: CMLib.map().areas().nextElement().getClimateObj();
 	}
 
 	@Override
@@ -131,7 +133,9 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	public TimeClock getTimeObj()
 	{
 		final Area shipItemArea = getShipItemArea();
-		return (shipItemArea != null) ? shipItemArea.getTimeObj() : CMLib.time().globalClock();
+		return ((shipItemArea != null) && (shipItemArea != this)) 
+				? shipItemArea.getTimeObj() 
+				: CMLib.time().globalClock();
 	}
 
 	@Override
@@ -341,14 +345,18 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	public int getThemeCode() 
 	{
 		final Area shipItemArea = getShipItemArea();
-		return (shipItemArea != null) ? shipItemArea.getThemeCode() : CMLib.map().areas().nextElement().getThemeCode();
+		return ((shipItemArea != null) && (shipItemArea != this)) 
+				? shipItemArea.getThemeCode() 
+				: Area.THEME_ALLTHEMES;
 	}
 	
 	@Override
 	public int getTheme()
 	{
 		final Area shipItemArea = getShipItemArea();
-		return (shipItemArea != null) ? shipItemArea.getTheme() : CMLib.map().areas().nextElement().getTheme();
+		return ((shipItemArea != null) && (shipItemArea != this))
+				? shipItemArea.getTheme() 
+				: Area.THEME_ALLTHEMES;
 	}
 	
 	@Override
