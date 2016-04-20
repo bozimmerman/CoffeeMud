@@ -176,7 +176,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 		final Room shipItemRoom = getShipItemRoom();
 		return ((shipItemRoom != null)&&(shipItemRoom.getArea()!=this)) 
 				? shipItemRoom.getAtmosphereCode() 
-				: CMLib.map().areas().nextElement().getAtmosphereCode();
+				: RawMaterial.RESOURCE_AIR;
 	}
 	
 	@Override
@@ -196,7 +196,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 		final Room shipItemRoom = getShipItemRoom();
 		return ((shipItemRoom != null)&&(shipItemRoom.getArea()!=this))
 				? shipItemRoom.getAtmosphere() 
-				: CMLib.map().areas().nextElement().getAtmosphere();
+				: RawMaterial.RESOURCE_AIR;
 	}
 	
 	@Override
@@ -248,7 +248,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 		final Room shipItemRoom = getShipItemRoom();
 		return ((shipItemRoom != null)&&(shipItemRoom.getArea()!=this))
 				? shipItemRoom.getClimateTypeCode() 
-				: CMLib.map().areas().nextElement().getClimateTypeCode();
+				: CLIMASK_NORMAL;
 	}
 	
 	@Override 
@@ -257,7 +257,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 		final Room shipItemRoom = getShipItemRoom();
 		return ((shipItemRoom != null)&&(shipItemRoom.getArea()!=this))
 				? shipItemRoom.getClimateType() 
-				: CMLib.map().areas().nextElement().getClimateType();
+				: CLIMASK_NORMAL;
 	}
 	
 	@Override

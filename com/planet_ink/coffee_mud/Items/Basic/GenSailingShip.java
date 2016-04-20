@@ -51,6 +51,7 @@ public class GenSailingShip extends StdBoardable
 	protected volatile boolean		anchorDown		= true;
 	protected final List<Integer>	courseDirections= new Vector<Integer>();
 	protected volatile int			directionFacing	= 0;
+	protected volatile int			ticksSinceMove	= 0;
 	protected volatile Rideable		targetedShip	= null;
 	protected volatile Room			shipCombatRoom	= null;
 	protected PairList<Item,int[]>	coordinates		= null;
@@ -745,15 +746,30 @@ public class GenSailingShip extends StdBoardable
 		&&(msg.target()==this)
 		&&(msg.source().location()==owner())
 		&&(CMLib.flags().isWateryRoom(msg.source().location()))
-		&&(!CMLib.flags().isClimbing(msg.source()))
 		&&(!CMLib.flags().isFlying(msg.source()))
 		&&(!CMLib.law().doesHavePriviledgesHere(msg.source(), super.getDestinationRoom())))
 		{
-			if(msg.source().riding() != null)
-				msg.source().tell(CMLib.lang().L("You'll need some assistance to board a ship from @x1.",msg.source().riding().name(msg.source())));
+			final Rideable ride=msg.source().riding();
+			if(ticksSinceMove < 2)
+			{
+				if(ride == null)
+					msg.source().tell(CMLib.lang().L("You'll need some assistance to board a ship from the water."));
+				else
+					msg.source().tell(msg.source(),this,ride,CMLib.lang().L("<S-NAME> chase(s) <T-NAME> around in <O-NAME>."));
+				return false;
+			}
 			else
+			if(ride == null)
+			{
 				msg.source().tell(CMLib.lang().L("You'll need some assistance to board a ship from the water."));
-			return false;
+				return false;
+			}
+			else
+			if(!CMLib.flags().isClimbing(msg.source()))
+			{
+				msg.source().tell(CMLib.lang().L("You'll need some assistance to board a ship from @x1, such as some means to climb up.",ride.name(msg.source())));
+				return false;
+			}
 		}
 		else
 		if((msg.sourceMinor()==CMMsg.TYP_COMMANDFAIL)
@@ -1056,6 +1072,7 @@ public class GenSailingShip extends StdBoardable
 		}
 		if(tickID == sailingTickID)
 		{
+			ticksSinceMove++;
 			if((!this.anchorDown) && (area != null) && (courseDirection != -1) )
 			{
 				int speed=phyStats().ability();
@@ -1355,6 +1372,8 @@ public class GenSailingShip extends StdBoardable
 		{
 			switch(msg.targetMinor())
 			{
+			case CMMsg.TYP_ENTER:
+				break;
 			case CMMsg.TYP_WEAPONATTACK:
 				if(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
 				{
@@ -1714,6 +1733,7 @@ public class GenSailingShip extends StdBoardable
 							tacticalCoords[0] = newCoords[0];
 							tacticalCoords[1] = newCoords[1];
 							final int newDistance = this.getLowestTacticalDistanceFromThis();
+							ticksSinceMove=0;
 							if((newDistance <= oldDistance)||(newDistance < thisRoom.maxRange()))
 								return SailResult.CONTINUE;
 						}
@@ -1774,6 +1794,7 @@ public class GenSailingShip extends StdBoardable
 						exit.executeMsg(mob,enterMsg);
 						thisRoom.sendOthers(mob, leaveMsg);
 						destRoom.moveItemTo(this);
+						ticksSinceMove=0;
 						this.dockHere(destRoom);
 						//this.sendAreaMessage(leaveMsg, true);
 						if(opExit!=null)
@@ -1909,6 +1930,7 @@ public class GenSailingShip extends StdBoardable
 			}
 			if(R2==null)
 				return false;
+			ticksSinceMove=0;
 			R2.moveItemTo(this);
 			this.dockHere(R2);
 			return true;
