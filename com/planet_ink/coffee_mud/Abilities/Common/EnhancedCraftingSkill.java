@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.Common.CraftingSkill.CraftingActivity;
+import com.planet_ink.coffee_mud.Abilities.Common.CraftingSkill.EnhancedExpertise;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -483,6 +484,31 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 			else
 				WA.setMiscText(spell+"("+parm+")");
 		}
+	}
+
+	@Override
+	protected String cleanBuildingNameForXP(MOB mob, String name)
+	{
+		name=" "+CMLib.english().cleanArticles(name)+" ";
+		final PairVector<EnhancedExpertise,Integer> enhancedTypes=enhancedTypes(mob,CMParms.parse(name));
+		if(enhancedTypes != null)
+		{
+			for(int t=0;t<enhancedTypes.size();t++)
+			{
+				final EnhancedExpertise type=enhancedTypes.elementAt(t).first;
+				final int stage=enhancedTypes.elementAt(t).second.intValue();
+				final String expertiseID=CMLib.expertises().getApplicableExpertise(ID(),type.flag);
+				ExpertiseLibrary.ExpertiseDefinition def = CMLib.expertises().getDefinition(expertiseID+CMath.convertToRoman(1));
+				if(def==null)
+					def = CMLib.expertises().getDefinition(expertiseID+1);
+				if(def==null)
+					def = CMLib.expertises().getDefinition(expertiseID);
+				if(def==null)
+					continue;
+				name=CMStrings.replaceAll(name," "+def.getData()[stage].toUpperCase()+" ","");
+			}
+		}
+		return name.trim();
 	}
 
 	public void enhanceItem(MOB mob, Item item, PairVector<EnhancedExpertise,Integer> types)

@@ -282,6 +282,11 @@ public class CraftingSkill extends GatheringSkill
 		return newWoodRequired;
 	}
 
+	protected String cleanBuildingNameForXP(MOB mob, String name)
+	{
+		return name;
+	}
+	
 	protected void dropAWinner(MOB mob, Item building)
 	{
 		final Room R=mob.location();
@@ -317,6 +322,7 @@ public class CraftingSkill extends GatheringSkill
 				else
 				{
 					final LinkedList<String> localLast5Items = mySkill.last4items;
+					String buildingIName = cleanBuildingNameForXP(mob,buildingI.Name().toUpperCase());
 					int lastBaseDuration = this.lastBaseDuration;
 					if(lastBaseDuration > 75)
 						lastBaseDuration = 75;
@@ -324,12 +330,12 @@ public class CraftingSkill extends GatheringSkill
 					double xp = lastBaseDuration * levelXPFactor / 25.0;
 					for(String s : localLast5Items)
 					{
-						if(s.equals(buildingI.Name()))
+						if(s.equals(buildingIName))
 							xp -= (baseXP * 0.25);
 					}
 					if(localLast5Items.size()==5)
 						localLast5Items.removeFirst();
-					localLast5Items.addLast(buildingI.Name());
+					localLast5Items.addLast(buildingIName);
 					if(xp > 0.0)
 						msg.setValue((int)Math.round(xp));
 				}
