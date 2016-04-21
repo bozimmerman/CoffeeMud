@@ -68,6 +68,7 @@ public interface ChattyBehavior extends Behavior
 			delay = responseDelay;
 		}
 	}
+
 	/**
 	 * A test response is a possible response to an environmental event, such as
 	 * someone speaking or acting.  It is only one possible response to one possible
@@ -84,6 +85,7 @@ public interface ChattyBehavior extends Behavior
 			responses=CMParms.parseSquiggleDelimited(resp.substring(1),true).toArray(new String[0]);
 		}
 	}
+
 	/**
 	 * A chatty entry embodies a test for a particular environmental event, such as
 	 * someone speaking or acting, and all possible responses to that event.
@@ -91,19 +93,21 @@ public interface ChattyBehavior extends Behavior
 	 */
 	public static class ChattyEntry
 	{
-		public String expression;
-		public ChattyTestResponse[] responses;
-		public boolean combatEntry = false;
+		public String				expression;
+		public ChattyTestResponse[]	responses;
+		public boolean				combatEntry	= false;
+
 		public ChattyEntry(String expression)
 		{
-			if(expression.startsWith("*"))
+			if (expression.startsWith("*"))
 			{
-				combatEntry=true;
-				expression=expression.substring(1);
+				combatEntry = true;
+				expression = expression.substring(1);
 			}
-			this.expression=expression;
+			this.expression = expression;
 		}
 	}
+
 	/**
 	 * A chatty group is a collection of particular environmental event tests, and
 	 * their possible responses.  It completely embodies a particular "chat behavior"
@@ -112,11 +116,28 @@ public interface ChattyBehavior extends Behavior
 	 */
 	public static class ChattyGroup implements Cloneable
 	{
-		public String[] groupNames;
-		public MaskingLibrary.CompiledZapperMask[] groupMasks;
-		public ChattyEntry[] entries = null;
+		public String[]								groupNames;
+		public MaskingLibrary.CompiledZapperMask[]	groupMasks;
+		public ChattyEntry[]						entries	= null;
+		public ChattyEntry[]						tickies	= null;
+
 		public ChattyGroup(String[] names, MaskingLibrary.CompiledZapperMask[] masks)
-		{ groupNames=names; groupMasks=masks;}
-		@Override public ChattyGroup clone(){ try{return (ChattyGroup)super.clone();}catch(final Exception e){return this;}}
+		{
+			groupNames = names;
+			groupMasks = masks;
+		}
+
+		@Override
+		public ChattyGroup clone()
+		{
+			try
+			{
+				return (ChattyGroup) super.clone();
+			}
+			catch (final Exception e)
+			{
+				return this;
+			}
+		}
 	}
 }

@@ -3949,11 +3949,13 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
 				int ct=0;
 				if(lastKnownLocation!=null)
-				for(int i=0;i<lastKnownLocation.numItems();i++)
 				{
-					final Item I=lastKnownLocation.getItem(i);
-					if((I!=null)&&(I.container()==null))
-						ct++;
+					for(int i=0;i<lastKnownLocation.numItems();i++)
+					{
+						final Item I=lastKnownLocation.getItem(i);
+						if((I!=null)&&(I.container()==null))
+							ct++;
+					}
 				}
 				returnable=simpleEval(scripted,""+ct,arg2,arg1,"NUMITEMSROOM");
 				break;
@@ -4156,13 +4158,19 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							}
 						}
 					}
+					if(which==null)
+						returnable=false;
+					else
+					{
+						returnable=(CMLib.english().containsString(which.name(),arg3)
+									||CMLib.english().containsString(which.Name(),arg3)
+									||CMLib.english().containsString(which.displayText(),arg3));
+						if(returnable)
+							setShopPrice(shopHere,which,tmp);
+					}
 				}
-				if(which==null)
-					returnable=false;
 				else
-					returnable=(CMLib.english().containsString(which.name(),arg3)
-								||CMLib.english().containsString(which.Name(),arg3)
-								||CMLib.english().containsString(which.displayText(),arg3));
+					returnable=false;
 				break;
 			}
 			case 102: // shophas
@@ -4198,7 +4206,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						CoffeeShop shop = shopHere.getShop();
 						if(shop != null)
 						{
-							returnable=shop.getStock(arg2.trim(), null) != null;
+							final Environmental E=shop.getStock(arg2.trim(), null);
+							returnable = (E!=null);
+							if(returnable)
+								setShopPrice(shopHere,E,tmp);
 						}
 					}
 				}
@@ -5491,6 +5502,21 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		return ((Boolean)stack.firstElement()).booleanValue();
 	}
 
+	protected void setShopPrice(ShopKeeper shopHere, Environmental E, Object[] tmp)
+	{
+		if(shopHere instanceof MOB)
+		{
+			ShopKeeper.ShopPrice price = CMLib.coffeeShops().sellingPrice((MOB)shopHere, null, E, shopHere, true);
+			if(price.experiencePrice>0)
+				tmp[SPECIAL_9SHOPHASPRICE] = price.experiencePrice+"xp";
+			else
+			if(price.questPointPrice>0)
+				tmp[SPECIAL_9SHOPHASPRICE] = price.questPointPrice+"qp";
+			else
+				tmp[SPECIAL_9SHOPHASPRICE] = CMLib.beanCounter().abbreviatedPrice((MOB)shopHere,price.absoluteGoldPrice);
+		}
+	}
+	
 	@Override
 	public String functify(PhysicalAgent scripted,
 							MOB source,
@@ -6515,6 +6541,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								if(ct==CMath.s_int(arg2.trim()))
 								{
 									which = E;
+									setShopPrice(shopHere,E,tmp);
 									break;
 								}
 								ct++;
@@ -6605,7 +6632,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							for(Iterator<Environmental> i=shop.getStoreInventory();i.hasNext();)
 							{
 								if(which == ct)
-									results.append(i.next().Name());
+								{
+									final Environmental E=i.next();
+									results.append(E.Name());
+									setShopPrice(shopHere,E,tmp);
+								}
 								else
 									i.next();
 							}
@@ -8941,7 +8972,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 									I.recoverPhyStats();
 									CoffeeShop shop = addHere.getShop();
 									if(shop != null)
-										shop.addStoreInventory(I,1,price);
+									{
+										Environmental E=shop.addStoreInventory(I,1,price);
+										if(E!=null)
+											setShopPrice(addHere, E, tmp);
+									}
 									I.destroy();
 								}
 							}
@@ -8997,7 +9032,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								m.resetToMaxState();
 								CoffeeShop shop = addHere.getShop();
 								if(shop != null)
-									shop.addStoreInventory(m,1,price);
+								{
+									Environmental E=shop.addStoreInventory(m,1,price);
+									if(E!=null)
+										setShopPrice(addHere, E, tmp);
+								}
 								m.destroy();
 							}
 						}
@@ -9971,43 +10010,43 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				break;
 			}
 			case 15: // mpat
-			if(lastKnownLocation!=null)
-			{
-				if(tt==null)
+				if(lastKnownLocation!=null)
 				{
-					tt=parseBits(script,si,"Ccp");
 					if(tt==null)
-						return null;
-				}
-				final Room lastPlace=lastKnownLocation;
-				final String roomName=tt[1];
-				if(roomName.length()>0)
-				{
-					final String doWhat=tt[2].trim();
-					Room goHere=null;
-					if(roomName.startsWith("$"))
-						goHere=CMLib.map().roomLocation(this.getArgumentItem(roomName,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp));
-					if(goHere==null)
-						goHere=getRoom(varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,roomName),lastKnownLocation);
-					if(goHere!=null)
 					{
-						goHere.bringMobHere(monster,true);
-						final DVector DV=new DVector(2);
-						DV.addElement("",null);
-						DV.addElement(doWhat,null);
-						lastKnownLocation=goHere;
-						execute(scripted,source,target,monster,primaryItem,secondaryItem,DV,msg,tmp);
-						lastKnownLocation=lastPlace;
-						lastPlace.bringMobHere(monster,true);
-						if(!(scripted instanceof MOB))
+						tt=parseBits(script,si,"Ccp");
+						if(tt==null)
+							return null;
+					}
+					final Room lastPlace=lastKnownLocation;
+					final String roomName=tt[1];
+					if(roomName.length()>0)
+					{
+						final String doWhat=tt[2].trim();
+						Room goHere=null;
+						if(roomName.startsWith("$"))
+							goHere=CMLib.map().roomLocation(this.getArgumentItem(roomName,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp));
+						if(goHere==null)
+							goHere=getRoom(varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,roomName),lastKnownLocation);
+						if(goHere!=null)
 						{
-							goHere.delInhabitant(monster);
-							lastPlace.delInhabitant(monster);
+							goHere.bringMobHere(monster,true);
+							final DVector DV=new DVector(2);
+							DV.addElement("",null);
+							DV.addElement(doWhat,null);
+							lastKnownLocation=goHere;
+							execute(scripted,source,target,monster,primaryItem,secondaryItem,DV,msg,tmp);
+							lastKnownLocation=lastPlace;
+							lastPlace.bringMobHere(monster,true);
+							if(!(scripted instanceof MOB))
+							{
+								goHere.delInhabitant(monster);
+								lastPlace.delInhabitant(monster);
+							}
 						}
 					}
 				}
-			}
-			break;
+				break;
 			case 17: // mptransfer
 			{
 				if(tt==null)

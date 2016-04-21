@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Behaviors;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.core.exceptions.ScriptParseException;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -62,10 +63,12 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 	// responseQue is a qued set of commands to
 	// run through the standard command processor,
 	// on tick or more.
-	protected SLinkedList<ChattyResponse> responseQue=new SLinkedList<ChattyResponse>();
+	protected SLinkedList<ChattyResponse>	responseQue	= new SLinkedList<ChattyResponse>();
+	protected ScriptingEngine				scriptEngine= null;
 	
 	protected final static int	RESPONSE_DELAY		= 2;
 	protected final static int	TALK_WAIT_DELAY		= 8;
+	
 
 	@Override
 	public String accountForYourself()
@@ -208,6 +211,7 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 		final ArrayList<ChattyGroup> chatGroups = new ArrayList<ChattyGroup>();
 		ChattyGroup currentChatGroup=newChattyGroup("");
 		final ArrayList<ChattyEntry> currentChatEntries = new ArrayList<ChattyEntry>();
+		final ArrayList<ChattyEntry> tickyChatEntries = new ArrayList<ChattyEntry>();
 		ChattyEntry currentChatEntry=null;
 		final ArrayList<ChattyTestResponse> currentChatEntryResponses = new ArrayList<ChattyTestResponse>();
 
@@ -217,80 +221,96 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 		while(str!=null)
 		{
 			if(str.length()>0)
-			switch(str.charAt(0))
 			{
-			case '"':
-				Log.sysOut("MudChat",str.substring(1));
-				break;
-			case '*':
-				if((str.length()==1)||("([{".indexOf(str.charAt(1))<0))
+				char c=str.charAt(0);
+				switch(c)
+				{
+				case '"':
+					Log.sysOut("MudChat",str.substring(1));
 					break;
-			//$FALL-THROUGH$
-			case '(':
-			case '[':
-			case '{':
-				if(currentChatEntry!=null)
-					currentChatEntry.responses = currentChatEntryResponses.toArray(new ChattyTestResponse[0]);
-				currentChatEntryResponses.clear();
-				currentChatEntry=new ChattyEntry(str);
-				if(currentChatEntry.expression.length()>0)
-					currentChatEntries.add(currentChatEntry);
-				else
+				case '*':
+					if((str.length()==1)||("([{<".indexOf(str.charAt(1))<0))
+						break;
+					c=str.charAt(1);
+				//$FALL-THROUGH$
+				case '(':
+				case '[':
+				case '{':
+				case '<':
+					if(currentChatEntry!=null)
+						currentChatEntry.responses = currentChatEntryResponses.toArray(new ChattyTestResponse[0]);
+					currentChatEntryResponses.clear();
+					currentChatEntry=new ChattyEntry(str);
+					if(currentChatEntry.expression.length()>0)
+					{
+						if(c=='<')
+							tickyChatEntries.add(currentChatEntry);
+						else
+							currentChatEntries.add(currentChatEntry);
+					}
+					else
+						currentChatEntry=null;
+					break;
+				case '>':
+					if(currentChatEntry!=null)
+						currentChatEntry.responses = currentChatEntryResponses.toArray(new ChattyTestResponse[0]);
+					currentChatGroup.entries = currentChatEntries.toArray(new ChattyEntry[0]);
+					currentChatGroup.tickies = tickyChatEntries.toArray(new ChattyEntry[0]);
+					currentChatEntries.clear();
+					tickyChatEntries.clear();
+					currentChatGroup=newChattyGroup(str.substring(1).trim());
+					if(currentChatGroup == null)
+						return null;
+					chatGroups.add(currentChatGroup);
 					currentChatEntry=null;
-				break;
-			case '>':
-				if(currentChatEntry!=null)
-					currentChatEntry.responses = currentChatEntryResponses.toArray(new ChattyTestResponse[0]);
-				currentChatGroup.entries = currentChatEntries.toArray(new ChattyEntry[0]);
-				currentChatEntries.clear();
-				currentChatGroup=newChattyGroup(str.substring(1).trim());
-				if(currentChatGroup == null)
-					return null;
-				chatGroups.add(currentChatGroup);
-				currentChatEntry=null;
-				break;
-			case '@':
-				{
-					otherChatGroup=matchChatGroup(null,str.substring(1).trim(),chatGroups.toArray(new ChattyGroup[0]));
-					if(otherChatGroup==null)
-						otherChatGroup=chatGroups.get(0);
-					if(otherChatGroup != currentChatGroup)
+					break;
+				case '@':
 					{
-						for(final ChattyEntry CE : otherChatGroup.entries)
-							currentChatEntries.add(CE);
+						otherChatGroup=matchChatGroup(null,str.substring(1).trim(),chatGroups.toArray(new ChattyGroup[0]));
+						if(otherChatGroup==null)
+							otherChatGroup=chatGroups.get(0);
+						if(otherChatGroup != currentChatGroup)
+						{
+							for(final ChattyEntry CE : otherChatGroup.entries)
+								currentChatEntries.add(CE);
+							for(final ChattyEntry CE : otherChatGroup.tickies)
+								tickyChatEntries.add(CE);
+						}
+						break;
 					}
-				}
-				break;
-			case '%':
-				{
-					final StringBuffer rsc2=new StringBuffer(Resources.getFileResource(str.substring(1).trim(),true).toString());
-					if (rsc2.length() < 1)
+				case '%':
 					{
-						Log.sysOut("MudChat", "Error reading resource " + str.substring(1).trim());
+						final StringBuffer rsc2=new StringBuffer(Resources.getFileResource(str.substring(1).trim(),true).toString());
+						if (rsc2.length() < 1)
+						{
+							Log.sysOut("MudChat", "Error reading resource " + str.substring(1).trim());
+						}
+						rsc.insert(0,rsc2.toString());
+						break;
 					}
-					rsc.insert(0,rsc2.toString());
+				case '0':
+				case '1':
+				case '2':
+				case '3':
+				case '4':
+				case '5':
+				case '6':
+				case '7':
+				case '8':
+				case '9':
+					if(currentChatEntry!=null)
+						currentChatEntryResponses.add(new ChattyTestResponse(str));
+					break;
 				}
-				break;
-			case '0':
-			case '1':
-			case '2':
-			case '3':
-			case '4':
-			case '5':
-			case '6':
-			case '7':
-			case '8':
-			case '9':
-				if(currentChatEntry!=null)
-					currentChatEntryResponses.add(new ChattyTestResponse(str));
-				break;
 			}
 			str=nextLine(rsc);
 		}
 		if(currentChatEntry!=null)
 			currentChatEntry.responses = currentChatEntryResponses.toArray(new ChattyTestResponse[0]);
 		currentChatGroup.entries = currentChatEntries.toArray(new ChattyEntry[0]);
+		currentChatGroup.tickies = tickyChatEntries.toArray(new ChattyEntry[0]);
 		currentChatEntries.clear();
+		tickyChatEntries.clear();
 		return chatGroups.toArray(new ChattyGroup[0]);
 	}
 
@@ -416,7 +436,6 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 		return chatGrp;
 	}
 
-
 	protected void queResponse(ArrayList<ChattyTestResponse> responses, MOB source, MOB target, String rest)
 	{
 		int total=0;
@@ -459,15 +478,23 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 				if(target!=null)
 					finalCommand="sayto \""+target.name()+"\" "+finalCommand.trim();
 
-				if(finalCommand.indexOf("$r")>=0)
-					finalCommand=CMStrings.replaceAll(finalCommand,"$r",rest);
-				if((target!=null)&&(finalCommand.indexOf("$t")>=0))
+				finalCommand=CMStrings.replaceAll(finalCommand,"$r",rest);
+				if(target!=null)
 					finalCommand=CMStrings.replaceAll(finalCommand,"$t",target.name());
-				if((source!=null)&&(finalCommand.indexOf("$n")>=0))
+				if(source!=null)
 					finalCommand=CMStrings.replaceAll(finalCommand,"$n",source.name());
-				if(finalCommand.indexOf("$$")>=0)
-					finalCommand=CMStrings.replaceAll(finalCommand,"$$","$");
-
+				if(finalCommand.indexOf("$%")>=0)
+				{
+					if(scriptEngine == null)
+					{
+						scriptEngine=(ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
+						scriptEngine.setSavable(false);
+						scriptEngine.setVarScope("*");
+					}
+					final Object[] tmp = new Object[ScriptingEngine.SPECIAL_NUM_OBJECTS];
+					finalCommand = scriptEngine.varify(source, target, source, source, null, null, "", tmp, finalCommand);
+				}
+				finalCommand=CMStrings.replaceAll(finalCommand,"$$","$");
 				Vector<String> V=CMParms.parse(finalCommand);
 				for(final ChattyResponse R : responseQue)
 				{
@@ -494,7 +521,9 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 			expression=expression.substring(1,expression.length()-1).trim();
 
 		int end=0;
-		for(;((end<expression.length())&&(("(&|~").indexOf(expression.charAt(end))<0));end++){/*loop*/}
+		for (; ((end < expression.length()) && (("(&|~").indexOf(expression.charAt(end)) < 0)); end++)
+		{/* loop */
+		}
 		String check=null;
 		if(end<expression.length())
 		{
@@ -525,8 +554,10 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 		{
 			int expEnd=0;
 			while((++expEnd)<check.length())
+			{
 				if(check.charAt(expEnd)=='/')
 					break;
+			}
 			response=CMLib.masking().maskCheck(check.substring(1,expEnd).trim(),speaker,false);
 		}
 		else
@@ -697,7 +728,6 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 				}
 			}
 
-
 			if(myResponses!=null)
 			{
 				lastReactedTo=msg.source();
@@ -724,6 +754,35 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 				if(tickDown<0)
 				{
 					myChatGroup=getMyChatGroup((MOB)ticking,getChatGroups(getParms()));
+					if((myChatGroup.tickies.length>0) && canActAtAll(ticking))
+					{
+						final boolean combat = ((MOB)ticking).isInCombat();
+						ArrayList<ChattyTestResponse> myResponses=null;
+						for(ChattyEntry entry : myChatGroup.tickies)
+						{
+							if(entry.combatEntry)
+							{
+								if(!combat)
+									continue;
+							}
+							else
+							if(combat)
+								continue;
+							if(entry.expression.length()>2)
+							{
+								int val=CMath.s_int(entry.expression.substring(1,entry.expression.length()-1).trim());
+								if((val==0)||(CMLib.dice().rollPercentage()<=val))
+									continue;
+							}
+							if(myResponses==null)
+								myResponses=new ArrayList<ChattyTestResponse>();
+							myResponses.addAll(Arrays.asList(entry.responses));
+						}
+						if(myResponses!=null)
+						{
+							queResponse(myResponses,(MOB)ticking,(MOB)ticking,"");
+						}
+					}
 				}
 			}
 			if(responseQue.size()==0)
@@ -735,17 +794,19 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 				return true;
 			}
 			else
-			for(final Iterator<ChattyResponse> riter= responseQue.descendingIterator();riter.hasNext();)
 			{
-				final ChattyResponse R = riter.next();
-				R.delay--;
-				if(R.delay<=0)
+				for(final Iterator<ChattyResponse> riter= responseQue.descendingIterator();riter.hasNext();)
 				{
-					responseQue.remove(R);
-					((MOB)ticking).doCommand(R.parsedCommand,MUDCmdProcessor.METAFLAG_FORCED);
-					lastReactedTo=null;
-					// you've done one, so get out before doing another!
-					break;
+					final ChattyResponse R = riter.next();
+					R.delay--;
+					if(R.delay<=0)
+					{
+						responseQue.remove(R);
+						((MOB)ticking).doCommand(R.parsedCommand,MUDCmdProcessor.METAFLAG_FORCED);
+						lastReactedTo=null;
+						// you've done one, so get out before doing another!
+						break;
+					}
 				}
 			}
 		}

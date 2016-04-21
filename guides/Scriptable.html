@@ -2497,12 +2497,12 @@ the given mob.</td>
           <tr>
             <td>SHOPHAS([code])</td>
             <td>Returns a random item from the shop inventory of the
-given shopkeeper code</td>
+given shopkeeper code. Sets $9 to price.</td>
           </tr>
           <tr>
             <td>SHOPITEM([code] [integer number])</td>
             <td>Returns the nth item from the shop inventory of the
-given shopkeeper code</td>
+given shopkeeper code. Sets $9 to price.</td>
           </tr>
           <tr>
             <td>STAT([code] [stat
@@ -3460,7 +3460,9 @@ the&nbsp;mob tag to search for, with optional id=value definitions
 after
 the item tag. &nbsp;The&nbsp;<span style="font-weight: bold;">PRICE=</span>
 syntax may be used at the end of ANY of the syntaxes to set the price
-of the mob, otherwise a default price will be used.</p>
+of the mob, otherwise a default price will be used. &nbsp;When this
+method completes, the value of $9 is automatically set to a string
+description of the final price.</p>
       <p>EXAMPLES:</p>
       <pre>mpmloadshop the nasty bat PRICE=40<br />mpmloadshop fromfile mymobs.cmare the nasty bat<br />mpmloadshop fromfile mymobs.cmare any<br />mpmloadshop fromgenfile /resources/randareas/example.xml bee forest_mobs level_range=10 aggrochance=1<br /></pre>
       <h3><a name="mpmoney">mpmoney</a></h3>
@@ -3540,7 +3542,7 @@ name&nbsp;followed by
 the item tag to search for, with optional id=value definitions after
 the item tag. Finally, the <b>into</b>
 syntax will allow you to load the item into a pre-existing container in
-the room.</p>
+the room.&nbsp;</p>
       <p>SPECIAL NOTES: You can do
 a lot with this command. There is no
 max on items loaded in this way, so keep that in mind. Using this
@@ -3565,7 +3567,9 @@ name&nbsp;followed by
 the item tag to search for, with optional id=value definitions after
 the item tag. Finally, the&nbsp;<b>price</b>
 syntax may be added to the end of the any of the others to designate
-the price of the item, otherwise a default value will be used.</p>
+the price of the item, otherwise a default value will be used.&nbsp;When
+this method completes, the value of $9 is automatically set to a string
+description of the final price.</p>
       <h3><a name="mpopen">mpopen</a></h3>
       <p>Usage:</p>
       <pre>mpopen [target]<br /></pre>
@@ -5071,7 +5075,8 @@ of the logical operators from above.</p>
       <p>Usage:</p>
       <pre>shophas(character item)<br /></pre>
       <p>This checks whether the shopkeeper has the given item in their
-shop inventory.</p>
+shop inventory. If this function returns true, it will also set the
+value of $9 to a string description of the price of the item.</p>
       <p>EXAMPLE:</p>
       <pre>if shophas($n a long sword)<br /> mpecho This shop has a long sword for sale.<br />else<br /> mpecho The shop does not sell anything called 'a long sword'.<br />endif      <br /></pre>
       <h3><a name="shopitem">shopitem</a></h3>
@@ -5079,7 +5084,9 @@ shop inventory.</p>
       <pre>shopitem(shopkeeper number keywords)<br /></pre>
       <p>This infrequently used
 function checks whether the numberth
-item in the shopkeepers inventory has keywords in its name.</p>
+item in the shopkeepers inventory has keywords in its name.&nbsp;If
+this function returns true, it will also set the value of $9 to a
+string description of the price of the item.</p>
       <p>EXAMPLE:</p>
       <pre>if shopitem($n 1 sword) or shopitem ($n $g.1 sword)<br /> mpecho Either the shops first item is a sword,<br /> mpecho or a shop item whose cardinality is represented by the code<br /> mpecho $g.1 is a sword.<br />else<br /> mpecho Neither of those shop items is a sword.<br />endif</pre>
       <h3><a name="stat">stat</a></h3>
