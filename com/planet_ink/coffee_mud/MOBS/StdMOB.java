@@ -2354,11 +2354,18 @@ public class StdMOB implements MOB
 					}
 				}
 
-				// limb check
+				// limb, weight check
 				switch (msg.targetMinor())
 				{
 				case CMMsg.TYP_PULL:
 				case CMMsg.TYP_PUSH:
+					if((msg.target() instanceof Physical)
+					&&((maxCarry()*10)<((Physical)msg.target()).phyStats().weight()))
+					{
+						tell(L("That's way too heavy."));
+						return false;
+					}
+					//$FALL-THROUGH$
 				case CMMsg.TYP_GET:
 				case CMMsg.TYP_REMOVE:
 				case CMMsg.TYP_OPEN:
