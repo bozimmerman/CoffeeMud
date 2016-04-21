@@ -129,7 +129,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 		return author;
 	}
 
-	@Override
+	@Override 
 	public TimeClock getTimeObj()
 	{
 		final Area shipItemArea = getShipItemArea();

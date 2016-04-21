@@ -657,14 +657,23 @@ public class Injury extends StdAbility implements LimbDamage, HealthCondition
 									bodyVec.removeElement(O);
 									if(bodyVec.size()==0)
 										injuries[chosenBodyLoc.intValue()]=null;
-									if(ampuA.damageLimb(O.first.toLowerCase())!=null)
+									final Amputation amputationA=ampuA;
+									final String bodyPartName=O.first.toLowerCase();
+									msg.addTrailerRunnable(new Runnable()
 									{
-										if(mob.fetchEffect(ampuA.ID())==null)
+										@Override
+										public void run()
 										{
-											ampuA.makeLongLasting();
-											mob.addEffect(ampuA);
+											if(amputationA.damageLimb(bodyPartName)!=null)
+											{
+												if(mob.fetchEffect(amputationA.ID())==null)
+												{
+													amputationA.makeLongLasting();
+													mob.addEffect(amputationA);
+												}
+											}
 										}
-									}
+									});
 								}
 							}
 						}
