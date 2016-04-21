@@ -754,35 +754,35 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 				if(tickDown<0)
 				{
 					myChatGroup=getMyChatGroup((MOB)ticking,getChatGroups(getParms()));
-					if((myChatGroup.tickies.length>0) && canActAtAll(ticking))
+				}
+			}
+			if((myChatGroup!=null)&&(myChatGroup.tickies.length>0) && canActAtAll(ticking))
+			{
+				final boolean combat = ((MOB)ticking).isInCombat();
+				ArrayList<ChattyTestResponse> myResponses=null;
+				for(ChattyEntry entry : myChatGroup.tickies)
+				{
+					if(entry.combatEntry)
 					{
-						final boolean combat = ((MOB)ticking).isInCombat();
-						ArrayList<ChattyTestResponse> myResponses=null;
-						for(ChattyEntry entry : myChatGroup.tickies)
-						{
-							if(entry.combatEntry)
-							{
-								if(!combat)
-									continue;
-							}
-							else
-							if(combat)
-								continue;
-							if(entry.expression.length()>2)
-							{
-								int val=CMath.s_int(entry.expression.substring(1,entry.expression.length()-1).trim());
-								if((val==0)||(CMLib.dice().rollPercentage()<=val))
-									continue;
-							}
-							if(myResponses==null)
-								myResponses=new ArrayList<ChattyTestResponse>();
-							myResponses.addAll(Arrays.asList(entry.responses));
-						}
-						if(myResponses!=null)
-						{
-							queResponse(myResponses,(MOB)ticking,(MOB)ticking,"");
-						}
+						if(!combat)
+							continue;
 					}
+					else
+					if(combat)
+						continue;
+					if(entry.expression.length()>2)
+					{
+						int val=CMath.s_int(entry.expression.substring(1,entry.expression.length()-1).trim());
+						if((val==0)||(CMLib.dice().rollPercentage()>val))
+							continue;
+					}
+					if(myResponses==null)
+						myResponses=new ArrayList<ChattyTestResponse>();
+					myResponses.addAll(Arrays.asList(entry.responses));
+				}
+				if(myResponses!=null)
+				{
+					queResponse(myResponses,(MOB)ticking,(MOB)ticking,"");
 				}
 			}
 			if(responseQue.size()==0)

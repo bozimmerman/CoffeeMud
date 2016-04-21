@@ -6535,7 +6535,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						CoffeeShop shop = shopHere.getShop();
 						if(shop != null)
 						{
-							for(Iterator<Environmental> i=shop.getStoreInventory();i.hasNext();)
+							for(Iterator<Environmental> i=shop.getStoreInventory();i.hasNext();ct++)
 							{
 								Environmental E=i.next();
 								if(ct==CMath.s_int(arg2.trim()))
@@ -6544,7 +6544,6 @@ public class DefaultScriptingEngine implements ScriptingEngine
 									setShopPrice(shopHere,E,tmp);
 									break;
 								}
-								ct++;
 							}
 						}
 					}
@@ -6629,16 +6628,15 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								ct++;
 							int which=CMLib.dice().roll(1, ct, -1);
 							ct=0;
-							for(Iterator<Environmental> i=shop.getStoreInventory();i.hasNext();)
+							for(Iterator<Environmental> i=shop.getStoreInventory();i.hasNext();ct++)
 							{
+								final Environmental E=i.next();
 								if(which == ct)
 								{
-									final Environmental E=i.next();
 									results.append(E.Name());
 									setShopPrice(shopHere,E,tmp);
+									break;
 								}
-								else
-									i.next();
 							}
 						}
 					}
