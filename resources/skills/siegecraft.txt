@@ -1,12 +1,12 @@
-Ballista	15	75	500	2500	GenSiegeWeapon	ballista-bolts	1	15	5	LEATHER	
-Multishot Ballista	18	80	600	3000	GenSiegeWeapon	ballista-bolts	3	15	5	LEATHER	
-Heavy Ballista	25	100	650	5000	GenSiegeWeapon	ballista-bolts	1	30	10	LEATHER	
-Catapult	20	60	500	2000	GenSiegeWeapon	catapult-boulders	1	20	6		
-Multishot Catapult	25	70	600	2500	GenSiegeWeapon	catapult-boulders	3	20	6		
-Trebuchet	30	80	700	4000	GenSiegeWeapon	trebuchet-shots	1	35	8	METAL	
-Multishot Trebuchet	40	90	800	5000	GenSiegeWeapon	trebuchet-shots	3	35	8	METAL	
-Ramming Prow	35	70	550	5000	GenSiegeWeapon		0	40	1		
-Grapples	5	10	(onground:consumed:10:metal:)	25	GenSiegeWeapon		0	0	1		
+% Ballista	15	75	500	2500	GenSiegeWeapon	ballista-bolts	1	15	5	LEATHER	
+% Multishot Ballista	18	80	600	3000	GenSiegeWeapon	ballista-bolts	3	15	5	LEATHER	
+Heavy % Ballista	25	100	650	5000	GenSiegeWeapon	ballista-bolts	1	30	10	LEATHER	
+% Catapult	20	60	500	2000	GenSiegeWeapon	catapult-boulders	1	20	6		
+Multishot % Catapult	25	70	600	2500	GenSiegeWeapon	catapult-boulders	3	20	6		
+% Trebuchet	30	80	700	4000	GenSiegeWeapon	trebuchet-shots	1	35	8	METAL	
+Multishot % Trebuchet	40	90	800	5000	GenSiegeWeapon	trebuchet-shots	3	35	8	METAL	
+% Ramming Prow	35	70	550	5000	GenSiegeWeapon		0	40	1		
+% Grapples	5	10	(onground:consumed:10:metal:)	25	GenSiegeWeapon		0	0	1		
 % bolt	5	5	5	5	GenAmmunition	ballista-bolts	1			METAL	
 % flaming bolt	7	10	5	10	GenAmmunition	ballista-bolts	1			LAMP OIL	Burning
 % bolt bundle	9	10	10	10	GenAmmunition	ballista-bolts	3			METAL	

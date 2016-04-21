@@ -831,6 +831,12 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	{
 		return getProperMap();
 	}
+	
+	@Override
+	public Enumeration<Room> getFilledCompleteMap()
+	{
+		return getFilledProperMap();
+	}
 
 	public List<Room> getMetroCollection()
 	{

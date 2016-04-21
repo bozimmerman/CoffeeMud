@@ -203,7 +203,17 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 					}
 				}
 			}
-			data[0][FOUND_CODE]=rscs.get(0).intValue();
+			List<Integer> compInts=new ArrayList<Integer>();
+			for(final Object o : componentsFoundList)
+			{
+				if(o instanceof Item)
+				{
+					final Item I=(Item)o;
+					compInts.add(Integer.valueOf(I.material()));
+				}
+			}
+			Collections.sort(compInts);
+			data[0][FOUND_CODE]=compInts.get((int)Math.round(Math.floor(compInts.size()/2))).intValue();
 		}
 	}
 

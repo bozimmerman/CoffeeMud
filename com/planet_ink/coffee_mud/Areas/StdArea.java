@@ -35,7 +35,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class StdArea implements Area
 {
 	@Override
@@ -120,8 +119,8 @@ public class StdArea implements Area
 		{
 			CMLib.beanCounter().unloadCurrencySet(currency);
 			currency=newCurrency;
-			for(final Enumeration e=CMLib.map().areas();e.hasMoreElements();)
-				CMLib.beanCounter().getCurrencySet(((Area)e.nextElement()).getCurrency());
+			for(final Enumeration<Area> e=CMLib.map().areas();e.hasMoreElements();)
+				CMLib.beanCounter().getCurrencySet(e.nextElement().getCurrency());
 		}
 		else
 		{
@@ -295,7 +294,7 @@ public class StdArea implements Area
 		//CMClass.bumpCounter(this,CMClass.CMObjectType.AREA);//removed for mem & perf
 		xtraValues=CMProps.getExtraStatCodesHolder(this);
 	}
-	
+
 	//protected void finalize(){CMClass.unbumpCounter(this,CMClass.CMObjectType.AREA);}//removed for mem & perf
 	@Override
 	public void destroy()
@@ -315,7 +314,7 @@ public class StdArea implements Area
 		parents=new SLinkedList<Area>();
 		blurbFlags=new STreeMap<String,String>();
 		subOps=new SVector<String>(1);
-		properRooms=new STreeMap();
+		properRooms=new STreeMap<String, Room>();
 		//metroRooms=null;
 		myClock=null;
 		climateObj=null;
@@ -359,7 +358,7 @@ public class StdArea implements Area
 			return phyStats().newName();
 		return name;
 	}
-	
+
 	@Override
 	public synchronized RoomnumberSet getProperRoomnumbers()
 	{
@@ -367,7 +366,7 @@ public class StdArea implements Area
 			properRoomIDSet=(RoomnumberSet)CMClass.getCommon("DefaultRoomnumberSet");
 		return properRoomIDSet;
 	}
-	
+
 	@Override
 	public RoomnumberSet getCachedRoomnumbers()
 	{
@@ -382,7 +381,7 @@ public class StdArea implements Area
 		}
 		return set;
 	}
-	
+
 	@Override
 	public void setName(String newName)
 	{
@@ -404,13 +403,13 @@ public class StdArea implements Area
 	{
 		return phyStats;
 	}
-	
+
 	@Override
 	public PhyStats basePhyStats()
 	{
 		return basePhyStats;
 	}
-	
+
 	@Override
 	public void recoverPhyStats()
 	{
@@ -424,13 +423,13 @@ public class StdArea implements Area
 			}
 		});
 	}
-	
+
 	@Override
 	public void setBasePhyStats(PhyStats newStats)
 	{
 		basePhyStats=(PhyStats)newStats.copyOf();
 	}
-	
+
 	@Override
 	public int getThemeCode()
 	{
@@ -456,7 +455,7 @@ public class StdArea implements Area
 		derivedTheme=CMProps.getIntVar(CMProps.Int.MUDTHEME);
 		return derivedTheme;
 	}
-	
+
 	@Override
 	public void setTheme(int level)
 	{
@@ -509,7 +508,7 @@ public class StdArea implements Area
 		derivedAtmo=ATMOSPHERE_INHERIT;
 		derivedTheme=THEME_INHERIT;
 	}
-	
+
 	@Override
 	public State getAreaState()
 	{
@@ -526,7 +525,7 @@ public class StdArea implements Area
 		}
 		return false;
 	}
-	
+
 	@Override
 	public String getSubOpList()
 	{
@@ -539,14 +538,14 @@ public class StdArea implements Area
 		}
 		return list.toString();
 	}
-	
+
 	@Override
 	public void setSubOpList(String list)
 	{
 		subOps.clear();
 		subOps.addAll(CMParms.parseSemicolons(list,true));
 	}
-	
+
 	@Override
 	public void addSubOp(String username)
 	{
@@ -574,9 +573,9 @@ public class StdArea implements Area
 			String roomID=null;
 			int newnum=0;
 			final String name=Name().toUpperCase();
-			for(final Enumeration i=CMLib.map().roomIDs();i.hasMoreElements();)
+			for(final Enumeration<String> i=CMLib.map().roomIDs();i.hasMoreElements();)
 			{
-				roomID=(String)i.nextElement();
+				roomID=i.nextElement();
 				if((roomID.length()>0)&&(roomID.startsWith(name+"#")))
 				{
 					roomID=roomID.substring(name.length()+1);
@@ -641,7 +640,7 @@ public class StdArea implements Area
 		}
 		return new StdArea();
 	}
-	
+
 	@Override
 	public boolean isGeneric()
 	{
@@ -688,7 +687,7 @@ public class StdArea implements Area
 		}
 		setSubOpList(areaA.getSubOpList());
 	}
-	
+
 	@Override
 	public CMObject copyOf()
 	{
@@ -706,7 +705,7 @@ public class StdArea implements Area
 			return this.newInstance();
 		}
 	}
-	
+
 	@Override
 	public String displayText()
 	{
@@ -738,7 +737,7 @@ public class StdArea implements Area
 			return s;
 		return CMProps.getVar(CMProps.Str.IGNOREMASK);
 	}
-	
+
 	protected String finalPrejudiceFactors(Area A)
 	{
 		if(A.prejudiceFactors().length()>0)
@@ -751,7 +750,7 @@ public class StdArea implements Area
 		}
 		return "";
 	}
-	
+
 	@Override
 	public String prejudiceFactors()
 	{
@@ -806,7 +805,7 @@ public class StdArea implements Area
 			return s;
 		return CMProps.getVar(CMProps.Str.IGNOREMASK);
 	}
-	
+
 	protected String finalIgnoreMask(Area A)
 	{
 		if(A.ignoreMask().length()>0)
@@ -819,7 +818,7 @@ public class StdArea implements Area
 		}
 		return "";
 	}
-	
+
 	@Override
 	public String ignoreMask()
 	{
@@ -840,7 +839,7 @@ public class StdArea implements Area
 			return budget;
 		return CMLib.coffeeShops().parseBudget(CMProps.getVar(CMProps.Str.BUDGET));
 	}
-	
+
 	protected Pair<Long, TimePeriod> finalAreaBudget(Area A)
 	{
 		if(A.budget().length()>0)
@@ -853,7 +852,7 @@ public class StdArea implements Area
 		}
 		return null;
 	}
-	
+
 	@Override
 	public String budget()
 	{
@@ -875,7 +874,7 @@ public class StdArea implements Area
 		
 		return CMLib.coffeeShops().parseDevalueRate(CMProps.getVar(CMProps.Str.DEVALUERATE));
 	}
-	
+
 	protected double[] finalAreaDevalueRate(Area A)
 	{
 		if(A.devalueRate().length()>0)
@@ -888,7 +887,7 @@ public class StdArea implements Area
 		}
 		return null;
 	}
-	
+
 	@Override
 	public String devalueRate()
 	{
@@ -952,7 +951,7 @@ public class StdArea implements Area
 	{
 		return CMLib.coffeeMaker().getPropertiesStr(this,true);
 	}
-	
+
 	@Override
 	public void setMiscText(String newMiscText)
 	{
@@ -994,7 +993,7 @@ public class StdArea implements Area
 		climask=newClimateType;
 		derivedClimate=CLIMASK_INHERIT;
 	}
-	
+
 	@Override
 	public int getClimateType()
 	{
@@ -1200,17 +1199,23 @@ public class StdArea implements Area
 			tickStatus=Tickable.STATUS_REBIRTH;
 			getTimeObj().tick(this,tickID);
 			tickStatus=Tickable.STATUS_BEHAVIOR;
-			eachBehavior(new EachApplicable<Behavior>(){ @Override
-			public final void apply(final Behavior B)
-			{
-				B.tick(ticking,tickID);
-			} });
+			eachBehavior(new EachApplicable<Behavior>()
+			{ 
+				@Override
+				public final void apply(final Behavior B)
+				{
+					B.tick(ticking,tickID);
+				} 
+			});
 			tickStatus=Tickable.STATUS_SCRIPT;
-			eachScript(new EachApplicable<ScriptingEngine>(){ @Override
-			public final void apply(final ScriptingEngine S)
-			{
-				S.tick(ticking,tickID);
-			} });
+			eachScript(new EachApplicable<ScriptingEngine>()
+			{ 
+				@Override
+				public final void apply(final ScriptingEngine S)
+				{
+					S.tick(ticking,tickID);
+				} 
+			});
 			tickStatus=Tickable.STATUS_AFFECT;
 			eachEffect(new EachApplicable<Ability>()
 			{
@@ -1311,7 +1316,7 @@ public class StdArea implements Area
 		affects.addElement(to);
 		to.setAffectedOne(this);
 	}
-	
+
 	@Override
 	public void delEffect(Ability to)
 	{
@@ -1320,7 +1325,7 @@ public class StdArea implements Area
 		if(affects.size()<size)
 			to.setAffectedOne(null);
 	}
-	
+
 	@Override
 	public void eachEffect(final EachApplicable<Ability> applier)
 	{
@@ -1336,9 +1341,11 @@ public class StdArea implements Area
 					applier.apply(A);
 			}
 		}
-		catch(final ArrayIndexOutOfBoundsException e){}
+		catch (final ArrayIndexOutOfBoundsException e)
+		{
+		}
 	}
-	
+
 	@Override
 	public void delAllEffects(boolean unInvoke)
 	{
@@ -1361,6 +1368,7 @@ public class StdArea implements Area
 		return (affects==null)?0:affects.size();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Enumeration<Ability> effects()
 	{
@@ -1540,16 +1548,20 @@ public class StdArea implements Area
 	{
 		final List<ScriptingEngine> scripts=this.scripts;
 		if(scripts!=null)
-		try
 		{
-			for(int a=0;a<scripts.size();a++)
+			try
 			{
-				final ScriptingEngine S=scripts.get(a);
-				if(S!=null)
-					applier.apply(S);
+				for(int a=0;a<scripts.size();a++)
+				{
+					final ScriptingEngine S=scripts.get(a);
+					if(S!=null)
+						applier.apply(S);
+				}
+			}
+			catch (final ArrayIndexOutOfBoundsException e)
+			{
 			}
 		}
-		catch(final ArrayIndexOutOfBoundsException e){}
 	}
 
 	@Override
@@ -2002,9 +2014,9 @@ public class StdArea implements Area
 	public int numberOfProperIDedRooms()
 	{
 		int num=0;
-		for(final Enumeration e=getProperMap();e.hasMoreElements();)
+		for(final Enumeration<Room> e=getProperMap();e.hasMoreElements();)
 		{
-			final Room R=(Room)e.nextElement();
+			final Room R=e.nextElement();
 			if(R.roomID().length()>0)
 			{
 				if(R instanceof GridLocale)
@@ -2088,6 +2100,12 @@ public class StdArea implements Area
 	public Enumeration<Room> getCompleteMap()
 	{
 		return getProperMap();
+	}
+
+	@Override
+	public Enumeration<Room> getFilledCompleteMap()
+	{
+		return getFilledProperMap();
 	}
 
 	@Override
