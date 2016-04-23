@@ -18,6 +18,7 @@
   17. New Scriptable commands: MPOLOADSHOP and MPMLOADSHOP, and funcs: SHOPHAS, SHOPITEM, NUMITEMSSHOP
   18. New Achievements trigger: CLASSLEVELSGAINED -- several more achievements that use it also.
   19. MudChat now supports talking spontaneously on a schedule, and responses may contain scriptable funcs.
+  20. Trailto now accepts 
 # Build 5.9.2 Released 02/09/2016
    1. Apprentice now gets bonus common skill.
    2. Prop_ItemBinder can now bind to a group.

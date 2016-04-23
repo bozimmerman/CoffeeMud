@@ -64,6 +64,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 	protected static class DefaultRFilters implements RFilters
 	{
 		private RFilterNode head=null;
+
 		@Override
 		public boolean isFilteredOut(Room hostR, final Room R, final Exit E, final int dir)
 		{
@@ -76,6 +77,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			}
 			return false;
 		}
+
 		@Override
 		public RFilters plus(RFilter filter)
 		{
@@ -90,12 +92,47 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			}
 			return this;
 		}
+
+		@Override
+		public RFilters minus(RFilter filter)
+		{
+			RFilterNode prev=null;
+			RFilterNode me=head;
+			while((me!=null)&&(me.filter != filter))
+			{
+				prev=me;
+				me=me.next;
+			}
+			if((me!=null)&&(me.filter==filter))
+			{
+				if(prev==null)
+					head=me.next;
+				else
+					prev.next=me.next;
+			}
+			return this;
+		}
+
+		@Override
+		public RFilters copyOf()
+		{
+			DefaultRFilters newFilters = new DefaultRFilters();
+			RFilterNode me=head;
+			while(me!=null)
+			{
+				newFilters.plus(me.filter);
+				me=me.next;
+			}
+			return newFilters;
+		}
 	}
 	
 	protected static class DefaultTrackingFlags extends HashSet<TrackingFlag> implements TrackingFlags
 	{
 		private static final long serialVersionUID = -6914706649617909073L;
+		
 		private int hashCode=(int)serialVersionUID;
+		
 		@Override
 		public boolean add(TrackingFlag flag)
 		{
@@ -106,6 +143,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			}
 			return false;
 		}
+
 		@Override
 		public boolean addAll(Collection<? extends TrackingFlag> flags)
 		{
@@ -117,16 +155,34 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			}
 			return false;
 		}
+
 		@Override
 		public TrackingFlags plus(TrackingFlag flag)
 		{
 			add(flag);
 			return this;
 		}
+
+		@Override
+		public TrackingFlags copyOf()
+		{
+			DefaultTrackingFlags newFlags = new DefaultTrackingFlags();
+			newFlags.addAll(this);
+			newFlags.hashCode = hashCode;
+			return newFlags;
+		}
+		
+		@Override
+		public TrackingFlags minus(TrackingFlag flag)
+		{
+			remove(flag);
+			return this;
+		}
+
 		@Override
 		public boolean remove(Object flag)
 		{
-			if(remove(flag))
+			if(super.remove(flag))
 			{
 				hashCode=(int)serialVersionUID;
 				for(TrackingFlag f : this)
@@ -135,11 +191,13 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			}
 			return false;
 		}
+
 		@Override
 		public int hashCode()
 		{
 			return hashCode;
 		}
+
 		@Override
 		public TrackingFlags plus(TrackingFlags flags)
 		{

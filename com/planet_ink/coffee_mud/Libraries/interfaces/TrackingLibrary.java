@@ -84,6 +84,10 @@ public interface TrackingLibrary extends CMLibrary
 		public boolean isFilteredOut(Room hostR, final Room R, final Exit E, final int dir);
 		
 		public RFilters plus(RFilter filter);
+		
+		public RFilters minus(RFilter filter);
+		
+		public RFilters copyOf();
 	}
 
 	public static interface TrackingFlags extends Set<TrackingFlag>
@@ -91,6 +95,10 @@ public interface TrackingLibrary extends CMLibrary
 		public TrackingFlags plus(TrackingFlag flag);
 		
 		public TrackingFlags plus(TrackingFlags flags);
+		
+		public TrackingFlags minus(TrackingFlag flag);
+		
+		public TrackingFlags copyOf();
 	}
 
 	public static enum TrackingFlag
