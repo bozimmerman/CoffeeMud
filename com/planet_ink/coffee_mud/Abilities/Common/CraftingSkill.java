@@ -1366,6 +1366,9 @@ public class CraftingSkill extends GatheringSkill
 			return false;
 		}
 		activity = CraftingActivity.LEARNING;
+		// checking to see if there is enough space (prop_reqcapacity) to make an
+		// item is unnecessary, because you must first drop the same weight in materials
+		// before you can make the item!
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		displayText=L("You are deconstructing @x1",buildingI.name());
