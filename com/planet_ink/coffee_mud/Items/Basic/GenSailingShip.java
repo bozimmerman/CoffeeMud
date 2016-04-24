@@ -700,7 +700,7 @@ public class GenSailingShip extends StdBoardable
 				{
 					this.courseDirections.clear(); // sail eliminates a course
 					this.courseDirections.add(Integer.valueOf(-1));
-					this.sail(msg.source(), R, dir);
+					this.beginSail(msg.source(), R, dir);
 				}
 				else
 				{
@@ -1744,7 +1744,7 @@ public class GenSailingShip extends StdBoardable
 					else
 					{
 						final CMMsg maneuverMsg=CMClass.getMsg(mob,thisRoom,null,CMMsg.MSG_ADVANCE,directionName,CMMsg.MSG_ADVANCE,null,
-								CMMsg.MSG_ADVANCE,L("<S-NAME> change(s) coarse, turning @x1.",directionName));
+								CMMsg.MSG_ADVANCE,L("<S-NAME> change(s) course, turning @x1.",directionName));
 						if(thisRoom.okMessage(mob, maneuverMsg))
 						{
 							thisRoom.send(mob, maneuverMsg);
@@ -1795,6 +1795,7 @@ public class GenSailingShip extends StdBoardable
 						thisRoom.sendOthers(mob, leaveMsg);
 						destRoom.moveItemTo(this);
 						ticksSinceMove=0;
+						this.unDock(false);
 						this.dockHere(destRoom);
 						//this.sendAreaMessage(leaveMsg, true);
 						if(opExit!=null)
@@ -1870,7 +1871,7 @@ public class GenSailingShip extends StdBoardable
 		return false;
 	}
 	
-	protected boolean sail(final MOB mob, final Room R, final int dir)
+	protected boolean beginSail(final MOB mob, final Room R, final int dir)
 	{
 		directionFacing = dir;
 		CMMsg msg2=CMClass.getMsg(mob, R, R.getExitInDir(dir), CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> sail(s) @x1 @x2.",name(mob),CMLib.directions().getDirectionName(dir)));
@@ -1932,6 +1933,7 @@ public class GenSailingShip extends StdBoardable
 				return false;
 			ticksSinceMove=0;
 			R2.moveItemTo(this);
+			this.unDock(false);
 			this.dockHere(R2);
 			return true;
 		}

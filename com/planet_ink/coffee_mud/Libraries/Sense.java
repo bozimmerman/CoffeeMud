@@ -1604,8 +1604,10 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	@Override
 	public boolean isDeepWaterySurfaceRoom(Room R)
 	{
-		if(!isWaterySurfaceRoom(R))
+		
+		if((R==null)||(!isWaterySurfaceRoom(R)))
 			return false;
+		R.giveASky(0);
 		return isUnderWateryRoom(R.getRoomInDir(Directions.DOWN));
 	}
 

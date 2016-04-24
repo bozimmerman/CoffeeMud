@@ -240,7 +240,7 @@ public class MOBloader
 		boolean inhab=false;
 		if(oldLoc!=null) 
 			inhab=oldLoc.isInhabitant(mob);
-		mob.setLocation(emptyRoom);
+		mob.setLocation(mob.getStartRoom());
 		DBConnection D=null;
 		// now grab the items
 		try
@@ -355,6 +355,10 @@ public class MOBloader
 			if(inhab&&(!oldLoc.isInhabitant(mob)))
 				oldLoc.addInhabitant(mob);
 		}
+		else
+		if((mob.location()!=null)
+		&&((inhab&&(!mob.location().isInhabitant(mob)))))
+			mob.location().addInhabitant(mob);
 		// now grab the abilities
 		try
 		{

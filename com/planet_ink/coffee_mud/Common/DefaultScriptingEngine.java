@@ -3498,19 +3498,24 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				for(final Enumeration<Room> e=lastKnownLocation.getArea().getProperMap();e.hasMoreElements();)
 				{
 					final Room R=e.nextElement();
-					for(int m=0;m<R.numInhabitants();m++)
+					if(arg1.equals("*"))
+						num+=R.numInhabitants();
+					else
 					{
-						final MOB M=R.fetchInhabitant(m);
-						if(M==null)
-							continue;
-						if(MASK!=null)
+						for(int m=0;m<R.numInhabitants();m++)
 						{
-							if(CMLib.masking().maskCheck(MASK,M,true))
+							final MOB M=R.fetchInhabitant(m);
+							if(M==null)
+								continue;
+							if(MASK!=null)
+							{
+								if(CMLib.masking().maskCheck(MASK,M,true))
+									num++;
+							}
+							else
+							if(CMLib.english().containsString(M.name(),arg1))
 								num++;
 						}
-						else
-						if(CMLib.english().containsString(M.name(),arg1))
-							num++;
 					}
 				}
 				returnable=simpleEval(scripted,""+num,arg3,arg2,"NUMMOBSINAREA");
@@ -6160,19 +6165,24 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				for(final Enumeration<Room> e=lastKnownLocation.getArea().getProperMap();e.hasMoreElements();)
 				{
 					final Room R=e.nextElement();
-					for(int m=0;m<R.numInhabitants();m++)
+					if(arg1.equals("*"))
+						num+=R.numInhabitants();
+					else
 					{
-						final MOB M=R.fetchInhabitant(m);
-						if(M==null)
-							continue;
-						if(MASK!=null)
+						for(int m=0;m<R.numInhabitants();m++)
 						{
-							if(CMLib.masking().maskCheck(MASK,M,true))
+							final MOB M=R.fetchInhabitant(m);
+							if(M==null)
+								continue;
+							if(MASK!=null)
+							{
+								if(CMLib.masking().maskCheck(MASK,M,true))
+									num++;
+							}
+							else
+							if(CMLib.english().containsString(M.name(),arg1))
 								num++;
 						}
-						else
-						if(CMLib.english().containsString(M.name(),arg1))
-							num++;
 					}
 				}
 				results.append(num);

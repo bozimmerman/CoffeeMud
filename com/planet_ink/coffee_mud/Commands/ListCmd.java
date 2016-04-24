@@ -1135,33 +1135,25 @@ public class ListCmd extends StdCommand
 
 	public StringBuilder listLinkages(Session viewerS, MOB mob, String rest)
 	{
-		Faction useFaction=null;
-		for(final Enumeration<Faction> e=CMLib.factions().factions();e.hasMoreElements();)
-		{
-			final Faction F=e.nextElement();
-			if(F.showInSpecialReported())
-				useFaction=F;
-		}
 		final StringBuilder buf=new StringBuilder("Links: \n\r");
 		final List<List<Area>> areaLinkGroups=new Vector<List<Area>>();
+		Vector<String> parms=CMParms.parse(rest.toUpperCase());
+		boolean showSubStats = parms.contains("SUBSTATS");
 		Enumeration<Area> a;
-		if(rest.equalsIgnoreCase("world"))
+		if(parms.contains("WORLD"))
 			a=CMLib.map().areas();
 		else
 			a=new XVector<Area>(mob.location().getArea()).elements();
 		for(;a.hasMoreElements();)
 		{
 			final Area A=a.nextElement();
-			buf.append(A.name()+"\t"+A.numberOfProperIDedRooms()+" rooms\t");
+			buf.append("^H"+A.name()+"^N, "+A.numberOfProperIDedRooms()+" rooms, ");
 			if(!A.getProperMap().hasMoreElements())
 			{
 				buf.append("\n\r");
 				continue;
 			}
 			final List<List<Room>> linkedGroups=new Vector<List<Room>>();
-			int numMobs=0;
-			int totalAlignment=0;
-			int totalLevels=0;
 			for(final Enumeration<Room> r=A.getCompleteMap();r.hasMoreElements();)
 			{
 				final Room R=r.nextElement();
@@ -1217,24 +1209,6 @@ public class ListCmd extends StdCommand
 					if((linkedGroups.get(g)).size()==0)
 						linkedGroups.remove(g);
 				}
-
-				for(int m=0;m<R.numInhabitants();m++)
-				{
-					final MOB M=R.fetchInhabitant(m);
-					if((M!=null)
-					&&(M.isMonster())
-					&&(M.getStartRoom()!=null)
-					&&(M.getStartRoom().getArea()==R.getArea()))
-					{
-						numMobs++;
-						if((useFaction!=null)
-						&&(CMLib.factions().getFaction(useFaction.factionID())!=null)
-						&&(M.fetchFaction(useFaction.factionID())!=Integer.MAX_VALUE))
-							totalAlignment+=M.fetchFaction(useFaction.factionID());
-						totalLevels+=M.phyStats().level();
-					}
-				}
-
 			}
 			final StringBuilder ext=new StringBuilder("links ");
 			List<Area> myVec=null;
@@ -1248,7 +1222,20 @@ public class ListCmd extends StdCommand
 					final Room R2=R.rawDoors()[d];
 					if((R2!=null)&&(R2.getArea()!=R.getArea()))
 					{
-						ext.append(CMLib.directions().getDirectionName(d)+" to "+R2.getArea().name()+" ("+R.roomID()+"/"+R2.roomID()+") ");
+						ext.append("\n\r   "+CMLib.directions().getDirectionName(d)+": "+R2.getArea().name());
+						if(showSubStats)
+						{
+							int[] areaStats = R2.getArea().getAreaIStats();
+							ext.append(" (");
+							ext.append(L("@x1 mobs, @x2 avg lvl, @x3 med lvl, @x4 avg align",
+									""+areaStats[Area.Stats.POPULATION.ordinal()],
+									""+areaStats[Area.Stats.AVG_LEVEL.ordinal()],
+									""+areaStats[Area.Stats.MED_LEVEL.ordinal()],
+									""+areaStats[Area.Stats.AVG_ALIGNMENT.ordinal()]));
+							ext.append(") ");
+						}
+						else
+							ext.append(" ("+R.roomID()+"/"+R2.roomID()+") ");
 						for(int g=0;g<areaLinkGroups.size();g++)
 						{
 							final List<Area> G=areaLinkGroups.get(g);
@@ -1287,13 +1274,18 @@ public class ListCmd extends StdCommand
 					areaLinkGroups.add(clearVec);
 				}
 			}
-			if(numMobs>0)
-				buf.append(L("@x1 mobs\t@x2 avg levels\t",""+numMobs,""+(totalLevels/numMobs)));
-			if((numMobs>0)&&(useFaction!=null)&&(CMLib.factions().getFaction(useFaction.factionID())!=null))
-				buf.append((totalAlignment/numMobs)+" avg "+useFaction.name());
+			int[] areaStats = A.getAreaIStats();
+			if(areaStats[Area.Stats.POPULATION.ordinal()]>0)
+			{
+				buf.append(L("@x1 mobs, @x2 avg lvl, @x3 med lvl, @x4 avg align",
+						""+areaStats[Area.Stats.POPULATION.ordinal()],
+						""+areaStats[Area.Stats.AVG_LEVEL.ordinal()],
+						""+areaStats[Area.Stats.MED_LEVEL.ordinal()],
+						""+areaStats[Area.Stats.AVG_ALIGNMENT.ordinal()]));
+			}
 			if(linkedGroups.size()>0)
 			{
-				buf.append("\tgroups: "+linkedGroups.size()+" sizes: ");
+				buf.append(", groups: "+linkedGroups.size()+" sizes: ");
 				for(final List<Room> grp : linkedGroups)
 					buf.append(grp.size()+" ");
 			}

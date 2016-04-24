@@ -510,6 +510,10 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 	
 	protected boolean securityCheck(final MOB mob)
 	{
+		if(CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.CMDITEMS))
+			return true;
+		if(getOwnerName().length()==0)
+			return true;
 		return (getOwnerName().length()>0)
 			 &&(mob!=null)
 			 &&((mob.Name().equals(getOwnerName()))
