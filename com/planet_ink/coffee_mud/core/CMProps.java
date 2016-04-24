@@ -191,7 +191,8 @@ public class CMProps extends Properties
 		CHANNELBACKLOG,
 		BLACKLISTFILE,
 		REMORTMASK,
-		REMORTRETAIN
+		REMORTRETAIN,
+		RACEMIXING
 	}
 
 	/**
@@ -2058,6 +2059,7 @@ public class CMProps extends Properties
 		setUpCosts("COMMONCOST",commonCost,CMParms.parseCommas(getStr("COMMONCOST","1 TRAIN"),true));
 		setUpCosts("SKILLCOST",skillsCost,CMParms.parseCommas(getStr("SKILLCOST","1 TRAIN"),true));
 		setUpCosts("LANGCOST",languageCost,CMParms.parseCommas(getStr("LANGCOST","3 PRACTICE"),true));
+		setVar(Str.RACEMIXING,getStr("RACEMIXING"));
 
 		setUpLowVar(Str.BLACKLISTFILE,getStr("BLACKLISTFILE","/resources/ipblock.ini"));
 		setWhitelist(CMProps.WhiteList.CONNS,getStr("WHITELISTIPSCONN"));
@@ -2224,7 +2226,7 @@ public class CMProps extends Properties
 		stateVar=getStr("STARTMOVE");
 		if((stateVar.length()>0)&&(CMath.isNumber(stateVar)))
 			setIntVar(Int.STARTMOVE,CMath.s_int(stateVar));
-
+		
 		setIntVar(Int.MAXITEMSHOWN,getStr("MAXITEMSHOWN"));
 		setIntVar(Int.MUDSTATE,getStr("MUDSTATE"));
 

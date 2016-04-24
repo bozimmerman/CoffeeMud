@@ -162,6 +162,27 @@ public class Pregnancy extends StdAbility implements HealthCondition
 		super.executeMsg(host,msg);
 	}
 
+	public String raceMixRuleCheck(String rule, String urace1, String urace2)
+	{
+		if(rule.toUpperCase().startsWith(urace1))
+		{
+			rule=rule.substring(urace1.length()).trim();
+			if(rule.startsWith("+"))
+			{
+				rule=rule.substring(1).trim();
+				if(rule.toUpperCase().startsWith(urace2))
+				{
+					rule=rule.substring(urace2.length()).trim();
+					if(rule.startsWith("="))
+					{
+						return rule.substring(1).trim();
+					}
+				}
+			}
+		}
+		return "";
+	}
+	
 	public Race getRace(MOB babe, String race1, String race2)
 	{
 		if(race1.indexOf(race2)>=0)
@@ -169,6 +190,62 @@ public class Pregnancy extends StdAbility implements HealthCondition
 		else
 		if(race2.indexOf(race1)>=0)
 			return CMClass.getRace(race2);
+		
+		String raceMixRules = CMProps.getVar(CMProps.Str.RACEMIXING);
+		if(raceMixRules.trim().length()>0)
+		{
+			List<String> rules=CMParms.parseCommas(raceMixRules, true);
+			final String urace1=race1.toUpperCase();
+			final String urace2=race2.toUpperCase();
+			for(String rule : rules)
+			{
+				rule=rule.trim();
+				if(rule.equalsIgnoreCase("FATHER"))
+				{
+					Race R=CMClass.getRace(race2);
+					if(R==null)
+						R=CMClass.findRace(race2);
+					if(R!=null)
+						return R;
+				}
+				else
+				if(rule.equalsIgnoreCase("MOTHER"))
+				{
+					Race R=CMClass.getRace(race1);
+					if(R==null)
+						R=CMClass.findRace(race1);
+					if(R!=null)
+						return R;
+				}
+				else
+				{
+					String chk=raceMixRuleCheck(rule,urace1,urace2);
+					if((chk==null)||(chk.length()==0))
+						chk=raceMixRuleCheck(rule,urace2,urace1);
+					if((chk!=null)&&(chk.length()>0))
+					{
+						String raceID=CMStrings.replaceAll(chk, " ", "_");
+						Race R=CMClass.getRace(raceID);
+						if(R==null)
+							R=CMClass.findRace(raceID);
+						if(R!=null)
+							return R;
+						else
+						{
+							final Race FIRSTR=CMClass.getRace(race1);
+							final Race SECONDR=CMClass.getRace(race2);
+							R=FIRSTR.mixRace(SECONDR,raceID,chk);
+							if(R.isGeneric() && (!R.ID().equals(race1))&& (!R.ID().equals(race2)))
+							{
+								CMClass.addRace(R);
+								CMLib.database().DBCreateRace(R.ID(),R.racialParms());
+							}
+							return R;
+						}
+					}
+				}
+			}
+		}
 
 		Race R=null;
 		if(race1.equalsIgnoreCase("Human")||race2.equalsIgnoreCase("Human"))
