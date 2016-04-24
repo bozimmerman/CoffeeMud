@@ -98,6 +98,10 @@ public class GrinderItems
 		final String mobNum=httpReq.getUrlParameter("MOB");
 		final String newClassID=httpReq.getUrlParameter("CLASSES");
 
+		String shopItemCode=httpReq.getUrlParameter("SHOPITEM");
+		if(shopItemCode==null)
+			shopItemCode="";
+		
 		final String sync=("SYNC"+((R==null)?((playerM!=null)?playerM.Name():null):R.roomID()));
 		synchronized(sync.intern())
 		{
@@ -888,7 +892,10 @@ public class GrinderItems
 				}
 				else
 				{
-					M.addItem(I);
+					if(shopItemCode.equals(mobNum) && (shopItemCode.length()>0))
+						((ShopKeeper)M).getShop().addStoreInventory(I);
+					else
+						M.addItem(I);
 					M.recoverPhyStats();
 					if((mobNum==null)||(!mobNum.startsWith("CATALOG-")))
 						M.text();
@@ -925,8 +932,16 @@ public class GrinderItems
 				}
 				else
 				{
-					M.delItem(oldI);
-					M.addItem(I);
+					if(shopItemCode.equals(mobNum) && (shopItemCode.length()>0))
+					{
+						((ShopKeeper)M).getShop().delAllStoreInventory(oldI);
+						((ShopKeeper)M).getShop().addStoreInventory(I);
+					}
+					else
+					{
+						M.delItem(oldI);
+						M.addItem(I);
+					}
 					M.recoverPhyStats();
 					if((mobNum==null)||(!mobNum.startsWith("CATALOG-")))
 						M.text();

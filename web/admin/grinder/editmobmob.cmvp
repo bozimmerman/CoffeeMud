@@ -1,0 +1,21 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+@if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
+@if?!CheckAuthCode?ANYMODAREAS=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
+@MUDGrinder?EDITMOB@
+
+@if?!CheckReqParm?ERRMSG=@ 
+	@AddFile?/grinder/editmob.cmvp@ 
+@else@ 
+<HTML>
+<head>
+ 	<link rel="grinder icon" href="/images/grinder.ico" >
+</head>
+	<FRAMESET ROWS=80%,20% FRAMEBORDER=NO FRAMESPACING=0>
+		<FRAME NORESIZE FRAMEBORDER=NO FRAMESPACING=0 SCROLLING=AUTO SRC="/grinder/editmobform.cmvp?AUTH=@Authenticate?AUTH@&AREA=@AreaIDEncoded@&MAPSTYLE=@RequestParameterEncoded?MAPSTYLE@&MAPLEVEL=@RequestParameterEncoded?MAPLEVEL@&ROOM=@RequestParameterEncoded?ROOM@&ITEM=@RequestParameterEncoded?ITEM@&MOB=@RequestParameterEncoded?MOB@&SHOPMOB=@RequestParameterEncoded?SHOPMOB@" NAME=MAP>
+		<FRAME NORESIZE FRAMEBORDER=NO FRAMESPACING=0 SCROLLING=AUTO SRC="/grinder/canmenu3.cmvp?AUTH=@Authenticate?AUTH@&AREA=@AreaIDEncoded@&MAPSTYLE=@RequestParameterEncoded?MAPSTYLE@&MAPLEVEL=@RequestParameterEncoded?MAPLEVEL@&ROOM=@RequestParameterEncoded?ROOM@&ITEM=@RequestParameterEncoded?ITEM@&MOB=@RequestParameterEncoded?MOB@&SHOPMOB=@RequestParameterEncoded?SHOPMOB@" NAME=MENU>
+	</FRAMESET>
+</HTML>
+@endif@
+@endif@
+@endif@

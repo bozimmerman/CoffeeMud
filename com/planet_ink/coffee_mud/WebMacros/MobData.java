@@ -798,13 +798,15 @@ public class MobData extends StdWebMacro
 							}
 						}
 						if(O==null)
-						for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 						{
-							final Ability A2=a.nextElement();
-							if(CMClass.classID(A2).equals(MATCHING))
+							for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 							{
-								O = (Ability) A2.copyOf();
-								break;
+								final Ability A2=a.nextElement();
+								if(CMClass.classID(A2).equals(MATCHING))
+								{
+									O = (Ability) A2.copyOf();
+									break;
+								}
 							}
 						}
 						if(O==null)
@@ -846,7 +848,7 @@ public class MobData extends StdWebMacro
 				final Environmental O=theclasses.get(i);
 				final String theparm=theparms.get(i);
 				String theprice=theprices.get(i);
-				str.append("<TR><TD WIDTH=70%>");
+				str.append("<TR><TD WIDTH=90%>");
 				str.append("<SELECT ONCHANGE=\"EditAffect(this);\" NAME=SHP"+(i+1)+">");
 				str.append("<OPTION VALUE=\"\">Delete!");
 				final int shopIndex=getShopCardinality(E,O);
@@ -864,18 +866,25 @@ public class MobData extends StdWebMacro
 				else
 					str.append("<OPTION SELECTED VALUE=\""+O.ID()+"\">"+O.Name()+" ("+O.ID()+")");
 				str.append("</SELECT>");
-				if(RoomData.getItemCache().contains(O))
-					str.append("<INPUT TYPE=BUTTON NAME=EDITITEM"+(i+1)+" VALUE=Edit ONCLICK=\"EditItem('"+RoomData.getItemCode(RoomData.getItemCache(),(Item)O)+"');\">");
-				if(RoomData.getMOBCache().contains(O))
-					str.append("<INPUT TYPE=BUTTON NAME=EDITMOB"+(i+1)+" VALUE=Edit ONCLICK=\"EditMob('"+RoomData.getMOBCode(RoomData.getMOBCache(),(MOB)O)+"');\">");
-				str.append("</TD><TD WIDTH=30%><TABLE WIDTH=100% CELLPADDING=0 CELLSPACING=0><TR><TD WIDTH=50%>Stock:</TD>");
-				str.append("<TD WIDTH=50%><INPUT TYPE=TEXT SIZE=5 NAME=SDATA"+(i+1)+" VALUE=\""+theparm+"\"></TD></TR>");
+				str.append("<BR>");
+				str.append("Stock: ");
+				str.append("<INPUT TYPE=TEXT SIZE=5 NAME=SDATA"+(i+1)+" VALUE=\""+theparm+"\">");
 				if((theprice==null)||(theprice.equals("null")))
 					theprice="-1";
-				str.append("<TR><TD WIDTH=50%>Price:</TD><TD WIDTH=50%><INPUT TYPE=TEXT SIZE=5 NAME=SPRIC"+(i+1)+" VALUE=\""+theprice+"\"></TD></TR></TABLE>");
+				str.append("&nbsp;&nbsp;&nbsp;");
+				str.append("Price: <INPUT TYPE=TEXT SIZE=5 NAME=SPRIC"+(i+1)+" VALUE=\""+theprice+"\">");
+				str.append("</TD><TD WIDTH=10%>");
+				if(!CMLib.flags().isCataloged(O))
+				{
+					//if(O instanceof MOB)
+						//str.append("<INPUT TYPE=BUTTON NAME=EDITSHOPMOB"+(i+1)+" VALUE=EDIT ONCLICK=\"EditShopMob('"+RoomData.getMOBCode(RoomData.getMOBCache(),(MOB)O)+"');\">");
+					//else
+					if(O instanceof Item)
+						str.append("<INPUT TYPE=BUTTON NAME=EDITSHOPITEM"+(i+1)+" VALUE=EDIT ONCLICK=\"EditShopItem('"+RoomData.getItemCode(RoomData.getItemCache(),(Item)O)+"');\">");
+				}
 				str.append("</TD></TR>");
 			}
-			str.append("<TR><TD WIDTH=70%>");
+			str.append("<TR><TD WIDTH=90%>");
 			str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME=SHP"+(theclasses.size()+1)+">");
 			str.append("<OPTION SELECTED VALUE=\"\">Select an item");
 			for (final Item I : RoomData.getItemCache())
@@ -913,9 +922,13 @@ public class MobData extends StdWebMacro
 			names=CMLib.catalog().getCatalogItemNames();
 			for (final String name : names)
 				str.append("<OPTION VALUE=\"CATALOG-"+name+"\">"+name);
-			str.append("</SELECT>");
-			str.append("</TD><TD WIDTH=30%>Stock:");
-			str.append("<INPUT TYPE=TEXT SIZE=5 NAME=SDATA"+(theclasses.size()+1)+" VALUE=\"1\">");
+			str.append("</SELECT><BR>");
+			str.append("Stock: <INPUT TYPE=TEXT SIZE=5 NAME=SDATA"+(theclasses.size()+1)+" VALUE=\"1\">");
+			str.append("&nbsp;&nbsp;&nbsp;");
+			str.append("Price: <INPUT TYPE=TEXT SIZE=5 NAME=SPRIC"+(theclasses.size()+1)+" VALUE=\"-1\">");
+			str.append("</TD><TD WIDTH=10%>");
+			str.append("<INPUT TYPE=BUTTON NAME=ADDSHOPITEM VALUE=\"+Item\" ONCLICK=\"AddNewShopItem();\">");
+			//str.append("<INPUT TYPE=BUTTON NAME=ADDSHOPMOB VALUE=\"+MOB\" ONCLICK=\"AddNewShopMOB();\">");
 			str.append("</TD></TR>");
 			str.append("</TABLE>");
 		}

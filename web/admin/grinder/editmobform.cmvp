@@ -17,6 +17,20 @@
 		{
 			document.AREAEDIT.action='/grinder/addmobitem.cmvp';
 			document.AREAEDIT.target='_top';
+			document.AREAEDIT.SHOPITEM.value='';
+			document.AREAEDIT.submit();
+		}
+		function AddNewShopItem()
+		{
+			document.AREAEDIT.action='/grinder/addmobitem.cmvp';
+			document.AREAEDIT.target='_top';
+			document.AREAEDIT.SHOPITEM.value=document.AREAEDIT.MOB.value;
+			document.AREAEDIT.submit();
+		}
+		function AddNewShopMOB()
+		{
+			document.AREAEDIT.action='/grinder/addmobmob.cmvp';
+			document.AREAEDIT.target='_top';
 			document.AREAEDIT.submit();
 		}
 		function AddItem(ME)
@@ -34,7 +48,25 @@
 			document.AREAEDIT.ITEM.value=ME;
 			document.AREAEDIT.action='/grinder/editmobitem.cmvp';
 			document.AREAEDIT.target='_top';
+			document.AREAEDIT.SHOPITEM.value='';
 			document.AREAEDIT.submit();
+		}
+		function EditShopItem(ME)
+		{
+			document.AREAEDIT.ITEM.value=ME;
+			document.AREAEDIT.action='/grinder/editmobitem.cmvp';
+			document.AREAEDIT.target='_top';
+			document.AREAEDIT.SHOPITEM.value=document.AREAEDIT.MOB.value;
+			document.AREAEDIT.submit();
+		}
+		function EditShopMob(ME)
+		{
+			document.AREAEDIT.ITEM.value=ME;
+			document.AREAEDIT.action='/grinder/editmobmob.cmvp';
+			document.AREAEDIT.target='_top';
+			document.AREAEDIT.SHOPMOB.value=document.AREAEDIT.MOB.value;
+			document.AREAEDIT.submit();
+			document.AREAEDIT.SHOPMOB.value='';
 		}
 		function EditBehavior(ME)
 		{
@@ -129,6 +161,8 @@
 <INPUT TYPE=HIDDEN NAME=CHANGEDCLASS VALUE="">
 <INPUT TYPE=HIDDEN NAME=CHANGEDLEVEL VALUE="">
 <INPUT TYPE=HIDDEN NAME=MOB VALUE="@RequestParameter?MOB@">
+<INPUT TYPE=HIDDEN NAME=SHOPMOB VALUE="@RequestParameter?SHOPMOB@">
+<INPUT TYPE=HIDDEN NAME=SHOPITEM VALUE="">
 <INPUT TYPE=HIDDEN NAME=ITEM VALUE="">
 <INPUT TYPE=HIDDEN NAME=ACTION VALUE="MODIFYMOB">
 @if?RequestParameter?SINGLEMOB@

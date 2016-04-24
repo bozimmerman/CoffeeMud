@@ -110,6 +110,18 @@ public class RoomData extends StdWebMacro
 			if(M.getItem(i)==I)
 				return Long.toString( ( I.ID() + "/" + I.Name() + "/" + I.displayText() ).hashCode() << 5 ) + i;
 		}
+		if(M instanceof ShopKeeper)
+		{
+			final ShopKeeper shopK=(ShopKeeper)M;
+			final CoffeeShop shop=shopK.getShop();
+			for(Iterator<Environmental> i=shop.getStoreInventory();i.hasNext();)
+			{
+				Environmental E=i.next();
+				if(E==I)
+					return Long.toString( ( I.ID() + "/" + I.Name() + "/" + I.displayText() ).hashCode() << 5 ) + i;
+			}
+			
+		}
 		return "";
 	}
 
