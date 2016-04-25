@@ -474,12 +474,13 @@ public class Amputation extends StdAbility implements LimbDamage, HealthConditio
 		{
 			if(affected instanceof MOB)
 			{
-				R=((MOB)affected).charStats().getMyRace();
+				final MOB M=(MOB)affected;
+				R=M.charStats().getMyRace();
 				boolean success;
 				if(gone.toLowerCase().endsWith("eye"))
-					success=((MOB)affected).location().show(((MOB)affected),this,CMMsg.MSG_OK_VISUAL,L("^G<S-YOUPOSS> @x1 is destroyed!^?",gone));
+					success=M.location().show(M,this,CMMsg.MSG_OK_VISUAL,L("^G<S-YOUPOSS> @x1 is destroyed!^?",gone));
 				else
-					success=((MOB)affected).location().show(((MOB)affected),this,CMMsg.MSG_OK_VISUAL,L("^G<S-YOUPOSS> @x1 falls off!^?",gone));
+					success=M.location().show(M,this,CMMsg.MSG_OK_VISUAL,L("^G<S-YOUPOSS> @x1 falls off!^?",gone));
 				if(!success)
 					return null;
 			}
@@ -488,11 +489,12 @@ public class Amputation extends StdAbility implements LimbDamage, HealthConditio
 			&&(((Item)affected).owner()!=null)
 			&&(((Item)affected).owner() instanceof Room))
 			{
-				R=((DeadBody)affected).charStats().getMyRace();
+				final DeadBody D=(DeadBody)affected;
+				R=D.charStats().getMyRace();
 				if(gone.toLowerCase().endsWith("eye"))
-					((Room)((Item)affected).owner()).showHappens(CMMsg.MSG_OK_VISUAL,L("^G@x1's @x2 is destroyed!^?",affected.name(),gone));
+					((Room)D.owner()).showHappens(CMMsg.MSG_OK_VISUAL,L("^G@x1's @x2 is destroyed!^?",D.name(),gone));
 				else
-					((Room)((Item)affected).owner()).showHappens(CMMsg.MSG_OK_VISUAL,L("^G@x1's @x2 falls off!^?",affected.name(),gone));
+					((Room)D.owner()).showHappens(CMMsg.MSG_OK_VISUAL,L("^G@x1's @x2 falls off!^?",D.name(),gone));
 			}
 		}
 		Item limb=null;
@@ -521,6 +523,7 @@ public class Amputation extends StdAbility implements LimbDamage, HealthConditio
 				limb.setSecretIdentity(affected.name()+"`s bloody "+gone+".");
 			int material=RawMaterial.RESOURCE_MEAT;
 			if((R!=null)&&(R.myResources()!=null)&&(R.myResources().size()>0))
+			{
 				for(int r=0;r<R.myResources().size();r++)
 				{
 					final Item I=R.myResources().get(r);
@@ -532,6 +535,7 @@ public class Amputation extends StdAbility implements LimbDamage, HealthConditio
 						break;
 					}
 				}
+			}
 			limb.setMaterial(material);
 			limb.basePhyStats().setLevel(1);
 			limb.basePhyStats().setWeight(5);
