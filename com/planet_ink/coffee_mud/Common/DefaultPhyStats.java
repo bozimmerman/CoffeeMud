@@ -279,6 +279,7 @@ public class DefaultPhyStats implements PhyStats
 	@Override
 	public boolean isAmbiance(String ambiance)
 	{
+		final String[] ambiances=this.ambiances;
 		if((ambiances==null)||(ambiance==null))
 			return false;
 		return Arrays.binarySearch(ambiances, ambiance.trim(), ambiComp) >=0;
