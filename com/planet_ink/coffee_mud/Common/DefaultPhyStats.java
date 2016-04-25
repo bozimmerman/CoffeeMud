@@ -36,8 +36,17 @@ import java.util.Vector;
 */
 public class DefaultPhyStats implements PhyStats
 {
-	@Override public String ID(){return "DefaultPhyStats";}
-	@Override public String name() { return ID();}
+	@Override
+	public String ID()
+	{
+		return "DefaultPhyStats";
+	}
+
+	@Override
+	public String name()
+	{
+		return ID();
+	}
 
 	private final static String[]	empty			= new String[0];
 	private final static int[]		DEFAULT_STATS	= {0,0,100,0,0,0,0,0,0,0};
@@ -71,65 +80,201 @@ public class DefaultPhyStats implements PhyStats
 		ambiances=null;
 	}
 
-	@Override public int sensesMask(){return stats[STAT_SENSES];}
-	@Override public int disposition(){return stats[STAT_DISPOSITION];}
-	@Override public int level(){return stats[STAT_LEVEL];}
-	@Override public int ability(){return stats[STAT_ABILITY];}
-	@Override public int rejuv(){return stats[STAT_REJUV];}
-	@Override public int weight(){return stats[STAT_WEIGHT];}
-	@Override public int height(){return stats[STAT_HEIGHT];}
-	@Override public int armor(){return stats[STAT_ARMOR];}
-	@Override public int damage(){return stats[STAT_DAMAGE];}
-	@Override public double speed(){return speed;}
-	@Override public int attackAdjustment(){return stats[STAT_ATTACK];}
-	@Override public String newName(){ return replacementName;}
-	@Override public String[] ambiances(){ return (ambiances==null)?empty:ambiances;}
+	@Override
+	public int sensesMask()
+	{
+		return stats[STAT_SENSES];
+	}
 
-	@Override public void setRejuv(int newRejuv){stats[STAT_REJUV]=newRejuv;}
-	@Override public void setLevel(int newLevel){stats[STAT_LEVEL]=newLevel;}
-	@Override public void setArmor(int newArmor){stats[STAT_ARMOR]=newArmor;}
-	@Override public void setDamage(int newDamage){stats[STAT_DAMAGE]=newDamage;}
-	@Override public void setWeight(int newWeight){stats[STAT_WEIGHT]=newWeight;}
-	@Override public void setSpeed(double newSpeed){speed=newSpeed;}
-	@Override public void setAttackAdjustment(int newAdjustment){stats[STAT_ATTACK]=newAdjustment;}
-	@Override public void setAbility(int newAdjustment){stats[STAT_ABILITY]=newAdjustment;}
-	@Override public void setDisposition(int newDisposition){stats[STAT_DISPOSITION]=newDisposition;}
-	@Override public void setSensesMask(int newMask){stats[STAT_SENSES]=newMask;}
-	@Override public void setHeight(int newHeight){stats[STAT_HEIGHT]=newHeight;}
-	@Override public void setName(String newName){ replacementName=newName;}
-	@Override public String getCombatStats(){return "L"+stats[STAT_LEVEL]+":A"+stats[STAT_ARMOR]+":K"+stats[STAT_ATTACK]+":D"+stats[STAT_DAMAGE];}
+	@Override
+	public int disposition()
+	{
+		return stats[STAT_DISPOSITION];
+	}
+
+	@Override
+	public int level()
+	{
+		return stats[STAT_LEVEL];
+	}
+
+	@Override
+	public int ability()
+	{
+		return stats[STAT_ABILITY];
+	}
+
+	@Override
+	public int rejuv()
+	{
+		return stats[STAT_REJUV];
+	}
+
+	@Override
+	public int weight()
+	{
+		return stats[STAT_WEIGHT];
+	}
+
+	@Override
+	public int height()
+	{
+		return stats[STAT_HEIGHT];
+	}
+
+	@Override
+	public int armor()
+	{
+		return stats[STAT_ARMOR];
+	}
+
+	@Override
+	public int damage()
+	{
+		return stats[STAT_DAMAGE];
+	}
+
+	@Override
+	public double speed()
+	{
+		return speed;
+	}
+
+	@Override
+	public int attackAdjustment()
+	{
+		return stats[STAT_ATTACK];
+	}
+
+	@Override
+	public String newName()
+	{
+		return replacementName;
+	}
+
+	@Override
+	public String[] ambiances()
+	{
+		return (ambiances == null) ? empty : ambiances;
+	}
+
+	@Override
+	public void setRejuv(int newRejuv)
+	{
+		stats[STAT_REJUV] = newRejuv;
+	}
+
+	@Override
+	public void setLevel(int newLevel)
+	{
+		stats[STAT_LEVEL] = newLevel;
+	}
+
+	@Override
+	public void setArmor(int newArmor)
+	{
+		stats[STAT_ARMOR] = newArmor;
+	}
+
+	@Override
+	public void setDamage(int newDamage)
+	{
+		stats[STAT_DAMAGE] = newDamage;
+	}
+
+	@Override
+	public void setWeight(int newWeight)
+	{
+		stats[STAT_WEIGHT] = newWeight;
+	}
+
+	@Override
+	public void setSpeed(double newSpeed)
+	{
+		speed = newSpeed;
+	}
+
+	@Override
+	public void setAttackAdjustment(int newAdjustment)
+	{
+		stats[STAT_ATTACK] = newAdjustment;
+	}
+
+	@Override
+	public void setAbility(int newAdjustment)
+	{
+		stats[STAT_ABILITY] = newAdjustment;
+	}
+
+	@Override
+	public void setDisposition(int newDisposition)
+	{
+		stats[STAT_DISPOSITION] = newDisposition;
+	}
+
+	@Override
+	public void setSensesMask(int newMask)
+	{
+		stats[STAT_SENSES] = newMask;
+	}
+
+	@Override
+	public void setHeight(int newHeight)
+	{
+		stats[STAT_HEIGHT] = newHeight;
+	}
+
+	@Override
+	public void setName(String newName)
+	{
+		replacementName = newName;
+	}
+
+	@Override
+	public String getCombatStats()
+	{
+		return "L" + stats[STAT_LEVEL] + ":A" + stats[STAT_ARMOR] + ":K" + stats[STAT_ATTACK] + ":D" + stats[STAT_DAMAGE];
+	}
+
 	@Override
 	public void addAmbiance(String ambiance)
 	{
 		if(ambiance==null)
 			return;
 		ambiance=ambiance.trim();
-		if((ambiances!=null)&&(Arrays.binarySearch(ambiances, ambiance, ambiComp)>=0))
-			return;
-		if(ambiances==null)
-			ambiances=new String[1];
-		else
-			ambiances=Arrays.copyOf(ambiances, ambiances.length+1);
-		ambiances[ambiances.length-1]=ambiance;
-		Arrays.sort(ambiances, ambiComp);
+		synchronized(this)
+		{
+			if((ambiances!=null)&&(Arrays.binarySearch(ambiances, ambiance, ambiComp)>=0))
+				return;
+			if(ambiances==null)
+				ambiances=new String[1];
+			else
+				ambiances=Arrays.copyOf(ambiances, ambiances.length+1);
+			ambiances[ambiances.length-1]=ambiance;
+			Arrays.sort(ambiances, ambiComp);
+		}
 	}
+
 	@Override
 	public void delAmbiance(String ambiance)
 	{
-		if((ambiances==null)||(ambiance==null))
-			return;
-		int dex=Arrays.binarySearch(ambiances, ambiance.trim(), ambiComp);
-		if(dex<0)
-			return;
-		if(ambiances.length==1)
+		synchronized(this)
 		{
-			ambiances=null;
-			return;
+			if((ambiances==null)||(ambiance==null))
+				return;
+			int dex=Arrays.binarySearch(ambiances, ambiance.trim(), ambiComp);
+			if(dex<0)
+				return;
+			if(ambiances.length==1)
+			{
+				ambiances=null;
+				return;
+			}
+			final String[] oldAmbiances=ambiances;
+			ambiances=Arrays.copyOf(ambiances, ambiances.length-1);
+			for(;dex<ambiances.length;dex++)
+				ambiances[dex]=oldAmbiances[dex+1];
 		}
-		final String[] oldAmbiances=ambiances;
-		ambiances=Arrays.copyOf(ambiances, ambiances.length-1);
-		for(;dex<ambiances.length;dex++)
-			ambiances[dex]=oldAmbiances[dex+1];
 	}
 	@Override
 	public boolean isAmbiance(String ambiance)
@@ -139,8 +284,24 @@ public class DefaultPhyStats implements PhyStats
 		return Arrays.binarySearch(ambiances, ambiance.trim(), ambiComp) >=0;
 	}
 
-	@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(final Exception e){return new DefaultPhyStats();}}
-	@Override public void initializeClass(){}
+	@Override
+	public CMObject newInstance()
+	{
+		try
+		{
+			return getClass().newInstance();
+		}
+		catch (final Exception e)
+		{
+			return new DefaultPhyStats();
+		}
+	}
+
+	@Override
+	public void initializeClass()
+	{
+	}
+
 	@Override
 	public void copyInto(PhyStats intoStats)
 	{
@@ -156,6 +317,7 @@ public class DefaultPhyStats implements PhyStats
 		for(int i=0;i<getStatCodes().length;i++)
 			intoStats.setStat(getStatCodes()[i],getStat(getStatCodes()[i]));
 	}
+
 	@Override
 	public CMObject copyOf()
 	{
@@ -170,13 +332,30 @@ public class DefaultPhyStats implements PhyStats
 			return new DefaultPhyStats();
 		}
 	}
+
 	private final static String[] CODES={
 		"SENSES","DISPOSITION","LEVEL",
 		"ABILITY","REJUV","WEIGHT","HEIGHT",
 		"ARMOR","DAMAGE","ATTACK", "AMBIANCES"};
-	@Override public int getSaveStatIndex(){return getStatCodes().length;}
-	@Override public String[] getStatCodes(){return CODES;}
-	@Override public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
+
+	@Override
+	public int getSaveStatIndex()
+	{
+		return getStatCodes().length;
+	}
+
+	@Override
+	public String[] getStatCodes()
+	{
+		return CODES;
+	}
+
+	@Override
+	public boolean isStat(String code)
+	{
+		return CMParms.indexOf(getStatCodes(), code.toUpperCase().trim()) >= 0;
+	}
+
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<CODES.length;i++)
@@ -198,17 +377,38 @@ public class DefaultPhyStats implements PhyStats
 	{
 		switch(getCodeNum(code))
 		{
-		case 0: setSensesMask(CMath.s_parseIntExpression(val)); break;
-		case 1: setDisposition(CMath.s_parseIntExpression(val)); break;
-		case 2: setLevel(CMath.s_parseIntExpression(val)); break;
-		case 3: setAbility(CMath.s_parseIntExpression(val)); break;
-		case 4: setRejuv(CMath.s_parseIntExpression(val)); break;
-		case 5: setWeight(CMath.s_parseIntExpression(val)); break;
-		case 6: setHeight(CMath.s_parseIntExpression(val)); break;
-		case 7: setArmor(CMath.s_parseIntExpression(val)); break;
-		case 8: setDamage(CMath.s_parseIntExpression(val)); break;
-		case 9: setAttackAdjustment(CMath.s_parseIntExpression(val)); break;
-		case 10:{
+		case 0:
+			setSensesMask(CMath.s_parseIntExpression(val));
+			break;
+		case 1:
+			setDisposition(CMath.s_parseIntExpression(val));
+			break;
+		case 2:
+			setLevel(CMath.s_parseIntExpression(val));
+			break;
+		case 3:
+			setAbility(CMath.s_parseIntExpression(val));
+			break;
+		case 4:
+			setRejuv(CMath.s_parseIntExpression(val));
+			break;
+		case 5:
+			setWeight(CMath.s_parseIntExpression(val));
+			break;
+		case 6:
+			setHeight(CMath.s_parseIntExpression(val));
+			break;
+		case 7:
+			setArmor(CMath.s_parseIntExpression(val));
+			break;
+		case 8:
+			setDamage(CMath.s_parseIntExpression(val));
+			break;
+		case 9:
+			setAttackAdjustment(CMath.s_parseIntExpression(val));
+			break;
+		case 10:
+		{
 			if(val.trim().length()==0)
 				ambiances=null;
 			else
@@ -220,24 +420,42 @@ public class DefaultPhyStats implements PhyStats
 		}
 		}
 	}
+
 	@Override
 	public String getStat(String code)
 	{
 		switch(getCodeNum(code))
 		{
-		case 0: return ""+sensesMask();
-		case 1: return ""+disposition();
-		case 2: return ""+level();
-		case 3: return ""+ability();
-		case 4: return ""+rejuv();
-		case 5: return ""+weight();
-		case 6: return ""+height();
-		case 7: return ""+armor();
-		case 8: return ""+damage();
-		case 9: return ""+attackAdjustment();
-		case 10: return CMParms.toListString(ambiances());
-		default: return "";
+		case 0:
+			return "" + sensesMask();
+		case 1:
+			return "" + disposition();
+		case 2:
+			return "" + level();
+		case 3:
+			return "" + ability();
+		case 4:
+			return "" + rejuv();
+		case 5:
+			return "" + weight();
+		case 6:
+			return "" + height();
+		case 7:
+			return "" + armor();
+		case 8:
+			return "" + damage();
+		case 9:
+			return "" + attackAdjustment();
+		case 10:
+			return CMParms.toListString(ambiances());
+		default:
+			return "";
 		}
 	}
-	@Override public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+
+	@Override
+	public int compareTo(CMObject o)
+	{
+		return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));
+	}
 }
