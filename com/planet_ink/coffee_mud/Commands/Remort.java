@@ -452,18 +452,50 @@ public class Remort extends StdCommand
 												mob.addNonUninvokableEffect(failsafeA);
 											}
 											recoverEverything(mob);
-											CMLib.login().promptPlayerStats(mob.playerStats().getTheme(), mob, mob.session(), bonusPointsPerStat[0]);
+											try
+											{
+												CMLib.login().promptPlayerStats(mob.playerStats().getTheme(), mob, 300, mob.session(), bonusPointsPerStat[0]);
+											}
+											catch(Throwable x)
+											{
+												sess.stopSession(true, true, false);
+											}
 											if(sess.isStopped())
+											{
+												sess.stopSession(true,true,false);
+												CMLib.s_sleep(3000);
+												sess.stopSession(true,true,false);
+												PlayerStats pStats = mob.playerStats();
+												if(pStats != null)
+													pStats.getExtItems().delAllItems(true);
+												CMLib.players().delPlayer(mob);
 												throw new IOException("Session stopped");
+											}
 											recoverEverything(mob);
 											mob.basePhyStats().setSensesMask(0);
 											mob.baseCharStats().getMyRace().startRacing(mob,false);
 											mob.setWimpHitPoint(5);
 											mob.setQuestPoint(questPoint[0]);
 											recoverEverything(mob);
-											mob.baseCharStats().setCurrentClass(CMLib.login().promptCharClass(mob.playerStats().getTheme(), mob, mob.session()));
+											try
+											{
+												mob.baseCharStats().setCurrentClass(CMLib.login().promptCharClass(mob.playerStats().getTheme(), mob, mob.session()));
+											}
+											catch(Throwable x)
+											{
+												sess.stopSession(true, true, false);
+											}
 											if(sess.isStopped())
+											{
+												sess.stopSession(true,true,false);
+												CMLib.s_sleep(3000);
+												sess.stopSession(true,true,false);
+												PlayerStats pStats = mob.playerStats();
+												if(pStats != null)
+													pStats.getExtItems().delAllItems(true);
+												CMLib.players().delPlayer(mob);
 												throw new IOException("Session stopped");
+											}
 											recoverEverything(mob);
 											mob.setPractices(0);
 											mob.setTrains(0);
