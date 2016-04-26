@@ -68,11 +68,12 @@ public interface CharCreationLibrary extends CMLibrary
 	 * @see CharCreationLibrary#promptCharClass(int, MOB, Session)
 	 * @param theme the theme code to use for stat allocation
 	 * @param mob the mob who is getting the new char stats
+	 * @param timeoutSecs TODO
 	 * @param session the session which might help allocate the points
 	 * @param bonusPoints any bonus points to allocate to stats
 	 * @throws IOException any input errors that occur
 	 */
-	public void promptPlayerStats(int theme, MOB mob, Session session, int bonusPoints) throws IOException;
+	public void promptPlayerStats(int theme, MOB mob, int timeoutSecs, Session session, int bonusPoints) throws IOException;
 
 	/**
 	 * A blocking call that populates the given mob with a character class
@@ -81,7 +82,7 @@ public interface CharCreationLibrary extends CMLibrary
 	 * through the class selection process.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CharStats
 	 * @see CharCreationLibrary#reRollStats(CharStats, int)
-	 * @see CharCreationLibrary#promptPlayerStats(int, MOB, Session, int)
+	 * @see CharCreationLibrary#promptPlayerStats(int, MOB, int, Session, int)
 	 * @see com.planet_ink.coffee_mud.Areas.interfaces.Area#THEME_FANTASY
 	 * @param theme the theme code to use for class selection
 	 * @param mob the mob who is getting the new char class

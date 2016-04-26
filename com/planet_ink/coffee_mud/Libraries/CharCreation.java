@@ -3827,7 +3827,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	}
 
 	@Override
-	public void promptPlayerStats(int theme, MOB mob, Session session, int bonusPoints) throws IOException
+	public void promptPlayerStats(int theme, MOB mob, int timeoutSecs, Session session, int bonusPoints) throws IOException
 	{
 		final LoginSessionImpl loginObj=new LoginSessionImpl();
 		if(mob.playerStats()!=null)
@@ -3838,7 +3838,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		while(!session.isStopped())
 		{
 			if(res==LoginResult.INPUT_REQUIRED)
-				loginObj.lastInput=session.blockingIn(90000, true);
+				loginObj.lastInput=session.blockingIn(timeoutSecs*1000, true);
 			if(loginObj.state==LoginState.CHARCR_STATDONE)
 				return;
 			if(loginObj.state.toString().startsWith("CHARCR_STAT"))
