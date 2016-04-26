@@ -61,7 +61,6 @@ public class StdNet extends StdWeapon
 		setRawLogicalAnd(true);
 	}
 
-
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{

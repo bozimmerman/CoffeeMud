@@ -14,8 +14,8 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
+
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 /*
@@ -94,30 +94,14 @@ public class GenBoffWeapon extends StdBoffWeapon
 		recoverPhyStats();
 	}
 
-	private final static String[] MYCODES={"MINRANGE","MAXRANGE","WEAPONTYPE","WEAPONCLASS",
-							  "AMMOTYPE","AMMOCAPACITY"};
 	@Override
 	public String getStat(String code)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
 			return CMLib.coffeeMaker().getGenItemStat(this,code);
-		switch(getCodeNum(code))
-		{
-		case 0:
-			return "" + minRange();
-		case 1:
-			return "" + maxRange();
-		case 2:
-			return "" + weaponDamageType();
-		case 3:
-			return "" + weaponClassification();
-		case 4:
-			return ammunitionType();
-		case 5:
-			return "" + ammunitionCapacity();
-		default:
-			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
-		}
+		if(GenWeapon.getGenWeaponCodeNum(code)>=0)
+			return GenWeapon.getGenWeaponStat(this,code);
+		return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 	}
 
 	@Override
@@ -126,50 +110,26 @@ public class GenBoffWeapon extends StdBoffWeapon
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
 			CMLib.coffeeMaker().setGenItemStat(this,code,val);
 		else
-		switch(getCodeNum(code))
-		{
-		case 0:
-			setRanges(CMath.s_parseIntExpression(val), maxRange());
-			break;
-		case 1:
-			setRanges(minRange(), CMath.s_parseIntExpression(val));
-			break;
-		case 2:
-			setWeaponDamageType(CMath.s_parseListIntExpression(Weapon.TYPE_DESCS, val));
-			break;
-		case 3:
-			setWeaponClassification(CMath.s_parseListIntExpression(Weapon.CLASS_DESCS, val));
-			break;
-		case 4:
-			setAmmunitionType(val);
-			break;
-		case 5:
-			setAmmoCapacity(CMath.s_parseIntExpression(val));
-			break;
-		default:
+		if(GenWeapon.getGenWeaponCodeNum(code)>=0)
+			GenWeapon.setGenWeaponStat(this,code,val);
+		else
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
-			break;
-		}
 	}
 
 	@Override
 	protected int getCodeNum(String code)
 	{
-		for(int i=0;i<MYCODES.length;i++)
-		{
-			if(code.equalsIgnoreCase(MYCODES[i]))
-				return i;
-		}
-		return -1;
+		return GenWeapon.getGenWeaponCodeNum(code);
 	}
 
 	private static String[] codes=null;
+
 	@Override
 	public String[] getStatCodes()
 	{
 		if(codes!=null)
 			return codes;
-		final String[] MYCODES=CMProps.getStatCodesList(GenBoffWeapon.MYCODES,this);
+		final String[] MYCODES=CMProps.getStatCodesList(GenWeapon.GENWEAPONCODES,this);
 		final String[] superCodes=CMParms.toStringArray(GenericBuilder.GenItemCode.values());
 		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;

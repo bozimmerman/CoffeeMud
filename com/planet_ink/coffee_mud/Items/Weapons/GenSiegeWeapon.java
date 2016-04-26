@@ -103,6 +103,8 @@ public class GenSiegeWeapon extends StdSiegeWeapon
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
 			return CMLib.coffeeMaker().getGenItemStat(this,code);
+		if(GenWeapon.getGenWeaponCodeNum(code)>=0)
+			return GenWeapon.getGenWeaponStat(this,code);
 		switch(getCodeNum(code))
 		{
 		case 0:
@@ -133,6 +135,9 @@ public class GenSiegeWeapon extends StdSiegeWeapon
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
 			CMLib.coffeeMaker().setGenItemStat(this,code,val);
+		else
+		if(GenWeapon.getGenWeaponCodeNum(code)>=0)
+			GenWeapon.setGenWeaponStat(this,code,val);
 		else
 		switch(getCodeNum(code))
 		{
@@ -187,7 +192,7 @@ public class GenSiegeWeapon extends StdSiegeWeapon
 	{
 		if(codes!=null)
 			return codes;
-		final String[] MYCODES=CMProps.getStatCodesList(GenSiegeWeapon.MYCODES,this);
+		final String[] MYCODES=CMProps.getStatCodesList(CMParms.combine(GenSiegeWeapon.MYCODES,GenWeapon.GENWEAPONCODES),this);
 		final String[] superCodes=CMParms.toStringArray(GenericBuilder.GenItemCode.values());
 		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;
