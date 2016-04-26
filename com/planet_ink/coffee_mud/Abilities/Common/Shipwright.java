@@ -154,7 +154,11 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 					{
 						if(activity == CraftingActivity.MENDING)
 						{
-							buildingI.setUsesRemaining(100);
+							if((buildingI instanceof BoardableShip)
+							&&(buildingI.usesRemaining()<90))
+								buildingI.setUsesRemaining(buildingI.usesRemaining()+10);
+							else
+								buildingI.setUsesRemaining(100);
 							CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.MENDER, 1, this);
 						}
 						else
