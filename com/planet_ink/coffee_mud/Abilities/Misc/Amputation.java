@@ -477,10 +477,15 @@ public class Amputation extends StdAbility implements LimbDamage, HealthConditio
 				final MOB M=(MOB)affected;
 				R=M.charStats().getMyRace();
 				boolean success;
-				if(gone.toLowerCase().endsWith("eye"))
-					success=M.location().show(M,this,CMMsg.MSG_OK_VISUAL,L("^G<S-YOUPOSS> @x1 is destroyed!^?",gone));
+				if(M.location()!=null)
+				{
+					if(gone.toLowerCase().endsWith("eye"))
+						success=M.location().show(M,this,CMMsg.MSG_OK_VISUAL,L("^G<S-YOUPOSS> @x1 is destroyed!^?",gone));
+					else
+						success=M.location().show(M,this,CMMsg.MSG_OK_VISUAL,L("^G<S-YOUPOSS> @x1 falls off!^?",gone));
+				}
 				else
-					success=M.location().show(M,this,CMMsg.MSG_OK_VISUAL,L("^G<S-YOUPOSS> @x1 falls off!^?",gone));
+					success=false;
 				if(!success)
 					return null;
 			}
