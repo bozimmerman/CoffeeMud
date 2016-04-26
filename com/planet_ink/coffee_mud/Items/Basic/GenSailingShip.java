@@ -1977,9 +1977,9 @@ public class GenSailingShip extends StdBoardable
 					{
 						exit.executeMsg(mob,enterMsg);
 						thisRoom.sendOthers(mob, leaveMsg);
+						this.unDock(false);
 						destRoom.moveItemTo(this);
 						ticksSinceMove=0;
-						this.unDock(false);
 						this.dockHere(destRoom);
 						//this.sendAreaMessage(leaveMsg, true);
 						if(opExit!=null)
@@ -2116,8 +2116,8 @@ public class GenSailingShip extends StdBoardable
 			if(R2==null)
 				return false;
 			ticksSinceMove=0;
-			R2.moveItemTo(this);
 			this.unDock(false);
+			R2.moveItemTo(this);
 			this.dockHere(R2);
 			return true;
 		}

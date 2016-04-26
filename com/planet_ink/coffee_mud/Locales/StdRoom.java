@@ -728,6 +728,7 @@ public class StdRoom implements Room
 				break;
 			case CMMsg.TYP_CAST_SPELL:
 			case CMMsg.TYP_DELICATE_HANDS_ACT:
+			case CMMsg.TYP_NOISYMOVEMENT:
 			case CMMsg.TYP_OK_ACTION:
 			case CMMsg.TYP_JUSTICE:
 			case CMMsg.TYP_OK_VISUAL:
