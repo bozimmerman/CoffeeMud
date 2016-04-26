@@ -510,12 +510,13 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 	
 	protected boolean securityCheck(final MOB mob)
 	{
+		if(mob==null)
+			return false;
 		if(CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.CMDITEMS))
 			return true;
 		if(getOwnerName().length()==0)
 			return true;
 		return (getOwnerName().length()>0)
-			 &&(mob!=null)
 			 &&((mob.Name().equals(getOwnerName()))
 				||(mob.getLiegeID().equals(getOwnerName())&mob.isMarriedToLiege())
 				||(CMLib.clans().checkClanPrivilege(mob, getOwnerName(), Clan.Function.PROPERTY_OWNER)));
@@ -557,10 +558,16 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 	
 	protected boolean confirmAreaMessage(final CMMsg msg, boolean outdoorOnly)
 	{
-		final Area ship=getShipArea();
-		if(ship!=null)
+		final Area itemArea=CMLib.map().areaLocation(this.getShipItem());
+		final Area shipArea=getShipArea();
+		if(itemArea == shipArea)
 		{
-			for(final Enumeration<Room> r = ship.getProperMap(); r.hasMoreElements();)
+			Log.errOut("Ship "+name()+" is inside itself?!");
+			return false;
+		}
+		if(shipArea!=null)
+		{
+			for(final Enumeration<Room> r = shipArea.getProperMap(); r.hasMoreElements();)
 			{
 				final Room R=r.nextElement();
 				if((!outdoorOnly)||((R.domainType()&Room.INDOORS)==0))
