@@ -52,7 +52,11 @@ public class DefaultPhyStats implements PhyStats
 	private final static int[]		DEFAULT_STATS	= {0,0,100,0,0,0,0,0,0,0};
 	private final static Comparator<String> ambiComp= new Comparator<String>()
 	{
-		@Override public int compare(String o1, String o2) { return o1.compareToIgnoreCase(o2); }
+		@Override
+		public int compare(String o1, String o2)
+		{
+			return o1.compareToIgnoreCase(o2);
+		}
 	};
 
 	protected int[]		stats			= DEFAULT_STATS.clone();
@@ -242,40 +246,42 @@ public class DefaultPhyStats implements PhyStats
 		if(ambiance==null)
 			return;
 		ambiance=ambiance.trim();
-		synchronized(this)
+		final String[] ambiances = this.ambiances;
+		if(ambiances == null)
 		{
-			if((ambiances!=null)&&(Arrays.binarySearch(ambiances, ambiance, ambiComp)>=0))
-				return;
-			if(ambiances==null)
-				ambiances=new String[1];
-			else
-				ambiances=Arrays.copyOf(ambiances, ambiances.length+1);
-			ambiances[ambiances.length-1]=ambiance;
-			Arrays.sort(ambiances, ambiComp);
+			this.ambiances = new String[] { ambiance };
+		}
+		else
+		{
+			final String[] newAmbiances = Arrays.copyOf(ambiances, ambiances.length+1); 
+			newAmbiances[newAmbiances.length-1]=ambiance;
+			Arrays.sort(newAmbiances, ambiComp);
+			this.ambiances = newAmbiances;
 		}
 	}
 
 	@Override
 	public void delAmbiance(String ambiance)
 	{
-		synchronized(this)
+		if(ambiance==null)
+			return;
+		final String[] ambiances = this.ambiances;
+		if(ambiances==null)
+			return;
+		int dex=Arrays.binarySearch(ambiances, ambiance.trim(), ambiComp);
+		if(dex<0)
+			return;
+		if(ambiances.length==1)
 		{
-			if((ambiances==null)||(ambiance==null))
-				return;
-			int dex=Arrays.binarySearch(ambiances, ambiance.trim(), ambiComp);
-			if(dex<0)
-				return;
-			if(ambiances.length==1)
-			{
-				ambiances=null;
-				return;
-			}
-			final String[] oldAmbiances=ambiances;
-			ambiances=Arrays.copyOf(ambiances, ambiances.length-1);
-			for(;dex<ambiances.length;dex++)
-				ambiances[dex]=oldAmbiances[dex+1];
+			this.ambiances=null;
+			return;
 		}
+		final String[] newAmbiances=Arrays.copyOf(ambiances, ambiances.length-1);
+		for(;dex<newAmbiances.length;dex++)
+			newAmbiances[dex]=ambiances[dex+1];
+		this.ambiances=newAmbiances;
 	}
+
 	@Override
 	public boolean isAmbiance(String ambiance)
 	{
@@ -360,16 +366,20 @@ public class DefaultPhyStats implements PhyStats
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<CODES.length;i++)
+		{
 			if(code.equalsIgnoreCase(CODES[i]))
 				return i;
+		}
 		return -1;
 	}
 	@Override
 	public boolean sameAs(PhyStats E)
 	{
 		for(int i=0;i<CODES.length;i++)
+		{
 			if(!E.getStat(CODES[i]).equals(getStat(CODES[i])))
-			   return false;
+				return false;
+		}
 		return true;
 	}
 
