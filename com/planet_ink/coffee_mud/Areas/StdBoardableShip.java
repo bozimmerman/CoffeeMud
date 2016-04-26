@@ -792,7 +792,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 					final Room hereR=msg.source().location();
 					if((hereR!=null)
 					&&((hereR.domainType()&Room.INDOORS)==0)
-					&&(hereR.getArea()==this))
+					&&(hereR.getArea()==this.getShipArea()))
 					{
 						final Room lookingR=hereR.getRoomInDir(CMLib.map().getExitDir(hereR, (Exit)msg.target()));
 						final Room R=CMLib.map().roomLocation(this.shipItem);
@@ -808,7 +808,8 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 					if(msg.targetMinor()==CMMsg.TYP_EXAMINE)
 					{
 						final Room R=CMLib.map().roomLocation(this.shipItem);
-						if((R!=null)&&(!((CMProps.getIntVar(CMProps.Int.EXVIEW)>=2)!=msg.source().isAttributeSet(MOB.Attrib.BRIEF))))
+						if((R!=null)
+						&&(R.getArea()!=this.getShipArea()))
 							lookOverBow(R,msg);
 					}
 				}
