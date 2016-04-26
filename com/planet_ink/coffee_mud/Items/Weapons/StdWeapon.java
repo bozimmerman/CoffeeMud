@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 
@@ -200,6 +201,12 @@ public class StdWeapon extends StdItem implements Weapon, AmmunitionWeapon
 						}
 					}
 					setAmmoRemaining(0);
+					final Room R=msg.source().location();
+					if(R!=null)
+					{
+						R.addItem(ammo, ItemPossessor.Expire.Player_Drop);
+						CMLib.commands().postGet(msg.source(), null, ammo, true);
+					}
 				}
 				break;
 			}

@@ -204,6 +204,12 @@ public class StdSiegeWeapon extends StdRideable implements AmmunitionWeapon
 						}
 					}
 					setAmmoRemaining(0);
+					final Room R=msg.source().location();
+					if(R!=null)
+					{
+						R.addItem(ammo, ItemPossessor.Expire.Player_Drop);
+						CMLib.commands().postGet(msg.source(), null, ammo, true);
+					}
 				}
 				break;
 			}

@@ -38,10 +38,15 @@ public class Unload extends StdCommand
 {
 	public Unload(){}
 
-	private final String[] access=I(new String[]{"UNLOAD"});
-	@Override public String[] getAccessWords(){return access;}
-	final String[] ARCHON_LIST={"CLASS", "HELP", "USER", "AREA", "FACTION", "ALL", "FILE", "RESOURCE", "INIFILE", "ACHIEVEMENTS", "[FILENAME]"};
+	private final String[]	access	= I(new String[] { "UNLOAD" });
 
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
+
+	final String[]	ARCHON_LIST	= { "CLASS", "HELP", "USER", "AREA", "FACTION", "ALL", "FILE", "RESOURCE", "INIFILE", "ACHIEVEMENTS", "[FILENAME]" };
 
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
@@ -67,11 +72,18 @@ public class Unload extends StdCommand
 				tryArchon=false;
 			else
 			{
-				I=mob.location().findItem(null, str);
+				I=mob.findItem(null, str);
 				if((I instanceof AmmunitionWeapon)
-				&&(((AmmunitionWeapon)I).requiresAmmunition())
-				&&((AmmunitionWeapon)I).isFreeStanding())
+				&&(((AmmunitionWeapon)I).requiresAmmunition()))
 					tryArchon=false;
+				else
+				{
+					I=mob.location().findItem(null, str);
+					if((I instanceof AmmunitionWeapon)
+					&&(((AmmunitionWeapon)I).requiresAmmunition())
+					&&((AmmunitionWeapon)I).isFreeStanding())
+						tryArchon=false;
+				}
 			}
 			for(final String aList : ARCHON_LIST)
 			{
