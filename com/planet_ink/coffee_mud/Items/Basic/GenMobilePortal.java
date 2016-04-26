@@ -63,7 +63,7 @@ public class GenMobilePortal extends GenPortal implements Rideable, Exit
 			else
 			{
 				myStationaryPortal=null;
-				final Room destR=getDestinationRoom();
+				final Room destR=getDestinationRoom(R);
 				final Vector<Item> choices=new Vector<Item>();
 				for(int i=0;i<destR.numItems();i++)
 				{

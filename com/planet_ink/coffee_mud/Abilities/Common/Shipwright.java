@@ -41,12 +41,34 @@ import java.util.*;
 
 public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSkill
 {
-	@Override public String ID() { return "Shipwright"; }
-	private final static String localizedName = CMLib.lang().L("Ship Building");
-	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =I(new String[] {"SHIPBUILD","SHIPBUILDING","SHIPWRIGHT"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public String supportedResourceString(){return "WOODEN";}
+	@Override
+	public String ID()
+	{
+		return "Shipwright";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Ship Building");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "SHIPBUILD", "SHIPBUILDING", "SHIPWRIGHT" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public String supportedResourceString()
+	{
+		return "WOODEN";
+	}
+
 	@Override
 	public String parametersFormat(){ return
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\t"
@@ -80,8 +102,17 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 		return super.tick(ticking,tickID);
 	}
 
-	@Override public String parametersFile(){ return "shipwright.txt";}
-	@Override protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
+	@Override
+	public String parametersFile()
+	{
+		return "shipwright.txt";
+	}
+
+	@Override
+	protected List<List<String>> loadRecipes()
+	{
+		return super.loadRecipes(parametersFile());
+	}
 
 	@Override
 	public void unInvoke()
@@ -153,7 +184,11 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 		super.unInvoke();
 	}
 
-	@Override public boolean supportsDeconstruction() { return true; }
+	@Override
+	public boolean supportsDeconstruction()
+	{
+		return true;
+	}
 
 	@Override
 	public boolean mayICraft(final Item I)
@@ -181,12 +216,21 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 		return false;
 	}
 
-	@Override public boolean supportsMending(Physical item){ return canMend(null,item,true);}
+	@Override
+	public boolean supportsMending(Physical item)
+	{
+		return canMend(null, item, true);
+	}
+
 	@Override
 	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
 	{
 		if(!super.canMend(mob,E,quiet))
 			return false;
+		if((E instanceof BoardableShip)
+		&&(E instanceof Rideable)
+		&&(((Rideable)E).rideBasis()==Rideable.RIDEABLE_WATER))
+			return true;
 		if((!(E instanceof Item))||(!mayICraft((Item)E)))
 		{
 			if(!quiet)
@@ -214,7 +258,7 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 	{
 		if(super.checkStop(mob, commands))
 			return true;
-
+		
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
@@ -283,7 +327,17 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 			key=null;
 			messedUp=false;
 			final Vector<String> newCommands=CMParms.parse(CMParms.combine(commands,1));
-			buildingI=getTarget(mob,mob.location(),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
+			final Room R=mob.location();
+			if((R.getArea() instanceof BoardableShip)
+			&&(R.getArea() instanceof Rideable)
+			&&(((Rideable)R.getArea()).rideBasis()==Rideable.RIDEABLE_WATER))
+			{
+				buildingI=getTarget(mob,CMLib.map().roomLocation(((BoardableShip)R.getArea()).getShipItem()),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
+				if(buildingI != ((BoardableShip)R.getArea()).getShipItem())
+					buildingI=null;
+			}
+			if(buildingI==null)
+				buildingI=getTarget(mob,mob.location(),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
 			if(!canMend(mob,buildingI,false))
 				return false;
 			activity = CraftingActivity.MENDING;

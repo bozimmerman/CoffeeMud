@@ -36,7 +36,11 @@ import java.util.*;
 */
 public class StdExit implements Exit
 {
-	@Override public String ID(){    return "StdExit";}
+	@Override
+	public String ID()
+	{
+		return "StdExit";
+	}
 
 	protected PhyStats	phyStats		= (PhyStats) CMClass.getCommon("DefaultPhyStats");
 	protected PhyStats	basePhyStats	= (PhyStats) CMClass.getCommon("DefaultPhyStats");
@@ -865,7 +869,7 @@ public class StdExit implements Exit
 	}
 
 	@Override
-	public Room lastRoomUsedFrom()
+	public Room lastRoomUsedFrom(Room fromRoom)
 	{
 		return CMLib.map().getRoom(lastRoomID);
 	}
@@ -877,13 +881,13 @@ public class StdExit implements Exit
 
 	@Override
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
-	{
-	}// exits will never be asked this, so this method should always do NOTHING
+	{// exits will never be asked this, so this method should always do NOTHING
+	}
 
 	@Override
 	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
-	{
-	}// exits will never be asked this, so this method should always do NOTHING
+	{// exits will never be asked this, so this method should always do NOTHING
+	}
 
 	@Override
 	public String temporaryDoorLink()

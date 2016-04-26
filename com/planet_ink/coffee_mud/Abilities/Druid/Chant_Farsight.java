@@ -36,13 +36,43 @@ import java.util.*;
 
 public class Chant_Farsight extends Chant
 {
-	@Override public String ID() { return "Chant_Farsight"; }
-	private final static String localizedName = CMLib.lang().L("Eaglesight");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return 0;}
+	@Override
+	public String ID()
+	{
+		return "Chant_Farsight";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Eaglesight");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT | Ability.DOMAIN_ENDURING;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -108,7 +138,7 @@ public class Chant_Farsight extends Chant
 						if((I instanceof Exit)&&(CMLib.flags().canBeSeenBy(I, mob)))
 						{
 							exit=(Exit)I;
-							room=((Exit)I).lastRoomUsedFrom();
+							room=((Exit)I).lastRoomUsedFrom(mob.location());
 							dirCode=Directions.GATE;
 						}
 						else
@@ -156,7 +186,6 @@ public class Chant_Farsight extends Chant
 				}
 			}
 		}
-
 		return success;
 	}
 }

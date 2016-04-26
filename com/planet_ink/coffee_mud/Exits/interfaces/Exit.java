@@ -127,7 +127,8 @@ public interface Exit extends PhysicalAgent, Readable, CloseableLockable
 
 	/**
 	 * Returns the very last room from or to which this exit was used.
+	 * @param fromRoom the room from which a perspective is desired
 	 * @return the last room that mattered to this exit
 	 */
-	public Room lastRoomUsedFrom();
+	public Room lastRoomUsedFrom(Room fromRoom);
 }

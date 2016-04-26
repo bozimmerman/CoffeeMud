@@ -199,7 +199,7 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 			{
 				if(msg.sourceMessage().indexOf(mountString(CMMsg.TYP_SIT,msg.source()))>0)
 				{
-					if(getDestinationRoom()==null)
+					if(getDestinationRoom(msg.source().location())==null)
 					{
 						msg.source().tell(L("This portal is broken.. nowhere to go!"));
 						return false;
@@ -237,7 +237,7 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 		return true;
 	}
 
-	protected Room getDestinationRoom()
+	protected Room getDestinationRoom(Room fromRoom)
 	{
 		Room R=null;
 		final List<String> V=CMParms.parseSemicolons(readableText(),true);
@@ -247,9 +247,9 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 	}
 
 	@Override
-	public Room lastRoomUsedFrom()
+	public Room lastRoomUsedFrom(Room fromRoom)
 	{
-		return getDestinationRoom();
+		return getDestinationRoom(fromRoom);
 	}
 
 	@Override
@@ -266,7 +266,7 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 				if(msg.sourceMessage().indexOf(mountString(CMMsg.TYP_SIT,msg.source()))>0)
 				{
 					final Room thisRoom=msg.source().location();
-					Room R=getDestinationRoom();
+					Room R=getDestinationRoom(thisRoom);
 					if(R==null)
 						R=thisRoom;
 					final Exit E=CMClass.getExit("OpenNameable");
@@ -340,10 +340,9 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 	@Override
 	public StringBuilder viewableText(MOB mob, Room myRoom)
 	{
-		final List<String> V=CMParms.parseSemicolons(readableText(),true);
-		Room room=myRoom;
-		if(V.size()>0)
-			room=CMLib.map().getRoom(V.get(CMLib.dice().roll(1,V.size(),-1)));
+		Room room=this.getDestinationRoom(myRoom);
+		if(room == null)
+			room = myRoom;
 		if(room==null)
 			return empty;
 		final StringBuilder Say=new StringBuilder("");

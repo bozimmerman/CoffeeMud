@@ -235,9 +235,85 @@ public class GenSailingShip extends StdBoardable
 	protected int getShipSpeed()
 	{
 		int speed=phyStats().ability();
+		if(this.subjectToWearAndTear())
+		{
+			if(this.usesRemaining()<10)
+				return 0;
+			speed=(int)Math.round(speed * CMath.div(usesRemaining(), 100));
+		}
 		if(speed <= 0)
 			return 1;
 		return speed;
+	}
+
+	protected Room getRandomDeckRoom()
+	{
+		final Area A=this.getShipArea();
+		if(A!=null)
+		{
+			List<Room> deckRooms=new ArrayList<Room>(2);
+			for(final Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
+			{
+				final Room R=r.nextElement();
+				if((R!=null) && ((R.domainType()&Room.INDOORS)==Room.INDOORS))
+					deckRooms.add(R);
+			}
+			if(deckRooms.size()>0)
+			{
+				return deckRooms.get(CMLib.dice().roll(1, deckRooms.size(), -1));
+			}
+		}
+		return null;
+	}
+	
+	protected boolean isAttachedToAnotherShip()
+	{
+		if(owner() instanceof Room)
+		{
+			final Room shipRoom=(Room)owner;
+			final Area A=this.getShipArea();
+			if(A!=null)
+			{
+				for(final Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
+				{
+					final Room R=r.nextElement();
+					if((R!=null)&&((R.domainType()&Room.INDOORS)==0))
+					{
+						for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+						{
+							final Room R2=R.getRoomInDir(d);
+							if(R2!=null)
+							{
+								if((R2.getArea()!=A)
+								&&(R2.getArea() instanceof BoardableShip)
+								&&(CMLib.map().roomLocation(((BoardableShip)R2.getArea()).getShipItem())==shipRoom))
+								{
+									return true;
+								}
+							}
+						}
+						for(Enumeration<Item> i=R.items();i.hasMoreElements();)
+						{
+							final Item I=i.nextElement();
+							if(I instanceof Exit)
+							{
+								final Room R2=((Exit)I).lastRoomUsedFrom(R);
+								if(R2!=null)
+								{
+									if((R2.getArea()!=A)
+									&&(R2.getArea() instanceof BoardableShip)
+									&&(CMLib.map().roomLocation(((BoardableShip)R2.getArea()).getShipItem())==shipRoom))
+									{
+										return true;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		return false;
 	}
 	
 	@Override
@@ -508,6 +584,11 @@ public class GenSailingShip extends StdBoardable
 						msg.source().tell(L("You are nowhere, so you won`t be moving anywhere."));
 						return false;
 					}
+					if(this.isAttachedToAnotherShip())
+					{
+						msg.source().tell(L("Your ship is grappled and cannot move."));
+						return false;
+					}
 					int dir=CMLib.directions().getCompassDirectionCode(secondWord);
 					if(dir<0)
 					{
@@ -552,6 +633,11 @@ public class GenSailingShip extends StdBoardable
 					if(safetyMove())
 					{
 						msg.source().tell(L("The ship has moved!"));
+						return false;
+					}
+					if(this.isAttachedToAnotherShip())
+					{
+						msg.source().tell(L("Your ship is grappled and cannot move."));
 						return false;
 					}
 					this.courseDirection=-1;
@@ -665,7 +751,7 @@ public class GenSailingShip extends StdBoardable
 			if(cmd != null)
 			{
 				cmds.add(0, "METAMSGCOMMAND");
-				double speed = (phyStats().ability()<=0) ? 1.0 : (double)phyStats().ability();
+				double speed=getShipSpeed();
 				speed = msg.source().phyStats().speed() / speed;
 				msg.source().enqueCommand(cmds, MUDCmdProcessor.METAFLAG_ASMESSAGE, speed);
 				return false;
@@ -690,6 +776,11 @@ public class GenSailingShip extends StdBoardable
 			{
 			case SAIL:
 			{
+				if(this.isAttachedToAnotherShip())
+				{
+					msg.source().tell(L("Your ship is grappled and cannot move."));
+					return false;
+				}
 				int dir=CMLib.directions().getCompassDirectionCode(secondWord);
 				if(dir<0)
 					return false;
@@ -715,6 +806,11 @@ public class GenSailingShip extends StdBoardable
 			}
 			case STEER:
 			{
+				if(this.isAttachedToAnotherShip())
+				{
+					msg.source().tell(L("Your ship is grappled and cannot move."));
+					return false;
+				}
 				int dir=CMLib.directions().getCompassDirectionCode(secondWord);
 				if(dir<0)
 					return false;
@@ -747,7 +843,7 @@ public class GenSailingShip extends StdBoardable
 		&&(msg.source().location()==owner())
 		&&(CMLib.flags().isWateryRoom(msg.source().location()))
 		&&(!CMLib.flags().isFlying(msg.source()))
-		&&(!CMLib.law().doesHavePriviledgesHere(msg.source(), super.getDestinationRoom())))
+		&&(!CMLib.law().doesHavePriviledgesHere(msg.source(), super.getDestinationRoom(msg.source().location()))))
 		{
 			final Rideable ride=msg.source().riding();
 			if(ticksSinceMove < 2)
@@ -823,6 +919,79 @@ public class GenSailingShip extends StdBoardable
 						{
 							R.send(msg.source(),lookMsg);
 							return false;
+						}
+					}
+				}
+				break;
+			}
+			case 'T': // throwing things to another ship, like a grapple
+			{
+				List<String> parsedFail = CMParms.parse(msg.targetMessage());
+				String cmd=parsedFail.get(0).toUpperCase();
+				if(("THROW".startsWith(cmd))
+				&&(owner() instanceof Room)
+				&&(msg.source().location()!=null)
+				&&((msg.source().location().domainType()&Room.INDOORS)==0)
+				&&(parsedFail.size()>2))
+				{
+					parsedFail.remove(0);
+					final MOB mob=msg.source();
+					final Room R = (Room)owner();
+					String str=parsedFail.get(parsedFail.size()-1);
+					parsedFail.remove(str);
+					final String what=CMParms.combine(parsedFail,0);
+					Item item=mob.fetchItem(null,Wearable.FILTER_WORNONLY,what);
+					if(item==null)
+						item=mob.findItem(null,what);
+					if((item!=null)
+					&&(CMLib.flags().canBeSeenBy(item,mob))
+					&&((item.amWearingAt(Wearable.WORN_HELD))||(item.amWearingAt(Wearable.WORN_WIELD))))
+					{
+						str=str.toLowerCase();
+						if(str.equals("water")||str.equals("overboard")||CMLib.english().containsString(R.displayText(), str))
+						{
+							final Room target=R;
+							final CMMsg msg2=CMClass.getMsg(mob,target,item,CMMsg.MSG_THROW,L("<S-NAME> throw(s) <O-NAME> overboard."));
+							final CMMsg msg3=CMClass.getMsg(mob,target,item,CMMsg.MSG_THROW,L("<O-NAME> fl(ys) in from overboard."));
+							if(mob.location().okMessage(mob,msg2)&&target.okMessage(mob,msg3))
+							{
+								mob.location().send(mob,msg2);
+								target.sendOthers(mob,msg3);
+							}
+							return false;
+						}
+							
+						final Item I = R.findItem(null, str);
+						if(I!=this)
+						{
+							if((I instanceof GenSailingShip)
+							||((I instanceof Rideable)&&(((Rideable)I).rideBasis()==Rideable.RIDEABLE_WATER)))
+							{
+								if((!amInTacticalMode())
+								||(I.maxRange() < getTacticalDistance((Rideable)I)))
+								{
+									msg.source().tell(L("You can't throw @x1 at @x2, it's too far away!",item.name(msg.source()),I.name(msg.source())));
+									return false;
+								}
+								else
+								{
+									final int[] targetCoords = ((GenSailingShip)I).getMyCoords();
+									int dir = Directions.getRelativeDirection(getMyCoords(), targetCoords);
+									final String inDir=CMLib.directions().getShipInDirectionName(dir);
+									final String fromDir=CMLib.directions().getFromShipDirectionName(Directions.getOpDirectionCode(dir));
+									Room target = ((GenSailingShip)I).getRandomDeckRoom();
+									if(target == null)
+										target=R;
+									final CMMsg msg2=CMClass.getMsg(mob,target,item,CMMsg.MSG_THROW,L("<S-NAME> throw(s) <O-NAME> @x1.",inDir.toLowerCase()));
+									final CMMsg msg3=CMClass.getMsg(mob,target,item,CMMsg.MSG_THROW,L("<O-NAME> fl(ys) in from @x1.",fromDir.toLowerCase()));
+									if(mob.location().okMessage(mob,msg2)&&target.okMessage(mob,msg3))
+									{
+										mob.location().send(mob,msg2);
+										target.sendOthers(mob,msg3);
+									}
+									return false;
+								}
+							}
 						}
 					}
 				}
@@ -1073,12 +1242,17 @@ public class GenSailingShip extends StdBoardable
 		if(tickID == sailingTickID)
 		{
 			ticksSinceMove++;
-			if((!this.anchorDown) && (area != null) && (courseDirection != -1) )
+			if((!this.anchorDown) 
+			&& (area != null) 
+			&& (courseDirection != -1) )
 			{
-				int speed=phyStats().ability();
-				if(speed <= 0)
-					speed=1;
+				final int speed=getShipSpeed();
 				
+				if(this.isAttachedToAnotherShip())
+				{
+					return super.tick(ticking, tickID);
+				}
+
 				for(int s=0;s<speed && (courseDirection>=0);s++)
 				{
 					switch(sail(courseDirection))
@@ -1128,6 +1302,11 @@ public class GenSailingShip extends StdBoardable
 		{
 			if(this.amInTacticalMode())
 			{
+				if(this.isAttachedToAnotherShip())
+				{
+					return super.tick(ticking, tickID);
+				}
+
 				final List<Weapon> weapons = new LinkedList<Weapon>();
 				for(Enumeration<Room> r=this.getShipArea().getProperMap();r.hasMoreElements();)
 				{
@@ -1267,6 +1446,15 @@ public class GenSailingShip extends StdBoardable
 			visualCondition.append(staticL("\n\r^g@x1^g is no longer in perfect condition.^N",name));
 		else
 			visualCondition.append(staticL("\n\r^c@x1^c is in perfect condition.^N",name));
+	}
+
+	protected int getMaxHullPoints()
+	{
+		if(maxHullPoints < 0)
+		{
+			maxHullPoints = 10 * this.getShipArea().numberOfProperIDedRooms();
+		}
+		return maxHullPoints;
 	}
 	
 	@Override
@@ -1412,7 +1600,7 @@ public class GenSailingShip extends StdBoardable
 									if((CMLib.dice().rollPercentage() < chanceToHit)&&(randomPair != null))
 									{
 										msg.source().setLocation(randomPair.second);
-										double pctLoss = CMath.div(msg.value(), maxHullPoints);
+										double pctLoss = CMath.div(msg.value(), getMaxHullPoints());
 										int pointsLost = (int)Math.round(pctLoss * msg.source().maxState().getHitPoints());
 										CMLib.combat().postWeaponDamage(msg.source(), randomPair.first, weapon, pointsLost);
 									}
@@ -1441,12 +1629,8 @@ public class GenSailingShip extends StdBoardable
 			case CMMsg.TYP_DAMAGE:
 				if(msg.value() > 0)
 				{
-					if(maxHullPoints < 0)
-					{
-						maxHullPoints = 10 * this.getShipArea().numberOfProperIDedRooms();
-					}
-					double pctLoss = CMath.div(msg.value(), maxHullPoints);
-					int pointsLost = (int)Math.round(pctLoss * maxHullPoints);
+					double pctLoss = CMath.div(msg.value(), getMaxHullPoints());
+					int pointsLost = (int)Math.round(pctLoss * getMaxHullPoints());
 					if(pointsLost > 0)
 					{
 						int weaponType = (msg.tool() instanceof Weapon) ? ((Weapon)msg.tool()).weaponDamageType() : Weapon.TYPE_BASHING;

@@ -2127,7 +2127,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			return roomLocation(((Ability)E).affecting());
 		else
 		if(E instanceof Exit)
-			return roomLocation(((Exit)E).lastRoomUsedFrom());
+			return roomLocation(((Exit)E).lastRoomUsedFrom(null));
 		return null;
 	}
 	@Override
@@ -2198,7 +2198,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			return areaLocation(((Ability)E).affecting());
 		else
 		if(E instanceof Exit)
-			return areaLocation(((Exit)E).lastRoomUsedFrom());
+			return areaLocation(((Exit)E).lastRoomUsedFrom(null));
 		return null;
 	}
 	

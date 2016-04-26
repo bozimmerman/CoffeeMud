@@ -308,7 +308,7 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 	}
 
 	@Override
-	protected Room getDestinationRoom()
+	protected Room getDestinationRoom(Room fromRoom)
 	{
 		getShipArea();
 		Room R=null;
