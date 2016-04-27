@@ -1075,6 +1075,19 @@ public class Directions
 	/**
 	 * Returns the cardinal direction from the FROM point on a graph to the
 	 * TO point, where the points are X, then Y, with the northwest corner
+	 * being 0,0.  This always return 11 direction codes.
+	 * @param xyFrom the starting point
+	 * @param xyTo the target point
+	 * @return the direction from the start to target
+	 */
+	public static final int getRelative11Directions(int[] xyFrom, int[] xyTo)
+	{
+		return getRelativeDirection(xyFrom,xyTo,false);
+	}
+	
+	/**
+	 * Returns the cardinal direction from the FROM point on a graph to the
+	 * TO point, where the points are X, then Y, with the northwest corner
 	 * being 0,0.
 	 * @param xyFrom the starting point
 	 * @param xyTo the target point

@@ -288,6 +288,7 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 						E.destroy();
 						E2.destroy();
 					}
+					msg.setTarget(null);
 				}
 			}
 			break;

@@ -76,12 +76,14 @@ public class GenMobilePortal extends GenPortal implements Rideable, Exit
 				{
 					M=destR.fetchInhabitant(m);
 					if(M!=null)
+					{
 						for(int i=0;i<M.numItems();i++)
 						{
 							final Item I=M.getItem(i);
 							if((I!=null)&&(I instanceof StdPortal))
 								choices.addElement(I);
 						}
+					}
 				}
 				if(choices.size()>0)
 				{
@@ -90,19 +92,27 @@ public class GenMobilePortal extends GenPortal implements Rideable, Exit
 					else
 					{
 						if(((myStationaryPortal==null)||(myStationaryPortal.amDestroyed()))&&(secretIdentity().length()>0))
-						for(int i=0;i<choices.size();i++)
-							if(choices.elementAt(i).secretIdentity().equals(secretIdentity()))
+						{
+							for(int i=0;i<choices.size();i++)
 							{
-								myStationaryPortal=(StdPortal)choices.elementAt(i);
-								break;
+								if(choices.elementAt(i).secretIdentity().equals(secretIdentity()))
+								{
+									myStationaryPortal=(StdPortal)choices.elementAt(i);
+									break;
+								}
 							}
+						}
 						if((myStationaryPortal==null)||(myStationaryPortal.amDestroyed()))
-						for(int i=0;i<choices.size();i++)
-							if(choices.elementAt(i).Name().equals(Name()))
+						{
+							for(int i=0;i<choices.size();i++)
 							{
-								myStationaryPortal=(StdPortal)choices.elementAt(i);
-								break;
+								if(choices.elementAt(i).Name().equals(Name()))
+								{
+									myStationaryPortal=(StdPortal)choices.elementAt(i);
+									break;
+								}
 							}
+						}
 						if((myStationaryPortal==null)||(myStationaryPortal.amDestroyed()))
 							myStationaryPortal=(StdPortal)choices.firstElement();
 					}
@@ -112,5 +122,4 @@ public class GenMobilePortal extends GenPortal implements Rideable, Exit
 		}
 		}
 	}
-
 }

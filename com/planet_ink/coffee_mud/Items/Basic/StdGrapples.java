@@ -50,12 +50,12 @@ public class StdGrapples extends StdPortal
 		basePhyStats.setWeight(50);
 		basePhyStats().setAttackAdjustment(0);
 		basePhyStats().setDamage(0);
+		setRawProperLocationBitmap(Wearable.WORN_HELD);
 		//basePhyStats().setSensesMask(basePhyStats().sensesMask()|PhyStats.SENSE_ITEMNOTGET);
 		baseGoldValue=15;
 		recoverPhyStats();
 		setRiderCapacity(0);
 		material=RawMaterial.RESOURCE_IRON;
-		properWornBitmap=0;
 		wornLogicalAnd = false;
 	}
 
@@ -68,17 +68,70 @@ public class StdGrapples extends StdPortal
 		return 0;
 	}
 	
+	protected void ungrappleCheck()
+	{
+		Room sourceR=this.sourceR;
+		Room targetR=this.targetR;
+		if((sourceR!=null)&&(targetR!=null))
+		{
+			if((amDestroyed()||(owner()!=sourceR)||(!targetR.isContent(this))||(!sourceR.isContent(this))))
+			{
+				ungrapple();
+				return;
+			}
+			final Area sourceA=sourceR.getArea();
+			final Area targetA=targetR.getArea();
+			if((sourceA==targetA)
+			||(!(sourceA instanceof BoardableShip))
+			||(!(targetA instanceof BoardableShip)))
+			{
+				ungrapple();
+				return;
+			}
+			final BoardableShip sourceS=(BoardableShip)sourceA;
+			final BoardableShip targetS=(BoardableShip)targetA;
+			final Room sourceShipR=CMLib.map().roomLocation(sourceS.getShipItem());
+			final Room targetShipR=CMLib.map().roomLocation(targetS.getShipItem());
+			if((sourceShipR==null)||(sourceShipR!=targetShipR))
+			{
+				ungrapple();
+				return;
+			}
+		}
+	}
+	
+	protected void ungrapple()
+	{
+		Room targetR=this.targetR;
+		if(targetR!=null)
+		{
+			while(targetR.isContent(this))
+				targetR.delItem(this);
+		}
+		this.targetR=null;
+		this.sourceR=null;
+	}
+	
+	@Override
+	public void destroy()
+	{
+		ungrapple();
+		super.destroy();
+	}
+	
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
+		ungrappleCheck();
 		switch(msg.targetMinor())
 		{
 		case CMMsg.TYP_GET:
 		case CMMsg.TYP_DROP:
-			sourceR=null;
-			targetR=null;
+		{
+			ungrapple();
 			break;
+		}
 		case CMMsg.TYP_ENTER:
 			break;
 		case CMMsg.TYP_THROW:
@@ -93,8 +146,20 @@ public class StdGrapples extends StdPortal
 				&&(sourceRoom.getArea() instanceof BoardableShip)
 				&&(targetRoom.getArea() instanceof BoardableShip))
 				{
-					this.sourceR=sourceRoom;
-					this.targetR=targetRoom;
+					final StdGrapples me=this;
+					msg.addTrailerRunnable(new Runnable()
+					{
+						@Override
+						public void run()
+						{
+							me.sourceR=sourceRoom;
+							me.targetR=targetRoom;
+							sourceRoom.moveItemTo(me);
+							if(!targetRoom.isContent(me))
+								targetRoom.addItem(me);
+							me.setOwner(sourceRoom);
+						}
+					});
 				}
 			}
 			break;
@@ -107,6 +172,46 @@ public class StdGrapples extends StdPortal
 	{
 		switch(msg.targetMinor())
 		{
+		case CMMsg.TYP_ADVANCE:
+		{
+			this.ungrappleCheck();
+			Room sourceR=this.sourceR;
+			Room targetR=this.targetR;
+			if((sourceR!=null)&&(targetR!=null))
+			{
+				final Area sourceA=sourceR.getArea();
+				final Area targetA=targetR.getArea();
+				if((sourceA instanceof BoardableShip)
+				&&(targetA instanceof BoardableShip))
+				{
+					final BoardableShip sourceS=(BoardableShip)sourceA;
+					final BoardableShip targetS=(BoardableShip)targetA;
+					if((msg.source().riding()==sourceS.getShipItem())
+					&&(sourceS.getShipArea()!=null))
+					{
+						for(Enumeration<Room> r=sourceS.getShipArea().getProperMap();r.hasMoreElements();)
+						{
+							final Room R=r.nextElement();
+							if((R!=null) && ((R.domainType()&Room.INDOORS)==0))
+								R.showHappens(CMMsg.MSG_OK_VISUAL, L("Your ship is grappled to @x1 and cannot move.",targetS.getShipItem().name()));
+						}
+						return false;
+					}
+					if((msg.source().riding()==targetS.getShipItem())
+					&&(targetS.getShipArea()!=null))
+					{
+						for(Enumeration<Room> r=targetS.getShipArea().getProperMap();r.hasMoreElements();)
+						{
+							final Room R=r.nextElement();
+							if((R!=null) && ((R.domainType()&Room.INDOORS)==0))
+								R.showHappens(CMMsg.MSG_OK_VISUAL, L("Your ship is grappled to @x1 and cannot move.",sourceS.getShipItem().name()));
+						}
+						return false;
+					}
+				}
+			}
+			break;
+		}
 		case CMMsg.TYP_SIT:
 			if(msg.amITarget(this))
 			{
@@ -147,8 +252,6 @@ public class StdGrapples extends StdPortal
 	public StringBuilder viewableText(MOB mob, Room myRoom)
 	{
 		Room room=this.getDestinationRoom(myRoom);
-		if(room == null)
-			room = myRoom;
 		if(room==null)
 			return new StringBuilder(this.displayText(mob));
 		return super.viewableText(mob, myRoom);

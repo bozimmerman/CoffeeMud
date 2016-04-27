@@ -624,11 +624,11 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
-		if(msg.amITarget(this))
+		switch(msg.targetMinor())
 		{
-			switch(msg.targetMinor())
+		case CMMsg.TYP_GET:
+			if(msg.amITarget(this))
 			{
-			case CMMsg.TYP_GET:
 				if(msg.tool() instanceof ShopKeeper)
 				{
 					final ShopKeeper shop=(ShopKeeper)msg.tool();
@@ -639,31 +639,31 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 					CMLib.map().registerWorldObjectLoaded(null, null, this);
 					transferOwnership(msg.source(),clanSale);
 				}
-				break;
 			}
-		}
-		else
-		if((msg.targetMinor()==CMMsg.TYP_SELL)
-		&&(msg.tool()==this)
-		&&(msg.target() instanceof ShopKeeper))
-		{
-			setOwnerName("");
-			recoverPhyStats();
-		}
-		else
-		if((msg.targetMinor()==CMMsg.TYP_GIVE)
-		&&(msg.tool()==this)
-		&&(getOwnerName().length()>0)
-		&&((msg.source().Name().equals(getOwnerName()))
-			||(msg.source().getLiegeID().equals(getOwnerName())&&msg.source().isMarriedToLiege())
-			||(CMLib.clans().checkClanPrivilege(msg.source(), getOwnerName(), Clan.Function.PROPERTY_OWNER)))
-		&&(msg.target() instanceof MOB)
-		&&(!(msg.target() instanceof Banker))
-		&&(!(msg.target() instanceof Auctioneer))
-		&&(!(msg.target() instanceof PostOffice)))
-		{
-			final boolean clanSale = CMLib.clans().checkClanPrivilege(msg.source(), getOwnerName(), Clan.Function.PROPERTY_OWNER);
-			transferOwnership((MOB)msg.target(),clanSale);
+			break;
+		case CMMsg.TYP_SELL:
+			if((msg.tool()==this)
+			&&(msg.target() instanceof ShopKeeper))
+			{
+				setOwnerName("");
+				recoverPhyStats();
+			}
+			break;
+		case CMMsg.TYP_GIVE:
+			if((msg.tool()==this)
+			&&(getOwnerName().length()>0)
+			&&((msg.source().Name().equals(getOwnerName()))
+				||(msg.source().getLiegeID().equals(getOwnerName())&&msg.source().isMarriedToLiege())
+				||(CMLib.clans().checkClanPrivilege(msg.source(), getOwnerName(), Clan.Function.PROPERTY_OWNER)))
+			&&(msg.target() instanceof MOB)
+			&&(!(msg.target() instanceof Banker))
+			&&(!(msg.target() instanceof Auctioneer))
+			&&(!(msg.target() instanceof PostOffice)))
+			{
+				final boolean clanSale = CMLib.clans().checkClanPrivilege(msg.source(), getOwnerName(), Clan.Function.PROPERTY_OWNER);
+				transferOwnership((MOB)msg.target(),clanSale);
+			}
+			break;
 		}
 	}
 	

@@ -35,23 +35,86 @@ import java.util.*;
 
 public class Skill_Trip extends StdSkill
 {
-	boolean doneTicking=false;
-	@Override public String ID() { return "Skill_Trip"; }
-	private final static String localizedName = CMLib.lang().L("Trip");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Tripped)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	private static final String[] triggerStrings =I(new String[] {"TRIP"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_DIRTYFIGHTING;}
-	@Override public long flags(){return Ability.FLAG_MOVING;}
-	protected int enhancement=0;
-	@Override public int abilityCode(){return enhancement;}
-	@Override public void setAbilityCode(int newCode){enhancement=newCode;}
-	@Override public int usageType(){return USAGE_MOVEMENT;}
+	@Override
+	public String ID()
+	{
+		return "Skill_Trip";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Trip");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Tripped)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "TRIP" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL | Ability.DOMAIN_DIRTYFIGHTING;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_MOVING;
+	}
+
+	protected int		enhancement	= 0;
+	protected boolean	doneTicking	= false;
+
+	@Override
+	public int abilityCode()
+	{
+		return enhancement;
+	}
+
+	@Override
+	public void setAbilityCode(int newCode)
+	{
+		enhancement = newCode;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT;
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
