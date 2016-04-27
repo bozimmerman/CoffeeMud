@@ -65,7 +65,7 @@ import java.sql.*;
 public class MUD extends Thread implements MudHost
 {
 	private static final float	  HOST_VERSION_MAJOR	= (float)5.9;
-	private static final float	  HOST_VERSION_MINOR	= (float)2.12;
+	private static final float	  HOST_VERSION_MINOR	= (float)2.13;
 	private static enum MudState {STARTING,WAITING,ACCEPTING,STOPPED}
 
 	private volatile MudState state		 = MudState.STOPPED;
@@ -488,7 +488,7 @@ public class MUD extends Thread implements MudHost
 								if((A!=null)&&(!A.isSavable()))
 									M.delEffect(A);
 							}
-							catch (final Exception ex)
+							catch (final Throwable ex)
 							{
 								Log.errOut(ex);
 							}
@@ -504,13 +504,13 @@ public class MUD extends Thread implements MudHost
 					{
 						((PlayerLibrary)e.nextElement()).savePlayers();
 					}
-					catch (final Exception ex)
+					catch (final Throwable ex)
 					{
 						Log.errOut(ex);
 					}
 				}
 			}
-			catch (final Exception ex)
+			catch (final Throwable ex)
 			{
 				Log.errOut(ex);
 			}
@@ -525,7 +525,7 @@ public class MUD extends Thread implements MudHost
 			for(final Enumeration<CMLibrary> e=CMLib.libraries(CMLib.Library.STATS);e.hasMoreElements();)
 				((StatisticsLibrary)e.nextElement()).update();
 		}
-		catch (final Exception ex)
+		catch (final Throwable ex)
 		{
 			Log.errOut(ex);
 		}
@@ -565,7 +565,7 @@ public class MUD extends Thread implements MudHost
 					{
 						R.send(mob,msg);
 					}
-					catch (final Exception ex)
+					catch (final Throwable ex)
 					{
 						Log.errOut(ex);
 					}
@@ -641,7 +641,7 @@ public class MUD extends Thread implements MudHost
 					if(R.roomID().length()>0)
 						R.executeMsg(mob,CMClass.getMsg(mob,R,null,CMMsg.MSG_EXPIRE,null));
 				}
-				catch (final Exception ex)
+				catch (final Throwable ex)
 				{
 					Log.errOut(ex);
 				}
@@ -659,7 +659,7 @@ public class MUD extends Thread implements MudHost
 			{
 				cm1server.shutdown();
 			}
-			catch (final Exception ex)
+			catch (final Throwable ex)
 			{
 				Log.errOut(ex);
 			}
@@ -680,7 +680,7 @@ public class MUD extends Thread implements MudHost
 			{
 				I3Server.shutdown();
 			}
-			catch (final Exception ex)
+			catch (final Throwable ex)
 			{
 				Log.errOut(ex);
 			}
@@ -698,7 +698,7 @@ public class MUD extends Thread implements MudHost
 			{
 				imc2server.shutdown();
 			}
-			catch (final Exception ex)
+			catch (final Throwable ex)
 			{
 				Log.errOut(ex);
 			}
@@ -763,7 +763,7 @@ public class MUD extends Thread implements MudHost
 					if(S!=null)
 						S.println("shut down.");
 				}
-				catch (final Exception ex)
+				catch (final Throwable ex)
 				{
 					Log.errOut(ex);
 				}
@@ -790,7 +790,7 @@ public class MUD extends Thread implements MudHost
 					if(debugMem) 
 						shutdownMemReport(library.ID());
 				}
-				catch (final Exception ex)
+				catch (final Throwable ex)
 				{
 					Log.errOut(ex);
 				}
@@ -814,9 +814,10 @@ public class MUD extends Thread implements MudHost
 						library.shutdown();
 						if(S!=null)
 							S.println("shut down.");
-						if(debugMem) shutdownMemReport(library.ID());
+						if(debugMem) 
+							shutdownMemReport(library.ID());
 					}
-					catch (final Exception ex)
+					catch (final Throwable ex)
 					{
 						Log.errOut(ex);
 					}
@@ -847,7 +848,7 @@ public class MUD extends Thread implements MudHost
 			{
 				webServerThread.close();
 			}
-			catch (final Exception ex)
+			catch (final Throwable ex)
 			{
 				Log.errOut(ex);
 			}
@@ -866,7 +867,7 @@ public class MUD extends Thread implements MudHost
 		{
 			CMClass.shutdown();
 		}
-		catch (final Exception ex)
+		catch (final Throwable ex)
 		{
 			Log.errOut(ex);
 		}
@@ -902,7 +903,7 @@ public class MUD extends Thread implements MudHost
 				{
 					CMLib.killThread((Thread)CMLib.hosts().get(m),100,30);
 				}
-				catch(final Exception t){}
+				catch(final Throwable t){}
 			}
 		}
 		CMLib.hosts().clear();
