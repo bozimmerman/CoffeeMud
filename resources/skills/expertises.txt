@@ -234,7 +234,7 @@ HELP_=<EXPERTISE>The ability to do more damage when using a slashing/slicing-typ
 SWORDPIERCE@x1=Sword Piercing @x2,10,X2,-SKILL +Specialization_Sword,-MAXCLASSLEVEL +>={27+(5*@x1)},+STR {15+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to do more damage when using a piercing-type sword.
 
-SWORDFOCUS@x1=Sword Piercing @x2,10,X4,-BASECLASS +Fighter -SKILL +Specialization_Sword,-MAXCLASSLEVEL +>={27+(5*@x1)},+WIS {10+@x1},0,1,0,0,0
+SWORDFOCUS@x1=Sword Focus @x2,10,X4,-BASECLASS +Fighter -SKILL +Specialization_Sword,-MAXCLASSLEVEL +>={27+(5*@x1)},+WIS {10+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to wield higher level swords.
 
 FASTDANCE@x1=Fast Dancing @x2,10,LEVEL,-SKILLFLAG +DANCING&MALICIOUS,-MAXCLASSLEVEL +>={15+(5*@x1)},+STR {12+@x1} +CHA {12+@x1},0,1,0,0,0
