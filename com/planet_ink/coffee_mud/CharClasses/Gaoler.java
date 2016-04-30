@@ -278,7 +278,7 @@ public class Gaoler extends StdCharClass
 						msg2.addTrailerMsg(CMClass.getMsg((MOB)host,null,null,CMMsg.MSG_OK_VISUAL,L("The sweet screams of your victim earns you @x1 experience points.",""+xp),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
 					}
 					else
-						msg2.addTrailerMsg(CMClass.getMsg((MOB)host,null,null,CMMsg.MSG_OK_VISUAL,L("The screams of your victims bore you now."),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+						msg2.addTrailerMsg(CMClass.getMsg((MOB)host,null,null,CMMsg.MSG_OK_VISUAL,L("The screams of this victim bore you now."),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
 					msg.addTrailerMsg(msg2);
 				}
 			}

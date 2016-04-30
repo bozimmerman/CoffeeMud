@@ -85,8 +85,10 @@ public class GenRideable extends StdRideable
 			return CMLib.coffeeMaker().getGenMobStat(this,code);
 		switch(getCodeNum(code))
 		{
-		case 0: return ""+rideBasis();
-		case 1: return ""+riderCapacity();
+		case 0:
+			return "" + rideBasis();
+		case 1:
+			return "" + riderCapacity();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -100,8 +102,12 @@ public class GenRideable extends StdRideable
 		else
 		switch(getCodeNum(code))
 		{
-		case 0: setRideBasis(CMath.s_parseListIntExpression(Rideable.RIDEABLE_DESCS,val)); break;
-		case 1: setRiderCapacity(CMath.s_parseIntExpression(val)); break;
+		case 0:
+			setRideBasis(CMath.s_parseListIntExpression(Rideable.RIDEABLE_DESCS, val));
+			break;
+		case 1:
+			setRiderCapacity(CMath.s_parseIntExpression(val));
+			break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;
@@ -120,6 +126,7 @@ public class GenRideable extends StdRideable
 	}
 
 	private static String[] codes=null;
+
 	@Override
 	public String[] getStatCodes()
 	{
