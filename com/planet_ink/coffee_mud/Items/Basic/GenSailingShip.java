@@ -1786,7 +1786,7 @@ public class GenSailingShip extends StdBoardable
 	{
 		final int[] fromCoords = this.getMyCoords();
 		final PairList<Item,int[]> coords = this.coordinates;
-		int lowest = CMLib.map().roomLocation(this).maxRange();
+		int lowest = Integer.MAX_VALUE;
 		if((coords != null) && (fromCoords != null))
 		{
 			final int p = coords.indexOfFirst((Item)targetShip);
@@ -1798,6 +1798,8 @@ public class GenSailingShip extends StdBoardable
 					lowest=distance;
 			}
 		}
+		if(lowest == Integer.MAX_VALUE)
+			return CMLib.map().roomLocation(this).maxRange() + 1;
 		return lowest;
 	}
 	

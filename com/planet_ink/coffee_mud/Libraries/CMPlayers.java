@@ -698,6 +698,8 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			return account.getLastIP();
 		case 4:
 			return Integer.toString(account.numPlayers());
+		case 5:
+			return Long.toString(account.getAccountExpiration());
 		}
 		return account.getAccountName();
 	}
