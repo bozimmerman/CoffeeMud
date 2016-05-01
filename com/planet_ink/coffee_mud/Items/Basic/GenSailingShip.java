@@ -61,6 +61,8 @@ public class GenSailingShip extends StdBoardable
 	protected volatile int lastSpamCt = 0;
 	protected volatile String lastSpamMsg = "";
 	
+	protected static final int STEER_MASK = 256;
+	
 	public GenSailingShip()
 	{
 		super();
@@ -1201,10 +1203,9 @@ public class GenSailingShip extends StdBoardable
 			&& (courseDirection != -1) )
 			{
 				final int speed=getShipSpeed();
-				
 				for(int s=0;s<speed && (courseDirection>=0);s++)
 				{
-					switch(sail(courseDirection))
+					switch(sail(courseDirection & 127))
 					{
 					case CANCEL:
 					{
@@ -1220,7 +1221,8 @@ public class GenSailingShip extends StdBoardable
 						}
 						else
 						{
-							courseDirection = -1;
+							if((courseDirection & STEER_MASK) == 0)
+								courseDirection = -1;
 						}
 						break;
 					}
@@ -1457,7 +1459,7 @@ public class GenSailingShip extends StdBoardable
 					visualCondition.append(L("^HThe anchor on @x1 is lowered, holding her in place.^.^?",name(msg.source())));
 				else
 				if((this.courseDirection >= 0)&&(this.courseDirections.size()>0))
-					visualCondition.append(L("^H@x1 is under full sail, traveling @x2^.^?",CMStrings.capitalizeFirstLetter(name(msg.source())), CMLib.directions().getDirectionName(courseDirection)));
+					visualCondition.append(L("^H@x1 is under full sail, traveling @x2^.^?",CMStrings.capitalizeFirstLetter(name(msg.source())), CMLib.directions().getDirectionName(courseDirection & 127)));
 				if(this.subjectToWearAndTear() && (usesRemaining() <= 100))
 				{
 					final double pct=(CMath.div(usesRemaining(),100.0));
@@ -1493,7 +1495,7 @@ public class GenSailingShip extends StdBoardable
 						visualCondition.append(L("\n\r^HThe anchor on @x1 is lowered, holding her in place.^.^?",name(msg.source())));
 					else
 					if((this.courseDirection >= 0)&&(this.courseDirections.size()>0))
-						visualCondition.append(L("\n\r^H@x1 is under full sail, traveling @x2^.^?",name(msg.source()), CMLib.directions().getDirectionName(courseDirection)));
+						visualCondition.append(L("\n\r^H@x1 is under full sail, traveling @x2^.^?",name(msg.source()), CMLib.directions().getDirectionName(courseDirection & 127)));
 					if(this.subjectToWearAndTear() && (usesRemaining() <= 100))
 					{
 						final double pct=(CMath.div(usesRemaining(),100.0));
@@ -1960,7 +1962,6 @@ public class GenSailingShip extends StdBoardable
 				mob.phyStats().setDisposition(mob.phyStats().disposition()|PhyStats.IS_SWIMMING);
 				try
 				{
-					this.courseDirection = -1;
 					final CMMsg enterMsg=CMClass.getMsg(mob,destRoom,exit,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,L("<S-NAME> sail(s) in from @x1.",otherDirectionName));
 					final CMMsg leaveMsg=CMClass.getMsg(mob,thisRoom,opExit,CMMsg.MSG_LEAVE,null,CMMsg.MSG_LEAVE,null,CMMsg.MSG_LEAVE,L("<S-NAME> sail(s) @x1.",directionName));
 					if((exit.okMessage(mob,enterMsg))
@@ -2043,7 +2044,7 @@ public class GenSailingShip extends StdBoardable
 		{
 			R.send(mob, msg2); // this lets the source know, i guess
 			this.sendAreaMessage(msg2, true); // this just sends to "others"
-			this.courseDirection=dir;
+			this.courseDirection=dir | STEER_MASK;
 			return true;
 		}
 		return false;

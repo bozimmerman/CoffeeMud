@@ -37,8 +37,14 @@ public class Transfer extends At
 {
 	public Transfer(){}
 
-	private final String[] access=I(new String[]{"TRANSFER"});
-	@Override public String[] getAccessWords(){return access;}
+	private final String[]	access	= I(new String[] { "TRANSFER" });
+
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
+
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
@@ -110,6 +116,7 @@ public class Transfer extends At
 				}
 			}
 			if(V.size()==0)
+			{
 				for(final Enumeration<Room> r=mob.location().getArea().getProperMap();r.hasMoreElements();)
 				{
 					final Room R=r.nextElement();
@@ -127,6 +134,7 @@ public class Transfer extends At
 					if((!allFlag)&&(V.size()>0))
 						break;
 				}
+			}
 			if(V.size()==0)
 			{
 				try
@@ -148,7 +156,10 @@ public class Transfer extends At
 						if((!allFlag)&&(V.size()>0))
 							break;
 					}
-				}catch(final NoSuchElementException nse){}
+				}
+				catch (final NoSuchElementException nse)
+				{
+				}
 			}
 		}
 		else
@@ -160,6 +171,7 @@ public class Transfer extends At
 					V.add(M);
 			}
 			if(V.size()==0)
+			{
 				for(final Enumeration<Room> r=mob.location().getArea().getProperMap();r.hasMoreElements();)
 				{
 					final Room R=r.nextElement();
@@ -177,6 +189,7 @@ public class Transfer extends At
 					if((!allFlag)&&(V.size()>0))
 						break;
 				}
+			}
 			if(V.size()==0)
 			{
 				try
@@ -198,7 +211,10 @@ public class Transfer extends At
 						if((!allFlag)&&(V.size()>0))
 							break;
 					}
-				}catch(final NoSuchElementException nse){}
+				}
+				catch (final NoSuchElementException nse)
+				{
+				}
 			}
 		}
 
@@ -260,8 +276,16 @@ public class Transfer extends At
 		return false;
 	}
 
-	@Override public boolean canBeOrdered(){return true;}
-	@Override public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.TRANSFER);}
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 
+	@Override
+	public boolean securityCheck(MOB mob)
+	{
+		return CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.TRANSFER);
+	}
 
 }
