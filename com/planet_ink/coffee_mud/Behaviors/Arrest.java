@@ -1015,7 +1015,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 			if(W!=null)
 			{
 				if(w==0)
-					msg.append(L("for @x1",fixCharge(W)));
+					msg.append(L("@x1",fixCharge(W)));
 				else
 				if(laws.getWarrant(mob,w+1)==null)
 					msg.append(L(", and for @x1",fixCharge(W)));
