@@ -151,7 +151,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		{
 			W.setArrestingOfficer(myArea,officer);
 			CMLib.commands().postSay(W.arrestingOfficer(),W.criminal(),
-					L("You are under arrest @x1! Sit down on the ground immediately!",restOfCharges(laws,W.criminal())),false,false);
+					L("You are under arrest for @x1! Sit down on the ground immediately!",restOfCharges(laws,W.criminal())),false,false);
 			W.setState(Law.STATE_ARRESTING);
 			return true;
 		}
@@ -2400,7 +2400,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 								return;
 							}
 
-							CMLib.commands().postSay(W.arrestingOfficer(),W.criminal(),L("You are under arrest @x1! Sit down on the ground immediately!",restOfCharges(laws,W.criminal())),false,false);
+							CMLib.commands().postSay(W.arrestingOfficer(),W.criminal(),L("You are under arrest for @x1! Sit down on the ground immediately!",restOfCharges(laws,W.criminal())),false,false);
 							W.setState(Law.STATE_ARRESTING);
 						}
 						else
@@ -2667,7 +2667,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 						String sirmaam="Sir";
 						if(Character.toString((char)judge.charStats().getStat(CharStats.STAT_GENDER)).equalsIgnoreCase("F"))
 							sirmaam="Ma'am";
-						CMLib.commands().postSay(officer,judge,L("@x1, @x2 has been arrested @x3.",sirmaam,W.criminal().name(),restOfCharges(laws,W.criminal())),false,false);
+						CMLib.commands().postSay(officer,judge,L("@x1, @x2 has been arrested for @x3.",sirmaam,W.criminal().name(),restOfCharges(laws,W.criminal())),false,false);
 						final Vector<LegalWarrant> warrants=getRelevantWarrants(laws.warrants(),W,W.criminal());
 						for(int w2=0;w2<warrants.size();w2++)
 						{
