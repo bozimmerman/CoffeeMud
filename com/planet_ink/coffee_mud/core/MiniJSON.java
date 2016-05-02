@@ -93,7 +93,6 @@ public class MiniJSON
 			{
 			case '\"':
 			case '\\':
-			case '/':
 				strBldr.append('\\').append(c);
 				break;
 			case '\b': 
