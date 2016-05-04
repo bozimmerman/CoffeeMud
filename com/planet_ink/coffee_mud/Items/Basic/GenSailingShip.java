@@ -488,7 +488,12 @@ public class GenSailingShip extends StdBoardable
 						msg.source().tell(L("The ship has moved!"));
 						return false;
 					}
-					this.courseDirection=-1;
+					if((courseDirection >=0)||(courseDirections.size()>0))
+					{
+						msg.source().tell(L("Your previous course has been cancelled."));
+						courseDirection = -1;
+						courseDirections.clear();
+					}
 					int dir=CMLib.directions().getCompassDirectionCode(secondWord);
 					if(dir<0)
 					{
@@ -539,6 +544,12 @@ public class GenSailingShip extends StdBoardable
 					{
 						msg.source().tell(L("The ship has moved!"));
 						return false;
+					}
+					if((courseDirection >=0)||(courseDirections.size()>0))
+					{
+						msg.source().tell(L("Your previous course has been cancelled."));
+						courseDirection = -1;
+						courseDirections.clear();
 					}
 					final Room R=CMLib.map().roomLocation(this);
 					if(R==null)
@@ -592,7 +603,12 @@ public class GenSailingShip extends StdBoardable
 						msg.source().tell(L("The ship has moved!"));
 						return false;
 					}
-					this.courseDirection=-1;
+					if((courseDirection >=0)||(courseDirections.size()>0))
+					{
+						msg.source().tell(L("Your previous course has been cancelled."));
+						courseDirection = -1;
+						courseDirections.clear();
+					}
 					final Room R=CMLib.map().roomLocation(this);
 					if(R==null)
 					{
@@ -1809,7 +1825,7 @@ public class GenSailingShip extends StdBoardable
 	{
 		final int[] fromCoords = this.getMyCoords();
 		final PairList<Item,int[]> coords = this.coordinates;
-		int lowest = CMLib.map().roomLocation(this).maxRange();
+		int lowest = Integer.MAX_VALUE;
 		if((coords != null) && (fromCoords != null))
 		{
 			for(int p=0;p<coords.size();p++)
@@ -1833,6 +1849,8 @@ public class GenSailingShip extends StdBoardable
 				}
 			}
 		}
+		if(lowest == Integer.MAX_VALUE)
+			return CMLib.map().roomLocation(this).maxRange();
 		return lowest;
 	}
 
@@ -1941,6 +1959,7 @@ public class GenSailingShip extends StdBoardable
 			{
 				directionFacing = direction;
 			}
+			this.clearTacticalMode();
 			final Room destRoom=thisRoom.getRoomInDir(direction);
 			final Exit exit=thisRoom.getExitInDir(direction);
 			if((destRoom!=null)&&(exit!=null))

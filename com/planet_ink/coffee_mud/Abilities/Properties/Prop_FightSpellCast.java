@@ -90,26 +90,67 @@ public class Prop_FightSpellCast extends Prop_SpellAdder
 
 		if((myItem!=null)
 		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
-		&&((msg.value())>0)
-		&&(!myItem.amWearingAt(Wearable.IN_INVENTORY))
-		&&(myItem.owner() instanceof MOB)
-		&&(msg.target() instanceof MOB))
+		&&((msg.value())>0))
 		{
-			final MOB mob=(MOB)myItem.owner();
-			if((mob.isInCombat())
-			&&(mob.location()!=null)
-			&&(!mob.amDead()))
+			if(CMLib.combat().isAShipSiegeWeapon(myItem)
+			&&(msg.target() instanceof MOB))
+				addMeIfNeccessary(msg.source(),(MOB)msg.target(),true,0,maxTicks);
+			else
+			if((!myItem.amWearingAt(Wearable.IN_INVENTORY))
+			&&(myItem.owner() instanceof MOB)
+			&&(msg.target() instanceof MOB))
 			{
-				if((myItem instanceof Weapon)
-				&&(msg.tool()==myItem)
-				&&(myItem.amWearingAt(Wearable.WORN_WIELD))
-				&&(msg.amISource(mob)))
-					addMeIfNeccessary(msg.source(),(MOB)msg.target(),true,0,maxTicks);
+				final MOB mob=(MOB)myItem.owner();
+				if((mob.isInCombat())
+				&&(mob.location()!=null)
+				&&(!mob.amDead()))
+				{
+					if((myItem instanceof Weapon)
+					&&(msg.tool()==myItem)
+					&&(myItem.amWearingAt(Wearable.WORN_WIELD))
+					&&(msg.amISource(mob)))
+						addMeIfNeccessary(msg.source(),(MOB)msg.target(),true,0,maxTicks);
+					else
+					if((msg.amITarget(mob))
+					&&(!myItem.amWearingAt(Wearable.WORN_WIELD))
+					&&(!(myItem instanceof Weapon)))
+						addMeIfNeccessary(mob,mob,true,0,maxTicks);
+				}
+			}
+			else
+			if(CMLib.combat().isAShipSiegeWeapon(myItem)
+			&&(msg.target() instanceof Item))
+			{
+				Item I=(Item)msg.target();
+				if(I instanceof BoardableShip)
+				{
+					Area A=((BoardableShip)I).getShipArea();
+					if(A!=null)
+					{
+						List<Physical> stuff = new ArrayList<Physical>();
+						for(Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
+						{
+							Room R=r.nextElement();
+							if((R!=null)&&((R.domainType()&Room.INDOORS)==0))
+							{
+								Item I2=R.getRandomItem();
+								if(I2!=null)
+									stuff.add(I2);
+								MOB M=R.fetchRandomInhabitant();
+								if(M!=null)
+									stuff.add(M);
+							}
+						}
+						if(stuff.size()>0)
+						{
+							Physical P=stuff.get(CMLib.dice().roll(1, stuff.size(), -1));
+							if(P!=null)
+								addMeIfNeccessary(msg.source(),P,true,0,maxTicks);
+						}
+					}
+				}
 				else
-				if((msg.amITarget(mob))
-				&&(!myItem.amWearingAt(Wearable.WORN_WIELD))
-				&&(!(myItem instanceof Weapon)))
-					addMeIfNeccessary(mob,mob,true,0,maxTicks);
+					addMeIfNeccessary(msg.source(),I,true,0,maxTicks);
 			}
 		}
 		processing=false;

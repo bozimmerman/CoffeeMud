@@ -154,6 +154,12 @@ public class Prop_ReqCapacity extends Property implements TriggeredAffect
 				}
 			}
 			break;
+		case CMMsg.TYP_PUSH:
+		case CMMsg.TYP_PULL:
+			if((msg.tool() != affected)
+			&&(msg.tool() != myHost))
+				break;
+			//$FALL-THROUGH$
 		case CMMsg.TYP_DROP:
 			if((msg.target() instanceof Item)
 			&&(msg.source().location()!=null)

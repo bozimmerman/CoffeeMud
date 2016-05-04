@@ -1,4 +1,21 @@
 BUGS
+1. maneuvers happens AFTER shots -- all WRONG
+2. multishots work, but no message to the sender at ALL
+3. 
+4. Sailing Ship Yeti was loaded in inventory, but never registered as other ships, no ticks
+5. remove coordinates (0,0)
+6. when you climb onto a boat from the ocean, your boat goes with you
+7. siegecraft flaming boulder was made from oak
+8. stone boulders did not sink
+9. can't put out weapons on fire
+10. ll always shows 2-4 conditions
+11. mudgrinder siegecraft recipe editor broke
+12. Sailor Behavior:
+	mobs -- captian > lvl 30 is perfectly proficient, otherwise add a delay of (1 normal tick/ 4 level)
+	captain -- set courses on unowned sips
+	sailor -- load and aim weapons
+	option to use shipwright mend (above 11)
+	above level 21 they board with grapples
 
 TECH
    *. do ship damage, make realibility and installed factor more about this.

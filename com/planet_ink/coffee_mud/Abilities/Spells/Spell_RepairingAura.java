@@ -35,17 +35,53 @@ import java.util.*;
 
 public class Spell_RepairingAura extends Spell
 {
-	@Override public String ID() { return "Spell_RepairingAura"; }
-	private final static String localizedName = CMLib.lang().L("Repairing Aura");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return CAN_ITEMS;}
-	@Override protected int canTargetCode(){return CAN_ITEMS;}
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ABJURATION;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	@Override public int overrideMana(){ return 50;}
-	public static final int REPAIR_MAX=30;
-	public int repairDown=REPAIR_MAX;
-	public int adjustedLevel=1;
+	@Override
+	public String ID()
+	{
+		return "Spell_RepairingAura";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Repairing Aura");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_ITEMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_ITEMS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL | Ability.DOMAIN_ABJURATION;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	public int overrideMana()
+	{
+		return 50;
+	}
+
+	public static final int	REPAIR_MAX		= 30;
+	public int				repairDown		= REPAIR_MAX;
+	public int				adjustedLevel	= 1;
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
@@ -71,7 +107,7 @@ public class Spell_RepairingAura extends Spell
 				else
 				if(I.owner() instanceof MOB)
 					((MOB)I.owner()).tell(L("@x1 is magically repairing itself.",I.name()));
-				I.setUsesRemaining(I.usesRemaining()+1);
+				I.setUsesRemaining(I.usesRemaining()+1+(super.getXLEVELLevel(invoker())/3));
 			}
 		}
 		return true;
