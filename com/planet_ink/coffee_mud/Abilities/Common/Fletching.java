@@ -375,7 +375,8 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 			}
 
 			final String woodRequiredStr = foundRecipe.get(RCP_WOOD);
-			final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName),autoGenerate);
+			final int[] compData = new int[CF_TOTAL];
+			final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName),autoGenerate,compData);
 			if(componentsFoundList==null)
 				return false;
 			int woodRequired=CMath.s_int(woodRequiredStr);
@@ -419,7 +420,6 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 			bundling=spell.equalsIgnoreCase("BUNDLE");
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
-			int hardness=RawMaterial.CODES.HARDNESS(data[0][FOUND_CODE])-3;
 			final int lostValue=autoGenerate>0?0:
 				CMLib.materials().destroyResourcesValue(mob.location(),woodRequired,data[0][FOUND_CODE],data[1][FOUND_CODE],null)
 				+CMLib.ableComponents().destroyAbilityComponents(componentsFoundList);
@@ -430,7 +430,9 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 				return false;
 			}
 			duration=getDuration(CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),4);
-			String itemName=replacePercent(foundRecipe.get(RCP_FINALNAME),RawMaterial.CODES.NAME(data[0][FOUND_CODE])).toLowerCase();
+			buildingI.setMaterial(getBuildingMaterial(woodRequired,data,compData));
+			int hardness=RawMaterial.CODES.HARDNESS(buildingI.material())-3;
+			String itemName=replacePercent(foundRecipe.get(RCP_FINALNAME),RawMaterial.CODES.NAME(buildingI.material())).toLowerCase();
 			itemName=CMLib.english().startWithAorAn(itemName);
 			buildingI.setName(itemName);
 			startStr=L("<S-NAME> start(s) making @x1.",buildingI.name());
@@ -439,15 +441,9 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 			playSound="sanding.wav";
 			buildingI.setDisplayText(L("@x1 lies here",itemName));
 			buildingI.setDescription(itemName+". ");
-			buildingI.basePhyStats().setWeight(getStandardWeight(woodRequired,bundling));
+			buildingI.basePhyStats().setWeight(getStandardWeight(woodRequired + compData[CF_AMOUNT],bundling));
 			buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE)));
-			if((woodRequired==0)&&(data[1][FOUND_CODE]>0))
-				buildingI.setMaterial(data[1][FOUND_CODE]);
-			else
-				buildingI.setMaterial(data[0][FOUND_CODE]);
 			final int level=CMath.s_int(foundRecipe.get(RCP_LEVEL));
-			if(woodRequired==0)
-				hardness=0;
 			buildingI.basePhyStats().setLevel(level+hardness);
 			buildingI.setSecretIdentity(getBrand(mob));
 			final String ammotype=foundRecipe.get(RCP_AMMOTYPE);

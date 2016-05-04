@@ -88,6 +88,12 @@ public class CraftingSkill extends GatheringSkill
 	protected static final int RCP_LEVEL=1;
 	protected static final int RCP_TICKS=2;
 
+	// for ability component style materials
+	protected static final int CF_AMOUNT=0;
+	protected static final int CF_HARDNESS=1;
+	protected static final int CF_MATERIAL=2;
+	protected static final int CF_TOTAL=3;
+	
 	protected static class CraftParms
 	{
 		public int autoGenerate=0;
@@ -269,6 +275,20 @@ public class CraftingSkill extends GatheringSkill
 		return recipes;
 	}
 
+	protected int getBuildingMaterial(int woodRequired, int[][] foundData, int[] compData)
+	{
+		if((woodRequired == 0) && (compData[CF_MATERIAL] > 0))
+			return compData[CF_MATERIAL];
+		else
+		if((woodRequired==0)&&(foundData[1][FOUND_CODE]>0))
+			return foundData[1][FOUND_CODE];
+		else
+		if((foundData[0][FOUND_CODE]==0)&&(foundData[1][FOUND_CODE]!=0))
+			return foundData[1][FOUND_CODE];
+		else
+			return foundData[0][FOUND_CODE];
+	}
+	
 	protected int adjustWoodRequired(int woodRequired, MOB mob)
 	{
 		int newWoodRequired=woodRequired-(int)Math.round((0.05*woodRequired*getXPCOSTLevel(mob)));
@@ -1241,7 +1261,7 @@ public class CraftingSkill extends GatheringSkill
 		return true;
 	}
 
-	public List<Object> getAbilityComponents(MOB mob, String componentID, String doingWhat, int autoGenerate)
+	public List<Object> getAbilityComponents(MOB mob, String componentID, String doingWhat, int autoGenerate, int[] compData)
 	{
 		if(autoGenerate>0)
 			return new LinkedList<Object>();
@@ -1262,6 +1282,19 @@ public class CraftingSkill extends GatheringSkill
 			final List<Object> components=CMLib.ableComponents().componentCheck(mob,componentsRequirements);
 			if(components!=null)
 			{
+				if(compData != null)
+				{
+					for(Object o : components)
+					{
+						if(o instanceof Physical)
+							compData[CF_AMOUNT] += ((Physical)o).phyStats().weight();
+						if((o instanceof Item)&&(compData[CF_MATERIAL]==0))
+						{
+							compData[CF_HARDNESS] = RawMaterial.CODES.HARDNESS(((Item)o).material());
+							compData[CF_MATERIAL] = ((Item)o).material();
+						}
+					}
+				}
 				return components;
 			}
 			final StringBuffer buf=new StringBuffer("");

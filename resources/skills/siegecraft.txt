@@ -4,8 +4,8 @@ Heavy % Ballista	25	100	6500	5000	GenSiegeWeapon	ballista-bolts	1	20	10	LEATHER
 % Catapult	20	60	500	5000	GenSiegeWeapon	catapult-boulders	1	20	6		
 Light % Catapult	25	70	3000	2500	GenSiegeWeapon	catapult-boulders	3	20	6		
 % Trebuchet	30	80	700	7000	GenSiegeWeapon	trebuchet-shots	1	35	8	METAL	
-% Ramming Prow	35	70	5500	5000	GenSiegeWeapon		0	40	1		
-% Grapples	5	10	(onground:consumed:10:metal:)	25	GenGrapples		0	0	1		
+% Ramming Prow	35	70	5500	5000	GenSiegeWeapon	nada	0	40	1		
+% Grapples	5	10	(onground:consumed:10:metal:)	25	GenGrapples		0	0			
 % bolt	5	5	5	5	GenAmmunition	ballista-bolts	1			METAL	
 % flaming bolt	7	10	5	10	GenAmmunition	ballista-bolts	1			LAMP OIL	Burning
 % bolt bundle	9	10	10	10	GenAmmunition	ballista-bolts	3			METAL	

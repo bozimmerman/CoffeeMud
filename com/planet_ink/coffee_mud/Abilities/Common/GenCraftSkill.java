@@ -626,7 +626,8 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 			}
 
 			final String requiredMats = foundRecipe.get(RCP_AMOUNTMATS);
-			final List<Object> componentsFoundList=getAbilityComponents(mob, requiredMats, "make "+CMLib.english().startWithAorAn(recipeName),autoGenerate);
+			final int[] compData = new int[CF_TOTAL];
+			final List<Object> componentsFoundList=getAbilityComponents(mob, requiredMats, "make "+CMLib.english().startWithAorAn(recipeName),autoGenerate,compData);
 			if(componentsFoundList==null)
 				return false;
 			int numRequired=CMath.isInteger(requiredMats)?CMath.s_int(requiredMats):0;
@@ -661,7 +662,8 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 				return false;
 			}
 			duration=getDuration(CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),4);
-			String itemName=replacePercent(foundRecipe.get(RCP_FINALNAME),RawMaterial.CODES.NAME(data[0][FOUND_CODE])).toLowerCase();
+			buildingI.setMaterial(getBuildingMaterial(numRequired,data,compData));
+			String itemName=replacePercent(foundRecipe.get(RCP_FINALNAME),RawMaterial.CODES.NAME(buildingI.material())).toLowerCase();
 			if(bundling)
 				itemName="a "+numRequired+"# "+itemName;
 			else
@@ -675,8 +677,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 			buildingI.setDescription(itemName+". ");
 			buildingI.basePhyStats().setWeight(getStandardWeight(numRequired, bundling));
 			buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE)));
-			buildingI.setMaterial(data[0][FOUND_CODE]);
-			final int hardness=RawMaterial.CODES.HARDNESS(data[0][FOUND_CODE])-3;
+			final int hardness=RawMaterial.CODES.HARDNESS(buildingI.material())-3;
 			buildingI.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL))+(hardness));
 			if(buildingI.basePhyStats().level()<1)
 				buildingI.basePhyStats().setLevel(1);

@@ -68,6 +68,7 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 		basePhyStats().setWeight(10000);
 		super.setCapacity(0);
 		setUsesRemaining(100);
+		this.setBaseValue(20000);
 		recoverPhyStats();
 		CMLib.flags().setGettable(this, false);
 	}
@@ -607,12 +608,13 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 			case CMMsg.TYP_LOCK:
 			case CMMsg.TYP_UNLOCK:
 			{
-				msg.setOthersMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAME>", L("@x1 on <T-NAME>",CMLib.english().startWithAorAn(doorName()))));
-				msg.setOthersMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAMESELF>", L("@x1 on <T-NAMESELF>",CMLib.english().startWithAorAn(doorName()))));
-				msg.setSourceMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAME>", L("@x1 on <T-NAME>",CMLib.english().startWithAorAn(doorName()))));
-				msg.setSourceMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAMESELF>", L("@x1 on <T-NAMESELF>",CMLib.english().startWithAorAn(doorName()))));
-				msg.setTargetMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAME>", L("@x1 on <T-NAME>",CMLib.english().startWithAorAn(doorName()))));
-				msg.setTargetMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAMESELF>", L("@x1 on <T-NAMESELF>",CMLib.english().startWithAorAn(doorName()))));
+				final String doorName = CMLib.english().startWithAorAn(doorName());
+				msg.setOthersMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAME>", L("@x1 on <T-NAME>",doorName)));
+				msg.setOthersMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAMESELF>", L("@x1 on <T-NAMESELF>",doorName)));
+				msg.setSourceMessage(CMStrings.replaceAll(msg.sourceMessage(), "<T-NAME>", L("@x1 on <T-NAME>",doorName)));
+				msg.setSourceMessage(CMStrings.replaceAll(msg.sourceMessage(), "<T-NAMESELF>", L("@x1 on <T-NAMESELF>",doorName)));
+				msg.setTargetMessage(CMStrings.replaceAll(msg.targetMessage(), "<T-NAME>", L("@x1 on <T-NAME>",doorName)));
+				msg.setTargetMessage(CMStrings.replaceAll(msg.targetMessage(), "<T-NAMESELF>", L("@x1 on <T-NAMESELF>",doorName)));
 				break;
 			}
 			}

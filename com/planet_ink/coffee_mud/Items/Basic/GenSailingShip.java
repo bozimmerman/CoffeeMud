@@ -490,7 +490,8 @@ public class GenSailingShip extends StdBoardable
 					}
 					if((courseDirection >=0)||(courseDirections.size()>0))
 					{
-						msg.source().tell(L("Your previous course has been cancelled."));
+						if(!this.amInTacticalMode())
+							msg.source().tell(L("Your previous course has been cancelled."));
 						courseDirection = -1;
 						courseDirections.clear();
 					}
@@ -547,7 +548,8 @@ public class GenSailingShip extends StdBoardable
 					}
 					if((courseDirection >=0)||(courseDirections.size()>0))
 					{
-						msg.source().tell(L("Your previous course has been cancelled."));
+						if(!this.amInTacticalMode())
+							msg.source().tell(L("Your previous course has been cancelled."));
 						courseDirection = -1;
 						courseDirections.clear();
 					}
@@ -605,7 +607,8 @@ public class GenSailingShip extends StdBoardable
 					}
 					if((courseDirection >=0)||(courseDirections.size()>0))
 					{
-						msg.source().tell(L("Your previous course has been cancelled."));
+						if(!this.amInTacticalMode())
+							msg.source().tell(L("Your previous course has been cancelled."));
 						courseDirection = -1;
 						courseDirections.clear();
 					}
@@ -824,6 +827,8 @@ public class GenSailingShip extends StdBoardable
 				msg.source().tell(CMLib.lang().L("You'll need some assistance to board a ship from @x1, such as some means to climb up.",ride.name(msg.source())));
 				return false;
 			}
+			else
+				msg.source().setRiding(null); // if you're climbing, you're not riding any more
 		}
 		else
 		if((msg.sourceMinor()==CMMsg.TYP_COMMANDFAIL)
@@ -1919,10 +1924,8 @@ public class GenSailingShip extends StdBoardable
 					if(directionFacing == direction)
 					{
 						final int[] newCoords = Directions.adjustXYByDirections(tacticalCoords[0], tacticalCoords[1], direction);
-						final int[] adj=this.getCoordAdjustments(newCoords);
-						final String coords = (newCoords[0]+adj[0])+","+(newCoords[1]+adj[1]);
 						final CMMsg maneuverMsg=CMClass.getMsg(mob,thisRoom,null,CMMsg.MSG_ADVANCE,null,CMMsg.MSG_ADVANCE,directionName,
-																CMMsg.MSG_ADVANCE,L("<S-NAME> maneuver(s) @x1 to (@x2).",directionName,coords));
+																CMMsg.MSG_ADVANCE,L("<S-NAME> maneuver(s) @x1.",directionName));
 						if(thisRoom.okMessage(mob, maneuverMsg))
 						{
 							thisRoom.send(mob, maneuverMsg);

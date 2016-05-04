@@ -483,7 +483,8 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 			}
 
 			final String woodRequiredStr = foundRecipe.get(RCP_WOOD);
-			final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName),autoGenerate);
+			final int[] compData = new int[CF_TOTAL];
+			final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName),autoGenerate,compData);
 			if(componentsFoundList==null)
 				return false;
 			int woodRequired=CMath.s_int(woodRequiredStr);
@@ -519,6 +520,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 				return false;
 			}
 			duration=getDuration(multiplier*CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,30,4);
+			buildingI.setMaterial(super.getBuildingMaterial(woodRequired, data, compData));
 			String itemName=(replacePercent(foundRecipe.get(RCP_FINALNAME),RawMaterial.CODES.NAME(data[0][FOUND_CODE]))).toLowerCase();
 			if(bundling)
 				itemName="a "+woodRequired+"# "+itemName;
@@ -533,11 +535,10 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 			verb=L("making @x1",buildingI.name());
 			buildingI.setDisplayText(L("@x1 lies here",itemName));
 			buildingI.setDescription(itemName+". ");
-			buildingI.basePhyStats().setWeight(getStandardWeight(woodRequired,bundling));
+			buildingI.basePhyStats().setWeight(getStandardWeight(woodRequired+compData[CF_AMOUNT],bundling));
 			buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE))*multiplier);
-			buildingI.setMaterial(data[0][FOUND_CODE]);
 			buildingI.setSecretIdentity(getBrand(mob));
-			final int hardness=RawMaterial.CODES.HARDNESS(data[0][FOUND_CODE])-2;
+			final int hardness=RawMaterial.CODES.HARDNESS(buildingI.material())-2;
 			buildingI.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL))+hardness);
 			final int capacity=CMath.s_int(foundRecipe.get(RCP_CAPACITY));
 			final long canContain=getContainerType(foundRecipe.get(RCP_CONTAINMASK));

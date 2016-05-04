@@ -420,7 +420,7 @@ public class StdRideable extends StdMOB implements Rideable
 					msg.source().tell(L("@x1 is not allowed on @x2.",((MOB)msg.tool()).name(msg.source()),name(msg.source())));
 					return false;
 				}
-				if((msg.source() instanceof Rideable)&&(msg.source() instanceof MOB))
+				if(msg.source() instanceof Rideable)
 				{
 					msg.source().tell(L("You can not mount @x1.",name(msg.source())));
 					return false;

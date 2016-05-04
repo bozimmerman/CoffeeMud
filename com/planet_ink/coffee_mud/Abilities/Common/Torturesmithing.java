@@ -246,7 +246,8 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 		}
 
 		final String woodRequiredStr = foundRecipe.get(RCP_WOOD);
-		final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName),autoGenerate);
+		final int[] compData = new int[CF_TOTAL];
+		final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName),autoGenerate,compData);
 		if(componentsFoundList==null)
 			return false;
 		int woodRequired=CMath.s_int(woodRequiredStr);
@@ -297,7 +298,8 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 			return false;
 		}
 		duration=getDuration(CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),4);
-		String itemName=replacePercent(foundRecipe.get(RCP_FINALNAME),RawMaterial.CODES.NAME(data[0][FOUND_CODE])).toLowerCase();
+		buildingI.setMaterial(super.getBuildingMaterial(woodRequired, data, compData));
+		String itemName=replacePercent(foundRecipe.get(RCP_FINALNAME),RawMaterial.CODES.NAME(buildingI.material())).toLowerCase();
 		if(bundling)
 			itemName="a "+woodRequired+"# "+itemName;
 		else
@@ -311,12 +313,11 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 		buildingI.setDescription(itemName+". ");
 		buildingI.basePhyStats().setWeight(woodRequired);
 		buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE))+(woodRequired*(RawMaterial.CODES.VALUE(data[0][FOUND_CODE]))));
-		buildingI.setMaterial(data[0][FOUND_CODE]);
 		buildingI.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL)));
 		buildingI.setSecretIdentity(getBrand(mob));
 		final int capacity=CMath.s_int(foundRecipe.get(RCP_CAPACITY));
 		final int armordmg=CMath.s_int(foundRecipe.get(RCP_ARMORDMG));
-		final int hardness=RawMaterial.CODES.HARDNESS(data[0][FOUND_CODE])-3;
+		final int hardness=RawMaterial.CODES.HARDNESS(buildingI.material())-3;
 		final String spell=(foundRecipe.size()>RCP_SPELL)?foundRecipe.get(RCP_SPELL).trim():"";
 		addSpells(buildingI,spell);
 		if(buildingI instanceof Container)

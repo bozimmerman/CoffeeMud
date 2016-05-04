@@ -50,7 +50,8 @@ public class Put extends StdCommand
 	public void putout(MOB mob, List<String> commands, boolean quiet)
 	{
 		List<String> origCmds=new XVector<String>(commands);
-		if(commands.size()<3)
+		final Room R=mob.location();
+		if((commands.size()<3)||(R==null))
 		{
 			CMLib.commands().doCommandFail(mob,origCmds,L("Put out what?"));
 			return;
@@ -60,6 +61,8 @@ public class Put extends StdCommand
 
 		final List<Item> items=CMLib.english().fetchItemList(mob,mob,null,commands,Wearable.FILTER_UNWORNONLY,true);
 		if(items.size()==0)
+			items.add(R.findItem(null, CMParms.combine(commands,0)));
+		if(items.size()==0)
 			CMLib.commands().doCommandFail(mob,origCmds,L("You don't seem to be carrying that."));
 		else
 		for(int i=0;i<items.size();i++)
@@ -68,8 +71,8 @@ public class Put extends StdCommand
 			if((items.size()==1)||(I instanceof Light))
 			{
 				final CMMsg msg=CMClass.getMsg(mob,I,null,CMMsg.MSG_EXTINGUISH,quiet?null:L("<S-NAME> put(s) out <T-NAME>."));
-				if(mob.location().okMessage(mob,msg))
-					mob.location().send(mob,msg);
+				if(R.okMessage(mob,msg))
+					R.send(mob,msg);
 			}
 		}
 	}
