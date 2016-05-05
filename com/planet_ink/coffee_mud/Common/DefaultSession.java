@@ -266,14 +266,49 @@ public class DefaultSession implements Session
 			{
 				CMLib.threads().startTickDown(new Tickable()
 				{
-					@Override public String ID() { return "SessionTicker";}
-					@Override public CMObject newInstance() { return null; }
-					@Override public CMObject copyOf() { return null; }
-					@Override public void initializeClass() {}
-					@Override public int compareTo(CMObject o) { return 0;}
-					@Override public String name() { return ID(); }
-					@Override public int getTickStatus() { return 0; }
-					@Override public boolean tick(Tickable ticking, int tickID)
+					@Override
+					public String ID()
+					{
+						return "SessionTicker";
+					}
+
+					@Override
+					public CMObject newInstance()
+					{
+						return null;
+					}
+
+					@Override
+					public CMObject copyOf()
+					{
+						return null;
+					}
+
+					@Override
+					public void initializeClass()
+					{
+					}
+
+					@Override
+					public int compareTo(CMObject o)
+					{
+						return 0;
+					}
+
+					@Override
+					public String name()
+					{
+						return ID();
+					}
+
+					@Override
+					public int getTickStatus()
+					{
+						return 0;
+					}
+
+					@Override
+					public boolean tick(Tickable ticking, int tickID)
 					{
 						if(debugBinInputBuf.length()>0)
 						{
@@ -637,7 +672,9 @@ public class DefaultSession implements Session
 			rawBytesOut(rawout, command);
 			rawout.flush();
 		}
-		catch(final Exception e){}
+		catch (final Exception e)
+		{
+		}
 		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET))
 			Log.debugOut("Sent: "+(onOff?"Will":"Won't")+" "+Session.TELNET_DESCS[telnetCode]);
 		setServerTelnetMode(telnetCode,onOff);
@@ -680,7 +717,9 @@ public class DefaultSession implements Session
 			}
 			rawout.flush();
 		}
-		catch(final Exception e){}
+		catch (final Exception e)
+		{
+		}
 		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET))
 			Log.debugOut("Negotiate-Sent: "+Session.TELNET_DESCS[telnetCode]);
 	}
@@ -1068,8 +1107,10 @@ public class DefaultSession implements Session
 				{
 					final StringBuffer buf=new StringBuffer(msg);
 					for(int i=buf.length()-1;i>=0;i--)
+					{
 						if((buf.charAt(i)=='\n')&&(i<buf.length()-2)&&(buf.charAt(i+1)=='\r'))
 							buf.insert(i+2, preFix);
+					}
 					msgColored=buf.toString();
 				}
 				else
@@ -1077,8 +1118,10 @@ public class DefaultSession implements Session
 				for(int s=0;s<snoops.size();s++)
 					snoops.get(s).onlyPrint(preFix+msgColored,noCache);
 			}
-		}catch(final IndexOutOfBoundsException x){}
-
+		}
+		catch (final IndexOutOfBoundsException x)
+		{
+		}
 	}
 
 	@Override
@@ -1148,7 +1191,11 @@ public class DefaultSession implements Session
 									if(s.startsWith("qu")||s.startsWith("ex")||s.equals("x"))
 										return;
 								}
-							}catch(final Exception e){return;}
+							}
+							catch (final Exception e)
+							{
+								return;
+							}
 						}
 					}
 				}
@@ -1180,7 +1227,9 @@ public class DefaultSession implements Session
 			}
 			rawCharsOut(msg.toCharArray());
 		}
-		catch(final java.lang.NullPointerException e){}
+		catch (final java.lang.NullPointerException e)
+		{
+		}
 	}
 
 	@Override
@@ -1233,7 +1282,9 @@ public class DefaultSession implements Session
 			{ 
 				rawBytesOut(rawout, TELNETGABYTES); 
 			} 
-			catch(final Exception e){}
+			catch (final Exception e)
+			{
+			}
 		}
 	}
 
@@ -1516,7 +1567,8 @@ public class DefaultSession implements Session
 				}
 				else
 				if (suboptionData[0] == 1) // Request for data.
-				{/* No idea how to handle this, ignore it for now.*/}
+				{/* No idea how to handle this, ignore it for now. */
+				}
 			}
 			break;
 		case TELNET_NAWS:
@@ -1550,7 +1602,7 @@ public class DefaultSession implements Session
 				if(resp!=null)
 					rawBytesOut(rawout, resp);
 			}
-		break;
+			break;
 		default:
 			// Ignore it.
 			break;
@@ -1749,7 +1801,8 @@ public class DefaultSession implements Session
 				{
 					prompt(new TickingCallback(250)
 					{
-						@Override public boolean tick(int counter)
+						@Override
+						public boolean tick(int counter)
 						{
 							try
 							{
@@ -1774,8 +1827,10 @@ public class DefaultSession implements Session
 									}
 									break;
 								}
-								case 10: return false;
-								default: break;
+								case 10:
+									return false;
+								default:
+									break;
 								}
 								return true;
 							}
@@ -1893,7 +1948,12 @@ public class DefaultSession implements Session
 			return b;
 		charWriter.write(b);
 		int maxBytes=inMaxBytesPerChar;
-		while((in!=null) && !in.ready() && !killFlag && (rawin!=null) &&(rawin.available()>0) && (--maxBytes>=0))
+		while((in!=null) 
+			&& !in.ready() 
+			&& !killFlag 
+			&& (rawin!=null) 
+			&&(rawin.available()>0) 
+			&& (--maxBytes>=0))
 		{
 			try
 			{
@@ -1933,7 +1993,9 @@ public class DefaultSession implements Session
 			if((maxWait>0)&&((System.currentTimeMillis()-start)>=maxWait))
 				throw new java.io.InterruptedIOException(TIMEOUT_MSG);
 		}
-		catch(final java.io.IOException e) { }
+		catch (final java.io.IOException e)
+		{
+		}
 		return '\0';
 	}
 
@@ -2311,7 +2373,9 @@ public class DefaultSession implements Session
 									out.checkError();
 								}
 							}
-							catch(final Exception t){}
+							catch (final Exception t)
+							{
+							}
 							out.close();
 						}
 						setStatus(SessionStatus.LOGOUT9);
@@ -2323,7 +2387,9 @@ public class DefaultSession implements Session
 					catch(final IOException e)
 					{
 					}
-					catch(final java.lang.ArrayIndexOutOfBoundsException e) { }
+					catch (final java.lang.ArrayIndexOutOfBoundsException e)
+					{
+					}
 					finally
 					{
 						rawin=null;
@@ -2379,7 +2445,9 @@ public class DefaultSession implements Session
 						{
 							R.send(M, CMClass.getMsg(mob, CMMsg.MSG_QUIT, null));
 						}
-						catch(Throwable t) { /* and eat it */ }
+						catch (Throwable t)
+						{ /* and eat it */
+						}
 					}
 				}
 		
@@ -2519,7 +2587,13 @@ public class DefaultSession implements Session
 				final byte[] msdpPingBuf=CMLib.protocol().pingMsdp(this, msdpReportables);
 				if(msdpPingBuf!=null)
 				{
-					try { rawBytesOut(rawout, msdpPingBuf);}catch(final IOException e){}
+					try
+					{
+						rawBytesOut(rawout, msdpPingBuf);
+					}
+					catch (final IOException e)
+					{
+					}
 					if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET))
 						Log.debugOut("MSDP Reported: "+msdpPingBuf.length+" bytes");
 				}
@@ -2529,7 +2603,13 @@ public class DefaultSession implements Session
 				final byte[] gmcpPingBuf=CMLib.protocol().pingGmcp(this, gmcpPings, gmcpSupports);
 				if(gmcpPingBuf!=null)
 				{
-					try { rawBytesOut(rawout, gmcpPingBuf);}catch(final IOException e){}
+					try
+					{
+						rawBytesOut(rawout, gmcpPingBuf);
+					}
+					catch (final IOException e)
+					{
+					}
 				}
 			}
 		}
@@ -2892,7 +2972,8 @@ public class DefaultSession implements Session
 				return;
 			}
 			while((!killFlag)&&(mob!=null)&&(mob.dequeCommand()))
-				{}
+			{
+			}
 
 			if(((System.currentTimeMillis()-lastBlahCheck)>=60000)
 			&&(mob()!=null))
@@ -3073,11 +3154,15 @@ public class DefaultSession implements Session
 			return '0';
 		}
 		
-		private MOB theMOB=null;
-		private int msgCode=-1;
-		private final HashSet<Room> skipRooms=new HashSet<Room>();
-		private long activeMillis=0;
-		private LoginLogoutThread(){}
+		private MOB				theMOB			= null;
+		private int				msgCode			= -1;
+		private final Set<Room>	skipRooms		= new HashSet<Room>();
+		private long			activeMillis	= 0;
+
+		private LoginLogoutThread()
+		{
+		}
+
 		public LoginLogoutThread(MOB mob, int msgC)
 		{
 			theMOB=mob;
@@ -3113,7 +3198,10 @@ public class DefaultSession implements Session
 					}
 					if(R!=null)
 						skipRooms.add(R);
-				}catch(final Exception e){}
+				}
+				catch (final Exception e)
+				{
+				}
 			}
 		}
 
@@ -3136,7 +3224,8 @@ public class DefaultSession implements Session
 					}
 				}
 				catch(final Exception e)
-				{}
+				{
+				}
 				theMOB=null;
 			}
 		}

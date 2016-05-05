@@ -198,64 +198,66 @@ public class Burning extends StdAbility
 						}
 					}
 					if(!(affected instanceof ClanItem))
-					switch(((Item)affected).material()&RawMaterial.MATERIAL_MASK)
 					{
-					case RawMaterial.MATERIAL_LIQUID:
-					case RawMaterial.MATERIAL_METAL:
-					case RawMaterial.MATERIAL_MITHRIL:
-					case RawMaterial.MATERIAL_ENERGY:
-					case RawMaterial.MATERIAL_GAS:
-					case RawMaterial.MATERIAL_PRECIOUS:
-					case RawMaterial.MATERIAL_ROCK:
-					case RawMaterial.MATERIAL_UNKNOWN:
-						break;
-					default:
-					{
-						if(CMLib.flags().isABonusItems(affected))
+						switch(((Item)affected).material()&RawMaterial.MATERIAL_MASK)
 						{
-							if(invoker==null)
-							{
-								invoker=CMClass.getMOB("StdMOB");
-								invoker.setLocation(CMClass.getLocale("StdRoom"));
-								invoker.basePhyStats().setLevel(affected.phyStats().level());
-								invoker.phyStats().setLevel(affected.phyStats().level());
-							}
-							room.showHappens(CMMsg.MSG_OK_ACTION,L("@x1 EXPLODES!!!",affected.name()));
-							for(int i=0;i<room.numInhabitants();i++)
-							{
-								final MOB target=room.fetchInhabitant(i);
-								CMLib.combat().postDamage(invoker(),target,null,CMLib.dice().roll(affected.phyStats().level(),5,1),CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,L("The blast <DAMAGE> <T-NAME>!"));
-							}
-							if(!isFlagSet(FIREFLAG_NEVERDESTROYHOST))
-								((Item)affected).destroy();
-						}
-						else
+						case RawMaterial.MATERIAL_LIQUID:
+						case RawMaterial.MATERIAL_METAL:
+						case RawMaterial.MATERIAL_MITHRIL:
+						case RawMaterial.MATERIAL_ENERGY:
+						case RawMaterial.MATERIAL_GAS:
+						case RawMaterial.MATERIAL_PRECIOUS:
+						case RawMaterial.MATERIAL_ROCK:
+						case RawMaterial.MATERIAL_UNKNOWN:
+							break;
+						default:
 						{
-							final Item ash=CMClass.getItem("GenResource");
-							ash.setName(L("some ash"));
-							ash.setDisplayText(L("a small pile of ash is here"));
-							ash.setMaterial(RawMaterial.RESOURCE_ASH);
-							ash.basePhyStats().setWeight(1);
-							ash.recoverPhyStats();
-							room.addItem(ash,ItemPossessor.Expire.Monster_EQ);
-							((RawMaterial)ash).rebundle();
-							if((affected instanceof RawMaterial)
-							&&(affected.basePhyStats().weight()>1)
-							&&(CMLib.materials().getBurnDuration(affected)>0))
+							if(CMLib.flags().isABonusItems(affected))
 							{
-								affected.basePhyStats().setWeight(affected.basePhyStats().weight()-1);
-								affected.recoverPhyStats();
-								this.tickDown = CMLib.materials().getBurnDuration(affected);
-								CMLib.materials().adjustResourceName((Item)affected);
-								room.recoverRoomStats();
-								return super.tick(ticking,tickID);
+								if(invoker==null)
+								{
+									invoker=CMClass.getMOB("StdMOB");
+									invoker.setLocation(CMClass.getLocale("StdRoom"));
+									invoker.basePhyStats().setLevel(affected.phyStats().level());
+									invoker.phyStats().setLevel(affected.phyStats().level());
+								}
+								room.showHappens(CMMsg.MSG_OK_ACTION,L("@x1 EXPLODES!!!",affected.name()));
+								for(int i=0;i<room.numInhabitants();i++)
+								{
+									final MOB target=room.fetchInhabitant(i);
+									CMLib.combat().postDamage(invoker(),target,null,CMLib.dice().roll(affected.phyStats().level(),5,1),CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,L("The blast <DAMAGE> <T-NAME>!"));
+								}
+								if(!isFlagSet(FIREFLAG_NEVERDESTROYHOST))
+									((Item)affected).destroy();
 							}
-							room.showHappens(CMMsg.MSG_OK_VISUAL, L("@x1 is no longer burning.",affected.name()));
-							if(!isFlagSet(FIREFLAG_NEVERDESTROYHOST))
-								((Item)affected).destroy();
+							else
+							{
+								final Item ash=CMClass.getItem("GenResource");
+								ash.setName(L("some ash"));
+								ash.setDisplayText(L("a small pile of ash is here"));
+								ash.setMaterial(RawMaterial.RESOURCE_ASH);
+								ash.basePhyStats().setWeight(1);
+								ash.recoverPhyStats();
+								room.addItem(ash,ItemPossessor.Expire.Monster_EQ);
+								((RawMaterial)ash).rebundle();
+								if((affected instanceof RawMaterial)
+								&&(affected.basePhyStats().weight()>1)
+								&&(CMLib.materials().getBurnDuration(affected)>0))
+								{
+									affected.basePhyStats().setWeight(affected.basePhyStats().weight()-1);
+									affected.recoverPhyStats();
+									this.tickDown = CMLib.materials().getBurnDuration(affected);
+									CMLib.materials().adjustResourceName((Item)affected);
+									room.recoverRoomStats();
+									return super.tick(ticking,tickID);
+								}
+								room.showHappens(CMMsg.MSG_OK_VISUAL, L("@x1 is no longer burning.",affected.name()));
+								if(!isFlagSet(FIREFLAG_NEVERDESTROYHOST))
+									((Item)affected).destroy();
+							}
+							break;
 						}
-						break;
-					}
+						}
 					}
 					((Room)E).recoverRoomStats();
 				}
@@ -315,7 +317,7 @@ public class Burning extends StdAbility
 				}
 			}
 		}
-
+		
 		// might want to add the ability for it to spread
 		return true;
 	}
@@ -418,6 +420,27 @@ public class Burning extends StdAbility
 			return false;
 		if(target==null)
 			return false;
+		if(target instanceof MOB)
+		{
+			final MOB targM=(MOB)target;
+			for(int i=0;i<10;i++)
+			{
+				Item I=targM.getRandomItem();
+				if((I.container()==null)&&(CMLib.materials().getBurnDuration(I)>0))
+				{
+					target=I;
+					break;
+				}
+			}
+			// mobs don't burn, only their stuff
+			if(target instanceof MOB)
+			{
+				int dmg=CMLib.dice().roll(1, targM.baseState().getHitPoints() / 10, 0);
+				CMLib.combat().postDamage(mob, targM, this, dmg, CMMsg.MASK_ALWAYS | CMMsg.MASK_MALICIOUS | CMMsg.TYP_FIRE, Weapon.TYPE_BURNING, L("A fire <DAMAGE> <T-NAME>!"));
+				return true;
+			}
+		}
+		
 		if(target.fetchEffect("Burning")==null)
 		{
 			if(((target instanceof Item)&&(((Item)target).material()==RawMaterial.RESOURCE_NOTHING))

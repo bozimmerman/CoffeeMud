@@ -310,26 +310,28 @@ public interface CombatLibrary extends CMLibrary
 	 * Generates a CMMsg message and sends it to the SOURCE room.  Call this
 	 * instead of postAttackResult when the amount of damage done is custom
 	 * instead of random.
+	 * @return the message sent to the source room, or null
 	 * @see CombatLibrary#replaceDamageTag(String, int, int, View)
 	 * @param source the attacker
 	 * @param target the target
 	 * @param item the weapon used
 	 * @param damageInt the amount of damage done by the weapon
 	 */
-	public void postWeaponDamage(MOB source, MOB target, Item item, int damageInt);
+	public CMMsg postWeaponDamage(MOB source, MOB target, Item item, int damageInt);
 	
 	/**
 	 * This method handles both a hit or a miss with a weapon.  The
 	 * hit, obviously, posts damage, while the miss, posts a miss.
 	 * replaceDataTag is called to ensure a proper damage word.
 	 * Generates a CMMsg message and sends it to the SOURCE room.
+	 * @return the message sent to the source room, or null
 	 * @see CombatLibrary#replaceDamageTag(String, int, int, View)
 	 * @param source the attacker
 	 * @param target the target
 	 * @param item the weapon used
 	 * @param success true if it was a hit with damage, false if it was a miss
 	 */
-	public void postWeaponAttackResult(MOB source, MOB target, Item item, boolean success);
+	public CMMsg postWeaponAttackResult(MOB source, MOB target, Item item, boolean success);
 
 
 	/**

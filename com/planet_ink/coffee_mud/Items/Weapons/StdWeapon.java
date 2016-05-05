@@ -158,7 +158,9 @@ public class StdWeapon extends StdItem implements Weapon, AmmunitionWeapon
 					int howMuchToTake=ammunitionCapacity();
 					if(I.ammunitionRemaining()<howMuchToTake)
 						howMuchToTake=I.ammunitionRemaining();
-					setAmmoRemaining(howMuchToTake);
+					if(this.ammunitionCapacity() - this.ammunitionRemaining() < howMuchToTake)
+						howMuchToTake=this.ammunitionCapacity() - this.ammunitionRemaining();
+					setAmmoRemaining(this.ammunitionRemaining() + howMuchToTake);
 					I.setAmmoRemaining(I.ammunitionRemaining()-howMuchToTake);
 					final LinkedList<Ability> removeThese=new LinkedList<Ability>();
 					for(final Enumeration<Ability> a=effects();a.hasMoreElements();)

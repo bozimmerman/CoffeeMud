@@ -905,7 +905,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	}
 
 	@Override
-	public void postWeaponDamage(MOB source, MOB target, Item item, int damageInt)
+	public CMMsg postWeaponDamage(MOB source, MOB target, Item item, int damageInt)
 	{
 		int damageType=Weapon.TYPE_BASHING;
 		Weapon weapon=null;
@@ -945,20 +945,33 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 						   msg.othersCode(),
 						   replaceDamageTag(msg.othersMessage(),msg.value(),damageType,CMMsg.View.OTHERS));
 			}
-			if((source.mayIFight(target))
-			&&(source.location()==room)
-			&&(target.location()==room))
-				room.send(source,msg);
+			if(source.mayIFight(target))
+			{
+				if((msg.source().riding() instanceof BoardableShip)
+				&&(CMLib.combat().isAShipSiegeWeapon(item)))
+				{
+					room.send(source,msg);
+					return msg;
+				}
+				else
+				if((source.location()==room)
+				&&(target.location()==room))
+				{
+					room.send(source,msg);
+					return msg;
+				}
+			}
 		}
+		return null;
 	}
 
 	@Override
-	public void postWeaponAttackResult(MOB source, MOB target, Item item, boolean success)
+	public CMMsg postWeaponAttackResult(MOB source, MOB target, Item item, boolean success)
 	{
 		if(source==null)
-			return;
+			return null;
 		if(!source.mayIFight(target))
-			return;
+			return null;
 		Weapon weapon=null;
 		int damageInt = 0;
 		if(item instanceof Weapon)
@@ -983,8 +996,12 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			final Room R=source.location();
 			if(R!=null)
 			if(R.okMessage(source,msg) && (!source.amDead()) && (!source.amDestroyed()))
+			{
 				R.send(source,msg);
+				return msg;
+			}
 		}
+		return null;
 	}
 
 	@Override

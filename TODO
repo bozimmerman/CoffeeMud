@@ -1,7 +1,4 @@
 BUGS
-2. multishots work, but no message to the sender at ALL
-4. Sailing Ship Yeti was loaded in inventory, but never registered as other ships, no ticks
-10. ll always shows 2-4 conditions
 12. Sailor Behavior:
 	mobs -- captian > lvl 30 is perfectly proficient, otherwise add a delay of (1 normal tick/ 4 level)
 	captain -- set courses on unowned sips

@@ -1511,7 +1511,7 @@ public class GenSailingShip extends StdBoardable
 			case CMMsg.TYP_EXAMINE:
 				if((CMLib.map().areaLocation(msg.source())==area))
 				{
-					StringBuilder visualCondition = new StringBuilder("");
+					final StringBuilder visualCondition = new StringBuilder("");
 					if(this.anchorDown)
 						visualCondition.append(L("\n\r^HThe anchor on @x1 is lowered, holding her in place.^.^?",name(msg.source())));
 					else
@@ -1522,9 +1522,14 @@ public class GenSailingShip extends StdBoardable
 						final double pct=(CMath.div(usesRemaining(),100.0));
 						appendCondition(visualCondition,pct,name(msg.source()));
 					}
-					msg.addTrailerMsg(CMClass.getMsg(msg.source(), null, null, 
-							CMMsg.MSG_OK_VISUAL, visualCondition.toString(), 
-							CMMsg.NO_EFFECT, null, CMMsg.NO_EFFECT, null));
+					msg.addTrailerRunnable(new Runnable()
+					{
+						@Override
+						public void run()
+						{
+							msg.source().tell(visualCondition.toString());
+						}
+					});
 				}
 				break;
 			case CMMsg.TYP_LEAVE:
@@ -1555,8 +1560,9 @@ public class GenSailingShip extends StdBoardable
 					Weapon weapon=null;
 					if((msg.tool() instanceof Weapon))
 						weapon=(Weapon)msg.tool();
-					if((weapon!=null)&&(msg.source().riding()!=null))
+					if((weapon!=null)&&(msg.source().riding()!=null)&&(owner() instanceof Room))
 					{
+						final Room shipRoom=(Room)owner();
 						final boolean isHit=msg.value()>0;
 						if(isHit && CMLib.combat().isAShipSiegeWeapon(weapon) 
 						&& (((AmmunitionWeapon)weapon).ammunitionCapacity() > 1))
@@ -1586,7 +1592,7 @@ public class GenSailingShip extends StdBoardable
 									final Pair<MOB,Room> randomPair = (targets.size()>0)? targets.get(CMLib.dice().roll(1,targets.size(),-1)) : null;
 									if((CMLib.dice().rollPercentage() < chanceToHit)&&(randomPair != null))
 									{
-										msg.source().setLocation(randomPair.second);
+										msg.source().setLocation(shipRoom);
 										double pctLoss = CMath.div(msg.value(), getMaxHullPoints());
 										int pointsLost = (int)Math.round(pctLoss * msg.source().maxState().getHitPoints());
 										CMLib.combat().postWeaponDamage(msg.source(), randomPair.first, weapon, pointsLost);
@@ -1594,7 +1600,7 @@ public class GenSailingShip extends StdBoardable
 									else
 									if(randomPair != null)
 									{
-										msg.source().setLocation(randomPair.second);
+										msg.source().setLocation(shipRoom);
 										CMLib.combat().postWeaponAttackResult(msg.source(), randomPair.first, weapon, false);
 									}
 									else

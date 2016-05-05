@@ -702,15 +702,21 @@ public class StdRideable extends StdContainer implements Rideable
 				&& (this.rideBasis() == Rideable.RIDEABLE_WATER)
 				&& (CMath.bset(material(), RawMaterial.MATERIAL_WOODEN)))
 				{
-					StringBuilder visualCondition = new StringBuilder("");
+					// this is for the small rideable boats
+					final StringBuilder visualCondition = new StringBuilder("");
 					if(this.subjectToWearAndTear() && (usesRemaining() <= 100))
 					{
 						final double pct=(CMath.div(usesRemaining(),100.0));
 						GenSailingShip.appendCondition(visualCondition,pct,CMStrings.capitalizeFirstLetter(name(msg.source())));
 					}
-					msg.addTrailerMsg(CMClass.getMsg(msg.source(), null, null, 
-							CMMsg.MSG_OK_VISUAL, visualCondition.toString(), 
-							CMMsg.NO_EFFECT, null, CMMsg.NO_EFFECT, null));
+					msg.addTrailerRunnable(new Runnable()
+					{
+						@Override
+						public void run()
+						{
+							msg.source().tell(visualCondition.toString());
+						}
+					});
 				}
 			}
 			break;
