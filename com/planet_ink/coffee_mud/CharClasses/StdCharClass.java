@@ -835,7 +835,8 @@ public class StdCharClass implements CharClass
 	@Override
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)
 	{
-		if(CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.ALLSKILLS))
+		if(CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.ALLSKILLS)
+		&&(mob.soulMate()==null))
 		{
 			// the most efficient way of doing this -- just hash em!
 			final Hashtable<String,Ability> alreadyAble=new Hashtable<String,Ability>();

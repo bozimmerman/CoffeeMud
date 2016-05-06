@@ -257,7 +257,7 @@ public class LightSource extends StdItem implements Light
 				if(getDuration()>0)
 				{
 					if(!isLit())
-						msg.addTrailerMsg(CMClass.getMsg(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> light(s) up @x1.",name())));
+						msg.addTrailerMsg(CMClass.getMsg(mob,this,CMMsg.MASK_SOUND|CMMsg.MASK_HANDS|CMMsg.MASK_MOVE|CMMsg.TYP_FIRE,L("<S-NAME> light(s) up @x1.",name())));
 					else
 						mob.tell(L("@x1 is already lit.",name()));
 					light(true);
