@@ -242,6 +242,19 @@ public class GenSailingShip extends StdBoardable
 		return "";
 	}
 
+	protected String getDirectionToTarget(Rideable targetedShip)
+	{
+		if((targetedShip != null)&&(targetedShip instanceof GenSailingShip))
+		{
+			final GenSailingShip targetShip = (GenSailingShip)targetedShip;
+			final int[] targetCoords = targetShip.getMyCoords();
+			final int[] myCoords = this.getMyCoords();
+			if((myCoords!=null)&&(targetCoords != null))
+				return CMLib.directions().getDirectionName(Directions.getRelative11Directions(myCoords, targetCoords));
+		}
+		return "";
+	}
+
 	protected Room getRandomDeckRoom()
 	{
 		final Area A=this.getShipArea();
@@ -2144,6 +2157,8 @@ public class GenSailingShip extends StdBoardable
 											"AREA","OWNER","PRICE","PUTSTR","MOUNTSTR","DISMOUNTSTR","DEFCLOSED","DEFLOCKED",
 											"EXITNAME"
 										  };
+	private final static String[] MISCCODES = { "DISTANCETOTARGET","DIRECTIONFACING","DIRECTIONTOTARGET","ANCHORDOWN" };
+	
 	@Override
 	public String getStat(String code)
 	{
@@ -2184,6 +2199,21 @@ public class GenSailingShip extends StdBoardable
 		case 15:
 			return "" + doorName();
 		default:
+			int x=CMParms.indexOf(MISCCODES, code.toUpperCase().trim());
+			if(x>=0)
+			{
+				switch(x)
+				{
+				case 0:
+					return "" + this.getTacticalDistance(this.targetedShip);
+				case 1:
+					return (this.directionFacing < 0) ? "" : CMLib.directions().getDirectionName(this.directionFacing);
+				case 2:
+					return "" + this.getDirectionToTarget(this.targetedShip);
+				case 3:
+					return "" + this.anchorDown;
+				}
+			}
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
 	}
@@ -2243,6 +2273,26 @@ public class GenSailingShip extends StdBoardable
 			this.doorName = val;
 			break;
 		default:
+			int x=CMParms.indexOf(MISCCODES, code.toUpperCase().trim());
+			if(x>=0)
+			{
+				switch(x)
+				{
+				case 0:
+					// set distance to target;
+					break;
+				case 1:
+					this.directionFacing = CMath.s_int(val);
+					break;
+				case 2:
+					// set direction to target
+					break;
+				case 3:
+					this.anchorDown=CMath.s_bool(val);
+					break;
+				}
+				return;
+			}
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;
 		}

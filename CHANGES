@@ -21,7 +21,10 @@
   20. Trailto now accepts full tracking flag set as arguments, as well as other new tweek settings
   22. Rules for mixing races can now be tweeked a little.  See coffeemud.ini RACEMIXING.
   21. Can now add/item items directly to shopkeeper inventory from MUDGrinder!!!
-  22. New item type: GenGrapples, for creating a portal between two ship bridges
+  22. New item type: GenSiegeWeapon, for combat between ships
+  23. New item type: GenGrapples, for creating a portal between two ship bridges
+  24. New behavior: Sailor, for allowing mobs to sail and fight on the big ships
+  25. If it's not already obvious, new feature: GenSailingShip combat, see help SHIP COMBAT
 # Build 5.9.2 Released 02/09/2016
    1. Apprentice now gets bonus common skill.
    2. Prop_ItemBinder can now bind to a group.

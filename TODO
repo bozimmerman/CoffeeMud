@@ -1,9 +1,4 @@
 BUGS
-12. Sailor Behavior:
-	captain -- set courses on unowned sips
-	sailor -- load and aim weapons
-	option to use shipwright mend (above 11)
-	above level 21 they board with grapples
 
 TECH
    *. do ship damage, make realibility and installed factor more about this.

@@ -8522,6 +8522,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			}
 			if(me instanceof PackagedItems)
 				((PackagedItems)me).setNumberOfItemsInPackage(prompt(mob,((PackagedItems)me).numberOfItemsInPackage(),++showNumber,showFlag,"Number of items in the package"));
+			if(me instanceof PrivateProperty)
+			{
+				promptStatStr(mob,me,null,++showNumber,showFlag,"Owner","OWNER",true);
+				promptStatInt(mob,me,null,++showNumber,showFlag,"Price","PRICE");
+			}
 			genGettable(mob,me,++showNumber,showFlag);
 			genReadable1(mob,me,++showNumber,showFlag);
 			genReadable2(mob,me,++showNumber,showFlag);
@@ -8897,6 +8902,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(!(me instanceof Electronics))
 			{
 				genContainerTypes(mob,me,++showNumber,showFlag);
+			}
+			if(me instanceof PrivateProperty)
+			{
+				promptStatStr(mob,me,null,++showNumber,showFlag,"Owner","OWNER",true);
+				promptStatInt(mob,me,null,++showNumber,showFlag,"Price","PRICE");
 			}
 			genDoorsNLocks(mob,me,L("lid"),++showNumber,showFlag);
 			if(me.hasADoor() && me.hasALock() && !CMLib.flags().isReadable(me))
