@@ -2023,4 +2023,21 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		return null;
 	}
 	
+	@Override
+	public int getSailingShipSpeed(Item I)
+	{
+		if(I==null)
+			return 0;
+		int speed=I.phyStats().ability();
+		if(I.subjectToWearAndTear())
+		{
+			if(I.usesRemaining()<10)
+				return 0;
+			speed=(int)Math.round(speed * CMath.div(I.usesRemaining(), 100));
+		}
+		if(speed <= 0)
+			return 1;
+		return speed;
+	}
+
 }
