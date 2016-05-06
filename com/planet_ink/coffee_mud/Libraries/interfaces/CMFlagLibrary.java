@@ -752,6 +752,15 @@ public interface CMFlagLibrary extends CMLibrary
 	 * @return true if it is marked falling, false otherwise
 	 */
 	public boolean isFalling(Physical P);
+	
+	/**
+	 * Returns which direction, if any, the given object
+	 * is falling. 
+	 * @see com.planet_ink.coffee_mud.core.Directions
+	 * @param P the item, mob, whatever to check
+	 * @return direction it is falling
+	 */
+	public int getFallingDirection(Physical P);
 
 	/**
 	 * Returns whether the given player is 

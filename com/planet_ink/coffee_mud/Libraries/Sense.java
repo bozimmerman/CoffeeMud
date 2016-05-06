@@ -834,6 +834,16 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		return (P != null) && ((P.phyStats().disposition() & PhyStats.IS_FALLING) == PhyStats.IS_FALLING);
 	}
 
+	public int getFallingDirection(Physical P)
+	{
+		if(!isFalling(P))
+			return -1;
+		Ability A=P.fetchEffect("Falling");
+		if((A!=null) && (A.proficiency()==100))
+			return Directions.UP;
+		return Directions.DOWN;
+	}
+	
 	@Override
 	public boolean isRunningLongCommand(MOB M)
 	{
