@@ -283,7 +283,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 	public Room prepareGridLocale(Room fromRoom, Room toRoom, int direction)
 	{
 		final XYVector xy=getRoomXY(fromRoom);
-		if((xy.x>=0)&&(xy.x<xGridSize())&&(xy.y>=0)&&(xy.y<yGridSize()))
+		if((xy!=null)&&(xy.x>=0)&&(xy.x<xGridSize())&&(xy.y>=0)&&(xy.y<yGridSize()))
 			fillExitsOfGridRoom(fromRoom,xy.x,xy.y);
 		return fromRoom.rawDoors()[direction];
 	}
