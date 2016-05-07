@@ -1385,7 +1385,6 @@ public class GenSailingShip extends StdBoardable
 						mob.setRangeToTarget(0);
 						mob.destroy();
 					}
-					
 				}
 			}
 		}

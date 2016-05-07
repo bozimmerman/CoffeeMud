@@ -410,6 +410,9 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	{
 		if((newState==State.ACTIVE)&&(!CMLib.threads().isTicking(this,Tickable.TICKID_AREA)))
 			CMLib.threads().startTickDown(this,Tickable.TICKID_AREA,1);
+		else
+		if((newState==State.STOPPED)&&(CMLib.threads().isTicking(this,Tickable.TICKID_AREA)))
+			CMLib.threads().deleteTick(this, Tickable.TICKID_AREA);
 		flag=newState;
 	}
 

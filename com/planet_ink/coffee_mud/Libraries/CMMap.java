@@ -1568,12 +1568,23 @@ public class CMMap extends StdLibrary implements WorldMap
 	protected void addShip(BoardableShip newOne)
 	{
 		if (!shipList.contains(newOne))
+		{
 			shipList.add(newOne);
+			final Area area=newOne.getShipArea();
+			if((area!=null)&&(area.getAreaState()==Area.State.ACTIVE))
+				area.setAreaState(Area.State.ACTIVE);
+		}
 	}
 
 	protected void delShip(BoardableShip oneToDel)
 	{
 		shipList.remove(oneToDel);
+		if(oneToDel!=null)
+		{
+			final Area area=oneToDel.getShipArea();
+			if(area!=null)
+				area.setAreaState(Area.State.STOPPED);
+		}
 	}
 
 	@Override

@@ -159,7 +159,8 @@ public class Sailor extends StdBehavior
 	
 	protected boolean amInTrouble()
 	{
-		return ((loyalShipItem!=null)
+		return (wimpy
+		&&(loyalShipItem!=null)
 		&&(this.targetShipItem!=null)
 		&&(combatMover)
 		&&(((Item)targetShipItem).subjectToWearAndTear())
@@ -174,7 +175,8 @@ public class Sailor extends StdBehavior
 		if((R!=null)
 		&&(CMLib.flags().isWateryRoom(R))
 		&&(E!=null)
-		&&(E.isOpen()))
+		&&(E.isOpen())
+		&&((!areaOnly)||(CMLib.map().areaLocation(shipR)==CMLib.map().areaLocation(R))))
 			return true;
 		return false;
 	}
@@ -192,12 +194,7 @@ public class Sailor extends StdBehavior
 			final List<Integer> goodDirs = new ArrayList<Integer>();
 			for(int dir : Directions.CODES())
 			{
-				Room R=shipR.getRoomInDir(dir);
-				Exit E=shipR.getExitInDir(dir);
-				if((R!=null)
-				&&(CMLib.flags().isWateryRoom(R))
-				&&(E!=null)
-				&&(E.isOpen()))
+				if(isGoodShipDir(shipR,dir))
 					goodDirs.add(Integer.valueOf(dir));
 			}
 			final Integer dirI=Integer.valueOf(directionToTarget);
@@ -254,13 +251,15 @@ public class Sailor extends StdBehavior
 					loyalShipArea = (BoardableShip)mobRoom.getArea();
 					loyalShipItem = loyalShipArea.getShipItem();
 				}
+				
 				if(loyalShipItem==null)
 					return true;
 				
 				if(mobRoom.getArea() != loyalShipArea)
 					return true;
 				
-				if(CMLib.map().roomLocation(targetShipItem)!=CMLib.map().roomLocation(loyalShipItem))
+				if((targetShipItem!=null) 
+				&&CMLib.map().roomLocation(targetShipItem)!=CMLib.map().roomLocation(loyalShipItem))
 				{
 					combatIsOver=true;
 					targetShipItem = null;
@@ -275,12 +274,13 @@ public class Sailor extends StdBehavior
 						mob.enqueCommand(new XVector<String>("RAISE","ANCHOR"), 0, 0);
 						return true;
 					}
-					if((loyalShipItem.owner() instanceof Room)
-					&&(loyalShipItem.owner() instanceof GridLocale)
-					&&(((Room)loyalShipItem.owner()).getGridParent()==null)
-					&&(canMoveShip()))
-						((GridLocale)loyalShipItem.owner()).getRandomGridChild().moveItemTo(loyalShipItem);
 				}
+				
+				if((loyalShipItem.owner() instanceof Room)
+				&&(loyalShipItem.owner() instanceof GridLocale)
+				&&(((Room)loyalShipItem.owner()).getGridParent()==null)
+				&&(canMoveShip()))
+					((GridLocale)loyalShipItem.owner()).getRandomGridChild().moveItemTo(loyalShipItem);
 				
 				if(targetShipItem != null)
 				{
@@ -425,6 +425,11 @@ public class Sailor extends StdBehavior
 					if(combatIsOver && CMLib.flags().isMobile(mob))
 					{
 						combatIsOver = false;
+						if(combatMover && (!peaceMover))
+						{
+							mob.enqueCommand(new XVector<String>("COURSE"), 0, 0);
+							mob.enqueCommand(new XVector<String>("LOWER","ANCHOR"), 0, 0);
+						}
 						for(Enumeration<Item> i=mobRoom.items();i.hasMoreElements();)
 						{
 							Item I=i.nextElement();
