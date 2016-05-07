@@ -432,7 +432,7 @@ public class GenSailingShip extends StdBoardable
 							}
 						}
 					}
-					break;
+					return false;
 				}
 				case WEIGH_ANCHOR:
 				case RAISE_ANCHOR:
