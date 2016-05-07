@@ -3008,7 +3008,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		final String defaultAmmo=(AW.requiresAmmunition())?"Y":"N";
 		if((showFlag!=showNumber)&&(showFlag>-999))
 		{
-			mob.tell(L("@x1. Ammo required: @x2 (@x3)",""+showNumber,""+AW.requiresAmmunition(),""+AW.ammunitionType()));
+			mob.tell(L("@x1. Ammo required: @x2 (@x3/@x4)",""+showNumber,""+AW.requiresAmmunition(),""+AW.ammunitionCapacity(),""+AW.ammunitionType()));
 			return;
 		}
 

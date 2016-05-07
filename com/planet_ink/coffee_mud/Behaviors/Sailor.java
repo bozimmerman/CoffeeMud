@@ -113,7 +113,13 @@ public class Sailor extends StdBehavior
 			&&(msg.source().riding() == loyalShipItem))
 			{
 				targetShipItem = (Rideable)msg.target();
-				//targetShipDist = -1;
+			}
+			else
+			if((msg.target()  == loyalShipItem)
+			&&(CMath.bset(msg.targetMajor(), CMMsg.MASK_MALICIOUS))
+			&&(msg.source().riding() != loyalShipItem))
+			{
+				targetShipItem = (Rideable)msg.target();
 			}
 			break;
 		case CMMsg.TYP_ENTER:
@@ -253,7 +259,7 @@ public class Sailor extends StdBehavior
 									&&(I2.container()==null)
 									&&(((Ammunition)I2).ammunitionType().equals(((AmmunitionWeapon)I).ammunitionType())))
 									{
-										mob.enqueCommand(new XVector<String>("GET","ALL",I.Name()), 0, 0);
+										mob.enqueCommand(new XVector<String>("GET","ALL",I2.Name()), 0, 0);
 										return true;
 									}
 								}
@@ -335,6 +341,7 @@ public class Sailor extends StdBehavior
 								course.add(lastDir);
 							ourSpeed--;
 						}
+						mob.enqueCommand(course, 0, 0);
 					}
 				}
 				else
@@ -434,6 +441,7 @@ public class Sailor extends StdBehavior
 								course.add(lastDir);
 							ourSpeed--;
 						}
+						mob.enqueCommand(course, 0, 0);
 					}
 				}
 			}

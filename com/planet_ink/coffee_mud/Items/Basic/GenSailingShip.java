@@ -413,9 +413,24 @@ public class GenSailingShip extends StdBoardable
 							return false;
 						}
 						String timeToFire=""+(CMLib.threads().msToNextTick((Tickable)CMLib.combat(), Tickable.TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK) / 1000);
-						this.aimings.removeFirst(weapon);
-						this.aimings.add(new Pair<Weapon,int[]>(weapon,targetCoords));
-						msg.source().tell(L("@x1 is now aimed and will be fired in @x2 seconds.",I.name(),timeToFire));
+						String msgStr=L("<S-NAME> aim(s) <O-NAME> at <T-NAME> (@x1).",""+distance);
+						if(msg.source().isMonster() && aimings.contains(weapon))
+						{
+							msg.source().tell(L("@x1 is already aimed.",weapon.Name()));
+							return false;
+						}
+						CMMsg msg2=CMClass.getMsg(msg.source(), targetedShip, weapon, CMMsg.MSG_NOISYMOVEMENT, msgStr);
+						final Room R=CMLib.map().roomLocation(this);
+						if(R!=null)
+						{
+							if((R.okMessage(msg.source(), msg2) && this.okAreaMessage(msg2, true)))
+							{
+								this.aimings.removeFirst(weapon);
+								this.aimings.add(new Pair<Weapon,int[]>(weapon,targetCoords));
+								R.send(msg.source(), msg2);
+								msg.source().tell(L("@x1 is now aimed and will be fired in @x2 seconds.",I.name(),timeToFire));
+							}
+						}
 					}
 					break;
 				}
