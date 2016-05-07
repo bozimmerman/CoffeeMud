@@ -385,6 +385,7 @@ public class GenSailingShip extends StdBoardable
 						AmmunitionWeapon weapon=(AmmunitionWeapon)I;
 						int distance = weapon.maxRange();
 						int[] targetCoords = new int[2];
+						int leadAmt=0;
 						if(this.targetedShip instanceof GenSailingShip)
 						{
 							targetCoords = ((GenSailingShip)this.targetedShip).getMyCoords();
@@ -395,7 +396,7 @@ public class GenSailingShip extends StdBoardable
 								return false;
 							}
 							distance = this.getTacticalDistance(this.targetedShip);
-							int leadAmt = CMath.s_int(leadStr);
+							leadAmt = CMath.s_int(leadStr);
 							for(int i=0;i<leadAmt;i++)
 								targetCoords = Directions.adjustXYByDirections(targetCoords[0], targetCoords[1], direction);
 						}
@@ -413,23 +414,19 @@ public class GenSailingShip extends StdBoardable
 							return false;
 						}
 						String timeToFire=""+(CMLib.threads().msToNextTick((Tickable)CMLib.combat(), Tickable.TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK) / 1000);
-						String msgStr=L("<S-NAME> aim(s) <O-NAME> at <T-NAME> (@x1).",""+distance);
+						String msgStr=L("<S-NAME> aim(s) <O-NAME> at <T-NAME> (@x1).",""+leadAmt);
 						if(msg.source().isMonster() && aimings.contains(weapon))
 						{
 							msg.source().tell(L("@x1 is already aimed.",weapon.Name()));
 							return false;
 						}
 						CMMsg msg2=CMClass.getMsg(msg.source(), targetedShip, weapon, CMMsg.MSG_NOISYMOVEMENT, msgStr);
-						final Room R=CMLib.map().roomLocation(this);
-						if(R!=null)
+						if(mobR.okMessage(msg.source(), msg2))
 						{
-							if((R.okMessage(msg.source(), msg2) && this.okAreaMessage(msg2, true)))
-							{
-								this.aimings.removeFirst(weapon);
-								this.aimings.add(new Pair<Weapon,int[]>(weapon,targetCoords));
-								R.send(msg.source(), msg2);
-								msg.source().tell(L("@x1 is now aimed and will be fired in @x2 seconds.",I.name(),timeToFire));
-							}
+							this.aimings.removeFirst(weapon);
+							this.aimings.add(new Pair<Weapon,int[]>(weapon,targetCoords));
+							mobR.send(msg.source(), msg2);
+							msg.source().tell(L("@x1 is now aimed and will be fired in @x2 seconds.",I.name(),timeToFire));
 						}
 					}
 					return false;

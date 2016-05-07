@@ -49,6 +49,7 @@ public class Sailor extends StdBehavior
 	protected boolean		aggressive		= false;
 	protected boolean		aggrMobs		= false;
 	protected boolean		areaOnly		= true;
+	protected boolean		wimpy			= true;
 	//protected int			targetShipDist	= -1;
 	
 	@Override
@@ -71,6 +72,7 @@ public class Sailor extends StdBehavior
 		combatTech = CMParms.getParmBool(newParms, "FIGHTTECH", true);
 		aggressive = CMParms.getParmBool(newParms, "AGGRO", false);
 		aggrMobs = CMParms.getParmBool(newParms, "AGGROMOBS", false);
+		wimpy = CMParms.getParmBool(newParms, "WIMPY", true);
 		loyalShipArea	= null;
 		loyalShipItem	= null;
 	}
@@ -155,6 +157,68 @@ public class Sailor extends StdBehavior
 		return false;
 	}
 	
+	protected boolean amInTrouble()
+	{
+		return ((loyalShipItem!=null)
+		&&(this.targetShipItem!=null)
+		&&(combatMover)
+		&&(((Item)targetShipItem).subjectToWearAndTear())
+		&&(loyalShipItem.subjectToWearAndTear())
+		&&((((Item)targetShipItem).usesRemaining() - loyalShipItem.usesRemaining()) > 33));
+	}
+
+	protected boolean isGoodShipDir(Room shipR, int dir)
+	{
+		final Room R=shipR.getRoomInDir(dir);
+		final Exit E=shipR.getExitInDir(dir);
+		if((R!=null)
+		&&(CMLib.flags().isWateryRoom(R))
+		&&(E!=null)
+		&&(E.isOpen()))
+			return true;
+		return false;
+	}
+	
+	protected int getEscapeRoute(int directionToTarget)
+	{
+		if(directionToTarget < 0)
+			return directionToTarget;
+		Room shipR=CMLib.map().roomLocation(loyalShipItem);
+		if(shipR!=null)
+		{
+			int opDir=Directions.getOpDirectionCode(directionToTarget);
+			if(isGoodShipDir(shipR,opDir))
+				return opDir;
+			final List<Integer> goodDirs = new ArrayList<Integer>();
+			for(int dir : Directions.CODES())
+			{
+				Room R=shipR.getRoomInDir(dir);
+				Exit E=shipR.getExitInDir(dir);
+				if((R!=null)
+				&&(CMLib.flags().isWateryRoom(R))
+				&&(E!=null)
+				&&(E.isOpen()))
+					goodDirs.add(Integer.valueOf(dir));
+			}
+			final Integer dirI=Integer.valueOf(directionToTarget);
+			if(goodDirs.contains(dirI)
+			&&(goodDirs.size()>1))
+				goodDirs.remove(dirI);
+			if(goodDirs.size()>0)
+				return goodDirs.get(0).intValue();
+		}
+		return -1;
+	}
+	
+	protected boolean canMoveShip()
+	{
+		return ((loyalShipItem!=null)
+		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MOBILITY))
+		&&(loyalShipItem.owner() instanceof Room)
+		&&(((Room)loyalShipItem.owner()).getMobility())
+		&&(!CMLib.tracking().isAnAdminHere((Room)loyalShipItem.owner(), true)));
+	}
+	
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -190,24 +254,23 @@ public class Sailor extends StdBehavior
 					loyalShipArea = (BoardableShip)mobRoom.getArea();
 					loyalShipItem = loyalShipArea.getShipItem();
 				}
-				if((loyalShipArea!=null)
-				&&(mobRoom.getArea() != loyalShipArea))
-					return true;
-				
 				if(loyalShipItem==null)
 					return true;
 				
-				if((targetShipItem != null)
-				&&(CMLib.map().roomLocation(targetShipItem)!=CMLib.map().roomLocation(loyalShipItem)))
+				if(mobRoom.getArea() != loyalShipArea)
+					return true;
+				
+				if(CMLib.map().roomLocation(targetShipItem)!=CMLib.map().roomLocation(loyalShipItem))
 				{
 					combatIsOver=true;
 					targetShipItem = null;
 					//stop combat signal
 				}
 				
-				if(combatMover || peaceMover)
+				if(((combatMover && (targetShipItem != null)) || peaceMover))
 				{
-					if(CMath.s_bool(loyalShipItem.getStat("ANCHORDOWN")))
+					if(CMath.s_bool(loyalShipItem.getStat("ANCHORDOWN"))
+					&&(canMoveShip()))
 					{
 						mob.enqueCommand(new XVector<String>("RAISE","ANCHOR"), 0, 0);
 						return true;
@@ -215,10 +278,7 @@ public class Sailor extends StdBehavior
 					if((loyalShipItem.owner() instanceof Room)
 					&&(loyalShipItem.owner() instanceof GridLocale)
 					&&(((Room)loyalShipItem.owner()).getGridParent()==null)
-					&&(!CMLib.tracking().isAnAdminHere((Room)loyalShipItem.owner(),false))
-					&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MOBILITY))
-					&&(loyalShipItem.owner() instanceof Room)
-					&&(((Room)loyalShipItem.owner()).getMobility()))
+					&&(canMoveShip()))
 						((GridLocale)loyalShipItem.owner()).getRandomGridChild().moveItemTo(loyalShipItem);
 				}
 				
@@ -311,9 +371,7 @@ public class Sailor extends StdBehavior
 					&&((!(loyalShipItem instanceof PrivateProperty))
 						||(((PrivateProperty)loyalShipItem).getOwnerName().length()==0)
 						||CMLib.law().doesOwnThisProperty(mob, (PrivateProperty)loyalShipItem))
-					&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MOBILITY))
-					&&(loyalShipItem.owner() instanceof Room)
-					&&(((Room)loyalShipItem.owner()).getMobility())
+					&&(canMoveShip())
 					)
 					{
 						int ourSpeed = CMLib.tracking().getSailingShipSpeed(loyalShipItem);
@@ -325,6 +383,19 @@ public class Sailor extends StdBehavior
 						if((lastDir==null)||(lastDir.length()==0))
 							lastDir = CMLib.directions().getDirectionName(CMLib.dice().roll(1, 4, -1));
 						String directionToTarget = loyalShipItem.getStat("DIRECTIONTOTARGET");
+						if(this.amInTrouble() && (ourSpeed >0))
+						{
+							final int dirToTarget=CMLib.directions().getDirectionCode(directionToTarget);
+							final int escapeDir = this.getEscapeRoute(dirToTarget);
+							if(escapeDir >=0)
+							{
+								for(int i=0;i<ourSpeed;i++)
+								{
+									course.add(CMLib.directions().getDirectionName(escapeDir));
+								}
+								ourSpeed = 0;
+							}
+						}
 						while(ourSpeed > 0)
 						{
 							if(ourSpeed == 1)
@@ -417,9 +488,7 @@ public class Sailor extends StdBehavior
 					&&((!(loyalShipItem instanceof PrivateProperty))
 						||(((PrivateProperty)loyalShipItem).getOwnerName().length()==0)
 						||CMLib.law().doesOwnThisProperty(mob, (PrivateProperty)loyalShipItem))
-					&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MOBILITY))
-					&&(loyalShipItem.owner() instanceof Room)
-					&&(((Room)loyalShipItem.owner()).getMobility())
+					&&(canMoveShip())
 					)
 					{
 						int ourSpeed = CMLib.tracking().getSailingShipSpeed(loyalShipItem);
