@@ -432,9 +432,17 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 							if(msg.trailerMsgs()!=null)
 							{
 								for(final CMMsg msg2 : msg.trailerMsgs())
+								{
 									if((msg!=msg2)&&(target.okMessage(target,msg2)))
 										target.executeMsg(target,msg2);
+								}
 								msg.trailerMsgs().clear();
+								if(msg.trailerRunnables()!=null)
+								{
+									for(final Runnable r : msg.trailerRunnables())
+										CMLib.threads().executeRunnable(r);
+									msg.trailerRunnables().clear();
+								}
 							}
 							if((!mob.isMonster())&&(!target.isMonster()))
 							{

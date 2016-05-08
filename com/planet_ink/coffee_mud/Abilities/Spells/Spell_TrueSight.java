@@ -36,14 +36,45 @@ import java.util.*;
 
 public class Spell_TrueSight extends Spell
 {
-	@Override public String ID() { return "Spell_TrueSight"; }
-	private final static String localizedName = CMLib.lang().L("True Sight");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(True Sight)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;	}
+	@Override
+	public String ID()
+	{
+		return "Spell_TrueSight";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("True Sight");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(True Sight)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_SELF;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL | Ability.DOMAIN_DIVINATION;
+	}
 
 	@Override
 	public void unInvoke()
@@ -63,15 +94,54 @@ public class Spell_TrueSight extends Spell
 		if(!super.okMessage(myHost,msg))
 			return false;
 		if(!(affected instanceof MOB))
-		   return true;
+			return true;
 		if((msg.amISource((MOB)affected))
 		&&((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE))
 		&&(msg.target()!=null)
 		&&(!msg.target().name().equals(msg.target().Name())))
-			msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,this,CMMsg.MSG_OK_VISUAL,L("@x1 is truly @x2.",msg.target().name(),msg.target().Name()),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+			msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,this,CMMsg.MSG_OK_VISUAL,L("^H@x1 is truly @x2.^N",msg.target().name(),msg.target().Name()),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
 		return true;
 	}
 
+	@Override
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
+	{
+		super.executeMsg(myHost, msg);
+		if((msg.source()!=affected)
+		&&(affected instanceof MOB)
+		&&(msg.source().fetchEffect("Spell_ObscureSelf")!=null))
+		{
+			if((msg.target()==affected)
+			&&((msg.targetMessage()!=null)&&(msg.targetMessage().toLowerCase().indexOf("someone")>=0)))
+			{
+				msg.addTrailerRunnable(new Runnable()
+				{
+					final MOB M=(MOB)affected;
+					@Override
+					public void run()
+					{
+						if(M!=null)
+							M.tell(L("^HThat someone was @x1.^N",msg.source().Name()));
+					}
+				});
+			}
+			else
+			if((msg.othersMessage()!=null)&&(msg.othersMessage().toLowerCase().indexOf("someone")>=0))
+			{
+				msg.addTrailerRunnable(new Runnable()
+				{
+					final MOB M=(MOB)affected;
+					@Override
+					public void run()
+					{
+						if(M!=null)
+							M.tell(L("^HThat someone was @x1.^N",msg.source().Name()));
+					}
+				});
+			}
+			
+		}
+	}
 
 	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)

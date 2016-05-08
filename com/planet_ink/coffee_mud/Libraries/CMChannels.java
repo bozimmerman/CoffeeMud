@@ -653,6 +653,12 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 				}
 				msg.trailerMsgs().clear();
 			}
+			if(msg.trailerRunnables()!=null)
+			{
+				for(final Runnable r : msg.trailerRunnables())
+					CMLib.threads().executeRunnable(r);
+				msg.trailerRunnables().clear();
+			}
 		}
 		return didIt;
 	}

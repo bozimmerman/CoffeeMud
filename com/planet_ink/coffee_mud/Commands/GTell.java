@@ -128,9 +128,17 @@ public class GTell extends StdCommand
 				if(msg.trailerMsgs()!=null)
 				{
 					for(final CMMsg msg2 : msg.trailerMsgs())
+					{
 						if((msg2!=msg)&&(target.okMessage(target,msg2)))
 							target.executeMsg(target,msg2);
+					}
 					msg.trailerMsgs().clear();
+				}
+				if(msg.trailerRunnables()!=null)
+				{
+					for(final Runnable r : msg.trailerRunnables())
+						CMLib.threads().executeRunnable(r);
+					msg.trailerRunnables().clear();
 				}
 			}
 		}
