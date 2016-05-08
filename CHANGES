@@ -26,7 +26,7 @@
   24. New behavior: Sailor, for allowing mobs to sail and fight on the big ships
   25. New Common Skill: Siegecraft, for making siege weapons for ship combat
   25. If it's not already obvious, new feature: GenSailingShip combat, see help SHIP COMBAT
-  26. New disable flag: FOODROT for disabling the automatic raw food rotability
+  26. New disable flag: FOODROT for disabling the automatic raw food rottability
 # Build 5.9.2 Released 02/09/2016
    1. Apprentice now gets bonus common skill.
    2. Prop_ItemBinder can now bind to a group.
