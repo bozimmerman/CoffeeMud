@@ -834,6 +834,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		return (P != null) && ((P.phyStats().disposition() & PhyStats.IS_FALLING) == PhyStats.IS_FALLING);
 	}
 
+	@Override
 	public int getFallingDirection(Physical P)
 	{
 		if(!isFalling(P))
@@ -1340,6 +1341,8 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	{
 		if(P!=null)
 		{
+			if((P instanceof BoardableShip)&&(!((BoardableShip)P).amDestroyed()))
+				return true;
 			for(final Enumeration<Behavior> e=P.behaviors();e.hasMoreElements();)
 			{
 				final Behavior B=e.nextElement();
