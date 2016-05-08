@@ -906,6 +906,67 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	}
 
 	@Override
+	public Item ruinItem(Item I)
+	{
+		if(I==null)
+			return null;
+		if((CMath.bset(I.phyStats().disposition(),PhyStats.IS_UNSAVABLE))
+		||(CMath.bset(I.phyStats().sensesMask(), PhyStats.SENSE_ITEMNORUIN))
+		||(I instanceof Coins))
+			return I;
+		if(I.ID().equals("GenRuinedItem"))
+			return I;
+		final Item I2=CMClass.getItem("GenRuinedItem");
+		I2.basePhyStats().setWeight(I.basePhyStats().weight());
+		I2.setName(I.Name());
+		I2.setDisplayText(I.displayText());
+		I2.setDescription(I2.description());
+		I2.recoverPhyStats();
+		I2.setRawLogicalAnd(I.rawLogicalAnd());
+		I2.setRawProperLocationBitmap(I.rawProperLocationBitmap());
+		I2.setMaterial(I.material());
+		String ruinDescAdder=null;
+		switch(I2.material()&RawMaterial.MATERIAL_MASK)
+		{
+			case RawMaterial.MATERIAL_LEATHER:
+			case RawMaterial.MATERIAL_CLOTH:
+			case RawMaterial.MATERIAL_VEGETATION:
+			case RawMaterial.MATERIAL_FLESH:
+			case RawMaterial.MATERIAL_PAPER:
+				ruinDescAdder=L("@x1  is torn and ruined beyond repair.",CMStrings.capitalizeFirstLetter(I2.name()));
+				break;
+			case RawMaterial.MATERIAL_METAL:
+			case RawMaterial.MATERIAL_MITHRIL:
+			case RawMaterial.MATERIAL_WOODEN:
+				ruinDescAdder=L("@x1 is battered and ruined beyond repair.",CMStrings.capitalizeFirstLetter(I2.name()));
+				break;
+			case RawMaterial.MATERIAL_GLASS:
+				ruinDescAdder=L("@x1 is shattered and ruined beyond repair.",CMStrings.capitalizeFirstLetter(I2.name()));
+				break;
+			case RawMaterial.MATERIAL_ROCK:
+			case RawMaterial.MATERIAL_PRECIOUS:
+			case RawMaterial.MATERIAL_SYNTHETIC:
+				ruinDescAdder=L("@x1 is cracked and ruined beyond repair.",CMStrings.capitalizeFirstLetter(I2.name()));
+				break;
+			case RawMaterial.MATERIAL_UNKNOWN:
+			case RawMaterial.MATERIAL_ENERGY:
+			case RawMaterial.MATERIAL_GAS:
+			case RawMaterial.MATERIAL_LIQUID:
+			default:
+				ruinDescAdder=L("@x1 is ruined beyond repair.",CMStrings.capitalizeFirstLetter(I2.name()));
+				break;
+		}
+		I2.setDescription(CMStrings.endWithAPeriod(I2.description())+" "+ruinDescAdder);
+		final String oldName=I2.Name();
+		I2.setName(CMLib.english().insertUnColoredAdjective(I2.Name(),L("ruined")));
+		final int x=I2.displayText().toUpperCase().indexOf(oldName.toUpperCase());
+		I2.setBaseValue(0);
+		if(x>=0)
+			I2.setDisplayText(I2.displayText().substring(0,x)+I2.Name()+I2.displayText().substring(x+oldName.length()));
+		return I2;
+	}
+
+	@Override
 	public Item isRuinedLoot(MOB mob, Item I)
 	{
 		if(I==null)
@@ -932,54 +993,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				continue;
 			if(CMath.bset(flags,LOOTFLAG_LOSS))
 				return null;
-			final Item I2=CMClass.getItem("GenRuinedItem");
-			I2.basePhyStats().setWeight(I.basePhyStats().weight());
-			I2.setName(I.Name());
-			I2.setDisplayText(I.displayText());
-			I2.setDescription(I2.description());
-			I2.recoverPhyStats();
-			I2.setRawLogicalAnd(I.rawLogicalAnd());
-			I2.setRawProperLocationBitmap(I.rawProperLocationBitmap());
-			I2.setMaterial(I.material());
-			String ruinDescAdder=null;
-			switch(I2.material()&RawMaterial.MATERIAL_MASK)
-			{
-				case RawMaterial.MATERIAL_LEATHER:
-				case RawMaterial.MATERIAL_CLOTH:
-				case RawMaterial.MATERIAL_VEGETATION:
-				case RawMaterial.MATERIAL_FLESH:
-				case RawMaterial.MATERIAL_PAPER:
-					ruinDescAdder=L("@x1  is torn and ruined beyond repair.",CMStrings.capitalizeFirstLetter(I2.name()));
-					break;
-				case RawMaterial.MATERIAL_METAL:
-				case RawMaterial.MATERIAL_MITHRIL:
-				case RawMaterial.MATERIAL_WOODEN:
-					ruinDescAdder=L("@x1 is battered and ruined beyond repair.",CMStrings.capitalizeFirstLetter(I2.name()));
-					break;
-				case RawMaterial.MATERIAL_GLASS:
-					ruinDescAdder=L("@x1 is shattered and ruined beyond repair.",CMStrings.capitalizeFirstLetter(I2.name()));
-					break;
-				case RawMaterial.MATERIAL_ROCK:
-				case RawMaterial.MATERIAL_PRECIOUS:
-				case RawMaterial.MATERIAL_SYNTHETIC:
-					ruinDescAdder=L("@x1 is cracked and ruined beyond repair.",CMStrings.capitalizeFirstLetter(I2.name()));
-					break;
-				case RawMaterial.MATERIAL_UNKNOWN:
-				case RawMaterial.MATERIAL_ENERGY:
-				case RawMaterial.MATERIAL_GAS:
-				case RawMaterial.MATERIAL_LIQUID:
-				default:
-					ruinDescAdder=L("@x1 is ruined beyond repair.",CMStrings.capitalizeFirstLetter(I2.name()));
-					break;
-			}
-			I2.setDescription(CMStrings.endWithAPeriod(I2.description())+" "+ruinDescAdder);
-			final String oldName=I2.Name();
-			I2.setName(CMLib.english().insertUnColoredAdjective(I2.Name(),L("ruined")));
-			final int x=I2.displayText().toUpperCase().indexOf(oldName.toUpperCase());
-			I2.setBaseValue(0);
-			if(x>=0)
-				I2.setDisplayText(I2.displayText().substring(0,x)+I2.Name()+I2.displayText().substring(x+oldName.length()));
-			return I2;
+			return ruinItem(I);
 		}
 		return I;
 	}

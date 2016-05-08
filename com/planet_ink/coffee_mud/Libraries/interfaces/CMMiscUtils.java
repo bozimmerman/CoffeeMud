@@ -286,6 +286,14 @@ public interface CMMiscUtils extends CMLibrary
 	public Item isRuinedLoot(MOB mob, Item I);
 
 	/**
+	 * Always converts the given item into the Ruined version
+	 * @see CMMiscUtils#isRuinedLoot(MOB, Item)
+	 * @param I the item to ruin
+	 * @return the new, ruined version
+	 */
+	public Item ruinItem(Item I);
+
+	/**
 	 * Iterates through every mob and player in the game, replacing the old race
 	 * object with the new one.
 	 * @see CMMiscUtils#reloadCharClasses(CharClass)
