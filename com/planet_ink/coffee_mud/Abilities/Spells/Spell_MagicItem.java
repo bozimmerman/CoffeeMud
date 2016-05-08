@@ -127,7 +127,8 @@ public class Spell_MagicItem extends Spell
 
 		if((wandThis.ID().equals("Spell_Stoneskin"))
 		||(wandThis.ID().equals("Spell_MirrorImage"))
-		||(CMath.bset(wandThis.flags(), FLAG_SUMMONING)))
+		||(CMath.bset(wandThis.flags(), FLAG_SUMMONING))
+		||(wandThis.canAffect(CAN_ROOMS)))
 		{
 			mob.tell(L("That spell cannot be used to enchant anything."));
 			return false;
