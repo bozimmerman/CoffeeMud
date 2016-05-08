@@ -15,8 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
 import java.util.*;
 
 /*
@@ -75,7 +73,8 @@ public class GenLiquidResource extends GenDrink implements RawMaterial, Drink
 				return;
 			rot.setAffectedOne(null);
 		}
-		rot.executeMsg(this,msg);
+		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.FOODROT))
+			rot.executeMsg(this,msg);
 	}
 
 	@Override
@@ -88,8 +87,11 @@ public class GenLiquidResource extends GenDrink implements RawMaterial, Drink
 				return true;
 			rot.setAffectedOne(null);
 		}
-		if(!rot.okMessage(this,msg))
-			return false;
+		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.FOODROT))
+		{
+			if(!rot.okMessage(this,msg))
+				return false;
+		}
 		return super.okMessage(host,msg);
 	}
 

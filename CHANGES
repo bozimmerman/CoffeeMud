@@ -1,4 +1,4 @@
-# Build 5.9.? Released ??/??/2016
+# Build 5.9.3 Released 05/08/2016
    1. Follower behavior now has a few more options.
    2. STAT [MOBNAME] will now give full editor stats also, and 
    3. STAT [ITEMNAME/AREANAME/EXITNAME/ROOMNAME] now gives editor stats without editing
@@ -26,6 +26,7 @@
   24. New behavior: Sailor, for allowing mobs to sail and fight on the big ships
   25. New Common Skill: Siegecraft, for making siege weapons for ship combat
   25. If it's not already obvious, new feature: GenSailingShip combat, see help SHIP COMBAT
+  26. New disable flag: FOODROT for disabling the automatic raw food rotability
 # Build 5.9.2 Released 02/09/2016
    1. Apprentice now gets bonus common skill.
    2. Prop_ItemBinder can now bind to a group.

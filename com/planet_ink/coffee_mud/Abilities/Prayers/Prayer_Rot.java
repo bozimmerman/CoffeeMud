@@ -70,6 +70,7 @@ public class Prayer_Rot extends Prayer
 			{
 				final List<Item> V=((Container)host).getDeepContents();
 				for(int f=0;f<V.size();f++)
+				{
 					if(V.get(f) != null)
 					{
 						if(V.get(f) instanceof Decayable)
@@ -78,6 +79,7 @@ public class Prayer_Rot extends Prayer
 						if(A!=null)
 							V.get(f).delEffect(A);
 					}
+				}
 			}
 		}
 	}
@@ -97,7 +99,7 @@ public class Prayer_Rot extends Prayer
 						System.currentTimeMillis()+(
 						   CMProps.getTickMillis()
 							*CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY)
-						  );
+						);
 				break;
 				}
 			case RawMaterial.MATERIAL_VEGETATION:

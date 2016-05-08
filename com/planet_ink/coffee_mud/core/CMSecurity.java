@@ -2258,7 +2258,8 @@ public class CMSecurity
 		CHANNELBACKLOGS("channel backlog system"),
 		MCP("mcp protocol"),
 		HYGIENE("hygiene system"),
-		ANSIPROMPT("ANSI Y/N Prompt")
+		ANSIPROMPT("ANSI Y/N Prompt"),
+		FOODROT("food/milk rot")
 		;
 		private final String desc;
 		DisFlag(final String description){this.desc=description;}

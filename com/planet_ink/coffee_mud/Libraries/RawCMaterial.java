@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DisFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -327,7 +328,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 							loseThirstHeld+=((Drink)E).liquidHeld();
 							loseThirstRemain+=((Drink)E).liquidRemaining();
 						}
-						if(rott!=null)
+						if((rott!=null)&&(!CMSecurity.isDisabled(DisFlag.FOODROT)))
 							E.addNonUninvokableEffect((Ability)rott.copyOf());
 						if(bundleSize>1)
 						{
