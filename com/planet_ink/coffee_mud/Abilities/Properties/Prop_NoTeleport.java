@@ -1,4 +1,7 @@
 package com.planet_ink.coffee_mud.Abilities.Properties;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -32,26 +35,61 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class Prop_NoTeleport extends Property
 {
-	@Override public String ID() { return "Prop_NoTeleport"; }
-	@Override public String name(){ return "Teleport-INTO Spell Neutralizing";}
-	@Override protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS;}
+	@Override
+	public String ID()
+	{
+		return "Prop_NoTeleport";
+	}
 
-	@Override public long flags(){return Ability.FLAG_IMMUNER;}
+	protected List<String> exceptionRooms = new ArrayList<String>(1);
+	
+	@Override
+	public String name()
+	{
+		return "Teleport-INTO Spell Neutralizing";
+	}
 
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ROOMS | Ability.CAN_AREAS;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_IMMUNER;
+	}
+
+	@Override
+	public void setMiscText(String newMiscText)
+	{
+		super.setMiscText(newMiscText);
+		exceptionRooms=CMParms.parseCommas(CMParms.getParmStr(newMiscText.toLowerCase(), "EXCEPTIONS", ""), true);
+	}
+	
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
 			return false;
 
+		final Room R=msg.source().location();
 		if((msg.tool() instanceof Ability)
-		&&(msg.source().location()!=null)
+		&&(R!=null)
 		&&(msg.sourceMinor()!=CMMsg.TYP_LEAVE))
 		{
 			final boolean summon=CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_SUMMONING);
 			final boolean teleport=CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_TRANSPORTING);
-			final boolean shere=(msg.source().location()==affected)
-						||((affected instanceof Area)&&(((Area)affected).inMyMetroArea(msg.source().location().getArea())));
+			final boolean shere=(R==affected)
+								||((affected instanceof Area)
+									&&(((Area)affected).inMyMetroArea(R.getArea())));
+			if(teleport 
+			&& (msg.target() instanceof Room) 
+			&& (affected instanceof Area)
+			&& (exceptionRooms.contains(CMLib.map().getExtendedRoomID((Room)msg.target()).toLowerCase())
+				||exceptionRooms.contains(((Room)msg.target()).getArea().Name().toLowerCase())))
+				return true;
 			if(((!shere)&&(!summon)&&(teleport))
 			   ||((shere)&&(summon)))
 			{
@@ -60,7 +98,7 @@ public class Prop_NoTeleport extends Property
 				||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)
 				||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
 				||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SONG))
-					msg.source().location().showHappens(CMMsg.MSG_OK_VISUAL,L("Magic energy fizzles and is absorbed into the air."));
+					R.showHappens(CMMsg.MSG_OK_VISUAL,L("Magic energy fizzles and is absorbed into the air."));
 				return false;
 			}
 		}
