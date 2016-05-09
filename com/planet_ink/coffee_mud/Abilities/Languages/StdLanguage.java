@@ -485,48 +485,6 @@ public class StdLanguage extends StdAbility implements Language
 		return super.okMessage(myHost,msg);
 	}
 
-	private int numLanguagesKnown(MOB student)
-	{
-		int numLanguages=0;
-		if(student==null)
-			return Integer.MAX_VALUE;
-		final CharClass C=student.charStats().getCurrentClass();
-		final PairVector<String,Integer> culturalAbilitiesDV = student.baseCharStats().getMyRace().culturalAbilities();
-		final HashSet<String> culturalAbilities=new HashSet<String>();
-		for(int i=0;i<culturalAbilitiesDV.size();i++)
-			culturalAbilities.add(culturalAbilitiesDV.getFirst(i).toLowerCase());
-		for(int a=0;a<student.numAbilities();a++)
-		{
-			final Ability A=student.fetchAbility(a);
-			if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE)
-			&&(!(A instanceof Common))
-			&&(!culturalAbilities.contains(A.ID())))
-			{
-				if((CMLib.ableMapper().getQualifyingLevel(C.ID(), false, A.ID())>=0)
-				||(culturalAbilities.contains(A.ID().toLowerCase())))
-					continue;
-				numLanguages++;
-			}
-		}
-		return numLanguages;
-	}
-
-	private int getMaxLanguages(final MOB student)
-	{
-		if(student==null)
-			return 0;
-		final CharClass C=student.charStats().getCurrentClass();
-		int maxLanguages = C.maxLanguages();
-		final PlayerStats pStats = student.playerStats();
-		if((pStats != null) && (maxLanguages < Integer.MAX_VALUE))
-		{
-			maxLanguages += pStats.getBonusLanguageLimits();
-			if(pStats.getAccount() != null)
-				maxLanguages += pStats.getAccount().getBonusLanguageLimits();
-		}
-		return maxLanguages;
-	}
-
 	@Override
 	public boolean canBeLearnedBy(MOB teacher, MOB student)
 	{
@@ -534,17 +492,11 @@ public class StdLanguage extends StdAbility implements Language
 			return false;
 		if(student==null)
 			return true;
-		final CharClass C=student.charStats().getCurrentClass();
-		final int maxLanguages = getMaxLanguages(student);
-		if(maxLanguages==0)
-			return true;
-		if(CMLib.ableMapper().getQualifyingLevel(C.ID(), false, ID())>=0)
-			return true;
-		final int numLanguages=numLanguagesKnown(student);
-		if((maxLanguages>0)&&(maxLanguages<=numLanguages))
+		final AbilityComponents.AbilityLimits remainders = CMLib.ableComponents().getSpecialSkillRemainder(student, this);
+		if(remainders.languageSkills()<=0)
 		{
-			teacher.tell(L("@x1 can not learn any more languages.",student.name()));
-			student.tell(L("You may only learn @x1 languages.",""+maxLanguages));
+			teacher.tell(L("@x1 can not learn any more languages.",student.name(teacher)));
+			student.tell(L("You have learned the maximum @xlanguages, and may not learn any more.",""+remainders.maxLanguageSkills()));
 			return false;
 		}
 		return true;
@@ -556,19 +508,12 @@ public class StdLanguage extends StdAbility implements Language
 		super.teach(teacher, student);
 		if((student!=null)&&(student.fetchAbility(ID())!=null))
 		{
-			final CharClass C=student.charStats().getCurrentClass();
-			final int maxLanguages = getMaxLanguages(student);
-			if(maxLanguages==0)
-				return;
-			if(CMLib.ableMapper().getQualifyingLevel(C.ID(), false, ID())>=0)
-				return;
-			final int numLanguages=numLanguagesKnown(student);
-			final int remaining = maxLanguages - numLanguages;
-			if(remaining<=0)
+			final AbilityComponents.AbilityLimits remainders = CMLib.ableComponents().getSpecialSkillRemainder(student, this);
+			if(remainders.languageSkills()<=0)
 				student.tell(L("@x1 may not learn any more languages.",student.name()));
 			else
-			if(remaining<Integer.MAX_VALUE/2)
-				student.tell(L("@x1 may learn @x2 more languages.",student.name(),""+remaining));
+			if(remainders.languageSkills()<=Integer.MAX_VALUE/2)
+				student.tell(L("@x1 may learn @x2 more languages.",student.name(),""+remainders.languageSkills()));
 		}
 	}
 

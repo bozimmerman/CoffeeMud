@@ -189,62 +189,62 @@ public interface AbilityComponents extends CMLibrary
 	 * Returns the character-class based common skill ability limits
 	 * object applicable to the given mob, or zeroes if there's
 	 * a problem.
-	 * @see AbilityComponents#getCommonSkillLimit(MOB, Ability)
-	 * @see AbilityComponents#getCommonSkillRemainder(MOB, Ability)
-	 * @see AbilityComponents#getCommonSkillRemainders(MOB)
+	 * @see AbilityComponents#getSpecialSkillLimit(MOB, Ability)
+	 * @see AbilityComponents#getSpecialSkillRemainder(MOB, Ability)
+	 * @see AbilityComponents#getSpecialSkillRemainders(MOB)
 	 * @see AbilityLimits
 	 * @param studentM the mob to find limits for
 	 * @return the character-class based common skill ability limits
 	 */
-	public AbilityLimits getCommonSkillLimit(MOB studentM);
+	public AbilityLimits getSpecialSkillLimit(MOB studentM);
 	
 	/**
 	 * Returns the character-class based common skill ability limits
 	 * object applicable to the given mob and the given ability.
-	 * @see AbilityComponents#getCommonSkillLimit(MOB)
-	 * @see AbilityComponents#getCommonSkillRemainder(MOB, Ability)
-	 * @see AbilityComponents#getCommonSkillRemainders(MOB)
+	 * @see AbilityComponents#getSpecialSkillLimit(MOB)
+	 * @see AbilityComponents#getSpecialSkillRemainder(MOB, Ability)
+	 * @see AbilityComponents#getSpecialSkillRemainders(MOB)
 	 * @see AbilityLimits
 	 * @see AbilityLimits#specificSkillLimit()
 	 * @param studentM the mob to find limits for
 	 * @param A the ability object to find limits for
 	 * @return the character-class based common skill ability limits
 	 */
-	public AbilityLimits getCommonSkillLimit(MOB studentM, Ability A);
+	public AbilityLimits getSpecialSkillLimit(MOB studentM, Ability A);
 	
 	/**
 	 * Returns the character-class based common skill ability limits
 	 * object applicable to the given mob and the given ability, and
 	 * then subtracts the number of each common skill already learned
 	 * to derive a remaining number of each type.
-	 * @see AbilityComponents#getCommonSkillLimit(MOB, Ability)
-	 * @see AbilityComponents#getCommonSkillLimit(MOB)
-	 * @see AbilityComponents#getCommonSkillRemainders(MOB)
+	 * @see AbilityComponents#getSpecialSkillLimit(MOB, Ability)
+	 * @see AbilityComponents#getSpecialSkillLimit(MOB)
+	 * @see AbilityComponents#getSpecialSkillRemainders(MOB)
 	 * @see AbilityLimits
 	 * @see AbilityLimits#specificSkillLimit()
 	 * @param studentM the mob to find limits for
 	 * @param A the ability object to find limits for
 	 * @return the character-class based common skill ability remainders
 	 */
-	public AbilityLimits getCommonSkillRemainder(MOB studentM, Ability A);
+	public AbilityLimits getSpecialSkillRemainder(MOB studentM, Ability A);
 	
 	/**
 	 * Returns the character-class based common skill ability limits
 	 * object applicable to the given mob, and
 	 * then subtracts the number of each common skill already learned
 	 * to derive a remaining number of each type.
-	 * @see AbilityComponents#getCommonSkillLimit(MOB, Ability)
-	 * @see AbilityComponents#getCommonSkillLimit(MOB)
-	 * @see AbilityComponents#getCommonSkillRemainder(MOB, Ability)
+	 * @see AbilityComponents#getSpecialSkillLimit(MOB, Ability)
+	 * @see AbilityComponents#getSpecialSkillLimit(MOB)
+	 * @see AbilityComponents#getSpecialSkillRemainder(MOB, Ability)
 	 * @see AbilityLimits
 	 * @param studentM the mob to find limits for
 	 * @return the character-class based common skill ability limits
 	 */
-	public AbilityLimits getCommonSkillRemainders(MOB studentM);
+	public AbilityLimits getSpecialSkillRemainders(MOB studentM);
 	
 	/**
 	 * Ability Limits object, denoting how many of different types
-	 * of common skills that a player can learn, including an
+	 * of common skills and langs that a player can learn, including an
 	 * entry for a specific skill.
 	 * @author Bo Zimmerman
 	 */
@@ -303,6 +303,24 @@ public interface AbilityComponents extends CMLibrary
 		 * @param newVal number of non-crafting skills
 		 */
 		public AbilityLimits nonCraftingSkills(int newVal);
+
+		/**
+		 * Returns max number of language skills
+		 * @return max number of language skills
+		 */
+		public int maxLanguageSkills();
+
+		/**
+		 * Sets number of language skills
+		 * @param newVal number of language skills
+		 */
+		public AbilityLimits languageSkills(int newVal);
+
+		/**
+		 * Returns number of language skills
+		 * @return number of language skills
+		 */
+		public int languageSkills();
 
 		/**
 		 * Returns number of given specific ability type 
