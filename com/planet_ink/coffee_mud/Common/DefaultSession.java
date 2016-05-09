@@ -2935,6 +2935,12 @@ public class DefaultSession implements Session
 					{
 						CMDS.remove(0);
 						final List<String> all_stuff=CMParms.parseSquiggleDelimited(alias,true);
+						echoOn=true;
+						if((all_stuff.size()>0)&&(all_stuff.get(0).toString().toLowerCase().startsWith("noecho")))
+						{
+							echoOn=false;
+							all_stuff.set(0, all_stuff.get(0).toString().substring(6).trim());
+						}
 						for(final String stuff : all_stuff)
 						{
 							final List THIS_CMDS=new XVector(CMDS);
@@ -2943,7 +2949,6 @@ public class DefaultSession implements Session
 							for(int v=preCommands.size()-1;v>=0;v--)
 								THIS_CMDS.add(0,preCommands.get(v));
 						}
-						echoOn=true;
 					}
 					else
 						ALL_CMDS.addElement(CMDS);
