@@ -613,9 +613,11 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 		||(flag==State.STOPPED)
 		||(!CMLib.flags().allowsMovement(this)))
 		{
-			if((msg.sourceMinor()==CMMsg.TYP_ENTER)
+			if(((msg.sourceMinor()==CMMsg.TYP_ENTER)
 			||(msg.sourceMinor()==CMMsg.TYP_LEAVE)
 			||(msg.sourceMinor()==CMMsg.TYP_FLEE))
+				&&(msg.target() instanceof Room)
+				&&(this.isRoom((Room)msg.target())))
 				return false;
 		}
 		
