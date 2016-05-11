@@ -38,6 +38,9 @@ public class Possess extends StdCommand
 	public Possess()
 	{
 	}
+	
+	@SuppressWarnings("rawtypes")
+	private final static Class[][] internalParameters=new Class[][]{{MOB.class, Boolean.class}};
 
 	private final String[]	access	= I(new String[] { "POSSESS", "POSS" });
 
@@ -198,11 +201,41 @@ public class Possess extends StdCommand
 		return false;
 	}
 
+	protected boolean possess(MOB mob, MOB target, boolean quiet)
+	{
+		final CMMsg msg=CMClass.getMsg(mob,target,null, CMMsg.MSG_POSSESS, quiet?null:L("<S-NAME> get(s) a far away look, then seem(s) to fall limp."));
+		final Room room=mob.location();
+		if((room==null)||(room.okMessage(mob, msg)))
+		{
+			if(room!=null)
+				room.send(mob, msg);
+			final Session s=mob.session();
+			s.setMob(target);
+			target.setSession(s);
+			target.setSoulMate(mob);
+			mob.setSession(null);
+			CMLib.commands().postLook(target,true);
+			if(!quiet)
+				target.tell(L("^HYour spirit has changed bodies@x1, use QUIT to return to yours.",(mob.isAttributeSet(MOB.Attrib.SYSOPMSGS)?" and SECURITY mode is ON":"")));
+			return true;
+		}
+		return false;
+	}
+	
+	@Override
+	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException
+	{
+		if(!super.checkArguments(internalParameters, args))
+			return Boolean.FALSE;
+		return Boolean.valueOf(possess(mob, (MOB)args[0], ((Boolean)args[1]).booleanValue()));
+	}
+
 	@Override
 	public boolean canBeOrdered()
 	{
 		return true;
 	}
+
 
 	@Override
 	public boolean securityCheck(MOB mob)
