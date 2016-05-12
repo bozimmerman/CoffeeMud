@@ -1090,7 +1090,11 @@ public class DefaultSession implements Session
 					CMLib.killThread(killThisThread,500,1);
 			}
 		}
-		catch(final Exception ioe){ setKillFlag(true);}
+		catch (final Exception ioe)
+		{
+			stopSession(true,true,false);
+			setKillFlag(true);
+		}
 	}
 
 	public void rawCharsOut(String c)
@@ -2210,7 +2214,7 @@ public class DefaultSession implements Session
 			{
 				if(sock[0].isClosed() || (!sock[0].isConnected()))
 				{
-					setKillFlag(true);
+					stopSession(true,true,false);
 					return null;
 				}
 			}
@@ -3002,7 +3006,7 @@ public class DefaultSession implements Session
 					if(minsIdle>=CMath.s_int(V.firstElement()))
 					{
 						println(CMLib.lang().L("\n\r^ZYou are being logged out!^?"));
-						setKillFlag(true);
+						stopSession(true,true,false);
 					}
 					else
 					if(minsIdle>=CMath.s_int(V.lastElement()))
