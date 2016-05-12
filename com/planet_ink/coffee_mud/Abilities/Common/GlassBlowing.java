@@ -39,26 +39,51 @@ import java.util.*;
 
 public class GlassBlowing extends CraftingSkill implements ItemCraftor
 {
-	@Override public String ID() { return "GlassBlowing"; }
-	private final static String localizedName = CMLib.lang().L("Glass Blowing");
-	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =I(new String[] {"GLASSBLOW","GLASSBLOWING"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public String supportedResourceString(){return "_GLASS|SAND";}
 	@Override
-	public String parametersFormat(){ return
+	public String ID()
+	{
+		return "GlassBlowing";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Glass Blowing");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "GLASSBLOW", "GLASSBLOWING" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public String supportedResourceString()
+	{
+		return "_GLASS|SAND";
+	}
+
+	@Override
+	public String parametersFormat()
+	{
+		return
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\t"
-	   +"ITEM_CLASS_ID\tLID_LOCK\tCONTAINER_CAPACITY||LIQUID_CAPACITY\tCODED_SPELL_LIST";}
+		+"ITEM_CLASS_ID\tLID_LOCK\tCONTAINER_CAPACITY||LIQUID_CAPACITY\tCODED_SPELL_LIST";
+	}
 
 	//protected static final int RCP_FINALNAME=0;
 	//protected static final int RCP_LEVEL=1;
 	//protected static final int RCP_TICKS=2;
-	protected static final int RCP_WOOD=3;
-	protected static final int RCP_VALUE=4;
-	protected static final int RCP_CLASSTYPE=5;
-	protected static final int RCP_MISCTYPE=6;
-	protected static final int RCP_CAPACITY=7;
-	protected static final int RCP_SPELL=8;
+	protected static final int	RCP_WOOD		= 3;
+	protected static final int	RCP_VALUE		= 4;
+	protected static final int	RCP_CLASSTYPE	= 5;
+	protected static final int	RCP_MISCTYPE	= 6;
+	protected static final int	RCP_CAPACITY	= 7;
+	protected static final int	RCP_SPELL		= 8;
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
@@ -76,8 +101,17 @@ public class GlassBlowing extends CraftingSkill implements ItemCraftor
 		return super.tick(ticking,tickID);
 	}
 
-	@Override public String parametersFile(){ return "glassblowing.txt";}
-	@Override protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
+	@Override
+	public String parametersFile()
+	{
+		return "glassblowing.txt";
+	}
+
+	@Override
+	protected List<List<String>> loadRecipes()
+	{
+		return super.loadRecipes(parametersFile());
+	}
 
 	@Override
 	protected boolean doLearnRecipe(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -122,7 +156,11 @@ public class GlassBlowing extends CraftingSkill implements ItemCraftor
 		super.unInvoke();
 	}
 
-	@Override public boolean supportsDeconstruction() { return true; }
+	@Override
+	public boolean supportsDeconstruction()
+	{
+		return true;
+	}
 
 	@Override
 	public boolean mayICraft(final Item I)
@@ -179,7 +217,11 @@ public class GlassBlowing extends CraftingSkill implements ItemCraftor
 		return (isANativeItem(I.Name()));
 	}
 
-	public boolean supportsMending(Physical I){ return canMend(null,I,true);}
+	public boolean supportsMending(Physical I)
+	{
+		return canMend(null, I, true);
+	}
+
 	@Override
 	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
 	{
@@ -215,10 +257,14 @@ public class GlassBlowing extends CraftingSkill implements ItemCraftor
 			return true;
 		fireRequired=true;
 
+		if(super.checkInfo(mob, commands))
+			return true;
+		
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,L("Make what? Enter \"glassblow list\" for a list, \"glassblow learn <item>\" to gain recipes, or \"glassblow stop\" to cancel."));
+			commonTell(mob,L("Make what? Enter \"glassblow list\" for a list, \"glassblow info <item>\", \"glassblow learn <item>\" to gain recipes,"
+							+ " or \"glassblow stop\" to cancel."));
 			return false;
 		}
 		if((!auto)
@@ -245,9 +291,9 @@ public class GlassBlowing extends CraftingSkill implements ItemCraftor
 				mask="";
 			}
 			final int[] cols={
-					CMLib.lister().fixColWidth(29,mob.session()),
-					CMLib.lister().fixColWidth(3,mob.session())
-				};
+				CMLib.lister().fixColWidth(29,mob.session()),
+				CMLib.lister().fixColWidth(3,mob.session())
+			};
 			final StringBuffer buf=new StringBuffer(L("@x1 @x2 Sand required\n\r",CMStrings.padRight(L("Item"),cols[0]),CMStrings.padRight(L("Lvl"),cols[1])));
 			for(int r=0;r<recipes.size();r++)
 			{
@@ -318,11 +364,11 @@ public class GlassBlowing extends CraftingSkill implements ItemCraftor
 		bundling=misctype.equalsIgnoreCase("BUNDLE");
 		final int[] pm={RawMaterial.RESOURCE_SAND,RawMaterial.RESOURCE_CRYSTAL,RawMaterial.RESOURCE_GLASS};
 		final int[][] data=fetchFoundResourceData(mob,
-											woodRequired,"sand",pm,
-											0,null,null,
-											bundling,
-											autoGenerate,
-											null);
+												woodRequired,"sand",pm,
+												0,null,null,
+												bundling,
+												autoGenerate,
+												null);
 		if(data==null)
 			return false;
 		woodRequired=data[0][FOUND_AMT];
@@ -391,7 +437,6 @@ public class GlassBlowing extends CraftingSkill implements ItemCraftor
 		buildingI.recoverPhyStats();
 		buildingI.text();
 		buildingI.recoverPhyStats();
-
 
 		messedUp=!proficiencyCheck(mob,0,auto);
 

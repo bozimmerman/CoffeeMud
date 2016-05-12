@@ -41,27 +41,52 @@ import java.util.*;
 
 public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 {
-	@Override public String ID() { return "InstrumentMaking"; }
-	private final static String localizedName = CMLib.lang().L("Instrument Making");
-	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =I(new String[] {"INSTRUMENTMAKING","INSTRUMENTMAKE"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public String supportedResourceString(){return "WOODEN";}
 	@Override
-	public String parametersFormat(){ return
+	public String ID()
+	{
+		return "InstrumentMaking";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Instrument Making");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "INSTRUMENTMAKING", "INSTRUMENTMAKE" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public String supportedResourceString()
+	{
+		return "WOODEN";
+	}
+
+	@Override
+	public String parametersFormat()
+	{
+		return
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\t"
-		+"ITEM_CLASS_ID\tRIDE_CAPACITY||CODED_WEAR_LOCATION\tMETAL_OR_WOOD\tOPTIONAL_RACE_ID\tINSTRUMENT_TYPE";}
+		+"ITEM_CLASS_ID\tRIDE_CAPACITY||CODED_WEAR_LOCATION\tMETAL_OR_WOOD\tOPTIONAL_RACE_ID\tINSTRUMENT_TYPE";
+	}
 
 	//protected static final int RCP_FINALNAME=0;
 	//protected static final int RCP_LEVEL=1;
 	//protected static final int RCP_TICKS=2;
-	protected static final int RCP_WOOD=3;
-	protected static final int RCP_VALUE=4;
-	protected static final int RCP_CLASSTYPE=5;
-	protected static final int RCP_MISCTYPE=6;
-	protected static final int RCP_MATERIAL=7;
-	protected static final int RCP_RACES=8;
-	protected static final int RCP_TYPE=9;
+	protected static final int	RCP_WOOD		= 3;
+	protected static final int	RCP_VALUE		= 4;
+	protected static final int	RCP_CLASSTYPE	= 5;
+	protected static final int	RCP_MISCTYPE	= 6;
+	protected static final int	RCP_MATERIAL	= 7;
+	protected static final int	RCP_RACES		= 8;
+	protected static final int	RCP_TYPE		= 9;
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
@@ -74,10 +99,23 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 		return super.tick(ticking,tickID);
 	}
 
-	@Override public String parametersFile(){ return "instruments.txt";}
-	@Override protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
+	@Override
+	public String parametersFile()
+	{
+		return "instruments.txt";
+	}
 
-	@Override public boolean supportsDeconstruction() { return true; }
+	@Override
+	protected List<List<String>> loadRecipes()
+	{
+		return super.loadRecipes(parametersFile());
+	}
+
+	@Override
+	public boolean supportsDeconstruction()
+	{
+		return true;
+	}
 
 	@Override
 	public boolean mayICraft(final Item I)
@@ -150,10 +188,14 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 		if(super.checkStop(mob, commands))
 			return true;
 
+		if(super.checkInfo(mob, commands))
+			return true;
+		
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,L("Make what Instrument? Enter \"instrumentmake list\" for a list, \"instrumentmake learn <item>\" to gain recipes, or \"instrumentmake stop\" to cancel."));
+			commonTell(mob,L("Make what Instrument? Enter \"instrumentmake list\" for a list, \"instrumentmake info <item>\","
+							+ " \"instrumentmake learn <item>\" to gain recipes, or \"instrumentmake stop\" to cancel."));
 			return false;
 		}
 		if((!auto)
@@ -181,10 +223,10 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 				mask="";
 			}
 			final int[] cols={
-					CMLib.lister().fixColWidth(23,mob.session()),
-					CMLib.lister().fixColWidth(3,mob.session()),
-					CMLib.lister().fixColWidth(10,mob.session())
-				};
+				CMLib.lister().fixColWidth(23,mob.session()),
+				CMLib.lister().fixColWidth(3,mob.session()),
+				CMLib.lister().fixColWidth(10,mob.session())
+			};
 			final StringBuffer buf=new StringBuffer(L("@x1 @x2 @x3 Material required\n\r",CMStrings.padRight(L("Item"),cols[0]),CMStrings.padRight(L("Lvl"),cols[1]),CMStrings.padRight(L("Type"),cols[2])));
 			for(int r=0;r<recipes.size();r++)
 			{
@@ -265,11 +307,11 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 		}
 		bundling=misctype.equalsIgnoreCase("BUNDLE");
 		final int[][] data=fetchFoundResourceData(mob,
-											woodRequired,"material",pm,
-											0,null,null,
-											bundling,
-											autoGenerate,
-											null);
+												woodRequired,"material",pm,
+												0,null,null,
+												bundling,
+												autoGenerate,
+												null);
 		if(data==null)
 			return false;
 		woodRequired=data[0][FOUND_AMT];

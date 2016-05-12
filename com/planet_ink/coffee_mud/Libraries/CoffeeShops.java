@@ -139,8 +139,6 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		final StringBuilder str=new StringBuilder("");
 		if(E==null)
 			return str.toString();
-		str.append(L("Interested in @x1?",E.name()));
-		str.append(L(" Here is some information for you:"));
 		if(E instanceof Physical)
 			str.append("\n\rLevel      : "+((Physical)E).phyStats().level());
 		if(E instanceof LandTitle)

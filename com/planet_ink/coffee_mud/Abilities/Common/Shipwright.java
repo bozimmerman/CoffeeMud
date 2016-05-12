@@ -70,24 +70,27 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 	}
 
 	@Override
-	public String parametersFormat(){ return
+	public String parametersFormat()
+	{ 
+		return
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\t"
 		+"ITEM_CLASS_ID\tRIDE_BASIS\tCONTAINER_CAPACITY||RIDE_CAPACITY\tCONTAINER_TYPE\t"
-		+"CODED_SPELL_LIST";}
+		+"CODED_SPELL_LIST";
+	}
 
-	private String reTitle=null;
-	private String reDesc=null;
+	private String				reTitle			= null;
+	private String				reDesc			= null;
 	
 	//protected static final int RCP_FINALNAME=0;
 	//protected static final int RCP_LEVEL=1;
 	//protected static final int RCP_TICKS=2;
-	protected static final int RCP_WOOD=3;
-	protected static final int RCP_VALUE=4;
-	protected static final int RCP_CLASSTYPE=5;
-	protected static final int RCP_MISCTYPE=6;
-	protected static final int RCP_CAPACITY=7;
-	protected static final int RCP_CONTAINMASK=8;
-	protected static final int RCP_SPELL=9;
+	protected static final int	RCP_WOOD		= 3;
+	protected static final int	RCP_VALUE		= 4;
+	protected static final int	RCP_CLASSTYPE	= 5;
+	protected static final int	RCP_MISCTYPE	= 6;
+	protected static final int	RCP_CAPACITY	= 7;
+	protected static final int	RCP_CONTAINMASK	= 8;
+	protected static final int	RCP_SPELL		= 9;
 
 	protected Item key=null;
 
@@ -263,10 +266,15 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 		if(super.checkStop(mob, commands))
 			return true;
 		
+		if(super.checkInfo(mob, commands))
+			return true;
+		
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,L("Shipwright what? Enter \"shipwright list\" for a list, \"shipwright scan\", \"shipwright learn <item>\", \"shipwright mend <item>\", \"shipwright title <text>\", \"shipwright desc <text>\", or \"shipwright stop\" to cancel."));
+			commonTell(mob,L("Shipwright what? Enter \"shipwright list\" for a list, \"shipwright info <item>\", \"shipwright scan\","
+						+ " \"shipwright learn <item>\", \"shipwright mend <item>\", \"shipwright title <text>\", \"shipwright desc <text>\","
+						+ " or \"shipwright stop\" to cancel."));
 			return false;
 		}
 		if((!auto)
@@ -481,11 +489,11 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 			final String misctype=foundRecipe.get(RCP_MISCTYPE);
 			bundling=misctype.equalsIgnoreCase("BUNDLE");
 			final int[][] data=fetchFoundResourceData(mob,
-												woodRequired,"wood",pm,
-												0,null,null,
-												false,
-												autoGenerate,
-												null);
+													woodRequired,"wood",pm,
+													0,null,null,
+													false,
+													autoGenerate,
+													null);
 			if(data==null)
 				return false;
 			woodRequired=data[0][FOUND_AMT];

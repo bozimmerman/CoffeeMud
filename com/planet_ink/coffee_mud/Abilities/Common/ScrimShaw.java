@@ -40,28 +40,53 @@ import java.util.*;
 
 public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, MendingSkill
 {
-	@Override public String ID() { return "ScrimShaw"; }
-	private final static String localizedName = CMLib.lang().L("Scrimshawing");
-	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =I(new String[] {"SCRIM","SCRIMSHAWING"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public String supportedResourceString(){return "BONE";}
 	@Override
-	public String parametersFormat(){ return
+	public String ID()
+	{
+		return "ScrimShaw";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Scrimshawing");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "SCRIM", "SCRIMSHAWING" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public String supportedResourceString()
+	{
+		return "BONE";
+	}
+
+	@Override
+	public String parametersFormat()
+	{
+		return
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\t"
 		+"ITEM_CLASS_ID\tSTATUE||LID_LOCK||WEAPON_CLASS||RIDE_BASIS||CODED_WEAR_LOCATION\t"
 		+"BASE_ARMOR_AMOUNT||CONTAINER_CAPACITY||BASE_DAMAGE||LIGHT_DURATION\t"
-		+"CODED_SPELL_LIST";}
+		+"CODED_SPELL_LIST";
+	}
 
 	//protected static final int RCP_FINALNAME=0;
 	//protected static final int RCP_LEVEL=1;
 	//protected static final int RCP_TICKS=2;
-	protected static final int RCP_WOOD=3;
-	protected static final int RCP_VALUE=4;
-	protected static final int RCP_CLASSTYPE=5;
-	protected static final int RCP_MISCTYPE=6;
-	protected static final int RCP_CAPACITY=7;
-	protected static final int RCP_SPELL=8;
+	protected static final int	RCP_WOOD		= 3;
+	protected static final int	RCP_VALUE		= 4;
+	protected static final int	RCP_CLASSTYPE	= 5;
+	protected static final int	RCP_MISCTYPE	= 6;
+	protected static final int	RCP_CAPACITY	= 7;
+	protected static final int	RCP_SPELL		= 8;
 
 	protected Item key=null;
 
@@ -76,8 +101,17 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 		return super.tick(ticking,tickID);
 	}
 
-	@Override public String parametersFile(){ return "scrimshaw.txt";}
-	@Override protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
+	@Override
+	public String parametersFile()
+	{
+		return "scrimshaw.txt";
+	}
+
+	@Override
+	protected List<List<String>> loadRecipes()
+	{
+		return super.loadRecipes(parametersFile());
+	}
 
 	@Override
 	public void unInvoke()
@@ -182,7 +216,12 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 		return (isANativeItem(I.Name()));
 	}
 
-	@Override public boolean supportsMending(Physical item){ return canMend(null,item,true);}
+	@Override
+	public boolean supportsMending(Physical item)
+	{
+		return canMend(null, item, true);
+	}
+
 	@Override
 	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
 	{
@@ -217,11 +256,15 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 		if(super.checkStop(mob, commands))
 			return true;
 
+		if(super.checkInfo(mob, commands))
+			return true;
+		
 		final PairVector<EnhancedExpertise,Integer> enhancedTypes=enhancedTypes(mob,commands);
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,L("Scrim what? Enter \"scrim list\" for a list, \"scrim scan\", \"scrim learn <item>\" to gain recipes, \"scrim mend <item>\", or \"scrim stop\" to cancel."));
+			commonTell(mob,L("Scrim what? Enter \"scrim list\" for a list, \"scrim info <item>\", \"scrim scan\","
+						+ " \"scrim learn <item>\" to gain recipes, \"scrim mend <item>\", or \"scrim stop\" to cancel."));
 			return false;
 		}
 		if((!auto)
@@ -248,9 +291,9 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 				mask="";
 			}
 			final int[] cols={
-					CMLib.lister().fixColWidth(23,mob.session()),
-					CMLib.lister().fixColWidth(3,mob.session())
-				};
+				CMLib.lister().fixColWidth(23,mob.session()),
+				CMLib.lister().fixColWidth(3,mob.session())
+			};
 			final StringBuffer buf=new StringBuffer(L("@x1 @x2 Bone required\n\r",CMStrings.padRight(L("Item"),cols[0]),CMStrings.padRight(L("Lvl"),cols[1])));
 			for(int r=0;r<recipes.size();r++)
 			{
@@ -372,9 +415,19 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 				final Physical target=givenTarget;
 				session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0)
 				{
-					@Override public void showPrompt() {session.promptPrint(L("What is this a statue of?\n\r: "));}
-					@Override public void timedOut() {}
-					@Override public void callBack()
+					@Override
+					public void showPrompt()
+					{
+						session.promptPrint(L("What is this a statue of?\n\r: "));
+					}
+
+					@Override
+					public void timedOut()
+					{
+					}
+
+					@Override
+					public void callBack()
 					{
 						final String of=this.input;
 						if((of.trim().length()==0)||(of.indexOf('<')>=0))
@@ -389,8 +442,6 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
-
-
 
 			final int lostValue=autoGenerate>0?0:
 				CMLib.materials().destroyResourcesValue(mob.location(),woodRequired,data[0][FOUND_CODE],0,null)
@@ -485,7 +536,6 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 			buildingI.text();
 			buildingI.recoverPhyStats();
 		}
-
 
 		messedUp=!proficiencyCheck(mob,0,auto);
 

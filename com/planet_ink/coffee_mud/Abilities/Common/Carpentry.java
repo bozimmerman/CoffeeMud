@@ -36,35 +36,58 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
-
 public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 {
-	@Override public String ID() { return "Carpentry"; }
-	private final static String localizedName = CMLib.lang().L("Carpentry");
-	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =I(new String[] {"CARVE","CARPENTRY"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public String supportedResourceString(){return "WOODEN";}
 	@Override
-	public String parametersFormat(){ return
+	public String ID()
+	{
+		return "Carpentry";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Carpentry");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "CARVE", "CARPENTRY" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public String supportedResourceString()
+	{
+		return "WOODEN";
+	}
+
+	@Override
+	public String parametersFormat()
+	{ 
+		return
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\t"
-	   +"ITEM_BASE_VALUE\tITEM_CLASS_ID\t"
-	   +"LID_LOCK||STATUE||RIDE_BASIS||WEAPON_CLASS||CODED_WEAR_LOCATION||SMOKE_FLAG\t"
-	   +"CONTAINER_CAPACITY||WEAPON_HANDS_REQUIRED||LIQUID_CAPACITY||LIGHT_DURATION\t"
-	   +"BASE_ARMOR_AMOUNT||BASE_DAMAGE\tCONTAINER_TYPE||ATTACK_MODIFICATION\tCODED_SPELL_LIST";}
+		+"ITEM_BASE_VALUE\tITEM_CLASS_ID\t"
+		+"LID_LOCK||STATUE||RIDE_BASIS||WEAPON_CLASS||CODED_WEAR_LOCATION||SMOKE_FLAG\t"
+		+"CONTAINER_CAPACITY||WEAPON_HANDS_REQUIRED||LIQUID_CAPACITY||LIGHT_DURATION\t"
+		+"BASE_ARMOR_AMOUNT||BASE_DAMAGE\tCONTAINER_TYPE||ATTACK_MODIFICATION\tCODED_SPELL_LIST";
+	}
 
 	//protected static final int RCP_FINALNAME=0;
 	//protected static final int RCP_LEVEL=1;
 	//protected static final int RCP_TICKS=2;
-	protected static final int RCP_WOOD=3;
-	protected static final int RCP_VALUE=4;
-	protected static final int RCP_CLASSTYPE=5;
-	protected static final int RCP_MISCTYPE=6;
-	protected static final int RCP_CAPACITY=7;
-	protected static final int RCP_ARMORDMG=8;
-	protected static final int RCP_CONTAINMASK=9;
-	protected static final int RCP_SPELL=10;
+	protected static final int	RCP_WOOD		= 3;
+	protected static final int	RCP_VALUE		= 4;
+	protected static final int	RCP_CLASSTYPE	= 5;
+	protected static final int	RCP_MISCTYPE	= 6;
+	protected static final int	RCP_CAPACITY	= 7;
+	protected static final int	RCP_ARMORDMG	= 8;
+	protected static final int	RCP_CONTAINMASK	= 9;
+	protected static final int	RCP_SPELL		= 10;
 
 	protected DoorKey key=null;
 
@@ -79,8 +102,17 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 		return super.tick(ticking,tickID);
 	}
 
-	@Override public String parametersFile(){ return "carpentry.txt";}
-	@Override protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
+	@Override
+	public String parametersFile()
+	{
+		return "carpentry.txt";
+	}
+
+	@Override
+	protected List<List<String>> loadRecipes()
+	{
+		return super.loadRecipes(parametersFile());
+	}
 
 	@Override
 	public void unInvoke()
@@ -209,7 +241,11 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 		return (isANativeItem(I.Name()));
 	}
 
-	public boolean supportsMending(Physical I){ return canMend(null,I,true);}
+	public boolean supportsMending(Physical I)
+	{
+		return canMend(null, I, true);
+	}
+
 	@Override
 	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
 	{
@@ -243,11 +279,15 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 		if(super.checkStop(mob, commands))
 			return true;
 
+		if(super.checkInfo(mob, commands))
+			return true;
+		
 		final PairVector<EnhancedExpertise,Integer> enhancedTypes=enhancedTypes(mob,commands);
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,L("Carve what? Enter \"carve list\" for a list, \"carve refit <item>\" to resize shoes or armor, \"carve learn <item>\", \"carve scan\", \"carve mend <item>\", or \"carve stop\" to cancel."));
+			commonTell(mob,L("Carve what? Enter \"carve list\" for a list, \"carve info <item>\", \"carve refit <item>\" to resize shoes or armor,"
+							+ " \"carve learn <item>\", \"carve scan\", \"carve mend <item>\", or \"carve stop\" to cancel."));
 			return false;
 		}
 		if((!auto)
@@ -420,11 +460,11 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 			final int[] pm={RawMaterial.MATERIAL_WOODEN};
 			bundling=misctype.equalsIgnoreCase("BUNDLE");
 			final int[][] data=fetchFoundResourceData(mob,
-												woodRequired,"wood",pm,
-												0,null,null,
-												bundling,
-												autoGenerate,
-												enhancedTypes);
+													woodRequired,"wood",pm,
+													0,null,null,
+													bundling,
+													autoGenerate,
+													enhancedTypes);
 			if(data==null)
 				return false;
 			fixDataForComponents(data,componentsFoundList);

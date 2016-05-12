@@ -366,7 +366,8 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					if ((msg.tool() != null) 
 					&& (getShop().doIHaveThisInStock("$" + msg.tool().Name() + "$", mob)))
 					{
-						final String viewDesc = CMLib.coffeeShops().getViewDescription(msg.source(), msg.tool());
+						final String prefix = L("Interested in @x1? Here is some information for you: ",msg.tool().Name());
+						final String viewDesc = prefix + CMLib.coffeeShops().getViewDescription(msg.source(), msg.tool());
 						CMLib.commands().postSay(this, msg.source(), viewDesc, true, false);
 					}
 				}

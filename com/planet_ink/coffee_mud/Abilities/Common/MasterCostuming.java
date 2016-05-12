@@ -38,12 +38,33 @@ import java.util.*;
 
 public class MasterCostuming extends Costuming
 {
-	@Override public String ID() { return "MasterCostuming"; }
-	private final static String localizedName = CMLib.lang().L("Master Costuming");
-	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =I(new String[] {"MASTERCOSTUME","MCOSTUME","MCOSTUMING","MASTERCOSTUMING"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public String parametersFile(){ return "mastercostume.txt";}
+	@Override
+	public String ID()
+	{
+		return "MasterCostuming";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Master Costuming");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "MASTERCOSTUME", "MCOSTUME", "MCOSTUMING", "MASTERCOSTUMING" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public String parametersFile()
+	{
+		return "mastercostume.txt";
+	}
 
 	@Override
 	protected boolean masterCraftCheck(final Item I)
@@ -62,10 +83,14 @@ public class MasterCostuming extends Costuming
 		if(super.checkStop(mob, commands))
 			return true;
 
+		if(super.checkInfo(mob, commands))
+			return true;
+		
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,L("Make what? Enter \"mcostume list\" for a list, \"mcostume scan\", \"mcostume refit\", \"mcostume learn <item>\", \"mcostume mend <item>\", or \"mcostume stop\" to cancel."));
+			commonTell(mob,L("Make what? Enter \"mcostume list\" for a list, \"mcostume info <item>\", \"mcostume scan\", \"mcostume refit\","
+						+ " \"mcostume learn <item>\", \"mcostume mend <item>\", or \"mcostume stop\" to cancel."));
 			return false;
 		}
 		return super.autoGenInvoke(mob,commands,givenTarget,auto,asLevel,autoGenerate,forceLevels,crafted);

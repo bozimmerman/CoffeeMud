@@ -37,7 +37,6 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor, MendingSkill
 {
 	@Override
@@ -74,25 +73,28 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 	}
 
 	@Override
-	public String parametersFormat(){ return
+	public String parametersFormat()
+	{
+		return
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\t"
 		+"ITEM_CLASS_ID\tWEAPON_CLASS\tWEAPON_TYPE\tBASE_DAMAGE\tATTACK_MODIFICATION\t"
-		+"WEAPON_HANDS_REQUIRED\tMAXIMUM_RANGE\tOPTIONAL_RESOURCE_OR_MATERIAL\tCODED_SPELL_LIST";}
+		+"WEAPON_HANDS_REQUIRED\tMAXIMUM_RANGE\tOPTIONAL_RESOURCE_OR_MATERIAL\tCODED_SPELL_LIST";
+	}
 
 	//protected static final int RCP_FINALNAME=0;
 	//protected static final int RCP_LEVEL=1;
 	//protected static final int RCP_TICKS=2;
-	protected static final int RCP_WOOD=3;
-	protected static final int RCP_VALUE=4;
-	protected static final int RCP_CLASSTYPE=5;
-	protected static final int RCP_WEAPONCLASS=6;
-	protected static final int RCP_WEAPONTYPE=7;
-	protected static final int RCP_ARMORDMG=8;
-	protected static final int RCP_ATTACK=9;
-	protected static final int RCP_HANDS=10;
-	protected static final int RCP_MAXRANGE=11;
-	protected static final int RCP_EXTRAREQ=12;
-	protected static final int RCP_SPELL=13;
+	protected static final int	RCP_WOOD		= 3;
+	protected static final int	RCP_VALUE		= 4;
+	protected static final int	RCP_CLASSTYPE	= 5;
+	protected static final int	RCP_WEAPONCLASS	= 6;
+	protected static final int	RCP_WEAPONTYPE	= 7;
+	protected static final int	RCP_ARMORDMG	= 8;
+	protected static final int	RCP_ATTACK		= 9;
+	protected static final int	RCP_HANDS		= 10;
+	protected static final int	RCP_MAXRANGE	= 11;
+	protected static final int	RCP_EXTRAREQ	= 12;
+	protected static final int	RCP_SPELL		= 13;
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
@@ -315,11 +317,15 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 			return true;
 		fireRequired=true;
 
+		if(super.checkInfo(mob, commands))
+			return true;
+		
 		final PairVector<EnhancedExpertise,Integer> enhancedTypes=enhancedTypes(mob,commands);
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,L("Make what? Enter \"weaponsmith list\" for a list, \"weaponsmith scan\", \"weaponsmith learn <item>\", \"weaponsmith mend <item>\", or \"weaponsmith stop\" to cancel."));
+			commonTell(mob,L("Make what? Enter \"weaponsmith list\" for a list, \"weaponsmith info <item>\", \"weaponsmith scan\","
+						+ " \"weaponsmith learn <item>\", \"weaponsmith mend <item>\", or \"weaponsmith stop\" to cancel."));
 			return false;
 		}
 		if((!auto)

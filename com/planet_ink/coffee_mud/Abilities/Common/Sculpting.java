@@ -40,28 +40,53 @@ import java.util.*;
 
 public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, MendingSkill
 {
-	@Override public String ID() { return "Sculpting"; }
-	private final static String localizedName = CMLib.lang().L("Sculpting");
-	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =I(new String[] {"SCULPT","SCULPTING"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public String supportedResourceString(){return "ROCK-BONE|STONE";}
 	@Override
-	public String parametersFormat(){ return
+	public String ID()
+	{
+		return "Sculpting";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Sculpting");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "SCULPT", "SCULPTING" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public String supportedResourceString()
+	{
+		return "ROCK-BONE|STONE";
+	}
+
+	@Override
+	public String parametersFormat()
+	{
+		return
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\t"
 		+"ITEM_CLASS_ID\tSTATUE||LID_LOCK||RIDE_BASIS\tCONTAINER_CAPACITY||LIGHT_DURATION\t"
-		+"CONTAINER_TYPE\tCODED_SPELL_LIST";}
+		+"CONTAINER_TYPE\tCODED_SPELL_LIST";
+	}
 
 	//protected static final int RCP_FINALNAME=0;
 	//protected static final int RCP_LEVEL=1;
 	//protected static final int RCP_TICKS=2;
-	protected static final int RCP_WOOD=3;
-	protected static final int RCP_VALUE=4;
-	protected static final int RCP_CLASSTYPE=5;
-	protected static final int RCP_MISCTYPE=6;
-	protected static final int RCP_CAPACITY=7;
-	protected static final int RCP_CONTAINMASK=8;
-	protected static final int RCP_SPELL=9;
+	protected static final int	RCP_WOOD		= 3;
+	protected static final int	RCP_VALUE		= 4;
+	protected static final int	RCP_CLASSTYPE	= 5;
+	protected static final int	RCP_MISCTYPE	= 6;
+	protected static final int	RCP_CAPACITY	= 7;
+	protected static final int	RCP_CONTAINMASK	= 8;
+	protected static final int	RCP_SPELL		= 9;
 
 	protected Item key=null;
 
@@ -76,8 +101,17 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 		return super.tick(ticking,tickID);
 	}
 
-	@Override public String parametersFile(){ return "sculpting.txt";}
-	@Override protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
+	@Override
+	public String parametersFile()
+	{
+		return "sculpting.txt";
+	}
+
+	@Override
+	protected List<List<String>> loadRecipes()
+	{
+		return super.loadRecipes(parametersFile());
+	}
 
 	@Override
 	public void unInvoke()
@@ -152,7 +186,12 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 		return true;
 	}
 
-	@Override public boolean supportsMending(Physical item){ return canMend(null,item,true);}
+	@Override
+	public boolean supportsMending(Physical item)
+	{
+		return canMend(null, item, true);
+	}
+
 	@Override
 	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
 	{
@@ -188,11 +227,15 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 		if(super.checkStop(mob, commands))
 			return true;
 
+		if(super.checkInfo(mob, commands))
+			return true;
+		
 		final PairVector<EnhancedExpertise,Integer> enhancedTypes=enhancedTypes(mob,commands);
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,L("Sculpt what? Enter \"sculpt list\" for a list, \"sculpt scan\", \"sculpt learn <item>\", \"sculpt mend <item>\", or \"sculpt stop\" to cancel."));
+			commonTell(mob,L("Sculpt what? Enter \"sculpt list\" for a list, \"sculpt info <item>\", \"sculpt scan\","
+						+ " \"sculpt learn <item>\", \"sculpt mend <item>\", or \"sculpt stop\" to cancel."));
 			return false;
 		}
 		if((!auto)
@@ -219,9 +262,9 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 				mask="";
 			}
 			final int[] cols={
-					CMLib.lister().fixColWidth(20,mob.session()),
-					CMLib.lister().fixColWidth(3,mob.session())
-				};
+				CMLib.lister().fixColWidth(20,mob.session()),
+				CMLib.lister().fixColWidth(3,mob.session())
+			};
 			final StringBuffer buf=new StringBuffer(L("@x1 @x2 Stone required\n\r",CMStrings.padRight(L("Item"),cols[0]),CMStrings.padRight(L("Lvl"),cols[1])));
 			for(int r=0;r<recipes.size();r++)
 			{
@@ -337,11 +380,11 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 			bundling=misctype.equalsIgnoreCase("BUNDLE");
 			final int[] pm={RawMaterial.MATERIAL_ROCK};
 			final int[][] data=fetchFoundResourceData(mob,
-												woodRequired,"stone",pm,
-												0,null,null,
-												bundling,
-												autoGenerate,
-												enhancedTypes);
+													woodRequired,"stone",pm,
+													0,null,null,
+													bundling,
+													autoGenerate,
+													enhancedTypes);
 			if(data==null)
 				return false;
 			fixDataForComponents(data,componentsFoundList);
@@ -386,9 +429,19 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 					if(session!=null)
 					session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0)
 					{
-						@Override public void showPrompt() {session.promptPrint(L("What is this a statue of?\n\r: "));}
-						@Override public void timedOut() {}
-						@Override public void callBack()
+						@Override
+						public void showPrompt()
+						{
+							session.promptPrint(L("What is this a statue of?\n\r: "));
+						}
+
+						@Override
+						public void timedOut()
+						{
+						}
+
+						@Override
+						public void callBack()
 						{
 							final String of=this.input;
 							if((of.trim().length()==0)||(of.indexOf('<')>=0))

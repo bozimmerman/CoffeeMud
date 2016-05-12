@@ -268,11 +268,15 @@ public class Costuming extends EnhancedCraftingSkill implements ItemCraftor, Men
 		if(super.checkStop(mob, commands))
 			return true;
 
+		if(super.checkInfo(mob, commands))
+			return true;
+		
 		final PairVector<EnhancedExpertise,Integer> enhancedTypes=enhancedTypes(mob,commands);
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,L("Costume what? Enter \"costume list\" for a list, \"costume refit <item>\" to resize, \"costume learn <item>\", \"costume scan\", \"costume mend <item>\", or \"costume stop\" to cancel."));
+			commonTell(mob,L("Costume what? Enter \"costume list\" for a list, \"costume info <item>\", \"costume refit <item>\" to resize,"
+					+ " \"costume learn <item>\", \"costume scan\", \"costume mend <item>\", or \"costume stop\" to cancel."));
 			return false;
 		}
 		if((!auto)

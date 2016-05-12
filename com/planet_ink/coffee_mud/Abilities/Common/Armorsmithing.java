@@ -35,17 +35,36 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
-
 public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor, MendingSkill
 {
-	@Override public String ID() { return "Armorsmithing"; }
-	private final static String localizedName = CMLib.lang().L("Armorsmithing");
-	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =I(new String[] {"ARMORSMITH","ARMORSMITHING"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public String supportedResourceString(){return "METAL|MITHRIL";}
-	
+	@Override
+	public String ID()
+	{
+		return "Armorsmithing";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Armorsmithing");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "ARMORSMITH", "ARMORSMITHING" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public String supportedResourceString()
+	{
+		return "METAL|MITHRIL";
+	}
+
 	@Override
 	public String parametersFormat()
 	{ 
@@ -58,14 +77,14 @@ public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor,
 	//protected static final int RCP_FINALNAME=0;
 	//protected static final int RCP_LEVEL=1;
 	//protected static final int RCP_TICKS=2;
-	protected static final int RCP_WOOD=3;
-	protected static final int RCP_VALUE=4;
-	protected static final int RCP_CLASSTYPE=5;
-	protected static final int RCP_MISCTYPE=6;
-	protected static final int RCP_CAPACITY=7;
-	protected static final int RCP_ARMORDMG=8;
-	protected static final int RCP_CONTAINMASK=9;
-	protected static final int RCP_SPELL=10;
+	protected static final int	RCP_WOOD		= 3;
+	protected static final int	RCP_VALUE		= 4;
+	protected static final int	RCP_CLASSTYPE	= 5;
+	protected static final int	RCP_MISCTYPE	= 6;
+	protected static final int	RCP_CAPACITY	= 7;
+	protected static final int	RCP_ARMORDMG	= 8;
+	protected static final int	RCP_CONTAINMASK	= 9;
+	protected static final int	RCP_SPELL		= 10;
 
 	protected String primeMaterialDesc()
 	{
@@ -200,9 +219,17 @@ public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor,
 		return true;
 	}
 
-	@Override public boolean supportsDeconstruction() { return true; }
+	@Override
+	public boolean supportsDeconstruction()
+	{
+		return true;
+	}
 
-	@Override public boolean supportsMending(Physical I){ return canMend(null,I,true);}
+	@Override
+	public boolean supportsMending(Physical I)
+	{
+		return canMend(null, I, true);
+	}
 
 	@Override
 	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
@@ -236,13 +263,18 @@ public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor,
 	{
 		if(super.checkStop(mob, commands))
 			return true;
+		
+		if(super.checkInfo(mob, commands))
+			return true;
+		
 		fireRequired=true;
 
 		final PairVector<EnhancedExpertise,Integer> enhancedTypes=enhancedTypes(mob,commands);
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,L("Make what? Enter \"armorsmith list\" for a list, \"armorsmith refit <item>\" to resize, \"armorsmith learn <item>\", \"armorsmith scan\", \"armorsmith mend <item>\", or \"armorsmith stop\" to cancel."));
+			commonTell(mob,L("Make what? Enter \"armorsmith list\" for a list, \"armorsmith refit <item>\" to resize, \"armorsmith info <item>\","
+							+ " \"armorsmith learn <item>\", \"armorsmith scan\", \"armorsmith mend <item>\", or \"armorsmith stop\" to cancel."));
 			return false;
 		}
 		if((!auto)
@@ -270,10 +302,10 @@ public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor,
 			}
 			final StringBuffer buf=new StringBuffer("");
 			final int[] cols={
-					CMLib.lister().fixColWidth(29,mob.session()),
-					CMLib.lister().fixColWidth(3,mob.session()),
-					CMLib.lister().fixColWidth(3,mob.session())
-				};
+				CMLib.lister().fixColWidth(29,mob.session()),
+				CMLib.lister().fixColWidth(3,mob.session()),
+				CMLib.lister().fixColWidth(3,mob.session())
+			};
 			int toggler=1;
 			final int toggleTop=2;
 			for(int r=0;r<toggleTop;r++)

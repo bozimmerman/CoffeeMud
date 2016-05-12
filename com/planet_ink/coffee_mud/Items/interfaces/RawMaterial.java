@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Items.interfaces;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.HashSet;
@@ -58,7 +59,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  */
 public interface RawMaterial extends Item
 {
-
 	/**
 	 * Gets the specific origin of this resource. If a resource has a specific
 	 * source that may be of interest to the owner, here it is. For example, if
@@ -1274,6 +1274,46 @@ public interface RawMaterial extends Item
 			return data[code & RESOURCE_MASK][2];
 		}
 
+
+		/**
+		 * Returns the resource code of the most frequently found
+		 * resource of the given material mask
+		 * @param material the material mask
+		 * @return the most common resource of that material
+		 */
+		public static int MOST_FREQUENT(int material)
+		{
+			return c().mostFrequent(material);
+		}
+		
+		/**
+		 * Returns the resource code of the most frequently found
+		 * resource of the given material mask
+		 * @param material the material mask
+		 * @return the most common resource of that material
+		 */
+		public int mostFrequent(int material)
+		{
+			final List<Integer> all = COMPOSE_RESOURCES(material);
+			if((all==null)||(all.size()==0))
+				return -1;
+			Collections.sort(all,new Comparator<Integer>()
+			{
+				@Override
+				public int compare(Integer o1, Integer o2)
+				{
+					int freq1 = frequency(o1.intValue());
+					int freq2 = frequency(o2.intValue());
+					if(freq1 < freq2)
+						return 1;
+					if(freq1 > freq2)
+						return -1;
+					return 0;
+				}
+			});
+			return all.get(0).intValue();
+		}
+		
 		/**
 		 * Returns the hardness of the resource, from 1-10
 		 * 

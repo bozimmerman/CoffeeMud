@@ -39,52 +39,74 @@ import java.util.regex.Pattern;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
-
 public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 {
-	public String ID = "GenCraftSkill";
-	@Override public String ID() { return ID;}
-	@Override public String Name(){return name();}
-	@Override public String name(){ return (String)V(ID,V_NAME);}
-
-	private static final Hashtable<String,Object[]> vars=new Hashtable<String,Object[]>();
-	private static final int V_NAME=0;//S
-	private static final int V_TRIG=1;//S[]
-	private static final int V_HELP=2;//S
-	private static final int V_FNAM=3;//S
-	private static final int V_RSCS=4;//S
-	private static final int V_VERB=5;//S
-	private static final int V_CNMN=6;//B
-	private static final int V_CNRF=7;//B
-	private static final int V_CNBN=8;//B
-	private static final int V_SOND=9;//S
-	private static final int V_CNST=10;//B
-	private static final int NUM_VS=11;//S
+	public String	ID	= "GenCraftSkill";
 
 	@Override
-	public String parametersFormat(){ return
+	public String ID()
+	{
+		return ID;
+	}
+
+	@Override
+	public String Name()
+	{
+		return name();
+	}
+
+	@Override
+	public String name()
+	{
+		return (String) V(ID, V_NAME);
+	}
+
+	private static final Map<String,Object[]> vars=new Hashtable<String,Object[]>();
+	private static final int	V_NAME			= 0;	// S
+	private static final int	V_TRIG			= 1;	// S[]
+	private static final int	V_HELP			= 2;	// S
+	private static final int	V_FNAM			= 3;	// S
+	private static final int	V_RSCS			= 4;	// S
+	private static final int	V_VERB			= 5;	// S
+	private static final int	V_CNMN			= 6;	// B
+	private static final int	V_CNRF			= 7;	// B
+	private static final int	V_CNBN			= 8;	// B
+	private static final int	V_SOND			= 9;	// S
+	private static final int	V_CNST			= 10;	// B
+	private static final int	NUM_VS			= 11;	// S
+
+	
+	// 
+
+	@Override
+	public String parametersFormat()
+	{ 
+		return
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\t"
-	   +"ITEM_BASE_VALUE\tITEM_CLASS_ID\t"
-	   +"LID_LOCK||STATUE||RIDE_BASIS||WEAPON_CLASS||CODED_WEAR_LOCATION||SMOKE_FLAG\t"
-	   +"CONTAINER_CAPACITY||WEAPON_HANDS_REQUIRED||LIQUID_CAPACITY||LIGHT_DURATION\t"
-	   +"BASE_ARMOR_AMOUNT||BASE_DAMAGE\tCONTAINER_TYPE||ATTACK_MODIFICATION\tCODED_SPELL_LIST";}
+		+"ITEM_BASE_VALUE\tITEM_CLASS_ID\t"
+		+"LID_LOCK||STATUE||RIDE_BASIS||WEAPON_CLASS||CODED_WEAR_LOCATION||SMOKE_FLAG\t"
+		+"CONTAINER_CAPACITY||WEAPON_HANDS_REQUIRED||LIQUID_CAPACITY||LIGHT_DURATION\t"
+		+"BASE_ARMOR_AMOUNT||BASE_DAMAGE\tCONTAINER_TYPE||ATTACK_MODIFICATION\tCODED_SPELL_LIST";}
 
 	//protected static final int RCP_FINALNAME=0;
 	//protected static final int RCP_LEVEL=1;
 	//protected static final int RCP_TICKS=2;
-	protected static final int RCP_AMOUNTMATS=3;
-	protected static final int RCP_VALUE=4;
-	protected static final int RCP_CLASSTYPE=5;
-	protected static final int RCP_MISCTYPE=6;
-	protected static final int RCP_CAPACITY=7;
-	protected static final int RCP_ARMORDMG=8;
-	protected static final int RCP_CONTAINMASK=9;
-	protected static final int RCP_SPELL=10;
+	protected static final int	RCP_AMOUNTMATS	= 3;
+	protected static final int	RCP_VALUE		= 4;
+	protected static final int	RCP_CLASSTYPE	= 5;
+	protected static final int	RCP_MISCTYPE	= 6;
+	protected static final int	RCP_CAPACITY	= 7;
+	protected static final int	RCP_ARMORDMG	= 8;
+	protected static final int	RCP_CONTAINMASK	= 9;
+	protected static final int	RCP_SPELL		= 10;
 
 	protected DoorKey key=null;
 
-	@Override public boolean supportsDeconstruction() { return false; }
+	@Override
+	public boolean supportsDeconstruction()
+	{
+		return false;
+	}
 
 	private static final Object[] makeEmpty()
 	{
@@ -103,13 +125,29 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 		return O;
 	}
 
-	@Override public String[] triggerStrings(){return (String[])V(ID,V_TRIG);}
+	@Override
+	public String[] triggerStrings()
+	{
+		return (String[]) V(ID, V_TRIG);
+	}
 
-	@Override protected boolean canBeDoneSittingDown() { return ((Boolean)V(ID,V_CNST)).booleanValue(); }
+	@Override
+	protected boolean canBeDoneSittingDown()
+	{
+		return ((Boolean) V(ID, V_CNST)).booleanValue();
+	}
 
-	@Override public String parametersFile(){ return (String)V(ID,V_FNAM);}
+	@Override
+	public String parametersFile()
+	{
+		return (String) V(ID, V_FNAM);
+	}
 
-	@Override public String supportedResourceString(){return (String)V(ID,V_RSCS);}
+	@Override
+	public String supportedResourceString()
+	{
+		return (String) V(ID, V_RSCS);
+	}
 
 	private static final Object V(String ID, int varNum)
 	{
@@ -158,10 +196,18 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 	{
 	}
 
-	@Override public boolean isGeneric(){return true;}
+	@Override
+	public boolean isGeneric()
+	{
+		return true;
+	}
 
 	// lots of work to be done here
-	@Override public int getSaveStatIndex(){return getStatCodes().length;}
+	@Override
+	public int getSaveStatIndex()
+	{
+		return getStatCodes().length;
+	}
 
 	private static final String[] CODES={"CLASS",//0
 										 "TEXT",//1
@@ -178,14 +224,20 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 										 "CANSIT",//2S
 										};
 
-	@Override public String[] getStatCodes(){return CODES;}
+	@Override
+	public String[] getStatCodes()
+	{
+		return CODES;
+	}
 
 	@Override
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<CODES.length;i++)
+		{
 			if(code.equalsIgnoreCase(CODES[i]))
 				return i;
+		}
 		return -1;
 	}
 
@@ -205,19 +257,32 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 		*/
 		switch(getCodeNum(code))
 		{
-		case 0: return ID();
-		case 1: return text();
-		case 2: return (String)V(ID,V_NAME);
-		case 3: return (String)V(ID,V_HELP);
-		case 4: return CMParms.toListString((String[])V(ID,V_TRIG));
-		case 5: return (String)V(ID,V_FNAM);
-		case 6: return ((String)V(ID,V_RSCS)).replace('|',',');
-		case 7: return (String)V(ID,V_VERB);
-		case 8: return Boolean.toString(((Boolean)V(ID,V_CNMN)).booleanValue());
-		case 9: return Boolean.toString(((Boolean)V(ID,V_CNRF)).booleanValue());
-		case 10: return Boolean.toString(((Boolean)V(ID,V_CNBN)).booleanValue());
-		case 11: return (String)V(ID,V_SOND);
-		case 12: return Boolean.toString(((Boolean)V(ID,V_CNST)).booleanValue());
+		case 0:
+			return ID();
+		case 1:
+			return text();
+		case 2:
+			return (String) V(ID, V_NAME);
+		case 3:
+			return (String) V(ID, V_HELP);
+		case 4:
+			return CMParms.toListString((String[]) V(ID, V_TRIG));
+		case 5:
+			return (String) V(ID, V_FNAM);
+		case 6:
+			return ((String) V(ID, V_RSCS)).replace('|', ',');
+		case 7:
+			return (String) V(ID, V_VERB);
+		case 8:
+			return Boolean.toString(((Boolean) V(ID, V_CNMN)).booleanValue());
+		case 9:
+			return Boolean.toString(((Boolean) V(ID, V_CNRF)).booleanValue());
+		case 10:
+			return Boolean.toString(((Boolean) V(ID, V_CNBN)).booleanValue());
+		case 11:
+			return (String) V(ID, V_SOND);
+		case 12:
+			return Boolean.toString(((Boolean) V(ID, V_CNST)).booleanValue());
 		default:
 			if(code.equalsIgnoreCase("allxml"))
 				return getAllXML();
@@ -241,34 +306,57 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 		switch(getCodeNum(code))
 		{
 		case 0:
-		if(val.trim().length()>0)
-		{
-			V(ID,V_NAME); // force creation, if necc
-			final Object[] O=vars.get(ID);
-			vars.remove(ID);
-			vars.put(val,O);
-			if(num!=9)
-				CMClass.delClass(CMObjectType.ABILITY,this);
-			ID=val;
-			if(num!=9)
-				CMClass.addClass(CMObjectType.ABILITY,this);
-		}
-		break;
-		case 1: setMiscText(val); break;
-		case 2: SV(ID,V_NAME,val);
-				if(ID.equalsIgnoreCase("GenCraftSkill"))
-					break;
+			if(val.trim().length()>0)
+			{
+				V(ID,V_NAME); // force creation, if necc
+				final Object[] O=vars.get(ID);
+				vars.remove(ID);
+				vars.put(val,O);
+				if(num!=9)
+					CMClass.delClass(CMObjectType.ABILITY,this);
+				ID=val;
+				if(num!=9)
+					CMClass.addClass(CMObjectType.ABILITY,this);
+			}
+			break;
+		case 1:
+			setMiscText(val);
+			break;
+		case 2:
+			SV(ID, V_NAME, val);
+			if (ID.equalsIgnoreCase("GenCraftSkill"))
 				break;
-		case 3: SV(ID,V_HELP,val); break;
-		case 4: SV(ID,V_TRIG,CMParms.parseCommas(val,true).toArray(new String[0])); break;
-		case 5: SV(ID,V_FNAM,val); break;
-		case 6: SV(ID,V_RSCS,val.toUpperCase().replace(',','|')); break;
-		case 7: SV(ID,V_VERB,val); break;
-		case 8: SV(ID,V_CNMN,Boolean.valueOf(CMath.s_bool(val))); break;
-		case 9: SV(ID,V_CNRF,Boolean.valueOf(CMath.s_bool(val))); break;
-		case 10: SV(ID,V_CNBN,Boolean.valueOf(CMath.s_bool(val))); break;
-		case 11: SV(ID,V_SOND,val); break;
-		case 12: SV(ID,V_CNST,Boolean.valueOf(CMath.s_bool(val))); break;
+			break;
+		case 3:
+			SV(ID, V_HELP, val);
+			break;
+		case 4:
+			SV(ID, V_TRIG, CMParms.parseCommas(val, true).toArray(new String[0]));
+			break;
+		case 5:
+			SV(ID, V_FNAM, val);
+			break;
+		case 6:
+			SV(ID, V_RSCS, val.toUpperCase().replace(',', '|'));
+			break;
+		case 7:
+			SV(ID, V_VERB, val);
+			break;
+		case 8:
+			SV(ID, V_CNMN, Boolean.valueOf(CMath.s_bool(val)));
+			break;
+		case 9:
+			SV(ID, V_CNRF, Boolean.valueOf(CMath.s_bool(val)));
+			break;
+		case 10:
+			SV(ID, V_CNBN, Boolean.valueOf(CMath.s_bool(val)));
+			break;
+		case 11:
+			SV(ID, V_SOND, val);
+			break;
+		case 12:
+			SV(ID, V_CNST, Boolean.valueOf(CMath.s_bool(val)));
+			break;
 		default:
 			if(code.equalsIgnoreCase("allxml")&&ID.equalsIgnoreCase("GenCraftSkill"))
 				parseAllXML(val);
@@ -294,21 +382,27 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 		if((V==null)||(V.size()==0))
 			return;
 		for(int c=0;c<getStatCodes().length;c++)
+		{
 			if(getStatCodes()[c].equals("CLASS"))
 				ID=CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(V, getStatCodes()[c]));
 			else
 			if(!getStatCodes()[c].equals("TEXT"))
 				setStat(getStatCodes()[c],CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(V, getStatCodes()[c])));
+		}
 	}
 
 	private String getAllXML()
 	{
 		final StringBuffer str=new StringBuffer("");
 		for(int c=0;c<getStatCodes().length;c++)
+		{
 			if(!getStatCodes()[c].equals("TEXT"))
+			{
 				str.append("<"+getStatCodes()[c]+">"
 						+CMLib.xml().parseOutAngleBrackets(getStat(getStatCodes()[c]))
 						+"</"+getStatCodes()[c]+">");
+			}
+		}
 		return str.toString();
 	}
 
@@ -411,7 +505,10 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 		return false;
 	}
 
-	public boolean supportsMending(Physical I){ return canMend(null,I,true); }
+	public boolean supportsMending(Physical I)
+	{
+		return canMend(null, I, true);
+	}
 
 	@Override
 	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
@@ -454,6 +551,9 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 		if(super.checkStop(mob, commands))
 			return true;
 
+		if(super.checkInfo(mob, commands))
+			return true;
+		
 		final PairVector<EnhancedExpertise,Integer> enhancedTypes=enhancedTypes(mob,commands);
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		final String noun=CMStrings.capitalizeAndLower(triggerStrings()[0]);
@@ -464,6 +564,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 		if(commands.size()==0)
 		{
 			final StringBuilder features=new StringBuilder(noun+" what? Enter \""+noun.toLowerCase()+" list\" for a list");
+			features.append(", \""+noun.toLowerCase()+" info\" to details");
 			if(canMendB.booleanValue())
 				features.append(", \""+noun.toLowerCase()+" mend <item>\" to mend broken items, \""+noun.toLowerCase()+" scan\" to scan for mendable items");
 			if(canRefitB.booleanValue())
@@ -502,10 +603,10 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 			int toggler=1;
 			final int toggleTop=2;
 			final int[] cols={
-					CMLib.lister().fixColWidth(29,mob.session()),
-					CMLib.lister().fixColWidth(3,mob.session()),
-					CMLib.lister().fixColWidth(4,mob.session())
-				};
+				CMLib.lister().fixColWidth(29,mob.session()),
+				CMLib.lister().fixColWidth(3,mob.session()),
+				CMLib.lister().fixColWidth(4,mob.session())
+			};
 			for(int r=0;r<toggleTop;r++)
 				buf.append((r>0?" ":"")+CMStrings.padRight(L("Item"),cols[0])+" "+CMStrings.padRight(L("Lvl"),cols[1])+" "+CMStrings.padRight(L("Mats"),cols[2]));
 			buf.append("\n\r");
@@ -641,11 +742,11 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 			for(int i=0;i<ipm.length;i++) pm[i]=ipm[i].intValue();
 			bundling=misctype.equalsIgnoreCase("BUNDLE");
 			final int[][] data=fetchFoundResourceData(mob,
-												numRequired,"material",pm,
-												0,null,null,
-												bundling,
-												autoGenerate,
-												enhancedTypes);
+													numRequired,"material",pm,
+													0,null,null,
+													bundling,
+													autoGenerate,
+													enhancedTypes);
 			if(data==null)
 				return false;
 			fixDataForComponents(data,componentsFoundList);

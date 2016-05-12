@@ -84,15 +84,15 @@ public class CraftingSkill extends GatheringSkill
 	protected boolean			messedUp		= false;
 
 	// common recipe definition indexes
-	protected static final int RCP_FINALNAME=0;
-	protected static final int RCP_LEVEL=1;
-	protected static final int RCP_TICKS=2;
+	protected static final int	RCP_FINALNAME	= 0;
+	protected static final int	RCP_LEVEL		= 1;
+	protected static final int	RCP_TICKS		= 2;
 
 	// for ability component style materials
-	protected static final int CF_AMOUNT=0;
-	protected static final int CF_HARDNESS=1;
-	protected static final int CF_MATERIAL=2;
-	protected static final int CF_TOTAL=3;
+	protected static final int	CF_AMOUNT		= 0;
+	protected static final int	CF_HARDNESS		= 1;
+	protected static final int	CF_MATERIAL		= 2;
+	protected static final int	CF_TOTAL		= 3;
 	
 	protected static class CraftParms
 	{
@@ -709,13 +709,27 @@ public class CraftingSkill extends GatheringSkill
 	
 	public ItemKeyPair craftItem(String recipeName, int material, boolean forceLevels)
 	{
+		MOB mob=null;
+		try
+		{
+			mob=CMLib.map().getFactoryMOBInAnyRoom();
+			mob.basePhyStats().setLevel(Integer.MAX_VALUE/2);
+			mob.basePhyStats().setSensesMask(mob.basePhyStats().sensesMask()|PhyStats.CAN_SEE_DARK);
+			mob.recoverPhyStats();
+			return craftItem(mob,new XVector<String>(recipeName),material,forceLevels);
+		}
+		finally
+		{
+			if(mob!=null)
+				mob.destroy();
+		}
+	}
+	
+	public ItemKeyPair craftItem(MOB mob, List<String> recipes, int material, boolean forceLevels)
+	{
 		Item building=null;
 		DoorKey key=null;
 		int tries=0;
-		final MOB mob=CMLib.map().getFactoryMOBInAnyRoom();
-		mob.basePhyStats().setLevel(Integer.MAX_VALUE/2);
-		mob.basePhyStats().setSensesMask(mob.basePhyStats().sensesMask()|PhyStats.CAN_SEE_DARK);
-		mob.recoverPhyStats();
 		if(material<0)
 		{
 			List<Integer> rscs=myResources();
@@ -726,7 +740,7 @@ public class CraftingSkill extends GatheringSkill
 		while(((building==null)||(building.name().endsWith(" bundle")))&&(((++tries)<100)))
 		{
 			List<Item> V=new Vector<Item>(1);
-			autoGenInvoke(mob,new XVector<String>(recipeName),null,true,-1,material,forceLevels,V);
+			autoGenInvoke(mob,recipes,null,true,-1,material,forceLevels,V);
 			if(V.size()>0)
 			{
 				if((V.size()>1)&&((V.get(V.size()-2) instanceof DoorKey)))
@@ -738,7 +752,6 @@ public class CraftingSkill extends GatheringSkill
 			else
 				building=null;
 		}
-		mob.destroy();
 		if(building==null)
 			return null;
 		building.setSecretIdentity("");
@@ -779,6 +792,37 @@ public class CraftingSkill extends GatheringSkill
 		}
 		usedNames.clear();
 		return allItems;
+	}
+
+	public boolean checkInfo(MOB mob, List<String> commands)
+	{
+		if((commands!=null)
+		&&(commands.size()>1)
+		&&(commands.get(0).equalsIgnoreCase("info")))
+		{
+			List<String> recipe = new XVector<String>(commands);
+			recipe.remove(0);
+			String recipeName = CMParms.combine(commands);
+			List<Integer> rscs=myResources();
+			if(rscs.size()==0)
+				rscs=new XVector(Integer.valueOf(RawMaterial.RESOURCE_WOOD));
+			final int material=RawMaterial.CODES.MOST_FREQUENT(rscs.get(0).intValue()&RawMaterial.MATERIAL_MASK);
+			ItemKeyPair pair = craftItem(mob,recipe,material,false);
+			if(pair == null)
+			{
+				commonTell(mob,L("You don't know how to make '@x1'",recipeName));
+			}
+			else
+			{
+				final String viewDesc = CMLib.coffeeShops().getViewDescription(mob, pair.item);
+				commonTell(mob,viewDesc);
+				pair.item.destroy();
+				if(pair.key!=null)
+					pair.key.destroy();
+			}
+			return true;
+		}
+		return false;
 	}
 
 	public ItemKeyPair craftItem(String recipeName)
