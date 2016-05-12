@@ -995,7 +995,12 @@ public class DefaultSession implements Session
 			return mob.name()+" is AFK at the moment.";
 		return afkMessage;
 	}
-	@Override public void setAFKMessage(String str){afkMessage=str;}
+
+	@Override
+	public void setAFKMessage(String str)
+	{
+		afkMessage = str;
+	}
 
 	protected void errorOut(Exception t)
 	{
@@ -1004,7 +1009,11 @@ public class DefaultSession implements Session
 		setKillFlag(true);
 	}
 
-	protected long getWriteStartTime(){return writeStartTime;}
+	protected long getWriteStartTime()
+	{
+		return writeStartTime;
+	}
+
 	@Override
 	public boolean isLockedUpWriting()
 	{

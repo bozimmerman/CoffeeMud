@@ -617,8 +617,9 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 			||(msg.sourceMinor()==CMMsg.TYP_LEAVE)
 			||(msg.sourceMinor()==CMMsg.TYP_FLEE))
 				&&(msg.target() instanceof Room)
-				&&(this.isRoom((Room)msg.target())))
-				return false;
+				&&(this.isRoom((Room)msg.target()))
+				&&(msg.source().isMonster()))
+					return false;
 		}
 		
 		if((getThemeCode()>0)&&(!CMath.bset(getThemeCode(),Area.THEME_FANTASY)))
