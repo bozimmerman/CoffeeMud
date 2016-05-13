@@ -6,6 +6,7 @@
    5. New Archon ability: Matrix Possess
    6. Common Skills now support INFO argument to get info on recipe items.
    7. New Area type: SubThinInstance, for making instance copies of existing areas.
+   8. EQUIP LONG now shows all items being worn and tattoos, even at other layers.
 # Build 5.9.3 Released 05/08/2016
    1. Follower behavior now has a few more options.
    2. STAT [MOBNAME] will now give full editor stats also, and 

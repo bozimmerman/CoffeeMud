@@ -89,88 +89,91 @@ public class Equipment extends StdCommand
 			int emptySlots=numLocations;
 			if(wornHere.size()>0)
 			{
-				final List<List<Item>> sets=new Vector<List<Item>>(numLocations);
-				for(int i=0;i<numLocations;i++)
-					sets.add(new Vector<Item>());
-				Item I=null;
-				Item I2=null;
-				short layer=Short.MAX_VALUE;
-				short layerAtt=0;
-				short layer2=Short.MAX_VALUE;
-				short layerAtt2=0;
-				List<Item> set=null;
-				for(int i=0;i<wornHere.size();i++)
+				if(!allPlaces)
 				{
-					I=wornHere.get(i);
-					if(I.container()!=null)
-						continue;
-					if(I instanceof Armor)
+					final List<List<Item>> sets=new Vector<List<Item>>(numLocations);
+					for(int i=0;i<numLocations;i++)
+						sets.add(new Vector<Item>());
+					Item I=null;
+					Item I2=null;
+					short layer=Short.MAX_VALUE;
+					short layerAtt=0;
+					short layer2=Short.MAX_VALUE;
+					short layerAtt2=0;
+					List<Item> set=null;
+					for(int i=0;i<wornHere.size();i++)
 					{
-						layer=((Armor)I).getClothingLayer();
-						layerAtt=((Armor)I).getLayerAttributes();
+						I=wornHere.get(i);
+						if(I.container()!=null)
+							continue;
+						if(I instanceof Armor)
+						{
+							layer=((Armor)I).getClothingLayer();
+							layerAtt=((Armor)I).getLayerAttributes();
+						}
+						else
+						{
+							layer=0;
+							layerAtt=0;
+						}
+						for(int s=0;s<sets.size();s++)
+						{
+							set=sets.get(s);
+							if(set.size()==0)
+							{
+								set.add(I);
+								break;
+							}
+							for(int s2=0;s2<set.size();s2++)
+							{
+								I2=set.get(s2);
+								if(I2 instanceof Armor)
+								{
+									layer2=((Armor)I2).getClothingLayer();
+									layerAtt2=((Armor)I2).getLayerAttributes();
+								}
+								else
+								{
+									layer2=0;
+									layerAtt2=0;
+								}
+								if(layer2==layer)
+								{
+									if(((layerAtt&Armor.LAYERMASK_MULTIWEAR)>0)
+									&&((layerAtt2&Armor.LAYERMASK_MULTIWEAR)>0))
+										set.add(s2,I);
+									break;
+								}
+								if(layer2>layer)
+								{
+									set.add(s2,I);
+									break;
+								}
+							}
+							if(set.contains(I))
+								break;
+							if(layer2<layer)
+							{
+								set.add(I);
+								break;
+							}
+						}
 					}
-					else
-					{
-						layer=0;
-						layerAtt=0;
-					}
+					wornHere.clear();
 					for(int s=0;s<sets.size();s++)
 					{
 						set=sets.get(s);
-						if(set.size()==0)
-						{
-							set.add(I);
-							break;
-						}
-						for(int s2=0;s2<set.size();s2++)
+						int s2=set.size()-1;
+						for(;s2>=0;s2--)
 						{
 							I2=set.get(s2);
-							if(I2 instanceof Armor)
+							wornHere.add(I2);
+							if((!(I2 instanceof Armor))
+							||(!CMath.bset(((Armor)I2).getLayerAttributes(),Armor.LAYERMASK_SEETHROUGH)))
 							{
-								layer2=((Armor)I2).getClothingLayer();
-								layerAtt2=((Armor)I2).getLayerAttributes();
-							}
-							else
-							{
-								layer2=0;
-								layerAtt2=0;
-							}
-							if(layer2==layer)
-							{
-								if(((layerAtt&Armor.LAYERMASK_MULTIWEAR)>0)
-								&&((layerAtt2&Armor.LAYERMASK_MULTIWEAR)>0))
-									set.add(s2,I);
+								emptySlots--;
 								break;
 							}
-							if(layer2>layer)
-							{
-								set.add(s2,I);
-								break;
-							}
-						}
-						if(set.contains(I))
-							break;
-						if(layer2<layer)
-						{
-							set.add(I);
-							break;
-						}
-					}
-				}
-				wornHere.clear();
-				for(int s=0;s<sets.size();s++)
-				{
-					set=sets.get(s);
-					int s2=set.size()-1;
-					for(;s2>=0;s2--)
-					{
-						I2=set.get(s2);
-						wornHere.add(I2);
-						if((!(I2 instanceof Armor))
-						||(!CMath.bset(((Armor)I2).getLayerAttributes(),Armor.LAYERMASK_SEETHROUGH)))
-						{
-							emptySlots--;
-							break;
 						}
 					}
 				}
