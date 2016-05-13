@@ -504,13 +504,9 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	@Override
 	public boolean mayIAttack(final MOB mob, final Rideable attacker, final Rideable defender)
 	{
-		final String attackerOwnerName = (attacker instanceof PrivateProperty) ? ((PrivateProperty)attacker).getOwnerName() : "";  
 		final String defenderOwnerName = (defender instanceof PrivateProperty) ? ((PrivateProperty)defender).getOwnerName() : "";  
 		// is this how we determine npc ships?
 		if(((defenderOwnerName == null)||(defenderOwnerName.length()==0))&&(defender instanceof PrivateProperty))
-			return true;
-		if(((attackerOwnerName == null)||(attackerOwnerName.length()==0)) 
-		&& (mob.isMonster()))
 			return true;
 		if(CMSecurity.isASysOp(mob) && mob.isAttributeSet(Attrib.PLAYERKILL))
 			return true;
