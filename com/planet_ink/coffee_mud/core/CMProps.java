@@ -977,7 +977,7 @@ public class CMProps extends Properties
 					return ""+CMParms.toListString(p().whiteLists.get(CMath.s_valueOf(c, varName)));
 			}
 		}
-		return "";
+		return p().getStr(varName,"");
 	}
 	
 	/**

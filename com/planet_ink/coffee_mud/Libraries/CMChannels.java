@@ -21,6 +21,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.lang.reflect.Method;
 import java.util.*;
 
 /*
@@ -740,12 +741,14 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		}
 		if(chan.flags().contains(ChannelsLibrary.ChannelFlag.NOLANGUAGE))
 			msg.setTool(getCommonLanguage());
-		
+
 		final Room R=mob.location();
 		CMLib.commands().monitorGlobalMessage(R, msg);
 		if((R!=null)
 		&&((!R.isInhabitant(mob))||(R.okMessage(mob,msg))))
 		{
+			if(chan.flags().contains(ChannelsLibrary.ChannelFlag.TWITTER))
+				tweet(message);
 			final boolean areareq=flags.contains(ChannelsLibrary.ChannelFlag.SAMEAREA);
 			channelQueUp(channelInt,msg);
 			for(final Session S : CMLib.sessions().localOnlineIterable())
@@ -775,6 +778,49 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 			serviceClient=CMLib.threads().startTickDown(this, Tickable.TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK, MudHost.TIME_UTILTHREAD_SLEEP, 1);
 		}
 		return true;
+	}
+
+	/**
+	 * Requires including special library and special configuration.
+	 * @param msg the message to tweet
+	 */
+	private void tweet(String msg)
+	{
+		msg = CMStrings.scrunchWord(CMStrings.removeColors(msg), 140);
+		try
+		{
+			Class<?> cbClass = Class.forName("twitter4j.conf.ConfigurationBuilder");
+			Object cbObj = cbClass.newInstance();
+			Method cbM1=cbClass.getMethod("setOAuthConsumerKey", String.class);
+			cbM1.invoke(cbObj,CMProps.getProp("TWITTER-OAUTHCONSUMERKEY"));
+			Method cbM2=cbClass.getMethod("setOAuthConsumerSecret", String.class);
+			cbM2.invoke(cbObj,CMProps.getProp("TWITTER-OAUTHCONSUMERSECRET"));
+			Method cbM3=cbClass.getMethod("setOAuthAccessToken", String.class);
+			cbM3.invoke(cbObj,CMProps.getProp("TWITTER-OAUTHACCESSTOKEN"));
+			Method cbM4=cbClass.getMethod("setOAuthAccessTokenSecret", String.class);
+			cbM4.invoke(cbObj,CMProps.getProp("TWITTER-OAUTHACCESSTOKENSECRET"));
+			Method cbM5=cbClass.getMethod("build");
+			Object cbBuildObj = cbM5.invoke(cbObj);
+			
+			Class<?> cfClass = Class.forName("twitter4j.conf.Configuration");
+			Class<?> afClass = Class.forName("twitter4j.auth.AuthorizationFactory");
+			Method adM1 = afClass.getMethod("getInstance",cfClass);
+			Object auObj = adM1.invoke(null, cbBuildObj);
+			
+			Class<?> auClass = Class.forName("twitter4j.auth.Authorization");
+			Class<?> tfClass = Class.forName("twitter4j.TwitterFactory");
+			Object tfObj = tfClass.newInstance();
+			Method tfM1 = tfClass.getMethod("getInstance", auClass);
+			Object twObj = tfM1.invoke(tfObj, auObj);
+			
+			Class<?> twClass = Class.forName("twitter4j.Twitter");
+			Method twM1 = twClass.getMethod("updateStatus", String.class);
+			twM1.invoke(twObj, msg);
+		}
+		catch (Exception e)
+		{
+			Log.errOut(e);
+		}
 	}
 
 	@Override 
