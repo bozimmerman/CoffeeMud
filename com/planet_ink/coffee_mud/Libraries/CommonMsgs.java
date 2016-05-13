@@ -1176,6 +1176,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		int lookCode=LOOK_LONG;
 		if(msg.targetMinor()!=CMMsg.TYP_EXAMINE)
 			lookCode=(msg.sourceMessage()==null)?LOOK_BRIEFOK:LOOK_NORMAL;
+		
+		sess.setStat("ROOMLOOK", ""+room.hashCode()); // for gmcp/protocol notifications
 
 		final StringBuilder finalLookStr=new StringBuilder("");
 		boolean sysmsgs=mob.isAttributeSet(MOB.Attrib.SYSOPMSGS);

@@ -48,7 +48,6 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 {
 	@Override public String ID(){return "CMProtocols";}
 
-	
 	// this is the sound support method.
 	// it builds a valid MSP sound code from built-in web server
 	// info, and the info provided.
@@ -1712,7 +1711,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		{
 			final MOB mob=session.mob();
 			final String allDoc=jsonData.trim();
-			final int pkgSepIndex=allDoc.indexOf(' ');
+			int pkgSepIndex=allDoc.indexOf(' ');
 			String pkg;
 			MiniJSON.JSONObject json;
 			if(pkgSepIndex>0)
@@ -1738,6 +1737,15 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				cmd=GMCPCommand.valueOf(pkg.toLowerCase().replace('.','_'));
 				switch(cmd)
 				{
+				case maplevel:
+					// what's this do?
+					break;
+				case request:
+				{
+					StringBuilder str=new StringBuilder(allDoc);
+					str.setCharAt(pkgSepIndex, '_');
+					return processGmcpStr(session,str.toString(),supportables);
+				}
 				case core_hello:
 				{
 					if(json!=null)
@@ -2256,7 +2264,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		final String doc=processGmcpStr(session, data, supportables);
 		if(doc != null)
 		{
-			if(CMSecurity.isDebugging(DbgFlag.TELNET))
+			if(CMSecurity.isDebugging(DbgFlag.GMCP))
 				Log.debugOut("GMCP Sent: "+doc);
 			return buildGmcpResponse(doc);
 		}
@@ -2273,10 +2281,56 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			if((oldHash==null)||(oldHash.longValue()!=newHash))
 			{
 				reporteds.put(command, Long.valueOf(newHash));
-				if(CMSecurity.isDebugging(DbgFlag.TELNET))
+				if(CMSecurity.isDebugging(DbgFlag.GMCP))
 					Log.debugOut("GMCP Sent: "+chunkStr);
 				return buildGmcpResponse(chunkStr);
 			}
+		}
+		return null;
+	}
+	
+	@Override
+	public byte[] invokeRoomChangeGmcp(final Session session, final Map<String,Long> reporteds, final Map<String,Double> supportables)
+	{
+		try
+		{
+			if(supportables.containsKey("room.info")||supportables.containsKey("room"))
+			{
+				final ByteArrayOutputStream bout=new ByteArrayOutputStream();
+				final MOB mob=session.mob();
+				byte[] buf;
+				if(mob!=null)
+				{
+					final Room room;
+					synchronized(mob)
+					{
+						room = mob.location();
+					}
+					if(room!=null)
+					{
+						final Long oldRoomHash=reporteds.get("system.currentRoom");
+						if((oldRoomHash==null)||(room.hashCode()!=oldRoomHash.longValue()))
+						{
+							reporteds.put("system.currentRoom", Long.valueOf(room.hashCode()));
+							final String command="room.info";
+							final char[] cmd=command.toCharArray();
+							buf=processGmcp(session, new String(cmd), supportables);
+							if(buf!=null)
+								bout.write(buf);
+						}
+					}
+				}
+				return (bout.size()==0) ? null: bout.toByteArray();
+			}
+		}
+		catch(final java.io.IOException ioe)
+		{
+			if(CMSecurity.isDebugging(DbgFlag.TELNET))
+				Log.errOut(ioe);
+		}
+		catch(final Throwable t)
+		{
+			Log.errOut(t);
 		}
 		return null;
 	}
@@ -2360,26 +2414,9 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 						bout.write(buf);
 				}
 			}
-			if(supportables.containsKey("room.info")||supportables.containsKey("room"))
-			{
-				if(mob!=null)
-				{
-					final Room room=mob.location();
-					if(room!=null)
-					{
-						final Long oldRoomHash=reporteds.get("system.currentRoom");
-						if((oldRoomHash==null)||(room.hashCode()!=oldRoomHash.longValue()))
-						{
-							reporteds.put("system.currentRoom", Long.valueOf(room.hashCode()));
-							final String command="room.info";
-							final char[] cmd=command.toCharArray();
-							buf=processGmcp(session, new String(cmd), supportables);
-							if(buf!=null)
-								bout.write(buf);
-						}
-					}
-				}
-			}
+			final byte[] roomStuff = this.invokeRoomChangeGmcp(session, reporteds, supportables);
+			if(roomStuff != null)
+				bout.write(roomStuff);
 			return (bout.size()==0) ? null: bout.toByteArray();
 		}
 		catch(final java.io.IOException ioe)

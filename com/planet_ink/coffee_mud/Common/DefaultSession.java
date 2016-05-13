@@ -1034,7 +1034,10 @@ public class DefaultSession implements Session
 					str.append(c).append(" ");
 				Log.debugOut( str.toString()+"'");
 			}
+			if(this.out!=null)
+				this.out.flush();
 			out.write(bytes);
+			out.flush();
 		}
 		finally
 		{
@@ -2577,6 +2580,39 @@ public class DefaultSession implements Session
 		return otherLoginName.equalsIgnoreCase(myLogin);
 	}
 
+	protected void doProtocolPings()
+	{
+		if(getClientTelnetMode(TELNET_MSDP))
+		{
+			final byte[] msdpPingBuf=CMLib.protocol().pingMsdp(this, msdpReportables);
+			if(msdpPingBuf!=null)
+			{
+				try
+				{
+					rawBytesOut(rawout, msdpPingBuf);
+				}
+				catch (final IOException e)
+				{
+				}
+				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET))
+					Log.debugOut("MSDP Reported: "+msdpPingBuf.length+" bytes");
+			}
+		}
+		if(getClientTelnetMode(TELNET_GMCP))
+		{
+			final byte[] gmcpPingBuf=CMLib.protocol().pingGmcp(this, gmcpPings, gmcpSupports);
+			if(gmcpPingBuf!=null)
+			{
+				try
+				{
+					rawBytesOut(rawout, gmcpPingBuf);
+				}
+				catch (final IOException e)
+				{
+				}
+			}
+		}
+	}
 
 	@Override
 	public void run()
@@ -2595,36 +2631,7 @@ public class DefaultSession implements Session
 		if((activeMillis>=nextMsdpPing)&&(connectionComplete))
 		{
 			nextMsdpPing=activeMillis+MSDPPINGINTERVAL;
-			if(getClientTelnetMode(TELNET_MSDP))
-			{
-				final byte[] msdpPingBuf=CMLib.protocol().pingMsdp(this, msdpReportables);
-				if(msdpPingBuf!=null)
-				{
-					try
-					{
-						rawBytesOut(rawout, msdpPingBuf);
-					}
-					catch (final IOException e)
-					{
-					}
-					if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET))
-						Log.debugOut("MSDP Reported: "+msdpPingBuf.length+" bytes");
-				}
-			}
-			if(getClientTelnetMode(TELNET_GMCP))
-			{
-				final byte[] gmcpPingBuf=CMLib.protocol().pingGmcp(this, gmcpPings, gmcpSupports);
-				if(gmcpPingBuf!=null)
-				{
-					try
-					{
-						rawBytesOut(rawout, gmcpPingBuf);
-					}
-					catch (final IOException e)
-					{
-					}
-				}
-			}
+			doProtocolPings();
 		}
 
 		try
@@ -3265,7 +3272,8 @@ public class DefaultSession implements Session
 
 	private static enum SESS_STAT_CODES {PREVCMD,ISAFK,AFKMESSAGE,ADDRESS,IDLETIME,
 										 LASTMSG,LASTNPCFIGHT,LASTPKFIGHT,TERMTYPE,
-										 TOTALMILLIS,TOTALTICKS,WRAP,LASTLOOPTIME}
+										 TOTALMILLIS,TOTALTICKS,WRAP,LASTLOOPTIME,
+										 ROOMLOOK}
 
 	@Override
 	public int getSaveStatIndex()
@@ -3326,6 +3334,8 @@ public class DefaultSession implements Session
 			return "" + getWrap();
 		case LASTLOOPTIME:
 			return CMLib.time().date2String(getInputLoopTime());
+		case ROOMLOOK:
+			break; // do nothing
 		default:
 			Log.errOut("Session", "getStat:Unhandled:" + stat.toString());
 			break;
@@ -3381,6 +3391,22 @@ public class DefaultSession implements Session
 			break;
 		case LASTLOOPTIME:
 			lastLoopTop = CMLib.time().string2Millis(val);
+			break;
+		case ROOMLOOK:
+			if(getClientTelnetMode(TELNET_GMCP))
+			{
+				final byte[] gmcpPingBuf=CMLib.protocol().invokeRoomChangeGmcp(this, gmcpPings, gmcpSupports);
+				if(gmcpPingBuf!=null)
+				{
+					try
+					{
+						rawBytesOut(rawout, gmcpPingBuf);
+					}
+					catch (final IOException e)
+					{
+					}
+				}
+			}
 			break;
 		default:
 			Log.errOut("Session", "setStat:Unhandled:" + stat.toString());

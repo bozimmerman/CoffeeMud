@@ -48,6 +48,7 @@ public interface ProtocolLibrary extends CMLibrary
 	public byte[] processGmcp(final Session session, final String data, final Map<String,Double> supportables);
 	public byte[] buildGmcpResponse(String json);
 	public byte[] pingGmcp(final Session session, final Map<String,Long> reporteds, final Map<String,Double> supportables);
+	public byte[] invokeRoomChangeGmcp(final Session session, final Map<String,Long> reporteds, final Map<String,Double> supportables);
 	
 	public enum GMCPCommand
 	{
@@ -75,7 +76,9 @@ public interface ProtocolLibrary extends CMLibrary
 		request_room,
 		request_area,
 		request_char,
-		request_sectors
+		request_sectors,
+		request,
+		maplevel
 	}
 	
 	
