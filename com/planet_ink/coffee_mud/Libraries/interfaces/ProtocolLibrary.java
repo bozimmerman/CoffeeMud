@@ -77,6 +77,9 @@ public interface ProtocolLibrary extends CMLibrary
 		request_area,
 		request_char,
 		request_sectors,
+		request_group,
+		request_quest,
+		rawcolor,
 		request,
 		maplevel
 	}

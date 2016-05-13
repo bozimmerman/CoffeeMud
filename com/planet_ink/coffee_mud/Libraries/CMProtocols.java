@@ -2094,6 +2094,16 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 						}
 					}
 					break;
+				case request_quest:
+					// comm.quest responds whenever quest stuff happens..
+					// comm.quest {"action": "start", "targ": "a swamp ape", "room": "Swamp Ape Enclosure", "area": "Aardwolf Zoological Park", "timer": 52 }
+					// for request quest, a simple response:
+					// comm.quest {"action": "status", "targ": "A spirit of strong essence", "room": "The Path of the Dead", "area": "The Deadlights", "timer": 60 }
+					return "comm.quest {\"action\": \"status\", \"status\": \"ready\" }";
+				case rawcolor:
+					// ardwolf stuff -- no idea
+					break;
+				case request_group:
 				case group:
 					if(mob!=null)
 					{
