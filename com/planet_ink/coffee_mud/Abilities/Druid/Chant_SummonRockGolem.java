@@ -109,7 +109,8 @@ public class Chant_SummonRockGolem extends Chant
 			final Room R=mob.location();
 			if(R!=null)
 			{
-				if(R.domainType()!=Room.DOMAIN_INDOORS_CAVE)
+				if((R.domainType()!=Room.DOMAIN_INDOORS_CAVE)
+				&&((R.getAtmosphere()&RawMaterial.MATERIAL_ROCK)==0))
 					return Ability.QUALITY_INDIFFERENT;
 				if(CMLib.flags().hasAControlledFollower(mob, this))
 					return Ability.QUALITY_INDIFFERENT;
@@ -131,7 +132,8 @@ public class Chant_SummonRockGolem extends Chant
 			return false;
 
 		if((!auto)
-		&&(mob.location().domainType()!=Room.DOMAIN_INDOORS_CAVE))
+		&&(mob.location().domainType()!=Room.DOMAIN_INDOORS_CAVE)
+		&&((mob.location().getAtmosphere()&RawMaterial.MATERIAL_ROCK)==0))
 		{
 			mob.tell(L("You can not summon a rock golem here."));
 			return false;

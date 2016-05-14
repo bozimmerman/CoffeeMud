@@ -34,11 +34,36 @@ import java.util.*;
 */
 public class Prop_Adjuster extends Prop_HaveAdjuster
 {
-	@Override public String ID() { return "Prop_Adjuster"; }
-	@Override public String name(){ return "Adjustments to stats";}
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_EXITS;}
-	@Override public boolean bubbleAffect(){return false;}
-	@Override public long flags(){return Ability.FLAG_ADJUSTER;}
+	@Override
+	public String ID()
+	{
+		return "Prop_Adjuster";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Adjustments to stats";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS | Ability.CAN_ITEMS | Ability.CAN_EXITS;
+	}
+
+	@Override
+	public boolean bubbleAffect()
+	{
+		return false;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_ADJUSTER;
+	}
+
 	@Override
 	public boolean canApply(MOB mob)
 	{

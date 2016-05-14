@@ -1535,6 +1535,67 @@ public class CMParms
 	}
 
 	/**
+	 * This method is for parsing space-delimited lists of ids, with optional parameters
+	 * in parenthis after the id.  For example ID1(parm1) ID2 ID3 ID4(parm2)
+	 * @param list the list of things to parse
+	 * @return the parsed list.
+	 */
+	public static final List<Pair<String,String>> parseSpaceParenList(final String list)
+	{
+		int state=0; //0=waitingfor id start,1=waiting for parenstart,2=waitingforparenend
+		StringBuilder id=new StringBuilder("");
+		StringBuilder parms=new StringBuilder("");
+		List<Pair<String,String>> pairList = new PairVector<String,String>();
+		for(int i=0;i<list.length();i++)
+		{
+			switch(state)
+			{
+			case 0:
+				if(!Character.isWhitespace(list.charAt(i)))
+				{
+					id.append(list.charAt(i));
+					state=1;
+				}
+				break;
+			case 1:
+				if(list.charAt(i)=='(')
+				{
+					state=2;
+				}
+				else
+				if(Character.isWhitespace(list.charAt(i)))
+				{
+					if(id.length()>0)
+						pairList.add(new Pair<String,String>(id.toString().toUpperCase(),parms.toString().trim()));
+					id.setLength(0);
+					parms.setLength(0);
+					state=0;
+				}
+				else
+					id.append(list.charAt(i));
+				break;
+			case 2:
+				if(list.charAt(i)==')')
+				{
+					if(id.length()>0)
+						pairList.add(new Pair<String,String>(id.toString().toUpperCase(),parms.toString().trim()));
+					id.setLength(0);
+					parms.setLength(0);
+					state=0;
+				}
+				else
+					parms.append(list.charAt(i));
+				break;
+			}
+		}
+		if(id.length()>0)
+		{
+			pairList.add(new Pair<String,String>(id.toString().toUpperCase(),parms.toString().trim()));
+		}
+		return pairList;
+	}
+	
+	/**
 	 * This method is a sloppy, forgiving method doing KEY+[INT] or KEY-[INT] value searches 
 	 * in a string.  Returns the value of the given key.  If the key is not found, it will
 	 * return 0.  The key is case insensitive, and start-partial.  For

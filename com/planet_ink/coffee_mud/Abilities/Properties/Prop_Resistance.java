@@ -35,18 +35,47 @@ import java.util.*;
 */
 public class Prop_Resistance extends Prop_HaveResister
 {
-	@Override public String ID() { return "Prop_Resistance"; }
-	@Override public String name(){ return "Resistance to Stuff";}
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
-	@Override public boolean bubbleAffect(){return false;}
+	@Override
+	public String ID()
+	{
+		return "Prop_Resistance";
+	}
 
-	@Override public long flags(){return Ability.FLAG_RESISTER;}
+	@Override
+	public String name()
+	{
+		return "Resistance to Stuff";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	public boolean bubbleAffect()
+	{
+		return false;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_RESISTER;
+	}
 
 	@Override
 	public String accountForYourself()
-	{ return "Have resistances: "+describeResistance(text());}
+	{
+		return "Have resistances: " + describeResistance(text());
+	}
 
-	@Override public int triggerMask() { return TriggeredAffect.TRIGGER_ALWAYS; }
+	@Override
+	public int triggerMask()
+	{
+		return TriggeredAffect.TRIGGER_ALWAYS;
+	}
 
 	@Override
 	public boolean canResist(Environmental E)

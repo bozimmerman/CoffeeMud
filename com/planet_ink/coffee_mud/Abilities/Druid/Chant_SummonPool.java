@@ -69,7 +69,8 @@ public class Chant_SummonPool extends Chant
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		if(mob.location().domainType()!=Room.DOMAIN_INDOORS_CAVE)
+		if((mob.location().domainType()!=Room.DOMAIN_INDOORS_CAVE)
+		&&((mob.location().getAtmosphere()&RawMaterial.MATERIAL_ROCK)==0))
 		{
 			mob.tell(L("This magic only works in caves."));
 			return false;

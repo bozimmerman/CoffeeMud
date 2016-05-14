@@ -2024,7 +2024,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 						if(vicM!=null)
 						{
 							doc.append(",");
-							doc.append("\"enemy\":").append(vicM.name()).append(",");
+							doc.append("\"enemy\":\"").append(vicM.name()).append("\",");
 							doc.append("\"enemypct\":").append(Math.round((double)vicM.maxState().getHitPoints()/(double)vicM.curState().getHitPoints()*100.0)).append(",");
 						}
 						doc.append("}");

@@ -1806,6 +1806,7 @@ public class Factions extends StdLibrary implements FactionManager
 			return "Can not save a blank faction";
 		return "";
 	}
+	
 	@Override
 	public int getAbilityFlagType(String strflag)
 	{

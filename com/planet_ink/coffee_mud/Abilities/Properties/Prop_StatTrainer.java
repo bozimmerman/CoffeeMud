@@ -73,6 +73,7 @@ public class Prop_StatTrainer extends Property
 
 	protected int[]		stats	= all25;
 	protected boolean	noteach	= false;
+	protected boolean	doAll	= false;
 
 	@Override
 	public String accountForYourself()
@@ -93,7 +94,18 @@ public class Prop_StatTrainer extends Property
 			affectedMOB.setAttribute(MOB.Attrib.NOTEACH,false);
 
 		for(final int i: CharStats.CODES.BASECODES())
-			affectableStats.setStat(i,stats[i]);
+		{
+			if(stats[i] >=0)
+				affectableStats.setStat(i,stats[i]);
+		}
+		if(doAll)
+		{
+			for(final int i: CharStats.CODES.ALLCODES())
+			{
+				if((stats[i] >=0)&&(!CharStats.CODES.isBASE(i)))
+					affectableStats.setStat(i,stats[i]);
+			}
+		}
 	}
 	@Override
 	public void setMiscText(String newMiscText)
@@ -101,12 +113,23 @@ public class Prop_StatTrainer extends Property
 		super.setMiscText(newMiscText);
 		if(newMiscText.length()>0)
 		{
+			final int base=CMParms.getParmInt(newMiscText, "BASEVALUE", 25);
 			if(newMiscText.toUpperCase().indexOf("NOTEACH")>=0)
 				noteach=true;
 			stats=new int[CharStats.CODES.TOTAL()];
+			doAll=false;
 			for(final int i : CharStats.CODES.BASECODES())
 			{
-				stats[i]=CMParms.getParmInt(newMiscText, CMStrings.limit(CharStats.CODES.NAME(i),3), 25);
+				stats[i]=CMParms.getParmInt(newMiscText, CMStrings.limit(CharStats.CODES.NAME(i),3), base);
+			}
+			for(final int i : CharStats.CODES.ALLCODES())
+			{
+				if(!CharStats.CODES.isBASE(i))
+				{
+					stats[i]=CMParms.getParmInt(newMiscText, CharStats.CODES.NAME(i), -1);
+					if(stats[i]>=0)
+						doAll=true;
+				}
 			}
 		}
 	}

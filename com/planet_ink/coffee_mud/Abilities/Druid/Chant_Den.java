@@ -88,7 +88,8 @@ public class Chant_Den extends Chant
 			mob.tell(L("There is already a den here!"));
 			return false;
 		}
-		if(mob.location().domainType()!=Room.DOMAIN_INDOORS_CAVE)
+		if((mob.location().domainType()!=Room.DOMAIN_INDOORS_CAVE)
+		&&((mob.location().getAtmosphere()&RawMaterial.MATERIAL_ROCK)==0))
 		{
 			mob.tell(L("This magic will only work in a cave."));
 			return false;

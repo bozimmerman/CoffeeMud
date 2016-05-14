@@ -11,11 +11,10 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZapperMask;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
-
-
 
 import java.util.*;
 
@@ -37,17 +36,41 @@ import java.util.*;
 
 public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 {
-	@Override public String ID() { return "Prop_HaveAdjuster"; }
-	@Override public String name(){ return "Adjustments to stats when owned";}
-	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
-	@Override public boolean bubbleAffect(){return true;}
-	protected Object[] charStatsChanges=null;
-	protected Object[] charStateChanges=null;
-	protected Object[] phyStatsChanges=null;
-	protected MaskingLibrary.CompiledZapperMask mask=null;
-	protected String[] parameters=new String[]{"",""};
+	@Override
+	public String ID()
+	{
+		return "Prop_HaveAdjuster";
+	}
 
-	@Override public long flags(){return Ability.FLAG_ADJUSTER;}
+	@Override
+	public String name()
+	{
+		return "Adjustments to stats when owned";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ITEMS;
+	}
+
+	@Override
+	public boolean bubbleAffect()
+	{
+		return true;
+	}
+
+	protected Object[]				charStatsChanges	= null;
+	protected Object[]				charStateChanges	= null;
+	protected Object[]				phyStatsChanges		= null;
+	protected CompiledZapperMask	mask				= null;
+	protected String[]				parameters			= new String[] { "", "" };
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_ADJUSTER;
+	}
 
 	@Override
 	public int triggerMask()
@@ -249,9 +272,15 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 			{
 				switch(((Character)changes[i]).charValue())
 				{
-				case 'G': charStats.setStat(CharStats.STAT_GENDER,((Character)changes[i+1]).charValue()); break;
-				case 'C': charStats.setCurrentClass((CharClass)changes[i+1]); break;
-				case 'R': charStats.setMyRace((Race)changes[i+1]); break;
+				case 'G':
+					charStats.setStat(CharStats.STAT_GENDER, ((Character) changes[i + 1]).charValue());
+					break;
+				case 'C':
+					charStats.setCurrentClass((CharClass) changes[i + 1]);
+					break;
+				case 'R':
+					charStats.setMyRace((Race) changes[i + 1]);
+					break;
 				}
 			}
 		}

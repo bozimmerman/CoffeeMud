@@ -111,7 +111,8 @@ public class Chant_Earthpocket extends Chant
 			{
 				if(((MOB)affected).location()!=null)
 				{
-					if(((MOB)affected).location().domainType()==Room.DOMAIN_INDOORS_CAVE)
+					if((((MOB)affected).location().domainType()==Room.DOMAIN_INDOORS_CAVE)
+					||((((MOB)affected).location().getAtmosphere()&RawMaterial.MATERIAL_ROCK)!=0))
 					{
 						if(CMath.bset(pocket.basePhyStats().disposition(),PhyStats.IS_NOT_SEEN))
 						{
@@ -145,7 +146,8 @@ public class Chant_Earthpocket extends Chant
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
 
-		if(mob.location().domainType()!=Room.DOMAIN_INDOORS_CAVE)
+		if((mob.location().domainType()!=Room.DOMAIN_INDOORS_CAVE)
+		&&((mob.location().getAtmosphere()&RawMaterial.MATERIAL_ROCK)==0))
 		{
 			mob.tell(L("The earthpocket can only be summoned or seen in a cave."));
 			return false;

@@ -177,8 +177,13 @@ public class Fighter_SmokeSignals extends FighterSkill
 
 		if(commands.size()==0)
 		{
-			mob.tell(L("You need to specify the message to send up in the smoke signals."));
-			return false;
+			if(mob.isMonster())
+				commands.add(L("@x1 is over here!",mob.Name()));
+			else
+			{
+				mob.tell(L("You need to specify the message to send up in the smoke signals."));
+				return false;
+			}
 		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

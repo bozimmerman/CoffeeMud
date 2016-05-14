@@ -25,6 +25,17 @@ public class PairVector<T, K> extends Vector<Pair<T, K>> implements PairList<T, 
 	 */
 	private static final long	serialVersionUID	= 1672867955945287259L;
 
+	public PairVector(List<Pair<T,K>> initial)
+	{
+		super(initial.size());
+		addAll(initial);
+	}
+	
+	public PairVector()
+	{
+		super();
+	}
+	
 	@Override
 	public Pair.FirstConverter<T, K> getFirstConverter()
 	{

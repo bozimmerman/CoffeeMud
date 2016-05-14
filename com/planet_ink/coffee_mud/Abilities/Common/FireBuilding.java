@@ -129,8 +129,13 @@ public class FireBuilding extends CommonSkill
 
 		if(commands.size()==0)
 		{
-			commonTell(mob,L("Light what?  Try light fire, or light torch..."));
-			return false;
+			if(mob.isMonster())
+				commands.add("fire");
+			else
+			{
+				commonTell(mob,L("Light what?  Try light fire, or light torch..."));
+				return false;
+			}
 		}
 		
 		final String name=CMParms.combine(commands,0);

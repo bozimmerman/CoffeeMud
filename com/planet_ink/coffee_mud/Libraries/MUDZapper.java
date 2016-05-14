@@ -79,6 +79,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		public final String minusNameStart;
 		public final String baseClassStart;
 		public final String plusBaseClassStart;
+
 		public SavedClass(final CharClass charClass, final int startChars)
 		{
 			name=charClass.name();
@@ -204,9 +205,10 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		return maskHelp;
 	}
 
-	protected volatile List<SavedClass> savedCharClasses = new Vector<SavedClass>(1);
-	protected volatile List<SavedRace> savedRaces = new Vector<SavedRace>(1);
-	protected volatile long savedClassUpdateTime=0;
+	protected volatile List<SavedClass>	savedCharClasses		= new Vector<SavedClass>(1);
+	protected volatile List<SavedRace>	savedRaces				= new Vector<SavedRace>(1);
+	protected volatile long				savedClassUpdateTime	= 0;
+
 	public synchronized void buildSavedClasses()
 	{
 		if(savedClassUpdateTime==CMClass.getLastClassUpdatedTime())
@@ -315,13 +317,20 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 			}
 			final Object[] o2=new Object[V.size()];
 			for(int v=0;v<V.size();v++)
+			{
 				if(V.elementAt(v) instanceof String)
 					o2[v]=makeSkillFlagObject((String)V.elementAt(v));
 				else
 					o2[v]=V.elementAt(v);
+			}
 			for(int i=0;i<o2.length;i++)
-				if((o2[i]!=null)&&(!(o2[i] instanceof Boolean)))
-				{ o=o2; break;}
+			{
+				if ((o2[i] != null) && (!(o2[i] instanceof Boolean)))
+				{
+					o = o2;
+					break;
+				}
+			}
 		}
 		if(o==null)
 		{

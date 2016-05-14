@@ -247,7 +247,9 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	public boolean isHomeRoomUpstairs(Room room)
 	{
 		final Room dR=room.getRoomInDir(Directions.DOWN);
-		if((dR!=null)&&(dR.domainType() != Room.DOMAIN_INDOORS_CAVE))
+		if((dR!=null)
+		&&(dR.domainType() != Room.DOMAIN_INDOORS_CAVE)
+		&&((dR.getAtmosphere()&RawMaterial.MATERIAL_ROCK)==0))
 		{
 			if(isHomePeerRoom(dR))
 				return true;
@@ -257,6 +259,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 				final Room pdR=R.getRoomInDir(Directions.DOWN);
 				if((pdR!=null)
 				&&(pdR.domainType() != Room.DOMAIN_INDOORS_CAVE)
+				&&((pdR.getAtmosphere()&RawMaterial.MATERIAL_ROCK)==0)
 				&&(isHomePeerRoom(pdR)))
 					return true;
 			}

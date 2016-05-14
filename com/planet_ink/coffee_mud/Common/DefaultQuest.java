@@ -160,8 +160,13 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	{
 		int code=-1;
 		for(int i=0;i<QCODES.length;i++)
+		{
 			if(named.equalsIgnoreCase(QCODES[i]))
-			{ code=i; break;}
+			{
+				code = i;
+				break;
+			}
+		}
 		switch(code)
 		{
 		case 0:
@@ -4703,16 +4708,21 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		return null;
 	}
 
+	protected static String[] CCODES = null;
 
 	@Override
 	public String[] getStatCodes()
 	{
-		final String[] CCODES=new String[QCODES.length+MYSTERY_QCODES.length];
-		for(int i=0;i<QCODES.length;i++)
-			CCODES[i]=QCODES[i];
-		for(int i=0;i<MYSTERY_QCODES.length;i++)
-			CCODES[QCODES.length+i]=MYSTERY_QCODES[i];
-		return QCODES;
+		if(CCODES == null)
+		{
+			final String[] CCODES=new String[QCODES.length+MYSTERY_QCODES.length];
+			for(int i=0;i<QCODES.length;i++)
+				CCODES[i]=QCODES[i];
+			for(int i=0;i<MYSTERY_QCODES.length;i++)
+				CCODES[QCODES.length+i]=MYSTERY_QCODES[i];
+			DefaultQuest.CCODES = CCODES;
+		}
+		return CCODES;
 	}
 
 	@Override
@@ -4987,8 +4997,10 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 			if(x>=0)
 				statName=statName.substring(0,x);
 			for (final String element : QOBJS)
+			{
 				if(statName.equalsIgnoreCase(element))
 					return true;
+			}
 			if(mysteryData!=null)
 				return mysteryData.isStat(statName);
 			return false;
