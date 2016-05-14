@@ -224,6 +224,33 @@ public class StdThinInstance extends StdThinArea
 		}
 		return false;
 	}
+	
+	@Override
+	public void destroy()
+	{
+		super.destroy();
+		if(this.doesManageChildAreas())
+		{
+			List<Area> cs = new ArrayList<Area>();
+			synchronized(instanceChildren)
+			{
+				for(int i=instanceChildren.size()-1;i>=0;i--)
+					cs.add(instanceChildren.get(i).A);
+				instanceChildren.clear();
+			}
+			for(Area A : cs)
+			{
+				final MOB mob=CMClass.sampleMOB();
+				for(final Enumeration<Room> e=A.getProperMap();e.hasMoreElements();)
+				{
+					final Room R=e.nextElement();
+					R.executeMsg(mob,CMClass.getMsg(mob,R,null,CMMsg.MSG_EXPIRE,null));
+				}
+				CMLib.map().delArea(A);
+				A.destroy();
+			}
+		}
+	}
 
 	protected boolean doesManageChildAreas()
 	{
@@ -414,7 +441,7 @@ public class StdThinInstance extends StdThinArea
 		&&(msg.target() instanceof Room)
 		&&(doesManageMobLists())
 		&&(isRoom((Room)msg.target()))
-		&&(!CMSecurity.isAllowed(msg.source(),(Room)msg.target(),CMSecurity.SecFlag.CMDAREAS))
+		//&&(!CMSecurity.isAllowed(msg.source(),(Room)msg.target(),CMSecurity.SecFlag.CMDAREAS)) //TODO: BZ: FiXME!
 		&&(((msg.source().getStartRoom()==null)||(msg.source().getStartRoom().getArea()!=this))))
 		{
 			synchronized(instanceChildren)

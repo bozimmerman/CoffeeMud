@@ -73,7 +73,7 @@ public class SubThinInstance extends StdThinInstance
 			return parentArea.get();
 		Area A=super.getParentArea();
 		if(A!=null)
-			return null;
+			return A;
 		int x=Name().indexOf('_');
 		if(x<0)
 			x=Name().indexOf(' ');
@@ -102,6 +102,7 @@ public class SubThinInstance extends StdThinInstance
 		return super.getAreaIStats();
 	}
 
+	@Override
 	protected Area createRedirectArea(MOB mob)
 	{
 		if(instanceChildren.size()==0)
