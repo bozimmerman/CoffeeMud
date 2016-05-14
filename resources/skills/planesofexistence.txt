@@ -1,37 +1,37 @@
-"Earth"
-"Air"
-"Fire"
-"Water"
-"Positive"
-"Negative"
-"Magma"
-"Ooze"
-"Minerals"
-"Dust"
-"Smoke"
-"Ice"
-"Lightning"
-"Vacuum"
-"Radiance"
-"Ash"
-"Steam"
-"Salt"
-"Astral" transition=true
-"Ethereal" transition=true
-"Nirvana"
-"Arcadia"
-"Seven Heavens"
-"Twin Paradises"
-"Elysium"
-"Happy Hunting Grounds"
-"Olympus"
-"Gladsheim"
-"Limbo"
-"Pandemonium"
-"Abyss"
-"Tarterus"
-"Hades"
-"Gehenna"
-"Nine Hells"
-"Acheron"
-"Concordant Opposition"
+"Earth" prefix="stone,earth,rock" leveladj=2
+"Air" prefix="wispy,cloudy,breezy,airey" leveladj=2
+"Fire" prefix="firey,burning" leveladj=2
+"Water" prefix="water,watery,liquidy" leveladj=2
+"Positive" alignment=10000 prefix="bright,energy,light" leveladj=2
+"Negative" alignment=-10000 prefix="dark,shadow,shadowy" leveladj=2
+"Magma" prefix="magma,molten" leveladj=2
+"Ooze" prefix="oozing,slimey,sludge" leveladj=2
+"Minerals" alignment=7500 prefix="metal,crystal,ruby" leveladj=2
+"Dust" alignment=-7500 prefix="dusty,dust" leveladj=2
+"Smoke" prefix="smokey,smoke"  leveladj=2
+"Ice" prefix="slick,icey,frozen" leveladj=2
+"Lightning" alignment=7500 prefix="electric,sparky" leveladj=2
+"Vacuum" alignment=-7500 prefix="void" leveladj=2
+"Radiance" alignment=7500 prefix="bright,luminous" leveladj=2
+"Ash" alignment=-7500 prefix="ashen,burned" leveladj=2
+"Steam" alignment=7500 prefix="steam,steamy,vapor" leveladj=2
+"Salt" alignment=-7500 prefix="salty,briney" leveladj=2
+"Astral" transition=true prefix="astral,gith" leveladj=2
+"Ethereal" transition=true prefix="ethereal,ghostly" leveladj=2
+"Nirvana" alignment=0 prefix="clockwork,modron" leveladj=2
+"Arcadia" alignment=7500 prefix="natural,pure" leveladj=1
+"Seven Heavens" alignment=10000 prefix="just,angelic" leveladj=0
+"Twin Paradises" alignment=7500 prefix="solar,deva" leveladj=1
+"Elysium" alignment=7500 prefix="planetar" leveladj=1
+"Happy Hunting Grounds" alignment=7500 prefix="beastial,dire" leveladj=4
+"Olympus" alignment=7500 prefix="great,fantastic" leveladj=1
+"Gladsheim" alignment=7500 prefix="giant,viking" leveladj=3
+"Limbo" alignment=0 prefix="slaad" leveladj=2
+"Pandemonium" alignment=-10000 prefix="marooned,lost" leveladj=1
+"Abyss" alignment=-10000 prefix="demon,demonic" leveladj=0
+"Tarterus" alignment=-10000 prefix="demodand,corrupted" leveladj=-1
+"Hades" alignment=-7500 prefix="daemon,shade" leveladj=-1
+"Gehenna" alignment=-7500 prefix="barghest,cursed" leveladj=0
+"Nine Hells" alignment=-7500 prefix="devil,devilish" leveladj=-1
+"Acheron" alignment=-7500 prefix="spirit,fallen" leveladj=1
+"Concordant Opposition" alignment=0 prefix="normal,balanced" leveladj=4

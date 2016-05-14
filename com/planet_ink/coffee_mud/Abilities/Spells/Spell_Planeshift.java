@@ -66,7 +66,7 @@ public class Spell_Planeshift extends Spell
 	@Override
 	public long flags()
 	{
-		return Ability.FLAG_TRANSPORTING;
+		return 0;
 	}
 
 	@Override
@@ -84,10 +84,125 @@ public class Spell_Planeshift extends Spell
 	protected enum PlanarVar
 	{
 		ID,
-		TRANSITIONAL
+		TRANSITIONAL,
+		ALIGNMENT,
+		PREFIX,
+		LEVELADJ
 	}
 	
 	protected static final AtomicInteger planeIDNum = new AtomicInteger(0);
+	
+	public synchronized void fixRoom(Room room)
+	{
+		try
+		{
+			this.roomsDone.add(room);
+			room.toggleMobility(false);
+			for(int i=0;i<Directions.NUM_DIRECTIONS();i++)
+			{
+				Room R=room.rawDoors()[i];
+				if((R!=null)&&(R.getArea()!=planeArea))
+					room.rawDoors()[i]=null;
+			}
+			List<Item> delItems=new ArrayList<Item>(0);
+			for(Enumeration<Item> i=room.items();i.hasMoreElements();)
+			{
+				Item I=i.nextElement();
+				if((I!=null)&&(I instanceof Exit)&&((I instanceof BoardableShip)))
+				{
+					for(int x=0;x<100;x++)
+					{
+						Room R2=((Exit)I).lastRoomUsedFrom(room);
+						if((R2!=null)&&(R2.getArea()!=planeArea))
+						{
+							delItems.add(I);
+							break;
+						}
+					}
+				}
+			}
+			for(Item I : delItems)
+				I.destroy();
+			int allLevelAdj=CMath.s_int(planeVars.get(PlanarVar.LEVELADJ.toString()));
+			for(Enumeration<MOB> m=room.inhabitants();m.hasMoreElements();)
+			{
+				MOB M=m.nextElement();
+				if((M!=null)
+				&&(M.isMonster())
+				&&(M.getStartRoom()!=null)
+				&&(M.getStartRoom().getArea()==planeArea))
+				{
+					int newLevelAdj = (planarLevel - M.phyStats().level());
+					int newLevel = invoker.phyStats().level() + newLevelAdj + allLevelAdj;
+					if(newLevel <= 0)
+						newLevel = 1;
+					if((planarPrefix!=null)&&(planarPrefix.length()>0))
+					{
+						String oldName=M.Name();
+						int x;
+						if(oldName.toLowerCase().indexOf(planarPrefix.toLowerCase())<0)
+						{
+							if(CMLib.english().startsWithAnArticle(M.Name()))
+							{
+								String Name = M.Name().substring(M.Name().indexOf(' ')).trim();
+								M.setName(CMLib.english().startWithAorAn(planarPrefix+" "+Name));
+							}
+							else
+							{
+								M.setName(CMStrings.capitalizeFirstLetter(planarPrefix)+" "+M.Name());
+							}
+							if((x=M.displayText().toLowerCase().indexOf(oldName.toLowerCase()))>=0)
+							{
+								M.setDisplayText(M.displayText().substring(0,x)+M.Name()+M.displayText().substring(x+oldName.length()));
+							}
+							else
+							if(CMLib.english().startsWithAnArticle(M.displayText()))
+							{
+								String Name = M.displayText().substring(M.displayText().indexOf(' ')).trim();
+								M.setDisplayText(CMLib.english().startWithAorAn(planarPrefix+" "+Name));
+							}
+							else
+							if((x=M.displayText().toLowerCase().indexOf(M.charStats().getMyRace().name().toLowerCase()))>=0)
+							{
+								int len=M.charStats().getMyRace().name().toLowerCase().length();
+								M.setDisplayText(M.displayText().substring(0,x)+planarPrefix+M.Name()+M.displayText().substring(x+len));
+							}
+						}
+					}
+					M.basePhyStats().setLevel(newLevel);
+					M.phyStats().setLevel(newLevel);
+					CMLib.leveler().fillOutMOB(M,M.basePhyStats().level());
+					String align=planeVars.get(Spell_Planeshift.PlanarVar.ALIGNMENT.toString());
+					if(align!=null)
+					{
+						M.removeFaction(CMLib.factions().AlignID());
+						M.addFaction(CMLib.factions().AlignID(), CMath.s_int(align));
+					}
+					for(Enumeration<Item> mi=M.items();mi.hasMoreElements();)
+					{
+						Item mI=mi.nextElement();
+						if(mI!=null)
+						{
+							int newILevelAdj = (planarLevel - mI.phyStats().level());
+							int newILevel=invoker.phyStats().level() + newILevelAdj + allLevelAdj;
+							if(newILevel <= 0)
+								newILevel = 1;
+							mI.basePhyStats().setLevel(newILevel);
+							mI.phyStats().setLevel(newILevel);
+							CMLib.itemBuilder().balanceItemByLevel(mI);
+						}
+					}
+					M.text();
+				}
+			}
+			
+		}
+		catch(Exception e)
+		{
+			room.toggleMobility(true);
+		}
+	}
+	
 	
 	@Override
 	public boolean okMessage(Environmental myHost, CMMsg msg)
@@ -102,7 +217,7 @@ public class Spell_Planeshift extends Spell
 			&&(!this.roomsDone.contains(msg.target()))
 			&&(((Room)msg.target()).getArea()==planeArea))
 			{
-				//TODO: alter the mobs and items, do all the stuff, please
+				fixRoom((Room)msg.target());
 			}
 			break;
 		}
@@ -205,7 +320,10 @@ public class Spell_Planeshift extends Spell
 	
 	protected WeakReference<Room> oldRoom=null;
 	protected Area planeArea = null;
+	protected Map<String,String> planeVars = null;
 	protected WeakArrayList<Room> roomsDone=new WeakArrayList<Room>();
+	protected int planarLevel = 1;
+	protected String planarPrefix = null;
 
 	protected void destroyPlane(Area planeA)
 	{
@@ -272,7 +390,11 @@ public class Spell_Planeshift extends Spell
 	{
 		oldRoom = null;
 		planeArea = null;
-
+		planarLevel=1;
+		roomsDone=new WeakArrayList<Room>();
+		planeVars=null;
+		planarPrefix=null;
+		
 		if(commands.size()<1)
 		{
 			mob.tell(L("Planeshift to where?"));
@@ -288,6 +410,7 @@ public class Spell_Planeshift extends Spell
 			mob.tell(L("Known planes: @x1",Spell_Planeshift.listOfPlanes())); 
 			return false;
 		}
+		planeName = planeFound.get(Spell_Planeshift.PlanarVar.ID.toString()).toUpperCase().trim();
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -413,6 +536,8 @@ public class Spell_Planeshift extends Spell
 		String newPlaneName = planeIDNum.addAndGet(1)+"_"+cloneArea.Name();
 		Area planeArea = CMClass.getAreaType("SubThinInstance");
 		planeArea.setName(newPlaneName);
+		CMLib.map().addArea(planeArea);
+		planeArea.setAreaState(Area.State.ACTIVE); // starts ticking
 		Room target=CMClass.getLocale("StdRoom");
 		String newRoomID=this.convertToMyArea(newPlaneName,cloneRoomID);
 		if(newRoomID==null)
@@ -421,8 +546,13 @@ public class Spell_Planeshift extends Spell
 		target.setDisplayText("Between The Planes of Existence");
 		target.setDescription("You are a floating consciousness between the planes of existence...");
 		target.setArea(planeArea);
-		//CMLib.map().addArea(this.planeArea);
-		planeArea.setAreaState(Area.State.ACTIVE); // starts ticking
+		TimeClock C=(TimeClock)CMClass.getCommon("DefaultTimeClock");
+		planeArea.setTimeObj(C);
+		planeArea.addNonUninvokableEffect(CMClass.getAbility("Prop_NoTeleportOut"));
+		planeArea.addNonUninvokableEffect(CMClass.getAbility("Prop_NoTeleport"));
+		planeArea.addNonUninvokableEffect(CMClass.getAbility("Prop_NoRecall"));
+		
+		
 		//CMLib.map().delArea(this.planeArea);
 		
 		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOVE|verbalCastCode(mob,target,auto),L("^S<S-NAME> conjur(s) a powerful planar connection!^?"));
@@ -451,7 +581,16 @@ public class Spell_Planeshift extends Spell
 					else
 						A.oldRoom=new WeakReference<Room>(mob.location());
 					A.planeArea=planeArea;
-					A.roomsDone.clear();
+					A.planeVars=planeFound;
+					A.roomsDone=roomsDone=new WeakArrayList<Room>();
+					int medianLevel=cloneArea.getAreaIStats()[Area.Stats.MED_LEVEL.ordinal()];
+					A.planarLevel=medianLevel;
+					A.planarPrefix=planeFound.get(PlanarVar.PREFIX.toString());
+					if((A.planarPrefix!=null)&&(A.planarPrefix.indexOf(',')>0))
+					{
+						List<String> choices=CMParms.parseCommas(A.planarPrefix, true);
+						A.planarPrefix=choices.get(CMLib.dice().roll(1, choices.size(), -1));
+					}
 					if(follower.isInCombat())
 					{
 						CMLib.commands().postFlee(follower,("NOWHERE"));

@@ -462,12 +462,12 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 
 	@Override
 	public Map<String, String> timsItemAdjustments(Item I,
-										 int level,
-										 int material,
-										 int hands,
-										 int wclass,
-										 int reach,
-										 long worndata)
+												 int level,
+												 int material,
+												 int hands,
+												 int wclass,
+												 int reach,
+												 long worndata)
 	{
 		final Hashtable<String,String> vals=new Hashtable<String,String>();
 		final int materialvalue=RawMaterial.CODES.VALUE(material);
