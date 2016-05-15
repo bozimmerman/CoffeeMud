@@ -65,19 +65,143 @@ public class Prop_AbsorbDamage extends Property implements TriggeredAffect
 		return TriggeredAffect.TRIGGER_BEING_HIT;
 	}
 
-	protected boolean immune=false;
+	protected boolean cancelFlag=false;
+	protected Object allAbsorb=null;
+	protected Map<Integer,Object> msgTypes=null;
+	protected Map<Integer,Object> weapTypes=null;
+	protected Map<Integer,Object> weapMats=null;
+	protected Object			  weapMagic=null;
+	protected Map<Integer,Object> weapLvls=null;
+	protected Map<Integer,Object> ableDomains=null;
+	protected Map<Integer,Object> ableCodes=null;
+	protected Map<Long,Object>	  ableFlags=null;
 	
 	@Override
 	public void setMiscText(String newMiscText)
 	{
 		super.setMiscText(newMiscText);
-		List<String> parms=CMParms.parse(newMiscText);
+		List<String> parms=CMParms.parse(newMiscText.toUpperCase());
+		allAbsorb=null;
+		msgTypes=null;
+		weapTypes=null;
+		weapMats=null;
+		weapMagic=null;
+		weapLvls=null;
+		ableDomains=null;
+		ableCodes=null;
+		ableFlags=null;
+		
+		boolean allFound=parms.contains("+ALL");
+		Object current=null;
 		for(String s : parms)
 		{
-			
+			if(CMath.isPct(s))
+			{
+				current=Double.valueOf(CMath.s_pct(s));
+				break;
+			}
+			else
+			if(CMath.isInteger(s))
+			{
+				current=Integer.valueOf(CMath.s_int(s));
+				break;
+			}
+		}
+		if(current==null)
+			current=Double.valueOf(0.5);
+		allAbsorb=(allFound?current:null);
+		for(String s : parms)
+		{
+			if(s.equals("CANCELOK"))
+			{
+				cancelFlag=true;
+				continue;
+			}
+			if(CMath.isPct(s))
+				current=Double.valueOf(CMath.s_pct(s));
+			else
+			if(CMath.isInteger(s))
+				current=Integer.valueOf(CMath.s_int(s));
+			else
+			if((s.startsWith("+") && (!allFound))
+			||(s.startsWith("-") && allFound))
+			{
+				s=s.substring(1);
+				boolean found=false;
+				int code=CharStats.CODES.findWhole(s,true);
+				if(code>=0)
+				{
+					code=CharStats.CODES.CMMSGMAP(code);
+					if(code>0)
+					{
+						found=true;
+						if(this.msgTypes==null)
+							this.msgTypes=new HashMap<Integer,Object>();
+						this.msgTypes.put(Integer.valueOf(code), current);
+					}
+				}
+				code=CMParms.indexOf(Weapon.TYPE_DESCS, s);
+				if(code>=0)
+				{
+					found=true;
+					if(this.weapTypes==null)
+						this.weapTypes=new HashMap<Integer,Object>();
+					this.weapTypes.put(Integer.valueOf(code), current);
+				}
+				code=CMParms.indexOf(Ability.ACODE_DESCS_, s);
+				if(code>=0)
+				{
+					found=true;
+					if(this.ableCodes==null)
+						this.ableCodes=new HashMap<Integer,Object>();
+					this.ableCodes.put(Integer.valueOf(code), current);
+				}
+				code=CMParms.indexOf(Ability.DOMAIN_DESCS, s);
+				if(code>=0)
+				{
+					found=true;
+					if(this.ableDomains==null)
+						this.ableDomains=new HashMap<Integer,Object>();
+					this.ableDomains.put(Integer.valueOf(code<<5), current);
+				}
+				code=CMParms.indexOf(Ability.FLAG_DESCS, s);
+				if(code>=0)
+				{
+					found=true;
+					if(this.ableFlags==null)
+						this.ableFlags=new HashMap<Long,Object>();
+					this.ableFlags.put(Long.valueOf(CMath.pow(2, code)), current);
+				}
+				code=RawMaterial.CODES.FIND_CaseSensitive(s);
+				if(code>=0)
+				{
+					found=true;
+					if(this.weapMats==null)
+						this.weapMats=new HashMap<Integer,Object>();
+					this.weapMats.put(Integer.valueOf(code), current);
+				}
+				if(s.equals("MAGIC"))
+				{
+					found=true;
+					this.weapMagic=current;
+				}
+				if(s.startsWith("LEVEL")&&(CMath.isInteger(s.substring(5))))
+				{
+					found=true;
+					if(this.weapLvls==null)
+						this.weapLvls=new HashMap<Integer,Object>();
+					this.weapLvls.put(Integer.valueOf(CMath.s_int(s.substring(5))), current);
+				}
+				if(!found)
+				{
+					if(affected!=null)
+						Log.errOut("Prop_AbsorbDamage","Unknown '"+s+"' on "+affected.Name()+" in "+CMLib.map().getDescriptiveExtendedRoomID(CMLib.map().roomLocation(affected)));
+					else
+						Log.errOut("Prop_AbsorbDamage","Unknown '"+s+"'");
+				}
+			}
 		}
 		newMiscText=newMiscText.toUpperCase();
-		immune=newMiscText.indexOf("+ALL")>=0;
 		
 	}
 	
@@ -87,127 +211,155 @@ public class Prop_AbsorbDamage extends Property implements TriggeredAffect
 		if(!super.okMessage(myHost,msg))
 			return false;
 		if((affected!=null)
-		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)&&(msg.value()>0))
+		&&((msg.targetMinor()==CMMsg.TYP_DAMAGE)
+			||(msg.targetMinor()==CMMsg.TYP_HEALING)
+			||(cancelFlag 
+				&& (msg.tool() instanceof Ability)
+				&& ((msg.sourceMinor()==CMMsg.TYP_CAST_SPELL)||(msg.sourceMinor()==CMMsg.TYP_DELICATE_HANDS_ACT)||(msg.sourceMinor()==CMMsg.TYP_JUSTICE))))
+		&&(msg.value()>0))
 		{
-			MOB M=null;
 			if(affected instanceof MOB)
-				M=(MOB)affected;
-			else
-			if((affected instanceof Item)
-			&&(!((Item)affected).amWearingAt(Wearable.IN_INVENTORY))
-			&&(((Item)affected).owner()!=null)
-			&&(((Item)affected).owner() instanceof MOB))
-				M=(MOB)((Item)affected).owner();
-			if(M==null)
-				return true;
-			if(!msg.amITarget(M))
-				return true;
-
-			String text=text().toUpperCase();
-
-			int immune=text.indexOf("+ALL");
-			int x=-1;
-			int statCode = CharStats.CODES.RVSCMMSGMAP(msg.sourceMinor());
-			if((statCode>=0)
-			&&((msg.tool()==null)||(statCode!=CharStats.STAT_SAVE_MAGIC)))
 			{
-				x=text.indexOf(CharStats.CODES.NAME(statCode));
-				if(x>0)
-				{
-					if((text.charAt(x-1)=='-')&&(immune>=0))
-						immune=-1;
-					else
-					if(text.charAt(x-1)!='-')
-						immune=x;
-				}
+				if(msg.target()!=affected)
+					return true;
+			}
+			else
+			if(affected instanceof Item)
+			{
+				if((!(((Item)affected).owner() instanceof MOB))
+				||(((Item)affected).amWearingAt(Wearable.IN_INVENTORY))
+				||(msg.target()!=((Item)affected).owner()))
+					return true;
 			}
 
-			if((x<0)&&(msg.tool() instanceof Weapon))
+			Object absorb=null;
+			if(this.allAbsorb!=null)
 			{
-				final Weapon W=(Weapon)msg.tool();
-				x=text.indexOf(Weapon.TYPE_DESCS[W.weaponDamageType()]);
-				if(x<0)
-					x=(CMLib.flags().isABonusItems(W))?text.indexOf("MAGIC"):-1;
-				if(x<0)
-					x=text.indexOf(RawMaterial.CODES.NAME(W.material()));
-				if(x>0)
+				absorb=this.allAbsorb;
+				if(((this.msgTypes!=null)&&(msgTypes.containsKey(Integer.valueOf(msg.sourceMinor()))))
+				&&((msg.tool()==null)||(msg.sourceMinor()!=CMMsg.TYP_CAST_SPELL)))
+					return true;
+				if(msg.tool() instanceof Weapon)
 				{
-					if((text.charAt(x-1)=='-')&&(immune>=0))
-						immune=-1;
+					final Weapon W=(Weapon)msg.tool();
+					if((this.weapMagic!=null)&&(CMLib.flags().isABonusItems(W)))
+						return true;
+					if((this.weapTypes!=null)&&(this.weapTypes.containsKey(Integer.valueOf(W.weaponDamageType()))))
+						return true;
+					if((this.weapMats!=null)&&(this.weapMats.containsKey(Integer.valueOf(W.material()))))
+						return true;
+					if(this.weapLvls!=null)
+					{
+						for(Integer I : this.weapLvls.keySet())
+						{
+							if(W.phyStats().level()>I.intValue())
+								return true;
+						}
+					}
+				}
+				if(msg.tool() instanceof Ability)
+				{
+					final Ability A=(Ability)msg.tool();
+					if((this.ableCodes!=null)&&(this.ableCodes.containsKey(Integer.valueOf(A.classificationCode()&Ability.ALL_ACODES))))
+						return true;
+					if((this.ableDomains!=null)&&(this.ableDomains.containsKey(Integer.valueOf(A.classificationCode()&Ability.ALL_DOMAINS))))
+						return true;
+					if(this.ableFlags!=null)
+					{
+						for(Long L : this.ableFlags.keySet())
+							if(CMath.bset(A.flags(),L.longValue()))
+								return true;
+					}
+				}
+				if((this.weapMagic!=null)&&(msg.tool() instanceof Ability))
+				{
+					final int classType=((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES;
+					switch(classType)
+					{
+					case Ability.ACODE_SPELL:
+					case Ability.ACODE_PRAYER:
+					case Ability.ACODE_CHANT:
+					case Ability.ACODE_SONG:
+						return true;
+					}
+				}
+			}
+			else
+			{
+				if(((this.msgTypes!=null)&&(msgTypes.containsKey(Integer.valueOf(msg.sourceMinor()))))
+				&&((msg.tool()==null)||(msg.sourceMinor()!=CMMsg.TYP_CAST_SPELL)))
+					absorb=msgTypes.get(Integer.valueOf(msg.sourceMinor()));
+				if(msg.tool() instanceof Weapon)
+				{
+					final Weapon W=(Weapon)msg.tool();
+					if((this.weapMagic!=null)&&(CMLib.flags().isABonusItems(W)))
+						absorb=this.weapMagic;
+					if((this.weapTypes!=null)&&(this.weapTypes.containsKey(Integer.valueOf(W.weaponDamageType()))))
+						absorb=this.weapTypes.get(Integer.valueOf(W.weaponDamageType()));
+					if((this.weapMats!=null)&&(this.weapMats.containsKey(Integer.valueOf(W.material()))))
+						absorb=this.weapMats.get(Integer.valueOf(W.material()));
+					
+					if(this.weapLvls!=null)
+					{
+						int highestLvl=-1;
+						for(Integer I : this.weapLvls.keySet())
+						{
+							if((W.phyStats().level()>I.intValue())&&(I.intValue()>highestLvl))
+							{
+								highestLvl=I.intValue();
+								absorb=this.weapLvls.get(I);
+							}
+						}
+					}
+				}
+				if(msg.tool() instanceof Ability)
+				{
+					final Ability A=(Ability)msg.tool();
+					if((this.ableCodes!=null)&&(this.ableCodes.containsKey(Integer.valueOf(A.classificationCode()&Ability.ALL_ACODES))))
+						absorb=this.ableCodes.get(Integer.valueOf(A.classificationCode()&Ability.ALL_ACODES));
+					if((this.ableDomains!=null)&&(this.ableDomains.containsKey(Integer.valueOf(A.classificationCode()&Ability.ALL_DOMAINS))))
+						absorb=this.ableDomains.get(Integer.valueOf(A.classificationCode()&Ability.ALL_DOMAINS));
+					if(this.ableFlags!=null)
+					{
+						for(Long L : this.ableFlags.keySet())
+						{
+							if(CMath.bset(A.flags(),L.longValue()))
+								absorb=this.ableFlags.get(L);
+						}
+					}
+				}
+				if((this.weapMagic!=null)&&(msg.tool() instanceof Ability))
+				{
+					final int classType=((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES;
+					switch(classType)
+					{
+					case Ability.ACODE_SPELL:
+					case Ability.ACODE_PRAYER:
+					case Ability.ACODE_CHANT:
+					case Ability.ACODE_SONG:
+						absorb=this.weapMagic;
+						break;
+					}
+				}
+			}
+			if(absorb!=null)
+			{
+				if((msg.targetMinor()==CMMsg.TYP_DAMAGE)||(msg.targetMinor()==CMMsg.TYP_HEALING))
+				{
+					if(absorb instanceof Double)
+						msg.setValue(msg.value()-(int)Math.round(CMath.mul(msg.value(),((Double)absorb).doubleValue())));
 					else
-					if(text.charAt(x-1)!='-')
-						immune=x;
+						msg.setValue(msg.value()-((Integer)absorb).intValue());
+					if(msg.value()<0)
+						msg.setValue(0);
 				}
 				else
 				{
-					x=text.indexOf("LEVEL");
-					if(x>0)
+					if((absorb instanceof Double)&&(CMLib.dice().rollPercentage()<(((Double)absorb).doubleValue()*100.0)))
 					{
-						String lvl=text.substring(x+5);
-						if(lvl.indexOf(' ')>=0)
-							lvl=lvl.substring(lvl.indexOf(' '));
-						if((text.charAt(x-1)=='-')&&(immune>=0))
-						{
-							if(W.phyStats().level()>=CMath.s_int(lvl))
-								immune=-1;
-						}
-						else
-						if(text.charAt(x-1)!='-')
-						{
-							if(W.phyStats().level()<CMath.s_int(lvl))
-								immune=x;
-						}
+						msg.source().tell(L("You can't concentrate on @x1.",msg.tool().Name()));
+						return false;
 					}
-				}
-			}
-
-			if((x<0)&&(msg.tool() instanceof Ability))
-			{
-				final int classType=((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES;
-				switch(classType)
-				{
-				case Ability.ACODE_SPELL:
-				case Ability.ACODE_PRAYER:
-				case Ability.ACODE_CHANT:
-				case Ability.ACODE_SONG:
-					{
-						x=text.indexOf("MAGIC");
-						if(x>0)
-						{
-							if((text.charAt(x-1)=='-')&&(immune>=0))
-								immune=-1;
-							else
-							if(text.charAt(x-1)!='-')
-								immune=x;
-						}
-					}
-					break;
-				default:
-					break;
-				}
-			}
-			if(immune>0)
-			{
-				int lastNumber=-1;
-				x=0;
-				while(x<immune)
-				{
-					if(Character.isDigit(text.charAt(x))&&((x==0)||(!Character.isDigit(text.charAt(x-1)))))
-					   lastNumber=x;
-					x++;
-				}
-				if(lastNumber>=0)
-				{
-					text=text.substring(lastNumber,immune).trim();
-					x=text.indexOf(' ');
-					if(x>0)
-						text=text.substring(0,x).trim();
-					if(text.endsWith("%"))
-						msg.setValue(msg.value()-(int)Math.round(CMath.mul(msg.value(),CMath.div(CMath.s_int(text.substring(0,text.length()-1)),100.0))));
-					else
-						msg.setValue(msg.value()-CMath.s_int(text));
-					if(msg.value()<0)
-						msg.setValue(0);
 				}
 			}
 		}

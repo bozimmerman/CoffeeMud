@@ -10,6 +10,8 @@
    9. CoffeeMud now supports Twitter.  See the end of the Installation Guide.
   10. Prop_StatTrainer has new parameter: BASEVALUE, for making it more flexible.
   11. Prop_StatAdjuster has new parameter: ADJMAX, for giving mobs more POWAH!
+  12. New Spell: Spell_Planeshift, for going to other planes of existence
+  13. Prop_AbsorbDamage has several new parameters
 # Build 5.9.3 Released 05/08/2016
    1. Follower behavior now has a few more options.
    2. STAT [MOBNAME] will now give full editor stats also, and 

@@ -1,19 +1,20 @@
-Wall	1	25	250		DIR INDOOR	WALL	NA	-		wall @x1	
-Roof	1	25	500		OUTDOOR	ROOM	StoneRoom	0		frame and roof	
-Low Roof	1	25	250		OUTDOOR	ROOM	StoneRoom	0	Prop_Crawlspace	lower frame and roof	
-Wide Roof	1	25	1000		OUTDOOR	ROOM	StoneRoom	0	Prop_EnlargeRoom(10)	broad frame and roof	
-Small Maze	1	25	1500		OUTDOOR	ROOM	StoneMaze	3		small maze frame and roof	
-Maze	1	25	2500		OUTDOOR	ROOM	StoneMaze	5		maze frame and roof	
-Big Maze	1	25	3500		OUTDOOR	ROOM	StoneMaze	7		large maze frame and roof	
+Wall	1	60	250		DIR INDOOR	WALL	NA	-		wall @x1	
+Roof	1	125	500		OUTDOOR	ROOM	StoneRoom	0		frame and roof	
+Low Roof	1	100	250		OUTDOOR	ROOM	StoneRoom	0	Prop_Crawlspace()	lower frame and roof	
+Wide Roof	1	150	1000		OUTDOOR	ROOM	StoneRoom	0	Prop_EnlargeRoom(10)	broad frame and roof	
+Small Maze	1	175	1500		OUTDOOR	ROOM	StoneMaze	3		small maze frame and roof	
+Maze	1	200	2500		OUTDOOR	ROOM	StoneMaze	5		maze frame and roof	
+Big Maze	1	225	3500		OUTDOOR	ROOM	StoneMaze	7		large maze frame and roof	
 Archway	1	25	200		DIR	DOOR	GenExit	archway		archway @x1	
 Demolish	1	25	0		DIR	DEMOLISH	Plains	-	-	demolishing	
 Title	1	15	0			TITLE	NA	-	-	title	
 Description	1	10	0			DESC	NA	-	-	description	
-Druidic Monument	1	25	1000		OUTDOOR	ITEM	DruidicMonument			druidic monument	-BASECLASS +Druid
+Druidic Monument	1	200	1000		OUTDOOR	ITEM	DruidicMonument			druidic monument	-BASECLASS +Druid
 Window	1	25	100		INDOOR DIR NOWALL	DOOR	GenDoor	window|open|close|A window.|An open window.	Prop_Crawlspace()Prop_RoomView()	window @x1	
 Crawlway	1	25	500		INDOOR DIR NOWALL	DOOR	GenExit	crawlway	Prop_Crawlspace	crawlway @x1	
-Pool	1	35	400		OUTDOOR	ROOM	WaterSurface	0		pool	
-Deep Pool	1	35	700		OUTDOOR	ROOM	WaterSurface	1		pool	
+Pool	1	160	400		OUTDOOR	ROOM	WaterSurface	0		pool	
+Deep Pool	1	200	700		OUTDOOR	ROOM	WaterSurface	1		pool	
 Portcullis	1	25	100	METAL	DIR	DOOR	GenDoor	portcullis|raise|lower|A portcullis blocks your way.		portcullis @x1	
-Stairs	1	45	2550		INDOOR	STAIRS		@x1stairs to the @x2 floor		stairway @x1	
-Hole Floor	1	45	2550		INDOOR	STAIRS		@x1 a hole to the @x2 floor.	Spell_Fly	hole @x1 to another floor	
+Stairs	1	210	2550		INDOOR	STAIRS		@x1stairs to the @x2 floor		stairway @x1	
+Hole Floor	1	180	2550		INDOOR	STAIRS		@x1 a hole to the @x2 floor.	Spell_Fly()	hole @x1 to another floor	
+Raised Ceiling	1	240	2500		INDOOR	STAIRS	IndoorInTheAir	@x1 to the @x2 floor	Spell_Fly()	scaffolding and supports to raise the ceiling	

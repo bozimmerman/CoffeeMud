@@ -36,7 +36,7 @@ Grand % Sceptre	20	140	16	1058	GenWeapon	BLUNT	BASHING	18	5	1	0
 % War Sceptre	24	180	18	1360	GenWeapon	BLUNT	BASHING	20	10	1	0		
 Butter Knife	0	20	1	8	GenWeapon	DAGGER	PIERCING	2	-10	1	0		
 % Knife	2	20	2	43	GenWeapon	DAGGER	PIERCING	3	-5	1	0		
-Butchers Knife	3	20	3	72	GenWeapon	DAGGER	PIERCING	4	-5	1	0		
+Chefs Knife	3	20	3	72	GenWeapon	DAGGER	PIERCING	4	-5	1	0		
 Dagger	4	20	6	162	GenWeapon	DAGGER	PIERCING	6	-5	1	0		
 Serrated Knife	5	20	4	122	GenWeapon	DAGGER	PIERCING	6	-5	1	0		
 Poignard	6	40	7	212	GenWeapon	DAGGER	PIERCING	9	-10	1	0		

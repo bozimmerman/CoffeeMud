@@ -11,10 +11,16 @@ a sheet of vellum	10	30	1	1	GenReadable	LEATHER
 a poster of %	12	40	3	1	GenReadable	WOOD	STATUE		
 a sheet of silkscreen	15	50	5	20	GenReadable	SILK			
 a scroll	15	60	10	20	GenScroll	SILK			
-a recipe page	17	15	1	1	GenRecipe	WOOD			
-a small recipe book	20	30	5	5	GenRecipe	WOOD			
-a nice recipe book	22	45	10	10	GenRecipe	WOOD			
-a large recipe book	24	60	25	15	GenRecipe	WOOD			
-a huge recipe book	26	70	50	20	GenRecipe	WOOD			
-an enormous recipe book	28	90	100	25	GenRecipe	WOOD			
+a recipe page	7	15	1	10	GenRecipe	WOOD			
+a small recipe book	12	30	5	50	GenRecipe	WOOD			
+a nice recipe book	18	45	10	65	GenRecipe	WOOD			
+a large recipe book	22	60	25	75	GenRecipe	WOOD			
+a huge recipe book	25	70	50	100	GenRecipe	WOOD			
+an enormous recipe book	28	90	100	125	GenRecipe	WOOD			
 a deck of cards	30	60	104	50	StdDeckOfCards	WOOD			
+a Cigarette	5	20	(onground:consumed:1:PIPEWEED:)&&(onground:consumed:1:a piece of paper:)	5	GenCigar	PAPER			
+a Cigar	11	20	(onground:consumed:1:A PIECE OF PAPER:)&&(onground:consumed:2:PIPEWEED:)	5	GenCigar	PAPER			
+a Joint	21	20	(onground:consumed:1:PIPEWEED:)&&(onground:consumed:1:A PIECE OF PAPER:)	50	GenCigar	PAPER			*Prop_WearSpellCast;Spell_delirium
+a Blunt	26	20	(onground:consumed:1:A PIECE OF PAPER:)&&(onground:consumed:1:PIPEWEED:)	50	GenCigar	PAPER			*Prop_WearSpellCast;Spell_FeignInvisibility
+a Doobie	24	20	(onground:consumed:1:A PIECE OF PAPER:)&&(onground:consumed:1:PIPEWEED:)	50	GenCigar	PAPER			*Prop_WearSpellCast;Spell_Hunger
+a wedding banner	11	40	(onground:consumed:10:a piece of paper:)	35	GenReadable	PAPER			

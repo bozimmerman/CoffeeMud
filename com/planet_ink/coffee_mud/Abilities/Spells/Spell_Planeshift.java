@@ -88,10 +88,16 @@ public class Spell_Planeshift extends Spell
 	protected int							planarLevel		= 1;
 	protected String						planarPrefix	= null;
 	protected List<Pair<String, String>>	behavList		= null;
+	protected List<Pair<String, String>>	reffectList		= null;
 	protected int							bonusDmgStat	= -1;
 	protected Set<String>					reqWeapons		= null;
-	protected Pair<Pair<Integer,Integer>,List<Pair<String,String>>> enableList=null;
+	protected int							recoverRate		= 0;
+	protected int							fatigueRate		= 0;
+	protected volatile int					recoverTick		= 0;
+	protected Set<PlanarSpecFlag>			specFlags		= null;
 
+	protected Pair<Pair<Integer,Integer>,List<Pair<String,String>>> enableList=null;
+	
 	protected enum PlanarVar
 	{
 		ID,
@@ -112,7 +118,21 @@ public class Spell_Planeshift extends Spell
 		BONUSDAMAGESTAT,
 		REQWEAPONS,
 		ATMOSPHERE,
-		AREABLURBS
+		AREABLURBS,
+		ABSORB,
+		HOURS,
+		RECOVERRATE,
+		FATIGUERATE,
+		REFFECT,
+		AEFFECT,
+		SPECFLAGS
+	}
+	
+	public enum PlanarSpecFlag
+	{
+		NOINFRAVISION,
+		BADMUNDANEARMOR,
+		ALLBREATHE
 	}
 	
 	protected static final AtomicInteger planeIDNum = new AtomicInteger(0);
@@ -126,8 +146,12 @@ public class Spell_Planeshift extends Spell
 		planarPrefix=null;
 		this.behavList=null;
 		this.enableList=null;
+		this.reffectList=null;
 		bonusDmgStat=-1;
 		this.reqWeapons=null;
+		this.recoverTick=-1;
+		recoverRate		= 0;
+		fatigueRate		= 0;
 	}
 
 	@Override
@@ -140,6 +164,9 @@ public class Spell_Planeshift extends Spell
 			this.planeVars=getPlane(newText);
 			this.roomsDone=new WeakArrayList<Room>();
 			this.planarPrefix=planeVars.get(PlanarVar.PREFIX.toString());
+			this.recoverRate = CMath.s_int(planeVars.get(PlanarVar.RECOVERRATE.toString()));
+			this.fatigueRate = CMath.s_int(planeVars.get(PlanarVar.FATIGUERATE.toString()));
+			this.recoverTick=1;
 			if((planarPrefix!=null)&&(planarPrefix.indexOf(',')>0))
 			{
 				List<String> choices=CMParms.parseCommas(planarPrefix, true);
@@ -151,6 +178,22 @@ public class Spell_Planeshift extends Spell
 				int medianLevel=planeArea.getAreaIStats()[Area.Stats.MED_LEVEL.ordinal()];
 				planarLevel=medianLevel;
 			}
+			String specflags = planeVars.get(Spell_Planeshift.PlanarVar.SPECFLAGS.toString());
+			if(specflags != null)
+			{
+				for(String s : CMParms.parse(specflags))
+				{
+					Spell_Planeshift.PlanarSpecFlag flag=(Spell_Planeshift.PlanarSpecFlag)CMath.s_valueOf(Spell_Planeshift.PlanarSpecFlag.class, s);
+					if(flag == null)
+						Log.errOut("Spell_Planeshift","Unknown spec flag "+s);
+					else
+					{
+						if(this.specFlags==null)
+							this.specFlags=new HashSet<Spell_Planeshift.PlanarSpecFlag>();
+						this.specFlags.add(flag);
+					}
+				}
+			}
 			String areablurbs = planeVars.get(Spell_Planeshift.PlanarVar.AREABLURBS.toString());
 			if((areablurbs!=null)&&(areablurbs.length()>0))
 			{
@@ -161,6 +204,9 @@ public class Spell_Planeshift extends Spell
 			String behaves = planeVars.get(Spell_Planeshift.PlanarVar.BEHAVE.toString());
 			if(behaves!=null)
 				this.behavList=CMParms.parseSpaceParenList(behaves);
+			String reffects = planeVars.get(Spell_Planeshift.PlanarVar.REFFECT.toString());
+			if(reffects!=null)
+				this.reffectList=CMParms.parseSpaceParenList(reffects);
 			String enables = planeVars.get(Spell_Planeshift.PlanarVar.ENABLE.toString());
 			if(enables!=null)
 			{
@@ -246,10 +292,67 @@ public class Spell_Planeshift extends Spell
 					this.planeArea.setAtmosphere(atmo);
 				}
 			}
+			String absorb = planeVars.get(Spell_Planeshift.PlanarVar.ABSORB.toString());
+			if(absorb != null)
+				reEffect(planeArea,"Prop_AbsorbDamage",absorb);
+			TimeClock C=(TimeClock)CMLib.time().globalClock().copyOf();
+			C.setDayOfMonth(1);
+			C.setYear(1);
+			C.setMonth(1);
+			C.setHourOfDay(0);
+			String hours = planeVars.get(Spell_Planeshift.PlanarVar.HOURS.toString());
+			if((hours != null)&&(CMath.isInteger(hours)))
+			{
+				double mul=CMath.s_int(hours) / 6;
+				if(mul != 1.0)
+				{
+					int newHours = (int)Math.round(CMath.mul(C.getHoursInDay(),mul));
+					C.setHoursInDay(newHours);
+					C.setDawnToDusk((int)Math.round(CMath.mul(C.getDawnToDusk()[0],mul))
+									, (int)Math.round(CMath.mul(C.getDawnToDusk()[1],mul))
+									, (int)Math.round(CMath.mul(C.getDawnToDusk()[2],mul))
+									, (int)Math.round(CMath.mul(C.getDawnToDusk()[3],mul)));
+				}
+			}
+			planeArea.setTimeObj(C);
+			planeArea.addNonUninvokableEffect(CMClass.getAbility("Prop_NoTeleportOut"));
+			planeArea.addNonUninvokableEffect(CMClass.getAbility("Prop_NoTeleport"));
+			planeArea.addNonUninvokableEffect(CMClass.getAbility("Prop_NoRecall"));
+			String aeffects = planeVars.get(Spell_Planeshift.PlanarVar.AEFFECT.toString());
+			if(aeffects!=null)
+			{
+				List<Pair<String,String>> affectList=CMParms.parseSpaceParenList(reffects);
+				if(affectList!=null)
+				{
+					for(Pair<String,String> p : this.reffectList)
+					{
+						if(planeArea.fetchBehavior(p.first)==null)
+						{
+							Behavior B=CMClass.getBehavior(p.first);
+							if(B==null)
+							{
+								Ability A=CMClass.getAbility(p.first);
+								if(A==null)
+									Log.errOut("Spell_Planeshift","Unknown behavior : "+p.first);
+								else
+								{
+									A.setMiscText(p.second);
+									planeArea.addNonUninvokableEffect(A);
+								}
+							}
+							else
+							{
+								B.setParms(p.second);
+								planeArea.addBehavior(B);
+							}
+						}
+					}
+				}
+			}
 		}
 	}
 	
-	protected void reEffect(MOB M, String ID, String parms)
+	protected void reEffect(Physical M, String ID, String parms)
 	{
 		Ability A=M.fetchEffect(ID);
 		if(A!=null)
@@ -276,6 +379,33 @@ public class Spell_Planeshift extends Spell
 			}
 			if(planeVars.containsKey(Spell_Planeshift.PlanarVar.ATMOSPHERE.toString()))
 				room.setAtmosphere(planeArea.getAtmosphere());
+			if(this.reffectList!=null)
+			{
+				for(Pair<String,String> p : this.reffectList)
+				{
+					if(room.fetchBehavior(p.first)==null)
+					{
+						Behavior B=CMClass.getBehavior(p.first);
+						if(B==null)
+						{
+							Ability A=CMClass.getAbility(p.first);
+							if(A==null)
+								Log.errOut("Spell_Planeshift","Unknown behavior : "+p.first);
+							else
+							{
+								A.setMiscText(p.second);
+								room.addNonUninvokableEffect(A);
+							}
+						}
+						else
+						{
+							B.setParms(p.second);
+							room.addBehavior(B);
+						}
+					}
+				}
+			}
+			
 			int allLevelAdj=CMath.s_int(planeVars.get(PlanarVar.LEVELADJ.toString()));
 			List<Item> delItems=new ArrayList<Item>(0);
 			for(Enumeration<Item> i=room.items();i.hasMoreElements();)
@@ -520,11 +650,86 @@ public class Spell_Planeshift extends Spell
 	}
 
 	@Override
+	public void affectCharStats(MOB affected, CharStats affectableStats)
+	{
+		super.affectCharStats(affected, affectableStats);
+		if(this.specFlags!=null)
+		{
+			if(this.specFlags.contains(Spell_Planeshift.PlanarSpecFlag.ALLBREATHE))
+				affectableStats.setBreathables(new int[]{});
+		}
+	}
+	
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected, affectableStats);
-		if((this.bonusDmgStat>=0)&&(affected instanceof MOB))
-			affectableStats.setDamage(affectableStats.damage() + (((((MOB)affected).charStats().getStat(this.bonusDmgStat))-10)/2));
+		if(affected instanceof MOB)
+		{
+			if(this.bonusDmgStat>=0)
+				affectableStats.setDamage(affectableStats.damage() + (((((MOB)affected).charStats().getStat(this.bonusDmgStat))-10)/2));
+			if(this.specFlags!=null)
+			{
+				if(this.specFlags.contains(Spell_Planeshift.PlanarSpecFlag.NOINFRAVISION))
+					affectableStats.setSensesMask(CMath.unsetb(affectableStats.sensesMask(), PhyStats.CAN_SEE_INFRARED));
+				if(this.specFlags.contains(Spell_Planeshift.PlanarSpecFlag.BADMUNDANEARMOR))
+				{
+					final MOB M=(MOB)affected;
+					int neg=0;
+					for(Enumeration<Item> i=M.items();i.hasMoreElements();)
+					{
+						Item I=i.nextElement();
+						if((I instanceof Armor)
+						&&(!I.amWearingAt(Wearable.IN_INVENTORY))
+						&&((!I.amWearingAt(Wearable.WORN_FLOATING_NEARBY))||(I.fitsOn(Wearable.WORN_FLOATING_NEARBY)))
+						&&((!I.amWearingAt(Wearable.WORN_HELD))||(this instanceof Shield))
+						&&(!CMLib.flags().isABonusItems(I))
+						&&(I.phyStats().ability()<=0))
+						{
+							neg += I.phyStats().armor();
+						}
+					}
+					affectableStats.setArmor(affectableStats.armor()+neg);
+				}
+			}
+		}
+	}
+
+	@Override
+	public boolean tick(Tickable ticking, int tickID)
+	{
+		if(!super.tick(ticking, tickID))
+			return false;
+		if((ticking instanceof Area)&&(tickID == Tickable.TICKID_AREA))
+		{
+			if(((this.recoverRate>0)||(this.fatigueRate>0)) &&(--this.recoverTick <= 0) && (this.planeArea!=null))
+			{
+				this.recoverTick = CMProps.getIntVar(CMProps.Int.RECOVERRATE) * CharState.REAL_TICK_ADJUST_FACTOR;
+				for(Enumeration<Room> r=planeArea.getFilledProperMap();r.hasMoreElements();)
+				{
+					final Room R=r.nextElement();
+					if((R!=null)&&(R.numPCInhabitants()>0))
+					{
+						for(Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
+						{
+							final MOB M=m.nextElement();
+							for(int i=0;i<this.recoverRate;i++)
+								CMLib.combat().recoverTick(M);
+							if(this.fatigueRate>100)
+							{
+								M.curState().setHunger(M.maxState().maxHunger(M.baseWeight()));
+								M.curState().setThirst(M.maxState().maxThirst(M.baseWeight()));
+								M.curState().setFatigue(0);
+							}
+							else
+							for(int i=0;i<(this.recoverTick * this.fatigueRate);i++)
+								CMLib.combat().expendEnergy(M, false);
+						}
+					}
+				}
+			}
+		}
+		return true;
 	}
 	
 	@Override
@@ -893,13 +1098,7 @@ public class Spell_Planeshift extends Spell
 		target.setRoomID(newRoomID);
 		target.setDisplayText("Between The Planes of Existence");
 		target.setDescription("You are a floating consciousness between the planes of existence...");
-		target.setArea(planeArea);
-		TimeClock C=(TimeClock)CMClass.getCommon("DefaultTimeClock");
-		planeArea.setTimeObj(C);
-		planeArea.addNonUninvokableEffect(CMClass.getAbility("Prop_NoTeleportOut"));
-		planeArea.addNonUninvokableEffect(CMClass.getAbility("Prop_NoTeleport"));
-		planeArea.addNonUninvokableEffect(CMClass.getAbility("Prop_NoRecall"));
-		
+		target.setArea(planeArea);		
 		
 		//CMLib.map().delArea(this.planeArea);
 		
