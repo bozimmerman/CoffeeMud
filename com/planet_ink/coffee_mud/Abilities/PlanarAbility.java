@@ -1040,6 +1040,11 @@ public class PlanarAbility extends StdAbility
 			return false;
 
 		final boolean success=proficiencyCheck(mob,0,auto);
+		if((currentShift!=null)&&(currentShift.text().equalsIgnoreCase(planeName)))
+		{
+			this.beneficialVisualFizzle(mob, null, failMessage(mob, auto));
+			return false;
+		}
 		
 		boolean randomPlane=false;
 		boolean randomTransitionPlane=false;
