@@ -110,6 +110,7 @@ public class Chant_PlaneWalking extends PlanarAbility
 		final Room R=mob.location();
 		if((R!=null)&&(!auto))
 		{
+			this.alwaysRandomArea=true;
 			if(super.getPlanarAbility(R.getArea())==null)
 			{
 				final boolean hereok=mob.location().findItem(null,"DruidicMonument")!=null;

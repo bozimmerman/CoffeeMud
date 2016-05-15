@@ -995,6 +995,8 @@ public class PlanarAbility extends StdAbility
 		super.unInvoke();
 	}
 
+	protected boolean alwaysRandomArea=false;
+	
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -1059,7 +1061,7 @@ public class PlanarAbility extends StdAbility
 		
 		boolean randomPlane=false;
 		boolean randomTransitionPlane=false;
-		boolean randomArea=false;
+		boolean randomArea=alwaysRandomArea;
 		if(!success)
 		{
 			if(CMLib.dice().rollPercentage()>5)
