@@ -212,10 +212,14 @@ public class StdThinInstance extends StdThinArea
 					}
 				}
 				final MOB mob=CMClass.sampleMOB();
-				for(final Enumeration<Room> e=childA.getProperMap();e.hasMoreElements();)
+				final CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_EXPIRE,null);
+				for(final Enumeration<Room> e=childA.getFilledProperMap();e.hasMoreElements();)
 				{
 					final Room R=e.nextElement();
-					R.executeMsg(mob,CMClass.getMsg(mob,R,null,CMMsg.MSG_EXPIRE,null));
+					CMLib.map().emptyRoom(R, null, true);
+					msg.setTarget(R);
+					R.executeMsg(mob,msg);
+					R.destroy();
 				}
 				CMLib.map().delArea(childA);
 				childA.destroy();

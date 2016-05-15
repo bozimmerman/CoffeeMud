@@ -901,9 +901,20 @@ public class PlanarAbility extends StdAbility
 							if((oldRoom==null)||(oldRoom.amDestroyed())||(oldRoom.getArea()==null)||(!oldRoom.getArea().isRoom(oldRoom)))
 								oldRoom=M.getStartRoom();
 							oldRoom.bringMobHere(M, true);
+							CMLib.commands().postLook(M,true);
 						}
 					}
 				}
+			}
+			final MOB mob=CMClass.sampleMOB();
+			final CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_EXPIRE,null);
+			for(final Enumeration<Room> e=planeA.getFilledProperMap();e.hasMoreElements();)
+			{
+				final Room R=e.nextElement();
+				CMLib.map().emptyRoom(R, null, true);
+				msg.setTarget(R);
+				R.executeMsg(mob,msg);
+				R.destroy();
 			}
 			planeA.destroy();
 		}

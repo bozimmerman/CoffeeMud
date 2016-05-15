@@ -194,7 +194,7 @@ public class LightSource extends StdItem implements Light
 
 	public static boolean inTheRain(Room room)
 	{
-		if(room==null)
+		if((room==null)||(room.getArea()==null))
 			return false;
 		return (((room.domainType()&Room.INDOORS)==0)
 				&&((room.getArea().getClimateObj().weatherType(room)==Climate.WEATHER_RAIN)
