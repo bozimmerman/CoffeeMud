@@ -49,7 +49,7 @@ public class Spell_BaseClanEq extends Spell
 	@Override public long flags(){return super.flags()|Ability.FLAG_CLANMAGIC;}
 	@Override protected int overrideMana(){return Ability.COST_ALL;}
 	protected String type="";
-	@Override protected boolean disregardsArmorCheck(MOB mob){return true;}
+	@Override public boolean disregardsArmorCheck(MOB mob){return true;}
 
 	@Override
 	public boolean canBeLearnedBy(MOB teacher, MOB student)

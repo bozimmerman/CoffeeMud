@@ -43,7 +43,7 @@ public class Thief_Con extends ThiefSkill
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
 	private static final String[] triggerStrings =I(new String[] {"CON"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override protected boolean disregardsArmorCheck(MOB mob){return true;}
+	@Override public boolean disregardsArmorCheck(MOB mob){return true;}
 	@Override public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_DECEPTIVE; }
 	protected MOB lastChecked=null;
 	@Override public double castingTime(final MOB mob, final List<String> cmds){return CMProps.getSkillActionCost(ID(),CMath.div(CMProps.getIntVar(CMProps.Int.DEFABLETIME),20.0));}

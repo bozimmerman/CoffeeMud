@@ -37,16 +37,57 @@ import java.util.*;
 
 public class Prayer extends StdAbility
 {
-	@Override public String ID() { return "Prayer"; }
-	private final static String localizedName = CMLib.lang().L("a Prayer");
-	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "";}
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	private static final String[] triggerStrings =I(new String[] {"PRAY","PR"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER;}
+	@Override
+	public String ID()
+	{
+		return "Prayer";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("a Prayer");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public String displayText()
+	{
+		return "";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "PRAY", "PR" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER;
+	}
 
 	protected String prayWord(MOB mob)
 	{
@@ -93,25 +134,22 @@ public class Prayer extends StdAbility
 		return "praying";
 	}
 
-	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical target, boolean auto, int asLevel)
+	protected static boolean prayerAlignmentCheck(StdAbility A, MOB mob, boolean auto)
 	{
-		if(!super.invoke(mob,commands,target,auto,asLevel))
-			return false;
 		if((!auto)
 		&&(!mob.isMonster())
-		&&(!disregardsArmorCheck(mob))
-		&&(mob.isMine(this))
-		&&(!appropriateToMyFactions(mob)))
+		&&(!A.disregardsArmorCheck(mob))
+		&&(mob.isMine(A))
+		&&(!A.appropriateToMyFactions(mob)))
 		{
 			int hq=500;
-			if(CMath.bset(flags(),Ability.FLAG_HOLY))
+			if(CMath.bset(A.flags(),Ability.FLAG_HOLY))
 			{
-				if(!CMath.bset(flags(),Ability.FLAG_UNHOLY))
+				if(!CMath.bset(A.flags(),Ability.FLAG_UNHOLY))
 					hq=1000;
 			}
 			else
-			if(CMath.bset(flags(),Ability.FLAG_UNHOLY))
+			if(CMath.bset(A.flags(),Ability.FLAG_UNHOLY))
 				hq=0;
 
 			int basis=0;
@@ -130,18 +168,28 @@ public class Prayer extends StdAbility
 				return true;
 
 			if(hq==0)
-				mob.tell(L("The evil nature of @x1 disrupts your prayer.",name()));
+				mob.tell(A.L("The evil nature of @x1 disrupts your prayer.",A.name()));
 			else
 			if(hq==1000)
-				mob.tell(L("The goodness of @x1 disrupts your prayer.",name()));
+				mob.tell(A.L("The goodness of @x1 disrupts your prayer.",A.name()));
 			else
 			if(CMLib.flags().isGood(mob))
-				mob.tell(L("The anti-good nature of @x1 disrupts your thought.",name()));
+				mob.tell(A.L("The anti-good nature of @x1 disrupts your thought.",A.name()));
 			else
 			if(CMLib.flags().isEvil(mob))
-				mob.tell(L("The anti-evil nature of @x1 disrupts your thought.",name()));
+				mob.tell(A.L("The anti-evil nature of @x1 disrupts your thought.",A.name()));
 			return false;
 		}
+		return true;
+	}
+	
+	@Override
+	public boolean invoke(MOB mob, List<String> commands, Physical target, boolean auto, int asLevel)
+	{
+		if(!super.invoke(mob,commands,target,auto,asLevel))
+			return false;
+		if(!prayerAlignmentCheck(this,mob,auto))
+			return false;
 		return true;
 	}
 

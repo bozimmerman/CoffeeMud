@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Abilities.Spells;
+package com.planet_ink.coffee_mud.Abilities.Druid;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -36,15 +36,15 @@ import java.util.concurrent.atomic.AtomicInteger;
    limitations under the License.
 */
 
-public class Spell_Planeshift extends PlanarAbility
+public class Chant_PlaneWalking extends PlanarAbility
 {
 	@Override
 	public String ID()
 	{
-		return "Spell_Planeshift";
+		return "Chant_PlaneWalking";
 	}
 
-	private final static String	localizedName	= CMLib.lang().L("Planeshift");
+	private final static String	localizedName	= CMLib.lang().L("Plane Walking");
 
 	@Override
 	public String name()
@@ -61,7 +61,7 @@ public class Spell_Planeshift extends PlanarAbility
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_SPELL | Ability.DOMAIN_CONJURATION;
+		return Ability.ACODE_CHANT | Ability.DOMAIN_CONJURATION;
 	}
 
 	@Override
@@ -82,7 +82,7 @@ public class Spell_Planeshift extends PlanarAbility
 		return Ability.QUALITY_INDIFFERENT;
 	}
 
-	private static final String[]	triggerStrings	= I(new String[] { "CAST", "CA", "C" });
+	private static final String[]	triggerStrings	= I(new String[] { "CHANT", "CH" });
 
 	@Override
 	public String[] triggerStrings()
@@ -93,20 +93,42 @@ public class Spell_Planeshift extends PlanarAbility
 	@Override
 	protected String castingMessage(MOB mob, boolean auto)
 	{
-		return auto?L("<S-NAME> <S-IS-ARE> conjured to another plane!"):L("^S<S-NAME> conjur(s) a powerful planar connection!^?");
+		return auto?L("<S-NAME> <S-IS-ARE> drawn to another plane of existence!"):L("^S<S-NAME> walks around chanting!^?");
 	}
 	
 	@Override
 	protected String failMessage(MOB mob, boolean auto)
 	{
-		return L("^S<S-NAME> attempt(s) to conjur a powerful planar connection, and fails.");
+		return L("^S<S-NAME> attempt(s) to chant, and fails.");
 	}
 	
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		if(!Spell.spellArmorCheck(this,mob,auto))
+		if(!Chant.chantAlignmentCheck(this,mob,false,auto))
 			return false;
+		final Room R=mob.location();
+		if((R!=null)&&(!auto))
+		{
+			if(super.getPlanarAbility(R.getArea())==null)
+			{
+				final boolean hereok=mob.location().findItem(null,"DruidicMonument")!=null;
+				if(!hereok)
+				{
+					mob.tell(L("There is no druidic monument here.  You can only begin this chant in a druidic grove."));
+					return false;
+				}
+			}
+			else
+			{
+				final Item otherPlant = Druid_MyPlants.myPlant(R, mob, 0);
+				if(otherPlant == null)
+				{
+					mob.tell(L("There is none of your plants here.  You can travel from here through one of your plants."));
+					return false;
+				}
+			}
+		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		return true;

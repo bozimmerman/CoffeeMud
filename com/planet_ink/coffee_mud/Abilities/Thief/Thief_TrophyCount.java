@@ -47,7 +47,7 @@ public class Thief_TrophyCount extends ThiefSkill
 	@Override public boolean isAutoInvoked(){return true;}
 	@Override public boolean canBeUninvoked(){return false;}
 	private static final String[] triggerStrings =I(new String[] {"TROPHYCOUNT"});
-	@Override protected boolean disregardsArmorCheck(MOB mob){return true;}
+	@Override public boolean disregardsArmorCheck(MOB mob){return true;}
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_COMBATLORE;}
 	Hashtable<String,String[]> theList=new Hashtable<String,String[]>();

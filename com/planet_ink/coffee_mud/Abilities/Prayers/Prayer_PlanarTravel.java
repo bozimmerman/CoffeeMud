@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Abilities.Spells;
+package com.planet_ink.coffee_mud.Abilities.Prayers;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -36,15 +36,15 @@ import java.util.concurrent.atomic.AtomicInteger;
    limitations under the License.
 */
 
-public class Spell_Planeshift extends PlanarAbility
+public class Prayer_PlanarTravel extends PlanarAbility
 {
 	@Override
 	public String ID()
 	{
-		return "Spell_Planeshift";
+		return "Prayer_PlanarTravel";
 	}
 
-	private final static String	localizedName	= CMLib.lang().L("Planeshift");
+	private final static String	localizedName	= CMLib.lang().L("Planar Travel");
 
 	@Override
 	public String name()
@@ -61,13 +61,13 @@ public class Spell_Planeshift extends PlanarAbility
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_SPELL | Ability.DOMAIN_CONJURATION;
+		return Ability.ACODE_PRAYER | Ability.DOMAIN_CONJURATION;
 	}
 
 	@Override
 	public long flags()
 	{
-		return 0;
+		return Ability.FLAG_UNHOLY | Ability.FLAG_HOLY;
 	}
 
 	@Override
@@ -82,7 +82,7 @@ public class Spell_Planeshift extends PlanarAbility
 		return Ability.QUALITY_INDIFFERENT;
 	}
 
-	private static final String[]	triggerStrings	= I(new String[] { "CAST", "CA", "C" });
+	private static final String[] triggerStrings =I(new String[] {"PRAY","PR"});
 
 	@Override
 	public String[] triggerStrings()
@@ -90,22 +90,29 @@ public class Spell_Planeshift extends PlanarAbility
 		return triggerStrings;
 	}
 	
+	protected String prayWord(MOB mob)
+	{
+		if(mob.getMyDeity()!=null)
+			return "pray(s) to "+mob.getMyDeity().name();
+		return "pray(s)";
+	}
+
 	@Override
 	protected String castingMessage(MOB mob, boolean auto)
 	{
-		return auto?L("<S-NAME> <S-IS-ARE> conjured to another plane!"):L("^S<S-NAME> conjur(s) a powerful planar connection!^?");
+		return auto?L("<S-NAME> gain(s) access to other planes of existence!"):L("^S<S-NAME> @x1 for access to other planes of existence!^?",prayWord(mob));
 	}
 	
 	@Override
 	protected String failMessage(MOB mob, boolean auto)
 	{
-		return L("^S<S-NAME> attempt(s) to conjur a powerful planar connection, and fails.");
+		return L("<S-NAME> @x1 for planar travel, but nothing happens.",prayWord(mob));
 	}
 	
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		if(!Spell.spellArmorCheck(this,mob,auto))
+		if(!Prayer.prayerAlignmentCheck(this,mob,auto))
 			return false;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

@@ -46,7 +46,7 @@ public class Thief_Alertness extends ThiefSkill
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings =I(new String[] {"ALERTNESS"});
 	@Override public int classificationCode(){	return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_ALERT;}
-	@Override protected boolean disregardsArmorCheck(MOB mob){return true;}
+	@Override public boolean disregardsArmorCheck(MOB mob){return true;}
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	Room room=null;
 

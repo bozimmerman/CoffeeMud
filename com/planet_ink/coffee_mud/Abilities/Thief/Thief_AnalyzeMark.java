@@ -43,7 +43,7 @@ public class Thief_AnalyzeMark extends ThiefSkill
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override public boolean isAutoInvoked(){return true;}
 	@Override public boolean canBeUninvoked(){return false;}
-	@Override protected boolean disregardsArmorCheck(MOB mob){return true;}
+	@Override public boolean disregardsArmorCheck(MOB mob){return true;}
 	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_COMBATLORE;}
 
 	public MOB getMark(MOB mob)

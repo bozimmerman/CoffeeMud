@@ -43,7 +43,7 @@ public class Thief_Lore extends ThiefSkill
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings =I(new String[] {"LORE"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override protected boolean disregardsArmorCheck(MOB mob){return true;}
+	@Override public boolean disregardsArmorCheck(MOB mob){return true;}
 	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_ARCANELORE;}
 
 	@Override

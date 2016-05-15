@@ -8578,9 +8578,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				ok=true;
 			}
 		}
-		me.recoverPhyStats();
-		if(me.text().length()>=maxLength)
-			mob.tell(L("\n\rThe data entered exceeds the string limit of @x1 characters.",""+maxLength));
+		if(showFlag != -950)
+		{
+			me.recoverPhyStats();
+			if(me.text().length()>=maxLength)
+				mob.tell(L("\n\rThe data entered exceeds the string limit of @x1 characters.",""+maxLength));
+		}
 	}
 
 	protected void modifyGenFood(MOB mob, Food me, int showFlag)
@@ -8636,9 +8639,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				ok=true;
 			}
 		}
-		me.recoverPhyStats();
-		if(me.text().length()>=maxLength)
-			mob.tell(L("\n\rThe data entered exceeds the string limit of @x1 characters.",""+maxLength));
+		if(showFlag != -950)
+		{
+			me.recoverPhyStats();
+			if(me.text().length()>=maxLength)
+				mob.tell(L("\n\rThe data entered exceeds the string limit of @x1 characters.",""+maxLength));
+		}
 	}
 
 	protected void genScripts(MOB mob, MOB E, int showNumber, int showFlag)
@@ -8741,9 +8747,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				ok=true;
 			}
 		}
-		me.recoverPhyStats();
-		if(me.text().length()>=maxLength)
-			mob.tell(L("\n\rThe data entered exceeds the string limit of @x1 characters.",""+maxLength));
+		if(showFlag != -950)
+		{
+			me.recoverPhyStats();
+			if(me.text().length()>=maxLength)
+				mob.tell(L("\n\rThe data entered exceeds the string limit of @x1 characters.",""+maxLength));
+		}
 	}
 
 	protected void modifyGenWallpaper(MOB mob, Item me, int showFlag)
@@ -8785,9 +8794,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				ok=true;
 			}
 		}
-		me.recoverPhyStats();
-		if(me.text().length()>=maxLength)
-			mob.tell(L("\n\rThe data entered exceeds the string limit of @x1 characters.",""+maxLength));
+		if(showFlag != -950)
+		{
+			me.recoverPhyStats();
+			if(me.text().length()>=maxLength)
+				mob.tell(L("\n\rThe data entered exceeds the string limit of @x1 characters.",""+maxLength));
+		}
 	}
 
 	protected void modifyGenMap(MOB mob, com.planet_ink.coffee_mud.Items.interfaces.RoomMap me, int showFlag)
@@ -8839,9 +8851,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				ok=true;
 			}
 		}
-		me.recoverPhyStats();
-		if(me.text().length()>=maxLength)
-			mob.tell(L("\n\rThe data entered exceeds the string limit of @x1 characters.",""+maxLength));
+		if(showFlag != -950)
+		{
+			me.recoverPhyStats();
+			if(me.text().length()>=maxLength)
+				mob.tell(L("\n\rThe data entered exceeds the string limit of @x1 characters.",""+maxLength));
+		}
 	}
 
 	protected void modifyGenContainer(MOB mob, Container me, int showFlag)
@@ -8967,9 +8982,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				ok=true;
 			}
 		}
-		me.recoverPhyStats();
-		if(me.text().length()>=maxLength)
-			mob.tell(L("\n\rThe data entered exceeds the string limit of @x1 characters.",""+maxLength));
+		if(showFlag != -950)
+		{
+			me.recoverPhyStats();
+			if(me.text().length()>=maxLength)
+				mob.tell(L("\n\rThe data entered exceeds the string limit of @x1 characters.",""+maxLength));
+		}
 	}
 
 	protected void modifyGenWeapon(MOB mob, Weapon me, int showFlag)
@@ -9058,9 +9076,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				ok=true;
 			}
 		}
-		me.recoverPhyStats();
-		if(me.text().length()>=maxLength)
-			mob.tell(L("\n\rThe data entered exceeds the string limit of @x1 characters.",""+maxLength));
+		if(showFlag != -950)
+		{
+			me.recoverPhyStats();
+			if(me.text().length()>=maxLength)
+				mob.tell(L("\n\rThe data entered exceeds the string limit of @x1 characters.",""+maxLength));
+		}
 	}
 
 	protected void modifyGenArmor(MOB mob, Armor me, int showFlag)
@@ -9138,9 +9159,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				ok=true;
 			}
 		}
-		me.recoverPhyStats();
-		if(me.text().length()>=maxLength)
-			mob.tell(L("\n\rThe data entered exceeds the string limit of @x1 characters.",""+maxLength));
+		if(showFlag != -950)
+		{
+			me.recoverPhyStats();
+			if(me.text().length()>=maxLength)
+				mob.tell(L("\n\rThe data entered exceeds the string limit of @x1 characters.",""+maxLength));
+		}
 	}
 
 
@@ -9194,9 +9218,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				ok=true;
 			}
 		}
-		me.recoverPhyStats();
-		if(me.text().length()>=maxLength)
-			mob.tell(L("\n\rThe data entered exceeds the string limit of @x1 characters.",""+maxLength));
+		if(showFlag != -950)
+		{
+			me.recoverPhyStats();
+			if(me.text().length()>=maxLength)
+				mob.tell(L("\n\rThe data entered exceeds the string limit of @x1 characters.",""+maxLength));
+		}
 	}
 
 
@@ -9251,9 +9278,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				ok=true;
 			}
 		}
-		me.recoverPhyStats();
-		if(me.text().length()>=maxLength)
-			mob.tell(L("\n\rThe data entered exceeds the string limit of @x1 characters.",""+maxLength));
+		if(showFlag != -950)
+		{
+			me.recoverPhyStats();
+			if(me.text().length()>=maxLength)
+				mob.tell(L("\n\rThe data entered exceeds the string limit of @x1 characters.",""+maxLength));
+		}
 	}
 
 
@@ -9374,12 +9404,15 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				ok=true;
 			}
 		}
-		me.recoverCharStats();
-		me.recoverMaxState();
-		me.recoverPhyStats();
-		me.resetToMaxState();
-		if(me.text().length()>=maxLength)
-			mob.tell(L("\n\rThe data entered exceeds the string limit of @x1 characters.",""+maxLength));
+		if(showFlag != -950)
+		{
+			me.recoverCharStats();
+			me.recoverMaxState();
+			me.recoverPhyStats();
+			me.resetToMaxState();
+			if(me.text().length()>=maxLength)
+				mob.tell(L("\n\rThe data entered exceeds the string limit of @x1 characters.",""+maxLength));
+		}
 	}
 
 	@Override
@@ -9913,12 +9946,15 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				ok=true;
 			}
 		}
-		M.recoverCharStats();
-		M.recoverMaxState();
-		M.recoverPhyStats();
-		M.resetToMaxState();
-		if(me.text().length()>=maxLength)
-			mob.tell(L("\n\rThe data entered exceeds the string limit of @x1 characters.",""+maxLength));
+		if(showFlag != -950)
+		{
+			M.recoverCharStats();
+			M.recoverMaxState();
+			M.recoverPhyStats();
+			M.resetToMaxState();
+			if(me.text().length()>=maxLength)
+				mob.tell(L("\n\rThe data entered exceeds the string limit of @x1 characters.",""+maxLength));
+		}
 	}
 
 	@Override

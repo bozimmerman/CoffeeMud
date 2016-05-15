@@ -76,7 +76,7 @@ public class Thief_Racketeer extends ThiefSkill
 	}
 
 	@Override
-	protected boolean disregardsArmorCheck(MOB mob)
+	public boolean disregardsArmorCheck(MOB mob)
 	{
 		return true;
 	}

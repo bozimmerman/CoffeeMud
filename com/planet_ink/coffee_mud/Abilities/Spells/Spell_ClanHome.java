@@ -74,7 +74,7 @@ public class Spell_ClanHome extends Spell
 	}
 
 	@Override
-	protected boolean disregardsArmorCheck(MOB mob)
+	public boolean disregardsArmorCheck(MOB mob)
 	{
 		return true;
 	}

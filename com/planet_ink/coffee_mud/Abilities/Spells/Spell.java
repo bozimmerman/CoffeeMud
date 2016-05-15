@@ -36,16 +36,57 @@ import java.util.*;
 
 public class Spell extends StdAbility
 {
-	@Override public String ID() { return "Spell"; }
-	private final static String localizedName = CMLib.lang().L("a Spell");
-	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "";}
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	private static final String[] triggerStrings =I(new String[] {"CAST","CA","C"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode(){return Ability.ACODE_SPELL;}
+	@Override
+	public String ID()
+	{
+		return "Spell";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("a Spell");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public String displayText()
+	{
+		return "";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "CAST", "CA", "C" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL;
+	}
 
 	protected static final int CHAIN_LENGTH=4;
 
@@ -87,27 +128,35 @@ public class Spell extends StdAbility
 		}
 		return doneA;
 	}
+
+	protected static boolean spellArmorCheck(StdAbility A, MOB mob, boolean auto)
+	{
+		if((!auto)&&(mob.isMine(A))&&(mob.location()!=null))
+		{
+			if((!mob.isMonster())
+			&&(!A.disregardsArmorCheck(mob))
+			&&(!CMLib.utensils().armorCheck(mob,CharClass.ARMOR_CLOTH))
+			&&(CMLib.dice().rollPercentage()<50))
+			{
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,A.L("<S-NAME> watch(es) <S-HIS-HER> armor absorb <S-HIS-HER> magical energy!"));
+				return false;
+			}
+			if(!CMLib.flags().canConcentrate(mob))
+			{
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,A.L("<S-NAME> can't seem to concentrate."));
+				return false;
+			}
+		}
+		return true;
+	}
+	
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		if((!auto)&&(mob.isMine(this))&&(mob.location()!=null))
-		{
-			if((!mob.isMonster())
-			&&(!disregardsArmorCheck(mob))
-			&&(!CMLib.utensils().armorCheck(mob,CharClass.ARMOR_CLOTH))
-			&&(CMLib.dice().rollPercentage()<50))
-			{
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> watch(es) <S-HIS-HER> armor absorb <S-HIS-HER> magical energy!"));
-				return false;
-			}
-			if(!CMLib.flags().canConcentrate(mob))
-			{
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> can't seem to concentrate."));
-				return false;
-			}
-		}
+		if(!spellArmorCheck(this,mob,auto))
+			return false;
 		return true;
 	}
 }

@@ -161,6 +161,30 @@ public class Chant extends StdAbility
 			return WEATHERQUE_CALM;
 		}
 	}
+	
+	protected static boolean chantAlignmentCheck(StdAbility A, MOB mob, boolean renderedMundane, boolean auto)
+	{
+		if((!auto)
+		&&(!mob.isMonster())
+		&&(!A.disregardsArmorCheck(mob))
+		&&(mob.isMine(A))
+		&&(!renderedMundane)
+		&&(CMLib.dice().rollPercentage()<50))
+		{
+			if(!A.appropriateToMyFactions(mob))
+			{
+				mob.tell(A.L("Extreme emotions disrupt your chant."));
+				return false;
+			}
+			else
+			if(!CMLib.utensils().armorCheck(mob,CharClass.ARMOR_LEATHER))
+			{
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,A.L("<S-NAME> watch(es) <S-HIS-HER> armor absorb <S-HIS-HER> magical energy!"));
+				return false;
+			}
+		}
+		return true;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -168,25 +192,8 @@ public class Chant extends StdAbility
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		if((!auto)
-		&&(!mob.isMonster())
-		&&(!disregardsArmorCheck(mob))
-		&&(mob.isMine(this))
-		&&(!renderedMundane)
-		&&(CMLib.dice().rollPercentage()<50))
-		{
-			if(!appropriateToMyFactions(mob))
-			{
-				mob.tell(L("Extreme emotions disrupt your chant."));
-				return false;
-			}
-			else
-			if(!CMLib.utensils().armorCheck(mob,CharClass.ARMOR_LEATHER))
-			{
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> watch(es) <S-HIS-HER> armor absorb <S-HIS-HER> magical energy!"));
-				return false;
-			}
-		}
+		if(!chantAlignmentCheck(this,mob,renderedMundane,auto))
+			return false;
 		return true;
 	}
 }

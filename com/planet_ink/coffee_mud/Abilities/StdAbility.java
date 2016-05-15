@@ -628,7 +628,7 @@ public class StdAbility implements Ability
 		tickDown=tickTime;
 	}
 
-	protected boolean disregardsArmorCheck(MOB mob)
+	public boolean disregardsArmorCheck(MOB mob)
 	{
 		return ((mob==null)
 				||(mob.isMonster())
