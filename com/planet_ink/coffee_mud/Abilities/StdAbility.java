@@ -2077,7 +2077,8 @@ public class StdAbility implements Ability
 		return getStatCodes().length;
 	}
 
-	private static final String[]	CODES	= { "CLASS", "TEXT", "TICKDOWN" };
+	private static final String[]	CODES			= { "CLASS", "TEXT" };
+	private static final String[]	INTERNAL_CODES	= { "TICKDOWN" };
 
 	@Override
 	public String[] getStatCodes()
@@ -2101,6 +2102,16 @@ public class StdAbility implements Ability
 		return -1;
 	}
 
+	protected int getInternalCodeNum(String code)
+	{
+		for(int i=0;i<INTERNAL_CODES.length;i++)
+		{
+			if(code.equalsIgnoreCase(INTERNAL_CODES[i]))
+				return i;
+		}
+		return -1;
+	}
+
 	@Override
 	public String getStat(String code)
 	{
@@ -2110,8 +2121,15 @@ public class StdAbility implements Ability
 			return ID();
 		case 1:
 			return text();
-		case 2:
-			return Integer.toString(tickDown);
+		default:
+			switch(getInternalCodeNum(code))
+			{
+			case 0:
+				return Integer.toString(tickDown);
+			default:
+				break;
+			}
+			break;
 		}
 		return "";
 	}
@@ -2126,8 +2144,15 @@ public class StdAbility implements Ability
 		case 1:
 			setMiscText(val);
 			break;
-		case 2:
-			tickDown = CMath.s_int(val);
+		default:
+			switch(getInternalCodeNum(code))
+			{
+			case 0:
+				tickDown = CMath.s_int(val);
+				break;
+			default:
+				break;
+			}
 			break;
 		}
 	}

@@ -65,22 +65,23 @@ public class Prop_AbsorbDamage extends Property implements TriggeredAffect
 		return TriggeredAffect.TRIGGER_BEING_HIT;
 	}
 
-	protected boolean cancelFlag=false;
-	protected Object allAbsorb=null;
-	protected Map<Integer,Object> msgTypes=null;
-	protected Map<Integer,Object> weapTypes=null;
-	protected Map<Integer,Object> weapMats=null;
-	protected Object			  weapMagic=null;
-	protected Map<Integer,Object> weapLvls=null;
-	protected Map<Integer,Object> ableDomains=null;
-	protected Map<Integer,Object> ableCodes=null;
-	protected Map<Long,Object>	  ableFlags=null;
+	protected boolean				enhFlag		= false;
+	protected Object				allAbsorb	= null;
+	protected Map<Integer, Object>	msgTypes	= null;
+	protected Map<Integer, Object>	weapTypes	= null;
+	protected Map<Integer, Object>	weapMats	= null;
+	protected Object				weapMagic	= null;
+	protected Map<Integer, Object>	weapLvls	= null;
+	protected Map<Integer, Object>	ableDomains	= null;
+	protected Map<Integer, Object>	ableCodes	= null;
+	protected Map<Long, Object>		ableFlags	= null;
 	
 	@Override
 	public void setMiscText(String newMiscText)
 	{
 		super.setMiscText(newMiscText);
 		List<String> parms=CMParms.parse(newMiscText.toUpperCase());
+		enhFlag=false;
 		allAbsorb=null;
 		msgTypes=null;
 		weapTypes=null;
@@ -112,9 +113,9 @@ public class Prop_AbsorbDamage extends Property implements TriggeredAffect
 		allAbsorb=(allFound?current:null);
 		for(String s : parms)
 		{
-			if(s.equals("CANCELOK"))
+			if(s.equals("ENHANCED"))
 			{
-				cancelFlag=true;
+				enhFlag=true;
 				continue;
 			}
 			if(CMath.isPct(s))
@@ -211,12 +212,12 @@ public class Prop_AbsorbDamage extends Property implements TriggeredAffect
 		if(!super.okMessage(myHost,msg))
 			return false;
 		if((affected!=null)
-		&&((msg.targetMinor()==CMMsg.TYP_DAMAGE)
-			||(msg.targetMinor()==CMMsg.TYP_HEALING)
-			||(cancelFlag 
+		&&(((msg.targetMinor()==CMMsg.TYP_DAMAGE)&&(msg.value()>0))
+			||((msg.targetMinor()==CMMsg.TYP_HEALING)&&(msg.value()>0))
+			||(enhFlag 
 				&& (msg.tool() instanceof Ability)
 				&& ((msg.sourceMinor()==CMMsg.TYP_CAST_SPELL)||(msg.sourceMinor()==CMMsg.TYP_DELICATE_HANDS_ACT)||(msg.sourceMinor()==CMMsg.TYP_JUSTICE))))
-		&&(msg.value()>0))
+		)
 		{
 			if(affected instanceof MOB)
 			{
@@ -344,7 +345,7 @@ public class Prop_AbsorbDamage extends Property implements TriggeredAffect
 			}
 			if(absorb!=null)
 			{
-				if((msg.targetMinor()==CMMsg.TYP_DAMAGE)||(msg.targetMinor()==CMMsg.TYP_HEALING))
+				if(((msg.targetMinor()==CMMsg.TYP_DAMAGE)||(msg.targetMinor()==CMMsg.TYP_HEALING))&&(msg.value()>0))
 				{
 					if(absorb instanceof Double)
 						msg.setValue(msg.value()-(int)Math.round(CMath.mul(msg.value(),((Double)absorb).doubleValue())));
@@ -354,11 +355,43 @@ public class Prop_AbsorbDamage extends Property implements TriggeredAffect
 						msg.setValue(0);
 				}
 				else
+				if((enhFlag)&&(absorb instanceof Double))
 				{
-					if((absorb instanceof Double)&&(CMLib.dice().rollPercentage()<(((Double)absorb).doubleValue()*100.0)))
+					if(((Double)absorb).doubleValue()<0.0)
 					{
-						msg.source().tell(L("You can't concentrate on @x1.",msg.tool().Name()));
-						return false;
+						if((msg.target() instanceof Physical)
+						&&(msg.tool() instanceof Ability)
+						&&(!((Ability)msg.tool()).isAutoInvoked())
+						&&(((Physical)msg.target()).fetchEffect(msg.tool().ID())==null))
+						{
+							final MOB srcM=msg.source();
+							final Physical tgtM=(Physical)msg.target();
+							final Ability A=(Ability)msg.tool();
+							final Double pct=(Double)absorb;
+							CMLib.threads().scheduleRunnable(new Runnable()
+							{
+								@Override
+								public void run()
+								{
+									Ability eA=tgtM.fetchEffect(A.ID());
+									if((eA!=null)
+									&&(eA.invoker()==srcM)
+									&&(eA.canBeUninvoked()))
+									{
+										int tickDown = CMath.s_int(eA.getStat("TICKDOWN"));
+										if(tickDown > 0)
+										{
+											eA.setStat("TICKDOWN", ""+(tickDown-(int)Math.round(CMath.mul(msg.value(),pct.doubleValue()))));
+										}
+									}
+								}
+							}, 500);
+						}
+					}
+					else
+					if(CMLib.dice().rollPercentage()<(((Double)absorb).doubleValue()*100.0))
+					{
+						msg.setValue(1); // saved?
 					}
 				}
 			}
