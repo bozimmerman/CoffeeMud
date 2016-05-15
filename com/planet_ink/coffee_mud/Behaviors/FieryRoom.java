@@ -111,17 +111,20 @@ public class FieryRoom extends ActiveTicker
 					if (inhab.isMonster())
 					{
 						boolean reallyAffect = true;
-						if ((noNpc)&&(inhab.getStartRoom()!=room))
+						if (noNpc)
 						{
 							reallyAffect = false;
-							final Set<MOB> group = inhab.getGroupMembers(new HashSet<MOB>());
-							for (final Object element : group)
+							if(inhab.getStartRoom()!=room)
 							{
-								final MOB follower = (MOB) element;
-								if (! (follower.isMonster()))
+								final Set<MOB> group = inhab.getGroupMembers(new HashSet<MOB>());
+								for (final Object element : group)
 								{
-									reallyAffect = true;
-									break;
+									final MOB follower = (MOB) element;
+									if (! (follower.isMonster()))
+									{
+										reallyAffect = true;
+										break;
+									}
 								}
 							}
 						}

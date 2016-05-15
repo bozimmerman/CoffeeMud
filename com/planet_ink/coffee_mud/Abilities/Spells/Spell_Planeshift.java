@@ -849,6 +849,11 @@ public class Spell_Planeshift extends Spell
 				if(planename != null)
 				{
 					Map<String,String> planeParms = CMParms.parseEQParms(line);
+					for(String key : planeParms.keySet())
+					{
+						if(CMath.s_valueOf(PlanarVar.class, key)==null)
+							Log.errOut("Spell_Planeshift","Unknown planar var: "+key);
+					}
 					planeParms.put(PlanarVar.ID.toString(), planename);
 					map.put(planename.toUpperCase(), planeParms);
 				}
@@ -1135,8 +1140,8 @@ public class Spell_Planeshift extends Spell
 					}
 					thisRoom.send(follower,leaveMsg);
 					((Room)enterMsg.target()).bringMobHere(follower,false);
-					((Room)enterMsg.target()).send(follower,enterMsg);
 					follower.tell(L("\n\r\n\r"));
+					((Room)enterMsg.target()).send(follower,enterMsg);
 					CMLib.commands().postLook(follower,true);
 				}
 			}
