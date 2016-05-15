@@ -110,7 +110,9 @@ public class Spell_Planeshift extends Spell
 		ENABLE,
 		WEAPONMAXRANGE,
 		BONUSDAMAGESTAT,
-		REQWEAPONS
+		REQWEAPONS,
+		ATMOSPHERE,
+		AREABLURBS
 	}
 	
 	protected static final AtomicInteger planeIDNum = new AtomicInteger(0);
@@ -148,6 +150,13 @@ public class Spell_Planeshift extends Spell
 				planeArea=(Area)affected;
 				int medianLevel=planeArea.getAreaIStats()[Area.Stats.MED_LEVEL.ordinal()];
 				planarLevel=medianLevel;
+			}
+			String areablurbs = planeVars.get(Spell_Planeshift.PlanarVar.AREABLURBS.toString());
+			if((areablurbs!=null)&&(areablurbs.length()>0))
+			{
+				Map<String,String> blurbSets=CMParms.parseEQParms(areablurbs);
+				for(String key : blurbSets.keySet())
+					planeArea.addBlurbFlag(key.toUpperCase().trim().replace(' ', '_')+" "+blurbSets.get(key));
 			}
 			String behaves = planeVars.get(Spell_Planeshift.PlanarVar.BEHAVE.toString());
 			if(behaves!=null)
@@ -226,6 +235,17 @@ public class Spell_Planeshift extends Spell
 			String reqWeapons = planeVars.get(Spell_Planeshift.PlanarVar.REQWEAPONS.toString());
 			if(reqWeapons != null)
 				this.reqWeapons = new HashSet<String>(CMParms.parse(reqWeapons.toUpperCase().trim()));
+			String atmosphere = planeVars.get(Spell_Planeshift.PlanarVar.ATMOSPHERE.toString());
+			if(atmosphere!=null)
+			{
+				if(atmosphere.length()==0)
+					this.planeArea.setAtmosphere(Integer.MIN_VALUE);
+				else
+				{
+					int atmo=RawMaterial.CODES.FIND_IgnoreCase(atmosphere);
+					this.planeArea.setAtmosphere(atmo);
+				}
+			}
 		}
 	}
 	
@@ -254,6 +274,8 @@ public class Spell_Planeshift extends Spell
 				if((R!=null)&&(R.getArea()!=planeArea))
 					room.rawDoors()[i]=null;
 			}
+			if(planeVars.containsKey(Spell_Planeshift.PlanarVar.ATMOSPHERE.toString()))
+				room.setAtmosphere(planeArea.getAtmosphere());
 			int allLevelAdj=CMath.s_int(planeVars.get(PlanarVar.LEVELADJ.toString()));
 			List<Item> delItems=new ArrayList<Item>(0);
 			for(Enumeration<Item> i=room.items();i.hasMoreElements();)
@@ -303,6 +325,8 @@ public class Spell_Planeshift extends Spell
 				&&(M.getStartRoom()!=null)
 				&&(M.getStartRoom().getArea()==planeArea))
 				{
+					if(planeVars.containsKey(Spell_Planeshift.PlanarVar.ATMOSPHERE.toString()))
+						M.baseCharStats().setBreathables(new int[]{room.getAtmosphere()});
 					int newLevelAdj = (planarLevel - M.phyStats().level());
 					int newLevel = invoker.phyStats().level() + newLevelAdj + allLevelAdj;
 					if(newLevel <= 0)

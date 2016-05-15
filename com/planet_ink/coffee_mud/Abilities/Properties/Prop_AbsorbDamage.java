@@ -34,9 +34,23 @@ import java.util.*;
 */
 public class Prop_AbsorbDamage extends Property implements TriggeredAffect
 {
-	@Override public String ID() { return "Prop_AbsorbDamage"; }
-	@Override public String name(){ return "Absorb Damage";}
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
+	@Override
+	public String ID()
+	{
+		return "Prop_AbsorbDamage";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Absorb Damage";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS | Ability.CAN_ITEMS;
+	}
 
 	@Override
 	public String accountForYourself()
@@ -51,6 +65,22 @@ public class Prop_AbsorbDamage extends Property implements TriggeredAffect
 		return TriggeredAffect.TRIGGER_BEING_HIT;
 	}
 
+	protected boolean immune=false;
+	
+	@Override
+	public void setMiscText(String newMiscText)
+	{
+		super.setMiscText(newMiscText);
+		List<String> parms=CMParms.parse(newMiscText);
+		for(String s : parms)
+		{
+			
+		}
+		newMiscText=newMiscText.toUpperCase();
+		immune=newMiscText.indexOf("+ALL")>=0;
+		
+	}
+	
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
