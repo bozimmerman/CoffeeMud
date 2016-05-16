@@ -3250,6 +3250,15 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		Q2.setCopy(true);
 		Q2.setVars(baseVars,0);
 		Q2.setScript(script,true);
+		
+		Quest Q=CMLib.quests().fetchQuest(Q2.name());
+		int append=1;
+		while((Q!=null)&&(Q!=Q2))
+		{
+			Q2.setName(name()+"#"+append);
+			append++;
+			Q=CMLib.quests().fetchQuest(Q2.name());
+		}
 		CMLib.quests().addQuest(Q2);
 		if(reTime)
 		{

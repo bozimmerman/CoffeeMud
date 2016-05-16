@@ -69,11 +69,13 @@ public class Prop_AbsorbDamage extends Property implements TriggeredAffect
 	protected Object				allAbsorb	= null;
 	protected Map<Integer, Object>	msgTypes	= null;
 	protected Map<Integer, Object>	weapTypes	= null;
+	protected Map<Integer, Object>	weapClass	= null;
 	protected Map<Integer, Object>	weapMats	= null;
 	protected Object				weapMagic	= null;
 	protected Map<Integer, Object>	weapLvls	= null;
 	protected Map<Integer, Object>	ableDomains	= null;
 	protected Map<Integer, Object>	ableCodes	= null;
+	protected Map<String,  Object>	ableIDs		= null;
 	protected Map<Long, Object>		ableFlags	= null;
 	
 	@Override
@@ -85,11 +87,13 @@ public class Prop_AbsorbDamage extends Property implements TriggeredAffect
 		allAbsorb=null;
 		msgTypes=null;
 		weapTypes=null;
+		weapClass=null;
 		weapMats=null;
 		weapMagic=null;
 		weapLvls=null;
 		ableDomains=null;
 		ableCodes=null;
+		ableIDs=null;
 		ableFlags=null;
 		
 		boolean allFound=parms.contains("+ALL");
@@ -149,6 +153,14 @@ public class Prop_AbsorbDamage extends Property implements TriggeredAffect
 						this.weapTypes=new HashMap<Integer,Object>();
 					this.weapTypes.put(Integer.valueOf(code), current);
 				}
+				code=CMParms.indexOf(Weapon.CLASS_DESCS, s);
+				if(code>=0)
+				{
+					found=true;
+					if(this.weapClass==null)
+						this.weapClass=new HashMap<Integer,Object>();
+					this.weapClass.put(Integer.valueOf(code), current);
+				}
 				code=CMParms.indexOf(Ability.ACODE_DESCS_, s);
 				if(code>=0)
 				{
@@ -172,6 +184,13 @@ public class Prop_AbsorbDamage extends Property implements TriggeredAffect
 					if(this.ableFlags==null)
 						this.ableFlags=new HashMap<Long,Object>();
 					this.ableFlags.put(Long.valueOf(CMath.pow(2, code)), current);
+				}
+				if(CMClass.getAbility(s)!=null)
+				{
+					found=true;
+					if(this.ableIDs==null)
+						this.ableIDs=new HashMap<String,Object>();
+					this.ableIDs.put(CMClass.getAbility(s).ID(), current);
 				}
 				code=RawMaterial.CODES.FIND_CaseSensitive(s);
 				if(code>=0)
@@ -247,6 +266,8 @@ public class Prop_AbsorbDamage extends Property implements TriggeredAffect
 						return true;
 					if((this.weapTypes!=null)&&(this.weapTypes.containsKey(Integer.valueOf(W.weaponDamageType()))))
 						return true;
+					if((this.weapClass!=null)&&(this.weapClass.containsKey(Integer.valueOf(W.weaponClassification()))))
+						return true;
 					if((this.weapMats!=null)&&(this.weapMats.containsKey(Integer.valueOf(W.material()))))
 						return true;
 					if(this.weapLvls!=null)
@@ -265,11 +286,15 @@ public class Prop_AbsorbDamage extends Property implements TriggeredAffect
 						return true;
 					if((this.ableDomains!=null)&&(this.ableDomains.containsKey(Integer.valueOf(A.classificationCode()&Ability.ALL_DOMAINS))))
 						return true;
+					if((this.ableIDs!=null)&&(this.ableIDs.containsKey(A.ID())))
+						return true;
 					if(this.ableFlags!=null)
 					{
 						for(Long L : this.ableFlags.keySet())
+						{
 							if(CMath.bset(A.flags(),L.longValue()))
 								return true;
+						}
 					}
 				}
 				if((this.weapMagic!=null)&&(msg.tool() instanceof Ability))
@@ -297,6 +322,8 @@ public class Prop_AbsorbDamage extends Property implements TriggeredAffect
 						absorb=this.weapMagic;
 					if((this.weapTypes!=null)&&(this.weapTypes.containsKey(Integer.valueOf(W.weaponDamageType()))))
 						absorb=this.weapTypes.get(Integer.valueOf(W.weaponDamageType()));
+					if((this.weapClass!=null)&&(this.weapClass.containsKey(Integer.valueOf(W.weaponClassification()))))
+						absorb=this.weapClass.get(Integer.valueOf(W.weaponClassification()));
 					if((this.weapMats!=null)&&(this.weapMats.containsKey(Integer.valueOf(W.material()))))
 						absorb=this.weapMats.get(Integer.valueOf(W.material()));
 					
@@ -320,6 +347,8 @@ public class Prop_AbsorbDamage extends Property implements TriggeredAffect
 						absorb=this.ableCodes.get(Integer.valueOf(A.classificationCode()&Ability.ALL_ACODES));
 					if((this.ableDomains!=null)&&(this.ableDomains.containsKey(Integer.valueOf(A.classificationCode()&Ability.ALL_DOMAINS))))
 						absorb=this.ableDomains.get(Integer.valueOf(A.classificationCode()&Ability.ALL_DOMAINS));
+					if((this.ableIDs!=null)&&(this.ableIDs.containsKey(A.ID())))
+						absorb=this.ableIDs.get(Integer.valueOf(A.ID()));
 					if(this.ableFlags!=null)
 					{
 						for(Long L : this.ableFlags.keySet())

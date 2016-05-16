@@ -3272,6 +3272,8 @@ public class ListCmd extends StdCommand
 		ITEMS("ITEMS",new SecFlag[]{SecFlag.CMDITEMS}),
 		ARMOR("ARMOR",new SecFlag[]{SecFlag.CMDITEMS}),
 		ABILITYDOMAINS("ABILITYDOMAINS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDABILITIES}),
+		ABILITYCODES("ABILITYCODES",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDABILITIES}),
+		ABILITYFLAGS("ABILITYFLAGS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDABILITIES}),
 		ENVRESOURCES("ENVRESOURCES",new SecFlag[]{SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS}),
 		WEAPONS("WEAPONS",new SecFlag[]{SecFlag.CMDITEMS}),
 		MOBS("MOBS",new SecFlag[]{SecFlag.CMDMOBS}),
@@ -4241,6 +4243,12 @@ public class ListCmd extends StdCommand
 			break;
 		case ABILITYDOMAINS:
 			s.wraplessPrintln(CMParms.toListString(Ability.DOMAIN_DESCS));
+			break;
+		case ABILITYCODES:
+			s.wraplessPrintln(CMParms.toListString(Ability.ACODE_DESCS_));
+			break;
+		case ABILITYFLAGS:
+			s.wraplessPrintln(CMParms.toListString(Ability.FLAG_DESCS));
 			break;
 		}
 	}
