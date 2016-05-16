@@ -1861,35 +1861,35 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				loginObj.state=LoginState.ACCTMENU_SHOWMENU;
 				return null;
 			}
-			PlayerLibrary.ThinPlayer delMeChk = null;
+			PlayerLibrary.ThinPlayer delPlayerChk = null;
 			for(final Enumeration<PlayerLibrary.ThinPlayer> p = acct.getThinPlayers(); p.hasMoreElements();)
 			{
 				final PlayerLibrary.ThinPlayer player = p.nextElement();
 				if(player.name().equalsIgnoreCase(parms[1]))
-					delMeChk=player;
+					delPlayerChk=player;
 			}
 			final String properName=CMStrings.capitalizeAndLower(parms[1]);
-			if(delMeChk==null)
+			if(delPlayerChk==null)
 			{
 				acct.delPlayer(properName);
 				session.println(L("The character '@x1' is unknown.",CMStrings.capitalizeAndLower(parms[1])));
 				loginObj.state=LoginState.ACCTMENU_SHOWMENU;
 				return null;
 			}
-			final PlayerLibrary.ThinPlayer delMe = delMeChk;
+			final PlayerLibrary.ThinPlayer delPlayer = delPlayerChk;
 			if((parms.length>2)&&(parms[parms.length-1].equalsIgnoreCase("<CONFIRMED>")))
 			{
-				final MOB M=CMLib.players().getLoadPlayer(delMe.name());
+				final MOB M=CMLib.players().getLoadPlayer(delPlayer.name());
 				if(M!=null)
 				{
 					CMLib.players().obliteratePlayer(M, true, false);
 				}
-				acct.delPlayer(delMe.name());
-				session.println(L("@x1 has been deleted.",delMe.name()));
+				acct.delPlayer(delPlayer.name());
+				session.println(L("@x1 has been deleted.",delPlayer.name()));
 			}
 			else
 			{
-				session.promptPrint(L("Are you sure you want to retire and delete '@x1' (y/N)?",delMe.name()));
+				session.promptPrint(L("Are you sure you want to retire and delete '@x1' (y/N)?",delPlayer.name()));
 				loginObj.state=LoginState.ACCTMENU_CONFIRMCOMMAND;
 				return LoginResult.INPUT_REQUIRED;
 			}
@@ -1910,14 +1910,14 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				loginObj.state=LoginState.ACCTMENU_SHOWMENU;
 				return null;
 			}
-			PlayerLibrary.ThinPlayer delMe = null;
+			PlayerLibrary.ThinPlayer delPlayer = null;
 			for(final Enumeration<PlayerLibrary.ThinPlayer> p = acct.getThinPlayers(); p.hasMoreElements();)
 			{
 				final PlayerLibrary.ThinPlayer player = p.nextElement();
 				if(player.name().equalsIgnoreCase(parms[1]))
-					delMe=player;
+					delPlayer=player;
 			}
-			if(delMe==null)
+			if(delPlayer==null)
 			{
 				session.println(L("The character '@x1' is unknown.",CMStrings.capitalizeAndLower(parms[1])));
 				loginObj.state=LoginState.ACCTMENU_SHOWMENU;
@@ -1938,7 +1938,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			}
 			if((parms.length>3)&&(parms[parms.length-1].equalsIgnoreCase("<CONFIRMED>")))
 			{
-				final MOB M=CMLib.players().getLoadPlayer(delMe.name());
+				final MOB M=CMLib.players().getLoadPlayer(delPlayer.name());
 				if(M!=null)
 				{
 					acct.delPlayer(M);
@@ -1948,12 +1948,12 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 					M.playerStats().setLastUpdated(System.currentTimeMillis());
 					M.playerStats().setPassword(password);
 					CMLib.database().DBUpdatePlayer(M);
-					session.println(L("@x1 has been exported from your account.",delMe.name()));
+					session.println(L("@x1 has been exported from your account.",delPlayer.name()));
 				}
 			}
 			else
 			{
-				session.promptPrint(L("Are you sure you want to remove character  '@x1' from your account (y/N)?",delMe.name()));
+				session.promptPrint(L("Are you sure you want to remove character  '@x1' from your account (y/N)?",delPlayer.name()));
 				loginObj.state=LoginState.ACCTMENU_CONFIRMCOMMAND;
 				return LoginResult.INPUT_REQUIRED;
 			}

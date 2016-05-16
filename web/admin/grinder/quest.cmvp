@@ -48,9 +48,9 @@
 @endif@
 <P ALIGN=RIGHT><A href="javascript:openUp('QUESTS');"><FONT COLOR=PINK><I>help</I></FONT></A></P>
 <BR>
-@if?!CheckReqParm?QUEST=@<TEXTAREA ROWS=25 COLS=70 NAME=RAWTEXT>@QuestData?RAWTEXT&REDIRECT@</TEXTAREA>
+@if?!CheckReqParm?QUEST=@<TEXTAREA ROWS=25 COLS=85 NAME=RAWTEXT>@QuestData?RAWTEXT&REDIRECT@</TEXTAREA>
 @else@
-<TEXTAREA ROWS=25 COLS=70 NAME=RAWTEXT>
+<TEXTAREA ROWS=25 COLS=85 NAME=RAWTEXT>
 set name MyQuest
 #   Set the quest name
 
@@ -93,6 +93,16 @@ set name MyQuest
 </TR>
 </TABLE>
 </FORM>
+<SCRIPT>
+<!--
+	function sizing()
+	{
+		document.QUEST.RAWTEXT.style.width=document.body.clientWidth-47;
+		document.QUEST.RAWTEXT.style.height=document.body.clientHeight-195;
+	}
+	window.onresize = sizing;
+-->
+</SCRIPT>
 </BODY>
 </HTML>
 @endif@
