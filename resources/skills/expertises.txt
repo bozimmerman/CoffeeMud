@@ -139,7 +139,7 @@ AXEPIERCE@x1=Axe Piercing @x2,10,X2,-SKILL +Specialization_Axe,-MAXCLASSLEVEL +>
 HELP_=<EXPERTISE>The ability to do more damage when using a piercing-type axe.
 
 AXEFOCUS@x1=Axe Focus @x2,10,X4,-BASECLASS +Fighter -SKILL +Specialization_Axe,-MAXCLASSLEVEL +>={24+(5*@x1)},+WIS {10+@x1},0,1,0,0,0
-HELP_=<EXPERTISE>The ability to wield higher level axes.
+HELP_=<EXPERTISE>The ability for fighters to wield higher level axes.
 
 UNARMEDSTRIKE@x1=Unarmed Striking @x2,10,LEVEL,-SKILL +Specialization_Natural +Druid_Bite +Druid_Rend,-MAXCLASSLEVEL +>={24+(5*@x1)},+DEX {15+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to hit more often when unarmed.
@@ -154,7 +154,7 @@ UNARMEDBASH@x1=Unarmed Bashing @x2,10,X3,-SKILL +Specialization_Natural,-MAXCLAS
 HELP_=<EXPERTISE>The ability to do more damage when using a bashing-type unarmed attack.
 
 UNARMEDFOCUS@x1=Unarmed Focus @x2,10,X4,-BASECLASS +Fighter -SKILL +Specialization_Natural,-MAXCLASSLEVEL +>={27+(5*@x1)},+WIS {10+@x1},0,1,0,0,0
-HELP_=<EXPERTISE>The ability to wield higher level natural weapons.
+HELP_=<EXPERTISE>The ability for fighters to wield higher level natural weapons.
 
 BLUNTSTRIKE@x1=Blunt Striking @x2,10,LEVEL,-SKILL +Specialization_BluntWeapon,-MAXCLASSLEVEL +>={24+(5*@x1)},+DEX {15+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to hit more often when using a blunt-class weapon.
@@ -166,7 +166,7 @@ BLUNTBASH@x1=Blunt Bashing @x2,10,X3,-SKILL +Specialization_BluntWeapon,-MAXCLAS
 HELP_=<EXPERTISE>The ability to do more damage when using a bashing-type blunt-class weapon.
 
 BLUNTFOCUS@x1=Blunt Focus @x2,10,X4,-BASECLASS +Fighter -SKILL +Specialization_BluntWeapon,-MAXCLASSLEVEL +>={27+(5*@x1)},+WIS {10+@x1},0,1,0,0,0
-HELP_=<EXPERTISE>The ability to use wield higher level blunt-class weapons.
+HELP_=<EXPERTISE>The ability for fighters to use wield higher level blunt-class weapons.
 
 EDGEDSTRIKE@x1=Edged Striking @x2,10,LEVEL,-SKILL +Specialization_EdgedWeapon,-MAXCLASSLEVEL +>={24+(5*@x1)},+DEX {15+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to hit more often when using an edged-class weapon.
@@ -178,7 +178,7 @@ EDGEPIERCE@x1=Edged Piercing @x2,10,X2,-SKILL +Specialization_EdgedWeapon,-MAXCL
 HELP_=<EXPERTISE>The ability to do more damage when using a piercing-type edged-class weapon.
 
 EDGEFOCUS@x1=Edged Focus @x2,10,X4,-BASECLASS +Fighter -SKILL +Specialization_EdgedWeapon,-MAXCLASSLEVEL +>={27+(5*@x1)},+WIS {10+@x1},0,1,0,0,0
-HELP_=<EXPERTISE>The ability to wield higher level edged-class weapon.
+HELP_=<EXPERTISE>The ability for fighters to wield higher level edged-class weapon.
 
 FLAILEDSTRIKE@x1=Flailed Striking @x2,10,LEVEL,-SKILL +Specialization_FlailedWeapon,-MAXCLASSLEVEL +>={24+(5*@x1)},+DEX {15+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to hit more often when using a flail-class weapon.
@@ -190,7 +190,7 @@ FLAILEDBASH@x1=Flailed Bashing @x2,10,X3,-SKILL +Specialization_FlailedWeapon,-M
 HELP_=<EXPERTISE>The ability to do more damage when using a bashing-type flail-class weapon.
 
 FLAILEDFOCUS@x1=Flailed Focus @x2,10,X4,-BASECLASS +Fighter -SKILL +Specialization_FlailedWeapon,-MAXCLASSLEVEL +>={27+(5*@x1)},+WIS {10+@x1},0,1,0,0,0
-HELP_=<EXPERTISE>The ability to wield higher level flail-class weapons.
+HELP_=<EXPERTISE>The ability for fighters to wield higher level flail-class weapons.
 
 HAMMERSTRIKE@x1=Hammer Striking @x2,10,LEVEL,-SKILL +Specialization_Hammer,-MAXCLASSLEVEL +>={24+(5*@x1)},+DEX {15+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to hit more often when using a hammer.
@@ -199,7 +199,7 @@ HAMMERBASH@x1=Hammer Bashing @x2,10,X3,-SKILL +Specialization_Hammer,-MAXCLASSLE
 HELP_=<EXPERTISE>The ability to do more damage when using a bashing-type hammer.
 
 HAMMERFOCUS@x1=Hammer Focus @x2,10,X4,-BASECLASS +Fighter -SKILL +Specialization_Hammer,-MAXCLASSLEVEL +>={27+(5*@x1)},+WIS {10+@x1},0,1,0,0,0
-HELP_=<EXPERTISE>The ability to wield higher level hammers.
+HELP_=<EXPERTISE>The ability for fighters to wield higher level hammers.
 
 POLESTRIKE@x1=Polearm Striking @x2,10,LEVEL,-SKILL +Specialization_Polearm,-MAXCLASSLEVEL +>={24+(5*@x1)},+DEX {15+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to hit more often when using a polearm-class weapon.
@@ -211,7 +211,7 @@ POLEPIERCE@x1=Polearm Piercing @x2,10,X2,-SKILL +Specialization_Polearm,-MAXCLAS
 HELP_=<EXPERTISE>The ability to do more damage when using a piercing-type polearm-class weapon.
 
 POLEFOCUS@x1=Polearm Focus @x2,10,X4,-BASECLASS +Fighter -SKILL +Specialization_Polearm,-MAXCLASSLEVEL +>={27+(5*@x1)},+STR {10+@x1},0,1,0,0,0
-HELP_=<EXPERTISE>The ability to wield higher level polearm-class weapons.
+HELP_=<EXPERTISE>The ability for fighters to wield higher level polearm-class weapons.
 
 RANGEDSTRIKE@x1=Ranged Striking @x2,10,LEVEL,-SKILL +Specialization_Ranged +Fighter_Fragmentation +Fighter_ImprovedThrowing,-MAXCLASSLEVEL +>={24+(5*@x1)},+DEX {15+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to hit more often when using a ranged or thrown weapon.
@@ -223,7 +223,7 @@ RANGEDBASH@x1=Ranged Bashing @x2,10,X3,-SKILL +Specialization_Ranged,-MAXCLASSLE
 HELP_=<EXPERTISE>The ability to do more damage when using a bashing-type blunt-class ranged or thrown weapon.
 
 RANGEDFOCUS@x1=Ranged Focus @x2,10,X4,-BASECLASS +Fighter -SKILL +Specialization_Ranged,-MAXCLASSLEVEL +>={27+(5*@x1)},+WIS {10+@x1},0,1,0,0,0
-HELP_=<EXPERTISE>The ability to wield higher level blunt-class ranged or thrown weapons.
+HELP_=<EXPERTISE>The ability for fighters to wield higher level blunt-class ranged or thrown weapons.
 
 SWORDSTRIKE@x1=Sword Striking @x2,10,LEVEL,-SKILL +Specialization_Sword,-MAXCLASSLEVEL +>={24+(5*@x1)},+DEX {15+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to hit more often when using a sword.
@@ -235,7 +235,7 @@ SWORDPIERCE@x1=Sword Piercing @x2,10,X2,-SKILL +Specialization_Sword,-MAXCLASSLE
 HELP_=<EXPERTISE>The ability to do more damage when using a piercing-type sword.
 
 SWORDFOCUS@x1=Sword Focus @x2,10,X4,-BASECLASS +Fighter -SKILL +Specialization_Sword,-MAXCLASSLEVEL +>={27+(5*@x1)},+WIS {10+@x1},0,1,0,0,0
-HELP_=<EXPERTISE>The ability to wield higher level swords.
+HELP_=<EXPERTISE>The ability for fighters to wield higher level swords.
 
 FASTDANCE@x1=Fast Dancing @x2,10,LEVEL,-SKILLFLAG +DANCING&MALICIOUS,-MAXCLASSLEVEL +>={15+(5*@x1)},+STR {12+@x1} +CHA {12+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to perform dances that have a more powerful malicious affect.

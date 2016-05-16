@@ -255,6 +255,7 @@ public class StdSmokable extends StdContainer implements Light
 				mob.tell(L("The water makes @x1 go out.",name()));
 			else
 				mob.tell(L("The rain makes @x1 go out.",name()));
+			durationTicks=1;
 			tick(this,Tickable.TICKID_LIGHT_FLICKERS);
 		}
 
