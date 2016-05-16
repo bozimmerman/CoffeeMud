@@ -172,7 +172,7 @@ public class Channel extends StdCommand
 			}
 		}
 		else
-		if(flags.contains(ChannelsLibrary.ChannelFlag.READONLY))
+		if((flags.contains(ChannelsLibrary.ChannelFlag.READONLY))&&(!CMSecurity.isASysOp(mob)))
 		{
 			mob.tell(L("This channel is read-only."));
 			return false;
