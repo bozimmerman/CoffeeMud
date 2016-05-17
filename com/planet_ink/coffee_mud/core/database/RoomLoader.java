@@ -1563,8 +1563,7 @@ public class RoomLoader
 		return new XVector<String>(
 			"DELETE FROM CMROEX WHERE CMROID='"+roomID+"'",
 			"DELETE FROM CMROCH WHERE CMROID='"+roomID+"'",
-			"DELETE FROM CMROIT WHERE CMROID='"+roomID+"'",
-			"DELETE FROM CMROOM WHERE CMROID='"+roomID+"'"
+			"DELETE FROM CMROIT WHERE CMROID='"+roomID+"'"
 		);
 	}
 	
@@ -1574,8 +1573,8 @@ public class RoomLoader
 			return;
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMROCH)||CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMS)))
 			Log.debugOut("RoomLoader","Destroying room "+room.roomID());
-		room.destroy();
 		DB.update(getRoomDeleteStrings(room.roomID()).toArray(new String[0]));
+		DB.update("DELETE FROM CMROCH WHERE CMROID='"+room.roomID()+"'");
 		room.destroy();
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMROCH)||CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMS)))
 			Log.debugOut("RoomLoader","Done gestroying room "+room.roomID());
@@ -1614,13 +1613,23 @@ public class RoomLoader
 		A.setAreaState(Area.State.STOPPED);
 		final List<String> statements = new Vector<String>(4 + A.numberOfProperIDedRooms());
 		statements.addAll(getAreaDeleteStrings(A.Name()));
+		statements.add("DELETE FROM CMROOM WHERE CMAREA='"+A.Name()+"'");
 		for(Enumeration<String> ids=A.getProperRoomnumbers().getRoomIDs();ids.hasMoreElements();)
 			statements.addAll(getRoomDeleteStrings(ids.nextElement()));
-		DB.update(statements.toArray(new String[statements.size()]));
+		statements.add("DELETE FROM CMROOM WHERE CMAREA='"+A.Name()+"'");
+		final String[] statementsBlock = statements.toArray(new String[statements.size()]);
 		statements.clear();
-		for(Enumeration<String> ids=A.getProperRoomnumbers().getRoomIDs();ids.hasMoreElements();)
-			statements.add("DELETE FROM CMROEX WHERE CMROID='"+ids.nextElement()+"'");
-		DB.update(statements.toArray(new String[statements.size()]));
-		DB.update(statements.toArray(new String[statements.size()]));
+		for(int i=0;i<3;i++)
+		{
+			// not even mysql delete everything as commanded.
+			DB.update(statementsBlock);
+			try
+			{
+				Thread.sleep(A.numberOfProperIDedRooms());
+			}
+			catch(Exception e)
+			{
+			}
+		}
 	}
 }
