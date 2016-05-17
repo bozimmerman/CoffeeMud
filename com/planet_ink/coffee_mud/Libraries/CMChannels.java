@@ -412,7 +412,9 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 				str.append(L(" This is a channel for clans and their allies."));
 			if(flags.contains(ChannelFlag.CLANONLY))
 				str.append(L(" Only members of the same clan can see messages on this channel."));
-			if(flags.contains(ChannelFlag.PLAYERREADONLY)||flags.contains(ChannelFlag.READONLY))
+			if(flags.contains(ChannelFlag.PLAYERREADONLY)
+			||flags.contains(ChannelFlag.READONLY)
+			||flags.contains(ChannelFlag.ARCHONREADONLY))
 				str.append(L(" This channel is read-only."));
 			if(flags.contains(ChannelFlag.SAMEAREA))
 				str.append(L(" Only people in the same area can see messages on this channel."));

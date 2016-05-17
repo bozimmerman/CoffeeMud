@@ -172,7 +172,7 @@ public class Channel extends StdCommand
 			}
 		}
 		else
-		if((flags.contains(ChannelsLibrary.ChannelFlag.READONLY))&&(!CMSecurity.isASysOp(mob)))
+		if(flags.contains(ChannelsLibrary.ChannelFlag.READONLY))
 		{
 			mob.tell(L("This channel is read-only."));
 			return false;
@@ -183,6 +183,13 @@ public class Channel extends StdCommand
 			mob.tell(L("This channel is read-only."));
 			return false;
 		}
+		else
+		if(flags.contains(ChannelsLibrary.ChannelFlag.ARCHONREADONLY)&&(!CMSecurity.isASysOp(mob)))
+		{
+			mob.tell(L("This channel is read-only."));
+			return false;
+		}
+		
 		else
 			CMLib.channels().createAndSendChannelMessage(mob,channelName,CMParms.combine(commands,0),systemMsg);
 		return false;

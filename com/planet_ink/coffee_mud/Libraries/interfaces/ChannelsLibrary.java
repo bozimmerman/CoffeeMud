@@ -408,6 +408,7 @@ public interface ChannelsLibrary extends CMLibrary
 		CLANINFO,
 		WARRANTS,
 		PLAYERREADONLY,
+		ARCHONREADONLY,
 		CLANALLYONLY,
 		ACCOUNTOOC,
 		NOBACKLOG,
