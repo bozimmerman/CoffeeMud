@@ -255,6 +255,12 @@ public interface AchievementLibrary extends CMLibrary
 		 * @return type of award
 		 */
 		public AwardType getType();
+		
+		/**
+		 * Returns a description of the award
+		 * @return a description of the award
+		 */
+		public String getDescription();
 	}
 	
 	/**
@@ -365,7 +371,7 @@ public interface AchievementLibrary extends CMLibrary
 	 * @author Bo Zimmerman
 	 *
 	 */
-	public interface Tracker
+	public interface Tracker extends Cloneable
 	{
 		/**
 		 * The achievement to which this tracker belongs.
@@ -402,6 +408,13 @@ public interface AchievementLibrary extends CMLibrary
 		 * @return the score for this achievement and this mob
 		 */
 		public int getCount(MOB mob);
+		
+		/**
+		 * Returns a copy of this tracker, unattached to the
+		 * tracker it is a copy of.
+		 * @return a copy of this tracker
+		 */
+		public Tracker copyOf();
 	}
 	
 	/**
@@ -481,6 +494,20 @@ public interface AchievementLibrary extends CMLibrary
 	 */
 	public void possiblyBumpAchievement(final MOB mob, final Event E, int bumpNum, Object... parms);
 	
+	/**
+	 * When an event occurs that might possible cause a player to have one of their achievements bumped,
+	 * this method is called with event specific parameters which might possibly cause the achievement
+	 * to be bumped in the tracker, which might cause it to be completed as well.  This method does
+	 * not actually affect the players trackers, but only pretends to, and then returns the list of
+	 * Achievements that would be gained by the effort.
+	 * @param mob the player whose achievement needs to be checked
+	 * @param E the event that occurred
+	 * @param bumpNum the amount to bump the achievement by
+	 * @param parms any event-specific argument that help determine whether a bump is warranted.
+	 * @return the list of achievements that would be earned by the bump, if any. Empty list otherwise. 
+	 */
+	public List<Achievement> fakeBumpAchievement(final MOB mob, final Event E, int bumpNum, Object... parms);
+
 	/**
 	 * Returns all the comment/help entries from the achievement definition file
 	 * The map is of the form event ID, then parameter->help map.

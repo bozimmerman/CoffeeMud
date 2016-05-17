@@ -15,6 +15,8 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Achievement;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Award;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Event;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -46,6 +48,11 @@ public class Achievements extends StdCommand
 		return access;
 	}
 
+	public enum NonAgentList
+	{
+		AWARDS, REMORT, FUTURE, RETIRE
+	}
+	
 	private enum ValidLists
 	{
 		WON, ALL, NOW
@@ -114,6 +121,34 @@ public class Achievements extends StdCommand
 		return useList;
 	}
 	
+	public List<Achievement> getAccountAwards(final PlayerAccount account)
+	{
+		if(account != null)
+		{
+			List<Achievement> awards=new Vector<Achievement>(1);
+			for(Enumeration<Tattoo> t=account.tattoos();t.hasMoreElements();)
+			{
+				final Tattoo T = t.nextElement();
+				final Achievement A=CMLib.achievements().getAchievement(T.getTattooName());
+				if(A != null)
+				{
+					awards.add(A);
+				}
+			}
+			return awards;
+		}
+		return new ArrayList<Achievement>(0);
+	}
+	
+	public List<Achievement> getAccountAwards(final MOB mob)
+	{
+		final PlayerStats pStats = (mob==null) ? null : mob.playerStats();
+		final PlayerAccount account = (pStats == null) ? null : pStats.getAccount();
+		if(account != null)
+			return getAccountAwards(account);
+		return new ArrayList<Achievement>(0);
+	}
+	
 	@Override
 	public boolean execute(final MOB mob, List<String> commands, int metaFlags) throws java.io.IOException
 	{
@@ -144,13 +179,117 @@ public class Achievements extends StdCommand
 			}
 			else
 			{
-				if(CMath.s_valueOf(ValidParms.class,lastParm.toUpperCase().trim()) == null)
+				if((CMath.s_valueOf(ValidParms.class,lastParm.toUpperCase().trim()) == null)
+				&&(CMath.s_valueOf(NonAgentList.class, lastParm.toUpperCase().trim())==null))
 				{
 					mob.tell(L("There is no such player as '@x1'.",lastParm));
 					return false;
 				}
 			}
 		}
+		
+		String cmd = CMParms.combine(parms);
+		NonAgentList noAgent = (NonAgentList)CMath.s_valueOf(NonAgentList.class, cmd.toUpperCase().trim());
+		if(noAgent != null)
+		{
+			switch(noAgent)
+			{
+			case RETIRE:
+			case REMORT:
+			{
+				final Event E=(noAgent == NonAgentList.REMORT) ? Event.REMORT : Event.RETIRE;
+				List<Achievement> awards = CMLib.achievements().fakeBumpAchievement(whoM, E, 1);
+				int numAwards=0;
+				for(Achievement A : awards)
+					numAwards+=A.getRewards().length;
+				if(numAwards==0)
+				{
+					mob.tell(whoM,null,null,L("<S-YOUPOSS> next "+noAgent.toString().toLowerCase()+" would grant <S-NAME> no new awards."));
+				}
+				else
+				{
+					StringBuilder str=new StringBuilder(L("^H<S-YOUPOSS> next "+noAgent.toString().toLowerCase()+" will get the following awards:^?"));
+					int i=1;
+					for(Achievement A : awards)
+					{
+						if(A.getRewards().length>0)
+							str.append(L("\n\rFrom the achievement '@x1':",A.getDisplayStr()));
+						for(final Award award : A.getRewards())
+							str.append("\n\r"+(i++)+") "+award.getDescription());
+					}
+					str.append("\n\r");
+					mob.tell(mob,whoM,null,str.toString());
+				}
+				if(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)<=1)
+				{
+					return false;
+				}
+				List<Achievement> futureAwards = getAccountAwards(whoM);
+				if(futureAwards.size()==0)
+				{
+					return false;
+				}
+				mob.tell(whoM,null,null,L("^HFrom <S-YOUPOSS> previous achievements. ^?"));
+			}
+			//$FALL-THROUGH$
+			case FUTURE:
+			{
+				if(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)<=1)
+				{
+					mob.tell(L("This system does not support new character achievement awards."));
+					return false;
+				}
+				List<Achievement> awards = this.getAccountAwards(whoM);
+				int numAwards=0;
+				for(Achievement A : awards)
+					numAwards+=A.getRewards().length;
+				if(numAwards==0)
+				{
+					mob.tell(whoM,null,null,L("<S-NAME> <S-HAS-HAVE> not won any account awards for new/future characters or remorting."));
+					return false;
+				}
+				StringBuilder str=new StringBuilder(L("<S-YOUPOSS> next character will get the following awards:"));
+				int i=1;
+				for(Achievement A : awards)
+				{
+					if(A.getRewards().length>0)
+						str.append(L("\n\rFrom the achievement '@x1':",A.getDisplayStr()));
+					for(final Award award : A.getRewards())
+						str.append("\n\r"+(i++)+") "+award.getDescription());
+				}
+				str.append("\n\r");
+				mob.tell(whoM,null,null,str.toString());
+				return true;
+			}
+			case AWARDS:
+			{
+				final StringBuilder str=new StringBuilder("");
+				int i=1;
+				for(final Enumeration<Tattoo> t = whoM.tattoos();t.hasMoreElements();)
+				{
+					final Achievement A=CMLib.achievements().getAchievement(t.nextElement().getTattooName());
+					if(A != null)
+					{
+						if(A.getRewards().length>0)
+							str.append(L("\n\rFrom the achievement '@x1':",A.getDisplayStr()));
+						for(final Award award : A.getRewards())
+							str.append("\n\r"+(i++)+") "+award.getDescription());
+					}
+				}
+				if(str.length()==0)
+				{
+					mob.tell(whoM,null,null,L("<S-NAME> <S-HAS-HAVE> not won any achievement awards."));
+					return false;
+				}
+				else
+				{
+					mob.tell(whoM,null,null,L("<S-NAME> <S-HAS-HAVE> have been granted the following achievement awards:")+str.toString());
+					return true;
+				}
+			}
+			}
+		}
+		
 		List<AccountStats.Agent> agents = new LinkedList<AccountStats.Agent>();
 		boolean announce=false;
 		ValidLists list = ValidLists.WON;
@@ -192,9 +331,7 @@ public class Achievements extends StdCommand
 		{
 			prefix=whoM.Name()+L("'s ");
 		}
-		
-		
-		
+
 		Set<String> WonList = new HashSet<String>();
 		for(Agent agent : agents)
 		{
@@ -222,7 +359,6 @@ public class Achievements extends StdCommand
 		case WON:
 			break;
 		}
-		
 		StringBuilder finalResponse = new StringBuilder();
 		for(Agent agent : agents)
 		{

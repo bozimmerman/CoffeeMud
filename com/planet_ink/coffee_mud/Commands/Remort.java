@@ -94,15 +94,15 @@ public class Remort extends StdCommand
 		}
 		
 		
-		final int[] newLevel = new int[]{1};
-		final int[] newMana = new int[]{CMProps.getIntVar(CMProps.Int.STARTMANA)};
-		final int[] newDamage = new int[]{0};
-		final int[] newHp = new int[]{CMProps.getIntVar(CMProps.Int.STARTHP)};
-		final int[] newMove = new int[]{CMProps.getIntVar(CMProps.Int.STARTMOVE)};
-		final int[] newAttack = new int[]{0};
-		final int[] newDefense = new int[]{100};
-		final int[] bonusPointsPerStat = new int[]{0};
-		final int[] questPoint = new int[]{0};
+		final int[] newLevel = new int[] { 1 };
+		final int[] newMana = new int[] { CMProps.getIntVar(CMProps.Int.STARTMANA) };
+		final int[] newDamage = new int[] { 0 };
+		final int[] newHp = new int[] { CMProps.getIntVar(CMProps.Int.STARTHP) };
+		final int[] newMove = new int[] { CMProps.getIntVar(CMProps.Int.STARTMOVE) };
+		final int[] newAttack = new int[] { 0 };
+		final int[] newDefense = new int[] { 100 };
+		final int[] bonusPointsPerStat = new int[] { 0 };
+		final int[] questPoint = new int[] { 0 };
 		final List<Pair<String,Integer>> factions=new ArrayList<Pair<String,Integer>>();
 		final List<Triad<String,String,Integer>> abilities=new ArrayList<Triad<String,String,Integer>>();
 		final List<Triad<String,String,Integer>> abilities100=new ArrayList<Triad<String,String,Integer>>();

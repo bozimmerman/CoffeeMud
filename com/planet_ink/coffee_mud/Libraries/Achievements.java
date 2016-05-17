@@ -115,6 +115,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				{
 					return titleStr;
 				}
+
+				@Override
+				public String getDescription()
+				{
+					return L("The title: @x1",getTitle());
+				}
 			});
 		}
 		for(int a=0;a<awardSet.length;a++)
@@ -147,6 +153,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							{
 								return number;
 							}
+
+							@Override
+							public String getDescription()
+							{
+								return L("@x1 Experience Points",""+getAmount());
+							}
 						});
 					}
 					else
@@ -163,6 +175,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							public int getAmount()
 							{
 								return number;
+							}
+
+							@Override
+							public String getDescription()
+							{
+								return L("@x1 Quest Points",""+getAmount());
 							}
 						});
 					}
@@ -204,6 +222,16 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 								public AbilityMapping getAbilityMapping()
 								{
 									return mapp;
+								}
+								
+								@Override
+								public String getDescription()
+								{
+									final Ability skillA = CMClass.getAbility(getAbilityMapping().abilityID());
+									if(getAbilityMapping().autoGain())
+										return L("@x1 at level @x2",skillA.name(),""+getAbilityMapping().qualLevel());
+									else
+										return L("@x1 qualification at level @x2",skillA.name(),""+getAbilityMapping().qualLevel());
 								}
 							});
 						}
@@ -410,6 +438,17 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 								{
 									return def;
 								}
+								
+
+								@Override
+								public String getDescription()
+								{
+									final ExpertiseDefinition defE = getExpertise();
+									if(defE.costDescription().length()==0)
+										return L("@x1 at level @x2",defE.name(),""+defE.getMinimumLevel());
+									else
+										return L("@x1 qualification at level @x1",""+defE.getMinimumLevel());
+								}
 							});
 						}
 						else
@@ -435,6 +474,15 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 								public String getStat()
 								{
 									return stat;
+								}
+
+								@Override
+								public String getDescription()
+								{
+									if(getAmount()<0)
+										return getAmount() + " " + L(CMStrings.capitalizeAndLower(getStat()));
+									else
+										return "+"+getAmount() + " " + L(CMStrings.capitalizeAndLower(getStat()));
 								}
 							});
 						}
@@ -464,6 +512,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 								public String getStat()
 								{
 									return stat;
+								}
+
+								@Override
+								public String getDescription()
+								{
+									return "+"+getAmount() + " " + L(CMStrings.capitalizeAndLower(getStat()));
 								}
 							});
 						}
@@ -496,6 +550,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 										public String getCurrency()
 										{
 											return currencyName;
+										}
+										
+										@Override
+										public String getDescription()
+										{
+											return getAmount() + " " + CMStrings.capitalizeAndLower(getCurrency());
 										}
 									});
 								}
@@ -605,6 +665,18 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							return false;
 						}
 						
+						@Override
+						public Tracker copyOf()
+						{
+							try
+							{
+								return (Tracker)this.clone();
+							}
+							catch(Exception e)
+							{
+								return this;
+							}
+						}
 					};
 				}
 				
@@ -724,6 +796,18 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							return false;
 						}
 						
+						@Override
+						public Tracker copyOf()
+						{
+							try
+							{
+								return (Tracker)this.clone();
+							}
+							catch(Exception e)
+							{
+								return this;
+							}
+						}
 					};
 				}
 				
@@ -827,6 +911,19 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						public boolean testBump(MOB mob, int bumpNum, Object... parms) 
 						{
 							return false;
+						}
+						
+						@Override
+						public Tracker copyOf()
+						{
+							try
+							{
+								return (Tracker)this.clone();
+							}
+							catch(Exception e)
+							{
+								return this;
+							}
 						}
 					};
 				}
@@ -940,6 +1037,19 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						public boolean testBump(MOB mob, int bumpNum, Object... parms) 
 						{
 							return false;
+						}
+						
+						@Override
+						public Tracker copyOf()
+						{
+							try
+							{
+								return (Tracker)this.clone();
+							}
+							catch(Exception e)
+							{
+								return this;
+							}
 						}
 					};
 				}
@@ -1074,6 +1184,19 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						{
 							return false;
 						}
+						
+						@Override
+						public Tracker copyOf()
+						{
+							try
+							{
+								return (Tracker)this.clone();
+							}
+							catch(Exception e)
+							{
+								return this;
+							}
+						}
 					};
 				}
 				
@@ -1201,6 +1324,19 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 								}
 							}
 							return false;
+						}
+						
+						@Override
+						public Tracker copyOf()
+						{
+							try
+							{
+								return (Tracker)this.clone();
+							}
+							catch(Exception e)
+							{
+								return this;
+							}
 						}
 					};
 				}
@@ -1351,6 +1487,19 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 								}
 							}
 							return false;
+						}
+						
+						@Override
+						public Tracker copyOf()
+						{
+							try
+							{
+								return (Tracker)this.clone();
+							}
+							catch(Exception e)
+							{
+								return this;
+							}
 						}
 					};
 				}
@@ -1517,6 +1666,19 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							}
 							return false;
 						}
+						
+						@Override
+						public Tracker copyOf()
+						{
+							try
+							{
+								return (Tracker)this.clone();
+							}
+							catch(Exception e)
+							{
+								return this;
+							}
+						}
 					};
 				}
 				
@@ -1656,6 +1818,19 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						{
 							return false;
 						}
+						
+						@Override
+						public Tracker copyOf()
+						{
+							try
+							{
+								return (Tracker)this.clone();
+							}
+							catch(Exception e)
+							{
+								return this;
+							}
+						}
 					};
 				}
 				
@@ -1770,6 +1945,19 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						public boolean testBump(MOB mob, int bumpNum, Object... parms) 
 						{
 							return false;
+						}
+						
+						@Override
+						public Tracker copyOf()
+						{
+							try
+							{
+								return (Tracker)this.clone();
+							}
+							catch(Exception e)
+							{
+								return this;
+							}
 						}
 					};
 				}
@@ -1906,6 +2094,18 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							return false;
 						}
 						
+						@Override
+						public Tracker copyOf()
+						{
+							try
+							{
+								return (Tracker)this.clone();
+							}
+							catch(Exception e)
+							{
+								return this;
+							}
+						}
 					};
 				}
 				
@@ -2028,6 +2228,18 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							return false;
 						}
 						
+						@Override
+						public Tracker copyOf()
+						{
+							try
+							{
+								return (Tracker)this.clone();
+							}
+							catch(Exception e)
+							{
+								return this;
+							}
+						}
 					};
 				}
 				
@@ -2146,6 +2358,18 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							return false;
 						}
 						
+						@Override
+						public Tracker copyOf()
+						{
+							try
+							{
+								return (Tracker)this.clone();
+							}
+							catch(Exception e)
+							{
+								return this;
+							}
+						}
 					};
 				}
 				
@@ -2262,6 +2486,18 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							return false;
 						}
 						
+						@Override
+						public Tracker copyOf()
+						{
+							try
+							{
+								return (Tracker)this.clone();
+							}
+							catch(Exception e)
+							{
+								return this;
+							}
+						}
 					};
 				}
 				
@@ -2381,6 +2617,18 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							return false;
 						}
 						
+						@Override
+						public Tracker copyOf()
+						{
+							try
+							{
+								return (Tracker)this.clone();
+							}
+							catch(Exception e)
+							{
+								return this;
+							}
+						}
 					};
 				}
 				
@@ -2550,6 +2798,76 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 			}
 		}
+	}
+
+	protected List<Achievement> fakeBumpPlayerAchievement(final MOB mob, final Achievement A, final PlayerStats pStats, final Event E, int bumpNum, Object... parms)
+	{
+		List<Achievement> achievements=new ArrayList<Achievement>(1);
+		if(mob.findTattoo(A.getTattoo())==null)
+		{
+			Tracker T=pStats.getAchievementTracker(A, mob);
+			T=T.copyOf();
+			if(T.testBump(mob, bumpNum, parms))
+			{
+				if(T.isAchieved(mob))
+				{
+					achievements.add(A);
+				}
+			}
+		}
+		return achievements;
+	}
+	
+	protected List<Achievement> fakeBumpAccountAchievement(final MOB mob, final Achievement A, final PlayerAccount account, final Event E, int bumpNum, Object... parms)
+	{
+		List<Achievement> achievements=new ArrayList<Achievement>(1);
+		if(account != null)
+		{
+			if(account.findTattoo(A.getTattoo())==null)
+			{
+				Tracker T=account.getAchievementTracker(A, mob);
+				T=T.copyOf();
+				if(T.testBump(mob, bumpNum, parms))
+				{
+					if(T.isAchieved(mob))
+					{
+						achievements.add(A);
+					}
+				}
+			}
+		}
+		return achievements;
+	}
+	
+	@Override
+	public List<Achievement> fakeBumpAchievement(final MOB mob, final Event E, int bumpNum, Object... parms)
+	{
+		List<Achievement> achievements=new ArrayList<Achievement>(1);
+		if((mob != null)&&(E!=null)&&(!mob.isMonster())&&(CMProps.getBoolVar(CMProps.Bool.MUDSTARTED)))
+		{
+			ensureAchievementsLoaded();
+			final PlayerStats pStats = mob.playerStats();
+			if(pStats != null)
+			{
+				if(eventMap.containsKey(E))
+				{
+					final PlayerAccount account = pStats.getAccount();
+					for(final Achievement A :  eventMap.get(E))
+					{
+						switch(A.getAgent())
+						{
+						case PLAYER:
+							achievements.addAll(fakeBumpPlayerAchievement(mob, A, pStats, E, bumpNum, parms));
+							break;
+						case ACCOUNT:
+							achievements.addAll(fakeBumpAccountAchievement(mob, A, account, E, bumpNum, parms));
+							break;
+						}
+					}
+				}
+			}
+		}
+		return achievements;
 	}
 
 	public void giveAwards(final MOB mob, final Award[] awardSet)
@@ -3348,7 +3666,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			}
 		}
 	}
-	
+
 	protected String makeAchievmentHelp(Achievement A)
 	{
 		if(A == null)
@@ -3380,68 +3698,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				str.append("\n\r").append(CMStrings.padRight(L("Rewards Granted:"),cols)).append(" ").append(L("Immediately"));
 		}
 		for(Award W : A.getRewards())
-		{
-			switch(W.getType())
-			{
-			case ABILITY:
-			{
-				AbilityAward award = (AbilityAward)W;
-				Ability skillA = CMClass.getAbility(award.getAbilityMapping().abilityID());
-				str.append("\n\r").append(CMStrings.padRight(L("Award:"),cols)).append(" ").append(skillA.name());
-				if(award.getAbilityMapping().autoGain())
-					str.append(L(" at level @x1",""+award.getAbilityMapping().qualLevel()));
-				else
-					str.append(L(" qualification level @x1",""+award.getAbilityMapping().qualLevel()));
-				break;
-			}
-			case CURRENCY:
-			{
-				CurrencyAward award = (CurrencyAward)W;
-				str.append("\n\r").append(CMStrings.padRight(L("Award:"),cols)).append(" ")
-					.append(award.getAmount()).append(" ").append(CMStrings.capitalizeAndLower(award.getCurrency()));
-				break;
-			}
-			case EXPERTISE:
-			{
-				ExpertiseAward award = (ExpertiseAward)W;
-				ExpertiseDefinition defE = award.getExpertise();
-				str.append("\n\r").append(CMStrings.padRight(L("Award:"),cols)).append(" ").append(defE.name());
-				if(defE.costDescription().length()==0)
-					str.append(L(" at level @x1",""+defE.getMinimumLevel()));
-				else
-					str.append(L(" qualification level @x1",""+defE.getMinimumLevel()));
-				break;
-			}
-			case QP:
-			{
-				AmountAward award = (AmountAward)W;
-				str.append("\n\r").append(CMStrings.padRight(L("Award:"),cols)).append(" ")
-					.append(award.getAmount()).append(" ").append(L("Quest Points"));
-				break;
-			}
-			case STAT:
-			{
-				StatAward award = (StatAward)W;
-				str.append("\n\r").append(CMStrings.padRight(L("Award:"),cols)).append(" +")
-					.append(award.getAmount()).append(" ").append(L(CMStrings.capitalizeAndLower(award.getStat())));
-				break;
-			}
-			case TITLE:
-			{
-				TitleAward T = (TitleAward)W;
-				str.append("\n\r").append(CMStrings.padRight(L("Award:"),cols)).append(" ")
-				.append(L("The title: ")).append(T.getTitle());
-				break;
-			}
-			case XP:
-			{
-				AmountAward award = (AmountAward)W;
-				str.append("\n\r").append(CMStrings.padRight(L("Award:"),cols)).append(" ")
-					.append(award.getAmount()).append(" ").append(L("Experience Points"));
-				break;
-			}
-			}
-		}
+			str.append("\n\r").append(CMStrings.padRight(L("Award:"),cols)).append(" ").append(W.getDescription());
 		str.append("\n\r");
 		helpMap.put(A.getTattoo(), str.toString());
 		return str.toString();
