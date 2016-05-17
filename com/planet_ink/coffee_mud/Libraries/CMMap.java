@@ -2360,29 +2360,24 @@ public class CMMap extends StdLibrary implements WorldMap
 	{
 		if(A==null)
 			return;
-		final LinkedList<Room> rooms=new LinkedList<Room>();
-		Room R=null;
-		Enumeration<Room> e=A.getCompleteMap();
-		while(e.hasMoreElements())
+		A.setAreaState(Area.State.STOPPED);
+		List<Room> allRooms=new LinkedList<Room>();
+		for(int i=0;i<2;i++)
 		{
-			for(int i=0;(i<100)&&e.hasMoreElements();i++)
+			for(Enumeration<Room> e=A.getProperMap();e.hasMoreElements();)
 			{
-				R=e.nextElement();
-				if((R!=null)&&(R.roomID()!=null))
-					rooms.add(R);
+				final Room R=e.nextElement();
+				if(R!=null)
+				{
+					allRooms.add(R);
+					emptyRoom(R,null,false);
+					R.clearSky();
+				}
 			}
-			if(rooms.size()==0)
-				break;
-			for(final Iterator<Room> e2=rooms.iterator();e2.hasNext();)
-			{
-				R=e2.next();
-				if((R!=null)&&(R.roomID().length()>0))
-					obliterateRoom(R);
-				e2.remove();
-			}
-			e=A.getCompleteMap();
 		}
-		CMLib.database().DBDeleteArea(A);
+		CMLib.database().DBDeleteAreaAndRooms(A);
+		for(final Room R : allRooms)
+			obliterateRoom(R);
 		delArea(A);
 		A.destroy(); // why not?
 	}

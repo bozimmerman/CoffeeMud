@@ -461,6 +461,16 @@ public interface DatabaseEngine extends CMLibrary
 
 	/**
 	 * Table category: DBMAP
+	 * Removes the given area record from the database.
+	 * Also removes all the proper rooms from the DB, 
+	 * along with exits, items, and characters in those 
+	 * rooms.
+	 * @param A the area to destroy.
+	 */
+	public void DBDeleteAreaAndRooms(Area A);
+
+	/**
+	 * Table category: DBMAP
 	 * Updates the area record in the database with the
 	 * given areaID with the data from the given area
 	 * object.  The areaID and the name of the area can

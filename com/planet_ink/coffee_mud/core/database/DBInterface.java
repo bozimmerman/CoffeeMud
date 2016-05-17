@@ -740,6 +740,12 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
+	public void DBDeleteAreaAndRooms(Area A)
+	{
+		RoomLoader.DBDeleteAreaAndRooms(A);
+	}
+
+	@Override
 	public void DBUpdateArea(String areaID, Area A)
 	{
 		RoomLoader.DBUpdate(areaID, A);

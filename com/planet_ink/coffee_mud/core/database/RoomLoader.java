@@ -1531,22 +1531,6 @@ public class RoomLoader
 			Log.debugOut("RoomLoader","Done updating mob "+mob.name()+" in room "+roomID);
 	}
 
-	public void DBDelete(Area A)
-	{
-		if(A==null)
-			return;
-		if(!A.isSavable())
-			return;
-		if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMAREA)||CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMS)))
-			Log.debugOut("RoomLoader","Destroying area "+A.name());
-		A.setAreaState(Area.State.STOPPED);
-		DB.update("DELETE FROM CMAREA WHERE CMAREA='"+A.Name()+"'");
-		DB.update("DELETE FROM CMPDAT WHERE CMPLID='"+A.Name()+"' AND CMSECT='TIMECLOCK'");
-		if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMAREA)||CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMS)))
-			Log.debugOut("RoomLoader","Done destroying area "+A.name()+".");
-	}
-
-
 	public void DBCreate(Room room)
 	{
 		if(!room.isSavable())
@@ -1574,6 +1558,16 @@ public class RoomLoader
 			Log.debugOut("RoomLoader","Done creating new room "+room.roomID());
 	}
 
+	protected List<String> getRoomDeleteStrings(final String roomID)
+	{
+		return new XVector<String>(
+			"DELETE FROM CMROEX WHERE CMROID='"+roomID+"'",
+			"DELETE FROM CMROCH WHERE CMROID='"+roomID+"'",
+			"DELETE FROM CMROIT WHERE CMROID='"+roomID+"'",
+			"DELETE FROM CMROOM WHERE CMROID='"+roomID+"'"
+		);
+	}
+	
 	public void DBDelete(Room room)
 	{
 		if(!room.isSavable())
@@ -1581,12 +1575,52 @@ public class RoomLoader
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMROCH)||CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMS)))
 			Log.debugOut("RoomLoader","Destroying room "+room.roomID());
 		room.destroy();
-		DB.update("DELETE FROM CMROCH WHERE CMROID='"+room.roomID()+"'");
-		DB.update("DELETE FROM CMROIT WHERE CMROID='"+room.roomID()+"'");
-		DB.update("DELETE FROM CMROEX WHERE CMROID='"+room.roomID()+"'");
-		DB.update("DELETE FROM CMROOM WHERE CMROID='"+room.roomID()+"'");
+		DB.update(getRoomDeleteStrings(room.roomID()).toArray(new String[0]));
 		room.destroy();
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMROCH)||CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMS)))
 			Log.debugOut("RoomLoader","Done gestroying room "+room.roomID());
+	}
+	
+	protected List<String> getAreaDeleteStrings(String areaName)
+	{
+		return new XVector<String>(
+			"DELETE FROM CMAREA WHERE CMAREA='"+areaName+"'",
+			"DELETE FROM CMPDAT WHERE CMPLID='"+areaName+"' AND CMSECT='TIMECLOCK'"
+		);
+	}
+	
+	public void DBDelete(Area A)
+	{
+		if(A==null)
+			return;
+		if(!A.isSavable())
+			return;
+		if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMAREA)||CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMS)))
+			Log.debugOut("RoomLoader","Destroying area "+A.name());
+		A.setAreaState(Area.State.STOPPED);
+		DB.update(getAreaDeleteStrings(A.Name()).toArray(new String[0]));
+		if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMAREA)||CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMS)))
+			Log.debugOut("RoomLoader","Done destroying area "+A.name()+".");
+	}
+	
+	public void DBDeleteAreaAndRooms(Area A)
+	{
+		if(A==null)
+			return;
+		if(!A.isSavable())
+			return;
+		if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMAREA)||CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMS)))
+			Log.debugOut("RoomLoader","Destroying area "+A.name());
+		A.setAreaState(Area.State.STOPPED);
+		final List<String> statements = new Vector<String>(4 + A.numberOfProperIDedRooms());
+		statements.addAll(getAreaDeleteStrings(A.Name()));
+		for(Enumeration<String> ids=A.getProperRoomnumbers().getRoomIDs();ids.hasMoreElements();)
+			statements.addAll(getRoomDeleteStrings(ids.nextElement()));
+		DB.update(statements.toArray(new String[statements.size()]));
+		statements.clear();
+		for(Enumeration<String> ids=A.getProperRoomnumbers().getRoomIDs();ids.hasMoreElements();)
+			statements.add("DELETE FROM CMROEX WHERE CMROID='"+ids.nextElement()+"'");
+		DB.update(statements.toArray(new String[statements.size()]));
+		DB.update(statements.toArray(new String[statements.size()]));
 	}
 }
