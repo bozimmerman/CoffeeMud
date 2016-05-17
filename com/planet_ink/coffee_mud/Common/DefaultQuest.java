@@ -589,9 +589,13 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 			Set<String> inUseByWhom=new TreeSet<String>();
 			for(int c=choices.size()-1;c>=0;c--)
 			{
-				if((!reselect)||(!q.reselectable.contains(choices.get(c))))
+				final Environmental E=choices.get(c);
+				if((E instanceof Physical) && (CMLib.flags().isCloaked((Physical)E)))
+					choices.remove(c);
+				else
+				if((!reselect)||(!q.reselectable.contains(E)))
 				{
-					final Quest Q=CMLib.quests().objectInUse(choices.get(c));
+					final Quest Q=CMLib.quests().objectInUse(E);
 					if(Q!=null)
 					{
 						choices.remove(c);
