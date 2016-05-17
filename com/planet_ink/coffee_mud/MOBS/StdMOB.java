@@ -885,6 +885,11 @@ public class StdMOB implements MOB
 			charStats.getMyClass(c).affectCharStats(this, charStats);
 		try
 		{
+			if(this.baseCharStats == charStats)
+			{
+				Log.errOut("***OMG!!!!!***");
+				this.baseCharStats=(CharStats)CMClass.getCommon("DefaultCharStats");
+			}
 			charStats.getMyRace().affectCharStats(this, charStats);
 		}
 		catch(IllegalArgumentException x) //TODO: DELME

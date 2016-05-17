@@ -2217,7 +2217,10 @@ public class DefaultSession implements Session
 			{
 				if(sock[0].isClosed() || (!sock[0].isConnected()))
 				{
-					stopSession(true,true,false);
+					if(mob()!=null)
+						stopSession(true,CMLib.flags().isInTheGame(mob(),true),false);
+					else
+						setKillFlag(true);
 					return null;
 				}
 			}
@@ -3029,7 +3032,7 @@ public class DefaultSession implements Session
 						setAfkFlag(true);
 				}
 				else
-				if((getIdleMillis()>=10800000)&&(!isStopped()))
+				if((getIdleMillis()>=10800000)&&(!isStopped())&&CMLib.flags().isInTheGame(mob(), true))
 				{
 					if((!CMLib.flags().isSleeping(mob))
 					&&(mob().fetchEffect("Disease_Blahs")==null)

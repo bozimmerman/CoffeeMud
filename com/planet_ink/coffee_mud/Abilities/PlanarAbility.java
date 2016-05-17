@@ -1189,7 +1189,7 @@ public class PlanarAbility extends StdAbility
 		//CMLib.map().delArea(this.planeArea);
 		
 		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOVE|verbalCastCode(mob,target,auto),castingMessage(mob, auto));
-		if((mob.location().okMessage(mob,msg))&&(target!=null)&&(target.okMessage(mob,msg)))
+		if((mob.location().okMessage(mob,msg))&&(target.okMessage(mob,msg)))
 		{
 			mob.location().send(mob,msg);
 			final Set<MOB> h=properTargets(mob,givenTarget,false);
