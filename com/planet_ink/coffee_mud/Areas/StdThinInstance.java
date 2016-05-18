@@ -117,6 +117,8 @@ public class StdThinInstance extends StdThinArea
 
 			final Room origRoom=R;
 			R=CMLib.database().DBReadRoomObject(R.roomID(), false);
+			if(R==null)
+				return null;
 			final TreeMap<String,Room> V=new TreeMap<String,Room>();
 			V.put(roomID,R);
 			CMLib.database().DBReadRoomExits(R.roomID(), R, false);

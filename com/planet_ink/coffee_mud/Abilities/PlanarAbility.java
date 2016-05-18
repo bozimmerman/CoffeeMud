@@ -315,10 +315,10 @@ public class PlanarAbility extends StdAbility
 			String aeffects = planeVars.get(PlanarVar.AEFFECT.toString());
 			if(aeffects!=null)
 			{
-				List<Pair<String,String>> affectList=CMParms.parseSpaceParenList(reffects);
+				List<Pair<String,String>> affectList=CMParms.parseSpaceParenList(aeffects);
 				if(affectList!=null)
 				{
-					for(Pair<String,String> p : this.reffectList)
+					for(Pair<String,String> p : affectList)
 					{
 						if(planeArea.fetchBehavior(p.first)==null)
 						{
@@ -420,7 +420,7 @@ public class PlanarAbility extends StdAbility
 					}
 				}
 				else
-				if((I instanceof Weapon)||(I instanceof Armor))
+				if((invoker!=null)&&((I instanceof Weapon)||(I instanceof Armor)))
 				{
 					int newILevelAdj = (planarLevel - I.phyStats().level());
 					int newILevel=invoker.phyStats().level() + newILevelAdj + allLevelAdj;
@@ -445,6 +445,7 @@ public class PlanarAbility extends StdAbility
 			{
 				MOB M=m.nextElement();
 				if((M!=null)
+				&&(invoker!=null)
 				&&(M.isMonster())
 				&&(M.getStartRoom()!=null)
 				&&(M.getStartRoom().getArea()==planeArea))
@@ -500,7 +501,7 @@ public class PlanarAbility extends StdAbility
 					for(Enumeration<Item> mi=M.items();mi.hasMoreElements();)
 					{
 						Item mI=mi.nextElement();
-						if(mI!=null)
+						if((mI!=null)&&(invoker!=null))
 						{
 							int newILevelAdj = (planarLevel - mI.phyStats().level());
 							int newILevel=invoker.phyStats().level() + newILevelAdj + allLevelAdj;
@@ -946,9 +947,9 @@ public class PlanarAbility extends StdAbility
 	public void setAffectedOne(Physical P)
 	{
 		super.setAffectedOne(P);
-		if(P instanceof MOB)
+		if(invoker != null)
 		{
-			final MOB mob=(MOB)P;
+			final MOB mob=invoker;
 			final Room R=mob.location();
 			if(R!=null)
 			{
@@ -1057,6 +1058,39 @@ public class PlanarAbility extends StdAbility
 		{
 			this.beneficialVisualFizzle(mob, null, failMessage(mob, auto));
 			return false;
+		}
+		
+		if(currentShift != null)
+		{
+			String areaName = cloneArea.Name();
+			int x=areaName.indexOf('_');
+			if((x>0)&&(CMath.isNumber(areaName.substring(0, x))))
+			{
+				Area newCloneArea=CMLib.map().getArea(areaName.substring(x+1));
+				if(newCloneArea!=null)
+				{
+					cloneArea=newCloneArea;
+					if(cloneRoomID.startsWith(areaName)
+					&&(cloneArea.getRoom(cloneRoomID.substring(x+1))!=null))
+					{
+						cloneRoomID=cloneRoomID.substring(x+1);
+					}
+					else
+					{
+						for(int i=0;i<100;i++)
+						{
+							Room R=cloneArea.getRandomProperRoom();
+							if((R!=null)
+							&&(!CMLib.flags().isHidden(R))
+							&&(CMLib.map().getExtendedRoomID(R).length()>0))
+							{
+								cloneRoomID=CMLib.map().getExtendedRoomID(R);
+								break;
+							}
+						}
+					}
+				}
+			}
 		}
 		
 		boolean randomPlane=false;
