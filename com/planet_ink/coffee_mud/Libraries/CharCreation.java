@@ -3834,6 +3834,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			loginObj.acct=mob.playerStats().getAccount();
 		loginObj.login=mob.Name();
 		loginObj.mob=mob;
+		loginObj.theme=theme;
 		LoginResult res=charcrStatInit(loginObj, session, bonusPoints);
 		while(!session.isStopped())
 		{
@@ -3857,6 +3858,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			loginObj.acct=pStats.getAccount();
 		loginObj.login=mob.Name();
 		loginObj.mob=mob;
+		loginObj.theme=theme;
 		LoginResult res=charcrClassInit(loginObj, session);
 		while((session!=null)&&(!session.isStopped()))
 		{
@@ -3870,6 +3872,56 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				return mob.baseCharStats().getCurrentClass();
 		}
 		return mob.baseCharStats().getCurrentClass();
+	}
+
+	@Override
+	public Race promptRace(int theme, MOB mob, Session session) throws IOException
+	{
+		final LoginSessionImpl loginObj=new LoginSessionImpl();
+		final PlayerStats pStats=mob.playerStats();
+		if(pStats!=null)
+			loginObj.acct=pStats.getAccount();
+		loginObj.login=mob.Name();
+		loginObj.mob=mob;
+		loginObj.theme=theme;
+		LoginResult res=charcrRaceStart(loginObj, session);
+		while((session!=null)&&(!session.isStopped()))
+		{
+			if(res==LoginResult.INPUT_REQUIRED)
+				loginObj.lastInput=session.blockingIn(90000, true);
+			if(loginObj.state==LoginState.CHARCR_RACEDONE)
+				return mob.baseCharStats().getMyRace();
+			if(loginObj.state.toString().startsWith("CHARCR_RACE"))
+				res=loginSubsystem(loginObj, session);
+			else
+				return mob.baseCharStats().getMyRace();
+		}
+		return mob.baseCharStats().getMyRace();
+	}
+
+	@Override
+	public char promptGender(int theme, MOB mob, Session session) throws IOException
+	{
+		final LoginSessionImpl loginObj=new LoginSessionImpl();
+		final PlayerStats pStats=mob.playerStats();
+		if(pStats!=null)
+			loginObj.acct=pStats.getAccount();
+		loginObj.login=mob.Name();
+		loginObj.mob=mob;
+		loginObj.theme=theme;
+		LoginResult res=charcrGenderStart(loginObj, session);
+		while((session!=null)&&(!session.isStopped()))
+		{
+			if(res==LoginResult.INPUT_REQUIRED)
+				loginObj.lastInput=session.blockingIn(90000, true);
+			if(loginObj.state==LoginState.CHARCR_GENDERDONE)
+				return (char)mob.baseCharStats().getStat(CharStats.STAT_GENDER);
+			if(loginObj.state.toString().startsWith("CHARCR_GENDER"))
+				res=loginSubsystem(loginObj, session);
+			else
+				return (char)mob.baseCharStats().getStat(CharStats.STAT_GENDER);
+		}
+		return (char)mob.baseCharStats().getStat(CharStats.STAT_GENDER);
 	}
 
 	@Override

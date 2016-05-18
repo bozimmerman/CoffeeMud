@@ -74,6 +74,18 @@ public class Remort extends StdCommand
 		mob.resetToMaxState();
 		mob.recoverPhyStats();
 	}
+
+	protected void slowStop(final Session sess, final MOB mob) throws IOException
+	{
+		sess.stopSession(true,true,false);
+		CMLib.s_sleep(3000);
+		sess.stopSession(true,true,false);
+		PlayerStats pStats = mob.playerStats();
+		if(pStats != null)
+			pStats.getExtItems().delAllItems(true);
+		CMLib.players().delPlayer(mob);
+		throw new IOException("Session stopped");
+	}
 	
 	@Override
 	public boolean execute(final MOB mob, List<String> commands, int metaFlags)
@@ -107,7 +119,20 @@ public class Remort extends StdCommand
 		final List<Triad<String,String,Integer>> abilities=new ArrayList<Triad<String,String,Integer>>();
 		final List<Triad<String,String,Integer>> abilities100=new ArrayList<Triad<String,String,Integer>>();
 		final List<String> expertises=new ArrayList<String>();
-		for(String thing : CMParms.parseCommas(CMProps.getVar(CMProps.Str.REMORTRETAIN), true))
+		final List<String> allRetains=CMParms.parseCommas(CMProps.getVar(CMProps.Str.REMORTRETAIN), true);
+		final int retainRace = allRetains.indexOf("RACE");
+		if(retainRace >=0)
+			allRetains.remove(retainRace);
+		final int retainGender = allRetains.indexOf("GENDER");
+		if(retainGender >=0)
+			allRetains.remove(retainGender);
+		final int retainCharClass = allRetains.indexOf("CHARCLASS");
+		if(retainCharClass >=0)
+			allRetains.remove(retainCharClass);
+		final int retainStats = allRetains.indexOf("STATS");
+		if(retainStats >=0)
+			allRetains.remove(retainStats);
+		for(String thing : allRetains)
 		{
 			thing=thing.toUpperCase().trim();
 			RemortRetain retainer = (RemortRetain)CMath.s_valueOf(RemortRetain.class, thing);
@@ -415,6 +440,18 @@ public class Remort extends StdCommand
 							&&(myHost instanceof MOB)
 							&&(msg.sourceMinor()==CMMsg.TYP_LIFE))
 							{
+								int tryTheme = mob.playerStats().getTheme();
+								if((tryTheme < 0)&&(mob.location()!=null))
+									tryTheme=mob.location().getArea().getTheme();
+								if((CMath.numberOfSetBits(tryTheme&Area.THEME_ALLTHEMES)) > 1)
+								{
+									if((tryTheme&Area.THEME_FANTASY) != 0)
+										tryTheme = Area.THEME_FANTASY;
+									else
+									if((tryTheme&Area.THEME_TECHNOLOGY) != 0)
+										tryTheme = Area.THEME_TECHNOLOGY;
+								}
+								final int theme=tryTheme;
 								Runnable remortRun = new Runnable()
 								{
 									@Override
@@ -452,51 +489,75 @@ public class Remort extends StdCommand
 												mob.addNonUninvokableEffect(failsafeA);
 											}
 											recoverEverything(mob);
-											try
+											if(retainRace < 0)
 											{
-												CMLib.login().promptPlayerStats(mob.playerStats().getTheme(), mob, 300, mob.session(), bonusPointsPerStat[0]);
+												try
+												{
+													mob.baseCharStats().setMyRace(CMLib.login().promptRace(theme, mob, mob.session()));
+												}
+												catch(Throwable x)
+												{
+													sess.stopSession(true, true, false);
+												}
+												if(sess.isStopped())
+												{
+													slowStop(sess,mob);
+												}
+												recoverEverything(mob);
 											}
-											catch(Throwable x)
+											if(retainGender < 0)
 											{
-												sess.stopSession(true, true, false);
+												try
+												{
+													mob.baseCharStats().setStat(CharStats.STAT_GENDER,CMLib.login().promptGender(theme, mob, mob.session()));
+												}
+												catch(Throwable x)
+												{
+													sess.stopSession(true, true, false);
+												}
+												if(sess.isStopped())
+												{
+													slowStop(sess,mob);
+												}
+												recoverEverything(mob);
 											}
-											if(sess.isStopped())
+											if(retainStats < 0)
 											{
-												sess.stopSession(true,true,false);
-												CMLib.s_sleep(3000);
-												sess.stopSession(true,true,false);
-												PlayerStats pStats = mob.playerStats();
-												if(pStats != null)
-													pStats.getExtItems().delAllItems(true);
-												CMLib.players().delPlayer(mob);
-												throw new IOException("Session stopped");
+												try
+												{
+													CMLib.login().promptPlayerStats(theme, mob, 300, mob.session(), bonusPointsPerStat[0]);
+												}
+												catch(Throwable x)
+												{
+													sess.stopSession(true, true, false);
+												}
+												if(sess.isStopped())
+												{
+													slowStop(sess,mob);
+												}
+												recoverEverything(mob);
 											}
-											recoverEverything(mob);
 											mob.basePhyStats().setSensesMask(0);
 											mob.baseCharStats().getMyRace().startRacing(mob,false);
 											mob.setWimpHitPoint(5);
 											mob.setQuestPoint(questPoint[0]);
 											recoverEverything(mob);
-											try
+											if(retainCharClass < 0)
 											{
-												mob.baseCharStats().setCurrentClass(CMLib.login().promptCharClass(mob.playerStats().getTheme(), mob, mob.session()));
+												try
+												{
+													mob.baseCharStats().setCurrentClass(CMLib.login().promptCharClass(theme, mob, mob.session()));
+												}
+												catch(Throwable x)
+												{
+													sess.stopSession(true, true, false);
+												}
+												if(sess.isStopped())
+												{
+													slowStop(sess,mob);
+												}
+												recoverEverything(mob);
 											}
-											catch(Throwable x)
-											{
-												sess.stopSession(true, true, false);
-											}
-											if(sess.isStopped())
-											{
-												sess.stopSession(true,true,false);
-												CMLib.s_sleep(3000);
-												sess.stopSession(true,true,false);
-												PlayerStats pStats = mob.playerStats();
-												if(pStats != null)
-													pStats.getExtItems().delAllItems(true);
-												CMLib.players().delPlayer(mob);
-												throw new IOException("Session stopped");
-											}
-											recoverEverything(mob);
 											mob.setPractices(0);
 											mob.setTrains(0);
 											mob.baseCharStats().getCurrentClass().startCharacter(mob, false, false);

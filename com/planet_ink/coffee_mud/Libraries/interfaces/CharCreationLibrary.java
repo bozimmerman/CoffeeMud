@@ -66,6 +66,8 @@ public interface CharCreationLibrary extends CMLibrary
 	 * @see com.planet_ink.coffee_mud.Areas.interfaces.Area#THEME_FANTASY
 	 * @see CharCreationLibrary#reRollStats(CharStats, int)
 	 * @see CharCreationLibrary#promptCharClass(int, MOB, Session)
+	 * @see CharCreationLibrary#promptRace(int, MOB, Session)
+	 * @see CharCreationLibrary#promptGender(int, MOB, Session)
 	 * @param theme the theme code to use for stat allocation
 	 * @param mob the mob who is getting the new char stats
 	 * @param timeoutSecs TODO
@@ -83,6 +85,8 @@ public interface CharCreationLibrary extends CMLibrary
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CharStats
 	 * @see CharCreationLibrary#reRollStats(CharStats, int)
 	 * @see CharCreationLibrary#promptPlayerStats(int, MOB, int, Session, int)
+	 * @see CharCreationLibrary#promptRace(int, MOB, Session)
+	 * @see CharCreationLibrary#promptGender(int, MOB, Session)
 	 * @see com.planet_ink.coffee_mud.Areas.interfaces.Area#THEME_FANTASY
 	 * @param theme the theme code to use for class selection
 	 * @param mob the mob who is getting the new char class
@@ -90,6 +94,43 @@ public interface CharCreationLibrary extends CMLibrary
 	 * @throws IOException any input errors that occur
 	 */
 	public CharClass promptCharClass(int theme, MOB mob, Session session) throws IOException;
+
+	/**
+	 * A blocking call that populates the given mob with a particular race
+	 * according to character creation rules.  This method
+	 * might return instantly, or it might send the given session
+	 * through the race selection process.
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CharStats
+	 * @see CharCreationLibrary#reRollStats(CharStats, int)
+	 * @see CharCreationLibrary#promptPlayerStats(int, MOB, int, Session, int)
+	 * @see CharCreationLibrary#promptCharClass(int, MOB, Session)
+	 * @see CharCreationLibrary#promptGender(int, MOB, Session)
+	 * @see com.planet_ink.coffee_mud.Areas.interfaces.Area#THEME_FANTASY
+	 * @param theme the theme code to use for race selection
+	 * @param mob the mob who is getting the new race
+	 * @param session the session which might help get the race
+	 * @return the race selected by this process
+	 * @throws IOException any input errors that occur
+	 */
+	public Race promptRace(int theme, MOB mob, Session session) throws IOException;
+
+	/**
+	 * A blocking call that populates the given mob with a particular gender
+	 * according to character creation rules.  This method goes
+	 * through the gender selection process.
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CharStats
+	 * @see CharCreationLibrary#reRollStats(CharStats, int)
+	 * @see CharCreationLibrary#promptPlayerStats(int, MOB, int, Session, int)
+	 * @see CharCreationLibrary#promptCharClass(int, MOB, Session)
+	 * @see CharCreationLibrary#promptRace(int, MOB, Session)
+	 * @see com.planet_ink.coffee_mud.Areas.interfaces.Area#THEME_FANTASY
+	 * @param theme the theme code to use for gender selection
+	 * @param mob the mob who is getting the new gender
+	 * @param session the session which might help get the gender
+	 * @return the gender selected by this process
+	 * @throws IOException any input errors that occur
+	 */
+	public char promptGender(int theme, MOB mob, Session session) throws IOException;
 
 	/**
 	 * Returns the cost, in trains, for the given mob to gain a point in the
