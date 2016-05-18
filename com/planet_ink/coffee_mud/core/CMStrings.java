@@ -2797,6 +2797,26 @@ public class CMStrings
 	}
 
 	/**
+	 * Counts the number of times the given character appears in the given string.
+	 * @param str the string to search through
+	 * @param c the character to count
+	 * @return the number of times the character appears in the string
+	 */
+	public final static int countChars(final String str, final char c)
+	{
+		if(str==null)
+			return 0;
+		int total=0;
+		int dex=str.indexOf(c);
+		while(dex>=0)
+		{
+			total++;
+			dex=str.indexOf(c,dex+1);
+		}
+		return total;
+	}
+
+	/**
 	 * Returns the type of end-of-line used by the given charsequence.
 	 * Considers \r, \n, \n\r, and \r\n as valid options.
 	 * @param str the char sequence to check
