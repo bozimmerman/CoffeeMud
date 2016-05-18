@@ -1024,13 +1024,18 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						@Override
 						public boolean isAchieved(MOB mob) 
 						{
+							if(mob.fetchFaction(factionID)==Integer.MAX_VALUE)
+								return false;
 							return (abelo > 0) ? (getCount(mob) > value) : (getCount(mob) < value);
 						}
 
 						@Override
 						public int getCount(MOB mob)
 						{
-							return mob.fetchFaction(factionID);
+							int f=mob.fetchFaction(factionID);
+							if(f == Integer.MAX_VALUE)
+								return 0;
+							return f;
 						}
 
 						@Override
@@ -1077,6 +1082,150 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 					if(CMLib.factions().getFaction(factionID)==null)
 						return "Error: Unknown faction ID parameter: "+factionID+"!";
 					this.factionID=factionID;
+					return "";
+				}
+			};
+			break;
+		case FACTIONS:
+			A=new Achievement()
+			{
+				private final List<Faction>	factions	= new LinkedList<Faction>();
+				private int 			number		= 0;
+				private int 			value		= 0;
+				private int				abelo		= 0;
+				
+				@Override
+				public Event getEvent()
+				{
+					return eventType;
+				}
+
+				@Override
+				public Agent getAgent()
+				{
+					return agent;
+				}
+
+				@Override
+				public String getTattoo()
+				{
+					return tattoo;
+				}
+
+				@Override
+				public String getDisplayStr()
+				{
+					return displayStr;
+				}
+
+				@Override
+				public boolean isTargetFloor()
+				{
+					return abelo > 0;
+				}
+				
+				@Override
+				public int getTargetCount()
+				{
+					return number;
+				}
+
+				@Override
+				public Award[] getRewards()
+				{
+					return rewardList;
+				}
+
+				@Override
+				public String getRawParmVal(String str)
+				{
+					return CMParms.getParmStr(params,str,"");
+				}
+
+				@Override
+				public Tracker getTracker(final int oldCount)
+				{
+					final Achievement me=this;
+					return new Tracker()
+					{
+						@Override
+						public Achievement getAchievement() 
+						{
+							return me;
+						}
+
+						@Override
+						public boolean isAchieved(MOB mob) 
+						{
+							return getCount(mob) >= number;
+						}
+
+						@Override
+						public int getCount(MOB mob)
+						{
+							int num=0;
+							for(Faction F : factions)
+							{
+								int f = mob.fetchFaction(F.factionID());
+								if((f!=Integer.MAX_VALUE)
+								&&((abelo > 0) ? (f > value) : (f < value)))
+									num++;
+							}
+							return num;
+						}
+
+						@Override
+						public boolean testBump(MOB mob, int bumpNum, Object... parms) 
+						{
+							return false;
+						}
+						
+						@Override
+						public Tracker copyOf()
+						{
+							try
+							{
+								return (Tracker)this.clone();
+							}
+							catch(Exception e)
+							{
+								return this;
+							}
+						}
+					};
+				}
+				
+				@Override
+				public boolean isSavableTracker()
+				{
+					return false;
+				}
+				
+				@Override
+				public String parseParms(final String parms)
+				{
+					String numStr=CMParms.getParmStr(parms, "VALUE", "");
+					if(!CMath.isInteger(numStr))
+						return "Error: Missing or invalid VALUE parameter: "+numStr+"!";
+					value=CMath.s_int(numStr);
+					numStr=CMParms.getParmStr(parms, "NUM", "");
+					if(!CMath.isInteger(numStr))
+						return "Error: Missing or invalid NUM parameter: "+numStr+"!";
+					number=CMath.s_int(numStr);
+					final String aboveBelow=CMParms.getParmStr(parms, "ABOVEBELOW", "").toUpperCase().trim();
+					if((!aboveBelow.equals("ABOVE")) && (!aboveBelow.equals("BELOW")))
+						return "Error: Missing or invalid ABOVEBELOW parameter: "+aboveBelow+"!";
+					this.abelo = aboveBelow.equals("ABOVE")? 1 : -1;
+					final String factionIDMask=CMParms.getParmStr(parms, "IDMASK", "").toUpperCase().trim();
+					this.factions.clear();
+					for(Enumeration<Faction> f=CMLib.factions().factions();f.hasMoreElements();)
+					{
+						final Faction F=f.nextElement();
+						if(CMStrings.filenameMatcher(F.factionID(), factionIDMask))
+							this.factions.add(F);
+					}
+					if(this.factions.size()==0)
+						return "Error: No existing factions match: "+factionIDMask+"!";
 					return "";
 				}
 			};

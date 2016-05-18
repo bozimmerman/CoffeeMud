@@ -1796,54 +1796,7 @@ public class CMFile extends File
 					set.addElement(element2);
 			}
 			final String name=element.getName().toUpperCase();
-			boolean ismatch=true;
-			if((!name.equalsIgnoreCase(fixedName))&&(fixedName.length()>0))
-			{
-				for(int f=0,n=0;f<fixedName.length();f++,n++)
-				{
-					if(fixedName.charAt(f)=='?')
-					{
-						if (n >= name.length())
-						{
-							ismatch = false;
-							break;
-						}
-					}
-					else
-					if(fixedName.charAt(f)=='*')
-					{
-						if(f==fixedName.length()-1)
-							break;
-						int endOfMatchStr=fixedName.indexOf('*',f+1);
-						if(endOfMatchStr<0)
-							endOfMatchStr=fixedName.indexOf('?',f+1);
-						int mbEnd = fixedName.length();
-						if(endOfMatchStr>f)
-							mbEnd = endOfMatchStr;
-						final String matchBuf = fixedName.substring(f+1,mbEnd);
-						final int found = name.indexOf(matchBuf,n);
-						if(found < 0)
-						{
-							ismatch=false;
-							break;
-						}
-						else
-						{
-							n=found + matchBuf.length() - 1;
-							f+=matchBuf.length();
-						}
-					}
-					else
-					if((n>=name.length())
-					||(fixedName.charAt(f)!=name.charAt(n))
-					||((f==fixedName.length()-1)&&(n<name.length()-1)))
-					{
-						ismatch=false;
-						break;
-					}
-				}
-			}
-			if(ismatch)
+			if(CMStrings.filenameMatcher(name,fixedName))
 				set.addElement(element);
 		}
 		if(set.size()==1)

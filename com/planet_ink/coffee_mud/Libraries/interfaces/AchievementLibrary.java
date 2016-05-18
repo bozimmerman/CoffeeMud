@@ -80,7 +80,8 @@ public interface AchievementLibrary extends CMLibrary
 		DEATHS("Dieing",new String[]{"NUM","ZAPPERMASK","PLAYERMASK"}),
 		RETIRE("Retiring",new String[]{"NUM","PLAYERMASK"}),
 		REMORT("Remorting",new String[]{"NUM","PLAYERMASK"}),
-		GOTITEM("Got an item",new String[]{"ITEMMASK","PLAYERMASK"})
+		GOTITEM("Got an item",new String[]{"ITEMMASK","PLAYERMASK"}),
+		FACTIONS("A group of factions",new String[]{"VALUE","ABOVEBELOW","IDMASK","NUM"}),
 		;
 		private final String[] parameters;
 		private final String displayName;

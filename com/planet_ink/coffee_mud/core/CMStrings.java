@@ -4173,4 +4173,65 @@ public class CMStrings
 			return true;
 		}
 	}
+
+	/**
+	 * Does traditional filename type matching, where ? substitutes for a 
+	 * single character, and * for a bunch.  This check is case sensitive!
+	 * You need to upper or lower both strings before calling to make
+	 * it insensitive
+	 * @param fileName the name to check for a match
+	 * @param fileNameMask the mask to match the fileName against
+	 * @return true if they match, false otherwise
+	 */
+	public final static boolean filenameMatcher(final String fileName, final String fileNameMask)
+	{
+		boolean ismatch=true;
+		if((!fileName.equalsIgnoreCase(fileNameMask))&&(fileNameMask.length()>0))
+		{
+			for(int f=0,n=0;f<fileNameMask.length();f++,n++)
+			{
+				if(fileNameMask.charAt(f)=='?')
+				{
+					if (n >= fileName.length())
+					{
+						ismatch = false;
+						break;
+					}
+				}
+				else
+				if(fileNameMask.charAt(f)=='*')
+				{
+					if(f==fileNameMask.length()-1)
+						break;
+					int endOfMatchStr=fileNameMask.indexOf('*',f+1);
+					if(endOfMatchStr<0)
+						endOfMatchStr=fileNameMask.indexOf('?',f+1);
+					int mbEnd = fileNameMask.length();
+					if(endOfMatchStr>f)
+						mbEnd = endOfMatchStr;
+					final String matchBuf = fileNameMask.substring(f+1,mbEnd);
+					final int found = fileName.indexOf(matchBuf,n);
+					if(found < 0)
+					{
+						ismatch=false;
+						break;
+					}
+					else
+					{
+						n=found + matchBuf.length() - 1;
+						f+=matchBuf.length();
+					}
+				}
+				else
+				if((n>=fileName.length())
+				||(fileNameMask.charAt(f)!=fileName.charAt(n))
+				||((f==fileNameMask.length()-1)&&(n<fileName.length()-1)))
+				{
+					ismatch=false;
+					break;
+				}
+			}
+		}
+		return ismatch;
+	}
 }
