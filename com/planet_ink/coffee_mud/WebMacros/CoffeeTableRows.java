@@ -87,10 +87,28 @@ public class CoffeeTableRows extends StdWebMacro
 			if(code.length()>1)
 				CharC=CMClass.getCharClass(code.substring(1));
 			final Vector<Ability> allSkills=new Vector<Ability>();
+			int onlyAbilityTypes=-1;
+			int onlyAbilityDomains=-1;
+			String typeName=parms.get("ABLETYPE");
+			if(typeName!=null)
+			{
+				onlyAbilityTypes=CMParms.indexOf(Ability.ACODE_DESCS, typeName.toUpperCase().trim());
+				if(onlyAbilityTypes<0)
+					onlyAbilityTypes=CMParms.indexOf(Ability.ACODE_DESCS_, typeName.toUpperCase().trim());
+			}
+			String domainName=parms.get("ABLEDOMAIN");
+			if(domainName!=null)
+			{
+				int domainIndex=CMParms.indexOf(Ability.DOMAIN_DESCS, domainName.toUpperCase().trim());
+				if(domainIndex>=0)
+					onlyAbilityDomains=domainIndex<<5;
+			}
 			for(final Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
 			{
 				final Ability A=e.nextElement();
-				if((CharC==null)||(CMLib.ableMapper().getQualifyingLevel(CharC.ID(),true,A.ID())>=0))
+				if(((CharC==null)||(CMLib.ableMapper().getQualifyingLevel(CharC.ID(),true,A.ID())>=0))
+				&&((onlyAbilityTypes<0)||((A.classificationCode()&Ability.ALL_ACODES)==onlyAbilityTypes))
+				&&((onlyAbilityDomains<0)||((A.classificationCode()&Ability.ALL_DOMAINS)==onlyAbilityDomains)))
 					allSkills.addElement(A);
 			}
 			final long[][] totals=new long[allSkills.size()][CoffeeTableRow.STAT_TOTAL];
