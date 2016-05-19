@@ -323,8 +323,6 @@ public class MOBTeacher extends CombatAbilities
 	{
 		if(myMOB==null)
 			return;
-		if(affecting.Name().equals("the guildmaster") && msg.source().name().equals("Dave"))
-			System.out.println("hi");
 		super.executeMsg(affecting,msg);
 		if(!canFreelyBehaveNormal(affecting))
 			return;
@@ -403,6 +401,16 @@ public class MOBTeacher extends CombatAbilities
 				if(s.trim().toUpperCase().equals("ALL"))
 				{
 					CMLib.commands().postSay(monster,student,L("I can't teach you everything at once. Try the QUALIFY command."),true,false);
+					return;
+				}
+				if(!CMLib.flags().canBeSeenBy(student,monster))
+				{
+					CMLib.commands().postSay(monster,student,L("I can't see you, so I can't teach you."),true,false);
+					return;
+				}
+				if(!CMLib.flags().canBeSeenBy(monster,student))
+				{
+					CMLib.commands().postSay(monster,student,L("You can't see me, so I can't teach you."),true,false);
 					return;
 				}
 				final Ability myAbility=CMClass.findAbility(s.trim().toUpperCase(),monster);
