@@ -53,12 +53,12 @@ public class StdShipShieldGenerator extends StdElecCompItem implements ShipShiel
 		return Technical.TechType.SHIP_SHIELD;
 	}
 	
-	private ShipDir[] 		allPossDirs		= ShipDir.values();
-	private int				numPermitDirs 	= ShipDir.values().length;
-	private int[]			shieldedMsgTypes= AVAIL_DAMAGE_TYPES;
-	private volatile long	lastPowerConsumption = 0;
-	private volatile long	powerSetting		 = Integer.MAX_VALUE;
-	
+	private ShipDir[]		allPossDirs			= ShipDir.values();
+	private int				numPermitDirs		= ShipDir.values().length;
+	private int[]			shieldedMsgTypes	= AVAIL_DAMAGE_TYPES;
+	private volatile long	lastPowerConsumption= 0;
+	private volatile long	powerSetting		= Integer.MAX_VALUE;
+
 	private volatile ShipDir[]  		  currCoverage = null;
 	private volatile Reference<SpaceShip> myShip 	   = null;
 
