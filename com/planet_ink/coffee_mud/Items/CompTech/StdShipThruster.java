@@ -274,7 +274,17 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipEngine
 		double thrust=me.getInstalledFactor() * amount;
 		if(thrust > me.getMaxThrust())
 			thrust=me.getMaxThrust();
-		thrust=manufacturer.getReliabilityPct() * thrust;
+		if(me.subjectToWearAndTear())
+		{
+			if(me.usesRemaining()<75)
+			{
+				final double pct = CMath.mul(me.usesRemaining(), 100.0) + (0.35 * manufacturer.getReliabilityPct());
+				if(pct < 1.0)
+					thrust = thrust * pct;
+			}
+		}
+		else
+			thrust=manufacturer.getReliabilityPct() * thrust;
 		final double oldThrust = me.getThrust();
 		if(portDir==TechComponent.ShipDir.AFT) // when thrusting aft, the thrust is continual, so save it
 			me.setThrust(amount); // also, its always the intended amount, not the adjusted amount

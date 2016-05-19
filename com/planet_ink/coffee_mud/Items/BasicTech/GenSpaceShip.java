@@ -255,11 +255,7 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 				if((msg.value() > 0)&&(myMass>0))
 				{
 					//TODO: apply non-collision damage to internal systems instead of hull
-					// only when there are no other systems to destroy do we apply damage
-					// to the hull.  Or perhaps only a small portions is applied to the hull.
-					//
-					// Use reliability to see if a system takes tiny damage on every hit, 
-					// even if it is not chosen to absorb any real damage.
+					//  only a portions is applied to the hull.
 					int hullDamage=0;
 					final int baseDamage = msg.value();
 					switch(msg.sourceMinor())

@@ -520,8 +520,13 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 						M.location().show(M, this, null, CMMsg.MASK_ALWAYS|CMMsg.TYP_OK_VISUAL, CMMsg.NO_EFFECT, CMMsg.NO_EFFECT, L("<T-NAME> says '^N\n\rUnknown activation command. Please read the screen for a menu of TYPEable commands.\n\r^.^N'"));
 					else
 					{
-						if((Math.random()<getFinalManufacturer().getReliabilityPct()*getInstalledFactor())
-						&&((!subjectToWearAndTear()) || (Math.random() < CMath.div(usesRemaining(), 100))))
+						double damageFailChance=1.0;
+						if(subjectToWearAndTear() && (usesRemaining()<75))
+						{
+							damageFailChance = CMath.div(usesRemaining(), 100);
+							damageFailChance += (0.35 * getFinalManufacturer().getReliabilityPct());
+						}
+						if((Math.random()<getInstalledFactor()) && (Math.random()<damageFailChance))
 						{
 							for(final CMMsg msg2 : msgs)
 							{
