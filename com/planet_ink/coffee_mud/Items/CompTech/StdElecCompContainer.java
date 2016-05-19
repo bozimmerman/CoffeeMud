@@ -164,13 +164,25 @@ public class StdElecCompContainer extends StdElecContainer implements TechCompon
 		return true;
 	}
 
-	public static final boolean isAllWiringConnected(Electronics E)
+	public static final boolean isAllWiringHot(Electronics E)
 	{
 		if(E instanceof ElecPanel)
 			return isThisPanelActivated((ElecPanel)E);
 		if(E.container() instanceof ElecPanel)
 			return isThisPanelActivated((ElecPanel)E.container());
-		return true;
+		return false;
+	}
+
+	@Override
+	public boolean isInstalled()
+	{
+		if(!CMLib.flags().isGettable(this))
+			return true;
+		if(this.container() instanceof ElecPanel)
+			return (!CMLib.flags().isGettable(this.container()));
+		if(this.container() instanceof TechComponent)
+			return ((TechComponent)this.container()).isInstalled();
+		return false;
 	}
 
 	@Override
@@ -181,7 +193,14 @@ public class StdElecCompContainer extends StdElecContainer implements TechCompon
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_ACTIVATE:
-				if(!isAllWiringConnected(this))
+				if(!isInstalled())
+				{
+					if(!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG))
+						msg.source().tell(L("@x1 is not installed or connected.",name()));
+					return false;
+				}
+				else
+				if(!isAllWiringHot(this))
 				{
 					if(!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG))
 						msg.source().tell(L("The panel containing @x1 is not activated or connected.",name()));

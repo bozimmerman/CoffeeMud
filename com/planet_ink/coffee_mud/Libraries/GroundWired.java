@@ -655,17 +655,20 @@ public class GroundWired extends StdLibrary implements TechLibrary
 						w.remove();
 					else
 					{
-						if(E instanceof PowerGenerator)
-							generators.add((PowerGenerator)E);
-						else
-						if(E instanceof PowerSource)
-							batteries.add((PowerSource)E);
-						else
-						if(E instanceof ElecPanel)
-							panels.add((ElecPanel)E);
-						else
-						if((E.owner() instanceof ElecPanel)&&(!rawSet.contains(E.owner())))
-							panels.add((ElecPanel)E.owner());
+						if((!(E instanceof TechComponent))||(((TechComponent)E).isInstalled()))
+						{
+							if(E instanceof PowerGenerator)
+								generators.add((PowerGenerator)E);
+							else
+							if(E instanceof PowerSource)
+								batteries.add((PowerSource)E);
+							else
+							if(E instanceof ElecPanel)
+								panels.add((ElecPanel)E);
+							else
+							if((E.owner() instanceof ElecPanel)&&(!rawSet.contains(E.owner())))
+								panels.add((ElecPanel)E.owner());
+						}
 						if(areaLocation == null)
 							areaLocation=CMLib.map().areaLocation(E);
 					}

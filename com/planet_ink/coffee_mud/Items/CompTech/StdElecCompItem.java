@@ -106,6 +106,36 @@ public class StdElecCompItem extends StdElecItem implements TechComponent
 	}
 
 	@Override
+	public boolean isInstalled()
+	{
+		if(!CMLib.flags().isGettable(this))
+			return true;
+		if(this.container() instanceof ElecPanel)
+			return (!CMLib.flags().isGettable(this.container()));
+		if(this.container() instanceof TechComponent)
+			return ((TechComponent)this.container()).isInstalled();
+		return false;
+	}
+
+	protected static final boolean isThisPanelActivated(ElecPanel E)
+	{
+		if (!E.activated())
+			return false;
+		if (E.container() instanceof ElecPanel)
+			return isThisPanelActivated((ElecPanel) E.container());
+		return true;
+	}
+
+	public static final boolean isAllWiringHot(Electronics E)
+	{
+		if (E instanceof ElecPanel)
+			return isThisPanelActivated((ElecPanel) E);
+		if (E.container() instanceof ElecPanel)
+			return isThisPanelActivated((ElecPanel) E.container());
+		return true;
+	}
+
+	@Override
 	public void destroy()
 	{
 		if((!destroyed)&&(circuitKey!=null))
@@ -153,7 +183,14 @@ public class StdElecCompItem extends StdElecItem implements TechComponent
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_ACTIVATE:
-				if((!isAllWiringConnected(this))&&(!(this instanceof ElecPanel)))
+				if(!isInstalled())
+				{
+					if(!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG))
+						msg.source().tell(L("@x1 is not installed or connected.",name()));
+					return false;
+				}
+				else
+				if((!isAllWiringHot(this))&&(!(this instanceof ElecPanel)))
 				{
 					if(!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG))
 						msg.source().tell(L("The panel containing @x1 is not activated or connected.",name()));
@@ -203,6 +240,23 @@ public class StdElecCompItem extends StdElecItem implements TechComponent
 				if((msg.source().location() != null)&&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG)))
 					msg.source().location().show(msg.source(), this, CMMsg.MSG_OK_VISUAL, L("<S-NAME> deactivate(s) <T-NAME>."));
 				this.activate(false);
+				break;
+			case CMMsg.TYP_DAMAGE:
+				if(subjectToWearAndTear() && (usesRemaining()>0))
+				{
+					if(msg.value()>usesRemaining())
+					{
+						final Room R=CMLib.map().roomLocation(this);
+						final CMMsg msg2=CMClass.getMsg(msg.source(), CMMsg.MSG_DEACTIVATE, L("@x1 sparks and fizzes out.",name()));
+						if((R!=null)&&(R.okMessage(msg.source(), msg2)))
+							R.send(msg.source(), msg2);
+					}
+					else
+					{
+						this.setUsesRemaining(this.usesRemaining()-msg.value());
+					}
+						
+				}
 				break;
 			case CMMsg.TYP_LOOK:
 				super.executeMsg(host, msg);

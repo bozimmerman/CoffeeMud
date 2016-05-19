@@ -276,6 +276,29 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 					case CMMsg.TYP_WATER:
 						if(CMLib.dice().getRandomizer().nextDouble() + CMath.div(baseDamage,100) > this.getFinalManufacturer().getReliabilityPct())
 							hullDamage=1;
+						if(hullDamage < usesRemaining())
+						{
+							List<Electronics> list = CMLib.tech().getMakeRegisteredElectronics(CMLib.tech().getElectronicsKey(getShipArea()));
+							for(Iterator<Electronics> i=list.iterator();i.hasNext();)
+							{
+								Electronics E=i.next();
+								if((E.amDestroyed())
+								||(((E.subjectToWearAndTear())&&(E.usesRemaining()>0)))
+								||(E instanceof ElecPanel)
+								||(E instanceof Software)
+								||((E instanceof TechComponent) && (!((TechComponent)E).isInstalled()))
+								||((!(E instanceof TechComponent)) && (!E.activated())))
+									i.remove();
+							}
+							if(list.size()>0)
+							{
+								final Electronics damagedE = list.get(CMLib.dice().roll(1, list.size(), -1));
+								final Room R=CMLib.map().roomLocation(damagedE);
+								CMMsg msg2=(CMMsg)msg.copyOf();
+								if((R!=null)&&(R.okMessage(msg.source(), msg2)))
+									R.send(msg.source(), msg2);
+							}
+						}
 						break;
 					}
 					if(hullDamage >= usesRemaining())
@@ -290,7 +313,6 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 					}
 					else
 					{
-						
 						if(hullDamage>0)
 							setUsesRemaining(usesRemaining() - hullDamage);
 						if(baseDamage > 75)

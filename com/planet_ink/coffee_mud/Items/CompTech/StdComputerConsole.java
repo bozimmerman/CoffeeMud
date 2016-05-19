@@ -268,6 +268,18 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 	}
 
 	@Override
+	public boolean isInstalled()
+	{
+		if(!CMLib.flags().isGettable(this))
+			return true;
+		if(this.container() instanceof ElecPanel)
+			return (!CMLib.flags().isGettable(this.container()));
+		if(this.container() instanceof TechComponent)
+			return ((TechComponent)this.container()).isInstalled();
+		return false;
+	}
+
+	@Override
 	public String readableText()
 	{
 		final StringBuilder str=new StringBuilder("");

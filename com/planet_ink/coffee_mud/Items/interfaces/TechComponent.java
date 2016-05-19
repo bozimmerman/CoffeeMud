@@ -57,6 +57,14 @@ public interface TechComponent extends Electronics
 	 */
 	public void setInstalledFactor(float pct);
 
+	
+	/**
+	 * Returns whether this item is installed properly, which is 
+	 * according to internal rules of each component type.
+	 * @return true if its installed, false if its just there.
+	 */
+	public boolean isInstalled();
+	
 	/**
 	 * Sets the amount of the capacity of this component that can gain
 	 * power every time a power current is received.
