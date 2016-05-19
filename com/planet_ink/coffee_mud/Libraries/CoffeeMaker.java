@@ -465,11 +465,11 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			text.append(CMLib.xml().convertXMLtoTag("SSCONST",""+((ShipEngine)E).isConstantThruster()));
 			text.append(CMLib.xml().convertXMLtoTag("SSAPORTS",CMParms.toListString(((ShipEngine)E).getAvailPorts())));
 		}
-		if(E instanceof ShipShieldGenerator)
+		if(E instanceof ShipWarComponent)
 		{
-			text.append(CMLib.xml().convertXMLtoTag("SSPDIRS",""+((ShipShieldGenerator)E).getPermittedNumDirections()));
-			text.append(CMLib.xml().convertXMLtoTag("SSAPORTS",""+CMParms.toListString(((ShipShieldGenerator)E).getPermittedDirections())));
-			text.append(CMLib.xml().convertXMLtoTag("SSMTYPES",""+CMParms.toListString(((ShipShieldGenerator)E).getShieldedMsgTypes())));
+			text.append(CMLib.xml().convertXMLtoTag("SSPDIRS",""+((ShipWarComponent)E).getPermittedNumDirections()));
+			text.append(CMLib.xml().convertXMLtoTag("SSAPORTS",""+CMParms.toListString(((ShipWarComponent)E).getPermittedDirections())));
+			text.append(CMLib.xml().convertXMLtoTag("SSMTYPES",""+CMParms.toListString(((ShipWarComponent)E).getDamageMsgTypes())));
 		}
 		if(E instanceof PowerGenerator)
 		{
@@ -3021,11 +3021,11 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			else
 				((ShipEngine)E).setAvailPorts(CMParms.parseEnumList(TechComponent.ShipDir.class, portsStr, ',').toArray(new TechComponent.ShipDir[0]));
 		}
-		if(E instanceof ShipShieldGenerator)
+		if(E instanceof ShipWarComponent)
 		{
-			((ShipShieldGenerator)E).setPermittedNumDirections(CMLib.xml().getIntFromPieces(buf,"SSPDIRS"));
-			((ShipShieldGenerator)E).setPermittedDirections(CMParms.parseEnumList(TechComponent.ShipDir.class, CMLib.xml().getValFromPieces(buf,"SSAPORTS"), ',').toArray(new TechComponent.ShipDir[0]));
-			((ShipShieldGenerator)E).setShieldedMsgTypes(CMParms.parseIntList(CMLib.xml().getValFromPieces(buf,"SSMTYPES"),','));
+			((ShipWarComponent)E).setPermittedNumDirections(CMLib.xml().getIntFromPieces(buf,"SSPDIRS"));
+			((ShipWarComponent)E).setPermittedDirections(CMParms.parseEnumList(TechComponent.ShipDir.class, CMLib.xml().getValFromPieces(buf,"SSAPORTS"), ',').toArray(new TechComponent.ShipDir[0]));
+			((ShipWarComponent)E).setDamageMsgTypes(CMParms.parseIntList(CMLib.xml().getValFromPieces(buf,"SSMTYPES"),','));
 		}
 		if(E instanceof PowerGenerator)
 		{

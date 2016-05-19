@@ -3189,7 +3189,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		}
 	}
 
-	protected void genMessageTypes(MOB mob, ShipShieldGenerator E, int showNumber, int showFlag) throws IOException
+	protected void genMessageTypes(MOB mob, ShipWarComponent E, int showNumber, int showFlag) throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber))
 			return;
@@ -3198,11 +3198,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		while((S!=null)&&(!S.isStopped())&&(!q))
 		{
 			final StringBuilder str=new StringBuilder("");
-			for(int i=0;i<E.getShieldedMsgTypes().length;i++)
+			for(int i=0;i<E.getDamageMsgTypes().length;i++)
 			{
 				if(i>0)
 					str.append(", ");
-				str.append(CMMsg.TYPE_DESCS[E.getShieldedMsgTypes()[i]]);
+				str.append(CMMsg.TYPE_DESCS[E.getDamageMsgTypes()[i]]);
 			}
 			mob.tell(L("@x1. Shielded Types: '@x2'.",""+showNumber,str.toString()));
 			if((showFlag!=showNumber)&&(showFlag>-999))
@@ -3225,21 +3225,21 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				final int newValue=CMParms.indexOf(CMMsg.TYPE_DESCS, newType.toUpperCase().trim());
 				if(newValue>=0)
 				{
-					if(CMParms.contains(E.getShieldedMsgTypes(), newValue))
+					if(CMParms.contains(E.getDamageMsgTypes(), newValue))
 					{
-						final int[] newSet=new int[E.getShieldedMsgTypes().length-1];
-						for(int o=0,n=0;o<E.getShieldedMsgTypes().length;o++)
+						final int[] newSet=new int[E.getDamageMsgTypes().length-1];
+						for(int o=0,n=0;o<E.getDamageMsgTypes().length;o++)
 						{
-							if(E.getShieldedMsgTypes()[o]!=newValue)
-								newSet[n++]=E.getShieldedMsgTypes()[o];
+							if(E.getDamageMsgTypes()[o]!=newValue)
+								newSet[n++]=E.getDamageMsgTypes()[o];
 						}
-						E.setShieldedMsgTypes(newSet);
+						E.setDamageMsgTypes(newSet);
 					}
 					else
 					{
-						final int[] newSet=Arrays.copyOf(E.getShieldedMsgTypes(),E.getShieldedMsgTypes().length+1);
+						final int[] newSet=Arrays.copyOf(E.getDamageMsgTypes(),E.getDamageMsgTypes().length+1);
 						newSet[newSet.length-1]=newValue;
-						E.setShieldedMsgTypes(newSet);
+						E.setDamageMsgTypes(newSet);
 					}
 				}
 				else
@@ -8513,9 +8513,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				E.setFuelEfficiency(prompt(mob, E.getFuelEfficiency()*100.0, ++showNumber, showFlag, "Fuel Effic. %")/100.0);
 				E.setAvailPorts(CMParms.parseEnumList(TechComponent.ShipDir.class,prompt(mob, CMParms.toListString(E.getAvailPorts()), ++showNumber, showFlag, "Avail. ports").toUpperCase(),',').toArray(new TechComponent.ShipDir[0]));
 			}
-			if(me instanceof ShipShieldGenerator)
+			if(me instanceof ShipWarComponent)
 			{
-				final ShipShieldGenerator E=(ShipShieldGenerator)me;
+				final ShipWarComponent E=(ShipWarComponent)me;
 				E.setPermittedNumDirections(prompt(mob, E.getPermittedNumDirections(), ++showNumber, showFlag, "Max Ports"));
 				E.setPermittedDirections(CMParms.parseEnumList(TechComponent.ShipDir.class,prompt(mob, CMParms.toListString(E.getPermittedDirections()), ++showNumber, showFlag, "Avail. ports").toUpperCase(),',').toArray(new TechComponent.ShipDir[0]));
 				genMessageTypes(mob, E, ++showNumber, showFlag);

@@ -1161,7 +1161,7 @@ public class ItemData extends StdWebMacro
 						str.append(I instanceof ShipEngine);
 						break;
 					case ISSHIPSHIELD:
-						str.append(I instanceof ShipShieldGenerator);
+						str.append(I instanceof ShipWarComponent);
 						break;
 					case ISPANEL:
 						str.append((I instanceof ElecPanel)&&(!(I instanceof Computer)));
@@ -1209,20 +1209,20 @@ public class ItemData extends StdWebMacro
 							str.append((firstTime) ? (((Electronics)I).activated()?"CHECKED":"") : (old.equalsIgnoreCase("on")?"CHECKED":"")).append(", ");
 						break;
 					case SSHIELDNUMPORTS:
-						if(I instanceof ShipShieldGenerator)
-							str.append((firstTime) ? (""+((ShipShieldGenerator)I).getPermittedNumDirections()) : old).append(", ");
+						if(I instanceof ShipWarComponent)
+							str.append((firstTime) ? (""+((ShipWarComponent)I).getPermittedNumDirections()) : old).append(", ");
 						break;
 					case SSHIELDPORTS:
-						if(I instanceof ShipShieldGenerator)
-							str.append((firstTime) ? (""+CMParms.toListString(((ShipShieldGenerator)I).getPermittedDirections())) : old).append(", ");
+						if(I instanceof ShipWarComponent)
+							str.append((firstTime) ? (""+CMParms.toListString(((ShipWarComponent)I).getPermittedDirections())) : old).append(", ");
 						break;
 					case SSHIELDMTYPES:
-						if(I instanceof ShipShieldGenerator)
+						if(I instanceof ShipWarComponent)
 						{
 							final Set<Integer> msgTypes=new TreeSet<Integer>(); 
 							if(firstTime)
 							{
-								for(int typ : ((ShipShieldGenerator)I).getShieldedMsgTypes())
+								for(int typ : ((ShipWarComponent)I).getDamageMsgTypes())
 									msgTypes.add(Integer.valueOf(typ));
 							}
 							else
@@ -1239,7 +1239,7 @@ public class ItemData extends StdWebMacro
 									}
 								}
 							}
-							for(final int r : ShipShieldGenerator.AVAIL_DAMAGE_TYPES)
+							for(final int r : ShipWarComponent.AVAIL_DAMAGE_TYPES)
 							{
 								str.append("<OPTION VALUE=\""+r+"\"");
 								if(msgTypes.contains(Integer.valueOf(r)))

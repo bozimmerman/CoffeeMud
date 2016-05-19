@@ -734,15 +734,15 @@ public class GrinderItems
 						((Electronics)I).activate(old.equalsIgnoreCase("on"));
 					break;
 				case SSHIELDNUMPORTS:
-					if(I instanceof ShipShieldGenerator)
-						((ShipShieldGenerator)I).setPermittedNumDirections(CMath.s_int(old));
+					if(I instanceof ShipWarComponent)
+						((ShipWarComponent)I).setPermittedNumDirections(CMath.s_int(old));
 					break;
 				case SSHIELDPORTS:
-					if(I instanceof ShipShieldGenerator)
-						((ShipShieldGenerator)I).setPermittedDirections(CMParms.parseEnumList(TechComponent.ShipDir.class,old.toUpperCase(),',').toArray(new TechComponent.ShipDir[0]));
+					if(I instanceof ShipWarComponent)
+						((ShipWarComponent)I).setPermittedDirections(CMParms.parseEnumList(TechComponent.ShipDir.class,old.toUpperCase(),',').toArray(new TechComponent.ShipDir[0]));
 					break;
 				case SSHIELDMTYPES:
-					if(I instanceof ShipShieldGenerator)
+					if(I instanceof ShipWarComponent)
 					{
 						final Set<Integer> msgTypes=new TreeSet<Integer>(); 
 						if(httpReq.isUrlParameter("SSHIELDMTYPES"))
@@ -760,7 +760,7 @@ public class GrinderItems
 						final Integer[] TYPES=msgTypes.toArray(new Integer[0]);
 						for(int i=0;i<types.length;i++)
 							types[i]=TYPES[i].intValue();
-						((ShipShieldGenerator)I).setShieldedMsgTypes(types);
+						((ShipWarComponent)I).setDamageMsgTypes(types);
 					}
 					break;
 				case ISCONSTTHRUST:

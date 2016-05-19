@@ -39,24 +39,23 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class StdShipShieldGenerator extends StdElecCompItem implements ShipWarComponent
+public class StdShipWeapon extends StdElecCompItem implements ShipWarComponent
 {
 	@Override
 	public String ID()
 	{
-		return "StdShipShieldGenerator";
+		return "StdShipWeapon";
 	}
 
 	@Override
 	public TechType getTechType()
 	{
-		return Technical.TechType.SHIP_SHIELD;
+		return Technical.TechType.SHIP_WEAPON;
 	}
 	
 	private ShipDir[]		allPossDirs			= ShipDir.values();
 	private int				numPermitDirs		= ShipDir.values().length;
-	private int[]			shieldedMsgTypes	= AVAIL_DAMAGE_TYPES;
-	private volatile long	lastPowerConsumption= 0;
+	private int[]			damageMsgTypes		= AVAIL_DAMAGE_TYPES;
 	private volatile long	powerSetting		= Integer.MAX_VALUE;
 
 	private volatile ShipDir[]  		  currCoverage = null;
@@ -115,13 +114,13 @@ public class StdShipShieldGenerator extends StdElecCompItem implements ShipWarCo
 	@Override
 	public void setDamageMsgTypes(int[] newTypes)
 	{
-		this.shieldedMsgTypes = newTypes;
+		this.damageMsgTypes = newTypes;
 	}
 	
 	@Override
 	public int[] getDamageMsgTypes()
 	{
-		return shieldedMsgTypes;
+		return damageMsgTypes;
 	}
 
 	protected ShipDir[] getCurrentCoveredDirections()
@@ -153,83 +152,15 @@ public class StdShipShieldGenerator extends StdElecCompItem implements ShipWarCo
 		}
 		return currCoverage;
 	}
-	
+
 	@Override
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
 		if(!super.okMessage(host, msg))
 			return false;
 		final SpaceShip ship = getMyShip(); 
-		if((msg.target() == ship)
-		&&(activated())
-		&&(CMParms.contains(this.getDamageMsgTypes(), msg.sourceMinor())))
+		if((msg.target() == ship) && (activated()))
 		{
-			switch(msg.targetMinor())
-			{
-			case CMMsg.TYP_DAMAGE: // laser, energy, some other kind of directed damage
-			{
-				if((msg.value() > 0)&&(this.lastPowerConsumption>0)&&(msg.tool() instanceof SpaceObject))
-				{
-					final SpaceObject weaponO=(SpaceObject)msg.tool();
-					// first decide if it came from a direction im handling
-					// if that matters
-					boolean absorbs = false;
-					if((getCurrentCoveredDirections().length >= ShipDir.values().length))
-						absorbs = true;
-					else
-					if(weaponO.knownSource() != null)
-					{
-						final double[] directionToMe = CMLib.map().getDirection(weaponO.knownSource(), ship);
-						final ShipDir dir = CMLib.map().getDirectionFromDir(ship.facing(), ship.roll(), directionToMe);
-						absorbs = CMParms.contains(getCurrentCoveredDirections(), dir);
-					}
-
-					if(absorbs)
-					{
-						double shieldHurtMultiplier = 1.0;
-						// this shield can handle it, do deal out any tech-diff adjustments
-						if(msg.tool() instanceof Technical)
-						{
-							if(this.techLevel() > ((Technical)msg.tool()).techLevel())
-							{
-								double pct = 1.0 - CMath.div(this.techLevel() - ((Technical)msg.tool()).techLevel(),10.0);
-								if(pct <= 0)
-								{
-									shieldHurtMultiplier = 0.0;
-									msg.setValue((int)Math.round(msg.value() * 0.05));
-								}
-								else
-								{
-									shieldHurtMultiplier = pct;
-									msg.setValue((int)Math.round(msg.value() * pct));
-								}
-							}
-						}
-						// next do actual shield-based mitigations
-						if(msg.value() > 0)
-						{
-							double pctShields = CMath.div(lastPowerConsumption,powerCapacity());
-							double efficiency = this.getFinalManufacturer().getEfficiencyPct();
-							double reliability = this.getFinalManufacturer().getReliabilityPct();
-							double wearAndTear = 1.0;
-							if(this.subjectToWearAndTear() && this.usesRemaining()<100)
-								wearAndTear =CMath.div(this.usesRemaining(), 100);
-							int newVal = (int)Math.round(msg.value() - CMath.mul(msg.value(), pctShields * efficiency * wearAndTear));
-							int shieldDamage = (int)Math.round(50.0 * shieldHurtMultiplier * (1.0-pctShields) * (1.0-reliability));
-							if(shieldDamage > 0)
-							{
-								CMMsg msg2=(CMMsg)msg.copyOf();
-								msg2.setValue(shieldDamage);
-								msg2.setTarget(this);
-								sendLocalMessage(msg2);
-							}
-							msg.setValue(newVal);
-						}
-					}
-				}
-				break;
-			}
-			}
 		}
 		return true;
 	}
@@ -248,7 +179,6 @@ public class StdShipShieldGenerator extends StdElecCompItem implements ShipWarCo
 		}
 	}
 	
-	
 	@Override
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
@@ -257,24 +187,6 @@ public class StdShipShieldGenerator extends StdElecCompItem implements ShipWarCo
 		{
 			switch(msg.targetMinor())
 			{
-			case CMMsg.TYP_DAMAGE:
-			{
-				if(this.subjectToWearAndTear() && (this.usesRemaining()<100) && (msg.value()>0))
-				{
-					int shieldDamage = msg.value();
-					if(shieldDamage > usesRemaining())
-					{
-						setUsesRemaining(0);
-						CMMsg msg2=CMClass.getMsg(msg.source(), this, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_DEACTIVATE|CMMsg.MASK_CNTRLMSG, "", CMMsg.NO_EFFECT,null);
-						this.sendLocalMessage(msg2);
-						final String code=Technical.TechCommand.COMPONENTFAILURE.makeCommand(TechType.SHIP_SHIELD, "Failure: "+me.name()+": shield_failure.");
-						sendComputerMessage(this,circuitKey,msg.source(),null,code);
-					}
-					else
-						setUsesRemaining(usesRemaining()-shieldDamage);
-				}
-				break;
-			}
 			case CMMsg.TYP_ACTIVATE:
 			{
 				final LanguageLibrary lang=CMLib.lang();
@@ -306,7 +218,7 @@ public class StdShipShieldGenerator extends StdElecCompItem implements ShipWarCo
 								powerSetting = powerCapacity();
 						}
 						else
-						if(command == TechCommand.SHIELDSET)
+						if(command == TechCommand.WEAPONSET)
 						{
 							ShipDir centerDir = (ShipDir)parms[0];
 							int centralIndex = CMParms.indexOf(this.getPermittedDirections(),centerDir);
@@ -314,31 +226,8 @@ public class StdShipShieldGenerator extends StdElecCompItem implements ShipWarCo
 								reportError(this, controlI, mob, lang.L("@x1 did not respond.",me.name(mob)), lang.L("Failure: @x1: control port failure.",me.name(mob)));
 							else
 							{
-								int numDirs = ((Integer)parms[1]).intValue();
-								if(numDirs > this.getPermittedNumDirections())
-									numDirs = this.getPermittedNumDirections();
-								if(numDirs >= this.getPermittedDirections().length)
-									currCoverage = getPermittedDirections();
-								else
-								{
-									final List<ShipDir> permittedDirs = new XVector<ShipDir>(this.getPermittedDirections());
-									permittedDirs.addAll(Arrays.asList(this.getPermittedDirections()));
-									permittedDirs.addAll(Arrays.asList(this.getPermittedDirections()));
-									centralIndex += this.getPermittedDirections().length;
-									final List<ShipDir> theDirs = new ArrayList<ShipDir>(numDirs);
-									int offset = 0;
-									while(theDirs.size() < numDirs)
-									{
-										if(!theDirs.contains(permittedDirs.get(centralIndex+offset)))
-											theDirs.add(permittedDirs.get(centralIndex+offset));
-										if(!theDirs.contains(permittedDirs.get(centralIndex-offset)))
-											theDirs.add(permittedDirs.get(centralIndex-offset));
-										offset+=1;
-									}
-									currCoverage = theDirs.toArray(new ShipDir[theDirs.size()]);
-								}
+								//TODO:
 							}
-							
 						}
 						else
 							reportError(this, controlI, mob, lang.L("@x1 refused to respond.",me.name(mob)), lang.L("Failure: @x1: control command failure.",me.name(mob)));
@@ -347,23 +236,10 @@ public class StdShipShieldGenerator extends StdElecCompItem implements ShipWarCo
 				break;
 			}
 			case CMMsg.TYP_POWERCURRENT:
-				// shields should constantly consume what they have
-				if(activated())
-				{
-					this.lastPowerConsumption = this.power;
-					this.power = 0;
-				}
-				else
-				{
-					this.lastPowerConsumption = 0;
-					this.power = 0;
-				}
 				break;
 			case CMMsg.TYP_DEACTIVATE:
 				this.activate(false);
-				this.lastPowerConsumption = 0;
 				this.power = 0;
-				//TODO:what does the ship need to know?
 				break;
 			}
 		}
@@ -372,7 +248,7 @@ public class StdShipShieldGenerator extends StdElecCompItem implements ShipWarCo
 	@Override
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof StdShipShieldGenerator))
+		if(!(E instanceof StdShipWeapon))
 			return false;
 		return super.sameAs(E);
 	}
