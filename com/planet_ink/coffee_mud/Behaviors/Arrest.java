@@ -2531,7 +2531,11 @@ public class Arrest extends StdBehavior implements LegalBehavior
 							W.setState(Law.STATE_JAILING);
 						else
 							W.setState(Law.STATE_MOVING);
-						if(cuff!=null){ cuff.unInvoke(); W.criminal().delEffect(cuff);}
+						if (cuff != null)
+						{
+							cuff.unInvoke();
+							W.criminal().delEffect(cuff);
+						}
 						Ability A=CMClass.getAbility("Skill_HandCuff");
 						if(A!=null)
 							A.invoke(officer,W.criminal(),true,0);
