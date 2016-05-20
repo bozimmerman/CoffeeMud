@@ -164,7 +164,7 @@ public class GenSpaceDrive extends StdShipFuellessThruster
 			this.setAvailPorts(CMParms.parseEnumList(TechComponent.ShipDir.class, val, ',').toArray(new TechComponent.ShipDir[0]));
 			break;
 		case 11:
-			setRechargeRate(CMath.s_parseLongExpression(val));
+			setRechargeRate((float)CMath.s_parseMathExpression(val));
 			break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);

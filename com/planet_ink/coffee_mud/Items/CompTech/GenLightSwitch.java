@@ -55,7 +55,7 @@ public class GenLightSwitch extends GenElecCompItem implements ElecPanel
 		baseGoldValue=15;
 		super.setPowerCapacity(1);
 		super.setPowerRemaining(0);
-		super.setRechargeRate(1);
+		super.setRechargeRate(1.0f);
 		basePhyStats().setSensesMask(basePhyStats.sensesMask()|PhyStats.SENSE_ALWAYSCOMPRESSED|PhyStats.SENSE_ITEMNOTGET);
 		basePhyStats().setLevel(1);
 		recoverPhyStats();

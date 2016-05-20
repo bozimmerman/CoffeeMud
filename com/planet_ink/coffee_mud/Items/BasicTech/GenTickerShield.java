@@ -275,7 +275,7 @@ public class GenTickerShield extends StdElecItem implements Armor
 		recoverPhyStats();
 	}
 
-	private final static String[] MYCODES={"POWERCAP","ACTIVATED","POWERREM","MANUFACTURER","LAYER","LAYERATTRIB"};
+	private final static String[] MYCODES={"POWERCAP","ACTIVATED","POWERREM","MANUFACTURER","LAYER","LAYERATTRIB","TECHLEVEL"};
 	@Override
 	public String getStat(String code)
 	{
@@ -295,6 +295,8 @@ public class GenTickerShield extends StdElecItem implements Armor
 			return "" + getClothingLayer();
 		case 5:
 			return "" + getLayerAttributes();
+		case 6:
+			return "" + techLevel();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -308,24 +310,27 @@ public class GenTickerShield extends StdElecItem implements Armor
 		else
 		switch(getCodeNum(code))
 		{
-			case 0:
-				setPowerCapacity(CMath.s_parseLongExpression(val));
-				break;
-			case 1:
-				activate(CMath.s_bool(val));
-				break;
-			case 2:
-				setPowerRemaining(CMath.s_parseLongExpression(val));
-				break;
-			case 3:
-				setManufacturerName(val);
-				break;
-			case 4:
-				setClothingLayer((short) CMath.s_parseIntExpression(val));
-				break;
-			case 5:
-				setLayerAttributes((short) CMath.s_parseListLongExpression(Armor.LAYERMASK_DESCS, val));
-				break;
+		case 0:
+			setPowerCapacity(CMath.s_parseLongExpression(val));
+			break;
+		case 1:
+			activate(CMath.s_bool(val));
+			break;
+		case 2:
+			setPowerRemaining(CMath.s_parseLongExpression(val));
+			break;
+		case 3:
+			setManufacturerName(val);
+			break;
+		case 4:
+			setClothingLayer((short) CMath.s_parseIntExpression(val));
+			break;
+		case 5:
+			setLayerAttributes((short) CMath.s_parseListLongExpression(Armor.LAYERMASK_DESCS, val));
+			break;
+		case 6:
+			setTechLevel(CMath.s_parseIntExpression(val));
+			break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;

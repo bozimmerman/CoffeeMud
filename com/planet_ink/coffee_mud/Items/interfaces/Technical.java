@@ -150,8 +150,9 @@ public interface Technical extends Item
 		SENSE(),
 		AIRREFRESH(Double.class, Integer.class), 
 		POWERSET(Long.class),
+		WEAPONTARGETSET(Double.class,Double.class),
+		WEAPONFIRE(),
 		SHIELDSET(ShipDir.class,Integer.class),
-		WEAPONSET(ShipDir.class,Integer.class),
 		GRAVITYCHANGE(Boolean.class);
 		private final Class<?>[]	parms;
 

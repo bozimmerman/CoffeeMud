@@ -153,7 +153,7 @@ public class GenShipShieldGenerator extends StdShipShieldGenerator
 			break;
 		}
 		case 8:
-			setRechargeRate(CMath.s_parseLongExpression(val));
+			setRechargeRate((float)CMath.s_parseMathExpression(val));
 			break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);

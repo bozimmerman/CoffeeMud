@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
-
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 /*
@@ -33,22 +32,22 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class GenElecContainer extends StdElecContainer
+public class GenTechItem extends StdTechItem
 {
 	@Override
 	public String ID()
 	{
-		return "GenElecContainer";
+		return "GenTechItem";
 	}
 
 	protected String	readableText	= "";
 
-	public GenElecContainer()
+	public GenTechItem()
 	{
 		super();
-		setName("a generic electric container");
+		setName("a generic technical item");
 		basePhyStats.setWeight(2);
-		setDisplayText("a generic electric container sits here.");
+		setDisplayText("a generic technical item sits here.");
 		setDescription("");
 		baseGoldValue=5;
 		basePhyStats().setLevel(1);
@@ -65,7 +64,7 @@ public class GenElecContainer extends StdElecContainer
 	@Override
 	public String text()
 	{
-		return CMLib.coffeeMaker().getPropertiesStr(this,false);
+		return CMLib.coffeeMaker().getPropertiesStr(this, false);
 	}
 
 	@Override
@@ -83,13 +82,12 @@ public class GenElecContainer extends StdElecContainer
 	@Override
 	public void setMiscText(String newText)
 	{
-		miscText="";
-		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
+		miscText = "";
+		CMLib.coffeeMaker().setPropertiesStr(this, newText, false);
 		recoverPhyStats();
 	}
 
-	private final static String[] MYCODES={"TECHLEVEL","HASLOCK","HASLID","CAPACITY","CONTAINTYPES","RESETTIME","POWERCAP","ACTIVATED","POWERREM","MANUFACTURER","DEFCLOSED","DEFLOCKED"};
-
+	private final static String[] MYCODES={"TECHLEVEL"};
 	@Override
 	public String getStat(String code)
 	{
@@ -99,28 +97,6 @@ public class GenElecContainer extends StdElecContainer
 		{
 		case 0:
 			return "" + techLevel();
-		case 1:
-			return "" + hasALock();
-		case 2:
-			return "" + hasADoor();
-		case 3:
-			return "" + capacity();
-		case 4:
-			return "" + containTypes();
-		case 5:
-			return "" + openDelayTicks();
-		case 6:
-			return "" + powerCapacity();
-		case 7:
-			return "" + activated();
-		case 8:
-			return "" + powerRemaining();
-		case 9:
-			return "" + getManufacturerName();
-		case 10:
-			return "" + defaultsClosed();
-		case 11:
-			return "" + defaultsLocked();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -137,45 +113,12 @@ public class GenElecContainer extends StdElecContainer
 		case 0:
 			setTechLevel(CMath.s_parseIntExpression(val));
 			break;
-		case 1:
-			setDoorsNLocks(hasADoor(), isOpen(), defaultsClosed(), CMath.s_bool(val), false, CMath.s_bool(val) && defaultsLocked());
-			break;
-		case 2:
-			setDoorsNLocks(CMath.s_bool(val), isOpen(), CMath.s_bool(val) && defaultsClosed(), hasALock(), isLocked(), defaultsLocked());
-			break;
-		case 3:
-			setCapacity(CMath.s_parseIntExpression(val));
-			break;
-		case 4:
-			setContainTypes(CMath.s_parseBitLongExpression(Container.CONTAIN_DESCS, val));
-			break;
-		case 5:
-			setOpenDelayTicks(CMath.s_parseIntExpression(val));
-			break;
-		case 6:
-			setPowerCapacity(CMath.s_parseLongExpression(val));
-			break;
-		case 7:
-			activate(CMath.s_bool(val));
-			break;
-		case 8:
-			setPowerRemaining(CMath.s_parseLongExpression(val));
-			break;
-		case 9:
-			setManufacturerName(val);
-			break;
-		case 10:
-			setDoorsNLocks(hasADoor(), isOpen(), CMath.s_bool(val), hasALock(), isLocked(), defaultsLocked());
-			break;
-		case 11:
-			setDoorsNLocks(hasADoor(), isOpen(), defaultsClosed(), hasALock(), isLocked(), CMath.s_bool(val));
-			break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;
 		}
 	}
-	
+
 	@Override
 	protected int getCodeNum(String code)
 	{
@@ -186,15 +129,15 @@ public class GenElecContainer extends StdElecContainer
 		}
 		return -1;
 	}
-
+	
 	private static String[] codes=null;
-
+	
 	@Override
 	public String[] getStatCodes()
 	{
 		if(codes!=null)
 			return codes;
-		final String[] MYCODES=CMProps.getStatCodesList(GenElecContainer.MYCODES,this);
+		final String[] MYCODES=CMProps.getStatCodesList(GenTechItem.MYCODES,this);
 		final String[] superCodes=CMParms.toStringArray(GenericBuilder.GenItemCode.values());
 		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;
@@ -208,7 +151,7 @@ public class GenElecContainer extends StdElecContainer
 	@Override
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof GenElecContainer))
+		if(!(E instanceof GenTechItem))
 			return false;
 		final String[] theCodes=getStatCodes();
 		for(int i=0;i<theCodes.length;i++)

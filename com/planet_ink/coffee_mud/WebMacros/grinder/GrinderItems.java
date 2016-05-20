@@ -793,7 +793,7 @@ public class GrinderItems
 					break;
 				case RECHARGERATE:
 					if(I instanceof TechComponent)
-						((TechComponent)I).setRechargeRate(CMath.s_long(old));
+						((TechComponent)I).setRechargeRate((float)CMath.s_parseMathExpression(old));
 					break;
 				case PANELTYPE:
 					if(I instanceof ElecPanel)

@@ -41,7 +41,7 @@ public class StdElecCompContainer extends StdElecContainer implements TechCompon
 		return "StdElecCompContainer";
 	}
 
-	protected long				maxRechargePer	= 0;
+	protected float				maxRechargePer	= 0;
 
 	protected float				installedFactor	= 1.0f;
 	protected volatile String	circuitKey		= null;
@@ -89,13 +89,13 @@ public class StdElecCompContainer extends StdElecContainer implements TechCompon
 	}
 
 	@Override
-	public void setRechargeRate(long amtPer)
+	public void setRechargeRate(float pctCapPer)
 	{
-		this.maxRechargePer = amtPer;
+		this.maxRechargePer = pctCapPer;
 	}
 
 	@Override
-	public long getRechargeRate()
+	public float getRechargeRate()
 	{
 		return maxRechargePer;
 	}

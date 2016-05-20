@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
+
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 /*
@@ -65,7 +66,7 @@ public class GenTriCorder extends StdTriCorder
 		recoverPhyStats();
 	}
 
-	private final static String[] MYCODES={"POWERCAP","ACTIVATED","POWERREM","MANUFACTURER"};
+	private final static String[] MYCODES={"POWERCAP","ACTIVATED","POWERREM","MANUFACTURER","TECHLEVEL"};
 
 	@Override
 	public String getStat(String code)
@@ -82,6 +83,8 @@ public class GenTriCorder extends StdTriCorder
 			return "" + powerRemaining();
 		case 3:
 			return "" + getManufacturerName();
+		case 4:
+			return "" + techLevel();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -106,6 +109,9 @@ public class GenTriCorder extends StdTriCorder
 			break;
 		case 3:
 			setManufacturerName(val);
+			break;
+		case 4:
+			setTechLevel(CMath.s_parseIntExpression(val));
 			break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);

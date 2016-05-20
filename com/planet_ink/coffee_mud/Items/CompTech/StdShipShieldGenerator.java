@@ -46,6 +46,15 @@ public class StdShipShieldGenerator extends StdElecCompItem implements ShipWarCo
 	{
 		return "StdShipShieldGenerator";
 	}
+	
+	public StdShipShieldGenerator()
+	{
+		super();
+		super.setRechargeRate(0.1f);
+		setName("a ship shield generator");
+		setDisplayText("a ship shield generator sits here.");
+		setDescription("");
+	}
 
 	@Override
 	public TechType getTechType()
@@ -72,7 +81,7 @@ public class StdShipShieldGenerator extends StdElecCompItem implements ShipWarCo
 	@Override
 	public int powerNeeds()
 	{
-		return (int) Math.min((int) Math.min(powerCapacity,powerSetting) - power, getRechargeRate());
+		return (int) Math.min((int) Math.min(powerCapacity,powerSetting) - power, (int)Math.round((double)powerCapacity*getRechargeRate()));
 	}
 	
 	protected synchronized SpaceShip getMyShip()
@@ -168,7 +177,9 @@ public class StdShipShieldGenerator extends StdElecCompItem implements ShipWarCo
 			{
 			case CMMsg.TYP_DAMAGE: // laser, energy, some other kind of directed damage
 			{
-				if((msg.value() > 0)&&(this.lastPowerConsumption>0)&&(msg.tool() instanceof SpaceObject))
+				if((msg.value() > 0)
+				&&(this.lastPowerConsumption>0)
+				&&(msg.tool() instanceof SpaceObject))
 				{
 					final SpaceObject weaponO=(SpaceObject)msg.tool();
 					// first decide if it came from a direction im handling

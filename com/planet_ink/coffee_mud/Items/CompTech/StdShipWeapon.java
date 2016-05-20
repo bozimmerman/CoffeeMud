@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.BasicTech.StdElecItem;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.TechComponent.ShipDir;
 import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechCommand;
 import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechType;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
@@ -53,10 +54,11 @@ public class StdShipWeapon extends StdElecCompItem implements ShipWarComponent
 		return Technical.TechType.SHIP_WEAPON;
 	}
 	
-	private ShipDir[]		allPossDirs			= ShipDir.values();
-	private int				numPermitDirs		= ShipDir.values().length;
-	private int[]			damageMsgTypes		= AVAIL_DAMAGE_TYPES;
+	private ShipDir[]		allPossDirs			= new ShipDir[] { ShipDir.FORWARD };
+	private int				numPermitDirs		= 1;
+	private int[]			damageMsgTypes		= new int[] { CMMsg.TYP_ELECTRIC };
 	private volatile long	powerSetting		= Integer.MAX_VALUE;
+	private final double[]	targetDirection		= new double[]{0.0,0.0}; 
 
 	private volatile ShipDir[]  		  currCoverage = null;
 	private volatile Reference<SpaceShip> myShip 	   = null;
@@ -71,7 +73,7 @@ public class StdShipWeapon extends StdElecCompItem implements ShipWarComponent
 	@Override
 	public int powerNeeds()
 	{
-		return (int) Math.min((int) Math.min(powerCapacity,powerSetting) - power, getRechargeRate());
+		return (int) Math.min((int) Math.min(powerCapacity,powerSetting) - power, (int)Math.round((double)powerCapacity*getRechargeRate()));
 	}
 	
 	protected synchronized SpaceShip getMyShip()
@@ -158,10 +160,6 @@ public class StdShipWeapon extends StdElecCompItem implements ShipWarComponent
 	{
 		if(!super.okMessage(host, msg))
 			return false;
-		final SpaceShip ship = getMyShip(); 
-		if((msg.target() == ship) && (activated()))
-		{
-		}
 		return true;
 	}
 
@@ -218,15 +216,85 @@ public class StdShipWeapon extends StdElecCompItem implements ShipWarComponent
 								powerSetting = powerCapacity();
 						}
 						else
-						if(command == TechCommand.WEAPONSET)
+						if(command == TechCommand.WEAPONTARGETSET)
 						{
-							ShipDir centerDir = (ShipDir)parms[0];
-							int centralIndex = CMParms.indexOf(this.getPermittedDirections(),centerDir);
-							if(centralIndex < 0)
-								reportError(this, controlI, mob, lang.L("@x1 did not respond.",me.name(mob)), lang.L("Failure: @x1: control port failure.",me.name(mob)));
+							final SpaceObject ship = CMLib.map().getSpaceObject(this, true);
+							if(ship == null)
+								reportError(this, controlI, mob, lang.L("@x1 did not respond.",me.name(mob)), lang.L("Failure: @x1: control syntax failure.",me.name(mob)));
 							else
 							{
-								//TODO:
+								targetDirection[0] = ((Double)parms[0]).doubleValue();
+								targetDirection[1] = ((Double)parms[0]).doubleValue();
+							}
+						}
+						else
+						if(command == TechCommand.WEAPONFIRE)
+						{
+							final SpaceObject ship = CMLib.map().getSpaceObject(this, true);
+							if(ship == null)
+								reportError(this, controlI, mob, lang.L("@x1 did not respond.",me.name(mob)), lang.L("Failure: @x1: control syntax failure.",me.name(mob)));
+							else
+							if(this.power < this.powerSetting)
+								reportError(this, controlI, mob, lang.L("@x1 is not charged up.",me.name(mob)), lang.L("Failure: @x1: weapon is not charged.",me.name(mob)));
+							else
+							{
+								if(ship instanceof SpaceShip)
+								{
+									final ShipDir dir = CMLib.map().getDirectionFromDir(((SpaceShip)ship).facing(), ((SpaceShip)ship).roll(), targetDirection);
+									if(CMParms.contains(getCurrentCoveredDirections(), dir))
+										reportError(this, controlI, mob, lang.L("@x1 is not facing a covered direction.",me.name(mob)), lang.L("Failure: @x1: weapon is not facing correctly.",me.name(mob)));
+								}
+								SpaceObject weaponO=(SpaceObject)CMClass.getTech("StdSpaceTech");
+								int damageMsgType = CMMsg.TYP_ELECTRIC;
+								if(getDamageMsgTypes().length>0)
+									damageMsgType = getDamageMsgTypes()[CMLib.dice().roll(1, getDamageMsgTypes().length, -1)];
+								switch(damageMsgType)
+								{
+								case CMMsg.TYP_COLLISION:
+									weaponO.setName(L("a metal slug"));
+									break;
+								case CMMsg.TYP_ELECTRIC:
+									weaponO.setName(L("an energy beam"));
+									break;
+								case CMMsg.TYP_ACID:
+									weaponO.setName(L("a disruptor beam"));
+									break;
+								case CMMsg.TYP_COLD:
+									weaponO.setName(L("a distintegration beam"));
+									break;
+								case CMMsg.TYP_FIRE:
+									weaponO.setName(L("a photonic beam"));
+									break;
+								case CMMsg.TYP_GAS:
+									weaponO.setName(L("a particle beam"));
+									break;
+								case CMMsg.TYP_LASER:
+									weaponO.setName(L("a laser beam"));
+									break;
+								case CMMsg.TYP_PARALYZE:
+									weaponO.setName(L("a fusion beam"));
+									break;
+								case CMMsg.TYP_POISON:
+									weaponO.setName(L("a magnetic beam"));
+									break;
+								case CMMsg.TYP_SONIC:
+									weaponO.setName(L("a tight radio beam"));
+									break;
+								case CMMsg.TYP_UNDEAD:
+									weaponO.setName(L("a graviton beam"));
+									break;
+								case CMMsg.TYP_WATER:
+									weaponO.setName(L("an ice slug"));
+									break;
+								}
+								weaponO.setKnownSource(ship);
+								weaponO.setCoords(ship.coordinates());
+								weaponO.setRadius(10);
+								weaponO.setDirection(targetDirection);
+								weaponO.setSpeed(SpaceObject.VELOCITY_LIGHT);
+								((Technical)weaponO).setTechLevel(techLevel());
+								//TODO: calculate damage?
+								//TODO: finish fireing
 							}
 						}
 						else

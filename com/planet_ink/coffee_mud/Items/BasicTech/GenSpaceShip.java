@@ -740,7 +740,7 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES","RESETTIME","RIDEBASIS","MOBSHELD",
 											"POWERCAP","ACTIVATED","POWERREM","MANUFACTURER","AREA","COORDS","RADIUS",
 											"ROLL","DIRECTION","SPEED","FACING","OWNER","PRICE","DEFCLOSED","DEFLOCKED",
-											"PUTSTR","MOUNTSTR","DISMOUNTSTR","EXITNAME"
+											"PUTSTR","MOUNTSTR","DISMOUNTSTR","EXITNAME","TECHLEVEL"
 										  };
 	@Override
 	public String getStat(String code)
@@ -801,6 +801,8 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 			return dismountString;
 		case 25:
 			return "" + doorName();
+		case 26:
+			return "" + techLevel();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -892,6 +894,9 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 			break;
 		case 25:
 			doorName = val;
+			break;
+		case 26:
+			setTechLevel(CMath.s_parseIntExpression(val));
 			break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);

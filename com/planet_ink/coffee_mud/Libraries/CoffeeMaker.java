@@ -3006,7 +3006,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		if(E instanceof TechComponent)
 		{
 			((TechComponent)E).setInstalledFactor((float)CMLib.xml().getDoubleFromPieces(buf,"INSTF"));
-			((TechComponent)E).setRechargeRate(CMLib.xml().getLongFromPieces(buf,"INSTF",((TechComponent)E).powerCapacity()));
+			((TechComponent)E).setRechargeRate((float)CMLib.xml().getDoubleFromPieces(buf,"RECHRATE",((TechComponent)E).getRechargeRate()));
 		}
 		if(E instanceof ShipEngine)
 		{

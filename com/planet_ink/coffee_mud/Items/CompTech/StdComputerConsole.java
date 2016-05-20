@@ -106,13 +106,13 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 	}
 
 	@Override
-	public void setRechargeRate(long amtPer)
+	public void setRechargeRate(float pctCapPer)
 	{
 		
 	}
 
 	@Override
-	public long getRechargeRate()
+	public float getRechargeRate()
 	{
 		return 1;
 	}
