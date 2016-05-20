@@ -38,25 +38,66 @@ import java.util.*;
 
 public class AstroEngineering extends TechSkill
 {
-	@Override public String ID() { return "AstroEngineering"; }
-	private final static String localizedName = CMLib.lang().L("Astro Engineering");
-	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "";}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected  int canTargetCode(){return CAN_ITEMS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	private static final String[] triggerStrings =I(new String[] {"ASTROENGINEER","ASTROENGINEERING","ENGINEER","AE"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int usageType(){return USAGE_MOVEMENT;}
+	@Override
+	public String ID()
+	{
+		return "AstroEngineering";
+	}
 
-	protected volatile int baseTickSpan = Integer.MAX_VALUE;
-	protected volatile boolean aborted = false;
-	protected volatile boolean failure = false;
-	protected volatile Item targetItem = null;
-	protected volatile Item targetPanel = null;
-	protected volatile Room targetRoom  = null;
-	protected volatile Operation op = Operation.REPAIR;
-	protected volatile String altverb="";
+	private final static String	localizedName	= CMLib.lang().L("Astro Engineering");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public String displayText()
+	{
+		return "";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_ITEMS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "ASTROENGINEER", "ASTROENGINEERING", "ENGINEER", "AE" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT;
+	}
+
+	protected volatile int			baseTickSpan	= Integer.MAX_VALUE;
+	protected volatile boolean		aborted			= false;
+	protected volatile boolean		failure			= false;
+	protected volatile Item			targetItem		= null;
+	protected volatile Item			targetPanel		= null;
+	protected volatile Room			targetRoom		= null;
+	protected volatile Operation	op				= Operation.REPAIR;
+	protected volatile String		altverb			= "";
 
 	protected static enum Operation
 	{
