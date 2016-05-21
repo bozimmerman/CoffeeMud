@@ -106,8 +106,8 @@ public class Prop_AbilityImmunity extends Property implements TriggeredAffect
 		if ((msg.target() != null)
 		&& (msg.tool() instanceof Ability )
 		&& ((msg.amITarget(affected))
-			||(owner && (affected instanceof Item)&&(msg.target()==((Item)affected).owner()))
-			||(owner && (affected instanceof Item)&&(msg.target()==((Item)affected).owner())&&(!((Item)affected).amWearingAt(Wearable.IN_INVENTORY)))))
+			||(owner && (affected instanceof Item) && (msg.target()==((Item)affected).owner()))
+			||(owner && (affected instanceof Item) && (msg.target()==((Item)affected).owner()) && (!((Item)affected).amWearingAt(Wearable.IN_INVENTORY)))))
 		{
 			final Ability d = (Ability)msg.tool();
 			for(int i = 0; i < diseases.size(); i++)

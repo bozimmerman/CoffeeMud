@@ -61,7 +61,11 @@ public class Put extends StdCommand
 
 		final List<Item> items=CMLib.english().fetchItemList(mob,mob,null,commands,Wearable.FILTER_UNWORNONLY,true);
 		if(items.size()==0)
-			items.add(R.findItem(null, CMParms.combine(commands,0)));
+		{
+			Item I=R.findItem(null, CMParms.combine(commands,0));
+			if(I!=null)
+				items.add(I);
+		}
 		if(items.size()==0)
 			CMLib.commands().doCommandFail(mob,origCmds,L("You don't seem to be carrying that."));
 		else
