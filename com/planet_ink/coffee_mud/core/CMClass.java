@@ -142,7 +142,7 @@ public class CMClass extends ClassLoader
 	/** stat constant for clan items type objects */
 	CLANITEM("com.planet_ink.coffee_mud.Items.interfaces.ClanItem"),
 	/** stat constant for misc tech type objects */
-	TECH("com.planet_ink.coffee_mud.Items.interfaces.Electronics"),
+	TECH("com.planet_ink.coffee_mud.Items.interfaces.Technical"),
 	/** stat constant for misc tech type objects */
 	COMPTECH("com.planet_ink.coffee_mud.Items.interfaces.TechComponent"),
 	/** stat constant for misc tech type objects */

@@ -1248,7 +1248,25 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			doBugFix=false;
 			Environmental item=null;
 			if(from instanceof MOB)
+			{
 				item=((MOB)from).fetchItem(container,filter,name+addendumStr);
+				// all this for single underlayer items with the same name.. ugh...
+				if((item instanceof Armor) 
+				&& (!allFlag) 
+				&& (filter == Wearable.FILTER_WORNONLY)
+				&& (addendumStr.length()==0))
+				{
+					int subAddendum = 0;
+					Item item2=((MOB)from).fetchItem(container,filter,name+"."+(++subAddendum));
+					while(item2 != null)
+					{
+						if((item2 instanceof Armor)
+						&&(((Armor)item2).getClothingLayer() > ((Armor)item).getClothingLayer()))
+							item=item2;
+						item2=((MOB)from).fetchItem(container,filter,name+"."+(++subAddendum));
+					}
+				}
+			}
 			else
 			if(from instanceof Room)
 				item=((Room)from).fetchFromMOBRoomFavorsItems(mob,container,name+addendumStr,filter);
@@ -1284,7 +1302,10 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 					I=V.get(v);
 					curLayer=(I instanceof Armor)?((Armor)I).getClothingLayer():0;
 					if(curLayer>topLayer)
-					{ which=v; topLayer=curLayer;}
+					{
+						which = v;
+						topLayer = curLayer;
+					}
 				}
 				V2.addElement(V.get(which));
 				V.remove(which);
