@@ -51,17 +51,23 @@ public interface BoundedObject
 		public BoundedCube(long lx, long rx, long ty, long by, long iz, long oz)
 		{
 			super();
-			this.lx=lx; this.rx=rx;
-			this.ty=ty; this.by=by;
-			this.iz=iz; this.oz=oz;
+			this.lx=lx; 
+			this.rx=rx;
+			this.ty=ty; 
+			this.by=by;
+			this.iz=iz; 
+			this.oz=oz;
 		}
 
 		public BoundedCube(long[] coords, long radius)
 		{
 			super();
-			this.lx=coords[0]-radius; this.rx=coords[0]+radius;
-			this.ty=coords[1]-radius; this.by=coords[1]+radius;
-			this.iz=coords[2]-radius; this.oz=coords[2]+radius;
+			this.lx=coords[0]-radius; 
+			this.rx=coords[0]+radius;
+			this.ty=coords[1]-radius; 
+			this.by=coords[1]+radius;
+			this.iz=coords[2]-radius; 
+			this.oz=coords[2]+radius;
 		}
 
 		public BoundedCube(BoundedCube l)
@@ -72,10 +78,14 @@ public interface BoundedObject
 
 		public void set(BoundedCube l)
 		{
-			this.lx=l.lx; this.rx=l.rx;
-			this.ty=l.ty; this.by=l.by;
-			this.iz=l.iz; this.oz=l.oz;
+			this.lx=l.lx; 
+			this.rx=l.rx;
+			this.ty=l.ty; 
+			this.by=l.by;
+			this.iz=l.iz; 
+			this.oz=l.oz;
 		}
+		
 		public void union(BoundedCube l)
 		{
 			if(l.lx < lx)
@@ -91,6 +101,12 @@ public interface BoundedObject
 			if(l.oz > oz)
 				oz=l.oz;
 		}
+
+		public long radius()
+		{
+			return Math.round(Math.sqrt((rx-lx)-(by-ty)-(oz-iz)));
+		}
+		
 
 		public BoundedCube expand(double[] direction, long distance)
 		{
@@ -115,6 +131,7 @@ public interface BoundedObject
 				cube.iz+=newCenter[2]-oldCenter[2];
 			else
 				cube.oz+=newCenter[2]-oldCenter[2];
+			// this and the new cube make a paralleogram?
 			return cube;
 		}
 
@@ -122,21 +139,37 @@ public interface BoundedObject
 		{
 			if(two==null)
 				return false;
-			return (rx >=two.lx) && (lx <=two.rx)
-				&& (by >= two.ty) && (ty <= two.by)
-				&& (oz >= two.iz) && (iz <= two.oz);
+			return ( 
+				((lx <= two.lx && two.lx <= rx) || (two.lx <= lx && lx <= two.rx))
+			&&	((ty <= two.ty && two.ty <= by) || (two.ty <= ty && ty <= two.by))
+			&&	((iz <= two.iz && two.iz <= oz) || (two.iz <= iz && iz <= two.oz)) 
+			);
 		}
 
 		public boolean contains(long x, long y, long z)
 		{
-			return ((x>=lx)&&(x<=rx)
-			&&(y>=ty)&&(y<=by)
-			&&(z>=iz)&&(z<=oz));
+			return ((x>=lx)
+				  &&(x<=rx)
+				  &&(y>=ty)
+				  &&(y<=by)
+				  &&(z>=iz)
+				  &&(z<=oz));
 		}
 
-		public long width() { return rx-lx; }
-		public long height() { return by-ty; }
-		public long depth() { return oz-iz; }
+		public long width()
+		{
+			return rx - lx;
+		}
+
+		public long height()
+		{
+			return by - ty;
+		}
+
+		public long depth()
+		{
+			return oz - iz;
+		}
 
 		@Override
 		public int compareTo(BoundedCube o)
