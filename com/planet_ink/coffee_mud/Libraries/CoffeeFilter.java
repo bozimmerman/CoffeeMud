@@ -975,6 +975,41 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 						}
 					}
 					break;
+				case ')':
+					if((!wrapOnly)&&(loop<(buf.length()-1)))
+					{
+						final char c2=Character.toUpperCase(buf.charAt(loop+1));
+						if(((loop<buf.length()-2)&&(buf.charAt(loop+2)=='(')&&(c2=='S'))
+						||((loop<buf.length()-3)&&(buf.charAt(loop+3)=='(')&&(Character.toUpperCase(buf.charAt(loop+2))=='S')&&((c2=='Y')||(c2=='E'))))
+						{
+							final String lastWord=getLastWord(buf,lastSp,lastSpace);
+							final int lastParen=(c2=='S')?loop+2:loop+3;
+							if(lastWord.equals("A")
+							||lastWord.equals("YOU")
+							||lastWord.equals("1")
+							||doSagain)
+							{
+								if(c2=='Y')
+									buf.replace(loop,lastParen+1,CMStrings.sameCase("ies",buf.charAt(loop+1)));
+								else
+								{
+									buf.deleteCharAt(lastParen);
+									buf.deleteCharAt(loop);
+								}
+								doSagain=true;
+							}
+							else
+							{
+								if(c2=='Y')
+									buf.replace(loop,lastParen+1,CMStrings.sameCase("y",buf.charAt(loop+1)));
+								else
+									buf.delete(loop,lastParen+1);
+								loop--;
+							}
+							firstSdone=true;
+						}
+					}
+					break;
 				case '(':
 					if((!wrapOnly)&&(loop<(buf.length()-1)))
 					{
