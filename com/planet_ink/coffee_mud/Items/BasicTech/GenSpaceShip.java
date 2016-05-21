@@ -355,7 +355,11 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 					// This is technically wrong. Imagine taping a huge object from behind because you 
 					// are going just a tiny bit faster, even though you are both going very fast.
 					// However, the odds of that happening are nothing.  Forget it.
-					double absorbedDamage = Math.floor((previousSpeed * myMass) + (O.speed() * O.getMass()));
+					double absorbedDamage;
+					if(O instanceof ShipWarComponent)
+						absorbedDamage = ((ShipWarComponent)O).phyStats().damage();
+					else
+						absorbedDamage = Math.floor((previousSpeed * myMass) + (O.speed() * O.getMass()));
 					if(absorbedDamage > Integer.MAX_VALUE / 10)
 						absorbedDamage = Integer.MAX_VALUE / 10;
 					

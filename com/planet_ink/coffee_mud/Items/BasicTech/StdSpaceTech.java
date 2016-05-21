@@ -55,10 +55,10 @@ public class StdSpaceTech extends StdTechItem implements SpaceObject
 		setDisplayText("a techy thing is floating in space");
 		Random random=new Random(System.currentTimeMillis());
 		radius=SpaceObject.Distance.Kilometer.dm + (random.nextLong() % (SpaceObject.Distance.Kilometer.dm / 2));
-		basePhyStats().setWeight(100);
+		basePhyStats().setWeight(1);
 		basePhyStats().setLevel(1);
 		recoverPhyStats();
-		setMaterial(RawMaterial.RESOURCE_STONE);
+		setMaterial(RawMaterial.RESOURCE_STEEL);
 	}
 
 	@Override

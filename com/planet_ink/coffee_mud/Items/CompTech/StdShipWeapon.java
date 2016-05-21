@@ -178,6 +178,19 @@ public class StdShipWeapon extends StdElecCompItem implements ShipWarComponent
 	}
 	
 	@Override
+	public boolean tick(final Tickable ticking, final int tickID)
+	{
+		if(!super.tick(ticking, tickID))
+			return false;
+		if((ticking == this) && (tickID == Tickable.TICKID_BEAMWEAPON))
+		{
+			this.destroy();
+			return false;
+		}
+		return true;
+	}
+	
+	@Override
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		super.executeMsg(myHost, msg);
@@ -252,49 +265,66 @@ public class StdShipWeapon extends StdElecCompItem implements ShipWarComponent
 								{
 								case CMMsg.TYP_COLLISION:
 									weaponO.setName(L("a metal slug"));
+									((Technical)weaponO).setMaterial(RawMaterial.RESOURCE_STEEL);
 									break;
 								case CMMsg.TYP_ELECTRIC:
 									weaponO.setName(L("an energy beam"));
+									((Technical)weaponO).setMaterial(RawMaterial.RESOURCE_ENERGY);
 									break;
 								case CMMsg.TYP_ACID:
 									weaponO.setName(L("a disruptor beam"));
+									((Technical)weaponO).setMaterial(RawMaterial.RESOURCE_CHLORINE);
 									break;
 								case CMMsg.TYP_COLD:
 									weaponO.setName(L("a distintegration beam"));
+									((Technical)weaponO).setMaterial(RawMaterial.RESOURCE_FRESHWATER);
 									break;
 								case CMMsg.TYP_FIRE:
 									weaponO.setName(L("a photonic beam"));
+									((Technical)weaponO).setMaterial(RawMaterial.RESOURCE_ENERGY);
 									break;
 								case CMMsg.TYP_GAS:
 									weaponO.setName(L("a particle beam"));
+									((Technical)weaponO).setMaterial(RawMaterial.RESOURCE_AIR);
 									break;
 								case CMMsg.TYP_LASER:
 									weaponO.setName(L("a laser beam"));
+									((Technical)weaponO).setMaterial(RawMaterial.RESOURCE_ENERGY);
 									break;
 								case CMMsg.TYP_PARALYZE:
 									weaponO.setName(L("a fusion beam"));
+									((Technical)weaponO).setMaterial(RawMaterial.RESOURCE_ENERGY);
 									break;
 								case CMMsg.TYP_POISON:
 									weaponO.setName(L("a magnetic beam"));
+									((Technical)weaponO).setMaterial(RawMaterial.RESOURCE_ENERGY);
 									break;
 								case CMMsg.TYP_SONIC:
 									weaponO.setName(L("a tight radio beam"));
+									((Technical)weaponO).setMaterial(RawMaterial.RESOURCE_ENERGY);
 									break;
 								case CMMsg.TYP_UNDEAD:
-									weaponO.setName(L("a graviton beam"));
+									weaponO.setName(L("an anti-matter beam"));
+									((Technical)weaponO).setMaterial(RawMaterial.RESOURCE_ANTIMATTER);
 									break;
 								case CMMsg.TYP_WATER:
-									weaponO.setName(L("an ice slug"));
+									weaponO.setName(L("a graviton beam"));
+									((Technical)weaponO).setMaterial(RawMaterial.RESOURCE_ENERGY);
 									break;
 								}
 								weaponO.setKnownSource(ship);
-								weaponO.setCoords(ship.coordinates());
+								long[] firstCoords = CMLib.map().moveSpaceObject(ship.coordinates(), targetDirection, ship.radius());
+								weaponO.setCoords(firstCoords);
 								weaponO.setRadius(10);
 								weaponO.setDirection(targetDirection);
 								weaponO.setSpeed(SpaceObject.VELOCITY_LIGHT);
 								((Technical)weaponO).setTechLevel(techLevel());
-								//TODO: calculate damage?
-								//TODO: finish fireing
+								((Technical)weaponO).basePhyStats().setWeight(0);
+								((Technical)weaponO).phyStats().setWeight(0);
+								((Technical)weaponO).basePhyStats().setDamage(phyStats().damage());
+								((Technical)weaponO).phyStats().setDamage(phyStats().damage());
+								CMLib.threads().startTickDown(weaponO, Tickable.TICKID_BEAMWEAPON, 10);
+								CMLib.map().addObjectToSpace(weaponO, firstCoords);
 							}
 						}
 						else
