@@ -57,9 +57,9 @@ public class GenSailingShip extends StdBoardable
 	protected PairList<Item,int[]>	coordinates		= null;
 	protected PairList<Weapon,int[]>aimings			= new PairVector<Weapon,int[]>();
 	
-	protected int maxHullPoints = -1;
-	protected volatile int lastSpamCt = 0;
-	protected volatile String lastSpamMsg = "";
+	protected int					maxHullPoints	= -1;
+	protected volatile int			lastSpamCt		= 0;
+	protected volatile String		lastSpamMsg		= "";
 	
 	protected static final int STEER_MASK = 256;
 	
@@ -1226,6 +1226,15 @@ public class GenSailingShip extends StdBoardable
 		{
 			if(amDestroyed())
 				return false;
+			Area area = this.getShipArea();
+			if(area instanceof BoardableShip)
+			{
+				if((((BoardableShip)area).getIsDocked() != owner())
+				&&(owner() instanceof Room))
+				{
+					this.dockHere((Room)owner());
+				}
+			}
 		}
 		if(tickID == sailingTickID)
 		{
