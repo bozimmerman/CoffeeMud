@@ -53,6 +53,17 @@ public class Pour extends StdCommand
 			return false;
 		}
 		commands.remove(0);
+		PourVerb verb=PourVerb.DEFAULT;
+		if(((commands.get(0))).equalsIgnoreCase("out"))
+		{
+			commands.remove(0);
+			verb=PourVerb.OUT;
+			if(commands.size()==0)
+			{
+				CMLib.commands().doCommandFail(mob,origCmds,L("Pour out what?"));
+				return false;
+			}
+		}
 		Environmental fillFromThis=null;
 		final String thingToFillFrom=commands.get(0);
 		fillFromThis=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,thingToFillFrom);
@@ -63,7 +74,15 @@ public class Pour extends StdCommand
 		}
 		commands.remove(0);
 
-		PourVerb verb=PourVerb.DEFAULT;
+		if(commands.size()==1)
+		{
+			if(((commands.get(0))).equalsIgnoreCase("out"))
+			{
+				commands.remove(0);
+				verb=PourVerb.OUT;
+			}
+		}
+		else
 		if(commands.size()>1)
 		{
 			if(((commands.get(0))).equalsIgnoreCase("into"))
@@ -73,12 +92,6 @@ public class Pour extends StdCommand
 			{
 				commands.remove(0);
 				verb=PourVerb.ONTO;
-			}
-			else
-			if(((commands.get(0))).equalsIgnoreCase("out"))
-			{
-				commands.remove(0);
-				verb=PourVerb.OUT;
 			}
 		}
 
