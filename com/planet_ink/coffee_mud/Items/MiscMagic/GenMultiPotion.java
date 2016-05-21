@@ -142,21 +142,26 @@ public class GenMultiPotion extends GenDrink implements Potion
 			{
 				final MOB caster=CMLib.map().getFactoryMOB(owner.location());
 				final MOB finalCaster=(owner!=drinkerTarget)?owner:caster;
+				boolean destroyCaster = true;
 				for(int i=0;i<spells.size();i++)
 				{
-					final Ability thisOne=(Ability)spells.get(i).copyOf();
+					final Ability thisOneA=(Ability)spells.get(i).copyOf();
 					if((drinkerTarget instanceof Item)
-					&&((!thisOne.canTarget(drinkerTarget))&&(!thisOne.canAffect(drinkerTarget))))
+					&&((!thisOneA.canTarget(drinkerTarget))&&(!thisOneA.canAffect(drinkerTarget))))
 						continue;
 					int level=phyStats().level();
-					final int lowest=CMLib.ableMapper().lowestQualifyingLevel(thisOne.ID());
+					final int lowest=CMLib.ableMapper().lowestQualifyingLevel(thisOneA.ID());
 					if(level<lowest)
 						level=lowest;
 					caster.basePhyStats().setLevel(level);
 					caster.phyStats().setLevel(level);
-					thisOne.invoke(finalCaster,drinkerTarget,true,level);
+					thisOneA.invoke(finalCaster,drinkerTarget,true,level);
+					Ability effectA=drinkerTarget.fetchEffect(thisOneA.ID());
+					if((effectA!=null) && (effectA.invoker() == caster))
+						destroyCaster =  false; 
 				}
-				caster.destroy();
+				if(destroyCaster)
+					caster.destroy();
 			}
 
 			if((liquidRemaining()<=thirstQuenched())&&(!isDrunk()))

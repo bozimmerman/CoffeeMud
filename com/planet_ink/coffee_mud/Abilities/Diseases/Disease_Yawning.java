@@ -35,25 +35,105 @@ import java.util.*;
 
 public class Disease_Yawning extends Disease
 {
-	@Override public String ID() { return "Disease_Yawning"; }
-	private final static String localizedName = CMLib.lang().L("Yawning");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Yawning)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public boolean putInCommandlist(){return false;}
+	@Override
+	public String ID()
+	{
+		return "Disease_Yawning";
+	}
 
-	@Override protected int DISEASE_TICKS(){return 30;}
-	@Override protected int DISEASE_DELAY(){return 3;}
-	@Override protected String DISEASE_DONE(){return L("You stop yawning.");}
-	@Override protected String DISEASE_START(){return L("^G<S-NAME> seem(s) really tired.^?");}
-	@Override protected String DISEASE_AFFECT(){return L("<S-NAME> stretch(es) and yawn(s).");}
-	@Override protected boolean DISEASE_REQSEE(){return true;}
-	@Override protected boolean DISEASE_MALICIOUS(){return false;}
-	@Override public int spreadBitmap(){return DiseaseAffect.SPREAD_PROXIMITY;}
-	@Override public int difficultyLevel(){return 0;}
+	private final static String	localizedName	= CMLib.lang().L("Yawning");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Yawning)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public boolean putInCommandlist()
+	{
+		return false;
+	}
+
+	@Override
+	protected int DISEASE_TICKS()
+	{
+		return 30;
+	}
+
+	@Override
+	protected int DISEASE_DELAY()
+	{
+		return 3;
+	}
+
+	@Override
+	protected String DISEASE_DONE()
+	{
+		return L("You stop yawning.");
+	}
+
+	@Override
+	protected String DISEASE_START()
+	{
+		return L("^G<S-NAME> seem(s) really tired.^?");
+	}
+
+	@Override
+	protected String DISEASE_AFFECT()
+	{
+		return L("<S-NAME> stretch(es) and yawn(s).");
+	}
+
+	@Override
+	protected boolean DISEASE_REQSEE()
+	{
+		return true;
+	}
+
+	@Override
+	protected boolean DISEASE_MALICIOUS()
+	{
+		return false;
+	}
+
+	@Override
+	public int spreadBitmap()
+	{
+		return DiseaseAffect.SPREAD_PROXIMITY;
+	}
+
+	@Override
+	public int difficultyLevel()
+	{
+		return 0;
+	}
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)

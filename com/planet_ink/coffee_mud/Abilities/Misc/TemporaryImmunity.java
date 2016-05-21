@@ -104,6 +104,12 @@ public class TemporaryImmunity extends StdAbility
 	}
 
 	@Override
+	public void unInvoke()
+	{
+		super.unInvoke();
+	}
+	
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected instanceof MOB)

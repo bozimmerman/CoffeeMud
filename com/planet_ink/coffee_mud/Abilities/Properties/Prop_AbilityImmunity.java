@@ -35,14 +35,34 @@ import java.util.*;
 
 public class Prop_AbilityImmunity extends Property implements TriggeredAffect
 {
-	@Override public String ID() { return "Prop_AbilityImmunity"; }
-	@Override public String name(){ return "Ability Immunity";}
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_ROOMS|Ability.CAN_EXITS;}
-	@Override public String accountForYourself() { return "Immunity";	}
-	protected List<String> diseases=new Vector<String>();
-	protected Vector<String> messages=new Vector<String>();
-	protected boolean owner = false;
-	protected boolean wearer = false;
+	@Override
+	public String ID()
+	{
+		return "Prop_AbilityImmunity";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Ability Immunity";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS | Ability.CAN_ITEMS | Ability.CAN_ROOMS | Ability.CAN_EXITS;
+	}
+
+	@Override
+	public String accountForYourself()
+	{
+		return "Immunity";
+	}
+
+	protected List<String>		diseases	= new Vector<String>();
+	protected List<String>		messages	= new Vector<String>();
+	protected boolean			owner		= false;
+	protected boolean			wearer		= false;
 
 	@Override
 	public int triggerMask()
@@ -69,11 +89,11 @@ public class Prop_AbilityImmunity extends Property implements TriggeredAffect
 			{
 				final int x=s.indexOf('=');
 				if(x<0)
-					messages.addElement("");
+					messages.add("");
 				else
 				{
 					diseases.set(d,s.substring(0,x).trim());
-					messages.addElement(s.substring(x+1).trim());
+					messages.add(s.substring(x+1).trim());
 				}
 			}
 		}
@@ -86,8 +106,8 @@ public class Prop_AbilityImmunity extends Property implements TriggeredAffect
 		if ((msg.target() != null)
 		&& (msg.tool() instanceof Ability )
 		&& ((msg.amITarget(affected))
-				||(owner && (affected instanceof Item)&&(msg.target()==((Item)affected).owner()))
-				||(owner && (affected instanceof Item)&&(msg.target()==((Item)affected).owner())&&(!((Item)affected).amWearingAt(Wearable.IN_INVENTORY)))))
+			||(owner && (affected instanceof Item)&&(msg.target()==((Item)affected).owner()))
+			||(owner && (affected instanceof Item)&&(msg.target()==((Item)affected).owner())&&(!((Item)affected).amWearingAt(Wearable.IN_INVENTORY)))))
 		{
 			final Ability d = (Ability)msg.tool();
 			for(int i = 0; i < diseases.size(); i++)
@@ -99,7 +119,7 @@ public class Prop_AbilityImmunity extends Property implements TriggeredAffect
 						((MOB)msg.target()).tell(L("You are immune to @x1.",msg.tool().name()));
 					if(msg.source()!=msg.target())
 					{
-						final String s=messages.elementAt(i);
+						final String s=messages.get(i);
 						if(s.length()>0)
 							msg.source().tell(msg.source(),msg.target(),msg.tool(),s);
 						else
