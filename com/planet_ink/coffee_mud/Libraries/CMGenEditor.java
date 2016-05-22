@@ -6952,7 +6952,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				final Ability A=CMClass.getAbility(E.getStat("GETRABLE"+v));
 				if(A!=null)
 				{
-					parts.append("("+A.ID()+"/"+E.getStat("GETRABLELVL"+v)+"/"+E.getStat("GETRABLEQUAL"+v)+"/"+E.getStat("GETRABLEPROF"+v));
+					parts.append("("+A.ID()+"/"+E.getStat("GETRABLELVL"+v)+"/"+E.getStat("GETRABLEQUAL"+v)+"/"+E.getStat("GETRABLEPROF"+v)+"/"+E.getStat("GETRABLEPARM"+v));
 					if(CMParms.contains(E.getStatCodes(),"GETRABLEROLE") && (E instanceof ClanGovernment))
 					{
 						final List<String> roleIdsList=CMParms.parseCommas(E.getStat("GETRABLEROLE"+v), true);
@@ -6968,7 +6968,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					else
 						parts.append("), ");
 					ables.addElement(A);
-					data.addElement(A.ID()+";"+E.getStat("GETRABLELVL"+v)+";"+E.getStat("GETRABLEQUAL"+v)+";"+E.getStat("GETRABLEPROF"+v)+";"+E.getStat("GETRABLEROLE"+v));
+					data.addElement(A.ID()+";"+E.getStat("GETRABLELVL"+v)+";"+E.getStat("GETRABLEQUAL"+v)+";"+E.getStat("GETRABLEPROF"+v)+";"+E.getStat("GETRABLEPARM"+v)+";"+E.getStat("GETRABLEROLE"+v));
 				}
 			}
 			if(parts.toString().endsWith(", "))
@@ -7017,6 +7017,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 							str.append("true;");
 						final String prof=mob.session().prompt(L("Enter the (perm) proficiency level (100): "),"100");
 						str.append((""+CMath.s_int(prof))+";");
+						final String parm=mob.session().prompt(L("Enter any default parameters: "),"");
+						str.append(""+parm+";");
 						String roles="";
 						if((CMParms.contains(E.getStatCodes(),"GETRABLEROLE"))&&(E instanceof ClanGovernment))
 						{
@@ -7081,8 +7083,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						E.setStat("GETRABLELVL"+i,(V.get(1)));
 						E.setStat("GETRABLEQUAL"+i,(V.get(2)));
 						E.setStat("GETRABLEPROF"+i,(V.get(3)));
-						if(CMParms.contains(E.getStatCodes(),"GETRABLEROLE")&&(V.size()>4))
-							E.setStat("GETRABLEROLE"+i,(V.get(4)));
+						E.setStat("GETRABLEPARM"+i,(V.get(4)));
+						if(CMParms.contains(E.getStatCodes(),"GETRABLEROLE")&&(V.size()>5))
+							E.setStat("GETRABLEROLE"+i,(V.get(5)));
 					}
 				}
 			}

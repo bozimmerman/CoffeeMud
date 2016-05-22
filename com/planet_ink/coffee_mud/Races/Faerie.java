@@ -59,6 +59,7 @@ public class Faerie extends SmallElfKin
 	private final int[]		racialAbilityLevels			= { 1 };
 	private final int[]		racialAbilityProficiencies	= { 100 };
 	private final boolean[]	racialAbilityQuals			= { false };
+	private final String[]	racialAbilityParms			= { "" };
 
 	@Override
 	public String[] racialAbilityNames()
@@ -82,6 +83,12 @@ public class Faerie extends SmallElfKin
 	public boolean[] racialAbilityQuals()
 	{
 		return racialAbilityQuals;
+	}
+
+	@Override
+	public String[] racialAbilityParms()
+	{
+		return racialAbilityParms;
 	}
 
 	private final String[]	culturalAbilityNames			= { "Fey", "Foraging" };

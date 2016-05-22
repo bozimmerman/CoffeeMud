@@ -70,6 +70,7 @@ public class GenRace extends StdRace
 	protected int[]					racialAbilityLevels				= null;
 	protected int[]					racialAbilityProficiencies		= null;
 	protected boolean[]				racialAbilityQuals				= null;
+	protected String[]				racialAbilityParms				= null;
 	protected String[]				culturalAbilityNames			= null;
 	protected int[]					culturalAbilityProficiencies	= null;
 	protected int[]					sortedBreathables				= new int[] { RawMaterial.RESOURCE_AIR };
@@ -254,6 +255,12 @@ public class GenRace extends StdRace
 	protected boolean[] racialAbilityQuals()
 	{
 		return racialAbilityQuals;
+	}
+
+	@Override
+	public String[] racialAbilityParms()
+	{
+		return racialAbilityParms;
 	}
 
 	@Override
@@ -504,6 +511,7 @@ public class GenRace extends StdRace
 				str.append("<RLEVEL>"+racialAbilityLevels[r]+"</RLEVEL>");
 				str.append("<RPROFF>"+racialAbilityProficiencies[r]+"</RPROFF>");
 				str.append("<RAGAIN>"+racialAbilityQuals[r]+"</RAGAIN>");
+				str.append("<RPARM>"+CMLib.xml().parseOutAngleBrackets(racialAbilityParms[r])+"</RPARM>");
 				str.append("</RABILITY>");
 			}
 			str.append("</RABILITIES>");
@@ -753,12 +761,14 @@ public class GenRace extends StdRace
 		racialAbilityProficiencies=null;
 		racialAbilityQuals=null;
 		racialAbilityLevels=null;
+		racialAbilityParms=null;
 		if((xV!=null)&&(xV.size()>0))
 		{
 			racialAbilityNames=new String[xV.size()];
 			racialAbilityProficiencies=new int[xV.size()];
 			racialAbilityQuals=new boolean[xV.size()];
 			racialAbilityLevels=new int[xV.size()];
+			racialAbilityParms=new String[xV.size()];
 			for(int x=0;x<xV.size();x++)
 			{
 				final XMLTag iblk=xV.get(x);
@@ -768,6 +778,7 @@ public class GenRace extends StdRace
 				racialAbilityProficiencies[x]=iblk.getIntFromPieces("RPROFF");
 				racialAbilityQuals[x]=iblk.getBoolFromPieces("RAGAIN");
 				racialAbilityLevels[x]=iblk.getIntFromPieces("RLEVEL");
+				racialAbilityParms[x]=CMLib.xml().restoreAngleBrackets(iblk.getValFromPieces("RPARM"));
 			}
 		}
 
@@ -836,7 +847,7 @@ public class GenRace extends StdRace
 									 "ASTATS","CSTATS","ASTATE",
 									 "NUMRSC","GETRSCID","GETRSCPARM",
 									 "WEAPONCLASS","WEAPONXML",
-									 "NUMRABLE","GETRABLE","GETRABLEPROF","GETRABLEQUAL","GETRABLELVL",
+									 "NUMRABLE","GETRABLE","GETRABLEPROF","GETRABLEQUAL","GETRABLELVL","GETRABLEPARM",
 									 "NUMCABLE","GETCABLE","GETCABLEPROF",
 									 "NUMOFT","GETOFTID","GETOFTPARM","BODYKILL",
 									 "NUMREFF","GETREFF","GETREFFPARM","GETREFFLVL","AGING",
@@ -921,46 +932,48 @@ public class GenRace extends StdRace
 		case 27:
 			return (racialAbilityLevels == null) ? "0" : ("" + racialAbilityLevels[num]);
 		case 28:
-			return (culturalAbilityNames == null) ? "0" : ("" + culturalAbilityNames.length);
+			return (racialAbilityParms == null) ? "" : ("" + racialAbilityParms[num]);
 		case 29:
-			return (culturalAbilityNames == null) ? "" : ("" + culturalAbilityNames[num]);
+			return (culturalAbilityNames == null) ? "0" : ("" + culturalAbilityNames.length);
 		case 30:
-			return (culturalAbilityProficiencies == null) ? "0" : ("" + culturalAbilityProficiencies[num]);
+			return (culturalAbilityNames == null) ? "" : ("" + culturalAbilityNames[num]);
 		case 31:
-			return "" + ((outfit(null) != null) ? outfit(null).size() : 0);
+			return (culturalAbilityProficiencies == null) ? "0" : ("" + culturalAbilityProficiencies[num]);
 		case 32:
-			return "" + ((outfit(null) != null) ? outfit(null).get(num).ID() : "");
+			return "" + ((outfit(null) != null) ? outfit(null).size() : 0);
 		case 33:
-			return "" + ((outfit(null) != null) ? outfit(null).get(num).text() : "");
+			return "" + ((outfit(null) != null) ? outfit(null).get(num).ID() : "");
 		case 34:
-			return "" + destroyBodyAfterUse();
+			return "" + ((outfit(null) != null) ? outfit(null).get(num).text() : "");
 		case 35:
-			return (racialEffectNames == null) ? "0" : ("" + racialEffectNames.length);
+			return "" + destroyBodyAfterUse();
 		case 36:
-			return (racialEffectNames == null) ? "" : ("" + racialEffectNames[num]);
+			return (racialEffectNames == null) ? "0" : ("" + racialEffectNames.length);
 		case 37:
-			return (racialEffectParms == null) ? "0" : ("" + racialEffectParms[num]);
+			return (racialEffectNames == null) ? "" : ("" + racialEffectNames[num]);
 		case 38:
-			return (racialEffectLevels == null) ? "0" : ("" + racialEffectLevels[num]);
+			return (racialEffectParms == null) ? "0" : ("" + racialEffectParms[num]);
 		case 39:
-			return CMParms.toListString(getAgingChart());
+			return (racialEffectLevels == null) ? "0" : ("" + racialEffectLevels[num]);
 		case 40:
-			return "" + disableFlags;
+			return CMParms.toListString(getAgingChart());
 		case 41:
-			return (startAdjState == null) ? "" : CMLib.coffeeMaker().getCharStateStr(startAdjState);
+			return "" + disableFlags;
 		case 42:
-			return getRaceLocatorID(eventBuddy);
+			return (startAdjState == null) ? "" : CMLib.coffeeMaker().getCharStateStr(startAdjState);
 		case 43:
-			return getRaceLocatorID(weaponBuddy);
+			return getRaceLocatorID(eventBuddy);
 		case 44:
-			return helpEntry;
+			return getRaceLocatorID(weaponBuddy);
 		case 45:
-			return CMParms.toListString(sortedBreathables);
+			return helpEntry;
 		case 46:
-			return "" + isRideable;
+			return CMParms.toListString(sortedBreathables);
 		case 47:
-			return "" + this.naturalAbilImmunities.size();
+			return "" + isRideable;
 		case 48:
+			return "" + this.naturalAbilImmunities.size();
+		case 49:
 			return this.abilityImmunities()[num];
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
@@ -1234,6 +1247,7 @@ public class GenRace extends StdRace
 				racialAbilityProficiencies=null;
 				racialAbilityQuals=null;
 				racialAbilityLevels=null;
+				racialAbilityParms=null;
 			}
 			else
 			{
@@ -1241,6 +1255,7 @@ public class GenRace extends StdRace
 				racialAbilityProficiencies=new int[CMath.s_int(val)];
 				racialAbilityQuals=new boolean[CMath.s_int(val)];
 				racialAbilityLevels=new int[CMath.s_int(val)];
+				racialAbilityParms=new String[CMath.s_int(val)];
 			}
 			break;
 		}
@@ -1274,6 +1289,13 @@ public class GenRace extends StdRace
 		}
 		case 28:
 		{
+			if(racialAbilityParms==null)
+				racialAbilityParms=new String[num+1];
+			racialAbilityParms[num]=val;
+			break;
+		}
+		case 29:
+		{
 			if(CMath.s_int(val)==0)
 			{
 				culturalAbilityNames=null;
@@ -1286,21 +1308,21 @@ public class GenRace extends StdRace
 			}
 			break;
 		}
-		case 29:
+		case 30:
 		{
 			if(culturalAbilityNames==null)
 				culturalAbilityNames=new String[num+1];
 			culturalAbilityNames[num]=val;
 			break;
 		}
-		case 30:
+		case 31:
 		{
 			if(culturalAbilityProficiencies==null)
 				culturalAbilityProficiencies=new int[num+1];
 			culturalAbilityProficiencies[num]=CMath.s_int(val);
 			break;
 		}
-		case 31:
+		case 32:
 		{
 			if(CMath.s_int(val)==0) 
 				outfitChoices=null; 
@@ -1308,7 +1330,7 @@ public class GenRace extends StdRace
 				outfitChoices=new Vector<Item>(CMath.s_int(val)); 
 			break;
 		}
-		case 32:
+		case 33:
 		{
 			if(outfitChoices==null)
 				outfitChoices=new Vector<Item>();
@@ -1318,7 +1340,7 @@ public class GenRace extends StdRace
 				outfitChoices.set(num,CMClass.getItem(val));
 			break;
 		}
-		case 33:
+		case 34:
 		{
 			if((outfitChoices!=null)&&(num<outfitChoices.size()))
 			{
@@ -1328,10 +1350,10 @@ public class GenRace extends StdRace
 			}
 			break;
 		}
-		case 34:
+		case 35:
 			destroyBodyAfterUse = CMath.s_bool(val);
 			break;
-		case 35:
+		case 36:
 		{
 			racialEffectMap=null;
 			if(CMath.s_int(val)==0)
@@ -1348,28 +1370,28 @@ public class GenRace extends StdRace
 			}
 			break;
 		}
-		case 36:
+		case 37:
 		{
 			if(racialEffectNames==null)
 				racialEffectNames=new String[num+1];
 			racialEffectNames[num]=val;
 			break;
 		}
-		case 37:
+		case 38:
 		{
 			if(racialEffectParms==null)
 				racialEffectParms=new String[num+1];
 			racialEffectParms[num]=val;
 			break;
 		}
-		case 38:
+		case 39:
 		{
 			if(racialEffectLevels==null) 
 				racialEffectLevels=new int[num+1];
 			racialEffectLevels[num]=CMath.s_int(val);
 			break;
 		}
-		case 39:
+		case 40:
 		{
 			final List<String> aV=CMParms.parseCommas(val,true);
 			for(int v=0;v<aV.size();v++)
@@ -1382,10 +1404,10 @@ public class GenRace extends StdRace
 			}
 			break;
 		}
-		case 40:
+		case 41:
 			disableFlags = CMath.s_int(val);
 			break;
-		case 41:
+		case 42:
 		{
 			startAdjState=null;
 			clrStatChgDesc();
@@ -1400,42 +1422,42 @@ public class GenRace extends StdRace
 			}
 			break;
 		}
-		case 42:
+		case 43:
 		{
 			eventBuddy=CMClass.getRace(val);
 			if(eventBuddy==null)
 				eventBuddy=(Race)CMClass.getLoadNewClassInstance(CMObjectType.RACE,val,true);
 			break;
 		}
-		case 43:
+		case 44:
 		{
 			weaponBuddy=CMClass.getRace(val);
 			if(weaponBuddy==null)
 				weaponBuddy=(Race)CMClass.getLoadNewClassInstance(CMObjectType.RACE,val,true);
 			break;
 		}
-		case 44:
+		case 45:
 		{
 			helpEntry=val;
 			break;
 		}
-		case 45:
+		case 46:
 		{
 			sortedBreathables=CMParms.toIntArray(CMParms.parseCommas(val,true));
 			Arrays.sort(sortedBreathables);
 			break;
 		}
-		case 46:
+		case 47:
 		{
 			isRideable=CMath.s_bool(val);
 			break;
 		}
-		case 47:
+		case 48:
 		{
 			naturalAbilImmunities.clear();
 			break;
 		}
-		case 48:
+		case 49:
 		{
 			naturalAbilImmunities.add(val);
 			break;

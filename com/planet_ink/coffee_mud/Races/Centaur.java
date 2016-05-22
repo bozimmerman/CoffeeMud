@@ -102,6 +102,7 @@ public class Centaur extends StdRace
 	private final int[]		racialAbilityLevels			= { 5 };
 	private final int[]		racialAbilityProficiencies	= { 50 };
 	private final boolean[]	racialAbilityQuals			= { false };
+	private final String[]	racialAbilityParms			= { "" };
 
 	@Override
 	public String[] racialAbilityNames()
@@ -125,6 +126,12 @@ public class Centaur extends StdRace
 	public boolean[] racialAbilityQuals()
 	{
 		return racialAbilityQuals;
+	}
+
+	@Override
+	public String[] racialAbilityParms()
+	{
+		return racialAbilityParms;
 	}
 
 	private final String[]	culturalAbilityNames			= { "Elvish", "Foraging" };

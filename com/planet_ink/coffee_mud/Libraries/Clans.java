@@ -889,7 +889,12 @@ public class Clans extends StdLibrary implements ClanManager
 				}
 				else
 					addExt="";
-				str.append(indt(2)).append("<ABILITY ID=\""+map.abilityID()+"\" PROFF="+map.defaultProficiency()+" LEVEL="+map.qualLevel()+" QUALIFYONLY="+(!map.autoGain())+" "+addExt+"/>\n");
+				str.append(indt(2)).append("<ABILITY ID=\""+map.abilityID()+"\" "
+						+ "PROFF="+map.defaultProficiency()+" "
+						+ "LEVEL="+map.qualLevel()+" "
+						+ "QUALIFYONLY="+(!map.autoGain())+" "
+						+ "PARM=\""+CMLib.xml().parseOutAngleBrackets(map.defaultParm())+"\" "
+						+addExt+"/>\n");
 			}
 			str.append(indt(1)).append("</ABILITIES>\n");
 		}
@@ -1045,7 +1050,9 @@ public class Clans extends StdLibrary implements ClanManager
 			}
 			ClanPosition[] posArray = new ClanPosition[positions.size()];
 			for(final ClanPosition pos : positions)
+			{
 				if((pos.getRoleID()>=0)&&(pos.getRoleID()<positions.size()))
+				{
 					if(posArray[pos.getRoleID()]!=null)
 					{
 						Log.errOut("Clans","Bad ROLEID "+pos.getRoleID()+" in positions list in "+typeName);
@@ -1056,6 +1063,8 @@ public class Clans extends StdLibrary implements ClanManager
 					{
 						posArray[pos.getRoleID()]=pos;
 					}
+				}
+			}
 			if(posArray.length==0)
 			{
 				Log.errOut("Clans","Missing positions in "+typeName);
@@ -1150,6 +1159,7 @@ public class Clans extends StdLibrary implements ClanManager
 					G.setStat("GETRABLEPROF"+x, able.parms().get("PROFF"));
 					G.setStat("GETRABLEQUAL"+x, able.parms().get("QUALIFYONLY"));
 					G.setStat("GETRABLELVL"+x, able.parms().get("LEVEL"));
+					G.setStat("GETRABLEPARM"+x, able.parms().get("PARM"));
 					G.setStat("GETRABLEROLE"+x, able.parms().get("ROLES"));
 				}
 			}

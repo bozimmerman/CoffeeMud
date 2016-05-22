@@ -59,6 +59,7 @@ public class Aarakocran extends Harpy
 	private final int[]		racialAbilityLevels			= { 1 };
 	private final int[]		racialAbilityProficiencies	= { 100 };
 	private final boolean[]	racialAbilityQuals			= { false };
+	private final String[]	racialAbilityParms			= { "" };
 
 	@Override
 	public String[] racialAbilityNames()
@@ -82,6 +83,12 @@ public class Aarakocran extends Harpy
 	public boolean[] racialAbilityQuals()
 	{
 		return racialAbilityQuals;
+	}
+
+	@Override
+	public String[] racialAbilityParms()
+	{
+		return racialAbilityParms;
 	}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi

@@ -99,6 +99,7 @@ public class Merfolk extends StdRace
 	private final int[]						racialAbilityLevels			= { 1 };
 	private final int[]						racialAbilityProficiencies	= { 100 };
 	private final boolean[]					racialAbilityQuals			= { false };
+	private final String[]					racialAbilityParms			= { "" };
 
 	@Override
 	protected String[] racialAbilityNames()
@@ -122,6 +123,12 @@ public class Merfolk extends StdRace
 	protected boolean[] racialAbilityQuals()
 	{
 		return racialAbilityQuals;
+	}
+
+	@Override
+	public String[] racialAbilityParms()
+	{
+		return racialAbilityParms;
 	}
 
 	@Override

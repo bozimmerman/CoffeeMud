@@ -2204,8 +2204,9 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			R.setStat("GETRABLEPROF"+i, ""+ableMap.defaultProficiency());
 			R.setStat("GETRABLEQUAL"+i, ""+(!ableMap.autoGain()));
 			R.setStat("GETRABLELVL"+i, ""+ableMap.qualLevel());
+			R.setStat("GETRABLEPARM"+i, ableMap.defaultParm());
 		}
-		ignoreStats.addAll(Arrays.asList(new String[]{"NUMRABLE","GETRABLE","GETRABLEPROF","GETRABLEQUAL","GETRABLELVL"}));
+		ignoreStats.addAll(Arrays.asList(new String[]{"NUMRABLE","GETRABLE","GETRABLEPROF","GETRABLEQUAL","GETRABLELVL","GETRABLEPARM"}));
 		final List<AbilityMapping> cables = findRaceAbles(E,"CULTUREABILITY","RACE_CULT_ABLE_",piece,defined);
 		R.setStat("NUMCABLE", ""+cables.size());
 		for(int i=0;i<cables.size();i++)

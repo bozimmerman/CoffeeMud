@@ -52,6 +52,7 @@ public class Goose extends WaterFowl
 	private final int[]		racialAbilityLevels			= CMParms.combine(super.racialAbilityLevels(), new int[] { 1 });
 	private final int[]		racialAbilityProficiencies	= CMParms.combine(super.racialAbilityProficiencies(), new int[] { 100 });
 	private final boolean[]	racialAbilityQuals			= CMParms.combine(super.racialAbilityQuals(), new boolean[] { false });
+	private final String[]	racialAbilityParms			= CMParms.combine(super.racialAbilityParms(), new String[] { "" });
 
 	@Override
 	protected String[] racialAbilityNames()
@@ -75,6 +76,12 @@ public class Goose extends WaterFowl
 	protected boolean[] racialAbilityQuals()
 	{
 		return racialAbilityQuals;
+	}
+
+	@Override
+	public String[] racialAbilityParms()
+	{
+		return racialAbilityParms;
 	}
 
 	@Override

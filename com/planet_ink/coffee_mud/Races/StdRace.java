@@ -197,6 +197,11 @@ public class StdRace implements Race
 		return null;
 	}
 
+	protected String[] racialAbilityParms()
+	{
+		return null;
+	}
+
 	protected int[] racialAbilityLevels()
 	{
 		return null;
@@ -1212,6 +1217,7 @@ public class StdRace implements Race
 				GR.setStat("GETRABLELVL"+i,""+racialAbilityLevels()[i]);
 				GR.setStat("GETRABLEQUAL"+i,""+racialAbilityQuals()[i]);
 				GR.setStat("GETRABLEPROF"+i,""+racialAbilityProficiencies()[i]);
+				GR.setStat("GETRABLEPARM"+i,""+racialAbilityParms()[i]);
 			}
 		}
 
@@ -1490,6 +1496,7 @@ public class StdRace implements Race
 			GR.setStat("GETRABLELVL"+i,""+CMLib.ableMapper().getQualifyingLevel(race1.ID(),false,dvata1.get(i).abilityID()));
 			GR.setStat("GETRABLEQUAL"+i,""+(!CMLib.ableMapper().getDefaultGain(race1.ID(),false,dvata1.get(i).abilityID())));
 			GR.setStat("GETRABLEPROF"+i,""+CMLib.ableMapper().getDefaultProficiency(race1.ID(),false,dvata1.get(i).abilityID()));
+			GR.setStat("GETRABLEPARM"+i, ""+CMLib.ableMapper().getDefaultParm(race1.ID(),false,dvata1.get(i).abilityID()));
 		}
 		for(int i=0;i<dvata2.size();i++)
 		{
@@ -1497,6 +1504,7 @@ public class StdRace implements Race
 			GR.setStat("GETRABLELVL"+(i+dvata1.size()),""+CMLib.ableMapper().getQualifyingLevel(race2.ID(),false,dvata2.get(i).abilityID()));
 			GR.setStat("GETRABLEQUAL"+(i+dvata1.size()),""+(!CMLib.ableMapper().getDefaultGain(race2.ID(),false,dvata2.get(i).abilityID())));
 			GR.setStat("GETRABLEPROF"+(i+dvata1.size()),""+CMLib.ableMapper().getDefaultProficiency(race2.ID(),false,dvata2.get(i).abilityID()));
+			GR.setStat("GETRABLEPARM"+(i+dvata1.size()),""+CMLib.ableMapper().getDefaultParm(race2.ID(),false,dvata2.get(i).abilityID()));
 		}
 
 		final List<Ability> data=new Vector<Ability>();
@@ -1581,7 +1589,7 @@ public class StdRace implements Race
 						 racialAbilityLevels()[i],
 						 racialAbilityNames()[i],
 						 racialAbilityProficiencies()[i],
-						 "",
+						 racialAbilityParms()[i],
 						 !racialAbilityQuals()[i],
 						 false,
 						 "");

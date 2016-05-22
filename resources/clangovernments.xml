@@ -108,8 +108,8 @@
         <ABILITY ID="Spell_CEqParalysis" PROFF=0 LEVEL=10 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqMind" PROFF=0 LEVEL=4 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqPoison" PROFF=0 LEVEL=7 QUALIFYONLY=true />
-        <ABILITY ID="Spell_ClanDonate" PROFF=100 LEVEL=2 QUALIFYONLY=false />
         <ABILITY ID="Spell_CEqWater" PROFF=0 LEVEL=4 QUALIFYONLY=true />
+        <ABILITY ID="Spell_ClanDonate" PROFF=100 LEVEL=2 QUALIFYONLY=false />
         <ABILITY ID="Spell_Flagportation" PROFF=0 LEVEL=11 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqElectric" PROFF=0 LEVEL=5 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqFire" PROFF=0 LEVEL=5 QUALIFYONLY=true />
@@ -229,12 +229,12 @@
         </POSITION>
     </POSITIONS>
     <VOTING MAXDAYS=24 QUORUMPCT=100>
-        <POWER>SET_HOME</POWER>
-        <POWER>DECLARE</POWER>
-        <POWER>PREMISE</POWER>
-        <POWER>SET_DONATE</POWER>
-        <POWER>TAX</POWER>
         <POWER>ASSIGN</POWER>
+        <POWER>SET_DONATE</POWER>
+        <POWER>DECLARE</POWER>
+        <POWER>SET_HOME</POWER>
+        <POWER>PREMISE</POWER>
+        <POWER>TAX</POWER>
     </VOTING>
     <AUTOPOSITION>APPLICANT</AUTOPOSITION>
     <ACCEPTPOSITION>MEMBER</ACCEPTPOSITION>
@@ -257,8 +257,8 @@
         <ABILITY ID="Spell_CEqParalysis" PROFF=0 LEVEL=10 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqMind" PROFF=0 LEVEL=4 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqPoison" PROFF=0 LEVEL=7 QUALIFYONLY=true />
-        <ABILITY ID="Spell_ClanDonate" PROFF=100 LEVEL=2 QUALIFYONLY=false />
         <ABILITY ID="Spell_CEqWater" PROFF=0 LEVEL=4 QUALIFYONLY=true />
+        <ABILITY ID="Spell_ClanDonate" PROFF=100 LEVEL=2 QUALIFYONLY=false />
         <ABILITY ID="Spell_Flagportation" PROFF=0 LEVEL=11 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqElectric" PROFF=0 LEVEL=5 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqFire" PROFF=0 LEVEL=5 QUALIFYONLY=true />
@@ -366,15 +366,15 @@
         </POSITION>
     </POSITIONS>
     <VOTING MAXDAYS=48 QUORUMPCT=66>
-        <POWER>SET_HOME</POWER>
-        <POWER>ACCEPT</POWER>
-        <POWER>DECLARE</POWER>
-        <POWER>PREMISE</POWER>
-        <POWER>SET_DONATE</POWER>
-        <POWER>EXILE</POWER>
-        <POWER>REJECT</POWER>
-        <POWER>TAX</POWER>
         <POWER>ASSIGN</POWER>
+        <POWER>SET_DONATE</POWER>
+        <POWER>ACCEPT</POWER>
+        <POWER>REJECT</POWER>
+        <POWER>DECLARE</POWER>
+        <POWER>SET_HOME</POWER>
+        <POWER>PREMISE</POWER>
+        <POWER>EXILE</POWER>
+        <POWER>TAX</POWER>
     </VOTING>
     <AUTOPOSITION>APPLICANT</AUTOPOSITION>
     <ACCEPTPOSITION>CITIZEN</ACCEPTPOSITION>
@@ -397,8 +397,8 @@
         <ABILITY ID="Spell_CEqParalysis" PROFF=0 LEVEL=10 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqMind" PROFF=0 LEVEL=4 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqPoison" PROFF=0 LEVEL=7 QUALIFYONLY=true />
-        <ABILITY ID="Spell_ClanDonate" PROFF=100 LEVEL=2 QUALIFYONLY=false />
         <ABILITY ID="Spell_CEqWater" PROFF=0 LEVEL=4 QUALIFYONLY=true />
+        <ABILITY ID="Spell_ClanDonate" PROFF=100 LEVEL=2 QUALIFYONLY=false />
         <ABILITY ID="Spell_Flagportation" PROFF=0 LEVEL=11 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqElectric" PROFF=0 LEVEL=5 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqFire" PROFF=0 LEVEL=5 QUALIFYONLY=true />
@@ -511,15 +511,15 @@
         </POSITION>
     </POSITIONS>
     <VOTING MAXDAYS=100 QUORUMPCT=33>
-        <POWER>SET_HOME</POWER>
-        <POWER>ACCEPT</POWER>
-        <POWER>DECLARE</POWER>
-        <POWER>PREMISE</POWER>
-        <POWER>SET_DONATE</POWER>
-        <POWER>EXILE</POWER>
-        <POWER>REJECT</POWER>
-        <POWER>TAX</POWER>
         <POWER>ASSIGN</POWER>
+        <POWER>SET_DONATE</POWER>
+        <POWER>ACCEPT</POWER>
+        <POWER>REJECT</POWER>
+        <POWER>DECLARE</POWER>
+        <POWER>SET_HOME</POWER>
+        <POWER>PREMISE</POWER>
+        <POWER>EXILE</POWER>
+        <POWER>TAX</POWER>
     </VOTING>
     <AUTOPOSITION>APPLICANT</AUTOPOSITION>
     <ACCEPTPOSITION>CITIZEN</ACCEPTPOSITION>
@@ -542,8 +542,8 @@
         <ABILITY ID="Spell_CEqParalysis" PROFF=0 LEVEL=10 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqMind" PROFF=0 LEVEL=4 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqPoison" PROFF=0 LEVEL=7 QUALIFYONLY=true />
-        <ABILITY ID="Spell_ClanDonate" PROFF=100 LEVEL=2 QUALIFYONLY=false />
         <ABILITY ID="Spell_CEqWater" PROFF=0 LEVEL=4 QUALIFYONLY=true />
+        <ABILITY ID="Spell_ClanDonate" PROFF=100 LEVEL=2 QUALIFYONLY=false />
         <ABILITY ID="Spell_Flagportation" PROFF=0 LEVEL=11 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqElectric" PROFF=0 LEVEL=5 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqFire" PROFF=0 LEVEL=5 QUALIFYONLY=true />
@@ -864,8 +864,8 @@
         <ABILITY ID="Spell_CEqParalysis" PROFF=0 LEVEL=10 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqMind" PROFF=0 LEVEL=4 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqPoison" PROFF=0 LEVEL=7 QUALIFYONLY=true />
-        <ABILITY ID="Spell_ClanDonate" PROFF=100 LEVEL=2 QUALIFYONLY=false />
         <ABILITY ID="Spell_CEqWater" PROFF=0 LEVEL=4 QUALIFYONLY=true />
+        <ABILITY ID="Spell_ClanDonate" PROFF=100 LEVEL=2 QUALIFYONLY=false />
         <ABILITY ID="Spell_Flagportation" PROFF=0 LEVEL=11 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqElectric" PROFF=0 LEVEL=5 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqFire" PROFF=0 LEVEL=5 QUALIFYONLY=true />
@@ -938,8 +938,8 @@
         <ABILITY ID="Spell_CEqParalysis" PROFF=0 LEVEL=10 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqMind" PROFF=0 LEVEL=4 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqPoison" PROFF=0 LEVEL=7 QUALIFYONLY=true />
-        <ABILITY ID="Spell_ClanDonate" PROFF=100 LEVEL=2 QUALIFYONLY=false />
         <ABILITY ID="Spell_CEqWater" PROFF=0 LEVEL=4 QUALIFYONLY=true />
+        <ABILITY ID="Spell_ClanDonate" PROFF=100 LEVEL=2 QUALIFYONLY=false />
         <ABILITY ID="Spell_Flagportation" PROFF=0 LEVEL=11 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqElectric" PROFF=0 LEVEL=5 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqFire" PROFF=0 LEVEL=5 QUALIFYONLY=true />
@@ -971,11 +971,16 @@
 <CLANTYPE TYPEID=7 NAME="PROFESSION" CATEGORY="CLASSCLAN">
     <SHORTDESC>a clan for professions that should also grant a class to members</SHORTDESC>
     <LONGDESC>
-    A simple, permanent membership clan that decides most things with votes. Use for system-based clans, and grant a class on entry.
-    Players must be an Apprentice to join a profession, and once in a profession, players can not gain experience outside of one.
-    When the Archon creates clans from this government, they should designate the clans auto-class, and make sure players only
-    qualify for Apprentice when creating characters.
-    </LONGDESC>
+
+    A simple, permanent membership clan that decides most things with votes. Use for system-based clans, and grant a class on entry.
+
+    Players must be an Apprentice to join a profession, and once in a profession, players can not gain experience outside of one.
+
+    When the Archon creates clans from this government, they should designate the clans auto-class, and make sure players only
+
+    qualify for Apprentice when creating characters.
+
+    </LONGDESC>
     <POSITIONS>
         <POSITION ID="OFFICER" ROLEID=2 RANK=2 NAME="OFFICER" PLURAL="OFFICERS" MAX=2147483647 INNERMASK="" PUBLIC="true">
             <POWER>ACCEPT</POWER>
@@ -1012,16 +1017,16 @@
         </POSITION>
     </POSITIONS>
     <VOTING MAXDAYS=10 QUORUMPCT=66>
-        <POWER>SET_HOME</POWER>
-        <POWER>DECLARE</POWER>
-        <POWER>PREMISE</POWER>
+        <POWER>ASSIGN</POWER>
         <POWER>SET_DONATE</POWER>
-        <POWER>EXILE</POWER>
         <POWER>WITHDRAW</POWER>
         <POWER>REJECT</POWER>
-        <POWER>TAX</POWER>
-        <POWER>ASSIGN</POWER>
         <POWER>MORGUE</POWER>
+        <POWER>DECLARE</POWER>
+        <POWER>SET_HOME</POWER>
+        <POWER>PREMISE</POWER>
+        <POWER>EXILE</POWER>
+        <POWER>TAX</POWER>
     </VOTING>
     <AUTOPOSITION>MEMBER</AUTOPOSITION>
     <ACCEPTPOSITION>MEMBER</ACCEPTPOSITION>

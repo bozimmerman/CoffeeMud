@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -119,6 +118,7 @@ public class Bullywug extends StdRace
 	private final int[]		racialAbilityLevels			= { 1 };
 	private final int[]		racialAbilityProficiencies	= { 100 };
 	private final boolean[]	racialAbilityQuals			= { false };
+	private final String[]	racialAbilityParms			= { "" };
 
 	@Override
 	public String[] racialAbilityNames()
@@ -142,6 +142,12 @@ public class Bullywug extends StdRace
 	public boolean[] racialAbilityQuals()
 	{
 		return racialAbilityQuals;
+	}
+
+	@Override
+	public String[] racialAbilityParms()
+	{
+		return racialAbilityParms;
 	}
 
 	//  						   		   an ey ea he ne ar ha to le fo no gi mo wa ta wi

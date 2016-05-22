@@ -96,6 +96,7 @@ public class Equine extends StdRace
 	private final int[]		racialAbilityLevels			= { 5, 1, 5 };
 	private final int[]		racialAbilityProficiencies	= { 40, 100, 50 };
 	private final boolean[]	racialAbilityQuals			= { false, false, false };
+	private final String[]	racialAbilityParms			= { "", "", "" };
 
 	@Override
 	protected String[] racialAbilityNames()
@@ -119,6 +120,12 @@ public class Equine extends StdRace
 	protected boolean[] racialAbilityQuals()
 	{
 		return racialAbilityQuals;
+	}
+
+	@Override
+	public String[] racialAbilityParms()
+	{
+		return racialAbilityParms;
 	}
 
 	@Override

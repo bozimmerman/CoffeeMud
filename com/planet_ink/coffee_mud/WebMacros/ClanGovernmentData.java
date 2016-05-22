@@ -38,7 +38,12 @@ import java.util.*;
 */
 public class ClanGovernmentData extends StdWebMacro
 {
-	@Override public String name() { return "ClanGovernmentData"; }
+	@Override
+	public String name()
+	{
+		return "ClanGovernmentData";
+	}
+
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
 	{
@@ -63,11 +68,13 @@ public class ClanGovernmentData extends StdWebMacro
 				G.setName(httpReq.getUrlParameter("NAME"));
 				G.setCategory(httpReq.getUrlParameter("CATEGORY"));
 				for(int i=0;i<CMLib.clans().getStockGovernments().length;i++)
+				{
 					if(!usedTypeIDs.contains(Integer.valueOf(i)))
 					{
 						G.setID(i);
 						break;
 					}
+				}
 			}
 			final StringBuffer str=new StringBuffer("");
 
@@ -158,17 +165,21 @@ public class ClanGovernmentData extends StdWebMacro
 				}
 			}
 			if(parms.containsKey("GPOSPOWERLIST"))
+			{
 				for(final Clan.Function func : Clan.Function.values())
 					str.append("<OPTION VALUE=\""+func.toString()+"\">"+func.toString());
+			}
 
 			if(parms.containsKey("NEXTPOSITIONID"))
 			{
 				for(int i=0;i<posList.size()+10;i++)
+				{
 					if(!usedRoleIDs.contains(Integer.valueOf(i)))
 					{
 						str.append(i+", ");
 						break;
 					}
+				}
 			}
 
 			// iterators
@@ -352,8 +363,10 @@ public class ClanGovernmentData extends StdWebMacro
 					{
 						final ClanPosition P=posList.get(0);
 						for(final Clan.Function func : Clan.Function.values())
+						{
 							if(P.getFunctionChart()[func.ordinal()]==Clan.Authority.MUST_VOTE_ON)
 								voteFuncs.add(func.toString());
+						}
 					}
 				}
 				else

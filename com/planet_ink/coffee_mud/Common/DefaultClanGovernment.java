@@ -41,8 +41,17 @@ import java.util.*;
 */
 public class DefaultClanGovernment implements ClanGovernment
 {
-	@Override public String ID(){return "DefaultClanGovernment";}
-	@Override public String name() { return ID();}
+	@Override
+	public String ID()
+	{
+		return "DefaultClanGovernment";
+	}
+
+	@Override
+	public String name()
+	{
+		return ID();
+	}
 
 	/** If this is a default government type, this is its ID, otherwise -1 */
 	public int		ID;
@@ -86,6 +95,8 @@ public class DefaultClanGovernment implements ClanGovernment
 	public String 	xpCalculationFormulaStr;
 	/**  Whether this is the default government  */
 	public boolean	isDefault 		 = false;
+	
+	
 	/** The list of ClanPosition objects for each holdable position in this government */
 	public ClanPosition[] 				positions;
 	/** Whether an unfilled topRole is automatically filled by those who meet its innermask  */
@@ -114,11 +125,33 @@ public class DefaultClanGovernment implements ClanGovernment
 	protected int[]			clanAbilityProficiencies=null;
 	protected boolean[]		clanAbilityQuals		=null;
 	protected Set<Integer>[]clanAbilityRoles		=null;
+	protected String[]		clanAbilityParms		=null;
 
-	/** return a new instance of the object*/
-	@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(final Exception e){return new DefaultClanGovernment();}}
-	@Override public void initializeClass(){}
-	@Override public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	/** return a new instance of the object */
+	@Override
+	public CMObject newInstance()
+	{
+		try
+		{
+			return getClass().newInstance();
+		}
+		catch (final Exception e)
+		{
+			return new DefaultClanGovernment();
+		}
+	}
+
+	@Override
+	public void initializeClass()
+	{
+	}
+
+	@Override
+	public int compareTo(CMObject o)
+	{
+		return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));
+	}
+
 	@Override
 	public CMObject copyOf()
 	{
@@ -137,26 +170,31 @@ public class DefaultClanGovernment implements ClanGovernment
 	{
 		return ID;
 	}
+
 	@Override
 	public void setID(int iD)
 	{
 		ID = iD;
 	}
+
 	@Override
 	public String getName()
 	{
 		return name;
 	}
+
 	@Override
 	public void setName(String name)
 	{
 		this.name = name;
 	}
+
 	@Override
 	public String getCategory()
 	{
 		return category;
 	}
+
 	@Override
 	public void setCategory(String category)
 	{
@@ -164,156 +202,188 @@ public class DefaultClanGovernment implements ClanGovernment
 			category="";
 		this.category=category.toUpperCase();
 	}
+
 	@Override
 	public int getAutoRole()
 	{
 		return autoRole;
 	}
+
 	@Override
 	public void setAutoRole(int autoRole)
 	{
 		this.autoRole = autoRole;
 	}
+
 	@Override
-	public boolean isRivalrous() {
+	public boolean isRivalrous() 
+	{
 		return isRivalrous;
 	}
+
 	@Override
 	public void setRivalrous(boolean isRivalrous)
 	{
 		this.isRivalrous=isRivalrous;
 	}
+
 	@Override
 	public int getAcceptPos()
 	{
 		return acceptPos;
 	}
+
 	@Override
 	public void setAcceptPos(int acceptPos)
 	{
 		this.acceptPos = acceptPos;
 	}
+
 	@Override
 	public String getShortDesc()
 	{
 		return shortDesc;
 	}
+
 	@Override
 	public void setShortDesc(String shortDesc)
 	{
 		this.shortDesc = shortDesc;
 	}
+
 	@Override
 	public String getLongDesc()
 	{
 		return longDesc;
 	}
+
 	@Override
 	public void setLongDesc(String longDesc)
 	{
 		this.longDesc = longDesc;
 		this.helpStr = null;
 	}
+
 	@Override
 	public String getRequiredMaskStr()
 	{
 		return requiredMaskStr;
 	}
+
 	@Override
 	public void setRequiredMaskStr(String requiredMaskStr)
 	{
 		this.requiredMaskStr = requiredMaskStr;
 	}
+
 	@Override
 	public boolean isPublic()
 	{
 		return isPublic;
 	}
+
 	@Override
 	public void setPublic(boolean isPublic)
 	{
 		this.isPublic = isPublic;
 	}
+
 	@Override
 	public boolean isFamilyOnly()
 	{
 		return isFamilyOnly;
 	}
+
 	@Override
 	public void setFamilyOnly(boolean isFamilyOnly)
 	{
 		this.isFamilyOnly = isFamilyOnly;
 	}
+
 	@Override
 	public Integer getOverrideMinMembers()
 	{
 		return overrideMinMembers;
 	}
+
 	@Override
 	public void setOverrideMinMembers(Integer overrideMinMembers)
 	{
 		this.overrideMinMembers = overrideMinMembers;
 	}
+
 	@Override
 	public boolean isConquestEnabled()
 	{
 		return conquestEnabled;
 	}
+
 	@Override
 	public void setConquestEnabled(boolean conquestEnabled)
 	{
 		this.conquestEnabled = conquestEnabled;
 	}
+
 	@Override
 	public boolean isConquestItemLoyalty()
 	{
 		return conquestItemLoyalty;
 	}
+
 	@Override
 	public void setConquestItemLoyalty(boolean conquestItemLoyalty)
 	{
 		this.conquestItemLoyalty = conquestItemLoyalty;
 	}
+
 	@Override
 	public boolean isConquestByWorship()
 	{
 		return conquestByWorship;
 	}
+
 	@Override
 	public void setConquestByWorship(boolean conquestByWorship)
 	{
 		this.conquestByWorship = conquestByWorship;
 	}
+
 	@Override
 	public int getMaxVoteDays()
 	{
 		return maxVoteDays;
 	}
+
 	@Override
 	public void setMaxVoteDays(int maxVoteDays)
 	{
 		this.maxVoteDays = maxVoteDays;
 	}
+
 	@Override
 	public int getVoteQuorumPct()
 	{
 		return voteQuorumPct;
 	}
+
 	@Override
 	public void setVoteQuorumPct(int voteQuorumPct)
 	{
 		this.voteQuorumPct = voteQuorumPct;
 	}
+
 	@Override
 	public String getXpCalculationFormulaStr()
 	{
 		return xpCalculationFormulaStr==null?"":xpCalculationFormulaStr;
 	}
+
 	@Override
 	public LinkedList<CMath.CompiledOperation> getXPCalculationFormula()
 	{
 		return xpCalculationFormula;
 	}
+
 	@Override
 	public void setXpCalculationFormulaStr(String newXpCalculationFormula)
 	{
@@ -332,42 +402,50 @@ public class DefaultClanGovernment implements ClanGovernment
 			Log.errOut("DefaultClanGovernment",e.getMessage());
 		}
 	}
+
 	@Override
 	public boolean isDefault()
 	{
 		return isDefault;
 	}
+
 	@Override
 	public void setDefault(boolean isDefault)
 	{
 		this.isDefault = isDefault;
 	}
+
 	@Override
 	public ClanPosition[] getPositions()
 	{
 		return positions;
 	}
+
 	@Override
 	public void setPositions(ClanPosition[] positions)
 	{
 		this.positionMap.clear();
 		this.positions = positions;
 	}
+
 	@Override
 	public Clan.AutoPromoteFlag getAutoPromoteBy()
 	{
 		return autoPromoteBy;
 	}
+
 	@Override
 	public void setAutoPromoteBy(Clan.AutoPromoteFlag autoPromoteBy)
 	{
 		this.autoPromoteBy = autoPromoteBy;
 	}
+
 	@Override
 	public int[] getLevelProgression()
 	{
 		return levelProgression;
 	}
+
 	@Override
 	public void setLevelProgression(int[] levelProgression)
 	{
@@ -379,16 +457,19 @@ public class DefaultClanGovernment implements ClanGovernment
 	{
 		return entryScriptParam;
 	}
+
 	@Override
 	public void setEntryScript(String scriptParm)
 	{
 		entryScriptParam=scriptParm;
 	}
+
 	@Override
 	public String getExitScript()
 	{
 		return exitScriptParam;
 	}
+
 	@Override
 	public void setExitScript(String scriptParm)
 	{
@@ -414,8 +495,10 @@ public class DefaultClanGovernment implements ClanGovernment
 				return positions[i];
 		}
 		for(final ClanPosition P : positions)
+		{
 			if(P.getID().equalsIgnoreCase(pos))
 				return P;
+		}
 		return null;
 	}
 	
@@ -431,36 +514,46 @@ public class DefaultClanGovernment implements ClanGovernment
 		{
 			int ipos=CMath.s_int(pos);
 			for(final ClanPosition P : positions)
+			{
 				if(P.getRoleID() == ipos)
 				{
 					positionMap.put(pos,P);
 					return P;
 				}
+			}
 		}
 		for(final ClanPosition P : positions)
+		{
 			if(P.getID().equalsIgnoreCase(pos))
 			{
 				positionMap.put(pos,P);
 				return P;
 			}
+		}
 		for(final ClanPosition P : positions)
+		{
 			if(P.getName().equalsIgnoreCase(pos))
 			{
 				positionMap.put(pos,P);
 				return P;
 			}
+		}
 		for(final ClanPosition P : positions)
+		{
 			if(P.getID().toUpperCase().startsWith(pos.toUpperCase()))
 			{
 				positionMap.put(pos,P);
 				return P;
 			}
+		}
 		for(final ClanPosition P : positions)
+		{
 			if(P.getName().toUpperCase().startsWith(pos.toUpperCase()))
 			{
 				positionMap.put(pos,P);
 				return P;
 			}
+		}
 		return null;
 	}
 	
@@ -473,11 +566,13 @@ public class DefaultClanGovernment implements ClanGovernment
 			return positionMap.get(roleID);
 		final int ipos=roleID.intValue();
 		for(final ClanPosition P : positions)
+		{
 			if(P.getRoleID() == ipos)
 			{
 				positionMap.put(roleID,P);
 				return P;
 			}
+		}
 		return null;
 	}
 	
@@ -521,26 +616,43 @@ public class DefaultClanGovernment implements ClanGovernment
 		P.setPublic(true);
 		positions[positions.length-1]=P;
 		for(int i=0;i<positions.length;i++)
+		{
 			if(!roles.contains(Integer.valueOf(i)))
 			{
 				P.setRoleID(i);
 				break;
 			}
+		}
 		positionMap.clear();
 		return P;
 	}
-	private static enum GOVT_STAT_CODES {
+	private static enum GOVT_STAT_CODES 
+	{
 		NAME,AUTOROLE,ACCEPTPOS,SHORTDESC,REQUIREDMASK,ISPUBLIC,ISFAMILYONLY,OVERRIDEMINMEMBERS,
 		CONQUESTENABLED,CONQUESTITEMLOYALTY,CONQUESTDEITYBASIS,MAXVOTEDAYS,VOTEQUORUMPCT,
 		AUTOPROMOTEBY,VOTEFUNCS,LONGDESC,XPLEVELFORMULA,
-		NUMRABLE,GETRABLE,GETRABLEPROF,GETRABLEQUAL,GETRABLELVL,
+		NUMRABLE,GETRABLE,GETRABLEPROF,GETRABLEQUAL,GETRABLELVL,GETRABLEPARM,
 		NUMREFF,GETREFF,GETREFFPARM,GETREFFLVL,CATEGORY,ISRIVALROUS,
 		ENTRYSCRIPT,EXITSCRIPT,GETREFFROLE,GETRABLEROLE
 	}
 
-	@Override public String[] getStatCodes() { return CMParms.toStringArray(GOVT_STAT_CODES.values());}
-	@Override public int getSaveStatIndex() { return GOVT_STAT_CODES.values().length;}
-	private GOVT_STAT_CODES getStatIndex(String code) { return (GOVT_STAT_CODES)CMath.s_valueOf(GOVT_STAT_CODES.values(),code); }
+	@Override
+	public String[] getStatCodes()
+	{
+		return CMParms.toStringArray(GOVT_STAT_CODES.values());
+	}
+
+	@Override
+	public int getSaveStatIndex()
+	{
+		return GOVT_STAT_CODES.values().length;
+	}
+
+	private GOVT_STAT_CODES getStatIndex(String code)
+	{
+		return (GOVT_STAT_CODES) CMath.s_valueOf(GOVT_STAT_CODES.values(), code);
+	}
+
 	@Override
 	public String getStat(String code)
 	{
@@ -554,36 +666,59 @@ public class DefaultClanGovernment implements ClanGovernment
 			code=code.substring(0,numDex);
 		}
 		final GOVT_STAT_CODES stat = getStatIndex(code);
-		if(stat==null){ return "";}
+		if (stat == null)
+		{
+			return "";
+		}
 		switch(stat)
 		{
-		case NAME: return name;
-		case AUTOROLE: return (autoRole < 0 || autoRole > positions.length) ? "" : positions[autoRole].getID();
-		case ACCEPTPOS: return (acceptPos < 0 || acceptPos > positions.length) ? "" : positions[acceptPos].getID();
-		case SHORTDESC: return shortDesc;
-		case LONGDESC: return longDesc;
-		case XPLEVELFORMULA: return xpCalculationFormulaStr==null?"":xpCalculationFormulaStr;
-		case REQUIREDMASK: return requiredMaskStr;
-		case ISPUBLIC: return Boolean.toString(isPublic);
-		case ISFAMILYONLY: return Boolean.toString(isFamilyOnly);
-		case OVERRIDEMINMEMBERS: return overrideMinMembers == null ? "" : overrideMinMembers.toString();
-		case CONQUESTENABLED: return Boolean.toString(conquestEnabled);
-		case CONQUESTITEMLOYALTY: return Boolean.toString(conquestItemLoyalty);
-		case CONQUESTDEITYBASIS: return Boolean.toString(conquestByWorship);
-		case MAXVOTEDAYS: return Integer.toString(maxVoteDays);
-		case VOTEQUORUMPCT: return Integer.toString(voteQuorumPct);
-		case AUTOPROMOTEBY: return autoPromoteBy.toString();
-		case ISRIVALROUS: return Boolean.toString(isRivalrous);
-		case ENTRYSCRIPT: return entryScriptParam;
-		case EXITSCRIPT: return exitScriptParam;
-		case VOTEFUNCS:{
-			final StringBuilder str=new StringBuilder("");
-			for(final ClanPosition pos : positions)
+		case NAME:
+			return name;
+		case AUTOROLE:
+			return (autoRole < 0 || autoRole > positions.length) ? "" : positions[autoRole].getID();
+		case ACCEPTPOS:
+			return (acceptPos < 0 || acceptPos > positions.length) ? "" : positions[acceptPos].getID();
+		case SHORTDESC:
+			return shortDesc;
+		case LONGDESC:
+			return longDesc;
+		case XPLEVELFORMULA:
+			return xpCalculationFormulaStr == null ? "" : xpCalculationFormulaStr;
+		case REQUIREDMASK:
+			return requiredMaskStr;
+		case ISPUBLIC:
+			return Boolean.toString(isPublic);
+		case ISFAMILYONLY:
+			return Boolean.toString(isFamilyOnly);
+		case OVERRIDEMINMEMBERS:
+			return overrideMinMembers == null ? "" : overrideMinMembers.toString();
+		case CONQUESTENABLED:
+			return Boolean.toString(conquestEnabled);
+		case CONQUESTITEMLOYALTY:
+			return Boolean.toString(conquestItemLoyalty);
+		case CONQUESTDEITYBASIS:
+			return Boolean.toString(conquestByWorship);
+		case MAXVOTEDAYS:
+			return Integer.toString(maxVoteDays);
+		case VOTEQUORUMPCT:
+			return Integer.toString(voteQuorumPct);
+		case AUTOPROMOTEBY:
+			return autoPromoteBy.toString();
+		case ISRIVALROUS:
+			return Boolean.toString(isRivalrous);
+		case ENTRYSCRIPT:
+			return entryScriptParam;
+		case EXITSCRIPT:
+			return exitScriptParam;
+		case VOTEFUNCS:
+		{
+			final StringBuilder str = new StringBuilder("");
+			for (final ClanPosition pos : positions)
 			{
-				for(int a=0;a<Function.values().length;a++)
-					if(pos.getFunctionChart()[a]==Authority.MUST_VOTE_ON)
+				for (int a = 0; a < Function.values().length; a++)
+					if (pos.getFunctionChart()[a] == Authority.MUST_VOTE_ON)
 					{
-						if(str.length()>0)
+						if (str.length() > 0)
 							str.append(",");
 						str.append(Function.values()[a]);
 					}
@@ -591,23 +726,45 @@ public class DefaultClanGovernment implements ClanGovernment
 			}
 			return str.toString();
 		}
-		case NUMRABLE: return (clanAbilityNames==null)?"0":(""+clanAbilityNames.length);
-		case GETRABLE: return (clanAbilityNames==null)?"":(""+clanAbilityNames[num]);
-		case GETRABLEPROF: return (clanAbilityProficiencies==null)?"0":(""+clanAbilityProficiencies[num]);
-		case GETRABLEQUAL: return (clanAbilityQuals==null)?"false":(""+clanAbilityQuals[num]);
-		case GETRABLELVL: return (clanAbilityLevels==null)?"0":(""+clanAbilityLevels[num]);
-		case GETRABLEROLE: return (clanAbilityRoles==null)?"":(CMParms.toListString(clanAbilityRoles[num]));
-		case NUMREFF: return (clanEffectNames==null)?"0":(""+clanEffectNames.length);
-		case GETREFF: return (clanEffectNames==null)?"":(""+clanEffectNames[num]);
-		case GETREFFPARM: return (clanEffectParms==null)?"0":(""+clanEffectParms[num]);
-		case GETREFFLVL: return (clanEffectLevels==null)?"0":(""+clanEffectLevels[num]);
-		case GETREFFROLE: return (clanEffectRoles==null)?"":(CMParms.toListString(clanEffectRoles[num]));
-		case CATEGORY: return category;
-		default: Log.errOut("Clan","getStat:Unhandled:"+stat.toString()); break;
+		case NUMRABLE:
+			return (clanAbilityNames == null) ? "0" : ("" + clanAbilityNames.length);
+		case GETRABLE:
+			return (clanAbilityNames == null) ? "" : ("" + clanAbilityNames[num]);
+		case GETRABLEPROF:
+			return (clanAbilityProficiencies == null) ? "0" : ("" + clanAbilityProficiencies[num]);
+		case GETRABLEQUAL:
+			return (clanAbilityQuals == null) ? "false" : ("" + clanAbilityQuals[num]);
+		case GETRABLELVL:
+			return (clanAbilityLevels == null) ? "0" : ("" + clanAbilityLevels[num]);
+		case GETRABLEROLE:
+			return (clanAbilityRoles == null) ? "" : (CMParms.toListString(clanAbilityRoles[num]));
+		case GETRABLEPARM:
+			return (clanAbilityParms == null) ? "0" : ("" + clanAbilityParms[num]);
+		case NUMREFF:
+			return (clanEffectNames == null) ? "0" : ("" + clanEffectNames.length);
+		case GETREFF:
+			return (clanEffectNames == null) ? "" : ("" + clanEffectNames[num]);
+		case GETREFFPARM:
+			return (clanEffectParms == null) ? "0" : ("" + clanEffectParms[num]);
+		case GETREFFLVL:
+			return (clanEffectLevels == null) ? "0" : ("" + clanEffectLevels[num]);
+		case GETREFFROLE:
+			return (clanEffectRoles == null) ? "" : (CMParms.toListString(clanEffectRoles[num]));
+		case CATEGORY:
+			return category;
+		default:
+			Log.errOut("Clan", "getStat:Unhandled:" + stat.toString());
+			break;
 		}
 		return "";
 	}
-	@Override public boolean isStat(String code) { return getStatIndex(code)!=null;}
+
+	@Override
+	public boolean isStat(String code)
+	{
+		return getStatIndex(code) != null;
+	}
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public void setStat(String code, String val)
@@ -622,153 +779,234 @@ public class DefaultClanGovernment implements ClanGovernment
 			code=code.substring(0,numDex);
 		}
 		final GOVT_STAT_CODES stat = getStatIndex(code);
-		if(stat==null){ return;}
+		final boolean isNull = (stat == null);
+		if (isNull)
+		{
+			return;
+		}
 		switch(stat)
 		{
-		case NAME: name=val; break;
-		case CATEGORY: category=val; break;
-		case AUTOROLE: { final ClanPosition P=getPosition(val); if(P!=null) autoRole=P.getRoleID(); break; }
-		case ACCEPTPOS: { final ClanPosition P=getPosition(val); if(P!=null) acceptPos=P.getRoleID(); break; }
-		case SHORTDESC: shortDesc=val; break;
-		case LONGDESC: longDesc=val; break;
-		case XPLEVELFORMULA: setXpCalculationFormulaStr(val); break;
-		case REQUIREDMASK: requiredMaskStr=val;break;
-		case ISPUBLIC: isPublic=CMath.s_bool(val); break;
-		case ISFAMILYONLY: isFamilyOnly=CMath.s_bool(val); break;
-		case OVERRIDEMINMEMBERS: {
-			if(val.length()==0)
+		case NAME:
+			name = val;
+			break;
+		case CATEGORY:
+			category = val;
+			break;
+		case AUTOROLE:
+		{
+			final ClanPosition P = getPosition(val);
+			if (P != null)
+				autoRole = P.getRoleID();
+			break;
+		}
+		case ACCEPTPOS:
+		{
+			final ClanPosition P = getPosition(val);
+			if (P != null)
+				acceptPos = P.getRoleID();
+			break;
+		}
+		case SHORTDESC:
+			shortDesc = val;
+			break;
+		case LONGDESC:
+			longDesc = val;
+			break;
+		case XPLEVELFORMULA:
+			setXpCalculationFormulaStr(val);
+			break;
+		case REQUIREDMASK:
+			requiredMaskStr = val;
+			break;
+		case ISPUBLIC:
+			isPublic = CMath.s_bool(val);
+			break;
+		case ISFAMILYONLY:
+			isFamilyOnly = CMath.s_bool(val);
+			break;
+		case OVERRIDEMINMEMBERS:
+		{
+			if (val.length() == 0)
 				overrideMinMembers = null;
-			else overrideMinMembers=Integer.valueOf(CMath.s_int(val));
+			else
+				overrideMinMembers = Integer.valueOf(CMath.s_int(val));
 			break;
 		}
-		case CONQUESTENABLED: conquestEnabled=CMath.s_bool(val); break;
-		case CONQUESTITEMLOYALTY: conquestItemLoyalty=CMath.s_bool(val); break;
-		case CONQUESTDEITYBASIS: conquestByWorship=CMath.s_bool(val); break;
-		case MAXVOTEDAYS: maxVoteDays=CMath.s_int(val); break;
-		case VOTEQUORUMPCT: voteQuorumPct=CMath.s_int(val); break;
-		case ISRIVALROUS: this.isRivalrous=CMath.s_bool(val); break;
-		case ENTRYSCRIPT: this.entryScriptParam=val; break;
-		case EXITSCRIPT: this.exitScriptParam=val; break;
-		case AUTOPROMOTEBY:{
-			final Clan.AutoPromoteFlag flag=(Clan.AutoPromoteFlag)CMath.s_valueOf(Clan.AutoPromoteFlag.values(),val);
-			if(flag!=null)
-				autoPromoteBy=flag;
+		case CONQUESTENABLED:
+			conquestEnabled = CMath.s_bool(val);
+			break;
+		case CONQUESTITEMLOYALTY:
+			conquestItemLoyalty = CMath.s_bool(val);
+			break;
+		case CONQUESTDEITYBASIS:
+			conquestByWorship = CMath.s_bool(val);
+			break;
+		case MAXVOTEDAYS:
+			maxVoteDays = CMath.s_int(val);
+			break;
+		case VOTEQUORUMPCT:
+			voteQuorumPct = CMath.s_int(val);
+			break;
+		case ISRIVALROUS:
+			this.isRivalrous = CMath.s_bool(val);
+			break;
+		case ENTRYSCRIPT:
+			this.entryScriptParam = val;
+			break;
+		case EXITSCRIPT:
+			this.exitScriptParam = val;
+			break;
+		case AUTOPROMOTEBY:
+		{
+			final Clan.AutoPromoteFlag flag = (Clan.AutoPromoteFlag) CMath.s_valueOf(Clan.AutoPromoteFlag.values(), val);
+			if (flag != null)
+				autoPromoteBy = flag;
 			break;
 		}
-		case VOTEFUNCS:{
-			final List<String> funcs=CMParms.parseCommas(val.toUpperCase().trim(), true);
-			for(final ClanPosition pos : positions)
+		case VOTEFUNCS:
+		{
+			final List<String> funcs = CMParms.parseCommas(val.toUpperCase().trim(), true);
+			for (final ClanPosition pos : positions)
 			{
-				for(int a=0;a<Function.values().length;a++)
-					if(pos.getFunctionChart()[a]==Authority.MUST_VOTE_ON)
-						pos.getFunctionChart()[a]=Authority.CAN_NOT_DO;
-				for(final String funcName : funcs)
+				for (int a = 0; a < Function.values().length; a++)
+					if (pos.getFunctionChart()[a] == Authority.MUST_VOTE_ON)
+						pos.getFunctionChart()[a] = Authority.CAN_NOT_DO;
+				for (final String funcName : funcs)
 				{
-					final Clan.Function func=(Clan.Function)CMath.s_valueOf(Function.values(), funcName);
-					if(func!=null)
+					final Clan.Function func = (Clan.Function) CMath.s_valueOf(Function.values(), funcName);
+					if (func != null)
 						pos.getFunctionChart()[func.ordinal()] = Authority.MUST_VOTE_ON;
 				}
 			}
 			break;
 		}
 		case NUMRABLE:
-				 clanAbilityMap=null;
-				 if(CMath.s_int(val)==0)
-				 {
-					 clanAbilityNames=null;
-					 clanAbilityProficiencies=null;
-					 clanAbilityQuals=null;
-					 clanAbilityLevels=null;
-					 clanAbilityRoles=null;
-				 }
-				 else
-				 {
-					 clanAbilityNames=new String[CMath.s_int(val)];
-					 clanAbilityProficiencies=new int[CMath.s_int(val)];
-					 clanAbilityQuals=new boolean[CMath.s_int(val)];
-					 clanAbilityLevels=new int[CMath.s_int(val)];
-					 clanAbilityRoles=new Set[CMath.s_int(val)];
-				 }
-				 break;
+			clanAbilityMap = null;
+			if (CMath.s_int(val) == 0)
+			{
+				clanAbilityNames = null;
+				clanAbilityProficiencies = null;
+				clanAbilityQuals = null;
+				clanAbilityLevels = null;
+				clanAbilityRoles = null;
+				clanAbilityParms = null;
+			}
+			else
+			{
+				clanAbilityParms = new String[CMath.s_int(val)];
+				clanAbilityNames = new String[CMath.s_int(val)];
+				clanAbilityProficiencies = new int[CMath.s_int(val)];
+				clanAbilityQuals = new boolean[CMath.s_int(val)];
+				clanAbilityLevels = new int[CMath.s_int(val)];
+				clanAbilityRoles = new Set[CMath.s_int(val)];
+			}
+			break;
 		case GETRABLE:
-				 {   if(clanAbilityNames==null) clanAbilityNames=new String[num+1];
-					 clanAbilityNames[num]=val;
-					 break;
-				 }
+		{
+			if (clanAbilityNames == null)
+				clanAbilityNames = new String[num + 1];
+			clanAbilityNames[num] = val;
+			break;
+		}
 		case GETRABLEPROF:
-				 {   if(clanAbilityProficiencies==null) clanAbilityProficiencies=new int[num+1];
-					 clanAbilityProficiencies[num]=CMath.s_parseIntExpression(val);
-					 break;
-				 }
+		{
+			if (clanAbilityProficiencies == null)
+				clanAbilityProficiencies = new int[num + 1];
+			clanAbilityProficiencies[num] = CMath.s_parseIntExpression(val);
+			break;
+		}
+		case GETRABLEPARM:
+		{
+			if (clanAbilityParms == null)
+				clanAbilityParms = new String[num + 1];
+			clanAbilityParms[num] = val;
+			break;
+		}
 		case GETRABLEQUAL:
-				 {   if(clanAbilityQuals==null) clanAbilityQuals=new boolean[num+1];
-					 clanAbilityQuals[num]=CMath.s_bool(val);
-					 break;
-				 }
+		{
+			if (clanAbilityQuals == null)
+				clanAbilityQuals = new boolean[num + 1];
+			clanAbilityQuals[num] = CMath.s_bool(val);
+			break;
+		}
 		case GETRABLELVL:
-				 {   if(clanAbilityLevels==null) clanAbilityLevels=new int[num+1];
-					 clanAbilityLevels[num]=CMath.s_parseIntExpression(val);
-					 break;
-				 }
+		{
+			if (clanAbilityLevels == null)
+				clanAbilityLevels = new int[num + 1];
+			clanAbilityLevels[num] = CMath.s_parseIntExpression(val);
+			break;
+		}
 		case GETRABLEROLE:
-				 {   if(clanAbilityRoles==null) clanAbilityRoles=new Set[num+1];
-				 	 final List<String> partsList=CMParms.parseCommas(val,true);
-				 	 final Set<Integer> roleSet=new HashSet<Integer>();
-				 	 for(final String part : partsList)
-				 	 {
-				 		 final ClanPosition P=findPositionRole(part);
-				 		 if(P!=null)
-				 			 roleSet.add(Integer.valueOf(P.getRoleID()));
-				 	 }
-				 	 clanAbilityRoles[num]=roleSet;
-					 break;
-				 }
+		{
+			if (clanAbilityRoles == null)
+				clanAbilityRoles = new Set[num + 1];
+			final List<String> partsList = CMParms.parseCommas(val, true);
+			final Set<Integer> roleSet = new HashSet<Integer>();
+			for (final String part : partsList)
+			{
+				final ClanPosition P = findPositionRole(part);
+				if (P != null)
+					roleSet.add(Integer.valueOf(P.getRoleID()));
+			}
+			clanAbilityRoles[num] = roleSet;
+			break;
+		}
 		case NUMREFF:
-				 clanEffectMap=null;
-				 if(CMath.s_int(val)==0)
-				 {
-					 clanEffectNames=null;
-					 clanEffectParms=null;
-					 clanEffectLevels=null;
-					 clanEffectRoles=null;
-				 }
-				 else
-				 {
-					 clanEffectNames=new String[CMath.s_int(val)];
-					 clanEffectParms=new String[CMath.s_int(val)];
-					 clanEffectLevels=new int[CMath.s_int(val)];
-					 clanEffectRoles=new Set[CMath.s_int(val)];
-				 }
-				 break;
+			clanEffectMap = null;
+			if (CMath.s_int(val) == 0)
+			{
+				clanEffectNames = null;
+				clanEffectParms = null;
+				clanEffectLevels = null;
+				clanEffectRoles = null;
+			}
+			else
+			{
+				clanEffectNames = new String[CMath.s_int(val)];
+				clanEffectParms = new String[CMath.s_int(val)];
+				clanEffectLevels = new int[CMath.s_int(val)];
+				clanEffectRoles = new Set[CMath.s_int(val)];
+			}
+			break;
 		case GETREFF:
-		 		 {   if(clanEffectNames==null) clanEffectNames=new String[num+1];
-					 clanEffectNames[num]=val;
-					 break;
-				 }
+		{
+			if (clanEffectNames == null)
+				clanEffectNames = new String[num + 1];
+			clanEffectNames[num] = val;
+			break;
+		}
 		case GETREFFPARM:
-				 {   if(clanEffectParms==null) clanEffectParms=new String[num+1];
-					 clanEffectParms[num]=val;
-					 break;
-				 }
+		{
+			if (clanEffectParms == null)
+				clanEffectParms = new String[num + 1];
+			clanEffectParms[num] = val;
+			break;
+		}
 		case GETREFFROLE:
-				 {   if(clanEffectRoles==null) clanEffectRoles=new Set[num+1];
-				 	 final List<String> partsList=CMParms.parseCommas(val,true);
-				 	 final Set<Integer> roleSet=new HashSet<Integer>();
-				 	 for(final String part : partsList)
-				 	 {
-				 		 final ClanPosition P=findPositionRole(part);
-				 		 if(P!=null)
-				 			 roleSet.add(Integer.valueOf(P.getRoleID()));
-				 	 }
-					 clanEffectRoles[num]=roleSet;
-					 break;
-				 }
+		{
+			if (clanEffectRoles == null)
+				clanEffectRoles = new Set[num + 1];
+			final List<String> partsList = CMParms.parseCommas(val, true);
+			final Set<Integer> roleSet = new HashSet<Integer>();
+			for (final String part : partsList)
+			{
+				final ClanPosition P = findPositionRole(part);
+				if (P != null)
+					roleSet.add(Integer.valueOf(P.getRoleID()));
+			}
+			clanEffectRoles[num] = roleSet;
+			break;
+		}
 		case GETREFFLVL:
-		 		 {   if(clanEffectLevels==null) clanEffectLevels=new int[num+1];
-					 clanEffectLevels[num]=CMath.s_int(val);
-					 break;
-				 }
-		default: Log.errOut("Clan","setStat:Unhandled:"+stat.toString()); break;
+		{
+			if (clanEffectLevels == null)
+				clanEffectLevels = new int[num + 1];
+			clanEffectLevels[num] = CMath.s_int(val);
+			break;
+		}
+		default:
+			Log.errOut("Clan", "setStat:Unhandled:" + stat.toString());
+			break;
 		}
 	}
 
@@ -787,8 +1025,10 @@ public class DefaultClanGovernment implements ClanGovernment
 			{
 				boolean showMe=false;
 				for(final Clan.Authority a : P.getFunctionChart())
+				{
 					if(a==Authority.CAN_DO)
 						showMe=true;
+				}
 				if(showMe)
 					showablePositions.add(P);
 			}
@@ -797,9 +1037,11 @@ public class DefaultClanGovernment implements ClanGovernment
 			{
 				ClanPosition highPos=null;
 				for(final ClanPosition P : showablePositions)
+				{
 					if((!sortedPositions.contains(P))
 					&&((highPos==null)||(highPos.getRank()<P.getRank())))
 						highPos=P;
+				}
 				sortedPositions.add(highPos);
 			}
 			final int[] posses=new int[sortedPositions.size()];
@@ -825,6 +1067,7 @@ public class DefaultClanGovernment implements ClanGovernment
 			while((funcMaxLen > funcMaxAvg)&&((funcMaxAvg + posTotalLen)>78))
 				funcMaxLen--;
 			if(posses.length>0)
+			{
 				while((funcMaxLen + posTotalLen) > 78)
 				{
 					int highPos=0;
@@ -834,6 +1077,7 @@ public class DefaultClanGovernment implements ClanGovernment
 					posTotalLen--;
 					posses[highPos]--;
 				}
+			}
 
 			final int commandColLen = funcMaxLen;
 			str.append(CMStrings.padRight(CMLib.lang().L("Command"),commandColLen-1)).append("!");
@@ -896,6 +1140,7 @@ public class DefaultClanGovernment implements ClanGovernment
 				{
 					final List<String> levelBenefits=new LinkedList<String>();
 					for(int x=0;x<clanEffectLevels.length;x++)
+					{
 						if(clanEffectLevels[x]==l)
 						{
 							final Ability A=CMClass.getAbility(clanEffectNames[x]);
@@ -923,7 +1168,9 @@ public class DefaultClanGovernment implements ClanGovernment
 								levelBenefits.add(desc);
 							}
 						}
+					}
 					for(int x=0;x<clanAbilityLevels.length;x++)
+					{
 						if(clanAbilityLevels[x]==l)
 						{
 							final Ability A=CMClass.getAbility(clanAbilityNames[x]);
@@ -950,6 +1197,7 @@ public class DefaultClanGovernment implements ClanGovernment
 									levelBenefits.add(CMLib.lang().L("@x1 automatically gain: @x2",roleNames,A.name()));
 							}
 						}
+					}
 					for(final String bene : levelBenefits)
 						str.append(CMLib.lang().L("Level @x1: @x2\n\r",""+l,bene));
 				}
@@ -999,7 +1247,7 @@ public class DefaultClanGovernment implements ClanGovernment
 															 clanAbilityLevels[i],
 															 A.ID(),
 															 clanAbilityProficiencies[i],
-															 "",
+															 clanAbilityParms[i],
 															 !clanAbilityQuals[i],
 															 false,
 															 extraMask);
@@ -1122,7 +1370,12 @@ public class DefaultClanGovernment implements ClanGovernment
 		return new ChameleonList<Ability>(empty,
 			new ChameleonList.Signaler<Ability>(empty)
 			{
-				@Override public boolean isDeprecated() { return (mob!=null)&&(mob.clans().iterator().hasNext());}
+				@Override
+				public boolean isDeprecated()
+				{
+					return (mob != null) && (mob.clans().iterator().hasNext());
+				}
+	
 				@Override
 				public void rebuild(final ChameleonList<Ability> me)
 				{
@@ -1171,8 +1424,16 @@ public class DefaultClanGovernment implements ClanGovernment
 			finalFinalV = new ChameleonList<Ability>(finalV,
 			new ChameleonList.Signaler<Ability>(myList)
 			{
-				@Override public boolean isDeprecated() { return false;}
-				@Override public void rebuild(final ChameleonList<Ability> me){}
+				@Override
+				public boolean isDeprecated()
+				{
+					return false;
+				}
+
+				@Override
+				public void rebuild(final ChameleonList<Ability> me)
+				{
+				}
 			});
 		}
 		else

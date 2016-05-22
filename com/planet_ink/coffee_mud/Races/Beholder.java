@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -99,6 +98,7 @@ public class Beholder extends StdRace
 	private final int[]		racialAbilityLevels			= { 1, 1, 1, 5, 10, 10, 15, 20, 30, 30 };
 	private final int[]		racialAbilityProficiencies	= { 50, 50, 50, 50, 50, 50, 100, 50, 50, 50 };
 	private final boolean[]	racialAbilityQuals			= { false, false, false, false, false, false, false, false, false, false };
+	private final String[]	racialAbilityParms			= { "", "", "","", "", "","", "", "","" };
 
 	@Override
 	public String[] racialAbilityNames()
@@ -122,6 +122,12 @@ public class Beholder extends StdRace
 	public boolean[] racialAbilityQuals()
 	{
 		return racialAbilityQuals;
+	}
+
+	@Override
+	public String[] racialAbilityParms()
+	{
+		return racialAbilityParms;
 	}
 
 	private final String[]	culturalAbilityNames			= { "Undercommon" };

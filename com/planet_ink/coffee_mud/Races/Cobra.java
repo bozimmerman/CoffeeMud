@@ -90,6 +90,7 @@ public class Cobra extends Snake
 	private final int[]		racialAbilityLevels			= { 5 };
 	private final int[]		racialAbilityProficiencies	= { 30 };
 	private final boolean[]	racialAbilityQuals			= { false };
+	private final String[]	racialAbilityParms			= { "" };
 
 	@Override
 	public String[] racialAbilityNames()
@@ -113,6 +114,12 @@ public class Cobra extends Snake
 	public boolean[] racialAbilityQuals()
 	{
 		return racialAbilityQuals;
+	}
+
+	@Override
+	public String[] racialAbilityParms()
+	{
+		return racialAbilityParms;
 	}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi

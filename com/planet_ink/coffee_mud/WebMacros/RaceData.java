@@ -370,7 +370,7 @@ public class RaceData extends StdWebMacro
 	public static StringBuffer dynAbilities(final MOB mob, List<Ability> ables, String ID, Modifiable obj, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize, String font)
 	{
 		final StringBuffer str=new StringBuffer("");
-		final QuintVector<String,String,String,String,String> theclasses=new QuintVector<String,String,String,String,String>();
+		final DVector theclasses=new DVector(6);
 		final boolean supportsRoles=CMParms.contains(obj.getStatCodes(), "GETRABLEROLE");
 		if(httpReq.isUrlParameter("RABLES1"))
 		{
@@ -386,6 +386,9 @@ public class RaceData extends StdWebMacro
 					String qual=httpReq.getUrlParameter("RABQUA"+num);
 					if(qual==null)
 						qual="";
+					String parm=httpReq.getUrlParameter("RABPRM"+num);
+					if(parm==null)
+						parm="";
 					String levl=httpReq.getUrlParameter("RABLVL"+num);
 					if(levl==null)
 						levl="0";
@@ -394,7 +397,7 @@ public class RaceData extends StdWebMacro
 						roles=httpReq.getUrlParameter("RABROL"+num);
 					if(roles==null) 
 						roles="";
-					theclasses.addElement(behav,prof,qual,levl,roles);
+					theclasses.addElement(behav,prof,qual,levl,parm,roles);
 				}
 				num++;
 				behav=httpReq.getUrlParameter("RABLES"+num);
@@ -414,6 +417,7 @@ public class RaceData extends StdWebMacro
 					AbilityMapper.AbilityMapping ableMap=CMLib.ableMapper().getAbleMap(ID, A.ID());
 					final boolean defaultGain = ableMap.autoGain();
 					final int qualifyingLevel = ableMap.qualLevel();
+					final String defaultParm = ableMap.defaultParm();
 					String roles=null;
 					if(supportsRoles && (obj instanceof ClanGovernment))
 					{
@@ -429,7 +433,7 @@ public class RaceData extends StdWebMacro
 					}
 					if(roles==null) 
 						roles="";
-					theclasses.addElement(A.ID(),A.proficiency()+"",defaultGain?"":"on",qualifyingLevel+"",roles);
+					theclasses.addElement(A.ID(),A.proficiency()+"",defaultGain?"":"on",qualifyingLevel+"",defaultParm,roles);
 				}
 			}
 		}
@@ -438,7 +442,7 @@ public class RaceData extends StdWebMacro
 		str.append("<TABLE WIDTH=100% BORDER="+borderSize+" CELLSPACING=0 CELLPADDING=0>");
 		for(int i=0;i<theclasses.size();i++)
 		{
-			final String theclass=theclasses.elementAt(i).first;
+			final String theclass=(String)theclasses.get(i,1);
 			str.append("<TR><TD COLSPAN=4><TABLE BORDER=0 WIDTH=100% CELLSPACING=0 CELLPADDING=0><TR><TD WIDTH=35%>");
 			str.append("<SELECT ONCHANGE=\"EditAffect(this);\" NAME=RABLES"+(i+1)+">");
 			str.append("<OPTION VALUE=\"\">Delete!");
@@ -446,19 +450,22 @@ public class RaceData extends StdWebMacro
 			str.append("</SELECT>");
 			str.append("</TD>");
 			str.append("<TD WIDTH=25%>");
-			str.append(font+"Lvl:</B></FONT> <INPUT TYPE=TEXT NAME=RABLVL"+(i+1)+" VALUE=\""+theclasses.elementAt(i).fourth+"\" SIZE=3 MAXLENGTH=3>");
+			str.append(font+"Lvl:</B></FONT> <INPUT TYPE=TEXT NAME=RABLVL"+(i+1)+" VALUE=\""+theclasses.get(i,4)+"\" SIZE=3 MAXLENGTH=3>");
 			str.append("</TD>");
 			str.append("<TD WIDTH=15%>");
-			str.append(font+"<INPUT TYPE=TEXT NAME=RABPOF"+(i+1)+" VALUE=\""+theclasses.elementAt(i).second+"\" SIZE=3 MAXLENGTH=3>%</B></I></FONT>");
+			str.append(font+"<INPUT TYPE=TEXT NAME=RABPOF"+(i+1)+" VALUE=\""+theclasses.get(i,2)+"\" SIZE=3 MAXLENGTH=3>%</B></I></FONT>");
 			str.append("</TD>");
 			str.append("<TD WIDTH=25%>");
-			str.append("<INPUT TYPE=CHECKBOX NAME=RABQUA"+(i+1)+" "+(theclasses.elementAt(i).third.equalsIgnoreCase("on")?"CHECKED":"")+">"+font+"Qualify Only</B></FONT></I>");
+			str.append("<INPUT TYPE=CHECKBOX NAME=RABQUA"+(i+1)+" "+(theclasses.get(i,3).toString().equalsIgnoreCase("on")?"CHECKED":"")+">"+font+"Qualify Only</B></FONT></I>");
 			str.append("</TD>");
 			str.append("</TR>");
+			str.append("<TR><TD WIDTH=35%>&nbsp;</TD><TD COLSPAN=3>");
+			str.append(font+"Parms:</B></FONT> <INPUT TYPE=TEXT NAME=RABPRM"+(i+1)+" VALUE=\""+theclasses.get(i,5)+"\" SIZE=40 MAXLENGTH=100>");
+			str.append("</TD></TR>");
 			if(supportsRoles)
 			{
 				str.append("<TR><TD WIDTH=35%>&nbsp;</TD><TD COLSPAN=3>");
-				str.append(font+"Roles:</B></FONT> <INPUT TYPE=TEXT NAME=RABROL"+(i+1)+" VALUE=\""+theclasses.elementAt(i).fifth+"\" SIZE=40 MAXLENGTH=100>");
+				str.append(font+"Roles:</B></FONT> <INPUT TYPE=TEXT NAME=RABROL"+(i+1)+" VALUE=\""+theclasses.get(i,6)+"\" SIZE=40 MAXLENGTH=100>");
 				str.append("</TD></TR>");
 			}
 			str.append("</TABLE></TD></TR>");
@@ -486,6 +493,9 @@ public class RaceData extends StdWebMacro
 		str.append("<INPUT TYPE=CHECKBOX NAME=RABQUA"+(theclasses.size()+1)+" >"+font+"Qualify Only</B></I></FONT>");
 		str.append("</TD>");
 		str.append("</TR>");
+		str.append("<TR><TD WIDTH=35%>&nbsp;</TD><TD COLSPAN=3>");
+		str.append(font+"Parms:</B></FONT> <INPUT TYPE=TEXT NAME=RABPRM"+(theclasses.size()+1)+" VALUE=\"\" SIZE=40 MAXLENGTH=100>");
+		str.append("</TD></TR>");
 		if(supportsRoles)
 		{
 			str.append("<TR><TD WIDTH=35%>&nbsp;</TD><TD COLSPAN=3>");

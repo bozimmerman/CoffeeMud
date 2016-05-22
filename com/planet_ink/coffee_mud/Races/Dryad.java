@@ -111,6 +111,7 @@ public class Dryad extends StdRace
 	private final int[]		racialAbilityLevels			= { 1, 10 };
 	private final int[]		racialAbilityProficiencies	= { 100, 60 };
 	private final boolean[]	racialAbilityQuals			= { false, false };
+	private final String[]	racialAbilityParms			= { "", "" };
 
 	@Override
 	public String[] racialAbilityNames()
@@ -134,6 +135,12 @@ public class Dryad extends StdRace
 	public boolean[] racialAbilityQuals()
 	{
 		return racialAbilityQuals;
+	}
+
+	@Override
+	public String[] racialAbilityParms()
+	{
+		return racialAbilityParms;
 	}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
