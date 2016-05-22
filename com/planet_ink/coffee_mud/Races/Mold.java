@@ -168,6 +168,10 @@ public class Mold extends StdRace
 		affectableStats.setStat(CharStats.STAT_SAVE_PARALYSIS,affectableStats.getStat(CharStats.STAT_SAVE_PARALYSIS)+100);
 		affectableStats.setStat(CharStats.STAT_SAVE_UNDEAD,affectableStats.getStat(CharStats.STAT_SAVE_UNDEAD)+100);
 		affectableStats.setStat(CharStats.STAT_SAVE_DISEASE,affectableStats.getStat(CharStats.STAT_SAVE_DISEASE)+100);
+		
+		affectableStats.setStat(CharStats.STAT_SAVE_PIERCE, affectableStats.getStat(CharStats.STAT_SAVE_PIERCE)+95);
+		affectableStats.setStat(CharStats.STAT_SAVE_SLASH, affectableStats.getStat(CharStats.STAT_SAVE_SLASH)+95);
+		affectableStats.setStat(CharStats.STAT_SAVE_BLUNT, affectableStats.getStat(CharStats.STAT_SAVE_BLUNT)+95);
 	}
 
 	@Override
@@ -223,13 +227,6 @@ public class Mold extends StdRace
 						((MOB)myHost).curState().setHitPoints(((MOB)myHost).curState().getHitPoints()+msg.value());
 						msg.setValue(1);
 					}
-					break;
-				case CMMsg.TYP_WEAPONATTACK:
-					if((msg.tool() instanceof Weapon)
-					&&((((Weapon)msg.tool()).weaponClassification()==Weapon.TYPE_SLASHING)
-					  ||(((Weapon)msg.tool()).weaponClassification()==Weapon.TYPE_PIERCING)
-					  ||(((Weapon)msg.tool()).weaponClassification()==Weapon.TYPE_BASHING)))
-						msg.setValue(1);
 					break;
 				case CMMsg.TYP_COLD:
 					msg.setValue(msg.value()*2);

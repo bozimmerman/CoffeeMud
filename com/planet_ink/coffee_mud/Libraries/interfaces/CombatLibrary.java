@@ -714,4 +714,22 @@ public interface CombatLibrary extends CMLibrary
 	 * @return true if its a siege weapon, false otherwise
 	 */
 	public boolean isAShipSiegeWeapon(Item I);
+	
+	/**
+	 * Checks to see if the given message gets a saving throw 
+	 * for the given mob and, if so, applies it.
+	 * @param mob the mob to save
+	 * @param msg the message that might apply
+	 * @return true if the message na or save only, false to cancel
+	 */
+	public boolean checkSavingThrows(final MOB mob, final CMMsg msg);
+	
+	/**
+	 * Checks to see if the given message gets a saving throw 
+	 * for the given mob damage and, if so, adjusts it
+	 * @param mob the mob to save
+	 * @param msg the message that might apply
+	 * @return true if the message na or save only, false to cancel
+	 */
+	public boolean checkDamageSaves(final MOB mob, final CMMsg msg);
 }

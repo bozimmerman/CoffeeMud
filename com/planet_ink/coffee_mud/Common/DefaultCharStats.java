@@ -289,6 +289,7 @@ public class DefaultCharStats implements CharStats
 			combined+=myLevels[i].intValue();
 		return combined;
 	}
+
 	public int combinedLevels()
 	{
 		if((myClasses==null)
@@ -731,6 +732,20 @@ public class DefaultCharStats implements CharStats
 			return getStat(STAT_SAVE_DETECTION);
 		case STAT_FAITH:
 			return getStat(STAT_FAITH);
+		case STAT_SAVE_BLUNT:
+			return getStat(STAT_SAVE_BLUNT);
+		case STAT_SAVE_PIERCE:
+			return getStat(STAT_SAVE_PIERCE);
+		case STAT_SAVE_SLASH:
+			return getStat(STAT_SAVE_SLASH);
+		case STAT_SAVE_SPELLS:
+			return getStat(STAT_SAVE_SPELLS);
+		case STAT_SAVE_PRAYERS:
+			return getStat(STAT_SAVE_PRAYERS);
+		case STAT_SAVE_SONGS:
+			return getStat(STAT_SAVE_SONGS);
+		case STAT_SAVE_CHANTS:
+			return getStat(STAT_SAVE_CHANTS);
 		}
 		return getStat(which);
 	}

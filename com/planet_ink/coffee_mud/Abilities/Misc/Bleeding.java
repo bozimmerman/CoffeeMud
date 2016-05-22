@@ -195,6 +195,8 @@ public class Bleeding extends StdAbility implements HealthCondition
 			return false;
 		if(((MOB)target).location()==null)
 			return false;
+		if(((MOB)target).amDead())
+			return false;
 		if(((MOB)target).location().show((MOB)target,null,this,CMMsg.MSG_OK_VISUAL,L("^R<S-NAME> start(s) BLEEDING!^?")))
 			beneficialAffect(mob,target,asLevel,0);
 		return true;

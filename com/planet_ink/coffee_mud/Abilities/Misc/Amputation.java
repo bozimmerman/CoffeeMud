@@ -475,6 +475,8 @@ public class Amputation extends StdAbility implements LimbDamage, HealthConditio
 			if(affected instanceof MOB)
 			{
 				final MOB M=(MOB)affected;
+				if(M.amDead())
+					return null;
 				R=M.charStats().getMyRace();
 				boolean success;
 				if(M.location()!=null)

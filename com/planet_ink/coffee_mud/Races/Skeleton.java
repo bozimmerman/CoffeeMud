@@ -51,23 +51,11 @@ public class Skeleton extends Undead
 	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
 
 	@Override
-	public boolean okMessage(final Environmental myHost, final CMMsg msg)
+	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
-		if(myHost instanceof MOB)
-		{
-			final MOB mob=(MOB)myHost;
-			if((msg.amITarget(mob))
-			&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
-			&&(msg.tool() instanceof Weapon)
-			&&((((Weapon)msg.tool()).weaponDamageType()==Weapon.TYPE_PIERCING)
-				||(((Weapon)msg.tool()).weaponDamageType()==Weapon.TYPE_SLASHING))
-			&&(!mob.amDead()))
-			{
-				final int recovery=(int)Math.round(CMath.div((msg.value()),2.0));
-				msg.setValue(recovery);
-			}
-		}
-		return super.okMessage(myHost,msg);
+		super.affectCharStats(affectedMOB, affectableStats);
+		affectableStats.setStat(CharStats.STAT_SAVE_PIERCE, affectableStats.getStat(CharStats.STAT_SAVE_PIERCE)+50);
+		affectableStats.setStat(CharStats.STAT_SAVE_SLASH, affectableStats.getStat(CharStats.STAT_SAVE_SLASH)+50);
 	}
 
 	@Override 

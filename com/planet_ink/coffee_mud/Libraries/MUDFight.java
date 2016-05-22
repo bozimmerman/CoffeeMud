@@ -1719,6 +1719,120 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	}
 
 	@Override
+	public boolean checkDamageSaves(final MOB mob, final CMMsg msg)
+	{
+		int chanceToFail = 0;
+		if(msg.tool() instanceof Weapon)
+		{
+			int charStatCode = -1;
+			switch(((Weapon)msg.tool()).weaponDamageType())
+			{
+			case Weapon.TYPE_BASHING:
+				charStatCode=CharStats.STAT_SAVE_BLUNT;
+				break;
+			case Weapon.TYPE_PIERCING:
+				charStatCode=CharStats.STAT_SAVE_PIERCE;
+				break;
+			case Weapon.TYPE_SLASHING:
+				charStatCode=CharStats.STAT_SAVE_SLASH;
+				break;
+			default:
+				return true;
+			}
+			chanceToFail = mob.charStats().getSave(charStatCode);
+		}
+		else
+		if(msg.tool() instanceof Ability)
+		{
+			switch(((Ability)msg.tool()).classificationCode() & Ability.ALL_ACODES)
+			{
+			case Ability.ACODE_CHANT:
+				chanceToFail=mob.charStats().getSave(CharStats.STAT_SAVE_CHANTS)
+							+mob.charStats().getSave(CharStats.STAT_SAVE_MAGIC);
+				break;
+			case Ability.ACODE_PRAYER:
+				chanceToFail=mob.charStats().getSave(CharStats.STAT_SAVE_PRAYERS)
+							+mob.charStats().getSave(CharStats.STAT_SAVE_MAGIC);
+				break;
+			case Ability.ACODE_SPELL:
+				chanceToFail=mob.charStats().getSave(CharStats.STAT_SAVE_SPELLS)
+							+mob.charStats().getSave(CharStats.STAT_SAVE_MAGIC);
+				break;
+			case Ability.ACODE_SONG:
+				chanceToFail=mob.charStats().getSave(CharStats.STAT_SAVE_SONGS)
+							+mob.charStats().getSave(CharStats.STAT_SAVE_MAGIC);
+				break;
+			}
+			int charStatCode = CharStats.CODES.RVSCMMSGMAP(msg.sourceMinor());
+			if(charStatCode >= 0)
+				chanceToFail += mob.charStats().getSave(charStatCode);
+		}
+		if ((chanceToFail != 0) && (chanceToFail > (Integer.MIN_VALUE/2)))
+		{
+			if (chanceToFail < -100)
+				chanceToFail = -100;
+			else
+			if (chanceToFail > 100)
+				chanceToFail = 100;
+			if (CMLib.dice().rollPercentage() < ((chanceToFail < 0) ? (-chanceToFail) : chanceToFail))
+				msg.setValue((int)Math.round(CMath.mul(msg.value(),CMath.div(100-chanceToFail,100))));
+		}
+		return true;
+	}
+
+	@Override
+	public boolean checkSavingThrows(final MOB mob, final CMMsg msg)
+	{
+		if ((msg.targetMinor() != CMMsg.TYP_WEAPONATTACK) && (msg.value() <= 0))
+		{
+			int charStatCode = -1;
+			int chanceToFail = 0;
+			if(msg.tool() instanceof Ability)
+			{
+				switch(((Ability)msg.tool()).classificationCode() & Ability.ALL_ACODES)
+				{
+				case Ability.ACODE_CHANT:
+					charStatCode=CharStats.STAT_SAVE_CHANTS;
+					break;
+				case Ability.ACODE_PRAYER:
+					charStatCode=CharStats.STAT_SAVE_PRAYERS;
+					break;
+				case Ability.ACODE_SPELL:
+					charStatCode=CharStats.STAT_SAVE_SPELLS;
+					break;
+				case Ability.ACODE_SONG:
+					charStatCode=CharStats.STAT_SAVE_SONGS;
+					break;
+				}
+				if((charStatCode > 0)
+				&&(msg.targetMinor()==CMMsg.TYP_CAST_SPELL))
+					chanceToFail = mob.charStats().getSave(CharStats.STAT_SAVE_MAGIC);
+			}
+			if(charStatCode<0)
+				charStatCode = CharStats.CODES.RVSCMMSGMAP(msg.targetMinor());
+			if(charStatCode >= 0)
+			{
+				chanceToFail += mob.charStats().getSave(charStatCode);
+				if (chanceToFail > (Integer.MIN_VALUE/2))
+				{
+					final int diff = (mob.phyStats().level() - msg.source().phyStats().level());
+					final int diffSign = diff < 0 ? -1 : 1;
+					chanceToFail += (diffSign * (diff * diff));
+					if (chanceToFail < 5)
+						chanceToFail = 5;
+					else
+					if (chanceToFail > 95)
+						chanceToFail = 95;
+
+					if (CMLib.dice().rollPercentage() < chanceToFail)
+						CMLib.combat().resistanceMsgs(msg.source(), mob, msg); // also applies the +1 to msg.value()
+				}
+			}
+		}
+		return true;
+	}
+
+	@Override
 	public void handleBeingHealed(CMMsg msg)
 	{
 		if(!(msg.target() instanceof MOB))

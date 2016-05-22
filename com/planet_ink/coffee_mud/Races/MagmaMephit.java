@@ -153,6 +153,7 @@ public class MagmaMephit extends StdRace
 		affectableStats.setStat(CharStats.STAT_SAVE_ACID,affectableStats.getStat(CharStats.STAT_SAVE_ACID)+50);
 		affectableStats.setStat(CharStats.STAT_SAVE_COLD,affectableStats.getStat(CharStats.STAT_SAVE_COLD)-50);
 		affectableStats.setStat(CharStats.STAT_SAVE_ELECTRIC,affectableStats.getStat(CharStats.STAT_SAVE_ELECTRIC)-50);
+		affectableStats.setStat(CharStats.STAT_SAVE_BLUNT, affectableStats.getStat(CharStats.STAT_SAVE_BLUNT)+95);
 	}
 
 	@Override
@@ -165,7 +166,7 @@ public class MagmaMephit extends StdRace
 	private final int[]		racialAbilityLevels			= { 1, };
 	private final int[]		racialAbilityProficiencies	= { 100 };
 	private final boolean[]	racialAbilityQuals			= { true };
-	private final String[]	racialAbilityParms			= { "" };
+	private final String[]	racialAbilityParms			= { "fire lesser" };
 
 	@Override
 	public String[] racialAbilityNames()

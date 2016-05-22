@@ -108,8 +108,22 @@ public interface CharStats extends CMCommon, Modifiable
 	public static final int STAT_FAITH=31;
 	/** stat constant for additions/subtractions from base weight */
 	public static final int STAT_WEIGHTADJ=32;
+	/** stat constant for  save vs bludgeoning*/
+	public static final int STAT_SAVE_BLUNT=33;
+	/** stat constant for  save vs piercing*/
+	public static final int STAT_SAVE_PIERCE=34;
+	/** stat constant for  save vs slashing*/
+	public static final int STAT_SAVE_SLASH=35;
+	/** stat constant for  save vs spells*/
+	public static final int STAT_SAVE_SPELLS=36;
+	/** stat constant for  save vs prayers*/
+	public static final int STAT_SAVE_PRAYERS=37;
+	/** stat constant for  save vs songs*/
+	public static final int STAT_SAVE_SONGS=38;
+	/** stat constant for  save vs songs*/
+	public static final int STAT_SAVE_CHANTS=39;
 	/** constant for total number of stat codes */
-	public final static int DEFAULT_NUM_STATS=33;
+	public final static int DEFAULT_NUM_STATS=40;
 
 	/**
 	 * Copies the internal data of this object into another of kind.
@@ -621,7 +635,14 @@ public interface CharStats extends CMCommon, Modifiable
 		"vH",
 		"vO",
 		"vC",
-		"Wa"
+		"Wa",
+		"vWB",
+		"vWP",
+		"vWS",
+		"vMS",
+		"vMP",
+		"vMG",
+		"vMC",
 	};
 
 	/** string array of descriptions of each stat code, ordered by numeric value */
@@ -659,7 +680,14 @@ public interface CharStats extends CMCommon, Modifiable
 		"SAVE VS DETECTION",
 		"SAVE VS OVERLOOKING",
 		"SAVE VS CONVERSIONS",
-		"WEIGHT ADJUSTMENT"
+		"WEIGHT ADJUSTMENT",
+		"SAVE VS BLUNT",
+		"SAVE VS PIERCE",
+		"SAVE VS SLASH",
+		"SAVE VS SPELLS",
+		"SAVE VS PRAYERS",
+		"SAVE VS SONGS",
+		"SAVE VS CHANTS"
 	};
 
 	/** string array of descriptions of each stat code, ordered by numeric value */
@@ -697,7 +725,14 @@ public interface CharStats extends CMCommon, Modifiable
 		"DETECTION",
 		"OVERLOOKING",
 		"CONVERSION",
-		"WEIGHTADJ"
+		"WEIGHTADJ",
+		"SAVEBLUNT",
+		"SAVEPIERCE",
+		"SAVESLASH",
+		"SAVESPELLS",
+		"SAVEPRAYERS",
+		"SAVESONGS",
+		"SAVECHANTS"
 	};
 
 	/** string array of attributable descriptions of each stat code, ordered by numeric value */
@@ -735,46 +770,61 @@ public interface CharStats extends CMCommon, Modifiable
 		"CONCEALED",
 		"WATCHFUL",
 		"DOUBTFUL",
-		""
+		"",
+		"RESISTANT TO BLUNT",
+		"RESISTANT TO PIERCE",
+		"RESISTANT TO SLASH",
+		"RESISTANT TO SPELLS",
+		"RESISTANT TO PRAYERS",
+		"RESISTANT TO SONGS",
+		"RESISTANT TO CHANTS"
 	};
 
 	/** an appropriate CMMsg MSG type to correspond to the given saving throw, indexed as STAT_SAVE_ constant */
-	public static int[] DEFAULT_STAT_MSG_MAP= {
-		   -1, // strength
-		   -1, // intelligence
-		   -1, // dexterity
-		   -1, // constitution
-		   -1, // charisma
-		   -1, // wisdom
-		   -1, // gender
-			CMMsg.TYP_PARALYZE,
-			CMMsg.TYP_FIRE,
-			CMMsg.TYP_COLD,
-			CMMsg.TYP_WATER,
-			CMMsg.TYP_GAS,
-			CMMsg.TYP_MIND,
-			CMMsg.TYP_GENERAL,
-			CMMsg.TYP_JUSTICE,
-			CMMsg.TYP_ACID,
-			CMMsg.TYP_ELECTRIC,
-			CMMsg.TYP_POISON,
-			CMMsg.TYP_UNDEAD,
-			CMMsg.TYP_CAST_SPELL,
-			CMMsg.TYP_DISEASE,
-			-1, // traps
-			-1, // max str
-			-1, // max int
-			-1, // max
-			-1, // max dex
-			-1, // max con
-			-1, // max cha
-			-1, // max wis
-			-1, // age
-			-1, // save conceilment
-			-1, // save overlooking
-			-1, // save conversion
-			-1, // weight adjustment
-		   };
+	public static int[] DEFAULT_STAT_MSG_MAP= 
+	{
+		-1, // strength
+		-1, // intelligence
+		-1, // dexterity
+		-1, // constitution
+		-1, // charisma
+		-1, // wisdom
+		-1, // gender
+		CMMsg.TYP_PARALYZE,
+		CMMsg.TYP_FIRE,
+		CMMsg.TYP_COLD,
+		CMMsg.TYP_WATER,
+		CMMsg.TYP_GAS,
+		CMMsg.TYP_MIND,
+		CMMsg.TYP_GENERAL,
+		CMMsg.TYP_JUSTICE,
+		CMMsg.TYP_ACID,
+		CMMsg.TYP_ELECTRIC,
+		CMMsg.TYP_POISON,
+		CMMsg.TYP_UNDEAD,
+		CMMsg.TYP_CAST_SPELL,
+		CMMsg.TYP_DISEASE,
+		-1, // traps
+		-1, // max str
+		-1, // max int
+		-1, // max
+		-1, // max dex
+		-1, // max con
+		-1, // max cha
+		-1, // max wis
+		-1, // age
+		-1, // save conceilment
+		-1, // save overlooking
+		-1, // save conversion
+		-1, // weight adjustment
+		-1, // save blunt
+		-1, // save pierce
+		-1, // save slash
+		-1, // save spells
+		-1, // save prayers
+		-1  // save songs
+		-1  // save chants
+	};
 
 	/**
 	 * Global character stat code data collector
@@ -919,27 +969,42 @@ public interface CharStats extends CMCommon, Modifiable
 		 * Returns the name of all base stats
 		 * @return names of all base stats
 		 */
-		public static String[] BASENAMES() { return c().baseStatNames;}
+		public static String[] BASENAMES()
+		{
+			return c().baseStatNames;
+		}
 
 		/**
 		 * Returns an array of the numeric codes for all base stats
+		 * 
 		 * @return an array of the numeric codes for all base stats
 		 */
-		public int[] base() { return baseStatCodes;}
+		public int[] base()
+		{
+			return baseStatCodes;
+		}
 
 		/**
 		 * Returns whether the given code is a base stat
+		 * 
 		 * @param code the STAT code to check
 		 * @return whether the given code is a base stat
 		 */
-		public static boolean isBASE(int code) { return c().isBaseStatCode[code];}
+		public static boolean isBASE(int code)
+		{
+			return c().isBaseStatCode[code];
+		}
 
 		/**
 		 * Returns whether the given code is a base stat
+		 * 
 		 * @param code the STAT code to check
 		 * @return whether the given code is a base stat
 		 */
-		public boolean isBase(int code) { return isBaseStatCode[code];}
+		public boolean isBase(int code)
+		{
+			return isBaseStatCode[code];
+		}
 
 		/**
 		 * Returns the code for the base code that matches the given max adj code
@@ -973,127 +1038,241 @@ public interface CharStats extends CMCommon, Modifiable
 		 * Returns an array of the numeric codes for all max stats
 		 * @return an array of the numeric codes for all max stats
 		 */
-		public static int[] MAXCODES() { return c().maxStatCodes;}
+		public static int[] MAXCODES()
+		{
+			return c().maxStatCodes;
+		}
+
 		/**
 		 * Returns an array of the numeric codes for all max stats
+		 * 
 		 * @return an array of the numeric codes for all max stats
 		 */
-		public int[] max() { return maxStatCodes;}
+		public int[] max()
+		{
+			return maxStatCodes;
+		}
+
 		/**
 		 * Returns total number of stat codes 0 - this-1
+		 * 
 		 * @return total number of stat codes 0 - this-1
 		 */
-		public static int TOTAL() { return c().allStatCodes.length;}
+		public static int TOTAL()
+		{
+			return c().allStatCodes.length;
+		}
+
 		/**
 		 * Returns total number of stat codes 0 - this-1
+		 * 
 		 * @return total number of stat codes 0 - this-1
 		 */
-		public int total() { return allStatCodes.length;}
+		public int total()
+		{
+			return allStatCodes.length;
+		}
+
 		/**
 		 * Returns an array of the numeric codes for all stats
+		 * 
 		 * @return an array of the numeric codes for all stats
 		 */
-		public static int[] ALLCODES() { return c().allStatCodes;}
+		public static int[] ALLCODES()
+		{
+			return c().allStatCodes;
+		}
+
 		/**
 		 * Returns an array of the numeric codes for all stats
+		 * 
 		 * @return an array of the numeric codes for all stats
 		 */
-		public int[] all() { return allStatCodes;}
+		public int[] all()
+		{
+			return allStatCodes;
+		}
+
 		/**
 		 * Returns an array of the numeric codes for all save stats
+		 * 
 		 * @return an array of the numeric codes for all save stats
 		 */
-		public static int[] SAVING_THROWS() { return c().savingThrowCodes;}
+		public static int[] SAVING_THROWS()
+		{
+			return c().savingThrowCodes;
+		}
+
 		/**
 		 * Returns an array of the numeric codes for all save stats
+		 * 
 		 * @return an array of the numeric codes for all save stats
 		 */
-		public int[] saving_throws() { return savingThrowCodes;}
+		public int[] saving_throws()
+		{
+			return savingThrowCodes;
+		}
+
 		/**
 		 * Returns the names of the various stats
+		 * 
 		 * @return the names of the various stats
 		 */
-		public static String[] NAMES() { return c().statNames;}
+		public static String[] NAMES()
+		{
+			return c().statNames;
+		}
+
 		/**
 		 * Returns the name of the stat code
+		 * 
 		 * @param code the stat code
 		 * @return the name of the stat code
 		 */
-		public static String NAME(int code) { return c().statNames[code];}
+		public static String NAME(int code)
+		{
+			return c().statNames[code];
+		}
+
 		/**
 		 * Returns the short name of the stat code
+		 * 
 		 * @param code the stat code
 		 * @return the short name of the stat code
 		 */
-		public static String SHORTNAME(int code) { return c().shortNames[code];}
+		public static String SHORTNAME(int code)
+		{
+			return c().shortNames[code];
+		}
+
 		/**
 		 * Returns the name of the stat code
+		 * 
 		 * @param code the stat code
 		 * @return the name of the stat code
 		 */
-		public String name(int code) { return statNames[code];}
+		public String name(int code)
+		{
+			return statNames[code];
+		}
+
 		/**
 		 * Returns the name of the stat code
+		 * 
 		 * @param code the stat code
 		 * @return the name of the stat code
 		 */
-		public String shortName(int code) { return shortNames[code];}
+		public String shortName(int code)
+		{
+			return shortNames[code];
+		}
+
 		/**
 		 * Returns the descriptions of the various stats
+		 * 
 		 * @return the descriptions of the various stats
 		 */
-		public static String[] DESCS() { return c().statDescriptions;}
+		public static String[] DESCS()
+		{
+			return c().statDescriptions;
+		}
+
 		/**
 		 * Returns the description of the stat code
+		 * 
 		 * @param code the stat code
 		 * @return the description of the stat code
 		 */
-		public static String DESC(int code) { return c().statDescriptions[code];}
+		public static String DESC(int code)
+		{
+			return c().statDescriptions[code];
+		}
+
 		/**
 		 * Returns the description of the stat code
+		 * 
 		 * @param code the stat code
 		 * @return the description of the stat code
 		 */
-		public String desc(int code) { return statDescriptions[code];}
+		public String desc(int code)
+		{
+			return statDescriptions[code];
+		}
+
 		/**
 		 * Returns the abbreviations of the various stats
+		 * 
 		 * @return the abbreviations of the various stats
 		 */
-		public static String[] ABBRS() { return c().statAbbreviations;}
+		public static String[] ABBRS()
+		{
+			return c().statAbbreviations;
+		}
+
 		/**
 		 * Returns the abbreviation of the stat code
+		 * 
 		 * @param code the stat code
 		 * @return the abbreviation of the stat code
 		 */
-		public static String ABBR(int code) { return c().statAbbreviations[code];}
+		public static String ABBR(int code)
+		{
+			return c().statAbbreviations[code];
+		}
+
 		/**
 		 * Returns the abbreviation of the stat code
+		 * 
 		 * @param code the stat code
 		 * @return the abbreviation of the stat code
 		 */
-		public String abbr(int code) { return statAbbreviations[code];}
+		public String abbr(int code)
+		{
+			return statAbbreviations[code];
+		}
+
 		/**
 		 * Returns the adjective descriptions of the various stats
+		 * 
 		 * @return the adjective descriptions of the various stats
 		 */
-		public static String[] ATTDESCS() { return c().statAttributionDescriptions;}
+		public static String[] ATTDESCS()
+		{
+			return c().statAttributionDescriptions;
+		}
+
 		/**
 		 * Returns the adjective description of the stat code
+		 * 
 		 * @param code the stat code
 		 * @return the adjective description of the stat code
 		 */
-		public static String ATTDESC(int code) { return c().statAttributionDescriptions[code];}
+		public static String ATTDESC(int code)
+		{
+			return c().statAttributionDescriptions[code];
+		}
+
 		/**
 		 * Returns the CMMsg mappings of the various stats
+		 * 
 		 * @return the CMMsg mappings of the various stats
 		 */
-		public static int[] CMMSGMAP() { return c().statCMMsgMapping;}
+		public static int[] CMMSGMAP()
+		{
+			return c().statCMMsgMapping;
+		}
+
 		/**
 		 * Returns the CMMsg mapping of the stat
+		 * 
 		 * @param code the CMMsg mapping for the given stat code
 		 * @return the CMMsg mapping of the stat
 		 */
-		public static int CMMSGMAP(int code) { return c().statCMMsgMapping[code];}
+		public static int CMMSGMAP(int code)
+		{
+			return c().statCMMsgMapping[code];
+		}
+
 		/**
 		 * Returns the Reverse CMMsg mapping of the stat from MsgCode -> Stat Code
 		 * @param code the Stat mapping for the given CMMsg code or -1
@@ -1156,6 +1335,7 @@ public interface CharStats extends CMCommon, Modifiable
 			baseStatNames[baseStatNames.length-1]=name;
 			addAllStat(abbr,desc,name,attDesc,cmmsgMap,true);
 		}
+
 		/**
 		 * Adds a new max stat to this object for all mobs and players to share
 		 * @param baseCode corresponding base stat code
@@ -1177,6 +1357,7 @@ public interface CharStats extends CMCommon, Modifiable
 			MaxBaseCrossCodes[maxCode]=baseCode;
 			MaxBaseCrossCodes[baseCode]=maxCode;
 		}
+
 		/**
 		 * Adds a new saving throw stat to this object for all mobs and players to share
 		 * @param abbr 1-3 letter short code for this stat
@@ -1191,6 +1372,7 @@ public interface CharStats extends CMCommon, Modifiable
 			savingThrowCodes[savingThrowCodes.length-1]=allStatCodes.length;
 			addAllStat(abbr,desc,name,attDesc,cmmsgMap,false);
 		}
+
 		/**
 		 * Adds a new miscellaneous stat to this object for all mobs and players to share
 		 * @param abbr 1-3 letter short code for this stat

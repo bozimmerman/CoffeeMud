@@ -36,10 +36,15 @@ import java.util.*;
 */
 public class StdArmor extends StdContainer implements Armor
 {
-	@Override public String ID(){	return "StdArmor";}
-	int sheath=0;
-	short layer=0;
-	short layerAttributes=0;
+	@Override
+	public String ID()
+	{
+		return "StdArmor";
+	}
+
+	int		sheath			= 0;
+	short	layer			= 0;
+	short	layerAttributes	= 0;
 
 	public StdArmor()
 	{
@@ -66,10 +71,30 @@ public class StdArmor extends StdContainer implements Armor
 			newUses=100;
 		super.setUsesRemaining(newUses);
 	}
-	@Override public short getClothingLayer(){return layer;}
-	@Override public void setClothingLayer(short newLayer){layer=newLayer;}
-	@Override public short getLayerAttributes(){return layerAttributes;}
-	@Override public void setLayerAttributes(short newAttributes){layerAttributes=newAttributes;}
+
+	@Override
+	public short getClothingLayer()
+	{
+		return layer;
+	}
+
+	@Override
+	public void setClothingLayer(short newLayer)
+	{
+		layer = newLayer;
+	}
+
+	@Override
+	public short getLayerAttributes()
+	{
+		return layerAttributes;
+	}
+
+	@Override
+	public void setLayerAttributes(short newAttributes)
+	{
+		layerAttributes = newAttributes;
+	}
 
 	@Override
 	public boolean canWear(MOB mob, long where)
@@ -268,6 +293,7 @@ public class StdArmor extends StdContainer implements Armor
 		}
 		return true;
 	}
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -631,8 +657,8 @@ public class StdArmor extends StdContainer implements Armor
 	{
 		super.recoverPhyStats();
 		if((basePhyStats().height()==0)
-		   &&(!amWearingAt(Wearable.IN_INVENTORY))
-		   &&(owner() instanceof MOB))
+		&&(!amWearingAt(Wearable.IN_INVENTORY))
+		&&(owner() instanceof MOB))
 			basePhyStats().setHeight(((MOB)owner()).phyStats().height());
 	}
 
@@ -660,6 +686,7 @@ public class StdArmor extends StdContainer implements Armor
 			}
 		}
 	}
+
 	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
@@ -699,6 +726,7 @@ public class StdArmor extends StdContainer implements Armor
 			break;
 		}
 	}
+
 	@Override
 	public int value()
 	{
@@ -706,6 +734,7 @@ public class StdArmor extends StdContainer implements Armor
 			return (int)Math.round(CMath.mul(super.value(),CMath.div(usesRemaining(),100)));
 		return super.value();
 	}
+
 	@Override
 	public boolean subjectToWearAndTear()
 	{
@@ -713,6 +742,7 @@ public class StdArmor extends StdContainer implements Armor
 			return true;
 		return false;
 	}
+
 	@Override
 	public String secretIdentity()
 	{

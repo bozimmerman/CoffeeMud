@@ -1070,7 +1070,9 @@ public class StdMOB implements MOB
 		{
 			CMLib.catalog().changeCatalogUsage(this, false);
 		}
-		catch (final Exception t){}
+		catch (final Exception t)
+		{
+		}
 		if ((CMSecurity.isDebugging(CMSecurity.DbgFlag.MISSINGKIDS))
 		&& (fetchEffect("Age") != null)
 		&& CMath.isInteger(fetchEffect("Age").text())
@@ -1210,12 +1212,14 @@ public class StdMOB implements MOB
 			if (CMProps.getBoolVar(CMProps.Bool.MOBCOMPRESS) && (miscText instanceof byte[]))
 			{
 				CMLib.coffeeMaker().resetGenMOB(this,
-						CMLib.coffeeMaker().getGenMOBTextUnpacked(this,
-								CMLib.encoder().decompressString((byte[]) miscText)));
+					CMLib.coffeeMaker().getGenMOBTextUnpacked(this,
+						CMLib.encoder().decompressString((byte[]) miscText)));
 			}
 			else
-			CMLib.coffeeMaker().resetGenMOB(this,
+			{
+				CMLib.coffeeMaker().resetGenMOB(this,
 					CMLib.coffeeMaker().getGenMOBTextUnpacked(this, CMStrings.bytesToStr(miscText)));
+			}
 		}
 		if (CMLib.map().getStartRoom(this) == null)
 			setStartRoom(isMonster() ? newLocation : CMLib.login().getDefaultStartRoom(this));
@@ -2695,7 +2699,7 @@ public class StdMOB implements MOB
 				}
 			}
 		}
-
+		
 		if ((msg.targetMinor() != CMMsg.NO_EFFECT) && (msg.amITarget(this)))
 		{
 			if ((amDead()) || (location() == null))
@@ -2766,31 +2770,8 @@ public class StdMOB implements MOB
 					}
 				}
 
-				if ((msg.targetMinor() != CMMsg.TYP_WEAPONATTACK) && (msg.value() <= 0))
-				{
-					int charStatCode = CharStats.CODES.RVSCMMSGMAP(msg.targetMinor());
-					if(charStatCode >= 0)
-					{
-						int chanceToFail = charStats().getSave(charStatCode);
-						if (chanceToFail > Integer.MIN_VALUE)
-						{
-							final int diff = (phyStats().level() - srcM.phyStats().level());
-							final int diffSign = diff < 0 ? -1 : 1;
-							chanceToFail += (diffSign * (diff * diff));
-							if (chanceToFail < 5)
-								chanceToFail = 5;
-							else
-							if (chanceToFail > 95)
-								chanceToFail = 95;
-
-							if (CMLib.dice().rollPercentage() < chanceToFail)
-							{
-								CMLib.combat().resistanceMsgs(srcM, this, msg);
-								msg.setValue(msg.value() + 1);
-							}
-						}
-					}
-				}
+				if(!CMLib.combat().checkSavingThrows(this,msg))
+					return false;
 			}
 
 			if ((rangeToTarget() >= 0) && (!isInCombat()))
@@ -2818,6 +2799,10 @@ public class StdMOB implements MOB
 			case CMMsg.TYP_TEACH:
 				if((msg.target() instanceof MOB)
 				&&(!CMLib.expertises().canBeTaught(msg.source(), (MOB)msg.target(), msg.tool(), msg.targetMessage())))
+					return false;
+				break;
+			case CMMsg.TYP_DAMAGE:
+				if(!CMLib.combat().checkDamageSaves(this,msg))
 					return false;
 				break;
 			case CMMsg.TYP_PULL:
