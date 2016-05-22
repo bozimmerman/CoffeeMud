@@ -38,7 +38,7 @@ public class Fey extends SmallElfKin
 		return "Fey";
 	}
 
-	private final static String localizedStaticName = CMLib.lang().L("Faerie");
+	private final static String localizedStaticName = CMLib.lang().L("Fey");
 
 	@Override
 	public String name()
