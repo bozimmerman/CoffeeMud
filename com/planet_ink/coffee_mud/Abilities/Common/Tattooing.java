@@ -35,14 +35,39 @@ import java.util.*;
 
 public class Tattooing extends CommonSkill
 {
-	@Override public String ID() { return "Tattooing"; }
-	private final static String localizedName = CMLib.lang().L("Tattooing");
-	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =I(new String[] {"TATTOO","TATTOOING"});
-	@Override public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ARTISTIC; }
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	protected String writing="";
-	MOB target=null;
+	@Override
+	public String ID()
+	{
+		return "Tattooing";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Tattooing");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "TATTOO", "TATTOOING" });
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_COMMON_SKILL | Ability.DOMAIN_ARTISTIC;
+	}
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	protected String	writing	= "";
+	protected MOB		target	= null;
+	protected int		oldHP	= 1;
+	protected String	bodyPart= "";
+
 	public Tattooing()
 	{
 		super();
@@ -65,6 +90,19 @@ public class Tattooing extends CommonSkill
 					commonEmote(mob,L("<S-NAME> complete(s) the tattoo on @x1.",target.name()));
 					target.addTattoo(writing);
 				}
+				if((bodyPart!=null)&&(bodyPart.length()>0))
+				{
+					Ability injuryA=CMClass.getAbility("Injury");
+					if(injuryA!=null)
+					{
+						injuryA.invoke(mob,new XVector<String>(),target,true,0);
+						injuryA=target.fetchEffect("Injury");
+						if(injuryA!=null)
+						{
+							((LimbDamage)injuryA).damageLimb(bodyPart);
+						}
+					}
+				}
 			}
 		}
 		super.unInvoke();
@@ -79,7 +117,14 @@ public class Tattooing extends CommonSkill
 			if((target==null)
 			||(mob.location()!=target.location())
 			||(!CMLib.flags().canBeSeenBy(target,mob)))
-			{aborted=true; unInvoke(); return false;}
+			{
+				aborted = true;
+				unInvoke();
+				return false;
+			}
+			else
+			if(target!=null)
+				target.curState().setHitPoints(oldHP);
 		}
 		return super.tick(ticking,tickID);
 	}
@@ -103,19 +148,20 @@ public class Tattooing extends CommonSkill
 		int partNum=-1;
 		final StringBuffer allParts=new StringBuffer("");
 		final long[] tattoable={Wearable.WORN_ARMS,
-						  Wearable.WORN_LEGS,
-						  Wearable.WORN_HANDS,
-						  Wearable.WORN_HEAD,
-						  Wearable.WORN_FEET,
-						  Wearable.WORN_LEFT_WRIST,
-						  Wearable.WORN_RIGHT_WRIST,
-						  Wearable.WORN_NECK,
-						  Wearable.WORN_BACK,
-						  Wearable.WORN_TORSO};
+								Wearable.WORN_LEGS,
+								Wearable.WORN_HANDS,
+								Wearable.WORN_HEAD,
+								Wearable.WORN_FEET,
+								Wearable.WORN_LEFT_WRIST,
+								Wearable.WORN_RIGHT_WRIST,
+								Wearable.WORN_NECK,
+								Wearable.WORN_BACK,
+								Wearable.WORN_TORSO};
 		final Wearable.CODES codes = Wearable.CODES.instance();
 		for(int i=0;i<codes.total();i++)
 		{
 			for (final long element : tattoable)
+			{
 				if(codes.get(i)==element)
 				{
 					if(codes.name(i).equalsIgnoreCase(part))
@@ -123,6 +169,7 @@ public class Tattooing extends CommonSkill
 					allParts.append(", "+CMStrings.capitalizeAndLower(codes.name(i).toLowerCase()));
 					break;
 				}
+			}
 		}
 		if(partNum<0)
 		{
@@ -189,15 +236,36 @@ public class Tattooing extends CommonSkill
 		final CMMsg msg=CMClass.getMsg(mob,target,this,getActivityMessageType(),str);
 		if(mob.location().okMessage(mob,msg))
 		{
+			final int percentOff=target.maxState().getHitPoints()/8;
+			CMLib.combat().postDamage(mob, target, this, percentOff, CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE, Weapon.TYPE_PIERCING, null);
+			CMLib.combat().postDamage(mob, target, this, percentOff, CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE, Weapon.TYPE_PIERCING, null);
 			mob.location().send(mob,msg);
 			if("REMOVE".startsWith(message.toUpperCase()))
 				target.delTattoo(tatToRemove);
 			else
 			{
+				//target.curState().adjHitPoints(-percentOff, target.maxState());
+				List<Integer> bodyPartNums = new ArrayList<Integer>();
+				for(int i=0;i<Race.BODY_WEARVECTOR.length;i++)
+				{
+					if((Race.BODY_WEARVECTOR[i] == wornCode)
+					&&(!bodyPartNums.contains(Integer.valueOf(i))))
+						bodyPartNums.add(Integer.valueOf(i));
+				}
+				String bodyPartName="";
+				if(bodyPartNums.size()>0)
+				{
+					Integer pNum=bodyPartNums.get(CMLib.dice().roll(1, bodyPartNums.size(), -1));
+					bodyPartName=Race.BODYPARTSTR[pNum.intValue()].toLowerCase();
+				}
 				beneficialAffect(mob,mob,asLevel,duration);
 				final Tattooing A=(Tattooing)mob.fetchEffect(ID());
 				if(A!=null)
+				{
 					A.target=target;
+					A.oldHP=target.curState().getHitPoints();
+					A.bodyPart=bodyPartName;
+				}
 			}
 		}
 		return true;

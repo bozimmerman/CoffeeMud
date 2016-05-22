@@ -66,6 +66,8 @@ public class BodyPiercing extends CommonSkill
 
 	protected String	writing	= "";
 	protected MOB		target	= null;
+	protected int		oldHP	= 1;
+	protected String	bodyPart= "";
 
 	public BodyPiercing()
 	{
@@ -89,6 +91,19 @@ public class BodyPiercing extends CommonSkill
 					commonEmote(mob,L("<S-NAME> complete(s) the piercing on @x1.",target.name(mob)));
 					target.addTattoo(writing);
 				}
+				if((bodyPart!=null)&&(bodyPart.length()>0))
+				{
+					Ability injuryA=CMClass.getAbility("Injury");
+					if(injuryA!=null)
+					{
+						injuryA.invoke(mob,new XVector<String>(),target,true,0);
+						injuryA=target.fetchEffect("Injury");
+						if(injuryA!=null)
+						{
+							((LimbDamage)injuryA).damageLimb(bodyPart);
+						}
+					}
+				}
 			}
 		}
 		super.unInvoke();
@@ -108,6 +123,9 @@ public class BodyPiercing extends CommonSkill
 				unInvoke();
 				return false;
 			}
+			else
+			if(target!=null)
+				target.curState().setHitPoints(oldHP);
 		}
 		return super.tick(ticking,tickID);
 	}
@@ -262,14 +280,34 @@ public class BodyPiercing extends CommonSkill
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
+			final int percentOff=target.maxState().getHitPoints()/8;
+			CMLib.combat().postDamage(mob, target, this, percentOff, CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE, Weapon.TYPE_PIERCING, null);
+			CMLib.combat().postDamage(mob, target, this, percentOff, CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE, Weapon.TYPE_PIERCING, null);
 			if("REMOVE".equals(command))
 				target.delTattoo(target.findTattoo(writing));
 			else
 			{
+				List<Integer> bodyPartNums = new ArrayList<Integer>();
+				for(int i=0;i<Race.BODY_WEARVECTOR.length;i++)
+				{
+					if((Race.BODY_WEARVECTOR[i] == wornCode)
+					&&(!bodyPartNums.contains(Integer.valueOf(i))))
+						bodyPartNums.add(Integer.valueOf(i));
+				}
+				String bodyPartName="";
+				if(bodyPartNums.size()>0)
+				{
+					Integer pNum=bodyPartNums.get(CMLib.dice().roll(1, bodyPartNums.size(), -1));
+					bodyPartName=Race.BODYPARTSTR[pNum.intValue()].toLowerCase();
+				}
 				beneficialAffect(mob,mob,asLevel,duration);
 				final BodyPiercing A=(BodyPiercing)mob.fetchEffect(ID());
 				if(A!=null) 
+				{
 					A.target=target;
+					A.oldHP=target.curState().getHitPoints();
+					A.bodyPart=bodyPartName;
+				}
 			}
 		}
 		return true;
