@@ -40,8 +40,8 @@ public interface BoundedObject
 
 	public static class BoundedCube implements Comparable<BoundedCube>
 	{
-		public long lx,ty,iz=0;
-		public long rx,by,oz=0;
+		public long	lx, ty, iz = 0;
+		public long	rx, by, oz = 0;
 
 		public BoundedCube()
 		{
@@ -51,23 +51,23 @@ public interface BoundedObject
 		public BoundedCube(long lx, long rx, long ty, long by, long iz, long oz)
 		{
 			super();
-			this.lx=lx; 
-			this.rx=rx;
-			this.ty=ty; 
-			this.by=by;
-			this.iz=iz; 
-			this.oz=oz;
+			this.lx = lx; 
+			this.rx = rx;
+			this.ty = ty;
+			this.by = by;
+			this.iz = iz;
+			this.oz = oz;
 		}
 
 		public BoundedCube(long[] coords, long radius)
 		{
 			super();
-			this.lx=coords[0]-radius; 
-			this.rx=coords[0]+radius;
-			this.ty=coords[1]-radius; 
-			this.by=coords[1]+radius;
-			this.iz=coords[2]-radius; 
-			this.oz=coords[2]+radius;
+			this.lx = coords[0] - radius; 
+			this.rx = coords[0] + radius;
+			this.ty = coords[1] - radius; 
+			this.by = coords[1] + radius;
+			this.iz = coords[2] - radius; 
+			this.oz = coords[2] + radius;
 		}
 
 		public BoundedCube(BoundedCube l)
@@ -78,12 +78,12 @@ public interface BoundedObject
 
 		public void set(BoundedCube l)
 		{
-			this.lx=l.lx; 
-			this.rx=l.rx;
-			this.ty=l.ty; 
-			this.by=l.by;
-			this.iz=l.iz; 
-			this.oz=l.oz;
+			this.lx = l.lx; 
+			this.rx = l.rx;
+			this.ty = l.ty; 
+			this.by = l.by;
+			this.iz = l.iz; 
+			this.oz = l.oz;
 		}
 		
 		public void union(BoundedCube l)
@@ -104,9 +104,10 @@ public interface BoundedObject
 
 		public long radius()
 		{
-			return Math.round(Math.sqrt((rx-lx)-(by-ty)-(oz-iz)));
+			return Math.round(Math.sqrt(((rx - lx) * (rx - lx))
+									   +((by - ty) * (by - ty))
+									   +((oz - iz) * (oz - iz))));
 		}
-		
 
 		public BoundedCube expand(double[] direction, long distance)
 		{
@@ -131,7 +132,6 @@ public interface BoundedObject
 				cube.iz+=newCenter[2]-oldCenter[2];
 			else
 				cube.oz+=newCenter[2]-oldCenter[2];
-			// this and the new cube make a paralleogram?
 			return cube;
 		}
 
@@ -148,12 +148,12 @@ public interface BoundedObject
 
 		public boolean contains(long x, long y, long z)
 		{
-			return ((x>=lx)
-				  &&(x<=rx)
-				  &&(y>=ty)
-				  &&(y<=by)
-				  &&(z>=iz)
-				  &&(z<=oz));
+			return ((x >= lx)
+				  &&(x <= rx)
+				  &&(y >= ty)
+				  &&(y <= by)
+				  &&(z >= iz)
+				  &&(z <= oz));
 		}
 
 		public long width()

@@ -79,30 +79,32 @@ public class Injury extends StdAbility implements LimbDamage, HealthCondition
 				{
 					V=injuries[i];
 					if(V!=null)
-					for(int i2=0;i2<V.size();i2++)
 					{
-						O=V.elementAt(i2);
-						String wounds="";
-						final int dmg = O.second.intValue();
-						if (dmg<5)
-							wounds=("a bruised ");
-						else if (dmg<10)
-							wounds=("a scratched ");
-						else if (dmg<20)
-							wounds=("a cut ");
-						else if (dmg<30)
-							wounds=("a sliced ");
-						else if (dmg<40)
-							wounds=("a gashed ");
-						else if (dmg<60)
-							wounds=("a bloody ");
-						else if ((dmg<75)||(i==Race.BODY_TORSO))
-							wounds=("a mangled ");
-						else if ((dmg<100)||(i==Race.BODY_HEAD))
-							wounds=("a dangling ");
-						else
-							wounds=("a shredded ");
-						buf.append(", "+wounds+O.first.toLowerCase()+" ("+dmg+"%)");
+						for(int i2=0;i2<V.size();i2++)
+						{
+							O=V.elementAt(i2);
+							String wounds="";
+							final int dmg = O.second.intValue();
+							if (dmg<5)
+								wounds=("a bruised ");
+							else if (dmg<10)
+								wounds=("a scratched ");
+							else if (dmg<20)
+								wounds=("a cut ");
+							else if (dmg<30)
+								wounds=("a sliced ");
+							else if (dmg<40)
+								wounds=("a gashed ");
+							else if (dmg<60)
+								wounds=("a bloody ");
+							else if ((dmg<75)||(i==Race.BODY_TORSO))
+								wounds=("a mangled ");
+							else if ((dmg<100)||(i==Race.BODY_HEAD))
+								wounds=("a dangling ");
+							else
+								wounds=("a shredded ");
+							buf.append(", "+wounds+O.first.toLowerCase()+" ("+dmg+"%)");
+						}
 					}
 				}
 			}
@@ -475,6 +477,25 @@ public class Injury extends StdAbility implements LimbDamage, HealthCondition
 								}
 							}
 						}
+					}
+				}
+			}
+			else
+			if((!mob.isMonster())
+			&& (CMLib.dice().rollPercentage()==1)
+			&& (CMLib.dice().rollPercentage()>(mob.charStats().getStat(CharStats.STAT_CONSTITUTION)*4))
+			&& (!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
+			{
+				Ability A=CMClass.getAbility("Disease_Infection");
+				if((A!=null)&&(mob.fetchEffect(A.ID())==null)&&(injuries.length>0))
+				{
+					final List<String> injuredList = affectedLimbNameSet();
+					if(injuredList.size()>0)
+					{
+						final int which=CMLib.dice().roll(1,injuredList.size(),-1);
+						final String injuredLimb=injuredList.get(which);
+						MOB infector = CMClass.getFactoryMOB(injuredLimb, mob.phyStats().level(), mob.location());
+						A.invoke(infector,mob,true,mob.phyStats().level());
 					}
 				}
 			}

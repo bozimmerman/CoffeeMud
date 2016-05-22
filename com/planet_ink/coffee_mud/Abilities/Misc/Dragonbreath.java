@@ -83,6 +83,24 @@ public class Dragonbreath extends StdAbility
 
 	private static final String[]	triggerStrings	= I(new String[] { "DRAGONBREATH" });
 
+	protected boolean lesser = false;
+	
+	@Override
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
+	{
+		super.affectPhyStats(affected,affectableStats);
+		if((affected instanceof MOB)&&(!CMLib.flags().canBreatheThis((MOB)affected, RawMaterial.RESOURCE_DUST)))
+			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_BREATHE);
+	}
+	
+	@Override
+	public void setMiscText(String newMiscText)
+	{
+		List<String> parms = CMParms.parse(newMiscText.toUpperCase().trim());
+		lesser = parms.contains("LESSER");
+		super.setMiscText(newMiscText);
+	}
+	
 	@Override
 	public String[] triggerStrings()
 	{
@@ -95,40 +113,13 @@ public class Dragonbreath extends StdAbility
 		return Ability.ACODE_SKILL | Ability.DOMAIN_RACIALABILITY;
 	}
 
-	private final static String[][] DragonColors={
-		{"WHITE","c"},
-		{"BLACK","a"},
-		{"BLUE","l"},
-		{"GREEN","g"},
-		{"RED","f"},
-		{"BRASS","f"},
-		{"COPPER","a"},
-		{"BRONZE","l"},
-		{"SILVER","c"},
-		{"GOLD","g"},
-	};
-
-	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	protected char getBreathColor(MOB mob)
 	{
-		final Set<MOB> h=properTargets(mob,givenTarget,auto);
-		if(h==null)
-		{
-			mob.tell(L("There doesn't appear to be anyone here worth breathing on."));
-			return false;
-		}
-		if(!CMLib.flags().canBreatheHere(mob,mob.location()))
-		{
-			mob.tell(L("You can't breathe!"));
-			return false;
-		}
-		if(mob.charStats().getBodyPart(Race.BODY_MOUTH)==0)
-		{
-			mob.tell(L("You don't have a mouth!"));
-			return false;
-		}
 		char colorc='f';
+		if(mob == null)
+			mob = invoker();
 		if((text().length()==0)
+		&&(mob!=null)
 		&&(mob.charStats().getMyRace().racialCategory().equals("Dragon")))
 		{
 			int color=-1;
@@ -161,63 +152,158 @@ public class Dragonbreath extends StdAbility
 			colorc=text().trim().toLowerCase().charAt(0);
 		else
 		{
-			final int x=CMLib.dice().roll(1,5,-1);
-			colorc=("rlcag").substring(x,x+1).charAt(0);
+			final int x=CMLib.dice().roll(1,DragonColors.length,-1);
+			colorc=DragonColors[x][1].charAt(0);
 		}
+		return colorc;
+	}
+	
+	@Override
+	public long flags()
+	{
+		switch(getBreathColor(null))
+		{
+		case 'f': // fire
+			return super.flags() | Ability.FLAG_FIREBASED;
+		case 'l': // lightning
+			return super.flags() | Ability.FLAG_AIRBASED;
+		case 'c':// cold
+			return super.flags() | Ability.FLAG_WATERBASED;
+		case 'a': // acid
+			return super.flags() | Ability.FLAG_EARTHBASED;
+		case 'o': // ooze
+			return super.flags() | Ability.FLAG_EARTHBASED;
+		case 'g':// gas
+			return super.flags() | Ability.FLAG_INTOXICATING;
+		case 'p': // pebbles
+			return super.flags();
+		case 'd': // dust
+			return super.flags();
+		default:
+			return super.flags() | Ability.FLAG_FIREBASED;
+		}
+	}
+	
+	private final static String[][] DragonColors={
+		{"WHITE","c"},
+		{"BLACK","a"},
+		{"BLUE","l"},
+		{"GREEN","g"},
+		{"RED","f"},
+		{"BRASS","f"},
+		{"COPPER","a"},
+		{"BRONZE","l"},
+		{"SILVER","c"},
+		{"GOLD","g"},
+	};
+
+	@Override
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	{
+		final Set<MOB> h=properTargets(mob,givenTarget,auto);
+		if(h==null)
+		{
+			mob.tell(L("There doesn't appear to be anyone here worth breathing on."));
+			return false;
+		}
+		if(!CMLib.flags().canBreatheHere(mob,mob.location()))
+		{
+			mob.tell(L("You can't breathe!"));
+			return false;
+		}
+		if(mob.charStats().getBodyPart(Race.BODY_MOUTH)==0)
+		{
+			mob.tell(L("You don't have a mouth!"));
+			return false;
+		}
+		this.setInvoker(mob);
+		char colorc = getBreathColor(mob);
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=proficiencyCheck(mob,0,auto);
 
-		String puffPhrase="<S-NAME> puff(s) smoke from <S-HIS-HER> mouth.";
-		String autoPhrase="A blast of flames erupts!";
-		String stuffWord="flames";
-		String castPhrase="<S-NAME> blast(s) flames from <S-HIS-HER> mouth!";
-		int WeaponType=Weapon.TYPE_BURNING;
-		int strikeType=CMMsg.TYP_FIRE;
+		final String puffPhrase;
+		final String autoPhrase;
+		final String stuffWord;
+		final String castPhrase;
+		final int weaponType;
+		final int strikeType;
 
 		switch(colorc)
 		{
+		default:
 		case 'f':
-				break;
+			puffPhrase=L("<S-NAME> puff(s) smoke from <S-HIS-HER> mouth.");
+			autoPhrase=L("A blast of flames erupts!");
+			stuffWord=L("flames");
+			castPhrase=L("<S-NAME> blast(s) flames from <S-HIS-HER> mouth!");
+			weaponType=Weapon.TYPE_BURNING;
+			strikeType=CMMsg.TYP_FIRE;
+			break;
 		case 'l':
-				puffPhrase="<S-NAME> spark(s) a little from <S-HIS-HER> mouth.";
-				autoPhrase="A blast of lightning bursts erupt!";
-				stuffWord="bolt";
-				castPhrase="<S-NAME> shoot(s) numerous bursts of lightning from <S-HIS-HER> mouth!"+CMLib.protocol().msp("lightning.wav",40);
-				WeaponType=Weapon.TYPE_STRIKING;
-				strikeType=CMMsg.TYP_ELECTRIC;
-				break;
+			puffPhrase=L("<S-NAME> spark(s) a little from <S-HIS-HER> mouth.");
+			autoPhrase=L("A blast of lightning bursts erupt!");
+			stuffWord=L("bolt");
+			castPhrase=L("<S-NAME> shoot(s) numerous bursts of lightning from <S-HIS-HER> mouth!")+CMLib.protocol().msp("lightning.wav",40);
+			weaponType=Weapon.TYPE_STRIKING;
+			strikeType=CMMsg.TYP_ELECTRIC;
+			break;
 		case 'c':
-				puffPhrase="<S-NAME> puff(s) cold air from <S-HIS-HER> mouth.";
-				autoPhrase="A blast of frozen air erupts!";
-				stuffWord="cold";
-				castPhrase="<S-NAME> blast(s) a frozen cone of frost from <S-HIS-HER> mouth!"+CMLib.protocol().msp("spelldam1.wav",40);
-				WeaponType=Weapon.TYPE_FROSTING;
-				strikeType=CMMsg.TYP_COLD;
-				break;
+			puffPhrase=L("<S-NAME> puff(s) cold air from <S-HIS-HER> mouth.");
+			autoPhrase=L("A blast of frozen air erupts!");
+			stuffWord=L("cold");
+			castPhrase=L("<S-NAME> blast(s) a frozen cone of frost from <S-HIS-HER> mouth!")+CMLib.protocol().msp("spelldam1.wav",40);
+			weaponType=Weapon.TYPE_FROSTING;
+			strikeType=CMMsg.TYP_COLD;
+			break;
 		case 'a':
-				puffPhrase="<S-NAME> dribble(s) acid harmlessly from <S-HIS-HER> mouth.";
-				autoPhrase="A spray of acid erupts!";
-				stuffWord="acid";
-				castPhrase="<S-NAME> spray(s) acid from <S-HIS-HER> mouth!"+CMLib.protocol().msp("water.wav",40);
-				WeaponType=Weapon.TYPE_MELTING;
-				strikeType=CMMsg.TYP_ACID;
-				break;
+			puffPhrase=L("<S-NAME> dribble(s) acid harmlessly from <S-HIS-HER> mouth.");
+			autoPhrase=L("A spray of acid erupts!");
+			stuffWord=L("acid");
+			castPhrase=L("<S-NAME> spray(s) acid from <S-HIS-HER> mouth!")+CMLib.protocol().msp("water.wav",40);
+			weaponType=Weapon.TYPE_MELTING;
+			strikeType=CMMsg.TYP_ACID;
+			break;
+		case 'o':
+			puffPhrase=L("<S-NAME> bubbles(s) acidic ooze harmlessly from <S-HIS-HER> mouth.");
+			autoPhrase=L("A splurt of acidic ooze erupts!");
+			stuffWord=L("ooze");
+			castPhrase=L("<S-NAME> belch(es) acidic ooze from <S-HIS-HER> mouth!")+CMLib.protocol().msp("water.wav",40);
+			weaponType=Weapon.TYPE_MELTING;
+			strikeType=CMMsg.TYP_ACID;
+			break;
 		case 'g':
-				puffPhrase="<S-NAME> puff(s) gas harmlessly from <S-HIS-HER> mouth.";
-				if(CMLib.dice().rollPercentage()>50)
-				{
-					autoPhrase="A cloud of deadly gas descends!";
-					stuffWord="gas";
-					castPhrase="<S-NAME> blow(s) deadly gas from <S-HIS-HER> mouth!";
-					WeaponType=Weapon.TYPE_GASSING;
-					strikeType=CMMsg.TYP_GAS;
-				}
-				else
-					success = false;
-				break;
+			puffPhrase=L("<S-NAME> puff(s) gas harmlessly from <S-HIS-HER> mouth.");
+			autoPhrase=L("A cloud of deadly gas descends!");
+			stuffWord=L("gas");
+			castPhrase=L("<S-NAME> blow(s) deadly gas from <S-HIS-HER> mouth!");
+			weaponType=Weapon.TYPE_GASSING;
+			strikeType=CMMsg.TYP_GAS;
+			if(CMLib.dice().rollPercentage()<50)
+				success = false;
+			break;
+		case 'p':
+			puffPhrase=L("<S-NAME> dribble(s) pebbles harmlessly from <S-HIS-HER> mouth.");
+			autoPhrase=L("A line of pebbles shoot out!");
+			stuffWord=L("pebbles");
+			castPhrase=L("<S-NAME> blow(s) a line of pebbles from <S-HIS-HER> mouth!");
+			weaponType=Weapon.TYPE_BASHING;
+			strikeType=CMMsg.TYP_JUSTICE;
+			if(CMLib.dice().rollPercentage()<50)
+				success = false;
+			break;
+		case 'd':
+			puffPhrase=L("<S-NAME> puff(s) dust harmlessly from <S-HIS-HER> mouth.");
+			autoPhrase=L("A cloud of dust descends!");
+			stuffWord=L("dust");
+			castPhrase=L("<S-NAME> blow(s) a cloud of dust from <S-HIS-HER> mouth!");
+			weaponType=Weapon.TYPE_GASSING;
+			strikeType=CMMsg.TYP_GAS;
+			if(CMLib.dice().rollPercentage()<50)
+				success = false;
+			break;
 		}
 		final Room R=mob.location();
 		if((success)&&(R!=null))
@@ -237,14 +323,26 @@ public class Dragonbreath extends StdAbility
 						R.send(mob,msg);
 						invoker=mob;
 
-						int damage = 0;
-						int levelBy=(mob.phyStats().level()+(2*getXLEVELLevel(mob)))/4;
-						if(levelBy<1)
-							levelBy=1;
-						damage += CMLib.dice().roll(levelBy,6,levelBy);
-						if(msg.value()>0)
-							damage = (int)Math.round(CMath.div(damage,2.0));
-						CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_ALWAYS|CMMsg.MASK_SOUND|strikeType,WeaponType,L("^F^<FIGHT^>The @x1 <DAMAGE> <T-NAME>!^</FIGHT^>^?",stuffWord));
+						if(colorc == 'd')
+						{
+							int ticks = 2 + ((getX1Level(mob)+getXLEVELLevel(mob))/4);
+							if(msg.value()<=0)
+								maliciousAffect(mob, target, asLevel, ticks, strikeType);
+						}
+						else
+						{
+							int damage = 0;
+							int levelBy=(mob.phyStats().level()+(2*getXLEVELLevel(mob))+(2*getX1Level(mob)))/4;
+							if(levelBy<1)
+								levelBy=1;
+							if(lesser)
+								damage += CMLib.dice().roll(levelBy,4,0);
+							else
+								damage += CMLib.dice().roll(levelBy,6,levelBy);
+							if(msg.value()>0)
+								damage = (int)Math.round(CMath.div(damage,2.0));
+							CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_ALWAYS|CMMsg.MASK_SOUND|strikeType,weaponType,L("^F^<FIGHT^>The @x1 <DAMAGE> <T-NAME>!^</FIGHT^>^?",stuffWord));
+						}
 					}
 				}
 			}
