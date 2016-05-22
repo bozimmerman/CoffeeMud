@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2003-2016 Bo Zimmerman
+   Copyright 2016-2016 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -32,15 +32,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Demon extends Unique
+public class Devil extends Unique
 {
 	@Override
 	public String ID()
 	{
-		return "Demon";
+		return "Devil";
 	}
 
-	private final static String localizedStaticName = CMLib.lang().L("Demon");
+	private final static String localizedStaticName = CMLib.lang().L("Devil");
 
 	@Override
 	public String name()
@@ -51,13 +51,13 @@ public class Demon extends Unique
 	@Override
 	public int shortestMale()
 	{
-		return 64;
+		return 72;
 	}
 
 	@Override
 	public int shortestFemale()
 	{
-		return 60;
+		return 70;
 	}
 
 	@Override
@@ -69,13 +69,13 @@ public class Demon extends Unique
 	@Override
 	public int lightestWeight()
 	{
-		return 100;
+		return 180;
 	}
 
 	@Override
 	public int weightVariance()
 	{
-		return 80;
+		return 50;
 	}
 
 	@Override
@@ -101,7 +101,7 @@ public class Demon extends Unique
 	private final String[]	culturalAbilityNames			= { "Undercommon" };
 	private final int[]		culturalAbilityProficiencies	= { 25 };
 
-	private final static String localizedStaticRacialCat = CMLib.lang().L("Demon");
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Devil");
 
 	@Override
 	public String racialCategory()
@@ -122,7 +122,7 @@ public class Demon extends Unique
 	}
 
 	// 									   an ey ea he ne ar ha to le fo no gi mo wa ta wi
-	private static final int[]	parts	= { 0, 2, 2, 1, 1, 2, 2, 1, 2, 2, 1, 0, 1, 1, 1, 0 };
+	private static final int[]	parts	= { 0, 2, 2, 1, 1, 2, 2, 1, 2, 2, 1, 0, 1, 1, 1, 2 };
 
 	@Override
 	public int[] bodyMask()
@@ -136,6 +136,42 @@ public class Demon extends Unique
 		return Area.THEME_FANTASY | Area.THEME_SKILLONLYMASK;
 	}
 
+	private final String[]	racialAbilityNames			= { "WingFlying" };
+	private final int[]		racialAbilityLevels			= { 1 };
+	private final int[]		racialAbilityProficiencies	= { 100 };
+	private final boolean[]	racialAbilityQuals			= { false };
+	private final String[]	racialAbilityParms			= { "" };
+
+	@Override
+	public String[] racialAbilityNames()
+	{
+		return racialAbilityNames;
+	}
+
+	@Override
+	public int[] racialAbilityLevels()
+	{
+		return racialAbilityLevels;
+	}
+
+	@Override
+	public int[] racialAbilityProficiencies()
+	{
+		return racialAbilityProficiencies;
+	}
+
+	@Override
+	public boolean[] racialAbilityQuals()
+	{
+		return racialAbilityQuals;
+	}
+
+	@Override
+	public String[] racialAbilityParms()
+	{
+		return racialAbilityParms;
+	}
+
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
@@ -147,8 +183,9 @@ public class Demon extends Unique
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_STRENGTH)+5);
-		affectableStats.setStat(CharStats.STAT_MAX_STRENGTH_ADJ,affectableStats.getStat(CharStats.STAT_MAX_STRENGTH_ADJ)+5);
-		affectableStats.setStat(CharStats.STAT_SAVE_FIRE,affectableStats.getStat(CharStats.STAT_SAVE_FIRE)+50);
+		affectableStats.setStat(CharStats.STAT_SAVE_FIRE,affectableStats.getStat(CharStats.STAT_SAVE_FIRE)+100);
+		affectableStats.setStat(CharStats.STAT_SAVE_POISON,affectableStats.getStat(CharStats.STAT_SAVE_POISON)+100);
+		affectableStats.setStat(CharStats.STAT_SAVE_ACID,affectableStats.getStat(CharStats.STAT_SAVE_ACID)+10);
+		affectableStats.setStat(CharStats.STAT_SAVE_COLD,affectableStats.getStat(CharStats.STAT_SAVE_COLD)+10);
 	}
 }

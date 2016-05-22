@@ -173,8 +173,12 @@ public class Dragonbreath extends StdAbility
 			return super.flags() | Ability.FLAG_EARTHBASED;
 		case 'o': // ooze
 			return super.flags() | Ability.FLAG_EARTHBASED;
+		case 's': // slime
+			return super.flags() | Ability.FLAG_EARTHBASED;
 		case 'g':// gas
 			return super.flags() | Ability.FLAG_INTOXICATING;
+		case 'u':// undead
+			return super.flags() | Ability.FLAG_UNHOLY;
 		case 'p': // pebbles
 			return super.flags();
 		case 'd': // dust
@@ -270,7 +274,15 @@ public class Dragonbreath extends StdAbility
 			puffPhrase=L("<S-NAME> bubbles(s) acidic ooze harmlessly from <S-HIS-HER> mouth.");
 			autoPhrase=L("A splurt of acidic ooze erupts!");
 			stuffWord=L("ooze");
-			castPhrase=L("<S-NAME> belch(es) acidic ooze from <S-HIS-HER> mouth!")+CMLib.protocol().msp("water.wav",40);
+			castPhrase=L("<S-NAME> belch(es) acidic ooze from <S-HIS-HER> mouth!");
+			weaponType=Weapon.TYPE_MELTING;
+			strikeType=CMMsg.TYP_ACID;
+			break;
+		case 's':
+			puffPhrase=L("<S-NAME> ooze(s) acidic slime harmlessly from <S-HIS-HER> mouth.");
+			autoPhrase=L("A splurt of acidic slime erupts!");
+			stuffWord=L("slime");
+			castPhrase=L("<S-NAME> sling(s) acidic slime from <S-HIS-HER> mouth!");
 			weaponType=Weapon.TYPE_MELTING;
 			strikeType=CMMsg.TYP_ACID;
 			break;
@@ -291,6 +303,16 @@ public class Dragonbreath extends StdAbility
 			castPhrase=L("<S-NAME> blow(s) a line of pebbles from <S-HIS-HER> mouth!");
 			weaponType=Weapon.TYPE_BASHING;
 			strikeType=CMMsg.TYP_JUSTICE;
+			if(CMLib.dice().rollPercentage()<50)
+				success = false;
+			break;
+		case 'u':
+			puffPhrase=L("<S-NAME> cough(s) death harmlessly from <S-HIS-HER> mouth.");
+			autoPhrase=L("A death ray shoot out!");
+			stuffWord=L("death");
+			castPhrase=L("<S-NAME> blow(s) a ray of death from <S-HIS-HER> mouth!");
+			weaponType=Weapon.TYPE_BURSTING;
+			strikeType=CMMsg.TYP_UNDEAD;
 			if(CMLib.dice().rollPercentage()<50)
 				success = false;
 			break;

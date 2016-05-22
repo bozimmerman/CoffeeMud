@@ -120,7 +120,7 @@ public interface CharStats extends CMCommon, Modifiable
 	public static final int STAT_SAVE_PRAYERS=37;
 	/** stat constant for  save vs songs*/
 	public static final int STAT_SAVE_SONGS=38;
-	/** stat constant for  save vs songs*/
+	/** stat constant for  save vs chants*/
 	public static final int STAT_SAVE_CHANTS=39;
 	/** constant for total number of stat codes */
 	public final static int DEFAULT_NUM_STATS=40;

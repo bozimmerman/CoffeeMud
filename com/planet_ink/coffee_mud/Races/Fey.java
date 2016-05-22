@@ -15,8 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import java.util.*;
-
 /*
    Copyright 2003-2016 Bo Zimmerman
 
@@ -32,15 +30,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Demon extends Unique
+public class Fey extends SmallElfKin
 {
 	@Override
 	public String ID()
 	{
-		return "Demon";
+		return "Fey";
 	}
 
-	private final static String localizedStaticName = CMLib.lang().L("Demon");
+	private final static String localizedStaticName = CMLib.lang().L("Faerie");
 
 	@Override
 	public String name()
@@ -48,66 +46,55 @@ public class Demon extends Unique
 		return localizedStaticName;
 	}
 
-	@Override
-	public int shortestMale()
-	{
-		return 64;
-	}
+	//                                     an ey ea he ne ar ha to le fo no gi mo wa ta wi
+	private static final int[]	parts	= { 0, 2, 2, 1, 1, 2, 2, 1, 2, 2, 1, 0, 1, 1, 0, 0 };
 
-	@Override
-	public int shortestFemale()
-	{
-		return 60;
-	}
-
-	@Override
-	public int heightVariance()
-	{
-		return 12;
-	}
-
-	@Override
-	public int lightestWeight()
-	{
-		return 100;
-	}
-
-	@Override
-	public int weightVariance()
-	{
-		return 80;
-	}
-
-	@Override
-	public Weapon myNaturalWeapon()
-	{
-		if(naturalWeapon==null)
-		{
-			naturalWeapon=CMClass.getWeapon("StdWeapon");
-			naturalWeapon.setName(L("claws"));
-			naturalWeapon.setMaterial(RawMaterial.RESOURCE_BONE);
-			naturalWeapon.setUsesRemaining(1000);
-			naturalWeapon.setWeaponDamageType(Weapon.TYPE_PIERCING);
-		}
-		return naturalWeapon;
-	}
-
-	@Override
-	public long forbiddenWornBits()
-	{
-		return 0;
-	}
-
-	private final String[]	culturalAbilityNames			= { "Undercommon" };
-	private final int[]		culturalAbilityProficiencies	= { 25 };
-
-	private final static String localizedStaticRacialCat = CMLib.lang().L("Demon");
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Faerie-kin");
 
 	@Override
 	public String racialCategory()
 	{
 		return localizedStaticRacialCat;
 	}
+
+	@Override
+	public int[] bodyMask()
+	{
+		return parts;
+	}
+
+	@Override
+	public int shortestMale()
+	{
+		return 56;
+	}
+
+	@Override
+	public int shortestFemale()
+	{
+		return 50;
+	}
+
+	@Override
+	public int heightVariance()
+	{
+		return 4;
+	}
+
+	@Override
+	public int lightestWeight()
+	{
+		return 80;
+	}
+
+	@Override
+	public int weightVariance()
+	{
+		return 10;
+	}
+	
+	private final String[]	culturalAbilityNames			= { "Fey", "Foraging" };
+	private final int[]		culturalAbilityProficiencies	= { 100, 50 };
 
 	@Override
 	public String[] culturalAbilityNames()
@@ -121,21 +108,6 @@ public class Demon extends Unique
 		return culturalAbilityProficiencies;
 	}
 
-	// 									   an ey ea he ne ar ha to le fo no gi mo wa ta wi
-	private static final int[]	parts	= { 0, 2, 2, 1, 1, 2, 2, 1, 2, 2, 1, 0, 1, 1, 1, 0 };
-
-	@Override
-	public int[] bodyMask()
-	{
-		return parts;
-	}
-
-	@Override
-	public int availabilityCode()
-	{
-		return Area.THEME_FANTASY | Area.THEME_SKILLONLYMASK;
-	}
-
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
@@ -147,8 +119,10 @@ public class Demon extends Unique
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_STRENGTH)+5);
-		affectableStats.setStat(CharStats.STAT_MAX_STRENGTH_ADJ,affectableStats.getStat(CharStats.STAT_MAX_STRENGTH_ADJ)+5);
-		affectableStats.setStat(CharStats.STAT_SAVE_FIRE,affectableStats.getStat(CharStats.STAT_SAVE_FIRE)+50);
+		affectableStats.setStat(CharStats.STAT_CONSTITUTION,affectableStats.getStat(CharStats.STAT_CONSTITUTION)+2);
+		affectableStats.setStat(CharStats.STAT_MAX_CONSTITUTION_ADJ,affectableStats.getStat(CharStats.STAT_MAX_CONSTITUTION_ADJ)+2);
+		affectableStats.setStat(CharStats.STAT_DEXTERITY,affectableStats.getStat(CharStats.STAT_DEXTERITY)+2);
+		affectableStats.setStat(CharStats.STAT_MAX_DEXTERITY_ADJ,affectableStats.getStat(CharStats.STAT_MAX_DEXTERITY_ADJ)+2);
+		affectableStats.setStat(CharStats.STAT_SAVE_POISON,affectableStats.getStat(CharStats.STAT_SAVE_POISON)+10);
 	}
 }

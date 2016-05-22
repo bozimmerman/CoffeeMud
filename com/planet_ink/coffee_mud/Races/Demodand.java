@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2003-2016 Bo Zimmerman
+   Copyright 2016-2016 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -32,15 +32,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Demon extends Unique
+public class Demodand extends Demon
 {
 	@Override
 	public String ID()
 	{
-		return "Demon";
+		return "Demodand";
 	}
 
-	private final static String localizedStaticName = CMLib.lang().L("Demon");
+	private final static String localizedStaticName = CMLib.lang().L("Demodand");
 
 	@Override
 	public String name()
@@ -51,13 +51,13 @@ public class Demon extends Unique
 	@Override
 	public int shortestMale()
 	{
-		return 64;
+		return 96;
 	}
 
 	@Override
 	public int shortestFemale()
 	{
-		return 60;
+		return 96;
 	}
 
 	@Override
@@ -69,27 +69,13 @@ public class Demon extends Unique
 	@Override
 	public int lightestWeight()
 	{
-		return 100;
+		return 550;
 	}
 
 	@Override
 	public int weightVariance()
 	{
-		return 80;
-	}
-
-	@Override
-	public Weapon myNaturalWeapon()
-	{
-		if(naturalWeapon==null)
-		{
-			naturalWeapon=CMClass.getWeapon("StdWeapon");
-			naturalWeapon.setName(L("claws"));
-			naturalWeapon.setMaterial(RawMaterial.RESOURCE_BONE);
-			naturalWeapon.setUsesRemaining(1000);
-			naturalWeapon.setWeaponDamageType(Weapon.TYPE_PIERCING);
-		}
-		return naturalWeapon;
+		return 100;
 	}
 
 	@Override
@@ -97,6 +83,42 @@ public class Demon extends Unique
 	{
 		return 0;
 	}
+	private final String[]	racialAbilityNames			= { "Dragonbreath"};
+	private final int[]		racialAbilityLevels			= { 1, };
+	private final int[]		racialAbilityProficiencies	= { 100 };
+	private final boolean[]	racialAbilityQuals			= { false };
+	private final String[]	racialAbilityParms			= { "slime lesser" };
+
+	@Override
+	public String[] racialAbilityNames()
+	{
+		return CMParms.combine(super.racialAbilityNames(), racialAbilityNames);
+	}
+
+	@Override
+	public int[] racialAbilityLevels()
+	{
+		return CMParms.combine(super.racialAbilityLevels(), racialAbilityLevels);
+	}
+
+	@Override
+	public int[] racialAbilityProficiencies()
+	{
+		return CMParms.combine(super.racialAbilityProficiencies(),  racialAbilityProficiencies);
+	}
+
+	@Override
+	public boolean[] racialAbilityQuals()
+	{
+		return CMParms.combine(super.racialAbilityQuals(),  racialAbilityQuals);
+	}
+
+	@Override
+	public String[] racialAbilityParms()
+	{
+		return CMParms.combine(super.racialAbilityParms(),  racialAbilityParms);
+	}
+
 
 	private final String[]	culturalAbilityNames			= { "Undercommon" };
 	private final int[]		culturalAbilityProficiencies	= { 25 };
@@ -147,8 +169,7 @@ public class Demon extends Unique
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_STRENGTH)+5);
-		affectableStats.setStat(CharStats.STAT_MAX_STRENGTH_ADJ,affectableStats.getStat(CharStats.STAT_MAX_STRENGTH_ADJ)+5);
-		affectableStats.setStat(CharStats.STAT_SAVE_FIRE,affectableStats.getStat(CharStats.STAT_SAVE_FIRE)+50);
+		affectableStats.setStat(CharStats.STAT_SAVE_ACID,affectableStats.getStat(CharStats.STAT_SAVE_ACID)+100);
+		affectableStats.setStat(CharStats.STAT_SAVE_POISON,affectableStats.getStat(CharStats.STAT_SAVE_POISON)+100);
 	}
 }

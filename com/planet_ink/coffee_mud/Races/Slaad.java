@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2003-2016 Bo Zimmerman
+   Copyright 2016-2016 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -32,15 +32,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Demon extends Unique
+public class Slaad extends Demon
 {
 	@Override
 	public String ID()
 	{
-		return "Demon";
+		return "Slaad";
 	}
 
-	private final static String localizedStaticName = CMLib.lang().L("Demon");
+	private final static String localizedStaticName = CMLib.lang().L("Slaad");
 
 	@Override
 	public String name()
@@ -51,13 +51,13 @@ public class Demon extends Unique
 	@Override
 	public int shortestMale()
 	{
-		return 64;
+		return 96;
 	}
 
 	@Override
 	public int shortestFemale()
 	{
-		return 60;
+		return 96;
 	}
 
 	@Override
@@ -69,27 +69,13 @@ public class Demon extends Unique
 	@Override
 	public int lightestWeight()
 	{
-		return 100;
+		return 650;
 	}
 
 	@Override
 	public int weightVariance()
 	{
-		return 80;
-	}
-
-	@Override
-	public Weapon myNaturalWeapon()
-	{
-		if(naturalWeapon==null)
-		{
-			naturalWeapon=CMClass.getWeapon("StdWeapon");
-			naturalWeapon.setName(L("claws"));
-			naturalWeapon.setMaterial(RawMaterial.RESOURCE_BONE);
-			naturalWeapon.setUsesRemaining(1000);
-			naturalWeapon.setWeaponDamageType(Weapon.TYPE_PIERCING);
-		}
-		return naturalWeapon;
+		return 100;
 	}
 
 	@Override
@@ -147,8 +133,9 @@ public class Demon extends Unique
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_STRENGTH)+5);
-		affectableStats.setStat(CharStats.STAT_MAX_STRENGTH_ADJ,affectableStats.getStat(CharStats.STAT_MAX_STRENGTH_ADJ)+5);
+		affectableStats.setStat(CharStats.STAT_SAVE_ACID,affectableStats.getStat(CharStats.STAT_SAVE_ACID)+50);
+		affectableStats.setStat(CharStats.STAT_SAVE_COLD,affectableStats.getStat(CharStats.STAT_SAVE_COLD)+50);
+		affectableStats.setStat(CharStats.STAT_SAVE_ELECTRIC,affectableStats.getStat(CharStats.STAT_SAVE_ELECTRIC)+50);
 		affectableStats.setStat(CharStats.STAT_SAVE_FIRE,affectableStats.getStat(CharStats.STAT_SAVE_FIRE)+50);
 	}
 }

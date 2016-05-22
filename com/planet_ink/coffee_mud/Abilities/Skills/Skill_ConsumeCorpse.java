@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Abilities.Prayers;
+package com.planet_ink.coffee_mud.Abilities.Skills;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2001-2016 Bo Zimmerman
+   Copyright 2016-2016 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -33,15 +33,59 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Prayer_Sacrifice extends Prayer
+public class Skill_ConsumeCorpse extends StdSkill
 {
-	@Override public String ID() { return "Prayer_Sacrifice"; }
-	private final static String localizedName = CMLib.lang().L("Sacrifice");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_DEATHLORE;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	@Override public long flags(){return Ability.FLAG_HOLY;}
-	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}
+	@Override
+	public String ID()
+	{
+		return "Skill_ConsumeCorpse";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Consume Corpse");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL | Ability.DOMAIN_CORRUPTION;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_UNHOLY;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_ITEMS;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "CONSUMECORPSE" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MANA;
+	}
 
 	public static Item getBody(Room R)
 	{
@@ -57,12 +101,27 @@ public class Prayer_Sacrifice extends Prayer
 		return null;
 	}
 
+	@Override
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			if(target instanceof MOB)
+			{
+				if(getBody(((MOB)target).location())!=null)
+					return super.castingQuality(mob, target, Ability.QUALITY_BENEFICIAL_SELF);
+			}
+		}
+		return super.castingQuality(mob,target);
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Item target=null;
 		if((commands.size()==0)&&(!auto)&&(givenTarget==null))
+			target=getBody(mob.location());
+		if((mob.isMonster())&&(givenTarget instanceof MOB))
 			target=getBody(mob.location());
 		if(target==null)
 			target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);
@@ -72,7 +131,7 @@ public class Prayer_Sacrifice extends Prayer
 		if((!(target instanceof DeadBody))
 		   ||(target.rawSecretIdentity().toUpperCase().indexOf("FAKE")>=0))
 		{
-			mob.tell(L("You may only sacrifice the dead."));
+			mob.tell(L("You may only consume the dead."));
 			return false;
 		}
 
@@ -80,7 +139,7 @@ public class Prayer_Sacrifice extends Prayer
 		&&(!((DeadBody)target).getMobName().equals(mob.Name()))
 		&&(((DeadBody)target).hasContent()))
 		{
-			mob.tell(L("You are not allowed to sacrifice that corpse."));
+			mob.tell(L("You are not allowed to consume that corpse."));
 			return false;
 		}
 
@@ -91,26 +150,23 @@ public class Prayer_Sacrifice extends Prayer
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> sacrifice(s) <T-HIM-HERSELF>."):L("^S<S-NAME> sacrifice(s) <T-NAMESELF> to @x1.^?",hisHerDiety(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> consume(s) <T-HIM-HERSELF>."):L("^S<S-NAME> consume(s) <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				if(CMLib.flags().isGood(mob))
-				{
-					double exp=5.0;
-					final int levelLimit=CMProps.getIntVar(CMProps.Int.EXPRATE);
-					final int levelDiff=mob.phyStats().level()-target.phyStats().level();
-					if(levelDiff>levelLimit)
-						exp=0.0;
-					if(exp>0)
-						CMLib.leveler().postExperience(mob,null,null,(int)Math.round(exp)+(super.getXPCOSTLevel(mob)),false);
-				}
+				double amtBack = CMath.div(target.phyStats().level(), adjustedLevel(mob,asLevel));
+				int hp=(int)Math.round(CMath.mul(mob.maxState().getHitPoints(),amtBack));
+				int mana=(int)Math.round(CMath.mul(mob.maxState().getMana(),amtBack));
+				int move=(int)Math.round(CMath.mul(mob.maxState().getMovement(),amtBack));
+				CMLib.combat().postHealing(mob, mob, this, hp, CMMsg.MASK_ALWAYS|CMMsg.TYP_HANDS, L("<S-NAME> feel(s) better!"));
+				mob.curState().adjMana(mana, mob.maxState());
+				mob.curState().adjMovement(move, mob.maxState());
 				target.destroy();
 				mob.location().recoverRoomStats();
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,auto?"":L("<S-NAME> attempt(s) to sacrifice <T-NAMESELF>, but fail(s)."));
+			beneficialWordsFizzle(mob,target,auto?"":L("<S-NAME> attempt(s) to consume <T-NAMESELF>, but fail(s)."));
 
 		// return whether it worked
 		return success;

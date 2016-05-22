@@ -32,20 +32,20 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class MagmaMephit extends Mephit
+public class SteamMephit extends Mephit
 {
 	@Override
 	public String ID()
 	{
-		return "MagmaMephit";
+		return "SteamMephit";
 	}
 
-	public MagmaMephit()
+	public SteamMephit()
 	{
 		super();
 	}
 	
-	private final static String localizedStaticName = CMLib.lang().L("Magma Mephit");
+	private final static String localizedStaticName = CMLib.lang().L("Steam Mephit");
 
 	@Override
 	public String name()
@@ -57,10 +57,18 @@ public class MagmaMephit extends Mephit
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setStat(CharStats.STAT_SAVE_ACID,affectableStats.getStat(CharStats.STAT_SAVE_ACID)+50);
-		affectableStats.setStat(CharStats.STAT_SAVE_COLD,affectableStats.getStat(CharStats.STAT_SAVE_COLD)-50);
-		affectableStats.setStat(CharStats.STAT_SAVE_ELECTRIC,affectableStats.getStat(CharStats.STAT_SAVE_ELECTRIC)-50);
-		affectableStats.setStat(CharStats.STAT_SAVE_BLUNT, affectableStats.getStat(CharStats.STAT_SAVE_BLUNT)+95);
+		affectableStats.setStat(CharStats.STAT_SAVE_SLASH, affectableStats.getStat(CharStats.STAT_SAVE_SLASH)+50);
+		affectableStats.setStat(CharStats.STAT_SAVE_WATER,affectableStats.getStat(CharStats.STAT_SAVE_WATER)+50);
+		
+		affectableStats.setStat(CharStats.STAT_SAVE_PIERCE,affectableStats.getStat(CharStats.STAT_SAVE_PIERCE)+100);
+		
+		affectableStats.setStat(CharStats.STAT_SAVE_GAS,affectableStats.getStat(CharStats.STAT_SAVE_GAS)-100);
+	}
+
+	@Override
+	public int lightestWeight()
+	{
+		return 2;
 	}
 
 	@Override
@@ -111,31 +119,31 @@ public class MagmaMephit extends Mephit
 		final double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
 		if(pct<.10)
-			return L("^r@x1^r is almost put out!^N",mob.name(viewer));
+			return L("^r@x1^r is almost completely dissipated!^N",mob.name(viewer));
 		else
 		if(pct<.20)
-			return L("^r@x1^r is flickering alot and is almost smoked out.^N",mob.name(viewer));
+			return L("^r@x1^r is very flawed and is nearing complete dissipation.^N",mob.name(viewer));
 		else
 		if(pct<.30)
-			return L("^r@x1^r is flickering alot and smoking massively.^N",mob.name(viewer));
+			return L("^r@x1^r is very flawed and dissipating massively.^N",mob.name(viewer));
 		else
 		if(pct<.40)
-			return L("^y@x1^y is flickering alot and smoking a lot.^N",mob.name(viewer));
+			return L("^y@x1^y is very flawed and dissipating a lot.^N",mob.name(viewer));
 		else
 		if(pct<.50)
-			return L("^y@x1^y is flickering and smoking.^N",mob.name(viewer));
+			return L("^y@x1^y is flawed and dissipating.^N",mob.name(viewer));
 		else
 		if(pct<.60)
-			return L("^p@x1^p is flickering and smoking somewhat.^N",mob.name(viewer));
+			return L("^p@x1^p is flawed and starting to dissipate.^N",mob.name(viewer));
 		else
 		if(pct<.70)
-			return L("^p@x1^p is showing large flickers.^N",mob.name(viewer));
+			return L("^p@x1^p is more flawed.^N",mob.name(viewer));
 		else
 		if(pct<.80)
-			return L("^g@x1^g is showing some flickers.^N",mob.name(viewer));
+			return L("^g@x1^g is showing some flaws.^N",mob.name(viewer));
 		else
 		if(pct<.90)
-			return L("^g@x1^g is showing small flickers.^N",mob.name(viewer));
+			return L("^g@x1^g is showing small flaws.^N",mob.name(viewer));
 		else
 		if(pct<.99)
 			return L("^g@x1^g is no longer in perfect condition.^N",mob.name(viewer));
@@ -149,7 +157,7 @@ public class MagmaMephit extends Mephit
 		final DeadBody body = super.getCorpseContainer(mob, room);
 		if(body != null)
 		{
-			body.setMaterial(RawMaterial.RESOURCE_STONE);
+			body.setMaterial(RawMaterial.RESOURCE_FRESHWATER);
 		}
 		return body;
 	}
@@ -165,7 +173,7 @@ public class MagmaMephit extends Mephit
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-					(L("a pound of stone"),RawMaterial.RESOURCE_STONE));
+					(L("a pound of water"),RawMaterial.RESOURCE_FRESHWATER));
 			}
 		}
 		return resources;

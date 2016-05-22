@@ -32,20 +32,20 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class MagmaMephit extends Mephit
+public class OozeMephit extends Mephit
 {
 	@Override
 	public String ID()
 	{
-		return "MagmaMephit";
+		return "OozeMephit";
 	}
 
-	public MagmaMephit()
+	public OozeMephit()
 	{
 		super();
 	}
 	
-	private final static String localizedStaticName = CMLib.lang().L("Magma Mephit");
+	private final static String localizedStaticName = CMLib.lang().L("Ooze Mephit");
 
 	@Override
 	public String name()
@@ -57,10 +57,18 @@ public class MagmaMephit extends Mephit
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setStat(CharStats.STAT_SAVE_ACID,affectableStats.getStat(CharStats.STAT_SAVE_ACID)+50);
-		affectableStats.setStat(CharStats.STAT_SAVE_COLD,affectableStats.getStat(CharStats.STAT_SAVE_COLD)-50);
+		affectableStats.setStat(CharStats.STAT_SAVE_BLUNT, affectableStats.getStat(CharStats.STAT_SAVE_BLUNT)+50);
+		affectableStats.setStat(CharStats.STAT_SAVE_PIERCE, affectableStats.getStat(CharStats.STAT_SAVE_PIERCE)+50);
+		affectableStats.setStat(CharStats.STAT_SAVE_ACID,affectableStats.getStat(CharStats.STAT_SAVE_ACID)+100);
+
+		affectableStats.setStat(CharStats.STAT_SAVE_FIRE,affectableStats.getStat(CharStats.STAT_SAVE_FIRE)-50);
 		affectableStats.setStat(CharStats.STAT_SAVE_ELECTRIC,affectableStats.getStat(CharStats.STAT_SAVE_ELECTRIC)-50);
-		affectableStats.setStat(CharStats.STAT_SAVE_BLUNT, affectableStats.getStat(CharStats.STAT_SAVE_BLUNT)+95);
+	}
+
+	@Override
+	public int lightestWeight()
+	{
+		return 30;
 	}
 
 	@Override
@@ -73,7 +81,7 @@ public class MagmaMephit extends Mephit
 	private final int[]		racialAbilityLevels			= { 1, };
 	private final int[]		racialAbilityProficiencies	= { 100 };
 	private final boolean[]	racialAbilityQuals			= { false };
-	private final String[]	racialAbilityParms			= { "fire lesser" };
+	private final String[]	racialAbilityParms			= { "ooze lesser" };
 
 	@Override
 	public String[] racialAbilityNames()
@@ -111,45 +119,45 @@ public class MagmaMephit extends Mephit
 		final double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
 		if(pct<.10)
-			return L("^r@x1^r is almost put out!^N",mob.name(viewer));
+			return L("^r@x1^r is unstable and almost disintegrated!^N",mob.name(viewer));
 		else
 		if(pct<.20)
-			return L("^r@x1^r is flickering alot and is almost smoked out.^N",mob.name(viewer));
+			return L("^r@x1^r is nearing disintegration.^N",mob.name(viewer));
 		else
 		if(pct<.30)
-			return L("^r@x1^r is flickering alot and smoking massively.^N",mob.name(viewer));
+			return L("^r@x1^r is noticeably disintegrating.^N",mob.name(viewer));
 		else
 		if(pct<.40)
-			return L("^y@x1^y is flickering alot and smoking a lot.^N",mob.name(viewer));
+			return L("^y@x1^y is very damaged and slightly disintegrated.^N",mob.name(viewer));
 		else
 		if(pct<.50)
-			return L("^y@x1^y is flickering and smoking.^N",mob.name(viewer));
+			return L("^y@x1^y is very damaged.^N",mob.name(viewer));
 		else
 		if(pct<.60)
-			return L("^p@x1^p is flickering and smoking somewhat.^N",mob.name(viewer));
+			return L("^p@x1^p is starting to show major damage.^N",mob.name(viewer));
 		else
 		if(pct<.70)
-			return L("^p@x1^p is showing large flickers.^N",mob.name(viewer));
+			return L("^p@x1^p is definitely damaged.^N",mob.name(viewer));
 		else
 		if(pct<.80)
-			return L("^g@x1^g is showing some flickers.^N",mob.name(viewer));
+			return L("^g@x1^g is disheveled and mildly damaged.^N",mob.name(viewer));
 		else
 		if(pct<.90)
-			return L("^g@x1^g is showing small flickers.^N",mob.name(viewer));
+			return L("^g@x1^g is noticeably disheveled.^N",mob.name(viewer));
 		else
 		if(pct<.99)
-			return L("^g@x1^g is no longer in perfect condition.^N",mob.name(viewer));
+			return L("^g@x1^g is slightly disheveled.^N",mob.name(viewer));
 		else
 			return L("^c@x1^c is in perfect condition.^N",mob.name(viewer));
 	}
-	
+
 	@Override 
 	public DeadBody getCorpseContainer(MOB mob, Room room)
 	{
 		final DeadBody body = super.getCorpseContainer(mob, room);
 		if(body != null)
 		{
-			body.setMaterial(RawMaterial.RESOURCE_STONE);
+			body.setMaterial(RawMaterial.RESOURCE_SLIME);
 		}
 		return body;
 	}
@@ -165,7 +173,7 @@ public class MagmaMephit extends Mephit
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-					(L("a pound of stone"),RawMaterial.RESOURCE_STONE));
+					(L("a pound of ooze"),RawMaterial.RESOURCE_SLIME));
 			}
 		}
 		return resources;

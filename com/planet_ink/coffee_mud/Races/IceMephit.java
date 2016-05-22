@@ -32,20 +32,20 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class MagmaMephit extends Mephit
+public class IceMephit extends Mephit
 {
 	@Override
 	public String ID()
 	{
-		return "MagmaMephit";
+		return "IceMephit";
 	}
 
-	public MagmaMephit()
+	public IceMephit()
 	{
 		super();
 	}
 	
-	private final static String localizedStaticName = CMLib.lang().L("Magma Mephit");
+	private final static String localizedStaticName = CMLib.lang().L("Ice Mephit");
 
 	@Override
 	public String name()
@@ -57,10 +57,10 @@ public class MagmaMephit extends Mephit
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setStat(CharStats.STAT_SAVE_ACID,affectableStats.getStat(CharStats.STAT_SAVE_ACID)+50);
-		affectableStats.setStat(CharStats.STAT_SAVE_COLD,affectableStats.getStat(CharStats.STAT_SAVE_COLD)-50);
-		affectableStats.setStat(CharStats.STAT_SAVE_ELECTRIC,affectableStats.getStat(CharStats.STAT_SAVE_ELECTRIC)-50);
-		affectableStats.setStat(CharStats.STAT_SAVE_BLUNT, affectableStats.getStat(CharStats.STAT_SAVE_BLUNT)+95);
+		affectableStats.setStat(CharStats.STAT_SAVE_SLASH, affectableStats.getStat(CharStats.STAT_SAVE_SLASH)+50);
+		affectableStats.setStat(CharStats.STAT_SAVE_COLD,affectableStats.getStat(CharStats.STAT_SAVE_COLD)+100);
+		
+		affectableStats.setStat(CharStats.STAT_SAVE_FIRE,affectableStats.getStat(CharStats.STAT_SAVE_FIRE)-50);
 	}
 
 	@Override
@@ -73,7 +73,7 @@ public class MagmaMephit extends Mephit
 	private final int[]		racialAbilityLevels			= { 1, };
 	private final int[]		racialAbilityProficiencies	= { 100 };
 	private final boolean[]	racialAbilityQuals			= { false };
-	private final String[]	racialAbilityParms			= { "fire lesser" };
+	private final String[]	racialAbilityParms			= { "cold lesser" };
 
 	@Override
 	public String[] racialAbilityNames()
@@ -111,31 +111,31 @@ public class MagmaMephit extends Mephit
 		final double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
 		if(pct<.10)
-			return L("^r@x1^r is almost put out!^N",mob.name(viewer));
+			return L("^r@x1^r is almost destroyed!^N",mob.name(viewer));
 		else
 		if(pct<.20)
-			return L("^r@x1^r is flickering alot and is almost smoked out.^N",mob.name(viewer));
+			return L("^r@x1^r is cracking alot and is almost melted.^N",mob.name(viewer));
 		else
 		if(pct<.30)
-			return L("^r@x1^r is flickering alot and smoking massively.^N",mob.name(viewer));
+			return L("^r@x1^r is cracking alot and dripping massively.^N",mob.name(viewer));
 		else
 		if(pct<.40)
-			return L("^y@x1^y is flickering alot and smoking a lot.^N",mob.name(viewer));
+			return L("^y@x1^y is cracking alot and dripping a lot.^N",mob.name(viewer));
 		else
 		if(pct<.50)
-			return L("^y@x1^y is flickering and smoking.^N",mob.name(viewer));
+			return L("^y@x1^y is cracking and dripping.^N",mob.name(viewer));
 		else
 		if(pct<.60)
-			return L("^p@x1^p is flickering and smoking somewhat.^N",mob.name(viewer));
+			return L("^p@x1^p is cracking and starting to drip.^N",mob.name(viewer));
 		else
 		if(pct<.70)
-			return L("^p@x1^p is showing large flickers.^N",mob.name(viewer));
+			return L("^p@x1^p is cracking more.^N",mob.name(viewer));
 		else
 		if(pct<.80)
-			return L("^g@x1^g is showing some flickers.^N",mob.name(viewer));
+			return L("^g@x1^g is showing some cracking.^N",mob.name(viewer));
 		else
 		if(pct<.90)
-			return L("^g@x1^g is showing small flickers.^N",mob.name(viewer));
+			return L("^g@x1^g is showing small cracks.^N",mob.name(viewer));
 		else
 		if(pct<.99)
 			return L("^g@x1^g is no longer in perfect condition.^N",mob.name(viewer));
@@ -149,7 +149,7 @@ public class MagmaMephit extends Mephit
 		final DeadBody body = super.getCorpseContainer(mob, room);
 		if(body != null)
 		{
-			body.setMaterial(RawMaterial.RESOURCE_STONE);
+			body.setMaterial(RawMaterial.RESOURCE_FRESHWATER);
 		}
 		return body;
 	}
@@ -165,7 +165,7 @@ public class MagmaMephit extends Mephit
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-					(L("a pound of stone"),RawMaterial.RESOURCE_STONE));
+					(L("a pound of water"),RawMaterial.RESOURCE_FRESHWATER));
 			}
 		}
 		return resources;

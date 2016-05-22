@@ -15,8 +15,10 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.util.*;
+
 /*
-   Copyright 2003-2016 Bo Zimmerman
+   Copyright 2016-2016 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -30,15 +32,15 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Faerie extends SmallElfKin
+public class Planetar extends StdRace
 {
 	@Override
 	public String ID()
 	{
-		return "Faerie";
+		return "Planetar";
 	}
 
-	private final static String localizedStaticName = CMLib.lang().L("Faerie");
+	private final static String localizedStaticName = CMLib.lang().L("Planetar");
 
 	@Override
 	public String name()
@@ -46,13 +48,18 @@ public class Faerie extends SmallElfKin
 		return localizedStaticName;
 	}
 
-	//                                     an ey ea he ne ar ha to le fo no gi mo wa ta wi
-	private static final int[]	parts	= { 0, 2, 2, 1, 1, 2, 2, 1, 2, 2, 1, 0, 1, 1, 0, 2 };
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Celestial");
 
 	@Override
-	public int[] bodyMask()
+	public String racialCategory()
 	{
-		return parts;
+		return localizedStaticRacialCat;
+	}
+
+	@Override
+	public long forbiddenWornBits()
+	{
+		return Wearable.WORN_BACK;
 	}
 
 	private final String[]	racialAbilityNames			= { "WingFlying" };
@@ -91,37 +98,68 @@ public class Faerie extends SmallElfKin
 		return racialAbilityParms;
 	}
 
-	private final String[]	culturalAbilityNames			= { "Fey", "Foraging" };
-	private final int[]		culturalAbilityProficiencies	= { 100, 50 };
+	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
+	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,0 ,2 };
 
 	@Override
-	public String[] culturalAbilityNames()
+	public int[] bodyMask()
 	{
-		return culturalAbilityNames;
+		return parts;
 	}
 
-	@Override
-	public int[] culturalAbilityProficiencies()
-	{
-		return culturalAbilityProficiencies;
-	}
+	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
 
 	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setStat(CharStats.STAT_CONSTITUTION,affectableStats.getStat(CharStats.STAT_CONSTITUTION)+2);
-		affectableStats.setStat(CharStats.STAT_MAX_CONSTITUTION_ADJ,affectableStats.getStat(CharStats.STAT_MAX_CONSTITUTION_ADJ)+2);
-		affectableStats.setStat(CharStats.STAT_DEXTERITY,affectableStats.getStat(CharStats.STAT_DEXTERITY)+2);
-		affectableStats.setStat(CharStats.STAT_MAX_DEXTERITY_ADJ,affectableStats.getStat(CharStats.STAT_MAX_DEXTERITY_ADJ)+2);
-		affectableStats.setStat(CharStats.STAT_SAVE_POISON,affectableStats.getStat(CharStats.STAT_SAVE_POISON)+10);
+		affectableStats.setStat(CharStats.STAT_SAVE_COLD, affectableStats.getStat(CharStats.STAT_SAVE_COLD)+20);
+		affectableStats.setStat(CharStats.STAT_SAVE_ELECTRIC, affectableStats.getStat(CharStats.STAT_SAVE_ELECTRIC)+20);
+		affectableStats.setStat(CharStats.STAT_SAVE_POISON, affectableStats.getStat(CharStats.STAT_SAVE_POISON)+20);
+		affectableStats.setStat(CharStats.STAT_SAVE_GAS, affectableStats.getStat(CharStats.STAT_SAVE_GAS)+20);
+		affectableStats.setStat(CharStats.STAT_SAVE_FIRE, affectableStats.getStat(CharStats.STAT_SAVE_FIRE)+10);
+	}
+
+	@Override
+	public int lightestWeight()
+	{
+		return 500;
+	}
+
+	@Override
+	public int shortestMale()
+	{
+		return 108;
+	}
+
+	@Override
+	public int shortestFemale()
+	{
+		return 108;
 	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		if((affectableStats.disposition() & (PhyStats.IS_SITTING|PhyStats.IS_SLEEPING))==0)
-			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_FLYING);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_DARK|PhyStats.CAN_SEE_EVIL);
+	}
+
+	@Override
+	public List<RawMaterial> myResources()
+	{
+		synchronized(resources)
+		{
+			if(resources.size()==0)
+			{
+				resources.addElement(makeResource
+				(L("some @x1 feathers",name().toLowerCase()),RawMaterial.RESOURCE_FEATHERS));
+				resources.addElement(makeResource
+				(L("some @x1 blood",name().toLowerCase()),RawMaterial.RESOURCE_BLOOD));
+				resources.addElement(makeResource
+				(L("a pile of @x1 bones",name().toLowerCase()),RawMaterial.RESOURCE_BONE));
+			}
+		}
+		return resources;
 	}
 }

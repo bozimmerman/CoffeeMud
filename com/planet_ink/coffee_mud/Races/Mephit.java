@@ -15,8 +15,10 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.util.*;
+
 /*
-   Copyright 2003-2016 Bo Zimmerman
+   Copyright 2016-2016 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -30,15 +32,20 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Faerie extends SmallElfKin
+public class Mephit extends StdRace
 {
 	@Override
 	public String ID()
 	{
-		return "Faerie";
+		return "Mephit";
 	}
 
-	private final static String localizedStaticName = CMLib.lang().L("Faerie");
+	public Mephit()
+	{
+		super();
+	}
+	
+	private final static String localizedStaticName = CMLib.lang().L("Mephit");
 
 	@Override
 	public String name()
@@ -46,17 +53,76 @@ public class Faerie extends SmallElfKin
 		return localizedStaticName;
 	}
 
-	//                                     an ey ea he ne ar ha to le fo no gi mo wa ta wi
-	private static final int[]	parts	= { 0, 2, 2, 1, 1, 2, 2, 1, 2, 2, 1, 0, 1, 1, 0, 2 };
-
 	@Override
-	public int[] bodyMask()
+	public int shortestMale()
 	{
-		return parts;
+		return 48;
 	}
 
-	private final String[]	racialAbilityNames			= { "WingFlying" };
-	private final int[]		racialAbilityLevels			= { 1 };
+	@Override
+	public int shortestFemale()
+	{
+		return 48;
+	}
+
+	@Override
+	public int heightVariance()
+	{
+		return 0;
+	}
+
+	@Override
+	public int lightestWeight()
+	{
+		return 60;
+	}
+
+	@Override
+	public int weightVariance()
+	{
+		return 0;
+	}
+
+	@Override
+	public long forbiddenWornBits()
+	{
+		return 0;
+	}
+
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Mephit");
+
+	@Override
+	public String racialCategory()
+	{
+		return localizedStaticRacialCat;
+	}
+
+	@Override
+	public boolean fertile()
+	{
+		return false;
+	}
+
+	@Override
+	public boolean uncharmable()
+	{
+		return false;
+	}
+
+	@Override
+	protected boolean destroyBodyAfterUse()
+	{
+		return false;
+	}
+
+	@Override
+	public int[] getBreathables()
+	{
+		return breatheAnythingArray;
+	}
+
+	private final String[]	racialAbilityNames			= { "WingFlying"};
+	private final int[]		racialAbilityLevels			= { 1, };
 	private final int[]		racialAbilityProficiencies	= { 100 };
 	private final boolean[]	racialAbilityQuals			= { false };
 	private final String[]	racialAbilityParms			= { "" };
@@ -91,37 +157,59 @@ public class Faerie extends SmallElfKin
 		return racialAbilityParms;
 	}
 
-	private final String[]	culturalAbilityNames			= { "Fey", "Foraging" };
-	private final int[]		culturalAbilityProficiencies	= { 100, 50 };
-
 	@Override
-	public String[] culturalAbilityNames()
+	public int availabilityCode()
 	{
-		return culturalAbilityNames;
+		return Area.THEME_FANTASY | Area.THEME_SKILLONLYMASK;
 	}
 
+	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
+	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,1 ,2 };
+
 	@Override
-	public int[] culturalAbilityProficiencies()
+	public int[] bodyMask()
 	{
-		return culturalAbilityProficiencies;
+		return parts;
+	}
+
+	private final int[]	agingChart	= { 0, 0, 0, 0, 0, YEARS_AGE_LIVES_FOREVER, YEARS_AGE_LIVES_FOREVER, YEARS_AGE_LIVES_FOREVER, YEARS_AGE_LIVES_FOREVER };
+
+	@Override
+	public int[] getAgingChart()
+	{
+		return agingChart;
 	}
 
 	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setStat(CharStats.STAT_CONSTITUTION,affectableStats.getStat(CharStats.STAT_CONSTITUTION)+2);
-		affectableStats.setStat(CharStats.STAT_MAX_CONSTITUTION_ADJ,affectableStats.getStat(CharStats.STAT_MAX_CONSTITUTION_ADJ)+2);
-		affectableStats.setStat(CharStats.STAT_DEXTERITY,affectableStats.getStat(CharStats.STAT_DEXTERITY)+2);
-		affectableStats.setStat(CharStats.STAT_MAX_DEXTERITY_ADJ,affectableStats.getStat(CharStats.STAT_MAX_DEXTERITY_ADJ)+2);
-		affectableStats.setStat(CharStats.STAT_SAVE_POISON,affectableStats.getStat(CharStats.STAT_SAVE_POISON)+10);
 	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectPhyStats(affected,affectableStats);
-		if((affectableStats.disposition() & (PhyStats.IS_SITTING|PhyStats.IS_SLEEPING))==0)
-			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_FLYING);
+		super.affectPhyStats(affected, affectableStats);
+	}
+
+	@Override
+	public String makeMobName(char gender, int age)
+	{
+		return makeMobName('N',Race.AGE_MATURE);
+	}
+
+	protected static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
+
+	@Override
+	public List<RawMaterial> myResources()
+	{
+		synchronized(resources)
+		{
+			if(resources.size()==0)
+			{
+				//resources.addElement(makeResource(L("a pound of stone"),RawMaterial.RESOURCE_STONE));
+			}
+		}
+		return resources;
 	}
 }
