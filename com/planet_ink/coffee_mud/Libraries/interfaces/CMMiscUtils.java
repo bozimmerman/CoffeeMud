@@ -342,4 +342,14 @@ public interface CMMiscUtils extends CMLibrary
 	 * @return a bizarre number 
 	 */
 	public int disenchantItem(Item target);
+	
+	/**
+	 * Absolutely returns the correct race when mixing races of the
+	 * two given IDs.  Applies system rules to the generation.
+	 * 
+	 * @param race1 the mother race
+	 * @param race2 the father race
+	 * @return the mixed race
+	 */
+	public Race getMixedRace(String race1, String race2);
 }

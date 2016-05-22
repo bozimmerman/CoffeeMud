@@ -119,7 +119,8 @@ public class PlanarAbility extends StdAbility
 		FATIGUERATE,
 		REFFECT,
 		AEFFECT,
-		SPECFLAGS
+		SPECFLAGS,
+		MIXRACE
 	}
 	
 	public enum PlanarSpecFlag
@@ -450,6 +451,24 @@ public class PlanarAbility extends StdAbility
 				&&(M.getStartRoom()!=null)
 				&&(M.getStartRoom().getArea()==planeArea))
 				{
+					if(planeVars.containsKey(PlanarVar.MIXRACE.toString()))
+					{
+						String mixRace = planeVars.get(PlanarVar.MIXRACE.toString());
+						Race firstR=CMClass.getRace(mixRace);
+						if(firstR==null)
+							Log.errOut("PlanarAbility","Unknown mixrace: "+mixRace);
+						else
+						{
+							final Race secondR=M.charStats().getMyRace();
+							Race R=CMLib.utensils().getMixedRace(firstR.ID(),secondR.ID());
+							if(R!=null)
+							{
+								M.baseCharStats().setMyRace(R);
+								M.charStats().setMyRace(R);
+							}
+						}
+					}
+					
 					if(planeVars.containsKey(PlanarVar.ATMOSPHERE.toString()))
 						M.baseCharStats().setBreathables(new int[]{room.getAtmosphere()});
 					int newLevelAdj = (planarLevel - M.phyStats().level());
