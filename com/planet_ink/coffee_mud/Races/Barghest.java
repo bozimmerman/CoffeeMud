@@ -92,31 +92,31 @@ public class Barghest extends Demon
 	@Override
 	public String[] racialAbilityNames()
 	{
-		return CMParms.combine(super.racialAbilityNames(), racialAbilityNames);
+		return racialAbilityNames;
 	}
 
 	@Override
 	public int[] racialAbilityLevels()
 	{
-		return CMParms.combine(super.racialAbilityLevels(), racialAbilityLevels);
+		return racialAbilityLevels;
 	}
 
 	@Override
 	public int[] racialAbilityProficiencies()
 	{
-		return CMParms.combine(super.racialAbilityProficiencies(),  racialAbilityProficiencies);
+		return racialAbilityProficiencies;
 	}
 
 	@Override
 	public boolean[] racialAbilityQuals()
 	{
-		return CMParms.combine(super.racialAbilityQuals(),  racialAbilityQuals);
+		return racialAbilityQuals;
 	}
 
 	@Override
 	public String[] racialAbilityParms()
 	{
-		return CMParms.combine(super.racialAbilityParms(),  racialAbilityParms);
+		return racialAbilityParms;
 	}
 
 

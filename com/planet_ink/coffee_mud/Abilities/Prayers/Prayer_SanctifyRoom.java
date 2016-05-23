@@ -35,18 +35,60 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Prayer_SanctifyRoom extends Prayer
 {
-	@Override public String ID() { return "Prayer_SanctifyRoom"; }
-	private final static String localizedName = CMLib.lang().L("Sanctify Room");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Sanctify Room)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_WARDING;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	@Override protected int canAffectCode(){return CAN_ROOMS;}
-	@Override protected int canTargetCode(){return CAN_ROOMS;}
-	@Override public long flags(){return Ability.FLAG_NEUTRAL;}
+	@Override
+	public String ID()
+	{
+		return "Prayer_SanctifyRoom";
+	}
 
-	public static final SHashSet MSG_CODESH=new SHashSet(new Integer[]{
+	private final static String localizedName = CMLib.lang().L("Sanctify Room");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Sanctify Room)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER | Ability.DOMAIN_WARDING;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_ROOMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_ROOMS;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_NEUTRAL;
+	}
+
+	public static final SHashSet MSG_CODESH=new SHashSet(new Integer[]
+	{
 		Integer.valueOf(CMMsg.TYP_GET),
 		Integer.valueOf(CMMsg.TYP_PULL),
 		Integer.valueOf(CMMsg.TYP_PUSH),
