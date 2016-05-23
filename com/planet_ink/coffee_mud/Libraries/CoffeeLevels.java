@@ -253,8 +253,8 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 			mob.setWimpHitPoint((int)Math.round(CMath.ceiling(CMath.mul(mob.baseState().getHitPoints()+newHitPointGain,wimpPct))));
 		}
 		mob.baseState().setHitPoints(mob.baseState().getHitPoints()+newHitPointGain);
-		if(mob.baseState().getHitPoints()<20)
-			mob.baseState().setHitPoints(20);
+		if(mob.baseState().getHitPoints()<CMProps.getIntVar(CMProps.Int.STARTHP))
+			mob.baseState().setHitPoints(CMProps.getIntVar(CMProps.Int.STARTHP));
 		mob.curState().setHitPoints(mob.curState().getHitPoints()+newHitPointGain);
 		theNews.append("^NYou have gained ^H"+newHitPointGain+"^? hit " +
 			(newHitPointGain!=1?"points":"point") + ", ^H");
