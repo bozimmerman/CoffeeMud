@@ -37,15 +37,37 @@ import java.util.*;
 
 public class Lacquerring extends CommonSkill
 {
-	@Override public String ID() { return "Lacquerring"; }
-	private final static String localizedName = CMLib.lang().L("Lacquering");
-	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =I(new String[] {"LACQUERING","LACQUER"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ARTISTIC; }
+	@Override
+	public String ID()
+	{
+		return "Lacquerring";
+	}
 
-	protected Item found=null;
-	protected String writing="";
+	private final static String	localizedName	= CMLib.lang().L("Lacquering");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "LACQUERING", "LACQUER" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_COMMON_SKILL | Ability.DOMAIN_ARTISTIC;
+	}
+
+	protected Item		found	= null;
+	protected String	writing	= "";
+
 	public Lacquerring()
 	{
 		super();
@@ -60,8 +82,7 @@ public class Lacquerring extends CommonSkill
 		{
 			final int start=name.substring(0,end).indexOf('^');
 			if((start>=0)&&(start<(end-3)))
-				name=name.substring(0,start)
-					 +name.substring(end+3);
+				name=name.substring(0,start)+name.substring(end+3);
 		}
 		colorWord="^"+colorWord.charAt(0)+colorWord+"^?";
 		final Vector<String> V=CMParms.parse(name);

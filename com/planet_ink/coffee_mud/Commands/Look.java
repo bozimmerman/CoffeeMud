@@ -75,10 +75,10 @@ public class Look extends StdCommand
 				commands.remove(1);
 			final String ID=CMParms.combine(commands,1);
 
-			if((ID.toUpperCase().startsWith("EXIT"))&&(commands.size()==2)&&(CMProps.getIntVar(CMProps.Int.EXVIEW)!=1))
+			if((ID.toUpperCase().startsWith("EXIT"))&&(commands.size()==2)&&(CMProps.getIntVar(CMProps.Int.EXVIEW)!=CMProps.Int.EXVIEW_PARAGRAPH))
 			{
 				final CMMsg exitMsg=CMClass.getMsg(mob,R,null,CMMsg.MSG_LOOK_EXITS,null);
-				if((CMProps.getIntVar(CMProps.Int.EXVIEW)>=2)!=mob.isAttributeSet(MOB.Attrib.BRIEF))
+				if((CMProps.getIntVar(CMProps.Int.EXVIEW)>=CMProps.Int.EXVIEW_MIXED)!=mob.isAttributeSet(MOB.Attrib.BRIEF))
 					exitMsg.setValue(CMMsg.MASK_OPTIMIZE);
 				if(R.okMessage(mob, exitMsg))
 					R.send(mob, exitMsg);
@@ -162,10 +162,12 @@ public class Look extends StdCommand
 								CMLib.directions().getShipDirectionName(dirCode):CMLib.directions().getDirectionName(dirCode);
 				}
 				final CMMsg msg=CMClass.getMsg(mob,thisThang,lookingTool,CMMsg.MSG_LOOK,textMsg+name+".");
-				if((thisThang instanceof Room)&&(mob.isAttributeSet(MOB.Attrib.AUTOEXITS))&&(CMProps.getIntVar(CMProps.Int.EXVIEW)!=1))
+				if((thisThang instanceof Room)
+				&&(mob.isAttributeSet(MOB.Attrib.AUTOEXITS))
+				&&(CMProps.getIntVar(CMProps.Int.EXVIEW)!=CMProps.Int.EXVIEW_PARAGRAPH))
 				{
 					final CMMsg exitMsg=CMClass.getMsg(mob,thisThang,lookingTool,CMMsg.MSG_LOOK_EXITS,null);
-					if((CMProps.getIntVar(CMProps.Int.EXVIEW)>=2)!=mob.isAttributeSet(MOB.Attrib.BRIEF))
+					if((CMProps.getIntVar(CMProps.Int.EXVIEW)>=CMProps.Int.EXVIEW_MIXED)!=mob.isAttributeSet(MOB.Attrib.BRIEF))
 						exitMsg.setValue(CMMsg.MASK_OPTIMIZE);
 					msg.addTrailerMsg(exitMsg);
 				}
@@ -187,10 +189,12 @@ public class Look extends StdCommand
 			}
 
 			final CMMsg msg=CMClass.getMsg(mob,R,null,CMMsg.MSG_LOOK,(quiet?null:textMsg+"around."),CMMsg.MSG_LOOK,(quiet?null:textMsg+"at you."),CMMsg.MSG_LOOK,(quiet?null:textMsg+"around."));
-			if((mob.isAttributeSet(MOB.Attrib.AUTOEXITS))&&(CMProps.getIntVar(CMProps.Int.EXVIEW)!=1)&&(CMLib.flags().canBeSeenBy(R,mob)))
+			if((mob.isAttributeSet(MOB.Attrib.AUTOEXITS))
+			&&(CMProps.getIntVar(CMProps.Int.EXVIEW)!=CMProps.Int.EXVIEW_PARAGRAPH)
+			&&(CMLib.flags().canBeSeenBy(R,mob)))
 			{
 				final CMMsg exitMsg=CMClass.getMsg(mob,R,null,CMMsg.MSG_LOOK_EXITS,null);
-				if((CMProps.getIntVar(CMProps.Int.EXVIEW)>=2)!=mob.isAttributeSet(MOB.Attrib.BRIEF))
+				if((CMProps.getIntVar(CMProps.Int.EXVIEW)>=CMProps.Int.EXVIEW_MIXED)!=mob.isAttributeSet(MOB.Attrib.BRIEF))
 					exitMsg.setValue(CMMsg.MASK_OPTIMIZE);
 				msg.addTrailerMsg(exitMsg);
 			}

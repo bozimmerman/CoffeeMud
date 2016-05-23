@@ -73,7 +73,7 @@ public class Examine extends StdCommand
 			if((ID.toUpperCase().startsWith("EXIT")&&(commands.size()==2)))
 			{
 				final CMMsg exitMsg=CMClass.getMsg(mob,thisThang,null,CMMsg.MSG_LOOK_EXITS,null);
-				if((CMProps.getIntVar(CMProps.Int.EXVIEW)>=2)!=mob.isAttributeSet(MOB.Attrib.BRIEF))
+				if((CMProps.getIntVar(CMProps.Int.EXVIEW)>=CMProps.Int.EXVIEW_MIXED)!=mob.isAttributeSet(MOB.Attrib.BRIEF))
 					exitMsg.setValue(CMMsg.MASK_OPTIMIZE);
 				if(R.okMessage(mob, exitMsg))
 					R.send(mob, exitMsg);

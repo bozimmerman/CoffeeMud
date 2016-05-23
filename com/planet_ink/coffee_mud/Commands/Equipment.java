@@ -65,8 +65,8 @@ public class Equipment extends StdCommand
 		String wornName=null;
 		Item thisItem=null;
 		String tat=null;
-		final boolean paragraphView=(CMProps.getIntVar(CMProps.Int.EQVIEW)>1)
-							||((seer!=mob)&&(CMProps.getIntVar(CMProps.Int.EQVIEW)>0))
+		final boolean paragraphView=(CMProps.getIntVar(CMProps.Int.EQVIEW)>CMProps.Int.EQVIEW_MIXED)
+							||((seer!=mob)&&(CMProps.getIntVar(CMProps.Int.EQVIEW)>CMProps.Int.EQVIEW_DEFAULT))
 							||seer.isAttributeSet(MOB.Attrib.COMPRESS);
 		final HashSet<Item> alreadyDone=new HashSet<Item>();
 		final Wearable.CODES codes = Wearable.CODES.instance();
@@ -311,7 +311,7 @@ public class Equipment extends StdCommand
 		final Session session=mob.session();
 		if(session!=null)
 		{
-			final boolean paragraphView=(CMProps.getIntVar(CMProps.Int.EQVIEW)==2);
+			final boolean paragraphView=(CMProps.getIntVar(CMProps.Int.EQVIEW)==CMProps.Int.EQVIEW_PARAGRAPH);
 			if(paragraphView)
 			{
 				if(longView)

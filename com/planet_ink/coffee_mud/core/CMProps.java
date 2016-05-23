@@ -280,7 +280,17 @@ public class CMProps extends Properties
 		DUELTICKDOWN,
 		BASEMINSTAT,
 		DEFSOCTIME,
-		DEFCOMSOCTIME,
+		DEFCOMSOCTIME
+		;
+		
+		public static final int	EXVIEW_DEFAULT		= 0;
+		public static final int	EXVIEW_PARAGRAPH	= 1;
+		public static final int	EXVIEW_MIXED		= 2;
+		public static final int	EXVIEW_BRIEF		= 3;
+		
+		public static final int	EQVIEW_DEFAULT		= 0;
+		public static final int	EQVIEW_MIXED		= 1;
+		public static final int	EQVIEW_PARAGRAPH	= 2;
 	}
 
 	/**
@@ -2098,23 +2108,23 @@ public class CMProps extends Properties
 			setIntVar(Int.COMBATSYSTEM,CombatLibrary.CombatSystem.DEFAULT.ordinal());
 		s=getStr("EQVIEW");
 		if("paragraph".equalsIgnoreCase(s))
-			setIntVar(Int.EQVIEW,2);
+			setIntVar(Int.EQVIEW,CMProps.Int.EQVIEW_PARAGRAPH);
 		else
 		if("mixed".equalsIgnoreCase(s))
-			setIntVar(Int.EQVIEW,1);
+			setIntVar(Int.EQVIEW,CMProps.Int.EQVIEW_MIXED);
 		else
-			setIntVar(Int.EQVIEW,0);
+			setIntVar(Int.EQVIEW,CMProps.Int.EQVIEW_DEFAULT);
 		s=getStr("EXVIEW");
 		if("brief".equalsIgnoreCase(s))
-			setIntVar(Int.EXVIEW,3);
+			setIntVar(Int.EXVIEW,CMProps.Int.EXVIEW_BRIEF);
 		else
 		if("paragraph".equalsIgnoreCase(s))
-			setIntVar(Int.EXVIEW,1);
+			setIntVar(Int.EXVIEW,CMProps.Int.EXVIEW_PARAGRAPH);
 		else
 		if("mixed".equalsIgnoreCase(s))
-			setIntVar(Int.EXVIEW,2);
+			setIntVar(Int.EXVIEW,CMProps.Int.EXVIEW_MIXED);
 		else
-			setIntVar(Int.EXVIEW,0);
+			setIntVar(Int.EXVIEW,CMProps.Int.EXVIEW_DEFAULT);
 
 		s=getStr("EXPIRATIONS");
 		List<String> V=CMParms.parseCommas(s,false);

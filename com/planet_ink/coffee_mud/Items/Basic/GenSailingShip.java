@@ -2069,9 +2069,11 @@ public class GenSailingShip extends StdBoardable
 							continue;
 						final CMMsg lookMsg=CMClass.getMsg(mob,targetR,null,CMMsg.MSG_LOOK,null);
 						final CMMsg lookExitMsg=CMClass.getMsg(mob,targetR,null,CMMsg.MSG_LOOK_EXITS,null);
-						if((mob.isAttributeSet(MOB.Attrib.AUTOEXITS))&&(CMProps.getIntVar(CMProps.Int.EXVIEW)!=1)&&(CMLib.flags().canBeSeenBy(targetR,mob)))
+						if((mob.isAttributeSet(MOB.Attrib.AUTOEXITS))
+						&&(CMProps.getIntVar(CMProps.Int.EXVIEW)!=CMProps.Int.EXVIEW_PARAGRAPH)
+						&&(CMLib.flags().canBeSeenBy(targetR,mob)))
 						{
-							if((CMProps.getIntVar(CMProps.Int.EXVIEW)>=2)!=mob.isAttributeSet(MOB.Attrib.BRIEF))
+							if((CMProps.getIntVar(CMProps.Int.EXVIEW)>=CMProps.Int.EXVIEW_MIXED)!=mob.isAttributeSet(MOB.Attrib.BRIEF))
 								lookExitMsg.setValue(CMMsg.MASK_OPTIMIZE);
 							lookMsg.addTrailerMsg(lookExitMsg);
 						}

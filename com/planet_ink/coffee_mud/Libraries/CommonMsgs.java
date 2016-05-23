@@ -1266,7 +1266,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 						}
 					}
 				}
-				if((CMProps.getIntVar(CMProps.Int.EXVIEW)==1)||(CMProps.getIntVar(CMProps.Int.EXVIEW)==2))
+				if((CMProps.getIntVar(CMProps.Int.EXVIEW)==CMProps.Int.EXVIEW_PARAGRAPH)
+				||(CMProps.getIntVar(CMProps.Int.EXVIEW)==CMProps.Int.EXVIEW_MIXED))
 					roomDesc += getRoomExitsParagraph(mob,room);
 				finalLookStr.append("^L^<RDesc^>" + roomDesc+"^</RDesc^>");
 
@@ -1718,8 +1719,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			final StringBuilder eq=CMLib.commands().getEquipment(viewermob,viewedmob);
 			if(eq.length() > 0)
 			{
-				if((CMProps.getIntVar(CMProps.Int.EQVIEW)>1)
-				||((viewermob!=viewedmob)&&(CMProps.getIntVar(CMProps.Int.EQVIEW)>0)))
+				if((CMProps.getIntVar(CMProps.Int.EQVIEW)>CMProps.Int.EQVIEW_MIXED)
+				||((viewermob!=viewedmob)&&(CMProps.getIntVar(CMProps.Int.EQVIEW)>CMProps.Int.EQVIEW_DEFAULT)))
 					myDescription.append(viewedmob.charStats().HeShe()+" is wearing "+eq.toString());
 				else
 					myDescription.append(viewedmob.charStats().HeShe()+" is wearing:\n\r"+eq.toString());
