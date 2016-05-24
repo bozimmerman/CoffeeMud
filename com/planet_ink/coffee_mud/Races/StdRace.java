@@ -1480,81 +1480,83 @@ public class StdRace implements Race
 		race2.racialAbilities(null);
 		final List<AbilityMapping> dvata1=CMLib.ableMapper().getUpToLevelListings(race1.ID(),Integer.MAX_VALUE,true,false);
 		final List<AbilityMapping> dvata2=CMLib.ableMapper().getUpToLevelListings(race2.ID(),Integer.MAX_VALUE,true,false);
-		// kill half of them.
-		for(int i=1;i<dvata1.size();i++)
-			dvata1.remove(i);
-		for(int i=1;i<dvata2.size();i++)
-			dvata2.remove(i);
+		final PairList<String,AbilityMapping> dvataf = new PairVector<String,AbilityMapping>();
+		for(int i=0;i<dvata1.size() || i<dvata2.size();i++)
+		{
+			if(i<dvata1.size())
+				dvataf.add(new Pair<String,AbilityMapping>(dvata1.get(i).abilityID(), dvata1.get(i)));
+			if(i<dvata2.size())
+				dvataf.add(new Pair<String,AbilityMapping>(dvata2.get(i).abilityID(), dvata2.get(i)));
+		}
+		for(int i=4;i<dvataf.size();i++)
+			dvataf.remove(i);
 
-		if((dvata1.size()+dvata2.size())>0)
-			GR.setStat("NUMRABLE",""+(dvata1.size()+dvata2.size()));
+		if(dvataf.size()>0)
+			GR.setStat("NUMRABLE",""+dvataf.size());
 		else
 			GR.setStat("NUMRABLE","");
-		for(int i=0;i<dvata1.size();i++)
+		for(int i=0;i<dvataf.size();i++)
 		{
-			GR.setStat("GETRABLE"+i,dvata1.get(i).abilityID());
-			GR.setStat("GETRABLELVL"+i,""+CMLib.ableMapper().getQualifyingLevel(race1.ID(),false,dvata1.get(i).abilityID()));
-			GR.setStat("GETRABLEQUAL"+i,""+(!CMLib.ableMapper().getDefaultGain(race1.ID(),false,dvata1.get(i).abilityID())));
-			GR.setStat("GETRABLEPROF"+i,""+CMLib.ableMapper().getDefaultProficiency(race1.ID(),false,dvata1.get(i).abilityID()));
-			GR.setStat("GETRABLEPARM"+i, ""+CMLib.ableMapper().getDefaultParm(race1.ID(),false,dvata1.get(i).abilityID()));
-		}
-		for(int i=0;i<dvata2.size();i++)
-		{
-			GR.setStat("GETRABLE"+(i+dvata1.size()),dvata2.get(i).abilityID());
-			GR.setStat("GETRABLELVL"+(i+dvata1.size()),""+CMLib.ableMapper().getQualifyingLevel(race2.ID(),false,dvata2.get(i).abilityID()));
-			GR.setStat("GETRABLEQUAL"+(i+dvata1.size()),""+(!CMLib.ableMapper().getDefaultGain(race2.ID(),false,dvata2.get(i).abilityID())));
-			GR.setStat("GETRABLEPROF"+(i+dvata1.size()),""+CMLib.ableMapper().getDefaultProficiency(race2.ID(),false,dvata2.get(i).abilityID()));
-			GR.setStat("GETRABLEPARM"+(i+dvata1.size()),""+CMLib.ableMapper().getDefaultParm(race2.ID(),false,dvata2.get(i).abilityID()));
+			GR.setStat("GETRABLE"+i,dvataf.get(i).second.abilityID());
+			GR.setStat("GETRABLELVL"+i,""+dvataf.get(i).second.qualLevel());
+			GR.setStat("GETRABLEQUAL"+i,""+(!dvataf.get(i).second.autoGain()));
+			GR.setStat("GETRABLEPROF"+i,""+dvataf.get(i).second.defaultProficiency());
+			GR.setStat("GETRABLEPARM"+i, ""+dvataf.get(i).second.defaultParm());
 		}
 
-		final List<Ability> data=new Vector<Ability>();
-		boolean skip=false;
-		for(final Ability A : race1.racialEffects(null))
+		final TriadVector<String,Integer,Integer> dataa=new TriadVector<String,Integer,Integer>();
+		int numReff1 = CMath.s_int(race1.getStat("NUMREFF"));
+		int numReff2 = CMath.s_int(race2.getStat("NUMREFF"));
+		for(int a=0; (a<numReff1) || (a<numReff2); a++)
 		{
-			if(!skip)
-				data.add(A);
-			skip=!skip;
+			if(a<numReff1)
+			{
+				dataa.add(
+					race1.getStat("GETREFF"+a),
+					Integer.valueOf(CMath.s_int(race1.getStat("GETREFFLVL"+a))),
+					Integer.valueOf(CMath.s_int(race1.getStat("GETREFFPARM"+a)))
+				);
+			}
+			if(a<numReff2)
+			{
+				dataa.add(
+					race2.getStat("GETREFF"+a),
+					Integer.valueOf(CMath.s_int(race2.getStat("GETREFFLVL"+a))),
+					Integer.valueOf(CMath.s_int(race2.getStat("GETREFFPARM"+a)))
+				);
+			}
 		}
-		for(final Ability A : race2.racialEffects(null))
-		{
-			if(!skip)
-				data.add(A);
-			skip=!skip;
-		}
+		for(int i=4;i<dataa.size();i++)
+			dataa.remove(i);
 
-		if(data.size()>0)
-			GR.setStat("NUMREFF",""+data.size());
+		if(dataa.size()>0)
+			GR.setStat("NUMREFF",""+dataa.size());
 		else
 			GR.setStat("NUMREFF","");
-		for(int i=0;i<data.size();i++)
+		for(int i=0;i<dataa.size();i++)
 		{
-			final Ability A=data.get(i);
-			GR.setStat("GETREFF"+i,A.ID());
-			GR.setStat("GETREFFLVL"+i,""+CMLib.ableMapper().getQualifyingLevel(race1.ID(),false,A.ID()));
-			GR.setStat("GETREFFPARM"+i,""+CMLib.ableMapper().getDefaultProficiency(race1.ID(),false,A.ID()));
+			GR.setStat("GETREFF"+i,dataa.getFirst(i));
+			GR.setStat("GETREFFLVL"+i,dataa.getSecond(i).toString());
+			GR.setStat("GETREFFPARM"+i,dataa.getThird(i).toString());
 		}
 		
 		final List<String> imms=new XVector<String>();
-		skip=false;
-		for(final String A : race1.abilityImmunities())
+		for(int i=0;(i<race1.abilityImmunities().length) || (i<race2.abilityImmunities().length);i++)
 		{
-			if(!skip)
-				imms.add(A);
-			skip=!skip;
+			if(i<race1.abilityImmunities().length)
+				imms.add(race1.abilityImmunities()[i]);
+			if(i<race2.abilityImmunities().length)
+				imms.add(race2.abilityImmunities()[i]);
 		}
-		for(final String A : race2.abilityImmunities())
-		{
-			if(!skip)
-				imms.add(A);
-			skip=!skip;
-		}
-		GR.setStat("NUMIABLE",""+data.size());
+		for(int i=4;i<imms.size();i++)
+			imms.remove(i);
+		
+		GR.setStat("NUMIABLE",""+imms.size());
 		for(int i=0;i<imms.size();i++)
 		{
 			final String AID=imms.get(i);
 			GR.setStat("GETIABLE"+i,AID);
 		}
-		
 		return GR;
 	}
 
