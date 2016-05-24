@@ -635,6 +635,15 @@ public class StdAbility implements Ability
 				||(CMLib.ableMapper().qualifiesByLevel(mob,this)));
 	}
 
+	protected int getPersonalLevelAdjustments(final MOB caster)
+	{
+		final CharStats charStats = caster.charStats();
+		return  charStats.getAbilityAdjustment("level+"+ID())
+		+ charStats.getAbilityAdjustment("level+"+Ability.ACODE_DESCS[classificationCode()&Ability.ALL_ACODES])
+		+ charStats.getAbilityAdjustment("level+"+Ability.DOMAIN_DESCS[(classificationCode()&Ability.ALL_DOMAINS)>> 5])
+		+ charStats.getAbilityAdjustment("level+*");
+	}
+	
 	@Override
 	public int adjustedLevel(MOB caster, int asLevel)
 	{
@@ -654,6 +663,7 @@ public class StdAbility implements Ability
 			adjLevel=asLevel;
 		if(adjLevel<lowestQualifyingLevel)
 			adjLevel=lowestQualifyingLevel;
+		adjLevel += getPersonalLevelAdjustments(caster);
 		if(adjLevel<1)
 			return 1;
 		int level=adjLevel+getXLEVELLevel(caster);
@@ -687,6 +697,7 @@ public class StdAbility implements Ability
 			adjLevel=(caster.phyStats().level()-lowestQualifyingLevel)+1;
 		if(asLevel>0)
 			adjLevel=asLevel;
+		adjLevel += getPersonalLevelAdjustments(caster);
 		if(adjLevel<1)
 			return 1;
 		return adjLevel+getXLEVELLevel(caster);
@@ -1009,11 +1020,19 @@ public class StdAbility implements Ability
 			return true;
 		}
 
-		if((mob!=null)&&CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.SUPERSKILL))
-		   return true;
-
 		isAnAutoEffect=false;
 		int pctChance=proficiency();
+		if(mob != null)
+		{
+			if(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.SUPERSKILL))
+				return true;
+			final CharStats charStats = mob.charStats();
+			pctChance += charStats.getAbilityAdjustment("prof+"+ID());
+			pctChance += charStats.getAbilityAdjustment("prof+"+Ability.ACODE_DESCS[classificationCode()&Ability.ALL_ACODES]);
+			pctChance += charStats.getAbilityAdjustment("prof+"+Ability.DOMAIN_DESCS[(classificationCode()&Ability.ALL_DOMAINS)>> 5]);
+			pctChance += charStats.getAbilityAdjustment("prof+*");
+		}
+		
 		if(pctChance>95)
 			pctChance=95;
 		if(pctChance<5)

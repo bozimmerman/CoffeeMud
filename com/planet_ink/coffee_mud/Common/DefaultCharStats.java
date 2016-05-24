@@ -84,12 +84,15 @@ public class DefaultCharStats implements CharStats
 	protected long			unwearableBitmap	= 0;
 	protected int[]			breathables			= null;
 
+	protected Map<String, Integer>	profAdj		= null;
+	
 	public DefaultCharStats()
 	{
 		reset();
 		setMyRace(CMClass.getRace("StdRace"));
 		setCurrentClass(CMClass.getCharClass("StdCharClass"));
 	}
+	
 
 	@Override
 	public void setAllBaseValues(int def)
@@ -150,6 +153,10 @@ public class DefaultCharStats implements CharStats
 			((DefaultCharStats)intoStats).genderName=genderName;
 			((DefaultCharStats)intoStats).displayClassName=displayClassName;
 			((DefaultCharStats)intoStats).displayClassLevel=displayClassLevel;
+			if(profAdj==null)
+				((DefaultCharStats)intoStats).profAdj=null;
+			else
+				((DefaultCharStats)intoStats).profAdj=new TreeMap<String,Integer>(profAdj);
 			if(bodyAlterations==null)
 				((DefaultCharStats)intoStats).bodyAlterations=null;
 			else
@@ -763,10 +770,31 @@ public class DefaultCharStats implements CharStats
 			newOne.myLevels=myLevels.clone();
 		if(bodyAlterations!=null)
 			newOne.bodyAlterations=bodyAlterations.clone();
+		if(profAdj!=null)
+			newOne.profAdj = new TreeMap<String,Integer>(profAdj);
 		newOne.stats=stats.clone();
 		return newOne;
 	}
 
+	@Override
+	public int getAbilityAdjustment(String ableID)
+	{
+		return (profAdj==null) ? 0 :
+				profAdj.get(ableID).intValue();
+	}
+
+	@Override
+	public void adjustAbilityAdjustment(String ableID, int newValue)
+	{
+		Map<String,Integer> prof=this.profAdj;
+		if(prof == null)
+		{
+			prof = new TreeMap<String,Integer>();
+			this.profAdj=prof;
+		}
+		prof.put(ableID, Integer.valueOf(newValue));
+	}
+	
 	@Override
 	public void setGenderName(String gname)
 	{

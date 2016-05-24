@@ -146,24 +146,19 @@ public class Pirate extends Thief
 				}
 			}
 		}
-		if((msg.tool() instanceof Ability)
-		&&(((Ability)msg.tool()).ID().equals("Skill_HandCuff"))
+		if((msg.targetMinor()==CMMsg.MSG_LEGALWARRANT)
 		&&(msg.target() instanceof MOB)
 		&&(((MOB)msg.target()).charStats().getCurrentClass()==this)
-		&&(CMath.bset(msg.sourceMajor(), CMMsg.MASK_ALWAYS))
-		&&(msg.source().location()!=null))
+		&&(((MOB)msg.target()).location()!=null))
 		{
-			LegalBehavior behav = CMLib.law().getLegalBehavior(msg.source().location());
-			Area area = CMLib.law().getLegalObject(msg.source().location());
-			if((behav != null)&&(area!=null)&&(behav.isAnyOfficer(area, msg.source())))
+			LegalBehavior behav = CMLib.law().getLegalBehavior(((MOB)msg.target()).location());
+			Area area = CMLib.law().getLegalObject(((MOB)msg.target()).location());
+			List<LegalWarrant> warrants = behav.getWarrantsOf(area, (MOB)msg.target());
+			for(LegalWarrant W : warrants)
 			{
-				List<LegalWarrant> warrants = behav.getWarrantsOf(area, (MOB)msg.target());
-				for(LegalWarrant W : warrants)
-				{
-					if((W.arrestingOfficer() == msg.source())
-					&&(W.state()>0))
-						W.setPunishment(W.punishment()+1);
-				}
+				if((W.victim()==msg.tool())
+				&&(W.crime() == msg.targetMessage()))
+					W.setPunishment(W.punishment()+1);
 			}
 		}
 	}

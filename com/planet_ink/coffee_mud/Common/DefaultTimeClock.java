@@ -717,6 +717,24 @@ public class DefaultTimeClock implements TimeClock
 	@Override
 	public int compareTo(CMObject o)
 	{
-		return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));
+		if(o instanceof TimeClock)
+		{
+			final TimeClock c2=(TimeClock)o;
+			long myHrs = (getHourOfDay() 
+						+ (getDayOfMonth() * getHoursInDay())
+						+ (getMonth() * getDaysInMonth() * getHoursInDay())
+						+ (getYear() * getMonthsInYear() * getDaysInMonth() * getHoursInDay()));
+			long hisHrs = (c2.getHourOfDay() 
+					+ (c2.getDayOfMonth() * c2.getHoursInDay())
+					+ (c2.getMonth() * c2.getDaysInMonth() * c2.getHoursInDay())
+					+ (c2.getYear() * c2.getMonthsInYear() * c2.getDaysInMonth() * c2.getHoursInDay()));
+			if (myHrs == hisHrs)
+				return 0;
+			if (myHrs > hisHrs)
+				return 1;
+			return -1;
+		}
+		else
+			return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));
 	}
 }

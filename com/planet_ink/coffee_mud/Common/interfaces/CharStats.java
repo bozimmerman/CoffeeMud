@@ -600,6 +600,32 @@ public interface CharStats extends CMCommon, Modifiable
 	 */
 	public String ageName();
 	
+	/**
+	 * Returns the adjustments to mob abilities, whether proficiency or
+	 * something else numeric.  
+	 * Ability adjustments begin with "prof+" to adjust proficiency.
+	 * They begin with "level+" to adjust the adjusted level.
+	 * The are followed by the exact ID() of the ability, or * for All, or
+	 * the skill classification name in uppercase, or the domain name in
+	 * uppercase.
+	 * @param ableID the ability ID, with an appropriate prefix
+	 * @return the numeric value associated with the adjustment.
+	 */
+	public int getAbilityAdjustment(String ableID);
+	
+	/**
+	 * Sets the adjustments to mob abilities, whether proficiency or
+	 * something else numeric.  
+	 * Ability adjustments begin with "prof+" to adjust proficiency.
+	 * They begin with "level+" to adjust the adjusted level.
+	 * The are followed by the exact ID() of the ability, or * for All, or
+	 * the skill classification name in uppercase, or the domain name in
+	 * uppercase.
+	 * @param ableID the ability ID, with an appropriate prefix
+	 * @param newValue the numeric value associated with the adjustment.
+	 */
+	public void adjustAbilityAdjustment(String ableID, int newValue);
+	
 	/** string array of abbreviations of each stat code, ordered by numeric value */
 	public static final String[] DEFAULT_STAT_ABBR=
 	{
