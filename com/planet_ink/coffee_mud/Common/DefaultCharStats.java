@@ -89,8 +89,6 @@ public class DefaultCharStats implements CharStats
 	public DefaultCharStats()
 	{
 		reset();
-		setMyRace(CMClass.getRace("StdRace"));
-		setCurrentClass(CMClass.getCharClass("StdCharClass"));
 	}
 	
 
@@ -117,6 +115,19 @@ public class DefaultCharStats implements CharStats
 	{
 		setAllBaseValues(VALUE_ALLSTATS_DEFAULT);
 		stats[STAT_GENDER]='M';
+		//myClasses;  // never null
+		myLevels = null;
+		//myRace; // never null
+		raceName = null;
+		genderName = null;
+		displayClassName = null;
+		displayClassLevel = null;
+		bodyAlterations = null;
+		unwearableBitmap = 0;
+		breathables = null;
+		profAdj = null;
+		setMyRace(CMClass.getRace("StdRace"));
+		setCurrentClass(CMClass.getCharClass("StdCharClass"));
 	}
 
 	@Override

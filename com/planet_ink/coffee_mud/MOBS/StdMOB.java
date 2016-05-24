@@ -1102,8 +1102,10 @@ public class StdMOB implements MOB
 		kickFlag = false;
 		clans.clear();
 		clanAffects=null;
-		charStats = baseCharStats;
-		phyStats = basePhyStats;
+		baseCharStats.reset();
+		charStats.reset();
+		basePhyStats.reset();
+		phyStats.reset(); 
 		playerStats = null;
 		location = null;
 		lastLocation = null;
