@@ -35,15 +35,47 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Spell_Brainwash extends Spell
 {
-	@Override public String ID() { return "Spell_Brainwash"; }
+	@Override
+	public String ID()
+	{
+		return "Spell_Brainwash";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Brainwash");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(brainwashed)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
-	public Vector<String> limbsToRemove=new Vector<String>();
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL | Ability.DOMAIN_ENCHANTMENT;
+	}
+
+	public Vector<String> limbsToRemove = new Vector<String>();
 
 	@Override
 	public boolean okMessage(Environmental host, CMMsg msg)
@@ -64,11 +96,21 @@ public class Spell_Brainwash extends Spell
 				String lead=" ";
 				switch(CMLib.dice().roll(1,6,0))
 				{
-				case 1:	lead=" And, by the way, "; break;
-				case 2:	lead=" Also, "; break;
-				case 3:	lead=" Did you know that "; break;
-				case 4:	lead=" In case I didn't mention it already, "; break;
-				case 5:	lead=" You might also be curious to know that "; break;
+				case 1:
+					lead = L(" And, by the way, ");
+					break;
+				case 2:
+					lead = L(" Also, ");
+					break;
+				case 3:
+					lead = L(" Did you know that ");
+					break;
+				case 4:
+					lead = L(" In case I didn't mention it already, ");
+					break;
+				case 5:
+					lead = L(" You might also be curious to know that ");
+					break;
 				case 6: lead=" "; break;
 				}
 				if(smsg!=null)
@@ -145,7 +187,7 @@ public class Spell_Brainwash extends Spell
 		{
 			final MOB oldVictim=mob.getVictim();
 			final MOB oldVictim2=target.getVictim();
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L(auto?"!":"^S<S-NAME> invoke(s) a spell upon the mind of <T-NAMESELF>, saying '"+message+"'.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L(auto?"@x1":"^S<S-NAME> invoke(s) a spell upon the mind of <T-NAMESELF>, saying '@x1'.^?",message));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

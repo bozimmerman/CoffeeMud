@@ -411,7 +411,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 					else
 						msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_TELL,L("^t^<TELL \"@x1\"^>You tell @x2 '@x3'^</TELL^>^?^.",CMStrings.removeColors(target.name(mob)),target.name(mob),text),CMMsg.MSG_TELL,L("^t^<TELL \"@x1\"^>@x2 tell(s) you '@x3'^</TELL^>^?^.",CMStrings.removeColors(mob.name(target)),mob.Name(),text),CMMsg.NO_EFFECT,null);
 					if((mob.location().okMessage(mob,msg))
-					&&((ignore)||(target.okMessage(target,msg))))
+					&&((ignore)||((target.location()!=null)&&(target.location().okMessage(target,msg)))))
 					{
 						if((mob.session()!=null)&&(mob.session().getClientTelnetMode(Session.TELNET_GMCP)))
 						{
