@@ -790,8 +790,14 @@ public class DefaultCharStats implements CharStats
 	@Override
 	public int getAbilityAdjustment(String ableID)
 	{
-		return (profAdj==null) ? 0 :
-				profAdj.get(ableID).intValue();
+		
+		final Map<String,Integer> prof=this.profAdj;
+		if(prof == null)
+			return 0;
+		final Integer value = prof.get(ableID);
+		if(value == null)
+			return 0;
+		return value.intValue();
 	}
 
 	@Override

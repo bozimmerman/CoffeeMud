@@ -347,7 +347,12 @@ public class Thief_Superstition extends ThiefSkill
 			this.setMiscText(newXml.toString());
 			Ability A=mob.fetchEffect(ID());
 			if(A!=null)
+			{
 				A.setMiscText(newXml.toString());
+			}
+			mob.recoverCharStats();
+			mob.recoverMaxState();
+			mob.recoverPhyStats();
 		}
 		return true;
 	}
