@@ -60,7 +60,7 @@ public class Poison_Alcohol extends Poison
 	@Override
 	public String displayText()
 	{
-		return (drunkness <= 3) ? "(Tipsy)" : ((drunkness < 10) ? "(Drunk)" : "(Smashed)");
+		return (drunkness <= 0) ? "(Holding your own)" : (drunkness <= 3) ? "(Tipsy)" : ((drunkness < 10) ? "(Drunk)" : "(Smashed)");
 	}
 
 	@Override
@@ -152,7 +152,7 @@ public class Poison_Alcohol extends Poison
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		if(affected instanceof MOB)
+		if((affected instanceof MOB)&&(drunkness>0))
 			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-(drunkness+((MOB)affected).phyStats().level()));
 	}
 	
@@ -170,7 +170,7 @@ public class Poison_Alcohol extends Poison
 		if(affected instanceof MOB)
 		{
 			final MOB mob=(MOB)affected;
-			if((CMLib.dice().rollPercentage()==1)&&(!((MOB)affected).isMonster()))
+			if((CMLib.dice().rollPercentage()==1)&&(!((MOB)affected).isMonster())&&(drunkness>0))
 			{
 				final Ability A=CMClass.getAbility("Disease_Migraines");
 				if((A!=null)&&(mob.fetchEffect(A.ID())==null))

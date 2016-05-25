@@ -1361,6 +1361,8 @@ public class Modify extends StdCommand
 		}
 		mob.location().showOthers(mob,M,CMMsg.MSG_OK_ACTION,L("<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>."));
 		final MOB copyMOB=(MOB)M.copyOf();
+		M.basePhyStats().copyInto(copyMOB.basePhyStats());
+		M.phyStats().copyInto(copyMOB.phyStats());
 		if(commands.size()<4)
 		{
 			CMLib.genEd().modifyPlayer(mob,M,-1);

@@ -1005,8 +1005,6 @@ public class DefaultClanGovernment implements ClanGovernment
 			break;
 		}
 		default:
-			if(stat != null)
-				Log.errOut("Clan", "setStat:Unhandled:" + stat.toString());
 			break;
 		}
 	}

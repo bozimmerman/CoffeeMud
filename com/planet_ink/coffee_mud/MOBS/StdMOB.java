@@ -602,12 +602,12 @@ public class StdMOB implements MOB
 		me=this;
 		if (!isGeneric())
 		{
-			final PhyStats oldBase=(PhyStats)basePhyStats.copyOf();
-			M.basePhyStats().copyInto(basePhyStats);
+			final PhyStats oldBase=basePhyStats;
+			basePhyStats = (PhyStats) M.basePhyStats().copyOf();
+			phyStats = (PhyStats) M.phyStats().copyOf();
 			basePhyStats.setAbility(oldBase.ability());
 			basePhyStats.setRejuv(oldBase.rejuv());
 			basePhyStats.setLevel(oldBase.level());
-			M.phyStats().copyInto(phyStats);
 			phyStats.setAbility(oldBase.ability());
 			phyStats.setRejuv(oldBase.rejuv());
 			phyStats.setLevel(oldBase.level());
