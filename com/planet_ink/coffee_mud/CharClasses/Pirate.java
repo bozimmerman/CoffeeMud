@@ -111,7 +111,7 @@ public class Pirate extends Thief
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Thief_Superstition",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Thief_RopeSwing",false);
-
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Thief_ImprovedBoarding",false);
 	}
 
 	@Override

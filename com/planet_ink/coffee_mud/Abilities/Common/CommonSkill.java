@@ -700,16 +700,19 @@ public class CommonSkill extends StdAbility
 			commonTell(mob,L("You need to stand up!"));
 			return false;
 		}
-		for(final Enumeration<Ability> a=mob.personalEffects();a.hasMoreElements();)
+		if(!auto)
 		{
-			final Ability A=a.nextElement();
-			if((A!=null)
-			&&(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL)||(A.ID().equalsIgnoreCase("AstroEngineering")))
-			&&(!getUninvokeException().contains(A.ID())))
+			for(final Enumeration<Ability> a=mob.personalEffects();a.hasMoreElements();)
 			{
-				if(A instanceof CommonSkill)
-					((CommonSkill)A).aborted=true;
-				A.unInvoke();
+				final Ability A=a.nextElement();
+				if((A!=null)
+				&&(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL)||(A.ID().equalsIgnoreCase("AstroEngineering")))
+				&&(!getUninvokeException().contains(A.ID())))
+				{
+					if(A instanceof CommonSkill)
+						((CommonSkill)A).aborted=true;
+					A.unInvoke();
+				}
 			}
 		}
 		isAnAutoEffect=false;

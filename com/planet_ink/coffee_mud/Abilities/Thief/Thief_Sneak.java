@@ -35,16 +35,57 @@ import java.util.*;
 
 public class Thief_Sneak extends ThiefSkill
 {
-	@Override public String ID() { return "Thief_Sneak"; }
+	@Override
+	public String ID()
+	{
+		return "Thief_Sneak";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Sneak");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALTHY;}
-	private static final String[] triggerStrings =I(new String[] {"SNEAK"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int usageType(){return USAGE_MOVEMENT;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_THIEF_SKILL | Ability.DOMAIN_STEALTHY;
+	}
+
+	private static final String[] triggerStrings = I(new String[] { "SNEAK" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -52,14 +93,55 @@ public class Thief_Sneak extends ThiefSkill
 		String dir=CMParms.combine(commands,0);
 		if(commands.size()>0)
 			dir=commands.get(commands.size()-1);
-		final int dirCode=CMLib.directions().getGoodDirectionCode(dir);
+		Physical target=givenTarget;
+		int dirCode=CMLib.directions().getGoodDirectionCode(dir);
 		if(dirCode<0)
+		{
+			if(target == null)
+				target=mob.location().fetchFromRoomFavorExits(CMParms.combine(commands,0));
+			if(target instanceof Exit)
+				dirCode = CMLib.map().getExitDir(mob.location(), (Exit)target);
+			if((dirCode<0)&&(target != null))
+			{
+				if(target instanceof Rideable)
+				{
+					if(target instanceof Exit) // it's a portal .. so we just assume you can climb "in" it
+					{
+						
+					}
+					else
+					if(((Rideable)target).rideBasis()!=Rideable.RIDEABLE_LADDER)
+					{
+						mob.tell(L("You can not sneak into '@x1'.",target.name(mob)));
+						return false;
+					}
+					else // ordinary ladder item, just convert to an UP
+					{
+						target=null;
+						dirCode=Directions.UP;
+					}
+				}
+				else
+				{
+					mob.tell(L("You can not sneak into '@x1'.",target.name(mob)));
+					return false;
+				}
+			}
+			else
+			{
+				target = null; // it's an ordinary exit
+			}
+		}
+		
+		if((dirCode<0)&&(!(target instanceof Rideable)))
 		{
 			mob.tell(L("Sneak where?"));
 			return false;
 		}
 
-		if((mob.location().getRoomInDir(dirCode)==null)||(mob.location().getExitInDir(dirCode)==null))
+		if((dirCode>=0)
+		&&((mob.location().getRoomInDir(dirCode)==null)
+			||(mob.location().getExitInDir(dirCode)==null)))
 		{
 			mob.tell(L("Sneak where?"));
 			return false;
@@ -72,7 +154,12 @@ public class Thief_Sneak extends ThiefSkill
 			return false;
 
 		boolean success=false;
-		final CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MSG_OK_VISUAL:CMMsg.MSG_DELICATE_HANDS_ACT,L("You quietly sneak @x1.",CMLib.directions().getDirectionName(dirCode)),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
+		String msgStr;
+		if(dirCode<0)
+			msgStr=L("You quietly sneak into <T-NAME>.");
+		else
+			msgStr=L("You quietly sneak @x1.",CMLib.directions().getDirectionName(dirCode));
+		final CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MSG_OK_VISUAL:CMMsg.MSG_DELICATE_HANDS_ACT,msgStr,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
@@ -86,7 +173,11 @@ public class Thief_Sneak extends ThiefSkill
 				mob.basePhyStats().setDisposition(mob.basePhyStats().disposition()|PhyStats.IS_SNEAKING);
 				mob.recoverPhyStats();
 			}
-			CMLib.tracking().walk(mob,dirCode,false,false);
+			if(dirCode>=0)
+				CMLib.tracking().walk(mob,dirCode,false,false);
+			else
+			if(target instanceof Rideable)
+				CMLib.commands().forceStandardCommand(mob, "Enter", new XVector<String>("ENTER",mob.location().getContextName(target)));
 			if(success)
 			{
 
