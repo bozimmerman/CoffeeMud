@@ -64,7 +64,9 @@ public class DefaultPhyStats implements PhyStats
 	protected String	replacementName	= null;
 	protected String[]	ambiances		= null;
 
-	public DefaultPhyStats(){}
+	public DefaultPhyStats()
+	{
+	}
 
 	@Override
 	public void setAllValues(int def)
@@ -340,10 +342,12 @@ public class DefaultPhyStats implements PhyStats
 		}
 	}
 
-	private final static String[] CODES={
+	private final static String[] CODES=
+	{
 		"SENSES","DISPOSITION","LEVEL",
 		"ABILITY","REJUV","WEIGHT","HEIGHT",
-		"ARMOR","DAMAGE","ATTACK", "AMBIANCES"};
+		"ARMOR","DAMAGE","ATTACK", "AMBIANCES"
+	};
 
 	@Override
 	public int getSaveStatIndex()
@@ -372,6 +376,7 @@ public class DefaultPhyStats implements PhyStats
 		}
 		return -1;
 	}
+
 	@Override
 	public boolean sameAs(PhyStats E)
 	{

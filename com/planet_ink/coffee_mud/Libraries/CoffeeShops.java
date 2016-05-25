@@ -1390,7 +1390,9 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		for(final Enumeration<Item> i=extItems.items();i.hasMoreElements();)
 		{
 			final Item I=i.nextElement();
-			if((I instanceof PrivateProperty)&&(I instanceof BoardableShip))
+			if((I instanceof PrivateProperty)
+			&&(I instanceof BoardableShip)
+			&&(!I.amDestroyed()))
 			{
 				final PrivateProperty P = (PrivateProperty)I;
 				if(CMLib.law().doesOwnThisProperty(buyer,P))
