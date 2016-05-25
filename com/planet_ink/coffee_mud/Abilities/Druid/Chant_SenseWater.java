@@ -96,6 +96,7 @@ public class Chant_SenseWater extends Chant
 		if(canBeUninvoked())
 			mob.tell(L("Your senses are no longer sensitive to water."));
 	}
+
 	public String waterCheck(MOB mob, Item I, Item container, StringBuffer msg)
 	{
 		if(I==null)
@@ -189,6 +190,7 @@ public class Chant_SenseWater extends Chant
 		}
 		return msg.toString();
 	}
+	
 	public void messageTo(MOB mob)
 	{
 		String last="";
@@ -217,7 +219,10 @@ public class Chant_SenseWater extends Chant
 				{
 					final MOB M=R.fetchInhabitant(m);
 					if((M!=null)&&(M!=mob)&&(waterHere(mob,M,null).length()>0))
-					{ metalFound=true; break;}
+					{
+						metalFound = true;
+						break;
+					}
 				}
 
 				if(metalFound)
@@ -240,6 +245,7 @@ public class Chant_SenseWater extends Chant
 				mob.tell(L("Water smells are coming from @x1, and @x2.",dirs.substring(2),last));
 		}
 	}
+	
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{

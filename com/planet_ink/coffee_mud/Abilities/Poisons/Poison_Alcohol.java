@@ -35,32 +35,118 @@ import java.util.*;
 
 public class Poison_Alcohol extends Poison
 {
-	@Override public String ID() { return "Poison_Alcohol"; }
+	@Override
+	public String ID()
+	{
+		return "Poison_Alcohol";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Alcohol");
-	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =I(new String[] {"POISONALCOHOL"});
-	@Override public String displayText(){ return (drunkness<=3)?"(Tipsy)":((drunkness<10)?"(Drunk)":"(Smashed)");}
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public long flags(){return super.flags()|Ability.FLAG_INTOXICATING;}
 
-	@Override protected int POISON_TICKS(){return 65;}
-	@Override protected int POISON_DELAY(){return 1;}
-	@Override protected String POISON_DONE(){return "You feel sober again.";}
-	@Override protected String POISON_START(){return "^G<S-NAME> burp(s)!^?";}
-	@Override protected String POISON_AFFECT(){return "";}
-	@Override protected String POISON_CAST(){return "^F^<FIGHT^><S-NAME> inebriate(s) <T-NAMESELF>!^</FIGHT^>^?";}
-	@Override protected String POISON_FAIL(){return "<S-NAME> attempt(s) to inebriate <T-NAMESELF>, but fail(s).";}
-	@Override protected int POISON_DAMAGE(){return 0;}
-	protected boolean disableHappiness=false;
-
-	protected int alchoholContribution(){return 1;}
-	protected int level(){return 1;}
-	protected int drunkness=5;
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
 
 	public Poison_Alcohol()
 	{
 		super();
 		drunkness=5;
+	}
+
+	private static final String[] triggerStrings = I(new String[] { "POISONALCOHOL" });
+
+	@Override
+	public String displayText()
+	{
+		return (drunkness <= 3) ? "(Tipsy)" : ((drunkness < 10) ? "(Drunk)" : "(Smashed)");
+	}
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public long flags()
+	{
+		return super.flags() | Ability.FLAG_INTOXICATING;
+	}
+
+	@Override
+	protected int POISON_TICKS()
+	{
+		return 65;
+	}
+
+	@Override
+	protected int POISON_DELAY()
+	{
+		return 1;
+	}
+
+	@Override
+	protected String POISON_DONE()
+	{
+		return "You feel sober again.";
+	}
+
+	@Override
+	protected String POISON_START()
+	{
+		return "^G<S-NAME> burp(s)!^?";
+	}
+
+	@Override
+	protected String POISON_AFFECT()
+	{
+		return "";
+	}
+
+	@Override
+	protected String POISON_CAST()
+	{
+		return "^F^<FIGHT^><S-NAME> inebriate(s) <T-NAMESELF>!^</FIGHT^>^?";
+	}
+
+	@Override
+	protected String POISON_FAIL()
+	{
+		return "<S-NAME> attempt(s) to inebriate <T-NAMESELF>, but fail(s).";
+	}
+
+	@Override
+	protected int POISON_DAMAGE()
+	{
+		return 0;
+	}
+
+	protected boolean disableHappiness = false;
+
+	protected int alchoholContribution()
+	{
+		return 1;
+	}
+
+	protected int level()
+	{
+		return 1;
+	}
+
+	protected int drunkness = 5;
+
+	@Override
+	public int abilityCode()
+	{
+		return drunkness;
+	}
+
+	@Override
+	public void setAbilityCode(int newCode)
+	{
+		drunkness=newCode;
 	}
 
 	@Override
@@ -69,6 +155,7 @@ public class Poison_Alcohol extends Poison
 		if(affected instanceof MOB)
 			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-(drunkness+((MOB)affected).phyStats().level()));
 	}
+	
 	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
@@ -115,6 +202,7 @@ public class Poison_Alcohol extends Poison
 		}
 		return caughtIt;
 	}
+
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
