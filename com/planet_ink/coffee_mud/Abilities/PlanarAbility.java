@@ -1125,6 +1125,9 @@ public class PlanarAbility extends StdAbility
 		boolean randomPlane=false;
 		boolean randomTransitionPlane=false;
 		boolean randomArea=alwaysRandomArea;
+		if(((cloneArea.flags()&Area.FLAG_INSTANCE_CHILD)==Area.FLAG_INSTANCE_CHILD)
+		&&(currentShift == null))
+			randomArea=true;
 		if(!success)
 		{
 			if(CMLib.dice().rollPercentage()>5)
