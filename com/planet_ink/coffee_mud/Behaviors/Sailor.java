@@ -125,7 +125,8 @@ public class Sailor extends StdBehavior
 			}
 			break;
 		case CMMsg.TYP_ENTER:
-			if((msg.source().riding() == this.loyalShipItem)
+			if((msg.source()!=null)
+			&&(msg.source().riding() == this.loyalShipItem)
 			&&(msg.source().isMonster())
 			&&(msg.source().Name().equals(this.loyalShipItem.Name())))
 			{

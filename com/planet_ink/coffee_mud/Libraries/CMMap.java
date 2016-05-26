@@ -2086,7 +2086,10 @@ public class CMMap extends StdLibrary implements WorldMap
 						CMLib.database().DBUpdateExits(R);
 				}
 			}
-		}catch(final NoSuchElementException e){}
+		}
+		catch (final NoSuchElementException e)
+		{
+		}
 		emptyRoom(deadRoom,null,true);
 		deadRoom.destroy();
 		if(deadRoom instanceof GridLocale)

@@ -450,9 +450,11 @@ public class StdThinInstance extends StdThinArea
 		//&&(!CMSecurity.isAllowed(msg.source(),(Room)msg.target(),CMSecurity.SecFlag.CMDAREAS)) //TODO: BZ: FiXME!
 		&&(((msg.source().getStartRoom()==null)||(msg.source().getStartRoom().getArea()!=this))))
 		{
+			int myDex=-1;
+			Area redirectA = null;
+			final Set<MOB> grp = msg.source().getGroupMembers(new HashSet<MOB>());
 			synchronized(instanceChildren)
 			{
-				int myDex=-1;
 				for(int i=0;i<instanceChildren.size();i++)
 				{
 					final List<WeakReference<MOB>> V=instanceChildren.get(i).mobs;
@@ -464,7 +466,6 @@ public class StdThinInstance extends StdThinArea
 						}
 					}
 				}
-				final Set<MOB> grp = msg.source().getGroupMembers(new HashSet<MOB>());
 				for(int i=0;i<instanceChildren.size();i++)
 				{
 					if(i!=myDex)
@@ -494,30 +495,29 @@ public class StdThinInstance extends StdThinArea
 						}
 					}
 				}
-				Area redirectA = null;
-				if(myDex<0)
-					redirectA = createRedirectArea(msg.source());
-				else
+				if(myDex>=0)
 					redirectA=instanceChildren.get(myDex).A;
-				if(redirectA instanceof StdThinInstance)
+			}
+			if(myDex<0)
+				redirectA = createRedirectArea(msg.source());
+			if(redirectA instanceof StdThinInstance)
+			{
+				Room R=redirectA.getRoom(((StdThinInstance)redirectA).convertToMyArea(CMLib.map().getExtendedRoomID((Room)msg.target())));
+				int tries=1000;
+				while((R==null)&&((--tries)>0))
 				{
-					Room R=redirectA.getRoom(((StdThinInstance)redirectA).convertToMyArea(CMLib.map().getExtendedRoomID((Room)msg.target())));
-					int tries=1000;
-					while((R==null)&&((--tries)>0))
-					{
-						R=redirectA.getRandomProperRoom();
-						if(R!=null)
-						{
-							msg.setTarget(R);
-							if((!CMLib.flags().canAccess(msg.source(),R))
-							||(CMLib.law().getLandTitle(R)!=null)
-							||(!R.okMessage(msg.source(), msg)))
-								R=null;
-						}
-					}
+					R=redirectA.getRandomProperRoom();
 					if(R!=null)
+					{
 						msg.setTarget(R);
+						if((!CMLib.flags().canAccess(msg.source(),R))
+						||(CMLib.law().getLandTitle(R)!=null)
+						||(!R.okMessage(msg.source(), msg)))
+							R=null;
+					}
 				}
+				if(R!=null)
+					msg.setTarget(R);
 			}
 		}
 		return true;
