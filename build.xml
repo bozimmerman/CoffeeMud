@@ -8,7 +8,7 @@
 		<echo>clean removes all compiled code from this directory and below</echo>
 	</target>
 	<target name="compile">
-		<javac srcdir="." classpath=".;./lib/js.jar;./lib/jzlib.jar" nowarn="yes" deprecation="on" debug="on" memoryMaximumSize="1024m" fork="on">
+		<javac srcdir="." classpath=".;./lib/js.jar;./lib/jzlib.jar" nowarn="yes" deprecation="on" target="1.6" source="1.6" debug="on" memoryMaximumSize="1024m" fork="on">
 			<compilerarg value="-Xlint:unchecked" />
     	</javac>
 		<echo>Compiliation done.</echo>
