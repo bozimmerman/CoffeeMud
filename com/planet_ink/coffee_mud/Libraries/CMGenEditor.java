@@ -10077,41 +10077,59 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	}
 
 	@Override
-	public void modifyStdMob(MOB mob, MOB thang, int showFlag) throws IOException
+	public void modifyStdMob(MOB mob, MOB E, int showFlag) throws IOException
 	{
-		if((showFlag == -1) && (CMProps.getIntVar(CMProps.Int.EDITORTYPE)>0))
-			showFlag=-999;
-		boolean ok=false;
-		while(!ok)
+		try
 		{
-			int showNumber=0;
-			if(showFlag<0)
-				mob.tell(L("*. Class: @x1",thang.ID()));
-			genLevel(mob,thang,++showNumber,showFlag);
-			genAbility(mob,thang,++showNumber,showFlag);
-			genRejuv(mob,thang,++showNumber,showFlag);
-			genMiscText(mob,thang,++showNumber,showFlag);
-			if (showFlag < -900)
+			if(E!=mob)
+				CMLib.threads().suspendTicking(E, -1);
+			if((showFlag == -1) && (CMProps.getIntVar(CMProps.Int.EDITORTYPE)>0))
+				showFlag=-999;
+			boolean ok=false;
+			while(!ok)
 			{
-				ok = true;
-				break;
+				int showNumber=0;
+				if(CMLib.flags().isCataloged(E))
+				{
+					if(CMLib.catalog().isCatalogObj(E.Name()))
+						mob.tell(L("*** This object is Cataloged **\n\r"));
+					else
+						mob.tell(L("*** This object WAS cataloged and is still tied **\n\r"));
+				}
+				if(showFlag<0)
+					mob.tell(L("*. Class: @x1",E.ID()));
+				genLevel(mob,E,++showNumber,showFlag);
+				genAbility(mob,E,++showNumber,showFlag);
+				genRejuv(mob,E,++showNumber,showFlag);
+				genMiscText(mob,E,++showNumber,showFlag);
+				if (showFlag < -900)
+				{
+					ok = true;
+					break;
+				}
+				if (showFlag > 0)
+				{
+					showFlag = -1;
+					continue;
+				}
+				showFlag=CMath.s_int(mob.session().prompt(L("Edit which? "),""));
+				if(showFlag<=0)
+				{
+					showFlag=-1;
+					ok=true;
+				}
 			}
-			if (showFlag > 0)
-			{
-				showFlag = -1;
-				continue;
-			}
-			showFlag=CMath.s_int(mob.session().prompt(L("Edit which? "),""));
-			if(showFlag<=0)
-			{
-				showFlag=-1;
-				ok=true;
-			}
+			catalogCheckUpdate(mob, E);
+		}
+		finally
+		{
+			if(E!=mob)
+				CMLib.threads().resumeTicking(E, -1);
 		}
 	}
 
 	@Override
-	public void modifyStdItem(MOB mob, Item thang, int showFlag) throws IOException
+	public void modifyStdItem(MOB mob, Item E, int showFlag) throws IOException
 	{
 		if((showFlag == -1) && (CMProps.getIntVar(CMProps.Int.EDITORTYPE)>0))
 			showFlag=-999;
@@ -10119,13 +10137,20 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		while(!ok)
 		{
 			int showNumber=0;
+			if(CMLib.flags().isCataloged(E))
+			{
+				if(CMLib.catalog().isCatalogObj(E.Name()))
+					mob.tell(L("*** This object is Cataloged **\n\r"));
+				else
+					mob.tell(L("*** This object WAS cataloged and is still tied **\n\r"));
+			}
 			if(showFlag<0)
-				mob.tell(L("*. Class: @x1",thang.ID()));
-			genLevel(mob,thang,++showNumber,showFlag);
-			genAbility(mob,thang,++showNumber,showFlag);
-			genRejuv(mob,thang,++showNumber,showFlag);
-			genUses(mob,thang,++showNumber,showFlag);
-			genMiscText(mob,thang,++showNumber,showFlag);
+				mob.tell(L("*. Class: @x1",E.ID()));
+			genLevel(mob,E,++showNumber,showFlag);
+			genAbility(mob,E,++showNumber,showFlag);
+			genRejuv(mob,E,++showNumber,showFlag);
+			genUses(mob,E,++showNumber,showFlag);
+			genMiscText(mob,E,++showNumber,showFlag);
 			if (showFlag < -900)
 			{
 				ok = true;
@@ -10143,6 +10168,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				ok=true;
 			}
 		}
+		catalogCheckUpdate(mob, E);
 	}
 
 	@Override
