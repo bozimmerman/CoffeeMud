@@ -366,6 +366,7 @@ public class PlanarAbility extends StdAbility
 		try
 		{
 			room.toggleMobility(false);
+			CMLib.threads().suspendResumeRecurse(room, false, true);
 			for(int i=0;i<Directions.NUM_DIRECTIONS();i++)
 			{
 				Room R=room.rawDoors()[i];
@@ -659,6 +660,7 @@ public class PlanarAbility extends StdAbility
 		}
 		finally
 		{
+			CMLib.threads().suspendResumeRecurse(room, false, false);
 			room.toggleMobility(true);
 		}
 	}
