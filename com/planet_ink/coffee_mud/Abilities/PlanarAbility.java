@@ -625,6 +625,9 @@ public class PlanarAbility extends StdAbility
 						}
 					}
 					M.text();
+					M.recoverCharStats();
+					M.recoverMaxState();
+					M.recoverPhyStats();
 				}
 			}
 			int mobCopy=CMath.s_int(planeVars.get(PlanarVar.MOBCOPY.toString()));
@@ -650,6 +653,9 @@ public class PlanarAbility extends StdAbility
 						M2.text();
 						M2.setSavable(M.isSavable());
 						M2.bringToLife(room, true);
+						M2.recoverCharStats();
+						M2.recoverMaxState();
+						M2.recoverPhyStats();
 					}
 				}
 			}
@@ -660,8 +666,10 @@ public class PlanarAbility extends StdAbility
 		}
 		finally
 		{
+			room.recoverRoomStats();
 			CMLib.threads().suspendResumeRecurse(room, false, false);
 			room.toggleMobility(true);
+			room.recoverRoomStats();
 		}
 	}
 
