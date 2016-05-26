@@ -816,6 +816,8 @@ public interface Ability extends Environmental
 	public static final int DOMAIN_WATERLORE=74<<5;
 	/** constant mask returned by classificationCode() designating this ability as being a watery chant @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
 	public static final int DOMAIN_WATERCONTROL=75<<5;
+	/** constant mask returned by classificationCode() designating this ability as being a sea travel skill @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
+	public static final int DOMAIN_SEATRAVEL=76<<5;
 	/** constant used to mask classificationCode() to return only the higher order DOMAIN_* constant. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
 	public static final int ALL_DOMAINS=(255<<5);
 	/** array of string describtions for the DOMAIN_* constants, indexed by their values */
@@ -838,7 +840,7 @@ public interface Ability extends Environmental
 		"COMBAT_LORE","COMBAT_FLUIDITY","EVASIVE","MARTIAL_LORE",
 		"RACIAL_ABILITY","ARTISTIC","ANATOMY","ARMOR_USE",
 		"SHIELD_USE","CRIMINAL","LEGAL","FITNESS","THEATRE",
-		"BUILDING","WATER_LORE","WATER_CONTROL"
+		"BUILDING","WATER_LORE","WATER_CONTROL","SEA_TRAVEL"
 	};
 	/** array of string verbs for the DOMAIN_* constants, indexed by their values */
 	public static final String[] DOMAIN_VERBS={
@@ -860,7 +862,7 @@ public interface Ability extends Environmental
 		"Combat Loring","Combat Fluidisizing","Evading","Matrial Loring",
 		"Racial Knowing","Artmaking","Anatomy","Armor Using",
 		"Shield Using","Crimemaking","Legalizing","Fitness","Acting",
-		"Building","Water Lore","Water Control"
+		"Building","Water Lore","Water Control","Sea Travel"
 	};
 
 	/** constant descriptions for the minRange()/maxRange() values @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#minRange() */
