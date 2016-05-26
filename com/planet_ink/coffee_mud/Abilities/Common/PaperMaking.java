@@ -40,29 +40,59 @@ import java.util.*;
 
 public class PaperMaking extends CraftingSkill implements ItemCraftor
 {
-	@Override public String ID() { return "PaperMaking"; }
-	private final static String localizedName = CMLib.lang().L("Paper Making");
-	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =I(new String[] {"PAPERMAKE","PAPERMAKING"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public String supportedResourceString(){return "WOODEN|HEMP|SILK|CLOTH";}
 	@Override
-	public String parametersFormat(){ return
-		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\t"
-		+"ITEM_CLASS_ID\tRESOURCE_OR_MATERIAL\tSTATUE||\tN_A\tCODED_SPELL_LIST";}
+	public String ID()
+	{
+		return "PaperMaking";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Paper Making");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "PAPERMAKE", "PAPERMAKING" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public String supportedResourceString()
+	{
+		return "WOODEN|HEMP|SILK|CLOTH";
+	}
+
+	@Override
+	public String parametersFormat()
+	{
+		return "ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\t" 
+			+ "ITEM_CLASS_ID\tRESOURCE_OR_MATERIAL\tLID_LOCK||STATUE||\tCONTAINER_CAPACITY||\tCODED_SPELL_LIST";
+	}
 
 	//protected static final int RCP_FINALNAME=0;
 	//protected static final int RCP_LEVEL=1;
 	//protected static final int RCP_TICKS=2;
-	protected static final int RCP_WOOD=3;
-	protected static final int RCP_VALUE=4;
-	protected static final int RCP_CLASSTYPE=5;
-	protected static final int RCP_WOODTYPE=6;
-	protected static final int RCP_MISCTYPE=7;
-	//protected static final int RCP_MISCTEXT=8;
-	protected static final int RCP_SPELL=9;
+	protected static final int	RCP_WOOD		= 3;
+	protected static final int	RCP_VALUE		= 4;
+	protected static final int	RCP_CLASSTYPE	= 5;
+	protected static final int	RCP_WOODTYPE	= 6;
+	protected static final int	RCP_MISCTYPE	= 7;
+	protected static final int	RCP_CAPACITY	= 8;
+	protected static final int	RCP_SPELL		= 9;
 
-	@Override public boolean supportsDeconstruction() { return false; }
+	@Override
+	public boolean supportsDeconstruction()
+	{
+		return false;
+	}
+
+	protected DoorKey key=null;
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
@@ -75,8 +105,17 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 		return super.tick(ticking,tickID);
 	}
 
-	@Override public String parametersFile(){ return "papermaking.txt";}
-	@Override protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
+	@Override
+	public String parametersFile()
+	{
+		return "papermaking.txt";
+	}
+
+	@Override
+	protected List<List<String>> loadRecipes()
+	{
+		return super.loadRecipes(parametersFile());
+	}
 
 	@Override
 	public void unInvoke()
@@ -94,9 +133,16 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 					{
 						dropAWinner(mob,buildingI);
 						CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.CRAFTING, 1, this);
+						if(key!=null)
+						{
+							dropAWinner(mob,key);
+							if(buildingI instanceof Container)
+								key.setContainer((Container)buildingI);
+						}
 					}
 				}
 				buildingI=null;
+				key=null;
 			}
 		}
 		super.unInvoke();
@@ -152,9 +198,9 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 				mask="";
 			}
 			final int[] cols={
-					CMLib.lister().fixColWidth(22,mob.session()),
-					CMLib.lister().fixColWidth(3,mob.session())
-				};
+				CMLib.lister().fixColWidth(22,mob.session()),
+				CMLib.lister().fixColWidth(3,mob.session())
+			};
 			final StringBuffer buf=new StringBuffer(L("@x1 @x2 Material required\n\r",CMStrings.padRight(L("Item"),cols[0]),CMStrings.padRight(L("Lvl"),cols[1])));
 			for(int r=0;r<recipes.size();r++)
 			{
@@ -177,6 +223,7 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 		}
 		activity = CraftingActivity.CRAFTING;
 		buildingI=null;
+		key=null;
 		messedUp=false;
 		String statue=null;
 		if((commands.size()>1)&&(commands.get(commands.size()-1)).startsWith("STATUE="))
@@ -226,11 +273,11 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 		woodRequired=adjustWoodRequired(woodRequired,mob);
 
 		final int[][] data=fetchFoundResourceData(mob,
-											woodRequired,materialDesc,null,
-											0,null,null,
-											false,
-											autoGenerate,
-											null);
+												woodRequired,materialDesc,null,
+												0,null,null,
+												false,
+												autoGenerate,
+												null);
 		if(data==null)
 			return false;
 		woodRequired=data[0][FOUND_AMT];
@@ -244,9 +291,19 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 			final Physical target=givenTarget;
 			session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0)
 			{
-				@Override public void showPrompt() {session.promptPrint(L("What is this of?\n\r: "));}
-				@Override public void timedOut() {}
-				@Override public void callBack()
+				@Override
+				public void showPrompt()
+				{
+					session.promptPrint(L("What is this of?\n\r: "));
+				}
+
+				@Override
+				public void timedOut()
+				{
+				}
+
+				@Override
+				public void callBack()
 				{
 					final String of=this.input;
 					if((of.trim().length()==0)||(of.indexOf('<')>=0))
@@ -297,6 +354,7 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 			buildingI.setMaterial(RawMaterial.RESOURCE_PAPER);
 		if(buildingI instanceof Recipe)
 			((Recipe)buildingI).setTotalRecipePages(CMath.s_int(woodRequiredStr));
+		final int capacity=CMath.s_int(foundRecipe.get(RCP_CAPACITY));
 		buildingI.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL)));
 		buildingI.recoverPhyStats();
 		buildingI.text();
@@ -320,11 +378,38 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 			}
 			verb=L("making @x1",buildingI.name());
 		}
+		else
+		if((buildingI instanceof Container)
+		&&(!(buildingI instanceof Armor)))
+		{
+			if(capacity>0)
+			{
+				((Container)buildingI).setCapacity(capacity+woodRequired);
+				((Container)buildingI).setContainTypes(Container.CONTAIN_ANYTHING);
+			}
+			if(misctype.equalsIgnoreCase("LID"))
+				((Container)buildingI).setDoorsNLocks(true,false,true,false,false,false);
+			else
+			if(misctype.equalsIgnoreCase("LOCK"))
+			{
+				((Container)buildingI).setDoorsNLocks(true,false,true,true,false,true);
+				((Container)buildingI).setKeyName(Double.toString(Math.random()));
+				key=(DoorKey)CMClass.getItem("GenKey");
+				key.setKey(((Container)buildingI).keyName());
+				key.setName(L("a key"));
+				key.setDisplayText(L("a small key sits here"));
+				key.setDescription(L("looks like a key to @x1",buildingI.name()));
+				key.recoverPhyStats();
+				key.text();
+			}
+		}
 
 		messedUp=!proficiencyCheck(mob,0,auto);
 
 		if(autoGenerate>0)
 		{
+			if(key!=null)
+				crafted.add(key);
 			crafted.add(buildingI);
 			return true;
 		}
