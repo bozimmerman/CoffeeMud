@@ -447,8 +447,12 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 			}
 			final char bc=str.charAt(enDex);
 			final String[] clookup = (S==null)?CMLib.color().standardColorLookups():S.getColorCodes();
+			final String bgEscapeSequence;
 			final String escapeSequence=clookup[bc];
-			final String bgEscapeSequence=ColorLibrary.MAP_ANSICOLOR_TO_ANSIBGCOLOR.get(escapeSequence);
+			if(escapeSequence == null)
+				bgEscapeSequence = null;
+			else
+				bgEscapeSequence=ColorLibrary.MAP_ANSICOLOR_TO_ANSIBGCOLOR.get(escapeSequence);
 			if(bgEscapeSequence != null)
 			{
 				str.insert(index+3, bgEscapeSequence);
