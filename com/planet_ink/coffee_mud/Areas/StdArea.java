@@ -255,23 +255,29 @@ public class StdArea implements Area
 	@Override
 	public void setClimateObj(Climate obj)
 	{
-		climateObj = obj;
+		if(obj != null)
+			climateObj = obj;
 	}
 
 	@Override
 	public Climate getClimateObj()
 	{
+		if(climateObj == null)
+			climateObj = (Climate)CMClass.getCommon("DefaultClimate");
 		return climateObj;
 	}
 
 	@Override
 	public void setTimeObj(TimeClock obj)
 	{
-		myClock = obj;
-		for(final Iterator<Area> i=getChildrenIterator(); i.hasNext();)
+		if(obj != null)
 		{
-			final Area A=i.next();
-			A.setTimeObj(obj);
+			myClock = obj;
+			for(final Iterator<Area> i=getChildrenIterator(); i.hasNext();)
+			{
+				final Area A=i.next();
+				A.setTimeObj(obj);
+			}
 		}
 	}
 	

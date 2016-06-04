@@ -1123,9 +1123,13 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 				   return true;
 				if((canSeeVictims(seer))&&(seer.getVictim()==seenP))
 					return true;
-				if((R.getArea().getClimateObj().canSeeTheMoon(R,null))
-				&&(R.getArea().getTimeObj().getMoonPhase(R)==TimeClock.MoonPhase.FULL))
-					return true;
+				final Area area=R.getArea();
+				if(area != null)
+				{
+					if((area.getClimateObj().canSeeTheMoon(R,null))
+					&&(area.getTimeObj().getMoonPhase(R)==TimeClock.MoonPhase.FULL))
+						return true;
+				}
 				return false;
 			}
 			return true;

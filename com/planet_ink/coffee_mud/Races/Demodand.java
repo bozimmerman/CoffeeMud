@@ -119,30 +119,6 @@ public class Demodand extends Demon
 		return racialAbilityParms;
 	}
 
-
-	private final String[]	culturalAbilityNames			= { "Undercommon" };
-	private final int[]		culturalAbilityProficiencies	= { 25 };
-
-	private final static String localizedStaticRacialCat = CMLib.lang().L("Demon");
-
-	@Override
-	public String racialCategory()
-	{
-		return localizedStaticRacialCat;
-	}
-
-	@Override
-	public String[] culturalAbilityNames()
-	{
-		return culturalAbilityNames;
-	}
-
-	@Override
-	public int[] culturalAbilityProficiencies()
-	{
-		return culturalAbilityProficiencies;
-	}
-
 	// 									   an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[]	parts	= { 0, 2, 2, 1, 1, 2, 2, 1, 2, 2, 1, 0, 1, 1, 1, 0 };
 
@@ -153,22 +129,8 @@ public class Demodand extends Demon
 	}
 
 	@Override
-	public int availabilityCode()
-	{
-		return Area.THEME_FANTASY | Area.THEME_SKILLONLYMASK;
-	}
-
-	@Override
-	public void affectPhyStats(Physical affected, PhyStats affectableStats)
-	{
-		super.affectPhyStats(affected,affectableStats);
-		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_INFRARED);
-	}
-
-	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
-		super.affectCharStats(affectedMOB, affectableStats);
 		affectableStats.setStat(CharStats.STAT_SAVE_ACID,affectableStats.getStat(CharStats.STAT_SAVE_ACID)+100);
 		affectableStats.setStat(CharStats.STAT_SAVE_POISON,affectableStats.getStat(CharStats.STAT_SAVE_POISON)+100);
 	}

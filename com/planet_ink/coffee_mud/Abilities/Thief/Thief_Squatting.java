@@ -103,7 +103,6 @@ public class Thief_Squatting extends ThiefSkill
 				title.updateLot(null);
 			}
 			else
-			if(title.getOwnerName().length()>0)
 			{
 				mob.tell(L("Your squat has succeeded.  This property now belongs to you."));
 				title.setOwnerName(mob.Name());
