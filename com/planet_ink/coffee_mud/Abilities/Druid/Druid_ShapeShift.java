@@ -434,7 +434,8 @@ public class Druid_ShapeShift extends StdAbility
 		setRaceName(mob);
 
 		// now check for alternate shapeshifts
-		if((triggerStrings().length>0)&&(parm.length()>0)&&(allShapeshifts.size()>1))
+		if((triggerStrings().length>0)
+		&&(parm.length()>0))
 		{
 			final Vector<Ability> V=allShapeshifts;
 			allShapeshifts=new Vector<Ability>();
