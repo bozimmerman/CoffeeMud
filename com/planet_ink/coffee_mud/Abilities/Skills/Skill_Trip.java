@@ -148,7 +148,7 @@ public class Skill_Trip extends StdSkill
 		if(canBeUninvoked())
 			doneTicking=true;
 		super.unInvoke();
-		if(canBeUninvoked())
+		if(canBeUninvoked() && (mob!=null))
 		{
 			if((mob.location()!=null)&&(!mob.amDead()))
 			{
