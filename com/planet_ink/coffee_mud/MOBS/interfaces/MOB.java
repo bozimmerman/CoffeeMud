@@ -1067,6 +1067,15 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	public int[][] getAbilityUsageCache(final String abilityID);
 
 	/**
+	 * Returns whether the given ability is actually a racial
+	 * ability instead of a learned, clan, or some other kind
+	 * of ability.
+	 * @param A the ability object to check for
+	 * @return true if that object is racial, false otherwise
+	 */
+	public boolean isRacialAbility(Ability A);
+
+	/**
 	 * Adds a new expertise, or updates an existing one.
 	 * Requires a coded expertise name (string followed by
 	 * roman or decimal number)

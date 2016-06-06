@@ -25,6 +25,7 @@
   24. New Thief Skills: Superstitious, Rope Swing, Improved Boarding, Locate Alcohol, Hold Your Liquor
   25. Papermaking now supports containers, for gift bags, paper sacks, etc.
   26. MORGUE/DEATH/BODY/START rooms support levels and masks now.
+  27. The Swim skill, when used as a racial ability, does not have a usage cost any more.
 # Build 5.9.3 Released 05/08/2016
    1. Follower behavior now has a few more options.
    2. STAT [MOBNAME] will now give full editor stats also, and 

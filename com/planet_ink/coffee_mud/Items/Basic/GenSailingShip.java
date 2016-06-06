@@ -1606,13 +1606,13 @@ public class GenSailingShip extends StdBoardable
 							final Room oldRoom=msg.source().location();
 							try
 							{
+								final double pctLoss = CMath.div(msg.value(), 100.0);
 								while(shotsRemaining-- > 0)
 								{
 									final Pair<MOB,Room> randomPair = (targets.size()>0)? targets.get(CMLib.dice().roll(1,targets.size(),-1)) : null;
 									if((CMLib.dice().rollPercentage() < chanceToHit)&&(randomPair != null))
 									{
 										msg.source().setLocation(shipRoom);
-										double pctLoss = CMath.div(msg.value(), getMaxHullPoints());
 										int pointsLost = (int)Math.round(pctLoss * msg.source().maxState().getHitPoints());
 										CMLib.combat().postWeaponDamage(msg.source(), randomPair.first, weapon, pointsLost);
 									}

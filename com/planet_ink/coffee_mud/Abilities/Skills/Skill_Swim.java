@@ -128,6 +128,15 @@ public class Skill_Swim extends StdSkill
 	}
 
 	@Override
+	public int[] usageCost(MOB mob, boolean ignoreClassOverride)
+	{
+		int[] cost = super.usageCost(mob, ignoreClassOverride);
+		if((mob != null)&&(mob.isRacialAbility(this)))
+			return new int[cost.length];
+		return cost;
+	}
+
+	@Override
 	public boolean preInvoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel, int secondsElapsed, double actionsRemaining)
 	{
 		if(secondsElapsed==0)

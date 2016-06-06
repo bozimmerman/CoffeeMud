@@ -32,20 +32,59 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
-
 public class Prayer_CurseItem extends Prayer
 {
-	@Override public String ID() { return "Prayer_CurseItem"; }
-	private final static String localizedName = CMLib.lang().L("Curse Item");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Cursed)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CURSING;}
-	@Override public long flags(){return Ability.FLAG_UNHOLY;}
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
-	@Override protected int canTargetCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
+	@Override
+	public String ID()
+	{
+		return "Prayer_CurseItem";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Curse Item");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Cursed)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER | Ability.DOMAIN_CURSING;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_UNHOLY;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS | Ability.CAN_ITEMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_MOBS | Ability.CAN_ITEMS;
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
@@ -65,8 +104,6 @@ public class Prayer_CurseItem extends Prayer
 	@Override
 	public void unInvoke()
 	{
-
-
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 		{
@@ -183,7 +220,6 @@ public class Prayer_CurseItem extends Prayer
 		}
 		else
 			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to curse <T-NAMESELF>, but nothing happens."));
-
 
 		// return whether it worked
 		return success;

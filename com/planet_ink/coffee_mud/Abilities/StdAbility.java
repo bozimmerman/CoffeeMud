@@ -37,7 +37,11 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class StdAbility implements Ability
 {
-	@Override public String ID() { return "StdAbility"; }
+	@Override
+	public String ID()
+	{
+		return "StdAbility";
+	}
 
 	protected boolean			isAnAutoEffect	= false;
 	protected int				proficiency		= 0;
