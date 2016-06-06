@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -35,7 +34,11 @@ import java.util.*;
 */
 public class ItemIdentifier extends StdBehavior
 {
-	@Override public String ID(){return "ItemIdentifier";}
+	@Override
+	public String ID()
+	{
+		return "ItemIdentifier";
+	}
 
 	private LinkedList<CMath.CompiledOperation> costFormula = null;
 
@@ -142,6 +145,8 @@ public class ItemIdentifier extends StdBehavior
 				up.append("It is a "+Weapon.CLASS_DESCS[w.weaponClassification()].toLowerCase()+" weapon.\n\r");
 				up.append("It does "+Weapon.TYPE_DESCS[w.weaponDamageType()].toLowerCase()+" damage.\n\r");
 			}
+			if((CMLib.flags().domainAffects(I,Ability.DOMAIN_CURSING).size()>0)||(!CMLib.flags().isRemovable(I)))
+				up.append("It is cursed.\n\r");
 			up.append(I.secretIdentity());
 			newMsg=CMClass.getMsg(observer,null,null,CMMsg.MSG_SPEAK,L("^T<S-NAME> say(s) '@x1'^?.",up.toString()));
 			msg.addTrailerMsg(newMsg);
