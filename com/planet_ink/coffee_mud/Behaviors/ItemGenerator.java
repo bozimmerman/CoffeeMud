@@ -246,7 +246,7 @@ public class ItemGenerator extends ActiveTicker
 			}
 			items=new GeneratedItemSet();
   			Item I=null;
-  			final MaskingLibrary.CompiledZapperMask compiled=CMLib.masking().maskCompile(mask);
+  			final MaskingLibrary.CompiledZMask compiled=CMLib.masking().maskCompile(mask);
 			double totalValue=0;
 			int maxValue=-1;
 			for(int a=0;a<allItems.size();a++)

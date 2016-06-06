@@ -56,7 +56,7 @@ public class Prop_ModExperience extends Property
 	protected String								operationFormula	= "";
 	protected boolean								selfXP				= false;
 	protected LinkedList<CMath.CompiledOperation>	operation			= null;
-	protected MaskingLibrary.CompiledZapperMask		mask				= null;
+	protected MaskingLibrary.CompiledZMask		mask				= null;
 
 	@Override
 	public String accountForYourself()

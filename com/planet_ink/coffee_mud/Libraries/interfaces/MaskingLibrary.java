@@ -41,16 +41,16 @@ public interface MaskingLibrary extends CMLibrary
 	public List<String> getAbilityEduReqs(final String text);
 	public String maskDesc(final String text);
 	public String maskDesc(final String text, final boolean skipFirstWord);
-	public CompiledZapperMask maskCompile(final String text);
-	public CompiledZapperMask getPreCompiledMask(final String str);
-	public boolean maskCheck(final CompiledZapperMask cset, final Environmental E, final boolean actual);
+	public CompiledZMask maskCompile(final String text);
+	public CompiledZMask getPreCompiledMask(final String str);
+	public boolean maskCheck(final CompiledZMask cset, final Environmental E, final boolean actual);
 	public boolean maskCheck(final String text, final Environmental E, final boolean actual);
-	public boolean maskCheck(final CompiledZapperMask cset, final PlayerLibrary.ThinPlayer E);
+	public boolean maskCheck(final CompiledZMask cset, final PlayerLibrary.ThinPlayer E);
 	public boolean maskCheck(final String text, final PlayerLibrary.ThinPlayer E);
 	public boolean syntaxCheck(final String text, final List<String> errorSink);
 	public int minMaskLevel(final String text, final int minMinLevel);
 	public String[] separateMaskStrs(final String newText);
-	public CompiledZapperMask createEmptyMask();
+	public CompiledZMask createEmptyMask();
 	
 	public enum ZapperKey
 	{
@@ -199,16 +199,16 @@ public interface MaskingLibrary extends CMLibrary
 		}
 	}
 	
-	public static interface CompiledZapperMaskEntry
+	public static interface CompiledZMaskEntry
 	{
 		public ZapperKey maskType();
 		public Object[] parms();
 	}
 	
-	public static interface CompiledZapperMask
+	public static interface CompiledZMask
 	{
 		public boolean[] flags();
 		public boolean empty();
-		public CompiledZapperMaskEntry[] entries();
+		public CompiledZMaskEntry[] entries();
 	}
 }

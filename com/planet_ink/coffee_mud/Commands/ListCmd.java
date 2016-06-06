@@ -321,7 +321,7 @@ public class ListCmd extends StdCommand
 		boolean exitOnly = false;
 		boolean zapperMask = false;
 		boolean zapperMask2 = false;
-		MaskingLibrary.CompiledZapperMask compiledZapperMask=null;
+		MaskingLibrary.CompiledZMask compiledZapperMask=null;
 		String who="";
 		if(commands.size()>start)
 			who=commands.get(start).toString().toUpperCase();

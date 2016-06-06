@@ -126,7 +126,7 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 		int last=0;
 		char lookFor=' ';
 		final ArrayList<String> names=new ArrayList<String>();
-		final ArrayList<MaskingLibrary.CompiledZapperMask> masks=new ArrayList<MaskingLibrary.CompiledZapperMask>();
+		final ArrayList<MaskingLibrary.CompiledZMask> masks=new ArrayList<MaskingLibrary.CompiledZMask>();
 		for(int i=0;i<n.length;i++)
 		{
 			if(n[i]==lookFor)
@@ -160,7 +160,7 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 		}
 		if((names.size()==0)&&(masks.size()==0))
 			names.add("");
-		return new ChattyGroup(names.toArray(new String[0]),masks.toArray(new MaskingLibrary.CompiledZapperMask[0]));
+		return new ChattyGroup(names.toArray(new String[0]),masks.toArray(new MaskingLibrary.CompiledZMask[0]));
 	}
 
 
@@ -382,7 +382,7 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 				}
 				if(meM != null)
 				{
-					for(final MaskingLibrary.CompiledZapperMask mask : CG.groupMasks)
+					for(final MaskingLibrary.CompiledZMask mask : CG.groupMasks)
 					{
 						if(CMLib.masking().maskCheck(mask, meM, true))
 							return CG;

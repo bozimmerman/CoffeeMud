@@ -54,7 +54,7 @@ public class MobileAggressive extends Mobile
 	protected int				aggressiveTickDown	= 0;
 	protected boolean			levelcheck			= false;
 	protected VeryAggressive	veryA				= new VeryAggressive();
-	protected MaskingLibrary.CompiledZapperMask	mask= null;
+	protected MaskingLibrary.CompiledZMask	mask= null;
 
 	public MobileAggressive()
 	{

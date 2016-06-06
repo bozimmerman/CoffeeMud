@@ -137,7 +137,7 @@ public interface Manufacturer extends CMCommon
 	 * @see MaskingLibrary
 	 * @return the zapperMask, compiled
 	 */
-	public MaskingLibrary.CompiledZapperMask getItemMask();
+	public MaskingLibrary.CompiledZMask getItemMask();
 
 	/**
 	 * Returns the item mask that describes what kind of items this

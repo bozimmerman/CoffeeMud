@@ -12,7 +12,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary;
-import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZapperMask;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZMask;
 import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -78,7 +78,7 @@ public class CMSecurity
 	protected final static Set<String>		journalFlags = new HashSet<String>(); // global, because of cross-library issues
 
 	protected final long					startTime	 = System.currentTimeMillis();
-	protected CompiledZapperMask			compiledSysop= null;
+	protected CompiledZMask			compiledSysop= null;
 	protected final Map<String,SecGroup> 	groups  	 = new Hashtable<String,SecGroup>();
 
 	protected static boolean				debuggingEverything=false;

@@ -3488,7 +3488,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				final String arg2=tt[t+1];
 				String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
 				int num=0;
-				MaskingLibrary.CompiledZapperMask MASK=null;
+				MaskingLibrary.CompiledZMask MASK=null;
 				if((arg3.toUpperCase().startsWith("MASK")&&(arg3.substring(4).trim().startsWith("="))))
 				{
 					arg3=arg3.substring(4).trim();
@@ -3529,7 +3529,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				final String arg2=tt[t+1];
 				String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
 				int num=0;
-				MaskingLibrary.CompiledZapperMask MASK=null;
+				MaskingLibrary.CompiledZMask MASK=null;
 				if((arg3.toUpperCase().startsWith("MASK")&&(arg3.substring(4).trim().startsWith("="))))
 				{
 					arg3=arg3.substring(4).trim();
@@ -3799,7 +3799,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						if(!name.equalsIgnoreCase("*"))
 						{
 							num=0;
-							MaskingLibrary.CompiledZapperMask MASK=null;
+							MaskingLibrary.CompiledZMask MASK=null;
 							if((name.toUpperCase().startsWith("MASK")&&(name.substring(4).trim().startsWith("="))))
 							{
 								final boolean usePreCompiled = (name.equals(tt[t+0]));
@@ -6155,7 +6155,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(funcParms));
 				int num=0;
-				MaskingLibrary.CompiledZapperMask MASK=null;
+				MaskingLibrary.CompiledZMask MASK=null;
 				if((arg1.toUpperCase().startsWith("MASK")&&(arg1.substring(4).trim().startsWith("="))))
 				{
 					arg1=arg1.substring(4).trim();
@@ -6192,7 +6192,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				int num=0;
 				String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(funcParms));
-				MaskingLibrary.CompiledZapperMask MASK=null;
+				MaskingLibrary.CompiledZMask MASK=null;
 				if((arg1.toUpperCase().startsWith("MASK")&&(arg1.substring(4).trim().startsWith("="))))
 				{
 					arg1=arg1.substring(4).trim();
@@ -6370,7 +6370,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if((name.length()>0)&&(!name.equalsIgnoreCase("*")))
 					{
 						num=0;
-						MaskingLibrary.CompiledZapperMask MASK=null;
+						MaskingLibrary.CompiledZMask MASK=null;
 						if((name.toUpperCase().startsWith("MASK")&&(name.substring(4).trim().startsWith("="))))
 						{
 							name=name.substring(4).trim();

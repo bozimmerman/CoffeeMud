@@ -2,9 +2,11 @@ package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.core.exceptions.BadEmailAddressException;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMProps.Int;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.CharCreationLibrary.LoginSession;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZMask;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -51,11 +53,14 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		return "CharCreation";
 	}
 
-	public Map<String,String>		startRooms			= new Hashtable<String,String>();
-	public Map<String,String>		deathRooms			= new Hashtable<String,String>();
-	public Map<String,String>		bodyRooms			= new Hashtable<String,String>();
-	public Pair<String,Integer>[]	randomNameVowels 	= null;
-	public Pair<String,Integer>[]	randomNameConsonants= null;
+	public Map<String, String>				startRooms			= new Hashtable<String, String>();
+	public PairList<CompiledZMask, String>	startRoomMasks		= new PairVector<CompiledZMask, String>();
+	public Map<String, String>				deathRooms			= new Hashtable<String, String>();
+	public PairList<CompiledZMask, String>	deathRoomMasks		= new PairVector<CompiledZMask, String>();
+	public Map<String, String>				bodyRooms			= new Hashtable<String, String>();
+	public PairList<CompiledZMask, String>	bodyRoomMasks		= new PairVector<CompiledZMask, String>();
+	public Pair<String, Integer>[]			randomNameVowels	= null;
+	public Pair<String, Integer>[]			randomNameConsonants= null;
 
 	protected final String RECONFIRMSTR="\n\r^WTry entering ^HY^W or ^HN^W: ";
 	
@@ -3620,7 +3625,22 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		String deity=mob.getWorshipCharID().toUpperCase();
 		deity=deity.replace(' ','_');
 		final String align=CMLib.flags().getAlignmentName(mob);
-		String roomID=startRooms.get(race);
+		
+		String roomID=null;
+		if((startRoomMasks.size()>0)&&(mob.isPlayer()))
+		{
+			for(Pair<CompiledZMask,String> p : startRoomMasks)
+			{
+				if(CMLib.masking().maskCheck(p.first, mob, true))
+				{
+					roomID=p.second;
+					break;
+				}
+			}
+		}
+		
+		if((roomID==null)||(roomID.length()==0))
+			roomID=startRooms.get(race);
 		if((roomID==null)||(roomID.length()==0))
 			roomID=startRooms.get(realrace);
 		if(((roomID==null)||(roomID.length()==0)))
@@ -3641,6 +3661,10 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		}
 		if(((roomID==null)||(roomID.length()==0))&&(deity.length()>0))
 			roomID=startRooms.get(deity);
+
+		if(((roomID==null)||(roomID.length()==0)))
+			roomID=startRooms.get(""+mob.phyStats().level());
+
 		if((roomID==null)||(roomID.length()==0))
 			roomID=startRooms.get("ALL");
 
@@ -3664,7 +3688,23 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		String deity=mob.getWorshipCharID().toUpperCase();
 		deity=deity.replace(' ','_');
 		final String align=CMLib.flags().getAlignmentName(mob);
-		String roomID=deathRooms.get(race);
+		
+		String roomID=null;
+		if((deathRoomMasks.size()>0)
+		&&(mob.isPlayer()))
+		{
+			for(Pair<CompiledZMask,String> p : deathRoomMasks)
+			{
+				if(CMLib.masking().maskCheck(p.first, mob, true))
+				{
+					roomID=p.second;
+					break;
+				}
+			}
+		}
+		
+		if(((roomID==null)||(roomID.length()==0)))
+			roomID=deathRooms.get(race);
 		if(((roomID==null)||(roomID.length()==0)))
 			roomID=deathRooms.get(align);
 		if(((roomID==null)||(roomID.length()==0)))
@@ -3683,6 +3723,10 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		}
 		if(((roomID==null)||(roomID.length()==0))&&(deity.length()>0))
 			roomID=deathRooms.get(deity);
+
+		if(((roomID==null)||(roomID.length()==0)))
+			roomID=deathRooms.get(""+mob.phyStats().level());
+		
 		if((roomID==null)||(roomID.length()==0))
 			roomID=deathRooms.get("ALL");
 
@@ -3723,7 +3767,22 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		String deity=mob.getWorshipCharID().toUpperCase();
 		deity=deity.replace(' ','_');
 		final String align=CMLib.flags().getAlignmentName(mob);
-		String roomID=bodyRooms.get(race);
+		
+		String roomID=null;
+		if((bodyRoomMasks.size()>0)&&(mob.isPlayer()))
+		{
+			for(Pair<CompiledZMask,String> p : bodyRoomMasks)
+			{
+				if(CMLib.masking().maskCheck(p.first, mob, true))
+				{
+					roomID=p.second;
+					break;
+				}
+			}
+		}
+		
+		if((roomID==null)||(roomID.length()==0))
+			roomID=bodyRooms.get(race);
 		if((roomID==null)||(roomID.length()==0))
 			roomID=bodyRooms.get(realrace);
 		if(((roomID==null)||(roomID.length()==0)))
@@ -3744,6 +3803,10 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		}
 		if(((roomID==null)||(roomID.length()==0))&&(deity.length()>0))
 			roomID=bodyRooms.get(deity);
+		
+		if(((roomID==null)||(roomID.length()==0)))
+			roomID=bodyRooms.get(""+mob.phyStats().level());
+		
 		if((roomID==null)||(roomID.length()==0))
 			roomID=bodyRooms.get("ALL");
 
@@ -3783,13 +3846,46 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		return val;
 	}
 
-	protected void pageRooms(CMProps page, Map<String, String> table, String start)
+	protected void pageRooms(CMProps page, Map<String, String> table, PairList<CompiledZMask,String> masks, String start)
 	{
+		List<Integer> ints=new ArrayList<Integer>();
 		for(final Enumeration<Object> i=page.keys();i.hasMoreElements();)
 		{
 			final String k=(String)i.nextElement();
 			if(k.startsWith(start+"_"))
-				table.put(k.substring(start.length()+1),page.getProperty(k));
+			{
+				final String kr=k.substring(start.length()+1);
+				if(kr.startsWith("MASK"))
+				{
+					final String m=page.getProperty(k);
+					int x=m.indexOf('=');
+					if(x<0)
+						Log.errOut("INI Entry '"+k+m+"' is malformed!");
+					else
+						masks.add(CMLib.masking().maskCompile(m.substring(x+1).trim()), m.substring(0,x).trim());
+				}
+				else
+				if(CMath.isInteger(kr))
+					ints.add(Integer.valueOf(CMath.s_int(kr)));
+				else
+					table.put(kr,page.getProperty(k));
+			}
+		}
+		Collections.sort(ints);
+		int lastPlayerLevel = CMath.s_int(page.getProperty(Int.LASTPLAYERLEVEL.name()))+10;
+		for(int i=ints.size()-1;i>=0;i--)
+		{
+			final Integer I=ints.get(i);
+			final String k=start+"_"+I.toString();
+			final int upTo=(lastPlayerLevel > I.intValue()) ? lastPlayerLevel : (I.intValue()+1);
+			if(page.containsKey(k))
+			{
+				for(int lvl=I.intValue();lvl<upTo;lvl++)
+				{
+					if(!table.containsKey(""+lvl))
+						table.put(""+lvl,page.getProperty(k));
+				}
+			}
 		}
 		final String thisOne=page.getProperty(start);
 		if((thisOne!=null)&&(thisOne.length()>0))
@@ -3800,21 +3896,24 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	public void initStartRooms(CMProps page)
 	{
 		startRooms=new Hashtable<String,String>();
-		pageRooms(page,startRooms,"START");
+		startRoomMasks=new PairVector<CompiledZMask,String>();
+		pageRooms(page,startRooms,startRoomMasks,"START");
 	}
 
 	@Override
 	public void initDeathRooms(CMProps page)
 	{
 		deathRooms=new Hashtable<String,String>();
-		pageRooms(page,deathRooms,"DEATH");
+		deathRoomMasks=new PairVector<CompiledZMask,String>();
+		pageRooms(page,deathRooms,deathRoomMasks,"DEATH");
 	}
 
 	@Override
 	public void initBodyRooms(CMProps page)
 	{
 		bodyRooms=new Hashtable<String,String>();
-		pageRooms(page,bodyRooms,"MORGUE");
+		bodyRoomMasks=new PairVector<CompiledZMask,String>();
+		pageRooms(page,bodyRooms,bodyRoomMasks,"MORGUE");
 	}
 
 	@Override

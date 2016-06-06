@@ -10,7 +10,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Tracker
 import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary.CostType;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary.ExpertiseDefinition;
 import com.planet_ink.coffee_mud.Libraries.interfaces.GenericEditor.CMEval;
-import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZapperMask;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZMask;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -347,13 +347,13 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 								}
 
 								@Override
-								public CompiledZapperMask compiledListMask()
+								public CompiledZMask compiledListMask()
 								{
 									return CMLib.masking().getPreCompiledMask("-LEVEL +>="+number);
 								}
 
 								@Override
-								public CompiledZapperMask compiledFinalMask()
+								public CompiledZMask compiledFinalMask()
 								{
 									return CMLib.masking().createEmptyMask();
 								}
@@ -573,8 +573,8 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			A=new Achievement()
 			{
 				private int num = 0;
-				private MaskingLibrary.CompiledZapperMask npcMask = null;
-				private MaskingLibrary.CompiledZapperMask playerMask = null;
+				private MaskingLibrary.CompiledZMask npcMask = null;
+				private MaskingLibrary.CompiledZMask playerMask = null;
 				
 				@Override
 				public Event getEvent()
@@ -708,7 +708,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		case JUSTBE:
 			A=new Achievement()
 			{
-				private MaskingLibrary.CompiledZapperMask playerMask = null;
+				private MaskingLibrary.CompiledZMask playerMask = null;
 				
 				@Override
 				public Event getEvent()
@@ -1707,7 +1707,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			A=new Achievement()
 			{
 				private int num = 0;
-				private MaskingLibrary.CompiledZapperMask mask = null;
+				private MaskingLibrary.CompiledZMask mask = null;
 				private java.util.regex.Pattern questPattern = null;
 				
 				@Override
@@ -2153,7 +2153,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			{
 				private int num = 0;
 				private CharClass charClass = null;
-				private MaskingLibrary.CompiledZapperMask playerMask = null;
+				private MaskingLibrary.CompiledZMask playerMask = null;
 				
 				@Override
 				public Event getEvent()
@@ -2290,7 +2290,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			A=new Achievement()
 			{
 				private int num = 0;
-				private MaskingLibrary.CompiledZapperMask playerMask = null;
+				private MaskingLibrary.CompiledZMask playerMask = null;
 				
 				@Override
 				public Event getEvent()
@@ -2415,8 +2415,8 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		case GOTITEM:
 			A=new Achievement()
 			{
-				private MaskingLibrary.CompiledZapperMask playerMask = null;
-				private MaskingLibrary.CompiledZapperMask itemMask = null;
+				private MaskingLibrary.CompiledZMask playerMask = null;
+				private MaskingLibrary.CompiledZMask itemMask = null;
 				
 				@Override
 				public Event getEvent()
@@ -2547,7 +2547,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			A=new Achievement()
 			{
 				private int seconds = 0;
-				private MaskingLibrary.CompiledZapperMask playerMask = null;
+				private MaskingLibrary.CompiledZMask playerMask = null;
 				
 				@Override
 				public Event getEvent()
@@ -2674,8 +2674,8 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			A=new Achievement()
 			{
 				private int num = 0;
-				private MaskingLibrary.CompiledZapperMask npcMask = null;
-				private MaskingLibrary.CompiledZapperMask playerMask = null;
+				private MaskingLibrary.CompiledZMask npcMask = null;
+				private MaskingLibrary.CompiledZMask playerMask = null;
 				
 				@Override
 				public Event getEvent()

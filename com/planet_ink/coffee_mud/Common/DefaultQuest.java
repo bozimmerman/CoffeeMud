@@ -1027,7 +1027,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						List<MOB> choices=null;
 						String mobName=CMParms.combine(p,2).toUpperCase();
 						final String maskStr=CMLib.quests().breakOutMaskString(s,p);
-						final MaskingLibrary.CompiledZapperMask mask=(maskStr.trim().length()==0)?null:CMLib.masking().maskCompile(maskStr);
+						final MaskingLibrary.CompiledZMask mask=(maskStr.trim().length()==0)?null:CMLib.masking().maskCompile(maskStr);
 						if(mask!=null)
 							mobName=CMParms.combine(p,2).toUpperCase();
 						try
@@ -1103,7 +1103,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						List<Item> choices=null;
 						String itemName=CMParms.combine(p,2).toUpperCase();
 						final String maskStr=CMLib.quests().breakOutMaskString(s,p);
-						final MaskingLibrary.CompiledZapperMask mask=(maskStr.trim().length()==0)?null:CMLib.masking().maskCompile(maskStr);
+						final MaskingLibrary.CompiledZMask mask=(maskStr.trim().length()==0)?null:CMLib.masking().maskCompile(maskStr);
 						if(mask!=null)
 							itemName=CMParms.combine(p,2).toUpperCase();
 						try
@@ -1465,7 +1465,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						final List<Room> choices3=new Vector<Room>();
 						final Vector<String> names=new Vector<String>();
 						final String maskStr=CMLib.quests().breakOutMaskString(s,p);
-						final MaskingLibrary.CompiledZapperMask mask=(maskStr.trim().length()==0)?null:CMLib.masking().maskCompile(maskStr);
+						final MaskingLibrary.CompiledZMask mask=(maskStr.trim().length()==0)?null:CMLib.masking().maskCompile(maskStr);
 						if((p.size()>3)&&(p.elementAt(2).equalsIgnoreCase("any")))
 						{
 							for(int ip=3;ip<p.size();ip++)
@@ -1575,7 +1575,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						}
 						String mobName=CMParms.combine(p,2).toUpperCase();
 						final String maskStr=CMLib.quests().breakOutMaskString(s,p);
-						final MaskingLibrary.CompiledZapperMask mask=(maskStr.trim().length()==0)?null:CMLib.masking().maskCompile(maskStr);
+						final MaskingLibrary.CompiledZMask mask=(maskStr.trim().length()==0)?null:CMLib.masking().maskCompile(maskStr);
 						if(mask!=null)
 							mobName=CMParms.combine(p,2).toUpperCase();
 						try
@@ -1672,7 +1672,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						}
 						String itemName=CMParms.combine(p,2).toUpperCase();
 						final String maskStr=CMLib.quests().breakOutMaskString(s,p);
-						final MaskingLibrary.CompiledZapperMask mask=(maskStr.trim().length()==0)?null:CMLib.masking().maskCompile(maskStr);
+						final MaskingLibrary.CompiledZMask mask=(maskStr.trim().length()==0)?null:CMLib.masking().maskCompile(maskStr);
 						if(mask!=null)
 							itemName=CMParms.combine(p,2).toUpperCase();
 						try
@@ -2650,7 +2650,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						}
 						String mobName=CMParms.combine(p,2);
 						final String maskStr=CMLib.quests().breakOutMaskString(s,p);
-						final MaskingLibrary.CompiledZapperMask mask=(maskStr.trim().length()==0)?null:CMLib.masking().maskCompile(maskStr);
+						final MaskingLibrary.CompiledZMask mask=(maskStr.trim().length()==0)?null:CMLib.masking().maskCompile(maskStr);
 						if(mask!=null)
 							mobName=CMParms.combine(p,2).toUpperCase();
 						if(mobName.length()==0)

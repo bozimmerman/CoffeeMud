@@ -36,7 +36,7 @@ public class DefaultAbilityComponent implements AbilityComponent
 	private long compTypeMatRsc = 0;
 	private String compTypeStr = "";
 	private String maskStr = "";
-	private MaskingLibrary.CompiledZapperMask compiledMask = null;
+	private MaskingLibrary.CompiledZMask compiledMask = null;
 
 	@Override public String ID(){return "DefaultAbilityComponent";}
 	@Override public String name() { return ID();}
@@ -98,7 +98,7 @@ public class DefaultAbilityComponent implements AbilityComponent
 		this.amount = amount;
 	}
 	@Override
-	public MaskingLibrary.CompiledZapperMask getCompiledMask()
+	public MaskingLibrary.CompiledZMask getCompiledMask()
 	{
 		return compiledMask;
 	}

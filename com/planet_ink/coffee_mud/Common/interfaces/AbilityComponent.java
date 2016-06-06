@@ -132,7 +132,7 @@ public interface AbilityComponent extends CMCommon
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
 	 * @return the compiled zapper mask
 	 */
-	public MaskingLibrary.CompiledZapperMask getCompiledMask();
+	public MaskingLibrary.CompiledZMask getCompiledMask();
 
 	/**
 	 * Returns the raw zapper mask to determine whether a given agent

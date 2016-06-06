@@ -41,7 +41,7 @@ public class Prop_Socials extends Property
 	protected final Map<String,List<Social>> socials=new TreeMap<String,List<Social>>();
 
 	protected boolean wornOnly=false;
-	protected MaskingLibrary.CompiledZapperMask mask=null;
+	protected MaskingLibrary.CompiledZMask mask=null;
 
 	@Override
 	public void setMiscText(String newText)

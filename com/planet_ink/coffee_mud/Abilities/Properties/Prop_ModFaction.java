@@ -44,7 +44,7 @@ public class Prop_ModFaction extends Property
 	protected boolean gainonly=false;
 	protected boolean lossonly=false;
 	protected LinkedList<CMath.CompiledOperation> operation = null;
-	protected MaskingLibrary.CompiledZapperMask   mask = null;
+	protected MaskingLibrary.CompiledZMask   mask = null;
 
 	@Override
 	public String accountForYourself()

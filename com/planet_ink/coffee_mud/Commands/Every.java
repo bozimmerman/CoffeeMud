@@ -67,7 +67,7 @@ public class Every extends StdCommand
 			return false;
 		commands=new XVector<String>(commands);
 		Enumeration<Room> roomList = new XVector<Room>(room).elements();
-		MaskingLibrary.CompiledZapperMask mask = null;
+		MaskingLibrary.CompiledZMask mask = null;
 		boolean doPlayers = false;
 		List<String> mskBunch=null;
 		if(commands.size()==0)

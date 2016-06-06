@@ -11,7 +11,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary;
-import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZapperMask;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZMask;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -63,7 +63,7 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 	protected Object[]				charStatsChanges	= null;
 	protected Object[]				charStateChanges	= null;
 	protected Object[]				phyStatsChanges		= null;
-	protected CompiledZapperMask	mask				= null;
+	protected CompiledZMask	mask				= null;
 	protected String[]				parameters			= new String[] { "", "" };
 
 	@Override

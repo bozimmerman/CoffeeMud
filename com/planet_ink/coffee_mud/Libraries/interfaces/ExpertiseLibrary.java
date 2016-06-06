@@ -66,9 +66,9 @@ public interface ExpertiseLibrary extends CMLibrary
 		
 		public String[] getData();
 		
-		public MaskingLibrary.CompiledZapperMask compiledListMask();
+		public MaskingLibrary.CompiledZMask compiledListMask();
 		
-		public MaskingLibrary.CompiledZapperMask compiledFinalMask();
+		public MaskingLibrary.CompiledZMask compiledFinalMask();
 		
 		public String allRequirements();
 		

@@ -117,11 +117,11 @@ public interface ChattyBehavior extends Behavior
 	public static class ChattyGroup implements Cloneable
 	{
 		public String[]								groupNames;
-		public MaskingLibrary.CompiledZapperMask[]	groupMasks;
+		public MaskingLibrary.CompiledZMask[]	groupMasks;
 		public ChattyEntry[]						entries	= null;
 		public ChattyEntry[]						tickies	= null;
 
-		public ChattyGroup(String[] names, MaskingLibrary.CompiledZapperMask[] masks)
+		public ChattyGroup(String[] names, MaskingLibrary.CompiledZMask[] masks)
 		{
 			groupNames = names;
 			groupMasks = masks;

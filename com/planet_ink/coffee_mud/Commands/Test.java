@@ -1556,7 +1556,7 @@ public class Test extends StdCommand
 				reset(mobs,backups,R,IS,R2);
 				String mask1="-ANYCLASSLEVEL +Gaian +>=30 +Druid +<10";
 				String mask2="+ANYCLASSLEVEL -Gaian ->=30 -Druid -<10";
-				MaskingLibrary.CompiledZapperMask cmask1 = CMLib.masking().maskCompile(mask1);
+				MaskingLibrary.CompiledZMask cmask1 = CMLib.masking().maskCompile(mask1);
 				mob.tell(L("Test#27-1: @x1",CMLib.masking().maskDesc(mask1)));
 				if(!CMLib.masking().maskCheck(mask1, mobs[0],true))
 				{ mob.tell(L("Error27-1")); return false;}
@@ -1566,7 +1566,7 @@ public class Test extends StdCommand
 				{ mob.tell(L("Error27-3")); return false;}
 				if(CMLib.masking().maskCheck(cmask1, mobs[1],true))
 				{ mob.tell(L("Error27-4")); return false;}
-				MaskingLibrary.CompiledZapperMask cmask2 = CMLib.masking().maskCompile(mask2);
+				MaskingLibrary.CompiledZMask cmask2 = CMLib.masking().maskCompile(mask2);
 				mob.tell(L("Test#27-2: @x1",CMLib.masking().maskDesc(mask2)));
 				if(CMLib.masking().maskCheck(mask2, mobs[0],true))
 				{ mob.tell(L("Error27-5")); return false;}

@@ -1617,8 +1617,8 @@ public class DefaultFaction implements Faction, MsgListener
 		private final Faction	myFaction;
 		
 		private Map<String,String> savedTriggerParms=new Hashtable<String,String>();
-		private MaskingLibrary.CompiledZapperMask compiledTargetZapper=null;
-		private MaskingLibrary.CompiledZapperMask compiledSourceZapper=null;
+		private MaskingLibrary.CompiledZMask compiledTargetZapper=null;
+		private MaskingLibrary.CompiledZMask compiledSourceZapper=null;
 
 		@Override
 		public String eventID()
@@ -1705,7 +1705,7 @@ public class DefaultFaction implements Faction, MsgListener
 		}
 
 		@Override
-		public MaskingLibrary.CompiledZapperMask compiledTargetZapper()
+		public MaskingLibrary.CompiledZMask compiledTargetZapper()
 		{
 			if(compiledTargetZapper == null)
 			{
@@ -1715,7 +1715,7 @@ public class DefaultFaction implements Faction, MsgListener
 			return compiledTargetZapper;
 		}
 		@Override
-		public MaskingLibrary.CompiledZapperMask compiledSourceZapper()
+		public MaskingLibrary.CompiledZMask compiledSourceZapper()
 		{
 			if(compiledSourceZapper == null)
 			{
@@ -2244,7 +2244,7 @@ public class DefaultFaction implements Faction, MsgListener
 			List<Faction.FReactionItem> tempReactSet=null;
 			for(int d=0;d<currentReactionSets.size();d++)
 			{
-				if(CMLib.masking().maskCheck((MaskingLibrary.CompiledZapperMask)currentReactionSets.elementAt(d,1),M,true))
+				if(CMLib.masking().maskCheck((MaskingLibrary.CompiledZMask)currentReactionSets.elementAt(d,1),M,true))
 				{
 					if(myReactions==null)
 						myReactions=new Vector<String>();
@@ -2430,7 +2430,7 @@ public class DefaultFaction implements Faction, MsgListener
 		private double gainF= 1.0;
 		private double lossF= 1.0;
 		private String mask	= "";
-		private MaskingLibrary.CompiledZapperMask compiledMask=null;
+		private MaskingLibrary.CompiledZMask compiledMask=null;
 		
 		public DefaultFactionZapFactor(double gain, double loss, String mask)
 		{
@@ -2470,7 +2470,7 @@ public class DefaultFaction implements Faction, MsgListener
 		}
 
 		@Override
-		public MaskingLibrary.CompiledZapperMask compiledMOBMask()
+		public MaskingLibrary.CompiledZMask compiledMOBMask()
 		{
 			return compiledMask;
 		}
@@ -2496,7 +2496,7 @@ public class DefaultFaction implements Faction, MsgListener
 		private String rangeName		="";
 		private String parms			="";
 		
-		private MaskingLibrary.CompiledZapperMask compiledMobMask=null;
+		private MaskingLibrary.CompiledZMask compiledMobMask=null;
 		
 		@Override
 		public String reactionObjectID()
@@ -2527,7 +2527,7 @@ public class DefaultFaction implements Faction, MsgListener
 		}
 		
 		@Override
-		public MaskingLibrary.CompiledZapperMask compiledPresentMOBMask()
+		public MaskingLibrary.CompiledZMask compiledPresentMOBMask()
 		{
 			return compiledMobMask;
 		}

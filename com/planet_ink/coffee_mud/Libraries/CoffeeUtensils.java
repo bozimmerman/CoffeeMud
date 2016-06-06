@@ -41,8 +41,8 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 {
 	@Override public String ID(){return "CoffeeUtensils";}
 
-	private TriadVector<Integer,Integer,MaskingLibrary.CompiledZapperMask> lootPolicy = null;
-	private final TriadVector<Integer,Integer,MaskingLibrary.CompiledZapperMask> noLootPolicy = new TriadVector<Integer,Integer,MaskingLibrary.CompiledZapperMask>();
+	private TriadVector<Integer,Integer,MaskingLibrary.CompiledZMask> lootPolicy = null;
+	private final TriadVector<Integer,Integer,MaskingLibrary.CompiledZMask> noLootPolicy = new TriadVector<Integer,Integer,MaskingLibrary.CompiledZMask>();
 	private int lastLootPolicyHash=0;
 
 	public static final int LOOTFLAG_RUIN=1;
@@ -788,7 +788,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		return true;
 	}
 
-	protected TriadVector<Integer,Integer,MaskingLibrary.CompiledZapperMask> parseLootPolicyFor(MOB mob)
+	protected TriadVector<Integer,Integer,MaskingLibrary.CompiledZMask> parseLootPolicyFor(MOB mob)
 	{
 		if((mob==null)||(!mob.isMonster()))
 			return noLootPolicy;
@@ -796,13 +796,13 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		if((lootPolicy==null)||(lastLootPolicyHash!=lootPolicyStr.hashCode()))
 		{
 			final List<String> lootPolicies=(!mob.isMonster())?new Vector<String>():CMParms.parseCommas(CMProps.getVar(CMProps.Str.ITEMLOOTPOLICY),true);
-			final TriadVector<Integer,Integer,MaskingLibrary.CompiledZapperMask> policies=new TriadVector<Integer,Integer,MaskingLibrary.CompiledZapperMask>();
+			final TriadVector<Integer,Integer,MaskingLibrary.CompiledZMask> policies=new TriadVector<Integer,Integer,MaskingLibrary.CompiledZMask>();
 			for(int p=0;p<lootPolicies.size();p++)
 			{
 				String s=lootPolicies.get(p).toUpperCase().trim();
 				if(s.length()==0)
 					continue;
-				MaskingLibrary.CompiledZapperMask compiledMask=null;
+				MaskingLibrary.CompiledZMask compiledMask=null;
 				final int maskDex=s.indexOf("MASK=");
 				if(maskDex>=0)
 				{
@@ -977,7 +977,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			return I;
 		if(I.ID().equals("GenRuinedItem"))
 			return I;
-		final TriadVector<Integer,Integer,MaskingLibrary.CompiledZapperMask> policies=parseLootPolicyFor(mob);
+		final TriadVector<Integer,Integer,MaskingLibrary.CompiledZMask> policies=parseLootPolicyFor(mob);
 		for(int d=0;d<policies.size();d++)
 		{
 			if((policies.get(d).third.entries().length>0)

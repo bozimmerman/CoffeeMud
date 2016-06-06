@@ -27,7 +27,7 @@ import java.util.concurrent.TimeUnit;
 
 import com.planet_ink.coffee_mud.core.exceptions.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
-import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZapperMask;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZMask;
 
 /*
    Copyright 2004-2016 Bo Zimmerman
@@ -246,7 +246,7 @@ public class SMTPserver extends Thread implements Tickable
 						}
 
 						@Override
-						public CompiledZapperMask criteria()
+						public CompiledZMask criteria()
 						{
 							return CMLib.masking().getPreCompiledMask(criteriaString);
 						}
@@ -299,7 +299,7 @@ public class SMTPserver extends Thread implements Tickable
 		final JournalsLibrary.SMTPJournal jrnl=getAJournal(journal);
 		return jrnl != null ? jrnl.keepAll() : false;
 	}
-	public MaskingLibrary.CompiledZapperMask getJournalCriteria(String journal)
+	public MaskingLibrary.CompiledZMask getJournalCriteria(String journal)
 	{
 		final JournalsLibrary.SMTPJournal jrnl=getAJournal(journal);
 		return jrnl != null ? jrnl.criteria() : null;

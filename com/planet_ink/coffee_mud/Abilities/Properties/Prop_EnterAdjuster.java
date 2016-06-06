@@ -55,7 +55,7 @@ public class Prop_EnterAdjuster extends Property implements TriggeredAffect
 		return Ability.CAN_EXITS | Ability.CAN_ROOMS;
 	}
 
-	protected MaskingLibrary.CompiledZapperMask mask=CMLib.masking().createEmptyMask();
+	protected MaskingLibrary.CompiledZMask mask=CMLib.masking().createEmptyMask();
 	protected String[] parameters=new String[]{"",""};
 
 	@Override

@@ -47,7 +47,7 @@ public class DefaultManufacturer implements Manufacturer
 
 	protected Set<TechType> types		= new HashSet<TechType>();
 
-	protected MaskingLibrary.CompiledZapperMask compiledItemMask = null;
+	protected MaskingLibrary.CompiledZMask compiledItemMask = null;
 
 	@Override public String name() { return name;}
 
@@ -176,7 +176,7 @@ public class DefaultManufacturer implements Manufacturer
 	}
 
 	@Override
-	public MaskingLibrary.CompiledZapperMask getItemMask()
+	public MaskingLibrary.CompiledZMask getItemMask()
 	{
 		return compiledItemMask;
 	}

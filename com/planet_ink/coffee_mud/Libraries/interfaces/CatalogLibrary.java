@@ -435,7 +435,7 @@ public interface CatalogLibrary extends CMLibrary
 		 * @see CataData#getRate()
 		 * @return a compiled zapper mask for dead mobs
 		 */
-		public MaskingLibrary.CompiledZapperMask getMaskV();
+		public MaskingLibrary.CompiledZMask getMaskV();
 		
 		/**
 		 * A zapper mask string that is applied to mobs to

@@ -38,8 +38,8 @@ public class ProtectedCitizens extends ActiveTicker
 {
 	@Override public String ID(){return "ProtectedCitizens";}
 	@Override protected int canImproveCode(){return Behavior.CAN_MOBS|Behavior.CAN_AREAS|Behavior.CAN_ROOMS;}
-	protected static MaskingLibrary.CompiledZapperMask citizenZapper=null;
-	protected static MaskingLibrary.CompiledZapperMask helperZapper=null;
+	protected static MaskingLibrary.CompiledZMask citizenZapper=null;
+	protected static MaskingLibrary.CompiledZMask helperZapper=null;
 	protected static String[] defclaims={"Help! I'm being attacked!","Help me!!"};
 	protected String[] claims=null;
 	protected int radius=7;
@@ -74,7 +74,7 @@ public class ProtectedCitizens extends ActiveTicker
 		claims=null;
 	}
 
-	public MaskingLibrary.CompiledZapperMask getProtectedZapper()
+	public MaskingLibrary.CompiledZMask getProtectedZapper()
 	{
 		if(citizenZapper!=null)
 			return citizenZapper;
@@ -87,7 +87,7 @@ public class ProtectedCitizens extends ActiveTicker
 		return citizenZapper;
 	}
 
-	public MaskingLibrary.CompiledZapperMask getCityguardZapper()
+	public MaskingLibrary.CompiledZMask getCityguardZapper()
 	{
 		if(helperZapper!=null)
 			return helperZapper;

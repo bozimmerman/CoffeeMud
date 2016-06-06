@@ -137,7 +137,7 @@ public class Where extends StdCommand
 				boolean zapperMask=false;
 				boolean zapperMask2=false;
 				boolean areaFlag=false;
-				MaskingLibrary.CompiledZapperMask compiledZapperMask=null;
+				MaskingLibrary.CompiledZMask compiledZapperMask=null;
 				if(who.toUpperCase().startsWith("AREA "))
 				{
 					areaFlag=true;

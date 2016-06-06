@@ -795,9 +795,9 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 			private String								uncompiledListMask	= "";
 			private String								uncompiledFinalMask	= "";
 			private int									minLevel			= Integer.MIN_VALUE + 1;
-			private MaskingLibrary.CompiledZapperMask	compiledListMask	= null;
+			private MaskingLibrary.CompiledZMask	compiledListMask	= null;
 			private final ExpertiseDefinition			parent				= null;
-			private MaskingLibrary.CompiledZapperMask	compiledFinalMask	= null;
+			private MaskingLibrary.CompiledZMask	compiledFinalMask	= null;
 			private final List<SkillCost>				costs				= new LinkedList<SkillCost>();
 
 			@Override
@@ -857,7 +857,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 			}
 			
 			@Override
-			public MaskingLibrary.CompiledZapperMask compiledListMask()
+			public MaskingLibrary.CompiledZMask compiledListMask()
 			{
 				if((this.compiledListMask==null)&&(uncompiledListMask.length()>0))
 				{
@@ -868,7 +868,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 			}
 			
 			@Override
-			public MaskingLibrary.CompiledZapperMask compiledFinalMask()
+			public MaskingLibrary.CompiledZMask compiledFinalMask()
 			{
 				if((this.compiledFinalMask==null)&&(uncompiledFinalMask.length()>0))
 				{

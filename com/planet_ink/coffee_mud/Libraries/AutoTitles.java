@@ -35,7 +35,7 @@ import java.util.*;
 public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
 {
 	@Override public String ID(){return "AutoTitles";}
-	private TriadSVector<String,String,MaskingLibrary.CompiledZapperMask> autoTitles=null;
+	private TriadSVector<String,String,MaskingLibrary.CompiledZMask> autoTitles=null;
 
 	private static final String titleFilename = "titles.ini";
 	
@@ -72,10 +72,10 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
 		{
 			if(autoTitles==null)
 				reloadAutoTitles();
-			for(final Triad<String,String,MaskingLibrary.CompiledZapperMask> triad : autoTitles)
+			for(final Triad<String,String,MaskingLibrary.CompiledZMask> triad : autoTitles)
 				if(triad.first.equalsIgnoreCase(title))
 					return "Error: Duplicate title: "+title+"="+mask+"!";
-			autoTitles.add(new Triad<String,String,MaskingLibrary.CompiledZapperMask>(title,mask,CMLib.masking().maskCompile(mask)));
+			autoTitles.add(new Triad<String,String,MaskingLibrary.CompiledZMask>(title,mask,CMLib.masking().maskCompile(mask)));
 		}
 		return null;
 	}
@@ -85,7 +85,7 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
 		if(autoTitles==null)
 			reloadAutoTitles();
 		title=title.trim();
-		for(final Triad<String,String,MaskingLibrary.CompiledZapperMask> triad : autoTitles)
+		for(final Triad<String,String,MaskingLibrary.CompiledZMask> triad : autoTitles)
 			if(triad.first.equalsIgnoreCase(title))
 				return true;
 		return false;
@@ -104,7 +104,7 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
 	{
 		if(autoTitles==null)
 			reloadAutoTitles();
-		for(final Triad<String,String,MaskingLibrary.CompiledZapperMask> triad : autoTitles)
+		for(final Triad<String,String,MaskingLibrary.CompiledZMask> triad : autoTitles)
 			if(triad.first.equalsIgnoreCase(title))
 				return triad.second;
 		return "";
@@ -121,13 +121,13 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
 		if(autoTitles==null)
 			reloadAutoTitles();
 		String title=null;
-		MaskingLibrary.CompiledZapperMask mask=null;
+		MaskingLibrary.CompiledZMask mask=null;
 		int pdex=0;
 		final List<String> ptV=P.getTitles();
 		boolean somethingDone=false;
 		synchronized(ptV)
 		{
-			for(final Triad<String,String,MaskingLibrary.CompiledZapperMask> triad : autoTitles)
+			for(final Triad<String,String,MaskingLibrary.CompiledZMask> triad : autoTitles)
 			{
 				mask=triad.third;
 				title=triad.first;
@@ -235,7 +235,7 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
 	@Override
 	public void reloadAutoTitles()
 	{
-		autoTitles=new TriadSVector<String,String,MaskingLibrary.CompiledZapperMask>();
+		autoTitles=new TriadSVector<String,String,MaskingLibrary.CompiledZMask>();
 		final List<String> V=Resources.getFileLineVector(Resources.getFileResource(this.getTitleFilename(),true));
 		String WKID=null;
 		for(int v=0;v<V.size();v++)

@@ -113,7 +113,7 @@ public interface JournalsLibrary extends CMLibrary
 		public boolean subscribeOnly();
 		public boolean keepAll();
 		public String  criteriaStr();
-		public MaskingLibrary.CompiledZapperMask criteria();
+		public MaskingLibrary.CompiledZMask criteria();
 	}
 
 	public static interface ForumJournal

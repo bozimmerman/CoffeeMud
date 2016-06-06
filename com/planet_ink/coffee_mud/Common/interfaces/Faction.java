@@ -1074,7 +1074,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		 * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
 		 * @return the zapper mask compiled
 		 */
-		public MaskingLibrary.CompiledZapperMask compiledTargetZapper();
+		public MaskingLibrary.CompiledZMask compiledTargetZapper();
 
 		/**
 		 * Returns the zapper mask that is used to see if the source of the event qualifies in
@@ -1083,7 +1083,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		 * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
 		 * @return the zapper mask compiled
 		 */
-		public MaskingLibrary.CompiledZapperMask compiledSourceZapper();
+		public MaskingLibrary.CompiledZMask compiledSourceZapper();
 
 		/**
 		 * Sets the zapper mask that is used to see if the target of the event qualifies in
@@ -1513,7 +1513,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FZapFactor#setMOBMask(String)
 		 * @return the compiled mask to tell which mobs to apply this reaction to
 		 */
-		public MaskingLibrary.CompiledZapperMask compiledMOBMask();
+		public MaskingLibrary.CompiledZMask compiledMOBMask();
 
 		/**
 		 * Set the mask to determine which mobs in the players presence will be affected.  This is a zappermask.
@@ -1570,7 +1570,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FReactionItem#setPresentMOBMask(String)
 		 * @return the compiled mask to tell which mobs to apply this reaction to
 		 */
-		public MaskingLibrary.CompiledZapperMask compiledPresentMOBMask();
+		public MaskingLibrary.CompiledZMask compiledPresentMOBMask();
 
 		/**
 		 * Set the mask to determine which mobs in the players presence will be affected.  This is a zappermask.

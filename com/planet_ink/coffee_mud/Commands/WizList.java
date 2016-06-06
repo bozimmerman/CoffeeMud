@@ -57,7 +57,7 @@ public class WizList extends StdCommand
 		String mask=CMProps.getVar(CMProps.Str.WIZLISTMASK);
 		if(mask.length()==0)
 			mask="-ANYCLASS +Archon";
-		final MaskingLibrary.CompiledZapperMask compiledMask=CMLib.masking().maskCompile(mask);
+		final MaskingLibrary.CompiledZMask compiledMask=CMLib.masking().maskCompile(mask);
 		for(final PlayerLibrary.ThinPlayer U : allUsers)
 		{
 			CharClass C;

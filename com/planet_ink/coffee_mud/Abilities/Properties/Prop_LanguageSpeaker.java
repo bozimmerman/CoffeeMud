@@ -41,7 +41,7 @@ public class Prop_LanguageSpeaker extends Property
 	protected boolean doPlayers=false;
 	protected boolean noMobs=false;
 	protected boolean homeOnly=false;
-	protected MaskingLibrary.CompiledZapperMask mobMask = null;
+	protected MaskingLibrary.CompiledZMask mobMask = null;
 	protected Language lang = null;
 	protected String langStr = "";
 
