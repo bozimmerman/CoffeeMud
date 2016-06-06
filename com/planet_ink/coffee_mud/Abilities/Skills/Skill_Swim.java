@@ -131,7 +131,7 @@ public class Skill_Swim extends StdSkill
 	public int[] usageCost(MOB mob, boolean ignoreClassOverride)
 	{
 		int[] cost = super.usageCost(mob, ignoreClassOverride);
-		if((mob != null)&&(mob.isRacialAbility(this)))
+		if((mob != null)&&(mob.isRacialAbility(ID())))
 			return new int[cost.length];
 		return cost;
 	}

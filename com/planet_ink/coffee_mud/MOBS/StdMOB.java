@@ -4137,12 +4137,18 @@ public class StdMOB implements MOB
 	}
 
 	@Override
-	public boolean isRacialAbility(Ability A)
+	public boolean isRacialAbility(String abilityID)
 	{
 		final List<Ability> racialAbilities = charStats().getMyRace().racialAbilities(this);
 		if(racialAbilities.size()==0)
 			return false;
-		return racialAbilities.contains(A);
+		for(int i=0;i<racialAbilities.size();i++)
+		{
+			final Ability A=racialAbilities.get(i);
+			if((A!=null)&&(A.ID().equalsIgnoreCase(abilityID)))
+				return true;
+		}
+		return false;
 	}
 	
 	@Override
