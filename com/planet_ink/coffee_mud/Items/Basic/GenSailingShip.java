@@ -126,7 +126,8 @@ public class GenSailingShip extends StdBoardable
 		COURSE,
 		SET_COURSE,
 		TARGET,
-		AIM
+		AIM,
+		SINK
 		;
 	}
 	
@@ -341,6 +342,15 @@ public class GenSailingShip extends StdBoardable
 						return false;
 					}
 					break;
+				}
+				case SINK:
+				{
+					if(!CMSecurity.isAllowedEverywhere(msg.source(), CMSecurity.SecFlag.CMDROOMS))
+						return true;
+					CMMsg damageMsg=CMClass.getMsg(msg.source(), this, CMMsg.MSG_DAMAGE, "SINK!!!");
+					damageMsg.setValue(99999);
+					this.executeMsg(this, damageMsg);
+					return false;
 				}
 				case AIM:
 				{

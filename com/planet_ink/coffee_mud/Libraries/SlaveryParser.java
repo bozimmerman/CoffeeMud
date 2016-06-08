@@ -924,6 +924,7 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
 					if(CMParms.parse(name).size()>1)
 						cur.set(1,CMParms.combine(CMParms.parse(name),1));
 					step=Step.EVAL;
+					que.remove(0);
 					CMLib.tracking().walk(me,dirCode,false,false);
 					return "HOLD";
 				}

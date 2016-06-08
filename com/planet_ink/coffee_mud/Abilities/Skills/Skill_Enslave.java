@@ -301,7 +301,12 @@ public class Skill_Enslave extends StdSkill
 						mob.setClan(p.first.clanID(),p.first.getGovernment().getAcceptPos());
 				}
 			}
-			if((STEPS==null)||(STEPS.size()==0)||(STEPS.isDone()))
+			if(STEPS==null)
+			{
+				// wait to be told to do something
+			}
+			else
+			if((STEPS.size()==0)||(STEPS.isDone()))
 			{
 				if(mob.isInCombat())
 					return true; // let them finish fighting.
