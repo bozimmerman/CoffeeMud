@@ -38,19 +38,63 @@ import java.util.*;
 
 public class Cooking extends CraftingSkill implements ItemCraftor
 {
-	@Override public String ID() { return "Cooking"; }
-	private final static String localizedName = CMLib.lang().L("Cooking");
-	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =I(new String[] {"COOK","COOKING"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	public String cookWordShort(){return "cook";}
-	public String cookWord(){return "cooking";}
-	public boolean honorHerbs(){return true;}
-	public boolean requireFire(){return true;}
-	public boolean requireLid(){return false;}
-	@Override public String supportedResourceString(){return "MISC";}
 	@Override
-	public String parametersFormat(){ return
+	public String ID()
+	{
+		return "Cooking";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Cooking");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "COOK", "COOKING" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	public String cookWordShort()
+	{
+		return "cook";
+	}
+
+	public String cookWord()
+	{
+		return "cooking";
+	}
+
+	public boolean honorHerbs()
+	{
+		return true;
+	}
+
+	public boolean requireFire()
+	{
+		return true;
+	}
+
+	public boolean requireLid()
+	{
+		return false;
+	}
+
+	@Override
+	public String supportedResourceString()
+	{
+		return "MISC";
+	}
+
+	@Override
+	public String parametersFormat()
+	{
+		return
 		"ITEM_NAME\tFOOD_DRINK||RESOURCE_NAME\tSMELL_LIST||CODED_SPELL_LIST\tITEM_LEVEL\t"
 		+"RESOURCE_OR_KEYWORD\tOPTIONAL_AMOUNT_REQUIRED\t"
 		+"RESOURCE_OR_KEYWORD\tOPTIONAL_AMOUNT_REQUIRED\t"
@@ -58,22 +102,23 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 		+"RESOURCE_OR_KEYWORD\tOPTIONAL_AMOUNT_REQUIRED\t"
 		+"RESOURCE_OR_KEYWORD\tOPTIONAL_AMOUNT_REQUIRED\t"
 		+"RESOURCE_OR_KEYWORD\tOPTIONAL_AMOUNT_REQUIRED\t"
-		+"RESOURCE_OR_KEYWORD\tOPTIONAL_AMOUNT_REQUIRED";}
+		+"RESOURCE_OR_KEYWORD\tOPTIONAL_AMOUNT_REQUIRED";
+	}
 
-	public static int RCP_FINALFOOD=0;
-	public static int RCP_FOODDRINK=1;
-	public static int RCP_BONUSSPELL=2;
-	public static int RCP_LEVEL=3;
-	public static int RCP_MAININGR=4;
-	public static int RCP_MAINAMNT=5;
+	public static int	RCP_FINALFOOD	= 0;
+	public static int	RCP_FOODDRINK	= 1;
+	public static int	RCP_BONUSSPELL	= 2;
+	public static int	RCP_LEVEL		= 3;
+	public static int	RCP_MAININGR	= 4;
+	public static int	RCP_MAINAMNT	= 5;
 
-	protected Container cookingPot=null;
-	protected String finalDishName=null;
-	protected int finalAmount=0;
-	protected List<String> finalRecipe=null;
-	protected Hashtable<String,Integer> oldPotContents=null;
-	protected String defaultFoodSound="sizzle.wav";
-	protected String defaultDrinkSound="liquid.wav";
+	protected Container				cookingPot			= null;
+	protected String				finalDishName		= null;
+	protected int					finalAmount			= 0;
+	protected List<String>			finalRecipe			= null;
+	protected Map<String, Integer>	oldPotContents		= null;
+	protected String				defaultFoodSound	= "sizzle.wav";
+	protected String				defaultDrinkSound	= "liquid.wav";
 
 	public Cooking()
 	{
@@ -147,10 +192,23 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 		return super.tick(ticking,tickID);
 	}
 
-	@Override public boolean supportsDeconstruction() { return false; }
+	@Override
+	public boolean supportsDeconstruction()
+	{
+		return false;
+	}
 
-	@Override public String parametersFile(){ return "recipes.txt";}
-	@Override protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
+	@Override
+	public String parametersFile()
+	{
+		return "recipes.txt";
+	}
+
+	@Override
+	protected List<List<String>> loadRecipes()
+	{
+		return super.loadRecipes(parametersFile());
+	}
 
 	@Override
 	public String getDecodedComponentsDescription(final MOB mob, final List<String> recipe)
@@ -195,13 +253,12 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 		super.unInvoke();
 	}
 
-	public boolean contentsSame(Hashtable<String,Integer> h1, Hashtable<String,Integer> h2)
+	public boolean contentsSame(Map<String,Integer> h1, Map<String,Integer> h2)
 	{
 		if(h1.size()!=h2.size())
 			return false;
-		for(final Enumeration<String> e=h1.keys();e.hasMoreElements();)
+		for(String key : h1.keySet())
 		{
-			final String key=e.nextElement();
 			final Integer INT1=h1.get(key);
 			final Integer INT2=h2.get(key);
 			if((INT1==null)||(INT2==null))
@@ -212,9 +269,9 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 		return true;
 	}
 
-	public Hashtable<String,Integer> potContents(Container pot)
+	public Map<String,Integer> potContents(Container pot)
 	{
-		final Hashtable<String,Integer> h=new Hashtable<String,Integer>();
+		final Map<String,Integer> h=new Hashtable<String,Integer>();
 		if((pot instanceof Drink)&&(((Drink)pot).liquidRemaining()>0))
 		{
 			if(pot instanceof RawMaterial)
@@ -243,7 +300,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 				||((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID)
 				||((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_FLESH))
 			&&(CMParms.parse(I.name()).size()>0))
-					ing=CMParms.parse(I.name()).lastElement().toUpperCase();
+				ing=CMParms.parse(I.name()).lastElement().toUpperCase();
 			else
 				ing=I.name();
 			Integer INT=h.get(ing+"/"+I.secretIdentity().toUpperCase()+"/"+I.Name().toUpperCase()+"/");
@@ -261,9 +318,9 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 		final String[] contents=new String[oldPotContents.size()];
 		final int[] amounts=new int[oldPotContents.size()];
 		int numIngredients=0;
-		for(final Enumeration<String> e=oldPotContents.keys();e.hasMoreElements();)
+		for(String ingr  : oldPotContents.keySet())
 		{
-			contents[numIngredients]=e.nextElement();
+			contents[numIngredients]=ingr;
 			amounts[numIngredients]=oldPotContents.get(contents[numIngredients]).intValue();
 			numIngredients++;
 		}
@@ -345,10 +402,9 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 	public Vector<String> extraIngredientsInOldContents(List<String> Vr, boolean perfectOnly)
 	{
 		final Vector<String> extra=new Vector<String>();
-		for(final Enumeration<String> e=oldPotContents.keys();e.hasMoreElements();)
+		for(final String ingredient : oldPotContents.keySet())
 		{
 			boolean found=false;
-			final String ingredient=e.nextElement();
 
 			if(honorHerbs()&&ingredient.toUpperCase().startsWith("HERBS/")) // herbs exception
 				found=true;
@@ -389,13 +445,15 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 				if(vr<Vr.size()-1)
 					amount=CMath.s_int(Vr.get(vr+1));
 				boolean found=false;
-				for(final Enumeration<String> e=oldPotContents.keys();e.hasMoreElements();)
+				for(final String ingredient2 : oldPotContents.keySet())
 				{
-					final String ingredient2=e.nextElement().toUpperCase();
 					final int index=ingredient2.toUpperCase().indexOf(ingredient.toUpperCase()+"/");
 					if((((index==0)||((index>0)&&(!Character.isLetter(ingredient2.charAt(index-1))))))
 					||((!perfectOnly)&&ingredient2.equalsIgnoreCase(ingredient.toUpperCase())))
-					{ found=true; break;}
+					{
+						found = true;
+						break;
+					}
 				}
 				if(amount>=0)
 				{
@@ -708,7 +766,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 	
 	@Override
 	protected boolean autoGenInvoke(final MOB mob, List<String> commands, Physical givenTarget, final boolean auto, 
-								 final int asLevel, int autoGenerate, boolean forceLevels, List<Item> crafted)
+									final int asLevel, int autoGenerate, boolean forceLevels, List<Item> crafted)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
@@ -743,10 +801,14 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 				{
 					final String item=Vr.get(RCP_FINALFOOD);
 					if(replacePercent(item,"").equalsIgnoreCase(recipeName))
-					{ finalRecipe=Vr; break;}
+					{
+						finalRecipe = Vr;
+						break;
+					}
 				}
 			}
 			if(finalRecipe==null)
+			{
 				for(int r=0;r<allRecipes.size();r++)
 				{
 					final List<String> Vr=allRecipes.get(r);
@@ -754,9 +816,13 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 					{
 						final String item=Vr.get(RCP_FINALFOOD);
 						if(replacePercent(item,"").toLowerCase().indexOf(recipeName.toLowerCase())>=0)
-						{ finalRecipe=Vr; break;}
+						{
+							finalRecipe = Vr;
+							break;
+						}
 					}
 				}
+			}
 			if(finalRecipe==null)
 				return false;
 			buildingI=buildItem(mob,finalRecipe,null);
@@ -897,12 +963,14 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 		{
 			final List<String> Vr=allRecipes.get(v);
 			boolean found=false;
-			for(final Enumeration<String> e=oldPotContents.keys();e.hasMoreElements();)
+			for(final String ingredient2 : oldPotContents.keySet())
 			{
-				final String ingredient2=e.nextElement().toUpperCase();
 				final int index =ingredient2.indexOf(Vr.get(RCP_MAININGR).toUpperCase()+"/");
 				if((index==0)||((index>0)&&(!Character.isLetter(ingredient2.charAt(index-1)))))
-				{ found=true; break;}
+				{
+					found = true;
+					break;
+				}
 			}
 			if(found)
 				closeRecipes.addElement(Vr);

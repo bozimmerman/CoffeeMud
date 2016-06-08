@@ -656,6 +656,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 			}
 			duration=getDuration(CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),4);
 			String itemName=null;
+			buildingI.setMaterial(getBuildingMaterial(woodRequired,data,compData));
 			if((otherRequired.length()>0)&&(otherRequired.equalsIgnoreCase("PRECIOUS")))
 				itemName=replacePercent(foundRecipe.get(RCP_FINALNAME),RawMaterial.CODES.NAME((data[1][FOUND_CODE]))).toLowerCase();
 			else
@@ -680,7 +681,6 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 			buildingI.basePhyStats().setWeight(getStandardWeight(woodRequired+compData[CF_AMOUNT],bundling));
 			buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE))+(woodRequired*(RawMaterial.CODES.VALUE(data[0][FOUND_CODE]))));
 			buildingI.setSecretIdentity(getBrand(mob));
-			buildingI.setMaterial(getBuildingMaterial(woodRequired,data,compData));
 			if(buildingI.material()==data[1][FOUND_CODE])
 				buildingI.setBaseValue(buildingI.baseGoldValue()+RawMaterial.CODES.VALUE(data[1][FOUND_CODE]));
 			buildingI.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL)));
