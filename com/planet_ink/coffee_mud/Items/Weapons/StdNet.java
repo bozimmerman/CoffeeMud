@@ -14,6 +14,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 
@@ -61,6 +62,23 @@ public class StdNet extends StdWeapon
 		setRawLogicalAnd(true);
 	}
 
+	@Override
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
+	{
+		if(!super.okMessage(myHost, msg))
+			return false;
+		if((msg.tool()==this)
+		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
+		&&(msg.value()>0)
+		&&(msg.target() !=null)
+		&&(msg.target() instanceof MOB)
+		&&(weaponClassification()==Weapon.CLASS_THROWN))
+		{
+			msg.setValue(0);
+		}
+		return true;
+	}
+	
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
