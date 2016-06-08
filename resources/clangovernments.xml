@@ -722,7 +722,7 @@
 </CLANTYPE>
 <CLANTYPE TYPEID=5 NAME="FAMILY" CATEGORY="">
     <SHORTDESC>patron/patron rules a private group only family can join</SHORTDESC>
-    <LONGDESC>The Family is a clan rules by either a Matron, a Patron, or both.  The traditional powers of treasurer and enchanter can be held by any of the adult members of the family, which includes Misters and Mistresses.  All other minor powers are held equally by all members, including the cousins, the children, and even the black sheep of the family.</LONGDESC>
+    <LONGDESC>The Family is a clan that only family can join, and is ruled by either a Matron, a Patron, or both.  The traditional powers of treasurer and enchanter can be held by any of the adult members of the family, which includes Misters and Mistresses.  All other minor powers are held equally by all members, including the cousins, the children, and even the black sheep of the family.</LONGDESC>
     <POSITIONS>
         <POSITION ID="PATRON" ROLEID=6 RANK=0 NAME="PATRON" PLURAL="PATRONS" MAX=1 INNERMASK="-FEMALE -NEUTER" PUBLIC="true">
             <POWER>ACCEPT</POWER>
