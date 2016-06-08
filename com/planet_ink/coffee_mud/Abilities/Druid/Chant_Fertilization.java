@@ -59,8 +59,12 @@ public class Chant_Fertilization extends Chant
 						Ability A=M.fetchEffect("Farming");
 						if(A==null)
 							A=M.fetchEffect("Foraging");
+						if(A==null)
+							A=M.fetchEffect("MasterFarming");
+						if(A==null)
+							A=M.fetchEffect("MasterForaging");
 						if(A!=null)
-							A.setAbilityCode(4);
+							A.setAbilityCode(3);
 					}
 				}
 		}

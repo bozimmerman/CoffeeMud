@@ -60,8 +60,12 @@ public class Prayer_Fertilize extends Prayer
 						Ability A=M.fetchEffect("Farming");
 						if(A==null)
 							A=M.fetchEffect("Foraging");
+						if(A==null)
+							A=M.fetchEffect("MasterFarming");
+						if(A==null)
+							A=M.fetchEffect("MasterForaging");
 						if(A!=null)
-							A.setAbilityCode(2);
+							A.setAbilityCode(1);
 					}
 				}
 		}

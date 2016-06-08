@@ -84,6 +84,7 @@ public class Prop_ImproveGather extends Property
 		if((msg.tool() instanceof Ability)
 		&&(CMath.bset(((Ability)msg.tool()).classificationCode(),Ability.DOMAIN_GATHERINGSKILL)
 		&&(improvement > ((Ability)msg.tool()).abilityCode())
+		&&(improvement > 1)
 		&&(msg.source().location()!=null)
 		&&(msg.source()==affected)||(msg.source().location()==affected)||(msg.source().location().getArea()==affected)
 			||((affected instanceof Item)&&(((Item)affected).owner()==msg.source())&&(!((Item)affected).amWearingAt(Wearable.IN_INVENTORY))))
