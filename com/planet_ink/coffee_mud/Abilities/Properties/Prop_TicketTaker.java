@@ -35,10 +35,29 @@ import java.util.*;
 */
 public class Prop_TicketTaker extends Property
 {
-	@Override public String ID() { return "Prop_TicketTaker"; }
-	@Override public String name(){ return "Ticket Taker";}
-	@Override public String displayText() {return "";}
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
+	@Override
+	public String ID()
+	{
+		return "Prop_TicketTaker";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Ticket Taker";
+	}
+
+	@Override
+	public String displayText()
+	{
+		return "";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS | Ability.CAN_ITEMS;
+	}
 
 	@Override
 	public String accountForYourself()
@@ -65,9 +84,9 @@ public class Prop_TicketTaker extends Property
 				return false;
 			if(mob.riding()==R)
 				return true;
-			if((R instanceof Rider)&&(((Rider)R).riding()==mob.riding()))
+			if((((Rider)R).riding()==mob.riding()))
 				return true;
-			if((mob.riding() instanceof Rider)&&(((Rider)mob.riding()).riding()==R))
+			if((((Rider)mob.riding()).riding()==R))
 				return true;
 		}
 		else
@@ -112,6 +131,7 @@ public class Prop_TicketTaker extends Property
 			}
 		}
 	}
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -126,6 +146,7 @@ public class Prop_TicketTaker extends Property
 			&&(!mob.isMonster())
 			&&(msg.target() instanceof Rideable)
 			&&(isMine(myHost,(Rideable)msg.target())))
+			{
 				switch(msg.sourceMinor())
 				{
 				case CMMsg.TYP_MOUNT:
@@ -150,6 +171,7 @@ public class Prop_TicketTaker extends Property
 				default:
 					break;
 				}
+			}
 		}
 		return true;
 	}

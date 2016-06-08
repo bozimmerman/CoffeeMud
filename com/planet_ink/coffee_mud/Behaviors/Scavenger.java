@@ -127,9 +127,7 @@ public class Scavenger extends ActiveTicker
 					mob.recoverMaxState();
 				}
 			}
-			if((thisRoom==null)||(thisRoom.numItems()==0))
-				return true;
-			if(thisRoom.numPCInhabitants()>0)
+			if((thisRoom.numItems()==0)||(thisRoom.numPCInhabitants()>0))
 				return true;
 			List<Item> choices=new ArrayList<Item>(thisRoom.numItems()<1000?thisRoom.numItems():1000);
 			for(int i=0;(i<thisRoom.numItems())&&(choices.size()<1000);i++)

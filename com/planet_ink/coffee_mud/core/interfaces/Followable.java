@@ -120,4 +120,15 @@ public interface Followable<T extends Followable<T>> extends Physical
 	 * @return the same list, filled
 	 */
 	public Set<T> getGroupMembers(Set<T> list);
+	
+	/**
+	 * Fills the given set with the Complete set of all followable followers by
+	 * counting not only this followable, but all the recursive followable
+	 * followers of this followable, and all the followables followed by this
+	 * followable and all their followable followers.  It also includes all their
+	 * rideables, and their rideables riders, and those riders rideables.
+	 * @param list requires list to populate with followables  and rideables
+	 * @return the same list, filled
+	 */
+	public Set<? extends Rider> getGroupMembersAndRideables(Set<? extends Rider> list);
 }

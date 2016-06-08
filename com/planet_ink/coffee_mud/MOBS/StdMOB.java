@@ -4036,6 +4036,39 @@ public class StdMOB implements MOB
 		return list;
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public Set<? extends Rider> getGroupMembersAndRideables(Set<? extends Rider> list)
+	{
+		if (list == null)
+			return list;
+		getGroupMembers((Set<MOB>)list);
+		List<Rider> riders = new ArrayList<Rider>();
+		riders.addAll(list);
+		int startDex=0;
+		while(startDex < riders.size())
+		{
+			int i=startDex;
+			startDex=riders.size();
+			for(;i<riders.size();i++)
+			{
+				final Rider P=riders.get(i);
+				if(!riders.contains(P.riding()))
+					riders.add(P.riding());
+				if(P instanceof Rideable)
+				{
+					for(Enumeration<Rider> r=((Rideable)P).riders();r.hasMoreElements();)
+					{
+						final Rider R2=r.nextElement();
+						if(!riders.contains(R2))
+							riders.add(R2);
+					}
+				}
+			}
+		}
+		return list;
+	}
+	
 	@Override
 	public boolean isSavable()
 	{

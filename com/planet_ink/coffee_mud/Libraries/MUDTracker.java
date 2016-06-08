@@ -1061,7 +1061,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		{
 			rideables.add(riding);
 			addRiders(theRider,riding,riders);
-			if((riding instanceof Rider)&&((Rider)riding).riding()!=theRider.riding())
+			if(((Rider)riding).riding()!=theRider.riding())
 				riding=((Rider)riding).riding();
 			else
 				riding=null;

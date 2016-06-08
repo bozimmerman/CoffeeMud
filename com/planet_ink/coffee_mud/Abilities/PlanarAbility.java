@@ -402,6 +402,34 @@ public class PlanarAbility extends StdAbility
 				}
 			}
 			
+			if(CMLib.law().getLegalBehavior(room)!=null)
+			{
+				List<Physical> destroyMe=new ArrayList<Physical>();
+				Set<Rider> protSet = new HashSet<Rider>();
+				for(Enumeration<MOB> m=room.inhabitants();m.hasMoreElements();)
+				{
+					final MOB M=m.nextElement();
+					if((M!=null)&&(M.isPlayer()))
+					{
+						protSet.add(M);
+						M.getGroupMembersAndRideables(protSet);
+					}
+				}
+				for(Enumeration<MOB> m=room.inhabitants();m.hasMoreElements();)
+				{
+					final MOB M=m.nextElement();
+					if((M!=null) && (!M.isPlayer()) && (!protSet.contains(M)))
+						destroyMe.add(M);
+				}
+				for(Enumeration<Item> i=room.items();i.hasMoreElements();)
+				{
+					final Item I=i.nextElement();
+					if((I!=null)&&(!protSet.contains(I)))
+						destroyMe.add(I);
+				}
+				for(Physical P : destroyMe)
+					P.destroy();
+			}
 			int allLevelAdj=CMath.s_int(planeVars.get(PlanarVar.LEVELADJ.toString()));
 			List<Item> delItems=new ArrayList<Item>(0);
 			for(Enumeration<Item> i=room.items();i.hasMoreElements();)
