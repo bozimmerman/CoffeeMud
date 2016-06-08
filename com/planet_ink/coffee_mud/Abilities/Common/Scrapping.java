@@ -87,7 +87,7 @@ public class Scrapping extends CommonSkill
 						commonTell(mob,L("You've messed up scrapping @x1!",oldItemName));
 					else
 					{
-						amount=amount*abilityCode();
+						amount=amount*(baseYield()+abilityCode());
 						String s="s";
 						if(amount==1)
 							s="";

@@ -392,7 +392,7 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 		{
 			((Armor)buildingI).basePhyStats().setArmor(0);
 			if(armordmg!=0)
-				((Armor)buildingI).basePhyStats().setArmor(armordmg+(abilityCode()-1));
+				((Armor)buildingI).basePhyStats().setArmor(armordmg+(baseYield()+abilityCode()-1));
 			setWearLocation(buildingI,misctype,hardness);
 		}
 		if(buildingI instanceof Drink)

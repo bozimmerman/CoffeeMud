@@ -90,7 +90,7 @@ public class Fishing extends GatheringSkill
 				final MOB mob=(MOB)affected;
 				if((found!=null)&&(!aborted)&&(!helping))
 				{
-					final int amount=CMLib.dice().roll(1,3,0)*(abilityCode());
+					final int amount=CMLib.dice().roll(1,3,0)*(baseYield()+abilityCode());
 					String s="s";
 					if(amount==1)
 						s="";

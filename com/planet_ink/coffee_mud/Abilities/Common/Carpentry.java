@@ -557,7 +557,7 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 			{
 				((Weapon)buildingI).setWeaponClassification(Weapon.CLASS_BLUNT);
 				setWeaponTypeClass((Weapon)buildingI,misctype,Weapon.TYPE_SLASHING);
-				buildingI.basePhyStats().setAttackAdjustment((abilityCode()+(hardness*5)-1));
+				buildingI.basePhyStats().setAttackAdjustment((baseYield()+abilityCode()+(hardness*5)-1));
 				buildingI.basePhyStats().setDamage(armordmg+hardness);
 				((Weapon)buildingI).setRawProperLocationBitmap(Wearable.WORN_WIELD|Wearable.WORN_HELD);
 				((Weapon)buildingI).setRawLogicalAnd((capacity>1));
@@ -568,7 +568,7 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 			{
 				((Armor)buildingI).basePhyStats().setArmor(0);
 				if(armordmg!=0)
-					((Armor)buildingI).basePhyStats().setArmor(armordmg+(abilityCode()-1));
+					((Armor)buildingI).basePhyStats().setArmor(armordmg+(baseYield()+abilityCode()-1));
 				setWearLocation(buildingI,misctype,hardness);
 			}
 			if(buildingI instanceof Light)

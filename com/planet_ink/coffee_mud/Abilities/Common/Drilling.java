@@ -104,8 +104,8 @@ public class Drilling extends GatheringSkill
 				if((found!=null)&&(!aborted))
 				{
 					int amount=((found.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_CLOTH)?
-							   (CMLib.dice().roll(1,10,0)*(abilityCode())):
-							   (CMLib.dice().roll(1,3,0)*(abilityCode()));
+							   (CMLib.dice().roll(1,10,0)*(baseYield()+abilityCode())):
+							   (CMLib.dice().roll(1,3,0)*(baseYield()+abilityCode()));
 					String s="s";
 					if(amount==1)
 						s="";

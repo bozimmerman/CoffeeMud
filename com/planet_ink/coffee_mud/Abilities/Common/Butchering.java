@@ -121,7 +121,7 @@ public class Butchering extends GatheringSkill
 									diseases.addElement(A);
 							}
 						}
-						for(int y=0;y<abilityCode();y++)
+						for(int y=0;y<(baseYield()+abilityCode());y++)
 						{
 							for(int i=0;i<resources.size();i++)
 							{

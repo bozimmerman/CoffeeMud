@@ -102,7 +102,7 @@ public class Chopping extends GatheringSkill
 				final MOB mob=(MOB)affected;
 				if((found!=null)&&(!aborted))
 				{
-					final int amount=CMLib.dice().roll(1,7,3)*(abilityCode());
+					final int amount=CMLib.dice().roll(1,7,3)*(baseYield()+abilityCode());
 					String s="s";
 					if(amount==1)
 						s="";

@@ -468,7 +468,7 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 						((AmmunitionWeapon)buildingI).setAmmunitionType(ammotype);
 					}
 				}
-				buildingI.basePhyStats().setAttackAdjustment((abilityCode()-1+(hardness*5)));
+				buildingI.basePhyStats().setAttackAdjustment((baseYield()+abilityCode()-1+(hardness*5)));
 				buildingI.basePhyStats().setDamage(armordmg+hardness);
 				((Weapon)buildingI).setRanges(((Weapon)buildingI).minRange(),maxrange);
 			}

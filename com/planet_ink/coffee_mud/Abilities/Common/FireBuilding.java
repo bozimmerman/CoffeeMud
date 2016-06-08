@@ -259,7 +259,7 @@ public class FireBuilding extends CommonSkill
 
 		failed=!proficiencyCheck(mob,proficiencyAdjustment,auto);
 
-		durationOfBurn=durationOfBurn*abilityCode();
+		durationOfBurn=durationOfBurn*(baseYield()+abilityCode());
 		if(duration<4)
 			duration=4;
 

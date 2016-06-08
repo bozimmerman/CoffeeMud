@@ -103,7 +103,7 @@ public class AnimalTaming extends CommonSkill
 						else
 						{
 							int amount=1;
-							amount=amount*abilityCode();
+							amount=amount*(baseYield()+abilityCode());
 							if(amount>animal.numBehaviors())
 								amount=animal.numBehaviors();
 							String s="";

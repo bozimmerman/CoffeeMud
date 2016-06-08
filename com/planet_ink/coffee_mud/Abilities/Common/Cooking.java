@@ -231,7 +231,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 					if((cookingPot instanceof Drink)&&(buildingI instanceof Drink))
 						((Drink)cookingPot).setLiquidRemaining(0);
 					if(!aborted)
-					for(int i=0;i<finalAmount*(abilityCode());i++)
+					for(int i=0;i<finalAmount*(baseYield()+abilityCode());i++)
 					{
 						final Item food=((Item)buildingI.copyOf());
 						food.setMiscText(buildingI.text());

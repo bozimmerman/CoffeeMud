@@ -91,10 +91,7 @@ public class Prop_ImproveGather extends Property
 		&&(CMParms.contains(improves, "ALL")||CMParms.contains(improves, msg.tool().ID().toUpperCase()))
 		&&((mask==null)||(CMLib.masking().maskCheck(mask, msg.source(), true))))
 		{
-			if(((Ability)msg.tool()).abilityCode()>0)
-				((Ability)msg.tool()).setAbilityCode(((Ability)msg.tool()).abilityCode() + improvement - 1);
-			else
-				((Ability)msg.tool()).setAbilityCode(improvement);
+			((Ability)msg.tool()).setAbilityCode(((Ability)msg.tool()).abilityCode() + improvement - 1);
 		}
 		super.executeMsg(myHost, msg);
 	}

@@ -126,7 +126,7 @@ public class Farming extends GatheringSkill
 			{
 				if((found!=null)&&(!isaborted))
 				{
-					final int amount=CMLib.dice().roll(1,7,0)*(abilityCode());
+					final int amount=CMLib.dice().roll(1,7,0)*(baseYield()+abilityCode());
 					String s="s";
 					if(amount==1)
 						s="";

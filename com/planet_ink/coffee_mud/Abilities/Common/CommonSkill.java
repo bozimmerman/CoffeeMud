@@ -76,7 +76,7 @@ public class CommonSkill extends StdAbility
 	protected volatile int	tickUp			= 0;
 	protected String		verb			= L("working");
 	protected String		playSound		= null;
-	protected int			yield			= baseYield();
+	protected int			bonusYield		= 0;
 	protected volatile int	lastBaseDuration= 0;
 
 	protected int baseYield()
@@ -162,13 +162,13 @@ public class CommonSkill extends StdAbility
 	@Override
 	public int abilityCode()
 	{
-		return yield;
+		return bonusYield;
 	}
 
 	@Override
 	public void setAbilityCode(int newCode)
 	{
-		yield = newCode;
+		bonusYield = newCode;
 	}
 
 	@Override
@@ -750,7 +750,7 @@ public class CommonSkill extends StdAbility
 		mob.curState().adjMana(-consumed[0],mob.maxState());
 		mob.curState().adjMovement(-consumed[1],mob.maxState());
 		mob.curState().adjHitPoints(-consumed[2],mob.maxState());
-		setAbilityCode(baseYield());
+		setAbilityCode(0);
 		activityRoom=mob.location();
 		if(!bundling)
 			helpProficiency(mob, 0);

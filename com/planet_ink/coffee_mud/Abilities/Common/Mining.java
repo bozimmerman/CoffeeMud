@@ -141,7 +141,7 @@ public class Mining extends GatheringSkill
 					if(((found.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_ROCK)
 					&&(found.material()!=RawMaterial.RESOURCE_COAL))
 						amount=CMLib.dice().roll(1,25,0);
-					amount=amount*abilityCode();
+					amount=amount*(baseYield()+abilityCode());
 					String s="s";
 					if(amount==1)
 						s="";

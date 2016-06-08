@@ -134,7 +134,7 @@ public class Shearing extends CommonSkill
 					{
 						mob.location().show(mob,null,sheep,getActivityMessageType(),L("<S-NAME> manage(s) to shear <O-NAME>."));
 						spreadImmunity(sheep);
-						final int yield=abilityCode()<=0?1:abilityCode();
+						final int yield=(baseYield()+abilityCode())<=0?1:(baseYield()+abilityCode());
 						for(int i=0;i<yield;i++)
 						{
 							final Vector<RawMaterial> V=getMyWool(sheep);
