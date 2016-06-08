@@ -35,17 +35,43 @@ import java.util.*;
 
 public class Spell_FleshStone extends Spell
 {
-	@Override public String ID() { return "Spell_FleshStone"; }
-	private final static String localizedName = CMLib.lang().L("Flesh Stone");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Flesh to Stone)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
+	@Override
+	public String ID()
+	{
+		return "Spell_FleshStone";
+	}
 
-	public Item statue=null;
-	protected boolean recurse=false;
-	protected CharState prevState=null;
+	private final static String	localizedName	= CMLib.lang().L("Flesh Stone");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Flesh to Stone)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL | Ability.DOMAIN_TRANSMUTATION;
+	}
+
+	public Item				statue		= null;
+	protected boolean		recurse		= false;
+	protected CharState		prevState	= null;
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
@@ -165,11 +191,10 @@ public class Spell_FleshStone extends Spell
 			if(prevState!=null)
 				prevState.copyInto(mob.curState());
 			CMLib.commands().postStand(mob,true);
+			CMLib.utensils().confirmWearability(mob);
 		}
 		recurse=false;
 	}
-
-
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -186,10 +211,8 @@ public class Spell_FleshStone extends Spell
 			return false;
 		}
 
-
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-
 
 		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+(2*getXLEVELLevel(mob)));
 		if(levelDiff<0)
