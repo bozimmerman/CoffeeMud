@@ -59,7 +59,7 @@ CREATE TABLE CMCHAR (
     CMCHID char (50),
 	CMUSERID char (50),
 	CMPASS char (50) NULL ,
-	CMCLAS char (200) NULL ,
+	CMCLAS char (250) NULL ,
 	CMSTRE int NULL ,
 	CMRACE char (50) NULL ,
 	CMDEXT int NULL ,

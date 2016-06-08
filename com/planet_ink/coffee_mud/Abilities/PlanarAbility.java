@@ -453,7 +453,7 @@ public class PlanarAbility extends StdAbility
 				if((invoker!=null)&&((I instanceof Weapon)||(I instanceof Armor)))
 				{
 					int newILevelAdj = (planarLevel - I.phyStats().level());
-					int newILevel=invoker.phyStats().level() + newILevelAdj + allLevelAdj;
+					int newILevel=invoker.phyStats().level() - newILevelAdj + allLevelAdj;
 					if(newILevel <= 0)
 						newILevel = 1;
 					I.basePhyStats().setLevel(newILevel);
@@ -501,7 +501,7 @@ public class PlanarAbility extends StdAbility
 					if(planeVars.containsKey(PlanarVar.ATMOSPHERE.toString()))
 						M.baseCharStats().setBreathables(new int[]{room.getAtmosphere()});
 					int newLevelAdj = (planarLevel - M.phyStats().level());
-					int newLevel = invoker.phyStats().level() + newLevelAdj + allLevelAdj;
+					int newLevel = invoker.phyStats().level() - newLevelAdj + allLevelAdj;
 					if(newLevel <= 0)
 						newLevel = 1;
 					if((planarPrefix!=null)&&(planarPrefix.length()>0))

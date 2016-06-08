@@ -75,7 +75,7 @@ public class Prop_ImproveGather extends Property
 			mask=CMLib.masking().maskCompile(maskStr);
 		final String skillStr=CMParms.getParmStr(newText, "SKILLS", "ALL");
 		final List<String> skills=CMParms.parseCommas(skillStr.toUpperCase().trim(), true);
-		improves=skills.toArray(new String[0]);
+		improves=skills.toArray(new String[skills.size()]);
 	}
 
 	@Override
@@ -83,7 +83,7 @@ public class Prop_ImproveGather extends Property
 	{
 		if((msg.tool() instanceof Ability)
 		&&(CMath.bset(((Ability)msg.tool()).classificationCode(),Ability.DOMAIN_GATHERINGSKILL)
-		&&(improvement != ((Ability)msg.tool()).abilityCode())
+		&&(improvement > ((Ability)msg.tool()).abilityCode())
 		&&(msg.source().location()!=null)
 		&&(msg.source()==affected)||(msg.source().location()==affected)||(msg.source().location().getArea()==affected)
 			||((affected instanceof Item)&&(((Item)affected).owner()==msg.source())&&(!((Item)affected).amWearingAt(Wearable.IN_INVENTORY))))
@@ -91,7 +91,10 @@ public class Prop_ImproveGather extends Property
 		&&(CMParms.contains(improves, "ALL")||CMParms.contains(improves, msg.tool().ID().toUpperCase()))
 		&&((mask==null)||(CMLib.masking().maskCheck(mask, msg.source(), true))))
 		{
-			((Ability)msg.tool()).setAbilityCode(improvement);
+			if(((Ability)msg.tool()).abilityCode()>0)
+				((Ability)msg.tool()).setAbilityCode(((Ability)msg.tool()).abilityCode() + improvement - 1);
+			else
+				((Ability)msg.tool()).setAbilityCode(improvement);
 		}
 		super.executeMsg(myHost, msg);
 	}

@@ -40,7 +40,7 @@ CREATE TABLE CMCHAR (
 	CMCHID nvarchar (50),
 	CMUSERID nvarchar (50),
 	CMPASS nvarchar (50) NULL,
-	CMCLAS nvarchar (200) NULL,
+	CMCLAS nvarchar (250) NULL,
 	CMSTRE integer NULL,
 	CMRACE nvarchar (50) NULL,
 	CMDEXT integer NULL,
