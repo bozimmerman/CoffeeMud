@@ -38,17 +38,33 @@ import java.util.*;
 
 public class Prop_Artifact extends Property
 {
-	@Override public String ID() { return "Prop_Artifact"; }
-	@Override public String name(){ return "Artifact";}
-	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
-	protected static final Hashtable<String,Item> registeredArtifacts=new Hashtable<String,Item>();
-	private String itemID=null;
-	private boolean autodrop=true;
-	private boolean nocast=true;
-	private boolean nolocate=true;
-	private boolean nomobs=true;
-	private boolean autoreset=false;
-	private long waitToReload=0;
+	@Override
+	public String ID()
+	{
+		return "Prop_Artifact";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Artifact";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ITEMS;
+	}
+
+	protected static final Map<String, Item>	registeredArtifacts	= new Hashtable<String, Item>();
+	
+	private String	itemID		= null;
+	private boolean	autodrop	= true;
+	private boolean	nocast		= true;
+	private boolean	nolocate	= true;
+	private boolean	nomobs		= true;
+	private boolean	autoreset	= false;
+	private long	waitToReload= 0;
 
 	private String getItemID()
 	{
@@ -95,7 +111,7 @@ public class Prop_Artifact extends Property
 		if(affected!=null)
 		{
 			itemID=""+affected+"_"+Math.random();
-			super.setMiscText(text()+";"+itemID);
+			super.setMiscText(text+";"+itemID);
 		}
 		autodrop=CMParms.getParmBool(text,"AUTODROP",true);
 		nocast=CMParms.getParmBool(text,"NOCAST",true);
@@ -120,7 +136,10 @@ public class Prop_Artifact extends Property
 				o.close();
 				if(o.toString().indexOf("Commands.Destroy.execute")>=0)
 					CMLib.database().DBDeleteData(getItemID(),"ARTIFACTS","ARTIFACTS/"+getItemID());
-			}catch(final Exception e){}
+			}
+			catch (final Exception e)
+			{
+			}
 		}
 	}
 
@@ -181,7 +200,8 @@ public class Prop_Artifact extends Property
 		}
 
 		if((msg.sourceMinor()==CMMsg.TYP_QUIT)
-		&&(msg.source()==((Item)affected).owner()))
+		&&(msg.source()==((Item)affected).owner())
+		&&(autodrop))
 		{
 			msg.source().tell(L("^HYou lose your hold over @x1^?",affected.name()));
 			final Room R=CMLib.map().roomLocation(msg.source());
@@ -320,6 +340,7 @@ public class Prop_Artifact extends Property
 											Log.errOut("Prop_Artifact","Possible duplicate artifact: "+newItem.name());
 										MOB foundMOB=null;
 										if(MOBname.length()>0)
+										{
 											for(int i=0;i<R.numInhabitants();i++)
 											{
 												final MOB M=R.fetchInhabitant(i);
@@ -330,6 +351,7 @@ public class Prop_Artifact extends Property
 												&&(!doneMOBs.contains(M)))
 												{ foundMOB=M; break;}
 											}
+										}
 										final Area A=R.getArea();
 										if((foundMOB==null)&&(MOBname.length()>0))
 										{
@@ -344,7 +366,10 @@ public class Prop_Artifact extends Property
 													&&(M.name().equals(MOBname))
 													&&(M.getStartRoom()==R)
 													&&(!doneMOBs.contains(M)))
-													{ foundMOB=M; break;}
+													{
+														foundMOB = M;
+														break;
+													}
 												}
 											}
 										}

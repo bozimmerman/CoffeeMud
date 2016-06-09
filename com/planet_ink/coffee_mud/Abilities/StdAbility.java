@@ -1020,7 +1020,8 @@ public class StdAbility implements Ability
 		if(auto)
 		{
 			isAnAutoEffect=true;
-			setProficiency(100);
+			if(!mob.isMine(this))
+				setProficiency(100);
 			return true;
 		}
 

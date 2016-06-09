@@ -34,9 +34,17 @@ import java.util.*;
 */
 public class Prop_WizInvis extends Property
 {
-	@Override public String ID() { return "Prop_WizInvis"; }
+	@Override
+	public String ID()
+	{
+		return "Prop_WizInvis";
+	}
 
-	@Override public long flags(){return Ability.FLAG_ADJUSTER;}
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_ADJUSTER;
+	}
 
 	@Override
 	public String displayText()
@@ -52,21 +60,60 @@ public class Prop_WizInvis extends Property
 		else
 			return "";
 	}
-	@Override public String name(){ return "Wizard Invisibility";}
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
-	protected boolean disabled=false;
-	protected int abilityCode=PhyStats.IS_NOT_SEEN|PhyStats.IS_CLOAKED;
-	@Override public int abilityCode(){return abilityCode;}
-	@Override public void setAbilityCode(int newCode){abilityCode=newCode;}
+
+	@Override
+	public String name()
+	{
+		return "Wizard Invisibility";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	protected boolean	disabled	= false;
+	protected boolean	unInvokable	= false;
+	protected int		abilityCode	= PhyStats.IS_NOT_SEEN | PhyStats.IS_CLOAKED;
+
+	@Override
+	public int abilityCode()
+	{
+		return abilityCode;
+	}
+
+	@Override
+	public void setAbilityCode(int newCode)
+	{
+		abilityCode = newCode;
+	}
 
 	@Override
 	public String accountForYourself()
-	{ return "Wizard Invisibile";	}
+	{
+		return "Wizard Invisibile";
+	}
 
+	@Override
+	public boolean canBeUninvoked()
+	{
+		return true;
+	}
 
-	@Override public boolean canBeUninvoked(){return true;}
-	public boolean isAnAutoEffect(){return false;}
+	public boolean isAnAutoEffect()
+	{
+		return false;
+	}
 
+	@Override
+	public void setMiscText(String newMiscText)
+	{
+		super.setMiscText(newMiscText);
+		List<String> ps=CMParms.parse(newMiscText.toUpperCase());
+		unInvokable = ps.contains("UNINVOKABLE");
+	}
+	
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
@@ -136,7 +183,10 @@ public class Prop_WizInvis extends Property
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if((CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS)&&(msg.amITarget(affected))&&(affected!=null)&&(!disabled)))
+		if((CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS)
+		&&(msg.amITarget(affected))
+		&&(affected!=null)
+		&&(!disabled)))
 		{
 			if(msg.source()!=msg.target())
 			{
@@ -152,13 +202,22 @@ public class Prop_WizInvis extends Property
 			if((CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))&&(msg.amISource((MOB)affected)))
 				disabled=true;
 			else
-			if((msg.amISource((MOB)affected))
-			&&(msg.source().isAttributeSet(MOB.Attrib.SYSOPMSGS))
-			&&(msg.source().location()!=null)
-			&&(!CMSecurity.isAllowed(msg.source(),msg.source().location(),CMSecurity.SecFlag.SYSMSGS)))
-				msg.source().setAttribute(MOB.Attrib.SYSOPMSGS,false);
+			if(msg.amISource((MOB)affected))
+			{
+				final Room R=msg.source().location();
+				if(R!=null)
+				{
+					if((msg.source().isAttributeSet(MOB.Attrib.SYSOPMSGS))
+					&&(!CMSecurity.isAllowed(msg.source(),R,CMSecurity.SecFlag.SYSMSGS)))
+						msg.source().setAttribute(MOB.Attrib.SYSOPMSGS,false);
+					else
+					if( unInvokable
+					&&(!CMSecurity.isAllowed(msg.source(),R,CMSecurity.SecFlag.WIZINV)))
+						unInvoke();
+				}
+				
+			}
 		}
-
 		return super.okMessage(myHost,msg);
 	}
 }

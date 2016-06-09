@@ -339,16 +339,26 @@ public class Clans extends StdLibrary implements ClanManager
 		return null;
 	}
 
+	protected boolean isMember(List<MemberRecord> members, String name)
+	{
+		for(MemberRecord R : members)
+		{
+			if(R.name.equals(name))
+				return true;
+		}
+		return false;
+	}
+	
 	@Override
 	public boolean isFamilyOfMembership(MOB M, List<MemberRecord> members)
 	{
 		if(M == null)
 			return false;
-		if(members.contains(M.Name()))
+		if(isMember(members,M.Name()))
 			return true;
 		if((M.getLiegeID().length()>0)
 		&&(M.isMarriedToLiege())
-		&&(members.contains(M.getLiegeID())))
+		&&(isMember(members,M.getLiegeID())))
 			return true;
 		for(final Enumeration<Tattoo> e=M.tattoos();e.hasMoreElements();)
 		{

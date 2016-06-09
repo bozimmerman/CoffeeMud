@@ -744,7 +744,10 @@ public class GenSailingShip extends StdBoardable
 			{
 				cmds.add(0, "METAMSGCOMMAND");
 				double speed=CMLib.tracking().getSailingShipSpeed(this);
-				speed = msg.source().phyStats().speed() / speed;
+				if(speed == 0)
+					speed=0;
+				else
+					speed = msg.source().phyStats().speed() / speed;
 				msg.source().enqueCommand(cmds, MUDCmdProcessor.METAFLAG_ASMESSAGE, speed);
 				return false;
 			}

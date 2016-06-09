@@ -694,9 +694,12 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 		}
 		try
 		{
-			if(str!=null)
+			if((str!=null)&&(str.indexOf('@')>=0))
 				return CMLib.webMacroFilter().virtualPageFilter(str);
-		}catch(final com.planet_ink.coffee_mud.core.exceptions.HTTPRedirectException x){}
+		}
+		catch (final com.planet_ink.coffee_mud.core.exceptions.HTTPRedirectException x)
+		{
+		}
 		return str;
 	}
 
@@ -1192,6 +1195,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 		unloadHelpFile(null);
 		return true;
 	}
+
 	@Override
 	public void unloadHelpFile(MOB mob)
 	{

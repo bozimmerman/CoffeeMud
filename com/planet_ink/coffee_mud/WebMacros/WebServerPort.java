@@ -37,7 +37,11 @@ import java.util.*;
 */
 public class WebServerPort extends StdWebMacro
 {
-	@Override public String name()	{return "WebServerPort";}
+	@Override
+	public String name()
+	{
+		return "WebServerPort";
+	}
 
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
@@ -49,6 +53,22 @@ public class WebServerPort extends StdWebMacro
 		{
 			final CWConfig config=((CWThread)Thread.currentThread()).getConfig();
 			return CMParms.toListString(config.getHttpListenPorts());
+		}
+		if(httpReq.getClientPort()==0)
+		{
+			String serverType = parms.containsKey("ADMIN") ? "ADMIN" : "PUB";
+			for(MudHost host : CMLib.hosts())
+			{
+				try
+				{
+					String var = host.executeCommand("WEBSERVER "+serverType+" PORT");
+					if(var.length()>0)
+						return var;
+				}
+				catch (Exception e)
+				{
+				}
+			}
 		}
 		return Integer.toString(httpReq.getClientPort());
 	}

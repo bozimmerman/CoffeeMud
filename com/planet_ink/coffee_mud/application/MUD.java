@@ -1983,6 +1983,43 @@ public class MUD extends Thread implements MudHost
 					return "Failure";
 			}
 		}
+		else
+		if(word.equalsIgnoreCase("WEBSERVER")&&(V.size()>2))
+		{
+			boolean admin = V.elementAt(1).equalsIgnoreCase("ADMIN");
+			String var = V.elementAt(2);
+			WebServer server=null;
+			for(WebServer serv : webServers)
+			{
+				if(CMath.s_bool(serv.getConfig().getMiscProp("ADMIN")))
+				{
+					if(admin)
+					{
+						server=serv;
+						break;
+					}
+				}
+				else
+				{
+					if(!admin)
+					{
+						server=serv;
+						break;
+					}
+				}
+			}
+			if(server==null)
+				return "";
+			if(var.equalsIgnoreCase("PORT"))
+			{
+				int[] ports = server.getConfig().getHttpListenPorts();
+				if(ports.length==0)
+					return "";
+				return Integer.toString(ports[0]);
+			}
+			else
+				throw new CMException("Unknown variable: "+var);
+		}
 		throw new CMException("Unknown command: "+word);
 	}
 }
