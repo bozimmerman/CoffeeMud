@@ -120,7 +120,8 @@ public class PlanarAbility extends StdAbility
 		REFFECT,
 		AEFFECT,
 		SPECFLAGS,
-		MIXRACE
+		MIXRACE,
+		ELITE
 	}
 	
 	public enum PlanarSpecFlag
@@ -375,6 +376,9 @@ public class PlanarAbility extends StdAbility
 			}
 			if(planeVars.containsKey(PlanarVar.ATMOSPHERE.toString()))
 				room.setAtmosphere(planeArea.getAtmosphere());
+			boolean elite = false;
+			if(planeVars.containsKey(PlanarVar.ELITE.toString()))
+				elite=CMath.s_bool(planeVars.get(PlanarVar.ELITE.toString()));
 			if(this.reffectList!=null)
 			{
 				for(Pair<String,String> p : this.reffectList)
@@ -603,15 +607,34 @@ public class PlanarAbility extends StdAbility
 					String adjStat = planeVars.get(PlanarVar.ADJSTAT.toString());
 					if(adjStat != null)
 						reEffect(M,"Prop_StatAdjuster",adjStat);
-					String adjust = planeVars.get(PlanarVar.ADJUST.toString());
-					if(adjust != null)
-						reEffect(M,"Prop_Adjuster",adjust);
+					if(elite)
+					{
+						reEffect(M,"Prop_Adjuster", "multiplych=true hitpoints+200 multiplyph=true damage+50 ALLSAVES+10");
+						reEffect(M,"Prop_ModExperience","*2");
+						String adjSize = planeVars.get(PlanarVar.ADJSIZE.toString());
+						if(adjSize != null)
+						{
+							double heightAdj = CMParms.getParmDouble(adjSize, "HEIGHT", Double.MIN_VALUE);
+							if(heightAdj > Double.MIN_VALUE)
+								reEffect(M,"Prop_Adjuster","height+"+(100+(heightAdj*100)));
+						}
+					}
+					else
+					{
+						String adjust = planeVars.get(PlanarVar.ADJUST.toString());
+						if(adjust != null)
+							reEffect(M,"Prop_Adjuster",adjust);
+						String adjSize = planeVars.get(PlanarVar.ADJSIZE.toString());
+						if(adjSize != null)
+						{
+							double heightAdj = CMParms.getParmDouble(adjSize, "HEIGHT", Double.MIN_VALUE);
+							if(heightAdj > Double.MIN_VALUE)
+								reEffect(M,"Prop_Adjuster","height+"+(int)Math.round(CMath.mul(M.basePhyStats().height(),heightAdj)));
+						}
+					}
 					String adjSize = planeVars.get(PlanarVar.ADJSIZE.toString());
 					if(adjSize != null)
 					{
-						double heightAdj = CMParms.getParmDouble(adjSize, "HEIGHT", Double.MIN_VALUE);
-						if(heightAdj > Double.MIN_VALUE)
-							reEffect(M,"Prop_Adjuster","height+"+(int)Math.round(CMath.mul(M.basePhyStats().height(),heightAdj)));
 						double weightAdj = CMParms.getParmDouble(adjSize, "WEIGHT", Double.MIN_VALUE);
 						if(weightAdj > Double.MIN_VALUE)
 							reEffect(M,"Prop_StatAdjuster","weightadj="+(int)Math.round(CMath.mul(M.baseWeight(),weightAdj)));
