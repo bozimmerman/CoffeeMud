@@ -155,7 +155,7 @@ See guides/RandomAreas.html for information about documents of this type.
 	<ITEM select="all">
 		<ITEM class="GenArmor" LEVEL="$mob_level">
 			<NAME>faerie garb</NAME>
-			<DISPLAY>$item_name has been left here"</DISPLAY>
+			<DISPLAY>$item_name has been left here</DISPLAY>
 			<MATERIAL>COTTON</MATERIAL>
 			<PROPERWORN>TORSO,LEGS</PROPERWORN><WORNAND>true</WORNAND>
 		</ITEM>

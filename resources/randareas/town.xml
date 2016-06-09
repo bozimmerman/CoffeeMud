@@ -140,7 +140,7 @@ See guides/RandomAreas.html for information about documents of this type.
 				</BEHAVIOR>
 				<ITEM class="GenArmor" LEVEL="$mob_level">
 					<NAME select="any-1"><NAME>a clothes</NAME></NAME>
-					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<DISPLAY>$item_name has been left here</DISPLAY>
 					<MATERIAL>COTTON</MATERIAL>
 					<PROPERWORN>TORSO,LEGS</PROPERWORN><WORNAND>true</WORNAND>
 				</ITEM>
@@ -196,13 +196,13 @@ See guides/RandomAreas.html for information about documents of this type.
 				</BEHAVIOR>
 				<ITEM class="GenArmor" LEVEL="$mob_level">
 					<NAME select="any-1"><NAME>a cook`s apron</NAME></NAME>
-					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<DISPLAY>$item_name has been left here</DISPLAY>
 					<MATERIAL>COTTON</MATERIAL>
 					<PROPERWORN>TORSO,LEGS</PROPERWORN><WORNAND>true</WORNAND>
 				</ITEM>
 				<ITEM class="GenWeapon" LEVEL="$mob_level">
 					<NAME>a rolling pin</NAME>
-					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<DISPLAY>$item_name has been left here</DISPLAY>
 					<MATERIAL>OAK</MATERIAL>
 					<WEAPONCLASS>BLUNT</WEAPONCLASS>
 					<WEAPONTYPE>BASHING</WEAPONTYPE>
@@ -269,13 +269,13 @@ See guides/RandomAreas.html for information about documents of this type.
 				</BEHAVIOR>
 				<ITEM class="GenArmor" LEVEL="$mob_level">
 					<NAME select="any-1"><NAME>a bartender`s apron</NAME></NAME>
-					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<DISPLAY>$item_name has been left here</DISPLAY>
 					<MATERIAL>COTTON</MATERIAL>
 					<PROPERWORN>TORSO,LEGS</PROPERWORN><WORNAND>true</WORNAND>
 				</ITEM>
 				<ITEM class="GenWeapon" LEVEL="$mob_level">
 					<NAME>an lime peeler</NAME>
-					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<DISPLAY>$item_name has been left here</DISPLAY>
 					<MATERIAL>IRON</MATERIAL>
 					<WEAPONCLASS>DAGGER</WEAPONCLASS>
 					<WEAPONTYPE>PIERCING</WEAPONTYPE>
@@ -336,13 +336,13 @@ See guides/RandomAreas.html for information about documents of this type.
 					</BEHAVIOR>
 					<ITEM class="GenArmor" LEVEL="$mob_level">
 						<NAME select="any-1"><NAME>a conservative suit</NAME></NAME>
-						<DISPLAY>$item_name has been left here"</DISPLAY>
+						<DISPLAY>$item_name has been left here</DISPLAY>
 						<MATERIAL>COTTON</MATERIAL>
 						<PROPERWORN>TORSO,LEGS</PROPERWORN><WORNAND>true</WORNAND>
 					</ITEM>
 					<ITEM class="GenWeapon" LEVEL="$mob_level" WORNAND="true">
 						<NAME>a broom</NAME>
-						<DISPLAY>$item_name has been left here"</DISPLAY>
+						<DISPLAY>$item_name has been left here</DISPLAY>
 						<MATERIAL>WOOD</MATERIAL>
 						<WEAPONCLASS>STAFF</WEAPONCLASS>
 						<WEAPONTYPE>BASHING</WEAPONTYPE>
@@ -443,13 +443,13 @@ See guides/RandomAreas.html for information about documents of this type.
 				</BEHAVIOR>
 				<ITEM class="GenArmor" LEVEL="$mob_level">
 					<NAME select="any-1"><NAME>a healer`s robe</NAME></NAME>
-					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<DISPLAY>$item_name has been left here</DISPLAY>
 					<MATERIAL>COTTON</MATERIAL>
 					<PROPERWORN>TORSO,LEGS</PROPERWORN><WORNAND>true</WORNAND>
 				</ITEM>
 				<ITEM class="GenWeapon" LEVEL="$mob_level">
 					<NAME>a holy sceptor</NAME>
-					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<DISPLAY>$item_name has been left here</DISPLAY>
 					<MATERIAL>WOOD</MATERIAL>
 					<WEAPONCLASS>BLUNT</WEAPONCLASS>
 					<WEAPONTYPE>BASHING</WEAPONTYPE>
@@ -469,7 +469,7 @@ See guides/RandomAreas.html for information about documents of this type.
 			</MOB>
 			<ITEM class="GenContainer" LEVEL="1" isgettable="false" capacity=100000 hasalid=false>
 				<NAME>the sacrificial pit</NAME>
-				<DISPLAY>$item_name sits here"</DISPLAY>
+				<DISPLAY>$item_name sits here</DISPLAY>
 				<MATERIAL>STONE</MATERIAL>
 				<AFFECT class="Prop_Trashcan"></AFFECT>
 			</ITEM>
@@ -566,14 +566,14 @@ See guides/RandomAreas.html for information about documents of this type.
 				</BEHAVIOR>
 				<ITEM class="GenArmor" LEVEL="$mob_level">
 					<NAME select="any-1"><NAME>(a(n)) apron</NAME></NAME>
-					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<DISPLAY>$item_name has been left here</DISPLAY>
 					<MATERIAL>COTTON</MATERIAL>
 					<PROPERWORN>WAIST,LEGS</PROPERWORN><WORNAND>true</WORNAND>
 					<LAYER>4</LAYER>
 				</ITEM>
 				<ITEM class="GenWeapon" LEVEL="$mob_level">
 					<NAME>(a(n)) ${shoptype}working tool</NAME>
-					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<DISPLAY>$item_name has been left here</DISPLAY>
 					<MATERIAL>IRON</MATERIAL>
 					<WEAPONCLASS>DAGGER</WEAPONCLASS>
 					<WEAPONTYPE>PIERCING</WEAPONTYPE>
@@ -654,7 +654,7 @@ See guides/RandomAreas.html for information about documents of this type.
 			<ITEM class="GenWallpaper" name="a sign" isreadable="true" readableText="Use `list` to see what is for sale, `view [itemname]` to see more information, `buy [itemname]` to buy something, `value [itemname]` to value your item, or `sell [itemname]` to try to sell something of yours." />
 			<ITEM class="GenFountain" LEVEL="$mob_level" isgettable="false" liquidheld=1000000 hasalid=false condition="$shoptype='food'">
 				<NAME>a drinking fountain</NAME>
-				<DISPLAY>$item_name flows from the wall"</DISPLAY>
+				<DISPLAY>$item_name flows from the wall</DISPLAY>
 				<MATERIAL>STONE</MATERIAL>
 			</ITEM>
 		</ROOM>
@@ -761,13 +761,13 @@ See guides/RandomAreas.html for information about documents of this type.
 				</BEHAVIOR>
 				<ITEM class="GenArmor" LEVEL="$mob_level">
 					<NAME select="any-1"><NAME>a stablehand`s uniform</NAME></NAME>
-					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<DISPLAY>$item_name has been left here</DISPLAY>
 					<MATERIAL>COTTON</MATERIAL>
 					<PROPERWORN>TORSO,LEGS</PROPERWORN><WORNAND>true</WORNAND>
 				</ITEM>
 				<ITEM class="GenWeapon" LEVEL="$mob_level">
 					<NAME>a shovel</NAME>
-					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<DISPLAY>$item_name has been left here</DISPLAY>
 					<MATERIAL>WOOD</MATERIAL>
 					<WEAPONCLASS>POLEARM</WEAPONCLASS>
 					<WEAPONTYPE>SLASHING</WEAPONTYPE>
@@ -839,13 +839,13 @@ See guides/RandomAreas.html for information about documents of this type.
 				</BEHAVIOR>
 				<ITEM class="GenArmor" LEVEL="$mob_level">
 					<NAME select="any-1"><NAME>a nanny`s uniform</NAME></NAME>
-					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<DISPLAY>$item_name has been left here</DISPLAY>
 					<MATERIAL>COTTON</MATERIAL>
 					<PROPERWORN>TORSO,LEGS</PROPERWORN><WORNAND>true</WORNAND>
 				</ITEM>
 				<ITEM class="GenWeapon" LEVEL="$mob_level">
 					<NAME>a ruler</NAME>
-					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<DISPLAY>$item_name has been left here</DISPLAY>
 					<MATERIAL>WOOD</MATERIAL>
 					<WEAPONCLASS>BLUNT</WEAPONCLASS>
 					<WEAPONTYPE>BASHING</WEAPONTYPE>
@@ -915,13 +915,13 @@ See guides/RandomAreas.html for information about documents of this type.
 				</BEHAVIOR>
 				<ITEM class="GenArmor" LEVEL="$mob_level">
 					<NAME select="any-1"><NAME>a conservative uniform</NAME></NAME>
-					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<DISPLAY>$item_name has been left here</DISPLAY>
 					<MATERIAL>COTTON</MATERIAL>
 					<PROPERWORN>TORSO,LEGS</PROPERWORN><WORNAND>true</WORNAND>
 				</ITEM>
 				<ITEM class="GenWeapon" LEVEL="$mob_level">
 					<NAME>a money clip</NAME>
-					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<DISPLAY>$item_name has been left here</DISPLAY>
 					<MATERIAL>IRON</MATERIAL>
 					<WEAPONCLASS>DAGGER</WEAPONCLASS>
 					<WEAPONTYPE>PIERCING</WEAPONTYPE>
@@ -975,13 +975,13 @@ See guides/RandomAreas.html for information about documents of this type.
 				</BEHAVIOR>
 				<ITEM class="GenArmor" LEVEL="$mob_level">
 					<NAME select="any-1"><NAME>a ${l:__chieftype}`s uniform</NAME></NAME>
-					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<DISPLAY>$item_name has been left here</DISPLAY>
 					<MATERIAL>COTTON</MATERIAL>
 					<PROPERWORN>TORSO,LEGS</PROPERWORN><WORNAND>true</WORNAND>
 				</ITEM>
 				<ITEM class="GenWeapon" LEVEL="$mob_level">
 					<NAME>a gavel</NAME>
-					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<DISPLAY>$item_name has been left here</DISPLAY>
 					<MATERIAL>WOOD</MATERIAL>
 					<WEAPONCLASS>BLUNT</WEAPONCLASS>
 					<WEAPONTYPE>BASHING</WEAPONTYPE>
@@ -1051,13 +1051,13 @@ See guides/RandomAreas.html for information about documents of this type.
 				</BEHAVIOR>
 				<ITEM class="GenArmor" LEVEL="$mob_level">
 					<NAME select="any-1"><NAME>a colonel`s uniform</NAME></NAME>
-					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<DISPLAY>$item_name has been left here</DISPLAY>
 					<MATERIAL>COTTON</MATERIAL>
 					<PROPERWORN>TORSO,LEGS</PROPERWORN><WORNAND>true</WORNAND>
 				</ITEM>
 				<ITEM class="GenWeapon" LEVEL="$mob_level">
 					<NAME>an auction pointer</NAME>
-					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<DISPLAY>$item_name has been left here</DISPLAY>
 					<MATERIAL>IRON</MATERIAL>
 					<WEAPONCLASS>DAGGER</WEAPONCLASS>
 					<WEAPONTYPE>PIERCING</WEAPONTYPE>
@@ -1131,13 +1131,13 @@ See guides/RandomAreas.html for information about documents of this type.
 				</BEHAVIOR>
 				<ITEM class="GenArmor" LEVEL="$mob_level">
 					<NAME select="any-1"><NAME>(a(n)) postal uniform</NAME></NAME>
-					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<DISPLAY>$item_name has been left here</DISPLAY>
 					<MATERIAL>COTTON</MATERIAL>
 					<PROPERWORN>TORSO,LEGS</PROPERWORN><WORNAND>true</WORNAND>
 				</ITEM>
 				<ITEM class="GenWeapon" LEVEL="$mob_level">
 					<NAME>(a(n)) letter opener</NAME>
-					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<DISPLAY>$item_name has been left here</DISPLAY>
 					<MATERIAL>IRON</MATERIAL>
 					<WEAPONCLASS>DAGGER</WEAPONCLASS>
 					<WEAPONTYPE>PIERCING</WEAPONTYPE>
@@ -1208,13 +1208,13 @@ See guides/RandomAreas.html for information about documents of this type.
 				</BEHAVIOR>
 				<ITEM class="GenArmor" LEVEL="$mob_level">
 					<NAME select="any-1"><NAME>a conservative uniform</NAME></NAME>
-					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<DISPLAY>$item_name has been left here</DISPLAY>
 					<MATERIAL>COTTON</MATERIAL>
 					<PROPERWORN>TORSO,LEGS</PROPERWORN><WORNAND>true</WORNAND>
 				</ITEM>
 				<ITEM class="GenWeapon" LEVEL="$mob_level">
 					<NAME>a money clip</NAME>
-					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<DISPLAY>$item_name has been left here</DISPLAY>
 					<MATERIAL>IRON</MATERIAL>
 					<WEAPONCLASS>DAGGER</WEAPONCLASS>
 					<WEAPONTYPE>PIERCING</WEAPONTYPE>
@@ -1312,13 +1312,13 @@ See guides/RandomAreas.html for information about documents of this type.
 				<AFFECT class="Prop_Trainer" parms="ALL" />
 				<ITEM class="GenArmor" LEVEL="$mob_level">
 					<NAME select="any-1"><NAME>a simple robe</NAME></NAME>
-					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<DISPLAY>$item_name has been left here</DISPLAY>
 					<MATERIAL>COTTON</MATERIAL>
 					<PROPERWORN>TORSO,LEGS</PROPERWORN><WORNAND>true</WORNAND>
 				</ITEM>
 				<ITEM class="GenWeapon" LEVEL="$mob_level">
 					<NAME>a ruler</NAME>
-					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<DISPLAY>$item_name has been left here</DISPLAY>
 					<MATERIAL>WOOD</MATERIAL>
 					<WEAPONCLASS>BLUNT</WEAPONCLASS>
 					<WEAPONTYPE>BASHING</WEAPONTYPE>
@@ -1374,13 +1374,13 @@ See guides/RandomAreas.html for information about documents of this type.
 		</BEHAVIOR>
 		<ITEM class="GenArmor" LEVEL="$mob_level">
 			<NAME select="any-1"><NAME>a ${l:__officertype}`s uniform</NAME></NAME>
-			<DISPLAY>$item_name has been left here"</DISPLAY>
+			<DISPLAY>$item_name has been left here</DISPLAY>
 			<MATERIAL>COTTON</MATERIAL>
 			<PROPERWORN>TORSO,LEGS</PROPERWORN><WORNAND>true</WORNAND>
 		</ITEM>
 		<ITEM class="GenWeapon" LEVEL="$mob_level">
 			<NAME>a ${l:__officertype} night stick</NAME>
-			<DISPLAY>$item_name has been left here"</DISPLAY>
+			<DISPLAY>$item_name has been left here</DISPLAY>
 			<MATERIAL>WOOD</MATERIAL>
 			<WEAPONCLASS>BLUNT</WEAPONCLASS>
 			<WEAPONTYPE>BASHING</WEAPONTYPE>
@@ -1403,13 +1403,13 @@ See guides/RandomAreas.html for information about documents of this type.
 		</BEHAVIOR>
 		<ITEM class="GenArmor" LEVEL="$mob_level">
 			<NAME select="any-1"><NAME>a street sweeper`s uniform</NAME></NAME>
-			<DISPLAY>$item_name has been left here"</DISPLAY>
+			<DISPLAY>$item_name has been left here</DISPLAY>
 			<MATERIAL>COTTON</MATERIAL>
 			<PROPERWORN>TORSO,LEGS</PROPERWORN><WORNAND>true</WORNAND>
 		</ITEM>
 		<ITEM class="GenWeapon" LEVEL="$mob_level">
 			<NAME>a broom</NAME>
-			<DISPLAY>$item_name has been left here"</DISPLAY>
+			<DISPLAY>$item_name has been left here</DISPLAY>
 			<MATERIAL>WOOD</MATERIAL>
 			<WEAPONCLASS>BLUNT</WEAPONCLASS>
 			<WEAPONTYPE>BASHING</WEAPONTYPE>
