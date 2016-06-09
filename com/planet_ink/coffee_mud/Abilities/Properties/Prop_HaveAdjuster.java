@@ -66,6 +66,7 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 	protected CompiledZMask	mask				= null;
 	protected boolean		multiplyPhyStats	= false;
 	protected boolean		multiplyCharStates	= false;
+	protected boolean		firstTime			= false;
 	protected String[]		parameters			= new String[] { "", "" };
 
 	@Override
@@ -355,7 +356,7 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 		}
 	}
 
-	public void adjCharState(Object[] changes, CharState charState)
+	public void adjCharState(final MOB mob, Object[] changes, CharState charState)
 	{
 		if(changes==null)
 			return;
@@ -407,6 +408,11 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 				}
 			}
 		}
+		if(firstTime)
+		{
+			firstTime=false;
+			charState.copyInto(mob.curState());
+		}
 	}
 
 	@Override
@@ -423,7 +429,7 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 	{
 		ensureStarted();
 		if(canApply(affectedMOB))
-			adjCharState(charStateChanges,affectedState);
+			adjCharState(affectedMOB,charStateChanges,affectedState);
 		super.affectCharState(affectedMOB,affectedState);
 	}
 

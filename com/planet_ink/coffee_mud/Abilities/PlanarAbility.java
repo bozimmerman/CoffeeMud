@@ -121,7 +121,10 @@ public class PlanarAbility extends StdAbility
 		AEFFECT,
 		SPECFLAGS,
 		MIXRACE,
-		ELITE
+		ELITE,
+		ROOMCOLOR,
+		ROOMADJS,
+		AREAEMOTER
 	}
 	
 	public enum PlanarSpecFlag
@@ -379,6 +382,48 @@ public class PlanarAbility extends StdAbility
 			boolean elite = false;
 			if(planeVars.containsKey(PlanarVar.ELITE.toString()))
 				elite=CMath.s_bool(planeVars.get(PlanarVar.ELITE.toString()));
+			if(planeVars.containsKey(PlanarVar.ROOMCOLOR.toString()))
+			{
+				String prefix="";
+				String displayText = room.displayText();
+				if(displayText.toUpperCase().startsWith("<VARIES>"))
+				{
+					prefix="<VARIES>";
+					displayText=displayText.substring(prefix.length());
+				}
+				String color=planeVars.get(PlanarVar.ROOMCOLOR.toString());
+				if(color.startsWith("UP "))
+				{
+					color=color.substring(3).trim();
+					displayText=displayText.toUpperCase();
+				}
+				room.setDisplayText(prefix+color+displayText+"^N");
+			}
+			if(planeVars.containsKey(PlanarVar.ROOMADJS.toString()))
+			{
+				String wordStr=planeVars.get(PlanarVar.ROOMADJS.toString());
+				String prefix="";
+				String desc = room.description();
+				if(wordStr.startsWith("UP "))
+				{
+					wordStr=wordStr.substring(3).trim();
+					desc=desc.toUpperCase();
+				}
+				int chance=30;
+				int x=wordStr.indexOf(' ');
+				if((x>0)&&(CMath.isInteger(wordStr.substring(0, x))))
+				{
+					chance=CMath.s_int(wordStr.substring(0, x));
+					wordStr=wordStr.substring(x+1).trim();
+				}
+				String[] words= wordStr.split(",");
+				if(desc.toUpperCase().startsWith("<VARIES>"))
+				{
+					prefix="<VARIES>";
+					desc=desc.substring(prefix.length());
+				}
+				room.setDescription(prefix+CMLib.english().insertAdjectives(desc, words, chance));
+			}
 			if(this.reffectList!=null)
 			{
 				for(Pair<String,String> p : this.reffectList)

@@ -47,6 +47,7 @@ public interface EnglishParsing extends CMLibrary
 	public String toEnglishStringList(final String[] V);
 	public String toEnglishStringList(final Collection<? extends Object> V);
 	public String insertUnColoredAdjective(String str, String adjective);
+	public String insertAdjectives(String paragraph, String[] adjsToChoose, int pctChance);
 	public String startWithAorAn(String str);
 	public CMObject findCommand(MOB mob, List<String> commands);
 	public boolean evokedBy(Ability thisAbility, String thisWord);

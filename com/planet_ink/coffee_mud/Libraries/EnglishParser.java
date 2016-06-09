@@ -98,8 +98,10 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	{
 		s=s.toLowerCase();
 		for (final String article : ARTICLES)
+		{
 			if(s.equals(article))
 				return true;
+		}
 		return false;
 	}
 
@@ -406,6 +408,49 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		if(uppStr.startsWith("SOME "))
 			return properIndefiniteArticle(adjective)+" "+adjective+" "+str.substring(4).trim();
 		return properIndefiniteArticle(adjective)+" "+adjective+" "+str.trim();
+	}
+
+	protected int skipSpaces(final String paragraph, int index)
+	{
+		while((index<paragraph.length())&&Character.isWhitespace(paragraph.charAt(index)))
+			index++;
+		if(index>=paragraph.length())
+			return -1;
+		return index;
+	}
+	
+	public String insertAdjectives(String paragraph, String[] adjsToChoose, int pctChance)
+	{
+		if((paragraph.length()==0)||(adjsToChoose==null)||(adjsToChoose.length==0))
+			return paragraph;
+		StringBuilder newParagraph = new StringBuilder("");
+		int startDex=skipSpaces(paragraph,0);
+		if(startDex<0)
+			return paragraph;
+		newParagraph.append(paragraph.substring(0,startDex));
+		int spaceDex=paragraph.indexOf(' ',startDex);
+		while(spaceDex > startDex)
+		{
+			final String word=paragraph.substring(startDex,spaceDex).trim();
+			if(isAnArticle(word) && (CMLib.dice().rollPercentage()<=pctChance))
+			{
+				final String adj=adjsToChoose[CMLib.dice().roll(1, adjsToChoose.length, -1)].toLowerCase();
+				if(word.equalsIgnoreCase("a")||word.equalsIgnoreCase("an"))
+					newParagraph.append(this.startWithAorAn(adj)).append(" ").append(adj);
+				else
+					newParagraph.append(word).append(" ").append(adj);
+			}
+			else
+				newParagraph.append(paragraph.substring(startDex,spaceDex));
+			startDex=skipSpaces(paragraph,spaceDex);
+			if(startDex<0)
+				break;
+			newParagraph.append(paragraph.substring(spaceDex,startDex));
+			spaceDex=paragraph.indexOf(' ',startDex);
+		}
+		if((spaceDex<startDex)&&(startDex>=0)&&(startDex<paragraph.length()))
+			newParagraph.append(paragraph.substring(startDex));
+		return newParagraph.toString();
 	}
 
 	@Override
