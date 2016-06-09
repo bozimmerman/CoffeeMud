@@ -64,6 +64,8 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 	protected Object[]		charStateChanges	= null;
 	protected Object[]		phyStatsChanges		= null;
 	protected CompiledZMask	mask				= null;
+	protected boolean		multiplyPhyStats	= false;
+	protected boolean		multiplyCharStates	= false;
 	protected String[]		parameters			= new String[] { "", "" };
 
 	@Override
@@ -107,11 +109,17 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 		this.charStateChanges=null;
 		this.phyStatsChanges=null;
 		this.charStatsChanges=null;
+		this.multiplyPhyStats = false;
+		this.multiplyCharStates = false;
 		parameters=CMLib.masking().separateMaskStrs(text());
 		if(parameters[1].trim().length()==0)
 			mask=CMLib.masking().createEmptyMask();
 		else
 			mask=CMLib.masking().getPreCompiledMask(parameters[1]);
+		
+		multiplyPhyStats = CMParms.getParmBool(parameters[0],"MULTIPLYPH",false);
+		multiplyCharStates = CMParms.getParmBool(parameters[0],"MULTIPLYCH",false);
+		
 		final Vector<Object> phyStatsV=new Vector<Object>();
 		addIfPlussed(parameters[0],"abi",PhyStats.STAT_ABILITY,phyStatsV);
 		addIfPlussed(parameters[0],"arm",PhyStats.STAT_ARMOR,phyStatsV);
@@ -172,7 +180,19 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 		addIfPlussed(parameters[0],"man",CharState.STAT_MANA,charStateV);
 		addIfPlussed(parameters[0],"mov",CharState.STAT_MOVE,charStateV);
 		addIfPlussed(parameters[0],"thi",CharState.STAT_THIRST,charStateV);
-
+		
+		int allSavesPlus=CMParms.getParmPlus(newText,"ALLSAVES");
+		if(allSavesPlus!=0)
+		{
+			for(final int c : CharStats.CODES.SAVING_THROWS())
+			{
+				if(CMMSGMAP[c]!=-1)
+				{
+					charStatsV.addElement(Integer.valueOf(c));
+					charStatsV.addElement(Integer.valueOf(allSavesPlus));
+				}
+			}
+		}
 		this.charStateChanges=makeObjectArray(charStateV);
 		this.phyStatsChanges=makeObjectArray(phyStatsV);
 		this.charStatsChanges=makeObjectArray(charStatsV);
@@ -182,47 +202,96 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 	{
 		if(changes==null)
 			return;
-		for(int c=0;c<changes.length;c+=2)
+		if(multiplyPhyStats)
 		{
-			switch(((Integer)changes[c]).intValue())
+			for(int c=0;c<changes.length;c+=2)
 			{
-			case PhyStats.STAT_ABILITY:
-				phyStats.setAbility(phyStats.ability() + ((Integer) changes[c + 1]).intValue());
-				break;
-			case PhyStats.STAT_ARMOR:
-				phyStats.setArmor(phyStats.armor() + ((Integer) changes[c + 1]).intValue());
-				break;
-			case PhyStats.STAT_ATTACK:
-				phyStats.setAttackAdjustment(phyStats.attackAdjustment() + ((Integer) changes[c + 1]).intValue());
-				break;
-			case PhyStats.STAT_DAMAGE:
-				phyStats.setDamage(phyStats.damage() + ((Integer) changes[c + 1]).intValue());
-				break;
-			case PhyStats.STAT_DISPOSITION:
-				phyStats.setDisposition(phyStats.disposition() | ((Integer) changes[c + 1]).intValue());
-				break;
-			case PhyStats.STAT_LEVEL:
-			{
-				phyStats.setLevel(phyStats.level() + ((Integer) changes[c + 1]).intValue());
-				if (phyStats.level() < 0)
-					phyStats.setLevel(0);
-				break;
+				switch(((Integer)changes[c]).intValue())
+				{
+				case PhyStats.STAT_ABILITY:
+					phyStats.setAbility(phyStats.ability() + ((Integer) changes[c + 1]).intValue());
+					break;
+				case PhyStats.STAT_ARMOR:
+					phyStats.setArmor((int)Math.round(CMath.mul(phyStats.armor(), CMath.div(((Integer) changes[c + 1]).intValue(),100))));
+					break;
+				case PhyStats.STAT_ATTACK:
+					phyStats.setAttackAdjustment((int)Math.round(CMath.mul(phyStats.attackAdjustment(), CMath.div(((Integer) changes[c + 1]).intValue(),100))));
+					break;
+				case PhyStats.STAT_DAMAGE:
+					phyStats.setDamage((int)Math.round(CMath.mul(phyStats.damage(), CMath.div(((Integer) changes[c + 1]).intValue(),100))));
+					break;
+				case PhyStats.STAT_DISPOSITION:
+					phyStats.setDisposition(phyStats.disposition() | ((Integer) changes[c + 1]).intValue());
+					break;
+				case PhyStats.STAT_LEVEL:
+				{
+					phyStats.setLevel(phyStats.level() + ((Integer) changes[c + 1]).intValue());
+					if (phyStats.level() < 0)
+						phyStats.setLevel(0);
+					break;
+				}
+				case PhyStats.STAT_REJUV:
+					phyStats.setRejuv(phyStats.rejuv() + ((Integer) changes[c + 1]).intValue());
+					break;
+				case PhyStats.STAT_SENSES:
+					phyStats.setSensesMask(phyStats.sensesMask() | ((Integer) changes[c + 1]).intValue());
+					break;
+				case PhyStats.STAT_WEIGHT:
+					phyStats.setWeight((int)Math.round(CMath.mul(phyStats.weight(), CMath.div(((Integer) changes[c + 1]).intValue(),100))));
+					break;
+				case PhyStats.STAT_HEIGHT:
+					phyStats.setHeight((int)Math.round(CMath.mul(phyStats.height(), CMath.div(((Integer) changes[c + 1]).intValue(),100))));
+					break;
+				case PhyStats.NUM_STATS:
+					phyStats.setSpeed(phyStats.speed() * ((Double) changes[c + 1]).doubleValue());
+					break;
+				}
 			}
-			case PhyStats.STAT_REJUV:
-				phyStats.setRejuv(phyStats.rejuv() + ((Integer) changes[c + 1]).intValue());
-				break;
-			case PhyStats.STAT_SENSES:
-				phyStats.setSensesMask(phyStats.sensesMask() | ((Integer) changes[c + 1]).intValue());
-				break;
-			case PhyStats.STAT_WEIGHT:
-				phyStats.setWeight(phyStats.weight() + ((Integer) changes[c + 1]).intValue());
-				break;
-			case PhyStats.STAT_HEIGHT:
-				phyStats.setHeight(phyStats.height() + ((Integer) changes[c + 1]).intValue());
-				break;
-			case PhyStats.NUM_STATS:
-				phyStats.setSpeed(phyStats.speed() + ((Double) changes[c + 1]).doubleValue());
-				break;
+		}
+		else
+		{
+			for(int c=0;c<changes.length;c+=2)
+			{
+				switch(((Integer)changes[c]).intValue())
+				{
+				case PhyStats.STAT_ABILITY:
+					phyStats.setAbility(phyStats.ability() + ((Integer) changes[c + 1]).intValue());
+					break;
+				case PhyStats.STAT_ARMOR:
+					phyStats.setArmor(phyStats.armor() + ((Integer) changes[c + 1]).intValue());
+					break;
+				case PhyStats.STAT_ATTACK:
+					phyStats.setAttackAdjustment(phyStats.attackAdjustment() + ((Integer) changes[c + 1]).intValue());
+					break;
+				case PhyStats.STAT_DAMAGE:
+					phyStats.setDamage(phyStats.damage() + ((Integer) changes[c + 1]).intValue());
+					break;
+				case PhyStats.STAT_DISPOSITION:
+					phyStats.setDisposition(phyStats.disposition() | ((Integer) changes[c + 1]).intValue());
+					break;
+				case PhyStats.STAT_LEVEL:
+				{
+					phyStats.setLevel(phyStats.level() + ((Integer) changes[c + 1]).intValue());
+					if (phyStats.level() < 0)
+						phyStats.setLevel(0);
+					break;
+				}
+				case PhyStats.STAT_REJUV:
+					phyStats.setRejuv(phyStats.rejuv() + ((Integer) changes[c + 1]).intValue());
+					break;
+				case PhyStats.STAT_SENSES:
+					phyStats.setSensesMask(phyStats.sensesMask() | ((Integer) changes[c + 1]).intValue());
+					break;
+				case PhyStats.STAT_WEIGHT:
+					phyStats.setWeight(phyStats.weight() + ((Integer) changes[c + 1]).intValue());
+					break;
+				case PhyStats.STAT_HEIGHT:
+					phyStats.setHeight(phyStats.height() + ((Integer) changes[c + 1]).intValue());
+					break;
+				case PhyStats.NUM_STATS:
+					phyStats.setSpeed(phyStats.speed() + ((Double) changes[c + 1]).doubleValue());
+					break;
+				}
 			}
 		}
 	}
@@ -290,25 +359,52 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 	{
 		if(changes==null)
 			return;
-		for(int c=0;c<changes.length;c+=2)
+		if(multiplyCharStates)
 		{
-			switch(((Integer)changes[c]).intValue())
+			for(int c=0;c<changes.length;c+=2)
 			{
-			case CharState.STAT_HITPOINTS:
-				charState.setHitPoints(charState.getHitPoints() + ((Integer) changes[c + 1]).intValue());
-				break;
-			case CharState.STAT_HUNGER:
-				charState.setHunger(charState.getHunger() + ((Integer) changes[c + 1]).intValue());
-				break;
-			case CharState.STAT_THIRST:
-				charState.setThirst(charState.getThirst() + ((Integer) changes[c + 1]).intValue());
-				break;
-			case CharState.STAT_MANA:
-				charState.setMana(charState.getMana() + ((Integer) changes[c + 1]).intValue());
-				break;
-			case CharState.STAT_MOVE:
-				charState.setMovement(charState.getMovement() + ((Integer) changes[c + 1]).intValue());
-				break;
+				switch(((Integer)changes[c]).intValue())
+				{
+				case CharState.STAT_HITPOINTS:
+					charState.setHitPoints((int)Math.round(CMath.mul(charState.getHitPoints(), CMath.div(((Integer) changes[c + 1]).intValue(),100))));
+					break;
+				case CharState.STAT_HUNGER:
+					charState.setHunger(charState.getHunger() + ((Integer) changes[c + 1]).intValue());
+					break;
+				case CharState.STAT_THIRST:
+					charState.setThirst(charState.getThirst() + ((Integer) changes[c + 1]).intValue());
+					break;
+				case CharState.STAT_MANA:
+					charState.setMana((int)Math.round(CMath.mul(charState.getMana(), CMath.div(((Integer) changes[c + 1]).intValue(),100))));
+					break;
+				case CharState.STAT_MOVE:
+					charState.setMovement((int)Math.round(CMath.mul(charState.getMovement(), CMath.div(((Integer) changes[c + 1]).intValue(),100))));
+					break;
+				}
+			}
+		}
+		else
+		{
+			for(int c=0;c<changes.length;c+=2)
+			{
+				switch(((Integer)changes[c]).intValue())
+				{
+				case CharState.STAT_HITPOINTS:
+					charState.setHitPoints(charState.getHitPoints() + ((Integer) changes[c + 1]).intValue());
+					break;
+				case CharState.STAT_HUNGER:
+					charState.setHunger(charState.getHunger() + ((Integer) changes[c + 1]).intValue());
+					break;
+				case CharState.STAT_THIRST:
+					charState.setThirst(charState.getThirst() + ((Integer) changes[c + 1]).intValue());
+					break;
+				case CharState.STAT_MANA:
+					charState.setMana(charState.getMana() + ((Integer) changes[c + 1]).intValue());
+					break;
+				case CharState.STAT_MOVE:
+					charState.setMovement(charState.getMovement() + ((Integer) changes[c + 1]).intValue());
+					break;
+				}
 			}
 		}
 	}

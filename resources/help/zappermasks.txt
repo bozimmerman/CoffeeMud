@@ -89,6 +89,8 @@
 -HOME "+my home/beacon areaname" etc.. (create exceptions)
 +HOME (do not <WORD> any home/beacon areas)
 +HOME "-my home/beacon areaname" etc.. (create exceptions)
+-ISHOME (<WORD> all npcs not currently in their home/beacon areas
++ISHOME (<WORD> all npcs unless they are in their home/beacon areas
 -ITEM "+item name" etc... (<WORD> only those with an item name)
 -WORN "+item name" etc... (<WORD> only those wearing item name)
 -EFFECTS (<WORD> everyone, even no effects)

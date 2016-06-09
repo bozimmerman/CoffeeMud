@@ -64,7 +64,7 @@ public interface MaskingLibrary extends CMLibrary
 		_TATTOO("-TATTOOS"),
 		TATTOO("+TATTOOS"),
 		_NAME("-NAMES"),
-		_PLAYER,
+		_PLAYER("-PLAYER"),
 		_NPC("-MOB"),
 		_RACECAT("-RACECATS"),
 		RACECAT("+RACECATS"),
@@ -182,7 +182,9 @@ public interface MaskingLibrary extends CMLibrary
 		MOOD("+MOODS"),
 		_CHANCE,
 		_ACCCHIEVE("-ACCCHIEVES"),
-		ACCCHIEVE("+ACCCHIEVES")
+		ACCCHIEVE("+ACCCHIEVES"),
+		ISHOME("+ISHOME"),
+		_ISHOME("-ISHOME")
 		;
 		private final String[] keys;
 		private ZapperKey(String... exts)

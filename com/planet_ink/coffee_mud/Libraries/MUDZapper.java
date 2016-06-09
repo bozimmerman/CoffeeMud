@@ -2103,6 +2103,12 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						buf.append(".  ");
 					}
 					break;
+				case ISHOME: // +isHome
+					buf.append(L("Disallows those who are not in their home area.  "));
+					break;
+				case _ISHOME: // -isHome
+					buf.append(L("Disallows those who are in their home area.  "));
+					break;
 				case HOME: // +Home
 					{
 						buf.append(L("Disallows those whose home is the following area"+(multipleQuals(V,v,"-")?"s":"")+": "));
@@ -3389,6 +3395,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				case _SUBOP: // +subop
 					buildRoomFlag=true;
 				//$FALL-THROUGH$
+				case ISHOME: // +ishome
+				case _ISHOME: // -ishome
 				case SYSOP: // +sysop
 				case _SYSOP: // +sysop
 				{
@@ -5182,6 +5190,22 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						}
 						break;
 					}
+				case _ISHOME: // -ishome
+					{
+						final Area homeA=CMLib.map().getStartArea(E);
+						final Area isA=CMLib.map().areaLocation(E);
+						if(homeA == isA)
+							return false;
+						break;
+					}
+				case ISHOME: // +ishome
+				{
+					final Area homeA=CMLib.map().getStartArea(E);
+					final Area isA=CMLib.map().areaLocation(E);
+					if(homeA != isA)
+						return false;
+					break;
+				}
 				case _HOME: // -home
 					{
 						boolean found=false;
@@ -5714,6 +5738,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				case AREA: // +area
 				case _HOME: // -home
 				case HOME: // +home
+				case _ISHOME: // -ishome
+				case ISHOME: // +ishome
 				case _ITEM: // -item
 				case _WORN: // -worn
 				case ITEM: // +item

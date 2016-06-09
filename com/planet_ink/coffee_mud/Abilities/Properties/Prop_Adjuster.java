@@ -49,13 +49,13 @@ public class Prop_Adjuster extends Prop_HaveAdjuster
 	@Override
 	protected int canAffectCode()
 	{
-		return Ability.CAN_MOBS | Ability.CAN_ITEMS | Ability.CAN_EXITS;
+		return Ability.CAN_MOBS | Ability.CAN_ITEMS | Ability.CAN_EXITS | Ability.CAN_ROOMS | Ability.CAN_AREAS;
 	}
 
 	@Override
 	public boolean bubbleAffect()
 	{
-		return false;
+		return (affected instanceof Area);
 	}
 
 	@Override
