@@ -60,11 +60,11 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 		return true;
 	}
 
-	protected Object[]				charStatsChanges	= null;
-	protected Object[]				charStateChanges	= null;
-	protected Object[]				phyStatsChanges		= null;
+	protected Object[]		charStatsChanges	= null;
+	protected Object[]		charStateChanges	= null;
+	protected Object[]		phyStatsChanges		= null;
 	protected CompiledZMask	mask				= null;
-	protected String[]				parameters			= new String[] { "", "" };
+	protected String[]		parameters			= new String[] { "", "" };
 
 	@Override
 	public long flags()
