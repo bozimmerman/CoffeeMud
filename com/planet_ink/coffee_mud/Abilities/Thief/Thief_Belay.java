@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2006-2016 Bo Zimmerman
+   Copyright 2016-2016 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -32,15 +32,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Thief_ConcealItem extends ThiefSkill
+public class Thief_Belay extends ThiefSkill
 {
 	@Override
 	public String ID()
 	{
-		return "Thief_ConcealItem";
+		return "Thief_Belay";
 	}
 
-	private final static String	localizedName	= CMLib.lang().L("Conceal Item");
+	private final static String	localizedName	= CMLib.lang().L("Belay");
 
 	@Override
 	public String name()
@@ -66,12 +66,12 @@ public class Thief_ConcealItem extends ThiefSkill
 		return Ability.QUALITY_INDIFFERENT;
 	}
 
-	private static final String[]	triggerStrings	= I(new String[] { "ITEMCONCEAL", "ICONCEAL", "CONCEALITEM" });
+	private static final String[]	triggerStrings	= I(new String[] { "BELAY" });
 
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_THIEF_SKILL | Ability.DOMAIN_STEALTHY;
+		return Ability.ACODE_THIEF_SKILL | Ability.DOMAIN_SEATRAVEL;
 	}
 
 	@Override
@@ -104,13 +104,16 @@ public class Thief_ConcealItem extends ThiefSkill
 	public void affectPhyStats(Physical host, PhyStats stats)
 	{
 		super.affectPhyStats(host,stats);
-		stats.setDisposition(stats.disposition()|PhyStats.IS_HIDDEN);
+		if(host instanceof Item)
+			stats.setSensesMask(stats.sensesMask()|PhyStats.SENSE_ITEMNOTGET);
+		stats.addAmbiance("belayed");
 	}
 
 	@Override
-	public void executeMsg(Environmental host, CMMsg msg)
+	public boolean okMessage(Environmental host, CMMsg msg)
 	{
-		super.executeMsg(host,msg);
+		if(!super.okMessage(host,msg))
+			return false;
 		if((msg.target()==affected)
 		&&((msg.targetMinor()==CMMsg.TYP_GET)||(msg.targetMinor()==CMMsg.TYP_PUSH)||(msg.targetMinor()==CMMsg.TYP_PULL)))
 		{
@@ -119,6 +122,7 @@ public class Thief_ConcealItem extends ThiefSkill
 			P.delEffect(this);
 			P.recoverPhyStats();
 		}
+		return true;
 	}
 
 	@Override
@@ -126,25 +130,40 @@ public class Thief_ConcealItem extends ThiefSkill
 	{
 		if((commands.size()<1)&&(givenTarget==null))
 		{
-			mob.tell(L("What item would you like to conceal?"));
+			mob.tell(L("What item would you like to belay?"));
 			return false;
 		}
+		final Room R=mob.location();
+		if(R==null)
+			return false;
+		if((!(R.getArea() instanceof BoardableShip))
+		||((R.domainType()&Room.INDOORS)!=0))
+		{
+			mob.tell(L("You must be on the deck of a ship to belay an item."));
+			return false;
+		}
+		
 		final Item item=super.getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);
 		if(item==null)
 			return false;
 
-		if((!auto)&&(item.phyStats().weight()>((adjustedLevel(mob,asLevel)*2))))
+		if(!(item.owner() instanceof Room))
 		{
-			mob.tell(L("You aren't good enough to conceal anything that large."));
+			mob.tell(L("You need to put that on the deck before you can belay it."));
 			return false;
 		}
-
+		
+		if(item.fetchEffect(ID())!=null)
+		{
+			mob.tell(L("That is already secured."));
+			return false;
+		}
+		
 		if(((!CMLib.flags().isGettable(item))
-			||(CMLib.flags().isRejuvingItem(item))
 			||(CMath.bset(item.phyStats().sensesMask(), PhyStats.SENSE_UNDESTROYABLE)))
 		&&(!CMLib.law().doesHavePriviledgesHere(mob,mob.location())))
 		{
-			mob.tell(L("You may not conceal that."));
+			mob.tell(L("You may not belay that."));
 			return false;
 		}
 
@@ -155,14 +174,13 @@ public class Thief_ConcealItem extends ThiefSkill
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,item,this,CMMsg.MSG_THIEF_ACT,L("<S-NAME> conceal(s) <T-NAME>."),CMMsg.MSG_THIEF_ACT,null,CMMsg.MSG_THIEF_ACT,null);
+			final CMMsg msg=CMClass.getMsg(mob,item,this,CMMsg.MSG_THIEF_ACT,L("<S-NAME> belay(s) <T-NAME>."),CMMsg.MSG_THIEF_ACT,null,CMMsg.MSG_THIEF_ACT,null);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				final Ability A=(Ability)super.copyOf();
 				A.setInvoker(mob);
 				A.setAbilityCode((adjustedLevel(mob,asLevel)*2)-item.phyStats().level());
-				final Room R=mob.location();
 				if(CMLib.law().doesOwnThisLand(mob,R))
 					item.addNonUninvokableEffect(A);
 				else
@@ -172,7 +190,7 @@ public class Thief_ConcealItem extends ThiefSkill
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,item,L("<S-NAME> attempt(s) to conceal <T-NAME>, but fail(s)."));
+			beneficialVisualFizzle(mob,item,L("<S-NAME> attempt(s) to belay <T-NAME>, but fail(s)."));
 		return success;
 	}
 }

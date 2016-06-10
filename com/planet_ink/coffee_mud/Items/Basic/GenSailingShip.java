@@ -2192,7 +2192,7 @@ public class GenSailingShip extends StdBoardable
 											"AREA","OWNER","PRICE","PUTSTR","MOUNTSTR","DISMOUNTSTR","DEFCLOSED","DEFLOCKED",
 											"EXITNAME"
 										  };
-	private final static String[] MISCCODES = { "DISTANCETOTARGET","DIRECTIONFACING","DIRECTIONTOTARGET","ANCHORDOWN" };
+	private final static String[] MISCCODES = { "DISTANCETOTARGET","DIRECTIONFACING","DIRECTIONTOTARGET","ANCHORDOWN","COMBATTARGET" };
 	
 	@Override
 	public String getStat(String code)
@@ -2247,6 +2247,12 @@ public class GenSailingShip extends StdBoardable
 					return "" + this.getDirectionToTarget(this.targetedShip);
 				case 3:
 					return "" + this.anchorDown;
+				case 4:
+					if(this.targetedShip==null)
+						return "";
+					if(!(owner() instanceof Room))
+						return "";
+					return ((Room)owner).getContextName(targetedShip);
 				}
 			}
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);

@@ -77,6 +77,12 @@ public class Chant_Capsize extends Chant
 	}
 
 	@Override
+	public long flags()
+	{
+		return Ability.FLAG_MOVING;
+	}
+
+	@Override
 	protected int canTargetCode()
 	{
 		return Ability.CAN_ITEMS;
@@ -295,14 +301,21 @@ public class Chant_Capsize extends Chant
 			{
 				List<Item> items = this.getAllTheStuff(target);
 				R.send(mob,msg);
+				R.show(mob,target,CMMsg.MSG_OK_ACTION,L("<T-NAME> momentarily capsizes!"));
 				for(Item I : items)
 				{
 					I.setContainer(null);
 					if(I.owner() != R)
-						R.moveItemTo(I);
+					{
+						final CMMsg msg2=CMClass.getMsg(mob,I,this,verbalCastCode(mob,target,auto),L("<T-NAME> fall(s) overboard"));
+						if(R.okMessage(mob,msg2))
+						{
+							R.send(mob,msg2);
+							R.moveItemTo(I);
+						}
+					}
 				}
 				R.recoverRoomStats();
-				R.show(mob,target,CMMsg.MSG_OK_ACTION,L("<T-NAME> momentarily capsizes!"));
 			}
 		}
 		else
