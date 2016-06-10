@@ -1848,10 +1848,10 @@ public class Modify extends StdCommand
 			for(final Long L : j.keySet())
 			{
 				O=j.get(L);
-				if(O instanceof StringBuffer)
+				if(!CMLib.players().playerExists(O.toString()))
 				{
 					somethingFound=true;
-					mob.tell(L("Unapproved script:\n\r@x1\n\r",((StringBuffer)O).toString()));
+					mob.tell(L("Unapproved script:\n\r@x1\n\r",O.toString()));
 					if((!mob.isMonster())
 					&&(mob.session().confirm(L("Approve this script (Y/n)?"),"Y")))
 						CMSecurity.approveJScript(mob.Name(),L.longValue());

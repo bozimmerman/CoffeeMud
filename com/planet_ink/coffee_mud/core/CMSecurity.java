@@ -811,7 +811,7 @@ public class CMSecurity
 		for(final Long L : approved.keySet())
 		{
 			final Object O=approved.get(L);
-			if(O instanceof String)
+			if(CMLib.players().playerExists(O.toString()))
 				newApproved.append(L.toString()+"="+((String)O)+"\n");
 		}
 		Resources.saveFileResource("::jscripts.ini",null,newApproved);

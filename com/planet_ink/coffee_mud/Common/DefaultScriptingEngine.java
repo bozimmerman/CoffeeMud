@@ -5758,8 +5758,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 58: // isable
 			{
 				final String arg1=CMParms.getCleanBit(funcParms,0);
-				final String arg2=CMParms.getPastBitClean(funcParms,0);
 				final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
+				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(funcParms,0));
 				if((E!=null)&&((E instanceof MOB))&&(!((MOB)E).amDead()))
 				{
 					final ExpertiseLibrary X=(ExpertiseLibrary)CMLib.expertises().findDefinition(arg2,true);
