@@ -244,22 +244,12 @@ public class Thief_Wenching extends ThiefSkill
 					mob.tell(L("@x1 requires @x2, which you don't have.",target.name(),CMLib.beanCounter().abbreviatedPrice(target, cost)));
 					return false;
 				}
-				
-				if(R.show(mob,target,this,CMMsg.MSG_OK_VISUAL, L("<S-NAME> and <T-NAME> wander off by yourselves for a time...")))
+				CMLib.beanCounter().subtractMoney(mob, CMLib.beanCounter().getCurrency(target), cost);
+				if(R.show(mob,target,this,CMMsg.MSG_OK_VISUAL, L("<S-NAME> gives <T-NAME> @x1, and then wander off together for a time...",CMLib.beanCounter().abbreviatedPrice(target, cost))))
 				{
-					final int oldMobDisposition=mob.basePhyStats().disposition();
-					final int oldWenchDisposition=target.basePhyStats().disposition();
-					mob.basePhyStats().setDisposition(oldMobDisposition|PhyStats.IS_NOT_SEEN);
-					target.basePhyStats().setDisposition(oldWenchDisposition|PhyStats.IS_NOT_SEEN);
-					mob.recoverPhyStats();
-					target.recoverPhyStats();
 					final Session sess=mob.session();
 					if(sess == null)
 					{
-						mob.basePhyStats().setDisposition(oldMobDisposition);
-						target.basePhyStats().setDisposition(oldWenchDisposition);
-						mob.recoverPhyStats();
-						target.recoverPhyStats();
 						Ability A=mob.fetchEffect(ID());
 						if(A!=null)
 						{
@@ -271,6 +261,13 @@ public class Thief_Wenching extends ThiefSkill
 					}
 					else
 					{
+						final int oldMobDisposition=mob.basePhyStats().disposition();
+						final int oldWenchDisposition=target.basePhyStats().disposition();
+						mob.basePhyStats().setDisposition(oldMobDisposition|PhyStats.IS_NOT_SEEN);
+						target.basePhyStats().setDisposition(oldWenchDisposition|PhyStats.IS_NOT_SEEN);
+						final MOB targetM=target;
+						mob.recoverPhyStats();
+						target.recoverPhyStats();
 						sess.prompt(new InputCallback(Type.WAIT,8000)
 						{
 							@Override
@@ -281,6 +278,10 @@ public class Thief_Wenching extends ThiefSkill
 							@Override
 							public void timedOut()
 							{
+								mob.basePhyStats().setDisposition(oldMobDisposition);
+								targetM.basePhyStats().setDisposition(oldWenchDisposition);
+								mob.recoverPhyStats();
+								targetM.recoverPhyStats();
 								Ability A=mob.fetchEffect(ID());
 								if(A!=null)
 								{
