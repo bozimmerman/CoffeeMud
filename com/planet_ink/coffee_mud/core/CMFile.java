@@ -1285,7 +1285,7 @@ public class CMFile extends File
 		}
 		else
 			O=new StringBuffer(data.toString());
-		if(!isLocalFile())
+		if((!isLocalFile())||(isVFSOnlyPathFile()))
 		{
 			String filename=getVFSPathAndName();
 			CMVFSFile info=getVFSInfo(filename);
@@ -1396,7 +1396,7 @@ public class CMFile extends File
 			O=new StringBuffer(CMStrings.bytesToStr((byte[])data));
 		else
 			O=new StringBuffer(data.toString());
-		if(!isLocalFile())
+		if((!isLocalFile())||(isVFSOnlyPathFile()))
 		{
 			if(append)
 				O=new StringBuffer(text().append(O).toString());
@@ -1570,6 +1570,36 @@ public class CMFile extends File
 			dir+="/";
 		final CMVFSFile file=getVFSInfo(dir);
 		return (file instanceof CMVFSDir);
+	}
+
+	/**
+	 * If this file represents (or could represent) a VFS (database) file,
+	 * because the directory path is vfs only, this returns true.
+	 * @return true if this file represents (or could represent) a VFS (database) file
+	 */
+	public final boolean isVFSOnlyPathFile()
+	{
+		if(demandLocal)
+			return false;
+		if(isDirectory())
+			return false;
+		String dir=getVFSPathAndName().toLowerCase();
+		if(dir.endsWith("/"))
+			return false;
+		if(demandVFS)
+			return true;
+		int x=dir.lastIndexOf('/');
+		if(x<0)
+			return false;
+		final CMVFSFile file=getVFSInfo(dir.substring(0,x+1));
+		if(file instanceof CMVFSDir)
+		{
+			final CMFile localFile = new CMFile(dir.substring(0,x+1),this.accessor,this.vfsBits);
+			if(localFile.isLocalDirectory())
+				return false;
+			return true;
+		}
+		return false;
 	}
 
 	/**
