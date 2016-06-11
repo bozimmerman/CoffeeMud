@@ -31,7 +31,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class HoleInTheGround extends StdContainer
+public class HoleInTheGround extends GenContainer
 {
 	@Override
 	public String ID()
@@ -176,5 +176,13 @@ public class HoleInTheGround extends StdContainer
 			}
 		}
 		super.executeMsg(myHost, msg);
+	}
+	
+	@Override
+	public boolean sameAs(Environmental E)
+	{
+		if(!(E instanceof HoleInTheGround))
+			return false;
+		return super.sameAs(E);
 	}
 }
