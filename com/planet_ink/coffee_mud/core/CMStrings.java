@@ -130,8 +130,11 @@ public class CMStrings
 		if(str==null)
 			return false;
 		for(int c=0;c<str.length();c++)
-			if(!Character.isUpperCase(str.charAt(c)))
+		{
+			final char ch=str.charAt(c);
+			if((!Character.isUpperCase(ch))&&(ch!='_')&&(!Character.isDigit(ch)))
 				return false;
+		}
 		return true;
 	}
 
@@ -146,8 +149,11 @@ public class CMStrings
 		if(str==null)
 			return false;
 		for(int c=0;c<str.length();c++)
-			if(!Character.isLowerCase(str.charAt(c)))
+		{
+			final char ch=str.charAt(c);
+			if((!Character.isLowerCase(ch))&&(ch!='_')&&(!Character.isDigit(ch)))
 				return false;
+		}
 		return true;
 	}
 

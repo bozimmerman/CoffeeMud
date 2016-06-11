@@ -184,16 +184,20 @@ public class Injury extends StdAbility implements LimbDamage, HealthCondition
 		Pair<String,Integer> O=null;
 		final StringBuffer buf=new StringBuffer("");
 		if(injuries!=null)
+		{
 			for(int i=0;i<Race.BODY_PARTS;i++)
 			{
 				V=injuries[i];
 				if(V!=null)
-				for(int i2=0;i2<V.size();i2++)
 				{
-					O=V.elementAt(i2);
-					buf.append(i+":"+O.first.toLowerCase()+":"+O.second.intValue()+";");
+					for(int i2=0;i2<V.size();i2++)
+					{
+						O=V.elementAt(i2);
+						buf.append(i+":"+O.first.toLowerCase()+":"+O.second.intValue()+";");
+					}
 				}
 			}
+		}
 		return buf.toString();
 	}
 

@@ -60,6 +60,136 @@ public class Reset extends StdCommand
 		return CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.RESET);
 	}
 
+	private enum helpSets
+	{
+		SKILLS("/resources/help/skill_help.ini", new Filterer<Ability>(){
+			@Override
+			public boolean passesFilter(Ability A)
+			{
+				final int classCode=A.classificationCode()&Ability.ALL_ACODES;
+				if((classCode == Ability.ACODE_SKILL)
+				||(classCode == Ability.ACODE_THIEF_SKILL)
+				||(A.ID().startsWith("Paladin_")))
+					return true;
+				return false;
+			}
+		}),
+		CHANTS("/resources/help/chant_help.ini", new Filterer<Ability>(){
+			@Override
+			public boolean passesFilter(Ability A)
+			{
+				final int classCode=A.classificationCode()&Ability.ALL_ACODES;
+				if((classCode == Ability.ACODE_CHANT)
+				||(A.ID().startsWith("Chant_")))
+					return true;
+				return false;
+			}
+		}),
+		COMMON("/resources/help/common_help.ini", new Filterer<Ability>(){
+			@Override
+			public boolean passesFilter(Ability A)
+			{
+				final int classCode=A.classificationCode()&Ability.ALL_ACODES;
+				if(classCode == Ability.ACODE_COMMON_SKILL)
+					return true;
+				return false;
+			}
+		}),
+		PRAYERS("/resources/help/prayer_help.ini", new Filterer<Ability>(){
+			@Override
+			public boolean passesFilter(Ability A)
+			{
+				final int classCode=A.classificationCode()&Ability.ALL_ACODES;
+				if((classCode == Ability.ACODE_PRAYER)
+				||(A.ID().startsWith("Prayer_")))
+					return true;
+				return false;
+			}
+		}),
+		SONGS("/resources/help/songs_help.ini", new Filterer<Ability>(){
+			@Override
+			public boolean passesFilter(Ability A)
+			{
+				final int classCode=A.classificationCode()&Ability.ALL_ACODES;
+				if((classCode == Ability.ACODE_SONG)
+				||(A.ID().startsWith("Song_"))
+				||(A.ID().startsWith("Play_"))
+				||(A.ID().startsWith("Dance_")))
+					return true;
+				return false;
+			}
+		}),
+		SPELLS("/resources/help/spell_help.ini", new Filterer<Ability>(){
+			@Override
+			public boolean passesFilter(Ability A)
+			{
+				final int classCode=A.classificationCode()&Ability.ALL_ACODES;
+				if((classCode == Ability.ACODE_SPELL)
+				||(A.ID().startsWith("Spell_")))
+					return true;
+				return false;
+			}
+		}),
+		TRAPS("/resources/help/traps.ini", new Filterer<Ability>(){
+			@Override
+			public boolean passesFilter(Ability A)
+			{
+				final int classCode=A.classificationCode()&Ability.ALL_ACODES;
+				if((classCode == Ability.ACODE_TRAP)
+				||(A.ID().startsWith("Trap_")))
+					return true;
+				return false;
+			}
+		}),
+		POISONS("/resources/help/poisons.ini", new Filterer<Ability>(){
+			@Override
+			public boolean passesFilter(Ability A)
+			{
+				final int classCode=A.classificationCode()&Ability.ALL_ACODES;
+				if((classCode == Ability.ACODE_POISON)
+				||(A.ID().startsWith("Poison_")))
+					return true;
+				return false;
+			}
+		}),
+		DISEASES("/resources/help/diseases.ini", new Filterer<Ability>(){
+			@Override
+			public boolean passesFilter(Ability A)
+			{
+				final int classCode=A.classificationCode()&Ability.ALL_ACODES;
+				if((classCode == Ability.ACODE_DISEASE)
+				||(A.ID().startsWith("Disease_")))
+					return true;
+				return false;
+			}
+		}),
+		PROPERTIES("/resources/help/arc_properties.ini", false, new Filterer<Ability>(){
+			@Override
+			public boolean passesFilter(Ability A)
+			{
+				final int classCode=A.classificationCode()&Ability.ALL_ACODES;
+				if((classCode == Ability.ACODE_PROPERTY)
+				||(A.ID().startsWith("Prop_")))
+					return true;
+				return false;
+			}
+		}),
+		;
+		public String file;
+		public Filterer<Ability> filter;
+		public boolean useName;
+		private helpSets(String filePath, Filterer<Ability> filter)
+		{
+			this(filePath,true,filter);
+		}
+		private helpSets(String filePath, boolean useName, Filterer<Ability> filter)
+		{
+			file=filePath;
+			this.useName=useName;
+			this.filter=filter;
+		}
+	}
+	
 	public int resetAreaOramaManaI(MOB mob, Item I, Hashtable<String,Integer> rememberI, String lead)
 		throws java.io.IOException
 	{
@@ -384,6 +514,165 @@ public class Reset extends StdCommand
 				mob.tell(L("Rejuv this ROOM, or the whole AREA?"));
 				return false;
 			}
+		}
+		else
+		if(s.equalsIgnoreCase("sorthelp"))
+		{
+			if((rest==null)||(rest.length()==0))
+			{
+				mob.tell("Which? "+CMParms.toListString(helpSets.values()));
+				return false;
+			}
+			final helpSets help=(helpSets)CMath.s_valueOf(helpSets.class, rest.toUpperCase().trim());
+			if(help == null)
+			{
+				mob.tell("Which? "+CMParms.toListString(helpSets.values()));
+				return false;
+			}
+			CMFile F=new CMFile(help.file,mob);
+			
+			List<String> batch=Resources.getFileLineVector(F.text());
+			List<StringBuilder> batches = new ArrayList<StringBuilder>();
+			Map<String,StringBuilder> ids=new Hashtable<String,StringBuilder>();
+			StringBuilder currentBatch = null;
+			boolean continueLine = false;
+			for(String s1 : batch)
+			{
+				int x=s1.indexOf('=');
+				if(currentBatch == null)
+				{
+					if(s1.trim().length()==0)
+						continue;
+					if(x<0)
+					{
+						mob.tell("Unstarted batch at "+s1);
+						return false;
+					}
+					else
+					{
+						currentBatch=new StringBuilder("");
+						if(CMStrings.isUpperCase(s1.substring(0, x)))
+							ids.put(s1.substring(0, x), currentBatch);
+						batches.add(currentBatch);
+						currentBatch.append(s1).append("\n\r");
+					}
+				}
+				else
+				{
+					if(continueLine)
+					{
+						currentBatch.append(s1).append("\n\r");
+						if(!s1.endsWith("\\"))
+						{
+							currentBatch=null;
+							continueLine=false;
+						}
+					}
+					else
+					{
+						if((x>0)&&(CMStrings.isUpperCase(s1.substring(0, x))))
+							ids.put(s1.substring(0, x), currentBatch);
+						currentBatch.append(s1).append("\n\r");
+						if(s1.endsWith("\\"))
+							continueLine=true;
+					}
+				}
+			}
+			PairList<String,StringBuilder> skills=new PairVector<String,StringBuilder>();
+			for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
+			{
+				final Ability A=e.nextElement();
+				if(help.filter.passesFilter(A))
+				{
+					StringBuilder[] bup=new StringBuilder[10];
+					bup[0]=ids.get(A.Name().toUpperCase().replace(' ','_'));
+					if(bup[0]==null)
+					{
+						int xx=A.ID().indexOf('_');
+						if(xx>0)
+							bup[0]=ids.get((A.ID().substring(0,xx)+"_"+A.Name()).toUpperCase().replace(' ','_'));
+					}
+					bup[1]=ids.get(A.ID().toUpperCase().replace(' ','_'));
+					if((bup[0]==null)&&(bup[1]==null))
+					{
+						mob.tell("Warning: Not found: "+A.ID());
+					}
+					else
+					if((bup[0]!=null)&&(bup[1]!=null)&&(bup[0]!=bup[1]))
+					{
+						mob.tell("Warning: Mis found: "+A.ID());
+						mob.tell("1: "+bup[0].toString());
+						mob.tell("2: "+bup[1].toString());
+						return false;
+					}
+					else
+					{
+						StringBuilder bp=bup[1];
+						if(bp==null)
+						{
+							bp=bup[0];
+							int xx=bp.toString().indexOf("=<ABILITY>");
+							if(xx>0)
+							{
+								ids.put(A.ID().toUpperCase(), bp);
+								int yy=bp.toString().lastIndexOf('\r',xx);
+								if(yy>0)
+								{
+									bp.insert(0, A.ID().toUpperCase()+"="+bp.toString().substring(yy+1,xx)+"\n\r");
+								}
+								else
+								{
+									bp.insert(0, A.ID().toUpperCase()+"="+bp.toString().substring(0,xx)+"\n\r");
+								}
+							}
+						}
+						if(!batches.contains(bp))
+						{
+							mob.tell("Warning: Re found: "+A.ID());
+							mob.tell("Info   : Re found: "+bp.toString());
+						}
+						else
+						{
+							if(help.useName)
+								skills.add(A.Name().toUpperCase(),bp);
+							else
+								skills.add(A.ID().toUpperCase(),bp);
+							batches.remove(bp);
+						}
+					}
+				}
+			}
+			for(StringBuilder b : batches)
+			{
+				int x=b.toString().indexOf('=');
+				if(x<0)
+				{
+					mob.tell("Error: Unused: "+CMStrings.replaceAll(CMStrings.replaceAll(CMStrings.replaceAll(CMStrings.replaceAll(b.substring(0,30),"\n"," "),"\r"," "),"\\n"," "),"\\r"," "));
+					return false;
+				}
+				else
+				{
+					mob.tell("Warning: Unused: "+CMStrings.replaceAll(CMStrings.replaceAll(CMStrings.replaceAll(CMStrings.replaceAll(b.substring(0,30),"\n"," "),"\r"," "),"\\n"," "),"\\r"," "));
+					skills.add(b.substring(0,x).toUpperCase(),b);
+				}
+			}
+			Collections.sort(skills,new Comparator<Pair<String,StringBuilder>>()
+			{
+				@Override
+				public int compare(Pair<String, StringBuilder> o1, Pair<String, StringBuilder> o2)
+				{
+					return o1.first.compareTo(o2.first);
+				}
+			});
+			StringBuilder finalTxt = new StringBuilder("");
+			for(Pair<String,StringBuilder> p : skills)
+			{
+				finalTxt.append(p.second);
+				finalTxt.append("\n\r");
+			}
+			if((mob.session()!=null)&&(mob.session().confirm("Save (y/N)?", "N")))
+				F.saveText(finalTxt);
+			return true;
 		}
 		else
 		if(s.equalsIgnoreCase("room"))

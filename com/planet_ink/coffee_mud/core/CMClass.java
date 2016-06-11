@@ -2612,16 +2612,18 @@ public class CMClass extends ClassLoader
 					Log.sysOut(Thread.currentThread().getName(),"Prayers loaded    : "+tempV.size());
 					c.abilities.addAll(tempV);
 
+					tempV=loadVectorListToObj(prefix+"Abilities/Thief/","%DEFAULT%",CMObjectType.ABILITY.ancestorName);
+					//size+=tempV.size();
+					c.abilities.addAll(tempV);
+					if(tempV.size()>0)
+						Log.sysOut(Thread.currentThread().getName(),"Thief Skills      : "+tempV.size());
+
 					tempV=loadVectorListToObj(prefix+"Abilities/Archon/","%DEFAULT%",CMObjectType.ABILITY.ancestorName);
 					size+=tempV.size();
 					c.abilities.addAll(tempV);
 
 					tempV=loadVectorListToObj(prefix+"Abilities/Skills/","%DEFAULT%",CMObjectType.ABILITY.ancestorName);
 					size=tempV.size();
-					c.abilities.addAll(tempV);
-
-					tempV=loadVectorListToObj(prefix+"Abilities/Thief/","%DEFAULT%",CMObjectType.ABILITY.ancestorName);
-					size+=tempV.size();
 					c.abilities.addAll(tempV);
 
 					tempV=loadVectorListToObj(prefix+"Abilities/Common/","%DEFAULT%",CMObjectType.ABILITY.ancestorName);
