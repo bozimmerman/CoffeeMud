@@ -93,14 +93,6 @@ public class Thief_HoldYourLiquor extends ThiefSkill
 
 	protected volatile int checkAgain = Integer.MAX_VALUE/2;
 
-	protected boolean isAlcoholic(Item I)
-	{
-		if(((CMLib.flags().flaggedAffects(I, Ability.FLAG_INTOXICATING).size()>0)
-		||(I.material()==RawMaterial.RESOURCE_LIQUOR)))
-			return true;
-		return false;
-	}
-	
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -112,7 +104,7 @@ public class Thief_HoldYourLiquor extends ThiefSkill
 		&&(msg.targetMinor()==CMMsg.TYP_DRINK)
 		&&(msg.target() instanceof Drink)
 		&&(msg.target() instanceof Item)
-		&&(isAlcoholic((Item)msg.target())))
+		&&(CMLib.flags().isAlcoholic((Item)msg.target())))
 		{
 			if(proficiencyCheck(mob,0,false))
 				checkAgain=2;

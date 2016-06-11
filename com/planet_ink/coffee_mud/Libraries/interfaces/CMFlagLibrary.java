@@ -1314,6 +1314,14 @@ public interface CMFlagLibrary extends CMLibrary
 	public String getDispositionStateList(MOB mob);
 
 	/**
+	 * Returns whether the given item is affected by
+	 * or contains alcohol as a drinkable.
+	 * @param thang the mob or item to check
+	 * @return true if it is alcohol
+	 */
+	public boolean isAlcoholic(Physical thang);
+	
+	/**
 	 * A disposition enum for various flagg methods.
 	 * Helps determine the english phrasing of what's
 	 * returned.

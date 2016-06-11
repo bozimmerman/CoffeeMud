@@ -2002,6 +2002,65 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		return "";
 	}
 
+	protected boolean isAlcoholEffect(Ability A)
+	{
+		if(A!=null)
+		{
+			if(CMath.bset(A.flags(),Ability.FLAG_INTOXICATING))
+				return true;
+			if(A instanceof AbilityContainer)
+			{
+				for(Enumeration<Ability> a2=((AbilityContainer)A).allAbilities();a2.hasMoreElements();)
+				{
+					final Ability A2=a2.nextElement();
+					if((A2!=null)&&(CMath.bset(A2.flags(),Ability.FLAG_INTOXICATING)))
+						return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	@Override
+	public boolean isAlcoholic(Physical thang)
+	{
+		if(thang==null)
+			return false;
+		if(thang instanceof Item)
+		{
+			if(((Item)thang).material()==RawMaterial.RESOURCE_LIQUOR)
+				return true;
+		}
+		if(thang instanceof Drink)
+		{
+			if(((Drink)thang).liquidType()==RawMaterial.RESOURCE_LIQUOR)
+				return true;
+			if(thang instanceof Container)
+			{
+				for(Item I : ((Container)thang).getContents())
+				{
+					if((I!=thang) && isAlcoholic(I))
+						return true;
+				}
+			}
+			if(thang instanceof SpellHolder)
+			{
+				for(Ability A : ((SpellHolder)thang).getSpells())
+				{
+					if(isAlcoholEffect(A))
+						return true;
+				}
+			}
+		}
+		for(int a=0;a<thang.numEffects();a++) // personal
+		{
+			final Ability A=thang.fetchEffect(a);
+			if(this.isAlcoholEffect(A))
+				return true;
+		}
+		return false;
+	}
+	
 	@Override
 	public String getPresentDispositionVerb(Physical seen, ComingOrGoing flag_msgType)
 	{

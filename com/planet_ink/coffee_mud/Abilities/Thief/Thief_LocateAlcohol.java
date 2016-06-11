@@ -97,8 +97,7 @@ public class Thief_LocateAlcohol extends ThiefSkill
 	{
 		if(I==null)
 			return "";
-		if(((CMLib.flags().flaggedAffects(I, Ability.FLAG_INTOXICATING).size()>0)
-			||(I.material()==RawMaterial.RESOURCE_LIQUOR))
+		if(CMLib.flags().isAlcoholic(I)
 		&&(CMLib.flags().canBeSeenBy(I,mob)))
 		{
 			if((I.container()!=null)&&(I.ultimateContainer(null)!=I))

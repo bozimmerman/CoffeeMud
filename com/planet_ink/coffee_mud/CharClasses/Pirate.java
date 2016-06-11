@@ -125,6 +125,9 @@ public class Pirate extends Thief
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Thief_BuriedTreasure",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Skill_WandUse",false);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Thief_Wenching",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Skill_Dodge",false);
 	}
 
 	@Override
