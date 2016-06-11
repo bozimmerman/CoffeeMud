@@ -150,12 +150,13 @@ public class Skill_Trip extends StdSkill
 		super.unInvoke();
 		if(canBeUninvoked() && (mob!=null))
 		{
-			if((mob.location()!=null)&&(!mob.amDead()))
+			final Room R=mob.location();
+			if((R!=null)&&(!mob.amDead()))
 			{
 				final CMMsg msg=CMClass.getMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> regain(s) <S-HIS-HER> feet."));
-				if(mob.location().okMessage(mob,msg)&&(!mob.amDead()))
+				if(R.okMessage(mob,msg)&&(!mob.amDead()))
 				{
-					mob.location().send(mob,msg);
+					R.send(mob,msg);
 					CMLib.commands().postStand(mob,true);
 				}
 			}

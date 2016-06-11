@@ -130,7 +130,7 @@ public class Spell_IceSheet extends Spell
 						oldDisposition=oldDisposition&(~(PhyStats.IS_SLEEPING|PhyStats.IS_SNEAKING|PhyStats.IS_SITTING|PhyStats.IS_CUSTOM));
 						mob.basePhyStats().setDisposition(oldDisposition|PhyStats.IS_SITTING);
 						mob.recoverPhyStats();
-						mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> slip(s) on the ice."));
+						room.show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> slip(s) on the ice."));
 						return false;
 					}
 				}

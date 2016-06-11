@@ -2288,8 +2288,8 @@ public class StdMOB implements MOB
 					else
 					{
 						if ((!CMLib.flags().canBeSeenBy(msg.target(), this))
-						&& (!(isMine(msg.target())
-						&& (msg.target() instanceof Item))))
+						&& (!(isMine(msg.target())))
+						&& (msg.target() instanceof Item))
 						{
 							srcM.tell(L("You don't see '@x1' here.",((Item)msg.target()).name(this)));
 							return false;
@@ -3743,7 +3743,7 @@ public class StdMOB implements MOB
 		{
 			return inventory.elementAt(index);
 		}
-		catch (final java.lang.ArrayIndexOutOfBoundsException x)
+		catch (final java.lang.IndexOutOfBoundsException x)
 		{
 		}
 		return null;
@@ -3764,7 +3764,9 @@ public class StdMOB implements MOB
 						applier.apply(I);
 				}
 			}
-			catch (final ArrayIndexOutOfBoundsException e){}
+			catch (final java.lang.IndexOutOfBoundsException x)
+			{
+			}
 		}
 	}
 
@@ -3913,7 +3915,9 @@ public class StdMOB implements MOB
 				return null;
 			return followers.get(index).first;
 		}
-		catch (final java.lang.ArrayIndexOutOfBoundsException x){}
+		catch (final java.lang.IndexOutOfBoundsException x)
+		{
+		}
 		return null;
 	}
 
@@ -4203,7 +4207,7 @@ public class StdMOB implements MOB
 				index-=list.size();
 			}
 		}
-		catch (final java.lang.ArrayIndexOutOfBoundsException x)
+		catch (final java.lang.IndexOutOfBoundsException x)
 		{
 		}
 		return null;
@@ -4418,7 +4422,9 @@ public class StdMOB implements MOB
 				for (int a = 0; a < affects.size(); a++)
 					applier.apply(affects.get(a));
 			}
-			catch (final ArrayIndexOutOfBoundsException e){}
+			catch (final java.lang.IndexOutOfBoundsException x)
+			{
+			}
 		}
 		final List<Ability> racialEffects = racialEffects();
 		try
@@ -4429,13 +4435,17 @@ public class StdMOB implements MOB
 					applier.apply(A);
 			}
 		}
-		catch (final ArrayIndexOutOfBoundsException e){}
+		catch (final java.lang.IndexOutOfBoundsException x)
+		{
+		}
 		try
 		{
 			for (final Ability A : clanEffects())
 				applier.apply(A);
 		}
-		catch (final ArrayIndexOutOfBoundsException e){}
+		catch (final java.lang.IndexOutOfBoundsException x)
+		{
+		}
 	}
 
 	@Override
@@ -4480,7 +4490,9 @@ public class StdMOB implements MOB
 				return racialEffects().get(index - affects.size());
 			return clanEffects().get(index - affects.size() - racialEffects().size());
 		}
-		catch (final java.lang.ArrayIndexOutOfBoundsException x){}
+		catch (final java.lang.IndexOutOfBoundsException x)
+		{
+		}
 		return null;
 	}
 
@@ -4555,7 +4567,7 @@ public class StdMOB implements MOB
 		{
 			return behaviors.elementAt(index);
 		}
-		catch (final java.lang.ArrayIndexOutOfBoundsException x)
+		catch (final java.lang.IndexOutOfBoundsException x)
 		{
 		}
 		return null;
@@ -4578,7 +4590,9 @@ public class StdMOB implements MOB
 				for (int a = 0; a < behaviors.size(); a++)
 					applier.apply(behaviors.get(a));
 			}
-			catch (final ArrayIndexOutOfBoundsException e){}
+			catch (final java.lang.IndexOutOfBoundsException x)
+			{
+			}
 		}
 	}
 
@@ -4761,7 +4775,7 @@ public class StdMOB implements MOB
 						applier.apply(S);
 				}
 			}
-			catch (final ArrayIndexOutOfBoundsException e)
+			catch (final java.lang.IndexOutOfBoundsException x)
 			{
 			}
 		}

@@ -1473,7 +1473,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
-	public Room getRoom(Room room)
+	public Room getRoom(final Room room)
 	{
 		if(room==null)
 			return null;

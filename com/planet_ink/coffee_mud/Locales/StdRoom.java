@@ -1902,7 +1902,7 @@ public class StdRoom implements Room
 	}
 
 	@Override
-	public boolean amDestroyed()
+	public final boolean amDestroyed()
 	{
 		return amDestroyed;
 	}
