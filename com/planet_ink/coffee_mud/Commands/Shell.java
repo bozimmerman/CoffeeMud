@@ -362,7 +362,27 @@ public class Shell extends StdCommand
 				return false;
 			}
 			if((dirs.length==1)&&(!target.trim().startsWith("::")&&(!target.trim().startsWith("//"))))
-				target=(dirs[0].isLocalFile())?"//"+target.trim():"::"+target.trim();
+			{
+				String ttarget1=(dirs[0].isLocalFile())?"//"+target.trim():"::"+target.trim();
+				final CMFile TD1=new CMFile(incorporateBaseDir(pwd,ttarget1),mob);
+				String ttargetd1=(dirs[0].isLocalFile())?"//"+TD1.getParent():"::"+TD1.getParent();
+				final CMFile TDp1=new CMFile(incorporateBaseDir(pwd,ttargetd1),mob);
+				String ttarget2=(dirs[0].isLocalFile())?"::"+target.trim():"//"+target.trim();
+				final CMFile TD2=new CMFile(incorporateBaseDir(pwd,ttarget2),mob);
+				String ttargetd2=(dirs[0].isLocalFile())?"::"+TD2.getParent():"//"+TD2.getParent();
+				final CMFile TDp2=new CMFile(incorporateBaseDir(pwd,ttargetd2),mob);
+				if(TD1.exists() && TD1.isDirectory())
+					target=ttarget1;
+				else
+				if(TD2.exists() && TD2.isDirectory())
+					target=ttarget2;
+				else
+				if((TDp1!=null) && TDp1.exists() && TDp1.isDirectory())
+					target=ttarget1;
+				else
+				if((TDp2!=null) && TDp2.exists() && TDp2.isDirectory())
+					target=ttarget2;
+			}
 			final CMFile DD=new CMFile(incorporateBaseDir(pwd,target),mob);
 			final java.util.List<CMFile> ddirs=sortDirsUp(dirs);
 			for(final CMFile SF: ddirs)
@@ -730,7 +750,27 @@ public class Shell extends StdCommand
 				return false;
 			}
 			if((dirs.length==1)&&(!target.trim().startsWith("::")&&(!target.trim().startsWith("//"))))
-				target=(dirs[0].isLocalFile())?"//"+target.trim():"::"+target.trim();
+			{
+				String ttarget1=(dirs[0].isLocalFile())?"//"+target.trim():"::"+target.trim();
+				final CMFile TD1=new CMFile(incorporateBaseDir(pwd,ttarget1),mob);
+				String ttargetd1=(dirs[0].isLocalFile())?"//"+TD1.getParent():"::"+TD1.getParent();
+				final CMFile TDp1=new CMFile(incorporateBaseDir(pwd,ttargetd1),mob);
+				String ttarget2=(dirs[0].isLocalFile())?"::"+target.trim():"//"+target.trim();
+				final CMFile TD2=new CMFile(incorporateBaseDir(pwd,ttarget2),mob);
+				String ttargetd2=(dirs[0].isLocalFile())?"::"+TD2.getParent():"//"+TD2.getParent();
+				final CMFile TDp2=new CMFile(incorporateBaseDir(pwd,ttargetd2),mob);
+				if(TD1.exists() && TD1.isDirectory())
+					target=ttarget1;
+				else
+				if(TD2.exists() && TD2.isDirectory())
+					target=ttarget2;
+				else
+				if((TDp1!=null) && TDp1.exists() && TDp1.isLocalDirectory())
+					target=ttarget1;
+				else
+				if((TDp2!=null) && TDp2.exists() && TDp2.isVFSDirectory())
+					target=ttarget2;
+			}
 			final CMFile DD=new CMFile(incorporateBaseDir(pwd,target),mob);
 			final java.util.List<CMFile> ddirs=sortDirsUp(dirs);
 			java.util.List<CMFile> dirsLater=new Vector<CMFile>();

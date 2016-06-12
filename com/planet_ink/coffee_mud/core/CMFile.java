@@ -234,14 +234,14 @@ public class CMFile extends File
 			vfsBits=vfsBits|CMFile.VFS_MASK_DIRECTORY;
 
 		if((demandVFS)&&(!allowedToReadVFS))
-			vfsBits=vfsBits|CMFile.VFS_MASK_NOREADLOCAL;
+			vfsBits=vfsBits|CMFile.VFS_MASK_NOREADVFS;
 		if((demandVFS)&&(!allowedToWriteVFS))
-			vfsBits=vfsBits|CMFile.VFS_MASK_NOWRITELOCAL;
+			vfsBits=vfsBits|CMFile.VFS_MASK_NOWRITEVFS;
 
 		if((demandLocal)&&(!allowedToReadLocal))
-			vfsBits=vfsBits|CMFile.VFS_MASK_NOREADVFS;
+			vfsBits=vfsBits|CMFile.VFS_MASK_NOREADLOCAL;
 		if((demandLocal)&&(!allowedToWriteLocal))
-			vfsBits=vfsBits|CMFile.VFS_MASK_NOWRITEVFS;
+			vfsBits=vfsBits|CMFile.VFS_MASK_NOWRITELOCAL;
 
 		if((!demandVFS)
 		&&(demandLocal||((!allowedToReadVFS) && (allowedToWriteLocal))))
@@ -707,7 +707,8 @@ public class CMFile extends File
 	@Override 
 	public final boolean exists() 
 	{ 
-		return !(CMath.bset(vfsBits,CMFile.VFS_MASK_NOREADVFS)&&CMath.bset(vfsBits,CMFile.VFS_MASK_NOREADLOCAL)); 
+		return !((demandLocal||CMath.bset(vfsBits,CMFile.VFS_MASK_NOREADVFS))
+					&& (demandVFS || CMath.bset(vfsBits,CMFile.VFS_MASK_NOREADLOCAL))); 
 	}
 
 	@Override 
@@ -824,7 +825,7 @@ public class CMFile extends File
 
 	/**
 	 * If this file is a directory and the directory
-	 * is empty of other directories.
+	 * is empty of other stuff.
 	 * @return true if the file is a deletable director
 	 */
 	public final boolean mayDeleteIfDirectory()
@@ -833,13 +834,21 @@ public class CMFile extends File
 			return true;
 		if(localFile!=null)
 		{
-			if(!localFile.isDirectory())
-				return false;
-			if(localFile.list().length>0)
+			if(localFile.isDirectory() && localFile.exists())
+			{
+				if(localFile.list().length>0)
+					return false;
+			}
+			else
+			if((!localFile.isDirectory())&&(localFile.isFile()))
 				return false;
 		}
-		if(getVFSDirectory().fetchSubDir(getVFSPathAndName().toUpperCase(), false)!=null)
-			return false;
+		CMVFSDir vfsDir=getVFSDirectory().fetchSubDir(getVFSPathAndName().toUpperCase(), false);
+		if(vfsDir!=null)
+		{
+			if((vfsDir.getFiles()!=null)&&(vfsDir.getFiles().length>0))
+				return false;
+		}
 		return true;
 	}
 
