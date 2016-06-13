@@ -101,16 +101,20 @@ public class Thief_BuriedTreasure extends ThiefSkill
 		&&(msg.tool()!=null)
 		&&(proficiencyCheck(msg.source(),0,false)))
 		{
-			if((msg.target() instanceof Physical)
-			&&(((Physical)msg.target()).fetchEffect(ID())==null))
+			final Room R=CMLib.map().roomLocation(msg.target());
+			if((R!=null)&&(CMLib.map().getExtendedRoomID(R).length()>0))
 			{
-				Ability A=(Ability)this.copyOf();
-				A.setMiscText(msg.source().Name());
-				((Physical)msg.target()).addNonUninvokableEffect(A);
+				if((msg.target() instanceof Physical)
+				&&(((Physical)msg.target()).fetchEffect(ID())==null))
+				{
+					Ability A=(Ability)this.copyOf();
+					A.setMiscText(msg.source().Name());
+					((Physical)msg.target()).addNonUninvokableEffect(A);
+				}
+				this.helpProficiency(msg.source(), 0);
+				msg.addTrailerMsg(CMClass.getMsg(msg.source(), null, null,CMMsg.MSG_OK_VISUAL,
+						L("You have buried some treasure!"),-1,null,-1,null));
 			}
-			this.helpProficiency(msg.source(), 0);
-			msg.addTrailerMsg(CMClass.getMsg(msg.source(), msg.target(), msg.tool(),CMMsg.MSG_OK_VISUAL,
-					L("You have buried some treasure!"),-1,null,-1,null));
 		}
 	}
 	
