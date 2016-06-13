@@ -325,6 +325,11 @@ public class GenSailingShip extends StdBoardable
 						return false;
 					}
 					final Room thisRoom = (Room)owner();
+					if(thisRoom==null)
+					{
+						msg.source().tell(L("This ship is nowhere to be found!"));
+						return false;
+					}
 					String rest = CMParms.combine(cmds,1);
 					Boolean result = startAttack(msg.source(),thisRoom,rest);
 					if(result  == Boolean.TRUE)
@@ -355,6 +360,11 @@ public class GenSailingShip extends StdBoardable
 				case AIM:
 				{
 					final Room thisRoom = (Room)owner();
+					if(thisRoom==null)
+					{
+						msg.source().tell(L("This ship is nowhere to be found!"));
+						return false;
+					}
 					if((!this.amInTacticalMode())
 					||(this.targetedShip==null)
 					||(!thisRoom.isContent((Item)this.targetedShip)))
