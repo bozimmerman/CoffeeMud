@@ -2166,7 +2166,9 @@ public class GenSailingShip extends StdBoardable
 	protected boolean safetyMove()
 	{
 		final Room R=CMLib.map().roomLocation(this);
-		if((R==null)|| R.amDestroyed() || (getAnyExitDir(R)<0))
+		if((R==null)
+		|| R.amDestroyed() 
+		|| (!CMLib.flags().isFalling(this)) && (getAnyExitDir(R)<0))
 		{
 			Room R2=CMLib.map().getRoom(getHomePortID());
 			if((R2==null)&&(R!=null)&&(R.getArea()!=null))
