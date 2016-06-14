@@ -107,20 +107,24 @@ public class Thief_WalkThePlank extends ThiefSkill
 		if(R==null)
 			return false;
 		if((!(R.getArea() instanceof BoardableShip))
-		||((R.domainType()&Room.INDOORS)!=0))
+		||((R.domainType()&Room.INDOORS)!=0)
+		||(R.domainType()==Room.DOMAIN_OUTDOORS_AIR))
 		{
 			mob.tell(L("You must be on the deck of a ship to make someone walk the plank."));
 			return false;
 		}
 		final BoardableShip myShip=(BoardableShip)R.getArea();
 		final Item myShipItem=myShip.getShipItem();
+		final Area myShipArea=myShip.getShipArea();
 		if((myShipItem==null)
+		||(myShipArea==null)
 		||(!(myShipItem.owner() instanceof Room))
 		||(!CMLib.flags().isWateryRoom((Room)myShipItem.owner())))
 		{
 			mob.tell(L("Your ship must be at sea to make someone walk the plank."));
 			return false;
 		}
+		final Room splashR=(Room)myShipItem.owner();
 		
 		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null)
@@ -135,11 +139,108 @@ public class Thief_WalkThePlank extends ThiefSkill
 			{
 				allowedToWalkThem=true;
 			}
-	
-			if((!auto)&&(CMLib.flags().isBoundOrHeld(target)&&(!CMSecurity.isASysOp(mob))))
+		}
+		
+		if(CMLib.flags().isBoundOrHeld(target))
+		{
+			allowedToWalkThem=true;
+		}
+		
+		if(!allowedToWalkThem)
+		{
+			Set<MOB> mobsConnectedToThisShip=new HashSet<MOB>();
+			for(Enumeration<Room> r=myShipArea.getProperMap();r.hasMoreElements();)
 			{
-				allowedToWalkThem=true;
+				final Room R2=r.nextElement();
+				if(R2!=null)
+				{
+					String owner = CMLib.law().getPropertyOwnerName(R2);
+					Clan C=CMLib.clans().getClan(owner);
+					for(Enumeration<MOB> m=R2.inhabitants();m.hasMoreElements();)
+					{
+						final MOB M=m.nextElement();
+						if(M==null)
+							continue;
+						String startOwner=CMLib.law().getPropertyOwnerName(M.getStartRoom());
+						if((CMLib.law().doesHavePriviledgesHere(mob, R2))
+						||(M.getStartRoom() == R2)
+						||(M.getStartRoom().getArea() == myShipArea))
+							mobsConnectedToThisShip.add(M);
+						else
+						if((M.getStartRoom().getArea() instanceof BoardableShip)
+						&&(owner.equals(startOwner) && (owner.length()>0)))
+							mobsConnectedToThisShip.add(M);
+						else
+						if((C!=null)&&(M.getClanRole(C.clanID())!=null))
+							mobsConnectedToThisShip.add(M);
+					}
+				}
 			}
+			for(Enumeration<Room> r=myShipArea.getProperMap();r.hasMoreElements();)
+			{
+				final Room R2=r.nextElement();
+				if(R2!=null)
+				{
+					for(Enumeration<MOB> m=R2.inhabitants();m.hasMoreElements();)
+					{
+						final MOB M=m.nextElement();
+						if(M==null)
+							continue;
+						for(MOB M2 : M.getGroupMembers(new HashSet<MOB>()))
+						{
+							if((M2 != M)
+							&&(mobsConnectedToThisShip.contains(M2)))
+								mobsConnectedToThisShip.add(M2);
+						}
+						if(M.isMarriedToLiege())
+						{
+							final MOB M2=CMLib.players().getLoadPlayer(M.getLiegeID());
+							if((M2!=null)&&(mobsConnectedToThisShip.contains(M)))
+								mobsConnectedToThisShip.add(M);
+						}
+					}
+				}
+			}
+			Set<MOB> mobsNotConnectedToThisShip=new HashSet<MOB>();
+			for(Enumeration<Room> r=myShipArea.getProperMap();r.hasMoreElements();)
+			{
+				final Room R2=r.nextElement();
+				if(R2!=null)
+				{
+					for(Enumeration<MOB> m=R2.inhabitants();m.hasMoreElements();)
+					{
+						final MOB M=m.nextElement();
+						if(M==null)
+							continue;
+						for(MOB M2 : M.getGroupMembers(new HashSet<MOB>()))
+						{
+							if((M2 != M)
+							&&(mobsConnectedToThisShip.contains(M2)))
+							{
+								mobsConnectedToThisShip.add(M2);
+							}
+						}
+						if(!mobsConnectedToThisShip.contains(M))
+							mobsNotConnectedToThisShip.add(M);
+					}
+				}
+			}
+			
+			if(mobsConnectedToThisShip.contains(mob)
+			&&(mobsNotConnectedToThisShip.contains(target))
+			&&(!mob.isInCombat())
+			&&(!target.isInCombat()))
+				allowedToWalkThem=true;
+			if(mobsConnectedToThisShip.contains(mob)
+			&&(mobsNotConnectedToThisShip.contains(target))
+			&&(mobsNotConnectedToThisShip.size()<2))
+				allowedToWalkThem=true;
+			else
+			if(mobsConnectedToThisShip.contains(target)
+			&&(mobsNotConnectedToThisShip.contains(mob))
+			&&(mobsConnectedToThisShip.size()<2)
+			&&(mobsNotConnectedToThisShip.size()>1))
+				allowedToWalkThem=true;
 		}
 		
 		if(!allowedToWalkThem)
@@ -155,18 +256,27 @@ public class Thief_WalkThePlank extends ThiefSkill
 		boolean success=proficiencyCheck(mob,-adjustment,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> make(s) <T-NAME> walk the plank..^?"));
-			if(R.okMessage(mob,msg))
+			String str=auto?"":L("^S<S-NAME> make(s) <T-NAME> walk the plank..^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_THIEF_ACT,str,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.MSG_THIEF_ACT|(auto?CMMsg.MASK_ALWAYS:0),str,CMMsg.MSG_NOISYMOVEMENT,str);
+			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.TYP_JUSTICE,null,CMMsg.MASK_MALICIOUS|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),null,CMMsg.NO_EFFECT,null);
+			if(R.okMessage(mob,msg) && R.okMessage(mob,msg2))
 			{
 				R.send(mob,msg);
-				if(msg.value()<=0)
+				R.send(mob,msg2);
+				if((msg.value()<=0) && (msg2.value()<=0))
 				{
-					success=maliciousAffect(mob,target,asLevel,0,CMMsg.MASK_MALICIOUS|CMMsg.TYP_JUSTICE)!=null;
+					CMLib.threads().scheduleRunnable(new Runnable(){
+						@Override
+						public void run()
+						{
+							CMLib.tracking().walkForced(target, R, splashR, false, true, L("<S-NAME> walks off the plank on @x1 and go(es) kersplash!",myShipItem.name()));
+						}
+					}, 1000);
 				}
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,L("<S-NAME> call(s) for the stoning of <T-NAMESELF>."));
+			return maliciousFizzle(mob,target,L("<S-NAME> call(s) for <T-NAME> to walk the plank, but <T-HIM-HER> won't budge."));
 
 
 		// return whether it worked

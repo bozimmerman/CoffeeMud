@@ -506,7 +506,7 @@ public class Chant_TidalWave extends Chant
 											if(washDir >=0)
 												CMLib.tracking().walk(M,washDir,true,false);
 											if(!washRoom.isInhabitant(M))
-												CMLib.tracking().forceEntry(M, R2, washRoom, false, true, L("<S-NAME> washes in."));
+												CMLib.tracking().walkForced(M, R2, washRoom, false, true, L("<S-NAME> washes in."));
 											if((!R2.isInhabitant(M))&&(M.isMonster()))
 												CMLib.tracking().markToWanderHomeLater(M);
 										}

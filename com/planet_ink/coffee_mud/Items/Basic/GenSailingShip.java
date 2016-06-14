@@ -649,7 +649,6 @@ public class GenSailingShip extends StdBoardable
 						msg.source().tell(L("You are nowhere, so you won`t be moving anywhere."));
 						return false;
 					}
-					
 					int dirIndex = 1;
 					if(word.equals("SET"))
 						dirIndex = 2;
@@ -2168,7 +2167,10 @@ public class GenSailingShip extends StdBoardable
 		final Room R=CMLib.map().roomLocation(this);
 		if((R==null)
 		|| R.amDestroyed() 
-		|| (!CMLib.flags().isFalling(this)) && (getAnyExitDir(R)<0))
+		|| ((!CMLib.flags().isFalling(this))
+			&& (R.domainType()!=Room.DOMAIN_INDOORS_UNDERWATER)
+			&& (R.domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
+			&& (getAnyExitDir(R)<0)))
 		{
 			Room R2=CMLib.map().getRoom(getHomePortID());
 			if((R2==null)&&(R!=null)&&(R.getArea()!=null))
