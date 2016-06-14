@@ -257,13 +257,14 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 							break;
 						case ColorLibrary.COLORCODE_FANSI256:
 						case ColorLibrary.COLORCODE_BANSI256:
-						  if(loop+3<buf.length())
-						  {
-							  len+=3;
-							  loop+=3;
-						  }
-						  break;
-						case '<': case '&':
+							if(loop+3<buf.length())
+							{
+								len+=3;
+								loop+=3;
+							}
+							break;
+						case '<': 
+						case '&':
 						{
 							len++;
 							loop++;
@@ -279,7 +280,8 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 							len++;
 							break;
 						}
-						default: break;
+						default:
+							break;
 						}
 					}
 					break;
@@ -582,7 +584,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 				final String[] clookup = (S==null)?CMLib.color().standardColorLookups():S.getColorCodes();
 				String escapeSequence=clookup[c];
 				if(escapeSequence==null)
-					escapeSequence="";
+					escapeSequence="^";
 				if((S!=null)&&(escapeSequence.length()>0)&&(escapeSequence.charAt(0)=='\033'))
 				{
 					final ColorState state=S.getCurrentColor();

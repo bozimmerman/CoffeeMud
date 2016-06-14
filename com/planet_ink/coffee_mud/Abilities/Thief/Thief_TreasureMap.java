@@ -128,7 +128,7 @@ public class Thief_TreasureMap extends ThiefSkill
 				coord[1]--;
 			}
 			coord[1]=0;
-			for(int i=0;i<(trailCt*2);i++)
+			for(int i=0;i<(trailCt);i++)
 			{
 				theMap.add(0,new StringBuilder(CMStrings.repeat(' ',width)));
 				theMap.get(coord[1]).setCharAt(coord[0], '.');
@@ -167,7 +167,7 @@ public class Thief_TreasureMap extends ThiefSkill
 				}
 			}
 			coord[1]=0;
-			for(int i=0;i<(trailCt*2);i++)
+			for(int i=0;i<(trailCt);i++)
 			{
 				theMap.add(0,new StringBuilder(CMStrings.repeat(' ',width)));
 				theMap.get(coord[1]).setCharAt(coord[0], '.');
@@ -213,7 +213,7 @@ public class Thief_TreasureMap extends ThiefSkill
 				}
 			}
 			coord[1]=0;
-			for(int i=0;i<(trailCt*2);i++)
+			for(int i=0;i<(trailCt);i++)
 			{
 				theMap.add(0,new StringBuilder(CMStrings.repeat(' ',width)));
 				theMap.get(coord[1]).setCharAt(coord[0], '.');
@@ -254,7 +254,7 @@ public class Thief_TreasureMap extends ThiefSkill
 				theMap.get(coord[1]).setCharAt(coord[0], '|');
 				coord[1]++;
 			}
-			for(int i=0;i<(trailCt*2);i++)
+			for(int i=0;i<(trailCt);i++)
 			{
 				theMap.add(new StringBuilder(CMStrings.repeat(' ',width)));
 				theMap.get(coord[1]).setCharAt(coord[0], '.');
@@ -294,7 +294,7 @@ public class Thief_TreasureMap extends ThiefSkill
 					width++;
 				}
 			}
-			for(int i=0;i<(trailCt*2);i++)
+			for(int i=0;i<(trailCt);i++)
 			{
 				theMap.add(new StringBuilder(CMStrings.repeat(' ',width)));
 				theMap.get(coord[1]).setCharAt(coord[0], '.');
@@ -345,7 +345,7 @@ public class Thief_TreasureMap extends ThiefSkill
 					width++;
 				}
 			}
-			for(int i=0;i<(trailCt*2);i++)
+			for(int i=0;i<(trailCt);i++)
 			{
 				theMap.add(new StringBuilder(CMStrings.repeat(' ',width)));
 				theMap.get(coord[1]).setCharAt(coord[0], '.');
@@ -394,7 +394,7 @@ public class Thief_TreasureMap extends ThiefSkill
 				coord[0]--;
 			}
 			coord[0]=0;
-			for(int i=0;i<(trailCt*2);i++)
+			for(int i=0;i<(trailCt);i++)
 			{
 				this.prefixAll(theMap, 1);
 				width++;
@@ -428,7 +428,7 @@ public class Thief_TreasureMap extends ThiefSkill
 				coord[0]++;
 			}
 			coord[0]=theMap.get(coord[1]).length();
-			for(int i=0;i<(trailCt*2);i++)
+			for(int i=0;i<(trailCt);i++)
 			{
 				postfixAll(theMap, 1);
 				theMap.get(coord[1]).setCharAt(coord[0], '.');
@@ -550,7 +550,7 @@ public class Thief_TreasureMap extends ThiefSkill
 		List<Room> track=CMLib.tracking().findBastardTheBestWay(R, dest, flags, range);
 		
 		List<StringBuilder> theMap=new LinkedList<StringBuilder>();
-		String firstRoomStr="^w[*"+CMStrings.ellipse(CMStrings.removeColors(R.displayText(mob)),20)+"]^N";
+		String firstRoomStr="["+CMStrings.ellipse(CMStrings.removeColors(R.displayText(mob)),20)+"]";
 		int lastWidth=firstRoomStr.length();
 		theMap.add(new StringBuilder(CMStrings.SPACES.substring(0,lastWidth)));
 		theMap.add(new StringBuilder(firstRoomStr));
@@ -597,7 +597,7 @@ public class Thief_TreasureMap extends ThiefSkill
 			StringBuilder buf=new StringBuilder("");
 			buf.append(L("@x1's treasure map of @x2\n\r",mob.Name(),room.getArea().Name()));
 			for(StringBuilder str : theMap)
-				buf.append(str.toString().trim()).append("\n\r");
+				buf.append(CMStrings.rtrim(str.toString())).append("\n\r");
 			buf.append("\n\r");
 			buf.append(desc).append("\n\r");
 			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_WRITE,L("<S-NAME> draw(s) a treasure map on <T-NAMESELF>."),CMMsg.MSG_WRITE,buf.toString(),CMMsg.MSG_WRITE,L("<S-NAME> draw(s) a treasure map on <T-NAMESELF>."));

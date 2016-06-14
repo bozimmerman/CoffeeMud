@@ -79,6 +79,42 @@ public class CMStrings
 	}
 
 	/**
+	 * Trims the given string, but only from the end (right side).
+	 * Otherwise, acts just like String.trim()
+	 * @param str the string to trim
+	 * @return the right-trimmed string
+	 */
+	public final static String rtrim(final String str)
+	{
+		if(str == null)
+			return null;
+		if(str.length()==0)
+			return str;
+		int x=str.length();
+		while((x>0) && Character.isWhitespace(str.charAt(x-1)))
+			x--;
+		return str.substring(0,x);
+	}
+
+	/**
+	 * Trims the given string, but only from the front (left side).
+	 * Otherwise, acts just like String.trim()
+	 * @param str the string to trim
+	 * @return the left-trimmed string
+	 */
+	public final static String ltrim(final String str)
+	{
+		if(str == null)
+			return null;
+		if(str.length()==0)
+			return str;
+		int x=-1;
+		while((x<str.length()) && Character.isWhitespace(str.charAt(x+1)))
+			x++;
+		return str.substring(x);
+	}
+
+	/**
 	 * Builds a string consisting entirely of the given character,
 	 * the given number of times in a row.
 	 * @param chr1 the character to repeat
@@ -199,7 +235,7 @@ public class CMStrings
 		&&((Character.isWhitespace(str.charAt(x))) // possible #~ color concerns, but normally catches ^? at the end.
 			||((x>0)&&((str.charAt(x)!='^')&&(str.charAt(x-1)=='^')&&((--x)>=0)))))
 		{
-				x--;
+			x--;
 		}
 		if(x<0)
 			return str;
@@ -295,8 +331,15 @@ public class CMStrings
 		{
 			switch(s.charAt(x))
 			{
-			case ' ': case '.': case ',': case ';': case '?': case '!': return x;
-			default: break;
+			case ' ':
+			case '.':
+			case ',':
+			case ';':
+			case '?':
+			case '!':
+				return x;
+			default:
+				break;
 			}
 		}
 		return s.length();
@@ -395,9 +438,23 @@ public class CMStrings
 				final String finalStr=curStr.toString();
 				list.add(new Map.Entry<Character,String>()
 				{
-					@Override public Character getKey() { return finalC; }
-					@Override public String getValue() { return finalStr; }
-					@Override public String setValue(String value) { return finalStr; }
+					@Override
+					public Character getKey()
+					{
+						return finalC;
+					}
+
+					@Override
+					public String getValue()
+					{
+						return finalStr;
+					}
+
+					@Override
+					public String setValue(String value)
+					{
+						return finalStr;
+					}
 				});
 				curStr.setLength(0);
 				curC=str.charAt(i);
@@ -409,9 +466,23 @@ public class CMStrings
 		final String finalStr=curStr.toString();
 		list.add(new Map.Entry<Character,String>()
 		{
-			@Override public Character getKey() { return finalC; }
-			@Override public String getValue() { return finalStr; }
-			@Override public String setValue(String value) { return finalStr; }
+			@Override
+			public Character getKey()
+			{
+				return finalC;
+			}
+
+			@Override
+			public String getValue()
+			{
+				return finalStr;
+			}
+
+			@Override
+			public String setValue(String value)
+			{
+				return finalStr;
+			}
 		});
 		return list.toArray(new Map.Entry[0]);
 	}
@@ -829,9 +900,15 @@ public class CMStrings
 				{
 					switch(c[i])
 					{
-					case ColorLibrary.COLORCODE_FANSI256: i+=3; break;
-					case ColorLibrary.COLORCODE_BANSI256: i+=3; break;
-					case ColorLibrary.COLORCODE_BACKGROUND: i++; break;
+					case ColorLibrary.COLORCODE_FANSI256:
+						i += 3;
+						break;
+					case ColorLibrary.COLORCODE_BANSI256:
+						i += 3;
+						break;
+					case ColorLibrary.COLORCODE_BACKGROUND:
+						i++;
+						break;
 					case '<':
 						while(i<c.length-1)
 						{
@@ -891,33 +968,39 @@ public class CMStrings
 				i++;
 				if(i<c.length)
 				{
-				  switch(c[i])
-				  {
-				  case ColorLibrary.COLORCODE_FANSI256: i+=3; break;
-				  case ColorLibrary.COLORCODE_BANSI256: i+=3; break;
-				  case ColorLibrary.COLORCODE_BACKGROUND: i++; break;
-				  case '<':
-					while(i<c.length-1)
+					switch(c[i])
 					{
-						if((c[i]!='^')||(c[i+1]!='>'))
-							i++;
-						else
+					case ColorLibrary.COLORCODE_FANSI256:
+						i += 3;
+						break;
+					case ColorLibrary.COLORCODE_BANSI256:
+						i += 3;
+						break;
+					case ColorLibrary.COLORCODE_BACKGROUND:
+						i++;
+						break;
+					case '<':
+						while(i<c.length-1)
 						{
-							i++;
-							break;
+							if((c[i]!='^')||(c[i+1]!='>'))
+								i++;
+							else
+							{
+								i++;
+								break;
+							}
 						}
+						break;
+					case '&':
+						while (i < c.length)
+						{
+							if (c[i] != ';')
+								i++;
+							else
+								break;
+						}
+						break;
 					}
-					break;
-				  case '&':
-					while(i<c.length)
-					{
-						if(c[i]!=';')
-							i++;
-						else
-							break;
-					}
-					break;
-				  }
 				}
 			}
 			else
@@ -961,9 +1044,15 @@ public class CMStrings
 				{
 					switch(c[i])
 					{
-					case ColorLibrary.COLORCODE_FANSI256: i+=3; break;
-					case ColorLibrary.COLORCODE_BANSI256: i+=3; break;
-					case ColorLibrary.COLORCODE_BACKGROUND: i++; break;
+					case ColorLibrary.COLORCODE_FANSI256:
+						i += 3;
+						break;
+					case ColorLibrary.COLORCODE_BANSI256:
+						i += 3;
+						break;
+					case ColorLibrary.COLORCODE_BACKGROUND:
+						i++;
+						break;
 					case '<':
 						while(i<c.length-1)
 						{
@@ -1258,7 +1347,9 @@ public class CMStrings
 					colorStart=-1;
 				}
 				break;
-			case (char)27: colorStart=i; break;
+			case (char) 27:
+				colorStart = i;
+				break;
 			case '^':
 				if((i+1)<str.length())
 				{
@@ -1373,9 +1464,15 @@ public class CMStrings
 					final int tagStart=i;
 					switch(thisStr.charAt(i))
 					{
-					case ColorLibrary.COLORCODE_BACKGROUND: i++; break;
-					case ColorLibrary.COLORCODE_FANSI256: i+=3; break;
-					case ColorLibrary.COLORCODE_BANSI256: i+=3; break;
+					case ColorLibrary.COLORCODE_BACKGROUND:
+						i++;
+						break;
+					case ColorLibrary.COLORCODE_FANSI256:
+						i += 3;
+						break;
+					case ColorLibrary.COLORCODE_BANSI256:
+						i += 3;
+						break;
 					case '<':
 					{
 						while(i<(thisStr.length()-1))
@@ -1544,8 +1641,15 @@ public class CMStrings
 			case 0:
 				switch(c)
 				{
-				case ' ': case '\t': case '<': case '>': start=0; break;
-				case '/': state=2; break;
+				case ' ':
+				case '\t':
+				case '<':
+				case '>':
+					start = 0;
+					break;
+				case '/':
+					state = 2;
+					break;
 				case '!':
 				{
 					if((i<finalData.length()-2)
@@ -1564,7 +1668,8 @@ public class CMStrings
 					else
 						start=-1;
 					break;
-				} break;
+				} 
+				break;
 			case 1: // eval start tag
 				if(c=='>')
 				{
@@ -1657,10 +1762,18 @@ public class CMStrings
 					finalData.delete(start, i+1);
 					if(code.equals("nbsp"))
 						finalData.insert(start,' ');
-					else if(code.equals("amp")) finalData.insert(start,'&');
-					else if(code.equals("lt")) finalData.insert(start,'<');
-					else if(code.equals("gt")) finalData.insert(start,'>');
-					else if(code.equals("quot")) finalData.insert(start,'"');
+					else 
+					if (code.equals("amp"))
+						finalData.insert(start, '&');
+					else 
+					if (code.equals("lt"))
+						finalData.insert(start, '<');
+					else 
+					if (code.equals("gt"))
+						finalData.insert(start, '>');
+					else 
+					if (code.equals("quot"))
+						finalData.insert(start, '"');
 					i=start-1;
 					start=-1;
 				}
@@ -3220,12 +3333,14 @@ public class CMStrings
 					// Ran off the right of the graph.
 					k1end += 2;
 				}
-				else if (y1 > text2_length)
+				else 
+				if (y1 > text2_length)
 				{
 					// Ran off the bottom of the graph.
 					k1start += 2;
 				}
-				else if (front)
+				else 
+				if (front)
 				{
 					final int k2_offset = v_offset + delta - k1;
 					if (k2_offset >= 0 && k2_offset < v_length && v2[k2_offset] != -1)
@@ -3267,12 +3382,14 @@ public class CMStrings
 					// Ran off the left of the graph.
 					k2end += 2;
 				}
-				else if (y2 > text2_length)
+				else 
+				if (y2 > text2_length)
 				{
 					// Ran off the top of the graph.
 					k2start += 2;
 				}
-				else if (!front)
+				else 
+				if (!front)
 				{
 					final int k1_offset = v_offset + delta - k2;
 					if (k1_offset >= 0 && k1_offset < v_length && v1[k1_offset] != -1)
@@ -3480,7 +3597,8 @@ public class CMStrings
 		{
 			text1 = text1.substring(text1_length - text2_length);
 		}
-		else if (text1_length < text2_length)
+		else 
+		if (text1_length < text2_length)
 		{
 			text2 = text2.substring(0, text1_length);
 		}
@@ -3547,11 +3665,13 @@ public class CMStrings
 		{
 			return null;
 		}
-		else if (hm2 == null)
+		else 
+		if (hm2 == null)
 		{
 			hm = hm1;
 		}
-		else if (hm1 == null)
+		else 
+		if (hm1 == null)
 		{
 			hm = hm2;
 		}
@@ -3567,7 +3687,8 @@ public class CMStrings
 			return hm;
 			//return new String[]{hm[0], hm[1], hm[2], hm[3], hm[4]};
 		}
-		else if(hm!=null)
+		else 
+		if(hm!=null)
 		{
 			return new String[]{hm[2], hm[3], hm[0], hm[1], hm[4]};
 		}
@@ -3918,22 +4039,26 @@ public class CMStrings
 			// Five points for blank lines.
 			return 5;
 		}
-		else if (lineBreak1 || lineBreak2)
+		else 
+		if (lineBreak1 || lineBreak2)
 		{
 			// Four points for line breaks.
 			return 4;
 		}
-		else if (nonAlphaNumeric1 && !whitespace1 && whitespace2)
+		else 
+		if (nonAlphaNumeric1 && !whitespace1 && whitespace2)
 		{
 			// Three points for end of sentences.
 			return 3;
 		}
-		else if (whitespace1 || whitespace2)
+		else 
+		if (whitespace1 || whitespace2)
 		{
 			// Two points for whitespace.
 			return 2;
 		}
-		else if (nonAlphaNumeric1 || nonAlphaNumeric2)
+		else 
+		if (nonAlphaNumeric1 || nonAlphaNumeric2)
 		{
 			// One point for non-alphanumeric.
 			return 1;
@@ -4034,7 +4159,8 @@ public class CMStrings
 					// Step forward to the equality.
 					thisDiff = pointer.hasNext() ? pointer.next() : null;
 				}
-				else if (prevEqual != null)
+				else 
+				if (prevEqual != null)
 				{
 					// Merge this equality with the previous one.
 					prevEqual.text += thisDiff.text;
@@ -4088,7 +4214,8 @@ public class CMStrings
 					nextDiff = pointer.hasNext() ? pointer.next() : null;
 					changes = true;
 				}
-				else if (thisDiff.text.startsWith(nextDiff.text))
+				else
+				if (thisDiff.text.startsWith(nextDiff.text))
 				{
 					// Shift the edit over the next equality.
 					prevDiff.text += nextDiff.text;
@@ -4192,7 +4319,8 @@ public class CMStrings
 					return false;
 				}
 			}
-			else if (!text.equals(other.text))
+			else 
+			if (!text.equals(other.text))
 			{
 				return false;
 			}
