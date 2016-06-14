@@ -275,18 +275,18 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		||(msg.targetMinor()==CMMsg.TYP_PUSH)
 		||(msg.targetMinor()==CMMsg.TYP_PULL))
 		{
+			final Room R=msg.source().location();
 			if((msg.target() instanceof Item)
-			&&(((Item)msg.target()).owner() ==msg.source().location())
+			&&(((Item)msg.target()).owner() ==R)
 			&&((!(msg.tool() instanceof Item))||(msg.source().isMine(msg.tool())))
 			&&(!msg.sourceMajor(CMMsg.MASK_ALWAYS))
 			&&(A.getOwnerName().length()>0)
-			&&(msg.source().location()!=null)
+			&&(R!=null)
 			&&(msg.othersMessage()!=null)
 			&&(msg.othersMessage().length()>0)
-			&&(!shopkeeperMobPresent(msg.source().location()))
-			&&(!CMLib.law().doesHavePriviledgesHere(msg.source(),msg.source().location())))
+			&&(!shopkeeperMobPresent(R))
+			&&(!CMLib.law().doesHavePriviledgesHere(msg.source(),R)))
 			{
-				final Room R=msg.source().location();
 				final LegalBehavior B=CMLib.law().getLegalBehavior(R);
 				if(B!=null)
 				{

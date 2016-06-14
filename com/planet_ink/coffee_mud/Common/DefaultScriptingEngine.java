@@ -10975,7 +10975,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					A.setProficiency(CMath.s_int(p2.trim()));
 					A.setMiscText(m2);
 					if(((MOB)newTarget).fetchAbility(A.ID())==null)
+					{
 						((MOB)newTarget).addAbility(A);
+						A.autoInvocation((MOB)newTarget, false);
+					}
 				}
 				break;
 			}

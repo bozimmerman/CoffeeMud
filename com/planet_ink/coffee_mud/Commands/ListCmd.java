@@ -3355,6 +3355,7 @@ public class ListCmd extends StdCommand
 		EXPIRED("EXPIRED",new SecFlag[]{SecFlag.CMDPLAYERS}),
 		SQL("SQL",new SecFlag[]{SecFlag.CMDDATABASE}),
 		SHIPS("SHIPS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDAREAS,SecFlag.CMDPLAYERS}),
+		COMMANDS("COMMANDS",new SecFlag[]{SecFlag.LISTADMIN}),
 		FILEUSE("FILEUSE",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDAREAS}),
 		;
 		public String[]			   cmd;
@@ -3483,6 +3484,84 @@ public class ListCmd extends StdCommand
 			return Integer.valueOf(A.getAreaIStats()[as.ordinal()]);
 		else
 			return null;
+	}
+	
+	public void listCommands(MOB mob, List<String> commands)
+	{
+		
+		String rest="";
+		MOB whoM=mob;
+		boolean wiki=false;
+		if(commands.size()>1)
+		{
+			rest=commands.get(1);
+			if(rest.equalsIgnoreCase("WIKI"))
+				wiki=true;
+			else
+			{
+				whoM=CMLib.players().getLoadPlayer(rest);
+				if(whoM==null)
+				{
+					mob.tell("No '"+rest+"'");
+					return;
+				}
+				if(commands.size()>2)
+				{
+					rest=commands.get(2);
+					if(rest.equalsIgnoreCase("WIKI"))
+						wiki=true;
+				}
+			}
+		}
+		
+		final StringBuffer commandList=new StringBuffer("");
+		final Vector<String> commandSet=new Vector<String>();
+		int col=0;
+		final HashSet<String> done=new HashSet<String>();
+		for(final Enumeration<Command> e=CMClass.commands();e.hasMoreElements();)
+		{
+			final Command C=e.nextElement();
+			final String[] access=C.getAccessWords();
+			if((access!=null)
+			&&(access.length>0)
+			&&(access[0].length()>0)
+			&&(!done.contains(access[0]))
+			&&(C.securityCheck(whoM)))
+			{
+				done.add(access[0]);
+				commandSet.add(access[0]);
+			}
+		}
+		for(final Enumeration<Ability> a=whoM.allAbilities();a.hasMoreElements();)
+		{
+			final Ability A=a.nextElement();
+			if((A!=null)&&(A.triggerStrings()!=null)&&(A.triggerStrings().length>0)&&(!done.contains(A.triggerStrings()[0])))
+			{
+				done.add(A.triggerStrings()[0]);
+				commandSet.add(A.triggerStrings()[0]);
+			}
+		}
+		Collections.sort(commandSet);
+		final int COL_LEN=CMLib.lister().fixColWidth(19.0,mob);
+		for(final Iterator<String> i=commandSet.iterator();i.hasNext();)
+		{
+			final String s=i.next();
+			if(wiki)
+			{
+				commandList.append("*[["+s+"|"+s+"]]\n\r");
+			}
+			else
+			{
+				if (++col > 3)
+				{
+					commandList.append("\n\r");
+					col = 0;
+				}
+				commandList.append(CMStrings.padRight(s,COL_LEN));
+			}
+		}
+		if(mob.session()!=null)
+			mob.session().rawPrint(commandList.toString());
 	}
 
 	public void listManufacturers(MOB mob, List<String> commands)
@@ -3934,6 +4013,9 @@ public class ListCmd extends StdCommand
 		}
 		switch(code)
 		{
+		case COMMANDS:
+			listCommands(mob,commands);
+			break;
 		case UNLINKEDEXITS:
 			s.wraplessPrintln(unlinkedExits(mob.session(), commands));
 			break;

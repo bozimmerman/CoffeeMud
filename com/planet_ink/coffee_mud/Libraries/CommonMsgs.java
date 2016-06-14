@@ -1514,7 +1514,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			||(CMLib.flags().isWateryRoom(mob.location())))
 			{
 				final long h=mob.playerStats().getHygiene();
-				if((h>0)
+				if((h>4)
 				&&(h<minHygiene)
 				&&(msg.sourceMinor()!=CMMsg.TYP_LEAVE)
 				&&((!CMLib.flags().isFlying(mob))
@@ -1524,6 +1524,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 					mob.playerStats().adjHygiene(-h);
 					mob.tell(L("You can't get any cleaner here."));
 				}
+				else
+					mob.playerStats().adjHygiene(-h);
 			}
 		}
 	}
