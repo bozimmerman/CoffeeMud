@@ -117,6 +117,11 @@ public class Skill_Map extends StdSkill
 		return mob.location();
 	}
 
+	protected String getMapClass()
+	{
+		return "BardMap";
+	}
+
 	protected boolean doExtraChecks(final MOB mob)
 	{
 		return true;
@@ -189,7 +194,7 @@ public class Skill_Map extends StdSkill
 
 		if(item instanceof com.planet_ink.coffee_mud.Items.interfaces.RoomMap)
 		{
-			if(!item.ID().equals("BardMap"))
+			if(!item.ID().equals(getMapClass()))
 			{
 				mob.tell(L("There's no more room to add to that map."));
 				return false;
@@ -213,9 +218,9 @@ public class Skill_Map extends StdSkill
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				if(!item.ID().equals("BardMap"))
+				if(!item.ID().equals(getMapClass()))
 				{
-					final Item B=CMClass.getItem("BardMap");
+					final Item B=CMClass.getItem(getMapClass());
 					B.setContainer(item.container());
 					B.setName(item.Name());
 					B.setBasePhyStats(item.basePhyStats());

@@ -320,7 +320,6 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 		return map;
 	}
 
-
 	public StringBuffer[][] getMyMappedRoom(int width)
 	{
 		StringBuffer[][] myMap=null;
@@ -401,13 +400,13 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 		switch(dirCode)
 		{
 		case Directions.NORTH:
-			return 'N';
+			return '^';
 		case Directions.SOUTH:
-			return 'S';
+			return 'v';
 		case Directions.EAST:
-			return 'E';
+			return '>';
 		case Directions.WEST:
-			return 'W';
+			return '<';
 		case Directions.UP:
 			return 'U';
 		case Directions.DOWN:

@@ -35,16 +35,57 @@ import java.util.*;
 
 public class Skill_RegionalAwareness extends StdSkill
 {
-	@Override public String ID() { return "Skill_RegionalAwareness"; }
-	private final static String localizedName = CMLib.lang().L("Regional Awareness");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	private static final String[] triggerStrings =I(new String[] {"REGION","REGIONALAWARENESS"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_NATURELORE;}
-	@Override public int overrideMana(){return 0;}
+	@Override
+	public String ID()
+	{
+		return "Skill_RegionalAwareness";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Regional Awareness");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "REGION", "REGIONALAWARENESS" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL | Ability.DOMAIN_NATURELORE;
+	}
+
+	@Override
+	public int overrideMana()
+	{
+		return 0;
+	}
 
 	public char roomColor(Room room)
 	{
@@ -54,32 +95,55 @@ public class Skill_RegionalAwareness extends StdSkill
 			return 'w';
 		switch(room.domainType())
 		{
-		case Room.DOMAIN_OUTDOORS_CITY:return 'w';
-		case Room.DOMAIN_OUTDOORS_WOODS:return 'G';
-		case Room.DOMAIN_OUTDOORS_ROCKS:return 'W';
-		case Room.DOMAIN_OUTDOORS_PLAINS:return 'Y';
-		case Room.DOMAIN_OUTDOORS_UNDERWATER:return 'B';
-		case Room.DOMAIN_OUTDOORS_AIR:return ' ';
-		case Room.DOMAIN_OUTDOORS_WATERSURFACE:return 'b';
-		case Room.DOMAIN_OUTDOORS_JUNGLE:return 'R';
-		case Room.DOMAIN_OUTDOORS_SEAPORT:return 'y';
-		case Room.DOMAIN_OUTDOORS_SWAMP:return 'r';
-		case Room.DOMAIN_OUTDOORS_DESERT:return 'y';
-		case Room.DOMAIN_OUTDOORS_HILLS:return 'g';
-		case Room.DOMAIN_OUTDOORS_MOUNTAINS:return 'p';
-		case Room.DOMAIN_OUTDOORS_SPACEPORT:return 'P';
-		case Room.DOMAIN_INDOORS_STONE:return 'W';
-		case Room.DOMAIN_INDOORS_WOOD:return 'y';
-		case Room.DOMAIN_INDOORS_CAVE:return 'w';
-		case Room.DOMAIN_INDOORS_MAGIC:return 'r';
-		case Room.DOMAIN_INDOORS_UNDERWATER:return 'B';
-		case Room.DOMAIN_INDOORS_AIR:return ' ';
-		case Room.DOMAIN_INDOORS_WATERSURFACE:return 'b';
-		case Room.DOMAIN_INDOORS_METAL:return 'P';
+		case Room.DOMAIN_OUTDOORS_CITY:
+			return 'w';
+		case Room.DOMAIN_OUTDOORS_WOODS:
+			return 'G';
+		case Room.DOMAIN_OUTDOORS_ROCKS:
+			return 'W';
+		case Room.DOMAIN_OUTDOORS_PLAINS:
+			return 'Y';
+		case Room.DOMAIN_OUTDOORS_UNDERWATER:
+			return 'B';
+		case Room.DOMAIN_OUTDOORS_AIR:
+			return ' ';
+		case Room.DOMAIN_OUTDOORS_WATERSURFACE:
+			return 'b';
+		case Room.DOMAIN_OUTDOORS_JUNGLE:
+			return 'R';
+		case Room.DOMAIN_OUTDOORS_SEAPORT:
+			return 'y';
+		case Room.DOMAIN_OUTDOORS_SWAMP:
+			return 'r';
+		case Room.DOMAIN_OUTDOORS_DESERT:
+			return 'y';
+		case Room.DOMAIN_OUTDOORS_HILLS:
+			return 'g';
+		case Room.DOMAIN_OUTDOORS_MOUNTAINS:
+			return 'p';
+		case Room.DOMAIN_OUTDOORS_SPACEPORT:
+			return 'P';
+		case Room.DOMAIN_INDOORS_STONE:
+			return 'W';
+		case Room.DOMAIN_INDOORS_WOOD:
+			return 'y';
+		case Room.DOMAIN_INDOORS_CAVE:
+			return 'w';
+		case Room.DOMAIN_INDOORS_MAGIC:
+			return 'r';
+		case Room.DOMAIN_INDOORS_UNDERWATER:
+			return 'B';
+		case Room.DOMAIN_INDOORS_AIR:
+			return ' ';
+		case Room.DOMAIN_INDOORS_WATERSURFACE:
+			return 'b';
+		case Room.DOMAIN_INDOORS_METAL:
+			return 'P';
 		default:
 			return 'k';
 		}
 	}
+	
 	public char roomChar(Room room, boolean amOutdoors)
 	{
 		if(room==null)
@@ -88,28 +152,46 @@ public class Skill_RegionalAwareness extends StdSkill
 			return ' ';
 		switch(room.domainType())
 		{
-		case Room.DOMAIN_OUTDOORS_CITY:return '=';
-		case Room.DOMAIN_OUTDOORS_WOODS:return 'T';
-		case Room.DOMAIN_OUTDOORS_ROCKS:return ':';
-		case Room.DOMAIN_OUTDOORS_PLAINS:return '_';
-		case Room.DOMAIN_OUTDOORS_UNDERWATER:return '~';
-		case Room.DOMAIN_OUTDOORS_AIR:return ' ';
-		case Room.DOMAIN_OUTDOORS_WATERSURFACE:return '~';
-		case Room.DOMAIN_OUTDOORS_JUNGLE:return 'J';
-		case Room.DOMAIN_OUTDOORS_SEAPORT:return 'P';
-		case Room.DOMAIN_OUTDOORS_SWAMP:return 'x';
-		case Room.DOMAIN_OUTDOORS_DESERT:return '.';
-		case Room.DOMAIN_OUTDOORS_HILLS:return 'h';
-		case Room.DOMAIN_OUTDOORS_MOUNTAINS:return 'M';
-		case Room.DOMAIN_OUTDOORS_SPACEPORT:return '@';
-		case Room.DOMAIN_INDOORS_UNDERWATER:return '~';
-		case Room.DOMAIN_INDOORS_AIR:return ' ';
-		case Room.DOMAIN_INDOORS_WATERSURFACE:return '~';
+		case Room.DOMAIN_OUTDOORS_CITY:
+			return '=';
+		case Room.DOMAIN_OUTDOORS_WOODS:
+			return 'T';
+		case Room.DOMAIN_OUTDOORS_ROCKS:
+			return ':';
+		case Room.DOMAIN_OUTDOORS_PLAINS:
+			return '_';
+		case Room.DOMAIN_OUTDOORS_UNDERWATER:
+			return '~';
+		case Room.DOMAIN_OUTDOORS_AIR:
+			return ' ';
+		case Room.DOMAIN_OUTDOORS_WATERSURFACE:
+			return '~';
+		case Room.DOMAIN_OUTDOORS_JUNGLE:
+			return 'J';
+		case Room.DOMAIN_OUTDOORS_SEAPORT:
+			return 'P';
+		case Room.DOMAIN_OUTDOORS_SWAMP:
+			return 'x';
+		case Room.DOMAIN_OUTDOORS_DESERT:
+			return '.';
+		case Room.DOMAIN_OUTDOORS_HILLS:
+			return 'h';
+		case Room.DOMAIN_OUTDOORS_MOUNTAINS:
+			return 'M';
+		case Room.DOMAIN_OUTDOORS_SPACEPORT:
+			return '@';
+		case Room.DOMAIN_INDOORS_UNDERWATER:
+			return '~';
+		case Room.DOMAIN_INDOORS_AIR:
+			return ' ';
+		case Room.DOMAIN_INDOORS_WATERSURFACE:
+			return '~';
 		case Room.DOMAIN_INDOORS_STONE:
 		case Room.DOMAIN_INDOORS_WOOD:
 		case Room.DOMAIN_INDOORS_CAVE:
 		case Room.DOMAIN_INDOORS_MAGIC:
-		case Room.DOMAIN_INDOORS_METAL:return '#';
+		case Room.DOMAIN_INDOORS_METAL:
+			return '#';
 		default:
 			return '?';
 		}
@@ -146,11 +228,13 @@ public class Skill_RegionalAwareness extends StdSkill
 			int parentDir=-1;
 			int[] xy=null;
 			for(int i2=0;(i2<diameter)&&(parentR==null);i2++)
+			{
 				for(int i3=0;(i3<diameter)&&(parentR==null);i3++)
 				{
 					final Room R2=rmap[i2][i3];
 					if(R2!=null)
 					for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+					{
 						if((R2.getRoomInDir(d)==R)
 						&&(!closedPaths.contains(R2))
 						&&(R2.getExitInDir(d)!=null))
@@ -160,7 +244,9 @@ public class Skill_RegionalAwareness extends StdSkill
 							xy=Directions.adjustXYByDirections(i3,i2,d);
 							break;
 						}
+					}
 				}
+			}
 			if(xy!=null)
 			{
 				if((parentDir<0)

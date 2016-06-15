@@ -92,7 +92,13 @@ public class Skill_SeaMapping extends Skill_Map
 		return mob.location();
 	}
 
-	
+	@Override
+	protected String getMapClass()
+	{
+		return "SeaMap";
+	}
+
+	@Override
 	protected boolean doExtraChecks(final MOB mob)
 	{
 		final Room R=mob.location();
