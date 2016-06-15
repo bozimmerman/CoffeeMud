@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2003-2016 Bo Zimmerman
+   Copyright 2016-2016 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -32,15 +32,16 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Skill_SeaMapping extends Skill_Map
+
+public class Skill_SeaCharting extends StdSkill
 {
 	@Override
 	public String ID()
 	{
-		return "Skill_SeaMapping";
+		return "Skill_SeaCharting";
 	}
 
-	private final static String	localizedName	= CMLib.lang().L("Make Sea Maps");
+	private final static String	localizedName	= CMLib.lang().L("Sea Charting");
 
 	@Override
 	public String name()
@@ -48,15 +49,25 @@ public class Skill_SeaMapping extends Skill_Map
 		return localizedName;
 	}
 
-	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Sea Mapping)");
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
 
 	@Override
-	public String displayText()
+	protected int canTargetCode()
 	{
-		return localizedStaticDisplay;
+		return 0;
 	}
-	
-	private static final String[]	triggerStrings	= I(new String[] { "SEAMAPPING","SEAMAP" });
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "SEACHARTING", "SEACHART" });
 
 	@Override
 	public String[] triggerStrings()
@@ -65,67 +76,54 @@ public class Skill_SeaMapping extends Skill_Map
 	}
 
 	@Override
-	protected boolean isTheMapMsg(final MOB mob, final MOB srcM)
+	public int classificationCode()
 	{
-		if((mob!=null)&&(srcM!=null))
-		{
-			if((mob.riding() !=null) 
-			&& (mob.riding().rideBasis() == Rideable.RIDEABLE_WATER)
-			&&(mob == srcM))
-				return true;
-			
-			if((srcM.riding() instanceof BoardableShip)
-			&&(mob.location()!=null)
-			&&(mob.location().getArea() == ((BoardableShip)srcM.riding()).getShipArea()))
-				return true;
-		}
-		return false;
+		return Ability.ACODE_SKILL | Ability.DOMAIN_SEATRAVEL;
 	}
 
 	@Override
-	protected Room getCurrentRoom(final MOB mob)
+	public int usageType()
 	{
+		return USAGE_MOVEMENT | USAGE_MANA;
+	}
+
+	@Override
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	{
+		final Room R=mob.location();
+		if(R==null)
+			return false;
+		if(R.getArea() instanceof BoardableShip)
+		{
+		}
+		else
 		if((mob.riding() !=null) && (mob.riding().rideBasis() == Rideable.RIDEABLE_WATER))
-			return mob.location();
-		
-		final Room R=mob.location();
-		if(R!=null)
 		{
-			if(R.getArea() instanceof BoardableShip)
+		}
+		else
+		{
+			mob.tell(L("This skill only works on board a ship or boat."));
+			return false;
+		}
+
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
+			return false;
+
+		final boolean success=proficiencyCheck(mob,0,auto);
+
+		if(success)
+		{
+			final String str=auto?L("<T-NAME> is bucked!"):L("<S-NAME> buck(s) <T-NAME> off <S-NAMESELF>!");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_DELICATE_HANDS_ACT,str);
+			if(R.okMessage(mob,msg))
 			{
-				Item I = ((BoardableShip)R.getArea()).getShipItem();
-				if(I!=null)
-					return CMLib.map().roomLocation(I);
+				R.send(mob,msg);
 			}
 		}
-		return mob.location();
+		else
+			return beneficialVisualFizzle(mob,null,L("<S-NAME> attempt(s) to buck off <S-HIS-HER> riders, but fails."));
+
+		return success;
 	}
 
-	@Override
-	protected String getMapClass()
-	{
-		return "SeaMap";
-	}
-
-	@Override
-	protected boolean doExtraChecks(final MOB mob)
-	{
-		final Room R=mob.location();
-		if(R!=null)
-		{
-			if((mob.riding() !=null) && (mob.riding().rideBasis() == Rideable.RIDEABLE_WATER))
-				return true;
-			
-			if(R.getArea() instanceof BoardableShip)
-			{
-				return true;
-			}
-			else
-			{
-				mob.tell(L("This skill only works on board a ship or boat."));
-				return false;
-			}
-		}
-		return false;
-	}
 }

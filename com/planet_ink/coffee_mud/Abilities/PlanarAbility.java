@@ -866,8 +866,8 @@ public class PlanarAbility extends StdAbility
 			&&(!this.roomsDone.contains(msg.target()))
 			&&(((Room)msg.target()).getArea()==planeArea))
 			{
-				fixRoom((Room)msg.target());
 				this.roomsDone.add((Room)msg.target());
+				fixRoom((Room)msg.target());
 			}
 			break;
 		case CMMsg.TYP_WEAPONATTACK:
