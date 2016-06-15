@@ -461,14 +461,34 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 				int xadjust=0;
 				switch(i)
 				{
-					case 0: xadjust=1; break;
-					case 1: xadjust=1;yadjust=1; break;
-					case 2: yadjust=1; break;
-					case 3: xadjust=1;xadjust=-1; break;
-					case 4: xadjust=-1; break;
-					case 5: xadjust=-1;yadjust=-1; break;
-					case 6: yadjust=-1; break;
-					case 7: yadjust=-1;xadjust=1; break;
+				case 0:
+					xadjust = 1;
+					break;
+				case 1:
+					xadjust = 1;
+					yadjust = 1;
+					break;
+				case 2:
+					yadjust = 1;
+					break;
+				case 3:
+					xadjust = 1;
+					xadjust = -1;
+					break;
+				case 4:
+					xadjust = -1;
+					break;
+				case 5:
+					xadjust = -1;
+					yadjust = -1;
+					break;
+				case 6:
+					yadjust = -1;
+					break;
+				case 7:
+					yadjust = -1;
+					xadjust = 1;
+					break;
 				}
 				if(isEmptyCluster(processed,x+(spacing*xadjust),y+(spacing*yadjust)))
 				{

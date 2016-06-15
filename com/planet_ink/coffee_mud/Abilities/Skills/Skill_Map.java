@@ -32,23 +32,64 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Skill_Map extends StdSkill
 {
-	@Override public String ID() { return "Skill_Map"; }
-	private final static String localizedName = CMLib.lang().L("Make Maps");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Mapping)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
-	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	private static final String[] triggerStrings =I(new String[] {"MAP"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_CALLIGRAPHY;}
+	@Override
+	public String ID()
+	{
+		return "Skill_Map";
+	}
 
-	Vector<Room> roomsMappedAlready=new Vector<Room>();
-	protected Item map=null;
+	private final static String	localizedName	= CMLib.lang().L("Make Maps");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Mapping)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_ITEMS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "MAP" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL | Ability.DOMAIN_CALLIGRAPHY;
+	}
+
+	Vector<Room>	roomsMappedAlready	= new Vector<Room>();
+	protected Item	map					= null;
 
 	@Override
 	public void unInvoke()
@@ -64,33 +105,52 @@ public class Skill_Map extends StdSkill
 		map=null;
 	}
 
+	protected boolean isTheMapMsg(final MOB mob, final MOB srcM)
+	{
+		if((mob!=null)&&(srcM!=null))
+			return (srcM == mob);
+		return false;
+	}
+	
+	protected Room getCurrentRoom(final MOB mob)
+	{
+		return mob.location();
+	}
+
+	protected boolean doExtraChecks(final MOB mob)
+	{
+		return true;
+	}
+	
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-		if(!(affected instanceof MOB))
-			return;
-		final MOB mob=(MOB)affected;
-		if((map.owner()==null)
-		||(map.owner()!=mob))
-			unInvoke();
-		else
-		if((msg.amISource(mob))
-		&&(map!=null)
-		&&(msg.targetMinor()==CMMsg.TYP_ENTER)
-		&&(msg.target() instanceof Room)
-		&&(CMLib.flags().canBeSeenBy(msg.target(),msg.source()))
-		&&(!roomsMappedAlready.contains(msg.target()))
-		&&(!CMath.bset(((Room)msg.target()).phyStats().sensesMask(),PhyStats.SENSE_ROOMUNMAPPABLE)))
+		if(affected instanceof MOB)
 		{
-			roomsMappedAlready.addElement((Room)msg.target());
-			map.setReadableText(map.readableText()+";"+CMLib.map().getExtendedRoomID((Room)msg.target()));
-			if(map instanceof com.planet_ink.coffee_mud.Items.interfaces.RoomMap)
-				((com.planet_ink.coffee_mud.Items.interfaces.RoomMap)map).doMapArea();
+			final MOB mob=(MOB)affected;
+			final Item map = this.map;
+			if((map != null)&&(mob!=null))
+			{
+				if((map.owner()==null)
+				||(map.owner()!=mob))
+					unInvoke();
+				else
+				if((isTheMapMsg(mob,msg.source()))
+				&&(msg.targetMinor()==CMMsg.TYP_ENTER)
+				&&(msg.target() instanceof Room)
+				&&(CMLib.flags().canBeSeenBy(msg.target(),mob))
+				&&(!roomsMappedAlready.contains(msg.target()))
+				&&(!CMath.bset(((Room)msg.target()).phyStats().sensesMask(),PhyStats.SENSE_ROOMUNMAPPABLE)))
+				{
+					roomsMappedAlready.addElement((Room)msg.target());
+					map.setReadableText(map.readableText()+";"+CMLib.map().getExtendedRoomID((Room)msg.target()));
+					if(map instanceof com.planet_ink.coffee_mud.Items.interfaces.RoomMap)
+						((com.planet_ink.coffee_mud.Items.interfaces.RoomMap)map).doMapArea();
+				}
+			}
 		}
-
 		super.executeMsg(myHost,msg);
 	}
-
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -106,6 +166,10 @@ public class Skill_Map extends StdSkill
 			mob.tell(L("You are too stupid to actually make a map."));
 			return false;
 		}
+
+		if(!doExtraChecks(mob))
+			return false;
+
 		final Item target=getTarget(mob,null,givenTarget,commands,Wearable.FILTER_UNWORNONLY);
 		if(target==null)
 			return false;
@@ -169,10 +233,11 @@ public class Skill_Map extends StdSkill
 					item=B;
 				}
 				map=item;
-				if(!roomsMappedAlready.contains(mob.location()))
+				final Room firstRoom=getCurrentRoom(mob);
+				if(!roomsMappedAlready.contains(firstRoom))
 				{
-					roomsMappedAlready.addElement(mob.location());
-					map.setReadableText(map.readableText()+";"+CMLib.map().getExtendedRoomID(mob.location()));
+					roomsMappedAlready.addElement(firstRoom);
+					map.setReadableText(map.readableText()+";"+CMLib.map().getExtendedRoomID(firstRoom));
 					if(map instanceof com.planet_ink.coffee_mud.Items.interfaces.RoomMap)
 						((com.planet_ink.coffee_mud.Items.interfaces.RoomMap)map).doMapArea();
 				}
@@ -183,8 +248,10 @@ public class Skill_Map extends StdSkill
 					final String roomID=rooms.substring(0,x);
 					final Room room=CMLib.map().getRoom(roomID);
 					if(room!=null)
+					{
 						if(!roomsMappedAlready.contains(room))
 							roomsMappedAlready.addElement(room);
+					}
 					rooms=rooms.substring(x+1);
 					x=rooms.indexOf(';');
 				}
