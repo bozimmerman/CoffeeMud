@@ -943,6 +943,8 @@ public class StdRace implements Race
 					if(room!=null)
 						room.addItem(I,ItemPossessor.Expire.Monster_EQ);
 				}
+				else
+					Log.errOut("Race "+ID()+" had NULL resource!");
 			}
 		}
 		else
@@ -1199,6 +1201,8 @@ public class StdRace implements Race
 				GR.setStat("GETRSCID"+i,I.ID());
 				GR.setStat("GETRSCPARM"+i,txt);
 			}
+			else
+				Log.errOut("Race "+ID()+" had NULL resource!");
 		}
 
 		List<Item> outfit=outfit(null);
