@@ -3285,7 +3285,8 @@ public class CMMap extends StdLibrary implements WorldMap
 						try 
 						{
 							final Room R=r.nextElement();
-							rooms.add(R);
+							if(R!=null)
+								rooms.add(R);
 						} 
 						catch(Exception e) 
 						{
