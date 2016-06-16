@@ -1192,10 +1192,13 @@ public class StdRace implements Race
 		for(int i=0;i<rscs.size();i++)
 		{
 			I=rscs.get(i);
-			I.recoverPhyStats();
-			txt=I.text();
-			GR.setStat("GETRSCID"+i,I.ID());
-			GR.setStat("GETRSCPARM"+i,txt);
+			if(I!=null)
+			{
+				I.recoverPhyStats();
+				txt=I.text();
+				GR.setStat("GETRSCID"+i,I.ID());
+				GR.setStat("GETRSCPARM"+i,txt);
+			}
 		}
 
 		List<Item> outfit=outfit(null);
