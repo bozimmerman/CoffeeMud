@@ -514,6 +514,11 @@ public class GenSailingShip extends StdBoardable
 						msg.source().tell(L("The captain does not permit you."));
 						return false;
 					}
+					if(CMLib.flags().isFalling(this) || ((this.subjectToWearAndTear() && (usesRemaining()<=0))))
+					{
+						msg.source().tell(L("The ship won't seem to move!"));
+						return false;
+					}
 					if(safetyMove())
 					{
 						msg.source().tell(L("The ship has moved!"));
@@ -570,6 +575,11 @@ public class GenSailingShip extends StdBoardable
 					if(!securityCheck(msg.source()))
 					{
 						msg.source().tell(L("The captain does not permit you."));
+						return false;
+					}
+					if(CMLib.flags().isFalling(this) || ((this.subjectToWearAndTear() && (usesRemaining()<=0))))
+					{
+						msg.source().tell(L("The ship won't seem to move!"));
 						return false;
 					}
 					if(safetyMove())
@@ -629,6 +639,11 @@ public class GenSailingShip extends StdBoardable
 					if(!securityCheck(msg.source()))
 					{
 						msg.source().tell(L("The captain does not permit you."));
+						return false;
+					}
+					if(CMLib.flags().isFalling(this) || ((this.subjectToWearAndTear() && (usesRemaining()<=0))))
+					{
+						msg.source().tell(L("The ship won't seem to move!"));
 						return false;
 					}
 					if(safetyMove())
