@@ -207,7 +207,7 @@ public class Chant_FindPlant extends Chant
 
 		flags = getTrackingFlags();
 		if(rooms.size()>0)
-			theTrail=CMLib.tracking().findBastardTheBestWay(mobRoom,rooms,flags,50+(2*super.getXLEVELLevel(mob)));
+			theTrail=CMLib.tracking().findTrailToAnyRoom(mobRoom,rooms,flags,50+(2*super.getXLEVELLevel(mob)));
 		return theTrail;
 	}
 	

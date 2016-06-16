@@ -316,7 +316,7 @@ public class Thief_LocateAlcohol extends ThiefSkill
 			flags = CMLib.tracking().newFlags()
 					.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
 					.plus(TrackingLibrary.TrackingFlag.NOAIR);
-			theTrail=CMLib.tracking().findBastardTheBestWay(target.location(),rooms,flags,50+adjustedLevel(mob,asLevel));
+			theTrail=CMLib.tracking().findTrailToAnyRoom(target.location(),rooms,flags,50+adjustedLevel(mob,asLevel));
 		}
 
 		if((success)&&(theTrail!=null))

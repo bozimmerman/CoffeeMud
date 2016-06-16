@@ -11,6 +11,8 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary.TrackingFlag;
+import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary.TrackingFlags;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -108,20 +110,21 @@ public class Skill_SeaCharting extends StdSkill
 
 		if(commands.size()==0)
 		{
-			mob.tell(L("You did not specify whether you wanted to ADD your current location, LIST existing locations, or REMOVE [X} an old chart point.  Try adding ADD, REMOVE X, or LIST."));
+			mob.tell(L("You did not specify whether you wanted to ADD your current location, LIST existing locations, DISTANCE [x] to a chart point, or REMOVE [X} an old chart point.  Try adding ADD, REMOVE X, or LIST."));
 			return false;
 		}
 		String cmd=commands.get(0).toString().toUpperCase().trim();
 		if((!cmd.equals("LIST"))
 		&&(!cmd.equals("REMOVE"))
+		&&(!cmd.equals("DISTANCE"))
 		&&(!cmd.equals("ADD")))
 		{
-			mob.tell(L("'@x1' is not a valid argument.  Try ADD, LIST, or REMOVE X, where X is a number.",cmd));
+			mob.tell(L("'@x1' is not a valid argument.  Try ADD, LIST, DISTANCE X, or REMOVE X (where X is a number).",cmd));
 			return false;
 		}
 		
 		List<String> rooms=CMParms.parseAny(text(),';',true);
-		int removeNum=-1;
+		int chartPointIndex=-1;
 		if(cmd.equals("REMOVE"))
 		{
 			if(rooms.size()==0)
@@ -139,13 +142,56 @@ public class Skill_SeaCharting extends StdSkill
 				mob.tell(L("'@x1' is not a valid chart point number to remove.   Try LIST."));
 				return false;
 			}
-			removeNum=CMath.s_int(commands.get(1));
-			if((removeNum<1)||(removeNum>rooms.size()))
+			chartPointIndex=CMath.s_int(commands.get(1));
+			if((chartPointIndex<1)||(chartPointIndex>rooms.size()))
 			{
 				mob.tell(L("'@x1' is not a valid chart point number to remove.   Try LIST."));
 				return false;
 			}
-			removeNum--;
+			chartPointIndex--;
+		}
+
+		Room currentR=null;
+		if(R.getArea() instanceof BoardableShip)
+		{
+			currentR=CMLib.map().roomLocation(((BoardableShip)R.getArea()).getShipItem());
+		}
+		else
+		if((mob.riding() !=null) && (mob.riding().rideBasis() == Rideable.RIDEABLE_WATER))
+		{
+			if(CMLib.flags().isWaterySurfaceRoom(mob.location()))
+				currentR=mob.location();
+		}
+		
+		if(cmd.equals("DISTANCE"))
+		{
+			if(rooms.size()==0)
+			{
+				mob.tell(L("There are no chart points yet.  Try LIST."));
+				return false;
+			}
+			if(currentR==null)
+			{
+				mob.tell(L("You can't seem to figure out how to get there from here."));
+				return false;
+			}
+			if(commands.size()<2)
+			{
+				mob.tell(L("You must specify which chart point to get the distance to.  Try LIST."));
+				return false;
+			}
+			if(!CMath.isInteger(commands.get(1)))
+			{
+				mob.tell(L("'@x1' is not a valid chart point number to get the distance to.   Try LIST."));
+				return false;
+			}
+			chartPointIndex=CMath.s_int(commands.get(1));
+			if((chartPointIndex<1)||(chartPointIndex>rooms.size()))
+			{
+				mob.tell(L("'@x1' is not a valid chart point number to get the distance to.   Try LIST."));
+				return false;
+			}
+			chartPointIndex--;
 		}
 
 		if(cmd.equalsIgnoreCase("LIST"))
@@ -169,19 +215,14 @@ public class Skill_SeaCharting extends StdSkill
 		final String addStr;
 		if(cmd.equalsIgnoreCase("ADD"))
 		{
-			if(R.getArea() instanceof BoardableShip)
+			if(currentR!=null)
 			{
-				addStr=CMLib.map().getExtendedRoomID(CMLib.map().roomLocation(((BoardableShip)R.getArea()).getShipItem()));
-			}
-			else
-			if((mob.riding() !=null) && (mob.riding().rideBasis() == Rideable.RIDEABLE_WATER))
-			{
-				if(!CMLib.flags().isWaterySurfaceRoom(mob.location()))
+				if(!CMLib.flags().isWaterySurfaceRoom(currentR))
 				{
 					mob.tell(L("This place cannot be charted."));
 					return false;
 				}
-				addStr=CMLib.map().getExtendedRoomID(mob.location());
+				addStr=CMLib.map().getExtendedRoomID(currentR);
 			}
 			else
 			{
@@ -217,6 +258,9 @@ public class Skill_SeaCharting extends StdSkill
 			if(cmd.equalsIgnoreCase("REMOVE"))
 				str=L("<S-NAME> erase(s) a mark on <S-HIS-HER> nautical chart.!");
 			else
+			if(cmd.equalsIgnoreCase("DISTANCE"))
+				str=L("<S-NAME> calculate(s) a distance between points on <S-HIS-HER> nautical chart.!");
+			else
 				str="?!?!?!";
 			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_DELICATE_HANDS_ACT,str);
 			if(R.okMessage(mob,msg))
@@ -232,8 +276,31 @@ public class Skill_SeaCharting extends StdSkill
 				else
 				if(cmd.equalsIgnoreCase("REMOVE"))
 				{
-					rooms.remove(removeNum);
+					rooms.remove(chartPointIndex);
 					setMiscText(CMParms.combine(rooms,';'));
+				}
+				else
+				if(cmd.equalsIgnoreCase("DISTANCE"))
+				{
+					String roomID = rooms.get(chartPointIndex);
+					final Room room=CMLib.map().getRoom(roomID);
+					if((room == null)||(currentR==null))
+					{
+						mob.tell(L("You can't get there from here."));
+						return false;
+					}
+					
+					List<Room> destRooms=new XVector<Room>(room);
+					TrackingFlags flags=CMLib.tracking().newFlags().plus(TrackingFlag.WATERSURFACEONLY);
+					List<Room> trail=CMLib.tracking().findTrailToAnyRoom(currentR, destRooms, flags, 100);
+					if((trail.size()==0)
+					||(trail.get(trail.size()-1)!=currentR)
+					||(trail.get(0)!=room))
+					{
+						mob.tell(L("You really can't get there from here."));
+						return false;
+					}
+					mob.tell(L("The distance from your ships current location to that chart point is @x1.",""+trail.size()));
 				}
 			}
 		}

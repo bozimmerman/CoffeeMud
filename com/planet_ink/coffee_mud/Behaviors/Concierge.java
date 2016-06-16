@@ -294,7 +294,7 @@ public class Concierge extends StdBehavior
 			double price=basePrice;
 			if(this.perRoomPrice > 0.0)
 			{
-				List<Room> trail=CMLib.tracking().findBastardTheBestWay(centerRoom, destR, trackingFlags, maxRange);
+				List<Room> trail=CMLib.tracking().findTrailToRoom(centerRoom, destR, trackingFlags, maxRange);
 				if(trail != null)
 					price = price + (perRoomPrice * trail.size());
 			}

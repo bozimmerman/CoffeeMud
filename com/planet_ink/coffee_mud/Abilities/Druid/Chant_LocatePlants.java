@@ -175,7 +175,7 @@ public class Chant_LocatePlants extends Chant
 			flags = CMLib.tracking().newFlags()
 					.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
 					.plus(TrackingLibrary.TrackingFlag.NOAIR);
-			theTrail=CMLib.tracking().findBastardTheBestWay(target.location(),rooms,flags,50);
+			theTrail=CMLib.tracking().findTrailToAnyRoom(target.location(),rooms,flags,50);
 		}
 
 		if((success)&&(theTrail!=null))

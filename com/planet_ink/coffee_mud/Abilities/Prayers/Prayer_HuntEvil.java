@@ -161,7 +161,7 @@ public class Prayer_HuntEvil extends Prayer
 		}
 
 		if(rooms.size()>0)
-			theTrail=CMLib.tracking().findBastardTheBestWay(mob.location(),rooms,flags,50);
+			theTrail=CMLib.tracking().findTrailToAnyRoom(mob.location(),rooms,flags,50);
 
 		MOB target=null;
 		if((theTrail!=null)&&(theTrail.size()>0))

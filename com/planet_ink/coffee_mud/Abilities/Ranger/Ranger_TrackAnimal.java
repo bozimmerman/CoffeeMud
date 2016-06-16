@@ -197,7 +197,7 @@ public class Ranger_TrackAnimal extends StdAbility
 		}
 
 		if(rooms.size()>0)
-			theTrail=CMLib.tracking().findBastardTheBestWay(mob.location(),rooms,flags,75+(2*getXLEVELLevel(mob)));
+			theTrail=CMLib.tracking().findTrailToAnyRoom(mob.location(),rooms,flags,75+(2*getXLEVELLevel(mob)));
 
 		MOB target=null;
 		if((theTrail!=null)&&(theTrail.size()>0))

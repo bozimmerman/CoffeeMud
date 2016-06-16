@@ -547,7 +547,7 @@ public class Thief_TreasureMap extends ThiefSkill
 			return false;
 		}
 		List<Room> dest=new XVector<Room>(targetRoom);
-		List<Room> track=CMLib.tracking().findBastardTheBestWay(R, dest, flags, range);
+		List<Room> track=CMLib.tracking().findTrailToAnyRoom(R, dest, flags, range);
 		
 		List<StringBuilder> theMap=new LinkedList<StringBuilder>();
 		String firstRoomStr="["+CMStrings.ellipse(CMStrings.removeColors(R.displayText(mob)),20)+"]";

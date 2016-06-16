@@ -149,11 +149,11 @@ public class Spell_HelpingHand extends Spell
 				return true;
 			}
 			if((trail == null) || (trail.size()==0) || (trail.get(0) != invokerM.location()))
-				trail = CMLib.tracking().findBastardTheBestWay(handIR, invokerM.location(), null, 1000);
+				trail = CMLib.tracking().findTrailToRoom(handIR, invokerM.location(), null, 1000);
 			int nextDirection = CMLib.tracking().trackNextDirectionFromHere(trail, handIR, false);
 			if(nextDirection < 0)
 			{
-				trail = CMLib.tracking().findBastardTheBestWay(handIR, invokerM.location(), null, 1000);
+				trail = CMLib.tracking().findTrailToRoom(handIR, invokerM.location(), null, 1000);
 				nextDirection = CMLib.tracking().trackNextDirectionFromHere(trail, handIR, false);
 			}
 			final Room nextRoom=handIR.getRoomInDir(nextDirection);

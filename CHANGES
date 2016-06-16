@@ -30,8 +30,9 @@
   29. Internal DB: CMCLAS field in CMCHAR table expanded to 250 chars. An optional DB upgrade!
   30. New ZapperMasks: +ISHOME -ISHOME, for masking mobs who are away from their areas
   31. Prop_*Adjuster now supports multiplying values, see help on Prop_HaveAdjuster
-  32. New Thief Skills: Sea Legs, Ride the Rigging, Belay, Buried Treasure, Wenching
-  33. New Thief Skills: Treasure Map
+  32. New Thief/Sailor Skills: Sea Legs, Ride the Rigging, Belay, Buried Treasure, Wenching
+  33. New Thief/Sailor Skills: Treasure Map, Walk the Plank, Sea Mapping, Plunder, Sea Charting
+  34. New Thief/Sailor Skills: Dead Reckoning 
 # Build 5.9.3 Released 05/08/2016
    1. Follower behavior now has a few more options.
    2. STAT [MOBNAME] will now give full editor stats also, and 

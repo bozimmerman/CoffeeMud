@@ -412,7 +412,7 @@ public class Skill_Track extends StdSkill
 				theTrail=cachedPaths.get(CMLib.map().getExtendedRoomID(thisRoom)+"->"+CMLib.map().getExtendedRoomID(rooms.firstElement()));
 			tickStatus=Tickable.STATUS_MISC6+9;
 			if(theTrail==null)
-				theTrail=CMLib.tracking().findBastardTheBestWay(thisRoom,rooms,flags,radius);
+				theTrail=CMLib.tracking().findTrailToAnyRoom(thisRoom,rooms,flags,radius);
 			tickStatus=Tickable.STATUS_MISC6+10;
 			if((cacheCode==1)&&(rooms.size()==1)&&(theTrail!=null))
 				cachedPaths.put(CMLib.map().getExtendedRoomID(thisRoom)+"->"+CMLib.map().getExtendedRoomID(rooms.firstElement()),theTrail);

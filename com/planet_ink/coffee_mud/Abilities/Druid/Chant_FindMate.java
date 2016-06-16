@@ -217,7 +217,7 @@ public class Chant_FindMate extends Chant
 				.plus(TrackingLibrary.TrackingFlag.NOAIR)
 				.plus(TrackingLibrary.TrackingFlag.NOWATER);
 		if(rooms.size()>0)
-			theTrail=CMLib.tracking().findBastardTheBestWay(mob.location(),rooms,flags,50);
+			theTrail=CMLib.tracking().findTrailToAnyRoom(mob.location(),rooms,flags,50);
 
 		if((success)&&(theTrail!=null))
 		{

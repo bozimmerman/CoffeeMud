@@ -195,7 +195,7 @@ public class Chant_FindDriftwood extends Chant_FindPlant
 		List<Room> rooms=new XVector<Room>(theDriftroom);
 		int limit = 50 - (super.getXLEVELLevel(mob));
 		if(rooms.size()>0)
-			theTrail=CMLib.tracking().findBastardTheBestWay(mobRoom,rooms,flags,limit);
+			theTrail=CMLib.tracking().findTrailToAnyRoom(mobRoom,rooms,flags,limit);
 		return theTrail;
 	}
 	

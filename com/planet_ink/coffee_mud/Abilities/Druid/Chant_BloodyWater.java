@@ -194,7 +194,7 @@ public class Chant_BloodyWater extends Chant
 								bloodyMobs.add(M);
 								Chant_BloodyWater w=(Chant_BloodyWater)this.copyOf();
 								w.theRoom = room;
-								w.theTrail = CMLib.tracking().findBastardTheBestWay(M.location(), destRooms, flags, limit);
+								w.theTrail = CMLib.tracking().findTrailToAnyRoom(M.location(), destRooms, flags, limit);
 								if(w.theTrail != null)
 									w.startTickDown(mob, M, w.tickDown);
 							}

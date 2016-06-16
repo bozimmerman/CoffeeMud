@@ -240,15 +240,15 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 	}
 
 	@Override
-	public List<Room> findBastardTheBestWay(Room location,
+	public List<Room> findTrailToRoom(Room location,
 											Room destRoom,
 											TrackingFlags flags,
 											int maxRadius)
 	{
-		return findBastardTheBestWay(location,destRoom,flags,maxRadius,null);
+		return findTrailToRoom(location,destRoom,flags,maxRadius,null);
 	}
 
-	public List<Room> findBastardTheBestWay(Room location,
+	public List<Room> findTrailToRoom(Room location,
 											Room destRoom,
 											TrackingFlags flags,
 											int maxRadius,
@@ -345,7 +345,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 	}
 
 	@Override
-	public List<Room> findBastardTheBestWay(Room location,
+	public List<Room> findTrailToAnyRoom(Room location,
 											List<Room> destRooms,
 											TrackingFlags flags,
 											int maxRadius)
@@ -365,23 +365,38 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			pick=CMLib.dice().roll(1,destRooms.size(),-1);
 			destRoom=destRooms.get(pick);
 			destRooms.remove(pick);
-			final List<Room> thisTrail=findBastardTheBestWay(location,destRoom,flags,maxRadius,radiant);
+			final List<Room> thisTrail=findTrailToRoom(location,destRoom,flags,maxRadius,radiant);
 			if((thisTrail!=null)
 			&&((finalTrail==null)||(thisTrail.size()<finalTrail.size())))
 				finalTrail=thisTrail;
 		}
 		if(finalTrail==null)
-		for(int r=0;r<destRooms.size();r++)
 		{
-			destRoom=destRooms.get(r);
-			final List<Room> thisTrail=findBastardTheBestWay(location,destRoom,flags,maxRadius);
-			if((thisTrail!=null)
-			&&((finalTrail==null)||(thisTrail.size()<finalTrail.size())))
-				finalTrail=thisTrail;
+			for(int r=0;r<destRooms.size();r++)
+			{
+				destRoom=destRooms.get(r);
+				final List<Room> thisTrail=findTrailToRoom(location,destRoom,flags,maxRadius);
+				if((thisTrail!=null)
+				&&((finalTrail==null)||(thisTrail.size()<finalTrail.size())))
+					finalTrail=thisTrail;
+			}
 		}
 		return finalTrail;
 	}
 
+	@Override
+	public List<Room> findTrailToAnyRoom(Room location, RFilter destFilter, TrackingFlags flags, int maxRadius)
+	{
+		List<Room> radiant=new ArrayList<Room>();
+		if(!getRadiantRoomsToTarget(location, radiant, flags, destFilter, maxRadius))
+			return new Vector<Room>(1);
+		if(radiant.size()==0)
+			return radiant;
+		
+		final Room destRoom=radiant.get(radiant.size()-1);
+		return findTrailToRoom(location,destRoom,flags,maxRadius);
+	}
+	
 	@Override
 	public int trackNextDirectionFromHere(List<Room> theTrail,
 										  Room location,
@@ -444,7 +459,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 	public List<Room> getRadiantRooms(final Room room, final RFilters filters, final int maxDepth)
 	{
 		final List<Room> V=new Vector<Room>();
-		getRadiantRooms(room,V,filters,null,maxDepth,null);
+		getRadiantRooms(room,V,filters,(Room)null,maxDepth,null);
 		return V;
 	}
 
@@ -527,12 +542,85 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		}
 	}
 
+	protected boolean getRadiantRoomsToTarget(final Room room, List<Room> rooms, TrackingFlags flags, final RFilter radiateTo, final int maxDepth)
+	{
+		if(flags == null)
+			flags = EMPTY_FLAGS;
+		RFilters filters=trackingFilters.get(flags);
+		if(filters==null)
+		{
+			if(flags.size()==0)
+				filters=EMPTY_FILTERS;
+			else
+			{
+				filters=new DefaultRFilters();
+				for(final TrackingFlag flag : flags)
+					filters.plus(flag.myFilter);
+			}
+			trackingFilters.put(flags, filters);
+		}
+		return getRadiantRoomsToTarget(room, rooms, filters, radiateTo, maxDepth);
+	}
+
+	protected boolean getRadiantRoomsToTarget(final Room room, List<Room> rooms, final RFilters filters, final RFilter radiateTo, final int maxDepth)
+	{
+		int depth=0;
+		if(room==null)
+			return false;
+		if(rooms.contains(room))
+			return false;
+		final HashSet<Room> H=new HashSet<Room>(1000);
+		rooms.add(room);
+		if(rooms instanceof Vector<?>)
+			((Vector<Room>)rooms).ensureCapacity(200);
+		for(int r=0;r<rooms.size();r++)
+			H.add(rooms.get(r));
+		int min=0;
+		int size=rooms.size();
+		Room R1=null;
+		Room R=null;
+		Exit E=null;
+
+		int r=0;
+		int d=0;
+		while(depth<maxDepth)
+		{
+			for(r=min;r<size;r++)
+			{
+				R1=rooms.get(r);
+				for(d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+				{
+					R=R1.getRoomInDir(d);
+					E=R1.getExitInDir(d);
+
+					if((R==null)||(E==null)
+					||(H.contains(R))
+					||(filters.isFilteredOut(R1, R, E, d)))
+						continue;
+					rooms.add(R);
+					H.add(R);
+					if(!radiateTo.isFilteredOut(R1,R,E,d)) // R can't be null here, so if they are equal, time to go!
+						return true;
+				}
+			}
+			min=size;
+			size=rooms.size();
+			if(min==size)
+				return false;
+			depth++;
+		}
+		return false;
+	}
+
 	@Override
 	public void stopTracking(MOB mob)
 	{
 		final List<Ability> V=CMLib.flags().flaggedAffects(mob,Ability.FLAG_TRACKING);
 		for(final Ability A : V)
-		{ A.unInvoke(); mob.delEffect(A);}
+		{
+			A.unInvoke();
+			mob.delEffect(A);
+		}
 	}
 
 	@Override
@@ -1435,6 +1523,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 				{
 					final Rider R=riders.get(i);
 					if(CMLib.map().roomLocation(R)!=thatRoom)
+					{
 						if((((Rideable)I).rideBasis()!=Rideable.RIDEABLE_SIT)
 						&&(((Rideable)I).rideBasis()!=Rideable.RIDEABLE_TABLE)
 						&&(((Rideable)I).rideBasis()!=Rideable.RIDEABLE_ENTERIN)
@@ -1457,6 +1546,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 						}
 						else
 							R.setRiding(null);
+					}
 				}
 			}
 			return true;

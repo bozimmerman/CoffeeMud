@@ -164,7 +164,7 @@ public class Chant_LocateAnimals extends Chant
 			rooms.removeElementAt(CMLib.dice().roll(1,rooms.size(),-1));
 
 		if(rooms.size()>0)
-			theTrail=CMLib.tracking().findBastardTheBestWay(mob.location(),rooms,flags,50);
+			theTrail=CMLib.tracking().findTrailToAnyRoom(mob.location(),rooms,flags,50);
 
 		MOB target=null;
 		if((theTrail!=null)&&(theTrail.size()>0))
