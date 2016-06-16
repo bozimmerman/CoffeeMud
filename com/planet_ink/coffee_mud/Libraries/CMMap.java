@@ -3279,11 +3279,23 @@ public class CMMap extends StdLibrary implements WorldMap
 				if(A!=null)
 				{
 					CMProps.setUpAllLowVar(CMProps.Str.MUDSTATUS,"Shutting down Map area '"+A.Name()+"'...");
+					LinkedList<Room> rooms=new LinkedList<Room>();
 					for(Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
 					{
 						try 
 						{
 							final Room R=r.nextElement();
+							rooms.add(R);
+						} 
+						catch(Exception e) 
+						{
+						}
+					}
+					for(Iterator<Room> r=rooms.iterator();r.hasNext();)
+					{
+						try 
+						{
+							final Room R=r.next();
 							A.delProperRoom(R);
 							R.destroy();
 						} 
