@@ -223,6 +223,21 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					final Room R=location();
 					final TimeClock C=((R != null) && (R.getArea() != null)) ? R.getArea().getTimeObj() : null;
 					final int ticksPerDay = CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY);
+					int hoursInDay = 1;
+					int daysInMonth = 1;
+					int monthsInYear = 1;
+					int daysInWeek = 1;
+					if(C!=null)
+					{
+						if(C.getHoursInDay()>0)
+							hoursInDay=C.getHoursInDay();
+						if(C.getDaysInMonth()>0)
+							daysInMonth=C.getDaysInMonth();
+						if(C.getMonthsInYear()>0)
+							monthsInYear=C.getMonthsInYear();
+						if(C.getDaysInWeek()>0)
+							daysInWeek=C.getDaysInWeek();
+					}
 					switch(budget.second)
 					{
 					case ALLTIME:
@@ -232,19 +247,19 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 						budgetTickDown = ticksPerDay;
 						break;
 					case HOUR:
-						budgetTickDown = ticksPerDay / ((C!=null) ? C.getHoursInDay() : 1);
+						budgetTickDown = ticksPerDay / hoursInDay;
 						break;
 					case MONTH:
-						budgetTickDown = ticksPerDay * ((C!=null) ? C.getDaysInMonth() : 1);
+						budgetTickDown = ticksPerDay * daysInMonth;
 						break;
 					case SEASON:
-						budgetTickDown = ticksPerDay * ((C!=null) ? (C.getDaysInMonth() * C.getMonthsInYear() / 4) : 1);
+						budgetTickDown = ticksPerDay * (daysInMonth * monthsInYear / 4);
 						break;
 					case WEEK:
-						budgetTickDown = ticksPerDay * ((C!=null) ? C.getDaysInWeek() : 1);
+						budgetTickDown = ticksPerDay * daysInWeek;
 						break;
 					case YEAR:
-						budgetTickDown = ticksPerDay * ((C!=null) ? (C.getDaysInMonth() * C.getMonthsInYear()) : 1);
+						budgetTickDown = ticksPerDay * (daysInMonth * monthsInYear);
 						break;
 					}
 				}
