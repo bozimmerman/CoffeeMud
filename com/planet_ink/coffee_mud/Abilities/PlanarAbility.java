@@ -302,7 +302,7 @@ public class PlanarAbility extends StdAbility
 			String hours = planeVars.get(PlanarVar.HOURS.toString());
 			if((hours != null)&&(CMath.isInteger(hours)))
 			{
-				double mul=CMath.s_int(hours) / 6;
+				double mul=CMath.div(CMath.s_int(hours),CMLib.time().globalClock().getHoursInDay());
 				if(mul != 1.0)
 				{
 					int newHours = (int)Math.round(CMath.mul(C.getHoursInDay(),mul));
