@@ -139,13 +139,13 @@ public class Skill_SeaCharting extends StdSkill
 			}
 			if(!CMath.isInteger(commands.get(1)))
 			{
-				mob.tell(L("'@x1' is not a valid chart point number to remove.   Try LIST."));
+				mob.tell(L("'@x1' is not a valid chart point number to remove.   Try LIST.",commands.get(1)));
 				return false;
 			}
 			chartPointIndex=CMath.s_int(commands.get(1));
 			if((chartPointIndex<1)||(chartPointIndex>rooms.size()))
 			{
-				mob.tell(L("'@x1' is not a valid chart point number to remove.   Try LIST."));
+				mob.tell(L("'@x1' is not a valid chart point number to remove.   Try LIST.",commands.get(1)));
 				return false;
 			}
 			chartPointIndex--;
@@ -182,13 +182,13 @@ public class Skill_SeaCharting extends StdSkill
 			}
 			if(!CMath.isInteger(commands.get(1)))
 			{
-				mob.tell(L("'@x1' is not a valid chart point number to get the distance to.   Try LIST."));
+				mob.tell(L("'@x1' is not a valid chart point number to get the distance to.   Try LIST.",commands.get(1)));
 				return false;
 			}
 			chartPointIndex=CMath.s_int(commands.get(1));
 			if((chartPointIndex<1)||(chartPointIndex>rooms.size()))
 			{
-				mob.tell(L("'@x1' is not a valid chart point number to get the distance to.   Try LIST."));
+				mob.tell(L("'@x1' is not a valid chart point number to get the distance to.   Try LIST.",commands.get(1)));
 				return false;
 			}
 			chartPointIndex--;
@@ -237,7 +237,7 @@ public class Skill_SeaCharting extends StdSkill
 			}
 			if(rooms.contains(addStr))
 			{
-				mob.tell(L("You have already charted this room, check #"+(rooms.indexOf(addStr)+1)));
+				mob.tell(L("You have already charted this room, check #@x1",""+(rooms.indexOf(addStr)+1)));
 				return false;
 			}
 		}
