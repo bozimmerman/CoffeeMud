@@ -805,6 +805,13 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 					}
 				}
 			}
+			if((product instanceof Item) 
+			&& (!CMLib.law().mayOwnThisItem(buyer, (Item)product))
+			&& (!CMLib.flags().isEvil(seller)))
+			{
+				CMLib.commands().postSay(seller,buyer,L("I don't buy stolen goods."),true,false);
+				return false;
+			}
 			final double yourValue=pawningPrice(seller,buyer,product,shop).absoluteGoldPrice;
 			if(yourValue<2)
 			{

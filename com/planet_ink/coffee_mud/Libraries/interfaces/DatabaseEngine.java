@@ -764,20 +764,24 @@ public interface DatabaseEngine extends CMLibrary
 
 	/**
 	 * Table category: DBPLAYERS
-	 * 
-	 * @param Login
-	 * @return
+	 * Attempts to return an extremely thin player record by
+	 * searching the database for a character with the exact given
+	 * name.
+	 * @param Login the name to look for
+	 * @return null if not found, or a thinner player record
 	 */
 	public PlayerLibrary.ThinnerPlayer DBUserSearch(String Login);
 
 	/**
 	 * Table category: DBPLAYERS
-	 * 
-	 * @param mob
-	 * @param liegeID
-	 * @return
+	 * Attempts to return a list of all characters who are
+	 * listed as vassals of the character with the given exact
+	 * name.  Vassals are characters that are SERVEing another
+	 * player.
+	 * @param liegeID the character name who would be the liege
+	 * @return a list containing as many thin vassal records
 	 */
-	public List<PlayerLibrary.ThinPlayer> vassals(MOB mob, String liegeID);
+	public List<PlayerLibrary.ThinPlayer> vassals(String liegeID);
 
 	/**
 	 * Table category: DBPLAYERS

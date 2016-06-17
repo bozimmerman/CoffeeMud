@@ -397,8 +397,10 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			{
 				final Item I=e.nextElement();
 				if(I instanceof PrivateProperty)
+				{
 					if(((PrivateProperty)I).getOwnerName().equalsIgnoreCase(oldName))
 						((PrivateProperty)I).setOwnerName(newName);
+				}
 			}
 		}
 

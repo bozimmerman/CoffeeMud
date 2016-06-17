@@ -165,9 +165,9 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
-	public List<PlayerLibrary.ThinPlayer> vassals(MOB mob, String liegeID)
+	public List<PlayerLibrary.ThinPlayer> vassals(String liegeID)
 	{
-		return MOBloader.vassals(mob, liegeID);
+		return MOBloader.vassals(liegeID);
 	}
 
 	@Override

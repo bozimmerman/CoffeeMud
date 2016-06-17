@@ -149,6 +149,9 @@ public class Pirate extends Thief
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Skill_SeaNavigation",false,new XVector<String>("Skill_SeaCharting"));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Skill_TwoWeaponFighting",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Thief_Listen",false);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Thief_Scuttle",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Thief_Bind",false);
 	}
 
 	@Override

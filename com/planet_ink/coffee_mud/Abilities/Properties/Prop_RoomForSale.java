@@ -253,65 +253,6 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		return newTitle;
 	}
 
-	public static boolean shopkeeperMobPresent(Room R)
-	{
-		if(R==null)
-			return false;
-		MOB M=null;
-		for(int i=0;i<R.numInhabitants();i++)
-		{
-			M=R.fetchInhabitant(i);
-			if((M.getStartRoom()==R)
-			&&(M.isMonster())
-			&&(CMLib.coffeeShops().getShopKeeper(M)!=null))
-				return true;
-		}
-		return false;
-	}
-
-	public static boolean robberyCheck(LandTitle A, CMMsg msg)
-	{
-		if(((msg.targetMinor()==CMMsg.TYP_GET)&&(!msg.isTarget(CMMsg.MASK_INTERMSG)))
-		||(msg.targetMinor()==CMMsg.TYP_PUSH)
-		||(msg.targetMinor()==CMMsg.TYP_PULL))
-		{
-			final Room R=msg.source().location();
-			if((msg.target() instanceof Item)
-			&&(((Item)msg.target()).owner() ==R)
-			&&((!(msg.tool() instanceof Item))||(msg.source().isMine(msg.tool())))
-			&&(!msg.sourceMajor(CMMsg.MASK_ALWAYS))
-			&&(A.getOwnerName().length()>0)
-			&&(R!=null)
-			&&(msg.othersMessage()!=null)
-			&&(msg.othersMessage().length()>0)
-			&&(!shopkeeperMobPresent(R))
-			&&(!CMLib.law().doesHavePriviledgesHere(msg.source(),R)))
-			{
-				final LegalBehavior B=CMLib.law().getLegalBehavior(R);
-				if(B!=null)
-				{
-					for(int m=0;m<R.numInhabitants();m++)
-					{
-						final MOB M=R.fetchInhabitant(m);
-						if(CMLib.law().doesHavePriviledgesHere(M,R))
-							return true;
-					}
-					MOB D=null;
-					final Clan C=CMLib.clans().getClan(A.getOwnerName());
-					if(C!=null)
-						D=C.getResponsibleMember();
-					else
-						D=CMLib.players().getLoadPlayer(A.getOwnerName());
-					if(D==null)
-						return true;
-					B.accuse(CMLib.law().getLegalObject(R),msg.source(),D,new String[]{"PROPERTYROB","THIEF_ROBBERY"});
-				}
-			}
-			return true;
-		}
-		return false;
-	}
-
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -353,7 +294,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	{
 		if(!super.okMessage(myHost,msg))
 			return false;
-		robberyCheck(this,msg);
+		CMLib.law().robberyCheck(this,msg);
 		return true;
 	}
 

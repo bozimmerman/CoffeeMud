@@ -377,10 +377,10 @@ public class Shell extends StdCommand
 				if(TD2.exists() && TD2.isDirectory())
 					target=ttarget2;
 				else
-				if((TDp1!=null) && TDp1.exists() && TDp1.isDirectory())
+				if(TDp1.exists() && TDp1.isDirectory())
 					target=ttarget1;
 				else
-				if((TDp2!=null) && TDp2.exists() && TDp2.isDirectory())
+				if(TDp2.exists() && TDp2.isDirectory())
 					target=ttarget2;
 			}
 			final CMFile DD=new CMFile(incorporateBaseDir(pwd,target),mob);
@@ -765,10 +765,10 @@ public class Shell extends StdCommand
 				if(TD2.exists() && TD2.isDirectory())
 					target=ttarget2;
 				else
-				if((TDp1!=null) && TDp1.exists() && TDp1.isLocalDirectory())
+				if(TDp1.exists() && TDp1.isLocalDirectory())
 					target=ttarget1;
 				else
-				if((TDp2!=null) && TDp2.exists() && TDp2.isVFSDirectory())
+				if(TDp2.exists() && TDp2.isVFSDirectory())
 					target=ttarget2;
 			}
 			final CMFile DD=new CMFile(incorporateBaseDir(pwd,target),mob);

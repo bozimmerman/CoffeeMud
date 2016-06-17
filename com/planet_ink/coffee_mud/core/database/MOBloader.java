@@ -669,7 +669,7 @@ public class MOBloader
 		return T.set(tattoo, tickDown);
 	}
 
-	public List<PlayerLibrary.ThinPlayer> vassals(MOB mob, String liegeID)
+	public List<PlayerLibrary.ThinPlayer> vassals(String liegeID)
 	{
 		DBConnection D=null;
 		List<PlayerLibrary.ThinPlayer> list=new ArrayList<PlayerLibrary.ThinPlayer>();
@@ -677,9 +677,11 @@ public class MOBloader
 		{
 			D=DB.DBFetch();
 			final ResultSet R=D.query("SELECT * FROM CMCHAR WHERE CMLEIG='"+liegeID+"'");
-			if(R!=null) 
-			while(R.next())
-				list.add(this.parseThinUser(R));
+			if(R!=null)
+			{
+				while(R.next())
+					list.add(this.parseThinUser(R));
+			}
 		}
 		catch(final Exception sqle)
 		{

@@ -1801,6 +1801,28 @@ public class CMParms
 	 */
 	public final static int getParmInt(String text, final String key, final int defaultValue)
 	{
+		return (int)getParmLong(text, key, defaultValue);
+	}
+
+	/**
+	 * This method is a sloppy, forgiving method doing KEY=VALUE value searches in a string.
+	 * Returns the value of the given key when the parameter is formatted in the given text
+	 * in the format [KEY]=[VALUE].  If the key is not found, it will return the given 
+	 * defaultVal.  The key is case insensitive, and start-partial.  For example, a key of 
+	 * NAME will match NAMEY or NAME12.
+	 * No assumptions are made about the given text.  It could have other garbage data of
+	 * any format around it.  For example, if BOB is the key, then a text string like:
+	 * 'joe larry bibob=1 moe="uiuiui bob=2 lou", bob=3' will still return 2.
+	 * If the key is found, but followed by a + or -, the default value is always returned.
+	 * The value ends when either an end quote is encountered, or a whitespace, semicolon, or
+	 * comma.
+	 * @param text the string to search
+	 * @param key the key to search for, case insensitive
+	 * @param defaultValue the value to return if the key is not found
+	 * @return the value
+	 */
+	public final static long getParmLong(String text, final String key, final long defaultValue)
+	{
 		int x=text.toUpperCase().indexOf(key.toUpperCase());
 		while(x>=0)
 		{
@@ -1836,7 +1858,7 @@ public class CMParms
 						}
 						while((x<text.length())&&(Character.isDigit(text.charAt(x))))
 							x++;
-						return CMath.s_int(text.substring(0,x));
+						return CMath.s_long(text.substring(0,x));
 					}
 				}
 				x=-1;

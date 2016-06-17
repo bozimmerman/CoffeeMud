@@ -206,7 +206,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 		}
 		return null;
 	}
-	
+
 	@Override
 	public LandTitle getLandTitle(Room room)
 	{
@@ -355,9 +355,19 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	}
 
 	@Override
-	public boolean doesHavePriviledgesHere(MOB mob, Room room)
+	public boolean doesHavePrivilegesWith(final MOB mob, final PrivateProperty record)
 	{
-		final PrivateProperty record=getPropertyRecord(room);
+		if(doesHaveWeakPrivilegesWith(mob,record))
+			return true;
+		final Pair<Clan,Integer> clanRole=mob.getClanRole(record.getOwnerName());
+		if((clanRole!=null)&&(clanRole.first.getAuthority(clanRole.second.intValue(), Clan.Function.HOME_PRIVS)!=Clan.Authority.CAN_NOT_DO))
+			return true;
+		return false;
+	}
+	
+	@Override
+	public boolean doesHaveWeakPrivilegesWith(final MOB mob, final PrivateProperty record)
+	{
 		if(record==null)
 			return false;
 		if(record.getOwnerName()==null)
@@ -369,10 +379,30 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 		if((record.getOwnerName().equals(mob.getLiegeID())&&(mob.isMarriedToLiege())))
 			return true;
 		final Pair<Clan,Integer> clanRole=mob.getClanRole(record.getOwnerName());
-		if((clanRole!=null)&&(clanRole.first.getAuthority(clanRole.second.intValue(), Clan.Function.HOME_PRIVS)!=Clan.Authority.CAN_NOT_DO))
+		if(clanRole != null)
+			return true;
+		return false;
+	}
+	
+	@Override
+	public boolean doesHavePriviledgesHere(MOB mob, Room room)
+	{
+		final PrivateProperty record=getPropertyRecord(room);
+		if(doesHavePrivilegesWith(mob,record))
 			return true;
 		if(mob.amFollowing()!=null)
 			return doesHavePriviledgesHere(mob.amFollowing(),room);
+		return false;
+	}
+
+	@Override
+	public boolean doesHaveWeakPriviledgesHere(MOB mob, Room room)
+	{
+		final PrivateProperty record=getPropertyRecord(room);
+		if(doesHaveWeakPrivilegesWith(mob,record))
+			return true;
+		if(mob.amFollowing()!=null)
+			return doesHaveWeakPriviledgesHere(mob.amFollowing(),room);
 		return false;
 	}
 
@@ -666,5 +696,126 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 				CMLib.database().DBUpdateItems(R);
 			}
 		}
+	}
+
+	protected boolean shopkeeperMobPresent(Room R)
+	{
+		if(R==null)
+			return false;
+		MOB M=null;
+		for(int i=0;i<R.numInhabitants();i++)
+		{
+			M=R.fetchInhabitant(i);
+			if((M.getStartRoom()==R)
+			&&(M.isMonster())
+			&&(CMLib.coffeeShops().getShopKeeper(M)!=null))
+				return true;
+		}
+		return false;
+	}
+
+	@Override
+	public boolean robberyCheck(PrivateProperty record, CMMsg msg)
+	{
+		if(((msg.targetMinor()==CMMsg.TYP_GET)&&(!msg.isTarget(CMMsg.MASK_INTERMSG)))
+		||(msg.targetMinor()==CMMsg.TYP_PUSH)
+		||(msg.targetMinor()==CMMsg.TYP_PULL))
+		{
+			final Room R=msg.source().location();
+			if((msg.target() instanceof Item)
+			&&(((Item)msg.target()).owner() ==R)
+			&&((!(msg.tool() instanceof Item))||(msg.source().isMine(msg.tool())))
+			&&(!msg.sourceMajor(CMMsg.MASK_ALWAYS))
+			&&(record.getOwnerName().length()>0)
+			&&(R!=null)
+			&&(msg.othersMessage()!=null)
+			&&(msg.othersMessage().length()>0)
+			&&(!shopkeeperMobPresent(R))
+			&&(!CMLib.law().doesHavePriviledgesHere(msg.source(),R)))
+			{
+				final LegalBehavior B=CMLib.law().getLegalBehavior(R);
+				if(B!=null)
+				{
+					for(int m=0;m<R.numInhabitants();m++)
+					{
+						final MOB M=R.fetchInhabitant(m);
+						if(CMLib.law().doesHavePriviledgesHere(M,R))
+							return true;
+					}
+					MOB D=null;
+					final Clan C=CMLib.clans().getClan(record.getOwnerName());
+					if(C!=null)
+						D=C.getResponsibleMember();
+					else
+						D=CMLib.players().getLoadPlayer(record.getOwnerName());
+					if(D==null)
+						return true;
+					B.accuse(CMLib.law().getLegalObject(R),msg.source(),D,new String[]{"PROPERTYROB","THIEF_ROBBERY"});
+					Ability propertyProp=((Item)msg.target()).fetchEffect("Prop_PrivateProperty");
+					if(propertyProp==null)
+					{
+						propertyProp=CMClass.getAbility("Prop_PrivateProperty");
+						propertyProp.setMiscText("owner=\""+record.getOwnerName()+"\" expiresec=60");
+						((Item)msg.target()).addNonUninvokableEffect(propertyProp);
+					}
+				}
+			}
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public PrivateProperty getPropertyRecord(final Item item)
+	{
+		if(item==null)
+			return null;
+		if(item.numEffects()==0)
+			return null;
+		for(final Enumeration<Ability> a=item.effects();a.hasMoreElements();)
+		{
+			final Ability A=a.nextElement();
+			if(A instanceof PrivateProperty)
+				return (PrivateProperty)A;
+		}
+		return null;
+	}
+
+	@Override
+	public boolean mayOwnThisItem(final MOB mob, final Item item)
+	{
+		final PrivateProperty record = getPropertyRecord(item);
+		if(record != null)
+		{
+			if(doesHaveWeakPrivilegesWith(mob,record))
+				return true;
+			MOB following=mob.amFollowing();
+			while((following!=null)&&(following!=mob))
+			{
+				if(doesHaveWeakPrivilegesWith(following,record))
+					return true;
+			}
+			if(item.owner() instanceof Room)
+			{
+				final Room R=(Room)item.owner();
+				if(doesHavePriviledgesHere(mob,R))
+					return true;
+			}
+			return false;
+		}
+		if(item.owner() instanceof Room)
+		{
+			final Room R=(Room)item.owner();
+			final PrivateProperty roomRecord = getPropertyRecord(R);
+			if(roomRecord != null)
+			{
+				if(doesHaveWeakPrivilegesWith(mob,roomRecord))
+					return true;
+				if((roomRecord.getOwnerName()!=null)
+				&&(roomRecord.getOwnerName().length()>0))
+					return false;
+			}
+		}
+		return true;
 	}
 }

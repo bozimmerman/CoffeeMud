@@ -69,6 +69,7 @@ public interface LegalLibrary extends CMLibrary
 	public LandTitle getLandTitle(Room room);
 	public PrivateProperty getPropertyRecord(Area area);
 	public PrivateProperty getPropertyRecord(Room room);
+	public PrivateProperty getPropertyRecord(Item item);
 	public boolean isRoomSimilarlyTitled(LandTitle title, Room R);
 	public Set<Room> getHomePeersOnThisFloor(Room room, Set<Room> doneRooms);
 	public boolean isHomeRoomDownstairs(Room room);
@@ -76,11 +77,16 @@ public interface LegalLibrary extends CMLibrary
 	public boolean doesHavePriviledgesHere(MOB mob, Room room);
 	public boolean doesAnyoneHavePrivilegesHere(MOB mob, String overrideID, Room R);
 	public boolean doesHavePriviledgesInThisDirection(MOB mob, Room room, Exit exit);
+	public boolean doesHavePrivilegesWith(final MOB mob, final PrivateProperty record);
+	public boolean doesHaveWeakPrivilegesWith(final MOB mob, final PrivateProperty record);
+	public boolean doesHaveWeakPriviledgesHere(MOB mob, Room room);
 	public boolean doesOwnThisLand(String name, Room room);
 	public boolean doesOwnThisLand(MOB mob, Room room);
+	public boolean mayOwnThisItem(MOB mob, Item item);
 	public boolean doesOwnThisProperty(String name, Room room);
 	public boolean doesOwnThisProperty(MOB mob, Room room);
 	public boolean doesOwnThisProperty(MOB mob, PrivateProperty record);
+	public boolean robberyCheck(PrivateProperty record, CMMsg msg);
 	public MOB getPropertyOwner(PrivateProperty record);
 	public boolean canAttackThisProperty(MOB mob, PrivateProperty record);
 	public List<LandTitle> getAllUniqueLandTitles(Enumeration<Room> e, String owner, boolean includeRentals);
