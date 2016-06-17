@@ -1730,6 +1730,9 @@ public class ListCmd extends StdCommand
 		final boolean shortList=parms.contains("SHORT");
 		if(shortList)
 			parms.remove("SHORT");
+		final boolean wiki=parms.contains("WIKI");
+		if(wiki)
+			parms.remove("WIKI");
 		final String restRest=CMParms.combine(parms).trim();
 		final StringBuilder lines=new StringBuilder("");
 		if(!these.hasMoreElements())
@@ -1759,14 +1762,21 @@ public class ListCmd extends StdCommand
 			||(CMLib.english().containsString(R.name(), restRest))
 			||(CMLib.english().containsString(R.racialCategory(), restRest)))
 			{
-				if(++column>3)
+				if(wiki)
 				{
-					lines.append("\n\r");
-					column=1;
+					lines.append("*[["+R.name()+"|"+R.name()+"]]\n\r");
 				}
-				lines.append(CMStrings.padRight(R.ID()
-											+(R.isGeneric()?"*":"")
-											+" ("+R.racialCategory()+")",COL_LEN));
+				else
+				{
+					if(++column>3)
+					{
+						lines.append("\n\r");
+						column=1;
+					}
+					lines.append(CMStrings.padRight(R.ID()
+								+(R.isGeneric()?"*":"")
+								+" ("+R.racialCategory()+")",COL_LEN));
+				}
 			}
 		}
 		lines.append("\n\r");
@@ -2854,16 +2864,66 @@ public class ListCmd extends StdCommand
 		return buf.toString();
 	}
 
-	public String listExpertises(Session viewerS)
+	public String listExpertises(Session viewerS, List<String> commands)
 	{
+		boolean wiki=false;
+		if(commands.size()>1)
+		{
+			String rest;
+			rest=commands.get(1);
+			if(rest.equalsIgnoreCase("WIKI"))
+				wiki=true;
+		}
 		final StringBuilder buf=new StringBuilder("^xAll Defined Expertise Codes: ^N\n\r");
 		final int COL_LEN=CMLib.lister().fixColWidth(20.0,viewerS);
 		for(final Enumeration<ExpertiseLibrary.ExpertiseDefinition> e=CMLib.expertises().definitions();e.hasMoreElements();)
 		{
 			final ExpertiseLibrary.ExpertiseDefinition def=e.nextElement();
-			buf.append(CMStrings.padRight("^Z"+def.ID(),COL_LEN)+"^?: "
-					  +CMStrings.padRight(def.name(),COL_LEN)+": "
-					  +CMLib.masking().maskDesc(def.allRequirements())+"\n\r");
+			if(wiki)
+			{
+				buf.append("*[["+def.name()+"|"+def.name()+"]]\n\r");
+			}
+			else
+			{
+				buf.append(CMStrings.padRight("^Z"+def.ID(),COL_LEN)+"^?: "
+						  +CMStrings.padRight(def.name(),COL_LEN)+": "
+						  +CMLib.masking().maskDesc(def.allRequirements())+"\n\r");
+			}
+		}
+		if(buf.length()==0)
+			return "None defined.";
+		return buf.toString();
+	}
+
+	public String listSocials(Session viewerS, List<String> commands)
+	{
+		boolean wiki=false;
+		if(commands.size()>1)
+		{
+			String rest;
+			rest=commands.get(1);
+			if(rest.equalsIgnoreCase("WIKI"))
+				wiki=true;
+		}
+		final StringBuilder buf=new StringBuilder("^xAll Defined Socials: ^N\n\r");
+		final int COL_LEN=CMLib.lister().fixColWidth(18.0,viewerS);
+		int col=0;
+		for(String social : CMLib.socials().getSocialsList())
+		{
+			if(wiki)
+			{
+				buf.append("*[["+social+"|"+social+"]]\n\r");
+			}
+			else
+			{
+				buf.append(CMStrings.padRight(social,COL_LEN)+" ");
+				col++;
+				if(col==4)
+				{
+					col=0;
+					buf.append("\n\r");
+				}
+			}
 		}
 		if(buf.length()==0)
 			return "None defined.";
@@ -3357,6 +3417,7 @@ public class ListCmd extends StdCommand
 		SHIPS("SHIPS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDAREAS,SecFlag.CMDPLAYERS}),
 		COMMANDS("COMMANDS",new SecFlag[]{SecFlag.LISTADMIN}),
 		FILEUSE("FILEUSE",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDAREAS}),
+		SOCIALS("SOCIALS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDSOCIALS,SecFlag.AREA_CMDSOCIALS}),
 		;
 		public String[]			   cmd;
 		public CMSecurity.SecGroup flags;
@@ -3743,11 +3804,18 @@ public class ListCmd extends StdCommand
 		commands.remove(0);
 		List<String> sortBys=null;
 		List<String> colNames=null;
+		boolean wiki=false;
 		if(commands.size()>0)
 		{
 			List<String> addTos=null;
 			while(commands.size()>0)
 			{
+				if(commands.get(0).toString().equalsIgnoreCase("wiki"))
+				{
+					commands.remove(0);
+					wiki=true;
+				}
+				else
 				if(commands.get(0).toString().equalsIgnoreCase("sortby"))
 				{
 					commands.remove(0);
@@ -3876,15 +3944,22 @@ public class ListCmd extends StdCommand
 			final Area A=a.nextElement();
 			if((filter!=null)&&(!filter.passesFilter(A)))
 				continue;
-			for(final Triad<String,String,Integer> head : columns)
+			if(wiki)
 			{
-				Object val =getAreaStatFromSomewhere(A,head.second);
-				if(val==null)
-					val="?";
-				if(head==lastColomn)
-					str.append(CMStrings.scrunchWord(val.toString(), head.third.intValue()-1));
-				else
-					str.append(CMStrings.padRight(CMStrings.scrunchWord(val.toString(), head.third.intValue()-1), head.third.intValue()));
+				str.append("*[["+A.name()+"|"+A.name()+"]]");
+			}
+			else
+			{
+				for(final Triad<String,String,Integer> head : columns)
+				{
+					Object val =getAreaStatFromSomewhere(A,head.second);
+					if(val==null)
+						val="?";
+					if(head==lastColomn)
+						str.append(CMStrings.scrunchWord(val.toString(), head.third.intValue()-1));
+					else
+						str.append(CMStrings.padRight(CMStrings.scrunchWord(val.toString(), head.third.intValue()-1), head.third.intValue()));
+				}
 			}
 			str.append("\n\r");
 		}
@@ -4207,7 +4282,10 @@ public class ListCmd extends StdCommand
 			s.wraplessPrintln(listComponents(mob.session()));
 			break;
 		case EXPERTISES:
-			s.wraplessPrintln(listExpertises(mob.session()));
+			s.wraplessPrintln(listExpertises(mob.session(),commands));
+			break;
+		case SOCIALS:
+			s.wraplessPrintln(listSocials(mob.session(),commands));
 			break;
 		case FACTIONS:
 			s.wraplessPrintln(CMLib.factions().listFactions());
