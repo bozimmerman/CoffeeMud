@@ -45,6 +45,7 @@ public class Spell_IllusoryDisease extends Spell implements DiseaseAffect
 	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
 	@Override public int difficultyLevel(){return 9;}
 	@Override public int spreadBitmap() { return 0; }
+	@Override public boolean isMalicious(){ return true;}
 	protected int diseaseTick=5;
 
 	@Override

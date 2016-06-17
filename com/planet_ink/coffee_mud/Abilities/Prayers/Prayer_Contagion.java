@@ -46,6 +46,7 @@ public class Prayer_Contagion extends Prayer implements DiseaseAffect
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int difficultyLevel(){return 0;}
+	@Override public boolean isMalicious(){ return true;}
 
 	@Override
 	public String getHealthConditionDesc()

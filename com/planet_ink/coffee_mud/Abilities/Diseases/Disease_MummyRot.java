@@ -52,6 +52,7 @@ public class Disease_MummyRot extends StdAbility implements DiseaseAffect
 	@Override public int abilityCode(){return 0;}
 	@Override public int spreadBitmap() { return 0; }
 	@Override public int difficultyLevel(){return 2;}
+	@Override public boolean isMalicious(){ return true;}
 
 	int conDown=1;
 	int diseaseTick=0;

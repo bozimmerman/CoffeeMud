@@ -46,6 +46,7 @@ public class Chant_FungusFeet extends Chant implements DiseaseAffect
 	@Override public int abilityCode(){return 0;}
 	@Override public int spreadBitmap() { return 0; }
 	@Override public int difficultyLevel(){return 4;}
+	@Override public boolean isMalicious(){ return true;}
 	int plagueDown=8;
 	double drawups=1.0;
 
