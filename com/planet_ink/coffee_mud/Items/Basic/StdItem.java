@@ -207,10 +207,10 @@ public class StdItem implements Item
 		if((owner()!=null)
 		&&(owner() instanceof MOB)
 		&&(CMLib.flags().isHidden(this)))
-		   phyStats().setDisposition((int)(phyStats().disposition()&(PhyStats.ALLMASK-PhyStats.IS_HIDDEN)));
+			phyStats().setDisposition((int)(phyStats().disposition()&(PhyStats.ALLMASK-PhyStats.IS_HIDDEN)));
 	}
 
-	@Override
+ 	@Override
 	public void setBasePhyStats(PhyStats newStats)
 	{
 		basePhyStats=(PhyStats)newStats.copyOf();
@@ -1384,6 +1384,8 @@ public class StdItem implements Item
 			break;
 		case CMMsg.TYP_PUT:
 			if(this instanceof Container)
+				return true;
+			if(CMath.bset(phyStats().sensesMask(), PhyStats.SENSE_INSIDEACCESSIBLE))
 				return true;
 			mob.tell(mob,this,null,L("You can't put things inside <T-NAME>."));
 			return false;

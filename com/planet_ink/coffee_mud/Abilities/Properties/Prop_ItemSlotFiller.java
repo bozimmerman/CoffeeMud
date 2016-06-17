@@ -56,7 +56,7 @@ public class Prop_ItemSlotFiller extends Property
 			affected2 = P;
 			for(Ability A : getAffects())
 			{
-				if(A!=null)
+				if((A!=null)&&(!A.ID().equals("Prop_ItemSlot")))
 					A.setAffectedOne(P);
 			}
 		}
@@ -109,7 +109,7 @@ public class Prop_ItemSlotFiller extends Property
 			return false;
 		for(Ability A : getAffects())
 		{
-			if(A!=null)
+			if((A!=null)&&(!A.ID().equals("Prop_ItemSlot")))
 			{
 				if(!A.okMessage(myHost, msg))
 					return false;
@@ -123,7 +123,7 @@ public class Prop_ItemSlotFiller extends Property
 	{
 		for(Ability A : getAffects())
 		{
-			if(A!=null)
+			if((A!=null)&&(!A.ID().equals("Prop_ItemSlot")))
 			{
 				A.executeMsg(myHost, msg);
 			}
@@ -136,8 +136,10 @@ public class Prop_ItemSlotFiller extends Property
 	{
 		for(Ability A : getAffects())
 		{
-			if(A!=null)
+			if((A!=null)&&(!A.ID().equals("Prop_ItemSlot")))
+			{
 				A.affectPhyStats(host, affectableStats);
+			}
 		}
 		super.affectPhyStats(host,affectableStats);
 	}
@@ -147,8 +149,10 @@ public class Prop_ItemSlotFiller extends Property
 	{
 		for(Ability A : getAffects())
 		{
-			if(A!=null)
+			if((A!=null)&&(!A.ID().equals("Prop_ItemSlot")))
+			{
 				A.affectCharStats(affectedMOB, affectedStats);
+			}
 		}
 		super.affectCharStats(affectedMOB,affectedStats);
 	}
@@ -158,8 +162,10 @@ public class Prop_ItemSlotFiller extends Property
 	{
 		for(Ability A : getAffects())
 		{
-			if(A!=null)
+			if((A!=null)&&(!A.ID().equals("Prop_ItemSlot")))
+			{
 				A.affectCharState(affectedMOB, affectedState);
+			}
 		}
 		super.affectCharState(affectedMOB,affectedState);
 	}
