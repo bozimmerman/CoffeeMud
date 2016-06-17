@@ -379,9 +379,9 @@ public class PlanarAbility extends StdAbility
 			}
 			if(planeVars.containsKey(PlanarVar.ATMOSPHERE.toString()))
 				room.setAtmosphere(planeArea.getAtmosphere());
-			boolean elite = false;
+			int eliteLevel=0;
 			if(planeVars.containsKey(PlanarVar.ELITE.toString()))
-				elite=CMath.s_bool(planeVars.get(PlanarVar.ELITE.toString()));
+				eliteLevel=CMath.s_int(planeVars.get(PlanarVar.ELITE.toString()));
 			if(planeVars.containsKey(PlanarVar.ROOMCOLOR.toString()))
 			{
 				String prefix="";
@@ -652,9 +652,17 @@ public class PlanarAbility extends StdAbility
 					String adjStat = planeVars.get(PlanarVar.ADJSTAT.toString());
 					if(adjStat != null)
 						reEffect(M,"Prop_StatAdjuster",adjStat);
-					if(elite)
+					if(eliteLevel > 0)
 					{
-						reEffect(M,"Prop_Adjuster", "multiplych=true hitpoints+200 multiplyph=true damage+50 ALLSAVES+10");
+						switch(eliteLevel)
+						{
+						case 1:
+							reEffect(M,"Prop_Adjuster", "multiplych=true hitpoints+300 multiplyph=true attack+150 damage+150 armor+115 ALLSAVES+15");
+							break;
+						default:
+							reEffect(M,"Prop_Adjuster", "multiplych=true hitpoints+600 multiplyph=true attack+150 damage+150 armor+115 ALLSAVES+15");
+							break;
+						}
 						reEffect(M,"Prop_ModExperience","*2");
 						String adjSize = planeVars.get(PlanarVar.ADJSIZE.toString());
 						if(adjSize != null)

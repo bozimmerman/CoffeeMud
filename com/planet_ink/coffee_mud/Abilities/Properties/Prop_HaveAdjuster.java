@@ -213,8 +213,11 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 					phyStats.setAbility(phyStats.ability() + ((Integer) changes[c + 1]).intValue());
 					break;
 				case PhyStats.STAT_ARMOR:
-					phyStats.setArmor((int)Math.round(CMath.mul(phyStats.armor(), CMath.div(((Integer) changes[c + 1]).intValue(),100))));
+				{
+					final int baseAmt=100 - phyStats.armor();
+					phyStats.setArmor(100 - (int)Math.round(CMath.mul(baseAmt, CMath.div(((Integer) changes[c + 1]).intValue(),100))));
 					break;
+				}
 				case PhyStats.STAT_ATTACK:
 					phyStats.setAttackAdjustment((int)Math.round(CMath.mul(phyStats.attackAdjustment(), CMath.div(((Integer) changes[c + 1]).intValue(),100))));
 					break;
