@@ -97,7 +97,8 @@ public class Disease extends StdAbility implements DiseaseAffect
 		return Ability.ACODE_DISEASE;
 	}
 
-	protected boolean DISEASE_MALICIOUS()
+	@Override
+	public boolean isMalicious()
 	{
 		return true;
 	}
@@ -350,7 +351,7 @@ public class Disease extends StdAbility implements DiseaseAffect
 				else
 					spreadImmunity(target);
 			}
-			if(!DISEASE_MALICIOUS())
+			if(!isMalicious())
 			{
 				if((mvictim==null)&&(mob.getVictim()==target))
 					mob.setVictim(null);

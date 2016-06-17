@@ -118,7 +118,7 @@ public class Disease_Yawning extends Disease
 	}
 
 	@Override
-	protected boolean DISEASE_MALICIOUS()
+	public boolean isMalicious()
 	{
 		return false;
 	}

@@ -72,4 +72,11 @@ public interface DiseaseAffect extends HealthCondition
 	 * @return the bitmap denoting how spread
 	 */
 	public int spreadBitmap();
+	
+	/**
+	 * This method returns whether this disease, specifically it's spreading,
+	 * is a malicious act.  Usually that's a NO, but sometimes...
+	 * @return
+	 */
+	public boolean isMalicious();
 }

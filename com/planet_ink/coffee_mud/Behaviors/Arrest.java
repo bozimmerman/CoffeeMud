@@ -2036,7 +2036,9 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		if((CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
 		&&(msg.target() instanceof MOB)
 		&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
-		&&((msg.tool()==null)||(msg.source().isMine(msg.tool())))
+		&&((msg.tool()==null)
+			||(msg.source().isMine(msg.tool()) 
+				&& ((!(msg.tool() instanceof DiseaseAffect)) || (((DiseaseAffect)msg.tool()).isMalicious()))))
 		&&(msg.target()!=msg.source())
 		&&(!msg.target().name().equals(msg.source().name())))
 		{
