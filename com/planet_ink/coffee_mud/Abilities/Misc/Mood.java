@@ -271,7 +271,7 @@ public class Mood extends StdAbility
 		{
 			if((msg.source()==affected)
 			&&(msg.sourceMessage()!=null)
-			&&(msg.tool()==null)
+			&&((msg.tool()==null)||(msg.tool().ID().equals("Common")))
 			&&((msg.sourceMinor()==CMMsg.TYP_SPEAK)
 			   ||(msg.sourceMinor()==CMMsg.TYP_TELL)
 			   ||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL)))
@@ -285,16 +285,22 @@ public class Mood extends StdAbility
 					final MOB M=target(msg.source(),msg.target());
 					if(CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL))
 					{
-						final String[] tags={"<S-NAME>","You"};
+						final String[] tags={"<S-NAME>","You",msg.source().Name()};
 						String tag=null;
 						for (final String tag2 : tags)
 						{
 							tag=tag2;
-							if((msg.othersMessage()!=null)&&(msg.othersMessage().indexOf(MOODS[moodCode][3])<0))
+							if((msg.othersMessage()!=null)
+							&&(msg.othersMessage().indexOf(MOODS[moodCode][3])<0)
+							&&(msg.othersMessage().indexOf(tag)<msg.othersMessage().indexOf('\'')))
 								msg.setOthersMessage(CMStrings.replaceFirst(msg.othersMessage(),tag,tag+" "+MOODS[moodCode][3]));
-							if((msg.targetMessage()!=null)&&(msg.targetMessage().indexOf(MOODS[moodCode][3])<0))
+							if((msg.targetMessage()!=null)
+							&&(msg.targetMessage().indexOf(MOODS[moodCode][3])<0)
+							&&(msg.targetMessage().indexOf(tag)<msg.targetMessage().indexOf('\'')))
 								msg.setTargetMessage(CMStrings.replaceFirst(msg.targetMessage(),tag,tag+" "+MOODS[moodCode][3]));
-							if((msg.sourceMessage()!=null)&&(msg.sourceMessage().indexOf(MOODS[moodCode][3])<0))
+							if((msg.sourceMessage()!=null)
+							&&(msg.sourceMessage().indexOf(MOODS[moodCode][3])<0)
+							&&(msg.sourceMessage().indexOf(tag)<msg.sourceMessage().indexOf('\'')))
 								msg.setSourceMessage(CMStrings.replaceFirst(msg.sourceMessage(),tag,tag+" "+MOODS[moodCode][3]));
 						}
 					}
