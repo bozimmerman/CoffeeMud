@@ -54,21 +54,68 @@ public class ServiceEngine implements ThreadEngine
 	private volatile long			globalTickID		= 0;
 	private final long 				globalStartTime		= System.currentTimeMillis();
 	private volatile CMRunnable[]	unsuspendedRunnables= null;
-	private volatile long			nextWakeAtTime			= 0;
-	private final List<CMRunnable>	schedTicks				= new LinkedList<CMRunnable>();
+	private volatile long			nextWakeAtTime		= 0;
+	private final List<CMRunnable>	schedTicks			= new LinkedList<CMRunnable>();
 
-	@Override public String ID(){return "ServiceEngine";}
-	@Override public String name() { return ID();}
-	@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(final Exception e){return new ServiceEngine();}}
-	@Override public String L(final String str, final String ... xs) { return CMLib.lang().fullSessionTranslation(str, xs); }
+	@Override
+	public String ID()
+	{
+		return "ServiceEngine";
+	}
+
+	@Override
+	public String name()
+	{
+		return ID();
+	}
+
+	@Override
+	public CMObject newInstance()
+	{
+		try
+		{
+			return getClass().newInstance();
+		}
+		catch (final Exception e)
+		{
+			return new ServiceEngine();
+		}
+	}
+
+	@Override
+	public String L(final String str, final String... xs)
+	{
+		return CMLib.lang().fullSessionTranslation(str, xs);
+	}
 
 	@Override
 	public void initializeClass()
 	{
 	}
-	@Override public CMObject copyOf(){try{return (CMObject)this.clone();}catch(final Exception e){return newInstance();}}
-	@Override public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
-	@Override public void propertiesLoaded(){}
+	
+	@Override
+	public CMObject copyOf()
+	{
+		try
+		{
+			return (CMObject) this.clone();
+		}
+		catch (final Exception e)
+		{
+			return newInstance();
+		}
+	}
+
+	@Override
+	public int compareTo(CMObject o)
+	{
+		return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));
+	}
+
+	@Override
+	public void propertiesLoaded()
+	{
+	}
 
 	@Override
 	public TickClient getServiceClient()
@@ -156,8 +203,10 @@ public class ServiceEngine implements ThreadEngine
 			{
 				final long myNextTime = System.currentTimeMillis() + ellapsedMs;
 				final char currentThreadId = Thread.currentThread().getThreadGroup().getName().charAt(0);
-				schedTicks.add(new CMRunnable(){
-					@Override public void run() 
+				schedTicks.add(new CMRunnable()
+				{
+					@Override 
+					public void run() 
 					{
 						try
 						{
@@ -168,9 +217,24 @@ public class ServiceEngine implements ThreadEngine
 							Log.errOut(t);
 						}
 					}
-					@Override public long activeTimeMillis() { return System.currentTimeMillis() - getStartTime(); }
-					@Override public long getStartTime() { return myNextTime; }
-					@Override public int getGroupID() { return currentThreadId; }
+
+					@Override
+					public long activeTimeMillis()
+					{
+						return System.currentTimeMillis() - getStartTime();
+					}
+
+					@Override
+					public long getStartTime()
+					{
+						return myNextTime;
+					}
+
+					@Override
+					public int getGroupID()
+					{
+						return currentThreadId;
+					}
 				});
 				if((this.nextWakeAtTime == 0) || (myNextTime < this.nextWakeAtTime))
 				{
@@ -357,33 +421,38 @@ public class ServiceEngine implements ThreadEngine
 		return false;
 	}
 
-	@Override public boolean isAllSuspended()
+	@Override
+	public boolean isAllSuspended()
 	{
 		return isSuspended;
 	}
-	
-	@Override public void suspendAll(CMRunnable[] exceptRs)
+
+	@Override
+	public void suspendAll(CMRunnable[] exceptRs)
 	{
-		unsuspendedRunnables=exceptRs;
-		isSuspended=true;
+		unsuspendedRunnables = exceptRs;
+		isSuspended = true;
 	}
-	
-	@Override public void resumeAll()
+
+	@Override
+	public void resumeAll()
 	{
-		unsuspendedRunnables=null;
-		isSuspended=false;
+		unsuspendedRunnables = null;
+		isSuspended = false;
 	}
-	
-	@Override public void suspendTicking(Tickable E, int tickID)
+
+	@Override
+	public void suspendTicking(Tickable E, int tickID)
 	{
-		suspendResumeTicking(E,tickID,true);
+		suspendResumeTicking(E, tickID, true);
 	}
-	
-	@Override public void resumeTicking(Tickable E, int tickID)
+
+	@Override
+	public void resumeTicking(Tickable E, int tickID)
 	{
-		suspendResumeTicking(E,tickID,false);
+		suspendResumeTicking(E, tickID, false);
 	}
-	
+
 	protected boolean suspendResumeTicking(Tickable E, int tickID, boolean suspend)
 	{
 		for(final Iterator<TickableGroup> e=tickGroups();e.hasNext();)
@@ -662,7 +731,6 @@ public class ServiceEngine implements ThreadEngine
 			return "";
 		}
 
-
 		return "";
 	}
 
@@ -710,7 +778,6 @@ public class ServiceEngine implements ThreadEngine
 			}
 		}
 	}
-
 
 	@Override
 	public void tickAllTickers(Room here)
@@ -845,7 +912,9 @@ public class ServiceEngine implements ThreadEngine
 							if(almostTock.numTickers()==0)
 								allTicks.remove(almostTock);
 						}
-						catch(final Exception e2) {}
+						catch (final Exception e2)
+						{
+						}
 					}
 				}
 				catch(final NoSuchElementException ex)
@@ -882,7 +951,9 @@ public class ServiceEngine implements ThreadEngine
 							if(almostTock.numTickers()==0)
 								allTicks.remove(almostTock);
 						}
-						catch(final Exception e2) {}
+						catch (final Exception e2)
+						{
+						}
 					}
 				}
 				catch(final NoSuchElementException ex)
@@ -897,11 +968,13 @@ public class ServiceEngine implements ThreadEngine
 	{
 		int grpstart=-1;
 		for(int i=0;i<which.length();i++)
+		{
 			if(Character.isDigit(which.charAt(i)))
 			{
 				grpstart=i;
 				break;
 			}
+		}
 		if(which.equalsIgnoreCase("tickGroupSize"))
 			return ""+allTicks.size();
 		else
@@ -1033,15 +1106,27 @@ public class ServiceEngine implements ThreadEngine
 		for(int t=0;t<timeObjects.size();t++)
 			timeObjects.elementAt(t).save();
 		for(final CMThreadPoolExecutor pool : threadPools)
+		{
 			if(pool != null)
 			{
 				pool.shutdown();
-				try { pool.awaitTermination(2, TimeUnit.SECONDS); } catch (final InterruptedException e)
+				try
+				{
+					pool.awaitTermination(2, TimeUnit.SECONDS);
+				}
+				catch (final InterruptedException e)
 				{
 					pool.shutdownNow();
-					try { pool.awaitTermination(3, TimeUnit.SECONDS); } catch (final InterruptedException e2) {}
+					try
+					{
+						pool.awaitTermination(3, TimeUnit.SECONDS);
+					}
+					catch (final InterruptedException e2)
+					{
+					}
 				}
 			}
+		}
 		Log.sysOut("ServiceEngine","Shutdown complete.");
 		return true;
 	}
@@ -1145,8 +1230,13 @@ public class ServiceEngine implements ThreadEngine
 				final long base=(code&STATUS_ALLMISCTICKS);
 				int num=0;
 				for(int i=1;i<6;i++)
+				{
 					if((1<<(10+i))==base)
-					{ num=i; break;}
+					{
+						num = i;
+						break;
+					}
+				}
 				return "Misc"+num+" Activity #"+(code-base);
 			}
 			else
@@ -1241,7 +1331,6 @@ public class ServiceEngine implements ThreadEngine
 		Log.debugOut(ID,dump.toString());
 	}
 
-
 	public final void checkHealth()
 	{
 		final long lastDateTime=System.currentTimeMillis()-SHORT_TICK_TIMEOUT;
@@ -1301,7 +1390,9 @@ public class ServiceEngine implements ThreadEngine
 				}
 			}
 		}
-		catch(final java.util.NoSuchElementException e){}
+		catch (final java.util.NoSuchElementException e)
+		{
+		}
 		for(int i=0;i<orderedDeaths.size();i++)
 			Log.errOut(Thread.currentThread().getName(),(String)orderedDeaths.elementAt(i,2));
 
@@ -1314,7 +1405,10 @@ public class ServiceEngine implements ThreadEngine
 			{
 				for(final Iterator<TickClient> e=almostTock.tickers();e.hasNext();)
 					tockClients.addElement(e.next());
-			}catch(final NoSuchElementException e){}
+			}
+			catch (final NoSuchElementException e)
+			{
+			}
 			try
 			{
 				almostTock.shutdown();
@@ -1341,6 +1435,7 @@ public class ServiceEngine implements ThreadEngine
 		{
 			final List<Runnable> badThreads=CMLib.hosts().get(m).getOverdueThreads();
 			for(final Runnable T : badThreads)
+			{
 				if(T instanceof Thread)
 				{
 					String threadName=((Thread)T).getName();
@@ -1352,8 +1447,8 @@ public class ServiceEngine implements ThreadEngine
 				}
 				else
 					Log.errOut("Unable to kill stray runnable: "+T.toString());
+			}
 		}
-
 		setSupportStatus("Done checking threads");
 	}
 
@@ -1467,15 +1562,51 @@ public class ServiceEngine implements ThreadEngine
 		supportClient=startTickDown(null,new Tickable()
 		{
 			private int tickStatus = Tickable.STATUS_NOT;
-			@Override public String ID() { return "THThreads"; }
-			@Override public CMObject newInstance() { return this; }
-			@Override public CMObject copyOf() { return this; }
-			@Override public void initializeClass() {}
-			@Override public int compareTo(CMObject o) { return (o==this)?0:1;}
-			@Override public String name() { return ID(); }
-			@Override public int getTickStatus() { return tickStatus; }
-			@Override public boolean tick(Tickable ticking, int tickID)
-			{
+
+				@Override
+				public String ID()
+				{
+					return "THThreads";
+				}
+
+				@Override
+				public CMObject newInstance()
+				{
+					return this;
+				}
+
+				@Override
+				public CMObject copyOf()
+				{
+					return this;
+				}
+
+				@Override
+				public void initializeClass()
+				{
+				}
+
+				@Override
+				public int compareTo(CMObject o)
+				{
+					return (o == this) ? 0 : 1;
+				}
+
+				@Override
+				public String name()
+				{
+					return ID();
+				}
+
+				@Override
+				public int getTickStatus()
+				{
+					return tickStatus;
+				}
+
+				@Override
+				public boolean tick(Tickable ticking, int tickID)
+				{
 				if((!CMSecurity.isDisabled(CMSecurity.DisFlag.UTILITHREAD))
 				&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.THREADTHREAD)))
 				{

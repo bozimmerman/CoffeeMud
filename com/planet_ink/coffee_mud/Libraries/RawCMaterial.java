@@ -622,6 +622,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 			break;
 		}
 		case RawMaterial.MATERIAL_GAS:
+		case 0:
 		{
 			//TODO!
 			I=(RawMaterial)CMClass.getItem("GenLiquidResource");

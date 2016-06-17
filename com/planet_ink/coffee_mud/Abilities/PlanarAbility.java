@@ -724,6 +724,10 @@ public class PlanarAbility extends StdAbility
 					M.recoverCharStats();
 					M.recoverMaxState();
 					M.recoverPhyStats();
+					M.recoverCharStats();
+					M.recoverMaxState();
+					M.recoverPhyStats();
+					M.resetToMaxState();
 				}
 			}
 			int mobCopy=CMath.s_int(planeVars.get(PlanarVar.MOBCOPY.toString()));
