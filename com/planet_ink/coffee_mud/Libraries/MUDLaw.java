@@ -357,6 +357,8 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	@Override
 	public boolean doesHavePrivilegesWith(final MOB mob, final PrivateProperty record)
 	{
+		if(record==null)
+			return false;
 		if(doesHaveWeakPrivilegesWith(mob,record))
 			return true;
 		final Pair<Clan,Integer> clanRole=mob.getClanRole(record.getOwnerName());
@@ -388,6 +390,8 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	public boolean doesHavePriviledgesHere(MOB mob, Room room)
 	{
 		final PrivateProperty record=getPropertyRecord(room);
+		if(record==null)
+			return false;
 		if(doesHavePrivilegesWith(mob,record))
 			return true;
 		if(mob.amFollowing()!=null)
@@ -399,6 +403,8 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	public boolean doesHaveWeakPriviledgesHere(MOB mob, Room room)
 	{
 		final PrivateProperty record=getPropertyRecord(room);
+		if(record==null)
+			return false;
 		if(doesHaveWeakPrivilegesWith(mob,record))
 			return true;
 		if(mob.amFollowing()!=null)
