@@ -658,6 +658,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 				break;
 			}
 		}
+		CMLib.law().robberyCheck(this, msg);
 		return true;
 	}
 

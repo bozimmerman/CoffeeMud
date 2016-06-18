@@ -277,7 +277,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 		if((R!=null)
 		&&(R.ID().length()>0)
 		&&(CMath.bset(R.domainType(),Room.INDOORS)))
-			return CMLib.law().getLandTitle(R);
+			return getLandTitle(R);
 		return null;
 	}
 
@@ -285,7 +285,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	{
 		if((R!=null)
 		&&(R.ID().length()>0))
-			return CMLib.law().getLandTitle(R);
+			return getLandTitle(R);
 		return null;
 	}
 
@@ -409,7 +409,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	@Override
 	public boolean doesAnyoneHavePrivilegesHere(MOB mob, String overrideID, Room R)
 	{
-		if((CMLib.law().doesHavePriviledgesHere(mob,R))||((overrideID.length()>0)&&(mob.Name().equals(overrideID))))
+		if((doesHavePriviledgesHere(mob,R))||((overrideID.length()>0)&&(mob.Name().equals(overrideID))))
 			return true;
 		if(overrideID.length()>0)
 		{
@@ -420,7 +420,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 		for(int i=0;i<R.numInhabitants();i++)
 		{
 			final MOB M=R.fetchInhabitant(i);
-			if(CMLib.law().doesHavePriviledgesHere(M,R))
+			if(doesHavePriviledgesHere(M,R))
 				return true;
 			if(overrideID.length()>0)
 			{
@@ -731,15 +731,15 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 			&&(msg.othersMessage()!=null)
 			&&(msg.othersMessage().length()>0)
 			&&(!shopkeeperMobPresent(R))
-			&&(!CMLib.law().doesHavePriviledgesHere(msg.source(),R)))
+			&&(!doesHavePriviledgesHere(msg.source(),R)))
 			{
-				final LegalBehavior B=CMLib.law().getLegalBehavior(R);
+				final LegalBehavior B=getLegalBehavior(R);
 				if(B!=null)
 				{
 					for(int m=0;m<R.numInhabitants();m++)
 					{
 						final MOB M=R.fetchInhabitant(m);
-						if(CMLib.law().doesHavePriviledgesHere(M,R))
+						if(doesHavePriviledgesHere(M,R))
 							return true;
 					}
 					MOB D=null;
@@ -750,7 +750,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 						D=CMLib.players().getLoadPlayer(record.getOwnerName());
 					if(D==null)
 						return true;
-					B.accuse(CMLib.law().getLegalObject(R),msg.source(),D,new String[]{"PROPERTYROB","THIEF_ROBBERY"});
+					B.accuse(getLegalObject(R),msg.source(),D,new String[]{"PROPERTYROB","THIEF_ROBBERY"});
 					Ability propertyProp=((Item)msg.target()).fetchEffect("Prop_PrivateProperty");
 					if(propertyProp==null)
 					{
