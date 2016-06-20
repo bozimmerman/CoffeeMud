@@ -231,12 +231,15 @@ public class HTTPSReader extends HTTPReader
 				while((buffer.hasRemaining()) && (appSizedBuf.hasRemaining()))
 					appSizedBuf.put(buffer.get());
 				appSizedBuf.flip();
-				final ByteBuffer outBuf=ByteBuffer.allocate(sslOutgoingBuffer.capacity());
-				sslEngine.wrap(appSizedBuf, outBuf);
-				if(outBuf.position() > 0)
+				while(appSizedBuf.hasRemaining())
 				{
-					outBuf.flip();
-					super.writeBytesToChannel(new CWDataBuffers(outBuf, 0, false));
+					final ByteBuffer outBuf=ByteBuffer.allocate(sslOutgoingBuffer.capacity());
+					sslEngine.wrap(appSizedBuf, outBuf);
+					if(outBuf.position() > 0)
+					{
+						outBuf.flip();
+						super.writeBytesToChannel(new CWDataBuffers(outBuf, 0, false));
+					}
 				}
 			}
 		}
