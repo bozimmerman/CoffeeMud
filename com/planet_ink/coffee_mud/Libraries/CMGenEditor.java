@@ -1770,6 +1770,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					ok=true;
 				}
 				else
+				if(E instanceof LandTitle)
+				{
+					mob.tell(L("@x1. Assigned Property ID: '@x2'.",""+showNumber,E.readableText()));
+					ok=true;
+				}
+				else
 				{
 					mob.tell(L("@x1. Assigned Read Text: '@x2'.",""+showNumber,E.readableText()));
 					ok=true;

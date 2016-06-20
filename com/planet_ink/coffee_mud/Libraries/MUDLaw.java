@@ -527,6 +527,8 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 			return null;
 		if(record.getOwnerName().length()==0)
 			return null;
+		if(record.getOwnerName().startsWith("#"))
+			return null;
 		final Clan clan = CMLib.clans().getClan(record.getOwnerName());
 		if(clan != null)
 			return clan.getResponsibleMember();
@@ -539,6 +541,8 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 		if(record.getOwnerName()==null)
 			return true;
 		if(record.getOwnerName().length()==0)
+			return true;
+		if(record.getOwnerName().startsWith("#"))
 			return true;
 		if(record.getOwnerName().equals(mob.Name()))
 			return true;
@@ -749,14 +753,16 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 							return true;
 					}
 					MOB D=null;
-					final Clan C=CMLib.clans().getClan(record.getOwnerName());
-					if(C!=null)
-						D=C.getResponsibleMember();
-					else
-						D=CMLib.players().getLoadPlayer(record.getOwnerName());
-					if(D==null)
-						return true;
-					B.accuse(getLegalObject(R),msg.source(),D,new String[]{"PROPERTYROB","THIEF_ROBBERY"});
+					if(!record.getOwnerName().startsWith("#"))
+					{
+						final Clan C=CMLib.clans().getClan(record.getOwnerName());
+						if(C!=null)
+							D=C.getResponsibleMember();
+						else
+							D=CMLib.players().getLoadPlayer(record.getOwnerName());
+					}
+					if(D!=null)
+						B.accuse(getLegalObject(R),msg.source(),D,new String[]{"PROPERTYROB","THIEF_ROBBERY"});
 					Ability propertyProp=((Item)msg.target()).fetchEffect("Prop_PrivateProperty");
 					if(propertyProp==null)
 					{

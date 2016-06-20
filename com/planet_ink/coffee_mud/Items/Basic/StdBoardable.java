@@ -453,13 +453,19 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 
 	protected synchronized void destroyThisShip()
 	{
-		if(this.getOwnerName().length()>0)
+		if((this.getOwnerName().length()>0)&&(!this.getOwnerName().startsWith("#")))
 		{
-			final MOB M = CMLib.players().getLoadPlayer(this.getOwnerName());
-			final PlayerStats pStats = (M!=null) ? M.playerStats() : null;
-			final ItemCollection items= (pStats != null) ? pStats.getExtItems() : null;
-			if(items != null)
-				items.delItem(this);
+			final Clan clan = CMLib.clans().getClan(this.getOwnerName());
+			if(clan != null)
+				clan.getExtItems().delItem(this);
+			else
+			{
+				final MOB M = CMLib.players().getLoadPlayer(this.getOwnerName());
+				final PlayerStats pStats = (M!=null) ? M.playerStats() : null;
+				final ItemCollection items= (pStats != null) ? pStats.getExtItems() : null;
+				if(items != null)
+					items.delItem(this);
+			}
 		}
 		final CMMsg expireMsg=CMClass.getMsg(CMLib.map().deity(), this, CMMsg.MASK_ALWAYS|CMMsg.MSG_EXPIRE, L("<T-NAME> is destroyed!"));
 		final Area A = getShipArea();
@@ -668,7 +674,7 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 	
 	protected void transferOwnership(final MOB buyer, boolean clanSale)
 	{
-		if(getOwnerName().length()>0)
+		if((getOwnerName().length()>0)&&(!getOwnerName().startsWith("#")))
 		{
 			final MOB M=CMLib.players().getLoadPlayer(getOwnerName());
 			if((M!=null)&&(M.playerStats()!=null))

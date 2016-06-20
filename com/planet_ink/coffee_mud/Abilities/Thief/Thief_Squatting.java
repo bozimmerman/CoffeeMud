@@ -35,21 +35,69 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Thief_Squatting extends ThiefSkill
 {
-	@Override public String ID() { return "Thief_Squatting"; }
-	private final static String localizedName = CMLib.lang().L("Squatting");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Squatting)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	private static final String[] triggerStrings =I(new String[] {"SQUAT","SQUATTING"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
-	protected boolean failed=false;
-	protected Room room=null;
-	private LandTitle title=null;
-	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_CRIMINAL;}
+	@Override
+	public String ID()
+	{
+		return "Thief_Squatting";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Squatting");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Squatting)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "SQUAT", "SQUATTING" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT | USAGE_MANA;
+	}
+
+	protected boolean	failed	= false;
+	protected Room		room	= null;
+	private LandTitle	title	= null;
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_THIEF_SKILL | Ability.DOMAIN_CRIMINAL;
+	}
 
 	@Override
 	public void executeMsg(Environmental host, CMMsg msg)
@@ -147,7 +195,7 @@ public class Thief_Squatting extends ThiefSkill
 			return false;
 		}
 		MOB warnMOB=null;
-		if(T.getOwnerName().length()>0)
+		if((T.getOwnerName().length()>0)&&(!T.getOwnerName().startsWith("#")))
 		{
 			final Clan C=CMLib.clans().getClan(T.getOwnerName());
 			if(C==null)
