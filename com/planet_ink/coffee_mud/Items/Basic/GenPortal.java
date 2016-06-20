@@ -41,12 +41,12 @@ public class GenPortal extends StdPortal
 		return "GenPortal";
 	}
 
-	protected String readableText="";
-	
-	protected String putString="in";
-	protected String mountString="enter(s)";
-	protected String dismountString="emerge(s) from";
-	
+	protected String	readableText	= "";
+
+	protected String	putString		= "in";
+	protected String	mountString		= "enter(s)";
+	protected String	dismountString	= "emerge(s) from";
+
 	public GenPortal()
 	{
 		super();
@@ -127,20 +127,34 @@ public class GenPortal extends StdPortal
 			return CMLib.coffeeMaker().getGenItemStat(this,code);
 		switch(getCodeNum(code))
 		{
-		case 0: return ""+hasALock();
-		case 1: return ""+hasADoor();
-		case 2: return ""+capacity();
-		case 3: return ""+containTypes();
-		case 4: return ""+openDelayTicks();
-		case 5: return ""+rideBasis();
-		case 6: return ""+riderCapacity();
-		case 7: return ""+doorName();
-		case 8: return ""+closedText();
-		case 9: return putString;
-		case 10: return mountString;
-		case 11: return dismountString;
-		case 12: return ""+defaultsClosed();
-		case 13: return ""+defaultsLocked();
+		case 0:
+			return "" + hasALock();
+		case 1:
+			return "" + hasADoor();
+		case 2:
+			return "" + capacity();
+		case 3:
+			return "" + containTypes();
+		case 4:
+			return "" + openDelayTicks();
+		case 5:
+			return "" + rideBasis();
+		case 6:
+			return "" + riderCapacity();
+		case 7:
+			return "" + doorName();
+		case 8:
+			return "" + closedText();
+		case 9:
+			return putString;
+		case 10:
+			return mountString;
+		case 11:
+			return dismountString;
+		case 12:
+			return "" + defaultsClosed();
+		case 13:
+			return "" + defaultsLocked();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -154,20 +168,46 @@ public class GenPortal extends StdPortal
 		else
 		switch(getCodeNum(code))
 		{
-		case 0: setDoorsNLocks(hasADoor(),isOpen(),defaultsClosed(),CMath.s_bool(val),false,CMath.s_bool(val)&&defaultsLocked()); break;
-		case 1: setDoorsNLocks(CMath.s_bool(val),isOpen(),CMath.s_bool(val)&&defaultsClosed(),hasALock(),isLocked(),defaultsLocked()); break;
-		case 2: setCapacity(CMath.s_parseIntExpression(val)); break;
-		case 3: setContainTypes(CMath.s_parseBitLongExpression(Container.CONTAIN_DESCS,val)); break;
-		case 4: setOpenDelayTicks(CMath.s_parseIntExpression(val)); break;
-		case 5: break;
-		case 6: break;
-		case 7: setExitParams(val,closeWord(),openWord(),closedText()); break;
-		case 8: setExitParams(doorName(),closeWord(),openWord(),val); break;
-		case 9: putString=val; break;
-		case 10: mountString=val; break;
-		case 11: dismountString=val; break;
-		case 12: setDoorsNLocks(hasADoor(),isOpen(),CMath.s_bool(val),hasALock(),isLocked(),defaultsLocked()); break;
-		case 13: setDoorsNLocks(hasADoor(),isOpen(),defaultsClosed(),hasALock(),isLocked(),CMath.s_bool(val)); break;
+		case 0:
+			setDoorsNLocks(hasADoor(), isOpen(), defaultsClosed(), CMath.s_bool(val), false, CMath.s_bool(val) && defaultsLocked());
+			break;
+		case 1:
+			setDoorsNLocks(CMath.s_bool(val), isOpen(), CMath.s_bool(val) && defaultsClosed(), hasALock(), isLocked(), defaultsLocked());
+			break;
+		case 2:
+			setCapacity(CMath.s_parseIntExpression(val));
+			break;
+		case 3:
+			setContainTypes(CMath.s_parseBitLongExpression(Container.CONTAIN_DESCS, val));
+			break;
+		case 4:
+			setOpenDelayTicks(CMath.s_parseIntExpression(val));
+			break;
+		case 5:
+			break;
+		case 6:
+			break;
+		case 7:
+			setExitParams(val, closeWord(), openWord(), closedText());
+			break;
+		case 8:
+			setExitParams(doorName(), closeWord(), openWord(), val);
+			break;
+		case 9:
+			putString = val;
+			break;
+		case 10:
+			mountString = val;
+			break;
+		case 11:
+			dismountString = val;
+			break;
+		case 12:
+			setDoorsNLocks(hasADoor(), isOpen(), CMath.s_bool(val), hasALock(), isLocked(), defaultsLocked());
+			break;
+		case 13:
+			setDoorsNLocks(hasADoor(), isOpen(), defaultsClosed(), hasALock(), isLocked(), CMath.s_bool(val));
+			break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;

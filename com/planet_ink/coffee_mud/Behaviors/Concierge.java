@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Behaviors;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.ItemPossessor.Expire;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -69,6 +70,7 @@ public class Concierge extends StdBehavior
 	protected Room		startRoom		= null;
 	protected String	greeting		= defaultGreeting;
 	protected String	mountStr		= "";
+	protected boolean	portal			= false;
 	protected int		maxRange		= 100;
 	
 	protected TrackingLibrary.TrackingFlags trackingFlags	= CMLib.tracking().newFlags().plus(defaultTrackingFlags);
@@ -151,6 +153,7 @@ public class Concierge extends StdBehavior
 		ratesVec=null;
 		destinations.clear();
 		thingsToSay.clear();
+		portal=false;
 	}
 	
 	protected void resetFlags()
@@ -181,59 +184,78 @@ public class Concierge extends StdBehavior
 		{
 			s=V.get(v);
 			x=s.indexOf('=');
-			if(x>0)
+			if(x>=0)
 			{
 				String numStr=s.substring(x+1).trim();
 				if(numStr.startsWith("\"")&&(numStr.endsWith("\"")))
 					numStr=numStr.substring(1,numStr.length()-1).trim();
 				s=s.substring(0,x).trim().toUpperCase();
+				boolean isTrue=numStr.toLowerCase().startsWith("t");
+				if(s.equals("PORTAL"))
+				{
+					portal=isTrue;
+					continue;
+				}
+				else
 				if(s.equals("AREAONLY"))
 				{
-					roomRadiusFlags.add(TrackingFlag.AREAONLY);
+					if(isTrue)
+						roomRadiusFlags.add(TrackingFlag.AREAONLY);
 					continue;
 				}
 				else
 				if(s.equals("NOCLIMB"))
 				{
-					trackingFlags.add(TrackingFlag.NOCLIMB);
+					if(isTrue)
+						trackingFlags.add(TrackingFlag.NOCLIMB);
 					continue;
 				}
 				else
 				if(s.equals("NOWATER"))
 				{
-					trackingFlags.add(TrackingFlag.NOWATER);
+					if(isTrue)
+						trackingFlags.add(TrackingFlag.NOWATER);
 					continue;
 				}
 				else
 				if(s.equals("INDOOROK"))
 				{
-					trackingFlags.remove(TrackingFlag.OUTDOORONLY);
-					roomRadiusFlags.remove(TrackingFlag.OUTDOORONLY);
+					if(isTrue)
+					{
+						trackingFlags.remove(TrackingFlag.OUTDOORONLY);
+						roomRadiusFlags.remove(TrackingFlag.OUTDOORONLY);
+					}
 					continue;
 				}
 				else
 				if(s.equals("NOAIR"))
 				{
-					trackingFlags.add(TrackingFlag.NOAIR);
+					if(isTrue)
+						trackingFlags.add(TrackingFlag.NOAIR);
 					continue;
 				}
 				else
 				if(s.equals("NOLOCKS"))
 				{
-					trackingFlags.add(TrackingFlag.UNLOCKEDONLY);
+					if(isTrue)
+						trackingFlags.add(TrackingFlag.UNLOCKEDONLY);
 					continue;
 				}
 				else
 				if(s.equals("NOHOMES"))
 				{
-					trackingFlags.add(TrackingFlag.NOHOMES);
+					if(isTrue)
+						trackingFlags.add(TrackingFlag.NOHOMES);
 					continue;
 				}
 				else
 				if(s.equals("NOINDOOR"))
 				{
-					trackingFlags.add(TrackingFlag.OUTDOORONLY);
-					roomRadiusFlags.add(TrackingFlag.OUTDOORONLY);
+					if(isTrue)
+					{
+						trackingFlags.add(TrackingFlag.OUTDOORONLY);
+						roomRadiusFlags.add(TrackingFlag.OUTDOORONLY);
+					}
 					continue;
 				}
 				else
@@ -548,12 +570,38 @@ public class Concierge extends StdBehavior
 	
 	protected void giveMerchandise(MOB whoM, Room destination, Environmental observer, Room room, TrackingFlags trackingFlags)
 	{
-		MOB fromM=getTalker(observer,room);
-		String name=CMLib.map().getExtendedRoomID(destination);
-		final List<Room> set=new ArrayList<Room>();
-		CMLib.tracking().getRadiantRooms(fromM.location(),set,trackingFlags,null,maxRange,null);
-		String trailStr=CMLib.tracking().getTrailToDescription(fromM.location(),set,name,false,false,maxRange,null,1);
-		thingsToSay.addElement(whoM,L("The way to @x1 from here is: @x2",getDestinationName(destination),trailStr));
+		
+		if(this.portal)
+		{
+			final Room R=whoM.location();
+			final Ability spell=CMClass.getAbility("Spell_Portal");
+			final CMMsg msg=CMClass.getMsg(whoM,R,spell,CMMsg.MSG_CAST_VERBAL_SPELL,L("A blinding, swirling portal appears here."));
+			final CMMsg msg2=CMClass.getMsg(whoM,destination,spell,CMMsg.MSG_CAST_VERBAL_SPELL,L("A blinding, swirling portal appears here."));
+			if((R.okMessage(whoM,msg))&&(destination.okMessage(whoM,msg2)))
+			{
+				R.send(whoM,msg);
+				destination=(Room)msg2.target();
+				destination.sendOthers(whoM,msg2);
+				Item I=CMClass.getItem("GenPortal");
+				I.setName(L("A portal to @x1",getDestinationName(destination)));
+				I.setDisplayText(L("A portal to @x1 swirls here",getDestinationName(destination)));
+				I.setReadableText(CMLib.map().getExtendedRoomID(destination));
+				R.addItem(I, Expire.Monster_EQ);
+				Behavior B=CMClass.getBehavior("Decay");
+				B.setParms("minticks=8 maxticks=12");
+				I.addBehavior(B);
+				thingsToSay.addElement(whoM,L("Enter this portal to @x1.",getDestinationName(destination)));
+			}
+		}
+		else
+		{
+			MOB fromM=getTalker(observer,room);
+			String name=CMLib.map().getExtendedRoomID(destination);
+			final List<Room> set=new ArrayList<Room>();
+			CMLib.tracking().getRadiantRooms(fromM.location(),set,trackingFlags,null,maxRange,null);
+			String trailStr=CMLib.tracking().getTrailToDescription(fromM.location(),set,name,false,false,maxRange,null,1);
+			thingsToSay.addElement(whoM,L("The way to @x1 from here is: @x2",getDestinationName(destination),trailStr));
+		}
 	}
 	
 	@Override
