@@ -1969,19 +1969,19 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	}
 	
 	@Override
-	public boolean handleDamageSpam(MOB observerM, final MOB targetM, int amount)
+	public boolean handleDamageSpam(MOB observerM, final Physical target, int amount)
 	{
 		if((observerM!=null)
 		&&(observerM.playerStats()!=null)
-		&&(targetM!=null)
+		&&(target!=null)
 		&&(amount>0))
 		{
 			Map<String,int[]> spam=observerM.playerStats().getCombatSpams();
 			synchronized(spam)
 			{
-				if(!spam.containsKey(targetM.Name()))
-					spam.put(targetM.Name(),new int[]{0});
-				spam.get(targetM.Name())[0]+=amount;
+				if(!spam.containsKey(target.Name()))
+					spam.put(target.Name(),new int[]{0});
+				spam.get(target.Name())[0]+=amount;
 			}
 			return true;
 		}

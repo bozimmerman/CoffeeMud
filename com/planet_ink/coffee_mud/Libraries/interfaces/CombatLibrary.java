@@ -593,11 +593,11 @@ public interface CombatLibrary extends CMLibrary
 	 * When a player has nobattlespam, this method is called when
 	 * damage is observed to add to the totals.
 	 * @param observerM the observer of the combat
-	 * @param targetM the damaged one.
+	 * @param target the damaged thing.
 	 * @param amount the amount of damage.
 	 * @return true if it was counted
 	 */
-	public boolean handleDamageSpam(MOB observerM, final MOB targetM, int amount);
+	public boolean handleDamageSpam(MOB observerM, final Physical target, int amount);
 	
 	/**
 	 * When a player has nobattlespam, this method is called when

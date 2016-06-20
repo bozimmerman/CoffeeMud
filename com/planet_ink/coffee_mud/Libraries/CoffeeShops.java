@@ -1165,8 +1165,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 							item2.destroy();
 						else
 						{
-							if(item2 instanceof Physical)
-								((Physical)item2).delEffect(((Physical)item2).fetchEffect("Prop_PrivateProperty"));
+							item2.delEffect(item2.fetchEffect("Prop_PrivateProperty"));
 							shop.getShop().addStoreInventory(item2,1,-1);
 						}
 					}

@@ -3139,8 +3139,8 @@ public class StdMOB implements MOB
 				default:
 					if((msg.targetMinor()==CMMsg.TYP_DAMAGE)
 					&&(isAttributeSet(Attrib.NOBATTLESPAM))
-					&&((msg.target() instanceof MOB))
-					&&(CMLib.combat().handleDamageSpam(this,(MOB)msg.target(), msg.value())))
+					&&(msg.target() instanceof Physical)
+					&&(CMLib.combat().handleDamageSpam(this,(Physical)msg.target(), msg.value())))
 						break;
 					// you pretty much always know what you are doing, if you can do
 					// it.
@@ -3198,8 +3198,8 @@ public class StdMOB implements MOB
 			case CMMsg.TYP_DAMAGE:
 			{
 				if((!isAttributeSet(Attrib.NOBATTLESPAM))
-				||(!(msg.target() instanceof MOB))
-				||(!CMLib.combat().handleDamageSpam(this, (MOB)msg.target(), msg.value())))
+				||(!(msg.target() instanceof Physical))
+				||(!CMLib.combat().handleDamageSpam(this, (Physical)msg.target(), msg.value())))
 					tell(srcM, msg.target(), msg.tool(), msg.targetMessage());
 				break;
 			}
@@ -3257,8 +3257,8 @@ public class StdMOB implements MOB
 
 			if(isAttributeSet(Attrib.NOBATTLESPAM)
 			&&(((msg.targetMinor()==CMMsg.TYP_DAMAGE)
-					&&(msg.target() instanceof MOB)
-					&&(CMLib.combat().handleDamageSpam(this,(MOB)msg.target(), msg.value())))
+					&&(msg.target() instanceof Physical)
+					&&(CMLib.combat().handleDamageSpam(this,(Physical)msg.target(), msg.value())))
 				||(msg.targetMinor()==CMMsg.TYP_ATTACKMISS)))
 			{
 				// don't say diddly
