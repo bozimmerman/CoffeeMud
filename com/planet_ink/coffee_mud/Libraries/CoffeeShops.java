@@ -1153,15 +1153,23 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 				if(V!=null)
 				for(int v=0;v<V.size();v++)
 					V.get(v).removeFromOwnerContainer();
+				if(coreSoldItem instanceof Physical)
+					((Physical)coreSoldItem).delEffect(((Physical)coreSoldItem).fetchEffect("Prop_PrivateProperty"));
 				shop.getShop().addStoreInventory(coreSoldItem,number,-1);
 				if(V!=null)
-				for(int v=0;v<V.size();v++)
 				{
-					final Item item2=V.get(v);
-					if(!shop.doISellThis(item2)||(item2 instanceof DoorKey))
-						item2.destroy();
-					else
-						shop.getShop().addStoreInventory(item2,1,-1);
+					for(int v=0;v<V.size();v++)
+					{
+						final Item item2=V.get(v);
+						if(!shop.doISellThis(item2)||(item2 instanceof DoorKey))
+							item2.destroy();
+						else
+						{
+							if(item2 instanceof Physical)
+								((Physical)item2).delEffect(((Physical)item2).fetchEffect("Prop_PrivateProperty"));
+							shop.getShop().addStoreInventory(item2,1,-1);
+						}
+					}
 				}
 			}
 			else
