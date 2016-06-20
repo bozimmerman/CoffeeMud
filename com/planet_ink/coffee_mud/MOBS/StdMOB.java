@@ -3132,7 +3132,16 @@ public class StdMOB implements MOB
 					possHeldItem = null;
 					tell(srcM, msg.target(), msg.tool(), msg.sourceMessage());
 					break;
+				case CMMsg.TYP_ATTACKMISS:
+					if(!isAttributeSet(Attrib.NOBATTLESPAM))
+						tell(srcM, msg.target(), msg.tool(), msg.sourceMessage());
+					break;
 				default:
+					if((msg.targetMinor()==CMMsg.TYP_DAMAGE)
+					&&(isAttributeSet(Attrib.NOBATTLESPAM))
+					&&((msg.target() instanceof MOB))
+					&&(CMLib.combat().handleDamageSpam(this,(MOB)msg.target(), msg.value())))
+						break;
 					// you pretty much always know what you are doing, if you can do
 					// it.
 					if (!CMath.bset(msg.sourceMajor(), CMMsg.MASK_CNTRLMSG))
@@ -3184,34 +3193,56 @@ public class StdMOB implements MOB
 			}
 
 			// now do the says
-			if ((CMath.bset(targetMajor, CMMsg.MASK_SOUND)) && (canhearsrc) && (!asleep))
+			switch(msg.targetMinor())
 			{
-				if ((msg.targetMinor() == CMMsg.TYP_SPEAK)
-				&& (srcM != null)
-				&& (playerStats() != null)
-				&& (!srcM.isMonster())
-				&& (CMLib.flags().canBeHeardSpeakingBy(srcM, this)))
-					playerStats().setReplyTo(srcM, PlayerStats.REPLY_SAY);
-
-				tell(srcM, msg.target(), msg.tool(), msg.targetMessage());
+			case CMMsg.TYP_DAMAGE:
+			{
+				if((!isAttributeSet(Attrib.NOBATTLESPAM))
+				||(!(msg.target() instanceof MOB))
+				||(!CMLib.combat().handleDamageSpam(this, (MOB)msg.target(), msg.value())))
+					tell(srcM, msg.target(), msg.tool(), msg.targetMessage());
+				break;
 			}
-			else
-			if ((CMath.bset(targetMajor, CMMsg.MASK_ALWAYS))
-			|| (msg.targetMinor() == CMMsg.TYP_DAMAGE)
-			|| (msg.targetMinor() == CMMsg.TYP_HEALING))
+			case CMMsg.TYP_HEALING:
+			{
 				tell(srcM, msg.target(), msg.tool(), msg.targetMessage());
-			else
-			if ((CMath.bset(targetMajor, CMMsg.MASK_EYES)) && ((!asleep) && (canseesrc)))
-				tell(srcM, msg.target(), msg.tool(), msg.targetMessage());
-			else
-			if (CMath.bset(msg.targetMajor(), CMMsg.MASK_MALICIOUS))
-				tell(srcM, msg.target(), msg.tool(), msg.targetMessage());
-			else
-			if (((CMath.bset(targetMajor, CMMsg.MASK_HANDS))
-				|| (CMath.bset(targetMajor, CMMsg.MASK_MOVE))
-				|| ((CMath.bset(targetMajor, CMMsg.MASK_MOUTH) && (!CMath.bset(targetMajor, CMMsg.MASK_SOUND)))))
-			&& (!asleep) && ((canhearsrc) || (canseesrc)))
-				tell(srcM, msg.target(), msg.tool(), msg.targetMessage());
+				break;
+			}
+			case CMMsg.TYP_ATTACKMISS:
+			{
+				if(!isAttributeSet(Attrib.NOBATTLESPAM))
+					tell(srcM, msg.target(), msg.tool(), msg.targetMessage());
+				break;
+			}
+			default:
+				if ((CMath.bset(targetMajor, CMMsg.MASK_SOUND)) && (canhearsrc) && (!asleep))
+				{
+					if ((msg.targetMinor() == CMMsg.TYP_SPEAK)
+					&& (srcM != null)
+					&& (playerStats() != null)
+					&& (!srcM.isMonster())
+					&& (CMLib.flags().canBeHeardSpeakingBy(srcM, this)))
+						playerStats().setReplyTo(srcM, PlayerStats.REPLY_SAY);
+
+					tell(srcM, msg.target(), msg.tool(), msg.targetMessage());
+				}
+				else
+				if (CMath.bset(targetMajor, CMMsg.MASK_ALWAYS))
+					tell(srcM, msg.target(), msg.tool(), msg.targetMessage());
+				else
+				if ((CMath.bset(targetMajor, CMMsg.MASK_EYES)) && ((!asleep) && (canseesrc)))
+					tell(srcM, msg.target(), msg.tool(), msg.targetMessage());
+				else
+				if (CMath.bset(msg.targetMajor(), CMMsg.MASK_MALICIOUS))
+					tell(srcM, msg.target(), msg.tool(), msg.targetMessage());
+				else
+				if (((CMath.bset(targetMajor, CMMsg.MASK_HANDS))
+					|| (CMath.bset(targetMajor, CMMsg.MASK_MOVE))
+					|| ((CMath.bset(targetMajor, CMMsg.MASK_MOUTH) && (!CMath.bset(targetMajor, CMMsg.MASK_SOUND)))))
+				&& (!asleep) && ((canhearsrc) || (canseesrc)))
+					tell(srcM, msg.target(), msg.tool(), msg.targetMessage());
+				break;
+			}
 		}
 		else
 		if ((msg.othersCode() != CMMsg.NO_EFFECT) && (!msg.amISource(this)) && (!msg.amITarget(this)))
@@ -3224,6 +3255,15 @@ public class StdMOB implements MOB
 			&& ((!CMath.bset(msg.sourceMajor(), CMMsg.MASK_ALWAYS)) || (!(msg.tool() instanceof DiseaseAffect))))
 				CMLib.combat().makeFollowersFight(this, (MOB) msg.target(), srcM);
 
+			if(isAttributeSet(Attrib.NOBATTLESPAM)
+			&&(((msg.targetMinor()==CMMsg.TYP_DAMAGE)
+					&&(msg.target() instanceof MOB)
+					&&(CMLib.combat().handleDamageSpam(this,(MOB)msg.target(), msg.value())))
+				||(msg.targetMinor()==CMMsg.TYP_ATTACKMISS)))
+			{
+				// don't say diddly
+			}
+			else
 			if ((othersMinor == CMMsg.TYP_ENTER) // exceptions to movement
 			|| (othersMinor == CMMsg.TYP_FLEE)
 			|| (othersMinor == CMMsg.TYP_LEAVE))
@@ -3466,6 +3506,8 @@ public class StdMOB implements MOB
 					peaceTime = 0;
 					if(CMLib.flags().canAutoAttack(this))
 						CMLib.combat().tickCombat(this);
+					
+					CMLib.combat().handleDamageSpamSummary(this);
 				}
 				else
 				{

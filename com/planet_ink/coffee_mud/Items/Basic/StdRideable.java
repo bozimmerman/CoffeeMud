@@ -828,7 +828,7 @@ public class StdRideable extends StdContainer implements Rideable
 								else
 								if(R!=null)
 								{
-									final CMMsg missMsg=CMClass.getMsg(msg.source(), msg.target(), weapon, CMMsg.MSG_OK_ACTION, weapon.missString());
+									final CMMsg missMsg=CMClass.getMsg(msg.source(), msg.target(), weapon, CMMsg.MASK_ALWAYS|CMMsg.MSG_ATTACKMISS, weapon.missString());
 									if(R.okMessage(msg.source(), missMsg))
 										R.send(msg.source(), missMsg);
 								}

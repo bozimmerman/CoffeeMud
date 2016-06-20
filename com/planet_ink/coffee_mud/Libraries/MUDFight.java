@@ -985,7 +985,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			final CMMsg msg=CMClass.getMsg(source,
 									target,
 									weapon,
-									CMMsg.MSG_NOISYMOVEMENT,
+									CMMsg.MSG_ATTACKMISS,
 									missString);
 			CMLib.color().fixSourceFightColor(msg);
 			// why was there no okaffect here?
@@ -1058,7 +1058,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			final CMMsg msg=CMClass.getMsg(source,
 											defender,
 											weapon,
-											CMMsg.MSG_NOISYMOVEMENT,
+											CMMsg.MSG_ATTACKMISS,
 											missString);
 			CMLib.color().fixSourceFightColor(msg);
 			// why was there no okaffect here?
@@ -1967,6 +1967,26 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				CMLib.catalog().bumpDeathPickup(deadmob);
 		}
 	}
+	
+	@Override
+	public boolean handleDamageSpam(MOB observerM, final MOB targetM, int amount)
+	{
+		if((observerM!=null)
+		&&(observerM.playerStats()!=null)
+		&&(targetM!=null)
+		&&(amount>0))
+		{
+			Map<String,int[]> spam=observerM.playerStats().getCombatSpams();
+			synchronized(spam)
+			{
+				if(!spam.containsKey(targetM.Name()))
+					spam.put(targetM.Name(),new int[]{0});
+				spam.get(targetM.Name())[0]+=amount;
+			}
+			return true;
+		}
+		return false;
+	}
 
 	@Override
 	public void doDeathPostProcessing(CMMsg msg)
@@ -2061,6 +2081,33 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	public void handleObserveDeath(MOB observer, MOB fighting, CMMsg msg)
 	{
 		// no longer does a damn thing
+	}
+	
+	@Override
+	public void handleDamageSpamSummary(final MOB mob)
+	{
+		if((mob.isAttributeSet(MOB.Attrib.NOBATTLESPAM))
+		&&(mob.playerStats()!=null))
+		{
+			Map<String,int[]> combatSpam = mob.playerStats().getCombatSpams();
+			final StringBuilder msg=new StringBuilder(""); 
+			synchronized(combatSpam)
+			{
+				if(combatSpam.size()==0)
+					msg.append("^<FIGHT^>"+L("No new combat damage reported.")+"^</FIGHT^>");
+				else
+				{
+					msg.append("^<FIGHT^>"+L("New combat damage: "));
+					for(String str : combatSpam.keySet())
+					{
+						msg.append(str).append(" ").append(combatSpam.get(str)[0]).append(" points. ");
+					}
+					msg.append("^</FIGHT^>");
+				}
+				mob.tell(msg.toString());
+				combatSpam.clear();
+			}
+		}
 	}
 
 	@Override

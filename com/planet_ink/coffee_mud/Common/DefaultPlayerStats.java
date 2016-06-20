@@ -46,8 +46,18 @@ import java.util.*;
 */
 public class DefaultPlayerStats implements PlayerStats
 {
-	@Override public String ID(){return "DefaultPlayerStats";}
-	@Override public String name() { return ID();}
+	@Override
+	public String ID()
+	{
+		return "DefaultPlayerStats";
+	}
+
+	@Override
+	public String name()
+	{
+		return ID();
+	}
+
 	protected final static int TELL_STACK_MAX_SIZE=50;
 	protected final static int GTELL_STACK_MAX_SIZE=50;
 
@@ -98,6 +108,7 @@ public class DefaultPlayerStats implements PlayerStats
 	protected Map<String,Tracker>	achievementers	= new STreeMap<String,Tracker>();
 	protected Map<String,String>	alias			= new STreeMap<String,String>();
 	protected Map<String,Integer>	legacy			= new STreeMap<String,Integer>();
+	protected Map<String,int[]>		combatSpams		= new STreeMap<String,int[]>();
 
 	protected Map<String, AbilityMapping>		ableMap		= new SHashtable<String, AbilityMapping>();
 	protected Map<String, ExpertiseDefinition>	experMap	= new SHashtable<String, ExpertiseDefinition>();
@@ -1067,6 +1078,11 @@ public class DefaultPlayerStats implements PlayerStats
 		return true;
 	}
 
+	@Override
+	public Map<String, int[]> getCombatSpams()
+	{
+		return this.combatSpams;
+	}
 
 	// Acct Expire Code
 	@Override

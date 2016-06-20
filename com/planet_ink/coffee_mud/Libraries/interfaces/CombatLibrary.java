@@ -590,6 +590,24 @@ public interface CombatLibrary extends CMLibrary
 	public void handleBeingAssaulted(CMMsg msg);
 
 	/**
+	 * When a player has nobattlespam, this method is called when
+	 * damage is observed to add to the totals.
+	 * @param observerM the observer of the combat
+	 * @param targetM the damaged one.
+	 * @param amount the amount of damage.
+	 * @return true if it was counted
+	 */
+	public boolean handleDamageSpam(MOB observerM, final MOB targetM, int amount);
+	
+	/**
+	 * When a player has nobattlespam, this method is called when
+	 * damage is observed to report the totals from the last  
+	 * combat round.
+	 * @param mob the no spam observer.
+	 */
+	public void handleDamageSpamSummary(final MOB mob);
+	
+	/**
 	 * When a death message is received by a mob and the message
 	 * has the mob as a source, this method is called to kill
 	 * the source of the message off.  The message has a source

@@ -32,6 +32,7 @@
   31. Prop_*Adjuster now supports multiplying values, see help on Prop_HaveAdjuster
   32. Concierge behavior can now create portals if you want.
   33. Stolen property (property taken from a home or owned ship) cannot be sold to shopkeepers.
+  34. New config option and Command: NOBATTLESPAM, for getting only damage summaries.
   34. New Thief/Sailor Skills: Sea Legs, Ride the Rigging, Belay, Buried Treasure, Wenching
   35. New Thief/Sailor Skills: Treasure Map, Walk the Plank, Sea Mapping, Plunder, Sea Charting
   36. New Thief/Sailor Skills: Dead Reckoning, Sea Navigation, Scuttle

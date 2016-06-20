@@ -14,6 +14,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.MOB.Attrib;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
@@ -1593,7 +1594,14 @@ public class StdAbility implements Ability
 	public boolean maliciousFizzle(MOB mob, Environmental target, String message)
 	{
 		// it didn't work, but tell everyone you tried.
-		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_OK_VISUAL|CMMsg.MASK_MALICIOUS,message);
+		final String targetMessage;
+		if((target instanceof MOB)
+		&&(mob!=target)
+		&&(((MOB)target).isAttributeSet(Attrib.NOBATTLESPAM)))
+			targetMessage=null;
+		else
+			targetMessage=message;
+		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_OK_VISUAL|CMMsg.MASK_MALICIOUS,message,targetMessage,message);
 		final Room room=mob.location();
 		if(room==null)
 			return false;

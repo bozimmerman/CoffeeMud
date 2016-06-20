@@ -1146,30 +1146,32 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 */
 	public static enum Attrib
 	{
-		AUTOGOLD(false),
-		AUTOLOOT(false),
-		AUTOEXITS(false),
-		AUTOASSIST(true),
-		ANSI(false,"ANSI COLOR"),
-		SYSOPMSGS(false,"SYSMSGS"),
-		AUTOMELEE(true),
-		PLAYERKILL(false),
-		BRIEF(false),
-		NOFOLLOW(false),
-		AUTOWEATHER(false),
-		AUTODRAW(false),
-		AUTOGUARD(false),
-		SOUND(false,"SOUNDS"),
-		AUTOIMPROVE(false,"AUTOIMPROVEMENT"),
-		NOTEACH(false),
-		AUTONOTIFY(false),
-		AUTOFORWARD(true),
-		DAILYMESSAGE(true,"MOTD"),
-		QUIET(false),
-		MXP(false),
-		COMPRESS(false,"COMPRESSED"),
-		AUTORUN(false),
-		AUTOMAP(true)
+		AUTOGOLD(false), //1
+		AUTOLOOT(false), //2
+		AUTOEXITS(false), //3
+		AUTOASSIST(true), //4
+		ANSI(false,"ANSI COLOR"), //5
+		SYSOPMSGS(false,"SYSMSGS"), //6
+		AUTOMELEE(true), //7
+		PLAYERKILL(false), //8
+		BRIEF(false),//9
+		NOFOLLOW(false),//10
+		AUTOWEATHER(false),//11
+		AUTODRAW(false),//12
+		AUTOGUARD(false),//13
+		SOUND(false,"SOUNDS"),//14
+		AUTOIMPROVE(false,"AUTOIMPROVEMENT"),//15
+		NOTEACH(false),//16
+		AUTONOTIFY(false),//17
+		AUTOFORWARD(true),//18
+		DAILYMESSAGE(true,"MOTD"),//19
+		QUIET(false),//20
+		MXP(false),//21
+		COMPRESS(false,"COMPRESSED"),//22
+		AUTORUN(false),//23
+		AUTOMAP(true),//24
+		NOBATTLESPAM(false)//25
+		// .. up to /31
 		;
 		private final int bitCode;
 		private final boolean autoReverse;

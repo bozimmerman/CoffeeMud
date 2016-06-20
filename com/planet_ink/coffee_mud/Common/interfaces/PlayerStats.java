@@ -770,6 +770,15 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats
 	 */
 	public Map<String, ExpertiseDefinition> getExtraQualifiedExpertises();
 
+	/**
+	 * If the player has NoCombatSpam turned on, then these player
+	 * settings are used to hold accumulated information about 
+	 * combat results for summarizing later.  The map is between
+	 * the name of the combatant and the amount of damage taken.
+	 * @return a combat damage map
+	 */
+	public Map<String, int[]> getCombatSpams();
+	
 	/** Constant for day of birthday, as from {@link PlayerStats#getBirthday()} */
 	public static final int BIRTHDEX_DAY = 0;
 	/** Constant for month of birthday, as from {@link PlayerStats#getBirthday()} */
