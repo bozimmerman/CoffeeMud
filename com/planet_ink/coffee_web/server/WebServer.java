@@ -54,7 +54,7 @@ import com.planet_ink.coffee_web.util.CWConfig;
 public class WebServer extends Thread
 {
 	public static final	String	  NAME				= "CoffeeWebServer";
-	public static final String	  POMVERSION		= "2.3";
+	public static final String	  POMVERSION		= "2.4";
 	public static 		double	  VERSION;
 	static { try { VERSION=Double.parseDouble(POMVERSION); } catch(final Exception e){ VERSION=0.0;} }
 	
