@@ -1016,7 +1016,7 @@ public class CMStrings
 					c[i]=Character.toLowerCase(c[i]);
 			}
 			else
-			if(Character.isWhitespace(c[i]))
+			if(Character.isWhitespace(c[i])||(c[i]=='/'))
 				firstLetter=true;
 		}
 		return new String(c).trim();

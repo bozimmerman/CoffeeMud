@@ -3345,6 +3345,7 @@ public class ListCmd extends StdCommand
 		RACES("RACES",new SecFlag[]{SecFlag.CMDRACES,SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS}),
 		CLASSES("CLASSES",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDCLASSES}),
 		STAFF("STAFF",new SecFlag[]{SecFlag.CMDAREAS}),
+		ABILITIES("ABILITIES",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES,SecFlag.CMDABILITIES}),
 		SPELLS("SPELLS",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES,SecFlag.CMDABILITIES}),
 		SONGS("SONGS",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES,SecFlag.CMDABILITIES}),
 		PRAYERS("PRAYERS",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES,SecFlag.CMDABILITIES}),
@@ -3724,6 +3725,49 @@ public class ListCmd extends StdCommand
 			mob.session().rawPrint(str.toString());
 	}
 
+	public void listAbilities(MOB mob, Session s, List<String> commands, String title, int ofType)
+	{
+		boolean wiki=false;
+		int domain=0;
+		for(int i=1;i<commands.size();i++)
+		{
+			final String str=commands.get(i);
+			if(str.equalsIgnoreCase("WIKI"))
+				wiki=true;
+			else
+			if(domain<=0)
+			{
+				int x=CMParms.indexOf(Ability.DOMAIN_DESCS,str.toUpperCase().trim());
+				if(x>=0)
+				{
+					domain = x << 5;
+					String domainName=CMStrings.capitalizeAllFirstLettersAndLower(Ability.DOMAIN_DESCS[x].toLowerCase().replaceAll("_"," "));
+					title=(domainName+" "+title).trim();
+				}
+				else
+				{
+					s.println("Unknown '"+str+"'");
+					return;
+				}
+			}
+		}
+		if(wiki)
+		{
+			if(title.length()==0)
+				title="Abilities";
+			if(domain == 0)
+				s.println("==="+title+"s===");
+			else
+				s.println("==="+title+"===");
+			s.wraplessPrintln(CMLib.lister().reallyWikiList(mob, CMClass.abilities(), ofType|domain).toString());
+		}
+		else
+		{
+			s.println("^H"+title+" Ability IDs:^N");
+			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.abilities(), ofType|domain).toString());
+		}
+	}
+	
 	public void listTimeZones(MOB mob, List<String> commands, Filterer<Area> filter)
 	{
 		if(mob==null)
@@ -4146,36 +4190,33 @@ public class ListCmd extends StdCommand
 		case STAFF:
 			s.wraplessPrintln(listSubOps(mob.session()).toString());
 			break;
+		case ABILITIES:
+			listAbilities(mob,s,commands,"",Ability.ALL_ACODES);
+			break;
 		case SPELLS:
-			s.println("^HSpell Ability IDs:^N");
-			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.abilities(), Ability.ACODE_SPELL).toString());
+			listAbilities(mob,s,commands,"Spell",Ability.ACODE_SPELL);
 			break;
 		case SONGS:
-			s.println("^HSong Ability IDs:^N");
-			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.abilities(), Ability.ACODE_SONG).toString());
+			listAbilities(mob,s,commands,"Song",Ability.ACODE_SONG);
 			break;
 		case PRAYERS:
-			s.println("^HPrayer Ability IDs:^N");
-			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.abilities(), Ability.ACODE_PRAYER).toString());
+			listAbilities(mob,s,commands,"Prayer",Ability.ACODE_PRAYER);
 			break;
 		case PROPERTIES:
 			s.println("^HProperty Ability IDs:^N");
 			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.abilities(), Ability.ACODE_PROPERTY).toString());
 			break;
 		case THIEFSKILLS:
-			s.println("^HThief Skill Ability IDs:^N");
-			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.abilities(), Ability.ACODE_THIEF_SKILL).toString());
+			listAbilities(mob,s,commands,"Thief Skill",Ability.ACODE_THIEF_SKILL);
 			break;
 		case COMMON:
-			s.println("^HCommon Skill Ability IDs:^N");
-			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.abilities(), Ability.ACODE_COMMON_SKILL).toString());
+			listAbilities(mob,s,commands,"Common Skill",Ability.ACODE_COMMON_SKILL);
 			break;
 		case JOURNALS:
 			s.println(listJournals(mob.session()).toString());
 			break;
 		case SKILLS:
-			s.println("^HSkill Ability IDs:^N");
-			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.abilities(), Ability.ACODE_SKILL).toString());
+			listAbilities(mob,s,commands,"Skill",Ability.ACODE_SKILL);
 			break;
 		case QUESTS:
 			s.println(listQuests(mob.session()).toString());
@@ -4187,16 +4228,13 @@ public class ListCmd extends StdCommand
 			s.println(listQuestWinners(mob.session(),rest).toString());
 			break;
 		case DISEASES:
-			s.println("^HDisease Ability IDs:^N");
-			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.abilities(), Ability.ACODE_DISEASE).toString());
+			listAbilities(mob,s,commands,"Disease",Ability.ACODE_DISEASE);
 			break;
 		case POISONS:
-			s.println("^HPoison Ability IDs:^N");
-			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.abilities(), Ability.ACODE_POISON).toString());
+			listAbilities(mob,s,commands,"Poison",Ability.ACODE_POISON);
 			break;
 		case LANGUAGES:
-			s.println("^HLanguage Ability IDs:^N");
-			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.abilities(), Ability.ACODE_LANGUAGE).toString());
+			listAbilities(mob,s,commands,"Language",Ability.ACODE_LANGUAGE);
 			break;
 		case TICKS:
 			s.println(listTicks(mob.session(), CMParms.combine(commands, 1)).toString());
@@ -4271,12 +4309,10 @@ public class ListCmd extends StdCommand
 			s.wraplessPrintln(reallyFindOneWays(mob.session(), commands));
 			break;
 		case CHANTS:
-			s.println("^HChant Ability IDs:^N");
-			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.abilities(), Ability.ACODE_CHANT).toString());
+			listAbilities(mob,s,commands,"Chant",Ability.ACODE_CHANT);
 			break;
 		case SUPERPOWERS:
-			s.println("^HSuper Power Ability IDs:^N");
-			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.abilities(), Ability.ACODE_SUPERPOWER).toString());
+			listAbilities(mob,s,commands,"Super Power",Ability.ACODE_SUPERPOWER);
 			break;
 		case COMPONENTS:
 			s.wraplessPrintln(listComponents(mob.session()));
@@ -4375,8 +4411,7 @@ public class ListCmd extends StdCommand
 			listManufacturers(mob, commands);
 			break;
 		case TECHSKILLS:
-			s.println("^HTech Skill Ability IDs:^N");
-			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.abilities(), Ability.ACODE_TECH).toString());
+			listAbilities(mob,s,commands,"Tech Skill",Ability.ACODE_TECH);
 			break;
 		case SOFTWARE:
 			s.println("^HSoftware Item IDs:^N");
