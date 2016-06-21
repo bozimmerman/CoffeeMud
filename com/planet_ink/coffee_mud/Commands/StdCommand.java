@@ -171,11 +171,15 @@ public class StdCommand implements Command
 			if(mob.isInCombat())
 				return combatActionsCost(mob,cmds);
 			final Room R=mob.location();
-			if((R!=null)&&(R.getArea() instanceof BoardableShip))
+			if(R!=null)
 			{
-				final BoardableShip ship = (BoardableShip)R.getArea();
-				if(ship.isInCombat())
-					return combatActionsCost(mob,cmds);
+				final Area A=R.getArea();
+				if(A instanceof BoardableShip)
+				{
+					final BoardableShip ship = (BoardableShip)A;
+					if(ship.isInCombat())
+						return combatActionsCost(mob,cmds);
+				}
 			}
 		}
 		return actionsCost(mob,cmds);
