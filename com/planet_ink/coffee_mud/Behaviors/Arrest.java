@@ -1809,6 +1809,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		&&((!testMOB.isMonster())||(!myArea.inMyMetroArea(CMLib.map().getStartArea(testMOB))))
 		&&((w=testMOB.fetchWieldedItem())!=null)
 		&&(w instanceof Weapon)
+		&&(testMOB.getPeaceTime()>(2*MOB.END_SHEATH_TIME))
 		&&(((Weapon)w).weaponClassification()!=Weapon.CLASS_NATURAL)
 		&&(((Weapon)w).weaponClassification()!=Weapon.CLASS_HAMMER)
 		&&(((Weapon)w).weaponClassification()!=Weapon.CLASS_STAFF)

@@ -336,8 +336,16 @@ public class Disease extends StdAbility implements DiseaseAffect
 		boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final MOB mvictim=mob.getVictim();
-			final MOB tvictim=target.getVictim();
+			final MOB mvictim;
+			synchronized(mob)
+			{
+				mvictim=mob.getVictim();
+			}
+			final MOB tvictim;
+			synchronized(target)
+			{
+				tvictim=target.getVictim();
+			}
 			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_HANDS|(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MASK_MALICIOUS|CMMsg.TYP_DISEASE,"");
 			final Room R=target.location();
 			if((R!=null)&&(R.okMessage(target,msg)))
@@ -353,10 +361,26 @@ public class Disease extends StdAbility implements DiseaseAffect
 			}
 			if(!isMalicious())
 			{
-				if((mvictim==null)&&(mob.getVictim()==target))
+				final MOB newmvictim;
+				synchronized(mob)
+				{
+					newmvictim=mob.getVictim();
+				}
+				final MOB newtvictim;
+				synchronized(target)
+				{
+					newtvictim=target.getVictim();
+				}
+				if((mvictim==null)&&(newmvictim==target))
+				{
 					mob.setVictim(null);
-				if((tvictim==null)&&(target.getVictim()==mob))
+					mob.makePeace(true);
+				}
+				if((tvictim==null)&&(newtvictim==mob))
+				{
 					target.setVictim(null);
+					target.makePeace(true);
+				}
 			}
 			else
 			if(auto)

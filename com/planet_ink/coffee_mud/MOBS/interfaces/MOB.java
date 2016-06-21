@@ -477,6 +477,13 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	public void setExperience(int newVal);
 	
 	/**
+	 * Returns the number of ms (in tick increments)
+	 * that this mob has NOT been in combat. 
+	 * @return the ms of peace enjoyed by this mob.
+	 */
+	public long getPeaceTime();
+	
+	/**
 	 * Gets the total number of experience points this mob needs to earn
 	 * their next level.
 	 * @see MOB#getExperience()

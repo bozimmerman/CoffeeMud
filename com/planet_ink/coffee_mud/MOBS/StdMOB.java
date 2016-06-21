@@ -1439,6 +1439,12 @@ public class StdMOB implements MOB
 	}
 
 	@Override
+	public long getPeaceTime()
+	{
+		return peaceTime;
+	}
+	
+	@Override
 	public void setRangeToTarget(int newRange)
 	{
 		atRange = newRange;
