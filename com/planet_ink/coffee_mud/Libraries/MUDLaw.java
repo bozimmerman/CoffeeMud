@@ -763,13 +763,13 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 					}
 					if(D!=null)
 						B.accuse(getLegalObject(R),msg.source(),D,new String[]{"PROPERTYROB","THIEF_ROBBERY"});
-					Ability propertyProp=((Item)msg.target()).fetchEffect("Prop_PrivateProperty");
-					if(propertyProp==null)
-					{
-						propertyProp=CMClass.getAbility("Prop_PrivateProperty");
-						propertyProp.setMiscText("owner=\""+record.getOwnerName()+"\" expiresec=60");
-						((Item)msg.target()).addNonUninvokableEffect(propertyProp);
-					}
+				}
+				Ability propertyProp=((Item)msg.target()).fetchEffect("Prop_PrivateProperty");
+				if(propertyProp==null)
+				{
+					propertyProp=CMClass.getAbility("Prop_PrivateProperty");
+					propertyProp.setMiscText("owner=\""+record.getOwnerName()+"\" expiresec=60");
+					((Item)msg.target()).addNonUninvokableEffect(propertyProp);
 				}
 			}
 			return true;

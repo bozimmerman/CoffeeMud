@@ -110,6 +110,7 @@ public class Thief_FenceLoot extends ThiefSkill
 			return false;
 		}
 
+		commands.add(0,"SELL"); // will be instantly deleted by parseshopkeeper
 		final Environmental shopkeeper=CMLib.english().parseShopkeeper(mob,commands,L("Fence what to whom?"));
 		if(shopkeeper==null)
 			return false;
@@ -125,7 +126,7 @@ public class Thief_FenceLoot extends ThiefSkill
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,shopkeeper,this,CMMsg.MSG_SPEAK,auto?"":L("<S-NAME> fence(s) stolen look to <T-NAMESELF>."));
+			final CMMsg msg=CMClass.getMsg(mob,shopkeeper,this,CMMsg.MSG_SPEAK,auto?"":L("<S-NAME> fence(s) stolen loot to <T-NAMESELF>."));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -149,7 +150,7 @@ public class Thief_FenceLoot extends ThiefSkill
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,shopkeeper,L("<S-NAME> attempt(s) to fence stolen goods to <T-NAMESELF>, but make(s) <T-HIM-HER> too nervous."));
+			beneficialWordsFizzle(mob,shopkeeper,L("<S-NAME> attempt(s) to fence stolen loot to <T-NAMESELF>, but make(s) <T-HIM-HER> too nervous."));
 
 		// return whether it worked
 		return success;
