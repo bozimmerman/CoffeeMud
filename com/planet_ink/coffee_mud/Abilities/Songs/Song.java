@@ -121,6 +121,46 @@ public class Song extends StdAbility
 		return super.castingQuality(mob,target);
 	}
 
+	@SuppressWarnings("unchecked")
+	protected List<String> getLyrics()
+	{
+		Map<String,List<String>> lyricMap=(Map<String,List<String>>)Resources.getResource("SYSTEM_SONG_LYRICS");
+		if(lyricMap==null)
+		{
+			lyricMap=new TreeMap<String,List<String>>();
+			List<String> lines=Resources.getFileLineVector(new CMFile(Resources.buildResourcePath("skills/songlyrics.txt"),null).text());
+			if(lines.size()>0)
+			{
+				List<String> current=null;
+				for(String line : lines)
+				{
+					line=line.trim();
+					if(line.startsWith("[")&&(line.endsWith("]")))
+					{
+						String ID=line.substring(1,line.length()-1);
+						Ability A=CMClass.getAbility(ID);
+						if(A==null)
+							A=CMClass.getAbility("Song_"+ID);
+						if(A!=null)
+						{
+							current=new ArrayList<String>();
+							lyricMap.put(A.ID(),current);
+						}
+						else
+						{
+							Log.errOut("Song","Unknown song class: "+ID);
+							current=null;
+						}
+					}
+					else
+					if((current!=null)&&(line.length()>0))
+						current.add(line);
+				}
+			}
+		}
+		return lyricMap.get(ID());
+	}
+	
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -167,6 +207,21 @@ public class Song extends StdAbility
 		||(commonRoomSet==null)
 		||(!commonRoomSet.contains(mob.location())))
 			return unsingMe(mob,null);
+		
+		if(invoker==affected)
+		{
+			final List<String> lyrics=this.getLyrics();
+			final MOB invoker=this.invoker;
+			if((lyrics!=null) && (invoker==affected))
+			{
+				final String line = lyrics.get((int)((System.currentTimeMillis()/CMProps.getTickMillis()) % (lyrics.size())));
+				final Room R=invoker.location();
+				if(R!=null)
+				{
+					R.show(invoker, null, this, CMMsg.MSG_SPEAK, L("<S-NAME> sing(s) '@x1'",line));
+				}
+			}
+		}
 
 		if(skipStandardSongTick())
 			return true;
