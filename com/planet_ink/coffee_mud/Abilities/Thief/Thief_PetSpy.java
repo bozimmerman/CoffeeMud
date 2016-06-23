@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Abilities.Druid;
+package com.planet_ink.coffee_mud.Abilities.Thief;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2002-2016 Bo Zimmerman
+   Copyright 2016-2016 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -32,15 +32,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Chant_AnimalSpy extends Chant
+public class Thief_PetSpy extends ThiefSkill
 {
 	@Override
 	public String ID()
 	{
-		return "Chant_AnimalSpy";
+		return "Thief_PetSpy";
 	}
 
-	private final static String	localizedName	= CMLib.lang().L("Animal Spy");
+	private final static String	localizedName	= CMLib.lang().L("Pet Spy");
 
 	@Override
 	public String name()
@@ -48,7 +48,7 @@ public class Chant_AnimalSpy extends Chant
 		return localizedName;
 	}
 
-	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Animal Spy)");
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Pet Spy)");
 
 	@Override
 	public String displayText()
@@ -163,30 +163,33 @@ public class Chant_AnimalSpy extends Chant
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		if(commands.size()<1)
-		{
-			mob.tell(L("Chant to whom?"));
+		final Room R=mob.location();
+		if(R==null)
 			return false;
-		}
-		final String mobName=CMParms.combine(commands,0).trim().toUpperCase();
-		final MOB target=getTarget(mob,commands,givenTarget);
-
-		Room newRoom=mob.location();
-		if(target!=null)
+		MOB target=null;
+		for(int f=0;f<mob.numFollowers();f++)
 		{
-			newRoom=target.location();
-			if((!CMLib.flags().isAnimalIntelligence(target))
-			||(target.amFollowing()!=mob))
+			final MOB M=mob.fetchFollower(f);
+			if((M!=null)
+			&&(M.isMonster())
+			&&(M.location()==R)
+			&&(M.fetchEffect("Prop_Familiar")!=null))
 			{
-				mob.tell(L("You have no animal follower named '@x1' here.",mobName));
-				return false;
+				target=M;
+				break;
 			}
 		}
-		else
+		if(target==null)
 		{
-			mob.tell(L("You have no animal follower named '@x1' here.",mobName));
+			mob.tell(L("You need a familiar to send them on a spy mission."));
 			return false;
 		}
+		if(commands.size()<1)
+		{
+			mob.tell(L("Send @x1 where or which directions?",target.name(mob)));
+			return false;
+		}
+		final String directions=CMParms.combine(commands,0).trim().toUpperCase();
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -195,26 +198,16 @@ public class Chant_AnimalSpy extends Chant
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> chant(s) to <T-NAMESELF>, invoking the a mystical connection.^?"));
-			final CMMsg msg2=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),null);
-			if((mob.location().okMessage(mob,msg))&&((newRoom==mob.location())||(newRoom.okMessage(mob,msg2))))
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> send(s) <T-NAMESELF> on a spy mission.^?"));
+			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				if(newRoom!=mob.location())
-					newRoom.send(target,msg2);
 				spy=target;
 				beneficialAffect(mob,spy,asLevel,0);
-				final Ability A=spy.fetchEffect(ID());
-				if(A!=null)
-				{
-					mob.addNonUninvokableEffect((Ability)A.copyOf());
-					A.setAffectedOne(spy);
-				}
 			}
-
 		}
 		else
-			beneficialVisualFizzle(mob,target,L("<S-NAME> chant(s) to <T-NAMESELF>, but the magic fades."));
+			beneficialVisualFizzle(mob,target,L("<S-NAME> attempt(s) to send <T-NAMESELF> on a spy mission, but <T-HE-SHE> doesn't seem to understand."));
 
 		// return whether it worked
 		return success;
