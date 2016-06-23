@@ -3509,13 +3509,14 @@ public class StdMOB implements MOB
 					if (CMProps.getIntVar(CMProps.Int.COMBATSYSTEM) == CombatLibrary.CombatSystem.DEFAULT.ordinal())
 						setActions(actions() + 1.0); // bonus action is employed in default system
 					tickStatus = Tickable.STATUS_FIGHT;
-					if(isAttributeSet(MOB.Attrib.NOBATTLESPAM) && (peaceTime>0))
+					if((!isMonster) && isAttributeSet(MOB.Attrib.NOBATTLESPAM) && (peaceTime>0))
 						tell(L("^F^<FIGHT^>You are now in combat.^</FIGHT^>^N"));
 					peaceTime = 0;
 					if(CMLib.flags().canAutoAttack(this))
 						CMLib.combat().tickCombat(this);
 					
-					CMLib.combat().handleDamageSpamSummary(this);
+					if(!isMonster)
+						CMLib.combat().handleDamageSpamSummary(this);
 				}
 				else
 				{
@@ -3524,7 +3525,8 @@ public class StdMOB implements MOB
 					&& (peaceTime >= START_SHEATH_TIME)
 					&& (peaceTime < END_SHEATH_TIME) && (CMLib.flags().isAliveAwakeMobileUnbound(this, true)))
 						CMLib.commands().postSheath(this, true);
-					if(isAttributeSet(MOB.Attrib.NOBATTLESPAM) 
+					if((!isMonster)
+					&& isAttributeSet(MOB.Attrib.NOBATTLESPAM) 
 					&& (playerStats()!=null)
 					&& (playerStats().getCombatSpams().size()>0))
 						CMLib.combat().handleDamageSpamSummary(this);
