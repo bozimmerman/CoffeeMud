@@ -4,6 +4,7 @@ import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.Follower;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
@@ -52,14 +53,23 @@ public class NoFollow extends Follow
 				unfollow(mob,((commands.size()>1)&&(commands.get(1).equalsIgnoreCase("QUIETLY"))));
 				return false;
 			}
-			MOB M=mob.fetchFollower(CMParms.combine(commands,1));
+			final String name=CMParms.combine(commands,1);
+			if(name.equalsIgnoreCase("ALL"))
+			{
+				if(mob.numFollowers()==0)
+					CMLib.commands().doCommandFail(mob,origCmds,L("No one is following you!"));
+				else
+					unfollow(mob,((commands.size()>1)&&(commands.get(1).equalsIgnoreCase("QUIETLY"))));
+				return false; 
+			}
+			MOB M=mob.fetchFollower(name);
 			if((M==null)&&(mob.location()!=null))
 			{
-				M=mob.location().fetchInhabitant(CMParms.combine(commands,1));
+				M=mob.location().fetchInhabitant(name);
 				if(M!=null)
 					CMLib.commands().doCommandFail(mob,origCmds,L("@x1 is not following you!",M.name(mob)));
 				else
-					CMLib.commands().doCommandFail(mob,origCmds,L("There is noone here called '@x1' following you!",CMParms.combine(commands,1)));
+					CMLib.commands().doCommandFail(mob,origCmds,L("There is noone here called '@x1' following you!",name));
 				return false;
 			}
 			if((mob.location()!=null)&&(M!=null)&&(M.amFollowing()==mob))
@@ -67,7 +77,7 @@ public class NoFollow extends Follow
 				nofollow(M,true,false);
 				return true;
 			}
-			CMLib.commands().doCommandFail(mob,origCmds,L("There is noone called '@x1' following you!",CMParms.combine(commands,1)));
+			CMLib.commands().doCommandFail(mob,origCmds,L("There is noone called '@x1' following you!",name));
 			return false;
 		}
 		if(!mob.isAttributeSet(MOB.Attrib.NOFOLLOW))

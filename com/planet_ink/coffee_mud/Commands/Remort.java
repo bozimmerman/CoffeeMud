@@ -382,6 +382,8 @@ public class Remort extends StdCommand
 				else
 				{
 					Log.sysOut("Remort: "+mob.Name());
+					if(mob.numFollowers()>0)
+						CMLib.commands().forceStandardCommand(mob, "Nofollow",new XVector<String>("NOFOLLOW","ALL"));
 					CMLib.achievements().possiblyBumpAchievement(mob, Event.REMORT, 1);
 					mob.basePhyStats().setLevel(1);
 					mob.basePhyStats().setArmor(newDefense[0]);

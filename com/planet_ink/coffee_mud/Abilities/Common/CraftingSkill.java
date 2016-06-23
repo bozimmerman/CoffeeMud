@@ -620,6 +620,9 @@ public class CraftingSkill extends GatheringSkill
 					if(req2Desc.equalsIgnoreCase("PRECIOUS"))
 						commonTell(mob,L("You need some sort of precious stones to make that.  There is not enough here.  Are you sure you set it all on the ground first?"));
 					else
+					if(req2Desc.equalsIgnoreCase("WOODEN"))
+						commonTell(mob,L("You need some wood to make that.  There is not enough here.  Are you sure you set it all on the ground first?"));
+					else
 						commonTell(mob,L("You need some @x1 to make that.  There is not enough here.  Are you sure you set it all on the ground first?",req2Desc.toLowerCase()));
 					return null;
 				}
