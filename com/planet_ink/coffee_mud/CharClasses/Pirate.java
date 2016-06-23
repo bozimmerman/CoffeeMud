@@ -159,6 +159,10 @@ public class Pirate extends Thief
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Thief_PirateFamiliar",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Thief_ConcealItem",false);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Thief_PubContacts",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Skill_Stability",false);
+		
 	}
 
 	@Override

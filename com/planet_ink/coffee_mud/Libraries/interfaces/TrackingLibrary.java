@@ -34,6 +34,7 @@ import java.util.*;
 public interface TrackingLibrary extends CMLibrary
 {
 	public List<Room> findTrailToRoom(Room location, Room destRoom, TrackingFlags flags, int maxRadius);
+	public List<Room> findTrailToRoom(Room location, Room destRoom, TrackingFlags flags, int maxRadius, List<Room> radiant);
 	public List<Room> findTrailToAnyRoom(Room location, List<Room> destRooms, TrackingFlags flags, int maxRadius);
 	public List<Room> findTrailToAnyRoom(Room location, RFilter destFilter, TrackingFlags flags, int maxRadius);
 	public int trackNextDirectionFromHere(List<Room> theTrail, Room location, boolean openOnly);

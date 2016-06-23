@@ -240,19 +240,13 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 	}
 
 	@Override
-	public List<Room> findTrailToRoom(Room location,
-											Room destRoom,
-											TrackingFlags flags,
-											int maxRadius)
+	public List<Room> findTrailToRoom(Room location, Room destRoom, TrackingFlags flags, int maxRadius)
 	{
 		return findTrailToRoom(location,destRoom,flags,maxRadius,null);
 	}
 
-	public List<Room> findTrailToRoom(Room location,
-											Room destRoom,
-											TrackingFlags flags,
-											int maxRadius,
-											List<Room> radiant)
+	@Override
+	public List<Room> findTrailToRoom(Room location, Room destRoom, TrackingFlags flags, int maxRadius, List<Room> radiant)
 	{
 		if((radiant==null)||(radiant.size()==0))
 		{

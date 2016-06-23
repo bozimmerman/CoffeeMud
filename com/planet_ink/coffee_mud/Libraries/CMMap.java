@@ -1560,6 +1560,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		return new IteratorEnumeration<Deity>(deitiesList.iterator()); 
 	}
 
+	@Override 
 	public int numShips() 
 	{ 
 		return shipList.size(); 

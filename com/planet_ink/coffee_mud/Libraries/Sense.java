@@ -1120,7 +1120,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 				if(canSeeInDark(seer))
 					return true;
 				if((!isGolem(seenP))&&(canSeeInfrared(seer))&&(seenP instanceof MOB))
-				   return true;
+					return true;
 				if((canSeeVictims(seer))&&(seer.getVictim()==seenP))
 					return true;
 				final Area area=R.getArea();
