@@ -296,6 +296,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 		&&(!CMLib.flags().isEnchanted(I)))
 		{
 			final Ability rott=I.fetchEffect("Poison_Rotten");
+			number = number * bundleSize;
 			if(I.basePhyStats().weight()>1)
 			{
 				final Environmental owner=I.owner();
