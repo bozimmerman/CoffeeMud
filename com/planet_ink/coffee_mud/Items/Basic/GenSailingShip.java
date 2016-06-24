@@ -2360,6 +2360,27 @@ public class GenSailingShip extends StdBoardable
 				case 3:
 					this.anchorDown=CMath.s_bool(val);
 					break;
+				case 4:
+				{
+					if(owner() instanceof Room)
+					{
+						final Room R=(Room)owner();
+						if(val.trim().length()==0)
+							this.targetedShip=null;
+						else
+						{
+							Item I=R.findItem(null, val);
+							int ct=1;
+							while((I!=null)&&(!(I instanceof Rideable))&&(val.indexOf('.')<0))
+								I=R.findItem(null, val+"."+(++ct));
+							if(I instanceof Rideable)
+								this.targetedShip=(Rideable)I;
+							else
+								this.targetedShip=null;
+						}
+					}
+					break;
+				}
 				}
 				return;
 			}

@@ -533,6 +533,43 @@ public class Directions
 		return -1;
 	}
 
+
+	/**
+	 * Given a string which is supposed to be a direction name of any type,
+	 * this method will make a case-insensitive check against the given
+	 * string and return the direction it probably represents.  It
+	 * requires complete actual direction names, such as north, aft, below, up,
+	 * or the words must BE a direction letter, or be a partial direction
+	 * word, e.g. NOR would be NORTH, but NAP would NOT.
+	 * 
+	 * @param theDir the direction search string
+	 * @return the direction code it represents, or -1 if no match at ALL
+	 */
+	public int getProbableDirectionCode(final String theDir)
+	{
+		if(theDir.length()==0)
+			return -1;
+		final String upDir=theDir.toUpperCase();
+		for (final Object[] element : DIRECTIONS_FULL_CHART)
+		{
+			if((element[0].toString().equals(upDir))
+			&&(((Integer)element[1]).intValue()<NUM_DIRECTIONS()))
+				return ((Integer)element[1]).intValue();
+		}
+		for(int i=0;i<NUM_DIRECTIONS();i++)
+		{
+			if(upDir.equals(DIRECTION_CHARS[i]))
+				return i;
+		}
+		for (final Object[] element : DIRECTIONS_FULL_CHART)
+		{
+			if((element[0].toString().startsWith(upDir))
+			&&(((Integer)element[1]).intValue()<NUM_DIRECTIONS()))
+				return ((Integer)element[1]).intValue();
+		}
+		return -1;
+	}
+	
 	/**
 	 * Given a string which is supposed to be a compass direction name,
 	 * this method will make a case-insensitive check against the given

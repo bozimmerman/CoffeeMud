@@ -2294,6 +2294,14 @@ public class Arrest extends StdBehavior implements LegalBehavior
 			if(debugging)
 				Log.debugOut("Arrest","("+lastAreaName+"): Tick: Handling "+W.crime()+" for "+W.criminal().Name()+": State "+W.state());
 
+			
+			if(System.currentTimeMillis() < W.getIgnoreUntilTime())
+			{
+				if(debugging)
+					Log.debugOut("Arrest","("+lastAreaName+"): Tick: Ignoring "+W.crime()+" for "+W.criminal().Name()+": State "+W.state());
+				continue;
+			}
+			
 			processWarrant(myArea, laws, W, debugging);
 		}
 		return true;
@@ -3330,5 +3338,48 @@ public class Arrest extends StdBehavior implements LegalBehavior
 			Log.warnOut("Unknown Arrest state: "+W.state());
 			break;
 		}
+	}
+
+	@Override
+	public void release(Area myArea, LegalWarrant warrant)
+	{
+		final long delay = CMProps.getTickMillis() * 5;
+		switch(warrant.state())
+		{
+		case Law.STATE_SEEKING:
+			warrant.setIgnoreUntilTime(System.currentTimeMillis() + delay);
+			warrant.setArrestingOfficer(myArea, null);
+			break;
+		case Law.STATE_RELEASE:
+			// this is a good thing!
+			break;
+		case Law.STATE_ARRESTING:
+		case Law.STATE_SUBDUEING:
+		case Law.STATE_MOVING:
+		case Law.STATE_REPORTING:
+		case Law.STATE_WAITING:
+		case Law.STATE_PAROLING:
+		case Law.STATE_JAILING:
+		case Law.STATE_EXECUTING:
+		case Law.STATE_MOVING3:
+		case Law.STATE_DETAINING:
+			this.unCuff(warrant.criminal());
+			final MOB officer=warrant.arrestingOfficer();
+			if(officer!=null)
+			{
+				if(officer.getVictim()==warrant.criminal())
+					officer.makePeace(true);
+				if(warrant.criminal()==officer)
+					warrant.criminal().makePeace(true);
+			}
+			warrant.setArrestingOfficer(myArea, null);
+			warrant.setIgnoreUntilTime(System.currentTimeMillis() + delay);
+			break;
+		case Law.STATE_MOVING2:
+			// this is a good thing!
+			break;
+		}
+		// TODO Auto-generated method stub
+		
 	}
 }

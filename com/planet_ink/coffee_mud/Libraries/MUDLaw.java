@@ -750,7 +750,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 					{
 						final MOB M=R.fetchInhabitant(m);
 						if(doesHavePriviledgesHere(M,R))
-							return true;
+							return false;
 					}
 					MOB D=null;
 					if(!record.getOwnerName().startsWith("#"))
@@ -761,7 +761,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 						else
 							D=CMLib.players().getLoadPlayer(record.getOwnerName());
 					}
-					if(D!=null)
+					if((D!=null)&&(D!=msg.source()))
 						B.accuse(getLegalObject(R),msg.source(),D,new String[]{"PROPERTYROB","THIEF_ROBBERY"});
 				}
 				Ability propertyProp=((Item)msg.target()).fetchEffect("Prop_PrivateProperty");
@@ -771,8 +771,8 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 					propertyProp.setMiscText("owner=\""+record.getOwnerName()+"\" expiresec=60");
 					((Item)msg.target()).addNonUninvokableEffect(propertyProp);
 				}
+				return true;
 			}
-			return true;
 		}
 		return false;
 	}

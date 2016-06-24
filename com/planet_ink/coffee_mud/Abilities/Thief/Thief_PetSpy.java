@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary.TrackingFlags;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -68,20 +69,37 @@ public class Thief_PetSpy extends ThiefSkill
 		return Ability.ACODE_CHANT | Ability.DOMAIN_ANIMALAFFINITY;
 	}
 
-	protected MOB		spy		= null;
-	protected boolean	disable	= false;
+	protected List<Integer>	path	= new ArrayList<Integer>(1);
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		if((tickID==Tickable.TICKID_MOB)
-		&&(affected==spy))
+		if((tickID==Tickable.TICKID_MOB)&&(affected instanceof MOB))
 		{
-			if(spy.amDead()
-			||(spy.amFollowing()!=invoker)
-			||(!CMLib.flags().isInTheGame(spy,false)))
+			final MOB M=(MOB)affected;
+			final MOB mob=invoker();
+			final Room R=CMLib.map().roomLocation(M);
+			if((R==null)||(this.path==null)||(this.path.size()==0))
+			{
+				unInvoke();
+				return false;
+			}
+			int direction = path.remove(0).intValue();
+			final Room nextR=R.getRoomInDir(direction);
+			if(nextR==null)
+			{
+				unInvoke();
+				return false;
+			}
+			CMLib.tracking().walk(M, direction, false, true, false, true);
+			if(M.location()==nextR)
+			{
+				final CMMsg msg2=CMClass.getMsg(mob,nextR,CMMsg.MSG_LOOK,null);
+				nextR.executeMsg(mob,msg2);
+			}
+			else
 				unInvoke();
 		}
 		return true;
@@ -93,14 +111,17 @@ public class Thief_PetSpy extends ThiefSkill
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
+		if(path != null)
+			path.clear();
 		if(canBeUninvoked())
 		{
-			if(invoker!=null)
+			final MOB M=(MOB)affected;
+			final MOB invoker=this.invoker;
+			if((M!=null)&&(invoker!=null))
 			{
-				final Ability A=invoker.fetchEffect(this.ID());
-				if(A!=null)
-					invoker.delEffect(A);
-				invoker.tell(L("Your connection with '@x1' fades.",spy.name()));
+				final Room R=CMLib.map().roomLocation(invoker);
+				if(R!=null)
+					CMLib.tracking().wanderIn(M, R);
 			}
 		}
 		super.unInvoke();
@@ -109,55 +130,7 @@ public class Thief_PetSpy extends ThiefSkill
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-		try
-		{
-			super.executeMsg(myHost,msg);
-			if(spy==null)
-				return;
-			if(invoker==null)
-				return;
-
-			if((msg.amISource(spy))
-			&&((msg.sourceMinor()==CMMsg.TYP_LOOK)||(msg.sourceMinor()==CMMsg.TYP_EXAMINE))
-			&&(msg.target()!=null)
-			&&((invoker.location()!=spy.location())||(!(msg.target() instanceof Room))))
-			{
-				disable=true;
-				final CMMsg newAffect=CMClass.getMsg(invoker,msg.target(),msg.sourceMinor(),null);
-				msg.target().executeMsg(invoker,newAffect);
-			}
-			else
-			if((!msg.amISource(invoker))
-			&&(invoker.location()!=spy.location())
-			&&(msg.source().location()==spy.location())
-			&&(msg.othersCode()!=CMMsg.NO_EFFECT)
-			&&(msg.othersMessage()!=null)
-			&&(!disable))
-			{
-				disable=true;
-				invoker.executeMsg(invoker,msg);
-			}
-			else
-			if(msg.amISource(invoker)
-			&&(!disable)
-			&&(msg.sourceMinor()==CMMsg.TYP_SPEAK)
-			&&(msg.sourceMessage()!=null)
-			&&((msg.sourceMajor()&CMMsg.MASK_MAGIC)==0))
-			{
-				final String msg2=CMStrings.getSayFromMessage(msg.sourceMessage());
-				if((msg2!=null)&&(msg2.length()>0))
-					spy.enqueCommand(CMParms.parse(msg2.trim()),MUDCmdProcessor.METAFLAG_FORCED,0);
-			}
-		}
-		finally
-		{
-			disable=false;
-			if((spy!=null)&&((spy.amFollowing()!=invoker)
-							||(spy.amDead())
-							||(!CMLib.flags().isInTheGame(spy,false))
-							||(!CMLib.flags().isInTheGame(invoker,true))))
-				unInvoke();
-		}
+		super.executeMsg(myHost,msg);
 	}
 
 	@Override
@@ -189,8 +162,63 @@ public class Thief_PetSpy extends ThiefSkill
 			mob.tell(L("Send @x1 where or which directions?",target.name(mob)));
 			return false;
 		}
-		final String directions=CMParms.combine(commands,0).trim().toUpperCase();
-
+		
+		int dirs=0;
+		for(String s : commands)
+		{
+			if(CMLib.directions().getProbableDirectionCode(s)>=0)
+				dirs++;
+		}
+		double pct=CMath.div(dirs, commands.size());
+		final List<Integer> directions=new ArrayList<Integer>();
+		int range=30 + (10 * super.getXLEVELLevel(mob));
+		if(pct < .75)
+		{
+			final String roomName=CMParms.combine(commands,0).trim();
+			final TrackingFlags flags=CMLib.tracking().newFlags();
+			final List<Room> rooms=CMLib.tracking().getRadiantRooms(R, flags, range);
+			Room R2=(Room)CMLib.english().fetchEnvironmental(rooms,roomName,true);
+			if(R2 == null)
+				R2=(Room)CMLib.english().fetchEnvironmental(rooms,roomName,false);
+			if(R2 == null)
+			{
+				R.show(target,mob,CMMsg.MSG_OK_VISUAL,L("<S-NAME> look(s) at <T-NAME> confusedly."));
+				return false;
+			}
+			List<Room> trail=CMLib.tracking().findTrailToRoom(R, R2, flags, range, rooms);
+			if((trail.size()==0)||(trail.get(trail.size()-1)==R))
+			{
+				R.show(target,mob,CMMsg.MSG_OK_VISUAL,L("<S-NAME> look(s) at <T-NAME> sadly."));
+				return false;
+			}
+			Room R3=R;
+			for(int r=trail.size()-2;r>=0;r--)
+			{
+				final int dir=CMLib.map().getRoomDir(R3, trail.get(r));
+				if(dir < 0)
+				{
+					R.show(target,mob,CMMsg.MSG_OK_VISUAL,L("<S-NAME> look(s) at <T-NAME> and frowns."));
+					return false;
+				}
+				directions.add(Integer.valueOf(dir));
+			}
+		}
+		else
+		{
+			for(String s : commands)
+			{
+				dirs = CMLib.directions().getProbableDirectionCode(s);
+				if(dirs < 0)
+				{
+					R.show(target,mob,CMMsg.MSG_OK_VISUAL,L("<S-NAME> look(s) at <T-NAME> confusedly."));
+					return false;
+				}
+				directions.add(Integer.valueOf(dirs));
+				if(directions.size()>= ( range / 3) )
+					break;
+			}
+		}
+		
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -202,8 +230,11 @@ public class Thief_PetSpy extends ThiefSkill
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				spy=target;
-				beneficialAffect(mob,spy,asLevel,0);
+				Thief_PetSpy affect = (Thief_PetSpy)beneficialAffect(mob,target,asLevel,0);
+				if(affect != null)
+				{
+					affect.path=directions;
+				}
 			}
 		}
 		else

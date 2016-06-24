@@ -244,7 +244,8 @@ public class WeatherAffects extends PuddleMaker
 				final Rideable riding=msg.source().riding();
 				if((riding!=null)
 				&&((riding.rideBasis()==Rideable.RIDEABLE_WATER)||(riding instanceof BoardableShip))
-				&&(!CMLib.flags().isABonusItems(riding)))
+				&&(!CMLib.flags().isABonusItems(riding))
+				&&(!riding.phyStats().isAmbiance("-ANTIWEATHER")))
 				{
 					String what=null;
 					switch(weather)
