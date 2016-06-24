@@ -226,7 +226,19 @@ public class Thief_Steal extends ThiefSkill
 					target.location().send(mob,msg);
 					msg=CMClass.getMsg(mob,stolen,null,CMMsg.MSG_GET,CMMsg.MSG_GET,CMMsg.MSG_NOISE,null);
 					if(mob.location().okMessage(mob,msg))
+					{
 						mob.location().send(mob,msg);
+						if(stolen!=null)
+						{
+							Ability propertyProp=stolen.fetchEffect("Prop_PrivateProperty");
+							if(propertyProp==null)
+							{
+								propertyProp=CMClass.getAbility("Prop_PrivateProperty");
+								propertyProp.setMiscText("owner=\""+mob.Name()+"\" expiresec=60");
+								stolen.addNonUninvokableEffect(propertyProp);
+							}
+						}
+					}
 				}
 			}
 		}
