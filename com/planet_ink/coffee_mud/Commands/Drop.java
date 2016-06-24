@@ -65,16 +65,22 @@ public class Drop extends StdCommand
 		if(R.okMessage(mob,msg))
 		{
 			R.send(mob,msg);
+			if(!intermediate)
+			{
+				if(dropThis instanceof Coins)
+					((Coins)dropThis).putCoinsBack();
+				if(dropThis instanceof RawMaterial)
+					((RawMaterial)dropThis).rebundle();
+			}
+			return true;
+		}
+		if(!intermediate)
+		{
 			if(dropThis instanceof Coins)
 				((Coins)dropThis).putCoinsBack();
 			if(dropThis instanceof RawMaterial)
 				((RawMaterial)dropThis).rebundle();
-			return true;
 		}
-		if(dropThis instanceof Coins)
-			((Coins)dropThis).putCoinsBack();
-		if(dropThis instanceof RawMaterial)
-			((RawMaterial)dropThis).rebundle();
 		return false;
 	}
 
