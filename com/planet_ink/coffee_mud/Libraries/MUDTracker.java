@@ -508,6 +508,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 
 		int r=0;
 		int d=0;
+		final WorldMap map=CMLib.map();
 		while(depth<maxDepth)
 		{
 			for(r=min;r<size;r++)
@@ -518,7 +519,10 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 					R=R1.getRoomInDir(d);
 					E=R1.getExitInDir(d);
 
-					if((R==null)||(E==null)
+					if((R==null)||(E==null))
+						continue;
+					R=map.getRoom(R);
+					if((R==null)
 					||(H.contains(R))
 					||(filters.isFilteredOut(R1, R, E, d)))
 						continue;

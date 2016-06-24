@@ -1602,10 +1602,13 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 			for (final Room room2 : checkSet)
 			{
 				final Room R=CMLib.map().getRoom(room2);
-				if(R.displayText(mob).equalsIgnoreCase(titleStr))
+				if(R!=null)
 				{
-					commonTell(mob,L("That title has already been taken.  Choose another."));
-					return false;
+					if(R.displayText(mob).equalsIgnoreCase(titleStr))
+					{
+						commonTell(mob,L("That title has already been taken.  Choose another."));
+						return false;
+					}
 				}
 			}
 			designTitle=titleStr;

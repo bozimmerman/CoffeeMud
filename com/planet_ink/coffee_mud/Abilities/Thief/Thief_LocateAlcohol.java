@@ -306,8 +306,12 @@ public class Thief_LocateAlcohol extends ThiefSkill
 		final List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,15+adjustedLevel(mob,asLevel));
 		for (final Room R : checkSet)
 		{
-			if(alcoholHere(mob,R).length()>0)
-				rooms.addElement(R);
+			final Room R2=CMLib.map().getRoom(R);
+			if(R2!=null)
+			{
+				if(alcoholHere(mob,R2).length()>0)
+					rooms.addElement(R2);
+			}
 		}
 
 		if(rooms.size()>0)
