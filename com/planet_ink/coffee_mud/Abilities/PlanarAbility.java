@@ -1370,6 +1370,9 @@ public class PlanarAbility extends StdAbility
 			if(h==null)
 				return false;
 
+			Ability A=this.beneficialAffect(mob, planeArea, asLevel, 0);
+			A.setMiscText(planeName);
+			
 			final Room thisRoom=mob.location();
 			for (final Object element : h)
 			{
@@ -1378,9 +1381,6 @@ public class PlanarAbility extends StdAbility
 				final CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,L("<S-NAME> fade(s) away."));
 				if(thisRoom.okMessage(follower,leaveMsg)&&target.okMessage(follower,enterMsg))
 				{
-					Ability A=this.beneficialAffect(mob, planeArea, asLevel, 0);
-					A.setMiscText(planeName);
-					
 					if(follower.isInCombat())
 					{
 						CMLib.commands().postFlee(follower,("NOWHERE"));
