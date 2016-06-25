@@ -45,6 +45,12 @@ public class Give extends StdCommand
 		return access;
 	}
 
+	@SuppressWarnings("rawtypes")
+	private final static Class[][] internalParameters=new Class[][]
+	{
+		{Item.class,MOB.class,Boolean.class}
+	};
+
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
@@ -148,17 +154,27 @@ public class Give extends StdCommand
 		for(int i=0;i<V.size();i++)
 		{
 			giveThis=V.get(i);
-			final CMMsg newMsg=CMClass.getMsg(mob,recipient,giveThis,CMMsg.MSG_GIVE,L("<S-NAME> give(s) <O-NAME> to <T-NAMESELF>."));
-			if(mob.location().okMessage(mob,newMsg))
-				mob.location().send(mob,newMsg);
-			if(giveThis instanceof Coins)
-				((Coins)giveThis).putCoinsBack();
-			if(giveThis instanceof RawMaterial)
-				((RawMaterial)giveThis).rebundle();
+			give(mob, recipient, giveThis, false);
 		}
 		return false;
 	}
 
+	protected boolean give(final MOB mob, final MOB recipient, final Item giveThis, boolean quiet)
+	{
+		final CMMsg newMsg=CMClass.getMsg(mob,recipient,giveThis,CMMsg.MSG_GIVE,quiet?"":L("<S-NAME> give(s) <O-NAME> to <T-NAMESELF>."));
+		boolean success=false;
+		if(mob.location().okMessage(mob,newMsg))
+		{
+			mob.location().send(mob,newMsg);
+			success=true;
+		}
+		if(giveThis instanceof Coins)
+			((Coins)giveThis).putCoinsBack();
+		if(giveThis instanceof RawMaterial)
+			((RawMaterial)giveThis).rebundle();
+		return success;
+	}
+	
 	@Override
 	public double combatActionsCost(final MOB mob, final List<String> cmds)
 	{
@@ -177,4 +193,18 @@ public class Give extends StdCommand
 		return true;
 	}
 
+	@Override
+	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException
+	{
+		if(!super.checkArguments(internalParameters, args))
+			return Boolean.FALSE;
+		if(args[0] instanceof Item)
+		{
+			final Item I=(Item)args[0];
+			final MOB targetMOB=(MOB)args[1];
+			final boolean quiet = ((Boolean)args[2]).booleanValue();
+			give(mob,targetMOB,I,quiet);
+		}
+		return Boolean.FALSE;
+	}
 }

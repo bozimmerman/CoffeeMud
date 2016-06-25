@@ -223,8 +223,8 @@ public class WeatherAffects extends PuddleMaker
 				if((CMLib.dice().rollPercentage()<windsheer)
 				&&(R!=null))
 				{
-					R.show(msg.source(),msg.target(),msg.tool(),CMMsg.MSG_OK_ACTION,L("^WThe strong wind blows <S-YOUPOSS> attack against <T-NAMESELF> with <O-NAME> off target.^?"));
-					return false;
+					if(R.show(msg.source(),msg.target(),msg.tool(),CMMsg.MSG_WEATHER,L("^WThe strong wind blows <S-YOUPOSS> attack against <T-NAMESELF> with <O-NAME> off target.^?")))
+						return false;
 				}
 				break;
 			}
@@ -275,22 +275,24 @@ public class WeatherAffects extends PuddleMaker
 					}
 					if(what!=null)
 					{
-						R.show(msg.source(),null,CMMsg.MSG_OK_ACTION,L("^W<S-NAME> make(s) no progress in the "+what+".^?"));
-						if(riding instanceof BoardableShip)
+						if(R.show(msg.source(),null,CMMsg.MSG_WEATHER,L("^W<S-NAME> make(s) no progress in the "+what+".^?")))
 						{
-							final Area shipArea=((BoardableShip)riding).getShipArea();
-							if(shipArea != null)
+							if(riding instanceof BoardableShip)
 							{
-								for(Enumeration<Room> sr=shipArea.getProperMap();sr.hasMoreElements();)
+								final Area shipArea=((BoardableShip)riding).getShipArea();
+								if(shipArea != null)
 								{
-									final Room sR=sr.nextElement();
-									if((sR!=null)&&((sR.domainType()&Room.INDOORS)==0))
-										sR.show(msg.source(),null,CMMsg.MSG_OK_ACTION,L("^W<S-NAME> make(s) no progress in the "+what+".^?"));
+									for(Enumeration<Room> sr=shipArea.getProperMap();sr.hasMoreElements();)
+									{
+										final Room sR=sr.nextElement();
+										if((sR!=null)&&((sR.domainType()&Room.INDOORS)==0))
+											sR.show(msg.source(),null,CMMsg.MSG_OK_ACTION,L("^W<S-NAME> make(s) no progress in the "+what+".^?"));
+									}
 								}
+								
 							}
-							
+							return false;
 						}
-						return false;
 					}
 				}
 				break;
@@ -322,12 +324,14 @@ public class WeatherAffects extends PuddleMaker
 				&&(!CMLib.flags().isInFlight(msg.source()))
 				&&(CMLib.dice().rollPercentage()>((msg.source().charStats().getStat(CharStats.STAT_DEXTERITY)*3)+25)))
 				{
-					int oldDisposition=msg.source().basePhyStats().disposition();
-					oldDisposition=oldDisposition&(~(PhyStats.IS_SLEEPING|PhyStats.IS_SNEAKING|PhyStats.IS_SITTING|PhyStats.IS_CUSTOM));
-					msg.source().basePhyStats().setDisposition(oldDisposition|PhyStats.IS_SITTING);
-					msg.source().recoverPhyStats();
-					R.show(msg.source(),null,CMMsg.MSG_OK_ACTION,L("^W<S-NAME> slip(s) on the "+what+" ground.^?"));
-					return false;
+					if(R.show(msg.source(),null,CMMsg.MSG_WEATHER,L("^W<S-NAME> slip(s) on the "+what+" ground.^?")))
+					{
+						int oldDisposition=msg.source().basePhyStats().disposition();
+						oldDisposition=oldDisposition&(~(PhyStats.IS_SLEEPING|PhyStats.IS_SNEAKING|PhyStats.IS_SITTING|PhyStats.IS_CUSTOM));
+						msg.source().basePhyStats().setDisposition(oldDisposition|PhyStats.IS_SITTING);
+						msg.source().recoverPhyStats();
+						return false;
+					}
 				}
 			}
 			}
@@ -887,11 +891,20 @@ public class WeatherAffects extends PuddleMaker
 					case RawMaterial.MATERIAL_VEGETATION:
 					case RawMaterial.MATERIAL_WOODEN:
 					{
-						final Ability A2=CMClass.getAbility("Burning");
-						final MOB mob=CMLib.map().getFactoryMOB(R);
-						R.showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 spontaneously combusts in the seering heat!@x2",I.Name(),CMLib.protocol().msp("fire.wav",40)));
-						A2.invoke(mob,I,true,0);
-						mob.destroy();
+						final MOB god=CMClass.getFactoryMOB("the heat",CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL),R);
+						try
+						{
+							if(R.show(god,I,null,CMMsg.MSG_WEATHER,L("<T-NAME> spontaneously combusts in the seering heat!@x2",CMLib.protocol().msp("fire.wav",40))))
+							{
+								final Ability A2=CMClass.getAbility("Burning");
+								if(A2!=null)
+									A2.invoke(god,I,true,0);
+							}
+						}
+						finally
+						{
+							god.destroy();
+						}
 						break;
 					}
 					default:

@@ -66,27 +66,13 @@ public class Skill_FoulWeatherSailing extends StdSkill
 	@Override
 	protected int canAffectCode()
 	{
-		return CAN_ITEMS;
+		return CAN_MOBS;
 	}
-
-	@Override
-	protected int canTargetCode()
-	{
-		return CAN_ITEMS;
-	}
-
-	private static final String[]	triggerStrings	= I(new String[] { "FOULWEATHERSAILING","FSAILING" });
 
 	@Override
 	public int classificationCode()
 	{
 		return Ability.ACODE_SKILL | Ability.DOMAIN_SEATRAVEL;
-	}
-
-	@Override
-	public String[] triggerStrings()
-	{
-		return triggerStrings;
 	}
 
 	@Override
@@ -96,10 +82,32 @@ public class Skill_FoulWeatherSailing extends StdSkill
 	}
 	
 	@Override
-	public void affectPhyStats(Physical affectedOne, PhyStats affectableStats)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		super.affectPhyStats(affectedOne, affectableStats);
-		affectableStats.addAmbiance("-ANTIWEATHER");
+		if(!super.okMessage(myHost, msg))
+			return false;
+		if((msg.target() instanceof BoardableShip)
+		&&(msg.targetMinor()==CMMsg.TYP_WEATHER)
+		&&(msg.target() instanceof Item)
+		&&(affected instanceof MOB))
+		{
+			final MOB M=(MOB)affected;
+			if((M!=null)
+			&&(M.location()!=null)
+			&&(M.location().getArea() instanceof BoardableShip)
+			&&(((BoardableShip)M.location().getArea()).getShipItem() == msg.target())
+			&&(super.proficiencyCheck(M, 0, false)))
+			{
+				super.helpProficiency(M, 0);
+				final Room R=M.location();
+				if(R!=null)
+				{
+					R.show(M, msg.target(), CMMsg.MSG_OK_VISUAL, L("<S-YOUPOSS> superior sailing skills keeps <T-NAME> sailing."));
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 
 	@Override
@@ -113,11 +121,11 @@ public class Skill_FoulWeatherSailing extends StdSkill
 
 		if(!CMLib.flags().isAliveAwakeMobileUnbound(mob,false))
 			return false;
-		
+
 		final Room R=mob.location();
 		if(R==null)
 			return false;
-		
+
 		final Item target;
 		if((R.getArea() instanceof BoardableShip)
 		&&(((BoardableShip)R.getArea()).getShipItem() instanceof BoardableShip))
@@ -129,7 +137,7 @@ public class Skill_FoulWeatherSailing extends StdSkill
 			mob.tell(L("You must be on a ship to do rig for foul weather!"));
 			return false;
 		}
-		
+
 		if(target.fetchEffect(ID())!=null)
 		{
 			mob.tell(L("Your ship is already rigged for foul weather!"));

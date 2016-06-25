@@ -168,7 +168,11 @@ public class StdContainer extends StdItem implements Container
 						}
 						if((!msg.source().isMine(this))&&(msg.source().isMine(newitem)))
 						{
-							if(!CMLib.commands().postDrop(msg.source(),newitem,true,true,true))
+							final Room R=msg.source().location();
+							final CMMsg msg2=CMClass.getMsg(mob,newitem,null,CMMsg.MASK_OPTIMIZE|CMMsg.MASK_INTERMSG|CMMsg.MSG_DROP,null);
+							if((R!=null)&&(R.okMessage(mob,msg2)))
+								R.send(mob,msg2);
+							else
 								return false;
 						}
 						return true;

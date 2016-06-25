@@ -60,13 +60,25 @@ public class Thief_PetSpy extends ThiefSkill
 	@Override
 	public int abstractQuality()
 	{
-		return Ability.QUALITY_OK_OTHERS;
+		return Ability.QUALITY_INDIFFERENT;
 	}
 
 	@Override
 	public int classificationCode()
 	{
 		return Ability.ACODE_CHANT | Ability.DOMAIN_ANIMALAFFINITY;
+	}
+
+	@Override
+	public boolean isAutoInvoked()
+	{
+		return true;
+	}
+
+	@Override
+	public boolean canBeUninvoked()
+	{
+		return affected != invoker;
 	}
 
 	protected List<Integer>	path	= new ArrayList<Integer>(1);
@@ -76,7 +88,10 @@ public class Thief_PetSpy extends ThiefSkill
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		if((tickID==Tickable.TICKID_MOB)&&(affected instanceof MOB))
+		
+		if((tickID==Tickable.TICKID_MOB)
+		&&(affected instanceof MOB)
+		&&(affected != invoker))
 		{
 			final MOB M=(MOB)affected;
 			final MOB mob=invoker();
@@ -108,20 +123,21 @@ public class Thief_PetSpy extends ThiefSkill
 	@Override
 	public void unInvoke()
 	{
-		// undo the affects of this spell
-		if(!(affected instanceof MOB))
-			return;
-		if(path != null)
-			path.clear();
 		if(canBeUninvoked())
 		{
-			final MOB M=(MOB)affected;
-			final MOB invoker=this.invoker;
-			if((M!=null)&&(invoker!=null))
+			Physical affected=this.affected;
+			if(affected instanceof MOB)
 			{
-				final Room R=CMLib.map().roomLocation(invoker);
-				if(R!=null)
-					CMLib.tracking().wanderIn(M, R);
+				if(path != null)
+					path.clear();
+				final MOB invoker=this.invoker;
+				final MOB M=(MOB)affected;
+				if((M!=null)&&(invoker!=null))
+				{
+					final Room R=CMLib.map().roomLocation(invoker);
+					if(R!=null)
+						CMLib.tracking().wanderIn(M, R);
+				}
 			}
 		}
 		super.unInvoke();
@@ -131,116 +147,103 @@ public class Thief_PetSpy extends ThiefSkill
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
-	}
-
-	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
-	{
-		final Room R=mob.location();
-		if(R==null)
-			return false;
-		MOB target=null;
-		for(int f=0;f<mob.numFollowers();f++)
+		if(msg.amISource(invoker)
+		&&(invoker == affected)
+		&&(msg.sourceMinor()==CMMsg.TYP_SPEAK)
+		&&(msg.sourceMessage()!=null)
+		&&(msg.target() instanceof MOB)
+		&&(((MOB)msg.target()).amFollowing()==msg.source())
+		&&(((MOB)msg.target()).fetchEffect("Prop_Familiar")!=null)
+		&&((msg.sourceMajor()&CMMsg.MASK_MAGIC)==0))
 		{
-			final MOB M=mob.fetchFollower(f);
-			if((M!=null)
-			&&(M.isMonster())
-			&&(M.location()==R)
-			&&(M.fetchEffect("Prop_Familiar")!=null))
+			final MOB mob=msg.source();
+			final List<String> commands = CMParms.parseSpaces(CMStrings.getSayFromMessage(msg.sourceMessage()),true);
+			if(commands.size()==0)
+				return;
+			if(!commands.get(0).equalsIgnoreCase("SPY"))
+				return;
+			commands.remove(0);
+			final Room R=mob.location();
+			if(R==null)
+				return;
+			MOB target=(MOB)msg.target();
+			if(commands.size()<1)
 			{
-				target=M;
-				break;
+				R.show(target,mob,CMMsg.MSG_QUIETMOVEMENT,L("<S-NAME> look(s) at <T-NAME> expectantly."));
+				return;
 			}
-		}
-		if(target==null)
-		{
-			mob.tell(L("You need a familiar to send them on a spy mission."));
-			return false;
-		}
-		if(commands.size()<1)
-		{
-			mob.tell(L("Send @x1 where or which directions?",target.name(mob)));
-			return false;
-		}
-		
-		int dirs=0;
-		for(String s : commands)
-		{
-			if(CMLib.directions().getProbableDirectionCode(s)>=0)
-				dirs++;
-		}
-		double pct=CMath.div(dirs, commands.size());
-		final List<Integer> directions=new ArrayList<Integer>();
-		int range=30 + (10 * super.getXLEVELLevel(mob));
-		if(pct < .75)
-		{
-			final String roomName=CMParms.combine(commands,0).trim();
-			final TrackingFlags flags=CMLib.tracking().newFlags();
-			final List<Room> rooms=CMLib.tracking().getRadiantRooms(R, flags, range);
-			Room R2=(Room)CMLib.english().fetchEnvironmental(rooms,roomName,true);
-			if(R2 == null)
-				R2=(Room)CMLib.english().fetchEnvironmental(rooms,roomName,false);
-			if(R2 == null)
+			if(target.fetchEffect(ID())!=null)
 			{
-				R.show(target,mob,CMMsg.MSG_OK_VISUAL,L("<S-NAME> look(s) at <T-NAME> confusedly."));
-				return false;
+				mob.tell(L("@x1 is already on a spy mission!",target.name(mob)));
+				return;
 			}
-			List<Room> trail=CMLib.tracking().findTrailToRoom(R, R2, flags, range, rooms);
-			if((trail.size()==0)||(trail.get(trail.size()-1)==R))
+			
+			if(!super.proficiencyCheck(mob, 0, false))
 			{
-				R.show(target,mob,CMMsg.MSG_OK_VISUAL,L("<S-NAME> look(s) at <T-NAME> sadly."));
-				return false;
+				R.show(target,mob,CMMsg.MSG_QUIETMOVEMENT,L("<S-NAME> refuse(s)."));
+				return;
 			}
-			Room R3=R;
-			for(int r=trail.size()-2;r>=0;r--)
-			{
-				final int dir=CMLib.map().getRoomDir(R3, trail.get(r));
-				if(dir < 0)
-				{
-					R.show(target,mob,CMMsg.MSG_OK_VISUAL,L("<S-NAME> look(s) at <T-NAME> and frowns."));
-					return false;
-				}
-				directions.add(Integer.valueOf(dir));
-			}
-		}
-		else
-		{
+			
+			int dirs=0;
 			for(String s : commands)
 			{
-				dirs = CMLib.directions().getProbableDirectionCode(s);
-				if(dirs < 0)
-				{
-					R.show(target,mob,CMMsg.MSG_OK_VISUAL,L("<S-NAME> look(s) at <T-NAME> confusedly."));
-					return false;
-				}
-				directions.add(Integer.valueOf(dirs));
-				if(directions.size()>= ( range / 3) )
-					break;
+				if(CMLib.directions().getProbableDirectionCode(s)>=0)
+					dirs++;
 			}
-		}
-		
-		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
-			return false;
-
-		final boolean success=proficiencyCheck(mob,0,auto);
-
-		if(success)
-		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> send(s) <T-NAMESELF> on a spy mission.^?"));
-			if(mob.location().okMessage(mob,msg))
+			double pct=CMath.div(dirs, commands.size());
+			final List<Integer> directions=new ArrayList<Integer>();
+			int range=30 + (10 * super.getXLEVELLevel(mob));
+			if(pct < .75)
 			{
-				mob.location().send(mob,msg);
-				Thief_PetSpy affect = (Thief_PetSpy)beneficialAffect(mob,target,asLevel,0);
-				if(affect != null)
+				final String roomName=CMParms.combine(commands,0).trim();
+				final TrackingFlags flags=CMLib.tracking().newFlags();
+				final List<Room> rooms=CMLib.tracking().getRadiantRooms(R, flags, range);
+				Room R2=(Room)CMLib.english().fetchEnvironmental(rooms,roomName,true);
+				if(R2 == null)
+					R2=(Room)CMLib.english().fetchEnvironmental(rooms,roomName,false);
+				if(R2 == null)
 				{
-					affect.path=directions;
+					R.show(target,mob,CMMsg.MSG_QUIETMOVEMENT,L("<S-NAME> look(s) at <T-NAME> confusedly."));
+					return;
+				}
+				List<Room> trail=CMLib.tracking().findTrailToRoom(R, R2, flags, range, rooms);
+				if((trail.size()==0)||(trail.get(trail.size()-1)==R))
+				{
+					R.show(target,mob,CMMsg.MSG_QUIETMOVEMENT,L("<S-NAME> look(s) at <T-NAME> sadly."));
+					return;
+				}
+				Room R3=R;
+				for(int r=trail.size()-2;r>=0;r--)
+				{
+					final int dir=CMLib.map().getRoomDir(R3, trail.get(r));
+					if(dir < 0)
+					{
+						R.show(target,mob,CMMsg.MSG_QUIETMOVEMENT,L("<S-NAME> look(s) at <T-NAME> and frowns."));
+						return;
+					}
+					directions.add(Integer.valueOf(dir));
 				}
 			}
+			else
+			{
+				for(String s : commands)
+				{
+					dirs = CMLib.directions().getProbableDirectionCode(s);
+					if(dirs < 0)
+					{
+						R.show(target,mob,CMMsg.MSG_QUIETMOVEMENT,L("<S-NAME> look(s) at <T-NAME> confusedly."));
+						return;
+					}
+					directions.add(Integer.valueOf(dirs));
+					if(directions.size()>= ( range / 3) )
+						break;
+				}
+			}
+			Thief_PetSpy affect = (Thief_PetSpy)beneficialAffect(mob,target,0,0);
+			if(affect != null)
+			{
+				affect.path=directions;
+			}
 		}
-		else
-			beneficialVisualFizzle(mob,target,L("<S-NAME> attempt(s) to send <T-NAMESELF> on a spy mission, but <T-HE-SHE> doesn't seem to understand."));
-
-		// return whether it worked
-		return success;
 	}
 }
