@@ -54,8 +54,6 @@ public class StdLawBook extends StdItem
 		recoverPhyStats();
 	}
 
-
-
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -1025,7 +1023,7 @@ public class StdLawBook extends StdItem
 				str.append(CMStrings.padRight(""+(highest+1)+". "+name,20)+" "+shortLawDesc(set)+"\n\r");
 				highest++;
 			}
-			str.append("A. ADD A NEW ONE\n\r");
+			str.append(L("A. ADD A NEW ONE\n\r"));
 			mob.session().colorOnlyPrintln(str.toString());
 			if((!theLaw.hasModifiableLaws())||(!allowedToModify))
 				break;
@@ -1454,7 +1452,7 @@ public class StdLawBook extends StdItem
 		if(mob.session()==null)
 			return;
 		mob.tell(getFromTOC("P2"+(theLaw.hasModifiableLaws()?"MOD":"")+(theLaw.hasModifiableNames()?"NAM":"")));
-		String duhJudge="No Judge Found!\n\r";
+		String duhJudge=L("No Judge Found!\n\r");
 		final StringBuffer duhOfficers=new StringBuffer("");
 		for(final Enumeration<Room> e=A.getMetroMap();e.hasMoreElements();)
 		{
