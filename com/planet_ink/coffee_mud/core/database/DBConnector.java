@@ -207,6 +207,20 @@ public class DBConnector
 	}
 
 	/**
+	 * Fetch a single, not in use DBConnection object for testing only.
+	 * You can then call DBConnection.query and DBConnection.update on this object.
+	 * The user must ALWAYS call DBDone when done with the object.  This is
+	 * different than DBFetch because it ensures limited connection attempts.
+	 *
+	 * Usage: DB=DBFetchTest();
+	 * @return DBConnection    The DBConnection to use
+	 */
+	public DBConnection DBFetchTest()
+	{
+		return (dbConnections != null) ? dbConnections.DBFetchTest() : null;
+	}
+	
+	/**
 	 * Fetch a single, not in use DBConnection object.  Must be rePrepared afterwards
 	 * You can then call DBConnection.query and DBConnection.update on this object.
 	 * The user must ALWAYS call DBDone when done with the object.

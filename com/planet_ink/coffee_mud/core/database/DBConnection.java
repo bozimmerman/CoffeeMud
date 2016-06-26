@@ -77,7 +77,7 @@ public class DBConnection
 	/** for remembering whether this is a fakeDB connection */
 	private Boolean isFakeDB = null;
 
-	public static enum FetchType {EMPTY,STATEMENT,PREPAREDSTATEMENT}
+	public static enum FetchType {EMPTY,STATEMENT,PREPAREDSTATEMENT,TESTSTATEMENT}
 
 	/**
 	 * construction

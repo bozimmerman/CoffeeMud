@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.core.database;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.core.database.DBConnection.FetchType;
 import com.planet_ink.coffee_mud.core.database.DBConnector.DBPreparedBatchEntry;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -38,35 +39,35 @@ import java.sql.*;
 */
 public class DBConnections
 {
-	protected String dbClass="";
-	/** the odbc service*/
-	protected String dbService="";
+	protected String			dbClass				= "";
+	/** the odbc service */
+	protected String			dbService			= "";
 	/** the odbc login user */
-	protected String dbUser="";
+	protected String			dbUser				= "";
 	/** the odbc password */
-	protected String dbPass="";
-	/** number of connections to make*/
-	protected int maxConnections=0;
+	protected String			dbPass				= "";
+	/** number of connections to make */
+	protected int				maxConnections		= 0;
 	/** the disconnected flag */
-	protected boolean disconnected=false;
-	/** the im in trouble flag*/
-	protected boolean lockedUp=false;
-	/** the number of times the system has failed to get a db*/
-	protected int consecutiveFailures=0;
+	protected boolean			disconnected		= false;
+	/** the im in trouble flag */
+	protected boolean			lockedUp			= false;
+	/** the number of times the system has failed to get a db */
+	protected int				consecutiveFailures	= 0;
 	/** the number of times the system has failed a request */
-	protected int consecutiveErrors=0;
-	/** Object to synchronize around on error handling*/
-	protected boolean errorQueingEnabled=false;
+	protected int				consecutiveErrors	= 0;
+	/** Object to synchronize around on error handling */
+	protected boolean			errorQueingEnabled	= false;
 	/** the database connnections */
-	protected SVector<DBConnection> connections;
+	protected List<DBConnection>connections;
 	/** set this to true once, cuz it makes it all go away. **/
-	protected boolean shutdown=false;
+	protected boolean			shutdown			= false;
 	/** whether to reuse connections */
-	protected boolean reuse=false;
+	protected boolean			reuse				= false;
 	/** last time resetconnections called (or resetconnections) */
-	private long lastReset=0;
+	private long				lastReset			= 0;
 	/** check for whether these connections are fakedb */
-	private Boolean isFakeDB = null;
+	private Boolean				isFakeDB			= null;
 
 	/**
 	 * Initialize this class.  Must be called at first,
@@ -320,6 +321,20 @@ public class DBConnections
 	/**
 	 * Fetch a single, not in use DBConnection object.
 	 * You can then call DBConnection.query and DBConnection.update on this object.
+	 * The user must ALWAYS call DBDone when done with the object.  This is
+	 * different than DBFetch because it ensures limited connection attempts.
+	 *
+	 * Usage: DB=DBFetchTest();
+	 * @return DBConnection    The DBConnection to use
+	 */
+	public DBConnection DBFetchTest()
+	{
+		return DBFetchAny("",DBConnection.FetchType.TESTSTATEMENT);
+	}
+
+	/**
+	 * Fetch a single, not in use DBConnection object.
+	 * You can then call DBConnection.query and DBConnection.update on this object.
 	 * The user must ALWAYS call DBDone when done with the object.
 	 *
 	 * Usage: DB=DBFetchPrepared();
@@ -329,8 +344,8 @@ public class DBConnections
 	 */
 	public DBConnection DBFetchAny(final String SQL, final DBConnection.FetchType type)
 	{
-		DBConnection ThisDB=null;
-		while(ThisDB==null)
+		DBConnection newConn=null;
+		while(newConn==null)
 		{
 			if(shutdown)
 			{
@@ -338,11 +353,13 @@ public class DBConnections
 			}
 
 			if(connections.size()<maxConnections)
+			{
 				try
 				{
-					ThisDB=new DBConnection(this,dbClass,dbService,dbUser,dbPass,reuse);
-					connections.addElement(ThisDB);
-				}catch(final Exception e)
+					newConn=new DBConnection(this,dbClass,dbService,dbUser,dbPass,reuse);
+					connections.add(newConn);
+				}
+				catch(final Exception e)
 				{
 					final String errMsg = e.getMessage();
 					if(errMsg!=null)
@@ -353,63 +370,65 @@ public class DBConnections
 					else
 					if(e.getMessage()==null)
 						Log.errOut("DBConnections",e);
-					ThisDB=null;
+					newConn=null;
 					if(connections.size()==0)
 					{
 						disconnected=true;
 						return null;
 					}
+					if(type==FetchType.TESTSTATEMENT)
+						return null;
 				}
-			if((ThisDB==null)&&(reuse))
+			}
+			if((newConn==null)&&(reuse))
 			{
 				try
 				{
 					for(final DBConnection conn : connections)
 					{
-						if(type==DBConnection.FetchType.PREPAREDSTATEMENT)
+						switch(type)
 						{
+						case PREPAREDSTATEMENT:
 							if( conn.usePrepared(SQL))
 							{
-								ThisDB=conn;
-								break;
+								newConn=conn;
 							}
-						}
-						else
-						if(type==DBConnection.FetchType.STATEMENT)
-						{
+							break;
+						case TESTSTATEMENT:
+						case STATEMENT:
 							if(conn.use(""))
 							{
-								ThisDB=conn;
-								break;
+								newConn=conn;
 							}
-						}
-						else
-						{
+							break;
+						case EMPTY:
 							if(conn.useEmpty())
 							{
-								ThisDB=conn;
-								break;
+								newConn=conn;
 							}
+							break;
 						}
+						if(newConn!=null)
+							break;
 					}
 				}
 				catch (final Exception e)
 				{
 				}
 			}
-			if((ThisDB!=null)&&(ThisDB.isProbablyDead()||ThisDB.isProbablyLockedUp()||(!ThisDB.ready())))
+			if((newConn!=null)&&(newConn.isProbablyDead()||newConn.isProbablyLockedUp()||(!newConn.ready())))
 			{
 				Log.errOut("DBConnections","Failed to connect to database.");
 				try
 				{
-					ThisDB.close();
+					newConn.close();
 				}
 				catch (final Exception e)
 				{
 				}
-				ThisDB=null;
+				newConn=null;
 			}
-			if(ThisDB==null)
+			if(newConn==null)
 			{
 				if((consecutiveFailures++)>=50)
 				{
@@ -426,14 +445,18 @@ public class DBConnections
 				{
 					int inuse=0;
 					for(final DBConnection conn : connections)
+					{
 						if(conn.inUse())
 							inuse++;
+					}
 					if(consecutiveFailures==180)
 					{
 						Log.errOut("DBConnections","Serious failure obtaining DBConnection ("+inuse+"/"+connections.size()+" in use).");
 						for(final DBConnection conn : connections)
+						{
 							if(conn.inUse())
 								Log.errOut("DBConnections","Last SQL was: "+conn.lastSQL);
+						}
 						if(inuse==0)
 							resetConnections();
 					}
@@ -454,13 +477,19 @@ public class DBConnections
 			}
 			else
 			{
-				if(type==DBConnection.FetchType.PREPAREDSTATEMENT)
-					ThisDB.usePrepared(SQL);
-				else
-				if(type==DBConnection.FetchType.STATEMENT)
-					ThisDB.use(SQL);
-				else
-					ThisDB.useEmpty();
+				switch(type)
+				{
+				case PREPAREDSTATEMENT:
+					newConn.usePrepared(SQL);
+					break;
+				case TESTSTATEMENT:
+				case STATEMENT:
+					newConn.use(SQL);
+					break;
+				case EMPTY:
+					newConn.useEmpty();
+					break;
+				}
 			}
 		}
 
@@ -470,9 +499,9 @@ public class DBConnections
 		lockedUp=false;
 		if(isFakeDB==null)
 		{
-			isFakeDB=Boolean.valueOf(ThisDB.isFakeDB());
+			isFakeDB=Boolean.valueOf(newConn.isFakeDB());
 		}
-		return ThisDB;
+		return newConn;
 	}
 
 	public boolean isFakeDB()
@@ -680,7 +709,7 @@ public class DBConnections
 		{
 			for(final DBConnection conn : connections)
 				conn.close();
-			connections.removeAllElements();
+			connections.clear();
 		}
 		try
 		{

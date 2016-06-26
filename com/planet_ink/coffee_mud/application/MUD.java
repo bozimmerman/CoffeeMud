@@ -1328,7 +1328,7 @@ public class MUD extends Thread implements MudHost
 				currentDBconnector.reconnect();
 				CMLib.registerLibrary(new DBInterface(currentDBconnector,CMProps.getPrivateSubSet("DB.*")));
 
-				final DBConnection DBTEST=currentDBconnector.DBFetch();
+				final DBConnection DBTEST=currentDBconnector.DBFetchTest();
 				if(DBTEST!=null)
 					currentDBconnector.DBDone(DBTEST);
 				if((DBTEST!=null)&&(currentDBconnector.amIOk())&&(CMLib.database().isConnected()))
