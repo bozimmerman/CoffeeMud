@@ -64,16 +64,15 @@ public class StdItem implements Item
 	protected boolean 		destroyed=false;
 	protected Item 			me=this;
 
-	protected PhyStats phyStats=(PhyStats)CMClass.getCommon("DefaultPhyStats");
-	protected PhyStats basePhyStats=(PhyStats)CMClass.getCommon("DefaultPhyStats");
+	protected PhyStats					phyStats		= (PhyStats) CMClass.getCommon("DefaultPhyStats");
+	protected PhyStats					basePhyStats	= (PhyStats) CMClass.getCommon("DefaultPhyStats");
+	protected volatile Container		myContainer		= null;
+	protected volatile ItemPossessor	owner			= null;
+	protected SVector<Ability>			affects			= null;
+	protected SVector<Behavior>			behaviors		= null;
+	protected SVector<ScriptingEngine>	scripts			= null;
 
-	protected volatile Container	   myContainer=null;
-	protected volatile ItemPossessor   owner=null;
-	protected SVector<Ability>  	   affects=null;
-	protected SVector<Behavior> 	   behaviors=null;
-	protected SVector<ScriptingEngine> scripts=null;
-	
-	protected ApplyAffectPhyStats	   affectPhyStats = new ApplyAffectPhyStats(this);
+	protected ApplyAffectPhyStats		affectPhyStats	= new ApplyAffectPhyStats(this);
 
 	public StdItem()
 	{

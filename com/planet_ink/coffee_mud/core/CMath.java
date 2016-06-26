@@ -1196,7 +1196,7 @@ public class CMath
 	 * @param previous the previous value, for operators that require it
 	 * @return the final value
 	 */
-	public final static double parseMathExpression(final LinkedList<CompiledOperation> list, final double[] vars, final double previous)
+	public final static double parseMathExpression(final List<CompiledOperation> list, final double[] vars, final double previous)
 	{
 		double finalValue=0.0;
 		double curValue=0.0;

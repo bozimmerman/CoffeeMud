@@ -795,9 +795,9 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 			private String								uncompiledListMask	= "";
 			private String								uncompiledFinalMask	= "";
 			private int									minLevel			= Integer.MIN_VALUE + 1;
-			private MaskingLibrary.CompiledZMask	compiledListMask	= null;
+			private MaskingLibrary.CompiledZMask		compiledListMask	= null;
 			private final ExpertiseDefinition			parent				= null;
-			private MaskingLibrary.CompiledZMask	compiledFinalMask	= null;
+			private MaskingLibrary.CompiledZMask		compiledFinalMask	= null;
 			private final List<SkillCost>				costs				= new LinkedList<SkillCost>();
 
 			@Override

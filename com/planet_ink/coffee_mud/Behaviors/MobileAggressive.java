@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZMask;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -54,7 +55,7 @@ public class MobileAggressive extends Mobile
 	protected int				aggressiveTickDown	= 0;
 	protected boolean			levelcheck			= false;
 	protected VeryAggressive	veryA				= new VeryAggressive();
-	protected MaskingLibrary.CompiledZMask	mask= null;
+	protected CompiledZMask		mask				= null;
 
 	public MobileAggressive()
 	{

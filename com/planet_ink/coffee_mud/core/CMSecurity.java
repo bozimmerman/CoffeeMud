@@ -78,7 +78,7 @@ public class CMSecurity
 	protected final static Set<String>		journalFlags = new HashSet<String>(); // global, because of cross-library issues
 
 	protected final long					startTime	 = System.currentTimeMillis();
-	protected CompiledZMask			compiledSysop= null;
+	protected CompiledZMask					compiledSysop= null;
 	protected final Map<String,SecGroup> 	groups  	 = new Hashtable<String,SecGroup>();
 
 	protected static boolean				debuggingEverything=false;

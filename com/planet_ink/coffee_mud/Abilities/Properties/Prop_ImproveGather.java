@@ -54,8 +54,8 @@ public class Prop_ImproveGather extends Property
 	}
 
 	protected CompiledZMask	mask		= null;
-	protected String[]				improves	= new String[] { "ALL" };
-	protected int					improvement	= 2;
+	protected String[]		improves	= new String[] { "ALL" };
+	protected int			improvement	= 2;
 
 	@Override
 	public String accountForYourself()

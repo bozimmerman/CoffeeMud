@@ -1661,20 +1661,20 @@ public class StdRoom implements Room
 	}
 
 	@Override
-	public void send(MOB source, CMMsg msg)
+	public void send(final MOB source, final CMMsg msg)
 	{
 		source.executeMsg(source,msg);
 		reallySend(source,msg,0);
 	}
 
 	@Override
-	public void sendOthers(MOB source, CMMsg msg)
+	public void sendOthers(final MOB source, final CMMsg msg)
 	{
 		reallySend(source,msg,0);
 	}
 
 	@Override
-	public void showHappens(int allCode, String allMessage)
+	public void showHappens(final int allCode, final String allMessage)
 	{
 		final MOB everywhereMOB=CMLib.map().getFactoryMOB(this);
 		final CMMsg msg=CMClass.getMsg(everywhereMOB,null,null,allCode,allCode,allCode,allMessage);
@@ -1683,7 +1683,7 @@ public class StdRoom implements Room
 	}
 
 	@Override
-	public void showHappens(int allCode, Environmental like, String allMessage)
+	public void showHappens(final int allCode, final Environmental like, final String allMessage)
 	{
 		final MOB everywhereMOB=CMClass.getFactoryMOB();
 		everywhereMOB.setName(like.name());
@@ -1697,7 +1697,7 @@ public class StdRoom implements Room
 	}
 
 	@Override
-	public boolean show(MOB source, Environmental target, int allCode, String allMessage)
+	public boolean show(final MOB source, final Environmental target, final int allCode, final String allMessage)
 	{
 		final CMMsg msg=CMClass.getMsg(source,target,null,allCode,allCode,allCode,allMessage);
 		if((!CMath.bset(allCode,CMMsg.MASK_ALWAYS))&&(!okMessage(source,msg)))
@@ -1707,7 +1707,7 @@ public class StdRoom implements Room
 	}
 
 	@Override
-	public boolean show(MOB source, Environmental target, Environmental tool, int allCode, String allMessage)
+	public boolean show(final MOB source, final Environmental target, final Environmental tool, final int allCode, final String allMessage)
 	{
 		final CMMsg msg=CMClass.getMsg(source,target,tool,allCode,allCode,allCode,allMessage);
 		if((!CMath.bset(allCode,CMMsg.MASK_ALWAYS))&&(!okMessage(source,msg)))
