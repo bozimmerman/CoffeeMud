@@ -61,7 +61,10 @@ public class RaceClassNext extends StdWebMacro
 				&&(CMStrings.containsIgnoreCase(C.getRequiredRaceList(),"All")
 					||CMStrings.containsIgnoreCase(C.getRequiredRaceList(),R.ID())
 					||CMStrings.containsIgnoreCase(C.getRequiredRaceList(),R.name())
-					||CMStrings.containsIgnoreCase(C.getRequiredRaceList(),R.racialCategory())))
+					||CMStrings.containsIgnoreCase(C.getRequiredRaceList(),R.racialCategory()))
+				&&(!CMStrings.containsIgnoreCase(C.getRequiredRaceList(),"-"+R.ID()))
+				&&(!CMStrings.containsIgnoreCase(C.getRequiredRaceList(),"-"+R.name()))
+				&&(!CMStrings.containsIgnoreCase(C.getRequiredRaceList(),"-"+R.racialCategory())))
 			{
 				if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!C.ID().equals(lastID))))
 				{

@@ -426,11 +426,14 @@ public class StdCharClass implements CharClass
 		boolean foundOne=raceList.length==0;
 		for(final String raceName : raceList)
 		{
-			if(raceName.equalsIgnoreCase("any")
-			|| raceName.equalsIgnoreCase("all")
-			|| R.ID().equalsIgnoreCase(raceName)
-			|| R.name().equalsIgnoreCase(raceName)
-			|| R.racialCategory().equalsIgnoreCase(raceName))
+			if((raceName.equalsIgnoreCase("any")
+				|| raceName.equalsIgnoreCase("all")
+				|| R.ID().equalsIgnoreCase(raceName)
+				|| R.name().equalsIgnoreCase(raceName)
+				|| R.racialCategory().equalsIgnoreCase(raceName))
+			&&(!raceName.equalsIgnoreCase("-"+R.ID()))
+			&&(!raceName.equalsIgnoreCase("-"+R.name()))
+			&&(!raceName.equalsIgnoreCase("-"+R.racialCategory())))
 			{
 				foundOne=true;
 				break;
@@ -532,19 +535,36 @@ public class StdCharClass implements CharClass
 	private StringBuilder getRaceList(String[] raceList)
 	{
 		final StringBuilder str=new StringBuilder();
-		if(raceList.length==1)
-			str.append(CMStrings.capitalizeAndLower(raceList[0]));
-		else
-		if(raceList.length==2)
-			str.append(CMStrings.capitalizeAndLower(raceList[0])).append(" or ").append(CMStrings.capitalizeAndLower(raceList[1]));
-		else
+		int end=raceList.length;
 		for(int i=0;i<raceList.length;i++)
+		{
+			if(raceList[i].startsWith("-"))
+				end=i;
+		}
+		if(end == 0)
+			str.append("All");
+		for(int i=0;i<end;i++)
 		{
 			if(i>0)
 				str.append(", ");
-			if(i==raceList.length-1)
+			if(i==end-1)
 				str.append(L("or "));
-			str.append(CMStrings.capitalizeAndLower(raceList[i]));
+			if(!raceList[i].startsWith("-"))
+				str.append(CMStrings.capitalizeAndLower(raceList[i]));
+		}
+		if(end<raceList.length)
+		{
+			str.append(" except ");
+			for(int i=end;i<raceList.length;i++)
+			{
+				if(i>end)
+					str.append(", ");
+				if(i==raceList.length-1)
+					str.append(L("or "));
+				if(raceList[i].startsWith("-"))
+					str.append(CMStrings.capitalizeAndLower(raceList[i].substring(1)));
+			}
+			
 		}
 		return str;
 	}

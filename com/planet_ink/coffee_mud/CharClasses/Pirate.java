@@ -65,10 +65,12 @@ public class Pirate extends Thief
 		return 0;//Area.THEME_FANTASY;
 	}
 
+	private final String[] raceRequiredList=new String[]{"All","-Equine"};
+
 	@Override
 	public String[] getRequiredRaceList()
 	{
-		return super.getRequiredRaceList();
+		return raceRequiredList;
 	}
 
 	@SuppressWarnings("unchecked")
