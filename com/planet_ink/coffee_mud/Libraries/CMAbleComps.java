@@ -51,20 +51,40 @@ import java.util.*;
  */
 public class CMAbleComps extends StdLibrary implements AbilityComponents
 {
-	@Override public String ID(){return "CMAbleComps";}
+	@Override
+	public String ID()
+	{
+		return "CMAbleComps";
+	}
 
+	protected final boolean isRightMaterial(final long type, final long itemMaterial)
+	{
+		if(itemMaterial == type)
+			return true;
+		if(type == RawMaterial.MATERIAL_METAL)
+		{
+			if(itemMaterial==RawMaterial.MATERIAL_MITHRIL)
+				return true;
+		}
+		return false;
+	}
+	
 	public boolean IsItemComponent(MOB mob, AbilityComponent comp, int[] amt, Item I, List<Object> thisSet)
 	{
 		if(I==null)
 			return false;
 		Item container=null;
-		if((comp.getType()==AbilityComponent.CompType.STRING)&&(!CMLib.english().containsString(I.name(),comp.getStringType())))
+		if((comp.getType()==AbilityComponent.CompType.STRING)
+		&&(!CMLib.english().containsString(I.name(),comp.getStringType())))
 			return false;
 		else
-		if((comp.getType()==AbilityComponent.CompType.RESOURCE)&&((!(I instanceof RawMaterial))||(I.material()!=comp.getLongType())))
+		if((comp.getType()==AbilityComponent.CompType.RESOURCE)
+		&&((!(I instanceof RawMaterial))||(I.material()!=comp.getLongType())))
 			return false;
 		else
-		if((comp.getType()==AbilityComponent.CompType.MATERIAL)&&((!(I instanceof RawMaterial))||((I.material()&RawMaterial.MATERIAL_MASK)!=comp.getLongType())))
+		if((comp.getType()==AbilityComponent.CompType.MATERIAL)
+		&&((!(I instanceof RawMaterial))
+			||(!isRightMaterial(comp.getLongType(),I.material()&RawMaterial.MATERIAL_MASK))))
 			return false;
 		container=I.ultimateContainer(null);
 		if(container==null)
