@@ -74,7 +74,9 @@ public class Druid_PackCall extends StdAbility
 	{
 		final MOB mob=(MOB)affected;
 		super.unInvoke();
-		if((canBeUninvoked())&&(mob!=null))
+		if((canBeUninvoked())
+		&&(mob!=null)
+		&&(!mob.amDestroyed()))
 		{
 			if((mob.location()!=null)&&(!mob.amDead()))
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> wander(s) off."));

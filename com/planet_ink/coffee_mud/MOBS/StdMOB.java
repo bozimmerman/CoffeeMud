@@ -698,19 +698,27 @@ public class StdMOB implements MOB
 			if (A != null)
 				addAbility((Ability) A.copyOf());
 		}
-		for (final Enumeration<Ability> a = M.personalEffects(); a.hasMoreElements();)
+		try
 		{
-			A = a.nextElement();
-			if (A != null)
+			amDestroyed=true;
+			for (final Enumeration<Ability> a = M.personalEffects(); a.hasMoreElements();)
 			{
-				A = (Ability) A.copyOf();
-				addEffect(A);
-				if (A.canBeUninvoked())
+				A = a.nextElement();
+				if (A != null)
 				{
-					A.unInvoke();
-					delEffect(A);
+					A = (Ability) A.copyOf();
+					addEffect(A);
+					if (A.canBeUninvoked())
+					{
+						A.unInvoke();
+						delEffect(A);
+					}
 				}
 			}
+		}
+		finally
+		{
+			amDestroyed=false;
 		}
 		for (final Enumeration<Behavior> e = M.behaviors(); e.hasMoreElements();)
 		{
