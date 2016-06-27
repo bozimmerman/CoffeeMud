@@ -9,7 +9,7 @@ import com.planet_ink.coffee_mud.core.CMath;
  * Descriptor class for ability components.
  * These are managed by by the Ability library.
  * @see com.planet_ink.coffee_mud.Libraries.interfaces.AbilityComponents#addAbilityComponent(String, java.util.Map)
- * @see com.planet_ink.coffee_mud.Libraries.interfaces.AbilityComponents#componentCheck(com.planet_ink.coffee_mud.MOBS.interfaces.MOB, List)
+ * @see com.planet_ink.coffee_mud.Libraries.interfaces.AbilityComponents#componentCheck(com.planet_ink.coffee_mud.MOBS.interfaces.MOB, List, boolean)
  * @see com.planet_ink.coffee_mud.Libraries.interfaces.AbilityComponents#getAbilityComponentMap()
  * @author Bo Zimmerman
  */

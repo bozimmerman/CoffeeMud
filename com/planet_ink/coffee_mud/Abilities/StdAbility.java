@@ -1487,7 +1487,7 @@ public class StdAbility implements Ability
 			final Vector<AbilityComponent> componentsRequirements=(Vector<AbilityComponent>)CMLib.ableComponents().getAbilityComponentMap().get(ID().toUpperCase());
 			if(componentsRequirements!=null)
 			{
-				final List<Object> components=CMLib.ableComponents().componentCheck(mob,componentsRequirements);
+				final List<Object> components=CMLib.ableComponents().componentCheck(mob,componentsRequirements, false);
 				if(components==null)
 				{
 					mob.tell(L("You lack the necessary materials to use this @x1, the requirements are: @x2.",

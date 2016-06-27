@@ -1326,7 +1326,7 @@ public class CraftingSkill extends GatheringSkill
 			componentsRequirements=CMLib.ableComponents().getAbilityComponentMap().get(componentID.toUpperCase());
 		if(componentsRequirements!=null)
 		{
-			final List<Object> components=CMLib.ableComponents().componentCheck(mob,componentsRequirements);
+			final List<Object> components=CMLib.ableComponents().componentCheck(mob,componentsRequirements, true);
 			if(components!=null)
 			{
 				if(compData != null)

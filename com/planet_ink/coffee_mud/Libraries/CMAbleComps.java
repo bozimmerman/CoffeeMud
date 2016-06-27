@@ -57,11 +57,11 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 		return "CMAbleComps";
 	}
 
-	protected final boolean isRightMaterial(final long type, final long itemMaterial)
+	protected final boolean isRightMaterial(final long type, final long itemMaterial, final boolean mithrilOK)
 	{
 		if(itemMaterial == type)
 			return true;
-		if(type == RawMaterial.MATERIAL_METAL)
+		if((mithrilOK) && (type == RawMaterial.MATERIAL_METAL))
 		{
 			if(itemMaterial==RawMaterial.MATERIAL_MITHRIL)
 				return true;
@@ -69,7 +69,7 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 		return false;
 	}
 	
-	public boolean IsItemComponent(MOB mob, AbilityComponent comp, int[] amt, Item I, List<Object> thisSet)
+	public boolean IsItemComponent(MOB mob, AbilityComponent comp, int[] amt, Item I, List<Object> thisSet, final boolean mithrilOK)
 	{
 		if(I==null)
 			return false;
@@ -84,7 +84,7 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 		else
 		if((comp.getType()==AbilityComponent.CompType.MATERIAL)
 		&&((!(I instanceof RawMaterial))
-			||(!isRightMaterial(comp.getLongType(),I.material()&RawMaterial.MATERIAL_MASK))))
+			||(!isRightMaterial(comp.getLongType(),I.material()&RawMaterial.MATERIAL_MASK,mithrilOK))))
 			return false;
 		container=I.ultimateContainer(null);
 		if(container==null)
@@ -145,7 +145,7 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 
 	// returns list of components found if all good, returns Integer of bad row if not.
 	@Override
-	public List<Object> componentCheck(MOB mob, List<AbilityComponent> req)
+	public List<Object> componentCheck(MOB mob, List<AbilityComponent> req, boolean mithrilOK)
 	{
 		if((mob==null)||(req==null)||(req.size()==0))
 			return new Vector<Object>();
@@ -177,7 +177,7 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 			{
 				for(int ii=0;ii<mob.numItems();ii++)
 				{
-					found=IsItemComponent(mob, comp, amt, mob.getItem(ii), thisSet);
+					found=IsItemComponent(mob, comp, amt, mob.getItem(ii), thisSet,mithrilOK);
 					if(found)
 						break;
 				}
@@ -188,7 +188,7 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 			{
 				for(int ii=0;ii<room.numItems();ii++)
 				{
-					found=IsItemComponent(mob, comp, amt, room.getItem(ii), thisSet);
+					found=IsItemComponent(mob, comp, amt, room.getItem(ii), thisSet,mithrilOK);
 					if(found)
 						break;
 				}

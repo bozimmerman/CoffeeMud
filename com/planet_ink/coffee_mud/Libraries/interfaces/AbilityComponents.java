@@ -52,15 +52,16 @@ public interface AbilityComponents extends CMLibrary
 	 * @see AbilityComponents#getAbilityComponents(String)
 	 * @param mob the mob whose inventory or room or both to check
 	 * @param req the ability components rules definition
+	 * @param mithrilOK true to allow mithril as a metal substitute
 	 * @return null if missing components, or the list of found components
 	 */
-	public List<Object> componentCheck(MOB mob, List<AbilityComponent> req);
+	public List<Object> componentCheck(MOB mob, List<AbilityComponent> req, boolean mithrilOK);
 	
 	/**
 	 * If the ability component recipe used to build the list of found
 	 * components needed to use a skill requires that any of the componenets
 	 * are destroyed.
-	 * @see AbilityComponents#componentCheck(MOB, List)
+	 * @see AbilityComponents#componentCheck(MOB, List, boolean)
 	 * @param found the components found with componentCheck
 	 * @return the value of the components destroyed
 	 */
