@@ -103,7 +103,7 @@ public class WanderHomeLater extends StdAbility
 			if((!P.amDestroyed())&&(destroy))
 			{
 				final Room R=CMLib.map().roomLocation(P);
-				if(R!=null)
+				if((R!=null)&&(!((MOB)P).amDead()))
 					R.showHappens(CMMsg.MSG_OK_ACTION, P,L("<S-NAME> wander(s) off."));
 				P.destroy();
 			}

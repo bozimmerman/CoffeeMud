@@ -98,7 +98,7 @@ public class Prayer_AnimateGhast extends Prayer
 			if((!P.amDestroyed())&&(((MOB)P).amFollowing()==null))
 			{
 				final Room R=CMLib.map().roomLocation(P);
-				if(R!=null)
+				if((R!=null)&&(!((MOB)P).amDead()))
 					R.showHappens(CMMsg.MSG_OK_ACTION, P,L("<S-NAME> wander(s) off."));
 				P.destroy();
 			}
