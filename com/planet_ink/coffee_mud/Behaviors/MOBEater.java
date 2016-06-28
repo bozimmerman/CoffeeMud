@@ -36,15 +36,30 @@ import java.util.*;
 
 public class MOBEater extends ActiveTicker
 {
-	@Override public String ID(){return "MOBEater";}
-	@Override protected int canImproveCode(){return Behavior.CAN_MOBS;}
-	@Override public long flags() { return super.flags()|Behavior.FLAG_POTENTIALLYAUTODEATHING; }
-	protected Room stomachR = null;
-	protected int digestDown=4;
-	protected Room lastKnownLocationR=null;
-	protected MOB lastKnownEaterM = null;
-	protected int chanceToEat = 5;
-	protected int pctAcidHp = 10;
+	@Override
+	public String ID()
+	{
+		return "MOBEater";
+	}
+
+	@Override
+	protected int canImproveCode()
+	{
+		return Behavior.CAN_MOBS;
+	}
+
+	@Override
+	public long flags()
+	{
+		return super.flags() | Behavior.FLAG_POTENTIALLYAUTODEATHING;
+	}
+
+	protected Room	stomachR			= null;
+	protected int	digestDown			= 4;
+	protected Room	lastKnownLocationR	= null;
+	protected MOB	lastKnownEaterM		= null;
+	protected int	chanceToEat			= 5;
+	protected int	pctAcidHp			= 10;
 
 	@Override
 	public String accountForYourself()
@@ -198,6 +213,7 @@ public class MOBEater extends ActiveTicker
 		}
 		super.executeMsg(myHost,msg);
 	}
+
 	protected boolean trySwallowWhole(MOB mob)
 	{
 		if(stomachR==null) 
@@ -248,15 +264,15 @@ public class MOBEater extends ActiveTicker
 			if (tastyMorselM != null)
 			{
 				final CMMsg DigestMsg=CMClass.getMsg(mob,
-										   tastyMorselM,
-										   null,
-										   CMMsg.MASK_ALWAYS|CMMsg.TYP_ACID,
-										   L("<S-NAME> digest(s) <T-NAMESELF>!!"));
+													 tastyMorselM,
+													 null,
+													 CMMsg.MASK_ALWAYS|CMMsg.TYP_ACID,
+													 L("<S-NAME> digest(s) <T-NAMESELF>!!"));
 				// no OKaffectS, since the dragon is not in his own stomach.
 				stomachR.send(mob,DigestMsg);
 				int damage=(int)Math.round(tastyMorselM.curState().getHitPoints() * CMath.div(pctAcidHp, 100));
-				if(damage<(tastyMorselM.phyStats().level()+6)) 
-					damage=tastyMorselM.curState().getHitPoints()+1;
+				if(damage<2) 
+					damage=2;
 				if(DigestMsg.value()!=0) 
 					damage=damage/2;
 				CMLib.combat().postDamage(mob,tastyMorselM,null,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_ACID,Weapon.TYPE_MELTING,L("The stomach acid <DAMAGE> <T-NAME>!"));
