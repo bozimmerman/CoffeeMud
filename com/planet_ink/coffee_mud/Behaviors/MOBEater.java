@@ -230,12 +230,12 @@ public class MOBEater extends ActiveTicker
 				// ===== The player has been eaten.
 				// ===== move the tasty morsel to the stomach
 				final CMMsg eatMsg=CMClass.getMsg(mob,
-										   tastyMorselM,
-										   null,
-										   CMMsg.MSG_EAT,
-										   CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,
-										   CMMsg.MSG_NOISYMOVEMENT,
-										   L("<S-NAME> swallow(es) <T-NAMESELF> WHOLE!"));
+												  tastyMorselM,
+												  null,
+												  CMMsg.MSG_EAT,
+												  CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,
+												  CMMsg.MSG_NOISYMOVEMENT,
+												  L("<S-NAME> swallow(es) <T-NAMESELF> WHOLE!"));
 				if(mob.location().okMessage(tastyMorselM,eatMsg))
 				{
 					mob.location().send(tastyMorselM,eatMsg);
