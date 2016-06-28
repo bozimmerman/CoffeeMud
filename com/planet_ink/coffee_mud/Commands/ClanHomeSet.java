@@ -35,10 +35,18 @@ import java.util.*;
 */
 public class ClanHomeSet extends StdCommand
 {
-	public ClanHomeSet(){}
+	public ClanHomeSet()
+	{
+	}
 
-	private final String[] access=I(new String[]{"CLANHOMESET"});
-	@Override public String[] getAccessWords(){return access;}
+	private final String[]	access	= I(new String[] { "CLANHOMESET" });
+
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
+
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
@@ -51,10 +59,17 @@ public class ClanHomeSet extends StdCommand
 			C=mob.getClanRole(mob.Name()).first;
 
 		if(C==null)
-		for(final Pair<Clan,Integer> c : mob.clans())
-			if((clanName.length()==0)||(CMLib.english().containsString(c.first.getName(), clanName))
-			&&(c.first.getAuthority(c.second.intValue(), Clan.Function.SET_HOME)!=Authority.CAN_NOT_DO))
-			{	C=c.first; break; }
+		{
+			for(final Pair<Clan,Integer> c : mob.clans())
+			{
+				if((clanName.length()==0)||(CMLib.english().containsString(c.first.getName(), clanName))
+				&&(c.first.getAuthority(c.second.intValue(), Clan.Function.SET_HOME)!=Authority.CAN_NOT_DO))
+				{
+					C = c.first;
+					break;
+				}
+			}
+		}
 
 		commands.set(0,getAccessWords()[0]);
 
@@ -103,7 +118,10 @@ public class ClanHomeSet extends StdCommand
 		return false;
 	}
 
-	@Override public boolean canBeOrdered(){return false;}
-
+	@Override
+	public boolean canBeOrdered()
+	{
+		return false;
+	}
 
 }

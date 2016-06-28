@@ -38,10 +38,17 @@ import java.util.*;
 
 public class ClanAssign extends StdCommand
 {
-	public ClanAssign(){}
+	public ClanAssign()
+	{
+	}
 
-	private final String[] access=I(new String[]{"CLANASSIGN"});
-	@Override public String[] getAccessWords(){return access;}
+	private final String[]	access	= I(new String[] { "CLANASSIGN" });
+
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
@@ -62,10 +69,17 @@ public class ClanAssign extends StdCommand
 			C=mob.getClanRole(mob.Name()).first;
 
 		if(C==null)
-		for(final Pair<Clan,Integer> c : mob.clans())
-			if((clanName.length()==0)||(CMLib.english().containsString(c.first.getName(), clanName))
-			&&(c.first.getAuthority(c.second.intValue(), Clan.Function.ASSIGN)!=Authority.CAN_NOT_DO))
-			{	C=c.first; break; }
+		{
+			for(final Pair<Clan,Integer> c : mob.clans())
+			{
+				if((clanName.length()==0)||(CMLib.english().containsString(c.first.getName(), clanName))
+				&&(c.first.getAuthority(c.second.intValue(), Clan.Function.ASSIGN)!=Authority.CAN_NOT_DO))
+				{
+					C = c.first;
+					break;
+				}
+			}
+		}
 
 		commands.clear();
 		commands.add(getAccessWords()[0]);
@@ -122,17 +136,23 @@ public class ClanAssign extends StdCommand
 						final int maxInNewPos=C.getMostInRole(newPos);
 						final Vector<String> currentMembersInNewPosV=new Vector<String>();
 						for(final MemberRecord member : members)
+						{
 							if(member.role==newPos)
 								currentMembersInNewPosV.add(member.name);
+						}
 						final List<Integer> topRoleIDs=C.getTopRankedRoles(Function.ASSIGN);
 						if(topRoleIDs.contains(Integer.valueOf(oldPos)))
 						{ // If you WERE already the highest order.. you must be being demoted.
 							// so we check to see if there will be any other high officers left
 							int numMembers=0;
 							for(final MemberRecord member : members)
+							{
 								if(!M.Name().equalsIgnoreCase(member.name))
+								{
 									if(topRoleIDs.contains(Integer.valueOf(member.role)))
 										numMembers++;
+								}
+							}
 							if(numMembers==0)
 							{
 								mob.tell(L("@x1 is the last @x2 and must be replaced before being reassigned.",M.Name(),C.getRoleName(oldPos,true,false)));
@@ -181,7 +201,10 @@ public class ClanAssign extends StdCommand
 		return false;
 	}
 
-	@Override public boolean canBeOrdered(){return false;}
-
+	@Override
+	public boolean canBeOrdered()
+	{
+		return false;
+	}
 
 }

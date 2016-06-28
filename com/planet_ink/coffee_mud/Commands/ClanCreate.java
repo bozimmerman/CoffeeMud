@@ -36,10 +36,18 @@ import java.util.*;
 
 public class ClanCreate extends StdCommand
 {
-	public ClanCreate(){}
+	public ClanCreate()
+	{
+	}
 
-	private final String[] access=I(new String[]{"CLANCREATE"});
-	@Override public String[] getAccessWords(){return access;}
+	private final String[]	access	= I(new String[] { "CLANCREATE" });
+
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
+
 	@Override
 	public boolean execute(final MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
@@ -47,16 +55,22 @@ public class ClanCreate extends StdCommand
 		int numGovernmentsAvailable=0;
 		Pair<Clan,Integer> p=null;
 		for(final ClanGovernment gvt : CMLib.clans().getStockGovernments())
+		{
 			if(CMProps.isPublicClanGvtCategory(gvt.getCategory()))
 			{
 				if(CMLib.clans().getClansByCategory(mob, gvt.getCategory()).size()<CMProps.getMaxClansThisCategory(gvt.getCategory()))
 					numGovernmentsAvailable++;
 				else
 				if(p==null)
-				for(final Pair<Clan,Integer> c : mob.clans())
-					if(c.first.getCategory().equalsIgnoreCase(gvt.getCategory()))
-						p=c;
+				{
+					for(final Pair<Clan,Integer> c : mob.clans())
+					{
+						if(c.first.getCategory().equalsIgnoreCase(gvt.getCategory()))
+							p=c;
+					}
+				}
 			}
+		}
 		if(numGovernmentsAvailable==0)
 		{
 			if(p!=null)
@@ -80,18 +94,38 @@ public class ClanCreate extends StdCommand
 			}
 			session.prompt(new InputCallback(InputCallback.Type.CHOOSE,"N","YN\n",0)
 			{
-				@Override public void showPrompt() { session.promptPrint(L("Are you sure you want to found a new clan (y/N)?"));}
-				@Override public void timedOut() { }
-				@Override public void callBack()
+				@Override
+				public void showPrompt()
+				{
+					session.promptPrint(L("Are you sure you want to found a new clan (y/N)?"));
+				}
+
+				@Override
+				public void timedOut()
+				{
+				}
+
+				@Override
+				public void callBack()
 				{
 					final String check=this.input;
 					if(!check.equalsIgnoreCase("Y"))
 						return;
 					session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0)
 					{
-						@Override public void showPrompt() { session.promptPrint(L("\n\r^HEnter the name of your new clan (30 chars max), exactly how you want it\n\r:^N"));}
-						@Override public void timedOut() { }
-						@Override public void callBack()
+						@Override
+						public void showPrompt()
+						{
+							session.promptPrint(L("\n\r^HEnter the name of your new clan (30 chars max), exactly how you want it\n\r:^N"));
+						}
+
+						@Override
+						public void timedOut()
+						{
+						}
+
+						@Override
+						public void callBack()
 						{
 							final String doubleCheck=this.input;
 							if(doubleCheck.length()<1)
@@ -112,9 +146,19 @@ public class ClanCreate extends StdCommand
 							{
 								session.prompt(new InputCallback(InputCallback.Type.CHOOSE,"N","YN\n",0)
 								{
-									@Override public void showPrompt() { session.promptPrint(L("\n\rIs '@x1' correct (y/N)?",doubleCheck));}
-									@Override public void timedOut() { }
-									@Override public void callBack()
+									@Override
+									public void showPrompt()
+									{
+										session.promptPrint(L("\n\rIs '@x1' correct (y/N)?", doubleCheck));
+									}
+
+									@Override
+									public void timedOut()
+									{
+									}
+
+									@Override
+									public void callBack()
 									{
 										final String check=this.input;
 										if(!check.equalsIgnoreCase("Y"))
@@ -124,24 +168,36 @@ public class ClanCreate extends StdCommand
 										final InputCallback[] IC=new InputCallback[1];
 										IC[0]=new InputCallback(InputCallback.Type.PROMPT,"",0)
 										{
-											@Override public void showPrompt()
+											@Override 
+											public void showPrompt()
 											{
 												final StringBuilder promptmsg=new StringBuilder("\n\r^HNow enter a political style for this clan. Choices are:\n\r^N");
 												{
 													int longest=0;
 													for(final ClanGovernment gvt : CMLib.clans().getStockGovernments())
+													{
 														if((gvt.getName().length() > longest)&&(CMProps.isPublicClanGvtCategory(gvt.getCategory())))
 															longest=gvt.getName().length();
+													}
 													for(final ClanGovernment gvt : CMLib.clans().getStockGovernments())
+													{
 														if(CMProps.isPublicClanGvtCategory(gvt.getCategory()))
+														{
 															promptmsg.append("^H"+CMStrings.padRight(gvt.getName(), longest))
 																	 .append("^N:").append(gvt.getShortDesc()).append("\n\r");
-
+														}
+													}
 												}
 												session.promptPrint(promptmsg.toString()+": ");
 											}
-											@Override public void timedOut() { }
-											@Override public void callBack()
+
+											@Override
+											public void timedOut()
+											{
+											}
+
+											@Override
+											public void callBack()
 											{
 												final String govt=this.input;
 												if(govt.length()==0){ mob.tell(L("Aborted.")); return;}
@@ -205,5 +261,9 @@ public class ClanCreate extends StdCommand
 		return false;
 	}
 
-	@Override public boolean canBeOrdered(){return false;}
+	@Override
+	public boolean canBeOrdered()
+	{
+		return false;
+	}
 }

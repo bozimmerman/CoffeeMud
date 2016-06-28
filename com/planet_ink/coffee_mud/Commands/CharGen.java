@@ -35,10 +35,17 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class CharGen extends StdCommand
 {
-	public CharGen(){}
+	public CharGen()
+	{
+	}
 
-	private final String[] access=I(new String[]{"CHARGEN"});
-	@Override public String[] getAccessWords(){return access;}
+	private final String[]	access	= I(new String[] { "CHARGEN" });
+
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
 	protected void equipPlayer(final MOB M)
 	{
@@ -314,13 +321,13 @@ public class CharGen extends StdCommand
 			return;
 		}
 		final String[][] CAMATCH={
-				{"Commoner","CombatAbilities"},
-				{"Bard","Bardness"},
-				{"Cleric","Clericness"},
-				{"Druid","Druidness"},
-				{"Mage","Mageness"},
-				{"Thief","Thiefness"},
-				{"Fighter","Fighterness"},
+			{"Commoner","CombatAbilities"},
+			{"Bard","Bardness"},
+			{"Cleric","Clericness"},
+			{"Druid","Druidness"},
+			{"Mage","Mageness"},
+			{"Thief","Thiefness"},
+			{"Fighter","Fighterness"},
 		};
 
 		for(final Enumeration e=CMClass.charClasses();e.hasMoreElements();)
@@ -333,8 +340,10 @@ public class CharGen extends StdCommand
 			{
 				String behav="CombatAbilities";
 				for (final String[] element : CAMATCH)
+				{
 					if(C.baseClass().equalsIgnoreCase(element[0]))
 						behav=element[1];
+				}
 				c.classSet.add(C,behav);
 			}
 		}
@@ -416,8 +425,10 @@ public class CharGen extends StdCommand
 				}
 				String behav="CombatAbilities";
 				for (final String[] element : CAMATCH)
+				{
 					if(C.baseClass().equalsIgnoreCase(element[0]))
 						behav=element[1];
+				}
 				c.classSet.add(C,behav);
 			}
 			else
@@ -440,8 +451,10 @@ public class CharGen extends StdCommand
 						}
 						String behav="CombatAbilities";
 						for (final String[] element : CAMATCH)
+						{
 							if(C.baseClass().equalsIgnoreCase(element[0]))
 								behav=element[1];
+						}
 						c.classSet.add(C,behav);
 					}
 				}
@@ -499,11 +512,12 @@ public class CharGen extends StdCommand
 		{
 			new Thread(Thread.currentThread().getThreadGroup(),"CharGen"+Thread.currentThread().getThreadGroup().getName().charAt(0))
 			{
-				CombatStats c;
-				int charClassDex;
-				String fileExp;
+				CombatStats	c;
+				int			charClassDex;
+				String		fileExp;
+				boolean[]	aborted;
 				java.util.concurrent.CountDownLatch latch = null;
-				boolean[] aborted;
+
 				public void start(CombatStats c, int charClassDex, String fileExp, java.util.concurrent.CountDownLatch latch, boolean[] aborted)
 				{
 					this.c=c;
@@ -513,6 +527,7 @@ public class CharGen extends StdCommand
 					this.aborted=aborted;
 					this.start();
 				}
+
 				@Override
 				public void run()
 				{
@@ -528,13 +543,13 @@ public class CharGen extends StdCommand
 						int roomRobin=0;
 						Room R=null;
 
-						final int[] bestSingleHitScore=new int[]{0};
-						final String[] bestSingleHitSkill=new String[]{""};
-						final int[] bestSingleHitPhys=new int[]{0};
-						final int[] bestHitScore=new int[]{0};
-						final String[] bestHitSkill=new String[]{""};
-						final int[] bestIterScore=new int[]{Integer.MAX_VALUE};
-						final String[] bestIterSkill=new String[]{""};
+						final int[] bestSingleHitScore = new int[] { 0 };
+						final String[] bestSingleHitSkill = new String[] { "" };
+						final int[] bestSingleHitPhys = new int[] { 0 };
+						final int[] bestHitScore = new int[] { 0 };
+						final String[] bestHitSkill = new String[] { "" };
+						final int[] bestIterScore = new int[] { Integer.MAX_VALUE };
+						final String[] bestIterSkill = new String[] { "" };
 
 						final int[] losses=new int[]{0};
 
@@ -566,9 +581,15 @@ public class CharGen extends StdCommand
 							B1.setParms(C.ID()+" NOSTAT NOCOMBATSTAT");
 							switch(roomRobin)
 							{
-							case 0: R=CMClass.getLocale("Woods"); break;
-							case 1: R=CMClass.getLocale("CaveRoom"); break;
-							case 2: R=CMClass.getLocale("CityStreet"); break;
+							case 0:
+								R = CMClass.getLocale("Woods");
+								break;
+							case 1:
+								R = CMClass.getLocale("CaveRoom");
+								break;
+							case 2:
+								R = CMClass.getLocale("CityStreet");
+								break;
 							}
 							if((++roomRobin)>2)
 								roomRobin=0;
@@ -733,13 +754,13 @@ public class CharGen extends StdCommand
 							
 							//chargen combat charclasses export=test.tab iterations=100 skiplevels=20 1 91
 							while((M1.getVictim()==M2)
-								 &&(M2.getVictim()==M1)
-								 &&(!M1.amDead())
-								 &&(!M2.amDead())
-								 &&(!M1.amDestroyed())
-								 &&(!M2.amDestroyed())
-								 &&(M1.location()==M2.location())
-								 &&(iterations<1000))
+								&&(M2.getVictim()==M1)
+								&&(!M1.amDead())
+								&&(!M2.amDead())
+								&&(!M1.amDestroyed())
+								&&(!M2.amDestroyed())
+								&&(M1.location()==M2.location())
+								&&(iterations<1000))
 							{
 								if(aborted[0])
 								{
@@ -932,7 +953,6 @@ public class CharGen extends StdCommand
 										if(pct>20)
 											fails.append(s+"("+pct+"%) ");
 									}
-
 								}
 								if(fileExp==null)
 									mob.tell(fails.toString());
@@ -996,12 +1016,14 @@ public class CharGen extends StdCommand
 						final int[] levels=new int[c.levelEnd+1];
 						double ct=0;
 						for(int charClassDex=0;charClassDex<c.classSet.size();charClassDex++)
+						{
 							if(((CharClass)c.classSet.get(charClassDex,1)).baseClass().equalsIgnoreCase(baseClass))
 							{
 								ct+=1.0;
 								for(int level=c.levelStart;level<=c.levelEnd;level+=c.skipLevels)
 									levels[level]+=c.allData[charClassDex][level-c.levelStart][d];
 							}
+						}
 						if(ct>0)
 						{
 							buf.append(baseClass).append("\t").append(baseClass).append("\t");
@@ -1066,7 +1088,10 @@ public class CharGen extends StdCommand
 			{
 				ClassName=mob.session().prompt(L("Enter a class name:"));
 			}
-			catch(final Exception e){return false;}
+			catch (final Exception e)
+			{
+				return false;
+			}
 
 			C=CMClass.findCharClass(ClassName);
 			if((C==null)&&(createNewOnly||(ClassName.toUpperCase().indexOf("ALL")<0)))
@@ -1079,7 +1104,10 @@ public class CharGen extends StdCommand
 			{
 				level=CMath.s_int(mob.session().prompt(L("Enter a level (1-@x1): ",""+CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL))));
 			}
-			catch(final Exception e){return false;}
+			catch (final Exception e)
+			{
+				return false;
+			}
 			if(level<=0)
 				return false;
 		}
@@ -1112,6 +1140,15 @@ public class CharGen extends StdCommand
 		return false;
 	}
 
-	@Override public boolean canBeOrdered(){return true;}
-	@Override public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CHARGEN);}
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
+
+	@Override
+	public boolean securityCheck(MOB mob)
+	{
+		return CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.CHARGEN);
+	}
 }

@@ -37,10 +37,18 @@ import java.util.*;
 
 public class ClanQual extends StdCommand
 {
-	public ClanQual(){}
+	public ClanQual()
+	{
+	}
 
-	private final String[] access=I(new String[]{"CLANQUAL"});
-	@Override public String[] getAccessWords(){return access;}
+	private final String[]	access	= I(new String[] { "CLANQUAL" });
+
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
+
 	@Override
 	public boolean execute(final MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
@@ -53,10 +61,17 @@ public class ClanQual extends StdCommand
 			chkC=mob.getClanRole(mob.Name()).first;
 
 		if(chkC==null)
-		for(final Pair<Clan,Integer> c : mob.clans())
-			if((clanName.length()==0)||(CMLib.english().containsString(c.first.getName(), clanName))
-			&&(c.first.getAuthority(c.second.intValue(), Clan.Function.PREMISE)!=Authority.CAN_NOT_DO))
-			{	chkC=c.first; break; }
+		{
+			for(final Pair<Clan,Integer> c : mob.clans())
+			{
+				if((clanName.length()==0)||(CMLib.english().containsString(c.first.getName(), clanName))
+				&&(c.first.getAuthority(c.second.intValue(), Clan.Function.PREMISE)!=Authority.CAN_NOT_DO))
+				{
+					chkC = c.first;
+					break;
+				}
+			}
+		}
 
 		commands.set(0,getAccessWords()[0]);
 
@@ -86,9 +101,19 @@ public class ClanQual extends StdCommand
 		final InputCallback[] IC=new InputCallback[1];
 		IC[0]=new InputCallback(InputCallback.Type.PROMPT,"",0)
 		{
-			@Override public void showPrompt() { session.promptPrint(L("Describe your @x1's Qualification Code (?)\n\r: ",C.getGovernmentName()));}
-			@Override public void timedOut() { }
-			@Override public void callBack()
+			@Override
+			public void showPrompt()
+			{
+				session.promptPrint(L("Describe your @x1's Qualification Code (?)\n\r: ", C.getGovernmentName()));
+			}
+
+			@Override
+			public void timedOut()
+			{
+			}
+
+			@Override 
+			public void callBack()
 			{
 				final String qualMask=this.input;
 				if(qualMask.length()==0)
@@ -103,13 +128,20 @@ public class ClanQual extends StdCommand
 				}
 				session.prompt(new InputCallback(InputCallback.Type.CHOOSE,"Y","YN\n",0)
 				{
-					@Override public void showPrompt()
+					@Override
+					public void showPrompt()
 					{
-						session.println(L("Your qualifications will be as follows: @x1\n\r",CMLib.masking().maskDesc(qualMask)));
+						session.println(L("Your qualifications will be as follows: @x1\n\r", CMLib.masking().maskDesc(qualMask)));
 						session.promptPrint(L("Is this correct (Y/n)?"));
 					}
-					@Override public void timedOut() { }
-					@Override public void callBack()
+
+					@Override
+					public void timedOut()
+					{
+					}
+
+					@Override
+					public void callBack()
 					{
 						if(!this.input.equalsIgnoreCase("Y"))
 						{
@@ -138,7 +170,10 @@ public class ClanQual extends StdCommand
 		CMLib.clans().clanAnnounce(mob,L("The qualifications of @x1 @x2 have been changed.",C.getGovernmentName(),C.clanID()));
 	}
 
-	@Override public boolean canBeOrdered(){return false;}
-
+	@Override
+	public boolean canBeOrdered()
+	{
+		return false;
+	}
 
 }

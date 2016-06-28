@@ -35,10 +35,18 @@ import java.util.*;
 */
 public class ClanDeclare extends StdCommand
 {
-	public ClanDeclare(){}
+	public ClanDeclare()
+	{
+	}
 
-	private final String[] access=I(new String[]{"CLANDECLARE"});
-	@Override public String[] getAccessWords(){return access;}
+	private final String[]	access	= I(new String[] { "CLANDECLARE" });
+
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
+
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
@@ -69,15 +77,25 @@ public class ClanDeclare extends StdCommand
 		if(C==null)
 		{
 			for(final Pair<Clan,Integer> c : mob.clans())
+			{
 				if((clanName.length()==0)||(CMLib.english().containsString(c.first.getName(), clanName))
 				&&(c.first.getAuthority(c.second.intValue(), Clan.Function.DECLARE)!=Authority.CAN_NOT_DO))
-				{	C=c.first; break; }
+				{
+					C = c.first;
+					break;
+				}
+			}
 		}
 		if(C2==null)
 		{
 			for(final Pair<Clan,Integer> c : mob.clans())
+			{
 				if(CMLib.english().containsString(c.first.getName(), clan2Name))
-				{	C2=c.first; break; }
+				{
+					C2 = c.first;
+					break;
+				}
+			}
 		}
 
 		if(C2==null)
@@ -105,8 +123,10 @@ public class ClanDeclare extends StdCommand
 			{
 				int newRole=-1;
 				for(int i=0;i<Clan.REL_DESCS.length;i++)
+				{
 					if(rel.equalsIgnoreCase(Clan.REL_DESCS[i]))
 						newRole=i;
+				}
 				if(newRole<0)
 				{
 					mob.tell(L("'@x1' is not a valid relationship. Try WAR, HOSTILE, NEUTRAL, FRIENDLY, or ALLY.",rel));
@@ -159,7 +179,10 @@ public class ClanDeclare extends StdCommand
 		return false;
 	}
 
-	@Override public boolean canBeOrdered(){return false;}
-
+	@Override
+	public boolean canBeOrdered()
+	{
+		return false;
+	}
 
 }

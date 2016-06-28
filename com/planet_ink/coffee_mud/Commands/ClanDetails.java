@@ -36,10 +36,18 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class ClanDetails extends StdCommand
 {
-	public ClanDetails(){}
+	public ClanDetails()
+	{
+	}
 
-	private final String[] access=I(new String[]{"CLANDETAILS","CLANPVPKILLS","CLANKILLS","CLAN"});
-	@Override public String[] getAccessWords(){return access;}
+	private final String[]	access	= I(new String[] { "CLANDETAILS", "CLANPVPKILLS", "CLANKILLS", "CLAN" });
+
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
+
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
@@ -78,8 +86,7 @@ public class ClanDetails extends StdCommand
 						if(M.playerpvps > 0)
 							topKillers.add(new Pair<String,Integer>(M.name,new Integer(M.playerpvps)));
 					@SuppressWarnings("unchecked")
-					final
-					Pair<String,Integer>[] killerArray = topKillers.toArray(new Pair[0]);
+					final Pair<String,Integer>[] killerArray = topKillers.toArray(new Pair[0]);
 					Arrays.sort(killerArray,new Comparator<Pair<String,Integer>>()
 					{
 						@Override
@@ -115,11 +122,12 @@ public class ClanDetails extends StdCommand
 				{
 					final List<Pair<String,Integer>> topKillers = new ArrayList<Pair<String,Integer>>();
 					for(final Clan.MemberRecord M : foundClan.getMemberList())
+					{
 						if((M.mobpvps+M.playerpvps) > 0)
 							topKillers.add(new Pair<String,Integer>(M.name,new Integer(M.mobpvps+M.playerpvps)));
+					}
 					@SuppressWarnings("unchecked")
-					final
-					Pair<String,Integer>[] killerArray = topKillers.toArray(new Pair[0]);
+					final Pair<String,Integer>[] killerArray = topKillers.toArray(new Pair[0]);
 					Arrays.sort(killerArray,new Comparator<Pair<String,Integer>>()
 					{
 						@Override
@@ -163,7 +171,10 @@ public class ClanDetails extends StdCommand
 		return false;
 	}
 
-	@Override public boolean canBeOrdered(){return false;}
-
+	@Override
+	public boolean canBeOrdered()
+	{
+		return false;
+	}
 
 }
