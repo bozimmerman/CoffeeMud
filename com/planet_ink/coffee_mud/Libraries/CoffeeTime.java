@@ -38,18 +38,27 @@ import java.util.concurrent.*;
 */
 public class CoffeeTime extends StdLibrary implements TimeManager
 {
-	@Override public String ID(){return "CoffeeTime";}
-	protected TimeClock globalClock=null;
+	@Override
+	public String ID()
+	{
+		return "CoffeeTime";
+	}
+
+	protected TimeClock	globalClock	= null;
 
 	@Override
 	public String month2MM(String monthName)
 	{
 		for(int m=0;m<MONTHS.length;m++)
+		{
 			if(monthName.equals(MONTHS[m]))
+			{
 				if(m<9)
 					return "0"+(m+1);
 				else
 					return String.valueOf(m+1);
+			}
+		}
 		return "01";
 	}
 
@@ -243,8 +252,8 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 			IntHour = IntHour-12;
 		}
 		else
-			if (IntHour == 0)
-				IntHour = 12;
+		if (IntHour == 0)
+			IntHour = 12;
 
 		hours24 = Integer.toString(IntHour);
 		return hours24;
@@ -373,10 +382,10 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 	@Override
 	public String twoDigits(long num)
 	{
-	   final String s=Long.toString(num);
-	   if(s.length()==1)
-	   	return "0"+s;
-	   return s;
+		final String s=Long.toString(num);
+		if(s.length()==1)
+			return "0"+s;
+		return s;
 	}
 
 	@Override

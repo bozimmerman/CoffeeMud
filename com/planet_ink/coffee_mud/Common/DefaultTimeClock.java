@@ -515,6 +515,12 @@ public class DefaultTimeClock implements TimeClock
 	@Override
 	public long deriveMillisAfter(TimeClock C)
 	{
+		return deriveMudHoursAfter(C) *CMProps.getMillisPerMudHour();
+	}
+
+	@Override
+	public long deriveMudHoursAfter(TimeClock C)
+	{
 		long numMudHours=0;
 		if(C.getYear()>getYear())
 			return -1;
@@ -540,9 +546,9 @@ public class DefaultTimeClock implements TimeClock
 		numMudHours+=(getMonth()-C.getMonth())*(getHoursInDay()*getDaysInMonth());
 		numMudHours+=(getDayOfMonth()-C.getDayOfMonth())*getHoursInDay();
 		numMudHours+=(getHourOfDay()-C.getHourOfDay());
-		return numMudHours*CMProps.getMillisPerMudHour();
+		return numMudHours;
 	}
-
+	
 	@Override
 	public void handleTimeChange()
 	{
