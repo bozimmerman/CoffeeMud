@@ -112,10 +112,13 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		if(mob==null)
 			return false;
 		final Room R=mob.location();
-		final CMMsg msg=CMClass.getMsg(mob,target,tools,CMMsg.MSG_COMMANDFAIL,msgStr,CMMsg.NO_EFFECT,CMParms.combineQuoted(command,0),CMMsg.NO_EFFECT,null);
-		if(!R.okMessage(mob,msg))
-			return false;
-		R.send(mob,msg);
+		if(R!=null)
+		{
+			final CMMsg msg=CMClass.getMsg(mob,target,tools,CMMsg.MSG_COMMANDFAIL,msgStr,CMMsg.NO_EFFECT,CMParms.combineQuoted(command,0),CMMsg.NO_EFFECT,null);
+			if(!R.okMessage(mob,msg))
+				return false;
+			R.send(mob,msg);
+		}
 		return true;
 	}
 	
