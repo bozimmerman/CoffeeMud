@@ -35,16 +35,57 @@ import java.util.*;
 
 public class Prayer_Paralyze extends Prayer
 {
-	@Override public String ID() { return "Prayer_Paralyze"; }
-	private final static String localizedName = CMLib.lang().L("Paralyze");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CORRUPTION;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	@Override public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_PARALYZING;}
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Paralyzed)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
-	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
+	@Override
+	public String ID()
+	{
+		return "Prayer_Paralyze";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Paralyze");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER | Ability.DOMAIN_CORRUPTION;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_UNHOLY | Ability.FLAG_PARALYZING;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Paralyzed)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_MOBS;
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
