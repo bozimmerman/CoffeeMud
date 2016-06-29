@@ -433,6 +433,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 		int closestX=getDenominationIndex(currency, denomination);
 		if(closestX<0)
 		for(int i=0;i<DV.length;i++)
+		{
 			if(DV[i].value()<=denomination)
 			{
 				if((DV[i].value()==denomination)
@@ -440,6 +441,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 				||((denomination-DV[i].value())<(denomination-DV[closestX].value())))
 					closestX=i;
 			}
+		}
 		if(closestX<0)
 			return "unknown";
 		return DV[closestX].name();

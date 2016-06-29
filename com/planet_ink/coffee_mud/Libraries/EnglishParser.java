@@ -419,6 +419,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return index;
 	}
 	
+	@Override
 	public String insertAdjectives(String paragraph, String[] adjsToChoose, int pctChance)
 	{
 		if((paragraph.length()==0)||(adjsToChoose==null)||(adjsToChoose.length==0))
@@ -1864,7 +1865,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	}
 
 	@Override
-	public Object[] parseMoneyStringSDL(MOB mob, String amount, String correctCurrency)
+	public Triad<String, Double, Long> parseMoneyStringSDL(MOB mob, String amount, String correctCurrency)
 	{
 		double b=0;
 		String myCurrency=CMLib.beanCounter().getCurrency(mob);
@@ -1883,7 +1884,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			else
 				myCurrency=CMLib.beanCounter().getCurrency(mob);
 		}
-		return new Object[]{myCurrency,Double.valueOf(denomination),Long.valueOf(Math.round(b/denomination))};
+		return new Triad<String,Double,Long>(myCurrency,Double.valueOf(denomination),Long.valueOf(Math.round(b/denomination)));
 	}
 
 	@Override

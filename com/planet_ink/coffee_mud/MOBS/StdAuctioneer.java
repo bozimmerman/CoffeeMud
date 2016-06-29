@@ -401,10 +401,10 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 					}
 					else
 					{
-						final Object[] bidAmts=CMLib.english().parseMoneyStringSDL(mob,bidStr,data.getCurrency());
-						final String myCurrency=(String)bidAmts[0];
-						final double myDenomination=((Double)bidAmts[1]).doubleValue();
-						final long myCoins=((Long)bidAmts[2]).longValue();
+						final Triad<String,Double,Long> bidAmts=CMLib.english().parseMoneyStringSDL(mob,bidStr,data.getCurrency());
+						final String myCurrency=bidAmts.first;
+						final double myDenomination=bidAmts.second.doubleValue();
+						final long myCoins=bidAmts.third.longValue();
 						final double bid=CMath.mul(myCoins,myDenomination);
 						if(!myCurrency.equals(data.getCurrency()))
 						{
@@ -651,10 +651,10 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 								CMLib.commands().postSay(this,mob,L("I can't seem to do business with you."),true,false);
 								return;
 							}
-							final Object[] bidAmts=CMLib.english().parseMoneyStringSDL(mob,bidStr,data.getCurrency());
-							final String myCurrency=(String)bidAmts[0];
-							final double myDenomination=((Double)bidAmts[1]).doubleValue();
-							final long myCoins=((Long)bidAmts[2]).longValue();
+							final Triad<String,Double,Long> bidAmts=CMLib.english().parseMoneyStringSDL(mob,bidStr,data.getCurrency());
+							final String myCurrency=bidAmts.first;
+							final double myDenomination=bidAmts.second.doubleValue();
+							final long myCoins=bidAmts.third.longValue();
 							final double bid=CMath.mul(myCoins,myDenomination);
 							final MOB M=data.getHighBidderMob();
 							final double oldBid=data.getBid();

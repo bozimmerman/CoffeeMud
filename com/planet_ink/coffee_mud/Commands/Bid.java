@@ -64,8 +64,8 @@ public class Bid extends StdCommand
 			CMLib.commands().doCommandFail(mob,origCmds,L("It does not look like '@x1' is enough to offer.",bidStr));
 			return false;
 		}
-		final Object[] bidThang=CMLib.english().parseMoneyStringSDL(mob,bidStr,null);
-		bidStr=CMLib.beanCounter().nameCurrencyShort((String)bidThang[0],CMath.mul(((Double)bidThang[1]).doubleValue(),((Long)bidThang[2]).longValue()));
+		final Triad<String,Double,Long> bidThang=CMLib.english().parseMoneyStringSDL(mob,bidStr,null);
+		bidStr=CMLib.beanCounter().nameCurrencyShort(bidThang.first,CMath.mul(bidThang.second.doubleValue(),bidThang.third.longValue()));
 		commands.remove(0);
 
 		int maxToDo=Integer.MAX_VALUE;
