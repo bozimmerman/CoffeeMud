@@ -122,14 +122,103 @@ public class Thief_MerchantFlag extends ThiefSkill
 			if(I.subjectToWearAndTear())
 			{
 				final String currentVictim = I.getStat("COMBATTARGET");
-				if(currentVictim.length()==0)
+				if(currentVictim.length()>0)
 				{
+					unInvoke();
+				}
+			}
+		}
+		return true;
+	}
+	
+	@Override
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
+	{
+		super.executeMsg(myHost, msg);
+		if((msg.targetMinor() == CMMsg.TYP_ADVANCE)
+		&&((msg.target() instanceof BoardableShip)
+			||(msg.target() instanceof Rideable))
+		&&(msg.targetMajor(CMMsg.MASK_MALICIOUS))
+		&&(msg.source().riding() instanceof BoardableShip)
+		&&(msg.source().riding().Name().equals(msg.source().Name())))
+		{
+			if((msg.source().riding() == affected)
+			&&(msg.source().Name().equals(affected.Name())))
+			{
+				unInvoke();
+				return;
+			}
+		}
+	}
+	@Override
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
+	{
+		if(!super.okMessage(myHost, msg))
+			return false;
+		if((msg.targetMinor() == CMMsg.TYP_ADVANCE)
+		&&((msg.target() instanceof BoardableShip)
+			||(msg.target() instanceof Rideable))
+		&&(msg.targetMajor(CMMsg.MASK_MALICIOUS))
+		&&(msg.source().riding() instanceof BoardableShip)
+		&&(msg.source().riding().Name().equals(msg.source().Name())))
+		{
+			if(msg.source().riding() == affected)
+			{
+				// execute will end this
+				return true;
+			}
+			if(msg.target() == affected)
+			{
+				boolean pirateAboard=false;
+				final BoardableShip ship=(BoardableShip)msg.source().riding();
+				if(ship != null)
+				{
+					final Area area=ship.getShipArea();
+					for(final Enumeration<Room> r=area.getProperMap();r.hasMoreElements();)
+					{
+						final Room R=r.nextElement();
+						if((R!=null)&&(R.numPCInhabitants()>0))
+						{
+							for(Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
+							{
+								final MOB M=m.nextElement();
+								if((M!=null)
+								&&(!M.isMonster())
+								&&((M.charStats().getClassLevel("Pirate")>0)
+									||(M.fetchAbility(ID())!=null)))
+								{
+									pirateAboard=true;
+									break;
+								}
+							}
+						}
+						if(pirateAboard)
+							break;
+					}
+					if(!pirateAboard)
+					{
+						//TODO: tell the ship why they can't, and then 
+						return false;
+					}
 				}
 			}
 		}
 		return true;
 	}
 
+	@Override
+	public void unInvoke()
+	{
+		final Physical P=affected;
+		super.unInvoke();
+		if(P instanceof BoardableShip)
+		{
+			final Room R=CMLib.map().roomLocation(P);
+			if((R!=null)&&(CMLib.flags().isWaterySurfaceRoom(R)))
+				R.showHappens(CMMsg.MSG_OK_VISUAL, L("@x1 lower(s) its Merchant Flag.",P.name()));
+		}
+	}
+	
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -207,6 +296,8 @@ public class Thief_MerchantFlag extends ThiefSkill
 					lastFlag = (TimeClock)now.copyOf();
 					A.setAbilityCode(adjustedLevel(mob,asLevel));
 					A.makeLongLasting();
+					if(CMLib.flags().isWaterySurfaceRoom(shipR))
+						R.showHappens(CMMsg.MSG_OK_VISUAL, L("@x1 raise(s) its Merchant Flag.",target.name()));
 				}
 			}
 		}

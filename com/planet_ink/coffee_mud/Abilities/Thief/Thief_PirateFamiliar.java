@@ -145,39 +145,36 @@ public class Thief_PirateFamiliar extends ThiefSkill
 	}
 	
 	@Override
-	public void affectPhyStats(Physical affected, PhyStats affectableStats)
+	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected, affectableStats);
 		if(affected instanceof MOB)
 		{
 			final MOB M=(MOB)affected;
-			if(M!=null)
+			if(invoker==null)
 			{
-				if(invoker==null)
+				if(M.amFollowing()!=null)
+					invoker=M.amFollowing();
+			}
+			MOB invoker=this.invoker;
+			if(invoker!=null)
+			{
+				if(affectableStats.level() < invoker.phyStats().level()-3)
 				{
-					if(M.amFollowing()!=null)
-						invoker=M.amFollowing();
-				}
-				MOB invoker=this.invoker;
-				if(invoker!=null)
-				{
-					if(affectableStats.level() < invoker.phyStats().level()-3)
-					{
-						int level = invoker.phyStats().level()-3;
-						if(level < 1)
-							level = 1;
-						M.basePhyStats().setLevel(level);
-						affectableStats.setLevel(level);
-						M.basePhyStats().setArmor(CMLib.leveler().getLevelMOBArmor(M)-(2*super.getXLEVELLevel(invoker)));
-						affectableStats.setArmor(M.basePhyStats().armor());
-						M.basePhyStats().setAttackAdjustment(CMLib.leveler().getLevelAttack(M));
-						affectableStats.setAttackAdjustment(M.basePhyStats().attackAdjustment());
-						M.basePhyStats().setDamage(CMLib.leveler().getLevelMOBDamage(M));
-						affectableStats.setDamage(M.basePhyStats().damage());
-						M.basePhyStats().setSpeed(CMLib.leveler().getLevelMOBSpeed(M));
-						affectableStats.setSpeed(M.basePhyStats().speed());
-						M.setExperience(CMLib.leveler().getLevelExperience(M.basePhyStats().level()));
-					}
+					int level = invoker.phyStats().level()-3;
+					if(level < 1)
+						level = 1;
+					M.basePhyStats().setLevel(level);
+					affectableStats.setLevel(level);
+					M.basePhyStats().setArmor(CMLib.leveler().getLevelMOBArmor(M)-(2*super.getXLEVELLevel(invoker)));
+					affectableStats.setArmor(M.basePhyStats().armor());
+					M.basePhyStats().setAttackAdjustment(CMLib.leveler().getLevelAttack(M));
+					affectableStats.setAttackAdjustment(M.basePhyStats().attackAdjustment());
+					M.basePhyStats().setDamage(CMLib.leveler().getLevelMOBDamage(M));
+					affectableStats.setDamage(M.basePhyStats().damage());
+					M.basePhyStats().setSpeed(CMLib.leveler().getLevelMOBSpeed(M));
+					affectableStats.setSpeed(M.basePhyStats().speed());
+					M.setExperience(CMLib.leveler().getLevelExperience(M.basePhyStats().level()));
 				}
 			}
 		}

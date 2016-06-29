@@ -132,7 +132,7 @@ public class Thief_PetSpy extends ThiefSkill
 					path.clear();
 				final MOB invoker=this.invoker;
 				final MOB M=(MOB)affected;
-				if((M!=null)&&(invoker!=null))
+				if(invoker!=null)
 				{
 					final Room R=CMLib.map().roomLocation(invoker);
 					if(R!=null)
