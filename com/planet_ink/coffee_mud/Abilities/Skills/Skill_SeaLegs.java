@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -96,31 +95,40 @@ public class Skill_SeaLegs extends StdSkill
 
 		final MOB mob=(MOB)affected;
 		if((msg.tool() instanceof Ability)
-		&&(msg.amITarget(affected))
-		&&(((Ability)msg.tool()).abstractQuality()==Ability.QUALITY_MALICIOUS)
-		&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_MOVING))
-		&&(mob.location()!=null)
-		&&(mob.location().getArea() instanceof BoardableShip)
-		&&((mob.fetchAbility(ID())==null)||proficiencyCheck(null,-40+(2*getXLEVELLevel(mob)),false)))
+		&&(msg.amITarget(affected)))
 		{
-			Room roomS=null;
-			Room roomD=null;
-			if(msg.target() instanceof MOB)
-				roomD=((MOB)msg.target()).location();
-			if(msg.source().location()!=null)
-				roomS=msg.source().location();
-			if(msg.target() instanceof Room)
-				roomD=(Room)msg.target();
-
-			if((roomS!=null)&&(roomD!=null)&&(roomS==roomD))
-				roomD=null;
-
-			if(roomS!=null)
-				roomS.show((MOB)affected,null,msg.tool(),CMMsg.MSG_OK_VISUAL,L("<S-NAME> keep(s) <S-HIS-HER> sea legs despite the <O-NAME>."));
-			if(roomD!=null)
-				roomD.show((MOB)affected,null,msg.tool(),CMMsg.MSG_OK_VISUAL,L("<S-NAME> keep(s) <S-HIS-HER> sea legs despite the <O-NAME>."));
-			helpProficiency((MOB)affected, 0);
-			return false;
+			if((msg.tool().ID().equalsIgnoreCase("Disease_SeaSickness"))
+			&&((mob.fetchAbility(ID())==null)||proficiencyCheck(null,(2*getXLEVELLevel(mob)),false)))
+			{
+				return false;
+			}
+			else
+			if((((Ability)msg.tool()).abstractQuality()==Ability.QUALITY_MALICIOUS)
+			&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_MOVING))
+			&&(mob.location()!=null)
+			&&(mob.location().getArea() instanceof BoardableShip)
+			&&((mob.fetchAbility(ID())==null)||proficiencyCheck(null,-40+(2*getXLEVELLevel(mob)),false)))
+			{
+				Room roomS=null;
+				Room roomD=null;
+				if(msg.target() instanceof MOB)
+					roomD=((MOB)msg.target()).location();
+				if(msg.source().location()!=null)
+					roomS=msg.source().location();
+				if(msg.target() instanceof Room)
+					roomD=(Room)msg.target();
+	
+				if((roomS!=null)&&(roomD!=null)&&(roomS==roomD))
+					roomD=null;
+	
+				if(roomS!=null)
+					roomS.show((MOB)affected,null,msg.tool(),CMMsg.MSG_OK_VISUAL,L("<S-NAME> keep(s) <S-HIS-HER> sea legs despite the <O-NAME>."));
+				if(roomD!=null)
+					roomD.show((MOB)affected,null,msg.tool(),CMMsg.MSG_OK_VISUAL,L("<S-NAME> keep(s) <S-HIS-HER> sea legs despite the <O-NAME>."));
+				helpProficiency((MOB)affected, 0);
+				return false;
+			}
+			
 		}
 		return true;
 	}

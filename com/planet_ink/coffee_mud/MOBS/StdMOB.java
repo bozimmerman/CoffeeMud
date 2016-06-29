@@ -2934,6 +2934,7 @@ public class StdMOB implements MOB
 						A.invoke(this, this, true, 0);
 				}
 			}
+			
 		}
 		return true;
 	}
@@ -3285,6 +3286,19 @@ public class StdMOB implements MOB
 				if (((!asleep) || (msg.othersMinor() == CMMsg.TYP_ENTER))
 				&& (CMLib.flags().canSenseEnteringLeaving(srcM, this)))
 					tell(srcM, msg.target(), msg.tool(), msg.othersMessage());
+				if((!isMonster())
+				&&(riding != null)
+				&&(riding.rideBasis()==Rideable.RIDEABLE_WATER)
+				&&(CMLib.dice().rollPercentage() == 1)
+				&&(CMLib.dice().rollPercentage() == 1)
+				&&(CMLib.flags().isWateryRoom(location()))
+				&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE))
+				&&(fetchEffect("Disease_SeaSickness")==null))
+				{
+					final Ability A=CMClass.getAbility("Disease_SeaSickness");
+					if(A!=null)
+						A.invoke(this, this, true, 0);
+				}
 			}
 			else
 			if (CMath.bset(othersMajor, CMMsg.MASK_CHANNEL))
@@ -3324,9 +3338,22 @@ public class StdMOB implements MOB
 			&& (!asleep) && ((canseesrc) || (canhearsrc)))
 				tell(srcM, msg.target(), msg.tool(), msg.othersMessage());
 			
-			if ((othersMinor == CMMsg.TYP_DEATH)
-			&& (othersMinor == CMMsg.TYP_DEATH)
-			&& (location() != null))
+			if ((othersMinor == CMMsg.TYP_ADVANCE)
+			&&(!isMonster())
+			&&(location()!=null)
+			&&(location().getArea() instanceof BoardableShip)
+			&&(CMLib.dice().rollPercentage() == 1)
+			&&(CMLib.dice().rollPercentage() == 1)
+			&&(CMLib.flags().isWateryRoom(CMLib.map().roomLocation(((BoardableShip)location().getArea()).getShipItem())))
+			&&(msg.source().riding() == ((BoardableShip)location().getArea()).getShipItem())
+			&&(fetchEffect("Disease_SeaSickness")==null))
+			{
+				final Ability A=CMClass.getAbility("Disease_SeaSickness");
+				if(A!=null)
+					A.invoke(this, this, true, 0);
+			}
+			else
+			if ((othersMinor == CMMsg.TYP_DEATH)&& (location() != null))
 				CMLib.combat().handleObserveDeath(this, victim, msg);
 			else
 			if (msg.sourceMinor() == CMMsg.TYP_LIFE)
@@ -3581,7 +3608,7 @@ public class StdMOB implements MOB
 				final Rideable riding = riding();
 				if ((riding != null) && (CMLib.map().roomLocation(riding) != R))
 					setRiding(null);
-
+				
 				if ((!isMonster) && (soulMate() == null))
 				{
 					CMLib.coffeeTables().bump(this, CoffeeTableRow.STAT_TICKSONLINE);
