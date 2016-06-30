@@ -353,11 +353,6 @@ public class Falling extends StdAbility
 				F.invoker=CMClass.getMOB("StdMOB");
 			F.setSavable(false);
 			F.makeLongLasting();
-			//TODO: DELME
-			if(P instanceof Coins)
-			{
-				Log.debugOut(new Exception(P.name()+"/Fall:"+(room.getArea() instanceof BoardableShip)));
-			}
 			P.addEffect(F);
 			if(!(P instanceof MOB))
 				CMLib.threads().startTickDown(F,Tickable.TICKID_MOB,1);

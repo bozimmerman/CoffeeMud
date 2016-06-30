@@ -130,20 +130,6 @@ public class InTheAir extends StdRoom
 		InTheAir.airAffects(this,msg);
 	}
 
-	@Override
-	public void addItem(Item I)
-	{
-		super.addItem(I);
-		//TODO: DELME
-		/**
-		 * delete this when the stupid coin bug is fixed
-		 */
-		if(I instanceof Coins)
-		{
-			Log.debugOut(new Exception(I.name()+"/"+(getArea() instanceof BoardableShip)));
-		}
-	}
-	
 	public static boolean isOkAirAffect(Room room, CMMsg msg)
 	{
 		if(CMLib.flags().isSleeping(room))
