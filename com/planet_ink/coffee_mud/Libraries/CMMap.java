@@ -975,6 +975,8 @@ public class CMMap extends StdLibrary implements WorldMap
 		{
 			if(calledThis==null)
 				return null;
+			if(calledThis.length()==0)
+				return null;
 			if(calledThis.endsWith(")"))
 			{
 				final int child=calledThis.lastIndexOf("#(");
