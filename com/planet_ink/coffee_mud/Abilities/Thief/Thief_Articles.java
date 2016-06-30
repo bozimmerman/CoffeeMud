@@ -100,6 +100,20 @@ public class Thief_Articles extends ThiefSkill
 		return USAGE_MANA;
 	}
 
+	protected int abilityCode = 0;
+	
+	@Override
+	public int abilityCode()
+	{
+		return abilityCode;
+	}
+	
+	@Override
+	public void setAbilityCode(int newCode)
+	{
+		this.abilityCode = newCode;
+	}
+	
 	private enum CrewType
 	{
 		GUNNER,
@@ -109,6 +123,7 @@ public class Thief_Articles extends ThiefSkill
 	
 	protected String	shipName	= "";
 	protected CrewType	type		= CrewType.GUNNER;
+	protected Behavior	sailor		= null;
 	
 	@Override
 	public void setMiscText(String newMiscText)
@@ -120,6 +135,90 @@ public class Thief_Articles extends ThiefSkill
 			shipName=newMiscText.substring(0,x);
 			type=(CrewType)CMath.s_valueOf(CrewType.class, newMiscText.substring(x+1));
 		}
+	}
+	
+	@Override
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
+	{
+		super.affectPhyStats(affected, affectableStats);
+		switch(type)
+		{
+		case GUNNER:
+			affectableStats.addAmbiance(L("(Siege Weapon Operator)"));
+			break;
+		case DEFENDER:
+			affectableStats.addAmbiance(L("(Defender)"));
+			break;
+		case BOARDER:
+			affectableStats.addAmbiance(L("(Boarder)"));
+			break;
+		}
+	}
+	
+	public Behavior getSailor()
+	{
+		if(affected instanceof PhysicalAgent)
+		{
+			PhysicalAgent agent=(PhysicalAgent)affected;
+			if((sailor == null)||(agent.fetchBehavior("Sailor")!=sailor))
+			{
+				final Behavior B=agent.fetchBehavior("Sailor");
+				if(B!=null)
+					agent.delBehavior(B);
+				sailor = CMClass.getBehavior("Sailor");
+				switch(type)
+				{
+				case GUNNER:
+					sailor.setParms("FIGHTTECH=true TICKBONUS="+abilityCode());
+					break;
+				case DEFENDER:
+					sailor.setParms("DEFENDER=true TICKBONUS="+abilityCode());
+					break;
+				case BOARDER:
+					sailor.setParms("BOARDER=true TICKBONUS="+abilityCode());
+					break;
+				}
+				sailor.setSavable(false);
+				((PhysicalAgent)affected).addBehavior(sailor);
+			}
+		}
+		return sailor;
+	}
+	
+	@Override
+	public void unInvoke()
+	{
+		if(affected instanceof PhysicalAgent)
+		{
+			PhysicalAgent agent=(PhysicalAgent)affected;
+			final Behavior B=agent.fetchBehavior("Sailor");
+			if(B!=null)
+				agent.delBehavior(B);
+		}
+		super.unInvoke();
+	}
+	
+	@Override
+	public boolean okMessage(Environmental affecting, CMMsg msg)
+	{
+		if(!super.okMessage(affecting, msg))
+			return false;
+		return true;
+	}
+	
+	@Override
+	public void executeMsg(Environmental affecting, CMMsg msg)
+	{
+		super.executeMsg(affecting, msg);
+	}
+	
+	@Override
+	public boolean tick(Tickable ticking, int tickID)
+	{
+		if(!super.tick(ticking,tickID))
+			return false;
+		getSailor();
+		return true;
 	}
 	
 	protected boolean isCrew(final MOB M, final String shipName)
@@ -233,7 +332,15 @@ public class Thief_Articles extends ThiefSkill
 				}
 			}
 		}
-
+		
+		int bonus= ( adjustedLevel(mob,asLevel) / 10);
+		if(bonus > 0)
+		{
+			int bonusDecks = bonus / 2;
+			numRooms += (bonus - bonusDecks);
+			numDecks += bonusDecks;
+		}
+		
 		CrewType nextType = null;
 		final int maxGunners = numDecks;
 		int maxBoarders = (numRooms-numDecks)/2;
@@ -298,12 +405,14 @@ public class Thief_Articles extends ThiefSkill
 					if(A!=null)
 						target.delEffect(A);
 					A=(Ability)copyOf();
+					A.setMiscText(myShipItem.Name()+";"+nextType.name());
+					A.setAbilityCode(super.getXLEVELLevel(mob));
 					target.addNonUninvokableEffect(A);
 				}
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,L("<S-NAME> call(s) for <T-NAME> to walk the plank, but <T-HIM-HER> won't budge."));
+			return maliciousFizzle(mob,target,L("<S-NAME> offer(s) <T-NAME> the pirate articles, but <T-HIM-HER> isn't convinced."));
 
 
 		// return whether it worked

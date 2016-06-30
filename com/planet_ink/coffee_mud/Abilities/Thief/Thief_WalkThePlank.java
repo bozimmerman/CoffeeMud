@@ -190,12 +190,12 @@ public class Thief_WalkThePlank extends ThiefSkill
 						{
 							if((M2 != M)
 							&&(mobsConnectedToThisShip.contains(M2)))
-								mobsConnectedToThisShip.add(M2);
+								mobsConnectedToThisShip.add(M);
 						}
 						if(M.isMarriedToLiege())
 						{
 							final MOB M2=CMLib.players().getLoadPlayer(M.getLiegeID());
-							if((M2!=null)&&(mobsConnectedToThisShip.contains(M)))
+							if((M2!=null)&&(mobsConnectedToThisShip.contains(M2)))
 								mobsConnectedToThisShip.add(M);
 						}
 					}

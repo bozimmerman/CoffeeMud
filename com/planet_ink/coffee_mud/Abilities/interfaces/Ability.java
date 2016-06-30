@@ -928,7 +928,6 @@ public interface Ability extends Environmental
 	public static final long FLAG_AGGROFYING=134217728L;
 	/** constant mask for the flags() method designating that the thing with this ability alters the tides @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
 	public static final long FLAG_TIDEALTERING=268435456L;
-	
 
 	/** array of string describtions for the FLAG_* constants, indexed by their values */
 	public static final String[] FLAG_DESCS=

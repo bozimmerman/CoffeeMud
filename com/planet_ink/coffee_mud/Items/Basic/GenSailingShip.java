@@ -55,7 +55,7 @@ public class GenSailingShip extends StdBoardable
 	protected volatile Rideable		targetedShip	= null;
 	protected volatile Room			shipCombatRoom	= null;
 	protected PairList<Item,int[]>	coordinates		= null;
-	protected PairList<Weapon,int[]>aimings			= new PairVector<Weapon,int[]>();
+	protected PairList<String,int[]>aimings			= new PairVector<String,int[]>();
 	
 	protected int					maxHullPoints	= -1;
 	protected volatile int			lastSpamCt		= 0;
@@ -443,8 +443,8 @@ public class GenSailingShip extends StdBoardable
 						CMMsg msg2=CMClass.getMsg(msg.source(), targetedShip, weapon, CMMsg.MSG_NOISYMOVEMENT, msgStr);
 						if(mobR.okMessage(msg.source(), msg2))
 						{
-							this.aimings.removeFirst(weapon);
-							this.aimings.add(new Pair<Weapon,int[]>(weapon,targetCoords));
+							this.aimings.removeFirst(""+weapon);
+							this.aimings.add(new Pair<String,int[]>(""+weapon,targetCoords));
 							mobR.send(msg.source(), msg2);
 							msg.source().tell(L("@x1 is now aimed and will be fired in @x2 seconds.",I.name(),timeToFire));
 						}
@@ -1385,7 +1385,7 @@ public class GenSailingShip extends StdBoardable
 								else
 								{
 									//mob.setRangeToTarget(0);
-									int index = aimings.indexOfFirst(w);
+									int index = aimings.indexOfFirst(""+w);
 									if(index >= 0)
 									{
 										int[] coordsAimedAt = aimings.remove(index).second;
@@ -2221,7 +2221,7 @@ public class GenSailingShip extends StdBoardable
 											"AREA","OWNER","PRICE","PUTSTR","MOUNTSTR","DISMOUNTSTR","DEFCLOSED","DEFLOCKED",
 											"EXITNAME"
 										  };
-	private final static String[] MISCCODES = { "DISTANCETOTARGET","DIRECTIONFACING","DIRECTIONTOTARGET","ANCHORDOWN","COMBATTARGET" };
+	private final static String[] MISCCODES = { "DISTANCETOTARGET","DIRECTIONFACING","DIRECTIONTOTARGET","ANCHORDOWN","COMBATTARGET","AIMINGS" };
 	
 	@Override
 	public String getStat(String code)
@@ -2282,6 +2282,18 @@ public class GenSailingShip extends StdBoardable
 					if(!(owner() instanceof Room))
 						return "";
 					return ((Room)owner).getContextName(targetedShip);
+				case 5:
+				{
+					if(this.aimings.size()==0)
+						return "";
+					StringBuilder str=new StringBuilder("");
+					for(Iterator<Pair<String,int[]>> p=aimings.iterator();p.hasNext();)
+					{
+						Pair<String,int[]> P=p.next();
+						str.append(P.first+"="+P.second[0]+","+P.second[1]).append(" ");
+					}
+					return str.toString();
+				}
 				}
 			}
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
@@ -2378,6 +2390,19 @@ public class GenSailingShip extends StdBoardable
 							else
 								this.targetedShip=null;
 						}
+					}
+					break;
+				}
+				case 5:
+				{
+					this.aimings.clear();
+					for(String bit : val.split(" "))
+					{
+						int y=bit.indexOf('=');
+						if(y<0)
+							continue;
+						int[] aimedAt=CMParms.parseIntList(bit.substring(y+1),',');
+						aimings.add(new Pair<String,int[]>(bit.substring(0, y),aimedAt));
 					}
 					break;
 				}
