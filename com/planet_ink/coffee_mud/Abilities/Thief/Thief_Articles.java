@@ -72,12 +72,6 @@ public class Thief_Articles extends ThiefSkill
 	}
 
 	@Override
-	public int enchantQuality()
-	{
-		return Ability.QUALITY_INDIFFERENT;
-	}
-
-	@Override
 	public String displayText()
 	{
 		return "";

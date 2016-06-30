@@ -64,7 +64,7 @@ public class Thief_PayOff extends ThiefSkill
 	@Override
 	public int abstractQuality()
 	{
-		return Ability.QUALITY_OK_OTHERS;
+		return Ability.QUALITY_INDIFFERENT;
 	}
 
 	private static final String[]	triggerStrings	= I(new String[] { "PAYOFF" });

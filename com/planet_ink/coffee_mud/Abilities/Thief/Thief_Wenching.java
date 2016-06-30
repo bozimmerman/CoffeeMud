@@ -74,7 +74,7 @@ public class Thief_Wenching extends ThiefSkill
 	@Override
 	public int abstractQuality()
 	{
-		return Ability.QUALITY_INDIFFERENT;
+		return Ability.QUALITY_OK_SELF;
 	}
 
 	private static final String[]	triggerStrings	= I(new String[] { "WENCHING" });

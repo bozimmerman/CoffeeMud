@@ -57,7 +57,7 @@ public class Skill_SeaLegs extends StdSkill
 	@Override
 	public int abstractQuality()
 	{
-		return Ability.QUALITY_INDIFFERENT;
+		return Ability.QUALITY_BENEFICIAL_SELF;
 	}
 
 	@Override

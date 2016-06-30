@@ -64,7 +64,7 @@ public class Thief_Superstition extends ThiefSkill
 	@Override
 	public int abstractQuality()
 	{
-		return Ability.QUALITY_INDIFFERENT;
+		return Ability.QUALITY_OK_SELF;
 	}
 
 	@Override

@@ -66,12 +66,6 @@ public class Thief_Scuttle extends ThiefSkill
 	@Override
 	public int abstractQuality()
 	{
-		return Ability.QUALITY_OK_OTHERS;
-	}
-
-	@Override
-	public int enchantQuality()
-	{
 		return Ability.QUALITY_INDIFFERENT;
 	}
 

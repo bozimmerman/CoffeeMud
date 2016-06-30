@@ -70,7 +70,7 @@ public class Thief_HoldYourLiquor extends ThiefSkill
 	@Override
 	public int abstractQuality()
 	{
-		return Ability.QUALITY_INDIFFERENT;
+		return Ability.QUALITY_BENEFICIAL_SELF;
 	}
 
 	@Override

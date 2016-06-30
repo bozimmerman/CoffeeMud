@@ -67,13 +67,7 @@ public class Thief_WalkThePlank extends ThiefSkill
 	@Override
 	public int abstractQuality()
 	{
-		return Ability.QUALITY_OK_OTHERS;
-	}
-
-	@Override
-	public int enchantQuality()
-	{
-		return Ability.QUALITY_INDIFFERENT;
+		return Ability.QUALITY_MALICIOUS;
 	}
 
 	@Override
