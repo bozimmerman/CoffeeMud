@@ -34,23 +34,85 @@ import java.util.*;
 */
 public class Skill_Attack2 extends StdSkill
 {
-	@Override public String ID() { return "Skill_Attack2"; }
+	@Override
+	public String ID()
+	{
+		return "Skill_Attack2";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Second Attack");
-	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "";}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_MARTIALLORE;}
-	@Override public boolean isAutoInvoked(){return true;}
-	@Override public boolean canBeUninvoked(){return false;}
-	protected int attackToNerf(){ return 2;}
-	protected int roundToNerf(){ return 1;}
-	protected double nerfAmount(){ return .8;}
-	protected double numberOfFullAttacks(){ return 1.0;}
-	protected int attacksSinceNerfing=0;
-	protected int roundOfNerfing=1;
-	protected volatile boolean freeToNerf=false;
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public String displayText()
+	{
+		return "";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_SELF;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL | Ability.DOMAIN_MARTIALLORE;
+	}
+
+	@Override
+	public boolean isAutoInvoked()
+	{
+		return true;
+	}
+
+	@Override
+	public boolean canBeUninvoked()
+	{
+		return false;
+	}
+
+	protected int attackToNerf()
+	{
+		return 2;
+	}
+
+	protected int roundToNerf()
+	{
+		return 1;
+	}
+
+	protected double nerfAmount()
+	{
+		return .8;
+	}
+
+	protected double numberOfFullAttacks()
+	{
+		return 1.0;
+	}
+
+	protected int				attacksSinceNerfing	= 0;
+	protected int				roundOfNerfing		= 1;
+	protected volatile boolean	freeToNerf			= false;
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
