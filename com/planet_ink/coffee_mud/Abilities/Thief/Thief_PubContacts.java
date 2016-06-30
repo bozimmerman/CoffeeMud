@@ -42,7 +42,7 @@ public class Thief_PubContacts extends ThiefSkill
 		return "Thief_PubContacts";
 	}
 
-	private final static String	localizedName	= CMLib.lang().L("Pub Contacts");
+	private final static String	localizedName	= CMLib.lang().L("Make Pub Contacts");
 
 	@Override
 	public String name()
@@ -74,7 +74,7 @@ public class Thief_PubContacts extends ThiefSkill
 		return Ability.ACODE_THIEF_SKILL | Ability.DOMAIN_INFLUENTIAL;
 	}
 
-	private static final String[]	triggerStrings	= I(new String[] { "PUBCONTACTS" });
+	private static final String[]	triggerStrings	= I(new String[] { "MAKEPUBCONTACTS","PUBCONTACTS" });
 
 	@Override
 	public String[] triggerStrings()

@@ -43,7 +43,7 @@ public class Thief_TreasureMap extends ThiefSkill
 		return "Thief_TreasureMap";
 	}
 
-	private final static String	localizedName	= CMLib.lang().L("Treasure Map");
+	private final static String	localizedName	= CMLib.lang().L("Draw Treasure Map");
 
 	@Override
 	public String name()
@@ -69,7 +69,7 @@ public class Thief_TreasureMap extends ThiefSkill
 		return Ability.QUALITY_INDIFFERENT;
 	}
 
-	private static final String[]	triggerStrings	= I(new String[] { "TREASUREMAP" });
+	private static final String[]	triggerStrings	= I(new String[] { "DRAWTREASUREMAP","TREASUREMAP" });
 
 	@Override
 	public String[] triggerStrings()

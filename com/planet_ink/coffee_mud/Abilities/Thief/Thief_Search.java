@@ -35,20 +35,68 @@ import java.util.*;
 
 public class Thief_Search extends ThiefSkill
 {
-	@Override public String ID() { return "Thief_Search"; }
-	private final static String localizedName = CMLib.lang().L("Search");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Searching)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_ALERT;}
-	private static final String[] triggerStrings =I(new String[] {"SEARCH"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
-	private Room lastRoom=null;
-	private int bonusThisRoom=0;
+	@Override
+	public String ID()
+	{
+		return "Thief_Search";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Search");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Searching)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_THIEF_SKILL | Ability.DOMAIN_ALERT;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "SEARCH" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT | USAGE_MANA;
+	}
+
+	private Room	lastRoom		= null;
+	private int		bonusThisRoom	= 0;
 
 	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
@@ -97,12 +145,14 @@ public class Thief_Search extends ThiefSkill
 
 			final Room R=mob.location();
 			if(R!=null)
+			{
 				for(int r=0;r<R.numInhabitants();r++)
 				{
 					final MOB M=R.fetchInhabitant(r);
 					if((M!=null)&&(M!=mob)&&(CMLib.flags().isHidden(M)))
 						return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_SELF);
 				}
+			}
 		}
 		return super.castingQuality(mob,target);
 	}

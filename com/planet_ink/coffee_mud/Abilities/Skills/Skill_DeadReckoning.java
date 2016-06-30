@@ -69,7 +69,7 @@ public class Skill_DeadReckoning extends StdSkill
 		return Ability.QUALITY_INDIFFERENT;
 	}
 
-	private static final String[]	triggerStrings	= I(new String[] { "DEADRECKONING" });
+	private static final String[]	triggerStrings	= I(new String[] { "DEADRECKON","DEADRECKONING" });
 
 	@Override
 	public String[] triggerStrings()

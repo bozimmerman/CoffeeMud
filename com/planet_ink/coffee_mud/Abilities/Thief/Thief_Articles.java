@@ -62,7 +62,7 @@ public class Thief_Articles extends ThiefSkill
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_THIEF_SKILL | Ability.DOMAIN_SEATRAVEL;
+		return Ability.ACODE_THIEF_SKILL | Ability.DOMAIN_INFLUENTIAL;
 	}
 
 	@Override

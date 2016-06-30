@@ -41,7 +41,7 @@ public class Thief_PirateFamiliar extends ThiefSkill
 		return "Thief_PirateFamiliar";
 	}
 
-	private final static String	localizedName	= CMLib.lang().L("Pirate Familiar");
+	private final static String	localizedName	= CMLib.lang().L("Call Pirate Familiar");
 
 	@Override
 	public String name()
@@ -51,7 +51,7 @@ public class Thief_PirateFamiliar extends ThiefSkill
 
 	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Pirate Familiar)");
 
-	private static final String[]	triggerStrings	= I(new String[] { "CALLFAMILIAR", "PIRATEFAMILIAR" });
+	private static final String[]	triggerStrings	= I(new String[] { "CALLFAMILIAR", "PIRATEFAMILIAR", "CALLPIRATEFAMILIAR" });
 	
 	@Override
 	public String[] triggerStrings()

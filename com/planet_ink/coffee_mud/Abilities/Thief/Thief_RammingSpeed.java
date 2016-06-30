@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Abilities.Skills;
+package com.planet_ink.coffee_mud.Abilities.Thief;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -33,28 +33,20 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Skill_CombatRepairs extends StdSkill
+public class Thief_RammingSpeed extends ThiefSkill
 {
 	@Override
 	public String ID()
 	{
-		return "Skill_CombatRepairs";
+		return "Thief_RammingSpeed";
 	}
 
-	private final static String	localizedName	= CMLib.lang().L("Combat Repairs");
+	private final static String	localizedName	= CMLib.lang().L("Rig Ramming Speed");
 
 	@Override
 	public String name()
 	{
 		return localizedName;
-	}
-
-	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Temporary Patches)");
-
-	@Override
-	public String displayText()
-	{
-		return localizedStaticDisplay;
 	}
 
 	@Override
@@ -75,7 +67,7 @@ public class Skill_CombatRepairs extends StdSkill
 		return CAN_ITEMS;
 	}
 
-	private static final String[]	triggerStrings	= I(new String[] { "COMBATREPAIR","COMBATREPAIRS" });
+	private static final String[]	triggerStrings	= I(new String[] { "RIGRAMMINGSPEED","RIGRAMMING","RAMMINGSPEED" });
 
 	@Override
 	public int classificationCode()
@@ -110,45 +102,42 @@ public class Skill_CombatRepairs extends StdSkill
 	}
 
 	@Override
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
+	{
+		super.affectPhyStats(affected, affectableStats);
+		affectableStats.setAbility(affectableStats.ability() + 1 + abilityCode());
+	}
+	
+	@Override
+	public void executeMsg(Environmental myHost, CMMsg msg)
+	{
+		super.executeMsg(myHost, msg);
+		if((msg.source().riding()==affected)
+		&&(msg.sourceMinor()==CMMsg.TYP_ADVANCE))
+		{
+			unInvoke();
+		}
+	}
+	
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking, tickID))
 			return false;
-		if(affected instanceof Item)
+		final Physical affected=this.affected;
+		if(affected instanceof BoardableShip)
 		{
-			final Item I=(Item)affected;
-			if(I.subjectToWearAndTear())
+			String combat=affected.getStat("COMBATTARGET");
+			if((combat.length()==0)
+			||(CMLib.flags().isFalling(affected)))
 			{
-				final String currentVictim = I.getStat("COMBATTARGET");
-				if(currentVictim.length()==0)
-				{
-					if(I.usesRemaining()<=code)
-						unInvoke();
-					else
-					{
-						I.setUsesRemaining(I.usesRemaining()-5);
-						if(I instanceof BoardableShip)
-						{
-							Area A=((BoardableShip)I).getShipArea();
-							if(A!=null)
-							{
-								for(Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
-								{
-									final Room R=r.nextElement();
-									if((R!=null)&&(R.numInhabitants()>0))
-									{
-										R.showHappens(CMMsg.MSG_OK_ACTION, L("The temporary combat repairs are slowly unraveling."));
-									}
-								}
-							}
-						}
-					}
-				}
+				unInvoke();
+				return false;
 			}
 		}
 		return true;
 	}
-
+	
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -173,28 +162,37 @@ public class Skill_CombatRepairs extends StdSkill
 		}
 		else
 		{
-			mob.tell(L("You must be on a ship to do combat repairs!"));
+			mob.tell(L("You must be on a ship to move to ramming speed!"));
 			return false;
 		}
 		
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(L("Your ship has already undergone temporary combat repairs!"));
+			mob.tell(L("Your ship is already prepared for ramming speed!"));
 			return false;
 		}
 		
-		Room shipR=CMLib.map().roomLocation(target);
+		final Room shipR=CMLib.map().roomLocation(target);
 		if((shipR==null)||(!CMLib.flags().isWaterySurfaceRoom(shipR))||(!target.subjectToWearAndTear()))
 		{
-			mob.tell(L("You must be on a sailing ship to do combat repairs!"));
+			mob.tell(L("You must be on a sailing ship to move to ramming speed!"));
 			return false;
 		}
 		
-		BoardableShip ship = (BoardableShip)target;
+		final BoardableShip ship = (BoardableShip)target;
 		final String currentVictim = ship.getStat("COMBATTARGET");
-		if((currentVictim.length()==0)||(target.usesRemaining()<=0))
+		if(currentVictim.length()==0)
 		{
-			mob.tell(L("Your ship must be in combat to do combat repairs!"));
+			mob.tell(L("Your ship must be in combat to move to ramming speed!"));
+			return false;
+		}
+		
+		final String directionToTargetStr = ship.getStat("DIRECTIONTOTARGET");
+		final int directionToTarget = CMLib.directions().getDirectionCode(directionToTargetStr);
+		final int directionFacing = CMLib.directions().getDirectionCode(ship.getStat("DIRECTIONFACING"));
+		if(directionToTarget != directionFacing)
+		{
+			mob.tell(L("You ship must be facing @x1, towards your target, to ram at them.",directionToTargetStr));
 			return false;
 		}
 
@@ -204,25 +202,17 @@ public class Skill_CombatRepairs extends StdSkill
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_NOISYMOVEMENT,auto?L("<T-NAME> is suddenly patched up!"):L("<S-NAME> make(s) quick combat repairs to <T-NAME>!"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_NOISYMOVEMENT,auto?L("<T-NAME> is at full sail!"):L("<S-NAME> prepare(s) <T-NAME> for ramming speed!"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				int dmg=target.usesRemaining();
-				dmg += 20 + mob.charStats().getStat(CharStats.STAT_DEXTERITY)+(7 * super.getXLEVELLevel(mob));
-				if(dmg > 100)
-					dmg = 100;
 				Ability A=beneficialAffect(mob, target, asLevel, 0);
 				if(A!=null)
-				{
-					A.setAbilityCode(target.usesRemaining());
-					A.makeLongLasting();
-				}
-				target.setUsesRemaining(dmg);
+					A.setAbilityCode((super.getXLEVELLevel(mob)+2) / 3);
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,null,L("<S-NAME> attempt(s) to do quick ship repairs, but mess(es) it up."));
+			return beneficialVisualFizzle(mob,null,L("<S-NAME> attempt(s) to move to ramming speed, but <S-IS-ARE> too slow."));
 		return success;
 	}
 }

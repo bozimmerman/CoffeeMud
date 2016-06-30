@@ -41,7 +41,7 @@ public class Thief_MerchantFlag extends ThiefSkill
 		return "Thief_MerchantFlag";
 	}
 
-	private final static String	localizedName	= CMLib.lang().L("Merchant Flag");
+	private final static String	localizedName	= CMLib.lang().L("Raise Merchant Flag");
 
 	@Override
 	public String name()
@@ -75,7 +75,7 @@ public class Thief_MerchantFlag extends ThiefSkill
 		return CAN_ITEMS;
 	}
 
-	private static final String[]	triggerStrings	= I(new String[] { "MERCHANTFLAG" });
+	private static final String[]	triggerStrings	= I(new String[] { "RAISEMERCHANTFLAG","MERCHANTFLAG" });
 
 	@Override
 	public int classificationCode()

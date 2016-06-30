@@ -36,16 +36,40 @@ import java.util.*;
 
 public class GatheringSkill extends CommonSkill
 {
-	@Override public String ID() { return "GatheringSkill"; }
-	private final static String localizedName = CMLib.lang().L("GatheringSkill");
-	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =I(new String[] {"FLETCH","FLETCHING"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public String supportedResourceString(){return "";}
-	protected static final Map<String,List<Integer>> supportedResources=new Hashtable<String,List<Integer>>();
+	@Override
+	public String ID()
+	{
+		return "GatheringSkill";
+	}
 
-	public GatheringSkill(){super();}
+	private final static String	localizedName	= CMLib.lang().L("GatheringSkill");
 
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "FLETCH", "FLETCHING" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public String supportedResourceString()
+	{
+		return "";
+	}
+
+	protected static final Map<String, List<Integer>>	supportedResources	= new Hashtable<String, List<Integer>>();
+
+	public GatheringSkill()
+	{
+		super();
+	}
 
 	@Override
 	public void affectPhyStats(Physical affectedEnv, PhyStats affectableStats)
@@ -94,9 +118,9 @@ public class GatheringSkill extends CommonSkill
 						str=str.substring(0,y);
 						for(final String sv : restV)
 						{
-							 final int code=RawMaterial.CODES.FIND_CaseSensitive(sv);
-							 if(code >= 0)
-								 notResources.add(Integer.valueOf(code));
+							final int code=RawMaterial.CODES.FIND_CaseSensitive(sv);
+							if(code >= 0)
+								notResources.add(Integer.valueOf(code));
 						}
 					}
 					final RawMaterial.Material m=RawMaterial.Material.findIgnoreCase(str);
@@ -222,6 +246,4 @@ public class GatheringSkill extends CommonSkill
 		R.recoverRoomStats();
 		return true;
 	}
-
-
 }
