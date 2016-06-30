@@ -181,6 +181,14 @@ public class Sailor extends StdBehavior
 	}
 	
 	@Override
+	public CMObject copyOf()
+	{
+		Sailor S=(Sailor)super.copyOf();
+		S.loyalShipArea=null;
+		S.loyalShipItem=null;
+		return S;
+	}
+	@Override
 	public boolean okMessage(Environmental affecting, CMMsg msg)
 	{
 		if(!super.okMessage(affecting, msg))
@@ -209,33 +217,36 @@ public class Sailor extends StdBehavior
 	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
 		super.executeMsg(affecting, msg);
-		switch(msg.sourceMinor())
+		if(this.loyalShipItem!=null)
 		{
-		case CMMsg.TYP_ADVANCE:
-			if((msg.target() instanceof Rideable)
-			&&(msg.target() instanceof Item)
-			&&(CMath.bset(msg.targetMajor(), CMMsg.MASK_MALICIOUS))
-			&&(msg.source().riding() == loyalShipItem))
+			switch(msg.sourceMinor())
 			{
-				targetShipItem = (Rideable)msg.target();
+			case CMMsg.TYP_ADVANCE:
+				if((msg.target() instanceof Rideable)
+				&&(msg.target() instanceof Item)
+				&&(CMath.bset(msg.targetMajor(), CMMsg.MASK_MALICIOUS))
+				&&(msg.source().riding() == loyalShipItem))
+				{
+					targetShipItem = (Rideable)msg.target();
+				}
+				else
+				if((msg.target()  == loyalShipItem)
+				&&(CMath.bset(msg.targetMajor(), CMMsg.MASK_MALICIOUS))
+				&&(msg.source().riding() != loyalShipItem))
+				{
+					targetShipItem = (Rideable)msg.target();
+				}
+				break;
+			case CMMsg.TYP_ENTER:
+				if((msg.source()!=null)
+				&&(msg.source().riding() == this.loyalShipItem)
+				&&(msg.source().isMonster())
+				&&(msg.source().Name().equals(this.loyalShipItem.Name())))
+				{
+					
+				}
+				break;
 			}
-			else
-			if((msg.target()  == loyalShipItem)
-			&&(CMath.bset(msg.targetMajor(), CMMsg.MASK_MALICIOUS))
-			&&(msg.source().riding() != loyalShipItem))
-			{
-				targetShipItem = (Rideable)msg.target();
-			}
-			break;
-		case CMMsg.TYP_ENTER:
-			if((msg.source()!=null)
-			&&(msg.source().riding() == this.loyalShipItem)
-			&&(msg.source().isMonster())
-			&&(msg.source().Name().equals(this.loyalShipItem.Name())))
-			{
-				
-			}
-			break;
 		}
 	}
 
@@ -535,29 +546,51 @@ public class Sailor extends StdBehavior
 							}
 						}
 						
-						final List<Integer> choices=new ArrayList<Integer>(1);
-						for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+						boolean isSecondFiddle=false;
+						if(roomHasWeapons)
 						{
-							final Room nextR=mobRoom.getRoomInDir(d);
-							final Exit nextE=mobRoom.getExitInDir(d);
-							if((nextR!=null)&&(nextE!=null)&&(nextE.isOpen()))
+							for(Enumeration<MOB> m=mobRoom.inhabitants();m.hasMoreElements();)
 							{
-								for(Enumeration<Item> i=nextR.items();i.hasMoreElements();)
+								final MOB M=m.nextElement();
+								if(M==mob)
+									break;
+								if(M!=null)
 								{
-									Item I=i.nextElement();
-									if(CMLib.combat().isAShipSiegeWeapon(I))
+									final Sailor S=(Sailor)M.fetchBehavior(ID());
+									if((S!=null)&&(S.combatTech)&&(S.loyalShipItem==loyalShipItem))
 									{
-										choices.add(Integer.valueOf(d));
+										isSecondFiddle=true;
+										break;
 									}
 								}
 							}
 						}
-						if(choices.size()>0)
-							CMLib.tracking().walk(mob, choices.get(CMLib.dice().roll(1, choices.size(), -1)).intValue(), false, false);
-						else
-						if(!roomHasWeapons)
+						if(isSecondFiddle || (!roomHasWeapons))
 						{
-							CMLib.tracking().beMobile(mob, true, false, false, false, null, null);
+							final List<Integer> choices=new ArrayList<Integer>(1);
+							for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+							{
+								final Room nextR=mobRoom.getRoomInDir(d);
+								final Exit nextE=mobRoom.getExitInDir(d);
+								if((nextR!=null)&&(nextE!=null)&&(nextE.isOpen()))
+								{
+									for(Enumeration<Item> i=nextR.items();i.hasMoreElements();)
+									{
+										Item I=i.nextElement();
+										if(CMLib.combat().isAShipSiegeWeapon(I))
+										{
+											choices.add(Integer.valueOf(d));
+										}
+									}
+								}
+							}
+							if(choices.size()>0)
+								CMLib.tracking().walk(mob, choices.get(CMLib.dice().roll(1, choices.size(), -1)).intValue(), false, false);
+							else
+							if(!roomHasWeapons)
+							{
+								CMLib.tracking().beMobile(mob, true, false, false, false, null, null);
+							}
 						}
 					}
 					if(defender && ((mobRoom.domainType() & Room.INDOORS) != 0))

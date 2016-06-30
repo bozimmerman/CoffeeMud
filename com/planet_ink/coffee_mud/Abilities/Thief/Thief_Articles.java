@@ -4,6 +4,7 @@ import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.StdBehavior;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
@@ -114,6 +115,14 @@ public class Thief_Articles extends ThiefSkill
 		this.abilityCode = newCode;
 	}
 	
+	@Override
+	public CMObject copyOf()
+	{
+		Thief_Articles A=(Thief_Articles)super.copyOf();
+		A.sailor=null;
+		return A;
+	}
+	
 	private enum CrewType
 	{
 		GUNNER,
@@ -144,13 +153,13 @@ public class Thief_Articles extends ThiefSkill
 		switch(type)
 		{
 		case GUNNER:
-			affectableStats.addAmbiance(L("(Siege Weapon Operator)"));
+			affectableStats.addAmbiance(L("Siege Op"));
 			break;
 		case DEFENDER:
-			affectableStats.addAmbiance(L("(Defender)"));
+			affectableStats.addAmbiance(L("Defender"));
 			break;
 		case BOARDER:
-			affectableStats.addAmbiance(L("(Boarder)"));
+			affectableStats.addAmbiance(L("Boarder"));
 			break;
 		}
 	}
@@ -261,7 +270,8 @@ public class Thief_Articles extends ThiefSkill
 			return false;
 		}
 		
-		if(!CMLib.law().doesHavePriviledgesHere(mob, R))
+		if((!CMLib.law().doesHavePriviledgesHere(mob, R))
+		&&(!CMSecurity.isAllowed(mob, R, CMSecurity.SecFlag.CMDMOBS)))
 		{
 			mob.tell(L("You must be on the deck of a ship that you have privileges on."));
 			return false;
@@ -337,7 +347,7 @@ public class Thief_Articles extends ThiefSkill
 		if(bonus > 0)
 		{
 			int bonusDecks = bonus / 2;
-			numRooms += (bonus - bonusDecks);
+			numRooms += bonus;
 			numDecks += bonusDecks;
 		}
 		

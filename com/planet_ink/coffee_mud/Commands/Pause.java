@@ -37,10 +37,17 @@ import java.io.IOException;
 
 public class Pause extends StdCommand
 {
-	public Pause(){}
+	public Pause()
+	{
+	}
 
-	private final String[] access=I(new String[]{"PAUSE"});
-	@Override public String[] getAccessWords(){return access;}
+	private final String[]	access	= I(new String[] { "PAUSE" });
+
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
 	public boolean errorOut(MOB mob)
 	{
@@ -113,8 +120,16 @@ public class Pause extends StdCommand
 		return false;
 	}
 
-	@Override public boolean canBeOrdered(){return true;}
-	@Override public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.PAUSE);}
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 
+	@Override
+	public boolean securityCheck(MOB mob)
+	{
+		return CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.PAUSE);
+	}
 
 }

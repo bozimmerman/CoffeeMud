@@ -500,7 +500,6 @@ public class Thief_TreasureMap extends ThiefSkill
 			return false;
 		}
 
-		item.setReadableText("");//BZ:DELME
 		int range = 50 + (10*super.getXLEVELLevel(mob));
 		final TrackingFlags flags=CMLib.tracking().newFlags()
 				.plus(TrackingLibrary.TrackingFlag.AREAONLY)

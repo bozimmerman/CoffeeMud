@@ -354,16 +354,9 @@ public class Falling extends StdAbility
 			F.setSavable(false);
 			F.makeLongLasting();
 			//TODO: DELME
-			/**
-			 * delete this when the stupid coin bug is fixed
-			 */
 			if(P instanceof Coins)
 			{
-				final Room R=CMLib.map().roomLocation(P);
-				if((R!=null)&&(R.getArea() instanceof BoardableShip))
-				{
-					Log.debugOut(new Exception(P.name()));
-				}
+				Log.debugOut(new Exception(P.name()+"/Fall:"+(room.getArea() instanceof BoardableShip)));
 			}
 			P.addEffect(F);
 			if(!(P instanceof MOB))
