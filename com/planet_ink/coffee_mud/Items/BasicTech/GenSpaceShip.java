@@ -122,12 +122,12 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 	}
 
 	@Override
-	public void unDock(boolean moveToOutside)
+	public Room unDock(boolean moveToOutside)
 	{
 		if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
 			Log.debugOut("SpaceShip "+name()+" is undocking"+(moveToOutside?"into space":""));
 		final Room R=getIsDocked();
-		super.unDock(moveToOutside);
+		Room exitRoom = super.unDock(moveToOutside);
 		if(R instanceof LocationRoom)
 		{
 			setDirection(Arrays.copyOf(((LocationRoom)R).getDirectionFromCore(),2));
@@ -139,6 +139,7 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 			if((o != null)&&(R instanceof LocationRoom))
 				CMLib.map().addObjectToSpace(o,((LocationRoom)R).coordinates());
 		}
+		return exitRoom;
 	}
 
 	@Override

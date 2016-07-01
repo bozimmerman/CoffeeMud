@@ -1081,11 +1081,12 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	}
 
 	@Override
-	public void unDock(boolean moveToOutside)
+	public Room unDock(boolean moveToOutside)
 	{
 		final Room dock=getIsDocked();
 		if(dock==null)
-			return;
+			return null;
+		Room exitRoom = null;
 		for(final Enumeration<Room> e=getProperMap();e.hasMoreElements();)
 		{
 			final Room R=e.nextElement();
@@ -1096,12 +1097,16 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 					final Room nextR=R.rawDoors()[d];
 					if((nextR!=null)
 					&&((nextR==dock)||(nextR.getArea()!=this)))
+					{
+						exitRoom=R;
 						R.rawDoors()[d]=null;
+					}
 				}
 			}
 		}
 		shipExitCache.clear();
 		savedDock=null;
+		return exitRoom;
 	}
 
 	@Override

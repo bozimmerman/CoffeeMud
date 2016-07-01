@@ -32,10 +32,6 @@ TECH
    *. Radiation Props: Alpha (damage), Beta (?!), Gamma (Mutation if in too long)
 
 NON-TECH
-	GenSailingShip Command-Tendering. Enables transfer between two sailing ships of goods and services. Tendering may be
-	  accomplished via small boats or via direct ship-to-ship boarding. Either way, 	the affect is that the crew and can 
-	  transfer from one ship to another ship When a ship TENDERs to a target ship, both ship's gangplanks are extended to
-		the other ship, creating a permanent connection which is instantly broken if either ship leaves the room or enters combat.'
 	2 Bowshot-level 13 Pirate/Sailor/fighter skill. Requires a loaded siegeweapon. If skill check is successful, the target ship may not
 	  enter combaat with the initiator for 1 round+1 per 10 character levels.
 	level 21 pirate skill-Mast Splitting (Crippling Siegeshot?) The character has a small chance (10% per shot, modified with a

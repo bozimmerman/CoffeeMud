@@ -53,6 +53,7 @@ public class GenSailingShip extends StdBoardable
 	protected volatile int			directionFacing	= 0;
 	protected volatile int			ticksSinceMove	= 0;
 	protected volatile Rideable		targetedShip	= null;
+	protected volatile Item			tenderShip		= null;
 	protected volatile Room			shipCombatRoom	= null;
 	protected PairList<Item,int[]>	coordinates		= null;
 	protected PairList<String,int[]>aimings			= new PairVector<String,int[]>();
@@ -127,7 +128,8 @@ public class GenSailingShip extends StdBoardable
 		SET_COURSE,
 		TARGET,
 		AIM,
-		SINK
+		SINK,
+		TENDER
 		;
 	}
 	
@@ -344,6 +346,73 @@ public class GenSailingShip extends StdBoardable
 					else
 					{
 						msg.source().tell(L("You don't see '@x1' here to target",rest));
+						return false;
+					}
+					break;
+				}
+				case TENDER:
+				{
+					if(cmds.size()==1)
+					{
+						msg.source().tell(L("You must specify another ship to offer aboard."));
+						return false;
+					}
+					final Room thisRoom = (Room)owner();
+					if(thisRoom==null)
+					{
+						msg.source().tell(L("This ship is nowhere to be found!"));
+						return false;
+					}
+					if(this.targetedShip!=null)
+					{
+						msg.source().tell(L("Not while you are in combat!"));
+						return false;
+					}
+					String rest = CMParms.combine(cmds,1);
+					final Item I=thisRoom.findItem(rest);
+					if((I instanceof GenSailingShip)&&(I!=this)&&(CMLib.flags().canBeSeenBy(I, msg.source())))
+					{
+						GenSailingShip otherShip = (GenSailingShip)I;
+						if(otherShip.targetedShip != null)
+						{
+							msg.source().tell(L("Not while @x1 is in in combat!",otherShip.Name()));
+							return false;
+						}
+						final MOB mob = CMClass.getFactoryMOB(name(),phyStats().level(),thisRoom);
+						try
+						{
+							mob.setRiding(this);
+							mob.basePhyStats().setDisposition(mob.basePhyStats().disposition()|PhyStats.IS_SWIMMING);
+							mob.phyStats().setDisposition(mob.phyStats().disposition()|PhyStats.IS_SWIMMING);
+							if(otherShip.tenderShip == this)
+							{
+								if(thisRoom.show(mob, otherShip, CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> connect(s) her gangplank with <T-NAME>")))
+								{
+									this.tenderShip = otherShip;
+									final BoardableShip myArea=(BoardableShip)this.getShipArea();
+									final BoardableShip hisArea=(BoardableShip)otherShip.getShipArea();
+									
+									final Room hisExitRoom = hisArea.unDock(false);
+									myArea.dockHere(hisExitRoom);
+									
+									final Room myExitRoom = myArea.unDock(false);
+									hisArea.dockHere(myExitRoom);
+								}
+							}
+							else
+							{
+								if(thisRoom.show(mob, otherShip, CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> extend(s) her gangplank toward(s) <T-NAME>")))
+									this.tenderShip = otherShip;
+							}
+						}
+						finally
+						{
+							mob.destroy();
+						}
+					}
+					else
+					{
+						msg.source().tell(L("You don't see the ship '@x1' here to board",rest));
 						return false;
 					}
 					break;
@@ -1266,10 +1335,22 @@ public class GenSailingShip extends StdBoardable
 			Area area = this.getShipArea();
 			if(area instanceof BoardableShip)
 			{
-				if((((BoardableShip)area).getIsDocked() != owner())
-				&&(owner() instanceof Room))
+				if((this.tenderShip != null)
+				&&(this.tenderShip.owner()==owner())
+				&&(this.targetedShip==null)
+				&&(this.tenderShip instanceof GenSailingShip)
+				&&(((GenSailingShip)this.tenderShip).targetedShip==null))
 				{
-					this.dockHere((Room)owner());
+					// yay!
+				}
+				else
+				{
+					this.tenderShip=null;
+					if((((BoardableShip)area).getIsDocked() != owner())
+					&&(owner() instanceof Room))
+					{
+						this.dockHere((Room)owner());
+					}
 				}
 			}
 		}

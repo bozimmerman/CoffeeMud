@@ -56,8 +56,9 @@ public interface BoardableShip extends Environmental
 	 * Designates that this ship is no longer docked, and whether it
 	 * should also be moved into its na
 	 * @param moveToOutside true to put in space/ocean,  or false to leave in limbo
+	 * @return one of the internal rooms that was connected to the dock
 	 */
-	public void unDock(boolean moveToOutside);
+	public Room unDock(boolean moveToOutside);
 
 	/**
 	 * Returns the Room where this ship is docked, or NULL if in space.

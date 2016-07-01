@@ -193,7 +193,7 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 	}
 
 	@Override
-	public void unDock(boolean moveToOutside)
+	public Room unDock(boolean moveToOutside)
 	{
 		final Room R=getIsDocked();
 		if(R!=null)
@@ -202,7 +202,8 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 			setOwner(null);
 		}
 		if (area instanceof BoardableShip)
-			((BoardableShip)area).unDock(moveToOutside);
+			return ((BoardableShip)area).unDock(moveToOutside);
+		return null;
 	}
 
 	@Override
