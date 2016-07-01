@@ -2303,7 +2303,8 @@ public class GenSailingShip extends StdBoardable
 											"AREA","OWNER","PRICE","PUTSTR","MOUNTSTR","DISMOUNTSTR","DEFCLOSED","DEFLOCKED",
 											"EXITNAME"
 										  };
-	private final static String[] MISCCODES = { "DISTANCETOTARGET","DIRECTIONFACING","DIRECTIONTOTARGET","ANCHORDOWN","COMBATTARGET","AIMINGS" };
+	private final static String[] MISCCODES = { "DISTANCETOTARGET","DIRECTIONFACING","DIRECTIONTOTARGET","ANCHORDOWN",
+												"COMBATTARGET","AIMINGS","COURSE" };
 	
 	@Override
 	public String getStat(String code)
@@ -2375,6 +2376,20 @@ public class GenSailingShip extends StdBoardable
 						str.append(P.first+"="+P.second[0]+","+P.second[1]).append(" ");
 					}
 					return str.toString();
+				}
+				case 6:
+				{
+					StringBuilder course=new StringBuilder("");
+					if((this.courseDirections.size()>0)
+					&&(this.courseDirections.get(0).intValue()>=0))
+					{
+						for(Integer I : courseDirections)
+						{
+							if(I.intValue()>=0)
+								course.append(CMLib.directions().getDirectionName(I.intValue() & 255)).append(" ");
+						}
+					}
+					return course.toString();
 				}
 				}
 			}
@@ -2485,6 +2500,28 @@ public class GenSailingShip extends StdBoardable
 							continue;
 						int[] aimedAt=CMParms.parseIntList(bit.substring(y+1),',');
 						aimings.add(new Pair<String,int[]>(bit.substring(0, y),aimedAt));
+					}
+					break;
+				}
+				case 6:
+				{
+					this.courseDirection=-1;
+					this.courseDirections.clear();
+					List<String> dirs=CMParms.parseSpaces(val,true);
+					for(int dirIndex=0;dirIndex<dirs.size();dirIndex++)
+					{
+						final String dirWord=dirs.get(dirIndex);
+						int dir=CMLib.directions().getCompassDirectionCode(dirWord);
+						if(dir>=0)
+						{
+							if(courseDirection < 0)
+							{
+								courseDirection = dir;
+								directionFacing = dir;
+							}
+							else
+								this.courseDirections.add(Integer.valueOf(dir));
+						}
 					}
 					break;
 				}

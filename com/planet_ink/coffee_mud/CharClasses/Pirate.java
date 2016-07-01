@@ -179,16 +179,19 @@ public class Pirate extends Thief
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Thief_PetSteal",false,new XVector<String>("Thief_PirateFamiliar"));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Thief_Alertness",false);
 		
-		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Thief_MerchantFlag",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Thief_MerchantFlag",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Thief_Articles",false);
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Thief_RammingSpeed",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Thief_SmugglersHold",false);
 		
-		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Skill_InterceptShip",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Skill_InterceptShip",false,new XVector<String>("Skill_SeaCharting"));
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Thief_HideShip",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Skill_AttackHalf",false);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Skill_AwaitShip",false);
+		
 	}
 
 	@Override
