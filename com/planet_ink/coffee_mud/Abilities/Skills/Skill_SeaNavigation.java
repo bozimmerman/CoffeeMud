@@ -201,6 +201,8 @@ public class Skill_SeaNavigation extends StdSkill
 				}
 			};
 			trail = CMLib.tracking().findTrailToAnyRoom(currentR, destFilter, flags, 100);
+			if((trail!=null)&&(trail.size()>0))
+				targetR=trail.get(0);
 		}
 		else
 		{
@@ -246,6 +248,7 @@ public class Skill_SeaNavigation extends StdSkill
 							courseStr.append(" ");
 						}
 					}
+					room=nextRoom;
 				}
 				final String msgStr=L("Your charts say the way there is: @x1",dirs.toString());
 				if(R.getArea() instanceof BoardableShip)

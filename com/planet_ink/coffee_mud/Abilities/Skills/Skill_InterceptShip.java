@@ -89,6 +89,85 @@ public class Skill_InterceptShip extends StdSkill
 		return USAGE_MOVEMENT | USAGE_MANA;
 	}
 
+	protected volatile Room targetRoom = null;
+	
+	@Override
+	public boolean tick(Tickable ticking, int tickID)
+	{
+		if(!super.tick(ticking, tickID))
+			return false;
+		if((invoker!=null)&&(invoker.isInCombat()))
+		{
+			unInvoke();
+			return false;
+		}
+		final Room R=CMLib.map().roomLocation(affected);
+		if(R == targetRoom)
+		{
+			unInvoke();
+			return false;
+		}
+		if((tickID==Tickable.TICKID_MOB)
+		&&(affected instanceof MOB))
+		{
+			final MOB mob=(MOB)affected;
+			if((mob.riding() !=null) && (mob.riding().rideBasis() == Rideable.RIDEABLE_WATER))
+			{
+				if(mob.isInCombat())
+				{
+					unInvoke();
+					return false;
+				}
+				
+			}
+			else
+			{
+				unInvoke();
+				return false;
+			}
+		}
+		else
+		if(affected instanceof Item)
+		{
+			final Item ship=(Item)affected;
+			final String currentVictim = ship.getStat("COMBATTARGET");
+			if(currentVictim.length()>0)
+			{
+				unInvoke();
+				return false;
+			}
+		}
+		return true;
+	}
+
+	@Override
+	protected int overrideMana()
+	{
+		return Ability.COST_ALL;
+	}
+
+	@Override
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
+	{
+		super.affectPhyStats(affected, affectableStats);
+		int bonus=super.getXLEVELLevel(invoker) / 3;
+		if(this.affected instanceof Item)
+		{
+			affectableStats.setAbility(affectableStats.ability()+1+bonus);
+		}
+		else
+		if(this.affected instanceof MOB)
+		{
+			affectableStats.setSpeed(affectableStats.speed()+1.0+bonus);
+		}
+	}
+
+	@Override
+	public void unInvoke()
+	{
+		super.unInvoke();
+	}
+	
 	@Override
 	public boolean invoke(final MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -96,13 +175,32 @@ public class Skill_InterceptShip extends StdSkill
 		if(R==null)
 			return false;
 		Room currentR=null;
+		Rideable myShip=null;
 		if(R.getArea() instanceof BoardableShip)
 		{
-			currentR=CMLib.map().roomLocation(((BoardableShip)R.getArea()).getShipItem());
+			myShip=(Rideable)((BoardableShip)R.getArea()).getShipItem();
+			currentR=CMLib.map().roomLocation(myShip);
+			if(currentR!=null)
+			{
+				final String currentVictim = myShip.getStat("COMBATTARGET");
+				if(currentVictim.length()>0)
+				{
+					mob.tell(L("Your ship must not be in combat to move to intercept speeds!"));
+					return false;
+				}
+				
+				final String anchor = myShip.getStat("ANCHORDOWN");
+				if(CMath.s_bool(anchor))
+				{
+					mob.tell(L("You should probably raise anchor first."));
+					return false;
+				}
+			}
 		}
 		else
 		if((mob.riding() !=null) && (mob.riding().rideBasis() == Rideable.RIDEABLE_WATER))
 		{
+			myShip=mob.riding();
 			if(CMLib.flags().isWaterySurfaceRoom(mob.location()))
 				currentR=mob.location();
 		}
@@ -112,20 +210,19 @@ public class Skill_InterceptShip extends StdSkill
 			return false;
 		}
 
-		List<String> rooms;
-
-		final String parm=CMParms.combine(commands).trim();
-		
 		if(currentR==null)
 		{
 			mob.tell(L("You can't seem to figure out how to get there from here."));
 			return false;
 		}
 		
+		final String parm=CMParms.combine(commands).trim();
+		
 		Room targetR = null;
 		List<Room> trail = null;
 		TrackingFlags flags=CMLib.tracking().newFlags().plus(TrackingFlag.NOAIR)
 				.plus(TrackingFlag.NOHOMES);
+		final Rideable[] targetShipI=new Rideable[1];
 		TrackingLibrary.RFilter destFilter = new TrackingLibrary.RFilter()
 		{
 			@Override
@@ -136,24 +233,40 @@ public class Skill_InterceptShip extends StdSkill
 				switch (R.domainType())
 				{
 				case Room.DOMAIN_INDOORS_UNDERWATER:
-				case Room.DOMAIN_INDOORS_WATERSURFACE:
 				case Room.DOMAIN_OUTDOORS_UNDERWATER:
+					return true;
+				case Room.DOMAIN_INDOORS_WATERSURFACE:
 				case Room.DOMAIN_OUTDOORS_WATERSURFACE:
+				{
+					final Item I=R.findItem(null,parm);
+					if((I instanceof Rideable)
+					&&((I instanceof BoardableShip)
+						||(((Rideable)I).rideBasis()==Rideable.RIDEABLE_WATER))
+					&&(!CMLib.flags().isHidden(I)))
+					{
+						targetShipI[0]=(Rideable)I;
+						return false;
+					}
 					return true;
 				}
-				if(CMLib.english().containsString(R.displayText(mob), parm))
-					return false;
-				final Area A=R.getArea();
-				if((A!=null)&&(CMLib.english().containsString(A.Name(), parm)))
-					return false;
-				return true;
+				default:
+					return true;
+				}
 			}
 		};
 		trail = CMLib.tracking().findTrailToAnyRoom(currentR, destFilter, flags, 100);
+		if((trail!=null)&&(trail.size()>0))
+			targetR=trail.get(0);
 		
 		if((targetR==null)||(trail==null)||(trail.size()==0))
 		{
-			mob.tell(L("You don't know how to get there from here."));
+			mob.tell(L("Your contacts and charts tell you nothing about where '@x1' might be .",parm));
+			return false;
+		}
+		
+		if(!CMLib.combat().mayIAttack(mob, myShip, targetShipI[0]))
+		{
+			mob.tell(L("You may only intercept a potential enemy ship, which '@x1' is not .",targetShipI[0].Name()));
 			return false;
 		}
 		
@@ -164,14 +277,15 @@ public class Skill_InterceptShip extends StdSkill
 
 		if(success)
 		{
-			final String str=L("<S-NAME> consult(s) <S-HIS-HER> sea charts.");
-			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_DELICATE_HANDS_ACT,str);
+			final String str=L("<S-NAME> consult(s) <S-HIS-HER> sea charts and rig(s) @x1 to intercept <T-NAME>.",myShip.Name());
+			final CMMsg msg=CMClass.getMsg(mob,targetShipI[0],this,CMMsg.MSG_DELICATE_HANDS_ACT,str);
 			if(R.okMessage(mob,msg))
 			{
 				R.send(mob,msg);
 				StringBuilder dirs=new StringBuilder("");
 				StringBuilder courseStr=new StringBuilder("");
 				Room room=trail.get(trail.size()-1);
+				List<String> cmds=new XVector<String>("GO");
 				for(int i=trail.size()-2;i>=0;i--)
 				{
 					Room nextRoom=trail.get(i);
@@ -180,30 +294,37 @@ public class Skill_InterceptShip extends StdSkill
 					{
 						dirs.append(CMLib.directions().getDirectionName(dir));
 						courseStr.append(CMLib.directions().getDirectionName(dir));
+						cmds.add(CMLib.directions().getDirectionName(dir));
 						if(i>0)
 						{
 							dirs.append(", ");
 							courseStr.append(" ");
 						}
 					}
+					room=nextRoom;
 				}
 				final String msgStr=L("Your charts say the way there is: @x1",dirs.toString());
-				if(R.getArea() instanceof BoardableShip)
+				if(myShip instanceof BoardableShip)
 				{
 					String courseMsgStr="COURSE "+courseStr.toString();
 					final CMMsg huhMsg=CMClass.getMsg(mob,null,null,CMMsg.MSG_HUH,msgStr,courseMsgStr,null);
 					if(R.okMessage(mob,huhMsg))
 						R.send(mob,huhMsg);
+					final Skill_InterceptShip A = (Skill_InterceptShip)beneficialAffect(mob,myShip,asLevel,trail.size()/2);
+					A.targetRoom = targetR;
 				}
 				else
 				if((mob.riding() !=null) && (mob.riding().rideBasis() == Rideable.RIDEABLE_WATER))
 				{
-					mob.tell(msgStr);
+					final Skill_InterceptShip A = (Skill_InterceptShip)beneficialAffect(mob,mob,asLevel,trail.size()/2);
+					A.targetRoom = targetR;
+					mob.enqueCommand(commands, MUDCmdProcessor.METAFLAG_FORCED, 0);
+					//mob.tell(msgStr);
 				}
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,null,L("<S-NAME> can't seem to figure out where <S-HE-SHE> is."));
+			return beneficialVisualFizzle(mob,targetShipI[0],L("<S-NAME> consult(s) <S-HIS-HER> sea charts, but can't seem to figure out how to find <T-NAME>."));
 
 		return success;
 	}

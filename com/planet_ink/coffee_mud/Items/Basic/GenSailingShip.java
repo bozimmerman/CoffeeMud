@@ -1535,7 +1535,8 @@ public class GenSailingShip extends StdBoardable
 				if(this.anchorDown)
 					visualCondition.append(L("^HThe anchor on @x1 is lowered, holding her in place.^.^?",name(msg.source())));
 				else
-				if((this.courseDirection >= 0)&&(this.courseDirections.size()>0))
+				if((this.courseDirection >= 0)
+				&&((this.courseDirections.size()>0)&&(this.courseDirections.get(0).intValue()>=0)))
 					visualCondition.append(L("^H@x1 is under full sail, traveling @x2^.^?",CMStrings.capitalizeFirstLetter(name(msg.source())), CMLib.directions().getDirectionName(courseDirection & 127)));
 				if(this.subjectToWearAndTear() && (usesRemaining() <= 100))
 				{
@@ -1571,9 +1572,10 @@ public class GenSailingShip extends StdBoardable
 					if(this.anchorDown)
 						visualCondition.append(L("\n\r^HThe anchor on @x1 is lowered, holding her in place.^.^?",name(msg.source())));
 					else
-					if((this.courseDirection >= 0)&&(this.courseDirections.size()>0))
+					if((this.courseDirection >= 0)
+					&&((this.courseDirections.size()>0)&&(this.courseDirections.get(0).intValue()>=0)))
 						visualCondition.append(L("\n\r^H@x1 is under full sail, traveling @x2^.^?",name(msg.source()), CMLib.directions().getDirectionName(courseDirection & 127)));
-					if(this.subjectToWearAndTear() && (usesRemaining() <= 100))
+					if(this.subjectToWearAndTear() && (usesRemaining() <= 100) && (this.targetedShip != null))
 					{
 						final double pct=(CMath.div(usesRemaining(),100.0));
 						appendCondition(visualCondition,pct,name(msg.source()));

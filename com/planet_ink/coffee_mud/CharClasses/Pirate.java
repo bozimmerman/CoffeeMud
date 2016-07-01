@@ -185,6 +185,8 @@ public class Pirate extends Thief
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Thief_RammingSpeed",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Thief_SmugglersHold",false);
 		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Skill_InterceptShip",false);
+		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Thief_HideShip",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Skill_AttackHalf",false);
 	}
