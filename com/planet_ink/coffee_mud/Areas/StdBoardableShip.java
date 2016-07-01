@@ -1084,9 +1084,9 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	public Room unDock(boolean moveToOutside)
 	{
 		final Room dock=getIsDocked();
+		Room exitRoom = null;
 		if(dock==null)
 			return null;
-		Room exitRoom = null;
 		for(final Enumeration<Room> e=getProperMap();e.hasMoreElements();)
 		{
 			final Room R=e.nextElement();

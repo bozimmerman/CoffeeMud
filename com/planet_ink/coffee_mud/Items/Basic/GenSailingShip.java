@@ -393,9 +393,8 @@ public class GenSailingShip extends StdBoardable
 									final BoardableShip hisArea=(BoardableShip)otherShip.getShipArea();
 									
 									final Room hisExitRoom = hisArea.unDock(false);
-									myArea.dockHere(hisExitRoom);
-									
 									final Room myExitRoom = myArea.unDock(false);
+									myArea.dockHere(hisExitRoom);
 									hisArea.dockHere(myExitRoom);
 								}
 							}
