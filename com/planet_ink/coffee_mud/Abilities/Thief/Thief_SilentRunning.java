@@ -239,7 +239,7 @@ public class Thief_SilentRunning extends ThiefSkill
 		}
 		else
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MSG_OK_ACTION:(CMMsg.MSG_DELICATE_HANDS_ACT|CMMsg.MASK_MOVE),L("<S-NAME> hide(s) <T-NAMESELF> by sailing her into the mists and tall waves on the horizon."));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MSG_OK_ACTION:(CMMsg.MSG_DELICATE_HANDS_ACT|CMMsg.MASK_MOVE),L("<S-NAME> rig(s) <T-NAMESELF> for silent running."));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -248,7 +248,7 @@ public class Thief_SilentRunning extends ThiefSkill
 				if(direction > 0)
 				{
 					String courseMsgStr="COURSE "+course.toString();
-					final CMMsg huhMsg=CMClass.getMsg(mob,null,null,CMMsg.MSG_HUH,"",courseMsgStr,null);
+					final CMMsg huhMsg=CMClass.getMsg(mob,null,null,CMMsg.MSG_HUH,null,courseMsgStr,null);
 					if(R.okMessage(mob,huhMsg))
 						R.send(mob,huhMsg);
 				}

@@ -2013,12 +2013,19 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		final List<MOB> inhabs=new Vector<MOB>();
 		final Room croom=andIsInDB?makeNewRoomContent(room,false):room;
 		if(andContent)
-		for(int i=0;i<croom.numInhabitants();i++)
-			inhabs.add(croom.fetchInhabitant(i));
+		{
+			for(int i=0;i<croom.numInhabitants();i++)
+				inhabs.add(croom.fetchInhabitant(i));
+		}
 		final List<Item> items=new Vector<Item>();
 		if(andContent)
-		for(int i=0;i<croom.numItems();i++)
-			items.add(croom.getItem(i));
+		{
+			for(int i=0;i<croom.numItems();i++)
+				items.add(croom.getItem(i));
+		}
+		
+		final Area area=room.getArea();
+		final boolean isShip=(area instanceof BoardableShip);
 
 		buf.append("<AROOM>");
 		buf.append(CMLib.xml().convertXMLtoTag("ROOMID",room.roomID()));
@@ -2029,11 +2036,15 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		buf.append(CMLib.xml().convertXMLtoTag("RTEXT",CMLib.xml().parseOutAngleBrackets(room.text())));
 		fillFileSet(room,files);
 		buf.append("<ROOMEXITS>");
+		Room door;
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
-			final Room door=room.rawDoors()[d];
+			door=room.rawDoors()[d];
 			final Exit exit=room.getRawExit(d);
-			if(((door!=null)&&(door.roomID().length()>0))||((door==null)&&(exit!=null)))
+			if((isShip)&&(exit!=null)&&(door!=null)&&(door.getArea() != area))
+				door=null;
+			if(((door!=null)&&(door.roomID().length()>0))
+			||((door==null)&&(exit!=null)))
 			{
 				buf.append("<REXIT>");
 				buf.append(CMLib.xml().convertXMLtoTag("XDIRE",d));

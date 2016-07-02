@@ -109,19 +109,23 @@ public class Thief_HideShip extends ThiefSkill
 	}
 
 	@Override
-	public void executeMsg(final Environmental myHost, final CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		super.executeMsg(myHost, msg);
+		if(!super.okMessage(myHost, msg))
+			return false;
 		
-		if(msg.source().riding()==affected)
+		final Physical affected=this.affected;
+		if(affected != null)
 		{
-			final Physical affected=this.affected;
-			if(affected != null)
+			if((msg.source().riding()==affected)
+			&&(msg.source().isMonster())
+			&&(msg.source().Name().equals(affected.Name())))
 			{
 				unInvoke();
 				affected.recoverPhyStats();
 			}
 		}
+		return true;
 	}
 
 	@Override

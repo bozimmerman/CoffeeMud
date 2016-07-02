@@ -793,6 +793,8 @@ public class GenSailingShip extends StdBoardable
 						}
 						if(this.courseDirections.size()>0)
 							this.courseDirection = this.courseDirections.remove(0).intValue();
+						if((this.courseDirections.size()==0)||(this.courseDirections.get(this.courseDirections.size()-1).intValue()>=0))
+							this.courseDirections.add(Integer.valueOf(-1));
 						
 						this.announceActionToDeck(msg.source(),L("<S-NAME> order(s) a course setting of @x1.",CMLib.english().toEnglishStringList(dirNames.toArray(new String[0]))));
 					}
@@ -821,9 +823,13 @@ public class GenSailingShip extends StdBoardable
 						final Exit targetExit=R.getExitInDir(firstDir);
 						if((targetRoom==null)||(targetExit==null)||(!targetExit.isOpen()))
 						{
+							this.courseDirection=-1;
+							this.courseDirections.clear();
 							msg.source().tell(L("There doesn't look to be anything in that direction."));
 							return false;
 						}
+						if((this.courseDirections.size()==0)||(this.courseDirections.get(this.courseDirections.size()-1).intValue()>=0))
+							this.courseDirections.add(Integer.valueOf(-1));
 						steer(msg.source(),R, firstDir);
 					}
 					if(anchorDown)
@@ -1623,15 +1629,8 @@ public class GenSailingShip extends StdBoardable
 					final double pct=(CMath.div(usesRemaining(),100.0));
 					appendCondition(visualCondition,pct,name(msg.source()));
 				}
-				Runnable R=new Runnable()
-				{
-					@Override
-					public void run()
-					{
-						msg.source().tell(visualCondition.toString());
-					}
-				};
-				msg.addTrailerRunnable(R);
+				if(visualCondition.length()>0)
+					msg.addTrailerMsg(CMClass.getMsg(msg.source(), null, null, CMMsg.MSG_OK_VISUAL, visualCondition.toString(), -1, null, -1, null));
 				break;
 			}
 			default:
@@ -1660,14 +1659,8 @@ public class GenSailingShip extends StdBoardable
 						final double pct=(CMath.div(usesRemaining(),100.0));
 						appendCondition(visualCondition,pct,name(msg.source()));
 					}
-					msg.addTrailerRunnable(new Runnable()
-					{
-						@Override
-						public void run()
-						{
-							msg.source().tell(visualCondition.toString());
-						}
-					});
+					if(visualCondition.length()>0)
+						msg.addTrailerMsg(CMClass.getMsg(msg.source(), null, null, CMMsg.MSG_OK_VISUAL, visualCondition.toString(), -1, null, -1, null));
 				}
 				break;
 			case CMMsg.TYP_LEAVE:
@@ -2210,11 +2203,18 @@ public class GenSailingShip extends StdBoardable
 	protected boolean steer(final MOB mob, final Room R, final int dir)
 	{
 		directionFacing = dir;
+		final String outerStr;
+		final String innerStr = L("@x1 change(s) course, steering @x2.",name(mob),CMLib.directions().getDirectionName(dir));
+		if(CMLib.flags().isSneaking(this))
+			outerStr=null;
+		else
+			outerStr=innerStr;
+		CMMsg msg=CMClass.getMsg(mob, null,null,CMMsg.MSG_NOISYMOVEMENT,innerStr,outerStr,outerStr);
 		CMMsg msg2=CMClass.getMsg(mob, CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> change(s) course, steering @x1 @x2.",name(mob),CMLib.directions().getDirectionName(dir)));
-		if((R.okMessage(mob, msg2) && this.okAreaMessage(msg2, true)))
+		if((R.okMessage(mob, msg) && this.okAreaMessage(msg2, true)))
 		{
-			R.send(mob, msg2); // this lets the source know, i guess
-			this.sendAreaMessage(msg2, true); // this just sends to "others"
+			R.sendOthers(mob, msg);
+			this.sendAreaMessage(msg2, true);
 			this.courseDirection=dir | STEER_MASK;
 			return true;
 		}
@@ -2224,7 +2224,13 @@ public class GenSailingShip extends StdBoardable
 	protected boolean beginSail(final MOB mob, final Room R, final int dir)
 	{
 		directionFacing = dir;
-		CMMsg msg2=CMClass.getMsg(mob, R, R.getExitInDir(dir), CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> sail(s) @x1 @x2.",name(mob),CMLib.directions().getDirectionName(dir)));
+		final String outerStr;
+		final String innerStr = L("<S-NAME> sail(s) @x1 @x2.",name(mob),CMLib.directions().getDirectionName(dir));
+		if(CMLib.flags().isSneaking(this))
+			outerStr=null;
+		else
+			outerStr=innerStr;
+		CMMsg msg2=CMClass.getMsg(mob, R, R.getExitInDir(dir), CMMsg.MSG_NOISYMOVEMENT, innerStr, outerStr,outerStr);
 		if((R.okMessage(mob, msg2) && this.okAreaMessage(msg2, true)))
 		{
 			R.send(mob, msg2); // this lets the source know, i guess

@@ -2322,6 +2322,7 @@ public class StdMOB implements MOB
 				{
 					if ((!CMLib.flags().canBeSeenBy(msg.target(), this))
 					&& (!(isMine(msg.target()) && (msg.target() instanceof Item)))
+					&& ((!(msg.target() instanceof BoardableShip)) || (((BoardableShip)msg.target()).getShipArea() != location().getArea()))
 					&& (!((isInCombat()) && (msg.target() == victim)))
 					&& (CMath.bset(msg.targetMajor(), CMMsg.MASK_HANDS)))
 					{
