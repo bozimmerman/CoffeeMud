@@ -127,7 +127,7 @@ public class Skill_AwaitShip extends StdSkill
 		if(success)
 		{
 			TrackingFlags flags=CMLib.tracking().newFlags().plus(TrackingFlag.NOAIR)
-					.plus(TrackingFlag.NOHOMES);
+															.plus(TrackingFlag.WATERSURFACEORSHOREONLY);
 			final Rideable[] targetShipI=new Rideable[1];
 			TrackingLibrary.RFilter destFilter = new TrackingLibrary.RFilter()
 			{

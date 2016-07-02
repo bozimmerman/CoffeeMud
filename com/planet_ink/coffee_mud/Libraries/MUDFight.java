@@ -551,6 +551,14 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	}
 	
 	@Override
+	public final int getShipHullPoints(BoardableShip ship)
+	{
+		if(ship == null)
+			return 0;
+		return 10 * ship.getShipArea().numberOfProperIDedRooms();
+	}
+	
+	@Override
 	public final boolean isAShipSiegeWeapon(Item I)
 	{
 		if((I instanceof AmmunitionWeapon)

@@ -179,6 +179,18 @@ public interface TrackingLibrary extends CMLibrary
 				return !CMLib.flags().isWaterySurfaceRoom(R);
 			}
 		}),
+		WATERSURFACEORSHOREONLY(new RFilter()
+		{
+			@Override
+			public boolean isFilteredOut(Room hostR, final Room R, final Exit E, final int dir)
+			{
+				if(R==null)
+					return true;
+				return !(CMLib.flags().isWaterySurfaceRoom(R) 
+							|| (R.ID().equals("Shore"))
+							|| (R.domainType() == Room.DOMAIN_OUTDOORS_SEAPORT));
+			}
+		}),
 		UNDERWATERONLY(new RFilter()
 		{
 			@Override

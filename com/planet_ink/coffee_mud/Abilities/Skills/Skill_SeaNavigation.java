@@ -167,7 +167,7 @@ public class Skill_SeaNavigation extends StdSkill
 			}
 			chartPointIndex--;
 			TrackingFlags flags=CMLib.tracking().newFlags().plus(TrackingFlag.NOAIR)
-															.plus(TrackingFlag.NOHOMES);
+															.plus(TrackingFlag.WATERSURFACEORSHOREONLY);
 			targetR=CMLib.map().getRoom(rooms.get(chartPointIndex));
 			if(targetR!=null)
 				trail = CMLib.tracking().findTrailToRoom(currentR, targetR, flags, 100);

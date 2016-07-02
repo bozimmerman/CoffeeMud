@@ -158,7 +158,7 @@ public class Thief_RideTheRigging extends ThiefSkill
 		boolean success=proficiencyCheck(mob,-((distance-1)*30),auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MSG_OK_VISUAL:CMMsg.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> climb(s) onto the rigging and rides it over to <T-NAME>!");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_THIEF_ACT,auto?"":L("<S-NAME> climb(s) onto the rigging and rides it over to <T-NAME>!"));
 			if(fightR.okMessage(mob,msg))
 			{
 				fightR.send(mob,msg);
@@ -186,7 +186,7 @@ public class Thief_RideTheRigging extends ThiefSkill
 			else
 			{
 				targetRoom=fightR;
-				final CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MSG_OK_VISUAL:CMMsg.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> climb(s) onto the rigging and swing(s) toward(s) <T-NAME>!");
+				final CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_NOISYMOVEMENT,auto?"":L("<S-NAME> climb(s) onto the rigging and swing(s) toward(s) <T-NAME>!"));
 				if(fightR.okMessage(mob,msg))
 				{
 					fightR.send(mob,msg);

@@ -2327,7 +2327,9 @@ public class StdMOB implements MOB
 					&& (CMath.bset(msg.targetMajor(), CMMsg.MASK_HANDS)))
 					{
 						if(msg.target() instanceof Physical)
+						{
 							srcM.tell(L("You don't see '@x1' here.",((Physical)msg.target()).name(this)));
+						}
 						else
 						if(msg.target()!=null)
 							srcM.tell(L("You don't see '@x1' here.",msg.target().name()));

@@ -1577,15 +1577,6 @@ public class GenSailingShip extends StdBoardable
 			visualCondition.append(staticL("\n\r^c@x1^c is in perfect condition.^N",name));
 	}
 
-	protected int getMaxHullPoints()
-	{
-		if(maxHullPoints < 0)
-		{
-			maxHullPoints = 10 * this.getShipArea().numberOfProperIDedRooms();
-		}
-		return maxHullPoints;
-	}
-	
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -1753,8 +1744,9 @@ public class GenSailingShip extends StdBoardable
 			case CMMsg.TYP_DAMAGE:
 				if(msg.value() > 0)
 				{
-					double pctLoss = CMath.div(msg.value(), getMaxHullPoints());
-					int pointsLost = (int)Math.round(pctLoss * getMaxHullPoints());
+					final int maxHullPoints = CMLib.combat().getShipHullPoints(this);
+					double pctLoss = CMath.div(msg.value(), maxHullPoints);
+					int pointsLost = (int)Math.round(pctLoss * maxHullPoints);
 					if(pointsLost > 0)
 					{
 						int weaponType = (msg.tool() instanceof Weapon) ? ((Weapon)msg.tool()).weaponDamageType() : Weapon.TYPE_BASHING;
@@ -2532,6 +2524,7 @@ public class GenSailingShip extends StdBoardable
 								this.courseDirections.add(Integer.valueOf(dir));
 						}
 					}
+					this.courseDirections.add(Integer.valueOf(-1));
 					break;
 				}
 				}

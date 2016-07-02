@@ -143,7 +143,7 @@ public class Skill_InterceptShip extends StdSkill
 	@Override
 	protected int overrideMana()
 	{
-		return Ability.COST_PCT-50;
+		return Ability.COST_PCT+50;
 	}
 
 	@Override
@@ -221,7 +221,7 @@ public class Skill_InterceptShip extends StdSkill
 		Room targetR = null;
 		List<Room> trail = null;
 		TrackingFlags flags=CMLib.tracking().newFlags().plus(TrackingFlag.NOAIR)
-				.plus(TrackingFlag.NOHOMES);
+														.plus(TrackingFlag.WATERSURFACEORSHOREONLY);
 		final Rideable[] targetShipI=new Rideable[1];
 		TrackingLibrary.RFilter destFilter = new TrackingLibrary.RFilter()
 		{

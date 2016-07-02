@@ -734,6 +734,13 @@ public interface CombatLibrary extends CMLibrary
 	public boolean isAShipSiegeWeapon(Item I);
 	
 	/**
+	 * Returns the number of base hull points that the given ship has.
+	 * @param ship the ship to get points for
+	 * @return the base hull points of the ship
+	 */
+	public int getShipHullPoints(BoardableShip ship);
+	
+	/**
 	 * Checks to see if the given message gets a saving throw 
 	 * for the given mob and, if so, applies it.
 	 * @param mob the mob to save

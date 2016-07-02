@@ -125,7 +125,7 @@ public class Skill_DeadReckoning extends StdSkill
 			{
 				R.send(mob,msg);
 				TrackingFlags flags=CMLib.tracking().newFlags().plus(TrackingFlag.NOAIR)
-																.plus(TrackingFlag.NOHOMES);
+																.plus(TrackingFlag.WATERSURFACEORSHOREONLY);
 				TrackingLibrary.RFilter destFilter = new TrackingLibrary.RFilter()
 				{
 					@Override
