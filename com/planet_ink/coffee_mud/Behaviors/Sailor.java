@@ -709,7 +709,8 @@ public class Sailor extends StdBehavior
 							&&(I.container()==null)
 							&&(I!=loyalShipItem)
 							&&((I instanceof BoardableShip)
-								||((I instanceof Rideable)&&(((Rideable)I).rideBasis()==Rideable.RIDEABLE_WATER))))
+								||((I instanceof Rideable)&&(((Rideable)I).rideBasis()==Rideable.RIDEABLE_WATER)))
+							&&(CMLib.flags().canBeSeenBy(I, mob)))
 							{
 								boolean hasPlayer = false;
 								if(!aggrMobs)

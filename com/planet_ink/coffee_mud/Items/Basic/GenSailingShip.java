@@ -2128,8 +2128,11 @@ public class GenSailingShip extends StdBoardable
 				mob.phyStats().setDisposition(mob.phyStats().disposition()|PhyStats.IS_SWIMMING);
 				try
 				{
-					final CMMsg enterMsg=CMClass.getMsg(mob,destRoom,exit,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,L("<S-NAME> sail(s) in from @x1.",otherDirectionName));
-					final CMMsg leaveMsg=CMClass.getMsg(mob,thisRoom,opExit,CMMsg.MSG_LEAVE,null,CMMsg.MSG_LEAVE,null,CMMsg.MSG_LEAVE,L("<S-NAME> sail(s) @x1.",directionName));
+					final boolean isSneaking = CMLib.flags().isSneaking(this);
+					final String sailEnterStr = isSneaking ? null : L("<S-NAME> sail(s) in from @x1.",otherDirectionName);
+					final String sailAwayStr = isSneaking ? null : L("<S-NAME> sail(s) @x1.",directionName);
+					final CMMsg enterMsg=CMClass.getMsg(mob,destRoom,exit,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,sailEnterStr);
+					final CMMsg leaveMsg=CMClass.getMsg(mob,thisRoom,opExit,CMMsg.MSG_LEAVE,null,CMMsg.MSG_LEAVE,null,CMMsg.MSG_LEAVE,sailAwayStr);
 					if((exit.okMessage(mob,enterMsg))
 					&&(leaveMsg.target().okMessage(mob,leaveMsg))
 					&&((opExit==null)||(opExit.okMessage(mob,leaveMsg)))

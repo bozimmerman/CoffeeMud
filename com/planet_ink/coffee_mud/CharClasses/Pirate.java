@@ -192,6 +192,7 @@ public class Pirate extends Thief
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Skill_AwaitShip",false);
 		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Thief_SilentRunning",false);
 	}
 
 	@Override

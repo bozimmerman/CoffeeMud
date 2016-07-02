@@ -143,7 +143,7 @@ public class Skill_InterceptShip extends StdSkill
 	@Override
 	protected int overrideMana()
 	{
-		return Ability.COST_ALL;
+		return Ability.COST_PCT-50;
 	}
 
 	@Override

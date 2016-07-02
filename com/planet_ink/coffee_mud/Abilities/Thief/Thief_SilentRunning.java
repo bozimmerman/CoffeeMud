@@ -32,16 +32,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
-public class Thief_RammingSpeed extends ThiefSkill
+public class Thief_SilentRunning extends ThiefSkill
 {
 	@Override
 	public String ID()
 	{
-		return "Thief_RammingSpeed";
+		return "Thief_SilentRunning";
 	}
 
-	private final static String	localizedName	= CMLib.lang().L("Rig Ramming Speed");
+	private final static String localizedName = CMLib.lang().L("Silent Running");
 
 	@Override
 	public String name()
@@ -50,9 +49,9 @@ public class Thief_RammingSpeed extends ThiefSkill
 	}
 
 	@Override
-	public int abstractQuality()
+	public String displayText()
 	{
-		return Ability.QUALITY_INDIFFERENT;
+		return "";
 	}
 
 	@Override
@@ -64,16 +63,22 @@ public class Thief_RammingSpeed extends ThiefSkill
 	@Override
 	protected int canTargetCode()
 	{
-		return CAN_ITEMS;
+		return 0;
 	}
 
-	private static final String[]	triggerStrings	= I(new String[] { "RIGRAMMINGSPEED","RIGRAMMING","RAMMINGSPEED" });
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
 
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_SKILL | Ability.DOMAIN_SEATRAVEL;
+		return Ability.ACODE_THIEF_SKILL | Ability.DOMAIN_STEALTHY;
 	}
+
+	private static final String[] triggerStrings = I(new String[] { "SSNEAK","SILENTRUN" });
 
 	@Override
 	public String[] triggerStrings()
@@ -84,11 +89,11 @@ public class Thief_RammingSpeed extends ThiefSkill
 	@Override
 	public int usageType()
 	{
-		return USAGE_MOVEMENT|USAGE_MANA;
+		return USAGE_MOVEMENT | USAGE_MANA;
 	}
 
-	protected int	code		= 0;
-	
+	public int	code	= 0;
+
 	@Override
 	public int abilityCode()
 	{
@@ -102,52 +107,65 @@ public class Thief_RammingSpeed extends ThiefSkill
 	}
 
 	@Override
-	public void affectPhyStats(Physical affected, PhyStats affectableStats)
-	{
-		super.affectPhyStats(affected, affectableStats);
-		affectableStats.setAbility(affectableStats.ability() + 1 + abilityCode());
-	}
-	
-	@Override
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost, msg);
-		if((msg.source().riding()==affected)
-		&&(msg.sourceMinor()==CMMsg.TYP_ADVANCE))
-		{
-			final Ability unInvokeMe=this;
-			msg.addTrailerRunnable(new Runnable(){
-				@Override
-				public void run()
-				{
-					unInvokeMe.unInvoke();
-				}
-			});
-		}
-	}
-	
-	@Override
-	public boolean tick(Tickable ticking, int tickID)
-	{
-		if(!super.tick(ticking, tickID))
-			return false;
+		
 		final Physical affected=this.affected;
-		if(affected instanceof BoardableShip)
+		final MOB invoker = invoker();
+		if((msg.source().riding()==affected)
+		&&(affected instanceof BoardableShip)
+		&&(msg.source().isMonster())
+		&&(msg.source().Name().equals(affected.Name())))
 		{
-			String combat=affected.getStat("COMBATTARGET");
-			if((combat.length()==0)
-			||(CMLib.flags().isFalling(affected)))
+			if((affected.getStat("COMBATTARGET").length()>0)
+			||(msg.sourceMinor()==CMMsg.TYP_ADVANCE))
 			{
 				unInvoke();
-				return false;
+				affected.recoverPhyStats();
+			}
+			if((msg.sourceMinor()==CMMsg.TYP_ENTER)
+			&&(affected.getStat("COURSE").length()==0))
+			{
+				final Ability A;
+				if((invoker != null)&&(invoker.fetchAbility(ID())!=null))
+					A=invoker.fetchAbility("Thief_HideShip");
+				else
+				{
+					A=CMClass.getAbility("Thief_HideShip");
+					if(A!=null)
+						A.setProficiency(100);
+				}
+				final Ability unInVokeMe=this;
+				msg.addTrailerRunnable(new Runnable(){
+					@Override
+					public void run()
+					{
+						if((A!=null)&&(invoker!=null)&&(affected.getStat("COMBATTARGET").length()==0))
+							A.invoke(invoker, affected, false, 0);
+						unInVokeMe.unInvoke();
+						affected.delEffect(unInVokeMe);
+					}
+				});
 			}
 		}
-		return true;
 	}
-	
+
+	@Override
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
+	{
+		super.affectPhyStats(affected,affectableStats);
+		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SNEAKING);
+	}
+
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
+		if(mob.isInCombat())
+		{
+			mob.tell(L("Not while in combat!"));
+			return false;
+		}
 		if((CMLib.flags().isSitting(mob)||CMLib.flags().isSleeping(mob)))
 		{
 			mob.tell(L("You are on the floor!"));
@@ -169,57 +187,75 @@ public class Thief_RammingSpeed extends ThiefSkill
 		}
 		else
 		{
-			mob.tell(L("You must be on a ship to move to ramming speed!"));
+			mob.tell(L("You must be on a ship to hide it!"));
 			return false;
 		}
 		
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(L("Your ship is already prepared for ramming speed!"));
+			mob.tell(L("Your ship is already hidden!"));
 			return false;
 		}
 		
 		final Room shipR=CMLib.map().roomLocation(target);
 		if((shipR==null)||(!CMLib.flags().isWaterySurfaceRoom(shipR))||(!target.subjectToWearAndTear()))
 		{
-			mob.tell(L("You must be on a sailing ship to move to ramming speed!"));
+			mob.tell(L("You must be on a sailing ship to hide it!"));
 			return false;
 		}
 		
 		final BoardableShip ship = (BoardableShip)target;
 		final String currentVictim = ship.getStat("COMBATTARGET");
-		if(currentVictim.length()==0)
+		if(currentVictim.length()>0)
 		{
-			mob.tell(L("Your ship must be in combat to move to ramming speed!"));
+			mob.tell(L("Your ship must not be in combat to hide it!"));
 			return false;
 		}
 		
-		final String directionToTargetStr = ship.getStat("DIRECTIONTOTARGET");
-		final int directionToTarget = CMLib.directions().getDirectionCode(directionToTargetStr);
-		final int directionFacing = CMLib.directions().getDirectionCode(ship.getStat("DIRECTIONFACING"));
-		if(directionToTarget != directionFacing)
+		int direction=-1;
+		StringBuilder course=new StringBuilder("");
+		if(commands.size()>0)
 		{
-			mob.tell(L("You ship must be facing @x1, towards your target, to ram at them.",directionToTargetStr));
-			return false;
+			for(int i=0;i<commands.size();i++)
+			{
+				direction=CMLib.directions().getDirectionCode(commands.get(i));
+				if(direction < 0)
+				{
+					mob.tell(L("'@x1' is not a valid direction.",commands.get(0)));
+					return false;
+				}
+				course.append(CMLib.directions().getDirectionName(direction)).append(" ");
+			}
 		}
-
+		
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		final boolean success=proficiencyCheck(mob,0,auto);
-		if(success)
+		boolean success=proficiencyCheck(mob,0,auto);
+
+		if(!success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_NOISYMOVEMENT,auto?L("<T-NAME> is at full sail!"):L("<S-NAME> prepare(s) <T-NAME> for ramming speed!"));
+			beneficialVisualFizzle(mob,target,L("<S-NAME> attempt(s) to rig <T-NAMESELF> for silent running and fail(s)."));
+		}
+		else
+		{
+			final CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MSG_OK_ACTION:(CMMsg.MSG_DELICATE_HANDS_ACT|CMMsg.MASK_MOVE),L("<S-NAME> hide(s) <T-NAMESELF> by sailing her into the mists and tall waves on the horizon."));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Ability A=beneficialAffect(mob, target, asLevel, 0);
-				if(A!=null)
-					A.setAbilityCode((super.getXLEVELLevel(mob)+2) / 3);
+				super.beneficialAffect(mob,target,asLevel,Ability.TICKS_ALMOST_FOREVER);
+				target.recoverPhyStats();
+				if(direction > 0)
+				{
+					String courseMsgStr="COURSE "+course.toString();
+					final CMMsg huhMsg=CMClass.getMsg(mob,null,null,CMMsg.MSG_HUH,"",courseMsgStr,null);
+					if(R.okMessage(mob,huhMsg))
+						R.send(mob,huhMsg);
+				}
 			}
+			else
+				success=false;
 		}
-		else
-			return beneficialVisualFizzle(mob,null,L("<S-NAME> attempt(s) to move to ramming speed, but <S-IS-ARE> too slow."));
 		return success;
 	}
 }
