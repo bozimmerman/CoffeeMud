@@ -373,7 +373,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 				Area redirectA = null;
 				int direction = CMLib.map().getRoomDir(msg.source().location(), (Room)msg.target());
 				if((direction<0)&&(msg.tool() instanceof Exit))
-					direction = CMLib.map().getExitDir(msg.source().location(), (Exit)msg.target());
+					direction = CMLib.map().getExitDir(msg.source().location(), (Exit)msg.tool());
 				if(direction < 0)
 				{
 					msg.source().tell(L("Can't figure out where you're coming from?!"));
