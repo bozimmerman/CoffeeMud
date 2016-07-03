@@ -2055,7 +2055,7 @@ public class StdMOB implements MOB
 		}
 		catch (final Exception e)
 		{
-			Log.errOut("StdMOB", CMParms.toListString(commands));
+			Log.errOut("StdMOB", Name()+" did "+CMParms.toListString(commands)+" in "+CMLib.map().roomLocation(location()));
 			Log.errOut("StdMOB", e);
 			tell(L("Oops!"));
 		}
