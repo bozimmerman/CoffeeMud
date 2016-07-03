@@ -72,7 +72,7 @@ public class Thief_SmugglersHold extends ThiefSkill
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_SKILL | Ability.DOMAIN_STEALTHY;
+		return Ability.ACODE_THIEF_SKILL | Ability.DOMAIN_STEALTHY;
 	}
 
 	@Override

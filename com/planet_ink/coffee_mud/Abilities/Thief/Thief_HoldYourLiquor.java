@@ -88,7 +88,7 @@ public class Thief_HoldYourLiquor extends ThiefSkill
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_SKILL | Ability.DOMAIN_FITNESS;
+		return Ability.ACODE_THIEF_SKILL | Ability.DOMAIN_FITNESS;
 	}
 
 	protected volatile int checkAgain = Integer.MAX_VALUE/2;

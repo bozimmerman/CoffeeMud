@@ -78,7 +78,7 @@ public class Thief_FenceLoot extends ThiefSkill
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_SKILL | Ability.DOMAIN_INFLUENTIAL;
+		return Ability.ACODE_THIEF_SKILL | Ability.DOMAIN_INFLUENTIAL;
 	}
 
 	protected Map<Item,Ability> addBackMap=new HashMap<Item,Ability>();

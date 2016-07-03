@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.CharClasses;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -62,7 +63,7 @@ public class Pirate extends Thief
 	@Override
 	public int availabilityCode()
 	{
-		return 0;//Area.THEME_FANTASY;
+		return 0;// Area.THEME_FANTASY; //
 	}
 
 	private final String[] raceRequiredList=new String[]{"All","-Equine"};
@@ -197,6 +198,145 @@ public class Pirate extends Thief
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Thief_SilentRunning",true);
 	}
 
+	@Override
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
+	{
+		if(!super.okMessage(myHost, msg))
+			return false;
+		if (msg.amITarget(myHost)
+		&& (msg.targetMinor() == CMMsg.TYP_GIVE)
+		&& (msg.source() != myHost)
+		&& (msg.tool() instanceof Coins)
+		&& (myHost instanceof MOB)
+		&& (((MOB)myHost).getVictim()==msg.source()))
+		{
+			final double amt = ((Coins)msg.tool()).getTotalValue();
+			final double min = (50.0 * ((MOB)myHost).phyStats().level()); 
+			if(amt >= min)
+			{
+				final MOB pirate = (MOB)myHost;
+				msg.addTrailerRunnable(new Runnable(){
+					@Override
+					public void run()
+					{
+						pirate.makePeace(true);
+						Room R=CMLib.map().roomLocation(msg.source());
+						Ability A=pirate.fetchEffect("Prop_PiratePaidOff");
+						if(A!=null)
+							A.setMiscText("+"+R.getContextName(msg.source()));
+						else
+						{
+							pirate.addNonUninvokableEffect(new StdAbility(){
+								private final Map<MOB,Long> timeOuts = new SHashtable<MOB,Long>();
+								@Override
+								public String ID()
+								{
+									return "Prop_PiratePaidOff";
+								}
+								
+								@Override
+								public void setMiscText(String newMiscText)
+								{
+									if(newMiscText.startsWith("+"))
+									{
+										Room R=CMLib.map().roomLocation(affected);
+										if(R!=null)
+										{
+											final MOB M=R.fetchInhabitant(newMiscText.substring(1));
+											if(M!=null)
+											{
+												final Long newTime = Long.valueOf(System.currentTimeMillis() + (10L * 60L * 1000L));
+												synchronized(timeOuts)
+												{
+													timeOuts.put(M,newTime);
+												}
+											}
+										}
+									}
+									else
+										super.setMiscText(newMiscText);
+									final long now=System.currentTimeMillis();
+									synchronized(timeOuts)
+									{
+										for(MOB M : timeOuts.keySet())
+										{
+											final Long L=timeOuts.get(M);
+											if((L!=null)&&(L.longValue() < now))
+											{
+												timeOuts.remove(M);
+											}
+										}
+									}
+								}
+								
+								@Override
+								public boolean isSavable()
+								{
+									return false;
+								}
+
+								@Override
+								public boolean okMessage(Environmental myHost, CMMsg msg)
+								{
+									if(!super.okMessage(myHost, msg))
+										return false;
+									if((msg.source() == pirate)
+									&&(msg.target() instanceof MOB)
+									&&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS)))
+									{
+										final MOB victimM=(MOB)msg.target();
+										MOB paidOneM = victimM;
+										Long timeOut;
+										synchronized(timeOuts)
+										{
+											timeOut = timeOuts.get(victimM);
+										}
+										final MOB ultiM=victimM.amUltimatelyFollowing();
+										if((timeOut == null)&&(ultiM!=null))
+										{
+											synchronized(timeOuts)
+											{
+												timeOut = timeOuts.get(ultiM);
+											}
+											if(timeOut != null)
+												paidOneM= ultiM;
+										}
+										if(timeOut != null)
+										{
+											if(System.currentTimeMillis() < timeOut.longValue())
+											{
+												if(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
+													msg.source().tell(L("@x1 paid you off, so you can't attack @x2.",paidOneM.name(pirate),victimM.charStats().himher()));
+												victimM.makePeace(true);
+												msg.source().makePeace(true);
+												return false;
+											}
+											else
+											{
+												timeOuts.remove(paidOneM);
+												if(timeOuts.size()==0)
+													pirate.delEffect(this);
+											}
+										}
+									}
+									return true;
+								}
+							});
+						}
+					}
+				});
+			}
+			else
+			{
+				final String minAmt = CMLib.beanCounter().abbreviatedPrice(((Coins)msg.tool()).getCurrency(), min);
+				final String himHer = ((MOB)myHost).charStats().himher();
+				msg.source().tell(L("You'll need to fork over at lease @x1 to make @x2 go away.",minAmt,himHer));
+				return false;
+			}
+		}
+		return true;
+	}
+	
 	@Override
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{

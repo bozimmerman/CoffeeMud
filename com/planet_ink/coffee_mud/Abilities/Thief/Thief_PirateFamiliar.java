@@ -86,7 +86,7 @@ public class Thief_PirateFamiliar extends ThiefSkill
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_SPELL | Ability.DOMAIN_ANIMALAFFINITY;
+		return Ability.ACODE_THIEF_SKILL | Ability.DOMAIN_ANIMALAFFINITY;
 	}
 
 	@Override

@@ -84,7 +84,7 @@ public class Thief_PayOff extends ThiefSkill
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_SKILL | Ability.DOMAIN_INFLUENTIAL;
+		return Ability.ACODE_THIEF_SKILL | Ability.DOMAIN_INFLUENTIAL;
 	}
 
 	protected void clearWarrants(final MOB officer, final MOB invoker, final Room R, final Area A, final LegalBehavior B)
