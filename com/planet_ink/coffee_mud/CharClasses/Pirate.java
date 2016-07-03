@@ -63,7 +63,7 @@ public class Pirate extends Thief
 	@Override
 	public int availabilityCode()
 	{
-		return  Area.THEME_FANTASY; //
+		return  0;//Area.THEME_FANTASY; //
 	}
 
 	private final String[] raceRequiredList=new String[]{"All","-Equine"};
