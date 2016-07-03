@@ -63,7 +63,7 @@ public class Pirate extends Thief
 	@Override
 	public int availabilityCode()
 	{
-		return 0;// Area.THEME_FANTASY; //
+		return  Area.THEME_FANTASY; //
 	}
 
 	private final String[] raceRequiredList=new String[]{"All","-Equine"};
@@ -222,11 +222,9 @@ public class Pirate extends Thief
 						pirate.makePeace(true);
 						Room R=CMLib.map().roomLocation(msg.source());
 						Ability A=pirate.fetchEffect("Prop_PiratePaidOff");
-						if(A!=null)
-							A.setMiscText("+"+R.getContextName(msg.source()));
-						else
+						if(A==null)
 						{
-							pirate.addNonUninvokableEffect(new StdAbility(){
+							pirate.addNonUninvokableEffect(A=new StdAbility(){
 								private final Map<MOB,Long> timeOuts = new SHashtable<MOB,Long>();
 								@Override
 								public String ID()
@@ -280,42 +278,82 @@ public class Pirate extends Thief
 								{
 									if(!super.okMessage(myHost, msg))
 										return false;
-									if((msg.source() == pirate)
-									&&(msg.target() instanceof MOB)
+									if((msg.target() instanceof MOB)
 									&&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS)))
 									{
-										final MOB victimM=(MOB)msg.target();
-										MOB paidOneM = victimM;
-										Long timeOut;
-										synchronized(timeOuts)
+										if(msg.source() == pirate)
 										{
-											timeOut = timeOuts.get(victimM);
-										}
-										final MOB ultiM=victimM.amUltimatelyFollowing();
-										if((timeOut == null)&&(ultiM!=null))
-										{
+											final MOB victimM=(MOB)msg.target();
+											MOB paidOneM = victimM;
+											Long timeOut;
 											synchronized(timeOuts)
 											{
-												timeOut = timeOuts.get(ultiM);
+												timeOut = timeOuts.get(victimM);
+											}
+											final MOB ultiM=victimM.amUltimatelyFollowing();
+											if((timeOut == null)&&(ultiM!=null))
+											{
+												synchronized(timeOuts)
+												{
+													timeOut = timeOuts.get(ultiM);
+												}
+												if(timeOut != null)
+													paidOneM= ultiM;
 											}
 											if(timeOut != null)
-												paidOneM= ultiM;
-										}
-										if(timeOut != null)
-										{
-											if(System.currentTimeMillis() < timeOut.longValue())
 											{
-												if(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
-													msg.source().tell(L("@x1 paid you off, so you can't attack @x2.",paidOneM.name(pirate),victimM.charStats().himher()));
-												victimM.makePeace(true);
-												msg.source().makePeace(true);
-												return false;
+												if(System.currentTimeMillis() < timeOut.longValue())
+												{
+													if(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
+														msg.source().tell(L("@x1 paid you off, so you can't attack @x2 for awhile.",paidOneM.name(pirate),victimM.charStats().himher()));
+													victimM.makePeace(true);
+													msg.source().makePeace(true);
+													return false;
+												}
+												else
+												{
+													timeOuts.remove(paidOneM);
+													if(timeOuts.size()==0)
+														pirate.delEffect(this);
+												}
 											}
-											else
+										}
+										else
+										if(msg.target() == pirate)
+										{
+											final MOB attackerM=msg.source();
+											MOB paidOneM = attackerM;
+											Long timeOut;
+											synchronized(timeOuts)
 											{
-												timeOuts.remove(paidOneM);
-												if(timeOuts.size()==0)
-													pirate.delEffect(this);
+												timeOut = timeOuts.get(attackerM);
+											}
+											final MOB ultiM=attackerM.amUltimatelyFollowing();
+											if((timeOut == null)&&(ultiM!=null))
+											{
+												synchronized(timeOuts)
+												{
+													timeOut = timeOuts.get(ultiM);
+												}
+												if(timeOut != null)
+													paidOneM= ultiM;
+											}
+											if(timeOut != null)
+											{
+												if(System.currentTimeMillis() < timeOut.longValue())
+												{
+													if(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
+														msg.source().tell(paidOneM,null,null,L("<S-NAME> paid off @x1, so you can't attack @x2 for awhile.",pirate.name(attackerM),pirate.charStats().himher()));
+													pirate.makePeace(true);
+													msg.source().makePeace(true);
+													return false;
+												}
+												else
+												{
+													timeOuts.remove(paidOneM);
+													if(timeOuts.size()==0)
+														pirate.delEffect(this);
+												}
 											}
 										}
 									}
@@ -323,6 +361,7 @@ public class Pirate extends Thief
 								}
 							});
 						}
+						A.setMiscText("+"+R.getContextName(msg.source()));
 					}
 				});
 			}
