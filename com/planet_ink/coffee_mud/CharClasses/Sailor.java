@@ -140,8 +140,9 @@ public class Sailor extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Semaphore",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Skill_SeaLegs",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Thief_Belay",true);
 
-		// to separate from artisam
+		// to separate from artisan
 		CMLib.ableMapper().addCharAbilityMapping(ID(),-1,"Chopping",0,"",false,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),-1,"Digging",0,"",false,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),-1,"Drilling",0,"",false,true);
