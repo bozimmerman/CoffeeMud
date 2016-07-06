@@ -127,6 +127,64 @@ public class Export extends StdCommand
 			commandType=commands.get(0).toUpperCase();
 			commands.remove(0);
 		}
+		if(commandType.equalsIgnoreCase("REALESTATE"))
+		{
+			if((commands.size()==0)||(area==null))
+			{
+				if(S!=null)
+					mob.tell(L("Export which real estate?  Name a clan or player!"));
+				return false;
+			}
+			else
+			{
+				String clanName = commands.remove(0);
+				List<Room> rooms=new ArrayList<Room>();
+				for(Enumeration<Room> r=area.getProperMap();r.hasMoreElements();)
+				{
+					final Room R=CMLib.map().getRoom(r.nextElement());
+					if((R!=null)&&(R.roomID().length()>0))
+					{
+						LandTitle title=CMLib.law().getLandTitle(R);
+						if((title != null)&&(title.getOwnerName().equalsIgnoreCase(clanName)))
+							rooms.add(R);
+					}
+				}
+				if(rooms.size()==0)
+				{
+					if(S!=null)
+						mob.tell(L("No rooms in this area match '@x1'",clanName));
+					return false;
+				}
+				else
+				{
+					for(Room R : rooms)
+					{
+						R.bringMobHere(mob, false);
+						if(R.isInhabitant(mob))
+						{
+							List<String> cmds=new XVector<String>(commands);
+							if(cmds.size()==0)
+								cmds.add("EXPORT");
+							else
+								cmds.add(0,"EXPORT");
+							if(cmds.size()==1)
+								cmds.add("ROOM");
+							else
+								cmds.add(1,"ROOM");
+							if(cmds.size()==2)
+								cmds.add(R.roomID().replaceAll("#","_"));
+							execute(mob,cmds,metaFlags);
+						}
+						else
+						if(S!=null)
+							mob.tell(L("Failed room '@x1'",R.roomID()));
+					}
+					room.bringMobHere(mob, false);
+					return true;
+				}
+			}
+		}
+		
 		if((!commandType.equalsIgnoreCase("ROOM"))
 		&&(!commandType.equalsIgnoreCase("WORLD"))
 		&&(!commandType.equalsIgnoreCase("CATALOG"))

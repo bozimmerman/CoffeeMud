@@ -376,12 +376,14 @@ public class DBConnection
 		try
 		{
 			if(!Closer.equals(""))
+			{
 				if(myStatement!=null)
 				{
 					lastSQL=Closer;
 					lastQueryTime=System.currentTimeMillis();
 					myStatement.executeUpdate(Closer);
 				}
+			}
 			if(myResultSet!=null)
 			{
 				myResultSet.close();
@@ -398,7 +400,10 @@ public class DBConnection
 				myStatement=null;
 			}
 			if(myConnection!=null)
-				myConnection.commit();
+			{
+				if(!myConnection.getAutoCommit())
+					myConnection.commit();
+			}
 		}
 		catch(final SQLException e)
 		{
