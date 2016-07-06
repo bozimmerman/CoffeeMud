@@ -2065,29 +2065,30 @@ public class CMMap extends StdLibrary implements WorldMap
 			for(final Enumeration<Room> r=rooms();r.hasMoreElements();)
 			{
 				Room R=r.nextElement();
+				boolean changes=false;
 				synchronized(("SYNC"+R.roomID()).intern())
 				{
 					R=getRoom(R);
-					if(R==null)
-						continue;
-					boolean changes=false;
-					for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+					if(R!=null)
 					{
-						final Room thatRoom=R.rawDoors()[d];
-						if(thatRoom==deadRoom)
+						for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 						{
-							R.rawDoors()[d]=null;
-							changes=true;
-							if((R.getRawExit(d)!=null)&&(R.getRawExit(d).isGeneric()))
+							final Room thatRoom=R.rawDoors()[d];
+							if(thatRoom==deadRoom)
 							{
-								final Exit GE=R.getRawExit(d);
-								GE.setTemporaryDoorLink(deadRoom.roomID());
+								R.rawDoors()[d]=null;
+								changes=true;
+								if((R.getRawExit(d)!=null)&&(R.getRawExit(d).isGeneric()))
+								{
+									final Exit GE=R.getRawExit(d);
+									GE.setTemporaryDoorLink(deadRoom.roomID());
+								}
 							}
 						}
 					}
-					if(changes)
-						CMLib.database().DBUpdateExits(R);
 				}
+				if(changes)
+					CMLib.database().DBUpdateExits(R);
 			}
 		}
 		catch (final NoSuchElementException e)

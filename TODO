@@ -1,4 +1,8 @@
 BUGS
+   *. Prop_ReqCapacity should push off overflow to adjacent rooms.
+   *. Rooms with lots of duplicate items should enumerate to save db writes
+   *. Gathering and clan donate don't respect req capacity
+   
 
 TECH
    *. test ship phaser, laser systems murder motel again

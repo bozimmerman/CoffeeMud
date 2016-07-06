@@ -689,6 +689,19 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			oldRoom=mob.location();
 		}
 
+		if(oldRoom == null)
+		{
+			if((!mob.amDead())&&(!mob.amDestroyed()))
+			{
+				if(mob.isPlayer() && (mob.getStartRoom()!=null))
+					mob.getStartRoom().bringMobHere(mob, true);
+				else
+					mob.killMeDead(false);
+				Log.errOut("MUDTracker","Inexplicable lost room for '"+mob.Name()+"'.  Killing dead.");
+			}
+			return false;
+		}
+
 		if(status!=null)
 			status[0]=Tickable.STATUS_MISC7+3;
 		int tries=0;
