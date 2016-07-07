@@ -307,13 +307,14 @@ public class CraftingSkill extends GatheringSkill
 		return name;
 	}
 	
-	protected void dropAWinner(MOB mob, Item building)
+	@Override
+	protected boolean dropAWinner(MOB mob, Item buildingI)
 	{
 		final Room R=mob.location();
 		if(R==null)
 			commonTell(mob,L("You are NOWHERE?!"));
 		else
-		if(building==null)
+		if(buildingI==null)
 			commonTell(mob,L("You have built NOTHING?!!"));
 		else
 		{
@@ -362,23 +363,19 @@ public class CraftingSkill extends GatheringSkill
 			}
 			if(mob.location().okMessage(mob,msg))
 			{
-				R.addItem(building,ItemPossessor.Expire.Player_Drop);
+				R.addItem(buildingI,ItemPossessor.Expire.Player_Drop);
 				R.recoverRoomStats();
 				mob.location().send(mob,msg);
-			
-				boolean foundIt=false;
-				for(int r=0;r<R.numItems();r++)
-				{
-					if(R.getItem(r)==building)
-						foundIt=true;
-				}
-				if(!foundIt)
+				if(!R.isContent(buildingI))
 				{
 					commonTell(mob,L("You have won the common-skill-failure LOTTERY! Congratulations!"));
 					CMLib.leveler().postExperience(mob, null, null,50,false);
 				}
+				else
+					return true;
 			}
 		}
+		return false;
 	}
 
 	protected void addSpells(Physical P, String spells)

@@ -303,6 +303,8 @@ public class CommonSkill extends StdAbility
 
 	protected void commonTell(MOB mob, String str)
 	{
+		if(mob==null)
+			return;
 		if(mob.isMonster()&&(mob.amFollowing()!=null))
 		{
 			if(str.startsWith("You"))
@@ -328,6 +330,39 @@ public class CommonSkill extends StdAbility
 		return lookingFor(V,fromHere);
 	}
 
+	protected boolean dropAWinner(MOB mob, Item buildingI)
+	{
+		return dropAWinner(mob,mob.location(),buildingI);
+	}
+	
+	protected boolean dropAWinner(MOB mob, Room R, Item buildingI)
+	{
+		if(R==null)
+			commonTell(mob,L("You are NOWHERE?!"));
+		else
+		if(buildingI==null)
+			commonTell(mob,L("You have built NOTHING?!!"));
+		else
+		{
+			final CMMsg msg=CMClass.getMsg(mob,buildingI,this,CMMsg.TYP_ITEMGENERATED|CMMsg.MASK_ALWAYS,null);
+			if(R.okMessage(mob,msg))
+			{
+				R.addItem(buildingI,ItemPossessor.Expire.Resource);
+				R.recoverRoomStats();
+				mob.location().send(mob,msg);
+			
+				if(!R.isContent(buildingI))
+				{
+					commonTell(mob,L("You have won the common-skill-failure LOTTERY! Congratulations!"));
+					CMLib.leveler().postExperience(mob, null, null,50,false);
+				}
+				else
+					return true;
+			}
+		}
+		return false;
+	}
+	
 	protected int lookingFor(Vector<Integer> materials, Room fromHere)
 	{
 		final Vector<Integer> possibilities=new Vector<Integer>();

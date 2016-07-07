@@ -127,11 +127,16 @@ public class Butchering extends GatheringSkill
 							{
 								final Item newFound=(Item)((Item)resources.get(i)).copyOf();
 								if((newFound instanceof Food)||(newFound instanceof Drink))
+								{
 									for(int d=0;d<diseases.size();d++)
 										newFound.addNonUninvokableEffect((Ability)diseases.elementAt(d).copyOf());
+								}
 								newFound.recoverPhyStats();
-								mob.location().addItem(newFound,ItemPossessor.Expire.Resource);
-								mob.location().recoverRoomStats();
+								if(!dropAWinner(mob,newFound))
+								{
+									y=9999;
+									break;
+								}
 							}
 						}
 					}

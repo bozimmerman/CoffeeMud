@@ -137,7 +137,8 @@ public class Smelting extends CraftingSkill implements CraftorAbility
 						final Item copy=(Item)buildingI.copyOf();
 						copy.setMiscText(buildingI.text());
 						copy.recoverPhyStats();
-						mob.location().addItem(copy,ItemPossessor.Expire.Player_Drop);
+						if(!dropAWinner(mob,copy))
+							break;
 					}
 				}
 				buildingI=null;

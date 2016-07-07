@@ -120,7 +120,10 @@ public class Drilling extends GatheringSkill
 						final Room R=mob.location();
 						if(R==null)
 							break;
-						R.addItem(newFound,ItemPossessor.Expire.Player_Drop);
+						if(!dropAWinner(mob,newFound))
+						{
+							break;
+						}
 						if((container!=null)
 						&&(container instanceof Container))
 						{

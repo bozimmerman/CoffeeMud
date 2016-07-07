@@ -111,8 +111,10 @@ public class Digging extends GatheringSkill
 					for(int i=0;i<amount;i++)
 					{
 						final Item newFound=(Item)found.copyOf();
-						mob.location().addItem(newFound,ItemPossessor.Expire.Resource);
-						//CMLib.commands().postGet(mob,null,newFound,true);
+						if(!dropAWinner(mob,newFound))
+						{
+							break;
+						}
 					}
 				}
 			}

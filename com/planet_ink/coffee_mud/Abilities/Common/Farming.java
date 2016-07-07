@@ -134,7 +134,8 @@ public class Farming extends GatheringSkill
 					for(int i=0;i<amount;i++)
 					{
 						final Item newFound=(Item)found.copyOf();
-						room.addItem(newFound,ItemPossessor.Expire.Player_Drop);
+						if(!dropAWinner(null,room,newFound))
+							break;
 					}
 				}
 			}

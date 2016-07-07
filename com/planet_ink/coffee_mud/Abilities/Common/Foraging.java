@@ -148,7 +148,8 @@ public class Foraging extends GatheringSkill
 					for(int i=0;i<amount;i++)
 					{
 						final Item newFound=(Item)found.copyOf();
-						mob.location().addItem(newFound,ItemPossessor.Expire.Player_Drop);
+						if(!dropAWinner(mob,newFound))
+							break;
 						CMLib.commands().postGet(mob,null,newFound,true);
 					}
 				}

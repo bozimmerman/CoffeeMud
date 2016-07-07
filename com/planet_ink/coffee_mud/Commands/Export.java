@@ -179,7 +179,8 @@ public class Export extends StdCommand
 						if(S!=null)
 							mob.tell(L("Failed room '@x1'",R.roomID()));
 					}
-					room.bringMobHere(mob, false);
+					if(room!=null)
+						room.bringMobHere(mob, false);
 					return true;
 				}
 			}

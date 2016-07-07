@@ -35,15 +35,55 @@ import java.util.*;
 
 public class Spell_ClanDonate extends Spell
 {
-	@Override public String ID() { return "Spell_ClanDonate"; }
-	private final static String localizedName = CMLib.lang().L("Clan Donate");
-	@Override public String name() { return localizedName; }
-	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
-	@Override public long flags(){return super.flags()|Ability.FLAG_CLANMAGIC;}
-	@Override protected int overrideMana(){return 5;}
-	@Override public boolean disregardsArmorCheck(MOB mob){return true;}
+	@Override
+	public String ID()
+	{
+		return "Spell_ClanDonate";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Clan Donate");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_ITEMS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL | Ability.DOMAIN_CONJURATION;
+	}
+
+	@Override
+	public long flags()
+	{
+		return super.flags() | Ability.FLAG_CLANMAGIC;
+	}
+
+	@Override
+	protected int overrideMana()
+	{
+		return 5;
+	}
+
+	@Override
+	public boolean disregardsArmorCheck(MOB mob)
+	{
+		return true;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)

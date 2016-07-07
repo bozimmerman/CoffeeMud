@@ -97,7 +97,7 @@ public class Scalp extends CommonSkill
 						scalp.setDescription(L("This is the bloody top of that poor creatures head."));
 						scalp.setMaterial(RawMaterial.RESOURCE_MEAT);
 						scalp.setSecretIdentity("This scalp was cut by "+mob.name()+".");
-						mob.location().addItem(scalp,ItemPossessor.Expire.Monster_EQ);
+						dropAWinner(mob,scalp);
 					}
 				}
 			}
