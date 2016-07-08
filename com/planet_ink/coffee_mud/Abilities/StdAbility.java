@@ -2110,7 +2110,7 @@ public class StdAbility implements Ability
 	}
 
 	private static final String[]	CODES			= { "CLASS", "TEXT" };
-	private static final String[]	INTERNAL_CODES	= { "TICKDOWN" };
+	private static final String[]	INTERNAL_CODES	= { "TICKDOWN","LEVEL" };
 
 	@Override
 	public String[] getStatCodes()
@@ -2158,6 +2158,8 @@ public class StdAbility implements Ability
 			{
 			case 0:
 				return Integer.toString(tickDown);
+			case 1:
+				return "0";
 			default:
 				break;
 			}
@@ -2181,6 +2183,8 @@ public class StdAbility implements Ability
 			{
 			case 0:
 				tickDown = CMath.s_int(val);
+				break;
+			case 1:
 				break;
 			default:
 				break;

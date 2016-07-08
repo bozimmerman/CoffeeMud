@@ -157,45 +157,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			}
 		}
 		if(ADJ!=null)
-		{
-			final String newText=ADJ.text();
-			final int ab=CMParms.getParmPlus(newText,"abi");
-			final int arm=CMParms.getParmPlus(newText,"arm")*-1;
-			final int att=CMParms.getParmPlus(newText,"att");
-			final int dam=CMParms.getParmPlus(newText,"dam");
-			if(savedI instanceof Weapon)
-				level+=(arm*2);
-			else
-			if(savedI instanceof Armor)
-			{
-				level+=(att/2);
-				level+=(dam*3);
-			}
-			level+=ab*5;
-
-
-			final int dis=CMParms.getParmPlus(newText,"dis");
-			if(dis!=0)
-				level+=5;
-			final int sen=CMParms.getParmPlus(newText,"sen");
-			if(sen!=0)
-				level+=5;
-			level+=(int)Math.round(5.0*CMParms.getParmDoublePlus(newText,"spe"));
-			for(final int i : CharStats.CODES.BASECODES())
-			{
-				final int stat=CMParms.getParmPlus(newText,CMStrings.limit(CharStats.CODES.NAME(i),3).toLowerCase());
-				final int max=CMParms.getParmPlus(newText,("max"+(CMStrings.limit(CharStats.CODES.NAME(i),3).toLowerCase())));
-				level+=(stat*10);
-				level+=(max*15);
-			}
-
-			final int hit=CMParms.getParmPlus(newText,"hit");
-			final int man=CMParms.getParmPlus(newText,"man");
-			final int mv=CMParms.getParmPlus(newText,"mov");
-			level+=(hit/5);
-			level+=(man/5);
-			level+=(mv/5);
-		}
+			level += CMath.s_int(ADJ.getStat("LEVEL"));
 		savedI.destroy();
 		I.destroy(); // this was a copy
 		return level;
@@ -1047,41 +1009,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		int level=0;
 		if(ADJ!=null)
 		{
-			final String newText=ADJ.text();
-			final int ab=CMParms.getParmPlus(newText,"abi");
-			final int arm=CMParms.getParmPlus(newText,"arm")*-1;
-			final int att=CMParms.getParmPlus(newText,"att");
-			final int dam=CMParms.getParmPlus(newText,"dam");
-			if(savedI instanceof Weapon)
-				level+=arm;
-			else
-			if(savedI instanceof Armor)
-			{
-				level+=att;
-				level+=(dam*3);
-			}
-			level+=ab*5;
-			final int dis=CMParms.getParmPlus(newText,"dis");
-			if(dis!=0)
-				level+=10;
-			final int sen=CMParms.getParmPlus(newText,"sen");
-			if(sen!=0)
-				level+=10;
-			level+=(int)Math.round(5.0*CMParms.getParmDoublePlus(newText,"spe"));
-			for(final int i: CharStats.CODES.BASECODES())
-			{
-				final int stat=CMParms.getParmPlus(newText,CMStrings.limit(CharStats.CODES.NAME(i),3).toLowerCase());
-				final int max=CMParms.getParmPlus(newText,("max"+(CMStrings.limit(CharStats.CODES.NAME(i),3).toLowerCase())));
-				level+=(stat*10);
-				level+=(max*15);
-			}
-
-			final int hit=CMParms.getParmPlus(newText,"hit");
-			final int man=CMParms.getParmPlus(newText,"man");
-			final int mv=CMParms.getParmPlus(newText,"mov");
-			level+=(hit/5);
-			level+=(man/5);
-			level+=(mv/5);
+			level += CMath.s_int(ADJ.getStat("LEVEL"));
 		}
 		return level;
 	}
