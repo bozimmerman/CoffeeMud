@@ -1332,7 +1332,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		&&(!isKnockedOutUponDeath(target,source)))
 			body=target.killMeDead(true);
 
-		handleCombatLossConsequences(target,source,cmds,expLost,L("^*You lose @x1 experience points.^?^.",""+expLost[0]));
+		handleCombatLossConsequences(target,source,cmds,expLost,"^*You lose @x1 experience points.^?^.");
 
 		if(!isKnockedOutUponDeath(target,source))
 		{
@@ -2674,12 +2674,12 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				}
 			}
 			else
-			if(CMath.isMathExpression(whatToDo,varVals))
+			if(CMath.s_parseIntExpression(whatToDo,varVals)>0)
 			{
 				lostExperience[0]=CMath.s_parseIntExpression(whatToDo,varVals);
 				if(lostExperience[0]>0)
 				{
-					message=CMStrings.replaceAll(message,"@x1",""+lostExperience[0]);
+					message=L(message,""+lostExperience[0]);
 					deadM.tell(message);
 					CMLib.leveler().postExperience(deadM,null,null,-lostExperience[0],false);
 				}
@@ -2690,7 +2690,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				lostExperience[0]=baseExperience;
 				if(lostExperience[0]>0)
 				{
-					message=CMStrings.replaceAll(message,"@x1",""+baseExperience);
+					message=L(message,""+baseExperience);
 					deadM.tell(message);
 					CMLib.leveler().postExperience(deadM,null,null,-baseExperience,false);
 				}

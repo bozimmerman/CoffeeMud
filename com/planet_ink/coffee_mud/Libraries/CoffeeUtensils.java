@@ -1119,10 +1119,16 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			rejuvedMOB.phyStats().setDisposition(CMath.unsetb(rejuvedMOB.basePhyStats().disposition(),PhyStats.IS_SITTING|PhyStats.IS_CUSTOM));
 			rejuvedMOB.location().show(rejuvedMOB,null,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> get(s) up!"));
 			corpseRoom.recoverRoomStats();
-			final Vector<String> whatsToDo=CMParms.parse(CMProps.getVar(CMProps.Str.PLAYERDEATH));
+			final List<String> whatsToDo=CMParms.parseCommas(CMProps.getVar(CMProps.Str.PLAYERDEATH),true);
+			int rejuv=rejuvedMOB.phyStats().rejuv();
+			if((rejuv==0)||(rejuv==Integer.MAX_VALUE))
+				rejuv=rejuvedMOB.phyStats().level();
+			if(((!rejuvedMOB.isMonster())&&(rejuvedMOB.soulMate()==null)))
+				rejuv=1;
+			double[] vars=new double[] { rejuvedMOB.phyStats().level(), rejuvedMOB.phyStats().level(), rejuv };
 			for(int w=0;w<whatsToDo.size();w++)
 			{
-				final String whatToDo=whatsToDo.elementAt(w);
+				final String whatToDo=whatsToDo.get(w);
 				if(whatToDo.startsWith("UNL"))
 					CMLib.leveler().level(rejuvedMOB);
 				else
@@ -1145,6 +1151,14 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				else
 				if(whatToDo.length()<3)
 					continue;
+				else
+				if(CMath.s_parseIntExpression(whatToDo,vars)>0)
+				{
+					int xp=CMath.s_parseIntExpression(whatToDo,vars);
+					final int expLost=(xp+(2*XPLevel))/2;
+					rejuvedMOB.tell(L("^*You regain @x1 experience points.^?^.",""+expLost));
+					CMLib.leveler().postExperience(rejuvedMOB,null,null,expLost,false);
+				}
 				else
 				if(XPLevel>=0)
 				{
