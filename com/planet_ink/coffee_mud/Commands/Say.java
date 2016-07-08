@@ -272,10 +272,10 @@ public class Say extends StdCommand
 		else
 			theWord=L(theWord+"(s)");
 		if(CMLib.flags().isAnimalIntelligence(mob))
-			msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_SPEAK,L("^T^<SAY \"@x1\"^><S-NAME> go(es)@x2 '@x3'^</SAY^>^?",CMStrings.removeColors(mob.name()),theWordSuffix,combinedCommands));
+			msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_SPEAK,"^T^<SAY \""+CMStrings.removeColors(mob.name())+"\"^><S-NAME> "+L("go(es)")+theWordSuffix+" '"+combinedCommands+"'^</SAY^>^?");
 		else
 		if(target==null)
-			msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_SPEAK,L("^T^<SAY \"@x1\"^><S-NAME> @x2@x3 '@x4'^</SAY^>^?",CMStrings.removeColors(mob.name()),theWord.toLowerCase(),theWordSuffix,combinedCommands));
+			msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_SPEAK,"^T^<SAY \""+CMStrings.removeColors(mob.name())+"\"^><S-NAME> "+theWord.toLowerCase()+theWordSuffix+" '"+combinedCommands+"'^</SAY^>^?");
 		else
 		{
 			final String fromSelf="^T^<SAY \""+CMStrings.removeColors(target.name())+"\"^><S-NAME> "+theWord.toLowerCase()+theWordSuffix+" <T-NAMESELF> '"+combinedCommands+"'^</SAY^>^?";
