@@ -157,7 +157,7 @@ public class Thief_WarningShot extends ThiefSkill
 				if(R instanceof MOB)
 				{
 					final MOB mob=(MOB)R;
-					if((mob!=null)&&(mob.isPlayer())&&(mob!=M))
+					if((mob.isPlayer())&&(mob!=M))
 						mob.tell(msg);
 				}
 			}
