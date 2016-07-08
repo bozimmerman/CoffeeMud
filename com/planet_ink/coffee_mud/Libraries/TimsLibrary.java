@@ -34,7 +34,11 @@ import java.util.*;
 */
 public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 {
-	@Override public String ID(){return "TimsLibrary";}
+	@Override
+	public String ID()
+	{
+		return "TimsLibrary";
+	}
 
 	@Override
 	public int timsLevelCalculator(Item I)
@@ -46,6 +50,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		final Ability CAST=RET[2];
 		return timsLevelCalculator(I,ADJ,RES,CAST,castMul[0]);
 	}
+
 	@Override
 	public int timsLevelCalculator(Item I, Ability ADJ, Ability RES, Ability CAST, int castMul)
 	{
@@ -88,9 +93,9 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 						break;
 				}
 			}
-			final int[] leatherPoints={ 0, 0, 1, 5,10,16,23,31,40,49,58,67,76,85,94};
-			final int[] clothPoints=  { 0, 3, 7,12,18,25,33,42,52,62,72,82,92,102};
-			final int[] metalPoints=  { 0, 0, 0, 0, 1, 3, 5, 8,12,17,23,30,38,46,54,62,70,78,86,94};
+			final int[] leatherPoints = { 0, 0, 1, 5, 10, 16, 23, 31, 40, 49, 58, 67, 76, 85, 94 };
+			final int[] clothPoints = { 0, 3, 7, 12, 18, 25, 33, 42, 52, 62, 72, 82, 92, 102 };
+			final int[] metalPoints = { 0, 0, 0, 0, 1, 3, 5, 8, 12, 17, 23, 30, 38, 46, 54, 62, 70, 78, 86, 94 };
 			final int materialCode=savedI.material()&RawMaterial.MATERIAL_MASK;
 			int[] useArray=null;
 			switch(materialCode)
@@ -485,14 +490,47 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			int basereach=0;
 			int maxreach=0;
 			int basematerial=RawMaterial.MATERIAL_WOODEN;
-			if(wclass==Weapon.CLASS_FLAILED)
+			switch(wclass)
+			{
+			case Weapon.CLASS_FLAILED:
 				baseattack=-5;
-			if(wclass==Weapon.CLASS_POLEARM){ basereach=1; basematerial=RawMaterial.MATERIAL_METAL;}
-			if(wclass==Weapon.CLASS_RANGED){ basereach=1; maxreach=5;}
-			if(wclass==Weapon.CLASS_THROWN){ basereach=1; maxreach=5;}
-			if(wclass==Weapon.CLASS_EDGED){ baseattack=10; basematerial=RawMaterial.MATERIAL_METAL;}
-			if(wclass==Weapon.CLASS_DAGGER){ baseattack=10; basematerial=RawMaterial.MATERIAL_METAL;}
-			if(wclass==Weapon.CLASS_SWORD){ basematerial=RawMaterial.MATERIAL_METAL;}
+				break;
+			case Weapon.CLASS_POLEARM:
+			{
+				basereach = 1;
+				basematerial = RawMaterial.MATERIAL_METAL;
+				break;
+			}
+			case Weapon.CLASS_RANGED:
+			{
+				basereach = 1;
+				maxreach = 5;
+				break;
+			}
+			case Weapon.CLASS_THROWN:
+			{
+				basereach = 1;
+				maxreach = 5;
+				break;
+			}
+			case Weapon.CLASS_EDGED:
+			{
+				baseattack = 10;
+				basematerial = RawMaterial.MATERIAL_METAL;
+				break;
+			}
+			case Weapon.CLASS_DAGGER:
+			{
+				baseattack = 10;
+				basematerial = RawMaterial.MATERIAL_METAL;
+				break;
+			}
+			case Weapon.CLASS_SWORD:
+			{
+				basematerial = RawMaterial.MATERIAL_METAL;
+				break;
+			}
+			}
 			int weight = I.basePhyStats().weight();
 			if(weight<1)
 				weight=8;
@@ -999,7 +1037,9 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 
 	@Override
 	public int levelsFromAbility(Item savedI)
-	{ return savedI.basePhyStats().ability()*5;}
+	{
+		return savedI.basePhyStats().ability() * 5;
+	}
 
 	@Override
 	public int levelsFromAdjuster(Item savedI, Ability ADJ)

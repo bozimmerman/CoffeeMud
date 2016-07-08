@@ -2084,7 +2084,8 @@ public class StdMOB implements MOB
 		return overrideActionCost;
 	}
 
-	protected void prequeCommand(List<String> commands, int metaFlags, double actionCost)
+	@Override
+	public void prequeCommand(List<String> commands, int metaFlags, double actionCost)
 	{
 		if (commands == null)
 			return;
@@ -2117,7 +2118,7 @@ public class StdMOB implements MOB
 	}
 
 	@Override
-	public void enqueCommand(List<String> commands, int metaFlags, double actionCost)
+	public void enqueCommand(final List<String> commands, final int metaFlags, double actionCost)
 	{
 		if (commands == null)
 			return;

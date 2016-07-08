@@ -421,6 +421,7 @@ public interface CharStats extends CMCommon, Modifiable
 	 * is empty, the race can breathe anything at all.
 	 * @see com.planet_ink.coffee_mud.Items.interfaces.RawMaterial
 	 * @see #setBreathables(int[])
+	 * @see #addBreathable(int)
 	 * @return a list of resource codes that this race can breathe
 	 */
 	public int[] getBreathables();
@@ -431,9 +432,21 @@ public interface CharStats extends CMCommon, Modifiable
 	 * is empty, the race can breathe anything at all.
 	 * @see com.planet_ink.coffee_mud.Items.interfaces.RawMaterial
 	 * @see #getBreathables()
+	 * @see #addBreathable(int)
 	 * @param newArray a list of resource codes that this race can breathe
 	 */
 	public void setBreathables(int[] newArray);
+	
+	/**
+	 * If necessary, adds the given breatheable resource as an override
+	 * addition to the current list of breatheable resources.
+	 * 
+	 * @see #setBreathables(int[])
+	 * @see #getBreathables()
+	 * @param resource the resources they can now breathe
+	 */
+	public void addBreathable(int resource);
+
 	/**
 	 * Changes the apparant race of ths mob by setting a new name.  A value of null will
 	 * reset this setting, allowing the mobs TRUE race to be displayed through the

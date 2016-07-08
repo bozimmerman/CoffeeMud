@@ -626,6 +626,18 @@ public class DefaultCharStats implements CharStats
 	{
 		breathables=newArray;
 	}
+	
+	public void addBreathable(int resource)
+	{
+		final int[] breatheables=getBreathables();
+		if((breatheables.length!=0)&&(CMParms.indexOf(breatheables, resource)<0))
+		{
+			int[] newSet=Arrays.copyOf(breatheables,breatheables.length+1);
+			newSet[newSet.length-1]=resource;
+			Arrays.sort(newSet);
+			this.setBreathables(newSet);
+		}
+	}
 
 	@Override
 	public int getBodyPart(int racialPartNumber)
