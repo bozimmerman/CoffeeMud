@@ -116,6 +116,34 @@ public class Prop_ReqCapacity extends Property implements TriggeredAffect
 		}
 	}
 
+	protected int getRoomWeight(Room R)
+	{
+		if(R==null)
+			return Integer.MAX_VALUE/2;
+		int soFar=0;
+		for(int i=0;i<R.numItems();i++)
+		{
+			final Item I = R.getItem(i);
+			if (I != null)
+				soFar += I.phyStats().weight();
+		}
+		return soFar;
+	}
+
+	protected int getRoomItemCount(Room R)
+	{
+		if(R==null)
+			return Integer.MAX_VALUE/2;
+		int soFar=0;
+		for(int i=0;i<R.numItems();i++)
+		{
+			final Item I=R.getItem(i);
+			if((I!=null)&&(I.container()==null))
+				soFar++;
+		}
+		return soFar;
+	}
+	
 	protected void overflowCheck()
 	{
 		final Physical affected=this.affected;
@@ -136,36 +164,78 @@ public class Prop_ReqCapacity extends Property implements TriggeredAffect
 						if((peopleCap<Integer.MAX_VALUE)
 						&&((!indoorOnly)||((R.domainType()&Room.INDOORS)==Room.INDOORS)))
 						{
-							//TODO:!!
 						}
 						if((!indoorOnly)||((R.domainType()&Room.INDOORS)==Room.INDOORS))
 						{
 							if(itemCap<Integer.MAX_VALUE)
 							{
-								int soFar=0;
-								for(int i=0;i<R.numItems();i++)
+								final int roomItemCount=getRoomItemCount(R);
+								if(roomItemCount>itemCap)
 								{
-									final Item I=R.getItem(i);
-									if((I!=null)&&(I.container()==null))
-										soFar++;
-								}
-								if(soFar>itemCap)
-								{
-									//TODO:!!
+									int totOver=roomItemCount-itemCap;
+									Room targetRoom = null;
+									int smallestCount=Integer.MAX_VALUE/2;
+									for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+									{
+										final Room R2=R.getRoomInDir(d);
+										final Exit E2=R.getExitInDir(d);
+										if((R2!=null)&&(E2!=null)
+										&&(E2.isOpen())&&(!CMLib.flags().isAiryRoom(R2)))
+										{
+											int rct=this.getRoomItemCount(R2);
+											if(rct < smallestCount)
+											{
+												targetRoom=R2;
+												smallestCount=rct;
+											}
+										}
+									}
+									if(targetRoom != null)
+									{
+										for(int ri=R.numItems()-1;ri>=0 && totOver>0;ri--,totOver--)
+										{
+											Item I=R.getItem(ri);
+											if((I!=null)&&(I.container()==null))
+												targetRoom.moveItemTo(I);
+										}
+									}
 								}
 							}
 							if(maxWeight<Integer.MAX_VALUE)
 							{
-								int soFar=0;
-								for(int i=0;i<R.numItems();i++)
+								final int roomItemWeight=getRoomWeight(R);
+								if(roomItemWeight>maxWeight)
 								{
-									final Item I = R.getItem(i);
-									if (I != null)
-										soFar += I.phyStats().weight();
-								}
-								if(soFar>maxWeight)
-								{
-									//TODO:!!
+									int totOver=roomItemWeight-maxWeight;
+									Room targetRoom = null;
+									int smallestCount=Integer.MAX_VALUE/2;
+									for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+									{
+										final Room R2=R.getRoomInDir(d);
+										final Exit E2=R.getExitInDir(d);
+										if((R2!=null)&&(E2!=null)
+										&&(E2.isOpen())&&(!CMLib.flags().isAiryRoom(R2)))
+										{
+											int rct=this.getRoomWeight(R2);
+											if(rct < smallestCount)
+											{
+												targetRoom=R2;
+												smallestCount=rct;
+											}
+										}
+									}
+									if(targetRoom != null)
+									{
+										for(int ri=R.numItems()-1;ri>=0 && totOver>0;ri--,totOver--)
+										{
+											Item I=R.getItem(ri);
+											if((I!=null)&&(I.container()==null))
+											{
+												targetRoom.moveItemTo(I);
+												totOver -= I.phyStats().weight();
+											}
+										}
+									}
 								}
 							}
 						}
@@ -278,13 +348,7 @@ public class Prop_ReqCapacity extends Property implements TriggeredAffect
 						}
 						if(maxWeight<Integer.MAX_VALUE)
 						{
-							int soFar=0;
-							for(int i=0;i<R.numItems();i++)
-							{
-								final Item I = R.getItem(i);
-								if (I != null)
-									soFar += I.phyStats().weight();
-							}
+							int soFar=getRoomWeight(R);
 							if((soFar+targetI.phyStats().weight())>=maxWeight)
 							{
 								msg.source().tell(L("There is no room in here to put @x1.",targetI.Name()));
