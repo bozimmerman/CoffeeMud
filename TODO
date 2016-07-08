@@ -1,5 +1,4 @@
 BUGS
-   *. Prop_ReqCapacity should push off overflow to adjacent rooms.
    *. @x1 eaten when there are no arguments (in a channel msg)
 
 TECH
