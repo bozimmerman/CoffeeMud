@@ -1,5 +1,4 @@
 BUGS
-   *. @x1 eaten when there are no arguments (in a channel msg)
 
 TECH
    *. test ship phaser, laser systems murder motel again
