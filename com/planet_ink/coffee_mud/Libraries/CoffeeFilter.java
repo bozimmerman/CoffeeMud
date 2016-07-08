@@ -563,21 +563,24 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 				return index-1;
 			}
 		case '.':
-		  if((S==null)||(S.getClientTelnetMode(Session.TELNET_ANSI)))
-		  {
-			  final String[] clookup = (S==null)?CMLib.color().standardColorLookups():S.getColorCodes();
-			  String escapeSequence=clookup[c];
-			  if(escapeSequence==null)
-			  	escapeSequence="";
-			  str.insert(index+2, escapeSequence);
-			  str.delete(index, index+2);
-			  return index+escapeSequence.length()-1;
-		  }
-		  else
-		  {
-			  str.delete(index, index+2);
-			  return index-1;
-		  }
+			if((S==null)||(S.getClientTelnetMode(Session.TELNET_ANSI)))
+			{
+				final String[] clookup = (S==null)?CMLib.color().standardColorLookups():S.getColorCodes();
+				String escapeSequence=clookup[c];
+				if(escapeSequence==null)
+					escapeSequence="";
+				str.insert(index+2, escapeSequence);
+				str.delete(index, index+2);
+				return index+escapeSequence.length()-1;
+			}
+			else
+			{
+				str.delete(index, index+2);
+				return index-1;
+			}
+		case '^':
+			str.delete(index, index+1);
+			return index;
 		default:
 			if((c>=0)&&(c<256)&&((S==null)||(S.getClientTelnetMode(Session.TELNET_ANSI))))
 			{
