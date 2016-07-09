@@ -760,36 +760,46 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 	{
 		boolean fixdam=true;
 		boolean fixatt=true;
-		if((ADJ!=null)&&(ADJ.text().toUpperCase().indexOf("DAMAGE+")>=0))
+		if((ADJ!=null)&&(CMParms.getParmPlus(ADJ.text(),"DAM")>0))
 		{
-			final int a=ADJ.text().toUpperCase().indexOf("DAMAGE+");
-			int a2=ADJ.text().toUpperCase().indexOf(' ',a+4);
-			if(a2<0)
-				a2=ADJ.text().length();
-			final int num=CMath.s_int(ADJ.text().substring(a+7,a2));
-			int newNum = (int)Math.round(CMath.mul(num,0.9));
-			if((newNum == num) && (newNum > 1))
-				newNum--;
-			if(newNum != 0)
+			int a=ADJ.text().toUpperCase().indexOf("DAM");
+			if(a>=0)
+				a=ADJ.text().indexOf('+',a+1);
+			if(a>0)
 			{
-				fixdam=false;
-				ADJ.setMiscText(ADJ.text().substring(0,a+7)+newNum+ADJ.text().substring(a2));
+				int a2=ADJ.text().toUpperCase().indexOf(' ',a+1);
+				if(a2<0)
+					a2=ADJ.text().length();
+				final int num=CMath.s_int(ADJ.text().substring(a+1,a2));
+				int newNum = (int)Math.round(CMath.mul(num,0.9));
+				if((newNum == num) && (newNum > 1))
+					newNum--;
+				if(newNum != 0)
+				{
+					fixdam=false;
+					ADJ.setMiscText(ADJ.text().substring(0,a+1)+newNum+ADJ.text().substring(a2));
+				}
 			}
 		}
-		if((ADJ!=null)&&(ADJ.text().toUpperCase().indexOf("ATTACK+")>=0))
+		if((ADJ!=null)&&(CMParms.getParmPlus(ADJ.text(),"ATT")>0))
 		{
-			final int a=ADJ.text().toUpperCase().indexOf("ATTACK+");
-			int a2=ADJ.text().toUpperCase().indexOf(' ',a+4);
-			if(a2<0)
-				a2=ADJ.text().length();
-			final int num=CMath.s_int(ADJ.text().substring(a+7,a2));
-			int newNum = (int)Math.round(CMath.mul(num,0.9));
-			if((newNum == num) && (newNum > 1))
-				newNum--;
-			if(newNum != 0)
+			int a=ADJ.text().toUpperCase().indexOf("ATT");
+			if(a>=0)
+				a=ADJ.text().indexOf('+',a+1);
+			if(a>0)
 			{
-				fixatt=false;
-				ADJ.setMiscText(ADJ.text().substring(0,a+7)+newNum+ADJ.text().substring(a2));
+				int a2=ADJ.text().toUpperCase().indexOf(' ',a+1);
+				if(a2<0)
+					a2=ADJ.text().length();
+				final int num=CMath.s_int(ADJ.text().substring(a+1,a2));
+				int newNum = (int)Math.round(CMath.mul(num,0.9));
+				if((newNum == num) && (newNum > 1))
+					newNum--;
+				if(newNum != 0)
+				{
+					fixatt=false;
+					ADJ.setMiscText(ADJ.text().substring(0,a+1)+newNum+ADJ.text().substring(a2));
+				}
 			}
 		}
 		if(fixdam&&(W.basePhyStats().damage()>=10))
@@ -808,20 +818,25 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 	public void toneDownArmor(Armor A, Ability ADJ)
 	{
 		boolean fixit=true;
-		if((ADJ!=null)&&(ADJ.text().toUpperCase().indexOf("ARMOR-")>=0))
+		if((ADJ!=null)&&(CMParms.getParmPlus(ADJ.text(),"ARM")>0))
 		{
-			final int a=ADJ.text().toUpperCase().indexOf("ARMOR-");
-			int a2=ADJ.text().toUpperCase().indexOf(' ',a+4);
-			if(a2<0)
-				a2=ADJ.text().length();
-			final int num=CMath.s_int(ADJ.text().substring(a+6,a2));
-			int newNum = (int)Math.round(CMath.mul(num,0.9));
-			if((newNum == num) && (newNum > 1))
-				newNum--;
-			if(newNum != 0)
+			int a=ADJ.text().toUpperCase().indexOf("ARM");
+			if(a>=0)
+				a=ADJ.text().indexOf('-',a+1);
+			if(a>0)
 			{
-				fixit=false;
-				ADJ.setMiscText(ADJ.text().substring(0,a+6)+newNum+ADJ.text().substring(a2));
+				int a2=ADJ.text().toUpperCase().indexOf(' ',a+1);
+				if(a2<0)
+					a2=ADJ.text().length();
+				final int num=CMath.s_int(ADJ.text().substring(a+1,a2));
+				int newNum = (int)Math.round(CMath.mul(num,0.9));
+				if((newNum == num) && (newNum > 1))
+					newNum--;
+				if(newNum != 0)
+				{
+					fixit=false;
+					ADJ.setMiscText(ADJ.text().substring(0,a+1)+newNum+ADJ.text().substring(a2));
+				}
 			}
 		}
 		if(fixit&&(A.basePhyStats().armor()>=10))

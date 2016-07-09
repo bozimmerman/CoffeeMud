@@ -35,18 +35,40 @@ import java.util.*;
 */
 public class Prop_CombatAdjuster extends Property implements TriggeredAffect
 {
-	@Override public String ID() { return "Prop_CombatAdjuster"; }
-	@Override public String name(){ return "Adjust combat stats";}
-	@Override protected int canAffectCode(){return 0;}
+	@Override
+	public String ID()
+	{
+		return "Prop_CombatAdjuster";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Adjust combat stats";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
 	// attack, damage, armor, hp, mana, move, speed
-	protected double[] alladj={1.0,1.0,1.0,1.0,1.0,1.0,1.0};
+	protected double[]	alladj	= { 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0 };
 	// attack, damage, armor, hp, mana, move, speed
-	protected int[] allset={-1,-1,-1,-1,-1,-1,-1};
+	protected int[]		allset	= { -1, -1, -1, -1, -1, -1, -1 };
+
 	@Override
 	public String accountForYourself()
-	{ return "Adjusted combat stats";	}
+	{
+		return "Adjusted combat stats";
+	}
 
-	@Override public long flags(){return Ability.FLAG_ADJUSTER;}
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_ADJUSTER;
+	}
 
 	@Override
 	public int triggerMask()

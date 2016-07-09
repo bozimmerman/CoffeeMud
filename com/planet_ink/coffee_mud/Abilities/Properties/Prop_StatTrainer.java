@@ -107,6 +107,7 @@ public class Prop_StatTrainer extends Property
 			}
 		}
 	}
+	
 	@Override
 	public void setMiscText(String newMiscText)
 	{
@@ -133,5 +134,4 @@ public class Prop_StatTrainer extends Property
 			}
 		}
 	}
-
 }

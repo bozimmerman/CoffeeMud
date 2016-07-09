@@ -505,6 +505,7 @@ public class PlanarAbility extends StdAbility
 					int newILevel=invoker.phyStats().level() - newILevelAdj + allLevelAdj;
 					if(newILevel <= 0)
 						newILevel = 1;
+					CMLib.itemBuilder().itemFix(I, newILevel, null);
 					I.basePhyStats().setLevel(newILevel);
 					I.phyStats().setLevel(newILevel);
 					CMLib.itemBuilder().balanceItemByLevel(I);

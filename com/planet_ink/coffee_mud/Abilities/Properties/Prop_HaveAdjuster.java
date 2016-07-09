@@ -508,168 +508,177 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 		{
 			int level = 0;
 			Object[] changes = charStateChanges;
-			if(multiplyCharStates)
+			if(changes != null)
 			{
-				for(int c=0;c<changes.length;c+=2)
+				if(multiplyCharStates)
 				{
-					int amt= ((Integer) changes[c + 1]).intValue();
-					if(amt >= 100)
-						amt -= 100;
-					else
-					if(amt < 100)
-						amt = -(100-amt);
-					
-					switch(((Integer)changes[c]).intValue())
+					for(int c=0;c<changes.length;c+=2)
 					{
-					case CharState.STAT_HITPOINTS:
-						level += (amt / 20);
-						break;
-					case CharState.STAT_HUNGER:
-						break;
-					case CharState.STAT_THIRST:
-						break;
-					case CharState.STAT_MANA:
-						level += (amt / 20);
-						break;
-					case CharState.STAT_MOVE:
-						level += (amt / 20);
-						break;
+						int amt= ((Integer) changes[c + 1]).intValue();
+						if(amt >= 100)
+							amt -= 100;
+						else
+						if(amt < 100)
+							amt = -(100-amt);
+						
+						switch(((Integer)changes[c]).intValue())
+						{
+						case CharState.STAT_HITPOINTS:
+							level += (amt / 20);
+							break;
+						case CharState.STAT_HUNGER:
+							break;
+						case CharState.STAT_THIRST:
+							break;
+						case CharState.STAT_MANA:
+							level += (amt / 20);
+							break;
+						case CharState.STAT_MOVE:
+							level += (amt / 20);
+							break;
+						}
 					}
 				}
-			}
-			else
-			{
-				for(int c=0;c<changes.length;c+=2)
+				else
 				{
-					switch(((Integer)changes[c]).intValue())
+					for(int c=0;c<changes.length;c+=2)
 					{
-					case CharState.STAT_HITPOINTS:
-						level += ( ((Integer) changes[c + 1]).intValue() / 5);
-						break;
-					case CharState.STAT_HUNGER:
-						break;
-					case CharState.STAT_THIRST:
-						break;
-					case CharState.STAT_MANA:
-						level += ( ((Integer) changes[c + 1]).intValue() / 5);
-						break;
-					case CharState.STAT_MOVE:
-						level += ( ((Integer) changes[c + 1]).intValue() / 5);
-						break;
+						switch(((Integer)changes[c]).intValue())
+						{
+						case CharState.STAT_HITPOINTS:
+							level += ( ((Integer) changes[c + 1]).intValue() / 5);
+							break;
+						case CharState.STAT_HUNGER:
+							break;
+						case CharState.STAT_THIRST:
+							break;
+						case CharState.STAT_MANA:
+							level += ( ((Integer) changes[c + 1]).intValue() / 5);
+							break;
+						case CharState.STAT_MOVE:
+							level += ( ((Integer) changes[c + 1]).intValue() / 5);
+							break;
+						}
 					}
 				}
 			}
 			changes = charStatsChanges;
-			for(int i=0;i<changes.length;i+=2)
+			if(changes != null)
 			{
-				if(changes[i] instanceof Integer)
+				for(int i=0;i<changes.length;i+=2)
 				{
-					if(CharStats.CODES.isBASE(((Integer)changes[i]).intValue()))
-						level += (((Integer)changes[i+1]).intValue() * 10);
-					else
-					if(CMParms.indexOf(CharStats.CODES.MAXCODES(),((Integer)changes[i]).intValue())>=0)
-						level += (((Integer)changes[i+1]).intValue() * 15);
-					else
-					if(CMParms.indexOf(CharStats.CODES.SAVING_THROWS(),((Integer)changes[i]).intValue())>=0)
-						level += (((Integer)changes[i+1]).intValue() / 20);
-				}
-				else
-				if(changes[i] instanceof Character)
-				{
-					switch(((Character)changes[i]).charValue())
+					if(changes[i] instanceof Integer)
 					{
-					case 'G':
-						break;
-					case 'C':
-						break;
-					case 'R':
-						break;
+						if(CharStats.CODES.isBASE(((Integer)changes[i]).intValue()))
+							level += (((Integer)changes[i+1]).intValue() * 10);
+						else
+						if(CMParms.indexOf(CharStats.CODES.MAXCODES(),((Integer)changes[i]).intValue())>=0)
+							level += (((Integer)changes[i+1]).intValue() * 15);
+						else
+						if(CMParms.indexOf(CharStats.CODES.SAVING_THROWS(),((Integer)changes[i]).intValue())>=0)
+							level += (((Integer)changes[i+1]).intValue() / 20);
+					}
+					else
+					if(changes[i] instanceof Character)
+					{
+						switch(((Character)changes[i]).charValue())
+						{
+						case 'G':
+							break;
+						case 'C':
+							break;
+						case 'R':
+							break;
+						}
 					}
 				}
 			}
 			changes = phyStatsChanges;
-			if(multiplyPhyStats)
+			if(changes != null)
 			{
-				for(int c=0;c<changes.length;c+=2)
+				if(multiplyPhyStats)
 				{
-					int amt= ((Integer) changes[c + 1]).intValue();
-					if(amt >= 100)
-						amt -= 100;
-					else
-					if(amt < 100)
-						amt = -(100-amt);
-					
-					switch(((Integer)changes[c]).intValue())
+					for(int c=0;c<changes.length;c+=2)
 					{
-					case PhyStats.STAT_ABILITY:
-						level+= (amt / 20);
-						break;
-					case PhyStats.STAT_ARMOR:
-						level+= (amt / -5);
-						break;
-					case PhyStats.STAT_ATTACK:
-						level+= (amt / 5);
-						break;
-					case PhyStats.STAT_DAMAGE:
-						level+= (amt / 20);
-						break;
-					case PhyStats.STAT_DISPOSITION:
-						level+=10;
-						break;
-					case PhyStats.STAT_LEVEL:
-						level -= (amt / 20);
-						break;
-					case PhyStats.STAT_REJUV:
-						break;
-					case PhyStats.STAT_SENSES:
-						level+=10;
-						break;
-					case PhyStats.STAT_WEIGHT:
-						break;
-					case PhyStats.STAT_HEIGHT:
-						break;
-					case PhyStats.NUM_STATS:
-						level+= (amt / 20);
-						break;
+						int amt= ((Integer) changes[c + 1]).intValue();
+						if(amt >= 100)
+							amt -= 100;
+						else
+						if(amt < 100)
+							amt = -(100-amt);
+						
+						switch(((Integer)changes[c]).intValue())
+						{
+						case PhyStats.STAT_ABILITY:
+							level+= (amt / 20);
+							break;
+						case PhyStats.STAT_ARMOR:
+							level+= (amt / -5);
+							break;
+						case PhyStats.STAT_ATTACK:
+							level+= (amt / 5);
+							break;
+						case PhyStats.STAT_DAMAGE:
+							level+= (amt / 20);
+							break;
+						case PhyStats.STAT_DISPOSITION:
+							level+=10;
+							break;
+						case PhyStats.STAT_LEVEL:
+							level -= (amt / 20);
+							break;
+						case PhyStats.STAT_REJUV:
+							break;
+						case PhyStats.STAT_SENSES:
+							level+=10;
+							break;
+						case PhyStats.STAT_WEIGHT:
+							break;
+						case PhyStats.STAT_HEIGHT:
+							break;
+						case PhyStats.NUM_STATS:
+							level+= (amt / 20);
+							break;
+						}
 					}
 				}
-			}
-			else
-			{
-				for(int c=0;c<changes.length;c+=2)
+				else
 				{
-					switch(((Integer)changes[c]).intValue())
+					for(int c=0;c<changes.length;c+=2)
 					{
-					case PhyStats.STAT_ABILITY:
-						level+= (((Integer) changes[c + 1]).intValue() * 5);
-						break;
-					case PhyStats.STAT_ARMOR:
-						level+= (((Integer) changes[c + 1]).intValue() * -1);
-						break;
-					case PhyStats.STAT_ATTACK:
-						level+= (((Integer) changes[c + 1]).intValue() * 1);
-						break;
-					case PhyStats.STAT_DAMAGE:
-						level+= (((Integer) changes[c + 1]).intValue() * 3);
-						break;
-					case PhyStats.STAT_DISPOSITION:
-						level+=10;
-						break;
-					case PhyStats.STAT_LEVEL:
-						level -= ((Integer) changes[c + 1]).intValue() /3;
-						break;
-					case PhyStats.STAT_REJUV:
-						break;
-					case PhyStats.STAT_SENSES:
-						level+=10;
-						break;
-					case PhyStats.STAT_WEIGHT:
-						break;
-					case PhyStats.STAT_HEIGHT:
-						break;
-					case PhyStats.NUM_STATS:
-						level+= (((Integer) changes[c + 1]).intValue() * 5);
-						break;
+						switch(((Integer)changes[c]).intValue())
+						{
+						case PhyStats.STAT_ABILITY:
+							level+= (((Integer) changes[c + 1]).intValue() * 5);
+							break;
+						case PhyStats.STAT_ARMOR:
+							level+= (((Integer) changes[c + 1]).intValue() * -1);
+							break;
+						case PhyStats.STAT_ATTACK:
+							level+= (((Integer) changes[c + 1]).intValue() * 1);
+							break;
+						case PhyStats.STAT_DAMAGE:
+							level+= (((Integer) changes[c + 1]).intValue() * 3);
+							break;
+						case PhyStats.STAT_DISPOSITION:
+							level+=10;
+							break;
+						case PhyStats.STAT_LEVEL:
+							level -= ((Integer) changes[c + 1]).intValue() /3;
+							break;
+						case PhyStats.STAT_REJUV:
+							break;
+						case PhyStats.STAT_SENSES:
+							level+=10;
+							break;
+						case PhyStats.STAT_WEIGHT:
+							break;
+						case PhyStats.STAT_HEIGHT:
+							break;
+						case PhyStats.NUM_STATS:
+							level+= (((Integer) changes[c + 1]).intValue() * 5);
+							break;
+						}
 					}
 				}
 			}
