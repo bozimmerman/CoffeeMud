@@ -865,6 +865,22 @@ public class PlanarAbility extends StdAbility
 		return true;
 	}
 	
+	protected boolean roomDone(final Room R)
+	{
+		synchronized(roomsDone)
+		{
+			return (this.roomsDone.contains(R));
+		}
+	}
+	
+	protected synchronized void doneRoom(final Room R)
+	{
+		synchronized(roomsDone)
+		{
+			this.roomsDone.add(R);
+		}
+	}
+	
 	@Override
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
@@ -875,11 +891,10 @@ public class PlanarAbility extends StdAbility
 		case CMMsg.TYP_LOOK:
 		case CMMsg.TYP_EXAMINE:
 			if((msg.target() instanceof Room)
-			&&(this.roomsDone!=null)
-			&&(!this.roomsDone.contains(msg.target()))
+			&&(!roomDone((Room)msg.target()))
 			&&(((Room)msg.target()).getArea()==planeArea))
 			{
-				this.roomsDone.add((Room)msg.target());
+				doneRoom((Room)msg.target());
 				fixRoom((Room)msg.target());
 			}
 			break;
