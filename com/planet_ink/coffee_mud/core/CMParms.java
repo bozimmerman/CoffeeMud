@@ -331,12 +331,13 @@ public class CMParms
 	public final static String combineWith(final List<?> commands, final String withSeparator)
 	{
 		final StringBuilder combined=new StringBuilder("");
-		if(commands!=null)
+		if((commands!=null)&&(commands.size()>0))
 		{
 			for(Object o : commands)
 				combined.append(withSeparator).append(o.toString());
+			return combined.substring(withSeparator.length());
 		}
-		return combined.substring(withSeparator.length());
+		return "";
 	}
 
 	/**
@@ -349,12 +350,13 @@ public class CMParms
 	public final static String combineWith(final Set<?> commands, final String withSeparator)
 	{
 		final StringBuilder combined=new StringBuilder("");
-		if(commands!=null)
+		if((commands!=null)&&(commands.size()>0))
 		{
 			for(Object o : commands)
 				combined.append(withSeparator).append(o.toString());
+			return combined.substring(withSeparator.length());
 		}
-		return combined.substring(withSeparator.length());
+		return "";
 	}
 
 	/**
@@ -368,7 +370,7 @@ public class CMParms
 	public final static String combineQuoted(final List<?> commands, final int startAt)
 	{
 		final StringBuilder combined=new StringBuilder("");
-		if(commands!=null)
+		if((commands!=null)&&(commands.size()>0))
 		{
 			String s;
 			for(int commandIndex=startAt;commandIndex<commands.size();commandIndex++)
@@ -379,8 +381,9 @@ public class CMParms
 				else
 					combined.append(s).append(" ");
 			}
+			return combined.toString().trim();
 		}
-		return combined.toString().trim();
+		return "";
 	}
 
 	/**
