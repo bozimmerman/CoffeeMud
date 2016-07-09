@@ -863,8 +863,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	public void recoverTick(MOB mob)
 	{
 		if((mob!=null)
-		&&(!mob.isInCombat())
-		&&(!CMLib.flags().isClimbing(mob)))
+		&&(!mob.isInCombat()))
 		{
 			final CharStats charStats=mob.charStats();
 			final CharState curState=mob.curState();
