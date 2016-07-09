@@ -948,6 +948,9 @@ public class GrinderMobs
 				CMLib.database().DBUpdateMOBs(R);
 				newMobCode=RoomData.getMOBCode(R,M);
 			}
+			final String shopItem=httpReq.getUrlParameter("SHOPITEM");
+			if((shopItem!=null)&&(mobCode!=null)&&(shopItem.equalsIgnoreCase(mobCode)))
+				httpReq.addFakeUrlParameter("SHOPITEM", newMobCode);
 			httpReq.addFakeUrlParameter("MOB",newMobCode);
 			if(!copyMOB.sameAs(M))
 				Log.sysOut("Grinder",whom.Name()+" modified mob "+copyMOB.Name()+((R!=null)?" in room "+R.roomID():"")+".");
