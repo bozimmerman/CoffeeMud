@@ -580,7 +580,11 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 						final String names=CMLib.ableMapper().formatPreRequisites(preReqs);
 						prepend.append(L("\n\rRequires : @x1",names));
 					}
-					final String mask=CMLib.ableMapper().getCommonExtraMask(A);
+					final String mask;
+					if(forMOB == null)
+						mask=CMLib.ableMapper().getCommonExtraMask(A);
+					else
+						mask=CMLib.ableMapper().getApplicableMask(forMOB,A);
 					if((mask!=null)&&(mask.length()>0))
 						prepend.append(L("\n\rRequires : @x1",CMLib.masking().maskDesc(mask,true)));
 					appendAllowed(prepend,A.ID());
