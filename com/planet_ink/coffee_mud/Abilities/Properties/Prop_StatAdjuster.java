@@ -142,4 +142,26 @@ public class Prop_StatAdjuster extends Property
 		}
 	}
 
+	@Override
+	public String getStat(String code)
+	{
+		if((code!=null)&&(code.equalsIgnoreCase("LEVEL")))
+		{
+			int level = 0;
+			return ""+level;
+		}
+		return super.getStat(code);
+	}
+	
+
+	@Override
+	public void setStat(String code, String val)
+	{
+		if((code!=null)&&(code.equalsIgnoreCase("LEVEL")))
+		{
+	
+		}
+		else
+			super.setStat(code, val);
+	}
 }

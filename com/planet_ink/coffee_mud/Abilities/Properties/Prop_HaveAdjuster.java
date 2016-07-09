@@ -602,22 +602,22 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 					switch(((Integer)changes[c]).intValue())
 					{
 					case PhyStats.STAT_ABILITY:
-						level+= (((Integer) changes[c + 1]).intValue() / 20);
+						level+= (amt / 20);
 						break;
 					case PhyStats.STAT_ARMOR:
-						level+= (((Integer) changes[c + 1]).intValue() / -5);
+						level+= (amt / -5);
 						break;
 					case PhyStats.STAT_ATTACK:
-						level+= (((Integer) changes[c + 1]).intValue() / 5);
+						level+= (amt / 5);
 						break;
 					case PhyStats.STAT_DAMAGE:
-						level+= (((Integer) changes[c + 1]).intValue() / 20);
+						level+= (amt / 20);
 						break;
 					case PhyStats.STAT_DISPOSITION:
 						level+=10;
 						break;
 					case PhyStats.STAT_LEVEL:
-						level -= (((Integer) changes[c + 1]).intValue() / 20);
+						level -= (amt / 20);
 						break;
 					case PhyStats.STAT_REJUV:
 						break;
@@ -629,7 +629,7 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 					case PhyStats.STAT_HEIGHT:
 						break;
 					case PhyStats.NUM_STATS:
-						level+= (((Integer) changes[c + 1]).intValue() / 20);
+						level+= (amt / 20);
 						break;
 					}
 				}
