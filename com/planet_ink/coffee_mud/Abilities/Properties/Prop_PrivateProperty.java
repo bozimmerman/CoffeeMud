@@ -154,7 +154,7 @@ public class Prop_PrivateProperty extends Property implements PrivateProperty
 				}
 				else
 				if((this.getOwnerName().length()>0)
-				&&(CMLib.law().doesOwnThisLand(this.getOwnerName(), R)))
+				&&(CMLib.law().doesOwnThisProperty(this.getOwnerName(), R)))
 				{
 					if(expiresec<=0)
 					{
