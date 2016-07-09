@@ -162,6 +162,7 @@ public class Go extends StdCommand
 				return CMLib.commands().forceStandardCommand(mob, "Enter", commands);
 
 			boolean doneAnything=false;
+			List<List<String>> prequeCommands=new ArrayList<List<String>>();
 			for(int v=1;v<commands.size();v++)
 			{
 				int num=1;
@@ -202,7 +203,7 @@ public class Go extends StdCommand
 							final Vector<String> V=new Vector<String>();
 							V.add(doing);
 							V.add(inAShip?CMLib.directions().getShipDirectionName(direction):CMLib.directions().getDirectionName(direction));
-							mob.prequeCommand(V,metaFlags,0);
+							prequeCommands.add(V);
 						}
 					}
 				}
@@ -210,13 +211,21 @@ public class Go extends StdCommand
 				{
 					E=R.fetchExit(s);
 					if(E!=null)
-						CMLib.commands().forceStandardCommand(mob, "Enter", new XVector<String>("ENTER",s));
+					{
+						if(mob.isMonster())
+							CMLib.commands().forceStandardCommand(mob, "Enter", new XVector<String>("ENTER",s));
+						else
+							prequeCommands.add(new XVector<String>("ENTER",s));
+					}
 					else
 						break;
 				}
 			}
 			if(!doneAnything)
 				mob.tell(L("@x1 which direction?\n\rTry @x2.",CMStrings.capitalizeAndLower(doing),validDirs.toLowerCase()));
+			else
+			if(prequeCommands.size()>0)
+				mob.enqueCommands(prequeCommands, metaFlags);
 		}
 		return false;
 	}

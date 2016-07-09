@@ -188,7 +188,8 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 						final int dig2=hexStr.indexOf(buf.charAt(loop+2));
 						if((dig1>=0)&&(dig2>=0))
 						{
-							buf.setCharAt(loop,(char)((dig1*16)+dig2));
+							final int val=((dig1*16)+dig2);
+							buf.setCharAt(loop,(char)val);
 							buf.deleteCharAt(loop+1);
 							if((buf.charAt(loop))==13)
 								buf.setCharAt(loop+1,(char)10);
@@ -973,7 +974,8 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 						final int dig2=hexStr.indexOf(buf.charAt(loop+2));
 						if((dig1>=0)&&(dig2>=0))
 						{
-							buf.setCharAt(loop,(char)((dig1*16)+dig2));
+							final int val=((dig1*16)+dig2);
+							buf.setCharAt(loop,(char)val);
 							buf.deleteCharAt(loop+1);
 							if((buf.charAt(loop))==13)
 								buf.setCharAt(loop+1,(char)10);
@@ -1561,6 +1563,9 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 		{
 			switch(buf.charAt(i))
 			{
+			case '%':
+				buf.insert(i,'\\');
+				break;
 			case (char)10:
 				buf.setCharAt(i,'r');
 				buf.insert(i,'\\');

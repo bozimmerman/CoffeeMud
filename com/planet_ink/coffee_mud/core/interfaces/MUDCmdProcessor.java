@@ -65,6 +65,20 @@ public interface MUDCmdProcessor
 	public void enqueCommand(List<String> commands, int metaFlags, double actionCost);
 	
 	/**
+	 * Parses the given commands string tokens to determine what kind of commands are
+	 * to be executed, and depending on how many actions the player has remaining
+	 * this tick, either executes the commands or puts them on the que for automatic
+	 * execution once sufficient actions are available.
+	 * @see MUDCmdProcessor#dequeCommand()
+	 * @see MUDCmdProcessor#clearCommandQueue()
+	 * @see MUDCmdProcessor#doCommand(List, int)
+	 * @see MUDCmdProcessor#actions()
+	 * @param commands the parsed commands string tokens
+	 * @param metaFlags meta-command flags to send to the command, if any
+	 */
+	public void enqueCommands(List<List<String>> commands, int metaFlags);
+	
+	/**
 	 * Parses the given command string tokens to determine what kind of command is
 	 * to be executed, and depending on how many actions the player has remaining
 	 * this tick, either executes the command or puts it on the que for automatic
@@ -79,6 +93,20 @@ public interface MUDCmdProcessor
 	 */
 	public void prequeCommand(List<String> commands, int metaFlags, double actionCost);
 	
+	/**
+	 * Parses the given command string tokens to determine what kind of command is
+	 * to be executed, and depending on how many actions the player has remaining
+	 * this tick, either executes the command or puts it on the que for automatic
+	 * execution once sufficient actions are available.
+	 * @see MUDCmdProcessor#dequeCommand()
+	 * @see MUDCmdProcessor#clearCommandQueue()
+	 * @see MUDCmdProcessor#doCommand(List, int)
+	 * @param commands the parsed command string tokens
+	 * @param metaFlags meta-command flags to send to the command, if any
+	 * @param actionCost either 0 to let the action object decide, or an override cost
+	 */
+	public void prequeCommands(List<List<String>> commands, int metaFlags);
+
 	/**
 	 * If this processor has enough action points to perform the top command on the que,
 	 * then this method will execute that action.

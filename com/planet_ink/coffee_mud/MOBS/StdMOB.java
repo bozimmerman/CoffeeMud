@@ -2118,6 +2118,45 @@ public class StdMOB implements MOB
 	}
 
 	@Override
+	public void prequeCommands(List<List<String>> commands, int metaFlags)
+	{
+		if ((commands == null) || (commands.size()==0))
+			return;
+		final List<QMCommand> queueUp=new ArrayList<QMCommand>(commands.size());
+		for(List<String> command : commands)
+		{
+			final CMObject O = CMLib.english().findCommand(this, command);
+			if (O == null)
+			{
+				CMLib.commands().handleUnknownCommand(this, command);
+				return;
+			}
+			double actionCost = calculateActionCost(O, command, 0.0);
+			if (actionCost < 0.0)
+				return;
+			synchronized (commandQue)
+			{
+				final QMCommand cmd = new QMCommand();
+				cmd.nextCheck = System.currentTimeMillis() - 1;
+				cmd.seconds = -1;
+				cmd.actionCost = actionCost;
+				cmd.metaFlags = metaFlags;
+				cmd.commandObj = O;
+				cmd.commandVector = command;
+				queueUp.add(cmd);
+			}
+		}
+		if(queueUp.size()>0)
+		{
+			if(this.commandQue.size()==0)
+				this.commandQue.addAll(queueUp);
+			else
+				this.commandQue.addAll(0,queueUp);
+		}
+		dequeCommand();
+	}
+	
+	@Override
 	public void enqueCommand(final List<String> commands, final int metaFlags, double actionCost)
 	{
 		if (commands == null)
@@ -2149,6 +2188,15 @@ public class StdMOB implements MOB
 			commandQue.addLast(cmd);
 		}
 		dequeCommand();
+	}
+
+	@Override
+	public void enqueCommands(List<List<String>> commands, int metaFlags)
+	{
+		if ((commands == null)||(commands.size()==0))
+			return;
+		for(List<String> cmds : commands)
+			enqueCommand(cmds,metaFlags,0.0);
 	}
 
 	@Override
