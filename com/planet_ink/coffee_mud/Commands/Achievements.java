@@ -395,7 +395,7 @@ public class Achievements extends StdCommand
 							AchievedList.add(CMStrings.padRight("^H"+done+"^?", padding)+": "+A.getDisplayStr());
 						else
 						{
-							AchievementLibrary.Tracker T=pStats.getAchievementTracker(A, whoM);
+							AchievementLibrary.Tracker T=stat.getAchievementTracker(A, whoM);
 							int score = (T==null) ? 0 : T.getCount(whoM);
 							int targetScore = A.getTargetCount();
 							if(targetScore == Integer.MIN_VALUE)
@@ -415,7 +415,7 @@ public class Achievements extends StdCommand
 						final Achievement A=a.next();
 						if(!WonList.contains(A.getTattoo()))
 						{
-							AchievementLibrary.Tracker T=pStats.getAchievementTracker(A, whoM);
+							AchievementLibrary.Tracker T=stat.getAchievementTracker(A, whoM);
 							final int score = (T==null) ? 0 : T.getCount(whoM);
 							if(score != 0)
 							{
@@ -436,7 +436,7 @@ public class Achievements extends StdCommand
 							AchievedList.add(CMStrings.padRight("^H"+done+"^?", padding)+": "+A.getDisplayStr());
 						else
 						{
-							AchievementLibrary.Tracker T=pStats.getAchievementTracker(A, whoM);
+							AchievementLibrary.Tracker T=stat.getAchievementTracker(A, whoM);
 							int score = (T==null) ? 0 : T.getCount(whoM);
 							if(score != 0)
 							{
