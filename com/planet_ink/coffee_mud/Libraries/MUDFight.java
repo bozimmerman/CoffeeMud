@@ -2096,10 +2096,20 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		if((mob.isAttributeSet(MOB.Attrib.NOBATTLESPAM))
 		&&(mob.playerStats()!=null))
 		{
+			int numEnemies=0;
+			final Room R=mob.location();
+			for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
+			{
+				final MOB M=m.nextElement();
+				if((M!=null)&&(M!=mob)&&(M.getVictim()==mob))
+					numEnemies++;
+			}
 			Map<String,int[]> combatSpam = mob.playerStats().getCombatSpams();
 			final StringBuilder msg=new StringBuilder(""); 
 			synchronized(combatSpam)
 			{
+				if(numEnemies>1)
+					msg.append("^<FIGHT^>"+L("Fighting @x1 enemies.  ",""+numEnemies)+"^</FIGHT^>");
 				if(combatSpam.size()==0)
 					msg.append("^<FIGHT^>"+L("No new combat damage reported.")+"^</FIGHT^>");
 				else
