@@ -327,13 +327,13 @@ public class Mer extends StdCharClass
 	{
 		// this is necessary because the race happens AFTER the breathe is modified,
 		// so we're actually adding water breathing to baseStat race (human, whatever)
-		affected.eachEffect(new EachApplicable<Ability>(){
+		affected.eachEffect(new EachApplicable<Ability>()
+		{
 			@Override
 			public void apply(Ability a)
 			{
-				if(a.ID().startsWith("Druid_ShapeShift")) {
+				if(a.ID().startsWith("Druid_ShapeShift"))
 					a.affectCharStats(affected, affectableStats);
-				}
 			}
 		});
 		

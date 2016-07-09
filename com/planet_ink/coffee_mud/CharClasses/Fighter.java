@@ -296,8 +296,10 @@ public class Fighter extends StdCharClass
 				if(lastDuelWinner < timeout)
 				{
 					for(final Iterator<String> m = duelWinners.keySet().iterator(); m.hasNext(); )
+					{
 						if(duelWinners.get(m.next())[0] < timeout)
 							m.remove();
+					}
 				}
 				final long[] lastTime=duelWinners.get(host.Name());
 				if((lastTime != null) && (lastTime[0] > timeout))

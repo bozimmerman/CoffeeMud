@@ -259,8 +259,8 @@ public class Barbarian extends StdCharClass
 		final MOB myChar=(MOB)myHost;
 
 		if((msg.amITarget(myChar))
-		   &&(msg.tool() instanceof Weapon)
-		   &&(msg.targetMinor()==CMMsg.TYP_DAMAGE))
+		&&(msg.tool() instanceof Weapon)
+		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE))
 		{
 			final int classLevel=myChar.charStats().getClassLevel(this);
 			int recovery=(classLevel/5);
@@ -272,9 +272,9 @@ public class Barbarian extends StdCharClass
 		}
 		else
 		if((msg.amITarget(myChar))
-		   &&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
-		   &&(msg.tool() instanceof Ability)
-		   &&((((Ability)msg.tool()).classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ENCHANTMENT))
+		&&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
+		&&(msg.tool() instanceof Ability)
+		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ENCHANTMENT))
 		{
 			if(CMLib.dice().rollPercentage()<=myChar.charStats().getClassLevel(this))
 			{

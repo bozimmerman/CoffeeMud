@@ -215,7 +215,8 @@ public class Pirate extends Thief
 			if(amt >= min)
 			{
 				final MOB pirate = (MOB)myHost;
-				msg.addTrailerRunnable(new Runnable(){
+				msg.addTrailerRunnable(new Runnable()
+				{
 					@Override
 					public void run()
 					{
@@ -224,7 +225,8 @@ public class Pirate extends Thief
 						Ability A=pirate.fetchEffect("Prop_PiratePaidOff");
 						if(A==null)
 						{
-							pirate.addNonUninvokableEffect(A=new StdAbility(){
+							pirate.addNonUninvokableEffect(A=new StdAbility()
+							{
 								private final Map<MOB,Long> timeOuts = new SHashtable<MOB,Long>();
 								@Override
 								public String ID()

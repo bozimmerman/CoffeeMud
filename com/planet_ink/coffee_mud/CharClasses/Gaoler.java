@@ -262,7 +262,11 @@ public class Gaoler extends StdCharClass
 			{
 				final int xp=(int)Math.round(10.0*CMath.div(((MOB)msg.target()).phyStats().level(),((MOB)host).charStats().getClassLevel(this)));
 				int[] done=mudHourMOBXPMap.get(host.Name()+"/"+msg.tool().ID());
-				if(done==null){ done=new int[3]; mudHourMOBXPMap.put(host.Name()+"/"+msg.tool().ID(),done);}
+				if (done == null)
+				{
+					done = new int[3];
+					mudHourMOBXPMap.put(host.Name() + "/" + msg.tool().ID(), done);
+				}
 				if(Calendar.getInstance().get(Calendar.SECOND)!=done[2])
 				{
 					final TimeClock clock =CMLib.map().getStartArea(host).getTimeObj();

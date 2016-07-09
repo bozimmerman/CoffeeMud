@@ -247,9 +247,11 @@ public class GenCharClass extends StdCharClass
 	public String name(int classLevel)
 	{
 		for(int i=nameLevels.length-1;i>=0;i--)
+		{
 			if((classLevel>=nameLevels[i].intValue())
 			&&(i<names.length))
 				return names[i];
+		}
 		return names[0];
 	}
 
@@ -461,8 +463,10 @@ public class GenCharClass extends StdCharClass
 	public boolean tick(Tickable myChar, int tickID)
 	{
 		if(eventBuddy!=null)
+		{
 			if(!eventBuddy.tick(myChar,tickID))
 				return false;
+		}
 		return super.tick(myChar, tickID);
 	}
 
@@ -676,7 +680,11 @@ public class GenCharClass extends StdCharClass
 			return;
 		}
 		final List<XMLLibrary.XMLTag> classData=CMLib.xml().getContentsFromPieces(xml,"CCLASS");
-		if(classData==null){	Log.errOut("GenCharClass","Unable to get CCLASS data."); return;}
+		if (classData == null)
+		{
+			Log.errOut("GenCharClass", "Unable to get CCLASS data.");
+			return;
+		}
 		final String classID=CMLib.xml().getValFromPieces(classData,"ID");
 		if(classID.length()==0)
 			return;
@@ -767,9 +775,13 @@ public class GenCharClass extends StdCharClass
 		final List<Pair<String,Integer>> statQuals=new ArrayList<Pair<String,Integer>>();
 		final List<XMLLibrary.XMLTag> mV=CMLib.xml().getContentsFromPieces(classData,"MINSTATS");
 		if((mV!=null)&&(mV.size()>0))
+		{
 			for(final XMLTag p : mV)
+			{
 				if(p.tag().equalsIgnoreCase("STAT"))
 					statQuals.add(new Pair<String,Integer>(p.parms().get("NAME"),Integer.valueOf(CMath.s_int(p.parms().get("MIN")))));
+			}
+		}
 		minimumStatRequirements=statQuals.toArray(new Pair[0]);
 
 		final String s=CMLib.xml().getValFromPieces(classData,"PLAYER");
@@ -779,24 +791,46 @@ public class GenCharClass extends StdCharClass
 			selectability=CMath.s_bool(s)?Area.THEME_FANTASY:0;
 		adjPStats=null;
 		final String eStats=CMLib.xml().getValFromPieces(classData,"ESTATS");
-		if(eStats.length()>0){ adjPStats=(PhyStats)CMClass.getCommon("DefaultPhyStats"); CMLib.coffeeMaker().setPhyStats(adjPStats,eStats);}
-		adjStats=null;
-		final String aStats=CMLib.xml().getValFromPieces(classData,"ASTATS");
-		if(aStats.length()>0){ adjStats=(CharStats)CMClass.getCommon("DefaultCharStats"); CMLib.coffeeMaker().setCharStats(adjStats,aStats);}
-		setStats=null;
-		final String cStats=CMLib.xml().getValFromPieces(classData,"CSTATS");
-		if(cStats.length()>0){ setStats=(CharStats)CMClass.getCommon("DefaultCharStats"); CMLib.coffeeMaker().setCharStats(setStats,cStats);}
-		adjState=null;
-		final String aState=CMLib.xml().getValFromPieces(classData,"ASTATE");
-		if(aState.length()>0){ adjState=(CharState)CMClass.getCommon("DefaultCharState"); CMLib.coffeeMaker().setCharState(adjState,aState);}
-		startAdjState=null;
-		disableFlags=CMLib.xml().getIntFromPieces(classData,"DISFLAGS");
-		final String saState=CMLib.xml().getValFromPieces(classData,"STARTASTATE");
-		if(saState.length()>0){ startAdjState=(CharState)CMClass.getCommon("DefaultCharState"); startAdjState.setAllValues(0); CMLib.coffeeMaker().setCharState(startAdjState,saState);}
+		if (eStats.length() > 0)
+		{
+			adjPStats = (PhyStats) CMClass.getCommon("DefaultPhyStats");
+			CMLib.coffeeMaker().setPhyStats(adjPStats, eStats);
+		}
+		adjStats = null;
+		final String aStats = CMLib.xml().getValFromPieces(classData, "ASTATS");
+		if (aStats.length() > 0)
+		{
+			adjStats = (CharStats) CMClass.getCommon("DefaultCharStats");
+			CMLib.coffeeMaker().setCharStats(adjStats, aStats);
+		}
+		setStats = null;
+		final String cStats = CMLib.xml().getValFromPieces(classData, "CSTATS");
+		if (cStats.length() > 0)
+		{
+			setStats = (CharStats) CMClass.getCommon("DefaultCharStats");
+			CMLib.coffeeMaker().setCharStats(setStats, cStats);
+		}
+		adjState = null;
+		final String aState = CMLib.xml().getValFromPieces(classData, "ASTATE");
+		if (aState.length() > 0)
+		{
+			adjState = (CharState) CMClass.getCommon("DefaultCharState");
+			CMLib.coffeeMaker().setCharState(adjState, aState);
+		}
+		startAdjState = null;
+		disableFlags = CMLib.xml().getIntFromPieces(classData, "DISFLAGS");
+		final String saState = CMLib.xml().getValFromPieces(classData, "STARTASTATE");
+		if (saState.length() > 0)
+		{
+			startAdjState = (CharState) CMClass.getCommon("DefaultCharState");
+			startAdjState.setAllValues(0);
+			CMLib.coffeeMaker().setCharState(startAdjState, saState);
+		}
 
 		List<XMLLibrary.XMLTag> xV=CMLib.xml().getContentsFromPieces(classData,"CABILITIES");
 		CMLib.ableMapper().delCharMappings(ID());
 		if((xV!=null)&&(xV.size()>0))
+		{
 			for(int x=0;x<xV.size();x++)
 			{
 				final XMLTag iblk=xV.get(x);
@@ -818,6 +852,7 @@ public class GenCharClass extends StdCharClass
 									 iblk.getValFromPieces("CAMASK"),
 									 null);
 			}
+		}
 
 		// now WEAPON RESTRICTIONS!
 		xV=CMLib.xml().getContentsFromPieces(classData,"NOWEAPS");
@@ -1314,17 +1349,21 @@ public class GenCharClass extends StdCharClass
 				final String[] newNames = new String[num];
 				final Integer[] newLevels = new Integer[num];
 				for (int i = 0; i < names.length; i++)
+				{
 					if (i < num)
 					{
 						newNames[i] = names[i];
 						newLevels[i] = nameLevels[i];
 					}
+				}
 				if (newNames.length > names.length)
+				{
 					for (int i = names.length; i < newNames.length; i++)
 					{
 						newNames[i] = names[names.length - 1];
 						newLevels[i] = Integer.valueOf(newLevels[i - 1].intValue() + 1);
 					}
+				}
 				names = newNames;
 				nameLevels = newLevels;
 			}
@@ -1500,8 +1539,10 @@ public class GenCharClass extends StdCharClass
 		while((code.length()>0)&&(Character.isDigit(code.charAt(code.length()-1))))
 			code=code.substring(0,code.length()-1);
 		for(int i=0;i<CODES.length;i++)
+		{
 			if(code.equalsIgnoreCase(CODES[i]))
 				return i;
+		}
 		return -1;
 	}
 

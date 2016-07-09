@@ -783,10 +783,10 @@ public class StdCharClass implements CharClass
 			C=mob.charStats().getMyClass(i);
 			if( C != null )
 			{
-			  ql=CMLib.ableMapper().getQualifyingLevel(C.ID(),true,A.ID());
-			  if((ql>0)
+				ql=CMLib.ableMapper().getQualifyingLevel(C.ID(),true,A.ID());
+				if((ql>0)
 				&&(ql<=mob.charStats().getClassLevel(C)))
-				  return (C.ID().equals(ID()));
+					return (C.ID().equals(ID()));
 			}
 		}
 		return false;

@@ -183,7 +183,11 @@ public class Oracle extends Cleric
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Skill_AboveTheLaw",false);
 	}
 
-	@Override public int availabilityCode(){return Area.THEME_FANTASY;}
+	@Override
+	public int availabilityCode()
+	{
+		return Area.THEME_FANTASY;
+	}
 
 	@Override
 	public boolean tick(Tickable myChar, int tickID)
@@ -284,18 +288,18 @@ public class Oracle extends Cleric
 						final Ability A=CMClass.randomAbility();
 						if( A != null )
 						{
-						  final int lql=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
-						  if((lql<25)
-						  &&(lql>0)
-						  &&(!CMLib.ableMapper().getSecretSkill(C.ID(),true,A.ID()))
-						  &&(CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID())<0)
-						  &&(CMLib.ableMapper().availableToTheme(A.ID(),Area.THEME_FANTASY,true))
-						  &&(CMLib.ableMapper().qualifiesByAnyCharClass(A.ID()))
-						  &&(A.isAutoInvoked()||((A.triggerStrings()!=null)&&(A.triggerStrings().length>0)))
-						  &&(mob.fetchAbility(A.ID())==null))
-						  {
-							newOne=A;
-						  }
+							final int lql=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
+							if((lql<25)
+							&&(lql>0)
+							&&(!CMLib.ableMapper().getSecretSkill(C.ID(),true,A.ID()))
+							&&(CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID())<0)
+							&&(CMLib.ableMapper().availableToTheme(A.ID(),Area.THEME_FANTASY,true))
+							&&(CMLib.ableMapper().qualifiesByAnyCharClass(A.ID()))
+							&&(A.isAutoInvoked()||((A.triggerStrings()!=null)&&(A.triggerStrings().length>0)))
+							&&(mob.fetchAbility(A.ID())==null))
+							{
+								newOne=A;
+							}
 						}
 					}
 				}
