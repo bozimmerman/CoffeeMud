@@ -918,31 +918,16 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 	public int levelsFromCaster(Item savedI, Ability CAST)
 	{
 		int level=0;
-		if(CAST!=null)
+		if(CAST instanceof AbilityContainer)
 		{
-			final String ID=CAST.ID().toUpperCase();
-			final Vector<Ability> theSpells=new Vector<Ability>();
-			String names=CAST.text();
-			int del=names.indexOf(';');
-			while(del>=0)
+			final boolean haver = (CAST instanceof TriggeredAffect) ? CMath.bset(((TriggeredAffect)CAST).triggerMask(),TriggeredAffect.TRIGGER_GET) : false;
+			for(Enumeration<Ability> a=((AbilityContainer)CAST).abilities();a.hasMoreElements();)
 			{
-				final String thisOne=names.substring(0,del);
-				final Ability A=CMClass.getAbility(thisOne);
-				if(A!=null)
-					theSpells.addElement(A);
-				names=names.substring(del+1);
-				del=names.indexOf(';');
-			}
-			Ability A=CMClass.getAbility(names);
-			if(A!=null)
-				theSpells.addElement(A);
-			for(int v=0;v<theSpells.size();v++)
-			{
-				A=theSpells.elementAt(v);
+				final Ability A=a.nextElement();
 				int mul=1;
 				if(A.abstractQuality()==Ability.QUALITY_MALICIOUS)
 					mul=-1;
-				if(ID.indexOf("HAVE")>=0)
+				if(haver)
 					level+=(mul*CMLib.ableMapper().lowestQualifyingLevel(A.ID()));
 				else
 					level+=(mul*CMLib.ableMapper().lowestQualifyingLevel(A.ID())/2);
