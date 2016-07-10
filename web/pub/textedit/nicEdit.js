@@ -69,8 +69,62 @@ var nicLinkOptions = {
 	}
 };
 
-var nicLinkButton=nicEditorAdvancedButton.extend({addPane:function(){this.ln=this.ne.selectedInstance.selElm().parentTag("A");this.addForm({"":{type:"title",txt:"Add/Edit Link"},href:{type:"text",txt:"URL",value:"http://",style:{width:"150px"}},title:{type:"text",txt:"Title"},target:{type:"select",txt:"Open In",options:{"":"Current Window",_blank:"New Window"},style:{width:"100px"}}},this.ln)},submit:function(C){var A=this.inputs.href.value;if(A=="http://"||A==""){alert("You must enter a URL to Create a Link");return false}this.removePane();if(!this.ln){var B="javascript:nicTemp();";this.ne.nicCommand("createlink",B);this.ln=this.findElm("A","href",B)}if(this.ln){this.ln.setAttributes({href:this.inputs.href.value,title:this.inputs.title.value,target:this.inputs.target.options[this.inputs.target.selectedIndex].value})}}});nicEditors.registerPlugin(nicPlugin,nicLinkOptions);
-
+var nicLinkButton = nicEditorAdvancedButton.extend({
+	addPane: function() {
+		this.ln = this.ne.selectedInstance.selElm().parentTag("A");
+		this.addForm({
+			"": {
+				type: "title",
+				txt: "Add/Edit Link"
+			},
+			href: {
+				type: "text",
+				txt: "URL",
+				value: "http://",
+				style: {
+					width: "150px"
+				}
+			},
+			title: {
+				type: "text",
+				txt: "Title"
+			},
+			target: {
+				type: "select",
+				txt: "Open In",
+				options: {
+					"": "Current Window",
+					_blank: "New Window"
+				},
+				style: {
+					width: "100px"
+				}
+			}
+		}, this.ln)
+	},
+	submit: function(C) {
+		var A = this.inputs.href.value;
+		var B = this.inputs.title.value;
+		if (A == "http://" || A == "") {
+			alert("You must enter a URL to Create a Link");
+			return false
+		}
+		this.removePane();
+		if (!this.ln) {
+			//var B = "javascript:nicTemp();";
+			this.ne.nicCommand("createlink", B);
+			this.ln = this.findElm("A", "href", B)
+		}
+		if (this.ln) {
+			this.ln.setAttributes({
+				href: this.inputs.href.value,
+				title: this.inputs.title.value,
+				target: this.inputs.target.options[this.inputs.target.selectedIndex].value
+			})
+		}
+	}
+});
+nicEditors.registerPlugin(nicPlugin, nicLinkOptions);
 
 var nicColorOptions = {
 	buttons : {
