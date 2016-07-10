@@ -501,10 +501,55 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 		return fixAccoutingsWithMask("Affects the owner: "+parameters[0],parameters[1]);
 	}
 	
+	public String getStrStatValue(final Object[] changes, final Integer statCode)
+	{
+		if(this.phyStatsChanges!=null)
+		{
+			for(int i=0;i<this.phyStatsChanges.length;i+=2)
+			{
+				if(this.phyStatsChanges[i].equals(statCode))
+					return this.phyStatsChanges[i+1].toString();
+			}
+		}
+		return "0";
+	}
+	
+	public int getIntStatValue(final Object[] changes, final Integer statCode)
+	{
+		if(this.phyStatsChanges!=null)
+		{
+			for(int i=0;i<this.phyStatsChanges.length;i+=2)
+			{
+				if(this.phyStatsChanges[i].equals(statCode))
+					return ((Integer)this.phyStatsChanges[i+1]).intValue();
+			}
+		}
+		return 0;
+	}
+	
 	@Override
 	public String getStat(String code)
 	{
-		if((code!=null)&&(code.equalsIgnoreCase("LEVEL")))
+		if(code == null)
+			return "";
+		if(code.toUpperCase().startsWith("STAT-"))
+		{
+			final String subCode=code.substring(5).toUpperCase();
+			if(this.multiplyPhyStats)
+				return "0";
+			else
+			{
+				if(subCode.startsWith("ATTACK"))
+					return getStrStatValue(phyStatsChanges, Integer.valueOf(PhyStats.STAT_ATTACK));
+				if(subCode.startsWith("DAMAGE"))
+					return getStrStatValue(phyStatsChanges, Integer.valueOf(PhyStats.STAT_DAMAGE));
+				if(subCode.startsWith("ARMOR"))
+					return getStrStatValue(phyStatsChanges, Integer.valueOf(PhyStats.STAT_ARMOR));
+			}
+			return "0";
+		}
+		else
+		if(code.equalsIgnoreCase("LEVEL"))
 		{
 			int level = 0;
 			Object[] changes = charStateChanges;
@@ -690,9 +735,157 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 	@Override
 	public void setStat(String code, String val)
 	{
-		if((code!=null)&&(code.equalsIgnoreCase("LEVEL")))
+		if(code!=null)
 		{
-	
+			if(code.equalsIgnoreCase("LEVEL"))
+			{
+				
+			}
+			else
+			if(code.equalsIgnoreCase("TONEDOWN"))
+			{
+				setStat("TONEDOWN-ARMOR",val);
+				setStat("TONEDOWN-WEAPON",val);
+				setStat("TONEDOWN-MISC",val);
+			}
+			else
+			if(code.equalsIgnoreCase("TONEDOWN-ARMOR"))
+			{
+				if(CMParms.getParmPlus(text(),"ARM")>0)
+				{
+					int a=text().toUpperCase().indexOf("ARM");
+					if(a>=0)
+						a=text().indexOf('-',a+1);
+					if(a>0)
+					{
+						int a2=text().toUpperCase().indexOf(' ',a+1);
+						if(a2<0)
+							a2=text().length();
+						final int num=CMath.s_int(text().substring(a+1,a2));
+						int newNum = (int)Math.round(CMath.mul(num,0.9));
+						if((newNum == num) && (newNum > 1))
+							newNum--;
+						if(newNum != 0)
+						{
+							setMiscText(text().substring(0,a+1)+newNum+text().substring(a2));
+						}
+					}
+				}
+			}
+			else
+			if(code.equalsIgnoreCase("TONEDOWN-WEAPON"))
+			{
+				final double pct=CMath.s_pct(val);
+				if(CMParms.getParmPlus(text(),"DAM")>0)
+				{
+					int a=text().toUpperCase().indexOf("DAM");
+					if(a>=0)
+						a=text().indexOf('+',a+1);
+					if(a>0)
+					{
+						int a2=text().toUpperCase().indexOf(' ',a+1);
+						if(a2<0)
+							a2=text().length();
+						final int num=CMath.s_int(text().substring(a+1,a2));
+						int newNum = (int)Math.round(CMath.mul(num,pct));
+						if((newNum == num) && (newNum > 1))
+							newNum--;
+						if(newNum != 0)
+						{
+							setMiscText(text().substring(0,a+1)+newNum+text().substring(a2));
+						}
+					}
+				}
+				if(CMParms.getParmPlus(text(),"ATT")>0)
+				{
+					int a=text().toUpperCase().indexOf("ATT");
+					if(a>=0)
+						a=text().indexOf('+',a+1);
+					if(a>0)
+					{
+						int a2=text().toUpperCase().indexOf(' ',a+1);
+						if(a2<0)
+							a2=text().length();
+						final int num=CMath.s_int(text().substring(a+1,a2));
+						int newNum = (int)Math.round(CMath.mul(num,pct));
+						if((newNum == num) && (newNum > 1))
+							newNum--;
+						if(newNum != 0)
+						{
+							setMiscText(text().substring(0,a+1)+newNum+text().substring(a2));
+						}
+					}
+				}
+			}
+			else
+			if(code.equalsIgnoreCase("TONEDOWN-MISC"))
+			{
+				final double pct=CMath.s_pct(val);
+				final Physical I=affected;
+				String s=text();
+				int plusminus=s.indexOf('+');
+				int minus=s.indexOf('-');
+				if((minus>=0)&&((plusminus<0)||(minus<plusminus)))
+					plusminus=minus;
+				while(plusminus>=0)
+				{
+					int spaceafter=s.indexOf(' ',plusminus+1);
+					if(spaceafter<0)
+						spaceafter=s.length();
+					if(spaceafter>plusminus)
+					{
+						final String number=s.substring(plusminus+1,spaceafter).trim();
+						if(CMath.isNumber(number))
+						{
+							final int num=CMath.s_int(number);
+							int spacebefore=s.lastIndexOf(' ',plusminus);
+							if(spacebefore<0)
+								spacebefore=0;
+							if(spacebefore<plusminus)
+							{
+								boolean proceed=true;
+								final String wd=s.substring(spacebefore,plusminus).trim().toUpperCase();
+								if(wd.startsWith("DIS"))
+									proceed=false;
+								else
+								if(wd.startsWith("SEN"))
+									proceed=false;
+								else
+								if(wd.startsWith("ARM")&&(I instanceof Armor))
+									proceed=false;
+								else
+								if(wd.startsWith("ATT")&&(I instanceof Weapon))
+									proceed=false;
+								else
+								if(wd.startsWith("DAM")&&(I instanceof Weapon))
+									proceed=false;
+								else
+								if(wd.startsWith("ARM")&&(s.charAt(plusminus)=='+'))
+									proceed=false;
+								else
+								if((!wd.startsWith("ARM"))&&(s.charAt(plusminus)=='-'))
+									proceed=false;
+								if(proceed)
+								{
+									if((num!=1)&&(num!=-1))
+									{
+										int newNum = (int)Math.round(CMath.mul(num,pct));
+										if((newNum == num) && (newNum > 1))
+											newNum--;
+										if(newNum != 0)
+											s=s.substring(0,plusminus+1)+newNum+s.substring(spaceafter);
+									}
+								}
+							}
+						}
+					}
+					minus=s.indexOf('-',plusminus+1);
+					plusminus=s.indexOf('+',plusminus+1);
+					if((minus>=0)&&((plusminus<0)||(minus<plusminus)))
+						plusminus=minus;
+				}
+				setMiscText(s);
+			}
 		}
 		else
 			super.setStat(code, val);
