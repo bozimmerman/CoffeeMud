@@ -37,47 +37,53 @@ import java.sql.*;
 */
 public class DBConnection
 {
-	/** Connection object being used*/
-	private Connection myConnection=null;
+	/** Connection object being used */
+	private Connection			myConnection		= null;
 
 	/** (new) resultset being used currently */
-	private ResultSet myResultSet=null;
+	private ResultSet			myResultSet			= null;
 
 	/** (new) statement object being used currently */
-	private Statement myStatement=null;
+	private Statement			myStatement			= null;
 
 	/** (new) statement object being used currently */
-	private PreparedStatement myPreparedStatement=null;
+	private PreparedStatement	myPreparedStatement	= null;
 
 	/** Whether this dbconnection is being used */
-	protected boolean inUse;
+	protected boolean			inUse;
 
-	/** if any SQL errors occur, they are here.**/
-	protected String lastError=null;
+	/** if any SQL errors occur, they are here. **/
+	protected String			lastError			= null;
 
-	/** last time the connection was queried/executed.**/
-	private long lastQueryTime=System.currentTimeMillis();
+	/** last time the connection was queried/executed. **/
+	private long				lastQueryTime		= System.currentTimeMillis();
 
-	/** when this connection was put into use**/
-	private long lastPutInUseTime=System.currentTimeMillis();
+	/** when this connection was put into use **/
+	private long				lastPutInUseTime	= System.currentTimeMillis();
 
 	/** number of failures in a row */
-	protected int failuresInARow=0;
+	protected int				failuresInARow		= 0;
 
-	protected boolean sqlserver=false;
+	protected boolean			sqlserver			= false;
 
-	protected boolean isReusable=false;
+	protected boolean			isReusable			= false;
 
 	/** parent container of this connection **/
-	private DBConnections myParent=null;
+	private DBConnections		myParent			= null;
 
 	/** for tracking the last sql statement made */
-	protected String lastSQL = "";
+	protected String			lastSQL				= "";
 
 	/** for remembering whether this is a fakeDB connection */
-	private Boolean isFakeDB = null;
+	private Boolean				isFakeDB			= null;
 
-	public static enum FetchType {EMPTY,STATEMENT,PREPAREDSTATEMENT,TESTSTATEMENT}
+	public static enum FetchType
+	{
+		EMPTY,
+		STATEMENT,
+		PREPAREDSTATEMENT,
+		TESTSTATEMENT
+	}
 
 	/**
 	 * construction
@@ -483,7 +489,6 @@ public class DBConnection
 				{
 					if(myParent!=null)
 						myParent.resetConnections();
-
 				}
 				throw sqle;
 			}
@@ -514,10 +519,12 @@ public class DBConnection
 			return;
 		}
 		for(int t=0;t<vals.length;t++)
+		{
 			if(vals[t]==null)
 				getPreparedStatement().setNull(t+1, java.sql.Types.CLOB);
 			else
 				getPreparedStatement().setString(t+1, vals[t]);
+		}
 	}
 
 	/**
@@ -569,8 +576,10 @@ public class DBConnection
 				if((myParent!=null) && (myStatement != null))
 					myParent.enQueueError(updateString,""+sqle,""+(retryNum+1));
 				if(isProbablyDead())
+				{
 					if(myParent!=null)
 						myParent.resetConnections();
+				}
 				throw sqle;
 			}
 		}

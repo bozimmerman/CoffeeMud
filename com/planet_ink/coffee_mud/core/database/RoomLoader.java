@@ -1574,7 +1574,7 @@ public class RoomLoader
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMROCH)||CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMS)))
 			Log.debugOut("RoomLoader","Destroying room "+room.roomID());
 		DB.update(getRoomDeleteStrings(room.roomID()).toArray(new String[0]));
-		DB.update("DELETE FROM CMROCH WHERE CMROID='"+room.roomID()+"'");
+		DB.update("DELETE FROM CMROOM WHERE CMROID='"+room.roomID()+"'");
 		room.destroy();
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMROCH)||CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMS)))
 			Log.debugOut("RoomLoader","Done gestroying room "+room.roomID());

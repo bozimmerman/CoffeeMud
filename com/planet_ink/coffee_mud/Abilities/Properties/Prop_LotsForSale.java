@@ -196,10 +196,13 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 				R.rawDoors()[d]=null;
 				R.setRawExit(d,null);
 				updateExits=true;
-				postWork.add(new Runnable(){
+				postWork.add(new Runnable()
+				{
+					final Room room=R2;
+					@Override
 					public void run()
 					{
-						CMLib.map().obliterateRoom(R2);
+						CMLib.map().obliterateRoom(room);
 					}
 				});
 				didAnything=true;
@@ -218,10 +221,12 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 						E.setKeyName("");
 						E.setDoorsNLocks(E.hasADoor(),E.isOpen(),E.defaultsClosed(),false,false,false);
 						postWork.add(new Runnable(){
+							final Room room=R2;
+							@Override
 							public void run()
 							{
-								CMLib.database().DBUpdateExits(R2);
-								R2.getArea().fillInAreaRoom(R2);
+								CMLib.database().DBUpdateExits(room);
+								R2.getArea().fillInAreaRoom(room);
 							}
 						});
 						didAnything=true;
@@ -318,13 +323,16 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 					Log.debugOut("Lots4Sale",R2.roomID()+" created and put up for sale.");
 				if(cap != null)
 					R2.addNonUninvokableEffect((Ability)cap.copyOf());
-				postWork.add(new Runnable(){
+				postWork.add(new Runnable()
+				{
+					final Room room = R2;
+					@Override
 					public void run()
 					{
-						CMLib.database().DBCreateRoom(R2);
+						CMLib.database().DBCreateRoom(room);
 						if(newTitle!=null)
-							CMLib.law().colorRoomForSale(R2,newTitle,true);
-						R2.getArea().fillInAreaRoom(R2);
+							CMLib.law().colorRoomForSale(room,newTitle,true);
+						room.getArea().fillInAreaRoom(room);
 					}
 				});
 				didAnything=true;
@@ -334,10 +342,13 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 		{
 			didAnything=true;
 			R.getArea().fillInAreaRoom(R);
-			postWork.add(new Runnable(){
+			postWork.add(new Runnable()
+			{
+				final Set<Room> updateExits2=new STreeSet<Room>(updateExits);
+				@Override
 				public void run()
 				{
-					for(Room xR : updateExits)
+					for(Room xR : updateExits2)
 						CMLib.database().DBUpdateExits(xR);
 				}
 			});
