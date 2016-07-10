@@ -645,13 +645,20 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 				{
 					for(int c=0;c<changes.length;c+=2)
 					{
-						int amt= ((Integer) changes[c + 1]).intValue();
+						int amt;
+						if(changes[c+1] instanceof Integer)
+							amt= ((Integer) changes[c + 1]).intValue();
+						else
+						if(changes[c+1] instanceof Double)
+							amt = (int)Math.round(((Double)changes[c+1]).doubleValue() * 100);
+						else
+							continue;
+							
 						if(amt >= 100)
 							amt -= 100;
 						else
 						if(amt < 100)
 							amt = -(100-amt);
-						
 						switch(((Integer)changes[c]).intValue())
 						{
 						case PhyStats.STAT_ABILITY:
