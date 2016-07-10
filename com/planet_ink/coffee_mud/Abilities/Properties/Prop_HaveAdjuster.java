@@ -728,7 +728,7 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 						case PhyStats.STAT_HEIGHT:
 							break;
 						case PhyStats.NUM_STATS:
-							level+= (((Integer) changes[c + 1]).intValue() * 5);
+							level+= (((Double) changes[c + 1]).intValue() * 5);
 							break;
 						}
 					}
