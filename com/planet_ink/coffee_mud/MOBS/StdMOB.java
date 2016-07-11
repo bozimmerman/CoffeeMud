@@ -3477,29 +3477,38 @@ public class StdMOB implements MOB
 						if ((phyStats().rejuv() < 0) || (CMProps.getBoolVar(CMProps.Bool.MUDSHUTTINGDOWN)))
 						{
 							final Room startRoom=CMLib.map().getStartRoom(this);
-							if((startRoom != null)
-							&&(CMLib.flags().canNotBeCamped(this)||CMLib.flags().canNotBeCamped(startRoom))
-							&& (startRoom.numPCInhabitants() > 0) 
-							&& (!CMLib.tracking().isAnAdminHere(startRoom,false)))
+							if((startRoom == null) || (startRoom.amDestroyed()))
 							{
-								phyStats().setRejuv(0);
-								tickStatus = Tickable.STATUS_NOT;
-								lastTickedTime = System.currentTimeMillis();
-								return isOk;
+								tickStatus = Tickable.STATUS_END;
+								if (soulMate() == null)
+									destroy();
+								isOk = false;
 							}
-							tickStatus = Tickable.STATUS_REBIRTH;
-							cloneFix(CMClass.getMOBPrototype(ID()));
-							bringToLife(startRoom, true);
-							final Room room = location();
-							if (room != null)
+							else
 							{
-								final Area A=room.getArea();
-								if ((lastTickedTime < 0)
-								&& room.getMobility()
-								&& (A.getAreaState() != Area.State.FROZEN)
-								&& (A.getAreaState() != Area.State.STOPPED))
-									lastTickedTime = CMLib.utensils().processVariableEquipment(this);
-								room.showOthers(this, null, CMMsg.MSG_OK_ACTION, L("<S-NAME> appears!"));
+								if((CMLib.flags().canNotBeCamped(this)||CMLib.flags().canNotBeCamped(startRoom))
+								&& (startRoom.numPCInhabitants() > 0) 
+								&& (!CMLib.tracking().isAnAdminHere(startRoom,false)))
+								{
+									phyStats().setRejuv(0);
+									tickStatus = Tickable.STATUS_NOT;
+									lastTickedTime = System.currentTimeMillis();
+									return isOk;
+								}
+								tickStatus = Tickable.STATUS_REBIRTH;
+								cloneFix(CMClass.getMOBPrototype(ID()));
+								bringToLife(startRoom, true);
+								final Room room = location();
+								if (room != null)
+								{
+									final Area A=room.getArea();
+									if ((lastTickedTime < 0)
+									&& room.getMobility()
+									&& (A.getAreaState() != Area.State.FROZEN)
+									&& (A.getAreaState() != Area.State.STOPPED))
+										lastTickedTime = CMLib.utensils().processVariableEquipment(this);
+									room.showOthers(this, null, CMMsg.MSG_OK_ACTION, L("<S-NAME> appears!"));
+								}
 							}
 						}
 					}
