@@ -451,7 +451,7 @@ public class PlanarAbility extends StdAbility
 				}
 			}
 			
-			if(CMLib.law().getLegalBehavior(room)!=null)
+			if(CMLib.law().getLandTitle(room)!=null)
 			{
 				List<Physical> destroyMe=new ArrayList<Physical>();
 				Set<Rider> protSet = new HashSet<Rider>();
