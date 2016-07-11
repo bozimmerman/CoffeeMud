@@ -38,8 +38,8 @@ public class BrotherHelper extends StdBehavior
 	@Override public String ID(){return "BrotherHelper";}
 
 	//protected boolean mobKiller=false;
-	protected boolean nameOnly = true;
-	protected int num=-1;
+	protected boolean	nameOnly	= true;
+	protected int		num			= -1;
 
 	@Override
 	public String accountForYourself()
@@ -51,22 +51,18 @@ public class BrotherHelper extends StdBehavior
 	public void setParms(String parms)
 	{
 		super.setParms(parms);
-		nameOnly=parms.toUpperCase().indexOf("NAMEONLY")>=0;
-		num=-1;
-	}
-
-	public int numAllowed()
-	{
-		if(num<0)
+		num=0;
+		nameOnly=false;
+		if(parms != null)
 		{
-			num=0;
-			final Vector<String> V=CMParms.parse(getParms());
-			for(int v=0;v<V.size();v++)
-				if(CMath.isInteger(V.elementAt(v)))
-					num=CMath.s_int(V.elementAt(v));
-
+			final List<String> V=CMParms.parse(parms.toUpperCase());
+			nameOnly=V.contains("NAMEONLY");
+			for(String s : V)
+			{
+				if(CMath.isInteger(s))
+					num=CMath.s_int(s);
+			}
 		}
-		return num;
 	}
 
 	public static boolean isBrother(MOB target, MOB observer, boolean nameOnly)
@@ -125,7 +121,7 @@ public class BrotherHelper extends StdBehavior
 				if(!CMLib.flags().isAggressiveTo(target,source))
 					yep=true;
 			}
-			if(yep&&((numAllowed()==0)||(numInFray<numAllowed())))
+			if(yep&&((num==0)||(numInFray<num)))
 			{
 				yep=Aggressive.startFight(observer,source,true,false,"DON'T HURT MY FRIEND!");
 			}
