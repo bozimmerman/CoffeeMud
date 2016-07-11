@@ -1528,15 +1528,18 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 				input.setCharAt(x,'`');
 				break;
 			case '%':
-				final int dig1=hexStr.indexOf(input.charAt(x+1));
-				final int dig2=hexStr.indexOf(input.charAt(x+2));
-				if((dig1>=0)&&(dig2>=0))
+				if(x<input.length()-2)
 				{
-					final int val=((dig1*16)+dig2);
-					if((val==0xff)||(val==0)||(val==0x1b))
+					final int dig1=hexStr.indexOf(input.charAt(x+1));
+					final int dig2=hexStr.indexOf(input.charAt(x+2));
+					if((dig1>=0)&&(dig2>=0))
 					{
-						input.insert(x,'\\');
-						x++;
+						final int val=((dig1*16)+dig2);
+						if((val==0xff)||(val==0)||(val==0x1b))
+						{
+							input.insert(x,'\\');
+							x++;
+						}
 					}
 				}
 				break;
