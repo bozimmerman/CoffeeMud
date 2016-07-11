@@ -157,7 +157,8 @@ public class ItemRejuv extends StdAbility implements ItemTicker
 	public synchronized boolean verifyFixContents()
 	{
 		final Room R=myProperLocation;
-		if(R==null)
+		if((R==null)||(R.amDestroyed())
+		||((R.getArea()!=null)&&(R.getArea().amDestroyed())))
 			return false;
 		for(int i=0;i<contents.size();i++)
 		{
@@ -203,7 +204,9 @@ public class ItemRejuv extends StdAbility implements ItemTicker
 
 		final Item item=(Item)affected;
 		final Room R=myProperLocation;
-		if((item==null)||(R==null))
+		if((item==null)
+		||(R==null)||(R.amDestroyed())
+		||((R.getArea()!=null)&&(R.getArea().amDestroyed())))
 			return false;
 
 		if(tickID==Tickable.TICKID_ROOM_ITEM_REJUV)

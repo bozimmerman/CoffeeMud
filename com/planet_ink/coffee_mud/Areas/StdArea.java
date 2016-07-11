@@ -2083,23 +2083,24 @@ public class StdArea implements Area
 	public Enumeration<Room> getFilledProperMap()
 	{
 		final Enumeration<Room> r=getProperMap();
-		final Vector<Room> V=new Vector<Room>();
-		Room R=null;
+		final List<Room> V=new LinkedList<Room>();
 		for(;r.hasMoreElements();)
 		{
-			R=r.nextElement();
-			if(!V.contains(R))
-				V.addElement(R);
-			for(final Room R2 : R.getSky())
+			final Room R=r.nextElement();
+			if(R!=null)
 			{
-				if(R2 instanceof GridLocale)
-					V.addAll(((GridLocale)R2).getAllRoomsFilled());
-				else
-				if(!V.contains(R2))
-					V.add(R2);
+				V.add(R);
+				for(final Room R2 : R.getSky())
+				{
+					if(R2 instanceof GridLocale)
+						V.addAll(((GridLocale)R2).getAllRoomsFilled());
+					else
+					if(!V.contains(R2))
+						V.add(R2);
+				}
 			}
 		}
-		return V.elements();
+		return new IteratorEnumeration<Room>(V.iterator());
 	}
 
 	@Override

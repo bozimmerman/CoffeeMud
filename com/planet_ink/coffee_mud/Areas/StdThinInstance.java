@@ -170,66 +170,119 @@ public class StdThinInstance extends StdThinArea
 		return R;
 	}
 
+	protected Set<MOB> getProtectedMobSet(final Area childA, final List<WeakReference<MOB>> registeredMobList)
+	{
+		final Set<MOB> protectTheseMobsList=new HashSet<MOB>();
+		for(final WeakReference<MOB> wmob : registeredMobList)
+		{
+			final MOB M=wmob.get();
+			if(M!=null)
+			{
+				final Room R=M.location();
+				if(CMLib.flags().isInTheGame(M,true)
+				&&(R!=null)
+				&&(R.getArea()==childA))
+					protectTheseMobsList.add(M);
+			}
+		}
+		for(final Enumeration<MOB> m = CMLib.players().players();m.hasMoreElements();)
+		{
+			final MOB M=m.nextElement();
+			if(M!=null)
+			{
+				final Room R=M.location();
+				if((R!=null)
+				&&(R.getArea()==childA))
+					protectTheseMobsList.add(M);
+			}
+		}
+		final List<MOB> addFollowers=new ArrayList<MOB>(0);
+		for(final MOB pmob : protectTheseMobsList)
+		{
+			final Set<MOB> grp=pmob.getGroupMembers(new HashSet<MOB>());
+			for(final MOB M : grp)
+			{
+				if(pmob!=M)
+				{
+					final Room R=M.location();
+					if((R!=null)
+					&&(R.getArea()==childA))
+						addFollowers.add(M);
+				}
+			}
+		}
+		protectTheseMobsList.addAll(addFollowers);
+		return protectTheseMobsList;
+	}
+
 	protected boolean flushInstance(int index)
 	{
 		final Area childA=instanceChildren.get(index).A;
-		if(childA.getAreaState() != Area.State.ACTIVE)
+		if(childA.getAreaState() != Area.State.ACTIVE) // this is the one and only criteria -- if its not active, flush it.
 		{
-			final List<WeakReference<MOB>> V=instanceChildren.get(index).mobs;
-			boolean anyInside=false;
-			final List<MOB> cleanTheseMobs=new ArrayList<MOB>();
-			for(final WeakReference<MOB> wmob : V)
+			instanceChildren.remove(index);
+			final Set<MOB> protectedMobsList = getProtectedMobSet(childA, instanceChildren.get(index).mobs);
+			for(final MOB wmob : protectedMobsList)
 			{
-				final MOB M=wmob.get();
-				if((M!=null)
-				&&CMLib.flags().isInTheGame(M,true)
-				&&(M.location()!=null)
-				&&(M.location().getArea()==childA))
-					cleanTheseMobs.add(M);
-			}
-			for(final Enumeration<MOB> m = CMLib.players().players();m.hasMoreElements();)
-			{
-				final MOB M=m.nextElement();
-				if((M!=null)
-				&&(M.location()!=null)
-				&&(M.location().getArea()==childA))
+				if((wmob.location()!=null)
+				&&(wmob.location().getArea()==childA))
 				{
-					cleanTheseMobs.add(M);
-					anyInside=true;
-				}
-			}
-			if(!anyInside)
-			{
-				instanceChildren.remove(index);
-				for(final MOB wmob : cleanTheseMobs)
-				{
-					if((wmob.location()!=null)
-					&&(wmob.location().getArea()==childA))
+					final Room startRoom=wmob.getStartRoom();
+					if(startRoom != null)
 					{
-						final Room startRoom=wmob.getStartRoom();
-						if(startRoom != null)
-						{
-							if(wmob.location().isInhabitant(wmob))
-								startRoom.bringMobHere(wmob, true);
-							if(wmob.location()!=startRoom)
-								wmob.setLocation(startRoom);
-						}
+						if(wmob.location().isInhabitant(wmob))
+							startRoom.bringMobHere(wmob, true);
+						if(wmob.location()!=startRoom)
+							wmob.setLocation(startRoom);
 					}
 				}
-				final MOB mob=CMClass.sampleMOB();
+			}
+			final MOB mob=CMClass.getFactoryMOB();
+			try
+			{
 				final CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_EXPIRE,null);
-				for(final Enumeration<Room> e=childA.getFilledProperMap();e.hasMoreElements();)
+				for(final Enumeration<Room> r=childA.getFilledProperMap();r.hasMoreElements();)
 				{
-					final Room R=e.nextElement();
-					CMLib.map().emptyRoom(R, null, true);
-					msg.setTarget(R);
-					R.executeMsg(mob,msg);
-					R.destroy();
+					final Room R=r.nextElement();
+					try
+					{
+						CMLib.map().emptyRoom(R, null, true);
+					}
+					catch(Exception e)
+					{
+						Log.errOut(e);
+					}
+				}
+				for(final Enumeration<Room> r=childA.getProperMap();r.hasMoreElements();)
+				{
+					final Room R=r.nextElement();
+					try
+					{
+						try
+						{
+							R.clearSky();
+							msg.setTarget(R);
+							R.executeMsg(mob,msg);
+						}
+						catch(Exception e)
+						{
+							Log.errOut(e);
+						}
+						R.destroy();
+					}
+					catch(Exception e)
+					{
+						Log.errOut(e);
+					}
 				}
 				CMLib.map().delArea(childA);
 				childA.destroy();
-				return true;
 			}
+			finally
+			{
+				mob.destroy();
+			}
+			return true;
 		}
 		return false;
 	}

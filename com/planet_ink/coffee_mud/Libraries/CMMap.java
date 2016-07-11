@@ -2316,8 +2316,12 @@ public class CMMap extends StdLibrary implements WorldMap
 			&&((M.amFollowing()==null)||(!M.amFollowing().isPlayer())))
 			{
 				final Room startRoom = M.getStartRoom();
+				final Area startArea = (startRoom == null) ? null : startRoom.getArea();
 				if((startRoom==null)
 				||(startRoom==room)
+				||(startRoom.amDestroyed())
+				||(startArea==null)
+				||(startArea.amDestroyed())
 				||(startRoom.ID().length()==0))
 					M.destroy();
 				else
