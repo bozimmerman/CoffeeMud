@@ -193,7 +193,10 @@ public class StdThinInstance extends StdThinArea
 				if((M!=null)
 				&&(M.location()!=null)
 				&&(M.location().getArea()==childA))
+				{
 					cleanTheseMobs.add(M);
+					anyInside=true;
+				}
 			}
 			if(!anyInside)
 			{
@@ -201,7 +204,7 @@ public class StdThinInstance extends StdThinArea
 				for(final MOB wmob : cleanTheseMobs)
 				{
 					if((wmob.location()!=null)
-					&&(wmob.location().getArea()==this))
+					&&(wmob.location().getArea()==childA))
 					{
 						final Room startRoom=wmob.getStartRoom();
 						if(startRoom != null)
