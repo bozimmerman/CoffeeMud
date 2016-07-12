@@ -2001,7 +2001,8 @@ public class StdArea implements Area
 			return null;
 		synchronized(properRooms)
 		{
-			if(roomID.toUpperCase().startsWith(Name().toUpperCase()+"#"))
+			if((!roomID.startsWith(Name()))
+			&&(roomID.toUpperCase().startsWith(Name().toUpperCase()+"#")))
 				roomID=Name()+roomID.substring(Name().length()); // for case sensitive situations
 			return properRooms.get(roomID);
 		}
