@@ -1,7 +1,7 @@
 <CLANTYPES>
 <CLANTYPE TYPEID=0 NAME="GANG" CATEGORY="">
     <SHORTDESC>ruled by a boss who assigns underlings</SHORTDESC>
-    <LONGDESC>The traditional Gang is an efficient organization run by a single boss. The boss has all the powers and authority mentioned above, and can assign lieutentants, treasurers, or staff to assist with some menial chores.  Gang bosses and lieutentants also have the authority to maintain discipline in the ranks using the ORDER command.</LONGDESC>
+    <LONGDESC>The traditional Gang is an efficient organization run by a single boss. The boss has all the powers and authority mentioned above, and can assign lieutenants, treasurers, or staff to assist with some menial chores.  Gang bosses and lieutenants also have the authority to maintain discipline in the ranks using the ORDER command.</LONGDESC>
     <POSITIONS>
         <POSITION ID="BOSS" ROLEID=6 RANK=0 NAME="BOSS" PLURAL="BOSSES" MAX=1 INNERMASK="" PUBLIC="true">
             <POWER>ACCEPT</POWER>
