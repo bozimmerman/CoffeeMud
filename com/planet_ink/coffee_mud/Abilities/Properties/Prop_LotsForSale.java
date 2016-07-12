@@ -326,12 +326,13 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 				postWork.add(new Runnable()
 				{
 					final Room room = R2;
+					final LandTitle title=newTitle;
 					@Override
 					public void run()
 					{
 						CMLib.database().DBCreateRoom(room);
-						if(newTitle!=null)
-							CMLib.law().colorRoomForSale(room,newTitle,true);
+						if(title!=null)
+							CMLib.law().colorRoomForSale(room,title,true);
 						room.getArea().fillInAreaRoom(room);
 					}
 				});
