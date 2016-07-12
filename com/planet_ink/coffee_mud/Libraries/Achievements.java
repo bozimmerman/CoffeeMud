@@ -572,7 +572,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		case KILLS:
 			A=new Achievement()
 			{
-				private int num = 0;
+				private int num = -1;
 				private MaskingLibrary.CompiledZMask npcMask = null;
 				private MaskingLibrary.CompiledZMask playerMask = null;
 				
@@ -642,7 +642,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						@Override
 						public boolean isAchieved(MOB mob) 
 						{
-							return (getCount(mob) >= num);
+							return (num>=0) && (getCount(mob) >= num);
 						}
 
 						@Override
@@ -1706,7 +1706,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		case QUESTOR:
 			A=new Achievement()
 			{
-				private int num = 0;
+				private int num = -1;
 				private MaskingLibrary.CompiledZMask mask = null;
 				private java.util.regex.Pattern questPattern = null;
 				
@@ -1775,7 +1775,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						@Override
 						public boolean isAchieved(MOB mob) 
 						{
-							return getCount(mob) >= num;
+							return (num>=0) && getCount(mob) >= num;
 						}
 
 						@Override
@@ -2151,7 +2151,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		case CLASSLEVELSGAINED:
 			A=new Achievement()
 			{
-				private int num = 0;
+				private int num = -1;
 				private CharClass charClass = null;
 				private MaskingLibrary.CompiledZMask playerMask = null;
 				
@@ -2218,7 +2218,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						@Override
 						public boolean isAchieved(MOB mob) 
 						{
-							return (getCount(mob) > num);
+							return (num>=0) && (getCount(mob) > num);
 						}
 
 						@Override
@@ -2289,7 +2289,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		case LEVELSGAINED:
 			A=new Achievement()
 			{
-				private int num = 0;
+				private int num = -1;
 				private MaskingLibrary.CompiledZMask playerMask = null;
 				
 				@Override
@@ -2357,7 +2357,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						@Override
 						public boolean isAchieved(MOB mob) 
 						{
-							return (getCount(mob) >= num);
+							return (num>=0) && (getCount(mob) >= num);
 						}
 
 						@Override
@@ -2673,7 +2673,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		case DEATHS:
 			A=new Achievement()
 			{
-				private int num = 0;
+				private int num = -1;
 				private MaskingLibrary.CompiledZMask npcMask = null;
 				private MaskingLibrary.CompiledZMask playerMask = null;
 				
@@ -2743,7 +2743,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						@Override
 						public boolean isAchieved(MOB mob) 
 						{
-							return (getCount(mob) >= num);
+							return (num>=0) && (getCount(mob) >= num);
 						}
 
 						@Override
