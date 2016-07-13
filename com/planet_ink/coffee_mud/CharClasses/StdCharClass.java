@@ -546,9 +546,11 @@ public class StdCharClass implements CharClass
 		for(int i=0;i<end;i++)
 		{
 			if(i>0)
+			{
 				str.append(", ");
-			if(i==end-1)
-				str.append(L("or "));
+				if(i==end-1)
+					str.append(L("or "));
+			}
 			if(!raceList[i].startsWith("-"))
 				str.append(CMStrings.capitalizeAndLower(raceList[i]));
 		}
@@ -558,9 +560,11 @@ public class StdCharClass implements CharClass
 			for(int i=end;i<raceList.length;i++)
 			{
 				if(i>end)
+				{
 					str.append(", ");
-				if(i==raceList.length-1)
-					str.append(L("or "));
+					if(i==raceList.length-1)
+						str.append(L("or "));
+				}
 				if(raceList[i].startsWith("-"))
 					str.append(CMStrings.capitalizeAndLower(raceList[i].substring(1)));
 			}

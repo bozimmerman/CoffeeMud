@@ -455,7 +455,10 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						if(CMLib.coffeeMaker().isAnyGenStat(CMClass.samplePlayer(), thing))
 						{
 							final String stat = thing.toUpperCase().trim();
-							
+							boolean isSave = false;
+							for(int t : CharStats.CODES.SAVING_THROWS())
+								isSave  = isSave  || CharStats.CODES.NAME(t).equals(stat.toUpperCase());
+							final boolean isSavingThrow = isSave; 
 							awardsList.add(new StatAward()
 							{
 								@Override
@@ -480,9 +483,9 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 								public String getDescription()
 								{
 									if(getAmount()<0)
-										return getAmount() + " " + L(CMStrings.capitalizeAndLower(getStat()));
+										return getAmount() + " " + L(CMStrings.capitalizeAndLower(getStat())+(isSavingThrow ? " resistance":""));
 									else
-										return "+"+getAmount() + " " + L(CMStrings.capitalizeAndLower(getStat()));
+										return "+"+getAmount() + " " + L(CMStrings.capitalizeAndLower(getStat())+(isSavingThrow ? " resistance":""));
 								}
 							});
 						}
@@ -493,6 +496,10 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						&&CMLib.coffeeMaker().isAnyGenStat(CMClass.samplePlayer(), thing.substring(8)))
 						{
 							final String stat = thing.toUpperCase().trim();
+							boolean isSave = false;
+							for(int t : CharStats.CODES.SAVING_THROWS())
+								isSave  = isSave  || CharStats.CODES.NAME(t).equals(stat.toUpperCase());
+							final boolean isSavingThrow = isSave; 
 							
 							awardsList.add(new StatAward()
 							{
@@ -517,7 +524,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 								@Override
 								public String getDescription()
 								{
-									return "+"+getAmount() + " " + L(CMStrings.capitalizeAndLower(getStat()));
+									return "+"+getAmount() + " " + L(CMStrings.capitalizeAndLower(getStat())+(isSavingThrow?" resistance":""));
 								}
 							});
 						}

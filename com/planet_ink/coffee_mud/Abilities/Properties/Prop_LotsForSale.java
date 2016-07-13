@@ -187,6 +187,8 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 			if(d==Directions.GATE)
 				continue;
 			final Room R2=R.rawDoors()[d];
+			if((R2!=null)&&((!R2.isSavable())||(R2.roomID().length()==0)))
+				continue;
 			foundOne=foundOne||(R2!=null);
 			Exit E=R.getRawExit(d);
 			if(checkedRetractRooms != null)
