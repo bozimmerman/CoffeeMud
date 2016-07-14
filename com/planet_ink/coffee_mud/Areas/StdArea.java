@@ -1687,12 +1687,15 @@ public class StdArea implements Area
 			return s;
 		}
 		s.append("Number of rooms: ^H"+statData[Area.Stats.VISITABLE_ROOMS.ordinal()]+"^N\n\r");
-		Faction theFaction=null;
-		for(final Enumeration<Faction> e=CMLib.factions().factions();e.hasMoreElements();)
+		Faction theFaction=CMLib.factions().getFaction(CMLib.factions().AlignID());
+		if(theFaction == null)
 		{
-			final Faction F=e.nextElement();
-			if(F.showInSpecialReported())
-				theFaction=F;
+			for(final Enumeration<Faction> e=CMLib.factions().factions();e.hasMoreElements();)
+			{
+				final Faction F=e.nextElement();
+				if(F.showInSpecialReported())
+					theFaction=F;
+			}
 		}
 		if(statData[Area.Stats.POPULATION.ordinal()]==0)
 		{

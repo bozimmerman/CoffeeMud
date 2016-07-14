@@ -420,6 +420,24 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 				prepend.append(columnHelper(L("^HAbilities :^N"),s,wrap));
 				prepend.append(columnHelper(L("^HLanguages :^N"),R.getLanguagesDesc(),wrap));
 				prepend.append(columnHelper(L("^HLife Exp. :^N"),L("@x1 years",""+R.getAgingChart()[Race.AGE_ANCIENT]),wrap));
+				s="";
+				for(String ableID : R.abilityImmunities())
+				{
+					final Ability A=CMClass.getAbilityPrototype(ableID);
+					if(A!=null)
+						s+=((s.length()>0)?", ":"")+A.name();
+				}
+				prepend.append(columnHelper(L("^HImmunities:^N"),s,wrap));
+				s="";
+				if(R.outfit(null)!=null)
+				{
+					for(final Item I : R.outfit(null))
+					{
+						if(I!=null)
+							s+=((s.length()>0)?", ":"")+I.Name();
+					}
+				}
+				prepend.append(columnHelper(L("^HEquipment :^N"),s,wrap));
 				prepend.append(L("^HDesc.     : ^N"));
 				str=prepend.toString()+"\n\r"+str;
 			}

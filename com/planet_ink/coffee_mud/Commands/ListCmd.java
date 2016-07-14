@@ -60,6 +60,33 @@ public class ListCmd extends StdCommand
 		return access;
 	}
 
+	private enum WikiFlag
+	{
+		NO,
+		WIKILIST,
+		WIKIHELP
+	}
+	
+	private WikiFlag getWikiFlagRemoved(List<String> commands)
+	{
+		if(commands == null)
+			return WikiFlag.NO;
+		for(String s : commands)
+		{
+			if(s.equalsIgnoreCase("wiki"))
+			{
+				commands.remove(s);
+				return WikiFlag.WIKILIST;
+			}
+			if(s.equalsIgnoreCase("wikihelp"))
+			{
+				commands.remove(s);
+				return WikiFlag.WIKILIST;
+			}
+		}
+		return WikiFlag.NO;
+	}
+	
 	private static class WorldFilter implements Filterer<Area>
 	{
 		private final TimeClock to;
@@ -1731,9 +1758,7 @@ public class ListCmd extends StdCommand
 		final boolean shortList=parms.contains("SHORT");
 		if(shortList)
 			parms.remove("SHORT");
-		final boolean wiki=parms.contains("WIKI");
-		if(wiki)
-			parms.remove("WIKI");
+		WikiFlag wiki = getWikiFlagRemoved(parms);
 		final String restRest=CMParms.combine(parms).trim();
 		final StringBuilder lines=new StringBuilder("");
 		if(!these.hasMoreElements())
@@ -1763,9 +1788,71 @@ public class ListCmd extends StdCommand
 			||(CMLib.english().containsString(R.name(), restRest))
 			||(CMLib.english().containsString(R.racialCategory(), restRest)))
 			{
-				if(wiki)
-				{
+				if(wiki == WikiFlag.WIKILIST)
 					lines.append("*[["+R.name()+"|"+R.name()+"]]\n\r");
+				else
+				if(wiki == WikiFlag.WIKIHELP)
+				{
+					String statAdj=R.getStatAdjDesc();
+					if(R.getTrainAdjDesc().length()>0)
+						statAdj+=((statAdj.length()>0)?", ":"")+R.getTrainAdjDesc();
+					if(R.getPracAdjDesc().length()>0)
+						statAdj+=((statAdj.length()>0)?", ":"")+R.getPracAdjDesc();
+					String ableStr=R.getSensesChgDesc();
+					if(R.getDispositionChgDesc().length()>0)
+						ableStr+=((ableStr.length()>0)?", ":"")+R.getDispositionChgDesc();
+					if(R.getAbilitiesDesc().length()>0)
+						ableStr+=((ableStr.length()>0)?", ":"")+R.getAbilitiesDesc();
+					String immunoStr="";
+					for(String ableID : R.abilityImmunities())
+					{
+						final Ability A=CMClass.getAbilityPrototype(ableID);
+						if(A!=null)
+							immunoStr+=((immunoStr.length()>0)?", ":"")+A.name();
+					}
+					StringBuilder help=CMLib.help().getHelpText(R.ID(),null,false,true);
+					if(help==null)
+						help=CMLib.help().getHelpText(R.name(),null,false,true);
+					if((help!=null)&&(help.toString().startsWith("<RACE>")))
+						help=new StringBuilder(help.toString().substring(6));
+					else
+						help=new StringBuilder("");
+					String eqStr="";
+					if(R.outfit(null)!=null)
+					{
+						for(final Item I : R.outfit(null))
+						{
+							if(I!=null)
+								eqStr+=((eqStr.length()>0)?", ":"")+I.Name();
+						}
+					}
+					String qualClassesStr="";
+					for(final Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
+					{
+						final CharClass C=c.nextElement();
+						if(((CMProps.isTheme(C.availabilityCode())))
+							&&(CMStrings.containsIgnoreCase(C.getRequiredRaceList(),"All")
+								||CMStrings.containsIgnoreCase(C.getRequiredRaceList(),R.ID())
+								||CMStrings.containsIgnoreCase(C.getRequiredRaceList(),R.name())
+								||CMStrings.containsIgnoreCase(C.getRequiredRaceList(),R.racialCategory()))
+							&&(!CMStrings.containsIgnoreCase(C.getRequiredRaceList(),"-"+R.ID()))
+							&&(!CMStrings.containsIgnoreCase(C.getRequiredRaceList(),"-"+R.name()))
+							&&(!CMStrings.containsIgnoreCase(C.getRequiredRaceList(),"-"+R.racialCategory())))
+						{
+							qualClassesStr+=((qualClassesStr.length()>0)?", ":"")+C.name();
+						}
+					}
+					lines.append("{{RaceTemplate"
+							+ "|Name="+R.name()
+							+ "|Description="+help
+							+ "|Statadj="+statAdj
+							+ "|BonusAbilities="+ableStr
+							+ "|BonusLanguages="+R.getLanguagesDesc()
+							+ "|Immunities="+immunoStr
+							+ "|LifeExpectancy="+L("@x1 years",""+R.getAgingChart()[Race.AGE_ANCIENT])
+							+ "|Startingequipment="+eqStr
+							+ "|Qualifyingclasses="+qualClassesStr
+							+ "}}\n\r");
 				}
 				else
 				{
@@ -2867,22 +2954,15 @@ public class ListCmd extends StdCommand
 
 	public String listExpertises(Session viewerS, List<String> commands)
 	{
-		boolean wiki=false;
-		if(commands.size()>1)
-		{
-			String rest;
-			rest=commands.get(1);
-			if(rest.equalsIgnoreCase("WIKI"))
-				wiki=true;
-		}
+		WikiFlag wiki = getWikiFlagRemoved(commands);
 		final StringBuilder buf=new StringBuilder("^xAll Defined Expertise Codes: ^N\n\r");
 		final int COL_LEN=CMLib.lister().fixColWidth(20.0,viewerS);
-		if(wiki)
+		if(wiki==WikiFlag.WIKILIST)
 		{
 			final Set<String> doneBases=new TreeSet<String>();
 			for(final Enumeration<ExpertiseLibrary.ExpertiseDefinition> e=CMLib.expertises().definitions();e.hasMoreElements();)
 			{
-				final ExpertiseLibrary.ExpertiseDefinition def=e.nextElement();
+				ExpertiseLibrary.ExpertiseDefinition def=e.nextElement();
 				if(!doneBases.contains(def.getBaseName()))
 				{
 					doneBases.add(def.getBaseName());
@@ -2891,6 +2971,39 @@ public class ListCmd extends StdCommand
 					if(CMath.isRomanNumeral(name.substring(x+1).trim()))
 						name=name.substring(0, x).trim();
 					buf.append("*[["+name+"(Expertise)|"+name+"]]\n\r");
+				}
+			}
+		}
+		else
+		if(wiki==WikiFlag.WIKIHELP)
+		{
+			final Set<String> doneBases=new TreeSet<String>();
+			for(final Enumeration<ExpertiseLibrary.ExpertiseDefinition> e=CMLib.expertises().definitions();e.hasMoreElements();)
+			{
+				ExpertiseLibrary.ExpertiseDefinition def=e.nextElement();
+				if(!doneBases.contains(def.getBaseName()))
+				{
+					doneBases.add(def.getBaseName());
+					String name=def.name();
+					int x=name.lastIndexOf(' ');
+					if(CMath.isRomanNumeral(name.substring(x+1).trim()))
+					{
+						name=name.substring(0, x).trim();
+						ExpertiseLibrary.ExpertiseDefinition defGuess=CMLib.expertises().findDefinition(def.getBaseName()+"1",true);
+						if(defGuess!=null)
+							def=defGuess;
+					}
+					String desc=CMLib.expertises().getExpertiseHelp(def.name().toUpperCase().replaceAll(" ","_"), true);
+					if((desc!=null)&&(desc.startsWith("<EXPERTISE>")))
+						desc=desc.substring(11);
+					else
+						desc="";
+					buf.append("{{ExpertiseTemplate"
+							+ "|Name="+name
+							+ "|Requires="+CMLib.masking().maskDesc(def.allRequirements(),true)
+							+ "|Description="+desc
+							+ "|Cost="+def.costDescription()
+							+ "}}\n\r");
 				}
 			}
 		}
@@ -2909,22 +3022,78 @@ public class ListCmd extends StdCommand
 
 	public String listSocials(Session viewerS, List<String> commands)
 	{
-		boolean wiki=false;
-		if(commands.size()>1)
-		{
-			String rest;
-			rest=commands.get(1);
-			if(rest.equalsIgnoreCase("WIKI"))
-				wiki=true;
-		}
+		WikiFlag wiki = getWikiFlagRemoved(commands);
 		final StringBuilder buf=new StringBuilder("^xAll Defined Socials: ^N\n\r");
 		final int COL_LEN=CMLib.lister().fixColWidth(18.0,viewerS);
 		int col=0;
+		Set<String> baseDone = new HashSet<String>();
 		for(String social : CMLib.socials().getSocialsList())
 		{
-			if(wiki)
-			{
+			final Social soc=CMLib.socials().fetchSocial(social,true);
+			if(baseDone.contains(soc.baseName()))
+				continue;
+			baseDone.add(soc.baseName());
+			if(wiki == WikiFlag.WIKILIST)
 				buf.append("*[["+social+"|"+social+"]]\n\r");
+			else
+			if(wiki == WikiFlag.WIKIHELP)
+			{
+				final String TargetNoneYouSee;
+				final String TargetNoneOthersSee;
+				final String TargetSomeoneNoTarget;
+				final String TargetSomeoneYouSee;
+				final String TargetSomeoneTargetSees;
+				final String TargetSomeoneOthersSee;
+				final String TargetSelfYouSee;
+				final String TargetSelfOthersSee;
+				final Social TargetNoneSoc = CMLib.socials().fetchSocial(soc.baseName(), true);
+				if(TargetNoneSoc!=null)
+				{
+					TargetNoneYouSee = TargetNoneSoc.You_see();
+					TargetNoneOthersSee = TargetNoneSoc.Third_party_sees();
+				}
+				else
+				{
+					TargetNoneYouSee = "";
+					TargetNoneOthersSee = "";
+				}
+				final Social TargetSomeoneSoc = CMLib.socials().fetchSocial(soc.baseName()+" <T-NAME>", true);
+				if(TargetSomeoneSoc!=null)
+				{
+					TargetSomeoneNoTarget = TargetSomeoneSoc.See_when_no_target();
+					TargetSomeoneYouSee = TargetSomeoneSoc.You_see();
+					TargetSomeoneOthersSee = TargetSomeoneSoc.Third_party_sees();
+					TargetSomeoneTargetSees=TargetSomeoneSoc.Target_sees();
+				}
+				else
+				{
+					TargetSomeoneNoTarget = "";
+					TargetSomeoneYouSee = "";
+					TargetSomeoneOthersSee = "";
+					TargetSomeoneTargetSees= "";
+				}
+				final Social TargetSelfSoc = CMLib.socials().fetchSocial(soc.baseName()+" SELF", true);
+				if(TargetSelfSoc!=null)
+				{
+					TargetSelfYouSee = TargetSelfSoc.You_see();
+					TargetSelfOthersSee = TargetSelfSoc.Third_party_sees();
+				}
+				else
+				{
+					TargetSelfYouSee = "";
+					TargetSelfOthersSee = "";
+				}
+				buf.append("{{SocialTemplate"
+						+ "|Name="+CMStrings.capitalizeAndLower(soc.baseName())
+						+ "|TargetNoneUSee="+TargetNoneYouSee
+						+ "|TargetNoneTheySee="+TargetNoneOthersSee
+						+ "|TargetSomeoneNoTarget="+TargetSomeoneNoTarget
+						+ "|TargetSomeoneUSee="+TargetSomeoneYouSee
+						+ "|TargetSomeoneTargetSees="+TargetSomeoneTargetSees
+						+ "|TargetSomeoneOthersSee="+TargetSomeoneOthersSee
+						+ "|TargetSelfUSee="+TargetSelfYouSee
+						+ "|TargetSelfOthersSee="+TargetSelfOthersSee
+						+ "}}\n\r");
 			}
 			else
 			{
@@ -3739,14 +3908,11 @@ public class ListCmd extends StdCommand
 
 	public void listAbilities(MOB mob, Session s, List<String> commands, String title, int ofType)
 	{
-		boolean wiki=false;
 		int domain=0;
+		final WikiFlag wiki = this.getWikiFlagRemoved(commands);
 		for(int i=1;i<commands.size();i++)
 		{
 			final String str=commands.get(i);
-			if(str.equalsIgnoreCase("WIKI"))
-				wiki=true;
-			else
 			if(domain<=0)
 			{
 				int x=CMParms.indexOf(Ability.DOMAIN_DESCS,str.toUpperCase().trim());
@@ -3763,7 +3929,7 @@ public class ListCmd extends StdCommand
 				}
 			}
 		}
-		if(wiki)
+		if(wiki == WikiFlag.WIKILIST)
 		{
 			if(title.length()==0)
 				title="Abilities";
@@ -3772,6 +3938,38 @@ public class ListCmd extends StdCommand
 			else
 				s.println("==="+title+"===");
 			s.wraplessPrintln(CMLib.lister().reallyWikiList(mob, CMClass.abilities(), ofType|domain).toString());
+		}
+		else
+		if(wiki == WikiFlag.WIKIHELP)
+		{
+			StringBuilder str=new StringBuilder("");
+			for(final Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
+			{
+				final Ability A=e.nextElement();
+				if((ofType>=0)&&(ofType!=Ability.ALL_ACODES))
+				{
+					if((A.classificationCode()&Ability.ALL_ACODES)!=ofType)
+						continue;
+				}
+				if(domain>0)
+				{
+					if((A.classificationCode()&Ability.ALL_DOMAINS)!=domain)
+						continue;
+				}
+				//TODO: finish
+				str.append("{{SkillTemplate"
+						+ "|Name="+A.name()
+						+ "|Domain=domainstring"
+						+ "|Available=availablestring"
+						+ "|Allows=allowsstring"
+						+ "|UseCost=usecoststring"
+						+ "|Quality=qualitystring"
+						+ "|Targets=targetsstring"
+						+ "|Range=rangestring"
+						+ "|Commands="+((A.triggerStrings().length>0)?A.triggerStrings()[0]:"")
+						+ "|Description=descriptionstring"
+						+ "}}");
+			}
 		}
 		else
 		{
@@ -3860,18 +4058,12 @@ public class ListCmd extends StdCommand
 		commands.remove(0);
 		List<String> sortBys=null;
 		List<String> colNames=null;
-		boolean wiki=false;
+		WikiFlag wiki=getWikiFlagRemoved(commands);
 		if(commands.size()>0)
 		{
 			List<String> addTos=null;
 			while(commands.size()>0)
 			{
-				if(commands.get(0).toString().equalsIgnoreCase("wiki"))
-				{
-					commands.remove(0);
-					wiki=true;
-				}
-				else
 				if(commands.get(0).toString().equalsIgnoreCase("sortby"))
 				{
 					commands.remove(0);
@@ -3995,14 +4187,46 @@ public class ListCmd extends StdCommand
 		}
 		else
 			a=CMLib.map().areas();
+		Faction theFaction=CMLib.factions().getFaction(CMLib.factions().AlignID());
+		if(theFaction == null)
+		{
+			for(final Enumeration<Faction> e=CMLib.factions().factions();e.hasMoreElements();)
+			{
+				final Faction F=e.nextElement();
+				if(F.showInSpecialReported())
+					theFaction=F;
+			}
+		}
 		for(;a.hasMoreElements();)
 		{
 			final Area A=a.nextElement();
 			if((filter!=null)&&(!filter.passesFilter(A)))
 				continue;
-			if(wiki)
+			if(wiki==WikiFlag.WIKILIST)
 			{
 				str.append("*[["+A.name()+"|"+A.name()+"]]");
+			}
+			else
+			if(wiki==WikiFlag.WIKIHELP)
+			{
+				str.append("{{AreaTemplate"
+						+ "|Name="+A.name()
+						+ "|Description=Descriptionstring"
+						+ "|Author="+A.getAuthorID()
+						+ "|Rooms="+A.getAreaIStats()[Area.Stats.VISITABLE_ROOMS.ordinal()]
+						+ "|Population="+A.getAreaIStats()[Area.Stats.POPULATION.ordinal()]
+						+ "|Currency=currencystring"
+						+ "|LevelRange="+A.getAreaIStats()[Area.Stats.MIN_LEVEL.ordinal()]+"-"+A.getAreaIStats()[Area.Stats.MAX_LEVEL.ordinal()]
+						+ "|MedianLevel="+A.getAreaIStats()[Area.Stats.MED_LEVEL.ordinal()]
+						+ "|AvgAlign="+((theFaction!=null)?theFaction.fetchRangeName(A.getAreaIStats()[Area.Stats.AVG_ALIGNMENT.ordinal()]):"")
+						+ "|MedAlignment="+((theFaction!=null)?theFaction.fetchRangeName(A.getAreaIStats()[Area.Stats.MED_ALIGNMENT.ordinal()]):""));
+				int x=1;
+				for(Enumeration<String> f=A.areaBlurbFlags();f.hasMoreElements();)
+				{
+					String flag=f.nextElement();
+					str.append("|Blurb"+x+"Name="+flag);
+				}
+				str.append("}} ");
 			}
 			else
 			{

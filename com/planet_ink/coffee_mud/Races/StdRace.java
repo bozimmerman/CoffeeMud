@@ -1721,33 +1721,41 @@ public class StdRace implements Race
 		{
 			StringBuilder str=new StringBuilder("");
 			final Session sess = (Session)CMClass.getCommon("DefaultSession");
-			final MOB mob=CMClass.getMOB("StdMOB");
-			mob.setSession(sess);
-			mob.baseCharStats().setMyRace(this);
-			startRacing(mob,false);
-			mob.recoverCharStats();
-			mob.recoverPhyStats();
-			mob.recoverMaxState();
-			final MOB mob2=CMClass.getMOB("StdMOB");
-			mob2.setSession(sess);
-			mob2.baseCharStats().setMyRace(new StdRace());
-			mob2.recoverCharStats();
-			mob2.recoverPhyStats();
-			mob2.recoverMaxState();
-			for(final int c: CharStats.CODES.ALLCODES())
+			final MOB mob=CMClass.getMOB("StdMOB"); // factory mobs didn't work because char stats...
+			final MOB mob2=CMClass.getMOB("StdMOB"); // factory mobs didn't work because char stats...
+			try
 			{
-				final int oldStat=mob2.charStats().getStat(c);
-				final int newStat=mob.charStats().getStat(c);
-				if(oldStat>newStat)
-					str.append(CharStats.CODES.DESC(c).toLowerCase()+"-"+(oldStat-newStat)+", ");
-				else
-				if(newStat>oldStat)
-					str.append(CharStats.CODES.DESC(c).toLowerCase()+"+"+(newStat-oldStat)+", ");
+				mob.setSession(sess);
+				mob.baseCharStats().setMyRace(this);
+				startRacing(mob,false);
+				mob.recoverCharStats();
+				mob.recoverPhyStats();
+				mob.recoverMaxState();
+				mob2.setSession(sess);
+				mob2.baseCharStats().setMyRace(new StdRace());
+				mob2.recoverCharStats();
+				mob2.recoverPhyStats();
+				mob2.recoverMaxState();
+				for(final int c: CharStats.CODES.ALLCODES())
+				{
+					final int oldStat=mob2.charStats().getStat(c);
+					final int newStat=mob.charStats().getStat(c);
+					if(oldStat>newStat)
+						str.append(CharStats.CODES.DESC(c).toLowerCase()+"-"+(oldStat-newStat)+", ");
+					else
+					if(newStat>oldStat)
+						str.append(CharStats.CODES.DESC(c).toLowerCase()+"+"+(newStat-oldStat)+", ");
+				}
+				dispChgDesc=CMLib.flags().getDispositionStateList(mob);
+				sensesChgDesc=CMLib.flags().getSensesStateList(mob);
 			}
-			dispChgDesc=CMLib.flags().getDispositionStateList(mob);
-			sensesChgDesc=CMLib.flags().getSensesStateList(mob);
-			mob.destroy();
-			mob2.destroy();
+			finally
+			{
+				mob.setSession(null);
+				mob.destroy();
+				mob2.setSession(null);
+				mob2.destroy();
+			}
 			baseStatChgDesc=str.toString();
 			if(baseStatChgDesc.endsWith(", "))
 				baseStatChgDesc=baseStatChgDesc.substring(0,baseStatChgDesc.length()-2);

@@ -1180,19 +1180,27 @@ public class RaceData extends StdWebMacro
 				if(parms.containsKey("EFFECTS"))
 				{
 					for(final Ability A : R.racialEffects(null))
+					{
 						if(A!=null)
 							str.append(A.Name()+", ");
+					}
 				}
 				if(parms.containsKey("LANGS"))
+				{
 					if(R.getLanguagesDesc().length()>0)
 						str.append(R.getLanguagesDesc()+", ");
+				}
 
 				if(parms.containsKey("STARTINGEQ"))
 				{
 					if(R.outfit(null)!=null)
+					{
 						for(final Item I : R.outfit(null))
+						{
 							if(I!=null)
 								str.append(I.Name()+", ");
+						}
+					}
 				}
 				if(parms.containsKey("CLASSES"))
 				{
