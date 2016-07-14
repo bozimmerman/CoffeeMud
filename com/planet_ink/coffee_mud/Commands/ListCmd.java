@@ -3956,18 +3956,61 @@ public class ListCmd extends StdCommand
 					if((A.classificationCode()&Ability.ALL_DOMAINS)!=domain)
 						continue;
 				}
+				String domainID = Ability.DOMAIN_DESCS[(A.classificationCode()&Ability.ALL_DOMAINS)>>5].toLowerCase();
+				String domainName = CMStrings.capitalizeAllFirstLettersAndLower(domainID.replaceAll("_"," "));
+				StringBuilder availStr=new StringBuilder("");
+				final PairList<String,Integer> avail=CMLib.ableMapper().getAvailabilityList(A, Integer.MAX_VALUE);
+				for(int c=0;c<avail.size();c++)
+				{
+					CharClass C=CMClass.getCharClass(avail.getFirst(c));
+					Integer I=avail.getSecond(c);
+					availStr.append("[["+C.name()+"("+C.baseClass()+")|"+C.name(I.intValue())+"("+I.intValue()+")]] ");
+				}
+				StringBuilder allowsStr=new StringBuilder("");
+				for(Iterator<String> i=CMLib.expertises().filterUniqueExpertiseIDList(CMLib.ableMapper().getAbilityAllowsList(ID));i.hasNext();)
+				{
+					final String ID=i.next();
+					ExpertiseDefinition def=CMLib.expertises().getDefinition(ID);
+					if(def != null)
+					{
+						String name=def.name();
+						int x=name.lastIndexOf(' ');
+						if(CMath.isRomanNumeral(name.substring(x+1).trim()))
+							name=name.substring(0, x).trim();
+						allowsStr.append("[["+name+"(Expertise)|"+name+"]]").append(" ");
+					}
+					else
+					{
+						final Ability A2=CMClass.getAbilityPrototype(ID);
+						if(A2!=null)
+							allowsStr.append("[["+A2.ID()+"|"+A2.name()+"]]").append(" ");
+						else
+							allowsStr.append(ID).append(" ");
+					}
+				}
+				final String cost=CMLib.help().getAbilityCostDesc(A, null);
+				final String quality=CMLib.help().getAbilityQualityDesc(A);
+				final String targets=CMLib.help().getAbilityTargetDesc(A);
+				final String range=CMLib.help().getAbilityRangeDesc(A);
+				StringBuilder help=CMLib.help().getHelpText(A.ID(),null,false,true);
+				if(help==null)
+					help=CMLib.help().getHelpText(A.name(),null,false,true);
+				if((help!=null)&&(help.toString().startsWith("<ABILITY>")))
+					help=new StringBuilder(help.toString().substring(6));
+				else
+					help=new StringBuilder("");
 				//TODO: finish
 				str.append("{{SkillTemplate"
 						+ "|Name="+A.name()
-						+ "|Domain=domainstring"
-						+ "|Available=availablestring"
-						+ "|Allows=allowsstring"
-						+ "|UseCost=usecoststring"
-						+ "|Quality=qualitystring"
-						+ "|Targets=targetsstring"
-						+ "|Range=rangestring"
-						+ "|Commands="+((A.triggerStrings().length>0)?A.triggerStrings()[0]:"")
-						+ "|Description=descriptionstring"
+						+ "|Domain=[["+domainID+"(Domain)|"+domainName+"]]"
+						+ "|Available="+availStr.toString()
+						+ "|Allows="+allowsStr.toString()
+						+ "|UseCost="+cost
+						+ "|Quality="+quality
+						+ "|Targets="+targets
+						+ "|Range="+range
+						+ "|Commands="+CMParms.toListString(A.triggerStrings())
+						+ "|Description="+help
 						+ "}}");
 			}
 		}
@@ -4673,8 +4716,21 @@ public class ListCmd extends StdCommand
 			listShips(mob, commands);
 			break;
 		case ABILITYDOMAINS:
-			s.wraplessPrintln(CMParms.toListString(Ability.DOMAIN_DESCS));
+		{
+			WikiFlag wiki=getWikiFlagRemoved(commands);
+			if(wiki == WikiFlag.NO)
+				s.wraplessPrintln(CMParms.toListString(Ability.DOMAIN_DESCS));
+			else
+			{
+				for(String domain : Ability.DOMAIN_DESCS)
+				{
+					domain = domain.toLowerCase();
+					String domainName = CMStrings.capitalizeAllFirstLettersAndLower(domain.replaceAll("_"," "));
+					s.println("[["+domain+"(Domain)|"+domainName+"]]");
+				}
+			}
 			break;
+		}
 		case ABILITYCODES:
 			s.wraplessPrintln(CMParms.toListString(Ability.ACODE_DESCS_));
 			break;

@@ -895,6 +895,16 @@ public interface AbilityMapper extends CMLibrary
 	public void saveAllQualifysFile(Map<String, Map<String,AbilityMapping>> newMap);
 
 	/**
+	 * Returns a String list of all the classes and levels that qualify for the given
+	 * skill.  If more than the given abbreviateAt skills qualify, then the list
+	 * will start abstracting the list by returning abstract terms instead of class ids.
+	 * @param A the skill to get a list of qualifiers for
+	 * @param abbreviateAt the number of classes beyond which is starts aggregating
+	 * @return a list of class ids/aggregate strings and levels
+	 */
+	public PairList<String,Integer> getAvailabilityList(final Ability A, int abbreviateAt);
+
+	/**
 	 * A mapping between an Ability ID and it's qualifying level
 	 * @see AbilityMapper#getAbilityAllowsList(String)
 	 * @author Bo Zimmerman

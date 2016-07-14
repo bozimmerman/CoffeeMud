@@ -598,6 +598,24 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 		}
 	}
 
+	@Override
+	public Iterator<String> filterUniqueExpertiseIDList(Iterator<String> i)
+	{
+		final Set<String> ids=new HashSet<String>();
+		for(;i.hasNext();)
+		{
+			final String id=i.next();
+			ExpertiseDefinition def=CMLib.expertises().getDefinition(id);
+			if((def != null)
+			&&(!(def.ID().equals(def.getBaseName()+"1")||def.ID().equals(def.getBaseName()+"I")||(def.ID().equals(def.getBaseName())))))
+			{
+				continue;
+			}
+			ids.add(id);
+		}
+		return ids.iterator();
+	}
+	
 	protected Object parseLearnID(final String msg)
 	{
 		if(msg==null)

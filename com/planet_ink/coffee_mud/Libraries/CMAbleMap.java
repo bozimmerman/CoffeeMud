@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.AbilityMapping;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary.ExpertiseDefinition;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -2222,5 +2223,45 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 		if(map!=null)
 			str.append(buildAllQualifysSection(map));
 		f.saveText(str.toString(),false);
+	}
+	
+	@Override
+	public PairList<String,Integer> getAvailabilityList(final Ability A, int abbreviateAt)
+	{
+		final PairList<String,Integer> avail=new PairVector<String,Integer>();
+		final Hashtable<Integer,int[]> sortedByLevel=new Hashtable<Integer,int[]>();
+		for(final Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
+		{
+			final CharClass C=c.nextElement();
+			final int lvl=getQualifyingLevel(C.ID(),true,A.ID());
+			if((!C.ID().equalsIgnoreCase("Archon"))
+			&&(lvl>=0)
+			&&(C.availabilityCode()!=0)
+			&&(!getSecretSkill(C.ID(),true,A.ID())))
+			{
+				if(!sortedByLevel.containsKey(Integer.valueOf(lvl)))
+					sortedByLevel.put(Integer.valueOf(lvl),new int[1]);
+				sortedByLevel.get(Integer.valueOf(lvl))[0]++;
+				avail.add(C.ID(),Integer.valueOf(lvl));
+			}
+		}
+		for(final Enumeration<Integer> e=sortedByLevel.keys();e.hasMoreElements();)
+		{
+			final Integer I=e.nextElement();
+			final int[] count=sortedByLevel.get(I);
+			if(count[0]>abbreviateAt)
+			{
+				for(int i=avail.size()-1;i>=0;i--)
+				{
+					if(avail.get(i).second.intValue()==I.intValue())
+						avail.remove(i);
+				}
+				if(count[0]>=(abbreviateAt*3))
+					avail.add("Numerous Classes",I);
+				else
+					avail.add("Several Classes",I);
+			}
+		}
+		return avail;
 	}
 }

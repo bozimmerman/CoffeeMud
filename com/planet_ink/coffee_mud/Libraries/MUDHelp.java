@@ -44,6 +44,8 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 		return "MUDHelp";
 	}
 
+	protected Map<String,String>		genUsageCost				= new SHashtable<String, String>(); 
+	
 	@Override
 	public boolean isPlayerSkill(String helpStr)
 	{
@@ -147,28 +149,15 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 		return reverseList;
 	}
 
-	@Override
-	public String getActualUsage(Ability A, int which, MOB forMOB)
+	protected String getActualUsageInternal(Ability A, int whichUsageCode, MOB forMOB)
 	{
-		boolean destroymob=false;
-		if(forMOB==null)
-		{
-			forMOB=CMClass.getFactoryMOB();
-			forMOB.maxState().setMana(Integer.MAX_VALUE/2);
-			forMOB.maxState().setMovement(Integer.MAX_VALUE/2);
-			forMOB.maxState().setHitPoints(Integer.MAX_VALUE/2);
-			destroymob=true;
-		}
-		else
-		{
-			final Ability myA=forMOB.fetchAbility(A.ID());
-			if(myA!=null)
-				A=myA;
-		}
-
+		final Ability myA=forMOB.fetchAbility(A.ID());
+		if(myA!=null)
+			A=myA;
+		
 		final int[] consumption=A.usageCost(forMOB,true);
 		int whichConsumed=consumption[0];
-		switch(which)
+		switch(whichUsageCode)
 		{
 		case Ability.USAGE_MOVEMENT:
 			whichConsumed = consumption[Ability.USAGEINDEX_MOVEMENT];
@@ -180,11 +169,135 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			whichConsumed = consumption[Ability.USAGEINDEX_HITPOINTS];
 			break;
 		}
-		if(destroymob)
-			forMOB.destroy();
 		if(whichConsumed==Integer.MAX_VALUE/2)
 			return "all";
 		return ""+whichConsumed;
+	}
+
+	@Override
+	public String getAbilityQualityDesc(Ability A)
+	{
+		StringBuilder prepend=new StringBuilder("");
+		switch(A.abstractQuality())
+		{
+		case Ability.QUALITY_MALICIOUS:
+			prepend.append(L("Malicious"));
+			break;
+		case Ability.QUALITY_BENEFICIAL_OTHERS:
+		case Ability.QUALITY_BENEFICIAL_SELF:
+			prepend.append(L("Always Beneficial"));
+			break;
+		case Ability.QUALITY_OK_OTHERS:
+		case Ability.QUALITY_OK_SELF:
+			prepend.append(L("Sometimes Beneficial"));
+			break;
+		case Ability.QUALITY_INDIFFERENT:
+			prepend.append(L("Circumstantial"));
+			break;
+		}
+		return prepend.toString();
+	}
+	
+	@Override
+	public String getAbilityCostDesc(Ability A, final MOB forMOB)
+	{
+		StringBuilder costStr = new StringBuilder("");
+		if(A.usageType()==Ability.USAGE_NADA)
+			costStr.append(L("None"));
+		if(CMath.bset(A.usageType(),Ability.USAGE_MANA))
+			costStr.append(L("Mana (@x1) ",CMLib.help().getActualAbilityUsageDesc(A,Ability.USAGE_MANA,forMOB)));
+		if(CMath.bset(A.usageType(),Ability.USAGE_MOVEMENT))
+			costStr.append(L("Movement (@x1) ",CMLib.help().getActualAbilityUsageDesc(A,Ability.USAGE_MOVEMENT,forMOB)));
+		if(CMath.bset(A.usageType(),Ability.USAGE_HITPOINTS))
+			costStr.append(L("Hit Points (@x1) ",CMLib.help().getActualAbilityUsageDesc(A,Ability.USAGE_HITPOINTS,forMOB)));
+		return costStr.toString();
+	}
+	
+	@Override
+	public String getAbilityRangeDesc(Ability A)
+	{
+		StringBuilder prepend=new StringBuilder("");
+		final int min=A.minRange();
+		final int max=A.maxRange();
+		if(min+max==0)
+			prepend.append(L("Touch, or not applicable"));
+		else
+		{
+			if(min==0)
+				prepend.append(L("Touch"));
+			else
+				prepend.append(L("Range @x1",""+min));
+			if(max>0)
+				prepend.append(L(" - Range @x1",""+max));
+		}
+		return prepend.toString();
+	}
+
+	@Override
+	public String getAbilityTargetDesc(Ability A)
+	{
+		StringBuilder prepend=new StringBuilder("");
+		if((A.abstractQuality()==Ability.QUALITY_BENEFICIAL_SELF)
+		||(A.abstractQuality()==Ability.QUALITY_OK_SELF))
+			prepend.append(L("Caster only"));
+		else
+		if((CMClass.basicItems().hasMoreElements())
+		&&(CMClass.mobTypes().hasMoreElements())
+		&&(CMClass.exits().hasMoreElements())
+		&&(CMClass.locales().hasMoreElements()))
+		{
+			if(A.canAffect(Ability.CAN_ITEMS)||A.canTarget(Ability.CAN_ITEMS))
+				prepend.append(L("Items "));
+			if(A.canAffect(Ability.CAN_MOBS)||A.canTarget(Ability.CAN_MOBS))
+				prepend.append(L("Creatures "));
+			if(A.canAffect(Ability.CAN_EXITS)||A.canTarget(Ability.CAN_EXITS))
+				prepend.append(L("Exits "));
+			if(A.canAffect(Ability.CAN_ROOMS)||A.canTarget(Ability.CAN_ROOMS))
+				prepend.append(L("Rooms "));
+		}
+		else
+		if(A.abstractQuality()==Ability.QUALITY_INDIFFERENT)
+			prepend.append(L("Items or Rooms"));
+		else
+		if(A.abstractQuality()==Ability.QUALITY_MALICIOUS)
+			prepend.append(L("Others"));
+		else
+		if((A.abstractQuality()==Ability.QUALITY_BENEFICIAL_OTHERS)
+		||(A.abstractQuality()==Ability.QUALITY_OK_SELF))
+			prepend.append(L("Caster, or others"));
+		return prepend.toString();
+	}
+	
+	@Override
+	public String getActualAbilityUsageDesc(Ability A, int whichUsageCode, MOB forMOB)
+	{
+		if(forMOB == null)
+			return getActualUsage(A,whichUsageCode);
+		else
+			return getActualUsageInternal(A,whichUsageCode,forMOB);
+	}
+	
+	protected String getActualUsage(Ability A, int whichUsageCode)
+	{
+		String usageCost;
+		if(this.genUsageCost.containsKey(A.ID()+"/"+whichUsageCode))
+			usageCost=this.genUsageCost.get(A.ID()+"/"+whichUsageCode);
+		else
+		{
+			final MOB forMOB=CMClass.getFactoryMOB();
+			try
+			{
+				forMOB.maxState().setMana(Integer.MAX_VALUE/2);
+				forMOB.maxState().setMovement(Integer.MAX_VALUE/2);
+				forMOB.maxState().setHitPoints(Integer.MAX_VALUE/2);
+				usageCost=this.getActualUsageInternal(A, whichUsageCode, forMOB);
+			}
+			finally
+			{
+				forMOB.destroy();
+			}
+		}
+		return usageCost;
 	}
 
 	@Override
@@ -198,44 +311,15 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 
 	private void appendAllowed(StringBuilder prepend, String ID)
 	{
-		final List<String> allows=new SVector<String>();
-		for(final Iterator<String> i=CMLib.ableMapper().getAbilityAllowsList(ID);i.hasNext();)
-			allows.add(i.next());
-		ExpertiseLibrary.ExpertiseDefinition def=null;
-		Ability A=null;
-		if(allows.size()>0)
+		final Iterator<String> i=CMLib.expertises().filterUniqueExpertiseIDList(CMLib.ableMapper().getAbilityAllowsList(ID));
+		int lastLine=11;
+		if(i.hasNext())
 		{
 			prepend.append(L("\n\rAllows   : "));
-			String test1=null;
-			String test2=null;
-			boolean roman=false;
-			for(int a0=0;a0<allows.size();a0++)
+			while(i.hasNext())
 			{
-				test1=allows.get(a0);
-				int x=test1.length();
-				roman=!Character.isDigit(test1.charAt(x-1));
-				while(((Character.isDigit(test1.charAt(x-1))&&(!roman))
-					||(CMath.isRomanDigit(test1.charAt(x-1))&&(roman)))
-				&&(x>=0))
-					x--;
-				if((x>0)&&(x<test1.length()))
-				{
-					test1=test1.substring(0,x);
-					for(int a1=allows.size()-1;a1>=(a0+1);a1--)
-					{
-						test2=allows.get(a1);
-						if(test2.startsWith(test1)
-						&&(((!roman)&&CMath.isInteger(test2.substring(x)))
-						   ||(roman&&CMath.isRomanNumeral(test2.substring(x)))))
-							allows.remove(a1);
-					}
-				}
-			}
-			int lastLine=11;
-			for(int a=0;a<allows.size();a++)
-			{
-				final String allowStr=allows.get(a);
-				def=CMLib.expertises().getDefinition(allowStr);
+				final String allowStr=i.next();
+				final ExpertiseLibrary.ExpertiseDefinition def=CMLib.expertises().getDefinition(allowStr);
 				if(def!=null)
 				{
 					prepend.append(def.name());
@@ -243,22 +327,21 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 				}
 				else
 				{
-					A=CMClass.getAbility(allowStr);
+					final Ability A=CMClass.getAbility(allowStr);
 					if(A!=null)
 					{
 						prepend.append(A.Name());
 						lastLine+=(A.Name().length()+2);
 					}
 				}
-				if((lastLine>60)&&(a<(allows.size()-1)))
+				if((lastLine>60)&&(i.hasNext()))
 				{
 					lastLine=11;
 					prepend.append(L("\n\rAllows   : "));
 				}
 				else
-				if(a<allows.size()-1)
+				if(i.hasNext())
 					prepend.append(", ");
-
 			}
 		}
 	}
@@ -544,48 +627,14 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 						final int school=(A.classificationCode()&Ability.ALL_DOMAINS)>>5;
 						prepend.append(CMStrings.capitalizeAndLower(Ability.DOMAIN_DESCS[school].replace('_',' ')));
 					}
-					final Vector<String> avail=new Vector<String>();
-					final Hashtable<Integer,int[]> sortedByLevel=new Hashtable<Integer,int[]>();
-					for(final Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
-					{
-						final CharClass C=c.nextElement();
-						final int lvl=CMLib.ableMapper().getQualifyingLevel(C.ID(),true,A.ID());
-						if((!C.ID().equalsIgnoreCase("Archon"))
-						&&(lvl>=0)
-						&&(C.availabilityCode()!=0)
-						&&(!CMLib.ableMapper().getSecretSkill(C.ID(),true,A.ID())))
-						{
-							if(!sortedByLevel.containsKey(Integer.valueOf(lvl)))
-								sortedByLevel.put(Integer.valueOf(lvl),new int[1]);
-							sortedByLevel.get(Integer.valueOf(lvl))[0]++;
-							avail.addElement(C.name(lvl)+"("+lvl+")");
-						}
-					}
-					for(final Enumeration<Integer> e=sortedByLevel.keys();e.hasMoreElements();)
-					{
-						final Integer I=e.nextElement();
-						final int[] count=sortedByLevel.get(I);
-						if(count[0]>2)
-						{
-							String s=null;
-							final String endsWith="("+I.intValue()+")";
-							for(int i=avail.size()-1;i>=0;i--)
-							{
-								s=avail.elementAt(i);
-								if(s.endsWith(endsWith))
-									avail.removeElementAt(i);
-							}
-							if(count[0]>5)
-								avail.addElement("Numerous Classes"+endsWith);
-							else
-								avail.addElement("Several Classes"+endsWith);
-						}
-					}
+					final PairList<String,Integer> avail=CMLib.ableMapper().getAvailabilityList(A, 2);
 					for(int c=0;c<avail.size();c++)
 					{
 						if((c%4)==0)
 							prepend.append(L("\n\rAvailable: "));
-						prepend.append((avail.elementAt(c))+" ");
+						CharClass C=CMClass.getCharClass(avail.getFirst(c));
+						Integer I=avail.getSecond(c);
+						prepend.append((C!=null)?C.name(I.intValue()):avail.getFirst(c)).append(" ");
 					}
 
 					DVector preReqs;
@@ -627,75 +676,13 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 							prepend.append(CMLib.ableComponents().getAbilityComponentDesc(forMOB,A.ID()));
 						}
 						prepend.append(L("\n\rUse Cost : "));
-						if(A.usageType()==Ability.USAGE_NADA)
-							prepend.append(L("None"));
-						if(CMath.bset(A.usageType(),Ability.USAGE_MANA))
-							prepend.append(L("Mana (@x1) ",getActualUsage(A,Ability.USAGE_MANA,forMOB)));
-						if(CMath.bset(A.usageType(),Ability.USAGE_MOVEMENT))
-							prepend.append(L("Movement (@x1) ",getActualUsage(A,Ability.USAGE_MOVEMENT,forMOB)));
-						if(CMath.bset(A.usageType(),Ability.USAGE_HITPOINTS))
-							prepend.append(L("Hit Points (@x1) ",getActualUsage(A,Ability.USAGE_HITPOINTS,forMOB)));
+						prepend.append(this.getAbilityCostDesc(A, forMOB));
 						prepend.append(L("\n\rQuality  : "));
-						switch(A.abstractQuality())
-						{
-						case Ability.QUALITY_MALICIOUS:
-							prepend.append(L("Malicious"));
-							break;
-						case Ability.QUALITY_BENEFICIAL_OTHERS:
-						case Ability.QUALITY_BENEFICIAL_SELF:
-							prepend.append(L("Always Beneficial"));
-							break;
-						case Ability.QUALITY_OK_OTHERS:
-						case Ability.QUALITY_OK_SELF:
-							prepend.append(L("Sometimes Beneficial"));
-							break;
-						case Ability.QUALITY_INDIFFERENT:
-							prepend.append(L("Circumstantial"));
-							break;
-						}
+						prepend.append(this.getAbilityQualityDesc(A));
 						prepend.append(L("\n\rTargets  : "));
-						if((A.abstractQuality()==Ability.QUALITY_BENEFICIAL_SELF)
-						||(A.abstractQuality()==Ability.QUALITY_OK_SELF))
-							prepend.append(L("Caster only"));
-						else
-						if((CMClass.basicItems().hasMoreElements())
-						&&(CMClass.mobTypes().hasMoreElements())
-						&&(CMClass.exits().hasMoreElements())
-						&&(CMClass.locales().hasMoreElements()))
-						{
-							if(A.canAffect(Ability.CAN_ITEMS)||A.canTarget(Ability.CAN_ITEMS))
-								prepend.append(L("Items "));
-							if(A.canAffect(Ability.CAN_MOBS)||A.canTarget(Ability.CAN_MOBS))
-								prepend.append(L("Creatures "));
-							if(A.canAffect(Ability.CAN_EXITS)||A.canTarget(Ability.CAN_EXITS))
-								prepend.append(L("Exits "));
-							if(A.canAffect(Ability.CAN_ROOMS)||A.canTarget(Ability.CAN_ROOMS))
-								prepend.append(L("Rooms "));
-						}
-						else
-						if(A.abstractQuality()==Ability.QUALITY_INDIFFERENT)
-							prepend.append(L("Items or Rooms"));
-						else
-						if(A.abstractQuality()==Ability.QUALITY_MALICIOUS)
-							prepend.append(L("Others"));
-						else
-						if((A.abstractQuality()==Ability.QUALITY_BENEFICIAL_OTHERS)
-						||(A.abstractQuality()==Ability.QUALITY_OK_SELF))
-							prepend.append(L("Caster, or others"));
+						prepend.append(this.getAbilityTargetDesc(A));
 						prepend.append(L("\n\rRange    : "));
-						final int min=A.minRange();
-						final int max=A.maxRange();
-						if(min+max==0)
-							prepend.append(L("Touch, or not applicable"));
-						else
-						{
-							if(min==0)
-								prepend.append(L("Touch"));
-							else
-								prepend.append(L("Range @x1",""+min));
-							if(max>0)
-								prepend.append(L(" - Range @x1",""+max));
-						}
+						prepend.append(this.getAbilityRangeDesc(A));
 						if((A.triggerStrings()!=null)
 						   &&(A.triggerStrings().length>0))
 						{
