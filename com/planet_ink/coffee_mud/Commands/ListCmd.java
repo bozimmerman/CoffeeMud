@@ -22,6 +22,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Currenc
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.ExpertiseAward;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.StatAward;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.TitleAward;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary.ExpertiseDefinition;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import com.planet_ink.coffee_mud.core.threads.*;
@@ -2876,19 +2877,30 @@ public class ListCmd extends StdCommand
 		}
 		final StringBuilder buf=new StringBuilder("^xAll Defined Expertise Codes: ^N\n\r");
 		final int COL_LEN=CMLib.lister().fixColWidth(20.0,viewerS);
+		if(wiki)
+		{
+			final Set<String> doneBases=new TreeSet<String>();
+			for(final Enumeration<ExpertiseLibrary.ExpertiseDefinition> e=CMLib.expertises().definitions();e.hasMoreElements();)
+			{
+				final ExpertiseLibrary.ExpertiseDefinition def=e.nextElement();
+				if(!doneBases.contains(def.getBaseName()))
+				{
+					doneBases.add(def.getBaseName());
+					String name=def.name();
+					int x=name.lastIndexOf(' ');
+					if(CMath.isRomanNumeral(name.substring(x+1).trim()))
+						name=name.substring(0, x).trim();
+					buf.append("*[["+name+"(Expertise)|"+name+"]]\n\r");
+				}
+			}
+		}
+		else
 		for(final Enumeration<ExpertiseLibrary.ExpertiseDefinition> e=CMLib.expertises().definitions();e.hasMoreElements();)
 		{
 			final ExpertiseLibrary.ExpertiseDefinition def=e.nextElement();
-			if(wiki)
-			{
-				buf.append("*[["+def.name()+"|"+def.name()+"]]\n\r");
-			}
-			else
-			{
-				buf.append(CMStrings.padRight("^Z"+def.ID(),COL_LEN)+"^?: "
-						  +CMStrings.padRight(def.name(),COL_LEN)+": "
-						  +CMLib.masking().maskDesc(def.allRequirements())+"\n\r");
-			}
+			buf.append(CMStrings.padRight("^Z"+def.ID(),COL_LEN)+"^?: "
+					  +CMStrings.padRight(def.name(),COL_LEN)+": "
+					  +CMLib.masking().maskDesc(def.allRequirements())+"\n\r");
 		}
 		if(buf.length()==0)
 			return "None defined.";
