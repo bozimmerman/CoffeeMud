@@ -59,6 +59,7 @@ public class WebServer extends Thread
 	static { try { VERSION=Double.parseDouble(POMVERSION); } catch(final Exception e){ VERSION=0.0;} }
 	
 	private volatile boolean	  	shutdownRequested	= false;// notice of external shutdown request
+	private volatile String	  		lastErrorMsg		= "";	// spam prevention for error reporting
 	private Selector			  	servSelector 		= null; // server io selector
 	private final CWThreadExecutor 	executor;					// request handler thread pool
 	private Thread				  	timeoutThread		= null; // thread to timeout connected but idle channels
@@ -204,7 +205,13 @@ public class WebServer extends Thread
 						}
 						catch(Exception e)
 						{
-							config.getLogger().severe(e.toString());
+							if(!lastErrorMsg.equals(e.toString()) && (e.toString()!=null))
+							{
+								config.getLogger().log(Level.SEVERE, e.toString(), e);
+								lastErrorMsg = e.toString();
+							}
+							else
+								config.getLogger().severe(e.toString());
 						}
 					}
 				}
@@ -298,6 +305,8 @@ public class WebServer extends Thread
 		synchronized(handlers)
 		{
 			// remove any stray handlers from time to time
+			if(handlers.size() == 0)
+				return;
 			for(final Iterator<HTTPIOHandler> i = handlers.iterator(); i.hasNext(); )
 			{
 				final HTTPIOHandler handler=i.next();
