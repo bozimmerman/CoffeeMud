@@ -623,7 +623,7 @@ public class Stat  extends Skills
 				msg.append(stat).append(", ");
 			for(String stat : mob.phyStats().getStatCodes())
 				msg.append(stat).append(", ");
-			msg.append("XP, XPTNL, XPFNL, QUESTPOINTS, TRAINS, PRACTICES, ");
+			msg.append("XP, XPTNL, XPFNL, QUESTPOINTS, TRAINS, PRACTICES, HEALTH, RESISTS, ATTRIBUTES, ");
 			if(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.STAT))
 			{
 				msg.append(L("[MOB/PLAYER NAME], [NUMBER] [DAYS/WEEKS/MONTHS], "));
@@ -1252,37 +1252,60 @@ public class Stat  extends Skills
 			{
 				String thisStat=commands.get(i).toString().toUpperCase().trim();
 				boolean found=false;
-				if(thisStat.equalsIgnoreCase("XP"))
+				if(thisStat.equals("XP"))
 				{
 					str.append(M.getExperience()).append(" ");
 					found=true;
 				}
 				else
-				if(thisStat.equalsIgnoreCase("TRAINS"))
+				if(thisStat.equals("ATTRIBUTES"))
+				{
+					CharStats CT=mob.charStats();
+					for(final int stat : CharStats.CODES.BASECODES())
+						str.append(CMStrings.capitalizeAndLower(CharStats.CODES.NAME(stat))+"("+CT.getStat(stat)).append(") ");
+					found=true;
+				}
+				else
+				if(thisStat.equals("RESISTS"))
+				{
+					CharStats CT=mob.charStats();
+					for(final int stat : CharStats.CODES.SAVING_THROWS())
+						str.append(CMStrings.capitalizeAndLower(CharStats.CODES.NAME(stat))+"("+CT.getStat(stat)).append(") ");
+					found=true;
+				}
+				else
+				if(thisStat.equals("HEALTH"))
+				{
+					for(String stat : M.curState().getStatCodes())
+						str.append(CMStrings.capitalizeAndLower(stat)).append("(").append(M.curState().getStat(stat)).append(") ");
+					found=true;
+				}
+				else
+				if(thisStat.equals("TRAINS"))
 				{
 					str.append(M.getTrains()).append(" ");
 					found=true;
 				}
 				else
-				if(thisStat.equalsIgnoreCase("PRACTICES"))
+				if(thisStat.equals("PRACTICES"))
 				{
 					str.append(M.getPractices()).append(" ");
 					found=true;
 				}
 				else
-				if(thisStat.equalsIgnoreCase("QUESTPOINTS"))
+				if(thisStat.equals("QUESTPOINTS"))
 				{
 					str.append(M.getQuestPoint()).append(" ");
 					found=true;
 				}
 				else
-				if(thisStat.equalsIgnoreCase("XPTNL"))
+				if(thisStat.equals("XPTNL"))
 				{
 					str.append(M.getExpNeededLevel()).append(" ");
 					found=true;
 				}
 				else
-				if(thisStat.equalsIgnoreCase("XPFNL"))
+				if(thisStat.equals("XPFNL"))
 				{
 					str.append(M.getExpNextLevel()).append(" ");
 					found=true;

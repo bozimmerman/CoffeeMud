@@ -152,11 +152,13 @@ public class Score extends Affect
 				CT=mob.baseCharStats();
 			msg.append("^N^!");
 			for(final int i : CharStats.CODES.BASECODES())
+			{
 				msg.append(CMStrings.padRight("^<HELP^>" + CMStrings.capitalizeAndLower(CharStats.CODES.NAME(i))+"^</HELP^>",15)
 						+": "
 						+CMStrings.padRight(Integer.toString(CT.getStat(i)),2)
 						+"/"
 						+(CT.getMaxStat(i))+"\n\r");
+			}
 			msg.append("^?\n\r");
 		}
 		msg.append(L("You have ^H@x1^? ^<HELP^>hit points^</HELP^>, ^H",mob.curState().getHitPoints()+"/"+mob.maxState().getHitPoints()));
