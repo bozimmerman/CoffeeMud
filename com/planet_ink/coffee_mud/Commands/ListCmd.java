@@ -2015,11 +2015,18 @@ public class ListCmd extends StdCommand
 		return lines;
 	}
 
-	public StringBuilder listRaceCats(Session viewerS, Enumeration<Race> these, boolean shortList)
+	public StringBuilder listRaceCats(Session viewerS, Enumeration<Race> these, List<String> commands)
 	{
 		final StringBuilder lines=new StringBuilder("");
 		if(!these.hasMoreElements())
 			return lines;
+		boolean shortList=false;
+		for(String c : commands)
+		{
+			if(c.equalsIgnoreCase("SHORT"))
+				shortList=true;
+		}
+		WikiFlag wiki=this.getWikiFlagRemoved(commands);
 		int column=0;
 		final Vector<String> raceCats=new Vector<String>();
 		Race R=null;
@@ -2038,6 +2045,15 @@ public class ListCmd extends StdCommand
 				sortedC[i]=(String)sortedB[i];
 			lines.append(CMParms.toListString(sortedC));
 		} 
+		else
+		if((wiki==WikiFlag.WIKILIST)||(wiki==WikiFlag.WIKIHELP))
+		{
+			for (final Object element : sortedB)
+			{
+				final String raceCat=(String)element;
+				lines.append("*[["+raceCat+"(RacialCategory)|"+raceCat+"]]\n\r");
+			}
+		}
 		else
 		{
 			for (final Object element : sortedB)
@@ -4697,7 +4713,7 @@ public class ListCmd extends StdCommand
 		}
 		case RACECATS:
 			s.println("^HRacial Categories:^N");
-			s.wraplessPrintln(listRaceCats(s, CMClass.races(), CMParms.containsIgnoreCase(commands, "SHORT")).toString());
+			s.wraplessPrintln(listRaceCats(s, CMClass.races(), commands).toString());
 			break;
 		case LOG:
 			listLog(mob, commands);
