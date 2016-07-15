@@ -1,40 +1,15 @@
 <HTML>
 <HEAD>
-<LINK REL=StyleSheet HREF="term.css" TYPE="text/css">
+<LINK REL=StyleSheet HREF="/siplet/term.css" TYPE="text/css">
 	<link rel="coffeemud icon" href="../images/coffeemud.ico" >
-<SCRIPT LANGUAGE=JavaScript src="dropdown.js"></SCRIPT>
+<SCRIPT LANGUAGE=JavaScript src="/siplet/dropdown.js"></SCRIPT>
+<SCRIPT LANGUAGE=JavaScript src="/siplet/termsupport.js"></SCRIPT>
 </HEAD>
 <BODY BGCOLOR=BLACK ONCLICK="top.term.front(myname,mynum);">
 <script language=JavaScript>
-var mynum = top.term.currentWindow;
-var myname='dwindow'+top.term.currentWindow;
-var mydivname='ewindow'+top.term.currentWindow;
-var gauges=new Array();
-var theapplet = null;
-var lastReceived = new Date().getTime();
-
-var limit=50000;
-var pingDelay=1000;
-var halflimit=limit/2;
-var tenthlimit=limit/10;
-var errorState=false;
 var myHttp=new xmlhttpPost();
 var appletVersion=false;
 
-function connectChecker()
-{
-	if((theapplet!=null)&&(!errorState))
-	{
-		var ellapsed=new Date().getTime() - lastReceived;
-		if(ellapsed>30000)
-		{
-			setTimeout(displayData,pingDelay);
-		}
-	}
-	else
-		lastReceived = new Date().getTime()
-	setTimeout(connectChecker,10001);
-}
 setTimeout(connectChecker,10001);
 
 function xmlhttpPost()
@@ -121,11 +96,11 @@ function closeWindow()
 {
 	if(appletVersion === true)
 	{
-		theapplet.disconnectFromURL();
+		theSiplet.disconnectFromURL();
 	}
 	else
 	{
-		myHttp.exec('DISCONNECT&TOKEN='+theapplet,function(success,status,txt){},5);
+		myHttp.exec('DISCONNECT&TOKEN='+theSiplet,function(success,status,txt){},5);
 		myHttp=new xmlhttpPost();
 	}
 	top.document.location.href='/index.cmvp';
@@ -135,14 +110,14 @@ function reconnect()
 {
 	if(appletVersion === true)
 	{
-		theapplet.disconnectFromURL();
+		theSiplet.disconnectFromURL();
 		setTimeout('connect("@MudInfo?DOMAIN@",@MudInfo?PORT@);',500);
 	}
 	else
-	if(theapplet!=null)
+	if(theSiplet!=null)
 	{
-		myHttp.exec('DISCONNECT&TOKEN='+theapplet,function(success,status,txt){
-			theapplet=null;
+		myHttp.exec('DISCONNECT&TOKEN='+theSiplet,function(success,status,txt){
+			theSiplet=null;
 			goRed();
 			myHttp=new xmlhttpPost();
 			setTimeout('connect("@MudInfo?DOMAIN@",@MudInfo?PORT@);',500);
@@ -199,37 +174,12 @@ function addToWindow(s)
 	}
 }
 
-function goCaution()
-{
-	var thespan=top.term.document.getElementById(myname+'namer');
-	thespan.style.backgroundColor='yellow'
-	thespan=top.term.document.getElementById(myname+'bar');
-	thespan.style.backgroundColor='yellow'
-	top.bar.yellowColor(mynum);
-}
 
-function goGreen()
-{
-	var thespan=top.term.document.getElementById(myname+'namer');
-	thespan.style.backgroundColor='green'
-	thespan=top.term.document.getElementById(myname+'bar');
-	thespan.style.backgroundColor='green'
-	top.bar.greenColor(mynum);
-}
-
-function goRed()
-{
-	var thespan=top.term.document.getElementById(myname+'bar');
-	thespan.style.backgroundColor='red'
-	thespan=top.term.document.getElementById(myname+'namer');
-	thespan.style.backgroundColor='red'
-	top.bar.redColor(mynum);
-}
 
 function goOffline()
 {
-	var token=theapplet;
-	theapplet=null;
+	var token=theSiplet;
+	theSiplet=null;
 	goRed();
 	if(token!=null)
 	{
@@ -239,63 +189,22 @@ function goOffline()
 	//if(alert) alert('Lost connection.'); // red is enough
 }
 
-function BoxFocus()
-{
-	top.entry.boxFocus();
-}
 
-var sounders=[];
-var soundDates=[];
-var soundPriorities=[];
-function PlaySound(key,playerName,url,repeats,volume,priority)
-{
-	var theplayer = sounders[playerName];  
-	if(theplayer)
-	{
-		var now=new Date();
-		var ellapsed=Math.abs(now.getTime() - soundDates[playerName].getTime());
-		if((ellapsed < 1500) && (priority <= soundPriorities[playerName]))
-			return;
-		if(theplayer.stop)
-			theplayer.stop();
-		document.childNodes[0].removeChild(theplayer);
-	}
-	theplayer=document.createElement('embed');
-	if(!theplayer) return;
-	sounders[playerName]=theplayer;
-	soundDates[playerName]=new Date();
-	soundPriorities[playerName]=priority;
-	document.childNodes[0].appendChild(theplayer);
-	theplayer.setAttribute('src', url+key);
-	theplayer.setAttribute('type','audio/wav');
-	theplayer.setAttribute('hidden','true');
-	theplayer.setAttribute('volume', volume);
-	if(theplayer.play)
-		theplayer.play();
-}
-
-function StopSound(key,playerName)
-{
-	var theplayer=document.getElementById(playerName);
-	theplayer.src='';
-	theplayer.Play();
-	theplayer.innerHTML='';
-}
 
 function displayData()
 {
 	if(appletVersion===true)
 	{
-		if(!theapplet.isConnectedToURL())
+		if(!theSiplet.isConnectedToURL())
 			goOffline();
 		else
 		{
-			theapplet.readURLData();
-			var t=theapplet.getURLData();
+			theSiplet.readURLData();
+			var t=theSiplet.getURLData();
 			var s="";
 			s=s+t;
 			addToWindow(s);
-			t=theapplet.getJScriptCommands();
+			t=theSiplet.getJScriptCommands();
 			s="";
 			s=s+t;
 			if(s.length>0) eval(s);
@@ -305,38 +214,16 @@ function displayData()
 		return;
 	}
 	else
-	if(theapplet==null) 
+	if(theSiplet==null) 
 		return;
-	myHttp.exec('POLL&TOKEN='+theapplet,function(success,status,txt)
+	myHttp.exec('POLL&TOKEN='+theSiplet,function(success,status,txt)
 	{
 		if(!success)
 			goOffline();
 		else
 		{
-			var tk=theapplet+";";
-			var x=txt.indexOf(tk);
-			if(x<0)
-				goOffline();
-			else
-			{
-				var data=txt.substr(0,x);
-				var s="";
-				s=s+data;
-				addToWindow(s);
-				
-				txt=txt.substr(x+tk.length);
-				x=txt.indexOf(tk);
-				if(x>0)
-				{
-					data=txt.substr(0,x);
-					s="";
-					s=s+data;
-					if(s.length>0)
-						eval(s);
-				}
-				lastReceived = new Date().getTime();
-				setTimeout(displayData,pingDelay);
-			}
+			var tk=theSiplet+";";
+			handlePacket(txt,tk);
 		}
 	});
 }
@@ -345,117 +232,23 @@ function sendData(me)
 	if(appletVersion===true)
 	{
 		var s=''+me;
-		theapplet.sendData(s);
+		theSiplet.sendData(s);
 		return;
 	}
-	if(theapplet==null)
+	if(theSiplet==null)
 		return;
 	var s=encodeURIComponent(''+me);
-	myHttp.exec('SENDDATA&TOKEN='+theapplet+'&DATA='+s,function(success,status,txt){
+	myHttp.exec('SENDDATA&TOKEN='+theSiplet+'&DATA='+s,function(success,status,txt){
 		if(!success)
 			goOffline();
 		else
 		{
-			var tk=theapplet+";";
-			var x=txt.indexOf(tk);
-			if(x<0)
-				goOffline();
-			else
-			{
-				var data=txt.substr(0,x);
-				var s="";
-				s=s+data;
-				addToWindow(s);
-				
-				txt=txt.substr(x+tk.length);
-				x=txt.indexOf(tk);
-				if(x>0)
-				{
-					data=txt.substr(0,x);
-					s="";
-					s=s+data;
-					if(s.length>0)
-						eval(s);
-				}
-				lastReceived = new Date().getTime();
-				setTimeout(displayData,pingDelay);
-			}
+			var tk=theSiplet+";";
+			handlePacket(txt,tk);
 		}
 	});
 }
 
-function createGauge(entity,caption,color,value,max)
-{
-	var gaugedata=new Array(5);
-	gaugedata[0]=entity;
-	gaugedata[1]=caption;
-	gaugedata[2]=color;
-	gaugedata[3]=value;
-	gaugedata[4]=max;
-	gauges[gauges.length]=gaugedata;
-	modifyGauge(entity,value,max);
-}
-function removeGauge(entity)
-{
-	var oldgauges=gauges;
-	gauges=new Array();
-	var o=0;
-	var ndex=0;
-	for(o=0;o<oldgauges.length;o++)
-	{
-		var gaugedata=oldgauges[o];
-		if(gaugedata[0]!=entity)
-		{
-			gauges[ndex]=gaugedata;
-			ndex++;
-		}
-	}
-	modifyGauge(entity,-1,-1);
-}
-
-function modifyGauge(entity,value,max)
-{
-	var div=top.term.document.getElementById(myname+'extracontent');
-	if(gauges.length==0)
-		div.innerHTML='';
-	else
-	{
-		var gaugewid=100;
-		var s='<TABLE WIDTH=100% CELLPADDING=0 CELLSPACING=0 BORDER=1><TR>';
-		var i=0;
-		var cellwidth=100/gauges.length;
-		for(i=0;i<gauges.length;i++)
-		{
-			var gaugedata=gauges[i];
-			if(gaugedata[0]==entity)
-			{
-				gaugedata[3]=value;
-				gaugedata[4]=max;
-			}
-		}
-		for(i=0;i<gauges.length;i++)
-		{
-			var gaugedata=gauges[i];
-			s+='<TD WIDTH='+cellwidth+'%>';
-			s+='<FONT STYLE="color: '+gaugedata[2]+'" SIZE=-2>'+gaugedata[1]+'</FONT><BR>';
-			var gaugedata=gauges[i];
-			var fullwidth=100-gaugedata[3];
-			var lesswidth=gaugedata[3];
-			s+='<TABLE WIDTH=100% CELLPADDING=0 CELLSPACING=0 BORDER=0 HEIGHT=5><TR HEIGHT=5>';
-			s+='<TD STYLE="background-color: '+gaugedata[2]+'" WIDTH='+lesswidth+'%></TD>';
-			s+='<TD STYLE="background-color: black" WIDTH='+fullwidth+'%></TD>';
-			s+='</TR></TABLE>';
-			s+='</TD>';
-		}
-		s+='</TR></TABLE>'
-		div.innerHTML=s;
-	}
-}
-function NoJava()
-{
-	var thespan=document.getElementById("DISPLAYSPAN");
-	thespan.innerHTML='<P><BR><FONT COLOR=RED SIZE=4>It does not appear that your browser has the proper version of the Java Runtime Environment installed.  Please visit <a href=http://java.sun.com>java.sun.com</a> to download the JRE.  Then restart your browser and try this page again.  If problems persist, make sure your browser has the <I>Allow Applet Installation</I> and <I>Allow Scripting</I> features enabled.</FONT><P>';
-}
 
 function connect(url,port,tries)
 {
@@ -464,15 +257,15 @@ function connect(url,port,tries)
 	if(appletVersion === true)
 	{
 		window.onerror=new Function('NoJava();');
-		var s=theapplet.info();
+		var s=theSiplet.info();
 		window.onerror=null;
 		var thespan=top.term.document.getElementById(myname+'namer');
 		thespan.innerHTML=s
 		gauges=new Array(0);
-		var connectWorked = theapplet.connectToURL(url,port); 
+		var connectWorked = theSiplet.connectToURL(url,port); 
 		if(!connectWorked)
 		{
-			connectWorked = theapplet.connectToURL(url,@WebServerPort?CURRENT@); 
+			connectWorked = theSiplet.connectToURL(url,@WebServerPort?CURRENT@); 
 			if(connectWorked) sendData('MUD\n\n\r\r');
 		}
 		if(!connectWorked)
@@ -496,10 +289,10 @@ function connect(url,port,tries)
 				connectWorked=false;
 			else
 			{
-				theapplet=txt.substr(0,x);
-				top.term.allapplets[top.term.currentWindow] = theapplet;
+				theSiplet=txt.substr(0,x);
+				top.term.allapplets[top.term.currentWindow] = theSiplet;
 				txt=txt.substr(x+1);
-				var tk=theapplet+";";
+				var tk=theSiplet+";";
 				var x=txt.indexOf(tk);
 				if(x<0)
 					connectWorked=false;
@@ -523,20 +316,7 @@ function connect(url,port,tries)
 		});
 	}
 }
-function addToPrompt(x,att)
-{
-	top.entry.document.ENTER.TEXT.value=x;
-	if(!att)
-		top.entry.sendText(x);
-	else
-		top.entry.document.ENTER.TEXT.value+=" ";
-}
-function goDefault(x)
-{
-	top.term.front('dwindow'+x,x);
-}
 
-top.term.allwindows[top.term.currentWindow]=this;
 </SCRIPT>
 <BR>
 <DIV ID=DISPLAYSPAN NAME=DISPLAYSPAN>
@@ -549,8 +329,8 @@ top.term.allwindows[top.term.currentWindow]=this;
 	if(appletVersion===true)
 	{
 		document.write('<applet code="com.planet_ink.siplet.applet.Siplet" archive="/siplet/siplet.jar" codebase="siplet.jar" width="0" height="0" name="Siplet" id="Siplet" mayscript="TRUE"> </applet><BR>');
-		theapplet=document.getElementById("Siplet").create();
-		top.term.allapplets[top.term.currentWindow] = theapplet;
+		theSiplet=document.getElementById("Siplet").create();
+		top.term.allapplets[top.term.currentWindow] = theSiplet;
 	}
 	setTimeout('connect("@MudInfo?DOMAIN@",@MudInfo?PORT@);',500);
 //-->
