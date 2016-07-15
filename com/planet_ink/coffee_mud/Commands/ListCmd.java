@@ -1871,8 +1871,15 @@ public class ListCmd extends StdCommand
 		return lines;
 	}
 
-	public StringBuilder listCharClasses(Session viewerS, Enumeration<CharClass> these, boolean shortList)
+	public StringBuilder listCharClasses(Session viewerS, Enumeration<CharClass> these, List<String> commands)
 	{
+		boolean shortList=false;
+		WikiFlag wiki=this.getWikiFlagRemoved(commands);
+		for(String c : commands)
+		{
+			if(c.equalsIgnoreCase("SHORT"))
+				shortList=true;
+		}
 		final StringBuilder lines=new StringBuilder("");
 		if(!these.hasMoreElements())
 			return lines;
@@ -4464,7 +4471,7 @@ public class ListCmd extends StdCommand
 			break;
 		case CLASSES:
 			s.println("^HCharacter Class IDs:^N");
-			s.wraplessPrintln(listCharClasses(s, CMClass.charClasses(), rest.equalsIgnoreCase("SHORT")).toString());
+			s.wraplessPrintln(listCharClasses(s, CMClass.charClasses(), commands).toString());
 			break;
 		case STAFF:
 			s.wraplessPrintln(listSubOps(mob.session()).toString());

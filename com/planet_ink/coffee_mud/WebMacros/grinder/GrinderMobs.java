@@ -949,7 +949,7 @@ public class GrinderMobs
 				newMobCode=RoomData.getMOBCode(R,M);
 			}
 			final String shopItem=httpReq.getUrlParameter("SHOPITEM");
-			if((shopItem!=null)&&(mobCode!=null)&&(shopItem.equalsIgnoreCase(mobCode)))
+			if((shopItem!=null)&&(shopItem.equalsIgnoreCase(mobCode))&&(newMobCode!=null))
 				httpReq.addFakeUrlParameter("SHOPITEM", newMobCode);
 			httpReq.addFakeUrlParameter("MOB",newMobCode);
 			if(!copyMOB.sameAs(M))
