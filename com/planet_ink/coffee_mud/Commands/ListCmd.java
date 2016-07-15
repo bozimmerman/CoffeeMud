@@ -14,6 +14,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.AbilityMapping;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.AbilityAward;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Achievement;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.AmountAward;
@@ -81,7 +82,7 @@ public class ListCmd extends StdCommand
 			if(s.equalsIgnoreCase("wikihelp"))
 			{
 				commands.remove(s);
-				return WikiFlag.WIKILIST;
+				return WikiFlag.WIKIHELP;
 			}
 		}
 		return WikiFlag.NO;
@@ -1827,21 +1828,25 @@ public class ListCmd extends StdCommand
 						}
 					}
 					String qualClassesStr="";
-					for(final Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
+					if(CMProps.isTheme(R.availabilityCode()) && ((R.availabilityCode()&Area.THEME_SKILLONLYMASK)==0))
 					{
-						final CharClass C=c.nextElement();
-						if(((CMProps.isTheme(C.availabilityCode())))
-							&&(CMStrings.containsIgnoreCase(C.getRequiredRaceList(),"All")
-								||CMStrings.containsIgnoreCase(C.getRequiredRaceList(),R.ID())
-								||CMStrings.containsIgnoreCase(C.getRequiredRaceList(),R.name())
-								||CMStrings.containsIgnoreCase(C.getRequiredRaceList(),R.racialCategory()))
-							&&(!CMStrings.containsIgnoreCase(C.getRequiredRaceList(),"-"+R.ID()))
-							&&(!CMStrings.containsIgnoreCase(C.getRequiredRaceList(),"-"+R.name()))
-							&&(!CMStrings.containsIgnoreCase(C.getRequiredRaceList(),"-"+R.racialCategory())))
+						for(final Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
 						{
-							qualClassesStr+=((qualClassesStr.length()>0)?", ":"")+C.name();
+							final CharClass C=c.nextElement();
+							if(((CMProps.isTheme(C.availabilityCode())))
+							&&(C.isAllowedRace(R)))
+							{
+								qualClassesStr+="[["+C.name()+"("+C.baseClass()+")|"+C.name()+"]] ";
+							}
 						}
 					}
+					int maxAge=R.getAgingChart()[Race.AGE_ANCIENT];
+					String lifeExpStr;
+					if(maxAge>Integer.MAX_VALUE/2)
+						lifeExpStr=L("Forever");
+					else
+						lifeExpStr=L("@x1 years",""+maxAge);
+						
 					lines.append("{{RaceTemplate"
 							+ "|Name="+R.name()
 							+ "|Description="+help
@@ -1849,7 +1854,7 @@ public class ListCmd extends StdCommand
 							+ "|BonusAbilities="+ableStr
 							+ "|BonusLanguages="+R.getLanguagesDesc()
 							+ "|Immunities="+immunoStr
-							+ "|LifeExpectancy="+L("@x1 years",""+R.getAgingChart()[Race.AGE_ANCIENT])
+							+ "|LifeExpectancy="+lifeExpStr
 							+ "|Startingequipment="+eqStr
 							+ "|Qualifyingclasses="+qualClassesStr
 							+ "}}\n\r");
@@ -1895,15 +1900,116 @@ public class ListCmd extends StdCommand
 		else
 		for(final Enumeration<CharClass> e=these;e.hasMoreElements();)
 		{
-			final CharClass thisThang=e.nextElement();
-			if(++column>2)
+			final CharClass C=e.nextElement();
+			if(wiki==WikiFlag.WIKILIST)
 			{
-				lines.append("\n\r");
-				column=1;
+				lines.append("[["+C.name()+"("+C.baseClass()+")|"+C.name()+"]]\n\r");
 			}
-			lines.append(CMStrings.padRight(thisThang.ID()
-										+(thisThang.isGeneric()?"*":"")
-										+" ("+thisThang.baseClass()+")",COL_LEN));
+			else
+			if(wiki==WikiFlag.WIKIHELP)
+			{
+				final Set<Integer> types=new STreeSet<Integer>(new Integer[]{
+					Integer.valueOf(Ability.ACODE_CHANT),
+					Integer.valueOf(Ability.ACODE_COMMON_SKILL),
+					Integer.valueOf(Ability.ACODE_PRAYER),
+					Integer.valueOf(Ability.ACODE_SKILL),
+					Integer.valueOf(Ability.ACODE_SONG),
+					Integer.valueOf(Ability.ACODE_THIEF_SKILL),
+					Integer.valueOf(Ability.ACODE_TECH),
+					Integer.valueOf(Ability.ACODE_SUPERPOWER)
+				});
+				StringBuilder help=CMLib.help().getHelpText(C.ID(),null,false,true);
+				if(help==null)
+					help=CMLib.help().getHelpText(C.name(),null,false,true);
+				if((help!=null)&&(help.toString().startsWith("<CHARCLASS>")))
+					help=new StringBuilder(help.toString().substring(11));
+				else
+					help=new StringBuilder("");
+				final List<Item> items=C.outfit(null);
+				StringBuilder outfit=new StringBuilder("");
+				if(items !=null)
+				{
+					for(final Item I : items)
+					{
+						if(I!=null)
+							outfit.append(((outfit.length()>0)?", ":"")+I.name());
+					}
+				}
+				StringBuilder raceStr=new StringBuilder("");
+				for(Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
+				{
+					final Race R=r.nextElement();
+					if((CMProps.isTheme(R.availabilityCode()))
+					&&(((R.availabilityCode()&Area.THEME_SKILLONLYMASK)==0))
+					&&(C.isAllowedRace(R)))
+					{
+						raceStr.append("[["+R.name()+"|"+R.name()+"]] ");
+					}
+				}
+				StringBuilder langStr=new StringBuilder("");
+				for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+				{
+					final Ability A=a.nextElement();
+					if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE)
+					&&(CMLib.ableMapper().getQualifyingLevel(C.ID(),true,A.ID())>=0)
+					&&(CMLib.ableMapper().getSecretSkill(C.ID(),false,A.ID())))
+							langStr.append("[["+A.ID()+"|"+A.name()+"]] ");
+				}
+				lines.append("{{ClassTemplate"
+						+ "|Name="+C.name()
+						+ "|Description="+help.toString()
+						+ "|PrimeStat="+C.getPrimeStatDesc()
+						+ "|Qualifications="+C.getStatQualDesc()
+						+ "|Practices="+C.getPracticeDesc()
+						+ "|Trains="+C.getTrainDesc()
+						+ "|Hitpoints="+C.getHitPointDesc()
+						+ "|Mana="+C.getManaDesc()
+						+ "|Movement="+C.getMovementDesc()
+						+ "|Attack="+C.getAttackDesc()
+						+ "|Damage="+C.getDamageDesc()
+						+ "|MaxStat="+C.getMaxStatDesc()
+						+ "|Bonuses="+C.getOtherBonusDesc()
+						+ "|Weapons="+C.getWeaponLimitDesc()
+						+ "|Armor="+C.getArmorLimitDesc()
+						+ "|Limitations="+C.getOtherLimitsDesc()
+						+ "|StartingEq="+outfit.toString()
+						+ "|Races="+raceStr.toString()
+						+ "|Languages="+langStr.toString());
+				for(int l=1;l<=CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL);l++)
+				{
+					StringBuilder levelList=new StringBuilder("");
+					for (final Enumeration<AbilityMapper.AbilityMapping> a = CMLib.ableMapper().getClassAbles(C.ID(),true); a.hasMoreElements(); )
+					{
+						final AbilityMapper.AbilityMapping cimable=a.nextElement();
+						if((cimable.qualLevel() ==l)&&(!cimable.isSecret()))
+						{
+							final Ability A=CMClass.getAbility(cimable.abilityID());
+							if((A!=null)
+							&&(types.contains(Integer.valueOf(A.classificationCode()&Ability.ALL_ACODES))))
+							{
+								if(cimable.autoGain())
+									levelList.append("[["+A.ID()+"|"+A.name()+"]] ");
+								else
+									levelList.append("([["+A.ID()+"|"+A.name()+"]]) ");
+							}
+						}
+					}
+					if(levelList.length()>0)
+						lines.append("|level"+l+"="+levelList.toString());
+				}
+				lines.append("}}");
+			}
+			else
+			{
+				if(++column>2)
+				{
+					lines.append("\n\r");
+					column=1;
+				}
+				lines.append(CMStrings.padRight(C.ID()
+							+(C.isGeneric()?"*":"")
+							+" ("+C.baseClass()+")",COL_LEN));
+			}
 		}
 		lines.append("\n\r");
 		return lines;
@@ -4000,13 +4106,33 @@ public class ListCmd extends StdCommand
 				final String targets=CMLib.help().getAbilityTargetDesc(A);
 				final String range=CMLib.help().getAbilityRangeDesc(A);
 				StringBuilder help=CMLib.help().getHelpText(A.ID(),null,false,true);
+				String usage="";
+				String example="";
+				String helpStr="";
 				if(help==null)
 					help=CMLib.help().getHelpText(A.name(),null,false,true);
 				if((help!=null)&&(help.toString().startsWith("<ABILITY>")))
-					help=new StringBuilder(help.toString().substring(6));
-				else
-					help=new StringBuilder("");
-				//TODO: finish
+				{
+					helpStr=help.toString().substring(9);
+					while(helpStr.startsWith("Usage")||helpStr.startsWith("  "))
+					{
+						int end=helpStr.indexOf("\n");
+						int start=helpStr.indexOf(":");
+						if((end<0)||(start<0)||(start>end))
+							break;
+						usage += ((usage.length()>0) ? "\n\r" : "" ) + helpStr.substring(start+1,end).trim();
+						helpStr=helpStr.substring(end+1).trim();
+					}
+					while(helpStr.startsWith("Example")||helpStr.startsWith("  "))
+					{
+						int end=helpStr.indexOf("\n");
+						int start=helpStr.indexOf(":");
+						if((end<0)||(start<0)||(start>end))
+							break;
+						example += ((example.length()>0) ? "\n\r" : "" ) + helpStr.substring(start+1,end).trim();
+						helpStr=helpStr.substring(end+1).trim();
+					}
+				}
 				str.append("{{SkillTemplate"
 						+ "|Name="+A.name()
 						+ "|Domain=[["+domainID+"(Domain)|"+domainName+"]]"
@@ -4017,9 +4143,12 @@ public class ListCmd extends StdCommand
 						+ "|Targets="+targets
 						+ "|Range="+range
 						+ "|Commands="+CMParms.toListString(A.triggerStrings())
-						+ "|Description="+help
-						+ "}}");
+						+ "|Usage="+CMStrings.replaceAllofAny(usage,"[]{}<>|".toCharArray(),"\"\"()()!".toCharArray())
+						+ "|Examples="+example
+						+ "|Description="+CMStrings.replaceAllofAny(helpStr,"[]{}<>|".toCharArray(),"()()()!".toCharArray())
+						+ "}}\n\r");
 			}
+			s.wraplessPrintln(str.toString());
 		}
 		else
 		{
@@ -4261,7 +4390,7 @@ public class ListCmd extends StdCommand
 			{
 				str.append("{{AreaTemplate"
 						+ "|Name="+A.name()
-						+ "|Description=Descriptionstring"
+						+ "|Description="+A.description()
 						+ "|Author="+A.getAuthorID()
 						+ "|Rooms="+A.getAreaIStats()[Area.Stats.VISITABLE_ROOMS.ordinal()]
 						+ "|Population="+A.getAreaIStats()[Area.Stats.POPULATION.ordinal()]

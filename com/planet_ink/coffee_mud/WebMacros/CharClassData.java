@@ -1174,10 +1174,12 @@ public class CharClassData extends StdWebMacro
 				{
 					final List<Item> items=C.outfit(null);
 					if(items !=null)
-					for(final Item I : items)
 					{
-						if(I!=null)
-							str.append(I.name()+", ");
+						for(final Item I : items)
+						{
+							if(I!=null)
+								str.append(I.name()+", ");
+						}
 					}
 				}
 				if(parms.containsKey("BALANCE"))

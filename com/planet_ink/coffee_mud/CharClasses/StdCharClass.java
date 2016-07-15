@@ -924,6 +924,18 @@ public class StdCharClass implements CharClass
 			}
 		}
 	}
+	
+	@Override
+	public boolean isAllowedRace(Race R)
+	{
+		return (CMStrings.containsIgnoreCase(getRequiredRaceList(),"All")
+				||CMStrings.containsIgnoreCase(getRequiredRaceList(),R.ID())
+				||CMStrings.containsIgnoreCase(getRequiredRaceList(),R.name())
+				||CMStrings.containsIgnoreCase(getRequiredRaceList(),R.racialCategory()))
+			&&(!CMStrings.containsIgnoreCase(getRequiredRaceList(),"-"+R.ID()))
+			&&(!CMStrings.containsIgnoreCase(getRequiredRaceList(),"-"+R.name()))
+			&&(!CMStrings.containsIgnoreCase(getRequiredRaceList(),"-"+R.racialCategory()));
+	}
 
 	@Override
 	public CharClass makeGenCharClass()

@@ -57,13 +57,7 @@ public class RaceClassNext extends StdWebMacro
 		{
 			final CharClass C=c.nextElement();
 			if(((CMProps.isTheme(C.availabilityCode()))||(parms.containsKey("ALL")))
-				&&(CMStrings.containsIgnoreCase(C.getRequiredRaceList(),"All")
-					||CMStrings.containsIgnoreCase(C.getRequiredRaceList(),R.ID())
-					||CMStrings.containsIgnoreCase(C.getRequiredRaceList(),R.name())
-					||CMStrings.containsIgnoreCase(C.getRequiredRaceList(),R.racialCategory()))
-				&&(!CMStrings.containsIgnoreCase(C.getRequiredRaceList(),"-"+R.ID()))
-				&&(!CMStrings.containsIgnoreCase(C.getRequiredRaceList(),"-"+R.name()))
-				&&(!CMStrings.containsIgnoreCase(C.getRequiredRaceList(),"-"+R.racialCategory())))
+			&&(C.isAllowedRace(R)))
 			{
 				if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!C.ID().equals(lastID))))
 				{

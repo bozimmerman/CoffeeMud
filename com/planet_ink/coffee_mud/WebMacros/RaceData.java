@@ -1209,13 +1209,7 @@ public class RaceData extends StdWebMacro
 						final CharClass C=(CharClass)c.nextElement();
 						if((C!=null)
 						&&(CMProps.isTheme(C.availabilityCode()))
-						&&(CMStrings.containsIgnoreCase(C.getRequiredRaceList(),"All")
-							||CMStrings.containsIgnoreCase(C.getRequiredRaceList(),R.ID())
-							||CMStrings.containsIgnoreCase(C.getRequiredRaceList(),R.name())
-							||CMStrings.containsIgnoreCase(C.getRequiredRaceList(),R.racialCategory()))
-						&&(!CMStrings.containsIgnoreCase(C.getRequiredRaceList(),"-"+R.ID()))
-						&&(!CMStrings.containsIgnoreCase(C.getRequiredRaceList(),"-"+R.name()))
-						&&(!CMStrings.containsIgnoreCase(C.getRequiredRaceList(),"-"+R.racialCategory())))
+						&&(C.isAllowedRace(R)))
 							str.append(C.name()+", ");
 					}
 				}

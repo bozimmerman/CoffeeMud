@@ -562,6 +562,33 @@ public class CMStrings
 	}
 
 	/**
+	 * Rebuilds the given string by replacing any instances of any of the characters
+	 * in the given array with the given character.  The search is case-sensitive.
+	 * @param str the string to rebuild without those characters
+	 * @param theseChars the characters to remove from the string
+	 * @param with the character to replace all the array characters with.
+	 * @return the rebuilt string, with all those characters replaced
+	 */
+	public final static String replaceAllofAny(final String str, final char[] theseChars, final char[] withThese)
+	{
+		if((str==null)
+		||(theseChars==null)
+		||(str.length()==0)
+		||(!containsAny(str,theseChars)))
+			return str;
+		final char[] newChars = str.toCharArray();
+		for(int i=str.length()-1;i>=0;i--)
+		{
+			int x=indexOf(theseChars,str.charAt(i));
+			if((x>=0)&&(x<withThese.length))
+			{
+				newChars[i]=withThese[x];
+			}
+		}
+		return new String(newChars);
+	}
+
+	/**
 	 * Rebuilds the given string by deleting any instances of any of the characters
 	 * in the given array.  The search is case-sensitive.
 	 * @param str the string to rebuild without those characters
@@ -1215,6 +1242,25 @@ public class CMStrings
 		return false;
 	}
 
+
+	/**
+	 * Checks whether the given character array contains the given character and
+	 * if so, returns the index in the array of the character
+	 * This method is case-sensitive!
+	 * @param anycs the character array to look in
+	 * @param c the character to look for
+	 * @return the index of the character in the array, or -1 
+	 */
+	public final static int indexOf(final char[] anycs, final char c)
+	{
+		for(int i=0;i<anycs.length;i++)
+		{
+			if(anycs[i]==c)
+				return i;
+		}
+		return -1;
+	}
+	
 	/**
 	 * Checks whether the given string contains any of the given characters.
 	 * This method is case sensitive!
