@@ -78,12 +78,15 @@ public class Prop_ImproveGather extends Property
 		improves=skills.toArray(new String[skills.size()]);
 	}
 
+	
 	@Override
-	public void executeMsg(final Environmental myHost, final CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if((msg.tool() instanceof Ability)
+		if(!super.okMessage(myHost, msg))
+			return false;
+		if((msg.sourceMinor()==CMMsg.TYP_ITEMSGENERATED)
+		&&(msg.tool() instanceof Ability)
 		&&(CMath.bset(((Ability)msg.tool()).classificationCode(),Ability.DOMAIN_GATHERINGSKILL)
-		&&(improvement > ((Ability)msg.tool()).abilityCode())
 		&&(improvement > 1)
 		&&(msg.source().location()!=null)
 		&&(msg.source()==affected)||(msg.source().location()==affected)||(msg.source().location().getArea()==affected)
@@ -92,8 +95,8 @@ public class Prop_ImproveGather extends Property
 		&&(CMParms.contains(improves, "ALL")||CMParms.contains(improves, msg.tool().ID().toUpperCase()))
 		&&((mask==null)||(CMLib.masking().maskCheck(mask, msg.source(), true))))
 		{
-			((Ability)msg.tool()).setAbilityCode(((Ability)msg.tool()).abilityCode() + improvement - 1);
+			msg.setValue(msg.value() + (msg.value()*(improvement - 1)));
 		}
-		super.executeMsg(myHost, msg);
+		return true;
 	}
 }

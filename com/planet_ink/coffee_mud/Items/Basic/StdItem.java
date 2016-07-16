@@ -1373,6 +1373,8 @@ public class StdItem implements Item
 		case CMMsg.TYP_SELL:
 		case CMMsg.TYP_VALUE:
 		case CMMsg.TYP_VIEW:
+		case CMMsg.TYP_ITEMGENERATED:
+		case CMMsg.TYP_ITEMSGENERATED:
 			return true;
 		case CMMsg.TYP_OPEN:
 		case CMMsg.TYP_CLOSE:

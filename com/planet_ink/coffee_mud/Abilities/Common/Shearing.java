@@ -126,24 +126,30 @@ public class Shearing extends CommonSkill
 			if(affected instanceof MOB)
 			{
 				final MOB mob=(MOB)affected;
-				if((sheep!=null)&&(!aborted))
+				if((sheep!=null)&&(!aborted)&&(mob.location()!=null))
 				{
 					if((failed)||(!mob.location().isInhabitant(sheep)))
 						commonTell(mob,L("You messed up your shearing completely."));
 					else
 					{
-						mob.location().show(mob,null,sheep,getActivityMessageType(),L("<S-NAME> manage(s) to shear <O-NAME>."));
 						spreadImmunity(sheep);
 						final int yield=(baseYield()+abilityCode())<=0?1:(baseYield()+abilityCode());
-						for(int i=0;i<yield;i++)
+						final CMMsg msg=CMClass.getMsg(mob,sheep,this,getCompletedActivityMessageType(),null);
+						msg.setValue(yield);
+						if(mob.location().okMessage(mob, msg))
 						{
-							final Vector<RawMaterial> V=getMyWool(sheep);
-							for(int v=0;v<V.size();v++)
+							msg.modify(L("<S-NAME> manage(s) to shear <T-NAME>."));
+							mob.location().send(mob, msg);
+							for(int i=0;i<msg.value();i++)
 							{
-								RawMaterial I=V.elementAt(v);
-								I=(RawMaterial)I.copyOf();
-								if(!dropAWinner(mob,I))
-									break;
+								final Vector<RawMaterial> V=getMyWool(sheep);
+								for(int v=0;v<V.size();v++)
+								{
+									RawMaterial I=V.elementAt(v);
+									I=(RawMaterial)I.copyOf();
+									if(!dropAWinner(mob,I))
+										break;
+								}
 							}
 						}
 					}

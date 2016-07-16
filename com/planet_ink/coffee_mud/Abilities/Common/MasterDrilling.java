@@ -35,16 +35,37 @@ import java.util.*;
 
 public class MasterDrilling extends Drilling
 {
-	@Override public String ID() { return "MasterDrilling"; }
-	private final static String localizedName = CMLib.lang().L("Master Drilling");
-	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =I(new String[] {"MDRILL","MDRILLING","MASTERDRILL","MASTERDRILLING"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override
+	public String ID()
+	{
+		return "MasterDrilling";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Master Drilling");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "MDRILL", "MDRILLING", "MASTERDRILL", "MASTERDRILLING" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
 
 	@Override
 	protected int getDuration(MOB mob, int level)
 	{
-		return getDuration(90,mob,level,25);
+		return getDuration(90, mob, level, 25);
 	}
-	@Override protected int baseYield() { return 3; }
+
+	@Override
+	protected int baseYield()
+	{
+		return 3;
+	}
 }

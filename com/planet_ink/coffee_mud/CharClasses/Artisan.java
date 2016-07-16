@@ -246,6 +246,7 @@ public class Artisan extends StdCharClass
 	{
 		if((msg.source() == myHost)
 		&&(msg.targetMinor() == CMMsg.TYP_ITEMGENERATED)
+		&&(msg.target() != null)
 		&&(msg.tool() instanceof Ability)
 		&&((((Ability)msg.tool()).classificationCode() & Ability.ALL_DOMAINS) == Ability.DOMAIN_CRAFTINGSKILL)
 		&&(msg.value() > 0))

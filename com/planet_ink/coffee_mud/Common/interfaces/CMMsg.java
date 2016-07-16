@@ -644,6 +644,21 @@ public interface CMMsg extends CMCommon
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceMessage()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#targetMessage()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#othersMessage()
+	 * @param allMessage the new source, target, and others message of this event
+	 * @return this
+	 */
+	public CMMsg modify(final String allMessage);
+
+	/**
+	 * Modifies one of more fields in this event. Sets target and tool to NULL.
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#source()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#target()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceCode()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#targetCode()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#othersCode()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceMessage()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#targetMessage()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#othersMessage()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#value()
 	 * @param source the new source of this event
 	 * @param newAllCode the new source, target, and others code of this event
@@ -1104,19 +1119,21 @@ public interface CMMsg extends CMCommon
 	/** MINOR_MASK minor action code type, denoting a collision*/
 	public static final int TYP_COLLISION=116;
 	/** MINOR_MASK minor action code type, denoting a general unknown action*/
-	public static final int TYP_AROMA=118;
+	public static final int TYP_AROMA=117;
 	/** MINOR_MASK minor action code type, denoting a loss in a duel*/
-	public static final int TYP_DUELLOSS=119;
+	public static final int TYP_DUELLOSS=118;
 	/** MINOR_MASK minor action code type, denoting a command that was mistargeted */
-	public static final int TYP_COMMANDFAIL=120;
+	public static final int TYP_COMMANDFAIL=119;
 	/** MINOR_MASK minor action code type, denoting a meta-message command */
-	public static final int TYP_COMMAND=121;
+	public static final int TYP_COMMAND=120;
 	/** MINOR_MASK minor action code type, denoting a completed item generation activty */
-	public static final int TYP_ITEMGENERATED=122;
+	public static final int TYP_ITEMGENERATED=121;
 	/** MINOR_MASK minor action code type, denoting a standard combat miss */
-	public static final int TYP_ATTACKMISS=123;
+	public static final int TYP_ATTACKMISS=122;
 	/** MINOR_MASK minor action code type, denoting a standard weather affect */
 	public static final int TYP_WEATHER=123;
+	/** MINOR_MASK minor action code type, denoting a completed item generation activty */
+	public static final int TYP_ITEMSGENERATED=124;
 
 	/** MINOR_MASK minor action code type, denoting a channel action -- 2000-2047 are channels*/
 	public static final int TYP_CHANNEL=2000; //(2000-2047 are channels)
@@ -1129,8 +1146,8 @@ public interface CMMsg extends CMCommon
 	/** Index string descriptions of all the MINOR_MASK action code TYP_s */
 	public static final String[] TYPE_DESCS={"NOTHING",
 		"AREAAFFECT", "PUSH", "PULL", "RECALL", "OPEN", "CLOSE", "PUT", "GET",
-		"UNLOCK", "LOCK", "WIELD", "GIVE", "BUY", "SELL", "DROP", "WEAR", "FILL",
-		"DELICATE_HANDS_ACT", "VALUE", "HOLD", "NOISYMOVEMENT", "QUIETMOVEMENT",
+		"UNLOCK", "LOCK", "WIELD", "GIVE", "BUY", "SELL", "DROP", "WEAR", 
+		"FILL",	"DELICATE_HANDS_ACT", "VALUE", "HOLD", "NOISYMOVEMENT", "QUIETMOVEMENT",
 		"WEAPONATTACK", "LOOK", "READ", "NOISE", "SPEAK", "CAST_SPELL","LIST",
 		"EAT", "ENTER", "FOLLOW", "LEAVE", "SLEEP", "SIT", "STAND", "FLEE",
 		"NOFOLLOW", "WRITE", "FIRE", "COLD", "WATER", "GAS", "MIND", "GENERAL",
@@ -1144,7 +1161,7 @@ public interface CMMsg extends CMCommon
 		"LIFE", "BID", "CLANEVENT", "UNLOAD", "DUELCHALLENGE", "LEGALWARRANT", "DIG",
 		"PREINVOKE","POSSESS","DISPOSSESS","POWERCURRENT","CONTEMPLATE","POUR","LOOKEXITS",
 		"LASER","SONIC","REPAIR","ENHANCE","INSTALL","COLLISION","AROMA","DUELLOSS",
-		"COMMANDFAIL","METACOMMAND", "ITEMGENERATED", "ATTACKMISS", "WEATHER"
+		"COMMANDFAIL","METACOMMAND", "ITEMGENERATED", "ATTACKMISS", "WEATHER","ITEMSGENERATED"
 	};
 
 	/** Index string descriptions of all the MAJOR_MASK code MAKS_s */

@@ -36,18 +36,50 @@ import java.util.*;
 
 public class Drilling extends GatheringSkill
 {
-	@Override public String ID() { return "Drilling"; }
-	private final static String localizedName = CMLib.lang().L("Drilling");
-	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =I(new String[] {"DRILL","DRILLING"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode(){return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_GATHERINGSKILL;}
-	@Override protected boolean allowedWhileMounted(){return false;}
-	@Override public String supportedResourceString(){return "LIQUID";}
+	@Override
+	public String ID()
+	{
+		return "Drilling";
+	}
 
-	protected Item found=null;
-	private Drink container=null;
-	protected String foundShortName="";
+	private final static String	localizedName	= CMLib.lang().L("Drilling");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "DRILL", "DRILLING" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_COMMON_SKILL | Ability.DOMAIN_GATHERINGSKILL;
+	}
+
+	@Override
+	protected boolean allowedWhileMounted()
+	{
+		return false;
+	}
+
+	@Override
+	public String supportedResourceString()
+	{
+		return "LIQUID";
+	}
+
+	protected Item		found			= null;
+	private Drink		container		= null;
+	protected String	foundShortName	= "";
+
 	public Drilling()
 	{
 		super();
@@ -59,7 +91,12 @@ public class Drilling extends GatheringSkill
 	{
 		return getDuration(35,mob,level,10);
 	}
-	@Override protected int baseYield() { return 1; }
+
+	@Override
+	protected int baseYield()
+	{
+		return 1;
+	}
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
@@ -101,41 +138,47 @@ public class Drilling extends GatheringSkill
 			if(affected instanceof MOB)
 			{
 				final MOB mob=(MOB)affected;
-				if((found!=null)&&(!aborted))
+				if((found!=null)&&(!aborted)&&(mob.location()!=null))
 				{
 					int amount=((found.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_CLOTH)?
 							   (CMLib.dice().roll(1,10,0)*(baseYield()+abilityCode())):
 							   (CMLib.dice().roll(1,3,0)*(baseYield()+abilityCode()));
-					String s="s";
-					if(amount==1)
-						s="";
 					if(amount>(container.liquidHeld()-container.liquidRemaining()))
 						amount=(container.liquidHeld()-container.liquidRemaining());
 					if(amount>((Container)container).capacity())
 						amount=((Container)container).capacity();
-					mob.location().show(mob,null,getActivityMessageType(),L("<S-NAME> manage(s) to drill out @x1 pound@x2 of @x3.",""+amount,s,foundShortName));
-					for(int i=0;i<amount;i++)
+					final CMMsg msg=CMClass.getMsg(mob,found,this,getCompletedActivityMessageType(),null);
+					msg.setValue(amount);
+					if(mob.location().okMessage(mob, msg))
 					{
-						final Item newFound=(Item)found.copyOf();
-						final Room R=mob.location();
-						if(R==null)
-							break;
-						if(!dropAWinner(mob,newFound))
+						String s="s";
+						if(msg.value()==1)
+							s="";
+						msg.modify(L("<S-NAME> manage(s) to drill out @x1 pound@x2 of @x3.",""+msg.value(),s,foundShortName));
+						mob.location().send(mob, msg);
+						for(int i=0;i<msg.value();i++)
 						{
-							break;
-						}
-						if((container!=null)
-						&&(container instanceof Container))
-						{
-							if(mob.isMine(container))
+							final Item newFound=(Item)found.copyOf();
+							final Room R=mob.location();
+							if(R==null)
+								break;
+							if(!dropAWinner(mob,newFound))
 							{
-								CMLib.commands().postGet(mob,null,newFound,true);
-								if(mob.isMine(newFound))
+								break;
+							}
+							if((container!=null)
+							&&(container instanceof Container))
+							{
+								if(mob.isMine(container))
+								{
+									CMLib.commands().postGet(mob,null,newFound,true);
+									if(mob.isMine(newFound))
+										newFound.setContainer((Container)container);
+								}
+								else
+								if(R.isContent((Item)container))
 									newFound.setContainer((Container)container);
 							}
-							else
-							if(R.isContent((Item)container))
-								newFound.setContainer((Container)container);
 						}
 					}
 				}

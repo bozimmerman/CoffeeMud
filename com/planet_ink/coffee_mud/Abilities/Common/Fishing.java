@@ -36,16 +36,43 @@ import java.util.*;
 
 public class Fishing extends GatheringSkill
 {
-	@Override public String ID() { return "Fishing"; }
-	private final static String localizedName = CMLib.lang().L("Fishing");
-	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =I(new String[] {"FISH"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode(){return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_GATHERINGSKILL;}
-	@Override public String supportedResourceString(){return "FLESH";}
+	@Override
+	public String ID()
+	{
+		return "Fishing";
+	}
 
-	protected Item found=null;
-	protected String foundShortName="";
+	private final static String	localizedName	= CMLib.lang().L("Fishing");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "FISH" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_COMMON_SKILL | Ability.DOMAIN_GATHERINGSKILL;
+	}
+
+	@Override
+	public String supportedResourceString()
+	{
+		return "FLESH";
+	}
+
+	protected Item		found			= null;
+	protected String	foundShortName	= "";
+
 	public Fishing()
 	{
 		super();
@@ -57,7 +84,12 @@ public class Fishing extends GatheringSkill
 	{
 		return getDuration(45,mob,level,15);
 	}
-	@Override protected int baseYield() { return 1; }
+
+	@Override
+	protected int baseYield()
+	{
+		return 1;
+	}
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
@@ -88,21 +120,27 @@ public class Fishing extends GatheringSkill
 			if(affected instanceof MOB)
 			{
 				final MOB mob=(MOB)affected;
-				if((found!=null)&&(!aborted)&&(!helping))
+				if((found!=null)&&(!aborted)&&(!helping)&&(mob.location()!=null))
 				{
 					final int amount=CMLib.dice().roll(1,3,0)*(baseYield()+abilityCode());
-					String s="s";
-					if(amount==1)
-						s="";
-					mob.location().show(mob,null,getActivityMessageType(),L("<S-NAME> manage(s) to catch @x1 pound@x2 of @x3.",""+amount,s,foundShortName));
-					for(int i=0;i<amount;i++)
+					final CMMsg msg=CMClass.getMsg(mob,found,this,getCompletedActivityMessageType(),null);
+					msg.setValue(amount);
+					if(mob.location().okMessage(mob, msg))
 					{
-						final Item newFound=(Item)found.copyOf();
-						if(!dropAWinner(mob,newFound))
-							break;
-						if((mob.riding()!=null)&&(mob.riding() instanceof Container))
-							newFound.setContainer((Container)mob.riding());
-						CMLib.commands().postGet(mob,null,newFound,true);
+						String s="s";
+						if(msg.value()==1)
+							s="";
+						msg.modify(L("<S-NAME> manage(s) to catch @x1 pound@x2 of @x3.",""+msg.value(),s,foundShortName));
+						mob.location().send(mob, msg);
+						for(int i=0;i<msg.value();i++)
+						{
+							final Item newFound=(Item)found.copyOf();
+							if(!dropAWinner(mob,newFound))
+								break;
+							if((mob.riding()!=null)&&(mob.riding() instanceof Container))
+								newFound.setContainer((Container)mob.riding());
+							CMLib.commands().postGet(mob,null,newFound,true);
+						}
 					}
 				}
 			}

@@ -144,11 +144,11 @@ public class Farming extends GatheringSkill
 		}
 		super.unInvoke();
 		if((canBeUninvoked)
-		   &&(aff!=null)
-		   &&(aff instanceof MOB)
-		   &&(aff!=room)
-		   &&(!isaborted)
-		   &&(room!=null))
+		&&(aff!=null)
+		&&(aff instanceof MOB)
+		&&(aff!=room)
+		&&(!isaborted)
+		&&(room!=null))
 		{
 			final Farming F=((Farming)copyOf());
 			F.unInvoked=false;
@@ -165,8 +165,10 @@ public class Farming extends GatheringSkill
 		if(R.resourceChoices()==null)
 			return false;
 		for(int i=0;i<R.resourceChoices().size();i++)
+		{
 			if(R.resourceChoices().get(i).intValue()==code)
 				return true;
+		}
 		return false;
 	}
 

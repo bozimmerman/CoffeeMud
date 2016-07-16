@@ -36,17 +36,49 @@ import java.util.*;
 
 public class Digging extends GatheringSkill
 {
-	@Override public String ID() { return "Digging"; }
-	private final static String localizedName = CMLib.lang().L("Gem Digging");
-	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =I(new String[] {"GDIG","GDIGGING","GEMDIGGING"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode(){return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_GATHERINGSKILL;}
-	@Override protected boolean allowedWhileMounted(){return false;}
-	@Override public String supportedResourceString(){return "GLASS|PRECIOUS|SAND|STONE";}
+	@Override
+	public String ID()
+	{
+		return "Digging";
+	}
 
-	protected Item found=null;
-	protected String foundShortName="";
+	private final static String	localizedName	= CMLib.lang().L("Gem Digging");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "GDIG", "GDIGGING", "GEMDIGGING" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_COMMON_SKILL | Ability.DOMAIN_GATHERINGSKILL;
+	}
+
+	@Override
+	protected boolean allowedWhileMounted()
+	{
+		return false;
+	}
+
+	@Override
+	public String supportedResourceString()
+	{
+		return "GLASS|PRECIOUS|SAND|STONE";
+	}
+
+	protected Item		found			= null;
+	protected String	foundShortName	= "";
+
 	public Digging()
 	{
 		super();
@@ -58,7 +90,12 @@ public class Digging extends GatheringSkill
 	{
 		return getDuration(60,mob,level,15);
 	}
-	@Override protected int baseYield() { return 1; }
+
+	@Override
+	protected int baseYield()
+	{
+		return 1;
+	}
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
@@ -96,7 +133,7 @@ public class Digging extends GatheringSkill
 			if(affected instanceof MOB)
 			{
 				final MOB mob=(MOB)affected;
-				if((found!=null)&&(!aborted))
+				if((found!=null)&&(!aborted)&&(mob.location()!=null))
 				{
 					int amount=1;
 					if(CMLib.dice().rollPercentage()>90)
@@ -104,16 +141,22 @@ public class Digging extends GatheringSkill
 					if((found.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_PRECIOUS)
 						amount=CMLib.dice().roll(1,15,0);
 					amount=amount*(baseYield()+abilityCode());
-					String s="s";
-					if((amount==1)||(foundShortName.endsWith("s")))
-						s="";
-					mob.location().show(mob,null,getActivityMessageType(),L("<S-NAME> manage(s) to dig out @x1 @x2@x3.",""+amount,foundShortName,s));
-					for(int i=0;i<amount;i++)
+					final CMMsg msg=CMClass.getMsg(mob,found,this,getCompletedActivityMessageType(),null);
+					msg.setValue(amount);
+					if(mob.location().okMessage(mob, msg))
 					{
-						final Item newFound=(Item)found.copyOf();
-						if(!dropAWinner(mob,newFound))
+						String s="s";
+						if((msg.value()==1)||(foundShortName.endsWith("s")))
+							s="";
+						msg.modify(L("<S-NAME> manage(s) to dig out @x1 @x2@x3.",""+msg.value(),foundShortName,s));
+						mob.location().send(mob, msg);
+						for(int i=0;i<msg.value();i++)
 						{
-							break;
+							final Item newFound=(Item)found.copyOf();
+							if(!dropAWinner(mob,newFound))
+							{
+								break;
+							}
 						}
 					}
 				}

@@ -36,17 +36,49 @@ import java.util.*;
 
 public class Chopping extends GatheringSkill
 {
-	@Override public String ID() { return "Chopping"; }
-	private final static String localizedName = CMLib.lang().L("Wood Chopping");
-	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =I(new String[] {"CHOP","CHOPPING"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode(){return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_GATHERINGSKILL;}
-	@Override protected boolean allowedWhileMounted(){return false;}
-	@Override public String supportedResourceString(){return "WOODEN";}
+	@Override
+	public String ID()
+	{
+		return "Chopping";
+	}
 
-	protected Item found=null;
-	protected String foundShortName="";
+	private final static String	localizedName	= CMLib.lang().L("Wood Chopping");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "CHOP", "CHOPPING" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_COMMON_SKILL | Ability.DOMAIN_GATHERINGSKILL;
+	}
+
+	@Override
+	protected boolean allowedWhileMounted()
+	{
+		return false;
+	}
+
+	@Override
+	public String supportedResourceString()
+	{
+		return "WOODEN";
+	}
+
+	protected Item		found			= null;
+	protected String	foundShortName	= "";
+
 	public Chopping()
 	{
 		super();
@@ -58,7 +90,12 @@ public class Chopping extends GatheringSkill
 	{
 		return getDuration(40,mob,level,15);
 	}
-	@Override protected int baseYield() { return 1; }
+
+	@Override
+	protected int baseYield()
+	{
+		return 1;
+	}
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
@@ -100,19 +137,24 @@ public class Chopping extends GatheringSkill
 			if(affected instanceof MOB)
 			{
 				final MOB mob=(MOB)affected;
-				if((found!=null)&&(!aborted))
+				if((found!=null)&&(!aborted)&&(mob.location()!=null))
 				{
-					final int amount=CMLib.dice().roll(1,7,3)*(baseYield()+abilityCode());
-					String s="s";
-					if(amount==1)
-						s="";
-					mob.location().show(mob,null,getActivityMessageType(),L("<S-NAME> manage(s) to chop up @x1 pound@x2 of @x3.",""+amount,s,foundShortName));
-					for(int i=0;i<amount;i++)
+					final CMMsg msg=CMClass.getMsg(mob,found,this,getCompletedActivityMessageType(),null);
+					msg.setValue(CMLib.dice().roll(1,7,3)*(baseYield()+abilityCode()));
+					if(mob.location().okMessage(mob, msg))
 					{
-						final Item newFound=(Item)found.copyOf();
-						if(!dropAWinner(mob,newFound))
+						String s="s";
+						if(msg.value()==1)
+							s="";
+						msg.modify(L("<S-NAME> manage(s) to chop up @x1 pound@x2 of @x3.",""+msg.value(),s,foundShortName));
+						mob.location().send(mob, msg);
+						for(int i=0;i<msg.value();i++)
 						{
-							break;
+							final Item newFound=(Item)found.copyOf();
+							if(!dropAWinner(mob,newFound))
+							{
+								break;
+							}
 						}
 					}
 				}

@@ -34,27 +34,57 @@ import java.util.*;
 */
 public class DefaultMessage implements CMMsg
 {
-	@Override public String ID(){return "DefaultMessage";}
-	@Override public String name() { return ID();}
-	@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(final Exception e){return new DefaultMessage();}}
-	@Override public void initializeClass(){}
-	@Override public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	@Override
+	public String ID()
+	{
+		return "DefaultMessage";
+	}
 
-	protected int   		targetMajorMask=0;
-	protected int   		sourceMajorMask=0;
-	protected int   		othersMajorMask=0;
-	protected int   		targetMinorType=0;
-	protected int   		sourceMinorType=0;
-	protected int   		othersMinorType=0;
-	protected String		targetMsg=null;
-	protected String		othersMsg=null;
-	protected String		sourceMsg=null;
-	protected MOB   		myAgent=null;
-	protected Environmental myTarget=null;
-	protected Environmental myTool=null;
-	protected int   		value=0;
-	protected List<CMMsg>	trailMsgs=null;
-	protected List<Runnable>trailRunnables=null;
+	@Override
+	public String name()
+	{
+		return ID();
+	}
+
+	@Override
+	public CMObject newInstance()
+	{
+		try
+		{
+			return getClass().newInstance();
+		}
+		catch (final Exception e)
+		{
+			return new DefaultMessage();
+		}
+	}
+
+	@Override
+	public void initializeClass()
+	{
+	}
+
+	@Override
+	public int compareTo(CMObject o)
+	{
+		return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));
+	}
+
+	protected int				targetMajorMask	= 0;
+	protected int				sourceMajorMask	= 0;
+	protected int				othersMajorMask	= 0;
+	protected int				targetMinorType	= 0;
+	protected int				sourceMinorType	= 0;
+	protected int				othersMinorType	= 0;
+	protected String			targetMsg		= null;
+	protected String			othersMsg		= null;
+	protected String			sourceMsg		= null;
+	protected MOB				myAgent			= null;
+	protected Environmental		myTarget		= null;
+	protected Environmental		myTool			= null;
+	protected int				value			= 0;
+	protected List<CMMsg>		trailMsgs		= null;
+	protected List<Runnable>	trailRunnables	= null;
 
 	@Override
 	public CMObject copyOf()
@@ -105,6 +135,15 @@ public class DefaultMessage implements CMMsg
 		targetMinorType=newAllCode&CMMsg.MINOR_MASK;
 		sourceMinorType=targetMinorType;
 		othersMinorType=targetMinorType;
+		othersMsg=allMessage;
+		return this;
+	}
+
+	@Override
+	public CMMsg modify(final String allMessage)
+	{
+		sourceMsg=allMessage;
+		targetMsg=allMessage;
 		othersMsg=allMessage;
 		return this;
 	}

@@ -159,6 +159,14 @@ public class CommonSkill extends StdAbility
 		return canBeDoneSittingDown() ? CMMsg.MSG_HANDS | CMMsg.MASK_SOUND : CMMsg.MSG_NOISYMOVEMENT;
 	}
 
+	protected int getCompletedActivityMessageType()
+	{
+		int activityCode = CMMsg.MASK_HANDS | CMMsg.MASK_SOUND;
+		if(!canBeDoneSittingDown())
+			activityCode |= CMMsg.MASK_MOVE;
+		return activityCode | CMMsg.TYP_ITEMSGENERATED;
+	}
+
 	@Override
 	public int abilityCode()
 	{

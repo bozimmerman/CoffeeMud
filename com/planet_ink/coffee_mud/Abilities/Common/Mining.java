@@ -142,15 +142,21 @@ public class Mining extends GatheringSkill
 					&&(found.material()!=RawMaterial.RESOURCE_COAL))
 						amount=CMLib.dice().roll(1,25,0);
 					amount=amount*(baseYield()+abilityCode());
-					String s="s";
-					if(amount==1)
-						s="";
-					mob.location().show(mob,null,getActivityMessageType(),L("<S-NAME> manage(s) to mine @x1 pound@x2 of @x3.",""+amount,s,foundShortName));
-					for(int i=0;i<amount;i++)
+					final CMMsg msg=CMClass.getMsg(mob,found,this,getCompletedActivityMessageType(),null);
+					msg.setValue(amount);
+					if(mob.location().okMessage(mob, msg))
 					{
-						final Item newFound=(Item)found.copyOf();
-						if(!dropAWinner(mob,newFound))
-							break;
+						String s="s";
+						if(msg.value()==1)
+							s="";
+						msg.modify(L("<S-NAME> manage(s) to mine @x1 pound@x2 of @x3.",""+msg.value(),s,foundShortName));
+						mob.location().send(mob, msg);
+						for(int i=0;i<msg.value();i++)
+						{
+							final Item newFound=(Item)found.copyOf();
+							if(!dropAWinner(mob,newFound))
+								break;
+						}
 					}
 				}
 			}

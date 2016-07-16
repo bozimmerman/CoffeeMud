@@ -107,35 +107,42 @@ public class Butchering extends GatheringSkill
 					if(failed)
 						commonTell(mob,L("You messed up your butchering completely."));
 					else
+					if(mob.location()!=null)
 					{
-						mob.location().show(mob,null,body,getActivityMessageType(),L("<S-NAME> manage(s) to skin and chop up <O-NAME>."));
-						final List<RawMaterial> resources=body.charStats().getMyRace().myResources();
-						final Vector<Ability> diseases=new Vector<Ability>();
-						for(int i=0;i<body.numEffects();i++)
+						final CMMsg msg=CMClass.getMsg(mob,body,this,getCompletedActivityMessageType(),
+								L("<S-NAME> manage(s) to skin and chop up <T-NAME>."));
+						msg.setValue(baseYield()+abilityCode());
+						if(mob.location().okMessage(mob, msg))
 						{
-							final Ability A=body.fetchEffect(i);
-							if((A!=null)&&(A instanceof DiseaseAffect))
+							mob.location().send(mob, msg);
+							final List<RawMaterial> resources=body.charStats().getMyRace().myResources();
+							final Vector<Ability> diseases=new Vector<Ability>();
+							for(int i=0;i<body.numEffects();i++)
 							{
-								if((CMath.bset(((DiseaseAffect)A).spreadBitmap(),DiseaseAffect.SPREAD_CONSUMPTION))
-								||(CMath.bset(((DiseaseAffect)A).spreadBitmap(),DiseaseAffect.SPREAD_CONTACT)))
-									diseases.addElement(A);
-							}
-						}
-						for(int y=0;y<(baseYield()+abilityCode());y++)
-						{
-							for(int i=0;i<resources.size();i++)
-							{
-								final Item newFound=(Item)((Item)resources.get(i)).copyOf();
-								if((newFound instanceof Food)||(newFound instanceof Drink))
+								final Ability A=body.fetchEffect(i);
+								if((A!=null)&&(A instanceof DiseaseAffect))
 								{
-									for(int d=0;d<diseases.size();d++)
-										newFound.addNonUninvokableEffect((Ability)diseases.elementAt(d).copyOf());
+									if((CMath.bset(((DiseaseAffect)A).spreadBitmap(),DiseaseAffect.SPREAD_CONSUMPTION))
+									||(CMath.bset(((DiseaseAffect)A).spreadBitmap(),DiseaseAffect.SPREAD_CONTACT)))
+										diseases.addElement(A);
 								}
-								newFound.recoverPhyStats();
-								if(!dropAWinner(mob,newFound))
+							}
+							for(int y=0;y<msg.value();y++)
+							{
+								for(int i=0;i<resources.size();i++)
 								{
-									y=9999;
-									break;
+									final Item newFound=(Item)((Item)resources.get(i)).copyOf();
+									if((newFound instanceof Food)||(newFound instanceof Drink))
+									{
+										for(int d=0;d<diseases.size();d++)
+											newFound.addNonUninvokableEffect((Ability)diseases.elementAt(d).copyOf());
+									}
+									newFound.recoverPhyStats();
+									if(!dropAWinner(mob,newFound))
+									{
+										y=9999;
+										break;
+									}
 								}
 							}
 						}
