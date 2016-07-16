@@ -337,7 +337,7 @@ public class CommonSkill extends StdAbility
 	
 	protected boolean dropAWinner(MOB mob, Room R, Item buildingI)
 	{
-		if(R==null)
+		if((R==null)||(mob.location()==null))
 			commonTell(mob,L("You are NOWHERE?!"));
 		else
 		if(buildingI==null)

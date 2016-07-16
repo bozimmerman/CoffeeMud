@@ -105,7 +105,9 @@ public class Farming extends GatheringSkill
 			final MOB mob=invoker();
 			if(tickUp==6)
 			{
-				if(found==null)
+				if((found==null)
+				||(mob==null)
+				||(mob.location()==null))
 				{
 					commonTell(mob,L("Your @x1 crop has failed.\n\r",foundShortName));
 					unInvoke();
