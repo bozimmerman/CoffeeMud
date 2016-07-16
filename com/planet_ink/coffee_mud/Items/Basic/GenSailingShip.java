@@ -606,9 +606,14 @@ public class GenSailingShip extends StdBoardable
 						return false;
 					}
 					final Room R=CMLib.map().roomLocation(this);
-					if(R==null)
+					if((R==null)||(msg.source().location()==null))
 					{
 						msg.source().tell(L("You are nowhere, so you won`t be moving anywhere."));
+						return false;
+					}
+					if((msg.source().location().domainType()&Room.INDOORS)==Room.INDOORS)
+					{
+						msg.source().tell(L("You must be on deck to steer your ship."));
 						return false;
 					}
 					final String dirName = CMLib.directions().getDirectionName(dir);
@@ -663,9 +668,14 @@ public class GenSailingShip extends StdBoardable
 						courseDirections.clear();
 					}
 					final Room R=CMLib.map().roomLocation(this);
-					if(R==null)
+					if((R==null)||(msg.source().location()==null))
 					{
 						msg.source().tell(L("You are nowhere, so you won`t be moving anywhere."));
+						return false;
+					}
+					if((msg.source().location().domainType()&Room.INDOORS)==Room.INDOORS)
+					{
+						msg.source().tell(L("You must be on deck to sail your ship."));
 						return false;
 					}
 					int dir=CMLib.directions().getCompassDirectionCode(secondWord);
@@ -727,9 +737,14 @@ public class GenSailingShip extends StdBoardable
 						courseDirections.clear();
 					}
 					final Room R=CMLib.map().roomLocation(this);
-					if(R==null)
+					if((R==null)||(msg.source().location()==null))
 					{
 						msg.source().tell(L("You are nowhere, so you won`t be moving anywhere."));
+						return false;
+					}
+					if((msg.source().location().domainType()&Room.INDOORS)==Room.INDOORS)
+					{
+						msg.source().tell(L("You must be on deck to steer your ship."));
 						return false;
 					}
 					int dirIndex = 1;
