@@ -2148,6 +2148,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			return roomLocation(((Exit)E).lastRoomUsedFrom(null));
 		return null;
 	}
+
 	@Override
 	public Area getStartArea(Environmental E)
 	{

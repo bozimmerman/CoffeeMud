@@ -244,6 +244,33 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 				&& ((((Physical) E).basePhyStats().disposition() & PhyStats.IS_CATALOGED) == PhyStats.IS_CATALOGED);
 	}
 
+	private Room roomLocation(Environmental E)
+	{
+		if(E==null)
+			return null;
+		if((E instanceof Area)&&(!((Area)E).isProperlyEmpty()))
+			return ((Area)E).getRandomProperRoom();
+		else
+		if(E instanceof Room)
+			return (Room)E;
+		else
+		if(E instanceof MOB)
+			return ((MOB)E).location();
+		else
+		if((E instanceof Item)&&(((Item)E).owner() instanceof Room))
+			return (Room)((Item)E).owner();
+		else
+		if((E instanceof Item)&&(((Item)E).owner() instanceof MOB))
+		   return ((MOB)((Item)E).owner()).location();
+		else
+		if(E instanceof Ability)
+			return roomLocation(((Ability)E).affecting());
+		else
+		if(E instanceof Exit)
+			return roomLocation(((Exit)E).lastRoomUsedFrom(null));
+		return null;
+	}
+	
 	@Override
 	public boolean isWithSeenContents(Physical P)
 	{
@@ -858,7 +885,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	{
 		if(!isSwimming(P))
 			return false;
-		return isWateryRoom(CMLib.map().roomLocation(P));
+		return isWateryRoom(roomLocation(P));
 	}
 	
 	@Override
@@ -1987,12 +2014,28 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 				say.append(" (^Wbound^?)");
 			if(isFlying(seen)&&(!(seen instanceof Exit))&&(!pStats.isAmbiance("-FLYING")))
 				say.append(" (^pflying^?)");
-			if((isFalling(seen))&&(!pStats.isAmbiance("-FALLING"))
-			&&((!(seen instanceof MOB))
-				||(((MOB)seen).location()==null)
-				||((((MOB)seen).location().domainType()!=Room.DOMAIN_OUTDOORS_AIR)
-					&&(((MOB)seen).location().domainType()!=Room.DOMAIN_INDOORS_AIR))))
-				say.append(" (^pfalling^?)");
+			if((isFalling(seen))&&(!pStats.isAmbiance("-FALLING")))
+			{
+				final Room R=roomLocation(seen);
+				switch(R.domainType())
+				{
+				case Room.DOMAIN_INDOORS_AIR:
+				case Room.DOMAIN_OUTDOORS_AIR:
+					say.append(" (^pfalling^?)");
+					break;
+				case Room.DOMAIN_INDOORS_WATERSURFACE:
+				case Room.DOMAIN_OUTDOORS_WATERSURFACE:
+				case Room.DOMAIN_INDOORS_UNDERWATER:
+				case Room.DOMAIN_OUTDOORS_UNDERWATER:
+				case Room.DOMAIN_OUTDOORS_SEAPORT:
+					say.append(" (^psinking^?)");
+					break;
+				default:
+					if(!(seen instanceof MOB))
+						say.append(" (^pfalling^?)");
+					break;
+				}
+			}
 			if(say.length()>1)
 			{
 				say.append(" ");
@@ -2066,7 +2109,15 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	{
 		String type=null;
 		if(isFalling(seen))
-			type="falls";
+		{
+			if((seen instanceof BoardableShip)
+			&&(seen instanceof Item)
+			&&(((Item)seen).owner() instanceof Room)
+			&&(this.isWateryRoom((Room)((Item)seen).owner())))
+				type="sinks";
+			else
+				type="falls";
+		}
 		else
 		if(isSleeping(seen))
 		{

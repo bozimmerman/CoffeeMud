@@ -1123,6 +1123,11 @@ public class GenSailingShip extends StdBoardable
 				sourceM.tell(L("You are not permitted to attack @x1",I.name()));
 				return Boolean.FALSE;
 			}
+			if(!CMLib.flags().isDeepWaterySurfaceRoom(thisRoom))
+			{
+				sourceM.tell(L("You are not able to engage in combat with @x1 here.",I.name()));
+				return Boolean.FALSE;
+			}
 			final MOB mob = CMClass.getFactoryMOB(name(),phyStats().level(),thisRoom);
 			try
 			{
@@ -2478,6 +2483,7 @@ public class GenSailingShip extends StdBoardable
 						if(val.trim().length()==0)
 							this.targetedShip=null;
 						else
+						if(CMLib.flags().isDeepWaterySurfaceRoom(R))
 						{
 							Item I=R.findItem(null, val);
 							int ct=1;
