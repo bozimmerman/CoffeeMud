@@ -334,14 +334,41 @@ public class CommonSkill extends StdAbility
 	{
 		return dropAWinner(mob,mob.location(),buildingI);
 	}
-	
+
+	/**
+	 * 
+	 * @param mob CAN BE NULL!!!
+	 * @param R
+	 * @param buildingI
+	 * @return
+	 */
 	protected boolean dropAWinner(MOB mob, Room R, Item buildingI)
 	{
-		if((R==null)||(mob.location()==null))
+		if(R==null)
 			commonTell(mob,L("You are NOWHERE?!"));
 		else
 		if(buildingI==null)
 			commonTell(mob,L("You have built NOTHING?!!"));
+		else
+		if(mob == null)
+		{
+			mob=CMClass.getFactoryMOB(R.name(),buildingI.phyStats().level(),R);
+			try
+			{
+				final CMMsg msg=CMClass.getMsg(mob,buildingI,this,CMMsg.TYP_ITEMGENERATED|CMMsg.MASK_ALWAYS,null);
+				if(R.okMessage(mob,msg))
+				{
+					R.addItem(buildingI,ItemPossessor.Expire.Resource);
+					R.recoverRoomStats();
+					R.send(mob,msg);
+					return R.isContent(buildingI);
+				}
+			}
+			finally
+			{
+				mob.destroy();
+			}
+		}
 		else
 		{
 			final CMMsg msg=CMClass.getMsg(mob,buildingI,this,CMMsg.TYP_ITEMGENERATED|CMMsg.MASK_ALWAYS,null);
