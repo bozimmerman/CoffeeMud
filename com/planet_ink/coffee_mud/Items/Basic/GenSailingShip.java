@@ -611,7 +611,8 @@ public class GenSailingShip extends StdBoardable
 						msg.source().tell(L("You are nowhere, so you won`t be moving anywhere."));
 						return false;
 					}
-					if((msg.source().location().domainType()&Room.INDOORS)==Room.INDOORS)
+					if(((msg.source().location().domainType()&Room.INDOORS)==Room.INDOORS)
+					&&(msg.source().isPlayer()))
 					{
 						msg.source().tell(L("You must be on deck to steer your ship."));
 						return false;
@@ -673,7 +674,8 @@ public class GenSailingShip extends StdBoardable
 						msg.source().tell(L("You are nowhere, so you won`t be moving anywhere."));
 						return false;
 					}
-					if((msg.source().location().domainType()&Room.INDOORS)==Room.INDOORS)
+					if(((msg.source().location().domainType()&Room.INDOORS)==Room.INDOORS)
+					&&(msg.source().isPlayer()))
 					{
 						msg.source().tell(L("You must be on deck to sail your ship."));
 						return false;
@@ -742,7 +744,8 @@ public class GenSailingShip extends StdBoardable
 						msg.source().tell(L("You are nowhere, so you won`t be moving anywhere."));
 						return false;
 					}
-					if((msg.source().location().domainType()&Room.INDOORS)==Room.INDOORS)
+					if(((msg.source().location().domainType()&Room.INDOORS)==Room.INDOORS)
+					&&(msg.source().isPlayer()))
 					{
 						msg.source().tell(L("You must be on deck to steer your ship."));
 						return false;
