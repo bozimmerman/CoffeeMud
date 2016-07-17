@@ -572,7 +572,9 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	@Override
 	public boolean postAttack(MOB attacker, Rideable attackingShip, Rideable target, Weapon weapon, boolean wasAHit)
 	{
-		if((attacker==null)||(!mayIAttack(attacker,attackingShip, target))||(weapon==null))
+		// if not in combat, howd you get here? if you are, this MUST happen
+		//(!mayIAttack(attacker,attackingShip, target))
+		if((attacker==null)||(weapon==null))
 			return false;
 		final CMMsg msg=CMClass.getMsg(attacker,target,weapon,CMMsg.MSG_WEAPONATTACK,null);
 		final Room R=CMLib.map().roomLocation(target);
@@ -1012,8 +1014,10 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	{
 		if(source==null)
 			return;
-		if(!mayIAttack(source, attacker, defender))
-			return;
+		// if you aren't in combat, how'd you get here.
+		// if you are in combat, this needs to happen regardless
+		//if(!mayIAttack(source, attacker, defender))
+		//	return;
 		int damageInt=adjustedDamage(source,weapon,null,0,false);
 		int damageType=Weapon.TYPE_BASHING;
 		if(weapon != null)
