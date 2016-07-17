@@ -211,7 +211,7 @@ public class Monk extends StdCharClass
 	}
 
 	private final String[] raceRequiredList=new String[]{
-			"Human","Humanoid","Elf","Goblinoid"
+		"Human","Humanoid","Elf","Goblinoid"
 	};
 
 	@Override

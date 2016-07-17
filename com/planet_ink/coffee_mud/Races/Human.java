@@ -90,7 +90,7 @@ public class Human extends StdRace
 		return 2;
 	}
 
-	private final static String localizedStaticRacialCat = CMLib.lang().L("Human");
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Humanoid");
 
 	@Override
 	public String racialCategory()
