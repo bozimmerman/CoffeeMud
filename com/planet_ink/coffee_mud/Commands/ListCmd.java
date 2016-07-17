@@ -1914,6 +1914,7 @@ public class ListCmd extends StdCommand
 					Integer.valueOf(Ability.ACODE_PRAYER),
 					Integer.valueOf(Ability.ACODE_SKILL),
 					Integer.valueOf(Ability.ACODE_SONG),
+					Integer.valueOf(Ability.ACODE_SPELL),
 					Integer.valueOf(Ability.ACODE_THIEF_SKILL),
 					Integer.valueOf(Ability.ACODE_TECH),
 					Integer.valueOf(Ability.ACODE_SUPERPOWER)
