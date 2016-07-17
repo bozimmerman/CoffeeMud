@@ -137,14 +137,79 @@ public class Sailor extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Unbinding",0,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Fishing",0,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Natural",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Semaphore",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Semaphore",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Chopping",0,"",false);
 
+		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Carpentry",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Skill_SeaLegs",true);
+		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Thief_Belay",true);
+		
+		//hide on a ship to get transport between two port cities.  If the player has charting, they can predetermine what port they end up in…otherwise, takes to a random connected shore room.
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Skill_Stowaway",false);
+		
+		//Net fishing from a boat….requires fishing 100%.  Yields 10x fishing yield, takes 3 times as long.  Gathering skill.
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Trawling",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Shipwright",0,"",false,true,CMParms.parseSemicolons("Carpentry",true),"");
+		
+		//Language transmitted via light or sound.  Can be “heard” for 10 continuous outdoor rooms (via light) or 3 continuous indoor rooms (via sound).  Must have light source if outdoors.
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),6,"MorseCode",false);
+		//The character climbs the mast to the crow’s nest to view the surrounding rooms.  Character can see details from other adjacent rooms based on skill/expertise.  Number of rooms distance, ships, items on ships.  Sample commands Crowsnest North, Crowsnest North North, Crowsnest North Ulysses (the name of a ship/mob in the room).  Results would be as a look at that location/target.  Level should determine range (1 additional room per 20 levels), expertise should determine resolution (just the room name/description, exits, items/ships/mobs).  A level 90 sailor with 1 level of expertise would be able to see 5 rooms out, but only get name/description of the rooms…except rooms 1 range out he could also get exits.  With 2 expertises, he would also get items/ships in the 1 range room.  With 3, he would get exits at range 2.  4 would provide items at range 2.  5 would provide exits at range 3.  7 would provide exits at range 4.
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),6,"CrowsNest",true);
+		
+		//avoid currents-Enables a captain (or Navigator) to ignore any currents with a successful check (check applied each time current tries to move the ship)
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Skill_AvoidCurrents",true);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_SeaMapping",true);
+		
+		//Take no fall damage for landing in a water or shallow water room.
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Diving",true);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Skill_SeaCharting",true);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Skill_DeadReckoning",true);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Skill_SeaNavigation",true);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Thief_Bind",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Thief_Scuttle",true);
+		
+		//Manuevering-Enables the ship to perform one additional turn per ship combat round.  Costs 200 movement.
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Skill_SeaManeuvering",true);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Siegecraft",false);
+		
+		//Weapon proficiency with Siege Weapons
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Skill_SpecializationSiegecraft",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Fighter_WaterTactics",true);
+		
+		//-Character can hold his/her breath longer before starting to drown (1 tick/5 levels).  Failed skill check results in a drowning tick.  After duration, take normal drowning damage.
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Skill_DeepDiving",false);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Skill_CombatRepairs",true);
+		
+		//The character recovers some wood and supplies from a recently sunk vessel (probably needs to be used while a ship is sinking in the region.  Generates wood and money that go straight to the character’s inventory.  Alternatively, maybe the gold goes to the player’s inventory (autogold), and the wood just floats and must be harvested separately.
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Salvage",false);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Skill_FoulWeatherSailing",false);
+		
+		// While in combat and a designated navigator of a ship (has the ability to set course), can specify one of 4 tactics to ATTEMPT to position their ship ideally.  Navaltactics Followship would take the target ship’s last issued command and issue it to your ship.  Navaltactics approachship would attempt to close range on the ship.  Navaltactics retreatship would attempt to put you as far away from the ship as possible.  Navaltactics retreatcombat would attempt to put you as far away from the ship as possible, in a direction to successfully leave combat.
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Skill_NavalTactics",false);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Thief_RammingSpeed",true);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Skill_InterceptShip",true);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Skill_AwaitShip",true);
+		
+		//The sailor hires a mob 5-10 levels lower than themselves to join his crew and work on his boat.
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Skill_HireCrewmember",true);
+		
 
 		// to separate from artisan
-		CMLib.ableMapper().addCharAbilityMapping(ID(),-1,"Chopping",0,"",false,true);
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),-1,"Chopping",0,"",false,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),-1,"Digging",0,"",false,true);
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),-1,"Carpentry",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),-1,"Drilling",0,"",false,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),-1,"Fishing",0,"",false,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),-1,"Foraging",0,"",false,true);
@@ -169,7 +234,7 @@ public class Sailor extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),-1,"Armorsmithing",0,"",false,true,CMParms.parseSemicolons("Blacksmithing",true),"");
 		CMLib.ableMapper().addCharAbilityMapping(ID(),-1,"Fletching",0,"",false,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),-1,"Weaponsmithing",0,"",false,true,CMParms.parseSemicolons("Blacksmithing;Specialization_*",true),"");
-		CMLib.ableMapper().addCharAbilityMapping(ID(),-1,"Shipwright",0,"",false,true,CMParms.parseSemicolons("Carpentry",true),"");
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),-1,"Shipwright",0,"",false,true,CMParms.parseSemicolons("Carpentry",true),"");
 		CMLib.ableMapper().addCharAbilityMapping(ID(),-1,"Wainwrighting",0,"",false,true,CMParms.parseSemicolons("Carpentry",true),"");
 		CMLib.ableMapper().addCharAbilityMapping(ID(),-1,"PaperMaking",0,"",false,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),-1,"Distilling",0,"",false,true);
