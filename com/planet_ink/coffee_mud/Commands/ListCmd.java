@@ -1995,8 +1995,7 @@ public class ListCmd extends StdCommand
 							}
 						}
 					}
-					if(levelList.length()>0)
-						lines.append("|level"+l+"="+levelList.toString());
+					lines.append("|level"+l+"="+levelList.toString());
 				}
 				lines.append("}}");
 			}

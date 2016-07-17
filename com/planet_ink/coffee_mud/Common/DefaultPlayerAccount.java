@@ -709,6 +709,13 @@ public class DefaultPlayerAccount implements PlayerAccount
 		return tattoos.find(of.trim());
 	}
 
+	@Override
+	public Tattoo findTattooStartsWith(String of)
+	{
+		if ((of == null) || (of.length() == 0))
+			return null;
+		return tattoos.findStartsWith(of.trim());
+	}
 
 	@Override
 	public int getBonusCharStatPoints()

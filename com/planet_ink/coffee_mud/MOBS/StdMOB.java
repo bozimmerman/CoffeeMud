@@ -4989,6 +4989,14 @@ public class StdMOB implements MOB
 		return tattoos.find(of.trim());
 	}
 
+	@Override
+	public Tattoo findTattooStartsWith(String of)
+	{
+		if ((of == null) || (of.length() == 0))
+			return null;
+		return tattoos.findStartsWith(of.trim());
+	}
+
 	/** Manipulation of the factions list */
 	@Override
 	public void addFaction(String which, int start)

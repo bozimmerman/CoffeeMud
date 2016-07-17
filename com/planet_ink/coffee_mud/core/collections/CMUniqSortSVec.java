@@ -26,6 +26,13 @@ public class CMUniqSortSVec<T extends CMObject> extends SVector<T> implements Se
 		return arg0.ID().compareToIgnoreCase(arg1);
 	}
 
+	protected int compareToStarts(CMObject arg0, String arg1)
+	{
+		if(arg0.ID().toLowerCase().startsWith(arg1.toLowerCase()))
+			return 0;
+		return arg0.ID().compareToIgnoreCase(arg1);
+	}
+
 	protected int compareTo(CMObject arg0, CMObject arg1)
 	{
 		return arg0.ID().compareToIgnoreCase(arg1.ID());
@@ -171,6 +178,29 @@ public class CMUniqSortSVec<T extends CMObject> extends SVector<T> implements Se
 		{
 			final int mid=(end+start)/2;
 			final int comp=compareTo(super.get(mid),arg0);
+			if(comp==0)
+				return super.get(mid);
+			else
+			if(comp>0)
+				end=mid-1;
+			else
+				start=mid+1;
+		}
+		return null;
+	}
+
+	public synchronized T findStartsWith(String arg0)
+	{
+		if(arg0==null)
+			return null;
+		if(size()==0)
+			return null;
+		int start=0;
+		int end=size()-1;
+		while(start<=end)
+		{
+			final int mid=(end+start)/2;
+			final int comp=compareToStarts(super.get(mid),arg0);
 			if(comp==0)
 				return super.get(mid);
 			else
