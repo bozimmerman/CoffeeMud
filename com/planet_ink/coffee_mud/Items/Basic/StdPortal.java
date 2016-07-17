@@ -269,22 +269,29 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 					Room R=getDestinationRoom(thisRoom);
 					if(R==null)
 						R=thisRoom;
-					final Exit E=CMClass.getExit("OpenNameable");
-					E.setMiscText(name());
-					synchronized(("GATE_"+CMLib.map().getExtendedTwinRoomIDs(thisRoom,R)).intern())
+					final Exit E2=CMClass.getExit("OpenPrepositional");
+					final Exit E=CMClass.getExit("OpenPrepositional");
+					try
 					{
-						final Exit oldE=thisRoom.getRawExit(Directions.GATE);
-						final Room oldR=thisRoom.rawDoors()[Directions.GATE];
-						final Exit oldE2=R.getRawExit(Directions.GATE);
-						thisRoom.rawDoors()[Directions.GATE]=R;
-						thisRoom.setRawExit(Directions.GATE,E);
-						final Exit E2=CMClass.getExit("OpenNameable");
-						E2.basePhyStats().setDisposition(PhyStats.IS_NOT_SEEN);
-						R.setRawExit(Directions.GATE,E2);
-						CMLib.tracking().walk(msg.source(),Directions.GATE,false,false,false);
-						thisRoom.rawDoors()[Directions.GATE]=oldR;
-						thisRoom.setRawExit(Directions.GATE,oldE);
-						R.setRawExit(Directions.GATE,oldE2);
+						synchronized(("GATE_"+CMLib.map().getExtendedTwinRoomIDs(thisRoom,R)).intern())
+						{
+							E.setMiscText(name());
+							E2.setMiscText(name());
+							final Exit oldE=thisRoom.getRawExit(Directions.GATE);
+							final Room oldR=thisRoom.rawDoors()[Directions.GATE];
+							final Exit oldE2=R.getRawExit(Directions.GATE);
+							thisRoom.rawDoors()[Directions.GATE]=R;
+							thisRoom.setRawExit(Directions.GATE,E);
+							E2.basePhyStats().setDisposition(PhyStats.IS_NOT_SEEN);
+							R.setRawExit(Directions.GATE,E2);
+							CMLib.tracking().walk(msg.source(),Directions.GATE,false,false,false);
+							thisRoom.rawDoors()[Directions.GATE]=oldR;
+							thisRoom.setRawExit(Directions.GATE,oldE);
+							R.setRawExit(Directions.GATE,oldE2);
+						}
+					}
+					finally
+					{
 						E.destroy();
 						E2.destroy();
 					}

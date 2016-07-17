@@ -1,5 +1,6 @@
-package com.planet_ink.coffee_mud.Exits;
+package com.planet_ink.coffee_mud.Exits.interfaces;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.Readable;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -16,7 +17,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 /*
-   Copyright 2005-2016 Bo Zimmerman
+   Copyright 2016-2016 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -30,29 +31,37 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class OpenNameable extends StdOpenDoorway
+/**
+ * An interface for an exit that modifies the enter and leave messages.
+ * @see com.planet_ink.coffee_mud.Locales.interfaces.Room
+ */
+public interface PrepositionExit extends Exit
 {
-	@Override
-	public String ID()
-	{
-		return "OpenNameable";
-	}
-
-	@Override
-	public String Name()
-	{
-		return miscText;
-	}
-
-	@Override
-	public String displayText()
-	{
-		return miscText;
-	}
-
-	@Override
-	public String description()
-	{
-		return miscText;
-	}
+	/**
+	 * Returns the preposition phrase seen by entering this exit.
+	 * @see PrepositionExit#setEntryPreposition(String)
+	 * @return the preposition phrase seen by entering this exit.
+	 */
+	public String getEntryPreposition();
+	
+	/**
+	 * Sets the preposition phrase seen by entering this exit.
+	 * @see PrepositionExit#getEntryPreposition()
+	 * @param phrase the preposition phrase seen by entering this exit.
+	 */
+	public void setEntryPreposition(String phrase);
+	
+	/**
+	 * Returns the preposition phrase seen by leaving this exit.
+	 * @see PrepositionExit#setExitPreposition(String)
+	 * @return the preposition phrase seen by leaving this exit.
+	 */
+	public String getExitPreposition();
+	
+	/**
+	 * Sets the preposition phrase seen by leaving this exit.
+	 * @see PrepositionExit#getExitPreposition()
+	 * @param phrase the preposition phrase seen by leaving this exit.
+	 */
+	public void setExitPreposition(String phrase);
 }

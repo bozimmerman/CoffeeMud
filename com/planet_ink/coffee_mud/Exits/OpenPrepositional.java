@@ -30,13 +30,16 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class OpenNameable extends StdOpenDoorway
+public class OpenPrepositional extends StdOpenDoorway implements PrepositionExit
 {
 	@Override
 	public String ID()
 	{
-		return "OpenNameable";
+		return "OpenPrepositional";
 	}
+	
+	private String entryPreposition="";
+	private String exitPreposition="";
 
 	@Override
 	public String Name()
@@ -54,5 +57,41 @@ public class OpenNameable extends StdOpenDoorway
 	public String description()
 	{
 		return miscText;
+	}
+
+	@Override
+	public void setMiscText(String newMiscText)
+	{
+		super.setMiscText(newMiscText);
+		if(newMiscText.length()>0)
+		{
+			entryPreposition="through "+newMiscText;
+			exitPreposition="through "+newMiscText;
+		}
+	}
+	
+	
+	@Override
+	public String getEntryPreposition()
+	{
+		return entryPreposition;
+	}
+
+	@Override
+	public String getExitPreposition()
+	{
+		return exitPreposition;
+	}
+
+	@Override
+	public void setEntryPreposition(String phrase)
+	{
+		entryPreposition=phrase;
+	}
+
+	@Override
+	public void setExitPreposition(String phrase)
+	{
+		exitPreposition=phrase;
 	}
 }

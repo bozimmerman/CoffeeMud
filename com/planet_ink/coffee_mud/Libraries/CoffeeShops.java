@@ -202,8 +202,14 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			else
 			if(I instanceof Weapon)
 			{
+				final String handedNess;
+				if(I.rawLogicalAnd() && ((I.rawProperLocationBitmap()&(Item.WORN_HELD|Item.WORN_WIELD))==(Item.WORN_HELD|Item.WORN_WIELD)))
+					handedNess = L(" (2 handed)");
+				else
+					handedNess = "";
 				str.append(L("\n\rWeap. Type : @x1",L(CMStrings.capitalizeAndLower(Weapon.TYPE_DESCS[((Weapon)I).weaponDamageType()]))));
-				str.append(L("\n\rWeap. Class: @x1",L(CMStrings.capitalizeAndLower(Weapon.CLASS_DESCS[((Weapon)I).weaponClassification()]))));
+				str.append(L("\n\rWeap. Class: @x1",L(CMStrings.capitalizeAndLower(Weapon.CLASS_DESCS[((Weapon)I).weaponClassification()]))))
+					.append(handedNess);
 			}
 			else
 			if(I instanceof Armor)

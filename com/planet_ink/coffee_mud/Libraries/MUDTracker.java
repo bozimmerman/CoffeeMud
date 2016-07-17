@@ -1262,8 +1262,16 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		final int opDir=Directions.getOpDirectionCode(directionCode);
 		final String dirName=useShipDirs?CMLib.directions().getShipDirectionName(directionCode):CMLib.directions().getDirectionName(directionCode);
 		final String fromDir=useShipDirs?CMLib.directions().getFromShipDirectionName(opDir):CMLib.directions().getFromCompassDirectionName(opDir);
-		final String directionName=(directionCode==Directions.GATE)&&(exit!=null)?"through "+exit.name():dirName;
-		final String otherDirectionName=(Directions.getOpDirectionCode(directionCode)==Directions.GATE)&&(exit!=null)?exit.name():fromDir;
+		final String directionName;
+		if((exit instanceof PrepositionExit)&&(((PrepositionExit)exit).getExitPreposition().length()>0))
+			directionName=((PrepositionExit)exit).getExitPreposition();
+		else
+			directionName=(directionCode==Directions.GATE)&&(exit!=null)?"through "+exit.name():dirName;
+		final String otherDirectionPhrase;
+		if((exit instanceof PrepositionExit)&&(((PrepositionExit)exit).getEntryPreposition().length()>0))
+			otherDirectionPhrase=((PrepositionExit)exit).getEntryPreposition();
+		else
+			otherDirectionPhrase="from "+((Directions.getOpDirectionCode(directionCode)==Directions.GATE)&&(exit!=null)?exit.name():fromDir);
 
 		final int generalMask=always?CMMsg.MASK_ALWAYS:0;
 		final int leaveCode;
@@ -1276,17 +1284,26 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		final CMMsg leaveMsg;
 		if((mob.riding()!=null)&&(mob.riding().mobileRideBasis()))
 		{
-			enterMsg=CMClass.getMsg(mob,destRoom,exit,generalMask|CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,
-									L("<S-NAME> ride(s) @x1 in from @x2.",mob.riding().name(),otherDirectionName));
-			leaveMsg=CMClass.getMsg(mob,thisRoom,opExit,leaveCode,((flee)?L("You flee @x1.",directionName):null),leaveCode,null,leaveCode,
-									L(((flee)?"<S-NAME> flee(s) with ":"<S-NAME> ride(s) ")+"@x1 @x2.",mob.riding().name()+" "+directionName+"."));
+			final String enterStr=L("<S-NAME> ride(s) @x1 in from @x2.",mob.riding().name(),otherDirectionPhrase);
+			enterMsg=CMClass.getMsg(mob,destRoom,exit,generalMask|CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,enterStr);
+			if(flee)
+				leaveMsg=CMClass.getMsg(mob,thisRoom,opExit,leaveCode,L("You flee @x1.",directionName),leaveCode,null,leaveCode,L("<S-NAME> flee(s) with @x1 @x2.",mob.riding().name()+" "+directionName+"."));
+			else
+				leaveMsg=CMClass.getMsg(mob,thisRoom,opExit,leaveCode,null,leaveCode,null,leaveCode,L("<S-NAME> ride(s) @x1 @x2.",mob.riding().name()+" "+directionName+"."));
 		}
 		else
 		{
-			enterMsg=CMClass.getMsg(mob,destRoom,exit,generalMask|CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,
-									L("<S-NAME> "+CMLib.flags().getPresentDispositionVerb(mob,CMFlagLibrary.ComingOrGoing.ARRIVES)+" from @x1.",otherDirectionName));
-			leaveMsg=CMClass.getMsg(mob,thisRoom,opExit,leaveCode,((flee)?"You flee "+directionName+".":null),leaveCode,null,leaveCode,
-									((flee)?L("<S-NAME> flee(s) @x1.",directionName):L("<S-NAME> "+CMLib.flags().getPresentDispositionVerb(mob,CMFlagLibrary.ComingOrGoing.LEAVES)+" @x1.",directionName)));
+			final String arriveWord=CMLib.flags().getPresentDispositionVerb(mob,CMFlagLibrary.ComingOrGoing.ARRIVES);
+			final String arriveStr=L("<S-NAME> "+arriveWord+" @x1.",otherDirectionPhrase);
+			enterMsg=CMClass.getMsg(mob,destRoom,exit,generalMask|CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,arriveStr);
+			if(flee)
+				leaveMsg=CMClass.getMsg(mob,thisRoom,opExit,leaveCode,L("You flee @x1.",directionName),leaveCode,null,leaveCode,L("<S-NAME> flee(s) @x1.",directionName));
+			else
+			{
+				final String leaveWord=CMLib.flags().getPresentDispositionVerb(mob,CMFlagLibrary.ComingOrGoing.LEAVES);
+				final String leaveStr=L("<S-NAME> "+leaveWord+" @x1.",directionName);
+				leaveMsg=CMClass.getMsg(mob,thisRoom,opExit,leaveCode,null,leaveCode,null,leaveCode,leaveStr);
+			}
 		}
 		final boolean gotoAllowed=(!mob.isMonster()) && CMSecurity.isAllowed(mob,destRoom,CMSecurity.SecFlag.GOTO);
 		if((exit==null)&&(!gotoAllowed))

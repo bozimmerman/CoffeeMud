@@ -1118,14 +1118,40 @@ public class GenSailingShip extends StdBoardable
 		}
 		else
 		if((msg.targetMinor()==CMMsg.TYP_LEAVE)
-		&&(msg.target() == owner())
-		&&(msg.source().riding() != null)
-		&&(this.targetedShip == msg.source().riding())
-		&&(CMLib.flags().isWaterWorthy(msg.source().riding())))
+		&&(msg.target() instanceof Room)
+		&&(msg.target() == owner()))
 		{
-			msg.source().tell(L("Your small vessel can not get away during combat."));
-			return false;
+			if((msg.source().riding() != null)
+			&&(this.targetedShip == msg.source().riding())
+			&&(CMLib.flags().isWaterWorthy(msg.source().riding())))
+			{
+				msg.source().tell(L("Your small vessel can not get away during combat."));
+				return false;
+			}
+			if(msg.tool() instanceof Exit)
+			{
+				final Room R=msg.source().location();
+				int dir=CMLib.map().getExitDir(R,(Exit)msg.tool());
+				if((dir >= 0)
+				&&(R.getRoomInDir(dir)!=null)
+				&&(R.getRoomInDir(dir).getArea()==this.getShipArea())
+				&&(msg.othersMessage()!=null)
+				&&(msg.othersMessage().indexOf("<S-NAME>")>=0)
+				&&(msg.othersMessage().indexOf(L(CMLib.flags().getPresentDispositionVerb(msg.source(),CMFlagLibrary.ComingOrGoing.LEAVES)))>=0))
+					msg.setOthersMessage(L("<S-NAME> board(s) @x1.",Name()));
+			}
+			
 		}
+		else
+		if((msg.targetMinor()==CMMsg.TYP_ENTER)
+		&&(msg.target() == owner())
+		&&(msg.source().location()!=null)
+		&&(msg.source().location().getArea()==this.getShipArea())
+		&&(msg.tool() instanceof Exit)
+		&&(msg.othersMessage()!=null)
+		&&(msg.othersMessage().indexOf("<S-NAME>")>=0)
+		&&(msg.othersMessage().indexOf(L(CMLib.flags().getPresentDispositionVerb(msg.source(),CMFlagLibrary.ComingOrGoing.ARRIVES)))>=0))
+			msg.setOthersMessage(L("<S-NAME> disembark(s) @x1.",Name()));
 		if(!super.okMessage(myHost, msg))
 			return false;
 		return true;
