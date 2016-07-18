@@ -1363,6 +1363,7 @@ public class Modify extends StdCommand
 		final MOB copyMOB=(MOB)M.copyOf();
 		M.basePhyStats().copyInto(copyMOB.basePhyStats());
 		M.phyStats().copyInto(copyMOB.phyStats());
+		mob.location().delInhabitant(copyMOB); //necc because location is cleared later, before destroy is called.
 		if(commands.size()<4)
 		{
 			CMLib.genEd().modifyPlayer(mob,M,-1);
