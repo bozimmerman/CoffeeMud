@@ -107,6 +107,22 @@ public class Falling extends StdAbility
 		return true;
 	}
 
+	public void setMiscText(String newMiscText)
+	{
+		super.setMiscText(newMiscText);
+		if((newMiscText!=null) && (newMiscText.length()>0))
+		{
+			for(final String parm : CMParms.parse(newMiscText.toUpperCase()))
+			{
+				if(parm.equals("REVERSED"))
+					this.setProficiency(100);
+				else
+				if(parm.equals("NORMAL"))
+					this.setProficiency(0);
+			}
+		}
+	}
+	
 	protected boolean stopFalling(MOB mob)
 	{
 		final Room R=mob.location();
@@ -360,5 +376,31 @@ public class Falling extends StdAbility
 
 		}
 		return true;
+	}
+	
+	@Override
+	public void setStat(String code, String val)
+	{
+		if(code==null)
+			return;
+		if(code.equalsIgnoreCase("DAMAGE"))
+		{
+			this.damageToTake=CMath.s_int(val);
+		}
+		else
+			super.setStat(code, val);
+	}
+	
+	@Override
+	public String getStat(String code)
+	{
+		if(code==null)
+			return "";
+		if(code.equalsIgnoreCase("DAMAGE"))
+		{
+			return ""+this.damageToTake;
+		}
+		else
+			return super.getStat(code);
 	}
 }

@@ -100,6 +100,22 @@ public class Sinking extends StdAbility
 		return false;
 	}
 
+	public void setMiscText(String newMiscText)
+	{
+		super.setMiscText(newMiscText);
+		if((newMiscText!=null) && (newMiscText.length()>0))
+		{
+			for(final String parm : CMParms.parse(newMiscText.toUpperCase()))
+			{
+				if(parm.equals("REVERSED"))
+					this.setProficiency(100);
+				else
+				if(parm.equals("NORMAL"))
+					this.setProficiency(0);
+			}
+		}
+	}
+	
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
