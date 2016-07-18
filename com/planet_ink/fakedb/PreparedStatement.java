@@ -582,6 +582,7 @@ public class PreparedStatement extends Statement implements java.sql.PreparedSta
 	}
 
 	@Override
+	@Deprecated
 	public void setUnicodeStream(int parameterIndex, InputStream x, int length) throws SQLException
 	{
 		// TODO Auto-generated method stub
