@@ -44,16 +44,16 @@ public class Log extends java.util.logging.Logger
 	private static final String SPACES="                                                                                                ";
 	private static final String SPACES15=SPACES.substring(0,15);
 
-	private PrintWriter 		fileOutWriter[]	= null; /**	always to "log" */
-	private int					numberOfFWLogs	= 1;
-	private final PrintWriter 	systemOutWriter	= new PrintWriter(System.out,true); /** always to systemout */
-	private File 				logPath 		= new File("."); /** The fully qualified file path */
-	private String 				logName 		= "application"; /** log name */
-	private String 				LOGNAME 		= "APPLICATION"; /** log name */
-	private static final Log[] 	logs			= new Log[256];
-	private final Map<Type,Conf>CONFS			= new Hashtable<Type,Conf>();
-	private final Map<PrintWriter,long[]> WRITTEN	= new Hashtable<PrintWriter,long[]>();
-	private static final Type[] TYPE_LEVEL_MAP  = new Type[1001];
+	private PrintWriter 		fileOutWriter[]	 = null; /**	always to "log" */
+	private int					numberOfFWLogs	 = 1;
+	private final PrintWriter 	systemOutWriter	 = new PrintWriter(System.out,true); /** always to systemout */
+	private File 				logPath 		 = new File("."); /** The fully qualified file path */
+	private String 				logName 		 = "application"; /** log name */
+	private String 				LOGNAME 		 = "APPLICATION"; /** log name */
+	private static final Log[] 	logs			 = new Log[256];
+	private final Map<Type,Conf>CONFS			 = new Hashtable<Type,Conf>();
+	private final Map<PrintWriter,long[]> WRITTEN= new Hashtable<PrintWriter,long[]>();
+	private static final Type[] TYPE_LEVEL_MAP   = new Type[1001];
 
 	/**
 	 * The internally used targets for a log
