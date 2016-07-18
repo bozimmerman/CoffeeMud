@@ -1878,24 +1878,28 @@ public class Log extends java.util.logging.Logger
 	}
 	//Log a message, specifying source class, method, and resource bundle name with no arguments.
 	@Override
+	@Deprecated
 	public void	logrb(final Level level, final String sourceClass, final String sourceMethod, final String bundleName, final String msg)
 	{
 		logp(level,sourceClass,sourceMethod+": "+bundleName, msg);
 	}
 	//Log a message, specifying source class, method, and resource bundle name, with a single object parameter to the log message.
 	@Override
+	@Deprecated
 	public void	logrb(final Level level, final String sourceClass, final String sourceMethod, final String bundleName, final String msg, Object param1)
 	{
 		logp(level,sourceClass,sourceMethod+": "+bundleName, msg, param1);
 	}
 	//Log a message, specifying source class, method, and resource bundle name, with an array of object arguments.
 	@Override
+	@Deprecated
 	public void	logrb(final Level level, final String sourceClass, final String sourceMethod, final String bundleName, final String msg, Object[] params)
 	{
 		logp(level,sourceClass,sourceMethod+": "+bundleName, msg, params);
 	}
 	//Log a message, specifying source class, method, and resource bundle name, with associated Throwable information.
 	@Override
+	@Deprecated
 	public void	logrb(final Level level, final String sourceClass, final String sourceMethod, final String bundleName, final String msg, final Throwable thrown)
 	{
 		logp(level,sourceClass,sourceMethod+": "+bundleName, msg, thrown);
