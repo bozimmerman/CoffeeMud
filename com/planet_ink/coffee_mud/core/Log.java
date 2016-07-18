@@ -42,8 +42,7 @@ public class Log extends java.util.logging.Logger
 
 	/** SPACES for headers */
 	private static final String SPACES="                                                                                                ";
-	private static final String SPACES15=SPACES.substring(0,15);
-
+	private static final String SPACES15		 = SPACES.substring(0,15);
 	private PrintWriter 		fileOutWriter[]	 = null; /**	always to "log" */
 	private int					numberOfFWLogs	 = 1;
 	private final PrintWriter 	systemOutWriter	 = new PrintWriter(System.out,true); /** always to systemout */
