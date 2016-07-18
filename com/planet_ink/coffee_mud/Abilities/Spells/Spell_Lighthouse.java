@@ -113,13 +113,18 @@ public class Spell_Lighthouse extends Spell
 			final boolean isInDark=CMLib.flags().isInDark(R);
 			A.setInvoker(invoker());
 			A.setSavable(false);
+			A.setExpirationDate(System.currentTimeMillis()+8000);
 			R.addEffect(A);
+			R.recoverPhyStats();
 			R.recoverRoomStats();
 			if(isInDark && (!CMLib.flags().isInDark(R)))
 			{
 				String dirName;
 				if(fromShip != null)
+				{
 					dirName=fromShip.Name();
+					R.showHappens(CMMsg.MSG_OK_VISUAL,L("A bright light shines in from @x1.",dirName));
+				}
 				else
 				if(fromDir >= 0)
 				{
@@ -127,13 +132,12 @@ public class Spell_Lighthouse extends Spell
 						dirName=CMLib.directions().getFromShipDirectionName(fromDir);
 					else
 						dirName=CMLib.directions().getFromCompassDirectionName(fromDir);
+					R.showHappens(CMMsg.MSG_OK_VISUAL,L("A bright light shines in from @x1.",dirName));
 				}
 				else
 				{
 					R.showHappens(CMMsg.MSG_OK_VISUAL,L("A bright light shines in."));
-					return;
 				}
-				R.showHappens(CMMsg.MSG_OK_VISUAL,L("A bright shines in from @x1.",dirName));
 			}
 		}
 	}
@@ -149,13 +153,18 @@ public class Spell_Lighthouse extends Spell
 			{
 				final boolean isInDark=CMLib.flags().isInDark(R);
 				R.delEffect(A);
-				A.destroy();
-				R.recoverRoomStats();
-				if(!isInDark && CMLib.flags().isInDark(R))
+				R.recoverPhyStats();
+				final boolean darkNow=CMLib.flags().isInDark(R);
+				R.addEffect(A);
+				R.recoverPhyStats();
+				if(!isInDark && darkNow)
 				{
 					String dirName;
 					if(fromShip != null)
+					{
 						dirName=fromShip.Name();
+						R.showHappens(CMMsg.MSG_OK_VISUAL,L("A bright light from @x1 disappears.",dirName));
+					}
 					else
 					if(fromDir >= 0)
 					{
@@ -163,13 +172,16 @@ public class Spell_Lighthouse extends Spell
 							dirName=CMLib.directions().getFromShipDirectionName(fromDir);
 						else
 							dirName=CMLib.directions().getFromCompassDirectionName(fromDir);
+						R.showHappens(CMMsg.MSG_OK_VISUAL,L("A bright light from @x1 disappears.",dirName));
 					}
 					else
 					{
 						R.showHappens(CMMsg.MSG_OK_VISUAL,L("A bright light disappears."));
-						return;
 					}
-					R.showHappens(CMMsg.MSG_OK_VISUAL,L("A bright from @x1 disappears.",dirName));
+					R.delEffect(A);
+					A.destroy();
+					R.recoverPhyStats();
+					R.recoverRoomStats();
 				}
 			}
 		}
@@ -248,86 +260,80 @@ public class Spell_Lighthouse extends Spell
 				unInvoke();
 				return false;
 			}
-			if(shipRoom != lastRoom)
+			lastRoom=currentRoom;
+			final Set<Room> newRooms = new HashSet<Room>();
+			final TrackingFlags flags=CMLib.tracking().newFlags()
+									.plus(TrackingFlag.AREAONLY)
+									.plus(TrackingFlag.OPENONLY)
+									.plus(TrackingFlag.OUTDOORONLY);
+			newRooms.add(currentRoom);
+			newRooms.addAll(CMLib.tracking().getRadiantRooms(currentRoom, flags, 10));
+			int prevDir=Directions.getOpDirectionCode(this.lastDir);
+			this.lastDir = nextDir(shipRoom);
+			newRooms.add(shipRoom);
+			if((this.lastDir>=0)
+			&&(shipRoom.getRoomInDir(this.lastDir)!=null)
+			&&(shipRoom.getExitInDir(this.lastDir)!=null)
+			&&(shipRoom.getExitInDir(this.lastDir).isOpen()))
+				newRooms.add(shipRoom.getRoomInDir(this.lastDir));
+			List<Room> oldRooms;
+			synchronized(roomSet)
 			{
-				lastRoom=currentRoom;
-				final Set<Room> newRooms = new HashSet<Room>();
-				final TrackingFlags flags=CMLib.tracking().newFlags()
-										.plus(TrackingFlag.AREAONLY)
-										.plus(TrackingFlag.OPENONLY)
-										.plus(TrackingFlag.OUTDOORONLY);
-				newRooms.add(currentRoom);
-				newRooms.addAll(CMLib.tracking().getRadiantRooms(currentRoom, flags, 10));
-				int prevDir=Directions.getOpDirectionCode(this.lastDir);
-				this.lastDir = nextDir(shipRoom);
-				newRooms.add(shipRoom);
-				if((this.lastDir>=0)
-				&&(shipRoom.getRoomInDir(this.lastDir)!=null)
-				&&(shipRoom.getExitInDir(this.lastDir)!=null)
-				&&(shipRoom.getExitInDir(this.lastDir).isOpen()))
-					newRooms.add(shipRoom.getRoomInDir(this.lastDir));
-				List<Room> oldRooms;
+				oldRooms=new LinkedList<Room>(roomSet);
+			}
+			for(Room R : oldRooms)
+			{
+				if(!newRooms.contains(R))
+					this.delFromRoom(R, shipItem, prevDir);
+			}
+			for(Room R : newRooms)
+			{
+				if(!oldRooms.contains(R))
+					this.addToRoom(R, shipItem, Directions.getOpDirectionCode(this.lastDir));
+			}
+			synchronized(roomSet)
+			{
 				synchronized(roomSet)
 				{
-					oldRooms=new LinkedList<Room>(roomSet);
-				}
-				for(Room R : oldRooms)
-				{
-					if(!newRooms.contains(R))
-						this.delFromRoom(R, shipItem, prevDir);
-				}
-				for(Room R : newRooms)
-				{
-					if(!oldRooms.contains(R))
-						this.addToRoom(R, shipItem, prevDir);
-				}
-				synchronized(roomSet)
-				{
-					synchronized(roomSet)
-					{
-						this.roomSet.clear();
-						this.roomSet.addAll(newRooms);
-					}
+					this.roomSet.clear();
+					this.roomSet.addAll(newRooms);
 				}
 			}
 		}
 		else
 		{
-			if(lastRoom != currentRoom)
+			lastRoom=currentRoom;
+			final List<Room> newRooms = new LinkedList<Room>();
+			newRooms.add(currentRoom);
+			int prevDir=Directions.getOpDirectionCode(this.lastDir);
+			this.lastDir = nextDir(currentRoom);
+			newRooms.add(currentRoom);
+			if((this.lastDir>=0)
+			&&(currentRoom.getRoomInDir(this.lastDir)!=null)
+			&&(currentRoom.getExitInDir(this.lastDir)!=null)
+			&&(currentRoom.getExitInDir(this.lastDir).isOpen()))
+				newRooms.add(currentRoom.getRoomInDir(this.lastDir));
+			List<Room> oldRooms;
+			synchronized(roomSet)
 			{
-				lastRoom=currentRoom;
-				final List<Room> newRooms = new LinkedList<Room>();
-				newRooms.add(currentRoom);
-				int prevDir=Directions.getOpDirectionCode(this.lastDir);
-				this.lastDir = nextDir(currentRoom);
-				newRooms.add(currentRoom);
-				if((this.lastDir>=0)
-				&&(currentRoom.getRoomInDir(this.lastDir)!=null)
-				&&(currentRoom.getExitInDir(this.lastDir)!=null)
-				&&(currentRoom.getExitInDir(this.lastDir).isOpen()))
-					newRooms.add(currentRoom.getRoomInDir(this.lastDir));
-				List<Room> oldRooms;
+				oldRooms=new LinkedList<Room>(roomSet);
+			}
+			for(Room R : oldRooms)
+			{
+				if(!newRooms.contains(R))
+					this.delFromRoom(R, null, prevDir);
+			}
+			for(Room R : newRooms)
+			{
+				if(!oldRooms.contains(R))
+					this.addToRoom(R, null, Directions.getOpDirectionCode(this.lastDir));
+			}
+			synchronized(roomSet)
+			{
 				synchronized(roomSet)
 				{
-					oldRooms=new LinkedList<Room>(roomSet);
-				}
-				for(Room R : oldRooms)
-				{
-					if(!newRooms.contains(R))
-						this.delFromRoom(R, null, prevDir);
-				}
-				for(Room R : newRooms)
-				{
-					if(!oldRooms.contains(R))
-						this.addToRoom(R, null, prevDir);
-				}
-				synchronized(roomSet)
-				{
-					synchronized(roomSet)
-					{
-						this.roomSet.clear();
-						this.roomSet.addAll(newRooms);
-					}
+					this.roomSet.clear();
+					this.roomSet.addAll(newRooms);
 				}
 			}
 		}
