@@ -39,7 +39,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class GenSailingShip extends StdBoardable
+public class GenSailingShip extends StdBoardable implements SailingShip
 {
 	@Override
 	public String ID()
@@ -47,22 +47,20 @@ public class GenSailingShip extends StdBoardable
 		return "GenSailingShip";
 	}
 
-	protected volatile int			courseDirection	= -1;
-	protected volatile boolean		anchorDown		= true;
-	protected final List<Integer>	courseDirections= new Vector<Integer>();
-	protected volatile int			directionFacing	= 0;
-	protected volatile int			ticksSinceMove	= 0;
-	protected volatile Rideable		targetedShip	= null;
-	protected volatile Item			tenderShip		= null;
-	protected volatile Room			shipCombatRoom	= null;
-	protected PairList<Item,int[]>	coordinates		= null;
-	protected PairList<String,int[]>aimings			= new PairVector<String,int[]>();
+	protected volatile int				courseDirection		= -1;
+	protected volatile boolean			anchorDown			= true;
+	protected final List<Integer>		courseDirections	= new Vector<Integer>();
+	protected volatile int				directionFacing		= 0;
+	protected volatile int				ticksSinceMove		= 0;
+	protected volatile PhysicalAgent	targetedShip		= null;
+	protected volatile Item				tenderShip			= null;
+	protected volatile Room				shipCombatRoom		= null;
+	protected PairList<Item, int[]>		coordinates			= null;
+	protected PairList<Weapon, int[]>	aimings				= new PairVector<Weapon, int[]>();
 	
 	protected int					maxHullPoints	= -1;
 	protected volatile int			lastSpamCt		= 0;
 	protected volatile String		lastSpamMsg		= "";
-	
-	protected static final int STEER_MASK = 256;
 	
 	public GenSailingShip()
 	{
@@ -137,6 +135,21 @@ public class GenSailingShip extends StdBoardable
 	{
 		final CMMsg msg=CMClass.getMsg(null, CMMsg.MSG_OK_ACTION, msgStr);
 		announceToDeck(msg);
+	}
+	
+	@Override
+	public int getShipSpeed()
+	{
+		int speed=phyStats().ability();
+		if(subjectToWearAndTear())
+		{
+			if(usesRemaining()<10)
+				return 0;
+			speed=(int)Math.round(speed * CMath.div(usesRemaining(), 100));
+		}
+		if(speed <= 0)
+			return 1;
+		return speed;
 	}
 	
 	protected void announceToDeck(final CMMsg msg)
@@ -222,11 +235,11 @@ public class GenSailingShip extends StdBoardable
 
 	protected String getTargetedShipInfo()
 	{
-		final Rideable targetedShip = this.targetedShip;
+		final PhysicalAgent targetedShip = this.targetedShip;
 		return getOtherShipInfo(targetedShip);
 	}
 	
-	protected String getOtherShipInfo(Rideable targetedShip)
+	protected String getOtherShipInfo(PhysicalAgent targetedShip)
 	{
 		if((targetedShip != null)&&(targetedShip instanceof GenSailingShip))
 		{
@@ -237,7 +250,7 @@ public class GenSailingShip extends StdBoardable
 			{
 				final String dist = ""+this.getTacticalDistance(targetShip);
 				final String dir=CMLib.directions().getDirectionName(targetShip.directionFacing);
-				final String speed=""+CMLib.tracking().getSailingShipSpeed(targetShip);
+				final String speed=""+targetShip.getShipSpeed();
 				final String dirFromYou = CMLib.directions().getDirectionName(Directions.getRelative11Directions(myCoords, targetCoords));
 				return L("@x1 is @x2 of you sailing @x3 at a speed of @x4 and a distance of @x5.",targetShip.name(),dirFromYou,dir,speed,dist);
 			}
@@ -245,7 +258,20 @@ public class GenSailingShip extends StdBoardable
 		return "";
 	}
 
-	protected String getDirectionToTarget(Rideable targetedShip)
+	protected int getDirectionToTarget(PhysicalAgent targetedShip)
+	{
+		if((targetedShip != null)&&(targetedShip instanceof GenSailingShip))
+		{
+			final GenSailingShip targetShip = (GenSailingShip)targetedShip;
+			final int[] targetCoords = targetShip.getMyCoords();
+			final int[] myCoords = this.getMyCoords();
+			if((myCoords!=null)&&(targetCoords != null))
+				return Directions.getRelative11Directions(myCoords, targetCoords);
+		}
+		return -1;
+	}
+
+	protected String getDirectionStrToTarget(PhysicalAgent targetedShip)
 	{
 		if((targetedShip != null)&&(targetedShip instanceof GenSailingShip))
 		{
@@ -511,8 +537,8 @@ public class GenSailingShip extends StdBoardable
 						CMMsg msg2=CMClass.getMsg(msg.source(), targetedShip, weapon, CMMsg.MSG_NOISYMOVEMENT, msgStr);
 						if(mobR.okMessage(msg.source(), msg2))
 						{
-							this.aimings.removeFirst(""+weapon);
-							this.aimings.add(new Pair<String,int[]>(""+weapon,targetCoords));
+							this.aimings.removeFirst(weapon);
+							this.aimings.add(new Pair<Weapon,int[]>(weapon,targetCoords));
 							mobR.send(msg.source(), msg2);
 							msg.source().tell(L("@x1 is now aimed and will be fired in @x2 seconds.",I.name(),timeToFire));
 						}
@@ -757,7 +783,7 @@ public class GenSailingShip extends StdBoardable
 					this.courseDirections.clear();
 					if(amInTacticalMode())
 					{
-						final int speed=CMLib.tracking().getSailingShipSpeed(this);
+						final int speed=getShipSpeed();
 						final String dirFacingName = CMLib.directions().getDirectionName(directionFacing);
 						if(dirIndex >= cmds.size())
 						{
@@ -859,7 +885,7 @@ public class GenSailingShip extends StdBoardable
 			if(cmd != null)
 			{
 				cmds.add(0, "METAMSGCOMMAND");
-				double speed=CMLib.tracking().getSailingShipSpeed(this);
+				double speed=getShipSpeed();
 				if(speed == 0)
 					speed=0;
 				else
@@ -1071,7 +1097,7 @@ public class GenSailingShip extends StdBoardable
 							||((I instanceof Rideable)&&(((Rideable)I).rideBasis()==Rideable.RIDEABLE_WATER)))
 							{
 								if((!amInTacticalMode())
-								||(I.maxRange() < getTacticalDistance((Rideable)I)))
+								||(I.maxRange() < getTacticalDistance(I)))
 								{
 									msg.source().tell(L("You can't throw @x1 at @x2, it's too far away!",item.name(msg.source()),I.name(msg.source())));
 									return false;
@@ -1162,7 +1188,7 @@ public class GenSailingShip extends StdBoardable
 		final Item I=thisRoom.findItem(rest);
 		if((I instanceof Rideable)&&(I!=this)&&(CMLib.flags().canBeSeenBy(I, sourceM)))
 		{
-			if(!CMLib.combat().mayIAttack(sourceM, this, (Rideable)I))
+			if(!sourceM.mayPhysicallyAttack(I))
 			{
 				sourceM.tell(L("You are not permitted to attack @x1",I.name()));
 				return Boolean.FALSE;
@@ -1182,7 +1208,7 @@ public class GenSailingShip extends StdBoardable
 				if(thisRoom.okMessage(mob, maneuverMsg))
 				{
 					thisRoom.send(mob, maneuverMsg);
-					targetedShip	 = (Rideable)I;
+					targetedShip	 = I;
 					shipCombatRoom	 = thisRoom;
 					if(I instanceof GenSailingShip)
 					{
@@ -1415,7 +1441,7 @@ public class GenSailingShip extends StdBoardable
 			&& (area != null) 
 			&& (courseDirection != -1) )
 			{
-				final int speed=CMLib.tracking().getSailingShipSpeed(this);
+				final int speed=getShipSpeed();
 				for(int s=0;s<speed && (courseDirection>=0);s++)
 				{
 					switch(sail(courseDirection & 127))
@@ -1434,7 +1460,7 @@ public class GenSailingShip extends StdBoardable
 						}
 						else
 						{
-							if((courseDirection & STEER_MASK) == 0)
+							if((courseDirection & COURSE_STEER_MASK) == 0)
 								courseDirection = -1;
 						}
 						break;
@@ -1520,12 +1546,12 @@ public class GenSailingShip extends StdBoardable
 								else
 								{
 									//mob.setRangeToTarget(0);
-									int index = aimings.indexOfFirst(""+w);
+									int index = aimings.indexOfFirst(w);
 									if(index >= 0)
 									{
 										int[] coordsAimedAt = aimings.remove(index).second;
 										boolean wasHit = Arrays.equals(coordsAimedAt, coordsToHit);
-										CMLib.combat().postAttack(mob, this, this.targetedShip, w, wasHit);
+										CMLib.combat().postShipAttack(mob, this, this.targetedShip, w, wasHit);
 									}
 									else
 										notAimed++;
@@ -1786,7 +1812,7 @@ public class GenSailingShip extends StdBoardable
 							}
 						}
 						else
-							CMLib.combat().postWeaponAttackResult(msg.source(), msg.source().riding(), this, weapon, isHit);
+							CMLib.combat().postShipWeaponAttackResult(msg.source(), msg.source().riding(), this, weapon, isHit);
 					}
 				}
 				break;
@@ -1983,7 +2009,7 @@ public class GenSailingShip extends StdBoardable
 		return lowests;
 	}
 
-	protected int getTacticalDistance(Rideable targetShip)
+	protected int getTacticalDistance(PhysicalAgent targetShip)
 	{
 		final int[] fromCoords = this.getMyCoords();
 		final PairList<Item,int[]> coords = this.coordinates;
@@ -2256,7 +2282,7 @@ public class GenSailingShip extends StdBoardable
 		{
 			R.sendOthers(mob, msg);
 			this.sendAreaMessage(msg2, true);
-			this.courseDirection=dir | STEER_MASK;
+			this.courseDirection=dir | COURSE_STEER_MASK;
 			return true;
 		}
 		return false;
@@ -2349,13 +2375,192 @@ public class GenSailingShip extends StdBoardable
 			&& (shipCombatRoom != null);
 	}
 
+	@Override
+	public void setRangeToTarget(int newRange)
+	{
+		//nothing to do atm
+	}
+
+	@Override
+	public int rangeToTarget()
+	{
+		return getTacticalDistance(this.targetedShip);
+	}
+
+	@Override
+	public boolean mayPhysicallyAttack(PhysicalAgent victim)
+	{
+		if(!mayIFight(victim))
+			return false;
+		return CMLib.map().roomLocation(this) == CMLib.map().roomLocation(victim);
+	}
+
+	protected static boolean ownerSecurityCheck(final String ownerName, final MOB mob)
+	{
+		return (ownerName.length()>0)
+			 &&(mob!=null)
+			 &&((mob.Name().equals(ownerName))
+				||(mob.getLiegeID().equals(ownerName)&mob.isMarriedToLiege())
+				||(CMLib.clans().checkClanPrivilege(mob, ownerName, Clan.Function.PROPERTY_OWNER)));
+	}
+
+	@Override
+	public boolean mayIFight(PhysicalAgent victim)
+	{
+		final Area myArea=this.getShipArea();
+		final PhysicalAgent defender=victim;
+		MOB mob = null;
+		if(myArea != null)
+		{
+			final LegalLibrary law=CMLib.law();
+			int legalLevel=0;
+			for(Enumeration<Room> r=myArea.getProperMap();r.hasMoreElements() && (legalLevel<2);)
+			{
+				final Room R=r.nextElement();
+				if((R!=null)&&(R.numInhabitants()>0))
+				{
+					for(Enumeration<MOB> i=R.inhabitants();i.hasMoreElements();)
+					{
+						final MOB M=i.nextElement();
+						if(M != null)
+						{
+							if(mob == null)
+								mob = M;
+							if((legalLevel==0)&&(mob.isMonster())&&(law.doesHaveWeakPriviledgesHere(M, R)))
+							{
+								mob=M;
+								legalLevel=1;
+							}
+							if(M.isPlayer())
+							{
+								if(!mob.isPlayer())
+								{
+									mob=M;
+									legalLevel=0;
+								}
+								if((legalLevel<2) && (law.doesHavePriviledgesHere(M, R)))
+								{
+									legalLevel=2;
+									mob=M;
+								}
+								if((legalLevel<1) && (law.doesHaveWeakPriviledgesHere(M, R)))
+								{
+									legalLevel=1;
+									mob=M;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		if(mob==null)
+			return false;
+		return CMLib.combat().mayIAttackThisVessel(mob, defender);
+	}
+
+	@Override
+	public void makePeace(boolean includePlayerFollowers)
+	{
+		clearTacticalMode();
+	}
+	
+	@Override
+	public PhysicalAgent getCombatant()
+	{
+		return this.targetedShip;
+	}
+
+	@Override
+	public void setCombatant(PhysicalAgent other)
+	{
+		final Room R=(owner() instanceof Room)?(Room)owner():CMLib.map().roomLocation(this);
+		if(other == null)
+			clearTacticalMode();
+		else
+		if(CMLib.flags().isDeepWaterySurfaceRoom(R))
+		{
+			targetedShip = other;
+			if(R != null)
+				shipCombatRoom = R;
+			if(other instanceof Combatant)
+			{
+				if(((Combatant)other).getCombatant()==null)
+					((Combatant)other).setCombatant(this);
+				if(other instanceof GenSailingShip)
+					((GenSailingShip)other).amInTacticalMode(); // now he is in combat
+			}
+			amInTacticalMode(); // now he is in combat
+		}
+	}
+
+	@Override
+	public int getDirectionToTarget()
+	{
+		return this.getDirectionToTarget(this.targetedShip);
+	}
+
+	@Override
+	public int getDirectionFacing()
+	{
+		return this.directionFacing;
+	}
+
+	@Override
+	public boolean isAnchorDown()
+	{
+		return this.anchorDown;
+	}
+
+	@Override
+	public void setAnchorDown(boolean truefalse)
+	{
+		this.anchorDown = truefalse;
+	}
+	
+	@Override
+	public PairList<Weapon,int[]> getSiegeWeaponAimings()
+	{
+		return this.aimings;
+	}
+	
+	@Override
+	public List<Integer> getCurrentCourse()
+	{
+		if((this.courseDirections.size()>0)
+		&&(this.courseDirections.get(0).intValue()>=0))
+		{
+			return this.courseDirections;
+		}
+		return new ArrayList<Integer>(0);
+	}
+
+	@Override
+	public void setCurrentCourse(List<Integer> course)
+	{
+		this.courseDirection=-1;
+		this.courseDirections.clear();
+		for(Integer dirIndex : course)
+		{
+			int dir=dirIndex.intValue();
+			if(dir>=0)
+			{
+				if(courseDirection < 0)
+				{
+					courseDirection = dir;
+					directionFacing = dir;
+				}
+				else
+					this.courseDirections.add(Integer.valueOf(dir));
+			}
+		}
+		this.courseDirections.add(Integer.valueOf(-1));
+	}
+	
 	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES","RESETTIME","RIDEBASIS","MOBSHELD",
 											"AREA","OWNER","PRICE","PUTSTR","MOUNTSTR","DISMOUNTSTR","DEFCLOSED","DEFLOCKED",
 											"EXITNAME"
 										  };
-	private final static String[] MISCCODES = { "DISTANCETOTARGET","DIRECTIONFACING","DIRECTIONTOTARGET","ANCHORDOWN",
-												"COMBATTARGET","AIMINGS","COURSE" };
-	
 	@Override
 	public String getStat(String code)
 	{
@@ -2396,53 +2601,6 @@ public class GenSailingShip extends StdBoardable
 		case 15:
 			return "" + doorName();
 		default:
-			int x=CMParms.indexOf(MISCCODES, code.toUpperCase().trim());
-			if(x>=0)
-			{
-				switch(x)
-				{
-				case 0:
-					return "" + this.getTacticalDistance(this.targetedShip);
-				case 1:
-					return (this.directionFacing < 0) ? "" : CMLib.directions().getDirectionName(this.directionFacing);
-				case 2:
-					return "" + this.getDirectionToTarget(this.targetedShip);
-				case 3:
-					return "" + this.anchorDown;
-				case 4:
-					if(this.targetedShip==null)
-						return "";
-					if(!(owner() instanceof Room))
-						return "";
-					return ((Room)owner).getContextName(targetedShip);
-				case 5:
-				{
-					if(this.aimings.size()==0)
-						return "";
-					StringBuilder str=new StringBuilder("");
-					for(Iterator<Pair<String,int[]>> p=aimings.iterator();p.hasNext();)
-					{
-						Pair<String,int[]> P=p.next();
-						str.append(P.first+"="+P.second[0]+","+P.second[1]).append(" ");
-					}
-					return str.toString();
-				}
-				case 6:
-				{
-					StringBuilder course=new StringBuilder("");
-					if((this.courseDirections.size()>0)
-					&&(this.courseDirections.get(0).intValue()>=0))
-					{
-						for(Integer I : courseDirections)
-						{
-							if(I.intValue()>=0)
-								course.append(CMLib.directions().getDirectionName(I.intValue() & 255)).append(" ");
-						}
-					}
-					return course.toString();
-				}
-				}
-			}
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
 	}
@@ -2502,84 +2660,6 @@ public class GenSailingShip extends StdBoardable
 			this.doorName = val;
 			break;
 		default:
-			int x=CMParms.indexOf(MISCCODES, code.toUpperCase().trim());
-			if(x>=0)
-			{
-				switch(x)
-				{
-				case 0:
-					// set distance to target;
-					break;
-				case 1:
-					this.directionFacing = CMath.s_int(val);
-					break;
-				case 2:
-					// set direction to target
-					break;
-				case 3:
-					this.anchorDown=CMath.s_bool(val);
-					break;
-				case 4:
-				{
-					if(owner() instanceof Room)
-					{
-						final Room R=(Room)owner();
-						if(val.trim().length()==0)
-							this.targetedShip=null;
-						else
-						if(CMLib.flags().isDeepWaterySurfaceRoom(R))
-						{
-							Item I=R.findItem(null, val);
-							int ct=1;
-							while((I!=null)&&(!(I instanceof Rideable))&&(val.indexOf('.')<0))
-								I=R.findItem(null, val+"."+(++ct));
-							if(I instanceof Rideable)
-								this.targetedShip=(Rideable)I;
-							else
-								this.targetedShip=null;
-						}
-					}
-					break;
-				}
-				case 5:
-				{
-					this.aimings.clear();
-					for(String bit : val.split(" "))
-					{
-						int y=bit.indexOf('=');
-						if(y<0)
-							continue;
-						int[] aimedAt=CMParms.parseIntList(bit.substring(y+1),',');
-						aimings.add(new Pair<String,int[]>(bit.substring(0, y),aimedAt));
-					}
-					break;
-				}
-				case 6:
-				{
-					this.courseDirection=-1;
-					this.courseDirections.clear();
-					List<String> dirs=CMParms.parseSpaces(val,true);
-					for(int dirIndex=0;dirIndex<dirs.size();dirIndex++)
-					{
-						final String dirWord=dirs.get(dirIndex);
-						int dir=CMLib.directions().getCompassDirectionCode(dirWord);
-						if(dir>=0)
-						{
-							if(courseDirection < 0)
-							{
-								courseDirection = dir;
-								directionFacing = dir;
-							}
-							else
-								this.courseDirections.add(Integer.valueOf(dir));
-						}
-					}
-					this.courseDirections.add(Integer.valueOf(-1));
-					break;
-				}
-				}
-				return;
-			}
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;
 		}

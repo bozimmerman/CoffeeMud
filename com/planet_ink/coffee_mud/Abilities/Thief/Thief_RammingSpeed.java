@@ -132,10 +132,9 @@ public class Thief_RammingSpeed extends ThiefSkill
 		if(!super.tick(ticking, tickID))
 			return false;
 		final Physical affected=this.affected;
-		if(affected instanceof BoardableShip)
+		if(affected instanceof SailingShip)
 		{
-			String combat=affected.getStat("COMBATTARGET");
-			if((combat.length()==0)
+			if((!((SailingShip)affected).isInCombat())
 			||(CMLib.flags().isFalling(affected)))
 			{
 				unInvoke();
@@ -161,11 +160,11 @@ public class Thief_RammingSpeed extends ThiefSkill
 		if(R==null)
 			return false;
 		
-		final Item target;
+		final SailingShip ship;
 		if((R.getArea() instanceof BoardableShip)
-		&&(((BoardableShip)R.getArea()).getShipItem() instanceof BoardableShip))
+		&&(((BoardableShip)R.getArea()).getShipItem() instanceof SailingShip))
 		{
-			target=((BoardableShip)R.getArea()).getShipItem();
+			ship=(SailingShip)((BoardableShip)R.getArea()).getShipItem();
 		}
 		else
 		{
@@ -173,33 +172,30 @@ public class Thief_RammingSpeed extends ThiefSkill
 			return false;
 		}
 		
-		if(target.fetchEffect(ID())!=null)
+		if(ship.fetchEffect(ID())!=null)
 		{
 			mob.tell(L("Your ship is already prepared for ramming speed!"));
 			return false;
 		}
 		
-		final Room shipR=CMLib.map().roomLocation(target);
-		if((shipR==null)||(!CMLib.flags().isWaterySurfaceRoom(shipR))||(!target.subjectToWearAndTear()))
+		final Room shipR=CMLib.map().roomLocation(ship);
+		if((shipR==null)||(!CMLib.flags().isWaterySurfaceRoom(shipR))||(!ship.subjectToWearAndTear()))
 		{
 			mob.tell(L("You must be on a sailing ship to move to ramming speed!"));
 			return false;
 		}
 		
-		final BoardableShip ship = (BoardableShip)target;
-		final String currentVictim = ship.getStat("COMBATTARGET");
-		if(currentVictim.length()==0)
+		if(!ship.isInCombat())
 		{
 			mob.tell(L("Your ship must be in combat to move to ramming speed!"));
 			return false;
 		}
 		
-		final String directionToTargetStr = ship.getStat("DIRECTIONTOTARGET");
-		final int directionToTarget = CMLib.directions().getDirectionCode(directionToTargetStr);
-		final int directionFacing = CMLib.directions().getDirectionCode(ship.getStat("DIRECTIONFACING"));
+		final int directionToTarget = ship.getDirectionToTarget();
+		final int directionFacing = ship.getDirectionFacing();
 		if(directionToTarget != directionFacing)
 		{
-			mob.tell(L("You ship must be facing @x1, towards your target, to ram at them.",directionToTargetStr));
+			mob.tell(L("You ship must be facing @x1, towards your target, to ram at them.",CMLib.directions().getDirectionName(directionToTarget)));
 			return false;
 		}
 
@@ -209,11 +205,11 @@ public class Thief_RammingSpeed extends ThiefSkill
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_NOISYMOVEMENT,auto?L("<T-NAME> is at full sail!"):L("<S-NAME> prepare(s) <T-NAME> for ramming speed!"));
+			final CMMsg msg=CMClass.getMsg(mob,ship,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_NOISYMOVEMENT,auto?L("<T-NAME> is at full sail!"):L("<S-NAME> prepare(s) <T-NAME> for ramming speed!"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Ability A=beneficialAffect(mob, target, asLevel, 0);
+				Ability A=beneficialAffect(mob, ship, asLevel, 0);
 				if(A!=null)
 					A.setAbilityCode((super.getXLEVELLevel(mob)+2) / 3);
 			}

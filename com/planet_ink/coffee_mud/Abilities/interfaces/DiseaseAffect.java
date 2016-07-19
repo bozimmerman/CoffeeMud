@@ -76,7 +76,7 @@ public interface DiseaseAffect extends HealthCondition
 	/**
 	 * This method returns whether this disease, specifically it's spreading,
 	 * is a malicious act.  Usually that's a NO, but sometimes...
-	 * @return
+	 * @return true if its malicious, false otherwise
 	 */
 	public boolean isMalicious();
 }

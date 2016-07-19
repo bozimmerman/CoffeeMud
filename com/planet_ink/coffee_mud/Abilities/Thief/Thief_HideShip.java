@@ -165,11 +165,11 @@ public class Thief_HideShip extends ThiefSkill
 		if(R==null)
 			return false;
 		
-		final Item target;
+		final SailingShip ship;
 		if((R.getArea() instanceof BoardableShip)
-		&&(((BoardableShip)R.getArea()).getShipItem() instanceof BoardableShip))
+		&&(((BoardableShip)R.getArea()).getShipItem() instanceof SailingShip))
 		{
-			target=((BoardableShip)R.getArea()).getShipItem();
+			ship=(SailingShip)((BoardableShip)R.getArea()).getShipItem();
 		}
 		else
 		{
@@ -177,22 +177,20 @@ public class Thief_HideShip extends ThiefSkill
 			return false;
 		}
 		
-		if(target.fetchEffect(ID())!=null)
+		if(ship.fetchEffect(ID())!=null)
 		{
 			mob.tell(L("Your ship is already hidden!"));
 			return false;
 		}
 		
-		final Room shipR=CMLib.map().roomLocation(target);
-		if((shipR==null)||(!CMLib.flags().isWaterySurfaceRoom(shipR))||(!target.subjectToWearAndTear()))
+		final Room shipR=CMLib.map().roomLocation(ship);
+		if((shipR==null)||(!CMLib.flags().isWaterySurfaceRoom(shipR))||(!ship.subjectToWearAndTear()))
 		{
 			mob.tell(L("You must be on a sailing ship to hide it!"));
 			return false;
 		}
 		
-		final BoardableShip ship = (BoardableShip)target;
-		final String currentVictim = ship.getStat("COMBATTARGET");
-		if(currentVictim.length()>0)
+		if(ship.isInCombat())
 		{
 			mob.tell(L("Your ship must not be in combat to hide it!"));
 			return false;
@@ -205,16 +203,16 @@ public class Thief_HideShip extends ThiefSkill
 
 		if(!success)
 		{
-			beneficialVisualFizzle(mob,target,L("<S-NAME> attempt(s) to hide <T-NAMESELF> in the mists and fail(s)."));
+			beneficialVisualFizzle(mob,ship,L("<S-NAME> attempt(s) to hide <T-NAMESELF> in the mists and fail(s)."));
 		}
 		else
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MSG_OK_ACTION:(CMMsg.MSG_DELICATE_HANDS_ACT|CMMsg.MASK_MOVE),L("<S-NAME> hide(s) <T-NAMESELF> by sailing her into the mists and tall waves on the horizon."));
+			final CMMsg msg=CMClass.getMsg(mob,ship,this,auto?CMMsg.MSG_OK_ACTION:(CMMsg.MSG_DELICATE_HANDS_ACT|CMMsg.MASK_MOVE),L("<S-NAME> hide(s) <T-NAMESELF> by sailing her into the mists and tall waves on the horizon."));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				super.beneficialAffect(mob,target,asLevel,Ability.TICKS_ALMOST_FOREVER);
-				final Thief_HideShip newOne=(Thief_HideShip)target.fetchEffect(ID());
+				super.beneficialAffect(mob,ship,asLevel,Ability.TICKS_ALMOST_FOREVER);
+				final Thief_HideShip newOne=(Thief_HideShip)ship.fetchEffect(ID());
 				if(newOne!=null)
 				{
 					newOne.bonus=getXLEVELLevel(mob)*2;

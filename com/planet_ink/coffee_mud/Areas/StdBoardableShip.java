@@ -2073,12 +2073,4 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 			return ((PrivateProperty)getShipItem()).getTitleID();
 		return null;
 	}
-	
-	@Override
-	public boolean isInCombat()
-	{
-		if( getShipItem() instanceof BoardableShip)
-			return ((BoardableShip)getShipItem()).isInCombat();
-		return false;
-	}
 }

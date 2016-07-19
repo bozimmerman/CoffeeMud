@@ -114,31 +114,28 @@ public class Skill_CombatRepairs extends StdSkill
 	{
 		if(!super.tick(ticking, tickID))
 			return false;
-		if(affected instanceof Item)
+		if(affected instanceof SailingShip)
 		{
-			final Item I=(Item)affected;
+			final SailingShip I=(SailingShip)affected;
 			if(I.subjectToWearAndTear())
 			{
-				final String currentVictim = I.getStat("COMBATTARGET");
-				if(currentVictim.length()==0)
+				final PhysicalAgent currentVictim = I.getCombatant();
+				if(currentVictim == null)
 				{
 					if(I.usesRemaining()<=code)
 						unInvoke();
 					else
 					{
 						I.setUsesRemaining(I.usesRemaining()-5);
-						if(I instanceof BoardableShip)
+						Area A=I.getShipArea();
+						if(A!=null)
 						{
-							Area A=((BoardableShip)I).getShipArea();
-							if(A!=null)
+							for(Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
 							{
-								for(Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
+								final Room R=r.nextElement();
+								if((R!=null)&&(R.numInhabitants()>0))
 								{
-									final Room R=r.nextElement();
-									if((R!=null)&&(R.numInhabitants()>0))
-									{
-										R.showHappens(CMMsg.MSG_OK_ACTION, L("The temporary combat repairs are slowly unraveling."));
-									}
+									R.showHappens(CMMsg.MSG_OK_ACTION, L("The temporary combat repairs are slowly unraveling."));
 								}
 							}
 						}
@@ -165,11 +162,11 @@ public class Skill_CombatRepairs extends StdSkill
 		if(R==null)
 			return false;
 		
-		final Item target;
+		final SailingShip ship;
 		if((R.getArea() instanceof BoardableShip)
-		&&(((BoardableShip)R.getArea()).getShipItem() instanceof BoardableShip))
+		&&(((BoardableShip)R.getArea()).getShipItem() instanceof SailingShip))
 		{
-			target=((BoardableShip)R.getArea()).getShipItem();
+			ship=(SailingShip)((BoardableShip)R.getArea()).getShipItem();
 		}
 		else
 		{
@@ -177,22 +174,20 @@ public class Skill_CombatRepairs extends StdSkill
 			return false;
 		}
 		
-		if(target.fetchEffect(ID())!=null)
+		if(ship.fetchEffect(ID())!=null)
 		{
 			mob.tell(L("Your ship has already undergone temporary combat repairs!"));
 			return false;
 		}
 		
-		Room shipR=CMLib.map().roomLocation(target);
-		if((shipR==null)||(!CMLib.flags().isWaterySurfaceRoom(shipR))||(!target.subjectToWearAndTear()))
+		Room shipR=CMLib.map().roomLocation(ship);
+		if((shipR==null)||(!CMLib.flags().isWaterySurfaceRoom(shipR))||(!ship.subjectToWearAndTear()))
 		{
 			mob.tell(L("You must be on a sailing ship to do combat repairs!"));
 			return false;
 		}
 		
-		BoardableShip ship = (BoardableShip)target;
-		final String currentVictim = ship.getStat("COMBATTARGET");
-		if((currentVictim.length()==0)||(target.usesRemaining()<=0))
+		if((!ship.isInCombat())||(ship.usesRemaining()<=0))
 		{
 			mob.tell(L("Your ship must be in combat to do combat repairs!"));
 			return false;
@@ -204,21 +199,21 @@ public class Skill_CombatRepairs extends StdSkill
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_NOISYMOVEMENT,auto?L("<T-NAME> is suddenly patched up!"):L("<S-NAME> make(s) quick combat repairs to <T-NAME>!"));
+			final CMMsg msg=CMClass.getMsg(mob,ship,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_NOISYMOVEMENT,auto?L("<T-NAME> is suddenly patched up!"):L("<S-NAME> make(s) quick combat repairs to <T-NAME>!"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				int dmg=target.usesRemaining();
+				int dmg=ship.usesRemaining();
 				dmg += 20 + mob.charStats().getStat(CharStats.STAT_DEXTERITY)+(7 * super.getXLEVELLevel(mob));
 				if(dmg > 100)
 					dmg = 100;
-				Ability A=beneficialAffect(mob, target, asLevel, 0);
+				Ability A=beneficialAffect(mob, ship, asLevel, 0);
 				if(A!=null)
 				{
-					A.setAbilityCode(target.usesRemaining());
+					A.setAbilityCode(ship.usesRemaining());
 					A.makeLongLasting();
 				}
-				target.setUsesRemaining(dmg);
+				ship.setUsesRemaining(dmg);
 			}
 		}
 		else

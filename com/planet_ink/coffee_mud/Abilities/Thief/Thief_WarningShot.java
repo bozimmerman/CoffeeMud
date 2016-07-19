@@ -173,13 +173,14 @@ public class Thief_WarningShot extends ThiefSkill
 		if(R==null)
 			return false;
 		if((!(R.getArea() instanceof BoardableShip))
+		||(!(((BoardableShip)R.getArea()).getShipItem() instanceof SailingShip))
 		||((R.domainType()&Room.INDOORS)!=0))
 		{
 			mob.tell(L("You must be on the deck of a ship to fire a warning shot."));
 			return false;
 		}
 		final BoardableShip myShip=(BoardableShip)R.getArea();
-		final Item myShipItem=myShip.getShipItem();
+		final SailingShip myShipItem=(SailingShip)myShip.getShipItem();
 		if((myShipItem==null)
 		||(!(myShipItem.owner() instanceof Room))
 		||(!CMLib.flags().isWateryRoom((Room)myShipItem.owner())))
@@ -192,8 +193,8 @@ public class Thief_WarningShot extends ThiefSkill
 		if(commands.size()>0)
 			targetName=CMParms.combine(commands);
 		else
-			targetName=myShipItem.getStat("COMBATTARGET");
-		Item I=fightR.findItem(null, targetName);
+			targetName=fightR.getContextName(myShipItem.getCombatant());
+		Item I=(targetName.length()>0)?fightR.findItem(null, targetName):null;
 		if((I==null)||(!CMLib.flags().canBeSeenBy(I, mob)))
 		{
 			mob.tell(L("You can't see a ship called '@x1' here.",targetName));
@@ -239,13 +240,14 @@ public class Thief_WarningShot extends ThiefSkill
 				final String iSeeStr;
 				final Item hisShipItem;
 				if((target instanceof BoardableShip)
+				&&(((BoardableShip)target).getShipItem() instanceof SailingShip)
 				&&(hisItems.size()>0))
 				{
 					hisShipItem = ((BoardableShip)target).getShipItem();
-					double mySpeed = CMLib.tracking().getSailingShipSpeed(myShipItem);
+					double mySpeed = myShipItem.getShipSpeed();
 					if(mySpeed <=0)
 						mySpeed = 1.0;
-					double hisSpeed = CMLib.tracking().getSailingShipSpeed(hisShipItem);
+					double hisSpeed = ((SailingShip)hisShipItem).getShipSpeed();
 					if(hisSpeed <=0)
 						hisSpeed = 1.0;
 					double myChancePerRoundToBeHit =  CMath.div(CMath.div(100.0, mySpeed + 1.0), 100.0);

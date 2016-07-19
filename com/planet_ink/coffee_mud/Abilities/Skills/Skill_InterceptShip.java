@@ -127,11 +127,10 @@ public class Skill_InterceptShip extends StdSkill
 			}
 		}
 		else
-		if(affected instanceof Item)
+		if(affected instanceof SailingShip)
 		{
-			final Item ship=(Item)affected;
-			final String currentVictim = ship.getStat("COMBATTARGET");
-			if(currentVictim.length()>0)
+			final SailingShip ship=(SailingShip)affected;
+			if(ship.isInCombat())
 			{
 				unInvoke();
 				return false;
@@ -176,21 +175,21 @@ public class Skill_InterceptShip extends StdSkill
 			return false;
 		Room currentR=null;
 		Rideable myShip=null;
-		if(R.getArea() instanceof BoardableShip)
+		if((R.getArea() instanceof BoardableShip)
+		&&(((BoardableShip)R.getArea()).getShipItem() instanceof SailingShip))
 		{
-			myShip=(Rideable)((BoardableShip)R.getArea()).getShipItem();
+			SailingShip sailShip=(SailingShip)((BoardableShip)R.getArea()).getShipItem();
+			myShip=sailShip;
 			currentR=CMLib.map().roomLocation(myShip);
 			if(currentR!=null)
 			{
-				final String currentVictim = myShip.getStat("COMBATTARGET");
-				if(currentVictim.length()>0)
+				if(sailShip.isInCombat())
 				{
 					mob.tell(L("Your ship must not be in combat to move to intercept speeds!"));
 					return false;
 				}
 				
-				final String anchor = myShip.getStat("ANCHORDOWN");
-				if(CMath.s_bool(anchor))
+				if(sailShip.isAnchorDown())
 				{
 					mob.tell(L("You should probably raise anchor first."));
 					return false;
@@ -222,7 +221,7 @@ public class Skill_InterceptShip extends StdSkill
 		List<Room> trail = null;
 		TrackingFlags flags=CMLib.tracking().newFlags().plus(TrackingFlag.NOAIR)
 														.plus(TrackingFlag.WATERSURFACEORSHOREONLY);
-		final Rideable[] targetShipI=new Rideable[1];
+		final PhysicalAgent[] targetShipI=new PhysicalAgent[1];
 		TrackingLibrary.RFilter destFilter = new TrackingLibrary.RFilter()
 		{
 			@Override
@@ -244,7 +243,7 @@ public class Skill_InterceptShip extends StdSkill
 						||(((Rideable)I).rideBasis()==Rideable.RIDEABLE_WATER))
 					&&(!CMLib.flags().isHidden(I)))
 					{
-						targetShipI[0]=(Rideable)I;
+						targetShipI[0]=I;
 						return false;
 					}
 					return true;
@@ -264,7 +263,7 @@ public class Skill_InterceptShip extends StdSkill
 			return false;
 		}
 		
-		if(!CMLib.combat().mayIAttack(mob, myShip, targetShipI[0]))
+		if(!mob.mayIFight(targetShipI[0]))
 		{
 			mob.tell(L("You may only intercept a potential enemy ship, which '@x1' is not .",targetShipI[0].Name()));
 			return false;

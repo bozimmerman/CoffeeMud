@@ -344,11 +344,11 @@ public class CommonSkill extends StdAbility
 	}
 
 	/**
-	 * 
-	 * @param mob CAN BE NULL!!!
-	 * @param R
-	 * @param buildingI
-	 * @return
+	 * Produce a constructed OR gathered thing.
+	 * @param mob CAN BE NULL!!! the dropper
+	 * @param R the room to drop it in
+	 * @param buildingI the item to drop
+	 * @return true if it dropped
 	 */
 	protected boolean dropAWinner(MOB mob, Room R, Item buildingI)
 	{

@@ -502,7 +502,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	}
 
 	@Override
-	public boolean mayIAttack(final MOB mob, final Rideable attacker, final Rideable defender)
+	public boolean mayIAttackThisVessel(final MOB mob, final PhysicalAgent defender)
 	{
 		final String defenderOwnerName = (defender instanceof PrivateProperty) ? ((PrivateProperty)defender).getOwnerName() : "";  
 		// is this how we determine npc ships?
@@ -535,12 +535,14 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			}
 		}
 		else
+		if(defender instanceof Rideable)
 		{
-			for(int i=0;i<defender.numRiders();i++)
+			final Rideable rideableDefender=(Rideable)defender;
+			for(int i=0;i<rideableDefender.numRiders();i++)
 			{
-				Rider R=defender.fetchRider(i);
+				Rider R=rideableDefender.fetchRider(i);
 				if((R instanceof MOB)
-				&&(!mob.mayIFight((MOB)R)))
+				&&(!mob.mayIFight(R)))
 				{
 					return false;
 				}
@@ -570,7 +572,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	}
 	
 	@Override
-	public boolean postAttack(MOB attacker, Rideable attackingShip, Rideable target, Weapon weapon, boolean wasAHit)
+	public boolean postShipAttack(MOB attacker, PhysicalAgent attackingShip, PhysicalAgent target, Weapon weapon, boolean wasAHit)
 	{
 		// if not in combat, howd you get here? if you are, this MUST happen
 		//(!mayIAttack(attacker,attackingShip, target))
@@ -876,7 +878,9 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			{
 				final Room R=mob.location();
 				final Area A=(R!=null)?R.getArea():null;
-				if((A instanceof BoardableShip)&&(((BoardableShip)A).isInCombat()))
+				if((A instanceof BoardableShip)
+				&&(((BoardableShip)A).getShipItem() instanceof Combatant)
+				&&(((Combatant)((BoardableShip)A).getShipItem()).isInCombat()))
 					return;
 				
 				final boolean isSleeping=(CMLib.flags().isSleeping(mob));
@@ -1015,7 +1019,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	}
 
 	@Override
-	public void postWeaponAttackResult(MOB source, Rideable attacker, Rideable defender, Weapon weapon, boolean success)
+	public void postShipWeaponAttackResult(MOB source, PhysicalAgent attacker, PhysicalAgent defender, Weapon weapon, boolean success)
 	{
 		if(source==null)
 			return;
@@ -1060,8 +1064,8 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 							   msg.othersCode(),
 							   replaceDamageTag(msg.othersMessage(),msg.value(),damageType,CMMsg.View.OTHERS));
 				}
-				if((mayIAttack(source,attacker,defender))
-				&&(CMLib.map().roomLocation(attacker)==room)
+				if(//(mayIAttack(source,attacker,defender))&&
+				(CMLib.map().roomLocation(attacker)==room)
 				&&(CMLib.map().roomLocation(defender)==room))
 					room.send(source,msg);
 			}

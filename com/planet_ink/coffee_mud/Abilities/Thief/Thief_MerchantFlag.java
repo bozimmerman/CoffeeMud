@@ -116,13 +116,12 @@ public class Thief_MerchantFlag extends ThiefSkill
 	{
 		if(!super.tick(ticking, tickID))
 			return false;
-		if(affected instanceof Item)
+		if(affected instanceof SailingShip)
 		{
-			final Item I=(Item)affected;
+			final SailingShip I=(SailingShip)affected;
 			if(I.subjectToWearAndTear())
 			{
-				final String currentVictim = I.getStat("COMBATTARGET");
-				if(currentVictim.length()>0)
+				if(I.isInCombat())
 				{
 					unInvoke();
 				}
@@ -235,11 +234,11 @@ public class Thief_MerchantFlag extends ThiefSkill
 		if(R==null)
 			return false;
 		
-		final Item target;
+		final SailingShip ship;
 		if((R.getArea() instanceof BoardableShip)
-		&&(((BoardableShip)R.getArea()).getShipItem() instanceof BoardableShip))
+		&&(((BoardableShip)R.getArea()).getShipItem() instanceof SailingShip))
 		{
-			target=((BoardableShip)R.getArea()).getShipItem();
+			ship=(SailingShip)((BoardableShip)R.getArea()).getShipItem();
 		}
 		else
 		{
@@ -247,22 +246,20 @@ public class Thief_MerchantFlag extends ThiefSkill
 			return false;
 		}
 		
-		if(target.fetchEffect(ID())!=null)
+		if(ship.fetchEffect(ID())!=null)
 		{
 			mob.tell(L("Your ship is already flying the merchant flag!"));
 			return false;
 		}
 		
-		Room shipR=CMLib.map().roomLocation(target);
-		if((shipR==null)||(!CMLib.flags().isWaterySurfaceRoom(shipR))||(!target.subjectToWearAndTear()))
+		Room shipR=CMLib.map().roomLocation(ship);
+		if((shipR==null)||(!CMLib.flags().isWaterySurfaceRoom(shipR))||(!ship.subjectToWearAndTear()))
 		{
 			mob.tell(L("You must be on a sailing ship to raise the merchant flag!"));
 			return false;
 		}
 		
-		BoardableShip ship = (BoardableShip)target;
-		final String currentVictim = ship.getStat("COMBATTARGET");
-		if(currentVictim.length()>0)
+		if(ship.isInCombat())
 		{
 			mob.tell(L("Your ship must not be in combat to raise the merchant flag!"));
 			return false;
@@ -286,18 +283,18 @@ public class Thief_MerchantFlag extends ThiefSkill
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_NOISYMOVEMENT,auto?L("<T-NAME> is protected from attack!"):L("<S-NAME> raise(s) an innocent countries merchant flag above <T-NAME>!"));
+			final CMMsg msg=CMClass.getMsg(mob,ship,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_NOISYMOVEMENT,auto?L("<T-NAME> is protected from attack!"):L("<S-NAME> raise(s) an innocent countries merchant flag above <T-NAME>!"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Ability A=beneficialAffect(mob, target, asLevel, 0);
+				Ability A=beneficialAffect(mob, ship, asLevel, 0);
 				if(A!=null)
 				{
 					lastFlag = (TimeClock)now.copyOf();
 					A.setAbilityCode(adjustedLevel(mob,asLevel));
 					A.makeLongLasting();
 					if(CMLib.flags().isWaterySurfaceRoom(shipR))
-						R.showHappens(CMMsg.MSG_OK_VISUAL, L("@x1 raise(s) its Merchant Flag.",target.name()));
+						R.showHappens(CMMsg.MSG_OK_VISUAL, L("@x1 raise(s) its Merchant Flag.",ship.name()));
 				}
 			}
 		}

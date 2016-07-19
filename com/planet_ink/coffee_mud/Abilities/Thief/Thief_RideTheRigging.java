@@ -94,13 +94,14 @@ public class Thief_RideTheRigging extends ThiefSkill
 		if(R==null)
 			return false;
 		if((!(R.getArea() instanceof BoardableShip))
+		||(!(((BoardableShip)R.getArea()).getShipItem() instanceof SailingShip))
 		||((R.domainType()&Room.INDOORS)!=0))
 		{
 			mob.tell(L("You must be on the deck of a ship to ride the rigging to another ship."));
 			return false;
 		}
 		final BoardableShip myShip=(BoardableShip)R.getArea();
-		final Item myShipItem=myShip.getShipItem();
+		final SailingShip myShipItem=(SailingShip)myShip.getShipItem();
 		if((myShipItem==null)
 		||(!(myShipItem.owner() instanceof Room))
 		||(!CMLib.flags().isWateryRoom((Room)myShipItem.owner())))
@@ -109,18 +110,13 @@ public class Thief_RideTheRigging extends ThiefSkill
 			return false;
 		}
 		final Room fightR=(Room)myShipItem.owner();
-		String targetContextName=myShipItem.getStat("COMBATTARGET");
-		final Item targetShipItem;
-		if(targetContextName.length()==0)
-			targetShipItem=fightR.findItem(targetContextName);
-		else
-			targetShipItem=null;
-		if(!(targetShipItem instanceof BoardableShip))
+		final PhysicalAgent targetShipItem=myShipItem.getCombatant();
+		if(!(targetShipItem instanceof SailingShip))
 		{
 			mob.tell(L("Your ship must be targeting another ship to ride the rigging to it."));
 			return false;
 		}
-		int distance=CMath.s_int(myShipItem.getStat("DISTANCETOTARGET"));
+		int distance=myShipItem.rangeToTarget();
 		if((distance<0)&&(!auto))
 		{
 			mob.tell(L("Your ship needs to get closer to the target to ride the rigging."));

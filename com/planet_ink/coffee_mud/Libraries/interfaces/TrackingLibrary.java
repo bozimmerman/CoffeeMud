@@ -75,7 +75,6 @@ public interface TrackingLibrary extends CMLibrary
 	public TrackingFlags newFlags();
 	public Room getCalculatedAdjacentRoom(PairVector<Room,int[]> rooms, Room R, int dir);
 	public PairVector<Room,int[]> buildGridList(Room room, String ownerName, int maxDepth);
-	public int getSailingShipSpeed(Item I);
 
 	public static interface RFilter
 	{

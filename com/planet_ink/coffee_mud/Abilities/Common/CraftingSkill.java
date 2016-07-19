@@ -699,7 +699,7 @@ public class CraftingSkill extends GatheringSkill
 	 * @param asLevel -1, unless being auto-invoked, when it is the level to invoke it at.
 	 * @param autoGenerate 0, unless auto generation, in which case it's a RawMaterial Resource Code number
 	 * @param forceLevels true to override other level modifiers on the items to force the Stock level.
-	 * @param crafted when autoGenerate > 0, this is where the auto generated crafted items are placed
+	 * @param crafted when autoGenerate &gt; 0, this is where the auto generated crafted items are placed
 	 * @return whether the skill successfully invoked.
 	 */
 	protected boolean autoGenInvoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel, int autoGenerate, boolean forceLevels, List<Item> crafted)

@@ -175,8 +175,7 @@ public class Trawling extends GatheringSkill
 		//if((mob.riding()!=null)&&(mob.riding().rideBasis()==Rideable.RIDEABLE_WATER))
 		//	fishRoom=R;
 		//else
-		if((R!=null)
-		&&(R.getArea() instanceof BoardableShip)
+		if((R.getArea() instanceof BoardableShip)
 		&&((R.domainType()&Room.INDOORS)==0))
 			fishRoom=CMLib.map().roomLocation(((BoardableShip)R.getArea()).getShipItem());
 		

@@ -177,7 +177,8 @@ public class StdCommand implements Command
 				if(A instanceof BoardableShip)
 				{
 					final BoardableShip ship = (BoardableShip)A;
-					if(ship.isInCombat())
+					if((ship.getShipItem() instanceof Combatant)
+					&&(((Combatant)ship.getShipItem()).isInCombat()))
 						return combatActionsCost(mob,cmds);
 				}
 			}

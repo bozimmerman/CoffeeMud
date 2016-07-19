@@ -244,17 +244,16 @@ public interface CombatLibrary extends CMLibrary
 	 * @param wasAHit TODO
 	 * @return true if the attack succeeded, false if it failed
 	 */
-	public boolean postAttack(MOB attacker, Rideable attackingShip, Rideable target, Weapon weapon, boolean wasAHit);
+	public boolean postShipAttack(MOB attacker, PhysicalAgent attackingShip, PhysicalAgent target, Weapon weapon, boolean wasAHit);
 	
 	/**
 	 * Returns whether the given attacking mob, on the given attacker ship, may attack the people and property
 	 * of the given defending ship.  
 	 * @param mob the agent attacker
-	 * @param attacker the attacking ship
 	 * @param defender the attacked ship
 	 * @return true if an attack is authorized, false otherwise
 	 */
-	public boolean mayIAttack(final MOB mob, final Rideable attacker, final Rideable defender);
+	public boolean mayIAttackThisVessel(final MOB mob, final PhysicalAgent defender);
 	
 	/**
 	 * Posts a message of healing from the given healer to the given
@@ -345,7 +344,7 @@ public interface CombatLibrary extends CMLibrary
 	 * @param item the weapon used
 	 * @param success true if it was a hit with damage, false if it was a miss
 	 */
-	public void postWeaponAttackResult(MOB source, Rideable attacker, Rideable defender, Weapon weapon, boolean success);
+	public void postShipWeaponAttackResult(MOB source, PhysicalAgent attacker, PhysicalAgent defender, Weapon weapon, boolean success);
 	
 	/**
 	 * This method handles an item taking damage.  If the item is subject

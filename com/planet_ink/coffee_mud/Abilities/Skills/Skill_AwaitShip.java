@@ -120,7 +120,7 @@ public class Skill_AwaitShip extends StdSkill
 		if(!super.invoke(mob, commands, givenTarget, auto, asLevel))
 			return false;
 		
-		Rideable targetShip=null;
+		SailingShip targetShip=null;
 		boolean success=proficiencyCheck(mob,0,auto);
 		Room targetR = null;
 		List<Room> trail = null;
@@ -128,7 +128,7 @@ public class Skill_AwaitShip extends StdSkill
 		{
 			TrackingFlags flags=CMLib.tracking().newFlags().plus(TrackingFlag.NOAIR)
 															.plus(TrackingFlag.WATERSURFACEORSHOREONLY);
-			final Rideable[] targetShipI=new Rideable[1];
+			final SailingShip[] targetShipI=new SailingShip[1];
 			TrackingLibrary.RFilter destFilter = new TrackingLibrary.RFilter()
 			{
 				@Override
@@ -146,11 +146,11 @@ public class Skill_AwaitShip extends StdSkill
 						for(Enumeration<Item> i=R.items();i.hasMoreElements();)
 						{
 							final Item I=i.nextElement();
-							if((I instanceof BoardableShip)
+							if((I instanceof SailingShip)
 							&&(I instanceof PrivateProperty)
 							&&(CMLib.law().doesHavePrivilegesWith(mob, (PrivateProperty)I)))
 							{
-								targetShipI[0]=(Rideable)I;
+								targetShipI[0]=(SailingShip)I;
 								return false;
 							}
 						}
@@ -170,7 +170,7 @@ public class Skill_AwaitShip extends StdSkill
 			else
 			{
 				targetShip = targetShipI[0];
-				if(targetShip.getStat("COMBATTARGET").length()>0)
+				if(targetShip.isInCombat())
 				{
 					success=false;
 				}
@@ -178,29 +178,25 @@ public class Skill_AwaitShip extends StdSkill
 			
 		}
 		
-		if(success && (trail!=null) && (targetShip instanceof BoardableShip))
+		if(success && (trail!=null) && (targetShip != null))
 		{
 			invoker=mob;
 			final CMMsg msg=CMClass.getMsg(mob,targetShip,this,CMMsg.MSG_QUIETMOVEMENT|(auto?CMMsg.MASK_ALWAYS:0),auto?"":L("<S-NAME> wait(s) for the scheduled arrival of <T-NAME>."));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				StringBuilder courseStr=new StringBuilder("");
+				List<Integer> newCourse=new ArrayList<Integer>();
 				Room room=trail.get(trail.size()-1);
 				for(int i=0;i<trail.size();i++)
 				{
 					Room nextRoom=trail.get(i);
 					int dir=CMLib.map().getRoomDir(room, nextRoom);
 					if(dir >= 0)
-					{
-						courseStr.append(CMLib.directions().getDirectionName(dir));
-						if(i>0)
-							courseStr.append(" ");
-					}
+						newCourse.add(Integer.valueOf(dir));
 					room=nextRoom;
 				}
-				targetShip.setStat("ANCHORDOWN", "false");
-				targetShip.setStat("COURSE", courseStr.toString());
+				targetShip.setAnchorDown(false);
+				targetShip.setCurrentCourse(newCourse);
 			}
 		}
 		else

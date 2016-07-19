@@ -137,7 +137,7 @@ public class Thief_MastShot extends ThiefSkill
 		else
 		if(affected instanceof AmmunitionWeapon)
 		{
-			if((msg.source().riding() instanceof BoardableShip)
+			if((msg.source().riding() instanceof SailingShip)
 			&&(msg.tool()==affected)
 			&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 			&&(msg.target() instanceof Rideable)
@@ -181,7 +181,7 @@ public class Thief_MastShot extends ThiefSkill
 				}
 				else
 				{
-					CMLib.combat().postWeaponAttackResult(msg.source(), msg.source().riding(), (Rideable)msg.target(), (Weapon)affected, false);
+					CMLib.combat().postShipWeaponAttackResult(msg.source(), (SailingShip)msg.source().riding(), (Rideable)msg.target(), (Weapon)affected, false);
 					if(this.canBeUninvoked())
 						unInvoke();
 					return false;
@@ -198,13 +198,14 @@ public class Thief_MastShot extends ThiefSkill
 		if(R==null)
 			return false;
 		if((!(R.getArea() instanceof BoardableShip))
+		||(!(((BoardableShip)R.getArea()).getShipItem() instanceof SailingShip))
 		||((R.domainType()&Room.INDOORS)!=0))
 		{
 			mob.tell(L("You must be on the deck of a ship to fire a mast shot."));
 			return false;
 		}
 		final BoardableShip myShip=(BoardableShip)R.getArea();
-		final Item myShipItem=myShip.getShipItem();
+		final SailingShip myShipItem=(SailingShip)myShip.getShipItem();
 		if((myShipItem==null)
 		||(!(myShipItem.owner() instanceof Room))
 		||(!CMLib.flags().isWateryRoom((Room)myShipItem.owner())))
@@ -212,19 +213,17 @@ public class Thief_MastShot extends ThiefSkill
 			mob.tell(L("Your ship must be at sea to fire a mast shot."));
 			return false;
 		}
-		final Room fightR=(Room)myShipItem.owner();
-		BoardableShip enemyShip=null;
-		String targetShipName=myShipItem.getStat("COMBATTARGET");
-		if(targetShipName.length()>0)
+		SailingShip enemyShip=null;
+		PhysicalAgent combatant=myShipItem.getCombatant();
+		if(combatant != null)
 		{
-			Item I=fightR.findItem(null, targetShipName);
-			if(I instanceof BoardableShip)
-				enemyShip=(BoardableShip)I;
+			if(combatant instanceof SailingShip)
+				enemyShip=(SailingShip)combatant;
 		}
 		
 		if(enemyShip == null)
 		{
-			mob.tell(L("Your ship must be in combat to fire a mast shot."));
+			mob.tell(L("Your ship must be in combat with another big ship to fire a mast shot."));
 			return false;
 		}
 

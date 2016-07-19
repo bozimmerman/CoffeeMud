@@ -891,26 +891,7 @@ public class StdMOB implements MOB
 		final int num = charStats.numClasses();
 		for (int c = 0; c < num; c++)
 			charStats.getMyClass(c).affectCharStats(this, charStats);
-		try
-		{
-			if(this.baseCharStats == charStats)
-			{
-				Log.errOut("***OMG!!!!!***");
-				this.baseCharStats=(CharStats)CMClass.getCommon("DefaultCharStats");
-			}
-			charStats.getMyRace().affectCharStats(this, charStats);
-		}
-		catch(IllegalArgumentException x) //TODO: DELME
-		{
-			Log.errOut("Char Stat Out of Range: "+Name()+": "+CMLib.map().getDescriptiveExtendedRoomID(location()));
-			Log.errOut(x);
-			if(isMonster())
-			{
-				Log.errOut("It's a mob -- killing it.");
-				destroy();
-				return;
-			}
-		}
+		charStats.getMyRace().affectCharStats(this, charStats);
 		baseCharStats.getMyRace().agingAffects(this, baseCharStats, charStats);
 		eachEffect(affectCharStats);
 		eachItem(affectCharStats);
@@ -1428,22 +1409,34 @@ public class StdMOB implements MOB
 	}
 
 	@Override
-	public boolean mayIFight(final MOB mob)
+	public boolean mayIFight(final PhysicalAgent victim)
 	{
-		if (mob == null)
+		if (!(victim instanceof MOB))
+		{
+			if(victim instanceof Rideable)
+				return CMLib.combat().mayIAttackThisVessel(this, victim);
 			return false;
-		if (isEitherOfUsDead(mob))
+		}
+		if (isEitherOfUsDead((MOB)victim))
 			return false;
-		return isPermissableToFight(mob);
+		return isPermissableToFight((MOB)victim);
 	}
 
 	@Override
-	public boolean mayPhysicallyAttack(MOB mob)
+	public boolean mayPhysicallyAttack(final PhysicalAgent victim)
 	{
-		if ((!mayIFight(mob))
-		|| (location() != mob.location())
-		|| (!CMLib.flags().isInTheGame(this, false))
-		|| (!CMLib.flags().isInTheGame(mob, false)))
+		if (!mayIFight(victim))
+			return false;
+		if(victim instanceof MOB)
+		{
+			if(location() != ((MOB)victim).location())
+				return false;
+		}
+		else
+		if(location() != CMLib.map().roomLocation(victim))
+			return false;
+		if((!CMLib.flags().isInTheGame(this, false))
+		|| (!CMLib.flags().isInTheGame(victim, false)))
 			return false;
 		return true;
 	}
@@ -1466,6 +1459,12 @@ public class StdMOB implements MOB
 		return atRange;
 	}
 
+	@Override
+	public int getDirectionToTarget()
+	{
+		return -1;
+	}
+	
 	@Override
 	public int maxRange()
 	{
@@ -1525,9 +1524,22 @@ public class StdMOB implements MOB
 	}
 
 	@Override
-	public void setVictim(MOB mob)
+	public PhysicalAgent getCombatant()
 	{
-		if (mob == null)
+		return getVictim();
+	}
+
+	@Override
+	public void setCombatant(PhysicalAgent other)
+	{
+		if((other == null)||(other instanceof MOB))
+			setVictim((MOB)other);
+	}
+
+	@Override
+	public void setVictim(MOB other)
+	{
+		if (other == null)
 		{
 			setRangeToTarget(-1);
 			if (victim != null)
@@ -1538,19 +1550,19 @@ public class StdMOB implements MOB
 				}
 			}
 		}
-		if (victim == mob)
+		if (victim == other)
 			return;
-		if (mob == this)
+		if (other == this)
 			return;
-		victim = mob;
+		victim = other;
 		recoverPhyStats();
 		recoverCharStats();
 		recoverMaxState();
-		if (mob != null)
+		if (other != null)
 		{
-			if ((mob.location() == null) || (location() == null) || (mob.amDead()) || (amDead())
-			|| (mob.location() != location()) || (!location().isInhabitant(this))
-			|| (!location().isInhabitant(mob)))
+			if ((other.location() == null) || (location() == null) || (other.amDead()) || (amDead())
+			|| (other.location() != location()) || (!location().isInhabitant(this))
+			|| (!location().isInhabitant(other)))
 			{
 				if (victim != null)
 					victim.setVictim(null);
@@ -1562,15 +1574,15 @@ public class StdMOB implements MOB
 				if (Log.combatChannelOn())
 				{
 					final Item I = fetchWieldedItem();
-					final Item VI = mob.fetchWieldedItem();
+					final Item VI = other.fetchWieldedItem();
 					Log.combatOut("STRT", Name() + ":" + phyStats().getCombatStats() + ":"
-							+ curState().getCombatStats() + ":" + ((I == null) ? "null" : I.name()) + ":" + mob.Name()
-							+ ":" + mob.phyStats().getCombatStats() + ":" + mob.curState().getCombatStats() + ":"
+							+ curState().getCombatStats() + ":" + ((I == null) ? "null" : I.name()) + ":" + other.Name()
+							+ ":" + other.phyStats().getCombatStats() + ":" + other.curState().getCombatStats() + ":"
 							+ ((VI == null) ? "null" : VI.name()));
 				}
-				mob.recoverCharStats();
-				mob.recoverPhyStats();
-				mob.recoverMaxState();
+				other.recoverCharStats();
+				other.recoverPhyStats();
+				other.recoverMaxState();
 			}
 		}
 	}

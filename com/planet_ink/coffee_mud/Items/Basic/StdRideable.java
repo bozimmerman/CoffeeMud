@@ -840,7 +840,7 @@ public class StdRideable extends StdContainer implements Rideable
 						}
 					}
 					else
-						CMLib.combat().postWeaponAttackResult(msg.source(), msg.source().riding(), this, weapon, isHit);
+						CMLib.combat().postShipWeaponAttackResult(msg.source(), msg.source().riding(), this, weapon, isHit);
 				}
 			}
 			break;

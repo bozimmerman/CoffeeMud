@@ -269,20 +269,10 @@ public class Undead extends StdRace
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		int statDex = 0;
-		try
+		for(int statDex=0;statDex<UNDEAD_SAVE_STATS.length;statDex++)
 		{
-			for(;statDex<UNDEAD_SAVE_STATS.length;statDex++)
-			{
-				final int stat = UNDEAD_SAVE_STATS[statDex];
-				affectableStats.setStat(stat,affectableStats.getStat(stat)+100);
-			}
-		}
-		catch(IllegalArgumentException x) //TODO: DELME
-		{
-			int oldStat = affectableStats.getStat(UNDEAD_SAVE_STATS[statDex]);
-			Log.errOut("Failed to bump stat "+CharStats.CODES.NAME(UNDEAD_SAVE_STATS[statDex])+" from "+oldStat+"/"+affectedMOB.baseCharStats().getStat(UNDEAD_SAVE_STATS[statDex]));
-			throw x;
+			final int stat = UNDEAD_SAVE_STATS[statDex];
+			affectableStats.setStat(stat,affectableStats.getStat(stat)+100);
 		}
 	}
 

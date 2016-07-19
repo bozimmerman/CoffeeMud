@@ -114,18 +114,19 @@ public class Thief_SilentRunning extends ThiefSkill
 		final Physical affected=this.affected;
 		final MOB invoker = invoker();
 		if((msg.source().riding()==affected)
-		&&(affected instanceof BoardableShip)
+		&&(affected instanceof SailingShip)
 		&&(msg.source().isMonster())
 		&&(msg.source().Name().equals(affected.Name())))
 		{
-			if((affected.getStat("COMBATTARGET").length()>0)
+			final SailingShip affShip = (SailingShip)affected;
+			if((affShip.isInCombat())
 			||(msg.sourceMinor()==CMMsg.TYP_ADVANCE))
 			{
 				unInvoke();
 				affected.recoverPhyStats();
 			}
 			if((msg.sourceMinor()==CMMsg.TYP_ENTER)
-			&&(affected.getStat("COURSE").length()==0))
+			&&(affShip.getCurrentCourse().size()==0))
 			{
 				final Ability A;
 				if((invoker != null)&&(invoker.fetchAbility(ID())!=null))
@@ -141,7 +142,7 @@ public class Thief_SilentRunning extends ThiefSkill
 					@Override
 					public void run()
 					{
-						if((A!=null)&&(invoker!=null)&&(affected.getStat("COMBATTARGET").length()==0))
+						if((A!=null)&&(invoker!=null)&&(!affShip.isInCombat()))
 							A.invoke(invoker, affected, false, 0);
 						unInVokeMe.unInvoke();
 						affected.delEffect(unInVokeMe);
@@ -179,36 +180,34 @@ public class Thief_SilentRunning extends ThiefSkill
 		if(R==null)
 			return false;
 		
-		final Item target;
+		final SailingShip ship;
 		if((R.getArea() instanceof BoardableShip)
-		&&(((BoardableShip)R.getArea()).getShipItem() instanceof BoardableShip))
+		&&(((BoardableShip)R.getArea()).getShipItem() instanceof SailingShip))
 		{
-			target=((BoardableShip)R.getArea()).getShipItem();
+			ship=(SailingShip)((BoardableShip)R.getArea()).getShipItem();
 		}
 		else
 		{
-			mob.tell(L("You must be on a ship to hide it!"));
+			mob.tell(L("You must be on a big sailing ship to rig it for silent running!"));
 			return false;
 		}
 		
-		if(target.fetchEffect(ID())!=null)
+		if(ship.fetchEffect(ID())!=null)
 		{
-			mob.tell(L("Your ship is already hidden!"));
+			mob.tell(L("Your ship is already rigged for silent running!"));
 			return false;
 		}
 		
-		final Room shipR=CMLib.map().roomLocation(target);
-		if((shipR==null)||(!CMLib.flags().isWaterySurfaceRoom(shipR))||(!target.subjectToWearAndTear()))
+		final Room shipR=CMLib.map().roomLocation(ship);
+		if((shipR==null)||(!CMLib.flags().isWaterySurfaceRoom(shipR))||(!ship.subjectToWearAndTear()))
 		{
-			mob.tell(L("You must be on a sailing ship to hide it!"));
+			mob.tell(L("You must be on a sailing ship to rig it for silent running!"));
 			return false;
 		}
 		
-		final BoardableShip ship = (BoardableShip)target;
-		final String currentVictim = ship.getStat("COMBATTARGET");
-		if(currentVictim.length()>0)
+		if(ship.isInCombat())
 		{
-			mob.tell(L("Your ship must not be in combat to hide it!"));
+			mob.tell(L("Your ship must not be in combat to rig for silent running!"));
 			return false;
 		}
 		
@@ -235,16 +234,16 @@ public class Thief_SilentRunning extends ThiefSkill
 
 		if(!success)
 		{
-			beneficialVisualFizzle(mob,target,L("<S-NAME> attempt(s) to rig <T-NAMESELF> for silent running and fail(s)."));
+			beneficialVisualFizzle(mob,ship,L("<S-NAME> attempt(s) to rig <T-NAMESELF> for silent running and fail(s)."));
 		}
 		else
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MSG_OK_ACTION:(CMMsg.MSG_DELICATE_HANDS_ACT|CMMsg.MASK_MOVE),L("<S-NAME> rig(s) <T-NAMESELF> for silent running."));
+			final CMMsg msg=CMClass.getMsg(mob,ship,this,auto?CMMsg.MSG_OK_ACTION:(CMMsg.MSG_DELICATE_HANDS_ACT|CMMsg.MASK_MOVE),L("<S-NAME> rig(s) <T-NAMESELF> for silent running."));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				super.beneficialAffect(mob,target,asLevel,Ability.TICKS_ALMOST_FOREVER);
-				target.recoverPhyStats();
+				super.beneficialAffect(mob,ship,asLevel,Ability.TICKS_ALMOST_FOREVER);
+				ship.recoverPhyStats();
 				if(direction > 0)
 				{
 					String courseMsgStr="COURSE "+course.toString();
