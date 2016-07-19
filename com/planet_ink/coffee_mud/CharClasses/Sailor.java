@@ -191,8 +191,7 @@ public class Sailor extends StdCharClass
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Siegecraft",false);
 		
-		//Weapon proficiency with Siege Weapons
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Skill_SpecializationSiegecraft",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Specialization_SiegeWeapon",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Fighter_WaterTactics",true);
 		
 		/*-Character can hold his/her breath longer before starting to drown (1 tick/5 levels).  Failed skill 

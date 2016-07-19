@@ -192,6 +192,9 @@ HELP_=<EXPERTISE>The ability to do more damage when using a bashing-type flail-c
 FLAILEDFOCUS@x1=Flailed Focus @x2,10,X4,-BASECLASS +Fighter -SKILL +Specialization_FlailedWeapon,-MAXCLASSLEVEL +>={27+(5*@x1)},+WIS {10+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability for fighters to wield higher level flail-class weapons.
 
+SIEGEBASH@x1=Siege Bashing @x2,10,X3,-SKILL +Specialization_SiegeWeapon,-MAXCLASSLEVEL +>={27+(5*@x1)},+INT {15+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>The ability to do more damage when using a siege weapon.
+
 HAMMERSTRIKE@x1=Hammer Striking @x2,10,LEVEL,-SKILL +Specialization_Hammer,-MAXCLASSLEVEL +>={24+(5*@x1)},+DEX {15+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to hit more often when using a hammer.
 

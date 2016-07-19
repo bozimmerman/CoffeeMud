@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Abilities.Specializations;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -19,7 +20,7 @@ import java.util.*;
 
 
 /*
-   Copyright 2014-2016 Bo Zimmerman
+   Copyright 2001-2016 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -33,15 +34,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Specialization_Bow extends Specialization_Weapon
+public class Specialization_SiegeWeapon extends StdAbility
 {
 	@Override
 	public String ID()
 	{
-		return "Specialization_Bow";
+		return "Specialization_SiegeWeapon";
 	}
 
-	private final static String	localizedName	= CMLib.lang().L("Bow Specialization");
+	private final static String	localizedName	= CMLib.lang().L("Siege Weapon Specialization");
 
 	@Override
 	public String name()
@@ -49,21 +50,70 @@ public class Specialization_Bow extends Specialization_Weapon
 		return localizedName;
 	}
 
-	public Specialization_Bow()
+	@Override
+	public String displayText()
 	{
-		super();
-		weaponClass=Weapon.CLASS_RANGED;
-		secondWeaponClass=-1;
+		return "";
 	}
 
 	@Override
-	protected boolean isWeaponMatch(Weapon W)
+	protected int canAffectCode()
 	{
-		if(!super.isWeaponMatch(W))
-			return false;
-		if(!(W instanceof AmmunitionWeapon))
-			return false;
-		final String ammo=((AmmunitionWeapon)W).ammunitionType();
-		return (ammo!=null) && (ammo.equalsIgnoreCase("arrow")||ammo.equalsIgnoreCase("arrows"));
+		return CAN_MOBS;
 	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_SELF;
+	}
+
+	@Override
+	public boolean isAutoInvoked()
+	{
+		return true;
+	}
+
+	@Override
+	public boolean canBeUninvoked()
+	{
+		return false;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL | Ability.DOMAIN_WEAPON_USE;
+	}
+
+	@Override
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
+	{
+		super.executeMsg(myHost, msg);
+	}
+
+	@Override
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
+	{
+		if(!super.okMessage(myHost,msg))
+			return false;
+
+		if((msg.targetMinor()==CMMsg.TYP_DAMAGE)
+		&&(msg.tool() instanceof AmmunitionWeapon)
+		&&(CMLib.combat().isAShipSiegeWeapon((Item)msg.tool()))
+		&&(affected instanceof MOB)
+		&&(((MOB)affected).location()==CMLib.map().roomLocation(msg.tool()))
+		&&(msg.value()>0))
+		{
+			msg.setValue(msg.value()+2+(2*getX3Level((MOB)affected)));
+		}
+		return true;
+	}
+
 }

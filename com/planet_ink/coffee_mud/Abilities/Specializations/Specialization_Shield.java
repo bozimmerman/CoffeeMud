@@ -35,9 +35,20 @@ import java.util.*;
 */
 public class Specialization_Shield extends Specialization_Weapon
 {
-	@Override public String ID() { return "Specialization_Shield"; }
-	private final static String localizedName = CMLib.lang().L("Shield Specialization");
-	@Override public String name() { return localizedName; }
+	@Override
+	public String ID()
+	{
+		return "Specialization_Shield";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Shield Specialization");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	public Specialization_Shield()
 	{
 		super();
@@ -49,6 +60,7 @@ public class Specialization_Shield extends Specialization_Weapon
 	{
 		return getXLEVELLevel(mob);
 	}
+
 	@Override
 	protected boolean isWeaponMatch(Weapon W)
 	{
@@ -66,5 +78,4 @@ public class Specialization_Shield extends Specialization_Weapon
 	{
 		return I instanceof Shield;
 	}
-
 }
