@@ -1349,7 +1349,9 @@ public class StdMOB implements MOB
 			}
 			return true;
 		}
-		catch (final NullPointerException n){}
+		catch (final NullPointerException n)
+		{
+		}
 		return false;
 	}
 
@@ -3572,11 +3574,11 @@ public class StdMOB implements MOB
 				{
 					if (!CMLib.flags().canBreathe(this))
 					{
-						final MOB killerM = CMLib.combat().getBreatheKiller(this);
-						R.show(this, this, CMMsg.MSG_OK_VISUAL, L("^Z<S-NAME> can't breathe!^.^?") + CMLib.protocol().msp("choke.wav", 10));
-						CMLib.combat().postDamage(killerM, this, null,
-								(int) Math.round(CMath.mul(Math.random(), basePhyStats().level() + 2)),
-								CMMsg.MASK_ALWAYS | CMMsg.TYP_WATER, -1, null);
+						final MOB killerM = CMLib.combat().getBreatheKiller(this); //R.show(this, this, CMMsg.MSG_OK_VISUAL, 
+						CMLib.combat().postDamage(killerM, this, this,
+												(int) Math.round(CMath.mul(Math.random(), basePhyStats().level() + 2)),
+												CMMsg.MASK_ALWAYS | CMMsg.TYP_WATER, -1, 
+												L("^Z<T-NAME> can't breathe!^.^?") + CMLib.protocol().msp("choke.wav", 10));
 					}
 					else
 					if(!CMLib.flags().canBreatheHere(this,R))
@@ -3584,18 +3586,23 @@ public class StdMOB implements MOB
 						final int atmo=R.getAtmosphere();
 						if((atmo&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID)
 						{
-							final MOB killerM = CMLib.combat().getBreatheKiller(this);
-							R.show(this, this, CMMsg.MSG_OK_VISUAL, L("^Z<S-NAME> <S-IS-ARE> drowning in @x1!^.^?",RawMaterial.CODES.NAME(atmo).toLowerCase()) + CMLib.protocol().msp("choke.wav", 10));
-							CMLib.combat().postDamage(killerM, this, null, (int) Math.round(CMath.mul(Math.random(), basePhyStats().level() + 2)), CMMsg.MASK_ALWAYS | CMMsg.TYP_WATER, -1, null);
+							final MOB killerM = CMLib.combat().getBreatheKiller(this); //R.show(this, this, CMMsg.MSG_OK_VISUAL, );
+							CMLib.combat().postDamage(killerM, this, this, 
+													(int) Math.round(CMath.mul(Math.random(), basePhyStats().level() + 2)), 
+													CMMsg.MASK_ALWAYS | CMMsg.TYP_WATER, -1, 
+													L("^Z<S-NAME> <S-IS-ARE> drowning in @x1!^.^?",RawMaterial.CODES.NAME(atmo).toLowerCase()) + CMLib.protocol().msp("choke.wav", 10));
 						}
 						else
 						{
+							final String msgStr;
 							if(atmo == 0)
-								R.show(this, this, CMMsg.MSG_OK_VISUAL, L("^Z<S-NAME> can't breathe!^.^?") + CMLib.protocol().msp("choke.wav", 10));
+								msgStr=L("^Z<S-NAME> can't breathe!^.^?") + CMLib.protocol().msp("choke.wav", 10);
 							else
-								R.show(this, this, CMMsg.MSG_OK_VISUAL, L("^Z<S-NAME> <S-IS-ARE> choking on @x1!^.^?",RawMaterial.CODES.NAME(atmo).toLowerCase()) + CMLib.protocol().msp("choke.wav", 10));
+								msgStr=L("^Z<S-NAME> <S-IS-ARE> choking on @x1!^.^?");
 							final MOB killerM = CMLib.combat().getBreatheKiller(this);
-							CMLib.combat().postDamage(killerM, this, null, (int) Math.round(CMath.mul(Math.random(), basePhyStats().level() + 2)), CMMsg.MASK_ALWAYS | CMMsg.TYP_GAS, -1, null);
+							CMLib.combat().postDamage(killerM, this, this, 
+													(int) Math.round(CMath.mul(Math.random(), basePhyStats().level() + 2)), 
+													CMMsg.MASK_ALWAYS | CMMsg.TYP_GAS, -1, msgStr);
 						}
 					}
 				}

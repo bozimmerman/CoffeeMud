@@ -194,10 +194,7 @@ public class Sailor extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Specialization_SiegeWeapon",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Fighter_WaterTactics",true);
 		
-		/*-Character can hold his/her breath longer before starting to drown (1 tick/5 levels).  Failed skill 
-		 * check results in a drowning tick.  After duration, take normal drowning damage.
-		 */
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Skill_DeepDiving",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Skill_DeepBreath",false);
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Skill_CombatRepairs",true);
 		

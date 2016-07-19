@@ -862,7 +862,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 
 
 	@Override
-	public void recoverTick(MOB mob)
+	public void recoverTick(final MOB mob)
 	{
 		if((mob!=null)
 		&&(!mob.isInCombat()))
@@ -874,6 +874,11 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			||(curState.getMana()<maxState.getMana())
 			||(curState.getMovement()<maxState.getMovement()))
 			{
+				final Room R=mob.location();
+				final Area A=(R!=null)?R.getArea():null;
+				if((A instanceof BoardableShip)&&(((BoardableShip)A).isInCombat()))
+					return;
+				
 				final boolean isSleeping=(CMLib.flags().isSleeping(mob));
 				final boolean isSittingOrRiding=(!isSleeping) && ((CMLib.flags().isSitting(mob))||(mob.riding()!=null));
 				final boolean isFlying=(!isSleeping) && (!isSittingOrRiding) && CMLib.flags().isFlying(mob);

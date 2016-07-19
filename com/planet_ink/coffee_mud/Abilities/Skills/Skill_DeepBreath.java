@@ -1,8 +1,7 @@
-package com.planet_ink.coffee_mud.Abilities.Specializations;
+package com.planet_ink.coffee_mud.Abilities.Skills;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
-import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -18,9 +17,8 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
-   Copyright 2001-2016 Bo Zimmerman
+   Copyright 2016-2016 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -34,15 +32,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Specialization_SiegeWeapon extends StdAbility
+public class Skill_DeepBreath extends StdSkill
 {
 	@Override
 	public String ID()
 	{
-		return "Specialization_SiegeWeapon";
+		return "Skill_DeepBreath";
 	}
 
-	private final static String	localizedName	= CMLib.lang().L("Siege Weapon Specialization");
+	private final static String localizedName = CMLib.lang().L("Deep Breath");
 
 	@Override
 	public String name()
@@ -75,6 +73,12 @@ public class Specialization_SiegeWeapon extends StdAbility
 	}
 
 	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL | Ability.DOMAIN_FITNESS;
+	}
+
+	@Override
 	public boolean isAutoInvoked()
 	{
 		return true;
@@ -86,36 +90,44 @@ public class Specialization_SiegeWeapon extends StdAbility
 		return false;
 	}
 
-	@Override
-	public int classificationCode()
-	{
-		return Ability.ACODE_SKILL | Ability.DOMAIN_WEAPON_USE;
-	}
-
-	@Override
-	public void executeMsg(final Environmental myHost, final CMMsg msg)
-	{
-		super.executeMsg(myHost, msg);
-	}
-
+	protected int breatheTicks=-1;
+	
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if(!super.okMessage(myHost,msg))
+		if(!super.okMessage(myHost, msg))
 			return false;
-
-		if((msg.targetMinor()==CMMsg.TYP_DAMAGE)
-		&&(msg.tool() instanceof AmmunitionWeapon)
-		&&(CMLib.combat().isAShipSiegeWeapon((Item)msg.tool()))
-		&&(affected instanceof MOB)
-		&&(((MOB)affected).location()==CMLib.map().roomLocation(msg.tool()))
-		&&(msg.value()>0))
+		if((msg.target()==affected)
+		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
+		&&((msg.sourceMajor()&CMMsg.MASK_ALWAYS)!=0)
+		&&(msg.tool() == affected)
+		&&((msg.targetMinor()==CMMsg.TYP_GAS)||(msg.targetMinor()==CMMsg.TYP_WATER))
+		&&(!CMLib.flags().canBreatheHere((MOB)affected,((MOB)affected).location()))
+		&&(msg.value()>0)
+		&&(breatheTicks != 0))
 		{
-			msg.setValue(msg.value()+((int)Math.round(CMath.mul(5+(2*getX3Level((MOB)affected)),CMath.div(proficiency(),100.0)))));
-			if(CMLib.dice().rollPercentage()<10)
-				helpProficiency((MOB)affected, 0);
+			if(breatheTicks<0)
+				breatheTicks = 3 + (super.adjustedLevel((MOB)affected,0)/5);
+			if(super.proficiencyCheck((MOB)affected,2*((MOB)affected).charStats().getStat(CharStats.STAT_CONSTITUTION),false))
+			{
+				breatheTicks--;
+				return false;
+			}
 		}
 		return true;
 	}
-
+	
+	@Override
+	public boolean tick(Tickable ticking, int tickID)
+	{
+		if(!super.tick(ticking, tickID))
+			return false;
+		final Physical affected=this.affected;
+		if((breatheTicks>=0)&&(affected instanceof MOB))
+		{
+			if(CMLib.flags().canBreatheHere((MOB)affected,((MOB)affected).location()))
+				breatheTicks=-1;
+		}
+		return true;
+	}
 }
