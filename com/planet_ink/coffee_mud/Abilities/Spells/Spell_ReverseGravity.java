@@ -119,7 +119,7 @@ public class Spell_ReverseGravity extends Spell
 							inhab.makePeace(true);
 							Ability A=CMClass.getAbility("Falling");
 							A.setAffectedOne(null);
-							A.setProficiency(100);
+							A.setMiscText("REVERSED");
 							A.invoke(null,null,inhab,true,0);
 							A=inhab.fetchEffect("Falling");
 							if(A!=null)

@@ -100,6 +100,7 @@ public class Sinking extends StdAbility
 		return false;
 	}
 
+	@Override
 	public void setMiscText(String newMiscText)
 	{
 		super.setMiscText(newMiscText);
@@ -319,7 +320,7 @@ public class Sinking extends StdAbility
 		if(target.fetchEffect("Sinking")==null)
 		{
 			final Sinking F=new Sinking();
-			F.setProficiency(proficiency());
+			F.setMiscText(this.reversed()?"REVERSED":"NORMAL");
 			F.invoker=null;
 			if(target instanceof MOB)
 				F.invoker=(MOB)target;
@@ -333,5 +334,33 @@ public class Sinking extends StdAbility
 			target.recoverPhyStats();
 		}
 		return true;
+	}
+	
+	@Override
+	public void setStat(String code, String val)
+	{
+		if(code==null)
+			return;
+		if(code.equalsIgnoreCase("REVERSED"))
+			this.setProficiency(CMath.s_bool(val)?100:0);
+		else
+		if(code.equalsIgnoreCase("NORMAL"))
+			this.setProficiency(CMath.s_bool(val)?0:100);
+		else
+			super.setStat(code, val);
+	}
+	
+	@Override
+	public String getStat(String code)
+	{
+		if(code==null)
+			return "";
+		if(code.equalsIgnoreCase("REVERSED"))
+			return ""+(this.proficiency()==100);
+		else
+		if(code.equalsIgnoreCase("NORMAL"))
+			return ""+(this.proficiency()==0);
+		else
+			return super.getStat(code);
 	}
 }

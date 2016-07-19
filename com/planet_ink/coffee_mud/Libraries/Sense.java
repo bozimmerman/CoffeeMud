@@ -867,7 +867,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		if(!isFalling(P))
 			return -1;
 		Ability A=P.fetchEffect("Falling");
-		if((A!=null) && (A.proficiency()==100))
+		if((A!=null) && (CMath.s_bool(A.getStat("REVERSED"))))
 			return Directions.UP;
 		return Directions.DOWN;
 	}

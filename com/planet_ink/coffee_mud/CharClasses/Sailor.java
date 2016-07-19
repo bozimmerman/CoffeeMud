@@ -150,8 +150,7 @@ public class Sailor extends StdCharClass
 		 */
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Skill_Stowaway",false);
 		
-		//Net fishing from a boat....requires fishing 100%.  Yields 10x fishing yield, takes 3 times as long.  Gathering skill.
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Trawling",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Trawling",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Shipwright",0,"",false,true,CMParms.parseSemicolons("Carpentry",true),"");
 		
 		/*Language transmitted via light or sound.  Can be heard for 10 continuous outdoor rooms 
@@ -176,8 +175,7 @@ public class Sailor extends StdCharClass
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_SeaMapping",true);
 		
-		//Take no fall damage for landing in a water or shallow water room.
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Diving",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Skill_Diving",true);
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Skill_SeaCharting",true);
 		

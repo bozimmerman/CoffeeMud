@@ -1902,15 +1902,15 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 	}
 
 	@Override
-	public boolean makeFall(Physical P, Room room, int avg)
+	public boolean makeFall(Physical P, Room room, boolean reverseFall)
 	{
 		if((P==null)||(room==null)) 
 			return false;
 
-		if((avg==0)&&(room.getRoomInDir(Directions.DOWN)==null)) 
+		if((!reverseFall)&&(room.getRoomInDir(Directions.DOWN)==null)) 
 			return false;
 		
-		if((avg>0)&&(room.getRoomInDir(Directions.UP)==null)) 
+		if((reverseFall)&&(room.getRoomInDir(Directions.UP)==null)) 
 			return false;
 
 		if(((P instanceof MOB)&&(!CMLib.flags().isInFlight(P)))
@@ -1923,7 +1923,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 				final Ability falling=CMClass.getAbility("Falling");
 				if(falling!=null)
 				{
-					falling.setProficiency(avg);
+					falling.setMiscText(reverseFall?"REVERSED":"NORMAL");
 					falling.setAffectedOne(room);
 					falling.invoke(null,null,P,true,0);
 					return true;
@@ -2016,13 +2016,13 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 	}
 
 	@Override
-	public void makeSink(Physical P, Room room, int avg)
+	public void makeSink(Physical P, Room room, boolean reverseSink)
 	{
 		if((P==null)||(room==null))
 			return;
 
 		Room R=room.getRoomInDir(Directions.DOWN);
-		if(avg>0)
+		if(reverseSink)
 			R=room.getRoomInDir(Directions.UP);
 		if((R==null)
 		||((R.domainType()!=Room.DOMAIN_INDOORS_UNDERWATER)
@@ -2042,7 +2042,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 				final Ability sinking=CMClass.getAbility("Sinking");
 				if(sinking!=null)
 				{
-					sinking.setProficiency(avg);
+					sinking.setMiscText(reverseSink?"REVERSED":"NORMAL");
 					sinking.setAffectedOne(room);
 					sinking.invoke(null,null,P,true,0);
 				}

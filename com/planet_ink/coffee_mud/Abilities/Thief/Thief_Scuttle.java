@@ -186,7 +186,7 @@ public class Thief_Scuttle extends ThiefSkill
 					{
 						if((mob.riding() != null)&&(mob.riding().rideBasis()==Rideable.RIDEABLE_WATER))
 							mob.riding().setRideBasis(Rideable.RIDEABLE_SIT);
-						CMLib.tracking().makeSink(boat, boatRoom, 0);
+						CMLib.tracking().makeSink(boat, boatRoom, false);
 						final String sinkString = L("<T-NAME> start(s) sinking!");
 						boatRoom.show(mob, boatRoom, CMMsg.MSG_OK_ACTION, sinkString);
 						CMLib.tracking().walkForced(mob, R, boatRoom, false, true, L("<S-NAME> jump(s) off @x1 and go(es) kersplash!",boat.name()));

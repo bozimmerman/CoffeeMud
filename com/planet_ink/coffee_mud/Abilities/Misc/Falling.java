@@ -107,6 +107,7 @@ public class Falling extends StdAbility
 		return true;
 	}
 
+	@Override
 	public void setMiscText(String newMiscText)
 	{
 		super.setMiscText(newMiscText);
@@ -377,16 +378,20 @@ public class Falling extends StdAbility
 		}
 		return true;
 	}
-	
+
 	@Override
 	public void setStat(String code, String val)
 	{
 		if(code==null)
 			return;
 		if(code.equalsIgnoreCase("DAMAGE"))
-		{
 			this.damageToTake=CMath.s_int(val);
-		}
+		else
+		if(code.equalsIgnoreCase("REVERSED"))
+			this.setProficiency(CMath.s_bool(val)?100:0);
+		else
+		if(code.equalsIgnoreCase("NORMAL"))
+			this.setProficiency(CMath.s_bool(val)?0:100);
 		else
 			super.setStat(code, val);
 	}
@@ -397,9 +402,13 @@ public class Falling extends StdAbility
 		if(code==null)
 			return "";
 		if(code.equalsIgnoreCase("DAMAGE"))
-		{
 			return ""+this.damageToTake;
-		}
+		else
+		if(code.equalsIgnoreCase("REVERSED"))
+			return ""+(this.proficiency()==100);
+		else
+		if(code.equalsIgnoreCase("NORMAL"))
+			return ""+(this.proficiency()==0);
 		else
 			return super.getStat(code);
 	}

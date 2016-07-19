@@ -80,7 +80,7 @@ public class InTheAir extends StdRoom
 				final Ability A=mob.fetchEffect("Falling");
 				if(A!=null)
 				{
-					if(A.proficiency()>=100)
+					if(CMath.s_bool(A.getStat("REVERSED")))
 					{
 						foundReversed=true;
 						mightNeedAdjusting.addElement(mob);
@@ -99,7 +99,7 @@ public class InTheAir extends StdRoom
 				final Ability A=item.fetchEffect("Falling");
 				if(A!=null)
 				{
-					if(A.proficiency()>=100)
+					if(CMath.s_bool(A.getStat("REVERSED")))
 					{
 						foundReversed=true;
 						mightNeedAdjusting.addElement(item);
@@ -111,16 +111,16 @@ public class InTheAir extends StdRoom
 					needToFall.addElement(item);
 			}
 		}
-		final int avg=((foundReversed)&&(!foundNormal))?100:0;
+		final boolean reversed=((foundReversed)&&(!foundNormal));
 		for(final Physical P : mightNeedAdjusting)
 		{
 			final Ability A=P.fetchEffect("Falling");
 			if(A!=null)
-				A.setProficiency(avg);
+				A.setStat("REVERSED", reversed+"");
 		}
 		final TrackingLibrary tracker = CMLib.tracking();
 		for(final Physical P : needToFall)
-			tracker.makeFall(P,room,avg);
+			tracker.makeFall(P,room,reversed);
 	}
 
 	@Override

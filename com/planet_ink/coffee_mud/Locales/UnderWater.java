@@ -122,7 +122,7 @@ public class UnderWater extends StdRoom implements Drink
 					final Ability A=mob.fetchEffect("Sinking");
 					if(A!=null)
 					{
-						if(A.proficiency()>=100)
+						if(CMath.s_bool(A.getStat("REVERSED")))
 						{
 							foundReversed=true;
 							mightNeedAdjusting.addElement(mob);
@@ -156,15 +156,15 @@ public class UnderWater extends StdRoom implements Drink
 					needToSink.addElement(item);
 			}
 		}
-		final int avg=((foundReversed)&&(!foundNormal))?100:0;
+		final boolean reversed=((foundReversed)&&(!foundNormal));
 		for(final Physical P : mightNeedAdjusting)
 		{
 			final Ability A=P.fetchEffect("Sinking");
 			if(A!=null)
-				A.setProficiency(avg);
+				A.setStat("REVERSED", ""+reversed);
 		}
 		for(final Physical P : needToSink)
-			CMLib.tracking().makeSink(P,room,avg);
+			CMLib.tracking().makeSink(P,room,reversed);
 	}
 
 	public static int isOkUnderWaterAffect(Room room, CMMsg msg)

@@ -871,7 +871,7 @@ public class StdRideable extends StdContainer implements Rideable
 						final Room shipR=CMLib.map().roomLocation(this);
 						if(shipR!=null)
 						{
-							CMLib.tracking().makeSink(this, shipR, 0);
+							CMLib.tracking().makeSink(this, shipR, false);
 							final String sinkString = L("<T-NAME> start(s) sinking!");
 							shipR.show(msg.source(), this, CMMsg.MSG_OK_ACTION, sinkString);
 						}

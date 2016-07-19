@@ -124,7 +124,7 @@ public class Prop_WeakBridge extends Property implements TriggeredAffect
 							if(!CMLib.flags().isFalling(mob))
 							{
 								final Ability falling=CMClass.getAbility("Falling");
-								falling.setProficiency(0);
+								falling.setMiscText("NORMAL");
 								falling.setAffectedOne(affected);
 								falling.invoke(null,null,mob,true,0);
 							}
