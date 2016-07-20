@@ -529,7 +529,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	public void setMoney(int newVal);
 	
 	/**
-	 * Returns a positive or negative range from 0->this number
+	 * Returns a positive or negative range from 0-&gt;this number
 	 * that represents the amount of money added or removed from
 	 * this mob when the mob-as-NPC does and is ready to be looted. 
 	 * @see MOB#getMoney()
@@ -540,7 +540,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	public double getMoneyVariation();
 	
 	/**
-	 * Sets a positive or negative range from 0->this number
+	 * Sets a positive or negative range from 0-&gt;this number
 	 * that represents the amount of money added or removed from
 	 * this mob when the mob-as-NPC does and is ready to be looted. 
 	 * @see MOB#getMoney()
@@ -838,7 +838,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 * @see MOB#fetchWieldedItem()
 	 * @see MOB#fetchFirstWornItem(long)
 	 * @param wornCode the specific worn code to loook for worn items
-	 * @param aboveOrAroundLayer -2048 will grab everything, and > 0 are higher layers
+	 * @param aboveOrAroundLayer -2048 will grab everything, and &gt; 0 are higher layers
 	 * @param layerAttributes 0 will grab everything, or one of the layer attributes
 	 * @return the list of items worn at the given worn code
 	 */

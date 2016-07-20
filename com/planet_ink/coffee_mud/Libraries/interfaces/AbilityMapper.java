@@ -1107,7 +1107,7 @@ public interface AbilityMapper extends CMLibrary
 		 * to train or gain this skill.
 		 * @see AbilityMapper.AbilityMapping#originalSkillPreReqList()
 		 * @see AbilityMapper.AbilityMapping#originalSkillPreReqList(String)
-		 * @see AbilityMapper.AbilityMapping#skillPreReqs(DVector)i
+		 * @see AbilityMapper.AbilityMapping#skillPreReqs(DVector)
 		 * @return the coded form of the pre-requisites skills needed
 		 */
 		public DVector				skillPreReqs();

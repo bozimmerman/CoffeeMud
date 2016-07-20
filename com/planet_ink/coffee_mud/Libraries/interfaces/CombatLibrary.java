@@ -239,9 +239,9 @@ public interface CombatLibrary extends CMLibrary
 	 * given target ship with the given siege weapon.
 	 * @param attacker the attacking agent mob
 	 * @param attackingShip the ship the attacker is on
-	 * @param target the targetk ship
+	 * @param target the target ship
 	 * @param weapon the siege weapon used
-	 * @param wasAHit TODO
+	 * @param wasAHit true to register a hit, false to register an attack
 	 * @return true if the attack succeeded, false if it failed
 	 */
 	public boolean postShipAttack(MOB attacker, PhysicalAgent attackingShip, PhysicalAgent target, Weapon weapon, boolean wasAHit);
@@ -339,9 +339,9 @@ public interface CombatLibrary extends CMLibrary
 	 * posts a miss. replaceDataTag is called to ensure a proper damage word.
 	 * Generates a CMMsg message and sends it to the common room.
 	 * @see CombatLibrary#replaceDamageTag(String, int, int, View)
-	 * @param source the attacker
-	 * @param target the target
-	 * @param item the weapon used
+	 * @param attacker the attacker
+	 * @param defender the target
+	 * @param weapon the weapon used
 	 * @param success true if it was a hit with damage, false if it was a miss
 	 */
 	public void postShipWeaponAttackResult(MOB source, PhysicalAgent attacker, PhysicalAgent defender, Weapon weapon, boolean success);
@@ -480,7 +480,7 @@ public interface CombatLibrary extends CMLibrary
 	 * the lists.ini file that matches.
 	 * @see com.planet_ink.coffee_mud.Items.interfaces.Weapon#TYPE_BASHING
 	 * @param type the weapon type
-	 * @param damage the percent of damage from 0.0 to 1.0
+	 * @param pct the percent of damage from 0.0 to 1.0
 	 * @return the hit/damage word
 	 */
 	public String standardHitWord(int type, double pct);

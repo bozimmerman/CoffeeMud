@@ -281,7 +281,8 @@ public interface ChannelsLibrary extends CMLibrary
 	 * @param imc2Name empty string, or the mapped name of the imc2 channel
 	 * @param mask the zapper mask for who may read the channel
 	 * @param flags
-	 * @param colorOverride empty string for default, or the color code for this channel
+	 * @param colorOverrideANSI empty string for default, or the color code for this channel
+	 * @param colorOverrideWords empty string for default, or the color code for this channel
 	 * @return the newly created channel object
 	 */
 	public CMChannel createNewChannel(final String name, final String i3Name, final String imc2Name, 

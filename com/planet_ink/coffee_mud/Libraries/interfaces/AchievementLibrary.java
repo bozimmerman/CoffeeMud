@@ -511,7 +511,7 @@ public interface AchievementLibrary extends CMLibrary
 
 	/**
 	 * Returns all the comment/help entries from the achievement definition file
-	 * The map is of the form event ID, then parameter->help map.
+	 * The map is of the form event ID, then parameter-&gt;help map.
 	 * @return all the comment/help entries from the achievement definition file
 	 */
 	public Map<String,Map<String,String>> getAchievementsHelpMap();

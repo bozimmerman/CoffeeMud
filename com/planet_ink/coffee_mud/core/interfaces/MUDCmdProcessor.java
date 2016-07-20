@@ -103,7 +103,6 @@ public interface MUDCmdProcessor
 	 * @see MUDCmdProcessor#doCommand(List, int)
 	 * @param commands the parsed command string tokens
 	 * @param metaFlags meta-command flags to send to the command, if any
-	 * @param actionCost either 0 to let the action object decide, or an override cost
 	 */
 	public void prequeCommands(List<List<String>> commands, int metaFlags);
 

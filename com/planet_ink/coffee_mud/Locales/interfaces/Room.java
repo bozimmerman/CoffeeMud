@@ -329,7 +329,6 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	 * one, or an empty list if none exist yet.
 	 * @see Room#clearSky()
 	 * @see Room#getSky()
-	 * @param depth the diameter of the sky or underwater to create
 	 */
 	public List<Room> getSky();
 	

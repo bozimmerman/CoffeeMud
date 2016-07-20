@@ -566,7 +566,7 @@ public class CMStrings
 	 * in the given array with the given character.  The search is case-sensitive.
 	 * @param str the string to rebuild without those characters
 	 * @param theseChars the characters to remove from the string
-	 * @param with the character to replace all the array characters with.
+	 * @param withThese the character to replace all the array characters with.
 	 * @return the rebuilt string, with all those characters replaced
 	 */
 	public final static String replaceAllofAny(final String str, final char[] theseChars, final char[] withThese)

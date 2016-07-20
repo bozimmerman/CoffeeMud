@@ -57,8 +57,8 @@ public interface SailingShip extends BoardableShip, Item, Combatant, Rideable
 	public boolean isAnchorDown();
 	
 	/**
-	 * Returns this ships max speed, typically >= 1
-	 * @return this ships max speed, typically >= 1
+	 * Returns this ships max speed, typically &gt;= 1
+	 * @return this ships max speed, typically &gt;= 1
 	 */
 	public int getShipSpeed();
 

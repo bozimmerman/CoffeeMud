@@ -69,7 +69,7 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats
 	/**
 	 * The time, in milis since 1970, that the player gained the given level
 	 *
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#setLeveledDateTime(int, int, Room)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#setLeveledDateTime(int, long, Room)
 	 *
 	 * @param level the level to check for
 	 * @return the time, in milis since 1970, that the player gained the given level
@@ -79,7 +79,7 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats
 	/**
 	 * The number of minutes played when the player gained the given level
 	 *
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#setLeveledDateTime(int, int, Room)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#setLeveledDateTime(int, long, Room)
 	 *
 	 * @param level the level to check for
 	 * @return the minutes played before the player gained the given level

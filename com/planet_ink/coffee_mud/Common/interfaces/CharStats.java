@@ -1313,7 +1313,7 @@ public interface CharStats extends CMCommon, Modifiable
 		}
 
 		/**
-		 * Returns the Reverse CMMsg mapping of the stat from MsgCode -> Stat Code
+		 * Returns the Reverse CMMsg mapping of the stat from MsgCode -&gt; Stat Code
 		 * @param code the Stat mapping for the given CMMsg code or -1
 		 * @return the Stat mapping of the CMMsg
 		 */

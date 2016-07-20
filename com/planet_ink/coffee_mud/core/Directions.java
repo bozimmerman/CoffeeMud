@@ -262,6 +262,7 @@ public class Directions
 	/**
 	 * Reinitializes this direction object with a new number-of-directions.
 	 * @param dirs the number of directions, either 7 or 11
+	 * @param translator optional language translator for all the strings
 	 */
 	public final void reInitialize(final int dirs, final DirectionWordTranslator translator)
 	{
@@ -382,6 +383,7 @@ public class Directions
 	/**
 	 * Given the direction code, returns the formal name of that direction, capitalized.
 	 * @param code the direction code
+	 * @param useShip true to use ship type directions, false for compass
 	 * @return the name of that direction, capitalized
 	 */
 	public String getUpperDirectionName(final int code, boolean useShip)
@@ -389,9 +391,9 @@ public class Directions
 		if((code>=0)&&(code<NUM_DIRECTIONS()))
 		{
 			if(useShip)
-				return DIRECTIONS_COMPASS_UPPER_INDEXED[code];
-			else
 				return DIRECTIONS_SHIP_UPPER_INDEXED[code];
+			else
+				return DIRECTIONS_COMPASS_UPPER_INDEXED[code];
 		}
 		return "";
 	}

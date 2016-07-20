@@ -41,7 +41,7 @@ public interface ShipEngine extends TechComponent
 {
 	/**
 	 * Gets set of available thrust ports on this engine.
-	 * @see ShipEngine#setAvailPorts(Set<ThrustPort>)
+	 * @see ShipEngine#setAvailPorts(com.planet_ink.coffee_mud.Items.interfaces.TechComponent.ShipDir[])
 	 * @return the set of available thrust ports.
 	 */
 	public TechComponent.ShipDir[] getAvailPorts();

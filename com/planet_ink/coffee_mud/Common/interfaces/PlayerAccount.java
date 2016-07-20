@@ -117,7 +117,7 @@ public interface PlayerAccount extends CMCommon, AccountStats, Modifiable, Tatto
 	 * Returns the number of bonus characters online available to
 	 * this account.
 	 * 
-	 * @see AccountStats#setBonusCharsOnlineLimit(int)
+	 * @see PlayerAccount#setBonusCharsOnlineLimit(int)
 	 * 
 	 * @return the number of bonus chars online
 	 */
@@ -127,7 +127,7 @@ public interface PlayerAccount extends CMCommon, AccountStats, Modifiable, Tatto
 	 * Sets the number of bonus characters online available to
 	 * this account.
 	 * 
-	 * @see AccountStats#getBonusCharsOnlineLimit()
+	 * @see PlayerAccount#getBonusCharsOnlineLimit()
 	 * 
 	 * @param bonus the number of bonus chars online
 	 */
@@ -137,7 +137,7 @@ public interface PlayerAccount extends CMCommon, AccountStats, Modifiable, Tatto
 	 * Returns the number of bonus characters available to
 	 * this account.
 	 * 
-	 * @see AccountStats#setBonusCharsLimit(int)
+	 * @see PlayerAccount#setBonusCharsLimit(int)
 	 * 
 	 * @return the number of bonus chars
 	 */
@@ -147,7 +147,7 @@ public interface PlayerAccount extends CMCommon, AccountStats, Modifiable, Tatto
 	 * Sets the number of bonus characters available to
 	 * this account.
 	 * 
-	 * @see AccountStats#getBonusCharsLimit()
+	 * @see PlayerAccount#getBonusCharsLimit()
 	 * 
 	 * @param bonus the number of bonus chars
 	 */
