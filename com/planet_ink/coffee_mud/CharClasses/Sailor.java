@@ -131,9 +131,9 @@ public class Sailor extends StdCharClass
 	{
 		super.initializeClass();
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Swim",100,true);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Write",0,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Write",0,false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Recall",50,true);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Climb",0,false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Climb",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Unbinding",0,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Fishing",0,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Natural",false);
