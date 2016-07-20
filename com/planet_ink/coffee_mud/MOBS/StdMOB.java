@@ -1425,16 +1425,25 @@ public class StdMOB implements MOB
 	@Override
 	public boolean mayPhysicallyAttack(final PhysicalAgent victim)
 	{
-		if (!mayIFight(victim))
+		final Room myLocation=location();
+		if ((!mayIFight(victim))||(myLocation==null))
 			return false;
 		if(victim instanceof MOB)
 		{
-			if(location() != ((MOB)victim).location())
+			if(myLocation != ((MOB)victim).location())
 				return false;
 		}
 		else
-		if(location() != CMLib.map().roomLocation(victim))
-			return false;
+		{
+			final Room R=CMLib.map().roomLocation(victim);
+			final Area myArea=myLocation.getArea();
+			if((R==null)||(myArea==null))
+				return false;
+			if((myLocation != R)
+			&&((!(myArea instanceof BoardableShip))
+				||(!R.isContent(((BoardableShip)myArea).getShipItem()))))
+				return false;
+		}
 		if((!CMLib.flags().isInTheGame(this, false))
 		|| (!CMLib.flags().isInTheGame(victim, false)))
 			return false;

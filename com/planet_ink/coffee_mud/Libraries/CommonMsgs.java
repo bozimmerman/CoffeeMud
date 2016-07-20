@@ -990,29 +990,39 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		final StringBuilder buf=new StringBuilder("");
 		if(mob.isAttributeSet(MOB.Attrib.SYSOPMSGS))
 		{
-			buf.append(L("@x1\n\r"
+			StringBuilder spells=new StringBuilder("");
+			for(Enumeration<Ability> a=item.effects();a.hasMoreElements();)
+			{
+				final Ability A=a.nextElement();
+				if((!A.isSavable())||(A.canBeUninvoked()))
+					spells.append(A.ID()).append(" ");
+			}
+			buf.append(L("\n\r"
+					+ "Type  : @x1\n\r"
 					+ "Rejuv : @x2\n\r"
-					+ "Type  : @x3\n\r"
-					+ "Uses  : @x4\n\r"
-					+ "Height: @x5\n\r"
-					+ "Weight: @x12\n\r"
+					+ "Uses  : @x3\n\r"
+					+ "Height: @x4\n\r"
+					+ "Weight: @x5\n\r"
 					+ "Abilty: @x6\n\r"
 					+ "Level : @x7\n\r"
-					+ "Expire: @x8@x9\n\r"
-					+ "Misc  : @x10\n\r"
-					+ "@x11",
+					+ "Expire: @x8\n\r"
+					+ "Capaci: @x9\n\r"
+					+ "Affect: @x10\n\r"
+					+ "Misc  : @x11\n\r"
+					+ "@x12",
 					item.ID(),
 					""+item.basePhyStats().rejuv(),
-					item.ID(),
 					""+item.usesRemaining(),
 					""+item.basePhyStats().height(),
+					""+item.basePhyStats().weight(),
 					""+item.basePhyStats().ability(),
 					""+item.basePhyStats().level(),
 					dispossessionTimeLeftString(item),
 					((item instanceof Container)?(L("\n\rCapac.: ")+((Container)item).capacity()):""),
+					spells.toString(),
 					""+item.text().length(),
-					item.text(),
-					""+item.basePhyStats().weight()));
+					item.text()
+					));
 		}
 		if(item.description(mob).length()==0)
 			buf.append(L("You don't see anything special about @x1",item.name()));

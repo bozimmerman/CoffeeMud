@@ -95,6 +95,7 @@ public class Go extends StdCommand
 
 		final boolean inAShip =(R instanceof BoardableShip)||(R.getArea() instanceof BoardableShip);
 		final String validDirs = inAShip?Directions.SHIP_NAMES_LIST() : Directions.NAMES_LIST();
+		final boolean running = mob.isAttributeSet(MOB.Attrib.AUTORUN);
 
 		int direction=-1;
 		if(whereStr.equalsIgnoreCase("OUT"))
@@ -154,7 +155,12 @@ public class Go extends StdCommand
 		}
 		final String doing=commands.get(0);
 		if(direction>=0)
-			CMLib.tracking().walk(mob,direction,false,false,false,false);
+		{
+			if(running)
+				CMLib.tracking().run(mob,direction,false,false,false,false);
+			else
+				CMLib.tracking().walk(mob,direction,false,false,false,false);
+		}
 		else
 		{
 			Exit E=R.fetchExit(whereStr);
@@ -195,6 +201,12 @@ public class Go extends StdCommand
 					{
 						if(mob.isMonster())
 						{
+							if(running)
+							{
+								if(!CMLib.tracking().run(mob,direction,false,false,false,false))
+									return false;
+							}
+							else
 							if(!CMLib.tracking().walk(mob,direction,false,false,false,false))
 								return false;
 						}
