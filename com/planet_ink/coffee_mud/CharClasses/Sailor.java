@@ -156,7 +156,7 @@ public class Sailor extends StdCharClass
 		/*Language transmitted via light or sound.  Can be heard for 10 continuous outdoor rooms 
 		 * (via light) or 3 continuous indoor rooms (via sound).  Must have light source if outdoors.
 		 */
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),6,"MorseCode",false);
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Skill_MorseCode",false);
 		/*The character climbs the mast to the crows nest to view the surrounding rooms.  Character can see 
 		 * details from other adjacent rooms based on skill/expertise.  Number of rooms distance, ships, items 
 		 * on ships.  Sample commands Crowsnest North, Crowsnest North North, Crowsnest North Ulysses (the 
