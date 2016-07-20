@@ -159,12 +159,6 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
-	public Tattoo parseTattoo(String tattoo)
-	{
-		return MOBloader.parseTattoo(tattoo);
-	}
-
-	@Override
 	public List<PlayerLibrary.ThinPlayer> vassals(String liegeID)
 	{
 		return MOBloader.vassals(liegeID);

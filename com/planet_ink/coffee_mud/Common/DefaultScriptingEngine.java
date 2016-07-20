@@ -9663,7 +9663,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					final boolean tattooMinus=tattooName.startsWith("-");
 					if(tattooMinus)
 						tattooName=tattooName.substring(1);
-					final Tattoo pT=CMLib.database().parseTattoo(tattooName);
+					final Tattoo pT=((Tattoo)CMClass.getCommon("DefaultTattoo")).parse(tattooName);
 					final Tattoo T=themob.findTattoo(pT.getTattooName());
 					if(T!=null)
 					{
@@ -9696,7 +9696,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					final boolean tattooMinus=tattooName.startsWith("-");
 					if(tattooMinus)
 						tattooName=tattooName.substring(1);
-					final Tattoo pT=CMLib.database().parseTattoo(tattooName);
+					final Tattoo pT=((Tattoo)CMClass.getCommon("DefaultTattoo")).parse(tattooName);
 					final Tattoo T=themob.findTattoo(pT.getTattooName());
 					if(T!=null)
 					{

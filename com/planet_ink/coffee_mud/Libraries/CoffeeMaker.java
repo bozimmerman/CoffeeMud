@@ -3328,8 +3328,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			List<String> V9=CMParms.parseSemicolons(CMLib.xml().getValFromPieces(buf,"TATTS"),true);
 			for(final Enumeration<Tattoo> e=((MOB)E).tattoos();e.hasMoreElements();)
 				((MOB)E).delTattoo(e.nextElement());
-			for(int v=0;v<V9.size();v++)
-				((MOB)E).addTattoo(CMLib.database().parseTattoo(V9.get(v)));
+			for(final String tatt : V9)
+				((MOB)E).addTattoo(((Tattoo)CMClass.getCommon("DefaultTattoo")).parse(tatt));
 
 			V9=CMParms.parseSemicolons(CMLib.xml().getValFromPieces(buf,"EDUS"),true);
 			((MOB)E).delAllExpertises();
@@ -3551,7 +3551,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			List<String> V9=CMParms.parseSemicolons(CMLib.xml().returnXMLValue(buf,"TATTS"),true);
 			for(final Enumeration<Tattoo> e=mob.tattoos();e.hasMoreElements();)
 				mob.delTattoo(e.nextElement());
-			for(int v=0;v<V9.size();v++) mob.addTattoo(CMLib.database().parseTattoo(V9.get(v)));
+			for(String tatt : V9)
+				mob.addTattoo(((Tattoo)CMClass.getCommon("DefaultTattoo")).parse(tatt));
 			V9=CMParms.parseSemicolons(CMLib.xml().returnXMLValue(buf,"EDUS"),true);
 			mob.delAllExpertises();
 			for(int v=0;v<V9.size();v++) mob.addExpertise(V9.get(v));
@@ -4523,26 +4524,25 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		{
 			M.delAllItems(true);
 			setGenMobInventory(M, CMLib.xml().parseAllXML(val)); // inventory
-		}
 			break;
+		}
 		case TATTS:
 		{
 			final List<String> V9 = CMParms.parseSemicolons(val, true);
-			for (final Enumeration<Tattoo> e = M.tattoos(); e.hasMoreElements();)
-				// tatts
+			for (final Enumeration<Tattoo> e = M.tattoos(); e.hasMoreElements();) // tatts
 				M.delTattoo(e.nextElement());
-			for (int v = 0; v < V9.size(); v++)
-				M.addTattoo(CMLib.database().parseTattoo(V9.get(v)));
-		}
+			for (final String tatt : V9)
+				M.addTattoo(((Tattoo)CMClass.getCommon("DefaultTattoo")).parse(tatt));
 			break;
+		}
 		case EXPS:
 		{
 			final List<String> V9 = CMParms.parseSemicolons(val, true); // exps
 			M.delAllExpertises();
 			for (int v = 0; v < V9.size(); v++)
 				M.addExpertise(V9.get(v));
-		}
 			break;
+		}
 		case IMG:
 			M.setImage(val);
 			break; // img

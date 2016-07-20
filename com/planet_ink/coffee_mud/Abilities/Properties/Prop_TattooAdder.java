@@ -117,7 +117,7 @@ public class Prop_TattooAdder extends Property
 		if(subOnly)
 			tattooPlus=false;
 
-		final Tattoo pT=CMLib.database().parseTattoo(tattooName);
+		final Tattoo pT=((Tattoo)CMClass.getCommon("DefaultTattoo")).parse(tattooName);
 		final Tattoo T = mob.findTattoo(pT.getTattooName());
 		if(T!=null)
 		{

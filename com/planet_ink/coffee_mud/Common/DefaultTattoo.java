@@ -65,8 +65,6 @@ public class DefaultTattoo implements Tattoo
 		return this;
 	}
 
-	
-	
 	/**
 	 * @return the tickDown
 	 */
@@ -127,5 +125,26 @@ public class DefaultTattoo implements Tattoo
 	public int tickDown()
 	{
 		return --tickDown;
+	}
+
+	@Override
+	public Tattoo parse(final String tattooCode)
+	{
+		if((tattooCode==null)
+		||(tattooCode.length()==0))
+			return this;
+		tattooName=tattooCode;
+		if((tattooName.length()>0)
+		&&(Character.isDigit(tattooName.charAt(0))))
+		{
+			final int x=tattooName.indexOf(' ');
+			if((x>0)
+			&&(CMath.isNumber(tattooName.substring(0,x).trim())))
+			{
+				tickDown=CMath.s_int(tattooName.substring(0,x));
+				tattooName=tattooName.substring(x+1).trim();
+			}
+		}
+		return this;
 	}
 }

@@ -231,8 +231,8 @@ public class GrinderPlayers extends GrinderMobs
 				final List<String> V=CMParms.parseCommas(old.toUpperCase(),true);
 				for(final Enumeration<Tattoo> e=M.tattoos();e.hasMoreElements();)
 					M.delTattoo(e.nextElement());
-				for(int v=0;v<V.size();v++)
-					M.addTattoo(CMLib.database().parseTattoo(V.get(v)));
+				for(final String tatt : V)
+					M.addTattoo(((Tattoo)CMClass.getCommon("DefaultTattoo")).parse(tatt));
 				break;
 			}
 			case 59:

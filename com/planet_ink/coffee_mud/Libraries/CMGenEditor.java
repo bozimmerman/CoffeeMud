@@ -3748,7 +3748,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			behave=mob.session().prompt(L("Enter a tattoo to add/remove\n\r:"),"");
 			if(behave.length()>0)
 			{
-				final Tattoo pT=CMLib.database().parseTattoo(behave);
+				final Tattoo pT=((Tattoo)CMClass.getCommon("DefaultTattoo")).parse(behave);
 				final Tattoo T=M.findTattoo(pT.getTattooName());
 				if(T!=null)
 				{

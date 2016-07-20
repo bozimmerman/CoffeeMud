@@ -91,7 +91,7 @@ public class GrinderAccounts
 						A.delTattoo(t);
 					List<String> tattNames = CMParms.parseCommas(str,true);
 					for(String tattName : tattNames)
-						A.addTattoo(CMLib.database().parseTattoo(tattName));
+						A.addTattoo(((Tattoo)CMClass.getCommon("DefaultTattoo")).parse(tattName));
 				}
 				str=httpReq.getUrlParameter("EXPIRATION");
 				if(str!=null)

@@ -785,24 +785,19 @@ public interface DatabaseEngine extends CMLibrary
 
 	/**
 	 * Table category: DBPLAYERS
-	 * 
-	 * @param deityID
-	 * @return
+	 * Attempts to return a list of all characters who are
+	 * listed as worshippers of the deity with the given exact
+	 * name.  
+	 * @param deityID the exact name of the deity to look for
+	 * @return a list containing as many thin worshipper records
 	 */
 	public List<PlayerLibrary.ThinPlayer> worshippers(String deityID);
 
 	/**
-	 * Table category: DBPLAYERS
-	 * 
-	 * @param tattoo
-	 * @return
-	 */
-	public Tattoo parseTattoo(String tattoo);
-
-	/**
 	 * Table category: DBQUEST
-	 * 
-	 * @param quests
+	 * Updates the entire complete quest list by deleting all quests
+	 * from the database and re-inserting the given list of quests.
+	 * @param quests the list of quests to end up with
 	 */
 	public void DBUpdateQuests(List<Quest> quests);
 

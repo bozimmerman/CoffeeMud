@@ -144,8 +144,8 @@ public class MOBloader
 				List<String> V9=CMParms.parseSemicolons(CMLib.xml().returnXMLValue(buf,"TATTS"),true);
 				for(final Enumeration<Tattoo> e=mob.tattoos();e.hasMoreElements();)
 					mob.delTattoo(e.nextElement());
-				for(int v=0;v<V9.size();v++)
-					mob.addTattoo(parseTattoo(V9.get(v)));
+				for(String tatt : V9)
+					mob.addTattoo(((Tattoo)CMClass.getCommon("DefaultTattoo")).parse(tatt));
 				V9=CMParms.parseSemicolons(CMLib.xml().returnXMLValue(buf,"EDUS"),true);
 				mob.delAllExpertises();
 				for(int v=0;v<V9.size();v++)
@@ -647,26 +647,6 @@ public class MOBloader
 			DB.DBDone(D);
 		}
 		return allUsers;
-	}
-
-	public Tattoo parseTattoo(String tattoo)
-	{
-		if(tattoo==null)
-			return (Tattoo)CMClass.getCommon("DefaultTattoo");
-		int tickDown = 0;
-		if((tattoo.length()>0)
-		&&(Character.isDigit(tattoo.charAt(0))))
-		{
-			final int x=tattoo.indexOf(' ');
-			if((x>0)
-			&&(CMath.isNumber(tattoo.substring(0,x).trim())))
-			{
-				tickDown=CMath.s_int(tattoo.substring(0,x));
-				tattoo=tattoo.substring(x+1).trim();
-			}
-		}
-		final Tattoo T=(Tattoo)CMClass.getCommon("DefaultTattoo");
-		return T.set(tattoo, tickDown);
 	}
 
 	public List<PlayerLibrary.ThinPlayer> vassals(String liegeID)
