@@ -134,8 +134,7 @@ public class DefaultTattoo implements Tattoo
 		||(tattooCode.length()==0))
 			return this;
 		tattooName=tattooCode;
-		if((tattooName.length()>0)
-		&&(Character.isDigit(tattooName.charAt(0))))
+		if(Character.isDigit(tattooName.charAt(0)))
 		{
 			final int x=tattooName.indexOf(' ');
 			if((x>0)
