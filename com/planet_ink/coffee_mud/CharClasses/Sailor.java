@@ -170,8 +170,7 @@ public class Sailor extends StdCharClass
 		 */
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),6,"CrowsNest",true);
 		
-		//avoid currents-Enables a captain (or Navigator) to ignore any currents with a successful check (check applied each time current tries to move the ship)
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Skill_AvoidCurrents",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Skill_AvoidCurrents",true);
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_SeaMapping",true);
 		

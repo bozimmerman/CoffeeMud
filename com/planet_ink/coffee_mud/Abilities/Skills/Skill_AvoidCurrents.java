@@ -33,15 +33,15 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Skill_FoulWeatherSailing extends StdSkill
+public class Skill_AvoidCurrents extends StdSkill
 {
 	@Override
 	public String ID()
 	{
-		return "Skill_FoulWeatherSailing";
+		return "Skill_AvoidCurrents";
 	}
 
-	private final static String	localizedName	= CMLib.lang().L("Foul Weather Sailing");
+	private final static String	localizedName	= CMLib.lang().L("Avoid Currents");
 
 	@Override
 	public String name()
@@ -49,7 +49,7 @@ public class Skill_FoulWeatherSailing extends StdSkill
 		return localizedName;
 	}
 
-	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Foul Weather Sailing)");
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Avoid Currents)");
 
 	@Override
 	public String displayText()
@@ -87,8 +87,9 @@ public class Skill_FoulWeatherSailing extends StdSkill
 		if(!super.okMessage(myHost, msg))
 			return false;
 		if((msg.target() instanceof BoardableShip)
-		&&(msg.targetMinor()==CMMsg.TYP_WEATHER)
+		&&(msg.tool() != null)
 		&&(msg.target() == affected)
+		&&(msg.tool().ID().equals("AWaterCurrent"))
 		&&(affected instanceof Item))
 		{
 			final MOB M=invoker();
@@ -102,7 +103,7 @@ public class Skill_FoulWeatherSailing extends StdSkill
 				final Room R=CMLib.map().roomLocation(msg.target());
 				if(R!=null)
 				{
-					R.show(M, msg.target(), CMMsg.MSG_OK_VISUAL, L("<S-YOUPOSS> superior sailing skills keeps <T-NAME> sailing."));
+					R.show(M, msg.target(), CMMsg.MSG_OK_VISUAL, L("<S-YOUPOSS> superior sailing skills keeps <T-NAME> from being swept away by currents."));
 					return false;
 				}
 			}
@@ -134,20 +135,20 @@ public class Skill_FoulWeatherSailing extends StdSkill
 		}
 		else
 		{
-			mob.tell(L("You must be on a ship to do rig for foul weather!"));
+			mob.tell(L("You must be on a sailing ship to steer around currents!"));
 			return false;
 		}
 
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(L("Your ship is already rigged for foul weather!"));
+			mob.tell(L("Your ship is already being steered around currents!"));
 			return false;
 		}
 		
 		Room shipR=CMLib.map().roomLocation(target);
 		if((shipR==null)||(!CMLib.flags().isWaterySurfaceRoom(shipR))||(!target.subjectToWearAndTear()))
 		{
-			mob.tell(L("You must be on a sailing ship to rig for foul weather!"));
+			mob.tell(L("You must be on a sailing ship to steer around currents!"));
 			return false;
 		}
 
@@ -157,7 +158,7 @@ public class Skill_FoulWeatherSailing extends StdSkill
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_NOISYMOVEMENT,auto?L("<T-NAME> is rigged for bad weather!"):L("<S-NAME> rig(s) <T-NAME> for foul weather sailing!"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_NOISYMOVEMENT,auto?L("<T-NAME> is avoiding the currents!"):L("<S-NAME> plot(s) a course for <T-NAME> around the currents!"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -165,7 +166,7 @@ public class Skill_FoulWeatherSailing extends StdSkill
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,null,L("<S-NAME> attempt(s) to do rid the ship for foul weather sailing, but mess(es) it up."));
+			return beneficialVisualFizzle(mob,null,L("<S-NAME> attempt(s) to do plot a course around the currents, but mess(es) it up."));
 		return success;
 	}
 }
