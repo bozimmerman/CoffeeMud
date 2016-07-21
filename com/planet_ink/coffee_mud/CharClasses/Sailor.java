@@ -221,6 +221,7 @@ public class Sailor extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Skill_AwaitShip",true);
 		
 		//The sailor hires a mob 5-10 levels lower than themselves to join his crew and work on his boat.
+		//Repair guy, Sailor, Defensive, Trawler
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Skill_HireCrewmember",true);
 		
 

@@ -147,6 +147,17 @@ public class Resources
 	}
 
 	/**
+	 * Returns the Resources instance tied to this particular thread group, or null if not yet created.
+	 * @return the Resources instance tied to this particular thread group, or null if not yet created.
+	 */
+	public static final Resources staticInstance()
+	{ 
+		if(rscs[0]==null)
+			rscs[0]=newResources(); 
+		return rscs[0];
+	}
+
+	/**
 	 * Creates and returns a new Resources object for the current calling thread
 	 * @return a new Resources object for the current calling thread
 	 */

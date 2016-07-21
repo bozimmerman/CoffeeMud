@@ -86,7 +86,6 @@ public class MUD extends Thread implements MudHost
 	private static List<String> 		autoblocked			= new Vector<String>();
 	private static List<DBConnector>	databases			= new Vector<DBConnector>();
 	private static List<CM1Server>		cm1Servers			= new Vector<CM1Server>();
-	private static List<Triad<String,Long,Integer>>	accessed= new LinkedList<Triad<String,Long,Integer>>();
 	private static final ServiceEngine	serviceEngine		= new ServiceEngine();
 
 	public MUD(String name)
@@ -176,6 +175,13 @@ public class MUD extends Thread implements MudHost
 							}
 							else
 							{
+								@SuppressWarnings("unchecked")
+								List<Triad<String,Long,Integer>> accessed= (LinkedList<Triad<String,Long,Integer>>)Resources.staticInstance()._getResource("SYSTEM_IPACCESS_STATS");
+								if(accessed == null)
+								{
+									accessed= new LinkedList<Triad<String,Long,Integer>>();
+									Resources.staticInstance()._submitResource("SYSTEM_IPACCESS_STATS",accessed);
+								}
 								synchronized(accessed)
 								{
 									for(final Iterator<Triad<String,Long,Integer>> i=accessed.iterator();i.hasNext();)
@@ -1993,21 +1999,6 @@ public class MUD extends Thread implements MudHost
 				else
 					return "Failure";
 			}
-		}
-		else
-		if(word.equalsIgnoreCase("LOGINIP")&&(V.size()>1))
-		{
-			final String ip=V.elementAt(1);
-			synchronized(accessed)
-			{
-				for(Iterator<Triad<String,Long,Integer>> i=accessed.iterator();i.hasNext();)
-				{
-					Triad<String,Long,Integer> T=i.next();
-					if(T.first.equals(ip))
-						i.remove();
-				}
-			}
-			return "Done";
 		}
 		else
 		if(word.equalsIgnoreCase("WEBSERVER")&&(V.size()>2))
