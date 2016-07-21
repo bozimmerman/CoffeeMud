@@ -46,7 +46,12 @@ import java.util.Map.Entry;
 */
 public class CMMap extends StdLibrary implements WorldMap
 {
-	@Override public String ID(){return "CMMap";}
+	@Override
+	public String ID()
+	{
+		return "CMMap";
+	}
+
 	public final int			QUADRANT_WIDTH  		= 10;
 	public static MOB   		deityStandIn			= null;
 	public long 				lastVReset  			= 0;
@@ -2359,7 +2364,9 @@ public class CMMap extends StdLibrary implements WorldMap
 			}
 		}
 		room.clearSky();
-		CMLib.threads().clearDebri(room,0);
+		 // clear debri only clears things by their start rooms, not location, so only roomid matters.
+		if(room.roomID().length()>0)
+			CMLib.threads().clearDebri(room,0);
 		if(room instanceof GridLocale)
 		{
 			for(final Iterator<Room> r=((GridLocale)room).getExistingRooms();r.hasNext();)
