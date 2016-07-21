@@ -1494,6 +1494,7 @@ public class DefaultClan implements Clan
 			List<FullMemberRecord> members=getFullMemberList();
 			int activeMembers=0;
 			final long deathMilis=CMProps.getIntVar(CMProps.Int.DAYSCLANDEATH)*CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY)*CMProps.getTickMillis();
+			final long overthrowMilis=CMProps.getIntVar(CMProps.Int.DAYSCLANOVERTHROW)*CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY)*CMProps.getTickMillis();
 			for(final FullMemberRecord member : members)
 			{
 				final long lastLogin=member.timestamp;
@@ -1566,7 +1567,7 @@ public class DefaultClan implements Clan
 				final List<MemberRecord> highMembers=new LinkedList<MemberRecord>();
 				for(final FullMemberRecord member : members)
 				{
-					if((((System.currentTimeMillis()-member.timestamp)<deathMilis)||(deathMilis==0))
+					if((((System.currentTimeMillis()-member.timestamp)<overthrowMilis)||(overthrowMilis==0))
 					&&(highPositionList.contains(Integer.valueOf(member.role))))
 						highMembers.add(member);
 				}
@@ -1597,7 +1598,7 @@ public class DefaultClan implements Clan
 							continue;
 						for(final Integer posI : highPositionList)
 						{
-							if((((System.currentTimeMillis()-member.timestamp)<deathMilis)||(deathMilis==0))
+							if((((System.currentTimeMillis()-member.timestamp)<overthrowMilis)||(overthrowMilis==0))
 							&&(canBeAssigned(M, posI.intValue())))
 								highestQualifiedMembers.add(member);
 						}
@@ -1620,23 +1621,25 @@ public class DefaultClan implements Clan
 							}
 						}
 					}
-
-					int highestLevel=-1;
-					for(final MemberRecord member : highestQualifiedMembers)
+					if(basePromoteBy==AutoPromoteFlag.LEVEL)
 					{
-						final MOB M=CMLib.players().getLoadPlayer(member.name);
-						if(M==null)
-							continue;
-						if(M.basePhyStats().level() > highestLevel)
-							highestLevel=M.basePhyStats().level();
-					}
-					for(final Iterator<MemberRecord> i=highestQualifiedMembers.iterator();i.hasNext();)
-					{
-						final MOB M=CMLib.players().getLoadPlayer(i.next().name);
-						if(M==null)
-							continue;
-						if(M.basePhyStats().level()!=highestLevel)
-							i.remove();
+						int highestLevel=-1;
+						for(final MemberRecord member : highestQualifiedMembers)
+						{
+							final MOB M=CMLib.players().getLoadPlayer(member.name);
+							if(M==null)
+								continue;
+							if(M.basePhyStats().level() > highestLevel)
+								highestLevel=M.basePhyStats().level();
+						}
+						for(final Iterator<MemberRecord> i=highestQualifiedMembers.iterator();i.hasNext();)
+						{
+							final MOB M=CMLib.players().getLoadPlayer(i.next().name);
+							if(M==null)
+								continue;
+							if(M.basePhyStats().level()!=highestLevel)
+								i.remove();
+						}
 					}
 					if(highestQualifiedMembers.size()>0)
 					{
