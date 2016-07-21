@@ -1070,6 +1070,19 @@ public class CharGen extends StdCommand
 				commands.remove(0);
 				createPlayer=true;
 			}
+			
+			if(commands.get(0).equalsIgnoreCase("EQUIP") && (commands.size()>1))
+			{
+				MOB M=CMLib.players().getLoadPlayer(CMParms.combine(commands,1));
+				if(M==null)
+				{
+					mob.tell(L("Equip Whom?"));
+					return false;
+				}
+				this.equipPlayer(M);
+				mob.tell(L("Done."));
+				return true;
+			}
 		}
 		CharClass C=null;
 		int level=-1;

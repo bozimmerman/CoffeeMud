@@ -1601,7 +1601,8 @@ public class Create extends StdCommand
 					else
 					{
 						final List<String> V=new XVector<String>(commands);
-						V.remove(2);
+						// this is some strange shit.
+						V.remove(1);
 						for(int i=0;i<num;i++)
 							if((!execute(mob,V,metaFlags))||(!CMLib.flags().isInTheGame(mob, true)))
 								return false;
