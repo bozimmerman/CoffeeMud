@@ -220,8 +220,8 @@ public class StdThinInstance extends StdThinArea
 		final Area childA=instanceChildren.get(index).A;
 		if(childA.getAreaState() != Area.State.ACTIVE) // this is the one and only criteria -- if its not active, flush it.
 		{
-			instanceChildren.remove(index);
-			final Set<MOB> protectedMobsList = getProtectedMobSet(childA, instanceChildren.get(index).mobs);
+			final AreaInstanceChild child = instanceChildren.remove(index);
+			final Set<MOB> protectedMobsList = getProtectedMobSet(childA, child.mobs);
 			for(final MOB wmob : protectedMobsList)
 			{
 				if((wmob.location()!=null)
@@ -410,7 +410,7 @@ public class StdThinInstance extends StdThinArea
 			if((msg.sourceMinor()==CMMsg.TYP_QUIT)&&(CMLib.map().isHere(msg.source(), this)))
 			{
 				final MOB mob = msg.source();
-				CMLib.tracking().forceRecall(mob);
+				CMLib.tracking().forceRecall(mob, true);
 			}
 		}
 	}

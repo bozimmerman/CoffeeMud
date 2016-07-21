@@ -65,7 +65,7 @@ import java.sql.*;
 public class MUD extends Thread implements MudHost
 {
 	private static final float	  HOST_VERSION_MAJOR	= (float)5.9;
-	private static final float	  HOST_VERSION_MINOR	= (float)3.12;
+	private static final float	  HOST_VERSION_MINOR	= (float)3.13;
 	private static enum MudState {STARTING,WAITING,ACCEPTING,STOPPED}
 
 	private volatile MudState state		 = MudState.STOPPED;
@@ -86,8 +86,7 @@ public class MUD extends Thread implements MudHost
 	private static List<String> 		autoblocked			= new Vector<String>();
 	private static List<DBConnector>	databases			= new Vector<DBConnector>();
 	private static List<CM1Server>		cm1Servers			= new Vector<CM1Server>();
-	private static List<Triad<String,Long,Integer>>
-										accessed			= new LinkedList<Triad<String,Long,Integer>>();
+	private static List<Triad<String,Long,Integer>>	accessed= new LinkedList<Triad<String,Long,Integer>>();
 	private static final ServiceEngine	serviceEngine		= new ServiceEngine();
 
 	public MUD(String name)
@@ -232,7 +231,13 @@ public class MUD extends Thread implements MudHost
 							{
 								introText=Resources.getFileResource(Resources.makeFileResourceName("text/blocked.txt"),true);
 							}
-							try { introText = CMLib.webMacroFilter().virtualPageFilter(introText);}catch(final Exception ex){}
+							try
+							{
+								introText = CMLib.webMacroFilter().virtualPageFilter(introText);
+							}
+							catch (final Exception ex)
+							{
+							}
 							out.print(introText.toString());
 							out.flush();
 							checkedSleep(250);
@@ -262,7 +267,13 @@ public class MUD extends Thread implements MudHost
 								introFilename=choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
 						}
 						StringBuffer introText=Resources.getFileResource(introFilename,true);
-						try { introText = CMLib.webMacroFilter().virtualPageFilter(introText);}catch(final Exception ex){}
+						try
+						{
+							introText = CMLib.webMacroFilter().virtualPageFilter(introText);
+						}
+						catch (final Exception ex)
+						{
+						}
 						final Session S=(Session)CMClass.getCommon("DefaultSession");
 						S.initializeSession(sock, threadGroup().getName(), introText != null ? introText.toString() : null);
 						CMLib.sessions().add(S);
@@ -1982,6 +1993,21 @@ public class MUD extends Thread implements MudHost
 				else
 					return "Failure";
 			}
+		}
+		else
+		if(word.equalsIgnoreCase("LOGINIP")&&(V.size()>1))
+		{
+			final String ip=V.elementAt(1);
+			synchronized(accessed)
+			{
+				for(Iterator<Triad<String,Long,Integer>> i=accessed.iterator();i.hasNext();)
+				{
+					Triad<String,Long,Integer> T=i.next();
+					if(T.first.equals(ip))
+						i.remove();
+				}
+			}
+			return "Done";
 		}
 		else
 		if(word.equalsIgnoreCase("WEBSERVER")&&(V.size()>2))

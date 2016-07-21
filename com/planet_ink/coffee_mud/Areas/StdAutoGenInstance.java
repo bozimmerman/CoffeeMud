@@ -294,7 +294,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 			if((msg.sourceMinor()==CMMsg.TYP_QUIT)&&(CMLib.map().isHere(msg.source(), this)))
 			{
 				final MOB mob = msg.source();
-				CMLib.tracking().forceRecall(mob);
+				CMLib.tracking().forceRecall(mob, true);
 			}
 		}
 	}

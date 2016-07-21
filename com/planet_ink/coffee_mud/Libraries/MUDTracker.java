@@ -2051,7 +2051,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 	}
 
 	@Override
-	public void forceRecall(final MOB mob)
+	public void forceRecall(final MOB mob, boolean includeFollowers)
 	{
 		if(mob == null)
 			return;
@@ -2065,16 +2065,46 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		if((currentRoom == recallRoom)
 		||(recallRoom == null))
 			return;
-		if(mob.isInCombat())
-			CMLib.commands().postFlee(mob,("NOWHERE"));
 		if(currentRoom != null)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,currentRoom,null,CMMsg.MSG_RECALL,CMMsg.MSG_LEAVE,CMMsg.MSG_RECALL,L("<S-NAME> disappear(s) into the Java Plane!"));
-			currentRoom.send(mob,msg);
-			final CMMsg msg2=CMClass.getMsg(mob,recallRoom,null,CMMsg.MASK_MOVE|CMMsg.TYP_RECALL,CMMsg.MASK_MOVE|CMMsg.MSG_ENTER,CMMsg.MASK_MOVE|CMMsg.TYP_RECALL,null);
-			recallRoom.send(mob,msg2);
-			if(currentRoom.isInhabitant(mob))
-				recallRoom.bringMobHere(mob,mob.isMonster());
+			final LinkedList<MOB> travellers=new LinkedList<MOB>();
+			travellers.add(mob);
+			if(includeFollowers)
+			{
+				for(int f=0;f<mob.numFollowers();f++)
+				{
+					final MOB follower=mob.fetchFollower(f);
+
+					if((follower!=null)
+					&&(follower.isMonster())
+					&&(!follower.isPossessing())
+					&&(CMLib.flags().isInTheGame(follower,true))
+					&&(!follower.isAttributeSet(MOB.Attrib.AUTOGUARD))
+					&&(follower.location()==currentRoom))
+						travellers.add(follower);
+				}
+			}
+			for(final Iterator<MOB> m=travellers.iterator();m.hasNext();)
+			{
+				final MOB M=m.next();
+				if(M.isInCombat())
+					CMLib.commands().postFlee(M,("NOWHERE"));
+				/*// if you disconnect, the generated Quit leads here, but the message causes a quit-loop.. npcs never get anywhere...
+				{
+					final CMMsg msg=CMClass.getMsg(M,currentRoom,null,CMMsg.MSG_RECALL,CMMsg.MSG_LEAVE,CMMsg.MSG_RECALL,L("<S-NAME> disappear(s) into the Java Plane!"));
+					currentRoom.send(M,msg);
+					final CMMsg msg2=CMClass.getMsg(M,recallRoom,null,CMMsg.MASK_MOVE|CMMsg.TYP_RECALL,CMMsg.MASK_MOVE|CMMsg.MSG_ENTER,CMMsg.MASK_MOVE|CMMsg.TYP_RECALL,null);
+					recallRoom.send(M,msg2);
+				}
+				*/
+				if(recallRoom != currentRoom)
+				{
+					if(currentRoom.isInhabitant(M))
+						currentRoom.delInhabitant(M);
+					if(!recallRoom.isInhabitant(M))
+						recallRoom.bringMobHere(M,M.isMonster());
+				}
+			}
 		}
 	}
 	
