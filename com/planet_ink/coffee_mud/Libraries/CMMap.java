@@ -3482,7 +3482,14 @@ public class CMMap extends StdLibrary implements WorldMap
 				for(int m=0;m<R.numInhabitants();m++)
 				{
 					final MOB mob=R.fetchInhabitant(m);
-					if((mob!=null)&&(mob.lastTickedDateTime()>0)&&(mob.lastTickedDateTime()<lastDateTime))
+					if(mob == null)
+						continue;
+					if(mob.amDestroyed())
+					{
+						R.delInhabitant(mob);
+						continue;
+					}
+					if((mob.lastTickedDateTime()>0)&&(mob.lastTickedDateTime()<lastDateTime))
 					{
 						final boolean ticked=CMLib.threads().isTicking(mob,Tickable.TICKID_MOB);
 						final boolean isDead=mob.amDead();
@@ -3490,7 +3497,7 @@ public class CMMap extends StdLibrary implements WorldMap
 						final String wasFrom=(startR!=null)?startR.roomID():"NULL";
 						if(!ticked)
 						{
-							if(CMLib.players().getPlayer(mob.Name())==null)
+							if(!mob.isPlayer())
 							{
 								if(ticked)
 								{
@@ -3503,6 +3510,7 @@ public class CMMap extends StdLibrary implements WorldMap
 								{
 									Log.errOut(serviceClient.getName(),mob.name()+" in room "+CMLib.map().getDescriptiveExtendedRoomID(R)
 											+" unticked (is ticking="+(ticked)+", dead="+isDead+", Home="+wasFrom+") since: "+CMLib.time().date2String(mob.lastTickedDateTime())+"."+(ticked?"":"  This mob has been destroyed. May he rest in peace."));
+									mob.destroy();
 								}
 							}
 							else
@@ -3510,10 +3518,7 @@ public class CMMap extends StdLibrary implements WorldMap
 								Log.errOut(serviceClient.getName(),"Player "+mob.name()+" in room "+CMLib.map().getDescriptiveExtendedRoomID(R)
 										+" unticked (is ticking="+(ticked)+", dead="+isDead+", Home="+wasFrom+") since: "+CMLib.time().date2String(mob.lastTickedDateTime())+"."+(ticked?"":"  This mob has been put aside."));
 							}
-							setThreadStatus(serviceClient,"destroying unticked mob "+mob.name());
-							if(CMLib.players().getPlayer(mob.Name())==null)
-								mob.destroy();
-							R.delInhabitant(mob);
+							R.delInhabitant(mob);//keeps it from happening again.
 							setThreadStatus(serviceClient,"checking");
 						}
 					}

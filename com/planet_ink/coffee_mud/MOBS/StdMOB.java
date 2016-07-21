@@ -3548,172 +3548,196 @@ public class StdMOB implements MOB
 				return isOk;
 			}
 			else
-			if (location() != null)
 			{
 				final Room R=location();
-				final Area A=R.getArea();
-				// handle variable equipment!
-				if ((lastTickedTime < 0)
-				&& isMonster && R.getMobility()
-				&& (A.getAreaState() != Area.State.FROZEN)
-				&& (A.getAreaState() != Area.State.STOPPED))
+				if (R != null)
 				{
-					if (lastTickedTime == -1)
-						lastTickedTime = CMLib.utensils().processVariableEquipment(this);
-					else
-						lastTickedTime++;
-				}
-
-				tickStatus = Tickable.STATUS_ALIVE;
-
-				if((CMProps.getIntVar(CMProps.Int.COMBATSYSTEM) == CombatLibrary.CombatSystem.TURNBASED.ordinal()) && isInCombat())
-				{
-					if(CMLib.combat().doTurnBasedCombat(this,R,A))
+					final Area A=R.getArea();
+					// handle variable equipment!
+					if ((lastTickedTime < 0)
+					&& isMonster && R.getMobility()
+					&& (A.getAreaState() != Area.State.FROZEN)
+					&& (A.getAreaState() != Area.State.STOPPED))
 					{
-						if (lastTickedTime >= 0)
-							lastTickedTime = System.currentTimeMillis();
-						tickStatus = Tickable.STATUS_NOT;
-						return !removeFromGame;
+						if (lastTickedTime == -1)
+							lastTickedTime = CMLib.utensils().processVariableEquipment(this);
+						else
+							lastTickedTime++;
 					}
-				}
-				else
-				{
-					if (commandQueSize() == 0)
-						setActions(actions() - Math.floor(actions()));
-					setActions(actions() + (CMLib.flags().isSitting(this) ? phyStats().speed() / 2.0 : phyStats().speed()));
-				}
-
-				if ((--recoverTickCter) <= 0)
-				{
-					CMLib.combat().recoverTick(this);
-					recoverTickCter = CMProps.getIntVar(CMProps.Int.RECOVERRATE) * CharState.REAL_TICK_ADJUST_FACTOR;
-				}
-				if (!isMonster)
-					CMLib.combat().expendEnergy(this, false);
-
-				if(!CMLib.flags().isGolem(this))
-				{
-					if (!CMLib.flags().canBreathe(this))
+	
+					tickStatus = Tickable.STATUS_ALIVE;
+	
+					if((CMProps.getIntVar(CMProps.Int.COMBATSYSTEM) == CombatLibrary.CombatSystem.TURNBASED.ordinal()) && isInCombat())
 					{
-						final MOB killerM = CMLib.combat().getBreatheKiller(this); //R.show(this, this, CMMsg.MSG_OK_VISUAL, 
-						CMLib.combat().postDamage(killerM, this, this,
-												(int) Math.round(CMath.mul(Math.random(), basePhyStats().level() + 2)),
-												CMMsg.MASK_ALWAYS | CMMsg.TYP_WATER, -1, 
-												L("^Z<T-NAME> can't breathe!^.^?") + CMLib.protocol().msp("choke.wav", 10));
-					}
-					else
-					if(!CMLib.flags().canBreatheHere(this,R))
-					{
-						final int atmo=R.getAtmosphere();
-						if((atmo&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID)
+						if(CMLib.combat().doTurnBasedCombat(this,R,A))
 						{
-							final MOB killerM = CMLib.combat().getBreatheKiller(this); //R.show(this, this, CMMsg.MSG_OK_VISUAL, );
-							CMLib.combat().postDamage(killerM, this, this, 
-													(int) Math.round(CMath.mul(Math.random(), basePhyStats().level() + 2)), 
+							if (lastTickedTime >= 0)
+								lastTickedTime = System.currentTimeMillis();
+							tickStatus = Tickable.STATUS_NOT;
+							return !removeFromGame;
+						}
+					}
+					else
+					{
+						if (commandQueSize() == 0)
+							setActions(actions() - Math.floor(actions()));
+						setActions(actions() + (CMLib.flags().isSitting(this) ? phyStats().speed() / 2.0 : phyStats().speed()));
+					}
+	
+					if ((--recoverTickCter) <= 0)
+					{
+						CMLib.combat().recoverTick(this);
+						recoverTickCter = CMProps.getIntVar(CMProps.Int.RECOVERRATE) * CharState.REAL_TICK_ADJUST_FACTOR;
+						if (isMonster)
+						{
+							if((R.amDestroyed())||(A.amDestroyed()))
+							{
+								Log.errOut("Destroying "+Name()+" because he's not ticking in a real place ("+CMLib.map().getExtendedRoomID(R)+"): ("+A.Name()+").");
+								this.destroy();
+								return false;
+							}
+							else
+							if(!R.isInhabitant(this)&&(!isPlayer()))
+							{
+								Log.errOut("Killing "+Name()+" because he's not ticking where he is ("+CMLib.map().getExtendedRoomID(R)+"): ("+A.Name()+").");
+								this.killMeDead(false);
+							}
+						}
+					}
+					if (!isMonster)
+						CMLib.combat().expendEnergy(this, false);
+	
+					if(!CMLib.flags().isGolem(this))
+					{
+						if (!CMLib.flags().canBreathe(this))
+						{
+							final MOB killerM = CMLib.combat().getBreatheKiller(this); //R.show(this, this, CMMsg.MSG_OK_VISUAL, 
+							CMLib.combat().postDamage(killerM, this, this,
+													(int) Math.round(CMath.mul(Math.random(), basePhyStats().level() + 2)),
 													CMMsg.MASK_ALWAYS | CMMsg.TYP_WATER, -1, 
-													L("^Z<S-NAME> <S-IS-ARE> drowning in @x1!^.^?",RawMaterial.CODES.NAME(atmo).toLowerCase()) + CMLib.protocol().msp("choke.wav", 10));
+													L("^Z<T-NAME> can't breathe!^.^?") + CMLib.protocol().msp("choke.wav", 10));
 						}
 						else
+						if(!CMLib.flags().canBreatheHere(this,R))
 						{
-							final String msgStr;
-							if(atmo == 0)
-								msgStr=L("^Z<S-NAME> can't breathe!^.^?") + CMLib.protocol().msp("choke.wav", 10);
+							final int atmo=R.getAtmosphere();
+							if((atmo&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID)
+							{
+								final MOB killerM = CMLib.combat().getBreatheKiller(this); //R.show(this, this, CMMsg.MSG_OK_VISUAL, );
+								CMLib.combat().postDamage(killerM, this, this, 
+														(int) Math.round(CMath.mul(Math.random(), basePhyStats().level() + 2)), 
+														CMMsg.MASK_ALWAYS | CMMsg.TYP_WATER, -1, 
+														L("^Z<S-NAME> <S-IS-ARE> drowning in @x1!^.^?",RawMaterial.CODES.NAME(atmo).toLowerCase()) + CMLib.protocol().msp("choke.wav", 10));
+							}
 							else
-								msgStr=L("^Z<S-NAME> <S-IS-ARE> choking on @x1!^.^?");
-							final MOB killerM = CMLib.combat().getBreatheKiller(this);
-							CMLib.combat().postDamage(killerM, this, this, 
-													(int) Math.round(CMath.mul(Math.random(), basePhyStats().level() + 2)), 
-													CMMsg.MASK_ALWAYS | CMMsg.TYP_GAS, -1, msgStr);
+							{
+								final String msgStr;
+								if(atmo == 0)
+									msgStr=L("^Z<S-NAME> can't breathe!^.^?") + CMLib.protocol().msp("choke.wav", 10);
+								else
+									msgStr=L("^Z<S-NAME> <S-IS-ARE> choking on @x1!^.^?");
+								final MOB killerM = CMLib.combat().getBreatheKiller(this);
+								CMLib.combat().postDamage(killerM, this, this, 
+														(int) Math.round(CMath.mul(Math.random(), basePhyStats().level() + 2)), 
+														CMMsg.MASK_ALWAYS | CMMsg.TYP_GAS, -1, msgStr);
+							}
 						}
 					}
-				}
-
-				if (isInCombat())
-				{
-					if (CMProps.getIntVar(CMProps.Int.COMBATSYSTEM) == CombatLibrary.CombatSystem.DEFAULT.ordinal())
-						setActions(actions() + 1.0); // bonus action is employed in default system
-					tickStatus = Tickable.STATUS_FIGHT;
-					if((!isMonster) && isAttributeSet(MOB.Attrib.NOBATTLESPAM) && (peaceTime>0))
-						tell(L("^F^<FIGHT^>You are now in combat.^</FIGHT^>^N"));
-					peaceTime = 0;
-					if(CMLib.flags().canAutoAttack(this))
-						CMLib.combat().tickCombat(this);
-					
-					if(!isMonster)
-						CMLib.combat().handleDamageSpamSummary(this);
-				}
-				else
-				{
-					peaceTime += CMProps.getTickMillis();
-					if (this.isAttributeSet(MOB.Attrib.AUTODRAW)
-					&& (peaceTime >= START_SHEATH_TIME)
-					&& (peaceTime < END_SHEATH_TIME) && (CMLib.flags().isAliveAwakeMobileUnbound(this, true)))
-						CMLib.commands().postSheath(this, true);
-					if((!isMonster)
-					&& isAttributeSet(MOB.Attrib.NOBATTLESPAM) 
-					&& (playerStats()!=null)
-					&& (playerStats().getCombatSpams().size()>0))
-						CMLib.combat().handleDamageSpamSummary(this);
-				}
-
-				tickStatus = Tickable.STATUS_OTHER;
-				if((!isMonster)&&(maxState().getFatigue()>Long.MIN_VALUE/2))
-				{
-					if (CMLib.flags().isSleeping(this))
-						curState().adjFatigue(-CharState.REST_PER_SLEEP, maxState());
-					else // rest/sit isn't here because fatigue is sleepiness, not exhaustion per se
-					if (!CMSecurity.isAllowed(this, R, CMSecurity.SecFlag.IMMORT))
+	
+					if (isInCombat())
 					{
-						curState().adjFatigue(Math.round(CMProps.getTickMillis()), maxState());
-						if (curState().getFatigue() > CharState.FATIGUED_MILLIS)
+						if (CMProps.getIntVar(CMProps.Int.COMBATSYSTEM) == CombatLibrary.CombatSystem.DEFAULT.ordinal())
+							setActions(actions() + 1.0); // bonus action is employed in default system
+						tickStatus = Tickable.STATUS_FIGHT;
+						if((!isMonster) && isAttributeSet(MOB.Attrib.NOBATTLESPAM) && (peaceTime>0))
+							tell(L("^F^<FIGHT^>You are now in combat.^</FIGHT^>^N"));
+						peaceTime = 0;
+						if(CMLib.flags().canAutoAttack(this))
+							CMLib.combat().tickCombat(this);
+						
+						if(!isMonster)
+							CMLib.combat().handleDamageSpamSummary(this);
+					}
+					else
+					{
+						peaceTime += CMProps.getTickMillis();
+						if (this.isAttributeSet(MOB.Attrib.AUTODRAW)
+						&& (peaceTime >= START_SHEATH_TIME)
+						&& (peaceTime < END_SHEATH_TIME) && (CMLib.flags().isAliveAwakeMobileUnbound(this, true)))
+							CMLib.commands().postSheath(this, true);
+						if((!isMonster)
+						&& isAttributeSet(MOB.Attrib.NOBATTLESPAM) 
+						&& (playerStats()!=null)
+						&& (playerStats().getCombatSpams().size()>0))
+							CMLib.combat().handleDamageSpamSummary(this);
+					}
+	
+					tickStatus = Tickable.STATUS_OTHER;
+					if((!isMonster)&&(maxState().getFatigue()>Long.MIN_VALUE/2))
+					{
+						if (CMLib.flags().isSleeping(this))
+							curState().adjFatigue(-CharState.REST_PER_SLEEP, maxState());
+						else // rest/sit isn't here because fatigue is sleepiness, not exhaustion per se
+						if (!CMSecurity.isAllowed(this, R, CMSecurity.SecFlag.IMMORT))
 						{
-							final boolean smallChance=(CMLib.dice().rollPercentage() == 1);
-							if(smallChance && (!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
+							curState().adjFatigue(Math.round(CMProps.getTickMillis()), maxState());
+							if (curState().getFatigue() > CharState.FATIGUED_MILLIS)
 							{
-								final Ability theYawns = CMClass.getAbility("Disease_Yawning");
-								if (theYawns != null)
-									theYawns.invoke(this, this, true, 0);
-							}
-							if (smallChance && curState().getFatigue() > (CharState.FATIGUED_EXHAUSTED_MILLIS))
-							{
-								R.show(this, null, CMMsg.MSG_OK_ACTION, L("<S-NAME> fall(s) asleep from exhaustion!!"));
-								basePhyStats().setDisposition(basePhyStats().disposition() | PhyStats.IS_SLEEPING);
-								phyStats().setDisposition(phyStats().disposition() | PhyStats.IS_SLEEPING);
-								if((CMLib.dice().rollPercentage() < 10) && (!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
+								final boolean smallChance=(CMLib.dice().rollPercentage() == 1);
+								if(smallChance && (!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
 								{
-									final Ability theYawns = CMClass.getAbility("Disease_Sleepwalking");
+									final Ability theYawns = CMClass.getAbility("Disease_Yawning");
 									if (theYawns != null)
 										theYawns.invoke(this, this, true, 0);
+								}
+								if (smallChance && curState().getFatigue() > (CharState.FATIGUED_EXHAUSTED_MILLIS))
+								{
+									R.show(this, null, CMMsg.MSG_OK_ACTION, L("<S-NAME> fall(s) asleep from exhaustion!!"));
+									basePhyStats().setDisposition(basePhyStats().disposition() | PhyStats.IS_SLEEPING);
+									phyStats().setDisposition(phyStats().disposition() | PhyStats.IS_SLEEPING);
+									if((CMLib.dice().rollPercentage() < 10) && (!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
+									{
+										final Ability theYawns = CMClass.getAbility("Disease_Sleepwalking");
+										if (theYawns != null)
+											theYawns.invoke(this, this, true, 0);
+									}
 								}
 							}
 						}
 					}
+					else
+					while ((!amDead())  && (!amDestroyed) && dequeCommand())
+					{
+					}
+	
+					final Rideable riding = riding();
+					if ((riding != null) && (CMLib.map().roomLocation(riding) != R))
+						setRiding(null);
+					
+					if ((!isMonster) && (soulMate() == null))
+					{
+						CMLib.coffeeTables().bump(this, CoffeeTableRow.STAT_TICKSONLINE);
+						if (((++tickAgeCounter) * CMProps.getTickMillis()) >= AGE_MILLIS_THRESHOLD)
+						{
+							final long secondsPassed = (tickAgeCounter * CMProps.getTickMillis()) / 1000;
+							CMLib.achievements().possiblyBumpAchievement(this, AchievementLibrary.Event.TIMEPLAYED, (int)secondsPassed, this);
+							tickAgeCounter = 0;
+							if (inventory != null)
+								inventory.trimToSize();
+							if (affects != null)
+								affects.trimToSize();
+							if (abilitys != null)
+								abilitys.trimToSize();
+							CMLib.commands().tickAging(this, AGE_MILLIS_THRESHOLD);
+						}
+					}
 				}
 				else
-				while ((!amDead())  && (!amDestroyed) && dequeCommand())
+				if (isMonster && (!isPlayer()))
 				{
-				}
-
-				final Rideable riding = riding();
-				if ((riding != null) && (CMLib.map().roomLocation(riding) != R))
-					setRiding(null);
-				
-				if ((!isMonster) && (soulMate() == null))
-				{
-					CMLib.coffeeTables().bump(this, CoffeeTableRow.STAT_TICKSONLINE);
-					if (((++tickAgeCounter) * CMProps.getTickMillis()) >= AGE_MILLIS_THRESHOLD)
-					{
-						final long secondsPassed = (tickAgeCounter * CMProps.getTickMillis()) / 1000;
-						CMLib.achievements().possiblyBumpAchievement(this, AchievementLibrary.Event.TIMEPLAYED, (int)secondsPassed, this);
-						tickAgeCounter = 0;
-						if (inventory != null)
-							inventory.trimToSize();
-						if (affects != null)
-							affects.trimToSize();
-						if (abilitys != null)
-							abilitys.trimToSize();
-						CMLib.commands().tickAging(this, AGE_MILLIS_THRESHOLD);
-					}
+					Log.errOut("Destroying "+Name()+" because he's not ticking anywhere at all!");
+					this.destroy();
+					return false;
 				}
 			}
 
