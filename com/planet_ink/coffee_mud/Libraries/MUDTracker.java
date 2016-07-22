@@ -2089,14 +2089,10 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 				final MOB M=m.next();
 				if(M.isInCombat())
 					CMLib.commands().postFlee(M,("NOWHERE"));
-				/*// if you disconnect, the generated Quit leads here, but the message causes a quit-loop.. npcs never get anywhere...
-				{
-					final CMMsg msg=CMClass.getMsg(M,currentRoom,null,CMMsg.MSG_RECALL,CMMsg.MSG_LEAVE,CMMsg.MSG_RECALL,L("<S-NAME> disappear(s) into the Java Plane!"));
-					currentRoom.send(M,msg);
-					final CMMsg msg2=CMClass.getMsg(M,recallRoom,null,CMMsg.MASK_MOVE|CMMsg.TYP_RECALL,CMMsg.MASK_MOVE|CMMsg.MSG_ENTER,CMMsg.MASK_MOVE|CMMsg.TYP_RECALL,null);
-					recallRoom.send(M,msg2);
-				}
-				*/
+				final CMMsg msg=CMClass.getMsg(M,currentRoom,null,CMMsg.MSG_RECALL,CMMsg.MSG_LEAVE,CMMsg.MSG_RECALL,L("<S-NAME> disappear(s) into the Java Plane!"));
+				currentRoom.send(M,msg);
+				final CMMsg msg2=CMClass.getMsg(M,recallRoom,null,CMMsg.MASK_MOVE|CMMsg.TYP_RECALL,CMMsg.MASK_MOVE|CMMsg.MSG_ENTER,CMMsg.MASK_MOVE|CMMsg.TYP_RECALL,null);
+				recallRoom.send(M,msg2);
 				if(recallRoom != currentRoom)
 				{
 					if(currentRoom.isInhabitant(M))

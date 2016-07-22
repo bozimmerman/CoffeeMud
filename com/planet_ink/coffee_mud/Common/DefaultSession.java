@@ -1071,7 +1071,7 @@ public class DefaultSession implements Session
 						Log.debugOut( str.toString()+"'");
 					}
 					out.write(chars);
-					if(out.checkError())
+					if(out.checkError() && (!killFlag))
 						stopSession(true,true,false);
 				}
 				finally

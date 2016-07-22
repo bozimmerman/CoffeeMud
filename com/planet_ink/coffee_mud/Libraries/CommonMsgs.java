@@ -611,35 +611,38 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 	@Override
 	public void handleRecall(CMMsg msg)
 	{
-		final MOB recallingmob=msg.source();
+		final MOB recallingMob=msg.source();
+		final Room recallingRoom=recallingMob.location();
 		if((msg.target() instanceof Room)
-		&&(recallingmob.location() != msg.target()))
+		&&(recallingRoom!=null)
+		&&(recallingRoom != msg.target()))
 		{
-			recallingmob.tell(msg.source(),null,msg.tool(),msg.targetMessage());
+			final Room recallToRoom=(Room)msg.target();
+			recallingMob.tell(msg.source(),null,msg.tool(),msg.targetMessage());
 
-			recallingmob.location().delInhabitant(recallingmob);
-			((Room)msg.target()).addInhabitant(recallingmob);
-			((Room)msg.target()).showOthers(recallingmob,null,CMMsg.MSG_ENTER,L("<S-NAME> appears out of the Java Plane."));
+			recallingRoom.delInhabitant(recallingMob);
+			recallToRoom.addInhabitant(recallingMob);
+			recallToRoom.showOthers(recallingMob,null,CMMsg.MSG_ENTER,L("<S-NAME> appears out of the Java Plane."));
 
-			recallingmob.setLocation(((Room)msg.target()));
-			if((recallingmob.riding()!=null)
-			&&(recallingmob.location()!=CMLib.map().roomLocation(recallingmob.riding())))
+			recallingMob.setLocation(recallToRoom);
+			if((recallingMob.riding()!=null)
+			&&(recallToRoom!=CMLib.map().roomLocation(recallingMob.riding())))
 			{
-				if(recallingmob.riding().mobileRideBasis())
+				if(recallingMob.riding().mobileRideBasis())
 				{
-					if(recallingmob.riding() instanceof Item)
-						recallingmob.location().moveItemTo((Item)recallingmob.riding(),ItemPossessor.Expire.Never,ItemPossessor.Move.Followers);
+					if(recallingMob.riding() instanceof Item)
+						recallToRoom.moveItemTo((Item)recallingMob.riding(),ItemPossessor.Expire.Never,ItemPossessor.Move.Followers);
 					else
-					if(recallingmob.riding() instanceof MOB)
-						recallingmob.location().bringMobHere((MOB)recallingmob.riding(),true);
+					if(recallingMob.riding() instanceof MOB)
+						recallToRoom.bringMobHere((MOB)recallingMob.riding(),true);
 				}
 				else
-					recallingmob.setRiding(null);
+					recallingMob.setRiding(null);
 			}
-			recallingmob.recoverPhyStats();
-			recallingmob.recoverCharStats();
-			recallingmob.recoverMaxState();
-			postLook(recallingmob,true);
+			recallingMob.recoverPhyStats();
+			recallingMob.recoverCharStats();
+			recallingMob.recoverMaxState();
+			postLook(recallingMob,true);
 		}
 	}
 
