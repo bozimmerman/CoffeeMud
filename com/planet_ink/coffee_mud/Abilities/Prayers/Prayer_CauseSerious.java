@@ -36,12 +36,37 @@ import java.util.*;
 
 public class Prayer_CauseSerious extends Prayer
 {
-	@Override public String ID() { return "Prayer_CauseSerious"; }
-	private final static String localizedName = CMLib.lang().L("Cause Serious Wounds");
-	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_VEXING;}
-	@Override public long flags(){return Ability.FLAG_UNHOLY;}
+	@Override
+	public String ID()
+	{
+		return "Prayer_CauseSerious";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Cause Serious Wounds");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER | Ability.DOMAIN_VEXING;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_UNHOLY;
+	}
 
 	@Override
 	public int castingQuality(MOB mob, Physical target)
@@ -75,7 +100,7 @@ public class Prayer_CauseSerious extends Prayer
 			final CMMsg msg=CMClass.getMsg(mob,target,this,(undead?0:CMMsg.MASK_MALICIOUS)|verbalCastCode(mob,target,auto),L(auto?"A seriously painful burst assaults <T-NAME>.":"^S<S-NAME> "+prayWord(mob)+" for a serious burst of pain at <T-NAMESELF>!^?")+CMLib.protocol().msp("spelldam1.wav",40));
 			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_UNDEAD|(auto?CMMsg.MASK_ALWAYS:0),null);
 			final Room R=target.location();
-			if((R.okMessage(mob,msg))&&((R.okMessage(mob,msg2))))
+			if((R!=null)&&(R.okMessage(mob,msg))&&((R.okMessage(mob,msg2))))
 			{
 				R.send(mob,msg);
 				R.send(mob,msg2);
