@@ -2466,7 +2466,7 @@ public class DefaultSession implements Session
 						}
 						catch (Throwable t)
 						{ /* and eat it */
-							Log.errOut(t);
+							Log.errOut(t.getMessage());
 						}
 					}
 				}
