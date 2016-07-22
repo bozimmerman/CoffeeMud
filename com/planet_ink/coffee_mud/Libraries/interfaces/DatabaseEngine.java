@@ -797,23 +797,32 @@ public interface DatabaseEngine extends CMLibrary
 	 * Table category: DBQUEST
 	 * Updates the entire complete quest list by deleting all quests
 	 * from the database and re-inserting the given list of quests.
+	 * @see DatabaseEngine#DBUpdateQuest(Quest)
+	 * @see DatabaseEngine#DBReadQuests()
 	 * @param quests the list of quests to end up with
 	 */
 	public void DBUpdateQuests(List<Quest> quests);
 
 	/**
 	 * Table category: DBQUEST
-	 * 
-	 * @param Q
+	 * Updates the given quest in the database by deleting
+	 * the old one and re-inserting this one.
+	 * @see DatabaseEngine#DBUpdateQuests(List)
+	 * @see DatabaseEngine#DBReadQuests()
+	 * @param Q the quest to update
 	 */
 	public void DBUpdateQuest(Quest Q);
 
 	/**
 	 * Table category: DBQUEST
-	 * 
-	 * @param myHost
+	 * Reads all the Quest objects from the database and
+	 * returns them as a list.  The Quests are pre-parsed 
+	 * and ready to go.  
+	 * @see DatabaseEngine#DBUpdateQuests(List)
+	 * @see DatabaseEngine#DBUpdateQuest(Quest)
+	 * @return the list of quests
 	 */
-	public void DBReadQuests(MudHost myHost);
+	public List<Quest> DBReadQuests();
 
 	/**
 	 * Table category: DBCLANS
@@ -821,7 +830,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * @param clan
 	 * @return
 	 */
-	public List<MemberRecord> DBClanMembers(String clan);
+	public List<MemberRecord> DBReadClanMembers(String clan);
 
 	/**
 	 * Table category: DBCLANS
@@ -957,7 +966,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * Table category: DBJOURNALS
 	 * 
 	 * @param Journal
-	 * @param ascending TODO
+	 * @param ascending true to order the read entries by date
 	 * @return
 	 */
 	public List<JournalEntry> DBReadJournalMsgsByUpdateDate(String Journal, boolean ascending);

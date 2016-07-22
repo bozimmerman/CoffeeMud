@@ -189,7 +189,7 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
-	public List<MemberRecord> DBClanMembers(String clan)
+	public List<MemberRecord> DBReadClanMembers(String clan)
 	{
 		return MOBloader.DBClanMembers(clan);
 	}
@@ -411,9 +411,9 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
-	public void DBReadQuests(MudHost myHost)
+	public List<Quest> DBReadQuests()
 	{
-		QuestLoader.DBRead(myHost);
+		return QuestLoader.DBRead();
 	}
 
 	@Override

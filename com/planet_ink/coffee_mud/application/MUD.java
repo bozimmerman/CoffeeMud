@@ -1519,7 +1519,9 @@ public class MUD extends Thread implements MudHost
 
 			if((tCode==MAIN_HOST)||(checkPrivate&&CMProps.isPrivateToMe("QUESTS")))
 			{
-				CMLib.database().DBReadQuests(CMLib.mud(0));
+				CMLib.quests().shutdown();
+				for(Quest Q : CMLib.database().DBReadQuests())
+					CMLib.quests().addQuest(Q);
 				if(CMLib.quests().numQuests()>0)
 					Log.sysOut(Thread.currentThread().getName(),"Quests loaded     : "+CMLib.quests().numQuests());
 			}

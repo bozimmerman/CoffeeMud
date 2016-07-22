@@ -1020,7 +1020,7 @@ public class DefaultClan implements Clan
 	@Override 
 	public int getSize() 
 	{ 
-		return CMLib.database().DBClanMembers(clanID()).size(); 
+		return CMLib.database().DBReadClanMembers(clanID()).size(); 
 	}
 
 	@Override
@@ -1265,7 +1265,7 @@ public class DefaultClan implements Clan
 	@Override
 	public List<MemberRecord> getMemberList(int posFilter)
 	{
-		return filterMemberList(CMLib.database().DBClanMembers(clanID()), posFilter);
+		return filterMemberList(CMLib.database().DBReadClanMembers(clanID()), posFilter);
 	}
 
 	public MemberRecord getMember(String name)
@@ -1277,7 +1277,7 @@ public class DefaultClan implements Clan
 	public List<FullMemberRecord> getFullMemberList()
 	{
 		final List<FullMemberRecord> members=new Vector<FullMemberRecord>();
-		final List<MemberRecord> subMembers=filterMemberList(CMLib.database().DBClanMembers(clanID()), -1);
+		final List<MemberRecord> subMembers=filterMemberList(CMLib.database().DBReadClanMembers(clanID()), -1);
 		for(final MemberRecord member : subMembers)
 		{
 			if(member!=null)
