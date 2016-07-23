@@ -477,15 +477,15 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
-	public void DBUpdateJournalStats(String journalID, JournalsLibrary.JournalSummaryStats stats)
+	public void DBUpdateJournalMetaData(String journalID, JournalsLibrary.JournalMetaData metaData)
 	{
-		JournalLoader.DBUpdateJournalStats(journalID, stats);
+		JournalLoader.DBUpdateJournalStats(journalID, metaData);
 	}
 
 	@Override
-	public void DBReadJournalSummaryStats(JournalsLibrary.JournalSummaryStats stats)
+	public void DBReadJournalMetaData(JournalsLibrary.JournalMetaData metaData)
 	{
-		JournalLoader.DBReadJournalSummaryStats(stats);
+		JournalLoader.DBReadJournalSummaryStats(metaData);
 	}
 
 	@Override
@@ -507,9 +507,9 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
-	public JournalEntry DBReadJournalEntry(String journalID, String Key)
+	public JournalEntry DBReadJournalEntry(String journalID, String messageKey)
 	{
-		return JournalLoader.DBReadJournalEntry(journalID, Key);
+		return JournalLoader.DBReadJournalEntry(journalID, messageKey);
 	}
 
 	@Override

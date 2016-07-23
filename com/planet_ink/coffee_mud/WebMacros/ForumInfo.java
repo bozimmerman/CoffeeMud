@@ -124,29 +124,29 @@ public class ForumInfo extends StdWebMacro
 		if(parms.containsKey("EXPIRE"))
 			str.append( "").append(", ");
 
-		final JournalsLibrary.JournalSummaryStats stats = CMLib.journals().getJournalStats(journal);
-		if(stats == null)
+		final JournalsLibrary.JournalMetaData metaData = CMLib.journals().getJournalStats(journal);
+		if(metaData == null)
 			return " @break@";
 
 		if(parms.containsKey("POSTS"))
-			str.append( ""+stats.posts()).append(", ");
+			str.append( ""+metaData.posts()).append(", ");
 
 		if(parms.containsKey("THREADS"))
-			str.append( ""+stats.threads()).append(", ");
+			str.append( ""+metaData.threads()).append(", ");
 
 		if(parms.containsKey("SHORTDESC"))
-			str.append( ""+stats.shortIntro()).append(", ");
+			str.append( ""+metaData.shortIntro()).append(", ");
 
 		if(parms.containsKey("LONGDESC"))
-			str.append( ""+stats.longIntro()).append(", ");
+			str.append( ""+metaData.longIntro()).append(", ");
 
 		if(parms.containsKey("IMAGEPATH"))
 		{
-			if((stats.imagePath()==null)
-			||(stats.imagePath().trim().length()==0))
+			if((metaData.imagePath()==null)
+			||(metaData.imagePath().trim().length()==0))
 				str.append( L("images/lilcm.jpg")).append(", ");
 			else
-				str.append( ""+stats.threads()).append(", ");
+				str.append( ""+metaData.threads()).append(", ");
 		}
 
 		String strstr=str.toString();

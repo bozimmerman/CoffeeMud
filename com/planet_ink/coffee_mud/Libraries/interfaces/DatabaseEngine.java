@@ -972,102 +972,202 @@ public interface DatabaseEngine extends CMLibrary
 
 	/**
 	 * Table category: DBJOURNALS
-	 * 
-	 * @return
+	 * Returns the list of every journalID in the database that
+	 * has at least one message, or an intro.
+	 * @see DatabaseEngine#DBUpdateJournal(String, JournalEntry)
+	 * @see DatabaseEngine#DBReadJournalEntry(String, String)
+	 * @see DatabaseEngine#DBWriteJournal(String, JournalEntry)
+	 * @see DatabaseEngine#DBWriteJournal(String, String, String, String, String)
+	 * @see DatabaseEngine#DBDeleteJournal(String, String)
+	 * @return the list of every journal ID
 	 */
 	public List<String> DBReadJournals();
 
 	/**
 	 * Table category: DBJOURNALS
-	 * 
-	 * @param Journal
-	 * @param stats
+	 * Updates the entire database record for the given journal
+	 * entry, which must have already been created.
+	 * @see JournalEntry
+	 * @see DatabaseEngine#DBReadJournals()
+	 * @see DatabaseEngine#DBReadJournalEntry(String, String)
+	 * @see DatabaseEngine#DBWriteJournal(String, JournalEntry)
+	 * @see DatabaseEngine#DBWriteJournal(String, String, String, String, String)
+	 * @see DatabaseEngine#DBDeleteJournal(String, String)
+	 * @param journalID the name/id of the journal
+	 * @param entry the complete entry record
 	 */
-	public void DBUpdateJournalStats(String Journal, JournalsLibrary.JournalSummaryStats stats);
+	public void DBUpdateJournal(String journalID, JournalEntry entry);
+
+	/**
+	 * Table category: DBJOURNALS
+	 * Reads an individual message from the given journal by its
+	 * message key.
+	 * @see JournalEntry
+	 * @see DatabaseEngine#DBReadJournals()
+	 * @see DatabaseEngine#DBUpdateJournal(String, JournalEntry)
+	 * @see DatabaseEngine#DBWriteJournal(String, JournalEntry)
+	 * @see DatabaseEngine#DBWriteJournal(String, String, String, String, String)
+	 * @see DatabaseEngine#DBDeleteJournal(String, String)
+	 * @param journalID the name/id of the journal
+	 * @param messageKey the message key
+	 * @return the complete journal entry, or null if it wasn't found
+	 */
+	public JournalEntry DBReadJournalEntry(String journalID, String messageKey);
+
+	/**
+	 * Table category: DBJOURNALS
+	 * Creates a new entry in the journal.  If the entries key already
+	 * exists, this will make an error.  If the entries key is null, however,
+	 * it will generate a new one.
+	 * @see JournalEntry
+	 * @see DatabaseEngine#DBReadJournals()
+	 * @see DatabaseEngine#DBReadJournalEntry(String, String)
+	 * @see DatabaseEngine#DBUpdateJournal(String, JournalEntry)
+	 * @see DatabaseEngine#DBWriteJournal(String, String, String, String, String)
+	 * @see DatabaseEngine#DBDeleteJournal(String, String)
+	 * @param journalID the name/id of the journal
+	 * @param entry the enttry to create
+	 */
+	public void DBWriteJournal(String journalID, JournalEntry entry);
+
+	/**
+	 * Table category: DBJOURNALS
+	 * Creates a new entry in this journal.  Will generate a new key.
+	 * @see DatabaseEngine#DBReadJournals()
+	 * @see DatabaseEngine#DBReadJournalEntry(String, String)
+	 * @see DatabaseEngine#DBUpdateJournal(String, JournalEntry)
+	 * @see DatabaseEngine#DBWriteJournal(String, JournalEntry)
+	 * @see DatabaseEngine#DBDeleteJournal(String, String)
+	 * @param journalID the name/id of the journal
+	 * @param from the author of the message
+	 * @param to who the message is to, such as ALL
+	 * @param subject the subject of the message
+	 * @param message the message to write
+	 */
+	public void DBWriteJournal(String journalID, String from, String to, String subject, String message);
+
+	/**
+	 * Table category: DBJOURNALS
+	 * Deletes enter a specific message, or all messages, from the given 
+	 * journal.  Deleting all messages deletes the journal.  Take care, 
+	 * because of the null thing, this method is dangerous. :)
+	 * @see DatabaseEngine#DBReadJournals()
+	 * @see DatabaseEngine#DBReadJournalEntry(String, String)
+	 * @see DatabaseEngine#DBUpdateJournal(String, JournalEntry)
+	 * @see DatabaseEngine#DBWriteJournal(String, JournalEntry)
+	 * @see DatabaseEngine#DBWriteJournal(String, String, String, String, String)
+	 * @param journalID the name/id of the journal
+	 * @param msgKeyOrNull the message key, or null to delete ALL messages
+	 */
+	public void DBDeleteJournal(String journalID, String msgKeyOrNull);
+
+	/**
+	 * Table category: DBJOURNALS
+	 * Writes a new journal entry formatted for the email system and generates
+	 * a new message key.
+	 * @see CMProps.Str.MAILBOX
+	 * @param mailBoxID the journal name/id of the email system MAILBOX
+	 * @param journalSource the name/id of the journal that originated the message 
+	 * @param from who the author of the email
+	 * @param to the recipient 
+	 * @param subject the subject of the message
+	 * @param message the email message
+	 */
+	public void DBWriteJournalEmail(String mailBoxID, String journalSource, String from, String to, String subject, String message);
+
+	/**
+	 * Table category: DBJOURNALS
+	 * Adds to an existing journal entry by taking on a fake/stupid reply as a text
+	 * appendage to the main message.  I should do something better some day, and
+	 * I did to forums right, but, well, that's how these still are, just like Zelch 64 1.0.
+	 * @param journalID the name/id of the journal
+	 * @param messageKey the key of the message to append to
+	 * @param from who the Reply is from
+	 * @param to who the recipient of the reply is
+	 * @param subject the subject of the reply
+	 * @param message the reply text
+	 */
+	public void DBWriteJournalReply(String journalID, String messageKey, String from, String to, String subject, String message);
+
+	/**
+	 * Table category: DBJOURNALS
+	 * Searches all the messages in the journal for the search string as
+	 * a (typically) case-insensitive substring of either the subject 
+	 * or the message text.  Returns up to 100 journal entries that
+	 * form a match.
+	 * @param journalID the name/id of the journal to search
+	 * @param searchStr the search substring
+	 * @return the list of journal entries that match
+	 */
+	public List<JournalEntry> DBSearchAllJournalEntries(String journalID, String searchStr);
+
+	/**
+	 * Table category: DBJOURNALS
+	 * For forum journals, updates the number of replies registered with the
+	 * parent message represented by the given message Key.
+	 * @param messageKey the key of the parent op message
+	 * @param numReplies the new number of replies to register
+	 */
+	public void DBUpdateMessageReplies(String messageKey, int numReplies);
 
 	/**
 	 * Table category: DBJOURNALS
 	 * 
-	 * @param Journal
-	 * @param entry
+	 * @param metaData
 	 */
-	public void DBUpdateJournal(String Journal, JournalEntry entry);
+	public void DBReadJournalMetaData(JournalsLibrary.JournalMetaData metaData);
+
+	/**
+	 * Table category: DBJOURNALS
+	 * Primarily for forum journals, this method updates 
+	 * @param journalID
+	 * @param metaData
+	 */
+	public void DBUpdateJournalMetaData(String journalID, JournalsLibrary.JournalMetaData metaData);
 
 	/**
 	 * Table category: DBJOURNALS
 	 * 
-	 * @param Journal
-	 * @param searchStr
-	 * @return
-	 */
-	public List<JournalEntry> DBSearchAllJournalEntries(String Journal, String searchStr);
-
-	/**
-	 * Table category: DBJOURNALS
-	 * 
-	 * @param stats
-	 */
-	public void DBReadJournalSummaryStats(JournalsLibrary.JournalSummaryStats stats);
-
-	/**
-	 * Table category: DBJOURNALS
-	 * 
-	 * @param key
-	 * @param numReplies
-	 */
-	public void DBUpdateMessageReplies(String key, int numReplies);
-
-	/**
-	 * Table category: DBJOURNALS
-	 * 
-	 * @param Journal
-	 * @param Key
-	 * @return
-	 */
-	public JournalEntry DBReadJournalEntry(String Journal, String Key);
-
-	/**
-	 * Table category: DBJOURNALS
-	 * 
-	 * @param Journal
+	 * @param journalID
 	 * @param parent
 	 * @param searchStr
 	 * @param newerDate
 	 * @param limit
 	 * @return
 	 */
-	public List<JournalEntry> DBReadJournalPageMsgs(String Journal, String parent, String searchStr, long newerDate, int limit);
+	public List<JournalEntry> DBReadJournalPageMsgs(String journalID, String parent, String searchStr, long newerDate, int limit);
 
 	/**
 	 * Table category: DBJOURNALS
 	 * 
-	 * @param Journal
+	 * @param journalID
 	 * @param ascending true to order the read entries by date
 	 * @return
 	 */
-	public List<JournalEntry> DBReadJournalMsgsByUpdateDate(String Journal, boolean ascending);
+	public List<JournalEntry> DBReadJournalMsgsByUpdateDate(String journalID, boolean ascending);
 
 	/**
 	 * Table category: DBJOURNALS
 	 * 
-	 * @param Journal
+	 * @param journalID
 	 * @param ascending
 	 * @param limit
 	 * @return
 	 */
-	public List<JournalEntry> DBReadJournalMsgsByUpdateDate(String Journal, boolean ascending, int limit);
+	public List<JournalEntry> DBReadJournalMsgsByUpdateDate(String journalID, boolean ascending, int limit);
 
 	/**
 	 * Table category: DBJOURNALS
 	 * 
-	 * @param Journal
+	 * @param journalID
 	 * @param ascending
 	 * @param tos
 	 * @return
 	 */
-	public List<JournalEntry> DBReadJournalMsgsByUpdateDate(String Journal, boolean ascending, int limit, String[] tos);
+	public List<JournalEntry> DBReadJournalMsgsByUpdateDate(String journalID, boolean ascending, int limit, String[] tos);
 	
 	/**
+	 * Table category: DBJOURNALS
 	 * 
 	 * @param journalID
 	 * @param ascending
@@ -1076,6 +1176,7 @@ public interface DatabaseEngine extends CMLibrary
 	public List<JournalEntry> DBReadJournalMsgsByCreateDate(String journalID, boolean ascending);
 
 	/**
+	 * Table category: DBJOURNALS
 	 * 
 	 * @param journalID
 	 * @param ascending
@@ -1085,6 +1186,7 @@ public interface DatabaseEngine extends CMLibrary
 	public List<JournalEntry> DBReadJournalMsgsByCreateDate(String journalID, boolean ascending, int limit);
 
 	/**
+	 * Table category: DBJOURNALS
 	 * 
 	 * @param journalID
 	 * @param ascending
@@ -1097,80 +1199,37 @@ public interface DatabaseEngine extends CMLibrary
 	/**
 	 * Table category: DBJOURNALS
 	 * 
-	 * @param Journal
+	 * @param journalID
 	 * @param to
 	 * @param olderDate
 	 * @return
 	 */
-	public List<JournalEntry> DBReadJournalMsgsNewerThan(String Journal, String to, long olderDate);
+	public List<JournalEntry> DBReadJournalMsgsNewerThan(String journalID, String to, long olderDate);
 
 	/**
 	 * Table category: DBJOURNALS
 	 * 
-	 * @param Journal
+	 * @param journalID
 	 * @param to
 	 * @param newestDate
 	 * @return
 	 */
-	public List<JournalEntry> DBReadJournalMsgsOlderThan(String Journal, String to, long newestDate);
+	public List<JournalEntry> DBReadJournalMsgsOlderThan(String journalID, String to, long newestDate);
 
 	/**
 	 * Table category: DBJOURNALS
 	 * 
-	 * @param Journal
+	 * @param journalID
 	 * @param from
 	 * @param to
 	 * @return
 	 */
-	public int DBCountJournal(String Journal, String from, String to);
+	public int DBCountJournal(String journalID, String from, String to);
 
 	/**
 	 * Table category: DBJOURNALS
 	 * 
-	 * @param Journal
-	 * @param entry
-	 */
-	public void DBWriteJournal(String Journal, JournalEntry entry);
-
-	/**
-	 * Table category: DBJOURNALS
-	 * 
-	 * @param Journal
-	 * @param from
-	 * @param to
-	 * @param subject
-	 * @param message
-	 */
-	public void DBWriteJournal(String Journal, String from, String to, String subject, String message);
-
-	/**
-	 * Table category: DBJOURNALS
-	 * 
-	 * @param MailBox
-	 * @param journalSource
-	 * @param from
-	 * @param to
-	 * @param subject
-	 * @param message
-	 */
-	public void DBWriteJournalEmail(String MailBox, String journalSource, String from, String to, String subject, String message);
-
-	/**
-	 * Table category: DBJOURNALS
-	 * 
-	 * @param Journal
-	 * @param key
-	 * @param from
-	 * @param to
-	 * @param subject
-	 * @param message
-	 */
-	public void DBWriteJournalReply(String Journal, String key, String from, String to, String subject, String message);
-
-	/**
-	 * Table category: DBJOURNALS
-	 * 
-	 * @param Journal
+	 * @param journalID
 	 * @param journalSource
 	 * @param from
 	 * @param to
@@ -1178,16 +1237,8 @@ public interface DatabaseEngine extends CMLibrary
 	 * @param subject
 	 * @param message
 	 */
-	public void DBWriteJournalChild(String Journal, String journalSource, String from, String to, 
+	public void DBWriteJournalChild(String journalID, String journalSource, String from, String to, 
 									String parentKey, String subject, String message);
-
-	/**
-	 * Table category: DBJOURNALS
-	 * 
-	 * @param Journal
-	 * @param msgKeyOrNull
-	 */
-	public void DBDeleteJournal(String Journal, String msgKeyOrNull);
 
 	/**
 	 * Table category: DBJOURNALS
@@ -1200,12 +1251,12 @@ public interface DatabaseEngine extends CMLibrary
 	/**
 	 * Table category: DBJOURNALS
 	 * 
-	 * @param Journal
+	 * @param journalID
 	 * @param to
 	 * @param olderTime
 	 * @return
 	 */
-	public long[] DBJournalLatestDateNewerThan(String Journal, String to, long olderTime);
+	public long[] DBJournalLatestDateNewerThan(String journalID, String to, long olderTime);
 
 	/**
 	 * Table category: DBJOURNALS
@@ -1217,35 +1268,35 @@ public interface DatabaseEngine extends CMLibrary
 	/**
 	 * Table category: DBJOURNALS
 	 * 
-	 * @param key
+	 * @param messageKey
 	 * @param subject
 	 * @param msg
 	 * @param newAttributes
 	 */
-	public void DBUpdateJournal(String key, String subject, String msg, long newAttributes);
+	public void DBUpdateJournal(String messageKey, String subject, String msg, long newAttributes);
 
 	/**
 	 * Table category: DBJOURNALS
 	 * 
-	 * @param key
+	 * @param messageKey
 	 * @param views
 	 */
-	public void DBViewJournalMessage(String key, int views);
+	public void DBViewJournalMessage(String messageKey, int views);
 
 	/**
 	 * Table category: DBJOURNALS
 	 * 
-	 * @param key
+	 * @param messageKey
 	 */
-	public void DBTouchJournalMessage(String key);
+	public void DBTouchJournalMessage(String messageKey);
 
 	/**
 	 * Table category: DBJOURNALS
 	 * 
-	 * @param key
+	 * @param messageKey
 	 * @param newDate
 	 */
-	public void DBTouchJournalMessage(String key, long newDate);
+	public void DBTouchJournalMessage(String messageKey, long newDate);
 
 	/**
 	 * Table category: DBPLAYERDATA
@@ -1409,7 +1460,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * @param raceID
 	 * @param data
 	 */
-	public void DBCreateRace(String raceID,String data);
+	public void DBCreateRace(String raceID, String data);
 
 	/**
 	 * Table category: DBCHARCLASS

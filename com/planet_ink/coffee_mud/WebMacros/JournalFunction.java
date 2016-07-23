@@ -178,16 +178,16 @@ public class JournalFunction extends StdWebMacro
 			final String longDesc=fixForumString(httpReq.getUrlParameter("LONGDESC"));
 			final String shortDesc=fixForumString(httpReq.getUrlParameter("SHORTDESC"));
 			final String imgPath=httpReq.getUrlParameter("IMGPATH");
-			final JournalsLibrary.JournalSummaryStats stats = CMLib.journals().getJournalStats(forum);
-			if(stats == null)
+			final JournalsLibrary.JournalMetaData metaData = CMLib.journals().getJournalStats(forum);
+			if(metaData == null)
 				return "Changes not submitted -- No Stats!";
 			if(longDesc!=null)
-				stats.longIntro(clearWebMacros(longDesc));
+				metaData.longIntro(clearWebMacros(longDesc));
 			if(shortDesc!=null)
-				stats.shortIntro(clearWebMacros(shortDesc));
+				metaData.shortIntro(clearWebMacros(shortDesc));
 			if(imgPath!=null)
-				stats.imagePath(clearWebMacros(imgPath));
-			CMLib.database().DBUpdateJournalStats(journalName, stats);
+				metaData.imagePath(clearWebMacros(imgPath));
+			CMLib.database().DBUpdateJournalMetaData(journalName, metaData);
 			CMLib.journals().clearJournalSummaryStats(forum);
 			return "Changed applied.";
 		}

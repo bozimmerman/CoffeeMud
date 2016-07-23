@@ -91,18 +91,18 @@ public class JournalInfo extends StdWebMacro
 				msgs=CMLib.database().DBReadJournalMsgsByUpdateDate(journalName, true);
 			else
 			{
-				final JournalsLibrary.JournalSummaryStats stats = CMLib.journals().getJournalStats(forumJournal);
+				final JournalsLibrary.JournalMetaData metaData = CMLib.journals().getJournalStats(forumJournal);
 				final long pageDate = CMath.s_long(page);
 				int limit = CMProps.getIntVar(CMProps.Int.JOURNALLIMIT);
 				if(limit<=0)
 					limit=Integer.MAX_VALUE;
 				msgs = new Vector<JournalEntry>();
 				if((pageDate <= 0)
-				&& (stats.stuckyKeys()!=null)
+				&& (metaData.stuckyKeys()!=null)
 				&& ((dbsearch==null)||(dbsearch.length()==0))
 				&& ((parent != null)&&(parent.length()==0)))
 				{
-					for(final String stuckyKey : stats.stuckyKeys())
+					for(final String stuckyKey : metaData.stuckyKeys())
 					{
 						final JournalEntry entry = CMLib.database().DBReadJournalEntry(journalName, stuckyKey);
 						if(entry != null)
@@ -184,10 +184,10 @@ public class JournalInfo extends StdWebMacro
 		JournalEntry entry=null;
 		if(msgKey.equalsIgnoreCase("FORUMLATEST"))
 		{
-			final JournalsLibrary.JournalSummaryStats stats = CMLib.journals().getJournalStats(journal);
-			if((stats!=null)&&(stats.latestKey()!=null)&&(stats.latestKey().length()>0))
+			final JournalsLibrary.JournalMetaData metaData = CMLib.journals().getJournalStats(journal);
+			if((metaData!=null)&&(metaData.latestKey()!=null)&&(metaData.latestKey().length()>0))
 			{
-				entry=CMLib.database().DBReadJournalEntry(journalName, stats.latestKey());
+				entry=CMLib.database().DBReadJournalEntry(journalName, metaData.latestKey());
 				if(entry != null)
 					httpReq.addFakeUrlParameter("JOURNALMESSAGE", entry.key());
 			}

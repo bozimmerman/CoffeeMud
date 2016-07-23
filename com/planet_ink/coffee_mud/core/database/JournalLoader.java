@@ -509,10 +509,10 @@ public class JournalLoader
 		}
 	}
 
-	public JournalEntry DBReadJournalEntry(String journal, String key)
+	public JournalEntry DBReadJournalEntry(String journal, String messageKey)
 	{
 		journal	= DB.injectionClean(journal);
-		key		= DB.injectionClean(key);
+		messageKey		= DB.injectionClean(messageKey);
 
 		if(journal==null) 
 			return null;
@@ -522,7 +522,7 @@ public class JournalLoader
 			try
 			{
 				D=DB.DBFetch();
-				final String sql="SELECT * FROM CMJRNL WHERE CMJKEY='"+key+"' AND CMJRNL='"+journal+"'";
+				final String sql="SELECT * FROM CMJRNL WHERE CMJKEY='"+messageKey+"' AND CMJRNL='"+journal+"'";
 				final ResultSet R=D.query(sql);
 				if(R.next())
 				{
@@ -628,10 +628,10 @@ public class JournalLoader
 		DB.update(sql);
 	}
 
-	public void DBUpdateMessageReplies(String key, int numReplies)
+	public void DBUpdateMessageReplies(String messageKey, int numReplies)
 	{
-		key = DB.injectionClean(key);
-		final String sql="UPDATE CMJRNL SET CMUPTM="+System.currentTimeMillis()+", CMREPL="+numReplies+" WHERE CMJKEY='"+key+"'";
+		messageKey = DB.injectionClean(messageKey);
+		final String sql="UPDATE CMJRNL SET CMUPTM="+System.currentTimeMillis()+", CMREPL="+numReplies+" WHERE CMJKEY='"+messageKey+"'";
 		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMJRNL))
 			Log.debugOut("JournalLoader",sql);
 		DB.update(sql);
@@ -692,29 +692,29 @@ public class JournalLoader
 		}
 	}
 
-	public void DBUpdateJournalStats(String journal, JournalsLibrary.JournalSummaryStats stats)
+	public void DBUpdateJournalStats(String journal, JournalsLibrary.JournalMetaData metaData)
 	{
 		journal = DB.injectionClean(journal);
-		stats.imagePath	(DB.injectionClean(stats.imagePath()));
-		stats.introKey	(DB.injectionClean(stats.introKey()));
-		stats.longIntro	(DB.injectionClean(stats.longIntro()));
-		stats.name		(DB.injectionClean(stats.name()));
-		stats.shortIntro(DB.injectionClean(stats.shortIntro()));
+		metaData.imagePath	(DB.injectionClean(metaData.imagePath()));
+		metaData.introKey	(DB.injectionClean(metaData.introKey()));
+		metaData.longIntro	(DB.injectionClean(metaData.longIntro()));
+		metaData.name		(DB.injectionClean(metaData.name()));
+		metaData.shortIntro(DB.injectionClean(metaData.shortIntro()));
 
 		DBConnection D=null;
 		try
 		{
 			D=DB.DBFetch();
-			final ResultSet R=D.query("SELECT * FROM CMJRNL WHERE CMJRNL='"+stats.name()+"' AND CMTONM='JOURNALINTRO'");
+			final ResultSet R=D.query("SELECT * FROM CMJRNL WHERE CMJRNL='"+metaData.name()+"' AND CMTONM='JOURNALINTRO'");
 			JournalEntry entry = null;
 			if(R.next())
 				entry = this.DBReadJournalEntry(R);
 			R.close();
 			if(entry!=null)
 			{
-				entry.subj		(stats.shortIntro());
-				entry.msg		(stats.longIntro());
-				entry.data		(stats.imagePath());
+				entry.subj		(metaData.shortIntro());
+				entry.msg		(metaData.longIntro());
+				entry.data		(metaData.imagePath());
 				entry.attributes(JournalEntry.ATTRIBUTE_PROTECTED);
 				entry.date		(-1);
 				entry.update	(-1);
@@ -723,9 +723,9 @@ public class JournalLoader
 			else
 			{
 				entry = (JournalEntry)CMClass.getCommon("DefaultJournalEntry");
-				entry.subj		(stats.shortIntro());
-				entry.msg		(stats.longIntro());
-				entry.data		(stats.imagePath());
+				entry.subj		(metaData.shortIntro());
+				entry.msg		(metaData.longIntro());
+				entry.data		(metaData.imagePath());
 				entry.to		("JOURNALINTRO");
 				entry.from		("");
 				entry.attributes(JournalEntry.ATTRIBUTE_PROTECTED);
@@ -744,20 +744,20 @@ public class JournalLoader
 		}
 	}
 
-	public void DBReadJournalSummaryStats(JournalsLibrary.JournalSummaryStats stats)
+	public void DBReadJournalSummaryStats(JournalsLibrary.JournalMetaData metaData)
 	{
-		stats.imagePath	(DB.injectionClean(stats.imagePath()));
-		stats.introKey	(DB.injectionClean(stats.introKey()));
-		stats.longIntro	(DB.injectionClean(stats.longIntro()));
-		stats.name		(DB.injectionClean(stats.name()));
-		stats.shortIntro(DB.injectionClean(stats.shortIntro()));
+		metaData.imagePath	(DB.injectionClean(metaData.imagePath()));
+		metaData.introKey	(DB.injectionClean(metaData.introKey()));
+		metaData.longIntro	(DB.injectionClean(metaData.longIntro()));
+		metaData.name		(DB.injectionClean(metaData.name()));
+		metaData.shortIntro(DB.injectionClean(metaData.shortIntro()));
 
 		DBConnection D=null;
 		String topKey = null;
 		try
 		{
 			D=DB.DBFetch();
-			final ResultSet R=D.query("SELECT * FROM CMJRNL WHERE CMJRNL='"+stats.name()+"' AND CMTONM='ALL' AND CMPART=''");
+			final ResultSet R=D.query("SELECT * FROM CMJRNL WHERE CMJRNL='"+metaData.name()+"' AND CMTONM='ALL' AND CMPART=''");
 			long topTime = 0;
 			while(R.next())
 			{
@@ -765,9 +765,9 @@ public class JournalLoader
 				final long updateTime=R.getLong("CMUPTM");
 				final long attributes=R.getLong("CMATTR");
 				final int replies=R.getInt("CMREPL");
-				stats.posts(stats.posts()+1);
-				stats.threads(stats.threads()+1);
-				stats.posts(stats.posts()+replies);
+				metaData.posts(metaData.posts()+1);
+				metaData.threads(metaData.threads()+1);
+				metaData.posts(metaData.posts()+replies);
 				if(updateTime>topTime)
 				{
 					topTime=updateTime;
@@ -775,9 +775,9 @@ public class JournalLoader
 				}
 				if(CMath.bset(attributes,JournalEntry.ATTRIBUTE_STUCKY))
 				{
-					if(stats.stuckyKeys()==null)
-						stats.stuckyKeys(new Vector<String>());
-					stats.stuckyKeys().add(key);
+					if(metaData.stuckyKeys()==null)
+						metaData.stuckyKeys(new Vector<String>());
+					metaData.stuckyKeys().add(key);
 				}
 			}
 			R.close();
@@ -787,26 +787,26 @@ public class JournalLoader
 			Log.errOut("JournalLoader",sqle.getMessage());
 		}
 		if(topKey != null)
-			stats.latestKey(topKey);
+			metaData.latestKey(topKey);
 		else
-			stats.latestKey(null);
-		stats.imagePath("");
-		stats.shortIntro("[This is the short journal description.]");
-		stats.longIntro("[This is the long journal description.    To change it, use forum Admin, or create a journal entry addressed to JOURNALINTRO with updatetime 0.]");
+			metaData.latestKey(null);
+		metaData.imagePath("");
+		metaData.shortIntro("[This is the short journal description.]");
+		metaData.longIntro("[This is the long journal description.    To change it, use forum Admin, or create a journal entry addressed to JOURNALINTRO with updatetime 0.]");
 		try
 		{
 			if(D==null)
 				D=DB.DBFetch();
-			final ResultSet R=D.query("SELECT * FROM CMJRNL WHERE CMJRNL='"+stats.name()+"' AND CMTONM='JOURNALINTRO'");
+			final ResultSet R=D.query("SELECT * FROM CMJRNL WHERE CMJRNL='"+metaData.name()+"' AND CMTONM='JOURNALINTRO'");
 			if(R.next())
 			{
 				final JournalEntry entry = this.DBReadJournalEntry(R);
 				if(entry != null)
 				{
-					stats.introKey	(entry.key());
-					stats.longIntro	(entry.msg());
-					stats.shortIntro(entry.subj());
-					stats.imagePath	(entry.data());
+					metaData.introKey	(entry.key());
+					metaData.longIntro	(entry.msg());
+					metaData.shortIntro(entry.subj());
+					metaData.imagePath	(entry.data());
 				}
 			}
 			R.close();
@@ -822,19 +822,19 @@ public class JournalLoader
 	}
 
 
-	public void DBDelete(String journal, String key)
+	public void DBDelete(String journal, String messageKey)
 	{
 		journal = DB.injectionClean(journal);
-		key = DB.injectionClean(key);
+		messageKey = DB.injectionClean(messageKey);
 
 		if(journal==null) 
 			return;
 		synchronized(journal.toUpperCase().intern())
 		{
 			String sql;
-			if(key!=null)
+			if(messageKey!=null)
 			{
-				sql="DELETE FROM CMJRNL WHERE CMJKEY='"+key+"' OR CMPART='"+key+"'";
+				sql="DELETE FROM CMJRNL WHERE CMJKEY='"+messageKey+"' OR CMPART='"+messageKey+"'";
 			}
 			else
 			{
@@ -846,20 +846,20 @@ public class JournalLoader
 		}
 	}
 
-	public void DBWriteJournalReply(String journal, String key, String from, String to, String subject, String message)
+	public void DBWriteJournalReply(String journal, String messageKey, String from, String to, String subject, String message)
 	{
-		journal = DB.injectionClean(journal);
-		key		= DB.injectionClean(key);
-		from	= DB.injectionClean(from);
-		to		= DB.injectionClean(to);
-		subject	= DB.injectionClean(subject);
-		message	= DB.injectionClean(message);
+		journal 	= DB.injectionClean(journal);
+		messageKey	= DB.injectionClean(messageKey);
+		from		= DB.injectionClean(from);
+		to			= DB.injectionClean(to);
+		subject		= DB.injectionClean(subject);
+		message		= DB.injectionClean(message);
 
 		if(journal==null) 
 			return;
 		synchronized(journal.toUpperCase().intern())
 		{
-			final JournalEntry entry=DBReadJournalEntry(journal, key);
+			final JournalEntry entry=DBReadJournalEntry(journal, messageKey);
 			if(entry==null)
 				return;
 			final long now=System.currentTimeMillis();

@@ -55,7 +55,7 @@ public interface JournalsLibrary extends CMLibrary
 	public boolean subscribeToJournal(String journalName, String userName, boolean saveMailingList);
 	public boolean unsubscribeFromJournal(String journalName, String userName, boolean saveMailingList);
 
-	public JournalSummaryStats getJournalStats(ForumJournal journal);
+	public JournalMetaData getJournalStats(ForumJournal journal);
 	public void clearJournalSummaryStats(ForumJournal journal);
 
 
@@ -65,26 +65,26 @@ public interface JournalsLibrary extends CMLibrary
 
 	public static final String JOURNAL_BOUNDARY="%0D^w---------------------------------------------^N%0D";
 
-	public interface JournalSummaryStats
+	public interface JournalMetaData
 	{
 		public String name();
-		public JournalSummaryStats name(String intro);
+		public JournalMetaData name(String intro);
 		public int threads();
-		public JournalSummaryStats threads(int num);
+		public JournalMetaData threads(int num);
 		public int posts();
-		public JournalSummaryStats posts(int num);
+		public JournalMetaData posts(int num);
 		public String imagePath();
-		public JournalSummaryStats imagePath(String intro);
+		public JournalMetaData imagePath(String intro);
 		public String shortIntro();
-		public JournalSummaryStats shortIntro(String intro);
+		public JournalMetaData shortIntro(String intro);
 		public String longIntro();
-		public JournalSummaryStats longIntro(String intro);
+		public JournalMetaData longIntro(String intro);
 		public String introKey();
-		public JournalSummaryStats introKey(String key);
+		public JournalMetaData introKey(String key);
 		public String latestKey();
-		public JournalSummaryStats latestKey(String key);
+		public JournalMetaData latestKey(String key);
 		public List<String> stuckyKeys();
-		public JournalSummaryStats stuckyKeys(List<String> keys);
+		public JournalMetaData stuckyKeys(List<String> keys);
 	}
 
 	public static interface CommandJournal

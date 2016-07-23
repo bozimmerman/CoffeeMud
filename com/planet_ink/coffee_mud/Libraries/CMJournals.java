@@ -48,18 +48,18 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 	protected final static List<ForumJournal> emptyForums = new ReadOnlyVector<ForumJournal>(0);
 
 	@SuppressWarnings("unchecked")
-	protected Hashtable<String,JournalSummaryStats> getSummaryStats()
+	protected Hashtable<String,JournalMetaData> getSummaryStats()
 	{
-		Hashtable<String,JournalSummaryStats> journalSummaryStats;
-		journalSummaryStats= (Hashtable<String,JournalSummaryStats>)Resources.getResource("FORUM_JOURNAL_STATS");
+		Hashtable<String,JournalMetaData> journalSummaryStats;
+		journalSummaryStats= (Hashtable<String,JournalMetaData>)Resources.getResource("FORUM_JOURNAL_STATS");
 		if(journalSummaryStats == null)
 		{
 			synchronized("FORUM_JOURNAL_STATS".intern())
 			{
-				journalSummaryStats= (Hashtable<String,JournalSummaryStats>)Resources.getResource("FORUM_JOURNAL_STATS");
+				journalSummaryStats= (Hashtable<String,JournalMetaData>)Resources.getResource("FORUM_JOURNAL_STATS");
 				if(journalSummaryStats==null)
 				{
-					journalSummaryStats=new Hashtable<String,JournalSummaryStats>();
+					journalSummaryStats=new Hashtable<String,JournalMetaData>();
 					Resources.submitResource("FORUM_JOURNAL_STATS", journalSummaryStats);
 				}
 			}
@@ -68,20 +68,20 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 	}
 
 	@Override
-	public JournalSummaryStats getJournalStats(ForumJournal journal)
+	public JournalMetaData getJournalStats(ForumJournal journal)
 	{
 		if(journal == null)
 			return null;
-		final Hashtable<String,JournalSummaryStats> journalSummaryStats=getSummaryStats();
-		JournalSummaryStats stats = journalSummaryStats.get(journal.NAME().toUpperCase().trim());
-		if(stats == null)
+		final Hashtable<String,JournalMetaData> journalSummaryStats=getSummaryStats();
+		JournalMetaData metaData = journalSummaryStats.get(journal.NAME().toUpperCase().trim());
+		if(metaData == null)
 		{
 			synchronized(journal.NAME().intern())
 			{
-				stats = journalSummaryStats.get(journal.NAME().toUpperCase().trim());
-				if(stats == null)
+				metaData = journalSummaryStats.get(journal.NAME().toUpperCase().trim());
+				if(metaData == null)
 				{
-					stats = new JournalSummaryStats()
+					metaData = new JournalMetaData()
 					{
 						private String			name		= "";
 						private int				threads		= 0;
@@ -100,7 +100,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 						}
 
 						@Override
-						public JournalSummaryStats name(String intro)
+						public JournalMetaData name(String intro)
 						{
 							name = intro;
 							return this;
@@ -113,7 +113,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 						}
 
 						@Override
-						public JournalSummaryStats threads(int num)
+						public JournalMetaData threads(int num)
 						{
 							this.threads = num;
 							return this;
@@ -126,7 +126,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 						}
 
 						@Override
-						public JournalSummaryStats posts(int num)
+						public JournalMetaData posts(int num)
 						{
 							this.posts = num;
 							return this;
@@ -139,7 +139,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 						}
 
 						@Override
-						public JournalSummaryStats imagePath(String intro)
+						public JournalMetaData imagePath(String intro)
 						{
 							imagePath = intro;
 							return this;
@@ -152,7 +152,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 						}
 
 						@Override
-						public JournalSummaryStats shortIntro(String intro)
+						public JournalMetaData shortIntro(String intro)
 						{
 							shortIntro = intro;
 							return this;
@@ -165,7 +165,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 						}
 
 						@Override
-						public JournalSummaryStats longIntro(String intro)
+						public JournalMetaData longIntro(String intro)
 						{
 							longIntro = intro;
 							return this;
@@ -178,7 +178,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 						}
 
 						@Override
-						public JournalSummaryStats introKey(String key)
+						public JournalMetaData introKey(String key)
 						{
 							introKey = key;
 							return this;
@@ -191,7 +191,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 						}
 
 						@Override
-						public JournalSummaryStats latestKey(String key)
+						public JournalMetaData latestKey(String key)
 						{
 							latestKey = key;
 							return this;
@@ -204,19 +204,19 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 						}
 
 						@Override
-						public JournalSummaryStats stuckyKeys(List<String> keys)
+						public JournalMetaData stuckyKeys(List<String> keys)
 						{
 							stuckyKeys = keys;
 							return this;
 						}
 					};
-					stats.name( journal.NAME() );
-					CMLib.database().DBReadJournalSummaryStats(stats);
-					journalSummaryStats.put(journal.NAME().toUpperCase().trim(), stats);
+					metaData.name( journal.NAME() );
+					CMLib.database().DBReadJournalMetaData(metaData);
+					journalSummaryStats.put(journal.NAME().toUpperCase().trim(), metaData);
 				}
 			}
 		}
-		return stats;
+		return metaData;
 	}
 
 	@Override
@@ -224,7 +224,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 	{
 		if(journal == null)
 			return;
-		final Hashtable<String,JournalSummaryStats> journalSummaryStats=getSummaryStats();
+		final Hashtable<String,JournalMetaData> journalSummaryStats=getSummaryStats();
 		synchronized(journal.NAME().intern())
 		{
 			journalSummaryStats.remove(journal.NAME().toUpperCase().trim());
