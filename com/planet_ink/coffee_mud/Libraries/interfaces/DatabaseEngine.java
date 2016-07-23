@@ -797,6 +797,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * Table category: DBQUEST
 	 * Updates the entire complete quest list by deleting all quests
 	 * from the database and re-inserting the given list of quests.
+	 * @see Quest
 	 * @see DatabaseEngine#DBUpdateQuest(Quest)
 	 * @see DatabaseEngine#DBReadQuests()
 	 * @param quests the list of quests to end up with
@@ -809,6 +810,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * the old one and re-inserting this one.
 	 * @see DatabaseEngine#DBUpdateQuests(List)
 	 * @see DatabaseEngine#DBReadQuests()
+	 * @see Quest
 	 * @param Q the quest to update
 	 */
 	public void DBUpdateQuest(Quest Q);
@@ -820,77 +822,151 @@ public interface DatabaseEngine extends CMLibrary
 	 * and ready to go.  
 	 * @see DatabaseEngine#DBUpdateQuests(List)
 	 * @see DatabaseEngine#DBUpdateQuest(Quest)
+	 * @see Quest
 	 * @return the list of quests
 	 */
 	public List<Quest> DBReadQuests();
 
 	/**
 	 * Table category: DBCLANS
-	 * 
-	 * @param clan
-	 * @return
+	 * Given an exact clan name, this method returns the
+	 * entire membership as MemberRecords.
+	 * @see MemberRecord
+	 * @see DatabaseEngine#DBGetClanMember(String, String)
+	 * @see DatabaseEngine#DBUpdateClanMembership(String, String, int)
+	 * @see DatabaseEngine#DBUpdateClanKills(String, String, int, int)
+	 * @param clan the name of the clan to read members for
+	 * @return the list of all the clans members
 	 */
 	public List<MemberRecord> DBReadClanMembers(String clan);
 
 	/**
 	 * Table category: DBCLANS
-	 * 
-	 * @param clan
-	 * @param name
-	 * @return
+	 * Reads information about a single clan member of the given exact
+	 * name from the clan of the given exact name.
+	 * @see MemberRecord
+	 * @see DatabaseEngine#DBReadClanMembers(String)
+	 * @see DatabaseEngine#DBUpdateClanMembership(String, String, int)
+	 * @see DatabaseEngine#DBUpdateClanKills(String, String, int, int)
+	 * @param clan the name of the clan to read a member for
+	 * @param name the name of the member to read in
+	 * @return the member record, or null
 	 */
 	public MemberRecord DBGetClanMember(String clan, String name);
 
 	/**
 	 * Table category: DBCLANS
-	 * 
-	 * @param clan
-	 * @param name
-	 * @param adjMobKills
-	 * @param adjPlayerKills
-	 */
-	public void DBUpdateClanKills(String clan, String name, int adjMobKills, int adjPlayerKills);
-
-	/**
-	 * Table category: DBCLANS
-	 * 
-	 * @param name
-	 * @param clan
-	 * @param role
+	 * Updates the Role of the clan member of the given exact name
+	 * for the given exact clan.
+	 * @see DatabaseEngine#DBReadClanMembers(String)
+	 * @see DatabaseEngine#DBGetClanMember(String, String)
+	 * @see DatabaseEngine#DBUpdateClanKills(String, String, int, int)
+	 * @param name the name of the member to update
+	 * @param clan the name of the clan to update a member for
+	 * @param role the new role constant
 	 */
 	public void DBUpdateClanMembership(String name, String clan, int role);
 
 	/**
 	 * Table category: DBCLANS
-	 * 
+	 * Updates the clan-kill counts for the clan member of the given 
+	 * exact name for the given exact clan
+	 * @param clan the name of the clan to update a member for
+	 * @param name the name of the member to update
+	 * @param adjMobKills the number of ADDITIONAL (plus or minus) clan mob kills
+	 * @param adjPlayerKills the number of ADDITIONAL (plus or minus) clan pvp kills
 	 */
-	public void DBReadAllClans();
+	public void DBUpdateClanKills(String clan, String name, int adjMobKills, int adjPlayerKills);
 
 	/**
 	 * Table category: DBCLANS
-	 * 
-	 * @param C
+	 * Reads the entire list of clans, not including their stored items.
+	 * The list of clans is then returned for adding to the official 
+	 * list, or whatever.
+	 * @see Clan
+	 * @see DatabaseEngine#DBReadClanItems(Map)
+	 * @see DatabaseEngine#DBUpdateClan(Clan)
+	 * @see DatabaseEngine#DBUpdateClanItems(Clan)
+	 * @see DatabaseEngine#DBDeleteClan(Clan)
+	 * @see DatabaseEngine#DBReadClanItems(Map)
+	 * @see DatabaseEngine#DBCreateClan(Clan)
+	 * @return the official list of clan objects
+	 */
+	public List<Clan> DBReadAllClans();
+
+	/**
+	 * Table category: DBCLANS
+	 * Reads the entire list of clan items, and uses the map
+	 * to get the clan object, and then adds the given item
+	 * to both the clan object and  to the World.
+	 * @see Clan
+	 * @see DatabaseEngine#DBReadAllClans()
+	 * @see DatabaseEngine#DBUpdateClan(Clan)
+	 * @see DatabaseEngine#DBUpdateClanItems(Clan)
+	 * @see DatabaseEngine#DBDeleteClan(Clan)
+	 * @see DatabaseEngine#DBReadClanItems(Map)
+	 * @see DatabaseEngine#DBCreateClan(Clan)
+	 * @param clans the map of clanids to clan objects
+	 */
+	public void DBReadClanItems(Map<String,Clan> clans);
+	
+	/**
+	 * Table category: DBCLANS
+	 * Updates the given clan objects record in the database.
+	 * Does not update the clan items, however.
+	 * @see Clan
+	 * @see DatabaseEngine#DBReadAllClans()
+	 * @see DatabaseEngine#DBReadClanItems(Map)
+	 * @see DatabaseEngine#DBUpdateClanItems(Clan)
+	 * @see DatabaseEngine#DBDeleteClan(Clan)
+	 * @see DatabaseEngine#DBReadClanItems(Map)
+	 * @see DatabaseEngine#DBCreateClan(Clan)
+	 * @param C the clan to update
 	 */
 	public void DBUpdateClan(Clan C);
 
 	/**
 	 * Table category: DBCLANS
-	 * 
-	 * @param C
+	 * Updates the external clan items in the database
+	 * for the given clan by deleting all the records
+	 * and re-inserting them.
+	 * @see Clan
+	 * @see DatabaseEngine#DBReadAllClans()
+	 * @see DatabaseEngine#DBReadClanItems(Map)
+	 * @see DatabaseEngine#DBUpdateClan(Clan)
+	 * @see DatabaseEngine#DBDeleteClan(Clan)
+	 * @see DatabaseEngine#DBReadClanItems(Map)
+	 * @see DatabaseEngine#DBCreateClan(Clan)
+	 * @param C the clan whose items to update
 	 */
 	public void DBUpdateClanItems(Clan C);
 
 	/**
 	 * Table category: DBCLANS
-	 * 
-	 * @param C
+	 * Removes the given clan, all of its items and records,
+	 * membership, and everything about it from the database.
+	 * @see Clan
+	 * @see DatabaseEngine#DBReadAllClans()
+	 * @see DatabaseEngine#DBReadClanItems(Map)
+	 * @see DatabaseEngine#DBUpdateClan(Clan)
+	 * @see DatabaseEngine#DBUpdateClanItems(Clan)
+	 * @see DatabaseEngine#DBReadClanItems(Map)
+	 * @see DatabaseEngine#DBCreateClan(Clan)
+	 * @param C the clan to delete
 	 */
 	public void DBDeleteClan(Clan C);
 
 	/**
 	 * Table category: DBCLANS
-	 * 
-	 * @param C
+	 * Creates the given clan in the database.
+	 * @see Clan
+	 * @see DatabaseEngine#DBReadAllClans()
+	 * @see DatabaseEngine#DBReadClanItems(Map)
+	 * @see DatabaseEngine#DBUpdateClan(Clan)
+	 * @see DatabaseEngine#DBUpdateClanItems(Clan)
+	 * @see DatabaseEngine#DBReadClanItems(Map)
+	 * @see DatabaseEngine#DBDeleteClan(Clan)
+	 * @param C the clan to create
 	 */
 	public void DBCreateClan(Clan C);
 

@@ -183,9 +183,15 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
-	public void DBReadAllClans()
+	public List<Clan> DBReadAllClans()
 	{
-		ClanLoader.DBRead();
+		return ClanLoader.DBRead();
+	}
+
+	@Override
+	public void DBReadClanItems(Map<String,Clan> clans)
+	{
+		ClanLoader.DBReadClanItems(clans);
 	}
 
 	@Override

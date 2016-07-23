@@ -49,36 +49,14 @@ public class ClanLoader
 	{
 		CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: Loading "+loading+" ("+currentRecordPos+" of "+recordCount+")");
 	}
-
-	public void DBRead()
+	
+	public void DBReadClanItems(Map<String,Clan> clans)
 	{
 		DBConnection D=null;
 		try
 		{
 			D=DB.DBFetch();
-			ResultSet R=D.query("SELECT * FROM CMCLAN");
-			recordCount=DB.getRecordCount(D,R);
-			final Map<String,Clan> clans=new Hashtable<String,Clan>();
-			while(R.next())
-			{
-				currentRecordPos=R.getRow();
-				final String name=DBConnections.getRes(R,"CMCLID");
-				final Clan C=(Clan)CMClass.getCommon("DefaultClan");
-				C.setName(name);
-				C.setPremise(DBConnections.getRes(R,"CMDESC"));
-				C.setAcceptanceSettings(DBConnections.getRes(R,"CMACPT"));
-				C.setPolitics(DBConnections.getRes(R,"CMPOLI"));
-				C.setRecall(DBConnections.getRes(R,"CMRCLL"));
-				C.setDonation(DBConnections.getRes(R,"CMDNAT"));
-				C.setStatus(CMath.s_int(DBConnections.getRes(R, "CMSTAT")));
-				C.setMorgue(DBConnections.getRes(R,"CMMORG"));
-				C.setTrophies(CMath.s_int(DBConnections.getRes(R, "CMTROP")));
-				CMLib.clans().addClan(C);
-				clans.put(C.clanID(), C);
-				updateBootStatus("Clans");
-			}
-			R.close();
-			R=D.query("SELECT * FROM CMCLIT");
+			ResultSet R=D.query("SELECT * FROM CMCLIT");
 			while(R.next())
 			{
 				final String clanID=DBConnections.getRes(R,"CMCLID");
@@ -145,7 +123,49 @@ public class ClanLoader
 		{
 			DB.DBDone(D);
 		}
+	}
+
+	public List<Clan> DBRead()
+	{
+		List<Clan> clanList=new ArrayList<Clan>();
+		DBConnection D=null;
+		try
+		{
+			D=DB.DBFetch();
+			ResultSet R=D.query("SELECT * FROM CMCLAN");
+			recordCount=DB.getRecordCount(D,R);
+			final Map<String,Clan> clans=new Hashtable<String,Clan>();
+			while(R.next())
+			{
+				currentRecordPos=R.getRow();
+				final String name=DBConnections.getRes(R,"CMCLID");
+				final Clan C=(Clan)CMClass.getCommon("DefaultClan");
+				C.setName(name);
+				C.setPremise(DBConnections.getRes(R,"CMDESC"));
+				C.setAcceptanceSettings(DBConnections.getRes(R,"CMACPT"));
+				C.setPolitics(DBConnections.getRes(R,"CMPOLI"));
+				C.setRecall(DBConnections.getRes(R,"CMRCLL"));
+				C.setDonation(DBConnections.getRes(R,"CMDNAT"));
+				C.setStatus(CMath.s_int(DBConnections.getRes(R, "CMSTAT")));
+				C.setMorgue(DBConnections.getRes(R,"CMMORG"));
+				C.setTrophies(CMath.s_int(DBConnections.getRes(R, "CMTROP")));
+				//CMLib.clans().addClan(C);
+				clanList.add(C);
+				clans.put(C.clanID(), C);
+				updateBootStatus("Clans");
+			}
+			R.close();
+		}
+		catch(final Exception sqle)
+		{
+			Log.errOut("Clan",sqle);
+		}
+		finally
+		{
+			DB.DBDone(D);
+		}
 		// log comment
+		return clanList;
 	}
 
 	public void DBUpdate(Clan C)

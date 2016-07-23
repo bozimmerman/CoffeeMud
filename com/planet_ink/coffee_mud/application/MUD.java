@@ -1446,9 +1446,15 @@ public class MUD extends Thread implements MudHost
 					Log.sysOut(Thread.currentThread().getName(),"Socials loaded    : "+CMLib.socials().numSocialSets());
 			}
 
+			final Map<String,Clan> clanPostLoads=new TreeMap<String,Clan>();
 			if((tCode==MAIN_HOST)||(checkPrivate&&CMProps.isPrivateToMe("CLANS")))
 			{
-				CMLib.database().DBReadAllClans();
+				List<Clan> clans = CMLib.database().DBReadAllClans();
+				for(final Clan C : clans)
+				{
+					CMLib.clans().addClan(C);
+					clanPostLoads.put(C.clanID(), C);
+				}
 				Log.sysOut(Thread.currentThread().getName(),"Clans loaded      : "+CMLib.clans().numClans());
 			}
 
@@ -1517,6 +1523,11 @@ public class MUD extends Thread implements MudHost
 				CMLib.login().initBodyRooms(page);
 			}
 
+			if(clanPostLoads.size()>0)
+			{
+				CMLib.database().DBReadClanItems(clanPostLoads);
+			}
+			
 			if((tCode==MAIN_HOST)||(checkPrivate&&CMProps.isPrivateToMe("QUESTS")))
 			{
 				CMLib.quests().shutdown();
