@@ -62,7 +62,9 @@ public class ClanLoader
 				final String clanID=DBConnections.getRes(R,"CMCLID");
 				final Clan C=clans.get(clanID);
 				if(C==null)
-					Log.errOut("Clan","Couldn't find clan '"+clanID+"'");
+				{
+					//Log.errOut("Clan","Couldn't find clan '"+clanID+"'");
+				}
 				else
 				{
 					final String itemID=DBConnections.getRes(R,"CMITID");
