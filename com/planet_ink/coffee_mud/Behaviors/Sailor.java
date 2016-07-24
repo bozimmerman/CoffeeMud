@@ -638,10 +638,10 @@ public class Sailor extends StdBehavior
 							final int escapeDir = this.getEscapeRoute(directionToTarget);
 							if(escapeDir >=0)
 							{
+								if((ourSpeed>1)&&(((SailingShip)loyalShipItem).getDirectionFacing() != escapeDir))
+									ourSpeed=1;
 								for(int i=0;i<ourSpeed;i++)
-								{
 									course.add(CMLib.directions().getDirectionName(escapeDir));
-								}
 								ourSpeed = 0;
 							}
 						}

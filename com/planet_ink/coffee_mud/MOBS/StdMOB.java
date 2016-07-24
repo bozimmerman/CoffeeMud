@@ -4809,14 +4809,16 @@ public class StdMOB implements MOB
 			ableCache=new int[Ability.CACHEINDEX_TOTAL][];
 			abilityUseCache.put(abilityID, ableCache);
 		}
+		final CharStats charStats = charStats();
+		final CharClass charClass=charStats.getCurrentClass();
 		if((phyStats().level()!=abilityUseTrig[0])
-		||(charStats().getCurrentClassLevel()!=abilityUseTrig[1])
-		||(charStats().getCurrentClass().hashCode()!=abilityUseTrig[2]))
+		||(charStats.getCurrentClassLevel()!=abilityUseTrig[1])
+		||(charClass.hashCode()!=abilityUseTrig[2]))
 		{
 			clearAbilityUsageCache();
 			abilityUseTrig[0]=phyStats().level();
-			abilityUseTrig[1]=charStats().getCurrentClassLevel();
-			abilityUseTrig[2]=charStats().getCurrentClass().hashCode();
+			abilityUseTrig[1]=charStats.getCurrentClassLevel();
+			abilityUseTrig[2]=charClass.hashCode();
 		}
 		return ableCache;
 	}

@@ -206,13 +206,7 @@ public class Sailor extends StdCharClass
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Skill_FoulWeatherSailing",false);
 		
-		/* While in combat and a designated navigator of a ship (has the ability to set course), can specify one 
-		 * of 4 tactics to ATTEMPT to position their ship ideally.  Navaltactics Followship would take the target ships 
-		 * last issued command and issue it to your ship.  Navaltactics approachship would attempt to close range on the 
-		 * ship.  Navaltactics retreatship would attempt to put you as far away from the ship as possible.  Navaltactics 
-		 * retreatcombat would attempt to put you as far away from the ship as possible, in a direction to successfully leave combat.
-		 */
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Skill_NavalTactics",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Skill_NavalTactics",false);
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Thief_RammingSpeed",true);
 		
@@ -225,7 +219,7 @@ public class Sailor extends StdCharClass
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Skill_HireCrewmember",true);
 		
 
-		// to separate from artisan
+		// to separate from artisan --------------------------------------------------------------------------------------------
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),-1,"Chopping",0,"",false,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),-1,"Digging",0,"",false,true);
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),-1,"Carpentry",false);

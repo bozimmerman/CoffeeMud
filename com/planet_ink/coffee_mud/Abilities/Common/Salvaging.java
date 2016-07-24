@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2003-2016 Bo Zimmerman
+   Copyright 2016-2016 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -33,15 +33,15 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Scrapping extends CommonSkill
+public class Salvaging extends CommonSkill
 {
 	@Override
 	public String ID()
 	{
-		return "Scrapping";
+		return "Salvaging";
 	}
 
-	private final static String	localizedName	= CMLib.lang().L("Scrapping");
+	private final static String	localizedName	= CMLib.lang().L("Salvaging");
 
 	@Override
 	public String name()
@@ -49,7 +49,7 @@ public class Scrapping extends CommonSkill
 		return localizedName;
 	}
 
-	private static final String[]	triggerStrings	= I(new String[] { "SCRAP", "SCRAPPING" });
+	private static final String[]	triggerStrings	= I(new String[] { "SALVAGE", "SALVAGING" });
 
 	@Override
 	public String[] triggerStrings()
@@ -70,17 +70,16 @@ public class Scrapping extends CommonSkill
 	}
 
 	protected Item		found			= null;
-	boolean				fireRequired	= false;
 	protected int		amount			= 0;
 	protected String	oldItemName		= "";
 	protected String	foundShortName	= "";
 	protected boolean	messedUp		= false;
 
-	public Scrapping()
+	public Salvaging()
 	{
 		super();
-		displayText = L("You are scrapping...");
-		verb = L("scrapping");
+		displayText = L("You are salvaging...");
+		verb = L("salvaging");
 	}
 
 	@Override
@@ -90,8 +89,7 @@ public class Scrapping extends CommonSkill
 		&&(affected instanceof MOB)
 		&&(tickID==Tickable.TICKID_MOB))
 		{
-			final MOB mob=(MOB)affected;
-			if((found==null)||(fireRequired&&(getRequiredFire(mob,0)==null)))
+			if(found==null)
 			{
 				messedUp=true;
 				unInvoke();
@@ -111,7 +109,7 @@ public class Scrapping extends CommonSkill
 				if((found!=null)&&(!aborted)&&(mob.location()!=null))
 				{
 					if(messedUp)
-						commonTell(mob,L("You've messed up scrapping @x1!",oldItemName));
+						commonTell(mob,L("You've messed up salvaging @x1!",oldItemName));
 					else
 					{
 						amount=amount*(baseYield()+abilityCode());
@@ -122,7 +120,7 @@ public class Scrapping extends CommonSkill
 							String s="s";
 							if(msg.value()==1)
 								s="";
-							msg.modify(L("<S-NAME> manage(s) to scrap @x1 pound@x2 of @x3.",""+msg.value(),s,foundShortName));
+							msg.modify(L("<S-NAME> manage(s) to salvage @x1 pound@x2 of @x3.",""+msg.value(),s,foundShortName));
 							mob.location().send(mob, msg);
 							for(int i=0;i<msg.value();i++)
 							{
@@ -145,7 +143,7 @@ public class Scrapping extends CommonSkill
 	{
 		if(super.checkStop(mob, commands))
 			return true;
-		verb=L("scrapping");
+		verb=L("salvaging");
 		final String str=CMParms.combine(commands,0);
 		final Item I=mob.location().findItem(null,str);
 		if((I==null)||(!CMLib.flags().canBeSeenBy(I,mob)))
@@ -163,23 +161,26 @@ public class Scrapping extends CommonSkill
 		case RawMaterial.MATERIAL_ENERGY:
 		case RawMaterial.MATERIAL_GAS:
 		case RawMaterial.MATERIAL_VEGETATION:
-			{ okMaterial=false; break;}
+		{
+			okMaterial = false;
+			break;
+		}
 		}
 		if(!okMaterial)
 		{
-			commonTell(mob,L("You don't know how to scrap @x1.",I.name(mob)));
+			commonTell(mob,L("You don't know how to salvage @x1.",I.name(mob)));
 			return false;
 		}
 
 		if(I instanceof RawMaterial)
 		{
-			commonTell(mob,L("@x1 already looks like scrap.",I.name(mob)));
+			commonTell(mob,L("@x1 already looks like salvage.",I.name(mob)));
 			return false;
 		}
 
 		if(CMLib.flags().isEnchanted(I))
 		{
-			commonTell(mob,L("@x1 is enchanted, and can't be scrapped.",I.name(mob)));
+			commonTell(mob,L("@x1 is enchanted, and can't be salvaged.",I.name(mob)));
 			return false;
 		}
 
@@ -217,23 +218,12 @@ public class Scrapping extends CommonSkill
 			commonTell(mob,L("You don't have enough here to get anything from."));
 			return false;
 		}
-		fireRequired=false;
-		if(((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_GLASS)
-		||((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_METAL)
-		||((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_SYNTHETIC)
-		||((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_MITHRIL))
-		{
-			final Item fire=getRequiredFire(mob,0);
-			fireRequired=true;
-			if(fire==null)
-				return false;
-		}
 
 		final PrivateProperty prop=CMLib.law().getPropertyRecord(I);
 		if(((prop != null)&&(!CMLib.law().doesHavePrivilegesWith(mob, prop)))
 		||(I instanceof SailingShip))
 		{
-			commonTell(mob,L("@x1 can't be scrapped.",I.name(mob)));
+			commonTell(mob,L("@x1 can't be salvaged.",I.name(mob)));
 			return false;
 		}
 
@@ -247,7 +237,7 @@ public class Scrapping extends CommonSkill
 		playSound="ripping.wav";
 		if(found!=null)
 			foundShortName=RawMaterial.CODES.NAME(found.material()).toLowerCase();
-		final CMMsg msg=CMClass.getMsg(mob,I,this,getActivityMessageType(),L("<S-NAME> start(s) scrapping @x1.",I.name()));
+		final CMMsg msg=CMClass.getMsg(mob,I,this,getActivityMessageType(),L("<S-NAME> start(s) salvaging @x1.",I.name()));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
