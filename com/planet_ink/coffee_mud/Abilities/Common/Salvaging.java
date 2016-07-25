@@ -72,7 +72,6 @@ public class Salvaging extends CommonSkill
 	protected Item		found			= null;
 	protected int		amount			= 0;
 	protected String	oldItemName		= "";
-	protected String	foundShortName	= "";
 	protected boolean	messedUp		= false;
 
 	public Salvaging()
@@ -97,7 +96,27 @@ public class Salvaging extends CommonSkill
 		}
 		return super.tick(ticking,tickID);
 	}
-
+	
+	protected void finishSalvage(final MOB mob, final Item found, final int amount)
+	{
+		final CMMsg msg=CMClass.getMsg(mob,found,this,getCompletedActivityMessageType(),null);
+		msg.setValue(amount);
+		if(mob.location().okMessage(mob, msg))
+		{
+			String s="s";
+			if(msg.value()==1)
+				s="";
+			msg.modify(L("<S-NAME> manage(s) to salvage @x1 pound@x2 of @x3.",""+msg.value(),s,RawMaterial.CODES.NAME(found.material()).toLowerCase()));
+			mob.location().send(mob, msg);
+			for(int i=0;i<msg.value();i++)
+			{
+				final Item newFound=(Item)found.copyOf();
+				if(!dropAWinner(mob,newFound))
+					break;
+			}
+		}
+	}
+	
 	@Override
 	public void unInvoke()
 	{
@@ -112,23 +131,21 @@ public class Salvaging extends CommonSkill
 						commonTell(mob,L("You've messed up salvaging @x1!",oldItemName));
 					else
 					{
-						amount=amount*(baseYield()+abilityCode());
-						final CMMsg msg=CMClass.getMsg(mob,found,this,getCompletedActivityMessageType(),null);
-						msg.setValue(amount);
-						if(mob.location().okMessage(mob, msg))
+						Item baseShip=found;
+						int finalAmount=amount*(baseYield()+abilityCode());
+						finishSalvage(mob,baseShip, finalAmount);
+						if((baseShip.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_METAL)
 						{
-							String s="s";
-							if(msg.value()==1)
-								s="";
-							msg.modify(L("<S-NAME> manage(s) to salvage @x1 pound@x2 of @x3.",""+msg.value(),s,foundShortName));
-							mob.location().send(mob, msg);
-							for(int i=0;i<msg.value();i++)
-							{
-								final Item newFound=(Item)found.copyOf();
-								if(!dropAWinner(mob,newFound))
-									break;
-								CMLib.commands().postGet(mob,null,newFound,true);
-							}
+							Item metalFound=CMLib.materials().makeItemResource(RawMaterial.RESOURCE_IRON);
+							int metalAmount = Math.round(CMath.sqrt(finalAmount));
+							finishSalvage(mob,metalFound, metalAmount);
+						}
+						if((baseShip.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_CLOTH)
+						{
+							Item clothFound=CMLib.materials().makeItemResource(RawMaterial.RESOURCE_COTTON);
+							int metalAmount = Math.round(CMath.sqrt(finalAmount));
+							int clothAmount = Math.round(CMath.sqrt(metalAmount));
+							finishSalvage(mob,clothFound, clothAmount);
 						}
 					}
 				}
@@ -184,73 +201,60 @@ public class Salvaging extends CommonSkill
 			return false;
 		}
 
-		final Vector<Item> V=new Vector<Item>();
-		int totalWeight=0;
-		for(int i=0;i<mob.location().numItems();i++)
-		{
-			final Item I2=mob.location().getItem(i);
-			if((I2!=null)&&(I2.sameAs(I)))
-			{
-				totalWeight+=I2.phyStats().weight();
-				V.addElement(I2);
-			}
-		}
-
 		final LandTitle t=CMLib.law().getLandTitle(mob.location());
 		if((t!=null)&&(!CMLib.law().doesHavePriviledgesHere(mob,mob.location())))
 		{
-			mob.tell(L("You are not allowed to scrap anything here."));
+			mob.tell(L("You are not allowed to salvage anything here."));
 			return false;
 		}
 
-		for(int i=0;i<mob.location().numItems();i++)
+		if((!(I instanceof SailingShip))
+		||((((SailingShip)I).subjectToWearAndTear())&&(((SailingShip)I).usesRemaining()>0))
+		||(((SailingShip)I).getShipArea()==null))
 		{
-			final Item I2=mob.location().getItem(i);
-			if((I2.container()!=null)&&(V.contains(I2.container())))
+			mob.tell(L("You can only salvage large sunk sailing ships, which @x1 is not.",I.Name()));
+			return false;
+		}
+		SailingShip ship=(SailingShip)I;
+		Area shipArea=ship.getShipArea();
+		
+		int totalWeight=I.phyStats().weight();
+		final Vector<Item> itemsToMove=new Vector<Item>();
+		for(Enumeration<Room> r=shipArea.getProperMap();r.hasMoreElements();)
+		{
+			final Room R=r.nextElement();
+			if(R!=null)
 			{
-				commonTell(mob,L("You need to remove the contents of @x1 first.",I2.name(mob)));
-				return false;
+				if(R.numInhabitants()>0)
+				{
+					mob.tell(L("There are still people aboard!"));
+					return false;
+				}
+				for(Enumeration<Item> i=R.items();i.hasMoreElements();)
+				{
+					final Item I2=i.nextElement();
+					if((I2!=null)&&(CMLib.flags().isGettable(I2))&&(I2.container()==null))
+						itemsToMove.add(I2);
+				}
 			}
 		}
-		amount=totalWeight/5;
-		if(amount<1)
-		{
-			commonTell(mob,L("You don't have enough here to get anything from."));
-			return false;
-		}
-
-		final PrivateProperty prop=CMLib.law().getPropertyRecord(I);
-		if(((prop != null)&&(!CMLib.law().doesHavePrivilegesWith(mob, prop)))
-		||(I instanceof SailingShip))
-		{
-			commonTell(mob,L("@x1 can't be salvaged.",I.name(mob)));
-			return false;
-		}
-
 		found=null;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		int duration=getDuration(45,mob,1,10);
+		amount=I.phyStats().weight();
 		messedUp=!proficiencyCheck(mob,0,auto);
 		found=CMLib.materials().makeItemResource(I.material());
-		foundShortName="nothing";
 		playSound="ripping.wav";
-		if(found!=null)
-			foundShortName=RawMaterial.CODES.NAME(found.material()).toLowerCase();
 		final CMMsg msg=CMClass.getMsg(mob,I,this,getActivityMessageType(),L("<S-NAME> start(s) salvaging @x1.",I.name()));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			for(int v=0;v<V.size();v++)
-			{
-				if(((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_PRECIOUS)
-				||((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_METAL)
-				||((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_MITHRIL))
-					duration+=V.elementAt(v).phyStats().weight();
-				else
-					duration+=V.elementAt(v).phyStats().weight()/2;
-				V.elementAt(v).destroy();
-			}
+			for(Item I2 : itemsToMove)
+				mob.location().moveItemTo(I2);
+			I.destroy();
+			mob.location().recoverPhyStats();
+			duration += CMath.sqrt(totalWeight/5);
 			beneficialAffect(mob,mob,asLevel,duration);
 		}
 		return true;

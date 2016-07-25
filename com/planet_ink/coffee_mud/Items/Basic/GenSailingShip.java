@@ -2124,9 +2124,9 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 					mob.setRiding(this);
 					mob.basePhyStats().setDisposition(mob.basePhyStats().disposition()|PhyStats.IS_SWIMMING);
 					mob.phyStats().setDisposition(mob.phyStats().disposition()|PhyStats.IS_SWIMMING);
-					final String directionName = CMLib.directions().getDirectionName(direction);
 					if(directionFacing == direction)
 					{
+						final String directionName = CMLib.directions().getDirectionName(direction);
 						final int[] newCoords = Directions.adjustXYByDirections(tacticalCoords[0], tacticalCoords[1], direction);
 						final CMMsg maneuverMsg=CMClass.getMsg(mob,thisRoom,null,CMMsg.MSG_ADVANCE,newCoords[0]+","+newCoords[1],CMMsg.MSG_ADVANCE,directionName,
 																CMMsg.MSG_ADVANCE,L("<S-NAME> maneuver(s) @x1.",directionName));
@@ -2147,14 +2147,20 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 					}
 					else
 					{
-						final CMMsg maneuverMsg=CMClass.getMsg(mob,thisRoom,null,CMMsg.MSG_ADVANCE,directionName,CMMsg.MSG_ADVANCE,null,
+						final int gradualDirection=Directions.getGradualDirectionCode(directionFacing, direction);
+						final String directionName = CMLib.directions().getDirectionName(gradualDirection);
+						final String finalDirectionName = CMLib.directions().getDirectionName(direction);
+						final CMMsg maneuverMsg=CMClass.getMsg(mob,thisRoom,null,CMMsg.MSG_ADVANCE,directionName,CMMsg.MSG_ADVANCE,finalDirectionName,
 								CMMsg.MSG_ADVANCE,L("<S-NAME> change(s) course, turning @x1.",directionName));
 						if(thisRoom.okMessage(mob, maneuverMsg))
 						{
 							thisRoom.send(mob, maneuverMsg);
-							directionFacing = direction;
+							directionFacing = CMLib.directions().getStrictDirectionCode(maneuverMsg.sourceMessage());
 						}
-						return SailResult.REPEAT;
+						if(direction != directionFacing)
+							return SailResult.REPEAT;
+						else
+							return SailResult.CONTINUE;
 					}
 				}
 				finally

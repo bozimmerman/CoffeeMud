@@ -185,8 +185,7 @@ public class Sailor extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Thief_Bind",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Thief_Scuttle",true);
 		
-		//Manuevering-Enables the ship to perform one additional turn per ship combat round.  Costs 200 movement.
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Skill_SeaManeuvering",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Skill_SeaManeuvers",true);
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Siegecraft",false);
 		
@@ -197,12 +196,7 @@ public class Sailor extends StdCharClass
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Skill_CombatRepairs",true);
 		
-		/*The character recovers some wood and supplies from a recently sunk vessel (probably needs to be used 
-		 * while a ship is sinking in the region.  Generates wood and money that go straight to the characters 
-		 * inventory.  Alternatively, maybe the gold goes to the players inventory (autogold), and the wood just 
-		 * floats and must be harvested separately.
-		 */
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Salvage",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Salvage",false);
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Skill_FoulWeatherSailing",false);
 		
