@@ -1473,6 +1473,22 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 				}
 				if(tickID == Tickable.TICKID_SPECIALMANEUVER)
 				{
+					final Room combatRoom=this.shipCombatRoom;
+					if(combatRoom != null)
+					{
+						final MOB mob = CMClass.getFactoryMOB(name(),phyStats().level(),null);
+						try
+						{
+							mob.setRiding(this);
+							mob.basePhyStats().setDisposition(mob.basePhyStats().disposition()|PhyStats.IS_SWIMMING);
+							mob.phyStats().setDisposition(mob.phyStats().disposition()|PhyStats.IS_SWIMMING);
+							combatRoom.show(mob, this, CMMsg.MSG_ACTIVATE|CMMsg.MASK_MALICIOUS, null);
+						}
+						finally
+						{
+							mob.destroy();
+						}
+					}
 					PairList<Item,int[]> coords = this.coordinates;
 					if(coords != null)
 					{
@@ -1735,8 +1751,11 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 				&&(msg.target() instanceof Room)
 				&&(((Room)msg.target()).getArea()!=area))
 				{
-					if((msg.source().riding() instanceof GenSailingShip)
-					&&(msg.source().Name().equals(msg.source().riding().Name())))
+					if(((msg.source().riding() == this)
+						&&(msg.source().Name().equals(Name())))
+					||((this.targetedShip!=null)
+						&&(msg.source().riding() == targetedShip)
+						&&(msg.source().Name().equals(targetedShip.Name()))))
 					{
 						clearTacticalMode();
 					}

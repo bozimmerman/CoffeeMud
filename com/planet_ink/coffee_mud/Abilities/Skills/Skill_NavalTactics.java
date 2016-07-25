@@ -79,18 +79,6 @@ public class Skill_NavalTactics extends StdSkill
 		return Ability.ACODE_SKILL | Ability.DOMAIN_SEATRAVEL;
 	}
 
-	@Override
-	public boolean isAutoInvoked()
-	{
-		return true;
-	}
-
-	@Override
-	public boolean canBeUninvoked()
-	{
-		return false;
-	}
-
 	private static final String[]	triggerStrings	= I(new String[] { "NAVALTACTICS", "NTACTICS" });
 
 	@Override
@@ -124,14 +112,30 @@ public class Skill_NavalTactics extends StdSkill
 	}
 	
 	@Override
+	public boolean okMessage(Environmental myHost, CMMsg msg)
+	{
+		if(!super.okMessage(myHost, msg))
+			return false;
+		
+		if((affected!=null)
+		&&(msg.source().riding()==affected)
+		&&(msg.source().Name().equals(affected.Name()))
+		&&((msg.sourceMinor()==CMMsg.TYP_ACTIVATE)
+			||(msg.sourceMinor()==CMMsg.TYP_ADVANCE)
+			||(msg.sourceMinor()==CMMsg.TYP_ENTER)
+			||(msg.sourceMinor()==CMMsg.TYP_LEAVE)
+			||(msg.sourceMinor()==CMMsg.TYP_WEAPONATTACK)
+			||(msg.sourceMinor()==CMMsg.TYP_ATTACKMISS)))
+			wait=false;
+		return true;
+	}
+	
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking, tickID))
 			return false;
-		if(tickID == Tickable.TICKID_SPECIALMANEUVER)
-			wait=false;
-		else
-		if(tickID == Tickable.TICKID_AREA)
+		
 		{
 			final Physical affected=this.affected;
 			if(!(affected instanceof SailingShip))
@@ -296,11 +300,11 @@ public class Skill_NavalTactics extends StdSkill
 				}
 				return true;
 			}
-		}
-		if(this.canBeUninvoked())
-		{
-			this.unInvoke();
-			return false;
+			if(this.canBeUninvoked())
+			{
+				this.unInvoke();
+				return false;
+			}
 		}
 		return true;
 	}
@@ -322,6 +326,7 @@ public class Skill_NavalTactics extends StdSkill
 		if(newMiscText.length()>0)
 		{
 			this.tactic=(Tactic)CMath.s_valueOf(Tactic.class, newMiscText.toUpperCase().trim());
+			wait=false;
 		}
 	}
 	
@@ -363,7 +368,7 @@ public class Skill_NavalTactics extends StdSkill
 			return false;
 		}
 		
-		final Skill_NavalTactics A=(Skill_NavalTactics)mob.fetchEffect(ID());
+		final Skill_NavalTactics A=(Skill_NavalTactics)myShipItem.fetchEffect(ID());
 		if((commands.size()==0)&&(A!=null))
 		{
 			A.unInvoke();
