@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Abilities.Thief;
+package com.planet_ink.coffee_mud.Abilities.Skills;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -35,15 +35,15 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Thief_Articles extends ThiefSkill
+public class Skill_HireCrewmember extends StdSkill
 {
 	@Override
 	public String ID()
 	{
-		return "Thief_Articles";
+		return "Skill_HireCrewmember";
 	}
 
-	private final static String	localizedName	= CMLib.lang().L("Articles");
+	private final static String	localizedName	= CMLib.lang().L("Hire Crewmember");
 
 	@Override
 	public String name()
@@ -51,7 +51,7 @@ public class Thief_Articles extends ThiefSkill
 		return localizedName;
 	}
 
-	private static final String[]	triggerStrings	= I(new String[] { "ARTICLES"});
+	private static final String[]	triggerStrings	= I(new String[] { "HIRECREWMEMBER","HIRECREW"});
 
 	@Override
 	public String[] triggerStrings()
@@ -62,7 +62,7 @@ public class Thief_Articles extends ThiefSkill
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_THIEF_SKILL | Ability.DOMAIN_INFLUENTIAL;
+		return Ability.ACODE_SKILL | Ability.DOMAIN_INFLUENTIAL;
 	}
 
 	@Override
@@ -112,20 +112,22 @@ public class Thief_Articles extends ThiefSkill
 	@Override
 	public CMObject copyOf()
 	{
-		Thief_Articles A=(Thief_Articles)super.copyOf();
+		Skill_HireCrewmember A=(Skill_HireCrewmember)super.copyOf();
 		A.sailor=null;
 		return A;
 	}
 	
 	private enum CrewType
 	{
-		GUNNER,
+		REPAIRER,
+		TACTICIAN,
+		CAPTAIN,
 		DEFENDER,
-		BOARDER
+		TRAWLER
 	}
 	
 	protected String	shipName	= "";
-	protected CrewType	type		= CrewType.GUNNER;
+	protected CrewType	type		= CrewType.DEFENDER;
 	protected Behavior	sailor		= null;
 	
 	@Override
@@ -146,14 +148,20 @@ public class Thief_Articles extends ThiefSkill
 		super.affectPhyStats(affected, affectableStats);
 		switch(type)
 		{
-		case GUNNER:
-			affectableStats.addAmbiance(L("Siege Op"));
+		case REPAIRER:
+			affectableStats.addAmbiance(L("Repairer"));
 			break;
 		case DEFENDER:
 			affectableStats.addAmbiance(L("Defender"));
 			break;
-		case BOARDER:
-			affectableStats.addAmbiance(L("Boarder"));
+		case TACTICIAN:
+			affectableStats.addAmbiance(L("Tactician"));
+			break;
+		case CAPTAIN:
+			affectableStats.addAmbiance(L("Captain"));
+			break;
+		case TRAWLER:
+			affectableStats.addAmbiance(L("Trawler"));
 			break;
 		}
 	}
@@ -171,14 +179,48 @@ public class Thief_Articles extends ThiefSkill
 				sailor = CMClass.getBehavior("Sailor");
 				switch(type)
 				{
-				case GUNNER:
-					sailor.setParms("FIGHTTECH=true FIGHTMOVER=false TICKBONUS="+abilityCode());
+				case REPAIRER:
+					if(agent instanceof MOB)
+					{
+						final MOB mob=(MOB)agent;
+						if(mob.fetchAbility("Shipwright")==null)
+						{
+							Ability A=CMClass.getAbility("Shipwright");
+							int prof=(mob.phyStats().level()+(5*super.getXLEVELLevel(invoker())))*2;
+							if(prof>=100)
+								prof=99;
+							A.setProficiency(prof);
+							A.setSavable(true);
+							mob.addAbility(A);
+						}
+					}
+					sailor.setParms("FIGHTMOVER=false FIGHTTECH=false TICKBONUS="+abilityCode());
 					break;
 				case DEFENDER:
 					sailor.setParms("DEFENDER=true FIGHTMOVER=false FIGHTTECH=false TICKBONUS="+abilityCode());
 					break;
-				case BOARDER:
-					sailor.setParms("BOARDER=true FIGHTMOVER=false FIGHTTECH=false TICKBONUS="+abilityCode());
+				case TACTICIAN:
+					sailor.setParms("FIGHTMOVER=true FIGHTTECH=false TICKBONUS="+abilityCode());
+					break;
+				case CAPTAIN:
+					sailor.setParms("PEACEMOVER=true FIGHTMOVER=false FIGHTTECH=false TICKBONUS="+abilityCode());
+					break;
+				case TRAWLER:
+					if(agent instanceof MOB)
+					{
+						final MOB mob=(MOB)agent;
+						if(mob.fetchAbility("Trawling")==null)
+						{
+							Ability A=CMClass.getAbility("Trawling");
+							int prof=(mob.phyStats().level()+(5*super.getXLEVELLevel(invoker())))*2;
+							if(prof>=100)
+								prof=99;
+							A.setProficiency(prof);
+							A.setSavable(true);
+							mob.addAbility(A);
+						}
+					}
+					sailor.setParms("FIGHTMOVER=false FIGHTTECH=false TICKBONUS="+abilityCode());
 					break;
 				}
 				sailor.setSavable(false);
@@ -226,19 +268,19 @@ public class Thief_Articles extends ThiefSkill
 	
 	protected boolean isCrew(final MOB M, final String shipName)
 	{
-		Thief_Articles articlesA=(Thief_Articles)M.fetchEffect(ID());
+		Skill_HireCrewmember articlesA=(Skill_HireCrewmember)M.fetchEffect(ID());
 		return ((articlesA!=null)&&(articlesA.shipName.equals(shipName)));
 	}
 	
 	protected String getCrewShip(final MOB M)
 	{
-		Thief_Articles articlesA=(Thief_Articles)M.fetchEffect(ID());
+		Skill_HireCrewmember articlesA=(Skill_HireCrewmember)M.fetchEffect(ID());
 		return (articlesA!=null) ? articlesA.shipName : "";
 	}
 	
 	protected CrewType getCrewType(final MOB M)
 	{
-		Thief_Articles articlesA=(Thief_Articles)M.fetchEffect(ID());
+		Skill_HireCrewmember articlesA=(Skill_HireCrewmember)M.fetchEffect(ID());
 		return (articlesA!=null) ? articlesA.type : null;
 	}
 	
@@ -279,13 +321,13 @@ public class Thief_Articles extends ThiefSkill
 		||(CMLib.flags().isAnimalIntelligence(target))
 		||((target.getStartRoom()==null)&&(target.fetchEffect(ID())==null)))
 		{
-			mob.tell(L("You can't offer the articles to @x1.",target.name(mob)));
+			mob.tell(L("You can't hire @x1 as a crewmember.",target.name(mob)));
 			return false;
 		}
 		
 		if(isCrew(target,myShipItem.Name()))
 		{
-			mob.tell(L("@x1 has already signed the articles.",target.name(mob)));
+			mob.tell(L("@x1 is already a crew member.",target.name(mob)));
 			return false;
 		}
 		
@@ -302,7 +344,7 @@ public class Thief_Articles extends ThiefSkill
 
 		if(!allowedToOfferToThem)
 		{
-			mob.tell(L("You can't offer @x1 the articles.",target.name()));
+			mob.tell(L("You can't hire @x1 as crew.",target.name()));
 			return false;
 		}
 		
@@ -368,7 +410,7 @@ public class Thief_Articles extends ThiefSkill
 			{
 				switch(nextType)
 				{
-				case GUNNER:
+				case TRAWLER:
 					if(numTypes[nextType.ordinal()]>=numDecks)
 						nextType=null;
 					break;
@@ -376,7 +418,15 @@ public class Thief_Articles extends ThiefSkill
 					if(numTypes[nextType.ordinal()]>=maxDefenders)
 						nextType=null;
 					break;
-				case BOARDER:
+				case CAPTAIN:
+					if(numTypes[nextType.ordinal()]>=maxBoarders)
+						nextType=null;
+					break;
+				case TACTICIAN:
+					if(numTypes[nextType.ordinal()]>=maxBoarders)
+						nextType=null;
+					break;
+				case REPAIRER:
 					if(numTypes[nextType.ordinal()]>=maxBoarders)
 						nextType=null;
 					break;
@@ -397,14 +447,14 @@ public class Thief_Articles extends ThiefSkill
 		boolean success=proficiencyCheck(mob,-adjustment,auto);
 		if(success)
 		{
-			String str=auto?"":L("^S<S-NAME> offer(s) <T-NAME> the articles of piracy..^?");
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_THIEF_ACT,str,CMMsg.MSG_THIEF_ACT|(auto?CMMsg.MASK_ALWAYS:0),str,CMMsg.MSG_NOISYMOVEMENT,str);
+			String str=auto?"":L("^S<S-NAME> offer(s) <T-NAME> @x1 to hire on as a crewmember..^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,str,CMMsg.MSG_NOISYMOVEMENT|(auto?CMMsg.MASK_ALWAYS:0),str,CMMsg.MSG_NOISYMOVEMENT,str);
 			if(R.okMessage(mob,msg))
 			{
 				R.send(mob,msg);
 				if(msg.value()<=0)
 				{
-					R.show(target, null, CMMsg.MSG_QUIETMOVEMENT,L("<S-NAME> sign(s) the articles of piracy and is now a member of the crew of @x1.",myShipItem.name()));
+					R.show(target, null, CMMsg.MSG_QUIETMOVEMENT,L("<S-NAME> sign(s) up to be a member of the crew of @x1.",myShipItem.name()));
 					Ability A=target.fetchEffect(ID());
 					if(A!=null)
 						target.delEffect(A);

@@ -271,6 +271,28 @@ public class Sailor extends StdBehavior
 		return false;
 	}
 	
+	public boolean tryTrawl(MOB mob)
+	{
+		if(CMLib.flags().domainAffects(mob, Ability.ACODE_COMMON_SKILL).size()==0)
+		{
+			Ability A=CMClass.getAbility("Trawling");
+			if((A!=null)
+			&&((A.proficiency()==0)||(A.proficiency()==100)))
+			{
+				A.setProficiency((mob.phyStats().level()+1) * 4 * 3);
+				if(A.proficiency() >= 100)
+					A.setProficiency(99);
+			}
+			Ability mend=mob.fetchAbility("Trawling");
+			if(mend != null)
+			{
+				mob.enqueCommand(new XVector<String>("TRAWL"), 0, 0);
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	protected boolean amInTrouble()
 	{
 		return (wimpy
@@ -671,6 +693,7 @@ public class Sailor extends StdBehavior
 					{
 						tryMend(mob);
 					}
+					tryTrawl(mob);
 					if(combatIsOver && (boarder || CMLib.flags().isMobile(mob)))
 					{
 						combatIsOver = false;
