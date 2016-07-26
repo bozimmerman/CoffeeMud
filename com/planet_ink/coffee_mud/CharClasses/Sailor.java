@@ -144,63 +144,64 @@ public class Sailor extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Skill_SeaLegs",true);
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Thief_Belay",true);
-		
+
 		/*hide on a ship to get transport between two port cities.  If the player has charting, they can 
 		 * predetermine what port they end up in...otherwise, takes to a random connected shore room.
 		 */
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Skill_Stowaway",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Trawling",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Shipwright",0,"",true,false,CMParms.parseSemicolons("Carpentry",true),"");
-		
+
 		/*Language transmitted via light or sound.  Can be heard for 10 continuous outdoor rooms 
 		 * (via light) or 3 continuous indoor rooms (via sound).  Must have light source if outdoors.
 		 */
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Skill_MorseCode",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Skill_CrowsNest",0,"",true,false,CMParms.parseSemicolons("Skill_Climb(74)", true),"");
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Skill_AvoidCurrents",true);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_SeaMapping",true);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Skill_Diving",true);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Skill_SeaCharting",true);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Skill_DeadReckoning",true);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Skill_SeaNavigation",true);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Thief_Bind",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Thief_Scuttle",true);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Skill_SeaManeuvers",true);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Siegecraft",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Specialization_SiegeWeapon",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Fighter_WaterTactics",true);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Skill_DeepBreath",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Skill_CombatRepairs",true);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Salvage",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Skill_FoulWeatherSailing",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Skill_NavalTactics",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Thief_RammingSpeed",true);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Skill_InterceptShip",0,"",true,false,CMParms.parseSemicolons("Skill_SeaCharting(50)", true),"");
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Skill_AwaitShip",true);
+
+		// scurvey, lowers cha, disease resist, cured by citris, emotes spitting out teeth 
 		
 		//The sailor hires a mob 5-10 levels lower than themselves to join his crew and work on his boat.
 		//Repair guy, Sailor, Defensive, Trawler
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Skill_HireCrewmember",true);
-		
 
 		// to separate from artisan --------------------------------------------------------------------------------------------
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),-1,"Chopping",0,"",false,true);
