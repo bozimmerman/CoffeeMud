@@ -153,6 +153,7 @@ public class Skill_NavalTactics extends StdSkill
 			&&(shipItem.getCombatant() instanceof SailingShip)
 			&&((CMLib.law().doesHavePriviledgesHere(mob, R))
 				||(CMSecurity.isAllowed(mob, R, CMSecurity.SecFlag.CMDMOBS)))
+			&&(R.roomID().length()>0)
 			&&((R.domainType()&Room.INDOORS)==0))
 			{
 				final SailingShip targetShip=(SailingShip)shipItem.getCombatant();

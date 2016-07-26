@@ -151,24 +151,13 @@ public class Sailor extends StdCharClass
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Skill_Stowaway",false);
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Trawling",true);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Shipwright",0,"",false,true,CMParms.parseSemicolons("Carpentry",true),"");
+		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Shipwright",0,"",true,false,CMParms.parseSemicolons("Carpentry",true),"");
 		
 		/*Language transmitted via light or sound.  Can be heard for 10 continuous outdoor rooms 
 		 * (via light) or 3 continuous indoor rooms (via sound).  Must have light source if outdoors.
 		 */
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Skill_MorseCode",false);
-		/*The character climbs the mast to the crows nest to view the surrounding rooms.  Character can see 
-		 * details from other adjacent rooms based on skill/expertise.  Number of rooms distance, ships, items 
-		 * on ships.  Sample commands Crowsnest North, Crowsnest North North, Crowsnest North Ulysses (the 
-		 * name of a ship/mob in the room).  Results would be as a look at that location/target.  Level should 
-		 * determine range (1 additional room per 20 levels), expertise should determine resolution (just the 
-		 * room name/description, exits, items/ships/mobs).  A level 90 sailor with 1 level of expertise would 
-		 * be able to see 5 rooms out, but only get name/description of the rooms...except rooms 1 range out he 
-		 * could also get exits.  With 2 expertises, he would also get items/ships in the 1 range room.  With 
-		 * 3, he would get exits at range 2.  4 would provide items at range 2.  5 would provide exits at range 3.
-		 *   7 would provide exits at range 4.
-		 */
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),6,"CrowsNest",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Skill_CrowsNest",0,"",true,false,CMParms.parseSemicolons("Skill_Climb(74)", true),"");
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Skill_AvoidCurrents",true);
 		

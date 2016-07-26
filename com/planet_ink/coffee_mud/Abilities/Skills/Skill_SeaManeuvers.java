@@ -100,6 +100,7 @@ public class Skill_SeaManeuvers extends StdSkill
 		&&(msg.target() instanceof Room)
 		&&(R!=null)
 		&&(R.getArea() instanceof BoardableShip)
+		&&(R.roomID().length()>0)
 		&&(msg.source().riding() == ((BoardableShip)R.getArea()).getShipItem())
 		&&(msg.source().Name().equals(msg.source().riding().Name()))
 		&&(msg.sourceMessage()!=null)
