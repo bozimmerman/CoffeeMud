@@ -978,8 +978,10 @@ public class StdAbility implements Ability
 				if(targetName.trim().length()==0)
 					mob.tell(L("You don't see that here."));
 				else
-				if(!CMLib.flags().isSleeping(mob))
+				if(!CMLib.flags().isSleeping(mob)) // no idea why this is here :(
 					mob.tell(L("You don't see anything called '@x1' here.",targetName));
+				else // this was added for clan donate (and other things I'm sure) while sleeping.
+					mob.tell(L("You don't see '@x1' in your dreams.",targetName));
 			}
 			else
 				mob.tell(mob,target,null,L("You can't do that to <T-NAMESELF>."));
