@@ -32,19 +32,53 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
-
 public class Chant_DruidicConnection extends Chant
 {
-	@Override public String ID() { return "Chant_DruidicConnection"; }
-	private final static String localizedName = CMLib.lang().L("Druidic Connection");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	@Override protected int canAffectCode(){return CAN_AREAS;}
-	@Override protected int canTargetCode(){return 0;}
-	protected long lastTime=System.currentTimeMillis();
-	@Override public boolean bubbleAffect(){return (affected instanceof Area);}
+	@Override
+	public String ID()
+	{
+		return "Chant_DruidicConnection";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Druidic Connection");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT | Ability.DOMAIN_ENDURING;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_AREAS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	protected long	lastTime	= System.currentTimeMillis();
+
+	@Override
+	public boolean bubbleAffect()
+	{
+		return (affected instanceof Area);
+	}
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
@@ -128,7 +162,11 @@ public class Chant_DruidicConnection extends Chant
 			}
 			invoker.tell(L("You have destroyed your connection with @x1!",affected.name()));
 			for(final Enumeration<Room> e=((Area)affected).getMetroMap();e.hasMoreElements();)
-				e.nextElement().recoverRoomStats();
+			{
+				final Room R=e.nextElement();
+				if(R!=null)
+					R.recoverRoomStats();
+			}
 		}
 		super.unInvoke();
 		if(invoker != null)

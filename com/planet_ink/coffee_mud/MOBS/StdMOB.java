@@ -4254,7 +4254,7 @@ public class StdMOB implements MOB
 		if (list == null)
 			return list;
 		getGroupMembers((Set<MOB>)list);
-		List<Rider> riders = new ArrayList<Rider>();
+		final List<Rider> riders = new ArrayList<Rider>();
 		riders.addAll(list);
 		int startDex=0;
 		while(startDex < riders.size())
@@ -4264,8 +4264,9 @@ public class StdMOB implements MOB
 			for(;i<riders.size();i++)
 			{
 				final Rider P=riders.get(i);
-				if(!riders.contains(P.riding()))
-					riders.add(P.riding());
+				final Rideable Pr=P.riding();
+				if((!riders.contains(Pr))&&(Pr!=null))
+					riders.add(Pr);
 				if(P instanceof Rideable)
 				{
 					for(Enumeration<Rider> r=((Rideable)P).riders();r.hasMoreElements();)
