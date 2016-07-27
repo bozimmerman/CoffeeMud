@@ -52,7 +52,7 @@ public class Push extends Go
 		throws java.io.IOException
 	{
 		Vector<String> origCmds=new XVector<String>(commands);
-		Environmental pushThis=null;
+		Physical pushThis=null;
 		String dir="";
 		int dirCode=-1;
 		Environmental E=null;
@@ -116,6 +116,11 @@ public class Push extends Go
 						if(msg.othersMessage().equals(msgStr))
 							msg.setOthersMessage("<S-NAME> push(es) <T-NAME> into here.");
 						R.sendOthers(mob,msg);
+						int expense = Math.round(CMath.sqrt(pushThis.phyStats().weight()));
+						if(expense < CMProps.getIntVar(CMProps.Int.RUNCOST))
+							expense = CMProps.getIntVar(CMProps.Int.RUNCOST);
+						for(int i=0;i<expense;i++)
+							CMLib.combat().expendEnergy(mob,true);
 						if(pushThis instanceof Item)
 							R.moveItemTo((Item)pushThis,ItemPossessor.Expire.Player_Drop,ItemPossessor.Move.Followers);
 						else

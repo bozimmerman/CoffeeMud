@@ -135,7 +135,7 @@ public class ItemRejuv extends StdAbility implements ItemTicker
 	@Override
 	public void unloadIfNecessary(Item item)
 	{
-		final ItemRejuv a=(ItemRejuv)item.fetchEffect(new ItemRejuv().ID());
+		final ItemRejuv a=(ItemRejuv)item.fetchEffect(ID());
 		if(a!=null)
 			a.unInvoke();
 	}

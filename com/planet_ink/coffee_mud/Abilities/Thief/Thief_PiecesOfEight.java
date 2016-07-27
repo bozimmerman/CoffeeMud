@@ -126,26 +126,29 @@ public class Thief_PiecesOfEight extends ThiefSkill
 		for(Enumeration<Item> i=coll.items();i.hasMoreElements();)
 		{
 			final Item I=i.nextElement();
-			if((I instanceof Container)
-			&&(I.fetchEffect("Thief_BuriedTreasure")!=null)
-			&&(mob.Name().equals(I.fetchEffect("Thief_BuriedTreasure").text())))
+			if(I instanceof Container)
 			{
-				List<Item> contents = ((Container)I).getContents();
-				for(Item I2 : contents)
+				final Ability A=I.fetchEffect("Thief_BuriedTreasure");
+				if((A!=null)
+				&&(mob.Name().equals(I.fetchEffect(A.text()))))
 				{
-					if(I2 instanceof Coins)
+					List<Item> contents = ((Container)I).getContents();
+					for(Item I2 : contents)
 					{
-						Coins C=(Coins)I2;
-						if(C.getCurrency().equals(triad.first))
+						if(I2 instanceof Coins)
 						{
-							if(C.getDenomination()==triad.second.doubleValue())
+							Coins C=(Coins)I2;
+							if(C.getCurrency().equals(triad.first))
 							{
-								coins.add(C);
-								totalCoinValue += C.getTotalValue();
-							}
-							else
-							{
-								otherDenoms.add(Double.valueOf(C.getDenomination()));
+								if(C.getDenomination()==triad.second.doubleValue())
+								{
+									coins.add(C);
+									totalCoinValue += C.getTotalValue();
+								}
+								else
+								{
+									otherDenoms.add(Double.valueOf(C.getDenomination()));
+								}
 							}
 						}
 					}

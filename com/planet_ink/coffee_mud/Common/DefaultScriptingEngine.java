@@ -4988,18 +4988,21 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if((P==null)||(!(P instanceof MOB)))
 					returnable=false;
 				else
-				if(P.fetchEffect("Mood")!=null)
 				{
-					final String sex=P.fetchEffect("Mood").text();
-					if(arg2.equals("=="))
-						returnable=sex.equalsIgnoreCase(arg3);
-					else
-					if(arg2.equals("!="))
-						returnable=!sex.equalsIgnoreCase(arg3);
-					else
+					final Ability moodA=P.fetchEffect("Mood");
+					if(moodA!=null)
 					{
-						logError(scripted,"MOOD","Syntax",funcParms);
-						return returnable;
+						final String sex=moodA.text();
+						if(arg2.equals("=="))
+							returnable=sex.equalsIgnoreCase(arg3);
+						else
+						if(arg2.equals("!="))
+							returnable=!sex.equalsIgnoreCase(arg3);
+						else
+						{
+							logError(scripted,"MOOD","Syntax",funcParms);
+							return returnable;
+						}
 					}
 				}
 				break;
@@ -7019,8 +7022,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				final String arg1=CMParms.cleanBit(funcParms);
 				final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
-				if((E instanceof MOB)&&(((MOB)E).fetchEffect("Mood")!=null))
-					results.append(CMStrings.capitalizeAndLower(((MOB)E).fetchEffect("Mood").text()));
+				if(E instanceof MOB)
+				{
+					final Ability moodA=((MOB)E).fetchEffect("Mood");
+					if(moodA!=null)
+						results.append(CMStrings.capitalizeAndLower(moodA.text()));
+				}
 				break;
 			}
 			case 22: // baseclass

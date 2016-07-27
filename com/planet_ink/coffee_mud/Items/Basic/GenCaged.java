@@ -95,7 +95,10 @@ public class GenCaged extends GenItem implements CagedAnimal
 	@Override
 	public void destroy()
 	{
-		if((CMSecurity.isDebugging(CMSecurity.DbgFlag.MISSINGKIDS))&&(fetchEffect("Age")!=null)&&CMath.isInteger(fetchEffect("Age").text())&&(CMath.s_int(fetchEffect("Age").text())>Short.MAX_VALUE))
+		if((CMSecurity.isDebugging(CMSecurity.DbgFlag.MISSINGKIDS))
+		&&(fetchEffect("Age")!=null)
+		&&CMath.isInteger(fetchEffect("Age").text())
+		&&(CMath.s_int(fetchEffect("Age").text())>Short.MAX_VALUE))
 			Log.debugOut("MISSKIDS",new Exception(Name()+" went missing form "+CMLib.map().getDescriptiveExtendedRoomID(CMLib.map().roomLocation(this))));
 		super.destroy();
 	}
