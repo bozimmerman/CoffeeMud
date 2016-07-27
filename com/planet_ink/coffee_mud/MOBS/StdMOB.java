@@ -2594,13 +2594,16 @@ public class StdMOB implements MOB
 						return false;
 					}
 					break;
+				case CMMsg.TYP_SIT: // SIT is waking!
+					if(CMLib.flags().isSleeping(this))
+						break;
+					//$FALL-THROUGH$
 				case CMMsg.TYP_BUY:
 				case CMMsg.TYP_BID:
 				case CMMsg.TYP_DELICATE_HANDS_ACT:
 				case CMMsg.TYP_FILL:
 				case CMMsg.TYP_LIST:
 				case CMMsg.TYP_LOCK:
-				case CMMsg.TYP_SIT:
 				case CMMsg.TYP_SLEEP:
 				case CMMsg.TYP_UNLOCK:
 				case CMMsg.TYP_VALUE:
