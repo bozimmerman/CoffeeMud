@@ -336,7 +336,6 @@ public class DefaultSession implements Session
 			negotiateTelnetMode(rawout,TELNET_TERMTYPE);
 			if(!CMSecurity.isDisabled(CMSecurity.DisFlag.MCCP))
 				changeTelnetMode(rawout,TELNET_COMPRESS2,true);
-
 			if(!CMSecurity.isDisabled(CMSecurity.DisFlag.MXP))
 				changeTelnetMode(rawout,TELNET_MXP,true);
 			if(!CMSecurity.isDisabled(CMSecurity.DisFlag.GMCP))
