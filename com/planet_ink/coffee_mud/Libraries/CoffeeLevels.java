@@ -232,10 +232,31 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 	@Override
 	public StringBuffer baseLevelAdjuster(MOB mob, int adjuster)
 	{
-		mob.basePhyStats().setLevel(mob.basePhyStats().level()+adjuster);
-		final CharClass curClass=mob.baseCharStats().getCurrentClass();
-		mob.baseCharStats().setClassLevel(curClass,mob.baseCharStats().getClassLevel(curClass)+adjuster);
-		final int classLevel=mob.baseCharStats().getClassLevel(mob.baseCharStats().getCurrentClass());
+		synchronized(mob.basePhyStats())
+		{
+			mob.basePhyStats().setLevel(mob.basePhyStats().level()+adjuster);
+		}
+		synchronized(mob.phyStats())
+		{
+			mob.phyStats().setLevel(mob.basePhyStats().level());
+		}
+		final CharClass curClass;
+		final int oldClassLevel;
+		synchronized(mob.baseCharStats())
+		{
+			curClass=mob.baseCharStats().getCurrentClass();
+			oldClassLevel = mob.baseCharStats().getClassLevel(curClass);
+			mob.baseCharStats().setClassLevel(curClass,oldClassLevel+adjuster);
+		}
+		synchronized(mob.charStats())
+		{
+			mob.charStats().setClassLevel(curClass,oldClassLevel+adjuster);
+		}
+		final int classLevel;
+		synchronized(mob.baseCharStats())
+		{
+			classLevel=mob.baseCharStats().getClassLevel(mob.baseCharStats().getCurrentClass());
+		}
 		int gained=mob.getExperience()-mob.getExpNextLevel();
 		if(gained<50)
 			gained=50;
