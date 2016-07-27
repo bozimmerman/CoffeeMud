@@ -709,6 +709,7 @@ public class DefaultClan implements Clan
 	@Override
 	public String getDetail(MOB mob)
 	{
+		final int COLBL_WIDTH=CMLib.lister().fixColWidth(16.0,mob);
 		final StringBuffer msg=new StringBuffer("");
 		final Pair<Clan,Integer> mobClanRole=(mob!=null)?(mob.getClanRole(clanID())):null;
 		final boolean member=(mob!=null)
@@ -717,54 +718,51 @@ public class DefaultClan implements Clan
 		final boolean sysmsgs=(mob!=null)&&mob.isAttributeSet(MOB.Attrib.SYSOPMSGS);
 		final LinkedList<CMath.CompiledOperation> form = govt().getXPCalculationFormula();
 		final double nextLevelXP = CMath.parseMathExpression(form, new double[]{getClanLevel()}, 0.0);
-		msg.append(L("^x@x1 Profile   :^.^N @x2\n\r"
-					+"-----------------------------------------------------------------\n\r"
-					+"@x3\n\r"
-					+"-----------------------------------------------------------------\n\r"
-					+"^xLevel           :^.^N @x4"+ ((member||sysmsgs)?("                      (Next at ^w@x5^Nxp)\n\r"):"\n\r")
-					+"^xType            :^.^N @x6\n\r",
-					getGovernmentName(),
-					clanID(),
-					getPremise(),
-					""+getClanLevel(),
-					""+nextLevelXP,
-					CMStrings.capitalizeAndLower(govt().getName()))
-		);
+		msg.append("^x"+CMStrings.padRight(L(getGovernmentName()+" Profile"),COLBL_WIDTH)+":^.^N "+clanID()+"\n\r");
+		msg.append("-----------------------------------------------------------------\n\r");
+		msg.append(getPremise()+"\n\r");
+		msg.append("-----------------------------------------------------------------\n\r");
+		msg.append("^x"+CMStrings.padRight(L("Level"),COLBL_WIDTH)+":^.^N "+getClanLevel());
+		if(member||sysmsgs)
+			msg.append(L("                      (Next at ^w@x1^Nxp)",""+nextLevelXP));
+		msg.append("\n\r");
+		msg.append("^x"+CMStrings.padRight(L("Type"),COLBL_WIDTH)+":^.^N "+CMStrings.capitalizeAndLower(govt().getName())+"\n\r");
+		
 		if(getAcceptanceSettings().length()>0)
 		{
-			msg.append(L("^xQualifications  :^.^N @x1\n\r",CMLib.masking().maskDesc(getAcceptanceSettings())));
+			msg.append("^x"+CMStrings.padRight(L("Qualifications"),COLBL_WIDTH)+":^.^N "+CMLib.masking().maskDesc(getAcceptanceSettings())+"\n\r");
 			if(getBasicRequirementMask().length()>0)
-				msg.append(L("^x           Plus :^.^N @x1\n\r",CMLib.masking().maskDesc(getBasicRequirementMask())));
+				msg.append("^x"+CMStrings.padLeft(L("Plus "),COLBL_WIDTH)+":^.^N "+CMLib.masking().maskDesc(getBasicRequirementMask())+"\n\r");
 		}
 		else
 		if(getBasicRequirementMask().length()>0)
-			msg.append(L("^xQualifications  :^.^N @x1\n\r",CMLib.masking().maskDesc(getBasicRequirementMask())));
+			msg.append("^x"+CMStrings.padRight(L("Qualifications"),COLBL_WIDTH)+":^.^N "+CMLib.masking().maskDesc(getBasicRequirementMask())+"\n\r");
 		else
-			msg.append(L("^xQualifications  :^.^N Anyone may apply\n\r"));
+			msg.append("^x"+CMStrings.padRight(L("Qualifications"),COLBL_WIDTH)+":^.^N "+L("Anyone may apply")+"\n\r");
 		final CharClass clanC=getClanClassC();
 		if(clanC!=null)
-			msg.append(L("^xClass           :^.^N @x1\n\r",clanC.name()));
-		msg.append(L("^xExp. Tax Rate   :^.^N @x1%\n\r",""+((int)Math.round(getTaxes()*100))));
+			msg.append("^x"+CMStrings.padRight(L("Class"),COLBL_WIDTH)+":^.^N "+clanC.name()+"\n\r");
+		msg.append("^x"+CMStrings.padRight(L("Exp. Tax Rate"),COLBL_WIDTH)+":^.^N "+((int)Math.round(getTaxes()*100))+"%\n\r");
 		if(member||sysmsgs)
 		{
-			msg.append(L("^xExperience Pts. :^.^N @x1\n\r",""+getExp()));
+			msg.append("^x"+CMStrings.padRight(L("Experience Pts."),COLBL_WIDTH)+":^.^N "+getExp()+"\n\r");
 			if(getMorgue().length()>0)
 			{
 				final Room R=CMLib.map().getRoom(getMorgue());
 				if(R!=null)
-					msg.append(L("^xMorgue          :^.^N @x1\n\r",R.displayText(mob)));
+					msg.append("^x"+CMStrings.padRight(L("Morgue"),COLBL_WIDTH)+":^.^N "+R.displayText(mob)+"\n\r");
 			}
 			if(getDonation().length()>0)
 			{
 				final Room R=CMLib.map().getRoom(getDonation());
 				if(R!=null)
-					msg.append(L("^xDonations       :^.^N @x1\n\r",R.displayText(mob)));
+					msg.append("^x"+CMStrings.padRight(L("Donations"),COLBL_WIDTH)+":^.^N "+R.displayText(mob)+"\n\r");
 			}
 			if(getRecall().length()>0)
 			{
 				final Room R=CMLib.map().getRoom(getRecall());
 				if(R!=null)
-					msg.append(L("^xRecall          :^.^N @x1\n\r",R.displayText(mob)));
+					msg.append("^x"+CMStrings.padRight(L("Recall"),COLBL_WIDTH)+":^.^N "+R.displayText(mob)+"\n\r");
 			}
 		}
 		final List<MemberRecord> members=getMemberList();
@@ -773,27 +771,29 @@ public class DefaultClan implements Clan
 		{
 			ClanPosition topRankedPos=null;
 			for(final ClanPosition pos : govt().getPositions())
+			{
 				if((pos.isPublic())
 				&&(!sortedPositions.contains(pos))
 				&&((topRankedPos==null)||(pos.getRank() < topRankedPos.getRank())))
 					topRankedPos = pos;
+			}
 			if(topRankedPos != null)
 			{
-				msg.append("^x"+CMStrings.padRight(CMStrings.capitalizeAndLower(topRankedPos.getPluralName()),16)+":^.^N "+crewList(members, topRankedPos.getRoleID())+"\n\r");
+				msg.append("^x"+CMStrings.padRight(CMStrings.capitalizeAndLower(topRankedPos.getPluralName()),COLBL_WIDTH)+":^.^N "+crewList(members, topRankedPos.getRoleID())+"\n\r");
 				sortedPositions.add(topRankedPos);
 			}
 		}
-		msg.append(L("^xTotal Members   :^.^N @x1\n\r",""+members.size()));
+		msg.append("^x"+CMStrings.padRight(L("Total Members"),COLBL_WIDTH)+":^.^N "+members.size()+"\n\r");
 		if(CMLib.clans().numClans()>1)
 		{
 			msg.append("-----------------------------------------------------------------\n\r");
-			msg.append("^x"+CMStrings.padRight(CMLib.lang().L("Clan Relations"),16)+":^.^N \n\r");
+			msg.append("^x"+CMStrings.padRight(L("Clan Relations"),COLBL_WIDTH)+":^.^N \n\r");
 			for(final Enumeration<Clan> e=CMLib.clans().clans();e.hasMoreElements();)
 			{
 				final Clan C=e.nextElement();
 				if((C!=this)&&(C.isRivalrous()))
 				{
-					msg.append("^x"+CMStrings.padRight(C.name(),16)+":^.^N ");
+					msg.append("^x"+CMStrings.padRight(C.name(),COLBL_WIDTH)+":^.^N ");
 					msg.append(CMStrings.capitalizeAndLower(REL_DESCS[getClanRelations(C.clanID())]));
 					final int orel=C.getClanRelations(clanID());
 					if(orel!=REL_NEUTRAL)
@@ -810,8 +810,8 @@ public class DefaultClan implements Clan
 				if((!pos.isPublic())&&(member)
 				&&((pos.getRoleID()!=govt().getAutoRole())||(pos.getRoleID()==govt().getAcceptPos())))
 				{
-					msg.append("-----------------------------------------------------------------\n\r"
-							  +"^x"+CMStrings.padRight(CMStrings.capitalizeAndLower(pos.getPluralName()),16)
+					msg.append("-----------------------------------------------------------------\n\r");
+					msg.append("^x"+CMStrings.padRight(CMStrings.capitalizeAndLower(pos.getPluralName()),COLBL_WIDTH)
 							  +":^.^N "+crewList(members, pos.getRoleID())+"\n\r");
 				}
 			}
@@ -820,8 +820,9 @@ public class DefaultClan implements Clan
 			&&((getAuthority(mobClanRole.second.intValue(),Function.ACCEPT)!=Clan.Authority.CAN_NOT_DO)||sysmsgs))
 			{
 				final ClanPosition pos=govt().getPositions()[getAutoPosition()];
-				msg.append("-----------------------------------------------------------------\n\r"
-						+"^x"+CMStrings.padRight(CMStrings.capitalizeAndLower(pos.getPluralName()),16)+":^.^N "+crewList(members, pos.getRoleID())+"\n\r");
+				msg.append("-----------------------------------------------------------------\n\r");
+				msg.append("^x"+CMStrings.padRight(CMStrings.capitalizeAndLower(pos.getPluralName()),COLBL_WIDTH)
+						  +":^.^N "+crewList(members, pos.getRoleID())+"\n\r");
 			}
 		}
 		final Vector<String> control=new Vector<String>();
@@ -867,12 +868,26 @@ public class DefaultClan implements Clan
 					msg.append(t.codeString+" ");
 					switch(t)
 					{
-						case Areas: msg.append("("+control.size()+") "); break;
-						case Points: msg.append("("+controlPoints+") "); break;
-						case Experience: msg.append("("+getExp()+") "); break;
-						case Members: msg.append("("+members.size()+") "); break;
-						case PlayerKills: msg.append("("+getCurrentClanKills(null)+") "); break;
-						case MemberLevel: { msg.append("("+filterMedianLevel(getFullMemberList())+") "); break; }
+					case Areas:
+						msg.append("(" + control.size() + ") ");
+						break;
+					case Points:
+						msg.append("(" + controlPoints + ") ");
+						break;
+					case Experience:
+						msg.append("(" + getExp() + ") ");
+						break;
+					case Members:
+						msg.append("(" + members.size() + ") ");
+						break;
+					case PlayerKills:
+						msg.append("(" + getCurrentClanKills(null) + ") ");
+						break;
+					case MemberLevel:
+					{
+						msg.append("(" + filterMedianLevel(getFullMemberList()) + ") ");
+						break;
+					}
 					}
 					msg.append(L(" Prize: @x1\n\r",CMLib.clans().translatePrize(t)));
 				}
@@ -1530,9 +1545,11 @@ public class DefaultClan implements Clan
 						{
 							final MOB player=CMLib.players().getLoadPlayer(name);
 							if(player!=null)
+							{
 								CMLib.smtp().emailIfPossible("AutoPurge",player.Name(),"AutoPurge: "+name(),
 										""+getGovernmentName()+" "+name()+" is in danger of being deleted if at least "+(minimumMembers-activeMembers)
 										+" members do not log on within 24 hours.");
+							}
 						}
 					}
 
@@ -1670,11 +1687,13 @@ public class DefaultClan implements Clan
 									continue;
 								ClanPosition newRole=null;
 								for(final Integer posI : highPositionList)
+								{
 									if(canBeAssigned(M, posI.intValue()))
 									{
 										newRole=govt().getPositions()[posI.intValue()];
 										break;
 									}
+								}
 								if(newRole!=null)
 								{
 									clanAnnounce(member.name+" is now a "+newRole.getName()+" of the "+getGovernmentName()+" "+name()+".");

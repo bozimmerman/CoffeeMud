@@ -35,12 +35,23 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Score extends Affect
 {
-	public Score(){}
+	public Score()
+	{
+	}
 
-	private final String[] access=I(new String[]{"SCORE","SC"});
-	@Override public String[] getAccessWords(){return access;}
+	private final String[]	access	= I(new String[] { "SCORE", "SC" });
 
-	public StringBuilder getScore(MOB mob){return getScore(mob,"");}
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
+
+	public StringBuilder getScore(MOB mob)
+	{
+		return getScore(mob, "");
+	}
+
 	public StringBuilder getScore(MOB mob, String parm)
 	{
 		final StringBuilder msg=new StringBuilder("^N");

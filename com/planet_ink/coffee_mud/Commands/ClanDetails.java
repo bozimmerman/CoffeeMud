@@ -83,8 +83,10 @@ public class ClanDetails extends StdCommand
 				{
 					final List<Pair<String,Integer>> topKillers = new ArrayList<Pair<String,Integer>>();
 					for(final Clan.MemberRecord M : foundClan.getMemberList())
+					{
 						if(M.playerpvps > 0)
 							topKillers.add(new Pair<String,Integer>(M.name,new Integer(M.playerpvps)));
+					}
 					@SuppressWarnings("unchecked")
 					final Pair<String,Integer>[] killerArray = topKillers.toArray(new Pair[0]);
 					Arrays.sort(killerArray,new Comparator<Pair<String,Integer>>()

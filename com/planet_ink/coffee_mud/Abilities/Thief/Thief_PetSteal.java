@@ -49,14 +49,6 @@ public class Thief_PetSteal extends ThiefSkill
 		return localizedName;
 	}
 
-	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Pet Steal)");
-
-	@Override
-	public String displayText()
-	{
-		return localizedStaticDisplay;
-	}
-
 	@Override
 	public int abstractQuality()
 	{
@@ -67,6 +59,12 @@ public class Thief_PetSteal extends ThiefSkill
 	public int classificationCode()
 	{
 		return Ability.ACODE_THIEF_SKILL | Ability.DOMAIN_ANIMALAFFINITY;
+	}
+
+	@Override
+	public String displayText()
+	{
+		return "";
 	}
 
 	@Override
