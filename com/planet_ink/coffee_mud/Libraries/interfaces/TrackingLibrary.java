@@ -237,6 +237,14 @@ public interface TrackingLibrary extends CMLibrary
 			{
 				return (R.domainType() & Room.INDOORS) != 0;
 			}
+		}),
+		INDOORONLY(new RFilter()
+		{
+			@Override
+			public boolean isFilteredOut(Room hostR, final Room R, final Exit E, final int dir)
+			{
+				return (R.domainType() & Room.INDOORS) == 0;
+			}
 		});
 		public RFilter myFilter;
 		private TrackingFlag(RFilter filter)

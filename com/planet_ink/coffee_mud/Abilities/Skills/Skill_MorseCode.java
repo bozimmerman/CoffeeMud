@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary;
+import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary.TrackingFlag;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -119,6 +120,20 @@ public class Skill_MorseCode extends StdSkill
 		super.executeMsg(myHost,msg);
 	}
 
+	protected int getRoomDir(Set<Room> higherRooms, Room thisRoom)
+	{
+		if(thisRoom != null)
+		{
+			for(int d = 0; d<=Directions.NUM_DIRECTIONS(); d++)
+			{
+				final Room R=thisRoom.getRoomInDir(d);
+				if((R!=null)&&(higherRooms.contains(R)))
+					return d;
+			}
+		}
+		return -1;
+	}
+	
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -128,7 +143,9 @@ public class Skill_MorseCode extends StdSkill
 			return false;
 		}
 
-		Room R=mob.location();
+		final Room R=mob.location();
+		if(R==null)
+			return false;
 
 		if(commands.size()==0)
 		{
@@ -140,6 +157,19 @@ public class Skill_MorseCode extends StdSkill
 				return false;
 			}
 		}
+		
+		final Item outDoorsI;
+		if(((R.domainType()&Room.INDOORS)==0))
+		{
+			outDoorsI=mob.fetchHeldItem();
+			if((outDoorsI==null)||(!CMLib.flags().isLightSource(outDoorsI)))
+			{
+				mob.tell(L("You need a light source to send morse code outdoors."));
+				return false;
+			}
+		}
+		else
+			outDoorsI=null;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -147,19 +177,92 @@ public class Skill_MorseCode extends StdSkill
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,auto?L("<T-NAME> begin(s) morse coding!"):L("<S-NAME> puff(s) up a mighty series of smoke signals!"));
-			if(mob.location().okMessage(mob,msg))
+			final String autoStr=L("<T-NAME> begin(s) morse coding!");
+			final String sendStr;
+			if(outDoorsI!=null)
+				sendStr=L("<S-NAME> use(s) @x1 to send signals in morse code!",outDoorsI.name());
+			else
+				sendStr=L("<S-NAME> start(s) banging out morse code on the walls!");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,auto?autoStr:sendStr);
+			if(R.okMessage(mob,msg))
 			{
-				mob.location().send(mob,msg);
+				R.send(mob,msg);
 				final String str=CMParms.combine(commands,0);
-				final CMMsg msg2=CMClass.getMsg(mob,null,this,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,str,CMMsg.MSG_OK_VISUAL,L("You see some smoke signals in the distance."));
+				final int msgCode;
+				if(outDoorsI!=null)
+					msgCode=CMMsg.MSG_OK_VISUAL;
+				else
+					msgCode=CMMsg.MSG_OK_ACTION;
+				final CMMsg msg2=CMClass.getMsg(mob,null,this,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,str,msgCode,null);
 				final TrackingLibrary.TrackingFlags flags=CMLib.tracking().newFlags();
-				final List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,50);
+				if(outDoorsI!=null)
+					flags.add(TrackingFlag.OUTDOORONLY);
+				else
+					flags.add(TrackingFlag.INDOORONLY);
+				final List<Room> checkSet=CMLib.tracking().getRadiantRooms(R,flags,3+super.getXLEVELLevel(mob));
+				Area deckArea=null;
+				Room deckShipRoom=null;
+				Item deckShip=null;
+				if(outDoorsI==null)
+					msg2.setOthersMessage(L("You hear someone banging morse code on the walls in the distance."));
+				else
+				{
+					if(R.getArea() instanceof BoardableShip)
+					{
+						deckShip=((BoardableShip)R.getArea()).getShipItem();
+						if(deckShip instanceof SailingShip)
+						{
+							deckArea=R.getArea();
+							deckShipRoom=CMLib.map().roomLocation(deckShip);
+							if(deckShipRoom != null)
+								checkSet.addAll(CMLib.tracking().getRadiantRooms(deckShipRoom,flags,3+super.getXLEVELLevel(mob)));
+						}
+					}
+				}
+				final Set<Room> higherRooms=new HashSet<Room>();
 				for(final Iterator<Room> r=checkSet.iterator();r.hasNext();)
 				{
-					R=r.next();
-					if((R!=null)&&(R.okMessage(mob,msg2)))
-						R.sendOthers(msg.source(),msg2);
+					final Room R2=r.next();
+					if(R2!=null)
+					{
+						if(outDoorsI!=null)
+						{
+							if(deckArea!=null)
+							{
+								if(deckArea == R2.getArea())
+								{
+									if(R2==R)
+										msg2.setOthersMessage(L("<S-NAME> flash(es) morse code in lights on the deck."));
+									else
+										msg2.setOthersMessage(L("You see someone flashing morse code in lights on the deck."));
+								}
+								else
+								{
+									if(R2 == deckShipRoom)
+										msg2.setOthersMessage(L("You see someone flashing morse code in lights on the deck of @x1.",(deckShip==null)?"":deckShip.name()));
+									else
+									{
+										int dir = getRoomDir(higherRooms,R2);
+										if(dir >= 0)
+											msg2.setOthersMessage(L("You see someone flashing morse code in lights somewhere on a ship @x1.",CMLib.directions().getInDirectionName(dir)));
+										else
+											msg2.setOthersMessage(L("You see someone flashing morse code on a ship in the distance."));
+									}
+								}
+							}
+							else
+							{
+								int dir = getRoomDir(higherRooms,R2);
+								if(dir >= 0)
+									msg2.setOthersMessage(L("You see someone flashing morse code in lights somewhere @x1.",CMLib.directions().getInDirectionName(dir)));
+								else
+									msg2.setOthersMessage(L("You see someone flashing morse code in the distance."));
+							}
+						}
+						if(R2.okMessage(mob,msg2))
+							R2.sendOthers(msg2.source(),msg2);
+						higherRooms.add(R2);
+					}
 				}
 			}
 		}

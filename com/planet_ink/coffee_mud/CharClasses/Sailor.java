@@ -153,10 +153,7 @@ public class Sailor extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Trawling",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Shipwright",0,"",true,false,CMParms.parseSemicolons("Carpentry",true),"");
 
-		/*Language transmitted via light or sound.  Can be heard for 10 continuous outdoor rooms 
-		 * (via light) or 3 continuous indoor rooms (via sound).  Must have light source if outdoors.
-		 */
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Skill_MorseCode",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Skill_MorseCode",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Skill_CrowsNest",0,"",true,false,CMParms.parseSemicolons("Skill_Climb(74)", true),"");
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Skill_AvoidCurrents",true);
