@@ -50,6 +50,7 @@
   49. DAYSCLANOVERTHROW separated from DAYSCLANDEATH -- see INI file.
   50. New Skills: Naval Tactics, Salvaging, Sea Maneuvers, Crows Nest, Hire Crewmember
   51. New Skills: Morse Code
+  52. Can now LIST AREATYPES
 # Build 5.9.3 Released 05/08/2016
    1. Follower behavior now has a few more options.
    2. STAT [MOBNAME] will now give full editor stats also, and 

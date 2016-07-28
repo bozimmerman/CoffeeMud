@@ -13,7 +13,9 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary.RFilter;
 import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary.TrackingFlag;
+import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary.TrackingFlags;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -103,6 +105,8 @@ public class Skill_Stowaway extends StdSkill
 		return 0;
 	}
 
+	protected Room destR = null;
+	protected Room boxR = null;
 	protected int abilityCode = 0;
 
 	@Override
@@ -118,24 +122,149 @@ public class Skill_Stowaway extends StdSkill
 	}
 
 	@Override
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
+	{
+		if((affected!=null)
+		&&(affected instanceof MOB)
+		&&(msg.amISource((MOB)affected))
+		&&((msg.sourceMinor()==CMMsg.TYP_DEATH)
+			||(msg.sourceMinor()==CMMsg.TYP_QUIT)
+			||(msg.sourceMinor()==CMMsg.TYP_RECALL)
+			||(msg.sourceMinor()==CMMsg.TYP_LEAVE)
+			||(destR==null)
+			||(msg.source().location()!=boxR)))
+			unInvoke();
+		return super.okMessage(myHost,msg);
+	}
+
+	@Override
+	public void unInvoke()
+	{
+		final Physical affected=this.affected;
+		final Room R=this.destR;
+		final Room boxR=this.boxR;
+		super.unInvoke();
+		if((affected instanceof MOB)&&(R!=null))
+		{
+			final MOB mob=(MOB)affected;
+			if(mob.location()==boxR)
+			{
+				//TODO!
+			}
+		}
+	}
+	
+	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final Room R=mob.location();
 		if(R==null)
 			return false;
-		boolean success=proficiencyCheck(mob,0,auto);
-		if(success)
+
+		final RFilter SHORE_ONLY=TrackingFlag.SHOREONLY.myFilter;
+		if(SHORE_ONLY.isFilteredOut(R, R, null, 0))
 		{
-			final CMMsg msg=CMClass.getMsg(mob,mob,this,CMMsg.MSG_NOISYMOVEMENT|(auto?CMMsg.MASK_ALWAYS:0),
-					auto?L("<S-NAME> stow(s) away!"):L("<S-NAME> slip(s) into a cargo box!"));
-			if(R.okMessage(mob,msg))
+			mob.tell(L("You must be on a shore to stow-away."));
+			return false;
+		}
+		
+		final Ability seaChartA=mob.fetchAbility("Skill_SeaCharting");
+		Room destR=null;
+		if(commands.size()>0)
+		{
+			if(seaChartA!=null)
 			{
-				R.send(mob,msg);
-				super.beneficialAffect(mob, mob, asLevel, (int)((4 * 60 * 1000) / CMProps.getTickMillis()));
+				List<String> chartRooms=CMParms.parseAny(seaChartA.text(),';',true);
+				String name=CMParms.combine(commands,0);
+				if(CMath.isInteger(name))
+				{
+					int x=CMath.s_int(name);
+					if((x<1)||(x>chartRooms.size()))
+					{
+						mob.tell(L("@x1 is not a valid number.  Check your sea charts!"));
+						return false;
+					}
+					destR=CMLib.map().getRoom(chartRooms.get(x-1));
+				}
+				else
+				{
+					for(String roomID : chartRooms)
+					{
+						final Room R2=CMLib.map().getRoom(roomID);
+						if((R2!=null)&&(CMLib.english().containsString(R2.displayText(mob), name)))
+						{
+							destR=R2;
+							break;
+						}
+					}
+					if(destR==null)
+					{
+						for(String roomID : chartRooms)
+						{
+							final Room R2=CMLib.map().getRoom(roomID);
+							if((R2!=null)&&(CMLib.english().containsString(R2.description(mob), name)))
+							{
+								destR=R2;
+								break;
+							}
+						}
+					}
+					if(destR==null)
+					{
+						mob.tell(L("You have not charted a room called '@x1'.",name));
+						return false;
+					}
+				}
+			}
+			else
+			{
+				mob.tell(L("You cannot specify a destination unless you have Sea Charting."));
+				return false;
 			}
 		}
-		else
-			return beneficialVisualFizzle(mob,null,L("<S-NAME> attempt(s) to stow away, but can't find a good ship to hide in."));
+		
+		TrackingFlags flags=CMLib.tracking().newFlags().plus(TrackingFlag.WATERSURFACEORSHOREONLY);
+		int radius=50 + (10*(super.getXLEVELLevel(mob)+super.getXMAXRANGELevel(mob)));
+		List<Room> rooms=CMLib.tracking().getRadiantRooms(R, flags, radius);
+		boolean success=proficiencyCheck(mob,0,auto);
+		if((destR==null)||(!rooms.contains(destR))||(!success))
+		{
+			for(Iterator<Room> i=rooms.iterator();i.hasNext();)
+			{
+				final Room R2=i.next();
+				if((R2 == R)
+				||(CMLib.map().getRoomDir(R, R2)>=0)
+				||(SHORE_ONLY.isFilteredOut(R2, R2, null, 0)))
+					i.remove();
+			}
+			if(rooms.size()==0)
+			{
+				mob.tell(L("There isn't enough shipping traffic here."));
+				return false;
+			}
+			destR=rooms.get(CMLib.dice().roll(1, rooms.size(), -1));
+		}
+		
+		if(!super.invoke(mob, commands, givenTarget, auto, asLevel))
+			return false;
+		
+		final CMMsg leaveMsg=CMClass.getMsg(mob,R,this,CMMsg.MSG_LEAVE|(auto?CMMsg.MASK_ALWAYS:0),auto?L("<S-NAME> stow(s) away!"):L("<S-NAME> slip(s) into a cargo box!"));
+		if(R.okMessage(mob,leaveMsg))
+		{
+			R.send(mob,leaveMsg);
+			Room boxR=CMClass.getLocale("WoodenRoom");
+			boxR.setDisplayText(L("You are squeezed into a dark cramped shipping box."));
+			boxR.addNonUninvokableEffect(CMClass.getAbility("Prop_Crawlspace"));
+			boxR.addNonUninvokableEffect(CMClass.getAbility("Prop_RoomDark"));
+			final Ability consA=CMClass.getAbility("Prop_ReqCapacity");
+			consA.setMiscText("people=1");
+			boxR.addNonUninvokableEffect(consA);
+			boxR.bringMobHere(mob, false);
+			Skill_Stowaway stow=(Skill_Stowaway)super.beneficialAffect(mob, mob, asLevel, (int)((4 * 60 * 1000) / CMProps.getTickMillis())  / (1+super.getXTIMELevel(mob)));
+			stow.destR=destR;
+			stow.boxR=boxR;
+			
+		}
 		return true;
 	}
 }

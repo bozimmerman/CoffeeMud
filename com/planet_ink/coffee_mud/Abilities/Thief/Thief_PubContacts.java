@@ -247,7 +247,7 @@ public class Thief_PubContacts extends ThiefSkill
 						return;
 					}
 					flags.add(TrackingLibrary.TrackingFlag.WATERSURFACEONLY);
-					int radius=50 + (10*super.getXLEVELLevel(mob));
+					int radius=50 + (10*(super.getXLEVELLevel(mob)+super.getXMAXRANGELevel(mob)));
 					final List<Room> ocean = CMLib.tracking().getRadiantRooms(notShore, flags, radius);
 					final Map<Room,List<Room>> trails=new Hashtable<Room,List<Room>>();
 					int farthest=0;

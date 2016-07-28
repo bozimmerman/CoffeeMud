@@ -309,7 +309,7 @@ public class Skill_Track extends StdSkill
 		}
 
 		tickStatus=Tickable.STATUS_MISC6+3;
-		int radius=50;
+		int radius=50 + (10*(super.getXMAXRANGELevel(mob)+super.getXLEVELLevel(mob)));
 		boolean allowAir=true;
 		boolean allowWater=true;
 		if((commands.size()>1)

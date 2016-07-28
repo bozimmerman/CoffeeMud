@@ -185,9 +185,45 @@ public interface TrackingLibrary extends CMLibrary
 			{
 				if(R==null)
 					return true;
-				return !(CMLib.flags().isWaterySurfaceRoom(R) 
-							|| (R.ID().equals("Shore"))
-							|| (R.domainType() == Room.DOMAIN_OUTDOORS_SEAPORT));
+				if((R.domainType()==Room.DOMAIN_OUTDOORS_AIR)
+				||(R.domainType()==Room.DOMAIN_INDOORS_AIR))
+					return true;
+				if(CMLib.flags().isWaterySurfaceRoom(R)
+				|| (R.ID().equals("Shore"))
+				|| (R.domainType() == Room.DOMAIN_OUTDOORS_SEAPORT))
+					return false;
+				boolean foundWater=false;
+				for(int dir2 : Directions.CODES())
+				{
+					final Room R2=R.getRoomInDir(dir2);
+					if((R2!=null)&&(CMLib.flags().isWaterySurfaceRoom(R2)))
+						foundWater=true;
+				}
+				return (!foundWater);
+			}
+		}),
+		SHOREONLY(new RFilter()
+		{
+			@Override
+			public boolean isFilteredOut(Room hostR, final Room R, final Exit E, final int dir)
+			{
+				if(R==null)
+					return true;
+				if((R.domainType()==Room.DOMAIN_OUTDOORS_AIR)
+				|| (R.domainType()==Room.DOMAIN_INDOORS_AIR)
+				|| (CMLib.flags().isWaterySurfaceRoom(R) ))
+					return true;
+				if((R.ID().equals("Shore"))
+				|| (R.domainType() == Room.DOMAIN_OUTDOORS_SEAPORT))
+					return false;
+				boolean foundWater=false;
+				for(int dir2 : Directions.CODES())
+				{
+					final Room R2=R.getRoomInDir(dir2);
+					if((R2!=null)&&(CMLib.flags().isWaterySurfaceRoom(R2)))
+						foundWater=true;
+				}
+				return (!foundWater);
 			}
 		}),
 		UNDERWATERONLY(new RFilter()

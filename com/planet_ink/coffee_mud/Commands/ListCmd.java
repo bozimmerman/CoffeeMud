@@ -3729,6 +3729,7 @@ public class ListCmd extends StdCommand
 		COMMANDS("COMMANDS",new SecFlag[]{SecFlag.LISTADMIN}),
 		FILEUSE("FILEUSE",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDAREAS}),
 		SOCIALS("SOCIALS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDSOCIALS,SecFlag.AREA_CMDSOCIALS}),
+		AREATYPES("AREATYPES",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDAREAS}),
 		;
 		public String[]			   cmd;
 		public CMSecurity.SecGroup flags;
@@ -4681,6 +4682,10 @@ public class ListCmd extends StdCommand
 		case CLANITEMS:
 			s.println("^HClan Item IDs:^N");
 			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.clanItems()).toString());
+			break;
+		case AREATYPES:
+			s.println("^HArea Type IDs:^N");
+			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.areaTypes()).toString());
 			break;
 		case COMMANDJOURNAL:
 			s.println(journalList(mob.session(), listWord).toString());

@@ -159,7 +159,7 @@ public class Skill_CrowsNest extends StdSkill
 									{
 										final CMMsg msg2=CMClass.getMsg(mob,R,targetCode,null);
 										R.executeMsg(mob,msg2);
-										if((R!=null)&&(targetMinor==CMMsg.TYP_EXAMINE)&&(R.getRoomInDir(dir)!=null))
+										if((targetMinor==CMMsg.TYP_EXAMINE)&&(R.getRoomInDir(dir)!=null))
 										{
 											for(int dir2 : Directions.CODES())
 											{
