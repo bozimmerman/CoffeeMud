@@ -416,7 +416,7 @@ public class Thief_Articles extends ThiefSkill
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,L("<S-NAME> offer(s) <T-NAME> the pirate articles, but <T-HIM-HER> isn't convinced."));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> offer(s) <T-NAME> the pirate articles, but <T-HIM-HER> isn't convinced."));
 
 
 		// return whether it worked

@@ -277,7 +277,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	}
 
 	@Override
-	public List<Race> raceQualifies(MOB mob, int theme)
+	public List<Race> raceQualifies(int theme)
 	{
 		final Vector<Race> qualRaces = new Vector<Race>();
 		final HashSet<String> doneRaces=new HashSet<String>();
@@ -872,7 +872,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		rpt.append("\r\n").append("RACES");
 		int numRaces = 0;
 		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.RACES))
-			numRaces=CMLib.login().raceQualifies(null, CMProps.getIntVar(CMProps.Int.MUDTHEME)&0x07).size();
+			numRaces=CMLib.login().raceQualifies(CMProps.getIntVar(CMProps.Int.MUDTHEME)&0x07).size();
 		rpt.append("\t").append(Long.toString(numRaces));
 		rpt.append("\r\n").append("SKILLS");
 		rpt.append("\t").append(Long.toString(CMLib.ableMapper().numMappedAbilities()));
@@ -2472,7 +2472,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		}
 		final StringBuffer listOfRaces=new StringBuffer("[");
 		boolean tmpFirst = true;
-		final List<Race> qualRaces = raceQualifies(mob,loginObj.theme);
+		final List<Race> qualRaces = raceQualifies(loginObj.theme);
 		for(final Race R : qualRaces)
 		{
 			if (!tmpFirst)

@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary.TrackingFlag;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -44,6 +45,8 @@ public class Skill_HireCrewmember extends StdSkill
 	}
 
 	private final static String	localizedName	= CMLib.lang().L("Hire Crewmember");
+
+	protected final static int baseWaterRange = 8;
 
 	@Override
 	public String name()
@@ -266,12 +269,6 @@ public class Skill_HireCrewmember extends StdSkill
 		return true;
 	}
 	
-	protected boolean isCrew(final MOB M, final String shipName)
-	{
-		Skill_HireCrewmember articlesA=(Skill_HireCrewmember)M.fetchEffect(ID());
-		return ((articlesA!=null)&&(articlesA.shipName.equals(shipName)));
-	}
-	
 	protected String getCrewShip(final MOB M)
 	{
 		Skill_HireCrewmember articlesA=(Skill_HireCrewmember)M.fetchEffect(ID());
@@ -284,35 +281,36 @@ public class Skill_HireCrewmember extends StdSkill
 		return (articlesA!=null) ? articlesA.type : null;
 	}
 	
-	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean isPub(MOB mob, Room room)
 	{
-		final Room R=mob.location();
-		if(R==null)
-			return false;
-		if(!(R.getArea() instanceof BoardableShip))
+		for(int m=0;m<room.numInhabitants();m++)
 		{
-			mob.tell(L("You must be on a sailing ship."));
-			return false;
+			final MOB M=room.fetchInhabitant(m);
+			if((M!=null)&&(M!=mob))
+			{
+				if(CMLib.flags().canBeSeenBy(M,mob))
+				{
+					final ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(M);
+					if(SK!=null)
+					{
+						for(final Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
+						{
+							final Environmental E=i.next();
+							if((E instanceof Item)&&(CMLib.flags().isAlcoholic((Item)E)))
+							{
+								return true;
+							}
+						}
+					}
+				}
+			}
 		}
-		final BoardableShip myShip=(BoardableShip)R.getArea();
-		final Item myShipItem=myShip.getShipItem();
-		final Area myShipArea=myShip.getShipArea();
-		if((myShipItem==null)
-		||(myShipArea==null)
-		||(!(myShipItem.owner() instanceof Room)))
-		{
-			mob.tell(L("You must be on your sailing ship."));
-			return false;
-		}
-		
-		if((!CMLib.law().doesHavePriviledgesHere(mob, R))
-		&&(!CMSecurity.isAllowed(mob, R, CMSecurity.SecFlag.CMDMOBS)))
-		{
-			mob.tell(L("You must be on the deck of a ship that you have privileges on."));
-			return false;
-		}
-		
+		return false;
+	}
+
+
+	/*
+	 * (non-Javadoc)
 		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null)
 			return false;
@@ -322,12 +320,6 @@ public class Skill_HireCrewmember extends StdSkill
 		||((target.getStartRoom()==null)&&(target.fetchEffect(ID())==null)))
 		{
 			mob.tell(L("You can't hire @x1 as a crewmember.",target.name(mob)));
-			return false;
-		}
-		
-		if(isCrew(target,myShipItem.Name()))
-		{
-			mob.tell(L("@x1 is already a crew member.",target.name(mob)));
 			return false;
 		}
 		
@@ -440,21 +432,6 @@ public class Skill_HireCrewmember extends StdSkill
 			return false;
 		}
 		
-		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
-			return false;
-
-		final int adjustment=target.phyStats().level()-((mob.phyStats().level()+super.getXLEVELLevel(mob))/2);
-		boolean success=proficiencyCheck(mob,-adjustment,auto);
-		if(success)
-		{
-			String str=auto?"":L("^S<S-NAME> offer(s) <T-NAME> @x1 to hire on as a crewmember..^?");
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,str,CMMsg.MSG_NOISYMOVEMENT|(auto?CMMsg.MASK_ALWAYS:0),str,CMMsg.MSG_NOISYMOVEMENT,str);
-			if(R.okMessage(mob,msg))
-			{
-				R.send(mob,msg);
-				if(msg.value()<=0)
-				{
-					R.show(target, null, CMMsg.MSG_QUIETMOVEMENT,L("<S-NAME> sign(s) up to be a member of the crew of @x1.",myShipItem.name()));
 					Ability A=target.fetchEffect(ID());
 					if(A!=null)
 						target.delEffect(A);
@@ -462,11 +439,116 @@ public class Skill_HireCrewmember extends StdSkill
 					A.setMiscText(myShipItem.Name()+";"+nextType.name());
 					A.setAbilityCode(super.getXLEVELLevel(mob));
 					target.addNonUninvokableEffect(A);
-				}
+		
+	 * @see com.planet_ink.coffee_mud.Abilities.StdAbility#invoke(com.planet_ink.coffee_mud.MOBS.interfaces.MOB, java.util.List, com.planet_ink.coffee_mud.core.interfaces.Physical, boolean, int)
+	 */
+	
+	@Override
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	{
+		final Room R=mob.location();
+		if(R==null)
+			return false;
+		double money=0.0;
+		String moneyStr="money";
+		int minLevel = mob.phyStats().level()-10;
+		if(minLevel < 1)
+			minLevel=1;
+		int range=5;
+		if(minLevel + range > mob.phyStats().level())
+			range = 1;
+		int level = CMLib.dice().roll(1, range, minLevel);
+		if(!auto)
+		{
+			if(!this.isPub(mob, R))
+			{
+				mob.tell(L("You must in a pub to hire a sailor."));
+				return false;
 			}
+			TrackingLibrary.TrackingFlags flags=CMLib.tracking().newFlags();
+			int roomRange = baseWaterRange + super.getXLEVELLevel(mob)+super.getXMAXRANGELevel(mob);
+			List<Room> nearby=CMLib.tracking().findTrailToAnyRoom(R, TrackingFlag.WATERSURFACEONLY.myFilter, flags, roomRange);
+			if((nearby==null)||(nearby.size()==0))
+			{
+				mob.tell(L("There's no sea or river nearby, so no one here would be a sailor."));
+				return false;
+			}
+			
+			int medLevel = minLevel + (int)Math.round(CMath.ceiling(CMath.div(range, 2.0)));
+			double amt = medLevel * 10.0;
+			String currency=R.getArea().getCurrency();
+			if(CMLib.beanCounter().getTotalAbsoluteValue(mob, currency) < amt)
+			{
+				moneyStr = CMLib.beanCounter().abbreviatedPrice(currency, amt);
+				mob.tell(L("You need at least @x1 to hire a decent sailor here.",moneyStr));
+				return false;
+			}
+			money=amt;
+		}
+		
+		if(mob.numFollowers() >= mob.maxFollowers())
+		{
+			mob.tell(L("You have too many followers to gather up another one right now."));
+			return false;
+		}
+
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
+			return false;
+
+		boolean success=proficiencyCheck(mob,0,auto);
+		if(success)
+		{
+			if(money > 0.0)
+				CMLib.beanCounter().subtractMoney(mob, money);
+			final MOB targetM=CMClass.getMOB("GenMob");
+			final List<Race> races=CMLib.login().raceQualifies(CMProps.getIntVar(CMProps.Int.MUDTHEME));
+			final Race raceR=races.get(CMLib.dice().roll(1, races.size(), -1));
+			String name=CMLib.login().generateRandomName(1, 5);
+			String fullName=name;
+			//TODO: some funny stuff with the name, display text, desc
+			targetM.setName(name);
+			targetM.setDisplayText(L("a warhorse with broad powerful wings stands here"));
+			targetM.setDescription(L("A ferocious, fleet of foot, flying friend."));
+			targetM.basePhyStats().setAbility(11);
+			targetM.basePhyStats().setDisposition(targetM.basePhyStats().disposition()|PhyStats.IS_FLYING);
+			targetM.basePhyStats().setLevel(level);
+			targetM.basePhyStats().setRejuv(PhyStats.NO_REJUV);
+			targetM.recoverPhyStats();
+			targetM.baseCharStats().setMyRace(raceR);
+			targetM.baseCharStats().setStat(CharStats.STAT_GENDER,(CMLib.dice().rollPercentage()>50)?'M':'F');
+			targetM.baseCharStats().getMyRace().startRacing(targetM,false);
+			targetM.recoverPhyStats();
+			targetM.recoverCharStats();
+			targetM.basePhyStats().setArmor(CMLib.leveler().getLevelMOBArmor(targetM));
+			targetM.basePhyStats().setAttackAdjustment(CMLib.leveler().getLevelAttack(targetM));
+			targetM.basePhyStats().setDamage(CMLib.leveler().getLevelMOBDamage(targetM));
+			targetM.basePhyStats().setSpeed(CMLib.leveler().getLevelMOBSpeed(targetM));
+			//targetM.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience")); -- could be dangerous not having this, but 5-10 levels lower, so...
+			targetM.recoverCharStats();
+			targetM.recoverPhyStats();
+			targetM.recoverMaxState();
+			CMLib.factions().setAlignment(targetM,Faction.Align.NEUTRAL);
+			targetM.resetToMaxState();
+			targetM.text();
+			targetM.bringToLife(R,true);
+			CMLib.beanCounter().clearZeroMoney(targetM,null);
+			//targetM.location().showOthers(targetM,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> appears!"));
+			R.recoverRoomStats();
+			targetM.setStartRoom(null);
+			
+			String str=auto?"":L("^S<S-NAME> offer(s) <T-NAME> @x1 to hire on as a crewmember..^?",moneyStr);
+			final CMMsg msg=CMClass.getMsg(mob,targetM,this,CMMsg.MSG_NOISYMOVEMENT,str,CMMsg.MSG_NOISYMOVEMENT|(auto?CMMsg.MASK_ALWAYS:0),str,CMMsg.MSG_NOISYMOVEMENT,str);
+			if(R.okMessage(mob,msg))
+			{
+				R.send(mob,msg);
+				R.show(targetM, null, CMMsg.MSG_QUIETMOVEMENT,L("<S-NAME> sign(s) up to be a member of the crew of @x1.",targetM.name()));
+				CMLib.commands().postFollow(targetM, mob, false);
+			}
+			else
+				targetM.destroy();
 		}
 		else
-			return maliciousFizzle(mob,target,L("<S-NAME> offer(s) <T-NAME> the pirate articles, but <T-HIM-HER> isn't convinced."));
+			return beneficialWordsFizzle(mob,null,L("<S-NAME> offer(s) @x1 to potential sailors, but no one is interested.",moneyStr));
 
 
 		// return whether it worked
