@@ -197,11 +197,7 @@ public class Sailor extends StdCharClass
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Skill_AwaitShip",true);
 
-		// scurvey, lowers cha, disease resist, cured by citris, emotes spitting out teeth 
-		
-		//The sailor hires a mob 5-10 levels lower than themselves to join his crew and work on his boat.
-		//Repair guy, Sailor, Defensive, Trawler
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Skill_HireCrewmember",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Skill_HireCrewmember",true);
 
 		// to separate from artisan --------------------------------------------------------------------------------------------
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),-1,"Chopping",0,"",false,true);

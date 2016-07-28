@@ -191,6 +191,7 @@ public class Thief_Articles extends ThiefSkill
 	@Override
 	public void unInvoke()
 	{
+		Physical affected=this.affected;
 		if(affected instanceof PhysicalAgent)
 		{
 			PhysicalAgent agent=(PhysicalAgent)affected;

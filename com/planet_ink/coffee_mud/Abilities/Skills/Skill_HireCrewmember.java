@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Abilities.Skills;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.Abilities.Thief.Thief_Articles;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.StdBehavior;
@@ -130,7 +131,7 @@ public class Skill_HireCrewmember extends StdSkill
 	}
 	
 	protected String	shipName	= "";
-	protected CrewType	type		= CrewType.DEFENDER;
+	protected CrewType	type		= null;
 	protected Behavior	sailor		= null;
 	
 	@Override
@@ -149,23 +150,26 @@ public class Skill_HireCrewmember extends StdSkill
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected, affectableStats);
-		switch(type)
+		if(type != null)
 		{
-		case REPAIRER:
-			affectableStats.addAmbiance(L("Repairer"));
-			break;
-		case DEFENDER:
-			affectableStats.addAmbiance(L("Defender"));
-			break;
-		case TACTICIAN:
-			affectableStats.addAmbiance(L("Tactician"));
-			break;
-		case CAPTAIN:
-			affectableStats.addAmbiance(L("Captain"));
-			break;
-		case TRAWLER:
-			affectableStats.addAmbiance(L("Trawler"));
-			break;
+			switch(type)
+			{
+			case REPAIRER:
+				affectableStats.addAmbiance(L("Repairer"));
+				break;
+			case DEFENDER:
+				affectableStats.addAmbiance(L("Defender"));
+				break;
+			case TACTICIAN:
+				affectableStats.addAmbiance(L("Tactician"));
+				break;
+			case CAPTAIN:
+				affectableStats.addAmbiance(L("Captain"));
+				break;
+			case TRAWLER:
+				affectableStats.addAmbiance(L("Trawler"));
+				break;
+			}
 		}
 	}
 	
@@ -236,14 +240,22 @@ public class Skill_HireCrewmember extends StdSkill
 	@Override
 	public void unInvoke()
 	{
+		Physical affected=this.affected;
 		if(affected instanceof PhysicalAgent)
 		{
 			PhysicalAgent agent=(PhysicalAgent)affected;
 			final Behavior B=agent.fetchBehavior("Sailor");
 			if(B!=null)
 				agent.delBehavior(B);
+			final Room R=CMLib.map().roomLocation(agent);
+			if(agent instanceof MOB)
+			{
+				R.show((MOB)agent, null, CMMsg.MSG_OK_VISUAL, L("<S-NAME> quit(s)."));
+				CMLib.tracking().wanderAway((MOB)agent, false, false);
+			}
 		}
 		super.unInvoke();
+		affected.destroy();
 	}
 	
 	@Override
@@ -260,12 +272,161 @@ public class Skill_HireCrewmember extends StdSkill
 		super.executeMsg(affecting, msg);
 	}
 	
+	protected boolean isCrew(final MOB M, final String shipName)
+	{
+		Skill_HireCrewmember articlesA=(Skill_HireCrewmember)M.fetchEffect(ID());
+		return ((articlesA!=null)&&(articlesA.shipName.equals(shipName)));
+	}
+	
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		getSailor();
+		if(!(affected instanceof MOB))
+			return false;
+		if((type == null)||(this.shipName.length()==0))
+		{
+			final Physical affected=this.affected;
+			if(affected instanceof MOB)
+			{
+				final MOB mob=(MOB)affected;
+				final Room R=mob.location();
+				if((mob.amDead())||(R==null)||(!CMLib.flags().isInTheGame(mob, true)))
+				{
+					this.unInvoke();
+					return false;
+				}
+				
+				if((R.getArea() instanceof BoardableShip)
+				&&(((BoardableShip)R.getArea()).getShipItem() instanceof SailingShip))
+				{
+					final Area shipArea=R.getArea();
+					final SailingShip ship = (SailingShip)((BoardableShip)shipArea).getShipItem();
+					if(this.type==null)
+					{
+						int numRooms=0;
+						int numCrew=0;
+						int numDecks=0;
+						int[] numTypes=new int[CrewType.values().length];
+						for(Enumeration<Room> r=shipArea.getProperMap();r.hasMoreElements();)
+						{
+							final Room R2=r.nextElement();
+							switch(R2.domainType())
+							{
+							case Room.DOMAIN_INDOORS_AIR:
+							case Room.DOMAIN_OUTDOORS_AIR:
+								break;
+							default:
+								if(((R2.domainType()&Room.INDOORS)!=0))
+									numDecks++;
+								numRooms++;
+								break;
+							}
+							for(Enumeration<MOB> m=R2.inhabitants();m.hasMoreElements();)
+							{
+								final MOB M=m.nextElement();
+								if((M!=null)
+								&&(M.isMonster())
+								&&(isCrew(M,ship.Name())))
+								{
+									numCrew++;
+									numTypes[getCrewType(M).ordinal()]++;
+								}
+							}
+						}
+						
+						int bonus= ( adjustedLevel(mob,0) / 10);
+						if(bonus > 0)
+						{
+							int bonusDecks = bonus / 2;
+							numRooms += bonus;
+							numDecks += bonusDecks;
+						}
+						
+						CrewType nextType = null;
+						final int maxCaptains = 1;
+						final int maxTacticians = 1;
+						final int maxDefenders = numDecks;
+						final int maxTrawlers = numDecks;
+						final int maxRepairers = (int)Math.round(Math.ceil(CMath.div((numRooms-numDecks),2.0)));
+						
+						if(numCrew >= (maxRepairers + maxTrawlers + maxDefenders + maxTacticians + maxCaptains))
+						{
+							CMLib.commands().postSay(mob, L("This ship already has the maximum crew."));
+							unInvoke();
+							return false;
+						}
+						
+						int attempts=10000;
+						while((nextType == null)&&(--attempts>0))
+						{
+							nextType = CrewType.values()[CMLib.dice().roll(1, CrewType.values().length, -1)];
+							if(numTypes[nextType.ordinal()]>0)
+							{
+								switch(nextType)
+								{
+								case TRAWLER:
+									if(numTypes[nextType.ordinal()]>=maxTrawlers)
+										nextType=null;
+									break;
+								case DEFENDER:
+									if(numTypes[nextType.ordinal()]>=maxDefenders)
+										nextType=null;
+									break;
+								case CAPTAIN:
+									if(numTypes[nextType.ordinal()]>=maxCaptains)
+										nextType=null;
+									break;
+								case TACTICIAN:
+									if(numTypes[nextType.ordinal()]>=maxTacticians)
+										nextType=null;
+									break;
+								case REPAIRER:
+									if(numTypes[nextType.ordinal()]>=maxRepairers)
+										nextType=null;
+									break;
+								}
+							}
+						}
+						
+						if(nextType == null)
+						{
+							CMLib.commands().postSay(mob, L("This ship already has enough crew."));
+							unInvoke();
+							return false;
+						}
+						
+						this.type=nextType;
+						mob.recoverPhyStats();
+						R.recoverRoomStats();
+						mob.recoverPhyStats();
+					}
+					if(mob.amFollowing()!=null)
+					{
+						// I'm only done when I'm no longer following.
+					}
+					else
+					{
+						this.setMiscText(ship.Name()+";"+type.name());
+						this.setAbilityCode(super.getXLEVELLevel(mob));
+						this.makeNonUninvokable();
+						this.setSavable(true);
+						getSailor();
+						CMLib.commands().postSay(mob, L("I am ready for duty."));
+					}
+				}
+				else
+				if(mob.amFollowing()==null)
+				{
+					CMLib.commands().postSay(mob, L("I guess I'm fired."));
+					unInvoke();
+					return false;
+				}
+			}
+		}
+		else
+			getSailor();
 		return true;
 	}
 	
@@ -309,140 +470,6 @@ public class Skill_HireCrewmember extends StdSkill
 	}
 
 
-	/*
-	 * (non-Javadoc)
-		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null)
-			return false;
-		
-		if((!target.isMonster())
-		||(CMLib.flags().isAnimalIntelligence(target))
-		||((target.getStartRoom()==null)&&(target.fetchEffect(ID())==null)))
-		{
-			mob.tell(L("You can't hire @x1 as a crewmember.",target.name(mob)));
-			return false;
-		}
-		
-		boolean allowedToOfferToThem=false;
-		if(CMLib.flags().isBoundOrHeld(target))
-		{
-			allowedToOfferToThem=true;
-		}
-
-		if(mob.getGroupMembers(new HashSet<MOB>()).contains(target))
-		{
-			allowedToOfferToThem=true;
-		}
-
-		if(!allowedToOfferToThem)
-		{
-			mob.tell(L("You can't hire @x1 as crew.",target.name()));
-			return false;
-		}
-		
-		int numRooms=0;
-		int numCrew=0;
-		int numDecks=0;
-		int[] numTypes=new int[CrewType.values().length];
-		for(Enumeration<Room> r=myShipArea.getProperMap();r.hasMoreElements();)
-		{
-			final Room R2=r.nextElement();
-			switch(R2.domainType())
-			{
-			case Room.DOMAIN_INDOORS_AIR:
-			case Room.DOMAIN_OUTDOORS_AIR:
-				break;
-			default:
-				if(((R2.domainType()&Room.INDOORS)!=0))
-					numDecks++;
-				numRooms++;
-				break;
-			}
-			for(Enumeration<MOB> m=R2.inhabitants();m.hasMoreElements();)
-			{
-				final MOB M=m.nextElement();
-				if((M!=null)
-				&&(M.isMonster())
-				&&(isCrew(M,myShipItem.Name())))
-				{
-					numCrew++;
-					numTypes[getCrewType(M).ordinal()]++;
-				}
-			}
-		}
-		
-		int bonus= ( adjustedLevel(mob,asLevel) / 10);
-		if(bonus > 0)
-		{
-			int bonusDecks = bonus / 2;
-			numRooms += bonus;
-			numDecks += bonusDecks;
-		}
-		
-		CrewType nextType = null;
-		final int maxGunners = numDecks;
-		int maxBoarders = (numRooms-numDecks)/2;
-		if(maxBoarders<1)
-			maxBoarders=1;
-		int maxDefenders = (numRooms-numDecks - maxBoarders);
-		if(maxDefenders<1)
-			maxDefenders=1;
-		
-		if(numCrew >= (maxGunners + maxBoarders + maxDefenders))
-		{
-			mob.tell(L("This ship already has the maximum crew."));
-			return false;
-		}
-		
-		int attempts=10000;
-		while((nextType == null)&&(--attempts>0))
-		{
-			nextType = CrewType.values()[CMLib.dice().roll(1, CrewType.values().length, -1)];
-			if(numTypes[nextType.ordinal()]>0)
-			{
-				switch(nextType)
-				{
-				case TRAWLER:
-					if(numTypes[nextType.ordinal()]>=numDecks)
-						nextType=null;
-					break;
-				case DEFENDER:
-					if(numTypes[nextType.ordinal()]>=maxDefenders)
-						nextType=null;
-					break;
-				case CAPTAIN:
-					if(numTypes[nextType.ordinal()]>=maxBoarders)
-						nextType=null;
-					break;
-				case TACTICIAN:
-					if(numTypes[nextType.ordinal()]>=maxBoarders)
-						nextType=null;
-					break;
-				case REPAIRER:
-					if(numTypes[nextType.ordinal()]>=maxBoarders)
-						nextType=null;
-					break;
-				}
-			}
-		}
-		
-		if(nextType == null)
-		{
-			mob.tell(L("This ship already has enough crew."));
-			return false;
-		}
-		
-					Ability A=target.fetchEffect(ID());
-					if(A!=null)
-						target.delEffect(A);
-					A=(Ability)copyOf();
-					A.setMiscText(myShipItem.Name()+";"+nextType.name());
-					A.setAbilityCode(super.getXLEVELLevel(mob));
-					target.addNonUninvokableEffect(A);
-		
-	 * @see com.planet_ink.coffee_mud.Abilities.StdAbility#invoke(com.planet_ink.coffee_mud.MOBS.interfaces.MOB, java.util.List, com.planet_ink.coffee_mud.core.interfaces.Physical, boolean, int)
-	 */
-	
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -477,9 +504,9 @@ public class Skill_HireCrewmember extends StdSkill
 			int medLevel = minLevel + (int)Math.round(CMath.ceiling(CMath.div(range, 2.0)));
 			double amt = medLevel * 10.0;
 			String currency=R.getArea().getCurrency();
+			moneyStr = CMLib.beanCounter().abbreviatedPrice(currency, amt);
 			if(CMLib.beanCounter().getTotalAbsoluteValue(mob, currency) < amt)
 			{
-				moneyStr = CMLib.beanCounter().abbreviatedPrice(currency, amt);
 				mob.tell(L("You need at least @x1 to hire a decent sailor here.",moneyStr));
 				return false;
 			}
@@ -501,14 +528,30 @@ public class Skill_HireCrewmember extends StdSkill
 			if(money > 0.0)
 				CMLib.beanCounter().subtractMoney(mob, money);
 			final MOB targetM=CMClass.getMOB("GenMob");
-			final List<Race> races=CMLib.login().raceQualifies(CMProps.getIntVar(CMProps.Int.MUDTHEME));
+			final List<Race> races=CMLib.login().raceQualifies(Area.THEME_FANTASY);
 			final Race raceR=races.get(CMLib.dice().roll(1, races.size(), -1));
 			String name=CMLib.login().generateRandomName(1, 5);
-			String fullName=name;
-			//TODO: some funny stuff with the name, display text, desc
-			targetM.setName(name);
-			targetM.setDisplayText(L("a warhorse with broad powerful wings stands here"));
-			targetM.setDescription(L("A ferocious, fleet of foot, flying friend."));
+			String raceName=raceR.name();
+			switch(CMLib.dice().roll(1, 5, -1))
+			{
+			case 0:
+				targetM.setName(name);
+				break;
+			case 1:
+				targetM.setName(L("sailor @x1",name));
+				break;
+			case 2:
+				targetM.setName(L("a sailor"));
+				break;
+			case 3:
+				targetM.setName(L("an @x1",raceName));
+				break;
+			case 4:
+				targetM.setName(L("a sailor @x1",raceName));
+				break;
+			}
+			targetM.setDisplayText(L("@x1 stands here",targetM.Name()));
+			targetM.setDescription("");
 			targetM.basePhyStats().setAbility(11);
 			targetM.basePhyStats().setDisposition(targetM.basePhyStats().disposition()|PhyStats.IS_FLYING);
 			targetM.basePhyStats().setLevel(level);
@@ -541,7 +584,10 @@ public class Skill_HireCrewmember extends StdSkill
 			if(R.okMessage(mob,msg))
 			{
 				R.send(mob,msg);
-				R.show(targetM, null, CMMsg.MSG_QUIETMOVEMENT,L("<S-NAME> sign(s) up to be a member of the crew of @x1.",targetM.name()));
+				R.show(targetM, null, CMMsg.MSG_QUIETMOVEMENT,L("<S-NAME> sign(s) up to be a member of your crew.",targetM.name()));
+				type=null;
+				Skill_HireCrewmember A=(Skill_HireCrewmember)this.beneficialAffect(mob, targetM, asLevel, 0);
+				A.type=null;
 				CMLib.commands().postFollow(targetM, mob, false);
 			}
 			else
