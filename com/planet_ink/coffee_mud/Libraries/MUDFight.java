@@ -1360,10 +1360,12 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 					body.setKillerTool(source.getNaturalWeapon());
 			}
 
-			if((!target.isMonster())&&(CMLib.dice().rollPercentage()==1)&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
+			if((!target.isMonster())
+			&&(CMLib.dice().rollPercentage()==1)
+			&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
 			{
 				final Ability A=CMClass.getAbility("Disease_Amnesia");
-				if((A!=null)&&(target.fetchEffect(A.ID())==null))
+				if((A!=null)&&(target.fetchEffect(A.ID())==null)&&(!CMSecurity.isAbilityDisabled(A.ID())))
 					A.invoke(target,target,true,0);
 			}
 

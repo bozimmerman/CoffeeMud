@@ -286,11 +286,17 @@ public class Undead extends StdRace
 			{
 				if((mob.name().toUpperCase().indexOf("DRACULA")>=0)
 				||(mob.name().toUpperCase().indexOf("VAMPIRE")>=0))
-					body.addNonUninvokableEffect(CMClass.getAbility("Disease_Vampirism"));
+				{
+					if(!CMSecurity.isAbilityDisabled("Disease_Vampirism"))
+						body.addNonUninvokableEffect(CMClass.getAbility("Disease_Vampirism"));
+				}
 				else
 				if((mob.name().toUpperCase().indexOf("GHOUL")>=0)
 				||(mob.name().toUpperCase().indexOf("GHAST")>=0))
-					body.addNonUninvokableEffect(CMClass.getAbility("Disease_Cannibalism"));
+				{
+					if(!CMSecurity.isAbilityDisabled("Disease_Cannibalism"))
+						body.addNonUninvokableEffect(CMClass.getAbility("Disease_Cannibalism"));
+				}
 			}
 			if(ID().equals("Undead"))
 			{

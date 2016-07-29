@@ -119,7 +119,7 @@ public class Spell extends StdAbility
 					if((num>5)&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
 					{
 						final Ability A2=CMClass.getAbility("Disease_Magepox");
-						if((A2!=null)&&(target.fetchEffect(A2.ID())==null))
+						if((A2!=null)&&(target.fetchEffect(A2.ID())==null)&&(!CMSecurity.isAbilityDisabled(A.ID())))
 							A2.invoke(mob,target,true,asLevel);
 						break;
 					}

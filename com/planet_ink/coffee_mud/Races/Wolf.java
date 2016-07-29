@@ -198,7 +198,7 @@ public class Wolf extends StdRace
 		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
 		{
 			final Ability A=CMClass.getAbility("Disease_Lycanthropy");
-			if((A!=null)&&(((MOB)msg.target()).fetchEffect(A.ID())==null))
+			if((A!=null)&&(((MOB)msg.target()).fetchEffect(A.ID())==null)&&(!CMSecurity.isAbilityDisabled(A.ID())))
 				A.invoke(mob,(MOB)msg.target(),true,0);
 		}
 		super.executeMsg(myHost,msg);

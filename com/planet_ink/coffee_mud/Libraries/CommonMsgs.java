@@ -774,7 +774,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
 				{
 					final Ability A=CMClass.getAbility("Disease_Cancer");
-					if((A!=null)&&(mob.fetchEffect(A.ID())==null))
+					if((A!=null)&&(mob.fetchEffect(A.ID())==null)&&(!CMSecurity.isAbilityDisabled(A.ID())))
 						A.invoke(mob,mob,true,0);
 				}
 				else
@@ -783,7 +783,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
 				{
 					final Ability A=CMClass.getAbility("Disease_Arthritis");
-					if((A!=null)&&(mob.fetchEffect(A.ID())==null))
+					if((A!=null)&&(mob.fetchEffect(A.ID())==null)&&(!CMSecurity.isAbilityDisabled(A.ID())))
 						A.invoke(mob,mob,true,0);
 				}
 				else
@@ -792,7 +792,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
 				{
 					final Ability A=CMClass.getAbility("Disease_Alzheimers");
-					if((A!=null)&&(mob.fetchEffect(A.ID())==null))
+					if((A!=null)&&(mob.fetchEffect(A.ID())==null)&&(!CMSecurity.isAbilityDisabled(A.ID())))
 						A.invoke(mob,mob,true,0);
 				}
 				else

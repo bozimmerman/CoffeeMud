@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 /*
    Copyright 2003-2016 Bo Zimmerman
@@ -181,7 +180,7 @@ public class StdSmokable extends StdContainer implements Light
 						if((CMLib.dice().roll(1,1000,0)==1)&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
 						{
 							final Ability A=CMClass.getAbility("Disease_Cancer");
-							if(A!=null)
+							if((A!=null)&&(!CMSecurity.isAbilityDisabled(A.ID())))
 								A.invoke(mob,mob,true,0);
 						}
 					}

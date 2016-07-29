@@ -3039,7 +3039,7 @@ public class DefaultSession implements Session
 					&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
 					{
 						final Ability A=CMClass.getAbility("Disease_Blahs");
-						if(A!=null)
+						if((A!=null)&&(!CMSecurity.isAbilityDisabled(A.ID())))
 							A.invoke(mob,mob,true,0);
 					}
 					else
@@ -3048,7 +3048,7 @@ public class DefaultSession implements Session
 					&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
 					{
 						final Ability A=CMClass.getAbility("Disease_Narcolepsy");
-						if(A!=null)
+						if((A!=null)&&(!CMSecurity.isAbilityDisabled(A.ID())))
 							A.invoke(mob,mob,true,0);
 					}
 				}

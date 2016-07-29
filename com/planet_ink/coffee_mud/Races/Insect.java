@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -149,7 +148,7 @@ public class Insect extends StdRace
 		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
 		{
 			final Ability A=CMClass.getAbility("Disease_Lyme");
-			if((A!=null)&&(((MOB)msg.target()).fetchEffect(A.ID())==null))
+			if((A!=null)&&(((MOB)msg.target()).fetchEffect(A.ID())==null)&&(!CMSecurity.isAbilityDisabled(A.ID())))
 				A.invoke(mob,(MOB)msg.target(),true,0);
 		}
 		super.executeMsg(myHost,msg);

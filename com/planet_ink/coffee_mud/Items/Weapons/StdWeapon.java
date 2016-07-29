@@ -249,7 +249,7 @@ public class StdWeapon extends StdItem implements Weapon, AmmunitionWeapon
 							A=CMClass.getAbility("Disease_Lockjaw");
 						else
 							A=CMClass.getAbility("Disease_Tetanus");
-						if((A!=null)&&(tmob.fetchEffect(A.ID())==null))
+						if((A!=null)&&(tmob.fetchEffect(A.ID())==null)&&(!CMSecurity.isAbilityDisabled(A.ID())))
 							A.invoke(msg.source(),tmob,true,phyStats().level());
 					}
 				}

@@ -556,7 +556,7 @@ public class WeatherAffects extends PuddleMaker
 						Ability COLD=CMClass.getAbility("Disease_Cold");
 						if(CMLib.dice().rollPercentage()<(fluChance+(((M.location().getClimateType()&Places.CLIMASK_WET)>0)?10:0)))
 							COLD=CMClass.getAbility("Disease_Flu");
-						if((COLD!=null)&&(M.fetchEffect(COLD.ID())==null))
+						if((COLD!=null)&&(M.fetchEffect(COLD.ID())==null)&&(!CMSecurity.isAbilityDisabled(A.ID())))
 							COLD.invoke(M,M,true,0);
 					}
 				}
@@ -584,7 +584,7 @@ public class WeatherAffects extends PuddleMaker
 					if((unfrostedPlaces!=ALL_FROST_CODE)&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
 					{
 						final Ability COLD=CMClass.getAbility("Disease_FrostBite");
-						if((COLD!=null)&&(M.fetchEffect(COLD.ID())==null))
+						if((COLD!=null)&&(M.fetchEffect(COLD.ID())==null)&&(!CMSecurity.isAbilityDisabled(A.ID())))
 							COLD.invoke(M,M,true,0);
 					}
 				}
@@ -594,7 +594,7 @@ public class WeatherAffects extends PuddleMaker
 				&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
 				{
 					final Ability COLD=CMClass.getAbility("Disease_HeatExhaustion");
-					if((COLD!=null)&&(M.fetchEffect(COLD.ID())==null))
+					if((COLD!=null)&&(M.fetchEffect(COLD.ID())==null)&&(!CMSecurity.isAbilityDisabled(A.ID())))
 						COLD.invoke(M,M,true,0);
 				}
 			}

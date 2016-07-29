@@ -51,6 +51,7 @@
   50. New Skills: Naval Tactics, Salvaging, Sea Maneuvers, Crows Nest, Hire Crewmember
   51. New Skills: Morse Code
   52. Can now LIST AREATYPES
+  53. Individual diseases can now be disabled from the DISABLE= entry in the INI file.
 # Build 5.9.3 Released 05/08/2016
    1. Follower behavior now has a few more options.
    2. STAT [MOBNAME] will now give full editor stats also, and 

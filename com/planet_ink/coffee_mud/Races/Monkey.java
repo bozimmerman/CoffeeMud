@@ -230,7 +230,7 @@ public class Monkey extends StdRace
 		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
 		{
 			final Ability A=CMClass.getAbility("Disease_Aids");
-			if(A!=null)
+			if((A!=null)&&(!CMSecurity.isAbilityDisabled(A.ID())))
 				A.invoke(msg.source(),myChar,true,0);
 		}
 	}

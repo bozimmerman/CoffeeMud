@@ -198,7 +198,7 @@ public class Dog extends StdRace
 		if((body!=null)&&(CMLib.dice().rollPercentage()<5)&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
 		{
 			final Ability A=CMClass.getAbility("Disease_Fleas");
-			if(A!=null)
+			if((A!=null)&&(!CMSecurity.isAbilityDisabled(A.ID())))
 				body.addNonUninvokableEffect(A);
 		}
 		return body;

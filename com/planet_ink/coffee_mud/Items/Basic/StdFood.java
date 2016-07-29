@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -142,7 +141,10 @@ public class StdFood extends StdItem implements Food
 				&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
 				{
 					final Ability A=CMClass.getAbility("Disease_Obesity");
-					if(A!=null){A.invoke(mob,mob,true,0);}
+					if ((A != null)&&(!CMSecurity.isAbilityDisabled(A.ID())))
+					{
+						A.invoke(mob, mob, true, 0);
+					}
 				}
 				int amountEaten=nourishmentPerBite;
 				if((amountEaten<1)||(amountEaten>amountOfNourishment))

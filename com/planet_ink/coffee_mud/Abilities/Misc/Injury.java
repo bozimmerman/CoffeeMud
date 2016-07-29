@@ -491,7 +491,7 @@ public class Injury extends StdAbility implements LimbDamage, HealthCondition
 			&& (!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
 			{
 				Ability A=CMClass.getAbility("Disease_Infection");
-				if((A!=null)&&(mob.fetchEffect(A.ID())==null)&&(injuries.length>0))
+				if((A!=null)&&(mob.fetchEffect(A.ID())==null)&&(injuries.length>0)&&(!CMSecurity.isAbilityDisabled(A.ID())))
 				{
 					final List<String> injuredList = affectedLimbNameSet();
 					if(injuredList.size()>0)

@@ -3008,7 +3008,7 @@ public class StdMOB implements MOB
 				&& (!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
 				{
 					final Ability A = CMClass.getAbility("Disease_Depression");
-					if (A != null)
+					if ((A != null)&&(!CMSecurity.isAbilityDisabled(A.ID())))
 						A.invoke(this, this, true, 0);
 				}
 			}
@@ -3370,11 +3370,10 @@ public class StdMOB implements MOB
 				&&(CMLib.dice().rollPercentage() == 1)
 				&&(CMLib.dice().rollPercentage() == 1)
 				&&(CMLib.flags().isWateryRoom(location()))
-				&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE))
-				&&(fetchEffect("Disease_SeaSickness")==null))
+				&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
 				{
 					final Ability A=CMClass.getAbility("Disease_SeaSickness");
-					if(A!=null)
+					if((A!=null)&&(fetchEffect(A.ID())==null)&&(!CMSecurity.isAbilityDisabled(A.ID())))
 						A.invoke(this, this, true, 0);
 				}
 			}
@@ -3690,7 +3689,7 @@ public class StdMOB implements MOB
 								if(smallChance && (!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
 								{
 									final Ability theYawns = CMClass.getAbility("Disease_Yawning");
-									if (theYawns != null)
+									if((theYawns != null)&&(!CMSecurity.isAbilityDisabled(A.ID())))
 										theYawns.invoke(this, this, true, 0);
 								}
 								if (smallChance && curState().getFatigue() > (CharState.FATIGUED_EXHAUSTED_MILLIS))
@@ -3701,7 +3700,7 @@ public class StdMOB implements MOB
 									if((CMLib.dice().rollPercentage() < 10) && (!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
 									{
 										final Ability theYawns = CMClass.getAbility("Disease_Sleepwalking");
-										if (theYawns != null)
+										if((theYawns != null)&&(!CMSecurity.isAbilityDisabled(A.ID())))
 											theYawns.invoke(this, this, true, 0);
 									}
 								}
