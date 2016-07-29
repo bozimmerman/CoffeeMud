@@ -114,7 +114,7 @@ public class Sailor extends StdCharClass
 	@Override
 	public int availabilityCode()
 	{
-		return  0;//Area.THEME_FANTASY; //
+		return Area.THEME_FANTASY;
 	}
 
 	public Hashtable<String, int[]> mudHourMOBXPMap = new Hashtable<String, int[]>();
