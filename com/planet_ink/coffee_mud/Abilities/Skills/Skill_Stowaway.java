@@ -108,6 +108,7 @@ public class Skill_Stowaway extends StdSkill
 	protected Room destR = null;
 	protected Room boxR = null;
 	protected int abilityCode = 0;
+	protected int tickUp=0;
 
 	@Override
 	public int abilityCode()
@@ -133,7 +134,10 @@ public class Skill_Stowaway extends StdSkill
 			||(msg.sourceMinor()==CMMsg.TYP_LEAVE)
 			||(destR==null)
 			||(msg.source().location()!=boxR)))
+		{
+			destR=null;
 			unInvoke();
+		}
 		return super.okMessage(myHost,msg);
 	}
 
@@ -149,10 +153,75 @@ public class Skill_Stowaway extends StdSkill
 			final MOB mob=(MOB)affected;
 			if(mob.location()==boxR)
 			{
-				//TODO!
+				mob.tell(L("You feel yourself being unloaded from the ship."));
+				final CMMsg leaveMsg=CMClass.getMsg(mob,R,this,CMMsg.MSG_LEAVE|CMMsg.MASK_ALWAYS,L("<S-NAME> slip(s) out of a cargo box just unloaded from one of the ships."));
+				if(R.okMessage(mob,leaveMsg))
+					R.send(mob,leaveMsg);
+				if(!R.isInhabitant(mob))
+					R.bringMobHere(mob, false);
+				CMLib.commands().postStand(mob, true);
 			}
 		}
+		if(boxR!=null)
+		{
+			if(R==null)
+				CMLib.map().emptyRoom(boxR, CMLib.map().getStartRoom(affected), true);
+			else
+				CMLib.map().emptyRoom(boxR, R, true);
+			boxR.destroy();
+		}
+		this.destR=null;
+		this.boxR=null;
 	}
+	
+	@Override
+	public boolean tick(Tickable ticking, int tickID)
+	{
+		if(!super.tick(ticking, tickID))
+			return false;
+		
+		if((affected instanceof MOB)
+		&&(((MOB)affected).location()==boxR)
+		&&(destR!=null))
+		{
+			final MOB mob=(MOB)affected;
+			if(++tickUp==2)
+			{
+				mob.tell(L("^xYou feel yourself being picked up and loaded onto a ship.^.^?"));
+			}
+			else
+			if(tickUp>2)
+			{
+				switch(CMLib.dice().roll(1,50,0))
+				{
+				case 1:
+					mob.tell(L("You feel the ship rocking gently in the waves."));
+					break;
+				case 2:
+					mob.tell(L("You hear rats crawling around on your crate."));
+					break;
+				case 3:
+					mob.tell(L("You hear the sounds of some crewmen talking outside."));
+					break;
+				case 4:
+				case 5:
+					mob.tell(L("You are extremely bored."));
+					break;
+				case 6:
+				case 7:
+					mob.tell(L("It is dark and cramped in here."));
+					break;
+				}
+			}
+		}
+		else
+		{
+			destR=null;
+			unInvoke();
+		}
+		return true;
+	}
+	
 	
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -252,7 +321,7 @@ public class Skill_Stowaway extends StdSkill
 		if(R.okMessage(mob,leaveMsg))
 		{
 			R.send(mob,leaveMsg);
-			Room boxR=CMClass.getLocale("WoodenRoom");
+			Room boxR=CMClass.getLocale("WoodRoom");
 			boxR.setDisplayText(L("You are squeezed into a dark cramped shipping box."));
 			boxR.addNonUninvokableEffect(CMClass.getAbility("Prop_Crawlspace"));
 			boxR.addNonUninvokableEffect(CMClass.getAbility("Prop_RoomDark"));
@@ -260,10 +329,11 @@ public class Skill_Stowaway extends StdSkill
 			consA.setMiscText("people=1");
 			boxR.addNonUninvokableEffect(consA);
 			boxR.bringMobHere(mob, false);
+			CMLib.commands().forceStandardCommand(mob, "Sit",new XVector<String>(""));
 			Skill_Stowaway stow=(Skill_Stowaway)super.beneficialAffect(mob, mob, asLevel, (int)((4 * 60 * 1000) / CMProps.getTickMillis())  / (1+super.getXTIMELevel(mob)));
 			stow.destR=destR;
 			stow.boxR=boxR;
-			
+			stow.tickUp=0;
 		}
 		return true;
 	}

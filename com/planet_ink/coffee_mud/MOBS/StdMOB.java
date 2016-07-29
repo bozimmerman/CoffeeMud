@@ -3368,7 +3368,7 @@ public class StdMOB implements MOB
 				&&(riding != null)
 				&&(riding.rideBasis()==Rideable.RIDEABLE_WATER)
 				&&(CMLib.dice().rollPercentage() == 1)
-				&&(CMLib.dice().rollPercentage() == 1)
+				&&(CMLib.dice().rollPercentage() < 10)
 				&&(CMLib.flags().isWateryRoom(location()))
 				&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
 				{
@@ -3415,18 +3415,17 @@ public class StdMOB implements MOB
 			&& (!asleep) && ((canseesrc) || (canhearsrc)))
 				tell(srcM, msg.target(), msg.tool(), msg.othersMessage());
 			
-			if ((othersMinor == CMMsg.TYP_ADVANCE)
+			if (((othersMinor == CMMsg.TYP_ADVANCE)||(othersMinor == CMMsg.TYP_ENTER))
 			&&(!isMonster())
 			&&(location()!=null)
 			&&(location().getArea() instanceof BoardableShip)
-			&&(CMLib.dice().rollPercentage() == 1)
+			&&(msg.source().riding() == ((BoardableShip)location().getArea()).getShipItem())
 			&&(CMLib.dice().rollPercentage() == 1)
 			&&(CMLib.flags().isWateryRoom(CMLib.map().roomLocation(((BoardableShip)location().getArea()).getShipItem())))
-			&&(msg.source().riding() == ((BoardableShip)location().getArea()).getShipItem())
-			&&(fetchEffect("Disease_SeaSickness")==null))
+			&&(CMLib.dice().rollPercentage() < 10))
 			{
-				final Ability A=CMClass.getAbility("Disease_SeaSickness");
-				if(A!=null)
+				final Ability A=CMClass.getAbility((CMLib.dice().rollPercentage()<20)?"Disease_Scurvy":"Disease_SeaSickness");
+				if((A!=null)&&(fetchEffect(ID())==null)&&(!CMSecurity.isAbilityDisabled(A.ID())))
 					A.invoke(this, this, true, 0);
 			}
 			else

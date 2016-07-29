@@ -501,7 +501,8 @@ public interface AbilityMapper extends CMLibrary
 	/**
 	 * Returns whether the given class qualifies for the given ability.
 	 * Does not check all-qualifies list, so this is only class (or race)
-	 * specific qualifications.
+	 * specific qualifications.  Returns true ONLY if the given class
+	 * or race is the ONLY one who qualifies.
 	 * @see AbilityMapper#classOnly(MOB, String, String)
 	 * @see AbilityMapper#qualifiesByAnyCharClass(String)
 	 * @param classID the class ID(), race ID() or whatever
@@ -514,7 +515,8 @@ public interface AbilityMapper extends CMLibrary
 	 * Returns whether the given class qualifies for the given ability.
 	 * Does not check all-qualifies list, so this is only class (or race)
 	 * specific qualifications.  Will also specifically check the given
-	 * mobs class object with the given ID, which is strange.
+	 * mobs class object with the given ID, which is strange. Returns true 
+	 * ONLY if the given class or race is the ONLY one who qualifies.
 	 * @see AbilityMapper#classOnly(String, String)
 	 * @see AbilityMapper#qualifiesByAnyCharClass(String)
 	 * @param mob the mob whose classes to also check

@@ -886,6 +886,17 @@ public class AbilityData extends StdWebMacro
 							str.append("(Qualify), ");
 					}
 				}
+				if(parms.containsKey("CLASSONLY")&&(httpReq.isUrlParameter("CLASS")))
+				{
+					final String className=httpReq.getUrlParameter("CLASS");
+					if((className!=null)&&(className.length()>0))
+					{
+						if(CMLib.ableMapper().getQualifyingLevel(className,false,A.ID())>=0)
+							str.append("true");
+						else
+							str.append("false");
+					}
+				}
 				String strstr=str.toString();
 				if(strstr.endsWith(", "))
 					strstr=strstr.substring(0,strstr.length()-2);

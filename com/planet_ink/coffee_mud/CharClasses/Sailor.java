@@ -145,10 +145,7 @@ public class Sailor extends StdCharClass
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Thief_Belay",true);
 
-		/*hide on a ship to get transport between two port cities.  If the player has charting, they can 
-		 * predetermine what port they end up in...otherwise, takes to a random connected shore room.
-		 */
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Skill_Stowaway",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Skill_Stowaway",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Trawling",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Shipwright",0,"",true,false,CMParms.parseSemicolons("Carpentry",true),"");
@@ -258,7 +255,11 @@ public class Sailor extends StdCharClass
 					&&(!A.isAutoInvoked())
 					&&(mob.isMine(A))
 					&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL))
+					{
 						exp++;
+						if((A.ID().equalsIgnoreCase("Trawling")||(A.ID().equalsIgnoreCase("Fishing"))))
+							exp++;
+					}
 				}
 				if(exp>0)
 					CMLib.leveler().postExperience(mob,null,null,exp,true);
@@ -310,10 +311,9 @@ public class Sailor extends StdCharClass
 		return raceRequiredList;
 	}
 
-
 	@SuppressWarnings("unchecked")
 	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
-		new Pair<String,Integer>("Strength",Integer.valueOf(5)),
+		new Pair<String,Integer>("Constitution",Integer.valueOf(5)),
 		new Pair<String,Integer>("Dexterity",Integer.valueOf(5))
 	};
 
@@ -328,11 +328,7 @@ public class Sailor extends StdCharClass
 	{
 		if(outfitChoices==null)
 		{
-			final Weapon w=CMClass.getWeapon("Whip");
-			if(w == null)
-				return new Vector<Item>();
 			outfitChoices=new Vector<Item>();
-			outfitChoices.add(w);
 		}
 		return outfitChoices;
 	}
@@ -340,6 +336,6 @@ public class Sailor extends StdCharClass
 	@Override
 	public String getOtherBonusDesc()
 	{
-		return L("Gains experience when using certain skills.  Screams of flayed, amputated, tattooed, body pierced, or chirguried victims grants xp/hr.");
+		return L("Sailors earn twice as much XP as other commoners when fishing or trawling.  Earn double experience in ship combat.");
 	}
 }
