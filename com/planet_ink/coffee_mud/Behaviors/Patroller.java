@@ -143,8 +143,9 @@ public class Patroller extends ActiveTicker
 		&&(host instanceof Rideable)
 		&&((msg.targetMinor()==CMMsg.TYP_ENTER)||(msg.targetMinor()==CMMsg.TYP_LEAVE))
 		&&(msg.source()!=host)
-		&&(msg.source().riding()==host))
-		{
+		&&(msg.source().riding()==host)
+		&&(!(host instanceof BoardableShip)))
+ 		{
 			if(host instanceof MOB)
 				msg.source().tell(L("You must dismount before you can do that."));
 			else
@@ -190,9 +191,23 @@ public class Patroller extends ActiveTicker
 				return true;
 			}
 			
+			if((ticking instanceof BoardableShip)
+			&&(((BoardableShip)ticking).getShipItem() instanceof SailingShip))
+			{
+				final SailingShip ship=(SailingShip)((BoardableShip)ticking).getShipItem();
+				if((ship.isInCombat())
+				||((ship.subjectToWearAndTear())&&(ship.usesRemaining()<=0))
+				||(CMLib.flags().isFalling(ship)))
+				{
+					tickStatus=Tickable.STATUS_NOT;
+					return true;
+				}
+			}
+			
 			tickStatus=Tickable.STATUS_MISC+1;
 			ArrayList<Rider> riders=null;
-			if(ticking instanceof Rideable)
+			if((ticking instanceof Rideable)
+			&&(!(ticking instanceof BoardableShip)))
 			{
 				riders=new ArrayList<Rider>(((Rideable)ticking).numRiders());
 				for(int i=0;i<((Rideable)ticking).numRiders();i++)
@@ -421,111 +436,126 @@ public class Patroller extends ActiveTicker
 			if(ticking instanceof Item)
 			{
 				final Item I=(Item)ticking;
-				if((ticking instanceof Rideable)
-				&&(thatRoom!=null)
-				&&(riders!=null))
+				if((ticking instanceof BoardableShip)
+				&&(((BoardableShip)ticking).getShipItem() instanceof SailingShip)
+				&&(thatRoom!=null))
 				{
-					final Exit opExit=thatRoom.getReverseExit(direction);
-					for(int i=0;i<riders.size();i++)
-					{
-						final Rider R=riders.get(i);
-						if(R instanceof MOB)
-						{
-							tickStatus=Tickable.STATUS_MISC+16;
-							final MOB mob=(MOB)R;
-							mob.setRiding((Rideable)ticking);
-							// overboard check
-							if(mob.isMonster()
-							&& mob.isSavable()
-							&& (mob.location() != thisRoom)
-							&& CMLib.flags().isInTheGame(mob,true))
-								thisRoom.bringMobHere(mob,false);
-
-							final CMMsg enterMsg=CMClass.getMsg(mob,thatRoom,E,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null);
-							final CMMsg leaveMsg=CMClass.getMsg(mob,thisRoom,opExit,CMMsg.MSG_LEAVE,null,CMMsg.MSG_LEAVE,null,CMMsg.MSG_LEAVE,null);
-							try
-							{
-								rideCheckCt++;
-								if(!E.okMessage(mob,enterMsg))
-								{
-									tickStatus=Tickable.STATUS_NOT;
-									return true;
-								}
-								else
-								if((opExit!=null)&&(!opExit.okMessage(mob,leaveMsg)))
-								{
-									tickStatus=Tickable.STATUS_NOT;
-									return true;
-								}
-								else
-								if(!enterMsg.target().okMessage(mob,enterMsg))
-								{
-									tickStatus=Tickable.STATUS_NOT;
-									return true;
-								}
-								else
-								if(!mob.okMessage(mob,enterMsg))
-								{
-									tickStatus=Tickable.STATUS_NOT;
-									return true;
-								}
-							}
-							finally
-							{
-								rideCheckCt--;
-							}
-						}
-					}
+					final SailingShip ship = (SailingShip)((BoardableShip)ticking).getShipItem();
+					if(ship.isAnchorDown())
+						ship.setAnchorDown(false);
+					ship.setCurrentCourse(new XVector<Integer>(Integer.valueOf(direction)));
+					ship.tick(ship, Tickable.TICKID_AREA); // this should force a move
 				}
-
-				tickStatus=Tickable.STATUS_MISC+17;
-				thisRoom.showHappens(CMMsg.MSG_OK_ACTION,I,L("<S-NAME> goes @x1.",CMLib.directions().getDirectionName(direction)));
-				tickStatus=Tickable.STATUS_MISC+18;
-				if(thatRoom!=null)
-					thatRoom.moveItemTo(I);
-				tickStatus=Tickable.STATUS_MISC+19;
-				if((I.owner()==thatRoom)&&(thatRoom!=null))
+				else
 				{
-					tickStatus=Tickable.STATUS_MISC+20;
-					thatRoom.showHappens(CMMsg.MSG_OK_ACTION,I,L("<S-NAME> arrives from @x1.",CMLib.directions().getFromCompassDirectionName(Directions.getOpDirectionCode(direction))));
-					tickStatus=Tickable.STATUS_MISC+21;
-					if(riders!=null)
-					for(int i=0;i<riders.size();i++)
+					if((ticking instanceof Rideable)
+					&&(thatRoom!=null)
+					&&(riders!=null))
 					{
-						final Rider R=riders.get(i);
-						if(CMLib.map().roomLocation(R)!=thatRoom)
+						final Exit opExit=thatRoom.getReverseExit(direction);
+						for(int i=0;i<riders.size();i++)
 						{
-							if((((Rideable)ticking).rideBasis()!=Rideable.RIDEABLE_SIT)
-							&&(((Rideable)ticking).rideBasis()!=Rideable.RIDEABLE_TABLE)
-							&&(((Rideable)ticking).rideBasis()!=Rideable.RIDEABLE_ENTERIN)
-							&&(((Rideable)ticking).rideBasis()!=Rideable.RIDEABLE_SLEEP)
-							&&(((Rideable)ticking).rideBasis()!=Rideable.RIDEABLE_LADDER))
+							final Rider R=riders.get(i);
+							if(R instanceof MOB)
 							{
-								if((R instanceof MOB)
-								&&(CMLib.flags().isInTheGame((MOB)R,true)))
+								tickStatus=Tickable.STATUS_MISC+16;
+								final MOB mob=(MOB)R;
+								mob.setRiding((Rideable)ticking);
+								// overboard check
+								if(mob.isMonster()
+								&& mob.isSavable()
+								&& (mob.location() != thisRoom)
+								&& CMLib.flags().isInTheGame(mob,true))
+									thisRoom.bringMobHere(mob,false);
+	
+								final CMMsg enterMsg=CMClass.getMsg(mob,thatRoom,E,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null);
+								final CMMsg leaveMsg=CMClass.getMsg(mob,thisRoom,opExit,CMMsg.MSG_LEAVE,null,CMMsg.MSG_LEAVE,null,CMMsg.MSG_LEAVE,null);
+								try
 								{
-									tickStatus=Tickable.STATUS_MISC+30;
-									thatRoom.bringMobHere((MOB)R,true);
-									((MOB)R).setRiding((Rideable)ticking);
-									tickStatus=Tickable.STATUS_MISC+31;
-									CMLib.commands().postLook((MOB)R,true);
-									thatRoom.show((MOB)R,thatRoom,E,CMMsg.MASK_ALWAYS|CMMsg.MSG_ENTER,null);
-									tickStatus=Tickable.STATUS_MISC+32;
+									rideCheckCt++;
+									if(!E.okMessage(mob,enterMsg))
+									{
+										tickStatus=Tickable.STATUS_NOT;
+										return true;
+									}
+									else
+									if((opExit!=null)&&(!opExit.okMessage(mob,leaveMsg)))
+									{
+										tickStatus=Tickable.STATUS_NOT;
+										return true;
+									}
+									else
+									if(!enterMsg.target().okMessage(mob,enterMsg))
+									{
+										tickStatus=Tickable.STATUS_NOT;
+										return true;
+									}
+									else
+									if(!mob.okMessage(mob,enterMsg))
+									{
+										tickStatus=Tickable.STATUS_NOT;
+										return true;
+									}
 								}
-								else
-								if(R instanceof Item)
+								finally
 								{
-									tickStatus=Tickable.STATUS_MISC+33;
-									thatRoom.moveItemTo((Item)R);
-									tickStatus=Tickable.STATUS_MISC+34;
+									rideCheckCt--;
 								}
 							}
-							else
-								R.setRiding(null);
 						}
-						tickStatus=Tickable.STATUS_MISC+35;
 					}
-					tickStatus=Tickable.STATUS_MISC+36;
+	
+					tickStatus=Tickable.STATUS_MISC+17;
+					thisRoom.showHappens(CMMsg.MSG_OK_ACTION,I,L("<S-NAME> goes @x1.",CMLib.directions().getDirectionName(direction)));
+					tickStatus=Tickable.STATUS_MISC+18;
+					if(thatRoom!=null)
+						thatRoom.moveItemTo(I);
+					tickStatus=Tickable.STATUS_MISC+19;
+					if((I.owner()==thatRoom)&&(thatRoom!=null))
+					{
+						tickStatus=Tickable.STATUS_MISC+20;
+						thatRoom.showHappens(CMMsg.MSG_OK_ACTION,I,L("<S-NAME> arrives from @x1.",CMLib.directions().getFromCompassDirectionName(Directions.getOpDirectionCode(direction))));
+						tickStatus=Tickable.STATUS_MISC+21;
+						if(riders!=null)
+						{
+							for(int i=0;i<riders.size();i++)
+							{
+								final Rider R=riders.get(i);
+								if(CMLib.map().roomLocation(R)!=thatRoom)
+								{
+									if((((Rideable)ticking).rideBasis()!=Rideable.RIDEABLE_SIT)
+									&&(((Rideable)ticking).rideBasis()!=Rideable.RIDEABLE_TABLE)
+									&&(((Rideable)ticking).rideBasis()!=Rideable.RIDEABLE_ENTERIN)
+									&&(((Rideable)ticking).rideBasis()!=Rideable.RIDEABLE_SLEEP)
+									&&(((Rideable)ticking).rideBasis()!=Rideable.RIDEABLE_LADDER))
+									{
+										if((R instanceof MOB)
+										&&(CMLib.flags().isInTheGame((MOB)R,true)))
+										{
+											tickStatus=Tickable.STATUS_MISC+30;
+											thatRoom.bringMobHere((MOB)R,true);
+											((MOB)R).setRiding((Rideable)ticking);
+											tickStatus=Tickable.STATUS_MISC+31;
+											CMLib.commands().postLook((MOB)R,true);
+											thatRoom.show((MOB)R,thatRoom,E,CMMsg.MASK_ALWAYS|CMMsg.MSG_ENTER,null);
+											tickStatus=Tickable.STATUS_MISC+32;
+										}
+										else
+										if(R instanceof Item)
+										{
+											tickStatus=Tickable.STATUS_MISC+33;
+											thatRoom.moveItemTo((Item)R);
+											tickStatus=Tickable.STATUS_MISC+34;
+										}
+									}
+									else
+										R.setRiding(null);
+								}
+								tickStatus=Tickable.STATUS_MISC+35;
+							}
+						}
+						tickStatus=Tickable.STATUS_MISC+36;
+					}
 				}
 				tickStatus=Tickable.STATUS_MISC+37;
 				if(I.owner()==destinationRoomForThisStep)
