@@ -50,7 +50,7 @@ public class Prop_AbilityImmunity extends Property implements TriggeredAffect
 	@Override
 	protected int canAffectCode()
 	{
-		return Ability.CAN_MOBS | Ability.CAN_ITEMS | Ability.CAN_ROOMS | Ability.CAN_EXITS;
+		return Ability.CAN_MOBS | Ability.CAN_ITEMS | Ability.CAN_ROOMS | Ability.CAN_EXITS | Ability.CAN_AREAS;
 	}
 
 	@Override
@@ -106,6 +106,7 @@ public class Prop_AbilityImmunity extends Property implements TriggeredAffect
 		if ((msg.target() != null)
 		&& (msg.tool() instanceof Ability )
 		&& ((msg.amITarget(affected))
+			||(affected instanceof Area)
 			||(owner && (affected instanceof Item) && (msg.target()==((Item)affected).owner()))
 			||(owner && (affected instanceof Item) && (msg.target()==((Item)affected).owner()) && (!((Item)affected).amWearingAt(Wearable.IN_INVENTORY)))))
 		{
