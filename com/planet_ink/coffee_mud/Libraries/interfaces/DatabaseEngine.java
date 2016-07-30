@@ -1105,6 +1105,8 @@ public interface DatabaseEngine extends CMLibrary
 	 * Table category: DBJOURNALS
 	 * For forum journals, updates the number of replies registered with the
 	 * parent message represented by the given message Key.
+	 * @see DatabaseEngine#DBReadJournalMetaData(com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.JournalMetaData)
+	 * @see DatabaseEngine#DBUpdateJournalMetaData(String, com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.JournalMetaData)
 	 * @param messageKey the key of the parent op message
 	 * @param numReplies the new number of replies to register
 	 */
@@ -1112,28 +1114,38 @@ public interface DatabaseEngine extends CMLibrary
 
 	/**
 	 * Table category: DBJOURNALS
-	 * 
-	 * @param metaData
+	 * Takes an empty JournalMetaData object, and the journal NAME
+	 *  and fills in the rest by querying the database.
+	 * @see DatabaseEngine#DBUpdateMessageReplies(String, int)
+	 * @see DatabaseEngine#DBUpdateJournalMetaData(String, com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.JournalMetaData)
+	 * @param journalID the name of the journals whose stats to update
+	 * @param metaData the created metadata object to fill in
 	 */
-	public void DBReadJournalMetaData(JournalsLibrary.JournalMetaData metaData);
+	public void DBReadJournalMetaData(String journalID, JournalsLibrary.JournalMetaData metaData);
 
 	/**
 	 * Table category: DBJOURNALS
-	 * Primarily for forum journals, this method updates 
-	 * @param journalID
-	 * @param metaData
+	 * Primarily for forum journals, this method updates all of the given
+	 * meta data, such as the intro, and so forth by deleting the old 
+	 * record and re-inserting it into the database.
+	 * @see DatabaseEngine#DBReadJournalMetaData(com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.JournalMetaData)
+	 * @see DatabaseEngine#DBUpdateMessageReplies(String, int)
+	 * @param journalID the name of the journals whose stats to update
+	 * @param metaData the metadata to resave into the database
 	 */
 	public void DBUpdateJournalMetaData(String journalID, JournalsLibrary.JournalMetaData metaData);
 
 	/**
 	 * Table category: DBJOURNALS
-	 * 
-	 * @param journalID
-	 * @param parent
-	 * @param searchStr
-	 * @param newerDate
-	 * @param limit
-	 * @return
+	 * Returns a window of messages from the given journal, either primary messages or replies
+	 * to messages, sorted by date, that matches a search, and can be limited, and older (or newer)
+	 * than a given timestamp.
+	 * @param journalID the name of the journal/forum to load from
+	 * @param parent the parent message (for getting replies), or null
+	 * @param searchStr the string to search for in the msg/subject, or null
+	 * @param newerDate 0 for all real msgs, parent for newer than timestamp, otherwise before timestamp 
+	 * @param limit the maximum number of messages to return 
+	 * @return the journal entries/messages that match this query
 	 */
 	public List<JournalEntry> DBReadJournalPageMsgs(String journalID, String parent, String searchStr, long newerDate, int limit);
 

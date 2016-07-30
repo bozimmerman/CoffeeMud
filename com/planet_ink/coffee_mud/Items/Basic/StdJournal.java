@@ -439,17 +439,17 @@ public class StdJournal extends StdItem
 		super.executeMsg(myHost,msg);
 	}
 
-	public JournalEntry DBRead(MOB reader, String Journal, int which, long lastTimeDate, boolean newOnly, boolean all)
+	public JournalEntry DBRead(MOB reader, String journal, int which, long lastTimeDate, boolean newOnly, boolean all)
 	{
 		final StringBuffer buf=new StringBuffer("");
-		final List<JournalEntry> journal;
+		final List<JournalEntry> journalEntries;
 		final boolean useCreateDate=getSortBy().toUpperCase().startsWith("CREAT");
 		if(useCreateDate)
-			journal=CMLib.database().DBReadJournalMsgsByCreateDate(Journal, true);
+			journalEntries=CMLib.database().DBReadJournalMsgsByCreateDate(journal, true);
 		else
-			journal=CMLib.database().DBReadJournalMsgsByUpdateDate(Journal, true);
+			journalEntries=CMLib.database().DBReadJournalMsgsByUpdateDate(journal, true);
 		final boolean shortFormat=readableText().toUpperCase().indexOf("SHORTLIST")>=0;
-		if((which<0)||(journal==null)||(which>=journal.size()))
+		if((which<0)||(journalEntries==null)||(which>=journalEntries.size()))
 		{
 			buf.append("#\n\r "+CMStrings.padRight("#",6)
 					   +((shortFormat)?"":""
@@ -458,7 +458,7 @@ public class StdJournal extends StdItem
 					   +CMStrings.padRight(L("Date"),20)
 					   +"Subject\n\r");
 			buf.append("-------------------------------------------------------------------------\n\r");
-			if(journal==null)
+			if(journalEntries==null)
 			{
 				final JournalEntry fakeEntry = (JournalEntry)CMClass.getCommon("DefaultJournalEntry");
 				fakeEntry.key("");
@@ -470,11 +470,11 @@ public class StdJournal extends StdItem
 		}
 
 		final JournalEntry fakeEntry = (JournalEntry)CMClass.getCommon("DefaultJournalEntry");
-		if((which<0)||(which>=journal.size()))
+		if((which<0)||(which>=journalEntries.size()))
 		{
-			if(journal.size()>0)
+			if(journalEntries.size()>0)
 			{
-				final JournalEntry entry=journal.get(0);
+				final JournalEntry entry=journalEntries.get(0);
 				fakeEntry.key(entry.key());
 				fakeEntry.from(entry.from());
 				fakeEntry.subj(entry.subj());
@@ -483,9 +483,9 @@ public class StdJournal extends StdItem
 			if((numToAdd==0)||(all))
 				numToAdd=Integer.MAX_VALUE;
 			final ArrayList<Integer> finalEntries = new ArrayList<Integer>();
-			for(int j=journal.size()-1;j>=0;j--)
+			for(int j=journalEntries.size()-1;j>=0;j--)
 			{
-				final JournalEntry entry=journal.get(j);
+				final JournalEntry entry=journalEntries.get(j);
 				final String from=entry.from();
 				final String to=entry.to();
 				// message is 5, but dont matter.
@@ -513,7 +513,7 @@ public class StdJournal extends StdItem
 			for(int j=finalEntries.size()-1;j>=0;j--)
 			{
 				final Integer J = finalEntries.get(j);
-				final JournalEntry entry=journal.get(J.intValue());
+				final JournalEntry entry=journalEntries.get(J.intValue());
 				final String from=entry.from();
 				final long date=entry.date();
 				String to=entry.to();
@@ -550,7 +550,7 @@ public class StdJournal extends StdItem
 		}
 		else
 		{
-			final JournalEntry entry=journal.get(which);
+			final JournalEntry entry=journalEntries.get(which);
 			final String from=entry.from();
 			final long date=entry.date();
 			String to=entry.to();

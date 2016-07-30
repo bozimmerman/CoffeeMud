@@ -210,8 +210,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 							return this;
 						}
 					};
-					metaData.name( journal.NAME() );
-					CMLib.database().DBReadJournalMetaData(metaData);
+					CMLib.database().DBReadJournalMetaData(journal.NAME(),metaData);
 					journalSummaryStats.put(journal.NAME().toUpperCase().trim(), metaData);
 				}
 			}

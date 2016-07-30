@@ -692,7 +692,7 @@ public class JournalLoader
 		}
 	}
 
-	public void DBUpdateJournalStats(String journal, JournalsLibrary.JournalMetaData metaData)
+	public void DBUpdateJournalMetaData(String journal, JournalsLibrary.JournalMetaData metaData)
 	{
 		journal = DB.injectionClean(journal);
 		metaData.imagePath	(DB.injectionClean(metaData.imagePath()));
@@ -744,12 +744,12 @@ public class JournalLoader
 		}
 	}
 
-	public void DBReadJournalSummaryStats(JournalsLibrary.JournalMetaData metaData)
+	public void DBReadJournalSummaryStats(String journalID, JournalsLibrary.JournalMetaData metaData)
 	{
 		metaData.imagePath	(DB.injectionClean(metaData.imagePath()));
 		metaData.introKey	(DB.injectionClean(metaData.introKey()));
 		metaData.longIntro	(DB.injectionClean(metaData.longIntro()));
-		metaData.name		(DB.injectionClean(metaData.name()));
+		metaData.name		(DB.injectionClean(journalID));
 		metaData.shortIntro(DB.injectionClean(metaData.shortIntro()));
 
 		DBConnection D=null;

@@ -479,13 +479,13 @@ public class DBInterface implements DatabaseEngine
 	@Override
 	public void DBUpdateJournalMetaData(String journalID, JournalsLibrary.JournalMetaData metaData)
 	{
-		JournalLoader.DBUpdateJournalStats(journalID, metaData);
+		JournalLoader.DBUpdateJournalMetaData(journalID, metaData);
 	}
 
 	@Override
-	public void DBReadJournalMetaData(JournalsLibrary.JournalMetaData metaData)
+	public void DBReadJournalMetaData(String journalID, JournalsLibrary.JournalMetaData metaData)
 	{
-		JournalLoader.DBReadJournalSummaryStats(metaData);
+		JournalLoader.DBReadJournalSummaryStats(journalID, metaData);
 	}
 
 	@Override
