@@ -43,6 +43,64 @@ public class Config extends StdCommand
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
+		String postStr="";
+		if((commands!=null)&&(commands.size()>1))
+		{
+			final String name=commands.get(1);
+			MOB.Attrib finalA=null;
+			for(MOB.Attrib a : MOB.Attrib.values())
+			{
+				if(name.equalsIgnoreCase(a.getName()))
+					finalA=a;
+			}
+			if(finalA==null)
+			{
+				if(name.equalsIgnoreCase("LINEWRAP"))
+				{
+					final String newWrap=(commands.size()>2)?CMParms.combine(commands,2):"";
+					int newVal=mob.playerStats().getWrap();
+					if((CMath.isInteger(newWrap))&&(CMath.s_int(newWrap)>10))
+						newVal=CMath.s_int(newWrap);
+					else
+					if("DISABLED".startsWith(newWrap.toUpperCase())&&(newWrap.length()>0))
+						newVal=0;
+					else
+					{
+						mob.tell(L("'@x1' is not a valid linewrap setting. Enter a number larger than 10 or 'disable'.",newWrap));
+						return false;
+					}
+					mob.playerStats().setWrap(newVal);
+					postStr=L("Configuration option change: LINEWRAP");
+				}
+				else
+				if(name.equalsIgnoreCase("PAGEBREAK"))
+				{
+					final String newBreak=(commands.size()>2)?CMParms.combine(commands,2):"";
+					int newVal=mob.playerStats().getWrap();
+					if((CMath.isInteger(newBreak))&&(CMath.s_int(newBreak)>0))
+						newVal=CMath.s_int(newBreak);
+					else
+					if("DISABLED".startsWith(newBreak.toUpperCase())&&(newBreak.length()>0))
+						newVal=0;
+					else
+					{
+						mob.tell(L("'@x1' is not a valid pagebreak setting. Enter a number larger than 0 or 'disable'.",newBreak));
+						return false;
+					}
+					mob.playerStats().setPageBreak(newVal);
+					postStr=L("Configuration option change: PAGEBREAK");
+				}
+				else
+					postStr=L("Unknown configuration flag '@x1'.",name);
+			}
+			else
+			{
+				postStr=L("Configuration flag toggled: "+finalA.getName());
+				mob.setAttribute(finalA, !mob.isAttributeSet(finalA));
+			}
+			mob.tell(postStr);
+		}
+		
 		final StringBuffer msg=new StringBuffer(L("^HYour configuration flags:^?\n\r"));
 		for(MOB.Attrib a : MOB.Attrib.values())
 		{
@@ -68,6 +126,7 @@ public class Config extends StdCommand
 			msg.append("\n\r");
 		}
 		mob.tell(msg.toString());
+		mob.tell(postStr);
 		return false;
 	}
 

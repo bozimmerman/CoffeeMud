@@ -1291,7 +1291,12 @@ public class DefaultSession implements Session
 			{
 			}
 		}
-		if((!getClientTelnetMode(TELNET_SUPRESS_GO_AHEAD)) && (!killFlag) && mightSupportTelnetMode(TELNET_GA))
+		final MOB mob=mob();
+		if((!getClientTelnetMode(TELNET_SUPRESS_GO_AHEAD)) 
+		&& (!killFlag)
+		&& (mightSupportTelnetMode(TELNET_GA)
+			||(mob==null)
+			||(mob.isAttributeSet(MOB.Attrib.TELNET_GA))))
 		{
 			try 
 			{ 

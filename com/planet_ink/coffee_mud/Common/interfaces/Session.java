@@ -1257,8 +1257,9 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 
 	public abstract class TickingCallback extends InputCallback
 	{
-		protected volatile int counter=0;
-		protected final StringBuilder collectedInput=new StringBuilder("");
+		protected volatile int			counter			= 0;
+		protected final StringBuilder	collectedInput	= new StringBuilder("");
+
 		/**
 		 * Only constructor is the one to tell out often to call back.
 		 * @param tickerMs the time is ms between timeouts
@@ -1270,8 +1271,16 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 		/**
 		 * TimeOutCallback has no prompt
 		 */
-		@Override public void showPrompt() {}
-		@Override public void callBack() {}
+		@Override
+		public void showPrompt()
+		{
+		}
+
+		@Override
+		public void callBack()
+		{
+		}
+
 		@Override
 		public void setInput(String input)
 		{
