@@ -1151,60 +1151,79 @@ public interface DatabaseEngine extends CMLibrary
 
 	/**
 	 * Table category: DBJOURNALS
-	 * 
-	 * @param journalID
+	 * Returns all the messages in the given journal, optionally sorted by update date, ascending.
+	 * This is a legacy method, and should be used with care.
+	 * @see DatabaseEngine#DBReadJournalMsgsByUpdateDate(String, boolean, int)
+	 * @see DatabaseEngine#DBReadJournalMsgsByUpdateDate(String, boolean, int, String[])
+	 * @param journalID the journal to read all the messages from
 	 * @param ascending true to order the read entries by date
-	 * @return
+	 * @return the list of all the messages in this journal, an empty list, or null on error
 	 */
 	public List<JournalEntry> DBReadJournalMsgsByUpdateDate(String journalID, boolean ascending);
 
 	/**
 	 * Table category: DBJOURNALS
-	 * 
-	 * @param journalID
-	 * @param ascending
-	 * @param limit
-	 * @return
+	 * Returns a limited number of messages from the given journal, optional sorted by update date,
+	 * ascending. 
+	 * @see DatabaseEngine#DBReadJournalMsgsByUpdateDate(String, boolean)
+	 * @see DatabaseEngine#DBReadJournalMsgsByUpdateDate(String, boolean, int, String[])
+	 * @param journalID the journal to read all the messages from
+	 * @param ascending true to order the read entries by date
+	 * @param limit the number of messages to return, max
+	 * @return the list of the messages in this journal, an empty list, or null on error
 	 */
 	public List<JournalEntry> DBReadJournalMsgsByUpdateDate(String journalID, boolean ascending, int limit);
 
 	/**
 	 * Table category: DBJOURNALS
-	 * 
-	 * @param journalID
-	 * @param ascending
-	 * @param tos
-	 * @return
+	 * Returns a limited number of messages from the given journal, optionally sorted by update date,
+	 * ascending, but only those marked as TO the given string array.
+	 * @see DatabaseEngine#DBReadJournalMsgsByUpdateDate(String, boolean, int)
+	 * @see DatabaseEngine#DBReadJournalMsgsByUpdateDate(String, boolean)
+	 * @param journalID the journal to read all the messages from
+	 * @param ascending true to order the read entries by date
+	 * @param limit the number of messages to return, max
+	 * @param tos return only messages marked TO one of the names in this array
+	 * @return the list of the messages in this journal, an empty list, or null on error
 	 */
 	public List<JournalEntry> DBReadJournalMsgsByUpdateDate(String journalID, boolean ascending, int limit, String[] tos);
 	
 	/**
 	 * Table category: DBJOURNALS
-	 * 
-	 * @param journalID
-	 * @param ascending
-	 * @return
+	 * Returns all the messages in the given journal, optionally sorted by create date, ascending.
+	 * This is a legacy method, and should be used with care.
+	 * @see DatabaseEngine#DBReadJournalMsgsByCreateDate(String, boolean, int)
+	 * @see DatabaseEngine#DBReadJournalMsgsByCreateDate(String, boolean, int, String[])
+	 * @param journalID the journal to read all the messages from
+	 * @param ascending true to order the read entries by date
+	 * @return the list of all the messages in this journal, an empty list, or null on error
 	 */
 	public List<JournalEntry> DBReadJournalMsgsByCreateDate(String journalID, boolean ascending);
 
 	/**
 	 * Table category: DBJOURNALS
-	 * 
-	 * @param journalID
-	 * @param ascending
-	 * @param limit
-	 * @return
+	 * Returns a limited number of messages from the given journal, optional sorted by create date,
+	 * ascending. 
+	 * @see DatabaseEngine#DBReadJournalMsgsByCreateDate(String, boolean)
+	 * @see DatabaseEngine#DBReadJournalMsgsByUpdateDate(String, boolean, int, String[])
+	 * @param journalID the journal to read all the messages from
+	 * @param ascending true to order the read entries by date
+	 * @param limit the number of messages to return, max
+	 * @return the list of the messages in this journal, an empty list, or null on error
 	 */
 	public List<JournalEntry> DBReadJournalMsgsByCreateDate(String journalID, boolean ascending, int limit);
 
 	/**
 	 * Table category: DBJOURNALS
-	 * 
-	 * @param journalID
-	 * @param ascending
-	 * @param limit
-	 * @param tos
-	 * @return
+	 * Returns a limited number of messages from the given journal, optionally sorted by create date,
+	 * ascending, but only those marked as TO the given string array.
+	 * @see DatabaseEngine#DBReadJournalMsgsByCreateDate(String, boolean, int)
+	 * @see DatabaseEngine#DBReadJournalMsgsByCreateDate(String, boolean)
+	 * @param journalID the journal to read all the messages from
+	 * @param ascending true to order the read entries by date
+	 * @param limit the number of messages to return, max
+	 * @param tos return only messages marked TO one of the names in this array
+	 * @return the list of the messages in this journal, an empty list, or null on error
 	 */
 	public List<JournalEntry> DBReadJournalMsgsByCreateDate(String journalID, boolean ascending, int limit, String[] tos);
 
