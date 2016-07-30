@@ -333,6 +333,7 @@ public class DefaultSession implements Session
 			setServerTelnetMode(TELNET_ANSI,true);
 			setClientTelnetMode(TELNET_ANSI,true);
 			setClientTelnetMode(TELNET_TERMTYPE,true);
+			//changeTelnetMode(rawout,TELNET_TERMTYPE,true);
 			negotiateTelnetMode(rawout,TELNET_TERMTYPE);
 			if(!CMSecurity.isDisabled(CMSecurity.DisFlag.MCCP))
 				changeTelnetMode(rawout,TELNET_COMPRESS2,true);
@@ -566,7 +567,6 @@ public class DefaultSession implements Session
 			telnetSupportSet.add(Integer.valueOf(Session.TELNET_BINARY));
 			telnetSupportSet.add(Integer.valueOf(Session.TELNET_ECHO));
 			telnetSupportSet.add(Integer.valueOf(Session.TELNET_LOGOUT));
-			telnetSupportSet.add(Integer.valueOf(Session.TELNET_TERMTYPE));
 			telnetSupportSet.add(Integer.valueOf(Session.TELNET_NAWS));
 			//telnetSupportSet.add(Integer.valueOf(Session.TELNET_GA));
 			//telnetSupportSet.add(Integer.valueOf(Session.TELNET_SUPRESS_GO_AHEAD));
@@ -1814,6 +1814,8 @@ public class DefaultSession implements Session
 				Log.debugOut("Got DO "+Session.TELNET_DESCS[last]);
 			if((terminalType.equalsIgnoreCase("zmud")||terminalType.equalsIgnoreCase("cmud"))&&(last==Session.TELNET_ECHO))
 				setClientTelnetMode(Session.TELNET_ECHO,false);
+			if(last==TELNET_TERMTYPE)
+				negotiateTelnetMode(rawout,TELNET_TERMTYPE);
 			if((last==TELNET_COMPRESS2)&&(getServerTelnetMode(last)))
 			{
 				setClientTelnetMode(last,true);
