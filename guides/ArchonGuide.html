@@ -3707,11 +3707,12 @@ the exits list.</td>
 item that has its self contained instanced area with custom rooms,
 property ownership, and special sailing commands. As an object, they
 have all the properties of the GenPortal above except that the portal
-can be moved around from inside the instanced Area, so long as the
+can be moved around, and still exited from inside the instanced Area,
+so long as the
 special building rules are followed. &nbsp;The GenSailingShip is
 saved
 along with the owning player or clan, and comes back into existence
-when it does.</p>
+when the player or clan does.</p>
 A GenSailingShip is intended to be sold to players or clans through
 shopkeepers that operate in the same area (but not necessarily the same
 room) as either a SeaPort locale room, or the shore to an ocean or big
@@ -3728,7 +3729,7 @@ way as in any other area, except that, instead of NORTH, SOUTH, etc.
 you must use ship-directions, such as PORT, STARBOARD, FORE, AFT,
 ABOVE, and BELOW.&nbsp; A ship should generally be built NORTH-SOUTH
 (which is the same as FORE-AFT). &nbsp;At least one of the rooms should
-be out of doors, preferably something like a WoodenDeck locale, so that
+be outdoors, preferably something like a WoodenDeck locale, so that
 players can see what is around the ship, and so that they have a place
 to build siege weapons. &nbsp;The deck is also the
 place to put some exits that link back to the room with the shopkeeper
@@ -3746,15 +3747,26 @@ mobs,&nbsp;siege weapons, siege ammunition, etc. &nbsp; Behaviors like
 the Sailor behavior can be given to mobs to make them sail the ship
 around and engage in ship combat.<br>
 <br>
+When designing your sailing ships, be sure to put Prop_ReqCapacity on
+your rooms, especially the deck rooms. &nbsp;This is the only thing
+that can limit the number of siege weapons that players can add to
+their ship. &nbsp;Using parameters of "weight=715" will allow one of
+all of the siege weapons to be built, but not two. &nbsp;Using
+parameters of "weight=400" will allow only one of the light
+weapons,&nbsp;"weight=600" will allow one of the normal or light
+weapons, &nbsp;and weight="900" will allow two light weapons or one
+normal or one light. etc.<br>
+<br>
 When this is completed, you
 can add the GenSailingShip
 item to the shopkeepers inventory. &nbsp;Don't run around with ships in
 your own inventory, or, for goodness sake, inside another ship.<br>
 <br>
 Whenever a GenSailingShip is
-created, much like the GenPortal above,
+created, much like the GenPortal, GenContainer, GenExit, and
+GenRideables,
 you are presented with a list of properties to fill in. Pressing enter
-will leave the property unchanged. &nbsp;<br>
+will leave the property unchanged. <br>
 <br>
 <table style="width: 100%;" bgcolor="yellow" border="1" cellpadding="1"
  cellspacing="1" width="100%">
