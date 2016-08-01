@@ -90,7 +90,8 @@ public class PlantLore extends CommonSkill
 								.plus(TrackingLibrary.TrackingFlag.OPENONLY)
 								.plus(TrackingLibrary.TrackingFlag.AREAONLY)
 								.plus(TrackingLibrary.TrackingFlag.NOAIR);
-						CMLib.tracking().getRadiantRooms(room,V,flags,null,2+(getXLEVELLevel(mob)/2),null);
+						int range=2+(getXLEVELLevel(mob)/2)+super.getXMAXRANGELevel(mob);
+						CMLib.tracking().getRadiantRooms(room,V,flags,null,range,null);
 						for(int v=0;v<V.size();v++)
 						{
 							final Room R=V.elementAt(v);

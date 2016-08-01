@@ -328,7 +328,8 @@ public class Ranger_FindWater extends StdAbility
 		flags = CMLib.tracking().newFlags()
 				.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
 				.plus(TrackingLibrary.TrackingFlag.NOAIR);
-		final List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,60+(2*getXLEVELLevel(mob)));
+		int range=60 + (2*super.getXLEVELLevel(mob))+(10*super.getXMAXRANGELevel(mob));
+		final List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,range);
 		for (final Room room : checkSet)
 		{
 			final Room R=CMLib.map().getRoom(room);
@@ -337,7 +338,7 @@ public class Ranger_FindWater extends StdAbility
 		}
 
 		if(rooms.size()>0)
-			theTrail=CMLib.tracking().findTrailToAnyRoom(mob.location(),rooms,flags,60+(2*getXLEVELLevel(mob)));
+			theTrail=CMLib.tracking().findTrailToAnyRoom(mob.location(),rooms,flags,range);
 
 		if((success)&&(theTrail!=null))
 		{

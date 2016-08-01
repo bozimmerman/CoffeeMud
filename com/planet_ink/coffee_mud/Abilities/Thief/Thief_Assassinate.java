@@ -271,6 +271,7 @@ public class Thief_Assassinate extends ThiefSkill
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 
+		int range=50 + super.getXLEVELLevel(mob)+(5*super.getXMAXRANGELevel(mob));
 		final Vector<Room> rooms=new Vector<Room>();
 		if(tracking!=null)
 		{
@@ -290,7 +291,7 @@ public class Thief_Assassinate extends ThiefSkill
 					 .plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
 					 .plus(TrackingLibrary.TrackingFlag.NOAIR)
 					 .plus(TrackingLibrary.TrackingFlag.NOWATER);
-				final List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,50+(2*getXLEVELLevel(mob)));
+				final List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,range);
 				for (final Room room : checkSet)
 				{
 					final Room R=CMLib.map().getRoom(room);
@@ -308,7 +309,7 @@ public class Thief_Assassinate extends ThiefSkill
 		if(givenTarget!=null&&auto&&mob.isMonster())
 			flags.plus(TrackingLibrary.TrackingFlag.AREAONLY);
 		if(rooms.size()>0)
-			theTrail=CMLib.tracking().findTrailToAnyRoom(mob.location(),rooms,flags,50+(2*getXLEVELLevel(mob)));
+			theTrail=CMLib.tracking().findTrailToAnyRoom(mob.location(),rooms,flags,range);
 
 		if((tracking==null)&&(theTrail!=null)&&(theTrail.size()>0))
 			tracking=theTrail.get(0).fetchInhabitant(mobName);

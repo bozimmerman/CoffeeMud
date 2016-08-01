@@ -206,7 +206,7 @@ public class Skill_CrowsNest extends StdSkill
 								shipR.executeMsg(mob,msg2);
 								
 								final TrackingFlags flags=CMLib.tracking().newFlags().plus(TrackingFlag.WATERSURFACEONLY);
-								int maxRadius=1+(selfA.adjustedLevel(mob, 0)/20)+(selfA.getXLEVELLevel(mob)/2);
+								int maxRadius=1+(selfA.adjustedLevel(mob, 0)/20)+(selfA.getXLEVELLevel(mob)/2)+selfA.getXMAXRANGELevel(mob);
 								final List<Room> Rs=CMLib.tracking().getRadiantRooms(shipR, flags, maxRadius);
 								for(Room R2 : Rs)
 								{

@@ -198,6 +198,7 @@ public class Chant_FindMate extends Chant
 		flags = CMLib.tracking().newFlags()
 				.plus(TrackingLibrary.TrackingFlag.OPENONLY);
 		final Vector<Room> rooms=new Vector<Room>();
+		int radius = 50 + (10*super.getXMAXRANGELevel(mob)) + super.getXLEVELLevel(mob);
 		List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,50);
 		for (final Room R : checkSet)
 		{

@@ -195,7 +195,8 @@ public class Chant_TremorSense extends Chant
 						.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
 						.plus(TrackingLibrary.TrackingFlag.NOAIR)
 						.plus(TrackingLibrary.TrackingFlag.NOWATER);
-				CMLib.tracking().getRadiantRooms(mob.location(),rooms,flags,null,5,null);
+				int range=5 +(super.getXMAXRANGELevel(mob)/2);
+				CMLib.tracking().getRadiantRooms(mob.location(),rooms,flags,null,range,null);
 				for(int r=0;r<rooms.size();r++)
 				{
 					final Room R=rooms.elementAt(r);

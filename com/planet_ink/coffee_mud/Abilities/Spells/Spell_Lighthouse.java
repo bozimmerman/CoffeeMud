@@ -267,7 +267,8 @@ public class Spell_Lighthouse extends Spell
 									.plus(TrackingFlag.OPENONLY)
 									.plus(TrackingFlag.OUTDOORONLY);
 			newRooms.add(currentRoom);
-			newRooms.addAll(CMLib.tracking().getRadiantRooms(currentRoom, flags, 10));
+			int range=10 + super.getXLEVELLevel(invoker())+(2*super.getXMAXRANGELevel(invoker()));
+			newRooms.addAll(CMLib.tracking().getRadiantRooms(currentRoom, flags, range));
 			int prevDir=Directions.getOpDirectionCode(this.lastDir);
 			this.lastDir = nextDir(shipRoom);
 			newRooms.add(shipRoom);

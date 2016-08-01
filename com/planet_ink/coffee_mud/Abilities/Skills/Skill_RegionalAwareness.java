@@ -201,8 +201,10 @@ public class Skill_RegionalAwareness extends StdSkill
 	{
 		final char[][] map=new char[diameter][diameter];
 		for(int i=0;i<diameter;i++)
+		{
 			for(int i2=0;i2<diameter;i2++)
 				map[i][i2]=' ';
+		}
 		final boolean amIndoors=((room.domainType()&Room.INDOORS)==Room.INDOORS);
 		final Room[][] rmap=new Room[diameter][diameter];
 		final Vector<Room> rooms=new Vector<Room>();
@@ -212,8 +214,7 @@ public class Skill_RegionalAwareness extends StdSkill
 					.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
 					.plus(TrackingLibrary.TrackingFlag.NOAIR);
 		if(openOnly)
-			flags = flags
-				.plus(TrackingLibrary.TrackingFlag.OPENONLY);
+			flags = flags.plus(TrackingLibrary.TrackingFlag.OPENONLY);
 
 		CMLib.tracking().getRadiantRooms(room,rooms,flags,null,diameter,null);
 		rmap[diameter/2][diameter/2]=room;

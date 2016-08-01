@@ -199,7 +199,8 @@ public class Skill_MorseCode extends StdSkill
 					flags.add(TrackingFlag.OUTDOORONLY);
 				else
 					flags.add(TrackingFlag.INDOORONLY);
-				final List<Room> checkSet=CMLib.tracking().getRadiantRooms(R,flags,3+super.getXLEVELLevel(mob));
+				int range=3 + (super.getXLEVELLevel(mob)/2)+(super.getXMAXRANGELevel(mob));
+				final List<Room> checkSet=CMLib.tracking().getRadiantRooms(R,flags,range);
 				Area deckArea=null;
 				Room deckShipRoom=null;
 				Item deckShip=null;
@@ -215,7 +216,7 @@ public class Skill_MorseCode extends StdSkill
 							deckArea=R.getArea();
 							deckShipRoom=CMLib.map().roomLocation(deckShip);
 							if(deckShipRoom != null)
-								checkSet.addAll(CMLib.tracking().getRadiantRooms(deckShipRoom,flags,3+super.getXLEVELLevel(mob)));
+								checkSet.addAll(CMLib.tracking().getRadiantRooms(deckShipRoom,flags,range));
 						}
 					}
 				}

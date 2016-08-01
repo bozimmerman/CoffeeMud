@@ -153,7 +153,8 @@ public class Prayer_HuntEvil extends Prayer
 
 		final Vector<Room> rooms=new Vector<Room>();
 		final TrackingLibrary.TrackingFlags flags=CMLib.tracking().newFlags();
-		final List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,50);
+		int range=50 + super.getXLEVELLevel(mob)+(2*super.getXMAXRANGELevel(mob));
+		final List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,range);
 		for (final Room R : checkSet)
 		{
 			if(gameHere(R)!=null)
@@ -161,7 +162,7 @@ public class Prayer_HuntEvil extends Prayer
 		}
 
 		if(rooms.size()>0)
-			theTrail=CMLib.tracking().findTrailToAnyRoom(mob.location(),rooms,flags,50);
+			theTrail=CMLib.tracking().findTrailToAnyRoom(mob.location(),rooms,flags,range);
 
 		MOB target=null;
 		if((theTrail!=null)&&(theTrail.size()>0))

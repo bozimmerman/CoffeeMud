@@ -198,7 +198,8 @@ public class Chant_FindPlant extends Chant
 	{
 		final Vector<Room> rooms=new Vector<Room>();
 		TrackingLibrary.TrackingFlags flags = getTrackingFlags();
-		final List<Room> checkSet=CMLib.tracking().getRadiantRooms(mobRoom,flags,50+(2*super.getXLEVELLevel(mob)));
+		int range = 50+(2*super.getXLEVELLevel(mob))+(10*super.getXMAXRANGELevel(mob));
+		final List<Room> checkSet=CMLib.tracking().getRadiantRooms(mobRoom,flags,range);
 		for (final Room R : checkSet)
 		{
 			if(itsHere(target,R).length()>0)
@@ -207,7 +208,7 @@ public class Chant_FindPlant extends Chant
 
 		flags = getTrackingFlags();
 		if(rooms.size()>0)
-			theTrail=CMLib.tracking().findTrailToAnyRoom(mobRoom,rooms,flags,50+(2*super.getXLEVELLevel(mob)));
+			theTrail=CMLib.tracking().findTrailToAnyRoom(mobRoom,rooms,flags,range);
 		return theTrail;
 	}
 	

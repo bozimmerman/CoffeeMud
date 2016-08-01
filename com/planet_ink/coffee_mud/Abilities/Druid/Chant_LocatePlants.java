@@ -162,7 +162,8 @@ public class Chant_LocatePlants extends Chant
 				.plus(TrackingLibrary.TrackingFlag.NOAIR)
 				.plus(TrackingLibrary.TrackingFlag.NOWATER);
 		final Vector<Room> rooms=new Vector<Room>();
-		final List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,50);
+		int range=50 + super.getXLEVELLevel(mob)+(2*super.getXMAXRANGELevel(mob));
+		final List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,range);
 		for (final Room R : checkSet)
 		{
 			if(plantsHere(mob,R).length()>0)
@@ -175,7 +176,7 @@ public class Chant_LocatePlants extends Chant
 			flags = CMLib.tracking().newFlags()
 					.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
 					.plus(TrackingLibrary.TrackingFlag.NOAIR);
-			theTrail=CMLib.tracking().findTrailToAnyRoom(target.location(),rooms,flags,50);
+			theTrail=CMLib.tracking().findTrailToAnyRoom(target.location(),rooms,flags,range);
 		}
 
 		if((success)&&(theTrail!=null))

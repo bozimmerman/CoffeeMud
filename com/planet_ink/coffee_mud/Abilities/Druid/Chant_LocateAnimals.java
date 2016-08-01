@@ -152,7 +152,8 @@ public class Chant_LocateAnimals extends Chant
 
 		final Vector<Room> rooms=new Vector<Room>();
 		final TrackingLibrary.TrackingFlags flags=CMLib.tracking().newFlags();
-		final List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,20);
+		int range=20 + super.getXLEVELLevel(mob) + (2*super.getXMAXRANGELevel(mob));
+		final List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,range);
 		for (final Room room : checkSet)
 		{
 			final Room R=CMLib.map().getRoom(room);
@@ -164,7 +165,7 @@ public class Chant_LocateAnimals extends Chant
 			rooms.removeElementAt(CMLib.dice().roll(1,rooms.size(),-1));
 
 		if(rooms.size()>0)
-			theTrail=CMLib.tracking().findTrailToAnyRoom(mob.location(),rooms,flags,50);
+			theTrail=CMLib.tracking().findTrailToAnyRoom(mob.location(),rooms,flags,range);
 
 		MOB target=null;
 		if((theTrail!=null)&&(theTrail.size()>0))

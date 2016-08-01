@@ -56,7 +56,7 @@ public class Chant_MassFungalGrowth extends Chant_SummonFungus
 				.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
 				.plus(TrackingLibrary.TrackingFlag.NOAIR)
 				.plus(TrackingLibrary.TrackingFlag.NOWATER);
-		CMLib.tracking().getRadiantRooms(mob.location(),V,flags,null,adjustedLevel(mob,asLevel),null);
+		CMLib.tracking().getRadiantRooms(mob.location(),V,flags,null,adjustedLevel(mob,asLevel)+(2*super.getXMAXRANGELevel(mob)),null);
 		for(int v=V.size()-1;v>=0;v--)
 		{
 			final Room R=V.elementAt(v);

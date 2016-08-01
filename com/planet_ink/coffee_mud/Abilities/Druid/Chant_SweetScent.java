@@ -88,7 +88,8 @@ public class Chant_SweetScent extends Chant
 				TrackingLibrary.TrackingFlags flags;
 				flags = CMLib.tracking().newFlags()
 						.plus(TrackingLibrary.TrackingFlag.OPENONLY);
-				CMLib.tracking().getRadiantRooms(room,rooms,flags,null,10,null);
+				int range=10 + super.getXLEVELLevel(invoker())+(2*super.getXMAXRANGELevel(invoker()));
+				CMLib.tracking().getRadiantRooms(room,rooms,flags,null,range,null);
 				for(int i=0;i<room.numInhabitants();i++)
 				{
 					final MOB M=room.fetchInhabitant(i);
