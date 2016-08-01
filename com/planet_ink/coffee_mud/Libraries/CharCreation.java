@@ -402,6 +402,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		else
 		if(S.getClientTelnetMode(Session.TELNET_MXP))
 		{
+			S.rawOut("\033[7z\n\r"); // for mudlet mostly.
 			S.changeTelnetMode(Session.TELNET_MXP,false);
 			S.setClientTelnetMode(Session.TELNET_MXP,false);
 		}
