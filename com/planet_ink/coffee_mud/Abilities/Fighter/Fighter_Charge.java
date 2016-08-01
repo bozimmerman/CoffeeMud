@@ -36,25 +36,93 @@ import java.util.*;
 
 public class Fighter_Charge extends FighterSkill
 {
-	@Override public String ID() { return "Fighter_Charge"; }
-	private final static String localizedName = CMLib.lang().L("Charge");
-	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =I(new String[] {"CHARGE"});
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Charging!!)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
-	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_ACROBATIC;}
-	@Override public int usageType(){return USAGE_MOVEMENT;}
-	@Override public int minRange(){return 1;}
-	@Override public int maxRange(){return adjustedMaxInvokerRange(2);}
-	protected int code=0;
-	@Override public int abilityCode(){return code;}
-	@Override public void setAbilityCode(int c){code=c;}
+	@Override
+	public String ID()
+	{
+		return "Fighter_Charge";
+	}
 
-	public boolean done=false;
+	private final static String	localizedName	= CMLib.lang().L("Charge");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "CHARGE" });
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Charging!!)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL | Ability.DOMAIN_ACROBATIC;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT;
+	}
+
+	@Override
+	public int minRange()
+	{
+		return 1;
+	}
+
+	@Override
+	public int maxRange()
+	{
+		return adjustedMaxInvokerRange(2);
+	}
+
+	protected int	code	= 0;
+
+	@Override
+	public int abilityCode()
+	{
+		return code;
+	}
+
+	@Override
+	public void setAbilityCode(int c)
+	{
+		code = c;
+	}
+
+	public boolean	done	= false;
 
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
@@ -71,8 +139,10 @@ public class Fighter_Charge extends FighterSkill
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(tickID==Tickable.TICKID_MOB)
+		{
 			if(done)
 				unInvoke();
+		}
 		return super.tick(ticking,tickID);
 	}
 
@@ -113,6 +183,7 @@ public class Fighter_Charge extends FighterSkill
 			mob.tell(L("You can not charge while in melee!"));
 			return false;
 		}
+
 		if((CMLib.flags().isSitting(mob))||(mob.riding()!=null))
 		{
 			mob.tell(L("You must be on your feet to charge!"));
@@ -144,8 +215,10 @@ public class Fighter_Charge extends FighterSkill
 					}
 					else
 						done=false;
-					if(mob.getVictim()==null) mob.setVictim(null); // correct range
-					if(target.getVictim()==null) target.setVictim(null); // correct range
+					if (mob.getVictim() == null)
+						mob.setVictim(null); // correct range
+					if (target.getVictim() == null)
+						target.setVictim(null); // correct range
 				}
 			}
 		}

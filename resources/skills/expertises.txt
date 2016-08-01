@@ -378,16 +378,16 @@ HELP_=<EXPERTISE>The ability to cast abjuration spells that last even longer.
 SMARTENGINEERING@x1=Ingenious Engineering @x2,10,XPCOST,-SKILLS +Construction +Masonry +Shipwright,-MAXCLASSLEVEL +>={21+(5*@x1)},+INT {12+@x1} +WIS {12+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to engineer using fewer materials.
 
-RANGEDSEATRAVEL@x1=Ranged Sea Travel @x2,10,MAXRANGE,-SKILLFLAG +SEA_TRAVEL,-MAXCLASSLEVEL +>={19+(5*@x1)},+DEX {9+@x1} +CON {9+@x1},0,1,0,0,0
+RANGEDSAILING@x1=Ranged Sailing @x2,10,MAXRANGE,-SKILLFLAG +SEA_TRAVEL,-MAXCLASSLEVEL +>={19+(5*@x1)},+DEX {9+@x1} +CON {9+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to use sea travel skills at longer ranges.
 
-REDUCEDSEATRAVEL@x1=Reduced Sea Travel @x2,10,LOWCOST,-SKILLFLAG +SEA_TRAVEL,-MAXCLASSLEVEL +>={1+(3*@x1)},+WIS {9+@x1} +STR {9+@x1},0,1,0,0,0
-HELP_=<EXPERTISE>The ability to use sea travel using less movement/mana.
+REDUCEDSAILING@x1=Reduced Sailing @x2,10,LOWCOST,-SKILLFLAG +SEA_TRAVEL,-MAXCLASSLEVEL +>={1+(3*@x1)},+WIS {9+@x1} +STR {9+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>The ability to use sea travel skills using less movement/mana.
 
-POWERSEATRAVEL@x1=Power Sea Travel @x2,10,LEVEL,-SKILLFLAG +SEA_TRAVEL,-MAXCLASSLEVEL +>={1+(3*@x1)},+CHA {9+@x1} +INT {9+@x1},0,1,0,0,0
+POWERSAILING@x1=Power Sailing @x2,10,LEVEL,-SKILLFLAG +SEA_TRAVEL,-MAXCLASSLEVEL +>={1+(3*@x1)},+CHA {9+@x1} +INT {9+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to use sea travel at a higher power level, producing longer and more malicious/beneficial effect.
 
-EXTENDEDSEATRAVEL@x1=Extended Sea Travel @x2,10,TIME,-SKILLFLAG +SEA_TRAVEL,-MAXCLASSLEVEL +>={19+(5*@x1)},+CON {9+@x1} +STR {9+@x1},0,1,0,0,0
+EXTENDEDSAILINGL@x1=Extended Sailing @x2,10,TIME,-SKILLFLAG +SEA_TRAVEL,-MAXCLASSLEVEL +>={19+(5*@x1)},+CON {9+@x1} +STR {9+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to use sea travel that last even longer.
 
 LITECRAFT@x1=Light Crafting @x2,3,X1,-SKILL +Carpentry +Armorsmithing +MasterArmorsmithing +Blacksmithing +Cobbling +Costuming +Fletching +JewelMaking +LeatherWorking +MasterCostuming +MasterLeatherWorking +MasterTailoring +Paladin_CraftHolyAvenger +ScrimShaw +Sculpting +Tailoring +Weaponsmithing +MasterWeaponsmithing +Weaving,,+DEX {10+(4*@x1)},0,1,0,0,0
