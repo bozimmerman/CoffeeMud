@@ -333,7 +333,7 @@ public class DefaultSession implements Session
 			setServerTelnetMode(TELNET_ANSI,true);
 			setClientTelnetMode(TELNET_ANSI,true);
 			setClientTelnetMode(TELNET_TERMTYPE,true);
-			//changeTelnetMode(rawout,TELNET_TERMTYPE,true);
+			changeTelnetMode(rawout,TELNET_TERMTYPE,true);
 			negotiateTelnetMode(rawout,TELNET_TERMTYPE);
 			if(!CMSecurity.isDisabled(CMSecurity.DisFlag.MCCP))
 				changeTelnetMode(rawout,TELNET_COMPRESS2,true);
