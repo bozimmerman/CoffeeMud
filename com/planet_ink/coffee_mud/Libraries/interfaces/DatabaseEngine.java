@@ -979,6 +979,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * @see DatabaseEngine#DBWriteJournal(String, JournalEntry)
 	 * @see DatabaseEngine#DBWriteJournal(String, String, String, String, String)
 	 * @see DatabaseEngine#DBDeleteJournal(String, String)
+	 * @see DatabaseEngine#DBUpdateJournal(String, String, String, long)
 	 * @return the list of every journal ID
 	 */
 	public List<String> DBReadJournals();
@@ -993,6 +994,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * @see DatabaseEngine#DBWriteJournal(String, JournalEntry)
 	 * @see DatabaseEngine#DBWriteJournal(String, String, String, String, String)
 	 * @see DatabaseEngine#DBDeleteJournal(String, String)
+	 * @see DatabaseEngine#DBUpdateJournal(String, String, String, long)
 	 * @param journalID the name/id of the journal
 	 * @param entry the complete entry record
 	 */
@@ -1008,6 +1010,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * @see DatabaseEngine#DBWriteJournal(String, JournalEntry)
 	 * @see DatabaseEngine#DBWriteJournal(String, String, String, String, String)
 	 * @see DatabaseEngine#DBDeleteJournal(String, String)
+	 * @see DatabaseEngine#DBUpdateJournal(String, String, String, long)
 	 * @param journalID the name/id of the journal
 	 * @param messageKey the message key
 	 * @return the complete journal entry, or null if it wasn't found
@@ -1025,6 +1028,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * @see DatabaseEngine#DBUpdateJournal(String, JournalEntry)
 	 * @see DatabaseEngine#DBWriteJournal(String, String, String, String, String)
 	 * @see DatabaseEngine#DBDeleteJournal(String, String)
+	 * @see DatabaseEngine#DBUpdateJournal(String, String, String, long)
 	 * @param journalID the name/id of the journal
 	 * @param entry the enttry to create
 	 */
@@ -1038,6 +1042,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * @see DatabaseEngine#DBUpdateJournal(String, JournalEntry)
 	 * @see DatabaseEngine#DBWriteJournal(String, JournalEntry)
 	 * @see DatabaseEngine#DBDeleteJournal(String, String)
+	 * @see DatabaseEngine#DBUpdateJournal(String, String, String, long)
 	 * @param journalID the name/id of the journal
 	 * @param from the author of the message
 	 * @param to who the message is to, such as ALL
@@ -1056,11 +1061,30 @@ public interface DatabaseEngine extends CMLibrary
 	 * @see DatabaseEngine#DBUpdateJournal(String, JournalEntry)
 	 * @see DatabaseEngine#DBWriteJournal(String, JournalEntry)
 	 * @see DatabaseEngine#DBWriteJournal(String, String, String, String, String)
+	 * @see DatabaseEngine#DBUpdateJournal(String, String, String, long)
 	 * @param journalID the name/id of the journal
 	 * @param msgKeyOrNull the message key, or null to delete ALL messages
 	 */
 	public void DBDeleteJournal(String journalID, String msgKeyOrNull);
 
+
+	/**
+	 * Table category: DBJOURNALS
+	 * Updates the existing journal message record in the database. 
+	 * Nothing is optional, it updates all of the given fields.
+	 * @see DatabaseEngine#DBReadJournals()
+	 * @see DatabaseEngine#DBReadJournalEntry(String, String)
+	 * @see DatabaseEngine#DBUpdateJournal(String, JournalEntry)
+	 * @see DatabaseEngine#DBWriteJournal(String, JournalEntry)
+	 * @see DatabaseEngine#DBWriteJournal(String, String, String, String, String)
+	 * @see DatabaseEngine#DBDeleteJournal(String, String)
+	 * @param messageKey the unique message key
+	 * @param subject the new message subject
+	 * @param msg the new message text
+	 * @param newAttributes the new message attributes bitmap
+	 */
+	public void DBUpdateJournal(String messageKey, String subject, String msg, long newAttributes);
+	
 	/**
 	 * Table category: DBJOURNALS
 	 * Writes a new journal entry formatted for the email system and generates
@@ -1229,53 +1253,64 @@ public interface DatabaseEngine extends CMLibrary
 
 	/**
 	 * Table category: DBJOURNALS
-	 * 
-	 * @param journalID
-	 * @param to
-	 * @param olderDate
-	 * @return
+	 * Returns all the messages optionally sent to the given user (or ALL) that 
+	 * are newer than the given date.
+	 * @see DatabaseEngine#DBReadJournalMsgsOlderThan(String, String, long)
+	 * @param journalID the name/ID of the journal/forum
+	 * @param to NULL, ALL, or a user the messages were sent to
+	 * @param olderDate the date beyond which to return messages for
+	 * @return the list of messages that were found
 	 */
 	public List<JournalEntry> DBReadJournalMsgsNewerThan(String journalID, String to, long olderDate);
 
 	/**
 	 * Table category: DBJOURNALS
-	 * 
-	 * @param journalID
-	 * @param to
-	 * @param newestDate
-	 * @return
+	 * Returns all the messages optionally sent to the given user (or ALL) that 
+	 * are older than the given date.
+	 * @see DatabaseEngine#DBReadJournalMsgsNewerThan(String, String, long)
+	 * @param journalID the name/ID of the journal/forum
+	 * @param to NULL, ALL, or a user the messages were sent to
+	 * @param newestDate the date before which to return messages for
+	 * @return the list of messages that were found
 	 */
 	public List<JournalEntry> DBReadJournalMsgsOlderThan(String journalID, String to, long newestDate);
 
 	/**
 	 * Table category: DBJOURNALS
-	 * 
-	 * @param journalID
-	 * @param from
-	 * @param to
-	 * @return
+	 * Returns the number of messages found in the given journal optionally
+	 * sent from the given user name, and/or optionally to the given user
+	 * name.
+	 * @param journalID the name/id of the journal
+	 * @param from NULL, or the user id of a user the messages are from
+	 * @param to NULL, or the user id of a user the messages are to
+	 * @return the number of messages found
 	 */
 	public int DBCountJournal(String journalID, String from, String to);
 
 	/**
 	 * Table category: DBJOURNALS
+	 * Writes a new journal message/entry to the database.  One which is
+	 * probably a reply to a parent message, denoted by the parentKey,
+	 * which is the message key of the parent.  This method also updates
+	 * the number of replies being tracked for the given parent message.
 	 * 
-	 * @param journalID
-	 * @param journalSource
-	 * @param from
-	 * @param to
-	 * @param parentKey
-	 * @param subject
-	 * @param message
+	 * @param journalID the name/id of the journal/forum
+	 * @param journalSource the originating name/id of an originating journal?
+	 * @param from who the message is written by, a user id
+	 * @param to who the message is to, or ALL
+	 * @param parentKey the message key of the parent message this is a reply to
+	 * @param subject the subject of the reply message
+	 * @param message the message text of the reply message
 	 */
 	public void DBWriteJournalChild(String journalID, String journalSource, String from, String to, 
 									String parentKey, String subject, String message);
 
 	/**
 	 * Table category: DBJOURNALS
-	 * 
-	 * @param possibleName
-	 * @return
+	 * A silly function that queries the database for a journal of the given exact
+	 * name, and if it is found, it returns it, otherwise it returns null.
+	 * @param possibleName the possible name of a journal
+	 * @return null, or the name returned
 	 */
 	public String DBGetRealJournalName(String possibleName);
 
@@ -1295,16 +1330,6 @@ public interface DatabaseEngine extends CMLibrary
 	 * @param name
 	 */
 	public void DBDeletePlayerJournals(String name);
-
-	/**
-	 * Table category: DBJOURNALS
-	 * 
-	 * @param messageKey
-	 * @param subject
-	 * @param msg
-	 * @param newAttributes
-	 */
-	public void DBUpdateJournal(String messageKey, String subject, String msg, long newAttributes);
 
 	/**
 	 * Table category: DBJOURNALS
