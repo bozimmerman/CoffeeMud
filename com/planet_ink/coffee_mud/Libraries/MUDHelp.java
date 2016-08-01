@@ -462,10 +462,8 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 				prepend.append("^H"+CMStrings.padRight(L("Movement  : ^N@x1",C.getMovementDesc()),(wrap/2)));
 				prepend.append(L("^HDamage Pts: ^N@x1",C.getDamageDesc()));
 				prepend.append("\n\r");
-				prepend.append(L("^HWeapons   : ^N@x1",C.getWeaponLimitDesc()));
-				prepend.append("\n\r");
-				prepend.append(L("^HArmor     : ^N@x1",C.getArmorLimitDesc()));
-				prepend.append("\n\r");
+				prepend.append(columnHelper(L("^HWeapons   : ^N"),C.getWeaponLimitDesc(),wrap));
+				prepend.append(columnHelper(L("^HArmor     : ^N"),C.getArmorLimitDesc(),wrap));
 				prepend.append(columnHelper(L("^HBonuses   :^N"),C.getOtherBonusDesc(),wrap));
 				prepend.append(columnHelper(L("^HLimits    :^N"),C.getOtherLimitsDesc(),wrap));
 				prepend.append(L("^HDesc.     : ^N"));
