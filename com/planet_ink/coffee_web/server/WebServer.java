@@ -307,7 +307,17 @@ public class WebServer extends Thread
 			// remove any stray handlers from time to time
 			if(handlers.size() == 0)
 				return;
-			for(final Iterator<HTTPIOHandler> i = handlers.iterator(); i.hasNext(); )
+			final Iterator<HTTPIOHandler> i;
+			try
+			{
+				i=handlers.iterator();
+			}
+			catch(java.lang.IndexOutOfBoundsException x)
+			{
+				handlers.clear();
+				throw x;
+			}
+			for(; i.hasNext(); )
 			{
 				final HTTPIOHandler handler=i.next();
 				try
