@@ -155,11 +155,13 @@ public class JournalFunction extends StdWebMacro
 			// check for dups
 			final List<JournalEntry> chckEntries = CMLib.database().DBReadJournalMsgsNewerThan(journalName, to, msg.date()-1);
 			for(final JournalEntry entry : chckEntries)
+			{
 				if((entry.date() == msg.date())
 				&&(entry.from().equals(msg.from()))
 				&&(entry.subj().equals(msg.subj()))
 				&&(entry.parent().equals(msg.parent())))
 					return "";
+			}
 			CMLib.database().DBWriteJournal(journalName,msg);
 			JournalInfo.clearJournalCache(httpReq, journalName);
 			if(parent!=null)
