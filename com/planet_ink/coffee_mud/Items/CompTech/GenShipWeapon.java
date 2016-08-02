@@ -43,8 +43,8 @@ public class GenShipWeapon extends StdShipWeapon
 	public GenShipWeapon()
 	{
 		super();
-		setName("a generic ship particle weapon");
-		setDisplayText("a generic ship particle weapon.");
+		setName("a generic ship weapon");
+		setDisplayText("a generic ship weapon.");
 		setDescription("");
 	}
 
