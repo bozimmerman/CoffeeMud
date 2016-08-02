@@ -71,7 +71,7 @@ public class GrinderItems
 		MAXTHRUST,SPECIMPULSE,FUELEFFICIENCY,INSTALLFACTOR,
 		PANELTYPE,GENAMTPERTICK,CONSUMEDMATS,AREAXML,RECIPESKILLHELP,
 		MINTHRUST,ISCONSTTHRUST,AVAILPORTS,CONTENTSACCESS,BLENDEDVIEW,
-		ISSHIPSHIELD,SSHIELDNUMPORTS,SSHIELDPORTS,SSHIELDMTYPES,
+		ISSHIPWARCOMP,SWARNUMPORTS,SWARPORTS,SWARMTYPES,
 		RECHARGERATE
 		;
 		public boolean isGenField;
@@ -715,7 +715,7 @@ public class GrinderItems
 				case ISPANEL:
 				case ISFUELCONSUMER:
 				case ISPOWERGENERATION:
-				case ISSHIPSHIELD:
+				case ISSHIPWARCOMP:
 					break;
 				case MANUFACTURER:
 					if(I instanceof Electronics)
@@ -733,25 +733,25 @@ public class GrinderItems
 					if(I instanceof Electronics)
 						((Electronics)I).activate(old.equalsIgnoreCase("on"));
 					break;
-				case SSHIELDNUMPORTS:
+				case SWARNUMPORTS:
 					if(I instanceof ShipWarComponent)
 						((ShipWarComponent)I).setPermittedNumDirections(CMath.s_int(old));
 					break;
-				case SSHIELDPORTS:
+				case SWARPORTS:
 					if(I instanceof ShipWarComponent)
 						((ShipWarComponent)I).setPermittedDirections(CMParms.parseEnumList(TechComponent.ShipDir.class,old.toUpperCase(),',').toArray(new TechComponent.ShipDir[0]));
 					break;
-				case SSHIELDMTYPES:
+				case SWARMTYPES:
 					if(I instanceof ShipWarComponent)
 					{
 						final Set<Integer> msgTypes=new TreeSet<Integer>(); 
-						if(httpReq.isUrlParameter("SSHIELDMTYPES"))
+						if(httpReq.isUrlParameter("SWARMTYPES"))
 						{
-							msgTypes.add(Integer.valueOf(CMath.s_int(httpReq.getUrlParameter("SSHIELDMTYPES"))));
+							msgTypes.add(Integer.valueOf(CMath.s_int(httpReq.getUrlParameter("SWARMTYPES"))));
 							for(int i=1;;i++)
 							{
-								if(httpReq.isUrlParameter("SSHIELDMTYPES"+(Integer.toString(i))))
-									msgTypes.add(Integer.valueOf(CMath.s_int(httpReq.getUrlParameter("SSHIELDMTYPES"+(Integer.toString(i))))));
+								if(httpReq.isUrlParameter("SWARMTYPES"+(Integer.toString(i))))
+									msgTypes.add(Integer.valueOf(CMath.s_int(httpReq.getUrlParameter("SWARMTYPES"+(Integer.toString(i))))));
 								else
 									break;
 							}

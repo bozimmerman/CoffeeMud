@@ -32,19 +32,19 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class GenShipShieldGenerator extends StdShipShieldGenerator
+public class GenShipWeapon extends StdShipWeapon
 {
 	@Override
 	public String ID()
 	{
-		return "GenShipShieldGenerator";
+		return "GenShipWeapon";
 	}
 
-	public GenShipShieldGenerator()
+	public GenShipWeapon()
 	{
 		super();
-		setName("a generic ship shield generator");
-		setDisplayText("a generic ship shield generator sits here.");
+		setName("a generic ship particle weapon");
+		setDisplayText("a generic ship particle weapon.");
 		setDescription("");
 	}
 
@@ -179,7 +179,7 @@ public class GenShipShieldGenerator extends StdShipShieldGenerator
 	{
 		if(codes!=null)
 			return codes;
-		final String[] MYCODES=CMProps.getStatCodesList(GenShipShieldGenerator.MYCODES,this);
+		final String[] MYCODES=CMProps.getStatCodesList(GenShipWeapon.MYCODES,this);
 		final String[] superCodes=CMParms.toStringArray(GenericBuilder.GenItemCode.values());
 		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;
@@ -193,7 +193,7 @@ public class GenShipShieldGenerator extends StdShipShieldGenerator
 	@Override
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof GenShipShieldGenerator))
+		if(!(E instanceof GenShipWeapon))
 			return false;
 		final String[] theCodes=getStatCodes();
 		for(int i=0;i<theCodes.length;i++)

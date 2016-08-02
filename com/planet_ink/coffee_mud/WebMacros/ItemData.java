@@ -1160,7 +1160,7 @@ public class ItemData extends StdWebMacro
 					case ISSHIPENGINE:
 						str.append(I instanceof ShipEngine);
 						break;
-					case ISSHIPSHIELD:
+					case ISSHIPWARCOMP:
 						str.append(I instanceof ShipWarComponent);
 						break;
 					case ISPANEL:
@@ -1208,15 +1208,15 @@ public class ItemData extends StdWebMacro
 						if(I instanceof Electronics)
 							str.append((firstTime) ? (((Electronics)I).activated()?"CHECKED":"") : (old.equalsIgnoreCase("on")?"CHECKED":"")).append(", ");
 						break;
-					case SSHIELDNUMPORTS:
+					case SWARNUMPORTS:
 						if(I instanceof ShipWarComponent)
 							str.append((firstTime) ? (""+((ShipWarComponent)I).getPermittedNumDirections()) : old).append(", ");
 						break;
-					case SSHIELDPORTS:
+					case SWARPORTS:
 						if(I instanceof ShipWarComponent)
 							str.append((firstTime) ? (""+CMParms.toListString(((ShipWarComponent)I).getPermittedDirections())) : old).append(", ");
 						break;
-					case SSHIELDMTYPES:
+					case SWARMTYPES:
 						if(I instanceof ShipWarComponent)
 						{
 							final Set<Integer> msgTypes=new TreeSet<Integer>(); 
@@ -1227,13 +1227,13 @@ public class ItemData extends StdWebMacro
 							}
 							else
 							{
-								if(httpReq.isUrlParameter("SSHIELDMTYPES"))
+								if(httpReq.isUrlParameter("SWARMTYPES"))
 								{
-									msgTypes.add(Integer.valueOf(CMath.s_int(httpReq.getUrlParameter("SSHIELDMTYPES"))));
+									msgTypes.add(Integer.valueOf(CMath.s_int(httpReq.getUrlParameter("SWARMTYPES"))));
 									for(int i=1;;i++)
 									{
-										if(httpReq.isUrlParameter("SSHIELDMTYPES"+(Integer.toString(i))))
-											msgTypes.add(Integer.valueOf(CMath.s_int(httpReq.getUrlParameter("SSHIELDMTYPES"+(Integer.toString(i))))));
+										if(httpReq.isUrlParameter("SWARMTYPES"+(Integer.toString(i))))
+											msgTypes.add(Integer.valueOf(CMath.s_int(httpReq.getUrlParameter("SWARMTYPES"+(Integer.toString(i))))));
 										else
 											break;
 									}
