@@ -75,6 +75,12 @@ public class Thief_Belay extends ThiefSkill
 	}
 
 	@Override
+	public long flags()
+	{
+		return Ability.FLAG_BINDING;
+	}
+
+	@Override
 	public String[] triggerStrings()
 	{
 		return triggerStrings;
