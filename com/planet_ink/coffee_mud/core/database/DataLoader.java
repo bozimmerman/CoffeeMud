@@ -504,7 +504,7 @@ public class DataLoader
 
 	public void DBReadArtifacts()
 	{
-		final List<String> itemSet=CMLib.database().DBReadPlayerDataPlayersBySection("ARTIFACTS");
+		final List<String> itemSet=DBReadNames("ARTIFACTS");
 		for(int i=0;i<itemSet.size();i++)
 		{
 			final String itemID=itemSet.get(i);
