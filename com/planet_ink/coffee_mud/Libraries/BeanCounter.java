@@ -963,7 +963,11 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	@Override
 	public boolean modifyBankGold(String bankName, String owner, String explanation, String currency, double absoluteAmount)
 	{
-		final List<PlayerData> V=CMLib.database().DBReadAllPlayerData(owner);
+		final List<PlayerData> V;
+		if((bankName==null)||(bankName.length()==0))
+			V=CMLib.database().DBReadAllPlayerData(owner);
+		else
+			V=CMLib.database().DBReadPlayerData(owner, bankName);
 		for(int v=0;v<V.size();v++)
 		{
 			final DatabaseEngine.PlayerData D=V.get(v);
