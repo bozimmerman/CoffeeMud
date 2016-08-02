@@ -348,7 +348,7 @@ public class Conquerable extends Arrest
 			{
 				laws.setInternalStr("ACTIVATED","FALSE");
 				laws.resetLaw();
-				CMLib.database().DBReCreateData(myArea.Name(),"ARREST",myArea.Name()+"/ARREST",laws.rawLawString());
+				CMLib.database().DBReCreatePlayerData(myArea.Name(),"ARREST",myArea.Name()+"/ARREST",laws.rawLawString());
 			}
 		}
 		synchronized(clanItems)
@@ -374,7 +374,7 @@ public class Conquerable extends Arrest
 			{
 			}
 			if((C==null)&&(clanItems.size()==0)&&(myArea!=null))
-				CMLib.database().DBDeleteData(myArea.name(),"CONQITEMS","CONQITEMS/"+myArea.name());
+				CMLib.database().DBDeletePlayerData(myArea.name(),"CONQITEMS","CONQITEMS/"+myArea.name());
 		}
 		holdingClan="";
 		conquestDate=0;
@@ -482,7 +482,7 @@ public class Conquerable extends Arrest
 		{
 			final HashSet<Room> doneRooms=new HashSet<Room>();
 			clanItems.clear();
-			final List<PlayerData> itemSet=CMLib.database().DBReadData(myArea.name(),"CONQITEMS","CONQITEMS/"+myArea.name());
+			final List<PlayerData> itemSet=CMLib.database().DBReadPlayerData(myArea.name(),"CONQITEMS","CONQITEMS/"+myArea.name());
 			if((itemSet!=null)&&(itemSet.size()>0))
 			{
 				final String data=itemSet.get(0).xml();
@@ -1434,7 +1434,7 @@ public class Conquerable extends Arrest
 				prevHoldingClan="";
 				clanControlPoints=new DVector(2);
 				data.append("</ACITEMS>");
-				CMLib.database().DBReCreateData(myArea.name(),"CONQITEMS","CONQITEMS/"+myArea.name(),data.toString());
+				CMLib.database().DBReCreatePlayerData(myArea.name(),"CONQITEMS","CONQITEMS/"+myArea.name(),data.toString());
 			}
 		}
 	}

@@ -300,7 +300,7 @@ public class Age extends StdAbility
 						R.show(babe,null,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> JUST TOOK <S-HIS-HER> FIRST STEPS!!!"));
 						I.destroy();
 						if(!CMLib.flags().isAnimalIntelligence(babe))
-							CMLib.database().DBReCreateData(following.Name(),"HEAVEN",following.Name()+"/HEAVEN/"+text(),babe.ID()+"/"+babe.basePhyStats().ability()+"/"+babe.text());
+							CMLib.database().DBReCreatePlayerData(following.Name(),"HEAVEN",following.Name()+"/HEAVEN/"+text(),babe.ID()+"/"+babe.basePhyStats().ability()+"/"+babe.text());
 					}
 				}
 			}
@@ -355,7 +355,7 @@ public class Age extends StdAbility
 					babe.recoverMaxState();
 					babe.text();
 					if(following!=null)
-						CMLib.database().DBReCreateData(following.Name(),"HEAVEN",following.Name()+"/HEAVEN/"+text(),babe.ID()+"/"+babe.basePhyStats().ability()+"/"+babe.text());
+						CMLib.database().DBReCreatePlayerData(following.Name(),"HEAVEN",following.Name()+"/HEAVEN/"+text(),babe.ID()+"/"+babe.basePhyStats().ability()+"/"+babe.text());
 				}
 			}
 			else
@@ -366,7 +366,7 @@ public class Age extends StdAbility
 				Ability A=babe.fetchEffect("Prop_SafePet");
 				if(A!=null)
 					babe.delEffect(A);
-				CMLib.database().DBDeleteData(following.Name(),"HEAVEN",following.Name()+"/HEAVEN/"+text());
+				CMLib.database().DBDeletePlayerData(following.Name(),"HEAVEN",following.Name()+"/HEAVEN/"+text());
 
 				final Room R=CMLib.map().roomLocation(affected);
 				if((R!=null)
@@ -576,7 +576,7 @@ public class Age extends StdAbility
 						babe.setName(name);
 						babe.setDisplayText(L("@x1 stands here.",name));
 					}
-					CMLib.database().DBDeleteData(following.Name(),"HEAVEN",following.Name()+"/HEAVEN/"+text());
+					CMLib.database().DBDeletePlayerData(following.Name(),"HEAVEN",following.Name()+"/HEAVEN/"+text());
 					if(liege!=babe.amFollowing())
 						babe.amFollowing().tell(L("@x1 has just grown up to be a mob.",babe.Name()));
 					liege.tell(L("@x1 has just grown up to be a mob.",babe.Name()));

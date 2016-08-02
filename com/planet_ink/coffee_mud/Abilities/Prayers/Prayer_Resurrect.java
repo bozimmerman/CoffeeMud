@@ -75,7 +75,7 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
 		boolean playerCorpse=false;
 		if((body==null)&&(CMSecurity.isASysOp(mob)))
 		{
-			final List<PlayerData> V=CMLib.database().DBReadData("HEAVEN");
+			final List<PlayerData> V=CMLib.database().DBReadPlayerSectionData("HEAVEN");
 			final Vector<Physical> allObjs=new Vector<Physical>();
 			final Vector<DatabaseEngine.PlayerData> allDataPs=new Vector<DatabaseEngine.PlayerData>();
 			if((V!=null)&&(V.size()>0))
@@ -145,7 +145,7 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
 						M=mob.location().fetchInhabitant(i);
 						if((M!=null)&&(!M.isMonster()))
 						{
-							final List<PlayerData> V=CMLib.database().DBReadData(M.Name(),"HEAVEN",M.Name()+"/HEAVEN/"+ageA.text());
+							final List<PlayerData> V=CMLib.database().DBReadPlayerData(M.Name(),"HEAVEN",M.Name()+"/HEAVEN/"+ageA.text());
 							if((V!=null)&&(V.size()>0))
 							{
 								nonPlayerData=V.get(0);

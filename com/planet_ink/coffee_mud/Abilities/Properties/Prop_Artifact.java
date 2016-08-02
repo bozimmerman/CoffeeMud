@@ -135,7 +135,7 @@ public class Prop_Artifact extends Property
 				new Exception().printStackTrace(new java.io.PrintStream(o));
 				o.close();
 				if(o.toString().indexOf("Commands.Destroy.execute")>=0)
-					CMLib.database().DBDeleteData(getItemID(),"ARTIFACTS","ARTIFACTS/"+getItemID());
+					CMLib.database().DBDeletePlayerData(getItemID(),"ARTIFACTS","ARTIFACTS/"+getItemID());
 			}
 			catch (final Exception e)
 			{
@@ -252,7 +252,7 @@ public class Prop_Artifact extends Property
 			{
 				if(autoreset)
 				{
-					final List<PlayerData> itemSet=CMLib.database().DBReadData(getItemID(),"ARTIFACTS","ARTIFACTS/"+getItemID());
+					final List<PlayerData> itemSet=CMLib.database().DBReadPlayerData(getItemID(),"ARTIFACTS","ARTIFACTS/"+getItemID());
 					if((itemSet!=null)&&(itemSet.size()>0))
 						return;
 				}
@@ -282,7 +282,7 @@ public class Prop_Artifact extends Property
 				data.append(CMLib.xml().convertXMLtoTag("ITEXT",CMLib.xml().parseOutAngleBrackets(I.text())));
 				data.append("</ARTITEM>");
 				I.destroy();
-				CMLib.database().DBReCreateData(getItemID(),"ARTIFACTS","ARTIFACTS/"+getItemID(),data.toString());
+				CMLib.database().DBReCreatePlayerData(getItemID(),"ARTIFACTS","ARTIFACTS/"+getItemID(),data.toString());
 			}
 		}
 	}
@@ -302,7 +302,7 @@ public class Prop_Artifact extends Property
 				&&(CMLib.flags().isInTheGame((Item)affected,true)))
 					return false;
 
-				final List<PlayerData> itemSet=CMLib.database().DBReadData(getItemID(),"ARTIFACTS","ARTIFACTS/"+getItemID());
+				final List<PlayerData> itemSet=CMLib.database().DBReadPlayerData(getItemID(),"ARTIFACTS","ARTIFACTS/"+getItemID());
 				if((itemSet!=null)&&(itemSet.size()>0))
 				{
 					// does it already exist?

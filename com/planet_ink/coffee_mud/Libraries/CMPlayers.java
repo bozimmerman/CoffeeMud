@@ -536,8 +536,8 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		CMLib.database().DBUpdatePlayerAbilities(deadMOB);
 		if(deleteAssets)
 		{
-			CMLib.database().DBDeletePlayerJournals(deadMOB.Name());
-			CMLib.database().DBDeletePlayerData(deadMOB.Name());
+			CMLib.database().DBDeletePlayerPrivateJournalEntries(deadMOB.Name());
+			CMLib.database().DBDeleteAllPlayerData(deadMOB.Name());
 		}
 		final PlayerStats pstats = deadMOB.playerStats();
 		if(pstats!=null)

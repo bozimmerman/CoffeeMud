@@ -156,7 +156,7 @@ public class DefaultClan implements Clan
 	{
 		if(lastClanKillRecord==null)
 		{
-			final List<PlayerData> V=CMLib.database().DBReadData(clanID(),"CLANKILLS",clanID()+"/CLANKILLS");
+			final List<PlayerData> V=CMLib.database().DBReadPlayerData(clanID(),"CLANKILLS",clanID()+"/CLANKILLS");
 			clanKills.clear();
 			if(V.size()==0)
 				lastClanKillRecord="";
@@ -185,7 +185,7 @@ public class DefaultClan implements Clan
 		if((lastClanKillRecord==null)||(!lastClanKillRecord.equals(str.toString())))
 		{
 			lastClanKillRecord=str.toString();
-			CMLib.database().DBReCreateData(clanID(),"CLANKILLS",clanID()+"/CLANKILLS",str.toString());
+			CMLib.database().DBReCreatePlayerData(clanID(),"CLANKILLS",clanID()+"/CLANKILLS",str.toString());
 		}
 	}
 
@@ -215,9 +215,9 @@ public class DefaultClan implements Clan
 			}
 		}
 		if(str.length()>0)
-			CMLib.database().DBReCreateData(clanID(),"CLANVOTES",clanID()+"/CLANVOTES","<BALLOTS>"+str.toString()+"</BALLOTS>");
+			CMLib.database().DBReCreatePlayerData(clanID(),"CLANVOTES",clanID()+"/CLANVOTES","<BALLOTS>"+str.toString()+"</BALLOTS>");
 		else
-			CMLib.database().DBDeleteData(clanID(),"CLANVOTES",clanID()+"/CLANVOTES");
+			CMLib.database().DBDeletePlayerData(clanID(),"CLANVOTES",clanID()+"/CLANVOTES");
 	}
 	@Override
 	public void addVote(ClanVote CV)
@@ -326,7 +326,7 @@ public class DefaultClan implements Clan
 	{
 		if(voteList==null)
 		{
-			final List<PlayerData> V=CMLib.database().DBReadData(clanID(),"CLANVOTES",clanID()+"/CLANVOTES");
+			final List<PlayerData> V=CMLib.database().DBReadPlayerData(clanID(),"CLANVOTES",clanID()+"/CLANVOTES");
 			voteList=new Vector<ClanVote>();
 			for(int v=0;v<V.size();v++)
 			{

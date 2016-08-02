@@ -10335,9 +10335,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								val="";
 						}
 						if(val.length()>0)
-							CMLib.database().DBReCreateData(which,"SCRIPTABLEVARS",which.toUpperCase()+"_SCRIPTABLEVARS_"+arg2,val);
+							CMLib.database().DBReCreatePlayerData(which,"SCRIPTABLEVARS",which.toUpperCase()+"_SCRIPTABLEVARS_"+arg2,val);
 						else
-							CMLib.database().DBDeleteData(which,"SCRIPTABLEVARS",which.toUpperCase()+"_SCRIPTABLEVARS_"+arg2);
+							CMLib.database().DBDeletePlayerData(which,"SCRIPTABLEVARS",which.toUpperCase()+"_SCRIPTABLEVARS_"+arg2);
 					}
 				}
 				break;
@@ -10358,9 +10358,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					List<PlayerData> V=null;
 					which=getVarHost(E,which,source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp);
 					if(arg2.equals("*"))
-						V=CMLib.database().DBReadData(which,"SCRIPTABLEVARS");
+						V=CMLib.database().DBReadPlayerData(which,"SCRIPTABLEVARS");
 					else
-						V=CMLib.database().DBReadData(which,"SCRIPTABLEVARS",which.toUpperCase()+"_SCRIPTABLEVARS_"+arg2);
+						V=CMLib.database().DBReadPlayerData(which,"SCRIPTABLEVARS",which.toUpperCase()+"_SCRIPTABLEVARS_"+arg2);
 					if((V!=null)&&(V.size()>0))
 					for(int v=0;v<V.size();v++)
 					{

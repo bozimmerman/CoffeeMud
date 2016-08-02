@@ -63,7 +63,7 @@ public class DataLoader
 			{
 				final String playerID2=DBConnections.getRes(R,"CMPLID");
 				final String section2=DBConnections.getRes(R,"CMSECT");
-				final PlayerData d = engine.createPlayerData();
+				final PlayerData d = createPlayerData();
 				d.who(playerID2);
 				d.section(section2);
 				d.key(DBConnections.getRes(R,"CMPKEY"));
@@ -96,7 +96,7 @@ public class DataLoader
 				final String playerID2=DBConnections.getRes(R,"CMPLID");
 				if(playerID2.equalsIgnoreCase(playerID))
 				{
-					final PlayerData d = engine.createPlayerData();
+					final PlayerData d = createPlayerData();
 					d.who(playerID2);
 					d.section(DBConnections.getRes(R,"CMSECT"));
 					d.key(DBConnections.getRes(R,"CMPKEY"));
@@ -160,7 +160,7 @@ public class DataLoader
 				final Matcher M=P.matcher(key);
 				if(M.find())
 				{
-					final PlayerData d = engine.createPlayerData();
+					final PlayerData d = createPlayerData();
 					d.who(plid);
 					d.section(sect);
 					d.key(key);
@@ -195,7 +195,7 @@ public class DataLoader
 				final String plid=DBConnections.getRes(R,"CMPLID");
 				final String sect=DBConnections.getRes(R,"CMSECT");
 				key=DBConnections.getRes(R,"CMPKEY");
-				final PlayerData d = engine.createPlayerData();
+				final PlayerData d = createPlayerData();
 				d.who(plid);
 				d.section(sect);
 				d.key(key);
@@ -231,7 +231,7 @@ public class DataLoader
 			{
 				final String playerID2=DBConnections.getRes(R,"CMPLID");
 				final String section2=DBConnections.getRes(R,"CMSECT");
-				final PlayerData d = engine.createPlayerData();
+				final PlayerData d = createPlayerData();
 				d.who(playerID2);
 				d.section(section2);
 				d.key(DBConnections.getRes(R,"CMPKEY"));
@@ -262,12 +262,44 @@ public class DataLoader
 			final ResultSet R=D.query("SELECT * FROM CMPDAT WHERE CMSECT='"+section+"'");
 			while(R.next())
 			{
-				final PlayerData d = engine.createPlayerData();
+				final PlayerData d = createPlayerData();
 				d.who(DBConnections.getRes(R,"CMPLID"));
 				d.section(DBConnections.getRes(R,"CMSECT"));
 				d.key(DBConnections.getRes(R,"CMPKEY"));
 				d.xml(DBConnections.getRes(R,"CMPDAT"));
 				rows.addElement(d);
+			}
+		}
+		catch(final Exception sqle)
+		{
+			Log.errOut("DataLoader",sqle);
+		}
+		finally
+		{
+			DB.DBDone(D);
+		}
+		// log comment
+		return rows;
+	}
+
+	public List<String> DBReadNames(String section)
+	{
+		DBConnection D=null;
+		final TreeSet<String> found=new TreeSet<String>();
+		final Vector<String> rows=new Vector<String>();
+		try
+		{
+			D=DB.DBFetch();
+			section = DB.injectionClean(section);
+			final ResultSet R=D.query("SELECT CMPLID FROM CMPDAT WHERE CMSECT='"+section+"'");
+			while(R.next())
+			{
+				final String name=DBConnections.getRes(R,"CMPLID");
+				if(!found.contains(name))
+				{
+					found.add(name);
+					rows.addElement(name);
+				}
 			}
 		}
 		catch(final Exception sqle)
@@ -302,7 +334,7 @@ public class DataLoader
 			final ResultSet R=D.query("SELECT * FROM CMPDAT WHERE CMPLID='"+playerID+"' AND ("+clause+")");
 			while(R.next())
 			{
-				final PlayerData d = engine.createPlayerData();
+				final PlayerData d = createPlayerData();
 				d.who(DBConnections.getRes(R,"CMPLID"));
 				d.section(DBConnections.getRes(R,"CMSECT"));
 				d.key(DBConnections.getRes(R,"CMPKEY"));
@@ -322,7 +354,7 @@ public class DataLoader
 		return rows;
 	}
 
-	public void DBReCreate(String name, String section, String key, String xml)
+	public PlayerData DBReCreate(String name, String section, String key, String xml)
 	{
 		synchronized(("RECREATE"+key).intern())
 		{
@@ -336,14 +368,22 @@ public class DataLoader
 				DB.DBDone(D);
 				D=null;
 				if(exists)
+				{
+					final PlayerData d = createPlayerData();
+					d.who(name);
+					d.section(section);
+					d.key(key);
+					d.xml(xml);
 					DBUpdate(key,xml);
+					return d;
+				}
 				else
-					DBCreate(name,section,key,xml);
-				return;
+					return DBCreate(name,section,key,xml);
 			}
 			catch(final Exception sqle)
 			{
 				Log.errOut("DataLoader",sqle);
+				return null;
 			}
 			finally
 			{
@@ -436,11 +476,16 @@ public class DataLoader
 			Log.errOut("Failed to delete data from section "+section+".");
 	}
 
-	public void DBCreate(String playerID, String section, String key, String data)
+	public PlayerData DBCreate(String playerID, String section, String key, String data)
 	{
 		playerID = DB.injectionClean(playerID);
 		section = DB.injectionClean(section);
 		key = DB.injectionClean(key);
+		PlayerData pData = createPlayerData();
+		pData.who(playerID);
+		pData.section(section);
+		pData.key(key);
+		pData.xml(data);
 		DB.updateWithClobs(
 		 "INSERT INTO CMPDAT ("
 		 +"CMPLID, "
@@ -454,15 +499,15 @@ public class DataLoader
 		 +"?"
 		 +")",
 		 data+" ");
+		return pData;
 	}
 
 	public void DBReadArtifacts()
 	{
-		final List<PlayerData> itemSet=CMLib.database().DBReadData("ARTIFACTS");
+		final List<String> itemSet=CMLib.database().DBReadPlayerDataPlayersBySection("ARTIFACTS");
 		for(int i=0;i<itemSet.size();i++)
 		{
-			final PlayerData item=itemSet.get(i);
-			final String itemID=item.who();
+			final String itemID=itemSet.get(i);
 			final Ability A=CMClass.getAbility("Prop_Artifact");
 			if(A!=null)
 			{
@@ -471,5 +516,68 @@ public class DataLoader
 					CMLib.threads().startTickDown(A, Tickable.TICKID_ITEM_BOUNCEBACK,4);
 			}
 		}
+	}
+	
+	public PlayerData createPlayerData()
+	{
+		return new PlayerData()
+		{
+			private String	who		= "";
+			private String	section	= "";
+			private String	key		= "";
+			private String	xml		= "";
+
+			@Override
+			public String who()
+			{
+				return who;
+			}
+
+			@Override
+			public PlayerData who(String who)
+			{
+				this.who = who;
+				return this;
+			}
+
+			@Override
+			public String section()
+			{
+				return section;
+			}
+
+			@Override
+			public PlayerData section(String section)
+			{
+				this.section = section;
+				return this;
+			}
+
+			@Override
+			public String key()
+			{
+				return key;
+			}
+
+			@Override
+			public PlayerData key(String key)
+			{
+				this.key = key;
+				return this;
+			}
+
+			@Override
+			public String xml()
+			{
+				return xml;
+			}
+
+			@Override
+			public PlayerData xml(String xml)
+			{
+				this.xml = xml;
+				return this;
+			}
+		};
 	}
 }

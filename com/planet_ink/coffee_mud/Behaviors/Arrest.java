@@ -256,7 +256,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 			if(getLawParms().equalsIgnoreCase("custom")
 			&&(myArea!=null))
 			{
-				CMLib.database().DBReCreateData(myArea.Name(),"ARREST",myArea.Name()+"/ARREST",laws.rawLawString());
+				CMLib.database().DBReCreatePlayerData(myArea.Name(),"ARREST",myArea.Name()+"/ARREST",laws.rawLawString());
 				return true;
 			}
 		}
@@ -565,7 +565,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 			{
 				if((lawName.equalsIgnoreCase("custom"))&&(what!=null))
 				{
-					final List<PlayerData> data=CMLib.database().DBReadData(what.Name(),"ARREST",what.Name()+"/ARREST");
+					final List<PlayerData> data=CMLib.database().DBReadPlayerData(what.Name(),"ARREST",what.Name()+"/ARREST");
 					if((data!=null)&&(data.size()>0))
 					{
 						final DatabaseEngine.PlayerData pdata=data.get(0);
@@ -580,7 +580,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 						s=CMStrings.replaceAll(s,"\n","~");
 						s=CMStrings.replaceAll(s,"\r","~");
 						s=CMStrings.replaceAll(s,"'","`");
-						CMLib.database().DBCreateData(what.Name(),"ARREST",what.Name()+"/ARREST",s);
+						CMLib.database().DBCreatePlayerData(what.Name(),"ARREST",what.Name()+"/ARREST",s);
 					}
 				}
 				if(lawprops.isEmpty())

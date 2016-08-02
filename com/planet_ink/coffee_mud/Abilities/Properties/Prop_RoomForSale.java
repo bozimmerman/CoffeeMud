@@ -486,18 +486,16 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		if(O instanceof List)
 			pDataV=(List<PlayerData>)O;
 		else
-			pDataV=CMLib.database().DBReadData(owner,"RENTAL INFO");
+			pDataV=CMLib.database().DBReadPlayerData(owner,"RENTAL INFO");
 		if(pDataV==null)
 			pDataV=new Vector<PlayerData>();
 		DatabaseEngine.PlayerData pData = null;
 		if(pDataV.size()==0)
 		{
-			pData = CMLib.database().createPlayerData();
-			pData.who(owner);
-			pData.section("RENTAL INFO");
-			pData.key("RENTAL INFO/"+owner);
-			pData.xml(ID+"|~>|"+day+" "+month+" "+year+"|~;|");
-			CMLib.database().DBCreateData(owner,"RENTAL INFO","RENTAL INFO/"+owner,pData.xml());
+			final String section="RENTAL INFO";
+			final String key="RENTAL INFO/"+owner;
+			final String xml=ID+"|~>|"+day+" "+month+" "+year+"|~;|";
+			pData = CMLib.database().DBCreatePlayerData(owner,section,key,xml);
 			pDataV.add(pData);
 			Resources.submitResource("RENTAL INFO/"+owner,pDataV);
 			return false;
@@ -564,15 +562,13 @@ public class Prop_RoomForSale extends Property implements LandTitle
 			}
 			if(changesMade)
 			{
-				CMLib.database().DBReCreateData(owner,"RENTAL INFO","RENTAL INFO/"+owner,reparse.toString());
-				pData = CMLib.database().createPlayerData();
-				pData.who(owner);
-				pData.section("RENTAL INFO");
-				pData.key("RENTAL INFO/"+owner);
-				pData.xml(reparse.toString());
-				pDataV.set(0,pData);
+				pData = CMLib.database().DBReCreatePlayerData(owner,"RENTAL INFO","RENTAL INFO/"+owner,reparse.toString());
 				Resources.removeResource("RENTAL INFO/"+owner);
-				Resources.submitResource("RENTAL INFO/"+owner,pDataV);
+				if(pData != null)
+				{
+					pDataV.set(0,pData);
+					Resources.submitResource("RENTAL INFO/"+owner,pDataV);
+				}
 			}
 			return needsToPay;
 		}

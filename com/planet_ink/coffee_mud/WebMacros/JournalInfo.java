@@ -373,7 +373,7 @@ public class JournalInfo extends StdWebMacro
 				if((entry.parent()==null)||(entry.parent().length()==0))
 				{
 					entry.views(entry.views()+1);
-					CMLib.database().DBViewJournalMessage(entry.key(), entry.views());
+					CMLib.database().DBUpdateJournalMessageViews(entry.key(), entry.views());
 				}
 				return s;
 			}

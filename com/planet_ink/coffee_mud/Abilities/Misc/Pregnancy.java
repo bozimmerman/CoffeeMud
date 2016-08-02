@@ -341,7 +341,7 @@ public class Pregnancy extends StdAbility implements HealthCondition
 								if(mob.isMonster()&&(otherParentM!=null))
 									parent=otherParentM.Name();
 								if(AGE!=null)
-									CMLib.database().DBCreateData(parent,"HEAVEN",parent+"/HEAVEN/"+AGE.text(),I.ID()+"/"+I.basePhyStats().ability()+"/"+I.text());
+									CMLib.database().DBCreatePlayerData(parent,"HEAVEN",parent+"/HEAVEN/"+AGE.text(),I.ID()+"/"+I.basePhyStats().ability()+"/"+I.text());
 							}
 						}
 						else

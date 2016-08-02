@@ -167,7 +167,7 @@ public class PlayerOnline extends StdWebMacro
 								final String encoded=B64Encoder.B64encodeBytes(buf);
 								M.setImage("PlayerPortrait?PLAYER="+M.Name()+"&FILENAME="+M.Name()+System.currentTimeMillis()+file);
 								CMLib.database().DBUpdatePlayerMOBOnly(M);
-								CMLib.database().DBReCreateData(M.Name(),"CMPORTRAIT","CMPORTRAIT-"+M.Name(),encoded);
+								CMLib.database().DBReCreatePlayerData(M.Name(),"CMPORTRAIT","CMPORTRAIT-"+M.Name(),encoded);
 								Resources.submitResource("CMPORTRAIT-"+M.Name(),buf);
 								return "Image successfully uploaded.";
 							}

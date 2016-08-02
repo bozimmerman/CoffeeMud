@@ -1316,79 +1316,167 @@ public interface DatabaseEngine extends CMLibrary
 
 	/**
 	 * Table category: DBJOURNALS
-	 * 
-	 * @param journalID
-	 * @param to
-	 * @param olderTime
-	 * @return
+	 * This method returns a two dimensional array, where the first long 
+	 * is the update timestamp of the latest message in the journal, optionally 
+	 * to the given recipient,  and the second long is the number of messages
+	 * found that are newer than the given timestamp.
+	 * @param journalID the journal id/name to search
+	 * @param to NULL, or ALL, or the recipient name
+	 * @param olderTime the time After which to count messages
+	 * @return the array with latest update timestamp, and the number of newer msgs 
 	 */
 	public long[] DBJournalLatestDateNewerThan(String journalID, String to, long olderTime);
 
 	/**
 	 * Table category: DBJOURNALS
-	 * 
-	 * @param name
+	 * This message deletes all private messages with the given 
+	 * user id as a recipient.  This is all the messages TO the given
+	 * user, which might include other kinds of user documents, such as
+	 * email, bank accounts, mail, and the like.
+	 * @param name the name of the user to delete journal entries from
 	 */
-	public void DBDeletePlayerJournals(String name);
+	public void DBDeletePlayerPrivateJournalEntries(String name);
 
 	/**
 	 * Table category: DBJOURNALS
-	 * 
-	 * @param messageKey
-	 * @param views
+	 * Sets the number of views for the given specific journal message.
+	 * @param messageKey the message key of the message to update
+	 * @param views the number of views to mark.
 	 */
-	public void DBViewJournalMessage(String messageKey, int views);
+	public void DBUpdateJournalMessageViews(String messageKey, int views);
 
 	/**
 	 * Table category: DBJOURNALS
-	 * 
-	 * @param messageKey
+	 * Updates the given journal message with an update time of
+	 * the current date/timestamp.
+	 * @param messageKey the message to touch.
 	 */
 	public void DBTouchJournalMessage(String messageKey);
 
 	/**
 	 * Table category: DBJOURNALS
-	 * 
-	 * @param messageKey
-	 * @param newDate
+	 * Updates the given journal message with a specific update
+	 * time of the given date/timestamp
+	 * @param messageKey the key of the message to touch
+	 * @param newDate the date/time to set the message update time to
 	 */
 	public void DBTouchJournalMessage(String messageKey, long newDate);
 
 	/**
 	 * Table category: DBPLAYERDATA
-	 * 
-	 * @param playerID
-	 * @return
+	 * Just as it says, this method reads all player data, which is
+	 * the only way to get all bank data at the same time, for example.
+	 * @see DatabaseEngine.PlayerData
+	 * @see DatabaseEngine#DBDeleteAllPlayerData(String)
+	 * @param playerID the user id of the player to read all data for
+	 * @return all of this players data.
 	 */
 	public List<PlayerData> DBReadAllPlayerData(String playerID);
 
 	/**
 	 * Table category: DBPLAYERDATA
-	 * 
-	 * @param playerID
-	 * @param section
-	 * @return
+	 * Deletes all player data belonging to the player, of all
+	 * types and sections, all over.  BOOM.
+	 * @see DatabaseEngine#DBReadAllPlayerData(String)
+	 * @param name the user id/name of the player to delete all data of
 	 */
-	public List<PlayerData> DBReadData(String playerID, String section);
+	public void DBDeleteAllPlayerData(String name);
 
 	/**
 	 * Table category: DBPLAYERDATA
-	 * 
-	 * @param playerID
-	 * @param section
-	 * @return
+	 * Read a specific set of data for the given player, belonging
+	 * to the given section
+	 * @see DatabaseEngine.PlayerData
+	 * @see DatabaseEngine#DBCountPlayerData(String, String)
+	 * @see DatabaseEngine#DBDeletePlayerData(String, String)
+	 * @see DatabaseEngine#DBReadPlayerData(String, List)
+	 * @param playerID the user id for the player to read data for
+	 * @param section the section/type of data to read.
+	 * @return the data for the player in the section
 	 */
-	public int DBCountData(String playerID, String section);
+	public List<PlayerData> DBReadPlayerData(String playerID, String section);
 
 	/**
 	 * Table category: DBPLAYERDATA
-	 * 
-	 * @param playerID
-	 * @param section
-	 * @param key
-	 * @return
+	 * Counts the number of rows of data/entries 
+	 * @see DatabaseEngine#DBReadPlayerData(String, String)
+	 * @see DatabaseEngine#DBDeletePlayerData(String, String)
+	 * @see DatabaseEngine#DBReadPlayerData(String, List)
+	 * @param playerID the user id of the player to count the data of
+	 * @param section the section/type of data to count
+	 * @return the number of entries for the given player and section
 	 */
-	public List<PlayerData> DBReadData(String playerID, String section, String key);
+	public int DBCountPlayerData(String playerID, String section);
+
+	/**
+	 * Table category: DBPLAYERDATA
+	 * Deletes all of the data for the given player of the
+	 * given section/type.
+	 * @see DatabaseEngine#DBReadPlayerData(String, String)
+	 * @see DatabaseEngine#DBCountPlayerData(String, String)
+	 * @see DatabaseEngine#DBReadPlayerData(String, List)
+	 * @param playerID the user id of the player to delete the data of
+	 * @param section the section/type of data to delete
+	 */
+	public void DBDeletePlayerData(String playerID, String section);
+
+	/**
+	 * Table category: DBPLAYERDATA
+	 * Reads in all data for the given player which also belongs to any
+	 * one of the given sections/data types.
+	 * @see DatabaseEngine.PlayerData
+	 * @see DatabaseEngine#DBReadPlayerData(String, String)
+	 * @see DatabaseEngine#DBCountPlayerData(String, String)
+	 * @see DatabaseEngine#DBDeletePlayerData(String, String)
+	 * @param player the user id of the player to delete the data of
+	 * @param sections the sections/types of data to return records for
+	 * @return the player data records that match the player and sections
+	 */
+	public List<PlayerData> DBReadPlayerData(String player, List<String> sections);
+
+	/**
+	 * Table category: DBPLAYERDATA
+	 * Reads in all unique player names for all players for the given 
+	 * data type/section. 
+	 * @see DatabaseEngine#DBReadPlayerSectionData(String)
+	 * @see DatabaseEngine#DBDeletePlayerSectionData(String)
+	 * @param section the section to read player names for
+	 * @return the list of all unique names in this section
+	 */
+	public List<String> DBReadPlayerDataPlayersBySection(String section);
+
+	/**
+	 * Table category: DBPLAYERDATA
+	 * Reads in all player data for all players for the given 
+	 * data type/section. Use this sparingly!
+	 * @see DatabaseEngine.PlayerData
+	 * @see DatabaseEngine#DBReadPlayerDataPlayersBySection(String)
+	 * @see DatabaseEngine#DBDeletePlayerSectionData(String)
+	 * @param section the section, type of data to delete
+	 * @return the player data in the given section for all players
+	 */
+	public List<PlayerData> DBReadPlayerSectionData(String section);
+
+	/**
+	 * Table category: DBPLAYERDATA
+	 * Deletes all player data of the given section/type.  
+	 * @see DatabaseEngine#DBReadPlayerDataPlayersBySection(String)
+	 * @see DatabaseEngine#DBReadPlayerSectionData(String)
+	 * @param section the section, type of data to delete
+	 */
+	public void DBDeletePlayerSectionData(String section);
+
+	/**
+	 * Table category: DBPLAYERDATA
+	 * Reads what is probably a single player data entry, but could be more.
+	 * All fields are required.
+	 * @see DatabaseEngine.PlayerData
+	 * @param playerID the name/userid of the player to read data for
+	 * @param section the section/type of data to return
+	 * @param key the key of the specific entry(s) to return
+	 * @return the player data entry to return
+	 */
+	public List<PlayerData> DBReadPlayerData(String playerID, String section, String key);
 
 	/**
 	 * Table category: DBPLAYERDATA
@@ -1397,7 +1485,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * @param keyMask
 	 * @return
 	 */
-	public List<PlayerData> DBReadDataKey(String section, String keyMask);
+	public List<PlayerData> DBReadPlayerDataByKeyMask(String section, String keyMask);
 
 	/**
 	 * Table category: DBPLAYERDATA
@@ -1405,39 +1493,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * @param key
 	 * @return
 	 */
-	public List<PlayerData> DBReadDataKey(String key);
-
-	/**
-	 * Table category: DBPLAYERDATA
-	 * 
-	 * @param section
-	 * @return
-	 */
-	public List<PlayerData> DBReadData(String section);
-
-	/**
-	 * Table category: DBPLAYERDATA
-	 * 
-	 * @param player
-	 * @param sections
-	 * @return
-	 */
-	public List<PlayerData> DBReadData(String player, List<String> sections);
-
-	/**
-	 * Table category: DBPLAYERDATA
-	 * 
-	 * @param name
-	 */
-	public void DBDeletePlayerData(String name);
-
-	/**
-	 * Table category: DBPLAYERDATA
-	 * 
-	 * @param playerID
-	 * @param section
-	 */
-	public void DBDeleteData(String playerID, String section);
+	public List<PlayerData> DBReadPlayerDataEntry(String key);
 
 	/**
 	 * Table category: DBPLAYERDATA
@@ -1446,7 +1502,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * @param section
 	 * @param key
 	 */
-	public void DBDeleteData(String playerID, String section, String key);
+	public void DBDeletePlayerData(String playerID, String section, String key);
 
 	/**
 	 * Table category: DBPLAYERDATA
@@ -1454,7 +1510,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * @param key
 	 * @param xml
 	 */
-	public void DBUpdateData(String key, String xml);
+	public void DBUpdatePlayerData(String key, String xml);
 
 	/**
 	 * Table category: DBPLAYERDATA
@@ -1463,15 +1519,9 @@ public interface DatabaseEngine extends CMLibrary
 	 * @param section
 	 * @param key
 	 * @param xml
+	 * @return 
 	 */
-	public void DBReCreateData(String name, String section, String key, String xml);
-
-	/**
-	 * Table category: DBPLAYERDATA
-	 * 
-	 * @param section
-	 */
-	public void DBDeleteData(String section);
+	public PlayerData DBReCreatePlayerData(String name, String section, String key, String xml);
 
 	/**
 	 * Table category: DBPLAYERDATA
@@ -1480,21 +1530,15 @@ public interface DatabaseEngine extends CMLibrary
 	 * @param section
 	 * @param key
 	 * @param data
+	 * @return 
 	 */
-	public void DBCreateData(String player, String section, String key, String data);
+	public PlayerData DBCreatePlayerData(String player, String section, String key, String data);
 
 	/**
 	 * Table category: DBPLAYERDATA
 	 * 
 	 */
 	public void DBReadArtifacts();
-
-	/**
-	 * Table category: DBPLAYERDATA
-	 * 
-	 * @return
-	 */
-	public PlayerData createPlayerData();
 
 	/**
 	 * Table category: DBRACE

@@ -1114,7 +1114,7 @@ public class Reset extends StdCommand
 					if(ID.equalsIgnoreCase("COINS"))
 						classID="COINS";
 					final Item I=(Item)CMClass.getItem("GenItem").copyOf();
-					CMLib.database().DBCreateData(name,bank,""+I,classID+";"+data);
+					CMLib.database().DBCreatePlayerData(name,bank,""+I,classID+";"+data);
 				}
 				CMLib.database().DBDeleteJournal(bank,null); // banks are no longer journaled
 				mob.tell(L("@x1 records done.",""+V.size()));

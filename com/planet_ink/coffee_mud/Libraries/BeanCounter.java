@@ -625,14 +625,14 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 		final String key=name.toUpperCase()+"-DEBT-"+owedTo.toUpperCase().trim();
 		synchronized(key.intern())
 		{
-			CMLib.database().DBDeleteData(name.toUpperCase(),"DEBT",key);
+			CMLib.database().DBDeletePlayerData(name.toUpperCase(),"DEBT",key);
 		}
 	}
 
 	@Override
 	public Vector<DebtItem> getDebtOwed(String owedTo)
 	{
-		final List<PlayerData> rows=CMLib.database().DBReadDataKey("DEBT",".*-DEBT-"+owedTo.toUpperCase().trim());
+		final List<PlayerData> rows=CMLib.database().DBReadPlayerDataByKeyMask("DEBT",".*-DEBT-"+owedTo.toUpperCase().trim());
 		final Vector<DebtItem> debt=new Vector<DebtItem>(rows.size());
 		for(int r=0;r<rows.size();r++)
 		{
@@ -724,19 +724,19 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 			if(update)
 			{
 				if(debts.size()==0)
-					CMLib.database().DBDeleteData(name.toUpperCase(),"DEBT",key);
+					CMLib.database().DBDeletePlayerData(name.toUpperCase(),"DEBT",key);
 				else
-					CMLib.database().DBUpdateData(key,xml);
+					CMLib.database().DBUpdatePlayerData(key,xml);
 			}
 			else
-				CMLib.database().DBCreateData(name.toUpperCase(),"DEBT",key,xml);
+				CMLib.database().DBCreatePlayerData(name.toUpperCase(),"DEBT",key,xml);
 		}
 	}
 
 	@Override
 	public Vector<DebtItem> getDebt(String name, String owedTo)
 	{
-		final List<PlayerData> rows=CMLib.database().DBReadData(name.toUpperCase(),"DEBT",name.toUpperCase()+"-DEBT-"+owedTo.toUpperCase().trim());
+		final List<PlayerData> rows=CMLib.database().DBReadPlayerData(name.toUpperCase(),"DEBT",name.toUpperCase()+"-DEBT-"+owedTo.toUpperCase().trim());
 		final Vector<DebtItem> debt=new Vector<DebtItem>(rows.size());
 		for(int r=0;r<rows.size();r++)
 		{
@@ -751,7 +751,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	@Override
 	public Vector<DebtItem> getDebt(String name)
 	{
-		final List<PlayerData> rows=CMLib.database().DBReadData(name.toUpperCase(),"DEBT");
+		final List<PlayerData> rows=CMLib.database().DBReadPlayerData(name.toUpperCase(),"DEBT");
 		final Vector<DebtItem> debt=new Vector<DebtItem>(rows.size());
 		for(int r=0;r<rows.size();r++)
 		{
@@ -942,7 +942,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	{
 		synchronized((this+"LEDGER"+bankName).intern())
 		{
-			final List<PlayerData> V=CMLib.database().DBReadData(owner,"LEDGER-"+bankName,"LEDGER-"+bankName+"/"+owner);
+			final List<PlayerData> V=CMLib.database().DBReadPlayerData(owner,"LEDGER-"+bankName,"LEDGER-"+bankName+"/"+owner);
 			if((V!=null)&&(V.size()>0))
 			{
 				final DatabaseEngine.PlayerData D=V.get(0);
@@ -953,10 +953,10 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 					if(x>=0)
 						last=last.substring(x+3);
 				}
-				CMLib.database().DBReCreateData(owner,D.section(),D.key(),last+explanation+";|;");
+				CMLib.database().DBReCreatePlayerData(owner,D.section(),D.key(),last+explanation+";|;");
 			}
 			else
-				CMLib.database().DBCreateData(owner,"LEDGER-"+bankName,"LEDGER-"+bankName+"/"+owner,explanation+";|;");
+				CMLib.database().DBCreatePlayerData(owner,"LEDGER-"+bankName,"LEDGER-"+bankName+"/"+owner,explanation+";|;");
 		}
 	}
 
@@ -982,9 +982,9 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 					{
 						C=makeBestCurrency(currency,value+absoluteAmount);
 						if(C!=null)
-							CMLib.database().DBReCreateData(owner,D.section(),D.key(),"COINS;"+CMLib.coffeeMaker().getPropertiesStr(C,true));
+							CMLib.database().DBReCreatePlayerData(owner,D.section(),D.key(),"COINS;"+CMLib.coffeeMaker().getPropertiesStr(C,true));
 						else
-							CMLib.database().DBDeleteData(owner,D.section(),D.key());
+							CMLib.database().DBDeletePlayerData(owner,D.section(),D.key());
 						bankLedger(bankName,owner,explanation);
 						return true;
 					}

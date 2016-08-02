@@ -637,7 +637,7 @@ public class JournalLoader
 		DB.update(sql);
 	}
 
-	public void DBViewJournalMessage(String key, int views)
+	public void DBUpdateJournalMessageViews(String key, int views)
 	{
 		key = DB.injectionClean(key);
 		final String sql="UPDATE CMJRNL SET CMVIEW="+views+" WHERE CMJKEY='"+key+"'";
@@ -646,7 +646,7 @@ public class JournalLoader
 		DB.update(sql);
 	}
 
-	public void DBDeletePlayerData(String name)
+	public void DBDeletePlayerPrivateJournalEntries(String name)
 	{
 		name = DB.injectionClean(name);
 		DBConnection D=null;
