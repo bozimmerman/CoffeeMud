@@ -95,25 +95,28 @@ public class Skill_SeaCharting extends StdSkill
 		final Room R=mob.location();
 		if(R==null)
 			return false;
-		if(R.getArea() instanceof BoardableShip)
-		{
-		}
-		else
-		if((mob.riding() !=null) && (mob.riding().rideBasis() == Rideable.RIDEABLE_WATER))
-		{
-		}
-		else
-		{
-			mob.tell(L("This skill only works on board a ship or boat."));
-			return false;
-		}
-
 		if(commands.size()==0)
 		{
 			mob.tell(L("You did not specify whether you wanted to ADD your current location, LIST existing locations, DISTANCE [x] to a chart point, or REMOVE [X} an old chart point.  Try adding ADD, REMOVE X, or LIST."));
 			return false;
 		}
 		String cmd=commands.get(0).toString().toUpperCase().trim();
+		if(!cmd.equals("LIST"))
+		{
+			if(R.getArea() instanceof BoardableShip)
+			{
+			}
+			else
+			if((mob.riding() !=null) && (mob.riding().rideBasis() == Rideable.RIDEABLE_WATER))
+			{
+			}
+			else
+			{
+				mob.tell(L("This skill only works on board a ship or boat."));
+				return false;
+			}
+		}
+
 		if((!cmd.equals("LIST"))
 		&&(!cmd.equals("REMOVE"))
 		&&(!cmd.equals("DISTANCE"))
@@ -196,6 +199,10 @@ public class Skill_SeaCharting extends StdSkill
 
 		if(cmd.equalsIgnoreCase("LIST"))
 		{
+			if(rooms.size()==0)
+				mob.tell(L("You have not added any chart points."));
+			else
+				mob.tell(L("^HYour charted points:^?"));
 			for(int i=0;i<rooms.size();i++)
 			{
 				final Room room=CMLib.map().getRoom(rooms.get(i));

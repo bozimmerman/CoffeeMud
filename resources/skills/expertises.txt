@@ -48,7 +48,7 @@ HELP_=<EXPERTISE>The ability to sneak around and hide using less mana and moveme
 STEALING@x1=Theft Mastery @x2,10,LEVEL,-SKILLFLAG +STEALING,-MAXCLASSLEVEL +>={10+(5*@x1)},+DEX {12+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to steal, swipe, and do unseemly slight of hand with more advanced foes.
 
-ROPEUSE@x1=Binding @x2,10,LEVEL,-SKILLFLAG +BINDING,-MAXCLASSLEVEL +>={23+(5*@x1)},+DEX {15+@x1},0,1,0,0,0
+ROPEUSE@x1=Rope Use @x2,10,LEVEL,-SKILLFLAG +BINDING,-MAXCLASSLEVEL +>={23+(5*@x1)},+DEX {15+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to better use and deploy rope based snares, bindings, knots, and traps.
 
 DECEPTIVE@x1=Deceptive @x2,10,LEVEL,-SKILLFLAG +DECEPTIVE,-MAXCLASSLEVEL +>={23+(5*@x1)},+CHA {12+@x1},0,1,0,0,0

@@ -201,7 +201,7 @@ public class Trawling extends GatheringSkill
 			commonTell(mob,L("The fishing doesn't look too good around here."));
 			return false;
 		}
-		verb=L("fishing");
+		verb=L("trawling");
 		found=null;
 		playSound="fishreel.wav";
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
