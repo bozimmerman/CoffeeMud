@@ -33,7 +33,12 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class RingMail extends StdArmor
 {
-	@Override public String ID(){	return "RingMail";}
+	@Override
+	public String ID()
+	{
+		return "RingMail";
+	}
+
 	public RingMail()
 	{
 		super();

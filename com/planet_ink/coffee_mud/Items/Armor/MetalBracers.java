@@ -33,7 +33,12 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class MetalBracers extends StdArmor
 {
-	@Override public String ID(){	return "MetalBracers";}
+	@Override
+	public String ID()
+	{
+		return "MetalBracers";
+	}
+
 	public MetalBracers()
 	{
 		super();

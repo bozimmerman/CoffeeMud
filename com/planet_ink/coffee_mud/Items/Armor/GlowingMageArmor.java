@@ -33,7 +33,12 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class GlowingMageArmor extends StdArmor
 {
-	@Override public String ID(){	return "GlowingMageArmor";}
+	@Override
+	public String ID()
+	{
+		return "GlowingMageArmor";
+	}
+
 	public GlowingMageArmor()
 	{
 		super();
@@ -52,7 +57,11 @@ public class GlowingMageArmor extends StdArmor
 	}
 
 
-	@Override public boolean isSavable(){return false;}
+	@Override
+	public boolean isSavable()
+	{
+		return false;
+	}
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)

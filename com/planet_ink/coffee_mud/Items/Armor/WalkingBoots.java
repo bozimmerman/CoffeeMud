@@ -33,7 +33,12 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class WalkingBoots extends StdArmor
 {
-	@Override public String ID(){	return "WalkingBoots";}
+	@Override
+	public String ID()
+	{
+		return "WalkingBoots";
+	}
+
 	public WalkingBoots()
 	{
 		super();
@@ -50,6 +55,4 @@ public class WalkingBoots extends StdArmor
 		recoverPhyStats();
 		material=RawMaterial.RESOURCE_LEATHER;
 	}
-
-
 }

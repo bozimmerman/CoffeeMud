@@ -33,7 +33,12 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class Shirt extends GenArmor
 {
-	@Override public String ID(){	return "Shirt";}
+	@Override
+	public String ID()
+	{
+		return "Shirt";
+	}
+
 	public Shirt()
 	{
 		super();

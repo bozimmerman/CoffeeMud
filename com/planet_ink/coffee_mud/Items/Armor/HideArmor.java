@@ -33,7 +33,12 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class HideArmor extends StdArmor
 {
-	@Override public String ID(){	return "HideArmor";}
+	@Override
+	public String ID()
+	{
+		return "HideArmor";
+	}
+
 	public HideArmor()
 	{
 		super();

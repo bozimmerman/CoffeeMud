@@ -33,7 +33,12 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class EternityLeafShield extends StdShield
 {
-	@Override public String ID(){	return "EternityLeafShield";}
+	@Override
+	public String ID()
+	{
+		return "EternityLeafShield";
+	}
+
 	public EternityLeafShield()
 	{
 		super();
@@ -52,6 +57,4 @@ public class EternityLeafShield extends StdShield
 		recoverPhyStats();
 		material=RawMaterial.RESOURCE_SEAWEED;
 	}
-
-
 }

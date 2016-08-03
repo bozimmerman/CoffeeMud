@@ -33,7 +33,12 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class StdShield extends StdArmor implements Armor, Shield
 {
-	@Override public String ID(){	return "StdShield";}
+	@Override
+	public String ID()
+	{
+		return "StdShield";
+	}
+
 	public StdShield()
 	{
 		super();
@@ -49,6 +54,4 @@ public class StdShield extends StdArmor implements Armor, Shield
 		recoverPhyStats();
 		material=RawMaterial.RESOURCE_STEEL;
 	}
-
-
 }

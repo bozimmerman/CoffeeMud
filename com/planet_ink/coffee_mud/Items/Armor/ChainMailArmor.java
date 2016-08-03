@@ -33,7 +33,12 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class ChainMailArmor extends StdArmor
 {
-	@Override public String ID(){	return "ChainMailArmor";}
+	@Override
+	public String ID()
+	{
+		return "ChainMailArmor";
+	}
+
 	public ChainMailArmor()
 	{
 		super();

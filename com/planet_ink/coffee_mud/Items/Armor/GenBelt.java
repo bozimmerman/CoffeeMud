@@ -33,7 +33,12 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class GenBelt extends GenArmor
 {
-	@Override public String ID(){	return "GenBelt";}
+	@Override
+	public String ID()
+	{
+		return "GenBelt";
+	}
+
 	public GenBelt()
 	{
 		super();
