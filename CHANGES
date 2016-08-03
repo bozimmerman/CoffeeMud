@@ -1,4 +1,4 @@
-# Build 5.9.4 Released ??/??/2016
+# Build 5.9.4 Released 08/03/2016
    1. Qualify now shows language limits
    2. New Prop_NoTeleport exceptions
    3. ALIAS commands now supports "noecho" prefix to prevent echos.
