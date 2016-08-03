@@ -1712,7 +1712,16 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 					appendCondition(visualCondition,pct,name(msg.source()));
 				}
 				if(visualCondition.length()>0)
-					msg.addTrailerMsg(CMClass.getMsg(msg.source(), null, null, CMMsg.MSG_OK_VISUAL, visualCondition.toString(), -1, null, -1, null));
+				{
+					msg.addTrailerRunnable(new Runnable()
+					{
+						@Override
+						public void run()
+						{
+							msg.source().tell(visualCondition.toString());
+						}
+					});
+				}
 				break;
 			}
 			default:
