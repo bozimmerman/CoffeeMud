@@ -199,7 +199,7 @@ public class Chant_FindMate extends Chant
 				.plus(TrackingLibrary.TrackingFlag.OPENONLY);
 		final Vector<Room> rooms=new Vector<Room>();
 		int radius = 50 + (10*super.getXMAXRANGELevel(mob)) + super.getXLEVELLevel(mob);
-		List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,50);
+		List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,radius);
 		for (final Room R : checkSet)
 		{
 			if(R!=null)
@@ -218,7 +218,7 @@ public class Chant_FindMate extends Chant
 				.plus(TrackingLibrary.TrackingFlag.NOAIR)
 				.plus(TrackingLibrary.TrackingFlag.NOWATER);
 		if(rooms.size()>0)
-			theTrail=CMLib.tracking().findTrailToAnyRoom(mob.location(),rooms,flags,50);
+			theTrail=CMLib.tracking().findTrailToAnyRoom(mob.location(),rooms,flags,radius);
 
 		if((success)&&(theTrail!=null))
 		{
