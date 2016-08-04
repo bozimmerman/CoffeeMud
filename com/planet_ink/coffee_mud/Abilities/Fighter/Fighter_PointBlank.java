@@ -72,7 +72,7 @@ public class Fighter_PointBlank extends FighterSkill
 		{
 			final Weapon targetW=(Weapon)affected;
 			if((targetW != null)
-			&&((Weapon)affected).amWearingAt(Wearable.IN_INVENTORY))
+			&&(targetW.amWearingAt(Wearable.IN_INVENTORY)))
 			{
 				qualifiedWeapons.remove(targetW);
 				targetW.delEffect(targetW.fetchEffect(ID()));
