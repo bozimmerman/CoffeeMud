@@ -319,9 +319,9 @@ public class WebServer extends Thread
 			}
 			for(; i.hasNext(); )
 			{
-				final HTTPIOHandler handler=i.next();
 				try
 				{
+					final HTTPIOHandler handler=i.next();
 					if(handler.isCloseable())
 					{
 						if(handlersToShutDown == null)
