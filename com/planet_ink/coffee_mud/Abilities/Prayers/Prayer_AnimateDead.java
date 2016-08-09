@@ -98,7 +98,7 @@ public class Prayer_AnimateDead extends Prayer
 			if((!P.amDestroyed())&&(((MOB)P).amFollowing()==null))
 			{
 				final Room R=CMLib.map().roomLocation(P);
-				if(CMLib.law().getLandOwnerName(R).length()==0)
+				if(!CMLib.law().doesHavePriviledgesHere(invoker(), R))
 				{
 					if((R!=null)&&(!((MOB)P).amDead()))
 						R.showHappens(CMMsg.MSG_OK_ACTION, P,L("<S-NAME> wander(s) off."));

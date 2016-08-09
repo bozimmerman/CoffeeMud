@@ -331,6 +331,8 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	@Override
 	public boolean isHomeRoomDownstairs(Room room)
 	{
+		if(room==null)
+			return false;
 		if(isHomePeerRoom(room.getRoomInDir(Directions.UP)))
 			return true;
 		final Set<Room> peerRooms=getHomePeersOnThisFloor(room,new HashSet<Room>());
@@ -357,7 +359,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	@Override
 	public boolean doesHavePrivilegesWith(final MOB mob, final PrivateProperty record)
 	{
-		if(record==null)
+		if((record==null)||(mob==null))
 			return false;
 		if(doesHaveWeakPrivilegesWith(mob,record))
 			return true;
@@ -370,7 +372,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	@Override
 	public boolean doesHaveWeakPrivilegesWith(final MOB mob, final PrivateProperty record)
 	{
-		if(record==null)
+		if((record==null)||(mob==null))
 			return false;
 		if(record.getOwnerName()==null)
 			return false;
@@ -390,7 +392,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	public boolean doesHavePriviledgesHere(MOB mob, Room room)
 	{
 		final PrivateProperty record=getPropertyRecord(room);
-		if(record==null)
+		if((record==null)||(mob==null))
 			return false;
 		if(doesHavePrivilegesWith(mob,record))
 			return true;
@@ -403,7 +405,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	public boolean doesHaveWeakPriviledgesHere(MOB mob, Room room)
 	{
 		final PrivateProperty record=getPropertyRecord(room);
-		if(record==null)
+		if((record==null)||(mob==null))
 			return false;
 		if(doesHaveWeakPrivilegesWith(mob,record))
 			return true;
@@ -415,6 +417,8 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	@Override
 	public boolean doesAnyoneHavePrivilegesHere(MOB mob, String overrideID, Room R)
 	{
+		if((mob==null)||(R==null))
+			return false;
 		if((doesHavePriviledgesHere(mob,R))||((overrideID.length()>0)&&(mob.Name().equals(overrideID))))
 			return true;
 		if(overrideID.length()>0)
