@@ -1896,6 +1896,8 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			return;
 		final MOB attacker=msg.source();
 		final MOB target=(MOB)msg.target();
+		if(target.amDead()) // already dead, don't take more damage.
+			return;
 		final int dmg=msg.value();
 		if(Log.combatChannelOn())
 		{
