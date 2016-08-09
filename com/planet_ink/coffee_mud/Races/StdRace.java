@@ -1412,12 +1412,21 @@ public class StdRace implements Race
 		{
 			if(CharStats.CODES.isBASE(i))
 			{
-				SETSTAT.setStat(i,(SETSTAT1.getStat(i)+SETSTAT2.getStat(i))/2);
 				final int newStat=((ADJSTAT1.getStat(i)+ADJSTAT2.getStat(i))/2);
 				if(newStat>5)
 					ADJSTAT.setStat(i,5);
 				else
 					ADJSTAT.setStat(i,newStat);
+				int setStat1=SETSTAT1.getStat(i);
+				int setStat2=SETSTAT2.getStat(i);
+				if((setStat1>0)||(setStat2>0))
+				{
+					if(setStat1 == 0)
+						setStat1 = 10;
+					if(setStat2 == 0)
+						setStat2 = 10;
+					SETSTAT.setStat(i,(setStat1 + setStat2)/2);
+				}
 			}
 			else
 			if((i!=CharStats.STAT_GENDER)&&(i!=CharStats.STAT_AGE))
