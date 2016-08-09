@@ -35,10 +35,18 @@ import java.util.*;
 
 public class Whisper extends StdCommand
 {
-	public Whisper(){}
+	public Whisper()
+	{
+	}
 
-	private final String[] access=I(new String[]{"WHISPER"});
-	@Override public String[] getAccessWords(){return access;}
+	private final String[]	access	= I(new String[] { "WHISPER" });
+
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
+
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
@@ -56,7 +64,7 @@ public class Whisper extends StdCommand
 			final String possibleTarget=commands.get(1);
 			target=R.fetchFromRoomFavorMOBs(null,possibleTarget);
 			if((target!=null)&&(!target.name().equalsIgnoreCase(possibleTarget))&&(possibleTarget.length()<4))
-			   target=null;
+				target=null;
 			if((target!=null)
 			&&(CMLib.flags().canBeSeenBy(target,mob))
 			&&((!(target instanceof Rider))
@@ -106,13 +114,17 @@ public class Whisper extends StdCommand
 						if(E!=null)
 						{
 							if( (E instanceof MOB) && riddenR.amRiding((MOB)E))
+							{
 								msg=CMClass.getMsg(mob,E,null,CMMsg.MSG_SPEAK,L("^T<S-NAME> whisper(s) around @x1 '@x2'.^?@x3",riddenR.name(),combinedCommands,CMLib.protocol().msp("whisper.wav",40)),
 												CMMsg.MSG_SPEAK,L("^T<S-NAME> whisper(s) around @x1 '@x2'.^?@x3",riddenR.name(),combinedCommands,CMLib.protocol().msp("whisper.wav",40)),
 												CMMsg.NO_EFFECT,null);
+							}
 							else
+							{
 								msg=CMClass.getMsg(mob,E,null,CMMsg.MSG_SPEAK,L("^T<S-NAME> whisper(s) around @x1 '@x2'.^?@x3",riddenR.name(),combinedCommands,CMLib.protocol().msp("whisper.wav",40)),
 												CMMsg.MSG_SPEAK,L("^T<S-NAME> whisper(s) something around @x1.^?@x2",riddenR.name(),CMLib.protocol().msp("whisper.wav",40)),
 												CMMsg.NO_EFFECT,null);
+							}
 							if(R.okMessage(mob,msg))
 								R.sendOthers(mob,msg);
 						}
@@ -122,15 +134,32 @@ public class Whisper extends StdCommand
 		}
 		else
 		{
-			msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_SPEAK,L("^T^<WHISPER \"@x1\"^><S-NAME> whisper(s) to <T-NAMESELF> '@x2'.^</WHISPER^>^?@x3",CMStrings.removeColors(target.name()),combinedCommands,CMLib.protocol().msp("whisper.wav",40)),CMMsg.MSG_SPEAK,L("^T^<WHISPER \"@x1\"^><S-NAME> whisper(s) to <T-NAMESELF> '@x2'^</WHISPER^>.^?@x3",CMStrings.removeColors(target.name()),combinedCommands,CMLib.protocol().msp("whisper.wav",40)),CMMsg.MSG_QUIETMOVEMENT,L("^T<S-NAME> whisper(s) something to <T-NAMESELF>.^?@x1",CMLib.protocol().msp("whisper.wav",40)));
+			msg=CMClass.getMsg(mob,target,null,
+				CMMsg.MSG_SPEAK,L("^T^<WHISPER \"@x1\"^><S-NAME> whisper(s) to <T-NAMESELF> '@x2'.^</WHISPER^>^?@x3",CMStrings.removeColors(target.name()),combinedCommands,CMLib.protocol().msp("whisper.wav",40)),
+				CMMsg.MSG_SPEAK,L("^T^<WHISPER \"@x1\"^><S-NAME> whisper(s) to <T-NAMESELF> '@x2'^</WHISPER^>.^?@x3",CMStrings.removeColors(target.name()),combinedCommands,CMLib.protocol().msp("whisper.wav",40)),
+				CMMsg.MSG_QUIETMOVEMENT,L("^T<S-NAME> whisper(s) something to <T-NAMESELF>.^?@x1",CMLib.protocol().msp("whisper.wav",40)));
 			if(R.okMessage(mob,msg))
 				R.send(mob,msg);
 		}
 		return false;
 	}
-	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandCombatActionCost(ID());}
-	@Override public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandActionCost(ID());}
-	@Override public boolean canBeOrdered(){return true;}
 
+	@Override
+	public double combatActionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandCombatActionCost(ID());
+	}
+
+	@Override
+	public double actionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandActionCost(ID());
+	}
+
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 
 }
