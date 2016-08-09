@@ -87,7 +87,7 @@ public class Bear extends StdRace
 	@Override
 	public long forbiddenWornBits()
 	{
-		return ~(Wearable.WORN_HEAD | Wearable.WORN_FEET | Wearable.WORN_NECK | Wearable.WORN_EARS | Wearable.WORN_EYES);
+		return ~(Wearable.WORN_HEAD | Wearable.WORN_FEET | Wearable.WORN_NECK | Wearable.WORN_EARS | Wearable.WORN_EYES | Wearable.WORN_TORSO);
 	}
 
 	private final static String localizedStaticRacialCat = CMLib.lang().L("Ursine");
