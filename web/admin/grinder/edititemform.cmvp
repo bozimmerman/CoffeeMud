@@ -471,6 +471,11 @@
 				<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Has a Lock:</B></FONT></TD>
 				<TD WIDTH=450 COLSPAN=2><INPUT TYPE=CHECKBOX NAME=HASALOCK @ItemData?HASALOCK@ ONCLICK="ReShow();"></TD>
 			</TR>
+			<TR>
+				<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Open Delay (Ticks):</B></FONT></TD>
+				<TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=OPENTICKS SIZE=5 VALUE="@ItemData?OPENTICKS@">
+				</TD>
+			</TR>
 			@AddRequestParameter?HASALOCK=@@ItemData?HASALOCK@@ @
 			@if?CheckReqParm?HASALOCK=checked@
 				<TR>
@@ -785,6 +790,11 @@
 		<TR>
 			<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Has a Lock:</B></FONT></TD>
 			<TD WIDTH=450 COLSPAN=2><INPUT TYPE=CHECKBOX NAME=HASALOCK @ItemData?HASALOCK@ ONCLICK="ReShow();"></TD>
+		</TR>
+		<TR>
+			<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Open Delay (Ticks):</B></FONT></TD>
+			<TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=OPENTICKS SIZE=5 VALUE="@ItemData?OPENTICKS@">
+			</TD>
 		</TR>
 		@AddRequestParameter?HASALOCK=@@ItemData?HASALOCK@@ @
 		@if?CheckReqParm?HASALOCK=checked@

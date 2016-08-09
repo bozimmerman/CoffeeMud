@@ -1092,6 +1092,11 @@ public class ItemData extends StdWebMacro
 							old=""+((Food)I).bite();
 						str.append(old);
 						break;
+					case OPENTICKS: // open ticks
+						if(((firstTime)&&(I instanceof CloseableLockable))||(old==null)||(old.length()==0))
+							old=""+((CloseableLockable)I).openDelayTicks();
+						str.append(old);
+						break;
 					case MAXUSES: // max uses
 						if((firstTime)&&(I instanceof Wand))
 							old=""+((Wand)I).maxUses();
