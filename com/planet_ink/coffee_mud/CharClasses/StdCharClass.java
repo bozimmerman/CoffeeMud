@@ -110,7 +110,7 @@ public class StdCharClass implements CharClass
 	@Override
 	public String getMovementFormula()
 	{
-		return "10*((@x2<@x3)/18)";
+		return "5*((@x2<@x3)/18)";
 	}
 
 	public String	movementDesc	= null;
