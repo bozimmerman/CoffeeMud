@@ -35,14 +35,45 @@ import java.util.*;
 
 public class Spell_MagicMissile extends Spell
 {
-	@Override public String ID() { return "Spell_MagicMissile"; }
-	private final static String localizedName = CMLib.lang().L("Magic Missile");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Magic Missile spell)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int maxRange(){return adjustedMaxInvokerRange(1);}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
+	@Override
+	public String ID()
+	{
+		return "Spell_MagicMissile";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Magic Missile");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Magic Missile spell)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int maxRange()
+	{
+		return adjustedMaxInvokerRange(1);
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL | Ability.DOMAIN_CONJURATION;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -68,7 +99,7 @@ public class Spell_MagicMissile extends Spell
 					mob.location().send(mob,msg);
 					if(msg.value()<=0)
 					{
-						final int damage = CMLib.dice().roll(1,11+super.getXLEVELLevel(mob),11+super.getXLEVELLevel(mob)/numMissiles);
+						final int damage = CMLib.dice().roll(1,7+super.getXLEVELLevel(mob),7+super.getXLEVELLevel(mob)/numMissiles);
 						if(target.location()==mob.location())
 							CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,((i==0)?"^SThe missile ":"^SAnother missile ")+"<DAMAGE> <T-NAME>!^?");
 					}
