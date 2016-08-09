@@ -1525,6 +1525,68 @@ public class Reset extends StdCommand
 			}
 		}
 		else
+		if(s.equalsIgnoreCase("mixedraces")&&(CMSecurity.isASysOp(mob)))
+		{
+			for(Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
+			{
+				Race R=r.nextElement();
+				if(R.isGeneric())
+				{
+					Set<String> genericOnlyFound=new TreeSet<String>();
+					List<String> raceParts = new ArrayList<String>();
+					String name=R.name();
+					if(name.startsWith("Half "))
+					{
+						name=name.substring(5);
+						raceParts.add("Human");
+					}
+					raceParts.addAll(Arrays.asList(name.split("-")));
+					for(int i=0;i<raceParts.size();i++)
+					{
+						if(raceParts.get(i).equalsIgnoreCase("Man")
+						&&(i<raceParts.size()-1)
+						&&raceParts.get(i+1).equalsIgnoreCase("Scorpion"))
+						{
+							raceParts.set(i, "Man-Scorpion");
+							raceParts.remove(i+1);
+						}
+					}
+					List<Object> races = new ArrayList<Object>();
+					for(int i=0;i<raceParts.size();i++)
+					{
+						final String racePart=raceParts.get(i);
+						Race R1=CMClass.findRace(racePart);
+						if(R1!=null)
+						{
+							if(!R1.isGeneric())
+								races.add(R1);
+							else
+							{
+								String lastPart=raceParts.get(i);
+								if(lastPart.equals("Whelpling"))
+									races.add(R1);
+								else
+								if(!lastPart.endsWith("ling"))
+									races.add(R1);
+								else
+								if(CMClass.findRace(lastPart.substring(0,lastPart.length()-4))!=null)
+									races.add(R1);
+								else
+									genericOnlyFound.add(R1.ID());
+							}
+						}
+						else
+						{
+							mob.tell("No race: "+racePart +" from "+R.name()+"("+R.ID()+")");
+						}
+					}
+					//Race R1=CMLib.utensils().getMixedRace(firstR.ID(),secondR.ID());
+					if(genericOnlyFound.size()>0)
+						mob.tell("Found generic races not handled: "+CMParms.toListString(genericOnlyFound));
+				}
+			}
+		}
+		else
 		if(s.equalsIgnoreCase("itemstats")&&(CMSecurity.isASysOp(mob)))
 		{
 			s="room";
