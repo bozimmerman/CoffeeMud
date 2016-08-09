@@ -4097,7 +4097,7 @@ public class ListCmd extends StdCommand
 					availStr.append("[["+C.name()+"("+C.baseClass()+")|"+C.name(I.intValue())+"("+I.intValue()+")]] ");
 				}
 				StringBuilder allowsStr=new StringBuilder("");
-				for(Iterator<String> i=CMLib.expertises().filterUniqueExpertiseIDList(CMLib.ableMapper().getAbilityAllowsList(ID));i.hasNext();)
+				for(Iterator<String> i=CMLib.expertises().filterUniqueExpertiseIDList(CMLib.ableMapper().getAbilityAllowsList(A.ID()));i.hasNext();)
 				{
 					final String ID=i.next();
 					ExpertiseDefinition def=CMLib.expertises().getDefinition(ID);
