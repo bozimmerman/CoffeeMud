@@ -1527,6 +1527,7 @@ public class Reset extends StdCommand
 		else
 		if(s.equalsIgnoreCase("mixedraces")&&(CMSecurity.isASysOp(mob)))
 		{
+			List<List<Race>> raceSets=new ArrayList<List<Race>>();
 			for(Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
 			{
 				Race R=r.nextElement();
@@ -1551,7 +1552,8 @@ public class Reset extends StdCommand
 							raceParts.remove(i+1);
 						}
 					}
-					List<Object> races = new ArrayList<Object>();
+					List<Race> races = new ArrayList<Race>();
+					raceSets.add(races);
 					for(int i=0;i<raceParts.size();i++)
 					{
 						final String racePart=raceParts.get(i);
@@ -1580,11 +1582,57 @@ public class Reset extends StdCommand
 							mob.tell("No race: "+racePart +" from "+R.name()+"("+R.ID()+")");
 						}
 					}
-					//Race R1=CMLib.utensils().getMixedRace(firstR.ID(),secondR.ID());
 					if(genericOnlyFound.size()>0)
 						mob.tell("Found generic races not handled: "+CMParms.toListString(genericOnlyFound));
 				}
 			}
+			for(int i=raceSets.size()-1;i>=0;i--)
+			{
+				List<Race> races=raceSets.get(i);
+				if(races.size()==1)
+				{
+					Race originalRace = races.get(0);
+					Race race2=races.get(0);
+					if((race2.ID().endsWith("ling"))
+					&&(!race2.ID().equals("Whelpling"))
+					&&race2.isGeneric())
+					{
+						final Race race1=CMClass.getRace(race2.ID().substring(0,race2.ID().length()-4));
+						if(race1!=null)
+						{
+							race2=CMClass.getRace("Halfling");
+							Race finalR=race1.mixRace(race2,originalRace.ID(),originalRace.name());
+							if(finalR.isGeneric())
+							{
+								//TODO: check it out.
+							}
+							else
+								mob.tell("Failed single race:"+race2.ID());
+						}
+						else
+							mob.tell("Undoable single race:"+race2.ID());
+					}
+					raceSets.remove(i);
+				}
+			}
+			for(int i=0;i<raceSets.size();i++)
+			{
+				List<Race> races=raceSets.get(i);
+				Race lastRace=races.get(races.size()-1);
+				for(int r=races.size()-2;r>=0;r--)
+				{
+					Race race2=lastRace;
+					Race race1=races.get(r);
+					Race finalR=race1.mixRace(race2,"TempID","TempName");
+					if(finalR.isGeneric())
+					{
+						//TODO: check it out.
+					}
+					else
+						mob.tell("Failed single race:"+race2.ID());
+				}
+			}
+			//Race R1=CMLib.utensils().getMixedRace(firstR.ID(),secondR.ID());
 		}
 		else
 		if(s.equalsIgnoreCase("itemstats")&&(CMSecurity.isASysOp(mob)))
