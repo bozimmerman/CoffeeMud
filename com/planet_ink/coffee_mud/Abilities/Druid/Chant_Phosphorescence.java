@@ -33,15 +33,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Chant_Moonbeam extends Chant
+public class Chant_Phosphorescence extends Chant
 {
 	@Override
 	public String ID()
 	{
-		return "Chant_Moonbeam";
+		return "Chant_Phosphorescence";
 	}
 
-	private final static String localizedName = CMLib.lang().L("Moonbeam");
+	private final static String localizedName = CMLib.lang().L("Phosphorescence");
 
 	@Override
 	public String name()
@@ -49,7 +49,7 @@ public class Chant_Moonbeam extends Chant
 		return localizedName;
 	}
 
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Moonbeam)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Phosphorescence)");
 
 	@Override
 	public String displayText()
@@ -60,7 +60,7 @@ public class Chant_Moonbeam extends Chant
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_CHANT | Ability.DOMAIN_MOONSUMMONING;
+		return Ability.ACODE_CHANT | Ability.DOMAIN_NATURELORE;
 	}
 
 	@Override
@@ -86,7 +86,7 @@ public class Chant_Moonbeam extends Chant
 		final MOB mob=(MOB)affected;
 		final Room room=((MOB)affected).location();
 		if(canBeUninvoked())
-			room.show(mob,null,CMMsg.MSG_OK_VISUAL,L("The moonbeam shining down from above <S-NAME> dims."));
+			room.show(mob,null,CMMsg.MSG_OK_VISUAL,L("The phosphorescent glow around <S-NAME> dims."));
 		super.unInvoke();
 		room.recoverRoomStats();
 	}
@@ -111,7 +111,7 @@ public class Chant_Moonbeam extends Chant
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			target.tell(L("The moonbeam is already with you."));
+			target.tell(L("You are already phosphorescent."));
 			return false;
 		}
 
@@ -122,10 +122,10 @@ public class Chant_Moonbeam extends Chant
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(!success)
 		{
-			return beneficialWordsFizzle(mob,mob.location(),L("<S-NAME> chant(s) for a moonbeam, but fail(s)."));
+			return beneficialWordsFizzle(mob,mob.location(),L("<S-NAME> chant(s) for phosphorescence, but fail(s)."));
 		}
 
-		final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("A moonbeam begin(s) to follow <T-NAME> around!"):L("^S<S-NAME> chant(s), causing a moonbeam to follow <S-HIM-HER> around!^?"));
+		final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> begin(s) to glow!"):L("^S<S-NAME> chant(s), causing <S-HIM-HER> skin to become phosphorescent!^?"));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
