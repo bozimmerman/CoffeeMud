@@ -972,9 +972,9 @@ public class GenRace extends StdRace
 		case 47:
 			return "" + isRideable;
 		case 48:
-			return "" + this.naturalAbilImmunities.size();
+			return (this.naturalAbilImmunities==null)?"0":("" + this.naturalAbilImmunities.size());
 		case 49:
-			return this.abilityImmunities()[num];
+			return ((this.naturalAbilImmunities==null)||(num>=this.naturalAbilImmunities.size()))?"":this.abilityImmunities()[num];
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}

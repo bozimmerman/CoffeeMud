@@ -465,6 +465,32 @@ public class Reset extends StdCommand
 		}
 		return false;
 	}
+	
+	public boolean compareRaces(String usefulID, Race race1, Race race2, MOB tellM)
+	{
+		boolean same = true;
+		for(String stat : race1.getStatCodes())
+		{
+			if(stat.equals("ID")||stat.equals("NAME"))
+				continue;
+			try
+			{
+				String val1=race1.getStat(stat);
+				String val2=race2.getStat(stat);
+				if(!val1.equals(val2))
+				{
+					same=false;
+					if(tellM!=null)
+						tellM.tell(usefulID+" "+stat+": '"+val1+"' != '"+val2+"'");
+				}
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
+		return same;
+	}
 
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
@@ -1604,6 +1630,7 @@ public class Reset extends StdCommand
 							Race finalR=race1.mixRace(race2,originalRace.ID(),originalRace.name());
 							if(finalR.isGeneric())
 							{
+								compareRaces(originalRace.ID(),originalRace,finalR,mob);
 								//TODO: check it out.
 							}
 							else
@@ -1626,6 +1653,13 @@ public class Reset extends StdCommand
 					Race finalR=race1.mixRace(race2,"TempID","TempName");
 					if(finalR.isGeneric())
 					{
+						Race compareR=CMClass.getRace(race1.ID()+race2.ID());
+						if(compareR==null)
+							compareR=CMClass.getRace(race2.ID()+race1.ID());
+						if(compareR==null)
+							mob.tell("Can't find "+race1.ID()+"-"+race2.ID());
+						else
+							compareRaces(race1.ID()+race2.ID(),compareR,finalR,mob);
 						//TODO: check it out.
 					}
 					else
