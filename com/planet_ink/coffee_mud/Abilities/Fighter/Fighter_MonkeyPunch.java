@@ -35,17 +35,63 @@ import java.util.*;
 
 public class Fighter_MonkeyPunch extends MonkSkill
 {
-	@Override public String ID() { return "Fighter_MonkeyPunch"; }
-	private final static String localizedName = CMLib.lang().L("Monkey Punch");
-	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "";}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_PUNCHING;}
-	@Override public boolean isAutoInvoked(){return true;}
-	@Override public boolean canBeUninvoked(){return false;}
-	protected Weapon naturalWeapon=null;
+	@Override
+	public String ID()
+	{
+		return "Fighter_MonkeyPunch";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Monkey Punch");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public String displayText()
+	{
+		return "";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL | Ability.DOMAIN_PUNCHING;
+	}
+
+	@Override
+	public boolean isAutoInvoked()
+	{
+		return true;
+	}
+
+	@Override
+	public boolean canBeUninvoked()
+	{
+		return false;
+	}
+
+	protected Weapon	naturalWeapon	= null;
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
