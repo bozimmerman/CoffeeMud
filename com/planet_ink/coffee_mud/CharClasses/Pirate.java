@@ -96,7 +96,7 @@ public class Pirate extends Thief
 	@Override
 	public String getOtherLimitsDesc()
 	{
-		return L("Get less leniency from the law, and can be paid to leave combat.");
+		return L("Get less leniency from the law, no limb recovery after death, and can be paid to leave combat.");
 	}
 
 	@Override
@@ -203,6 +203,30 @@ public class Pirate extends Thief
 	{
 		if(!super.okMessage(myHost, msg))
 			return false;
+
+		if((msg.source() == myHost) && (msg.sourceMinor()==CMMsg.TYP_DEATH))
+		{
+			final Ability A=msg.source().fetchEffect("Amputation");
+			msg.addTrailerRunnable(new Runnable()
+			{
+				private final String amuText = A.text();
+				private final MOB mob=msg.source();
+				@Override
+				public void run()
+				{
+					if(mob.fetchEffect("Amputation")==null)
+					{
+						final Ability A=CMClass.getAbility("Amputation");
+						mob.addNonUninvokableEffect(A);
+						A.setMiscText(amuText);
+						mob.recoverCharStats();
+						mob.recoverMaxState();
+						mob.recoverPhyStats();
+					}
+				}
+			});
+		}
+
 		if (msg.amITarget(myHost)
 		&& (msg.targetMinor() == CMMsg.TYP_GIVE)
 		&& (msg.source() != myHost)
