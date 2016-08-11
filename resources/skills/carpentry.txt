@@ -59,7 +59,7 @@ Large % Table	25	45	90	30	GenRideable	TABLE	100		0
 Ornate % Chair	26	45	45	15	GenChair	CHAIR	5		0	
 Long % Bench	27	60	60	22	GenChair	CHAIR	15		0	
 King sized % Bed	28	75	90	30	GenBed	BED	4		0	
-% Cermonial Dagger	28	20	80	350	GenWeapon	DAGGER	1	16	10	
+% Ceremonial Dagger	28	20	80	350	GenWeapon	DAGGER	1	16	10	
 % Chest	29	75	30	30	GenContainer	LOCK	50		0	
 % Crib	30	60	30	80	GenContainer		60		0	
 Large % Chest	31	100	45	45	GenContainer	LOCK	100		0	
