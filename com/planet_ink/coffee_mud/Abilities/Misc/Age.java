@@ -250,7 +250,7 @@ public class Age extends StdAbility
 				if(R!=null)
 				{
 					final Item I=(Item)affected;
-					final MOB following=getFollowing(I);
+					MOB following=getFollowing(I);
 					if(following==null)
 					{
 						norecurse=false;
@@ -266,6 +266,34 @@ public class Age extends StdAbility
 					}
 					else
 					{
+						MOB leigeM=following;
+						Set<MOB> parents=new HashSet<MOB>();
+						for(Enumeration<Tattoo> t= babe.tattoos();t.hasMoreElements();)
+						{
+							final Tattoo T=t.nextElement();
+							if(T.name().startsWith("PARENT:"))
+							{
+								String parentName=T.name().substring(7).trim();
+								MOB M=R.fetchInhabitant("$"+parentName+"$");
+								if(M!=null)
+									parents.add(M);
+								else
+								if(CMLib.players().playerExists(parentName))
+									parents.add(CMLib.players().getLoadPlayer(parentName));
+							}
+						}
+						if((!parents.contains(following))
+						&&(parents.size()>0))
+						{
+							Iterator<MOB> i=parents.iterator();
+							MOB M=i.next();
+							if(!M.isMonster())
+							{
+								leigeM=M;
+								if(M.location()==R)
+									following=M;
+							}
+						}
 						babe.baseCharStats().setStat(CharStats.STAT_CHARISMA,10);
 						babe.baseCharStats().setStat(CharStats.STAT_CONSTITUTION,7);
 						babe.baseCharStats().setStat(CharStats.STAT_DEXTERITY,3);
@@ -277,7 +305,7 @@ public class Age extends StdAbility
 						babe.baseState().setHitPoints(2);
 						babe.baseState().setMana(10);
 						babe.baseState().setMovement(20);
-						babe.setLiegeID(following.Name());
+						babe.setLiegeID(leigeM.Name());
 						babe.recoverCharStats();
 						babe.recoverPhyStats();
 						babe.recoverMaxState();
@@ -300,7 +328,7 @@ public class Age extends StdAbility
 						R.show(babe,null,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> JUST TOOK <S-HIS-HER> FIRST STEPS!!!"));
 						I.destroy();
 						if(!CMLib.flags().isAnimalIntelligence(babe))
-							CMLib.database().DBReCreatePlayerData(following.Name(),"HEAVEN",following.Name()+"/HEAVEN/"+text(),babe.ID()+"/"+babe.basePhyStats().ability()+"/"+babe.text());
+							CMLib.database().DBReCreatePlayerData(leigeM.Name(),"HEAVEN",leigeM.Name()+"/HEAVEN/"+text(),babe.ID()+"/"+babe.basePhyStats().ability()+"/"+babe.text());
 					}
 				}
 			}
