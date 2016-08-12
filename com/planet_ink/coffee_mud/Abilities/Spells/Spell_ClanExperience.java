@@ -88,7 +88,9 @@ public class Spell_ClanExperience extends Spell
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		if((mob==null)||(mob.isMonster())||(mob.phyStats().level()<10))
+		if(mob==null)
+			return false;
+		if((mob.isMonster())||(mob.phyStats().level()<10))
 		{
 			mob.tell(L("You must be at least level 10 to donate experience to a clan"));
 			return false;
@@ -141,6 +143,7 @@ public class Spell_ClanExperience extends Spell
 				mob.tell(L("You need to specify a clan to donate to."));
 				return false;
 			}
+			C=clanPair.first;
 		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

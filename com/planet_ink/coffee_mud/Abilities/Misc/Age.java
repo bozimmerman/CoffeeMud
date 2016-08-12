@@ -274,12 +274,14 @@ public class Age extends StdAbility
 							if(T.name().startsWith("PARENT:"))
 							{
 								String parentName=T.name().substring(7).trim();
-								MOB M=R.fetchInhabitant("$"+parentName+"$");
-								if(M!=null)
-									parents.add(M);
-								else
 								if(CMLib.players().playerExists(parentName))
 									parents.add(CMLib.players().getLoadPlayer(parentName));
+								else
+								{
+									MOB M=R.fetchInhabitant("$"+parentName+"$");
+									if(M!=null)
+										parents.add(M);
+								}
 							}
 						}
 						if((!parents.contains(following))
