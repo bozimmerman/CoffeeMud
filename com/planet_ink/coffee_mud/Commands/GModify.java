@@ -470,6 +470,8 @@ public class GModify extends StdCommand
 			mob.tell(L("Valid field names are @x1",allFieldsMsg.toString()));
 			return false;
 		}
+		
+		
 		if((commands.size()>0)&&
 		   commands.get(0).equalsIgnoreCase("room"))
 		{
@@ -481,6 +483,7 @@ public class GModify extends StdCommand
 			commands.remove(0);
 			placesToDo.add(mob.location());
 		}
+		else
 		if((commands.size()>0)&&
 		   commands.get(0).equalsIgnoreCase("area"))
 		{
@@ -492,6 +495,7 @@ public class GModify extends StdCommand
 			commands.remove(0);
 			placesToDo.add(mob.location().getArea());
 		}
+		else
 		if((commands.size()>0)&&
 		   commands.get(0).equalsIgnoreCase("world"))
 		{
@@ -778,10 +782,9 @@ public class GModify extends StdCommand
 								for(final Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
 								{
 									final Environmental E2=i.next();
-									if(E2 instanceof Item)
+									if((E2 instanceof Item)||(E2 instanceof MOB))
 									{
-										final Item I=(Item)E2;
-										if(tryModfy(mob,R,I,changes,onfields,noisy))
+										if(tryModfy(mob,R,E2,changes,onfields,noisy))
 											savemobs=true;
 									}
 								}

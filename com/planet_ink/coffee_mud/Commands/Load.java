@@ -59,7 +59,7 @@ public class Load extends StdCommand
 		return fset;
 	}
 
-	public final String ARCHON_LIST[]=combine(new String[]{"RESOURCE","FACTION"},CMClass.CMObjectType.values());
+	public final String ARCHON_LIST[]=combine(new String[]{"RESOURCE","FACTION","CLASS"},CMClass.CMObjectType.values());
 
 	public final Ammunition getNextAmmunition(String type, List<Ammunition> ammos)
 	{
