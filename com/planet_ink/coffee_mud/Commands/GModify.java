@@ -733,7 +733,7 @@ public class GModify extends StdCommand
 			synchronized(("SYNC"+R.roomID()).intern())
 			{
 				R=CMLib.map().getRoom(R);
-				if((mob.session()==null)||(mob.session().isStopped())||(R.getArea()==null))
+				if((mob.session()==null)||(mob.session().isStopped())||(R==null)||(R.getArea()==null))
 					return false;
 				final Area A=R.getArea();
 				final Area.State oldFlag=A.getAreaState();
