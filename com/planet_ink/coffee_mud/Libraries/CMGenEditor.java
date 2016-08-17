@@ -9134,7 +9134,10 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				{
 					genContainerTypes(mob,(Container)me,++showNumber,showFlag);
 				}
-				genDoorsNLocks(mob,(Container)me,L("lid"),++showNumber,showFlag);
+				if(me.ID().equalsIgnoreCase("GenCloak"))
+					me.setStat("READABLETEXT", prompt(mob,me.getStat("READABLETEXT"),++showNumber,showFlag,L("Cloak Name")));
+				else
+					genDoorsNLocks(mob,(Container)me,L("lid"),++showNumber,showFlag);
 			}
 			//genReadable1(mob,me,++showNumber,showFlag); // since they can have keys, no readability for you.
 			//genReadable2(mob,me,++showNumber,showFlag);

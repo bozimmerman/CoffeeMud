@@ -457,10 +457,18 @@
 			<TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=CAPACITY SIZE=5 VALUE="@ItemData?CAPACITY@">
 			</TD>
 		</TR>
-		<TR>
-			<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Has a Lid:</B></FONT></TD>
-			<TD WIDTH=450 COLSPAN=2><INPUT TYPE=CHECKBOX NAME=HASALID @ItemData?HASALID@ ONCLICK="ReShow();"></TD>
-		</TR>
+		@if?ItemData?ISCLOAK@
+			<TR>
+				<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Cloak Name:</B></FONT></TD>
+				<TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=KEYCODE SIZE=50 VALUE="@ItemData?KEYCODE@">
+				</TD>
+			</TR>
+		@else
+			<TR>
+				<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Has a Lid:</B></FONT></TD>
+				<TD WIDTH=450 COLSPAN=2><INPUT TYPE=CHECKBOX NAME=HASALID @ItemData?HASALID@ ONCLICK="ReShow();"></TD>
+			</TR>
+		@endif@
 		@AddRequestParameter?HASALID=@@ItemData?HASALID@@ @
 		@if?CheckReqParm?HASALID=checked@
 			<TR>

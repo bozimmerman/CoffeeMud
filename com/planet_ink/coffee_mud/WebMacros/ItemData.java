@@ -590,6 +590,8 @@ public class ItemData extends StdWebMacro
 						if(I instanceof com.planet_ink.coffee_mud.Items.interfaces.RoomMap)
 							return "true";
 						return "false";
+					case ISCLOAK: // is cloak
+						return Boolean.toString(I.ID().equalsIgnoreCase("GenCloak"));
 					case MAPAREAS: // map areas
 					{
 						String mask=";"+I.readableText();
