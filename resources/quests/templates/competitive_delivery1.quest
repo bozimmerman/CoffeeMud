@@ -247,7 +247,7 @@ QUEST_TIME_PROG * 1
 <FILE><NAME>$QUEST_ID_deliveree.script</NAME>
 <DATA>
 GREET_PROG 100
-	if has($n '$[1 *]')
+	if eval('$[1 *]' != '') AND has($n '$[1 *]')
 		say "$n" Ah, I see you are here to deliver $[1 *].  Go ahead and give it to me.
 	endif
 ~

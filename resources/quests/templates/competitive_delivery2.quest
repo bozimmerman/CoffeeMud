@@ -189,7 +189,7 @@ ONCE_PROG 100
 
 # this script is for the human chosen to be the note bearer
 GREET_PROG 100
-	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n)
+	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and EVAL('$[1 *]' != '')
 		if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
 			if has($n '$[1 *]')
 					sayto "$n" What are you doing back here?  Take $[1 *] to $DESTINATION_DESC!
@@ -203,7 +203,7 @@ GREET_PROG 100
 ~
 
 SPEECH_PROG mission problem package quest help delivery deliver 'me to do' 'to do' mission? problem? package? quest? help? delivery? delive?r 'me to do?' 'to do?' 
-	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n)
+	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and EVAL('$[1 *]' != '')
 		if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
 			if has($n '$[1 *]')
 					sayto "$n" Just take $[1 *] to $DESTINATION_DESC!
