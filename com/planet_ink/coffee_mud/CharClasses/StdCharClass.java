@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.AbilityMapping;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
@@ -902,25 +903,28 @@ public class StdCharClass implements CharClass
 		}
 		else
 		{
-			final List<Ability> onesToAdd=new ArrayList<Ability>();
+			final PairList<Ability,AbilityMapping> onesToAdd=new PairVector<Ability,AbilityMapping>();
 			for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 			{
 				final Ability A=a.nextElement();
-				if((CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID())>0)
-				&&(CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID())<=mob.baseCharStats().getClassLevel(this))
-				&&(CMLib.ableMapper().getDefaultGain(ID(),true,A.ID())))
+				final AbilityMapping mapping = CMLib.ableMapper().getQualifyingMapping(ID(), true, A.ID());
+				if((mapping != null)
+				&&(mapping.qualLevel()>0)
+				&&(mapping.qualLevel()<=mob.baseCharStats().getClassLevel(this))
+				&&(mapping.autoGain()))
 				{
-					final String extraMask=CMLib.ableMapper().getExtraMask(A.ID(),true,A.ID());
+					final String extraMask=mapping.extraMask();
 					if((extraMask==null)
 					||(extraMask.length()==0)
 					||(CMLib.masking().maskCheck(extraMask,mob,true)))
-						onesToAdd.add(A);
+						onesToAdd.add(A,mapping);
 				}
 			}
 			for(int v=0;v<onesToAdd.size();v++)
 			{
-				final Ability A=onesToAdd.get(v);
-				giveMobAbility(mob,A,CMLib.ableMapper().getDefaultProficiency(ID(),true,A.ID()),CMLib.ableMapper().getDefaultParm(ID(),true,A.ID()),isBorrowedClass);
+				final Ability A=onesToAdd.get(v).first;
+				final AbilityMapping map=onesToAdd.get(v).second;
+				giveMobAbility(mob,A,map.defaultProficiency(),map.defaultParm(),isBorrowedClass);
 			}
 		}
 	}

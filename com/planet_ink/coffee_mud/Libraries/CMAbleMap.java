@@ -1045,6 +1045,31 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 		return -1;
 	}
 
+	@Override
+	public AbilityMapping getQualifyingMapping(String ID, boolean checkAll, String abilityID)
+	{
+		if(completeAbleMap.containsKey(ID))
+		{
+			final Map<String,AbilityMapping> ableMap=completeAbleMap.get(ID);
+			if(ableMap.containsKey(abilityID))
+				return ableMap.get(abilityID);
+		}
+		if((checkAll)&&(completeAbleMap.containsKey("All")))
+		{
+			final Map<String,AbilityMapping> ableMap=completeAbleMap.get("All");
+			if(ableMap.containsKey(abilityID))
+			{
+				final AbilityMapping map=ableMap.get(abilityID);
+				final int qualLevel = map.qualLevel();
+				final CharClass C=CMClass.getCharClass(ID);
+				if((C!=null)&&(C.getLevelCap()>=0))
+					return (qualLevel>C.getLevelCap())?null:map;
+				return map;
+			}
+		}
+		return null;
+	}
+
 	protected List<String> getOrSet(String errStr, String abilityID)
 	{
 		Ability preA=null;

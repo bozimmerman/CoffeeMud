@@ -365,6 +365,19 @@ public interface AbilityMapper extends CMLibrary
 	public int getQualifyingLevel(String ID, boolean checkAll, String abilityID);
 
 	/**
+	 * Returns the mapping which the given class or race qualifies for the given ability ID(),
+	 * optionally checking the All-Qualifies list or not.  Returns null for no match.
+	 * @see AbilityMapper#qualifyingLevel(MOB, Ability)
+	 * @see AbilityMapper#qualifyingClassLevel(MOB, Ability)
+	 * @see AbilityMapper#lowestQualifyingClassRaceGovt(MOB, Ability)
+	 * @param ID the charclass ID(), race ID(), or whatever
+	 * @param checkAll true to check the All Qualifies list, false to skip it
+	 * @param abilityID the Ability ID() to find a map for
+	 * @return the level at which the give class or race qualifies, or null
+	 */
+	public AbilityMapping getQualifyingMapping(String ID, boolean checkAll, String abilityID);
+	
+	/**
 	 * Returns the lowest class or player level at which the given mob (by race or 
 	 * class) qualified for the given ability if any. Returns -1 for no match.
 	 * This method is called when you are trying to guage how powerful the player
