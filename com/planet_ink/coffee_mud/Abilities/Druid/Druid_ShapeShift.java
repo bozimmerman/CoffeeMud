@@ -377,12 +377,20 @@ public class Druid_ShapeShift extends StdAbility
 						}
 						if(CMath.isInteger(choice))
 						{
-							int x=CMath.s_int(choice)-1;
-							if((x>=0)&&(x<formNames.size()))
+							final int x=CMath.s_int(choice)-1;
+							boolean found=false;
+							for(final String key : formMap.keySet())
 							{
-								myRaceCode = formMap.get(formNames.get(x)).intValue();
-								break;
+								final Integer num=formMap.get(key);
+								if(x == num.intValue())
+								{
+									myRaceCode = num.intValue();
+									found=true;
+									break;
+								}
 							}
+							if(found)
+								break;
 						}
 						else
 						{
