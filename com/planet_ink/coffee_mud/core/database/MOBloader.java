@@ -1301,7 +1301,7 @@ public class MOBloader
 	}
 
 	// this method is unused, but is a good idea of how to collect riders, followers, carts, etc.
-	protected void addFollowerDependent(PhysicalAgent P, DVector list, String parent)
+	protected void addFollowerDependent(PhysicalAgent P, PairList<PhysicalAgent,String> list, String parent)
 	{
 		if(P==null)
 			return;
@@ -1312,7 +1312,7 @@ public class MOBloader
 			return;
 		CMLib.catalog().updateCatalogIntegrity(P);
 		final String myCode=""+(list.size()-1);
-		list.addElement(P,CMClass.classID(P)+"#"+myCode+parent);
+		list.add(P,CMClass.classID(P)+"#"+myCode+parent);
 		if(P instanceof Rideable)
 		{
 			final Rideable R=(Rideable)P;
@@ -1326,7 +1326,6 @@ public class MOBloader
 			for(int c=0;c<contents.size();c++)
 				addFollowerDependent(contents.get(c),list,"@"+myCode+"C");
 		}
-
 	}
 
 	public void DBUpdateFollowers(MOB mob)
@@ -1338,7 +1337,10 @@ public class MOBloader
 		for(int f=0;f<mob.numFollowers();f++)
 		{
 			final MOB thisMOB=mob.fetchFollower(f);
-			if((thisMOB!=null)&&(thisMOB.isMonster())&&(!thisMOB.isPossessing())&&(CMLib.flags().isSavable(thisMOB)))
+			if((thisMOB!=null)
+			&&(thisMOB.isMonster())
+			&&(!thisMOB.isPossessing())
+			&&(CMLib.flags().isSavable(thisMOB)))
 			{
 				CMLib.catalog().updateCatalogIntegrity(thisMOB);
 				final String sql="INSERT INTO CMCHFO (CMUSERID, CMFONM, CMFOID, CMFOTX, CMFOLV, CMFOAB"
