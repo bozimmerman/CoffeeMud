@@ -822,7 +822,7 @@ public class CommonSkill extends StdAbility
 		mob.curState().adjHitPoints(-consumed[2],mob.maxState());
 		setAbilityCode(0);
 		activityRoom=mob.location();
-		if(!bundling)
+		if((!bundling)&&(!auto))
 			helpProficiency(mob, 0);
 
 		return true;
