@@ -180,6 +180,7 @@ public class Sailor extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Skill_CombatRepairs",true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Salvage",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"MasterFishing",true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Skill_FoulWeatherSailing",false);
 
@@ -189,6 +190,8 @@ public class Sailor extends StdCharClass
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Skill_InterceptShip",0,"",true,false,CMParms.parseSemicolons("Skill_SeaCharting(50)", true),"");
 
+		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"MasterTrawling",true);
+		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Skill_AwaitShip",true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Skill_HireCrewmember",true);
@@ -198,13 +201,18 @@ public class Sailor extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),-1,"Digging",0,"",false,true);
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),-1,"Carpentry",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),-1,"Drilling",0,"",false,true);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),-1,"Fishing",0,"",false,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),-1,"Blacksmithing",0,"",false,true);
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),-1,"Fishing",0,"",false,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),-1,"Foraging",0,"",false,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),-1,"Herbology",0,"",false,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),-1,"Cobbling",0,"",false,true,CMParms.parseSemicolons("LeatherWorking",true),"");
 		CMLib.ableMapper().addCharAbilityMapping(ID(),-1,"Hunting",0,"",false,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),-1,"Mining",0,"",false,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),-1,"Pottery",0,"",false,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),-1,"Shearing",0,"",false,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),-1,"Locksmithing",0,"",false,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),-1,"Baking",0,"",false,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),-1,"FoodPrep",0,"",false,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),-1,"ScrimShaw",0,"",false,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),-1,"LeatherWorking",0,"",false,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),-1,"GlassBlowing",0,"",false,true);
