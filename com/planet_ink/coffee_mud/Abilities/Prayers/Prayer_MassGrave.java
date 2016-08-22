@@ -247,6 +247,7 @@ public class Prayer_MassGrave extends Prayer
 				if(A!=null)
 					newRoom.addEffect(A);
 				shelter.setArea(mob.location().getArea());
+				shelter.setAtmosphere(RawMaterial.RESOURCE_DIRT);
 				miscText=CMLib.map().getExtendedRoomID(mob.location());
 				for (final Object element : h)
 				{

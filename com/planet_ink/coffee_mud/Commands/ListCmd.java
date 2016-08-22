@@ -3864,26 +3864,15 @@ public class ListCmd extends StdCommand
 		
 		String rest="";
 		MOB whoM=mob;
-		boolean wiki=false;
+		WikiFlag wiki = getWikiFlagRemoved(commands);
 		if(commands.size()>1)
 		{
 			rest=commands.get(1);
-			if(rest.equalsIgnoreCase("WIKI"))
-				wiki=true;
-			else
+			whoM=CMLib.players().getLoadPlayer(rest);
+			if(whoM==null)
 			{
-				whoM=CMLib.players().getLoadPlayer(rest);
-				if(whoM==null)
-				{
-					mob.tell("No '"+rest+"'");
-					return;
-				}
-				if(commands.size()>2)
-				{
-					rest=commands.get(2);
-					if(rest.equalsIgnoreCase("WIKI"))
-						wiki=true;
-				}
+				mob.tell("No '"+rest+"'");
+				return;
 			}
 		}
 		
@@ -3919,9 +3908,67 @@ public class ListCmd extends StdCommand
 		for(final Iterator<String> i=commandSet.iterator();i.hasNext();)
 		{
 			final String s=i.next();
-			if(wiki)
+			if(wiki == WikiFlag.WIKILIST)
 			{
 				commandList.append("*[["+s+"|"+s+"]]\n\r");
+			}
+			else
+			if(wiki == WikiFlag.WIKIHELP)
+			{
+				StringBuilder help=CMLib.help().getHelpText(s,null,false,true);
+				if(help==null)
+				{
+System.out.println(s);
+					continue;
+				}
+				String helpStr=help.toString();
+				if(helpStr.startsWith("<ABILITY>"))
+					continue;
+				String usage="";
+				String example="";
+				String shorts="";
+				while(helpStr.startsWith("Command")||helpStr.startsWith("  "))
+				{
+					int end=helpStr.indexOf("\n");
+					if(end<0)
+						break;
+					helpStr=helpStr.substring(end+1).trim();
+				}
+				while(helpStr.startsWith("Usage")||helpStr.startsWith("  "))
+				{
+					int end=helpStr.indexOf("\n");
+					int start=helpStr.indexOf(":");
+					if((end<0)||(start<0)||(start>end))
+						break;
+					usage += ((usage.length()>0) ? "\n\r" : "" ) + helpStr.substring(start+1,end).trim();
+					helpStr=helpStr.substring(end+1).trim();
+				}
+				while(helpStr.startsWith("Example")||helpStr.startsWith("  "))
+				{
+					int end=helpStr.indexOf("\n");
+					int start=helpStr.indexOf(":");
+					if((end<0)||(start<0)||(start>end))
+						break;
+					example += ((example.length()>0) ? "\n\r" : "" ) + helpStr.substring(start+1,end).trim();
+					helpStr=helpStr.substring(end+1).trim();
+				}
+				while(helpStr.startsWith("Short")||helpStr.startsWith("  "))
+				{
+					int end=helpStr.indexOf("\n");
+					int start=helpStr.indexOf(":");
+					if((end<0)||(start<0)||(start>end))
+						break;
+					shorts += ((example.length()>0) ? "\n\r" : "" ) + helpStr.substring(start+1,end).trim();
+					helpStr=helpStr.substring(end+1).trim();
+				}
+
+				commandList.append("{{CommandTemplate"
+								+ "|Name="+s
+								+ "|Usage="+CMStrings.replaceAllofAny(usage,"[]{}<>|".toCharArray(),"\"\"()()!".toCharArray())
+								+ "|Examples="+example
+								+ "|Shorts="+shorts
+								+ "|Description="+CMStrings.replaceAllofAny(helpStr,"[]{}<>|".toCharArray(),"()()()!".toCharArray())
+								+ "}}\n\r");
 			}
 			else
 			{
