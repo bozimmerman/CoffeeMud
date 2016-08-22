@@ -12604,6 +12604,13 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							  int ticks,
 							  String msg)
 	{
+		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+			return;
+		if(que.size()>25)
+		{
+			this.logError(monster, "UNK", "SYS", "Attempt to que more than 25 events.");
+			que.clear();
+		}
 		if(noDelay)
 			execute(host,source,target,monster,primaryItem,secondaryItem,script,msg,newObjs());
 		else
@@ -12620,6 +12627,13 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							   int ticks,
 							   String msg)
 	{
+		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+			return;
+		if(que.size()>25)
+		{
+			this.logError(monster, "UNK", "SYS", "Attempt to que more than 25 events.");
+			que.clear();
+		}
 		que.add(0,new ScriptableResponse(host,source,target,monster,primaryItem,secondaryItem,script,ticks,msg));
 	}
 
