@@ -32,20 +32,56 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Skill_QuickChange extends BardSkill
 {
-	@Override public String ID() { return "Skill_QuickChange"; }
-	private final static String localizedName = CMLib.lang().L("QuickChange");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	private static final String[] triggerStrings =I(new String[] {"QUICKCHANGE"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_FOOLISHNESS;}
-	static final String locationsDelim="<ITEMLOCATIONS>";
-	static final String containerDelim="<ITEMCONTAINERS>";
+	@Override
+	public String ID()
+	{
+		return "Skill_QuickChange";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("QuickChange");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "QUICKCHANGE" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL | Ability.DOMAIN_FOOLISHNESS;
+	}
+
+	static final String	locationsDelim	= "<ITEMLOCATIONS>";
+	static final String	containerDelim	= "<ITEMCONTAINERS>";
 
 	private class PackedItem
 	{
@@ -112,6 +148,9 @@ public class Skill_QuickChange extends BardSkill
 			mob.addItem(I.I);
 			I.I.wearAt(I.wornLoc);
 		}
+		// this is to clear the wear/wield cache
+		final CMMsg msg=CMClass.getMsg(mob, null, null, CMMsg.MASK_ALWAYS|CMMsg.MSG_WIELD,null,CMMsg.MSG_OK_VISUAL,null,CMMsg.MSG_OK_VISUAL,null);
+		mob.executeMsg(mob, msg);
 	}
 
 	public void packThese(List<PackedItem> items)
