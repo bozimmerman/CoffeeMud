@@ -210,7 +210,7 @@ public class Sailor extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),-1,"Mining",0,"",false,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),-1,"Pottery",0,"",false,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),-1,"Shearing",0,"",false,true);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),-1,"Locksmithing",0,"",false,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),-1,"LockSmith",0,"",false,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),-1,"Baking",0,"",false,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),-1,"FoodPrep",0,"",false,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),-1,"ScrimShaw",0,"",false,true);
