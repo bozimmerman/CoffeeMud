@@ -10,19 +10,19 @@ Marionette	3	10	5	1	GenItem
 a Pair of % Sabots	3	20	10	15	GenShoes	2:FEET	0	2	0	
 a Pair of % Clogs	3	30	10	15	GenShoes	2:FEET	0	2	0	
 Small % Shield	3	30	15	5	GenShield	HELD	1	6	0	
-% Box	3	30	30	8	GenContainer		50		0	
-% Shiv	3	15	15	250	GenWeapon	DAGGER	1	6	0	
+% Box	3	30	30	8	GenContainer		300		0	
+% Shiv	3	15	3	250	GenWeapon	DAGGER	1	6	0	
 % Mug	4	10	8	1	GenDrink		5		1	
 % Plate	4	10	8	1	GenContainer		5		0	
 % Staff	4	20	15	392	GenWeapon	STAFF	2	12	0	
 % Pitcher	5	15	15	1	GenDrink		15		1	
-% Barrel	5	30	30	5	GenDrink		50		0	
+% Barrel	5	30	30	5	GenDrink		300		0	
 % Quarterstaff	5	15	10	267	GenWeapon	STAFF	2	10	0	
 % Wheel	6	20	10	1	GenItem					
-% Bucket	6	20	20	5	GenDrink		15		0	
-Small % Chest	6	50	20	20	GenContainer	LOCK	25		0	
+% Bucket	6	20	5	5	GenDrink		15		0	
+Small % Chest	6	50	20	20	GenContainer	LOCK	100		0	
 % Shield	6	50	30	8	GenShield	HELD	1	8	0	
-Large % Box	6	40	40	10	GenContainer	LID	65		0	
+Large % Box	6	40	40	10	GenContainer	LID	400		0	
 % Plaque	7	20	5	20	GenItem					
 % pipe	7	10	1	2	GenPipe	SMOKE	200		8192	
 Small % Table	8	15	30	15	GenRideable	TABLE	20		0	
@@ -34,7 +34,7 @@ Small % Chair	9	15	15	5	GenChair	CHAIR	1		0
 Small % Bench	10	20	20	10	GenChair	CHAIR	2		0	
 % Peg Leg	10	30	10	100	GenLimb	LEGS		0		
 Small % Bed	11	25	30	15	GenBed	BED	1		0	
-Small % Box	11	15	15	5	GenContainer		25		0	
+Small % Box	11	15	15	5	GenContainer		150		0	
 % Bookshelf	12	30	10	15	GenContainer		100		384	
 % Scroll Case	12	30	10	10	GenContainer		3		256	
 Large % Shield	12	75	40	16	GenShield	HELD	1	13	0	
@@ -45,10 +45,10 @@ Large % Shield	12	75	40	16	GenShield	HELD	1	13	0
 Solid % Club	16	85	50	350	GenWeapon	BLUNT	1	12	-20	
 % Potion Rack	17	30	30	8	GenContainer		100		2048	Prop_NoPurge
 % Desk	18	30	60	20	GenRideable	TABLE	50		0	
-% Stake	18	20	40	300	GenWeapon	DAGGER	1	14	0	
+% Stake	18	20	4	300	GenWeapon	DAGGER	1	14	0	
 % Stool	19	30	20	6	GenChair	CHAIR	1		0	
 % Chair	20	30	30	10	GenChair	CHAIR	5		0	
-Solid % Mace	20	95	60	1028	GenWeapon	BLUNT	1	16	0	
+Solid % Mace	20	95	15	1028	GenWeapon	BLUNT	1	16	0	
 % Bench	21	40	40	15	GenChair	CHAIR	10		0	
 % Bed	22	50	60	20	GenBed	BED	2		0	
 % Wand	22	30	5	3	GenWand					
@@ -59,10 +59,10 @@ Large % Table	25	45	90	30	GenRideable	TABLE	100		0
 Ornate % Chair	26	45	45	15	GenChair	CHAIR	5		0	
 Long % Bench	27	60	60	22	GenChair	CHAIR	15		0	
 King sized % Bed	28	75	90	30	GenBed	BED	4		0	
-% Ceremonial Dagger	28	20	80	350	GenWeapon	DAGGER	1	16	10	
-% Chest	29	75	30	30	GenContainer	LOCK	50		0	
+% Ceremonial Dagger	28	20	4	350	GenWeapon	DAGGER	1	16	10	
+% Chest	29	75	30	30	GenContainer	LOCK	150		0	
 % Crib	30	60	30	80	GenContainer		60		0	
-Large % Chest	31	100	45	45	GenContainer	LOCK	100		0	
+Large % Chest	31	100	45	45	GenContainer	LOCK	225		0	
 % Wardrobe	32	75	70	60	GenContainer	LID	500		4096	Prop_NoPurge
 Ornate % Club	32	130	100	650	GenWeapon	BLUNT	1	16	-20	
 % Armor Rack	33	85	80	75	GenContainer		1000		4096	Prop_NoPurge
@@ -75,7 +75,7 @@ Four Poster % Bed	40	150	200	1500	GenBed	BED	4		0
 Ornate % Mace	40	160	120	2056	GenWeapon	BLUNT	1	22	0	
 % Armoire	42	80	50	40	GenContainer	LID	100		4096	
 % Hat Rack	44	20	5	10	GenContainer		10		4096	
-The Mighty % Shiv	45	30	100	500	GenWeapon	DAGGER	1	20	10	
+The Mighty % Shiv	45	30	12	500	GenWeapon	DAGGER	1	20	10	
 % Coat Rack	46	30	10	10	GenContainer		50		4096	
 % Couch	48	80	120	200	GenChair	CHAIR	3		0	
 % Sofa	50	90	100	250	GenChair	CHAIR	4		0	
@@ -93,13 +93,13 @@ The % Club	64	150	200	1300	GenWeapon	BLUNT	1	40	-20
 Ornate % Bench	64	80	80	88	GenChair	CHAIR	15		0	
 Decorative % Bench	64	180	180	88	GenChair	CHAIR	15		0	
 Kingly % Bed	66	150	180	120	GenBed	BED	6		0	
-Lordly % Chest	68	150	60	120	GenContainer	LOCK	50		0	
-Decorative % Chest	68	210	120	120	GenContainer	LOCK	150		0	
+Lordly % Chest	68	150	60	120	GenContainer	LOCK	300		0	
+Decorative % Chest	68	210	120	120	GenContainer	LOCK	600		0	
 The % Mace	70	180	240	4000	GenWeapon	BLUNT	1	35	0	
 Princely % Crib	70	120	60	160	GenContainer		60		0	
 Queenly % Wardrobe	72	150	140	120	GenContainer	LID	500		4096	Prop_NoPurge
 Knights % Armor Rack	74	150	160	300	GenContainer		1500		4096	Prop_NoPurge
-The Mighty % Dagger	75	40	120	1200	GenWeapon	DAGGER	1	36	10	
+The Mighty % Dagger	75	40	12	1200	GenWeapon	DAGGER	1	36	10	
 Knights % Weapon Rack	76	130	130	240	GenContainer		1000		60	Prop_NoPurge
 Kingly % Crib	78	140	100	250	GenContainer		400		0	
 The % Quarterstaff	80	270	300	2700	GenWeapon	STAFF	2	80	0	

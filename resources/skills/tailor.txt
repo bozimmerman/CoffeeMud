@@ -1,6 +1,6 @@
 % Cushion	5	10	5	5	GenRideable	CHAIR	0		0	
 % Sleeping Bag	5	30	15	4	GenRideable	ENTER	0		0	
-% Tent	10	60	25	5	GenRideable	ENTER	5		0	
+% Tent	10	60	25	250	GenRideable	ENTER	5		0	
 % Pillow	1	10	5	1	GenBoffWeapon	BASHING	0	0		Prop_NoDamage
 Large % Pillow	10	10	5	7	GenBoffWeapon	BASHING	0	0		Prop_NoDamage
 % Armbands	3	30	1	2	GenArmor	S-1:ARMS	0	1	0	

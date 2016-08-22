@@ -106,7 +106,7 @@ Sabre	21	60	8	752	GenWeapon	SWORD	SLASHING	16	5	1	0
 Zweihander	25	70	36	3552	GenWeapon	SWORD	SLASHING	48	0	2	0		
 TwoHanded Sword	17	70	30	2128	GenWeapon	SWORD	SLASHING	36	0	2	0		
 Drussus	15	70	8	460	GenWeapon	SWORD	PIERCING	10	10	1	0		
-Wakazashi	9	80	10	368	GenWeapon	SWORD	SLASHING	8	5	1	0		
+Wakizashi	9	80	10	368	GenWeapon	SWORD	SLASHING	8	5	1	0		
 Rapier	11	80	6	288	GenWeapon	SWORD	PIERCING	8	5	1	0		
 Foil	7	80	2	92	GenWeapon	SWORD	PIERCING	4	5	1	0		
 Epee	10	90	6	252	GenWeapon	SWORD	PIERCING	6	10	1	0		
@@ -129,5 +129,5 @@ Balanced Knife	8	90	2	78	GenSpear	THROWN	PIERCING	2	5	1	1
 Shuriken	11	120	2	132	GenSpear	THROWN	SLASHING	4	5	1	1		
 Pilum	16	130	8	468	GenSpear	THROWN	PIERCING	7	10	1	2		
 Hurlbat	18	140	8	718	GenSpear	THROWN	SLASHING	18	-15	1	1		
-Dwarven Thrower	19	170	8	688	GenSpear	THROWN	BASHING	12	0	1	2	MITHRIL	
+Dwarven Thrower	19	170	8	688	GenSpear	THROWN	BASHING	12	0	1	2	MITHRIL	Prop_HaveZapper;-RACECAT +Dwarf;Spell_Boomerang
 Dizzy Boff Stick	1	100	20	2	GenBoffWeapon	BLUNT	BASHING	0	0	1	0		Prop_NoDamage
