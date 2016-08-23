@@ -1978,7 +1978,9 @@ public class ListCmd extends StdCommand
 						+ "|Languages="+langStr.toString());
 				for(int l=1;l<=CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL);l++)
 				{
-					StringBuilder levelList=new StringBuilder("");
+					final StringBuilder levelList=new StringBuilder("");
+					final List<Ability> autoGains=new ArrayList<Ability>(3);
+					final List<Ability> qualifies=new ArrayList<Ability>(3);
 					for (final Enumeration<AbilityMapper.AbilityMapping> a = CMLib.ableMapper().getClassAbles(C.ID(),true); a.hasMoreElements(); )
 					{
 						final AbilityMapper.AbilityMapping cimable=a.nextElement();
@@ -1989,12 +1991,17 @@ public class ListCmd extends StdCommand
 							&&(types.contains(Integer.valueOf(A.classificationCode()&Ability.ALL_ACODES))))
 							{
 								if(cimable.autoGain())
-									levelList.append("[["+A.ID()+"|"+A.name()+"]] ");
+									autoGains.add(A);
 								else
-									levelList.append("([["+A.ID()+"|"+A.name()+"]]) ");
+									qualifies.add(A);
 							}
 						}
 					}
+					for(Ability A : autoGains)
+						levelList.append("[["+A.ID()+"|"+A.name()+"]]&nbsp;&nbsp;&nbsp;&nbsp;");
+					for(Ability A : qualifies)
+						levelList.append("([["+A.ID()+"|"+A.name()+"]])&nbsp;&nbsp;&nbsp;&nbsp;");
+					
 					lines.append("|level"+l+"="+levelList.toString());
 				}
 				lines.append("}}");
