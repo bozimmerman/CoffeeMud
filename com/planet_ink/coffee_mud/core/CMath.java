@@ -1458,8 +1458,14 @@ public class CMath
 	 */
 	public final static int s_int(final String INT)
 	{
-		try{ return Integer.parseInt(INT); }
-		catch(final Exception e){ return 0;}
+		try
+		{
+			return Integer.parseInt(INT);
+		}
+		catch (final Exception e)
+		{
+			return 0;
+		}
 	}
 
 	/**

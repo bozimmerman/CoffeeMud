@@ -216,6 +216,59 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 		return V;
 	}
 
+	private int getStageNumber(ExpertiseDefinition D)
+	{
+		if(D.ID().startsWith(D.getBaseName()))
+		{
+			final String remID=D.ID().substring(D.getBaseName().length());
+			if(CMath.isInteger(remID))
+				return CMath.s_int(remID);
+			if(CMath.isRomanNumeral(remID))
+				return CMath.convertFromRoman(remID);
+		}
+		return 0;
+	}
+	
+	@Override
+	public int getHighestListableStageBySkill(final MOB mob, String ableID, ExpertiseLibrary.Flag flag)
+	{
+		String expertiseID = completeUsageMap[flag.ordinal()].get(ableID);
+		if(expertiseID == null)
+			return 0;
+		ExpertiseDefinition D=null;
+		int max=0;
+		for(final Enumeration<ExpertiseDefinition> e=definitions();e.hasMoreElements();)
+		{
+			D=e.nextElement();
+			if(expertiseID.equals(D.getBaseName()))
+			{
+				if((D.compiledListMask()==null)||(CMLib.masking().maskCheck(D.compiledListMask(),mob,true)))
+				{
+					int stage=getStageNumber(D);
+					if(stage > max)
+						max=stage;
+				}
+			}
+		}
+		final PlayerStats pStats = mob.playerStats();
+		if(pStats != null)
+		{
+			for(final ExpertiseDefinition def : pStats.getExtraQualifiedExpertises().values())
+			{
+				if(expertiseID.equals(def.getBaseName()))
+				{
+					if((def.compiledListMask()==null)||(CMLib.masking().maskCheck(def.compiledListMask(),mob,true)))
+					{
+						int stage=getStageNumber(def);
+						if(stage > max)
+							max=stage;
+					}
+				}
+			}
+		}
+		return max;
+	}
+
 	@Override
 	public int numExpertises()
 	{

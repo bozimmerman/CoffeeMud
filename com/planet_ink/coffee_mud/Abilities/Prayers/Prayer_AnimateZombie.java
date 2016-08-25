@@ -123,6 +123,24 @@ public class Prayer_AnimateZombie extends Prayer
 		return true;
 	}
 	
+	public int getUndeadLevel(final MOB mob, double baseLvl, double corpseLevel)
+	{
+		final ExpertiseLibrary exLib=CMLib.expertises();
+		final double deathLoreExpertiseLevel = super.getXLEVELLevel(mob);
+		final double appropriateLoreExpertiseLevel = super.getX1Level(mob);
+		final double charLevel = mob.phyStats().level();
+		final double maxDeathLoreExpertiseLevel = exLib.getHighestListableStageBySkill(mob,ID(),ExpertiseLibrary.Flag.LEVEL);
+		final double maxApproLoreExpertiseLevel = exLib.getHighestListableStageBySkill(mob,ID(),ExpertiseLibrary.Flag.X1);
+		double lvl = (charLevel * appropriateLoreExpertiseLevel / maxApproLoreExpertiseLevel)
+					-(baseLvl+4+(2*maxDeathLoreExpertiseLevel));
+		if(lvl < 0.0)
+			lvl = 0.0;
+		lvl += baseLvl + (2*deathLoreExpertiseLevel);
+		if(lvl > corpseLevel)
+			lvl = corpseLevel;
+		return (int)Math.round(lvl);
+	}
+	
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -178,7 +196,7 @@ public class Prayer_AnimateZombie extends Prayer
 				newMOB.setName(L("@x1 zombie",race));
 				newMOB.setDescription(description);
 				newMOB.setDisplayText(L("@x1 zombie is here",race));
-				newMOB.basePhyStats().setLevel(2+(super.getX1Level(mob)*2)+super.getXLEVELLevel(mob));
+				newMOB.basePhyStats().setLevel(getUndeadLevel(mob,2,body.phyStats().level()));
 				newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,body.charStats().getStat(CharStats.STAT_GENDER));
 				newMOB.baseCharStats().setMyRace(CMClass.getRace("Undead"));
 				newMOB.baseCharStats().setBodyPartsFromStringAfterRace(body.charStats().getBodyPartsAsString());

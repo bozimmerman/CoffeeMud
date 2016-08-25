@@ -123,6 +123,24 @@ public class Prayer_AnimateSkeleton extends Prayer
 		return true;
 	}
 	
+	public int getUndeadLevel(final MOB mob, double baseLvl, double corpseLevel)
+	{
+		final ExpertiseLibrary exLib=CMLib.expertises();
+		final double deathLoreExpertiseLevel = super.getXLEVELLevel(mob);
+		final double appropriateLoreExpertiseLevel = super.getX1Level(mob);
+		final double charLevel = mob.phyStats().level();
+		final double maxDeathLoreExpertiseLevel = exLib.getHighestListableStageBySkill(mob,ID(),ExpertiseLibrary.Flag.LEVEL);
+		final double maxApproLoreExpertiseLevel = exLib.getHighestListableStageBySkill(mob,ID(),ExpertiseLibrary.Flag.X1);
+		double lvl = (charLevel * appropriateLoreExpertiseLevel / maxApproLoreExpertiseLevel)
+					-(baseLvl+4+(2*maxDeathLoreExpertiseLevel));
+		if(lvl < 0.0)
+			lvl = 0.0;
+		lvl += baseLvl + (2*deathLoreExpertiseLevel);
+		if(lvl > corpseLevel)
+			lvl = corpseLevel;
+		return (int)Math.round(lvl);
+	}
+	
 	public void makeSkeletonFrom(Room R, DeadBody body, MOB mob, int level)
 	{
 		String race="a";
@@ -137,7 +155,7 @@ public class Prayer_AnimateSkeleton extends Prayer
 		newMOB.setName(L("@x1 skeleton",race));
 		newMOB.setDescription(description);
 		newMOB.setDisplayText(L("@x1 skeleton is here",race));
-		newMOB.basePhyStats().setLevel(level+(super.getX1Level(mob)*2)+super.getXLEVELLevel(mob));
+		newMOB.basePhyStats().setLevel(getUndeadLevel(mob,level,body.phyStats().level()));
 		newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,body.charStats().getStat(CharStats.STAT_GENDER));
 		newMOB.baseCharStats().setMyRace(CMClass.getRace("Skeleton"));
 		newMOB.baseCharStats().setBodyPartsFromStringAfterRace(body.charStats().getBodyPartsAsString());

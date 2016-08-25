@@ -163,4 +163,5 @@ public interface ExpertiseLibrary extends CMLibrary
 	public boolean canBeTaught(MOB teacher, MOB student, Environmental item, String msg);
 	public boolean postTeach(MOB teacher, MOB student, CMObject teachObj);
 	public Iterator<String> filterUniqueExpertiseIDList(Iterator<String> i);
+	public int getHighestListableStageBySkill(final MOB mob, String ableID, ExpertiseLibrary.Flag flag);
 }
