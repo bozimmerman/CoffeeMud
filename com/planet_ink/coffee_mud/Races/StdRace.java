@@ -1737,23 +1737,28 @@ public class StdRace implements Race
 				mob.setSession(sess);
 				mob.baseCharStats().setMyRace(this);
 				startRacing(mob,false);
+				mob.baseCharStats().setStat(CharStats.STAT_GENDER, 'N');
 				mob.recoverCharStats();
 				mob.recoverPhyStats();
 				mob.recoverMaxState();
 				mob2.setSession(sess);
 				mob2.baseCharStats().setMyRace(new StdRace());
+				mob2.baseCharStats().setStat(CharStats.STAT_GENDER, 'N');
 				mob2.recoverCharStats();
 				mob2.recoverPhyStats();
 				mob2.recoverMaxState();
 				for(final int c: CharStats.CODES.ALLCODES())
 				{
-					final int oldStat=mob2.charStats().getStat(c);
-					final int newStat=mob.charStats().getStat(c);
-					if(oldStat>newStat)
-						str.append(CharStats.CODES.DESC(c).toLowerCase()+"-"+(oldStat-newStat)+", ");
-					else
-					if(newStat>oldStat)
-						str.append(CharStats.CODES.DESC(c).toLowerCase()+"+"+(newStat-oldStat)+", ");
+					if(c != CharStats.STAT_GENDER)
+					{
+						final int oldStat=mob2.charStats().getStat(c);
+						final int newStat=mob.charStats().getStat(c);
+						if(oldStat>newStat)
+							str.append(CharStats.CODES.DESC(c).toLowerCase()+"-"+(oldStat-newStat)+", ");
+						else
+						if(newStat>oldStat)
+							str.append(CharStats.CODES.DESC(c).toLowerCase()+"+"+(newStat-oldStat)+", ");
+					}
 				}
 				dispChgDesc=CMLib.flags().getDispositionStateList(mob);
 				sensesChgDesc=CMLib.flags().getSensesStateList(mob);
