@@ -71,7 +71,8 @@ public class Quit extends StdCommand
 			if(session!=null)
 			{
 				if((session.getLastPKFight()>0)
-				&&((System.currentTimeMillis()-session.getLastPKFight())<(5*60*1000)))
+				&&((System.currentTimeMillis()-session.getLastPKFight())<(5*60*1000))
+				&&(!CMSecurity.isASysOp(mob)))
 				{
 					mob.tell(L("You must wait a few more minutes before you are allowed to quit."));
 					return false;
