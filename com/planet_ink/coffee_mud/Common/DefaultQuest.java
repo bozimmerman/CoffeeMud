@@ -1613,16 +1613,19 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 									for(final Enumeration<Room> e=getAppropriateRoomSet(q);e.hasMoreElements();)
 									{
 										final Room R2=e.nextElement();
-										for(int i=0;i<R2.numInhabitants();i++)
+										if(R2!=null)
 										{
-											final MOB M2=R2.fetchInhabitant(i);
-											if((M2!=null)
-											&&(M2.isMonster())
-											&&((M2.amUltimatelyFollowing()==null)||(M2.amUltimatelyFollowing().isMonster())))
+											for(int i=0;i<R2.numInhabitants();i++)
 											{
-												if(!CMLib.masking().maskCheck(mask,M2,true))
-													continue;
-												choices=sortSelect(M2,mobName,choices,choices0,choices1,choices2,choices3);
+												final MOB M2=R2.fetchInhabitant(i);
+												if((M2!=null)
+												&&(M2.isMonster())
+												&&((M2.amUltimatelyFollowing()==null)||(M2.amUltimatelyFollowing().isMonster())))
+												{
+													if(!CMLib.masking().maskCheck(mask,M2,true))
+														continue;
+													choices=sortSelect(M2,mobName,choices,choices0,choices1,choices2,choices3);
+												}
 											}
 										}
 									}

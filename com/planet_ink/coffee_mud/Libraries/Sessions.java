@@ -193,19 +193,20 @@ public class Sessions extends StdLibrary implements SessionsList
 						if((S.getPreviousCMD()!=null)&&(S.getPreviousCMD().size()>0))
 						{
 							final String roomID=S.mob()!=null?CMLib.map().getExtendedRoomID(S.mob().location()):"";
+							final String statusMsg;
+							if(((S.getStatus())!=Session.SessionStatus.LOGIN)
+							||((S.getPreviousCMD()!=null)&&(S.getPreviousCMD().size()>0)))
+								statusMsg = "STATUS  is :"+S.getStatus()+", LASTCMD was :"+((S.getPreviousCMD()!=null)?S.getPreviousCMD().toString():"");
+							else
+								statusMsg = "STATUS  is :"+S.getStatus()+", no last command available.";
 							if((S.isLockedUpWriting())
 							&&(CMLib.flags().isInTheGame(S.mob(),true)))
 							{
-								Log.errOut(serviceClient.getName(),"LOGGED OFF Session: "+((S.mob()==null)?"Unknown":S.mob().Name())+" ("+roomID+"), out for "+CMLib.time().date2EllapsedTime(time, TimeUnit.MILLISECONDS, true)+": "+S.isLockedUpWriting());
+								Log.errOut(serviceClient.getName(),"LOGGED OFF Session: "+((S.mob()==null)?"Unknown":S.mob().Name())+" ("+roomID+"), out for "+CMLib.time().date2EllapsedTime(time, TimeUnit.MILLISECONDS, true)+": "+S.isLockedUpWriting()+"\r\n"+statusMsg);
 								stopSessionAtAllCosts(S);
 							}
 							else
-								Log.errOut(serviceClient.getName(),"Suspect Session: "+((S.mob()==null)?"Unknown":S.mob().Name())+" ("+roomID+"), out for "+CMLib.time().date2EllapsedTime(time, TimeUnit.MILLISECONDS, true));
-							if(((S.getStatus())!=Session.SessionStatus.LOGIN)
-							||((S.getPreviousCMD()!=null)&&(S.getPreviousCMD().size()>0)))
-								Log.errOut(serviceClient.getName(),"STATUS  is :"+S.getStatus()+", LASTCMD was :"+((S.getPreviousCMD()!=null)?S.getPreviousCMD().toString():""));
-							else
-								Log.errOut(serviceClient.getName(),"STATUS  is :"+S.getStatus()+", no last command available.");
+								Log.warnOut(serviceClient.getName(),"Suspect Session: "+((S.mob()==null)?"Unknown":S.mob().Name())+" ("+roomID+"), out for "+CMLib.time().date2EllapsedTime(time, TimeUnit.MILLISECONDS, true)+"\r\n"+statusMsg);
 						}
 					}
 				}
