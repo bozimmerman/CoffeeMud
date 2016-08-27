@@ -117,8 +117,7 @@ public class Thief_WildernessSounds extends ThiefSkill
 	{
 		if(!super.okMessage(myHost, msg))
 			return false;
-		if(msg.amISource(invoker)
-		&&(invoker == affected)
+		if((msg.source()==affected)
 		&&(myListen != null)
 		&&(msg.tool() == myListen)
 		&&(msg.target() instanceof Room)
