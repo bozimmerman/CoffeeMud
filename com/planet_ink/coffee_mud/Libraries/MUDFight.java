@@ -2163,7 +2163,8 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		}
 		if(target.isInCombat())
 		{
-			if(attacker.session()!=null)
+			if((attacker.session()!=null)
+			&&(!attacker.isPossessing()))
 			{
 				if(!target.isMonster())
 					attacker.session().setLastPKFight();
