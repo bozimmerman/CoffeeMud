@@ -117,14 +117,12 @@ public class Thief_UnderwaterSounds extends ThiefSkill
 	{
 		if(!super.okMessage(myHost, msg))
 			return false;
-		if(msg.amISource(invoker)
-		&&(invoker == affected)
+		if((msg.source()==affected)
 		&&(myListen != null)
 		&&(msg.tool() == myListen)
 		&&(msg.target() instanceof Room)
 		&&(msg.target() != msg.source().location())
-		&&(!CMLib.flags().isUnderWateryRoom((Room)msg.target()))
-		&&((((Room)msg.target()).domainType()&Room.INDOORS)==0))
+		&&(CMLib.flags().isUnderWateryRoom((Room)msg.target())))
 		{
 			if(msg.source().isMine(msg.tool()))
 			{
