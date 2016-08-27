@@ -35,19 +35,75 @@ import java.util.*;
 
 public class Thief_Listen extends ThiefSkill
 {
-	@Override public String ID() { return "Thief_Listen"; }
-	private final static String localizedName = CMLib.lang().L("Listen");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
-	@Override protected int canTargetCode(){return Ability.CAN_ROOMS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_ALERT;}
-	private static final String[] triggerStrings =I(new String[] {"LISTEN"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override
+	public String ID()
+	{
+		return "Thief_Listen";
+	}
 
-	protected Room sourceRoom=null;
-	protected Room room=null;
-	protected String lastSaid="";
+	private final static String	localizedName	= CMLib.lang().L("Listen");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ROOMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_ROOMS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_THIEF_SKILL | Ability.DOMAIN_ALERT;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "LISTEN" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	protected Room				sourceRoom	= null;
+	protected Room				room		= null;
+	protected String			lastSaid	= "";
+	protected Set<ListenFlag>	flags		= new TreeSet<ListenFlag>(Arrays.asList(new ListenFlag[] { ListenFlag.INDOORS }));
+	
+	
+	@Override
+	public CMObject copyOf()
+	{
+		Thief_Listen A=(Thief_Listen)super.copyOf();
+		A.sourceRoom=null;
+		A.room=null;
+		A.lastSaid="";
+		A.flags= new TreeSet<ListenFlag>(Arrays.asList(new ListenFlag[] { ListenFlag.INDOORS }));
+		return A;
+	}
+	
+	protected enum ListenFlag
+	{
+		INDOORS,
+		OUTDOORS,
+		UNDERWATER
+	}
 
 	protected MOB getInvisibleMOB()
 	{
@@ -104,8 +160,10 @@ public class Thief_Listen extends ThiefSkill
 	public void cleanTalkers(Environmental[] Ps)
 	{
 		for(final Environmental P : Ps)
+		{
 			if(P!=null)
 				P.destroy();
+		}
 	}
 
 	@Override
@@ -191,15 +249,20 @@ public class Thief_Listen extends ThiefSkill
 			room=mob.location();
 		else
 		{
-			if((mob.location().getRoomInDir(dirCode)==null)||(mob.location().getExitInDir(dirCode)==null))
+			room=mob.location().getRoomInDir(dirCode);
+			if((room==null)||(mob.location().getExitInDir(dirCode)==null))
 			{
 				mob.tell(L("Listen which direction?"));
 				return false;
 			}
-			room=mob.location().getRoomInDir(dirCode);
-			if((room.domainType()&Room.INDOORS)==0)
+			if(((CMLib.flags().isUnderWateryRoom(room))&&(!flags.contains(ListenFlag.UNDERWATER)))
+			||(((room.domainType()&Room.INDOORS)!=0)&&(!CMLib.flags().isUnderWateryRoom(room))&&(!flags.contains(ListenFlag.INDOORS)))
+			||(((room.domainType()&Room.INDOORS)==0)&&(!CMLib.flags().isUnderWateryRoom(room))&&(!flags.contains(ListenFlag.OUTDOORS))))
 			{
-				mob.tell(L("You can only listen indoors."));
+				final List<String> lst=new ArrayList<String>();
+				for(ListenFlag flag : flags)
+					lst.add(flag.name().toLowerCase());
+				mob.tell(L("You can only listen "+CMLib.english().toEnglishStringList(lst) +".")); // no further L necc
 				return false;
 			}
 		}
@@ -208,7 +271,7 @@ public class Thief_Listen extends ThiefSkill
 			return false;
 
 		boolean success=false;
-		final CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MSG_OK_ACTION:(CMMsg.MSG_DELICATE_SMALL_HANDS_ACT),CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,L("<S-NAME> listen(s)@x1.",((dirCode<0)?"":" "+CMLib.directions().getDirectionName(dirCode))));
+		final CMMsg msg=CMClass.getMsg(mob,room,this,auto?CMMsg.MSG_OK_ACTION:(CMMsg.MSG_DELICATE_SMALL_HANDS_ACT),CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,L("<S-NAME> listen(s)@x1.",((dirCode<0)?"":" "+CMLib.directions().getDirectionName(dirCode))));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
@@ -232,8 +295,12 @@ public class Thief_Listen extends ThiefSkill
 					mob.tell(L("You definitely hear @x1 creature(s).",""+numberHeard));
 					if(proficiency()>((room==mob.location())?50:75))
 					{
-						sourceRoom=mob.location();
-						beneficialAffect(mob,room,asLevel,0);
+						Thief_Listen A=(Thief_Listen)beneficialAffect(mob,room,asLevel,0);
+						if(A!=null)
+						{
+							A.sourceRoom=mob.location();
+							A.room=room;
+						}
 					}
 				}
 				else

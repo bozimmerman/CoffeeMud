@@ -4,6 +4,7 @@
    3. Pirates no longer regain lost limbs after death.
    4. New resource: DIRT.  Mass Grave now populates its room with the stuff.
    5. GModify now supports query-able stat "CLASSTYPE"
+   6. New Trapper skill: Wilderness Sounds
 # Build 5.9.4 Released 08/03/2016
    1. Qualify now shows language limits
    2. New Prop_NoTeleport exceptions
