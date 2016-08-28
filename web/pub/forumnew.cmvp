@@ -53,6 +53,10 @@
     	var oldEditorFlag = '@RequestParameter?PLAINBOX@';
         function SwitchEditors()
         {
+        	if(oldEditorFlag == '')
+                document.FORUM.PLAINBOX.value='on';
+        	else
+                document.FORUM.PLAINBOX.value='';
             document.FORUM.action='forumnew.cmvp';
             document.FORUM.submit();
         }
@@ -97,6 +101,7 @@
 <body>
 <script language="JavaScript" type="text/javascript" src="textedit/nicEdit.js"></script>
 <FORM  ACCEPT-CHARSET="UTF-8" NAME=FORUM TARGET=_top METHOD=POST ACTION="forumnew.cmvp">
+<INPUT TYPE=HIDDEN NAME=PLAINBOX VALUE="@RequestParameter?PLAINBOX@">
 @if?CheckReqParm?!JOURNALMESSAGE=@
 <INPUT TYPE=HIDDEN NAME=JOURNALMESSAGE VALUE="@RequestParameter?JOURNALMESSAGE@">
 <INPUT TYPE=HIDDEN NAME=JOURNALPARENT VALUE="@RequestParameter?JOURNALPARENT@">
@@ -117,7 +122,7 @@
         @else@
         <a href="index.cmvp?AUTH=@Authenticate?AUTH@">
         @endif@
-        <IMG BORDER=0 src=images/cm50.gif>
+        <IMG BORDER=0 src=images/cm50.gif ALT="Exit Forums">
         </a>
     </TD>
 	<TD ALIGN=RIGHT VALIGN=TOP>
@@ -157,7 +162,10 @@
 		</TR></TABLE>
 	</TD>
 </TR>
-<TR BGCOLOR=LIGHTGREY><TD COLSPAN=2>&nbsp;</TD></TR>
+<TR BGCOLOR=LIGHTGREY>
+	<TD COLSPAN=2>
+		<FONT SIZE=-1><INPUT TYPE=CHECKBOX NAME=PLAINBUTTON ONCLICK="SwitchEditors();"><LABEL FOR=PLAINBUTTON>Switch to @if?CheckReqParm?PLAINBOX=on@fancy edit@else@plain editor@endif@</LABEL></FONT>
+	</TD></TR>
 @if?CheckReqParm?JOURNALMESSAGE=@
 <TR BGCOLOR=LIGHTGREY VALIGN=BOTTOM>
 	<TD ALIGN=LEFT VALIGN=BOTTOM>&nbsp;&nbsp;<FONT SIZE=6><B>Subject:</B></FONT></TD>
@@ -192,13 +200,7 @@
 	</TD>
 </TR>
 <TR BGCOLOR=LIGHTGREY VALIGN=TOP>
-	<TD ALIGN=LEFT WIDTH=200px VALIGN=TOP>
-		&nbsp;&nbsp;<FONT SIZE=6>
-			<B>Message:</B><BR>
-			<INPUT TYPE=CHECKBOX NAME=PLAINBOX @if?CheckReqParm?PLAINBOX=on@CHECKED@endif@ ONCLICK="SwitchEditors();">
-			<FONT SIZE=-1><LABEL FOR="PLAINBOX">@if?CheckReqParm?PLAINBOX=on@Plain Text Area@else@Fancy Editor@endif@</LABEL></FONT>
-		</FONT>
-	</TD>
+	<TD ALIGN=LEFT WIDTH=200px VALIGN=TOP>&nbsp;&nbsp;<FONT SIZE=6><B>Message:</B><BR></FONT></TD>
 	<TD ALIGN=LEFT VALIGN=TOP>
 <textarea id="NEWTEXT" name="NEWTEXT" style="height: 170px; width: 500px; background: white;">@if?CheckReqParm?!NEWTEXT=@ @RequestParameter?NEWTEXT@ @else@ @if?CheckReqParm?!QUOTEDMESSAGE=@ @JournalInfo?QUOTEDTEXT@<BR> @else@ @if?CheckReqParm?FUNCTION=EDITPOST@ @JournalInfo?MESSAGE@ @endif@ @endif@ @endif@</textarea>
 		<script language="javascript">

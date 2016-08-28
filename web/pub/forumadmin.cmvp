@@ -64,7 +64,7 @@
         @else@
         <a href="index.cmvp?AUTH=@Authenticate?AUTH@">
         @endif@
-        <IMG BORDER=0 src=images/cm50.gif>
+        <IMG BORDER=0 src=images/cm50.gif ALT="Exit Forums">
         </a>
     </TD>
 	<TD ALIGN=RIGHT VALIGN=TOP>
