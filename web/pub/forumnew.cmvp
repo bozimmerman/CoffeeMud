@@ -50,6 +50,12 @@
             document.FORUM.action='register.cmvp';
             document.FORUM.submit();
         }
+    	var oldEditorFlag = '@RequestParameter?PLAINBOX@';
+        function SwitchEditors()
+        {
+            document.FORUM.action='forumnew.cmvp';
+            document.FORUM.submit();
+        }
 		function Submit()
 		{
 			document.FORUM.FUNCTION.value='NEWPOST';
@@ -164,33 +170,40 @@
 	<TABLE WIDTH=600px BORDER=0 CELLSPACING=0 CELLPADDING=0>
 	<TR>
 	<TD><FONT SIZE=-2 COLOR=BLACK><INPUT CHECKED TYPE=RADIO NAME=MSGICON VALUE=""><B>No Icon</B></FONT></TD>
-	<TD><INPUT TYPE=RADIO NAME=MSGICON VALUE="images/smiley0.gif"><IMG SRC="images/smiley0.gif"></TD>
-	<TD><INPUT TYPE=RADIO NAME=MSGICON VALUE="images/smiley1.gif"><IMG SRC="images/smiley1.gif"></TD>
-	<TD><INPUT TYPE=RADIO NAME=MSGICON VALUE="images/smiley2.gif"><IMG SRC="images/smiley2.gif"></TD>
-	<TD><INPUT TYPE=RADIO NAME=MSGICON VALUE="images/smiley3.gif"><IMG SRC="images/smiley3.gif"></TD>
-	<TD><INPUT TYPE=RADIO NAME=MSGICON VALUE="images/smiley4.gif"><IMG SRC="images/smiley4.gif"></TD>
-	<TD><INPUT TYPE=RADIO NAME=MSGICON VALUE="images/smiley5.gif"><IMG SRC="images/smiley5.gif"></TD>
-	<TD><INPUT TYPE=RADIO NAME=MSGICON VALUE="images/smiley6.gif"><IMG SRC="images/smiley6.gif"></TD>
+	<TD><INPUT TYPE=RADIO NAME=MSGICON VALUE="images/smiley0.gif"><IMG SRC="images/smiley0.gif" ALT="Document"></TD>
+	<TD><INPUT TYPE=RADIO NAME=MSGICON VALUE="images/smiley1.gif"><IMG SRC="images/smiley1.gif" ALT="Thumbs-Up"></TD>
+	<TD><INPUT TYPE=RADIO NAME=MSGICON VALUE="images/smiley2.gif"><IMG SRC="images/smiley2.gif" ALT="Angry Face"></TD>
+	<TD><INPUT TYPE=RADIO NAME=MSGICON VALUE="images/smiley3.gif"><IMG SRC="images/smiley3.gif" ALT="Arrow Right"></TD>
+	<TD><INPUT TYPE=RADIO NAME=MSGICON VALUE="images/smiley4.gif"><IMG SRC="images/smiley4.gif" ALT="Frowny Face"></TD>
+	<TD><INPUT TYPE=RADIO NAME=MSGICON VALUE="images/smiley5.gif"><IMG SRC="images/smiley5.gif" ALT="Lightbulb"></TD>
+	<TD><INPUT TYPE=RADIO NAME=MSGICON VALUE="images/smiley6.gif"><IMG SRC="images/smiley6.gif" ALT="Big Smiley"></TD>
 	</TR>
 	<TR>
 	<TD>&nbsp;</TD>
-	<TD><INPUT TYPE=RADIO NAME=MSGICON VALUE="images/smiley7.gif"><IMG SRC="images/smiley7.gif"></TD>
-	<TD><INPUT TYPE=RADIO NAME=MSGICON VALUE="images/smiley8.gif"><IMG SRC="images/smiley8.gif"></TD>
-	<TD><INPUT TYPE=RADIO NAME=MSGICON VALUE="images/smiley9.gif"><IMG SRC="images/smiley9.gif"></TD>
-	<TD><INPUT TYPE=RADIO NAME=MSGICON VALUE="images/smiley10.gif"><IMG SRC="images/smiley10.gif"></TD>
-	<TD><INPUT TYPE=RADIO NAME=MSGICON VALUE="images/smiley11.gif"><IMG SRC="images/smiley11.gif"></TD>
-	<TD><INPUT TYPE=RADIO NAME=MSGICON VALUE="images/smiley12.gif"><IMG SRC="images/smiley12.gif"></TD>
-	<TD><INPUT TYPE=RADIO NAME=MSGICON VALUE="images/smiley13.gif"><IMG SRC="images/smiley13.gif"></TD>
+	<TD><INPUT TYPE=RADIO NAME=MSGICON VALUE="images/smiley7.gif"><IMG SRC="images/smiley7.gif" ALT="Caution"></TD>
+	<TD><INPUT TYPE=RADIO NAME=MSGICON VALUE="images/smiley8.gif"><IMG SRC="images/smiley8.gif" ALT="Sleepy Face"></TD>
+	<TD><INPUT TYPE=RADIO NAME=MSGICON VALUE="images/smiley9.gif"><IMG SRC="images/smiley9.gif" ALT="Question Ball"></TD>
+	<TD><INPUT TYPE=RADIO NAME=MSGICON VALUE="images/smiley10.gif"><IMG SRC="images/smiley10.gif" ALT="Wink Face"></TD>
+	<TD><INPUT TYPE=RADIO NAME=MSGICON VALUE="images/smiley11.gif"><IMG SRC="images/smiley11.gif" ALT="Cool Face"></TD>
+	<TD><INPUT TYPE=RADIO NAME=MSGICON VALUE="images/smiley12.gif"><IMG SRC="images/smiley12.gif" ALT="Thumbs-Down"></TD>
+	<TD><INPUT TYPE=RADIO NAME=MSGICON VALUE="images/smiley13.gif"><IMG SRC="images/smiley13.gif" ALT="Smiley"></TD>
 	</TR>
 	</TABLE>
 	</TD>
 </TR>
 <TR BGCOLOR=LIGHTGREY VALIGN=TOP>
-	<TD ALIGN=LEFT WIDTH=200px VALIGN=TOP>&nbsp;&nbsp;<FONT SIZE=6><B>Message:</B></FONT></TD>
+	<TD ALIGN=LEFT WIDTH=200px VALIGN=TOP>
+		&nbsp;&nbsp;<FONT SIZE=6>
+			<B>Message:</B><BR>
+			<INPUT TYPE=CHECKBOX NAME=PLAINBOX @if?CheckReqParm?PLAINBOX=on@CHECKED@endif@ ONCLICK="SwitchEditors();">
+			<FONT SIZE=-1><LABEL FOR="PLAINBOX">@if?CheckReqParm?PLAINBOX=on@Plain Text Area@else@Fancy Editor@endif@</LABEL></FONT>
+		</FONT>
+	</TD>
 	<TD ALIGN=LEFT VALIGN=TOP>
 <textarea id="NEWTEXT" name="NEWTEXT" style="height: 170px; width: 500px; background: white;">@if?CheckReqParm?!NEWTEXT=@ @RequestParameter?NEWTEXT@ @else@ @if?CheckReqParm?!QUOTEDMESSAGE=@ @JournalInfo?QUOTEDTEXT@<BR> @else@ @if?CheckReqParm?FUNCTION=EDITPOST@ @JournalInfo?MESSAGE@ @endif@ @endif@ @endif@</textarea>
 		<script language="javascript">
-            forumEditors.push(new nicEditor({iconsPath : 'textedit/nicEditorIcons.gif', fullPanel: true}).panelInstance('NEWTEXT'));
+			if(oldEditorFlag != 'on')
+            	forumEditors.push(new nicEditor({iconsPath : 'textedit/nicEditorIcons.gif', fullPanel: true}).panelInstance('NEWTEXT'));
 		</script>
 	</TD>
 </TR>
