@@ -720,6 +720,7 @@ public class GrinderItems
 				case ISFUELCONSUMER:
 				case ISPOWERGENERATION:
 				case ISSHIPWARCOMP:
+				case ISCLOAK:
 					break;
 				case MANUFACTURER:
 					if(I instanceof Electronics)
@@ -834,6 +835,8 @@ public class GrinderItems
 				case AREAXML:
 					if((I instanceof BoardableShip)&&(old.trim().length()>0))
 						((BoardableShip)I).setShipArea(CMLib.xml().restoreAngleBrackets(old));
+					break;
+				default:
 					break;
 				}
 			}
