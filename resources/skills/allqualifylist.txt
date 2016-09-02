@@ -58,6 +58,7 @@
 3 Carpentry MASK=+CON 10
 3 LeatherWorking MASK=+CON 10
 3 Tailoring MASK=+DEX 10
+3 MeatCuring
 
 4 Mining
 4 Pottery

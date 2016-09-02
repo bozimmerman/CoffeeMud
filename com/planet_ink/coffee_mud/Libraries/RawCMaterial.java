@@ -296,6 +296,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 		&&(!CMLib.flags().isEnchanted(I)))
 		{
 			final Ability rott=I.fetchEffect("Poison_Rotten");
+			final Ability purt=I.fetchEffect("Poison_Purify");
 			number = number * bundleSize;
 			if(I.basePhyStats().weight()>1)
 			{
@@ -329,8 +330,10 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 							loseThirstHeld+=((Drink)E).liquidHeld();
 							loseThirstRemain+=((Drink)E).liquidRemaining();
 						}
-						if((rott!=null)&&(!CMSecurity.isDisabled(DisFlag.FOODROT)))
+						if((rott!=null)&&(!rott.canBeUninvoked())&&(!CMSecurity.isDisabled(DisFlag.FOODROT)))
 							E.addNonUninvokableEffect((Ability)rott.copyOf());
+						if((purt!=null)&&(!purt.canBeUninvoked())&&(!CMSecurity.isDisabled(DisFlag.FOODROT)))
+							E.addNonUninvokableEffect((Ability)purt.copyOf());
 						if(bundleSize>1)
 						{
 							((Item)E).basePhyStats().setWeight(bundleSize);
