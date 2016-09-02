@@ -58,7 +58,6 @@
 3 Carpentry MASK=+CON 10
 3 LeatherWorking MASK=+CON 10
 3 Tailoring MASK=+DEX 10
-3 MeatCuring
 
 4 Mining
 4 Pottery
@@ -77,6 +76,8 @@
 5 ScrimShaw REQUIRES=Sculpting
 5 Weaponsmithing REQUIRES=Blacksmithing(75) Specialization_* MASK=+STR 12
 5 Fletching REQUIRES=Specialization_Ranged Carpentry MASK=+DEX 12
+
+7 MeatCuring
 
 10 Construction REQUIRES=Carpentry MASK=+CON 12
 10 Farming
