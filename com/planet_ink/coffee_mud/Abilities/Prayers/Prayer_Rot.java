@@ -94,23 +94,23 @@ public class Prayer_Rot extends Prayer
 			switch(I.material()&RawMaterial.MATERIAL_MASK)
 			{
 			case RawMaterial.MATERIAL_FLESH:
-				{
-						newTime=
-						System.currentTimeMillis()+(
-						   CMProps.getTickMillis()
-							*CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY)
-						);
+			{
+				newTime=
+				System.currentTimeMillis()+(
+				   CMProps.getTickMillis()
+					*CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY)
+				);
 				break;
-				}
+			}
 			case RawMaterial.MATERIAL_VEGETATION:
-				{
-						newTime=
-						System.currentTimeMillis()+(
-						CMProps.getTickMillis()
-						*CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY)
-						*5);
+			{
+				newTime=
+				System.currentTimeMillis()+(
+				CMProps.getTickMillis()
+				*CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY)
+				*5);
 				break;
-				}
+			}
 			}
 			if(I instanceof Drink)
 			{
@@ -199,8 +199,10 @@ public class Prayer_Rot extends Prayer
 			{
 				final List<Item> V=((Container)host).getDeepContents();
 				for(int v=0;v<V.size();v++)
+				{
 					if(V.get(v) != null)
 						setRot(V.get(v));
+				}
 			}
 		}
 		return super.okMessage(host,msg);

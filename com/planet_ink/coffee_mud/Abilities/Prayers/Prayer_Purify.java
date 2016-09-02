@@ -35,15 +35,55 @@ import java.util.*;
 
 public class Prayer_Purify extends Prayer
 {
-	@Override public String ID() { return "Prayer_Purify"; }
-	private final static String localizedName = CMLib.lang().L("Purify");
-	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "";}
-	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
-	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	@Override public long flags(){return Ability.FLAG_HOLY;}
-	@Override public int classificationCode(){return ((affecting() instanceof Food)&&(!canBeUninvoked()))?Ability.ACODE_PROPERTY:Ability.ACODE_PRAYER|Ability.DOMAIN_RESTORATION;}
+	@Override
+	public String ID()
+	{
+		return "Prayer_Purify";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Purify");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public String displayText()
+	{
+		return "";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ITEMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_ITEMS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_HOLY;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return ((affecting() instanceof Food) && (!canBeUninvoked())) ? Ability.ACODE_PROPERTY : Ability.ACODE_PRAYER | Ability.DOMAIN_RESTORATION;
+	}
 
 	@Override
 	public void affectPhyStats(Physical affecting, PhyStats stats)
