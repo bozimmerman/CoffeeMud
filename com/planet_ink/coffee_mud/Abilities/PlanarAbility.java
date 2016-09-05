@@ -499,6 +499,9 @@ public class PlanarAbility extends StdAbility
 					}
 				}
 				else
+				if(I instanceof Exit)
+					I.setReadableText("");
+				else
 				if((invoker!=null)&&((I instanceof Weapon)||(I instanceof Armor)))
 				{
 					int newILevelAdj = (planarLevel - I.phyStats().level());
