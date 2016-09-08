@@ -265,7 +265,7 @@ public class Sailor extends StdCharClass
 					&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL))
 					{
 						exp++;
-						if((A.ID().equalsIgnoreCase("Trawling")||(A.ID().equalsIgnoreCase("Fishing"))))
+						if((A.ID().equalsIgnoreCase("Trawling")))//||(A.ID().equalsIgnoreCase("Fishing"))))
 							exp++;
 					}
 				}
@@ -276,10 +276,49 @@ public class Sailor extends StdCharClass
 		return super.tick(ticking,tickID);
 	}
 
+	protected void giveExploreXP(final MOB mob, final Room R, int amt)
+	{
+		if(((R.roomID().length()>0)
+			||((R.getGridParent()!=null)&&(R.getGridParent().roomID().length()>0)))
+		&&(!CMath.bset(R.getArea().flags(),Area.FLAG_INSTANCE_CHILD))
+		&&(!mob.playerStats().hasVisited(R))
+		&&(mob.soulMate()==null)
+		&&(CMLib.flags().isWaterySurfaceRoom(R))
+		)
+		{
+			if(mob.playerStats().addRoomVisit(R))
+			{
+				CMLib.players().bumpPrideStat(mob,AccountStats.PrideStat.ROOMS_EXPLORED,1);
+				if(mob.playerStats().hasVisited(R))
+				{
+					CMLib.leveler().postExperience(mob, null, null, amt, false);
+				}
+			}
+		}
+	}
+	
 	@Override
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		super.executeMsg(myHost, msg);
+		
+		if((msg.target() instanceof Room)&&(msg.targetMinor()==CMMsg.TYP_ENTER))
+		{
+			if((msg.source()==myHost)
+			&&(msg.source().riding() !=null)
+			&&(!msg.source().isMonster())
+			&&(msg.source().playerStats()!=null)
+			&&(msg.source().riding().rideBasis() == Rideable.RIDEABLE_WATER))
+				giveExploreXP(msg.source(), (Room)msg.target(), 5);
+			if((msg.source().riding() instanceof SailingShip)
+			&&(msg.source().Name().equals(msg.source().riding().Name()))
+			&&(myHost instanceof MOB)
+			&&(((MOB)myHost).playerStats()!=null)
+			&&(((MOB)myHost).location()!=null)
+			&&(((MOB)myHost).location().getArea() == ((BoardableShip)msg.source().riding()).getShipArea()))
+				giveExploreXP((MOB)myHost, (Room)msg.target(), 10);
+		}
+		
 		if((msg.sourceMinor()==CMMsg.TYP_EXPCHANGE)
 		&&(msg.value()>0)
 		&&(msg.source().charStats().getCurrentClass() == this)
@@ -344,6 +383,6 @@ public class Sailor extends StdCharClass
 	@Override
 	public String getOtherBonusDesc()
 	{
-		return L("Sailors earn twice as much XP as other commoners when fishing or trawling.  Earn double experience in ship combat.");
+		return L("Sailors earn twice as much XP as other commoners when trawling, sea explore xp, and double experience in ship combat.");
 	}
 }
