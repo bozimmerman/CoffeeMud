@@ -658,7 +658,7 @@ public class GrinderItems
 						((Wand)I).setMaxUses(CMath.s_int(old));
 					break;
 				case OPENTICKS: // open ticks
-					if((I instanceof CloseableLockable)&&(old!=null)&&(old.length()>0))
+					if((I instanceof CloseableLockable)&&(old.length()>0))
 						((CloseableLockable)I).setOpenDelayTicks(CMath.s_int(old));
 					break;
 				case CATACAT: // catacat

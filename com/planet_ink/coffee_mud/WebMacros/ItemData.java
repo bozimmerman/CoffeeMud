@@ -1095,7 +1095,7 @@ public class ItemData extends StdWebMacro
 						str.append(old);
 						break;
 					case OPENTICKS: // open ticks
-						if(((firstTime)&&(I instanceof CloseableLockable))||(old==null)||(old.length()==0))
+						if(((firstTime)&&(I instanceof CloseableLockable))||(old.length()==0))
 							old=""+((CloseableLockable)I).openDelayTicks();
 						str.append(old);
 						break;
