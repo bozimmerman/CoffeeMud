@@ -3033,6 +3033,7 @@ public class StdMOB implements MOB
 
 	protected String fixChannelColors(final int channelCode, final String message)
 	{
+		
 		final Session session = mySession;
 		if(session != null && session.getColorCodes()[128 + channelCode]!=null)
 			return CMStrings.replaceAll(message, ColorLibrary.SpecialColor.CHANNEL.getEscapeCode(), mySession.getColorCodes()[128 + channelCode]);
