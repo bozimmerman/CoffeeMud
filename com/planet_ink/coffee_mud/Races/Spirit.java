@@ -86,7 +86,7 @@ public class Spirit extends Undead
 	{
 		if(naturalWeaponChoices==null)
 		{
-			naturalWeaponChoices=new Vector<Weapon>();
+			Vector<Weapon> naturalWeaponChoices=new Vector<Weapon>();
 			for(int i=1;i<11;i++)
 			{
 				naturalWeapon=CMClass.getWeapon("StdWeapon");
@@ -131,6 +131,7 @@ public class Spirit extends Undead
 				naturalWeapon.setUsesRemaining(1000);
 				naturalWeaponChoices.add(naturalWeapon);
 			}
+			this.naturalWeaponChoices = naturalWeaponChoices;
 		}
 		return naturalWeaponChoices.get(CMLib.dice().roll(1,naturalWeaponChoices.size(),-1));
 	}

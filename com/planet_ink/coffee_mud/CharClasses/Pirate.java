@@ -207,24 +207,27 @@ public class Pirate extends Thief
 		if((msg.source() == myHost) && (msg.sourceMinor()==CMMsg.TYP_DEATH))
 		{
 			final Ability A=msg.source().fetchEffect("Amputation");
-			msg.addTrailerRunnable(new Runnable()
+			if(A!=null)
 			{
-				private final String amuText = A.text();
-				private final MOB mob=msg.source();
-				@Override
-				public void run()
+				msg.addTrailerRunnable(new Runnable()
 				{
-					if(mob.fetchEffect("Amputation")==null)
+					private final String amuText = A.text();
+					private final MOB mob=msg.source();
+					@Override
+					public void run()
 					{
-						final Ability A=CMClass.getAbility("Amputation");
-						mob.addNonUninvokableEffect(A);
-						A.setMiscText(amuText);
-						mob.recoverCharStats();
-						mob.recoverMaxState();
-						mob.recoverPhyStats();
+						if(mob.fetchEffect("Amputation")==null)
+						{
+							final Ability A=CMClass.getAbility("Amputation");
+							mob.addNonUninvokableEffect(A);
+							A.setMiscText(amuText);
+							mob.recoverCharStats();
+							mob.recoverMaxState();
+							mob.recoverPhyStats();
+						}
 					}
-				}
-			});
+				});
+			}
 		}
 
 		if (msg.amITarget(myHost)

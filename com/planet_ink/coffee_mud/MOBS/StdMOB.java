@@ -3035,7 +3035,10 @@ public class StdMOB implements MOB
 	{
 		
 		final Session session = mySession;
-		if(session != null && session.getColorCodes()[128 + channelCode]!=null)
+		if((session != null)
+		&& ((128+channelCode) >= 0)
+		&& ((128+channelCode) < session.getColorCodes().length)
+		&& (session.getColorCodes()[128 + channelCode]!=null))
 			return CMStrings.replaceAll(message, ColorLibrary.SpecialColor.CHANNEL.getEscapeCode(), mySession.getColorCodes()[128 + channelCode]);
 		else
 		{
@@ -3381,7 +3384,7 @@ public class StdMOB implements MOB
 			else
 			if (CMath.bset(othersMajor, CMMsg.MASK_CHANNEL))
 			{
-				final int channelCode = ((msg.othersCode() - CMMsg.MASK_CHANNEL) - CMMsg.TYP_CHANNEL);
+				final int channelCode = (msg.othersMinor() - CMMsg.TYP_CHANNEL);
 				if ((playerStats() != null)
 				&& (!this.isAttributeSet(MOB.Attrib.QUIET))
 				&& (!CMath.isSet(playerStats().getChannelMask(), channelCode)))
