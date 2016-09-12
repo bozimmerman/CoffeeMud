@@ -359,7 +359,7 @@ public class StdContainer extends StdItem implements Container
 	{
 		if(tickID==Tickable.TICKID_EXIT_REOPEN)
 		{
-			setDoorsNLocks(hasALid,defaultsClosed,defaultsClosed,hasALock,hasALock && defaultsClosed && defaultsLocked,defaultsLocked);
+			setDoorsNLocks(hasALid,!defaultsClosed,defaultsClosed,hasALock,hasALock && defaultsClosed && defaultsLocked,defaultsLocked);
 			return false;
 		}
 		return super.tick(ticking,tickID);
