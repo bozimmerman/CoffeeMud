@@ -1420,14 +1420,18 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		if((showFlag>0)&&(showFlag!=showNumber))
 			return;
 		if(E instanceof Item)
-			mob.tell(L("@x1. Exit Direction: '@x2'.",""+showNumber,E.doorName()));
+			mob.tell(L("@x1. Exit Direction (or 'null'): '@x2'.",""+showNumber,E.doorName()));
 		else
 			mob.tell(L("@x1. Door Name: '@x2'.",""+showNumber,E.doorName()));
 		if((showFlag!=showNumber)&&(showFlag>-999))
 			return;
-		final String newName=mob.session().prompt(L("Enter something new\n\r:"),"");
+		String newName=mob.session().prompt(L("Enter something new\n\r:"),"");
 		if(newName.length()>0)
+		{
+			if((E instanceof Item)&&(newName.equalsIgnoreCase("null")))
+				newName="";
 			E.setExitParams(newName,E.closeWord(),E.openWord(),E.closedText());
+		}
 		else
 			mob.tell(L("(no change)"));
 	}
