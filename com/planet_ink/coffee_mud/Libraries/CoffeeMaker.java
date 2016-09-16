@@ -2645,16 +2645,23 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 	}
 
 	@Override
+	public String getFinalStatName(String stat)
+	{
+		final boolean current=stat.startsWith("CURRENT ")||stat.startsWith("CURRENT_");
+		if(current)
+			return stat.substring(8);
+		else
+		if(stat.startsWith("BASE ")||stat.startsWith("BASE_"))
+			return stat.substring(5);
+		return stat;
+	}
+	
+	@Override
 	public boolean isAnyGenStat(Physical P, String stat)
 	{
 		if(P.isStat(stat))
 			return true;
-		final boolean current=stat.startsWith("CURRENT ")||stat.startsWith("CURRENT_");
-		if(current)
-			stat=stat.substring(8);
-		else
-		if(stat.startsWith("BASE ")||stat.startsWith("BASE_"))
-			stat=stat.substring(5);
+		stat = getFinalStatName(stat);
 		if(P.basePhyStats().isStat(stat))
 			return true;
 		if(P instanceof MOB)
@@ -2691,11 +2698,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		if(P.isStat(stat))
 			return P.getStat(stat);
 		final boolean current=stat.startsWith("CURRENT ")||stat.startsWith("CURRENT_");
-		if(current)
-			stat=stat.substring(8);
-		else
-		if(stat.startsWith("BASE ")||stat.startsWith("BASE_"))
-			stat=stat.substring(5);
+		stat = getFinalStatName(stat);
 		if(P.basePhyStats().isStat(stat))
 			return (current)?P.phyStats().getStat(stat):P.basePhyStats().getStat(stat);
 		if(P instanceof MOB)
@@ -2778,11 +2781,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			return;
 		}
 		final boolean current=stat.startsWith("CURRENT ")||stat.startsWith("CURRENT_");
-		if(current)
-			stat=stat.substring(8);
-		else
-		if(stat.startsWith("BASE ")||stat.startsWith("BASE_"))
-			stat=stat.substring(5);
+		stat = getFinalStatName(stat);
 		if(P.basePhyStats().isStat(stat))
 		{
 			if(current)

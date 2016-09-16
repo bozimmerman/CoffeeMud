@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Abilities.Misc;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.AchievementLoadFlag;
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
@@ -565,7 +566,7 @@ public class Age extends StdAbility
 						newMan.recoverMaxState();
 						newMan.resetToMaxState();
 					}
-					CMLib.achievements().loadAccountAchievements(newMan);
+					CMLib.achievements().loadAccountAchievements(newMan,AchievementLoadFlag.NORMAL);
 					CMLib.database().DBCreateCharacter(newMan);
 					CMLib.players().addPlayer(newMan);
 

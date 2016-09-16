@@ -241,8 +241,25 @@ public interface AchievementLibrary extends CMLibrary
 		ABILITY,
 		EXPERTISE,
 		STAT
+		;
 	}
 	
+	/**
+	 * Flags to denote how awards are given when achievements
+	 * are granted, especially on character creation and/or
+	 * remort.
+	 * @author Bo Zimmerman
+	 *
+	 */
+	public enum AchievementLoadFlag
+	{
+		REMORT_PRELOAD,
+		REMORT_POSTLOAD,
+		CHARCR_PRELOAD,
+		CHARCR_POSTLOAD,
+		NORMAL
+	}
+
 	/**
 	 * The award interface provides pre-parsed award information for those who
 	 * complete the achievement.
@@ -262,6 +279,20 @@ public interface AchievementLibrary extends CMLibrary
 		 * @return a description of the award
 		 */
 		public String getDescription();
+
+		/**
+		 * Returns true if the award is given before the character
+		 * is fully created.
+		 * @return true if it is pre-awarded, false if always after
+		 */
+		public boolean isPreAwarded();
+
+		/**
+		 * Returns true if the award is given only to new characters or
+		 * at achievement-time
+		 * @return true if it is only awarded for new chars and at ach-time
+		 */
+		public boolean isNotAwardedOnRemort();
 	}
 	
 	/**
@@ -560,8 +591,9 @@ public interface AchievementLibrary extends CMLibrary
 	 * down, then the awards are granted, including skill awards if any.
 	 * @see AchievementLibrary#loadPlayerSkillAwards(Tattooable, PlayerStats)
 	 * @param mob the new character to load up.
+	 * @param flag the circumstances under which achievements are being loaded
 	 */
-	public void loadAccountAchievements(final MOB mob);
+	public void loadAccountAchievements(final MOB mob, final AchievementLoadFlag flag);
 
 	/**
 	 * Searches for an Achievement of the given tattoo name or display name,

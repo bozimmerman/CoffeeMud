@@ -6,6 +6,7 @@ import com.planet_ink.coffee_mud.core.exceptions.CMException;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.AbilityMapping;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Achievement;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.AchievementLoadFlag;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Tracker;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary.CostType;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary.ExpertiseDefinition;
@@ -117,9 +118,21 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
+				public boolean isPreAwarded()
+				{
+					return false;
+				}
+
+				@Override
 				public String getDescription()
 				{
 					return L("The title: @x1",getTitle());
+				}
+
+				@Override
+				public boolean isNotAwardedOnRemort()
+				{
+					return false;
 				}
 			});
 		}
@@ -148,10 +161,23 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							{
 								return AwardType.XP;
 							}
+
 							@Override
 							public int getAmount()
 							{
 								return number;
+							}
+
+							@Override
+							public boolean isPreAwarded()
+							{
+								return false;
+							}
+
+							@Override
+							public boolean isNotAwardedOnRemort()
+							{
+								return false;
 							}
 
 							@Override
@@ -171,6 +197,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							{
 								return AwardType.QP;
 							}
+
 							@Override
 							public int getAmount()
 							{
@@ -178,9 +205,21 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							}
 
 							@Override
+							public boolean isPreAwarded()
+							{
+								return false;
+							}
+
+							@Override
 							public String getDescription()
 							{
 								return L("@x1 Quest Points",""+getAmount());
+							}
+							
+							@Override
+							public boolean isNotAwardedOnRemort()
+							{
+								return false;
 							}
 						});
 					}
@@ -225,6 +264,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 								}
 								
 								@Override
+								public boolean isPreAwarded()
+								{
+									return false;
+								}
+								
+								@Override
 								public String getDescription()
 								{
 									final Ability skillA = CMClass.getAbility(getAbilityMapping().abilityID());
@@ -232,6 +277,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 										return L("@x1 at level @x2",skillA.name(),""+getAbilityMapping().qualLevel());
 									else
 										return L("@x1 qualification at level @x2",skillA.name(),""+getAbilityMapping().qualLevel());
+								}
+
+								@Override
+								public boolean isNotAwardedOnRemort()
+								{
+									return false;
 								}
 							});
 						}
@@ -441,6 +492,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 								
 
 								@Override
+								public boolean isPreAwarded()
+								{
+									return false;
+								}
+
+								@Override
 								public String getDescription()
 								{
 									final ExpertiseDefinition defE = getExpertise();
@@ -449,18 +506,34 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 									else
 										return L("@x1 qualification at level @x1",""+defE.getMinimumLevel());
 								}
+
+								@Override
+								public boolean isNotAwardedOnRemort()
+								{
+									return false;
+								}
 							});
 						}
 						else
 						if(CMLib.coffeeMaker().isAnyGenStat(CMClass.samplePlayer(), thing))
 						{
-							final String stat = thing.toUpperCase().trim();
+							final String stat1 = thing.toUpperCase().trim();
+							String astat=CMLib.coffeeMaker().getFinalStatName(stat1);
 							boolean isSave = false;
 							for(int t : CharStats.CODES.SAVING_THROWS())
-								isSave  = isSave  || CharStats.CODES.NAME(t).equals(stat.toUpperCase());
-							final boolean isSavingThrow = isSave; 
+								isSave  = isSave  || CharStats.CODES.NAME(t).equals(astat.toUpperCase());
+							final boolean isSavingThrow = isSave;
+							final boolean isPreAwarded=
+									(astat.startsWith("MAX") 
+									&& (CharStats.CODES.findWhole(astat,true) >=0)
+									&& (CMParms.contains(CharStats.CODES.MAXCODES(),CharStats.CODES.findWhole(astat,true))));
+							final boolean isNotPremortAwarded = ((PlayerStats)CMClass.getCommonPrototype("DefaultPlayerStats")).isStat(astat);
 							awardsList.add(new StatAward()
 							{
+								final String stat = stat1;
+								final boolean savingThrow = isSavingThrow;
+								final boolean preAwarded = isPreAwarded;
+								final boolean noRemort = isNotPremortAwarded;
 								@Override
 								public AwardType getType()
 								{
@@ -483,9 +556,21 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 								public String getDescription()
 								{
 									if(getAmount()<0)
-										return getAmount() + " " + L(CMStrings.capitalizeAndLower(getStat())+(isSavingThrow ? " resistance":""));
+										return getAmount() + " " + L(CMStrings.capitalizeAndLower(getStat())+(savingThrow ? " resistance":""));
 									else
-										return "+"+getAmount() + " " + L(CMStrings.capitalizeAndLower(getStat())+(isSavingThrow ? " resistance":""));
+										return "+"+getAmount() + " " + L(CMStrings.capitalizeAndLower(getStat())+(savingThrow ? " resistance":""));
+								}
+
+								@Override
+								public boolean isPreAwarded()
+								{
+									return preAwarded;
+								}
+
+								@Override
+								public boolean isNotAwardedOnRemort()
+								{
+									return noRemort;
 								}
 							});
 						}
@@ -495,14 +580,25 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						&&(CMClass.samplePlayer().playerStats().getAccount()!=null)
 						&&CMLib.coffeeMaker().isAnyGenStat(CMClass.samplePlayer(), thing.substring(8)))
 						{
-							final String stat = thing.toUpperCase().trim();
+							final String stat1 = thing.toUpperCase().trim();
+							String astat=CMLib.coffeeMaker().getFinalStatName(stat1);
 							boolean isSave = false;
 							for(int t : CharStats.CODES.SAVING_THROWS())
-								isSave  = isSave  || CharStats.CODES.NAME(t).equals(stat.toUpperCase());
-							final boolean isSavingThrow = isSave; 
+								isSave  = isSave  || CharStats.CODES.NAME(t).equals(astat.toUpperCase());
+							final boolean isSavingThrow = isSave;
+							final boolean isPreAwarded=
+									(astat.startsWith("MAX") 
+									&& (CharStats.CODES.findWhole(astat,true) >=0)
+									&& (CMParms.contains(CharStats.CODES.MAXCODES(),CharStats.CODES.findWhole(astat,true))));
+							final boolean isNotPremortAwarded = ((PlayerStats)CMClass.getCommonPrototype("DefaultPlayerStats")).isStat(astat);
 							
 							awardsList.add(new StatAward()
 							{
+								final String stat = stat1;
+								final boolean savingThrow = isSavingThrow;
+								final boolean preAwarded = isPreAwarded;
+								final boolean noRemort = isNotPremortAwarded;
+								
 								@Override
 								public AwardType getType()
 								{
@@ -524,7 +620,19 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 								@Override
 								public String getDescription()
 								{
-									return "+"+getAmount() + " " + L(CMStrings.capitalizeAndLower(getStat())+(isSavingThrow?" resistance":""));
+									return "+"+getAmount() + " " + L(CMStrings.capitalizeAndLower(getStat())+(savingThrow?" resistance":""));
+								}
+
+								@Override
+								public boolean isPreAwarded()
+								{
+									return preAwarded;
+								}
+
+								@Override
+								public boolean isNotAwardedOnRemort()
+								{
+									return noRemort;
 								}
 							});
 						}
@@ -548,21 +656,35 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 										{
 											return AwardType.CURRENCY;
 										}
+
 										@Override
 										public int getAmount()
 										{
 											return number;
 										}
+
 										@Override
 										public String getCurrency()
 										{
 											return currencyName;
 										}
-										
+
+										@Override
+										public boolean isPreAwarded()
+										{
+											return false;
+										}
+
 										@Override
 										public String getDescription()
 										{
 											return getAmount() + " " + CMStrings.capitalizeAndLower(getCurrency());
+										}
+
+										@Override
+										public boolean isNotAwardedOnRemort()
+										{
+											return false;
 										}
 									});
 								}
@@ -2903,7 +3025,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			{
 				if(T.isAchieved(mob))
 				{
-					giveAwards(A,mob,mob);
+					giveAwards(A,mob,mob,AchievementLoadFlag.NORMAL);
 				}
 			}
 		}
@@ -2920,7 +3042,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				{
 					if(T.isAchieved(mob))
 					{
-						giveAwards(A,account,mob);
+						giveAwards(A,account,mob,AchievementLoadFlag.NORMAL);
 					}
 				}
 			}
@@ -3026,7 +3148,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		return achievements;
 	}
 
-	public void giveAwards(final MOB mob, final Award[] awardSet)
+	protected void giveAwards(final MOB mob, final Award[] awardSet, final AchievementLoadFlag flag)
 	{
 		if(mob == null)
 			return;
@@ -3034,6 +3156,31 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		StringBuilder awardMessage = new StringBuilder("");
 		for(final Award award : awardSet)
 		{
+			switch(flag)
+			{
+			case REMORT_PRELOAD:
+				if(!award.isPreAwarded())
+					continue;
+				if(award.isNotAwardedOnRemort())
+					continue;
+				break;
+			case REMORT_POSTLOAD:
+				if(award.isPreAwarded())
+					continue;
+				if(award.isNotAwardedOnRemort())
+					continue;
+				break;
+			case CHARCR_PRELOAD:
+				if(!award.isPreAwarded())
+					continue;
+				break;
+			case CHARCR_POSTLOAD:
+				if(award.isPreAwarded())
+					continue;
+				break;
+			case NORMAL:
+				break;
+			}
 			switch(award.getType())
 			{
 			case ABILITY:
@@ -3138,7 +3285,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		grantAbilitiesAndExpertises(mob);
 	}
 	
-	private boolean giveAwards(final Achievement A, final Tattooable holder, final MOB mob)
+	protected boolean giveAwards(final Achievement A, final Tattooable holder, final MOB mob, final AchievementLoadFlag flag)
 	{
 		if(holder.findTattoo(A.getTattoo())==null)
 		{
@@ -3157,7 +3304,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			mob.tell(awardMessage.toString());
 			if(A.getAgent() == Agent.PLAYER)
 			{
-				giveAwards(mob,awardSet);
+				giveAwards(mob,awardSet,flag);
 			}
 			return true;
 		}
@@ -3607,7 +3754,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			final Tracker T=pStats.getAchievementTracker(A, mob);
 			if(T.isAchieved(mob))
 			{
-				return giveAwards(A, mob, mob);
+				return giveAwards(A, mob, mob,AchievementLoadFlag.NORMAL);
 			}
 		}
 		return false;
@@ -3622,7 +3769,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				final Tracker T=account.getAchievementTracker(A, mob);
 				if(T.isAchieved(mob))
 				{
-					return giveAwards(A, account, mob);
+					return giveAwards(A, account, mob,AchievementLoadFlag.NORMAL);
 				}
 			}
 		}
@@ -3794,7 +3941,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 	}
 
 	@Override
-	public void loadAccountAchievements(final MOB mob)
+	public void loadAccountAchievements(final MOB mob, final AchievementLoadFlag flag)
 	{
 		final PlayerStats pStats = (mob==null) ? null : mob.playerStats();
 		final PlayerAccount account = (pStats == null) ? null : pStats.getAccount();
@@ -3809,8 +3956,10 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				{
 					if(mob.findTattoo(T.getTattooName())==null)
 					{
-						mob.addTattoo(A.getTattoo());
-						giveAwards(mob, A.getRewards());
+						if((flag != AchievementLoadFlag.CHARCR_PRELOAD)
+						&&(flag != AchievementLoadFlag.REMORT_PRELOAD))
+							mob.addTattoo(A.getTattoo());
+						giveAwards(mob, A.getRewards(), flag);
 						somethingDone=true;
 					}
 				}

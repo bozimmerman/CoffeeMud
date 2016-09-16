@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.AchievementLoadFlag;
 import com.planet_ink.coffee_mud.Libraries.interfaces.CatalogLibrary.CataData;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -5810,7 +5811,7 @@ public class Import extends StdCommand
 						if(M.playerStats()!=null)
 							M.playerStats().setLastUpdated(System.currentTimeMillis());
 						CMLib.achievements().loadPlayerSkillAwards(M, M.playerStats());
-						CMLib.achievements().loadAccountAchievements(M);
+						CMLib.achievements().loadAccountAchievements(M,AchievementLoadFlag.NORMAL);
 						CMLib.database().DBCreateCharacter(M);
 						CMLib.players().addPlayer(M);
 						Log.sysOut("Import","Imported user: "+M.Name());

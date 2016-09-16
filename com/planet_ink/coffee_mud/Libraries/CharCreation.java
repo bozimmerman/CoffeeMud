@@ -5,6 +5,7 @@ import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMProps.Int;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.AchievementLoadFlag;
 import com.planet_ink.coffee_mud.Libraries.interfaces.CharCreationLibrary.LoginSession;
 import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZMask;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -2644,6 +2645,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			mob.recoverCharStats();
 			loginObj.state=LoginState.CHARCR_STATSTART;
 		}
+		CMLib.achievements().loadAccountAchievements(mob,AchievementLoadFlag.CHARCR_PRELOAD);
 		loginObj.baseStats = (CharStats)mob.baseCharStats().copyOf();
 		return null;
 	}
@@ -3265,7 +3267,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			mob.bringToLife(mob.getStartRoom(),true);
 			mob.location().showOthers(mob,mob.location(),CMMsg.MASK_ALWAYS|CMMsg.MSG_ENTER,L("<S-NAME> appears!"));
 		}
-		CMLib.achievements().loadAccountAchievements(mob);
+		CMLib.achievements().loadAccountAchievements(mob,AchievementLoadFlag.CHARCR_POSTLOAD);
 		mob.playerStats().leveledDateTime(0);
 		CMLib.database().DBCreateCharacter(mob);
 		CMLib.players().addPlayer(mob);

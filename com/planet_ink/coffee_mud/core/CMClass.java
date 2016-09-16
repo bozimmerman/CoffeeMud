@@ -794,6 +794,12 @@ public class CMClass extends ClassLoader
 	 */
 	public static final CMCommon	getCommon(final String calledThis){return (CMCommon)getNewGlobal(c().common,calledThis);}
 	/**
+	 * Returns the prototype instance of a common object of the given ID from your classloader
+	 * @param calledThis the ID() of the object to return
+	 * @return the prototype instance of a common object of the given ID
+	 */
+	public static final CMCommon	getCommonPrototype(final String calledThis){return (CMCommon)getGlobal(c().common,calledThis);}
+	/**
 	 * Returns a reference to the prototype for the command of the given ID from your classloader
 	 * @param word the ID() of the object to return
 	 * @return a reference to the prototype for the command of the given ID

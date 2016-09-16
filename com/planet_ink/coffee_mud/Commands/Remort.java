@@ -8,10 +8,13 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.AccountStats.Agent;
 import com.planet_ink.coffee_mud.Common.interfaces.Session.InputCallback;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Achievement;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.AchievementLoadFlag;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Event;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -395,6 +398,8 @@ public class Remort extends StdCommand
 					mob.baseState().setMovement(newMove[0]);
 					for(int code : CharStats.CODES.SAVING_THROWS())
 						mob.baseCharStats().setStat(code, 0);
+					for(int code : CharStats.CODES.MAXCODES())
+						mob.baseCharStats().setStat(code, 0);
 					mob.delAllAbilities();
 					mob.delAllBehaviors();
 					mob.delAllScripts();
@@ -428,6 +433,21 @@ public class Remort extends StdCommand
 					{
 						mob.addExpertise(PA);
 					}
+					List<Achievement> reAwardTattoos = new LinkedList<Achievement>();
+					List<Tattoo> delTattoo =  new LinkedList<Tattoo>();
+					for(Enumeration<Tattoo> t=mob.tattoos();t.hasMoreElements();)
+					{
+						Tattoo T=t.nextElement();
+						if(T != null)
+						{
+							delTattoo.add(T);
+							Achievement A=CMLib.achievements().getAchievement(T.getTattooName());
+							if((A != null) && (A.getAgent() == Agent.PLAYER))
+								reAwardTattoos.add(A);
+						}
+					}
+					for(Enumeration<Tattoo> t=mob.tattoos();t.hasMoreElements();)
+						mob.delTattoo(t.nextElement());
 					mob.setStartRoom(CMLib.login().getDefaultStartRoom(mob));
 					mob.getStartRoom().bringMobHere(mob, true);
 					final String failsafeID = "RemoteFailSafe";
@@ -523,6 +543,7 @@ public class Remort extends StdCommand
 												}
 												recoverEverything(mob);
 											}
+											CMLib.achievements().loadAccountAchievements(mob,AchievementLoadFlag.REMORT_PRELOAD);
 											if(retainStats < 0)
 											{
 												try
@@ -566,7 +587,7 @@ public class Remort extends StdCommand
 											mob.baseCharStats().getCurrentClass().grantAbilities(mob, false);
 											recoverEverything(mob);
 											recoverEverything(mob);
-											CMLib.achievements().loadAccountAchievements(mob);
+											CMLib.achievements().loadAccountAchievements(mob,AchievementLoadFlag.REMORT_POSTLOAD);
 											CMLib.achievements().loadPlayerSkillAwards(mob, mob.playerStats());
 											CMLib.commands().postLook(mob, true);
 											if((!mob.charStats().getCurrentClass().leveless())
