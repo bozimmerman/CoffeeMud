@@ -546,6 +546,8 @@ public class Remort extends StdCommand
 												}
 												recoverEverything(mob);
 											}
+											mob.setPractices(0);
+											mob.setTrains(0);
 											CMLib.achievements().reloadPlayerAwards(mob,AchievementLoadFlag.REMORT_PRELOAD);
 											CMLib.achievements().loadAccountAchievements(mob,AchievementLoadFlag.REMORT_PRELOAD);
 											if(retainStats < 0)
@@ -585,8 +587,6 @@ public class Remort extends StdCommand
 												}
 												recoverEverything(mob);
 											}
-											mob.setPractices(0);
-											mob.setTrains(0);
 											mob.baseCharStats().getCurrentClass().startCharacter(mob, false, false);
 											mob.baseCharStats().getCurrentClass().grantAbilities(mob, false);
 											recoverEverything(mob);
