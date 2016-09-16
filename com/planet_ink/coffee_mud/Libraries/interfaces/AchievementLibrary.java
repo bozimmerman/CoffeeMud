@@ -596,6 +596,14 @@ public interface AchievementLibrary extends CMLibrary
 	public void loadAccountAchievements(final MOB mob, final AchievementLoadFlag flag);
 
 	/**
+	 * When a player remorts, they keep their player achievements, but the rewards
+	 * are removed.  This method is called to re-reward all player achievement rewards.
+	 * @param mob the mob to award
+	 * @param whether this is happening before or after stat selection
+	 */
+	public void reloadPlayerAwards(MOB mob, AchievementLoadFlag flag);
+	
+	/**
 	 * Searches for an Achievement of the given tattoo name or display name,
 	 * and returns a help entry for the achievement.
 	 * @param ID the tattoo name or display name

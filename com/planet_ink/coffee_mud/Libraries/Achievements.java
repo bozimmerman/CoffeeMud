@@ -3941,6 +3941,30 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 	}
 
 	@Override
+	public void reloadPlayerAwards(MOB mob, AchievementLoadFlag flag)
+	{
+		if(mob != null)
+		{
+			final PlayerStats pStats = mob.playerStats();
+			boolean somethingDone=false;
+			for(final Enumeration<Tattoo> t = mob.tattoos();t.hasMoreElements();)
+			{
+				final Achievement A=getAchievement(t.nextElement().getTattooName());
+				if((A != null)&&(A.getAgent()==Agent.PLAYER))
+				{
+					giveAwards(mob, A.getRewards(), flag);
+					somethingDone=true;
+				}
+			}
+			if(somethingDone)
+			{
+				loadPlayerSkillAwards(mob, pStats);
+				grantAbilitiesAndExpertises(mob);
+			}
+		}
+	}
+	
+	@Override
 	public void loadAccountAchievements(final MOB mob, final AchievementLoadFlag flag)
 	{
 		final PlayerStats pStats = (mob==null) ? null : mob.playerStats();
@@ -3958,9 +3982,11 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 					{
 						if((flag != AchievementLoadFlag.CHARCR_PRELOAD)
 						&&(flag != AchievementLoadFlag.REMORT_PRELOAD))
+						{
 							mob.addTattoo(A.getTattoo());
+							somethingDone=true;
+						}
 						giveAwards(mob, A.getRewards(), flag);
-						somethingDone=true;
 					}
 				}
 			}

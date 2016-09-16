@@ -440,14 +440,17 @@ public class Remort extends StdCommand
 						Tattoo T=t.nextElement();
 						if(T != null)
 						{
-							delTattoo.add(T);
 							Achievement A=CMLib.achievements().getAchievement(T.getTattooName());
 							if((A != null) && (A.getAgent() == Agent.PLAYER))
 								reAwardTattoos.add(A);
+							else
+								delTattoo.add(T);
 						}
+						else
+							delTattoo.add(T);
 					}
-					for(Enumeration<Tattoo> t=mob.tattoos();t.hasMoreElements();)
-						mob.delTattoo(t.nextElement());
+					for(Iterator<Tattoo> t=delTattoo.iterator();t.hasNext();)
+						mob.delTattoo(t.next());
 					mob.setStartRoom(CMLib.login().getDefaultStartRoom(mob));
 					mob.getStartRoom().bringMobHere(mob, true);
 					final String failsafeID = "RemoteFailSafe";
@@ -543,6 +546,7 @@ public class Remort extends StdCommand
 												}
 												recoverEverything(mob);
 											}
+											CMLib.achievements().reloadPlayerAwards(mob,AchievementLoadFlag.REMORT_PRELOAD);
 											CMLib.achievements().loadAccountAchievements(mob,AchievementLoadFlag.REMORT_PRELOAD);
 											if(retainStats < 0)
 											{
@@ -587,6 +591,7 @@ public class Remort extends StdCommand
 											mob.baseCharStats().getCurrentClass().grantAbilities(mob, false);
 											recoverEverything(mob);
 											recoverEverything(mob);
+											CMLib.achievements().reloadPlayerAwards(mob,AchievementLoadFlag.REMORT_POSTLOAD);
 											CMLib.achievements().loadAccountAchievements(mob,AchievementLoadFlag.REMORT_POSTLOAD);
 											CMLib.achievements().loadPlayerSkillAwards(mob, mob.playerStats());
 											CMLib.commands().postLook(mob, true);
