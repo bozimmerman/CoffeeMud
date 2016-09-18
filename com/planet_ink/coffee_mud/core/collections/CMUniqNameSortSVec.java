@@ -19,6 +19,13 @@ public class CMUniqNameSortSVec<T extends CMObject> extends CMUniqSortSVec<T>
 		super();
 	}
 
+	public CMUniqNameSortSVec(CMUniqNameSortSVec<T> O)
+	{
+		super();
+		for(T o: O)
+			this.add(o);
+	}
+
 	@Override
 	protected int compareTo(CMObject arg0, String arg1)
 	{
@@ -30,4 +37,19 @@ public class CMUniqNameSortSVec<T extends CMObject> extends CMUniqSortSVec<T>
 	{
 		return arg0.name().compareToIgnoreCase(arg1.name());
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public synchronized SVector<T> copyOf()
+	{
+		try
+		{
+			return (CMUniqNameSortSVec<T>) clone();
+		}
+		catch (final Exception e)
+		{
+			return new CMUniqNameSortSVec<T>(this);
+		}
+	}
+
 }

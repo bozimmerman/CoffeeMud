@@ -47,7 +47,7 @@ public class Thief_Assassinate extends ThiefSkill
 	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public long flags(){return Ability.FLAG_TRACKING;}
-	@Override public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_DIRTYFIGHTING; }
+	@Override public int classificationCode() {   return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_DIRTYFIGHTING; }
 	protected List<Room> theTrail=null;
 	public int nextDirection=-2;
 	protected MOB tracking=null;

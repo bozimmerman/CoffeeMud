@@ -78,14 +78,26 @@ public class Remort extends StdCommand
 		mob.recoverPhyStats();
 	}
 
-	protected void slowStop(final Session sess, final MOB mob) throws IOException
+	protected void slowStop(final Session sess, final MOB mob, final PlayerAccount oldAcct) throws IOException
 	{
+		PlayerStats pStats = mob.playerStats();
+		if(pStats != null)
+		{
+			if(oldAcct != null)
+			{
+				// gets rid of any gains or changes from the remort process.
+				PlayerAccount realAcct = pStats.getAccount();
+				if(realAcct != null)
+					oldAcct.copyInto(realAcct);
+			}
+		}
 		sess.stopSession(true,true,false);
 		CMLib.s_sleep(3000);
 		sess.stopSession(true,true,false);
-		PlayerStats pStats = mob.playerStats();
 		if(pStats != null)
+		{
 			pStats.getExtItems().delAllItems(true);
+		}
 		CMLib.players().delPlayer(mob);
 		throw new IOException("Session stopped");
 	}
@@ -387,6 +399,12 @@ public class Remort extends StdCommand
 					Log.sysOut("Remort: "+mob.Name());
 					if(mob.numFollowers()>0)
 						CMLib.commands().forceStandardCommand(mob, "Nofollow",new XVector<String>("NOFOLLOW","ALL"));
+					
+					final PlayerAccount oldAccount;
+					if((mob.playerStats()!=null)&&(mob.playerStats().getAccount()!=null))
+						oldAccount = (PlayerAccount)mob.playerStats().getAccount().copyOf();
+					else
+						oldAccount = null;
 					CMLib.achievements().possiblyBumpAchievement(mob, Event.REMORT, 1);
 					mob.basePhyStats().setLevel(1);
 					mob.basePhyStats().setArmor(newDefense[0]);
@@ -526,7 +544,7 @@ public class Remort extends StdCommand
 												}
 												if(sess.isStopped())
 												{
-													slowStop(sess,mob);
+													slowStop(sess,mob,oldAccount);
 												}
 												recoverEverything(mob);
 											}
@@ -542,7 +560,7 @@ public class Remort extends StdCommand
 												}
 												if(sess.isStopped())
 												{
-													slowStop(sess,mob);
+													slowStop(sess,mob,oldAccount);
 												}
 												recoverEverything(mob);
 											}
@@ -562,7 +580,7 @@ public class Remort extends StdCommand
 												}
 												if(sess.isStopped())
 												{
-													slowStop(sess,mob);
+													slowStop(sess,mob,oldAccount);
 												}
 												recoverEverything(mob);
 											}
@@ -583,7 +601,7 @@ public class Remort extends StdCommand
 												}
 												if(sess.isStopped())
 												{
-													slowStop(sess,mob);
+													slowStop(sess,mob,oldAccount);
 												}
 												recoverEverything(mob);
 											}

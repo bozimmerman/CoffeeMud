@@ -91,7 +91,7 @@ public class Thief_BackStab extends ThiefSkill
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_SKILL | Ability.DOMAIN_DIRTYFIGHTING;
+		return Ability.ACODE_THIEF_SKILL | Ability.DOMAIN_DIRTYFIGHTING;
 	}
 
 	protected String	lastMOB		= "";

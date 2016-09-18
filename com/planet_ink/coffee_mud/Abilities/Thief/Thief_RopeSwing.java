@@ -80,7 +80,7 @@ public class Thief_RopeSwing extends ThiefSkill
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_SKILL | Ability.DOMAIN_BINDING;
+		return Ability.ACODE_THIEF_SKILL | Ability.DOMAIN_BINDING;
 	}
 
 	@Override

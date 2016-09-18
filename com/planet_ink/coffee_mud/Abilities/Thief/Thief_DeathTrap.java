@@ -83,7 +83,7 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_SKILL | Ability.DOMAIN_TRAPPING;
+		return Ability.ACODE_THIEF_SKILL | Ability.DOMAIN_TRAPPING;
 	}
 
 	protected boolean	sprung	= false;

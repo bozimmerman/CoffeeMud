@@ -154,6 +154,14 @@ public interface PlayerAccount extends CMCommon, AccountStats, Modifiable, Tatto
 	public void setBonusCharsLimit(int bonus);
 
 	/**
+	 * Populates this account object with all the data
+	 * from the given one, replacing any existing internal
+	 * data.
+	 * @param otherAccount the data to copy from.
+	 */
+	public void copyInto(PlayerAccount otherAccount);
+	
+	/**
 	 * Various account-level flags
 	 * @author Bo Zimmerman
 	 *

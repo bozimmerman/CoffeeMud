@@ -44,7 +44,7 @@ public class Thief_ContractHit extends ThiefSkill
 	private static final String[] triggerStrings =I(new String[] {"CONTRACTHIT"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public boolean disregardsArmorCheck(MOB mob){return true;}
-	@Override public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_CRIMINAL; }
+	@Override public int classificationCode() {   return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_CRIMINAL; }
 	@Override public String displayText(){return "";}
 	protected boolean done=false;
 	protected boolean readyToHit=false;

@@ -46,7 +46,7 @@ public class Thief_CutThroat extends ThiefSkill
 	private static final String[] triggerStrings =I(new String[] {"CUTTHROAT","CT"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int usageType(){return USAGE_MOVEMENT;}
-	@Override public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_DIRTYFIGHTING; }
+	@Override public int classificationCode() {   return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_DIRTYFIGHTING; }
 	protected String lastMOB="";
 	protected int controlCode=0;
 	@Override public int abilityCode(){return controlCode;}

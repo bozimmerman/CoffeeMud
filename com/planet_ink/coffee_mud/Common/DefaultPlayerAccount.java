@@ -112,6 +112,13 @@ public class DefaultPlayerAccount implements PlayerAccount
 			O.friends=friends.copyOf();
 			O.ignored=ignored.copyOf();
 			O.xtraValues=(xtraValues==null)?null:(String[])xtraValues.clone();
+			O.thinPlayers = thinPlayers.copyOf();
+			O.achievementers = new STreeMap<String,Tracker>();
+			for(final String key : achievementers.keySet())
+				O.achievementers.put(key, achievementers.get(key).copyOf());
+			O.tattoos = new CMUniqNameSortSVec<Tattoo>(tattoos);
+			O.acctFlags = new SHashSet<AccountFlag>(acctFlags);
+			O.fakePlayerM = null;
 			return O;
 		}
 		catch(final CloneNotSupportedException e)
@@ -120,6 +127,40 @@ public class DefaultPlayerAccount implements PlayerAccount
 		}
 	}
 
+	@Override
+	public void copyInto(PlayerAccount otherAccount)
+	{
+		for(String stat : this.getStatCodes())
+			otherAccount.setStat(stat, this.getStat(stat));
+		if(otherAccount instanceof DefaultPlayerAccount)
+		{
+			DefaultPlayerAccount O = (DefaultPlayerAccount)otherAccount;
+			O.friends=friends.copyOf();
+			O.ignored=ignored.copyOf();
+			O.xtraValues=(xtraValues==null)?null:(String[])xtraValues.clone();
+			O.thinPlayers = thinPlayers.copyOf();
+			O.achievementers = new STreeMap<String,Tracker>(achievementers);
+			O.tattoos = new CMUniqNameSortSVec<Tattoo>(tattoos);
+			O.acctFlags = new SHashSet<AccountFlag>(acctFlags);
+			O.fakePlayerM = null;
+			O.accountName = accountName;
+			O.lastIP = lastIP;
+			O.lastDateTime = lastDateTime;
+			O.lastUpdated = lastUpdated;
+			O.email = email;
+			O.password = password;
+			O.notes = notes;
+			O.accountExpiration = accountExpiration;
+			O.bonusCommonSk = bonusCommonSk;
+			O.bonusCraftSk = bonusCraftSk;
+			O.bonusNonCraftSk = bonusNonCraftSk;
+			O.bonusLanguages = bonusLanguages;
+			O.bonusCharStatPt = bonusCharStatPt;
+			O.bonusCharLimit = bonusCharLimit;
+			O.bonusCharOnlineLimit= bonusCharOnlineLimit;
+		}
+	}
+	
 	@Override
 	public String getLastIP()
 	{

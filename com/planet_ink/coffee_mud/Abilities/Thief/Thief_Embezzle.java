@@ -44,7 +44,7 @@ public class Thief_Embezzle extends ThiefSkill
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	private static final String[] triggerStrings =I(new String[] {"EMBEZZLE"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_CRIMINAL; }
+	@Override public int classificationCode() {   return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_CRIMINAL; }
 	@Override public boolean disregardsArmorCheck(MOB mob){return true;}
 	public List<MOB> mobs=new Vector<MOB>();
 	private final LinkedList<Pair<MOB,Integer>> lastOnes=new LinkedList<Pair<MOB,Integer>>();
