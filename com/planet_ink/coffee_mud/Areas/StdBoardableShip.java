@@ -589,6 +589,12 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
+		if((msg.targetMinor()==CMMsg.TYP_EXPIRE)
+		&&(msg.target() != null)
+		&&(this.getOwnerName().length()>0)
+		&&(CMLib.map().areaLocation(msg.target())==this))
+			return false;
+
 		MsgListener N=null;
 		for(int b=0;b<numBehaviors();b++)
 		{
@@ -795,6 +801,20 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 		{
 			switch(msg.targetMinor())
 			{
+			case CMMsg.TYP_DROP:
+				if(msg.target() instanceof Item)
+				{
+					final Item I=(Item)msg.target();
+					msg.addTrailerRunnable(new Runnable()
+					{
+						@Override
+						public void run()
+						{
+							I.setExpirationDate(0);
+						}
+					});
+				}
+				break;
 			case CMMsg.TYP_LOOK:
 			case CMMsg.TYP_EXAMINE:
 				if((msg.target() instanceof Exit)&&(((Exit)msg.target()).isOpen()))

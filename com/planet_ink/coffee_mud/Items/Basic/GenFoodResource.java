@@ -85,6 +85,12 @@ public class GenFoodResource extends GenFood implements RawMaterial, Food
 		return false;
 		//CMLib.materials().rebundle(this);
 	}
+	
+	@Override
+	public void destroy()
+	{
+		super.destroy();
+	}
 
 	@Override
 	public void quickDestroy()
