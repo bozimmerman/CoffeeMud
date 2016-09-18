@@ -95,6 +95,7 @@ public class Skill_SeaLegs extends StdSkill
 
 		final MOB mob=(MOB)affected;
 		if((msg.tool() instanceof Ability)
+		&&(msg.sourceMinor()!=CMMsg.TYP_TEACH)
 		&&(msg.amITarget(affected)))
 		{
 			if((msg.tool().ID().equalsIgnoreCase("Disease_SeaSickness"))

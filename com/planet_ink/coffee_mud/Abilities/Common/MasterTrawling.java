@@ -33,7 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class MasterTrawling extends Fishing
+public class MasterTrawling extends Trawling
 {
 	@Override
 	public String ID()

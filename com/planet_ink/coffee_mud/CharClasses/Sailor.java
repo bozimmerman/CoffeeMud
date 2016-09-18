@@ -265,7 +265,8 @@ public class Sailor extends StdCharClass
 					&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL))
 					{
 						exp++;
-						if((A.ID().equalsIgnoreCase("Trawling")))//||(A.ID().equalsIgnoreCase("Fishing"))))
+						if((A.ID().equalsIgnoreCase("Trawling"))//||(A.ID().equalsIgnoreCase("Fishing"))))
+						||(A.ID().equalsIgnoreCase("MasterTrawling")))//||(A.ID().equalsIgnoreCase("MasterFishing"))))
 							exp++;
 					}
 				}
