@@ -669,11 +669,14 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 	@Override
 	public void createAndSendChannelMessage(MOB mob, String channelName, String message, boolean systemMsg)
 	{
+		if(mob == null)
+			return;
 		final int channelInt=getChannelIndex(channelName);
 		if(channelInt<0)
 			return;
 
 		final PlayerStats pStats=mob.playerStats();
+		final Room R=mob.location();
 
 		message=CMProps.applyINIFilter(message,CMProps.Str.CHANNELFILTER);
 		final CMChannel chan=getChannel(channelInt);
@@ -681,12 +684,23 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		channelName=chan.name();
 		final String channelColor="^Q";
 
+		String nameAppendage="";
+		if(chan.flags().contains(ChannelsLibrary.ChannelFlag.ADDACCOUNT)
+		&&(pStats.getAccount()!=null))
+			nameAppendage+=" ("+pStats.getAccount().name()+")";
+		if(chan.flags().contains(ChannelsLibrary.ChannelFlag.ADDROOM)
+		&&(R!=null))
+			nameAppendage+=" in "+CMStrings.replaceAll(R.displayText(mob),"\'","");
+		if(chan.flags().contains(ChannelsLibrary.ChannelFlag.ADDAREA)
+		&&(R!=null)&&(R.getArea()!=null))
+			nameAppendage+=" at "+CMStrings.replaceAll(R.getArea().name(mob),"\'","");
+		
 		CMMsg msg=null;
 		if(systemMsg)
 		{
-			String str="["+channelName+"] '"+message+"'^</CHANNEL^>^?^.";
+			String str="["+channelName+"]"+nameAppendage+" '"+message+"'^</CHANNEL^>^?^.";
 			if((!mob.name().startsWith("^"))||(mob.name().length()>2))
-				str="<S-NAME> "+str;
+				str="<S-NAME>"+nameAppendage+" "+str;
 			msg=CMClass.getMsg(mob,null,null,
 					CMMsg.MASK_CHANNEL|CMMsg.MASK_ALWAYS|CMMsg.MSG_SPEAK,channelColor+"^<CHANNEL \""+channelName+"\"^>"+str,
 					CMMsg.NO_EFFECT,null,
@@ -712,8 +726,8 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 					msgstr=msgstr.trim();
 				else
 					msgstr=" "+msgstr.trim();
-				final String srcstr="^<CHANNEL \""+channelName+"\"^>["+channelName+"] "+mob.name()+msgstr+"^</CHANNEL^>^N^.";
-				final String reststr="^<CHANNEL \""+channelName+"\"^>["+channelName+"] <S-NAME>"+msgstr+"^</CHANNEL^>^N^.";
+				final String srcstr="^<CHANNEL \""+channelName+"\"^>["+channelName+"] "+mob.name()+nameAppendage+msgstr+"^</CHANNEL^>^N^.";
+				final String reststr="^<CHANNEL \""+channelName+"\"^>["+channelName+"] <S-NAME>"+nameAppendage+msgstr+"^</CHANNEL^>^N^.";
 				msg=CMClass.getMsg(mob,null,null,
 						CMMsg.MASK_CHANNEL|CMMsg.MASK_ALWAYS|CMMsg.MSG_SPEAK,channelColor+""+srcstr,
 						CMMsg.NO_EFFECT,null,
@@ -723,10 +737,11 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		else
 		{
 			msg=CMClass.getMsg(mob,null,null,
-					CMMsg.MASK_CHANNEL|CMMsg.MASK_ALWAYS|CMMsg.MSG_SPEAK,channelColor+"^<CHANNEL \""+channelName+"\"^>"+L("You")+" "+channelName+" '"+message+"'^</CHANNEL^>^N^.",
+					CMMsg.MASK_CHANNEL|CMMsg.MASK_ALWAYS|CMMsg.MSG_SPEAK,channelColor+"^<CHANNEL \""+channelName+"\"^>"+L("You")+nameAppendage+" "+channelName+" '"+message+"'^</CHANNEL^>^N^.",
 					CMMsg.NO_EFFECT,null,
-					CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),channelColor+"^<CHANNEL \""+channelName+"\"^><S-NAME> "+CMLib.english().makePlural(channelName)+" '"+message+"'^</CHANNEL^>^N^.");
+					CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),channelColor+"^<CHANNEL \""+channelName+"\"^><S-NAME>"+nameAppendage+" "+CMLib.english().makePlural(channelName)+" '"+message+"'^</CHANNEL^>^N^.");
 		}
+		
 		if((chan.flags().contains(ChannelsLibrary.ChannelFlag.ACCOUNTOOC)
 			||(chan.flags().contains(ChannelsLibrary.ChannelFlag.ACCOUNTOOCNOADMIN) && (!CMSecurity.isStaff(mob))))
 		&&(pStats!=null)
@@ -741,10 +756,10 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 			if(msg.othersMessage()!=null)
 				msg.setOthersMessage(CMStrings.replaceAll(msg.othersMessage(), "<S-NAME>", accountName));
 		}
+		
 		if(chan.flags().contains(ChannelsLibrary.ChannelFlag.NOLANGUAGE))
 			msg.setTool(getCommonLanguage());
 
-		final Room R=mob.location();
 		CMLib.commands().monitorGlobalMessage(R, msg);
 		if((R!=null)
 		&&((!R.isInhabitant(mob))||(R.okMessage(mob,msg))))

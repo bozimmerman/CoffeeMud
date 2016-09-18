@@ -416,6 +416,9 @@ public interface ChannelsLibrary extends CMLibrary
 		ACHIEVEMENTS,
 		ACCOUNTOOCNOADMIN,
 		NOLANGUAGE,
-		TWITTER
+		TWITTER,
+		ADDROOM,
+		ADDAREA,
+		ADDACCOUNT
 	}
 }
