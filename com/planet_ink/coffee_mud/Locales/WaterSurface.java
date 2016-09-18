@@ -192,9 +192,22 @@ public class WaterSurface extends StdRoom implements Drink
 		}
 	}
 
+	protected void fixUnderwater()
+	{
+		if(!this.skyedYet)
+			giveASky(0);
+		else
+		if(rawDoors()[Directions.DOWN]==null)
+		{
+			clearSky();
+			giveASky(0);
+		}
+	}
+	
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
+		fixUnderwater();
 		switch(CMLib.tracking().isOkWaterSurfaceAffect(this,msg))
 		{
 		case CANCEL:
