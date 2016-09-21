@@ -2316,7 +2316,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		}
 	
 		pStats.setBonusCommonSkillLimits(CMath.s_int(mob.session().prompt(L("*. Bonus Common Skills (@x1): ",""+pStats.getBonusCommonSkillLimits()),""+pStats.getBonusCommonSkillLimits())));
-		pStats.setBonusCharStatPoints(CMath.s_int(mob.session().prompt(L("*. Bonus Craft Skills (@x1): ",""+pStats.getBonusCraftingSkillLimits()),""+pStats.getBonusCraftingSkillLimits())));
+		pStats.setBonusCraftingSkillLimits(CMath.s_int(mob.session().prompt(L("*. Bonus Craft Skills (@x1): ",""+pStats.getBonusCraftingSkillLimits()),""+pStats.getBonusCraftingSkillLimits())));
 		pStats.setBonusNonCraftingSkillLimits(CMath.s_int(mob.session().prompt(L("*. Bonus Gather Skills (@x1): ",""+pStats.getBonusNonCraftingSkillLimits()),""+pStats.getBonusNonCraftingSkillLimits())));
 		pStats.setBonusLanguageLimits(CMath.s_int(mob.session().prompt(L("*. Bonus Languages (@x1): ",""+pStats.getBonusLanguageLimits()),""+pStats.getBonusLanguageLimits())));
 		pStats.setBonusCharStatPoints(CMath.s_int(mob.session().prompt(L("*. Bonus Creation Pts (@x1): ",""+pStats.getBonusCharStatPoints()),""+pStats.getBonusCharStatPoints())));
