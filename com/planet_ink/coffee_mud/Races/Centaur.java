@@ -98,11 +98,11 @@ public class Centaur extends StdRace
 		return true;
 	}
 
-	private final String[]	racialAbilityNames			= { "Skill_Buck" };
-	private final int[]		racialAbilityLevels			= { 5 };
-	private final int[]		racialAbilityProficiencies	= { 50 };
-	private final boolean[]	racialAbilityQuals			= { false };
-	private final String[]	racialAbilityParms			= { "" };
+	private final String[]	racialAbilityNames			= { "Fighter_EnhancedFitness", "Skill_Buck" };
+	private final int[]		racialAbilityLevels			= { 1, 5 };
+	private final int[]		racialAbilityProficiencies	= { 50, 50 };
+	private final boolean[]	racialAbilityQuals			= { false, false };
+	private final String[]	racialAbilityParms			= { "", "" };
 
 	@Override
 	public String[] racialAbilityNames()

@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2014-2016 Bo Zimmerman
+   Copyright 2016-2016 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -33,15 +33,15 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Fighter_Toughness extends FighterSkill
+public class Fighter_EnhancedFitness extends FighterSkill
 {
 	@Override
 	public String ID()
 	{
-		return "Fighter_Toughness";
+		return "Fighter_EnhancedFitness";
 	}
 
-	private final static String	localizedName	= CMLib.lang().L("Toughness");
+	private final static String	localizedName	= CMLib.lang().L("Enhanced Fitness");
 
 	@Override
 	public String name()
@@ -95,7 +95,7 @@ public class Fighter_Toughness extends FighterSkill
 	public void affectCharState(MOB affected, CharState affectableState)
 	{
 		super.affectCharState(affected,affectableState);
-		affectableState.setHitPoints(affectableState.getHitPoints() + 30 + (int)Math.round(2.0*adjustedLevel(invoker,0)*CMath.div(proficiency(), 100.0)));
+		affectableState.setMovement(affectableState.getMovement() + 30 + (int)Math.round(2.0*adjustedLevel(invoker,0)*CMath.div(proficiency(), 100.0)));
 	}
 	
 	@Override
@@ -109,7 +109,8 @@ public class Fighter_Toughness extends FighterSkill
 		&&(((MOB)affected).location()!=null))
 		{
 			final MOB mob=(MOB)affected;
-			if(mob.isInCombat() && (CMLib.dice().rollPercentage()<5))
+			if((CMath.div(mob.curState().getMovement(), mob.maxState().getMovement())<.75) 
+			&& (CMLib.dice().rollPercentage()<2))
 			{
 				super.helpProficiency((MOB)affected, 0);
 			}
