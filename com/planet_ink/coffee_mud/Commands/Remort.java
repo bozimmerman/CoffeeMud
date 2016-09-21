@@ -400,11 +400,14 @@ public class Remort extends StdCommand
 					if(mob.numFollowers()>0)
 						CMLib.commands().forceStandardCommand(mob, "Nofollow",new XVector<String>("NOFOLLOW","ALL"));
 					
+					final PlayerStats pStats = mob.playerStats();
 					final PlayerAccount oldAccount;
-					if((mob.playerStats()!=null)&&(mob.playerStats().getAccount()!=null))
-						oldAccount = (PlayerAccount)mob.playerStats().getAccount().copyOf();
+					if((pStats!=null)&&(pStats.getAccount()!=null))
+						oldAccount = (PlayerAccount)pStats.getAccount().copyOf();
 					else
 						oldAccount = null;
+					if(pStats!=null)
+						pStats.setSavable(false);
 					CMLib.achievements().possiblyBumpAchievement(mob, Event.REMORT, 1);
 					mob.basePhyStats().setLevel(1);
 					mob.basePhyStats().setArmor(newDefense[0]);
@@ -642,6 +645,8 @@ public class Remort extends StdCommand
 										catch (final IOException e)
 										{
 										}
+										if(pStats!=null)
+											pStats.setSavable(true);
 									}
 								};
 								if(msg.sourceMajor(CMMsg.MASK_CNTRLMSG))

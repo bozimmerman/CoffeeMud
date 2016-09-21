@@ -509,7 +509,13 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			pStats.getExtItems().delAllItems(true);
 		final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.PLAYERPURGES);
 		for(int i=0;i<channels.size();i++)
-			CMLib.commands().postChannel(channels.get(i),deadMOB.clans(),CMLib.lang().fullSessionTranslation("@x1 has just been deleted.",deadMOB.Name()),true);
+		{
+			String name=deadMOB.Name();
+			if((pStats != null)
+			&&(pStats.getAccount()!=null))
+				name+=" ("+pStats.getAccount()+")";
+			CMLib.commands().postChannel(channels.get(i),deadMOB.clans(),CMLib.lang().fullSessionTranslation("@x1 has just been deleted.",name),true);
+		}
 		CMLib.coffeeTables().bump(deadMOB,CoffeeTableRow.STAT_PURGES);
 		
 		CMLib.database().DBDeletePlayer(deadMOB.Name());
@@ -605,7 +611,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			try
 			{
 				final PlayerStats pStats=mob.playerStats();
-				if(!mob.isMonster())
+				if((!mob.isMonster()) && (pStats.isSavable()))
 				{
 					CMLib.factions().updatePlayerFactions(mob,mob.location(), false);
 					setThreadStatus(serviceClient,"just saving "+mob.Name());

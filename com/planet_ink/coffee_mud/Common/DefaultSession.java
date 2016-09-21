@@ -2957,8 +2957,10 @@ public class DefaultSession implements Session
 				{
 					waiting=false;
 					final String firstWord=CMDS.get(0);
-					final PlayerStats pstats=mob.playerStats();
-					final String alias=(pstats!=null)?pstats.getAlias(firstWord):"";
+					final PlayerStats pStats=mob.playerStats();
+					if(pStats!=null)
+						pStats.setSavable(true);
+					final String alias=(pStats!=null)?pStats.getAlias(firstWord):"";
 					final Vector<List<String>> ALL_CMDS=new Vector<List<String>>();
 					boolean echoOn=false;
 					if(alias.length()>0)

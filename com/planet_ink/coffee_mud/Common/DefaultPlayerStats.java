@@ -105,6 +105,7 @@ public class DefaultPlayerStats implements PlayerStats
 	protected int[][]		 prideStats		= new int[TimeClock.TimePeriod.values().length][AccountStats.PrideStat.values().length];
 	protected ItemCollection extItems;
 
+	protected volatile boolean		isSavable		= true;
 	protected Map<String,Tracker>	achievementers	= new STreeMap<String,Tracker>();
 	protected Map<String,String>	alias			= new STreeMap<String,String>();
 	protected Map<String,Integer>	legacy			= new STreeMap<String,Integer>();
@@ -1663,5 +1664,48 @@ public class DefaultPlayerStats implements PlayerStats
 	public int compareTo(CMObject o)
 	{
 		return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));
+	}
+
+	@Override
+	public void destroy()
+	{
+		friends.clear();
+		ignored.clear();
+		tellStack.clear();
+		gtellStack.clear();
+		titles.clear();
+		autoInvokeSet.clear();
+		account = null;
+		visitedRoomSet	= null;
+		introductions.clear();
+		extItems.delAllItems(true);
+		achievementers.clear();
+		alias.clear();
+		legacy.clear();
+		combatSpams.clear();
+		ableMap.clear();
+		experMap.clear();
+		levelInfo.clear();
+	}
+
+	@Override
+	public boolean isSavable()
+	{
+		return isSavable;
+	}
+
+	@Override
+	public boolean amDestroyed()
+	{
+		return false;
+	}
+
+	@Override
+	public void setSavable(boolean truefalse)
+	{
+		synchronized(this)
+		{
+			isSavable=truefalse;
+		}
 	}
 }

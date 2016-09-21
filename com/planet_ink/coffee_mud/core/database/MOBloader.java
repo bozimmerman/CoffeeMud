@@ -930,8 +930,10 @@ public class MOBloader
 
 	public void DBUpdate(MOB mob)
 	{
-		DBUpdateJustMOB(mob);
 		final PlayerStats pStats = mob.playerStats();
+		if(!pStats.isSavable())
+			return;
+		DBUpdateJustMOB(mob);
 		if((mob.Name().length()==0)||(pStats==null))
 			return;
 		DBUpdateItems(mob);
@@ -997,7 +999,7 @@ public class MOBloader
 			return;
 		}
 		final PlayerStats pstats=mob.playerStats();
-		if(pstats==null)
+		if((pstats==null)||(!pstats.isSavable()))
 			return;
 		final String strStartRoomID=(mob.getStartRoom()!=null)?CMLib.map().getExtendedRoomID(mob.getStartRoom()):"";
 		String strOtherRoomID=(mob.location()!=null)?CMLib.map().getExtendedRoomID(mob.location()):"";

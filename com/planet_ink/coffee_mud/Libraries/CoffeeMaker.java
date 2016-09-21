@@ -964,31 +964,35 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 						final XMLTag iblk=iV.get(i);
 						if((!iblk.tag().equalsIgnoreCase("RITEM"))||(iblk.contents()==null))
 							return unpackErr("Room","bad 'iblk' in room "+newRoom.roomID(),iblk);
-						final String iClass=iblk.getValFromPieces("ICLAS");
-						final Item newItem=CMClass.getItem(iClass);
-						if(newItem instanceof ArchonOnly)
-							continue;
-						if(newItem==null)
-							return unpackErr("Room","null 'iClass': "+iClass+" in room "+newRoom.roomID(),iblk);
-						if((newItem instanceof Container)||(newItem instanceof Rideable))
+						final int itemCount = iblk.parms().containsKey("COUNT") ? CMath.s_int(iblk.getParmValue("COUNT")) : 1;  
+						for(int inum=0;inum<itemCount;inum++)
 						{
-							final String iden=iblk.getValFromPieces("IIDEN");
-							if((iden!=null)&&(iden.length()>0))
-								identTable.put(iden,newItem);
+							final String iClass=iblk.getValFromPieces("ICLAS");
+							final Item newItem=CMClass.getItem(iClass);
+							if(newItem instanceof ArchonOnly)
+								break;
+							if(newItem==null)
+								return unpackErr("Room","null 'iClass': "+iClass+" in room "+newRoom.roomID(),iblk);
+							if((newItem instanceof Container)||(newItem instanceof Rideable))
+							{
+								final String iden=iblk.getValFromPieces("IIDEN");
+								if((iden!=null)&&(iden.length()>0))
+									identTable.put(iden,newItem);
+							}
+							final String iloc=iblk.getValFromPieces("ILOCA");
+							if(iloc.length()>0)
+								itemLocTable.put(newItem,iloc);
+							newItem.basePhyStats().setLevel(iblk.getIntFromPieces("ILEVL"));
+							newItem.basePhyStats().setAbility(iblk.getIntFromPieces("IABLE"));
+							newItem.basePhyStats().setRejuv(iblk.getIntFromPieces("IREJV"));
+							newItem.setUsesRemaining(iblk.getIntFromPieces("IUSES"));
+							newItem.setOwner(newRoom); // temporary measure to take care of behaviors
+							newItem.setMiscText(CMLib.xml().restoreAngleBrackets(iblk.getValFromPieces("ITEXT")));
+							newItem.setContainer(null);
+							newItem.recoverPhyStats();
+							newRoom.addItem(newItem);
+							newItem.recoverPhyStats();
 						}
-						final String iloc=iblk.getValFromPieces("ILOCA");
-						if(iloc.length()>0)
-							itemLocTable.put(newItem,iloc);
-						newItem.basePhyStats().setLevel(iblk.getIntFromPieces("ILEVL"));
-						newItem.basePhyStats().setAbility(iblk.getIntFromPieces("IABLE"));
-						newItem.basePhyStats().setRejuv(iblk.getIntFromPieces("IREJV"));
-						newItem.setUsesRemaining(iblk.getIntFromPieces("IUSES"));
-						newItem.setOwner(newRoom); // temporary measure to take care of behaviors
-						newItem.setMiscText(CMLib.xml().restoreAngleBrackets(iblk.getValFromPieces("ITEXT")));
-						newItem.setContainer(null);
-						newItem.recoverPhyStats();
-						newRoom.addItem(newItem);
-						newItem.recoverPhyStats();
 					}
 				}
 				for(final Item childI : itemLocTable.keySet())
@@ -2147,28 +2151,62 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			else
 			{
 				buf.append("<ROOMITEMS>");
+				final List<Pair<String,int[]>> itemList=(items.size()>20?new LinkedList<Pair<String,int[]>>():null);
 				for(int i=0;i<items.size();i++)
 				{
-					buf.append("<RITEM>");
 					final Item item=items.get(i);
 					if(item.isSavable() || (!andIsInDB))
 					{
-						buf.append(CMLib.xml().convertXMLtoTag("ICLAS",CMClass.classID(item)));
+						StringBuilder ibuf=new StringBuilder();
+						ibuf.append(CMLib.xml().convertXMLtoTag("ICLAS",CMClass.classID(item)));
 						if(((item instanceof Container)&&(((Container)item).capacity()>0))
 						||((item instanceof Rideable)&&(((Rideable)item).numRiders()>0)))
-							buf.append(CMLib.xml().convertXMLtoTag("IIDEN",""+item));
+							ibuf.append(CMLib.xml().convertXMLtoTag("IIDEN",""+item));
 						if(item.container()==null)
-							buf.append("<ILOCA />");
+							ibuf.append("<ILOCA />");
 						else
-							buf.append(CMLib.xml().convertXMLtoTag("ILOCA",""+item.container()));
-						buf.append(CMLib.xml().convertXMLtoTag("IREJV",item.basePhyStats().rejuv()));
-						buf.append(CMLib.xml().convertXMLtoTag("IUSES",item.usesRemaining()));
-						buf.append(CMLib.xml().convertXMLtoTag("ILEVL",item.basePhyStats().level()));
-						buf.append(CMLib.xml().convertXMLtoTag("IABLE",item.basePhyStats().ability()));
-						buf.append(CMLib.xml().convertXMLtoTag("ITEXT",CMLib.xml().parseOutAngleBrackets(item.text())));
-						buf.append("</RITEM>");
+							ibuf.append(CMLib.xml().convertXMLtoTag("ILOCA",""+item.container()));
+						ibuf.append(CMLib.xml().convertXMLtoTag("IREJV",item.basePhyStats().rejuv()));
+						ibuf.append(CMLib.xml().convertXMLtoTag("IUSES",item.usesRemaining()));
+						ibuf.append(CMLib.xml().convertXMLtoTag("ILEVL",item.basePhyStats().level()));
+						ibuf.append(CMLib.xml().convertXMLtoTag("IABLE",item.basePhyStats().ability()));
+						ibuf.append(CMLib.xml().convertXMLtoTag("ITEXT",CMLib.xml().parseOutAngleBrackets(item.text())));
+						if(itemList != null)
+						{
+							String itemStr=ibuf.toString();
+							boolean found=false;
+							for(Pair<String,int[]> P : itemList)
+							{
+								if(itemStr.equals(P.first))
+								{
+									found=true;
+									P.second[0]++;
+								}
+							}
+							if(!found)
+								itemList.add(new Pair<String,int[]>(itemStr,new int[]{1}));
+						}
+						else
+						{
+							buf.append("<RITEM>");
+							buf.append(ibuf);
+							buf.append("</RITEM>");
+							ibuf = null;
+						}
 						possibleAddElectronicsManufacturers(item, custom);
 						fillFileSet(item,files);
+					}
+				}
+				if(itemList!=null)
+				{
+					for(Pair<String,int[]> P : itemList)
+					{
+						if(P.second[0]<=1)
+							buf.append("<RITEM>");
+						else
+							buf.append("<RITEM COUNT="+P.second[0]+">");
+						buf.append(P.first);
+						buf.append("</RITEM>");
 					}
 				}
 				buf.append("</ROOMITEMS>");

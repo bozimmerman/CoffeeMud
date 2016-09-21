@@ -44,7 +44,7 @@ import java.util.*;
  *
  * @see com.planet_ink.coffee_mud.MOBS.interfaces.MOB#playerStats()
  */
-public interface PlayerStats extends CMCommon, Modifiable, AccountStats
+public interface PlayerStats extends CMCommon, Modifiable, AccountStats, Contingent
 {
 	/**
 	 * The time, in milis since 1970, that the player was last saved.
