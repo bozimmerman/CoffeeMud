@@ -635,7 +635,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 					processed++;
 				}
 				else
-				if(pStats!=null)
+				if((pStats!=null)&& (pStats.isSavable()))
 				{
 					if((pStats.getLastUpdated()==0)
 					||(pStats.getLastUpdated()<pStats.getLastDateTime())
