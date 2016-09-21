@@ -638,6 +638,9 @@ public class Remort extends StdCommand
 											Ability A=mob.fetchEffect(failsafeID);
 											if(A!=null)
 												mob.delEffect(A);
+											if(pStats!=null)
+												pStats.setSavable(true);
+											CMLib.database().DBUpdatePlayer(mob);
 										}
 										catch(java.lang.NullPointerException e)
 										{
