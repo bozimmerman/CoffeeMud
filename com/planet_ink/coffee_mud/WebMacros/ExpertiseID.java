@@ -35,7 +35,11 @@ import java.util.*;
 */
 public class ExpertiseID extends StdWebMacro
 {
-	@Override public String name() { return "ExpertiseID"; }
+	@Override
+	public String name()
+	{
+		return "ExpertiseID";
+	}
 
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)

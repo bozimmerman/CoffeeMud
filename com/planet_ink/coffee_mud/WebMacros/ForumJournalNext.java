@@ -39,7 +39,11 @@ import java.util.*;
 
 public class ForumJournalNext extends StdWebMacro
 {
-	@Override public String name() { return "ForumJournalNext"; }
+	@Override
+	public String name()
+	{
+		return "ForumJournalNext";
+	}
 
 	public static MOB guestM = null;
 

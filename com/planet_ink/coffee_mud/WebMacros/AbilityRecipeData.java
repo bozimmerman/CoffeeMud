@@ -36,7 +36,11 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class AbilityRecipeData extends StdWebMacro
 {
-	@Override public String name() { return "AbilityRecipeData"; }
+	@Override
+	public String name()
+	{
+		return "AbilityRecipeData";
+	}
 
 	// valid parms include help, ranges, quality, target, alignment, domain,
 	// qualifyQ, auto
@@ -143,8 +147,10 @@ public class AbilityRecipeData extends StdWebMacro
 					{
 						final DVector editRow = new DVector(2);
 						for(int c=0;c<recipeData.columns().size();c++)
+						{
 							if(recipeData.columns().get(c) instanceof List)
 								editRow.addElement(recipeData.columns().get(c),"");
+						}
 						final List<String> o=(List)editRow.elementAt(cfIndex,1);
 						classFieldEditor = CMLib.ableParms().getEditors().get(o.get(0).toString());
 					}

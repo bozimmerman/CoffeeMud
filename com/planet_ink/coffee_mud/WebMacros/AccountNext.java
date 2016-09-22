@@ -34,7 +34,11 @@ import java.util.*;
 */
 public class AccountNext extends StdWebMacro
 {
-	@Override public String name() { return "AccountNext"; }
+	@Override
+	public String name()
+	{
+		return "AccountNext";
+	}
 
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)

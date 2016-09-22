@@ -36,7 +36,11 @@ import java.util.*;
 */
 public class AreaScriptKey extends StdWebMacro
 {
-	@Override public String name() { return "AreaScriptKey"; }
+	@Override
+	public String name()
+	{
+		return "AreaScriptKey";
+	}
 
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
@@ -48,12 +52,16 @@ public class AreaScriptKey extends StdWebMacro
 		try
 		{
 			if(last.length()>0)
+			{
 				if(parms.containsKey("ENCODED"))
 					return URLEncoder.encode(clearWebMacros(last),"UTF-8");
 				else
 					return clearWebMacros(last);
+			}
 		}
-		catch(final Exception e){}
+		catch (final Exception e)
+		{
+		}
 		return "";
 	}
 }

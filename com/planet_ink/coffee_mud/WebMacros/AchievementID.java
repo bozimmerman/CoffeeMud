@@ -36,7 +36,11 @@ import java.util.*;
 */
 public class AchievementID extends StdWebMacro
 {
-	@Override public String name() { return "AchievementID"; }
+	@Override
+	public String name()
+	{
+		return "AchievementID";
+	}
 
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
@@ -50,7 +54,9 @@ public class AchievementID extends StdWebMacro
 			if(parms.containsKey("ACHIEVEMENT"))
 				return URLEncoder.encode(last,"UTF-8");
 		}
-		catch(final Exception e) {}
+		catch(final Exception e)
+		{
+		}
 		return clearWebMacros(last);
 	}
 }

@@ -36,8 +36,17 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class HolidayNext extends StdWebMacro
 {
-	@Override public String name() { return "HolidayNext"; }
-	@Override public boolean isAdminMacro()   {return true;}
+	@Override
+	public String name()
+	{
+		return "HolidayNext";
+	}
+
+	@Override
+	public boolean isAdminMacro()
+	{
+		return true;
+	}
 
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
@@ -79,7 +88,9 @@ public class HolidayNext extends StdWebMacro
 					//if(var.equals("AREAGROUP"))
 					//{ areaLine=line;}
 					if(var.equals("NAME"))
-					{ nameLine=line;}
+					{
+						nameLine=line;
+					}
 				}
 			}
 			if(nameLine!=null)

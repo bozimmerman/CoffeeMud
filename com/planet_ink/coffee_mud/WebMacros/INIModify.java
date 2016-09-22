@@ -35,8 +35,17 @@ import java.util.*;
 */
 public class INIModify extends StdWebMacro
 {
-	@Override public String name() { return "INIModify"; }
-	@Override public boolean isAdminMacro()	{return true;}
+	@Override
+	public String name()
+	{
+		return "INIModify";
+	}
+
+	@Override
+	public boolean isAdminMacro()
+	{
+		return true;
+	}
 
 	public void updateINIFile(List<String> page)
 	{
@@ -95,7 +104,10 @@ public class INIModify extends StdWebMacro
 					if((x>0)&&(!Character.isLetter(s.charAt(x-1))))
 						found=true;
 					if((!s.startsWith("#"))&&(!s.startsWith("!"))&&(found))
-					{ where=p; break;}
+					{
+						where=p;
+						break;
+					}
 				}
 			}
 			if(where>=0)

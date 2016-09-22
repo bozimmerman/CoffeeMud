@@ -37,7 +37,11 @@ import java.util.*;
 
 public class CharClassData extends StdWebMacro
 {
-	@Override public String name() { return "CharClassData"; }
+	@Override
+	public String name()
+	{
+		return "CharClassData";
+	}
 
 
 	private String classDropDown(String old)
@@ -351,6 +355,7 @@ public class CharClassData extends StdWebMacro
 								{
 									boolean added=false;
 									for(int n=0;n<nameSet.size();n++)
+									{
 										if(minLevel<((Integer)nameSet.elementAt(n,1)).intValue())
 										{
 											nameSet.insertElementAt(n,Integer.valueOf(minLevel),name);
@@ -363,6 +368,7 @@ public class CharClassData extends StdWebMacro
 											added=true;
 											break;
 										}
+									}
 									if(!added)
 										nameSet.addElement(Integer.valueOf(minLevel),name);
 								}
@@ -636,35 +642,50 @@ public class CharClassData extends StdWebMacro
 					{
 						final String eStats=C.getStat("ESTATS");
 						final PhyStats adjPStats=(PhyStats)CMClass.getCommon("DefaultPhyStats"); adjPStats.setAllValues(0);
-						if(eStats.length()>0){ CMLib.coffeeMaker().setPhyStats(adjPStats,eStats);}
+						if(eStats.length()>0)
+						{
+							CMLib.coffeeMaker().setPhyStats(adjPStats,eStats);
+						}
 						str.append(RaceData.estats(adjPStats,'E',httpReq,parms,0)+", ");
 					}
 					if(parms.containsKey("CSTATS"))
 					{
 						final CharStats setStats=(CharStats)CMClass.getCommon("DefaultCharStats"); setStats.setAllValues(0);
 						final String cStats=C.getStat("CSTATS");
-						if(cStats.length()>0){  CMLib.coffeeMaker().setCharStats(setStats,cStats);}
+						if(cStats.length()>0)
+						{
+							CMLib.coffeeMaker().setCharStats(setStats,cStats);
+						}
 						str.append(RaceData.cstats(setStats,'S',httpReq,parms,0)+", ");
 					}
 					if(parms.containsKey("ASTATS"))
 					{
 						final CharStats adjStats=(CharStats)CMClass.getCommon("DefaultCharStats"); adjStats.setAllValues(0);
 						final String cStats=C.getStat("ASTATS");
-						if(cStats.length()>0){  CMLib.coffeeMaker().setCharStats(adjStats,cStats);}
+						if(cStats.length()>0)
+						{
+							CMLib.coffeeMaker().setCharStats(adjStats,cStats);
+						}
 						str.append(RaceData.cstats(adjStats,'A',httpReq,parms,0)+", ");
 					}
 					if(parms.containsKey("ASTATE"))
 					{
 						final CharState adjState=(CharState)CMClass.getCommon("DefaultCharState"); adjState.setAllValues(0);
 						final String aState=C.getStat("ASTATE");
-						if(aState.length()>0){  CMLib.coffeeMaker().setCharState(adjState,aState);}
+						if(aState.length()>0)
+						{
+							CMLib.coffeeMaker().setCharState(adjState,aState);
+						}
 						str.append(RaceData.cstate(adjState,'A',httpReq,parms,0)+", ");
 					}
 					if(parms.containsKey("STARTASTATE"))
 					{
 						final CharState startAdjState=(CharState)CMClass.getCommon("DefaultCharState"); startAdjState.setAllValues(0);
 						final String saState=C.getStat("STARTASTATE");
-						if(saState.length()>0){ CMLib.coffeeMaker().setCharState(startAdjState,saState);}
+						if(saState.length()>0)
+						{
+							CMLib.coffeeMaker().setCharState(startAdjState,saState);
+						}
 						str.append(RaceData.cstate(startAdjState,'S',httpReq,parms,0)+", ");
 					}
 				}
@@ -791,6 +812,7 @@ public class CharClassData extends StdWebMacro
 								{
 									boolean added=false;
 									for(int n=0;n<sSet.size();n++)
+									{
 										if(minLevel<((Integer)sSet.elementAt(n,1)).intValue())
 										{
 											sSet.insertElementAt(n,Integer.valueOf(minLevel),sec);
@@ -803,6 +825,7 @@ public class CharClassData extends StdWebMacro
 											added=true;
 											break;
 										}
+									}
 									if(!added)
 										sSet.addElement(Integer.valueOf(minLevel),sec);
 								}
@@ -857,8 +880,10 @@ public class CharClassData extends StdWebMacro
 						String id="";
 						set=new Vector<String>();
 						for(int i=0;httpReq.isUrlParameter("WEAPMATS"+id);id=""+(++i))
+						{
 							if(CMath.isInteger(httpReq.getUrlParameter("WEAPMATS"+id)))
 								set.add(httpReq.getUrlParameter("WEAPMATS"+id));
+						}
 					}
 					str.append("<OPTION VALUE=\"*\"");
 					if(set.size()==0)
@@ -1325,9 +1350,15 @@ public class CharClassData extends StdWebMacro
 				if(gained)
 				{
 					totalgained++;
-					if((numOthers==0)&&(numOutsiders==0)){ uniqueClassSkillsGained++; }
+					if((numOthers==0)&&(numOutsiders==0))
+					{
+						uniqueClassSkillsGained++;
+					}
 					else
-					if(numOutsiders==0){ uncommonClassSkillsGained++; }
+					if(numOutsiders==0)
+					{
+						uncommonClassSkillsGained++;
+					}
 				}
 				else
 					totalqualified++;

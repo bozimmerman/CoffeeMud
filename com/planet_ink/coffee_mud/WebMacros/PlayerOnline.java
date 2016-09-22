@@ -36,7 +36,11 @@ import java.util.*;
 */
 public class PlayerOnline extends StdWebMacro
 {
-	@Override public String name() { return "PlayerOnline"; }
+	@Override
+	public String name()
+	{
+		return "PlayerOnline";
+	}
 
 	public static final int MAX_IMAGE_SIZE=50*1024;
 

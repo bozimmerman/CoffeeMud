@@ -36,7 +36,11 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class CharClassNext extends StdWebMacro
 {
-	@Override public String name() { return "CharClassNext"; }
+	@Override
+	public String name()
+	{
+		return "CharClassNext";
+	}
 
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)

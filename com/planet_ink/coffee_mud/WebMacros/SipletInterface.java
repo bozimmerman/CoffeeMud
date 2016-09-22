@@ -69,10 +69,10 @@ public class SipletInterface extends StdWebMacro
 		return true;
 	}
 
-	public static final LinkedList<String> removables		 = new LinkedList<String>();
-	public static final Object 			   sipletConnectSync = new Object();
-	public static volatile boolean 		   initialized		 = false;
-	public static final SHashtable<String,SipletSession> 	 siplets 	= new SHashtable<String,SipletSession>();
+	public static final List<String>				removables			= new LinkedList<String>();
+	public static final Object						sipletConnectSync	= new Object();
+	public static volatile boolean					initialized			= false;
+	public static final Map<String, SipletSession>	siplets				= new SHashtable<String, SipletSession>();
 
 	protected class SipletSession
 	{
@@ -191,7 +191,7 @@ public class SipletInterface extends StdWebMacro
 						if ((p != null) && ((System.currentTimeMillis() - p.lastTouched) > (2 * 60 * 1000)))
 						{
 							p.siplet.disconnectFromURL();
-							removables.addLast(key);
+							removables.add(key);
 						}
 					}
 					if (removables.size() > 0)

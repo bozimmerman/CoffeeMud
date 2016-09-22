@@ -159,8 +159,10 @@ public class GrinderHolidays {
 		behaviors.clear();
 		setText(behaviors,"AGGRESSIVE",httpReq.getUrlParameter("AGGRESSIVE"));
 		for(int i=1;httpReq.isUrlParameter("BEHAV"+i);i++)
+		{
 			if(httpReq.getUrlParameter("BEHAV"+i).trim().length()>0)
 				setText(behaviors,httpReq.getUrlParameter("BEHAV"+i),httpReq.getUrlParameter("BDATA"+i));
+		}
 		final StringBuffer mudChats=new StringBuffer("");
 		for(int i=1;httpReq.isUrlParameter("MCWDS"+i);i++)
 		{
@@ -170,8 +172,10 @@ public class GrinderHolidays {
 			{
 				mudChats.append("("+words+");");
 				for(int ii=1;httpReq.isUrlParameter("MCSAYW"+i+"_"+ii);ii++)
+				{
 					if(CMath.isInteger(httpReq.getUrlParameter("MCSAYW"+i+"_"+ii)))
 						mudChats.append(httpReq.getUrlParameter("MCSAYW"+i+"_"+ii)+httpReq.getUrlParameter("MCSAYS"+i+"_"+ii)+";");
+				}
 				mudChats.append(";");
 			}
 		}

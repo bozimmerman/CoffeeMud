@@ -85,11 +85,20 @@ public class GrinderClanGovernments
 			if(str!=null)
 				G.setShortDesc(str);
 			str=httpReq.getUrlParameter("REQUIREDMASK");
-			if(str!=null){ G.setRequiredMaskStr(str);}
+			if(str!=null)
+			{
+				G.setRequiredMaskStr(str);
+			}
 			str=httpReq.getUrlParameter("ENTRYSCRIPT");
-			if(str!=null){ G.setEntryScript(str);}
+			if(str!=null)
+			{
+				G.setEntryScript(str);
+			}
 			str=httpReq.getUrlParameter("EXITSCRIPT");
-			if(str!=null){ G.setExitScript(str);}
+			if(str!=null)
+			{
+				G.setExitScript(str);
+			}
 			str=httpReq.getUrlParameter("ISPUBLIC");
 			G.setPublic((str==null)?false:str.equalsIgnoreCase("on"));
 			str=httpReq.getUrlParameter("ISFAMILYONLY");

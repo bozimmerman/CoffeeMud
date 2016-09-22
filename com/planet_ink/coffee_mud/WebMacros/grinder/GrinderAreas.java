@@ -350,22 +350,22 @@ public class GrinderAreas
 		while(A.getChildren().hasMoreElements())
 			A.removeChild(A.getChildren().nextElement());
 		for(int i=1;;i++)
-		  if(httpReq.isUrlParameter("CHILDREN"+(Integer.toString(i))))
-		  {
-			  final Area child=CMLib.map().getArea(httpReq.getUrlParameter("CHILDREN"+(Integer.toString(i))));
-			  if(child!=null)
-			  {
-				  if(A.canChild(child))
-				  {
-					  A.addChild(child);
-					  child.addParent(A);
-					  areasNeedingUpdates.addElement(child);
-				  }
-				  else
-					  return "The area, '"+child.Name()+"', cannot be added as a child, as this would create a circular reference.";
-			  }
-			  else
-				  break;
+		if(httpReq.isUrlParameter("CHILDREN"+(Integer.toString(i))))
+		{
+			final Area child=CMLib.map().getArea(httpReq.getUrlParameter("CHILDREN"+(Integer.toString(i))));
+			if(child!=null)
+			{
+				if(A.canChild(child))
+				{
+					A.addChild(child);
+					child.addParent(A);
+					areasNeedingUpdates.addElement(child);
+				}
+				else
+					return "The area, '"+child.Name()+"', cannot be added as a child, as this would create a circular reference.";
+			}
+			else
+				break;
 		}
 
 		String error=GrinderAreas.doAffects(A,httpReq,parms);

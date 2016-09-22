@@ -50,7 +50,7 @@ public class GrinderExits
 		{
 			final String parm=httpReq.getUrlParameter(PhyStats.IS_CODES[d]);
 			if((parm!=null)&&(parm.equals("on")))
-			   P.basePhyStats().setDisposition(P.basePhyStats().disposition()|(1<<d));
+				P.basePhyStats().setDisposition(P.basePhyStats().disposition()|(1<<d));
 		}
 		return "";
 	}
@@ -211,6 +211,7 @@ public class GrinderExits
 		}
 		return "";
 	}
+
 	public static String delExit(Room R, int dir)
 	{
 		synchronized(("SYNC"+R.roomID()).intern())

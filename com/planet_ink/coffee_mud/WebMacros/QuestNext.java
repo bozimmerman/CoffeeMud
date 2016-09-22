@@ -36,8 +36,17 @@ import java.util.*;
 
 public class QuestNext extends StdWebMacro
 {
-	@Override public String name() { return "QuestNext"; }
-	@Override public boolean isAdminMacro()	{return true;}
+	@Override
+	public String name()
+	{
+		return "QuestNext";
+	}
+
+	@Override
+	public boolean isAdminMacro()
+	{
+		return true;
+	}
 
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)

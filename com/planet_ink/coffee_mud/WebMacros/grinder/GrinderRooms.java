@@ -49,6 +49,7 @@ public class GrinderRooms
 		M.bringToLife(R,true);
 		R.recoverRoomStats();
 	}
+
 	public static void happilyAddItem(Item I, Room R)
 	{
 		if(I.subjectToWearAndTear())
@@ -436,6 +437,7 @@ public class GrinderRooms
 		R.getArea().fillInAreaRoom(R);
 		return "";
 	}
+
 	public static Room createGridRoom(Area A, String roomID, Room copyThisOne, RoomnumberSet deferredExitSaves, boolean autoLink)
 	{
 		Room R=null;

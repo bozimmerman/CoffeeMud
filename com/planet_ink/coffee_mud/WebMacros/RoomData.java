@@ -43,7 +43,11 @@ import java.util.concurrent.TimeUnit;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class RoomData extends StdWebMacro
 {
-	@Override public String name() { return "RoomData"; }
+	@Override
+	public String name()
+	{
+		return "RoomData";
+	}
 	static final String[][] STAT_CHECKS={{"DISPLAY","NAME"},{"CLASS","CLASSES"},{"DESCRIPTION","DESCRIPTION"},{"XSIZE","XGRID"},{"YSIZE","XGRID"},{"IMAGE","IMAGE"}};
 
 	public static List<MOB> getMOBCache()
@@ -521,8 +525,10 @@ public class RoomData extends StdWebMacro
 	{
 		Pair<String,String> p;
 		for(int x=1; (p=getPair(fixtures,varStart+x))!=null;x++)
+		{
 			if((p.second==value)||((p.second!=null)&&(p.second.equalsIgnoreCase(value))))
 				return p;
+		}
 		return null;
 	}
 
@@ -531,16 +537,20 @@ public class RoomData extends StdWebMacro
 		final List<Pair<String,String>> pairs=new LinkedList<Pair<String,String>>();
 		Pair<String,String> p;
 		for(int x=1; (p=getPair(fixtures,varStart+x))!=null;x++)
+		{
 			if((p.second==value)||((p.second!=null)&&(p.second.equalsIgnoreCase(value))))
 				pairs.add(p);
+		}
 		return pairs;
 	}
 
 	public static Pair<String,String> getPair(final List<Pair<String,String>> fixtures, final String var)
 	{
 		for(final Pair<String,String> p : fixtures)
+		{
 			if(p.first.equalsIgnoreCase(var))
 				return p;
+		}
 		return null;
 	}
 
@@ -909,33 +919,149 @@ public class RoomData extends StdWebMacro
 		final HTTPRequest mergeReq=new HTTPRequest()
 		{
 			public final Hashtable<String,String> params=mergeParams;
-			@Override public String getHost() { return httpReq.getHost(); }
-			@Override public String getUrlPath() { return httpReq.getUrlPath(); }
-			@Override public String getFullRequest() { return httpReq.getFullRequest(); }
-			@Override public Map<String,String> getUrlParametersCopy() { return new XHashtable<String,String>(params); }
-			@Override public String getUrlParameter(String name) { return params.get(name.toLowerCase()); }
-			@Override public boolean isUrlParameter(String name) { return params.containsKey(name.toLowerCase()); }
-			@Override public Set<String> getUrlParameters() { return params.keySet(); }
-			@Override public HTTPMethod getMethod() { return httpReq.getMethod(); }
-			@Override public String getHeader(String name) { return httpReq.getHeader(name); }
-			@Override public InetAddress getClientAddress() { return httpReq.getClientAddress(); }
-			@Override public int getClientPort() { return httpReq.getClientPort(); }
-			@Override public InputStream getBody() { return httpReq.getBody(); }
-			@Override public String getCookie(String name) { return httpReq.getCookie(name); }
-			@Override public Set<String> getCookieNames() { return httpReq.getCookieNames(); }
-			@Override public List<MultiPartData> getMultiParts() { return httpReq.getMultiParts(); }
-			@Override public double getSpecialEncodingAcceptability(String type) { return httpReq.getSpecialEncodingAcceptability(type); }
-			@Override public String getFullHost() { return httpReq.getFullHost(); }
-			@Override public List<long[]> getRangeAZ() { return httpReq.getRangeAZ(); }
-			@Override public void addFakeUrlParameter(String name, String value) { params.put(name.toLowerCase(), value); }
-			@Override public void removeUrlParameter(String name) { params.remove(name.toLowerCase()); }
-			@Override public Map<String,Object> getRequestObjects() { return httpReq.getRequestObjects(); }
-			@Override public float getHttpVer() { return httpReq.getHttpVer(); }
-			@Override public String getQueryString() { return httpReq.getQueryString(); }
+			@Override
+			public String getHost()
+			{
+				return httpReq.getHost();
+			}
+
+			@Override
+			public String getUrlPath()
+			{
+				return httpReq.getUrlPath();
+			}
+
+			@Override
+			public String getFullRequest()
+			{
+				return httpReq.getFullRequest();
+			}
+
+			@Override
+			public Map<String,String> getUrlParametersCopy()
+			{
+				return new XHashtable<String,String>(params);
+			}
+
+			@Override
+			public String getUrlParameter(String name)
+			{
+				return params.get(name.toLowerCase());
+			}
+
+			@Override
+			public boolean isUrlParameter(String name)
+			{
+				return params.containsKey(name.toLowerCase());
+			}
+
+			@Override
+			public Set<String> getUrlParameters()
+			{
+				return params.keySet();
+			}
+
+			@Override
+			public HTTPMethod getMethod()
+			{
+				return httpReq.getMethod();
+			}
+
+			@Override
+			public String getHeader(String name)
+			{
+				return httpReq.getHeader(name);
+			}
+
+			@Override
+			public InetAddress getClientAddress()
+			{
+				return httpReq.getClientAddress();
+			}
+
+			@Override
+			public int getClientPort()
+			{
+				return httpReq.getClientPort();
+			}
+
+			@Override
+			public InputStream getBody()
+			{
+				return httpReq.getBody();
+			}
+
+			@Override
+			public String getCookie(String name)
+			{
+				return httpReq.getCookie(name);
+			}
+
+			@Override
+			public Set<String> getCookieNames()
+			{
+				return httpReq.getCookieNames();
+			}
+
+			@Override
+			public List<MultiPartData> getMultiParts()
+			{
+				return httpReq.getMultiParts();
+			}
+
+			@Override
+			public double getSpecialEncodingAcceptability(String type)
+			{
+				return httpReq.getSpecialEncodingAcceptability(type);
+			}
+
+			@Override
+			public String getFullHost()
+			{
+				return httpReq.getFullHost();
+			}
+
+			@Override
+			public List<long[]> getRangeAZ()
+			{
+				return httpReq.getRangeAZ();
+			}
+
+			@Override
+			public void addFakeUrlParameter(String name, String value)
+			{
+				params.put(name.toLowerCase(), value);
+			}
+
+			@Override
+			public void removeUrlParameter(String name)
+			{
+				params.remove(name.toLowerCase());
+			}
+
+			@Override
+			public Map<String,Object> getRequestObjects()
+			{
+				return httpReq.getRequestObjects();
+			}
+
+			@Override
+			public float getHttpVer()
+			{
+				return httpReq.getHttpVer();
+			}
+
+			@Override
+			public String getQueryString()
+			{
+				return httpReq.getQueryString();
+			}
 		};
 		for(final String[] pair : STAT_CHECKS)
+		{
 			if(mergeReq.isUrlParameter(pair[1]) && (mergeReq.getUrlParameter(pair[1]).length()==0))
 				mergeReq.addFakeUrlParameter(pair[1].toLowerCase(), R.getStat(pair[0]));
+		}
 		CMLib.map().resetRoom(R);
 		R=(Room)R.copyOf();
 		final RoomStuff stuff=new RoomStuff(R);
@@ -1175,7 +1301,10 @@ public class RoomData extends StdWebMacro
 							{
 								final MOB M2=m.next();
 								if(MATCHING.equals(""+M2))
-								{	classes.addElement(M2);	break;	}
+								{
+									classes.addElement(M2);
+									break;
+								}
 							}
 						}
 						else
@@ -1183,8 +1312,11 @@ public class RoomData extends StdWebMacro
 						{
 							final MOB M2=(MOB)m.nextElement();
 							if(CMClass.classID(M2).equals(MATCHING)
-							   &&(!M2.isGeneric()))
-							{	classes.addElement((MOB)M2.copyOf()); break;	}
+							&&(!M2.isGeneric()))
+							{
+								classes.addElement((MOB)M2.copyOf());
+								break;
+							}
 						}
 					}
 				}

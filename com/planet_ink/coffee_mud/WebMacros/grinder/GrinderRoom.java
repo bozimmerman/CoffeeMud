@@ -47,6 +47,7 @@ public class GrinderRoom
 		}
 		return roomCache;
 	}
+
 	public boolean isRoomGood(){return ((roomCache!=null)&&(!roomCache.amDestroyed()));}
 	public GrinderDir[] doors=new GrinderDir[Directions.NUM_DIRECTIONS()];
 	public GrinderRoom(String newRoomID)
@@ -71,6 +72,7 @@ public class GrinderRoom
 			doors[d]=D;
 		}
 	}
+
 	public GrinderRoom(Room R)
 	{
 		roomCache=null;

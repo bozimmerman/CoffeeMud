@@ -35,7 +35,11 @@ import java.util.*;
 */
 public class IsAccountSystem extends StdWebMacro
 {
-	@Override public String name() { return "IsAccountSystem"; }
+	@Override
+	public String name()
+	{
+		return "IsAccountSystem";
+	}
 
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)

@@ -35,7 +35,11 @@ import java.util.*;
 */
 public class SocialID extends StdWebMacro
 {
-	@Override public String name() { return "SocialID"; }
+	@Override
+	public String name()
+	{
+		return "SocialID";
+	}
 
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)

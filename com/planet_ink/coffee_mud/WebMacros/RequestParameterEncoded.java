@@ -36,7 +36,11 @@ import java.net.URLEncoder;
 */
 public class RequestParameterEncoded extends RequestParameter
 {
-	@Override public String name() { return "RequestParameterEncoded"; }
+	@Override
+	public String name()
+	{
+		return "RequestParameterEncoded";
+	}
 
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)

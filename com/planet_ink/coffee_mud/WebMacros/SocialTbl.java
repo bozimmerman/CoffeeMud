@@ -35,7 +35,11 @@ import java.util.*;
 */
 public class SocialTbl extends StdWebMacro
 {
-	@Override public String name()	{return "SocialTbl";}
+	@Override
+	public String name()
+	{
+		return "SocialTbl";
+	}
 
 	protected static final int AT_MAX_COL = 6;
 

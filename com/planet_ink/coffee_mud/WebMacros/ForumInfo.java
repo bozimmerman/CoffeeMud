@@ -37,7 +37,11 @@ import java.util.*;
 */
 public class ForumInfo extends StdWebMacro
 {
-	@Override public String name() { return "ForumInfo"; }
+	@Override
+	public String name()
+	{
+		return "ForumInfo";
+	}
 
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)

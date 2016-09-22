@@ -34,7 +34,11 @@ import java.util.*;
 */
 public class AccountOnline extends StdWebMacro
 {
-	@Override public String name() { return "AccountOnline"; }
+	@Override
+	public String name()
+	{
+		return "AccountOnline";
+	}
 
 	public static final int MAX_IMAGE_SIZE=50*1024;
 

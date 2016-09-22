@@ -39,9 +39,17 @@ import java.util.regex.Pattern;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class QuestMaker extends StdWebMacro
 {
-	@Override public String name()	{return "QuestMaker";}
+	@Override
+	public String name()
+	{
+		return "QuestMaker";
+	}
 
-	@Override public boolean isAdminMacro()	{return true;}
+	@Override
+	public boolean isAdminMacro()
+	{
+		return true;
+	}
 
 	private static final Pattern keyPattern=Pattern.compile("^AT_(.+)");
 
@@ -227,8 +235,10 @@ public class QuestMaker extends StdWebMacro
 
 			final List<String> V=new XVector<String>();
 			for(final String str : httpReq.getUrlParameters() )
+			{
 				if(keyPattern.matcher(str.toUpperCase().subSequence(0, str.length())).matches())
 					V.add(str.toUpperCase());
+			}
 			list.append("<TR><TD COLSPAN=2>");
 			for(int v=0;v<V.size();v++)
 			{
@@ -243,7 +253,10 @@ public class QuestMaker extends StdWebMacro
 					&&(key.substring(3).toUpperCase().equals(keyName.substring(1))
 						||(key.substring(3).toUpperCase().startsWith(keyName.substring(1)+"_")
 								&&CMath.isNumber(key.substring(3+keyName.length())))))
-					{ thisPage=true; break;}
+					{
+						thisPage=true;
+						break;
+					}
 				}
 				if(thisPage)
 					continue;

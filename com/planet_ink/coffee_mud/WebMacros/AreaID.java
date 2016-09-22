@@ -35,7 +35,11 @@ import java.util.*;
 */
 public class AreaID extends StdWebMacro
 {
-	@Override public String name() { return "AreaID"; }
+	@Override
+	public String name()
+	{
+		return "AreaID";
+	}
 
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)

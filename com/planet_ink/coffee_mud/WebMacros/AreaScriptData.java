@@ -36,7 +36,12 @@ import java.util.*;
 */
 public class AreaScriptData extends AreaScriptNext
 {
-	@Override public String name() { return "AreaScriptData"; }
+	@Override
+	public String name()
+	{
+		return "AreaScriptData";
+	}
+
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
 	{
@@ -107,10 +112,15 @@ public class AreaScriptData extends AreaScriptNext
 			str.append(entry.instanceKey+", ");
 
 		if(parms.containsKey("RESOURCEKEYENCODED") && (entry != null))
+		{
 			try
 			{
 				str.append(URLEncoder.encode(entry.instanceKey,"UTF-8")+", ");
-			}catch(final Exception e){}
+			}
+			catch (final Exception e)
+			{
+			}
+		}
 
 		if(parms.containsKey("PATH") && (entry != null))
 		{
@@ -123,6 +133,7 @@ public class AreaScriptData extends AreaScriptNext
 			str.append(CMParms.combineWith(entry.path, '.',0, entry.path.size())+", ");
 
 		if(parms.containsKey("CUSTOMSCRIPT") && (entry != null))
+		{
 			try
 			{
 				String s = entry.customScript;
@@ -139,7 +150,11 @@ public class AreaScriptData extends AreaScriptNext
 					s=st.toString();
 				}
 				str.append(webify(new StringBuffer(s))+", ");
-			}catch(final Exception e){}
+			}
+			catch (final Exception e)
+			{
+			}
+		}
 
 		if(parms.containsKey("FILENAME") && (entry != null))
 		{
@@ -155,7 +170,10 @@ public class AreaScriptData extends AreaScriptNext
 			try
 			{
 				str.append(URLEncoder.encode(((x<0)?"":path.substring(0,x)),"UTF-8")+", ");
-			}catch(final Exception e){}
+			}
+			catch (final Exception e)
+			{
+			}
 		}
 
 		if(parms.containsKey("ENCODEDFILENAME") && (entry != null))
@@ -165,7 +183,10 @@ public class AreaScriptData extends AreaScriptNext
 			try
 			{
 				str.append(URLEncoder.encode(((x<0)?path:path.substring(x+1)),"UTF-8")+", ");
-			}catch(final Exception e){}
+			}
+			catch (final Exception e)
+			{
+			}
 		}
 
 		if(parms.containsKey("ROOM") && (entry != null) && (entry.path.size()>1))

@@ -36,7 +36,11 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class BaseCharClassName extends StdWebMacro
 {
-	@Override public String name() { return "BaseCharClassName"; }
+	@Override
+	public String name()
+	{
+		return "BaseCharClassName";
+	}
 
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
@@ -59,10 +63,12 @@ public class BaseCharClassName extends StdWebMacro
 			{
 				C=(CharClass)e.nextElement();
 				if(C.baseClass().equalsIgnoreCase(last))
+				{
 					if(parms.containsKey("PLURAL"))
 						return clearWebMacros(CMLib.english().makePlural(C.baseClass()));
 					else
 						return clearWebMacros(C.baseClass());
+				}
 			}
 		}
 		return "";

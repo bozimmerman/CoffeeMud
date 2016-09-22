@@ -38,7 +38,11 @@ import java.util.*;
 
 public class FactionData extends StdWebMacro
 {
-	@Override public String name() { return "FactionData"; }
+	@Override
+	public String name()
+	{
+		return "FactionData";
+	}
 
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
@@ -846,13 +850,17 @@ public class FactionData extends StdWebMacro
 		{
 		case 1:
 			for(int i=0;i<Ability.ACODE_DESCS.length;i++)
+			{
 				if(!done.contains(Ability.ACODE_DESCS[i].toUpperCase()))
 					done.add(Ability.ACODE_DESCS[i].toUpperCase());
+			}
 			break;
 		case 2:
 			for(int i=0;i<Ability.DOMAIN_DESCS.length;i++)
+			{
 				if(!done.contains(Ability.DOMAIN_DESCS[i].toUpperCase()))
 					done.add(Ability.DOMAIN_DESCS[i].toUpperCase());
+			}
 			break;
 		case 3: done.add(val.toUpperCase()); break;
 		}

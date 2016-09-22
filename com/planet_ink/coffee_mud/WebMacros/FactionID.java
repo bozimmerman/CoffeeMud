@@ -35,7 +35,11 @@ import java.util.*;
 */
 public class FactionID extends StdWebMacro
 {
-	@Override public String name() { return "FactionID"; }
+	@Override
+	public String name()
+	{
+		return "FactionID";
+	}
 
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)

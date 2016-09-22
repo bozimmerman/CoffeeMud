@@ -35,7 +35,11 @@ import java.util.*;
 */
 public class HTTPclientIP extends StdWebMacro
 {
-	@Override public String name()	{return "HTTPclientIP";}
+	@Override
+	public String name()
+	{
+		return "HTTPclientIP";
+	}
 
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)

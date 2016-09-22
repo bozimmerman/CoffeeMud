@@ -37,7 +37,11 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class ExpertiseNext extends StdWebMacro
 {
-	@Override public String name() { return "ExpertiseNext"; }
+	@Override
+	public String name()
+	{
+		return "ExpertiseNext";
+	}
 
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)

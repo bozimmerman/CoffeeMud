@@ -36,7 +36,11 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class CheckAuthCode extends StdWebMacro
 {
-	@Override public String name() { return "CheckAuthCode"; }
+	@Override
+	public String name()
+	{
+		return "CheckAuthCode";
+	}
 
 	public Hashtable<String,String> getAuths(HTTPRequest httpReq)
 	{

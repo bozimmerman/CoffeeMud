@@ -37,7 +37,11 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class RaceData extends StdWebMacro
 {
-	@Override public String name() { return "RaceData"; }
+	@Override
+	public String name()
+	{
+		return "RaceData";
+	}
 
 	// valid parms include HELP, STATS, SENSES, TRAINS, PRACS, ABILITIES,
 	// HEALTHTEXTS, NATURALWEAPON, PLAYABLE, DISPOSITIONS, STARTINGEQ,
@@ -117,8 +121,10 @@ public class RaceData extends StdWebMacro
 		str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME="+c+"ESTATS"+(theclasses.size()+1)+">");
 		str.append("<OPTION SELECTED VALUE=\"\">Select a stat");
 		for(int i=0;i<E.getStatCodes().length;i++)
+		{
 			if((CMath.isNumber(E.getStat(E.getStatCodes()[i])))&&(!theclasses.contains(E.getStatCodes()[i])))
 				str.append("<OPTION VALUE=\""+E.getStatCodes()[i]+"\">"+E.getStatCodes()[i]);
+		}
 		str.append("</SELECT>");
 		str.append("</TD>");
 		str.append("<TD WIDTH=65%>");
@@ -176,8 +182,10 @@ public class RaceData extends StdWebMacro
 		str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME="+c+"CSTATS"+(theclasses.size()+1)+">");
 		str.append("<OPTION SELECTED VALUE=\"\">Select a stat");
 		for(final int i : CharStats.CODES.ALLCODES())
+		{
 			if(!theclasses.contains(CharStats.CODES.NAME(i)))
 				str.append("<OPTION VALUE=\""+CharStats.CODES.NAME(i)+"\">"+CharStats.CODES.DESC(i));
+		}
 		str.append("</SELECT>");
 		str.append("</TD>");
 		str.append("<TD WIDTH=65%>");
@@ -1063,35 +1071,50 @@ public class RaceData extends StdWebMacro
 					{
 						final String eStats=R.getStat("ESTATS");
 						final PhyStats adjPStats=(PhyStats)CMClass.getCommon("DefaultPhyStats"); adjPStats.setAllValues(0);
-						if(eStats.length()>0){ CMLib.coffeeMaker().setPhyStats(adjPStats,eStats);}
+						if(eStats.length()>0)
+						{
+							CMLib.coffeeMaker().setPhyStats(adjPStats,eStats);
+						}
 						str.append(estats(adjPStats,'E',httpReq,parms,0)+", ");
 					}
 					if(parms.containsKey("CSTATS"))
 					{
 						final CharStats setStats=(CharStats)CMClass.getCommon("DefaultCharStats"); setStats.setAllValues(0);
 						final String cStats=R.getStat("CSTATS");
-						if(cStats.length()>0){  CMLib.coffeeMaker().setCharStats(setStats,cStats);}
+						if(cStats.length()>0)
+						{
+							CMLib.coffeeMaker().setCharStats(setStats,cStats);
+						}
 						str.append(cstats(setStats,'S',httpReq,parms,0)+", ");
 					}
 					if(parms.containsKey("ASTATS"))
 					{
 						final CharStats adjStats=(CharStats)CMClass.getCommon("DefaultCharStats"); adjStats.setAllValues(0);
 						final String cStats=R.getStat("ASTATS");
-						if(cStats.length()>0){  CMLib.coffeeMaker().setCharStats(adjStats,cStats);}
+						if(cStats.length()>0)
+						{
+							CMLib.coffeeMaker().setCharStats(adjStats,cStats);
+						}
 						str.append(cstats(adjStats,'A',httpReq,parms,0)+", ");
 					}
 					if(parms.containsKey("ASTATE"))
 					{
 						final CharState adjState=(CharState)CMClass.getCommon("DefaultCharState"); adjState.setAllValues(0);
 						final String aState=R.getStat("ASTATE");
-						if(aState.length()>0){  CMLib.coffeeMaker().setCharState(adjState,aState);}
+						if(aState.length()>0)
+						{
+							CMLib.coffeeMaker().setCharState(adjState,aState);
+						}
 						str.append(cstate(adjState,'A',httpReq,parms,0)+", ");
 					}
 					if(parms.containsKey("STARTASTATE"))
 					{
 						final CharState startAdjState=(CharState)CMClass.getCommon("DefaultCharState"); startAdjState.setAllValues(0);
 						final String saState=R.getStat("STARTASTATE");
-						if(saState.length()>0){ CMLib.coffeeMaker().setCharState(startAdjState,saState);}
+						if(saState.length()>0)
+						{
+							CMLib.coffeeMaker().setCharState(startAdjState,saState);
+						}
 						str.append(cstate(startAdjState,'S',httpReq,parms,0)+", ");
 					}
 				}
@@ -1147,36 +1170,52 @@ public class RaceData extends StdWebMacro
 				{
 					final int[] ageChart=R.getAgingChart();
 					if(!httpReq.isUrlParameter("AGE0"))
+					{
 						for(int i=0;i<Race.AGE_DESCS.length;i++)
 							httpReq.addFakeUrlParameter("AGE"+i,""+ageChart[i]);
+					}
 					int val=-1;
 					for(int i=0;i<Race.AGE_DESCS.length;i++)
 					{
 						final int lastVal=val;
 						val=CMath.s_int(httpReq.getUrlParameter("AGE"+i));
-						if(val<lastVal){ val=lastVal; httpReq.addFakeUrlParameter("AGE"+i,""+val);}
+						if(val<lastVal)
+						{
+							val=lastVal;
+							httpReq.addFakeUrlParameter("AGE"+i,""+val);
+						}
 						str.append("<INPUT TYPE=TEXT SIZE=4 NAME=AGE"+i+" VALUE="+val+">"+Race.AGE_DESCS[i]+"<BR>");
 					}
 					str.append(", ");
 				}
 
 				if(parms.containsKey("SENSES"))
+				{
 					if(R.getSensesChgDesc().length()>0)
 						str.append(R.getSensesChgDesc()+", ");
+				}
 				if(parms.containsKey("DISPOSITIONS"))
+				{
 					if(R.getDispositionChgDesc().length()>0)
 						str.append(R.getDispositionChgDesc()+", ");
+				}
 				if(parms.containsKey("TRAINS"))
+				{
 					if(R.getTrainAdjDesc().length()>0)
 						str.append(R.getTrainAdjDesc()+", ");
+				}
 				if(parms.containsKey("EXPECTANCY"))
 					str.append(""+R.getAgingChart()[Race.AGE_ANCIENT]+", ");
 				if(parms.containsKey("PRACS"))
+				{
 					if(R.getPracAdjDesc().length()>0)
 						str.append(R.getPracAdjDesc()+", ");
+				}
 				if(parms.containsKey("ABILITIES"))
+				{
 					if(R.getAbilitiesDesc().length()>0)
 						str.append(R.getAbilitiesDesc()+", ");
+				}
 				if(parms.containsKey("EFFECTS"))
 				{
 					for(final Ability A : R.racialEffects(null))

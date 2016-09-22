@@ -35,7 +35,11 @@ import java.util.*;
 */
 public class HelpTopics extends StdWebMacro
 {
-	@Override public String name() { return "HelpTopics"; }
+	@Override
+	public String name()
+	{
+		return "HelpTopics";
+	}
 
 	@Override @SuppressWarnings({ "unchecked", "rawtypes" })
 	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
@@ -124,7 +128,7 @@ public class HelpTopics extends StdWebMacro
 			{
 				final String topic=topics.get(h);
 				if(noables&&CMLib.help().isPlayerSkill(topic))
-				   continue;
+					continue;
 				if(topic.startsWith(fletter)||(fletter.length()==0))
 				if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!topic.equals(lastID))))
 				{

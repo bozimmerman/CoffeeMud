@@ -35,7 +35,11 @@ import java.util.*;
 */
 public class PlayerList extends StdWebMacro
 {
-	@Override public String name()	{return "PlayerList";}
+	@Override
+	public String name()
+	{
+		return "PlayerList";
+	}
 
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)

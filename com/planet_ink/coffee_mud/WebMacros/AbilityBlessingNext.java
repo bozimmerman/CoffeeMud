@@ -34,7 +34,11 @@ import java.util.*;
 */
 public class AbilityBlessingNext extends StdWebMacro
 {
-	@Override public String name() { return "AbilityBlessingNext"; }
+	@Override
+	public String name()
+	{
+		return "AbilityBlessingNext";
+	}
 
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)

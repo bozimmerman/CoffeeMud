@@ -38,8 +38,17 @@ import java.util.*;
 */
 public class ControlPanel extends StdWebMacro
 {
-	@Override public String name() { return "ControlPanel"; }
-	@Override public boolean isAdminMacro()    {return true;}
+	@Override
+	public String name()
+	{
+		return "ControlPanel";
+	}
+
+	@Override
+	public boolean isAdminMacro()
+	{
+		return true;
+	}
 
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
@@ -86,8 +95,6 @@ public class ControlPanel extends StdWebMacro
 				return " @break@";
 			return flag.description();
 		}
-
-
 		final String lastDebug=httpReq.getUrlParameter("DEBUGFLAG");
 		if(parms.containsKey("ISDEBUGGING"))
 		{

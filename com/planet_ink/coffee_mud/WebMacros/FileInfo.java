@@ -36,8 +36,17 @@ import java.util.*;
 */
 public class FileInfo extends StdWebMacro
 {
-	@Override public String name() { return "FileInfo"; }
-	@Override public boolean isAdminMacro()	{return true;}
+	@Override
+	public String name()
+	{
+		return "FileInfo";
+	}
+
+	@Override
+	public boolean isAdminMacro()
+	{
+		return true;
+	}
 
 	public String trimSlash(String path)
 	{

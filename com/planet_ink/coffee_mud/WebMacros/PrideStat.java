@@ -35,7 +35,11 @@ import java.util.*;
 */
 public class PrideStat extends StdWebMacro
 {
-	@Override public String name() { return "PrideStat"; }
+	@Override
+	public String name()
+	{
+		return "PrideStat";
+	}
 
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)

@@ -255,7 +255,7 @@ public class ItemData extends StdWebMacro
 			final int material=CMath.s_int(httpReq.getUrlParameter("MATERIALS"));
 			int hands=1;
 			if(httpReq.isUrlParameter("ISTWOHANDED")&&(httpReq.getUrlParameter("ISTWOHANDED").equalsIgnoreCase("on")))
-			   hands=2;
+				hands=2;
 			Map<String,String> vals=null;
 			if(I instanceof Weapon)
 			{
@@ -950,15 +950,15 @@ public class ItemData extends StdWebMacro
 							old=""+((Recipe)I).getCommonSkillID();
 						for(final Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
 						{
-						 	A=e.nextElement();
-						 	if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL)
-						 	&&((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_CRAFTINGSKILL))
-						 	{
-							 	str.append("<OPTION VALUE=\""+A.ID()+"\"");
-							 	if(A.ID().equalsIgnoreCase(old))
-							 		str.append(" SELECTED");
-							 	str.append(">"+A.name());
-						 	}
+							A=e.nextElement();
+							if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL)
+							&&((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_CRAFTINGSKILL))
+							{
+								str.append("<OPTION VALUE=\""+A.ID()+"\"");
+								if(A.ID().equalsIgnoreCase(old))
+									str.append(" SELECTED");
+								str.append(">"+A.name());
+							}
 						}
 						break;
 					}

@@ -36,7 +36,11 @@ import java.util.*;
 */
 public class StatRejuvCharts extends StdWebMacro
 {
-	@Override public String name()	{return "StatRejuvCharts";}
+	@Override
+	public String name()
+	{
+		return "StatRejuvCharts";
+	}
 
 	protected String getReq(HTTPRequest httpReq, String tag)
 	{
@@ -89,19 +93,42 @@ public class StatRejuvCharts extends StdWebMacro
 		int disposition=0;
 
 		if((getReq(httpReq,"SITTING").length()>0))
-		{ disposition=PhyStats.IS_SITTING; buf.append("Sitting ");}
+		{
+			disposition=PhyStats.IS_SITTING;
+			buf.append("Sitting ");
+		}
 		if((getReq(httpReq,"SLEEPING").length()>0))
-		{ disposition=PhyStats.IS_SLEEPING; buf.append("Sleeping ");}
+		{
+			disposition=PhyStats.IS_SLEEPING;
+			buf.append("Sleeping ");
+		}
 		if((getReq(httpReq,"FLYING").length()>0))
-		{ disposition=PhyStats.IS_FLYING; buf.append("Flying ");}
+		{
+			disposition=PhyStats.IS_FLYING;
+			buf.append("Flying ");
+		}
 		if((getReq(httpReq,"SWIMMING").length()>0))
-		{ disposition=PhyStats.IS_SWIMMING; buf.append("Swimming ");}
+		{
+			disposition=PhyStats.IS_SWIMMING;
+			buf.append("Swimming ");
+		}
 		if((getReq(httpReq,"RIDING").length()>0))
-		{ mob.setRiding((Rideable)CMClass.getMOB("GenRideable")); buf.append("Riding ");}
+		{
+			mob.setRiding((Rideable)CMClass.getMOB("GenRideable"));
+			buf.append("Riding ");
+		}
 		final boolean hungry=(httpReq.getUrlParameter("HUNGRY")!=null)&&(httpReq.getUrlParameter("HUNGRY").length()>0);
-		if(hungry){ buf.append("Hungry ");		mob.curState().setHunger(0);}
+		if(hungry)
+		{
+			buf.append("Hungry ");
+			mob.curState().setHunger(0);
+		}
 		final boolean thirsty=(httpReq.getUrlParameter("THIRSTY")!=null)&&(httpReq.getUrlParameter("THIRSTY").length()>0);
-		if(thirsty){ buf.append("Thirsty ");		mob.curState().setThirst(0);}
+		if(thirsty)
+		{
+			buf.append("Thirsty ");
+			mob.curState().setThirst(0);
+		}
 		mob.basePhyStats().setDisposition(disposition);
 		mob.recoverPhyStats();
 

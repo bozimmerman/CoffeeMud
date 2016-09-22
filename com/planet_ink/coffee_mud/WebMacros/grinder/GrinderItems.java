@@ -79,6 +79,7 @@ public class GrinderItems
 		{
 			this.isGenField=isGeneric;
 		}
+
 		private ItemDataField()
 		{
 			isGenField = true;
@@ -132,7 +133,7 @@ public class GrinderItems
 					{
 						final MOB M2=R.fetchInhabitant(m);
 						if((M2!=null)&&(M2.isSavable()))
-						   str.append(M2.Name()+"="+RoomData.getMOBCode(R,M2));
+							str.append(M2.Name()+"="+RoomData.getMOBCode(R,M2));
 					}
 					return str.toString();
 				}

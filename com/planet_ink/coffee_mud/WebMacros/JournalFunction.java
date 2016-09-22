@@ -36,7 +36,11 @@ import java.util.*;
 */
 public class JournalFunction extends StdWebMacro
 {
-	@Override public String name() { return "JournalFunction"; }
+	@Override
+	public String name()
+	{
+		return "JournalFunction";
+	}
 
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
@@ -293,10 +297,10 @@ public class JournalFunction extends StdWebMacro
 						else
 						{
 							CMLib.database().DBWriteJournal(CMProps.getVar(CMProps.Str.MAILBOX),
-															  M.Name(),
-															  toM.Name(),
-															  "RE: "+entry.subj(),
-															  clearWebMacros(replyMsg));
+															M.Name(),
+															toM.Name(),
+															"RE: "+entry.subj(),
+															clearWebMacros(replyMsg));
 							JournalInfo.clearJournalCache(httpReq, journalName);
 							messages.append("Email to #"+cardinalNumber+" queued<BR>");
 						}

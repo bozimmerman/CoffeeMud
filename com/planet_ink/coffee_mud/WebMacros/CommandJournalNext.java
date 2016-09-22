@@ -37,7 +37,11 @@ import java.util.*;
 */
 public class CommandJournalNext extends StdWebMacro
 {
-	@Override public String name() { return "CommandJournalNext"; }
+	@Override
+	public String name()
+	{
+		return "CommandJournalNext";
+	}
 
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)

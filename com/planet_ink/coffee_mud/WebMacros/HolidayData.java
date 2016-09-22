@@ -38,7 +38,11 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class HolidayData extends StdWebMacro
 {
-	@Override public String name() { return "HolidayData"; }
+	@Override
+	public String name()
+	{
+		return "HolidayData";
+	}
 
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)

@@ -62,7 +62,10 @@ public class QuestData extends StdWebMacro
 				final String newLast=CMStrings.replaceAll(last,"*","@");
 				for(int q=0;q<CMLib.quests().numQuests();q++)
 					if((""+CMLib.quests().fetchQuest(q)).equals(newLast))
-					{ Q=CMLib.quests().fetchQuest(q); break;}
+					{
+						Q=CMLib.quests().fetchQuest(q);
+						break;
+					}
 			}
 			if(Q==null)
 				return "";

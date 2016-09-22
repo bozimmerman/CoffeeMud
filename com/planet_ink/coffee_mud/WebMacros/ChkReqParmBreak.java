@@ -35,7 +35,11 @@ import java.util.*;
 */
 public class ChkReqParmBreak extends CheckReqParm
 {
-	@Override public String name() { return "ChkReqParmBreak"; }
+	@Override
+	public String name()
+	{
+		return "ChkReqParmBreak";
+	}
 
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)

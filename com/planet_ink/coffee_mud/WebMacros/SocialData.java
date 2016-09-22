@@ -36,7 +36,11 @@ import java.util.*;
 
 public class SocialData extends StdWebMacro
 {
-	@Override public String name() { return "SocialData"; }
+	@Override
+	public String name()
+	{
+		return "SocialData";
+	}
 	static String[] BTYPES={"NONE","ALL","SELF","TARGETMOB","TARGETITEM","TARGETINV","TARGETEQUIP"};
 	static String[] BEXTNS={""," ALL"," SELF"," <T-NAME>"," <I-NAME>"," <V-NAME>"," <E-NAME>"};
 	static String[] BFIELDS={"YOM","YONM","YOM","YTONM","YONM","YONM","YONM"};
@@ -83,8 +87,10 @@ public class SocialData extends StdWebMacro
 				return "No local file.";
 			CMFile vf=new CMFile("::/resources/socials.txt",M);
 			if(vf.exists())
+			{
 				if(!vf.delete())
 					return "Unable to delete existing vfs file.";
+			}
 			vf=new CMFile("::/resources/socials.txt",M);
 			if(!vf.canWrite())
 				return "Unable to write new vfs file.";
@@ -104,8 +110,10 @@ public class SocialData extends StdWebMacro
 				return "No vfs file.";
 			CMFile vf=new CMFile("///resources/socials.txt",M);
 			if(vf.exists())
+			{
 				if(!vf.delete())
 					return "Unable to delete existing local file.";
+			}
 			vf=new CMFile("///resources/socials.txt",M);
 			if(!vf.canWrite())
 				return "Unable to write new local file.";
@@ -122,8 +130,10 @@ public class SocialData extends StdWebMacro
 				return "[authentication error]";
 			final CMFile vf=new CMFile("::/resources/socials.txt",M);
 			if(vf.exists())
+			{
 				if(!vf.delete())
 					return "Unable to delete existing vfs file.";
+			}
 			CMLib.socials().unloadSocials();
 			return "Socials file removed from vfs";
 		}
@@ -134,8 +144,10 @@ public class SocialData extends StdWebMacro
 				return "[authentication error]";
 			final CMFile vf=new CMFile("///resources/socials.txt",M);
 			if(vf.exists())
+			{
 				if(!vf.delete())
 					return "Unable to delete existing local file.";
+			}
 			CMLib.socials().unloadSocials();
 			return "Socials file removed from local file system.";
 		}
@@ -239,22 +251,29 @@ public class SocialData extends StdWebMacro
 					{
 						switch(field.charAt(f))
 						{
-							case 'Y': S.setSourceCode(CMath.s_int(old));
-									  break;
-							case 'O': S.setTargetCode(CMath.s_int(old));
-									  S.setOthersCode(CMath.s_int(old));
-									  break;
-							case 'N': break;
-							case 'M': break;
-							case 'T': break;
+						case 'Y':
+							S.setSourceCode(CMath.s_int(old));
+							break;
+						case 'O':
+							S.setTargetCode(CMath.s_int(old));
+							S.setOthersCode(CMath.s_int(old));
+							break;
+						case 'N':
+							break;
+						case 'M':
+							break;
+						case 'T':
+							break;
 						}
 					}
 				}
 				SV.add(S);
 			}
 			if(OSV!=null)
+			{
 				for(int s=0;s<OSV.size();s++)
 					CMLib.socials().remove(OSV.get(s).Name());
+			}
 
 			for(int s=0;s<SV.size();s++)
 				CMLib.socials().addSocial(SV.get(s));
@@ -351,8 +370,10 @@ public class SocialData extends StdWebMacro
 						final Social S=SV.get(s);
 						boolean found=false;
 						for (final String element : BEXTNS)
+						{
 							if(S.Name().equalsIgnoreCase(last+element))
 								found=true;
+						}
 						if(!found)
 						{
 							final int x=S.Name().indexOf(' ');

@@ -36,7 +36,11 @@ import java.util.*;
 */
 public class AddRandomFile extends StdWebMacro
 {
-	@Override public String name() { return "AddRandomFile"; }
+	@Override
+	public String name()
+	{
+		return "AddRandomFile";
+	}
 
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
@@ -50,8 +54,10 @@ public class AddRandomFile extends StdWebMacro
 		int i=0;
 		boolean LINKONLY=false;
 		for(final String val : parms.values())
+		{
 			if(val.equalsIgnoreCase("LINKONLY"))
 				LINKONLY=true;
+		}
 		for(final String val : parms.values())
 		{
 			file=val;

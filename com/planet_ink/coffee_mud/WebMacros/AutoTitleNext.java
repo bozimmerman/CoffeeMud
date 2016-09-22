@@ -35,7 +35,11 @@ import java.util.*;
 */
 public class AutoTitleNext extends StdWebMacro
 {
-	@Override public String name() { return "AutoTitleNext"; }
+	@Override
+	public String name()
+	{
+		return "AutoTitleNext";
+	}
 
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)

@@ -35,8 +35,17 @@ import java.util.*;
 */
 public class SocialNext extends StdWebMacro
 {
-	@Override public String name() { return "SocialNext"; }
-	@Override public boolean isAdminMacro()   {return true;}
+	@Override
+	public String name()
+	{
+		return "SocialNext";
+	}
+
+	@Override
+	public boolean isAdminMacro()
+	{
+		return true;
+	}
 
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)

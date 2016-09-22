@@ -36,7 +36,11 @@ import java.util.*;
 
 public class CrossBaseClassAbilities extends StdWebMacro
 {
-	@Override public String name()	{return "CrossBaseClassAbilities";}
+	@Override
+	public String name()
+	{
+		return "CrossBaseClassAbilities";
+	}
 
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)

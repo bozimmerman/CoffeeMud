@@ -112,8 +112,10 @@ public class GrinderPlayers extends GrinderMobs
 	public static int getBasicCode(String val)
 	{
 		for(int i=0;i<BASICS.length;i++)
+		{
 			if(val.equalsIgnoreCase(BASICS[i]))
 				return i;
+		}
 		return -1;
 	}
 
@@ -135,6 +137,7 @@ public class GrinderPlayers extends GrinderMobs
 		}
 		return "";
 	}
+
 	public static String setBasics(HTTPRequest httpReq,MOB M)
 	{
 		for(int i=0;i<BASICS.length;i++)
@@ -222,8 +225,10 @@ public class GrinderPlayers extends GrinderMobs
 				final List<String> V=CMParms.parseCommas(old.toUpperCase(),true);
 				M.delAllExpertises();
 				for(int v=0;v<V.size();v++)
+				{
 					if(CMLib.expertises().getDefinition(V.get(v))!=null)
 						M.addExpertise(V.get(v));
+				}
 				break;
 			}
 			case 58:

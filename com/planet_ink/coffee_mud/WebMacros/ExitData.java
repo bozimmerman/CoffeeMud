@@ -36,7 +36,11 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class ExitData extends StdWebMacro
 {
-	@Override public String name() { return "ExitData"; }
+	@Override
+	public String name()
+	{
+		return "ExitData";
+	}
 
 	private static final String[] okparms={
 		"NAME","CLASSES","DISPLAYTEXT","DESCRIPTION",

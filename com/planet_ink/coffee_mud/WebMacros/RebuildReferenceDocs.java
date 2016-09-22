@@ -37,10 +37,23 @@ import com.planet_ink.coffee_mud.core.exceptions.HTTPServerException;
 */
 public class RebuildReferenceDocs extends StdWebMacro
 {
-	@Override public String name() { return "RebuildReferenceDocs"; }
+	@Override
+	public String name()
+	{
+		return "RebuildReferenceDocs";
+	}
 
-	@Override public boolean isAWebPath(){return true;}
-	@Override public boolean isAdminMacro() { return true;}
+	@Override
+	public boolean isAWebPath()
+	{
+		return true;
+	}
+
+	@Override
+	public boolean isAdminMacro()
+	{
+		return true;
+	}
 
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp) throws HTTPServerException
@@ -67,7 +80,13 @@ public class RebuildReferenceDocs extends StdWebMacro
 				final byte[] savable = CMLib.webMacroFilter().virtualPageFilter(httpReq, httpReq.getRequestObjects(), processStartTime, lastFoundMacro, new StringBuffer(new String(sf.raw()))).toString().getBytes();
 				for(int b=0;b<savable.length-5;b++)
 					if((savable[b]=='.') &&(savable[b+1]=='c') &&(savable[b+2]=='m') &&(savable[b+3]=='v') &&(savable[b+4]=='p'))
-					{ savable[b+1]='h'; savable[b+2]='t'; savable[b+3]='m'; savable[b+4]='l'; b+=4;}
+					{
+						savable[b+1]='h';
+						savable[b+2]='t';
+						savable[b+3]='m';
+						savable[b+4]='l';
+						b+=4;
+					}
 				df.saveRaw(savable);
 			}
 		}

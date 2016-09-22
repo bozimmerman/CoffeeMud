@@ -34,7 +34,11 @@ import java.util.*;
 */
 public class AccountID extends StdWebMacro
 {
-	@Override public String name() { return "AccountID"; }
+	@Override
+	public String name()
+	{
+		return "AccountID";
+	}
 
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)

@@ -248,8 +248,10 @@ public class GrinderFlatMap
 		}
 		// find leftover rooms and make them their own cluster
 		for(int a=0;a<areaMap.size();a++)
+		{
 			if(!roomsDone.contains(areaMap.get(a).roomID))
 				finalCluster.add(areaMap.get(a));
+		}
 		if(finalCluster.size()>0)
 		{
 			final boolean[][] miniGrid=new boolean[finalCluster.size()+1][finalCluster.size()+1];
@@ -310,8 +312,10 @@ public class GrinderFlatMap
 		}
 		// find leftover rooms and make them their own cluster
 		for(int a=0;a<areaMap.size();a++)
+		{
 			if(!roomsDone.contains(areaMap.get(a).roomID))
 				finalCluster.add(areaMap.get(a));
+		}
 		if(finalCluster.size()>0)
 		{
 			final boolean[][] miniGrid=new boolean[finalCluster.size()+1][finalCluster.size()+1];
@@ -472,7 +476,7 @@ public class GrinderFlatMap
 	public GrinderRoom getRoom(String ID)
 	{
 		if((hashRooms!=null)&&(hashRooms.containsKey(ID)))
-		   return hashRooms.get(ID);
+			return hashRooms.get(ID);
 
 		if(areaMap!=null)
 			for(int r=0;r<areaMap.size();r++)
@@ -588,31 +592,31 @@ public class GrinderFlatMap
 			{
 				final GrinderRoom R=V.elementAt(s);
 				xy=xys.get(R.roomID);
-		 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
-		 		{
-		 			if((d!=Directions.UP)
-		 			&&(d!=Directions.DOWN)
-		 			&&(R.doors[d]!=null)
-		 			&&(R.doors[d].room!=null)
-				 	&&(R.doors[d].room.length()>0)
-		 			&&(!myRoomsDone.contains(R.doors[d].room))
-		 			&&(!roomsDone.contains(R.doors[d].room)))
-		 			{
-		 				final GrinderRoom R2=H.get(R.doors[d].room);
-		 				if(R2==null)
-		 					continue;
-		 				final int[] xy2=newXY(xy,d);
-		 				xys.put(R2.roomID,xy2);
-		 				if(!coordsDone.contains(xy2[0]+"/"+xy2[1]))
-		 				{
-		 					if(finalPosition)
-		 						R2.xy=xy2;
-			 				myRoomsDone.add(R2.roomID);
-			 				coordsDone.add(xy2[0]+"/"+xy2[1]);
-			 				V.addElement(R2);
-		 				}
-		 			}
-		 		}
+				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+				{
+					if((d!=Directions.UP)
+					&&(d!=Directions.DOWN)
+					&&(R.doors[d]!=null)
+					&&(R.doors[d].room!=null)
+					&&(R.doors[d].room.length()>0)
+					&&(!myRoomsDone.contains(R.doors[d].room))
+					&&(!roomsDone.contains(R.doors[d].room)))
+					{
+						final GrinderRoom R2=H.get(R.doors[d].room);
+						if(R2==null)
+							continue;
+						final int[] xy2=newXY(xy,d);
+						xys.put(R2.roomID,xy2);
+						if(!coordsDone.contains(xy2[0]+"/"+xy2[1]))
+						{
+							if(finalPosition)
+								R2.xy=xy2;
+							myRoomsDone.add(R2.roomID);
+							coordsDone.add(xy2[0]+"/"+xy2[1]);
+							V.addElement(R2);
+						}
+					}
+				}
 			}
 		}
 		return V;
@@ -918,8 +922,8 @@ public class GrinderFlatMap
 				final String tdins=(boundsXYXY!=null)?" ID=X"+(x+boundsXYXY[0])+"_"+(y+boundsXYXY[1]):"";
 				if (GR == null)
 					buf.append("<TD"+tdins+"></TD>");
-				  else
-				  {
+				else
+				{
 					buf.append("<TD"+tdins+" ");
 					if(!GR.isRoomGood())
 						buf.append("BGCOLOR=BLACK");

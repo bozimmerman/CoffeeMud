@@ -37,7 +37,11 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class BankChainNext extends StdWebMacro
 {
-	@Override public String name() { return "BankChainNext"; }
+	@Override
+	public String name()
+	{
+		return "BankChainNext";
+	}
 
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)

@@ -37,7 +37,11 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class DeityData extends StdWebMacro
 {
-	@Override public String name() { return "DeityData"; }
+	@Override
+	public String name()
+	{
+		return "DeityData";
+	}
 
 	// valid parms include description, worshipreq, clericreq,
 	// worshiptrig, clerictrig, worshipsintrig,clericsintrig,powertrig
@@ -77,15 +81,23 @@ public class DeityData extends StdWebMacro
 						str.append(CMLib.map().getExtendedRoomID(D.getStartRoom())+": "+D.getStartRoom().displayText()+", ");
 				}
 				if(parms.containsKey("AREA")&&(D.getStartRoom()!=null))
+				{
 					if(parms.containsKey("ENCODED"))
+					{
 						try {str.append(URLEncoder.encode(D.getStartRoom().getArea().Name(),"UTF-8")+", ");}catch(final Exception e){}
+					}
 					else
 						str.append(D.getStartRoom().getArea().Name()+", ");
+				}
 				if(parms.containsKey("ROOM")&&(D.getStartRoom()!=null))
+				{
 					if(parms.containsKey("ENCODED"))
+					{
 						try {str.append(URLEncoder.encode(D.getStartRoom().roomID(),"UTF-8")+", ");}catch(final Exception e){}
+					}
 					else
 						str.append(D.getStartRoom().roomID()+", ");
+				}
 				if(parms.containsKey("MOBCODE"))
 				{
 					final String roomID=D.getStartRoom().roomID();
@@ -143,7 +155,9 @@ public class DeityData extends StdWebMacro
 						httpReq.getRequestObjects().put("DEITYLIST-"+roomID,classes);
 					}
 					if(parms.containsKey("ENCODED"))
+					{
 						try {str.append(URLEncoder.encode(RoomData.getMOBCode(classes,D),"UTF-8")+", ");}catch(final Exception e){}
+					}
 					else
 						str.append(RoomData.getMOBCode(classes,D)+", ");
 				}

@@ -36,7 +36,11 @@ import java.util.*;
 */
 public class JournalInfo extends StdWebMacro
 {
-	@Override public String name() { return "JournalInfo"; }
+	@Override
+	public String name()
+	{
+		return "JournalInfo";
+	}
 
 	public static JournalEntry getEntry(List<JournalEntry> msgs, String key)
 	{

@@ -37,7 +37,11 @@ import java.util.*;
 */
 public class AddRandomFileFromDir extends StdWebMacro
 {
-	@Override public String name() { return "AddRandomFileFromDir"; }
+	@Override
+	public String name()
+	{
+		return "AddRandomFileFromDir";
+	}
 
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
@@ -49,8 +53,10 @@ public class AddRandomFileFromDir extends StdWebMacro
 		final Vector<String> fileList=new Vector<String>();
 		boolean LINKONLY=false;
 		for(final String val : parms.values())
+		{
 			if(val.equalsIgnoreCase("LINKONLY"))
 				LINKONLY=true;
+		}
 		for(String filePath : parms.values())
 		{
 			if(filePath.equalsIgnoreCase("LINKONLY"))

@@ -35,7 +35,11 @@ import java.util.*;
 */
 public class AbilityData extends StdWebMacro
 {
-	@Override public String name() { return "AbilityData"; }
+	@Override
+	public String name()
+	{
+		return "AbilityData";
+	}
 
 	// valid parms include help, ranges, quality, target, alignment, domain,
 	// qualifyQ, auto
@@ -177,7 +181,7 @@ public class AbilityData extends StdWebMacro
 						List<String[]> wordLists=((Language)A).translationVector(A.ID());
 						if(httpReq.isUrlParameter("WORDLIST1"))
 						{
-							wordLists=new Vector<String[]>();
+							wordLists=new ArrayList<String[]>();
 							int x=1;
 							while(httpReq.isUrlParameter("WORDLIST"+x))
 							{
@@ -193,10 +197,12 @@ public class AbilityData extends StdWebMacro
 						}
 
 						for(int i=wordLists.size()-1;i>=0;i--)
+						{
 							if(wordLists.get(i).length==0)
 								wordLists.remove(i);
 							else
 								break;
+						}
 
 						if(parms.containsKey("RESET"))
 						{
@@ -405,7 +411,7 @@ public class AbilityData extends StdWebMacro
 				}
 				if(parms.containsKey("ABILITY_FLAGS"))
 				{
-					List<String> list=new Vector<String>();
+					List<String> list=new ArrayList<String>();
 					if(httpReq.isUrlParameter("ABILITY_FLAGS"))
 					{
 						String id="";
@@ -446,7 +452,7 @@ public class AbilityData extends StdWebMacro
 				}
 				if(parms.containsKey("USAGEMASK"))
 				{
-					List<String> list=new Vector<String>();
+					List<String> list=new ArrayList<String>();
 					if(httpReq.isUrlParameter("USAGEMASK"))
 					{
 						String id="";
@@ -462,7 +468,7 @@ public class AbilityData extends StdWebMacro
 				}
 				if(parms.containsKey("CANAFFECTMASK"))
 				{
-					List<String> list=new Vector<String>();
+					List<String> list=new ArrayList<String>();
 					if(httpReq.isUrlParameter("CANAFFECTMASK"))
 					{
 						String id="";
@@ -478,7 +484,7 @@ public class AbilityData extends StdWebMacro
 				}
 				if(parms.containsKey("CANTARGETMASK"))
 				{
-					List<String> list=new Vector<String>();
+					List<String> list=new ArrayList<String>();
 					if(httpReq.isUrlParameter("CANTARGETMASK"))
 					{
 						String id="";
@@ -626,7 +632,7 @@ public class AbilityData extends StdWebMacro
 
 				if(parms.containsKey("MATLIST"))
 				{
-					List<String> list=new Vector<String>();
+					List<String> list=new ArrayList<String>();
 					if(httpReq.isUrlParameter("MATLIST"))
 					{
 						String id="";
@@ -645,7 +651,7 @@ public class AbilityData extends StdWebMacro
 
 				if(parms.containsKey("POSTCASTAFFECT"))
 				{
-					List<String> list=new Vector<String>();
+					List<String> list=new ArrayList<String>();
 					if(httpReq.isUrlParameter("POSTCASTAFFECT"))
 					{
 						String id="";
@@ -669,7 +675,7 @@ public class AbilityData extends StdWebMacro
 				}
 				if(parms.containsKey("POSTCASTABILITY"))
 				{
-					List<String> list=new Vector<String>();
+					List<String> list=new ArrayList<String>();
 					if(httpReq.isUrlParameter("POSTCASTABILITY"))
 					{
 						String id="";

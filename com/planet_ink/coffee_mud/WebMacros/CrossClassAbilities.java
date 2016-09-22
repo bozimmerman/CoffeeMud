@@ -36,7 +36,11 @@ import java.util.*;
 
 public class CrossClassAbilities extends StdWebMacro
 {
-	@Override public String name()	{return "CrossClassAbilities";}
+	@Override
+	public String name()
+	{
+		return "CrossClassAbilities";
+	}
 
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
@@ -65,9 +69,11 @@ public class CrossClassAbilities extends StdWebMacro
 			{
 				final CharClass C=c.nextElement();
 				if(CMProps.isTheme(C.availabilityCode())
-				   &&(CMLib.ableMapper().getQualifyingLevel(C.ID(),true,A.ID())>=0))
+				&&(CMLib.ableMapper().getQualifyingLevel(C.ID(),true,A.ID())>=0))
+				{
 					if((++numFound)>0)
 						break;
+				}
 			}
 			if(numFound>0)
 			{

@@ -36,7 +36,11 @@ import java.util.*;
 */
 public class NumPlayers extends StdWebMacro
 {
-	@Override public String name()	{return "NumPlayers";}
+	@Override
+	public String name()
+	{
+		return "NumPlayers";
+	}
 
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
@@ -63,8 +67,10 @@ public class NumPlayers extends StdWebMacro
 
 		int numPlayers=0;
 		for(final Session S : CMLib.sessions().localOnlineIterable())
+		{
 			if((S.mob()!=null)&&(!CMLib.flags().isCloaked(S.mob())))
-			   numPlayers++;
+				numPlayers++;
+		}
 		return Integer.toString(numPlayers);
 	}
 
