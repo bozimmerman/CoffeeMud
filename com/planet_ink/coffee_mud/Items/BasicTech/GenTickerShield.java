@@ -43,9 +43,9 @@ public class GenTickerShield extends StdElecItem implements Armor
 		return "GenTickerShield";
 	}
 
-	short layer=0;
-	short layerAttributes=0;
-	String readableText="";
+	protected short	layer				= 0;
+	protected short	layerAttributes		= 0;
+	protected String	readableText	= "";
 
 	public GenTickerShield()
 	{

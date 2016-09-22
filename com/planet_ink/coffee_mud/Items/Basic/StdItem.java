@@ -43,26 +43,26 @@ public class StdItem implements Item
 		return "StdItem";
 	}
 
-	protected String		name="an ordinary item";
-	protected String		displayText=L("a nondescript item sits here doing nothing.");
-	protected Object		description=null;
-	protected int   		myUses=Integer.MAX_VALUE;
-	protected long  		myWornCode=Wearable.IN_INVENTORY;
-	protected String		miscText="";
-	protected Rideable 		riding=null;
-	protected String		rawImageName=null;
-	protected String		cachedImageName=null;
-	protected String		secretIdentity=null;
-	protected boolean   	wornLogicalAnd=false;
-	protected long  		properWornBitmap=Wearable.WORN_HELD;
-	protected int   		baseGoldValue=0;
-	protected int   		material=RawMaterial.RESOURCE_COTTON;
-	protected String[]  	xtraValues=null;
-	protected long  		dispossessionTime=0;
-	protected int			tickStatus=Tickable.STATUS_NOT;
-	protected String		databaseID="";
-	protected boolean 		destroyed=false;
-	protected Item 			me=this;
+	protected String	name				= "an ordinary item";
+	protected String	displayText			= L("a nondescript item sits here doing nothing.");
+	protected Object	description			= null;
+	protected int		myUses				= Integer.MAX_VALUE;
+	protected long		myWornCode			= Wearable.IN_INVENTORY;
+	protected String	miscText			= "";
+	protected Rideable	riding				= null;
+	protected String	rawImageName		= null;
+	protected String	cachedImageName		= null;
+	protected String	secretIdentity		= null;
+	protected boolean	wornLogicalAnd		= false;
+	protected long		properWornBitmap	= Wearable.WORN_HELD;
+	protected int		baseGoldValue		= 0;
+	protected int		material			= RawMaterial.RESOURCE_COTTON;
+	protected String[]	xtraValues			= null;
+	protected long		dispossessionTime	= 0;
+	protected int		tickStatus			= Tickable.STATUS_NOT;
+	protected String	databaseID			= "";
+	protected boolean	destroyed			= false;
+	protected Item		me					= this;
 
 	protected PhyStats					phyStats		= (PhyStats) CMClass.getCommon("DefaultPhyStats");
 	protected PhyStats					basePhyStats	= (PhyStats) CMClass.getCommon("DefaultPhyStats");
