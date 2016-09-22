@@ -35,7 +35,10 @@ import java.util.*;
 */
 public class GrinderAccounts
 {
-	public String name() { return "GrinderAccounts"; }
+	public String name()
+	{
+		return "GrinderAccounts";
+	}
 
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{

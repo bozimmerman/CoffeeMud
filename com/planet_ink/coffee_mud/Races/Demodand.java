@@ -83,6 +83,7 @@ public class Demodand extends Demon
 	{
 		return 0;
 	}
+
 	private final String[]	racialAbilityNames			= { "Dragonbreath"};
 	private final int[]		racialAbilityLevels			= { 1, };
 	private final int[]		racialAbilityProficiencies	= { 100 };

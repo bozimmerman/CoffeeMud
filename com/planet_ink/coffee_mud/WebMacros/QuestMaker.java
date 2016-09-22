@@ -284,8 +284,11 @@ public class QuestMaker extends StdWebMacro
 				final QMCommand command = QMCommand.values()[inputCode];
 				switch(command)
 				{
-				case $TITLE: break;
-				case $LABEL: lastLabel=defValue; break;
+				case $TITLE:
+					break;
+				case $LABEL:
+					lastLabel = defValue;
+					break;
 				case $EXPRESSION:
 				case $TIMEEXPRESSION:
 				case $UNIQUE_QUEST_NAME:
@@ -621,8 +624,10 @@ public class QuestMaker extends StdWebMacro
 				{
 					switch(command)
 					{
-					case $TITLE: break;
-					case $LABEL: break;
+					case $TITLE:
+						break;
+					case $LABEL:
+						break;
 					case $HIDDEN:
 						httpReq.addFakeUrlParameter(httpKeyName,defValue);
 						break;

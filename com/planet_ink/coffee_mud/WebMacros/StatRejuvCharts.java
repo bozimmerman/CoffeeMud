@@ -155,6 +155,7 @@ public class StatRejuvCharts extends StdWebMacro
 		}
 		
 		for(int l=1;l<=MAX_LEVEL;l+=SKIP_LEVEL)
+		{
 			for(int s=4;s<=MAX_STAT;s+=SKIP_STAT)
 			{
 				int num=0;
@@ -170,6 +171,7 @@ public class StatRejuvCharts extends StdWebMacro
 				manacharts[l][s]/=num;
 				movementcharts[l][s]/=num;
 			}
+		}
 		
 		
 		buf.append("<P><TABLE WIDTH=100% BORDER=1>");
@@ -186,8 +188,6 @@ public class StatRejuvCharts extends StdWebMacro
 		stateManaRecoverFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.Str.FORMULA_MANARECOVER));
 		stateMovesRecoverFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.Str.FORMULA_MOVESRECOVER));
 
-		
-		
 		for(int level=1;level<=MAX_LEVEL;level+=SKIP_LEVEL)
 		{
 			buf.append("<TR>");

@@ -387,6 +387,7 @@ public class GrinderItems
 							if(old.length()>0)
 								V.add(old);
 							for(int i=1;;i++)
+							{
 								if(httpReq.isUrlParameter("MAPAREAS"+(Integer.toString(i))))
 								{
 									old=httpReq.getUrlParameter("MAPAREAS"+(Integer.toString(i))).trim();
@@ -395,6 +396,7 @@ public class GrinderItems
 								}
 								else
 									break;
+							}
 						}
 						old = CMParms.toSemicolonListString(V);
 						CMLib.flags().setReadable(I,false);
@@ -507,10 +509,12 @@ public class GrinderItems
 						long content=CMath.s_long(httpReq.getUrlParameter("CONTENTTYPES"));
 						if(content>0)
 						for(int i=1;;i++)
+						{
 							if(httpReq.isUrlParameter("CONTENTTYPES"+(Integer.toString(i))))
 								content=content|CMath.s_int(httpReq.getUrlParameter("CONTENTTYPES"+(Integer.toString(i))));
 							else
 								break;
+						}
 						((Container)I).setContainTypes(content);
 					}
 					break;
@@ -821,10 +825,12 @@ public class GrinderItems
 						{
 							consumedFuel.add(Integer.valueOf(CMath.s_int(httpReq.getUrlParameter("CONSUMEDMATS"))));
 							for(int i=1;;i++)
+							{
 								if(httpReq.isUrlParameter("CONSUMEDMATS"+(Integer.toString(i))))
 									consumedFuel.add(Integer.valueOf(CMath.s_int(httpReq.getUrlParameter("CONSUMEDMATS"+(Integer.toString(i))))));
 								else
 									break;
+							}
 						}
 						final int[] mats=new int[consumedFuel.size()];
 						final Integer[] MATS=consumedFuel.toArray(new Integer[0]);
@@ -890,7 +896,6 @@ public class GrinderItems
 				{
 					if(R==null)
 					{
-
 					}
 					else
 					{
@@ -919,7 +924,6 @@ public class GrinderItems
 				{
 					if(R==null)
 					{
-
 					}
 					else
 					{
@@ -931,10 +935,12 @@ public class GrinderItems
 							final Item I2=R.getItem(i);
 							if((I2.container()!=null)
 							&&(I2.container()==oldI))
+							{
 								if(I instanceof Container)
 									I2.setContainer((Container)I);
 								else
 									I2.setContainer(null);
+							}
 						}
 					}
 				}
@@ -960,10 +966,12 @@ public class GrinderItems
 						final Item I2=M.getItem(i);
 						if((I2.container()!=null)
 						&&(I2.container()==oldI))
+						{
 							if(I instanceof Container)
 								I2.setContainer((Container)I);
 							else
 								I2.setContainer(null);
+						}
 					}
 				}
 				oldI.setOwner(oldOwner); // necesssary for destroy this to work.

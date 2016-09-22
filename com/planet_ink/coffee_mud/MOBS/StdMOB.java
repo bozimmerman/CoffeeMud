@@ -857,7 +857,9 @@ public class StdMOB implements MOB
 			for (final Enumeration<Pair<MOB,Short>> f = followers(); f.hasMoreElements();)
 				total += (1+f.nextElement().first.totalFollowers());
 		}
-		catch (final Exception t){}
+		catch (final Exception t)
+		{
+		}
 		return total;
 	}
 
@@ -3862,7 +3864,9 @@ public class StdMOB implements MOB
 					return true;
 			}
 		}
-		catch (final Exception e){}
+		catch (final Exception e)
+		{
+		}
 		return false;
 	}
 

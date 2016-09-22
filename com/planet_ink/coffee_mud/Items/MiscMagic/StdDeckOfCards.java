@@ -112,8 +112,10 @@ public class StdDeckOfCards extends StdHandOfCards implements DeckOfCards
 	{
 		final Vector<PlayingCard> allCards=new Vector<PlayingCard>();
 		for (final int suit : PlayingCard.suits)
+		{
 			for (final int card : PlayingCard.cards)
 				allCards.addElement(makePlayingCard(suit+card));
+		}
 		return allCards;
 	}
 

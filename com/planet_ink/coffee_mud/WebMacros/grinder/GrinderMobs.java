@@ -699,17 +699,21 @@ public class GrinderMobs
 					break;
 				case TIMELIST: // timed list
 					if(M instanceof Auctioneer)
+					{
 						if(old.length()==0)
 							((Auctioneer)M).setTimedListingPrice(-1.0);
 						else
 							((Auctioneer)M).setTimedListingPrice(CMath.s_double(old));
+					}
 					break;
 				case TIMELISTPCT: // timed list pct
 					if(M instanceof Auctioneer)
+					{
 						if(old.length()==0)
 							((Auctioneer)M).setTimedListingPct(-1.0);
 						else
 							((Auctioneer)M).setTimedListingPct(CMath.s_pct(old));
+					}
 					break;
 				case LIVECUT: // live cut
 					//if(M instanceof Auctioneer)
@@ -720,24 +724,30 @@ public class GrinderMobs
 					break;
 				case TIMECUT: // timed cut
 					if(M instanceof Auctioneer)
+					{
 						if(old.length()==0)
 							((Auctioneer)M).setTimedFinalCutPct(-1.0);
 						else
 							((Auctioneer)M).setTimedFinalCutPct(CMath.s_pct(old));
+					}
 					break;
 				case MAXDAYS: // max days
 					if(M instanceof Auctioneer)
+					{
 						if(old.length()==0)
 							((Auctioneer)M).setMaxTimedAuctionDays(-1);
 						else
 							((Auctioneer)M).setMaxTimedAuctionDays(CMath.s_int(old));
+					}
 					break;
 				case MINDAYS: // min days
 					if(M instanceof Auctioneer)
+					{
 						if(old.length()==0)
 							((Auctioneer)M).setMinTimedAuctionDays(-1);
 						else
 							((Auctioneer)M).setMinTimedAuctionDays(CMath.s_int(old));
+					}
 					break;
 				case ISAUCTION: // is auction
 					break;

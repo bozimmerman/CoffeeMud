@@ -61,6 +61,7 @@ public class Wand_Nourishment extends StdWand
 		super.setSpell(theSpell);
 		secretWord="SHAZAM";
 	}
+
 	@Override
 	public void setMiscText(String newText)
 	{

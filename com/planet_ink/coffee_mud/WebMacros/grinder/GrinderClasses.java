@@ -36,7 +36,10 @@ import java.util.*;
 
 public class GrinderClasses
 {
-	public String name() { return "GrinderClasses"; }
+	public String name()
+	{
+		return "GrinderClasses";
+	}
 
 	public static DVector cabilities(HTTPRequest httpReq)
 	{
@@ -53,12 +56,14 @@ public class GrinderClasses
 					if(prof==null)
 						prof="0";
 					String qual=httpReq.getUrlParameter("CABQUA"+num);
-					if(qual==null) qual="";// null means unchecked
+					if(qual==null) 
+						qual="";// null means unchecked
 					String levl=httpReq.getUrlParameter("CABLVL"+num);
 					if(levl==null)
 						levl="0";
 					String secr=httpReq.getUrlParameter("CABSCR"+num);
-					if(secr==null) secr="";// null means unchecked
+					if(secr==null) 
+						secr="";// null means unchecked
 					Object parm=httpReq.getUrlParameter("CABPRM"+num);
 					if(parm==null)
 						parm="";
@@ -98,6 +103,7 @@ public class GrinderClasses
 		DVector DV=new DVector(2);
 		int num=0;
 		while(httpReq.isUrlParameter("NAME"+(++num)))
+		{
 			if(CMath.isInteger(httpReq.getUrlParameter("NAMELEVEL"+(num))))
 			{
 				final int minLevel = CMath.s_int(httpReq.getUrlParameter("NAMELEVEL"+(num)));
@@ -110,6 +116,7 @@ public class GrinderClasses
 					{
 						boolean added=false;
 						for(int n=0;n<DV.size();n++)
+						{
 							if(minLevel<((Integer)DV.elementAt(n,1)).intValue())
 							{
 								DV.insertElementAt(n,Integer.valueOf(minLevel),name);
@@ -122,11 +129,13 @@ public class GrinderClasses
 								added=true;
 								break;
 							}
+						}
 						if(!added)
 							DV.addElement(Integer.valueOf(minLevel),name);
 					}
 				}
 			}
+		}
 		if(DV.size()==0)
 			DV.addElement(Integer.valueOf(0),C.ID());
 		C.setStat("NUMNAME",""+DV.size());
@@ -224,6 +233,7 @@ public class GrinderClasses
 		num=0;
 		DV.clear();
 		while(httpReq.isUrlParameter("SSET"+(++num)))
+		{
 			if(CMath.isInteger(httpReq.getUrlParameter("SSETLEVEL"+(num))))
 			{
 				final int minLevel = CMath.s_int(httpReq.getUrlParameter("SSETLEVEL"+(num)));
@@ -236,6 +246,7 @@ public class GrinderClasses
 					{
 						boolean added=false;
 						for(int n=0;n<DV.size();n++)
+						{
 							if(minLevel<((Integer)DV.elementAt(n,1)).intValue())
 							{
 								DV.insertElementAt(n,Integer.valueOf(minLevel),name);
@@ -248,11 +259,13 @@ public class GrinderClasses
 								added=true;
 								break;
 							}
+						}
 						if(!added)
 							DV.addElement(Integer.valueOf(minLevel),name);
 					}
 				}
 			}
+		}
 		C.setStat("NUMSSET",""+DV.size());
 		for(int l=0;l<DV.size();l++)
 		{

@@ -54,14 +54,16 @@ public class NumPlayers extends StdWebMacro
 		{
 			final Enumeration<ThinPlayer> pe=CMLib.players().thinPlayers("",httpReq.getRequestObjects());
 			int x=0;
-			for(;pe.hasMoreElements();pe.nextElement()) x++;
+			for(;pe.hasMoreElements();pe.nextElement()) 
+				x++;
 			return ""+x;
 		}
 		if(parms.containsKey("ACCOUNTS"))
 		{
 			final Enumeration<PlayerAccount> pe=CMLib.players().accounts("",httpReq.getRequestObjects());
 			int x=0;
-			for(;pe.hasMoreElements();pe.nextElement()) x++;
+			for(;pe.hasMoreElements();pe.nextElement()) 
+				x++;
 			return ""+x;
 		}
 

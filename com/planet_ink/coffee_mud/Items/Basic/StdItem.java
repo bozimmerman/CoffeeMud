@@ -1888,7 +1888,9 @@ public class StdItem implements Item
 		{
 			return behaviors.elementAt(index);
 		}
-		catch(final java.lang.ArrayIndexOutOfBoundsException x){}
+		catch(final java.lang.ArrayIndexOutOfBoundsException x)
+		{
+		}
 		return null;
 	}
 

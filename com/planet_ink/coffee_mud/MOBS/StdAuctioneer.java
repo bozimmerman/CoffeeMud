@@ -306,7 +306,14 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 					aRates.mergeAuctioneerPolicy(this);
 					CMLib.commands().postSay(this,mob,L("Ok, so how many local days will your auction run for (@x1-@x2)?",""+aRates.minTimedAuctionDays(),""+aRates.maxTimedAuctionDays()),true,false);
 					int days=0;
-					try{days=CMath.s_int(mob.session().prompt(":","",30000));}catch(final Exception e){return false;}
+					try
+					{
+						days=CMath.s_int(mob.session().prompt(":","",30000));
+					}
+					catch(final Exception e)
+					{
+						return false;
+					}
 					if(days==0)
 						return false;
 					if(days<aRates.minTimedAuctionDays())
@@ -328,7 +335,15 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 						return false;
 					}
 					CMLib.commands().postSay(this,mob,L("Auctioning @x1 will cost a listing fee of @x2, proceed?",I.name(),depositAmt),true,false);
-					try{if(!mob.session().confirm(L("(Y/N):"),"Y",10000)) return false;}catch(final Exception e){return false;}
+					try
+					{
+						if(!mob.session().confirm(L("(Y/N):"),"Y",10000))
+							return false;
+					}
+					catch(final Exception e)
+					{
+						return false;
+					}
 					lastMsgData=(AuctionData)CMClass.getCommon("DefaultAuction");
 					lastMsgData.setAuctionedItem((Item)msg.tool());
 					lastMsgData.setAuctioningMob(msg.source());

@@ -42,7 +42,18 @@ public class RequestParameter extends StdWebMacro
 		return "RequestParameter";
 	}
 
-	private static enum MODIFIER {UPPERCASE,LOWERCASE,LEFT,RIGHT,ELLIPSE,TRIM,AFTER,CAPITALCASE}
+	private static enum MODIFIER
+	{
+		UPPERCASE,
+		LOWERCASE,
+		LEFT,
+		RIGHT,
+		ELLIPSE,
+		TRIM,
+		AFTER,
+		CAPITALCASE
+	}
+
 	private static HashSet<String> modifiers=new HashSet<String>();
 	static
 	{
@@ -58,8 +69,10 @@ public class RequestParameter extends StdWebMacro
 		for(final String key : parms.keySet())
 		{
 			if(!modifiers.contains(key))
+			{
 				if(httpReq.isUrlParameter(key))
 					str+=httpReq.getUrlParameter(key);
+			}
 		}
 		boolean capCase=false;
 		for(final String key : parms.keySet())

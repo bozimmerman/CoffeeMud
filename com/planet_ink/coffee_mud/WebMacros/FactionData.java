@@ -862,7 +862,9 @@ public class FactionData extends StdWebMacro
 					done.add(Ability.DOMAIN_DESCS[i].toUpperCase());
 			}
 			break;
-		case 3: done.add(val.toUpperCase()); break;
+		case 3:
+			done.add(val.toUpperCase());
+			break;
 		}
 	}
 

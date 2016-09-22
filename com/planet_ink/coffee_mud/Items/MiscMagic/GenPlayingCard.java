@@ -104,6 +104,7 @@ public class GenPlayingCard extends StdPlayingCard
 			codes=CMProps.getStatCodesList(CMParms.toStringArray(GenericBuilder.GenItemCode.values()),this);
 		return codes;
 	}
+
 	@Override
 	public boolean sameAs(Environmental E)
 	{

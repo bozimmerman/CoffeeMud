@@ -256,7 +256,10 @@ public class MUDGrinder extends StdWebMacro
 					return map.getHTMLMap(httpReq).toString();
 				return map.getHTMLMap(httpReq, roomSize).toString();
 			}
-			catch(final Exception e){e.printStackTrace();}
+			catch (final Exception e)
+			{
+				e.printStackTrace();
+			}
 		}
 		else
 		if(parms.containsKey("WORLDMAP"))
@@ -1183,12 +1186,14 @@ public class MUDGrinder extends StdWebMacro
 			for(final Room R : rooms)
 			{
 				for(int d=0;d<R.rawDoors().length;d++)
+				{
 					if(R.rawDoors()[d]!=null)
 					{
 						httpReq.addFakeUrlParameter("ROOM",R.rawDoors()[d].roomID());
 						httpReq.addFakeUrlParameter("LINK","");
 						break;
 					}
+				}
 				Log.sysOut("Grinder",mob.Name()+" deleted room "+R.roomID());
 				errMsg+=GrinderRooms.delRoom(R)+" ";
 			}

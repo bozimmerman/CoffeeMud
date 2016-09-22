@@ -62,12 +62,15 @@ public class SystemFunction extends StdWebMacro
 				try
 				{
 					C.execute(M,CMParms.parse("all "+s.trim()),0);
-				}catch(final Exception e){}
+				}
+				catch(final Exception e)
+				{
+				}
 			}
 		}
 		if(parms.get("SHUTDOWN")!=null)
 		{
-com.planet_ink.coffee_mud.application.MUD.globalShutdown(null,(parms.get("RESTART")==null),null);
+			//com.planet_ink.coffee_mud.application.MUD.globalShutdown(null,(parms.get("RESTART")==null),null);
 			return "";
 		}
 		return "";

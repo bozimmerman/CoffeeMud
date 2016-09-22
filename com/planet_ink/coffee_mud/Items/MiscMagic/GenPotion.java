@@ -135,6 +135,7 @@ public class GenPotion extends StdPotion
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
 	}
+
 	@Override
 	public void setStat(String code, String val)
 	{
@@ -182,6 +183,7 @@ public class GenPotion extends StdPotion
 			break;
 		}
 	}
+
 	@Override
 	protected int getCodeNum(String code)
 	{

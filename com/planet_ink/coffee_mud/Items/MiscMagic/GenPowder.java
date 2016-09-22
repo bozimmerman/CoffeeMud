@@ -58,7 +58,11 @@ public class GenPowder extends StdPowder
 		setMaterial(RawMaterial.RESOURCE_ASH);
 	}
 
-	@Override public boolean isGeneric(){return true;}
+	@Override
+	public boolean isGeneric()
+	{
+		return true;
+	}
 
 	@Override
 	public String text()
@@ -81,6 +85,7 @@ public class GenPowder extends StdPowder
 			return CMLib.coffeeMaker().getGenItemStat(this,code);
 		return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 	}
+
 	@Override
 	public void setStat(String code, String val)
 	{
@@ -88,6 +93,7 @@ public class GenPowder extends StdPowder
 			CMLib.coffeeMaker().setGenItemStat(this,code,val);
 		CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code,val);
 	}
+
 	private static String[] codes=null;
 	
 	@Override

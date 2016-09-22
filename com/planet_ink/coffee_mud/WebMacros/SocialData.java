@@ -239,11 +239,21 @@ public class SocialData extends StdWebMacro
 					{
 						switch(field.charAt(f))
 						{
-							case 'Y': S.setYou_see(old); break;
-							case 'O': S.setThird_party_sees(old); break;
-							case 'N': S.setSee_when_no_target(old); break;
-							case 'M': S.setMSPfile(old); break;
-							case 'T': S.setTarget_sees(old); break;
+						case 'Y':
+							S.setYou_see(old);
+							break;
+						case 'O':
+							S.setThird_party_sees(old);
+							break;
+						case 'N':
+							S.setSee_when_no_target(old);
+							break;
+						case 'M':
+							S.setMSPfile(old);
+							break;
+						case 'T':
+							S.setTarget_sees(old);
+							break;
 						}
 					}
 					old=httpReq.getUrlParameter(fnam+"C");
@@ -414,11 +424,13 @@ public class SocialData extends StdWebMacro
 						final String EXTN=EXTNS.elementAt(t);
 						Social S=null;
 						for(int s=0;s<SV.size();s++)
+						{
 							if(SV.get(s).Name().equalsIgnoreCase(last+EXTN))
 							{
 								S=SV.get(s);
 								break;
 							}
+						}
 						if(parms.containsKey("IS"+TYPE))
 						{
 							old=httpReq.getUrlParameter("IS"+TYPE);
@@ -441,11 +453,21 @@ public class SocialData extends StdWebMacro
 										S=CMLib.socials().makeDefaultSocial(last,EXTN);
 									switch(field.charAt(f))
 									{
-										case 'Y': old=S.You_see(); break;
-										case 'O': old=S.Third_party_sees(); break;
-										case 'N': old=S.See_when_no_target(); break;
-										case 'M': old=S.MSPfile(); break;
-										case 'T': old=S.Target_sees(); break;
+									case 'Y':
+										old = S.You_see();
+										break;
+									case 'O':
+										old = S.Third_party_sees();
+										break;
+									case 'N':
+										old = S.See_when_no_target();
+										break;
+									case 'M':
+										old = S.MSPfile();
+										break;
+									case 'T':
+										old = S.Target_sees();
+										break;
 									}
 								}
 								str.append(old+", ");
@@ -459,14 +481,22 @@ public class SocialData extends StdWebMacro
 										S=CMLib.socials().makeDefaultSocial(last,EXTN);
 									switch(field.charAt(f))
 									{
-										case 'Y': old=(S==null)?null:""+S.sourceCode(); break;
-										case 'O': old=(S==null)?null:""+S.targetCode(); break;
-										case 'N': break;
-										case 'M': break;
-										case 'T': break;
+									case 'Y':
+										old = (S == null) ? null : "" + S.sourceCode();
+										break;
+									case 'O':
+										old = (S == null) ? null : "" + S.targetCode();
+										break;
+									case 'N':
+										break;
+									case 'M':
+										break;
+									case 'T':
+										break;
 									}
 								}
 								if(old!=null)
+								{
 									for(int c=0;c<CODES.length;c++)
 									{
 										str.append("<OPTION VALUE="+CODES[c]);
@@ -474,6 +504,7 @@ public class SocialData extends StdWebMacro
 											str.append(" SELECTED");
 										str.append(">"+CODESTR[c]);
 									}
+								}
 							}
 						}
 					}

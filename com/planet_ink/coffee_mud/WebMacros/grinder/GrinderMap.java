@@ -109,8 +109,10 @@ public class GrinderMap extends GrinderFlatMap
 		xoffset = xoffset * -1;
 		yoffset = yoffset * -1;
 
-		if (debug) Log.sysOut("GR-REGRID", "xoffset set : " + xoffset);
-		if (debug) Log.sysOut("GR-REGRID", "Xbound  set : " + Xbound);
+		if (debug) 
+			Log.sysOut("GR-REGRID", "xoffset set : " + xoffset);
+		if (debug) 
+			Log.sysOut("GR-REGRID", "Xbound  set : " + Xbound);
 
 		Xbound = 0;
 		Ybound = 0;
@@ -136,13 +138,16 @@ public class GrinderMap extends GrinderFlatMap
 			if(room.z<minZ)
 			{
 				grid[room.xy[0]][room.xy[1]][(room.z + zFix)] = room;
-				if (debug) Log.sysOut("GR-REGRID", "Room outside z range: " + room.z);
+				if (debug) 
+					Log.sysOut("GR-REGRID", "Room outside z range: " + room.z);
 			}
 			else
 			{
 				if ((debug) && ((room.z > maxZ) || (room.z < minZ)))
+				{
 					Log.sysOut("GR-HTML", "Room.z error: " + room.z + " outside " + maxZ + "-" + minZ + "(" +
 								room.roomID + ")");
+				}
 				grid[room.xy[0]][room.xy[1]][room.z] = room;
 			}
 		}
@@ -306,8 +311,10 @@ public class GrinderMap extends GrinderFlatMap
 		if ((zFix + minZ) > 0)
 			zFix -= (0 - (minZ + zFix)) * -1;
 
-		if (debug) Log.sysOut("GR-PLACERS", "zFix set    : " + zFix);
-		if (debug) Log.sysOut("GR-PLACERS", "areaMap size: " + areaMap.size());
+		if (debug) 
+			Log.sysOut("GR-PLACERS", "zFix set    : " + zFix);
+		if (debug) 
+			Log.sysOut("GR-PLACERS", "areaMap size: " + areaMap.size());
 		int updatedCount = 0;
 		for (int x = 0; x < areaMap.size(); x++)
 		{
@@ -317,16 +324,21 @@ public class GrinderMap extends GrinderFlatMap
 			areaMap.set(x,GR);
 			if (GR.z!=oldZ) updatedCount++;
 		}
-		if (debug) Log.sysOut("GR-PLACERS", "maybe update: " + updatedCount);
-		if (debug) Log.sysOut("GR-PLACERS", "maxZ changed: " + maxZ + " to " + (maxZ + zFix));
+		if (debug) 
+			Log.sysOut("GR-PLACERS", "maybe update: " + updatedCount);
+		if (debug) 
+			Log.sysOut("GR-PLACERS", "maxZ changed: " + maxZ + " to " + (maxZ + zFix));
 		maxZ += zFix;
-		if (debug) Log.sysOut("GR-PLACERS", "minZ changed: " + minZ + " to " + (minZ + zFix));
+		if (debug) 
+			Log.sysOut("GR-PLACERS", "minZ changed: " + minZ + " to " + (minZ + zFix));
 		minZ += zFix;
 
 		if (areaMap.size() > processed.size())
+		{
 			Log.errOut("GrinderMap",
 					   areaMap.size() - processed.size() +
 					   " room(s) were not placed.");
+		}
 	}
 
 	@Override

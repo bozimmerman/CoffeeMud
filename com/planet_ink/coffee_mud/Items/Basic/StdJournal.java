@@ -168,13 +168,21 @@ public class StdJournal extends StdItem
 								if((CMProps.getVar(CMProps.Str.MAILBOX).length()>0)
 								&&(from.length()>0))
 									prompt+="^<MENU^>E^</MENU^>)mail "; cmds+="E";
-								if(msg.value()>0){ prompt+="S)top "; cmds+="S";}
+								if(msg.value()>0)
+								{
+									prompt+="S)top ";
+									cmds+="S";
+								}
 								else
 								{
 									prompt+="^<MENU^>N^</MENU^>)ext ";
 									cmds+="N";
 								}
-								if(mineAble){ prompt+="^<MENU^>D^</MENU^>)elete "; cmds+="D";}
+								if(mineAble)
+								{
+									prompt+="^<MENU^>D^</MENU^>)elete ";
+									cmds+="D";
+								}
 								if((admin)
 								||(CMSecurity.isAllowed(msg.source(),msg.source().location(),CMSecurity.SecFlag.JOURNALS)))
 								{
@@ -578,7 +586,9 @@ public class StdJournal extends StdItem
 				if(message.startsWith("<cmvp>"))
 					message=new String(CMLib.webMacroFilter().virtualPageFilter(message.substring(6).getBytes()));
 			}
-			catch(final HTTPRedirectException e){}
+			catch(final HTTPRedirectException e)
+			{
+			}
 
 			if((allMine)||(to.equals("ALL")))
 			{

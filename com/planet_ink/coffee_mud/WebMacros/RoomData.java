@@ -124,7 +124,6 @@ public class RoomData extends StdWebMacro
 				if(E==I)
 					return Long.toString( ( I.ID() + "/" + I.Name() + "/" + I.displayText() ).hashCode() << 5 ) + i;
 			}
-			
 		}
 		return "";
 	}
@@ -1450,12 +1449,14 @@ public class RoomData extends StdWebMacro
 					str.append("<SELECT NAME=ITEMCONT"+(i+1)+">");
 					str.append("<OPTION VALUE=\"\" "+((C==null)?"SELECTED":"")+">On the ground");
 					for(int i2=0;i2<classes.size();i2++)
+					{
 						if((classes.elementAt(i2) instanceof Container)&&(i2!=i))
 						{
 							final Container C2=(Container)classes.elementAt(i2);
 							final String name=CMLib.english().getContextName(classes,C2);
 							str.append("<OPTION "+((C2==C)?"SELECTED":"")+" VALUE=\""+name+"\">"+name+" ("+C2.ID()+")");
 						}
+					}
 					str.append("</SELECT>&nbsp;&nbsp;");
 					//str.append("<INPUT TYPE=CHECKBOX NAME=ITEMWORN"+(i+1)+" "+(W.booleanValue()?"CHECKED":"")+">Worn/Wielded");
 					str.append("</FONT></TD>");

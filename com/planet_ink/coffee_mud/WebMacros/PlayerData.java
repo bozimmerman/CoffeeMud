@@ -409,13 +409,15 @@ public class PlayerData extends StdWebMacro
 		case 60:
 		{
 			if(M.playerStats()!=null)
+			{
 				for(int b=0;b<M.playerStats().getTitles().size();b++)
 				{
 					final String B=M.playerStats().getTitles().get(b);
 					if(B!=null)
 						str.append(B+", ");
 				}
-				break;
+			}
+			break;
 		}
 		case 61:
 		{
@@ -602,6 +604,7 @@ public class PlayerData extends StdWebMacro
 				if(CMLib.factions().getFaction(CMLib.factions().AlignID())!=null)
 				{
 					for(final Faction.Align v : Faction.Align.values())
+					{
 						if(v!=Faction.Align.INDIFF)
 						{
 							str.append("<OPTION VALUE="+v.toString());
@@ -609,6 +612,7 @@ public class PlayerData extends StdWebMacro
 								str.append(" SELECTED");
 							str.append(">"+CMStrings.capitalizeAndLower(v.toString().toLowerCase()));
 						}
+					}
 				}
 			}
 			if(parms.containsKey("BASEGENDER"))

@@ -209,6 +209,7 @@ public class StdClanCommonItem extends StdClanItem
 		}
 		return false;
 	}
+
 	public boolean trackTo(MOB M, Room R)
 	{
 		final Ability A=CMClass.getAbility("Skill_Track");

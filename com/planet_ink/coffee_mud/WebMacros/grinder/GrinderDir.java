@@ -32,7 +32,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class GrinderDir
 {
-	public String room="";
-	public Exit exit=null;
-	public boolean positionedAlready=false;
+	public String	room				= "";
+	public Exit		exit				= null;
+	public boolean	positionedAlready	= false;
 }

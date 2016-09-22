@@ -99,8 +99,10 @@ public class RaceData extends StdWebMacro
 		else
 		{
 			for(int i=0;i<E.getStatCodes().length;i++)
+			{
 				if(CMath.s_int(E.getStat(E.getStatCodes()[i]))!=0)
 					theclasses.addElement(E.getStatCodes()[i],Integer.toString(CMath.s_int(E.getStat(E.getStatCodes()[i]))));
+			}
 		}
 		str.append("<TABLE WIDTH=100% BORDER="+borderSize+" CELLSPACING=0 CELLPADDING=0>");
 		for(int i=0;i<theclasses.size();i++)
@@ -160,8 +162,10 @@ public class RaceData extends StdWebMacro
 		else
 		{
 			for(final int i : CharStats.CODES.ALLCODES())
+			{
 				if(CMath.s_int(E.getStat(CharStats.CODES.NAME(i)))!=0)
 					theclasses.addElement(CharStats.CODES.NAME(i),E.getStat(CharStats.CODES.NAME(i)));
+			}
 		}
 		str.append("<TABLE WIDTH=100% BORDER="+borderSize+" CELLSPACING=0 CELLPADDING=0>");
 		for(int i=0;i<theclasses.size();i++)
@@ -221,8 +225,10 @@ public class RaceData extends StdWebMacro
 		else
 		{
 			for(int i=0;i<E.getStatCodes().length;i++)
+			{
 				if(CMath.s_int(E.getStat(E.getStatCodes()[i]))!=0)
 					theclasses.addElement(E.getStatCodes()[i],Integer.valueOf(E.getStat(E.getStatCodes()[i])).toString());
+			}
 		}
 		str.append("<TABLE WIDTH=100% BORDER="+borderSize+" CELLSPACING=0 CELLPADDING=0>");
 		for(int i=0;i<theclasses.size();i++)
@@ -243,9 +249,13 @@ public class RaceData extends StdWebMacro
 		str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME="+c+"CSTATE"+(theclasses.size()+1)+">");
 		str.append("<OPTION SELECTED VALUE=\"\">Select a stat");
 		for(int i=0;i<E.getStatCodes().length;i++)
+		{
 			if(CMath.isNumber(E.getStat(E.getStatCodes()[i])))
+			{
 				if(!theclasses.contains(E.getStatCodes()[i]))
 					str.append("<OPTION VALUE=\""+E.getStatCodes()[i]+"\">"+E.getStatCodes()[i]);
+			}
+		}
 		str.append("</SELECT>");
 		str.append("</TD>");
 		str.append("<TD WIDTH=65%>");
@@ -340,17 +350,21 @@ public class RaceData extends StdWebMacro
 			{
 				boolean selected=false;
 				for(int x=0;x<classes.size();x++)
+				{
 					if(classes.elementAt(x).ID().equals(element))
 					{ 
 						selected=true;
 						found.add(classes.elementAt(x).ID());
 						break;
 					}
+				}
 				str.append("<OPTION "+(selected?"SELECTED":"")+" VALUE=\""+(String)element+"\">"+(String)element);
 			}
 			for(int x=0;x<classes.size();x++)
+			{
 				if(!found.contains(classes.elementAt(x).ID()))
 					str.append("<OPTION SELECTED VALUE=\""+classes.elementAt(x).ID()+"\">"+classes.elementAt(x).ID());
+			}
 		}
 		else
 		{

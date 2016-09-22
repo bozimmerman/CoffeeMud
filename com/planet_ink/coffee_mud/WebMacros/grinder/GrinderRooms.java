@@ -267,7 +267,6 @@ public class GrinderRooms
 			else
 				return "No MOB Data!";
 
-
 			if(httpReq.isUrlParameter("ITEM1"))
 			{
 				final Vector<Item> items=new Vector<Item>();
@@ -324,7 +323,7 @@ public class GrinderRooms
 			for(int m=0;m<allmobs.size();m++)
 			{
 				@SuppressWarnings("cast")
-				final MOB M=(MOB)allmobs.elementAt(m);
+				final MOB M=allmobs.elementAt(m);
 				if(!R.isInhabitant(M))
 					M.destroy();
 			}
@@ -346,7 +345,10 @@ public class GrinderRooms
 							}
 						}
 					}
-				}catch(final NoSuchElementException e){}
+				}
+				catch(final NoSuchElementException e)
+				{
+				}
 				try
 				{
 					for(final Enumeration<MOB> e=CMLib.players().players();e.hasMoreElements();)
@@ -358,7 +360,10 @@ public class GrinderRooms
 						if(M.location()==oldR)
 							M.setLocation(R);
 					}
-				}catch(final NoSuchElementException e){}
+				}
+				catch(final NoSuchElementException e)
+				{
+				}
 			}
 			R.getArea().fillInAreaRoom(R);
 			CMLib.database().DBUpdateRoom(R);
@@ -376,8 +381,6 @@ public class GrinderRooms
 		}
 		return "";
 	}
-
-
 
 	public static String delRoom(Room R)
 	{

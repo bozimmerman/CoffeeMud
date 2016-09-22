@@ -83,6 +83,7 @@ public class Barghest extends Demon
 	{
 		return 0;
 	}
+
 	private final String[]	racialAbilityNames			= { "Skill_ConsumeCorpse"};
 	private final int[]		racialAbilityLevels			= { 1, };
 	private final int[]		racialAbilityProficiencies	= { 100 };

@@ -85,6 +85,7 @@ public class LifeFountain extends StdDrink implements MiscMagic
 		}
 		return super.okMessage(myHost,msg);
 	}
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{

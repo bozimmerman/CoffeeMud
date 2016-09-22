@@ -80,6 +80,7 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 			return 0;
 		return super.value();
 	}
+
 	@Override
 	public boolean useTheScroll(Ability A, MOB mob)
 	{
@@ -264,6 +265,7 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 		}
 		super.executeMsg(myHost,msg);
 	}
+
 	@Override
 	public void setMiscText(String newText)
 	{
@@ -301,6 +303,7 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 		}
 		return "";
 	}
+
 	@Override
 	public void setStat(String code, String val)
 	{

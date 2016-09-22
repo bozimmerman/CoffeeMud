@@ -174,6 +174,7 @@ public class GrinderAreas
 			if(climate>=0)
 			{
 				for(int i=1;;i++)
+				{
 					if(httpReq.isUrlParameter("CLIMATE"+(Integer.toString(i))))
 					{
 						final int newVal=CMath.s_int(httpReq.getUrlParameter("CLIMATE"+(Integer.toString(i))));
@@ -186,6 +187,7 @@ public class GrinderAreas
 					}
 					else
 						break;
+				}
 			}
 			A.setClimateType(climate);
 		}
@@ -204,10 +206,12 @@ public class GrinderAreas
 		for(final Enumeration<String> s=A.subOps();s.hasMoreElements();)
 			A.delSubOp(s.nextElement());
 		for(int i=1;;i++)
+		{
 			if(httpReq.isUrlParameter("SUBOP"+(Integer.toString(i))))
 				A.addSubOp(httpReq.getUrlParameter("SUBOP"+(Integer.toString(i))));
 			else
 				break;
+		}
 
 		int num=1;
 		if(httpReq.isUrlParameter("BLURBFLAG1"))
@@ -328,6 +332,7 @@ public class GrinderAreas
 		while(A.getParents().hasMoreElements())
 			A.removeParent(A.getParents().nextElement());
 		for(int i=1;;i++)
+		{
 			if(httpReq.isUrlParameter("PARENT"+(Integer.toString(i))))
 			{
 				final Area parent=CMLib.map().getArea(httpReq.getUrlParameter("PARENT"+(Integer.toString(i))));
@@ -345,27 +350,30 @@ public class GrinderAreas
 			}
 			else
 				break;
+		}
 
 		// modify Child Area list
 		while(A.getChildren().hasMoreElements())
 			A.removeChild(A.getChildren().nextElement());
 		for(int i=1;;i++)
-		if(httpReq.isUrlParameter("CHILDREN"+(Integer.toString(i))))
 		{
-			final Area child=CMLib.map().getArea(httpReq.getUrlParameter("CHILDREN"+(Integer.toString(i))));
-			if(child!=null)
+			if(httpReq.isUrlParameter("CHILDREN"+(Integer.toString(i))))
 			{
-				if(A.canChild(child))
+				final Area child=CMLib.map().getArea(httpReq.getUrlParameter("CHILDREN"+(Integer.toString(i))));
+				if(child!=null)
 				{
-					A.addChild(child);
-					child.addParent(A);
-					areasNeedingUpdates.addElement(child);
+					if(A.canChild(child))
+					{
+						A.addChild(child);
+						child.addParent(A);
+						areasNeedingUpdates.addElement(child);
+					}
+					else
+						return "The area, '"+child.Name()+"', cannot be added as a child, as this would create a circular reference.";
 				}
 				else
-					return "The area, '"+child.Name()+"', cannot be added as a child, as this would create a circular reference.";
+					break;
 			}
-			else
-				break;
 		}
 
 		String error=GrinderAreas.doAffects(A,httpReq,parms);

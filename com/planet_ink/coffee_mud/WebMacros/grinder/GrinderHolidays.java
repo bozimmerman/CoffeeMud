@@ -35,9 +35,12 @@ import java.util.*;
    limitations under the License.
 */
 @SuppressWarnings({"unchecked","rawtypes"})
-public class GrinderHolidays {
-	public String name() { return "GrinderHolidays"; }
-
+public class GrinderHolidays 
+{
+	public String name()
+	{
+		return "GrinderHolidays";
+	}
 
 	protected static String setText(TriadList<String,String,Integer> sets, String var, String newVAL)
 	{
@@ -142,6 +145,7 @@ public class GrinderHolidays {
 			int areaNum=2;
 			boolean reallyAll=true;
 			for(final Enumeration e=CMLib.map().areas();e.hasMoreElements();areaNum++)
+			{
 				if(areaCodes.contains("AREAGROUP"+areaNum))
 					areaGroup.append(" \"" + ((Area)e.nextElement()).Name()+"\"");
 				else
@@ -149,6 +153,7 @@ public class GrinderHolidays {
 					reallyAll=false;
 					e.nextElement();
 				}
+			}
 			if(reallyAll)
 				areaGroup.setLength(0);
 		}

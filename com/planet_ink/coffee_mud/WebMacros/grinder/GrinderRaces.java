@@ -37,7 +37,10 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class GrinderRaces
 {
-	public String name() { return "GrinderRaces"; }
+	public String name()
+	{
+		return "GrinderRaces";
+	}
 
 	public static String getPStats(char c, HTTPRequest httpReq)
 	{
@@ -351,10 +354,12 @@ public class GrinderRaces
 		{
 			mask|=CMath.s_long(old);
 			for(int i=1;;i++)
+			{
 				if(httpReq.isUrlParameter("WEARID"+(Integer.toString(i))))
 					mask|=CMath.s_long(httpReq.getUrlParameter("WEARID"+(Integer.toString(i))));
 				else
 					break;
+			}
 		}
 		R.setStat("WEAR",""+mask);
 		R.setStat("AVAIL",""+CMath.s_long(httpReq.getUrlParameter("PLAYABLEID")));

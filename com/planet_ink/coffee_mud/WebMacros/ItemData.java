@@ -202,7 +202,6 @@ public class ItemData extends StdWebMacro
 						httpReq.getRequestObjects().put(itemCode,I);
 				}
 			}
-
 		}
 
 		if(I==null)
@@ -221,12 +220,14 @@ public class ItemData extends StdWebMacro
 				}
 			}
 			else
+			{
 				for(int i=0;i<M.numItems();i++)
 				{
 					final Item I2=M.getItem(i);
 					if(I2!=null)
 						str.append(RoomData.getItemCode(M,I2));
 				}
+			}
 			return clearWebMacros(str);
 		}
 
@@ -277,10 +278,12 @@ public class ItemData extends StdWebMacro
 				{
 					worndata=CMath.s_int(httpReq.getUrlParameter("WORNDATA"));
 					for(int i=1;;i++)
+					{
 						if(httpReq.isUrlParameter("WORNDATA"+(Integer.toString(i))))
 							worndata=worndata|CMath.s_int(httpReq.getUrlParameter("WORNDATA"+(Integer.toString(i))));
 						else
 							break;
+					}
 				}
 				vals=CMLib.itemBuilder().timsItemAdjustments(I,
 															 level,
@@ -1323,10 +1326,12 @@ public class ItemData extends StdWebMacro
 								{
 									consumedFuel.add(Integer.valueOf(CMath.s_int(httpReq.getUrlParameter("CONSUMEDMATS"))));
 									for(int i=1;;i++)
+									{
 										if(httpReq.isUrlParameter("CONSUMEDMATS"+(Integer.toString(i))))
 											consumedFuel.add(Integer.valueOf(CMath.s_int(httpReq.getUrlParameter("CONSUMEDMATS"+(Integer.toString(i))))));
 										else
 											break;
+									}
 								}
 							}
 							for(final int r : RawMaterial.CODES.ALL_SBN())
@@ -1340,9 +1345,11 @@ public class ItemData extends StdWebMacro
 						break;
 					case AREAXML:
 						if(I instanceof BoardableShip)
+						{
 							str.append((firstTime) ? 
 								CMLib.xml().parseOutAngleBracketsAndQuotes(CMLib.coffeeMaker().getAreaObjectXML(((BoardableShip)I).getShipArea(), null, null, null, true).toString()) :
 								old).append(", ");
+						}
 						break;
 					}
 					if(firstTime)

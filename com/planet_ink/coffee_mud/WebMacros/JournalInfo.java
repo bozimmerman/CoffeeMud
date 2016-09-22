@@ -126,8 +126,10 @@ public class JournalInfo extends StdWebMacro
 	{
 		final List<String> h = new XVector<String>(httpReq.getRequestObjects().keySet());
 		for(final String o : h)
+		{
 			if((o!=null)&&(o.startsWith("JOURNAL: "+journalName+": ")))
 				httpReq.getRequestObjects().remove(o.toString());
+		}
 	}
 
 	public static JournalEntry getNextEntry(List<JournalEntry> info, String key)
@@ -382,8 +384,10 @@ public class JournalInfo extends StdWebMacro
 				return s;
 			}
 			if(parms.containsKey("EMAILALLOWED"))
+			{
 				return ""+((entry.from().length()>0)
 						&&(CMProps.getVar(CMProps.Str.MAILBOX).length()>0));
+			}
 		}
 		return "";
 	}

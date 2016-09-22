@@ -35,7 +35,10 @@ import java.util.*;
 */
 public class GrinderClanGovernments
 {
-	public String name() { return "GrinderClanGovernments"; }
+	public String name()
+	{
+		return "GrinderClanGovernments";
+	}
 
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
@@ -60,12 +63,14 @@ public class GrinderClanGovernments
 					usedTypeIDs.add(Integer.valueOf(G2.getID()));
 				G=CMLib.clans().createGovernment(httpReq.getUrlParameter("NAME"));
 				for(int i=0;i<CMLib.clans().getStockGovernments().length;i++)
+				{
 					if(!usedTypeIDs.contains(Integer.valueOf(i)))
 					{
 						httpReq.addFakeUrlParameter("GOVERNMENT", Integer.toString(i));
 						G.setID(i);
 						break;
 					}
+				}
 			}
 
 			String str=null;

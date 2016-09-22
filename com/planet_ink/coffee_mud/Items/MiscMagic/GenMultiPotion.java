@@ -125,6 +125,7 @@ public class GenMultiPotion extends GenDrink implements Potion
 	{
 		return StdPotion.getSpells(this);
 	}
+
 	@Override
 	public void setReadableText(String text)
 	{

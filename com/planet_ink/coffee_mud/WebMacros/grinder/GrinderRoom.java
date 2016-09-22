@@ -32,10 +32,11 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class GrinderRoom
 {
-	public int z=0;
-	public int[] xy=null;
-	public String roomID="";
-	private Room roomCache=null;
+	public int		z			= 0;
+	public int[]	xy			= null;
+	public String	roomID		= "";
+	private Room	roomCache	= null;
+
 	public Room room()
 	{
 		if((roomID.length()>0)
@@ -48,8 +49,13 @@ public class GrinderRoom
 		return roomCache;
 	}
 
-	public boolean isRoomGood(){return ((roomCache!=null)&&(!roomCache.amDestroyed()));}
-	public GrinderDir[] doors=new GrinderDir[Directions.NUM_DIRECTIONS()];
+	public boolean isRoomGood()
+	{
+		return ((roomCache != null) && (!roomCache.amDestroyed()));
+	}
+
+	public GrinderDir[]	doors	= new GrinderDir[Directions.NUM_DIRECTIONS()];
+
 	public GrinderRoom(String newRoomID)
 	{
 		roomCache=null;

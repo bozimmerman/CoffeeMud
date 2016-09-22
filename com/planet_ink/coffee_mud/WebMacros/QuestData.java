@@ -61,11 +61,13 @@ public class QuestData extends StdWebMacro
 			{
 				final String newLast=CMStrings.replaceAll(last,"*","@");
 				for(int q=0;q<CMLib.quests().numQuests();q++)
+				{
 					if((""+CMLib.quests().fetchQuest(q)).equals(newLast))
 					{
 						Q=CMLib.quests().fetchQuest(q);
 						break;
 					}
+				}
 			}
 			if(Q==null)
 				return "";
@@ -130,9 +132,11 @@ public class QuestData extends StdWebMacro
 					script=new StringBuffer(script.toString().substring(0,limit));
 				}
 				for(int i=0;i<script.length();i++)
+				{
 					if((script.charAt(i)==';')
 					&&((i==0)||(script.charAt(i-1)!='\\')))
 						script.setCharAt(i,'\n');
+				}
 				script=new StringBuffer(CMStrings.replaceAll(script.toString(),"\\;",";"));
 				return clearWebMacros(script+postFix);
  			}

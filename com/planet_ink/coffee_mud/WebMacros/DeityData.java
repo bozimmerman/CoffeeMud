@@ -84,7 +84,13 @@ public class DeityData extends StdWebMacro
 				{
 					if(parms.containsKey("ENCODED"))
 					{
-						try {str.append(URLEncoder.encode(D.getStartRoom().getArea().Name(),"UTF-8")+", ");}catch(final Exception e){}
+						try
+						{
+							str.append(URLEncoder.encode(D.getStartRoom().getArea().Name(),"UTF-8")+", ");
+						}
+						catch(final Exception e)
+						{
+						}
 					}
 					else
 						str.append(D.getStartRoom().getArea().Name()+", ");
@@ -93,7 +99,13 @@ public class DeityData extends StdWebMacro
 				{
 					if(parms.containsKey("ENCODED"))
 					{
-						try {str.append(URLEncoder.encode(D.getStartRoom().roomID(),"UTF-8")+", ");}catch(final Exception e){}
+						try
+						{
+							str.append(URLEncoder.encode(D.getStartRoom().roomID(),"UTF-8")+", ");
+						}
+						catch(final Exception e)
+						{
+						}
 					}
 					else
 						str.append(D.getStartRoom().roomID()+", ");
@@ -156,7 +168,13 @@ public class DeityData extends StdWebMacro
 					}
 					if(parms.containsKey("ENCODED"))
 					{
-						try {str.append(URLEncoder.encode(RoomData.getMOBCode(classes,D),"UTF-8")+", ");}catch(final Exception e){}
+						try
+						{
+							str.append(URLEncoder.encode(RoomData.getMOBCode(classes,D),"UTF-8")+", ");
+						}
+						catch(final Exception e)
+						{
+						}
 					}
 					else
 						str.append(RoomData.getMOBCode(classes,D)+", ");

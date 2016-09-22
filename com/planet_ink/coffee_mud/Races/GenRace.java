@@ -586,7 +586,11 @@ public class GenRace extends StdRace
 			return;
 		}
 		final List<XMLLibrary.XMLTag> raceData=CMLib.xml().getContentsFromPieces(xml,"RACE");
-		if(raceData==null){	Log.errOut("GenRace","Unable to get RACE data: ("+parms.length()+"): "+CMStrings.padRight(parms,30)+"."); return;}
+		if(raceData==null)
+		{
+			Log.errOut("GenRace","Unable to get RACE data: ("+parms.length()+"): "+CMStrings.padRight(parms,30)+".");
+			return;
+		}
 		final String id=CMLib.xml().getValFromPieces(raceData,"ID");
 		if(id.length()==0)
 		{
@@ -691,7 +695,12 @@ public class GenRace extends StdRace
 		startAdjState=null;
 		disableFlags=CMLib.xml().getIntFromPieces(raceData,"DISFLAGS");
 		final String saState=CMLib.xml().getValFromPieces(raceData,"STARTASTATE");
-		if(saState.length()>0){ startAdjState=(CharState)CMClass.getCommon("DefaultCharState"); startAdjState.setAllValues(0); CMLib.coffeeMaker().setCharState(startAdjState,saState);}
+		if(saState.length()>0)
+		{
+			startAdjState=(CharState)CMClass.getCommon("DefaultCharState");
+			startAdjState.setAllValues(0);
+			CMLib.coffeeMaker().setCharState(startAdjState,saState);
+		}
 		final String aging=CMLib.xml().getValFromPieces(raceData,"AGING");
 		final List<String> aV=CMParms.parseCommas(aging,true);
 		for(int v=0;v<aV.size();v++)

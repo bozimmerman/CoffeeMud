@@ -670,7 +670,12 @@ public class StdRace implements Race
 							if(isChild && (!isAnimal))
 							{
 								A=mob.fetchAbility("Common");
-								if(A==null){ A=CMClass.getAbility("Common"); if(A!=null)mob.addAbility(A);}
+								if(A==null)
+								{
+									A=CMClass.getAbility("Common");
+									if(A!=null)
+										mob.addAbility(A);
+								}
 								if(A!=null)
 									A.setProficiency(100);
 							}

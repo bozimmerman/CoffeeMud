@@ -38,8 +38,10 @@ import java.util.*;
 
 public class GrinderFactions 
 {
-	public String name() { return "GrinderFactions"; }
-
+	public String name()
+	{
+		return "GrinderFactions";
+	}
 
 	public static String modifyFaction(HTTPRequest httpReq, java.util.Map<String,String> parms, Faction F)
 	{

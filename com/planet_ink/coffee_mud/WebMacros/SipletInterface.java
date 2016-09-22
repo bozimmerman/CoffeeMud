@@ -537,7 +537,7 @@ public class SipletInterface extends StdWebMacro
 		{
 			msg.reset();
 			payload.reset();
-			state = WSState.S0;
+			state 		= WSState.S0;
 			subState	= 0;
 			dataLen		= 0;
 			opCode		= 0;

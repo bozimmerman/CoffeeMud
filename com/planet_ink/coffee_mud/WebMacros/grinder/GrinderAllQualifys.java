@@ -37,7 +37,10 @@ import java.util.*;
 */
 public class GrinderAllQualifys
 {
-	public String name() { return "GrinderAllQualifys"; }
+	public String name()
+	{
+		return "GrinderAllQualifys";
+	}
 
 	public String editAllQualify(HTTPRequest httpReq, java.util.Map<String,String> parms)
 	{
