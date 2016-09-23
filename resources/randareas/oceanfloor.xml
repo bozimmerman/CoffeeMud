@@ -1,0 +1,300 @@
+<!--  
+   Copyright 2016-2016 Kevin
+
+   Licensed under the Apache License</STRING><STRING>Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+	   http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing</STRING><STRING>software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND</STRING><STRING>either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+--------------------------------------------------------------------------------
+
+See guides/RandomAreas.html for information about documents of this type.
+
+-->
+<!--  include file full of desert-specific tags -->
+<string id="randomtheme" merge=true select="any-1">
+	<string condition="$theme=''">oceanfloor</string>
+</string>
+
+<STRING load="/resources/randareas/inc_roomruns.xml" />
+<STRING load="/resources/randareas/inc_common.xml" />
+<STRING load="/resources/randareas/inc_adjectives.xml" />
+
+<AREA id="maze_dungeon" merge=true layout="MAZE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=desert">
+	<NAME merge=false>$areaname</NAME><SIZE merge=false>$areasize</SIZE>
+	<CLASS merge=false select="any-1"><CLASS condition="$areatype!=''">$areatype</CLASS><CLASS condition="$areatype=''">StdArea</CLASS></CLASS>
+	<ROOM merge=false insert="hallway_rooms,interior_rooms,leaf_rooms" />
+</AREA>
+<AREA id="grid_dungeon" merge=true like="maze_dungeon" layout="GRIDCITY" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=desert" />
+<AREA id="square_dungeon" merge=true like="maze_dungeon" layout="BOXCITYSQUARE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=desert" />
+<AREA id="box_dungeon" merge=true like="maze_dungeon" layout="BOXCITY" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=desert" />
+<AREA id="cross_dungeon" merge=true like="maze_dungeon" layout="CROSS" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=desert" />
+<AREA id="tree_dungeon" merge=true like="maze_dungeon" layout="TREE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=desert" />
+
+<ROOM id="hallway_rooms" merge=true select="pick-1" condition="$roomtag_nodetype='street' or $roomtag_nodetype='surround'">
+	<ROOM class="Desert" id="oceanfloor_street_room" condition="$theme='desert' or $theme='random'">
+		<TITLE>(a(n)) $_oceanfloor_path_name</TITLE>
+		<DESCRIPTION>$oceanfloor_street_desc</DESCRIPTION>
+		<STRING id="oceanfloor_street_desc" select="all">
+			<STRING action="PREPEND" condition="$ROOMTAG_NODEGATEEXIT != ''">You are at the entrance to $areaname. ${c:STAT:AREAGATE:AREA:NAME} is to the ${l:ROOMTAG_NODEGATEEXIT}. </STRING>
+			<STRING select="any-1" action="PREPEND">
+				<STRING>You are working your way along (a(n)) ${l:_oceanfloor_path_name}. </STRING>
+				<STRING>You are on (a(n)) ${l:_oceanfloor_path_name}. </STRING>
+				<STRING>The ${l:_oceanfloor_path_name} goes through the $oceanfloor_nouns. </STRING>
+				<STRING>(A(n)) ${l:_oceanfloor_path_name} runs through the $oceanfloor_nouns. </STRING>
+				<STRING>You are inching your way through (a(n)) ${l:_oceanfloor_path_name}. </STRING>
+				<STRING>You are lost in (a(n)) ${l:_oceanfloor_path_name}. </STRING>
+				<STRING>You are deep in (a(n)) ${l:_oceanfloor_path_name}. </STRING>
+				<STRING>The ${l:_oceanfloor_path_name} surrounds you. </STRING>
+				<STRING>The ${l:_oceanfloor_path_name} is all around you. </STRING>
+			</STRING>
+			<STRING select="any-1" action="APPEND">
+				<STRING>The $_oceanfloor_path_type is crossed by $adj_sparse cacti and plants. ${c:adj_desolate} sands otherwise surrounds you. </STRING>
+				<STRING>Tracks in the $adj_soft_sands sands make the $_oceanfloor_path_type easier to follow here. </STRING>
+				<STRING>${c:adj_phys_size_tall} dunes curve around the $_oceanfloor_path_type like a wall. </STRING>
+				<STRING>The plant life here is $adj_sparse enough here to make the $_oceanfloor_path_type $adj_desolate and dead. </STRING>
+				<STRING>The sands of $areaname are $adj_phys_size_large and gold, dunes rise in $adj_impassable walls. </STRING>
+				<STRING>You $verb_oceanfloor_tread your way through the $noun_oceanfloor_brush of the $adj_sparse desert. </STRING>
+				<STRING>The desert surrounds you, $adj_sparse cacti making some directions prickly and $adj_impassable. </STRING>
+				<STRING>You feel a $noun_oceanfloor_wind blow around the $adj_sparse plants of the desert. </STRING>
+			</STRING>
+			<STRING select="any-1" action="APPEND">
+				<STRING>The $_oceanfloor_path_type continues $roomrun_desc_long.</STRING>
+				<STRING>Beneath the narrow shadows of the dunes you can see the $_oceanfloor_path_type running $roomrun_desc_long.</STRING>
+				<STRING>The $_oceanfloor_path_type runs $roomrun_desc_long.</STRING>
+				<STRING>The faint $_oceanfloor_path_type goes $roomrun_desc_long.</STRING>
+				<STRING>It looks like you might pick your way $roomexits_desc_long.</STRING>
+				<STRING>Openings in the $adj_sparse $noun_oceanfloor_brush can be seen $roomexits_desc_long.</STRING>
+				<STRING>You can $verb_oceanfloor_tread on through $roomexits_desc_long.</STRING>
+				<STRING>You can continue $roomexits_desc_long.</STRING>
+			</STRING>
+		</STRING>
+		<EXIT class="Open" />
+		<MOB condition="1?2=1" select="any-1" insert="oceanfloor_mobs" />
+	</ROOM>
+</ROOM>
+
+<ROOM id="interior_rooms" merge=true select="any-1" condition="$roomtag_nodetype='interior' or $roomtag_nodetype='square'">
+	<ROOM class="Desert" like="oceanfloor_street_room" condition="$theme='desert' or $theme='random'" />
+</ROOM>
+
+<ROOM id="leaf_rooms" merge=true select="any-1" condition="$roomtag_nodetype='leaf'">
+	<ROOM class="Desert" id="oceanfloor_interior_room" condition="$theme='desert' or $theme='random'">
+		<TITLE>
+			<TITLE>$oceanfloor_path_prefix $oceanfloor_nouns</TITLE>
+		</TITLE>
+		<DESCRIPTION>$oceanfloor_interior_desc</DESCRIPTION>
+		<STRING id="oceanfloor_interior_desc" select="all">
+			<STRING select="any-1" action="PREPEND">
+				<STRING>You find yourself by a $adj_sparse copse of plants in the ${l:room_title}. </STRING>
+				<STRING>You are in a corner of the ${l:room_title}. </STRING>
+				<STRING>The ${oceanfloor_nouns} surrounds you. </STRING>
+				<STRING>The ${oceanfloor_nouns} is all around you. </STRING>
+			</STRING>
+			<STRING select="any-1" action="APPEND">
+				<STRING>The $adj_large dunes of $areaname are $adj_cramped around you in $adj_impassable walls. </STRING>
+				<STRING>You $verb_oceanfloor_tread your way through the $noun_oceanfloor_brush of the desert. </STRING>
+				<STRING>The desert surrounds you, ${adj_phys_size_tall} $adj_cramped dunes making some directions $adj_impassable. </STRING>
+				<STRING>You feel a $noun_oceanfloor_wind blow over the $adj_phys_size_tall dunes of the $noun_oceanfloor_wind_adj desert. </STRING>
+			</STRING>
+			<STRING select="any-1" action="APPEND">
+				<STRING>It looks like you might pick your way $roomexits_desc_long.</STRING>
+				<STRING>Openings in the $noun_oceanfloor_brush can be seen $roomexits_desc_long.</STRING>
+				<STRING>You can $verb_oceanfloor_tread on through $roomexits_desc_long.</STRING>
+				<STRING>You can continue $roomexits_desc_long.</STRING>
+				<STRING condition="$roomtag_nodetype='leaf'">It looks like you might pick your way $roomexits_desc_long to ${l:STAT:ANYROOM:DISPLAY}.</STRING>
+				<STRING condition="$roomtag_nodetype='leaf'">You can $verb_oceanfloor_tread on through $roomexits_desc_long to ${l:STAT:ANYROOM:DISPLAY}.</STRING>
+			</STRING>
+		</STRING>
+		<EXIT class="Open" />
+		<MOB condition="($NOFANTASY != 'true') and ($__defined_oceanfloor_dragon&lt;1)" define="__defined_oceanfloor_dragon+=1" like="oceanfloor_dragon_mob" />
+		<MOB condition="1?2=1" select="any-1" insert="oceanfloor_mobs" />
+		<ITEM condition="1?4=1" select="any-1">
+			<ITEM class="GenContainer" name="A $adj_wooden_ragged chest" display="$item_name is here" HASLID="true" HASLOCK="$trueorfalse">
+				<CONTENT>
+					<ITEM select="any-5" insert="dungeon_treasure_items" />
+				</CONTENT>
+				<AFFECT class="Prop_Hidden" />
+			</ITEM>
+		</ITEM>
+	</ROOM>
+</ROOM>
+	
+<MOB class="GenMob" level="$level_range" id="oceanfloor_dragon_mob" race="Dragon" gender="$anygender" hpmod="15">
+	<NAME select="all">
+		<NAME condition="$mob_level&lt;10">a hatchling blue dragon</NAME>
+		<NAME condition="$mob_level&lt;20 and $mob_level&gt;=10">a very young blue dragon</NAME>
+		<NAME condition="$mob_level&lt;30 and $mob_level&gt;=20">a young blue dragon</NAME>
+		<NAME condition="$mob_level&lt;40 and $mob_level&gt;=30">a subadult blue dragon</NAME>
+		<NAME condition="$mob_level&lt;70 and $mob_level&gt;=40">an adult blue dragon</NAME>
+		<NAME condition="$mob_level&lt;80 and $mob_level&gt;=70">an old blue dragon</NAME>
+		<NAME condition="$mob_level&lt;85 and $mob_level&gt;=80">a very old blue dragon</NAME>
+		<NAME condition="$mob_level&gt;=85">a ancient blue dragon</NAME>
+	</NAME>
+	<DISPLAY select="pick-1">
+		<DISPLAY pickweight="1">$mob_name leaps towards you.</DISPLAY>
+		<DISPLAY pickweight="1">$mob_name is watching you.</DISPLAY>
+		<DISPLAY pickweight="5">$mob_name is here.</DISPLAY>
+	</DISPLAY>
+	<DESCRIPTION>$mob_name strikes terror in your very bones.</DESCRIPTION>
+	<BEHAVIOR select="all">
+		<BEHAVIOR condition="$mob_level&gt;=40" class="MOBEater" parms="" />
+		<BEHAVIOR class="CombatAbilities" parms="" />
+		<BEHAVIOR class="ObjectGuardian" parms="" />
+	</BEHAVIOR>
+	<AFFECT class="Prop_Resistance" parms="magic 20% enchantment/charm $[$mob_level]%" />
+	<ABILITY select="all">
+		<ABILITY condition="$mob_level&gt;=10" class="Skill_Trip" parms="" />
+		<ABILITY condition="$mob_level&gt;=20" class="Dragonbreath" parms="" />
+		<ABILITY condition="$mob_level&gt;=30" class="Spell_DetectInvisible" parms="" />
+		<ABILITY condition="$mob_level&gt;=40" class="Spell_Fear" parms="" />
+		<ABILITY condition="$mob_level&gt;=50" class="Spell_Hold" parms="" />
+		<ABILITY condition="$mob_level&gt;=60" class="Spell_Slow" parms="" />
+		<ABILITY condition="$mob_level&gt;=70" class="Spell_GravitySlam" parms="" />
+		<ABILITY condition="$mob_level&gt;=80" class="Spell_SpellTurning" parms="" />
+		<ABILITY condition="$mob_level&gt;=90" class="Spell_ResistSlashing" parms="" />
+	</ABILITY>
+</MOB>
+
+<MOB id="oceanfloor_mob" select="any-1" requires="level_range=int,aggrochance=int">
+	<MOB id="oceanfloor_mobs" select="all" requires="level_range=int,aggrochance=int">
+		<MOB class="genmob" copyof="Lizard" level="$level_range" gender="$anygender" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display">
+			<BEHAVIOR CLASS="Mobile" />
+			<BEHAVIOR CLASS="BrotherHelper" />
+		</MOB>
+		<MOB class="genmob" copyof="Lizard" level="$level_range" gender="$anygender" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display">
+			<BEHAVIOR CLASS="Mobile" />
+			<BEHAVIOR CLASS="BrotherHelper" />
+		</MOB>
+		<MOB class="genmob" copyof="Vulture" level="$level_range" gender="$anygender" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display">
+			<BEHAVIOR CLASS="Mobile" />
+			<BEHAVIOR CLASS="BrotherHelper" />
+		</MOB>
+		<MOB class="genmob" copyof="Rabbit" level="$level_range" gender="$anygender" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display">
+			<BEHAVIOR CLASS="Mobile" />
+			<BEHAVIOR CLASS="BrotherHelper" />
+		</MOB>
+		<MOB class="genmob" copyof="Rat" level="$level_range" gender="$anygender" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display">
+			<BEHAVIOR CLASS="Mobile" />
+			<BEHAVIOR CLASS="BrotherHelper" />
+		</MOB>
+		<MOB class="genmob" copyof="Toad" level="$level_range" gender="$anygender" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display">
+			<BEHAVIOR CLASS="Mobile" />
+			<BEHAVIOR CLASS="BrotherHelper" />
+		</MOB>
+		<MOB class="genmob" copyof="Spider" level="$level_range" gender="$anygender" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display">
+			<BEHAVIOR CLASS="Mobile" />
+			<BEHAVIOR CLASS="BrotherHelper" />
+			<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
+		</MOB>
+		<MOB class="genmob" copyof="Scorpion" level="$level_range" gender="$anygender" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display">
+			<BEHAVIOR CLASS="Mobile" />
+			<BEHAVIOR CLASS="BrotherHelper" />
+			<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
+		</MOB>
+		<MOB condition="$NOFANTASY != 'true'" class="genmob" copyof="Zombie" level="$level_range" gender="$anygender" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display">
+			<BEHAVIOR CLASS="Mobile" />
+			<BEHAVIOR CLASS="BrotherHelper" />
+			<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
+		</MOB>
+		<MOB class="genmob" copyof="Rattlesnake" level="$level_range" gender="$anygender" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display">
+			<BEHAVIOR CLASS="Mobile" />
+			<BEHAVIOR CLASS="BrotherHelper" />
+			<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
+		</MOB>
+		<MOB class="genmob" copyof="Scorpion" level="$level_range" gender="$anygender" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display">
+			<BEHAVIOR CLASS="Mobile" />
+			<BEHAVIOR CLASS="BrotherHelper" />
+			<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
+		</MOB>
+		<MOB class="genmob" copyof="Rattlesnake" level="$level_range" gender="$anygender" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display">
+			<BEHAVIOR CLASS="Mobile" />
+			<BEHAVIOR CLASS="BrotherHelper" />
+			<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
+		</MOB>
+		<MOB class="genmob" copyof="GiantScorpion" level="$level_range" gender="$anygender" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display">
+			<BEHAVIOR CLASS="Mobile" />
+			<BEHAVIOR CLASS="BrotherHelper" />
+			<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
+		</MOB>
+		<MOB class="genmob" copyof="Cobra" level="$level_range" gender="$anygender" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display">
+			<BEHAVIOR CLASS="Mobile" />
+			<BEHAVIOR CLASS="BrotherHelper" />
+			<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
+		</MOB>
+	</MOB>
+</MOB>
+
+<STRING id="noun_oceanfloor_brush" select="any-1">
+    <STRING>sandscape</STRING>
+    <STRING>dunes</STRING>
+    <STRING>scrub</STRING>
+    <STRING>brush</STRING>
+    <STRING>cacti</STRING>
+    <STRING>desertscape</STRING>
+    <STRING>desert</STRING>
+</STRING>
+
+<STRING id="noun_oceanfloor_wind_adj" select="any-1">
+    <STRING>stinging</STRING>
+    <STRING>scouring</STRING>
+    <STRING>scratchy</STRING>
+    <STRING>hot</STRING>
+    <STRING>burning</STRING>
+    <STRING>dry</STRING>
+</STRING>
+
+<STRING id="noun_oceanfloor_wind" select="any-1">
+    <STRING>$noun_oceanfloor_wind_adj wind</STRING>
+    <STRING>$noun_oceanfloor_wind_adj breeze</STRING>
+    <STRING>$noun_oceanfloor_wind_adj air</STRING>
+</STRING>
+
+<STRING id="verb_oceanfloor_tread" select="any-1">
+    <STRING>drag</STRING>
+    <STRING>work</STRING>
+    <STRING>trample</STRING>
+    <STRING>tread</STRING>
+    <STRING>stomp</STRING>
+    <STRING>walk</STRING>
+    <STRING>shuffle</STRING>
+</STRING>
+
+<STRING id="_oceanfloor_path_name" select="any-1" define="_oceanfloor_path_name">
+	<STRING pickweight=1>$oceanfloor_path_prefix $oceanfloor_nouns</STRING>
+	<STRING pickweight=1>$adj_random_moody_words1 $oceanfloor_path_prefix $oceanfloor_nouns</STRING>
+</STRING>
+
+<STRING id="oceanfloor_path_prefix" select="any-1">
+	<STRING>sandy</STRING><STRING>silty</STRING><STRING>rocky</STRING><STRING>barren</STRING>
+	<STRING>lush</STRING><STRING>vast</STRING><STRING>creepy</STRING><STRING>overgrown</STRING>
+	<STRING>extensive</STRING><STRING>flourishing</STRING><STRING>thriving</STRING><STRING>desolate</STRING>
+	<STRING>empty</STRING><STRING>bouldered</STRING><STRING>errie</STRING><STRING>weird</STRING>
+</STRING>
+
+<STRING id="oceanfloor_nouns" select="any-1">
+	<STRING>ocean floor</STRING>
+	<STRING>ocean bottom</STRING>
+	<STRING>sea bottom</STRING>
+	<STRING>sea floor</STRING>
+	<STRING>coral reef</STRING>
+	<STRING>mid-ocean ridge</STRING>
+	<STRING>abyssal plain</STRING>
+	<STRING>continental shelf</STRING>
+	<STRING>continental slope</STRING>
+	<STRING>continental rise</STRING>
+	<STRING>transform fault</STRING>
+	<STRING>submarine canyon</STRING>
+	<STRING>trench</STRING>
+	<STRING>guyot</STRING>
+	<STRING>abyssal hill</STRING>
+	<STRING>abyss</STRING>
+	<STRING>rift valley</STRING>
+	<STRING>whale fall</STRING>
+</STRING>
