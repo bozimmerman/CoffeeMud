@@ -98,7 +98,7 @@ public class Centaur extends StdRace
 		return true;
 	}
 
-	private final String[]	racialEffectNames			= { "Fighter_EnhancedFitness"};
+	private final String[]	racialEffectNames			= { "Fighter_Hardiness"};
 	private final int[]		racialEffectLevels			= { 1};
 	private final String[]	racialEffectParms			= { "" };
 	

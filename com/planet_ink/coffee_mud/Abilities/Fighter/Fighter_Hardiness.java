@@ -33,15 +33,15 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Fighter_EnhancedFitness extends FighterSkill
+public class Fighter_Hardiness extends FighterSkill
 {
 	@Override
 	public String ID()
 	{
-		return "Fighter_EnhancedFitness";
+		return "Fighter_Hardiness";
 	}
 
-	private final static String	localizedName	= CMLib.lang().L("Enhanced Fitness");
+	private final static String	localizedName	= CMLib.lang().L("Hardiness");
 
 	@Override
 	public String name()
