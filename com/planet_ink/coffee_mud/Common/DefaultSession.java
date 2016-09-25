@@ -2517,15 +2517,15 @@ public class DefaultSession implements Session
 		final MOB M=mob;
 		if(M!=null)
 		{
+			final PlayerStats pStats=M.playerStats();
 			final boolean inTheGame=CMLib.flags().isInTheGame(M,true);
-			final PlayerStats pstats=M.playerStats();
-			if(pstats!=null)
-				pstats.setLastDateTime(System.currentTimeMillis());
+			if(pStats!=null)
+				pStats.setLastDateTime(System.currentTimeMillis());
 			if(inTheGame)
 				CMLib.database().DBUpdateFollowers(M);
 			if(!CMSecurity.isDisabled(CMSecurity.DisFlag.LOGOUTS))
 			{
-				if(pstats!=null) // cant do this when logouts are suspended -- folks might get killed!
+				if(pStats!=null) // cant do this when logouts are suspended -- folks might get killed!
 					CMLib.threads().suspendResumeRecurse(M, false, true);
 				M.removeFromGame(true,killSession);
 			}
@@ -2958,10 +2958,8 @@ public class DefaultSession implements Session
 					waiting=false;
 					final String firstWord=CMDS.get(0);
 					final PlayerStats pStats=mob.playerStats();
-					if(pStats!=null)
-						pStats.setSavable(true);
 					final String alias=(pStats!=null)?pStats.getAlias(firstWord):"";
-					final Vector<List<String>> ALL_CMDS=new Vector<List<String>>();
+					final List<List<String>> ALL_CMDS=new LinkedList<List<String>>();
 					boolean echoOn=false;
 					if(alias.length()>0)
 					{
@@ -2976,17 +2974,17 @@ public class DefaultSession implements Session
 						for(final String stuff : all_stuff)
 						{
 							final List THIS_CMDS=new XVector(CMDS);
-							ALL_CMDS.addElement(THIS_CMDS);
+							ALL_CMDS.add(THIS_CMDS);
 							final List<String> preCommands=CMParms.parse(stuff);
 							for(int v=preCommands.size()-1;v>=0;v--)
 								THIS_CMDS.add(0,preCommands.get(v));
 						}
 					}
 					else
-						ALL_CMDS.addElement(CMDS);
-					for(int v=0;v<ALL_CMDS.size();v++)
+						ALL_CMDS.add(CMDS);
+					for(Iterator<List<String>> i=ALL_CMDS.iterator();i.hasNext();)
 					{
-						CMDS=ALL_CMDS.elementAt(v);
+						CMDS=i.next();
 						setPreviousCmd(CMDS);
 						milliTotal+=(lastStop-lastStart);
 

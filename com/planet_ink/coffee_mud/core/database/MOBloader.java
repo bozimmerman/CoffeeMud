@@ -985,7 +985,7 @@ public class MOBloader
 			return;
 		}
 		final PlayerStats pstats=mob.playerStats();
-		if(pstats==null)
+		if((pstats==null)||(!pstats.isSavable()))
 			return;
 		final String pfxml=getPlayerStatsXML(mob);
 		DB.updateWithClobs("UPDATE CMCHAR SET CMPFIL=? WHERE CMUSERID='"+mob.Name()+"'", pfxml.toString());
