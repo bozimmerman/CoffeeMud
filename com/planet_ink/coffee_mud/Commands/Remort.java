@@ -484,182 +484,181 @@ public class Remort extends StdCommand
 							&&(myHost instanceof MOB)
 							&&(msg.sourceMinor()==CMMsg.TYP_LIFE))
 							{
-								try
+								int tryTheme = mob.playerStats().getTheme();
+								if((tryTheme < 0)&&(mob.location()!=null))
+									tryTheme=mob.location().getArea().getTheme();
+								if((CMath.numberOfSetBits(tryTheme&Area.THEME_ALLTHEMES)) > 1)
 								{
-									int tryTheme = mob.playerStats().getTheme();
-									if((tryTheme < 0)&&(mob.location()!=null))
-										tryTheme=mob.location().getArea().getTheme();
-									if((CMath.numberOfSetBits(tryTheme&Area.THEME_ALLTHEMES)) > 1)
-									{
-										if((tryTheme&Area.THEME_FANTASY) != 0)
-											tryTheme = Area.THEME_FANTASY;
-										else
-										if((tryTheme&Area.THEME_TECHNOLOGY) != 0)
-											tryTheme = Area.THEME_TECHNOLOGY;
-									}
-									final int theme=tryTheme;
-									Runnable remortRun = new Runnable()
-									{
-										@Override
-										public void run()
-										{
-											try
-											{
-												final Session sess = mob.session();
-												mob.baseCharStats().setMyClasses("StdCharClass");
-												mob.baseCharStats().setMyLevels("1");
-												mob.basePhyStats().setLevel(1);
-												for (final Enumeration<Ability> a = mob.personalEffects(); a.hasMoreElements();)
-												{
-													final Ability A = a.nextElement();
-													if(A!=null)
-													{
-														if (A.canBeUninvoked()
-														||(A.isNowAnAutoEffect()))
-														{
-															A.unInvoke();
-															mob.delEffect(A);
-														}
-														
-													}
-												}
-												Ability oldFailSafeA=mob.fetchEffect(failsafeID);
-												if(oldFailSafeA!=null)
-													mob.delEffect(oldFailSafeA);
-												ExtendableAbility failsafeA=(ExtendableAbility)CMClass.getAbility("ExtAbility");
-												if(failsafeA!=null)
-												{
-													failsafeA.setAbilityID(failsafeID);
-													failsafeA.setMsgListener(me);
-													failsafeA.setSavable(false);
-													mob.addNonUninvokableEffect(failsafeA);
-												}
-												recoverEverything(mob);
-												if(retainRace < 0)
-												{
-													try
-													{
-														mob.baseCharStats().setMyRace(CMLib.login().promptRace(theme, mob, mob.session()));
-													}
-													catch(Throwable x)
-													{
-														sess.stopSession(true, true, false);
-													}
-													if(sess.isStopped())
-													{
-														slowStop(sess,mob,oldAccount);
-													}
-													recoverEverything(mob);
-												}
-												if(retainGender < 0)
-												{
-													try
-													{
-														mob.baseCharStats().setStat(CharStats.STAT_GENDER,CMLib.login().promptGender(theme, mob, mob.session()));
-													}
-													catch(Throwable x)
-													{
-														sess.stopSession(true, true, false);
-													}
-													if(sess.isStopped())
-													{
-														slowStop(sess,mob,oldAccount);
-													}
-													recoverEverything(mob);
-												}
-												mob.setPractices(0);
-												mob.setTrains(0);
-												CMLib.achievements().reloadPlayerAwards(mob,AchievementLoadFlag.REMORT_PRELOAD);
-												CMLib.achievements().loadAccountAchievements(mob,AchievementLoadFlag.REMORT_PRELOAD);
-												if(retainStats < 0)
-												{
-													try
-													{
-														CMLib.login().promptPlayerStats(theme, mob, 300, mob.session(), bonusPointsPerStat[0]);
-													}
-													catch(Throwable x)
-													{
-														sess.stopSession(true, true, false);
-													}
-													if(sess.isStopped())
-													{
-														slowStop(sess,mob,oldAccount);
-													}
-													recoverEverything(mob);
-												}
-												mob.basePhyStats().setSensesMask(0);
-												mob.baseCharStats().getMyRace().startRacing(mob,false);
-												mob.setWimpHitPoint(5);
-												mob.setQuestPoint(questPoint[0]);
-												recoverEverything(mob);
-												if(retainCharClass < 0)
-												{
-													try
-													{
-														mob.baseCharStats().setCurrentClass(CMLib.login().promptCharClass(theme, mob, mob.session()));
-													}
-													catch(Throwable x)
-													{
-														sess.stopSession(true, true, false);
-													}
-													if(sess.isStopped())
-													{
-														slowStop(sess,mob,oldAccount);
-													}
-													recoverEverything(mob);
-												}
-												mob.baseCharStats().getCurrentClass().startCharacter(mob, false, false);
-												mob.baseCharStats().getCurrentClass().grantAbilities(mob, false);
-												recoverEverything(mob);
-												recoverEverything(mob);
-												CMLib.achievements().reloadPlayerAwards(mob,AchievementLoadFlag.REMORT_POSTLOAD);
-												CMLib.achievements().loadAccountAchievements(mob,AchievementLoadFlag.REMORT_POSTLOAD);
-												CMLib.achievements().loadPlayerSkillAwards(mob, mob.playerStats());
-												CMLib.commands().postLook(mob, true);
-												if((!mob.charStats().getCurrentClass().leveless())
-												&&(!mob.charStats().isLevelCapped(mob.charStats().getCurrentClass()))
-												&&(!mob.charStats().getMyRace().leveless())
-												&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS)))
-												{
-													for(int i=1;i<newLevel[0];i++)
-													{
-														if((mob.getExpNeededLevel()==Integer.MAX_VALUE)
-														||(mob.charStats().getCurrentClass().expless())
-														||(mob.charStats().getMyRace().expless()))
-															CMLib.leveler().level(mob);
-														else
-															CMLib.leveler().postExperience(mob,null,null,mob.getExpNeededLevel()+1,false);
-													}
-												}
-												recoverEverything(mob);
-												CMLib.utensils().confirmWearability(mob);
-												recoverEverything(mob);
-												mob.tell(L("You have remorted back to level @x1!",""+mob.phyStats().level()));
-												Ability A=mob.fetchEffect(failsafeID);
-												if(A!=null)
-													mob.delEffect(A);
-												CMLib.database().DBUpdatePlayer(mob);
-											}
-											catch(java.lang.NullPointerException e)
-											{
-											}
-											catch (final IOException e)
-											{
-											}
-										}
-									};
-									if(msg.sourceMajor(CMMsg.MASK_CNTRLMSG))
-										remortRun.run();
+									if((tryTheme&Area.THEME_FANTASY) != 0)
+										tryTheme = Area.THEME_FANTASY;
 									else
-										CMLib.threads().scheduleRunnable(remortRun,500);
+									if((tryTheme&Area.THEME_TECHNOLOGY) != 0)
+										tryTheme = Area.THEME_TECHNOLOGY;
 								}
-								finally
+								final int theme=tryTheme;
+								Runnable remortRun = new Runnable()
 								{
-									if(pStats!=null)
-										pStats.setSavable(false);
-								}
+									@Override
+									public void run()
+									{
+										final PlayerStats pStats = mob.playerStats();
+										try
+										{
+											if(pStats != null)
+												pStats.setSavable(false); // protect vulnerable weakling from saves so restore works
+											final Session sess = mob.session();
+											mob.baseCharStats().setMyClasses("StdCharClass");
+											mob.baseCharStats().setMyLevels("1");
+											mob.basePhyStats().setLevel(1);
+											for (final Enumeration<Ability> a = mob.personalEffects(); a.hasMoreElements();)
+											{
+												final Ability A = a.nextElement();
+												if(A!=null)
+												{
+													if (A.canBeUninvoked()
+													||(A.isNowAnAutoEffect()))
+													{
+														A.unInvoke();
+														mob.delEffect(A);
+													}
+													
+												}
+											}
+											Ability oldFailSafeA=mob.fetchEffect(failsafeID);
+											if(oldFailSafeA!=null)
+												mob.delEffect(oldFailSafeA);
+											ExtendableAbility failsafeA=(ExtendableAbility)CMClass.getAbility("ExtAbility");
+											if(failsafeA!=null)
+											{
+												failsafeA.setAbilityID(failsafeID);
+												failsafeA.setMsgListener(me);
+												failsafeA.setSavable(false);
+												mob.addNonUninvokableEffect(failsafeA);
+											}
+											recoverEverything(mob);
+											if(retainRace < 0)
+											{
+												try
+												{
+													mob.baseCharStats().setMyRace(CMLib.login().promptRace(theme, mob, mob.session()));
+												}
+												catch(Throwable x)
+												{
+													sess.stopSession(true, true, false);
+												}
+												if(sess.isStopped())
+												{
+													slowStop(sess,mob,oldAccount);
+												}
+												recoverEverything(mob);
+											}
+											if(retainGender < 0)
+											{
+												try
+												{
+													mob.baseCharStats().setStat(CharStats.STAT_GENDER,CMLib.login().promptGender(theme, mob, mob.session()));
+												}
+												catch(Throwable x)
+												{
+													sess.stopSession(true, true, false);
+												}
+												if(sess.isStopped())
+												{
+													slowStop(sess,mob,oldAccount);
+												}
+												recoverEverything(mob);
+											}
+											mob.setPractices(0);
+											mob.setTrains(0);
+											CMLib.achievements().reloadPlayerAwards(mob,AchievementLoadFlag.REMORT_PRELOAD);
+											CMLib.achievements().loadAccountAchievements(mob,AchievementLoadFlag.REMORT_PRELOAD);
+											if(retainStats < 0)
+											{
+												try
+												{
+													CMLib.login().promptPlayerStats(theme, mob, 300, mob.session(), bonusPointsPerStat[0]);
+												}
+												catch(Throwable x)
+												{
+													sess.stopSession(true, true, false);
+												}
+												if(sess.isStopped())
+												{
+													slowStop(sess,mob,oldAccount);
+												}
+												recoverEverything(mob);
+											}
+											mob.basePhyStats().setSensesMask(0);
+											mob.baseCharStats().getMyRace().startRacing(mob,false);
+											mob.setWimpHitPoint(5);
+											mob.setQuestPoint(questPoint[0]);
+											recoverEverything(mob);
+											if(retainCharClass < 0)
+											{
+												try
+												{
+													mob.baseCharStats().setCurrentClass(CMLib.login().promptCharClass(theme, mob, mob.session()));
+												}
+												catch(Throwable x)
+												{
+													sess.stopSession(true, true, false);
+												}
+												if(sess.isStopped())
+												{
+													slowStop(sess,mob,oldAccount);
+												}
+												recoverEverything(mob);
+											}
+											mob.baseCharStats().getCurrentClass().startCharacter(mob, false, false);
+											mob.baseCharStats().getCurrentClass().grantAbilities(mob, false);
+											recoverEverything(mob);
+											recoverEverything(mob);
+											CMLib.achievements().reloadPlayerAwards(mob,AchievementLoadFlag.REMORT_POSTLOAD);
+											CMLib.achievements().loadAccountAchievements(mob,AchievementLoadFlag.REMORT_POSTLOAD);
+											CMLib.achievements().loadPlayerSkillAwards(mob, mob.playerStats());
+											CMLib.commands().postLook(mob, true);
+											if((!mob.charStats().getCurrentClass().leveless())
+											&&(!mob.charStats().isLevelCapped(mob.charStats().getCurrentClass()))
+											&&(!mob.charStats().getMyRace().leveless())
+											&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS)))
+											{
+												for(int i=1;i<newLevel[0];i++)
+												{
+													if((mob.getExpNeededLevel()==Integer.MAX_VALUE)
+													||(mob.charStats().getCurrentClass().expless())
+													||(mob.charStats().getMyRace().expless()))
+														CMLib.leveler().level(mob);
+													else
+														CMLib.leveler().postExperience(mob,null,null,mob.getExpNeededLevel()+1,false);
+												}
+											}
+											recoverEverything(mob);
+											CMLib.utensils().confirmWearability(mob);
+											recoverEverything(mob);
+											mob.tell(L("You have remorted back to level @x1!",""+mob.phyStats().level()));
+											Ability A=mob.fetchEffect(failsafeID);
+											if(A!=null)
+												mob.delEffect(A);
+											CMLib.database().DBUpdatePlayer(mob);
+										}
+										catch(Exception e)
+										{
+											Log.errOut(e);
+										}
+										finally
+										{
+											if(pStats!=null)
+												pStats.setSavable(false);
+										}
+									}
+								};
+								if(msg.sourceMajor(CMMsg.MASK_CNTRLMSG))
+									remortRun.run();
+								else
+									CMLib.threads().scheduleRunnable(remortRun,500);
 							}
 						}
+							
 						@Override
 						public boolean okMessage(Environmental myHost, CMMsg msg)
 						{
