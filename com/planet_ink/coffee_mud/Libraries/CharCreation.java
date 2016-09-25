@@ -387,6 +387,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		if(S==null)
 			return;
 
+		mob.clearCommandQueue();
 		S.initTelnetMode(mob.getAttributesBitmap());
 		if((mob.isAttributeSet(MOB.Attrib.MXP))
 		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MXP)))
