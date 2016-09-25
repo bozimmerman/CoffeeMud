@@ -571,9 +571,9 @@ public class Remort extends StdCommand
 											mob.setPractices(0);
 											mob.setTrains(0);
 											CMLib.achievements().reloadPlayerAwards(mob,AchievementLoadFlag.REMORT_PRELOAD);
-											CMLib.achievements().loadAccountAchievements(mob,AchievementLoadFlag.REMORT_PRELOAD);
 											if(retainStats < 0)
 											{
+												// loadAccountAchievements already done by crcrinit in promptplayerstats
 												try
 												{
 													CMLib.login().promptPlayerStats(theme, mob, 300, mob.session(), bonusPointsPerStat[0]);
@@ -588,7 +588,8 @@ public class Remort extends StdCommand
 												}
 												recoverEverything(mob);
 											}
-											mob.basePhyStats().setSensesMask(0);
+											else
+												CMLib.achievements().loadAccountAchievements(mob,AchievementLoadFlag.REMORT_PRELOAD);											mob.basePhyStats().setSensesMask(0);
 											mob.baseCharStats().getMyRace().startRacing(mob,false);
 											mob.setWimpHitPoint(5);
 											mob.setQuestPoint(questPoint[0]);
@@ -640,6 +641,9 @@ public class Remort extends StdCommand
 											if(A!=null)
 												mob.delEffect(A);
 											CMLib.database().DBUpdatePlayer(mob);
+										}
+										catch(IOException e)
+										{
 										}
 										catch(Exception e)
 										{
