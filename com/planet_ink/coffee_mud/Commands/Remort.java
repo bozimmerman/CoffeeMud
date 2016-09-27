@@ -652,7 +652,7 @@ public class Remort extends StdCommand
 										finally
 										{
 											if(pStats!=null)
-												pStats.setSavable(false);
+												pStats.setSavable(true);
 										}
 									}
 								};
