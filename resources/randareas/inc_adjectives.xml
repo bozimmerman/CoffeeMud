@@ -770,27 +770,27 @@ See guides/RandomAreas.html for information about documents of this type.
 </STRING>
 
 <STRING id="adj_random_moody_words1" select="any-1">
-	<STRING>errie</STRING
-	<STRING>chilling</STRING
-	<STRING>spooky</STRING
-	<STRING>happy</STRING
-	<STRING>lovely</STRING
-	<STRING>astounding</STRING
-	<STRING>bewitching</STRING
-	<STRING>cheery</STRING
-	<STRING>boring</STRING
-	<STRING>mindboggling</STRING
-	<STRING>interesting</STRING
-	<STRING>confusing</STRING
-	<STRING>dark</STRING
-	<STRING>unsettling</STRING
-	<STRING>creepy</STRING
-	<STRING>moody</STRING
-	<STRING>depressing</STRING
-	<STRING>uplifting</STRING
-	<STRING>apathetic</STRING
-	<STRING>annoying</STRING
-	<STRING>comforting</STRING
-	<STRING>soothing</STRING
-	<STRING>frightning</STRING
+	<STRING>errie</STRING>
+	<STRING>chilling</STRING>
+	<STRING>spooky</STRING>
+	<STRING>happy</STRING>
+	<STRING>lovely</STRING>
+	<STRING>astounding</STRING>
+	<STRING>bewitching</STRING>
+	<STRING>cheery</STRING>
+	<STRING>boring</STRING>
+	<STRING>mindboggling</STRING>
+	<STRING>interesting</STRING>
+	<STRING>confusing</STRING>
+	<STRING>dark</STRING>
+	<STRING>unsettling</STRING>
+	<STRING>creepy</STRING>
+	<STRING>moody</STRING>
+	<STRING>depressing</STRING>
+	<STRING>uplifting</STRING>
+	<STRING>apathetic</STRING>
+	<STRING>annoying</STRING>
+	<STRING>comforting</STRING>
+	<STRING>soothing</STRING>
+	<STRING>frightning</STRING>
 </STRING>
