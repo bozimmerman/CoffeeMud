@@ -99,6 +99,29 @@ public class Drow extends Elf
 		return localizedStaticRacialCat;
 	}
 
+	private final String[]	racialEffectNames			= { "Spell_LightSensitivity","Prayer_TaintOfEvil" };
+	private final int[]		racialEffectLevels			= { 1, 1 };
+	private final String[]	racialEffectParms			= { "", "" };
+	
+	@Override
+	protected String[] racialEffectNames()
+	{
+		return racialEffectNames;
+	}
+
+	@Override
+	protected int[] racialEffectLevels()
+	{
+		return racialEffectLevels;
+	}
+
+	@Override
+	protected String[] racialEffectParms()
+	{
+		return racialEffectParms;
+	}
+
+	
 	private final String[]	culturalAbilityNames			= { "Drowish", "Spell_Darkness", "Spell_FaerieFire", "Undercommon" };
 	private final int[]		culturalAbilityProficiencies	= { 75, 25, 25, 25 };
 

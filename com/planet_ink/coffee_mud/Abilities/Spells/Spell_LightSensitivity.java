@@ -35,14 +35,45 @@ import java.util.*;
 
 public class Spell_LightSensitivity extends Spell
 {
-	@Override public String ID() { return "Spell_LightSensitivity"; }
-	private final static String localizedName = CMLib.lang().L("Light Sensitivity");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Light Sensitivity)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
+	@Override
+	public String ID()
+	{
+		return "Spell_LightSensitivity";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Light Sensitivity");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Light Sensitivity)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL | Ability.DOMAIN_TRANSMUTATION;
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
@@ -57,7 +88,6 @@ public class Spell_LightSensitivity extends Spell
 		else
 			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_SEE);
 	}
-
 
 	@Override
 	public void unInvoke()
