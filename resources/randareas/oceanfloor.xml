@@ -19,7 +19,7 @@ See guides/RandomAreas.html for information about documents of this type.
 -->
 <!--  include file full of desert-specific tags -->
 <string id="randomtheme" merge=true select="any-1">
-	<string condition="$theme=''">oceanfloor</string>
+    <string condition="$theme=''">oceanfloor</string>
 </string>
 
 <STRING load="/resources/randareas/inc_roomruns.xml" />
@@ -27,9 +27,9 @@ See guides/RandomAreas.html for information about documents of this type.
 <STRING load="/resources/randareas/inc_adjectives.xml" />
 
 <AREA id="maze_dungeon" merge=true layout="MAZE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=desert">
-	<NAME merge=false>$areaname</NAME><SIZE merge=false>$areasize</SIZE>
-	<CLASS merge=false select="any-1"><CLASS condition="$areatype!=''">$areatype</CLASS><CLASS condition="$areatype=''">StdArea</CLASS></CLASS>
-	<ROOM merge=false insert="hallway_rooms,interior_rooms,leaf_rooms" />
+    <NAME merge=false>$areaname</NAME><SIZE merge=false>$areasize</SIZE>
+    <CLASS merge=false select="any-1"><CLASS condition="$areatype!=''">$areatype</CLASS><CLASS condition="$areatype=''">StdArea</CLASS></CLASS>
+    <ROOM merge=false insert="hallway_rooms,interior_rooms,leaf_rooms" />
 </AREA>
 <AREA id="grid_dungeon" merge=true like="maze_dungeon" layout="GRIDCITY" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=desert" />
 <AREA id="square_dungeon" merge=true like="maze_dungeon" layout="BOXCITYSQUARE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=desert" />
@@ -231,70 +231,129 @@ See guides/RandomAreas.html for information about documents of this type.
 	</MOB>
 </MOB>
 
-<STRING id="noun_oceanfloor_brush" select="any-1">
-    <STRING>sandscape</STRING>
-    <STRING>dunes</STRING>
-    <STRING>scrub</STRING>
-    <STRING>brush</STRING>
-    <STRING>cacti</STRING>
-    <STRING>desertscape</STRING>
-    <STRING>desert</STRING>
+<STRING id="noun_oceanfloor_plants" select="any-1">
+    <STRING>$noun_oceanfloor_plants_adj kelp</STRING>
+    <STRING>$noun_oceanfloor_plants_adj seaweed</STRING>
+    <STRING>$noun_oceanfloor_plants_adj seagrass</STRING>
+    <STRING>$noun_oceanfloor_plants_adj coralline algae</STRING>
+    <STRING>$noun_oceanfloor_plants_adj coral</STRING>
 </STRING>
 
-<STRING id="noun_oceanfloor_wind_adj" select="any-1">
-    <STRING>stinging</STRING>
-    <STRING>scouring</STRING>
-    <STRING>scratchy</STRING>
-    <STRING>hot</STRING>
-    <STRING>burning</STRING>
-    <STRING>dry</STRING>
+<STRING id="noun_oceanfloor_plants_adj" select="any-1">
+    <STRING>small</STRING>
+    <STRING>large</STRING>
+    <STRING>single</STRING>
+    <STRING>cultivated</STRING>
+    <STRING>hardy</STRING>
+    <STRING>growing</STRING>
+    <STRING>dying</STRING>
+    <STRING>rare</STRING>
+    <STRING>native</STRING>
+    <STRING>typical</STRING>
+    <STRING>common</STRING>
+    <STRING>huge</STRING>
 </STRING>
 
-<STRING id="noun_oceanfloor_wind" select="any-1">
-    <STRING>$noun_oceanfloor_wind_adj wind</STRING>
-    <STRING>$noun_oceanfloor_wind_adj breeze</STRING>
-    <STRING>$noun_oceanfloor_wind_adj air</STRING>
+<STRING id="noun_oceanfloor_fishes" select="any-1">
+    <STRING>$noun_oceanfloor_fishes_adj schools of fish</STRING>
+    <STRING>$noun_oceanfloor_fishes_adj shrimp</STRING>
+    <STRING>$noun_oceanfloor_fishes_adj crustaceans</STRING>
+    <STRING>$noun_oceanfloor_fishes_adj sea cucumbers</STRING>
+    <STRING>$noun_oceanfloor_fishes_adj starfish</STRING>
+    <STRING>$noun_oceanfloor_fishes_adj urchin</STRING>
+    <STRING>$noun_oceanfloor_fishes_adj oyters</STRING>
+    <STRING>$noun_oceanfloor_fishes_adj clams</STRING>
+    <STRING>$noun_oceanfloor_fishes_adj jellyfish</STRING>
+    <STRING>$noun_oceanfloor_fishes_adj seahorses</STRING>
+    <STRING>$noun_oceanfloor_fishes_adj fish</STRING>
+</STRING>
+
+<STRING id="noun_oceanfloor_fishes_adj" select="any-1">
+    <STRING>tiny</STRING>
+    <STRING>small</STRING>
+    <STRING>large</STRING>
+    <STRING>huge</STRING>
+    <STRING>colorful</STRING>
+    <STRING>graceful</STRING>
+    <STRING>alien looking</STRING>
+    <STRING>prehistoric looking</STRING>
+    <STRING>typical</STRING>
+    <STRING>common</STRING>
+    <STRING>rare</STRING>
+    <STRING>native</STRING>
+</STRING>
+
+<STRING id="noun_oceanfloor_rocks" select="any-1">
+    <STRING>$noun_oceanfloor_rocks_adj pebbles</STRING>
+    <STRING>$noun_oceanfloor_rocks_adj rocks</STRING>
+    <STRING>$noun_oceanfloor_rocks_adj boulders</STRING>
+    <STRING>$noun_oceanfloor_rocks_adj gravel</STRING>
+    <STRING>$noun_oceanfloor_rocks_adj rubble</STRING>
+</STRING>
+
+<STRING id="noun_oceanfloor_rocks_adj" select="any-1">
+    <STRING>small</STRING>
+    <STRING>large</STRING>
+    <STRING>smooth</STRING>
+    <STRING>rough</STRING>
+    <STRING>broken</STRING>
+    <STRING>common</STRING>
+    <STRING>typical</STRING>
 </STRING>
 
 <STRING id="verb_oceanfloor_tread" select="any-1">
-    <STRING>drag</STRING>
-    <STRING>work</STRING>
-    <STRING>trample</STRING>
-    <STRING>tread</STRING>
-    <STRING>stomp</STRING>
-    <STRING>walk</STRING>
-    <STRING>shuffle</STRING>
+    <STRING>swimming</STRING>
+    <STRING>floating</STRING>
+    <STRING>dogpaddling</STRING>
+    <STRING>frogging</STRING>
+    <STRING>paddling</STRING>
+    <STRING>freestyling</STRING>
+    <STRING>treading water</STRING>
+    <STRING>diving</STRING>
+    <STRING>gliding</STRING>
+    <STRING>underway</STRING>
+    <STRING>navigating</STRING>
+    <STRING>squelching</STRING>
+    <STRING>bathing</STRING>
+    <STRING>breaststroking</STRING>
+    <STRING>backstroking</STRING>
+    <STRING>porpoising</STRING>
+    <STRING>drifting</STRING>
+    <STRING>flowing</STRING>
+    <STRING>washing</STRING>
+    <STRING>skimming</STRING>
+    <STRING>coasting</STRING>
 </STRING>
 
 <STRING id="_oceanfloor_path_name" select="any-1" define="_oceanfloor_path_name">
-	<STRING pickweight=1>$oceanfloor_path_prefix $oceanfloor_nouns</STRING>
-	<STRING pickweight=1>$adj_random_moody_words1 $oceanfloor_path_prefix $oceanfloor_nouns</STRING>
+    <STRING pickweight=1>$oceanfloor_path_prefix $oceanfloor_nouns</STRING>
+    <STRING pickweight=1>$adj_random_moody_words1 $oceanfloor_path_prefix $oceanfloor_nouns</STRING>
 </STRING>
 
 <STRING id="oceanfloor_path_prefix" select="any-1">
-	<STRING>sandy</STRING><STRING>silty</STRING><STRING>rocky</STRING><STRING>barren</STRING>
-	<STRING>lush</STRING><STRING>vast</STRING><STRING>creepy</STRING><STRING>overgrown</STRING>
-	<STRING>extensive</STRING><STRING>flourishing</STRING><STRING>thriving</STRING><STRING>desolate</STRING>
-	<STRING>empty</STRING><STRING>bouldered</STRING><STRING>errie</STRING><STRING>weird</STRING>
+    <STRING>sandy</STRING><STRING>silty</STRING><STRING>rocky</STRING><STRING>barren</STRING>
+    <STRING>lush</STRING><STRING>vast</STRING><STRING>creepy</STRING><STRING>overgrown</STRING>
+    <STRING>extensive</STRING><STRING>flourishing</STRING><STRING>thriving</STRING><STRING>desolate</STRING>
+    <STRING>empty</STRING><STRING>bouldered</STRING><STRING>errie</STRING><STRING>weird</STRING>
 </STRING>
 
 <STRING id="oceanfloor_nouns" select="any-1">
-	<STRING>ocean floor</STRING>
-	<STRING>ocean bottom</STRING>
-	<STRING>sea bottom</STRING>
-	<STRING>sea floor</STRING>
-	<STRING>coral reef</STRING>
-	<STRING>mid-ocean ridge</STRING>
-	<STRING>abyssal plain</STRING>
-	<STRING>continental shelf</STRING>
-	<STRING>continental slope</STRING>
-	<STRING>continental rise</STRING>
-	<STRING>transform fault</STRING>
-	<STRING>submarine canyon</STRING>
-	<STRING>trench</STRING>
-	<STRING>guyot</STRING>
-	<STRING>abyssal hill</STRING>
-	<STRING>abyss</STRING>
-	<STRING>rift valley</STRING>
-	<STRING>whale fall</STRING>
+    <STRING>ocean floor</STRING>
+    <STRING>ocean bottom</STRING>
+    <STRING>sea bottom</STRING>
+    <STRING>sea floor</STRING>
+    <STRING>coral reef</STRING>
+    <STRING>mid-ocean ridge</STRING>
+    <STRING>abyssal plain</STRING>
+    <STRING>continental shelf</STRING>
+    <STRING>continental slope</STRING>
+    <STRING>continental rise</STRING>
+    <STRING>transform fault</STRING>
+    <STRING>submarine canyon</STRING>
+    <STRING>trench</STRING>
+    <STRING>guyot</STRING>
+    <STRING>abyssal hill</STRING>
+    <STRING>abyss</STRING>
+    <STRING>rift valley</STRING>
+    <STRING>whale fall</STRING>
 </STRING>
