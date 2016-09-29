@@ -2407,7 +2407,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	{
 		if((showFlag>0)&&(showFlag!=showNumber))
 			return;
-		final int[] senses={PhyStats.CAN_SEE_DARK,
+		final int[] senses={
+					  PhyStats.CAN_SEE_DARK,
 					  PhyStats.CAN_SEE_HIDDEN,
 					  PhyStats.CAN_SEE_INVISIBLE,
 					  PhyStats.CAN_SEE_SNEAKERS,
@@ -2417,18 +2418,21 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					  PhyStats.CAN_SEE_BONUS,
 					  PhyStats.CAN_NOT_SPEAK,
 					  PhyStats.CAN_NOT_HEAR,
-					  PhyStats.CAN_NOT_SEE};
+					  PhyStats.CAN_NOT_SEE,
+					  PhyStats.CAN_SEE_HIDDEN_ITEMS,
+		};
 		final String[] briefs={"darkvision",
-						 "hidden",
-						 "invisible",
-						 "sneakers",
-						 "infrared",
-						 "good",
-						 "evil",
-						 "magic",
-						 "MUTE",
-						 "DEAF",
-						 "BLIND"};
+								 "hidden",
+								 "invisible",
+								 "sneakers",
+								 "infrared",
+								 "good",
+								 "evil",
+								 "magic",
+								 "mute",
+								 "deaf",
+								 "blind",
+								 "items"};
 		if((showFlag!=showNumber)&&(showFlag>-999))
 		{
 			final StringBuffer buf=new StringBuffer(showNumber+". Senses: ");

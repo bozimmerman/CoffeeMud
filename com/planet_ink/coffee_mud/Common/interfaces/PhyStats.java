@@ -384,6 +384,8 @@ public interface PhyStats extends CMCommon, Modifiable
 	public final static int CAN_NOT_BE_CAMPED=1048576;
 	/** a bit setting, as from sensesMask(), flagging this mob being able to grunt, when sufficiently stupid */
 	public final static int CAN_GRUNT_WHEN_STUPID=2097152;
+	/** a bit setting, as from sensesMask(), flagging this mob as able to see hidden items */
+	public final static int CAN_SEE_HIDDEN_ITEMS=4194304;
 
 	/** STAT codes list, indexed by the 2nd root of the various sensesMask() CAN_SEE bitmasks */
 	public static final String[] CAN_SEE_CODES={
@@ -407,7 +409,8 @@ public interface PhyStats extends CMCommon, Modifiable
 		"CANNOTTHINK",
 		"CANNOTWORK",
 		"CANNOTAUTOATTACK",
-		"CANNOTBECAMPED"
+		"CANNOTBECAMPED",
+		"CANSEEITEMSHIDDEN",
 	};
 
 	/** Descriptions, indexed by the 2nd root of the various CAN_SEE sensesMask() bitmasks */

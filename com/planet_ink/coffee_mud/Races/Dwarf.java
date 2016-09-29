@@ -113,7 +113,7 @@ public class Dwarf extends StdRace
 		return culturalAbilityProficiencies;
 	}
 
-	private final String[]	racialEffectNames			= { "Stonecunning" };
+	private final String[]	racialEffectNames			= { "Skill_Stonecunning" };
 	private final int[]		racialEffectLevels			= { 1 };
 	private final String[]	racialEffectParms			= { "" };
 	

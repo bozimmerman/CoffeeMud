@@ -73,6 +73,14 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	}
 
 	@Override
+	public boolean canSeeHiddenItems(MOB M)
+	{
+		return (M != null) 
+			&& (((M.phyStats().sensesMask() & PhyStats.CAN_SEE_HIDDEN_ITEMS) == PhyStats.CAN_SEE_HIDDEN_ITEMS)
+				||((M.phyStats().sensesMask() & PhyStats.CAN_SEE_HIDDEN) == PhyStats.CAN_SEE_HIDDEN));
+	}
+	
+	@Override
 	public boolean canSeeInvisible(MOB M)
 	{
 		return (M != null) && ((M.phyStats().sensesMask() & PhyStats.CAN_SEE_INVISIBLE) == PhyStats.CAN_SEE_INVISIBLE);
@@ -1131,7 +1139,15 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 
 		if((isHidden(seenP))&&(!(seenP instanceof Room)))
 		{
-			if((!canSeeHidden(seer))||(seer==null))
+			if(seer == null)
+				return false;
+			if(seenP instanceof Item)
+			{
+				if(!canSeeHiddenItems(seer))
+					return false;
+			}
+			else
+			if(!canSeeHidden(seer))
 				return false;
 			//if(this.getHideScore(seenP)>getDetectScore(seer))
 			//    return false;
@@ -1974,7 +1990,9 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 					say.append(" (^yinvisible^?)");
 				if((isSneaking(seen))&&(canSeeSneakers(seer))&&(!pStats.isAmbiance("-SNEAKING")))
 					say.append(" (^ysneaking^?)");
-				if((isHidden(seen))&&(canSeeHidden(seer))&&(!pStats.isAmbiance("-HIDDEN")))
+				if((isHidden(seen))
+				&&(canSeeHidden(seer)||((seen instanceof Item)&&(canSeeHiddenItems(seer))))
+				&&(!pStats.isAmbiance("-HIDDEN")))
 					say.append(" (^yhidden^?)");
 				if((!isGolem(seen))&&(canSeeInfrared(seer))&&(seen instanceof MOB)&&(isInDark(seer.location()))&&(!pStats.isAmbiance("-HEAT")))
 					say.append(" (^rheat aura^?)");
@@ -2237,6 +2255,9 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			str.append(L("detect good, "));
 		if(canSeeHidden(mob))
 			str.append("see hidden, ");
+		else
+		if(canSeeHiddenItems(mob))
+			str.append("see hidden items, ");
 		if(canSeeInDark(mob))
 			str.append(L("darkvision, "));
 		if(canSeeInfrared(mob))

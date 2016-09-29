@@ -94,6 +94,14 @@ public class Skill_Stonecunning extends StdSkill
 	protected volatile boolean doThisRoom	= false;
 	protected volatile Room thisRoom = null;
 
+	protected boolean appliesToRoom(Room R)
+	{
+		return
+			(R.domainType()==Room.DOMAIN_OUTDOORS_MOUNTAINS)
+			||(R.domainType()==Room.DOMAIN_INDOORS_STONE)
+			||(R.domainType()==Room.DOMAIN_INDOORS_CAVE);
+	}
+
 	public String trapCheck(Physical P)
 	{
 		if(P!=null)
@@ -127,19 +135,19 @@ public class Skill_Stonecunning extends StdSkill
 			if((I!=null)
 			&&(I.container()==null)
 			&&(CMLib.flags().canBeSeenBy(I, mob)))
-				msg.append(I);
+				msg.append(trapCheck(I));
 		}
 		return msg.toString();
 	}
-	
+
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
 		if(doThisRoom)
-			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_HIDDEN);
+			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_HIDDEN_ITEMS);
 	}
-	
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -158,11 +166,7 @@ public class Skill_Stonecunning extends StdSkill
 		{
 			final Room R=(Room)msg.target();
 			thisRoom = R;
-			final boolean goodRoom = 
-				(R.domainType()==Room.DOMAIN_OUTDOORS_MOUNTAINS)
-				||(R.domainType()==Room.DOMAIN_INDOORS_STONE)
-				||(R.domainType()==Room.DOMAIN_INDOORS_CAVE);
-			if(!goodRoom)
+			if(!appliesToRoom(R))
 			{
 				doThisRoom = false;
 				mob.recoverPhyStats();

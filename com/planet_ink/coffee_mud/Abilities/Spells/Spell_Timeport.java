@@ -35,18 +35,56 @@ import java.util.*;
 
 public class Spell_Timeport extends Spell
 {
-	@Override public String ID() { return "Spell_Timeport"; }
-	private final static String localizedName = CMLib.lang().L("Timeport");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Time Travelling)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override
+	public String ID()
+	{
+		return "Spell_Timeport";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Timeport");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Time Travelling)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL | Ability.DOMAIN_ALTERATION;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
 
 	protected final static int mask=
-			PhyStats.CAN_NOT_TASTE|PhyStats.CAN_NOT_SMELL|PhyStats.CAN_NOT_SEE
+			PhyStats.CAN_NOT_TASTE
+			|PhyStats.CAN_NOT_SMELL
+			|PhyStats.CAN_NOT_SEE
 			|PhyStats.CAN_NOT_HEAR;
 	protected final static int mask2=Integer.MAX_VALUE
 			-PhyStats.CAN_SEE_BONUS
@@ -54,6 +92,7 @@ public class Spell_Timeport extends Spell
 			-PhyStats.CAN_SEE_EVIL
 			-PhyStats.CAN_SEE_GOOD
 			-PhyStats.CAN_SEE_HIDDEN
+			-PhyStats.CAN_SEE_HIDDEN_ITEMS
 			-PhyStats.CAN_SEE_INFRARED
 			-PhyStats.CAN_SEE_INVISIBLE
 			-PhyStats.CAN_SEE_METAL

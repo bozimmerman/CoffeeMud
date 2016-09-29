@@ -706,6 +706,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			status[0]=Tickable.STATUS_MISC7+3;
 		int tries=0;
 		int direction=-1;
+		final CMFlagLibrary flags=CMLib.flags();
 		while(((tries++)<10)&&(direction<0))
 		{
 			direction=CMLib.dice().roll(1,Directions.NUM_DIRECTIONS(),-1);
@@ -720,23 +721,23 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 				}
 
 				final Exit opExit=nextRoom.getExitInDir(Directions.getOpDirectionCode(direction));
-				if(CMLib.flags().isTrapped(nextExit)
-				||(CMLib.flags().isHidden(nextExit)&&(!CMLib.flags().canSeeHidden(mob)))
-				||(CMLib.flags().isInvisible(nextExit)&&(!CMLib.flags().canSeeInvisible(mob))))
+				if(flags.isTrapped(nextExit)
+				||(flags.isHidden(nextExit)&&(!flags.canSeeHidden(mob))&&(!flags.canSeeHiddenItems(mob)))
+				||(flags.isInvisible(nextExit)&&(!flags.canSeeInvisible(mob))))
 					direction=-1;
 				else
-				if((opExit!=null)&&(CMLib.flags().isTrapped(opExit)))
+				if((opExit!=null)&&(flags.isTrapped(opExit)))
 					direction=-1;
 				else
 				if((oldRoom.domainType()!=nextRoom.domainType())
-				&&(!CMLib.flags().isInFlight(mob))
+				&&(!flags.isInFlight(mob))
 				&&((nextRoom.domainType()==Room.DOMAIN_INDOORS_AIR)
 				||(nextRoom.domainType()==Room.DOMAIN_OUTDOORS_AIR)))
 					direction=-1;
 				else
 				if((oldRoom.domainType()!=nextRoom.domainType())
-				&&(!CMLib.flags().isSwimming(mob))
-				&&(CMLib.flags().isUnderWateryRoom(nextRoom)))
+				&&(!flags.isSwimming(mob))
+				&&(flags.isUnderWateryRoom(nextRoom)))
 					direction=-1;
 				else
 				if((!wander)&&(!oldRoom.getArea().Name().equals(nextRoom.getArea().Name())))
@@ -812,9 +813,9 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			return false;
 		}
 
-		if(((CMLib.flags().isWaterySurfaceRoom(nextRoom)))
-		   &&(!CMLib.flags().isWaterWorthy(mob))
-		   &&(!CMLib.flags().isInFlight(mob))
+		if(((flags.isWaterySurfaceRoom(nextRoom)))
+		   &&(!flags.isWaterWorthy(mob))
+		   &&(!flags.isInFlight(mob))
 		   &&(mob.fetchAbility("Skill_Swim")!=null))
 		{
 			final Ability A=mob.fetchAbility("Skill_Swim");
@@ -827,9 +828,9 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			mob.curState().setMovement(oldState.getMovement());
 		}
 		else
-		if(((nextRoom.ID().indexOf("Surface")>0)||(CMLib.flags().isClimbing(nextExit))||(CMLib.flags().isClimbing(nextRoom)))
-		&&(!CMLib.flags().isClimbing(mob))
-		&&(!CMLib.flags().isInFlight(mob))
+		if(((nextRoom.ID().indexOf("Surface")>0)||(flags.isClimbing(nextExit))||(flags.isClimbing(nextRoom)))
+		&&(!flags.isClimbing(mob))
+		&&(!flags.isInFlight(mob))
 		&&((mob.fetchAbility("Skill_Climb")!=null)||(mob.fetchAbility("Power_SuperClimb")!=null)))
 		{
 			Ability A=mob.fetchAbility("Skill_Climb");
@@ -953,16 +954,17 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 	{
 		int dir=-1;
 		int tries=0;
+		final CMFlagLibrary flags=CMLib.flags();
 		while((dir<0)&&((++tries)<100))
 		{
 			dir=CMLib.dice().roll(1,Directions.NUM_DIRECTIONS(),-1);
 			final Room R=toHere.getRoomInDir(dir);
 			if(R!=null)
 			{
-				if(((R.domainType()==Room.DOMAIN_INDOORS_AIR)&&(!CMLib.flags().isFlying(M)))
-				||((R.domainType()==Room.DOMAIN_OUTDOORS_AIR)&&(!CMLib.flags().isFlying(M)))
-				||((CMLib.flags().isUnderWateryRoom(R))&&(!CMLib.flags().isSwimming(M)))
-				||((CMLib.flags().isWaterySurfaceRoom(R))&&(!CMLib.flags().isWaterWorthy(M))))
+				if(((R.domainType()==Room.DOMAIN_INDOORS_AIR)&&(!flags.isFlying(M)))
+				||((R.domainType()==Room.DOMAIN_OUTDOORS_AIR)&&(!flags.isFlying(M)))
+				||((flags.isUnderWateryRoom(R))&&(!flags.isSwimming(M)))
+				||((flags.isWaterySurfaceRoom(R))&&(!flags.isWaterWorthy(M))))
 					dir=-1;
 				if(tries < 65)
 				{
@@ -2166,5 +2168,4 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		}
 		return null;
 	}
-	
 }

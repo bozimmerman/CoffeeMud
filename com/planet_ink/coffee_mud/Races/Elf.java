@@ -156,6 +156,28 @@ public class Elf extends StdRace
 		affectableStats.setStat(CharStats.STAT_SAVE_MAGIC,affectableStats.getStat(CharStats.STAT_SAVE_MAGIC)+10);
 	}
 
+	private final String[]	racialEffectNames			= { "Skill_Keenvision" };
+	private final int[]		racialEffectLevels			= { 1 };
+	private final String[]	racialEffectParms			= { "" };
+	
+	@Override
+	protected String[] racialEffectNames()
+	{
+		return racialEffectNames;
+	}
+
+	@Override
+	protected int[] racialEffectLevels()
+	{
+		return racialEffectLevels;
+	}
+
+	@Override
+	protected String[] racialEffectParms()
+	{
+		return racialEffectParms;
+	}
+	
 	@Override
 	public List<Item> outfit(MOB myChar)
 	{

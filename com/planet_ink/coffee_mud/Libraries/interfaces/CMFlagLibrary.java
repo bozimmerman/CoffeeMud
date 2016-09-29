@@ -69,6 +69,14 @@ public interface CMFlagLibrary extends CMLibrary
 
 	/**
 	 * Returns whether the given mob has the ability to see
+	 * hidden items, but not necessarily mobs.
+	 * @param M the mob to check
+	 * @return whether the mob can see hidden items
+	 */
+	public boolean canSeeHiddenItems(MOB M);
+
+	/**
+	 * Returns whether the given mob has the ability to see
 	 * invisible.
 	 * @param M the mob to check
 	 * @return whether the mob can see invisible

@@ -997,10 +997,12 @@ public class StdRace implements Race
 		final List<Ability> finalV=new Vector<Ability>(myList.size());
 		for(final Ability A : myList)
 		{
-			A.makeNonUninvokable();
-			A.setSavable(false); // must come AFTER the above
-			A.setAffectedOne(mob);
-			finalV.add(A);
+			Ability A2=(Ability)A.copyOf();
+			A2.setMiscText(A.text());
+			A2.makeNonUninvokable();
+			A2.setSavable(false); // must come AFTER the above
+			A2.setAffectedOne(mob);
+			finalV.add(A2);
 		}
 		final ChameleonList<Ability> finalFinalV;
 		if(mob==null)
@@ -1798,8 +1800,9 @@ public class StdRace implements Race
 			final StringBuilder astr=new StringBuilder("");
 			final StringBuilder lstr=new StringBuilder("");
 
-			final List<Ability> ables=new Vector<Ability>();
+			final List<Ability> ables=new ArrayList<Ability>();
 			ables.addAll(racialAbilities(null));
+			ables.addAll(racialEffects(null));
 
 			final PairVector<String,Integer> cables=culturalAbilities();
 			Ability A=null;

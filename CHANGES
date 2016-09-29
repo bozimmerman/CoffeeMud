@@ -4,10 +4,10 @@
    3. Pirates no longer regain lost limbs after death.
    4. New resource: DIRT.  Mass Grave now populates its room with the stuff.
    5. GModify now supports query-able stat "CLASSTYPE"
-   6. New Skills: Wilderness Sounds, Hardiness
+   6. New Skills: Wilderness Sounds, Hardiness, Stonecunning, Keenvision
    7. New Prayers: Taint of Evil
    8. Centaur gets Hardiness, Drow adds Light Sensitivity and Taint of Evil, 
-   9. Duergar get -10% XP, Dwarfs get Stonecunning
+   9. Duergar get -10% XP, Dwarfs get Stonecunning, Elfs Keenvision
    10. Races can now have a XP adjustment, see Archon's Guide
 # Build 5.9.4 Released 08/03/2016
    1. Qualify now shows language limits

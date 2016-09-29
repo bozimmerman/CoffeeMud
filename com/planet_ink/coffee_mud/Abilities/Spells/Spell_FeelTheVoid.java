@@ -35,16 +35,50 @@ import java.util.*;
 
 public class Spell_FeelTheVoid extends Spell
 {
-	@Override public String ID() { return "Spell_FeelTheVoid"; }
-	private final static String localizedName = CMLib.lang().L("Feel The Void");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(In a Void)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
+	@Override
+	public String ID()
+	{
+		return "Spell_FeelTheVoid";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Feel The Void");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(In a Void)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL | Ability.DOMAIN_ILLUSION;
+	}
+
 	protected final static int mask=
-			PhyStats.CAN_NOT_TASTE|PhyStats.CAN_NOT_SMELL|PhyStats.CAN_NOT_SEE
+			PhyStats.CAN_NOT_TASTE
+			|PhyStats.CAN_NOT_SMELL
+			|PhyStats.CAN_NOT_SEE
 			|PhyStats.CAN_NOT_HEAR;
 	protected final static int mask2=Integer.MAX_VALUE
 			-PhyStats.CAN_SEE_BONUS
@@ -52,6 +86,7 @@ public class Spell_FeelTheVoid extends Spell
 			-PhyStats.CAN_SEE_EVIL
 			-PhyStats.CAN_SEE_GOOD
 			-PhyStats.CAN_SEE_HIDDEN
+			-PhyStats.CAN_SEE_HIDDEN_ITEMS
 			-PhyStats.CAN_SEE_INFRARED
 			-PhyStats.CAN_SEE_INVISIBLE
 			-PhyStats.CAN_SEE_METAL
