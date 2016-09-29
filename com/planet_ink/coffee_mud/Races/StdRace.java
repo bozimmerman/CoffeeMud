@@ -513,7 +513,7 @@ public class StdRace implements Race
 
 		final MOB myChar=(MOB)myHost;
 		if((msg.source()==myChar)
-		&&(msg.sourceMinor()==CMMsg.TYP_EXPCHANGE)
+		&&(msg.sourceMinor()==CMMsg.TYP_EXPCHANGE) // race gets execmsg before expchange application, so this works.
 		&&(this.getXPAdjustment()!=0)
 		&&(msg.value()!=0))
 			msg.setValue(msg.value() + (int)Math.round(msg.value() * CMath.div(getXPAdjustment(), 100.0)));
