@@ -6,7 +6,9 @@
    5. GModify now supports query-able stat "CLASSTYPE"
    6. New Skills: Wilderness Sounds, Hardiness
    7. New Prayers: Taint of Evil
-   8. Centaur gets Hardiness, Drow adds Light Sensitivity and Taint of Evil
+   8. Centaur gets Hardiness, Drow adds Light Sensitivity and Taint of Evil, 
+   9. Duergar get -10% XP, Dwarfs get Stonecunning
+   10. Races can now have a XP adjustment, see Archon's Guide
 # Build 5.9.4 Released 08/03/2016
    1. Qualify now shows language limits
    2. New Prop_NoTeleport exceptions

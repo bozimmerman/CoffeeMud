@@ -143,13 +143,12 @@ public class StdRace implements Race
 		return false;
 	}
 
-
 	@Override
 	public int getXPAdjustment()
 	{
 		return 0;
 	}
-	
+
 	@Override
 	public int[] bodyMask()
 	{

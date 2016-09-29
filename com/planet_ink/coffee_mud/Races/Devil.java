@@ -98,6 +98,28 @@ public class Devil extends Unique
 		return 0;
 	}
 
+	private final String[]	racialEffectNames			= { "Prayer_TaintOfEvil" };
+	private final int[]		racialEffectLevels			= { 1 };
+	private final String[]	racialEffectParms			= { "" };
+	
+	@Override
+	protected String[] racialEffectNames()
+	{
+		return racialEffectNames;
+	}
+
+	@Override
+	protected int[] racialEffectLevels()
+	{
+		return racialEffectLevels;
+	}
+
+	@Override
+	protected String[] racialEffectParms()
+	{
+		return racialEffectParms;
+	}
+
 	private final String[]	culturalAbilityNames			= { "Undercommon" };
 	private final int[]		culturalAbilityProficiencies	= { 25 };
 

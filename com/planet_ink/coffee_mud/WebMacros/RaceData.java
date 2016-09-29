@@ -884,6 +884,13 @@ public class RaceData extends StdWebMacro
 						old=""+R.shortestFemale();
 					str.append(old+", ");
 				}
+				if(parms.containsKey("XPADJ"))
+				{
+					String old=httpReq.getUrlParameter("XPADJ");
+					if(old==null)
+						old=R.getXPAdjustment()+"%";
+					str.append(old+", ");
+				}
 				if(parms.containsKey("LEAVESTR"))
 				{
 					String old=httpReq.getUrlParameter("LEAVESTR");

@@ -317,6 +317,8 @@ public class GrinderRaces
 		R.setStat("NAME",(old==null)?"NAME":old);
 		old=httpReq.getUrlParameter("CAT");
 		R.setStat("CAT",(old==null)?"CAT":old);
+		old=httpReq.getUrlParameter("XPADJ");
+		R.setStat("XPADJ",""+(int)Math.round(CMath.s_pct((old==null)?"0":old)));
 		old=httpReq.getUrlParameter("VWEIGHT");
 		R.setStat("VWEIGHT",(old==null)?"VWEIGHT":old);
 		old=httpReq.getUrlParameter("BWEIGHT");

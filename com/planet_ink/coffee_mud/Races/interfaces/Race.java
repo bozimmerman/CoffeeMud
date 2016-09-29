@@ -354,6 +354,13 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, M
 	public void agingAffects(MOB mob, CharStats baseStats, CharStats charStats);
 
 	/**
+	 * Returns the amount, as a positive or negative % to adjust all experience gains.
+	 * 
+	 * @return xp adjustment 0-100, or -1 - -100 to adjust experience gains by.
+	 */
+	public int getXPAdjustment();
+	
+	/**
 	 * Returns a list of the stat adjustments made by this race
 	 * @return a list of the stat adjustments made by this race
 	 */
