@@ -143,6 +143,13 @@ public class StdRace implements Race
 		return false;
 	}
 
+
+	@Override
+	public int getXPAdjustment()
+	{
+		return 0;
+	}
+	
 	@Override
 	public int[] bodyMask()
 	{
@@ -505,6 +512,12 @@ public class StdRace implements Race
 			return;
 
 		final MOB myChar=(MOB)myHost;
+		if((msg.source()==myChar)
+		&&(msg.sourceMinor()==CMMsg.TYP_EXPCHANGE)
+		&&(this.getXPAdjustment()!=0)
+		&&(msg.value()!=0))
+			msg.setValue(msg.value() + (int)Math.round(msg.value() * CMath.div(getXPAdjustment(), 100.0)));
+		
 		if((msg.tool() instanceof Social)
 		&&(msg.amITarget(myChar)||(msg.source()==myChar))
 		&&(myChar.location()==msg.source().location())
@@ -1106,9 +1119,10 @@ public class StdRace implements Race
 		GR.setStat("BODYKILL",""+destroyBodyAfterUse());
 		GR.setStat("HELP",""+CMLib.help().getHelpText(name(),null,false));
 		GR.setStat("AGING",CMParms.toListString(getAgingChart()));
+		GR.setStat("XPADJ", ""+this.getXPAdjustment());
 		GR.setStat("CANRIDE", ""+useRideClass());
 		for(int i=0;i<Race.BODYPARTSTR.length;i++)
-				GR.bodyMask()[i]=bodyMask()[i];
+			GR.bodyMask()[i]=bodyMask()[i];
 
 		Weapon W=myNaturalWeapon();
 		final Weapon NW=CMClass.getWeapon("Natural");
@@ -1355,6 +1369,10 @@ public class StdRace implements Race
 			GR.setStat("WEAPONCLASS",W.ID());
 			GR.setStat("WEAPONXML",W.text());
 		}
+
+		final int xpAdj1=CMath.s_int(GR.getStat("XPADJ"));
+		final int xpAdj2=CMath.s_int(otherRace.getStat("XPADJ"));
+		GR.setStat("XPADJ", ""+((xpAdj1+xpAdj2)/2));
 
 		GR.setStat("BODYKILL",""+otherRace.getStat("BODYKILL"));
 		GR.setStat("CANRIDE",""+otherRace.getStat("CANRIDE"));
