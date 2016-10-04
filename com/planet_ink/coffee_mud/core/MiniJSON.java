@@ -2,9 +2,11 @@ package com.planet_ink.coffee_mud.core;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.TreeMap;
+
 /*
    Copyright 2013-2016 Bo Zimmerman
 
@@ -324,6 +326,29 @@ public class MiniJSON
 			return value.toString();
 		}
 
+		public Object jsonDeepCopy(Object obj)
+		{
+			if(obj instanceof JSONObject)
+				return ((JSONObject)obj).copyOf();
+			else
+			if(obj.getClass().isArray())
+			{
+				final Object[] newArray = Arrays.copyOf((Object[])obj, ((Object[])obj).length);
+				for(int i=0;i<newArray.length;i++)
+					newArray[i] = jsonDeepCopy(newArray[i]);
+				return newArray;
+			}
+			else
+				return obj;
+		}
+
+		public JSONObject copyOf()
+		{
+			final JSONObject newObj = new JSONObject();
+			for(String key : this.keySet())
+				newObj.put(key, jsonDeepCopy(this.get(key)));
+			return newObj;
+		}
 	}
 
 	/**
