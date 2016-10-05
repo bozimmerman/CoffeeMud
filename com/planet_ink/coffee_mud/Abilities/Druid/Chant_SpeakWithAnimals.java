@@ -33,7 +33,6 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Chant_SpeakWithAnimals extends Chant implements Language
 {
 	@Override
@@ -73,6 +72,12 @@ public class Chant_SpeakWithAnimals extends Chant implements Language
 	protected WeakHashMap<MOB,Behavior> mudChatters=new WeakHashMap<MOB,Behavior>();
 	protected Map<String,Language> myLanguages=new Hashtable<String,Language>();
 	
+	protected void sayYouAreDone(MOB mob)
+	{
+		if((mob.location()!=null)&&(!mob.amDead()))
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> ability to speak to animals has faded."));
+	}
+	
 	@Override
 	public void unInvoke()
 	{
@@ -83,10 +88,14 @@ public class Chant_SpeakWithAnimals extends Chant implements Language
 		super.unInvoke();
 		if(canBeUninvoked())
 		{
-			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> ability to speak to animals has faded."));
+			sayYouAreDone(mob);
 			mudChatters.clear();
 		}
+	}
+
+	protected boolean canSpeakWithThis(MOB mob)
+	{
+		return CMLib.flags().isAnimalIntelligence(mob);
 	}
 
 	protected Language getMyAnimalSpeak(final MOB M, final String ID)
@@ -115,7 +124,7 @@ public class Chant_SpeakWithAnimals extends Chant implements Language
 	protected Language getAnimalSpeak(final MOB M)
 	{
 		if((M!=null)
-		&&(CMLib.flags().isAnimalIntelligence(M)))
+		&&(canSpeakWithThis(M)))
 		{
 			final Race r=M.charStats().getMyRace();
 			for(Ability A : r.racialAbilities(M))
@@ -140,7 +149,7 @@ public class Chant_SpeakWithAnimals extends Chant implements Language
 	protected Behavior getMudChat(final MOB M)
 	{
 		if((M!=null)
-		&&(CMLib.flags().isAnimalIntelligence(M)))
+		&&(canSpeakWithThis(M)))
 		{
 			Behavior B = null;
 			synchronized(mudChatters)
@@ -178,12 +187,18 @@ public class Chant_SpeakWithAnimals extends Chant implements Language
 					final MOB M=m.nextElement();
 					if((M!=null)
 					&&(M!=mob)
-					&&(CMLib.flags().isAnimalIntelligence(M)))
+					&&(canSpeakWithThis(M)))
 					{
 						final Behavior B=getMudChat(M);
 						if(B!=null)
 							B.tick(M, Tickable.TICKID_MOB);
 					}
+				}
+				for(final Iterator<MOB> i= mudChatters.keySet().iterator();i.hasNext();)
+				{
+					final MOB M=i.next();
+					if(M.location()!=room)
+						i.remove();
 				}
 			}
 		}
@@ -206,7 +221,7 @@ public class Chant_SpeakWithAnimals extends Chant implements Language
 				if((!msg.amISource(mob))
 				&&(msg.tool() instanceof Ability)
 				&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE)
-				&&(CMLib.flags().isAnimalIntelligence(msg.source()))
+				&&(canSpeakWithThis(msg.source()))
 				&&(mob.fetchEffect(msg.tool().ID())==null)
 				&&(msg.source().charStats().getMyRace().racialAbilities(msg.source()).find(msg.tool().ID())!=null))
 				{
@@ -231,7 +246,7 @@ public class Chant_SpeakWithAnimals extends Chant implements Language
 				else
 				if(msg.amISource(mob)
 				&&(msg.target() instanceof MOB)
-				&&(CMLib.flags().isAnimalIntelligence((MOB)msg.target()))
+				&&(canSpeakWithThis((MOB)msg.target()))
 				&&((msg.tool()==null) || (!(msg.tool() instanceof Language)) ||(((MOB)msg.target()).charStats().getMyRace().racialAbilities((MOB)msg.target()).find(msg.tool().ID())==null)))
 				{
 					Language lA=this.getAnimalSpeak((MOB)msg.target());
@@ -249,7 +264,7 @@ public class Chant_SpeakWithAnimals extends Chant implements Language
 					final MOB M=m.nextElement();
 					if((M!=null)
 					&&(M!=mob)
-					&&(CMLib.flags().isAnimalIntelligence(M)))
+					&&(canSpeakWithThis(M)))
 					{
 						final Behavior B=getMudChat(M);
 						if(B!=null)
@@ -279,7 +294,7 @@ public class Chant_SpeakWithAnimals extends Chant implements Language
 				{
 					if(msg.amISource(mob)
 					&&(msg.target() instanceof MOB)
-					&&(CMLib.flags().isAnimalIntelligence((MOB)msg.target()))
+					&&(canSpeakWithThis((MOB)msg.target()))
 					&&((msg.tool()==null) 
 						|| (!(msg.tool() instanceof Language)) 
 						||(((MOB)msg.target()).charStats().getMyRace().racialAbilities((MOB)msg.target()).find(msg.tool().ID())==null)))
@@ -296,7 +311,7 @@ public class Chant_SpeakWithAnimals extends Chant implements Language
 					final MOB M=m.nextElement();
 					if((M!=null)
 					&&(M!=mob)
-					&&(CMLib.flags().isAnimalIntelligence(M)))
+					&&(canSpeakWithThis(M)))
 					{
 						final Behavior B=getMudChat(M);
 						if((B!=null)&&(!B.okMessage(M, msg)))
@@ -308,6 +323,16 @@ public class Chant_SpeakWithAnimals extends Chant implements Language
 		return true;
 	}
 
+	protected String canSpeakWithWhat()
+	{
+		return "speak with animals";
+	}
+
+	protected String canSpeakWithWhatNoun()
+	{
+		return "speech of animals";
+	}
+
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -317,7 +342,7 @@ public class Chant_SpeakWithAnimals extends Chant implements Language
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,L("<S-YOUPOSS> can already speak with animals."));
+			mob.tell(target,null,null,L("<S-YOUPOSS> can already "+canSpeakWithWhat()+"."));
 			return false;
 		}
 
@@ -329,7 +354,7 @@ public class Chant_SpeakWithAnimals extends Chant implements Language
 		if(success)
 		{
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?L("<T-NAME> attain(s) the ability to speak with aniamls!"):L("^S<S-NAME> chant(s) to <S-NAMESELF>, becoming one with the speech of animals!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?L("<T-NAME> attain(s) the ability to "+canSpeakWithWhat()+"!"):L("^S<S-NAME> chant(s) to <S-NAMESELF>, becoming one with the "+canSpeakWithWhatNoun()+"!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
