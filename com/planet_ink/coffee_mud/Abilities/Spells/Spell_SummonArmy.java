@@ -118,6 +118,7 @@ public class Spell_SummonArmy extends Spell
 		||(!(affected instanceof MOB))
 		||(((MOB)affected).amDead())
 		||(((MOB)affected).amFollowing()==null)
+		||(((MOB)affected).amFollowing().amDead())
 		||((hasFought)&&(!((MOB)affected).isInCombat())))
 		{
 			unInvoke();

@@ -106,25 +106,48 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 
 	}
 
-	protected boolean isRetractableLink(Room fromRoom, Room theRoom)
+	protected boolean isRetractableLink(Map<Room,Boolean> recurseChkRooms, Room fromRoom, Room theRoom)
 	{
-		if(theRoom==null) 
+		if(theRoom==null)
 			return true;
 
 		if((theRoom.roomID().length()>0)
 		&&((CMLib.law().getLandTitle(theRoom)==null)
 			||(CMLib.law().getLandTitle(theRoom).getOwnerName().length()>0)))
+		{
+			if(recurseChkRooms != null)
+				recurseChkRooms.put(theRoom, Boolean.valueOf(false));
 			return false;
+		}
 
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
 			final Room R=theRoom.rawDoors()[d];
-			if((R!=null)
-			&&(R!=fromRoom)
-			&&(R.roomID().length()>0)
-			&&((CMLib.law().getLandTitle(R)==null)||(CMLib.law().getLandTitle(R).getOwnerName().length()>0)))
-				return false;
+			if(R!=null)
+			{
+				if((recurseChkRooms != null)
+				&&(recurseChkRooms.containsKey(R)))
+					return recurseChkRooms.get(theRoom).booleanValue();
+				if((R!=fromRoom)
+				&&(R.roomID().length()>0))
+				{
+					if((CMLib.law().getLandTitle(R)==null)||(CMLib.law().getLandTitle(R).getOwnerName().length()>0))
+					{
+						if(recurseChkRooms != null)
+							recurseChkRooms.put(theRoom, Boolean.valueOf(false));
+						return false;
+					}
+					if((recurseChkRooms != null)
+					&&(!isRetractableLink(recurseChkRooms,theRoom,R)))
+					{
+						recurseChkRooms.put(theRoom, Boolean.valueOf(false));
+						return false;
+					}
+				}
+			}
 		}
+		if(recurseChkRooms != null)
+			recurseChkRooms.put(theRoom, Boolean.valueOf(true));
 		return true;
 	}
 
@@ -149,6 +172,199 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 	{
 		return getOwnerName().length()>0;
 	}
+
+	protected boolean retractRooms(final Room R, List<Runnable> postWork)
+	{
+		boolean updateExits=false;
+		boolean foundOne=false;
+		boolean didAnything = false;
+		final Map<Room,Boolean> checkedRetractRooms;
+		if(super.gridLayout())
+			checkedRetractRooms = new Hashtable<Room,Boolean>();
+		else
+			checkedRetractRooms = null;
+		for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+		{
+			if(d==Directions.GATE)
+				continue;
+			final Room R2=R.rawDoors()[d];
+			if((R2!=null)&&((!R2.isSavable())||(R2.roomID().length()==0)))
+				continue;
+			Exit E=R.getRawExit(d);
+			if(checkedRetractRooms != null)
+				checkedRetractRooms.clear();
+			if((R2!=null)&&(R2.rawDoors()[Directions.getOpDirectionCode(d)]==R))
+				foundOne=true;
+			else
+			if((R2!=null)
+			&&(isRetractableLink(checkedRetractRooms,R,R2)))
+			{
+				R.rawDoors()[d]=null;
+				R.setRawExit(d,null);
+				updateExits=true;
+				postWork.add(new Runnable()
+				{
+					final Room room=R2;
+					@Override
+					public void run()
+					{
+						CMLib.map().obliterateRoom(room);
+					}
+				});
+				didAnything=true;
+			}
+			else
+			if((E!=null)&&(E.hasALock())&&(E.isGeneric()))
+			{
+				E.setKeyName("");
+				E.setDoorsNLocks(E.hasADoor(),E.isOpen(),E.defaultsClosed(),false,false,false);
+				updateExits=true;
+				if(R2!=null)
+				{
+					E=R2.getRawExit(Directions.getOpDirectionCode(d));
+					if((E!=null)&&(E.hasALock())&&(E.isGeneric()))
+					{
+						E.setKeyName("");
+						E.setDoorsNLocks(E.hasADoor(),E.isOpen(),E.defaultsClosed(),false,false,false);
+						postWork.add(new Runnable(){
+							final Room room=R2;
+							@Override
+							public void run()
+							{
+								CMLib.database().DBUpdateExits(room);
+								R2.getArea().fillInAreaRoom(room);
+							}
+						});
+						didAnything=true;
+					}
+				}
+			}
+		}
+		if(checkedRetractRooms != null)
+			checkedRetractRooms.clear();
+		if(!foundOne)
+		{
+			CMLib.map().obliterateRoom(R);
+			didAnything=true;
+		}
+		else
+		if(updateExits)
+		{
+			CMLib.database().DBUpdateExits(R);
+			R.getArea().fillInAreaRoom(R);
+			didAnything=true;
+		}
+		return didAnything;
+	}
+	
+	public boolean expandRooms(final Room R, final List<Runnable> postWork)
+	{
+		int numberOfPeers = -1;//getConnectedPropertyRooms().size();
+		final boolean doGrid=super.gridLayout();
+		long roomLimit = Long.MAX_VALUE;
+		final Set<Room> updateExits=new HashSet<Room>();
+		Prop_ReqCapacity cap = null;
+		boolean didAnything = false;
+		for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+		{
+			if((d==Directions.UP)||(d==Directions.DOWN)||(d==Directions.GATE))
+				continue;
+			final Room chkR=R.getRoomInDir(d);
+			if((chkR==null)&&(numberOfPeers < 0))
+			{
+				final List<Room> allRooms = getConnectedPropertyRooms();
+				if(allRooms.size()>0)
+				{
+					cap = (Prop_ReqCapacity)allRooms.get(0).fetchEffect("Prop_ReqCapacity");
+					if(cap != null)
+					{
+						roomLimit = cap.roomLimit;
+					}
+				}
+				numberOfPeers = allRooms.size();
+			}
+			if((chkR==null)&&(numberOfPeers < roomLimit))
+			{
+				numberOfPeers++;
+				final Room R2=CMClass.getLocale(CMClass.classID(R));
+				R2.setRoomID(R.getArea().getNewRoomID(R,d));
+				if(R2.roomID().length()==0)
+					continue;
+				R2.setArea(R.getArea());
+				LandTitle oldTitle=CMLib.law().getLandTitle(R);
+				final LandTitle newTitle;
+				if((oldTitle!=null)&&(CMLib.law().getLandTitle(R2)==null))
+				{
+					newTitle = oldTitle.generateNextRoomTitle();
+					R2.addNonUninvokableEffect((Ability)newTitle);
+				}
+				else
+					newTitle=null;
+				R.rawDoors()[d]=R2;
+				R.setRawExit(d,CMClass.getExit("Open"));
+				R2.rawDoors()[Directions.getOpDirectionCode(d)]=R;
+				R2.setRawExit(Directions.getOpDirectionCode(d),CMClass.getExit("Open"));
+				updateExits.add(R);
+				if(doGrid)
+				{
+					final PairVector<Room,int[]> rooms=CMLib.tracking().buildGridList(R2, this.getOwnerName(), 100);
+					for(int dir=0;dir<Directions.NUM_DIRECTIONS();dir++)
+					{
+						if(dir==Directions.GATE)
+							continue;
+						Room R3=R2.getRoomInDir(dir);
+						if(R3 == null)
+						{
+							R3=CMLib.tracking().getCalculatedAdjacentRoom(rooms, R3, dir);
+							if(R3!=null)
+							{
+								R2.rawDoors()[dir]=R3;
+								R3.rawDoors()[Directions.getOpDirectionCode(dir)]=R2;
+								updateExits.add(R3);
+							}
+						}
+					}
+				}
+				updateExits.add(R2);
+				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.PROPERTY))
+					Log.debugOut("Lots4Sale",R2.roomID()+" created and put up for sale.");
+				if(cap != null)
+					R2.addNonUninvokableEffect((Ability)cap.copyOf());
+				postWork.add(new Runnable()
+				{
+					final Room room = R2;
+					final LandTitle title=newTitle;
+					@Override
+					public void run()
+					{
+						CMLib.database().DBCreateRoom(room);
+						if(title!=null)
+							CMLib.law().colorRoomForSale(room,title,true);
+						room.getArea().fillInAreaRoom(room);
+					}
+				});
+				didAnything=true;
+			}
+		}
+		if(updateExits.size()>0)
+		{
+			didAnything=true;
+			R.getArea().fillInAreaRoom(R);
+			postWork.add(new Runnable()
+			{
+				final Set<Room> updateExits2=new SHashSet<Room>(updateExits);
+				@Override
+				public void run()
+				{
+					for(Room xR : updateExits2)
+					{
+						CMLib.database().DBUpdateExits(xR);
+					}
+				}
+			});
+		}
+		return didAnything;
+	}
 	
 	@Override
 	public void updateLot(List<String> optPlayerList)
@@ -160,6 +376,7 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 		boolean didAnything=false;
 		try
 		{
+			List<Runnable> postWork=new ArrayList<Runnable>();
 			synchronized(("SYNC"+R.roomID()).intern())
 			{
 				R=CMLib.map().getRoom(R);
@@ -167,121 +384,16 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 
 				if(getOwnerName().length()==0)
 				{
-					boolean updateExits=false;
-					boolean foundOne=false;
-					for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
-					{
-						if(d==Directions.GATE)
-							continue;
-						final Room R2=R.rawDoors()[d];
-						foundOne=foundOne||(R2!=null);
-						Exit E=R.getRawExit(d);
-						if((R2!=null)&&(isRetractableLink(R,R2)))
-						{
-							R.rawDoors()[d]=null;
-							R.setRawExit(d,null);
-							updateExits=true;
-							CMLib.map().obliterateRoom(R2);
-							didAnything=true;
-						}
-						else
-						if((E!=null)&&(E.hasALock())&&(E.isGeneric()))
-						{
-							E.setKeyName("");
-							E.setDoorsNLocks(E.hasADoor(),E.isOpen(),E.defaultsClosed(),false,false,false);
-							updateExits=true;
-							if(R2!=null)
-							{
-								E=R2.getRawExit(Directions.getOpDirectionCode(d));
-								if((E!=null)&&(E.hasALock())&&(E.isGeneric()))
-								{
-									E.setKeyName("");
-									E.setDoorsNLocks(E.hasADoor(),E.isOpen(),E.defaultsClosed(),false,false,false);
-									CMLib.database().DBUpdateExits(R2);
-									R2.getArea().fillInAreaRoom(R2);
-									didAnything=true;
-								}
-							}
-						}
-					}
-					if(!foundOne)
-					{
-						CMLib.map().obliterateRoom(R);
-						didAnything=true;
-						return;
-					}
-					if(updateExits)
-					{
-						CMLib.database().DBUpdateExits(R);
-						R.getArea().fillInAreaRoom(R);
-						didAnything=true;
-					}
+					didAnything = retractRooms(R,postWork) || didAnything;
 				}
 				else
 				if(canGenerateAdjacentRooms(R))
 				{
-					int numberOfPeers = -1;//getConnectedPropertyRooms().size();
-					long roomLimit = Long.MAX_VALUE;
-					boolean updateExits=false;
-					Prop_ReqCapacity cap = null;
-					for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
-					{
-						if((d==Directions.UP)||(d==Directions.DOWN)||(d==Directions.GATE))
-							continue;
-						Room R2=R.getRoomInDir(d);
-						if((R2==null)&&(numberOfPeers < 0))
-						{
-							final List<Room> allRooms = getConnectedPropertyRooms();
-							if(allRooms.size()>0)
-							{
-								cap = (Prop_ReqCapacity)allRooms.get(0).fetchEffect("Prop_ReqCapacity");
-								if(cap != null)
-								{
-									roomLimit = cap.roomLimit;
-								}
-							}
-							numberOfPeers = allRooms.size();
-						}
-						if((R2==null)&&(numberOfPeers < roomLimit))
-						{
-							numberOfPeers++;
-							R2=CMClass.getLocale(CMClass.classID(R));
-							R2.setRoomID(R.getArea().getNewRoomID(R,d));
-							if(R2.roomID().length()==0)
-								continue;
-							R2.setArea(R.getArea());
-							LandTitle oldTitle=CMLib.law().getLandTitle(R);
-							LandTitle newTitle = null;
-							if((oldTitle!=null)&&(CMLib.law().getLandTitle(R2)==null))
-							{
-								newTitle = oldTitle.generateNextRoomTitle();
-								R2.addNonUninvokableEffect((Ability)newTitle);
-							}
-							R.rawDoors()[d]=R2;
-							R.setRawExit(d,CMClass.getExit("Open"));
-							R2.rawDoors()[Directions.getOpDirectionCode(d)]=R;
-							R2.setRawExit(Directions.getOpDirectionCode(d),CMClass.getExit("Open"));
-							updateExits=true;
-							if(CMSecurity.isDebugging(CMSecurity.DbgFlag.PROPERTY))
-								Log.debugOut("Lots4Sale",R2.roomID()+" created and put up for sale.");
-							if(cap != null)
-								R2.addNonUninvokableEffect((Ability)cap.copyOf());
-							CMLib.database().DBCreateRoom(R2);
-							if(newTitle!=null)
-								CMLib.law().colorRoomForSale(R2,newTitle.rentalProperty(),true);
-							R2.getArea().fillInAreaRoom(R2);
-							CMLib.database().DBUpdateExits(R2);
-							didAnything=true;
-						}
-					}
-					if(updateExits)
-					{
-						CMLib.database().DBUpdateExits(R);
-						R.getArea().fillInAreaRoom(R);
-						didAnything=true;
-					}
+					didAnything = expandRooms(R,postWork) || didAnything;
 				}
 			}
+			for(Runnable run : postWork)
+				run.run();
 			scheduleReset=false;
 		}
 		finally

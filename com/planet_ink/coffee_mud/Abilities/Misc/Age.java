@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Abilities.Misc;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.AchievementLoadFlag;
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
@@ -250,7 +251,7 @@ public class Age extends StdAbility
 				if(R!=null)
 				{
 					final Item I=(Item)affected;
-					final MOB following=getFollowing(I);
+					MOB following=getFollowing(I);
 					if(following==null)
 					{
 						norecurse=false;
@@ -266,6 +267,36 @@ public class Age extends StdAbility
 					}
 					else
 					{
+						MOB leigeM=following;
+						Set<MOB> parents=new HashSet<MOB>();
+						for(Enumeration<Tattoo> t= babe.tattoos();t.hasMoreElements();)
+						{
+							final Tattoo T=t.nextElement();
+							if(T.name().startsWith("PARENT:"))
+							{
+								String parentName=T.name().substring(7).trim();
+								if(CMLib.players().playerExists(parentName))
+									parents.add(CMLib.players().getLoadPlayer(parentName));
+								else
+								{
+									MOB M=R.fetchInhabitant("$"+parentName+"$");
+									if(M!=null)
+										parents.add(M);
+								}
+							}
+						}
+						if((!parents.contains(following))
+						&&(parents.size()>0))
+						{
+							Iterator<MOB> i=parents.iterator();
+							MOB M=i.next();
+							if(!M.isMonster())
+							{
+								leigeM=M;
+								if(M.location()==R)
+									following=M;
+							}
+						}
 						babe.baseCharStats().setStat(CharStats.STAT_CHARISMA,10);
 						babe.baseCharStats().setStat(CharStats.STAT_CONSTITUTION,7);
 						babe.baseCharStats().setStat(CharStats.STAT_DEXTERITY,3);
@@ -277,7 +308,7 @@ public class Age extends StdAbility
 						babe.baseState().setHitPoints(2);
 						babe.baseState().setMana(10);
 						babe.baseState().setMovement(20);
-						babe.setLiegeID(following.Name());
+						babe.setLiegeID(leigeM.Name());
 						babe.recoverCharStats();
 						babe.recoverPhyStats();
 						babe.recoverMaxState();
@@ -300,7 +331,7 @@ public class Age extends StdAbility
 						R.show(babe,null,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> JUST TOOK <S-HIS-HER> FIRST STEPS!!!"));
 						I.destroy();
 						if(!CMLib.flags().isAnimalIntelligence(babe))
-							CMLib.database().DBReCreateData(following.Name(),"HEAVEN",following.Name()+"/HEAVEN/"+text(),babe.ID()+"/"+babe.basePhyStats().ability()+"/"+babe.text());
+							CMLib.database().DBReCreatePlayerData(leigeM.Name(),"HEAVEN",leigeM.Name()+"/HEAVEN/"+text(),babe.ID()+"/"+babe.basePhyStats().ability()+"/"+babe.text());
 					}
 				}
 			}
@@ -355,7 +386,7 @@ public class Age extends StdAbility
 					babe.recoverMaxState();
 					babe.text();
 					if(following!=null)
-						CMLib.database().DBReCreateData(following.Name(),"HEAVEN",following.Name()+"/HEAVEN/"+text(),babe.ID()+"/"+babe.basePhyStats().ability()+"/"+babe.text());
+						CMLib.database().DBReCreatePlayerData(following.Name(),"HEAVEN",following.Name()+"/HEAVEN/"+text(),babe.ID()+"/"+babe.basePhyStats().ability()+"/"+babe.text());
 				}
 			}
 			else
@@ -366,7 +397,7 @@ public class Age extends StdAbility
 				Ability A=babe.fetchEffect("Prop_SafePet");
 				if(A!=null)
 					babe.delEffect(A);
-				CMLib.database().DBDeleteData(following.Name(),"HEAVEN",following.Name()+"/HEAVEN/"+text());
+				CMLib.database().DBDeletePlayerData(following.Name(),"HEAVEN",following.Name()+"/HEAVEN/"+text());
 
 				final Room R=CMLib.map().roomLocation(affected);
 				if((R!=null)
@@ -535,7 +566,7 @@ public class Age extends StdAbility
 						newMan.recoverMaxState();
 						newMan.resetToMaxState();
 					}
-					CMLib.achievements().loadAccountAchievements(newMan);
+					CMLib.achievements().loadAccountAchievements(newMan,AchievementLoadFlag.NORMAL);
 					CMLib.database().DBCreateCharacter(newMan);
 					CMLib.players().addPlayer(newMan);
 
@@ -576,7 +607,7 @@ public class Age extends StdAbility
 						babe.setName(name);
 						babe.setDisplayText(L("@x1 stands here.",name));
 					}
-					CMLib.database().DBDeleteData(following.Name(),"HEAVEN",following.Name()+"/HEAVEN/"+text());
+					CMLib.database().DBDeletePlayerData(following.Name(),"HEAVEN",following.Name()+"/HEAVEN/"+text());
 					if(liege!=babe.amFollowing())
 						babe.amFollowing().tell(L("@x1 has just grown up to be a mob.",babe.Name()));
 					liege.tell(L("@x1 has just grown up to be a mob.",babe.Name()));

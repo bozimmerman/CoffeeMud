@@ -37,7 +37,10 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class GrinderRaces
 {
-	public String name() { return "GrinderRaces"; }
+	public String name()
+	{
+		return "GrinderRaces";
+	}
 
 	public static String getPStats(char c, HTTPRequest httpReq)
 	{
@@ -164,7 +167,7 @@ public class GrinderRaces
 	public static void setDynAbilities(Modifiable M, HTTPRequest httpReq)
 	{
 		final boolean supportsRoles=CMParms.contains(M.getStatCodes(), "GETRABLEROLE");
-		final QuintVector<String,String,String,String,String> theclasses=new QuintVector<String,String,String,String,String>();
+		final DVector theclasses=new DVector(6);
 		if(httpReq.isUrlParameter("RABLES1"))
 		{
 			int num=1;
@@ -182,12 +185,15 @@ public class GrinderRaces
 					String levl=httpReq.getUrlParameter("RABLVL"+num);
 					if(levl==null)
 						levl="0";
+					String parm=httpReq.getUrlParameter("RABPRM"+num);
+					if(parm==null)
+						parm="";
 					String roles=null;
 					if(supportsRoles)
 						roles=httpReq.getUrlParameter("RABROL"+num);
 					if(roles==null) 
 						roles="";
-					theclasses.addElement(behav,prof,qual,levl,roles);
+					theclasses.addElement(behav,prof,qual,levl,parm,roles);
 				}
 				num++;
 				behav=httpReq.getUrlParameter("RABLES"+num);
@@ -196,12 +202,13 @@ public class GrinderRaces
 		M.setStat("NUMRABLE", ""+theclasses.size());
 		for(int i=0;i<theclasses.size();i++)
 		{
-			M.setStat("GETRABLE"+i, theclasses.elementAt(i).first);
-			M.setStat("GETRABLEPROF"+i, theclasses.elementAt(i).second);
-			M.setStat("GETRABLEQUAL"+i, (theclasses.elementAt(i).third).equalsIgnoreCase("on")?"true":"false");
-			M.setStat("GETRABLELVL"+i, theclasses.elementAt(i).fourth);
+			M.setStat("GETRABLE"+i, (String)theclasses.get(i,1));
+			M.setStat("GETRABLEPROF"+i, (String)theclasses.get(i,2));
+			M.setStat("GETRABLEQUAL"+i, ((String)theclasses.get(i,3)).equalsIgnoreCase("on")?"true":"false");
+			M.setStat("GETRABLELVL"+i, (String)theclasses.get(i,4));
+			M.setStat("GETRABLEPARM"+i, (String)theclasses.get(i,5));
 			if(supportsRoles)
-				M.setStat("GETRABLEROLE"+i, theclasses.elementAt(i).fifth);
+				M.setStat("GETRABLEROLE"+i, (String)theclasses.get(i,6));
 		}
 	}
 
@@ -310,6 +317,8 @@ public class GrinderRaces
 		R.setStat("NAME",(old==null)?"NAME":old);
 		old=httpReq.getUrlParameter("CAT");
 		R.setStat("CAT",(old==null)?"CAT":old);
+		old=httpReq.getUrlParameter("XPADJ");
+		R.setStat("XPADJ",""+(int)Math.round(CMath.s_pct((old==null)?"0":old)));
 		old=httpReq.getUrlParameter("VWEIGHT");
 		R.setStat("VWEIGHT",(old==null)?"VWEIGHT":old);
 		old=httpReq.getUrlParameter("BWEIGHT");
@@ -347,10 +356,12 @@ public class GrinderRaces
 		{
 			mask|=CMath.s_long(old);
 			for(int i=1;;i++)
+			{
 				if(httpReq.isUrlParameter("WEARID"+(Integer.toString(i))))
 					mask|=CMath.s_long(httpReq.getUrlParameter("WEARID"+(Integer.toString(i))));
 				else
 					break;
+			}
 		}
 		R.setStat("WEAR",""+mask);
 		R.setStat("AVAIL",""+CMath.s_long(httpReq.getUrlParameter("PLAYABLEID")));

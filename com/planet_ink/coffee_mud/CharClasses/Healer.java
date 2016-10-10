@@ -128,6 +128,7 @@ public class Healer extends Cleric
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Prayer_Freedom",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Prayer_Forgive",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Prayer_RemoveParalysis",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Prayer_DispelEvil",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Prayer_GodLight",false);

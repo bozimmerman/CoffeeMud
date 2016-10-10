@@ -109,7 +109,7 @@ public class Disease_Lyme extends Disease
 			{
 				A.invoke(diseaser,mob,true,0);
 				A=mob.fetchEffect(A.ID());
-				if(A!=null)
+				if((A!=null)&&(!CMSecurity.isAbilityDisabled(A.ID())))
 					A.makeLongLasting();
 			}
 		}

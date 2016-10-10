@@ -56,7 +56,7 @@ public class Thief_IdentifyTraps extends ThiefSkill
 		int dirCode=-1;
 		if(unlockThis==null)
 		{
-			dirCode=Directions.getGoodDirectionCode(whatTounlock);
+			dirCode=CMLib.directions().getGoodDirectionCode(whatTounlock);
 			if(dirCode>=0)
 			{
 				unlockThis=mob.location().getExitInDir(dirCode);

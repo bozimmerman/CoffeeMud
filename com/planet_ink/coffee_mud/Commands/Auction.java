@@ -222,9 +222,9 @@ public class Auction extends Channel implements Tickable
 			if(commands!=null)
 				sb=CMParms.combine(commands,0);
 			final MOB M=getLiveData().getHighBidderMob();
-			final Object[] bidObjs=CMLib.english().parseMoneyStringSDL(mob,sb,getLiveData().getCurrency());
-			final String currency=(String)bidObjs[0];
-			final double amt=CMath.mul(((Double)bidObjs[1]).doubleValue(),((Long)bidObjs[2]).doubleValue());
+			final Triad<String,Double,Long> bidObjs=CMLib.english().parseMoneyStringSDL(mob,sb,getLiveData().getCurrency());
+			final String currency=bidObjs.first;
+			final double amt=CMath.mul(bidObjs.second.doubleValue(),bidObjs.third.doubleValue());
 			final String[] resp=CMLib.coffeeShops().bid(mob,amt,currency,getLiveData(),getLiveData().getAuctionedItem(),V);
 			if(resp!=null)
 			{

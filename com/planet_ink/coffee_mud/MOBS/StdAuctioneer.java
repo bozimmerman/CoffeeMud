@@ -306,7 +306,14 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 					aRates.mergeAuctioneerPolicy(this);
 					CMLib.commands().postSay(this,mob,L("Ok, so how many local days will your auction run for (@x1-@x2)?",""+aRates.minTimedAuctionDays(),""+aRates.maxTimedAuctionDays()),true,false);
 					int days=0;
-					try{days=CMath.s_int(mob.session().prompt(":","",30000));}catch(final Exception e){return false;}
+					try
+					{
+						days=CMath.s_int(mob.session().prompt(":","",30000));
+					}
+					catch(final Exception e)
+					{
+						return false;
+					}
 					if(days==0)
 						return false;
 					if(days<aRates.minTimedAuctionDays())
@@ -328,7 +335,15 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 						return false;
 					}
 					CMLib.commands().postSay(this,mob,L("Auctioning @x1 will cost a listing fee of @x2, proceed?",I.name(),depositAmt),true,false);
-					try{if(!mob.session().confirm(L("(Y/N):"),"Y",10000)) return false;}catch(final Exception e){return false;}
+					try
+					{
+						if(!mob.session().confirm(L("(Y/N):"),"Y",10000))
+							return false;
+					}
+					catch(final Exception e)
+					{
+						return false;
+					}
 					lastMsgData=(AuctionData)CMClass.getCommon("DefaultAuction");
 					lastMsgData.setAuctionedItem((Item)msg.tool());
 					lastMsgData.setAuctioningMob(msg.source());
@@ -401,10 +416,10 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 					}
 					else
 					{
-						final Object[] bidAmts=CMLib.english().parseMoneyStringSDL(mob,bidStr,data.getCurrency());
-						final String myCurrency=(String)bidAmts[0];
-						final double myDenomination=((Double)bidAmts[1]).doubleValue();
-						final long myCoins=((Long)bidAmts[2]).longValue();
+						final Triad<String,Double,Long> bidAmts=CMLib.english().parseMoneyStringSDL(mob,bidStr,data.getCurrency());
+						final String myCurrency=bidAmts.first;
+						final double myDenomination=bidAmts.second.doubleValue();
+						final long myCoins=bidAmts.third.longValue();
 						final double bid=CMath.mul(myCoins,myDenomination);
 						if(!myCurrency.equals(data.getCurrency()))
 						{
@@ -651,10 +666,10 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 								CMLib.commands().postSay(this,mob,L("I can't seem to do business with you."),true,false);
 								return;
 							}
-							final Object[] bidAmts=CMLib.english().parseMoneyStringSDL(mob,bidStr,data.getCurrency());
-							final String myCurrency=(String)bidAmts[0];
-							final double myDenomination=((Double)bidAmts[1]).doubleValue();
-							final long myCoins=((Long)bidAmts[2]).longValue();
+							final Triad<String,Double,Long> bidAmts=CMLib.english().parseMoneyStringSDL(mob,bidStr,data.getCurrency());
+							final String myCurrency=bidAmts.first;
+							final double myDenomination=bidAmts.second.doubleValue();
+							final long myCoins=bidAmts.third.longValue();
 							final double bid=CMath.mul(myCoins,myDenomination);
 							final MOB M=data.getHighBidderMob();
 							final double oldBid=data.getBid();
@@ -699,7 +714,9 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 					{
 						final String price=CMLib.beanCounter().nameCurrencyShort(data.getCurrency(),data.getBid());
 						final String buyOut=(data.getBuyOutPrice()<=0.0)?null:CMLib.beanCounter().nameCurrencyShort(data.getCurrency(),data.getBuyOutPrice());
-						final StringBuffer str=new StringBuffer(L("@x1\n\r\n\rThe current bid on @x2 is @x3. Use the BID command to place your own bid.  ",CMLib.coffeeShops().getViewDescription(mob,msg.tool()),msg.tool().name(),price));
+						final StringBuffer str=new StringBuffer(
+							L("Interested in @x2? Here is some information for you: @x1\n\r\n\rThe current bid on @x2 is @x3. Use the BID command to place your own bid.  ",
+							CMLib.coffeeShops().getViewDescription(mob,msg.tool()),msg.tool().name(),price));
 						if(buyOut!=null)
 							str.append(L("You may also buy this item immediately for @x1 by using the BUY command.",buyOut));
 						CMLib.commands().postSay(this,mob,str.toString(),true,false);

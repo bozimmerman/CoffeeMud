@@ -41,10 +41,10 @@ public class StdLimb extends StdItem implements FalseLimb
 		return "StdLimb";
 	}
 
-	protected int partnum=-1;
-	protected long wearplace=-1;
-	protected short layer=-10;
-	protected short layerAttributes=0;
+	protected int	partnum			= -1;
+	protected long	wearplace		= -1;
+	protected short	layer			= -10;
+	protected short	layerAttributes	= 0;
 
 	public StdLimb()
 	{
@@ -81,10 +81,13 @@ public class StdLimb extends StdItem implements FalseLimb
 			final MOB mob=(MOB)owner();
 			final Wearable.CODES codes = Wearable.CODES.instance();
 			for(int w=0;w<codes.total();w++)
+			{
 				if((amWearingAt(codes.get(w)))
 				&&(codes.get(w)!=Wearable.IN_INVENTORY)
 				&&(codes.dependency_masks()[w]>0))
+				{
 					for(int w2=0;w2<codes.total();w2++)
+					{
 						if(!amWearingAt(codes.get(w2))
 						&&(codes.get(w2)!=Wearable.IN_INVENTORY)
 						&&(CMath.bset(codes.dependency_masks()[w], codes.get(w2))))
@@ -96,6 +99,9 @@ public class StdLimb extends StdItem implements FalseLimb
 								return false;
 							}
 						}
+					}
+				}
+			}
 		}
 		return true;
 	}
@@ -114,12 +120,14 @@ public class StdLimb extends StdItem implements FalseLimb
 		if(partnum>=0)
 			return partnum;
 		for(int i=0;i<Race.BODYPARTSTR.length;i++)
+		{
 			if((name().toUpperCase().endsWith(Race.BODYPARTSTR[i]))
 			||(rawSecretIdentity().toUpperCase().endsWith(Race.BODYPARTSTR[i])))
 			{
 				partnum=i;
 				break;
 			}
+		}
 		return partnum;
 	}
 

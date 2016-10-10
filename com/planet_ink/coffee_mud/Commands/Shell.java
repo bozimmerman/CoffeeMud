@@ -279,6 +279,7 @@ public class Shell extends StdCommand
 			if(cmd>=0)
 				break;
 		}
+		final boolean killOnSession=((mob.session()!=null)&&(!mob.session().isStopped())); 
 		switch(cmd)
 		{
 		case 0: // directory
@@ -312,6 +313,8 @@ public class Shell extends StdCommand
 			}
 			for (final CMFile dir : dirs)
 			{
+				if(killOnSession && ((mob.session()==null)||(mob.session().isStopped())))
+					break;
 				final CMFile entry=dir;
 				if(!entry.isDirectory())
 				{
@@ -359,11 +362,33 @@ public class Shell extends StdCommand
 				return false;
 			}
 			if((dirs.length==1)&&(!target.trim().startsWith("::")&&(!target.trim().startsWith("//"))))
-				target=(dirs[0].isLocalFile())?"//"+target.trim():"::"+target.trim();
+			{
+				String ttarget1=(dirs[0].isLocalFile())?"//"+target.trim():"::"+target.trim();
+				final CMFile TD1=new CMFile(incorporateBaseDir(pwd,ttarget1),mob);
+				String ttargetd1=(dirs[0].isLocalFile())?"//"+TD1.getParent():"::"+TD1.getParent();
+				final CMFile TDp1=new CMFile(incorporateBaseDir(pwd,ttargetd1),mob);
+				String ttarget2=(dirs[0].isLocalFile())?"::"+target.trim():"//"+target.trim();
+				final CMFile TD2=new CMFile(incorporateBaseDir(pwd,ttarget2),mob);
+				String ttargetd2=(dirs[0].isLocalFile())?"::"+TD2.getParent():"//"+TD2.getParent();
+				final CMFile TDp2=new CMFile(incorporateBaseDir(pwd,ttargetd2),mob);
+				if(TD1.exists() && TD1.isDirectory())
+					target=ttarget1;
+				else
+				if(TD2.exists() && TD2.isDirectory())
+					target=ttarget2;
+				else
+				if(TDp1.exists() && TDp1.isDirectory())
+					target=ttarget1;
+				else
+				if(TDp2.exists() && TDp2.isDirectory())
+					target=ttarget2;
+			}
 			final CMFile DD=new CMFile(incorporateBaseDir(pwd,target),mob);
 			final java.util.List<CMFile> ddirs=sortDirsUp(dirs);
 			for(final CMFile SF: ddirs)
 			{
+				if(killOnSession && ((mob.session()==null)||(mob.session().isStopped())))
+					break;
 				if ((SF == null) || (!SF.exists()))
 				{
 					mob.tell(L("^xError: source @x1 does not exist!^N", desc(SF)));
@@ -484,6 +509,8 @@ public class Shell extends StdCommand
 			final java.util.List<CMFile> ddirs=sortDirsDown(dirs);
 			for(int d=0;d<ddirs.size();d++)
 			{
+				if(killOnSession && ((mob.session()==null)||(mob.session().isStopped())))
+					break;
 				final CMFile CF=ddirs.get(d);
 				if((CF==null)||(!CF.exists()))
 				{
@@ -519,6 +546,8 @@ public class Shell extends StdCommand
 			}
 			for (final CMFile dir : dirs)
 			{
+				if(killOnSession && ((mob.session()==null)||(mob.session().isStopped())))
+					break;
 				final CMFile CF=dir;
 				if((CF==null)||(!CF.exists()))
 				{
@@ -573,6 +602,8 @@ public class Shell extends StdCommand
 			}
 			for (final CMFile dir : dirs)
 			{
+				if(killOnSession && ((mob.session()==null)||(mob.session().isStopped())))
+					break;
 				final CMFile entry=dir;
 				if(!entry.isDirectory())
 				{
@@ -611,6 +642,8 @@ public class Shell extends StdCommand
 			final Vector<CMFile> dirs2=new Vector<CMFile>();
 			for (final CMFile dir : dirs)
 			{
+				if(killOnSession && ((mob.session()==null)||(mob.session().isStopped())))
+					break;
 				final CMFile entry=dir;
 				if(!entry.isDirectory())
 				{
@@ -717,12 +750,34 @@ public class Shell extends StdCommand
 				return false;
 			}
 			if((dirs.length==1)&&(!target.trim().startsWith("::")&&(!target.trim().startsWith("//"))))
-				target=(dirs[0].isLocalFile())?"//"+target.trim():"::"+target.trim();
+			{
+				String ttarget1=(dirs[0].isLocalFile())?"//"+target.trim():"::"+target.trim();
+				final CMFile TD1=new CMFile(incorporateBaseDir(pwd,ttarget1),mob);
+				String ttargetd1=(dirs[0].isLocalFile())?"//"+TD1.getParent():"::"+TD1.getParent();
+				final CMFile TDp1=new CMFile(incorporateBaseDir(pwd,ttargetd1),mob);
+				String ttarget2=(dirs[0].isLocalFile())?"::"+target.trim():"//"+target.trim();
+				final CMFile TD2=new CMFile(incorporateBaseDir(pwd,ttarget2),mob);
+				String ttargetd2=(dirs[0].isLocalFile())?"::"+TD2.getParent():"//"+TD2.getParent();
+				final CMFile TDp2=new CMFile(incorporateBaseDir(pwd,ttargetd2),mob);
+				if(TD1.exists() && TD1.isDirectory())
+					target=ttarget1;
+				else
+				if(TD2.exists() && TD2.isDirectory())
+					target=ttarget2;
+				else
+				if(TDp1.exists() && TDp1.isLocalDirectory())
+					target=ttarget1;
+				else
+				if(TDp2.exists() && TDp2.isVFSDirectory())
+					target=ttarget2;
+			}
 			final CMFile DD=new CMFile(incorporateBaseDir(pwd,target),mob);
 			final java.util.List<CMFile> ddirs=sortDirsUp(dirs);
 			java.util.List<CMFile> dirsLater=new Vector<CMFile>();
 			for(int d=0;d<ddirs.size();d++)
 			{
+				if(killOnSession && ((mob.session()==null)||(mob.session().isStopped())))
+					break;
 				final CMFile SF=ddirs.get(d);
 				if ((SF == null) || (!SF.exists()))
 				{
@@ -817,6 +872,8 @@ public class Shell extends StdCommand
 			dirsLater=sortDirsDown(dirsLater.toArray(new CMFile[0]));
 			for(int d=0;d<dirsLater.size();d++)
 			{
+				if(killOnSession && ((mob.session()==null)||(mob.session().isStopped())))
+					break;
 				final CMFile CF=dirsLater.get(d);
 				if((!CF.delete())&&(CF.exists()))
 				{

@@ -385,9 +385,19 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	 * names of particular races, racial categories, or
 	 * the word "ANY" to mean any class is OK.  All others
 	 * are not permitted to be this class.
+	 * @see CharClass#isAllowedRace(Race)
 	 * @return a list of races, racecats, or ANY
 	 */
 	public String[] getRequiredRaceList();
+	
+	/**
+	 * Returns whether the given race matches the required race
+	 * list rules.
+	 * @see CharClass#getRequiredRaceList()
+	 * @param R the race to check
+	 * @return true if the race can be this class, false otherwse
+	 */
+	public boolean isAllowedRace(Race R);
 
 	/**
 	 * Returns pairings of stat names and the minimum a player

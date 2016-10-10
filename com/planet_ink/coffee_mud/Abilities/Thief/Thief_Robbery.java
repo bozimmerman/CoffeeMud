@@ -204,6 +204,7 @@ public class Thief_Robbery extends ThiefSkill
 			String str=null;
 			int code=CMMsg.MSG_THIEF_ACT;
 			if(!auto)
+			{
 				if(stolen!=null)
 					str=L("<S-NAME> rob(s) @x1 from <T-NAMESELF>.",stolen.name());
 				else
@@ -211,6 +212,7 @@ public class Thief_Robbery extends ThiefSkill
 					str=L("<S-NAME> attempt(s) to rob <T-HIM-HER>, but it doesn't appear @x1 has that in <T-HIS-HER> inventory!",target.charStats().heshe());
 					code=CMMsg.MSG_QUIETMOVEMENT;
 				}
+			}
 
 			final boolean alreadyFighting=(mob.getVictim()==target)||(target.getVictim()==mob);
 			String hisStr=str;
@@ -260,7 +262,19 @@ public class Thief_Robbery extends ThiefSkill
 						mob.location().addItem((Item)stolen,ItemPossessor.Expire.Player_Drop);
 						msg=CMClass.getMsg(mob,stolen,null,CMMsg.MSG_GET,CMMsg.MSG_GET,CMMsg.MSG_NOISE,null);
 						if(mob.location().okMessage(mob,msg))
+						{
 							mob.location().send(mob,msg);
+							if(stolen!=null)
+							{
+								Ability propertyProp=stolen.fetchEffect("Prop_PrivateProperty");
+								if(propertyProp==null)
+								{
+									propertyProp=CMClass.getAbility("Prop_PrivateProperty");
+									propertyProp.setMiscText("owner=\""+mob.Name()+"\" expiresec=60");
+									stolen.addNonUninvokableEffect(propertyProp);
+								}
+							}
+						}
 					}
 				}
 			}

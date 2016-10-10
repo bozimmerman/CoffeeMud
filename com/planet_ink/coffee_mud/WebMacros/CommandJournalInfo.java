@@ -35,9 +35,17 @@ import java.util.*;
 */
 public class CommandJournalInfo extends StdWebMacro
 {
-	@Override public String name() { return "CommandJournalInfo"; }
+	@Override
+	public String name()
+	{
+		return "CommandJournalInfo";
+	}
 
-	@Override public boolean isAdminMacro() { return true; }
+	@Override
+	public boolean isAdminMacro()
+	{
+		return true;
+	}
 
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
@@ -67,11 +75,15 @@ public class CommandJournalInfo extends StdWebMacro
 			if(parms.containsKey("MASK"))
 				str.append(C.mask()).append(", ");
 			if(parms.containsKey("FLAGSET"))
+			{
 				for(final JournalsLibrary.CommandJournalFlags flag : JournalsLibrary.CommandJournalFlags.values())
 					httpReq.addFakeUrlParameter("FLAG_"+flag.name(), C.getFlag(flag)!=null?((C.getFlag(flag).length()==0)?"on":C.getFlag(flag)):"");
+			}
 			for(final JournalsLibrary.CommandJournalFlags flag : JournalsLibrary.CommandJournalFlags.values())
+			{
 				if(parms.containsKey("FLAG_"+flag.name().toUpperCase().trim()))
 					str.append(C.getFlag(flag)!=null?((C.getFlag(flag).length()==0)?"on":C.getFlag(flag)):"").append(", ");
+			}
 		}
 		String strstr=str.toString();
 		if(strstr.endsWith(", "))

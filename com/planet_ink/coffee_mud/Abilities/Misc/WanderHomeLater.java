@@ -100,10 +100,12 @@ public class WanderHomeLater extends StdAbility
 		super.unInvoke();
 		if((P!=null)&&(this.canBeUninvoked)&&(this.unInvoked))
 		{
-			if((!P.amDestroyed())&&(destroy))
+			if((!P.amDestroyed())
+			&&(destroy)
+			&&(CMLib.flags().isInTheGame(P, true))) 
 			{
 				final Room R=CMLib.map().roomLocation(P);
-				if(R!=null)
+				if((R!=null)&&(!((MOB)P).amDead()))
 					R.showHappens(CMMsg.MSG_OK_ACTION, P,L("<S-NAME> wander(s) off."));
 				P.destroy();
 			}

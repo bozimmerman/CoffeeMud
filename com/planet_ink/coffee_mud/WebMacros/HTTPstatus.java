@@ -35,7 +35,11 @@ import java.util.*;
 */
 public class HTTPstatus extends StdWebMacro
 {
-	@Override public String name()	{return "HTTPstatus";}
+	@Override
+	public String name()
+	{
+		return "HTTPstatus";
+	}
 
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)

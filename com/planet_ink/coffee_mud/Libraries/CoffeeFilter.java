@@ -81,23 +81,22 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 				{
 					switch(buf.charAt(i+1))
 					{
+					case '%':
+						buf.deleteCharAt(i);
+						break;
 					case 'n':
 					case 'r':
-						{
 						buf.setCharAt(i,(char)13);
 						if((i>=buf.length()-2)||((i<buf.length()-2)&&((buf.charAt(i+2))!=10)))
 							buf.setCharAt(i+1,(char)10);
 						else
 						if(i<buf.length()-2)
 							buf.deleteCharAt(i+1);
-						}
 						break;
 					case '\'':
 					case '`':
-						{
 						buf.setCharAt(i,'\'');
 						buf.deleteCharAt(i+1);
-						}
 						break;
 					}
 				}
@@ -188,7 +187,8 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 						final int dig2=hexStr.indexOf(buf.charAt(loop+2));
 						if((dig1>=0)&&(dig2>=0))
 						{
-							buf.setCharAt(loop,(char)((dig1*16)+dig2));
+							final int val=((dig1*16)+dig2);
+							buf.setCharAt(loop,(char)val);
 							buf.deleteCharAt(loop+1);
 							if((buf.charAt(loop))==13)
 								buf.setCharAt(loop+1,(char)10);
@@ -204,23 +204,22 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 					{
 						switch(buf.charAt(loop+1))
 						{
+						case '%':
+							buf.deleteCharAt(loop);
+							break;
 						case 'n':
 						case 'r':
-							{
 							buf.setCharAt(loop,(char)13);
 							if((loop>=buf.length()-2)||((loop<buf.length()-2)&&((buf.charAt(loop+2))!=10)))
 								buf.setCharAt(loop+1,(char)10);
 							else
 							if(loop<buf.length()-2)
 								buf.deleteCharAt(loop+1);
-							}
 							break;
 						case '\'':
 						case '`':
-							{
 							buf.setCharAt(loop,'\'');
 							buf.deleteCharAt(loop+1);
-							}
 							break;
 						}
 					}
@@ -257,13 +256,14 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 							break;
 						case ColorLibrary.COLORCODE_FANSI256:
 						case ColorLibrary.COLORCODE_BANSI256:
-						  if(loop+3<buf.length())
-						  {
-							  len+=3;
-							  loop+=3;
-						  }
-						  break;
-						case '<': case '&':
+							if(loop+3<buf.length())
+							{
+								len+=3;
+								loop+=3;
+							}
+							break;
+						case '<': 
+						case '&':
 						{
 							len++;
 							loop++;
@@ -279,7 +279,8 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 							len++;
 							break;
 						}
-						default: break;
+						default:
+							break;
 						}
 					}
 					break;
@@ -447,8 +448,12 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 			}
 			final char bc=str.charAt(enDex);
 			final String[] clookup = (S==null)?CMLib.color().standardColorLookups():S.getColorCodes();
+			final String bgEscapeSequence;
 			final String escapeSequence=clookup[bc];
-			final String bgEscapeSequence=ColorLibrary.MAP_ANSICOLOR_TO_ANSIBGCOLOR.get(escapeSequence);
+			if(escapeSequence == null)
+				bgEscapeSequence = null;
+			else
+				bgEscapeSequence=ColorLibrary.MAP_ANSICOLOR_TO_ANSIBGCOLOR.get(escapeSequence);
 			if(bgEscapeSequence != null)
 			{
 				str.insert(index+3, bgEscapeSequence);
@@ -557,28 +562,31 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 				return index-1;
 			}
 		case '.':
-		  if((S==null)||(S.getClientTelnetMode(Session.TELNET_ANSI)))
-		  {
-			  final String[] clookup = (S==null)?CMLib.color().standardColorLookups():S.getColorCodes();
-			  String escapeSequence=clookup[c];
-			  if(escapeSequence==null)
-			  	escapeSequence="";
-			  str.insert(index+2, escapeSequence);
-			  str.delete(index, index+2);
-			  return index+escapeSequence.length()-1;
-		  }
-		  else
-		  {
-			  str.delete(index, index+2);
-			  return index-1;
-		  }
+			if((S==null)||(S.getClientTelnetMode(Session.TELNET_ANSI)))
+			{
+				final String[] clookup = (S==null)?CMLib.color().standardColorLookups():S.getColorCodes();
+				String escapeSequence=clookup[c];
+				if(escapeSequence==null)
+					escapeSequence="";
+				str.insert(index+2, escapeSequence);
+				str.delete(index, index+2);
+				return index+escapeSequence.length()-1;
+			}
+			else
+			{
+				str.delete(index, index+2);
+				return index-1;
+			}
+		case '^':
+			str.delete(index, index+1);
+			return index;
 		default:
 			if((c>=0)&&(c<256)&&((S==null)||(S.getClientTelnetMode(Session.TELNET_ANSI))))
 			{
 				final String[] clookup = (S==null)?CMLib.color().standardColorLookups():S.getColorCodes();
 				String escapeSequence=clookup[c];
 				if(escapeSequence==null)
-					escapeSequence="";
+					escapeSequence="^";
 				if((S!=null)&&(escapeSequence.length()>0)&&(escapeSequence.charAt(0)=='\033'))
 				{
 					final ColorState state=S.getCurrentColor();
@@ -964,7 +972,8 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 						final int dig2=hexStr.indexOf(buf.charAt(loop+2));
 						if((dig1>=0)&&(dig2>=0))
 						{
-							buf.setCharAt(loop,(char)((dig1*16)+dig2));
+							final int val=((dig1*16)+dig2);
+							buf.setCharAt(loop,(char)val);
 							buf.deleteCharAt(loop+1);
 							if((buf.charAt(loop))==13)
 								buf.setCharAt(loop+1,(char)10);
@@ -1015,6 +1024,9 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 					{
 						switch(buf.charAt(loop+1))
 						{
+						case '%':
+							buf.deleteCharAt(loop);
+							break;
 						case 'n':
 						case 'r':
 							{
@@ -1510,22 +1522,41 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 		while(x<input.length())
 		{
 			final char c=input.charAt(x);
-			if(c=='\'')
-				input.setCharAt(x,'`');
-			else
-			if((c=='^')&&(x<(input.length()-1))&&(!permitMXPTags))
+			switch(c)
 			{
-				switch(input.charAt(x+1))
+			case '\'':
+				input.setCharAt(x,'`');
+				break;
+			case '%':
+				if(x<input.length()-2)
 				{
-				case '<':
-				case '>':
-				case '&':
-					input.deleteCharAt(x);
-					break;
+					final int dig1=hexStr.indexOf(input.charAt(x+1));
+					final int dig2=hexStr.indexOf(input.charAt(x+2));
+					if((dig1>=0)&&(dig2>=0))
+					{
+						final int val=((dig1*16)+dig2);
+						if((val==0xff)||(val==0)||(val==0x1b))
+						{
+							input.insert(x,'\\');
+							x++;
+						}
+					}
 				}
-			}
-			else
-			if(c==8)
+				break;
+			case '^':
+				if((x<(input.length()-1))&&(!permitMXPTags))
+				{
+					switch(input.charAt(x+1))
+					{
+					case '<':
+					case '>':
+					case '&':
+						input.deleteCharAt(x);
+						break;
+					}
+				}
+				break;
+			case 8:
 			{
 				final String newStr=input.toString();
 				if(x==0)
@@ -1536,6 +1567,8 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 					x--;
 				}
 				x--;
+				break;
+			}
 			}
 			x++;
 		}

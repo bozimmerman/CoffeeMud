@@ -36,17 +36,27 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public class AreaScriptNext extends StdWebMacro
 {
-	@Override public String name() { return "AreaScriptNext"; }
-	@Override public boolean isAdminMacro()	{return true;}
+	@Override
+	public String name()
+	{
+		return "AreaScriptNext";
+	}
+
+	@Override
+	public boolean isAdminMacro()
+	{
+		return true;
+	}
 
 	protected class AreaScriptInstance
 	{
-		public ArrayList<String> path;
-		public String instanceKey;
-		public String fileName;
-		public String key;
-		public String customScript="";
-		public AreaScriptInstance(String instanceKey, ArrayList<String> path,
+		public List<String>	path;
+		public String		instanceKey;
+		public String		fileName;
+		public String		key;
+		public String		customScript	= "";
+
+		public AreaScriptInstance(String instanceKey, List<String> path,
 								  String key, String fileName)
 		{
 			this.path=path;

@@ -102,10 +102,11 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		return getAllTitledRooms();
 	}
 
-	protected void saveData(String owner, int price, boolean rental, int backTaxes)
+	protected void saveData(String owner, int price, boolean rental, int backTaxes, boolean grid)
 	{
 		setMiscText(owner+"/"
 				+(rental?"RENTAL ":"")
+				+(grid?"GRID ":"")
 				+((backTaxes>0)?"TAX"+backTaxes+"X ":"")
 				+price);
 	}
@@ -113,7 +114,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	@Override
 	public void setPrice(int price)
 	{
-		saveData(getOwnerName(), price, rentalProperty(), backTaxes());
+		saveData(getOwnerName(), price, rentalProperty(), backTaxes(), gridLayout());
 	}
 
 	@Override
@@ -142,7 +143,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	{
 		if((owner.length()==0)&&(getOwnerName().length()>0))
 			scheduleReset=true;
-		saveData(owner, getPrice(), rentalProperty(), backTaxes());
+		saveData(owner, getPrice(), rentalProperty(), backTaxes(), gridLayout());
 	}
 
 	@Override
@@ -161,7 +162,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	@Override
 	public void setBackTaxes(int tax)
 	{
-		saveData(getOwnerName(), getPrice(), rentalProperty(), tax);
+		saveData(getOwnerName(), getPrice(), rentalProperty(), tax, gridLayout());
 	}
 
 	@Override
@@ -177,7 +178,23 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	@Override
 	public void setRentalProperty(boolean truefalse)
 	{
-		saveData(getOwnerName(), getPrice(), truefalse, backTaxes());
+		saveData(getOwnerName(), getPrice(), truefalse, backTaxes(), gridLayout());
+	}
+
+	@Override
+	public boolean gridLayout()
+	{
+		final String upperText=text().toUpperCase();
+		final int dex=upperText.indexOf('/');
+		if(dex<0)
+			return upperText.indexOf("GRID")>=0;
+		return upperText.indexOf("GRID",dex)>0;
+	}
+
+	@Override
+	public void setGridLayout(boolean layout)
+	{
+		saveData(getOwnerName(), getPrice(), rentalProperty(), backTaxes(), layout);
 	}
 
 	// update title, since it may affect clusters, worries about ALL involved
@@ -236,65 +253,6 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		return newTitle;
 	}
 
-	public static boolean shopkeeperMobPresent(Room R)
-	{
-		if(R==null)
-			return false;
-		MOB M=null;
-		for(int i=0;i<R.numInhabitants();i++)
-		{
-			M=R.fetchInhabitant(i);
-			if((M.getStartRoom()==R)
-			&&(M.isMonster())
-			&&(CMLib.coffeeShops().getShopKeeper(M)!=null))
-				return true;
-		}
-		return false;
-	}
-
-	public static boolean robberyCheck(LandTitle A, CMMsg msg)
-	{
-		if(((msg.targetMinor()==CMMsg.TYP_GET)&&(!msg.isTarget(CMMsg.MASK_INTERMSG)))
-		||(msg.targetMinor()==CMMsg.TYP_PUSH)
-		||(msg.targetMinor()==CMMsg.TYP_PULL))
-		{
-			if((msg.target() instanceof Item)
-			&&(((Item)msg.target()).owner() ==msg.source().location())
-			&&((!(msg.tool() instanceof Item))||(msg.source().isMine(msg.tool())))
-			&&(!msg.sourceMajor(CMMsg.MASK_ALWAYS))
-			&&(A.getOwnerName().length()>0)
-			&&(msg.source().location()!=null)
-			&&(msg.othersMessage()!=null)
-			&&(msg.othersMessage().length()>0)
-			&&(!shopkeeperMobPresent(msg.source().location()))
-			&&(!CMLib.law().doesHavePriviledgesHere(msg.source(),msg.source().location())))
-			{
-				final Room R=msg.source().location();
-				final LegalBehavior B=CMLib.law().getLegalBehavior(R);
-				if(B!=null)
-				{
-					for(int m=0;m<R.numInhabitants();m++)
-					{
-						final MOB M=R.fetchInhabitant(m);
-						if(CMLib.law().doesHavePriviledgesHere(M,R))
-							return true;
-					}
-					MOB D=null;
-					final Clan C=CMLib.clans().getClan(A.getOwnerName());
-					if(C!=null)
-						D=C.getResponsibleMember();
-					else
-						D=CMLib.players().getLoadPlayer(A.getOwnerName());
-					if(D==null)
-						return true;
-					B.accuse(CMLib.law().getLegalObject(R),msg.source(),D,new String[]{"PROPERTYROB","THIEF_ROBBERY"});
-				}
-			}
-			return true;
-		}
-		return false;
-	}
-
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -336,7 +294,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	{
 		if(!super.okMessage(myHost,msg))
 			return false;
-		robberyCheck(this,msg);
+		CMLib.law().robberyCheck(this,msg);
 		return true;
 	}
 
@@ -443,7 +401,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 					CMLib.database().DBUpdateItems(R);
 				if(updateRoom)
 					CMLib.database().DBUpdateRoom(R);
-				CMLib.law().colorRoomForSale(R,T.rentalProperty(),resetRoomName);
+				CMLib.law().colorRoomForSale(R,T,resetRoomName);
 				return -1;
 			}
 
@@ -528,18 +486,16 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		if(O instanceof List)
 			pDataV=(List<PlayerData>)O;
 		else
-			pDataV=CMLib.database().DBReadData(owner,"RENTAL INFO");
+			pDataV=CMLib.database().DBReadPlayerData(owner,"RENTAL INFO");
 		if(pDataV==null)
 			pDataV=new Vector<PlayerData>();
 		DatabaseEngine.PlayerData pData = null;
 		if(pDataV.size()==0)
 		{
-			pData = CMLib.database().createPlayerData();
-			pData.who(owner);
-			pData.section("RENTAL INFO");
-			pData.key("RENTAL INFO/"+owner);
-			pData.xml(ID+"|~>|"+day+" "+month+" "+year+"|~;|");
-			CMLib.database().DBCreateData(owner,"RENTAL INFO","RENTAL INFO/"+owner,pData.xml());
+			final String section="RENTAL INFO";
+			final String key="RENTAL INFO/"+owner;
+			final String xml=ID+"|~>|"+day+" "+month+" "+year+"|~;|";
+			pData = CMLib.database().DBCreatePlayerData(owner,section,key,xml);
 			pDataV.add(pData);
 			Resources.submitResource("RENTAL INFO/"+owner,pDataV);
 			return false;
@@ -575,10 +531,10 @@ public class Prop_RoomForSale extends Property implements LandTitle
 							if(needsToPay)
 							{
 								if(CMLib.beanCounter().modifyLocalBankGold(A,
-										owner,
-										CMLib.utensils().getFormattedDate(A)+":Withdrawal of "+rent+": Rent for "+ID,
-										CMLib.beanCounter().getCurrency(A),
-										(-rent)))
+									owner,
+									CMLib.utensils().getFormattedDate(A)+":Withdrawal of "+rent+": Rent for "+ID,
+									CMLib.beanCounter().getCurrency(A),
+									(-rent)))
 								{
 									lastMonth++;
 									if(lastMonth>A.getTimeObj().getMonthsInYear())
@@ -606,15 +562,13 @@ public class Prop_RoomForSale extends Property implements LandTitle
 			}
 			if(changesMade)
 			{
-				CMLib.database().DBReCreateData(owner,"RENTAL INFO","RENTAL INFO/"+owner,reparse.toString());
-				pData = CMLib.database().createPlayerData();
-				pData.who(owner);
-				pData.section("RENTAL INFO");
-				pData.key("RENTAL INFO/"+owner);
-				pData.xml(reparse.toString());
-				pDataV.set(0,pData);
+				pData = CMLib.database().DBReCreatePlayerData(owner,"RENTAL INFO","RENTAL INFO/"+owner,reparse.toString());
 				Resources.removeResource("RENTAL INFO/"+owner);
-				Resources.submitResource("RENTAL INFO/"+owner,pDataV);
+				if(pData != null)
+				{
+					pDataV.set(0,pData);
+					Resources.submitResource("RENTAL INFO/"+owner,pDataV);
+				}
 			}
 			return needsToPay;
 		}

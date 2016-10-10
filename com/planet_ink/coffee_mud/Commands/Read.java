@@ -89,7 +89,7 @@ public class Read extends StdCommand
 			return false;
 		}
 		commands.remove(0);
-		final int dir=Directions.getGoodDirectionCode(CMParms.combine(commands,0));
+		final int dir=CMLib.directions().getGoodDirectionCode(CMParms.combine(commands,0));
 		Environmental thisThang=null;
 		if(dir>=0)
 			thisThang=mob.location().getExitInDir(dir);

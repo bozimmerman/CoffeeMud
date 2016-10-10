@@ -25,15 +25,20 @@ import java.util.*;
 import java.util.Map.Entry;
 
 /*
- * Copyright 2000-2016 Bo Zimmerman Licensed under the Apache License, Version
- * 2.0 (the "License"); you may not use this file except in compliance with the
- * License. You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0 Unless required by applicable law
- * or agreed to in writing, software distributed under the License is
- * distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the specific language
- * governing permissions and limitations under the License.
- */
+   Copyright 2002-2016 Bo Zimmerman
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+	   http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+*/
 public class MOBloader
 {
 	protected DBConnector DB=null;
@@ -139,8 +144,8 @@ public class MOBloader
 				List<String> V9=CMParms.parseSemicolons(CMLib.xml().returnXMLValue(buf,"TATTS"),true);
 				for(final Enumeration<Tattoo> e=mob.tattoos();e.hasMoreElements();)
 					mob.delTattoo(e.nextElement());
-				for(int v=0;v<V9.size();v++)
-					mob.addTattoo(parseTattoo(V9.get(v)));
+				for(String tatt : V9)
+					mob.addTattoo(((Tattoo)CMClass.getCommon("DefaultTattoo")).parse(tatt));
 				V9=CMParms.parseSemicolons(CMLib.xml().returnXMLValue(buf,"EDUS"),true);
 				mob.delAllExpertises();
 				for(int v=0;v<V9.size();v++)
@@ -240,7 +245,7 @@ public class MOBloader
 		boolean inhab=false;
 		if(oldLoc!=null) 
 			inhab=oldLoc.isInhabitant(mob);
-		mob.setLocation(emptyRoom);
+		mob.setLocation(mob.getStartRoom());
 		DBConnection D=null;
 		// now grab the items
 		try
@@ -319,7 +324,11 @@ public class MOBloader
 					newItem.basePhyStats().setHeight((int)DBConnections.getLongRes(R,"CMHEIT"));
 					newItem.recoverPhyStats();
 					if(addToMOB)
+					{
 						mob.addItem(newItem);
+						if(newItem instanceof BoardableShip)
+							CMLib.map().registerWorldObjectLoaded(null, null, newItem);
+					}
 					else
 					{
 						CMLib.map().registerWorldObjectLoaded(null, null, newItem);
@@ -355,6 +364,10 @@ public class MOBloader
 			if(inhab&&(!oldLoc.isInhabitant(mob)))
 				oldLoc.addInhabitant(mob);
 		}
+		else
+		if((mob.location()!=null)
+		&&((inhab&&(!mob.location().isInhabitant(mob)))))
+			mob.location().addInhabitant(mob);
 		// now grab the abilities
 		try
 		{
@@ -580,7 +593,8 @@ public class MOBloader
 					return expLvl;
 				}
 			};
-		}catch(final Exception e)
+		}
+		catch(final Exception e)
 		{
 			Log.errOut("MOBloader",e);
 		}
@@ -635,27 +649,7 @@ public class MOBloader
 		return allUsers;
 	}
 
-	public Tattoo parseTattoo(String tattoo)
-	{
-		if(tattoo==null)
-			return (Tattoo)CMClass.getCommon("DefaultTattoo");
-		int tickDown = 0;
-		if((tattoo.length()>0)
-		&&(Character.isDigit(tattoo.charAt(0))))
-		{
-			final int x=tattoo.indexOf(' ');
-			if((x>0)
-			&&(CMath.isNumber(tattoo.substring(0,x).trim())))
-			{
-				tickDown=CMath.s_int(tattoo.substring(0,x));
-				tattoo=tattoo.substring(x+1).trim();
-			}
-		}
-		final Tattoo T=(Tattoo)CMClass.getCommon("DefaultTattoo");
-		return T.set(tattoo, tickDown);
-	}
-
-	public List<PlayerLibrary.ThinPlayer> vassals(MOB mob, String liegeID)
+	public List<PlayerLibrary.ThinPlayer> vassals(String liegeID)
 	{
 		DBConnection D=null;
 		List<PlayerLibrary.ThinPlayer> list=new ArrayList<PlayerLibrary.ThinPlayer>();
@@ -663,9 +657,11 @@ public class MOBloader
 		{
 			D=DB.DBFetch();
 			final ResultSet R=D.query("SELECT * FROM CMCHAR WHERE CMLEIG='"+liegeID+"'");
-			if(R!=null) 
-			while(R.next())
-				list.add(this.parseThinUser(R));
+			if(R!=null)
+			{
+				while(R.next())
+					list.add(this.parseThinUser(R));
+			}
 		}
 		catch(final Exception sqle)
 		{
@@ -702,7 +698,7 @@ public class MOBloader
 		return DV;
 	}
 
-	public List<MOB> DBScanFollowers(MOB mob)
+	public List<MOB> DBScanFollowers(String mobName)
 	{
 		DBConnection D=null;
 		final Vector<MOB> V=new Vector<MOB>();
@@ -710,7 +706,7 @@ public class MOBloader
 		try
 		{
 			D=DB.DBFetch();
-			final ResultSet R=D.query("SELECT * FROM CMCHFO WHERE CMUSERID='"+mob.Name()+"'");
+			final ResultSet R=D.query("SELECT * FROM CMCHFO WHERE CMUSERID='"+mobName+"'");
 			while(R.next())
 			{
 				final String MOBID=DBConnections.getRes(R,"CMFOID");
@@ -747,7 +743,7 @@ public class MOBloader
 		Room location=mob.location();
 		if(location==null)
 			location=mob.getStartRoom();
-		final List<MOB> V=DBScanFollowers(mob);
+		final List<MOB> V=DBScanFollowers(mob.Name());
 		for(int v=0;v<V.size();v++)
 		{
 			final MOB newMOB=V.get(v);
@@ -934,8 +930,10 @@ public class MOBloader
 
 	public void DBUpdate(MOB mob)
 	{
-		DBUpdateJustMOB(mob);
 		final PlayerStats pStats = mob.playerStats();
+		if(!pStats.isSavable())
+			return;
+		DBUpdateJustMOB(mob);
 		if((mob.Name().length()==0)||(pStats==null))
 			return;
 		DBUpdateItems(mob);
@@ -987,7 +985,7 @@ public class MOBloader
 			return;
 		}
 		final PlayerStats pstats=mob.playerStats();
-		if(pstats==null)
+		if((pstats==null)||(!pstats.isSavable()))
 			return;
 		final String pfxml=getPlayerStatsXML(mob);
 		DB.updateWithClobs("UPDATE CMCHAR SET CMPFIL=? WHERE CMUSERID='"+mob.Name()+"'", pfxml.toString());
@@ -1001,7 +999,7 @@ public class MOBloader
 			return;
 		}
 		final PlayerStats pstats=mob.playerStats();
-		if(pstats==null)
+		if((pstats==null)||(!pstats.isSavable()))
 			return;
 		final String strStartRoomID=(mob.getStartRoom()!=null)?CMLib.map().getExtendedRoomID(mob.getStartRoom()):"";
 		String strOtherRoomID=(mob.location()!=null)?CMLib.map().getExtendedRoomID(mob.location()):"";
@@ -1305,7 +1303,7 @@ public class MOBloader
 	}
 
 	// this method is unused, but is a good idea of how to collect riders, followers, carts, etc.
-	protected void addFollowerDependent(PhysicalAgent P, DVector list, String parent)
+	protected void addFollowerDependent(PhysicalAgent P, PairList<PhysicalAgent,String> list, String parent)
 	{
 		if(P==null)
 			return;
@@ -1316,7 +1314,7 @@ public class MOBloader
 			return;
 		CMLib.catalog().updateCatalogIntegrity(P);
 		final String myCode=""+(list.size()-1);
-		list.addElement(P,CMClass.classID(P)+"#"+myCode+parent);
+		list.add(P,CMClass.classID(P)+"#"+myCode+parent);
 		if(P instanceof Rideable)
 		{
 			final Rideable R=(Rideable)P;
@@ -1330,7 +1328,6 @@ public class MOBloader
 			for(int c=0;c<contents.size();c++)
 				addFollowerDependent(contents.get(c),list,"@"+myCode+"C");
 		}
-
 	}
 
 	public void DBUpdateFollowers(MOB mob)
@@ -1342,7 +1339,10 @@ public class MOBloader
 		for(int f=0;f<mob.numFollowers();f++)
 		{
 			final MOB thisMOB=mob.fetchFollower(f);
-			if((thisMOB!=null)&&(thisMOB.isMonster())&&(!thisMOB.isPossessing())&&(CMLib.flags().isSavable(thisMOB)))
+			if((thisMOB!=null)
+			&&(thisMOB.isMonster())
+			&&(!thisMOB.isPossessing())
+			&&(CMLib.flags().isSavable(thisMOB)))
 			{
 				CMLib.catalog().updateCatalogIntegrity(thisMOB);
 				final String sql="INSERT INTO CMCHFO (CMUSERID, CMFONM, CMFOID, CMFOTX, CMFOLV, CMFOAB"
@@ -1376,62 +1376,10 @@ public class MOBloader
 		DB.update("UPDATE CMPDAT SET CMPLID='"+newName+"' WHERE CMPLID='"+oldName+"'");
 	}
 
-	public void DBDelete(MOB mob, boolean deleteAssets)
+	public void DBDelete(String mobName)
 	{
-		if(mob.Name().length()==0)
-			return;
-		final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.PLAYERPURGES);
-		for(int i=0;i<channels.size();i++)
-			CMLib.commands().postChannel(channels.get(i),mob.clans(),CMLib.lang().fullSessionTranslation("@x1 has just been deleted.",mob.Name()),true);
-		CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_PURGES);
-		DB.update("DELETE FROM CMCHAR WHERE CMUSERID='"+mob.Name()+"'");
-		DB.update("DELETE FROM CMCHCL WHERE CMUSERID='"+mob.Name()+"'");
-		mob.delAllItems(false);
-		for(int i=0;i<mob.numItems();i++)
-		{
-			final Item I=mob.getItem(i);
-			if(I!=null)
-				I.setContainer(null);
-		}
-		mob.delAllItems(false);
-		DBUpdateItems(mob);
-		while(mob.numFollowers()>0)
-		{
-			final MOB follower=mob.fetchFollower(0);
-			if(follower!=null)
-				follower.setFollowing(null);
-		}
-		if(deleteAssets)
-		{
-			DBUpdateFollowers(mob);
-		}
-		mob.delAllAbilities();
-		DBUpdateAbilities(mob);
-		if(deleteAssets)
-		{
-			CMLib.database().DBDeletePlayerJournals(mob.Name());
-			CMLib.database().DBDeletePlayerData(mob.Name());
-		}
-		final PlayerStats pstats = mob.playerStats();
-		if(pstats!=null)
-		{
-			final PlayerAccount account = pstats.getAccount();
-			if(account != null)
-			{
-				account.delPlayer(mob);
-				DBUpdateAccount(account);
-				account.setLastUpdated(System.currentTimeMillis());
-			}
-		}
-		if(deleteAssets)
-		{
-			for(int q=0;q<CMLib.quests().numQuests();q++)
-			{
-				final Quest Q=CMLib.quests().fetchQuest(q);
-				if(Q.wasWinner(mob.Name()))
-					Q.declareWinner("-"+mob.Name());
-			}
-		}
+		DB.update("DELETE FROM CMCHAR WHERE CMUSERID='"+mobName+"'");
+		DB.update("DELETE FROM CMCHCL WHERE CMUSERID='"+mobName+"'");
 	}
 
 	public void DBUpdateAbilities(MOB mob)
@@ -1720,17 +1668,14 @@ public class MOBloader
 		return thinPlayer;
 	}
 
-	public String[] DBFetchEmailData(String name)
+	public Pair<String, Boolean> DBFetchEmailData(String name)
 	{
-		final String[] data=new String[2];
 		for(final Enumeration<MOB> e=CMLib.players().players();e.hasMoreElements();)
 		{
 			final MOB M=e.nextElement();
 			if((M.Name().equalsIgnoreCase(name))&&(M.playerStats()!=null))
 			{
-				data[0]=M.playerStats().getEmail();
-				data[1]=""+M.isAttributeSet(MOB.Attrib.AUTOFORWARD);
-				return data;
+				return new Pair<String,Boolean>(M.playerStats().getEmail(),Boolean.valueOf(M.isAttributeSet(MOB.Attrib.AUTOFORWARD)));
 			}
 		}
 		DBConnection D=null;
@@ -1743,9 +1688,7 @@ public class MOBloader
 				// String username=DB.getRes(R,"CMUSERID");
 				final int btmp=CMath.s_int(DB.getRes(R,"CMBTMP"));
 				final String temail=DB.getRes(R,"CMEMAL");
-				data[0]=temail;
-				data[1]=""+((btmp&MOB.Attrib.AUTOFORWARD.getBitCode())!=0);
-				return data;
+				return new Pair<String,Boolean>(temail,Boolean.valueOf((btmp&MOB.Attrib.AUTOFORWARD.getBitCode())!=0));
 			}
 		}
 		catch(final Exception sqle)
@@ -1780,6 +1723,7 @@ public class MOBloader
 			if((R==null)||(!R.next()))
 				R=D.query("SELECT * FROM CMCHAR");
 			if(R!=null)
+			{
 				while(R.next())
 				{
 					final String username=DB.getRes(R,"CMUSERID");
@@ -1789,6 +1733,7 @@ public class MOBloader
 						return username;
 					}
 				}
+			}
 		}
 		catch(final Exception sqle)
 		{

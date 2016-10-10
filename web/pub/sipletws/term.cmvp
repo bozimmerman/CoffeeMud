@@ -1,0 +1,134 @@
+<HTML>
+<HEAD>
+<LINK REL=StyleSheet HREF="/siplet/term.css" TYPE="text/css">
+	<link rel="coffeemud icon" href="../images/coffeemud.ico" >
+<SCRIPT LANGUAGE=JavaScript src="/siplet/dropdown.js"></SCRIPT>
+<SCRIPT LANGUAGE=JavaScript src="siplet.js"></SCRIPT>
+<SCRIPT LANGUAGE=JavaScript src="/siplet/termsupport.js"></SCRIPT>
+</HEAD>
+<BODY BGCOLOR=BLACK ONCLICK="top.term.front(myname,mynum);">
+<script language=JavaScript>
+
+setTimeout(connectChecker,10001);
+
+function closeWindow()
+{
+	if(theSiplet)
+		theSiplet.disconnectFromURL();
+	top.document.location.href='/index.cmvp';
+}
+
+function reconnect()
+{
+	if(theSiplet)
+	{
+		if(!theSiplet.isConnecting())
+			theSiplet.disconnectFromURL();
+	}
+	if((!theSiplet) || (!theSiplet.isConnecting()))
+		setTimeout('connect("@MudInfo?DOMAIN@",@MudInfo?PORT@);',500);
+}
+
+function goOffline()
+{
+	theSiplet.disconnectFromURL();
+	theSiplet=new Siplet();
+	goRed();
+}
+
+function displayData()
+{
+	if(!theSiplet.isConnectedToURL())
+		goOffline();
+	else
+	{
+		theSiplet.getURLData(function(connected, txt){
+			if(!connected || (!txt) || (txt.substr(0,5)!='true;'))
+				goOffline();
+			else
+			{
+				txt=txt.substr(5);
+				var tk=theSiplet.token+";";
+				handlePacket(txt,tk);
+			}
+		});
+	}
+}
+
+function sendData(me)
+{
+	var s=''+me;
+	theSiplet.sendData(s,function(success,txt) {
+		if(!success || (!txt) || (txt.substr(0,5)!='true;'))
+			goOffline();
+		else
+		{
+			txt=txt.substr(5);
+			var tk=theSiplet.token+";";
+			handlePacket(txt,tk);
+		}
+	});
+}
+
+
+function connect(url,port,tries)
+{
+	errorState=false;
+	goCaution();
+	gauges=new Array(0);
+	theSiplet.connectToURL(url,@WebServerPort?CURRENT@,port,function(connectWorked, txt){
+		var s='';
+		var x=txt.indexOf(';');
+		if(x<0)
+			connectWorked=false;
+		else
+		{
+			connectWorked = connectWorked && txt.substr(0,x) == "true";
+			if(connectWorked == true)
+			{
+				txt=txt.substr(x+1);
+				x=txt.indexOf(';');
+				theSiplet.token=txt.substr(0,x);
+				top.term.allapplets[top.term.currentWindow] = theSiplet;
+				txt=txt.substr(x+1);
+				var tk=theSiplet.token+";";
+				var x=txt.indexOf(tk);
+				if(x<0)
+					connectWorked=false;
+				else
+					s=txt.substr(0,x);
+			}
+		}
+		//window.onerror=null;
+		var thespan=top.term.document.getElementById(myname+'namer');
+		thespan.innerHTML=s
+		gauges=new Array(0);
+		if(!connectWorked)
+		{
+			goRed();
+		}
+		else
+		{
+			goGreen();
+			lastReceived = new Date().getTime();
+			setTimeout('displayData(); top.entry.boxFocus();',pingDelay);
+		}
+	}); 
+}
+
+
+</SCRIPT>
+<BR>
+<DIV ID=DISPLAYSPAN NAME=DISPLAYSPAN>
+</DIV>
+<DIV ID=NODISPLAY NAME=NODISPLAY></DIV>
+<SPAN ID=musicplayer NAME=musicplayer style="display:none"></SPAN>
+<SPAN ID=soundplayer NAME=soundplayer style="display:none"></SPAN>
+<script language=JavaScript>
+<!--
+	theSiplet=new Siplet();
+	top.term.allapplets[top.term.currentWindow] = theSiplet;
+	setTimeout('connect("@MudInfo?DOMAIN@",@MudInfo?PORT@);',500);
+//-->
+</script>
+</BODY></HTML>

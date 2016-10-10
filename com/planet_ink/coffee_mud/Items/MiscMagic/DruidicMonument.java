@@ -16,8 +16,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
 /*
    Copyright 2003-2016 Bo Zimmerman
 
@@ -35,7 +33,12 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class DruidicMonument extends StdItem implements MiscMagic
 {
-	@Override public String ID(){	return "DruidicMonument";}
+	@Override
+	public String ID()
+	{
+		return "DruidicMonument";
+	}
+
 	public DruidicMonument()
 	{
 		super();

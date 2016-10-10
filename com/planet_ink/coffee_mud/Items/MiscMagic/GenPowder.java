@@ -20,7 +20,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 /**
  * Title: False Realities Flavored CoffeeMUD
  * Description: The False Realities Version of CoffeeMUD
- * Copyright: Copyright (c) 2004 Jeremy Vyska
+ * Copyright: Copyright (c) 2004-2016 Jeremy Vyska
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -37,8 +37,13 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
  * @version 1.0.0.0
  */
 
-public class GenPowder extends StdPowder {
-	@Override public String ID(){	return "GenPowder";}
+public class GenPowder extends StdPowder 
+{
+	@Override
+	public String ID()
+	{
+		return "GenPowder";
+	}
 
 	public GenPowder()
 	{
@@ -53,7 +58,11 @@ public class GenPowder extends StdPowder {
 		setMaterial(RawMaterial.RESOURCE_ASH);
 	}
 
-	@Override public boolean isGeneric(){return true;}
+	@Override
+	public boolean isGeneric()
+	{
+		return true;
+	}
 
 	@Override
 	public String text()
@@ -76,6 +85,7 @@ public class GenPowder extends StdPowder {
 			return CMLib.coffeeMaker().getGenItemStat(this,code);
 		return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 	}
+
 	@Override
 	public void setStat(String code, String val)
 	{
@@ -83,7 +93,9 @@ public class GenPowder extends StdPowder {
 			CMLib.coffeeMaker().setGenItemStat(this,code,val);
 		CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code,val);
 	}
+
 	private static String[] codes=null;
+	
 	@Override
 	public String[] getStatCodes()
 	{
@@ -91,14 +103,17 @@ public class GenPowder extends StdPowder {
 			codes=CMProps.getStatCodesList(CMParms.toStringArray(GenericBuilder.GenItemCode.values()),this);
 		return codes;
 	}
+
 	@Override
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof GenPowder))
 			return false;
 		for(int i=0;i<getStatCodes().length;i++)
+		{
 			if(!E.getStat(getStatCodes()[i]).equals(getStat(getStatCodes()[i])))
 				return false;
+		}
 		return true;
 	}
 }

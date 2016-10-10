@@ -34,7 +34,11 @@ import java.util.*;
 */
 public class AbilityAffectNext extends StdWebMacro
 {
-	@Override public String name() { return "AbilityAffectNext"; }
+	@Override
+	public String name()
+	{
+		return "AbilityAffectNext";
+	}
 
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
@@ -60,8 +64,13 @@ public class AbilityAffectNext extends StdWebMacro
 				continue;
 			boolean containsOne=false;
 			for (final String element : Ability.ACODE_DESCS)
+			{
 				if(parms.containsKey(element))
-				{ containsOne=true; break;}
+				{
+					containsOne=true;
+					break;
+				}
+			}
 			if(containsOne&&(!parms.containsKey(Ability.ACODE_DESCS[classType])))
 				okToShow=false;
 			if(parms.containsKey("NOT"))

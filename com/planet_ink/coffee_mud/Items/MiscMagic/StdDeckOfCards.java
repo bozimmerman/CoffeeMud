@@ -52,7 +52,11 @@ import java.util.*;
 
 public class StdDeckOfCards extends StdHandOfCards implements DeckOfCards
 {
-	@Override public String ID(){	return "StdDeckOfCards";}
+	@Override
+	public String ID()
+	{
+		return "StdDeckOfCards";
+	}
 
 	// a flag to tell us whether the deck instance
 	// has already been filled with cards.
@@ -80,7 +84,12 @@ public class StdDeckOfCards extends StdHandOfCards implements DeckOfCards
 		recoverPhyStats();
 	}
 
-	@Override protected boolean abilityImbuesMagic(){return false;}
+	@Override
+	protected boolean abilityImbuesMagic()
+	{
+		return false;
+	}
+
 	// makePlayingCard(int cardBitCode)
 	// this method creates a playing card object for
 	// population in the deck.  The card created is
@@ -103,8 +112,10 @@ public class StdDeckOfCards extends StdHandOfCards implements DeckOfCards
 	{
 		final Vector<PlayingCard> allCards=new Vector<PlayingCard>();
 		for (final int suit : PlayingCard.suits)
+		{
 			for (final int card : PlayingCard.cards)
 				allCards.addElement(makePlayingCard(suit+card));
+		}
 		return allCards;
 	}
 

@@ -397,8 +397,10 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			{
 				final Item I=e.nextElement();
 				if(I instanceof PrivateProperty)
+				{
 					if(((PrivateProperty)I).getOwnerName().equalsIgnoreCase(oldName))
 						((PrivateProperty)I).setOwnerName(newName);
+				}
 			}
 		}
 
@@ -505,7 +507,65 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		PlayerStats pStats = deadMOB.playerStats();
 		if(pStats != null)
 			pStats.getExtItems().delAllItems(true);
-		CMLib.database().DBDeletePlayer(deadMOB, deleteAssets);
+		final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.PLAYERPURGES);
+		for(int i=0;i<channels.size();i++)
+		{
+			String name=deadMOB.Name();
+			if((pStats != null)
+			&&(pStats.getAccount()!=null))
+				name+=" ("+pStats.getAccount()+")";
+			CMLib.commands().postChannel(channels.get(i),deadMOB.clans(),CMLib.lang().fullSessionTranslation("@x1 has just been deleted.",name),true);
+		}
+		CMLib.coffeeTables().bump(deadMOB,CoffeeTableRow.STAT_PURGES);
+		
+		CMLib.database().DBDeletePlayer(deadMOB.Name());
+		deadMOB.delAllItems(false);
+		for(int i=0;i<deadMOB.numItems();i++)
+		{
+			final Item I=deadMOB.getItem(i);
+			if(I!=null)
+				I.setContainer(null);
+		}
+		deadMOB.delAllItems(false);
+		CMLib.database().DBUpdatePlayerItems(deadMOB);
+		while(deadMOB.numFollowers()>0)
+		{
+			final MOB follower=deadMOB.fetchFollower(0);
+			if(follower!=null)
+				follower.setFollowing(null);
+		}
+		if(deleteAssets)
+		{
+			CMLib.database().DBUpdateFollowers(deadMOB);
+		}
+		deadMOB.delAllAbilities();
+		CMLib.database().DBUpdatePlayerAbilities(deadMOB);
+		if(deleteAssets)
+		{
+			CMLib.database().DBDeletePlayerPrivateJournalEntries(deadMOB.Name());
+			CMLib.database().DBDeleteAllPlayerData(deadMOB.Name());
+		}
+		final PlayerStats pstats = deadMOB.playerStats();
+		if(pstats!=null)
+		{
+			final PlayerAccount account = pstats.getAccount();
+			if(account != null)
+			{
+				account.delPlayer(deadMOB);
+				CMLib.database().DBUpdateAccount(account);
+				account.setLastUpdated(System.currentTimeMillis());
+			}
+		}
+		if(deleteAssets)
+		{
+			for(int q=0;q<CMLib.quests().numQuests();q++)
+			{
+				final Quest Q=CMLib.quests().fetchQuest(q);
+				if(Q.wasWinner(deadMOB.Name()))
+					Q.declareWinner("-"+deadMOB.Name());
+			}
+		}
+		
 		if(deadMOB.session()!=null)
 			deadMOB.session().stopSession(false,false,false);
 		Log.sysOut(deadMOB.name()+" has been deleted.");
@@ -551,7 +611,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			try
 			{
 				final PlayerStats pStats=mob.playerStats();
-				if(!mob.isMonster())
+				if((!mob.isMonster()) && (pStats.isSavable()))
 				{
 					CMLib.factions().updatePlayerFactions(mob,mob.location(), false);
 					setThreadStatus(serviceClient,"just saving "+mob.Name());
@@ -575,7 +635,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 					processed++;
 				}
 				else
-				if(pStats!=null)
+				if((pStats!=null)&& (pStats.isSavable()))
 				{
 					if((pStats.getLastUpdated()==0)
 					||(pStats.getLastUpdated()<pStats.getLastDateTime())
@@ -646,6 +706,8 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			return account.getLastIP();
 		case 4:
 			return Integer.toString(account.numPlayers());
+		case 5:
+			return Long.toString(account.getAccountExpiration());
 		}
 		return account.getAccountName();
 	}
@@ -1145,7 +1207,9 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 						setThreadStatus(serviceClient,"checking player titles");
 						for(final MOB M : playersList)
 						{
-							if((M.playerStats()!=null)&&(CMLib.flags().isInTheGame(M,true)))
+							if((M.playerStats()!=null)
+							&&(M.playerStats().isSavable())
+							&&(CMLib.flags().isInTheGame(M,true)))
 							{
 								//boolean didSomething =
 								CMLib.titles().evaluateAutoTitles(M);

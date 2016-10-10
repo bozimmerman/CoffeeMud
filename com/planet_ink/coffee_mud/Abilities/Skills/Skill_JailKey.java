@@ -55,7 +55,7 @@ public class Skill_JailKey extends StdSkill
 	{
 		final String whatTounlock=CMParms.combine(commands,0);
 		Exit unlockThis=null;
-		final int dirCode=Directions.getGoodDirectionCode(whatTounlock);
+		final int dirCode=CMLib.directions().getGoodDirectionCode(whatTounlock);
 		if((dirCode>=0)&&(mob.location()!=null))
 		{
 			unlockThis=mob.location().getExitInDir(dirCode);

@@ -36,7 +36,11 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class ClanNext extends StdWebMacro
 {
-	@Override public String name() { return "ClanNext"; }
+	@Override
+	public String name()
+	{
+		return "ClanNext";
+	}
 
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)

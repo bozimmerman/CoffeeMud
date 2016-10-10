@@ -2202,7 +2202,8 @@ word minutes, seconds, hours, days, mudhours, or muddays to
 additionally wait up to, after the official WAIT period above has
 ellapsed, before&nbsp;starting the scheduled quest.&nbsp;
 This works in conjucton with SET WAIT. &nbsp;The full wait time between
-quest starts is WAIT + (random number between 1 and INTERVAL). &nbsp;Required
+quest starts is WAIT + (random number between 1 and INTERVAL).
+&nbsp;Required
 for
 scheduled quests.</p>
       <span style="color: rgb(51, 102, 102);"></span>
@@ -2536,7 +2537,9 @@ Normally a mob will not be chosen by this command if the mob has been
 previously set with SET MOB, or SET MOBTYPE. The RESELECT flag is an
 optional first flag which, if specified, designates that a mob may be
 chosen if previously chosen, so long as the RESELECT flag was also used
-in the previous SET MOB or SET MOBTYPE command.</p>
+in the previous SET MOB or SET MOBTYPE command. Note: mobs, items,
+rooms, etc that are Cloaked (as per Prop_WizInvis) are never ever
+selected with any SET command.</p>
       <p><span style="color: rgb(51, 102, 102);">SET MOB</span> <span
  style="color: rgb(102, 51, 102);">[OBJECT]</span>
 - serves the same purpose as the above command of the same name, but

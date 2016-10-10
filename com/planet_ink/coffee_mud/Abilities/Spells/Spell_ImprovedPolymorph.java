@@ -32,20 +32,63 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Spell_ImprovedPolymorph extends Spell
 {
-	@Override public String ID() { return "Spell_ImprovedPolymorph"; }
+	@Override
+	public String ID()
+	{
+		return "Spell_ImprovedPolymorph";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Improved Polymorph");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Improved Polymorph)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
 
-	Race newRace=null;
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
 
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL | Ability.DOMAIN_TRANSMUTATION;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_OTHERS;
+	}
+
+	protected Race		newRace	= null;
+	protected boolean	noxp	= false;
+
+	@Override
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
+	{
+		if((msg.sourceMinor()==CMMsg.TYP_EXPCHANGE)
+		&&(noxp)
+		&&((msg.target()==affected)   &&(affected instanceof MOB)))
+		{
+			msg.setValue(0);
+		}
+		return super.okMessage(myHost,msg);
+	}
+	
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
@@ -62,6 +105,7 @@ public class Spell_ImprovedPolymorph extends Spell
 				affectableStats.setWeight(affectableStats.weight()+oldAdd);
 		}
 	}
+
 	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
@@ -85,8 +129,10 @@ public class Spell_ImprovedPolymorph extends Spell
 		final MOB mob=(MOB)affected;
 		super.unInvoke();
 		if(canBeUninvoked())
+		{
 			if((mob.location()!=null)&&(!mob.amDead()))
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> morph(s) back to <S-HIS-HER> normal form."));
+		}
 	}
 
 	@Override
@@ -190,10 +236,17 @@ public class Spell_ImprovedPolymorph extends Spell
 			fakeStatTotal+=fakeMOB.charStats().getStat(s);
 
 		int statDiff=targetStatTotal-fakeStatTotal;
+		boolean noxp=false;
 		if(CMLib.flags().canMove(fakeMOB)!=CMLib.flags().canMove(target))
-			statDiff+=100;
+		{
+			statDiff+=75;
+			noxp=true;
+		}
 		if(CMLib.flags().canBreatheHere(fakeMOB,target.location())!=CMLib.flags().canBreatheHere(target,target.location()))
-			statDiff+=50;
+		{
+			statDiff+=40;
+			noxp = true;
+		}
 		if(CMLib.flags().canSee(fakeMOB)!=CMLib.flags().canSee(target))
 			statDiff+=25;
 		if(CMLib.flags().canHear(fakeMOB)!=CMLib.flags().canHear(target))
@@ -225,7 +278,14 @@ public class Spell_ImprovedPolymorph extends Spell
 				{
 					newRace=R;
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> become(s) a @x1!",newRace.name()));
-					success=beneficialAffect(mob,target,asLevel,0)!=null;
+					Spell_ImprovedPolymorph morph = (Spell_ImprovedPolymorph) beneficialAffect(mob,target,asLevel,0); 
+					if(morph != null)
+					{
+						success=true;
+						morph.noxp = noxp;
+					}
+					else
+						success=false;
 					target.recoverCharStats();
 					CMLib.utensils().confirmWearability(target);
 				}

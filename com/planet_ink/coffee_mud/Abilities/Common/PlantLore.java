@@ -90,7 +90,8 @@ public class PlantLore extends CommonSkill
 								.plus(TrackingLibrary.TrackingFlag.OPENONLY)
 								.plus(TrackingLibrary.TrackingFlag.AREAONLY)
 								.plus(TrackingLibrary.TrackingFlag.NOAIR);
-						CMLib.tracking().getRadiantRooms(room,V,flags,null,2+(getXLEVELLevel(mob)/2),null);
+						int range=2+(getXLEVELLevel(mob)/2)+super.getXMAXRANGELevel(mob);
+						CMLib.tracking().getRadiantRooms(room,V,flags,null,range,null);
 						for(int v=0;v<V.size();v++)
 						{
 							final Room R=V.elementAt(v);
@@ -117,14 +118,14 @@ public class PlantLore extends CommonSkill
 										isAdjacent=d;
 								}
 								if(isAdjacent>=0)
-									str.append(L("There looks like @x1 @x2.\n\r",resourceStr.toLowerCase(),Directions.getInDirectionName(isAdjacent)));
+									str.append(L("There looks like @x1 @x2.\n\r",resourceStr.toLowerCase(),CMLib.directions().getInDirectionName(isAdjacent)));
 								else
 								{
 									int d=CMLib.tracking().radiatesFromDir(R,V);
 									if(d>=0)
 									{
 										d=Directions.getOpDirectionCode(d);
-										str.append(L("There looks like @x1 far @x2.\n\r",resourceStr.toLowerCase(),Directions.getInDirectionName(d)));
+										str.append(L("There looks like @x1 far @x2.\n\r",resourceStr.toLowerCase(),CMLib.directions().getInDirectionName(d)));
 									}
 								}
 

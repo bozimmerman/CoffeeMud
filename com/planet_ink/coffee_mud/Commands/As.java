@@ -34,10 +34,17 @@ import java.util.*;
 */
 public class As extends StdCommand
 {
-	public As(){}
+	public As()
+	{
+	}
 
-	private final String[] access=I(new String[]{"AS"});
-	@Override public String[] getAccessWords(){return access;}
+	private final String[] access = I(new String[] { "AS" });
+
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
@@ -68,7 +75,9 @@ public class As extends StdCommand
 				if(targets.size()>0)
 					M=targets.get(CMLib.dice().roll(1,targets.size(),-1));
 			}
-			catch(final NoSuchElementException e){}
+			catch (final NoSuchElementException e)
+			{
+			}
 		}
 		if(M==null)
 		{
@@ -156,8 +165,16 @@ public class As extends StdCommand
 		return false;
 	}
 
-	@Override public boolean canBeOrdered(){return false;}
-	@Override public boolean securityCheck(MOB mob){return CMSecurity.isAllowedAnywhere(mob,CMSecurity.SecFlag.AS);}
+	@Override
+	public boolean canBeOrdered()
+	{
+		return false;
+	}
 
+	@Override
+	public boolean securityCheck(MOB mob)
+	{
+		return CMSecurity.isAllowedAnywhere(mob, CMSecurity.SecFlag.AS);
+	}
 
 }

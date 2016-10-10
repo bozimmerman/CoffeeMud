@@ -1,7 +1,7 @@
 <CLANTYPES>
 <CLANTYPE TYPEID=0 NAME="GANG" CATEGORY="">
     <SHORTDESC>ruled by a boss who assigns underlings</SHORTDESC>
-    <LONGDESC>The traditional Gang is an efficient organization run by a single boss. The boss has all the powers and authority mentioned above, and can assign lieutentants, treasurers, or staff to assist with some menial chores.  Gang bosses and lieutentants also have the authority to maintain discipline in the ranks using the ORDER command.</LONGDESC>
+    <LONGDESC>The traditional Gang is an efficient organization run by a single boss. The boss has all the powers and authority mentioned above, and can assign lieutenants, treasurers, or staff to assist with some menial chores.  Gang bosses and lieutenants also have the authority to maintain discipline in the ranks using the ORDER command.</LONGDESC>
     <POSITIONS>
         <POSITION ID="BOSS" ROLEID=6 RANK=0 NAME="BOSS" PLURAL="BOSSES" MAX=1 INNERMASK="" PUBLIC="true">
             <POWER>ACCEPT</POWER>
@@ -108,8 +108,8 @@
         <ABILITY ID="Spell_CEqParalysis" PROFF=0 LEVEL=10 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqMind" PROFF=0 LEVEL=4 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqPoison" PROFF=0 LEVEL=7 QUALIFYONLY=true />
-        <ABILITY ID="Spell_ClanDonate" PROFF=100 LEVEL=2 QUALIFYONLY=false />
         <ABILITY ID="Spell_CEqWater" PROFF=0 LEVEL=4 QUALIFYONLY=true />
+        <ABILITY ID="Spell_ClanDonate" PROFF=100 LEVEL=2 QUALIFYONLY=false />
         <ABILITY ID="Spell_Flagportation" PROFF=0 LEVEL=11 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqElectric" PROFF=0 LEVEL=5 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqFire" PROFF=0 LEVEL=5 QUALIFYONLY=true />
@@ -229,12 +229,12 @@
         </POSITION>
     </POSITIONS>
     <VOTING MAXDAYS=24 QUORUMPCT=100>
-        <POWER>SET_HOME</POWER>
-        <POWER>DECLARE</POWER>
-        <POWER>PREMISE</POWER>
-        <POWER>SET_DONATE</POWER>
-        <POWER>TAX</POWER>
         <POWER>ASSIGN</POWER>
+        <POWER>SET_DONATE</POWER>
+        <POWER>DECLARE</POWER>
+        <POWER>SET_HOME</POWER>
+        <POWER>PREMISE</POWER>
+        <POWER>TAX</POWER>
     </VOTING>
     <AUTOPOSITION>APPLICANT</AUTOPOSITION>
     <ACCEPTPOSITION>MEMBER</ACCEPTPOSITION>
@@ -257,8 +257,8 @@
         <ABILITY ID="Spell_CEqParalysis" PROFF=0 LEVEL=10 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqMind" PROFF=0 LEVEL=4 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqPoison" PROFF=0 LEVEL=7 QUALIFYONLY=true />
-        <ABILITY ID="Spell_ClanDonate" PROFF=100 LEVEL=2 QUALIFYONLY=false />
         <ABILITY ID="Spell_CEqWater" PROFF=0 LEVEL=4 QUALIFYONLY=true />
+        <ABILITY ID="Spell_ClanDonate" PROFF=100 LEVEL=2 QUALIFYONLY=false />
         <ABILITY ID="Spell_Flagportation" PROFF=0 LEVEL=11 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqElectric" PROFF=0 LEVEL=5 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqFire" PROFF=0 LEVEL=5 QUALIFYONLY=true />
@@ -366,22 +366,22 @@
         </POSITION>
     </POSITIONS>
     <VOTING MAXDAYS=48 QUORUMPCT=66>
-        <POWER>SET_HOME</POWER>
-        <POWER>ACCEPT</POWER>
-        <POWER>DECLARE</POWER>
-        <POWER>PREMISE</POWER>
-        <POWER>SET_DONATE</POWER>
-        <POWER>EXILE</POWER>
-        <POWER>REJECT</POWER>
-        <POWER>TAX</POWER>
         <POWER>ASSIGN</POWER>
+        <POWER>SET_DONATE</POWER>
+        <POWER>ACCEPT</POWER>
+        <POWER>REJECT</POWER>
+        <POWER>DECLARE</POWER>
+        <POWER>SET_HOME</POWER>
+        <POWER>PREMISE</POWER>
+        <POWER>EXILE</POWER>
+        <POWER>TAX</POWER>
     </VOTING>
     <AUTOPOSITION>APPLICANT</AUTOPOSITION>
     <ACCEPTPOSITION>CITIZEN</ACCEPTPOSITION>
     <REQUIREDMASK></REQUIREDMASK>
     <ENTRYSCRIPT></ENTRYSCRIPT>
     <EXITSCRIPT></EXITSCRIPT>
-    <AUTOPROMOTEBY>NONE</AUTOPROMOTEBY>
+    <AUTOPROMOTEBY>RANK</AUTOPROMOTEBY>
     <PUBLIC>true</PUBLIC>
     <FAMILYONLY>false</FAMILYONLY>
     <RIVALROUS>true</RIVALROUS>
@@ -397,8 +397,8 @@
         <ABILITY ID="Spell_CEqParalysis" PROFF=0 LEVEL=10 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqMind" PROFF=0 LEVEL=4 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqPoison" PROFF=0 LEVEL=7 QUALIFYONLY=true />
-        <ABILITY ID="Spell_ClanDonate" PROFF=100 LEVEL=2 QUALIFYONLY=false />
         <ABILITY ID="Spell_CEqWater" PROFF=0 LEVEL=4 QUALIFYONLY=true />
+        <ABILITY ID="Spell_ClanDonate" PROFF=100 LEVEL=2 QUALIFYONLY=false />
         <ABILITY ID="Spell_Flagportation" PROFF=0 LEVEL=11 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqElectric" PROFF=0 LEVEL=5 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqFire" PROFF=0 LEVEL=5 QUALIFYONLY=true />
@@ -511,22 +511,22 @@
         </POSITION>
     </POSITIONS>
     <VOTING MAXDAYS=100 QUORUMPCT=33>
-        <POWER>SET_HOME</POWER>
-        <POWER>ACCEPT</POWER>
-        <POWER>DECLARE</POWER>
-        <POWER>PREMISE</POWER>
-        <POWER>SET_DONATE</POWER>
-        <POWER>EXILE</POWER>
-        <POWER>REJECT</POWER>
-        <POWER>TAX</POWER>
         <POWER>ASSIGN</POWER>
+        <POWER>SET_DONATE</POWER>
+        <POWER>ACCEPT</POWER>
+        <POWER>REJECT</POWER>
+        <POWER>DECLARE</POWER>
+        <POWER>SET_HOME</POWER>
+        <POWER>PREMISE</POWER>
+        <POWER>EXILE</POWER>
+        <POWER>TAX</POWER>
     </VOTING>
     <AUTOPOSITION>APPLICANT</AUTOPOSITION>
     <ACCEPTPOSITION>CITIZEN</ACCEPTPOSITION>
     <REQUIREDMASK></REQUIREDMASK>
     <ENTRYSCRIPT></ENTRYSCRIPT>
     <EXITSCRIPT></EXITSCRIPT>
-    <AUTOPROMOTEBY>NONE</AUTOPROMOTEBY>
+    <AUTOPROMOTEBY>RANK</AUTOPROMOTEBY>
     <PUBLIC>true</PUBLIC>
     <FAMILYONLY>false</FAMILYONLY>
     <RIVALROUS>true</RIVALROUS>
@@ -542,8 +542,8 @@
         <ABILITY ID="Spell_CEqParalysis" PROFF=0 LEVEL=10 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqMind" PROFF=0 LEVEL=4 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqPoison" PROFF=0 LEVEL=7 QUALIFYONLY=true />
-        <ABILITY ID="Spell_ClanDonate" PROFF=100 LEVEL=2 QUALIFYONLY=false />
         <ABILITY ID="Spell_CEqWater" PROFF=0 LEVEL=4 QUALIFYONLY=true />
+        <ABILITY ID="Spell_ClanDonate" PROFF=100 LEVEL=2 QUALIFYONLY=false />
         <ABILITY ID="Spell_Flagportation" PROFF=0 LEVEL=11 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqElectric" PROFF=0 LEVEL=5 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqFire" PROFF=0 LEVEL=5 QUALIFYONLY=true />
@@ -722,7 +722,7 @@
 </CLANTYPE>
 <CLANTYPE TYPEID=5 NAME="FAMILY" CATEGORY="">
     <SHORTDESC>patron/patron rules a private group only family can join</SHORTDESC>
-    <LONGDESC>The Family is a clan rules by either a Matron, a Patron, or both.  The traditional powers of treasurer and enchanter can be held by any of the adult members of the family, which includes Misters and Mistresses.  All other minor powers are held equally by all members, including the cousins, the children, and even the black sheep of the family.</LONGDESC>
+    <LONGDESC>The Family is a clan that only family can join, and is ruled by either a Matron, a Patron, or both.  The traditional powers of treasurer and enchanter can be held by any of the adult members of the family, which includes Misters and Mistresses.  All other minor powers are held equally by all members, including the cousins, the children, and even the black sheep of the family.</LONGDESC>
     <POSITIONS>
         <POSITION ID="PATRON" ROLEID=6 RANK=0 NAME="PATRON" PLURAL="PATRONS" MAX=1 INNERMASK="-FEMALE -NEUTER" PUBLIC="true">
             <POWER>ACCEPT</POWER>
@@ -864,8 +864,8 @@
         <ABILITY ID="Spell_CEqParalysis" PROFF=0 LEVEL=10 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqMind" PROFF=0 LEVEL=4 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqPoison" PROFF=0 LEVEL=7 QUALIFYONLY=true />
-        <ABILITY ID="Spell_ClanDonate" PROFF=100 LEVEL=2 QUALIFYONLY=false />
         <ABILITY ID="Spell_CEqWater" PROFF=0 LEVEL=4 QUALIFYONLY=true />
+        <ABILITY ID="Spell_ClanDonate" PROFF=100 LEVEL=2 QUALIFYONLY=false />
         <ABILITY ID="Spell_Flagportation" PROFF=0 LEVEL=11 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqElectric" PROFF=0 LEVEL=5 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqFire" PROFF=0 LEVEL=5 QUALIFYONLY=true />
@@ -934,12 +934,13 @@
         <DEITYBASIS>false</DEITYBASIS>
     </CONQUEST>
     <ABILITIES>
+        <ABILITY ID="Spell_ClanExperience" PROFF=100 LEVEL=1 QUALIFYONLY=false />
         <ABILITY ID="Spell_CEqGas" PROFF=0 LEVEL=4 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqParalysis" PROFF=0 LEVEL=10 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqMind" PROFF=0 LEVEL=4 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqPoison" PROFF=0 LEVEL=7 QUALIFYONLY=true />
-        <ABILITY ID="Spell_ClanDonate" PROFF=100 LEVEL=2 QUALIFYONLY=false />
         <ABILITY ID="Spell_CEqWater" PROFF=0 LEVEL=4 QUALIFYONLY=true />
+        <ABILITY ID="Spell_ClanDonate" PROFF=100 LEVEL=2 QUALIFYONLY=false />
         <ABILITY ID="Spell_Flagportation" PROFF=0 LEVEL=11 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqElectric" PROFF=0 LEVEL=5 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqFire" PROFF=0 LEVEL=5 QUALIFYONLY=true />
@@ -971,11 +972,16 @@
 <CLANTYPE TYPEID=7 NAME="PROFESSION" CATEGORY="CLASSCLAN">
     <SHORTDESC>a clan for professions that should also grant a class to members</SHORTDESC>
     <LONGDESC>
-    A simple, permanent membership clan that decides most things with votes. Use for system-based clans, and grant a class on entry.
-    Players must be an Apprentice to join a profession, and once in a profession, players can not gain experience outside of one.
-    When the Archon creates clans from this government, they should designate the clans auto-class, and make sure players only
-    qualify for Apprentice when creating characters.
-    </LONGDESC>
+
+    A simple, permanent membership clan that decides most things with votes. Use for system-based clans, and grant a class on entry.
+
+    Players must be an Apprentice to join a profession, and once in a profession, players can not gain experience outside of one.
+
+    When the Archon creates clans from this government, they should designate the clans auto-class, and make sure players only
+
+    qualify for Apprentice when creating characters.
+
+    </LONGDESC>
     <POSITIONS>
         <POSITION ID="OFFICER" ROLEID=2 RANK=2 NAME="OFFICER" PLURAL="OFFICERS" MAX=2147483647 INNERMASK="" PUBLIC="true">
             <POWER>ACCEPT</POWER>
@@ -1012,16 +1018,16 @@
         </POSITION>
     </POSITIONS>
     <VOTING MAXDAYS=10 QUORUMPCT=66>
-        <POWER>SET_HOME</POWER>
-        <POWER>DECLARE</POWER>
-        <POWER>PREMISE</POWER>
+        <POWER>ASSIGN</POWER>
         <POWER>SET_DONATE</POWER>
-        <POWER>EXILE</POWER>
         <POWER>WITHDRAW</POWER>
         <POWER>REJECT</POWER>
-        <POWER>TAX</POWER>
-        <POWER>ASSIGN</POWER>
         <POWER>MORGUE</POWER>
+        <POWER>DECLARE</POWER>
+        <POWER>SET_HOME</POWER>
+        <POWER>PREMISE</POWER>
+        <POWER>EXILE</POWER>
+        <POWER>TAX</POWER>
     </VOTING>
     <AUTOPOSITION>MEMBER</AUTOPOSITION>
     <ACCEPTPOSITION>MEMBER</ACCEPTPOSITION>

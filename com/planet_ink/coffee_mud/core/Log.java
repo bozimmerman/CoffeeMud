@@ -42,18 +42,17 @@ public class Log extends java.util.logging.Logger
 
 	/** SPACES for headers */
 	private static final String SPACES="                                                                                                ";
-	private static final String SPACES15=SPACES.substring(0,15);
-
-	private PrintWriter 		fileOutWriter[]	= null; /**	always to "log" */
-	private int					numberOfFWLogs	= 1;
-	private final PrintWriter 	systemOutWriter	= new PrintWriter(System.out,true); /** always to systemout */
-	private File 				logPath 		= new File("."); /** The fully qualified file path */
-	private String 				logName 		= "application"; /** log name */
-	private String 				LOGNAME 		= "APPLICATION"; /** log name */
-	private static final Log[] 	logs			= new Log[256];
-	private final Map<Type,Conf>CONFS			= new Hashtable<Type,Conf>();
-	private final Map<PrintWriter,long[]> WRITTEN	= new Hashtable<PrintWriter,long[]>();
-	private static final Type[] TYPE_LEVEL_MAP  = new Type[1001];
+	private static final String SPACES15		 = SPACES.substring(0,15);
+	private PrintWriter 		fileOutWriter[]	 = null; /**	always to "log" */
+	private int					numberOfFWLogs	 = 1;
+	private final PrintWriter 	systemOutWriter	 = new PrintWriter(System.out,true); /** always to systemout */
+	private File 				logPath 		 = new File("."); /** The fully qualified file path */
+	private String 				logName 		 = "application"; /** log name */
+	private String 				LOGNAME 		 = "APPLICATION"; /** log name */
+	private static final Log[] 	logs			 = new Log[256];
+	private final Map<Type,Conf>CONFS			 = new Hashtable<Type,Conf>();
+	private final Map<PrintWriter,long[]> WRITTEN= new Hashtable<PrintWriter,long[]>();
+	private static final Type[] TYPE_LEVEL_MAP   = new Type[1001];
 
 	/**
 	 * The internally used targets for a log
@@ -1878,24 +1877,28 @@ public class Log extends java.util.logging.Logger
 	}
 	//Log a message, specifying source class, method, and resource bundle name with no arguments.
 	@Override
+	@Deprecated
 	public void	logrb(final Level level, final String sourceClass, final String sourceMethod, final String bundleName, final String msg)
 	{
 		logp(level,sourceClass,sourceMethod+": "+bundleName, msg);
 	}
 	//Log a message, specifying source class, method, and resource bundle name, with a single object parameter to the log message.
 	@Override
+	@Deprecated
 	public void	logrb(final Level level, final String sourceClass, final String sourceMethod, final String bundleName, final String msg, Object param1)
 	{
 		logp(level,sourceClass,sourceMethod+": "+bundleName, msg, param1);
 	}
 	//Log a message, specifying source class, method, and resource bundle name, with an array of object arguments.
 	@Override
+	@Deprecated
 	public void	logrb(final Level level, final String sourceClass, final String sourceMethod, final String bundleName, final String msg, Object[] params)
 	{
 		logp(level,sourceClass,sourceMethod+": "+bundleName, msg, params);
 	}
 	//Log a message, specifying source class, method, and resource bundle name, with associated Throwable information.
 	@Override
+	@Deprecated
 	public void	logrb(final Level level, final String sourceClass, final String sourceMethod, final String bundleName, final String msg, final Throwable thrown)
 	{
 		logp(level,sourceClass,sourceMethod+": "+bundleName, msg, thrown);

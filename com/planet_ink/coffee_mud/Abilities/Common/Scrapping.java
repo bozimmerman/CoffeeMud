@@ -35,25 +35,52 @@ import java.util.*;
 
 public class Scrapping extends CommonSkill
 {
-	@Override public String ID() { return "Scrapping"; }
-	private final static String localizedName = CMLib.lang().L("Scrapping");
-	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =I(new String[] {"SCRAP","SCRAPPING"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override protected ExpertiseLibrary.SkillCostDefinition getRawTrainingCost() { return CMProps.getNormalSkillGainCost(ID()); }
-	@Override public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_NATURELORE; }
+	@Override
+	public String ID()
+	{
+		return "Scrapping";
+	}
 
-	protected Item found=null;
-	boolean fireRequired=false;
-	protected int amount=0;
-	protected String oldItemName="";
-	protected String foundShortName="";
-	protected boolean messedUp=false;
+	private final static String	localizedName	= CMLib.lang().L("Scrapping");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "SCRAP", "SCRAPPING" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	protected ExpertiseLibrary.SkillCostDefinition getRawTrainingCost()
+	{
+		return CMProps.getNormalSkillGainCost(ID());
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_COMMON_SKILL | Ability.DOMAIN_NATURELORE;
+	}
+
+	protected Item		found			= null;
+	boolean				fireRequired	= false;
+	protected int		amount			= 0;
+	protected String	oldItemName		= "";
+	protected String	foundShortName	= "";
+	protected boolean	messedUp		= false;
+
 	public Scrapping()
 	{
 		super();
-		displayText=L("You are scrapping...");
-		verb=L("scrapping");
+		displayText = L("You are scrapping...");
+		verb = L("scrapping");
 	}
 
 	@Override
@@ -81,22 +108,29 @@ public class Scrapping extends CommonSkill
 			if(affected instanceof MOB)
 			{
 				final MOB mob=(MOB)affected;
-				if((found!=null)&&(!aborted))
+				if((found!=null)&&(!aborted)&&(mob.location()!=null))
 				{
 					if(messedUp)
 						commonTell(mob,L("You've messed up scrapping @x1!",oldItemName));
 					else
 					{
-						amount=amount*abilityCode();
-						String s="s";
-						if(amount==1)
-							s="";
-						mob.location().show(mob,null,getActivityMessageType(),L("<S-NAME> manage(s) to scrap @x1 pound@x2 of @x3.",""+amount,s,foundShortName));
-						for(int i=0;i<amount;i++)
+						amount=amount*(baseYield()+abilityCode());
+						final CMMsg msg=CMClass.getMsg(mob,found,this,getCompletedActivityMessageType(),null);
+						msg.setValue(amount);
+						if(mob.location().okMessage(mob, msg))
 						{
-							final Item newFound=(Item)found.copyOf();
-							mob.location().addItem(newFound,ItemPossessor.Expire.Player_Drop);
-							CMLib.commands().postGet(mob,null,newFound,true);
+							String s="s";
+							if(msg.value()==1)
+								s="";
+							msg.modify(L("<S-NAME> manage(s) to scrap @x1 pound@x2 of @x3.",""+msg.value(),s,foundShortName));
+							mob.location().send(mob, msg);
+							for(int i=0;i<msg.value();i++)
+							{
+								final Item newFound=(Item)found.copyOf();
+								if(!dropAWinner(mob,newFound))
+									break;
+								CMLib.commands().postGet(mob,null,newFound,true);
+							}
 						}
 					}
 				}
@@ -193,6 +227,14 @@ public class Scrapping extends CommonSkill
 			fireRequired=true;
 			if(fire==null)
 				return false;
+		}
+
+		final PrivateProperty prop=CMLib.law().getPropertyRecord(I);
+		if(((prop != null)&&(!CMLib.law().doesHavePrivilegesWith(mob, prop)))
+		||(I instanceof SailingShip))
+		{
+			commonTell(mob,L("@x1 can't be scrapped.",I.name(mob)));
+			return false;
 		}
 
 		found=null;

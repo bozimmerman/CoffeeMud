@@ -32,19 +32,44 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
-
 public class Chant_AnimalSpy extends Chant
 {
-	@Override public String ID() { return "Chant_AnimalSpy"; }
-	private final static String localizedName = CMLib.lang().L("Animal Spy");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Animal Spy)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;}
-	protected MOB spy=null;
-	protected boolean disable=false;
+	@Override
+	public String ID()
+	{
+		return "Chant_AnimalSpy";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Animal Spy");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Animal Spy)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_OTHERS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT | Ability.DOMAIN_ANIMALAFFINITY;
+	}
+
+	protected MOB		spy		= null;
+	protected boolean	disable	= false;
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
@@ -52,11 +77,11 @@ public class Chant_AnimalSpy extends Chant
 		if(!super.tick(ticking,tickID))
 			return false;
 		if((tickID==Tickable.TICKID_MOB)
-		   &&(affected==spy))
+		&&(affected==spy))
 		{
 			if(spy.amDead()
-			   ||(spy.amFollowing()!=invoker)
-			   ||(!CMLib.flags().isInTheGame(spy,false)))
+			||(spy.amFollowing()!=invoker)
+			||(!CMLib.flags().isInTheGame(spy,false)))
 				unInvoke();
 		}
 		return true;
@@ -138,7 +163,6 @@ public class Chant_AnimalSpy extends Chant
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-
 		if(commands.size()<1)
 		{
 			mob.tell(L("Chant to whom?"));
@@ -191,7 +215,6 @@ public class Chant_AnimalSpy extends Chant
 		}
 		else
 			beneficialVisualFizzle(mob,target,L("<S-NAME> chant(s) to <T-NAMESELF>, but the magic fades."));
-
 
 		// return whether it worked
 		return success;

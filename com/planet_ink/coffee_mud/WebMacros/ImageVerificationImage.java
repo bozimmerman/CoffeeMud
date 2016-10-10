@@ -57,14 +57,23 @@ import com.planet_ink.coffee_mud.core.exceptions.HTTPServerException;
   * @author Jeff Haynie
   * Copyright (c) by Jeff Haynie. All Rights Reserved.
   */
- public class ImageVerificationImage extends StdWebMacro
- {
+public class ImageVerificationImage extends StdWebMacro
+{
 	private String value;
 	public  static Object sync=new Object();
 	private static Random rand=new Random();
 
-	@Override public boolean isAWebPath(){return true;}
-	@Override public boolean preferBinary(){return true;}
+	@Override
+	public boolean isAWebPath()
+	{
+		return true;
+	}
+
+	@Override
+	public boolean preferBinary()
+	{
+		return true;
+	}
 	
 	public ImageVerificationImage (){}
 
@@ -76,10 +85,10 @@ import com.planet_ink.coffee_mud.core.exceptions.HTTPServerException;
 		public String ip;
 	}
 
- 	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked")
 	public static SLinkedList<ImgCacheEntry> getVerifyCache()
 	{
- 		SLinkedList<ImgCacheEntry> verSet=(SLinkedList<ImgCacheEntry>)Resources.getResource("SYSTEM_WEB_IMGVER_CACHE");
+		SLinkedList<ImgCacheEntry> verSet=(SLinkedList<ImgCacheEntry>)Resources.getResource("SYSTEM_WEB_IMGVER_CACHE");
 		if(verSet==null)
 		{
 			verSet=new SLinkedList<ImgCacheEntry>();
@@ -105,10 +114,10 @@ import com.planet_ink.coffee_mud.core.exceptions.HTTPServerException;
 
 	public String getFilename(HTTPRequest httpReq, String filename)
 	{
-		 final String foundFilename=httpReq.getUrlParameter("FILENAME");
-		 if((foundFilename!=null)&&(foundFilename.length()>0))
-			 return foundFilename;
-		 return filename;
+		final String foundFilename=httpReq.getUrlParameter("FILENAME");
+		if((foundFilename!=null)&&(foundFilename.length()>0))
+			return foundFilename;
+		return filename;
 	}
 
 	@Override
@@ -132,7 +141,7 @@ import com.planet_ink.coffee_mud.core.exceptions.HTTPServerException;
 				final String hisIp=httpReq.getClientAddress().getHostAddress();
 				if(imageRequest)
 				{
-		 			for(final Iterator<ImageVerificationImage.ImgCacheEntry> p =cache.descendingIterator();p.hasNext();)
+					for(final Iterator<ImageVerificationImage.ImgCacheEntry> p =cache.descendingIterator();p.hasNext();)
 					{
 						final ImageVerificationImage.ImgCacheEntry entry=p.next();
 						if(entry.ip.equalsIgnoreCase(hisIp))
@@ -169,93 +178,93 @@ import com.planet_ink.coffee_mud.core.exceptions.HTTPServerException;
 		return bout.toByteArray();
 	}
 
-	 @Override
+	@Override
 	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp) throws HTTPServerException
-	 {
-		 return "[Unimplemented string method!]";
-	 }
+	{
+		return "[Unimplemented string method!]";
+	}
 
-	 public ImageVerificationImage (String oldValue, OutputStream out) throws IOException
-	 {
-		 this(34,120,oldValue,out);
-	 }
+	public ImageVerificationImage (String oldValue, OutputStream out) throws IOException
+	{
+		this(34,120,oldValue,out);
+	}
 
-	 public ImageVerificationImage (int height, int width, String oldValue, OutputStream out) throws IOException
-	 {
-		 final BufferedImage bimage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-		 final Random rand=new Random(System.currentTimeMillis());
-		 final Graphics2D g = bimage.createGraphics();
-		 // create a random color
-		 final Color color = new Color(rand.nextInt(255), rand.nextInt(255), rand.nextInt(255));
-		 // the the background to the random color to fill the
-		 // background and make it darker
-		 g.setColor(color.darker());
-		 g.fillRect(0, 0, width, height);
-		 // set the font
-		 g.setFont(new Font("arial",Font.BOLD,24));
-		 // generate a random value
-		 if(oldValue!=null)
-			 this.value = oldValue;
-		 else
-			 this.value = UUID.randomUUID().toString().replace("-","").substring(0,5);
-		 final int w = (g.getFontMetrics()).stringWidth(value);
-		 final int d = (g.getFontMetrics()).getDescent();
-		 final int a = (g.getFontMetrics()).getMaxAscent();
-		 int x = 0, y =0;
-		 // randomly set the color and draw some straight lines through it
-		 for (int i = 0; i < height; i += 5)
-		 {
+	public ImageVerificationImage (int height, int width, String oldValue, OutputStream out) throws IOException
+	{
+		final BufferedImage bimage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+		final Random rand=new Random(System.currentTimeMillis());
+		final Graphics2D g = bimage.createGraphics();
+		// create a random color
+		final Color color = new Color(rand.nextInt(255), rand.nextInt(255), rand.nextInt(255));
+		// the the background to the random color to fill the
+		// background and make it darker
+		g.setColor(color.darker());
+		g.fillRect(0, 0, width, height);
+		// set the font
+		g.setFont(new Font("arial",Font.BOLD,24));
+		// generate a random value
+		if(oldValue!=null)
+			this.value = oldValue;
+		else
+			this.value = UUID.randomUUID().toString().replace("-","").substring(0,5);
+		final int w = (g.getFontMetrics()).stringWidth(value);
+		final int d = (g.getFontMetrics()).getDescent();
+		final int a = (g.getFontMetrics()).getMaxAscent();
+		int x = 0, y =0;
+		// randomly set the color and draw some straight lines through it
+		for (int i = 0; i < height; i += 5)
+		{
 			g.setColor(new Color(rand.nextInt(255), rand.nextInt(255), rand.nextInt(255)));
 			g.drawLine(x, y + i, width, y+i);
-		 }
-		 // reset x and y
-		 x=0;
-		 y=0;
-		 // randomly set the color of the lines and just draw think at an angle
-		 for (int i = 0; i < height; i += 5)
-		 {
+		}
+		// reset x and y
+		x=0;
+		y=0;
+		// randomly set the color of the lines and just draw think at an angle
+		for (int i = 0; i < height; i += 5)
+		{
 			g.setColor(new Color(rand.nextInt(255), rand.nextInt(255), rand.nextInt(255)));
 			g.drawLine(x, y + d - i, width + w, height + d - i);
-		 }
-		 // randomly set the color and make it really bright for more readability
-		 g.setColor(new Color(rand.nextInt(255), rand.nextInt(255), rand.nextInt(255)).brighter().brighter());
-		 // we need to position the text in the center of the box
-		 x = width/2 - w/2;
-		 y = height/2 + a/2 - 2;
-		 // affine transform is used to rock the text a bit
-		 final AffineTransform fontAT = new AffineTransform();
-		 int xp = x-2;
-		 // walk through each character and rotate it randomly
-		 for (int c=0;c<value.length();c++)
-		 {
-			 // apply a random radian either left or right (left is half since it's too far back)
-			 final int rotate = rand.nextInt(20);
-			 fontAT.rotate(rand.nextBoolean() ? Math.toRadians(rotate) : -Math.toRadians(rotate/2));
-			 final Font fx = new Font("arial", Font.BOLD, 24).deriveFont(fontAT);
-			 g.setFont(fx);
-			 final String ch = String.valueOf(value.charAt(c));
-			 final int ht = rand.nextInt(3);
-			 // draw the string and move the y either up or down slightly
-			 g.drawString(ch, xp, y + (rand.nextBoolean()?-ht:ht));
-			 // move our pointer
-			 xp+=g.getFontMetrics().stringWidth(ch) + 2;
-		 }
-		 // write out the PNG file
-		 ImageIO.write(bimage, "png", out);
-		 // make sure your clean up the graphics object
-		 g.dispose();
-	 }
+		}
+		// randomly set the color and make it really bright for more readability
+		g.setColor(new Color(rand.nextInt(255), rand.nextInt(255), rand.nextInt(255)).brighter().brighter());
+		// we need to position the text in the center of the box
+		x = width/2 - w/2;
+		y = height/2 + a/2 - 2;
+		// affine transform is used to rock the text a bit
+		final AffineTransform fontAT = new AffineTransform();
+		int xp = x-2;
+		// walk through each character and rotate it randomly
+		for (int c=0;c<value.length();c++)
+		{
+			// apply a random radian either left or right (left is half since it's too far back)
+			final int rotate = rand.nextInt(20);
+			fontAT.rotate(rand.nextBoolean() ? Math.toRadians(rotate) : -Math.toRadians(rotate/2));
+			final Font fx = new Font("arial", Font.BOLD, 24).deriveFont(fontAT);
+			g.setFont(fx);
+			final String ch = String.valueOf(value.charAt(c));
+			final int ht = rand.nextInt(3);
+			// draw the string and move the y either up or down slightly
+			g.drawString(ch, xp, y + (rand.nextBoolean()?-ht:ht));
+			// move our pointer
+			xp+=g.getFontMetrics().stringWidth(ch) + 2;
+		}
+		// write out the PNG file
+		ImageIO.write(bimage, "png", out);
+		// make sure your clean up the graphics object
+		g.dispose();
+	}
 
-	 /**
-	  * return the value to check for when the user enters it in. Make sure you
-	  * store this off in the session or something like a database and NOT in the
-	  * form of the webpage since the whole point of this exercise is to ensure that
-	  * only humans and not machines are entering the data.
-	  *
-	  * @return the value to enter
-	  */
-	 public String getVerificationValue ()
-	 {
-		 return this.value;
-	 }
- }
+	/**
+	 * return the value to check for when the user enters it in. Make sure you
+	 * store this off in the session or something like a database and NOT in the
+	 * form of the webpage since the whole point of this exercise is to ensure that
+	 * only humans and not machines are entering the data.
+	 *
+	 * @return the value to enter
+	 */
+	public String getVerificationValue ()
+	{
+		return this.value;
+	}
+}

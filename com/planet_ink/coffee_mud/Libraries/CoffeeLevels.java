@@ -232,10 +232,31 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 	@Override
 	public StringBuffer baseLevelAdjuster(MOB mob, int adjuster)
 	{
-		mob.basePhyStats().setLevel(mob.basePhyStats().level()+adjuster);
-		final CharClass curClass=mob.baseCharStats().getCurrentClass();
-		mob.baseCharStats().setClassLevel(curClass,mob.baseCharStats().getClassLevel(curClass)+adjuster);
-		final int classLevel=mob.baseCharStats().getClassLevel(mob.baseCharStats().getCurrentClass());
+		synchronized(mob.basePhyStats())
+		{
+			mob.basePhyStats().setLevel(mob.basePhyStats().level()+adjuster);
+		}
+		synchronized(mob.phyStats())
+		{
+			mob.phyStats().setLevel(mob.basePhyStats().level());
+		}
+		final CharClass curClass;
+		final int oldClassLevel;
+		synchronized(mob.baseCharStats())
+		{
+			curClass=mob.baseCharStats().getCurrentClass();
+			oldClassLevel = mob.baseCharStats().getClassLevel(curClass);
+			mob.baseCharStats().setClassLevel(curClass,oldClassLevel+adjuster);
+		}
+		synchronized(mob.charStats())
+		{
+			mob.charStats().setClassLevel(curClass,oldClassLevel+adjuster);
+		}
+		final int classLevel;
+		synchronized(mob.baseCharStats())
+		{
+			classLevel=mob.baseCharStats().getClassLevel(mob.baseCharStats().getCurrentClass());
+		}
 		int gained=mob.getExperience()-mob.getExpNextLevel();
 		if(gained<50)
 			gained=50;
@@ -253,8 +274,8 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 			mob.setWimpHitPoint((int)Math.round(CMath.ceiling(CMath.mul(mob.baseState().getHitPoints()+newHitPointGain,wimpPct))));
 		}
 		mob.baseState().setHitPoints(mob.baseState().getHitPoints()+newHitPointGain);
-		if(mob.baseState().getHitPoints()<20)
-			mob.baseState().setHitPoints(20);
+		if(mob.baseState().getHitPoints()<CMProps.getIntVar(CMProps.Int.STARTHP))
+			mob.baseState().setHitPoints(CMProps.getIntVar(CMProps.Int.STARTHP));
 		mob.curState().setHitPoints(mob.curState().getHitPoints()+newHitPointGain);
 		theNews.append("^NYou have gained ^H"+newHitPointGain+"^? hit " +
 			(newHitPointGain!=1?"points":"point") + ", ^H");
@@ -350,6 +371,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		}
 		fixMobStatsIfNecessary(mob,-1);
 		CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.LEVELSGAINED, -1, mob);
+		CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.CLASSLEVELSGAINED, -1, mob);
 	}
 
 	@Override
@@ -482,7 +504,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 					C.execute(mob,new XVector<String>("GTELL",",<S-HAS-HAVE> gained a level."),MUDCmdProcessor.METAFLAG_FORCED);
 			}catch(final Exception e){}
 		}
-		final StringBuffer theNews=new StringBuffer("^xYou have L E V E L E D ! ! ! ! ! ^.^N\n\r\n\r"+CMLib.protocol().msp("level_gain.wav",60));
+		final StringBuffer theNews=new StringBuffer("^xYou have L E V E L E D ! ! ! ! ! ^.^N\n\r\n\r"+CMLib.protocol().msp("levelgain.wav",60));
 		CharClass curClass=mob.baseCharStats().getCurrentClass();
 		theNews.append(baseLevelAdjuster(mob,1));
 		if(mob.playerStats()!=null)
@@ -608,6 +630,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		mob.charStats().getMyRace().level(mob,newAbilityIDs);
 		
 		CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.LEVELSGAINED, 1, mob);
+		CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.CLASSLEVELSGAINED, 1, mob);
 	}
 
 	protected boolean fixMobStatsIfNecessary(MOB mob, int direction)
@@ -751,6 +774,33 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 			else
 				loseExperience(mob,-msg.value());
 		}
+	}
+	
+	@Override
+	public boolean postExperienceToAllAboard(Physical possibleShip, int amount)
+	{
+		boolean posted = false;
+		if(possibleShip instanceof BoardableShip)
+		{
+			final Area A=((BoardableShip)possibleShip).getShipArea();
+			if(A!=null)
+			{
+				posted = true;
+				for(final Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
+				{
+					final Room R=r.nextElement();
+					if(R!=null)
+					{
+						for(Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
+						{
+							final MOB M=m.nextElement();
+							posted = CMLib.leveler().postExperience(M, null, null, amount, false) && posted;
+						}
+					}
+				}
+			}
+		}
+		return posted;
 	}
 
 }

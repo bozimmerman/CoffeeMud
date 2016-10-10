@@ -73,7 +73,7 @@ public class Examine extends StdCommand
 			if((ID.toUpperCase().startsWith("EXIT")&&(commands.size()==2)))
 			{
 				final CMMsg exitMsg=CMClass.getMsg(mob,thisThang,null,CMMsg.MSG_LOOK_EXITS,null);
-				if((CMProps.getIntVar(CMProps.Int.EXVIEW)>=2)!=mob.isAttributeSet(MOB.Attrib.BRIEF))
+				if((CMProps.getIntVar(CMProps.Int.EXVIEW)>=CMProps.Int.EXVIEW_MIXED)!=mob.isAttributeSet(MOB.Attrib.BRIEF))
 					exitMsg.setValue(CMMsg.MASK_OPTIMIZE);
 				if(R.okMessage(mob, exitMsg))
 					R.send(mob, exitMsg);
@@ -101,7 +101,7 @@ public class Examine extends StdCommand
 			int dirCode=-1;
 			if(thisThang==null)
 			{
-				dirCode=Directions.getGoodDirectionCode(ID);
+				dirCode=CMLib.directions().getGoodDirectionCode(ID);
 				if(dirCode>=0)
 				{
 					final Room room=R.getRoomInDir(dirCode);
@@ -125,7 +125,7 @@ public class Examine extends StdCommand
 					else
 					if(dirCode>=0)
 						name=((R instanceof BoardableShip)||(R.getArea() instanceof BoardableShip))?
-							Directions.getShipDirectionName(dirCode):Directions.getDirectionName(dirCode);
+							CMLib.directions().getShipDirectionName(dirCode):CMLib.directions().getDirectionName(dirCode);
 				}
 				final CMMsg msg=CMClass.getMsg(mob,thisThang,null,CMMsg.MSG_EXAMINE,L("@x1@x2 closely.",textMsg,name));
 				if(R.okMessage(mob,msg))

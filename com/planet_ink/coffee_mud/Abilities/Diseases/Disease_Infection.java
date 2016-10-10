@@ -35,24 +35,95 @@ import java.util.*;
 
 public class Disease_Infection extends Disease
 {
-	@Override public String ID() { return "Disease_Infection"; }
-	private final static String localizedName = CMLib.lang().L("Infection");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Infected Wounds)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public boolean putInCommandlist(){return false;}
-	@Override public int difficultyLevel(){return 0;}
+	@Override
+	public String ID()
+	{
+		return "Disease_Infection";
+	}
 
-	@Override protected int DISEASE_TICKS(){return 34;}
-	@Override protected int DISEASE_DELAY(){return 5;}
-	protected int lastHP=Integer.MAX_VALUE;
-	@Override protected String DISEASE_DONE(){return L("Your infected wounds feel better.");}
-	@Override protected String DISEASE_START(){return L("^G<S-NAME> look(s) like <S-HE-SHE> <S-HAS-HAVE> infected wounds.^?");}
-	@Override protected String DISEASE_AFFECT(){return L("<S-NAME> wince(s) in pain.");}
-	@Override public int abilityCode(){return 0;}
+	private final static String	localizedName	= CMLib.lang().L("Infection");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Infected Wounds)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public boolean putInCommandlist()
+	{
+		return false;
+	}
+
+	@Override
+	public int difficultyLevel()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int DISEASE_TICKS()
+	{
+		return 34;
+	}
+
+	@Override
+	protected int DISEASE_DELAY()
+	{
+		return 5;
+	}
+
+	protected int	lastHP	= Integer.MAX_VALUE;
+
+	@Override
+	protected String DISEASE_DONE()
+	{
+		return L("Your infected wounds feel better.");
+	}
+
+	@Override
+	protected String DISEASE_START()
+	{
+		return L("^G<S-NAME> look(s) like <S-HE-SHE> <S-HAS-HAVE> infected wounds.^?");
+	}
+
+	@Override
+	protected String DISEASE_AFFECT()
+	{
+		return L("<S-NAME> wince(s) in pain.");
+	}
+
+	@Override
+	public int abilityCode()
+	{
+		return 0;
+	}
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
@@ -66,10 +137,15 @@ public class Disease_Infection extends Disease
 
 		final MOB mob=(MOB)affected;
 		if(mob.curState().getHitPoints()>=mob.maxState().getHitPoints())
-		{ unInvoke(); return false;}
+		{
+			unInvoke();
+			return false;
+		}
 		if(lastHP<mob.curState().getHitPoints())
+		{
 			mob.curState().setHitPoints(mob.curState().getHitPoints()
 							-((mob.curState().getHitPoints()-lastHP)/2));
+		}
 		MOB diseaser=invoker;
 		if(diseaser==null)
 			diseaser=mob;

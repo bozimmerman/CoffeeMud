@@ -35,14 +35,45 @@ import java.util.*;
 
 public class Spell_Anchor extends Spell
 {
-	@Override public String ID() { return "Spell_Anchor"; }
-	private final static String localizedName = CMLib.lang().L("Anchor");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Anchor)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	@Override protected int canAffectCode(){return CAN_MOBS|CAN_ITEMS;}
-	@Override public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_ABJURATION;}
+	@Override
+	public String ID()
+	{
+		return "Spell_Anchor";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Anchor");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Anchor)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_OTHERS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS | CAN_ITEMS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL | Ability.DOMAIN_ABJURATION;
+	}
 
 	@Override
 	public void unInvoke()

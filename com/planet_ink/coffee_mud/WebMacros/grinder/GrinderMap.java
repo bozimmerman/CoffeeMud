@@ -67,6 +67,7 @@ public class GrinderMap extends GrinderFlatMap
 			}
 		}
 	}
+
 	public GrinderMap(Area A, int[] xyxy)
 	{
 		super(A,xyxy);
@@ -108,8 +109,10 @@ public class GrinderMap extends GrinderFlatMap
 		xoffset = xoffset * -1;
 		yoffset = yoffset * -1;
 
-		if (debug) Log.sysOut("GR-REGRID", "xoffset set : " + xoffset);
-		if (debug) Log.sysOut("GR-REGRID", "Xbound  set : " + Xbound);
+		if (debug) 
+			Log.sysOut("GR-REGRID", "xoffset set : " + xoffset);
+		if (debug) 
+			Log.sysOut("GR-REGRID", "Xbound  set : " + Xbound);
 
 		Xbound = 0;
 		Ybound = 0;
@@ -121,10 +124,12 @@ public class GrinderMap extends GrinderFlatMap
 			room.xy[1] = room.xy[1] + yoffset;
 			if (room.xy[1] > Ybound) Ybound = room.xy[1];
 		}
-		if (debug) Log.sysOut("GR-REGRID", "Xbound  set2: " + Xbound);
+		if (debug) 
+			Log.sysOut("GR-REGRID", "Xbound  set2: " + Xbound);
 		grid = new GrinderRoom[Xbound + 1][Ybound + 1][maxZ + 1];
-		if (debug) Log.sysOut("GR-REGRID", "GrinderRoom Grid Created: (x,y,z) " +
-							  (Xbound + 1) + "," + (Ybound + 1) + "," + (maxZ + 1));
+		if (debug) 
+			Log.sysOut("GR-REGRID", "GrinderRoom Grid Created: (x,y,z) " +
+					  (Xbound + 1) + "," + (Ybound + 1) + "," + (maxZ + 1));
 		for (int y = 0; y < areaMap.size(); y++)
 		{
 			final GrinderRoom room = areaMap.get(y);
@@ -133,13 +138,16 @@ public class GrinderMap extends GrinderFlatMap
 			if(room.z<minZ)
 			{
 				grid[room.xy[0]][room.xy[1]][(room.z + zFix)] = room;
-				if (debug) Log.sysOut("GR-REGRID", "Room outside z range: " + room.z);
+				if (debug) 
+					Log.sysOut("GR-REGRID", "Room outside z range: " + room.z);
 			}
 			else
 			{
 				if ((debug) && ((room.z > maxZ) || (room.z < minZ)))
-					  Log.sysOut("GR-HTML", "Room.z error: " + room.z + " outside " + maxZ + "-" + minZ + "(" +
-								 room.roomID + ")");
+				{
+					Log.sysOut("GR-HTML", "Room.z error: " + room.z + " outside " + maxZ + "-" + minZ + "(" +
+								room.roomID + ")");
+				}
 				grid[room.xy[0]][room.xy[1]][room.z] = room;
 			}
 		}
@@ -231,8 +239,7 @@ public class GrinderMap extends GrinderFlatMap
 					break;
 				}
 				// I'm letting EmptyCluster always search the current Z level
-				if (isEmptyCluster(processed, x + (spacing * xadjust),
-								   y + (spacing * yadjust), z))
+				if (isEmptyCluster(processed, x + (spacing * xadjust), y + (spacing * yadjust), z))
 				{
 					XYZ.setElementAt(Integer.valueOf(x + (spacing * xadjust)), 0);
 					XYZ.setElementAt(Integer.valueOf(y + (spacing * yadjust)), 1);
@@ -248,9 +255,9 @@ public class GrinderMap extends GrinderFlatMap
 	public void placeRooms()
 	{
 		if (areaMap == null)
-		  return;
+			return;
 		if (areaMap.size() == 0)
-		  return;
+			return;
 
 		for (int i = 0; i < areaMap.size(); i++)
 		{
@@ -260,7 +267,7 @@ public class GrinderMap extends GrinderFlatMap
 			{
 				final GrinderDir dir = room.doors[d];
 				if (dir != null)
-				  dir.positionedAlready = false;
+					dir.positionedAlready = false;
 			}
 		}
 
@@ -302,10 +309,12 @@ public class GrinderMap extends GrinderFlatMap
 
 		zFix = maxZ - minZ;
 		if ((zFix + minZ) > 0)
-		  zFix -= (0 - (minZ + zFix)) * -1;
+			zFix -= (0 - (minZ + zFix)) * -1;
 
-		if (debug) Log.sysOut("GR-PLACERS", "zFix set    : " + zFix);
-		if (debug) Log.sysOut("GR-PLACERS", "areaMap size: " + areaMap.size());
+		if (debug) 
+			Log.sysOut("GR-PLACERS", "zFix set    : " + zFix);
+		if (debug) 
+			Log.sysOut("GR-PLACERS", "areaMap size: " + areaMap.size());
 		int updatedCount = 0;
 		for (int x = 0; x < areaMap.size(); x++)
 		{
@@ -315,16 +324,21 @@ public class GrinderMap extends GrinderFlatMap
 			areaMap.set(x,GR);
 			if (GR.z!=oldZ) updatedCount++;
 		}
-		if (debug) Log.sysOut("GR-PLACERS", "maybe update: " + updatedCount);
-		if (debug) Log.sysOut("GR-PLACERS", "maxZ changed: " + maxZ + " to " + (maxZ + zFix));
+		if (debug) 
+			Log.sysOut("GR-PLACERS", "maybe update: " + updatedCount);
+		if (debug) 
+			Log.sysOut("GR-PLACERS", "maxZ changed: " + maxZ + " to " + (maxZ + zFix));
 		maxZ += zFix;
-		if (debug) Log.sysOut("GR-PLACERS", "minZ changed: " + minZ + " to " + (minZ + zFix));
+		if (debug) 
+			Log.sysOut("GR-PLACERS", "minZ changed: " + minZ + " to " + (minZ + zFix));
 		minZ += zFix;
 
 		if (areaMap.size() > processed.size())
+		{
 			Log.errOut("GrinderMap",
 					   areaMap.size() - processed.size() +
 					   " room(s) were not placed.");
+		}
 	}
 
 	@Override
@@ -400,15 +414,15 @@ public class GrinderMap extends GrinderFlatMap
 								String roomID = GR.roomID;
 								if (roomID.startsWith(area.Name() + "#"))
 								{
-								  roomID = roomID.substring(roomID.indexOf('#'));
+									roomID = roomID.substring(roomID.indexOf('#'));
 								}
 								try
 								{
-								  buf.append("<a name=\"" +
-											 URLEncoder.encode(GR.roomID, "UTF-8") +
-									  "\" href=\"javascript:RC('" +GR.roomID
-									  + "');\"><FONT SIZE=-1><B>" + roomID +
-									  "</B></FONT></a><BR>");
+									buf.append("<a name=\"" +
+												URLEncoder.encode(GR.roomID, "UTF-8") +
+												"\" href=\"javascript:RC('" +GR.roomID
+												+ "');\"><FONT SIZE=-1><B>" + roomID +
+												"</B></FONT></a><BR>");
 								}
 								catch (final java.io.UnsupportedEncodingException e)
 								{
@@ -419,7 +433,7 @@ public class GrinderMap extends GrinderFlatMap
 								String displayText = GR.room().displayText();
 								if (displayText.length() > 20)
 								{
-								  displayText = displayText.substring(0, 20) + "...";
+									displayText = displayText.substring(0, 20) + "...";
 								}
 								buf.append(displayText + "</FONT></TD>");
 								buf.append("<TD>" +
@@ -521,8 +535,8 @@ public class GrinderMap extends GrinderFlatMap
 					final String tdins=(boundsXYXY!=null)?" ID=X"+(x+boundsXYXY[0])+"_"+(y+boundsXYXY[1]):"";
 					if (GR == null)
 						buf.append("<TD"+tdins+"></TD>");
-					  else
-					  {
+					else
+					{
 						buf.append("<TD"+tdins+" ");
 						if(!GR.isRoomGood())
 							buf.append("BGCOLOR=BLACK");
@@ -579,11 +593,11 @@ public class GrinderMap extends GrinderFlatMap
 			break;
 		case Directions.UP:
 			if (room.z > maxZ)
-			  return grid[room.xy[0]][room.xy[1]][room.z - 1];
+				return grid[room.xy[0]][room.xy[1]][room.z - 1];
 			break;
 		case Directions.DOWN:
 			if (room.z < minZ)
-			  return grid[room.xy[0]][room.xy[1]][room.z + 1];
+				return grid[room.xy[0]][room.xy[1]][room.z + 1];
 			break;
 		}
 		return null;
@@ -599,9 +613,9 @@ public class GrinderMap extends GrinderFlatMap
 						  int zLevel)
 	{
 		if (room == null)
-		  return;
+			return;
 		if (depth > 500)
-		  return;
+			return;
 
 		final GrinderRoom anythingAt = getProcessedRoomAt(processed, favoredX, favoredY, zLevel);
 		if (anythingAt != null)
@@ -616,12 +630,12 @@ public class GrinderMap extends GrinderFlatMap
 					{
 						for (int rd = 0; rd < Directions.NUM_DIRECTIONS(); rd++)
 						{
-						  final GrinderDir RD = roomToBlame.doors[rd];
-						  if ( (RD != null)
-							  && (RD.room != null)
-							  && (!RD.positionedAlready)
-							  && (RD.room.equals(room.roomID)))
-							return;
+							final GrinderDir RD = roomToBlame.doors[rd];
+							if ( (RD != null)
+							&& (RD.room != null)
+							&& (!RD.positionedAlready)
+							&& (RD.room.equals(room.roomID)))
+								return;
 						}
 					}
 				}
@@ -666,30 +680,38 @@ public class GrinderMap extends GrinderFlatMap
 					int newZLevel = room.z;
 					switch (d)
 					{
-					  case Directions.NORTH:
+					case Directions.NORTH:
 						newFavoredY--;
 						break;
-					  case Directions.SOUTH:
+					case Directions.SOUTH:
 						newFavoredY++;
 						break;
-					  case Directions.EAST:
+					case Directions.EAST:
 						newFavoredX++;
 						break;
-					  case Directions.WEST:
+					case Directions.WEST:
 						newFavoredX--;
 						break;
 					case Directions.NORTHEAST:
-						newFavoredY--; newFavoredX++; break;
+						newFavoredY--;
+						newFavoredX++;
+						break;
 					case Directions.NORTHWEST:
-						newFavoredY--; newFavoredX--;break;
+						newFavoredY--;
+						newFavoredX--;
+						break;
 					case Directions.SOUTHEAST:
-						newFavoredY++; newFavoredX++; break;
+						newFavoredY++;
+						newFavoredX++;
+						break;
 					case Directions.SOUTHWEST:
-						newFavoredY++; newFavoredX--; break;
-					  case Directions.UP:
+						newFavoredY++;
+						newFavoredX--;
+						break;
+					case Directions.UP:
 						newZLevel++;
 						break;
-					  case Directions.DOWN:
+					case Directions.DOWN:
 						newZLevel--;
 						break;
 					}

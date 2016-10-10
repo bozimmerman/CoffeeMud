@@ -31,7 +31,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class HoleInTheGround extends StdContainer
+public class HoleInTheGround extends GenContainer
 {
 	@Override
 	public String ID()
@@ -105,7 +105,7 @@ public class HoleInTheGround extends StdContainer
 			case CMMsg.TYP_PUT:
 				if((msg.tool() instanceof Item))
 				{
-					if((text().length()>0)&&(!text().equals(msg.source().Name())))
+					if((readableText().length()>0)&&(!readableText().equals(msg.source().Name())))
 					{
 						msg.source().tell(L("Go find your own hole."));
 						return false;
@@ -163,8 +163,8 @@ public class HoleInTheGround extends StdContainer
 					final PlayerStats pstats=mob.playerStats();
 					if(pstats!=null)
 					{
-						if(text().length()==0)
-							setMiscText(mob.Name());
+						if(readableText().length()==0)
+							setReadableText(mob.Name());
 						if(!pstats.getExtItems().isContent(this))
 							pstats.getExtItems().addItem(this);
 						if(msg.tool() instanceof Decayable)
@@ -176,5 +176,13 @@ public class HoleInTheGround extends StdContainer
 			}
 		}
 		super.executeMsg(myHost, msg);
+	}
+	
+	@Override
+	public boolean sameAs(Environmental E)
+	{
+		if(!(E instanceof HoleInTheGround))
+			return false;
+		return super.sameAs(E);
 	}
 }

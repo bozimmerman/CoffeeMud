@@ -38,32 +38,62 @@ import java.util.*;
 
 public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor, MendingSkill
 {
-	@Override public String ID() { return "LeatherWorking"; }
-	private final static String localizedName = CMLib.lang().L("Leather Working");
-	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =I(new String[] {"LEATHERWORK","LEATHERWORKING"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public String supportedResourceString(){return "LEATHER";}
 	@Override
-	public String parametersFormat(){ return
+	public String ID()
+	{
+		return "LeatherWorking";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Leather Working");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "LEATHERWORK", "LEATHERWORKING" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public String supportedResourceString()
+	{
+		return "LEATHER";
+	}
+
+	@Override
+	public String parametersFormat()
+	{
+		return
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\t"
 		+"ITEM_CLASS_ID\tWEAPON_CLASS||CODED_WEAR_LOCATION\t"
 		+"CONTAINER_CAPACITY||LIQUID_CAPACITY||WEAPON_HANDS_REQUIRED\tBASE_DAMAGE||BASE_ARMOR_AMOUNT\t"
-		+"CONTAINER_TYPE\tCODED_SPELL_LIST";}
+		+"CONTAINER_TYPE\tCODED_SPELL_LIST";
+	}
 
 	//protected static final int RCP_FINALNAME=0;
 	//protected static final int RCP_LEVEL=1;
 	//protected static final int RCP_TICKS=2;
-	protected static final int RCP_WOOD=3;
-	protected static final int RCP_VALUE=4;
-	protected static final int RCP_CLASSTYPE=5;
-	protected static final int RCP_MISCTYPE=6;
-	protected static final int RCP_CAPACITY=7;
-	protected static final int RCP_ARMORDMG=8;
-	protected static final int RCP_CONTAINMASK=9;
-	protected static final int RCP_SPELL=10;
+	protected static final int	RCP_WOOD		= 3;
+	protected static final int	RCP_VALUE		= 4;
+	protected static final int	RCP_CLASSTYPE	= 5;
+	protected static final int	RCP_MISCTYPE	= 6;
+	protected static final int	RCP_CAPACITY	= 7;
+	protected static final int	RCP_ARMORDMG	= 8;
+	protected static final int	RCP_CONTAINMASK	= 9;
+	protected static final int	RCP_SPELL		= 10;
 
-	@Override public String parametersFile(){ return "leatherworking.txt";}
+	@Override
+	public String parametersFile()
+	{
+		return "leatherworking.txt";
+	}
+
 	@Override
 	protected List<List<String>> loadRecipes()
 	{
@@ -222,7 +252,12 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 		return (isANativeItem(I.Name()));
 	}
 
-	@Override public boolean supportsMending(Physical item){ return canMend(null,item,true);}
+	@Override
+	public boolean supportsMending(Physical item)
+	{
+		return canMend(null, item, true);
+	}
+
 	@Override
 	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
 	{
@@ -256,11 +291,15 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 		if(super.checkStop(mob, commands))
 			return true;
 
+		if(super.checkInfo(mob, commands))
+			return true;
+		
 		final PairVector<EnhancedExpertise,Integer> enhancedTypes=enhancedTypes(mob,commands);
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,L("Make what? Enter \"leatherwork list\" for a list, \"leatherwork refit <item>\" to resize, \"leatherwork learn <item>\", \"leatherwork scan\", \"leatherwork mend <item>\", or \"leatherwork stop\" to cancel."));
+			commonTell(mob,L("Make what? Enter \"leatherwork list\" for a list, \"leatherwork info <item>\", \"leatherwork refit <item>\" to resize,"
+							+ " \"leatherwork learn <item>\", \"leatherwork scan\", \"leatherwork mend <item>\", or \"leatherwork stop\" to cancel."));
 			return false;
 		}
 		if((!auto)
@@ -427,7 +466,8 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 			}
 
 			final String woodRequiredStr = foundRecipe.get(RCP_WOOD);
-			final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName),autoGenerate);
+			final int[] compData = new int[CF_TOTAL];
+			final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName),autoGenerate,compData);
 			if(componentsFoundList==null)
 				return false;
 			int woodRequired=CMath.s_int(woodRequiredStr);
@@ -440,13 +480,13 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 			final String misctype=foundRecipe.get(RCP_MISCTYPE);
 			bundling=misctype.equalsIgnoreCase("BUNDLE");
 			final int[][] data=fetchFoundResourceData(mob,
-												woodRequired,"leather",pm,
-												(multiplier==3)?1:0,
-												(multiplier==3)?"metal":null,
-												(multiplier==3)?pm1:null,
-												bundling,
-												autoGenerate,
-												enhancedTypes);
+													woodRequired,"leather",pm,
+													(multiplier==3)?1:0,
+													(multiplier==3)?"metal":null,
+													(multiplier==3)?pm1:null,
+													bundling,
+													autoGenerate,
+													enhancedTypes);
 			if(data==null)
 				return false;
 			fixDataForComponents(data,componentsFoundList);
@@ -463,6 +503,7 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 				return false;
 			}
 			duration=getDuration(multiplier*CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),4);
+			buildingI.setMaterial(super.getBuildingMaterial(woodRequired, data, compData));
 			String itemName=(replacePercent(foundRecipe.get(RCP_FINALNAME),RawMaterial.CODES.NAME(data[0][FOUND_CODE]))).toLowerCase();
 			if(bundling)
 				itemName="a "+woodRequired+"# "+itemName;
@@ -478,11 +519,10 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 			playSound="scissor.wav";
 			buildingI.setDisplayText(L("@x1 lies here",itemName));
 			buildingI.setDescription(itemName+". ");
-			buildingI.basePhyStats().setWeight(getStandardWeight(woodRequired,bundling));
+			buildingI.basePhyStats().setWeight(getStandardWeight(woodRequired+compData[CF_AMOUNT],bundling));
 			buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE))*multiplier);
-			buildingI.setMaterial(data[0][FOUND_CODE]);
 			buildingI.setSecretIdentity(getBrand(mob));
-			final int hardness=RawMaterial.CODES.HARDNESS(data[0][FOUND_CODE])-2;
+			final int hardness=RawMaterial.CODES.HARDNESS(buildingI.material())-2;
 			buildingI.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL))+(hardness/2));
 			if(buildingI.basePhyStats().level()<1)
 				buildingI.basePhyStats().setLevel(1);
@@ -497,7 +537,7 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 			addSpells(buildingI,spell);
 			if(buildingI instanceof Weapon)
 			{
-				((Weapon)buildingI).basePhyStats().setAttackAdjustment(abilityCode()+(hardness*5)+(abilityCode()-1)-1);
+				((Weapon)buildingI).basePhyStats().setAttackAdjustment(baseYield()+abilityCode()+(hardness*5)-1);
 				((Weapon)buildingI).setWeaponClassification(Weapon.CLASS_FLAILED);
 				setWeaponTypeClass((Weapon)buildingI,misctype,Weapon.TYPE_SLASHING);
 				buildingI.basePhyStats().setDamage(armordmg+hardness);
@@ -513,7 +553,7 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 				}
 				((Armor)buildingI).basePhyStats().setArmor(0);
 				if(armordmg!=0)
-					((Armor)buildingI).basePhyStats().setArmor(armordmg+(abilityCode()-1)+hardness);
+					((Armor)buildingI).basePhyStats().setArmor(armordmg+(baseYield()+abilityCode()-1)+hardness);
 				setWearLocation(buildingI,misctype,0);
 			}
 			if(buildingI instanceof Drink)

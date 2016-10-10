@@ -1043,7 +1043,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 		 * @author Bo Zimmerman
 		 *
 		 */
-		public static enum Type { CONFIRM, PROMPT, CHOOSE }
+		public static enum Type { CONFIRM, PROMPT, CHOOSE, WAIT }
 
 		private final Type			type;
 		private final String		defaultInput;
@@ -1072,9 +1072,14 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 			else
 			switch(type)
 			{
-			case CONFIRM: this.choicesStr="YN"; break;
-			case CHOOSE: this.choicesStr="YN"; break;
-			default: this.choicesStr="";
+				case CONFIRM:
+					this.choicesStr = "YN";
+					break;
+				case CHOOSE:
+					this.choicesStr = "YN";
+					break;
+				default:
+					this.choicesStr = "";
 			}
 			this.timeoutMs=timeoutMs;
 			if(this.timeoutMs<=0)
@@ -1166,6 +1171,9 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 				waiting=false;
 				break;
 			}
+			case WAIT:
+				waiting=true;
+				return;
 			case CONFIRM:
 				if(input.trim().toUpperCase().startsWith("T"))
 					input="Y";
@@ -1249,8 +1257,9 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 
 	public abstract class TickingCallback extends InputCallback
 	{
-		protected volatile int counter=0;
-		protected final StringBuilder collectedInput=new StringBuilder("");
+		protected volatile int			counter			= 0;
+		protected final StringBuilder	collectedInput	= new StringBuilder("");
+
 		/**
 		 * Only constructor is the one to tell out often to call back.
 		 * @param tickerMs the time is ms between timeouts
@@ -1262,8 +1271,16 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 		/**
 		 * TimeOutCallback has no prompt
 		 */
-		@Override public void showPrompt() {}
-		@Override public void callBack() {}
+		@Override
+		public void showPrompt()
+		{
+		}
+
+		@Override
+		public void callBack()
+		{
+		}
+
 		@Override
 		public void setInput(String input)
 		{

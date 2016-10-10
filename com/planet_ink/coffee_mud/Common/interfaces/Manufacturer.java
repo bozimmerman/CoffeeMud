@@ -108,7 +108,7 @@ public interface Manufacturer extends CMCommon
 
 	/**
 	 * Returns a pct, from 0-2, to multiply by the amt of damage taken,
-	 * and the change of failure.  A 1.0 means perfectly
+	 * and the chance of failure, esp. when damaged.  A 1.0 means perfectly
 	 * standard.  A 2.0 means super-standard.  A 0.5 means sub standard.
 	 * @return a pct, from 0-2
 	 */
@@ -117,7 +117,7 @@ public interface Manufacturer extends CMCommon
 
 	/**
 	 * Sets a pct, from 0-2, to multiply by the amt of damage taken,
-	 * and the change of failure.  A 1.0 means perfectly
+	 * and the chance of failure, esp. when damaged.  A 1.0 means perfectly
 	 * standard.  A 2.0 means super-standard.  A 0.5 means sub standard.
 	 * @param pct from 0-2
 	 */
@@ -137,7 +137,7 @@ public interface Manufacturer extends CMCommon
 	 * @see MaskingLibrary
 	 * @return the zapperMask, compiled
 	 */
-	public MaskingLibrary.CompiledZapperMask getItemMask();
+	public MaskingLibrary.CompiledZMask getItemMask();
 
 	/**
 	 * Returns the item mask that describes what kind of items this

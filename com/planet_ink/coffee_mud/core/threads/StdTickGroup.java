@@ -37,22 +37,22 @@ import java.util.*;
 */
 public class StdTickGroup implements TickableGroup, Cloneable
 {
-	private final ThreadEngine myEngine;
+	private final ThreadEngine	myEngine;
 
-	private final long 	  tickTime;
-	private final int 	  tickObjectCounter;
-	private final String  name;
-	private final String  threadGroupName;
-	private final boolean solitaryTicker;
+	private final long			tickTime;
+	private final int			tickObjectCounter;
+	private final String		name;
+	private final String		threadGroupName;
+	private final boolean		solitaryTicker;
 
-	private volatile long nextTickTime;
-	private volatile long lastStart=0;
-	private volatile long lastStop=0;
-	private volatile long milliTotal=0;
-	private volatile int  tickTotal=0;
+	private volatile long		nextTickTime;
+	private volatile long		lastStart		= 0;
+	private volatile long		lastStop		= 0;
+	private volatile long		milliTotal		= 0;
+	private volatile int		tickTotal		= 0;
 
-	private volatile TickClient lastClient=null;
-	private volatile Thread currentThread = null;
+	private volatile TickClient	lastClient		= null;
+	private volatile Thread		currentThread	= null;
 
 	private static volatile int tickObjReference=0;
 
@@ -126,24 +126,66 @@ public class StdTickGroup implements TickableGroup, Cloneable
 		return null;
 	}
 
-	@Override public Thread getCurrentThread() { return currentThread; }
+	@Override
+	public Thread getCurrentThread()
+	{
+		return currentThread;
+	}
 
-	@Override public String getThreadGroupName() { return threadGroupName; }
+	@Override
+	public String getThreadGroupName()
+	{
+		return threadGroupName;
+	}
 
-	@Override public long getLastStartTime() { return lastStart;}
+	@Override
+	public long getLastStartTime()
+	{
+		return lastStart;
+	}
 
-	@Override public long getLastStopTime() { return lastStop; }
+	@Override
+	public long getLastStopTime()
+	{
+		return lastStop;
+	}
 
-	@Override public long getMilliTotal() { return milliTotal; }
+	@Override
+	public long getMilliTotal()
+	{
+		return milliTotal;
+	}
 
-	@Override public long getTickTotal() { return tickTotal; }
+	@Override
+	public long getTickTotal()
+	{
+		return tickTotal;
+	}
 
-	@Override public boolean isSolitaryTicker() { return solitaryTicker; }
+	@Override
+	public boolean isSolitaryTicker()
+	{
+		return solitaryTicker;
+	}
 
-	@Override public boolean isAwake() { return currentThread != null; }
+	@Override
+	public boolean isAwake()
+	{
+		return currentThread != null;
+	}
 
-	@Override public Iterator<TickClient> tickers(){return tickers.iterator();}
-	@Override public int numTickers(){return tickers.size();}
+	@Override
+	public Iterator<TickClient> tickers()
+	{
+		return tickers.iterator();
+	}
+
+	@Override
+	public int numTickers()
+	{
+		return tickers.size();
+	}
+
 	@Override
 	public Iterator<TickClient> getTickSet(final Tickable T, final int tickID)
 	{

@@ -88,7 +88,8 @@ public class Chant_SweetScent extends Chant
 				TrackingLibrary.TrackingFlags flags;
 				flags = CMLib.tracking().newFlags()
 						.plus(TrackingLibrary.TrackingFlag.OPENONLY);
-				CMLib.tracking().getRadiantRooms(room,rooms,flags,null,10,null);
+				int range=10 + super.getXLEVELLevel(invoker())+(2*super.getXMAXRANGELevel(invoker()));
+				CMLib.tracking().getRadiantRooms(room,rooms,flags,null,range,null);
 				for(int i=0;i<room.numInhabitants();i++)
 				{
 					final MOB M=room.fetchInhabitant(i);
@@ -114,7 +115,7 @@ public class Chant_SweetScent extends Chant
 								&&((!M.isMonster())||(CMLib.flags().isMobile(M)))
 								&&(CMLib.flags().canSmell(M)))
 								{
-									M.tell(M,null,null,L("You smell something irresistable @x1.",Directions.getInDirectionName(dir)));
+									M.tell(M,null,null,L("You smell something irresistable @x1.",CMLib.directions().getInDirectionName(dir)));
 									if(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.STAT_SAVE_MIND))
 										CMLib.tracking().walk(M,dir,false,false);
 								}

@@ -37,39 +37,129 @@ import java.util.*;
 
 public class Disease extends StdAbility implements DiseaseAffect
 {
-	@Override public String ID() { return "Disease"; }
-	private final static String localizedName = CMLib.lang().L("Disease");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(a disease)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS|CAN_ITEMS;}
-	private static final String[] triggerStrings =I(new String[] {"DISEASE"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public boolean putInCommandlist(){return false;}
-	@Override public int classificationCode(){return Ability.ACODE_DISEASE;}
-	protected boolean DISEASE_MALICIOUS(){return true;}
+	@Override
+	public String ID()
+	{
+		return "Disease";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Disease");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(a disease)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS | CAN_ITEMS;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "DISEASE" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public boolean putInCommandlist()
+	{
+		return false;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_DISEASE;
+	}
+
+	@Override
+	public boolean isMalicious()
+	{
+		return true;
+	}
 
 	@Override
 	public String getHealthConditionDesc()
 	{
-		return "Suffering the effects of "+name();
+		return "Suffering the effects of " + name();
 	}
 
-	protected int DISEASE_TICKS(){return 48;}
-	protected int DISEASE_DELAY(){return 5;}
-	protected String DISEASE_DONE(){return L("Your disease has run its course.");}
-	protected String DISEASE_START(){return L("^G<S-NAME> come(s) down with a disease.^?");}
-	protected String DISEASE_AFFECT(){return L("<S-NAME> ache(s) and groan(s).");}
-	protected boolean DISEASE_REQSEE(){return false;}
+	protected int DISEASE_TICKS()
+	{
+		return 48;
+	}
 
-	@Override public int spreadBitmap() { return 0; }
-	@Override public int abilityCode() { return spreadBitmap(); }
-	@Override public int difficultyLevel(){return 0;}
-	protected boolean processing=false;
+	protected int DISEASE_DELAY()
+	{
+		return 5;
+	}
 
-	protected int diseaseTick=DISEASE_DELAY();
+	protected String DISEASE_DONE()
+	{
+		return L("Your disease has run its course.");
+	}
+
+	protected String DISEASE_START()
+	{
+		return L("^G<S-NAME> come(s) down with a disease.^?");
+	}
+
+	protected String DISEASE_AFFECT()
+	{
+		return L("<S-NAME> ache(s) and groan(s).");
+	}
+
+	protected boolean DISEASE_REQSEE()
+	{
+		return false;
+	}
+
+	@Override
+	public int spreadBitmap()
+	{
+		return 0;
+	}
+
+	@Override
+	public int abilityCode()
+	{
+		return spreadBitmap();
+	}
+
+	@Override
+	public int difficultyLevel()
+	{
+		return 0;
+	}
+
+	protected boolean	processing	= false;
+
+	protected int		diseaseTick	= DISEASE_DELAY();
 
 	protected boolean catchIt(MOB mob, Physical target)
 	{
@@ -98,7 +188,8 @@ public class Disease extends StdAbility implements DiseaseAffect
 						targetMOB.setFollowing(following);
 					return doMe;
 				}
-				spreadImmunity(targetMOB);
+				else
+					spreadImmunity(targetMOB);
 			}
 			else
 			{
@@ -245,8 +336,16 @@ public class Disease extends StdAbility implements DiseaseAffect
 		boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final MOB mvictim=mob.getVictim();
-			final MOB tvictim=target.getVictim();
+			final MOB mvictim;
+			synchronized(mob)
+			{
+				mvictim=mob.getVictim();
+			}
+			final MOB tvictim;
+			synchronized(target)
+			{
+				tvictim=target.getVictim();
+			}
 			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_HANDS|(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MASK_MALICIOUS|CMMsg.TYP_DISEASE,"");
 			final Room R=target.location();
 			if((R!=null)&&(R.okMessage(target,msg)))
@@ -260,12 +359,28 @@ public class Disease extends StdAbility implements DiseaseAffect
 				else
 					spreadImmunity(target);
 			}
-			if(!DISEASE_MALICIOUS())
+			if(!isMalicious())
 			{
-				if((mvictim==null)&&(mob.getVictim()==target))
+				final MOB newmvictim;
+				synchronized(mob)
+				{
+					newmvictim=mob.getVictim();
+				}
+				final MOB newtvictim;
+				synchronized(target)
+				{
+					newtvictim=target.getVictim();
+				}
+				if((mvictim==null)&&(newmvictim==target))
+				{
 					mob.setVictim(null);
-				if((tvictim==null)&&(target.getVictim()==mob))
+					mob.makePeace(true);
+				}
+				if((tvictim==null)&&(newtvictim==mob))
+				{
 					target.setVictim(null);
+					target.makePeace(true);
+				}
 			}
 			else
 			if(auto)

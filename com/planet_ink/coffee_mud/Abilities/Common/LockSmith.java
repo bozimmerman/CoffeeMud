@@ -231,7 +231,7 @@ public class LockSmith extends CraftingSkill
 			commands.remove(0);
 		}
 		final String recipeName=CMParms.combine(commands,0);
-		final int dir=Directions.getGoodDirectionCode(recipeName);
+		final int dir=CMLib.directions().getGoodDirectionCode(recipeName);
 		if(dir<0)
 			workingOn=mob.location().fetchFromMOBRoomFavorsItems(mob,null,recipeName,Wearable.FILTER_UNWORNONLY);
 		else

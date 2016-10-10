@@ -35,14 +35,26 @@ import java.util.*;
 */
 public class Specialization_Natural extends Specialization_Weapon
 {
-	@Override public String ID() { return "Specialization_Natural"; }
-	private final static String localizedName = CMLib.lang().L("Hand to hand combat");
-	@Override public String name() { return localizedName; }
+	@Override
+	public String ID()
+	{
+		return "Specialization_Natural";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Hand to hand combat");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	public Specialization_Natural()
 	{
 		super();
 		weaponClass=Weapon.CLASS_NATURAL;
 	}
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -76,5 +88,4 @@ public class Specialization_Natural extends Specialization_Weapon
 	{
 		return (W.weaponClassification()==Weapon.CLASS_NATURAL) || (!W.amWearingAt(Wearable.IN_INVENTORY));
 	}
-
 }

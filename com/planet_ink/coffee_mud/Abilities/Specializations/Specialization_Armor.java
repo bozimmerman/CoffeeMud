@@ -35,23 +35,67 @@ import java.util.*;
 */
 public class Specialization_Armor extends StdAbility
 {
-	@Override public String ID() { return "Specialization_Armor"; }
-	private final static String localizedName = CMLib.lang().L("Armor Specialization");
-	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "";}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	@Override public boolean isAutoInvoked(){return true;}
-	@Override public boolean canBeUninvoked(){return false;}
+	@Override
+	public String ID()
+	{
+		return "Specialization_Armor";
+	}
 
-	protected final static long WORN_ARMOR=Item.WORN_ARMS|Item.WORN_FEET|Item.WORN_HANDS|Item.WORN_HEAD|Item.WORN_LEFT_WRIST
-											|Item.WORN_LEGS|Item.WORN_RIGHT_WRIST|Item.WORN_TORSO|Item.WORN_WAIST;
+	private final static String	localizedName	= CMLib.lang().L("Armor Specialization");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public String displayText()
+	{
+		return "";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_SELF;
+	}
+
+	@Override
+	public boolean isAutoInvoked()
+	{
+		return true;
+	}
+
+	@Override
+	public boolean canBeUninvoked()
+	{
+		return false;
+	}
+
+	protected final static long	WORN_ARMOR	= Item.WORN_ARMS | Item.WORN_FEET | Item.WORN_HANDS | Item.WORN_HEAD 
+											| Item.WORN_LEFT_WRIST | Item.WORN_LEGS | Item.WORN_RIGHT_WRIST | Item.WORN_TORSO 
+											| Item.WORN_WAIST;
 
 	protected double bonus=-1;
 
-	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_ARMORUSE;}
-
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL | Ability.DOMAIN_ARMORUSE;
+	}
 
 	private void recalculateBonus(MOB mob)
 	{
@@ -99,10 +143,11 @@ public class Specialization_Armor extends StdAbility
 			if((bonus<0)&&(((MOB)affected).numItems()>0))
 				recalculateBonus((MOB)affected);
 			if(bonus>0)
-			affectableStats.setArmor(affectableStats.armor()
-					-(int)Math.round(bonus*CMath.div(proficiency(),100.0))
-					-(getXLEVELLevel((MOB)affected)/2));
-
+			{
+				affectableStats.setArmor(affectableStats.armor()
+						-(int)Math.round(bonus*CMath.div(proficiency(),100.0))
+						-(getXLEVELLevel((MOB)affected)/2));
+			}
 		}
 	}
 

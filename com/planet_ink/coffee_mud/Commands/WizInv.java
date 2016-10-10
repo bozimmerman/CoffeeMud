@@ -34,10 +34,18 @@ import java.util.*;
 */
 public class WizInv extends StdCommand
 {
-	public WizInv(){}
+	public WizInv()
+	{
+	}
 
-	private final String[] access=I(new String[]{"WIZINVISIBLE","WIZINV","NOWIZINV"});
-	@Override public String[] getAccessWords(){return access;}
+	private final String[]	access	= I(new String[] { "WIZINVISIBLE", "WIZINV", "NOWIZINV" });
+
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
+
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
@@ -47,17 +55,16 @@ public class WizInv extends StdCommand
 			commands.add(1,"OFF");
 		commands.remove(0);
 		int abilityCode=PhyStats.IS_NOT_SEEN|PhyStats.IS_CLOAKED;
-		str=L("Prop_WizInvis");
-		Ability A=mob.fetchEffect(str);
+		Ability A=mob.fetchEffect("Prop_WizInvis");
 		if((commands.size()>0)&&("NOCLOAK".startsWith(CMParms.combine(commands,0).trim().toUpperCase())))
 			abilityCode=PhyStats.IS_NOT_SEEN;
 		if(CMParms.combine(commands,0).trim().equalsIgnoreCase("OFF"))
 		{
-		   if(A!=null)
-			   A.unInvoke();
-		   else
-			   mob.tell(L("You are not wizinvisible!"));
-		   return false;
+			if(A!=null)
+				A.unInvoke();
+			else
+				mob.tell(L("You are not wizinvisible!"));
+			return false;
 		}
 		else
 		if(A!=null)
@@ -70,7 +77,7 @@ public class WizInv extends StdCommand
 		}
 
 		if(A==null)
-			A=CMClass.getAbility(str);
+			A=CMClass.getAbility("Prop_WizInvis");
 		if(A!=null)
 		{
 			if(mob.location()!=null)
@@ -79,8 +86,10 @@ public class WizInv extends StdCommand
 				mob.addPriorityEffect((Ability)A.copyOf());
 			A=mob.fetchEffect(A.ID());
 			if(A!=null)
+			{
 				A.setAbilityCode(abilityCode);
-
+				A.setMiscText("UNINVOKABLE");
+			}
 			mob.recoverPhyStats();
 			mob.location().recoverRoomStats();
 			mob.tell(L("You may uninvoke WIZINV with 'WIZINV OFF'."));
@@ -90,8 +99,16 @@ public class WizInv extends StdCommand
 		return false;
 	}
 
-	@Override public boolean canBeOrdered(){return true;}
-	@Override public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.WIZINV);}
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 
+	@Override
+	public boolean securityCheck(MOB mob)
+	{
+		return CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.WIZINV);
+	}
 
 }

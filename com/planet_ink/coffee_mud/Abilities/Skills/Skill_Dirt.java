@@ -175,7 +175,9 @@ public class Skill_Dirt extends StdSkill
 		 ||(R.domainType()==Room.DOMAIN_INDOORS_STONE)
 		 ||(R.domainType()==Room.DOMAIN_INDOORS_METAL)
 		 ||(R.domainType()==Room.DOMAIN_INDOORS_CAVE)
-		 ||(R.domainType()==Room.DOMAIN_INDOORS_WOOD))
+		 ||(R.domainType()==Room.DOMAIN_INDOORS_WOOD)
+		 ||(R.getAtmosphere()==RawMaterial.RESOURCE_SAND)
+		 ||(R.getAtmosphere()==RawMaterial.RESOURCE_DUST))
 			return false;
 		return true;
 	}

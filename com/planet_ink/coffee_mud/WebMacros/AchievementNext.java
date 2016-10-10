@@ -36,7 +36,11 @@ import java.util.*;
 */
 public class AchievementNext extends StdWebMacro
 {
-	@Override public String name() { return "AchievementNext"; }
+	@Override
+	public String name()
+	{
+		return "AchievementNext";
+	}
 
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)

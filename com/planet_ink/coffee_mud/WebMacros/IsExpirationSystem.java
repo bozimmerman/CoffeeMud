@@ -35,7 +35,11 @@ import java.util.*;
 */
 public class IsExpirationSystem extends StdWebMacro
 {
-	@Override public String name() { return "IsExpirationSystem"; }
+	@Override
+	public String name()
+	{
+		return "IsExpirationSystem";
+	}
 
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)

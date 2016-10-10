@@ -37,7 +37,11 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class RaceData extends StdWebMacro
 {
-	@Override public String name() { return "RaceData"; }
+	@Override
+	public String name()
+	{
+		return "RaceData";
+	}
 
 	// valid parms include HELP, STATS, SENSES, TRAINS, PRACS, ABILITIES,
 	// HEALTHTEXTS, NATURALWEAPON, PLAYABLE, DISPOSITIONS, STARTINGEQ,
@@ -95,8 +99,10 @@ public class RaceData extends StdWebMacro
 		else
 		{
 			for(int i=0;i<E.getStatCodes().length;i++)
+			{
 				if(CMath.s_int(E.getStat(E.getStatCodes()[i]))!=0)
 					theclasses.addElement(E.getStatCodes()[i],Integer.toString(CMath.s_int(E.getStat(E.getStatCodes()[i]))));
+			}
 		}
 		str.append("<TABLE WIDTH=100% BORDER="+borderSize+" CELLSPACING=0 CELLPADDING=0>");
 		for(int i=0;i<theclasses.size();i++)
@@ -117,8 +123,10 @@ public class RaceData extends StdWebMacro
 		str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME="+c+"ESTATS"+(theclasses.size()+1)+">");
 		str.append("<OPTION SELECTED VALUE=\"\">Select a stat");
 		for(int i=0;i<E.getStatCodes().length;i++)
+		{
 			if((CMath.isNumber(E.getStat(E.getStatCodes()[i])))&&(!theclasses.contains(E.getStatCodes()[i])))
 				str.append("<OPTION VALUE=\""+E.getStatCodes()[i]+"\">"+E.getStatCodes()[i]);
+		}
 		str.append("</SELECT>");
 		str.append("</TD>");
 		str.append("<TD WIDTH=65%>");
@@ -154,8 +162,10 @@ public class RaceData extends StdWebMacro
 		else
 		{
 			for(final int i : CharStats.CODES.ALLCODES())
+			{
 				if(CMath.s_int(E.getStat(CharStats.CODES.NAME(i)))!=0)
 					theclasses.addElement(CharStats.CODES.NAME(i),E.getStat(CharStats.CODES.NAME(i)));
+			}
 		}
 		str.append("<TABLE WIDTH=100% BORDER="+borderSize+" CELLSPACING=0 CELLPADDING=0>");
 		for(int i=0;i<theclasses.size();i++)
@@ -176,8 +186,10 @@ public class RaceData extends StdWebMacro
 		str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME="+c+"CSTATS"+(theclasses.size()+1)+">");
 		str.append("<OPTION SELECTED VALUE=\"\">Select a stat");
 		for(final int i : CharStats.CODES.ALLCODES())
+		{
 			if(!theclasses.contains(CharStats.CODES.NAME(i)))
 				str.append("<OPTION VALUE=\""+CharStats.CODES.NAME(i)+"\">"+CharStats.CODES.DESC(i));
+		}
 		str.append("</SELECT>");
 		str.append("</TD>");
 		str.append("<TD WIDTH=65%>");
@@ -213,8 +225,10 @@ public class RaceData extends StdWebMacro
 		else
 		{
 			for(int i=0;i<E.getStatCodes().length;i++)
+			{
 				if(CMath.s_int(E.getStat(E.getStatCodes()[i]))!=0)
 					theclasses.addElement(E.getStatCodes()[i],Integer.valueOf(E.getStat(E.getStatCodes()[i])).toString());
+			}
 		}
 		str.append("<TABLE WIDTH=100% BORDER="+borderSize+" CELLSPACING=0 CELLPADDING=0>");
 		for(int i=0;i<theclasses.size();i++)
@@ -235,9 +249,13 @@ public class RaceData extends StdWebMacro
 		str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME="+c+"CSTATE"+(theclasses.size()+1)+">");
 		str.append("<OPTION SELECTED VALUE=\"\">Select a stat");
 		for(int i=0;i<E.getStatCodes().length;i++)
+		{
 			if(CMath.isNumber(E.getStat(E.getStatCodes()[i])))
+			{
 				if(!theclasses.contains(E.getStatCodes()[i]))
 					str.append("<OPTION VALUE=\""+E.getStatCodes()[i]+"\">"+E.getStatCodes()[i]);
+			}
+		}
 		str.append("</SELECT>");
 		str.append("</TD>");
 		str.append("<TD WIDTH=65%>");
@@ -332,17 +350,21 @@ public class RaceData extends StdWebMacro
 			{
 				boolean selected=false;
 				for(int x=0;x<classes.size();x++)
+				{
 					if(classes.elementAt(x).ID().equals(element))
 					{ 
 						selected=true;
 						found.add(classes.elementAt(x).ID());
 						break;
 					}
+				}
 				str.append("<OPTION "+(selected?"SELECTED":"")+" VALUE=\""+(String)element+"\">"+(String)element);
 			}
 			for(int x=0;x<classes.size();x++)
+			{
 				if(!found.contains(classes.elementAt(x).ID()))
 					str.append("<OPTION SELECTED VALUE=\""+classes.elementAt(x).ID()+"\">"+classes.elementAt(x).ID());
+			}
 		}
 		else
 		{
@@ -370,7 +392,7 @@ public class RaceData extends StdWebMacro
 	public static StringBuffer dynAbilities(final MOB mob, List<Ability> ables, String ID, Modifiable obj, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize, String font)
 	{
 		final StringBuffer str=new StringBuffer("");
-		final QuintVector<String,String,String,String,String> theclasses=new QuintVector<String,String,String,String,String>();
+		final DVector theclasses=new DVector(6);
 		final boolean supportsRoles=CMParms.contains(obj.getStatCodes(), "GETRABLEROLE");
 		if(httpReq.isUrlParameter("RABLES1"))
 		{
@@ -386,6 +408,9 @@ public class RaceData extends StdWebMacro
 					String qual=httpReq.getUrlParameter("RABQUA"+num);
 					if(qual==null)
 						qual="";
+					String parm=httpReq.getUrlParameter("RABPRM"+num);
+					if(parm==null)
+						parm="";
 					String levl=httpReq.getUrlParameter("RABLVL"+num);
 					if(levl==null)
 						levl="0";
@@ -394,7 +419,7 @@ public class RaceData extends StdWebMacro
 						roles=httpReq.getUrlParameter("RABROL"+num);
 					if(roles==null) 
 						roles="";
-					theclasses.addElement(behav,prof,qual,levl,roles);
+					theclasses.addElement(behav,prof,qual,levl,parm,roles);
 				}
 				num++;
 				behav=httpReq.getUrlParameter("RABLES"+num);
@@ -414,6 +439,7 @@ public class RaceData extends StdWebMacro
 					AbilityMapper.AbilityMapping ableMap=CMLib.ableMapper().getAbleMap(ID, A.ID());
 					final boolean defaultGain = ableMap.autoGain();
 					final int qualifyingLevel = ableMap.qualLevel();
+					final String defaultParm = ableMap.defaultParm();
 					String roles=null;
 					if(supportsRoles && (obj instanceof ClanGovernment))
 					{
@@ -429,7 +455,7 @@ public class RaceData extends StdWebMacro
 					}
 					if(roles==null) 
 						roles="";
-					theclasses.addElement(A.ID(),A.proficiency()+"",defaultGain?"":"on",qualifyingLevel+"",roles);
+					theclasses.addElement(A.ID(),A.proficiency()+"",defaultGain?"":"on",qualifyingLevel+"",defaultParm,roles);
 				}
 			}
 		}
@@ -438,7 +464,7 @@ public class RaceData extends StdWebMacro
 		str.append("<TABLE WIDTH=100% BORDER="+borderSize+" CELLSPACING=0 CELLPADDING=0>");
 		for(int i=0;i<theclasses.size();i++)
 		{
-			final String theclass=theclasses.elementAt(i).first;
+			final String theclass=(String)theclasses.get(i,1);
 			str.append("<TR><TD COLSPAN=4><TABLE BORDER=0 WIDTH=100% CELLSPACING=0 CELLPADDING=0><TR><TD WIDTH=35%>");
 			str.append("<SELECT ONCHANGE=\"EditAffect(this);\" NAME=RABLES"+(i+1)+">");
 			str.append("<OPTION VALUE=\"\">Delete!");
@@ -446,19 +472,22 @@ public class RaceData extends StdWebMacro
 			str.append("</SELECT>");
 			str.append("</TD>");
 			str.append("<TD WIDTH=25%>");
-			str.append(font+"Lvl:</B></FONT> <INPUT TYPE=TEXT NAME=RABLVL"+(i+1)+" VALUE=\""+theclasses.elementAt(i).fourth+"\" SIZE=3 MAXLENGTH=3>");
+			str.append(font+"Lvl:</B></FONT> <INPUT TYPE=TEXT NAME=RABLVL"+(i+1)+" VALUE=\""+theclasses.get(i,4)+"\" SIZE=3 MAXLENGTH=3>");
 			str.append("</TD>");
 			str.append("<TD WIDTH=15%>");
-			str.append(font+"<INPUT TYPE=TEXT NAME=RABPOF"+(i+1)+" VALUE=\""+theclasses.elementAt(i).second+"\" SIZE=3 MAXLENGTH=3>%</B></I></FONT>");
+			str.append(font+"<INPUT TYPE=TEXT NAME=RABPOF"+(i+1)+" VALUE=\""+theclasses.get(i,2)+"\" SIZE=3 MAXLENGTH=3>%</B></I></FONT>");
 			str.append("</TD>");
 			str.append("<TD WIDTH=25%>");
-			str.append("<INPUT TYPE=CHECKBOX NAME=RABQUA"+(i+1)+" "+(theclasses.elementAt(i).third.equalsIgnoreCase("on")?"CHECKED":"")+">"+font+"Qualify Only</B></FONT></I>");
+			str.append("<INPUT TYPE=CHECKBOX NAME=RABQUA"+(i+1)+" "+(theclasses.get(i,3).toString().equalsIgnoreCase("on")?"CHECKED":"")+">"+font+"Qualify Only</B></FONT></I>");
 			str.append("</TD>");
 			str.append("</TR>");
+			str.append("<TR><TD WIDTH=35%>&nbsp;</TD><TD COLSPAN=3>");
+			str.append(font+"Parms:</B></FONT> <INPUT TYPE=TEXT NAME=RABPRM"+(i+1)+" VALUE=\""+theclasses.get(i,5)+"\" SIZE=40 MAXLENGTH=100>");
+			str.append("</TD></TR>");
 			if(supportsRoles)
 			{
 				str.append("<TR><TD WIDTH=35%>&nbsp;</TD><TD COLSPAN=3>");
-				str.append(font+"Roles:</B></FONT> <INPUT TYPE=TEXT NAME=RABROL"+(i+1)+" VALUE=\""+theclasses.elementAt(i).fifth+"\" SIZE=40 MAXLENGTH=100>");
+				str.append(font+"Roles:</B></FONT> <INPUT TYPE=TEXT NAME=RABROL"+(i+1)+" VALUE=\""+theclasses.get(i,6)+"\" SIZE=40 MAXLENGTH=100>");
 				str.append("</TD></TR>");
 			}
 			str.append("</TABLE></TD></TR>");
@@ -486,6 +515,9 @@ public class RaceData extends StdWebMacro
 		str.append("<INPUT TYPE=CHECKBOX NAME=RABQUA"+(theclasses.size()+1)+" >"+font+"Qualify Only</B></I></FONT>");
 		str.append("</TD>");
 		str.append("</TR>");
+		str.append("<TR><TD WIDTH=35%>&nbsp;</TD><TD COLSPAN=3>");
+		str.append(font+"Parms:</B></FONT> <INPUT TYPE=TEXT NAME=RABPRM"+(theclasses.size()+1)+" VALUE=\"\" SIZE=40 MAXLENGTH=100>");
+		str.append("</TD></TR>");
 		if(supportsRoles)
 		{
 			str.append("<TR><TD WIDTH=35%>&nbsp;</TD><TD COLSPAN=3>");
@@ -852,6 +884,13 @@ public class RaceData extends StdWebMacro
 						old=""+R.shortestFemale();
 					str.append(old+", ");
 				}
+				if(parms.containsKey("XPADJ"))
+				{
+					String old=httpReq.getUrlParameter("XPADJ");
+					if(old==null)
+						old=R.getXPAdjustment()+"%";
+					str.append(old+", ");
+				}
 				if(parms.containsKey("LEAVESTR"))
 				{
 					String old=httpReq.getUrlParameter("LEAVESTR");
@@ -1053,35 +1092,50 @@ public class RaceData extends StdWebMacro
 					{
 						final String eStats=R.getStat("ESTATS");
 						final PhyStats adjPStats=(PhyStats)CMClass.getCommon("DefaultPhyStats"); adjPStats.setAllValues(0);
-						if(eStats.length()>0){ CMLib.coffeeMaker().setPhyStats(adjPStats,eStats);}
+						if(eStats.length()>0)
+						{
+							CMLib.coffeeMaker().setPhyStats(adjPStats,eStats);
+						}
 						str.append(estats(adjPStats,'E',httpReq,parms,0)+", ");
 					}
 					if(parms.containsKey("CSTATS"))
 					{
 						final CharStats setStats=(CharStats)CMClass.getCommon("DefaultCharStats"); setStats.setAllValues(0);
 						final String cStats=R.getStat("CSTATS");
-						if(cStats.length()>0){  CMLib.coffeeMaker().setCharStats(setStats,cStats);}
+						if(cStats.length()>0)
+						{
+							CMLib.coffeeMaker().setCharStats(setStats,cStats);
+						}
 						str.append(cstats(setStats,'S',httpReq,parms,0)+", ");
 					}
 					if(parms.containsKey("ASTATS"))
 					{
 						final CharStats adjStats=(CharStats)CMClass.getCommon("DefaultCharStats"); adjStats.setAllValues(0);
 						final String cStats=R.getStat("ASTATS");
-						if(cStats.length()>0){  CMLib.coffeeMaker().setCharStats(adjStats,cStats);}
+						if(cStats.length()>0)
+						{
+							CMLib.coffeeMaker().setCharStats(adjStats,cStats);
+						}
 						str.append(cstats(adjStats,'A',httpReq,parms,0)+", ");
 					}
 					if(parms.containsKey("ASTATE"))
 					{
 						final CharState adjState=(CharState)CMClass.getCommon("DefaultCharState"); adjState.setAllValues(0);
 						final String aState=R.getStat("ASTATE");
-						if(aState.length()>0){  CMLib.coffeeMaker().setCharState(adjState,aState);}
+						if(aState.length()>0)
+						{
+							CMLib.coffeeMaker().setCharState(adjState,aState);
+						}
 						str.append(cstate(adjState,'A',httpReq,parms,0)+", ");
 					}
 					if(parms.containsKey("STARTASTATE"))
 					{
 						final CharState startAdjState=(CharState)CMClass.getCommon("DefaultCharState"); startAdjState.setAllValues(0);
 						final String saState=R.getStat("STARTASTATE");
-						if(saState.length()>0){ CMLib.coffeeMaker().setCharState(startAdjState,saState);}
+						if(saState.length()>0)
+						{
+							CMLib.coffeeMaker().setCharState(startAdjState,saState);
+						}
 						str.append(cstate(startAdjState,'S',httpReq,parms,0)+", ");
 					}
 				}
@@ -1137,52 +1191,76 @@ public class RaceData extends StdWebMacro
 				{
 					final int[] ageChart=R.getAgingChart();
 					if(!httpReq.isUrlParameter("AGE0"))
+					{
 						for(int i=0;i<Race.AGE_DESCS.length;i++)
 							httpReq.addFakeUrlParameter("AGE"+i,""+ageChart[i]);
+					}
 					int val=-1;
 					for(int i=0;i<Race.AGE_DESCS.length;i++)
 					{
 						final int lastVal=val;
 						val=CMath.s_int(httpReq.getUrlParameter("AGE"+i));
-						if(val<lastVal){ val=lastVal; httpReq.addFakeUrlParameter("AGE"+i,""+val);}
+						if(val<lastVal)
+						{
+							val=lastVal;
+							httpReq.addFakeUrlParameter("AGE"+i,""+val);
+						}
 						str.append("<INPUT TYPE=TEXT SIZE=4 NAME=AGE"+i+" VALUE="+val+">"+Race.AGE_DESCS[i]+"<BR>");
 					}
 					str.append(", ");
 				}
 
 				if(parms.containsKey("SENSES"))
+				{
 					if(R.getSensesChgDesc().length()>0)
 						str.append(R.getSensesChgDesc()+", ");
+				}
 				if(parms.containsKey("DISPOSITIONS"))
+				{
 					if(R.getDispositionChgDesc().length()>0)
 						str.append(R.getDispositionChgDesc()+", ");
+				}
 				if(parms.containsKey("TRAINS"))
+				{
 					if(R.getTrainAdjDesc().length()>0)
 						str.append(R.getTrainAdjDesc()+", ");
+				}
 				if(parms.containsKey("EXPECTANCY"))
 					str.append(""+R.getAgingChart()[Race.AGE_ANCIENT]+", ");
 				if(parms.containsKey("PRACS"))
+				{
 					if(R.getPracAdjDesc().length()>0)
 						str.append(R.getPracAdjDesc()+", ");
+				}
 				if(parms.containsKey("ABILITIES"))
+				{
 					if(R.getAbilitiesDesc().length()>0)
 						str.append(R.getAbilitiesDesc()+", ");
+				}
 				if(parms.containsKey("EFFECTS"))
 				{
 					for(final Ability A : R.racialEffects(null))
+					{
 						if(A!=null)
 							str.append(A.Name()+", ");
+					}
 				}
 				if(parms.containsKey("LANGS"))
+				{
 					if(R.getLanguagesDesc().length()>0)
 						str.append(R.getLanguagesDesc()+", ");
+				}
 
 				if(parms.containsKey("STARTINGEQ"))
 				{
 					if(R.outfit(null)!=null)
+					{
 						for(final Item I : R.outfit(null))
+						{
 							if(I!=null)
 								str.append(I.Name()+", ");
+						}
+					}
 				}
 				if(parms.containsKey("CLASSES"))
 				{
@@ -1191,11 +1269,8 @@ public class RaceData extends StdWebMacro
 						final CharClass C=(CharClass)c.nextElement();
 						if((C!=null)
 						&&(CMProps.isTheme(C.availabilityCode()))
-						&&(CMStrings.containsIgnoreCase(C.getRequiredRaceList(),"All")
-							||CMStrings.containsIgnoreCase(C.getRequiredRaceList(),R.ID())
-							||CMStrings.containsIgnoreCase(C.getRequiredRaceList(),R.name())
-							||CMStrings.containsIgnoreCase(C.getRequiredRaceList(),R.racialCategory())))
-								str.append(C.name()+", ");
+						&&(C.isAllowedRace(R)))
+							str.append(C.name()+", ");
 					}
 				}
 				String strstr=str.toString();

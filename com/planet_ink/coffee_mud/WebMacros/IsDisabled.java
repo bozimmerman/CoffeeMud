@@ -35,7 +35,11 @@ import java.util.*;
 */
 public class IsDisabled extends StdWebMacro
 {
-	@Override public String name() { return "IsDisabled"; }
+	@Override
+	public String name()
+	{
+		return "IsDisabled";
+	}
 
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)

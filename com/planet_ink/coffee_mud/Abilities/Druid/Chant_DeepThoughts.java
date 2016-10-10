@@ -97,7 +97,8 @@ public class Chant_DeepThoughts extends Chant
 			return true;
 		if(!mob.isInCombat())
 		{
-			if(mob.location().domainType()!=Room.DOMAIN_INDOORS_CAVE)
+			if((mob.location().domainType()!=Room.DOMAIN_INDOORS_CAVE)
+			&&((mob.location().getAtmosphere()&RawMaterial.MATERIAL_ROCK)==0))
 			{
 				unInvoke();
 				return false;
@@ -148,7 +149,8 @@ public class Chant_DeepThoughts extends Chant
 			mob.tell(L("You can't think deeply while in combat!"));
 			return false;
 		}
-		if(mob.location().domainType()!=Room.DOMAIN_INDOORS_CAVE)
+		if((mob.location().domainType()!=Room.DOMAIN_INDOORS_CAVE)
+		&&((mob.location().getAtmosphere()&RawMaterial.MATERIAL_ROCK)==0))
 		{
 			mob.tell(L("You must be in a cave for this chant to work."));
 			return false;

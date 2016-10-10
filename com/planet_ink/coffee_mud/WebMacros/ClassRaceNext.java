@@ -36,7 +36,11 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class ClassRaceNext extends StdWebMacro
 {
-	@Override public String name() { return "ClassRaceNext"; }
+	@Override
+	public String name()
+	{
+		return "ClassRaceNext";
+	}
 
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
@@ -61,10 +65,7 @@ public class ClassRaceNext extends StdWebMacro
 			final Race R=(Race)r.nextElement();
 			if(((CMProps.isTheme(R.availabilityCode())&&(!CMath.bset(R.availabilityCode(),Area.THEME_SKILLONLYMASK)))
 				||(parms.containsKey("ALL")))
-			&&(CMStrings.containsIgnoreCase(C.getRequiredRaceList(),"All")
-				||CMStrings.containsIgnoreCase(C.getRequiredRaceList(),R.ID())
-				||CMStrings.containsIgnoreCase(C.getRequiredRaceList(),R.name())
-				||CMStrings.containsIgnoreCase(C.getRequiredRaceList(),R.racialCategory())))
+			&&(C.isAllowedRace(R)))
 			{
 				if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!R.ID().equals(lastID))))
 				{

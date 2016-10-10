@@ -104,12 +104,13 @@ public class Skill_Puppeteer extends BardSkill
 		{
 			if(M.isInCombat())
 			{
-				final boolean isHit=(CMLib.combat().rollToHit(CMLib.combat().adjustedAttackBonus(M,M.getVictim())+(5*getXLEVELLevel(M))
-							+((Item)affected).phyStats().attackAdjustment(),CMLib.combat().adjustedArmor(M.getVictim()), 0));
+				final MOB victiM=M.getVictim();
+				final boolean isHit=(CMLib.combat().rollToHit(CMLib.combat().adjustedAttackBonus(M,victiM)+(5*getXLEVELLevel(M))
+							+((Item)affected).phyStats().attackAdjustment(),CMLib.combat().adjustedArmor(victiM), 0));
 				if(!isHit)
-					M.location().show(M,M.getVictim(),affected,CMMsg.MSG_OK_ACTION,L("<O-NAME> attacks <T-NAME> and misses!"));
+					M.location().show(M,victiM,affected,CMMsg.MSG_OK_ACTION,L("<O-NAME> attacks <T-NAME> and misses!"));
 				else
-					CMLib.combat().postDamage(M,M.getVictim(),affected,
+					CMLib.combat().postDamage(M,victiM,affected,
 											CMLib.dice().roll(1,affected.phyStats().level()+(2*getXLEVELLevel(M)),1),
 											CMMsg.MASK_ALWAYS|CMMsg.TYP_WEAPONATTACK,
 											Weapon.TYPE_BASHING,L("@x1 attacks and <DAMAGE> <T-NAME>!",affected.name()));

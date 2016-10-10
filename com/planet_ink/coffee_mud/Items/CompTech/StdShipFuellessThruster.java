@@ -159,7 +159,7 @@ public class StdShipFuellessThruster extends StdElecCompItem implements ShipEngi
 	
 	/**
 	 * Gets set of available thrust ports on this engine.
-	 * @see ShipEngine#setAvailPorts(Set<ThrustPort>)
+	 * @see ShipEngine#setAvailPorts(TechComponent.ShipDir[])
 	 * @return the set of available thrust ports.
 	 */
 	@Override

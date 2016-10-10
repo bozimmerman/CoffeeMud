@@ -63,6 +63,6 @@ public class UnderSaltWater extends UnderWater
 	@Override
 	public List<Integer> resourceChoices()
 	{
-		return UnderWater.roomResources;
+		return roomResources;
 	}
 }

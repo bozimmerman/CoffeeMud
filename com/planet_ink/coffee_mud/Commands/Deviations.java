@@ -39,10 +39,19 @@ public class Deviations extends StdCommand
 {
 	public Deviations(){}
 
-	private final String[] access=I(new String[]{"DEVIATIONS"});
-	@Override public String[] getAccessWords(){return access;}
+	private final String[]	access	= I(new String[] { "DEVIATIONS" });
 
-	@Override public boolean canBeOrdered(){return true;}
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
+
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 
 	protected String mobHeader(Faction useFaction)
 	{
@@ -62,6 +71,7 @@ public class Deviations extends StdCommand
 		str.append("\n\r");
 		return str.toString();
 	}
+
 	protected String itemHeader()
 	{
 		final StringBuffer str=new StringBuffer();
@@ -154,7 +164,6 @@ public class Deviations extends StdCommand
 	
 	protected String getDeviation(double val, double val2)
 	{
-
 		if(val==val2)
 			return "0%";
 		final double oval=val2-val;
@@ -177,6 +186,7 @@ public class Deviations extends StdCommand
 		if(V.size()==1)
 			return new StringBuffer("You must also specify a mob or item name, or the word room, or the word area.");
 
+		final Room mobR=mob.location();
 		Faction useFaction=null;
 		for(final Enumeration<Faction> e=CMLib.factions().factions();e.hasMoreElements();)
 		{
@@ -185,14 +195,14 @@ public class Deviations extends StdCommand
 				useFaction=F;
 		}
 		final String where=V.get(1).toLowerCase();
-		final Environmental E=mob.location().fetchFromMOBRoomFavorsItems(mob,null,where,Wearable.FILTER_ANY);
+		final Environmental E=mobR.fetchFromMOBRoomFavorsItems(mob,null,where,Wearable.FILTER_ANY);
 		final Vector<Environmental> check=new Vector<Environmental>();
 		if(where.equalsIgnoreCase("room"))
-			fillCheckDeviations(mob.location(),type,check);
+			fillCheckDeviations(mobR,type,check);
 		else
 		if(where.equalsIgnoreCase("area"))
 		{
-			for(final Enumeration<Room> r=mob.location().getArea().getCompleteMap();r.hasMoreElements();)
+			for(final Enumeration<Room> r=mobR.getArea().getFilledCompleteMap();r.hasMoreElements();)
 			{
 				final Room R=r.nextElement();
 				fillCheckDeviations(R,type,check);
@@ -201,7 +211,7 @@ public class Deviations extends StdCommand
 		else
 		if(where.equalsIgnoreCase("world"))
 		{
-			for(final Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
+			for(final Enumeration<Room> r=CMLib.map().roomsFilled();r.hasMoreElements();)
 			{
 				final Room R=r.nextElement();
 				fillCheckDeviations(R,type,check);

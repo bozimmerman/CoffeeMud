@@ -46,7 +46,7 @@ public class Crawl extends Go
 	{
 		if(secondsElapsed==0)
 		{
-			final int direction=Directions.getGoodDirectionCode(CMParms.combine(commands,1));
+			final int direction=CMLib.directions().getGoodDirectionCode(CMParms.combine(commands,1));
 			if(direction<0)
 			{
 				CMLib.commands().doCommandFail(mob,new StringXVector(commands),L("Crawl which way?\n\rTry north, south, east, west, up, or down."));
@@ -59,7 +59,7 @@ public class Crawl extends Go
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
-		final int direction=Directions.getGoodDirectionCode(CMParms.combine(commands,1));
+		final int direction=CMLib.directions().getGoodDirectionCode(CMParms.combine(commands,1));
 		if(direction>=0)
 		{
 			final CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_SIT,null);

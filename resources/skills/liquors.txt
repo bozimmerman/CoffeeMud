@@ -13,3 +13,6 @@ mead	DRINK	Poison_Alcohol	3	HONEY	1	GRAPES	1	WATER	1
 sake	DRINK	Poison_Alcohol	10	RICE	1	WATER	1										
 beer	DRINK	Poison_Alcohol	1	BARLEY	1	WATER	1										
 blood wine	DRINK	Poison_Alcohol	1	GRAPES	1	BLOOD	1	WATER	1								
+moonshine	DRINK	*Poison_Liquor;	8	CORN	1	WATER											
+White Lightning	DRINK	*Poison_Liquor;	14	CORN	1	WATER											
+some hooch	DRINK	*Poison_Liquor;	16	CORN	1	WATER	1										

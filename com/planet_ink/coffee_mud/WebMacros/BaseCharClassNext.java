@@ -36,7 +36,11 @@ import java.util.*;
 
 public class BaseCharClassNext extends StdWebMacro
 {
-	@Override public String name() { return "BaseCharClassNext"; }
+	@Override
+	public String name()
+	{
+		return "BaseCharClassNext";
+	}
 
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
@@ -57,7 +61,7 @@ public class BaseCharClassNext extends StdWebMacro
 			if((CMProps.isTheme(C.availabilityCode()))||(parms.containsKey("ALL")))
 			{
 				if(!baseClasses.contains(C.baseClass()))
-				   baseClasses.addElement(C.baseClass());
+					baseClasses.addElement(C.baseClass());
 			}
 		}
 		for(int i=0;i<baseClasses.size();i++)

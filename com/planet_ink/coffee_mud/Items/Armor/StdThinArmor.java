@@ -35,7 +35,11 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class StdThinArmor extends StdItem implements Armor
 {
-	@Override public String ID(){	return "StdThinArmor";}
+	@Override
+	public String ID()
+	{
+		return "StdThinArmor";
+	}
 	int sheath=0;
 	short layer=0;
 	short layerAttributes=0;
@@ -63,10 +67,30 @@ public class StdThinArmor extends StdItem implements Armor
 			newUses=100;
 		super.setUsesRemaining(newUses);
 	}
-	@Override public short getClothingLayer(){return layer;}
-	@Override public void setClothingLayer(short newLayer){layer=newLayer;}
-	@Override public short getLayerAttributes(){return layerAttributes;}
-	@Override public void setLayerAttributes(short newAttributes){layerAttributes=newAttributes;}
+
+	@Override
+	public short getClothingLayer()
+	{
+		return layer;
+	}
+
+	@Override
+	public void setClothingLayer(short newLayer)
+	{
+		layer=newLayer;
+	}
+
+	@Override
+	public short getLayerAttributes()
+	{
+		return layerAttributes;
+	}
+
+	@Override
+	public void setLayerAttributes(short newAttributes)
+	{
+		layerAttributes=newAttributes;
+	}
 
 	@Override
 	public boolean canWear(MOB mob, long where)
@@ -90,6 +114,7 @@ public class StdThinArmor extends StdItem implements Armor
 	{
 		return false;
 	}
+
 	@Override
 	public String secretIdentity()
 	{

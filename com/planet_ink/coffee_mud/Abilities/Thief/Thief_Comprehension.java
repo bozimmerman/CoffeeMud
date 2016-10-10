@@ -44,7 +44,7 @@ public class Thief_Comprehension extends ThiefSkill
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	private static final String[] triggerStrings =I(new String[] {"COMPREHEND","COMPREHENSION"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override protected boolean disregardsArmorCheck(MOB mob){return true;}
+	@Override public boolean disregardsArmorCheck(MOB mob){return true;}
 	protected Vector<CMMsg> queue=new Vector<CMMsg>();
 	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STREETSMARTS;}
 

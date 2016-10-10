@@ -245,7 +245,7 @@ public class Chant_Flood extends Chant
 				mob.tell(L("There is no water nearby to call in a flood from."));
 				return false;
 			}
-			fromDir=Directions.getFromCompassDirectionName(waterDir);
+			fromDir=CMLib.directions().getFromCompassDirectionName(waterDir);
 		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

@@ -35,7 +35,12 @@ import java.util.*;
 */
 public class RingOfElectricity extends Ring_Protection implements MiscMagic
 {
-	@Override public String ID(){	return "RingOfElectricity";}
+	@Override
+	public String ID()
+	{
+		return "RingOfElectricity";
+	}
+
 	public RingOfElectricity()
 	{
 		super();

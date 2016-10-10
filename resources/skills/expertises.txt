@@ -48,7 +48,7 @@ HELP_=<EXPERTISE>The ability to sneak around and hide using less mana and moveme
 STEALING@x1=Theft Mastery @x2,10,LEVEL,-SKILLFLAG +STEALING,-MAXCLASSLEVEL +>={10+(5*@x1)},+DEX {12+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to steal, swipe, and do unseemly slight of hand with more advanced foes.
 
-ROPEUSE@x1=Binding @x2,10,LEVEL,-SKILLFLAG +BINDING,-MAXCLASSLEVEL +>={23+(5*@x1)},+DEX {15+@x1},0,1,0,0,0
+ROPEUSE@x1=Rope Use @x2,10,LEVEL,-SKILLFLAG +BINDING,-MAXCLASSLEVEL +>={23+(5*@x1)},+DEX {15+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to better use and deploy rope based snares, bindings, knots, and traps.
 
 DECEPTIVE@x1=Deceptive @x2,10,LEVEL,-SKILLFLAG +DECEPTIVE,-MAXCLASSLEVEL +>={23+(5*@x1)},+CHA {12+@x1},0,1,0,0,0
@@ -139,7 +139,7 @@ AXEPIERCE@x1=Axe Piercing @x2,10,X2,-SKILL +Specialization_Axe,-MAXCLASSLEVEL +>
 HELP_=<EXPERTISE>The ability to do more damage when using a piercing-type axe.
 
 AXEFOCUS@x1=Axe Focus @x2,10,X4,-BASECLASS +Fighter -SKILL +Specialization_Axe,-MAXCLASSLEVEL +>={24+(5*@x1)},+WIS {10+@x1},0,1,0,0,0
-HELP_=<EXPERTISE>The ability to wield higher level axes.
+HELP_=<EXPERTISE>The ability for fighters to wield higher level axes.
 
 UNARMEDSTRIKE@x1=Unarmed Striking @x2,10,LEVEL,-SKILL +Specialization_Natural +Druid_Bite +Druid_Rend,-MAXCLASSLEVEL +>={24+(5*@x1)},+DEX {15+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to hit more often when unarmed.
@@ -154,7 +154,7 @@ UNARMEDBASH@x1=Unarmed Bashing @x2,10,X3,-SKILL +Specialization_Natural,-MAXCLAS
 HELP_=<EXPERTISE>The ability to do more damage when using a bashing-type unarmed attack.
 
 UNARMEDFOCUS@x1=Unarmed Focus @x2,10,X4,-BASECLASS +Fighter -SKILL +Specialization_Natural,-MAXCLASSLEVEL +>={27+(5*@x1)},+WIS {10+@x1},0,1,0,0,0
-HELP_=<EXPERTISE>The ability to wield higher level natural weapons.
+HELP_=<EXPERTISE>The ability for fighters to wield higher level natural weapons.
 
 BLUNTSTRIKE@x1=Blunt Striking @x2,10,LEVEL,-SKILL +Specialization_BluntWeapon,-MAXCLASSLEVEL +>={24+(5*@x1)},+DEX {15+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to hit more often when using a blunt-class weapon.
@@ -166,7 +166,7 @@ BLUNTBASH@x1=Blunt Bashing @x2,10,X3,-SKILL +Specialization_BluntWeapon,-MAXCLAS
 HELP_=<EXPERTISE>The ability to do more damage when using a bashing-type blunt-class weapon.
 
 BLUNTFOCUS@x1=Blunt Focus @x2,10,X4,-BASECLASS +Fighter -SKILL +Specialization_BluntWeapon,-MAXCLASSLEVEL +>={27+(5*@x1)},+WIS {10+@x1},0,1,0,0,0
-HELP_=<EXPERTISE>The ability to use wield higher level blunt-class weapons.
+HELP_=<EXPERTISE>The ability for fighters to use wield higher level blunt-class weapons.
 
 EDGEDSTRIKE@x1=Edged Striking @x2,10,LEVEL,-SKILL +Specialization_EdgedWeapon,-MAXCLASSLEVEL +>={24+(5*@x1)},+DEX {15+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to hit more often when using an edged-class weapon.
@@ -178,7 +178,7 @@ EDGEPIERCE@x1=Edged Piercing @x2,10,X2,-SKILL +Specialization_EdgedWeapon,-MAXCL
 HELP_=<EXPERTISE>The ability to do more damage when using a piercing-type edged-class weapon.
 
 EDGEFOCUS@x1=Edged Focus @x2,10,X4,-BASECLASS +Fighter -SKILL +Specialization_EdgedWeapon,-MAXCLASSLEVEL +>={27+(5*@x1)},+WIS {10+@x1},0,1,0,0,0
-HELP_=<EXPERTISE>The ability to wield higher level edged-class weapon.
+HELP_=<EXPERTISE>The ability for fighters to wield higher level edged-class weapon.
 
 FLAILEDSTRIKE@x1=Flailed Striking @x2,10,LEVEL,-SKILL +Specialization_FlailedWeapon,-MAXCLASSLEVEL +>={24+(5*@x1)},+DEX {15+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to hit more often when using a flail-class weapon.
@@ -190,7 +190,10 @@ FLAILEDBASH@x1=Flailed Bashing @x2,10,X3,-SKILL +Specialization_FlailedWeapon,-M
 HELP_=<EXPERTISE>The ability to do more damage when using a bashing-type flail-class weapon.
 
 FLAILEDFOCUS@x1=Flailed Focus @x2,10,X4,-BASECLASS +Fighter -SKILL +Specialization_FlailedWeapon,-MAXCLASSLEVEL +>={27+(5*@x1)},+WIS {10+@x1},0,1,0,0,0
-HELP_=<EXPERTISE>The ability to wield higher level flail-class weapons.
+HELP_=<EXPERTISE>The ability for fighters to wield higher level flail-class weapons.
+
+SIEGEBASH@x1=Siege Bashing @x2,10,X3,-SKILL +Specialization_SiegeWeapon,-MAXCLASSLEVEL +>={27+(5*@x1)},+INT {15+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>The ability to do more damage when using a siege weapon.
 
 HAMMERSTRIKE@x1=Hammer Striking @x2,10,LEVEL,-SKILL +Specialization_Hammer,-MAXCLASSLEVEL +>={24+(5*@x1)},+DEX {15+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to hit more often when using a hammer.
@@ -199,7 +202,7 @@ HAMMERBASH@x1=Hammer Bashing @x2,10,X3,-SKILL +Specialization_Hammer,-MAXCLASSLE
 HELP_=<EXPERTISE>The ability to do more damage when using a bashing-type hammer.
 
 HAMMERFOCUS@x1=Hammer Focus @x2,10,X4,-BASECLASS +Fighter -SKILL +Specialization_Hammer,-MAXCLASSLEVEL +>={27+(5*@x1)},+WIS {10+@x1},0,1,0,0,0
-HELP_=<EXPERTISE>The ability to wield higher level hammers.
+HELP_=<EXPERTISE>The ability for fighters to wield higher level hammers.
 
 POLESTRIKE@x1=Polearm Striking @x2,10,LEVEL,-SKILL +Specialization_Polearm,-MAXCLASSLEVEL +>={24+(5*@x1)},+DEX {15+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to hit more often when using a polearm-class weapon.
@@ -211,7 +214,7 @@ POLEPIERCE@x1=Polearm Piercing @x2,10,X2,-SKILL +Specialization_Polearm,-MAXCLAS
 HELP_=<EXPERTISE>The ability to do more damage when using a piercing-type polearm-class weapon.
 
 POLEFOCUS@x1=Polearm Focus @x2,10,X4,-BASECLASS +Fighter -SKILL +Specialization_Polearm,-MAXCLASSLEVEL +>={27+(5*@x1)},+STR {10+@x1},0,1,0,0,0
-HELP_=<EXPERTISE>The ability to wield higher level polearm-class weapons.
+HELP_=<EXPERTISE>The ability for fighters to wield higher level polearm-class weapons.
 
 RANGEDSTRIKE@x1=Ranged Striking @x2,10,LEVEL,-SKILL +Specialization_Ranged +Fighter_Fragmentation +Fighter_ImprovedThrowing,-MAXCLASSLEVEL +>={24+(5*@x1)},+DEX {15+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to hit more often when using a ranged or thrown weapon.
@@ -223,7 +226,7 @@ RANGEDBASH@x1=Ranged Bashing @x2,10,X3,-SKILL +Specialization_Ranged,-MAXCLASSLE
 HELP_=<EXPERTISE>The ability to do more damage when using a bashing-type blunt-class ranged or thrown weapon.
 
 RANGEDFOCUS@x1=Ranged Focus @x2,10,X4,-BASECLASS +Fighter -SKILL +Specialization_Ranged,-MAXCLASSLEVEL +>={27+(5*@x1)},+WIS {10+@x1},0,1,0,0,0
-HELP_=<EXPERTISE>The ability to wield higher level blunt-class ranged or thrown weapons.
+HELP_=<EXPERTISE>The ability for fighters to wield higher level blunt-class ranged or thrown weapons.
 
 SWORDSTRIKE@x1=Sword Striking @x2,10,LEVEL,-SKILL +Specialization_Sword,-MAXCLASSLEVEL +>={24+(5*@x1)},+DEX {15+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to hit more often when using a sword.
@@ -234,8 +237,8 @@ HELP_=<EXPERTISE>The ability to do more damage when using a slashing/slicing-typ
 SWORDPIERCE@x1=Sword Piercing @x2,10,X2,-SKILL +Specialization_Sword,-MAXCLASSLEVEL +>={27+(5*@x1)},+STR {15+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to do more damage when using a piercing-type sword.
 
-SWORDFOCUS@x1=Sword Piercing @x2,10,X4,-BASECLASS +Fighter -SKILL +Specialization_Sword,-MAXCLASSLEVEL +>={27+(5*@x1)},+WIS {10+@x1},0,1,0,0,0
-HELP_=<EXPERTISE>The ability to wield higher level swords.
+SWORDFOCUS@x1=Sword Focus @x2,10,X4,-BASECLASS +Fighter -SKILL +Specialization_Sword,-MAXCLASSLEVEL +>={27+(5*@x1)},+WIS {10+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>The ability for fighters to wield higher level swords.
 
 FASTDANCE@x1=Fast Dancing @x2,10,LEVEL,-SKILLFLAG +DANCING&MALICIOUS,-MAXCLASSLEVEL +>={15+(5*@x1)},+STR {12+@x1} +CHA {12+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to perform dances that have a more powerful malicious affect.
@@ -372,8 +375,20 @@ HELP_=<EXPERTISE>The ability to cast abjuration spells at a higher power level, 
 EXTENDEDABJURATION@x1=Extended Abjuring @x2,10,TIME,-SKILLFLAG +ABJURATION,-MAXCLASSLEVEL +>={19+(5*@x1)},+CON {9+@x1} +STR {9+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to cast abjuration spells that last even longer.
 
-SMARTENGINEERING@x1=Ingenious Engineering @x2,10,XPCOST,-SKILLS +Construction +Masonry,-MAXCLASSLEVEL +>={21+(5*@x1)},+INT {12+@x1} +WIS {12+@x1},0,1,0,0,0
+SMARTENGINEERING@x1=Ingenious Engineering @x2,10,XPCOST,-SKILLS +Construction +Masonry +Shipwright,-MAXCLASSLEVEL +>={21+(5*@x1)},+INT {12+@x1} +WIS {12+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to engineer using fewer materials.
+
+RANGEDSAILING@x1=Ranged Sailing @x2,10,MAXRANGE,-SKILLFLAG +SEA_TRAVEL,-MAXCLASSLEVEL +>={19+(5*@x1)},+DEX {9+@x1} +CON {9+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>The ability to use sea travel skills at longer ranges.
+
+REDUCEDSAILING@x1=Reduced Sailing @x2,10,LOWCOST,-SKILLFLAG +SEA_TRAVEL,-MAXCLASSLEVEL +>={1+(3*@x1)},+WIS {9+@x1} +STR {9+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>The ability to use sea travel skills using less movement/mana.
+
+POWERSAILING@x1=Power Sailing @x2,10,LEVEL,-SKILLFLAG +SEA_TRAVEL,-MAXCLASSLEVEL +>={1+(3*@x1)},+CHA {9+@x1} +INT {9+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>The ability to use sea travel at a higher power level, producing longer and more malicious/beneficial effect.
+
+EXTENDEDSAILINGL@x1=Extended Sailing @x2,10,TIME,-SKILLFLAG +SEA_TRAVEL,-MAXCLASSLEVEL +>={19+(5*@x1)},+CON {9+@x1} +STR {9+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>The ability to use sea travel that last even longer.
 
 LITECRAFT@x1=Light Crafting @x2,3,X1,-SKILL +Carpentry +Armorsmithing +MasterArmorsmithing +Blacksmithing +Cobbling +Costuming +Fletching +JewelMaking +LeatherWorking +MasterCostuming +MasterLeatherWorking +MasterTailoring +Paladin_CraftHolyAvenger +ScrimShaw +Sculpting +Tailoring +Weaponsmithing +MasterWeaponsmithing +Weaving,,+DEX {10+(4*@x1)},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to craft items using less material without sacrificing quality.
@@ -473,16 +488,16 @@ HELP_=<EXPERTISE>The ability to cast plant growing chants that produce more hard
 PLANTMASTER@x1=Plant Mastering @x2,10,LEVEL|LOWCOST,-SKILLFLAG +PLANT_CONTROL,-MAXCLASSLEVEL +>={26+(5*@x1)},+WIS {12+@x1} ,0,1,0,0,0
 HELP_=<EXPERTISE>The ability to cast plant controlling chants at a higher power level, producing longer and more malicious/beneficial magic, while also reducing mana cost.
 
-BONELORE@x1=Bone Lore @x2,10,X1,-SKILL +Prayer_AnimateDead +Prayer_AnimateSkeleton +Prayer_AnimateMummy,-MAXCLASSLEVEL +>={22+(5*@x1)},+STR {12+@x1},0,1,0,0,0
+BONELORE@x1=Bone Lore @x2,10,X1,-SKILL +Prayer_AnimateDead +Prayer_AnimateSkeleton +Prayer_AnimateMummy,-MAXCLASSLEVEL +>={1+(8*@x1)},+STR {12+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to magically generate higher level skeletons, zombies, and mummies.
 
-GHOULLORE@x1=Ghoul Lore @x2,10,X1,-SKILL +Prayer_AnimateGhoul +Prayer_AnimateGhast,-MAXCLASSLEVEL +>={16+(5*@x1)},+INT {12+@x1},0,1,0,0,0
+GHOULLORE@x1=Ghoul Lore @x2,10,X1,-SKILL +Prayer_AnimateGhoul +Prayer_AnimateGhast,-MAXCLASSLEVEL +>={7+(7*@x1)},+INT {12+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to magically generate higher level ghouls and ghasts.
 
-SPIRITLORE@x1=Spirit Lore @x2,10,X1,-SKILL +Prayer_AnimateSpectre +Prayer_AnimateGhost,-MAXCLASSLEVEL +>={23+(5*@x1)},+DEX {12+@x1},0,1,0,0,0
+SPIRITLORE@x1=Spirit Lore @x2,10,X1,-SKILL +Prayer_AnimateSpectre +Prayer_AnimateGhost,-MAXCLASSLEVEL +>={25+(6*@x1)},+DEX {12+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to magically generate higher level spectres and ghosts.
 
-VAMPIRELORE@x1=Vampire Lore @x2,10,X1,-SKILL +Prayer_AnimateVampire,-MAXCLASSLEVEL +>={29+(5*@x1)},+DEX {12+@x1},0,1,0,0,0
+VAMPIRELORE@x1=Vampire Lore @x2,10,X1,-SKILL +Prayer_AnimateVampire,-MAXCLASSLEVEL +>={27+(6*@x1)},+DEX {12+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to magically generate higher level vampires.
 
 DEATHLORE@x1=Death Lore @x2,10,LEVEL|XPCOST,-SKILLFLAG +DEATH_LORE,-MAXCLASSLEVEL +>={17+(5*@x1)},+CON {12+@x1},0,1,0,0,0

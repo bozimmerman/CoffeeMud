@@ -412,9 +412,12 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 	public static final int SPECIAL_RANDPC=10;
 	/** The index into the local variables array for a random pc or mob  */
 	public static final int SPECIAL_RANDANYONE=11;
+	/** The index into the local variables array for a random items shop price from shophas  */
+	public static final int SPECIAL_9SHOPHASPRICE=9;
 
 	/** String list of all valid trigger keywords */
-	public static final String[] progs={
+	public static final String[] progs=
+	{
 		"GREET_PROG", //1
 		"ALL_GREET_PROG", //2
 		"SPEECH_PROG", //3
@@ -460,11 +463,11 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 		"IMASK_PROG", // 43
 		"KILL_PROG", //44
 		"ARRIVE_PROG" //45
-
 	};
 
 	/** String list of all valid mobprog functions for logical expressions or string functions */
-	public static final String[] funcs={
+	public static final String[] funcs=
+	{
 		"RAND", //1
 		"HAS", //2
 		"WORN", //3
@@ -564,10 +567,14 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 		"WORNON", // 97
 		"CLANQUALIFIES", // 98
 		"HASACCTATTOO", // 99
+		"SHOPITEM", // 100
+		"NUMITEMSSHOP", // 101
+		"SHOPHAS" // 102
 	};
 
 	/** String list of all valid mobprog commands */
-	public static final String[] methods={
+	public static final String[] methods=
+	{
 		"MPASOUND", //1
 		"MPECHO", //2
 		"MPSLAY", //3
@@ -651,6 +658,8 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 		"MPSETCLAN", // 81
 		"MPRLOAD", // 82
 		"MPACCTATTOO", // 83
+		"MPOLOADSHOP", //84
+		"MPMLOADSHOP", //85
 	};
 
 	/** a list of some some extra stat codes for mobs*/
@@ -698,7 +707,8 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 	/** index and equate for logical connector ORNOT */
 	public final static int CONNECTOR_ORNOT=4;
 	/** A table to describe what happens when connectors are found sequentially (and and not or not and and, etc) */
-	public final static int[][] CONNECTOR_MAP={
+	public final static int[][] CONNECTOR_MAP=
+	{
 		{CONNECTOR_AND,CONNECTOR_OR,CONNECTOR_ANDNOT,CONNECTOR_AND,CONNECTOR_ORNOT}, //and
 		{CONNECTOR_OR,CONNECTOR_OR,CONNECTOR_ORNOT,CONNECTOR_ORNOT,CONNECTOR_ORNOT}, //or
 		{CONNECTOR_ANDNOT,CONNECTOR_ORNOT,CONNECTOR_AND,CONNECTOR_AND,CONNECTOR_OR}, //not

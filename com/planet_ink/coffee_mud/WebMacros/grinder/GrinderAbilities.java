@@ -37,7 +37,10 @@ import java.util.*;
 
 public class GrinderAbilities 
 {
-	public String name() { return "GrinderAbilities"; }
+	public String name()
+	{
+		return "GrinderAbilities";
+	}
 
 	public static String modifyAbility(HTTPRequest httpReq, java.util.Map<String,String> parms, Ability oldA, Ability A)
 	{

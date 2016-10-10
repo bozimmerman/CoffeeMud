@@ -33,7 +33,12 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class SplintMail extends StdArmor
 {
-	@Override public String ID(){	return "SplintMail";}
+	@Override
+	public String ID()
+	{
+		return "SplintMail";
+	}
+
 	public SplintMail()
 	{
 		super();

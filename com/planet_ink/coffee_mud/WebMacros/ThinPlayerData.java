@@ -36,7 +36,11 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class ThinPlayerData extends StdWebMacro {
 
-	@Override public String name() { return "ThinPlayerData"; }
+	@Override
+	public String name()
+	{
+		return "ThinPlayerData";
+	}
 
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)

@@ -34,8 +34,14 @@ import java.util.*;
 */
 public class Ingredients extends BagOfEndlessness
 {
-	@Override public String ID(){	return "Ingredients";}
-	boolean alreadyFilled=false;
+	@Override
+	public String ID()
+	{
+		return "Ingredients";
+	}
+
+	boolean	alreadyFilled	= false;
+
 	public Ingredients()
 	{
 		super();
@@ -86,8 +92,10 @@ public class Ingredients extends BagOfEndlessness
 		{
 			alreadyFilled=true;
 			if(!hasContent())
+			{
 				for(final int rsc : RawMaterial.CODES.ALL())
 					makeResource(RawMaterial.CODES.NAME(rsc).toLowerCase(),rsc);
+			}
 		}
 		else
 		if(msg.amITarget(this)

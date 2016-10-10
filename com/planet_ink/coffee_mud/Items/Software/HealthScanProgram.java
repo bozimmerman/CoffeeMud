@@ -43,7 +43,11 @@ import java.util.*;
 */
 public class HealthScanProgram extends GenSoftware
 {
-	@Override public String ID(){	return "HealthScanProgram";}
+	@Override
+	public String ID()
+	{
+		return "HealthScanProgram";
+	}
 
 	protected WeakReference<MOB> lastMOBChecked=null;
 
@@ -58,8 +62,17 @@ public class HealthScanProgram extends GenSoftware
 		recoverPhyStats();
 	}
 
-	@Override public String getParentMenu() { return ""; }
-	@Override public String getInternalName() { return "";}
+	@Override
+	public String getParentMenu()
+	{
+		return "";
+	}
+
+	@Override
+	public String getInternalName()
+	{
+		return "";
+	}
 
 	public boolean isAlive(MOB M)
 	{

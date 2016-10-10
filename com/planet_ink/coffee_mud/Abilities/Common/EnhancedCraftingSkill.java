@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.Common.CraftingSkill.CraftingActivity;
+import com.planet_ink.coffee_mud.Abilities.Common.CraftingSkill.EnhancedExpertise;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -202,7 +203,17 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 					}
 				}
 			}
-			data[0][FOUND_CODE]=rscs.get(0).intValue();
+			List<Integer> compInts=new ArrayList<Integer>();
+			for(final Object o : componentsFoundList)
+			{
+				if(o instanceof Item)
+				{
+					final Item I=(Item)o;
+					compInts.add(Integer.valueOf(I.material()));
+				}
+			}
+			Collections.sort(compInts);
+			data[0][FOUND_CODE]=compInts.get((int)Math.round(Math.floor(compInts.size()/2))).intValue();
 		}
 	}
 
@@ -286,11 +297,13 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 		final List<String> parmNames=CMParms.parseTabs(parametersFormat(), true);
 		int levelParmPos=-1;
 		for(int p=0;p<parmNames.size();p++)
+		{
 			if(parmNames.get(p).endsWith("_LEVEL"))
 			{
 				levelParmPos=p;
 				break;
 			}
+		}
 		if(levelParmPos<0)
 			return lists;
 		final List<List<String>> sortedLists=new Vector<List<String>>();
@@ -299,11 +312,13 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 			int lowestLevelRecipeIndex=-1;
 			int lowestLevel=Integer.MAX_VALUE;
 			for(int index=0;index<lists.size();index++)
+			{
 				if((lists.get(index).size()>levelParmPos)&&(CMath.s_int(lists.get(index).get(levelParmPos))<lowestLevel))
 				{
 					lowestLevelRecipeIndex=index;
 					lowestLevel=CMath.s_int(lists.get(index).get(levelParmPos));
 				}
+			}
 			if(lowestLevelRecipeIndex<0)
 				sortedLists.add(lists.remove(0));
 			else
@@ -485,6 +500,31 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 		}
 	}
 
+	@Override
+	protected String cleanBuildingNameForXP(MOB mob, String name)
+	{
+		name=" "+CMLib.english().cleanArticles(name)+" ";
+		final PairVector<EnhancedExpertise,Integer> enhancedTypes=enhancedTypes(mob,CMParms.parse(name));
+		if(enhancedTypes != null)
+		{
+			for(int t=0;t<enhancedTypes.size();t++)
+			{
+				final EnhancedExpertise type=enhancedTypes.elementAt(t).first;
+				final int stage=enhancedTypes.elementAt(t).second.intValue();
+				final String expertiseID=CMLib.expertises().getApplicableExpertise(ID(),type.flag);
+				ExpertiseLibrary.ExpertiseDefinition def = CMLib.expertises().getDefinition(expertiseID+CMath.convertToRoman(1));
+				if(def==null)
+					def = CMLib.expertises().getDefinition(expertiseID+1);
+				if(def==null)
+					def = CMLib.expertises().getDefinition(expertiseID);
+				if(def==null)
+					continue;
+				name=CMStrings.replaceAll(name," "+def.getData()[stage].toUpperCase()+" ","");
+			}
+		}
+		return name.trim();
+	}
+
 	public void enhanceItem(MOB mob, Item item, PairVector<EnhancedExpertise,Integer> types)
 	{
 		if(types==null)
@@ -649,5 +689,4 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 			item.recoverPhyStats();
 		}
 	}
-
 }

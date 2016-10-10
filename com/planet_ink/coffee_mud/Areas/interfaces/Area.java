@@ -303,6 +303,16 @@ public interface Area extends Economics, PhysicalAgent, Places
 	public Enumeration<Room> getCompleteMap();
 
 	/**
+	 * This method is the same as getFilledProperMap, except that it will load any
+	 * Rooms that belong to the area but have not yet been loaded.  The
+	 * Enumerator returned is thus a more complete set than returned by getFilledProperMap
+	 * @see com.planet_ink.coffee_mud.Areas.interfaces.Area#getFilledProperMap()
+	 * @see com.planet_ink.coffee_mud.Locales.interfaces.Room
+	 * @return an enumerator of Room objects
+	 */
+	public Enumeration<Room> getFilledCompleteMap();
+
+	/**
 	 * Returns whether this area has any proper rooms at all, even if uncached.
 	 * @return true if there are no proper rooms, false otherwise
 	 */

@@ -33,10 +33,13 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
 public class RaceClassNext extends StdWebMacro
 {
-	@Override public String name() { return "RaceClassNext"; }
+	@Override
+	public String name()
+	{
+		return "RaceClassNext";
+	}
 
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
@@ -54,14 +57,11 @@ public class RaceClassNext extends StdWebMacro
 			return "";
 		}
 		String lastID="";
-		for(final Enumeration c=CMClass.charClasses();c.hasMoreElements();)
+		for(final Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
 		{
-			final CharClass C=(CharClass)c.nextElement();
+			final CharClass C=c.nextElement();
 			if(((CMProps.isTheme(C.availabilityCode()))||(parms.containsKey("ALL")))
-				&&(CMStrings.containsIgnoreCase(C.getRequiredRaceList(),"All")
-					||CMStrings.containsIgnoreCase(C.getRequiredRaceList(),R.ID())
-					||CMStrings.containsIgnoreCase(C.getRequiredRaceList(),R.name())
-					||CMStrings.containsIgnoreCase(C.getRequiredRaceList(),R.racialCategory())))
+			&&(C.isAllowedRace(R)))
 			{
 				if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!C.ID().equals(lastID))))
 				{

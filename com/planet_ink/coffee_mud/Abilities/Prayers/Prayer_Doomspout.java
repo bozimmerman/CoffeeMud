@@ -47,6 +47,7 @@ public class Prayer_Doomspout extends Prayer implements DiseaseAffect
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
 	@Override public int difficultyLevel(){return 7;}
+	@Override public boolean isMalicious(){ return true;}
 	int plagueDown=4;
 	String godName="The Demon";
 	protected boolean ispoke=false;

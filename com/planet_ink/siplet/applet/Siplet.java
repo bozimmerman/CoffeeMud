@@ -1,6 +1,8 @@
 package com.planet_ink.siplet.applet;
+import com.planet_ink.coffee_mud.core.CMLib;
 import com.planet_ink.siplet.support.*;
 import com.jcraft.jzlib.*;
+
 import java.applet.Applet;
 import java.awt.*;
 import java.net.*;
@@ -147,7 +149,7 @@ public class Siplet
 			this.sock=sock;
 			rawin=sock.getInputStream();
 			in=new BufferedReader[1];
-			in[0]=new BufferedReader(new InputStreamReader(sock.getInputStream(),"iso-8859-1"));
+			in[0]=new BufferedReader(new InputStreamReader(sock.getInputStream(),"iso-8859-1"),65536);
 			out=new DataOutputStream(sock.getOutputStream());
 			Telnet=new TelnetFilter(this);
 			connected=true;
@@ -269,39 +271,53 @@ public class Siplet
 		}
 	}
 
-
 	public boolean isConnectedToURL(){return connected;}
 
 	public void readURLData()
 	{
 		try
 		{
-			while(connected
+			if(connected
 			&&in[0].ready()
 			&&(!sock.isClosed())
 			&&(sock.isConnected()))
 			{
-				try
+				long last=System.currentTimeMillis();
+				while(connected
+				&&(!sock.isClosed())
+				&&(sock.isConnected())
+				&&(System.currentTimeMillis()-last)<250)
 				{
-					Telnet.TelnetRead(buf,rawin,in);
-				}
-				catch(final java.io.InterruptedIOException e)
-				{
-					disconnectFromURL();
-					return;
-				}
-				catch(final Exception e)
-				{
-					if(e instanceof com.jcraft.jzlib.ZStreamException)
+					if(in[0].ready())
 					{
-						disconnectFromURL();
-						try{Thread.sleep(100);}catch(final Exception e2){}
-						connectToURL();
+						try
+						{
+							Telnet.TelnetRead(buf,rawin,in);
+							last=System.currentTimeMillis();
+						}
+						catch(final java.io.InterruptedIOException e)
+						{
+							disconnectFromURL();
+							return;
+						}
+						catch(final Exception e)
+						{
+							if(e instanceof com.jcraft.jzlib.ZStreamException)
+							{
+								disconnectFromURL();
+								CMLib.s_sleep(100);
+								connectToURL();
+							}
+							else
+							{
+								disconnectFromURL();
+								return;
+							}
+						}
 					}
 					else
 					{
-						disconnectFromURL();
-						return;
+						CMLib.s_sleep(1);
 					}
 				}
 			}

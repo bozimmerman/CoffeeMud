@@ -41,40 +41,40 @@ public class StdDeity extends StdMOB implements Deity
 		return "StdDeity";
 	}
 
-	protected int 		xpwrath=100;
-	protected String 	clericReqs="";
-	protected String 	worshipReqs="";
-	protected String 	serviceRitual="";
-	protected String 	clericRitual="";
-	protected String 	clericSin="";
-	protected String 	clericPowerup="";
-	protected String 	worshipRitual="";
-	protected String 	worshipSin="";
-	protected int 		rebukeCheckDown=0;
-	protected boolean 	norecurse=false;
-	protected MOB 		blacklist=null;
-	protected int 		blackmarks=0;
-	protected long 		lastBlackmark=0;
+	protected int		xpwrath			= 100;
+	protected String	clericReqs		= "";
+	protected String	worshipReqs		= "";
+	protected String	serviceRitual	= "";
+	protected String	clericRitual	= "";
+	protected String	clericSin		= "";
+	protected String	clericPowerup	= "";
+	protected String	worshipRitual	= "";
+	protected String	worshipSin		= "";
+	protected int		rebukeCheckDown	= 0;
+	protected boolean	norecurse		= false;
+	protected MOB		blacklist		= null;
+	protected int		blackmarks		= 0;
+	protected long		lastBlackmark	= 0;
 
-	protected List<DeityTrigger> 	worshipTriggers=new Vector<DeityTrigger>();
-	protected List<DeityTrigger> 	worshipCurseTriggers=new Vector<DeityTrigger>();
-	protected List<DeityTrigger> 	clericTriggers=new Vector<DeityTrigger>();
-	protected List<DeityTrigger> 	serviceTriggers=new Vector<DeityTrigger>();
-	protected List<DeityTrigger> 	clericPowerTriggers=new Vector<DeityTrigger>();
-	protected List<DeityTrigger> 	clericCurseTriggers=new Vector<DeityTrigger>();
-	protected List<DeityPower> 	 	blessings=new SVector<DeityPower>();
-	protected List<DeityPower>	 	curses=new SVector<DeityPower>();
-	protected List<Ability> 	 	powers=new SVector<Ability>();
-	protected Map<String,boolean[]> trigBlessingParts=new SHashtable();
-	protected Map<String,Long> 		trigBlessingTimes=new SHashtable();
-	protected Map<String,boolean[]> trigPowerParts=new SHashtable();
-	protected Map<String,Long> 		trigPowerTimes=new SHashtable();
-	protected Map<String,boolean[]> trigCurseParts=new SHashtable();
-	protected Map<String,Long> 		trigCurseTimes=new SHashtable();
-	protected Map<String,boolean[]> trigServiceParts=new SHashtable();
-	protected Map<String,Long> 		trigServiceTimes=new SHashtable();
-	protected List<WorshipService> 	services=new SVector<WorshipService>();
-	protected List<MOB> 			waitingFor=new SLinkedList();
+	protected List<DeityTrigger>	worshipTriggers		= new Vector<DeityTrigger>();
+	protected List<DeityTrigger>	worshipCurseTriggers= new Vector<DeityTrigger>();
+	protected List<DeityTrigger>	clericTriggers		= new Vector<DeityTrigger>();
+	protected List<DeityTrigger>	serviceTriggers		= new Vector<DeityTrigger>();
+	protected List<DeityTrigger>	clericPowerTriggers	= new Vector<DeityTrigger>();
+	protected List<DeityTrigger>	clericCurseTriggers	= new Vector<DeityTrigger>();
+	protected List<DeityPower>		blessings			= new SVector<DeityPower>();
+	protected List<DeityPower>		curses				= new SVector<DeityPower>();
+	protected List<Ability>			powers				= new SVector<Ability>();
+	protected Map<String, boolean[]>trigBlessingParts	= new SHashtable();
+	protected Map<String, Long>		trigBlessingTimes	= new SHashtable();
+	protected Map<String, boolean[]>trigPowerParts		= new SHashtable();
+	protected Map<String, Long>		trigPowerTimes		= new SHashtable();
+	protected Map<String, boolean[]>trigCurseParts		= new SHashtable();
+	protected Map<String, Long>		trigCurseTimes		= new SHashtable();
+	protected Map<String, boolean[]>trigServiceParts	= new SHashtable();
+	protected Map<String, Long>		trigServiceTimes	= new SHashtable();
+	protected List<WorshipService>	services			= new SVector<WorshipService>();
+	protected List<MOB>				waitingFor			= new SLinkedList();
 
 	public StdDeity()
 	{
@@ -1307,7 +1307,12 @@ public class StdDeity extends StdMOB implements Deity
 							}
 						}
 						else
-							if(blacklist==M){ blackmarks=0; blacklist=null; lastBlackmark=0;}
+						if(blacklist==M)
+						{
+							blackmarks=0;
+							blacklist=null;
+							lastBlackmark=0;
+						}
 					}
 					else
 					if(!CMLib.masking().maskCheck(getWorshipRequirements(),M,true))
@@ -1330,10 +1335,20 @@ public class StdDeity extends StdMOB implements Deity
 						}
 					}
 					else
-						if(blacklist==M){ blackmarks=0; blacklist=null; lastBlackmark=0;}
+					if(blacklist==M)
+					{
+						blackmarks=0;
+						blacklist=null;
+						lastBlackmark=0;
+					}
 				}
 				else
-					if(blacklist==M){ blackmarks=0; blacklist=null; lastBlackmark=0;}
+				if(blacklist==M)
+				{
+					blackmarks=0;
+					blacklist=null;
+					lastBlackmark=0;
+				}
 			}
 			final long curTime=System.currentTimeMillis()-60000;
 			Long L=null;

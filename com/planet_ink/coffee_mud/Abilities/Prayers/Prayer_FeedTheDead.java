@@ -36,14 +36,49 @@ import java.util.*;
 
 public class Prayer_FeedTheDead extends Prayer
 {
-	@Override public String ID() { return "Prayer_FeedTheDead"; }
-	private final static String localizedName = CMLib.lang().L("Feed The Dead");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_DEATHLORE;}
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
-	@Override public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_NOORDERING;}
+	@Override
+	public String ID()
+	{
+		return "Prayer_FeedTheDead";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Feed The Dead");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER | Ability.DOMAIN_DEATHLORE;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_OTHERS;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_UNHOLY | Ability.FLAG_NOORDERING;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -99,8 +134,11 @@ public class Prayer_FeedTheDead extends Prayer
 				mob.location().send(mob,msg);
 				CMLib.leveler().postExperience(mob,null,null,-amount,false);
 				if((mob.phyStats().level()>target.phyStats().level())&&(target.isMonster()))
-					amount+=(mob.phyStats().level()-target.phyStats().level())
-						  *(mob.phyStats().level()/10);
+				{
+					int adjLevel = adjustedLevel(mob,asLevel);
+					amount+=(adjustedLevel(mob,asLevel)-target.phyStats().level())
+						  *(adjLevel/3);
+				}
 				CMLib.leveler().postExperience(target,null,null,amount,false);
 				if((CMLib.dice().rollPercentage() < amount)
 				&&(target.isMonster())

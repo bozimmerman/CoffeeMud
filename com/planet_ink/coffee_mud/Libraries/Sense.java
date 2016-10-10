@@ -73,6 +73,14 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	}
 
 	@Override
+	public boolean canSeeHiddenItems(MOB M)
+	{
+		return (M != null) 
+			&& (((M.phyStats().sensesMask() & PhyStats.CAN_SEE_HIDDEN_ITEMS) == PhyStats.CAN_SEE_HIDDEN_ITEMS)
+				||((M.phyStats().sensesMask() & PhyStats.CAN_SEE_HIDDEN) == PhyStats.CAN_SEE_HIDDEN));
+	}
+	
+	@Override
 	public boolean canSeeInvisible(MOB M)
 	{
 		return (M != null) && ((M.phyStats().sensesMask() & PhyStats.CAN_SEE_INVISIBLE) == PhyStats.CAN_SEE_INVISIBLE);
@@ -244,6 +252,33 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 				&& ((((Physical) E).basePhyStats().disposition() & PhyStats.IS_CATALOGED) == PhyStats.IS_CATALOGED);
 	}
 
+	private Room roomLocation(Environmental E)
+	{
+		if(E==null)
+			return null;
+		if((E instanceof Area)&&(!((Area)E).isProperlyEmpty()))
+			return ((Area)E).getRandomProperRoom();
+		else
+		if(E instanceof Room)
+			return (Room)E;
+		else
+		if(E instanceof MOB)
+			return ((MOB)E).location();
+		else
+		if((E instanceof Item)&&(((Item)E).owner() instanceof Room))
+			return (Room)((Item)E).owner();
+		else
+		if((E instanceof Item)&&(((Item)E).owner() instanceof MOB))
+		   return ((MOB)((Item)E).owner()).location();
+		else
+		if(E instanceof Ability)
+			return roomLocation(((Ability)E).affecting());
+		else
+		if(E instanceof Exit)
+			return roomLocation(((Exit)E).lastRoomUsedFrom(null));
+		return null;
+	}
+	
 	@Override
 	public boolean isWithSeenContents(Physical P)
 	{
@@ -835,6 +870,17 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	}
 
 	@Override
+	public int getFallingDirection(Physical P)
+	{
+		if(!isFalling(P))
+			return -1;
+		Ability A=P.fetchEffect("Falling");
+		if((A!=null) && (CMath.s_bool(A.getStat("REVERSED"))))
+			return Directions.UP;
+		return Directions.DOWN;
+	}
+	
+	@Override
 	public boolean isRunningLongCommand(MOB M)
 	{
 		return (M != null) 
@@ -847,7 +893,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	{
 		if(!isSwimming(P))
 			return false;
-		return isWateryRoom(CMLib.map().roomLocation(P));
+		return isWateryRoom(roomLocation(P));
 	}
 	
 	@Override
@@ -1093,7 +1139,15 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 
 		if((isHidden(seenP))&&(!(seenP instanceof Room)))
 		{
-			if((!canSeeHidden(seer))||(seer==null))
+			if(seer == null)
+				return false;
+			if(seenP instanceof Item)
+			{
+				if(!canSeeHiddenItems(seer))
+					return false;
+			}
+			else
+			if(!canSeeHidden(seer))
 				return false;
 			//if(this.getHideScore(seenP)>getDetectScore(seer))
 			//    return false;
@@ -1109,12 +1163,16 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 				if(canSeeInDark(seer))
 					return true;
 				if((!isGolem(seenP))&&(canSeeInfrared(seer))&&(seenP instanceof MOB))
-				   return true;
+					return true;
 				if((canSeeVictims(seer))&&(seer.getVictim()==seenP))
 					return true;
-				if((R.getArea().getClimateObj().canSeeTheMoon(R,null))
-				&&(R.getArea().getTimeObj().getMoonPhase(R)==TimeClock.MoonPhase.FULL))
-					return true;
+				final Area area=R.getArea();
+				if(area != null)
+				{
+					if((area.getClimateObj().canSeeTheMoon(R,null))
+					&&(area.getTimeObj().getMoonPhase(R)==TimeClock.MoonPhase.FULL))
+						return true;
+				}
 				return false;
 			}
 			return true;
@@ -1260,7 +1318,9 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			return true;
 		if((P instanceof Rider)&&(((Rider)P).riding()!=null))
 			return isWaterWorthy(((Rider)P).riding());
-		if((P instanceof Rideable)&&(((Rideable)P).rideBasis()==Rideable.RIDEABLE_WATER))
+		if((P instanceof Rideable)
+		&&(((Rideable)P).rideBasis()==Rideable.RIDEABLE_WATER)
+		&&(P instanceof MOB))
 			return true;
 		if(P instanceof Item)
 		{
@@ -1290,6 +1350,8 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			if(totalWeight<=0)
 				return true;
 
+			if(isFalling(P))
+				return false;
 			return (totalFloatilla/totalWeight)<=1000;
 		}
 		return false;
@@ -1326,6 +1388,8 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	{
 		if(P!=null)
 		{
+			if((P instanceof BoardableShip)&&(!((BoardableShip)P).amDestroyed()))
+				return true;
 			for(final Enumeration<Behavior> e=P.behaviors();e.hasMoreElements();)
 			{
 				final Behavior B=e.nextElement();
@@ -1600,8 +1664,10 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	@Override
 	public boolean isDeepWaterySurfaceRoom(Room R)
 	{
-		if(!isWaterySurfaceRoom(R))
+		
+		if((R==null)||(!isWaterySurfaceRoom(R)))
 			return false;
+		R.giveASky(0);
 		return isUnderWateryRoom(R.getRoomInDir(Directions.DOWN));
 	}
 
@@ -1924,7 +1990,9 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 					say.append(" (^yinvisible^?)");
 				if((isSneaking(seen))&&(canSeeSneakers(seer))&&(!pStats.isAmbiance("-SNEAKING")))
 					say.append(" (^ysneaking^?)");
-				if((isHidden(seen))&&(canSeeHidden(seer))&&(!pStats.isAmbiance("-HIDDEN")))
+				if((isHidden(seen))
+				&&(canSeeHidden(seer)||((seen instanceof Item)&&(canSeeHiddenItems(seer))))
+				&&(!pStats.isAmbiance("-HIDDEN")))
 					say.append(" (^yhidden^?)");
 				if((!isGolem(seen))&&(canSeeInfrared(seer))&&(seen instanceof MOB)&&(isInDark(seer.location()))&&(!pStats.isAmbiance("-HEAT")))
 					say.append(" (^rheat aura^?)");
@@ -1964,12 +2032,28 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 				say.append(" (^Wbound^?)");
 			if(isFlying(seen)&&(!(seen instanceof Exit))&&(!pStats.isAmbiance("-FLYING")))
 				say.append(" (^pflying^?)");
-			if((isFalling(seen))&&(!pStats.isAmbiance("-FALLING"))
-			&&((!(seen instanceof MOB))
-				||(((MOB)seen).location()==null)
-				||((((MOB)seen).location().domainType()!=Room.DOMAIN_OUTDOORS_AIR)
-					&&(((MOB)seen).location().domainType()!=Room.DOMAIN_INDOORS_AIR))))
-				say.append(" (^pfalling^?)");
+			if((isFalling(seen))&&(!pStats.isAmbiance("-FALLING")))
+			{
+				final Room R=roomLocation(seen);
+				switch(R.domainType())
+				{
+				case Room.DOMAIN_INDOORS_AIR:
+				case Room.DOMAIN_OUTDOORS_AIR:
+					say.append(" (^pfalling^?)");
+					break;
+				case Room.DOMAIN_INDOORS_WATERSURFACE:
+				case Room.DOMAIN_OUTDOORS_WATERSURFACE:
+				case Room.DOMAIN_INDOORS_UNDERWATER:
+				case Room.DOMAIN_OUTDOORS_UNDERWATER:
+				case Room.DOMAIN_OUTDOORS_SEAPORT:
+					say.append(" (^psinking^?)");
+					break;
+				default:
+					if(!(seen instanceof MOB))
+						say.append(" (^pfalling^?)");
+					break;
+				}
+			}
 			if(say.length()>1)
 			{
 				say.append(" ");
@@ -1979,12 +2063,79 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		return "";
 	}
 
+	protected boolean isAlcoholEffect(Ability A)
+	{
+		if(A!=null)
+		{
+			if(CMath.bset(A.flags(),Ability.FLAG_INTOXICATING))
+				return true;
+			if(A instanceof AbilityContainer)
+			{
+				for(Enumeration<Ability> a2=((AbilityContainer)A).allAbilities();a2.hasMoreElements();)
+				{
+					final Ability A2=a2.nextElement();
+					if((A2!=null)&&(CMath.bset(A2.flags(),Ability.FLAG_INTOXICATING)))
+						return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	@Override
+	public boolean isAlcoholic(Physical thang)
+	{
+		if(thang==null)
+			return false;
+		if(thang instanceof Item)
+		{
+			if(((Item)thang).material()==RawMaterial.RESOURCE_LIQUOR)
+				return true;
+		}
+		if(thang instanceof Drink)
+		{
+			if(((Drink)thang).liquidType()==RawMaterial.RESOURCE_LIQUOR)
+				return true;
+			if(thang instanceof Container)
+			{
+				for(Item I : ((Container)thang).getContents())
+				{
+					if((I!=thang) && isAlcoholic(I))
+						return true;
+				}
+			}
+			if(thang instanceof SpellHolder)
+			{
+				for(Ability A : ((SpellHolder)thang).getSpells())
+				{
+					if(isAlcoholEffect(A))
+						return true;
+				}
+			}
+		}
+		for(int a=0;a<thang.numEffects();a++) // personal
+		{
+			final Ability A=thang.fetchEffect(a);
+			if(this.isAlcoholEffect(A))
+				return true;
+		}
+		return false;
+	}
+	
 	@Override
 	public String getPresentDispositionVerb(Physical seen, ComingOrGoing flag_msgType)
 	{
 		String type=null;
 		if(isFalling(seen))
-			type="falls";
+		{
+			if((seen instanceof BoardableShip)
+			&&(seen instanceof Item)
+			&&(((Item)seen).owner() instanceof Room)
+			&&(this.isWateryRoom((Room)((Item)seen).owner())))
+				type="sinks";
+			else
+				type="falls";
+		}
 		else
 		if(isSleeping(seen))
 		{
@@ -2104,6 +2255,9 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			str.append(L("detect good, "));
 		if(canSeeHidden(mob))
 			str.append("see hidden, ");
+		else
+		if(canSeeHiddenItems(mob))
+			str.append("see hidden items, ");
 		if(canSeeInDark(mob))
 			str.append(L("darkvision, "));
 		if(canSeeInfrared(mob))

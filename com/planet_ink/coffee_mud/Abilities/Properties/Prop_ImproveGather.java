@@ -11,7 +11,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary;
-import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZapperMask;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZMask;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -53,9 +53,9 @@ public class Prop_ImproveGather extends Property
 		return Ability.CAN_MOBS | Ability.CAN_ITEMS | Ability.CAN_AREAS | Ability.CAN_ROOMS;
 	}
 
-	protected CompiledZapperMask	mask		= null;
-	protected String[]				improves	= new String[] { "ALL" };
-	protected int					improvement	= 2;
+	protected CompiledZMask	mask		= null;
+	protected String[]		improves	= new String[] { "ALL" };
+	protected int			improvement	= 2;
 
 	@Override
 	public String accountForYourself()
@@ -75,15 +75,19 @@ public class Prop_ImproveGather extends Property
 			mask=CMLib.masking().maskCompile(maskStr);
 		final String skillStr=CMParms.getParmStr(newText, "SKILLS", "ALL");
 		final List<String> skills=CMParms.parseCommas(skillStr.toUpperCase().trim(), true);
-		improves=skills.toArray(new String[0]);
+		improves=skills.toArray(new String[skills.size()]);
 	}
 
+	
 	@Override
-	public void executeMsg(final Environmental myHost, final CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if((msg.tool() instanceof Ability)
+		if(!super.okMessage(myHost, msg))
+			return false;
+		if((msg.sourceMinor()==CMMsg.TYP_ITEMSGENERATED)
+		&&(msg.tool() instanceof Ability)
 		&&(CMath.bset(((Ability)msg.tool()).classificationCode(),Ability.DOMAIN_GATHERINGSKILL)
-		&&(improvement != ((Ability)msg.tool()).abilityCode())
+		&&(improvement > 1)
 		&&(msg.source().location()!=null)
 		&&(msg.source()==affected)||(msg.source().location()==affected)||(msg.source().location().getArea()==affected)
 			||((affected instanceof Item)&&(((Item)affected).owner()==msg.source())&&(!((Item)affected).amWearingAt(Wearable.IN_INVENTORY))))
@@ -91,8 +95,8 @@ public class Prop_ImproveGather extends Property
 		&&(CMParms.contains(improves, "ALL")||CMParms.contains(improves, msg.tool().ID().toUpperCase()))
 		&&((mask==null)||(CMLib.masking().maskCheck(mask, msg.source(), true))))
 		{
-			((Ability)msg.tool()).setAbilityCode(improvement);
+			msg.setValue(msg.value() + (msg.value()*(improvement - 1)));
 		}
-		super.executeMsg(myHost, msg);
+		return true;
 	}
 }

@@ -133,7 +133,7 @@ public class Chant_FindDriftwood extends Chant_FindPlant
 	protected boolean findWhatImLookingFor(MOB mob, String s)
 	{
 		TrackingLibrary.TrackingFlags flags = getTrackingFlags();
-		int limit = 50 - (super.getXLEVELLevel(mob));
+		int limit = 50 - (super.getXLEVELLevel(mob) + super.getXMAXRANGELevel(mob));
 		final List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,limit);
 		if((checkSet == null) || (checkSet.size() < limit))
 		{
@@ -195,7 +195,7 @@ public class Chant_FindDriftwood extends Chant_FindPlant
 		List<Room> rooms=new XVector<Room>(theDriftroom);
 		int limit = 50 - (super.getXLEVELLevel(mob));
 		if(rooms.size()>0)
-			theTrail=CMLib.tracking().findBastardTheBestWay(mobRoom,rooms,flags,limit);
+			theTrail=CMLib.tracking().findTrailToAnyRoom(mobRoom,rooms,flags,limit);
 		return theTrail;
 	}
 	

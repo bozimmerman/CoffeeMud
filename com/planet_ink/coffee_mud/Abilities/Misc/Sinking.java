@@ -101,6 +101,23 @@ public class Sinking extends StdAbility
 	}
 
 	@Override
+	public void setMiscText(String newMiscText)
+	{
+		super.setMiscText(newMiscText);
+		if((newMiscText!=null) && (newMiscText.length()>0))
+		{
+			for(final String parm : CMParms.parse(newMiscText.toUpperCase()))
+			{
+				if(parm.equals("REVERSED"))
+					this.setProficiency(100);
+				else
+				if(parm.equals("NORMAL"))
+					this.setProficiency(0);
+			}
+		}
+	}
+	
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
@@ -211,7 +228,7 @@ public class Sinking extends StdAbility
 
 			if((room==null)
 			||((room!=null)&&(!room.isContent(item)))
-			||(!CMLib.flags().isGettable(item)))
+			||((!CMLib.flags().isGettable(item)&&(!(item instanceof BoardableShip)))))
 			{
 				unInvoke();
 				return false;
@@ -236,11 +253,31 @@ public class Sinking extends StdAbility
 			final Room nextRoom=room.getRoomInDir(direction);
 			if((nextRoom!=null)&&(canSinkFrom(room,direction)))
 			{
-				room.show(invoker,null,item,CMMsg.MSG_OK_ACTION,L("<O-NAME> sinks @x1.",addStr));
-				nextRoom.moveItemTo(item,ItemPossessor.Expire.Player_Drop);
-				room=nextRoom;
-				nextRoom.show(invoker,null,item,CMMsg.MSG_OK_ACTION,L("<O-NAME> sinks in from @x1.",(reversed()?L("below"):L("above"))));
-				return true;
+				final MOB mob;
+				if((item instanceof Rideable)&&(item instanceof BoardableShip))
+				{
+					mob = CMClass.getFactoryMOB(item.name(),item.phyStats().level(),room);
+					mob.setRiding((Rideable)item);
+				}
+				else
+					mob = invoker;
+				try
+				{
+					room.show(mob,null,item,CMMsg.MSG_OK_ACTION,L("<O-NAME> sinks @x1.",addStr));
+					nextRoom.moveItemTo(item,ItemPossessor.Expire.Player_Drop);
+					room=nextRoom;
+					nextRoom.show(mob,null,item,CMMsg.MSG_OK_ACTION,L("<O-NAME> sinks in from @x1.",(reversed()?L("below"):L("above"))));
+					return true;
+				}
+				finally
+				{
+					if((mob != invoker)
+					&&(mob.isMonster())
+					&&(mob.Name().equals(item.name())))
+						mob.destroy();
+				}
+				
+				
 			}
 			if(reversed())
 				return true;
@@ -283,7 +320,7 @@ public class Sinking extends StdAbility
 		if(target.fetchEffect("Sinking")==null)
 		{
 			final Sinking F=new Sinking();
-			F.setProficiency(proficiency());
+			F.setMiscText(this.reversed()?"REVERSED":"NORMAL");
 			F.invoker=null;
 			if(target instanceof MOB)
 				F.invoker=(MOB)target;
@@ -297,5 +334,33 @@ public class Sinking extends StdAbility
 			target.recoverPhyStats();
 		}
 		return true;
+	}
+	
+	@Override
+	public void setStat(String code, String val)
+	{
+		if(code==null)
+			return;
+		if(code.equalsIgnoreCase("REVERSED"))
+			this.setProficiency(CMath.s_bool(val)?100:0);
+		else
+		if(code.equalsIgnoreCase("NORMAL"))
+			this.setProficiency(CMath.s_bool(val)?0:100);
+		else
+			super.setStat(code, val);
+	}
+	
+	@Override
+	public String getStat(String code)
+	{
+		if(code==null)
+			return "";
+		if(code.equalsIgnoreCase("REVERSED"))
+			return ""+(this.proficiency()==100);
+		else
+		if(code.equalsIgnoreCase("NORMAL"))
+			return ""+(this.proficiency()==0);
+		else
+			return super.getStat(code);
 	}
 }

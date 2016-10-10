@@ -39,16 +39,17 @@ import java.net.URLEncoder;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class GrinderFlatMap
 {
-	protected List<GrinderRoom> areaMap=null;
-	protected Map<String,GrinderRoom> hashRooms=null;
-	private GrinderRoom[][] grid=null;
-	protected int Xbound=0;
-	protected int Ybound=0;
-	protected int Ystart=0;
-	protected int Xstart=0;
-	protected Area area=null;
-	protected boolean debug = false;
-	protected int[] boundsXYXY=null;
+	protected List<GrinderRoom>			areaMap		= null;
+	protected Map<String, GrinderRoom>	hashRooms	= null;
+	private GrinderRoom[][]				grid		= null;
+	
+	protected int		Xbound		= 0;
+	protected int		Ybound		= 0;
+	protected int		Ystart		= 0;
+	protected int		Xstart		= 0;
+	protected Area		area		= null;
+	protected boolean	debug		= false;
+	protected int[]		boundsXYXY	= null;
 
 	public GrinderFlatMap()
 	{
@@ -248,8 +249,10 @@ public class GrinderFlatMap
 		}
 		// find leftover rooms and make them their own cluster
 		for(int a=0;a<areaMap.size();a++)
+		{
 			if(!roomsDone.contains(areaMap.get(a).roomID))
 				finalCluster.add(areaMap.get(a));
+		}
 		if(finalCluster.size()>0)
 		{
 			final boolean[][] miniGrid=new boolean[finalCluster.size()+1][finalCluster.size()+1];
@@ -262,10 +265,14 @@ public class GrinderFlatMap
 			{
 				int[] bestCoords=new int[]{miniGrid.length-1,miniGrid.length-1};
 				for(int x=0;x<miniGrid.length;x++)
+				{
 					for(int y=0;y<miniGrid[x].length;y++)
+					{
 						if((!miniGrid[x][y])
 						&&(getDistanceFrom(bestCoords,midXY)>getDistanceFrom(new int[]{x,y},midXY)))
 							bestCoords=new int[]{x,y};
+					}
+				}
 				miniGrid[bestCoords[0]][bestCoords[1]]=true;
 				finalCluster.get(f).xy=bestCoords.clone();
 			}
@@ -310,8 +317,10 @@ public class GrinderFlatMap
 		}
 		// find leftover rooms and make them their own cluster
 		for(int a=0;a<areaMap.size();a++)
+		{
 			if(!roomsDone.contains(areaMap.get(a).roomID))
 				finalCluster.add(areaMap.get(a));
+		}
 		if(finalCluster.size()>0)
 		{
 			final boolean[][] miniGrid=new boolean[finalCluster.size()+1][finalCluster.size()+1];
@@ -324,10 +333,14 @@ public class GrinderFlatMap
 			{
 				int[] bestCoords=new int[]{miniGrid.length-1,miniGrid.length-1};
 				for(int x=0;x<miniGrid.length;x++)
+				{
 					for(int y=0;y<miniGrid[x].length;y++)
+					{
 						if((!miniGrid[x][y])
 						&&(getDistanceFrom(bestCoords,midXY)>getDistanceFrom(new int[]{x,y},midXY)))
 							bestCoords=new int[]{x,y};
+					}
+				}
 				miniGrid[bestCoords[0]][bestCoords[1]]=true;
 				finalCluster.get(f).xy=bestCoords.clone();
 			}
@@ -446,6 +459,7 @@ public class GrinderFlatMap
 			{
 				set=element[y];
 				if(set!=null)
+				{
 					for(int r=0;r<set.size();r++)
 					{
 						R=set.get(r);
@@ -453,6 +467,7 @@ public class GrinderFlatMap
 						if(R.xy[1]>nextBottomMostY)
 							nextBottomMostY=R.xy[1];
 					}
+				}
 			}
 			bottomMostY=nextBottomMostY+2;
 		}
@@ -472,15 +487,17 @@ public class GrinderFlatMap
 	public GrinderRoom getRoom(String ID)
 	{
 		if((hashRooms!=null)&&(hashRooms.containsKey(ID)))
-		   return hashRooms.get(ID);
+			return hashRooms.get(ID);
 
 		if(areaMap!=null)
+		{
 			for(int r=0;r<areaMap.size();r++)
 			{
 				final GrinderRoom room=areaMap.get(r);
 				if(room.roomID.equalsIgnoreCase(ID))
 					return room;
 			}
+		}
 		return null;
 	}
 
@@ -515,6 +532,7 @@ public class GrinderFlatMap
 			{
 				final GrinderRoom R=V.get(s);
 				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+				{
 					if((R.doors[d]!=null)
 					&&(R.doors[d].room!=null)
 					&&(R.doors[d].room.length()>0)
@@ -534,16 +552,36 @@ public class GrinderFlatMap
 								R3=V.get(v);
 								switch(d)
 								{
-								case Directions.NORTH: adjust=(R3.xy[1]<=R2.xy[1]); break;
-								case Directions.SOUTH: adjust=(R3.xy[1]>=R2.xy[1]); break;
-								case Directions.EAST: adjust=(R3.xy[0]>=R2.xy[0]); break;
-								case Directions.WEST: adjust=(R3.xy[0]<=R2.xy[0]); break;
-								case Directions.NORTHEAST: adjust=(R3.xy[1]<=R2.xy[1])||(R3.xy[0]>=R2.xy[0]); break;
-								case Directions.NORTHWEST: adjust=(R3.xy[1]<=R2.xy[1])||(R3.xy[0]<=R2.xy[0]); break;
-								case Directions.SOUTHEAST: adjust=(R3.xy[1]<=R2.xy[1]); break;
-								case Directions.SOUTHWEST: adjust=(R3.xy[1]<=R2.xy[1]); break;
-								case Directions.UP: adjust=(R3.xy[1]<=R2.xy[1]); break;
-								case Directions.DOWN: adjust=(R3.xy[1]>=R2.xy[1]); break;
+								case Directions.NORTH:
+									adjust = (R3.xy[1] <= R2.xy[1]);
+									break;
+								case Directions.SOUTH:
+									adjust = (R3.xy[1] >= R2.xy[1]);
+									break;
+								case Directions.EAST:
+									adjust = (R3.xy[0] >= R2.xy[0]);
+									break;
+								case Directions.WEST:
+									adjust = (R3.xy[0] <= R2.xy[0]);
+									break;
+								case Directions.NORTHEAST:
+									adjust = (R3.xy[1] <= R2.xy[1]) || (R3.xy[0] >= R2.xy[0]);
+									break;
+								case Directions.NORTHWEST:
+									adjust = (R3.xy[1] <= R2.xy[1]) || (R3.xy[0] <= R2.xy[0]);
+									break;
+								case Directions.SOUTHEAST:
+									adjust = (R3.xy[1] <= R2.xy[1]);
+									break;
+								case Directions.SOUTHWEST:
+									adjust = (R3.xy[1] <= R2.xy[1]);
+									break;
+								case Directions.UP:
+									adjust = (R3.xy[1] <= R2.xy[1]);
+									break;
+								case Directions.DOWN:
+									adjust = (R3.xy[1] >= R2.xy[1]);
+									break;
 								}
 								if(adjust)
 								{
@@ -557,6 +595,7 @@ public class GrinderFlatMap
 						coordsDone.add(R2.xy[0]+"/"+R2.xy[1]);
 						V.add(R2);
 					}
+				}
 			}
 		}
 		return V;
@@ -588,31 +627,31 @@ public class GrinderFlatMap
 			{
 				final GrinderRoom R=V.elementAt(s);
 				xy=xys.get(R.roomID);
-		 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
-		 		{
-		 			if((d!=Directions.UP)
-		 			&&(d!=Directions.DOWN)
-		 			&&(R.doors[d]!=null)
-		 			&&(R.doors[d].room!=null)
-				 	&&(R.doors[d].room.length()>0)
-		 			&&(!myRoomsDone.contains(R.doors[d].room))
-		 			&&(!roomsDone.contains(R.doors[d].room)))
-		 			{
-		 				final GrinderRoom R2=H.get(R.doors[d].room);
-		 				if(R2==null)
-		 					continue;
-		 				final int[] xy2=newXY(xy,d);
-		 				xys.put(R2.roomID,xy2);
-		 				if(!coordsDone.contains(xy2[0]+"/"+xy2[1]))
-		 				{
-		 					if(finalPosition)
-		 						R2.xy=xy2;
-			 				myRoomsDone.add(R2.roomID);
-			 				coordsDone.add(xy2[0]+"/"+xy2[1]);
-			 				V.addElement(R2);
-		 				}
-		 			}
-		 		}
+				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+				{
+					if((d!=Directions.UP)
+					&&(d!=Directions.DOWN)
+					&&(R.doors[d]!=null)
+					&&(R.doors[d].room!=null)
+					&&(R.doors[d].room.length()>0)
+					&&(!myRoomsDone.contains(R.doors[d].room))
+					&&(!roomsDone.contains(R.doors[d].room)))
+					{
+						final GrinderRoom R2=H.get(R.doors[d].room);
+						if(R2==null)
+							continue;
+						final int[] xy2=newXY(xy,d);
+						xys.put(R2.roomID,xy2);
+						if(!coordsDone.contains(xy2[0]+"/"+xy2[1]))
+						{
+							if(finalPosition)
+								R2.xy=xy2;
+							myRoomsDone.add(R2.roomID);
+							coordsDone.add(xy2[0]+"/"+xy2[1]);
+							V.addElement(R2);
+						}
+					}
+				}
 			}
 		}
 		return V;
@@ -834,10 +873,10 @@ public class GrinderFlatMap
 		||(room.doors==null)
 		||(d>=room.doors.length)) return "";
 		final GrinderDir dir=room.doors[d];
-		String dirLetter=""+Directions.getDirectionChar(d);
+		String dirLetter=""+CMLib.directions().getDirectionChar(d);
 		GrinderRoom roomPointer=null;
 		if((dir==null)||(dir.room.length()==0))
-			return "<a href=\"javascript:EC('"+Directions.getDirectionName(d)+"','"+room.roomID+"');\"><IMG BORDER=0 SRC=\"images/E"+dirLetter+".gif\"></a>";
+			return "<a href=\"javascript:EC('"+CMLib.directions().getDirectionName(d)+"','"+room.roomID+"');\"><IMG BORDER=0 SRC=\"images/E"+dirLetter+".gif\"></a>";
 		else
 		if((d==Directions.UP)||(d==Directions.DOWN))
 		{
@@ -848,7 +887,7 @@ public class GrinderFlatMap
 		else
 			roomPointer=getRoomInDir(room,d);
 
-		final String dirName=Directions.getDirectionName(d);
+		final String dirName=CMLib.directions().getDirectionName(d);
 		if((dir.room.length()>0)&&((roomPointer==null)||(!roomPointer.roomID.equals(dir.room))))
 			dirLetter+="R";
 		final String theRest=".gif\" BORDER=0 ALT=\""+dirName+" to "+dir.room+"\"></a>";
@@ -868,28 +907,40 @@ public class GrinderFlatMap
 		xy=xy.clone();
 		switch(dir)
 		{
-			case Directions.NORTH:
-				xy[1]--; break;
-			case Directions.SOUTH:
-				xy[1]++; break;
-			case Directions.EAST:
-				xy[0]++; break;
-			case Directions.WEST:
-				xy[0]--; break;
-			case Directions.NORTHEAST:
-				xy[1]--; xy[0]++; break;
-			case Directions.NORTHWEST:
-				xy[1]--; xy[0]--;break;
-			case Directions.SOUTHEAST:
-				xy[1]++; xy[0]++; break;
-			case Directions.SOUTHWEST:
-				xy[1]++; xy[0]--; break;
-			case Directions.UP:
-				xy[1]--;
-				break;
-			case Directions.DOWN:
-				xy[1]++;
-				break;
+		case Directions.NORTH:
+			xy[1]--;
+			break;
+		case Directions.SOUTH:
+			xy[1]++;
+			break;
+		case Directions.EAST:
+			xy[0]++;
+			break;
+		case Directions.WEST:
+			xy[0]--;
+			break;
+		case Directions.NORTHEAST:
+			xy[1]--;
+			xy[0]++;
+			break;
+		case Directions.NORTHWEST:
+			xy[1]--;
+			xy[0]--;
+			break;
+		case Directions.SOUTHEAST:
+			xy[1]++;
+			xy[0]++;
+			break;
+		case Directions.SOUTHWEST:
+			xy[1]++;
+			xy[0]--;
+			break;
+		case Directions.UP:
+			xy[1]--;
+			break;
+		case Directions.DOWN:
+			xy[1]++;
+			break;
 		}
 		return xy;
 	}
@@ -918,8 +969,8 @@ public class GrinderFlatMap
 				final String tdins=(boundsXYXY!=null)?" ID=X"+(x+boundsXYXY[0])+"_"+(y+boundsXYXY[1]):"";
 				if (GR == null)
 					buf.append("<TD"+tdins+"></TD>");
-				  else
-				  {
+				else
+				{
 					buf.append("<TD"+tdins+" ");
 					if(!GR.isRoomGood())
 						buf.append("BGCOLOR=BLACK");

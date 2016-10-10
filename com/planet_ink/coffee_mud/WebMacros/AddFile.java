@@ -40,7 +40,11 @@ import java.util.*;
 */
 public class AddFile extends StdWebMacro
 {
-	@Override public String name() { return "AddFile"; }
+	@Override
+	public String name()
+	{
+		return "AddFile";
+	}
 
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)

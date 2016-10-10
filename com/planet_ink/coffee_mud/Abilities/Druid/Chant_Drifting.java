@@ -94,7 +94,7 @@ public class Chant_Drifting extends Chant
 		{
 			final Ability A=CMClass.getAbility("Falling");
 			A.setAffectedOne(null);
-			A.setProficiency(100);
+			A.setMiscText("REVERSED");
 			A.invoke(null,null,affected,true,0);
 			affected.recoverPhyStats();
 		}

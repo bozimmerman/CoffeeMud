@@ -102,7 +102,9 @@ public class GenPerfume extends StdPerfume
 		recoverPhyStats();
 	}
 
-	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES","RESETTIME","QUENCHED","LIQUIDHELD","LIQUIDTYPE","SMELLLST","DEFCLOSED","DEFLOCKED"};
+	private final static String[] MYCODES= {"HASLOCK","HASLID","CAPACITY","CONTAINTYPES","RESETTIME","QUENCHED",
+											"LIQUIDHELD","LIQUIDTYPE","SMELLLST","DEFCLOSED","DEFLOCKED"};
+	
 	@Override
 	public String getStat(String code)
 	{
@@ -110,17 +112,28 @@ public class GenPerfume extends StdPerfume
 			return CMLib.coffeeMaker().getGenItemStat(this,code);
 		switch(getCodeNum(code))
 		{
-		case 0: return ""+hasALock();
-		case 1: return ""+hasADoor();
-		case 2: return ""+capacity();
-		case 3: return ""+containTypes();
-		case 4: return ""+openDelayTicks();
-		case 5: return ""+thirstQuenched();
-		case 6: return ""+liquidHeld();
-		case 7: return ""+liquidType();
-		case 8: return ""+getSmellList();
-		case 9: return ""+defaultsClosed();
-		case 10: return ""+defaultsLocked();
+		case 0:
+			return "" + hasALock();
+		case 1:
+			return "" + hasADoor();
+		case 2:
+			return "" + capacity();
+		case 3:
+			return "" + containTypes();
+		case 4:
+			return "" + openDelayTicks();
+		case 5:
+			return "" + thirstQuenched();
+		case 6:
+			return "" + liquidHeld();
+		case 7:
+			return "" + liquidType();
+		case 8:
+			return "" + getSmellList();
+		case 9:
+			return "" + defaultsClosed();
+		case 10:
+			return "" + defaultsLocked();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -134,22 +147,43 @@ public class GenPerfume extends StdPerfume
 		else
 		switch(getCodeNum(code))
 		{
-		case 0: setDoorsNLocks(hasADoor(),isOpen(),defaultsClosed(),CMath.s_bool(val),false,CMath.s_bool(val)&&defaultsLocked()); break;
-		case 1: setDoorsNLocks(CMath.s_bool(val),isOpen(),CMath.s_bool(val)&&defaultsClosed(),hasALock(),isLocked(),defaultsLocked()); break;
-		case 2: setCapacity(CMath.s_parseIntExpression(val)); break;
-		case 3: setContainTypes(CMath.s_parseBitLongExpression(Container.CONTAIN_DESCS,val)); break;
-		case 4: setOpenDelayTicks(CMath.s_parseIntExpression(val)); break;
-		case 5: setThirstQuenched(CMath.s_parseIntExpression(val)); break;
-		case 6: setLiquidHeld(CMath.s_parseIntExpression(val)); break;
-		case 7:{
-				int x=CMath.s_parseListIntExpression(RawMaterial.CODES.NAMES(), val);
-				x=((x>=0)&&(x<RawMaterial.RESOURCE_MASK))?RawMaterial.CODES.GET(x):x;
-				setLiquidType(x);
-				break;
-			   }
-		case 8: setSmellList(val); break;
-		case 9: setDoorsNLocks(hasADoor(),isOpen(),CMath.s_bool(val),hasALock(),isLocked(),defaultsLocked()); break;
-		case 10: setDoorsNLocks(hasADoor(),isOpen(),defaultsClosed(),hasALock(),isLocked(),CMath.s_bool(val)); break;
+		case 0:
+			setDoorsNLocks(hasADoor(), isOpen(), defaultsClosed(), CMath.s_bool(val), false, CMath.s_bool(val) && defaultsLocked());
+			break;
+		case 1:
+			setDoorsNLocks(CMath.s_bool(val), isOpen(), CMath.s_bool(val) && defaultsClosed(), hasALock(), isLocked(), defaultsLocked());
+			break;
+		case 2:
+			setCapacity(CMath.s_parseIntExpression(val));
+			break;
+		case 3:
+			setContainTypes(CMath.s_parseBitLongExpression(Container.CONTAIN_DESCS, val));
+			break;
+		case 4:
+			setOpenDelayTicks(CMath.s_parseIntExpression(val));
+			break;
+		case 5:
+			setThirstQuenched(CMath.s_parseIntExpression(val));
+			break;
+		case 6:
+			setLiquidHeld(CMath.s_parseIntExpression(val));
+			break;
+		case 7:
+		{
+			int x = CMath.s_parseListIntExpression(RawMaterial.CODES.NAMES(), val);
+			x = ((x >= 0) && (x < RawMaterial.RESOURCE_MASK)) ? RawMaterial.CODES.GET(x) : x;
+			setLiquidType(x);
+			break;
+		}
+		case 8:
+			setSmellList(val);
+			break;
+		case 9:
+			setDoorsNLocks(hasADoor(), isOpen(), CMath.s_bool(val), hasALock(), isLocked(), defaultsLocked());
+			break;
+		case 10:
+			setDoorsNLocks(hasADoor(), isOpen(), defaultsClosed(), hasALock(), isLocked(), CMath.s_bool(val));
+			break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;
@@ -168,6 +202,7 @@ public class GenPerfume extends StdPerfume
 	}
 
 	private static String[] codes=null;
+
 	@Override
 	public String[] getStatCodes()
 	{

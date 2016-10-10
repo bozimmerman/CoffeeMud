@@ -54,7 +54,7 @@ public class Link extends At
 		}
 		final String dirStr=commands.get(commands.size()-1);
 		commands.remove(commands.size()-1);
-		final int direction=Directions.getGoodDirectionCode(dirStr);
+		final int direction=CMLib.directions().getGoodDirectionCode(dirStr);
 		if(direction<0)
 		{
 			mob.tell(L("You have failed to specify a direction.  Try @x1.\n\r",Directions.LETTERS()));

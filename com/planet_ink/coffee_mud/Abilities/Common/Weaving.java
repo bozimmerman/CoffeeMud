@@ -37,33 +37,57 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, MendingSkill
 {
-	@Override public String ID() { return "Weaving"; }
-	private final static String localizedName = CMLib.lang().L("Weaving");
-	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =I(new String[] {"WEAVING","WEAVE"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public String supportedResourceString(){return "WHEAT|VINE|SEAWEED|HEMP|SILK|COTTON|FLOWERS|BAMBOO";}
 	@Override
-	public String parametersFormat(){ return
+	public String ID()
+	{
+		return "Weaving";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Weaving");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "WEAVING", "WEAVE" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public String supportedResourceString()
+	{
+		return "WHEAT|VINE|SEAWEED|HEMP|SILK|COTTON|FLOWERS|BAMBOO";
+	}
+
+	@Override
+	public String parametersFormat()
+	{
+		return
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\t"
 		+"ITEM_CLASS_ID\tWEAPON_CLASS||CODED_WEAR_LOCATION||RIDE_BASIS||LID_LOCK\t"
 		+"CONTAINER_CAPACITY||WEAPON_HANDS_REQUIRED\tBASE_ARMOR_AMOUNT||BASE_DAMAGE\t"
-		+"CONTAINER_TYPE\tCODED_SPELL_LIST";}
+		+"CONTAINER_TYPE\tCODED_SPELL_LIST";
+	}
 
 	//protected static final int RCP_FINALNAME=0;
 	//protected static final int RCP_LEVEL=1;
 	//protected static final int RCP_TICKS=2;
-	protected static final int RCP_WOOD=3;
-	protected static final int RCP_VALUE=4;
-	protected static final int RCP_CLASSTYPE=5;
-	protected static final int RCP_MISCTYPE=6;
-	protected static final int RCP_CAPACITY=7;
-	protected static final int RCP_ARMORDMG=8;
-	protected static final int RCP_CONTAINMASK=9;
-	protected static final int RCP_SPELL=10;
+	protected static final int	RCP_WOOD		= 3;
+	protected static final int	RCP_VALUE		= 4;
+	protected static final int	RCP_CLASSTYPE	= 5;
+	protected static final int	RCP_MISCTYPE	= 6;
+	protected static final int	RCP_CAPACITY	= 7;
+	protected static final int	RCP_ARMORDMG	= 8;
+	protected static final int	RCP_CONTAINMASK	= 9;
+	protected static final int	RCP_SPELL		= 10;
 
 	protected Item key=null;
 
@@ -76,7 +100,6 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 		messedUp = false;
 	}
 
-
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -88,8 +111,17 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 		return super.tick(ticking,tickID);
 	}
 
-	@Override public String parametersFile(){ return "weaving.txt";}
-	@Override protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
+	@Override
+	public String parametersFile()
+	{
+		return "weaving.txt";
+	}
+
+	@Override
+	protected List<List<String>> loadRecipes()
+	{
+		return super.loadRecipes(parametersFile());
+	}
 
 	@Override
 	public void unInvoke()
@@ -157,7 +189,11 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 		super.unInvoke();
 	}
 
-	@Override public boolean supportsDeconstruction() { return true; }
+	@Override
+	public boolean supportsDeconstruction()
+	{
+		return true;
+	}
 
 	@Override
 	public double getItemWeightMultiplier(boolean bundling)
@@ -222,7 +258,12 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 		return (isANativeItem(I.Name()));
 	}
 
-	@Override public boolean supportsMending(Physical I){ return canMend(null,I,true);}
+	@Override
+	public boolean supportsMending(Physical I)
+	{
+		return canMend(null, I, true);
+	}
+
 	@Override
 	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
 	{
@@ -257,11 +298,15 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 		if(super.checkStop(mob, commands))
 			return true;
 
+		if(super.checkInfo(mob, commands))
+			return true;
+		
 		final PairVector<EnhancedExpertise,Integer> enhancedTypes=enhancedTypes(mob,commands);
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,L("Weave what? Enter \"weave list\" for a list, \"weave refit <item>\" to resize, \"weave learn <item>\", \"weave scan\", \"weave mend <item>\", or \"weave stop\" to cancel."));
+			commonTell(mob,L("Weave what? Enter \"weave list\" for a list, \"weave info <item>\", \"weave refit <item>\" to resize,"
+						+ " \"weave learn <item>\", \"weave scan\", \"weave mend <item>\", or \"weave stop\" to cancel."));
 			return false;
 		}
 		if((!auto)
@@ -291,10 +336,10 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 			int toggler=1;
 			final int toggleTop=2;
 			final int[] cols={
-					CMLib.lister().fixColWidth(22,mob.session()),
-					CMLib.lister().fixColWidth(3,mob.session()),
-					CMLib.lister().fixColWidth(10,mob.session())
-				};
+				CMLib.lister().fixColWidth(22,mob.session()),
+				CMLib.lister().fixColWidth(3,mob.session()),
+				CMLib.lister().fixColWidth(10,mob.session())
+			};
 			for(int r=0;r<toggleTop;r++)
 				buf.append((r>0?" ":"")+CMStrings.padRight(L("Item"),cols[0])+" "+CMStrings.padRight(L("Lvl"),cols[1])+" "+CMStrings.padRight(L("Material"),cols[2]));
 			buf.append("\n\r");
@@ -429,7 +474,8 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 			}
 
 			final String woodRequiredStr = foundRecipe.get(RCP_WOOD);
-			final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName),autoGenerate);
+			final int[] compData = new int[CF_TOTAL];
+			final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName),autoGenerate,compData);
 			if(componentsFoundList==null)
 				return false;
 			int woodRequired=CMath.s_int(woodRequiredStr);
@@ -438,22 +484,23 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 			if(amount>woodRequired)
 				woodRequired=amount;
 			final int[] pm={RawMaterial.RESOURCE_COTTON,
-					  RawMaterial.RESOURCE_SILK,
-					  RawMaterial.RESOURCE_HEMP,
-					  RawMaterial.RESOURCE_VINE,
-					  RawMaterial.RESOURCE_FLOWERS,
-					  RawMaterial.RESOURCE_BAMBOO,
-					  RawMaterial.RESOURCE_WHEAT,
-					  RawMaterial.RESOURCE_SEAWEED};
+							RawMaterial.RESOURCE_SILK,
+							RawMaterial.RESOURCE_HEMP,
+							RawMaterial.RESOURCE_VINE,
+							RawMaterial.RESOURCE_FLOWERS,
+							RawMaterial.RESOURCE_BAMBOO,
+							RawMaterial.RESOURCE_WHEAT,
+							RawMaterial.RESOURCE_SEAWEED
+							};
 			final String misctype=foundRecipe.get(RCP_MISCTYPE);
 			final String spell=(foundRecipe.size()>RCP_SPELL)?foundRecipe.get(RCP_SPELL).trim():"";
 			bundling=spell.equalsIgnoreCase("BUNDLE")||misctype.equalsIgnoreCase("BUNDLE");
 			final int[][] data=fetchFoundResourceData(mob,
-												woodRequired,"weavable material",pm,
-												0,null,null,
-												false,
-												autoGenerate,
-												enhancedTypes);
+													woodRequired,"weavable material",pm,
+													0,null,null,
+													false,
+													autoGenerate,
+													enhancedTypes);
 			if(data==null)
 				return false;
 			fixDataForComponents(data,componentsFoundList);
@@ -470,7 +517,8 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 				return false;
 			}
 			duration=getDuration(CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),4);
-			String itemName=replacePercent(foundRecipe.get(RCP_FINALNAME),RawMaterial.CODES.NAME(data[0][FOUND_CODE])).toLowerCase();
+			buildingI.setMaterial(super.getBuildingMaterial(woodRequired, data, compData));
+			String itemName=replacePercent(foundRecipe.get(RCP_FINALNAME),RawMaterial.CODES.NAME(buildingI.material())).toLowerCase();
 			if(bundling)
 				itemName="a "+woodRequired+"# "+itemName;
 			else
@@ -484,9 +532,8 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 			verb=L("weaving @x1",buildingI.name());
 			buildingI.setDisplayText(L("@x1 lies here",itemName));
 			buildingI.setDescription(itemName+". ");
-			buildingI.basePhyStats().setWeight(getStandardWeight(woodRequired,bundling));
+			buildingI.basePhyStats().setWeight(getStandardWeight(woodRequired+compData[CF_AMOUNT],bundling));
 			buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE)));
-			buildingI.setMaterial(data[0][FOUND_CODE]);
 			buildingI.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL)));
 			buildingI.setSecretIdentity(getBrand(mob));
 			final int capacity=CMath.s_int(foundRecipe.get(RCP_CAPACITY));
@@ -520,7 +567,7 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 				}
 				((Armor)buildingI).basePhyStats().setArmor(0);
 				if(armordmg!=0)
-					((Armor)buildingI).basePhyStats().setArmor(armordmg+(abilityCode()-1));
+					((Armor)buildingI).basePhyStats().setArmor(armordmg+(baseYield()+abilityCode()-1));
 				setWearLocation(buildingI,misctype,0);
 			}
 			else

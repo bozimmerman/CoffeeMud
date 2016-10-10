@@ -37,10 +37,18 @@ import java.util.*;
 
 public class ClanVote extends StdCommand
 {
-	public ClanVote(){}
+	public ClanVote()
+	{
+	}
 
-	private final String[] access=I(new String[]{"CLANVOTE"});
-	@Override public String[] getAccessWords(){return access;}
+	private final String[]	access	= I(new String[] { "CLANVOTE" });
+
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
+
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
@@ -59,8 +67,14 @@ public class ClanVote extends StdCommand
 		Clan C=null;
 		Integer clanRole=null;
 		for(final Pair<Clan,Integer> c : mob.clans())
+		{
 			if((clanName.length()==0)||(CMLib.english().containsString(c.first.getName(), clanName)))
-			{	C=c.first; clanRole=c.second; break; }
+			{
+				C = c.first;
+				clanRole = c.second;
+				break;
+			}
+		}
 
 		if((C==null)||(clanRole==null))
 		{
@@ -114,6 +128,7 @@ public class ClanVote extends StdCommand
 					int nays=0;
 					Boolean myVote=null;
 					if(CV.votes!=null)
+					{
 						for(int vs=0;vs<CV.votes.size();vs++)
 						{
 							if(CV.votes.getFirst(vs).equals(mob.Name()))
@@ -123,6 +138,7 @@ public class ClanVote extends StdCommand
 							else
 								nays++;
 						}
+					}
 					msg.append(L("Vote       : @x1\n\r",""+(which+1)));
 					msg.append(L("Started by : @x1\n\r",CV.voteStarter));
 					if(CV.voteStatus==Clan.VSTAT_STARTED)
@@ -227,7 +243,10 @@ public class ClanVote extends StdCommand
 		return false;
 	}
 
-	@Override public boolean canBeOrdered(){return false;}
-
+	@Override
+	public boolean canBeOrdered()
+	{
+		return false;
+	}
 
 }

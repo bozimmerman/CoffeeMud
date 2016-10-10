@@ -56,7 +56,7 @@ public class Aggressive extends StdBehavior
 	protected String	attackMessage		= null;
 	protected Room		lastRoom			= null;
 	protected int		lastRoomInhabCount	= 0;
-	protected MaskingLibrary.CompiledZapperMask mask = null;
+	protected MaskingLibrary.CompiledZMask mask = null;
 
 	@Override
 	public void executeMsg(Environmental affecting, CMMsg msg)
@@ -134,7 +134,7 @@ public class Aggressive extends StdBehavior
 		}
 		return false;
 	}
-	public boolean pickAFight(MOB observer, MaskingLibrary.CompiledZapperMask mask, boolean mobKiller, boolean misBehave, boolean levelCheck, String attackMsg)
+	public boolean pickAFight(MOB observer, MaskingLibrary.CompiledZMask mask, boolean mobKiller, boolean misBehave, boolean levelCheck, String attackMsg)
 	{
 		if(!canFreelyBehaveNormal(observer))
 			return false;
@@ -163,7 +163,7 @@ public class Aggressive extends StdBehavior
 		return false;
 	}
 
-	public void tickAggressively(Tickable ticking, int tickID, boolean mobKiller, boolean misBehave, boolean levelCheck, MaskingLibrary.CompiledZapperMask mask, String attackMsg)
+	public void tickAggressively(Tickable ticking, int tickID, boolean mobKiller, boolean misBehave, boolean levelCheck, MaskingLibrary.CompiledZMask mask, String attackMsg)
 	{
 		if(tickID!=Tickable.TICKID_MOB)
 			return;

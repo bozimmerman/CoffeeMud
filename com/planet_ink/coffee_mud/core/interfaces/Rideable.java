@@ -39,7 +39,7 @@ import java.util.Set;
  * @author Bo Zimmerman
  *
  */
-public interface Rideable extends PhysicalAgent
+public interface Rideable extends Rider
 {
 	/** constant for the  rideType() method.  Means it is ridden over land*/
 	public final static int RIDEABLE_LAND=0;

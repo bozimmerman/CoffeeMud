@@ -37,7 +37,12 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class ManualClasses extends StdItem implements MiscMagic,ArchonOnly
 {
-	@Override public String ID(){	return "ManualClasses";}
+	@Override
+	public String ID()
+	{
+		return "ManualClasses";
+	}
+
 	public ManualClasses()
 	{
 		super();

@@ -936,7 +936,7 @@ public class Modify extends StdCommand
 			return;
 		}
 
-		final int direction=Directions.getGoodDirectionCode((commands.get(2)));
+		final int direction=CMLib.directions().getGoodDirectionCode((commands.get(2)));
 		if(direction<0)
 		{
 			mob.tell(L("You have failed to specify a direction.  Try @x1.\n\r",Directions.LETTERS()));
@@ -952,7 +952,7 @@ public class Modify extends StdCommand
 			return;
 		}
 		final boolean useShipDirs=(mob.location() instanceof BoardableShip)||(mob.location().getArea() instanceof BoardableShip);
-		final String inDirName=useShipDirs?Directions.getShipInDirectionName(direction):Directions.getInDirectionName(direction);
+		final String inDirName=useShipDirs?CMLib.directions().getShipInDirectionName(direction):CMLib.directions().getInDirectionName(direction);
 		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> wave(s) <S-HIS-HER> hands around to the @x1.",inDirName));
 		final Exit copyExit=(Exit)thisExit.copyOf();
 		if(thisExit.isGeneric() && (commands.size()<5))
@@ -1361,6 +1361,9 @@ public class Modify extends StdCommand
 		}
 		mob.location().showOthers(mob,M,CMMsg.MSG_OK_ACTION,L("<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>."));
 		final MOB copyMOB=(MOB)M.copyOf();
+		M.basePhyStats().copyInto(copyMOB.basePhyStats());
+		M.phyStats().copyInto(copyMOB.phyStats());
+		mob.location().delInhabitant(copyMOB); //necc because location is cleared later, before destroy is called.
 		if(commands.size()<4)
 		{
 			CMLib.genEd().modifyPlayer(mob,M,-1);
@@ -1846,10 +1849,10 @@ public class Modify extends StdCommand
 			for(final Long L : j.keySet())
 			{
 				O=j.get(L);
-				if(O instanceof StringBuffer)
+				if(!CMLib.players().playerExists(O.toString()))
 				{
 					somethingFound=true;
-					mob.tell(L("Unapproved script:\n\r@x1\n\r",((StringBuffer)O).toString()));
+					mob.tell(L("Unapproved script:\n\r@x1\n\r",O.toString()));
 					if((!mob.isMonster())
 					&&(mob.session().confirm(L("Approve this script (Y/n)?"),"Y")))
 						CMSecurity.approveJScript(mob.Name(),L.longValue());
@@ -2169,10 +2172,10 @@ public class Modify extends StdCommand
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("@x1 shake(s) under the transforming power.",thang.name()));
 			}
 			else
-			if((Directions.getGoodDirectionCode(allWord)>=0)||(thang instanceof Exit))
+			if((CMLib.directions().getGoodDirectionCode(allWord)>=0)||(thang instanceof Exit))
 			{
-				if(Directions.getGoodDirectionCode(allWord)>=0)
-					thang=mob.location().getRawExit(Directions.getGoodDirectionCode(allWord));
+				if(CMLib.directions().getGoodDirectionCode(allWord)>=0)
+					thang=mob.location().getRawExit(CMLib.directions().getGoodDirectionCode(allWord));
 
 				if(thang!=null)
 				{

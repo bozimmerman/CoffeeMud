@@ -74,7 +74,7 @@ public class Close extends StdCommand
 					if((opE!=null)
 					&&(!opE.isOpen())
 					&&(!((Exit)closeThis).isOpen()))
-						opR.showHappens(CMMsg.MSG_OK_ACTION,L("@x1 @x2 closes.",opE.name(),(useShipDirs?Directions.getShipInDirectionName(opCode):Directions.getInDirectionName(opCode))));
+						opR.showHappens(CMMsg.MSG_OK_ACTION,L("@x1 @x2 closes.",opE.name(),(useShipDirs?CMLib.directions().getShipInDirectionName(opCode):CMLib.directions().getInDirectionName(opCode))));
 				}
 				return true;
 			}
@@ -100,7 +100,7 @@ public class Close extends StdCommand
 			return false;
 		}
 		Environmental closeThis=null;
-		int dirCode=Directions.getGoodDirectionCode(whatToClose);
+		int dirCode=CMLib.directions().getGoodDirectionCode(whatToClose);
 		if(dirCode>=0)
 			closeThis=mob.location().getExitInDir(dirCode);
 		if(closeThis==null)

@@ -45,9 +45,9 @@ public interface Contingent extends CMObject
 	 */
 	public boolean amDestroyed();
 	/**
-	 * Sets whether this behavior can be saved as a permanent aspect of
+	 * Sets whether this object can be saved as a permanent aspect of
 	 * its host.
-	 * @see Behavior#isSavable()
+	 * @see Contingent#isSavable()
 	 * @param truefalse whether this behavior can be saved as part of its host.
 	 */
 	public void setSavable(boolean truefalse);

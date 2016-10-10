@@ -33,7 +33,12 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class BandedArmor extends StdArmor
 {
-	@Override public String ID(){	return "BandedArmor";}
+	@Override
+	public String ID()
+	{
+		return "BandedArmor";
+	}
+
 	public BandedArmor()
 	{
 		super();

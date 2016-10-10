@@ -33,7 +33,12 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class ScaleMail extends StdArmor
 {
-	@Override public String ID(){	return "ScaleMail";}
+	@Override
+	public String ID()
+	{
+		return "ScaleMail";
+	}
+
 	public ScaleMail()
 	{
 		super();

@@ -36,17 +36,57 @@ import java.util.*;
 
 public class Prayer_BloodMoon extends Prayer
 {
-	@Override public String ID() { return "Prayer_BloodMoon"; }
-	private final static String localizedName = CMLib.lang().L("Blood Moon");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Blood Moon)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
-	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CURSING;}
-	@Override public long flags(){return Ability.FLAG_UNHOLY;}
+	@Override
+	public String ID()
+	{
+		return "Prayer_BloodMoon";
+	}
 
+	private final static String	localizedName	= CMLib.lang().L("Blood Curse");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Blood Curse)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER | Ability.DOMAIN_CURSING;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_UNHOLY;
+	}
 
 	@Override
 	public void unInvoke()
@@ -58,7 +98,7 @@ public class Prayer_BloodMoon extends Prayer
 		{
 			final Room R=CMLib.map().roomLocation(affected);
 			if((R!=null)&&(CMLib.flags().isInTheGame(affected,true)))
-				R.showHappens(CMMsg.MSG_OK_VISUAL,L("The blood moon fades."));
+				R.showHappens(CMMsg.MSG_OK_VISUAL,L("The blood curse fades."));
 		}
 		super.unInvoke();
 	}
@@ -103,15 +143,13 @@ public class Prayer_BloodMoon extends Prayer
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("The Blood Moon rises over <S-NAME>."));
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("The Blood Curse inflicts <S-NAME>."));
 					maliciousAffect(mob,target,asLevel,0,-1);
 				}
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,L("<S-NAME> @x1 for the Blood Moon, but <S-HIS-HER> plea is not answered.",prayWord(mob)));
-
-
+			return maliciousFizzle(mob,target,L("<S-NAME> @x1 for a Blood Curse, but <S-HIS-HER> plea is not answered.",prayWord(mob)));
 		// return whether it worked
 		return success;
 	}

@@ -47,6 +47,7 @@ public interface EnglishParsing extends CMLibrary
 	public String toEnglishStringList(final String[] V);
 	public String toEnglishStringList(final Collection<? extends Object> V);
 	public String insertUnColoredAdjective(String str, String adjective);
+	public String insertAdjectives(String paragraph, String[] adjsToChoose, int pctChance);
 	public String startWithAorAn(String str);
 	public CMObject findCommand(MOB mob, List<String> commands);
 	public boolean evokedBy(Ability thisAbility, String thisWord);
@@ -85,7 +86,7 @@ public interface EnglishParsing extends CMLibrary
 	public long numPossibleGold(Environmental mine, String itemID);
 	public String numPossibleGoldCurrency(Environmental mine, String itemID);
 	public double numPossibleGoldDenomination(Environmental mine, String currency, String itemID);
-	public Object[] parseMoneyStringSDL(MOB mob, String amount, String correctCurrency);
+	public Triad<String, Double, Long> parseMoneyStringSDL(MOB mob, String amount, String correctCurrency);
 	public long getMillisMultiplierByName(String timeName);
 	public String matchAnyCurrencySet(String itemID);
 	public double matchAnyDenomination(String currency, String itemID);

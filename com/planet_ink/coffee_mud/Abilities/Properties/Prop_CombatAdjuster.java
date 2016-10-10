@@ -35,18 +35,40 @@ import java.util.*;
 */
 public class Prop_CombatAdjuster extends Property implements TriggeredAffect
 {
-	@Override public String ID() { return "Prop_CombatAdjuster"; }
-	@Override public String name(){ return "Adjust combat stats";}
-	@Override protected int canAffectCode(){return 0;}
+	@Override
+	public String ID()
+	{
+		return "Prop_CombatAdjuster";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Adjust combat stats";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
 	// attack, damage, armor, hp, mana, move, speed
-	protected double[] alladj={1.0,1.0,1.0,1.0,1.0,1.0,1.0};
+	protected double[]	alladj	= { 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0 };
 	// attack, damage, armor, hp, mana, move, speed
-	protected int[] allset={-1,-1,-1,-1,-1,-1,-1};
+	protected int[]		allset	= { -1, -1, -1, -1, -1, -1, -1 };
+
 	@Override
 	public String accountForYourself()
-	{ return "Adjusted combat stats";	}
+	{
+		return "Adjusted combat stats";
+	}
 
-	@Override public long flags(){return Ability.FLAG_ADJUSTER;}
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_ADJUSTER;
+	}
 
 	@Override
 	public int triggerMask()
@@ -59,7 +81,7 @@ public class Prop_CombatAdjuster extends Property implements TriggeredAffect
 	{
 		super.affectPhyStats(affectedMOB,affectableStats);
 		if(alladj[2]!=1.0)
-			affectableStats.setArmor((int)Math.round(CMath.mul(affectableStats.armor()-100,alladj[2]))+100);
+			affectableStats.setArmor(100-(int)Math.round(CMath.mul(100-affectableStats.armor(),alladj[2])));
 		else
 		if(allset[2]>=0)
 			affectableStats.setArmor(allset[2]);
@@ -121,4 +143,61 @@ public class Prop_CombatAdjuster extends Property implements TriggeredAffect
 		}
 	}
 
+	@Override
+	public String getStat(String code)
+	{
+		if((code!=null)&&(code.equalsIgnoreCase("LEVEL")))
+		{
+			int level = 0;
+			for(int c=0;c<alladj.length;c+=1)
+			{
+				if(alladj[c]==1.0)
+					continue;
+				int amt= (int)Math.round(alladj[c] * 100.0);
+				if(amt >= 100)
+					amt -= 100;
+				else
+				if(amt < 100)
+					amt = -(100-amt);
+				
+				switch(c)
+				{
+				case 0://PhyStats.STAT_ATTACK:
+					level+= (amt / 5);
+					break;
+				case 1://PhyStats.STAT_DAMAGE:
+					level+= (amt / 20);
+					break;
+				case 2://PhyStats.STAT_ARMOR:
+					level+= (amt / -5);
+					break;
+				case 3://CharState.STAT_HITPOINTS:
+					level += (amt / 20);
+					break;
+				case 4://CharState.STAT_MANA:
+					level += (amt / 20);
+					break;
+				case 5://CharState.STAT_MOVE:
+					level += (amt / 20);
+					break;
+				case 6://speed --PhyStats.NUM_STATS:
+					level+= (amt / 20);
+					break;
+				}
+			}
+			return ""+level;
+		}
+		return super.getStat(code);
+	}
+
+	@Override
+	public void setStat(String code, String val)
+	{
+		if((code!=null)&&(code.equalsIgnoreCase("LEVEL")))
+		{
+	
+		}
+		else
+			super.setStat(code, val);
+	}
 }

@@ -37,10 +37,18 @@ import java.util.*;
 
 public class ClanPremise extends StdCommand
 {
-	public ClanPremise(){}
+	public ClanPremise()
+	{
+	}
 
-	private final String[] access=I(new String[]{"CLANPREMISE"});
-	@Override public String[] getAccessWords(){return access;}
+	private final String[]	access	= I(new String[] { "CLANPREMISE" });
+
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
+
 	@Override
 	public boolean execute(final MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
@@ -53,10 +61,17 @@ public class ClanPremise extends StdCommand
 			chkC=mob.getClanRole(mob.Name()).first;
 
 		if(chkC==null)
-		for(final Pair<Clan,Integer> c : mob.clans())
-			if((clanName.length()==0)||(CMLib.english().containsString(c.first.getName(), clanName))
-			&&(c.first.getAuthority(c.second.intValue(), Clan.Function.PREMISE)!=Authority.CAN_NOT_DO))
-			{	chkC=c.first; break; }
+		{
+			for(final Pair<Clan,Integer> c : mob.clans())
+			{
+				if((clanName.length()==0)||(CMLib.english().containsString(c.first.getName(), clanName))
+				&&(c.first.getAuthority(c.second.intValue(), Clan.Function.PREMISE)!=Authority.CAN_NOT_DO))
+				{
+					chkC = c.first;
+					break;
+				}
+			}
+		}
 
 		commands.set(0,getAccessWords()[0]);
 
@@ -84,9 +99,19 @@ public class ClanPremise extends StdCommand
 		}
 		session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0)
 		{
-			@Override public void showPrompt() { session.promptPrint(L("Describe your @x1's Premise\n\r: ",C.getGovernmentName()));}
-			@Override public void timedOut() { }
-			@Override public void callBack()
+			@Override
+			public void showPrompt()
+			{
+				session.promptPrint(L("Describe your @x1's Premise\n\r: ", C.getGovernmentName()));
+			}
+
+			@Override
+			public void timedOut()
+			{
+			}
+
+			@Override
+			public void callBack()
 			{
 				final String premise=this.input;
 				if(premise.length()==0)
@@ -112,8 +137,10 @@ public class ClanPremise extends StdCommand
 		CMLib.clans().clanAnnounce(mob,L("The premise of @x1 @x2 has been changed.",C.getGovernmentName(),C.clanID()));
 	}
 
-
-	@Override public boolean canBeOrdered(){return false;}
-
+	@Override
+	public boolean canBeOrdered()
+	{
+		return false;
+	}
 
 }

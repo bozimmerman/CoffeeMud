@@ -39,7 +39,6 @@ public interface ItemBalanceLibrary extends CMLibrary
 	public boolean fixRejuvItem(Item I);
 	public void toneDownWeapon(Weapon W, Ability ADJ);
 	public void toneDownArmor(Armor A, Ability ADJ);
-	public void toneDownAdjuster(Item I, Ability ADJ);
 	public boolean toneDownValue(Item I);
 	public int timsBaseLevel(Item I);
 	public void balanceItemByLevel(Item I);

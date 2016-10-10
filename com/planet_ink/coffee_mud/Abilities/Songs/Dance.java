@@ -249,7 +249,7 @@ public class Dance extends StdAbility
 		{
 			final int dir=this.getCorrectDirToOriginRoom(R,v);
 			if(dir>=0)
-				msgStr=L("^SYou see the @x1 being performed @x2!^?",danceOf(),Directions.getInDirectionName(dir));
+				msgStr=L("^SYou see the @x1 being performed @x2!^?",danceOf(),CMLib.directions().getInDirectionName(dir));
 			else
 				msgStr=L("^SYou see the @x1 being performed nearby!^?",danceOf());
 		}

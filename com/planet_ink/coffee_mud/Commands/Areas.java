@@ -177,7 +177,9 @@ public class Areas extends StdCommand
 		for(;a.hasMoreElements();)
 		{
 			final Area A=a.nextElement();
-			if(CMLib.flags().canAccess(mob,A)&&(!CMath.bset(A.flags(),Area.FLAG_INSTANCE_CHILD))&&(!(A instanceof SpaceObject)))
+			if(CMLib.flags().canAccess(mob,A)
+			&&(!CMath.bset(A.flags(),Area.FLAG_INSTANCE_CHILD))
+			&&(!(A instanceof SpaceObject)))
 			{
 				String levelStr = (addStat>=0?(Integer.toString(A.getAreaIStats()[addStat])+":"):"");
 				if(addStat==-999)

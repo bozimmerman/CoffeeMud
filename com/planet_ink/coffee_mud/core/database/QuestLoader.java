@@ -40,9 +40,9 @@ public class QuestLoader
 	{
 		DB=newDB;
 	}
-	public void DBRead(MudHost myHost)
+	public List<Quest> DBRead()
 	{
-		CMLib.quests().shutdown();
+		List<Quest> quests=new LinkedList<Quest>();
 		DBConnection D=null;
 		try
 		{
@@ -68,8 +68,14 @@ public class QuestLoader
 						Log.sysOut("QuestLoader","Unable to load Quest '"+questName+"'.  Suspending.");
 						Q.setSuspended(true);
 					}
-					if(CMLib.quests().fetchQuest(Q.name())==null)
-						CMLib.quests().addQuest(Q);
+					boolean dup=false;
+					for(Quest Q2 : quests)
+					{
+						if(Q2.name().equalsIgnoreCase(Q.name()))
+							dup=true;
+					}
+					if(!dup)
+						quests.add(Q);
 					continue;
 				}
 				if(Q.name().length()==0)
@@ -81,7 +87,7 @@ public class QuestLoader
 				if(CMLib.quests().fetchQuest(Q.name())!=null)
 					Log.sysOut("QuestLoader","Unable to load Quest '"+questName+"' due to it already being loaded.");
 				else
-					CMLib.quests().addQuest(Q);
+					quests.add(Q);
 			}
 		}
 		catch(final SQLException sqle)
@@ -92,6 +98,7 @@ public class QuestLoader
 		{
 			DB.DBDone(D);
 		}
+		return quests;
 	}
 
 

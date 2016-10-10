@@ -76,7 +76,7 @@ public class CommonSkill extends StdAbility
 	protected volatile int	tickUp			= 0;
 	protected String		verb			= L("working");
 	protected String		playSound		= null;
-	protected int			yield			= baseYield();
+	protected int			bonusYield		= 0;
 	protected volatile int	lastBaseDuration= 0;
 
 	protected int baseYield()
@@ -159,16 +159,24 @@ public class CommonSkill extends StdAbility
 		return canBeDoneSittingDown() ? CMMsg.MSG_HANDS | CMMsg.MASK_SOUND : CMMsg.MSG_NOISYMOVEMENT;
 	}
 
+	protected int getCompletedActivityMessageType()
+	{
+		int activityCode = CMMsg.MASK_HANDS | CMMsg.MASK_SOUND;
+		if(!canBeDoneSittingDown())
+			activityCode |= CMMsg.MASK_MOVE;
+		return activityCode | CMMsg.TYP_ITEMSGENERATED;
+	}
+
 	@Override
 	public int abilityCode()
 	{
-		return yield;
+		return bonusYield;
 	}
 
 	@Override
 	public void setAbilityCode(int newCode)
 	{
-		yield = newCode;
+		bonusYield = newCode;
 	}
 
 	@Override
@@ -303,6 +311,8 @@ public class CommonSkill extends StdAbility
 
 	protected void commonTell(MOB mob, String str)
 	{
+		if(mob==null)
+			return;
 		if(mob.isMonster()&&(mob.amFollowing()!=null))
 		{
 			if(str.startsWith("You"))
@@ -328,6 +338,66 @@ public class CommonSkill extends StdAbility
 		return lookingFor(V,fromHere);
 	}
 
+	protected boolean dropAWinner(MOB mob, Item buildingI)
+	{
+		return dropAWinner(mob,mob.location(),buildingI);
+	}
+
+	/**
+	 * Produce a constructed OR gathered thing.
+	 * @param mob CAN BE NULL!!! the dropper
+	 * @param R the room to drop it in
+	 * @param buildingI the item to drop
+	 * @return true if it dropped
+	 */
+	protected boolean dropAWinner(MOB mob, Room R, Item buildingI)
+	{
+		if(R==null)
+			commonTell(mob,L("You are NOWHERE?!"));
+		else
+		if(buildingI==null)
+			commonTell(mob,L("You have built NOTHING?!!"));
+		else
+		if(mob == null)
+		{
+			mob=CMClass.getFactoryMOB(R.name(),buildingI.phyStats().level(),R);
+			try
+			{
+				final CMMsg msg=CMClass.getMsg(mob,buildingI,this,CMMsg.TYP_ITEMGENERATED|CMMsg.MASK_ALWAYS,null);
+				if(R.okMessage(mob,msg))
+				{
+					R.addItem(buildingI,ItemPossessor.Expire.Resource);
+					R.recoverRoomStats();
+					R.send(mob,msg);
+					return R.isContent(buildingI);
+				}
+			}
+			finally
+			{
+				mob.destroy();
+			}
+		}
+		else
+		{
+			final CMMsg msg=CMClass.getMsg(mob,buildingI,this,CMMsg.TYP_ITEMGENERATED|CMMsg.MASK_ALWAYS,null);
+			if(R.okMessage(mob,msg))
+			{
+				R.addItem(buildingI,ItemPossessor.Expire.Resource);
+				R.recoverRoomStats();
+				mob.location().send(mob,msg);
+			
+				if(!R.isContent(buildingI))
+				{
+					commonTell(mob,L("You have won the common-skill-failure LOTTERY! Congratulations!"));
+					CMLib.leveler().postExperience(mob, null, null,50,false);
+				}
+				else
+					return true;
+			}
+		}
+		return false;
+	}
+	
 	protected int lookingFor(Vector<Integer> materials, Room fromHere)
 	{
 		final Vector<Integer> possibilities=new Vector<Integer>();
@@ -582,7 +652,7 @@ public class CommonSkill extends StdAbility
 		if(CMLib.ableMapper().getQualifyingLevel(C.ID(), false, ID())>=0)
 			return true;
 		final boolean crafting = ((classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_CRAFTINGSKILL);
-		final AbilityComponents.AbilityLimits remainders = CMLib.ableComponents().getCommonSkillRemainder(studentM, this);
+		final AbilityComponents.AbilityLimits remainders = CMLib.ableComponents().getSpecialSkillRemainder(studentM, this);
 		if(remainders.commonSkills()<=0)
 		{
 			teacherM.tell(L("@x1 can not learn any more common skills.",studentM.name(teacherM)));
@@ -615,7 +685,7 @@ public class CommonSkill extends StdAbility
 			if(CMLib.ableMapper().getQualifyingLevel(C.ID(), false, ID())>=0)
 				return;
 			final boolean crafting = ((classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_CRAFTINGSKILL);
-			final AbilityComponents.AbilityLimits remainders = CMLib.ableComponents().getCommonSkillRemainder(student, this);
+			final AbilityComponents.AbilityLimits remainders = CMLib.ableComponents().getSpecialSkillRemainder(student, this);
 			if(remainders.commonSkills()<=0)
 				student.tell(L("@x1 may not learn any more common skills.",student.name()));
 			else
@@ -700,16 +770,19 @@ public class CommonSkill extends StdAbility
 			commonTell(mob,L("You need to stand up!"));
 			return false;
 		}
-		for(final Enumeration<Ability> a=mob.personalEffects();a.hasMoreElements();)
+		if(!auto)
 		{
-			final Ability A=a.nextElement();
-			if((A!=null)
-			&&(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL)||(A.ID().equalsIgnoreCase("AstroEngineering")))
-			&&(!getUninvokeException().contains(A.ID())))
+			for(final Enumeration<Ability> a=mob.personalEffects();a.hasMoreElements();)
 			{
-				if(A instanceof CommonSkill)
-					((CommonSkill)A).aborted=true;
-				A.unInvoke();
+				final Ability A=a.nextElement();
+				if((A!=null)
+				&&(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL)||(A.ID().equalsIgnoreCase("AstroEngineering")))
+				&&(!getUninvokeException().contains(A.ID())))
+				{
+					if(A instanceof CommonSkill)
+						((CommonSkill)A).aborted=true;
+					A.unInvoke();
+				}
 			}
 		}
 		isAnAutoEffect=false;
@@ -747,9 +820,9 @@ public class CommonSkill extends StdAbility
 		mob.curState().adjMana(-consumed[0],mob.maxState());
 		mob.curState().adjMovement(-consumed[1],mob.maxState());
 		mob.curState().adjHitPoints(-consumed[2],mob.maxState());
-		setAbilityCode(baseYield());
+		setAbilityCode(0);
 		activityRoom=mob.location();
-		if(!bundling)
+		if((!bundling)&&(!auto))
 			helpProficiency(mob, 0);
 
 		return true;

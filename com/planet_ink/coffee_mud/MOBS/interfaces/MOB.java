@@ -43,7 +43,7 @@ import java.util.Vector;
  *
  */
 public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor, AbilityContainer, 
-							 Tattooable, FactionMember, MUDCmdProcessor, Followable<MOB>
+							 Tattooable, FactionMember, MUDCmdProcessor, Followable<MOB>, Combatant
 {
 	public static long AGE_MILLIS_THRESHOLD = 120000;
 
@@ -256,24 +256,13 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	public boolean amActive();
 	
 	/**
-	 * Returns whether this mob is in an active combat state
-	 * @see MOB#getVictim()
-	 * @see MOB#setVictim(MOB)
-	 * @see MOB#makePeace(boolean)
-	 * @see MOB#setRangeToTarget(int)
-	 * @see MOB#mayIFight(MOB)
-	 * @return true if this mob is in combat, false otherwise
-	 */
-	public boolean isInCombat();
-	
-	/**
 	 * If this mob is in combat, this returns the mob that this mob is
 	 * targeting. If this method returns null, the mob is not in combat.
-	 * @see MOB#isInCombat()
+	 * @see Combatant#isInCombat()
 	 * @see MOB#setVictim(MOB)
-	 * @see MOB#makePeace(boolean)
-	 * @see MOB#setRangeToTarget(int)
-	 * @see MOB#mayIFight(MOB)
+	 * @see Combatant#makePeace(boolean)
+	 * @see Combatant#setRangeToTarget(int)
+	 * @see Combatant#mayIFight(PhysicalAgent)
 	 * @return the combat target, or null for a peace state
 	 */
 	public MOB getVictim();
@@ -282,77 +271,14 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 * Sets the mob that this mob is targeting for combat, which
 	 * either puts them into, or clears their combat state. 
 	 * If a null value, the mob is no longer fighting.
-	 * @see MOB#isInCombat()
+	 * @see Combatant#isInCombat()
 	 * @see MOB#getVictim()
-	 * @see MOB#makePeace(boolean)
-	 * @see MOB#setRangeToTarget(int)
-	 * @see MOB#mayIFight(MOB)
-	 * @param mob the combat target, or null for a peace state
+	 * @see Combatant#makePeace(boolean)
+	 * @see Combatant#setRangeToTarget(int)
+	 * @see Combatant#mayIFight(PhysicalAgent)
+	 * @param other the combat target, or null for a peace state
 	 */
-	public void setVictim(MOB mob);
-	
-	/**
-	 * Clears the combat state between this mob and their
-	 * target, clears the targets combat state, as well as
-	 * that of any followers of this mob.  It is at best
-	 * an approximation of a universal combat ender.
-	 * @see MOB#isInCombat()
-	 * @see MOB#getVictim()
-	 * @see MOB#setVictim(MOB)
-	 * @see MOB#setRangeToTarget(int)
-	 * @see MOB#mayIFight(MOB)
-	 * @param includePlayerFollowers false to apply only to mob followers, true for mob and player
-	 */
-	public void makePeace(boolean includePlayerFollowers);
-
-	/**
-	 * Sets the distance between this mob and the current combat
-	 * victim.  This method only matters if the mob is in combat
-	 * and getVictim() returns a non-null value.  
-	 * This method does not reciprocate by setting the range to
-	 * target of the combat target.
-	 * @see MOB#getVictim()
-	 * @see MOB#rangeToTarget()
-	 * @see MOB#mayIFight(MOB)
-	 * @param newRange the range from this mob to their target
-	 */
-	public void setRangeToTarget(int newRange);
-	
-	/**
-	 * Gets the distance between this mob and the current combat
-	 * victim.  This method only matters if the mob is in combat
-	 * and getVictim() returns a non-null value.
-	 * @see MOB#getVictim()
-	 * @see MOB#setRangeToTarget(int)
-	 * @see MOB#mayIFight(MOB)
-	 * @return newRange the range from this mob to their target
-	 */
-	public int rangeToTarget();
-	
-	/**
-	 * Returns whether this mob is both permitted to attack the
-	 * given mob, and that both this mob and the potential target
-	 * are alive.  Being in the same room is not necessary.
-	 * @see MOB#getVictim()
-	 * @see MOB#setRangeToTarget(int)
-	 * @see MOB#mayPhysicallyAttack(MOB)
-	 * @param mob the potential combat target
-	 * @return true if this mob can fight the given mob, false otherwise
-	 */
-	public boolean mayIFight(MOB mob);
-	
-	/**
-	 * Returns whether this mob is permitted to attack the
-	 * given mob, both this mob and the potential target are alive,
-	 * both the mob and the target are confirmed to be the same
-	 * room.
-	 * @see MOB#getVictim()
-	 * @see MOB#setRangeToTarget(int)
-	 * @see MOB#mayPhysicallyAttack(MOB)
-	 * @param mob the potential combat target
-	 * @return true if this mob can attack the given mob, false otherwise
-	 */
-	public boolean mayPhysicallyAttack(MOB mob);
+	public void setVictim(MOB other);
 
 	/* Primary mob communication */
 	
@@ -477,6 +403,13 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	public void setExperience(int newVal);
 	
 	/**
+	 * Returns the number of ms (in tick increments)
+	 * that this mob has NOT been in combat. 
+	 * @return the ms of peace enjoyed by this mob.
+	 */
+	public long getPeaceTime();
+	
+	/**
 	 * Gets the total number of experience points this mob needs to earn
 	 * their next level.
 	 * @see MOB#getExperience()
@@ -596,7 +529,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	public void setMoney(int newVal);
 	
 	/**
-	 * Returns a positive or negative range from 0->this number
+	 * Returns a positive or negative range from 0-&gt;this number
 	 * that represents the amount of money added or removed from
 	 * this mob when the mob-as-NPC does and is ready to be looted. 
 	 * @see MOB#getMoney()
@@ -607,7 +540,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	public double getMoneyVariation();
 	
 	/**
-	 * Sets a positive or negative range from 0->this number
+	 * Sets a positive or negative range from 0-&gt;this number
 	 * that represents the amount of money added or removed from
 	 * this mob when the mob-as-NPC does and is ready to be looted. 
 	 * @see MOB#getMoney()
@@ -905,7 +838,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 * @see MOB#fetchWieldedItem()
 	 * @see MOB#fetchFirstWornItem(long)
 	 * @param wornCode the specific worn code to loook for worn items
-	 * @param aboveOrAroundLayer -2048 will grab everything, and > 0 are higher layers
+	 * @param aboveOrAroundLayer -2048 will grab everything, and &gt; 0 are higher layers
 	 * @param layerAttributes 0 will grab everything, or one of the layer attributes
 	 * @return the list of items worn at the given worn code
 	 */
@@ -1067,6 +1000,15 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	public int[][] getAbilityUsageCache(final String abilityID);
 
 	/**
+	 * Returns whether the given ability is actually a racial
+	 * ability instead of a learned, clan, or some other kind
+	 * of ability.
+	 * @param abilityID the ability object to check for
+	 * @return true if that object is racial, false otherwise
+	 */
+	public boolean isRacialAbility(String abilityID);
+
+	/**
 	 * Adds a new expertise, or updates an existing one.
 	 * Requires a coded expertise name (string followed by
 	 * roman or decimal number)
@@ -1137,30 +1079,33 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 */
 	public static enum Attrib
 	{
-		AUTOGOLD(false),
-		AUTOLOOT(false),
-		AUTOEXITS(false),
-		AUTOASSIST(true),
-		ANSI(false,"ANSI COLOR"),
-		SYSOPMSGS(false,"SYSMSGS"),
-		AUTOMELEE(true),
-		PLAYERKILL(false),
-		BRIEF(false),
-		NOFOLLOW(false),
-		AUTOWEATHER(false),
-		AUTODRAW(false),
-		AUTOGUARD(false),
-		SOUND(false,"SOUNDS"),
-		AUTOIMPROVE(false,"AUTOIMPROVEMENT"),
-		NOTEACH(false),
-		AUTONOTIFY(false),
-		AUTOFORWARD(true),
-		DAILYMESSAGE(true,"MOTD"),
-		QUIET(false),
-		MXP(false),
-		COMPRESS(false,"COMPRESSED"),
-		AUTORUN(false),
-		AUTOMAP(true)
+		AUTOGOLD(false), //1
+		AUTOLOOT(false), //2
+		AUTOEXITS(false), //3
+		AUTOASSIST(true), //4
+		ANSI(false,"ANSI COLOR"), //5
+		SYSOPMSGS(false,"SYSMSGS"), //6
+		AUTOMELEE(true), //7
+		PLAYERKILL(false), //8
+		BRIEF(false),//9
+		NOFOLLOW(false),//10
+		AUTOWEATHER(false),//11
+		AUTODRAW(false),//12
+		AUTOGUARD(false),//13
+		SOUND(false,"SOUNDS"),//14
+		AUTOIMPROVE(false,"AUTOIMPROVEMENT"),//15
+		NOTEACH(false),//16
+		AUTONOTIFY(false),//17
+		AUTOFORWARD(true),//18
+		DAILYMESSAGE(true,"MOTD"),//19
+		QUIET(false),//20
+		MXP(false),//21
+		COMPRESS(false,"COMPRESSED"),//22
+		AUTORUN(false),//23
+		AUTOMAP(true),//24
+		NOBATTLESPAM(false),//25
+		TELNET_GA(false,"TELNET-GA"), // 26
+		// .. up to /31
 		;
 		private final int bitCode;
 		private final boolean autoReverse;

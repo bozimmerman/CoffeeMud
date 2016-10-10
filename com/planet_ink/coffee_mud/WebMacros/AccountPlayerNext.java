@@ -35,7 +35,11 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class AccountPlayerNext extends StdWebMacro
 {
-	@Override public String name() { return "AccountPlayerNext"; }
+	@Override
+	public String name()
+	{
+		return "AccountPlayerNext";
+	}
 
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)

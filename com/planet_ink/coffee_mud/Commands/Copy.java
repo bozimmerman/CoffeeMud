@@ -97,13 +97,13 @@ public class Copy extends StdCommand
 			}
 		}
 		Environmental E=null;
-		int dirCode=Directions.getGoodDirectionCode(name);
+		int dirCode=CMLib.directions().getGoodDirectionCode(name);
 		if(dirCode>=0)
 			E=mob.location();
 		else
 		if(commands.size()>1)
 		{
-			dirCode=Directions.getGoodDirectionCode(commands.get(commands.size()-1));
+			dirCode=CMLib.directions().getGoodDirectionCode(commands.get(commands.size()-1));
 			if(dirCode>=0)
 			{
 				commands.remove(commands.size()-1);
@@ -113,7 +113,7 @@ public class Copy extends StdCommand
 				{
 					if(commands.size()>1)
 					{
-						final int subDirCode=Directions.getGoodDirectionCode(commands.get(commands.size()-1));
+						final int subDirCode=CMLib.directions().getGoodDirectionCode(commands.get(commands.size()-1));
 						if(subDirCode>=0)
 						{
 							commands.remove(commands.size()-1);
@@ -261,7 +261,7 @@ public class Copy extends StdCommand
 				if(room.getRoomInDir(dirCode)!=null)
 				{
 					final boolean useShipDirs=(room instanceof BoardableShip)||(room.getArea() instanceof BoardableShip);
-					mob.tell(L("A room already exists @x1!",(useShipDirs?Directions.getShipInDirectionName(dirCode):Directions.getInDirectionName(dirCode))));
+					mob.tell(L("A room already exists @x1!",(useShipDirs?CMLib.directions().getShipInDirectionName(dirCode):CMLib.directions().getInDirectionName(dirCode))));
 					return false;
 				}
 				synchronized(("SYNC"+room.roomID()).intern())
@@ -297,7 +297,7 @@ public class Copy extends StdCommand
 						CMLib.database().DBUpdateItems(newRoom);
 					newRoom.getArea().fillInAreaRoom(newRoom);
 					final boolean useShipDirs=(room instanceof BoardableShip)||(room.getArea() instanceof BoardableShip);
-					final String inDirName=useShipDirs?Directions.getShipInDirectionName(dirCode):Directions.getInDirectionName(dirCode);
+					final String inDirName=useShipDirs?CMLib.directions().getShipInDirectionName(dirCode):CMLib.directions().getInDirectionName(dirCode);
 					if(i==0)
 					{
 						if(number>1)
@@ -339,7 +339,7 @@ public class Copy extends StdCommand
 						CMLib.database().DBUpdateExits(editRoom);
 					}
 					final boolean useShipDirs=(editRoom instanceof BoardableShip)||(editRoom.getArea() instanceof BoardableShip);
-					final String inDirName=useShipDirs?Directions.getShipInDirectionName(dirCode):Directions.getInDirectionName(dirCode);
+					final String inDirName=useShipDirs?CMLib.directions().getShipInDirectionName(dirCode):CMLib.directions().getInDirectionName(dirCode);
 					room.showHappens(CMMsg.MSG_OK_ACTION,L("Suddenly, @x1 falls @x2.",E.name(),inDirName));
 				}
 			}

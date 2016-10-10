@@ -37,33 +37,64 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Costuming extends EnhancedCraftingSkill implements ItemCraftor, MendingSkill
 {
-	@Override public String ID() { return "Costuming"; }
-	private final static String localizedName = CMLib.lang().L("Costuming");
-	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =I(new String[] {"COSTUME","COSTUMING"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public String supportedResourceString(){return "CLOTH";}
 	@Override
-	public String parametersFormat(){ return
-		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\t"
-		+"ITEM_CLASS_ID\tWEAPON_CLASS||CODED_WEAR_LOCATION||RIDE_BASIS\t"
-		+"CONTAINER_CAPACITY||WEAPON_HANDS_REQUIRED\tBASE_ARMOR_AMOUNT||BASE_DAMAGE\t"
-		+"CONTAINER_TYPE\tCODED_SPELL_LIST";}
+	public String ID()
+	{
+		return "Costuming";
+	}
 
-	//protected static final int RCP_FINALNAME=0;
-	//protected static final int RCP_LEVEL=1;
-	//protected static final int RCP_TICKS=2;
-	protected static final int RCP_WOOD=3;
-	protected static final int RCP_VALUE=4;
-	protected static final int RCP_CLASSTYPE=5;
-	protected static final int RCP_MISCTYPE=6;
-	protected static final int RCP_CAPACITY=7;
-	protected static final int RCP_ARMORDMG=8;
-	protected static final int RCP_CONTAINMASK=9;
-	protected static final int RCP_SPELL=10;
+	private final static String	localizedName	= CMLib.lang().L("Costuming");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "COSTUME", "COSTUMING" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public String supportedResourceString()
+	{
+		return "CLOTH";
+	}
+
+	@Override
+	public String parametersFormat()
+	{
+		return
+		  "ITEM_NAME\t"
+		+ "ITEM_LEVEL\t"
+		+ "BUILD_TIME_TICKS\t"
+		+ "MATERIALS_REQUIRED\t"
+		+ "ITEM_BASE_VALUE\t"
+		+ "ITEM_CLASS_ID\t"
+		+ "WEAPON_CLASS||CODED_WEAR_LOCATION||RIDE_BASIS\t"
+		+ "CONTAINER_CAPACITY||WEAPON_HANDS_REQUIRED\t"
+		+ "BASE_ARMOR_AMOUNT||BASE_DAMAGE\t"
+		+ "CONTAINER_TYPE\t"
+		+ "CODED_SPELL_LIST";
+	}
+
+	// protected static final int RCP_FINALNAME=0;
+	// protected static final int RCP_LEVEL=1;
+	// protected static final int RCP_TICKS=2;
+	protected static final int	RCP_WOOD		= 3;
+	protected static final int	RCP_VALUE		= 4;
+	protected static final int	RCP_CLASSTYPE	= 5;
+	protected static final int	RCP_MISCTYPE	= 6;
+	protected static final int	RCP_CAPACITY	= 7;
+	protected static final int	RCP_ARMORDMG	= 8;
+	protected static final int	RCP_CONTAINMASK	= 9;
+	protected static final int	RCP_SPELL		= 10;
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
@@ -76,8 +107,17 @@ public class Costuming extends EnhancedCraftingSkill implements ItemCraftor, Men
 		return super.tick(ticking,tickID);
 	}
 
-	@Override public String parametersFile(){ return "costume.txt";}
-	@Override protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
+	@Override
+	public String parametersFile()
+	{
+		return "costume.txt";
+	}
+
+	@Override
+	protected List<List<String>> loadRecipes()
+	{
+		return super.loadRecipes(parametersFile());
+	}
 
 	@Override
 	public double getItemWeightMultiplier(boolean bundling)
@@ -189,7 +229,12 @@ public class Costuming extends EnhancedCraftingSkill implements ItemCraftor, Men
 		return (isANativeItem(I.Name()));
 	}
 
-	@Override public boolean supportsMending(Physical item){ return canMend(null,item,true);}
+	@Override
+	public boolean supportsMending(Physical item)
+	{
+		return canMend(null, item, true);
+	}
+
 	@Override
 	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
 	{
@@ -218,16 +263,20 @@ public class Costuming extends EnhancedCraftingSkill implements ItemCraftor, Men
 	
 	@Override
 	protected boolean autoGenInvoke(final MOB mob, List<String> commands, Physical givenTarget, final boolean auto, 
-								 final int asLevel, int autoGenerate, boolean forceLevels, List<Item> crafted)
+								 	final int asLevel, int autoGenerate, boolean forceLevels, List<Item> crafted)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
 
+		if(super.checkInfo(mob, commands))
+			return true;
+		
 		final PairVector<EnhancedExpertise,Integer> enhancedTypes=enhancedTypes(mob,commands);
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,L("Costume what? Enter \"costume list\" for a list, \"costume refit <item>\" to resize, \"costume learn <item>\", \"costume scan\", \"costume mend <item>\", or \"costume stop\" to cancel."));
+			commonTell(mob,L("Costume what? Enter \"costume list\" for a list, \"costume info <item>\", \"costume refit <item>\" to resize,"
+					+ " \"costume learn <item>\", \"costume scan\", \"costume mend <item>\", or \"costume stop\" to cancel."));
 			return false;
 		}
 		if((!auto)
@@ -244,11 +293,12 @@ public class Costuming extends EnhancedCraftingSkill implements ItemCraftor, Men
 		String startStr=null;
 		bundling=false;
 		int duration=4;
-		final int[] cols={
-				CMLib.lister().fixColWidth(27,mob.session()),
-				CMLib.lister().fixColWidth(3,mob.session()),
-				CMLib.lister().fixColWidth(6,mob.session())
-			};
+		final int[] cols=
+		{
+			CMLib.lister().fixColWidth(27,mob.session()),
+			CMLib.lister().fixColWidth(3,mob.session()),
+			CMLib.lister().fixColWidth(6,mob.session())
+		};
 		if(str.equalsIgnoreCase("list"))
 		{
 			String mask=CMParms.combine(commands,1);
@@ -385,7 +435,8 @@ public class Costuming extends EnhancedCraftingSkill implements ItemCraftor, Men
 			}
 
 			final String woodRequiredStr = foundRecipe.get(RCP_WOOD);
-			final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName),autoGenerate);
+			final int[] compData = new int[CF_TOTAL];
+			final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName),autoGenerate,compData);
 			if(componentsFoundList==null)
 				return false;
 			int woodRequired=CMath.s_int(woodRequiredStr);
@@ -394,14 +445,14 @@ public class Costuming extends EnhancedCraftingSkill implements ItemCraftor, Men
 			if(amount>woodRequired)
 				woodRequired=amount;
 			final String misctype=foundRecipe.get(RCP_MISCTYPE);
-			final int[] pm={RawMaterial.MATERIAL_CLOTH};
+			final int[] pm= { RawMaterial.MATERIAL_CLOTH };
 			bundling=misctype.equalsIgnoreCase("BUNDLE");
 			final int[][] data=fetchFoundResourceData(mob,
-												woodRequired,"cloth",pm,
-												0,null,null,
-												bundling,
-												autoGenerate,
-												enhancedTypes);
+													  woodRequired,"cloth",pm,
+													  0,null,null,
+													  bundling,
+													  autoGenerate,
+													  enhancedTypes);
 			if(data==null)
 				return false;
 			fixDataForComponents(data,componentsFoundList);
@@ -418,7 +469,8 @@ public class Costuming extends EnhancedCraftingSkill implements ItemCraftor, Men
 				return false;
 			}
 			duration=getDuration(CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),4);
-			String itemName=replacePercent(foundRecipe.get(RCP_FINALNAME),RawMaterial.CODES.NAME(data[0][FOUND_CODE])).toLowerCase();
+			buildingI.setMaterial(getBuildingMaterial(woodRequired,data,compData));
+			String itemName=replacePercent(foundRecipe.get(RCP_FINALNAME),RawMaterial.CODES.NAME(buildingI.material())).toLowerCase();
 			if(bundling)
 				itemName="a "+woodRequired+"# "+itemName;
 			else
@@ -433,10 +485,9 @@ public class Costuming extends EnhancedCraftingSkill implements ItemCraftor, Men
 			verb=L("making @x1",buildingI.name());
 			buildingI.setDisplayText(L("@x1 lies here",itemName));
 			buildingI.setDescription(itemName+". ");
-			buildingI.basePhyStats().setWeight(getStandardWeight(woodRequired,bundling));
-			final int hardness=RawMaterial.CODES.HARDNESS(data[0][FOUND_CODE])-1;
+			buildingI.basePhyStats().setWeight(getStandardWeight(woodRequired+compData[CF_AMOUNT],bundling));
+			final int hardness=RawMaterial.CODES.HARDNESS(buildingI.material())-1;
 			buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE)));
-			buildingI.setMaterial(data[0][FOUND_CODE]);
 			buildingI.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL)));
 			buildingI.setSecretIdentity(getBrand(mob));
 			final int capacity=CMath.s_int(foundRecipe.get(RCP_CAPACITY));
@@ -463,7 +514,7 @@ public class Costuming extends EnhancedCraftingSkill implements ItemCraftor, Men
 				}
 				((Armor)buildingI).basePhyStats().setArmor(0);
 				if(armordmg!=0)
-					((Armor)buildingI).basePhyStats().setArmor(armordmg+(abilityCode()-1)+hardness);
+					((Armor)buildingI).basePhyStats().setArmor(armordmg+(baseYield()+abilityCode()-1)+hardness);
 				setWearLocation(buildingI,misctype,0);
 			}
 			if(buildingI instanceof Rideable)
@@ -474,7 +525,6 @@ public class Costuming extends EnhancedCraftingSkill implements ItemCraftor, Men
 			buildingI.text();
 			buildingI.recoverPhyStats();
 		}
-
 
 		messedUp=!proficiencyCheck(mob,0,auto);
 

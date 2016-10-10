@@ -36,7 +36,11 @@ import java.net.URLEncoder;
 */
 public class AddRequestParameter extends StdWebMacro
 {
-	@Override public String name() { return "AddRequestParameter"; }
+	@Override
+	public String name()
+	{
+		return "AddRequestParameter";
+	}
 
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)

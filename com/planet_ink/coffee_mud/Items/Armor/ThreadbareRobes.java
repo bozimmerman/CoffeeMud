@@ -18,7 +18,12 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 public class ThreadbareRobes extends StdArmor
 {
-	@Override public String ID(){	return "ThreadbareRobes";}
+	@Override
+	public String ID()
+	{
+		return "ThreadbareRobes";
+	}
+
 	public ThreadbareRobes()
 	{
 		super();

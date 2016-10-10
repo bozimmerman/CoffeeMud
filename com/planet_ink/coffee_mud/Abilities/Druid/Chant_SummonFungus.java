@@ -105,7 +105,8 @@ public class Chant_SummonFungus extends Chant_SummonPlants
 	public boolean rightPlace(MOB mob,boolean auto)
 	{
 		if((!auto)
-		&&(mob.location().domainType()!=Room.DOMAIN_INDOORS_CAVE))
+		&&(mob.location().domainType()!=Room.DOMAIN_INDOORS_CAVE)
+		&&((mob.location().getAtmosphere()&RawMaterial.MATERIAL_ROCK)==0))
 		{
 			mob.tell(L("This is not the place for fungus."));
 			return false;

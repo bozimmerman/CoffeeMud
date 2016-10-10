@@ -35,7 +35,11 @@ import java.util.*;
 */
 public class ExpertiseData extends StdWebMacro
 {
-	@Override public String name() { return "ExpertiseData"; }
+	@Override
+	public String name()
+	{
+		return "ExpertiseData";
+	}
 
 	// valid parms include help, ranges, quality, target, alignment, domain,
 	// qualifyQ, auto

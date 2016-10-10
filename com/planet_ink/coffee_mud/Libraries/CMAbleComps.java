@@ -51,20 +51,40 @@ import java.util.*;
  */
 public class CMAbleComps extends StdLibrary implements AbilityComponents
 {
-	@Override public String ID(){return "CMAbleComps";}
+	@Override
+	public String ID()
+	{
+		return "CMAbleComps";
+	}
 
-	public boolean IsItemComponent(MOB mob, AbilityComponent comp, int[] amt, Item I, List<Object> thisSet)
+	protected final boolean isRightMaterial(final long type, final long itemMaterial, final boolean mithrilOK)
+	{
+		if(itemMaterial == type)
+			return true;
+		if((mithrilOK) && (type == RawMaterial.MATERIAL_METAL))
+		{
+			if(itemMaterial==RawMaterial.MATERIAL_MITHRIL)
+				return true;
+		}
+		return false;
+	}
+	
+	public boolean IsItemComponent(MOB mob, AbilityComponent comp, int[] amt, Item I, List<Object> thisSet, final boolean mithrilOK)
 	{
 		if(I==null)
 			return false;
 		Item container=null;
-		if((comp.getType()==AbilityComponent.CompType.STRING)&&(!CMLib.english().containsString(I.name(),comp.getStringType())))
+		if((comp.getType()==AbilityComponent.CompType.STRING)
+		&&(!CMLib.english().containsString(I.name(),comp.getStringType())))
 			return false;
 		else
-		if((comp.getType()==AbilityComponent.CompType.RESOURCE)&&((!(I instanceof RawMaterial))||(I.material()!=comp.getLongType())))
+		if((comp.getType()==AbilityComponent.CompType.RESOURCE)
+		&&((!(I instanceof RawMaterial))||(I.material()!=comp.getLongType())))
 			return false;
 		else
-		if((comp.getType()==AbilityComponent.CompType.MATERIAL)&&((!(I instanceof RawMaterial))||((I.material()&RawMaterial.MATERIAL_MASK)!=comp.getLongType())))
+		if((comp.getType()==AbilityComponent.CompType.MATERIAL)
+		&&((!(I instanceof RawMaterial))
+			||(!isRightMaterial(comp.getLongType(),I.material()&RawMaterial.MATERIAL_MASK,mithrilOK))))
 			return false;
 		container=I.ultimateContainer(null);
 		if(container==null)
@@ -125,7 +145,7 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 
 	// returns list of components found if all good, returns Integer of bad row if not.
 	@Override
-	public List<Object> componentCheck(MOB mob, List<AbilityComponent> req)
+	public List<Object> componentCheck(MOB mob, List<AbilityComponent> req, boolean mithrilOK)
 	{
 		if((mob==null)||(req==null)||(req.size()==0))
 			return new Vector<Object>();
@@ -157,7 +177,7 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 			{
 				for(int ii=0;ii<mob.numItems();ii++)
 				{
-					found=IsItemComponent(mob, comp, amt, mob.getItem(ii), thisSet);
+					found=IsItemComponent(mob, comp, amt, mob.getItem(ii), thisSet,mithrilOK);
 					if(found)
 						break;
 				}
@@ -168,7 +188,7 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 			{
 				for(int ii=0;ii<room.numItems();ii++)
 				{
-					found=IsItemComponent(mob, comp, amt, room.getItem(ii), thisSet);
+					found=IsItemComponent(mob, comp, amt, room.getItem(ii), thisSet,mithrilOK);
 					if(found)
 						break;
 				}
@@ -683,7 +703,7 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 	}
 
 	@Override
-	public AbilityLimits getCommonSkillLimit(MOB studentM)
+	public AbilityLimits getSpecialSkillLimit(MOB studentM)
 	{
 		final AbilityLimits aL = new AbilityLimits()
 		{
@@ -694,6 +714,8 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 			private int	nonCraftingSkills	= 0;
 			private int	maxNonCraftingSkills= 0;
 			private int	specificSkillLimit	= 0;
+			private int maxLanguageSkills	= 0;
+			private int languageSkills		= 0;
 			
 			@Override
 			public AbilityLimits commonSkills(int newVal)
@@ -723,6 +745,15 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 			}
 
 			@Override
+			public AbilityLimits languageSkills(int newVal)
+			{
+				languageSkills = newVal;
+				if(newVal > maxLanguageSkills)
+					maxLanguageSkills = newVal;
+				return this;
+			}
+
+			@Override
 			public AbilityLimits specificSkillLimit(int newVal)
 			{
 				specificSkillLimit = newVal;
@@ -741,6 +772,12 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 				return craftingSkills;
 			}
 
+			@Override
+			public int languageSkills()
+			{
+				return languageSkills;
+			}
+			
 			@Override
 			public int nonCraftingSkills()
 			{
@@ -770,6 +807,12 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 			{
 				return specificSkillLimit;
 			}
+
+			@Override
+			public int maxLanguageSkills()
+			{
+				return maxLanguageSkills;
+			}
 		};
 		CharClass C = null;
 		if(studentM!=null)
@@ -790,6 +833,10 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 				aL.nonCraftingSkills(Integer.MAX_VALUE);
 			else
 				aL.nonCraftingSkills(C.maxNonCraftingSkills());
+			if(C.maxLanguages() == 0)
+				aL.languageSkills(Integer.MAX_VALUE);
+			else
+				aL.languageSkills(C.maxLanguages());
 		}
 		if((studentM != null) && (studentM.playerStats() != null))
 		{
@@ -812,14 +859,20 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 				if(pStats.getAccount() != null)
 					aL.nonCraftingSkills(aL.nonCraftingSkills() + pStats.getAccount().getBonusNonCraftingSkillLimits());
 			}
+			if (aL.maxLanguageSkills() < Integer.MAX_VALUE)
+			{
+				aL.languageSkills(aL.languageSkills() + pStats.getBonusLanguageLimits());
+				if(pStats.getAccount() != null)
+					aL.languageSkills(aL.languageSkills() + pStats.getAccount().getBonusLanguageLimits());
+			}
 		}
 		return aL;
 	}
 
 	@Override
-	public AbilityLimits getCommonSkillLimit(MOB studentM, Ability A)
+	public AbilityLimits getSpecialSkillLimit(MOB studentM, Ability A)
 	{
-		final AbilityLimits aL=getCommonSkillLimit(studentM);
+		final AbilityLimits aL=getSpecialSkillLimit(studentM);
 		aL.specificSkillLimit(Integer.MAX_VALUE);
 		if(A==null)
 			return aL;
@@ -828,13 +881,17 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 			final boolean crafting = ((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_CRAFTINGSKILL);
 			aL.specificSkillLimit(crafting ? aL.craftingSkills() : aL.nonCraftingSkills());
 		}
+		if((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE)
+		{
+			aL.specificSkillLimit(aL.languageSkills());
+		}
 		return aL;
 	}
 
 	@Override
-	public AbilityLimits getCommonSkillRemainder(MOB studentM, Ability A)
+	public AbilityLimits getSpecialSkillRemainder(MOB studentM, Ability A)
 	{
-		final AbilityLimits aL = getCommonSkillRemainders(studentM);
+		final AbilityLimits aL = getSpecialSkillRemainders(studentM);
 		aL.specificSkillLimit(Integer.MAX_VALUE);
 		if(A==null)
 			return aL;
@@ -843,13 +900,17 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 			final boolean crafting = ((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_CRAFTINGSKILL);
 			aL.specificSkillLimit(crafting ? aL.craftingSkills() : aL.nonCraftingSkills());
 		}
+		if((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE)
+		{
+			aL.specificSkillLimit(aL.languageSkills());
+		}
 		return aL;
 	}
 
 	@Override
-	public AbilityLimits getCommonSkillRemainders(MOB student)
+	public AbilityLimits getSpecialSkillRemainders(MOB student)
 	{
-		final AbilityLimits aL = getCommonSkillLimit(student);
+		final AbilityLimits aL = getSpecialSkillLimit(student);
 		final CharStats CS=student.charStats();
 		if(CS.getCurrentClass()==null)
 			return aL;
@@ -880,6 +941,25 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 					aL.craftingSkills(aL.craftingSkills()-1);
 				else
 					aL.nonCraftingSkills(aL.nonCraftingSkills()-1);
+			}
+			else
+			if(((A2.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE)
+			&&(!A2.ID().equals("Common")))
+			{
+				if(culturalAbilities.contains(A2.ID().toLowerCase()))
+					continue;
+				boolean foundInAClass=false;
+				for(int c=0;c<CS.numClasses();c++)
+				{
+					if(CMLib.ableMapper().getQualifyingLevel(CS.getMyClass(c).ID(), false, A2.ID())>=0)
+					{
+						foundInAClass=true;
+						break;
+					}
+				}
+				if(foundInAClass)
+					continue;
+				aL.languageSkills(aL.languageSkills()-1);
 			}
 		}
 		return aL;

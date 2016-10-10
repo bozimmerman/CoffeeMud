@@ -112,7 +112,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		if(serviceClient==null)
 		{
 			name="THCombat"+Thread.currentThread().getThreadGroup().getName().charAt(0);
-			serviceClient=CMLib.threads().startTickDown(this, Tickable.TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK, CMProps.getTickMillis(), 3);
+			serviceClient=CMLib.threads().startTickDown(this, Tickable.TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK, CMProps.getTickMillis(), 4);
 		}
 		return true;
 	}
@@ -502,15 +502,11 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	}
 
 	@Override
-	public boolean mayIAttack(final MOB mob, final Rideable attacker, final Rideable defender)
+	public boolean mayIAttackThisVessel(final MOB mob, final PhysicalAgent defender)
 	{
-		final String attackerOwnerName = (attacker instanceof PrivateProperty) ? ((PrivateProperty)attacker).getOwnerName() : "";  
 		final String defenderOwnerName = (defender instanceof PrivateProperty) ? ((PrivateProperty)defender).getOwnerName() : "";  
 		// is this how we determine npc ships?
-		if((defenderOwnerName == null)||(defenderOwnerName.length()==0))
-			return true;
-		if(((attackerOwnerName == null)||(attackerOwnerName.length()==0)) 
-		&& (mob.isMonster()))
+		if(((defenderOwnerName == null)||(defenderOwnerName.length()==0))&&(defender instanceof PrivateProperty))
 			return true;
 		if(CMSecurity.isASysOp(mob) && mob.isAttributeSet(Attrib.PLAYERKILL))
 			return true;
@@ -539,24 +535,48 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			}
 		}
 		else
+		if(defender instanceof Rideable)
 		{
-			for(int i=0;i<defender.numRiders();i++)
+			final Rideable rideableDefender=(Rideable)defender;
+			for(int i=0;i<rideableDefender.numRiders();i++)
 			{
-				Rider R=defender.fetchRider(i);
+				Rider R=rideableDefender.fetchRider(i);
 				if((R instanceof MOB)
-				&&(mob.mayIFight((MOB)R)))
+				&&(!mob.mayIFight(R)))
 				{
-					return true;
+					return false;
 				}
 			}
+			return true;
 		}
 		return false;
 	}
 	
 	@Override
-	public boolean postAttack(MOB attacker, Rideable attackingShip, Rideable target, Weapon weapon, boolean wasAHit)
+	public final int getShipHullPoints(BoardableShip ship)
 	{
-		if((attacker==null)||(!mayIAttack(attacker,attackingShip, target))||(weapon==null))
+		if(ship == null)
+			return 0;
+		return 10 * ship.getShipArea().numberOfProperIDedRooms();
+	}
+	
+	@Override
+	public final boolean isAShipSiegeWeapon(Item I)
+	{
+		if((I instanceof AmmunitionWeapon)
+		&&(I instanceof Rideable)
+		&&((AmmunitionWeapon)I).isFreeStanding()
+		&&(((AmmunitionWeapon)I).requiresAmmunition()))
+			return true;
+		return false;
+	}
+	
+	@Override
+	public boolean postShipAttack(MOB attacker, PhysicalAgent attackingShip, PhysicalAgent target, Weapon weapon, boolean wasAHit)
+	{
+		// if not in combat, howd you get here? if you are, this MUST happen
+		//(!mayIAttack(attacker,attackingShip, target))
+		if((attacker==null)||(weapon==null))
 			return false;
 		final CMMsg msg=CMClass.getMsg(attacker,target,weapon,CMMsg.MSG_WEAPONATTACK,null);
 		final Room R=CMLib.map().roomLocation(target);
@@ -844,11 +864,10 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 
 
 	@Override
-	public void recoverTick(MOB mob)
+	public void recoverTick(final MOB mob)
 	{
 		if((mob!=null)
-		&&(!mob.isInCombat())
-		&&(!CMLib.flags().isClimbing(mob)))
+		&&(!mob.isInCombat()))
 		{
 			final CharStats charStats=mob.charStats();
 			final CharState curState=mob.curState();
@@ -857,6 +876,13 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			||(curState.getMana()<maxState.getMana())
 			||(curState.getMovement()<maxState.getMovement()))
 			{
+				final Room R=mob.location();
+				final Area A=(R!=null)?R.getArea():null;
+				if((A instanceof BoardableShip)
+				&&(((BoardableShip)A).getShipItem() instanceof Combatant)
+				&&(((Combatant)((BoardableShip)A).getShipItem()).isInCombat()))
+					return;
+				
 				final boolean isSleeping=(CMLib.flags().isSleeping(mob));
 				final boolean isSittingOrRiding=(!isSleeping) && ((CMLib.flags().isSitting(mob))||(mob.riding()!=null));
 				final boolean isFlying=(!isSleeping) && (!isSittingOrRiding) && CMLib.flags().isFlying(mob);
@@ -893,7 +919,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	}
 
 	@Override
-	public void postWeaponDamage(MOB source, MOB target, Item item, int damageInt)
+	public CMMsg postWeaponDamage(MOB source, MOB target, Item item, int damageInt)
 	{
 		int damageType=Weapon.TYPE_BASHING;
 		Weapon weapon=null;
@@ -933,20 +959,33 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 						   msg.othersCode(),
 						   replaceDamageTag(msg.othersMessage(),msg.value(),damageType,CMMsg.View.OTHERS));
 			}
-			if((source.mayIFight(target))
-			&&(source.location()==room)
-			&&(target.location()==room))
-				room.send(source,msg);
+			if(source.mayIFight(target))
+			{
+				if((msg.source().riding() instanceof BoardableShip)
+				&&(CMLib.combat().isAShipSiegeWeapon(item)))
+				{
+					room.send(source,msg);
+					return msg;
+				}
+				else
+				if((source.location()==room)
+				&&(target.location()==room))
+				{
+					room.send(source,msg);
+					return msg;
+				}
+			}
 		}
+		return null;
 	}
 
 	@Override
-	public void postWeaponAttackResult(MOB source, MOB target, Item item, boolean success)
+	public CMMsg postWeaponAttackResult(MOB source, MOB target, Item item, boolean success)
 	{
 		if(source==null)
-			return;
+			return null;
 		if(!source.mayIFight(target))
-			return;
+			return null;
 		Weapon weapon=null;
 		int damageInt = 0;
 		if(item instanceof Weapon)
@@ -964,34 +1003,41 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			final CMMsg msg=CMClass.getMsg(source,
 									target,
 									weapon,
-									CMMsg.MSG_NOISYMOVEMENT,
+									CMMsg.MSG_ATTACKMISS,
 									missString);
 			CMLib.color().fixSourceFightColor(msg);
 			// why was there no okaffect here?
 			final Room R=source.location();
 			if(R!=null)
 			if(R.okMessage(source,msg) && (!source.amDead()) && (!source.amDestroyed()))
+			{
 				R.send(source,msg);
+				return msg;
+			}
 		}
+		return null;
 	}
 
 	@Override
-	public void postWeaponAttackResult(MOB source, Rideable attacker, Rideable defender, Weapon weapon, boolean success)
+	public void postShipWeaponAttackResult(MOB source, PhysicalAgent attacker, PhysicalAgent defender, Weapon weapon, boolean success)
 	{
 		if(source==null)
 			return;
-		if(!mayIAttack(source, attacker, defender))
-			return;
+		// if you aren't in combat, how'd you get here.
+		// if you are in combat, this needs to happen regardless
+		//if(!mayIAttack(source, attacker, defender))
+		//	return;
 		int damageInt=adjustedDamage(source,weapon,null,0,false);
 		int damageType=Weapon.TYPE_BASHING;
-		damageType=weapon.weaponDamageType();
+		if(weapon != null)
+			damageType= weapon.weaponDamageType();
 		final Room room=CMLib.map().roomLocation(attacker);
 		if(success)
 		{
 			// calculate Base Damage (with Strength bonus)
 			final String oldHitString="^F^<FIGHT^>"+((weapon!=null)?
 								weapon.hitString(damageInt):
-								standardHitString(Weapon.TYPE_NATURAL,Weapon.CLASS_BLUNT,damageInt,weapon.name()))+"^</FIGHT^>^?";
+								standardHitString(Weapon.TYPE_NATURAL,Weapon.CLASS_BLUNT,(int)Math.round(Math.pow(2,damageInt)),attacker.Name()))+"^</FIGHT^>^?";
 			final CMMsg msg=CMClass.getMsg(source,
 									defender,
 									weapon,
@@ -1018,8 +1064,8 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 							   msg.othersCode(),
 							   replaceDamageTag(msg.othersMessage(),msg.value(),damageType,CMMsg.View.OTHERS));
 				}
-				if((mayIAttack(source,attacker,defender))
-				&&(CMLib.map().roomLocation(attacker)==room)
+				if(//(mayIAttack(source,attacker,defender))&&
+				(CMLib.map().roomLocation(attacker)==room)
 				&&(CMLib.map().roomLocation(defender)==room))
 					room.send(source,msg);
 			}
@@ -1028,16 +1074,16 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		{
 			final String missString="^F^<FIGHT^>"+((weapon!=null)?
 								weapon.missString():
-								standardMissString(Weapon.TYPE_BASHING,Weapon.CLASS_BLUNT,weapon.name(),false))+"^</FIGHT^>^?";
+								standardMissString(Weapon.TYPE_BASHING,Weapon.CLASS_BLUNT,attacker.name(),false))+"^</FIGHT^>^?";
 			final CMMsg msg=CMClass.getMsg(source,
 											defender,
 											weapon,
-											CMMsg.MSG_NOISYMOVEMENT,
+											CMMsg.MSG_ATTACKMISS,
 											missString);
 			CMLib.color().fixSourceFightColor(msg);
 			// why was there no okaffect here?
-			if(room!=null)
-			if(room.okMessage(source,msg))
+			if((room!=null)
+			&&(room.okMessage(source,msg)))
 				room.send(source,msg);
 		}
 	}
@@ -1298,7 +1344,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		&&(!isKnockedOutUponDeath(target,source)))
 			body=target.killMeDead(true);
 
-		handleCombatLossConsequences(target,source,cmds,expLost,L("^*You lose @x1 experience points.^?^.",""+expLost[0]));
+		handleCombatLossConsequences(target,source,cmds,expLost,"^*You lose @x1 experience points.^?^.");
 
 		if(!isKnockedOutUponDeath(target,source))
 		{
@@ -1314,10 +1360,12 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 					body.setKillerTool(source.getNaturalWeapon());
 			}
 
-			if((!target.isMonster())&&(CMLib.dice().rollPercentage()==1)&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
+			if((!target.isMonster())
+			&&(CMLib.dice().rollPercentage()==1)
+			&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
 			{
 				final Ability A=CMClass.getAbility("Disease_Amnesia");
-				if((A!=null)&&(target.fetchEffect(A.ID())==null))
+				if((A!=null)&&(target.fetchEffect(A.ID())==null)&&(!CMSecurity.isAbilityDisabled(A.ID())))
 					A.invoke(target,target,true,0);
 			}
 
@@ -1693,6 +1741,120 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	}
 
 	@Override
+	public boolean checkDamageSaves(final MOB mob, final CMMsg msg)
+	{
+		int chanceToFail = 0;
+		if(msg.tool() instanceof Weapon)
+		{
+			int charStatCode = -1;
+			switch(((Weapon)msg.tool()).weaponDamageType())
+			{
+			case Weapon.TYPE_BASHING:
+				charStatCode=CharStats.STAT_SAVE_BLUNT;
+				break;
+			case Weapon.TYPE_PIERCING:
+				charStatCode=CharStats.STAT_SAVE_PIERCE;
+				break;
+			case Weapon.TYPE_SLASHING:
+				charStatCode=CharStats.STAT_SAVE_SLASH;
+				break;
+			default:
+				return true;
+			}
+			chanceToFail = mob.charStats().getSave(charStatCode);
+		}
+		else
+		if(msg.tool() instanceof Ability)
+		{
+			switch(((Ability)msg.tool()).classificationCode() & Ability.ALL_ACODES)
+			{
+			case Ability.ACODE_CHANT:
+				chanceToFail=mob.charStats().getSave(CharStats.STAT_SAVE_CHANTS)
+							+mob.charStats().getSave(CharStats.STAT_SAVE_MAGIC);
+				break;
+			case Ability.ACODE_PRAYER:
+				chanceToFail=mob.charStats().getSave(CharStats.STAT_SAVE_PRAYERS)
+							+mob.charStats().getSave(CharStats.STAT_SAVE_MAGIC);
+				break;
+			case Ability.ACODE_SPELL:
+				chanceToFail=mob.charStats().getSave(CharStats.STAT_SAVE_SPELLS)
+							+mob.charStats().getSave(CharStats.STAT_SAVE_MAGIC);
+				break;
+			case Ability.ACODE_SONG:
+				chanceToFail=mob.charStats().getSave(CharStats.STAT_SAVE_SONGS)
+							+mob.charStats().getSave(CharStats.STAT_SAVE_MAGIC);
+				break;
+			}
+			int charStatCode = CharStats.CODES.RVSCMMSGMAP(msg.sourceMinor());
+			if(charStatCode >= 0)
+				chanceToFail += mob.charStats().getSave(charStatCode);
+		}
+		if ((chanceToFail != 0) && (chanceToFail > (Integer.MIN_VALUE/2)))
+		{
+			if (chanceToFail < -100)
+				chanceToFail = -100;
+			else
+			if (chanceToFail > 100)
+				chanceToFail = 100;
+			if (CMLib.dice().rollPercentage() < ((chanceToFail < 0) ? (-chanceToFail) : chanceToFail))
+				msg.setValue((int)Math.round(CMath.mul(msg.value(),CMath.div(100-chanceToFail,100))));
+		}
+		return true;
+	}
+
+	@Override
+	public boolean checkSavingThrows(final MOB mob, final CMMsg msg)
+	{
+		if ((msg.targetMinor() != CMMsg.TYP_WEAPONATTACK) && (msg.value() <= 0))
+		{
+			int charStatCode = -1;
+			int chanceToFail = 0;
+			if(msg.tool() instanceof Ability)
+			{
+				switch(((Ability)msg.tool()).classificationCode() & Ability.ALL_ACODES)
+				{
+				case Ability.ACODE_CHANT:
+					charStatCode=CharStats.STAT_SAVE_CHANTS;
+					break;
+				case Ability.ACODE_PRAYER:
+					charStatCode=CharStats.STAT_SAVE_PRAYERS;
+					break;
+				case Ability.ACODE_SPELL:
+					charStatCode=CharStats.STAT_SAVE_SPELLS;
+					break;
+				case Ability.ACODE_SONG:
+					charStatCode=CharStats.STAT_SAVE_SONGS;
+					break;
+				}
+				if((charStatCode > 0)
+				&&(msg.targetMinor()==CMMsg.TYP_CAST_SPELL))
+					chanceToFail = mob.charStats().getSave(CharStats.STAT_SAVE_MAGIC);
+			}
+			if(charStatCode<0)
+				charStatCode = CharStats.CODES.RVSCMMSGMAP(msg.targetMinor());
+			if(charStatCode >= 0)
+			{
+				chanceToFail += mob.charStats().getSave(charStatCode);
+				if (chanceToFail > (Integer.MIN_VALUE/2))
+				{
+					final int diff = (mob.phyStats().level() - msg.source().phyStats().level());
+					final int diffSign = diff < 0 ? -1 : 1;
+					chanceToFail += (diffSign * (diff * diff));
+					if (chanceToFail < 5)
+						chanceToFail = 5;
+					else
+					if (chanceToFail > 95)
+						chanceToFail = 95;
+
+					if (CMLib.dice().rollPercentage() < chanceToFail)
+						CMLib.combat().resistanceMsgs(msg.source(), mob, msg); // also applies the +1 to msg.value()
+				}
+			}
+		}
+		return true;
+	}
+
+	@Override
 	public void handleBeingHealed(CMMsg msg)
 	{
 		if(!(msg.target() instanceof MOB))
@@ -1734,6 +1896,8 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			return;
 		final MOB attacker=msg.source();
 		final MOB target=(MOB)msg.target();
+		if(target.amDead()) // already dead, don't take more damage.
+			return;
 		final int dmg=msg.value();
 		if(Log.combatChannelOn())
 		{
@@ -1826,6 +1990,26 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			if(CMLib.flags().isCataloged(deadmob))
 				CMLib.catalog().bumpDeathPickup(deadmob);
 		}
+	}
+	
+	@Override
+	public boolean handleDamageSpam(MOB observerM, final Physical target, int amount)
+	{
+		if((observerM!=null)
+		&&(observerM.playerStats()!=null)
+		&&(target!=null)
+		&&(amount>0))
+		{
+			Map<String,int[]> spam=observerM.playerStats().getCombatSpams();
+			synchronized(spam)
+			{
+				if(!spam.containsKey(target.Name()))
+					spam.put(target.Name(),new int[]{0});
+				spam.get(target.Name())[0]+=amount;
+			}
+			return true;
+		}
+		return false;
 	}
 
 	@Override
@@ -1922,6 +2106,43 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	{
 		// no longer does a damn thing
 	}
+	
+	@Override
+	public void handleDamageSpamSummary(final MOB mob)
+	{
+		if((mob.isAttributeSet(MOB.Attrib.NOBATTLESPAM))
+		&&(mob.playerStats()!=null))
+		{
+			int numEnemies=0;
+			final Room R=mob.location();
+			for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
+			{
+				final MOB M=m.nextElement();
+				if((M!=null)&&(M!=mob)&&(M.getVictim()==mob))
+					numEnemies++;
+			}
+			Map<String,int[]> combatSpam = mob.playerStats().getCombatSpams();
+			final StringBuilder msg=new StringBuilder(""); 
+			synchronized(combatSpam)
+			{
+				if(numEnemies>1)
+					msg.append("^<FIGHT^>"+L("Fighting @x1 enemies.  ",""+numEnemies)+"^</FIGHT^>");
+				if(combatSpam.size()==0)
+					msg.append("^<FIGHT^>"+L("No new combat damage reported.")+"^</FIGHT^>");
+				else
+				{
+					msg.append("^<FIGHT^>"+L("New combat damage: "));
+					for(String str : combatSpam.keySet())
+					{
+						msg.append(str).append(" ").append(combatSpam.get(str)[0]).append(" points. ");
+					}
+					msg.append("^</FIGHT^>");
+				}
+				mob.tell(msg.toString());
+				combatSpam.clear();
+			}
+		}
+	}
 
 	@Override
 	public void handleBeingAssaulted(CMMsg msg)
@@ -1942,7 +2163,8 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		}
 		if(target.isInCombat())
 		{
-			if(attacker.session()!=null)
+			if((attacker.session()!=null)
+			&&(!attacker.isPossessing()))
 			{
 				if(!target.isMonster())
 					attacker.session().setLastPKFight();
@@ -2479,12 +2701,12 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				}
 			}
 			else
-			if(CMath.isMathExpression(whatToDo,varVals))
+			if(CMath.s_parseIntExpression(whatToDo,varVals)>0)
 			{
 				lostExperience[0]=CMath.s_parseIntExpression(whatToDo,varVals);
 				if(lostExperience[0]>0)
 				{
-					message=CMStrings.replaceAll(message,"@x1",""+lostExperience[0]);
+					message=L(message,""+lostExperience[0]);
 					deadM.tell(message);
 					CMLib.leveler().postExperience(deadM,null,null,-lostExperience[0],false);
 				}
@@ -2495,7 +2717,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				lostExperience[0]=baseExperience;
 				if(lostExperience[0]>0)
 				{
-					message=CMStrings.replaceAll(message,"@x1",""+baseExperience);
+					message=L(message,""+baseExperience);
 					deadM.tell(message);
 					CMLib.leveler().postExperience(deadM,null,null,-baseExperience,false);
 				}
@@ -2529,6 +2751,11 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 
 	protected void tickAllShips()
 	{
+		for(final Enumeration<BoardableShip> s = CMLib.map().ships();s.hasMoreElements();)
+		{
+			final BoardableShip ship = s.nextElement();
+			ship.tick(ship, Tickable.TICKID_SPECIALMANEUVER);
+		}
 		for(final Enumeration<BoardableShip> s = CMLib.map().ships();s.hasMoreElements();)
 		{
 			final BoardableShip ship = s.nextElement();

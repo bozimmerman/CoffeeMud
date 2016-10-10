@@ -162,89 +162,6 @@ public class Pregnancy extends StdAbility implements HealthCondition
 		super.executeMsg(host,msg);
 	}
 
-	public Race getRace(MOB babe, String race1, String race2)
-	{
-		if(race1.indexOf(race2)>=0)
-			return CMClass.getRace(race1);
-		else
-		if(race2.indexOf(race1)>=0)
-			return CMClass.getRace(race2);
-
-		Race R=null;
-		if(race1.equalsIgnoreCase("Human")||race2.equalsIgnoreCase("Human"))
-		{
-			String halfRace=(race1.equalsIgnoreCase("Human")?race2:race1);
-			R=CMClass.getRace(halfRace);
-			if((R!=null)&&(!R.ID().toUpperCase().startsWith("HALF")))
-			{
-				halfRace="Half"+CMStrings.capitalizeAndLower(R.ID().toLowerCase());
-				final Race testR=CMClass.getRace(halfRace);
-				if(testR!=null)
-					R=testR;
-				else
-				{
-					R=R.mixRace(CMClass.getRace("Human"),halfRace,"Half "+CMStrings.capitalizeAndLower(R.name()));
-					if(R.isGeneric() && (!R.ID().equals(race1))&& (!R.ID().equals(race2)))
-					{
-						CMClass.addRace(R);
-						CMLib.database().DBCreateRace(R.ID(),R.racialParms());
-					}
-				}
-			}
-		}
-		else
-		if(race1.equalsIgnoreCase("Halfling")||race2.equalsIgnoreCase("Halfling"))
-		{
-			String halfRace=(race1.equalsIgnoreCase("Halfling")?race2:race1);
-			R=CMClass.getRace(halfRace);
-			if((R!=null)&&(!R.ID().endsWith("ling")))
-			{
-				halfRace=R.ID()+"ling";
-				final Race testR=CMClass.getRace(halfRace);
-				if(testR!=null)
-					R=testR;
-				else
-				{
-					R=R.mixRace(CMClass.getRace("Halfling"),halfRace,CMStrings.capitalizeAndLower(R.name())+"ling");
-					if(R.isGeneric() && (!R.ID().equals(race1))&& (!R.ID().equals(race2)))
-					{
-						CMClass.addRace(R);
-						CMLib.database().DBCreateRace(R.ID(),R.racialParms());
-					}
-				}
-			}
-		}
-		else
-		{
-			String first=null;
-			if(race1.length()==race2.length())
-				first=(race1.compareToIgnoreCase(race2)<0)?race1:race2;
-			else
-			if(race1.length()>race2.length())
-				first=race1;
-			else
-				first=race2;
-			final String second=(first.equals(race1)?race2:race1);
-			final String halfRace=(race1.compareToIgnoreCase(race2)<0)?race1+race2:race2+race1;
-			final Race testR=CMClass.getRace(halfRace);
-			final Race FIRSTR=CMClass.getRace(first);
-			final Race SECONDR=CMClass.getRace(second);
-			if(testR!=null)
-				R=testR;
-			else
-			{
-				R=FIRSTR.mixRace(SECONDR,halfRace,FIRSTR.name()+"-"+SECONDR.name());
-				if(R.isGeneric() && (!R.ID().equals(race1))&& (!R.ID().equals(race2)))
-				{
-					CMClass.addRace(R);
-					CMLib.database().DBCreateRace(R.ID(),R.racialParms());
-				}
-			}
-		}
-		return R;
-	}
-
-
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -327,7 +244,7 @@ public class Pregnancy extends StdAbility implements HealthCondition
 									A=mob.fetchAbility(ID());
 								}
 							}
-							Race R=getRace(babe,race1,race2);
+							Race R=CMLib.utensils().getMixedRace(race1,race2);
 							if(R==null)
 								R=mob.baseCharStats().getMyRace();
 							String name=CMLib.english().startWithAorAn(R.makeMobName(gender, 2)).toLowerCase();
@@ -424,7 +341,7 @@ public class Pregnancy extends StdAbility implements HealthCondition
 								if(mob.isMonster()&&(otherParentM!=null))
 									parent=otherParentM.Name();
 								if(AGE!=null)
-									CMLib.database().DBCreateData(parent,"HEAVEN",parent+"/HEAVEN/"+AGE.text(),I.ID()+"/"+I.basePhyStats().ability()+"/"+I.text());
+									CMLib.database().DBCreatePlayerData(parent,"HEAVEN",parent+"/HEAVEN/"+AGE.text(),I.ID()+"/"+I.basePhyStats().ability()+"/"+I.text());
 							}
 						}
 						else

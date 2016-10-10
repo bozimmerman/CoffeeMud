@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.AbilityMapping;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
@@ -110,7 +111,7 @@ public class StdCharClass implements CharClass
 	@Override
 	public String getMovementFormula()
 	{
-		return "10*((@x2<@x3)/18)";
+		return "5*((@x2<@x3)/18)";
 	}
 
 	public String	movementDesc	= null;
@@ -411,7 +412,9 @@ public class StdCharClass implements CharClass
 			final int statCode=CharStats.CODES.findWhole(minReq.first, true);
 			if(statCode >= 0)
 			{
-				if(mob.baseCharStats().getStat(statCode) < minReq.second.intValue())
+				final CharStats cStats = (CharStats)mob.baseCharStats().copyOf();
+				cStats.getMyRace().affectCharStats(mob, cStats);
+				if(cStats.getStat(statCode) < minReq.second.intValue())
 				{
 					if(!quiet)
 						mob.tell(L("You need at least a @x1 @x2 to become a @x3.",minReq.second.toString(),CMStrings.capitalizeAndLower(CharStats.CODES.NAME(statCode)),name()));
@@ -424,11 +427,14 @@ public class StdCharClass implements CharClass
 		boolean foundOne=raceList.length==0;
 		for(final String raceName : raceList)
 		{
-			if(raceName.equalsIgnoreCase("any")
-			|| raceName.equalsIgnoreCase("all")
-			|| R.ID().equalsIgnoreCase(raceName)
-			|| R.name().equalsIgnoreCase(raceName)
-			|| R.racialCategory().equalsIgnoreCase(raceName))
+			if((raceName.equalsIgnoreCase("any")
+				|| raceName.equalsIgnoreCase("all")
+				|| R.ID().equalsIgnoreCase(raceName)
+				|| R.name().equalsIgnoreCase(raceName)
+				|| R.racialCategory().equalsIgnoreCase(raceName))
+			&&(!raceName.equalsIgnoreCase("-"+R.ID()))
+			&&(!raceName.equalsIgnoreCase("-"+R.name()))
+			&&(!raceName.equalsIgnoreCase("-"+R.racialCategory())))
 			{
 				foundOne=true;
 				break;
@@ -530,19 +536,40 @@ public class StdCharClass implements CharClass
 	private StringBuilder getRaceList(String[] raceList)
 	{
 		final StringBuilder str=new StringBuilder();
-		if(raceList.length==1)
-			str.append(CMStrings.capitalizeAndLower(raceList[0]));
-		else
-		if(raceList.length==2)
-			str.append(CMStrings.capitalizeAndLower(raceList[0])).append(" or ").append(CMStrings.capitalizeAndLower(raceList[1]));
-		else
+		int end=raceList.length;
 		for(int i=0;i<raceList.length;i++)
 		{
+			if(raceList[i].startsWith("-"))
+				end=i;
+		}
+		if(end == 0)
+			str.append("All");
+		for(int i=0;i<end;i++)
+		{
 			if(i>0)
+			{
 				str.append(", ");
-			if(i==raceList.length-1)
-				str.append(L("or "));
-			str.append(CMStrings.capitalizeAndLower(raceList[i]));
+				if(i==end-1)
+					str.append(L("or "));
+			}
+			if(!raceList[i].startsWith("-"))
+				str.append(CMStrings.capitalizeAndLower(raceList[i]));
+		}
+		if(end<raceList.length)
+		{
+			str.append(" except ");
+			for(int i=end;i<raceList.length;i++)
+			{
+				if(i>end)
+				{
+					str.append(", ");
+					if(i==raceList.length-1)
+						str.append(L("or "));
+				}
+				if(raceList[i].startsWith("-"))
+					str.append(CMStrings.capitalizeAndLower(raceList[i].substring(1)));
+			}
+			
 		}
 		return str;
 	}
@@ -761,10 +788,10 @@ public class StdCharClass implements CharClass
 			C=mob.charStats().getMyClass(i);
 			if( C != null )
 			{
-			  ql=CMLib.ableMapper().getQualifyingLevel(C.ID(),true,A.ID());
-			  if((ql>0)
+				ql=CMLib.ableMapper().getQualifyingLevel(C.ID(),true,A.ID());
+				if((ql>0)
 				&&(ql<=mob.charStats().getClassLevel(C)))
-				  return (C.ID().equals(ID()));
+					return (C.ID().equals(ID()));
 			}
 		}
 		return false;
@@ -833,7 +860,8 @@ public class StdCharClass implements CharClass
 	@Override
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)
 	{
-		if(CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.ALLSKILLS))
+		if(CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.ALLSKILLS)
+		&&(mob.soulMate()==null))
 		{
 			// the most efficient way of doing this -- just hash em!
 			final Hashtable<String,Ability> alreadyAble=new Hashtable<String,Ability>();
@@ -875,27 +903,42 @@ public class StdCharClass implements CharClass
 		}
 		else
 		{
-			final List<Ability> onesToAdd=new ArrayList<Ability>();
+			final PairList<Ability,AbilityMapping> onesToAdd=new PairVector<Ability,AbilityMapping>();
 			for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 			{
 				final Ability A=a.nextElement();
-				if((CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID())>0)
-				&&(CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID())<=mob.baseCharStats().getClassLevel(this))
-				&&(CMLib.ableMapper().getDefaultGain(ID(),true,A.ID())))
+				final AbilityMapping mapping = CMLib.ableMapper().getQualifyingMapping(ID(), true, A.ID());
+				if((mapping != null)
+				&&(mapping.qualLevel()>0)
+				&&(mapping.qualLevel()<=mob.baseCharStats().getClassLevel(this))
+				&&(mapping.autoGain()))
 				{
-					final String extraMask=CMLib.ableMapper().getExtraMask(A.ID(),true,A.ID());
+					final String extraMask=mapping.extraMask();
 					if((extraMask==null)
 					||(extraMask.length()==0)
 					||(CMLib.masking().maskCheck(extraMask,mob,true)))
-						onesToAdd.add(A);
+						onesToAdd.add(A,mapping);
 				}
 			}
 			for(int v=0;v<onesToAdd.size();v++)
 			{
-				final Ability A=onesToAdd.get(v);
-				giveMobAbility(mob,A,CMLib.ableMapper().getDefaultProficiency(ID(),true,A.ID()),CMLib.ableMapper().getDefaultParm(ID(),true,A.ID()),isBorrowedClass);
+				final Ability A=onesToAdd.get(v).first;
+				final AbilityMapping map=onesToAdd.get(v).second;
+				giveMobAbility(mob,A,map.defaultProficiency(),map.defaultParm(),isBorrowedClass);
 			}
 		}
+	}
+	
+	@Override
+	public boolean isAllowedRace(Race R)
+	{
+		return (CMStrings.containsIgnoreCase(getRequiredRaceList(),"All")
+				||CMStrings.containsIgnoreCase(getRequiredRaceList(),R.ID())
+				||CMStrings.containsIgnoreCase(getRequiredRaceList(),R.name())
+				||CMStrings.containsIgnoreCase(getRequiredRaceList(),R.racialCategory()))
+			&&(!CMStrings.containsIgnoreCase(getRequiredRaceList(),"-"+R.ID()))
+			&&(!CMStrings.containsIgnoreCase(getRequiredRaceList(),"-"+R.name()))
+			&&(!CMStrings.containsIgnoreCase(getRequiredRaceList(),"-"+R.racialCategory()));
 	}
 
 	@Override

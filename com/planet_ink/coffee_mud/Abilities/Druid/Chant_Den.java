@@ -88,7 +88,8 @@ public class Chant_Den extends Chant
 			mob.tell(L("There is already a den here!"));
 			return false;
 		}
-		if(mob.location().domainType()!=Room.DOMAIN_INDOORS_CAVE)
+		if((mob.location().domainType()!=Room.DOMAIN_INDOORS_CAVE)
+		&&((mob.location().getAtmosphere()&RawMaterial.MATERIAL_ROCK)==0))
 		{
 			mob.tell(L("This magic will only work in a cave."));
 			return false;
@@ -123,7 +124,7 @@ public class Chant_Den extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,L("Your den, carefully covered, appears to the @x1!",Directions.getDirectionName(d)));
+				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,L("Your den, carefully covered, appears to the @x1!",CMLib.directions().getDirectionName(d)));
 				final Room newRoom=CMClass.getLocale("CaveRoom");
 				newRoom.setDisplayText(L("A musty den"));
 				newRoom.setDescription(L("You are in a dark rocky den!"));

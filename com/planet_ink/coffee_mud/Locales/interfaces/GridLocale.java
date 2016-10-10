@@ -97,6 +97,13 @@ public interface GridLocale extends Room, GridZones
 	public List<Room> getAllRooms();
 
 	/**
+	 * Returns a read-only list of grid-child rooms, and any skys or seas
+	 * attached to them.
+	 * @return a read-only list of all rooms around here.
+	 */
+	public List<Room> getAllRoomsFilled();
+	
+	/**
 	 * Returns a read-only iterator over the existing grid-child rooms.
 	 * This iterator may be empty if the grid creates children as-needed.
 	 * @return a read-only iterator over the existing grid-child rooms.

@@ -144,6 +144,12 @@ public class StdRace implements Race
 	}
 
 	@Override
+	public int getXPAdjustment()
+	{
+		return 0;
+	}
+
+	@Override
 	public int[] bodyMask()
 	{
 		return parts;
@@ -193,6 +199,11 @@ public class StdRace implements Race
 	}
 
 	protected String[] racialAbilityNames()
+	{
+		return null;
+	}
+
+	protected String[] racialAbilityParms()
 	{
 		return null;
 	}
@@ -500,6 +511,12 @@ public class StdRace implements Race
 			return;
 
 		final MOB myChar=(MOB)myHost;
+		if((msg.source()==myChar)
+		&&(msg.sourceMinor()==CMMsg.TYP_EXPCHANGE) // race gets execmsg before expchange application, so this works.
+		&&(this.getXPAdjustment()!=0)
+		&&(msg.value()!=0))
+			msg.setValue(msg.value() + (int)Math.round(msg.value() * CMath.div(getXPAdjustment(), 100.0)));
+		
 		if((msg.tool() instanceof Social)
 		&&(msg.amITarget(myChar)||(msg.source()==myChar))
 		&&(myChar.location()==msg.source().location())
@@ -665,7 +682,12 @@ public class StdRace implements Race
 							if(isChild && (!isAnimal))
 							{
 								A=mob.fetchAbility("Common");
-								if(A==null){ A=CMClass.getAbility("Common"); if(A!=null)mob.addAbility(A);}
+								if(A==null)
+								{
+									A=CMClass.getAbility("Common");
+									if(A!=null)
+										mob.addAbility(A);
+								}
 								if(A!=null)
 									A.setProficiency(100);
 							}
@@ -938,6 +960,8 @@ public class StdRace implements Race
 					if(room!=null)
 						room.addItem(I,ItemPossessor.Expire.Monster_EQ);
 				}
+				else
+					Log.errOut("Race "+ID()+" had NULL resource!");
 			}
 		}
 		else
@@ -973,10 +997,12 @@ public class StdRace implements Race
 		final List<Ability> finalV=new Vector<Ability>(myList.size());
 		for(final Ability A : myList)
 		{
-			A.makeNonUninvokable();
-			A.setSavable(false); // must come AFTER the above
-			A.setAffectedOne(mob);
-			finalV.add(A);
+			Ability A2=(Ability)A.copyOf();
+			A2.setMiscText(A.text());
+			A2.makeNonUninvokable();
+			A2.setSavable(false); // must come AFTER the above
+			A2.setAffectedOne(mob);
+			finalV.add(A2);
 		}
 		final ChameleonList<Ability> finalFinalV;
 		if(mob==null)
@@ -1094,9 +1120,10 @@ public class StdRace implements Race
 		GR.setStat("BODYKILL",""+destroyBodyAfterUse());
 		GR.setStat("HELP",""+CMLib.help().getHelpText(name(),null,false));
 		GR.setStat("AGING",CMParms.toListString(getAgingChart()));
+		GR.setStat("XPADJ", ""+this.getXPAdjustment());
 		GR.setStat("CANRIDE", ""+useRideClass());
 		for(int i=0;i<Race.BODYPARTSTR.length;i++)
-				GR.bodyMask()[i]=bodyMask()[i];
+			GR.bodyMask()[i]=bodyMask()[i];
 
 		Weapon W=myNaturalWeapon();
 		final Weapon NW=CMClass.getWeapon("Natural");
@@ -1187,10 +1214,15 @@ public class StdRace implements Race
 		for(int i=0;i<rscs.size();i++)
 		{
 			I=rscs.get(i);
-			I.recoverPhyStats();
-			txt=I.text();
-			GR.setStat("GETRSCID"+i,I.ID());
-			GR.setStat("GETRSCPARM"+i,txt);
+			if(I!=null)
+			{
+				I.recoverPhyStats();
+				txt=I.text();
+				GR.setStat("GETRSCID"+i,I.ID());
+				GR.setStat("GETRSCPARM"+i,txt);
+			}
+			else
+				Log.errOut("Race "+ID()+" had NULL resource!");
 		}
 
 		List<Item> outfit=outfit(null);
@@ -1212,6 +1244,7 @@ public class StdRace implements Race
 				GR.setStat("GETRABLELVL"+i,""+racialAbilityLevels()[i]);
 				GR.setStat("GETRABLEQUAL"+i,""+racialAbilityQuals()[i]);
 				GR.setStat("GETRABLEPROF"+i,""+racialAbilityProficiencies()[i]);
+				GR.setStat("GETRABLEPARM"+i,""+racialAbilityParms()[i]);
 			}
 		}
 
@@ -1338,6 +1371,10 @@ public class StdRace implements Race
 			GR.setStat("WEAPONXML",W.text());
 		}
 
+		final int xpAdj1=CMath.s_int(GR.getStat("XPADJ"));
+		final int xpAdj2=CMath.s_int(otherRace.getStat("XPADJ"));
+		GR.setStat("XPADJ", ""+((xpAdj1+xpAdj2)/2));
+
 		GR.setStat("BODYKILL",""+otherRace.getStat("BODYKILL"));
 		GR.setStat("CANRIDE",""+otherRace.getStat("CANRIDE"));
 		GR.setStat("AGING",CMParms.toListString(aging));
@@ -1399,12 +1436,21 @@ public class StdRace implements Race
 		{
 			if(CharStats.CODES.isBASE(i))
 			{
-				SETSTAT.setStat(i,(SETSTAT1.getStat(i)+SETSTAT2.getStat(i))/2);
 				final int newStat=((ADJSTAT1.getStat(i)+ADJSTAT2.getStat(i))/2);
 				if(newStat>5)
 					ADJSTAT.setStat(i,5);
 				else
 					ADJSTAT.setStat(i,newStat);
+				int setStat1=SETSTAT1.getStat(i);
+				int setStat2=SETSTAT2.getStat(i);
+				if((setStat1>0)||(setStat2>0))
+				{
+					if(setStat1 == 0)
+						setStat1 = 10;
+					if(setStat2 == 0)
+						setStat2 = 10;
+					SETSTAT.setStat(i,(setStat1 + setStat2)/2);
+				}
 			}
 			else
 			if((i!=CharStats.STAT_GENDER)&&(i!=CharStats.STAT_AGE))
@@ -1474,79 +1520,83 @@ public class StdRace implements Race
 		race2.racialAbilities(null);
 		final List<AbilityMapping> dvata1=CMLib.ableMapper().getUpToLevelListings(race1.ID(),Integer.MAX_VALUE,true,false);
 		final List<AbilityMapping> dvata2=CMLib.ableMapper().getUpToLevelListings(race2.ID(),Integer.MAX_VALUE,true,false);
-		// kill half of them.
-		for(int i=1;i<dvata1.size();i++)
-			dvata1.remove(i);
-		for(int i=1;i<dvata2.size();i++)
-			dvata2.remove(i);
+		final PairList<String,AbilityMapping> dvataf = new PairVector<String,AbilityMapping>();
+		for(int i=0;i<dvata1.size() || i<dvata2.size();i++)
+		{
+			if(i<dvata1.size())
+				dvataf.add(new Pair<String,AbilityMapping>(dvata1.get(i).abilityID(), dvata1.get(i)));
+			if(i<dvata2.size())
+				dvataf.add(new Pair<String,AbilityMapping>(dvata2.get(i).abilityID(), dvata2.get(i)));
+		}
+		for(int i=4;i<dvataf.size();i++)
+			dvataf.remove(i);
 
-		if((dvata1.size()+dvata2.size())>0)
-			GR.setStat("NUMRABLE",""+(dvata1.size()+dvata2.size()));
+		if(dvataf.size()>0)
+			GR.setStat("NUMRABLE",""+dvataf.size());
 		else
 			GR.setStat("NUMRABLE","");
-		for(int i=0;i<dvata1.size();i++)
+		for(int i=0;i<dvataf.size();i++)
 		{
-			GR.setStat("GETRABLE"+i,dvata1.get(i).abilityID());
-			GR.setStat("GETRABLELVL"+i,""+CMLib.ableMapper().getQualifyingLevel(race1.ID(),false,dvata1.get(i).abilityID()));
-			GR.setStat("GETRABLEQUAL"+i,""+(!CMLib.ableMapper().getDefaultGain(race1.ID(),false,dvata1.get(i).abilityID())));
-			GR.setStat("GETRABLEPROF"+i,""+CMLib.ableMapper().getDefaultProficiency(race1.ID(),false,dvata1.get(i).abilityID()));
-		}
-		for(int i=0;i<dvata2.size();i++)
-		{
-			GR.setStat("GETRABLE"+(i+dvata1.size()),dvata2.get(i).abilityID());
-			GR.setStat("GETRABLELVL"+(i+dvata1.size()),""+CMLib.ableMapper().getQualifyingLevel(race2.ID(),false,dvata2.get(i).abilityID()));
-			GR.setStat("GETRABLEQUAL"+(i+dvata1.size()),""+(!CMLib.ableMapper().getDefaultGain(race2.ID(),false,dvata2.get(i).abilityID())));
-			GR.setStat("GETRABLEPROF"+(i+dvata1.size()),""+CMLib.ableMapper().getDefaultProficiency(race2.ID(),false,dvata2.get(i).abilityID()));
+			GR.setStat("GETRABLE"+i,dvataf.get(i).second.abilityID());
+			GR.setStat("GETRABLELVL"+i,""+dvataf.get(i).second.qualLevel());
+			GR.setStat("GETRABLEQUAL"+i,""+(!dvataf.get(i).second.autoGain()));
+			GR.setStat("GETRABLEPROF"+i,""+dvataf.get(i).second.defaultProficiency());
+			GR.setStat("GETRABLEPARM"+i, ""+dvataf.get(i).second.defaultParm());
 		}
 
-		final List<Ability> data=new Vector<Ability>();
-		boolean skip=false;
-		for(final Ability A : race1.racialEffects(null))
+		final TriadVector<String,Integer,Integer> dataa=new TriadVector<String,Integer,Integer>();
+		int numReff1 = CMath.s_int(race1.getStat("NUMREFF"));
+		int numReff2 = CMath.s_int(race2.getStat("NUMREFF"));
+		for(int a=0; (a<numReff1) || (a<numReff2); a++)
 		{
-			if(!skip)
-				data.add(A);
-			skip=!skip;
+			if(a<numReff1)
+			{
+				dataa.add(
+					race1.getStat("GETREFF"+a),
+					Integer.valueOf(CMath.s_int(race1.getStat("GETREFFLVL"+a))),
+					Integer.valueOf(CMath.s_int(race1.getStat("GETREFFPARM"+a)))
+				);
+			}
+			if(a<numReff2)
+			{
+				dataa.add(
+					race2.getStat("GETREFF"+a),
+					Integer.valueOf(CMath.s_int(race2.getStat("GETREFFLVL"+a))),
+					Integer.valueOf(CMath.s_int(race2.getStat("GETREFFPARM"+a)))
+				);
+			}
 		}
-		for(final Ability A : race2.racialEffects(null))
-		{
-			if(!skip)
-				data.add(A);
-			skip=!skip;
-		}
+		for(int i=4;i<dataa.size();i++)
+			dataa.remove(i);
 
-		if(data.size()>0)
-			GR.setStat("NUMREFF",""+data.size());
+		if(dataa.size()>0)
+			GR.setStat("NUMREFF",""+dataa.size());
 		else
 			GR.setStat("NUMREFF","");
-		for(int i=0;i<data.size();i++)
+		for(int i=0;i<dataa.size();i++)
 		{
-			final Ability A=data.get(i);
-			GR.setStat("GETREFF"+i,A.ID());
-			GR.setStat("GETREFFLVL"+i,""+CMLib.ableMapper().getQualifyingLevel(race1.ID(),false,A.ID()));
-			GR.setStat("GETREFFPARM"+i,""+CMLib.ableMapper().getDefaultProficiency(race1.ID(),false,A.ID()));
+			GR.setStat("GETREFF"+i,dataa.getFirst(i));
+			GR.setStat("GETREFFLVL"+i,dataa.getSecond(i).toString());
+			GR.setStat("GETREFFPARM"+i,dataa.getThird(i).toString());
 		}
 		
 		final List<String> imms=new XVector<String>();
-		skip=false;
-		for(final String A : race1.abilityImmunities())
+		for(int i=0;(i<race1.abilityImmunities().length) || (i<race2.abilityImmunities().length);i++)
 		{
-			if(!skip)
-				imms.add(A);
-			skip=!skip;
+			if(i<race1.abilityImmunities().length)
+				imms.add(race1.abilityImmunities()[i]);
+			if(i<race2.abilityImmunities().length)
+				imms.add(race2.abilityImmunities()[i]);
 		}
-		for(final String A : race2.abilityImmunities())
-		{
-			if(!skip)
-				imms.add(A);
-			skip=!skip;
-		}
-		GR.setStat("NUMIABLE",""+data.size());
+		for(int i=4;i<imms.size();i++)
+			imms.remove(i);
+		
+		GR.setStat("NUMIABLE",""+imms.size());
 		for(int i=0;i<imms.size();i++)
 		{
 			final String AID=imms.get(i);
 			GR.setStat("GETIABLE"+i,AID);
 		}
-		
 		return GR;
 	}
 
@@ -1581,7 +1631,7 @@ public class StdRace implements Race
 						 racialAbilityLevels()[i],
 						 racialAbilityNames()[i],
 						 racialAbilityProficiencies()[i],
-						 "",
+						 racialAbilityParms()[i],
 						 !racialAbilityQuals()[i],
 						 false,
 						 "");
@@ -1704,41 +1754,55 @@ public class StdRace implements Race
 		{
 			StringBuilder str=new StringBuilder("");
 			final Session sess = (Session)CMClass.getCommon("DefaultSession");
-			final MOB mob=CMClass.getMOB("StdMOB");
-			mob.setSession(sess);
-			mob.baseCharStats().setMyRace(this);
-			startRacing(mob,false);
-			mob.recoverCharStats();
-			mob.recoverPhyStats();
-			mob.recoverMaxState();
-			final MOB mob2=CMClass.getMOB("StdMOB");
-			mob2.setSession(sess);
-			mob2.baseCharStats().setMyRace(new StdRace());
-			mob2.recoverCharStats();
-			mob2.recoverPhyStats();
-			mob2.recoverMaxState();
-			for(final int c: CharStats.CODES.ALLCODES())
+			final MOB mob=CMClass.getMOB("StdMOB"); // factory mobs didn't work because char stats...
+			final MOB mob2=CMClass.getMOB("StdMOB"); // factory mobs didn't work because char stats...
+			try
 			{
-				final int oldStat=mob2.charStats().getStat(c);
-				final int newStat=mob.charStats().getStat(c);
-				if(oldStat>newStat)
-					str.append(CharStats.CODES.DESC(c).toLowerCase()+"-"+(oldStat-newStat)+", ");
-				else
-				if(newStat>oldStat)
-					str.append(CharStats.CODES.DESC(c).toLowerCase()+"+"+(newStat-oldStat)+", ");
+				mob.setSession(sess);
+				mob.baseCharStats().setMyRace(this);
+				startRacing(mob,false);
+				mob.baseCharStats().setStat(CharStats.STAT_GENDER, 'N');
+				mob.recoverCharStats();
+				mob.recoverPhyStats();
+				mob.recoverMaxState();
+				mob2.setSession(sess);
+				mob2.baseCharStats().setMyRace(new StdRace());
+				mob2.baseCharStats().setStat(CharStats.STAT_GENDER, 'N');
+				mob2.recoverCharStats();
+				mob2.recoverPhyStats();
+				mob2.recoverMaxState();
+				for(final int c: CharStats.CODES.ALLCODES())
+				{
+					if(c != CharStats.STAT_GENDER)
+					{
+						final int oldStat=mob2.charStats().getStat(c);
+						final int newStat=mob.charStats().getStat(c);
+						if(oldStat>newStat)
+							str.append(CharStats.CODES.DESC(c).toLowerCase()+"-"+(oldStat-newStat)+", ");
+						else
+						if(newStat>oldStat)
+							str.append(CharStats.CODES.DESC(c).toLowerCase()+"+"+(newStat-oldStat)+", ");
+					}
+				}
+				dispChgDesc=CMLib.flags().getDispositionStateList(mob);
+				sensesChgDesc=CMLib.flags().getSensesStateList(mob);
 			}
-			dispChgDesc=CMLib.flags().getDispositionStateList(mob);
-			sensesChgDesc=CMLib.flags().getSensesStateList(mob);
-			mob.destroy();
-			mob2.destroy();
+			finally
+			{
+				mob.setSession(null);
+				mob.destroy();
+				mob2.setSession(null);
+				mob2.destroy();
+			}
 			baseStatChgDesc=str.toString();
 			if(baseStatChgDesc.endsWith(", "))
 				baseStatChgDesc=baseStatChgDesc.substring(0,baseStatChgDesc.length()-2);
 			final StringBuilder astr=new StringBuilder("");
 			final StringBuilder lstr=new StringBuilder("");
 
-			final List<Ability> ables=new Vector<Ability>();
+			final List<Ability> ables=new ArrayList<Ability>();
 			ables.addAll(racialAbilities(null));
+			ables.addAll(racialEffects(null));
 
 			final PairVector<String,Integer> cables=culturalAbilities();
 			Ability A=null;

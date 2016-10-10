@@ -38,7 +38,11 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class ClanData extends StdWebMacro
 {
-	@Override public String name() { return "ClanData"; }
+	@Override
+	public String name()
+	{
+		return "ClanData";
+	}
 
 	// valid parms include PREMISE, RECALL, DONATION, TAX, EXP, STATUS,
 	// ACCEPTANCE, TYPE, POINTS, CLANIDRELATIONS, MEMBERSTART, MEMBERNEXT,
@@ -138,8 +142,10 @@ public class ClanData extends StdWebMacro
 			str.append("<OPTION SELECTED VALUE=\"\">Select a new Member");
 			final List<String> V=CMLib.database().getUserList();
 			for(final String mem : V)
+			{
 				if(!themembers.contains(mem))
 					str.append("<OPTION VALUE=\""+mem+"\">"+mem);
+			}
 			str.append("</SELECT>");
 			str.append("</TD>");
 			str.append("<TD WIDTH=65% COLSPAN=2>");
@@ -245,8 +251,10 @@ public class ClanData extends StdWebMacro
 				{
 					int numPlayers=0;
 					for(final Session S : CMLib.sessions().localOnlineIterable())
+					{
 						if((S.mob()!=null)&&(!CMLib.flags().isCloaked(S.mob()))&&(S.mob().getClanRole(C.clanID())!=null))
-						   numPlayers++;
+							numPlayers++;
+					}
 					return Integer.toString(numPlayers);
 				}
 				if(parms.containsKey("AUTHORIZED")||parms.containsKey("AUTH"))
@@ -332,8 +340,10 @@ public class ClanData extends StdWebMacro
 					else
 					{
 						for(final Trophy t : Trophy.values())
+						{
 							if(CMath.bset(C.getTrophies(),t.flagNum()))
 								str.append(t.description+", ");
+						}
 					}
 				}
 				if(parms.containsKey("TROPHIESHORT"))
@@ -343,8 +353,10 @@ public class ClanData extends StdWebMacro
 					else
 					{
 						for(final Trophy t : Trophy.values())
+						{
 							if(CMath.bset(C.getTrophies(),t.flagNum()))
 								str.append(t.codeString+", ");
+						}
 					}
 				}
 				if(parms.containsKey("DONATIONID") && authorized)
@@ -359,7 +371,8 @@ public class ClanData extends StdWebMacro
 					final Room R=CMLib.map().getRoom(C.getDonation());
 					if(R!=null)
 						str.append(R.displayText()+", ");
-					else str.append("None, ");
+					else 
+						str.append("None, ");
 				}
 				if(parms.containsKey("TAX"))
 				{
@@ -448,6 +461,7 @@ public class ClanData extends StdWebMacro
 						final List<MemberRecord> members=getMembers(C,httpReq);
 						final String sort=parms.get("SORTBY");
 						if(sort.equalsIgnoreCase("NAME"))
+						{
 							Collections.sort(members, new Comparator<MemberRecord>()
 							{
 								@Override public int compare(MemberRecord o1, MemberRecord o2)
@@ -455,8 +469,10 @@ public class ClanData extends StdWebMacro
 									return o1.name.compareTo(o2.name);
 								}
 							});
+						}
 						else
 						if(sort.equalsIgnoreCase("ROLE"))
+						{
 							Collections.sort(members, new Comparator<MemberRecord>()
 							{
 								@Override public int compare(MemberRecord o1, MemberRecord o2)
@@ -464,8 +480,10 @@ public class ClanData extends StdWebMacro
 									return new Integer(o1.role).compareTo(new Integer(o2.role));
 								}
 							});
+						}
 						else
 						if(sort.equalsIgnoreCase("KILLS")||sort.equalsIgnoreCase("TOTALKILLS"))
+						{
 							Collections.sort(members, new Comparator<MemberRecord>()
 							{
 								@Override public int compare(MemberRecord o1, MemberRecord o2)
@@ -473,8 +491,10 @@ public class ClanData extends StdWebMacro
 									return new Integer(o2.mobpvps+o2.playerpvps).compareTo(new Integer(o1.mobpvps+o1.playerpvps));
 								}
 							});
+						}
 						else
 						if(sort.equalsIgnoreCase("MOBKILLS"))
+						{
 							Collections.sort(members, new Comparator<MemberRecord>()
 							{
 								@Override public int compare(MemberRecord o1, MemberRecord o2)
@@ -482,8 +502,10 @@ public class ClanData extends StdWebMacro
 									return new Integer(o2.mobpvps).compareTo(new Integer(o1.mobpvps));
 								}
 							});
+						}
 						else
 						if(sort.equalsIgnoreCase("PLAYERKILLS")||sort.equalsIgnoreCase("PVPKILLS"))
+						{
 							Collections.sort(members, new Comparator<MemberRecord>()
 							{
 								@Override public int compare(MemberRecord o1, MemberRecord o2)
@@ -491,6 +513,7 @@ public class ClanData extends StdWebMacro
 									return new Integer(o2.playerpvps).compareTo(new Integer(o1.playerpvps));
 								}
 							});
+						}
 						else
 							return "[Unknown sort field: "+sort+"]";
 					}

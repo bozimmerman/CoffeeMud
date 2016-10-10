@@ -276,7 +276,7 @@ public class GenAbility extends StdAbility
 			{
 				final String whatToOpen=CMParms.combine(commands,0);
 				Environmental openThis=null;
-				final int dirCode=Directions.getGoodDirectionCode(whatToOpen);
+				final int dirCode=CMLib.directions().getGoodDirectionCode(whatToOpen);
 				if(dirCode>=0)
 					openThis=mob.location().getExitInDir(dirCode);
 				if(openThis==null)

@@ -35,8 +35,14 @@ import java.util.*;
 */
 public class Alias extends StdCommand
 {
-	private final String[] access=I(new String[]{"ALIAS"});
-	@Override public String[] getAccessWords(){return access;}
+	private final String[]	access	= I(new String[] { "ALIAS" });
+
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
+
 	@Override
 	public boolean execute(final MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
@@ -48,7 +54,9 @@ public class Alias extends StdCommand
 		final InputCallback IC[]=new InputCallback[1];
 		IC[0]=new InputCallback(InputCallback.Type.PROMPT,"",0)
 		{
-			@Override public void showPrompt() {
+			@Override
+			public void showPrompt()
+			{
 				final StringBuffer menu=new StringBuffer("^xAlias definitions:^.^?\n\r");
 				final String[] aliasNames=pStats.getAliasNames();
 				for(int i=0;i<aliasNames.length;i++)
@@ -57,8 +65,14 @@ public class Alias extends StdCommand
 				mob.tell(menu.toString());
 				session.promptPrint(L("Enter a selection: "));
 			}
-			@Override public void timedOut() { }
-			@Override public void callBack()
+
+			@Override
+			public void timedOut()
+			{
+			}
+
+			@Override
+			public void callBack()
 			{
 				if(this.input.length()==0)
 					return;
@@ -70,9 +84,19 @@ public class Alias extends StdCommand
 					final String selection=pStats.getAliasNames()[num-1];
 					session.prompt(new InputCallback(InputCallback.Type.CHOOSE,"","MD\n",0)
 					{
-						@Override public void showPrompt() { session.promptPrint(L("\n\rAlias selected '@x1'.\n\rWould you like to D)elete or M)odify this alias (d/M)? ",selection));}
-						@Override public void timedOut() { }
-						@Override public void callBack()
+						@Override
+						public void showPrompt()
+						{
+							session.promptPrint(L("\n\rAlias selected '@x1'.\n\rWould you like to D)elete or M)odify this alias (d/M)? ", selection));
+						}
+
+						@Override
+						public void timedOut()
+						{
+						}
+
+						@Override
+						public void callBack()
 						{
 							final String check=this.input;
 							if(check.trim().length()==0)
@@ -95,9 +119,19 @@ public class Alias extends StdCommand
 				{
 					session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0)
 					{
-						@Override public void showPrompt() { session.promptPrint(L("\n\rEnter a new alias string consisting of letters and numbers only.\n\r: "));}
-						@Override public void timedOut() { }
-						@Override public void callBack()
+						@Override
+						public void showPrompt()
+						{
+							session.promptPrint(L("\n\rEnter a new alias string consisting of letters and numbers only.\n\r: "));
+						}
+
+						@Override
+						public void timedOut()
+						{
+						}
+
+						@Override
+						public void callBack()
 						{
 							if(this.input.trim().length()==0)
 							{
@@ -139,9 +173,20 @@ public class Alias extends StdCommand
 	{
 		session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0)
 		{
-			@Override public void showPrompt() { session.safeRawPrintln(L("\n\rEnter a value for alias '@x1'.  Use ~ to separate commands.",aliasName)); session.promptPrint(": "); }
-			@Override public void timedOut() { }
-			@Override public void callBack()
+			@Override
+			public void showPrompt()
+			{
+				session.safeRawPrintln(L("\n\rEnter a value for alias '@x1'.  Use ~ to separate commands. Prefix with noecho to turn off command echo.", aliasName));
+				session.promptPrint(": ");
+			}
+
+			@Override
+			public void timedOut()
+			{
+			}
+
+			@Override
+			public void callBack()
 			{
 				String value=this.input;
 				value=CMStrings.replaceAll(value,"<","");
@@ -164,8 +209,11 @@ public class Alias extends StdCommand
 		});
 	}
 
-	@Override public boolean canBeOrdered(){return true;}
-
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 
 }
 

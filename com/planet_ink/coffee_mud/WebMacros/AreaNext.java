@@ -38,7 +38,11 @@ import java.util.*;
 
 public class AreaNext extends StdWebMacro
 {
-	@Override public String name() { return "AreaNext"; }
+	@Override
+	public String name()
+	{
+		return "AreaNext";
+	}
 
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)

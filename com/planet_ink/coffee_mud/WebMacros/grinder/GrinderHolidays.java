@@ -35,9 +35,12 @@ import java.util.*;
    limitations under the License.
 */
 @SuppressWarnings({"unchecked","rawtypes"})
-public class GrinderHolidays {
-	public String name() { return "GrinderHolidays"; }
-
+public class GrinderHolidays 
+{
+	public String name()
+	{
+		return "GrinderHolidays";
+	}
 
 	protected static String setText(TriadList<String,String,Integer> sets, String var, String newVAL)
 	{
@@ -142,6 +145,7 @@ public class GrinderHolidays {
 			int areaNum=2;
 			boolean reallyAll=true;
 			for(final Enumeration e=CMLib.map().areas();e.hasMoreElements();areaNum++)
+			{
 				if(areaCodes.contains("AREAGROUP"+areaNum))
 					areaGroup.append(" \"" + ((Area)e.nextElement()).Name()+"\"");
 				else
@@ -149,6 +153,7 @@ public class GrinderHolidays {
 					reallyAll=false;
 					e.nextElement();
 				}
+			}
 			if(reallyAll)
 				areaGroup.setLength(0);
 		}
@@ -159,8 +164,10 @@ public class GrinderHolidays {
 		behaviors.clear();
 		setText(behaviors,"AGGRESSIVE",httpReq.getUrlParameter("AGGRESSIVE"));
 		for(int i=1;httpReq.isUrlParameter("BEHAV"+i);i++)
+		{
 			if(httpReq.getUrlParameter("BEHAV"+i).trim().length()>0)
 				setText(behaviors,httpReq.getUrlParameter("BEHAV"+i),httpReq.getUrlParameter("BDATA"+i));
+		}
 		final StringBuffer mudChats=new StringBuffer("");
 		for(int i=1;httpReq.isUrlParameter("MCWDS"+i);i++)
 		{
@@ -170,8 +177,10 @@ public class GrinderHolidays {
 			{
 				mudChats.append("("+words+");");
 				for(int ii=1;httpReq.isUrlParameter("MCSAYW"+i+"_"+ii);ii++)
+				{
 					if(CMath.isInteger(httpReq.getUrlParameter("MCSAYW"+i+"_"+ii)))
 						mudChats.append(httpReq.getUrlParameter("MCSAYW"+i+"_"+ii)+httpReq.getUrlParameter("MCSAYS"+i+"_"+ii)+";");
+				}
 				mudChats.append(";");
 			}
 		}

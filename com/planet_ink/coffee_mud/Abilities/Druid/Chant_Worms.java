@@ -46,6 +46,7 @@ public class Chant_Worms extends Chant implements DiseaseAffect
 	@Override public int abilityCode(){return 0;}
 	@Override public int spreadBitmap() { return 0; }
 	@Override public int difficultyLevel(){return 1;}
+	@Override public boolean isMalicious(){ return true;}
 
 	int plagueDown=5;
 

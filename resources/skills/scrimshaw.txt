@@ -33,11 +33,11 @@ Wicked % Spear	23	40	52	608	GenSpear	THROWN	23
 % Sliver	24	10	1	668	GenWeapon	EDGED	18	
 Spiked % Throne	25	40	50	650	GenRideable	CHAIR	1	
 Sacrificial % Altar	30	200	150	500	GenRideable	TABLE	1000	
-% Body Armor	30	100	300	500	GenArmor	S0:TORSO&&ARMS&&LEGS	70	Prop_Doppleganger;ASMATERIAL=IRON MIN=30
-% Flail of skulls	40	80	120	1602	GenWeapon	FLAILED	31	Prop_Doppleganger;ASMATERIAL=IRON MIN=40
-% Skull mace	50	80	120	1602	GenWeapon	BLUNT	48	Prop_Doppleganger;ASMATERIAL=IRON MIN=50
-Spiked % Shield	55	100	150	500	GenShield	S0:HELD	70	Prop_Doppleganger;ASMATERIAL=IRON MIN=55
-Skull-handled % sword	60	100	150	1802	GenWeapon	SWORD	58	Prop_Doppleganger;ASMATERIAL=IRON MIN=60
-Spiked % Body Armor	70	200	600	2000	GenArmor	S0:TORSO&&ARMS&&LEGS	90	Prop_Doppleganger;ASMATERIAL=IRON LEVELADD=5 MIN=70
-Crown of %	80	250	400	300	GenArmor	0:HEAD	90	Prop_Doppleganger;ASMATERIAL=IRON LEVELADD=6 MIN=80
-Mask of %	90	250	500	450	GenArmor	0:HEAD	90	Prop_Doppleganger;ASMATERIAL=IRON LEVELADD=10 MIN=90
+% Body Armor	30	100	60	500	GenArmor	S0:TORSO&&ARMS&&LEGS	70	*Prop_Doppleganger;ASMATERIAL=IRON MIN=30
+% Flail of skulls	40	80	22	1602	GenWeapon	FLAILED	31	*Prop_Doppleganger;ASMATERIAL=IRON MIN=40
+% Skull mace	50	80	18	1602	GenWeapon	BLUNT	48	*Prop_Doppleganger;ASMATERIAL=IRON MIN=50
+Spiked % Shield	55	100	40	500	GenShield	S0:HELD	70	*Prop_Doppleganger;ASMATERIAL=IRON MIN=55
+Skull-handled % sword	60	100	15	1802	GenWeapon	SWORD	58	*Prop_Doppleganger;ASMATERIAL=IRON MIN=60
+Spiked % Full Armor	70	200	70	2000	GenArmor	S0:TORSO&&ARMS&&LEGS	90	*Prop_Doppleganger;ASMATERIAL=IRON LEVELADD=5 MIN=70
+Crown of %	80	250	20	300	GenArmor	HEAD	90	*Prop_Doppleganger;ASMATERIAL=IRON LEVELADD=6 MIN=80
+Mask of %	90	250	15	450	GenArmor	3:EYES	90	*Prop_Doppleganger;ASMATERIAL=IRON LEVELADD=10 MIN=90

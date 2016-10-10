@@ -36,9 +36,20 @@ import java.util.*;
 */
 public class Specialization_Ranged extends Specialization_Weapon
 {
-	@Override public String ID() { return "Specialization_Ranged"; }
-	private final static String localizedName = CMLib.lang().L("Ranged Weapon Specialization");
-	@Override public String name() { return localizedName; }
+	@Override
+	public String ID()
+	{
+		return "Specialization_Ranged";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Ranged Weapon Specialization");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	public Specialization_Ranged()
 	{
 		super();

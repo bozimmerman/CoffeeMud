@@ -1064,7 +1064,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 							refs				= new SVector<WeakReference<Physical>>(1);
 		public boolean 		noRefs = CMProps.getBoolVar(CMProps.Bool.CATALOGNOCACHE)
 								  || CMSecurity.isDisabled(CMSecurity.DisFlag.CATALOGCACHE);
-		public MaskingLibrary.CompiledZapperMask 
+		public MaskingLibrary.CompiledZMask 
 							lmaskV				= null;
 
 		public CataDataImpl(String catadata)
@@ -1300,7 +1300,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 		}
 
 		@Override
-		public MaskingLibrary.CompiledZapperMask getMaskV()
+		public MaskingLibrary.CompiledZMask getMaskV()
 		{
 			return lmaskV;
 		}

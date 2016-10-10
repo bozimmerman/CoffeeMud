@@ -39,27 +39,52 @@ import java.util.*;
 
 public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 {
-	@Override public String ID() { return "Blacksmithing"; }
-	private final static String localizedName = CMLib.lang().L("Blacksmithing");
-	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =I(new String[] {"BLACKSMITH","BLACKSMITHING"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public String supportedResourceString(){return "METAL|MITHRIL";}
 	@Override
-	public String parametersFormat(){ return
+	public String ID()
+	{
+		return "Blacksmithing";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Blacksmithing");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "BLACKSMITH", "BLACKSMITHING" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public String supportedResourceString()
+	{
+		return "METAL|MITHRIL";
+	}
+
+	@Override
+	public String parametersFormat()
+	{ 
+		return
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\t"
-	   +"ITEM_BASE_VALUE\tITEM_CLASS_ID\tSTATUE||RIDE_BASIS||CONTAINER_TYPE_OR_LIDLOCK\t"
-	   +"CONTAINER_CAPACITY||LIQUID_CAPACITY\tCODED_SPELL_LIST";}
+		+"ITEM_BASE_VALUE\tITEM_CLASS_ID\tSTATUE||RIDE_BASIS||CONTAINER_TYPE_OR_LIDLOCK\t"
+		+"CONTAINER_CAPACITY||LIQUID_CAPACITY\tCODED_SPELL_LIST";
+	}
 
 	//protected static final int RCP_FINALNAME=0;
 	//protected static final int RCP_LEVEL=1;
 	//protected static final int RCP_TICKS=2;
-	protected static final int RCP_WOOD=3;
-	protected static final int RCP_VALUE=4;
-	protected static final int RCP_CLASSTYPE=5;
-	protected static final int RCP_MISCTYPE=6;
-	protected static final int RCP_CAPACITY=7;
-	protected static final int RCP_SPELL=8;
+	protected static final int	RCP_WOOD		= 3;
+	protected static final int	RCP_VALUE		= 4;
+	protected static final int	RCP_CLASSTYPE	= 5;
+	protected static final int	RCP_MISCTYPE	= 6;
+	protected static final int	RCP_CAPACITY	= 7;
+	protected static final int	RCP_SPELL		= 8;
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
@@ -80,10 +105,23 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 		return super.tick(ticking,tickID);
 	}
 
-	@Override public String parametersFile(){ return "blacksmith.txt";}
-	@Override protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
+	@Override
+	public String parametersFile()
+	{
+		return "blacksmith.txt";
+	}
 
-	@Override public boolean supportsDeconstruction() { return true; }
+	@Override
+	protected List<List<String>> loadRecipes()
+	{
+		return super.loadRecipes(parametersFile());
+	}
+
+	@Override
+	public boolean supportsDeconstruction()
+	{
+		return true;
+	}
 
 	@Override
 	protected boolean doLearnRecipe(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -197,13 +235,18 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 		if(super.checkStop(mob, commands))
 			return true;
 
+		if(super.checkInfo(mob, commands))
+			return true;
+		
 		fireRequired=true;
 
 		final PairVector<EnhancedExpertise,Integer> enhancedTypes=enhancedTypes(mob,commands);
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,L("Make what? Enter \"@x1 list\" for a list, \"@x2 learn <item>\" to gain recipes, or \"@x3 stop\" to cancel.",triggerStrings()[0].toLowerCase(),triggerStrings()[0].toLowerCase(),triggerStrings()[0].toLowerCase()));
+			commonTell(mob,L("Make what? Enter \"@x1 list\" for a list, \"@x2 info <item>\", \"@x2 learn <item>\" to gain recipes,"
+							+ " or \"@x3 stop\" to cancel.",triggerStrings()[0].toLowerCase(), triggerStrings()[0].toLowerCase(),
+							triggerStrings()[0].toLowerCase()));
 			return false;
 		}
 		if((!auto)
@@ -221,9 +264,9 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 		bundling=false;
 		int duration=4;
 		final int[] cols={
-				CMLib.lister().fixColWidth(16,mob.session()),
-				CMLib.lister().fixColWidth(3,mob.session())
-			};
+			CMLib.lister().fixColWidth(16,mob.session()),
+			CMLib.lister().fixColWidth(3,mob.session())
+		};
 		if(str.equalsIgnoreCase("list"))
 		{
 			String mask=CMParms.combine(commands,1);
@@ -298,7 +341,8 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 		}
 
 		final String woodRequiredStr = foundRecipe.get(RCP_WOOD);
-		final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName),autoGenerate);
+		final int[] compData = new int[CF_TOTAL];
+		final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName),autoGenerate,compData);
 		if(componentsFoundList==null)
 			return false;
 		int woodRequired=CMath.s_int(woodRequiredStr);
@@ -310,11 +354,11 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 		final int[] pm={RawMaterial.MATERIAL_METAL,RawMaterial.MATERIAL_MITHRIL};
 		bundling=misctype.equalsIgnoreCase("BUNDLE");
 		final int[][] data=fetchFoundResourceData(mob,
-											woodRequired,"metal",pm,
-											0,null,null,
-											bundling,
-											autoGenerate,
-											enhancedTypes);
+												woodRequired,"metal",pm,
+												0,null,null,
+												bundling,
+												autoGenerate,
+												enhancedTypes);
 		if(data==null)
 			return false;
 		fixDataForComponents(data,componentsFoundList);
@@ -338,9 +382,20 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 			final Physical target=givenTarget;
 			session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0)
 			{
-				@Override public void showPrompt() {session.promptPrint(L("What is a statue this of?\n\r: "));}
-				@Override public void timedOut() {}
-				@Override public void callBack()
+				@Override
+				public void showPrompt()
+				{
+					session.promptPrint(L("What is a statue this of?\n\r: "));
+				}
+
+				@Override
+				
+				public void timedOut()
+				{
+				}
+
+				@Override
+				public void callBack()
 				{
 					final String of=this.input;
 					if((of.trim().length()==0)||(of.indexOf('<')>=0))
@@ -365,7 +420,8 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 			return false;
 		}
 		duration=getDuration(CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),4);
-		String itemName=replacePercent(foundRecipe.get(RCP_FINALNAME),RawMaterial.CODES.NAME(data[0][FOUND_CODE])).toLowerCase();
+		buildingI.setMaterial(getBuildingMaterial(woodRequired,data,compData));
+		String itemName=replacePercent(foundRecipe.get(RCP_FINALNAME),RawMaterial.CODES.NAME(buildingI.material())).toLowerCase();
 		if(bundling)
 			itemName="a "+woodRequired+"# "+itemName;
 		else
@@ -377,9 +433,8 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 		playSound="tinktinktink2.wav";
 		buildingI.setDisplayText(L("@x1 lies here",itemName));
 		buildingI.setDescription(itemName+". ");
-		buildingI.basePhyStats().setWeight(getStandardWeight(woodRequired,bundling));
+		buildingI.basePhyStats().setWeight(getStandardWeight(woodRequired+compData[CF_AMOUNT],bundling));
 		buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE))+(woodRequired*(RawMaterial.CODES.VALUE(data[0][FOUND_CODE]))));
-		buildingI.setMaterial(data[0][FOUND_CODE]);
 		buildingI.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL)));
 		buildingI.setSecretIdentity(getBrand(mob));
 		final int capacity=CMath.s_int(foundRecipe.get(RCP_CAPACITY));
@@ -435,7 +490,6 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 		buildingI.recoverPhyStats();
 		buildingI.text();
 		buildingI.recoverPhyStats();
-
 
 		messedUp=!proficiencyCheck(mob,0,auto);
 

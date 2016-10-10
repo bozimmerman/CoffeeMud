@@ -37,8 +37,14 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class WandArchon extends StdWand implements ArchonOnly
 {
-	@Override public String ID(){    return "WandArchon";}
-	protected final static String[] MAGIC_WORDS={"LEVEL","RESTORE","REFRESH","BLAST","BURN","GAIN"};
+	@Override
+	public String ID()
+	{
+		return "WandArchon";
+	}
+
+	protected final static String[]	MAGIC_WORDS	= { "LEVEL", "RESTORE", "REFRESH", "BLAST", "BURN", "GAIN" };
+
 	public WandArchon()
 	{
 		super();
@@ -142,10 +148,10 @@ public class WandArchon extends StdWand implements ArchonOnly
 			return false;
 		final List<String> parms=CMParms.cleanParameterList(message.toUpperCase());
 		for (final String element : MAGIC_WORDS)
+		{
 			if(parms.contains(element))
-			{
 				return (mob.isMine(this)) && (!amWearingAt(Wearable.IN_INVENTORY));
-			}
+		}
 		return super.checkWave(mob, message);
 	}
 
@@ -317,13 +323,43 @@ public class WandArchon extends StdWand implements ArchonOnly
 						return;
 					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("@x1 glows brightly at <T-NAME>.",this.name()));
 					final List<Ability> diseaseV=CMLib.flags().domainAffects(target,Ability.ACODE_DISEASE);
-					if(diseaseV.size()>0){ final Ability A=CMClass.getAbility("Prayer_CureDisease"); if(A!=null) A.invoke(mob,target,true,0);}
-					final List<Ability> poisonV=CMLib.flags().domainAffects(target,Ability.ACODE_POISON);
-					if(poisonV.size()>0){ final Ability A=CMClass.getAbility("Prayer_RemovePoison"); if(A!=null) A.invoke(mob,target,true,0);}
-					final Ability bleed=target.fetchEffect("Bleeding"); if(bleed!=null){ bleed.unInvoke(); target.delEffect(bleed);}
-					final Ability injury=target.fetchEffect("Injury"); if(injury!=null){ injury.unInvoke(); target.delEffect(injury);}
-					final Ability ampu=target.fetchEffect("Amputation"); if(ampu!=null){ ampu.unInvoke(); target.delEffect(ampu);}
-					final Ability brok=target.fetchEffect("BrokenLimbs"); if(brok!=null){ brok.unInvoke(); target.delEffect(brok);}
+					if (diseaseV.size() > 0)
+					{
+						final Ability A = CMClass.getAbility("Prayer_CureDisease");
+						if (A != null)
+							A.invoke(mob, target, true, 0);
+					}
+					final List<Ability> poisonV = CMLib.flags().domainAffects(target, Ability.ACODE_POISON);
+					if (poisonV.size() > 0)
+					{
+						final Ability A = CMClass.getAbility("Prayer_RemovePoison");
+						if (A != null)
+							A.invoke(mob, target, true, 0);
+					}
+					final Ability bleed = target.fetchEffect("Bleeding");
+					if (bleed != null)
+					{
+						bleed.unInvoke();
+						target.delEffect(bleed);
+					}
+					final Ability injury = target.fetchEffect("Injury");
+					if (injury != null)
+					{
+						injury.unInvoke();
+						target.delEffect(injury);
+					}
+					final Ability ampu = target.fetchEffect("Amputation");
+					if (ampu != null)
+					{
+						ampu.unInvoke();
+						target.delEffect(ampu);
+					}
+					final Ability brok = target.fetchEffect("BrokenLimbs");
+					if (brok != null)
+					{
+						brok.unInvoke();
+						target.delEffect(brok);
+					}
 					target.recoverMaxState();
 					target.resetToMaxState();
 					target.tell(L("You feel refreshed!"));
@@ -335,7 +371,12 @@ public class WandArchon extends StdWand implements ArchonOnly
 					if(!safetyCheck(mob,message))
 						return;
 					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("@x1 glows brightly at <T-NAME>.",this.name()));
-					final Ability bleed=target.fetchEffect("Bleeding"); if(bleed!=null){ bleed.unInvoke(); target.delEffect(bleed);}
+					final Ability bleed = target.fetchEffect("Bleeding");
+					if (bleed != null)
+					{
+						bleed.unInvoke();
+						target.delEffect(bleed);
+					}
 					target.recoverMaxState();
 					target.resetToMaxState();
 					target.tell(L("You feel refreshed!"));

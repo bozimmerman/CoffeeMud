@@ -396,6 +396,20 @@ public interface TimeClock extends Tickable, CMCommon
 	public long deriveMillisAfter(TimeClock C);
 
 	/**
+	 * This method will discover the difference in mud hours between this time clock
+	 * and the given EARLIER clock, assuming they use the same scale of measurement.
+	 * It will then return the number of actual mud hours would have elapsed.
+	 *
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#deriveClock(long)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock#deriveEllapsedTimeString(long)
+	 *
+	 * @param C the earlier time clock object
+	 *
+	 * @return the number of mud hours elapsed since the given clock
+	 */
+	public long deriveMudHoursAfter(TimeClock C);
+	
+	/**
 	 * Using the given number of milliseconds, this method will return a string
 	 * describing the number of mud days, hours, etc that is represented by
 	 * that amount of real time, assuming constant running and perfect timing.

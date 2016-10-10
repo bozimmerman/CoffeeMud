@@ -291,7 +291,7 @@ public class Paladin extends StdCharClass
 		return super.okMessage(myChar, msg);
 	}
 
-	private final String[] raceRequiredList=new String[]{"Human"};
+	private final String[] raceRequiredList=new String[]{"Human","Humanoid"};
 
 	@Override
 	public String[] getRequiredRaceList()

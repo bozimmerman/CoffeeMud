@@ -48,7 +48,6 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 {
 	@Override public String ID(){return "CMProtocols";}
 
-	
 	// this is the sound support method.
 	// it builds a valid MSP sound code from built-in web server
 	// info, and the info provided.
@@ -1384,7 +1383,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 						final String roomID=CMLib.map().getExtendedRoomID(R2);
 						if(roomID.length()>0)
 						{
-							buf.write(Session.MSDP_VAR);buf.write(Directions.getDirectionChar(d).getBytes(Session.MSDP_CHARSET));
+							buf.write(Session.MSDP_VAR);buf.write(CMLib.directions().getDirectionChar(d).getBytes(Session.MSDP_CHARSET));
 							buf.write(Session.MSDP_VAL);
 							buf.write(Integer.toString(roomID.hashCode()).getBytes(Session.MSDP_CHARSET));
 						}
@@ -1434,7 +1433,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 						final String roomID=CMLib.map().getExtendedRoomID(R2);
 						if(roomID.length()>0)
 						{
-							buf.write(Session.MSDP_VAR);buf.write(Directions.getDirectionChar(d).getBytes(Session.MSDP_CHARSET));
+							buf.write(Session.MSDP_VAR);buf.write(CMLib.directions().getDirectionChar(d).getBytes(Session.MSDP_CHARSET));
 							buf.write(Session.MSDP_VAL);
 							buf.write(Integer.toString(roomID.hashCode()).getBytes(Session.MSDP_CHARSET));
 						}
@@ -1712,7 +1711,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		{
 			final MOB mob=session.mob();
 			final String allDoc=jsonData.trim();
-			final int pkgSepIndex=allDoc.indexOf(' ');
+			int pkgSepIndex=allDoc.indexOf(' ');
 			String pkg;
 			MiniJSON.JSONObject json;
 			if(pkgSepIndex>0)
@@ -1738,6 +1737,15 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				cmd=GMCPCommand.valueOf(pkg.toLowerCase().replace('.','_'));
 				switch(cmd)
 				{
+				case maplevel:
+					// what's this do?
+					break;
+				case request:
+				{
+					StringBuilder str=new StringBuilder(allDoc);
+					str.setCharAt(pkgSepIndex, '_');
+					return processGmcpStr(session,str.toString(),supportables);
+				}
 				case core_hello:
 				{
 					if(json!=null)
@@ -2016,8 +2024,8 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 						if(vicM!=null)
 						{
 							doc.append(",");
-							doc.append("\"enemy\":").append(vicM.name()).append(",");
-							doc.append("\"enemypct\":").append(Math.round((double)vicM.maxState().getHitPoints()/(double)vicM.curState().getHitPoints()*100.0)).append(",");
+							doc.append("\"enemy\":\"").append(vicM.name()).append("\",");
+							doc.append("\"enemypct\":").append(Math.round((double)vicM.maxState().getHitPoints()/(double)vicM.curState().getHitPoints()*100.0));
 						}
 						doc.append("}");
 						return doc.toString();
@@ -2076,7 +2084,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 									{
 										if(comma)
 											doc.append(","); comma=true;
-										doc.append("\""+Directions.getDirectionChar(d)+"\":").append(room2ID.hashCode());
+										doc.append("\""+CMLib.directions().getDirectionChar(d)+"\":").append(room2ID.hashCode());
 									}
 								}
 							}
@@ -2086,6 +2094,16 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 						}
 					}
 					break;
+				case request_quest:
+					// comm.quest responds whenever quest stuff happens..
+					// comm.quest {"action": "start", "targ": "a swamp ape", "room": "Swamp Ape Enclosure", "area": "Aardwolf Zoological Park", "timer": 52 }
+					// for request quest, a simple response:
+					// comm.quest {"action": "status", "targ": "A spirit of strong essence", "room": "The Path of the Dead", "area": "The Deadlights", "timer": 60 }
+					return "comm.quest {\"action\": \"status\", \"status\": \"ready\" }";
+				case rawcolor:
+					// ardwolf stuff -- no idea
+					break;
+				case request_group:
 				case group:
 					if(mob!=null)
 					{
@@ -2256,7 +2274,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		final String doc=processGmcpStr(session, data, supportables);
 		if(doc != null)
 		{
-			if(CMSecurity.isDebugging(DbgFlag.TELNET))
+			if(CMSecurity.isDebugging(DbgFlag.GMCP))
 				Log.debugOut("GMCP Sent: "+doc);
 			return buildGmcpResponse(doc);
 		}
@@ -2273,10 +2291,56 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			if((oldHash==null)||(oldHash.longValue()!=newHash))
 			{
 				reporteds.put(command, Long.valueOf(newHash));
-				if(CMSecurity.isDebugging(DbgFlag.TELNET))
+				if(CMSecurity.isDebugging(DbgFlag.GMCP))
 					Log.debugOut("GMCP Sent: "+chunkStr);
 				return buildGmcpResponse(chunkStr);
 			}
+		}
+		return null;
+	}
+	
+	@Override
+	public byte[] invokeRoomChangeGmcp(final Session session, final Map<String,Long> reporteds, final Map<String,Double> supportables)
+	{
+		try
+		{
+			if(supportables.containsKey("room.info")||supportables.containsKey("room"))
+			{
+				final ByteArrayOutputStream bout=new ByteArrayOutputStream();
+				final MOB mob=session.mob();
+				byte[] buf;
+				if(mob!=null)
+				{
+					final Room room;
+					synchronized(mob)
+					{
+						room = mob.location();
+					}
+					if(room!=null)
+					{
+						final Long oldRoomHash=reporteds.get("system.currentRoom");
+						if((oldRoomHash==null)||(room.hashCode()!=oldRoomHash.longValue()))
+						{
+							reporteds.put("system.currentRoom", Long.valueOf(room.hashCode()));
+							final String command="room.info";
+							final char[] cmd=command.toCharArray();
+							buf=processGmcp(session, new String(cmd), supportables);
+							if(buf!=null)
+								bout.write(buf);
+						}
+					}
+				}
+				return (bout.size()==0) ? null: bout.toByteArray();
+			}
+		}
+		catch(final java.io.IOException ioe)
+		{
+			if(CMSecurity.isDebugging(DbgFlag.TELNET))
+				Log.errOut(ioe);
+		}
+		catch(final Throwable t)
+		{
+			Log.errOut(t);
 		}
 		return null;
 	}
@@ -2360,26 +2424,9 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 						bout.write(buf);
 				}
 			}
-			if(supportables.containsKey("room.info")||supportables.containsKey("room"))
-			{
-				if(mob!=null)
-				{
-					final Room room=mob.location();
-					if(room!=null)
-					{
-						final Long oldRoomHash=reporteds.get("system.currentRoom");
-						if((oldRoomHash==null)||(room.hashCode()!=oldRoomHash.longValue()))
-						{
-							reporteds.put("system.currentRoom", Long.valueOf(room.hashCode()));
-							final String command="room.info";
-							final char[] cmd=command.toCharArray();
-							buf=processGmcp(session, new String(cmd), supportables);
-							if(buf!=null)
-								bout.write(buf);
-						}
-					}
-				}
-			}
+			final byte[] roomStuff = this.invokeRoomChangeGmcp(session, reporteds, supportables);
+			if(roomStuff != null)
+				bout.write(roomStuff);
 			return (bout.size()==0) ? null: bout.toByteArray();
 		}
 		catch(final java.io.IOException ioe)

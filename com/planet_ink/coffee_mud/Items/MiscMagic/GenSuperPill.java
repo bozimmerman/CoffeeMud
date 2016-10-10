@@ -35,7 +35,12 @@ import java.util.*;
 */
 public class GenSuperPill extends GenPill implements ArchonOnly
 {
-	@Override public String ID(){	return "GenSuperPill";}
+	@Override
+	public String ID()
+	{
+		return "GenSuperPill";
+	}
+
 	public GenSuperPill()
 	{
 		super();
@@ -50,8 +55,11 @@ public class GenSuperPill extends GenPill implements ArchonOnly
 		material=RawMaterial.RESOURCE_CORN;
 	}
 
-
-	@Override public boolean isGeneric(){return true;}
+	@Override
+	public boolean isGeneric()
+	{
+		return true;
+	}
 
 	@Override
 	public String secretIdentity()
@@ -87,8 +95,10 @@ public class GenSuperPill extends GenPill implements ArchonOnly
 			{
 				final StringBuffer middle=new StringBuffer("");
 				for(int num=0;num<PhyStats.IS_VERBS.length;num++)
+				{
 					if(CMath.bset(val,CMath.pow(2,num)))
 						middle.append(PhyStats.IS_VERBS[num]+" ");
+				}
 				id=id.substring(0,x)+middle.toString().trim()+id.substring(y+((""+val).length()));
 			}
 		}
@@ -101,8 +111,10 @@ public class GenSuperPill extends GenPill implements ArchonOnly
 			{
 				final StringBuffer middle=new StringBuffer("");
 				for(int num=0;num<PhyStats.CAN_SEE_VERBS.length;num++)
+				{
 					if(CMath.bset(val,CMath.pow(2,num)))
 						middle.append(PhyStats.CAN_SEE_VERBS[num]+" ");
+				}
 				id=id.substring(0,x)+middle.toString().trim()+id.substring(y+((""+val).length()));
 			}
 		}

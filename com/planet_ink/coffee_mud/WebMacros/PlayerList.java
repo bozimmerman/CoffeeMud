@@ -35,7 +35,11 @@ import java.util.*;
 */
 public class PlayerList extends StdWebMacro
 {
-	@Override public String name()	{return "PlayerList";}
+	@Override
+	public String name()
+	{
+		return "PlayerList";
+	}
 
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
@@ -52,9 +56,10 @@ public class PlayerList extends StdWebMacro
 			if((m!=null)&&(m.soulMate()!=null))
 				m=m.soulMate();
 
-			if ( (m!=null) && (m.name() != null)
-				&& (m.name().length() > 0)
-				&& (!S.getStatus().toString().startsWith("LOGOUT")))
+			if ((m!=null) 
+			&& (m.name() != null)
+			&& (m.name().length() > 0)
+			&& (!S.getStatus().toString().startsWith("LOGOUT")))
 			{
 				// jef: nb - only shows full sysops, not subops
 				if ( CMSecurity.isASysOp(m) )
@@ -62,10 +67,11 @@ public class PlayerList extends StdWebMacro
 				s.append("\">");
 				s.append(CMStrings.removeColors(m.Name().equals(m.name())?m.titledName():m.name()));
 				s.append(" ");
-				if (m.charStats().getMyRace()!= null && m.charStats().raceName()!=null
-					&& m.charStats().raceName().length() > 0
-					&& !m.charStats().raceName().equals("MOB")
-					&& ((S.getStatus())==Session.SessionStatus.MAINLOOP))
+				if (m.charStats().getMyRace()!= null 
+				&& m.charStats().raceName()!=null
+				&& m.charStats().raceName().length() > 0
+				&& !m.charStats().raceName().equals("MOB")
+				&& ((S.getStatus())==Session.SessionStatus.MAINLOOP))
 				{
 					s.append("(");
 					if(!CMSecurity.isDisabled(CMSecurity.DisFlag.RACES))

@@ -50,7 +50,11 @@ import java.util.*;
 */
 public class StdHandOfCards extends StdContainer implements MiscMagic, HandOfCards
 {
-	@Override public String ID(){ return "StdHandOfCards";}
+	@Override
+	public String ID()
+	{
+		return "StdHandOfCards";
+	}
 
 	// if this hand or deck is owned by a mob or a room, then
 	// than mob or room suffices as a container.  Otherwise,
@@ -382,7 +386,9 @@ public class StdHandOfCards extends StdContainer implements MiscMagic, HandOfCar
 	// or a number for other cards.
 	@Override
 	public boolean containsCard(String cardStringCode)
-	{ return getCard(cardStringCode)!=null;}
+	{
+		return getCard(cardStringCode) != null;
+	}
 
 	// getCard(String cardStringCode)
 	// returns the PlayingCard from this deck or hand if
@@ -441,7 +447,9 @@ public class StdHandOfCards extends StdContainer implements MiscMagic, HandOfCar
 	// and the ace, or a number for other cards.
 	@Override
 	public boolean containsAtLeastOneOfValue(String cardStringCode)
-	{ return getFirstCardOfValue(cardStringCode)!=null;}
+	{
+		return getFirstCardOfValue(cardStringCode) != null;
+	}
 
 	// containsAtLeastOneOfSuit(String cardStringCode)
 	// returns whether a PlayingCard in this deck or hand
@@ -449,7 +457,9 @@ public class StdHandOfCards extends StdContainer implements MiscMagic, HandOfCar
 	// a string code is a single letter suit
 	@Override
 	public boolean containsAtLeastOneOfSuit(String cardStringCode)
-	{ return getFirstCardOfSuit(cardStringCode)!=null;}
+	{
+		return getFirstCardOfSuit(cardStringCode) != null;
+	}
 
 	// getFirstCardOfSuit(String cardStringCode)
 	// returns the first PlayingCard from this deck or hand
@@ -479,7 +489,9 @@ public class StdHandOfCards extends StdContainer implements MiscMagic, HandOfCar
 	// a bit code is as described in PlayingCard.java
 	@Override
 	public boolean containsCard(int cardBitCode)
-	{ return getCard(cardBitCode)!=null;}
+	{
+		return getCard(cardBitCode) != null;
+	}
 
 	// getCard(int cardBitCode)
 	// returns the PlayingCard from this deck or hand if
@@ -532,7 +544,9 @@ public class StdHandOfCards extends StdContainer implements MiscMagic, HandOfCar
 	// a bit code is as described in PlayingCard.java
 	@Override
 	public boolean containsAtLeastOneOfValue(int cardBitCode)
-	{ return getFirstCardOfValue(cardBitCode)!=null;}
+	{
+		return getFirstCardOfValue(cardBitCode) != null;
+	}
 
 	// containsAtLeastOneOfSuit(int cardBitCode)
 	// returns whether a PlayingCard in this deck or hand
@@ -540,7 +554,9 @@ public class StdHandOfCards extends StdContainer implements MiscMagic, HandOfCar
 	// a bit code is as described in PlayingCard.java
 	@Override
 	public boolean containsAtLeastOneOfSuit(int cardBitCode)
-	{ return getFirstCardOfSuit(cardBitCode)!=null;}
+	{
+		return getFirstCardOfSuit(cardBitCode) != null;
+	}
 
 	// getFirstCardOfSuit(int cardBitCode)
 	// returns the first PlayingCard from this deck or hand
@@ -570,7 +586,8 @@ public class StdHandOfCards extends StdContainer implements MiscMagic, HandOfCar
 	@Override
 	public boolean canContain(Item I)
 	{
-		if (!(I instanceof PlayingCard)) return false;
+		if (!(I instanceof PlayingCard)) 
+			return false;
 		return true;
 	}
 

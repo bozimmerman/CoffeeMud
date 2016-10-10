@@ -225,6 +225,10 @@
 			<TD WIDTH=66%><INPUT TYPE=CHECKBOX NAME=CANRIDE @RaceData?CANRIDE@></TD>
 		</TR>
 		<TR>
+			<TD WIDTH=25%><FONT COLOR=YELLOW>XP Adjustment: </FONT></TD>
+			<TD WIDTH=66%><INPUT TYPE=TEXT SIZE=6 NAME=XPADJ VALUE="@RaceData?XPADJ@"></TD>
+		</TR>
+		<TR>
 			<TD WIDTH=25%><FONT COLOR=YELLOW>PhysStat Adjustments: </FONT></TD>
 			<TD WIDTH=66%>@RaceData?ESTATS@></TD>
 		</TR>

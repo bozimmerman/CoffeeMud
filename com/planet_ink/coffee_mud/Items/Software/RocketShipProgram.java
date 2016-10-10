@@ -50,9 +50,9 @@ public class RocketShipProgram extends GenShipProgram
 
 	protected String noActivationMenu="^rNo engine systems found.\n\r";
 
-	protected volatile List<ShipEngine>		engines				= null;
-	protected volatile List<TechComponent>	sensors				= null;
-	protected volatile List<TechComponent>	components			= null;
+	protected volatile List<ShipEngine>			engines				= null;
+	protected volatile List<TechComponent>		sensors				= null;
+	protected volatile List<TechComponent>		components			= null;
 	
 	protected final List<CMObject> sensorReport = new LinkedList<CMObject>();
 
@@ -402,8 +402,9 @@ public class RocketShipProgram extends GenShipProgram
 			}
 			str.append("^N\n\r");
 			str.append("^X").append(CMStrings.centerPreserve(L(" -- Commands -- "),60)).append("^.^N\n\r");
-			str.append("^H").append(CMStrings.padRight(L("[ENGINEHELP] : Give details about engine commands."),60)).append("\n\r");
+			str.append("^H").append(CMStrings.padRight(L("[ENGINEHELP]/[SHIELDHELP]/[WEAPONHELP] : Get details."),60)).append("\n\r");
 			str.append("^H").append(CMStrings.padRight(L("[ENGINE#/NAME] ([AFT/PORT/STARBOARD/DORSEL/VENTRAL]) [AMT]"),60)).append("\n\r");
+			str.append("^H").append(CMStrings.padRight(L("[WEAPON#/NAME] ([TARGETNAME]) [AMT]"),60)).append("\n\r");
 			str.append("^X").append(CMStrings.centerPreserve("",60)).append("^.^N\n\r");
 			str.append("^N\n\r");
 		}

@@ -97,7 +97,8 @@ public class Chant_VolcanicChasm extends Chant
 			final Room R=mob.location();
 			if(R!=null)
 			{
-				if(mob.location().domainType()!=Room.DOMAIN_INDOORS_CAVE)
+				if((R.domainType()!=Room.DOMAIN_INDOORS_CAVE)
+				&&((R.getAtmosphere()&RawMaterial.MATERIAL_ROCK)==0))
 					return Ability.QUALITY_INDIFFERENT;
 			}
 		}
@@ -111,7 +112,8 @@ public class Chant_VolcanicChasm extends Chant
 		if(target==null)
 			return false;
 		if((!auto)
-		&&(mob.location().domainType()!=Room.DOMAIN_INDOORS_CAVE))
+		&&(mob.location().domainType()!=Room.DOMAIN_INDOORS_CAVE)
+		&&((mob.location().getAtmosphere()&RawMaterial.MATERIAL_ROCK)==0))
 		{
 			mob.tell(L("This chant only works in caves."));
 			return false;

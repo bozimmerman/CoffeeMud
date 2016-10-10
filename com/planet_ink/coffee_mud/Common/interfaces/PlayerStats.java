@@ -44,7 +44,7 @@ import java.util.*;
  *
  * @see com.planet_ink.coffee_mud.MOBS.interfaces.MOB#playerStats()
  */
-public interface PlayerStats extends CMCommon, Modifiable, AccountStats
+public interface PlayerStats extends CMCommon, Modifiable, AccountStats, Contingent
 {
 	/**
 	 * The time, in milis since 1970, that the player was last saved.
@@ -69,7 +69,7 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats
 	/**
 	 * The time, in milis since 1970, that the player gained the given level
 	 *
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#setLeveledDateTime(int, int, Room)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#setLeveledDateTime(int, long, Room)
 	 *
 	 * @param level the level to check for
 	 * @return the time, in milis since 1970, that the player gained the given level
@@ -79,7 +79,7 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats
 	/**
 	 * The number of minutes played when the player gained the given level
 	 *
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#setLeveledDateTime(int, int, Room)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#setLeveledDateTime(int, long, Room)
 	 *
 	 * @param level the level to check for
 	 * @return the minutes played before the player gained the given level
@@ -770,6 +770,15 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats
 	 */
 	public Map<String, ExpertiseDefinition> getExtraQualifiedExpertises();
 
+	/**
+	 * If the player has NoCombatSpam turned on, then these player
+	 * settings are used to hold accumulated information about 
+	 * combat results for summarizing later.  The map is between
+	 * the name of the combatant and the amount of damage taken.
+	 * @return a combat damage map
+	 */
+	public Map<String, int[]> getCombatSpams();
+	
 	/** Constant for day of birthday, as from {@link PlayerStats#getBirthday()} */
 	public static final int BIRTHDEX_DAY = 0;
 	/** Constant for month of birthday, as from {@link PlayerStats#getBirthday()} */

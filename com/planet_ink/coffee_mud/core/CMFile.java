@@ -234,14 +234,14 @@ public class CMFile extends File
 			vfsBits=vfsBits|CMFile.VFS_MASK_DIRECTORY;
 
 		if((demandVFS)&&(!allowedToReadVFS))
-			vfsBits=vfsBits|CMFile.VFS_MASK_NOREADLOCAL;
+			vfsBits=vfsBits|CMFile.VFS_MASK_NOREADVFS;
 		if((demandVFS)&&(!allowedToWriteVFS))
-			vfsBits=vfsBits|CMFile.VFS_MASK_NOWRITELOCAL;
+			vfsBits=vfsBits|CMFile.VFS_MASK_NOWRITEVFS;
 
 		if((demandLocal)&&(!allowedToReadLocal))
-			vfsBits=vfsBits|CMFile.VFS_MASK_NOREADVFS;
+			vfsBits=vfsBits|CMFile.VFS_MASK_NOREADLOCAL;
 		if((demandLocal)&&(!allowedToWriteLocal))
-			vfsBits=vfsBits|CMFile.VFS_MASK_NOWRITEVFS;
+			vfsBits=vfsBits|CMFile.VFS_MASK_NOWRITELOCAL;
 
 		if((!demandVFS)
 		&&(demandLocal||((!allowedToReadVFS) && (allowedToWriteLocal))))
@@ -707,7 +707,8 @@ public class CMFile extends File
 	@Override 
 	public final boolean exists() 
 	{ 
-		return !(CMath.bset(vfsBits,CMFile.VFS_MASK_NOREADVFS)&&CMath.bset(vfsBits,CMFile.VFS_MASK_NOREADLOCAL)); 
+		return !((demandLocal||CMath.bset(vfsBits,CMFile.VFS_MASK_NOREADVFS))
+					&& (demandVFS || CMath.bset(vfsBits,CMFile.VFS_MASK_NOREADLOCAL))); 
 	}
 
 	@Override 
@@ -824,7 +825,7 @@ public class CMFile extends File
 
 	/**
 	 * If this file is a directory and the directory
-	 * is empty of other directories.
+	 * is empty of other stuff.
 	 * @return true if the file is a deletable director
 	 */
 	public final boolean mayDeleteIfDirectory()
@@ -833,13 +834,21 @@ public class CMFile extends File
 			return true;
 		if(localFile!=null)
 		{
-			if(!localFile.isDirectory())
-				return false;
-			if(localFile.list().length>0)
+			if(localFile.isDirectory() && localFile.exists())
+			{
+				if(localFile.list().length>0)
+					return false;
+			}
+			else
+			if((!localFile.isDirectory())&&(localFile.isFile()))
 				return false;
 		}
-		if(getVFSDirectory().fetchSubDir(getVFSPathAndName().toUpperCase(), false)!=null)
-			return false;
+		CMVFSDir vfsDir=getVFSDirectory().fetchSubDir(getVFSPathAndName().toUpperCase(), false);
+		if(vfsDir!=null)
+		{
+			if((vfsDir.getFiles()!=null)&&(vfsDir.getFiles().length>0))
+				return false;
+		}
 		return true;
 	}
 
@@ -1285,7 +1294,7 @@ public class CMFile extends File
 		}
 		else
 			O=new StringBuffer(data.toString());
-		if(!isLocalFile())
+		if((!isLocalFile())||(isVFSOnlyPathFile()))
 		{
 			String filename=getVFSPathAndName();
 			CMVFSFile info=getVFSInfo(filename);
@@ -1396,7 +1405,7 @@ public class CMFile extends File
 			O=new StringBuffer(CMStrings.bytesToStr((byte[])data));
 		else
 			O=new StringBuffer(data.toString());
-		if(!isLocalFile())
+		if((!isLocalFile())||(isVFSOnlyPathFile()))
 		{
 			if(append)
 				O=new StringBuffer(text().append(O).toString());
@@ -1573,6 +1582,36 @@ public class CMFile extends File
 	}
 
 	/**
+	 * If this file represents (or could represent) a VFS (database) file,
+	 * because the directory path is vfs only, this returns true.
+	 * @return true if this file represents (or could represent) a VFS (database) file
+	 */
+	public final boolean isVFSOnlyPathFile()
+	{
+		if(demandLocal)
+			return false;
+		if(isDirectory())
+			return false;
+		String dir=getVFSPathAndName().toLowerCase();
+		if(dir.endsWith("/"))
+			return false;
+		if(demandVFS)
+			return true;
+		int x=dir.lastIndexOf('/');
+		if(x<0)
+			return false;
+		final CMVFSFile file=getVFSInfo(dir.substring(0,x+1));
+		if(file instanceof CMVFSDir)
+		{
+			final CMFile localFile = new CMFile(dir.substring(0,x+1),this.accessor,this.vfsBits);
+			if(localFile.isLocalDirectory())
+				return false;
+			return true;
+		}
+		return false;
+	}
+
+	/**
 	 * If this file represents (or could represent) a local dir, true
 	 * @return if this file represents (or could represent) a local dir
 	 */
@@ -1699,6 +1738,8 @@ public class CMFile extends File
 		{
 			path=absolutePath.substring(0,x);
 			name=absolutePath.substring(x+1);
+			if(name.equalsIgnoreCase("."))
+				name="";
 		}
 		return new String[]{absolutePath,path,name};
 	}
@@ -1794,54 +1835,7 @@ public class CMFile extends File
 					set.addElement(element2);
 			}
 			final String name=element.getName().toUpperCase();
-			boolean ismatch=true;
-			if((!name.equalsIgnoreCase(fixedName))&&(fixedName.length()>0))
-			{
-				for(int f=0,n=0;f<fixedName.length();f++,n++)
-				{
-					if(fixedName.charAt(f)=='?')
-					{
-						if (n >= name.length())
-						{
-							ismatch = false;
-							break;
-						}
-					}
-					else
-					if(fixedName.charAt(f)=='*')
-					{
-						if(f==fixedName.length()-1)
-							break;
-						int endOfMatchStr=fixedName.indexOf('*',f+1);
-						if(endOfMatchStr<0)
-							endOfMatchStr=fixedName.indexOf('?',f+1);
-						int mbEnd = fixedName.length();
-						if(endOfMatchStr>f)
-							mbEnd = endOfMatchStr;
-						final String matchBuf = fixedName.substring(f+1,mbEnd);
-						final int found = name.indexOf(matchBuf,n);
-						if(found < 0)
-						{
-							ismatch=false;
-							break;
-						}
-						else
-						{
-							n=found + matchBuf.length() - 1;
-							f+=matchBuf.length();
-						}
-					}
-					else
-					if((n>=name.length())
-					||(fixedName.charAt(f)!=name.charAt(n))
-					||((f==fixedName.length()-1)&&(n<name.length()-1)))
-					{
-						ismatch=false;
-						break;
-					}
-				}
-			}
-			if(ismatch)
+			if(CMStrings.filenameMatcher(name,fixedName))
 				set.addElement(element);
 		}
 		if(set.size()==1)

@@ -202,7 +202,7 @@ public class Taxidermy extends CraftingSkill
 		buildingI.basePhyStats().setWeight(woodRequired);
 		final String name=((DeadBody)I).getMobName();
 		final String desc=((DeadBody)I).getMobDescription();
-		I.setMaterial(data[0][FOUND_CODE]);
+		buildingI.setMaterial(super.getBuildingMaterial(woodRequired, data, new int[CF_TOTAL]));
 		buildingI.setName(L("the stuffed body of @x1",name));
 		final CharStats C=(I instanceof DeadBody)?((DeadBody)I).charStats():null;
 		if((pose==null)||(C==null))

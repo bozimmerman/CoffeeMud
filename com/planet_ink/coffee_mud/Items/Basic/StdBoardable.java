@@ -66,7 +66,9 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 		myUses=100;
 		this.doorName="gangplank";
 		basePhyStats().setWeight(10000);
+		super.setCapacity(0);
 		setUsesRemaining(100);
+		this.setBaseValue(20000);
 		recoverPhyStats();
 		CMLib.flags().setGettable(this, false);
 	}
@@ -191,7 +193,7 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 	}
 
 	@Override
-	public void unDock(boolean moveToOutside)
+	public Room unDock(boolean moveToOutside)
 	{
 		final Room R=getIsDocked();
 		if(R!=null)
@@ -200,7 +202,8 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 			setOwner(null);
 		}
 		if (area instanceof BoardableShip)
-			((BoardableShip)area).unDock(moveToOutside);
+			return ((BoardableShip)area).unDock(moveToOutside);
+		return null;
 	}
 
 	@Override
@@ -307,7 +310,7 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 	}
 
 	@Override
-	protected Room getDestinationRoom()
+	protected Room getDestinationRoom(Room fromRoom)
 	{
 		getShipArea();
 		Room R=null;
@@ -451,13 +454,19 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 
 	protected synchronized void destroyThisShip()
 	{
-		if(this.getOwnerName().length()>0)
+		if((this.getOwnerName().length()>0)&&(!this.getOwnerName().startsWith("#")))
 		{
-			final MOB M = CMLib.players().getLoadPlayer(this.getOwnerName());
-			final PlayerStats pStats = (M!=null) ? M.playerStats() : null;
-			final ItemCollection items= (pStats != null) ? pStats.getExtItems() : null;
-			if(items != null)
-				items.delItem(this);
+			final Clan clan = CMLib.clans().getClan(this.getOwnerName());
+			if(clan != null)
+				clan.getExtItems().delItem(this);
+			else
+			{
+				final MOB M = CMLib.players().getLoadPlayer(this.getOwnerName());
+				final PlayerStats pStats = (M!=null) ? M.playerStats() : null;
+				final ItemCollection items= (pStats != null) ? pStats.getExtItems() : null;
+				if(items != null)
+					items.delItem(this);
+			}
 		}
 		final CMMsg expireMsg=CMClass.getMsg(CMLib.map().deity(), this, CMMsg.MASK_ALWAYS|CMMsg.MSG_EXPIRE, L("<T-NAME> is destroyed!"));
 		final Area A = getShipArea();
@@ -509,11 +518,13 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 	
 	protected boolean securityCheck(final MOB mob)
 	{
-		return (getOwnerName().length()>0)
-			 &&(mob!=null)
-			 &&((mob.Name().equals(getOwnerName()))
-				||(mob.getLiegeID().equals(getOwnerName())&mob.isMarriedToLiege())
-				||(CMLib.clans().checkClanPrivilege(mob, getOwnerName(), Clan.Function.PROPERTY_OWNER)));
+		if(mob==null)
+			return false;
+		if(CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.CMDITEMS))
+			return true;
+		if(getOwnerName().length()==0)
+			return true;
+		return CMLib.law().doesOwnThisProperty(mob, this);
 	}
 
 	protected void announceToShip(final String msgStr)
@@ -543,12 +554,36 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 			for(final Enumeration<Room> r = ship.getProperMap(); r.hasMoreElements();)
 			{
 				final Room R=r.nextElement();
-				if((!outdoorOnly)||((R.domainType()&Room.INDOORS)==0))
+				if(((!outdoorOnly)||((R.domainType()&Room.INDOORS)==0))
+				&&(R.roomID().length()>0))
 					R.sendOthers(msg.source(), msg);
 			}
 		}
 	}
 	
+	protected boolean confirmAreaMessage(final CMMsg msg, boolean outdoorOnly)
+	{
+		final Area itemArea=CMLib.map().areaLocation(this.getShipItem());
+		final Area shipArea=getShipArea();
+		if(itemArea == shipArea)
+		{
+			Log.errOut("Ship "+name()+" is inside itself?!");
+			return false;
+		}
+		if(shipArea!=null)
+		{
+			for(final Enumeration<Room> r = shipArea.getProperMap(); r.hasMoreElements();)
+			{
+				final Room R=r.nextElement();
+				if((!outdoorOnly)||((R.domainType()&Room.INDOORS)==0))
+				{
+					if(!R.okMessage(msg.source(), msg))
+						return false;
+				}
+			}
+		}
+		return true;
+	}
 	
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
@@ -577,12 +612,13 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 			case CMMsg.TYP_LOCK:
 			case CMMsg.TYP_UNLOCK:
 			{
-				msg.setOthersMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAME>", L("@x1 on <T-NAME>",CMLib.english().startWithAorAn(doorName()))));
-				msg.setOthersMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAMESELF>", L("@x1 on <T-NAMESELF>",CMLib.english().startWithAorAn(doorName()))));
-				msg.setSourceMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAME>", L("@x1 on <T-NAME>",CMLib.english().startWithAorAn(doorName()))));
-				msg.setSourceMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAMESELF>", L("@x1 on <T-NAMESELF>",CMLib.english().startWithAorAn(doorName()))));
-				msg.setTargetMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAME>", L("@x1 on <T-NAME>",CMLib.english().startWithAorAn(doorName()))));
-				msg.setTargetMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAMESELF>", L("@x1 on <T-NAMESELF>",CMLib.english().startWithAorAn(doorName()))));
+				final String doorName = CMLib.english().startWithAorAn(doorName());
+				msg.setOthersMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAME>", L("@x1 on <T-NAME>",doorName)));
+				msg.setOthersMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAMESELF>", L("@x1 on <T-NAMESELF>",doorName)));
+				msg.setSourceMessage(CMStrings.replaceAll(msg.sourceMessage(), "<T-NAME>", L("@x1 on <T-NAME>",doorName)));
+				msg.setSourceMessage(CMStrings.replaceAll(msg.sourceMessage(), "<T-NAMESELF>", L("@x1 on <T-NAMESELF>",doorName)));
+				msg.setTargetMessage(CMStrings.replaceAll(msg.targetMessage(), "<T-NAME>", L("@x1 on <T-NAME>",doorName)));
+				msg.setTargetMessage(CMStrings.replaceAll(msg.targetMessage(), "<T-NAMESELF>", L("@x1 on <T-NAMESELF>",doorName)));
 				break;
 			}
 			}
@@ -594,11 +630,11 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
-		if(msg.amITarget(this))
+		switch(msg.targetMinor())
 		{
-			switch(msg.targetMinor())
+		case CMMsg.TYP_GET:
+			if(msg.amITarget(this))
 			{
-			case CMMsg.TYP_GET:
 				if(msg.tool() instanceof ShopKeeper)
 				{
 					final ShopKeeper shop=(ShopKeeper)msg.tool();
@@ -609,37 +645,37 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 					CMLib.map().registerWorldObjectLoaded(null, null, this);
 					transferOwnership(msg.source(),clanSale);
 				}
-				break;
 			}
-		}
-		else
-		if((msg.targetMinor()==CMMsg.TYP_SELL)
-		&&(msg.tool()==this)
-		&&(msg.target() instanceof ShopKeeper))
-		{
-			setOwnerName("");
-			recoverPhyStats();
-		}
-		else
-		if((msg.targetMinor()==CMMsg.TYP_GIVE)
-		&&(msg.tool()==this)
-		&&(getOwnerName().length()>0)
-		&&((msg.source().Name().equals(getOwnerName()))
-			||(msg.source().getLiegeID().equals(getOwnerName())&&msg.source().isMarriedToLiege())
-			||(CMLib.clans().checkClanPrivilege(msg.source(), getOwnerName(), Clan.Function.PROPERTY_OWNER)))
-		&&(msg.target() instanceof MOB)
-		&&(!(msg.target() instanceof Banker))
-		&&(!(msg.target() instanceof Auctioneer))
-		&&(!(msg.target() instanceof PostOffice)))
-		{
-			final boolean clanSale = CMLib.clans().checkClanPrivilege(msg.source(), getOwnerName(), Clan.Function.PROPERTY_OWNER);
-			transferOwnership((MOB)msg.target(),clanSale);
+			break;
+		case CMMsg.TYP_SELL:
+			if((msg.tool()==this)
+			&&(msg.target() instanceof ShopKeeper))
+			{
+				setOwnerName("");
+				recoverPhyStats();
+			}
+			break;
+		case CMMsg.TYP_GIVE:
+			if((msg.tool()==this)
+			&&(getOwnerName().length()>0)
+			&&((msg.source().Name().equals(getOwnerName()))
+				||(msg.source().getLiegeID().equals(getOwnerName())&&msg.source().isMarriedToLiege())
+				||(CMLib.clans().checkClanPrivilege(msg.source(), getOwnerName(), Clan.Function.PROPERTY_OWNER)))
+			&&(msg.target() instanceof MOB)
+			&&(!(msg.target() instanceof Banker))
+			&&(!(msg.target() instanceof Auctioneer))
+			&&(!(msg.target() instanceof PostOffice)))
+			{
+				final boolean clanSale = CMLib.clans().checkClanPrivilege(msg.source(), getOwnerName(), Clan.Function.PROPERTY_OWNER);
+				transferOwnership((MOB)msg.target(),clanSale);
+			}
+			break;
 		}
 	}
 	
 	protected void transferOwnership(final MOB buyer, boolean clanSale)
 	{
-		if(getOwnerName().length()>0)
+		if((getOwnerName().length()>0)&&(!getOwnerName().startsWith("#")))
 		{
 			final MOB M=CMLib.players().getLoadPlayer(getOwnerName());
 			if((M!=null)&&(M.playerStats()!=null))
@@ -789,11 +825,5 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 		if(!super.isSavable())
 			return false;
 		return (getOwnerName().length()==0);
-	}
-
-	@Override
-	public boolean isInCombat()
-	{
-		return false;
 	}
 }

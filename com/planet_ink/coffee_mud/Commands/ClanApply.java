@@ -35,10 +35,17 @@ import java.util.*;
 
 public class ClanApply extends StdCommand
 {
-	public ClanApply(){}
+	public ClanApply()
+	{
+	}
 
-	private final String[] access=I(new String[]{"CLANAPPLY"});
-	@Override public String[] getAccessWords(){return access;}
+	private final String[]	access	= I(new String[] { "CLANAPPLY" });
+
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
@@ -148,7 +155,10 @@ public class ClanApply extends StdCommand
 		return false;
 	}
 
-	@Override public boolean canBeOrdered(){return false;}
-
+	@Override
+	public boolean canBeOrdered()
+	{
+		return false;
+	}
 
 }

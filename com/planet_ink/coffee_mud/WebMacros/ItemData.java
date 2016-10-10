@@ -202,7 +202,6 @@ public class ItemData extends StdWebMacro
 						httpReq.getRequestObjects().put(itemCode,I);
 				}
 			}
-
 		}
 
 		if(I==null)
@@ -221,12 +220,14 @@ public class ItemData extends StdWebMacro
 				}
 			}
 			else
+			{
 				for(int i=0;i<M.numItems();i++)
 				{
 					final Item I2=M.getItem(i);
 					if(I2!=null)
 						str.append(RoomData.getItemCode(M,I2));
 				}
+			}
 			return clearWebMacros(str);
 		}
 
@@ -255,7 +256,7 @@ public class ItemData extends StdWebMacro
 			final int material=CMath.s_int(httpReq.getUrlParameter("MATERIALS"));
 			int hands=1;
 			if(httpReq.isUrlParameter("ISTWOHANDED")&&(httpReq.getUrlParameter("ISTWOHANDED").equalsIgnoreCase("on")))
-			   hands=2;
+				hands=2;
 			Map<String,String> vals=null;
 			if(I instanceof Weapon)
 			{
@@ -277,10 +278,12 @@ public class ItemData extends StdWebMacro
 				{
 					worndata=CMath.s_int(httpReq.getUrlParameter("WORNDATA"));
 					for(int i=1;;i++)
+					{
 						if(httpReq.isUrlParameter("WORNDATA"+(Integer.toString(i))))
 							worndata=worndata|CMath.s_int(httpReq.getUrlParameter("WORNDATA"+(Integer.toString(i))));
 						else
 							break;
+					}
 				}
 				vals=CMLib.itemBuilder().timsItemAdjustments(I,
 															 level,
@@ -590,6 +593,8 @@ public class ItemData extends StdWebMacro
 						if(I instanceof com.planet_ink.coffee_mud.Items.interfaces.RoomMap)
 							return "true";
 						return "false";
+					case ISCLOAK: // is cloak
+						return Boolean.toString(I.ID().equalsIgnoreCase("GenCloak"));
 					case MAPAREAS: // map areas
 					{
 						String mask=";"+I.readableText();
@@ -948,15 +953,15 @@ public class ItemData extends StdWebMacro
 							old=""+((Recipe)I).getCommonSkillID();
 						for(final Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
 						{
-						 	A=e.nextElement();
-						 	if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL)
-						 	&&((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_CRAFTINGSKILL))
-						 	{
-							 	str.append("<OPTION VALUE=\""+A.ID()+"\"");
-							 	if(A.ID().equalsIgnoreCase(old))
-							 		str.append(" SELECTED");
-							 	str.append(">"+A.name());
-						 	}
+							A=e.nextElement();
+							if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL)
+							&&((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_CRAFTINGSKILL))
+							{
+								str.append("<OPTION VALUE=\""+A.ID()+"\"");
+								if(A.ID().equalsIgnoreCase(old))
+									str.append(" SELECTED");
+								str.append(">"+A.name());
+							}
 						}
 						break;
 					}
@@ -1092,6 +1097,11 @@ public class ItemData extends StdWebMacro
 							old=""+((Food)I).bite();
 						str.append(old);
 						break;
+					case OPENTICKS: // open ticks
+						if(((firstTime)&&(I instanceof CloseableLockable))||(old.length()==0))
+							old=""+((CloseableLockable)I).openDelayTicks();
+						str.append(old);
+						break;
 					case MAXUSES: // max uses
 						if((firstTime)&&(I instanceof Wand))
 							old=""+((Wand)I).maxUses();
@@ -1160,8 +1170,8 @@ public class ItemData extends StdWebMacro
 					case ISSHIPENGINE:
 						str.append(I instanceof ShipEngine);
 						break;
-					case ISSHIPSHIELD:
-						str.append(I instanceof ShipShieldGenerator);
+					case ISSHIPWARCOMP:
+						str.append(I instanceof ShipWarComponent);
 						break;
 					case ISPANEL:
 						str.append((I instanceof ElecPanel)&&(!(I instanceof Computer)));
@@ -1208,38 +1218,38 @@ public class ItemData extends StdWebMacro
 						if(I instanceof Electronics)
 							str.append((firstTime) ? (((Electronics)I).activated()?"CHECKED":"") : (old.equalsIgnoreCase("on")?"CHECKED":"")).append(", ");
 						break;
-					case SSHIELDNUMPORTS:
-						if(I instanceof ShipShieldGenerator)
-							str.append((firstTime) ? (""+((ShipShieldGenerator)I).getPermittedNumDirections()) : old).append(", ");
+					case SWARNUMPORTS:
+						if(I instanceof ShipWarComponent)
+							str.append((firstTime) ? (""+((ShipWarComponent)I).getPermittedNumDirections()) : old).append(", ");
 						break;
-					case SSHIELDPORTS:
-						if(I instanceof ShipShieldGenerator)
-							str.append((firstTime) ? (""+CMParms.toListString(((ShipShieldGenerator)I).getPermittedDirections())) : old).append(", ");
+					case SWARPORTS:
+						if(I instanceof ShipWarComponent)
+							str.append((firstTime) ? (""+CMParms.toListString(((ShipWarComponent)I).getPermittedDirections())) : old).append(", ");
 						break;
-					case SSHIELDMTYPES:
-						if(I instanceof ShipShieldGenerator)
+					case SWARMTYPES:
+						if(I instanceof ShipWarComponent)
 						{
 							final Set<Integer> msgTypes=new TreeSet<Integer>(); 
 							if(firstTime)
 							{
-								for(int typ : ((ShipShieldGenerator)I).getShieldedMsgTypes())
+								for(int typ : ((ShipWarComponent)I).getDamageMsgTypes())
 									msgTypes.add(Integer.valueOf(typ));
 							}
 							else
 							{
-								if(httpReq.isUrlParameter("SSHIELDMTYPES"))
+								if(httpReq.isUrlParameter("SWARMTYPES"))
 								{
-									msgTypes.add(Integer.valueOf(CMath.s_int(httpReq.getUrlParameter("SSHIELDMTYPES"))));
+									msgTypes.add(Integer.valueOf(CMath.s_int(httpReq.getUrlParameter("SWARMTYPES"))));
 									for(int i=1;;i++)
 									{
-										if(httpReq.isUrlParameter("SSHIELDMTYPES"+(Integer.toString(i))))
-											msgTypes.add(Integer.valueOf(CMath.s_int(httpReq.getUrlParameter("SSHIELDMTYPES"+(Integer.toString(i))))));
+										if(httpReq.isUrlParameter("SWARMTYPES"+(Integer.toString(i))))
+											msgTypes.add(Integer.valueOf(CMath.s_int(httpReq.getUrlParameter("SWARMTYPES"+(Integer.toString(i))))));
 										else
 											break;
 									}
 								}
 							}
-							for(final int r : ShipShieldGenerator.AVAIL_DAMAGE_TYPES)
+							for(final int r : ShipWarComponent.AVAIL_DAMAGE_TYPES)
 							{
 								str.append("<OPTION VALUE=\""+r+"\"");
 								if(msgTypes.contains(Integer.valueOf(r)))
@@ -1316,10 +1326,12 @@ public class ItemData extends StdWebMacro
 								{
 									consumedFuel.add(Integer.valueOf(CMath.s_int(httpReq.getUrlParameter("CONSUMEDMATS"))));
 									for(int i=1;;i++)
+									{
 										if(httpReq.isUrlParameter("CONSUMEDMATS"+(Integer.toString(i))))
 											consumedFuel.add(Integer.valueOf(CMath.s_int(httpReq.getUrlParameter("CONSUMEDMATS"+(Integer.toString(i))))));
 										else
 											break;
+									}
 								}
 							}
 							for(final int r : RawMaterial.CODES.ALL_SBN())
@@ -1333,9 +1345,11 @@ public class ItemData extends StdWebMacro
 						break;
 					case AREAXML:
 						if(I instanceof BoardableShip)
+						{
 							str.append((firstTime) ? 
 								CMLib.xml().parseOutAngleBracketsAndQuotes(CMLib.coffeeMaker().getAreaObjectXML(((BoardableShip)I).getShipArea(), null, null, null, true).toString()) :
 								old).append(", ");
+						}
 						break;
 					}
 					if(firstTime)

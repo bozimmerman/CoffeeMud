@@ -35,21 +35,35 @@ import java.util.*;
 
 public class Run extends Go
 {
-	public Run(){}
+	public Run()
+	{
+	}
 
-	private final String[] access=I(new String[]{"RUN"});
-	@Override public String[] getAccessWords(){return access;}
-	public int energyExpenseFactor(){return 2;}
+	private final String[]	access	= I(new String[] { "RUN" });
+
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
+
+	public int energyExpenseFactor()
+	{
+		return 2;
+	}
+
 	@Override
 	public double actionsCost(final MOB mob, final List<String> cmds)
 	{
-		return CMProps.getCommandActionCost(ID(), CMath.div(CMProps.getIntVar(CMProps.Int.DEFCMDTIME),400.0));
+		return CMProps.getCommandActionCost(ID(), CMath.div(CMProps.getIntVar(CMProps.Int.DEFCMDTIME), 400.0));
 	}
+
 	@Override
 	public double combatActionsCost(MOB mob, List<String> cmds)
 	{
-		return CMProps.getCommandCombatActionCost(ID(), CMath.div(CMProps.getIntVar(CMProps.Int.DEFCOMCMDTIME),400.0));
+		return CMProps.getCommandCombatActionCost(ID(), CMath.div(CMProps.getIntVar(CMProps.Int.DEFCOMCMDTIME), 400.0));
 	}
+
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 	throws java.io.IOException

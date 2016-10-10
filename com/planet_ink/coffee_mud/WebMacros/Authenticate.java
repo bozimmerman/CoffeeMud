@@ -37,8 +37,18 @@ import java.net.*;
 */
 public class Authenticate extends StdWebMacro
 {
-	@Override public String name() { return "Authenticate"; }
-	@Override public boolean isAdminMacro()    {return false;}
+	@Override
+	public String name()
+	{
+		return "Authenticate";
+	}
+
+	@Override
+	public boolean isAdminMacro()
+	{
+		return false;
+	}
+
 	private static final long ONE_REAL_DAY=(long)1000*60*60*24;
 
 	@Override
@@ -86,16 +96,22 @@ public class Authenticate extends StdWebMacro
 					FILTER[i]=filterc[i % filterc.length];
 				final String domain=CMProps.getVar(CMProps.Str.MUDDOMAIN);
 				if(domain.length()>0)
+				{
 					for(int i=0;i<256;i++)
 						FILTER[i]^=domain.charAt(i % domain.length());
+				}
 				final String name=CMProps.getVar(CMProps.Str.MUDNAME);
 				if(name.length()>0)
+				{
 					for(int i=0;i<256;i++)
 						FILTER[i]^=name.charAt(i % name.length());
+				}
 				final String email=CMProps.getVar(CMProps.Str.ADMINEMAIL);
 				if(email.length()>0)
+				{
 					for(int i=0;i<256;i++)
 						FILTER[i]^=email.charAt(i % email.length());
+				}
 				for(final Enumeration<NetworkInterface> nie = NetworkInterface.getNetworkInterfaces(); nie.hasMoreElements();)
 				{
 					final NetworkInterface ni = nie.nextElement();
@@ -123,8 +139,9 @@ public class Authenticate extends StdWebMacro
 		final byte[] FILTER=getFilter();
 		for ( int i = 0, j = 0; i < bytes.length; i++, j++ )
 		{
-		   if ( j >= FILTER.length ) j = 0;
-		   bytes[i]=(byte)((bytes[i] ^ FILTER[j]) & 0xff);
+			if ( j >= FILTER.length ) 
+				j = 0;
+			bytes[i]=(byte)((bytes[i] ^ FILTER[j]) & 0xff);
 		}
 		return bytes;
 	}

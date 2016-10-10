@@ -55,7 +55,7 @@ public class Thief_DetectTraps extends ThiefSkill
 		int dirCode=-1;
 		if(unlockThis==null)
 		{
-			dirCode=Directions.getGoodDirectionCode(whatTounlock);
+			dirCode=CMLib.directions().getGoodDirectionCode(whatTounlock);
 			if(dirCode>=0)
 			{
 				unlockThis=mob.location().getExitInDir(dirCode);
@@ -106,7 +106,7 @@ public class Thief_DetectTraps extends ThiefSkill
 				}
 			}
 		}
-		final String add=(dirCode>=0)?" "+Directions.getInDirectionName(dirCode):"";
+		final String add=(dirCode>=0)?" "+CMLib.directions().getInDirectionName(dirCode):"";
 		final CMMsg msg=CMClass.getMsg(mob,unlockThis,this,auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_DELICATE_HANDS_ACT,auto?null:L("<S-NAME> look(s) @x1@x2 over very carefully.",((unlockThis==null)?"":unlockThis.name()),add));
 		if((unlockThis!=null)&&(mob.location().okMessage(mob,msg)))
 		{

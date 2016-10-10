@@ -149,11 +149,11 @@ public class Spell_HelpingHand extends Spell
 				return true;
 			}
 			if((trail == null) || (trail.size()==0) || (trail.get(0) != invokerM.location()))
-				trail = CMLib.tracking().findBastardTheBestWay(handIR, invokerM.location(), null, 1000);
+				trail = CMLib.tracking().findTrailToRoom(handIR, invokerM.location(), null, 1000);
 			int nextDirection = CMLib.tracking().trackNextDirectionFromHere(trail, handIR, false);
 			if(nextDirection < 0)
 			{
-				trail = CMLib.tracking().findBastardTheBestWay(handIR, invokerM.location(), null, 1000);
+				trail = CMLib.tracking().findTrailToRoom(handIR, invokerM.location(), null, 1000);
 				nextDirection = CMLib.tracking().trackNextDirectionFromHere(trail, handIR, false);
 			}
 			final Room nextRoom=handIR.getRoomInDir(nextDirection);
@@ -183,12 +183,12 @@ public class Spell_HelpingHand extends Spell
 				}
 				if(!nextExit.isOpen())
 				{
-					final Vector<String> openCommandV=new ReadOnlyVector<String>(CMParms.parse("OPEN "+Directions.getDirectionName(nextDirection)));
+					final Vector<String> openCommandV=new ReadOnlyVector<String>(CMParms.parse("OPEN "+CMLib.directions().getDirectionName(nextDirection)));
 					doorOpenerM.doCommand(openCommandV,MUDCmdProcessor.METAFLAG_FORCED);
 				}
 				doorOpenerM.destroy();
 			}
-			handIR.show(CMLib.map().deity(), targetM, handI, CMMsg.MSG_OK_VISUAL, L("<O-NAME> floats @x1.",Directions.getDirectionName(nextDirection)));
+			handIR.show(CMLib.map().deity(), targetM, handI, CMMsg.MSG_OK_VISUAL, L("<O-NAME> floats @x1.",CMLib.directions().getDirectionName(nextDirection)));
 			nextRoom.moveItemTo(handI);
 			if((targetM.location() == handIR) && (targetM.isMonster()) && (invoker()!=null) && (invoker().getGroupMembers(new HashSet<MOB>()).contains(targetM)))
 				CMLib.tracking().walk(targetM, nextDirection, targetM.isInCombat(), true);

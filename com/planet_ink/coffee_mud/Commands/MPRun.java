@@ -36,10 +36,17 @@ import org.mozilla.javascript.*;
 */
 public class MPRun extends StdCommand
 {
-	public MPRun(){}
+	public MPRun()
+	{
+	}
 
-	private final String[] access=I(new String[]{"MPRUN"});
-	@Override public String[] getAccessWords(){return access;}
+	private final String[]	access	= I(new String[] { "MPRUN" });
+
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
@@ -96,7 +103,21 @@ public class MPRun extends StdCommand
 		S.tick(mob,Tickable.TICKID_MOB);
 	}
 
-	@Override public boolean canBeOrdered(){return false;}
-	@Override public boolean securityCheck(MOB mob){return true; }
-	@Override public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	@Override
+	public boolean canBeOrdered()
+	{
+		return false;
+	}
+
+	@Override
+	public boolean securityCheck(MOB mob)
+	{
+		return true;
+	}
+
+	@Override
+	public int compareTo(CMObject o)
+	{
+		return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));
+	}
 }

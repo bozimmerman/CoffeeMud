@@ -34,7 +34,12 @@ import java.util.*;
 */
 public class Wand_Advancement extends StdWand implements ArchonOnly
 {
-	@Override public String ID(){	return "Wand_Advancement";}
+	@Override
+	public String ID()
+	{
+		return "Wand_Advancement";
+	}
+
 	public Wand_Advancement()
 	{
 		super();
@@ -49,7 +54,6 @@ public class Wand_Advancement extends StdWand implements ArchonOnly
 		recoverPhyStats();
 		secretWord="LEVEL UP";
 	}
-
 
 	@Override
 	public void setSpell(Ability theSpell)
@@ -107,7 +111,6 @@ public class Wand_Advancement extends StdWand implements ArchonOnly
 							else
 								CMLib.leveler().postExperience(target,null,null,target.getExpNeededLevel()+1,false);
 						}
-
 					}
 				}
 			}

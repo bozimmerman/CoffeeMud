@@ -35,14 +35,31 @@ import java.util.*;
 
 public class Prop_CommonTwister extends Property
 {
-	@Override public String ID() { return "Prop_CommonTwister"; }
-	@Override public String name(){ return "Common Twister";}
-	@Override protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_ITEMS|Ability.CAN_MOBS;}
-	protected List<Triad<String,String,String>> changes=new Vector<Triad<String,String,String>>();
+	@Override
+	public String ID()
+	{
+		return "Prop_CommonTwister";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Common Twister";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_EXITS | Ability.CAN_ROOMS | Ability.CAN_AREAS | Ability.CAN_ITEMS | Ability.CAN_MOBS;
+	}
+
+	protected List<Triad<String, String, String>>	changes	= new Vector<Triad<String, String, String>>();
 
 	@Override
 	public String accountForYourself()
-	{ return "Twists around what the gathering common skills gives you.";	}
+	{
+		return "Twists around what the gathering common skills gives you.";
+	}
 
 	@Override
 	public void setMiscText(String text)

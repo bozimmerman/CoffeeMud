@@ -189,6 +189,7 @@ public class Gaoler extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),-1,"CageBuilding",0,"",false,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),-1,"JewelMaking",0,"",false,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),-1,"Dyeing",0,"",false,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),-1,"Shearing",0,"",false,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),-1,"Embroidering",0,"",false,true,CMParms.parseSemicolons("Skill_Write",true),"");
 		CMLib.ableMapper().addCharAbilityMapping(ID(),-1,"Engraving",0,"",false,true,CMParms.parseSemicolons("Skill_Write",true),"");
 		CMLib.ableMapper().addCharAbilityMapping(ID(),-1,"Lacquerring",0,"",false,true);
@@ -262,7 +263,11 @@ public class Gaoler extends StdCharClass
 			{
 				final int xp=(int)Math.round(10.0*CMath.div(((MOB)msg.target()).phyStats().level(),((MOB)host).charStats().getClassLevel(this)));
 				int[] done=mudHourMOBXPMap.get(host.Name()+"/"+msg.tool().ID());
-				if(done==null){ done=new int[3]; mudHourMOBXPMap.put(host.Name()+"/"+msg.tool().ID(),done);}
+				if (done == null)
+				{
+					done = new int[3];
+					mudHourMOBXPMap.put(host.Name() + "/" + msg.tool().ID(), done);
+				}
 				if(Calendar.getInstance().get(Calendar.SECOND)!=done[2])
 				{
 					final TimeClock clock =CMLib.map().getStartArea(host).getTimeObj();
@@ -278,7 +283,7 @@ public class Gaoler extends StdCharClass
 						msg2.addTrailerMsg(CMClass.getMsg((MOB)host,null,null,CMMsg.MSG_OK_VISUAL,L("The sweet screams of your victim earns you @x1 experience points.",""+xp),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
 					}
 					else
-						msg2.addTrailerMsg(CMClass.getMsg((MOB)host,null,null,CMMsg.MSG_OK_VISUAL,L("The screams of your victims bore you now."),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+						msg2.addTrailerMsg(CMClass.getMsg((MOB)host,null,null,CMMsg.MSG_OK_VISUAL,L("The screams of this victim bore you now."),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
 					msg.addTrailerMsg(msg2);
 				}
 			}

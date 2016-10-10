@@ -36,7 +36,11 @@ import java.util.*;
 
 public class AreaTbl extends StdWebMacro
 {
-	@Override public String name()	{return "AreaTbl";}
+	@Override
+	public String name()
+	{
+		return "AreaTbl";
+	}
 
 	protected static final int AT_MAX_COL = 3;
 

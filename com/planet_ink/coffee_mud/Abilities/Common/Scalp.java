@@ -71,13 +71,13 @@ public class Scalp extends CommonSkill
 			if(affected instanceof MOB)
 			{
 				final MOB mob=(MOB)affected;
-				if((body!=null)&&(!aborted))
+				if((body!=null)&&(!aborted)&&(mob.location()!=null))
 				{
 					if((failed)||(!mob.location().isContent(body)))
 						commonTell(mob,L("You messed up your scalping completely."));
 					else
 					{
-						mob.location().show(mob,null,body,getActivityMessageType(),L("<S-NAME> manage(s) to scalp <O-NAME>."));
+						mob.location().show(mob,body,this,getCompletedActivityMessageType(),L("<S-NAME> manage(s) to scalp <T-NAME>."));
 						lastSoManyScalps.addElement(body);
 						if(lastSoManyScalps.size()>100)
 							lastSoManyScalps.removeElementAt(0);
@@ -97,7 +97,7 @@ public class Scalp extends CommonSkill
 						scalp.setDescription(L("This is the bloody top of that poor creatures head."));
 						scalp.setMaterial(RawMaterial.RESOURCE_MEAT);
 						scalp.setSecretIdentity("This scalp was cut by "+mob.name()+".");
-						mob.location().addItem(scalp,ItemPossessor.Expire.Monster_EQ);
+						dropAWinner(mob,scalp);
 					}
 				}
 			}

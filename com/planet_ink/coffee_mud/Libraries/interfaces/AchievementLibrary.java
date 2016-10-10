@@ -74,12 +74,14 @@ public interface AchievementLibrary extends CMLibrary
 		ACHIEVER("Completing Achievements",new String[]{"ACHIEVEMENTLIST"}), 
 		ROOMENTER("Entering a Room",new String[]{"ROOMID"}),
 		LEVELSGAINED("Gaining Levels",new String[]{"NUM","PLAYERMASK"}),
+		CLASSLEVELSGAINED("Gaining Class Levels",new String[]{"NUM","CLASS","PLAYERMASK"}),
 		TIMEPLAYED("Time Played",new String[]{"SECONDS","PLAYERMASK"}),
 		JUSTBE("Character State",new String[]{"PLAYERMASK"}),
 		DEATHS("Dieing",new String[]{"NUM","ZAPPERMASK","PLAYERMASK"}),
 		RETIRE("Retiring",new String[]{"NUM","PLAYERMASK"}),
 		REMORT("Remorting",new String[]{"NUM","PLAYERMASK"}),
-		GOTITEM("Got an item",new String[]{"ITEMMASK","PLAYERMASK"})
+		GOTITEM("Got an item",new String[]{"ITEMMASK","PLAYERMASK"}),
+		FACTIONS("A group of factions",new String[]{"VALUE","ABOVEBELOW","IDMASK","NUM"}),
 		;
 		private final String[] parameters;
 		private final String displayName;
@@ -239,8 +241,25 @@ public interface AchievementLibrary extends CMLibrary
 		ABILITY,
 		EXPERTISE,
 		STAT
+		;
 	}
 	
+	/**
+	 * Flags to denote how awards are given when achievements
+	 * are granted, especially on character creation and/or
+	 * remort.
+	 * @author Bo Zimmerman
+	 *
+	 */
+	public enum AchievementLoadFlag
+	{
+		REMORT_PRELOAD,
+		REMORT_POSTLOAD,
+		CHARCR_PRELOAD,
+		CHARCR_POSTLOAD,
+		NORMAL
+	}
+
 	/**
 	 * The award interface provides pre-parsed award information for those who
 	 * complete the achievement.
@@ -254,6 +273,26 @@ public interface AchievementLibrary extends CMLibrary
 		 * @return type of award
 		 */
 		public AwardType getType();
+		
+		/**
+		 * Returns a description of the award
+		 * @return a description of the award
+		 */
+		public String getDescription();
+
+		/**
+		 * Returns true if the award is given before the character
+		 * is fully created.
+		 * @return true if it is pre-awarded, false if always after
+		 */
+		public boolean isPreAwarded();
+
+		/**
+		 * Returns true if the award is given only to new characters or
+		 * at achievement-time
+		 * @return true if it is only awarded for new chars and at ach-time
+		 */
+		public boolean isNotAwardedOnRemort();
 	}
 	
 	/**
@@ -364,7 +403,7 @@ public interface AchievementLibrary extends CMLibrary
 	 * @author Bo Zimmerman
 	 *
 	 */
-	public interface Tracker
+	public interface Tracker extends Cloneable
 	{
 		/**
 		 * The achievement to which this tracker belongs.
@@ -401,6 +440,13 @@ public interface AchievementLibrary extends CMLibrary
 		 * @return the score for this achievement and this mob
 		 */
 		public int getCount(MOB mob);
+		
+		/**
+		 * Returns a copy of this tracker, unattached to the
+		 * tracker it is a copy of.
+		 * @return a copy of this tracker
+		 */
+		public Tracker copyOf();
 	}
 	
 	/**
@@ -481,8 +527,22 @@ public interface AchievementLibrary extends CMLibrary
 	public void possiblyBumpAchievement(final MOB mob, final Event E, int bumpNum, Object... parms);
 	
 	/**
+	 * When an event occurs that might possible cause a player to have one of their achievements bumped,
+	 * this method is called with event specific parameters which might possibly cause the achievement
+	 * to be bumped in the tracker, which might cause it to be completed as well.  This method does
+	 * not actually affect the players trackers, but only pretends to, and then returns the list of
+	 * Achievements that would be gained by the effort.
+	 * @param mob the player whose achievement needs to be checked
+	 * @param E the event that occurred
+	 * @param bumpNum the amount to bump the achievement by
+	 * @param parms any event-specific argument that help determine whether a bump is warranted.
+	 * @return the list of achievements that would be earned by the bump, if any. Empty list otherwise. 
+	 */
+	public List<Achievement> fakeBumpAchievement(final MOB mob, final Event E, int bumpNum, Object... parms);
+
+	/**
 	 * Returns all the comment/help entries from the achievement definition file
-	 * The map is of the form event ID, then parameter->help map.
+	 * The map is of the form event ID, then parameter-&gt;help map.
 	 * @return all the comment/help entries from the achievement definition file
 	 */
 	public Map<String,Map<String,String>> getAchievementsHelpMap();
@@ -531,9 +591,18 @@ public interface AchievementLibrary extends CMLibrary
 	 * down, then the awards are granted, including skill awards if any.
 	 * @see AchievementLibrary#loadPlayerSkillAwards(Tattooable, PlayerStats)
 	 * @param mob the new character to load up.
+	 * @param flag the circumstances under which achievements are being loaded
 	 */
-	public void loadAccountAchievements(final MOB mob);
+	public void loadAccountAchievements(final MOB mob, final AchievementLoadFlag flag);
 
+	/**
+	 * When a player remorts, they keep their player achievements, but the rewards
+	 * are removed.  This method is called to re-reward all player achievement rewards.
+	 * @param mob the mob to award
+	 * @param whether this is happening before or after stat selection
+	 */
+	public void reloadPlayerAwards(MOB mob, AchievementLoadFlag flag);
+	
 	/**
 	 * Searches for an Achievement of the given tattoo name or display name,
 	 * and returns a help entry for the achievement.

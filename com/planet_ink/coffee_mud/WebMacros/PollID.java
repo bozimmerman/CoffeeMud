@@ -36,7 +36,11 @@ import java.util.*;
 */
 public class PollID extends StdWebMacro
 {
-	@Override public String name() { return "PollID"; }
+	@Override
+	public String name()
+	{
+		return "PollID";
+	}
 
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
@@ -50,7 +54,9 @@ public class PollID extends StdWebMacro
 			if(parms.containsKey("ENCODED"))
 				return URLEncoder.encode(last,"UTF-8");
 		}
-		catch(final Exception e) {}
+		catch(final Exception e)
+		{
+		}
 		return clearWebMacros(last);
 	}
 }

@@ -365,6 +365,19 @@ public interface AbilityMapper extends CMLibrary
 	public int getQualifyingLevel(String ID, boolean checkAll, String abilityID);
 
 	/**
+	 * Returns the mapping which the given class or race qualifies for the given ability ID(),
+	 * optionally checking the All-Qualifies list or not.  Returns null for no match.
+	 * @see AbilityMapper#qualifyingLevel(MOB, Ability)
+	 * @see AbilityMapper#qualifyingClassLevel(MOB, Ability)
+	 * @see AbilityMapper#lowestQualifyingClassRaceGovt(MOB, Ability)
+	 * @param ID the charclass ID(), race ID(), or whatever
+	 * @param checkAll true to check the All Qualifies list, false to skip it
+	 * @param abilityID the Ability ID() to find a map for
+	 * @return the level at which the give class or race qualifies, or null
+	 */
+	public AbilityMapping getQualifyingMapping(String ID, boolean checkAll, String abilityID);
+	
+	/**
 	 * Returns the lowest class or player level at which the given mob (by race or 
 	 * class) qualified for the given ability if any. Returns -1 for no match.
 	 * This method is called when you are trying to guage how powerful the player
@@ -501,7 +514,8 @@ public interface AbilityMapper extends CMLibrary
 	/**
 	 * Returns whether the given class qualifies for the given ability.
 	 * Does not check all-qualifies list, so this is only class (or race)
-	 * specific qualifications.
+	 * specific qualifications.  Returns true ONLY if the given class
+	 * or race is the ONLY one who qualifies.
 	 * @see AbilityMapper#classOnly(MOB, String, String)
 	 * @see AbilityMapper#qualifiesByAnyCharClass(String)
 	 * @param classID the class ID(), race ID() or whatever
@@ -514,7 +528,8 @@ public interface AbilityMapper extends CMLibrary
 	 * Returns whether the given class qualifies for the given ability.
 	 * Does not check all-qualifies list, so this is only class (or race)
 	 * specific qualifications.  Will also specifically check the given
-	 * mobs class object with the given ID, which is strange.
+	 * mobs class object with the given ID, which is strange. Returns true 
+	 * ONLY if the given class or race is the ONLY one who qualifies.
 	 * @see AbilityMapper#classOnly(String, String)
 	 * @see AbilityMapper#qualifiesByAnyCharClass(String)
 	 * @param mob the mob whose classes to also check
@@ -895,6 +910,16 @@ public interface AbilityMapper extends CMLibrary
 	public void saveAllQualifysFile(Map<String, Map<String,AbilityMapping>> newMap);
 
 	/**
+	 * Returns a String list of all the classes and levels that qualify for the given
+	 * skill.  If more than the given abbreviateAt skills qualify, then the list
+	 * will start abstracting the list by returning abstract terms instead of class ids.
+	 * @param A the skill to get a list of qualifiers for
+	 * @param abbreviateAt the number of classes beyond which is starts aggregating
+	 * @return a list of class ids/aggregate strings and levels
+	 */
+	public PairList<String,Integer> getAvailabilityList(final Ability A, int abbreviateAt);
+
+	/**
 	 * A mapping between an Ability ID and it's qualifying level
 	 * @see AbilityMapper#getAbilityAllowsList(String)
 	 * @author Bo Zimmerman
@@ -1097,7 +1122,7 @@ public interface AbilityMapper extends CMLibrary
 		 * to train or gain this skill.
 		 * @see AbilityMapper.AbilityMapping#originalSkillPreReqList()
 		 * @see AbilityMapper.AbilityMapping#originalSkillPreReqList(String)
-		 * @see AbilityMapper.AbilityMapping#skillPreReqs(DVector)i
+		 * @see AbilityMapper.AbilityMapping#skillPreReqs(DVector)
 		 * @return the coded form of the pre-requisites skills needed
 		 */
 		public DVector				skillPreReqs();

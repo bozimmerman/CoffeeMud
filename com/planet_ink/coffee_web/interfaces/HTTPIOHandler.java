@@ -78,6 +78,7 @@ public interface HTTPIOHandler extends Runnable
 	 * @return number of bytes written
 	 * @throws IOException
 	 */
+	@Deprecated
 	public int writeBlockingBytesToChannel(final DataBuffers buffer) throws IOException;
 	
 	/**

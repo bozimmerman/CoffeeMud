@@ -35,7 +35,7 @@ CREATE TABLE CMCHAR (
 	CMCHID varchar (50) NOT NULL,
 	CMUSERID varchar (50) NOT NULL,
 	CMPASS varchar (50),
-	CMCLAS varchar (200),
+	CMCLAS varchar (250),
 	CMSTRE integer,
 	CMRACE varchar (50),
 	CMDEXT integer,

@@ -166,7 +166,7 @@ public class Skill_Track extends StdSkill
 			else
 			if(nextDirection>=0)
 			{
-				mob.tell(L("The trail seems to continue @x1.",Directions.getDirectionName(nextDirection)));
+				mob.tell(L("The trail seems to continue @x1.",CMLib.directions().getDirectionName(nextDirection)));
 				if((mob.isMonster())&&(mob.location()!=null))
 				{
 					final Room oldRoom=mob.location();
@@ -309,7 +309,7 @@ public class Skill_Track extends StdSkill
 		}
 
 		tickStatus=Tickable.STATUS_MISC6+3;
-		int radius=50;
+		int radius=50 + (10*(super.getXMAXRANGELevel(mob)+super.getXLEVELLevel(mob)));
 		boolean allowAir=true;
 		boolean allowWater=true;
 		if((commands.size()>1)
@@ -412,7 +412,7 @@ public class Skill_Track extends StdSkill
 				theTrail=cachedPaths.get(CMLib.map().getExtendedRoomID(thisRoom)+"->"+CMLib.map().getExtendedRoomID(rooms.firstElement()));
 			tickStatus=Tickable.STATUS_MISC6+9;
 			if(theTrail==null)
-				theTrail=CMLib.tracking().findBastardTheBestWay(thisRoom,rooms,flags,radius);
+				theTrail=CMLib.tracking().findTrailToAnyRoom(thisRoom,rooms,flags,radius);
 			tickStatus=Tickable.STATUS_MISC6+10;
 			if((cacheCode==1)&&(rooms.size()==1)&&(theTrail!=null))
 				cachedPaths.put(CMLib.map().getExtendedRoomID(thisRoom)+"->"+CMLib.map().getExtendedRoomID(rooms.firstElement()),theTrail);

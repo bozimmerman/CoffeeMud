@@ -35,7 +35,11 @@ import java.util.*;
 */
 public class BehaviorID extends StdWebMacro
 {
-	@Override public String name() { return "BehaviorID"; }
+	@Override
+	public String name()
+	{
+		return "BehaviorID";
+	}
 
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)

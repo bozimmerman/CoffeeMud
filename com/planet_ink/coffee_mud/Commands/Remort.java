@@ -8,10 +8,13 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.AccountStats.Agent;
 import com.planet_ink.coffee_mud.Common.interfaces.Session.InputCallback;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Achievement;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.AchievementLoadFlag;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Event;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -58,6 +61,7 @@ public class Remort extends StdCommand
 		LEVEL, 
 		ATTACK, 
 		DEFENSE,
+		DAMAGE,
 		SKILL,
 		SKILLSAT100,
 		FACTION,
@@ -72,6 +76,30 @@ public class Remort extends StdCommand
 		mob.recoverMaxState();
 		mob.resetToMaxState();
 		mob.recoverPhyStats();
+	}
+
+	protected void slowStop(final Session sess, final MOB mob, final PlayerAccount oldAcct) throws IOException
+	{
+		PlayerStats pStats = mob.playerStats();
+		if(pStats != null)
+		{
+			if(oldAcct != null)
+			{
+				// gets rid of any gains or changes from the remort process.
+				PlayerAccount realAcct = pStats.getAccount();
+				if(realAcct != null)
+					oldAcct.copyInto(realAcct);
+			}
+		}
+		sess.stopSession(true,true,false);
+		CMLib.s_sleep(3000);
+		sess.stopSession(true,true,false);
+		if(pStats != null)
+		{
+			pStats.getExtItems().delAllItems(true);
+		}
+		CMLib.players().delPlayer(mob);
+		throw new IOException("Session stopped");
 	}
 	
 	@Override
@@ -93,19 +121,33 @@ public class Remort extends StdCommand
 		}
 		
 		
-		final int[] newLevel = new int[]{1};
-		final int[] newMana = new int[]{CMProps.getIntVar(CMProps.Int.STARTMANA)};
-		final int[] newHp = new int[]{CMProps.getIntVar(CMProps.Int.STARTHP)};
-		final int[] newMove = new int[]{CMProps.getIntVar(CMProps.Int.STARTMOVE)};
-		final int[] newAttack = new int[]{0};
-		final int[] newDefense = new int[]{100};
-		final int[] bonusPointsPerStat = new int[]{0};
-		final int[] questPoint = new int[]{0};
+		final int[] newLevel = new int[] { 1 };
+		final int[] newMana = new int[] { CMProps.getIntVar(CMProps.Int.STARTMANA) };
+		final int[] newDamage = new int[] { 0 };
+		final int[] newHp = new int[] { CMProps.getIntVar(CMProps.Int.STARTHP) };
+		final int[] newMove = new int[] { CMProps.getIntVar(CMProps.Int.STARTMOVE) };
+		final int[] newAttack = new int[] { 0 };
+		final int[] newDefense = new int[] { 100 };
+		final int[] bonusPointsPerStat = new int[] { 0 };
+		final int[] questPoint = new int[] { 0 };
 		final List<Pair<String,Integer>> factions=new ArrayList<Pair<String,Integer>>();
 		final List<Triad<String,String,Integer>> abilities=new ArrayList<Triad<String,String,Integer>>();
 		final List<Triad<String,String,Integer>> abilities100=new ArrayList<Triad<String,String,Integer>>();
 		final List<String> expertises=new ArrayList<String>();
-		for(String thing : CMParms.parseCommas(CMProps.getVar(CMProps.Str.REMORTRETAIN), true))
+		final List<String> allRetains=CMParms.parseCommas(CMProps.getVar(CMProps.Str.REMORTRETAIN), true);
+		final int retainRace = allRetains.indexOf("RACE");
+		if(retainRace >=0)
+			allRetains.remove(retainRace);
+		final int retainGender = allRetains.indexOf("GENDER");
+		if(retainGender >=0)
+			allRetains.remove(retainGender);
+		final int retainCharClass = allRetains.indexOf("CHARCLASS");
+		if(retainCharClass >=0)
+			allRetains.remove(retainCharClass);
+		final int retainStats = allRetains.indexOf("STATS");
+		if(retainStats >=0)
+			allRetains.remove(retainStats);
+		for(String thing : allRetains)
 		{
 			thing=thing.toUpperCase().trim();
 			RemortRetain retainer = (RemortRetain)CMath.s_valueOf(RemortRetain.class, thing);
@@ -223,6 +265,15 @@ public class Remort extends StdCommand
 						total = (int)Math.round(CMath.mul(pctAmount, mob.baseState().getMana())) - CMProps.getIntVar(CMProps.Int.STARTMANA);
 					total += flatAmount;
 					newMana[0] += total;
+					break;
+				}
+				case DAMAGE:
+				{
+					int total = 0;
+					if(pctAmount != 0)
+						total = (int)Math.round(CMath.mul(pctAmount, mob.basePhyStats().damage()));
+					total += flatAmount;
+					newDamage[0] += total;
 					break;
 				}
 				case MOVE:
@@ -345,15 +396,29 @@ public class Remort extends StdCommand
 					mob.tell(L("Password incorrect."));
 				else
 				{
-					Log.sysOut("Retire","Remort: "+mob.Name());
+					Log.sysOut("Remort: "+mob.Name());
+					if(mob.numFollowers()>0)
+						CMLib.commands().forceStandardCommand(mob, "Nofollow",new XVector<String>("NOFOLLOW","ALL"));
+					
+					final PlayerStats pStats = mob.playerStats();
+					final PlayerAccount oldAccount;
+					if((pStats!=null)&&(pStats.getAccount()!=null))
+						oldAccount = (PlayerAccount)pStats.getAccount().copyOf();
+					else
+						oldAccount = null;
 					CMLib.achievements().possiblyBumpAchievement(mob, Event.REMORT, 1);
 					mob.basePhyStats().setLevel(1);
 					mob.basePhyStats().setArmor(newDefense[0]);
+					mob.basePhyStats().setDamage(newDamage[0]);
 					mob.basePhyStats().setAttackAdjustment(newAttack[0]);
 					mob.basePhyStats().setSpeed(1.0);
 					mob.baseState().setHitPoints(newHp[0]);
 					mob.baseState().setMana(newMana[0]);
 					mob.baseState().setMovement(newMove[0]);
+					for(int code : CharStats.CODES.SAVING_THROWS())
+						mob.baseCharStats().setStat(code, 0);
+					for(int code : CharStats.CODES.MAXCODES())
+						mob.baseCharStats().setStat(code, 0);
 					mob.delAllAbilities();
 					mob.delAllBehaviors();
 					mob.delAllScripts();
@@ -387,6 +452,24 @@ public class Remort extends StdCommand
 					{
 						mob.addExpertise(PA);
 					}
+					List<Achievement> reAwardTattoos = new LinkedList<Achievement>();
+					List<Tattoo> delTattoo =  new LinkedList<Tattoo>();
+					for(Enumeration<Tattoo> t=mob.tattoos();t.hasMoreElements();)
+					{
+						Tattoo T=t.nextElement();
+						if(T != null)
+						{
+							Achievement A=CMLib.achievements().getAchievement(T.getTattooName());
+							if((A != null) && (A.getAgent() == Agent.PLAYER))
+								reAwardTattoos.add(A);
+							else
+								delTattoo.add(T);
+						}
+						else
+							delTattoo.add(T);
+					}
+					for(Iterator<Tattoo> t=delTattoo.iterator();t.hasNext();)
+						mob.delTattoo(t.next());
 					mob.setStartRoom(CMLib.login().getDefaultStartRoom(mob));
 					mob.getStartRoom().bringMobHere(mob, true);
 					final String failsafeID = "RemoteFailSafe";
@@ -401,13 +484,28 @@ public class Remort extends StdCommand
 							&&(myHost instanceof MOB)
 							&&(msg.sourceMinor()==CMMsg.TYP_LIFE))
 							{
+								int tryTheme = mob.playerStats().getTheme();
+								if((tryTheme < 0)&&(mob.location()!=null))
+									tryTheme=mob.location().getArea().getTheme();
+								if((CMath.numberOfSetBits(tryTheme&Area.THEME_ALLTHEMES)) > 1)
+								{
+									if((tryTheme&Area.THEME_FANTASY) != 0)
+										tryTheme = Area.THEME_FANTASY;
+									else
+									if((tryTheme&Area.THEME_TECHNOLOGY) != 0)
+										tryTheme = Area.THEME_TECHNOLOGY;
+								}
+								final int theme=tryTheme;
 								Runnable remortRun = new Runnable()
 								{
 									@Override
 									public void run()
 									{
+										final PlayerStats pStats = mob.playerStats();
 										try
 										{
+											if(pStats != null)
+												pStats.setSavable(false); // protect vulnerable weakling from saves so restore works
 											final Session sess = mob.session();
 											mob.baseCharStats().setMyClasses("StdCharClass");
 											mob.baseCharStats().setMyLevels("1");
@@ -415,10 +513,15 @@ public class Remort extends StdCommand
 											for (final Enumeration<Ability> a = mob.personalEffects(); a.hasMoreElements();)
 											{
 												final Ability A = a.nextElement();
-												if ((A != null)&& (A.canBeUninvoked()))
+												if(A!=null)
 												{
-													A.unInvoke();
-													mob.delEffect(A);
+													if (A.canBeUninvoked()
+													||(A.isNowAnAutoEffect()))
+													{
+														A.unInvoke();
+														mob.delEffect(A);
+													}
+													
 												}
 											}
 											Ability oldFailSafeA=mob.fetchEffect(failsafeID);
@@ -433,26 +536,86 @@ public class Remort extends StdCommand
 												mob.addNonUninvokableEffect(failsafeA);
 											}
 											recoverEverything(mob);
-											CMLib.login().promptPlayerStats(mob.playerStats().getTheme(), mob, mob.session(), bonusPointsPerStat[0]);
-											if(sess.isStopped())
-												throw new IOException("Session stopped");
-											recoverEverything(mob);
-											mob.basePhyStats().setSensesMask(0);
+											if(retainRace < 0)
+											{
+												try
+												{
+													mob.baseCharStats().setMyRace(CMLib.login().promptRace(theme, mob, mob.session()));
+												}
+												catch(Throwable x)
+												{
+													sess.stopSession(true, true, false);
+												}
+												if(sess.isStopped())
+												{
+													slowStop(sess,mob,oldAccount);
+												}
+												recoverEverything(mob);
+											}
+											if(retainGender < 0)
+											{
+												try
+												{
+													mob.baseCharStats().setStat(CharStats.STAT_GENDER,CMLib.login().promptGender(theme, mob, mob.session()));
+												}
+												catch(Throwable x)
+												{
+													sess.stopSession(true, true, false);
+												}
+												if(sess.isStopped())
+												{
+													slowStop(sess,mob,oldAccount);
+												}
+												recoverEverything(mob);
+											}
+											mob.setPractices(0);
+											mob.setTrains(0);
+											CMLib.achievements().reloadPlayerAwards(mob,AchievementLoadFlag.REMORT_PRELOAD);
+											if(retainStats < 0)
+											{
+												// loadAccountAchievements already done by crcrinit in promptplayerstats
+												try
+												{
+													CMLib.login().promptPlayerStats(theme, mob, 300, mob.session(), bonusPointsPerStat[0]);
+												}
+												catch(Throwable x)
+												{
+													sess.stopSession(true, true, false);
+												}
+												if(sess.isStopped())
+												{
+													slowStop(sess,mob,oldAccount);
+												}
+												recoverEverything(mob);
+											}
+											else
+												CMLib.achievements().loadAccountAchievements(mob,AchievementLoadFlag.REMORT_PRELOAD);											mob.basePhyStats().setSensesMask(0);
 											mob.baseCharStats().getMyRace().startRacing(mob,false);
 											mob.setWimpHitPoint(5);
 											mob.setQuestPoint(questPoint[0]);
 											recoverEverything(mob);
-											mob.baseCharStats().setCurrentClass(CMLib.login().promptCharClass(mob.playerStats().getTheme(), mob, mob.session()));
-											if(sess.isStopped())
-												throw new IOException("Session stopped");
-											recoverEverything(mob);
-											mob.setPractices(0);
-											mob.setTrains(0);
+											if(retainCharClass < 0)
+											{
+												try
+												{
+													mob.baseCharStats().setCurrentClass(CMLib.login().promptCharClass(theme, mob, mob.session()));
+												}
+												catch(Throwable x)
+												{
+													sess.stopSession(true, true, false);
+												}
+												if(sess.isStopped())
+												{
+													slowStop(sess,mob,oldAccount);
+												}
+												recoverEverything(mob);
+											}
 											mob.baseCharStats().getCurrentClass().startCharacter(mob, false, false);
 											mob.baseCharStats().getCurrentClass().grantAbilities(mob, false);
 											recoverEverything(mob);
 											recoverEverything(mob);
-											CMLib.achievements().loadAccountAchievements(mob);
+											CMLib.achievements().reloadPlayerAwards(mob,AchievementLoadFlag.REMORT_POSTLOAD);
+											CMLib.achievements().loadAccountAchievements(mob,AchievementLoadFlag.REMORT_POSTLOAD);
 											CMLib.achievements().loadPlayerSkillAwards(mob, mob.playerStats());
 											CMLib.commands().postLook(mob, true);
 											if((!mob.charStats().getCurrentClass().leveless())
@@ -477,12 +640,19 @@ public class Remort extends StdCommand
 											Ability A=mob.fetchEffect(failsafeID);
 											if(A!=null)
 												mob.delEffect(A);
+											CMLib.database().DBUpdatePlayer(mob);
 										}
-										catch(java.lang.NullPointerException e)
+										catch(IOException e)
 										{
 										}
-										catch (final IOException e)
+										catch(Exception e)
 										{
+											Log.errOut(e);
+										}
+										finally
+										{
+											if(pStats!=null)
+												pStats.setSavable(true);
 										}
 									}
 								};
@@ -492,6 +662,7 @@ public class Remort extends StdCommand
 									CMLib.threads().scheduleRunnable(remortRun,500);
 							}
 						}
+							
 						@Override
 						public boolean okMessage(Environmental myHost, CMMsg msg)
 						{

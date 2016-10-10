@@ -303,38 +303,41 @@ public class Bard extends StdCharClass
 				if((!mob.playerStats().hasVisited(A))&&(mob.soulMate()==null))
 				{
 					if(mob.playerStats().addRoomVisit(R))
+					{
 						CMLib.players().bumpPrideStat(mob,AccountStats.PrideStat.ROOMS_EXPLORED,1);
-					int xp=(int)Math.round(100.0*CMath.div(A.getAreaIStats()[Area.Stats.AVG_LEVEL.ordinal()],hostP.phyStats().level()));
-					if(xp>250)
-						xp=250;
-					if((xp>0)&&CMLib.leveler().postExperience((MOB)host,null,null,xp,true))
-						msg.addTrailerMsg(CMClass.getMsg((MOB)host,null,null,CMMsg.MSG_OK_VISUAL,CMLib.lang().L("^HYou have discovered '@x1', you gain @x2 experience.^?",A.name(),""+xp),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+						int xp=(int)Math.round(100.0*CMath.div(A.getAreaIStats()[Area.Stats.AVG_LEVEL.ordinal()],hostP.phyStats().level()));
+						if(xp>250)
+							xp=250;
+						if((xp>0)&&CMLib.leveler().postExperience((MOB)host,null,null,xp,true))
+							msg.addTrailerMsg(CMClass.getMsg((MOB)host,null,null,CMMsg.MSG_OK_VISUAL,CMLib.lang().L("^HYou have discovered '@x1', you gain @x2 experience.^?",A.name(),""+xp),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+					}
 				}
 				else
 				{
 					final int pctBefore=mob.playerStats().percentVisited((MOB)host,A);
 					if(mob.playerStats().addRoomVisit(R))
+					{
 						CMLib.players().bumpPrideStat(mob,AccountStats.PrideStat.ROOMS_EXPLORED,1);
-					final int pctAfter=mob.playerStats().percentVisited((MOB)host,A);
-					if((pctBefore<50)&&(pctAfter>=50))
-					{
-						int xp=(int)Math.round(50.0*CMath.div(A.getAreaIStats()[Area.Stats.AVG_LEVEL.ordinal()],hostP.phyStats().level()));
-						if(xp>125)
-							xp=125;
-						if((xp>0)&&CMLib.leveler().postExperience((MOB)host,null,null,xp,true))
-							msg.addTrailerMsg(CMClass.getMsg((MOB)host,null,null,CMMsg.MSG_OK_VISUAL,CMLib.lang().L("^HYou have familiarized yourself with '@x1', you gain @x2 experience.^?",A.name(),""+xp),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
-					}
-					else
-					if((pctBefore<90)&&(pctAfter>=90))
-					{
-						int xp=(int)Math.round(100.0*CMath.div(A.getAreaIStats()[Area.Stats.AVG_LEVEL.ordinal()],hostP.phyStats().level()));
-						if(xp>250)
-							xp=250;
-						if((xp>0)&&CMLib.leveler().postExperience((MOB)host,null,null,xp,true))
-							msg.addTrailerMsg(CMClass.getMsg((MOB)host,null,null,CMMsg.MSG_OK_VISUAL,CMLib.lang().L("^HYou have explored '@x1', you gain @x2 experience.^?",A.name(),""+xp),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+						final int pctAfter=mob.playerStats().percentVisited((MOB)host,A);
+						if((pctBefore<50)&&(pctAfter>=50))
+						{
+							int xp=(int)Math.round(50.0*CMath.div(A.getAreaIStats()[Area.Stats.AVG_LEVEL.ordinal()],hostP.phyStats().level()));
+							if(xp>125)
+								xp=125;
+							if((xp>0)&&CMLib.leveler().postExperience((MOB)host,null,null,xp,true))
+								msg.addTrailerMsg(CMClass.getMsg((MOB)host,null,null,CMMsg.MSG_OK_VISUAL,CMLib.lang().L("^HYou have familiarized yourself with '@x1', you gain @x2 experience.^?",A.name(),""+xp),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+						}
+						else
+						if((pctBefore<90)&&(pctAfter>=90))
+						{
+							int xp=(int)Math.round(100.0*CMath.div(A.getAreaIStats()[Area.Stats.AVG_LEVEL.ordinal()],hostP.phyStats().level()));
+							if(xp>250)
+								xp=250;
+							if((xp>0)&&CMLib.leveler().postExperience((MOB)host,null,null,xp,true))
+								msg.addTrailerMsg(CMClass.getMsg((MOB)host,null,null,CMMsg.MSG_OK_VISUAL,CMLib.lang().L("^HYou have explored '@x1', you gain @x2 experience.^?",A.name(),""+xp),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+						}
 					}
 				}
-
 			}
 		}
 	}

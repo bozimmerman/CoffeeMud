@@ -84,7 +84,8 @@ public class Chant_CrystalGrowth extends Chant
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		if(mob.location().domainType()!=Room.DOMAIN_INDOORS_CAVE)
+		if((mob.location().domainType()!=Room.DOMAIN_INDOORS_CAVE)
+		&&((mob.location().getAtmosphere()&RawMaterial.MATERIAL_ROCK)==0))
 		{
 			mob.tell(L("This magic will not work here."));
 			return false;
@@ -103,7 +104,7 @@ public class Chant_CrystalGrowth extends Chant
 				mob.location().send(mob,msg);
 
 				ItemCraftor A=null;
-				switch(CMLib.dice().roll(1,10,0)+9)//TODO: FIXME!!!!!!!!!!!!!!!!!!!
+				switch(CMLib.dice().roll(1,10,0))
 				{
 				case 1:
 				case 2:

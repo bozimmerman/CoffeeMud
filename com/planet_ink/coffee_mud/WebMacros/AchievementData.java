@@ -40,7 +40,11 @@ import java.util.*;
 */
 public class AchievementData extends StdWebMacro
 {
-	@Override public String name() { return "AchievementData"; }
+	@Override
+	public String name()
+	{
+		return "AchievementData";
+	}
 
 	public void rebuildTrackers(String tattoo)
 	{

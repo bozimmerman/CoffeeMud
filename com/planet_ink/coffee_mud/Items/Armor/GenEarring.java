@@ -41,7 +41,11 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class GenEarring extends GenThinArmor
 {
-	@Override public String ID(){	return "GenEarring";}
+	@Override
+	public String ID()
+	{
+		return "GenEarring";
+	}
 	
 	private String wearLocDesc = null;
 	private final Map<Long,String> wearLocs = new TreeMap<Long,String>();
@@ -69,8 +73,10 @@ public class GenEarring extends GenThinArmor
 	{
 		int numWorn = 0;
 		for(Item I : mob.fetchWornItems(wornCode, layer, layerAttributes))
+		{
 			if(I instanceof GenEarring)
 				numWorn++;
+		}
 		return numWorn;
 	}
 	
@@ -99,21 +105,25 @@ public class GenEarring extends GenThinArmor
 		if(super.wornLogicalAnd)
 		{
 			for(long code : codes.all())
+			{
 				if((code != 0) 
 				&& (code != Wearable.WORN_HELD)
 				&& CMath.bset(wornCodes,code)
 				&& (!hasFreePiercing(mob, code)))
 					return false;
+			}
 			return true;
 		}
 		else
 		{
 			for(long code : codes.all())
+			{
 				if((code != 0) 
 				&& CMath.bset(wornCodes,code)
 				&&((code == Wearable.WORN_HELD)
 					||(hasFreePiercing(mob, code))))
 					return true;
+			}
 			return false;
 		}
 	}
@@ -136,6 +146,7 @@ public class GenEarring extends GenThinArmor
 		if(where == 0)
 		{
 			for(long code : codes.all())
+			{
 				if((code != 0)
 				&& fitsOn(code)
 				&&(code!=Item.WORN_HELD)
@@ -146,6 +157,7 @@ public class GenEarring extends GenThinArmor
 					else
 						where = where | code;
 				}
+			}
 		}
 		return where;
 	}
@@ -189,9 +201,11 @@ public class GenEarring extends GenThinArmor
 							}
 							final Long wornCodeL=Long.valueOf(wornCode);
 							for(final GenEarring I : wornStuff)
+							{
 								if((I.wearLocs!=null) && ((I.rawWornCode() & wornCode)!=0) 
 								&& (I.wearLocs.containsKey(wornCodeL)))
 									availablePiercingsThisLoc.remove(I.wearLocs.remove(wornCodeL));
+							}
 							if(availablePiercingsThisLoc.size()>0)
 							{
 								final String loc=availablePiercingsThisLoc.get(0);

@@ -67,7 +67,7 @@ public class Every extends StdCommand
 			return false;
 		commands=new XVector<String>(commands);
 		Enumeration<Room> roomList = new XVector<Room>(room).elements();
-		MaskingLibrary.CompiledZapperMask mask = null;
+		MaskingLibrary.CompiledZMask mask = null;
 		boolean doPlayers = false;
 		List<String> mskBunch=null;
 		if(commands.size()==0)
@@ -234,7 +234,7 @@ public class Every extends StdCommand
 						if((E!=null)
 						&&((mask==null)||(CMLib.masking().maskCheck(mask, E, true))))
 						{
-							mob.doCommand(makeNewCommands(commands,inAShip ? Directions.getShipDirectionName(d) : Directions.getDirectionName(d)),metaFlags);
+							mob.doCommand(makeNewCommands(commands,inAShip ? CMLib.directions().getShipDirectionName(d) : CMLib.directions().getDirectionName(d)),metaFlags);
 						}
 					}
 				}

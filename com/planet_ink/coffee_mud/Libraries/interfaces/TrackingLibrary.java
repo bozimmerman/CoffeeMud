@@ -33,12 +33,14 @@ import java.util.*;
 */
 public interface TrackingLibrary extends CMLibrary
 {
-	public List<Room> findBastardTheBestWay(Room location, Room destRoom, TrackingFlags flags, int maxRadius);
-	public List<Room> findBastardTheBestWay(Room location, List<Room> destRooms, TrackingFlags flags, int maxRadius);
+	public List<Room> findTrailToRoom(Room location, Room destRoom, TrackingFlags flags, int maxRadius);
+	public List<Room> findTrailToRoom(Room location, Room destRoom, TrackingFlags flags, int maxRadius, List<Room> radiant);
+	public List<Room> findTrailToAnyRoom(Room location, List<Room> destRooms, TrackingFlags flags, int maxRadius);
+	public List<Room> findTrailToAnyRoom(Room location, RFilter destFilter, TrackingFlags flags, int maxRadius);
 	public int trackNextDirectionFromHere(List<Room> theTrail, Room location, boolean openOnly);
 	public void stopTracking(MOB mob);
-	public boolean makeFall(Physical P, Room room, int avg);
-	public void makeSink(Physical P, Room room, int avg);
+	public boolean makeFall(Physical P, Room room, boolean reverseFall);
+	public void makeSink(Physical P, Room room, boolean reverseSink);
 	public CheckedMsgResponse isOkWaterSurfaceAffect(final Room room, final CMMsg msg);
 	public int radiatesFromDir(Room room, List<Room> rooms);
 	public void getRadiantRooms(Room room, List<Room> rooms, TrackingFlags flags, Room radiateTo, int maxDepth, Set<Room> ignoreRooms);
@@ -57,9 +59,9 @@ public interface TrackingLibrary extends CMLibrary
 	public boolean walk(MOB mob, int directionCode, boolean flee, boolean nolook, boolean noriders, boolean always);
 	public boolean run(MOB mob, int directionCode, boolean flee, boolean nolook, boolean noriders, boolean always);
 	public boolean walk(Item I, int directionCode);
-	public void forceRecall(final MOB mob);
+	public void forceRecall(final MOB mob, boolean includeFollowers);
 	public void forceEntry(MOB M, Room toHere, boolean andFollowers, boolean forceLook, String msg);
-	public void forceEntry(MOB M, Room fromHere, Room toHere, boolean andFollowers, boolean forceLook, String msg);
+	public void walkForced(MOB M, Room fromHere, Room toHere, boolean andFollowers, boolean forceLook, String msg);
 	public int findExitDir(MOB mob, Room R, String desc);
 	public int findRoomDir(MOB mob, Room R);
 	public boolean isAnAdminHere(Room R, boolean sysMsgsOnly);
@@ -71,6 +73,8 @@ public interface TrackingLibrary extends CMLibrary
 	public Rideable findALadder(MOB mob, Room room);
 	public void postMountLadder(MOB mob, Rideable ladder);
 	public TrackingFlags newFlags();
+	public Room getCalculatedAdjacentRoom(PairVector<Room,int[]> rooms, Room R, int dir);
+	public PairVector<Room,int[]> buildGridList(Room room, String ownerName, int maxDepth);
 
 	public static interface RFilter
 	{
@@ -82,6 +86,10 @@ public interface TrackingLibrary extends CMLibrary
 		public boolean isFilteredOut(Room hostR, final Room R, final Exit E, final int dir);
 		
 		public RFilters plus(RFilter filter);
+		
+		public RFilters minus(RFilter filter);
+		
+		public RFilters copyOf();
 	}
 
 	public static interface TrackingFlags extends Set<TrackingFlag>
@@ -89,6 +97,10 @@ public interface TrackingLibrary extends CMLibrary
 		public TrackingFlags plus(TrackingFlag flag);
 		
 		public TrackingFlags plus(TrackingFlags flags);
+		
+		public TrackingFlags minus(TrackingFlag flag);
+		
+		public TrackingFlags copyOf();
 	}
 
 	public static enum TrackingFlag
@@ -166,6 +178,54 @@ public interface TrackingLibrary extends CMLibrary
 				return !CMLib.flags().isWaterySurfaceRoom(R);
 			}
 		}),
+		WATERSURFACEORSHOREONLY(new RFilter()
+		{
+			@Override
+			public boolean isFilteredOut(Room hostR, final Room R, final Exit E, final int dir)
+			{
+				if(R==null)
+					return true;
+				if((R.domainType()==Room.DOMAIN_OUTDOORS_AIR)
+				||(R.domainType()==Room.DOMAIN_INDOORS_AIR))
+					return true;
+				if(CMLib.flags().isWaterySurfaceRoom(R)
+				|| (R.ID().equals("Shore"))
+				|| (R.domainType() == Room.DOMAIN_OUTDOORS_SEAPORT))
+					return false;
+				boolean foundWater=false;
+				for(int dir2 : Directions.CODES())
+				{
+					final Room R2=R.getRoomInDir(dir2);
+					if((R2!=null)&&(CMLib.flags().isWaterySurfaceRoom(R2)))
+						foundWater=true;
+				}
+				return (!foundWater);
+			}
+		}),
+		SHOREONLY(new RFilter()
+		{
+			@Override
+			public boolean isFilteredOut(Room hostR, final Room R, final Exit E, final int dir)
+			{
+				if(R==null)
+					return true;
+				if((R.domainType()==Room.DOMAIN_OUTDOORS_AIR)
+				|| (R.domainType()==Room.DOMAIN_INDOORS_AIR)
+				|| (CMLib.flags().isWaterySurfaceRoom(R) ))
+					return true;
+				if((R.ID().equals("Shore"))
+				|| (R.domainType() == Room.DOMAIN_OUTDOORS_SEAPORT))
+					return false;
+				boolean foundWater=false;
+				for(int dir2 : Directions.CODES())
+				{
+					final Room R2=R.getRoomInDir(dir2);
+					if((R2!=null)&&(CMLib.flags().isWaterySurfaceRoom(R2)))
+						foundWater=true;
+				}
+				return (!foundWater);
+			}
+		}),
 		UNDERWATERONLY(new RFilter()
 		{
 			@Override
@@ -212,6 +272,14 @@ public interface TrackingLibrary extends CMLibrary
 			public boolean isFilteredOut(Room hostR, final Room R, final Exit E, final int dir)
 			{
 				return (R.domainType() & Room.INDOORS) != 0;
+			}
+		}),
+		INDOORONLY(new RFilter()
+		{
+			@Override
+			public boolean isFilteredOut(Room hostR, final Room R, final Exit E, final int dir)
+			{
+				return (R.domainType() & Room.INDOORS) == 0;
 			}
 		});
 		public RFilter myFilter;

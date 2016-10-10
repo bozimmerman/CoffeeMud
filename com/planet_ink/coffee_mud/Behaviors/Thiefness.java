@@ -90,7 +90,9 @@ public class Thiefness extends CombatAbilities
 				if((potentialVictim!=null)
 				&&(potentialVictim!=mob)
 				&&(!potentialVictim.isMonster())
-				&&(CMLib.flags().canBeSeenBy(potentialVictim,mob)))
+				&&(CMLib.flags().canBeSeenBy(potentialVictim,mob))
+				&&(!potentialVictim.getGroupMembers(new HashSet<MOB>()).contains(mob))
+				&&(!mob.getGroupMembers(new HashSet<MOB>()).contains(potentialVictim)))
 					victim=potentialVictim;
 			}
 			if((victim!=null)

@@ -69,7 +69,7 @@ public class GenShipShieldGenerator extends StdShipShieldGenerator
 	}
 
 	private final static String[] MYCODES={"POWERCAP","ACTIVATED","POWERREM","MANUFACTURER","INSTFACT",
-										   "SSHIELDNUMPORTS","SSHIELDPORTS","SSHIELDMTYPES","RECHRATE"};
+										   "SWARNUMPORTS","SWARPORTS","SWARMTYPES","RECHRATE"};
 	
 	@Override
 	public String getStat(String code)
@@ -95,11 +95,11 @@ public class GenShipShieldGenerator extends StdShipShieldGenerator
 		case 7:
 		{
 			final StringBuilder str=new StringBuilder("");
-			for(int i=0;i<this.getShieldedMsgTypes().length;i++)
+			for(int i=0;i<this.getDamageMsgTypes().length;i++)
 			{
 				if(i>0)
 					str.append(", ");
-				str.append(CMMsg.TYPE_DESCS[getShieldedMsgTypes()[i]]);
+				str.append(CMMsg.TYPE_DESCS[getDamageMsgTypes()[i]]);
 			}
 			return str.toString();
 		}
@@ -149,11 +149,11 @@ public class GenShipShieldGenerator extends StdShipShieldGenerator
 				if(typCode > 0)
 					newTypes[x] = typCode;
 			}
-			super.setShieldedMsgTypes(newTypes);
+			super.setDamageMsgTypes(newTypes);
 			break;
 		}
 		case 8:
-			setRechargeRate(CMath.s_parseLongExpression(val));
+			setRechargeRate((float)CMath.s_parseMathExpression(val));
 			break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);

@@ -43,37 +43,36 @@ public class StdItem implements Item
 		return "StdItem";
 	}
 
-	protected String		name="an ordinary item";
-	protected String		displayText=L("a nondescript item sits here doing nothing.");
-	protected Object		description=null;
-	protected int   		myUses=Integer.MAX_VALUE;
-	protected long  		myWornCode=Wearable.IN_INVENTORY;
-	protected String		miscText="";
-	protected Rideable 		riding=null;
-	protected String		rawImageName=null;
-	protected String		cachedImageName=null;
-	protected String		secretIdentity=null;
-	protected boolean   	wornLogicalAnd=false;
-	protected long  		properWornBitmap=Wearable.WORN_HELD;
-	protected int   		baseGoldValue=0;
-	protected int   		material=RawMaterial.RESOURCE_COTTON;
-	protected String[]  	xtraValues=null;
-	protected long  		dispossessionTime=0;
-	protected int			tickStatus=Tickable.STATUS_NOT;
-	protected String		databaseID="";
-	protected boolean 		destroyed=false;
-	protected Item 			me=this;
+	protected String	name				= "an ordinary item";
+	protected String	displayText			= L("a nondescript item sits here doing nothing.");
+	protected Object	description			= null;
+	protected int		myUses				= Integer.MAX_VALUE;
+	protected long		myWornCode			= Wearable.IN_INVENTORY;
+	protected String	miscText			= "";
+	protected Rideable	riding				= null;
+	protected String	rawImageName		= null;
+	protected String	cachedImageName		= null;
+	protected String	secretIdentity		= null;
+	protected boolean	wornLogicalAnd		= false;
+	protected long		properWornBitmap	= Wearable.WORN_HELD;
+	protected int		baseGoldValue		= 0;
+	protected int		material			= RawMaterial.RESOURCE_COTTON;
+	protected String[]	xtraValues			= null;
+	protected long		dispossessionTime	= 0;
+	protected int		tickStatus			= Tickable.STATUS_NOT;
+	protected String	databaseID			= "";
+	protected boolean	destroyed			= false;
+	protected Item		me					= this;
 
-	protected PhyStats phyStats=(PhyStats)CMClass.getCommon("DefaultPhyStats");
-	protected PhyStats basePhyStats=(PhyStats)CMClass.getCommon("DefaultPhyStats");
+	protected PhyStats					phyStats		= (PhyStats) CMClass.getCommon("DefaultPhyStats");
+	protected PhyStats					basePhyStats	= (PhyStats) CMClass.getCommon("DefaultPhyStats");
+	protected volatile Container		myContainer		= null;
+	protected volatile ItemPossessor	owner			= null;
+	protected SVector<Ability>			affects			= null;
+	protected SVector<Behavior>			behaviors		= null;
+	protected SVector<ScriptingEngine>	scripts			= null;
 
-	protected volatile Container	   myContainer=null;
-	protected volatile ItemPossessor   owner=null;
-	protected SVector<Ability>  	   affects=null;
-	protected SVector<Behavior> 	   behaviors=null;
-	protected SVector<ScriptingEngine> scripts=null;
-	
-	protected ApplyAffectPhyStats	   affectPhyStats = new ApplyAffectPhyStats(this);
+	protected ApplyAffectPhyStats		affectPhyStats	= new ApplyAffectPhyStats(this);
 
 	public StdItem()
 	{
@@ -207,10 +206,10 @@ public class StdItem implements Item
 		if((owner()!=null)
 		&&(owner() instanceof MOB)
 		&&(CMLib.flags().isHidden(this)))
-		   phyStats().setDisposition((int)(phyStats().disposition()&(PhyStats.ALLMASK-PhyStats.IS_HIDDEN)));
+			phyStats().setDisposition((int)(phyStats().disposition()&(PhyStats.ALLMASK-PhyStats.IS_HIDDEN)));
 	}
 
-	@Override
+ 	@Override
 	public void setBasePhyStats(PhyStats newStats)
 	{
 		basePhyStats=(PhyStats)newStats.copyOf();
@@ -703,7 +702,9 @@ public class StdItem implements Item
 		if(destroyed)
 			return false;
 		tickStatus=Tickable.STATUS_START;
-		if(tickID==Tickable.TICKID_ITEM_BEHAVIOR)
+		switch(tickID)
+		{
+		case Tickable.TICKID_ITEM_BEHAVIOR:
 		{
 			tickStatus=Tickable.STATUS_BEHAVIOR;
 			if(numBehaviors()>0)
@@ -731,9 +732,14 @@ public class StdItem implements Item
 			}
 			if((numBehaviors()==0)&&(numScripts()==0))
 				return false;
+			break;
 		}
-		else
-		if((tickID!=Tickable.TICKID_CLANITEM)&&(tickID!=Tickable.TICKID_ELECTRONICS))
+		case Tickable.TICKID_CLANITEM:
+		case Tickable.TICKID_ELECTRONICS:
+		case Tickable.TICKID_SPECIALCOMBAT:
+		case Tickable.TICKID_SPECIALMANEUVER:
+			break;
+		default:
 		{
 			tickStatus=Tickable.STATUS_AFFECT;
 			if(numEffects()>0)
@@ -748,6 +754,8 @@ public class StdItem implements Item
 					} 
 				});
 			}
+			break;
+		}
 		}
 		tickStatus=Tickable.STATUS_NOT;
 		return !amDestroyed();
@@ -1066,6 +1074,13 @@ public class StdItem implements Item
 			if(this instanceof Technical)
 				return true;
 			break;
+		case CMMsg.TYP_DAMAGE:
+		case CMMsg.TYP_WEAPONATTACK:
+		case CMMsg.TYP_ATTACKMISS:
+			if((this instanceof BoardableShip)
+			||((this instanceof Rideable)||(((Rideable)this).rideBasis()==Rideable.RIDEABLE_WATER)))
+				return true;
+			break;
 		case CMMsg.TYP_EXPIRE:
 		case CMMsg.TYP_LOOK:
 		case CMMsg.TYP_EXAMINE:
@@ -1358,6 +1373,8 @@ public class StdItem implements Item
 		case CMMsg.TYP_SELL:
 		case CMMsg.TYP_VALUE:
 		case CMMsg.TYP_VIEW:
+		case CMMsg.TYP_ITEMGENERATED:
+		case CMMsg.TYP_ITEMSGENERATED:
 			return true;
 		case CMMsg.TYP_OPEN:
 		case CMMsg.TYP_CLOSE:
@@ -1369,6 +1386,8 @@ public class StdItem implements Item
 			break;
 		case CMMsg.TYP_PUT:
 			if(this instanceof Container)
+				return true;
+			if(CMath.bset(phyStats().sensesMask(), PhyStats.SENSE_INSIDEACCESSIBLE))
 				return true;
 			mob.tell(mob,this,null,L("You can't put things inside <T-NAME>."));
 			return false;
@@ -1400,7 +1419,8 @@ public class StdItem implements Item
 				return true;
 			break;
 		case CMMsg.TYP_ADVANCE:
-			if(this instanceof BoardableShip)
+			if((this instanceof BoardableShip)
+			||((this instanceof Rideable)||(((Rideable)this).rideBasis()==Rideable.RIDEABLE_WATER)))
 				return true;
 			break;
 		case CMMsg.TYP_ACTIVATE:
@@ -1568,7 +1588,13 @@ public class StdItem implements Item
 			return;
 		myContainer=null;
 		CMLib.map().registerWorldObjectDestroyed(null,null,this);
-		try {CMLib.catalog().changeCatalogUsage(this,false);} catch(final Exception t){}
+		try
+		{
+			CMLib.catalog().changeCatalogUsage(this, false);
+		}
+		catch (final Exception t)
+		{
+		}
 		delAllEffects(true);
 		delAllBehaviors();
 		delAllScripts();
@@ -1862,7 +1888,9 @@ public class StdItem implements Item
 		{
 			return behaviors.elementAt(index);
 		}
-		catch(final java.lang.ArrayIndexOutOfBoundsException x){}
+		catch(final java.lang.ArrayIndexOutOfBoundsException x)
+		{
+		}
 		return null;
 	}
 

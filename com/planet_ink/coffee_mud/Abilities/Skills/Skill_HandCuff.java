@@ -105,13 +105,13 @@ public class Skill_HandCuff extends StdSkill
 	public boolean oldAssist=false;
 	public boolean oldGuard=false;
 
-
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_BOUND);
 	}
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{

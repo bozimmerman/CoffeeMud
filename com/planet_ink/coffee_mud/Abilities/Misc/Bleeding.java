@@ -140,9 +140,9 @@ public class Bleeding extends StdAbility implements HealthCondition
 				final Item I=CMClass.getItem("GenFatWallpaper");
 				I.setName(L("A trail of blood"));
 				if(lastDir>=0)
-					I.setDisplayText(L("A faint trail of blood leads from @x1 to @x2.",Directions.getDirectionName(lastDir),Directions.getDirectionName(dir)));
+					I.setDisplayText(L("A faint trail of blood leads from @x1 to @x2.",CMLib.directions().getDirectionName(lastDir),CMLib.directions().getDirectionName(dir)));
 				else
-					I.setDisplayText(L("A faint trail of blood leads @x1.",Directions.getDirectionName(dir)));
+					I.setDisplayText(L("A faint trail of blood leads @x1.",CMLib.directions().getDirectionName(dir)));
 				I.phyStats().setDisposition(I.phyStats().disposition()|PhyStats.IS_HIDDEN|PhyStats.IS_UNSAVABLE);
 				I.setSecretIdentity(msg.source().Name()+"`s blood.");
 				R.addItem(I,ItemPossessor.Expire.Monster_EQ);
@@ -194,6 +194,8 @@ public class Bleeding extends StdAbility implements HealthCondition
 		if(((MOB)target).fetchEffect(ID())!=null)
 			return false;
 		if(((MOB)target).location()==null)
+			return false;
+		if(((MOB)target).amDead())
 			return false;
 		if(((MOB)target).location().show((MOB)target,null,this,CMMsg.MSG_OK_VISUAL,L("^R<S-NAME> start(s) BLEEDING!^?")))
 			beneficialAffect(mob,target,asLevel,0);

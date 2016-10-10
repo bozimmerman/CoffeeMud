@@ -93,7 +93,7 @@
     <TR>
     <TD WIDTH=10px>&nbsp;</TD>
     <TD><a href="@if?!Authenticate?SETPLAYER@index.cmvp@else@access.cmvp@endif@?AUTH=@Authenticate?AUTH@">
-        <IMG BORDER=0 SRC=images/cm50.gif>
+        <IMG BORDER=0 src=images/cm50.gif ALT="Exit Forums">
         </a>
     </TD>
     <TD ALIGN=RIGHT VALIGN=TOP>

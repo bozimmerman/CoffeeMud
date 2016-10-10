@@ -36,7 +36,6 @@ import java.util.*;
 public interface HelpLibrary extends CMLibrary
 {
 	public List<String> getTopics(boolean archonHelp, boolean standardHelp);
-	public String getActualUsage(Ability A, int which, MOB forMOB);
 	public String fixHelp(String tag, String str, MOB forMOB);
 	public StringBuilder getHelpText(String helpStr, MOB forMOB, boolean favorAHelp);
 	public StringBuilder getHelpText(String helpStr, MOB forMOB, boolean favorAHelp, boolean noFix);
@@ -48,4 +47,19 @@ public interface HelpLibrary extends CMLibrary
 	public void unloadHelpFile(MOB mob);
 	public boolean isPlayerSkill(String helpStr);
 	public void addHelpEntry(String ID, String text, boolean archon);
+	
+	/**
+	 * Returns a description of the amount of a particular cost is required
+	 * by the given mob to use the given ability.
+	 * @see Ability#USAGE_DESCS
+	 * @param A the Ability to find usage for
+	 * @param whichUsageCode the Ability.USAGE_ code.
+	 * @param forMOB null, or a mob to make the report more specific
+	 * @return either the word "all" or a number in string form
+	 */
+	public String getActualAbilityUsageDesc(Ability A, int whichUsageCode, MOB forMOB);
+	public String getAbilityTargetDesc(Ability A);
+	public String getAbilityQualityDesc(Ability A);
+	public String getAbilityRangeDesc(Ability A);
+	public String getAbilityCostDesc(Ability A, final MOB forMOB);
 }

@@ -35,17 +35,29 @@ import java.util.*;
 */
 public class Decay extends ActiveTicker
 {
-	@Override public String ID(){return "Decay";}
-	@Override protected int canImproveCode(){return Behavior.CAN_ITEMS|Behavior.CAN_MOBS;}
+	@Override
+	public String ID()
+	{
+		return "Decay";
+	}
+
+	@Override
+	protected int canImproveCode()
+	{
+		return Behavior.CAN_ITEMS | Behavior.CAN_MOBS;
+	}
+
 	public Decay()
 	{
 		super();
-		minTicks=50;maxTicks=50;chance=100;
+		minTicks = 50;
+		maxTicks = 50;
+		chance = 100;
 		tickReset();
 	}
 
-	boolean activated=false;
-	protected String answer=" vanishes!";
+	protected boolean	activated	= false;
+	protected String	answer		= " vanishes!";
 
 	@Override
 	public String accountForYourself()

@@ -1077,7 +1077,7 @@ public class CMath
 
 	/**
 	 * Pre-compiles an expression for faster evaluation later on.
-	 * @see CMath#parseMathExpression(LinkedList, double[], double)
+	 * @see CMath#parseMathExpression(List, double[], double)
 	 * @param formula the math expression as a string
 	 * @return the pre-compiled expression
 	 * @throws ArithmeticException a parse error, typically arithmetic
@@ -1196,7 +1196,7 @@ public class CMath
 	 * @param previous the previous value, for operators that require it
 	 * @return the final value
 	 */
-	public final static double parseMathExpression(final LinkedList<CompiledOperation> list, final double[] vars, final double previous)
+	public final static double parseMathExpression(final List<CompiledOperation> list, final double[] vars, final double previous)
 	{
 		double finalValue=0.0;
 		double curValue=0.0;
@@ -1458,8 +1458,14 @@ public class CMath
 	 */
 	public final static int s_int(final String INT)
 	{
-		try{ return Integer.parseInt(INT); }
-		catch(final Exception e){ return 0;}
+		try
+		{
+			return Integer.parseInt(INT);
+		}
+		catch (final Exception e)
+		{
+			return 0;
+		}
 	}
 
 	/**

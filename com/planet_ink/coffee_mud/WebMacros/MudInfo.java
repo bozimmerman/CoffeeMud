@@ -35,8 +35,17 @@ import java.util.*;
 */
 public class MudInfo extends StdWebMacro
 {
-	@Override public String name() { return "MudInfo"; }
-	@Override public boolean isAdminMacro()   {return false;}
+	@Override
+	public String name()
+	{
+		return "MudInfo";
+	}
+
+	@Override
+	public boolean isAdminMacro()
+	{
+		return false;
+	}
 
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)

@@ -301,7 +301,9 @@ public class StdBook extends StdItem
 				if(message.startsWith("<cmvp>"))
 					message=new String(CMLib.webMacroFilter().virtualPageFilter(message.substring(6).getBytes()));
 			}
-			catch(final HTTPRedirectException e){}
+			catch(final HTTPRedirectException e)
+			{
+			}
 
 			if(to.equals("ALL")||mineAble)
 				buf.append("\n\r"+subject

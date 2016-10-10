@@ -36,14 +36,49 @@ import java.util.*;
 
 public class Spell_MagicItem extends Spell
 {
-	@Override public String ID() { return "Spell_MagicItem"; }
-	private final static String localizedName = CMLib.lang().L("Magic Item");
-	@Override public String name() { return localizedName; }
-	@Override protected int canTargetCode(){return CAN_ITEMS;}
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
-	@Override public long flags(){return Ability.FLAG_NOORDERING;}
-	@Override protected int overrideMana(){return Ability.COST_ALL;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override
+	public String ID()
+	{
+		return "Spell_MagicItem";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Magic Item");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_ITEMS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL | Ability.DOMAIN_ENCHANTMENT;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_NOORDERING;
+	}
+
+	@Override
+	protected int overrideMana()
+	{
+		return Ability.COST_ALL;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -92,7 +127,8 @@ public class Spell_MagicItem extends Spell
 
 		if((wandThis.ID().equals("Spell_Stoneskin"))
 		||(wandThis.ID().equals("Spell_MirrorImage"))
-		||(CMath.bset(wandThis.flags(), FLAG_SUMMONING)))
+		||(CMath.bset(wandThis.flags(), FLAG_SUMMONING))
+		||(wandThis.canAffect(CAN_ROOMS)))
 		{
 			mob.tell(L("That spell cannot be used to enchant anything."));
 			return false;
@@ -184,8 +220,6 @@ public class Spell_MagicItem extends Spell
 			mob.tell(L("You lose @x1 experience points for the effort.",""+experienceToLose));
 			beneficialWordsFizzle(mob,target,L("<S-NAME> move(s) <S-HIS-HER> fingers around <T-NAMESELF>, incanting softly, and looking very frustrated."));
 		}
-
-
 		// return whether it worked
 		return success;
 	}

@@ -35,7 +35,11 @@ import java.util.*;
 */
 public class CharClassID extends StdWebMacro
 {
-	@Override public String name() { return "CharClassID"; }
+	@Override
+	public String name()
+	{
+		return "CharClassID";
+	}
 
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)

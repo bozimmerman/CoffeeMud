@@ -37,20 +37,47 @@ import java.util.*;
 
 public class MasterBaking extends Baking
 {
-	private String cookingID="";
-	@Override public String ID() { return "MasterBaking"+cookingID; }
-	@Override public String name() { return L("Master Baking"+cookingID); }
-	private static final String[] triggerStrings =I(new String[] {"MBAKE","MBAKING","MASTERBAKE","MASTERBAKING"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	protected List<String> noUninvokes=new ArrayList<String>(0);
-	@Override protected List<String> getUninvokeException() { return noUninvokes; }
+	private String	cookingID	= "";
+
+	@Override
+	public String ID()
+	{
+		return "MasterBaking" + cookingID;
+	}
+
+	@Override
+	public String name()
+	{
+		return L("Master Baking" + cookingID);
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "MBAKE", "MBAKING", "MASTERBAKE", "MASTERBAKING" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	protected List<String>	noUninvokes	= new ArrayList<String>(0);
+
+	@Override
+	protected List<String> getUninvokeException()
+	{
+		return noUninvokes;
+	}
 
 	@Override
 	protected int getDuration(MOB mob, int level)
 	{
-		return getDuration(60,mob,1,8);
+		return getDuration(60, mob, 1, 8);
 	}
-	@Override protected int baseYield() { return 2; }
+
+	@Override
+	protected int baseYield()
+	{
+		return 2;
+	}
 
 	@Override
 	

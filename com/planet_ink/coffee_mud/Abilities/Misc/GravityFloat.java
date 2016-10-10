@@ -351,7 +351,7 @@ public class GravityFloat extends StdAbility
 					{
 						for(int dir : Directions.DISPLAY_CODES())
 						{
-							if(words.get(i).equals(Directions.getUpperDirectionName(dir, useShip)))
+							if(words.get(i).equals(CMLib.directions().getUpperDirectionName(dir, useShip)))
 							{
 								floatDir = Directions.getOpDirectionCode(dir);
 								break;

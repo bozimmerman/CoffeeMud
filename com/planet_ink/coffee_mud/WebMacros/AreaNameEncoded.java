@@ -38,7 +38,11 @@ import java.net.URLEncoder;
 */
 public class AreaNameEncoded extends StdWebMacro
 {
-	@Override public String name() { return "AreaNameEncoded"; }
+	@Override
+	public String name()
+	{
+		return "AreaNameEncoded";
+	}
 
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)

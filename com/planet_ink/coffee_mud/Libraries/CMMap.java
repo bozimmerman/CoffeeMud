@@ -46,7 +46,12 @@ import java.util.Map.Entry;
 */
 public class CMMap extends StdLibrary implements WorldMap
 {
-	@Override public String ID(){return "CMMap";}
+	@Override
+	public String ID()
+	{
+		return "CMMap";
+	}
+
 	public final int			QUADRANT_WIDTH  		= 10;
 	public static MOB   		deityStandIn			= null;
 	public long 				lastVReset  			= 0;
@@ -945,7 +950,7 @@ public class CMMap extends StdLibrary implements WorldMap
 				{
 					final String attachedRoomID = getExtendedRoomID(attachedRoom);
 					if(attachedRoomID.length()>0)
-						return Directions.getFromCompassDirectionName(Directions.getOpDirectionCode(dir))+" "+attachedRoomID;
+						return CMLib.directions().getFromCompassDirectionName(Directions.getOpDirectionCode(dir))+" "+attachedRoomID;
 				}
 			}
 		}
@@ -974,6 +979,8 @@ public class CMMap extends StdLibrary implements WorldMap
 		try
 		{
 			if(calledThis==null)
+				return null;
+			if(calledThis.length()==0)
 				return null;
 			if(calledThis.endsWith(")"))
 			{
@@ -1473,7 +1480,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
-	public Room getRoom(Room room)
+	public Room getRoom(final Room room)
 	{
 		if(room==null)
 			return null;
@@ -1560,6 +1567,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		return new IteratorEnumeration<Deity>(deitiesList.iterator()); 
 	}
 
+	@Override 
 	public int numShips() 
 	{ 
 		return shipList.size(); 
@@ -1568,12 +1576,23 @@ public class CMMap extends StdLibrary implements WorldMap
 	protected void addShip(BoardableShip newOne)
 	{
 		if (!shipList.contains(newOne))
+		{
 			shipList.add(newOne);
+			final Area area=newOne.getShipArea();
+			if((area!=null)&&(area.getAreaState()==Area.State.ACTIVE))
+				area.setAreaState(Area.State.ACTIVE);
+		}
 	}
 
 	protected void delShip(BoardableShip oneToDel)
 	{
 		shipList.remove(oneToDel);
+		if(oneToDel!=null)
+		{
+			final Area area=oneToDel.getShipArea();
+			if(area!=null)
+				area.setAreaState(Area.State.STOPPED);
+		}
 	}
 
 	@Override
@@ -2051,31 +2070,35 @@ public class CMMap extends StdLibrary implements WorldMap
 			for(final Enumeration<Room> r=rooms();r.hasMoreElements();)
 			{
 				Room R=r.nextElement();
+				boolean changes=false;
 				synchronized(("SYNC"+R.roomID()).intern())
 				{
 					R=getRoom(R);
-					if(R==null)
-						continue;
-					boolean changes=false;
-					for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+					if(R!=null)
 					{
-						final Room thatRoom=R.rawDoors()[d];
-						if(thatRoom==deadRoom)
+						for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 						{
-							R.rawDoors()[d]=null;
-							changes=true;
-							if((R.getRawExit(d)!=null)&&(R.getRawExit(d).isGeneric()))
+							final Room thatRoom=R.rawDoors()[d];
+							if(thatRoom==deadRoom)
 							{
-								final Exit GE=R.getRawExit(d);
-								GE.setTemporaryDoorLink(deadRoom.roomID());
+								R.rawDoors()[d]=null;
+								changes=true;
+								if((R.getRawExit(d)!=null)&&(R.getRawExit(d).isGeneric()))
+								{
+									final Exit GE=R.getRawExit(d);
+									GE.setTemporaryDoorLink(deadRoom.roomID());
+								}
 							}
 						}
 					}
-					if(changes)
-						CMLib.database().DBUpdateExits(R);
 				}
+				if(changes)
+					CMLib.database().DBUpdateExits(R);
 			}
-		}catch(final NoSuchElementException e){}
+		}
+		catch (final NoSuchElementException e)
+		{
+		}
 		emptyRoom(deadRoom,null,true);
 		deadRoom.destroy();
 		if(deadRoom instanceof GridLocale)
@@ -2127,9 +2150,10 @@ public class CMMap extends StdLibrary implements WorldMap
 			return roomLocation(((Ability)E).affecting());
 		else
 		if(E instanceof Exit)
-			return roomLocation(((Exit)E).lastRoomUsedFrom());
+			return roomLocation(((Exit)E).lastRoomUsedFrom(null));
 		return null;
 	}
+
 	@Override
 	public Area getStartArea(Environmental E)
 	{
@@ -2198,7 +2222,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			return areaLocation(((Ability)E).affecting());
 		else
 		if(E instanceof Exit)
-			return areaLocation(((Exit)E).lastRoomUsedFrom());
+			return areaLocation(((Exit)E).lastRoomUsedFrom(null));
 		return null;
 	}
 	
@@ -2260,12 +2284,21 @@ public class CMMap extends StdLibrary implements WorldMap
 	{
 		if(room==null) 
 			return;
-		MOB M=null;
+		// this will empty grid rooms so that
+		// the code below can delete them or whatever.
+		if(room instanceof GridLocale)
+		{
+			for(final Iterator<Room> r=((GridLocale)room).getExistingRooms();r.hasNext();)
+				emptyRoom(r.next(), toRoom, clearPlayers);
+		}
+		// this will empty skys and underwater of mobs so that
+		// the code below can delete them or whatever.
+		room.clearSky();
 		if(toRoom != null)
 		{
 			for(final Enumeration<MOB> i=room.inhabitants();i.hasMoreElements();)
 			{
-				M=i.nextElement();
+				final MOB M=i.nextElement();
 				if(M!=null)
 					toRoom.bringMobHere(M,false);
 			}
@@ -2275,22 +2308,27 @@ public class CMMap extends StdLibrary implements WorldMap
 		{
 			for(final Enumeration<MOB> i=room.inhabitants();i.hasMoreElements();)
 			{
-				M=i.nextElement();
+				final MOB M=i.nextElement();
 				if((M!=null) && (M.isPlayer()))
 					M.getStartRoom().bringMobHere(M,true);
 			}
 		}
 		for(final Enumeration<MOB> i=room.inhabitants();i.hasMoreElements();)
 		{
-			M=i.nextElement();
+			final MOB M=i.nextElement();
 			if((M!=null)
 			&&(!M.isPlayer())
 			&&(M.isSavable())
 			&&((M.amFollowing()==null)||(!M.amFollowing().isPlayer())))
 			{
-				if((M.getStartRoom()==null)
-				||(M.getStartRoom()==room)
-				||(M.getStartRoom().ID().length()==0))
+				final Room startRoom = M.getStartRoom();
+				final Area startArea = (startRoom == null) ? null : startRoom.getArea();
+				if((startRoom==null)
+				||(startRoom==room)
+				||(startRoom.amDestroyed())
+				||(startArea==null)
+				||(startArea.amDestroyed())
+				||(startRoom.ID().length()==0))
 					M.destroy();
 				else
 					M.getStartRoom().bringMobHere(M,false);
@@ -2326,10 +2364,14 @@ public class CMMap extends StdLibrary implements WorldMap
 			}
 		}
 		room.clearSky();
-		CMLib.threads().clearDebri(room,0);
+		 // clear debri only clears things by their start rooms, not location, so only roomid matters.
+		if(room.roomID().length()>0)
+			CMLib.threads().clearDebri(room,0);
 		if(room instanceof GridLocale)
+		{
 			for(final Iterator<Room> r=((GridLocale)room).getExistingRooms();r.hasNext();)
 				emptyRoom(r.next(), toRoom, clearPlayers);
+		}
 	}
 
 	@Override
@@ -2337,29 +2379,24 @@ public class CMMap extends StdLibrary implements WorldMap
 	{
 		if(A==null)
 			return;
-		final LinkedList<Room> rooms=new LinkedList<Room>();
-		Room R=null;
-		Enumeration<Room> e=A.getCompleteMap();
-		while(e.hasMoreElements())
+		A.setAreaState(Area.State.STOPPED);
+		List<Room> allRooms=new LinkedList<Room>();
+		for(int i=0;i<2;i++)
 		{
-			for(int i=0;(i<100)&&e.hasMoreElements();i++)
+			for(Enumeration<Room> e=A.getProperMap();e.hasMoreElements();)
 			{
-				R=e.nextElement();
-				if((R!=null)&&(R.roomID()!=null))
-					rooms.add(R);
+				final Room R=e.nextElement();
+				if(R!=null)
+				{
+					allRooms.add(R);
+					emptyRoom(R,null,false);
+					R.clearSky();
+				}
 			}
-			if(rooms.size()==0)
-				break;
-			for(final Iterator<Room> e2=rooms.iterator();e2.hasNext();)
-			{
-				R=e2.next();
-				if((R!=null)&&(R.roomID().length()>0))
-					obliterateRoom(R);
-				e2.remove();
-			}
-			e=A.getCompleteMap();
 		}
-		CMLib.database().DBDeleteArea(A);
+		CMLib.database().DBDeleteAreaAndRooms(A);
+		for(final Room R : allRooms)
+			obliterateRoom(R);
 		delArea(A);
 		A.destroy(); // why not?
 	}
@@ -2384,27 +2421,33 @@ public class CMMap extends StdLibrary implements WorldMap
 			if((rebuildGrids)&&(room instanceof GridLocale))
 				((GridLocale)room).clearGrid(null);
 			final boolean mobile=room.getMobility();
-			room.toggleMobility(false);
-			if(resetMsg==null)
-				resetMsg=CMClass.getMsg(CMClass.sampleMOB(),room,CMMsg.MSG_ROOMRESET,null);
-			resetMsg.setTarget(room);
-			room.executeMsg(room,resetMsg);
-			if(room.isSavable())
-				emptyRoom(room,null,false);
-			for(final Enumeration<Ability> a=room.effects();a.hasMoreElements();)
+			try
 			{
-				final Ability A=a.nextElement();
-				if((A!=null)&&(A.canBeUninvoked()))
-					A.unInvoke();
+				room.toggleMobility(false);
+				if(resetMsg==null)
+					resetMsg=CMClass.getMsg(CMClass.sampleMOB(),room,CMMsg.MSG_ROOMRESET,null);
+				resetMsg.setTarget(room);
+				room.executeMsg(room,resetMsg);
+				if(room.isSavable())
+					emptyRoom(room,null,false);
+				for(final Enumeration<Ability> a=room.effects();a.hasMoreElements();)
+				{
+					final Ability A=a.nextElement();
+					if((A!=null)&&(A.canBeUninvoked()))
+						A.unInvoke();
+				}
+				if(room.isSavable())
+				{
+					CMLib.database().DBReReadRoomData(room);
+					CMLib.database().DBReadContent(room.roomID(),room,true);
+				}
+				room.startItemRejuv();
+				room.setResource(-1);
 			}
-			if(room.isSavable())
+			finally
 			{
-				CMLib.database().DBReReadRoomData(room);
-				CMLib.database().DBReadContent(room.roomID(),room,true);
+				room.toggleMobility(mobile);
 			}
-			room.startItemRejuv();
-			room.setResource(-1);
-			room.toggleMobility(mobile);
 		}
 	}
 
@@ -2642,7 +2685,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		final long startTime = System.currentTimeMillis();
 		if(searchRooms)
 		{
-			final int dirCode=Directions.getGoodDirectionCode(cmd);
+			final int dirCode=CMLib.directions().getGoodDirectionCode(cmd);
 			if((dirCode>=0)&&(curRoom!=null))
 				room=addWorldRoomsLiberally(rooms,curRoom.rawDoors()[dirCode]);
 			if(room==null)
@@ -3252,11 +3295,24 @@ public class CMMap extends StdLibrary implements WorldMap
 				if(A!=null)
 				{
 					CMProps.setUpAllLowVar(CMProps.Str.MUDSTATUS,"Shutting down Map area '"+A.Name()+"'...");
+					LinkedList<Room> rooms=new LinkedList<Room>();
 					for(Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
 					{
 						try 
 						{
 							final Room R=r.nextElement();
+							if(R!=null)
+								rooms.add(R);
+						} 
+						catch(Exception e) 
+						{
+						}
+					}
+					for(Iterator<Room> r=rooms.iterator();r.hasNext();)
+					{
+						try 
+						{
+							final Room R=r.next();
 							A.delProperRoom(R);
 							R.destroy();
 						} 
@@ -3322,7 +3378,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			Room R=null;
 			final List<Room> roomsToGo=new ArrayList<Room>();
 			final CMMsg expireMsg=CMClass.getMsg(expireM,R,null,CMMsg.MSG_EXPIRE,null);
-			for(final Enumeration<Room> r=rooms();r.hasMoreElements();)
+			for(final Enumeration<Room> r=roomsFilled();r.hasMoreElements();)
 			{
 				R=r.nextElement();
 				expireM.setLocation(R);
@@ -3420,13 +3476,20 @@ public class CMMap extends StdLibrary implements WorldMap
 		setThreadStatus(serviceClient,"checking");
 		try
 		{
-			for(final Enumeration<Room> r=rooms();r.hasMoreElements();)
+			for(final Enumeration<Room> r=roomsFilled();r.hasMoreElements();)
 			{
 				final Room R=r.nextElement();
 				for(int m=0;m<R.numInhabitants();m++)
 				{
 					final MOB mob=R.fetchInhabitant(m);
-					if((mob!=null)&&(mob.lastTickedDateTime()>0)&&(mob.lastTickedDateTime()<lastDateTime))
+					if(mob == null)
+						continue;
+					if(mob.amDestroyed())
+					{
+						R.delInhabitant(mob);
+						continue;
+					}
+					if((mob.lastTickedDateTime()>0)&&(mob.lastTickedDateTime()<lastDateTime))
 					{
 						final boolean ticked=CMLib.threads().isTicking(mob,Tickable.TICKID_MOB);
 						final boolean isDead=mob.amDead();
@@ -3434,23 +3497,28 @@ public class CMMap extends StdLibrary implements WorldMap
 						final String wasFrom=(startR!=null)?startR.roomID():"NULL";
 						if(!ticked)
 						{
-							if(CMLib.players().getPlayer(mob.Name())==null)
+							if(!mob.isPlayer())
 							{
 								if(ticked)
 								{
 									// we have a dead group.. let the group handler deal with it.
-									Log.errOut(serviceClient.getName(),mob.name()+" in room "+R.roomID()+" unticked in dead group (Home="+wasFrom+") since: "+CMLib.time().date2String(mob.lastTickedDateTime())+".");
+									Log.errOut(serviceClient.getName(),mob.name()+" in room "+CMLib.map().getDescriptiveExtendedRoomID(R)
+											+" unticked in dead group (Home="+wasFrom+") since: "+CMLib.time().date2String(mob.lastTickedDateTime())+".");
 									continue;
 								}
 								else
-									Log.errOut(serviceClient.getName(),mob.name()+" in room "+R.roomID()+" unticked (is ticking="+(ticked)+", dead="+isDead+", Home="+wasFrom+") since: "+CMLib.time().date2String(mob.lastTickedDateTime())+"."+(ticked?"":"  This mob has been destroyed. May he rest in peace."));
+								{
+									Log.errOut(serviceClient.getName(),mob.name()+" in room "+CMLib.map().getDescriptiveExtendedRoomID(R)
+											+" unticked (is ticking="+(ticked)+", dead="+isDead+", Home="+wasFrom+") since: "+CMLib.time().date2String(mob.lastTickedDateTime())+"."+(ticked?"":"  This mob has been destroyed. May he rest in peace."));
+									mob.destroy();
+								}
 							}
 							else
-								Log.errOut(serviceClient.getName(),"Player "+mob.name()+" in room "+R.roomID()+" unticked (is ticking="+(ticked)+", dead="+isDead+", Home="+wasFrom+") since: "+CMLib.time().date2String(mob.lastTickedDateTime())+"."+(ticked?"":"  This mob has been put aside."));
-							setThreadStatus(serviceClient,"destroying unticked mob "+mob.name());
-							if(CMLib.players().getPlayer(mob.Name())==null)
-								mob.destroy();
-							R.delInhabitant(mob);
+							{
+								Log.errOut(serviceClient.getName(),"Player "+mob.name()+" in room "+CMLib.map().getDescriptiveExtendedRoomID(R)
+										+" unticked (is ticking="+(ticked)+", dead="+isDead+", Home="+wasFrom+") since: "+CMLib.time().date2String(mob.lastTickedDateTime())+"."+(ticked?"":"  This mob has been put aside."));
+							}
+							R.delInhabitant(mob);//keeps it from happening again.
 							setThreadStatus(serviceClient,"checking");
 						}
 					}
@@ -3610,30 +3678,33 @@ public class CMMap extends StdLibrary implements WorldMap
 												{
 													final List<CMFile.CMVFSFile> myFiles=new Vector<CMFile.CMVFSFile>();
 													final Room R2=CMLib.coffeeMaker().makeNewRoomContent(R, false);
-													for(int i=0;i<R2.numInhabitants();i++)
+													if(R2!=null)
 													{
-														final MOB M=R2.fetchInhabitant(i);
-														myFiles.add(new CMFile.CMVFSFile(this.path+cmfsFilenameify(R2.getContextName(M))+".cmare",48,System.currentTimeMillis(),"SYS")
+														for(int i=0;i<R2.numInhabitants();i++)
 														{
-															@Override 
-															public Object readData()
+															final MOB M=R2.fetchInhabitant(i);
+															myFiles.add(new CMFile.CMVFSFile(this.path+cmfsFilenameify(R2.getContextName(M))+".cmare",48,System.currentTimeMillis(),"SYS")
 															{
-																return CMLib.coffeeMaker().getMobXML(M);
-															}
-														});
-														myFiles.add(new CMFile.CMVFSDir(this,this.path+cmfsFilenameify(R2.getContextName(M))+"/")
-														{
-															@Override 
-															protected CMFile.CMVFSFile[] getFiles()
+																@Override 
+																public Object readData()
+																{
+																	return CMLib.coffeeMaker().getMobXML(M);
+																}
+															});
+															myFiles.add(new CMFile.CMVFSDir(this,this.path+cmfsFilenameify(R2.getContextName(M))+"/")
 															{
-																final List<CMFile.CMVFSFile> myFiles=new Vector<CMFile.CMVFSFile>();
-																addMapStatFiles(myFiles,R,M,this);
-																Collections.sort(myFiles,CMFile.CMVFSDir.fcomparator);
-																return myFiles.toArray(new CMFile.CMVFSFile[0]);
-															}
-														});
+																@Override 
+																protected CMFile.CMVFSFile[] getFiles()
+																{
+																	final List<CMFile.CMVFSFile> myFiles=new Vector<CMFile.CMVFSFile>();
+																	addMapStatFiles(myFiles,R,M,this);
+																	Collections.sort(myFiles,CMFile.CMVFSDir.fcomparator);
+																	return myFiles.toArray(new CMFile.CMVFSFile[0]);
+																}
+															});
+														}
+														Collections.sort(myFiles,CMFile.CMVFSDir.fcomparator);
 													}
-													Collections.sort(myFiles,CMFile.CMVFSDir.fcomparator);
 													return myFiles.toArray(new CMFile.CMVFSFile[0]);
 												}
 											});

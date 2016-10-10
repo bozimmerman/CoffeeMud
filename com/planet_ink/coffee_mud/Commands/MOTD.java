@@ -137,7 +137,7 @@ public class MOTD extends StdCommand
 				}
 				if((postalChains.size()>0)&&(P!=null))
 				{
-					List<PlayerData> V=CMLib.database().DBReadData(mob.Name(),postalChains);
+					List<PlayerData> V=CMLib.database().DBReadPlayerData(mob.Name(),postalChains);
 					final Map<PostOffice,int[]> res=getPostalResults(V,mob.playerStats().getLastDateTime());
 					for(final Iterator<PostOffice> e=res.keySet().iterator();e.hasNext();)
 					{
@@ -153,7 +153,7 @@ public class MOTD extends StdCommand
 							final Clan C=clanPair.first;
 							if(C.getAuthority(clanPair.second.intValue(),Clan.Function.WITHDRAW)!=Clan.Authority.CAN_NOT_DO)
 							{
-								V=CMLib.database().DBReadData(C.name(),postalChains);
+								V=CMLib.database().DBReadPlayerData(C.name(),postalChains);
 								if(V.size()>0)
 								{
 									res2.putAll(getPostalResults(V,mob.playerStats().getLastDateTime()));

@@ -86,7 +86,7 @@ public class Spirit extends Undead
 	{
 		if(naturalWeaponChoices==null)
 		{
-			naturalWeaponChoices=new Vector<Weapon>();
+			Vector<Weapon> naturalWeaponChoices=new Vector<Weapon>();
 			for(int i=1;i<11;i++)
 			{
 				naturalWeapon=CMClass.getWeapon("StdWeapon");
@@ -131,10 +131,81 @@ public class Spirit extends Undead
 				naturalWeapon.setUsesRemaining(1000);
 				naturalWeaponChoices.add(naturalWeapon);
 			}
+			this.naturalWeaponChoices = naturalWeaponChoices;
 		}
 		return naturalWeaponChoices.get(CMLib.dice().roll(1,naturalWeaponChoices.size(),-1));
 	}
 
+	@Override
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
+	{
+		if(((msg.targetMinor()==CMMsg.TYP_UNDEAD)
+			||(msg.sourceMinor()==CMMsg.TYP_UNDEAD))
+		&&((!(myHost instanceof MOB))
+			||(msg.amITarget(myHost)&&(!((MOB)myHost).amDead())))
+		&&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS)
+			||(msg.targetMinor()==CMMsg.TYP_DAMAGE)
+			||(msg.targetMinor()==CMMsg.TYP_LEGALWARRANT)))
+		{
+			String immunityName="certain";
+			if(msg.tool()!=null)
+				immunityName=msg.tool().name();
+			if(!msg.sourceMajor(CMMsg.MASK_CNTRLMSG) && !msg.targetMajor(CMMsg.MASK_CNTRLMSG))
+			{
+				final Room R=CMLib.map().roomLocation(msg.target());
+				if(msg.target()!=msg.source())
+					R.show(msg.source(),msg.target(),CMMsg.MSG_OK_VISUAL,L("<T-NAME> seem(s) immune to @x1 attacks from <S-NAME>.",immunityName));
+				else
+					R.show(msg.source(),msg.target(),CMMsg.MSG_OK_VISUAL,L("<T-NAME> seem(s) immune to @x1.",immunityName));
+			}
+			return false;
+		}
+		return true;
+	}
+
+	private final String[]	racialAbilityNames			= { "Prayer_Heal", "Prayer_CureLight" };
+	private final int[]		racialAbilityLevels			= { 1, 1 };
+	private final int[]		racialAbilityProficiencies	= { 100, 100 };
+	private final boolean[]	racialAbilityQuals			= { true, false };
+	private final String[]	racialAbilityParms			= { "", "" };
+
+	@Override
+	public String[] racialAbilityNames()
+	{
+		return racialAbilityNames;
+	}
+
+	@Override
+	public int[] racialAbilityLevels()
+	{
+		return racialAbilityLevels;
+	}
+
+	@Override
+	public int[] racialAbilityProficiencies()
+	{
+		return racialAbilityProficiencies;
+	}
+
+	@Override
+	public boolean[] racialAbilityQuals()
+	{
+		return racialAbilityQuals;
+	}
+
+	@Override
+	public String[] racialAbilityParms()
+	{
+		return racialAbilityParms;
+	}
+
+	@Override
+	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
+	{
+		super.affectCharStats(affectedMOB, affectableStats);
+		affectableStats.setStat(CharStats.STAT_SAVE_UNDEAD,affectableStats.getStat(CharStats.STAT_SAVE_UNDEAD)+100);
+	}
+	
 	@Override
 	public Weapon myNaturalWeapon()
 	{

@@ -35,10 +35,18 @@ import java.util.*;
 
 public class Sell extends StdCommand
 {
-	public Sell(){}
+	public Sell()
+	{
+	}
 
-	private final String[] access=I(new String[]{"SELL"});
-	@Override public String[] getAccessWords(){return access;}
+	private final String[] access = I(new String[] { "SELL" });
+
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
+
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
@@ -61,8 +69,16 @@ public class Sell extends StdCommand
 		String whatName=CMParms.combine(commands,0);
 		final Vector<Item> V=new Vector<Item>();
 		boolean allFlag=commands.get(0).equalsIgnoreCase("all");
-		if(whatName.toUpperCase().startsWith("ALL.")){ allFlag=true; whatName="ALL "+whatName.substring(4);}
-		if(whatName.toUpperCase().endsWith(".ALL")){ allFlag=true; whatName="ALL "+whatName.substring(0,whatName.length()-4);}
+		if (whatName.toUpperCase().startsWith("ALL."))
+		{
+			allFlag = true;
+			whatName = "ALL " + whatName.substring(4);
+		}
+		if (whatName.toUpperCase().endsWith(".ALL"))
+		{
+			allFlag = true;
+			whatName = "ALL " + whatName.substring(0, whatName.length() - 4);
+		}
 		int addendum=1;
 		String addendumStr="";
 		boolean doBugFix = true;
@@ -81,18 +97,34 @@ public class Sell extends StdCommand
 		if(V.size()==0)
 			CMLib.commands().doCommandFail(mob,origCmds,L("You don't seem to have '@x1'.",whatName));
 		else
-		for(int v=0;v<V.size();v++)
 		{
-			final Item thisThang=V.get(v);
-			final CMMsg newMsg=CMClass.getMsg(mob,shopkeeper,thisThang,CMMsg.MSG_SELL,L("<S-NAME> sell(s) <O-NAME> to <T-NAMESELF>."));
-			if(mob.location().okMessage(mob,newMsg))
-				mob.location().send(mob,newMsg);
+			for(int v=0;v<V.size();v++)
+			{
+				final Item thisThang=V.get(v);
+				final CMMsg newMsg=CMClass.getMsg(mob,shopkeeper,thisThang,CMMsg.MSG_SELL,L("<S-NAME> sell(s) <O-NAME> to <T-NAMESELF>."));
+				if(mob.location().okMessage(mob,newMsg))
+					mob.location().send(mob,newMsg);
+			}
 		}
 		return false;
 	}
-	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandCombatActionCost(ID());}
-	@Override public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandActionCost(ID());}
-	@Override public boolean canBeOrdered(){return false;}
 
+	@Override
+	public double combatActionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandCombatActionCost(ID());
+	}
+
+	@Override
+	public double actionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandActionCost(ID());
+	}
+
+	@Override
+	public boolean canBeOrdered()
+	{
+		return false;
+	}
 
 }

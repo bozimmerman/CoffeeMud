@@ -35,8 +35,17 @@ import java.util.*;
 */
 public class ResourceOverride extends ActiveTicker
 {
-	@Override public String ID(){return "ResourceOverride";}
-	@Override protected int canImproveCode(){return Behavior.CAN_ROOMS|Behavior.CAN_AREAS;}
+	@Override
+	public String ID()
+	{
+		return "ResourceOverride";
+	}
+
+	@Override
+	protected int canImproveCode()
+	{
+		return Behavior.CAN_ROOMS | Behavior.CAN_AREAS;
+	}
 
 	private final List<Integer>	rscs		= new Vector<Integer>();
 	private final Set<Integer>	roomTypes	= new TreeSet<Integer>();
@@ -88,12 +97,24 @@ public class ResourceOverride extends ActiveTicker
 			else
 			{
 				for(int i=0;i<Room.DOMAIN_OUTDOOR_DESCS.length;i++)
+				{
 					if(which.equalsIgnoreCase(Room.DOMAIN_OUTDOOR_DESCS[i]))
-					{ code=i; break;}
+					{
+						code = i;
+						break;
+					}
+				}
 				if(code<0)
+				{
 					for(int i=0;i<Room.DOMAIN_INDOORS_DESCS.length;i++)
+					{
 						if(which.equalsIgnoreCase(Room.DOMAIN_INDOORS_DESCS[i]))
-						{ code=Room.INDOORS|i; break;}
+						{
+							code = Room.INDOORS | i;
+							break;
+						}
+					}
+				}
 				if(code>=0)
 					roomTypes.add(Integer.valueOf(code));
 			}

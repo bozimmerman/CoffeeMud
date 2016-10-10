@@ -95,7 +95,8 @@ public class Chant_CaveIn extends Chant
 	{
 		if(mob!=null)
 		{
-			if(mob.location().domainType()!=Room.DOMAIN_INDOORS_CAVE)
+			if((mob.location().domainType()!=Room.DOMAIN_INDOORS_CAVE)
+			&&((mob.location().getAtmosphere()&RawMaterial.MATERIAL_ROCK)==0))
 				return Ability.QUALITY_INDIFFERENT;
 			if(mob.isMonster())
 				return Ability.QUALITY_INDIFFERENT;
@@ -112,7 +113,7 @@ public class Chant_CaveIn extends Chant
 		else
 		if((commands.size()>0)&&(givenTarget==null))
 		{
-			final int dir=Directions.getGoodDirectionCode(CMParms.combine(commands,0));
+			final int dir=CMLib.directions().getGoodDirectionCode(CMParms.combine(commands,0));
 			if((dir>=0)&&(dir!=Directions.UP)&&(mob.location().getExitInDir(dir)!=null))
 				target=mob.location().getExitInDir(dir);
 		}
@@ -126,7 +127,8 @@ public class Chant_CaveIn extends Chant
 			return false;
 		}
 		if((!auto)
-		&&(mob.location().domainType()!=Room.DOMAIN_INDOORS_CAVE))
+		&&(mob.location().domainType()!=Room.DOMAIN_INDOORS_CAVE)
+		&&((mob.location().getAtmosphere()&RawMaterial.MATERIAL_ROCK)==0))
 		{
 			mob.tell(L("This chant only works in caves."));
 			return false;

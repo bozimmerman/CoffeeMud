@@ -35,30 +35,78 @@ import java.util.*;
 */
 public class Specialization_Weapon extends StdAbility
 {
-	@Override public String ID() { return "Specialization_Weapon"; }
-	private final static String localizedName = CMLib.lang().L("Weapon Specialization");
-	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "";}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	@Override public boolean isAutoInvoked(){return true;}
-	@Override public boolean canBeUninvoked(){return false;}
+	@Override
+	public String ID()
+	{
+		return "Specialization_Weapon";
+	}
 
-	protected boolean activated=false;
-	protected int weaponClass=-1;
-	protected int secondWeaponClass=-1;
+	private final static String	localizedName	= CMLib.lang().L("Weapon Specialization");
 
-	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_WEAPON_USE;}
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public String displayText()
+	{
+		return "";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_SELF;
+	}
+
+	@Override
+	public boolean isAutoInvoked()
+	{
+		return true;
+	}
+
+	@Override
+	public boolean canBeUninvoked()
+	{
+		return false;
+	}
+
+	protected boolean	activated			= false;
+	protected int		weaponClass			= -1;
+	protected int		secondWeaponClass	= -1;
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL | Ability.DOMAIN_WEAPON_USE;
+	}
 
 	protected int getDamageBonus(MOB mob, int dmgType)
 	{
 		switch(dmgType)
 		{
-		case Weapon.TYPE_SLASHING: return getX1Level(mob);
-		case Weapon.TYPE_PIERCING: return getX2Level(mob);
-		case Weapon.TYPE_BASHING: return getX3Level(mob);
-		case Weapon.TYPE_SHOOT: return getX2Level(mob);
+		case Weapon.TYPE_SLASHING:
+			return getX1Level(mob);
+		case Weapon.TYPE_PIERCING:
+			return getX2Level(mob);
+		case Weapon.TYPE_BASHING:
+			return getX3Level(mob);
+		case Weapon.TYPE_SHOOT:
+			return getX2Level(mob);
 		default:
 			return 0;
 		}

@@ -96,6 +96,7 @@ public class Sheep extends StdRace
 	private final int[]		racialAbilityLevels			= { 1 };
 	private final int[]		racialAbilityProficiencies	= { 100 };
 	private final boolean[]	racialAbilityQuals			= { false };
+	private final String[]	racialAbilityParms			= { "" };
 
 	@Override
 	protected String[] racialAbilityNames()
@@ -119,6 +120,12 @@ public class Sheep extends StdRace
 	protected boolean[] racialAbilityQuals()
 	{
 		return racialAbilityQuals;
+	}
+
+	@Override
+	public String[] racialAbilityParms()
+	{
+		return racialAbilityParms;
 	}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
@@ -281,7 +288,7 @@ public class Sheep extends StdRace
 		if((body!=null)&&(CMLib.dice().roll(1,1000,0)==1)&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
 		{
 			final Ability A=CMClass.getAbility("Disease_Anthrax");
-			if(A!=null)
+			if((A!=null)&&(!CMSecurity.isAbilityDisabled(A.ID())))
 				body.addNonUninvokableEffect(A);
 		}
 		return body;

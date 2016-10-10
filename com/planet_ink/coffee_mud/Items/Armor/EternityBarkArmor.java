@@ -33,7 +33,12 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class EternityBarkArmor extends StdArmor
 {
-	@Override public String ID(){	return "EternityBarkArmor";}
+	@Override
+	public String ID()
+	{
+		return "EternityBarkArmor";
+	}
+
 	public EternityBarkArmor()
 	{
 		super();

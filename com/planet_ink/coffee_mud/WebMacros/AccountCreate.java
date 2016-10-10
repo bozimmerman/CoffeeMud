@@ -36,12 +36,22 @@ import java.util.*;
 */
 public class AccountCreate extends StdWebMacro
 {
-	@Override public String name() { return "AccountCreate"; }
+	@Override
+	public String name()
+	{
+		return "AccountCreate";
+	}
 
 	private enum AccountCreateErrors
 	{
-		NO_NAME, NO_PASSWORD, NO_PASSWORDAGAIN, BAD_PASSWORDMATCH, NO_VERIFYKEY, NO_VERIFY,
-		BAD_EMAILADDRESS, BAD_VERIFY
+		NO_NAME,
+		NO_PASSWORD,
+		NO_PASSWORDAGAIN,
+		BAD_PASSWORDMATCH,
+		NO_VERIFYKEY,
+		NO_VERIFY,
+		BAD_EMAILADDRESS,
+		BAD_VERIFY
 	}
 	// OK, NO_NEW_PLAYERS, NO_NEW_LOGINS, BAD_USED_NAME, CREATE_LIMIT_REACHED
 

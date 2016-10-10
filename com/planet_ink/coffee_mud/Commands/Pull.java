@@ -50,13 +50,13 @@ public class Pull extends Go
 		throws java.io.IOException
 	{
 		Vector<String> origCmds=new XVector<String>(commands);
-		Environmental openThis=null;
+		Physical pullThis=null;
 		String dir="";
 		int dirCode=-1;
 		Environmental E=null;
 		if(commands.size()>1)
 		{
-			dirCode=Directions.getGoodDirectionCode(commands.get(commands.size()-1));
+			dirCode=CMLib.directions().getGoodDirectionCode(commands.get(commands.size()-1));
 			if(dirCode>=0)
 			{
 				if((mob.location().getRoomInDir(dirCode)==null)
@@ -68,27 +68,27 @@ public class Pull extends Go
 				}
 				E=mob.location().getRoomInDir(dirCode);
 				dir=" "+(((mob.location() instanceof BoardableShip)||(mob.location().getArea() instanceof BoardableShip))?
-						Directions.getShipDirectionName(dirCode):Directions.getDirectionName(dirCode));
+						CMLib.directions().getShipDirectionName(dirCode):CMLib.directions().getDirectionName(dirCode));
 				commands.remove(commands.size()-1);
 			}
 		}
 		if(dir.length()==0)
 		{
-			dirCode=Directions.getGoodDirectionCode(commands.get(commands.size()-1));
+			dirCode=CMLib.directions().getGoodDirectionCode(commands.get(commands.size()-1));
 			if(dirCode>=0)
-				openThis=mob.location().getExitInDir(dirCode);
+				pullThis=mob.location().getExitInDir(dirCode);
 		}
 		final String itemName=CMParms.combine(commands,1);
-		if(openThis==null)
-			openThis=mob.location().fetchFromRoomFavorItems(null,itemName);
-		if(openThis==null)
-			openThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,itemName,Wearable.FILTER_ANY);
-		if((openThis==null)||(!CMLib.flags().canBeSeenBy(openThis,mob)))
+		if(pullThis==null)
+			pullThis=mob.location().fetchFromRoomFavorItems(null,itemName);
+		if(pullThis==null)
+			pullThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,itemName,Wearable.FILTER_ANY);
+		if((pullThis==null)||(!CMLib.flags().canBeSeenBy(pullThis,mob)))
 		{
 			CMLib.commands().doCommandFail(mob,origCmds,L("You don't see '@x1' here.",itemName));
 			return false;
 		}
-		final CMMsg msg=CMClass.getMsg(mob,openThis,E,CMMsg.MSG_PULL,L("<S-NAME> pull(s) <T-NAME>@x1.",dir));
+		final CMMsg msg=CMClass.getMsg(mob,pullThis,E,CMMsg.MSG_PULL,L("<S-NAME> pull(s) <T-NAME>@x1.",dir));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
@@ -98,11 +98,16 @@ public class Pull extends Go
 				dirCode=CMLib.tracking().findRoomDir(mob,R);
 				if((dirCode>=0)&&(CMLib.tracking().walk(mob,dirCode,false,false,false,false)))
 				{
-					if(openThis instanceof Item)
-						R.moveItemTo((Item)openThis,ItemPossessor.Expire.Player_Drop,ItemPossessor.Move.Followers);
+					int expense = Math.round(CMath.sqrt(pullThis.phyStats().weight()));
+					if(expense < CMProps.getIntVar(CMProps.Int.RUNCOST))
+						expense = CMProps.getIntVar(CMProps.Int.RUNCOST);
+					for(int i=0;i<expense;i++)
+						CMLib.combat().expendEnergy(mob,true);
+					if(pullThis instanceof Item)
+						R.moveItemTo((Item)pullThis,ItemPossessor.Expire.Player_Drop,ItemPossessor.Move.Followers);
 					else
-					if(openThis instanceof MOB)
-						CMLib.tracking().walk((MOB)openThis,dirCode,((MOB)openThis).isInCombat(),false,true,true);
+					if(pullThis instanceof MOB)
+						CMLib.tracking().walk((MOB)pullThis,dirCode,((MOB)pullThis).isInCombat(),false,true,true);
 				}
 			}
 		}

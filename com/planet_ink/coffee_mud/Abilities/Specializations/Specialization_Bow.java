@@ -35,9 +35,20 @@ import java.util.*;
 */
 public class Specialization_Bow extends Specialization_Weapon
 {
-	@Override public String ID() { return "Specialization_Bow"; }
-	private final static String localizedName = CMLib.lang().L("Bow Specialization");
-	@Override public String name() { return localizedName; }
+	@Override
+	public String ID()
+	{
+		return "Specialization_Bow";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Bow Specialization");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	public Specialization_Bow()
 	{
 		super();
@@ -55,5 +66,4 @@ public class Specialization_Bow extends Specialization_Weapon
 		final String ammo=((AmmunitionWeapon)W).ammunitionType();
 		return (ammo!=null) && (ammo.equalsIgnoreCase("arrow")||ammo.equalsIgnoreCase("arrows"));
 	}
-
 }

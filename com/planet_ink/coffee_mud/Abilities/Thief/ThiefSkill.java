@@ -106,7 +106,7 @@ public class ThiefSkill extends StdAbility
 			return null;
 		final String whatToOpen=CMParms.combine(commands,0);
 		Physical unlockThis=null;
-		dirCode[0]=Directions.getGoodDirectionCode(whatToOpen);
+		dirCode[0]=CMLib.directions().getGoodDirectionCode(whatToOpen);
 		if(dirCode[0]>=0)
 			unlockThis=room.getExitInDir(dirCode[0]);
 		if(unlockThis==null)

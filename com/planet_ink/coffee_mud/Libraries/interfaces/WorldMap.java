@@ -137,6 +137,7 @@ public interface WorldMap extends CMLibrary
 	public Enumeration<Auctioneer> auctionHouses();
 	public BoardableShip getShip(String calledThis);
 	public Enumeration<BoardableShip> ships();
+	public int numShips();
 	public Room getSafeRoomToMovePropertyTo(Room room, PrivateProperty I);
 
 	/* ***********************************************************************/

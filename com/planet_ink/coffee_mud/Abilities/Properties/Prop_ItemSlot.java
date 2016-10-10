@@ -320,6 +320,8 @@ public class Prop_ItemSlot extends Property
 	@Override
 	public void affectPhyStats(Physical host, PhyStats affectableStats)
 	{
+		if((host == affected)&&(!(affected instanceof Container)))
+			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.SENSE_INSIDEACCESSIBLE);
 		for(Ability A : slotProps)
 		{
 			if(A!=null)

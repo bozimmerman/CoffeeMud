@@ -166,7 +166,7 @@ public class Follower extends ActiveTicker
 					if(x>=0)
 					{
 						directionWent=directionWent.substring(x+1);
-						direction=Directions.getDirectionCode(directionWent);
+						direction=CMLib.directions().getDirectionCode(directionWent);
 					}
 					else
 						direction=-1;

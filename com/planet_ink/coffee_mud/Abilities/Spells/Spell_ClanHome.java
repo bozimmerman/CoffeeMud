@@ -74,7 +74,7 @@ public class Spell_ClanHome extends Spell
 	}
 
 	@Override
-	protected boolean disregardsArmorCheck(MOB mob)
+	public boolean disregardsArmorCheck(MOB mob)
 	{
 		return true;
 	}
@@ -106,7 +106,7 @@ public class Spell_ClanHome extends Spell
 			mob.tell(L("You can't use this magic to get there from here."));
 			return false;
 		}
-		if(!CMLib.law().doesOwnThisLand(C.clanID(),clanHomeRoom))
+		if(!CMLib.law().doesOwnThisProperty(C.clanID(),clanHomeRoom))
 		{
 			mob.tell(L("Your clan no longer owns that room."));
 			return false;

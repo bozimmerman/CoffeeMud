@@ -79,7 +79,7 @@ public class TaxiBehavior extends Concierge
 		MOB fromM=getTalker(observer,room);
 		final ArrayList<Room> set=new ArrayList<Room>();
 		CMLib.tracking().getRadiantRooms(fromM.location(),set,roomRadiusFlags,null,maxRange,null);
-		trailTo=CMLib.tracking().findBastardTheBestWay(fromM.location(), destR, trackingFlags, maxRange);
+		trailTo=CMLib.tracking().findTrailToRoom(fromM.location(), destR, trackingFlags, maxRange);
 		thingsToSay.addElement(whoM,L("OK, we're now on our way to @x1.",getDestinationName(destR)));
 		this.returnToRoom=fromM.location();
 		this.isEnRouter=CMClass.getAbility("Prop_Adjuster");

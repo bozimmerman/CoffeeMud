@@ -111,7 +111,7 @@ public class Prop_NarrowLedge extends Property
 					{
 						mobsToKill.add(mob);
 						final Ability falling=CMClass.getAbility("Falling");
-						falling.setProficiency(0);
+						falling.setMiscText("NORMAL");
 						falling.setAffectedOne(affected);
 						falling.invoke(null,null,mob,true,0);
 						CMLib.threads().startTickDown(this,Tickable.TICKID_SPELL_AFFECT,1);

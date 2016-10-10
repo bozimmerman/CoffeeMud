@@ -102,9 +102,15 @@ public class Prop_HereSpellCast extends Prop_HaveSpellCast
 	{
 		if(processing)
 			return;
-		processing=true;
-		if((host instanceof MOB)&&(affected instanceof Room))
-			process((MOB)host, (Room)affected,0);
-		processing=false;
+		try
+		{
+			processing=true;
+			if((host instanceof MOB)&&(affected instanceof Room))
+				process((MOB)host, (Room)affected,0);
+		}
+		finally
+		{
+			processing=false;
+		}
 	}
 }

@@ -144,6 +144,14 @@ public class Prop_WearEnabler extends Prop_HaveEnabler
 	}
 
 	@Override
+	public void setAffectedOne(Physical P)
+	{
+		if((this.affected != null)&&(P==null))
+			removeMyAffectsFromLastMob();
+		super.setAffectedOne(P);
+	}
+	
+	@Override
 	public void affectPhyStats(Physical host, PhyStats affectableStats)
 	{
 		if(processing)

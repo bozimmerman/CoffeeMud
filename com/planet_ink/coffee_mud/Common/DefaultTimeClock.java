@@ -515,6 +515,12 @@ public class DefaultTimeClock implements TimeClock
 	@Override
 	public long deriveMillisAfter(TimeClock C)
 	{
+		return deriveMudHoursAfter(C) *CMProps.getMillisPerMudHour();
+	}
+
+	@Override
+	public long deriveMudHoursAfter(TimeClock C)
+	{
 		long numMudHours=0;
 		if(C.getYear()>getYear())
 			return -1;
@@ -540,9 +546,9 @@ public class DefaultTimeClock implements TimeClock
 		numMudHours+=(getMonth()-C.getMonth())*(getHoursInDay()*getDaysInMonth());
 		numMudHours+=(getDayOfMonth()-C.getDayOfMonth())*getHoursInDay();
 		numMudHours+=(getHourOfDay()-C.getHourOfDay());
-		return numMudHours*CMProps.getMillisPerMudHour();
+		return numMudHours;
 	}
-
+	
 	@Override
 	public void handleTimeChange()
 	{
@@ -639,7 +645,7 @@ public class DefaultTimeClock implements TimeClock
 	{
 		if((loaded)&&(loadName!=null))
 		{
-			CMLib.database().DBReCreateData(loadName,"TIMECLOCK","TIMECLOCK/"+loadName,
+			CMLib.database().DBReCreatePlayerData(loadName,"TIMECLOCK","TIMECLOCK/"+loadName,
 			"<DAY>"+getDayOfMonth()+"</DAY><MONTH>"+getMonth()+"</MONTH><YEAR>"+getYear()+"</YEAR>"
 			+"<HOURS>"+getHoursInDay()+"</HOURS><DAYS>"+getDaysInMonth()+"</DAYS>"
 			+"<MONTHS>"+CMParms.toListString(getMonthNames())+"</MONTHS>"
@@ -660,63 +666,87 @@ public class DefaultTimeClock implements TimeClock
 		if(((loadName==null)||(loaded))
 		&&(((System.currentTimeMillis()-lastTicked)<=CMProps.getMillisPerMudHour())))
 			return true;
+		boolean process = false;
+		boolean timeToTick=false;
 		synchronized(this)
 		{
-			final boolean timeToTick = ((System.currentTimeMillis()-lastTicked)>CMProps.getMillisPerMudHour());
+			timeToTick = ((System.currentTimeMillis()-lastTicked)>CMProps.getMillisPerMudHour());
 			lastTicked=System.currentTimeMillis();
 			if((loadName!=null)&&(!loaded))
 			{
-				loaded=true;
-				final List<PlayerData> bitV=CMLib.database().DBReadData(loadName,"TIMECLOCK");
-				String timeRsc=null;
-				if((bitV==null)||(bitV.size()==0))
-					timeRsc="<TIME>-1</TIME><DAY>1</DAY><MONTH>1</MONTH><YEAR>1</YEAR>";
-				else
-					timeRsc=bitV.get(0).xml();
-				final List<XMLLibrary.XMLTag> V=CMLib.xml().parseAllXML(timeRsc);
-				setHourOfDay(CMLib.xml().getIntFromPieces(V,"TIME"));
-				setDayOfMonth(CMLib.xml().getIntFromPieces(V,"DAY"));
-				setMonth(CMLib.xml().getIntFromPieces(V,"MONTH"));
-				setYear(CMLib.xml().getIntFromPieces(V,"YEAR"));
-				if(this!=CMLib.time().globalClock())
+				process=true;
+			}
+		}
+		if(process)
+		{
+			loaded=true;
+			final List<PlayerData> bitV=CMLib.database().DBReadPlayerData(loadName,"TIMECLOCK");
+			String timeRsc=null;
+			if((bitV==null)||(bitV.size()==0))
+				timeRsc="<TIME>-1</TIME><DAY>1</DAY><MONTH>1</MONTH><YEAR>1</YEAR>";
+			else
+				timeRsc=bitV.get(0).xml();
+			final List<XMLLibrary.XMLTag> V=CMLib.xml().parseAllXML(timeRsc);
+			setHourOfDay(CMLib.xml().getIntFromPieces(V,"TIME"));
+			setDayOfMonth(CMLib.xml().getIntFromPieces(V,"DAY"));
+			setMonth(CMLib.xml().getIntFromPieces(V,"MONTH"));
+			setYear(CMLib.xml().getIntFromPieces(V,"YEAR"));
+			if(this!=CMLib.time().globalClock())
+			{
+				if((CMLib.xml().getValFromPieces(V,"HOURS").length()==0)
+				||(CMLib.xml().getValFromPieces(V,"DAYS").length()==0)
+				||(CMLib.xml().getValFromPieces(V,"MONTHS").length()==0))
 				{
-					if((CMLib.xml().getValFromPieces(V,"HOURS").length()==0)
-					||(CMLib.xml().getValFromPieces(V,"DAYS").length()==0)
-					||(CMLib.xml().getValFromPieces(V,"MONTHS").length()==0))
-					{
-						setHoursInDay(CMLib.time().globalClock().getHoursInDay());
-						setDaysInMonth(CMLib.time().globalClock().getDaysInMonth());
-						setMonthsInYear(CMLib.time().globalClock().getMonthNames());
-						setDawnToDusk(CMLib.time().globalClock().getDawnToDusk()[TimeOfDay.DAWN.ordinal()],
-									  CMLib.time().globalClock().getDawnToDusk()[TimeOfDay.DAY.ordinal()],
-									  CMLib.time().globalClock().getDawnToDusk()[TimeOfDay.DUSK.ordinal()],
-									  CMLib.time().globalClock().getDawnToDusk()[TimeOfDay.NIGHT.ordinal()]);
-						setDaysInWeek(CMLib.time().globalClock().getWeekNames());
-						setYearNames(CMLib.time().globalClock().getYearNames());
-					}
-					else
-					{
-						setHoursInDay(CMLib.xml().getIntFromPieces(V,"HOURS"));
-						setDaysInMonth(CMLib.xml().getIntFromPieces(V,"DAYS"));
-						setMonthsInYear(CMParms.toStringArray(CMParms.parseCommas(CMLib.xml().getValFromPieces(V,"MONTHS"),true)));
-						setDawnToDusk(CMLib.xml().getIntFromPieces(V,"DAWNHR"),
-									  CMLib.xml().getIntFromPieces(V,"DAYHR"),
-									  CMLib.xml().getIntFromPieces(V,"DUSKHR"),
-									  CMLib.xml().getIntFromPieces(V,"NIGHTHR"));
-						setDaysInWeek(CMParms.toStringArray(CMParms.parseCommas(CMLib.xml().getValFromPieces(V,"WEEK"),true)));
-						setYearNames(CMParms.toStringArray(CMParms.parseCommas(CMLib.xml().getValFromPieces(V,"YEARS"),true)));
-					}
+					setHoursInDay(CMLib.time().globalClock().getHoursInDay());
+					setDaysInMonth(CMLib.time().globalClock().getDaysInMonth());
+					setMonthsInYear(CMLib.time().globalClock().getMonthNames());
+					setDawnToDusk(CMLib.time().globalClock().getDawnToDusk()[TimeOfDay.DAWN.ordinal()],
+								  CMLib.time().globalClock().getDawnToDusk()[TimeOfDay.DAY.ordinal()],
+								  CMLib.time().globalClock().getDawnToDusk()[TimeOfDay.DUSK.ordinal()],
+								  CMLib.time().globalClock().getDawnToDusk()[TimeOfDay.NIGHT.ordinal()]);
+					setDaysInWeek(CMLib.time().globalClock().getWeekNames());
+					setYearNames(CMLib.time().globalClock().getYearNames());
+				}
+				else
+				{
+					setHoursInDay(CMLib.xml().getIntFromPieces(V,"HOURS"));
+					setDaysInMonth(CMLib.xml().getIntFromPieces(V,"DAYS"));
+					setMonthsInYear(CMParms.toStringArray(CMParms.parseCommas(CMLib.xml().getValFromPieces(V,"MONTHS"),true)));
+					setDawnToDusk(CMLib.xml().getIntFromPieces(V,"DAWNHR"),
+								  CMLib.xml().getIntFromPieces(V,"DAYHR"),
+								  CMLib.xml().getIntFromPieces(V,"DUSKHR"),
+								  CMLib.xml().getIntFromPieces(V,"NIGHTHR"));
+					setDaysInWeek(CMParms.toStringArray(CMParms.parseCommas(CMLib.xml().getValFromPieces(V,"WEEK"),true)));
+					setYearNames(CMParms.toStringArray(CMParms.parseCommas(CMLib.xml().getValFromPieces(V,"YEARS"),true)));
 				}
 			}
-			if(timeToTick)
-				tickTock(1);
 		}
+		if(timeToTick)
+			tickTock(1);
 		return true;
 	}
 
 	@Override
 	public int compareTo(CMObject o)
 	{
-		return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));
+		if(o instanceof TimeClock)
+		{
+			final TimeClock c2=(TimeClock)o;
+			long myHrs = (getHourOfDay() 
+						+ (getDayOfMonth() * getHoursInDay())
+						+ (getMonth() * getDaysInMonth() * getHoursInDay())
+						+ (getYear() * getMonthsInYear() * getDaysInMonth() * getHoursInDay()));
+			long hisHrs = (c2.getHourOfDay() 
+					+ (c2.getDayOfMonth() * c2.getHoursInDay())
+					+ (c2.getMonth() * c2.getDaysInMonth() * c2.getHoursInDay())
+					+ (c2.getYear() * c2.getMonthsInYear() * c2.getDaysInMonth() * c2.getHoursInDay()));
+			if (myHrs == hisHrs)
+				return 0;
+			if (myHrs > hisHrs)
+				return 1;
+			return -1;
+		}
+		else
+			return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));
 	}
 }

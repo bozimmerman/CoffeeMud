@@ -239,22 +239,21 @@ public interface CombatLibrary extends CMLibrary
 	 * given target ship with the given siege weapon.
 	 * @param attacker the attacking agent mob
 	 * @param attackingShip the ship the attacker is on
-	 * @param target the targetk ship
+	 * @param target the target ship
 	 * @param weapon the siege weapon used
-	 * @param wasAHit TODO
+	 * @param wasAHit true to register a hit, false to register an attack
 	 * @return true if the attack succeeded, false if it failed
 	 */
-	public boolean postAttack(MOB attacker, Rideable attackingShip, Rideable target, Weapon weapon, boolean wasAHit);
+	public boolean postShipAttack(MOB attacker, PhysicalAgent attackingShip, PhysicalAgent target, Weapon weapon, boolean wasAHit);
 	
 	/**
 	 * Returns whether the given attacking mob, on the given attacker ship, may attack the people and property
 	 * of the given defending ship.  
 	 * @param mob the agent attacker
-	 * @param attacker the attacking ship
 	 * @param defender the attacked ship
 	 * @return true if an attack is authorized, false otherwise
 	 */
-	public boolean mayIAttack(final MOB mob, final Rideable attacker, final Rideable defender);
+	public boolean mayIAttackThisVessel(final MOB mob, final PhysicalAgent defender);
 	
 	/**
 	 * Posts a message of healing from the given healer to the given
@@ -310,26 +309,28 @@ public interface CombatLibrary extends CMLibrary
 	 * Generates a CMMsg message and sends it to the SOURCE room.  Call this
 	 * instead of postAttackResult when the amount of damage done is custom
 	 * instead of random.
+	 * @return the message sent to the source room, or null
 	 * @see CombatLibrary#replaceDamageTag(String, int, int, View)
 	 * @param source the attacker
 	 * @param target the target
 	 * @param item the weapon used
 	 * @param damageInt the amount of damage done by the weapon
 	 */
-	public void postWeaponDamage(MOB source, MOB target, Item item, int damageInt);
+	public CMMsg postWeaponDamage(MOB source, MOB target, Item item, int damageInt);
 	
 	/**
 	 * This method handles both a hit or a miss with a weapon.  The
 	 * hit, obviously, posts damage, while the miss, posts a miss.
 	 * replaceDataTag is called to ensure a proper damage word.
 	 * Generates a CMMsg message and sends it to the SOURCE room.
+	 * @return the message sent to the source room, or null
 	 * @see CombatLibrary#replaceDamageTag(String, int, int, View)
 	 * @param source the attacker
 	 * @param target the target
 	 * @param item the weapon used
 	 * @param success true if it was a hit with damage, false if it was a miss
 	 */
-	public void postWeaponAttackResult(MOB source, MOB target, Item item, boolean success);
+	public CMMsg postWeaponAttackResult(MOB source, MOB target, Item item, boolean success);
 
 
 	/**
@@ -338,12 +339,12 @@ public interface CombatLibrary extends CMLibrary
 	 * posts a miss. replaceDataTag is called to ensure a proper damage word.
 	 * Generates a CMMsg message and sends it to the common room.
 	 * @see CombatLibrary#replaceDamageTag(String, int, int, View)
-	 * @param source the attacker
-	 * @param target the target
-	 * @param item the weapon used
+	 * @param attacker the attacker
+	 * @param defender the target
+	 * @param weapon the weapon used
 	 * @param success true if it was a hit with damage, false if it was a miss
 	 */
-	public void postWeaponAttackResult(MOB source, Rideable attacker, Rideable defender, Weapon weapon, boolean success);
+	public void postShipWeaponAttackResult(MOB source, PhysicalAgent attacker, PhysicalAgent defender, Weapon weapon, boolean success);
 	
 	/**
 	 * This method handles an item taking damage.  If the item is subject
@@ -479,7 +480,7 @@ public interface CombatLibrary extends CMLibrary
 	 * the lists.ini file that matches.
 	 * @see com.planet_ink.coffee_mud.Items.interfaces.Weapon#TYPE_BASHING
 	 * @param type the weapon type
-	 * @param damage the percent of damage from 0.0 to 1.0
+	 * @param pct the percent of damage from 0.0 to 1.0
 	 * @return the hit/damage word
 	 */
 	public String standardHitWord(int type, double pct);
@@ -587,6 +588,24 @@ public interface CombatLibrary extends CMLibrary
 	 */
 	public void handleBeingAssaulted(CMMsg msg);
 
+	/**
+	 * When a player has nobattlespam, this method is called when
+	 * damage is observed to add to the totals.
+	 * @param observerM the observer of the combat
+	 * @param target the damaged thing.
+	 * @param amount the amount of damage.
+	 * @return true if it was counted
+	 */
+	public boolean handleDamageSpam(MOB observerM, final Physical target, int amount);
+	
+	/**
+	 * When a player has nobattlespam, this method is called when
+	 * damage is observed to report the totals from the last  
+	 * combat round.
+	 * @param mob the no spam observer.
+	 */
+	public void handleDamageSpamSummary(final MOB mob);
+	
 	/**
 	 * When a death message is received by a mob and the message
 	 * has the mob as a source, this method is called to kill
@@ -704,4 +723,37 @@ public interface CombatLibrary extends CMLibrary
 	 * @return the mob to blame
 	 */
 	public MOB getBreatheKiller(MOB victim);
+	
+	/**
+	 * Returns whether the given item is classified as a ammunition
+	 * firing siege weapon, as used on a sailing ship.
+	 * @param I the item to check
+	 * @return true if its a siege weapon, false otherwise
+	 */
+	public boolean isAShipSiegeWeapon(Item I);
+	
+	/**
+	 * Returns the number of base hull points that the given ship has.
+	 * @param ship the ship to get points for
+	 * @return the base hull points of the ship
+	 */
+	public int getShipHullPoints(BoardableShip ship);
+	
+	/**
+	 * Checks to see if the given message gets a saving throw 
+	 * for the given mob and, if so, applies it.
+	 * @param mob the mob to save
+	 * @param msg the message that might apply
+	 * @return true if the message na or save only, false to cancel
+	 */
+	public boolean checkSavingThrows(final MOB mob, final CMMsg msg);
+	
+	/**
+	 * Checks to see if the given message gets a saving throw 
+	 * for the given mob damage and, if so, adjusts it
+	 * @param mob the mob to save
+	 * @param msg the message that might apply
+	 * @return true if the message na or save only, false to cancel
+	 */
+	public boolean checkDamageSaves(final MOB mob, final CMMsg msg);
 }

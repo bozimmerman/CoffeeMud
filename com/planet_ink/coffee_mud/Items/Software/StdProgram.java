@@ -40,7 +40,11 @@ import java.util.*;
 */
 public class StdProgram extends StdItem implements Software
 {
-	@Override public String ID(){	return "StdProgram";}
+	@Override
+	public String ID()
+	{
+		return "StdProgram";
+	}
 
 	protected StringBuilder nextMsg = new StringBuilder("");
 	protected String currentScreen="";

@@ -71,14 +71,15 @@ public class GrinderItems
 		MAXTHRUST,SPECIMPULSE,FUELEFFICIENCY,INSTALLFACTOR,
 		PANELTYPE,GENAMTPERTICK,CONSUMEDMATS,AREAXML,RECIPESKILLHELP,
 		MINTHRUST,ISCONSTTHRUST,AVAILPORTS,CONTENTSACCESS,BLENDEDVIEW,
-		ISSHIPSHIELD,SSHIELDNUMPORTS,SSHIELDPORTS,SSHIELDMTYPES,
-		RECHARGERATE
+		ISSHIPWARCOMP,SWARNUMPORTS,SWARPORTS,SWARMTYPES,
+		RECHARGERATE,OPENTICKS,ISCLOAK
 		;
 		public boolean isGenField;
 		private ItemDataField(boolean isGeneric)
 		{
 			this.isGenField=isGeneric;
 		}
+
 		private ItemDataField()
 		{
 			isGenField = true;
@@ -98,6 +99,10 @@ public class GrinderItems
 		final String mobNum=httpReq.getUrlParameter("MOB");
 		final String newClassID=httpReq.getUrlParameter("CLASSES");
 
+		String shopItemCode=httpReq.getUrlParameter("SHOPITEM");
+		if(shopItemCode==null)
+			shopItemCode="";
+		
 		final String sync=("SYNC"+((R==null)?((playerM!=null)?playerM.Name():null):R.roomID()));
 		synchronized(sync.intern())
 		{
@@ -128,7 +133,7 @@ public class GrinderItems
 					{
 						final MOB M2=R.fetchInhabitant(m);
 						if((M2!=null)&&(M2.isSavable()))
-						   str.append(M2.Name()+"="+RoomData.getMOBCode(R,M2));
+							str.append(M2.Name()+"="+RoomData.getMOBCode(R,M2));
 					}
 					return str.toString();
 				}
@@ -382,6 +387,7 @@ public class GrinderItems
 							if(old.length()>0)
 								V.add(old);
 							for(int i=1;;i++)
+							{
 								if(httpReq.isUrlParameter("MAPAREAS"+(Integer.toString(i))))
 								{
 									old=httpReq.getUrlParameter("MAPAREAS"+(Integer.toString(i))).trim();
@@ -390,6 +396,7 @@ public class GrinderItems
 								}
 								else
 									break;
+							}
 						}
 						old = CMParms.toSemicolonListString(V);
 						CMLib.flags().setReadable(I,false);
@@ -502,10 +509,12 @@ public class GrinderItems
 						long content=CMath.s_long(httpReq.getUrlParameter("CONTENTTYPES"));
 						if(content>0)
 						for(int i=1;;i++)
+						{
 							if(httpReq.isUrlParameter("CONTENTTYPES"+(Integer.toString(i))))
 								content=content|CMath.s_int(httpReq.getUrlParameter("CONTENTTYPES"+(Integer.toString(i))));
 							else
 								break;
+						}
 						((Container)I).setContainTypes(content);
 					}
 					break;
@@ -653,6 +662,10 @@ public class GrinderItems
 					if(I instanceof Wand)
 						((Wand)I).setMaxUses(CMath.s_int(old));
 					break;
+				case OPENTICKS: // open ticks
+					if((I instanceof CloseableLockable)&&(old.length()>0))
+						((CloseableLockable)I).setOpenDelayTicks(CMath.s_int(old));
+					break;
 				case CATACAT: // catacat
 					if(itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-"))
 					{
@@ -711,7 +724,8 @@ public class GrinderItems
 				case ISPANEL:
 				case ISFUELCONSUMER:
 				case ISPOWERGENERATION:
-				case ISSHIPSHIELD:
+				case ISSHIPWARCOMP:
+				case ISCLOAK:
 					break;
 				case MANUFACTURER:
 					if(I instanceof Electronics)
@@ -729,25 +743,25 @@ public class GrinderItems
 					if(I instanceof Electronics)
 						((Electronics)I).activate(old.equalsIgnoreCase("on"));
 					break;
-				case SSHIELDNUMPORTS:
-					if(I instanceof ShipShieldGenerator)
-						((ShipShieldGenerator)I).setPermittedNumDirections(CMath.s_int(old));
+				case SWARNUMPORTS:
+					if(I instanceof ShipWarComponent)
+						((ShipWarComponent)I).setPermittedNumDirections(CMath.s_int(old));
 					break;
-				case SSHIELDPORTS:
-					if(I instanceof ShipShieldGenerator)
-						((ShipShieldGenerator)I).setPermittedDirections(CMParms.parseEnumList(TechComponent.ShipDir.class,old.toUpperCase(),',').toArray(new TechComponent.ShipDir[0]));
+				case SWARPORTS:
+					if(I instanceof ShipWarComponent)
+						((ShipWarComponent)I).setPermittedDirections(CMParms.parseEnumList(TechComponent.ShipDir.class,old.toUpperCase(),',').toArray(new TechComponent.ShipDir[0]));
 					break;
-				case SSHIELDMTYPES:
-					if(I instanceof ShipShieldGenerator)
+				case SWARMTYPES:
+					if(I instanceof ShipWarComponent)
 					{
 						final Set<Integer> msgTypes=new TreeSet<Integer>(); 
-						if(httpReq.isUrlParameter("SSHIELDMTYPES"))
+						if(httpReq.isUrlParameter("SWARMTYPES"))
 						{
-							msgTypes.add(Integer.valueOf(CMath.s_int(httpReq.getUrlParameter("SSHIELDMTYPES"))));
+							msgTypes.add(Integer.valueOf(CMath.s_int(httpReq.getUrlParameter("SWARMTYPES"))));
 							for(int i=1;;i++)
 							{
-								if(httpReq.isUrlParameter("SSHIELDMTYPES"+(Integer.toString(i))))
-									msgTypes.add(Integer.valueOf(CMath.s_int(httpReq.getUrlParameter("SSHIELDMTYPES"+(Integer.toString(i))))));
+								if(httpReq.isUrlParameter("SWARMTYPES"+(Integer.toString(i))))
+									msgTypes.add(Integer.valueOf(CMath.s_int(httpReq.getUrlParameter("SWARMTYPES"+(Integer.toString(i))))));
 								else
 									break;
 							}
@@ -756,7 +770,7 @@ public class GrinderItems
 						final Integer[] TYPES=msgTypes.toArray(new Integer[0]);
 						for(int i=0;i<types.length;i++)
 							types[i]=TYPES[i].intValue();
-						((ShipShieldGenerator)I).setShieldedMsgTypes(types);
+						((ShipWarComponent)I).setDamageMsgTypes(types);
 					}
 					break;
 				case ISCONSTTHRUST:
@@ -789,7 +803,7 @@ public class GrinderItems
 					break;
 				case RECHARGERATE:
 					if(I instanceof TechComponent)
-						((TechComponent)I).setRechargeRate(CMath.s_long(old));
+						((TechComponent)I).setRechargeRate((float)CMath.s_parseMathExpression(old));
 					break;
 				case PANELTYPE:
 					if(I instanceof ElecPanel)
@@ -811,10 +825,12 @@ public class GrinderItems
 						{
 							consumedFuel.add(Integer.valueOf(CMath.s_int(httpReq.getUrlParameter("CONSUMEDMATS"))));
 							for(int i=1;;i++)
+							{
 								if(httpReq.isUrlParameter("CONSUMEDMATS"+(Integer.toString(i))))
 									consumedFuel.add(Integer.valueOf(CMath.s_int(httpReq.getUrlParameter("CONSUMEDMATS"+(Integer.toString(i))))));
 								else
 									break;
+							}
 						}
 						final int[] mats=new int[consumedFuel.size()];
 						final Integer[] MATS=consumedFuel.toArray(new Integer[0]);
@@ -826,6 +842,8 @@ public class GrinderItems
 				case AREAXML:
 					if((I instanceof BoardableShip)&&(old.trim().length()>0))
 						((BoardableShip)I).setShipArea(CMLib.xml().restoreAngleBrackets(old));
+					break;
+				default:
 					break;
 				}
 			}
@@ -878,7 +896,6 @@ public class GrinderItems
 				{
 					if(R==null)
 					{
-
 					}
 					else
 					{
@@ -888,7 +905,10 @@ public class GrinderItems
 				}
 				else
 				{
-					M.addItem(I);
+					if((shopItemCode.equals(mobNum)||shopItemCode.equals("NEW")) && (shopItemCode.length()>0))
+						((ShopKeeper)M).getShop().addStoreInventory(I);
+					else
+						M.addItem(I);
 					M.recoverPhyStats();
 					if((mobNum==null)||(!mobNum.startsWith("CATALOG-")))
 						M.text();
@@ -904,7 +924,6 @@ public class GrinderItems
 				{
 					if(R==null)
 					{
-
 					}
 					else
 					{
@@ -916,17 +935,27 @@ public class GrinderItems
 							final Item I2=R.getItem(i);
 							if((I2.container()!=null)
 							&&(I2.container()==oldI))
+							{
 								if(I instanceof Container)
 									I2.setContainer((Container)I);
 								else
 									I2.setContainer(null);
+							}
 						}
 					}
 				}
 				else
 				{
-					M.delItem(oldI);
-					M.addItem(I);
+					if((shopItemCode.equals(mobNum)||shopItemCode.equals("NEW")) && (shopItemCode.length()>0))
+					{
+						((ShopKeeper)M).getShop().delAllStoreInventory(oldI);
+						((ShopKeeper)M).getShop().addStoreInventory(I);
+					}
+					else
+					{
+						M.delItem(oldI);
+						M.addItem(I);
+					}
 					M.recoverPhyStats();
 					if((mobNum==null)||(!mobNum.startsWith("CATALOG-")))
 						M.text();
@@ -937,10 +966,12 @@ public class GrinderItems
 						final Item I2=M.getItem(i);
 						if((I2.container()!=null)
 						&&(I2.container()==oldI))
+						{
 							if(I instanceof Container)
 								I2.setContainer((Container)I);
 							else
 								I2.setContainer(null);
+						}
 					}
 				}
 				oldI.setOwner(oldOwner); // necesssary for destroy this to work.

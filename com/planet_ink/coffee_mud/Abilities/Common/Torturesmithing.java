@@ -36,37 +36,70 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Torturesmithing extends CraftingSkill implements ItemCraftor
 {
-	@Override public String ID() { return "Torturesmithing"; }
-	private final static String localizedName = CMLib.lang().L("Torturesmithing");
-	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =I(new String[] {"TORTURESMITH","TORTURESMITHING"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public String supportedResourceString(){return "METAL|MITHRIL|CLOTH";}
 	@Override
-	public String parametersFormat(){ return
+	public String ID()
+	{
+		return "Torturesmithing";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Torturesmithing");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "TORTURESMITH", "TORTURESMITHING" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public String supportedResourceString()
+	{
+		return "METAL|MITHRIL|CLOTH";
+	}
+
+	@Override
+	public String parametersFormat()
+	{
+		return
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\t"
-	   +"ITEM_BASE_VALUE\tITEM_CLASS_ID\t"
-	   +"LID_LOCK||CONTAINER_TYPE||RIDE_BASIS||WEAPON_CLASS||CODED_WEAR_LOCATION\t"
-	   +"CONTAINER_CAPACITY||LIQUID_CAPACITY\t"
-	   +"BASE_ARMOR_AMOUNT\tWOOD_METAL_CLOTH\tCODED_SPELL_LIST";}
+		+"ITEM_BASE_VALUE\tITEM_CLASS_ID\t"
+		+"LID_LOCK||CONTAINER_TYPE||RIDE_BASIS||WEAPON_CLASS||CODED_WEAR_LOCATION\t"
+		+"CONTAINER_CAPACITY||LIQUID_CAPACITY\t"
+		+"BASE_ARMOR_AMOUNT\tWOOD_METAL_CLOTH\tCODED_SPELL_LIST";
+	}
 
 	//protected static final int RCP_FINALNAME=0;
 	//protected static final int RCP_LEVEL=1;
 	//protected static final int RCP_TICKS=2;
-	protected static final int RCP_WOOD=3;
-	protected static final int RCP_VALUE=4;
-	protected static final int RCP_CLASSTYPE=5;
-	protected static final int RCP_MISCTYPE=6;
-	protected static final int RCP_CAPACITY=7;
-	protected static final int RCP_ARMORDMG=8;
-	protected static final int RCP_MATERIAL=9;
-	protected static final int RCP_SPELL=10;
+	protected static final int	RCP_WOOD		= 3;
+	protected static final int	RCP_VALUE		= 4;
+	protected static final int	RCP_CLASSTYPE	= 5;
+	protected static final int	RCP_MISCTYPE	= 6;
+	protected static final int	RCP_CAPACITY	= 7;
+	protected static final int	RCP_ARMORDMG	= 8;
+	protected static final int	RCP_MATERIAL	= 9;
+	protected static final int	RCP_SPELL		= 10;
 
-	@Override public String parametersFile(){ return "torturesmith.txt";}
-	@Override protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
+	@Override
+	public String parametersFile()
+	{
+		return "torturesmith.txt";
+	}
+
+	@Override
+	protected List<List<String>> loadRecipes()
+	{
+		return super.loadRecipes(parametersFile());
+	}
 
 	@Override
 	public void unInvoke()
@@ -104,7 +137,11 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 		super.unInvoke();
 	}
 
-	@Override public boolean supportsDeconstruction() { return true; }
+	@Override
+	public boolean supportsDeconstruction()
+	{
+		return true;
+	}
 
 	@Override
 	public boolean mayICraft(final Item I)
@@ -132,7 +169,10 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 		return (isANativeItem(I.Name()));
 	}
 
-	public boolean supportsMending(Physical I){ return canMend(null,I,true);}
+	public boolean supportsMending(Physical I)
+	{
+		return canMend(null, I, true);
+	}
 
 	@Override
 	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
@@ -168,10 +208,15 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 		if(super.checkStop(mob, commands))
 			return true;
 
+		if(super.checkInfo(mob, commands))
+			return true;
+		
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,L("Make what? Enter \"@x1 list\" for a list, \"@x2 learn <item>\" to gain recipes, or \"@x3 stop\" to cancel.",triggerStrings()[0].toLowerCase(),triggerStrings()[0].toLowerCase(),triggerStrings()[0].toLowerCase()));
+			commonTell(mob,L("Make what? Enter \"@x1 list\" for a list, \"@x2 info <item>\", \"@x2 learn <item>\" to gain recipes,"
+							+ " or \"@x3 stop\" to cancel.", triggerStrings()[0].toLowerCase(), triggerStrings()[0].toLowerCase(),
+							triggerStrings()[0].toLowerCase()));
 			return false;
 		}
 		final List<List<String>> recipes=addRecipes(mob,loadRecipes());
@@ -246,7 +291,8 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 		}
 
 		final String woodRequiredStr = foundRecipe.get(RCP_WOOD);
-		final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName),autoGenerate);
+		final int[] compData = new int[CF_TOTAL];
+		final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName),autoGenerate,compData);
 		if(componentsFoundList==null)
 			return false;
 		int woodRequired=CMath.s_int(woodRequiredStr);
@@ -277,11 +323,11 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 		}
 		bundling=misctype.equalsIgnoreCase("BUNDLE");
 		final int[][] data=fetchFoundResourceData(mob,
-											woodRequired,"wood or cloth",pm,
-											0,null,null,
-											bundling,
-											autoGenerate,
-											null);
+												woodRequired,"wood or cloth",pm,
+												0,null,null,
+												bundling,
+												autoGenerate,
+												null);
 		if(data==null)
 			return false;
 		woodRequired=data[0][FOUND_AMT];
@@ -297,7 +343,8 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 			return false;
 		}
 		duration=getDuration(CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),4);
-		String itemName=replacePercent(foundRecipe.get(RCP_FINALNAME),RawMaterial.CODES.NAME(data[0][FOUND_CODE])).toLowerCase();
+		buildingI.setMaterial(super.getBuildingMaterial(woodRequired, data, compData));
+		String itemName=replacePercent(foundRecipe.get(RCP_FINALNAME),RawMaterial.CODES.NAME(buildingI.material())).toLowerCase();
 		if(bundling)
 			itemName="a "+woodRequired+"# "+itemName;
 		else
@@ -311,12 +358,11 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 		buildingI.setDescription(itemName+". ");
 		buildingI.basePhyStats().setWeight(woodRequired);
 		buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE))+(woodRequired*(RawMaterial.CODES.VALUE(data[0][FOUND_CODE]))));
-		buildingI.setMaterial(data[0][FOUND_CODE]);
 		buildingI.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL)));
 		buildingI.setSecretIdentity(getBrand(mob));
 		final int capacity=CMath.s_int(foundRecipe.get(RCP_CAPACITY));
 		final int armordmg=CMath.s_int(foundRecipe.get(RCP_ARMORDMG));
-		final int hardness=RawMaterial.CODES.HARDNESS(data[0][FOUND_CODE])-3;
+		final int hardness=RawMaterial.CODES.HARDNESS(buildingI.material())-3;
 		final String spell=(foundRecipe.size()>RCP_SPELL)?foundRecipe.get(RCP_SPELL).trim():"";
 		addSpells(buildingI,spell);
 		if(buildingI instanceof Container)
@@ -346,7 +392,7 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 		{
 			((Armor)buildingI).basePhyStats().setArmor(0);
 			if(armordmg!=0)
-				((Armor)buildingI).basePhyStats().setArmor(armordmg+(abilityCode()-1));
+				((Armor)buildingI).basePhyStats().setArmor(armordmg+(baseYield()+abilityCode()-1));
 			setWearLocation(buildingI,misctype,hardness);
 		}
 		if(buildingI instanceof Drink)

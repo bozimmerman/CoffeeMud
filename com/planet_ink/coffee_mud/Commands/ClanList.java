@@ -36,10 +36,18 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class ClanList extends StdCommand
 {
-	public ClanList(){}
+	public ClanList()
+	{
+	}
 
-	private final String[] access=I(new String[]{"CLANLIST","CLANS"});
-	@Override public String[] getAccessWords(){return access;}
+	private final String[]	access	= I(new String[] { "CLANLIST", "CLANS" });
+
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
+
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
@@ -63,9 +71,13 @@ public class ClanList extends StdCommand
 
 			final StringBuffer trophySet = new StringBuffer("");
 			if(trophySystemActive)
+			{
 				for(final Trophy t : Trophy.values())
+				{
 					if(CMath.bset(thisClan.getTrophies(),t.flagNum()))
 						trophySet.append(t.codeString.charAt(0));
+				}
+			}
 
 			msg.append(" ");
 			msg.append("^<CLAN^>"+CMStrings.padRight(CMStrings.removeColors(thisClan.clanID()),30)+"^</CLAN^>  ");
@@ -98,7 +110,10 @@ public class ClanList extends StdCommand
 		return false;
 	}
 
-	@Override public boolean canBeOrdered(){return true;}
-
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 
 }

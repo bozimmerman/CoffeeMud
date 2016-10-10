@@ -46,7 +46,7 @@ public class Thief_CarefulStep extends ThiefSkill
 	private static final String[] triggerStrings =I(new String[] {"CARESTEP","CAREFULSTEP"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int usageType(){return USAGE_MOVEMENT;}
-	@Override public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_ACROBATIC; }
+	@Override public int classificationCode() {   return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_ACROBATIC; }
 
 	@Override
 	public boolean preInvoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel, int secondsElapsed, double actionsRemaining)
@@ -56,7 +56,7 @@ public class Thief_CarefulStep extends ThiefSkill
 			String dir=CMParms.combine(commands,0);
 			if(commands.size()>0)
 				dir=commands.get(commands.size()-1);
-			final int dirCode=Directions.getGoodDirectionCode(dir);
+			final int dirCode=CMLib.directions().getGoodDirectionCode(dir);
 			if(dirCode<0)
 			{
 				mob.tell(L("Step where?"));
@@ -73,7 +73,7 @@ public class Thief_CarefulStep extends ThiefSkill
 				mob.tell(L("Step where?"));
 				return false;
 			}
-			final CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MSG_OK_VISUAL:CMMsg.MSG_DELICATE_HANDS_ACT,L("<S-NAME> start(s) walking carefully @x1.",Directions.getDirectionName(dirCode)));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MSG_OK_VISUAL:CMMsg.MSG_DELICATE_HANDS_ACT,L("<S-NAME> start(s) walking carefully @x1.",CMLib.directions().getDirectionName(dirCode)));
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 			else
@@ -87,7 +87,7 @@ public class Thief_CarefulStep extends ThiefSkill
 		String dir=CMParms.combine(commands,0);
 		if(commands.size()>0)
 			dir=commands.get(commands.size()-1);
-		final int dirCode=Directions.getGoodDirectionCode(dir);
+		final int dirCode=CMLib.directions().getGoodDirectionCode(dir);
 		if(!preInvoke(mob,commands,givenTarget,auto,asLevel,0,0.0))
 			return false;
 
@@ -98,7 +98,7 @@ public class Thief_CarefulStep extends ThiefSkill
 			return false;
 
 		boolean success=false;
-		final CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MSG_OK_VISUAL:CMMsg.MSG_DELICATE_HANDS_ACT,L("<S-NAME> walk(s) carefully @x1.",Directions.getDirectionName(dirCode)));
+		final CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MSG_OK_VISUAL:CMMsg.MSG_DELICATE_HANDS_ACT,L("<S-NAME> walk(s) carefully @x1.",CMLib.directions().getDirectionName(dirCode)));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

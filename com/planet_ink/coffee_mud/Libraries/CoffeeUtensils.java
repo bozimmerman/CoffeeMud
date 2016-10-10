@@ -41,8 +41,8 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 {
 	@Override public String ID(){return "CoffeeUtensils";}
 
-	private TriadVector<Integer,Integer,MaskingLibrary.CompiledZapperMask> lootPolicy = null;
-	private final TriadVector<Integer,Integer,MaskingLibrary.CompiledZapperMask> noLootPolicy = new TriadVector<Integer,Integer,MaskingLibrary.CompiledZapperMask>();
+	private TriadVector<Integer,Integer,MaskingLibrary.CompiledZMask> lootPolicy = null;
+	private final TriadVector<Integer,Integer,MaskingLibrary.CompiledZMask> noLootPolicy = new TriadVector<Integer,Integer,MaskingLibrary.CompiledZMask>();
 	private int lastLootPolicyHash=0;
 
 	public static final int LOOTFLAG_RUIN=1;
@@ -788,7 +788,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		return true;
 	}
 
-	protected TriadVector<Integer,Integer,MaskingLibrary.CompiledZapperMask> parseLootPolicyFor(MOB mob)
+	protected TriadVector<Integer,Integer,MaskingLibrary.CompiledZMask> parseLootPolicyFor(MOB mob)
 	{
 		if((mob==null)||(!mob.isMonster()))
 			return noLootPolicy;
@@ -796,13 +796,13 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		if((lootPolicy==null)||(lastLootPolicyHash!=lootPolicyStr.hashCode()))
 		{
 			final List<String> lootPolicies=(!mob.isMonster())?new Vector<String>():CMParms.parseCommas(CMProps.getVar(CMProps.Str.ITEMLOOTPOLICY),true);
-			final TriadVector<Integer,Integer,MaskingLibrary.CompiledZapperMask> policies=new TriadVector<Integer,Integer,MaskingLibrary.CompiledZapperMask>();
+			final TriadVector<Integer,Integer,MaskingLibrary.CompiledZMask> policies=new TriadVector<Integer,Integer,MaskingLibrary.CompiledZMask>();
 			for(int p=0;p<lootPolicies.size();p++)
 			{
 				String s=lootPolicies.get(p).toUpperCase().trim();
 				if(s.length()==0)
 					continue;
-				MaskingLibrary.CompiledZapperMask compiledMask=null;
+				MaskingLibrary.CompiledZMask compiledMask=null;
 				final int maskDex=s.indexOf("MASK=");
 				if(maskDex>=0)
 				{
@@ -906,6 +906,67 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	}
 
 	@Override
+	public Item ruinItem(Item I)
+	{
+		if(I==null)
+			return null;
+		if((CMath.bset(I.phyStats().disposition(),PhyStats.IS_UNSAVABLE))
+		||(CMath.bset(I.phyStats().sensesMask(), PhyStats.SENSE_ITEMNORUIN))
+		||(I instanceof Coins))
+			return I;
+		if(I.ID().equals("GenRuinedItem"))
+			return I;
+		final Item I2=CMClass.getItem("GenRuinedItem");
+		I2.basePhyStats().setWeight(I.basePhyStats().weight());
+		I2.setName(I.Name());
+		I2.setDisplayText(I.displayText());
+		I2.setDescription(I2.description());
+		I2.recoverPhyStats();
+		I2.setRawLogicalAnd(I.rawLogicalAnd());
+		I2.setRawProperLocationBitmap(I.rawProperLocationBitmap());
+		I2.setMaterial(I.material());
+		String ruinDescAdder=null;
+		switch(I2.material()&RawMaterial.MATERIAL_MASK)
+		{
+			case RawMaterial.MATERIAL_LEATHER:
+			case RawMaterial.MATERIAL_CLOTH:
+			case RawMaterial.MATERIAL_VEGETATION:
+			case RawMaterial.MATERIAL_FLESH:
+			case RawMaterial.MATERIAL_PAPER:
+				ruinDescAdder=L("@x1  is torn and ruined beyond repair.",CMStrings.capitalizeFirstLetter(I2.name()));
+				break;
+			case RawMaterial.MATERIAL_METAL:
+			case RawMaterial.MATERIAL_MITHRIL:
+			case RawMaterial.MATERIAL_WOODEN:
+				ruinDescAdder=L("@x1 is battered and ruined beyond repair.",CMStrings.capitalizeFirstLetter(I2.name()));
+				break;
+			case RawMaterial.MATERIAL_GLASS:
+				ruinDescAdder=L("@x1 is shattered and ruined beyond repair.",CMStrings.capitalizeFirstLetter(I2.name()));
+				break;
+			case RawMaterial.MATERIAL_ROCK:
+			case RawMaterial.MATERIAL_PRECIOUS:
+			case RawMaterial.MATERIAL_SYNTHETIC:
+				ruinDescAdder=L("@x1 is cracked and ruined beyond repair.",CMStrings.capitalizeFirstLetter(I2.name()));
+				break;
+			case RawMaterial.MATERIAL_UNKNOWN:
+			case RawMaterial.MATERIAL_ENERGY:
+			case RawMaterial.MATERIAL_GAS:
+			case RawMaterial.MATERIAL_LIQUID:
+			default:
+				ruinDescAdder=L("@x1 is ruined beyond repair.",CMStrings.capitalizeFirstLetter(I2.name()));
+				break;
+		}
+		I2.setDescription(CMStrings.endWithAPeriod(I2.description())+" "+ruinDescAdder);
+		final String oldName=I2.Name();
+		I2.setName(CMLib.english().insertUnColoredAdjective(I2.Name(),L("ruined")));
+		final int x=I2.displayText().toUpperCase().indexOf(oldName.toUpperCase());
+		I2.setBaseValue(0);
+		if(x>=0)
+			I2.setDisplayText(I2.displayText().substring(0,x)+I2.Name()+I2.displayText().substring(x+oldName.length()));
+		return I2;
+	}
+
+	@Override
 	public Item isRuinedLoot(MOB mob, Item I)
 	{
 		if(I==null)
@@ -916,7 +977,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			return I;
 		if(I.ID().equals("GenRuinedItem"))
 			return I;
-		final TriadVector<Integer,Integer,MaskingLibrary.CompiledZapperMask> policies=parseLootPolicyFor(mob);
+		final TriadVector<Integer,Integer,MaskingLibrary.CompiledZMask> policies=parseLootPolicyFor(mob);
 		for(int d=0;d<policies.size();d++)
 		{
 			if((policies.get(d).third.entries().length>0)
@@ -932,54 +993,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				continue;
 			if(CMath.bset(flags,LOOTFLAG_LOSS))
 				return null;
-			final Item I2=CMClass.getItem("GenRuinedItem");
-			I2.basePhyStats().setWeight(I.basePhyStats().weight());
-			I2.setName(I.Name());
-			I2.setDisplayText(I.displayText());
-			I2.setDescription(I2.description());
-			I2.recoverPhyStats();
-			I2.setRawLogicalAnd(I.rawLogicalAnd());
-			I2.setRawProperLocationBitmap(I.rawProperLocationBitmap());
-			I2.setMaterial(I.material());
-			String ruinDescAdder=null;
-			switch(I2.material()&RawMaterial.MATERIAL_MASK)
-			{
-				case RawMaterial.MATERIAL_LEATHER:
-				case RawMaterial.MATERIAL_CLOTH:
-				case RawMaterial.MATERIAL_VEGETATION:
-				case RawMaterial.MATERIAL_FLESH:
-				case RawMaterial.MATERIAL_PAPER:
-					ruinDescAdder=L("@x1  is torn and ruined beyond repair.",CMStrings.capitalizeFirstLetter(I2.name()));
-					break;
-				case RawMaterial.MATERIAL_METAL:
-				case RawMaterial.MATERIAL_MITHRIL:
-				case RawMaterial.MATERIAL_WOODEN:
-					ruinDescAdder=L("@x1 is battered and ruined beyond repair.",CMStrings.capitalizeFirstLetter(I2.name()));
-					break;
-				case RawMaterial.MATERIAL_GLASS:
-					ruinDescAdder=L("@x1 is shattered and ruined beyond repair.",CMStrings.capitalizeFirstLetter(I2.name()));
-					break;
-				case RawMaterial.MATERIAL_ROCK:
-				case RawMaterial.MATERIAL_PRECIOUS:
-				case RawMaterial.MATERIAL_SYNTHETIC:
-					ruinDescAdder=L("@x1 is cracked and ruined beyond repair.",CMStrings.capitalizeFirstLetter(I2.name()));
-					break;
-				case RawMaterial.MATERIAL_UNKNOWN:
-				case RawMaterial.MATERIAL_ENERGY:
-				case RawMaterial.MATERIAL_GAS:
-				case RawMaterial.MATERIAL_LIQUID:
-				default:
-					ruinDescAdder=L("@x1 is ruined beyond repair.",CMStrings.capitalizeFirstLetter(I2.name()));
-					break;
-			}
-			I2.setDescription(CMStrings.endWithAPeriod(I2.description())+" "+ruinDescAdder);
-			final String oldName=I2.Name();
-			I2.setName(CMLib.english().insertUnColoredAdjective(I2.Name(),L("ruined")));
-			final int x=I2.displayText().toUpperCase().indexOf(oldName.toUpperCase());
-			I2.setBaseValue(0);
-			if(x>=0)
-				I2.setDisplayText(I2.displayText().substring(0,x)+I2.Name()+I2.displayText().substring(x+oldName.length()));
-			return I2;
+			return ruinItem(I);
 		}
 		return I;
 	}
@@ -1105,10 +1119,16 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			rejuvedMOB.phyStats().setDisposition(CMath.unsetb(rejuvedMOB.basePhyStats().disposition(),PhyStats.IS_SITTING|PhyStats.IS_CUSTOM));
 			rejuvedMOB.location().show(rejuvedMOB,null,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> get(s) up!"));
 			corpseRoom.recoverRoomStats();
-			final Vector<String> whatsToDo=CMParms.parse(CMProps.getVar(CMProps.Str.PLAYERDEATH));
+			final List<String> whatsToDo=CMParms.parseCommas(CMProps.getVar(CMProps.Str.PLAYERDEATH),true);
+			int rejuv=rejuvedMOB.phyStats().rejuv();
+			if((rejuv==0)||(rejuv==Integer.MAX_VALUE))
+				rejuv=rejuvedMOB.phyStats().level();
+			if(((!rejuvedMOB.isMonster())&&(rejuvedMOB.soulMate()==null)))
+				rejuv=1;
+			double[] vars=new double[] { rejuvedMOB.phyStats().level(), rejuvedMOB.phyStats().level(), rejuv };
 			for(int w=0;w<whatsToDo.size();w++)
 			{
-				final String whatToDo=whatsToDo.elementAt(w);
+				final String whatToDo=whatsToDo.get(w);
 				if(whatToDo.startsWith("UNL"))
 					CMLib.leveler().level(rejuvedMOB);
 				else
@@ -1131,6 +1151,14 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				else
 				if(whatToDo.length()<3)
 					continue;
+				else
+				if(CMath.s_parseIntExpression(whatToDo,vars)>0)
+				{
+					int xp=CMath.s_parseIntExpression(whatToDo,vars);
+					final int expLost=(xp+(2*XPLevel))/2;
+					rejuvedMOB.tell(L("^*You regain @x1 experience points.^?^.",""+expLost));
+					CMLib.leveler().postExperience(rejuvedMOB,null,null,expLost,false);
+				}
 				else
 				if(XPLevel>=0)
 				{
@@ -1655,6 +1683,166 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				buf.append(prompt.charAt(c++));
 		}
 		return buf.toString();
+	}
+	
+	protected String raceMixRuleCheck(String rule, String urace1, String urace2)
+	{
+		if(rule.toUpperCase().startsWith(urace1))
+		{
+			rule=rule.substring(urace1.length()).trim();
+			if(rule.startsWith("+"))
+			{
+				rule=rule.substring(1).trim();
+				if(rule.toUpperCase().startsWith(urace2))
+				{
+					rule=rule.substring(urace2.length()).trim();
+					if(rule.startsWith("="))
+					{
+						return rule.substring(1).trim();
+					}
+				}
+			}
+		}
+		return "";
+	}
+	
+	@Override
+	public Race getMixedRace(String race1, String race2)
+	{
+		if(race1.indexOf(race2)>=0)
+			return CMClass.getRace(race1);
+		else
+		if(race2.indexOf(race1)>=0)
+			return CMClass.getRace(race2);
+		
+		String raceMixRules = CMProps.getVar(CMProps.Str.RACEMIXING);
+		if(raceMixRules.trim().length()>0)
+		{
+			List<String> rules=CMParms.parseCommas(raceMixRules, true);
+			final String urace1=race1.toUpperCase();
+			final String urace2=race2.toUpperCase();
+			for(String rule : rules)
+			{
+				rule=rule.trim();
+				if(rule.equalsIgnoreCase("FATHER"))
+				{
+					Race R=CMClass.getRace(race2);
+					if(R==null)
+						R=CMClass.findRace(race2);
+					if(R!=null)
+						return R;
+				}
+				else
+				if(rule.equalsIgnoreCase("MOTHER"))
+				{
+					Race R=CMClass.getRace(race1);
+					if(R==null)
+						R=CMClass.findRace(race1);
+					if(R!=null)
+						return R;
+				}
+				else
+				{
+					String chk=raceMixRuleCheck(rule,urace1,urace2);
+					if((chk==null)||(chk.length()==0))
+						chk=raceMixRuleCheck(rule,urace2,urace1);
+					if((chk!=null)&&(chk.length()>0))
+					{
+						String raceID=CMStrings.replaceAll(chk, " ", "_");
+						Race R=CMClass.getRace(raceID);
+						if(R==null)
+							R=CMClass.findRace(raceID);
+						if(R!=null)
+							return R;
+						else
+						{
+							final Race FIRSTR=CMClass.getRace(race1);
+							final Race SECONDR=CMClass.getRace(race2);
+							R=FIRSTR.mixRace(SECONDR,raceID,chk);
+							if(R.isGeneric() && (!R.ID().equals(race1))&& (!R.ID().equals(race2)))
+							{
+								CMClass.addRace(R);
+								CMLib.database().DBCreateRace(R.ID(),R.racialParms());
+							}
+							return R;
+						}
+					}
+				}
+			}
+		}
+
+		Race R=null;
+		if(race1.equalsIgnoreCase("Human")||race2.equalsIgnoreCase("Human"))
+		{
+			String halfRace=(race1.equalsIgnoreCase("Human")?race2:race1);
+			R=CMClass.getRace(halfRace);
+			if((R!=null)&&(!R.ID().toUpperCase().startsWith("HALF")))
+			{
+				halfRace="Half"+CMStrings.capitalizeAndLower(R.ID().toLowerCase());
+				final Race testR=CMClass.getRace(halfRace);
+				if(testR!=null)
+					R=testR;
+				else
+				{
+					R=R.mixRace(CMClass.getRace("Human"),halfRace,"Half "+CMStrings.capitalizeAndLower(R.name()));
+					if(R.isGeneric() && (!R.ID().equals(race1))&& (!R.ID().equals(race2)))
+					{
+						CMClass.addRace(R);
+						CMLib.database().DBCreateRace(R.ID(),R.racialParms());
+					}
+				}
+			}
+		}
+		else
+		if(race1.equalsIgnoreCase("Halfling")||race2.equalsIgnoreCase("Halfling"))
+		{
+			String halfRace=(race1.equalsIgnoreCase("Halfling")?race2:race1);
+			R=CMClass.getRace(halfRace);
+			if((R!=null)&&(!R.ID().endsWith("ling")))
+			{
+				halfRace=R.ID()+"ling";
+				final Race testR=CMClass.getRace(halfRace);
+				if(testR!=null)
+					R=testR;
+				else
+				{
+					R=R.mixRace(CMClass.getRace("Halfling"),halfRace,CMStrings.capitalizeAndLower(R.name())+"ling");
+					if(R.isGeneric() && (!R.ID().equals(race1))&& (!R.ID().equals(race2)))
+					{
+						CMClass.addRace(R);
+						CMLib.database().DBCreateRace(R.ID(),R.racialParms());
+					}
+				}
+			}
+		}
+		else
+		{
+			String first=null;
+			if(race1.length()==race2.length())
+				first=(race1.compareToIgnoreCase(race2)<0)?race1:race2;
+			else
+			if(race1.length()>race2.length())
+				first=race1;
+			else
+				first=race2;
+			final String second=(first.equals(race1)?race2:race1);
+			final String halfRace=(race1.compareToIgnoreCase(race2)<0)?race1+race2:race2+race1;
+			final Race testR=CMClass.getRace(halfRace);
+			final Race FIRSTR=CMClass.getRace(first);
+			final Race SECONDR=CMClass.getRace(second);
+			if(testR!=null)
+				R=testR;
+			else
+			{
+				R=FIRSTR.mixRace(SECONDR,halfRace,FIRSTR.name()+"-"+SECONDR.name());
+				if(R.isGeneric() && (!R.ID().equals(race1))&& (!R.ID().equals(race2)))
+				{
+					CMClass.addRace(R);
+					CMLib.database().DBCreateRace(R.ID(),R.racialParms());
+				}
+			}
+		}
+		return R;
 	}
 }
 

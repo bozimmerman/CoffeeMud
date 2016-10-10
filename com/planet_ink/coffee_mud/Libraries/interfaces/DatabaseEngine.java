@@ -461,6 +461,16 @@ public interface DatabaseEngine extends CMLibrary
 
 	/**
 	 * Table category: DBMAP
+	 * Removes the given area record from the database.
+	 * Also removes all the proper rooms from the DB, 
+	 * along with exits, items, and characters in those 
+	 * rooms.
+	 * @param A the area to destroy.
+	 */
+	public void DBDeleteAreaAndRooms(Area A);
+
+	/**
+	 * Table category: DBMAP
 	 * Updates the area record in the database with the
 	 * given areaID with the data from the given area
 	 * object.  The areaID and the name of the area can
@@ -480,31 +490,39 @@ public interface DatabaseEngine extends CMLibrary
 
 	/**
 	 * Table category: DBPLAYERS
-	 * 
-	 * @param account
+	 * Inserts a new row into the account record in the
+	 * database.  Only works the first time for a given
+	 * account name
+	 * @param account the account to insert
 	 */
 	public void DBCreateAccount(PlayerAccount account);
 
 	/**
 	 * Table category: DBPLAYERS
-	 * 
-	 * @param account
+	 * Removes only the given account from the database.
+	 * Does not delete players or any player data.
+	 * @param account the account to delete
 	 */
 	public void DBDeleteAccount(PlayerAccount account);
 
 	/**
 	 * Table category: DBPLAYERS
-	 * 
-	 * @param Login
-	 * @return
+	 * Loads an account with the given name from the 
+	 * database, populates a playeraccount object,
+	 * and returns it. Does not load players, only
+	 * the account record.
+	 * @param Login the name of the account to load
+	 * @return the player account object
 	 */
 	public PlayerAccount DBReadAccount(String Login);
 
 	/**
 	 * Table category: DBPLAYERS
-	 * 
-	 * @param mask
-	 * @return
+	 * Populates and returns a list of player account
+	 * objects that match the given lowercase substring.
+	 * Does this by doing a full scan. :/
+	 * @param mask lowercase substring to search for or null
+	 * @return the list of playeraccount objects
 	 */
 	public List<PlayerAccount> DBListAccounts(String mask);
 
@@ -614,540 +632,851 @@ public interface DatabaseEngine extends CMLibrary
 
 	/**
 	 * Table category: DBPLAYERS
-	 * 
-	 * @param name
-	 * @return
+	 * Reads and populates a player MOB object
+	 * from the database. Does not include 
+	 * followers, but does items and abilities.
+	 * @param name the name of the player
+	 * @return the player mob object, or null
 	 */
 	public MOB DBReadPlayer(String name);
 
 	/**
 	 * Table category: DBPLAYERS
-	 * 
-	 * @param oldName
-	 * @param newName
+	 * Renames all player records belonging to the old
+	 * name to the new name.  Does nothing to existing
+	 * cached objects, and the new name better not already
+	 * exist!
+	 * @param oldName the previous existing name in the db
+	 * @param newName the new name to change them to
 	 */
 	public void DBPlayerNameChange(String oldName, String newName);
 
 	/**
 	 * Table category: DBPLAYERS
-	 * 
-	 * @param mob
+	 * Updates the email address of the given player in the 
+	 * database.  Does not update the account system.
+	 * @param mob the mob containing the email addy to change
 	 */
 	public void DBUpdateEmail(MOB mob);
 
 	/**
 	 * Table category: DBPLAYERS
-	 * 
-	 * @param name
-	 * @param password
+	 * Updates the password of the given player in the 
+	 * database.  Does not update the account system.
+	 * @param name the mob name containing the pw to change
+	 * @param password the new password string
 	 */
 	public void DBUpdatePassword(String name, String password);
 
 	/**
 	 * Table category: DBPLAYERS
-	 * 
-	 * @param name
-	 * @return
+	 * Returns the email address and autoforward flag for the
+	 * player with the given name.  Does not check accounts.
+	 * Does, however, check the cache, so its not necessarily
+	 * a db check.
+	 * @param name the name of the player to get info for
+	 * @return the email address and autoforward flag
 	 */
-	public String[] DBFetchEmailData(String name);
+	public Pair<String, Boolean> DBFetchEmailData(String name);
 
 	/**
 	 * Table category: DBPLAYERS
-	 * 
-	 * @param email
-	 * @return
+	 * Returns the name of the player with the given email
+	 * address.
+	 * @param email the email address to look for
+	 * @return the name of the player, or null if not found
 	 */
 	public String DBPlayerEmailSearch(String email);
 
 	/**
 	 * Table category: DBPLAYERS
-	 * 
-	 * @return
+	 * Returns the list of all characters as thinplayer
+	 * objects.  This is the whole bloody list.
+	 * @see PlayerLibrary.ThinPlayer
+	 * @return the list of all players
 	 */
 	public List<PlayerLibrary.ThinPlayer> getExtendedUserList();
 
 	/**
 	 * Table category: DBPLAYERS
-	 * 
-	 * @param name
-	 * @return
+	 * Returns a ThinPlayer object with information about the 
+	 * character with the given name.
+	 * @see PlayerLibrary.ThinPlayer
+	 * @param name the name of the character to return.
+	 * @return the thin player of this user, or null if not found
 	 */
 	public PlayerLibrary.ThinPlayer getThinUser(String name);
 
 	/**
 	 * Table category: DBPLAYERS
-	 * 
-	 * @return
+	 * Returns a list of all the characters in the database.
+	 * Each and every one.
+	 * @return the list of all character names
 	 */
 	public List<String> getUserList();
 
 	/**
 	 * Table category: DBPLAYERS
-	 * 
-	 * @param mob
-	 * @return
+	 * Queries and creates mob objects for all the followers of
+	 * the player with the given name and returns the list.
+	 * It does not bring them to life, add to to any mob,
+	 * or start them ticking.  It just makes and returns the
+	 * mob objects.
+	 * @see DatabaseEngine#DBReadFollowers(MOB, boolean)
+	 * @param mobName the name of the mob to return
+	 * @return the list of follower mob objects
 	 */
-	public List<MOB> DBScanFollowers(MOB mob);
+	public List<MOB> DBScanFollowers(String mobName);
 
 	/**
 	 * Table category: DBPLAYERS
-	 * 
-	 * @param mob
-	 * @param bringToLife
+	 * Loads the followers of the given mob and optionally
+	 * brings them to life. This will query and create the
+	 * follower mob objects, add them to the given mob
+	 * at the very least.
+	 * @see DatabaseEngine#DBScanFollowers(String)
+	 * @param mob the mob whose players to load
+	 * @param bringToLife true to bring them to life, false not
 	 */
 	public void DBReadFollowers(MOB mob, boolean bringToLife);
 
 	/**
 	 * Table category: DBPLAYERS
-	 * 
-	 * @param mob
-	 * @param deleteAssets
+	 * Removes the character and clan affiliation records
+	 * from the database and nothing else.  Not abilities, or
+	 * items, or followers, or anything else... there are
+	 * other methods for that.  This just does in the char
+	 * record and clan affiliation.
+	 * @param mobName the mob to delete
 	 */
-	public void DBDeletePlayer(MOB mob, boolean deleteAssets);
+	public void DBDeletePlayer(String mobName);
 
 	/**
 	 * Table category: DBPLAYERS
-	 * 
-	 * @param mob
+	 * Creates the character record for the given mob in
+	 * the CMCHAR table in the database, and updates
+	 * the account record if any.  Does not handle items,
+	 * followers, abilities, or anything else -- just the
+	 * base character record.
+	 * @param mob the character to create
 	 */
 	public void DBCreateCharacter(MOB mob);
 
 	/**
 	 * Table category: DBPLAYERS
-	 * 
-	 * @param Login
-	 * @return
+	 * Attempts to return an extremely thin player record by
+	 * searching the database for a character with the exact given
+	 * name.
+	 * @param Login the name to look for
+	 * @return null if not found, or a thinner player record
 	 */
 	public PlayerLibrary.ThinnerPlayer DBUserSearch(String Login);
 
 	/**
 	 * Table category: DBPLAYERS
-	 * 
-	 * @param mob
-	 * @param liegeID
-	 * @return
+	 * Attempts to return a list of all characters who are
+	 * listed as vassals of the character with the given exact
+	 * name.  Vassals are characters that are SERVEing another
+	 * player.
+	 * @param liegeID the character name who would be the liege
+	 * @return a list containing as many thin vassal records
 	 */
-	public List<PlayerLibrary.ThinPlayer> vassals(MOB mob, String liegeID);
+	public List<PlayerLibrary.ThinPlayer> vassals(String liegeID);
 
 	/**
 	 * Table category: DBPLAYERS
-	 * 
-	 * @param deityID
-	 * @return
+	 * Attempts to return a list of all characters who are
+	 * listed as worshippers of the deity with the given exact
+	 * name.  
+	 * @param deityID the exact name of the deity to look for
+	 * @return a list containing as many thin worshipper records
 	 */
 	public List<PlayerLibrary.ThinPlayer> worshippers(String deityID);
 
 	/**
-	 * Table category: DBPLAYERS
-	 * 
-	 * @param tattoo
-	 * @return
-	 */
-	public Tattoo parseTattoo(String tattoo);
-
-	/**
 	 * Table category: DBQUEST
-	 * 
-	 * @param quests
+	 * Updates the entire complete quest list by deleting all quests
+	 * from the database and re-inserting the given list of quests.
+	 * @see Quest
+	 * @see DatabaseEngine#DBUpdateQuest(Quest)
+	 * @see DatabaseEngine#DBReadQuests()
+	 * @param quests the list of quests to end up with
 	 */
 	public void DBUpdateQuests(List<Quest> quests);
 
 	/**
 	 * Table category: DBQUEST
-	 * 
-	 * @param Q
+	 * Updates the given quest in the database by deleting
+	 * the old one and re-inserting this one.
+	 * @see DatabaseEngine#DBUpdateQuests(List)
+	 * @see DatabaseEngine#DBReadQuests()
+	 * @see Quest
+	 * @param Q the quest to update
 	 */
 	public void DBUpdateQuest(Quest Q);
 
 	/**
 	 * Table category: DBQUEST
-	 * 
-	 * @param myHost
+	 * Reads all the Quest objects from the database and
+	 * returns them as a list.  The Quests are pre-parsed 
+	 * and ready to go.  
+	 * @see DatabaseEngine#DBUpdateQuests(List)
+	 * @see DatabaseEngine#DBUpdateQuest(Quest)
+	 * @see Quest
+	 * @return the list of quests
 	 */
-	public void DBReadQuests(MudHost myHost);
+	public List<Quest> DBReadQuests();
 
 	/**
 	 * Table category: DBCLANS
-	 * 
-	 * @param clan
-	 * @return
+	 * Given an exact clan name, this method returns the
+	 * entire membership as MemberRecords.
+	 * @see MemberRecord
+	 * @see DatabaseEngine#DBGetClanMember(String, String)
+	 * @see DatabaseEngine#DBUpdateClanMembership(String, String, int)
+	 * @see DatabaseEngine#DBUpdateClanKills(String, String, int, int)
+	 * @param clan the name of the clan to read members for
+	 * @return the list of all the clans members
 	 */
-	public List<MemberRecord> DBClanMembers(String clan);
+	public List<MemberRecord> DBReadClanMembers(String clan);
 
 	/**
 	 * Table category: DBCLANS
-	 * 
-	 * @param clan
-	 * @param name
-	 * @return
+	 * Reads information about a single clan member of the given exact
+	 * name from the clan of the given exact name.
+	 * @see MemberRecord
+	 * @see DatabaseEngine#DBReadClanMembers(String)
+	 * @see DatabaseEngine#DBUpdateClanMembership(String, String, int)
+	 * @see DatabaseEngine#DBUpdateClanKills(String, String, int, int)
+	 * @param clan the name of the clan to read a member for
+	 * @param name the name of the member to read in
+	 * @return the member record, or null
 	 */
 	public MemberRecord DBGetClanMember(String clan, String name);
 
 	/**
 	 * Table category: DBCLANS
-	 * 
-	 * @param clan
-	 * @param name
-	 * @param adjMobKills
-	 * @param adjPlayerKills
-	 */
-	public void DBUpdateClanKills(String clan, String name, int adjMobKills, int adjPlayerKills);
-
-	/**
-	 * Table category: DBCLANS
-	 * 
-	 * @param name
-	 * @param clan
-	 * @param role
+	 * Updates the Role of the clan member of the given exact name
+	 * for the given exact clan.
+	 * @see DatabaseEngine#DBReadClanMembers(String)
+	 * @see DatabaseEngine#DBGetClanMember(String, String)
+	 * @see DatabaseEngine#DBUpdateClanKills(String, String, int, int)
+	 * @param name the name of the member to update
+	 * @param clan the name of the clan to update a member for
+	 * @param role the new role constant
 	 */
 	public void DBUpdateClanMembership(String name, String clan, int role);
 
 	/**
 	 * Table category: DBCLANS
-	 * 
+	 * Updates the clan-kill counts for the clan member of the given 
+	 * exact name for the given exact clan
+	 * @param clan the name of the clan to update a member for
+	 * @param name the name of the member to update
+	 * @param adjMobKills the number of ADDITIONAL (plus or minus) clan mob kills
+	 * @param adjPlayerKills the number of ADDITIONAL (plus or minus) clan pvp kills
 	 */
-	public void DBReadAllClans();
+	public void DBUpdateClanKills(String clan, String name, int adjMobKills, int adjPlayerKills);
 
 	/**
 	 * Table category: DBCLANS
-	 * 
-	 * @param C
+	 * Reads the entire list of clans, not including their stored items.
+	 * The list of clans is then returned for adding to the official 
+	 * list, or whatever.
+	 * @see Clan
+	 * @see DatabaseEngine#DBReadClanItems(Map)
+	 * @see DatabaseEngine#DBUpdateClan(Clan)
+	 * @see DatabaseEngine#DBUpdateClanItems(Clan)
+	 * @see DatabaseEngine#DBDeleteClan(Clan)
+	 * @see DatabaseEngine#DBReadClanItems(Map)
+	 * @see DatabaseEngine#DBCreateClan(Clan)
+	 * @return the official list of clan objects
+	 */
+	public List<Clan> DBReadAllClans();
+
+	/**
+	 * Table category: DBCLANS
+	 * Reads the entire list of clan items, and uses the map
+	 * to get the clan object, and then adds the given item
+	 * to both the clan object and  to the World.
+	 * @see Clan
+	 * @see DatabaseEngine#DBReadAllClans()
+	 * @see DatabaseEngine#DBUpdateClan(Clan)
+	 * @see DatabaseEngine#DBUpdateClanItems(Clan)
+	 * @see DatabaseEngine#DBDeleteClan(Clan)
+	 * @see DatabaseEngine#DBReadClanItems(Map)
+	 * @see DatabaseEngine#DBCreateClan(Clan)
+	 * @param clans the map of clanids to clan objects
+	 */
+	public void DBReadClanItems(Map<String,Clan> clans);
+	
+	/**
+	 * Table category: DBCLANS
+	 * Updates the given clan objects record in the database.
+	 * Does not update the clan items, however.
+	 * @see Clan
+	 * @see DatabaseEngine#DBReadAllClans()
+	 * @see DatabaseEngine#DBReadClanItems(Map)
+	 * @see DatabaseEngine#DBUpdateClanItems(Clan)
+	 * @see DatabaseEngine#DBDeleteClan(Clan)
+	 * @see DatabaseEngine#DBReadClanItems(Map)
+	 * @see DatabaseEngine#DBCreateClan(Clan)
+	 * @param C the clan to update
 	 */
 	public void DBUpdateClan(Clan C);
 
 	/**
 	 * Table category: DBCLANS
-	 * 
-	 * @param C
+	 * Updates the external clan items in the database
+	 * for the given clan by deleting all the records
+	 * and re-inserting them.
+	 * @see Clan
+	 * @see DatabaseEngine#DBReadAllClans()
+	 * @see DatabaseEngine#DBReadClanItems(Map)
+	 * @see DatabaseEngine#DBUpdateClan(Clan)
+	 * @see DatabaseEngine#DBDeleteClan(Clan)
+	 * @see DatabaseEngine#DBReadClanItems(Map)
+	 * @see DatabaseEngine#DBCreateClan(Clan)
+	 * @param C the clan whose items to update
 	 */
 	public void DBUpdateClanItems(Clan C);
 
 	/**
 	 * Table category: DBCLANS
-	 * 
-	 * @param C
+	 * Removes the given clan, all of its items and records,
+	 * membership, and everything about it from the database.
+	 * @see Clan
+	 * @see DatabaseEngine#DBReadAllClans()
+	 * @see DatabaseEngine#DBReadClanItems(Map)
+	 * @see DatabaseEngine#DBUpdateClan(Clan)
+	 * @see DatabaseEngine#DBUpdateClanItems(Clan)
+	 * @see DatabaseEngine#DBReadClanItems(Map)
+	 * @see DatabaseEngine#DBCreateClan(Clan)
+	 * @param C the clan to delete
 	 */
 	public void DBDeleteClan(Clan C);
 
 	/**
 	 * Table category: DBCLANS
-	 * 
-	 * @param C
+	 * Creates the given clan in the database.
+	 * @see Clan
+	 * @see DatabaseEngine#DBReadAllClans()
+	 * @see DatabaseEngine#DBReadClanItems(Map)
+	 * @see DatabaseEngine#DBUpdateClan(Clan)
+	 * @see DatabaseEngine#DBUpdateClanItems(Clan)
+	 * @see DatabaseEngine#DBReadClanItems(Map)
+	 * @see DatabaseEngine#DBDeleteClan(Clan)
+	 * @param C the clan to create
 	 */
 	public void DBCreateClan(Clan C);
 
 	/**
 	 * Table category: DBJOURNALS
-	 * 
-	 * @return
+	 * Returns the list of every journalID in the database that
+	 * has at least one message, or an intro.
+	 * @see DatabaseEngine#DBUpdateJournal(String, JournalEntry)
+	 * @see DatabaseEngine#DBReadJournalEntry(String, String)
+	 * @see DatabaseEngine#DBWriteJournal(String, JournalEntry)
+	 * @see DatabaseEngine#DBWriteJournal(String, String, String, String, String)
+	 * @see DatabaseEngine#DBDeleteJournal(String, String)
+	 * @see DatabaseEngine#DBUpdateJournal(String, String, String, long)
+	 * @return the list of every journal ID
 	 */
 	public List<String> DBReadJournals();
 
 	/**
 	 * Table category: DBJOURNALS
-	 * 
-	 * @param Journal
-	 * @param stats
+	 * Updates the entire database record for the given journal
+	 * entry, which must have already been created.
+	 * @see JournalEntry
+	 * @see DatabaseEngine#DBReadJournals()
+	 * @see DatabaseEngine#DBReadJournalEntry(String, String)
+	 * @see DatabaseEngine#DBWriteJournal(String, JournalEntry)
+	 * @see DatabaseEngine#DBWriteJournal(String, String, String, String, String)
+	 * @see DatabaseEngine#DBDeleteJournal(String, String)
+	 * @see DatabaseEngine#DBUpdateJournal(String, String, String, long)
+	 * @param journalID the name/id of the journal
+	 * @param entry the complete entry record
 	 */
-	public void DBUpdateJournalStats(String Journal, JournalsLibrary.JournalSummaryStats stats);
+	public void DBUpdateJournal(String journalID, JournalEntry entry);
 
 	/**
 	 * Table category: DBJOURNALS
-	 * 
-	 * @param Journal
-	 * @param entry
+	 * Reads an individual message from the given journal by its
+	 * message key.
+	 * @see JournalEntry
+	 * @see DatabaseEngine#DBReadJournals()
+	 * @see DatabaseEngine#DBUpdateJournal(String, JournalEntry)
+	 * @see DatabaseEngine#DBWriteJournal(String, JournalEntry)
+	 * @see DatabaseEngine#DBWriteJournal(String, String, String, String, String)
+	 * @see DatabaseEngine#DBDeleteJournal(String, String)
+	 * @see DatabaseEngine#DBUpdateJournal(String, String, String, long)
+	 * @param journalID the name/id of the journal
+	 * @param messageKey the message key
+	 * @return the complete journal entry, or null if it wasn't found
 	 */
-	public void DBUpdateJournal(String Journal, JournalEntry entry);
+	public JournalEntry DBReadJournalEntry(String journalID, String messageKey);
 
 	/**
 	 * Table category: DBJOURNALS
-	 * 
-	 * @param Journal
-	 * @param searchStr
-	 * @return
+	 * Creates a new entry in the journal.  If the entries key already
+	 * exists, this will make an error.  If the entries key is null, however,
+	 * it will generate a new one.
+	 * @see JournalEntry
+	 * @see DatabaseEngine#DBReadJournals()
+	 * @see DatabaseEngine#DBReadJournalEntry(String, String)
+	 * @see DatabaseEngine#DBUpdateJournal(String, JournalEntry)
+	 * @see DatabaseEngine#DBWriteJournal(String, String, String, String, String)
+	 * @see DatabaseEngine#DBDeleteJournal(String, String)
+	 * @see DatabaseEngine#DBUpdateJournal(String, String, String, long)
+	 * @param journalID the name/id of the journal
+	 * @param entry the enttry to create
 	 */
-	public List<JournalEntry> DBSearchAllJournalEntries(String Journal, String searchStr);
+	public void DBWriteJournal(String journalID, JournalEntry entry);
 
 	/**
 	 * Table category: DBJOURNALS
-	 * 
-	 * @param stats
+	 * Creates a new entry in this journal.  Will generate a new key.
+	 * @see DatabaseEngine#DBReadJournals()
+	 * @see DatabaseEngine#DBReadJournalEntry(String, String)
+	 * @see DatabaseEngine#DBUpdateJournal(String, JournalEntry)
+	 * @see DatabaseEngine#DBWriteJournal(String, JournalEntry)
+	 * @see DatabaseEngine#DBDeleteJournal(String, String)
+	 * @see DatabaseEngine#DBUpdateJournal(String, String, String, long)
+	 * @param journalID the name/id of the journal
+	 * @param from the author of the message
+	 * @param to who the message is to, such as ALL
+	 * @param subject the subject of the message
+	 * @param message the message to write
 	 */
-	public void DBReadJournalSummaryStats(JournalsLibrary.JournalSummaryStats stats);
+	public void DBWriteJournal(String journalID, String from, String to, String subject, String message);
 
 	/**
 	 * Table category: DBJOURNALS
-	 * 
-	 * @param key
-	 * @param numReplies
+	 * Deletes enter a specific message, or all messages, from the given 
+	 * journal.  Deleting all messages deletes the journal.  Take care, 
+	 * because of the null thing, this method is dangerous. :)
+	 * @see DatabaseEngine#DBReadJournals()
+	 * @see DatabaseEngine#DBReadJournalEntry(String, String)
+	 * @see DatabaseEngine#DBUpdateJournal(String, JournalEntry)
+	 * @see DatabaseEngine#DBWriteJournal(String, JournalEntry)
+	 * @see DatabaseEngine#DBWriteJournal(String, String, String, String, String)
+	 * @see DatabaseEngine#DBUpdateJournal(String, String, String, long)
+	 * @param journalID the name/id of the journal
+	 * @param msgKeyOrNull the message key, or null to delete ALL messages
 	 */
-	public void DBUpdateMessageReplies(String key, int numReplies);
+	public void DBDeleteJournal(String journalID, String msgKeyOrNull);
+
 
 	/**
 	 * Table category: DBJOURNALS
-	 * 
-	 * @param Journal
-	 * @param Key
-	 * @return
+	 * Updates the existing journal message record in the database. 
+	 * Nothing is optional, it updates all of the given fields.
+	 * @see DatabaseEngine#DBReadJournals()
+	 * @see DatabaseEngine#DBReadJournalEntry(String, String)
+	 * @see DatabaseEngine#DBUpdateJournal(String, JournalEntry)
+	 * @see DatabaseEngine#DBWriteJournal(String, JournalEntry)
+	 * @see DatabaseEngine#DBWriteJournal(String, String, String, String, String)
+	 * @see DatabaseEngine#DBDeleteJournal(String, String)
+	 * @param messageKey the unique message key
+	 * @param subject the new message subject
+	 * @param msg the new message text
+	 * @param newAttributes the new message attributes bitmap
 	 */
-	public JournalEntry DBReadJournalEntry(String Journal, String Key);
-
-	/**
-	 * Table category: DBJOURNALS
-	 * 
-	 * @param Journal
-	 * @param parent
-	 * @param searchStr
-	 * @param newerDate
-	 * @param limit
-	 * @return
-	 */
-	public List<JournalEntry> DBReadJournalPageMsgs(String Journal, String parent, String searchStr, long newerDate, int limit);
-
-	/**
-	 * Table category: DBJOURNALS
-	 * 
-	 * @param Journal
-	 * @param ascending TODO
-	 * @return
-	 */
-	public List<JournalEntry> DBReadJournalMsgsByUpdateDate(String Journal, boolean ascending);
-
-	/**
-	 * Table category: DBJOURNALS
-	 * 
-	 * @param Journal
-	 * @param ascending
-	 * @param limit
-	 * @return
-	 */
-	public List<JournalEntry> DBReadJournalMsgsByUpdateDate(String Journal, boolean ascending, int limit);
-
-	/**
-	 * Table category: DBJOURNALS
-	 * 
-	 * @param Journal
-	 * @param ascending
-	 * @param tos
-	 * @return
-	 */
-	public List<JournalEntry> DBReadJournalMsgsByUpdateDate(String Journal, boolean ascending, int limit, String[] tos);
+	public void DBUpdateJournal(String messageKey, String subject, String msg, long newAttributes);
 	
 	/**
-	 * 
-	 * @param journalID
-	 * @param ascending
-	 * @return
+	 * Table category: DBJOURNALS
+	 * Writes a new journal entry formatted for the email system and generates
+	 * a new message key.
+	 * @see CMProps.Str.MAILBOX
+	 * @param mailBoxID the journal name/id of the email system MAILBOX
+	 * @param journalSource the name/id of the journal that originated the message 
+	 * @param from who the author of the email
+	 * @param to the recipient 
+	 * @param subject the subject of the message
+	 * @param message the email message
+	 */
+	public void DBWriteJournalEmail(String mailBoxID, String journalSource, String from, String to, String subject, String message);
+
+	/**
+	 * Table category: DBJOURNALS
+	 * Adds to an existing journal entry by taking on a fake/stupid reply as a text
+	 * appendage to the main message.  I should do something better some day, and
+	 * I did to forums right, but, well, that's how these still are, just like Zelch 64 1.0.
+	 * @param journalID the name/id of the journal
+	 * @param messageKey the key of the message to append to
+	 * @param from who the Reply is from
+	 * @param to who the recipient of the reply is
+	 * @param subject the subject of the reply
+	 * @param message the reply text
+	 */
+	public void DBWriteJournalReply(String journalID, String messageKey, String from, String to, String subject, String message);
+
+	/**
+	 * Table category: DBJOURNALS
+	 * Searches all the messages in the journal for the search string as
+	 * a (typically) case-insensitive substring of either the subject 
+	 * or the message text.  Returns up to 100 journal entries that
+	 * form a match.
+	 * @param journalID the name/id of the journal to search
+	 * @param searchStr the search substring
+	 * @return the list of journal entries that match
+	 */
+	public List<JournalEntry> DBSearchAllJournalEntries(String journalID, String searchStr);
+
+	/**
+	 * Table category: DBJOURNALS
+	 * For forum journals, updates the number of replies registered with the
+	 * parent message represented by the given message Key.
+	 * @see DatabaseEngine#DBReadJournalMetaData(com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.JournalMetaData)
+	 * @see DatabaseEngine#DBUpdateJournalMetaData(String, com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.JournalMetaData)
+	 * @param messageKey the key of the parent op message
+	 * @param numReplies the new number of replies to register
+	 */
+	public void DBUpdateMessageReplies(String messageKey, int numReplies);
+
+	/**
+	 * Table category: DBJOURNALS
+	 * Takes an empty JournalMetaData object, and the journal NAME
+	 *  and fills in the rest by querying the database.
+	 * @see DatabaseEngine#DBUpdateMessageReplies(String, int)
+	 * @see DatabaseEngine#DBUpdateJournalMetaData(String, com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.JournalMetaData)
+	 * @param journalID the name of the journals whose stats to update
+	 * @param metaData the created metadata object to fill in
+	 */
+	public void DBReadJournalMetaData(String journalID, JournalsLibrary.JournalMetaData metaData);
+
+	/**
+	 * Table category: DBJOURNALS
+	 * Primarily for forum journals, this method updates all of the given
+	 * meta data, such as the intro, and so forth by deleting the old 
+	 * record and re-inserting it into the database.
+	 * @see DatabaseEngine#DBReadJournalMetaData(com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.JournalMetaData)
+	 * @see DatabaseEngine#DBUpdateMessageReplies(String, int)
+	 * @param journalID the name of the journals whose stats to update
+	 * @param metaData the metadata to resave into the database
+	 */
+	public void DBUpdateJournalMetaData(String journalID, JournalsLibrary.JournalMetaData metaData);
+
+	/**
+	 * Table category: DBJOURNALS
+	 * Returns a window of messages from the given journal, either primary messages or replies
+	 * to messages, sorted by date, that matches a search, and can be limited, and older (or newer)
+	 * than a given timestamp.
+	 * @param journalID the name of the journal/forum to load from
+	 * @param parent the parent message (for getting replies), or null
+	 * @param searchStr the string to search for in the msg/subject, or null
+	 * @param newerDate 0 for all real msgs, parent for newer than timestamp, otherwise before timestamp 
+	 * @param limit the maximum number of messages to return 
+	 * @return the journal entries/messages that match this query
+	 */
+	public List<JournalEntry> DBReadJournalPageMsgs(String journalID, String parent, String searchStr, long newerDate, int limit);
+
+	/**
+	 * Table category: DBJOURNALS
+	 * Returns all the messages in the given journal, optionally sorted by update date, ascending.
+	 * This is a legacy method, and should be used with care.
+	 * @see DatabaseEngine#DBReadJournalMsgsByUpdateDate(String, boolean, int)
+	 * @see DatabaseEngine#DBReadJournalMsgsByUpdateDate(String, boolean, int, String[])
+	 * @param journalID the journal to read all the messages from
+	 * @param ascending true to order the read entries by date
+	 * @return the list of all the messages in this journal, an empty list, or null on error
+	 */
+	public List<JournalEntry> DBReadJournalMsgsByUpdateDate(String journalID, boolean ascending);
+
+	/**
+	 * Table category: DBJOURNALS
+	 * Returns a limited number of messages from the given journal, optional sorted by update date,
+	 * ascending. 
+	 * @see DatabaseEngine#DBReadJournalMsgsByUpdateDate(String, boolean)
+	 * @see DatabaseEngine#DBReadJournalMsgsByUpdateDate(String, boolean, int, String[])
+	 * @param journalID the journal to read all the messages from
+	 * @param ascending true to order the read entries by date
+	 * @param limit the number of messages to return, max
+	 * @return the list of the messages in this journal, an empty list, or null on error
+	 */
+	public List<JournalEntry> DBReadJournalMsgsByUpdateDate(String journalID, boolean ascending, int limit);
+
+	/**
+	 * Table category: DBJOURNALS
+	 * Returns a limited number of messages from the given journal, optionally sorted by update date,
+	 * ascending, but only those marked as TO the given string array.
+	 * @see DatabaseEngine#DBReadJournalMsgsByUpdateDate(String, boolean, int)
+	 * @see DatabaseEngine#DBReadJournalMsgsByUpdateDate(String, boolean)
+	 * @param journalID the journal to read all the messages from
+	 * @param ascending true to order the read entries by date
+	 * @param limit the number of messages to return, max
+	 * @param tos return only messages marked TO one of the names in this array
+	 * @return the list of the messages in this journal, an empty list, or null on error
+	 */
+	public List<JournalEntry> DBReadJournalMsgsByUpdateDate(String journalID, boolean ascending, int limit, String[] tos);
+	
+	/**
+	 * Table category: DBJOURNALS
+	 * Returns all the messages in the given journal, optionally sorted by create date, ascending.
+	 * This is a legacy method, and should be used with care.
+	 * @see DatabaseEngine#DBReadJournalMsgsByCreateDate(String, boolean, int)
+	 * @see DatabaseEngine#DBReadJournalMsgsByCreateDate(String, boolean, int, String[])
+	 * @param journalID the journal to read all the messages from
+	 * @param ascending true to order the read entries by date
+	 * @return the list of all the messages in this journal, an empty list, or null on error
 	 */
 	public List<JournalEntry> DBReadJournalMsgsByCreateDate(String journalID, boolean ascending);
 
 	/**
-	 * 
-	 * @param journalID
-	 * @param ascending
-	 * @param limit
-	 * @return
+	 * Table category: DBJOURNALS
+	 * Returns a limited number of messages from the given journal, optional sorted by create date,
+	 * ascending. 
+	 * @see DatabaseEngine#DBReadJournalMsgsByCreateDate(String, boolean)
+	 * @see DatabaseEngine#DBReadJournalMsgsByUpdateDate(String, boolean, int, String[])
+	 * @param journalID the journal to read all the messages from
+	 * @param ascending true to order the read entries by date
+	 * @param limit the number of messages to return, max
+	 * @return the list of the messages in this journal, an empty list, or null on error
 	 */
 	public List<JournalEntry> DBReadJournalMsgsByCreateDate(String journalID, boolean ascending, int limit);
 
 	/**
-	 * 
-	 * @param journalID
-	 * @param ascending
-	 * @param limit
-	 * @param tos
-	 * @return
+	 * Table category: DBJOURNALS
+	 * Returns a limited number of messages from the given journal, optionally sorted by create date,
+	 * ascending, but only those marked as TO the given string array.
+	 * @see DatabaseEngine#DBReadJournalMsgsByCreateDate(String, boolean, int)
+	 * @see DatabaseEngine#DBReadJournalMsgsByCreateDate(String, boolean)
+	 * @param journalID the journal to read all the messages from
+	 * @param ascending true to order the read entries by date
+	 * @param limit the number of messages to return, max
+	 * @param tos return only messages marked TO one of the names in this array
+	 * @return the list of the messages in this journal, an empty list, or null on error
 	 */
 	public List<JournalEntry> DBReadJournalMsgsByCreateDate(String journalID, boolean ascending, int limit, String[] tos);
 
 	/**
 	 * Table category: DBJOURNALS
-	 * 
-	 * @param Journal
-	 * @param to
-	 * @param olderDate
-	 * @return
+	 * Returns all the messages optionally sent to the given user (or ALL) that 
+	 * are newer than the given date.
+	 * @see DatabaseEngine#DBReadJournalMsgsOlderThan(String, String, long)
+	 * @param journalID the name/ID of the journal/forum
+	 * @param to NULL, ALL, or a user the messages were sent to
+	 * @param olderDate the date beyond which to return messages for
+	 * @return the list of messages that were found
 	 */
-	public List<JournalEntry> DBReadJournalMsgsNewerThan(String Journal, String to, long olderDate);
+	public List<JournalEntry> DBReadJournalMsgsNewerThan(String journalID, String to, long olderDate);
 
 	/**
 	 * Table category: DBJOURNALS
-	 * 
-	 * @param Journal
-	 * @param to
-	 * @param newestDate
-	 * @return
+	 * Returns all the messages optionally sent to the given user (or ALL) that 
+	 * are older than the given date.
+	 * @see DatabaseEngine#DBReadJournalMsgsNewerThan(String, String, long)
+	 * @param journalID the name/ID of the journal/forum
+	 * @param to NULL, ALL, or a user the messages were sent to
+	 * @param newestDate the date before which to return messages for
+	 * @return the list of messages that were found
 	 */
-	public List<JournalEntry> DBReadJournalMsgsOlderThan(String Journal, String to, long newestDate);
+	public List<JournalEntry> DBReadJournalMsgsOlderThan(String journalID, String to, long newestDate);
 
 	/**
 	 * Table category: DBJOURNALS
-	 * 
-	 * @param Journal
-	 * @param from
-	 * @param to
-	 * @return
+	 * Returns the number of messages found in the given journal optionally
+	 * sent from the given user name, and/or optionally to the given user
+	 * name.
+	 * @param journalID the name/id of the journal
+	 * @param from NULL, or the user id of a user the messages are from
+	 * @param to NULL, or the user id of a user the messages are to
+	 * @return the number of messages found
 	 */
-	public int DBCountJournal(String Journal, String from, String to);
+	public int DBCountJournal(String journalID, String from, String to);
 
 	/**
 	 * Table category: DBJOURNALS
+	 * Writes a new journal message/entry to the database.  One which is
+	 * probably a reply to a parent message, denoted by the parentKey,
+	 * which is the message key of the parent.  This method also updates
+	 * the number of replies being tracked for the given parent message.
 	 * 
-	 * @param Journal
-	 * @param entry
+	 * @param journalID the name/id of the journal/forum
+	 * @param journalSource the originating name/id of an originating journal?
+	 * @param from who the message is written by, a user id
+	 * @param to who the message is to, or ALL
+	 * @param parentKey the message key of the parent message this is a reply to
+	 * @param subject the subject of the reply message
+	 * @param message the message text of the reply message
 	 */
-	public void DBWriteJournal(String Journal, JournalEntry entry);
-
-	/**
-	 * Table category: DBJOURNALS
-	 * 
-	 * @param Journal
-	 * @param from
-	 * @param to
-	 * @param subject
-	 * @param message
-	 */
-	public void DBWriteJournal(String Journal, String from, String to, String subject, String message);
-
-	/**
-	 * Table category: DBJOURNALS
-	 * 
-	 * @param MailBox
-	 * @param journalSource
-	 * @param from
-	 * @param to
-	 * @param subject
-	 * @param message
-	 */
-	public void DBWriteJournalEmail(String MailBox, String journalSource, String from, String to, String subject, String message);
-
-	/**
-	 * Table category: DBJOURNALS
-	 * 
-	 * @param Journal
-	 * @param key
-	 * @param from
-	 * @param to
-	 * @param subject
-	 * @param message
-	 */
-	public void DBWriteJournalReply(String Journal, String key, String from, String to, String subject, String message);
-
-	/**
-	 * Table category: DBJOURNALS
-	 * 
-	 * @param Journal
-	 * @param journalSource
-	 * @param from
-	 * @param to
-	 * @param parentKey
-	 * @param subject
-	 * @param message
-	 */
-	public void DBWriteJournalChild(String Journal, String journalSource, String from, String to, 
+	public void DBWriteJournalChild(String journalID, String journalSource, String from, String to, 
 									String parentKey, String subject, String message);
 
 	/**
 	 * Table category: DBJOURNALS
-	 * 
-	 * @param Journal
-	 * @param msgKeyOrNull
-	 */
-	public void DBDeleteJournal(String Journal, String msgKeyOrNull);
-
-	/**
-	 * Table category: DBJOURNALS
-	 * 
-	 * @param possibleName
-	 * @return
+	 * A silly function that queries the database for a journal of the given exact
+	 * name, and if it is found, it returns it, otherwise it returns null.
+	 * @param possibleName the possible name of a journal
+	 * @return null, or the name returned
 	 */
 	public String DBGetRealJournalName(String possibleName);
 
 	/**
 	 * Table category: DBJOURNALS
-	 * 
-	 * @param Journal
-	 * @param to
-	 * @param olderTime
-	 * @return
+	 * This method returns a two dimensional array, where the first long 
+	 * is the update timestamp of the latest message in the journal, optionally 
+	 * to the given recipient,  and the second long is the number of messages
+	 * found that are newer than the given timestamp.
+	 * @param journalID the journal id/name to search
+	 * @param to NULL, or ALL, or the recipient name
+	 * @param olderTime the time After which to count messages
+	 * @return the array with latest update timestamp, and the number of newer msgs 
 	 */
-	public long[] DBJournalLatestDateNewerThan(String Journal, String to, long olderTime);
+	public long[] DBJournalLatestDateNewerThan(String journalID, String to, long olderTime);
 
 	/**
 	 * Table category: DBJOURNALS
-	 * 
-	 * @param name
+	 * This message deletes all private messages with the given 
+	 * user id as a recipient.  This is all the messages TO the given
+	 * user, which might include other kinds of user documents, such as
+	 * email, bank accounts, mail, and the like.
+	 * @param name the name of the user to delete journal entries from
 	 */
-	public void DBDeletePlayerJournals(String name);
+	public void DBDeletePlayerPrivateJournalEntries(String name);
 
 	/**
 	 * Table category: DBJOURNALS
-	 * 
-	 * @param key
-	 * @param subject
-	 * @param msg
-	 * @param newAttributes
+	 * Sets the number of views for the given specific journal message.
+	 * @param messageKey the message key of the message to update
+	 * @param views the number of views to mark.
 	 */
-	public void DBUpdateJournal(String key, String subject, String msg, long newAttributes);
+	public void DBUpdateJournalMessageViews(String messageKey, int views);
 
 	/**
 	 * Table category: DBJOURNALS
-	 * 
-	 * @param key
-	 * @param views
+	 * Updates the given journal message with an update time of
+	 * the current date/timestamp.
+	 * @param messageKey the message to touch.
 	 */
-	public void DBViewJournalMessage(String key, int views);
+	public void DBTouchJournalMessage(String messageKey);
 
 	/**
 	 * Table category: DBJOURNALS
-	 * 
-	 * @param key
+	 * Updates the given journal message with a specific update
+	 * time of the given date/timestamp
+	 * @param messageKey the key of the message to touch
+	 * @param newDate the date/time to set the message update time to
 	 */
-	public void DBTouchJournalMessage(String key);
-
-	/**
-	 * Table category: DBJOURNALS
-	 * 
-	 * @param key
-	 * @param newDate
-	 */
-	public void DBTouchJournalMessage(String key, long newDate);
+	public void DBTouchJournalMessage(String messageKey, long newDate);
 
 	/**
 	 * Table category: DBPLAYERDATA
-	 * 
-	 * @param playerID
-	 * @return
+	 * Just as it says, this method reads all player data, which is
+	 * the only way to get all bank data at the same time, for example.
+	 * @see DatabaseEngine.PlayerData
+	 * @see DatabaseEngine#DBDeleteAllPlayerData(String)
+	 * @param playerID the user id of the player to read all data for
+	 * @return all of this players data.
 	 */
 	public List<PlayerData> DBReadAllPlayerData(String playerID);
 
 	/**
 	 * Table category: DBPLAYERDATA
-	 * 
-	 * @param playerID
-	 * @param section
-	 * @return
+	 * Deletes all player data belonging to the player, of all
+	 * types and sections, all over.  BOOM.
+	 * @see DatabaseEngine#DBReadAllPlayerData(String)
+	 * @param name the user id/name of the player to delete all data of
 	 */
-	public List<PlayerData> DBReadData(String playerID, String section);
+	public void DBDeleteAllPlayerData(String name);
 
 	/**
 	 * Table category: DBPLAYERDATA
-	 * 
-	 * @param playerID
-	 * @param section
-	 * @return
+	 * Read a specific set of data for the given player, belonging
+	 * to the given section
+	 * @see DatabaseEngine.PlayerData
+	 * @see DatabaseEngine#DBCountPlayerData(String, String)
+	 * @see DatabaseEngine#DBDeletePlayerData(String, String)
+	 * @see DatabaseEngine#DBReadPlayerData(String, List)
+	 * @param playerID the user id for the player to read data for
+	 * @param section the section/type of data to read.
+	 * @return the data for the player in the section
 	 */
-	public int DBCountData(String playerID, String section);
+	public List<PlayerData> DBReadPlayerData(String playerID, String section);
 
 	/**
 	 * Table category: DBPLAYERDATA
-	 * 
-	 * @param playerID
-	 * @param section
-	 * @param key
-	 * @return
+	 * Counts the number of rows of data/entries 
+	 * @see DatabaseEngine#DBReadPlayerData(String, String)
+	 * @see DatabaseEngine#DBDeletePlayerData(String, String)
+	 * @see DatabaseEngine#DBReadPlayerData(String, List)
+	 * @param playerID the user id of the player to count the data of
+	 * @param section the section/type of data to count
+	 * @return the number of entries for the given player and section
 	 */
-	public List<PlayerData> DBReadData(String playerID, String section, String key);
+	public int DBCountPlayerData(String playerID, String section);
+
+	/**
+	 * Table category: DBPLAYERDATA
+	 * Deletes all of the data for the given player of the
+	 * given section/type.
+	 * @see DatabaseEngine#DBReadPlayerData(String, String)
+	 * @see DatabaseEngine#DBCountPlayerData(String, String)
+	 * @see DatabaseEngine#DBReadPlayerData(String, List)
+	 * @param playerID the user id of the player to delete the data of
+	 * @param section the section/type of data to delete
+	 */
+	public void DBDeletePlayerData(String playerID, String section);
+
+	/**
+	 * Table category: DBPLAYERDATA
+	 * Reads in all data for the given player which also belongs to any
+	 * one of the given sections/data types.
+	 * @see DatabaseEngine.PlayerData
+	 * @see DatabaseEngine#DBReadPlayerData(String, String)
+	 * @see DatabaseEngine#DBCountPlayerData(String, String)
+	 * @see DatabaseEngine#DBDeletePlayerData(String, String)
+	 * @param player the user id of the player to delete the data of
+	 * @param sections the sections/types of data to return records for
+	 * @return the player data records that match the player and sections
+	 */
+	public List<PlayerData> DBReadPlayerData(String player, List<String> sections);
+
+	/**
+	 * Table category: DBPLAYERDATA
+	 * Reads in all unique player names for all players for the given 
+	 * data type/section. 
+	 * @see DatabaseEngine#DBReadPlayerSectionData(String)
+	 * @see DatabaseEngine#DBDeletePlayerSectionData(String)
+	 * @param section the section to read player names for
+	 * @return the list of all unique names in this section
+	 */
+	public List<String> DBReadPlayerDataPlayersBySection(String section);
+
+	/**
+	 * Table category: DBPLAYERDATA
+	 * Reads in all player data for all players for the given 
+	 * data type/section. Use this sparingly!
+	 * @see DatabaseEngine.PlayerData
+	 * @see DatabaseEngine#DBReadPlayerDataPlayersBySection(String)
+	 * @see DatabaseEngine#DBDeletePlayerSectionData(String)
+	 * @param section the section, type of data to delete
+	 * @return the player data in the given section for all players
+	 */
+	public List<PlayerData> DBReadPlayerSectionData(String section);
+
+	/**
+	 * Table category: DBPLAYERDATA
+	 * Deletes all player data of the given section/type.  
+	 * @see DatabaseEngine#DBReadPlayerDataPlayersBySection(String)
+	 * @see DatabaseEngine#DBReadPlayerSectionData(String)
+	 * @param section the section, type of data to delete
+	 */
+	public void DBDeletePlayerSectionData(String section);
+
+	/**
+	 * Table category: DBPLAYERDATA
+	 * Reads what is probably a single player data entry, but could be more.
+	 * All fields are required.
+	 * @see DatabaseEngine.PlayerData
+	 * @param playerID the name/userid of the player to read data for
+	 * @param section the section/type of data to return
+	 * @param key the key of the specific entry(s) to return
+	 * @return the player data entry to return
+	 */
+	public List<PlayerData> DBReadPlayerData(String playerID, String section, String key);
 
 	/**
 	 * Table category: DBPLAYERDATA
@@ -1156,7 +1485,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * @param keyMask
 	 * @return
 	 */
-	public List<PlayerData> DBReadDataKey(String section, String keyMask);
+	public List<PlayerData> DBReadPlayerDataByKeyMask(String section, String keyMask);
 
 	/**
 	 * Table category: DBPLAYERDATA
@@ -1164,39 +1493,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * @param key
 	 * @return
 	 */
-	public List<PlayerData> DBReadDataKey(String key);
-
-	/**
-	 * Table category: DBPLAYERDATA
-	 * 
-	 * @param section
-	 * @return
-	 */
-	public List<PlayerData> DBReadData(String section);
-
-	/**
-	 * Table category: DBPLAYERDATA
-	 * 
-	 * @param player
-	 * @param sections
-	 * @return
-	 */
-	public List<PlayerData> DBReadData(String player, List<String> sections);
-
-	/**
-	 * Table category: DBPLAYERDATA
-	 * 
-	 * @param name
-	 */
-	public void DBDeletePlayerData(String name);
-
-	/**
-	 * Table category: DBPLAYERDATA
-	 * 
-	 * @param playerID
-	 * @param section
-	 */
-	public void DBDeleteData(String playerID, String section);
+	public List<PlayerData> DBReadPlayerDataEntry(String key);
 
 	/**
 	 * Table category: DBPLAYERDATA
@@ -1205,7 +1502,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * @param section
 	 * @param key
 	 */
-	public void DBDeleteData(String playerID, String section, String key);
+	public void DBDeletePlayerData(String playerID, String section, String key);
 
 	/**
 	 * Table category: DBPLAYERDATA
@@ -1213,7 +1510,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * @param key
 	 * @param xml
 	 */
-	public void DBUpdateData(String key, String xml);
+	public void DBUpdatePlayerData(String key, String xml);
 
 	/**
 	 * Table category: DBPLAYERDATA
@@ -1222,15 +1519,9 @@ public interface DatabaseEngine extends CMLibrary
 	 * @param section
 	 * @param key
 	 * @param xml
+	 * @return 
 	 */
-	public void DBReCreateData(String name, String section, String key, String xml);
-
-	/**
-	 * Table category: DBPLAYERDATA
-	 * 
-	 * @param section
-	 */
-	public void DBDeleteData(String section);
+	public PlayerData DBReCreatePlayerData(String name, String section, String key, String xml);
 
 	/**
 	 * Table category: DBPLAYERDATA
@@ -1239,21 +1530,15 @@ public interface DatabaseEngine extends CMLibrary
 	 * @param section
 	 * @param key
 	 * @param data
+	 * @return 
 	 */
-	public void DBCreateData(String player, String section, String key, String data);
+	public PlayerData DBCreatePlayerData(String player, String section, String key, String data);
 
 	/**
 	 * Table category: DBPLAYERDATA
 	 * 
 	 */
 	public void DBReadArtifacts();
-
-	/**
-	 * Table category: DBPLAYERDATA
-	 * 
-	 * @return
-	 */
-	public PlayerData createPlayerData();
 
 	/**
 	 * Table category: DBRACE
@@ -1275,7 +1560,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * @param raceID
 	 * @param data
 	 */
-	public void DBCreateRace(String raceID,String data);
+	public void DBCreateRace(String raceID, String data);
 
 	/**
 	 * Table category: DBCHARCLASS

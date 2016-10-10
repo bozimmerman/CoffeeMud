@@ -14,6 +14,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.MOB.Attrib;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
@@ -37,7 +38,11 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class StdAbility implements Ability
 {
-	@Override public String ID() { return "StdAbility"; }
+	@Override
+	public String ID()
+	{
+		return "StdAbility";
+	}
 
 	protected boolean			isAnAutoEffect	= false;
 	protected int				proficiency		= 0;
@@ -628,13 +633,22 @@ public class StdAbility implements Ability
 		tickDown=tickTime;
 	}
 
-	protected boolean disregardsArmorCheck(MOB mob)
+	public boolean disregardsArmorCheck(MOB mob)
 	{
 		return ((mob==null)
 				||(mob.isMonster())
 				||(CMLib.ableMapper().qualifiesByLevel(mob,this)));
 	}
 
+	protected int getPersonalLevelAdjustments(final MOB caster)
+	{
+		final CharStats charStats = caster.charStats();
+		return  charStats.getAbilityAdjustment("level+"+ID())
+		+ charStats.getAbilityAdjustment("level+"+Ability.ACODE_DESCS[classificationCode()&Ability.ALL_ACODES])
+		+ charStats.getAbilityAdjustment("level+"+Ability.DOMAIN_DESCS[(classificationCode()&Ability.ALL_DOMAINS)>> 5])
+		+ charStats.getAbilityAdjustment("level+*");
+	}
+	
 	@Override
 	public int adjustedLevel(MOB caster, int asLevel)
 	{
@@ -654,6 +668,7 @@ public class StdAbility implements Ability
 			adjLevel=asLevel;
 		if(adjLevel<lowestQualifyingLevel)
 			adjLevel=lowestQualifyingLevel;
+		adjLevel += getPersonalLevelAdjustments(caster);
 		if(adjLevel<1)
 			return 1;
 		int level=adjLevel+getXLEVELLevel(caster);
@@ -687,6 +702,7 @@ public class StdAbility implements Ability
 			adjLevel=(caster.phyStats().level()-lowestQualifyingLevel)+1;
 		if(asLevel>0)
 			adjLevel=asLevel;
+		adjLevel += getPersonalLevelAdjustments(caster);
 		if(adjLevel<1)
 			return 1;
 		return adjLevel+getXLEVELLevel(caster);
@@ -863,7 +879,7 @@ public class StdAbility implements Ability
 				||targetName.equalsIgnoreCase("place")))
 				target=R;
 			int dir=-1;
-			if((target==null)&&((dir=Directions.getGoodDirectionCode(targetName))>=0))
+			if((target==null)&&((dir=CMLib.directions().getGoodDirectionCode(targetName))>=0))
 				target=R.getExitInDir(dir);
 			if((target==null)&&(checkOthersInventory))
 			{
@@ -962,8 +978,10 @@ public class StdAbility implements Ability
 				if(targetName.trim().length()==0)
 					mob.tell(L("You don't see that here."));
 				else
-				if(!CMLib.flags().isSleeping(mob))
+				if(!CMLib.flags().isSleeping(mob)) // no idea why this is here :(
 					mob.tell(L("You don't see anything called '@x1' here.",targetName));
+				else // this was added for clan donate (and other things I'm sure) while sleeping.
+					mob.tell(L("You don't see '@x1' in your dreams.",targetName));
 			}
 			else
 				mob.tell(mob,target,null,L("You can't do that to <T-NAMESELF>."));
@@ -1005,15 +1023,24 @@ public class StdAbility implements Ability
 		if(auto)
 		{
 			isAnAutoEffect=true;
-			setProficiency(100);
+			if((mob!=null)&&(!mob.isMine(this)))
+				setProficiency(100);
 			return true;
 		}
 
-		if((mob!=null)&&CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.SUPERSKILL))
-		   return true;
-
 		isAnAutoEffect=false;
 		int pctChance=proficiency();
+		if(mob != null)
+		{
+			if(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.SUPERSKILL))
+				return true;
+			final CharStats charStats = mob.charStats();
+			pctChance += charStats.getAbilityAdjustment("prof+"+ID());
+			pctChance += charStats.getAbilityAdjustment("prof+"+Ability.ACODE_DESCS[classificationCode()&Ability.ALL_ACODES]);
+			pctChance += charStats.getAbilityAdjustment("prof+"+Ability.DOMAIN_DESCS[(classificationCode()&Ability.ALL_DOMAINS)>> 5]);
+			pctChance += charStats.getAbilityAdjustment("prof+*");
+		}
+		
 		if(pctChance>95)
 			pctChance=95;
 		if(pctChance<5)
@@ -1462,7 +1489,7 @@ public class StdAbility implements Ability
 			final Vector<AbilityComponent> componentsRequirements=(Vector<AbilityComponent>)CMLib.ableComponents().getAbilityComponentMap().get(ID().toUpperCase());
 			if(componentsRequirements!=null)
 			{
-				final List<Object> components=CMLib.ableComponents().componentCheck(mob,componentsRequirements);
+				final List<Object> components=CMLib.ableComponents().componentCheck(mob,componentsRequirements, false);
 				if(components==null)
 				{
 					mob.tell(L("You lack the necessary materials to use this @x1, the requirements are: @x2.",
@@ -1569,7 +1596,14 @@ public class StdAbility implements Ability
 	public boolean maliciousFizzle(MOB mob, Environmental target, String message)
 	{
 		// it didn't work, but tell everyone you tried.
-		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_OK_VISUAL|CMMsg.MASK_MALICIOUS,message);
+		final String targetMessage;
+		if((target instanceof MOB)
+		&&(mob!=target)
+		&&(((MOB)target).isAttributeSet(Attrib.NOBATTLESPAM)))
+			targetMessage=null;
+		else
+			targetMessage=message;
+		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_OK_VISUAL|CMMsg.MASK_MALICIOUS,message,targetMessage,message);
 		final Room room=mob.location();
 		if(room==null)
 			return false;
@@ -2077,7 +2111,8 @@ public class StdAbility implements Ability
 		return getStatCodes().length;
 	}
 
-	private static final String[]	CODES	= { "CLASS", "TEXT", "TICKDOWN" };
+	private static final String[]	CODES			= { "CLASS", "TEXT" };
+	private static final String[]	INTERNAL_CODES	= { "TICKDOWN","LEVEL" };
 
 	@Override
 	public String[] getStatCodes()
@@ -2101,6 +2136,16 @@ public class StdAbility implements Ability
 		return -1;
 	}
 
+	protected int getInternalCodeNum(String code)
+	{
+		for(int i=0;i<INTERNAL_CODES.length;i++)
+		{
+			if(code.equalsIgnoreCase(INTERNAL_CODES[i]))
+				return i;
+		}
+		return -1;
+	}
+
 	@Override
 	public String getStat(String code)
 	{
@@ -2110,8 +2155,17 @@ public class StdAbility implements Ability
 			return ID();
 		case 1:
 			return text();
-		case 2:
-			return Integer.toString(tickDown);
+		default:
+			switch(getInternalCodeNum(code))
+			{
+			case 0:
+				return Integer.toString(tickDown);
+			case 1:
+				return "0";
+			default:
+				break;
+			}
+			break;
 		}
 		return "";
 	}
@@ -2126,8 +2180,17 @@ public class StdAbility implements Ability
 		case 1:
 			setMiscText(val);
 			break;
-		case 2:
-			tickDown = CMath.s_int(val);
+		default:
+			switch(getInternalCodeNum(code))
+			{
+			case 0:
+				tickDown = CMath.s_int(val);
+				break;
+			case 1:
+				break;
+			default:
+				break;
+			}
 			break;
 		}
 	}

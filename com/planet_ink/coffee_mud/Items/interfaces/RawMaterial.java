@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Items.interfaces;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.HashSet;
@@ -58,7 +59,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  */
 public interface RawMaterial extends Item
 {
-
 	/**
 	 * Gets the specific origin of this resource. If a resource has a specific
 	 * source that may be of interest to the owner, here it is. For example, if
@@ -535,6 +535,7 @@ public interface RawMaterial extends Item
 	public final static int	RESOURCE_TAR			= MATERIAL_LIQUID | 202;
 	public final static int	RESOURCE_SALT			= MATERIAL_ROCK | 203;
 	public final static int	RESOURCE_SPICE			= MATERIAL_VEGETATION | 204;
+	public final static int	RESOURCE_DIRT			= MATERIAL_ROCK | 205;
 	
 	public final static int	RESOURCE_MASK			= 255;
 
@@ -764,6 +765,7 @@ public interface RawMaterial extends Item
 		TAR(RESOURCE_TAR				, 10,   15, 2, 1280, "strong oily", "", null),
 		SALT(RESOURCE_SALT, 10, 20, 5, 750, "", "", null),
 		SPICE(RESOURCE_SPICE, 100, 5, 1, 750, "spicy smell", "", null),
+		DIRT(RESOURCE_DIRT, 1, 50, 1, 1600, "rich earthy smell", "", null),
 		
 		;//code, 						  v, freq, h, b, smell, effects, ResourceFlag flags
 		public final int			code, value, frequency, hardness, bouancy;
@@ -1274,6 +1276,46 @@ public interface RawMaterial extends Item
 			return data[code & RESOURCE_MASK][2];
 		}
 
+
+		/**
+		 * Returns the resource code of the most frequently found
+		 * resource of the given material mask
+		 * @param material the material mask
+		 * @return the most common resource of that material
+		 */
+		public static int MOST_FREQUENT(int material)
+		{
+			return c().mostFrequent(material);
+		}
+		
+		/**
+		 * Returns the resource code of the most frequently found
+		 * resource of the given material mask
+		 * @param material the material mask
+		 * @return the most common resource of that material
+		 */
+		public int mostFrequent(int material)
+		{
+			final List<Integer> all = COMPOSE_RESOURCES(material);
+			if((all==null)||(all.size()==0))
+				return -1;
+			Collections.sort(all,new Comparator<Integer>()
+			{
+				@Override
+				public int compare(Integer o1, Integer o2)
+				{
+					int freq1 = frequency(o1.intValue());
+					int freq2 = frequency(o2.intValue());
+					if(freq1 < freq2)
+						return 1;
+					if(freq1 > freq2)
+						return -1;
+					return 0;
+				}
+			});
+			return all.get(0).intValue();
+		}
+		
 		/**
 		 * Returns the hardness of the resource, from 1-10
 		 * 

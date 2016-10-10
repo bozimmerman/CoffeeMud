@@ -32,21 +32,53 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Farming extends GatheringSkill
 {
-	@Override public String ID() { return "Farming"; }
-	private final static String localizedName = CMLib.lang().L("Farming");
-	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =I(new String[] {"PLANT","FARM","FARMING"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode(){return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_GATHERINGSKILL;}
-	@Override protected boolean allowedWhileMounted(){return false;}
-	@Override public String supportedResourceString(){return "VEGETATION|COTTON|HEMP|WOODEN";}
+	@Override
+	public String ID()
+	{
+		return "Farming";
+	}
 
-	protected Item found=null;
-	protected Room room=null;
-	protected String foundShortName="";
+	private final static String localizedName = CMLib.lang().L("Farming");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private static final String[] triggerStrings = I(new String[] { "PLANT", "FARM", "FARMING" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_COMMON_SKILL | Ability.DOMAIN_GATHERINGSKILL;
+	}
+
+	@Override
+	protected boolean allowedWhileMounted()
+	{
+		return false;
+	}
+
+	@Override
+	public String supportedResourceString()
+	{
+		return "VEGETATION|COTTON|HEMP|WOODEN";
+	}
+
+	protected Item		found			= null;
+	protected Room		room			= null;
+	protected String	foundShortName	= "";
+
+	
 	public Farming()
 	{
 		super();
@@ -58,7 +90,12 @@ public class Farming extends GatheringSkill
 	{
 		return getDuration(45,mob,level,15);
 	}
-	@Override protected int baseYield() { return 1; }
+
+	@Override
+	protected int baseYield()
+	{
+		return 1;
+	}
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
@@ -68,7 +105,9 @@ public class Farming extends GatheringSkill
 			final MOB mob=invoker();
 			if(tickUp==6)
 			{
-				if(found==null)
+				if((found==null)
+				||(mob==null)
+				||(mob.location()==null))
 				{
 					commonTell(mob,L("Your @x1 crop has failed.\n\r",foundShortName));
 					unInvoke();
@@ -89,7 +128,7 @@ public class Farming extends GatheringSkill
 			{
 				if((found!=null)&&(!isaborted))
 				{
-					final int amount=CMLib.dice().roll(1,7,0)*(abilityCode());
+					final int amount=CMLib.dice().roll(1,7,0)*(baseYield()+abilityCode());
 					String s="s";
 					if(amount==1)
 						s="";
@@ -97,18 +136,19 @@ public class Farming extends GatheringSkill
 					for(int i=0;i<amount;i++)
 					{
 						final Item newFound=(Item)found.copyOf();
-						room.addItem(newFound,ItemPossessor.Expire.Player_Drop);
+						if(!dropAWinner(null,room,newFound))
+							break;
 					}
 				}
 			}
 		}
 		super.unInvoke();
 		if((canBeUninvoked)
-		   &&(aff!=null)
-		   &&(aff instanceof MOB)
-		   &&(aff!=room)
-		   &&(!isaborted)
-		   &&(room!=null))
+		&&(aff!=null)
+		&&(aff instanceof MOB)
+		&&(aff!=room)
+		&&(!isaborted)
+		&&(room!=null))
 		{
 			final Farming F=((Farming)copyOf());
 			F.unInvoked=false;
@@ -125,8 +165,10 @@ public class Farming extends GatheringSkill
 		if(R.resourceChoices()==null)
 			return false;
 		for(int i=0;i<R.resourceChoices().size();i++)
+		{
 			if(R.resourceChoices().get(i).intValue()==code)
 				return true;
+		}
 		return false;
 	}
 

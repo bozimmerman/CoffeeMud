@@ -35,22 +35,68 @@ import java.util.*;
 */
 public class Prop_Weather extends Property
 {
-	@Override public String ID() { return "Prop_Weather"; }
-	@Override public String name(){ return "Weather Setter";}
-	@Override protected int canAffectCode(){return Ability.CAN_AREAS;}
+	@Override
+	public String ID()
+	{
+		return "Prop_Weather";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Weather Setter";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_AREAS;
+	}
 
 	int code=-1;
+	int climask=-1;
 
+	@Override
+	public void setMiscText(String newMiscText)
+	{
+		super.setMiscText(newMiscText);
+		List<String> parms=CMParms.parse(newMiscText);
+		code=-1;
+		climask=-1;
+		if(text().length()>0)
+		{
+			for(String parm : parms)
+			{
+				if(parm.startsWith("CLIMASK_")||parm.startsWith("CLIMATE_"))
+				{
+					parm=parm.substring(8);
+					for(int i=0;i<Places.CLIMATE_DESCS.length;i++)
+					{
+						if(Places.CLIMATE_DESCS[i].equalsIgnoreCase("parm"))
+						{
+							if(code<0)
+								code=0;
+							if(i>0)
+								code=code|((int)CMath.pow(2,i-1));
+						}
+					}
+				}
+				else
+				{
+					for(int i=0;i<Climate.WEATHER_DESCS.length;i++)
+					{
+						if(Climate.WEATHER_DESCS[i].equalsIgnoreCase(parm))
+							code=i;
+					}
+				}
+			}
+		}
+	}
+	
 	@Override
 	public void affectPhyStats(Physical host, PhyStats stats)
 	{
 		super.affectPhyStats(host,stats);
-		if((code<0)&&(text().length()>0))
-		{
-			for(int i=0;i<Climate.WEATHER_DESCS.length;i++)
-				if(Climate.WEATHER_DESCS[i].equalsIgnoreCase(text()))
-					code=i;
-		}
 		if(code>=0)
 		{
 			if(affected instanceof Room)
@@ -64,6 +110,13 @@ public class Prop_Weather extends Property
 				((Area)affected).getClimateObj().setCurrentWeatherType(code);
 				((Area)affected).getClimateObj().setNextWeatherType(code);
 			}
+		}
+		if(climask>=0)
+		{
+			if(affected instanceof Room)
+				((Room)affected).getArea().setClimateType(climask);
+			else
+				((Area)affected).setClimateType(climask);
 		}
 	}
 

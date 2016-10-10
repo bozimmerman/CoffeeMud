@@ -115,10 +115,10 @@ public class GenElecCompItem extends StdElecCompItem
 			setManufacturerName(val);
 			break;
 		case 4:
-			setInstalledFactor((float)CMath.parseMathExpression(val));
+			setInstalledFactor((float)CMath.s_parseMathExpression(val));
 			break;
 		case 5:
-			setRechargeRate(CMath.parseLongExpression(val));
+			setRechargeRate((float)CMath.s_parseMathExpression(val));
 			break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);

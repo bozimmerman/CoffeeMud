@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.AbilityMapping;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -127,6 +128,8 @@ public class Oracle extends Cleric
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Prayer_MinorInfusion",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_Prayercraft",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Prayer_RemoveParalysis",false);
+
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Prayer_DivineGuidance",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Skill_WildernessLore",false);
@@ -183,7 +186,11 @@ public class Oracle extends Cleric
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Skill_AboveTheLaw",false);
 	}
 
-	@Override public int availabilityCode(){return Area.THEME_FANTASY;}
+	@Override
+	public int availabilityCode()
+	{
+		return Area.THEME_FANTASY;
+	}
 
 	@Override
 	public boolean tick(Tickable myChar, int tickID)
@@ -284,18 +291,20 @@ public class Oracle extends Cleric
 						final Ability A=CMClass.randomAbility();
 						if( A != null )
 						{
-						  final int lql=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
-						  if((lql<25)
-						  &&(lql>0)
-						  &&(!CMLib.ableMapper().getSecretSkill(C.ID(),true,A.ID()))
-						  &&(CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID())<0)
-						  &&(CMLib.ableMapper().availableToTheme(A.ID(),Area.THEME_FANTASY,true))
-						  &&(CMLib.ableMapper().qualifiesByAnyCharClass(A.ID()))
-						  &&(A.isAutoInvoked()||((A.triggerStrings()!=null)&&(A.triggerStrings().length>0)))
-						  &&(mob.fetchAbility(A.ID())==null))
-						  {
-							newOne=A;
-						  }
+							final int lql=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
+							if((lql<25)
+							&&(lql>0))
+							{
+								if((!CMLib.ableMapper().getSecretSkill(C.ID(),true,A.ID()))
+								&&(CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID())<0)
+								&&(CMLib.ableMapper().availableToTheme(A.ID(),Area.THEME_FANTASY,true))
+								&&(CMLib.ableMapper().qualifiesByAnyCharClass(A.ID()))
+								&&(A.isAutoInvoked()||((A.triggerStrings()!=null)&&(A.triggerStrings().length>0)))
+								&&(mob.fetchAbility(A.ID())==null))
+								{
+									newOne=A;
+								}
+							}
 						}
 					}
 				}

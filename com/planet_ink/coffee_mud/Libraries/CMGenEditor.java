@@ -1420,14 +1420,18 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		if((showFlag>0)&&(showFlag!=showNumber))
 			return;
 		if(E instanceof Item)
-			mob.tell(L("@x1. Exit Direction: '@x2'.",""+showNumber,E.doorName()));
+			mob.tell(L("@x1. Exit Direction (or 'null'): '@x2'.",""+showNumber,E.doorName()));
 		else
 			mob.tell(L("@x1. Door Name: '@x2'.",""+showNumber,E.doorName()));
 		if((showFlag!=showNumber)&&(showFlag>-999))
 			return;
-		final String newName=mob.session().prompt(L("Enter something new\n\r:"),"");
+		String newName=mob.session().prompt(L("Enter something new\n\r:"),"");
 		if(newName.length()>0)
+		{
+			if((E instanceof Item)&&(newName.equalsIgnoreCase("null")))
+				newName="";
 			E.setExitParams(newName,E.closeWord(),E.openWord(),E.closedText());
+		}
 		else
 			mob.tell(L("(no change)"));
 	}
@@ -1767,6 +1771,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				if(E instanceof Light)
 				{
 					mob.tell(L("@x1. Light duration (before burn out): '@x2'.",""+showNumber,""+CMath.s_int(E.readableText())));
+					ok=true;
+				}
+				else
+				if(E instanceof LandTitle)
+				{
+					mob.tell(L("@x1. Assigned Property ID: '@x2'.",""+showNumber,E.readableText()));
 					ok=true;
 				}
 				else
@@ -2306,7 +2316,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		}
 	
 		pStats.setBonusCommonSkillLimits(CMath.s_int(mob.session().prompt(L("*. Bonus Common Skills (@x1): ",""+pStats.getBonusCommonSkillLimits()),""+pStats.getBonusCommonSkillLimits())));
-		pStats.setBonusCharStatPoints(CMath.s_int(mob.session().prompt(L("*. Bonus Craft Skills (@x1): ",""+pStats.getBonusCraftingSkillLimits()),""+pStats.getBonusCraftingSkillLimits())));
+		pStats.setBonusCraftingSkillLimits(CMath.s_int(mob.session().prompt(L("*. Bonus Craft Skills (@x1): ",""+pStats.getBonusCraftingSkillLimits()),""+pStats.getBonusCraftingSkillLimits())));
 		pStats.setBonusNonCraftingSkillLimits(CMath.s_int(mob.session().prompt(L("*. Bonus Gather Skills (@x1): ",""+pStats.getBonusNonCraftingSkillLimits()),""+pStats.getBonusNonCraftingSkillLimits())));
 		pStats.setBonusLanguageLimits(CMath.s_int(mob.session().prompt(L("*. Bonus Languages (@x1): ",""+pStats.getBonusLanguageLimits()),""+pStats.getBonusLanguageLimits())));
 		pStats.setBonusCharStatPoints(CMath.s_int(mob.session().prompt(L("*. Bonus Creation Pts (@x1): ",""+pStats.getBonusCharStatPoints()),""+pStats.getBonusCharStatPoints())));
@@ -2397,7 +2407,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	{
 		if((showFlag>0)&&(showFlag!=showNumber))
 			return;
-		final int[] senses={PhyStats.CAN_SEE_DARK,
+		final int[] senses={
+					  PhyStats.CAN_SEE_DARK,
 					  PhyStats.CAN_SEE_HIDDEN,
 					  PhyStats.CAN_SEE_INVISIBLE,
 					  PhyStats.CAN_SEE_SNEAKERS,
@@ -2407,18 +2418,21 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					  PhyStats.CAN_SEE_BONUS,
 					  PhyStats.CAN_NOT_SPEAK,
 					  PhyStats.CAN_NOT_HEAR,
-					  PhyStats.CAN_NOT_SEE};
+					  PhyStats.CAN_NOT_SEE,
+					  PhyStats.CAN_SEE_HIDDEN_ITEMS,
+		};
 		final String[] briefs={"darkvision",
-						 "hidden",
-						 "invisible",
-						 "sneakers",
-						 "infrared",
-						 "good",
-						 "evil",
-						 "magic",
-						 "MUTE",
-						 "DEAF",
-						 "BLIND"};
+								 "hidden",
+								 "invisible",
+								 "sneakers",
+								 "infrared",
+								 "good",
+								 "evil",
+								 "magic",
+								 "mute",
+								 "deaf",
+								 "blind",
+								 "items"};
 		if((showFlag!=showNumber)&&(showFlag>-999))
 		{
 			final StringBuffer buf=new StringBuffer(showNumber+". Senses: ");
@@ -3008,7 +3022,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		final String defaultAmmo=(AW.requiresAmmunition())?"Y":"N";
 		if((showFlag!=showNumber)&&(showFlag>-999))
 		{
-			mob.tell(L("@x1. Ammo required: @x2 (@x3)",""+showNumber,""+AW.requiresAmmunition(),""+AW.ammunitionType()));
+			mob.tell(L("@x1. Ammo required: @x2 (@x3/@x4)",""+showNumber,""+AW.requiresAmmunition(),""+AW.ammunitionCapacity(),""+AW.ammunitionType()));
 			return;
 		}
 
@@ -3189,7 +3203,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		}
 	}
 
-	protected void genMessageTypes(MOB mob, ShipShieldGenerator E, int showNumber, int showFlag) throws IOException
+	protected void genMessageTypes(MOB mob, ShipWarComponent E, int showNumber, int showFlag) throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber))
 			return;
@@ -3198,11 +3212,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		while((S!=null)&&(!S.isStopped())&&(!q))
 		{
 			final StringBuilder str=new StringBuilder("");
-			for(int i=0;i<E.getShieldedMsgTypes().length;i++)
+			for(int i=0;i<E.getDamageMsgTypes().length;i++)
 			{
 				if(i>0)
 					str.append(", ");
-				str.append(CMMsg.TYPE_DESCS[E.getShieldedMsgTypes()[i]]);
+				str.append(CMMsg.TYPE_DESCS[E.getDamageMsgTypes()[i]]);
 			}
 			mob.tell(L("@x1. Shielded Types: '@x2'.",""+showNumber,str.toString()));
 			if((showFlag!=showNumber)&&(showFlag>-999))
@@ -3225,21 +3239,21 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				final int newValue=CMParms.indexOf(CMMsg.TYPE_DESCS, newType.toUpperCase().trim());
 				if(newValue>=0)
 				{
-					if(CMParms.contains(E.getShieldedMsgTypes(), newValue))
+					if(CMParms.contains(E.getDamageMsgTypes(), newValue))
 					{
-						final int[] newSet=new int[E.getShieldedMsgTypes().length-1];
-						for(int o=0,n=0;o<E.getShieldedMsgTypes().length;o++)
+						final int[] newSet=new int[E.getDamageMsgTypes().length-1];
+						for(int o=0,n=0;o<E.getDamageMsgTypes().length;o++)
 						{
-							if(E.getShieldedMsgTypes()[o]!=newValue)
-								newSet[n++]=E.getShieldedMsgTypes()[o];
+							if(E.getDamageMsgTypes()[o]!=newValue)
+								newSet[n++]=E.getDamageMsgTypes()[o];
 						}
-						E.setShieldedMsgTypes(newSet);
+						E.setDamageMsgTypes(newSet);
 					}
 					else
 					{
-						final int[] newSet=Arrays.copyOf(E.getShieldedMsgTypes(),E.getShieldedMsgTypes().length+1);
+						final int[] newSet=Arrays.copyOf(E.getDamageMsgTypes(),E.getDamageMsgTypes().length+1);
 						newSet[newSet.length-1]=newValue;
-						E.setShieldedMsgTypes(newSet);
+						E.setDamageMsgTypes(newSet);
 					}
 				}
 				else
@@ -3742,7 +3756,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			behave=mob.session().prompt(L("Enter a tattoo to add/remove\n\r:"),"");
 			if(behave.length()>0)
 			{
-				final Tattoo pT=CMLib.database().parseTattoo(behave);
+				final Tattoo pT=((Tattoo)CMClass.getCommon("DefaultTattoo")).parse(behave);
 				final Tattoo T=M.findTattoo(pT.getTattooName());
 				if(T!=null)
 				{
@@ -6952,7 +6966,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				final Ability A=CMClass.getAbility(E.getStat("GETRABLE"+v));
 				if(A!=null)
 				{
-					parts.append("("+A.ID()+"/"+E.getStat("GETRABLELVL"+v)+"/"+E.getStat("GETRABLEQUAL"+v)+"/"+E.getStat("GETRABLEPROF"+v));
+					parts.append("("+A.ID()+"/"+E.getStat("GETRABLELVL"+v)+"/"+E.getStat("GETRABLEQUAL"+v)+"/"+E.getStat("GETRABLEPROF"+v)+"/"+E.getStat("GETRABLEPARM"+v));
 					if(CMParms.contains(E.getStatCodes(),"GETRABLEROLE") && (E instanceof ClanGovernment))
 					{
 						final List<String> roleIdsList=CMParms.parseCommas(E.getStat("GETRABLEROLE"+v), true);
@@ -6968,7 +6982,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					else
 						parts.append("), ");
 					ables.addElement(A);
-					data.addElement(A.ID()+";"+E.getStat("GETRABLELVL"+v)+";"+E.getStat("GETRABLEQUAL"+v)+";"+E.getStat("GETRABLEPROF"+v)+";"+E.getStat("GETRABLEROLE"+v));
+					data.addElement(A.ID()+";"+E.getStat("GETRABLELVL"+v)+";"+E.getStat("GETRABLEQUAL"+v)+";"+E.getStat("GETRABLEPROF"+v)+";"+E.getStat("GETRABLEPARM"+v)+";"+E.getStat("GETRABLEROLE"+v));
 				}
 			}
 			if(parts.toString().endsWith(", "))
@@ -7017,6 +7031,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 							str.append("true;");
 						final String prof=mob.session().prompt(L("Enter the (perm) proficiency level (100): "),"100");
 						str.append((""+CMath.s_int(prof))+";");
+						final String parm=mob.session().prompt(L("Enter any default parameters: "),"");
+						str.append(""+parm+";");
 						String roles="";
 						if((CMParms.contains(E.getStatCodes(),"GETRABLEROLE"))&&(E instanceof ClanGovernment))
 						{
@@ -7081,8 +7097,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						E.setStat("GETRABLELVL"+i,(V.get(1)));
 						E.setStat("GETRABLEQUAL"+i,(V.get(2)));
 						E.setStat("GETRABLEPROF"+i,(V.get(3)));
-						if(CMParms.contains(E.getStatCodes(),"GETRABLEROLE")&&(V.size()>4))
-							E.setStat("GETRABLEROLE"+i,(V.get(4)));
+						E.setStat("GETRABLEPARM"+i,(V.get(4)));
+						if(CMParms.contains(E.getStatCodes(),"GETRABLEROLE")&&(V.size()>5))
+							E.setStat("GETRABLEROLE"+i,(V.get(5)));
 					}
 				}
 			}
@@ -8433,6 +8450,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genAgingChart(mob,me,++showNumber,showFlag);
 			promptStatBool(mob,me,++showNumber,showFlag,"Never create corpse","BODYKILL");
 			promptStatBool(mob,me,++showNumber,showFlag,"Rideable Player","CANRIDE");
+			promptStatInt(mob, me, ++showNumber, showFlag, "XP Adjustment %", "XPADJ");
 			genPStats(mob,me,++showNumber,showFlag);
 			genAStats(mob,me,"ASTATS","CharStat Adjustments",++showNumber,showFlag);
 			genAStats(mob,me,"CSTATS","CharStat Settings",++showNumber,showFlag);
@@ -8501,7 +8519,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			{
 				final TechComponent E=(TechComponent)me;
 				E.setInstalledFactor((float)prompt(mob, E.getInstalledFactor(), ++showNumber, showFlag, L("Installed Factor")));
-				E.setRechargeRate(prompt(mob, E.getRechargeRate(), ++showNumber, showFlag, L("Pwr Recharge Rate")));
+				E.setRechargeRate((float)prompt(mob, E.getRechargeRate(), ++showNumber, showFlag, L("Pwr Recharge Rate")));
 			}
 			if(me instanceof ShipEngine)
 			{
@@ -8513,15 +8531,20 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				E.setFuelEfficiency(prompt(mob, E.getFuelEfficiency()*100.0, ++showNumber, showFlag, "Fuel Effic. %")/100.0);
 				E.setAvailPorts(CMParms.parseEnumList(TechComponent.ShipDir.class,prompt(mob, CMParms.toListString(E.getAvailPorts()), ++showNumber, showFlag, "Avail. ports").toUpperCase(),',').toArray(new TechComponent.ShipDir[0]));
 			}
-			if(me instanceof ShipShieldGenerator)
+			if(me instanceof ShipWarComponent)
 			{
-				final ShipShieldGenerator E=(ShipShieldGenerator)me;
+				final ShipWarComponent E=(ShipWarComponent)me;
 				E.setPermittedNumDirections(prompt(mob, E.getPermittedNumDirections(), ++showNumber, showFlag, "Max Ports"));
 				E.setPermittedDirections(CMParms.parseEnumList(TechComponent.ShipDir.class,prompt(mob, CMParms.toListString(E.getPermittedDirections()), ++showNumber, showFlag, "Avail. ports").toUpperCase(),',').toArray(new TechComponent.ShipDir[0]));
 				genMessageTypes(mob, E, ++showNumber, showFlag);
 			}
 			if(me instanceof PackagedItems)
 				((PackagedItems)me).setNumberOfItemsInPackage(prompt(mob,((PackagedItems)me).numberOfItemsInPackage(),++showNumber,showFlag,"Number of items in the package"));
+			if(me instanceof PrivateProperty)
+			{
+				promptStatStr(mob,me,null,++showNumber,showFlag,"Owner","OWNER",true);
+				promptStatInt(mob,me,null,++showNumber,showFlag,"Price","PRICE");
+			}
 			genGettable(mob,me,++showNumber,showFlag);
 			genReadable1(mob,me,++showNumber,showFlag);
 			genReadable2(mob,me,++showNumber,showFlag);
@@ -8573,9 +8596,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				ok=true;
 			}
 		}
-		me.recoverPhyStats();
-		if(me.text().length()>=maxLength)
-			mob.tell(L("\n\rThe data entered exceeds the string limit of @x1 characters.",""+maxLength));
+		if(showFlag != -950)
+		{
+			me.recoverPhyStats();
+			if(me.text().length()>=maxLength)
+				mob.tell(L("\n\rThe data entered exceeds the string limit of @x1 characters.",""+maxLength));
+		}
 	}
 
 	protected void modifyGenFood(MOB mob, Food me, int showFlag)
@@ -8631,9 +8657,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				ok=true;
 			}
 		}
-		me.recoverPhyStats();
-		if(me.text().length()>=maxLength)
-			mob.tell(L("\n\rThe data entered exceeds the string limit of @x1 characters.",""+maxLength));
+		if(showFlag != -950)
+		{
+			me.recoverPhyStats();
+			if(me.text().length()>=maxLength)
+				mob.tell(L("\n\rThe data entered exceeds the string limit of @x1 characters.",""+maxLength));
+		}
 	}
 
 	protected void genScripts(MOB mob, MOB E, int showNumber, int showFlag)
@@ -8736,9 +8765,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				ok=true;
 			}
 		}
-		me.recoverPhyStats();
-		if(me.text().length()>=maxLength)
-			mob.tell(L("\n\rThe data entered exceeds the string limit of @x1 characters.",""+maxLength));
+		if(showFlag != -950)
+		{
+			me.recoverPhyStats();
+			if(me.text().length()>=maxLength)
+				mob.tell(L("\n\rThe data entered exceeds the string limit of @x1 characters.",""+maxLength));
+		}
 	}
 
 	protected void modifyGenWallpaper(MOB mob, Item me, int showFlag)
@@ -8780,9 +8812,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				ok=true;
 			}
 		}
-		me.recoverPhyStats();
-		if(me.text().length()>=maxLength)
-			mob.tell(L("\n\rThe data entered exceeds the string limit of @x1 characters.",""+maxLength));
+		if(showFlag != -950)
+		{
+			me.recoverPhyStats();
+			if(me.text().length()>=maxLength)
+				mob.tell(L("\n\rThe data entered exceeds the string limit of @x1 characters.",""+maxLength));
+		}
 	}
 
 	protected void modifyGenMap(MOB mob, com.planet_ink.coffee_mud.Items.interfaces.RoomMap me, int showFlag)
@@ -8834,9 +8869,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				ok=true;
 			}
 		}
-		me.recoverPhyStats();
-		if(me.text().length()>=maxLength)
-			mob.tell(L("\n\rThe data entered exceeds the string limit of @x1 characters.",""+maxLength));
+		if(showFlag != -950)
+		{
+			me.recoverPhyStats();
+			if(me.text().length()>=maxLength)
+				mob.tell(L("\n\rThe data entered exceeds the string limit of @x1 characters.",""+maxLength));
+		}
 	}
 
 	protected void modifyGenContainer(MOB mob, Container me, int showFlag)
@@ -8892,11 +8930,16 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			{
 				final TechComponent E=(TechComponent)me;
 				E.setInstalledFactor((float)prompt(mob, E.getInstalledFactor(), ++showNumber, showFlag, "Installed Factor"));
-				E.setRechargeRate(prompt(mob, E.getRechargeRate(), ++showNumber, showFlag, L("Pwr Recharge Rate")));
+				E.setRechargeRate((float)prompt(mob, E.getRechargeRate(), ++showNumber, showFlag, L("Pwr Recharge Rate")));
 			}
 			if(!(me instanceof Electronics))
 			{
 				genContainerTypes(mob,me,++showNumber,showFlag);
+			}
+			if(me instanceof PrivateProperty)
+			{
+				promptStatStr(mob,me,null,++showNumber,showFlag,"Owner","OWNER",true);
+				promptStatInt(mob,me,null,++showNumber,showFlag,"Price","PRICE");
 			}
 			genDoorsNLocks(mob,me,L("lid"),++showNumber,showFlag);
 			if(me.hasADoor() && me.hasALock() && !CMLib.flags().isReadable(me))
@@ -8957,9 +9000,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				ok=true;
 			}
 		}
-		me.recoverPhyStats();
-		if(me.text().length()>=maxLength)
-			mob.tell(L("\n\rThe data entered exceeds the string limit of @x1 characters.",""+maxLength));
+		if(showFlag != -950)
+		{
+			me.recoverPhyStats();
+			if(me.text().length()>=maxLength)
+				mob.tell(L("\n\rThe data entered exceeds the string limit of @x1 characters.",""+maxLength));
+		}
 	}
 
 	protected void modifyGenWeapon(MOB mob, Weapon me, int showFlag)
@@ -8988,6 +9034,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genWeaponType(mob,me,++showNumber,showFlag);
 			genWeaponClassification(mob,me,++showNumber,showFlag);
 			genWeaponRanges(mob,me,++showNumber,showFlag);
+			if(me instanceof Rideable)
+			{
+				genRideable1(mob,(Rideable)me,++showNumber,showFlag);
+				genRideable2(mob,(Rideable)me,++showNumber,showFlag);
+			}
 			if(me instanceof Wand)
 			{
 				genReadable1(mob,me,++showNumber,showFlag);
@@ -9043,9 +9094,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				ok=true;
 			}
 		}
-		me.recoverPhyStats();
-		if(me.text().length()>=maxLength)
-			mob.tell(L("\n\rThe data entered exceeds the string limit of @x1 characters.",""+maxLength));
+		if(showFlag != -950)
+		{
+			me.recoverPhyStats();
+			if(me.text().length()>=maxLength)
+				mob.tell(L("\n\rThe data entered exceeds the string limit of @x1 characters.",""+maxLength));
+		}
 	}
 
 	protected void modifyGenArmor(MOB mob, Armor me, int showFlag)
@@ -9089,7 +9143,10 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				{
 					genContainerTypes(mob,(Container)me,++showNumber,showFlag);
 				}
-				genDoorsNLocks(mob,(Container)me,L("lid"),++showNumber,showFlag);
+				if(me.ID().equalsIgnoreCase("GenCloak"))
+					me.setStat("READABLETEXT", prompt(mob,me.getStat("READABLETEXT"),++showNumber,showFlag,L("Cloak Name")));
+				else
+					genDoorsNLocks(mob,(Container)me,L("lid"),++showNumber,showFlag);
 			}
 			//genReadable1(mob,me,++showNumber,showFlag); // since they can have keys, no readability for you.
 			//genReadable2(mob,me,++showNumber,showFlag);
@@ -9123,9 +9180,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				ok=true;
 			}
 		}
-		me.recoverPhyStats();
-		if(me.text().length()>=maxLength)
-			mob.tell(L("\n\rThe data entered exceeds the string limit of @x1 characters.",""+maxLength));
+		if(showFlag != -950)
+		{
+			me.recoverPhyStats();
+			if(me.text().length()>=maxLength)
+				mob.tell(L("\n\rThe data entered exceeds the string limit of @x1 characters.",""+maxLength));
+		}
 	}
 
 
@@ -9179,9 +9239,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				ok=true;
 			}
 		}
-		me.recoverPhyStats();
-		if(me.text().length()>=maxLength)
-			mob.tell(L("\n\rThe data entered exceeds the string limit of @x1 characters.",""+maxLength));
+		if(showFlag != -950)
+		{
+			me.recoverPhyStats();
+			if(me.text().length()>=maxLength)
+				mob.tell(L("\n\rThe data entered exceeds the string limit of @x1 characters.",""+maxLength));
+		}
 	}
 
 
@@ -9236,9 +9299,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				ok=true;
 			}
 		}
-		me.recoverPhyStats();
-		if(me.text().length()>=maxLength)
-			mob.tell(L("\n\rThe data entered exceeds the string limit of @x1 characters.",""+maxLength));
+		if(showFlag != -950)
+		{
+			me.recoverPhyStats();
+			if(me.text().length()>=maxLength)
+				mob.tell(L("\n\rThe data entered exceeds the string limit of @x1 characters.",""+maxLength));
+		}
 	}
 
 
@@ -9359,12 +9425,15 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				ok=true;
 			}
 		}
-		me.recoverCharStats();
-		me.recoverMaxState();
-		me.recoverPhyStats();
-		me.resetToMaxState();
-		if(me.text().length()>=maxLength)
-			mob.tell(L("\n\rThe data entered exceeds the string limit of @x1 characters.",""+maxLength));
+		if(showFlag != -950)
+		{
+			me.recoverCharStats();
+			me.recoverMaxState();
+			me.recoverPhyStats();
+			me.resetToMaxState();
+			if(me.text().length()>=maxLength)
+				mob.tell(L("\n\rThe data entered exceeds the string limit of @x1 characters.",""+maxLength));
+		}
 	}
 
 	@Override
@@ -9714,7 +9783,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			final Room newRoom=CMLib.map().getRoom(newName);
 			if((newRoom==null)
 			||(CMLib.map().getExtendedRoomID(newRoom).length()==0)
-			||(!CMLib.law().doesOwnThisLand(C.clanID(),newRoom)))
+			||(!CMLib.law().doesOwnThisProperty(C.clanID(),newRoom)))
 				mob.tell(L("That is either not a valid room id, or that room is not owned by the clan."));
 			else
 				return CMLib.map().getExtendedRoomID(newRoom);
@@ -9898,12 +9967,15 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				ok=true;
 			}
 		}
-		M.recoverCharStats();
-		M.recoverMaxState();
-		M.recoverPhyStats();
-		M.resetToMaxState();
-		if(me.text().length()>=maxLength)
-			mob.tell(L("\n\rThe data entered exceeds the string limit of @x1 characters.",""+maxLength));
+		if(showFlag != -950)
+		{
+			M.recoverCharStats();
+			M.recoverMaxState();
+			M.recoverPhyStats();
+			M.resetToMaxState();
+			if(me.text().length()>=maxLength)
+				mob.tell(L("\n\rThe data entered exceeds the string limit of @x1 characters.",""+maxLength));
+		}
 	}
 
 	@Override
@@ -10023,41 +10095,59 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	}
 
 	@Override
-	public void modifyStdMob(MOB mob, MOB thang, int showFlag) throws IOException
+	public void modifyStdMob(MOB mob, MOB E, int showFlag) throws IOException
 	{
-		if((showFlag == -1) && (CMProps.getIntVar(CMProps.Int.EDITORTYPE)>0))
-			showFlag=-999;
-		boolean ok=false;
-		while(!ok)
+		try
 		{
-			int showNumber=0;
-			if(showFlag<0)
-				mob.tell(L("*. Class: @x1",thang.ID()));
-			genLevel(mob,thang,++showNumber,showFlag);
-			genAbility(mob,thang,++showNumber,showFlag);
-			genRejuv(mob,thang,++showNumber,showFlag);
-			genMiscText(mob,thang,++showNumber,showFlag);
-			if (showFlag < -900)
+			if(E!=mob)
+				CMLib.threads().suspendTicking(E, -1);
+			if((showFlag == -1) && (CMProps.getIntVar(CMProps.Int.EDITORTYPE)>0))
+				showFlag=-999;
+			boolean ok=false;
+			while(!ok)
 			{
-				ok = true;
-				break;
+				int showNumber=0;
+				if(CMLib.flags().isCataloged(E))
+				{
+					if(CMLib.catalog().isCatalogObj(E.Name()))
+						mob.tell(L("*** This object is Cataloged **\n\r"));
+					else
+						mob.tell(L("*** This object WAS cataloged and is still tied **\n\r"));
+				}
+				if(showFlag<0)
+					mob.tell(L("*. Class: @x1",E.ID()));
+				genLevel(mob,E,++showNumber,showFlag);
+				genAbility(mob,E,++showNumber,showFlag);
+				genRejuv(mob,E,++showNumber,showFlag);
+				genMiscText(mob,E,++showNumber,showFlag);
+				if (showFlag < -900)
+				{
+					ok = true;
+					break;
+				}
+				if (showFlag > 0)
+				{
+					showFlag = -1;
+					continue;
+				}
+				showFlag=CMath.s_int(mob.session().prompt(L("Edit which? "),""));
+				if(showFlag<=0)
+				{
+					showFlag=-1;
+					ok=true;
+				}
 			}
-			if (showFlag > 0)
-			{
-				showFlag = -1;
-				continue;
-			}
-			showFlag=CMath.s_int(mob.session().prompt(L("Edit which? "),""));
-			if(showFlag<=0)
-			{
-				showFlag=-1;
-				ok=true;
-			}
+			catalogCheckUpdate(mob, E);
+		}
+		finally
+		{
+			if(E!=mob)
+				CMLib.threads().resumeTicking(E, -1);
 		}
 	}
 
 	@Override
-	public void modifyStdItem(MOB mob, Item thang, int showFlag) throws IOException
+	public void modifyStdItem(MOB mob, Item E, int showFlag) throws IOException
 	{
 		if((showFlag == -1) && (CMProps.getIntVar(CMProps.Int.EDITORTYPE)>0))
 			showFlag=-999;
@@ -10065,13 +10155,20 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		while(!ok)
 		{
 			int showNumber=0;
+			if(CMLib.flags().isCataloged(E))
+			{
+				if(CMLib.catalog().isCatalogObj(E.Name()))
+					mob.tell(L("*** This object is Cataloged **\n\r"));
+				else
+					mob.tell(L("*** This object WAS cataloged and is still tied **\n\r"));
+			}
 			if(showFlag<0)
-				mob.tell(L("*. Class: @x1",thang.ID()));
-			genLevel(mob,thang,++showNumber,showFlag);
-			genAbility(mob,thang,++showNumber,showFlag);
-			genRejuv(mob,thang,++showNumber,showFlag);
-			genUses(mob,thang,++showNumber,showFlag);
-			genMiscText(mob,thang,++showNumber,showFlag);
+				mob.tell(L("*. Class: @x1",E.ID()));
+			genLevel(mob,E,++showNumber,showFlag);
+			genAbility(mob,E,++showNumber,showFlag);
+			genRejuv(mob,E,++showNumber,showFlag);
+			genUses(mob,E,++showNumber,showFlag);
+			genMiscText(mob,E,++showNumber,showFlag);
 			if (showFlag < -900)
 			{
 				ok = true;
@@ -10089,6 +10186,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				ok=true;
 			}
 		}
+		catalogCheckUpdate(mob, E);
 	}
 
 	@Override

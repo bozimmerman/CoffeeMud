@@ -256,7 +256,10 @@ public class MUDGrinder extends StdWebMacro
 					return map.getHTMLMap(httpReq).toString();
 				return map.getHTMLMap(httpReq, roomSize).toString();
 			}
-			catch(final Exception e){e.printStackTrace();}
+			catch (final Exception e)
+			{
+				e.printStackTrace();
+			}
 		}
 		else
 		if(parms.containsKey("WORLDMAP"))
@@ -702,7 +705,7 @@ public class MUDGrinder extends StdWebMacro
 			final Room R=getRoomObject(httpReq,httpReq.getUrlParameter("ROOM"));
 			if(R==null)
 				return "@break@";
-			final int dir=Directions.getGoodDirectionCode(httpReq.getUrlParameter("LINK"));
+			final int dir=CMLib.directions().getGoodDirectionCode(httpReq.getUrlParameter("LINK"));
 			if(dir<0)
 				return "@break@";
 			Log.sysOut("Grinder",mob.Name()+" deleted exit "+dir+" from "+R.roomID());
@@ -718,7 +721,7 @@ public class MUDGrinder extends StdWebMacro
 			final Room R=getRoomObject(httpReq,httpReq.getUrlParameter("ROOM"));
 			if(R==null)
 				return "@break@";
-			final int dir=Directions.getGoodDirectionCode(httpReq.getUrlParameter("LINK"));
+			final int dir=CMLib.directions().getGoodDirectionCode(httpReq.getUrlParameter("LINK"));
 			if(dir<0)
 				return "@break@";
 			Log.sysOut("Grinder",mob.Name()+" modified exit "+dir+" from "+R.roomID());
@@ -749,13 +752,13 @@ public class MUDGrinder extends StdWebMacro
 			final Room R=getRoomObject(httpReq,httpReq.getUrlParameter("ROOM"));
 			if(R==null)
 				return "@break@";
-			final int dir=Directions.getGoodDirectionCode(httpReq.getUrlParameter("LINK"));
+			final int dir=CMLib.directions().getGoodDirectionCode(httpReq.getUrlParameter("LINK"));
 			if(dir<0)
 				return "@break@";
 			final Room R2=getRoomObject(httpReq,httpReq.getUrlParameter("OLDROOM"));
 			if(R2==null)
 				return "@break@";
-			final int dir2=Directions.getGoodDirectionCode(httpReq.getUrlParameter("OLDLINK"));
+			final int dir2=CMLib.directions().getGoodDirectionCode(httpReq.getUrlParameter("OLDLINK"));
 			if(dir2<0)
 				return "@break@";
 			Log.sysOut("Grinder",mob.Name()+" linked exit "+dir+" from "+R.roomID());
@@ -771,7 +774,7 @@ public class MUDGrinder extends StdWebMacro
 			final Room R=getRoomObject(httpReq,httpReq.getUrlParameter("ROOM"));
 			if(R==null)
 				return "@break@";
-			final int dir=Directions.getGoodDirectionCode(httpReq.getUrlParameter("LINK"));
+			final int dir=CMLib.directions().getGoodDirectionCode(httpReq.getUrlParameter("LINK"));
 			if(dir<0)
 				return "@break@";
 			String oldroom=httpReq.getUrlParameter("OLDROOM");
@@ -1183,12 +1186,14 @@ public class MUDGrinder extends StdWebMacro
 			for(final Room R : rooms)
 			{
 				for(int d=0;d<R.rawDoors().length;d++)
+				{
 					if(R.rawDoors()[d]!=null)
 					{
 						httpReq.addFakeUrlParameter("ROOM",R.rawDoors()[d].roomID());
 						httpReq.addFakeUrlParameter("LINK","");
 						break;
 					}
+				}
 				Log.sysOut("Grinder",mob.Name()+" deleted room "+R.roomID());
 				errMsg+=GrinderRooms.delRoom(R)+" ";
 			}
@@ -1244,7 +1249,7 @@ public class MUDGrinder extends StdWebMacro
 			Room R=getRoomObject(httpReq,httpReq.getUrlParameter("ROOM"));
 			if(R==null)
 				return "@break@";
-			final int dir=Directions.getGoodDirectionCode(link);
+			final int dir=CMLib.directions().getGoodDirectionCode(link);
 			if(dir<0)
 				return "@break@";
 			final String copyThisOne=httpReq.getUrlParameter("COPYROOM");

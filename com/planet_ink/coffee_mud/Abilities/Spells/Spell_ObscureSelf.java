@@ -35,15 +35,48 @@ import java.util.*;
 
 public class Spell_ObscureSelf extends Spell
 {
-	@Override public String ID() { return "Spell_ObscureSelf"; }
-	private final static String localizedName = CMLib.lang().L("Obscure Self");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Obscure Self)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
-	private final static String[][] stuff={
+	@Override
+	public String ID()
+	{
+		return "Spell_ObscureSelf";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Obscure Self");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Obscure Self)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_SELF;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL | Ability.DOMAIN_ILLUSION;
+	}
+
+	private final static String[][] stuff=
+	{
 		{"<S-NAME>","<T-NAME>","someone"},
 		{"<S-HIS-HER>","<T-HIS-HER>","his or her"},
 		{"<S-HIM-HER>","<T-HIM-HER>","him or her"},
@@ -53,7 +86,6 @@ public class Spell_ObscureSelf extends Spell
 		{"<S-HIM-HERSELF>","<T-HIM-HERSELF>","him or herself"},
 		{"<S-HIS-HERSELF>","<T-HIS-HERSELF>","his or herself"}
 	};
-
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
@@ -70,9 +102,10 @@ public class Spell_ObscureSelf extends Spell
 		int x=0;
 		if((msg.amITarget(mob))&&(msg.targetMinor()!=CMMsg.TYP_DAMAGE))
 		{
-			if((!msg.amISource(mob))&&((msg.targetMinor()==CMMsg.TYP_LOOK)
-										||(msg.targetMinor()==CMMsg.TYP_EXAMINE)
-										||(msg.targetMinor()==CMMsg.TYP_READ)))
+			if((!msg.amISource(mob))
+			&&((msg.targetMinor()==CMMsg.TYP_LOOK)
+				||(msg.targetMinor()==CMMsg.TYP_EXAMINE)
+				||(msg.targetMinor()==CMMsg.TYP_READ)))
 			{
 				msg.source().tell(L("He or she is too vague to make out any details."));
 				return false;
@@ -149,8 +182,10 @@ public class Spell_ObscureSelf extends Spell
 		super.unInvoke();
 
 		if(canBeUninvoked())
+		{
 			if((mob.location()!=null)&&(!mob.amDead()))
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> seem(s) a bit less obscure."));
+		}
 	}
 
 	@Override

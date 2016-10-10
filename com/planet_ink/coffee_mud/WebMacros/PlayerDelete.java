@@ -35,8 +35,17 @@ import java.util.*;
 */
 public class PlayerDelete extends StdWebMacro
 {
-	@Override public String name() { return "PlayerDelete"; }
-	@Override public boolean isAdminMacro()	{return true;}
+	@Override
+	public String name()
+	{
+		return "PlayerDelete";
+	}
+
+	@Override
+	public boolean isAdminMacro()
+	{
+		return true;
+	}
 
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)

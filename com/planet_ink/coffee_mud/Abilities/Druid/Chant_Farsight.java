@@ -36,13 +36,43 @@ import java.util.*;
 
 public class Chant_Farsight extends Chant
 {
-	@Override public String ID() { return "Chant_Farsight"; }
-	private final static String localizedName = CMLib.lang().L("Eaglesight");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return 0;}
+	@Override
+	public String ID()
+	{
+		return "Chant_Farsight";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Eaglesight");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT | Ability.DOMAIN_ENDURING;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -79,7 +109,7 @@ public class Chant_Farsight extends Chant
 
 						if((exit!=null)&&(room!=null)&&(CMLib.flags().canBeSeenBy(exit,mob)&&(exit.isOpen())))
 						{
-							mob.tell("^D" + CMStrings.padRight(Directions.getDirectionName(d),5)+":^.^N ^d"+exit.viewableText(mob, room)+"^N");
+							mob.tell("^D" + CMStrings.padRight(CMLib.directions().getDirectionName(d),5)+":^.^N ^d"+exit.viewableText(mob, room)+"^N");
 							exit=room.getExitInDir(d);
 							room=room.getRoomInDir(d);
 							if((exit!=null)&&(room!=null)&&(CMLib.flags().canBeSeenBy(exit,mob)&&(exit.isOpen())))
@@ -99,7 +129,7 @@ public class Chant_Farsight extends Chant
 				while(commands.size()>0)
 				{
 					final String whatToOpen=commands.get(0);
-					int dirCode=Directions.getGoodDirectionCode(whatToOpen);
+					int dirCode=CMLib.directions().getGoodDirectionCode(whatToOpen);
 					final Exit exit;
 					final Room room;
 					if(dirCode < 0)
@@ -108,7 +138,7 @@ public class Chant_Farsight extends Chant
 						if((I instanceof Exit)&&(CMLib.flags().canBeSeenBy(I, mob)))
 						{
 							exit=(Exit)I;
-							room=((Exit)I).lastRoomUsedFrom();
+							room=((Exit)I).lastRoomUsedFrom(mob.location());
 							dirCode=Directions.GATE;
 						}
 						else
@@ -156,7 +186,6 @@ public class Chant_Farsight extends Chant
 				}
 			}
 		}
-
 		return success;
 	}
 }

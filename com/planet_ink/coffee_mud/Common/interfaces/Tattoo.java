@@ -55,7 +55,20 @@ public interface Tattoo extends Cloneable, CMObject, CMCommon
 	public int tickDown();
 	
 	/**
+	 * Returns the tattoo Name
 	 * @return the tattooName
 	 */
 	public String getTattooName();
+	
+	/**
+	 * Parse a new tattoo object from the
+	 * coded data, of the form:
+	 * TATOONAME
+	 * or
+	 * NUMBER TATTOONAME
+	 * 
+	 * @param tattooCode coded data
+	 * @return this tattoo
+	 */
+	public Tattoo parse(String tattooCode);
 }

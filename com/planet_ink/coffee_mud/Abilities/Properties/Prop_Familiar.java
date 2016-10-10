@@ -36,29 +36,62 @@ import java.util.*;
 */
 public class Prop_Familiar extends Property
 {
-	@Override public String ID() { return "Prop_Familiar"; }
-	@Override public String name(){ return "Find Familiar Property";}
-	protected String displayText=L("Familiarity with an animal");
-	@Override public String displayText() {return displayText;}
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
-	protected final static int DOG=0;
-	protected final static int TURTLE=1;
-	protected final static int CAT=2;
-	protected final static int BAT=3;
-	protected final static int RAT=4;
-	protected final static int SNAKE=5;
-	protected final static int OWL=6;
-	protected final static int RABBIT=7;
-	protected final static int RAVEN=8;
-	protected final static String[] names={"dog","turtle","cat","bat","rat","snake",
-										 "owl","rabbit","raven"};
+	@Override
+	public String ID()
+	{
+		return "Prop_Familiar";
+	}
 
-	protected MOB familiarTo=null;
-	protected MOB familiarWith=null;
-	protected boolean imthedaddy=false;
-	protected int familiarType=0;
-	protected int[] lastBreathablesSet=null;
-	protected int[] newBreathablesSet=null;
+	@Override
+	public String name()
+	{
+		return "Find Familiar Property";
+	}
+
+	protected String	displayText	= L("Familiarity with an animal");
+
+	@Override
+	public String displayText()
+	{
+		return displayText;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	protected enum Familiar
+	{
+		DOG("dog"),
+		TURTLE("turtle"),
+		CAT("cat"),
+		BAT("bat"),
+		RAT("rat"),
+		SNAKE("snake"),
+		OWL("owl"),
+		RABBIT("rabbit"),
+		RAVEN("raven"),
+		PARROT("parrot"),
+		SPIDERMONKEY("spidermonkey"),
+		BOA_CONSTRICTOR("boa constrictor"),
+		IGUANA("iguana"),
+		SEATURTLE("sea turtle")
+		;
+		public String name;
+		private Familiar(String name)
+		{
+			this.name=name;
+		}
+	}
+	
+	protected MOB		familiarTo			= null;
+	protected MOB		familiarWith		= null;
+	protected boolean	imthedaddy			= false;
+	protected Familiar	familiarType		= Familiar.DOG;
+	protected int[]		lastBreathablesSet	= null;
+	protected int[]		newBreathablesSet	= null;
 
 	@Override
 	public String accountForYourself()
@@ -66,7 +99,11 @@ public class Prop_Familiar extends Property
 		return "is a familiar MOB";
 	}
 
-	@Override public long flags(){return Ability.FLAG_ADJUSTER;}
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_ADJUSTER;
+	}
 
 	public boolean removeMeFromFamiliarTo()
 	{
@@ -152,34 +189,52 @@ public class Prop_Familiar extends Property
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-
+		final MOB familiarWith=this.familiarWith;
+		final MOB familiarTo=this.familiarTo;
 		if((familiarWith!=null)
 		&&(familiarTo!=null)
 		&&(familiarWith.location()==familiarTo.location()))
-		switch(familiarType)
 		{
-		case DOG:
+			switch(familiarType)
+			{
+			case DOG:
 				affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_HIDDEN);
 				break;
-		case TURTLE:
+			case TURTLE:
 				break;
-		case CAT:
+			case CAT:
 				break;
-		case BAT:
+			case BAT:
 				if(((affectableStats.sensesMask()&PhyStats.CAN_NOT_SEE)>0)&&(affected instanceof MOB))
 					affectableStats.setSensesMask(affectableStats.sensesMask()-PhyStats.CAN_NOT_SEE);
 				break;
-		case RAT:
+			case RAT:
 				break;
-		case SNAKE:
+			case SNAKE:
 				break;
-		case OWL:
+			case OWL:
 				affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_INFRARED);
 				break;
-		case RABBIT:
+			case RABBIT:
 				break;
-		case RAVEN:
+			case RAVEN:
 				break;
+			case BOA_CONSTRICTOR:
+				break;
+			case IGUANA:
+				break;
+			case PARROT:
+				if((affected == familiarWith)&&(!familiarWith.isInCombat()))
+				{
+					affectableStats.addAmbiance(L("on @x1`s shoulder",familiarTo.name()));
+					affectableStats.setDisposition(CMath.unsetb(affectableStats.disposition(), PhyStats.IS_FLYING));
+				}
+				break;
+			case SEATURTLE:
+				break;
+			case SPIDERMONKEY:
+				break;
+			}
 		}
 	}
 
@@ -189,10 +244,10 @@ public class Prop_Familiar extends Property
 		if(((msg.targetMajor()&CMMsg.MASK_MALICIOUS)>0)
 		&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
 		&&(familiarWith!=null)
-		&&(familiarTo!=null)
+		&&(familiarType==Familiar.RABBIT)
 		&&((msg.amITarget(familiarWith))||(msg.amITarget(familiarTo)))
 		&&(familiarWith.location()==familiarTo.location())
-		&&(familiarType==RABBIT))
+		)
 		{
 			final MOB target=(MOB)msg.target();
 			if((!target.isInCombat())
@@ -223,12 +278,29 @@ public class Prop_Familiar extends Property
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
-		familiarType=CMath.s_int(newText);
-		if(newText.trim().length()>2)
-		for(int i=0;i<names.length;i++)
-			if(newText.trim().equalsIgnoreCase(names[i]))
-			{ familiarType=i; break;}
-		displayText=L("(Familiarity with the @x1)",names[familiarType]);
+		if(CMath.isInteger(newText))
+			familiarType=Familiar.values()[CMath.s_int(newText)];
+		else
+		{
+			if(newText.trim().length()>2)
+			{
+				newText=newText.trim();
+				for(int i=0;i<Familiar.values().length;i++)
+				{
+					if(Familiar.values()[i].name().equalsIgnoreCase(newText))
+					{
+						familiarType=Familiar.values()[i];
+						break;
+					}
+					if(Familiar.values()[i].name.equalsIgnoreCase(newText))
+					{
+						familiarType=Familiar.values()[i];
+						break;
+					}
+				}
+			}
+		}
+		displayText=L("(Familiarity with the @x1)",familiarType.name);
 	}
 
 	@Override
@@ -240,54 +312,87 @@ public class Prop_Familiar extends Property
 		switch(familiarType)
 		{
 		case DOG:
-				affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_STRENGTH)+1);
-				break;
+			affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_STRENGTH)+1);
+			break;
 		case TURTLE:
+		{
+			final int[] breatheables=affectableStats.getBreathables();
+			if(breatheables.length==0)
+				return;
+			if((lastBreathablesSet!=breatheables)||(newBreathablesSet==null))
 			{
-				final int[] breatheables=affectableStats.getBreathables();
-				if(breatheables.length==0)
-					return;
-				if((lastBreathablesSet!=breatheables)||(newBreathablesSet==null))
-				{
-					newBreathablesSet=Arrays.copyOf(affectableStats.getBreathables(),affectableStats.getBreathables().length+2);
-					newBreathablesSet[newBreathablesSet.length-1]=RawMaterial.RESOURCE_SALTWATER;
-					newBreathablesSet[newBreathablesSet.length-2]=RawMaterial.RESOURCE_FRESHWATER;
-					Arrays.sort(newBreathablesSet);
-					lastBreathablesSet=breatheables;
-				}
-				affectableStats.setBreathables(newBreathablesSet);
-				affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_STRENGTH)+1);
-				break;
+				newBreathablesSet=Arrays.copyOf(affectableStats.getBreathables(),affectableStats.getBreathables().length+2);
+				newBreathablesSet[newBreathablesSet.length-1]=RawMaterial.RESOURCE_SALTWATER;
+				newBreathablesSet[newBreathablesSet.length-2]=RawMaterial.RESOURCE_FRESHWATER;
+				Arrays.sort(newBreathablesSet);
+				lastBreathablesSet=breatheables;
 			}
+			affectableStats.setBreathables(newBreathablesSet);
+			affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_STRENGTH)+1);
+			break;
+		}
 		case CAT:
-				affectableStats.setStat(CharStats.STAT_DEXTERITY,affectableStats.getStat(CharStats.STAT_DEXTERITY)+1);
-				if(affectableStats.getStat(CharStats.STAT_SAVE_PARALYSIS)<500)
-					affectableStats.setStat(CharStats.STAT_SAVE_PARALYSIS,affectableStats.getStat(CharStats.STAT_SAVE_PARALYSIS)+100);
-				break;
+			affectableStats.setStat(CharStats.STAT_DEXTERITY,affectableStats.getStat(CharStats.STAT_DEXTERITY)+1);
+			if(affectableStats.getStat(CharStats.STAT_SAVE_PARALYSIS)<500)
+				affectableStats.setStat(CharStats.STAT_SAVE_PARALYSIS,affectableStats.getStat(CharStats.STAT_SAVE_PARALYSIS)+100);
+			break;
 		case BAT:
-				affectableStats.setStat(CharStats.STAT_DEXTERITY,affectableStats.getStat(CharStats.STAT_DEXTERITY)+1);
-				break;
+			affectableStats.setStat(CharStats.STAT_DEXTERITY,affectableStats.getStat(CharStats.STAT_DEXTERITY)+1);
+			break;
 		case RAT:
-				if(affectableStats.getStat(CharStats.STAT_SAVE_DISEASE)<500)
-					affectableStats.setStat(CharStats.STAT_SAVE_DISEASE,affectableStats.getStat(CharStats.STAT_SAVE_DISEASE)+100);
-				affectableStats.setStat(CharStats.STAT_CONSTITUTION,affectableStats.getStat(CharStats.STAT_CONSTITUTION)+1);
-				break;
+			if(affectableStats.getStat(CharStats.STAT_SAVE_DISEASE)<500)
+				affectableStats.setStat(CharStats.STAT_SAVE_DISEASE,affectableStats.getStat(CharStats.STAT_SAVE_DISEASE)+100);
+			affectableStats.setStat(CharStats.STAT_CONSTITUTION,affectableStats.getStat(CharStats.STAT_CONSTITUTION)+1);
+			break;
 		case SNAKE:
-				if(affectableStats.getStat(CharStats.STAT_SAVE_POISON)<500)
-					affectableStats.setStat(CharStats.STAT_SAVE_POISON,affectableStats.getStat(CharStats.STAT_SAVE_POISON)+100);
-				affectableStats.setStat(CharStats.STAT_CONSTITUTION,affectableStats.getStat(CharStats.STAT_CONSTITUTION)+1);
-				break;
+			if(affectableStats.getStat(CharStats.STAT_SAVE_POISON)<500)
+				affectableStats.setStat(CharStats.STAT_SAVE_POISON,affectableStats.getStat(CharStats.STAT_SAVE_POISON)+100);
+			affectableStats.setStat(CharStats.STAT_CONSTITUTION,affectableStats.getStat(CharStats.STAT_CONSTITUTION)+1);
+			break;
 		case OWL:
-				affectableStats.setStat(CharStats.STAT_WISDOM,affectableStats.getStat(CharStats.STAT_WISDOM)+1);
-				break;
+			affectableStats.setStat(CharStats.STAT_WISDOM,affectableStats.getStat(CharStats.STAT_WISDOM)+1);
+			break;
 		case RABBIT:
-				affectableStats.setStat(CharStats.STAT_CHARISMA,affectableStats.getStat(CharStats.STAT_CHARISMA)+1);
-				break;
+			affectableStats.setStat(CharStats.STAT_CHARISMA,affectableStats.getStat(CharStats.STAT_CHARISMA)+1);
+			break;
 		case RAVEN:
-				if(affectableStats.getStat(CharStats.STAT_SAVE_UNDEAD)<500)
-					affectableStats.setStat(CharStats.STAT_SAVE_UNDEAD,affectableStats.getStat(CharStats.STAT_SAVE_UNDEAD)+100);
-				affectableStats.setStat(CharStats.STAT_INTELLIGENCE,affectableStats.getStat(CharStats.STAT_INTELLIGENCE)+1);
-				break;
+			if(affectableStats.getStat(CharStats.STAT_SAVE_UNDEAD)<500)
+				affectableStats.setStat(CharStats.STAT_SAVE_UNDEAD,affectableStats.getStat(CharStats.STAT_SAVE_UNDEAD)+100);
+			affectableStats.setStat(CharStats.STAT_INTELLIGENCE,affectableStats.getStat(CharStats.STAT_INTELLIGENCE)+1);
+			break;
+		case BOA_CONSTRICTOR:
+			affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_STRENGTH)+1);
+			break;
+		case IGUANA:
+			if(affectableStats.getStat(CharStats.STAT_SAVE_UNDEAD)<500)
+				affectableStats.setStat(CharStats.STAT_SAVE_UNDEAD,affectableStats.getStat(CharStats.STAT_SAVE_UNDEAD)+100);
+			affectableStats.setStat(CharStats.STAT_INTELLIGENCE,affectableStats.getStat(CharStats.STAT_INTELLIGENCE)+1);
+			break;
+		case PARROT:
+			affectableStats.setStat(CharStats.STAT_CHARISMA,affectableStats.getStat(CharStats.STAT_CHARISMA)+1);
+			break;
+		case SEATURTLE:
+			final int[] breatheables=affectableStats.getBreathables();
+			if(breatheables.length==0)
+				return;
+			if((lastBreathablesSet!=breatheables)||(newBreathablesSet==null))
+			{
+				newBreathablesSet=Arrays.copyOf(affectableStats.getBreathables(),affectableStats.getBreathables().length+2);
+				newBreathablesSet[newBreathablesSet.length-1]=RawMaterial.RESOURCE_SALTWATER;
+				newBreathablesSet[newBreathablesSet.length-2]=RawMaterial.RESOURCE_FRESHWATER;
+				Arrays.sort(newBreathablesSet);
+				lastBreathablesSet=breatheables;
+			}
+			affectableStats.setBreathables(newBreathablesSet);
+			affectableStats.setStat(CharStats.STAT_CONSTITUTION,affectableStats.getStat(CharStats.STAT_CONSTITUTION)+1);
+			break;
+		case SPIDERMONKEY:
+			affectableStats.setStat(CharStats.STAT_DEXTERITY,affectableStats.getStat(CharStats.STAT_DEXTERITY)+1);
+			if(affectableStats.getStat(CharStats.STAT_SAVE_PARALYSIS)<500)
+				affectableStats.setStat(CharStats.STAT_SAVE_PARALYSIS,affectableStats.getStat(CharStats.STAT_SAVE_PARALYSIS)+100);
+			break;
+		default:
+			break;
 		}
 	}
 }

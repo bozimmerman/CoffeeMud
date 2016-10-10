@@ -103,7 +103,7 @@ public class Prayer_SenseInjury extends Prayer
 			{
 				if(last.length()>0)
 					dirs+=", "+last;
-				last=Directions.getInDirectionName(d);
+				last=CMLib.directions().getInDirectionName(d);
 			}
 		}
 		final List<MOB> V=getInjured(mob,mob.location());

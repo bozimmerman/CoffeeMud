@@ -36,7 +36,7 @@ import java.util.*;
 public class Spell_Clog extends Spell
 {
 	@Override public String ID() { return "Spell_Clog"; }
-	private final static String localizedName = CMLib.lang().L("Shrink Mouth");
+	private final static String localizedName = CMLib.lang().L("Clog Mouth");
 	@Override public String name() { return localizedName; }
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Shrunken Mouth)");
 	@Override public String displayText() { return localizedStaticDisplay; }
@@ -62,7 +62,7 @@ public class Spell_Clog extends Spell
 
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> mouth reverts to normal size."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> mouth drains clear."));
 	}
 
 	@Override
@@ -99,7 +99,7 @@ public class Spell_Clog extends Spell
 				{
 					if(target.location()==mob.location())
 					{
-						target.location().show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> start(s) gagging and spitting as <S-HIS-HER> mouth shrinks!"));
+						target.location().show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> start(s) gagging and spitting as <S-HIS-HER> mouth becomes clogged with gunk!"));
 						success=maliciousAffect(mob,target,asLevel,0,-1)!=null;
 					}
 				}

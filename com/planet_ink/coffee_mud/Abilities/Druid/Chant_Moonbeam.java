@@ -33,17 +33,41 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
-
 public class Chant_Moonbeam extends Chant
 {
-	@Override public String ID() { return "Chant_Moonbeam"; }
+	@Override
+	public String ID()
+	{
+		return "Chant_Moonbeam";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Moonbeam");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Moonbeam)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_MOONSUMMONING;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT | Ability.DOMAIN_MOONSUMMONING;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_SELF;
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)

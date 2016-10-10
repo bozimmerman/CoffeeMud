@@ -294,7 +294,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 			if((msg.sourceMinor()==CMMsg.TYP_QUIT)&&(CMLib.map().isHere(msg.source(), this)))
 			{
 				final MOB mob = msg.source();
-				CMLib.tracking().forceRecall(mob);
+				CMLib.tracking().forceRecall(mob, true);
 			}
 		}
 	}
@@ -373,7 +373,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 				Area redirectA = null;
 				int direction = CMLib.map().getRoomDir(msg.source().location(), (Room)msg.target());
 				if((direction<0)&&(msg.tool() instanceof Exit))
-					direction = CMLib.map().getExitDir(msg.source().location(), (Exit)msg.target());
+					direction = CMLib.map().getExitDir(msg.source().location(), (Exit)msg.tool());
 				if(direction < 0)
 				{
 					msg.source().tell(L("Can't figure out where you're coming from?!"));
@@ -505,7 +505,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 						}
 						for(final MOB M : myGroup)
 							M.tell(L("^x------------------------------------------------------\n\rPreparing to enter @x1, please stand by...\n\r------------------------------------------------------^N^.",Name()));
-						definedIDs.put("ROOMTAG_NODEGATEEXIT", Directions.getDirectionName(Directions.getOpDirectionCode(direction)));
+						definedIDs.put("ROOMTAG_NODEGATEEXIT", CMLib.directions().getDirectionName(Directions.getOpDirectionCode(direction)));
 						definedIDs.put("ROOMTAG_GATEEXITROOM", msg.source().location());
 						if(!CMLib.percolator().fillInArea(piece, definedIDs, newA, direction))
 						{

@@ -73,7 +73,7 @@ public class Swamp extends StdRoom implements Drink
 				A=CMClass.getAbility("Disease_Chlamydia");
 			else
 				A=CMClass.getAbility("Disease_Malaria");
-			if((A!=null)&&(msg.source().fetchEffect(A.ID())==null))
+			if((A!=null)&&(msg.source().fetchEffect(A.ID())==null)&&(!CMSecurity.isAbilityDisabled(A.ID())))
 				A.invoke(msg.source(),msg.source(),true,0);
 		}
 		if(msg.amITarget(this)&&(msg.targetMinor()==CMMsg.TYP_DRINK))

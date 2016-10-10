@@ -35,7 +35,11 @@ import java.util.*;
 */
 public class ChannelBackLogNext extends StdWebMacro
 {
-	@Override public String name() { return "ChannelBackLogNext"; }
+	@Override
+	public String name()
+	{
+		return "ChannelBackLogNext";
+	}
 
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)

@@ -69,6 +69,14 @@ public interface CMFlagLibrary extends CMLibrary
 
 	/**
 	 * Returns whether the given mob has the ability to see
+	 * hidden items, but not necessarily mobs.
+	 * @param M the mob to check
+	 * @return whether the mob can see hidden items
+	 */
+	public boolean canSeeHiddenItems(MOB M);
+
+	/**
+	 * Returns whether the given mob has the ability to see
 	 * invisible.
 	 * @param M the mob to check
 	 * @return whether the mob can see invisible
@@ -752,6 +760,15 @@ public interface CMFlagLibrary extends CMLibrary
 	 * @return true if it is marked falling, false otherwise
 	 */
 	public boolean isFalling(Physical P);
+	
+	/**
+	 * Returns which direction, if any, the given object
+	 * is falling. 
+	 * @see com.planet_ink.coffee_mud.core.Directions
+	 * @param P the item, mob, whatever to check
+	 * @return direction it is falling
+	 */
+	public int getFallingDirection(Physical P);
 
 	/**
 	 * Returns whether the given player is 
@@ -1304,6 +1321,14 @@ public interface CMFlagLibrary extends CMLibrary
 	 */
 	public String getDispositionStateList(MOB mob);
 
+	/**
+	 * Returns whether the given item is affected by
+	 * or contains alcohol as a drinkable.
+	 * @param thang the mob or item to check
+	 * @return true if it is alcohol
+	 */
+	public boolean isAlcoholic(Physical thang);
+	
 	/**
 	 * A disposition enum for various flagg methods.
 	 * Helps determine the english phrasing of what's

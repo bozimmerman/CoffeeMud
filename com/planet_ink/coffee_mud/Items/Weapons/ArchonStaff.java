@@ -297,13 +297,43 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 						return;
 					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("@x1 glows brightly at <T-NAME>.",this.name()));
 					final List<Ability> diseaseV=CMLib.flags().domainAffects(target,Ability.ACODE_DISEASE);
-					if(diseaseV.size()>0){ final Ability A=CMClass.getAbility("Prayer_CureDisease"); if(A!=null) A.invoke(mob,target,true,0);}
-					final List<Ability> poisonV=CMLib.flags().domainAffects(target,Ability.ACODE_POISON);
-					if(poisonV.size()>0){ final Ability A=CMClass.getAbility("Prayer_RemovePoison"); if(A!=null) A.invoke(mob,target,true,0);}
-					final Ability bleed=target.fetchEffect("Bleeding"); if(bleed!=null){ bleed.unInvoke(); target.delEffect(bleed);}
-					final Ability injury=target.fetchEffect("Injury"); if(injury!=null){ injury.unInvoke(); target.delEffect(injury);}
-					final Ability ampu=target.fetchEffect("Amputation"); if(ampu!=null){ ampu.unInvoke(); target.delEffect(ampu);}
-					final Ability brok=target.fetchEffect("BrokenLimbs"); if(brok!=null){ brok.unInvoke(); target.delEffect(brok);}
+					if (diseaseV.size() > 0)
+					{
+						final Ability A = CMClass.getAbility("Prayer_CureDisease");
+						if (A != null)
+							A.invoke(mob, target, true, 0);
+					}
+					final List<Ability> poisonV = CMLib.flags().domainAffects(target, Ability.ACODE_POISON);
+					if (poisonV.size() > 0)
+					{
+						final Ability A = CMClass.getAbility("Prayer_RemovePoison");
+						if (A != null)
+							A.invoke(mob, target, true, 0);
+					}
+					final Ability bleed = target.fetchEffect("Bleeding");
+					if (bleed != null)
+					{
+						bleed.unInvoke();
+						target.delEffect(bleed);
+					}
+					final Ability injury = target.fetchEffect("Injury");
+					if (injury != null)
+					{
+						injury.unInvoke();
+						target.delEffect(injury);
+					}
+					final Ability ampu = target.fetchEffect("Amputation");
+					if (ampu != null)
+					{
+						ampu.unInvoke();
+						target.delEffect(ampu);
+					}
+					final Ability brok = target.fetchEffect("BrokenLimbs");
+					if (brok != null)
+					{
+						brok.unInvoke();
+						target.delEffect(brok);
+					}
 
 					target.recoverMaxState();
 					target.resetToMaxState();

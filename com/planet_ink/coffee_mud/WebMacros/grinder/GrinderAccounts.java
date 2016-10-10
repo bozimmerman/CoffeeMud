@@ -35,7 +35,10 @@ import java.util.*;
 */
 public class GrinderAccounts
 {
-	public String name() { return "GrinderAccounts"; }
+	public String name()
+	{
+		return "GrinderAccounts";
+	}
 
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
@@ -91,7 +94,7 @@ public class GrinderAccounts
 						A.delTattoo(t);
 					List<String> tattNames = CMParms.parseCommas(str,true);
 					for(String tattName : tattNames)
-						A.addTattoo(CMLib.database().parseTattoo(tattName));
+						A.addTattoo(((Tattoo)CMClass.getCommon("DefaultTattoo")).parse(tattName));
 				}
 				str=httpReq.getUrlParameter("EXPIRATION");
 				if(str!=null)

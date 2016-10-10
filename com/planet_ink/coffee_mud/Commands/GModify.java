@@ -79,6 +79,11 @@ public class GModify extends StdCommand
 			{
 				return ""+((MOB)E).baseCharStats().getStat(CharStats.STAT_GENDER);
 			}
+			else
+			if(stat.equalsIgnoreCase("CLASSTYPE"))
+			{
+				return ""+CMClass.getObjectType(E).toString();
+			}
 			return E.getStat(stat);
 		}
 		return "";
@@ -466,10 +471,12 @@ public class GModify extends StdCommand
 			addEnumeratedStatCodes(CMClass.clanItems(),allKnownFields,allFieldsMsg);
 			addEnumeratedStatCodes(CMClass.miscMagic(),allKnownFields,allFieldsMsg);
 			addEnumeratedStatCodes(CMClass.tech(),allKnownFields,allFieldsMsg);
-			allFieldsMsg.append("ADDABILITY DELABILITY ADDBEHAVIOR DELBEHAVIOR ADDAFFECT DELAFFECT REJUV GENDER DESTROY ");
+			allFieldsMsg.append("CLASSTYPE ADDABILITY DELABILITY ADDBEHAVIOR DELBEHAVIOR ADDAFFECT DELAFFECT REJUV GENDER DESTROY ");
 			mob.tell(L("Valid field names are @x1",allFieldsMsg.toString()));
 			return false;
 		}
+		
+		
 		if((commands.size()>0)&&
 		   commands.get(0).equalsIgnoreCase("room"))
 		{
@@ -481,6 +488,7 @@ public class GModify extends StdCommand
 			commands.remove(0);
 			placesToDo.add(mob.location());
 		}
+		else
 		if((commands.size()>0)&&
 		   commands.get(0).equalsIgnoreCase("area"))
 		{
@@ -492,6 +500,7 @@ public class GModify extends StdCommand
 			commands.remove(0);
 			placesToDo.add(mob.location().getArea());
 		}
+		else
 		if((commands.size()>0)&&
 		   commands.get(0).equalsIgnoreCase("world"))
 		{
@@ -518,8 +527,8 @@ public class GModify extends StdCommand
 		addEnumeratedStatCodes(CMClass.miscMagic(),allKnownFields,allFieldsMsg);
 		addEnumeratedStatCodes(CMClass.tech(),allKnownFields,allFieldsMsg);
 		addEnumeratedStatCodes(CMClass.locales(),allKnownFields,allFieldsMsg);
-		allFieldsMsg.append("REJUV DESTROY ADDABILITY DELABILITY ADDBEHAVIOR DELBEHAVIOR ADDAFFECT DELAFFECT ");
-		allKnownFields.addAll(Arrays.asList(new String[]{"REJUV","GENDER","DESTROY","ADDABILITY","DELABILITY","ADDBEHAVIOR","DELBEHAVIOR","ADDAFFECT","DELAFFECT"}));
+		allFieldsMsg.append("CLASSTYPE REJUV DESTROY ADDABILITY DELABILITY ADDBEHAVIOR DELBEHAVIOR ADDAFFECT DELAFFECT ");
+		allKnownFields.addAll(Arrays.asList(new String[]{"CLASSTYPE","REJUV","GENDER","DESTROY","ADDABILITY","DELABILITY","ADDBEHAVIOR","DELBEHAVIOR","ADDAFFECT","DELAFFECT"}));
 		
 		use=onfields;
 		final Vector<String> newSet=new Vector<String>();
@@ -729,7 +738,7 @@ public class GModify extends StdCommand
 			synchronized(("SYNC"+R.roomID()).intern())
 			{
 				R=CMLib.map().getRoom(R);
-				if((mob.session()==null)||(mob.session().isStopped())||(R.getArea()==null))
+				if((mob.session()==null)||(mob.session().isStopped())||(R==null)||(R.getArea()==null))
 					return false;
 				final Area A=R.getArea();
 				final Area.State oldFlag=A.getAreaState();
@@ -778,10 +787,9 @@ public class GModify extends StdCommand
 								for(final Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
 								{
 									final Environmental E2=i.next();
-									if(E2 instanceof Item)
+									if((E2 instanceof Item)||(E2 instanceof MOB))
 									{
-										final Item I=(Item)E2;
-										if(tryModfy(mob,R,I,changes,onfields,noisy))
+										if(tryModfy(mob,R,E2,changes,onfields,noisy))
 											savemobs=true;
 									}
 								}

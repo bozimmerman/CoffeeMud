@@ -46,43 +46,47 @@ public class Spell_AnimateWeapon extends Spell
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((affected!=null)
-		&&(affected instanceof Item)
+		if((affected instanceof Item)
 		&&(((Item)affected).owner()!=null)
 		&&(((Item)affected).owner() instanceof Room)
 		&&(invoker()!=null)
 		&&(invoker().location().isContent((Item)affected)))
 		{
-			if(invoker().isInCombat())
+			final Item item=(Item)affected;
+			final MOB invoker=invoker();
+			if((invoker!=null)&&(invoker.isInCombat()))
 			{
-				final boolean isHit=(CMLib.combat().rollToHit(CMLib.combat().adjustedAttackBonus(invoker(),invoker().getVictim())+((Item)affected).phyStats().attackAdjustment(),CMLib.combat().adjustedArmor(invoker().getVictim()), 0));
-				if((!isHit)||(!(affected instanceof Weapon)))
-					invoker().location().show(invoker(),invoker().getVictim(),affected,CMMsg.MSG_OK_ACTION,L("<O-NAME> attacks <T-NAME> and misses!"));
+				final MOB victiM=invoker.getVictim();
+				final boolean isHit=(CMLib.combat().rollToHit(CMLib.combat().adjustedAttackBonus(invoker(),victiM)+item.phyStats().attackAdjustment(),CMLib.combat().adjustedArmor(victiM), 0));
+				if((!isHit)||(!(item instanceof Weapon)))
+					invoker().location().show(invoker(),victiM,item,CMMsg.MSG_OK_ACTION,L("<O-NAME> attacks <T-NAME> and misses!"));
 				else
-					CMLib.combat().postDamage(invoker(),invoker().getVictim(),affected,
-											CMLib.dice().roll(1,affected.phyStats().damage(),5),
+					CMLib.combat().postDamage(invoker(),victiM,item,
+											CMLib.dice().roll(1,item.phyStats().damage(),5),
 											CMMsg.MASK_ALWAYS|CMMsg.TYP_WEAPONATTACK,
-											((Weapon)affected).weaponDamageType(),L("@x1 attacks and <DAMAGE> <T-NAME>!",affected.name()));
+											((Weapon)item).weaponDamageType(),L("@x1 attacks and <DAMAGE> <T-NAME>!",affected.name()));
 			}
 			else
 			if(CMLib.dice().rollPercentage()>75)
-			switch(CMLib.dice().roll(1,5,0))
 			{
-			case 1:
-				invoker().location().showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 twiches a bit.",affected.name()));
-				break;
-			case 2:
-				invoker().location().showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 is looking for trouble.",affected.name()));
-				break;
-			case 3:
-				invoker().location().showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 practices its moves.",affected.name()));
-				break;
-			case 4:
-				invoker().location().showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 makes a few fake attacks.",affected.name()));
-				break;
-			case 5:
-				invoker().location().showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 dances around.",affected.name()));
-				break;
+				switch(CMLib.dice().roll(1,5,0))
+				{
+				case 1:
+					invoker().location().showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 twiches a bit.",affected.name()));
+					break;
+				case 2:
+					invoker().location().showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 is looking for trouble.",affected.name()));
+					break;
+				case 3:
+					invoker().location().showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 practices its moves.",affected.name()));
+					break;
+				case 4:
+					invoker().location().showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 makes a few fake attacks.",affected.name()));
+					break;
+				case 5:
+					invoker().location().showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 dances around.",affected.name()));
+					break;
+				}
 			}
 		}
 		else

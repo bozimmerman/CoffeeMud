@@ -34,7 +34,12 @@ import java.util.*;
 */
 public class Wand_Fire extends StdWand
 {
-	@Override public String ID(){	return "Wand_Fire";}
+	@Override
+	public String ID()
+	{
+		return "Wand_Fire";
+	}
+
 	public Wand_Fire()
 	{
 		super();
@@ -58,6 +63,7 @@ public class Wand_Fire extends StdWand
 		super.setSpell(theSpell);
 		secretWord="BLAZE, BURN";
 	}
+
 	@Override
 	public void setMiscText(String newText)
 	{

@@ -92,10 +92,11 @@ public class Dragon extends StdRace
 		return localizedStaticRacialCat;
 	}
 
-	private final String[]	racialAbilityNames			= { "Dragonbreath", "WingFlying" };
-	private final int[]		racialAbilityLevels			= { 5, 1 };
-	private final int[]		racialAbilityProficiencies	= { 100, 100 };
-	private final boolean[]	racialAbilityQuals			= { false, false };
+	private final String[]	racialAbilityNames			= { "Dragonbreath", "WingFlying", "Skill_Buck" };
+	private final int[]		racialAbilityLevels			= { 5, 1, 1 };
+	private final int[]		racialAbilityProficiencies	= { 100, 100, 100 };
+	private final boolean[]	racialAbilityQuals			= { false, false, false };
+	private final String[]	racialAbilityParms			= { "", "", "" };
 
 	@Override
 	protected String[] racialAbilityNames()
@@ -119,6 +120,12 @@ public class Dragon extends StdRace
 	protected boolean[] racialAbilityQuals()
 	{
 		return racialAbilityQuals;
+	}
+
+	@Override
+	public String[] racialAbilityParms()
+	{
+		return racialAbilityParms;
 	}
 
 	private final String[]	culturalAbilityNames			= { "Draconic" };

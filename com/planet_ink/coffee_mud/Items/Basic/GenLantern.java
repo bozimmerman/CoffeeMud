@@ -88,6 +88,11 @@ public class GenLantern extends GenLightSource
 							mob.tell(L("@x1 is empty.",thePuddle.name()));
 							return false;
 						}
+						if(this.getDuration() >= (int)Math.round(CMath.mul(DURATION_TICKS, .9)))
+						{
+							mob.tell(L("@x1 is full of oil.",name()));
+							return false;
+						}
 						return true;
 					}
 					mob.tell(L("You can't fill @x1 from that.",name()));

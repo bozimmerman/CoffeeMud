@@ -36,17 +36,26 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class CatalogMobNext extends StdWebMacro
 {
-	@Override public String name() { return "CatalogMobNext"; }
-	@Override public boolean isAdminMacro()   {return true;}
+	@Override
+	public String name()
+	{
+		return "CatalogMobNext";
+	}
+
+	@Override
+	public boolean isAdminMacro()
+	{
+		return true;
+	}
 
 	final static String[] DATA={
-						"CATALOG_MOB_USAGE"
-					   ,"CATALOG_MOB_NAME"
-					   ,"CATALOG_MOB_AREA"
-					   ,"CATALOG_MOB_RACE"
-					   ,"CATALOG_MOB_GENDER"
-					   ,"CATALOG_MOB_LEVEL"
-					   ,"CATALOG_MOB_CLASS"
+								"CATALOG_MOB_USAGE"
+							   ,"CATALOG_MOB_NAME"
+							   ,"CATALOG_MOB_AREA"
+							   ,"CATALOG_MOB_RACE"
+							   ,"CATALOG_MOB_GENDER"
+							   ,"CATALOG_MOB_LEVEL"
+							   ,"CATALOG_MOB_CLASS"
 	};
 
 	public static String getCataStat(MOB M, CatalogLibrary.CataData data, int x, String optionalColumn)
@@ -55,13 +64,20 @@ public class CatalogMobNext extends StdWebMacro
 			return "";
 		switch(x)
 		{
-		case 0: return ""+data.numReferences();
-		case 1: return M.name();
-		case 2: return ""+data.mostPopularArea();
-		case 3: return M.baseCharStats().raceName();
-		case 4: return M.baseCharStats().genderName();
-		case 5: return ""+M.basePhyStats().level();
-		case 6: return M.ID();
+		case 0:
+			return "" + data.numReferences();
+		case 1:
+			return M.name();
+		case 2:
+			return "" + data.mostPopularArea();
+		case 3:
+			return M.baseCharStats().raceName();
+		case 4:
+			return M.baseCharStats().genderName();
+		case 5:
+			return "" + M.basePhyStats().level();
+		case 6:
+			return M.ID();
 		default:
 			if((optionalColumn!=null)&&(optionalColumn.length()>0))
 			{
@@ -129,10 +145,14 @@ public class CatalogMobNext extends StdWebMacro
 				{
 					final Object[] sortifiable=new Object[names.length];
 					for(int s=0;s<names.length;s++)
-						sortifiable[s]=new Object[]{
+					{
+						sortifiable[s]=new Object[]
+						{
 							names[s],
 							CMLib.catalog().getCatalogMob(names[s]),
-							CMLib.catalog().getCatalogMobData(names[s])};
+							CMLib.catalog().getCatalogMobData(names[s])
+						};
+					}
 					Arrays.sort(sortifiable,new Comparator()
 					{
 						@Override

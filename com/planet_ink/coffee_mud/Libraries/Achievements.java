@@ -6,11 +6,12 @@ import com.planet_ink.coffee_mud.core.exceptions.CMException;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.AbilityMapping;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Achievement;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.AchievementLoadFlag;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Tracker;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary.CostType;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary.ExpertiseDefinition;
 import com.planet_ink.coffee_mud.Libraries.interfaces.GenericEditor.CMEval;
-import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZapperMask;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZMask;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -115,6 +116,24 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				{
 					return titleStr;
 				}
+
+				@Override
+				public boolean isPreAwarded()
+				{
+					return false;
+				}
+
+				@Override
+				public String getDescription()
+				{
+					return L("The title: @x1",getTitle());
+				}
+
+				@Override
+				public boolean isNotAwardedOnRemort()
+				{
+					return false;
+				}
 			});
 		}
 		for(int a=0;a<awardSet.length;a++)
@@ -142,10 +161,29 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							{
 								return AwardType.XP;
 							}
+
 							@Override
 							public int getAmount()
 							{
 								return number;
+							}
+
+							@Override
+							public boolean isPreAwarded()
+							{
+								return false;
+							}
+
+							@Override
+							public boolean isNotAwardedOnRemort()
+							{
+								return false;
+							}
+
+							@Override
+							public String getDescription()
+							{
+								return L("@x1 Experience Points",""+getAmount());
 							}
 						});
 					}
@@ -159,10 +197,29 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							{
 								return AwardType.QP;
 							}
+
 							@Override
 							public int getAmount()
 							{
 								return number;
+							}
+
+							@Override
+							public boolean isPreAwarded()
+							{
+								return false;
+							}
+
+							@Override
+							public String getDescription()
+							{
+								return L("@x1 Quest Points",""+getAmount());
+							}
+							
+							@Override
+							public boolean isNotAwardedOnRemort()
+							{
+								return false;
 							}
 						});
 					}
@@ -204,6 +261,28 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 								public AbilityMapping getAbilityMapping()
 								{
 									return mapp;
+								}
+								
+								@Override
+								public boolean isPreAwarded()
+								{
+									return false;
+								}
+								
+								@Override
+								public String getDescription()
+								{
+									final Ability skillA = CMClass.getAbility(getAbilityMapping().abilityID());
+									if(getAbilityMapping().autoGain())
+										return L("@x1 at level @x2",skillA.name(),""+getAbilityMapping().qualLevel());
+									else
+										return L("@x1 qualification at level @x2",skillA.name(),""+getAbilityMapping().qualLevel());
+								}
+
+								@Override
+								public boolean isNotAwardedOnRemort()
+								{
+									return false;
 								}
 							});
 						}
@@ -319,13 +398,13 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 								}
 
 								@Override
-								public CompiledZapperMask compiledListMask()
+								public CompiledZMask compiledListMask()
 								{
 									return CMLib.masking().getPreCompiledMask("-LEVEL +>="+number);
 								}
 
 								@Override
-								public CompiledZapperMask compiledFinalMask()
+								public CompiledZMask compiledFinalMask()
 								{
 									return CMLib.masking().createEmptyMask();
 								}
@@ -410,15 +489,51 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 								{
 									return def;
 								}
+								
+
+								@Override
+								public boolean isPreAwarded()
+								{
+									return false;
+								}
+
+								@Override
+								public String getDescription()
+								{
+									final ExpertiseDefinition defE = getExpertise();
+									if(defE.costDescription().length()==0)
+										return L("@x1 at level @x2",defE.name(),""+defE.getMinimumLevel());
+									else
+										return L("@x1 qualification at level @x1",""+defE.getMinimumLevel());
+								}
+
+								@Override
+								public boolean isNotAwardedOnRemort()
+								{
+									return false;
+								}
 							});
 						}
 						else
 						if(CMLib.coffeeMaker().isAnyGenStat(CMClass.samplePlayer(), thing))
 						{
-							final String stat = thing.toUpperCase().trim();
-							
+							final String stat1 = thing.toUpperCase().trim();
+							String astat=CMLib.coffeeMaker().getFinalStatName(stat1);
+							boolean isSave = false;
+							for(int t : CharStats.CODES.SAVING_THROWS())
+								isSave  = isSave  || CharStats.CODES.NAME(t).equals(astat.toUpperCase());
+							final boolean isSavingThrow = isSave;
+							final boolean isPreAwarded=
+									(astat.startsWith("MAX") 
+									&& (CharStats.CODES.findWhole(astat,true) >=0)
+									&& (CMParms.contains(CharStats.CODES.MAXCODES(),CharStats.CODES.findWhole(astat,true))));
+							final boolean isNotPremortAwarded = ((PlayerStats)CMClass.getCommonPrototype("DefaultPlayerStats")).isStat(astat);
 							awardsList.add(new StatAward()
 							{
+								final String stat = stat1;
+								final boolean savingThrow = isSavingThrow;
+								final boolean preAwarded = isPreAwarded;
+								final boolean noRemort = isNotPremortAwarded;
 								@Override
 								public AwardType getType()
 								{
@@ -435,6 +550,27 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 								public String getStat()
 								{
 									return stat;
+								}
+
+								@Override
+								public String getDescription()
+								{
+									if(getAmount()<0)
+										return getAmount() + " " + L(CMStrings.capitalizeAndLower(getStat())+(savingThrow ? " resistance":""));
+									else
+										return "+"+getAmount() + " " + L(CMStrings.capitalizeAndLower(getStat())+(savingThrow ? " resistance":""));
+								}
+
+								@Override
+								public boolean isPreAwarded()
+								{
+									return preAwarded;
+								}
+
+								@Override
+								public boolean isNotAwardedOnRemort()
+								{
+									return noRemort;
 								}
 							});
 						}
@@ -444,10 +580,25 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						&&(CMClass.samplePlayer().playerStats().getAccount()!=null)
 						&&CMLib.coffeeMaker().isAnyGenStat(CMClass.samplePlayer(), thing.substring(8)))
 						{
-							final String stat = thing.toUpperCase().trim();
+							final String stat1 = thing.toUpperCase().trim();
+							String astat=CMLib.coffeeMaker().getFinalStatName(stat1);
+							boolean isSave = false;
+							for(int t : CharStats.CODES.SAVING_THROWS())
+								isSave  = isSave  || CharStats.CODES.NAME(t).equals(astat.toUpperCase());
+							final boolean isSavingThrow = isSave;
+							final boolean isPreAwarded=
+									(astat.startsWith("MAX") 
+									&& (CharStats.CODES.findWhole(astat,true) >=0)
+									&& (CMParms.contains(CharStats.CODES.MAXCODES(),CharStats.CODES.findWhole(astat,true))));
+							final boolean isNotPremortAwarded = ((PlayerStats)CMClass.getCommonPrototype("DefaultPlayerStats")).isStat(astat);
 							
 							awardsList.add(new StatAward()
 							{
+								final String stat = stat1;
+								final boolean savingThrow = isSavingThrow;
+								final boolean preAwarded = isPreAwarded;
+								final boolean noRemort = isNotPremortAwarded;
+								
 								@Override
 								public AwardType getType()
 								{
@@ -464,6 +615,24 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 								public String getStat()
 								{
 									return stat;
+								}
+
+								@Override
+								public String getDescription()
+								{
+									return "+"+getAmount() + " " + L(CMStrings.capitalizeAndLower(getStat())+(savingThrow?" resistance":""));
+								}
+
+								@Override
+								public boolean isPreAwarded()
+								{
+									return preAwarded;
+								}
+
+								@Override
+								public boolean isNotAwardedOnRemort()
+								{
+									return noRemort;
 								}
 							});
 						}
@@ -487,15 +656,35 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 										{
 											return AwardType.CURRENCY;
 										}
+
 										@Override
 										public int getAmount()
 										{
 											return number;
 										}
+
 										@Override
 										public String getCurrency()
 										{
 											return currencyName;
+										}
+
+										@Override
+										public boolean isPreAwarded()
+										{
+											return false;
+										}
+
+										@Override
+										public String getDescription()
+										{
+											return getAmount() + " " + CMStrings.capitalizeAndLower(getCurrency());
+										}
+
+										@Override
+										public boolean isNotAwardedOnRemort()
+										{
+											return false;
 										}
 									});
 								}
@@ -512,9 +701,9 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		case KILLS:
 			A=new Achievement()
 			{
-				private int num = 0;
-				private MaskingLibrary.CompiledZapperMask npcMask = null;
-				private MaskingLibrary.CompiledZapperMask playerMask = null;
+				private int num = -1;
+				private MaskingLibrary.CompiledZMask npcMask = null;
+				private MaskingLibrary.CompiledZMask playerMask = null;
 				
 				@Override
 				public Event getEvent()
@@ -582,7 +771,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						@Override
 						public boolean isAchieved(MOB mob) 
 						{
-							return (getCount(mob) >= num);
+							return (num>=0) && (getCount(mob) >= num);
 						}
 
 						@Override
@@ -605,6 +794,18 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							return false;
 						}
 						
+						@Override
+						public Tracker copyOf()
+						{
+							try
+							{
+								return (Tracker)this.clone();
+							}
+							catch(Exception e)
+							{
+								return this;
+							}
+						}
 					};
 				}
 				
@@ -636,7 +837,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		case JUSTBE:
 			A=new Achievement()
 			{
-				private MaskingLibrary.CompiledZapperMask playerMask = null;
+				private MaskingLibrary.CompiledZMask playerMask = null;
 				
 				@Override
 				public Event getEvent()
@@ -724,6 +925,18 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							return false;
 						}
 						
+						@Override
+						public Tracker copyOf()
+						{
+							try
+							{
+								return (Tracker)this.clone();
+							}
+							catch(Exception e)
+							{
+								return this;
+							}
+						}
 					};
 				}
 				
@@ -828,6 +1041,19 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						{
 							return false;
 						}
+						
+						@Override
+						public Tracker copyOf()
+						{
+							try
+							{
+								return (Tracker)this.clone();
+							}
+							catch(Exception e)
+							{
+								return this;
+							}
+						}
 					};
 				}
 				
@@ -927,19 +1153,37 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						@Override
 						public boolean isAchieved(MOB mob) 
 						{
+							if(mob.fetchFaction(factionID)==Integer.MAX_VALUE)
+								return false;
 							return (abelo > 0) ? (getCount(mob) > value) : (getCount(mob) < value);
 						}
 
 						@Override
 						public int getCount(MOB mob)
 						{
-							return mob.fetchFaction(factionID);
+							int f=mob.fetchFaction(factionID);
+							if(f == Integer.MAX_VALUE)
+								return 0;
+							return f;
 						}
 
 						@Override
 						public boolean testBump(MOB mob, int bumpNum, Object... parms) 
 						{
 							return false;
+						}
+						
+						@Override
+						public Tracker copyOf()
+						{
+							try
+							{
+								return (Tracker)this.clone();
+							}
+							catch(Exception e)
+							{
+								return this;
+							}
 						}
 					};
 				}
@@ -967,6 +1211,150 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 					if(CMLib.factions().getFaction(factionID)==null)
 						return "Error: Unknown faction ID parameter: "+factionID+"!";
 					this.factionID=factionID;
+					return "";
+				}
+			};
+			break;
+		case FACTIONS:
+			A=new Achievement()
+			{
+				private final List<Faction>	factions	= new LinkedList<Faction>();
+				private int 			number		= 0;
+				private int 			value		= 0;
+				private int				abelo		= 0;
+				
+				@Override
+				public Event getEvent()
+				{
+					return eventType;
+				}
+
+				@Override
+				public Agent getAgent()
+				{
+					return agent;
+				}
+
+				@Override
+				public String getTattoo()
+				{
+					return tattoo;
+				}
+
+				@Override
+				public String getDisplayStr()
+				{
+					return displayStr;
+				}
+
+				@Override
+				public boolean isTargetFloor()
+				{
+					return abelo > 0;
+				}
+				
+				@Override
+				public int getTargetCount()
+				{
+					return number;
+				}
+
+				@Override
+				public Award[] getRewards()
+				{
+					return rewardList;
+				}
+
+				@Override
+				public String getRawParmVal(String str)
+				{
+					return CMParms.getParmStr(params,str,"");
+				}
+
+				@Override
+				public Tracker getTracker(final int oldCount)
+				{
+					final Achievement me=this;
+					return new Tracker()
+					{
+						@Override
+						public Achievement getAchievement() 
+						{
+							return me;
+						}
+
+						@Override
+						public boolean isAchieved(MOB mob) 
+						{
+							return getCount(mob) >= number;
+						}
+
+						@Override
+						public int getCount(MOB mob)
+						{
+							int num=0;
+							for(Faction F : factions)
+							{
+								int f = mob.fetchFaction(F.factionID());
+								if((f!=Integer.MAX_VALUE)
+								&&((abelo > 0) ? (f > value) : (f < value)))
+									num++;
+							}
+							return num;
+						}
+
+						@Override
+						public boolean testBump(MOB mob, int bumpNum, Object... parms) 
+						{
+							return false;
+						}
+						
+						@Override
+						public Tracker copyOf()
+						{
+							try
+							{
+								return (Tracker)this.clone();
+							}
+							catch(Exception e)
+							{
+								return this;
+							}
+						}
+					};
+				}
+				
+				@Override
+				public boolean isSavableTracker()
+				{
+					return false;
+				}
+				
+				@Override
+				public String parseParms(final String parms)
+				{
+					String numStr=CMParms.getParmStr(parms, "VALUE", "");
+					if(!CMath.isInteger(numStr))
+						return "Error: Missing or invalid VALUE parameter: "+numStr+"!";
+					value=CMath.s_int(numStr);
+					numStr=CMParms.getParmStr(parms, "NUM", "");
+					if(!CMath.isInteger(numStr))
+						return "Error: Missing or invalid NUM parameter: "+numStr+"!";
+					number=CMath.s_int(numStr);
+					final String aboveBelow=CMParms.getParmStr(parms, "ABOVEBELOW", "").toUpperCase().trim();
+					if((!aboveBelow.equals("ABOVE")) && (!aboveBelow.equals("BELOW")))
+						return "Error: Missing or invalid ABOVEBELOW parameter: "+aboveBelow+"!";
+					this.abelo = aboveBelow.equals("ABOVE")? 1 : -1;
+					final String factionIDMask=CMParms.getParmStr(parms, "IDMASK", "").toUpperCase().trim();
+					this.factions.clear();
+					for(Enumeration<Faction> f=CMLib.factions().factions();f.hasMoreElements();)
+					{
+						final Faction F=f.nextElement();
+						if(CMStrings.filenameMatcher(F.factionID(), factionIDMask))
+							this.factions.add(F);
+					}
+					if(this.factions.size()==0)
+						return "Error: No existing factions match: "+factionIDMask+"!";
 					return "";
 				}
 			};
@@ -1073,6 +1461,19 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						public boolean testBump(MOB mob, int bumpNum, Object... parms) 
 						{
 							return false;
+						}
+						
+						@Override
+						public Tracker copyOf()
+						{
+							try
+							{
+								return (Tracker)this.clone();
+							}
+							catch(Exception e)
+							{
+								return this;
+							}
 						}
 					};
 				}
@@ -1201,6 +1602,19 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 								}
 							}
 							return false;
+						}
+						
+						@Override
+						public Tracker copyOf()
+						{
+							try
+							{
+								return (Tracker)this.clone();
+							}
+							catch(Exception e)
+							{
+								return this;
+							}
 						}
 					};
 				}
@@ -1352,6 +1766,19 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							}
 							return false;
 						}
+						
+						@Override
+						public Tracker copyOf()
+						{
+							try
+							{
+								return (Tracker)this.clone();
+							}
+							catch(Exception e)
+							{
+								return this;
+							}
+						}
 					};
 				}
 				
@@ -1408,8 +1835,8 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		case QUESTOR:
 			A=new Achievement()
 			{
-				private int num = 0;
-				private MaskingLibrary.CompiledZapperMask mask = null;
+				private int num = -1;
+				private MaskingLibrary.CompiledZMask mask = null;
 				private java.util.regex.Pattern questPattern = null;
 				
 				@Override
@@ -1477,7 +1904,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						@Override
 						public boolean isAchieved(MOB mob) 
 						{
-							return getCount(mob) >= num;
+							return (num>=0) && getCount(mob) >= num;
 						}
 
 						@Override
@@ -1516,6 +1943,19 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 								}
 							}
 							return false;
+						}
+						
+						@Override
+						public Tracker copyOf()
+						{
+							try
+							{
+								return (Tracker)this.clone();
+							}
+							catch(Exception e)
+							{
+								return this;
+							}
 						}
 					};
 				}
@@ -1656,6 +2096,19 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						{
 							return false;
 						}
+						
+						@Override
+						public Tracker copyOf()
+						{
+							try
+							{
+								return (Tracker)this.clone();
+							}
+							catch(Exception e)
+							{
+								return this;
+							}
+						}
 					};
 				}
 				
@@ -1771,6 +2224,19 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						{
 							return false;
 						}
+						
+						@Override
+						public Tracker copyOf()
+						{
+							try
+							{
+								return (Tracker)this.clone();
+							}
+							catch(Exception e)
+							{
+								return this;
+							}
+						}
 					};
 				}
 				
@@ -1811,13 +2277,149 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 			};
 			break;
+		case CLASSLEVELSGAINED:
+			A=new Achievement()
+			{
+				private int num = -1;
+				private CharClass charClass = null;
+				private MaskingLibrary.CompiledZMask playerMask = null;
+				
+				@Override
+				public Event getEvent()
+				{
+					return eventType;
+				}
+
+				@Override
+				public Agent getAgent()
+				{
+					return agent;
+				}
+
+				@Override
+				public String getTattoo()
+				{
+					return tattoo;
+				}
+
+				@Override
+				public int getTargetCount()
+				{
+					return num;
+				}
+
+				@Override
+				public boolean isTargetFloor()
+				{
+					return true;
+				}
+
+				@Override
+				public String getDisplayStr()
+				{
+					return displayStr;
+				}
+
+				@Override
+				public Award[] getRewards()
+				{
+					return rewardList;
+				}
+
+				@Override
+				public String getRawParmVal(String str)
+				{
+					return CMParms.getParmStr(params,str,"");
+				}
+
+				@Override
+				public Tracker getTracker(final int oldCount)
+				{
+					final Achievement me=this;
+					return new Tracker()
+					{
+						@Override
+						public Achievement getAchievement() 
+						{
+							return me;
+						}
+
+						@Override
+						public boolean isAchieved(MOB mob) 
+						{
+							return (num>=0) && (getCount(mob) > num);
+						}
+
+						@Override
+						public int getCount(MOB mob)
+						{
+							if(mob == null)
+								return 0;
+							int classLevel = mob.charStats().getClassLevel(charClass);
+							if(classLevel < 0)
+								return 0;
+							return classLevel + 1;
+						}
+
+						@Override
+						public boolean testBump(MOB mob, int bumpNum, Object... parms)
+						{
+							if(((playerMask==null)||(CMLib.masking().maskCheck(playerMask, mob, true)))
+							&&(mob.charStats().getCurrentClass() == charClass))
+							{
+								return true;
+							}
+							return false;
+						}
+						
+						@Override
+						public Tracker copyOf()
+						{
+							try
+							{
+								return (Tracker)this.clone();
+							}
+							catch(Exception e)
+							{
+								return this;
+							}
+						}
+					};
+				}
+				
+				@Override
+				public boolean isSavableTracker()
+				{
+					return true;
+				}
+				
+				@Override
+				public String parseParms(final String parms)
+				{
+					final String numStr=CMParms.getParmStr(parms, "NUM", "");
+					if(!CMath.isInteger(numStr))
+						return "Error: Missing or invalid NUM parameter: "+numStr+"!";
+					num=CMath.s_int(numStr);
+					String charClassID=CMStrings.deEscape(CMParms.getParmStr(parms, "CLASS", ""));
+					this.charClass = CMClass.getCharClass(charClassID);
+					if(this.charClass == null)
+						this.charClass = CMClass.findCharClass(charClassID);
+					if(this.charClass == null)
+						return "Error: Missing or invalid CLASS parameter: "+charClassID+"!";
+					String zapperMask=CMStrings.deEscape(CMParms.getParmStr(parms, "PLAYERMASK", ""));
+					if(zapperMask.trim().length()>0)
+						this.playerMask = CMLib.masking().getPreCompiledMask(zapperMask);
+					return "";
+				}
+			};
+			break;
 		case RETIRE:
 		case REMORT:
 		case LEVELSGAINED:
 			A=new Achievement()
 			{
-				private int num = 0;
-				private MaskingLibrary.CompiledZapperMask playerMask = null;
+				private int num = -1;
+				private MaskingLibrary.CompiledZMask playerMask = null;
 				
 				@Override
 				public Event getEvent()
@@ -1884,7 +2486,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						@Override
 						public boolean isAchieved(MOB mob) 
 						{
-							return (getCount(mob) >= num);
+							return (num>=0) && (getCount(mob) >= num);
 						}
 
 						@Override
@@ -1904,6 +2506,18 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							return false;
 						}
 						
+						@Override
+						public Tracker copyOf()
+						{
+							try
+							{
+								return (Tracker)this.clone();
+							}
+							catch(Exception e)
+							{
+								return this;
+							}
+						}
 					};
 				}
 				
@@ -1930,8 +2544,8 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		case GOTITEM:
 			A=new Achievement()
 			{
-				private MaskingLibrary.CompiledZapperMask playerMask = null;
-				private MaskingLibrary.CompiledZapperMask itemMask = null;
+				private MaskingLibrary.CompiledZMask playerMask = null;
+				private MaskingLibrary.CompiledZMask itemMask = null;
 				
 				@Override
 				public Event getEvent()
@@ -2022,6 +2636,18 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							return false;
 						}
 						
+						@Override
+						public Tracker copyOf()
+						{
+							try
+							{
+								return (Tracker)this.clone();
+							}
+							catch(Exception e)
+							{
+								return this;
+							}
+						}
 					};
 				}
 				
@@ -2050,7 +2676,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			A=new Achievement()
 			{
 				private int seconds = 0;
-				private MaskingLibrary.CompiledZapperMask playerMask = null;
+				private MaskingLibrary.CompiledZMask playerMask = null;
 				
 				@Override
 				public Event getEvent()
@@ -2138,6 +2764,18 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							return false;
 						}
 						
+						@Override
+						public Tracker copyOf()
+						{
+							try
+							{
+								return (Tracker)this.clone();
+							}
+							catch(Exception e)
+							{
+								return this;
+							}
+						}
 					};
 				}
 				
@@ -2164,9 +2802,9 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		case DEATHS:
 			A=new Achievement()
 			{
-				private int num = 0;
-				private MaskingLibrary.CompiledZapperMask npcMask = null;
-				private MaskingLibrary.CompiledZapperMask playerMask = null;
+				private int num = -1;
+				private MaskingLibrary.CompiledZMask npcMask = null;
+				private MaskingLibrary.CompiledZMask playerMask = null;
 				
 				@Override
 				public Event getEvent()
@@ -2234,7 +2872,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						@Override
 						public boolean isAchieved(MOB mob) 
 						{
-							return (getCount(mob) >= num);
+							return (num>=0) && (getCount(mob) >= num);
 						}
 
 						@Override
@@ -2257,6 +2895,18 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							return false;
 						}
 						
+						@Override
+						public Tracker copyOf()
+						{
+							try
+							{
+								return (Tracker)this.clone();
+							}
+							catch(Exception e)
+							{
+								return this;
+							}
+						}
 					};
 				}
 				
@@ -2375,7 +3025,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			{
 				if(T.isAchieved(mob))
 				{
-					giveAwards(A,mob,mob);
+					giveAwards(A,mob,mob,AchievementLoadFlag.NORMAL);
 				}
 			}
 		}
@@ -2392,7 +3042,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				{
 					if(T.isAchieved(mob))
 					{
-						giveAwards(A,account,mob);
+						giveAwards(A,account,mob,AchievementLoadFlag.NORMAL);
 					}
 				}
 			}
@@ -2428,7 +3078,77 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		}
 	}
 
-	public void giveAwards(final MOB mob, final Award[] awardSet)
+	protected List<Achievement> fakeBumpPlayerAchievement(final MOB mob, final Achievement A, final PlayerStats pStats, final Event E, int bumpNum, Object... parms)
+	{
+		List<Achievement> achievements=new ArrayList<Achievement>(1);
+		if(mob.findTattoo(A.getTattoo())==null)
+		{
+			Tracker T=pStats.getAchievementTracker(A, mob);
+			T=T.copyOf();
+			if(T.testBump(mob, bumpNum, parms))
+			{
+				if(T.isAchieved(mob))
+				{
+					achievements.add(A);
+				}
+			}
+		}
+		return achievements;
+	}
+	
+	protected List<Achievement> fakeBumpAccountAchievement(final MOB mob, final Achievement A, final PlayerAccount account, final Event E, int bumpNum, Object... parms)
+	{
+		List<Achievement> achievements=new ArrayList<Achievement>(1);
+		if(account != null)
+		{
+			if(account.findTattoo(A.getTattoo())==null)
+			{
+				Tracker T=account.getAchievementTracker(A, mob);
+				T=T.copyOf();
+				if(T.testBump(mob, bumpNum, parms))
+				{
+					if(T.isAchieved(mob))
+					{
+						achievements.add(A);
+					}
+				}
+			}
+		}
+		return achievements;
+	}
+	
+	@Override
+	public List<Achievement> fakeBumpAchievement(final MOB mob, final Event E, int bumpNum, Object... parms)
+	{
+		List<Achievement> achievements=new ArrayList<Achievement>(1);
+		if((mob != null)&&(E!=null)&&(!mob.isMonster())&&(CMProps.getBoolVar(CMProps.Bool.MUDSTARTED)))
+		{
+			ensureAchievementsLoaded();
+			final PlayerStats pStats = mob.playerStats();
+			if(pStats != null)
+			{
+				if(eventMap.containsKey(E))
+				{
+					final PlayerAccount account = pStats.getAccount();
+					for(final Achievement A :  eventMap.get(E))
+					{
+						switch(A.getAgent())
+						{
+						case PLAYER:
+							achievements.addAll(fakeBumpPlayerAchievement(mob, A, pStats, E, bumpNum, parms));
+							break;
+						case ACCOUNT:
+							achievements.addAll(fakeBumpAccountAchievement(mob, A, account, E, bumpNum, parms));
+							break;
+						}
+					}
+				}
+			}
+		}
+		return achievements;
+	}
+
+	protected void giveAwards(final MOB mob, final Award[] awardSet, final AchievementLoadFlag flag)
 	{
 		if(mob == null)
 			return;
@@ -2436,6 +3156,31 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		StringBuilder awardMessage = new StringBuilder("");
 		for(final Award award : awardSet)
 		{
+			switch(flag)
+			{
+			case REMORT_PRELOAD:
+				if(!award.isPreAwarded())
+					continue;
+				if(award.isNotAwardedOnRemort())
+					continue;
+				break;
+			case REMORT_POSTLOAD:
+				if(award.isPreAwarded())
+					continue;
+				if(award.isNotAwardedOnRemort())
+					continue;
+				break;
+			case CHARCR_PRELOAD:
+				if(!award.isPreAwarded())
+					continue;
+				break;
+			case CHARCR_POSTLOAD:
+				if(award.isPreAwarded())
+					continue;
+				break;
+			case NORMAL:
+				break;
+			}
 			switch(award.getType())
 			{
 			case ABILITY:
@@ -2540,7 +3285,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		grantAbilitiesAndExpertises(mob);
 	}
 	
-	private boolean giveAwards(final Achievement A, final Tattooable holder, final MOB mob)
+	protected boolean giveAwards(final Achievement A, final Tattooable holder, final MOB mob, final AchievementLoadFlag flag)
 	{
 		if(holder.findTattoo(A.getTattoo())==null)
 		{
@@ -2559,7 +3304,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			mob.tell(awardMessage.toString());
 			if(A.getAgent() == Agent.PLAYER)
 			{
-				giveAwards(mob,awardSet);
+				giveAwards(mob,awardSet,flag);
 			}
 			return true;
 		}
@@ -3009,7 +3754,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			final Tracker T=pStats.getAchievementTracker(A, mob);
 			if(T.isAchieved(mob))
 			{
-				return giveAwards(A, mob, mob);
+				return giveAwards(A, mob, mob,AchievementLoadFlag.NORMAL);
 			}
 		}
 		return false;
@@ -3024,7 +3769,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				final Tracker T=account.getAchievementTracker(A, mob);
 				if(T.isAchieved(mob))
 				{
-					return giveAwards(A, account, mob);
+					return giveAwards(A, account, mob,AchievementLoadFlag.NORMAL);
 				}
 			}
 		}
@@ -3196,7 +3941,31 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 	}
 
 	@Override
-	public void loadAccountAchievements(final MOB mob)
+	public void reloadPlayerAwards(MOB mob, AchievementLoadFlag flag)
+	{
+		if(mob != null)
+		{
+			final PlayerStats pStats = mob.playerStats();
+			boolean somethingDone=false;
+			for(final Enumeration<Tattoo> t = mob.tattoos();t.hasMoreElements();)
+			{
+				final Achievement A=getAchievement(t.nextElement().getTattooName());
+				if((A != null)&&(A.getAgent()==Agent.PLAYER))
+				{
+					giveAwards(mob, A.getRewards(), flag);
+					somethingDone=true;
+				}
+			}
+			if(somethingDone)
+			{
+				loadPlayerSkillAwards(mob, pStats);
+				grantAbilitiesAndExpertises(mob);
+			}
+		}
+	}
+	
+	@Override
+	public void loadAccountAchievements(final MOB mob, final AchievementLoadFlag flag)
 	{
 		final PlayerStats pStats = (mob==null) ? null : mob.playerStats();
 		final PlayerAccount account = (pStats == null) ? null : pStats.getAccount();
@@ -3211,9 +3980,13 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				{
 					if(mob.findTattoo(T.getTattooName())==null)
 					{
-						mob.addTattoo(A.getTattoo());
-						giveAwards(mob, A.getRewards());
-						somethingDone=true;
+						if((flag != AchievementLoadFlag.CHARCR_PRELOAD)
+						&&(flag != AchievementLoadFlag.REMORT_PRELOAD))
+						{
+							mob.addTattoo(A.getTattoo());
+							somethingDone=true;
+						}
+						giveAwards(mob, A.getRewards(), flag);
 					}
 				}
 			}
@@ -3224,7 +3997,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			}
 		}
 	}
-	
+
 	protected String makeAchievmentHelp(Achievement A)
 	{
 		if(A == null)
@@ -3256,68 +4029,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				str.append("\n\r").append(CMStrings.padRight(L("Rewards Granted:"),cols)).append(" ").append(L("Immediately"));
 		}
 		for(Award W : A.getRewards())
-		{
-			switch(W.getType())
-			{
-			case ABILITY:
-			{
-				AbilityAward award = (AbilityAward)W;
-				Ability skillA = CMClass.getAbility(award.getAbilityMapping().abilityID());
-				str.append("\n\r").append(CMStrings.padRight(L("Award:"),cols)).append(" ").append(skillA.name());
-				if(award.getAbilityMapping().autoGain())
-					str.append(L(" at level @x1",""+award.getAbilityMapping().qualLevel()));
-				else
-					str.append(L(" qualification level @x1",""+award.getAbilityMapping().qualLevel()));
-				break;
-			}
-			case CURRENCY:
-			{
-				CurrencyAward award = (CurrencyAward)W;
-				str.append("\n\r").append(CMStrings.padRight(L("Award:"),cols)).append(" ")
-					.append(award.getAmount()).append(" ").append(CMStrings.capitalizeAndLower(award.getCurrency()));
-				break;
-			}
-			case EXPERTISE:
-			{
-				ExpertiseAward award = (ExpertiseAward)W;
-				ExpertiseDefinition defE = award.getExpertise();
-				str.append("\n\r").append(CMStrings.padRight(L("Award:"),cols)).append(" ").append(defE.name());
-				if(defE.costDescription().length()==0)
-					str.append(L(" at level @x1",""+defE.getMinimumLevel()));
-				else
-					str.append(L(" qualification level @x1",""+defE.getMinimumLevel()));
-				break;
-			}
-			case QP:
-			{
-				AmountAward award = (AmountAward)W;
-				str.append("\n\r").append(CMStrings.padRight(L("Award:"),cols)).append(" ")
-					.append(award.getAmount()).append(" ").append(L("Quest Points"));
-				break;
-			}
-			case STAT:
-			{
-				StatAward award = (StatAward)W;
-				str.append("\n\r").append(CMStrings.padRight(L("Award:"),cols)).append(" +")
-					.append(award.getAmount()).append(" ").append(L(CMStrings.capitalizeAndLower(award.getStat())));
-				break;
-			}
-			case TITLE:
-			{
-				TitleAward T = (TitleAward)W;
-				str.append("\n\r").append(CMStrings.padRight(L("Award:"),cols)).append(" ")
-				.append(L("The title: ")).append(T.getTitle());
-				break;
-			}
-			case XP:
-			{
-				AmountAward award = (AmountAward)W;
-				str.append("\n\r").append(CMStrings.padRight(L("Award:"),cols)).append(" ")
-					.append(award.getAmount()).append(" ").append(L("Experience Points"));
-				break;
-			}
-			}
-		}
+			str.append("\n\r").append(CMStrings.padRight(L("Award:"),cols)).append(" ").append(W.getDescription());
 		str.append("\n\r");
 		helpMap.put(A.getTattoo(), str.toString());
 		return str.toString();

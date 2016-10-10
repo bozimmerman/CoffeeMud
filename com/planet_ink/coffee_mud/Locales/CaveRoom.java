@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -74,7 +73,7 @@ public class CaveRoom extends StdRoom
 		   &&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
 		{
 			final Ability A=CMClass.getAbility("Disease_Syphilis");
-			if((A!=null)&&(msg.source().fetchEffect(A.ID())==null))
+			if((A!=null)&&(msg.source().fetchEffect(A.ID())==null)&&(!CMSecurity.isAbilityDisabled(A.ID())))
 				A.invoke(msg.source(),msg.source(),true,0);
 		}
 		super.executeMsg(myHost,msg);

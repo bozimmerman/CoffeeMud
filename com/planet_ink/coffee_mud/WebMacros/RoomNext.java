@@ -36,7 +36,11 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class RoomNext extends StdWebMacro
 {
-	@Override public String name() { return "RoomNext"; }
+	@Override
+	public String name()
+	{
+		return "RoomNext";
+	}
 
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)

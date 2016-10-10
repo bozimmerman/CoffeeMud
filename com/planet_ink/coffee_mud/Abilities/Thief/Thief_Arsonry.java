@@ -42,7 +42,7 @@ public class Thief_Arsonry extends ThiefSkill
 	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings =I(new String[] {"ARSON","ARSONRY"});
-	@Override public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_CRIMINAL; }
+	@Override public int classificationCode() {   return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_CRIMINAL; }
 	@Override public String[] triggerStrings(){return triggerStrings;}
 
 	@Override
@@ -54,7 +54,7 @@ public class Thief_Arsonry extends ThiefSkill
 			return false;
 		}
 		final String str=CMParms.combine(commands,0);
-		final int dir=Directions.getGoodDirectionCode(str);
+		final int dir=CMLib.directions().getGoodDirectionCode(str);
 		Room targetRoom=null;
 		Physical target=null;
 		if(dir>=0)

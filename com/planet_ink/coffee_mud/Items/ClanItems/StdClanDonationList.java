@@ -111,7 +111,7 @@ public class StdClanDonationList extends StdClanItem
 				if(CMLib.flags().canBeSeenBy(this,mob))
 				{
 					final StringBuffer text=new StringBuffer("");
-					final List<PlayerData> V=CMLib.database().DBReadData(clanID(),"DONATIONS");
+					final List<PlayerData> V=CMLib.database().DBReadPlayerData(clanID(),"DONATIONS");
 					final Vector<Object[]> sorted=new Vector<Object[]>();
 					String key=null;
 					int x=0;
@@ -166,23 +166,23 @@ public class StdClanDonationList extends StdClanItem
 			&&(msg.tool().ID().equalsIgnoreCase("Spell_ClanDonate")))
 			{
 				lastItem=(Item)msg.target();
-				CMLib.database().DBCreateData(clanID(),"DONATIONS",getDonationKey(msg.source()),makeDonationDescription(msg.source(),msg.target(),"donated"));
+				CMLib.database().DBCreatePlayerData(clanID(),"DONATIONS",getDonationKey(msg.source()),makeDonationDescription(msg.source(),msg.target(),"donated"));
 			}
 			else
 			if((msg.targetMinor()==CMMsg.TYP_GET)
 			&&(msg.target() instanceof Item)
 			&&(!msg.targetMajor(CMMsg.MASK_INTERMSG)))
-				CMLib.database().DBCreateData(clanID(),"DONATIONS",getDonationKey(msg.source()),makeDonationDescription(msg.source(),msg.target(),"gets"));
+				CMLib.database().DBCreatePlayerData(clanID(),"DONATIONS",getDonationKey(msg.source()),makeDonationDescription(msg.source(),msg.target(),"gets"));
 			else
 			if(((msg.targetMinor()==CMMsg.TYP_PUSH)||(msg.targetMinor()==CMMsg.TYP_PULL))
 			&&(msg.target() instanceof Item)
 			&&(!msg.targetMajor(CMMsg.MASK_INTERMSG)))
-				CMLib.database().DBCreateData(clanID(),"DONATIONS",getDonationKey(msg.source()),makeDonationDescription(msg.source(),msg.target(),"moves"));
+				CMLib.database().DBCreatePlayerData(clanID(),"DONATIONS",getDonationKey(msg.source()),makeDonationDescription(msg.source(),msg.target(),"moves"));
 			else
 			if((msg.targetMinor()==CMMsg.TYP_DROP)
 			&&(msg.target() instanceof Item)
 			&&(!msg.targetMajor(CMMsg.MASK_INTERMSG)))
-				CMLib.database().DBCreateData(clanID(),"DONATIONS",getDonationKey(msg.source()),makeDonationDescription(msg.source(),msg.target(),"drops"));
+				CMLib.database().DBCreatePlayerData(clanID(),"DONATIONS",getDonationKey(msg.source()),makeDonationDescription(msg.source(),msg.target(),"drops"));
 		}
 		super.executeMsg(myHost,msg);
 	}

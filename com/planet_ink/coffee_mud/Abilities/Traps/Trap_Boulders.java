@@ -115,7 +115,8 @@ public class Trap_Boulders extends StdTrap
 				if((R.domainType()!=Room.DOMAIN_INDOORS_CAVE)
 				&&(R.domainType()!=Room.DOMAIN_OUTDOORS_MOUNTAINS)
 				&&(R.domainType()!=Room.DOMAIN_OUTDOORS_ROCKS)
-				&&(R.domainType()!=Room.DOMAIN_OUTDOORS_HILLS))
+				&&(R.domainType()!=Room.DOMAIN_OUTDOORS_HILLS)
+				&&((R.getAtmosphere()&RawMaterial.MATERIAL_ROCK)==0))
 				{
 					mob.tell(L("You can only set this trap in caves, or by mountains or hills."));
 					return false;

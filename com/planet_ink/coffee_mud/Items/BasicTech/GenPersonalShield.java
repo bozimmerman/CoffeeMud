@@ -14,8 +14,8 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
+
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 /*
@@ -80,7 +80,7 @@ public class GenPersonalShield extends StdPersonalShield
 		recoverPhyStats();
 	}
 	
-	private final static String[] MYCODES={"POWERCAP","ACTIVATED","POWERREM","MANUFACTURER","LAYER","LAYERATTRIB"};
+	private final static String[] MYCODES={"POWERCAP","ACTIVATED","POWERREM","MANUFACTURER","LAYER","LAYERATTRIB","TECHLEVEL"};
 
 	@Override
 	public String getStat(String code)
@@ -101,6 +101,8 @@ public class GenPersonalShield extends StdPersonalShield
 			return "" + getClothingLayer();
 		case 5:
 			return "" + getLayerAttributes();
+		case 6:
+			return "" + techLevel();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -131,6 +133,9 @@ public class GenPersonalShield extends StdPersonalShield
 			break;
 		case 5:
 			setLayerAttributes((short) CMath.s_parseListLongExpression(Armor.LAYERMASK_DESCS, val));
+			break;
+		case 6:
+			setTechLevel(CMath.s_parseIntExpression(val));
 			break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);

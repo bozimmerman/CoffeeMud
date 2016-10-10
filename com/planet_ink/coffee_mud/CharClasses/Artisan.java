@@ -215,6 +215,7 @@ public class Artisan extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"MasterTailoring",false,CMParms.parseSemicolons("Tailoring(100)",true),"+DEX 16");
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"MasterCostuming",false,CMParms.parseSemicolons("Costuming(100)",true),"+INT 16");
+		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"MasterButchering",false,CMParms.parseSemicolons("Butchering(100)",true),"+STR 16");
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"MasterLeatherWorking",false,CMParms.parseSemicolons("LeatherWorking(100)",true),"+CON 16");
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"MasterShearing",false,CMParms.parseSemicolons("Shearing(100)",true),"+WIS 16");
@@ -245,6 +246,7 @@ public class Artisan extends StdCharClass
 	{
 		if((msg.source() == myHost)
 		&&(msg.targetMinor() == CMMsg.TYP_ITEMGENERATED)
+		&&(msg.target() != null)
 		&&(msg.tool() instanceof Ability)
 		&&((((Ability)msg.tool()).classificationCode() & Ability.ALL_DOMAINS) == Ability.DOMAIN_CRAFTINGSKILL)
 		&&(msg.value() > 0))

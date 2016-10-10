@@ -35,14 +35,45 @@ import java.util.*;
 
 public class Spell_Boomerang extends Spell
 {
-	@Override public String ID() { return "Spell_Boomerang"; }
-	private final static String localizedName = CMLib.lang().L("Returning");
-	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	@Override protected int canAffectCode(){return CAN_ITEMS;}
-	@Override protected int canTargetCode(){return CAN_ITEMS;}
-	@Override public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
-	protected MOB owner=null;
+	@Override
+	public String ID()
+	{
+		return "Spell_Boomerang";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Returning");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_ITEMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_ITEMS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL | Ability.DOMAIN_CONJURATION;
+	}
+
+	protected MOB	owner	= null;
 
 	@Override
 	public boolean okMessage(Environmental host, CMMsg msg)
@@ -88,13 +119,6 @@ public class Spell_Boomerang extends Spell
 					I.unWear();
 					I.setContainer(null);
 					owner.moveItemTo(I);
-				}
-				else
-				{
-					I.unWear();
-					I.setContainer(null);
-					owner.moveItemTo(I);
-					I.setOwner(owner);
 				}
 			}
 		}

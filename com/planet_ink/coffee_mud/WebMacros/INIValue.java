@@ -36,9 +36,17 @@ import java.util.*;
 
 public class INIValue extends StdWebMacro
 {
-	@Override public String name() { return "INIValue"; }
-	@Override public boolean isAdminMacro()	{return false;}
+	@Override
+	public String name()
+	{
+		return "INIValue";
+	}
 
+	@Override
+	public boolean isAdminMacro()
+	{
+		return false;
+	}
 
 	public String getHelpFor(String tag, String mask)
 	{

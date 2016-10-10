@@ -38,8 +38,17 @@ import java.util.regex.Pattern;
 
 public class FileMgr extends StdWebMacro
 {
-	@Override public String name() { return "FileMgr"; }
-	@Override public boolean isAdminMacro()	{return true;}
+	@Override
+	public String name()
+	{
+		return "FileMgr";
+	}
+
+	@Override
+	public boolean isAdminMacro()
+	{
+		return true;
+	}
 
 
 	public boolean matches(String s1, String s2)

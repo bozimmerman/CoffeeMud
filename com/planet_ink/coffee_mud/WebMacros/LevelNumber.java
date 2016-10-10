@@ -35,7 +35,11 @@ import java.util.*;
 */
 public class LevelNumber extends StdWebMacro
 {
-	@Override public String name() { return "LevelNumber"; }
+	@Override
+	public String name()
+	{
+		return "LevelNumber";
+	}
 
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)

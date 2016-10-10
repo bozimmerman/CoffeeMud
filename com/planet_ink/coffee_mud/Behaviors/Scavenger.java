@@ -56,12 +56,16 @@ public class Scavenger extends ActiveTicker
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		super.tick(ticking,tickID);
+		if(!super.tick(ticking,tickID))
+			return false;
 
 		if((canAct(ticking,tickID))&&(ticking instanceof MOB))
 		{
 			final MOB mob=(MOB)ticking;
 			final Room thisRoom=mob.location();
+			if(thisRoom == null)
+				return true;
+				
 			if(origItems<0)
 				origItems=mob.numItems();
 			if((mob.phyStats().weight()>=(int)Math.round(CMath.mul(mob.maxCarry(),0.9)))
@@ -123,9 +127,7 @@ public class Scavenger extends ActiveTicker
 					mob.recoverMaxState();
 				}
 			}
-			if((thisRoom==null)||(thisRoom.numItems()==0))
-				return true;
-			if(thisRoom.numPCInhabitants()>0)
+			if((thisRoom.numItems()==0)||(thisRoom.numPCInhabitants()>0))
 				return true;
 			List<Item> choices=new ArrayList<Item>(thisRoom.numItems()<1000?thisRoom.numItems():1000);
 			for(int i=0;(i<thisRoom.numItems())&&(choices.size()<1000);i++)

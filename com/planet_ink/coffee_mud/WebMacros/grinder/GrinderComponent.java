@@ -35,7 +35,10 @@ import java.util.*;
 */
 public class GrinderComponent
 {
-	public String name() { return "GrinderComponent"; }
+	public String name()
+	{
+		return "GrinderComponent";
+	}
 
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{

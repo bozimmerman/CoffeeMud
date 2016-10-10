@@ -65,7 +65,7 @@ import java.sql.*;
 public class MUD extends Thread implements MudHost
 {
 	private static final float	  HOST_VERSION_MAJOR	= (float)5.9;
-	private static final float	  HOST_VERSION_MINOR	= (float)2.7;
+	private static final float	  HOST_VERSION_MINOR	= (float)4.1;
 	private static enum MudState {STARTING,WAITING,ACCEPTING,STOPPED}
 
 	private volatile MudState state		 = MudState.STOPPED;
@@ -86,8 +86,6 @@ public class MUD extends Thread implements MudHost
 	private static List<String> 		autoblocked			= new Vector<String>();
 	private static List<DBConnector>	databases			= new Vector<DBConnector>();
 	private static List<CM1Server>		cm1Servers			= new Vector<CM1Server>();
-	private static List<Triad<String,Long,Integer>>
-										accessed			= new LinkedList<Triad<String,Long,Integer>>();
 	private static final ServiceEngine	serviceEngine		= new ServiceEngine();
 
 	public MUD(String name)
@@ -177,6 +175,13 @@ public class MUD extends Thread implements MudHost
 							}
 							else
 							{
+								@SuppressWarnings("unchecked")
+								List<Triad<String,Long,Integer>> accessed= (LinkedList<Triad<String,Long,Integer>>)Resources.staticInstance()._getResource("SYSTEM_IPACCESS_STATS");
+								if(accessed == null)
+								{
+									accessed= new LinkedList<Triad<String,Long,Integer>>();
+									Resources.staticInstance()._submitResource("SYSTEM_IPACCESS_STATS",accessed);
+								}
 								synchronized(accessed)
 								{
 									for(final Iterator<Triad<String,Long,Integer>> i=accessed.iterator();i.hasNext();)
@@ -232,7 +237,13 @@ public class MUD extends Thread implements MudHost
 							{
 								introText=Resources.getFileResource(Resources.makeFileResourceName("text/blocked.txt"),true);
 							}
-							try { introText = CMLib.webMacroFilter().virtualPageFilter(introText);}catch(final Exception ex){}
+							try
+							{
+								introText = CMLib.webMacroFilter().virtualPageFilter(introText);
+							}
+							catch (final Exception ex)
+							{
+							}
 							out.print(introText.toString());
 							out.flush();
 							checkedSleep(250);
@@ -262,7 +273,13 @@ public class MUD extends Thread implements MudHost
 								introFilename=choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
 						}
 						StringBuffer introText=Resources.getFileResource(introFilename,true);
-						try { introText = CMLib.webMacroFilter().virtualPageFilter(introText);}catch(final Exception ex){}
+						try
+						{
+							introText = CMLib.webMacroFilter().virtualPageFilter(introText);
+						}
+						catch (final Exception ex)
+						{
+						}
 						final Session S=(Session)CMClass.getCommon("DefaultSession");
 						S.initializeSession(sock, threadGroup().getName(), introText != null ? introText.toString() : null);
 						CMLib.sessions().add(S);
@@ -480,15 +497,15 @@ public class MUD extends Thread implements MudHost
 						// important! shutdown their affects!
 						for(int a=M.numAllEffects()-1;a>=0;a--) // reverse enumeration
 						{
-							final Ability A=M.fetchEffect(a);
 							try
 							{
+								final Ability A=M.fetchEffect(a);
 								if((A!=null)&&(A.canBeUninvoked()))
 									A.unInvoke();
 								if((A!=null)&&(!A.isSavable()))
 									M.delEffect(A);
 							}
-							catch (final Exception ex)
+							catch (final Throwable ex)
 							{
 								Log.errOut(ex);
 							}
@@ -499,9 +516,18 @@ public class MUD extends Thread implements MudHost
 			try
 			{
 				for(final Enumeration<CMLibrary> e=CMLib.libraries(CMLib.Library.PLAYERS);e.hasMoreElements();)
-					((PlayerLibrary)e.nextElement()).savePlayers();
+				{
+					try
+					{
+						((PlayerLibrary)e.nextElement()).savePlayers();
+					}
+					catch (final Throwable ex)
+					{
+						Log.errOut(ex);
+					}
+				}
 			}
-			catch (final Exception ex)
+			catch (final Throwable ex)
 			{
 				Log.errOut(ex);
 			}
@@ -516,7 +542,7 @@ public class MUD extends Thread implements MudHost
 			for(final Enumeration<CMLibrary> e=CMLib.libraries(CMLib.Library.STATS);e.hasMoreElements();)
 				((StatisticsLibrary)e.nextElement()).update();
 		}
-		catch (final Exception ex)
+		catch (final Throwable ex)
 		{
 			Log.errOut(ex);
 		}
@@ -556,7 +582,7 @@ public class MUD extends Thread implements MudHost
 					{
 						R.send(mob,msg);
 					}
-					catch (final Exception ex)
+					catch (final Throwable ex)
 					{
 						Log.errOut(ex);
 					}
@@ -632,7 +658,7 @@ public class MUD extends Thread implements MudHost
 					if(R.roomID().length()>0)
 						R.executeMsg(mob,CMClass.getMsg(mob,R,null,CMMsg.MSG_EXPIRE,null));
 				}
-				catch (final Exception ex)
+				catch (final Throwable ex)
 				{
 					Log.errOut(ex);
 				}
@@ -650,7 +676,7 @@ public class MUD extends Thread implements MudHost
 			{
 				cm1server.shutdown();
 			}
-			catch (final Exception ex)
+			catch (final Throwable ex)
 			{
 				Log.errOut(ex);
 			}
@@ -671,7 +697,7 @@ public class MUD extends Thread implements MudHost
 			{
 				I3Server.shutdown();
 			}
-			catch (final Exception ex)
+			catch (final Throwable ex)
 			{
 				Log.errOut(ex);
 			}
@@ -689,7 +715,7 @@ public class MUD extends Thread implements MudHost
 			{
 				imc2server.shutdown();
 			}
-			catch (final Exception ex)
+			catch (final Throwable ex)
 			{
 				Log.errOut(ex);
 			}
@@ -754,7 +780,7 @@ public class MUD extends Thread implements MudHost
 					if(S!=null)
 						S.println("shut down.");
 				}
-				catch (final Exception ex)
+				catch (final Throwable ex)
 				{
 					Log.errOut(ex);
 				}
@@ -781,7 +807,7 @@ public class MUD extends Thread implements MudHost
 					if(debugMem) 
 						shutdownMemReport(library.ID());
 				}
-				catch (final Exception ex)
+				catch (final Throwable ex)
 				{
 					Log.errOut(ex);
 				}
@@ -805,9 +831,10 @@ public class MUD extends Thread implements MudHost
 						library.shutdown();
 						if(S!=null)
 							S.println("shut down.");
-						if(debugMem) shutdownMemReport(library.ID());
+						if(debugMem) 
+							shutdownMemReport(library.ID());
 					}
-					catch (final Exception ex)
+					catch (final Throwable ex)
 					{
 						Log.errOut(ex);
 					}
@@ -838,7 +865,7 @@ public class MUD extends Thread implements MudHost
 			{
 				webServerThread.close();
 			}
-			catch (final Exception ex)
+			catch (final Throwable ex)
 			{
 				Log.errOut(ex);
 			}
@@ -857,7 +884,7 @@ public class MUD extends Thread implements MudHost
 		{
 			CMClass.shutdown();
 		}
-		catch (final Exception ex)
+		catch (final Throwable ex)
 		{
 			Log.errOut(ex);
 		}
@@ -893,7 +920,7 @@ public class MUD extends Thread implements MudHost
 				{
 					CMLib.killThread((Thread)CMLib.hosts().get(m),100,30);
 				}
-				catch(final Exception t){}
+				catch(final Throwable t){}
 			}
 		}
 		CMLib.hosts().clear();
@@ -1318,7 +1345,7 @@ public class MUD extends Thread implements MudHost
 				currentDBconnector.reconnect();
 				CMLib.registerLibrary(new DBInterface(currentDBconnector,CMProps.getPrivateSubSet("DB.*")));
 
-				final DBConnection DBTEST=currentDBconnector.DBFetch();
+				final DBConnection DBTEST=currentDBconnector.DBFetchTest();
 				if(DBTEST!=null)
 					currentDBconnector.DBDone(DBTEST);
 				if((DBTEST!=null)&&(currentDBconnector.amIOk())&&(CMLib.database().isConnected()))
@@ -1419,9 +1446,15 @@ public class MUD extends Thread implements MudHost
 					Log.sysOut(Thread.currentThread().getName(),"Socials loaded    : "+CMLib.socials().numSocialSets());
 			}
 
+			final Map<String,Clan> clanPostLoads=new TreeMap<String,Clan>();
 			if((tCode==MAIN_HOST)||(checkPrivate&&CMProps.isPrivateToMe("CLANS")))
 			{
-				CMLib.database().DBReadAllClans();
+				List<Clan> clans = CMLib.database().DBReadAllClans();
+				for(final Clan C : clans)
+				{
+					CMLib.clans().addClan(C);
+					clanPostLoads.put(C.clanID(), C);
+				}
 				Log.sysOut(Thread.currentThread().getName(),"Clans loaded      : "+CMLib.clans().numClans());
 			}
 
@@ -1490,9 +1523,16 @@ public class MUD extends Thread implements MudHost
 				CMLib.login().initBodyRooms(page);
 			}
 
+			if(clanPostLoads.size()>0)
+			{
+				CMLib.database().DBReadClanItems(clanPostLoads);
+			}
+			
 			if((tCode==MAIN_HOST)||(checkPrivate&&CMProps.isPrivateToMe("QUESTS")))
 			{
-				CMLib.database().DBReadQuests(CMLib.mud(0));
+				CMLib.quests().shutdown();
+				for(Quest Q : CMLib.database().DBReadQuests())
+					CMLib.quests().addQuest(Q);
 				if(CMLib.quests().numQuests()>0)
 					Log.sysOut(Thread.currentThread().getName(),"Quests loaded     : "+CMLib.quests().numQuests());
 			}
@@ -1972,6 +2012,43 @@ public class MUD extends Thread implements MudHost
 				else
 					return "Failure";
 			}
+		}
+		else
+		if(word.equalsIgnoreCase("WEBSERVER")&&(V.size()>2))
+		{
+			boolean admin = V.elementAt(1).equalsIgnoreCase("ADMIN");
+			String var = V.elementAt(2);
+			WebServer server=null;
+			for(WebServer serv : webServers)
+			{
+				if(CMath.s_bool(serv.getConfig().getMiscProp("ADMIN")))
+				{
+					if(admin)
+					{
+						server=serv;
+						break;
+					}
+				}
+				else
+				{
+					if(!admin)
+					{
+						server=serv;
+						break;
+					}
+				}
+			}
+			if(server==null)
+				return "";
+			if(var.equalsIgnoreCase("PORT"))
+			{
+				int[] ports = server.getConfig().getHttpListenPorts();
+				if(ports.length==0)
+					return "";
+				return Integer.toString(ports[0]);
+			}
+			else
+				throw new CMException("Unknown variable: "+var);
 		}
 		throw new CMException("Unknown command: "+word);
 	}

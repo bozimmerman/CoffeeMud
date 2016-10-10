@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2004-2016 Bo Zimmerman
 
@@ -98,7 +97,7 @@ public class Prayer_Marry extends Prayer
 		}
 		if((husband.isMonster())||(husband.playerStats()==null))
 		{
-			mob.tell(L("@x1 must be a player to marry.",wife.name()));
+			mob.tell(L("@x1 must be a player to marry.",husband.name()));
 			return false;
 		}
 		CMLib.coffeeTables().bump(husband,CoffeeTableRow.STAT_BIRTHS);

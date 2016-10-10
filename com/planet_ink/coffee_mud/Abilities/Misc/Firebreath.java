@@ -58,7 +58,7 @@ public class Firebreath extends Dragonbreath
 		super.setMiscText(text());
 	}
 
-	private static final String[]	triggerStrings	= I(new String[] { "FIREBREATH" });
+	private static final String[]	triggerStrings	= I(new String[] { "FIREBREATH", "BREATHEFIRE", "BREATHFIRE" });
 
 	@Override
 	public String[] triggerStrings()

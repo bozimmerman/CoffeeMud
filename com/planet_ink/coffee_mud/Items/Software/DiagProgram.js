@@ -1,7 +1,10 @@
 //extends com.planet_ink.coffee_mud.Items.Software.GenSoftware
 //implements com.planet_ink.coffee_mud.Items.interfaces.ArchonOnly
 
-function ID(){	return "ShipDiagProgram";}
+function ID() 
+{
+	return "ShipDiagProgram";
+}
 
 var lib=Packages.com.planet_ink.coffee_mud.core.CMLib;
 
@@ -14,10 +17,15 @@ function newInstance()
 	return newOne;
 }
 
-function getParentMenu() { return ""; }
+function getParentMenu() 
+{
+	return "";
+}
 
-function getInternalName() { return "SCRIPTDIAG";}
-
+function getInternalName() 
+{
+	return "SCRIPTDIAG";
+}
 
 function isActivationString(word)
 {
@@ -56,7 +64,8 @@ function onTyping(mob, message)
 {
 	var cmd=''+message;
 	var x=cmd.indexOf('`');
-	while(x>=0) {
+	while(x>=0) 
+	{
 		cmd = cmd.substr(0,x)+'\''+cmd.substr(x+1);
 		x=cmd.indexOf('`')
 	}

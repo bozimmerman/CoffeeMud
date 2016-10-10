@@ -56,7 +56,8 @@ public class Spell_HearThoughts extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				final List<Room> rooms=CMLib.tracking().getRadiantRooms(mob.location(), CMLib.tracking().newFlags(), 50);
+				int range=50 + super.getXLEVELLevel(mob)+(2*super.getXMAXRANGELevel(mob));
+				final List<Room> rooms=CMLib.tracking().getRadiantRooms(mob.location(), CMLib.tracking().newFlags(), range);
 				final List<MOB> mobs=new LinkedList<MOB>();
 				int numMobs= 8 + super.getXLEVELLevel(mob);
 				for(final Room R : rooms)

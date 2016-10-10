@@ -161,7 +161,7 @@ public class Affect extends StdCommand
 						msg.append("\n\r");
 						colnum=0;
 					}
-					msg.append("^S"+CMStrings.padRightPreserve("^<HELPNAME NAME='"+CMStrings.removeColors(A.name())+"'^>"+disp+"^</HELPNAME^>",COL_LEN));
+					msg.append("^S"+CMStrings.padRightPreserve("^<HELPNAME NAME='"+CMStrings.removeColors(A.name())+"'^>"+disp+"^.^N^</HELPNAME^>",COL_LEN));
 					if(CMStrings.lengthMinusColors(disp)>COL_LEN)
 						colnum=99;
 				}

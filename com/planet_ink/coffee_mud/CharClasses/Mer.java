@@ -151,6 +151,7 @@ public class Mer extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Druid_SeaLore",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Chant_BreatheWater",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Chant_SummonSeaweed",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Chant_Phosphorescence",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Druid_ShapeShift",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Druid_AquaticPass",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Druid_MyPlants",true);
@@ -245,7 +246,7 @@ public class Mer extends StdCharClass
 	@Override
 	public int availabilityCode()
 	{
-		return Area.THEME_FANTASY | Area.THEME_SKILLONLYMASK;
+		return Area.THEME_FANTASY;
 	}
 
 	@Override
@@ -327,13 +328,13 @@ public class Mer extends StdCharClass
 	{
 		// this is necessary because the race happens AFTER the breathe is modified,
 		// so we're actually adding water breathing to baseStat race (human, whatever)
-		affected.eachEffect(new EachApplicable<Ability>(){
+		affected.eachEffect(new EachApplicable<Ability>()
+		{
 			@Override
 			public void apply(Ability a)
 			{
-				if(a.ID().startsWith("Druid_ShapeShift")) {
+				if(a.ID().startsWith("Druid_ShapeShift"))
 					a.affectCharStats(affected, affectableStats);
-				}
 			}
 		});
 		

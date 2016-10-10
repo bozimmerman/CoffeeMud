@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 
@@ -157,7 +158,9 @@ public class StdWeapon extends StdItem implements Weapon, AmmunitionWeapon
 					int howMuchToTake=ammunitionCapacity();
 					if(I.ammunitionRemaining()<howMuchToTake)
 						howMuchToTake=I.ammunitionRemaining();
-					setAmmoRemaining(howMuchToTake);
+					if(this.ammunitionCapacity() - this.ammunitionRemaining() < howMuchToTake)
+						howMuchToTake=this.ammunitionCapacity() - this.ammunitionRemaining();
+					setAmmoRemaining(this.ammunitionRemaining() + howMuchToTake);
 					I.setAmmoRemaining(I.ammunitionRemaining()-howMuchToTake);
 					final LinkedList<Ability> removeThese=new LinkedList<Ability>();
 					for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
@@ -200,6 +203,12 @@ public class StdWeapon extends StdItem implements Weapon, AmmunitionWeapon
 						}
 					}
 					setAmmoRemaining(0);
+					final Room R=msg.source().location();
+					if(R!=null)
+					{
+						R.addItem(ammo, ItemPossessor.Expire.Player_Drop);
+						CMLib.commands().postGet(msg.source(), null, ammo, true);
+					}
 				}
 				break;
 			}
@@ -240,12 +249,9 @@ public class StdWeapon extends StdItem implements Weapon, AmmunitionWeapon
 							A=CMClass.getAbility("Disease_Lockjaw");
 						else
 							A=CMClass.getAbility("Disease_Tetanus");
+						if((A!=null)&&(tmob.fetchEffect(A.ID())==null)&&(!CMSecurity.isAbilityDisabled(A.ID())))
+							A.invoke(msg.source(),tmob,true,phyStats().level());
 					}
-					else
-						A=CMClass.getAbility("Disease_Infection");
-
-					if((A!=null)&&(tmob.fetchEffect(A.ID())==null))
-						A.invoke(msg.source(),tmob,true,phyStats().level());
 				}
 			}
 
@@ -278,7 +284,10 @@ public class StdWeapon extends StdItem implements Weapon, AmmunitionWeapon
 			{
 				if(lastReloadTime != msg.source().lastTickedDateTime())
 				{
-					msg.source().tell(L("@x1 is out of @x2.",name(),ammunitionType()));
+					if(msg.source().isMonster() && (owner() instanceof Room))
+						((Room)owner()).showHappens(CMMsg.MSG_OK_VISUAL, L("@x1 is out of @x2.",name(),ammunitionType()));
+					else
+						msg.source().tell(L("@x1 is out of @x2.",name(),ammunitionType()));
 					if((msg.source().isMine(this))
 					&&(msg.source().location()!=null)
 					&&(CMLib.flags().isAliveAwakeMobile(msg.source(),true)))
@@ -420,6 +429,12 @@ public class StdWeapon extends StdItem implements Weapon, AmmunitionWeapon
 		if((readableText()==null)||(this instanceof Wand))
 			return false;
 		return readableText().length()>0;
+	}
+
+	@Override
+	public boolean isFreeStanding()
+	{
+		return false;
 	}
 
 	@Override

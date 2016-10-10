@@ -69,26 +69,36 @@ public class Sword extends StdWeapon
 			{
 				return this.getClass().newInstance();
 			}
-			catch(final Exception e){}
+			catch(final Exception e)
+			{
+			}
 			return new Sword();
 		}
 		final Random randomizer = new Random(System.currentTimeMillis());
 		final int swordType = Math.abs(randomizer.nextInt() % 6);
 		switch (swordType)
 		{
-			case 0:  return new Rapier();
-			case 1:	 return new Katana();
-			case 2:	 return new Longsword();
-			case 3:	 return new Scimitar();
-			case 4:	 return new Claymore();
-			case 5:	 return new Shortsword();
-			default:
-				try
-				{
-					return this.getClass().newInstance();
-				}
-				catch(final Exception e){}
-				return new Sword();
+		case 0:
+			return new Rapier();
+		case 1:
+			return new Katana();
+		case 2:
+			return new Longsword();
+		case 3:
+			return new Scimitar();
+		case 4:
+			return new Claymore();
+		case 5:
+			return new Shortsword();
+		default:
+			try
+			{
+				return this.getClass().newInstance();
+			}
+			catch(final Exception e)
+			{
+			}
+			return new Sword();
 		}
 
 	}

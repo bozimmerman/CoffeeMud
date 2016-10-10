@@ -87,7 +87,7 @@ public class Spell_SolveMaze extends Spell
 		}
 		else
 		{
-			direction=Directions.getDirectionCode(commands.get(0).toString());
+			direction=CMLib.directions().getDirectionCode(commands.get(0).toString());
 			if(direction>=0)
 				outRoom=grid.getRoomInDir(direction);
 		}

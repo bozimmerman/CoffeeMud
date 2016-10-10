@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -88,5 +87,65 @@ public class GenHandBow extends StdBow
 		miscText="";
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
 		recoverPhyStats();
+	}
+	
+	@Override
+	public String getStat(String code)
+	{
+		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
+			return CMLib.coffeeMaker().getGenItemStat(this,code);
+		if(GenWeapon.getGenWeaponCodeNum(code)>=0)
+			return GenWeapon.getGenWeaponStat(this,code);
+		return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
+	}
+
+	@Override
+	public void setStat(String code, String val)
+	{
+		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
+			CMLib.coffeeMaker().setGenItemStat(this,code,val);
+		else
+		if(GenWeapon.getGenWeaponCodeNum(code)>=0)
+			GenWeapon.setGenWeaponStat(this,code,val);
+		else
+			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
+	}
+
+	@Override
+	protected int getCodeNum(String code)
+	{
+		return GenWeapon.getGenWeaponCodeNum(code);
+	}
+
+	private static String[] codes=null;
+
+	@Override
+	public String[] getStatCodes()
+	{
+		if(codes!=null)
+			return codes;
+		final String[] MYCODES=CMProps.getStatCodesList(GenWeapon.GENWEAPONCODES,this);
+		final String[] superCodes=CMParms.toStringArray(GenericBuilder.GenItemCode.values());
+		codes=new String[superCodes.length+MYCODES.length];
+		int i=0;
+		for(;i<superCodes.length;i++)
+			codes[i]=superCodes[i];
+		for(int x=0;x<MYCODES.length;i++,x++)
+			codes[i]=MYCODES[x];
+		return codes;
+	}
+
+	@Override
+	public boolean sameAs(Environmental E)
+	{
+		if(!(E instanceof GenHandBow))
+			return false;
+		final String[] codes=getStatCodes();
+		for(int i=0;i<codes.length;i++)
+		{
+			if(!E.getStat(codes[i]).equals(getStat(codes[i])))
+				return false;
+		}
+		return true;
 	}
 }

@@ -34,19 +34,47 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
-
 public class MasterWeaponsmithing extends Weaponsmithing implements ItemCraftor
 {
-	@Override public String ID() { return "MasterWeaponsmithing"; }
-	private final static String localizedName = CMLib.lang().L("Master Weaponsmithing");
-	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =I(new String[] {"MWEAPONSMITH","MASTERWEAPONSMITHING"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override protected int displayColumns(){return 2;}
+	@Override
+	public String ID()
+	{
+		return "MasterWeaponsmithing";
+	}
 
-	@Override public String parametersFile(){ return "masterweaponsmith.txt";}
-	@Override protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
+	private final static String	localizedName	= CMLib.lang().L("Master Weaponsmithing");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "MWEAPONSMITH", "MASTERWEAPONSMITHING" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	protected int displayColumns()
+	{
+		return 2;
+	}
+
+	@Override
+	public String parametersFile()
+	{
+		return "masterweaponsmith.txt";
+	}
+
+	@Override
+	protected List<List<String>> loadRecipes()
+	{
+		return super.loadRecipes(parametersFile());
+	}
 
 	@Override
 	protected boolean masterCraftCheck(final Item I)
@@ -65,10 +93,14 @@ public class MasterWeaponsmithing extends Weaponsmithing implements ItemCraftor
 		if(super.checkStop(mob, commands))
 			return true;
 
+		if(super.checkInfo(mob, commands))
+			return true;
+		
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,L("Make what? Enter \"mweaponsmith list\" for a list, \"mweaponsmith scan\", \"mweaponsmith learn <item>\", \"mweaponsmith mend <item>\", or \"mweaponsmith stop\" to cancel."));
+			commonTell(mob,L("Make what? Enter \"mweaponsmith list\" for a list, \"mweaponsmith info <item>\", \"mweaponsmith scan\","
+						+ " \"mweaponsmith learn <item>\", \"mweaponsmith mend <item>\", or \"mweaponsmith stop\" to cancel."));
 			return false;
 		}
 		return super.autoGenInvoke(mob,commands,givenTarget,auto,asLevel,autoGenerate,forceLevels,crafted);

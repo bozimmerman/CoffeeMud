@@ -35,10 +35,18 @@ import java.util.*;
 
 public class Flee extends Go
 {
-	public Flee(){}
+	public Flee()
+	{
+	}
 
-	private final String[] access=I(new String[]{"FLEE"});
-	@Override public String[] getAccessWords(){return access;}
+	private final String[] access = I(new String[] { "FLEE" });
+
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
+
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
@@ -103,17 +111,25 @@ public class Flee extends Go
 				if(directions.size()>0)
 				{
 					directionCode=directions.get(CMLib.dice().roll(1,directions.size(),-1)).intValue();
-					direction=Directions.getDirectionName(directionCode);
+					direction=CMLib.directions().getDirectionName(directionCode);
 				}
 			}
 			else
-				directionCode=Directions.getGoodDirectionCode(direction);
+				directionCode=CMLib.directions().getGoodDirectionCode(direction);
 			if(directionCode<0)
 			{
 				CMLib.commands().doCommandFail(mob,origCmds,L("Flee where?!"));
 				return false;
 			}
 		}
+		
+		if(CMLib.flags().isFalling(mob))
+		{
+			int fallDir = CMLib.flags().getFallingDirection(mob);
+			if((fallDir >=0) && (R.rawDoors()[fallDir]!=null) && (R.getExitInDir(fallDir)!=null))
+				directionCode = fallDir;
+		}
+		
 		if((direction.equals("NOWHERE"))||((directionCode>=0)&&(CMLib.tracking().walk(mob,directionCode,true,false,false))))
 		{
 			mob.makePeace(false);
@@ -143,7 +159,10 @@ public class Flee extends Go
 		return false;
 	}
 
-	@Override public boolean canBeOrdered(){return true;}
-
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 
 }

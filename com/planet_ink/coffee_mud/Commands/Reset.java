@@ -60,6 +60,136 @@ public class Reset extends StdCommand
 		return CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.RESET);
 	}
 
+	private enum helpSets
+	{
+		SKILLS("/resources/help/skill_help.ini", new Filterer<Ability>(){
+			@Override
+			public boolean passesFilter(Ability A)
+			{
+				final int classCode=A.classificationCode()&Ability.ALL_ACODES;
+				if((classCode == Ability.ACODE_SKILL)
+				||(classCode == Ability.ACODE_THIEF_SKILL)
+				||(A.ID().startsWith("Paladin_")))
+					return true;
+				return false;
+			}
+		}),
+		CHANTS("/resources/help/chant_help.ini", new Filterer<Ability>(){
+			@Override
+			public boolean passesFilter(Ability A)
+			{
+				final int classCode=A.classificationCode()&Ability.ALL_ACODES;
+				if((classCode == Ability.ACODE_CHANT)
+				||(A.ID().startsWith("Chant_")))
+					return true;
+				return false;
+			}
+		}),
+		COMMON("/resources/help/common_help.ini", new Filterer<Ability>(){
+			@Override
+			public boolean passesFilter(Ability A)
+			{
+				final int classCode=A.classificationCode()&Ability.ALL_ACODES;
+				if(classCode == Ability.ACODE_COMMON_SKILL)
+					return true;
+				return false;
+			}
+		}),
+		PRAYERS("/resources/help/prayer_help.ini", new Filterer<Ability>(){
+			@Override
+			public boolean passesFilter(Ability A)
+			{
+				final int classCode=A.classificationCode()&Ability.ALL_ACODES;
+				if((classCode == Ability.ACODE_PRAYER)
+				||(A.ID().startsWith("Prayer_")))
+					return true;
+				return false;
+			}
+		}),
+		SONGS("/resources/help/songs_help.ini", new Filterer<Ability>(){
+			@Override
+			public boolean passesFilter(Ability A)
+			{
+				final int classCode=A.classificationCode()&Ability.ALL_ACODES;
+				if((classCode == Ability.ACODE_SONG)
+				||(A.ID().startsWith("Song_"))
+				||(A.ID().startsWith("Play_"))
+				||(A.ID().startsWith("Dance_")))
+					return true;
+				return false;
+			}
+		}),
+		SPELLS("/resources/help/spell_help.ini", new Filterer<Ability>(){
+			@Override
+			public boolean passesFilter(Ability A)
+			{
+				final int classCode=A.classificationCode()&Ability.ALL_ACODES;
+				if((classCode == Ability.ACODE_SPELL)
+				||(A.ID().startsWith("Spell_")))
+					return true;
+				return false;
+			}
+		}),
+		TRAPS("/resources/help/traps.ini", new Filterer<Ability>(){
+			@Override
+			public boolean passesFilter(Ability A)
+			{
+				final int classCode=A.classificationCode()&Ability.ALL_ACODES;
+				if((classCode == Ability.ACODE_TRAP)
+				||(A.ID().startsWith("Trap_")))
+					return true;
+				return false;
+			}
+		}),
+		POISONS("/resources/help/poisons.ini", new Filterer<Ability>(){
+			@Override
+			public boolean passesFilter(Ability A)
+			{
+				final int classCode=A.classificationCode()&Ability.ALL_ACODES;
+				if((classCode == Ability.ACODE_POISON)
+				||(A.ID().startsWith("Poison_")))
+					return true;
+				return false;
+			}
+		}),
+		DISEASES("/resources/help/diseases.ini", new Filterer<Ability>(){
+			@Override
+			public boolean passesFilter(Ability A)
+			{
+				final int classCode=A.classificationCode()&Ability.ALL_ACODES;
+				if((classCode == Ability.ACODE_DISEASE)
+				||(A.ID().startsWith("Disease_")))
+					return true;
+				return false;
+			}
+		}),
+		PROPERTIES("/resources/help/arc_properties.ini", false, new Filterer<Ability>(){
+			@Override
+			public boolean passesFilter(Ability A)
+			{
+				final int classCode=A.classificationCode()&Ability.ALL_ACODES;
+				if((classCode == Ability.ACODE_PROPERTY)
+				||(A.ID().startsWith("Prop_")))
+					return true;
+				return false;
+			}
+		}),
+		;
+		public String file;
+		public Filterer<Ability> filter;
+		public boolean useName;
+		private helpSets(String filePath, Filterer<Ability> filter)
+		{
+			this(filePath,true,filter);
+		}
+		private helpSets(String filePath, boolean useName, Filterer<Ability> filter)
+		{
+			file=filePath;
+			this.useName=useName;
+			this.filter=filter;
+		}
+	}
+	
 	public int resetAreaOramaManaI(MOB mob, Item I, Hashtable<String,Integer> rememberI, String lead)
 		throws java.io.IOException
 	{
@@ -335,6 +465,32 @@ public class Reset extends StdCommand
 		}
 		return false;
 	}
+	
+	public boolean compareRaces(String usefulID, Race race1, Race race2, MOB tellM)
+	{
+		boolean same = true;
+		for(String stat : race1.getStatCodes())
+		{
+			if(stat.equals("ID")||stat.equals("NAME"))
+				continue;
+			try
+			{
+				String val1=race1.getStat(stat);
+				String val2=race2.getStat(stat);
+				if(!val1.equals(val2))
+				{
+					same=false;
+					if(tellM!=null)
+						tellM.tell(usefulID+" "+stat+": '"+val1+"' != '"+val2+"'");
+				}
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
+		return same;
+	}
 
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
@@ -384,6 +540,165 @@ public class Reset extends StdCommand
 				mob.tell(L("Rejuv this ROOM, or the whole AREA?"));
 				return false;
 			}
+		}
+		else
+		if(s.equalsIgnoreCase("sorthelp"))
+		{
+			if((rest==null)||(rest.length()==0))
+			{
+				mob.tell("Which? "+CMParms.toListString(helpSets.values()));
+				return false;
+			}
+			final helpSets help=(helpSets)CMath.s_valueOf(helpSets.class, rest.toUpperCase().trim());
+			if(help == null)
+			{
+				mob.tell("Which? "+CMParms.toListString(helpSets.values()));
+				return false;
+			}
+			CMFile F=new CMFile(help.file,mob);
+			
+			List<String> batch=Resources.getFileLineVector(F.text());
+			List<StringBuilder> batches = new ArrayList<StringBuilder>();
+			Map<String,StringBuilder> ids=new Hashtable<String,StringBuilder>();
+			StringBuilder currentBatch = null;
+			boolean continueLine = false;
+			for(String s1 : batch)
+			{
+				int x=s1.indexOf('=');
+				if(currentBatch == null)
+				{
+					if(s1.trim().length()==0)
+						continue;
+					if(x<0)
+					{
+						mob.tell("Unstarted batch at "+s1);
+						return false;
+					}
+					else
+					{
+						currentBatch=new StringBuilder("");
+						if(CMStrings.isUpperCase(s1.substring(0, x)))
+							ids.put(s1.substring(0, x), currentBatch);
+						batches.add(currentBatch);
+						currentBatch.append(s1).append("\n\r");
+					}
+				}
+				else
+				{
+					if(continueLine)
+					{
+						currentBatch.append(s1).append("\n\r");
+						if(!s1.endsWith("\\"))
+						{
+							currentBatch=null;
+							continueLine=false;
+						}
+					}
+					else
+					{
+						if((x>0)&&(CMStrings.isUpperCase(s1.substring(0, x))))
+							ids.put(s1.substring(0, x), currentBatch);
+						currentBatch.append(s1).append("\n\r");
+						if(s1.endsWith("\\"))
+							continueLine=true;
+					}
+				}
+			}
+			PairList<String,StringBuilder> skills=new PairVector<String,StringBuilder>();
+			for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
+			{
+				final Ability A=e.nextElement();
+				if(help.filter.passesFilter(A))
+				{
+					StringBuilder[] bup=new StringBuilder[10];
+					bup[0]=ids.get(A.Name().toUpperCase().replace(' ','_'));
+					if(bup[0]==null)
+					{
+						int xx=A.ID().indexOf('_');
+						if(xx>0)
+							bup[0]=ids.get((A.ID().substring(0,xx)+"_"+A.Name()).toUpperCase().replace(' ','_'));
+					}
+					bup[1]=ids.get(A.ID().toUpperCase().replace(' ','_'));
+					if((bup[0]==null)&&(bup[1]==null))
+					{
+						mob.tell("Warning: Not found: "+A.ID());
+					}
+					else
+					if((bup[0]!=null)&&(bup[1]!=null)&&(bup[0]!=bup[1]))
+					{
+						mob.tell("Warning: Mis found: "+A.ID());
+						mob.tell("1: "+bup[0].toString());
+						mob.tell("2: "+bup[1].toString());
+						return false;
+					}
+					else
+					{
+						StringBuilder bp=bup[1];
+						if(bp==null)
+						{
+							bp=bup[0];
+							int xx=bp.toString().indexOf("=<ABILITY>");
+							if(xx>0)
+							{
+								ids.put(A.ID().toUpperCase(), bp);
+								int yy=bp.toString().lastIndexOf('\r',xx);
+								if(yy>0)
+								{
+									bp.insert(0, A.ID().toUpperCase()+"="+bp.toString().substring(yy+1,xx)+"\n\r");
+								}
+								else
+								{
+									bp.insert(0, A.ID().toUpperCase()+"="+bp.toString().substring(0,xx)+"\n\r");
+								}
+							}
+						}
+						if(!batches.contains(bp))
+						{
+							mob.tell("Warning: Re found: "+A.ID());
+							mob.tell("Info   : Re found: "+bp.toString());
+						}
+						else
+						{
+							if(help.useName)
+								skills.add(A.Name().toUpperCase(),bp);
+							else
+								skills.add(A.ID().toUpperCase(),bp);
+							batches.remove(bp);
+						}
+					}
+				}
+			}
+			for(StringBuilder b : batches)
+			{
+				int x=b.toString().indexOf('=');
+				if(x<0)
+				{
+					mob.tell("Error: Unused: "+CMStrings.replaceAll(CMStrings.replaceAll(CMStrings.replaceAll(CMStrings.replaceAll(b.substring(0,30),"\n"," "),"\r"," "),"\\n"," "),"\\r"," "));
+					return false;
+				}
+				else
+				{
+					mob.tell("Warning: Unused: "+CMStrings.replaceAll(CMStrings.replaceAll(CMStrings.replaceAll(CMStrings.replaceAll(b.substring(0,30),"\n"," "),"\r"," "),"\\n"," "),"\\r"," "));
+					skills.add(b.substring(0,x).toUpperCase(),b);
+				}
+			}
+			Collections.sort(skills,new Comparator<Pair<String,StringBuilder>>()
+			{
+				@Override
+				public int compare(Pair<String, StringBuilder> o1, Pair<String, StringBuilder> o2)
+				{
+					return o1.first.compareTo(o2.first);
+				}
+			});
+			StringBuilder finalTxt = new StringBuilder("");
+			for(Pair<String,StringBuilder> p : skills)
+			{
+				finalTxt.append(p.second);
+				finalTxt.append("\n\r");
+			}
+			if((mob.session()!=null)&&(mob.session().confirm("Save (y/N)?", "N")))
+				F.saveText(finalTxt);
+			return true;
 		}
 		else
 		if(s.equalsIgnoreCase("room"))
@@ -825,7 +1140,7 @@ public class Reset extends StdCommand
 					if(ID.equalsIgnoreCase("COINS"))
 						classID="COINS";
 					final Item I=(Item)CMClass.getItem("GenItem").copyOf();
-					CMLib.database().DBCreateData(name,bank,""+I,classID+";"+data);
+					CMLib.database().DBCreatePlayerData(name,bank,""+I,classID+";"+data);
 				}
 				CMLib.database().DBDeleteJournal(bank,null); // banks are no longer journaled
 				mob.tell(L("@x1 records done.",""+V.size()));
@@ -1234,6 +1549,124 @@ public class Reset extends StdCommand
 				}
 				mob.session().println(L("done!"));
 			}
+		}
+		else
+		if(s.equalsIgnoreCase("mixedraces")&&(CMSecurity.isASysOp(mob)))
+		{
+			List<List<Race>> raceSets=new ArrayList<List<Race>>();
+			for(Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
+			{
+				Race R=r.nextElement();
+				if(R.isGeneric())
+				{
+					Set<String> genericOnlyFound=new TreeSet<String>();
+					List<String> raceParts = new ArrayList<String>();
+					String name=R.name();
+					if(name.startsWith("Half "))
+					{
+						name=name.substring(5);
+						raceParts.add("Human");
+					}
+					raceParts.addAll(Arrays.asList(name.split("-")));
+					for(int i=0;i<raceParts.size();i++)
+					{
+						if(raceParts.get(i).equalsIgnoreCase("Man")
+						&&(i<raceParts.size()-1)
+						&&raceParts.get(i+1).equalsIgnoreCase("Scorpion"))
+						{
+							raceParts.set(i, "Man-Scorpion");
+							raceParts.remove(i+1);
+						}
+					}
+					List<Race> races = new ArrayList<Race>();
+					raceSets.add(races);
+					for(int i=0;i<raceParts.size();i++)
+					{
+						final String racePart=raceParts.get(i);
+						Race R1=CMClass.findRace(racePart);
+						if(R1!=null)
+						{
+							if(!R1.isGeneric())
+								races.add(R1);
+							else
+							{
+								String lastPart=raceParts.get(i);
+								if(lastPart.equals("Whelpling"))
+									races.add(R1);
+								else
+								if(!lastPart.endsWith("ling"))
+									races.add(R1);
+								else
+								if(CMClass.findRace(lastPart.substring(0,lastPart.length()-4))!=null)
+									races.add(R1);
+								else
+									genericOnlyFound.add(R1.ID());
+							}
+						}
+						else
+						{
+							mob.tell("No race: "+racePart +" from "+R.name()+"("+R.ID()+")");
+						}
+					}
+					if(genericOnlyFound.size()>0)
+						mob.tell("Found generic races not handled: "+CMParms.toListString(genericOnlyFound));
+				}
+			}
+			for(int i=raceSets.size()-1;i>=0;i--)
+			{
+				List<Race> races=raceSets.get(i);
+				if(races.size()==1)
+				{
+					Race originalRace = races.get(0);
+					Race race2=races.get(0);
+					if((race2.ID().endsWith("ling"))
+					&&(!race2.ID().equals("Whelpling"))
+					&&race2.isGeneric())
+					{
+						final Race race1=CMClass.getRace(race2.ID().substring(0,race2.ID().length()-4));
+						if(race1!=null)
+						{
+							race2=CMClass.getRace("Halfling");
+							Race finalR=race1.mixRace(race2,originalRace.ID(),originalRace.name());
+							if(finalR.isGeneric())
+							{
+								compareRaces(originalRace.ID(),originalRace,finalR,mob);
+								//TODO: check it out.
+							}
+							else
+								mob.tell("Failed single race:"+race2.ID());
+						}
+						else
+							mob.tell("Undoable single race:"+race2.ID());
+					}
+					raceSets.remove(i);
+				}
+			}
+			for(int i=0;i<raceSets.size();i++)
+			{
+				List<Race> races=raceSets.get(i);
+				Race lastRace=races.get(races.size()-1);
+				for(int r=races.size()-2;r>=0;r--)
+				{
+					Race race2=lastRace;
+					Race race1=races.get(r);
+					Race finalR=race1.mixRace(race2,"TempID","TempName");
+					if(finalR.isGeneric())
+					{
+						Race compareR=CMClass.getRace(race1.ID()+race2.ID());
+						if(compareR==null)
+							compareR=CMClass.getRace(race2.ID()+race1.ID());
+						if(compareR==null)
+							mob.tell("Can't find "+race1.ID()+"-"+race2.ID());
+						else
+							compareRaces(race1.ID()+race2.ID(),compareR,finalR,mob);
+						//TODO: check it out.
+					}
+					else
+						mob.tell("Failed single race:"+race2.ID());
+				}
+			}
+			//Race R1=CMLib.utensils().getMixedRace(firstR.ID(),secondR.ID());
 		}
 		else
 		if(s.equalsIgnoreCase("itemstats")&&(CMSecurity.isASysOp(mob)))

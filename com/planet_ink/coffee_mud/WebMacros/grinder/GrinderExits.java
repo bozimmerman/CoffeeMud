@@ -34,14 +34,16 @@ import java.util.*;
 */
 public class GrinderExits
 {
-	private static final String[] okparms={
+	private static final String[] okparms=
+	{
 	  "NAME"," CLASSES","DISPLAYTEXT","DESCRIPTION",
 	  "LEVEL","LEVELRESTRICTED","ISTRAPPED","HASADOOR",
 	  "CLOSEDTEXT","DEFAULTSCLOSED","OPENWORD","CLOSEWORD",
 	  "HASALOCK","DEFAULTSLOCKED","KEYNAME","ISREADABLE",
 	  "READABLETEXT","ISCLASSRESTRICTED","RESTRICTEDCLASSES",
 	  "ISALIGNMENTRESTRICTED","RESTRICTEDALIGNMENTS",
-	  " MISCTEXT","ISGENERIC","DOORNAME","IMAGE","OPENTICKS"};
+	  " MISCTEXT","ISGENERIC","DOORNAME","IMAGE","OPENTICKS"
+	};
 
 	public static String dispositions(Physical P, HTTPRequest httpReq, java.util.Map<String,String> parms)
 	{
@@ -50,7 +52,7 @@ public class GrinderExits
 		{
 			final String parm=httpReq.getUrlParameter(PhyStats.IS_CODES[d]);
 			if((parm!=null)&&(parm.equals("on")))
-			   P.basePhyStats().setDisposition(P.basePhyStats().disposition()|(1<<d));
+				P.basePhyStats().setDisposition(P.basePhyStats().disposition()|(1<<d));
 		}
 		return "";
 	}
@@ -211,6 +213,7 @@ public class GrinderExits
 		}
 		return "";
 	}
+
 	public static String delExit(Room R, int dir)
 	{
 		synchronized(("SYNC"+R.roomID()).intern())

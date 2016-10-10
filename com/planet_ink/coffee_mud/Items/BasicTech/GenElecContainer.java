@@ -88,7 +88,7 @@ public class GenElecContainer extends StdElecContainer
 		recoverPhyStats();
 	}
 
-	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES","RESETTIME","POWERCAP","ACTIVATED","POWERREM","MANUFACTURER","DEFCLOSED","DEFLOCKED"};
+	private final static String[] MYCODES={"TECHLEVEL","HASLOCK","HASLID","CAPACITY","CONTAINTYPES","RESETTIME","POWERCAP","ACTIVATED","POWERREM","MANUFACTURER","DEFCLOSED","DEFLOCKED"};
 
 	@Override
 	public String getStat(String code)
@@ -98,26 +98,28 @@ public class GenElecContainer extends StdElecContainer
 		switch(getCodeNum(code))
 		{
 		case 0:
-			return "" + hasALock();
+			return "" + techLevel();
 		case 1:
-			return "" + hasADoor();
+			return "" + hasALock();
 		case 2:
-			return "" + capacity();
+			return "" + hasADoor();
 		case 3:
-			return "" + containTypes();
+			return "" + capacity();
 		case 4:
-			return "" + openDelayTicks();
+			return "" + containTypes();
 		case 5:
-			return "" + powerCapacity();
+			return "" + openDelayTicks();
 		case 6:
-			return "" + activated();
+			return "" + powerCapacity();
 		case 7:
-			return "" + powerRemaining();
+			return "" + activated();
 		case 8:
-			return "" + getManufacturerName();
+			return "" + powerRemaining();
 		case 9:
-			return "" + defaultsClosed();
+			return "" + getManufacturerName();
 		case 10:
+			return "" + defaultsClosed();
+		case 11:
 			return "" + defaultsLocked();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
@@ -133,36 +135,39 @@ public class GenElecContainer extends StdElecContainer
 		switch(getCodeNum(code))
 		{
 		case 0:
-			setDoorsNLocks(hasADoor(), isOpen(), defaultsClosed(), CMath.s_bool(val), false, CMath.s_bool(val) && defaultsLocked());
+			setTechLevel(CMath.s_parseIntExpression(val));
 			break;
 		case 1:
-			setDoorsNLocks(CMath.s_bool(val), isOpen(), CMath.s_bool(val) && defaultsClosed(), hasALock(), isLocked(), defaultsLocked());
+			setDoorsNLocks(hasADoor(), isOpen(), defaultsClosed(), CMath.s_bool(val), false, CMath.s_bool(val) && defaultsLocked());
 			break;
 		case 2:
-			setCapacity(CMath.s_parseIntExpression(val));
+			setDoorsNLocks(CMath.s_bool(val), isOpen(), CMath.s_bool(val) && defaultsClosed(), hasALock(), isLocked(), defaultsLocked());
 			break;
 		case 3:
-			setContainTypes(CMath.s_parseBitLongExpression(Container.CONTAIN_DESCS, val));
+			setCapacity(CMath.s_parseIntExpression(val));
 			break;
 		case 4:
-			setOpenDelayTicks(CMath.s_parseIntExpression(val));
+			setContainTypes(CMath.s_parseBitLongExpression(Container.CONTAIN_DESCS, val));
 			break;
 		case 5:
-			setPowerCapacity(CMath.s_parseLongExpression(val));
+			setOpenDelayTicks(CMath.s_parseIntExpression(val));
 			break;
 		case 6:
-			activate(CMath.s_bool(val));
+			setPowerCapacity(CMath.s_parseLongExpression(val));
 			break;
 		case 7:
-			setPowerRemaining(CMath.s_parseLongExpression(val));
+			activate(CMath.s_bool(val));
 			break;
 		case 8:
-			setManufacturerName(val);
+			setPowerRemaining(CMath.s_parseLongExpression(val));
 			break;
 		case 9:
-			setDoorsNLocks(hasADoor(), isOpen(), CMath.s_bool(val), hasALock(), isLocked(), defaultsLocked());
+			setManufacturerName(val);
 			break;
 		case 10:
+			setDoorsNLocks(hasADoor(), isOpen(), CMath.s_bool(val), hasALock(), isLocked(), defaultsLocked());
+			break;
+		case 11:
 			setDoorsNLocks(hasADoor(), isOpen(), defaultsClosed(), hasALock(), isLocked(), CMath.s_bool(val));
 			break;
 		default:

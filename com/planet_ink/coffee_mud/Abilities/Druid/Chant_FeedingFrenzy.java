@@ -172,7 +172,8 @@ public class Chant_FeedingFrenzy extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				List<Room> rooms = CMLib.tracking().getRadiantRooms(mob.location(), flags, 10);
+				int radius = 10 + super.getXMAXRANGELevel(mob) + (super.getXLEVELLevel(mob)/2);
+				List<Room> rooms = CMLib.tracking().getRadiantRooms(mob.location(), flags, radius);
 				for(Room room : rooms)
 				{
 					if((room != null)&&(room.numInhabitants()>0))

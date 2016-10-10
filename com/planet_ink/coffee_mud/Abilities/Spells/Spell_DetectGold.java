@@ -146,7 +146,7 @@ public class Spell_DetectGold extends Spell
 					if(d>=Directions.NUM_DIRECTIONS())
 						last="here";
 					else
-						last=Directions.getFromCompassDirectionName(d);
+						last=CMLib.directions().getFromCompassDirectionName(d);
 				}
 			}
 		}

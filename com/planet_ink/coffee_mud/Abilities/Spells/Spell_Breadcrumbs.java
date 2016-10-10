@@ -77,7 +77,7 @@ public class Spell_Breadcrumbs extends Spell
 						{ dir=d; break;}
 					}
 					if(dir>=0)
-						str.append(Directions.getDirectionName(dir)+" ");
+						str.append(CMLib.directions().getDirectionName(dir)+" ");
 					else
 						str.append(L("Unknown "));
 				}

@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -237,7 +236,7 @@ public class Kobold extends StdRace
 		if((CMLib.dice().rollPercentage()<5)&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
 		{
 			final Ability A=CMClass.getAbility("Disease_Lepresy");
-			if(A!=null)
+			if((A!=null)&&(!CMSecurity.isAbilityDisabled(A.ID())))
 				meat.addNonUninvokableEffect(A);
 		}
 		return rsc;

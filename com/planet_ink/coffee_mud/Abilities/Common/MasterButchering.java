@@ -35,11 +35,27 @@ import java.util.*;
 
 public class MasterButchering extends Butchering
 {
-	@Override public String ID() { return "MasterButchering"; }
-	private final static String localizedName = CMLib.lang().L("Master Butchering");
-	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =I(new String[] {"MBUTCHERING","MASTERBUTCHERING","MSKIN","MASTERSKIN"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override
+	public String ID()
+	{
+		return "MasterButchering";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Master Butchering");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "MBUTCHERING", "MASTERBUTCHERING", "MSKIN", "MASTERSKIN" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
 
 	@Override
 	protected int getDuration(MOB mob, int weight)
@@ -50,5 +66,10 @@ public class MasterButchering extends Butchering
 			duration=100;
 		return duration;
 	}
-	@Override protected int baseYield() { return 3; }
+
+	@Override
+	protected int baseYield()
+	{
+		return 3;
+	}
 }

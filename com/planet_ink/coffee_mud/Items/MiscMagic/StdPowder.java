@@ -40,7 +40,11 @@ import java.util.*;
 
 public class StdPowder extends StdItem implements MagicDust 
 {
-	@Override public String ID(){	return "StdPowder";}
+	@Override
+	public String ID()
+	{
+		return "StdPowder";
+	}
 
 	public StdPowder()
 	{
@@ -61,6 +65,7 @@ public class StdPowder extends StdItem implements MagicDust
 	{
 		final List<Ability> spells = getSpells();
 		if (spells.size() > 0)
+		{
 			for (int i = 0; i < spells.size(); i++)
 			{
 				final Ability thisOne = (Ability) spells.get(i).copyOf();
@@ -72,6 +77,7 @@ public class StdPowder extends StdItem implements MagicDust
 						thisOne.invoke((MOB)target,(MOB)target, true, phyStats().level());
 				}
 			}
+		}
 		destroy();
 	}
 
@@ -93,23 +99,33 @@ public class StdPowder extends StdItem implements MagicDust
 
 	@Override
 	public String getSpellList()
-	{ return miscText;}
-	@Override public void setSpellList(String list){miscText=list;}
+	{
+		return miscText;
+	}
+
+	@Override
+	public void setSpellList(String list)
+	{
+		miscText = list;
+	}
 
 	public boolean malicious(SpellHolder me)
 	{
 		final List<Ability> spells=getSpells();
 		for(final Ability checking : spells)
+		{
 			if(checking.abstractQuality()==Ability.QUALITY_MALICIOUS)
 				return true;
+		}
 		return false;
 	}
+
 	@Override
 	public List<Ability> getSpells()
 	{
 		final String names=getSpellList();
 
-		final Vector<Ability> theSpells=new Vector<Ability>();
+		final List<Ability> theSpells=new Vector<Ability>();
 		final List<String> parsedSpells=CMParms.parseSemicolons(names, true);
 		for(String thisOne : parsedSpells)
 		{
@@ -126,7 +142,7 @@ public class StdPowder extends StdItem implements MagicDust
 			{
 				A=(Ability)A.copyOf();
 				A.setMiscText(parms);
-				theSpells.addElement(A);
+				theSpells.add(A);
 			}
 		}
 		recoverPhyStats();
@@ -138,5 +154,4 @@ public class StdPowder extends StdItem implements MagicDust
 	{
 		return description()+"\n\r"+super.secretIdentity();
 	}
-
 }

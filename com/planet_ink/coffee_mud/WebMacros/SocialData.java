@@ -36,7 +36,11 @@ import java.util.*;
 
 public class SocialData extends StdWebMacro
 {
-	@Override public String name() { return "SocialData"; }
+	@Override
+	public String name()
+	{
+		return "SocialData";
+	}
 	static String[] BTYPES={"NONE","ALL","SELF","TARGETMOB","TARGETITEM","TARGETINV","TARGETEQUIP"};
 	static String[] BEXTNS={""," ALL"," SELF"," <T-NAME>"," <I-NAME>"," <V-NAME>"," <E-NAME>"};
 	static String[] BFIELDS={"YOM","YONM","YOM","YTONM","YONM","YONM","YONM"};
@@ -83,8 +87,10 @@ public class SocialData extends StdWebMacro
 				return "No local file.";
 			CMFile vf=new CMFile("::/resources/socials.txt",M);
 			if(vf.exists())
+			{
 				if(!vf.delete())
 					return "Unable to delete existing vfs file.";
+			}
 			vf=new CMFile("::/resources/socials.txt",M);
 			if(!vf.canWrite())
 				return "Unable to write new vfs file.";
@@ -104,8 +110,10 @@ public class SocialData extends StdWebMacro
 				return "No vfs file.";
 			CMFile vf=new CMFile("///resources/socials.txt",M);
 			if(vf.exists())
+			{
 				if(!vf.delete())
 					return "Unable to delete existing local file.";
+			}
 			vf=new CMFile("///resources/socials.txt",M);
 			if(!vf.canWrite())
 				return "Unable to write new local file.";
@@ -122,8 +130,10 @@ public class SocialData extends StdWebMacro
 				return "[authentication error]";
 			final CMFile vf=new CMFile("::/resources/socials.txt",M);
 			if(vf.exists())
+			{
 				if(!vf.delete())
 					return "Unable to delete existing vfs file.";
+			}
 			CMLib.socials().unloadSocials();
 			return "Socials file removed from vfs";
 		}
@@ -134,8 +144,10 @@ public class SocialData extends StdWebMacro
 				return "[authentication error]";
 			final CMFile vf=new CMFile("///resources/socials.txt",M);
 			if(vf.exists())
+			{
 				if(!vf.delete())
 					return "Unable to delete existing local file.";
+			}
 			CMLib.socials().unloadSocials();
 			return "Socials file removed from local file system.";
 		}
@@ -227,11 +239,21 @@ public class SocialData extends StdWebMacro
 					{
 						switch(field.charAt(f))
 						{
-							case 'Y': S.setYou_see(old); break;
-							case 'O': S.setThird_party_sees(old); break;
-							case 'N': S.setSee_when_no_target(old); break;
-							case 'M': S.setMSPfile(old); break;
-							case 'T': S.setTarget_sees(old); break;
+						case 'Y':
+							S.setYou_see(old);
+							break;
+						case 'O':
+							S.setThird_party_sees(old);
+							break;
+						case 'N':
+							S.setSee_when_no_target(old);
+							break;
+						case 'M':
+							S.setMSPfile(old);
+							break;
+						case 'T':
+							S.setTarget_sees(old);
+							break;
 						}
 					}
 					old=httpReq.getUrlParameter(fnam+"C");
@@ -239,22 +261,29 @@ public class SocialData extends StdWebMacro
 					{
 						switch(field.charAt(f))
 						{
-							case 'Y': S.setSourceCode(CMath.s_int(old));
-									  break;
-							case 'O': S.setTargetCode(CMath.s_int(old));
-									  S.setOthersCode(CMath.s_int(old));
-									  break;
-							case 'N': break;
-							case 'M': break;
-							case 'T': break;
+						case 'Y':
+							S.setSourceCode(CMath.s_int(old));
+							break;
+						case 'O':
+							S.setTargetCode(CMath.s_int(old));
+							S.setOthersCode(CMath.s_int(old));
+							break;
+						case 'N':
+							break;
+						case 'M':
+							break;
+						case 'T':
+							break;
 						}
 					}
 				}
 				SV.add(S);
 			}
 			if(OSV!=null)
+			{
 				for(int s=0;s<OSV.size();s++)
 					CMLib.socials().remove(OSV.get(s).Name());
+			}
 
 			for(int s=0;s<SV.size();s++)
 				CMLib.socials().addSocial(SV.get(s));
@@ -351,8 +380,10 @@ public class SocialData extends StdWebMacro
 						final Social S=SV.get(s);
 						boolean found=false;
 						for (final String element : BEXTNS)
+						{
 							if(S.Name().equalsIgnoreCase(last+element))
 								found=true;
+						}
 						if(!found)
 						{
 							final int x=S.Name().indexOf(' ');
@@ -393,11 +424,13 @@ public class SocialData extends StdWebMacro
 						final String EXTN=EXTNS.elementAt(t);
 						Social S=null;
 						for(int s=0;s<SV.size();s++)
+						{
 							if(SV.get(s).Name().equalsIgnoreCase(last+EXTN))
 							{
 								S=SV.get(s);
 								break;
 							}
+						}
 						if(parms.containsKey("IS"+TYPE))
 						{
 							old=httpReq.getUrlParameter("IS"+TYPE);
@@ -420,11 +453,21 @@ public class SocialData extends StdWebMacro
 										S=CMLib.socials().makeDefaultSocial(last,EXTN);
 									switch(field.charAt(f))
 									{
-										case 'Y': old=S.You_see(); break;
-										case 'O': old=S.Third_party_sees(); break;
-										case 'N': old=S.See_when_no_target(); break;
-										case 'M': old=S.MSPfile(); break;
-										case 'T': old=S.Target_sees(); break;
+									case 'Y':
+										old = S.You_see();
+										break;
+									case 'O':
+										old = S.Third_party_sees();
+										break;
+									case 'N':
+										old = S.See_when_no_target();
+										break;
+									case 'M':
+										old = S.MSPfile();
+										break;
+									case 'T':
+										old = S.Target_sees();
+										break;
 									}
 								}
 								str.append(old+", ");
@@ -438,14 +481,22 @@ public class SocialData extends StdWebMacro
 										S=CMLib.socials().makeDefaultSocial(last,EXTN);
 									switch(field.charAt(f))
 									{
-										case 'Y': old=(S==null)?null:""+S.sourceCode(); break;
-										case 'O': old=(S==null)?null:""+S.targetCode(); break;
-										case 'N': break;
-										case 'M': break;
-										case 'T': break;
+									case 'Y':
+										old = (S == null) ? null : "" + S.sourceCode();
+										break;
+									case 'O':
+										old = (S == null) ? null : "" + S.targetCode();
+										break;
+									case 'N':
+										break;
+									case 'M':
+										break;
+									case 'T':
+										break;
 									}
 								}
 								if(old!=null)
+								{
 									for(int c=0;c<CODES.length;c++)
 									{
 										str.append("<OPTION VALUE="+CODES[c]);
@@ -453,6 +504,7 @@ public class SocialData extends StdWebMacro
 											str.append(" SELECTED");
 										str.append(">"+CODESTR[c]);
 									}
+								}
 							}
 						}
 					}

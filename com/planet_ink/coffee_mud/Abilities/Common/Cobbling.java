@@ -40,28 +40,53 @@ import java.util.*;
 
 public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor, MendingSkill
 {
-	@Override public String ID() { return "Cobbling"; }
-	private final static String localizedName = CMLib.lang().L("Cobbling");
-	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =I(new String[] {"COBBLE","COBBLING"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public String supportedResourceString(){return "WOODEN|METAL";}
 	@Override
-	public String parametersFormat(){ return
+	public String ID()
+	{
+		return "Cobbling";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Cobbling");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "COBBLE", "COBBLING" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public String supportedResourceString()
+	{
+		return "WOODEN|METAL";
+	}
+
+	@Override
+	public String parametersFormat()
+	{
+		return
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\t"
-		+"ITEM_CLASS_ID\tCODED_WEAR_LOCATION\tCONTAINER_CAPACITY\tBASE_ARMOR_AMOUNT\tCONTAINER_TYPE\tCODED_SPELL_LIST";}
+		+"ITEM_CLASS_ID\tCODED_WEAR_LOCATION\tCONTAINER_CAPACITY\tBASE_ARMOR_AMOUNT\tCONTAINER_TYPE\tCODED_SPELL_LIST";
+	}
 
 	//protected static final int RCP_FINALNAME=0;
 	//protected static final int RCP_LEVEL=1;
 	//protected static final int RCP_TICKS=2;
-	protected static final int RCP_WOOD=3;
-	protected static final int RCP_VALUE=4;
-	protected static final int RCP_CLASSTYPE=5;
-	protected static final int RCP_MISCTYPE=6;
-	protected static final int RCP_CAPACITY=7;
-	protected static final int RCP_ARMORDMG=8;
-	protected static final int RCP_CONTAINMASK=9;
-	protected static final int RCP_SPELL=10;
+	protected static final int	RCP_WOOD		= 3;
+	protected static final int	RCP_VALUE		= 4;
+	protected static final int	RCP_CLASSTYPE	= 5;
+	protected static final int	RCP_MISCTYPE	= 6;
+	protected static final int	RCP_CAPACITY	= 7;
+	protected static final int	RCP_ARMORDMG	= 8;
+	protected static final int	RCP_CONTAINMASK	= 9;
+	protected static final int	RCP_SPELL		= 10;
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
@@ -77,8 +102,17 @@ public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor, Mend
 		return super.tick(ticking,tickID);
 	}
 
-	@Override public String parametersFile(){ return "cobbler.txt";}
-	@Override protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
+	@Override
+	public String parametersFile()
+	{
+		return "cobbler.txt";
+	}
+
+	@Override
+	protected List<List<String>> loadRecipes()
+	{
+		return super.loadRecipes(parametersFile());
+	}
 
 	@Override
 	public void unInvoke()
@@ -155,7 +189,12 @@ public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor, Mend
 		return true;
 	}
 
-	@Override public boolean supportsMending(Physical item){ return canMend(null,item,true);}
+	@Override
+	public boolean supportsMending(Physical item)
+	{
+		return canMend(null, item, true);
+	}
+
 	@Override
 	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
 	{
@@ -190,11 +229,15 @@ public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor, Mend
 		if(super.checkStop(mob, commands))
 			return true;
 
+		if(super.checkInfo(mob, commands))
+			return true;
+		
 		final PairVector<EnhancedExpertise,Integer> enhancedTypes=enhancedTypes(mob,commands);
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,L("Make what? Enter \"cobble list\" for a list, \"cobble refit <item>\" to resize, \"cobble learn <item>\", \"cobble scan\", or \"cobble mend <item>\", \"cobble stop\" to cancel."));
+			commonTell(mob,L("Make what? Enter \"cobble list\" for a list, \"cobble info <item>\", \"cobble refit <item>\" to resize, "
+							+ "\"cobble learn <item>\", \"cobble scan\", or \"cobble mend <item>\", \"cobble stop\" to cancel."));
 			return false;
 		}
 		if((!auto)
@@ -212,10 +255,10 @@ public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor, Mend
 		bundling=false;
 		int duration=4;
 		final int[] cols={
-				CMLib.lister().fixColWidth(29,mob.session()),
-				CMLib.lister().fixColWidth(3,mob.session()),
-				CMLib.lister().fixColWidth(3,mob.session()),
-			};
+			CMLib.lister().fixColWidth(29,mob.session()),
+			CMLib.lister().fixColWidth(3,mob.session()),
+			CMLib.lister().fixColWidth(3,mob.session()),
+		};
 		if(str.equalsIgnoreCase("list"))
 		{
 			String mask=CMParms.combine(commands,1);
@@ -352,7 +395,8 @@ public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor, Mend
 			}
 
 			final String woodRequiredStr = foundRecipe.get(RCP_WOOD);
-			final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName),autoGenerate);
+			final int[] compData = new int[CF_TOTAL];
+			final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName),autoGenerate,compData);
 			if(componentsFoundList==null)
 				return false;
 			int woodRequired=CMath.s_int(woodRequiredStr);
@@ -364,11 +408,11 @@ public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor, Mend
 			final int[] pm={RawMaterial.MATERIAL_METAL,RawMaterial.MATERIAL_MITHRIL,RawMaterial.MATERIAL_CLOTH,RawMaterial.MATERIAL_WOODEN,RawMaterial.MATERIAL_LEATHER};
 			bundling=misctype.equalsIgnoreCase("BUNDLE");
 			final int[][] data=fetchFoundResourceData(mob,
-												woodRequired,"metal",pm,
-												0,null,null,
-												bundling,
-												autoGenerate,
-												enhancedTypes);
+													woodRequired,"metal",pm,
+													0,null,null,
+													bundling,
+													autoGenerate,
+													enhancedTypes);
 			if(data==null)
 				return false;
 			fixDataForComponents(data,componentsFoundList);
@@ -386,7 +430,8 @@ public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor, Mend
 				return false;
 			}
 			duration=getDuration(CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),4);
-			String itemName=replacePercent(foundRecipe.get(RCP_FINALNAME),RawMaterial.CODES.NAME(data[0][FOUND_CODE])).toLowerCase();
+			buildingI.setMaterial(getBuildingMaterial(woodRequired,data,compData));
+			String itemName=replacePercent(foundRecipe.get(RCP_FINALNAME),RawMaterial.CODES.NAME(buildingI.material())).toLowerCase();
 			if(itemName.endsWith("s"))
 				itemName="some "+itemName;
 			else
@@ -398,10 +443,9 @@ public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor, Mend
 			playSound="sanding.wav";
 			buildingI.setDisplayText(L("@x1 lies here",itemName));
 			buildingI.setDescription(itemName+". ");
-			buildingI.basePhyStats().setWeight(getStandardWeight(woodRequired,bundling));
+			buildingI.basePhyStats().setWeight(getStandardWeight(woodRequired+compData[CF_AMOUNT],bundling));
 			buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE)));
-			buildingI.setMaterial(data[0][FOUND_CODE]);
-			final int hardness=RawMaterial.CODES.HARDNESS(data[0][FOUND_CODE])-6;
+			final int hardness=RawMaterial.CODES.HARDNESS(buildingI.material())-6;
 			buildingI.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL))+(hardness*3));
 			if(buildingI.basePhyStats().level()<1)
 				buildingI.basePhyStats().setLevel(1);
@@ -417,7 +461,7 @@ public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor, Mend
 			{
 				((Armor)buildingI).basePhyStats().setArmor(0);
 				if(armordmg!=0)
-					((Armor)buildingI).basePhyStats().setArmor(armordmg+(abilityCode()-1));
+					((Armor)buildingI).basePhyStats().setArmor(armordmg+(baseYield()+abilityCode()-1));
 				setWearLocation(buildingI,misctype,hardness);
 			}
 			if(buildingI instanceof Container)
@@ -430,8 +474,6 @@ public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor, Mend
 			buildingI.text();
 			buildingI.recoverPhyStats();
 		}
-
-
 
 		messedUp=!proficiencyCheck(mob,0,auto);
 

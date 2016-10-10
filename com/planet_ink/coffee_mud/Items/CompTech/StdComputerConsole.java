@@ -63,7 +63,6 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 		basePhyStats.setWeight(20);
 		setDescription("");
 		baseGoldValue=5;
-		setUsesRemaining(100);
 		containType=Container.CONTAIN_SSCOMPONENTS;
 		rideBasis=Rideable.RIDEABLE_TABLE;
 		riderCapacity=1;
@@ -107,13 +106,13 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 	}
 
 	@Override
-	public void setRechargeRate(long amtPer)
+	public void setRechargeRate(float pctCapPer)
 	{
 		
 	}
 
 	@Override
-	public long getRechargeRate()
+	public float getRechargeRate()
 	{
 		return 1;
 	}
@@ -266,6 +265,18 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 	public void setReadableText(String text)
 	{
 		// important that this does nothing
+	}
+
+	@Override
+	public boolean isInstalled()
+	{
+		if(!CMLib.flags().isGettable(this))
+			return true;
+		if(this.container() instanceof ElecPanel)
+			return (!CMLib.flags().isGettable(this.container()));
+		if(this.container() instanceof TechComponent)
+			return ((TechComponent)this.container()).isInstalled();
+		return false;
 	}
 
 	@Override
@@ -521,8 +532,13 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 						M.location().show(M, this, null, CMMsg.MASK_ALWAYS|CMMsg.TYP_OK_VISUAL, CMMsg.NO_EFFECT, CMMsg.NO_EFFECT, L("<T-NAME> says '^N\n\rUnknown activation command. Please read the screen for a menu of TYPEable commands.\n\r^.^N'"));
 					else
 					{
-						if((Math.random()<getFinalManufacturer().getReliabilityPct()*getInstalledFactor())
-						&&((!subjectToWearAndTear()) || (Math.random() < CMath.div(usesRemaining(), 100))))
+						double damageFailChance=1.0;
+						if(subjectToWearAndTear() && (usesRemaining()<75))
+						{
+							damageFailChance = CMath.div(usesRemaining(), 100);
+							damageFailChance += (0.35 * getFinalManufacturer().getReliabilityPct());
+						}
+						if((Math.random()<getInstalledFactor()) && (Math.random()<damageFailChance))
 						{
 							for(final CMMsg msg2 : msgs)
 							{

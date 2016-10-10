@@ -173,7 +173,11 @@ public class PlayerClass extends StdCharClass
 			for(final Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
 			{
 				final CharClass C=c.nextElement();
-				if(C.baseClass().equals(C.ID()) && (!C.baseClass().equalsIgnoreCase("Archon"))&& (!C.baseClass().equalsIgnoreCase("PlayerClass"))&& (!C.baseClass().equalsIgnoreCase("Qualifier"))&& (!C.baseClass().equalsIgnoreCase("StdCharClass")))
+				if(C.baseClass().equals(C.ID()) 
+				&& (!C.baseClass().equalsIgnoreCase("Archon"))
+				&& (!C.baseClass().equalsIgnoreCase("PlayerClass"))
+				&& (!C.baseClass().equalsIgnoreCase("Qualifier"))
+				&& (!C.baseClass().equalsIgnoreCase("StdCharClass")))
 				{
 					names.add(C.ID());
 					charClassesOrder.add(C);

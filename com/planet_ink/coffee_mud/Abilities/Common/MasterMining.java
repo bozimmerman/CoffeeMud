@@ -35,17 +35,37 @@ import java.util.*;
 
 public class MasterMining extends Mining
 {
-	@Override public String ID() { return "MasterMining"; }
+	@Override
+	public String ID()
+	{
+		return "MasterMining";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Master Mining");
-	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =I(new String[] {"MMINE","MMINING","MASTERMINE","MASTERMINING"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private static final String[] triggerStrings = I(new String[] { "MMINE", "MMINING", "MASTERMINE", "MASTERMINING" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
 
 	@Override
 	protected int getDuration(MOB mob, int level)
 	{
-		return getDuration(125,mob,level,37);
+		return getDuration(125, mob, level, 37);
 	}
-	@Override protected int baseYield() { return 3; }
 
+	@Override
+	protected int baseYield()
+	{
+		return 3;
+	}
 }

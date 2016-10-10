@@ -33,17 +33,26 @@ public interface Tattooable extends CMObject
 {
 	/**
 	 * Add a new tattoo to this object
+	 * @see Tattooable
+	 * @see Tattooable#addTattoo(String, int)
+	 * @see Tattooable#addTattoo(String)
 	 * @param of the tattoo object to add
 	 */
 	public void addTattoo(Tattoo of);
 	
 	/**
 	 * Add a new tattoo to this object
+	 * @see Tattooable
+	 * @see Tattooable#addTattoo(String, int)
+	 * @see Tattooable#addTattoo(Tattoo)
 	 * @param of the permanent tattoo name to add
 	 */
 	public void addTattoo(String of);
 	/**
 	 * Add a new tattoo to this object
+	 * @see Tattooable
+	 * @see Tattooable#addTattoo(String)
+	 * @see Tattooable#addTattoo(Tattoo)
 	 * @param of the permanent tattoo name to add
 	 * @param tickDown the ticks of life for this tattoo
 	 */
@@ -51,26 +60,42 @@ public interface Tattooable extends CMObject
 	
 	/**
 	 * Remove a specific tattoo from this object
+	 * @see Tattooable
+	 * @see Tattooable#delTattoo(String)
 	 * @param of the tattoo object to remove
 	 */
 	public void delTattoo(Tattoo of);
 	
 	/**
 	 * Remove a specific tattoo from this object
+	 * @see Tattooable
+	 * @see Tattooable#delTattoo(Tattoo)
 	 * @param of the tattoo name of the tattoo to remove
 	 */
 	public void delTattoo(String of);
 
 	/**
 	 * Returns an enumeration of all the tattoos on this object.
+	 * @see Tattooable
 	 * @return an enumeration of all the tattoos on this object.
 	 */
 	public Enumeration<Tattoo> tattoos();
 	
 	/**
 	 * Returns the tattoo of the given marker name
+	 * @see Tattooable
+	 * @see Tattooable#findTattooStartsWith(String)
 	 * @param of the marker name to return a tattoo for
 	 * @return the tattoo of the given marker name
 	 */
 	public Tattoo findTattoo(String of);
+	
+	/**
+	 * Returns the tattoo that starts with the given marker name
+	 * @see Tattooable
+	 * @see Tattooable#findTattoo(String)
+	 * @param of the marker name to return a tattoo starter for
+	 * @return the tattoo that starts with the given marker name
+	 */
+	public Tattoo findTattooStartsWith(String of);
 }

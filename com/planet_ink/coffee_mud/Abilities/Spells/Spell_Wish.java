@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary;
+import com.planet_ink.coffee_mud.Libraries.interfaces.LegalLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -347,6 +348,35 @@ public class Spell_Wish extends Spell
 					if(O instanceof Physical)
 						foundThang=maybeAdd(mob,((Physical)O),thangsFound,foundThang);
 				}
+				if(objectWish.equals("LAND")
+				||objectWish.equals("A HOUSE")
+				||objectWish.equals("HOUSE")
+				||objectWish.equals("A HOME")
+				||objectWish.equals("HOME")
+				||objectWish.equals("REAL ESTATE")
+				||objectWish.equals("SOME REAL ESTATE")
+				||objectWish.equals("PROPERTY")
+				||objectWish.equals("SOME PROPERTY")
+				||objectWish.equals("SOME LAND"))
+				{
+					final LegalLibrary law=CMLib.law();
+					for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
+					{
+						final Room R=r.nextElement();
+						if((R!=null)&&(!(R.getArea() instanceof BoardableShip)))
+						{
+							final LandTitle title = law.getLandTitle(R);
+							if((title!=null)
+							&&(title.getOwnerName().length()==0))
+							{
+								LandTitle T=(LandTitle)CMClass.getItem("GenTitle");
+								T.setLandPropertyID(title.landPropertyID());
+								T.text();
+								items.add(T);
+							}
+						}
+					}
+				}
 			}
 			catch (final NoSuchElementException nse)
 			{
@@ -404,8 +434,10 @@ public class Spell_Wish extends Spell
 				{
 					final Item newItem=(Item)foundThang.copyOf();
 					experienceRequired+=newItem.value();
+					if(newItem instanceof LandTitle)
+						((LandTitle)newItem).setOwnerName(mob.Name());
 					if(experienceRequired>mob.getExpPrevLevel())
-
+						experienceRequired=mob.getExpPrevLevel();
 					newItem.setContainer(null);
 					newItem.wearAt(0);
 					mob.location().addItem(newItem,ItemPossessor.Expire.Player_Drop);
@@ -418,6 +450,7 @@ public class Spell_Wish extends Spell
 				}
 			}
 
+			boolean onFlag=false;
 			// anything else may refer to another person or item
 			Physical target=null;
 			String possName=wishV.elementAt(0).trim();
@@ -449,13 +482,34 @@ public class Spell_Wish extends Spell
 					wishV.removeElementAt(0);
 					myWish=" "+CMParms.combine(wishV,0).toUpperCase()+" ";
 				}
-				target=mob;
+				if((wishV.size()>3)&&(wishV.get(wishV.size()-2).equals("ON")))
+				{
+					possName=wishV.get(wishV.size()-1);
+					if(possName.equals("SELF")
+					||possName.equals("ME")
+					||possName.equals("MYSELF"))
+						target=mob;
+					if(target==null)
+						target=mob.location().fetchFromRoomFavorMOBs(null,possName);
+					if(target==null)
+						target=mob.findItem(possName);
+					if(target!=null)
+					{
+						wishV.remove(wishV.size()-1);
+						wishV.remove(wishV.size()-1);
+						onFlag=true;
+						myWish=" "+CMParms.combine(wishV,0).toUpperCase().trim()+" ";
+					}
+				}
+				if(target==null)
+					target=mob;
 			}
 			else
 			{
 				wishV.removeElementAt(0);
 				myWish=" "+CMParms.combine(wishV,0).toUpperCase().trim()+" ";
 			}
+			
 
 			if(target instanceof PackagedItems)
 				target = ((PackagedItems)target).peekFirstItem();
@@ -622,7 +676,7 @@ public class Spell_Wish extends Spell
 			if(validStart)
 			{
 				Room newRoom=null;
-				final int dir=Directions.getGoodDirectionCode(wishV.lastElement());
+				final int dir=CMLib.directions().getGoodDirectionCode(wishV.lastElement());
 				if(dir>=0)
 					newRoom=mob.location().getRoomInDir(dir);
 				if(newRoom==null)
@@ -890,11 +944,13 @@ public class Spell_Wish extends Spell
 							}
 						}
 						else
-						while(MT.basePhyStats().level()>newLevel)
 						{
-							CMLib.leveler().unLevel(MT);
-							MT.setExperience(CMLib.leveler().getLevelExperience(MT.basePhyStats().level()-1));
-							MT.recoverPhyStats();
+							while(MT.basePhyStats().level()>newLevel)
+							{
+								CMLib.leveler().unLevel(MT);
+								MT.setExperience(CMLib.leveler().getLevelExperience(MT.basePhyStats().level()-1));
+								MT.recoverPhyStats();
+							}
 						}
 					}
 					else
@@ -905,6 +961,7 @@ public class Spell_Wish extends Spell
 					wishDrain(mob,baseLoss*levelsLost,true);
 					if((mob!=target)||(level>0))
 					{
+						msg.source().tell(L("Your wish also causes you to lose @x1 levels.",""+levelsLost));
 						for(int i2=0;i2<levelsLost;i2++)
 						{
 							CMLib.leveler().unLevel(mob);
@@ -992,6 +1049,8 @@ public class Spell_Wish extends Spell
 						mob.setExperience(CMLib.leveler().getLevelExperience(mob.basePhyStats().level()-1));
 					}
 					wishDrain(mob,baseLoss,true);
+					if(!((MOB)target).isMonster())
+						msg.source().tell(L("Your wish also causes you lose a level."));
 					final int oldCat=((MOB)target).baseCharStats().ageCategory();
 					((MOB)target).baseCharStats().setMyRace(R);
 					((MOB)target).baseCharStats().getMyRace().startRacing(((MOB)target),true);
@@ -1022,6 +1081,7 @@ public class Spell_Wish extends Spell
 					final CharClass oldC=mob.baseCharStats().getCurrentClass();
 					baseLoss+=1000;
 					wishDrain(mob,baseLoss,true);
+					msg.source().tell(L("Your wish also causes you lose 3 levels."));
 					CMLib.leveler().unLevel(mob);
 					CMLib.leveler().unLevel(mob);
 					CMLib.leveler().unLevel(mob);
@@ -1110,20 +1170,37 @@ public class Spell_Wish extends Spell
 						}
 						else
 						{
-							tm.addAbility(A);
-							baseLoss+=500;
-							wishDrain(mob,baseLoss,true);
-							CMLib.leveler().unLevel(mob);
-							CMLib.leveler().unLevel(mob);
+							if(((myWish.indexOf(" CAST ")>=0)
+								||(myWish.indexOf(" PRAY ")>=0)
+								||(myWish.indexOf(" SING ")>=0))
+							&&(onFlag)
+							&&(target!=mob)&&(!A.isAutoInvoked()))
+							{
+								A.setProficiency(100);
+								A.invoke(mob, target, true, asLevel);
+								A=null;
+							}
+							else
+							{
+								tm.addAbility(A);
+								baseLoss+=500;
+								wishDrain(mob,baseLoss,true);
+								msg.source().tell(L("Your wish also causes you lose 2 levels."));
+								CMLib.leveler().unLevel(mob);
+								CMLib.leveler().unLevel(mob);
+							}
 							mob.setExperience(CMLib.leveler().getLevelExperience(mob.basePhyStats().level()-1));
 						}
-						A=tm.fetchAbility(A.ID());
-						A.setProficiency(100);
-						A.autoInvocation(tm, false);
-						mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("@x1 now knows @x2!",target.name(),A.name()));
-						final Ability A2=tm.fetchEffect(A.ID());
-						if(A2!=null)
-							A2.setProficiency(100);
+						if(A!=null)
+						{
+							A=tm.fetchAbility(A.ID());
+							A.setProficiency(100);
+							A.autoInvocation(tm, false);
+							mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("@x1 now knows @x2!",target.name(),A.name()));
+							final Ability A2=tm.fetchEffect(A.ID());
+							if(A2!=null)
+								A2.setProficiency(100);
+						}
 						return true;
 					}
 				}
@@ -1355,6 +1432,7 @@ public class Spell_Wish extends Spell
 				wishDrain(mob,baseLoss,true);
 				if(!CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS))
 				{
+					msg.source().tell(L("Your wish causes you lose a level."));
 					CMLib.leveler().unLevel(mob);
 					mob.setExperience(CMLib.leveler().getLevelExperience(mob.basePhyStats().level()-1));
 				}

@@ -39,10 +39,23 @@ import com.planet_ink.coffee_mud.core.exceptions.HTTPServerException;
 */
 public class PlayerPortrait extends StdWebMacro
 {
-	@Override public String name() { return "PlayerPortrait"; }
+	@Override
+	public String name()
+	{
+		return "PlayerPortrait";
+	}
 
-	@Override public boolean isAWebPath(){return true;}
-	@Override public boolean preferBinary(){return true;}
+	@Override
+	public boolean isAWebPath()
+	{
+		return true;
+	}
+
+	@Override
+	public boolean preferBinary()
+	{
+		return true;
+	}
 
 	public String getFilename(HTTPRequest httpReq, String filename)
 	{
@@ -66,7 +79,7 @@ public class PlayerPortrait extends StdWebMacro
 			img=(byte[])Resources.getResource("CMPORTRAIT-"+last);
 			if(img==null)
 			{
-				final List<PlayerData> data=CMLib.database().DBReadData(last,"CMPORTRAIT");
+				final List<PlayerData> data=CMLib.database().DBReadPlayerData(last,"CMPORTRAIT");
 				if((data!=null)&&(data.size()>0))
 				{
 					final String encoded=data.get(0).xml();

@@ -103,6 +103,7 @@ public class DefaultArrestWarrant implements LegalWarrant
 	private long			lastOffense			= 0;
 	private long			travelAttemptTime	= 0;
 	private long			lastStateChangeTime = 0;
+	private long			ignoreUntilTime		= 0;
 	private String			warnMsg				= null;
 
 	@Override
@@ -306,5 +307,17 @@ public class DefaultArrestWarrant implements LegalWarrant
 	public void setWarnMsg(String msg)
 	{
 		warnMsg = msg;
+	}
+
+	@Override
+	public long getIgnoreUntilTime()
+	{
+		return ignoreUntilTime;
+	}
+
+	@Override
+	public void setIgnoreUntilTime(long time)
+	{
+		this.ignoreUntilTime = time;
 	}
 }

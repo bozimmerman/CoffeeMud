@@ -85,7 +85,7 @@ public interface CMMiscUtils extends CMLibrary
 
 	/**
 	 * This strange method takes a list of space-delimited expressions of the
-	 * form [CONDITION]number number number number, etc. E.G.: >1 3 2 5 3 2.
+	 * form [CONDITION]number number number number, etc. E.G.: &gt;1 3 2 5 3 2.
 	 * Each list must contain the given num of digits. If the condition falls
 	 * within the given start of range and end of range, then the condition
 	 * range of entries in the returned array is populated with the values on
@@ -93,7 +93,7 @@ public interface CMMiscUtils extends CMLibrary
 	 * @param condV the list of fully expressions
 	 * @param numDigits the min number of digits in each expression
 	 * @param startOfRange the starting range to return
-	 * @param endOfRange the ending range to return > startOfRange
+	 * @param endOfRange the ending range to return &gt; startOfRange
 	 * @return the list of number lists
 	 */
 	public long[][] compileConditionalRange(List<String> condV, int numDigits, final int startOfRange, final int endOfRange);
@@ -270,7 +270,7 @@ public interface CMMiscUtils extends CMLibrary
 	 * @param tellMob if the corpse could not be resurrected, tell this mob.
 	 * @param corpseRoom room to bring the mob to after resurrection, probably same as body's location
 	 * @param body the corpse to resurrect
-	 * @param XPLevel if > 0, and rules allow, bonus xp restored
+	 * @param XPLevel if &gt; 0, and rules allow, bonus xp restored
 	 * @return true if the resurrection happened, false otherwise
 	 */
 	public boolean resurrect(MOB tellMob, Room corpseRoom, DeadBody body, int XPLevel);
@@ -284,6 +284,14 @@ public interface CMMiscUtils extends CMLibrary
 	 * @return the ruined item, or the original item, depending
 	 */
 	public Item isRuinedLoot(MOB mob, Item I);
+
+	/**
+	 * Always converts the given item into the Ruined version
+	 * @see CMMiscUtils#isRuinedLoot(MOB, Item)
+	 * @param I the item to ruin
+	 * @return the new, ruined version
+	 */
+	public Item ruinItem(Item I);
 
 	/**
 	 * Iterates through every mob and player in the game, replacing the old race
@@ -334,4 +342,14 @@ public interface CMMiscUtils extends CMLibrary
 	 * @return a bizarre number 
 	 */
 	public int disenchantItem(Item target);
+	
+	/**
+	 * Absolutely returns the correct race when mixing races of the
+	 * two given IDs.  Applies system rules to the generation.
+	 * 
+	 * @param race1 the mother race
+	 * @param race2 the father race
+	 * @return the mixed race
+	 */
+	public Race getMixedRace(String race1, String race2);
 }

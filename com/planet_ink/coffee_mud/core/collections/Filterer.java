@@ -22,7 +22,10 @@ public interface Filterer<K>
 	@SuppressWarnings("rawtypes")
 	public static final Filterer ANYTHING=new Filterer()
 	{
-		@Override public boolean passesFilter(Object obj) { return true; }
+		@Override
+		public boolean passesFilter(Object obj)
+		{
+			return true;
+		}
 	};
-	
 }

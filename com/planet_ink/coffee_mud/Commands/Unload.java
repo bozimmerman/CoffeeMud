@@ -38,10 +38,15 @@ public class Unload extends StdCommand
 {
 	public Unload(){}
 
-	private final String[] access=I(new String[]{"UNLOAD"});
-	@Override public String[] getAccessWords(){return access;}
-	final String[] ARCHON_LIST={"CLASS", "HELP", "USER", "AREA", "FACTION", "ALL", "FILE", "RESOURCE", "INIFILE", "ACHIEVEMENTS", "[FILENAME]"};
+	private final String[]	access	= I(new String[] { "UNLOAD" });
 
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
+
+	final String[]	ARCHON_LIST	= { "CLASS", "HELP", "USER", "AREA", "FACTION", "ALL", "FILE", "RESOURCE", "INIFILE", "ACHIEVEMENTS", "[FILENAME]" };
 
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
@@ -61,22 +66,47 @@ public class Unload extends StdCommand
 		final String str=CMParms.combine(commands,1);
 		if(tryArchon)
 		{
-			final Item I=mob.fetchWieldedItem();
-			if((I instanceof AmmunitionWeapon)&&((AmmunitionWeapon)I).requiresAmmunition())
+			Item I=mob.fetchWieldedItem();
+			if((I instanceof AmmunitionWeapon)
+			&&((AmmunitionWeapon)I).requiresAmmunition())
 				tryArchon=false;
+			else
+			{
+				I=mob.findItem(null, str);
+				if((I instanceof AmmunitionWeapon)
+				&&(((AmmunitionWeapon)I).requiresAmmunition()))
+					tryArchon=false;
+				else
+				{
+					I=mob.location().findItem(null, str);
+					if((I instanceof AmmunitionWeapon)
+					&&(((AmmunitionWeapon)I).requiresAmmunition())
+					&&((AmmunitionWeapon)I).isFreeStanding())
+						tryArchon=false;
+				}
+			}
 			for(final String aList : ARCHON_LIST)
+			{
 				if(str.equalsIgnoreCase(aList))
 					tryArchon=true;
+			}
 		}
 		if(!tryArchon)
 		{
 			commands.remove(0);
 			final List<Item> baseItems=CMLib.english().fetchItemList(mob,mob,null,commands,Wearable.FILTER_ANY,false);
+			baseItems.addAll(mob.location().findItems(null,CMParms.combine(commands,0)));
 			final List<AmmunitionWeapon> items=new XVector<AmmunitionWeapon>();
 			for (Item I : baseItems)
 			{
 				if((I instanceof AmmunitionWeapon)&&((AmmunitionWeapon)I).requiresAmmunition())
-					items.add((AmmunitionWeapon)I);
+				{
+					if(mob.isMine(I))
+						items.add((AmmunitionWeapon)I);
+					else
+					if(((AmmunitionWeapon)I).isFreeStanding())
+						items.add((AmmunitionWeapon)I);
+				}
 			}
 			if(baseItems.size()==0)
 				mob.tell(L("You don't seem to have that."));
@@ -203,18 +233,27 @@ public class Unload extends StdCommand
 						{
 							if (M.session() != null)
 								M.session().stopSession(false, false, false);
-							while (M.session() != null)
+							int attempts=100;
+							while ((M.session() != null)&&(--attempts>0))
 							{
 								CMLib.s_sleep(100);
 							}
 							if (M.session() != null)
 								M.session().stopSession(true, true, false);
-							while (M.session() != null)
+							attempts=100;
+							while ((M.session() != null)&&(--attempts>0))
 							{
 								CMLib.s_sleep(100);
 							}
 							if (M.session() != null)
 								M.session().stopSession(true, true, true);
+							attempts=100;
+							while ((M.session() != null)&&(--attempts>0))
+							{
+								CMLib.s_sleep(100);
+							}
+							if (M.session() != null)
+								mob.tell(L("Session kill failed."));
 						}
 						else
 							mob.tell(L("Can't unload yourself -- a destroy is involved, which would disrupt this process."));

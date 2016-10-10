@@ -386,21 +386,21 @@ See guides/RandomAreas.html for information about documents of this type.
 				<ITEM select="pick-1?3">
 					<ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level">
 						<NAME select="any-1"><NAME>(a(n)) $adj_fancy wardens hat</NAME><NAME>(a(n)) $adj_fancy wardens hat</NAME></NAME>
-						<DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>COTTON</MATERIAL><PROPERWORN>HEAD</PROPERWORN>
+						<DISPLAY>$item_name has been left here</DISPLAY><MATERIAL>COTTON</MATERIAL><PROPERWORN>HEAD</PROPERWORN>
 					</ITEM>
 					<ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level" capacity=100 containtypes="DAGGERS,ONE-HANDED WEAPONS,SWORDS,OTHER WEAPONS">
 						<NAME select="any-1"><NAME>(a(n)) $adj_fancy weapon belt</NAME><NAME>(a(n)) $adj_fancy weapon belt</NAME></NAME>
-						<DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>SILVER</MATERIAL><PROPERWORN>WAIST</PROPERWORN>
+						<DISPLAY>$item_name has been left here</DISPLAY><MATERIAL>SILVER</MATERIAL><PROPERWORN>WAIST</PROPERWORN>
 					</ITEM>
 					<ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level">
 						<NAME select="any-1"><NAME>a pair of $adj_fancy warden shoes</NAME><NAME>a pair of $adj_fancy warden shoes</NAME></NAME>
-						<DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>DRAGONSCALES</MATERIAL><PROPERWORN>FEET</PROPERWORN>
+						<DISPLAY>$item_name has been left here</DISPLAY><MATERIAL>DRAGONSCALES</MATERIAL><PROPERWORN>FEET</PROPERWORN>
 					</ITEM>
 				</ITEM>
 				<ITEM select="pick-1">
 					<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
 						<NAME>(a(n)) $adj_fancy nightstick</NAME>
-						<DISPLAY>$item_name has been left here"</DISPLAY>
+						<DISPLAY>$item_name has been left here</DISPLAY>
 						<MATERIAL>GOLD</MATERIAL>
 						<WEAPONCLASS>BLUNT</WEAPONCLASS>
 						<WEAPONTYPE>BASHING</WEAPONTYPE>
@@ -493,27 +493,27 @@ See guides/RandomAreas.html for information about documents of this type.
 			<ITEM select="all">
 				<ITEM class="GenArmor" LEVEL="$mob_level">
 					<NAME>(a(n)) $adj_colored_color prisoner`s jumpsuit</NAME>
-					<DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>COTTON</MATERIAL>
+					<DISPLAY>$item_name has been left here</DISPLAY><MATERIAL>COTTON</MATERIAL>
 					<PROPERWORN>TORSO,ARMS,LEGS</PROPERWORN><WORNAND>true</WORNAND>
 				</ITEM>
 				<ITEM select="pick-1">
 					<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
 						<NAME>a sharp $adj_wooden_ragged stick</NAME>
-						<DISPLAY>$item_name has been left here"</DISPLAY>
+						<DISPLAY>$item_name has been left here</DISPLAY>
 						<MATERIAL>OAK</MATERIAL>
 						<WEAPONCLASS>DAGGER</WEAPONCLASS>
 						<WEAPONTYPE>PIERCING</WEAPONTYPE>
 					</ITEM>
 					<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
 						<NAME>(a(n)) $adj_metal_ragged lead pipe</NAME>
-						<DISPLAY>$item_name has been left here"</DISPLAY>
+						<DISPLAY>$item_name has been left here</DISPLAY>
 						<MATERIAL>LEAD</MATERIAL>
 						<WEAPONCLASS>BLUNT</WEAPONCLASS>
 						<WEAPONTYPE>BASHING</WEAPONTYPE>
 					</ITEM>
 					<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
 						<NAME>(a(n)) $adj_metal_ragged shank</NAME>
-						<DISPLAY>$item_name has been left here"</DISPLAY>
+						<DISPLAY>$item_name has been left here</DISPLAY>
 						<WEAPONCLASS>DAGGER</WEAPONCLASS>
 						<WEAPONTYPE>PIERCING</WEAPONTYPE>
 						<MATERIAL>IRON</MATERIAL>
@@ -576,43 +576,43 @@ See guides/RandomAreas.html for information about documents of this type.
 				<ITEM select="any-1?4">
 					<ITEM class="GenArmor" LEVEL="$mob_level">
 						<NAME>$mob_name`s helmet</NAME>
-						<DISPLAY>$item_name has been left here"</DISPLAY>
+						<DISPLAY>$item_name has been left here</DISPLAY>
 						<MATERIAL>IRON</MATERIAL>
 						<PROPERWORN>HEAD,HELD</PROPERWORN><WORNAND>false</WORNAND>
 					</ITEM>
 					<ITEM class="GenArmor" LEVEL="$mob_level">
 						<NAME>$mob_name`s armor</NAME>
-						<DISPLAY>$item_name has been left here"</DISPLAY>
+						<DISPLAY>$item_name has been left here</DISPLAY>
 						<MATERIAL>IRON</MATERIAL>
 						<PROPERWORN>TORSO,HELD</PROPERWORN><WORNAND>false</WORNAND>
 					</ITEM>
 					<ITEM class="GenArmor" LEVEL="$mob_level">
 						<NAME>$mob_name`s armguards</NAME>
-						<DISPLAY>$item_name has been left here"</DISPLAY>
+						<DISPLAY>$item_name has been left here</DISPLAY>
 						<MATERIAL>IRON</MATERIAL>
 						<PROPERWORN>ARMS,HELD</PROPERWORN><WORNAND>false</WORNAND>
 					</ITEM>
 					<ITEM class="GenArmor" LEVEL="$mob_level">
 						<NAME>$mob_name`s boots</NAME>
-						<DISPLAY>$item_name has been left here"</DISPLAY>
+						<DISPLAY>$item_name has been left here</DISPLAY>
 						<MATERIAL>IRON</MATERIAL>
 						<PROPERWORN>FEET,HELD</PROPERWORN><WORNAND>false</WORNAND>
 					</ITEM>
 					<ITEM class="GenArmor" LEVEL="$mob_level">
 						<NAME>$mob_name`s legguards</NAME>
-						<DISPLAY>$item_name has been left here"</DISPLAY>
+						<DISPLAY>$item_name has been left here</DISPLAY>
 						<MATERIAL>IRON</MATERIAL>
 						<PROPERWORN>LEGS,HELD</PROPERWORN><WORNAND>false</WORNAND>
 					</ITEM>
 					<ITEM class="GenArmor" LEVEL="$mob_level">
 						<NAME>$mob_name`s gloves</NAME>
-						<DISPLAY>$item_name has been left here"</DISPLAY>
+						<DISPLAY>$item_name has been left here</DISPLAY>
 						<MATERIAL>LEATHER</MATERIAL>
 						<PROPERWORN>HANDS,HELD</PROPERWORN><WORNAND>false</WORNAND>
 					</ITEM>
 					<ITEM class="GenArmor" LEVEL="$mob_level">
 						<NAME>$mob_name`s belt</NAME>
-						<DISPLAY>$item_name has been left here"</DISPLAY>
+						<DISPLAY>$item_name has been left here</DISPLAY>
 						<MATERIAL>LEATHER</MATERIAL>
 						<PROPERWORN>WAIST,HELD</PROPERWORN><WORNAND>false</WORNAND>
 					</ITEM>
@@ -620,14 +620,14 @@ See guides/RandomAreas.html for information about documents of this type.
 				<ITEM select="pick-1">
 					<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
 						<NAME>(a(n)) $adj_wooden_ragged nightstick</NAME>
-						<DISPLAY>$item_name has been left here"</DISPLAY>
+						<DISPLAY>$item_name has been left here</DISPLAY>
 						<MATERIAL>OAK</MATERIAL>
 						<WEAPONCLASS>BLUNT</WEAPONCLASS>
 						<WEAPONTYPE>PIERCING</WEAPONTYPE>
 					</ITEM>
 					<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
 						<NAME>(a(n)) $adj_metal_ragged sword</NAME>
-						<DISPLAY>$item_name has been left here"</DISPLAY>
+						<DISPLAY>$item_name has been left here</DISPLAY>
 						<MATERIAL>IRON</MATERIAL>
 						<WEAPONCLASS>SWORD</WEAPONCLASS>
 						<WEAPONTYPE>SLASHING</WEAPONTYPE>

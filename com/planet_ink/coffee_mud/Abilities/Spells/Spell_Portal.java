@@ -151,6 +151,7 @@ public class Spell_Portal extends Spell
 			if((mob.location().okMessage(mob,msg))&&(newRoom.okMessage(mob,msg2)))
 			{
 				mob.location().send(mob,msg);
+				newRoom=(Room)msg2.target();
 				newRoom.send(mob,msg2);
 				final Exit e=CMClass.getExit("GenExit");
 				e.setDescription(L("A swirling portal to somewhere"));

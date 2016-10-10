@@ -98,6 +98,7 @@ public class StdClanApron extends StdClanItem
 		}
 		return super.okMessage(affecting,msg);
 	}
+
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{

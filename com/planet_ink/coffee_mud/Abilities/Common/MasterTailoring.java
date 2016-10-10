@@ -34,17 +34,35 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
-
 public class MasterTailoring extends Tailoring
 {
-	@Override public String ID() { return "MasterTailoring"; }
-	private final static String localizedName = CMLib.lang().L("Master Tailoring");
-	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =I(new String[] {"MASTERKNIT","MKNIT","MTAILOR","MTAILORING","MASTERTAILOR","MASTERTAILORING"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override
+	public String ID()
+	{
+		return "MasterTailoring";
+	}
 
-	@Override public String parametersFile(){ return "mastertailor.txt";}
+	private final static String	localizedName	= CMLib.lang().L("Master Tailoring");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "MASTERKNIT", "MKNIT", "MTAILOR", "MTAILORING", "MASTERTAILOR", "MASTERTAILORING" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public String parametersFile()
+	{
+		return "mastertailor.txt";
+	}
 
 	@Override
 	protected boolean masterCraftCheck(final Item I)
@@ -63,10 +81,14 @@ public class MasterTailoring extends Tailoring
 		if(super.checkStop(mob, commands))
 			return true;
 
+		if(super.checkInfo(mob, commands))
+			return true;
+		
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,L("Knit what? Enter \"mknit list\" for a list, \"mknit refit <item>\" to resize, \"mknit learn <item>\", \"mknit scan\", \"mknit mend <item>\", or \"mknit stop\" to cancel."));
+			commonTell(mob,L("Knit what? Enter \"mknit list\" for a list, \"mknit info <item>\", \"mknit refit <item>\" to resize,"
+						+ " \"mknit learn <item>\", \"mknit scan\", \"mknit mend <item>\", or \"mknit stop\" to cancel."));
 			return false;
 		}
 		return super.autoGenInvoke(mob,commands,givenTarget,auto,asLevel,autoGenerate,forceLevels,crafted);

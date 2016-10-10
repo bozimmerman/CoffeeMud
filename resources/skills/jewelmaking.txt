@@ -45,3 +45,4 @@
 % Badge	22	60	4	150	GenArmor	MS0:TORSO		0		
 % Medal	33	80	1	100	GenArmor	MS0:TORSO		0		
 % Hero`s Medal	44	80	1	500	GenArmor	MS0:TORSO		0	PRECIOUS	
+Bone Nipple Spike	10	20	1	10	GenEarring	MS-10:TORSO		0	BONE	

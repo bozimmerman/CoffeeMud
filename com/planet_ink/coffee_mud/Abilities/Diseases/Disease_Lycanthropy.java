@@ -171,7 +171,7 @@ public class Disease_Lycanthropy extends Disease
 						.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
 						.plus(TrackingLibrary.TrackingFlag.NOAIR)
 						.plus(TrackingLibrary.TrackingFlag.NOWATER);
-				deathTrail=CMLib.tracking().findBastardTheBestWay(mob.location(),rooms,flags,50);
+				deathTrail=CMLib.tracking().findTrailToAnyRoom(mob.location(),rooms,flags,50);
 				if(deathTrail!=null)
 					deathTrail.add(mob.location());
 			}

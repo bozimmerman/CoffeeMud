@@ -134,9 +134,11 @@ public class Fighter_FieldTactics extends FighterSkill
 	public boolean oneOf(int dom)
 	{
 		for(int i=0;i<landClasses().length;i++)
+		{
 			if((dom==landClasses()[i].intValue())
 			||(landClasses()[i].intValue()<0))
 				return true;
+		}
 		return false;
 	}
 

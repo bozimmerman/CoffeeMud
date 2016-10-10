@@ -35,7 +35,12 @@ import java.util.*;
 */
 public class StdClanPamphlet extends StdClanItem
 {
-	@Override public String ID(){	return "StdClanPamphlet";}
+	@Override
+	public String ID()
+	{
+		return "StdClanPamphlet";
+	}
+
 	protected int tradeTime=-1;
 
 	public StdClanPamphlet()

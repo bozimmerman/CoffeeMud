@@ -216,17 +216,17 @@ public class GenRecipe extends GenReadable implements Recipe
 		else
 		switch(getCodeNum(code))
 		{
-			case 0:
-				setCommonSkillID(val);
-				break;
-			case 1:
-				setRecipeCodeLines(CMParms.parseAny(val, '\n', true).toArray(new String[0]));
-				break;
-			case 2:
-				final int x = CMath.s_int(val);
-				setTotalRecipePages(x > 0 ? x : 1);
-				break;
-			default:
+		case 0:
+			setCommonSkillID(val);
+			break;
+		case 1:
+			setRecipeCodeLines(CMParms.parseAny(val, '\n', true).toArray(new String[0]));
+			break;
+		case 2:
+			final int x = CMath.s_int(val);
+			setTotalRecipePages(x > 0 ? x : 1);
+			break;
+		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;
 		}

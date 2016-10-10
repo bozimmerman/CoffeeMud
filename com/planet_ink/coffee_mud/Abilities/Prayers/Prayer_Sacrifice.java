@@ -63,7 +63,7 @@ public class Prayer_Sacrifice extends Prayer
 	{
 		Item target=null;
 		if((commands.size()==0)&&(!auto)&&(givenTarget==null))
-			target=Prayer_Sacrifice.getBody(mob.location());
+			target=getBody(mob.location());
 		if(target==null)
 			target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);
 		if(target==null)

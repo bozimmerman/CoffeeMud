@@ -35,7 +35,12 @@ import java.util.*;
 */
 public class TrainingSession extends StdItem implements MiscMagic
 {
-	@Override public String ID(){ return "TrainingSession";}
+	@Override
+	public String ID()
+	{
+		return "TrainingSession";
+	}
+
 	public TrainingSession()
 	{
 		super();

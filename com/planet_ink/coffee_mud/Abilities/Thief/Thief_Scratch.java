@@ -43,7 +43,7 @@ public class Thief_Scratch extends ThiefSkill
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	private static final String[] triggerStrings =I(new String[] {"SCRATCH"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_DIRTYFIGHTING;}
+	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_DIRTYFIGHTING;}
 	@Override public int usageType(){return USAGE_MOVEMENT;}
 	@Override public int overrideMana(){return 1;}
 

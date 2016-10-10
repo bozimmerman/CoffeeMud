@@ -164,6 +164,7 @@ public interface GenericBuilder extends CMLibrary
 	public String getAnyGenStat(Physical P, String stat);
 	public List<String> getAllGenStats(Physical P);
 	public boolean isAnyGenStat(Physical P, String stat);
+	public String getFinalStatName(String stat);
 	public int getGenItemCodeNum(String code);
 	public String getGenItemStat(Item I, String code);
 	public void setGenItemStat(Item I, String code, String val);

@@ -36,7 +36,11 @@ import java.util.*;
 */
 public class JournalInfo extends StdWebMacro
 {
-	@Override public String name() { return "JournalInfo"; }
+	@Override
+	public String name()
+	{
+		return "JournalInfo";
+	}
 
 	public static JournalEntry getEntry(List<JournalEntry> msgs, String key)
 	{
@@ -91,18 +95,18 @@ public class JournalInfo extends StdWebMacro
 				msgs=CMLib.database().DBReadJournalMsgsByUpdateDate(journalName, true);
 			else
 			{
-				final JournalsLibrary.JournalSummaryStats stats = CMLib.journals().getJournalStats(forumJournal);
+				final JournalsLibrary.JournalMetaData metaData = CMLib.journals().getJournalStats(forumJournal);
 				final long pageDate = CMath.s_long(page);
 				int limit = CMProps.getIntVar(CMProps.Int.JOURNALLIMIT);
 				if(limit<=0)
 					limit=Integer.MAX_VALUE;
 				msgs = new Vector<JournalEntry>();
 				if((pageDate <= 0)
-				&& (stats.stuckyKeys()!=null)
+				&& (metaData.stuckyKeys()!=null)
 				&& ((dbsearch==null)||(dbsearch.length()==0))
 				&& ((parent != null)&&(parent.length()==0)))
 				{
-					for(final String stuckyKey : stats.stuckyKeys())
+					for(final String stuckyKey : metaData.stuckyKeys())
 					{
 						final JournalEntry entry = CMLib.database().DBReadJournalEntry(journalName, stuckyKey);
 						if(entry != null)
@@ -122,8 +126,10 @@ public class JournalInfo extends StdWebMacro
 	{
 		final List<String> h = new XVector<String>(httpReq.getRequestObjects().keySet());
 		for(final String o : h)
+		{
 			if((o!=null)&&(o.startsWith("JOURNAL: "+journalName+": ")))
 				httpReq.getRequestObjects().remove(o.toString());
+		}
 	}
 
 	public static JournalEntry getNextEntry(List<JournalEntry> info, String key)
@@ -184,10 +190,10 @@ public class JournalInfo extends StdWebMacro
 		JournalEntry entry=null;
 		if(msgKey.equalsIgnoreCase("FORUMLATEST"))
 		{
-			final JournalsLibrary.JournalSummaryStats stats = CMLib.journals().getJournalStats(journal);
-			if((stats!=null)&&(stats.latestKey()!=null)&&(stats.latestKey().length()>0))
+			final JournalsLibrary.JournalMetaData metaData = CMLib.journals().getJournalStats(journal);
+			if((metaData!=null)&&(metaData.latestKey()!=null)&&(metaData.latestKey().length()>0))
 			{
-				entry=CMLib.database().DBReadJournalEntry(journalName, stats.latestKey());
+				entry=CMLib.database().DBReadJournalEntry(journalName, metaData.latestKey());
 				if(entry != null)
 					httpReq.addFakeUrlParameter("JOURNALMESSAGE", entry.key());
 			}
@@ -373,13 +379,15 @@ public class JournalInfo extends StdWebMacro
 				if((entry.parent()==null)||(entry.parent().length()==0))
 				{
 					entry.views(entry.views()+1);
-					CMLib.database().DBViewJournalMessage(entry.key(), entry.views());
+					CMLib.database().DBUpdateJournalMessageViews(entry.key(), entry.views());
 				}
 				return s;
 			}
 			if(parms.containsKey("EMAILALLOWED"))
+			{
 				return ""+((entry.from().length()>0)
 						&&(CMProps.getVar(CMProps.Str.MAILBOX).length()>0));
+			}
 		}
 		return "";
 	}

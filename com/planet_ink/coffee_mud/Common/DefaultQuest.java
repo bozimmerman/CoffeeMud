@@ -160,8 +160,13 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	{
 		int code=-1;
 		for(int i=0;i<QCODES.length;i++)
+		{
 			if(named.equalsIgnoreCase(QCODES[i]))
-			{ code=i; break;}
+			{
+				code = i;
+				break;
+			}
+		}
 		switch(code)
 		{
 		case 0:
@@ -584,9 +589,13 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 			Set<String> inUseByWhom=new TreeSet<String>();
 			for(int c=choices.size()-1;c>=0;c--)
 			{
-				if((!reselect)||(!q.reselectable.contains(choices.get(c))))
+				final Environmental E=choices.get(c);
+				if((E instanceof Physical) && (CMLib.flags().isCloaked((Physical)E)))
+					choices.remove(c);
+				else
+				if((!reselect)||(!q.reselectable.contains(E)))
 				{
-					final Quest Q=CMLib.quests().objectInUse(choices.get(c));
+					final Quest Q=CMLib.quests().objectInUse(E);
 					if(Q!=null)
 					{
 						choices.remove(c);
@@ -1018,7 +1027,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						List<MOB> choices=null;
 						String mobName=CMParms.combine(p,2).toUpperCase();
 						final String maskStr=CMLib.quests().breakOutMaskString(s,p);
-						final MaskingLibrary.CompiledZapperMask mask=(maskStr.trim().length()==0)?null:CMLib.masking().maskCompile(maskStr);
+						final MaskingLibrary.CompiledZMask mask=(maskStr.trim().length()==0)?null:CMLib.masking().maskCompile(maskStr);
 						if(mask!=null)
 							mobName=CMParms.combine(p,2).toUpperCase();
 						try
@@ -1094,7 +1103,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						List<Item> choices=null;
 						String itemName=CMParms.combine(p,2).toUpperCase();
 						final String maskStr=CMLib.quests().breakOutMaskString(s,p);
-						final MaskingLibrary.CompiledZapperMask mask=(maskStr.trim().length()==0)?null:CMLib.masking().maskCompile(maskStr);
+						final MaskingLibrary.CompiledZMask mask=(maskStr.trim().length()==0)?null:CMLib.masking().maskCompile(maskStr);
 						if(mask!=null)
 							itemName=CMParms.combine(p,2).toUpperCase();
 						try
@@ -1456,7 +1465,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						final List<Room> choices3=new Vector<Room>();
 						final Vector<String> names=new Vector<String>();
 						final String maskStr=CMLib.quests().breakOutMaskString(s,p);
-						final MaskingLibrary.CompiledZapperMask mask=(maskStr.trim().length()==0)?null:CMLib.masking().maskCompile(maskStr);
+						final MaskingLibrary.CompiledZMask mask=(maskStr.trim().length()==0)?null:CMLib.masking().maskCompile(maskStr);
 						if((p.size()>3)&&(p.elementAt(2).equalsIgnoreCase("any")))
 						{
 							for(int ip=3;ip<p.size();ip++)
@@ -1566,7 +1575,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						}
 						String mobName=CMParms.combine(p,2).toUpperCase();
 						final String maskStr=CMLib.quests().breakOutMaskString(s,p);
-						final MaskingLibrary.CompiledZapperMask mask=(maskStr.trim().length()==0)?null:CMLib.masking().maskCompile(maskStr);
+						final MaskingLibrary.CompiledZMask mask=(maskStr.trim().length()==0)?null:CMLib.masking().maskCompile(maskStr);
 						if(mask!=null)
 							mobName=CMParms.combine(p,2).toUpperCase();
 						try
@@ -1604,16 +1613,19 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 									for(final Enumeration<Room> e=getAppropriateRoomSet(q);e.hasMoreElements();)
 									{
 										final Room R2=e.nextElement();
-										for(int i=0;i<R2.numInhabitants();i++)
+										if(R2!=null)
 										{
-											final MOB M2=R2.fetchInhabitant(i);
-											if((M2!=null)
-											&&(M2.isMonster())
-											&&((M2.amUltimatelyFollowing()==null)||(M2.amUltimatelyFollowing().isMonster())))
+											for(int i=0;i<R2.numInhabitants();i++)
 											{
-												if(!CMLib.masking().maskCheck(mask,M2,true))
-													continue;
-												choices=sortSelect(M2,mobName,choices,choices0,choices1,choices2,choices3);
+												final MOB M2=R2.fetchInhabitant(i);
+												if((M2!=null)
+												&&(M2.isMonster())
+												&&((M2.amUltimatelyFollowing()==null)||(M2.amUltimatelyFollowing().isMonster())))
+												{
+													if(!CMLib.masking().maskCheck(mask,M2,true))
+														continue;
+													choices=sortSelect(M2,mobName,choices,choices0,choices1,choices2,choices3);
+												}
 											}
 										}
 									}
@@ -1663,7 +1675,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						}
 						String itemName=CMParms.combine(p,2).toUpperCase();
 						final String maskStr=CMLib.quests().breakOutMaskString(s,p);
-						final MaskingLibrary.CompiledZapperMask mask=(maskStr.trim().length()==0)?null:CMLib.masking().maskCompile(maskStr);
+						final MaskingLibrary.CompiledZMask mask=(maskStr.trim().length()==0)?null:CMLib.masking().maskCompile(maskStr);
 						if(mask!=null)
 							itemName=CMParms.combine(p,2).toUpperCase();
 						try
@@ -2641,7 +2653,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						}
 						String mobName=CMParms.combine(p,2);
 						final String maskStr=CMLib.quests().breakOutMaskString(s,p);
-						final MaskingLibrary.CompiledZapperMask mask=(maskStr.trim().length()==0)?null:CMLib.masking().maskCompile(maskStr);
+						final MaskingLibrary.CompiledZMask mask=(maskStr.trim().length()==0)?null:CMLib.masking().maskCompile(maskStr);
 						if(mask!=null)
 							mobName=CMParms.combine(p,2).toUpperCase();
 						if(mobName.length()==0)
@@ -3245,6 +3257,15 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		Q2.setCopy(true);
 		Q2.setVars(baseVars,0);
 		Q2.setScript(script,true);
+		
+		Quest Q=CMLib.quests().fetchQuest(Q2.name());
+		int append=1;
+		while((Q!=null)&&(Q!=Q2))
+		{
+			Q2.setName(name()+"#"+append);
+			append++;
+			Q=CMLib.quests().fetchQuest(Q2.name());
+		}
 		CMLib.quests().addQuest(Q2);
 		if(reTime)
 		{
@@ -4703,16 +4724,21 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		return null;
 	}
 
+	protected static String[] CCODES = null;
 
 	@Override
 	public String[] getStatCodes()
 	{
-		final String[] CCODES=new String[QCODES.length+MYSTERY_QCODES.length];
-		for(int i=0;i<QCODES.length;i++)
-			CCODES[i]=QCODES[i];
-		for(int i=0;i<MYSTERY_QCODES.length;i++)
-			CCODES[QCODES.length+i]=MYSTERY_QCODES[i];
-		return QCODES;
+		if(CCODES == null)
+		{
+			final String[] CCODES=new String[QCODES.length+MYSTERY_QCODES.length];
+			for(int i=0;i<QCODES.length;i++)
+				CCODES[i]=QCODES[i];
+			for(int i=0;i<MYSTERY_QCODES.length;i++)
+				CCODES[QCODES.length+i]=MYSTERY_QCODES[i];
+			DefaultQuest.CCODES = CCODES;
+		}
+		return CCODES;
 	}
 
 	@Override
@@ -4987,8 +5013,10 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 			if(x>=0)
 				statName=statName.substring(0,x);
 			for (final String element : QOBJS)
+			{
 				if(statName.equalsIgnoreCase(element))
 					return true;
+			}
 			if(mysteryData!=null)
 				return mysteryData.isStat(statName);
 			return false;

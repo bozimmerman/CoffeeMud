@@ -35,16 +35,37 @@ import java.util.*;
 */
 public class Prop_HaveResister extends Property implements TriggeredAffect
 {
-	@Override public String ID() { return "Prop_HaveResister"; }
-	@Override public String name(){ return "Resistance due to ownership";}
-	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
-	@Override public boolean bubbleAffect(){return true;}
-	protected CharStats adjCharStats=null;
-	protected String maskString="";
-	protected final Map<String,Integer> prots=new TreeMap<String,Integer>();
-	protected boolean ignoreCharStats=true;
-	protected long lastProtection=0;
-	protected int remainingProtection=0;
+	@Override
+	public String ID()
+	{
+		return "Prop_HaveResister";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Resistance due to ownership";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ITEMS;
+	}
+
+	@Override
+	public boolean bubbleAffect()
+	{
+		return true;
+	}
+
+	protected CharStats						adjCharStats		= null;
+	protected String						maskString			= "";
+	protected final Map<String, Integer>	prots				= new TreeMap<String, Integer>();
+	protected boolean						ignoreCharStats		= true;
+	protected long							lastProtection		= 0;
+	protected int							remainingProtection	= 0;
+	protected boolean						alwaysWeapProt		= false;
 
 	@Override
 	public long flags()
@@ -96,6 +117,9 @@ public class Prop_HaveResister extends Property implements TriggeredAffect
 				else
 					newPct = Integer.valueOf((int)Math.round(d * 100.0));
 			}
+			else
+			if(parts.equals("ALWAYS"))
+				this.alwaysWeapProt=true;
 			else
 			{
 				previousSet.add(parts);
@@ -155,6 +179,11 @@ public class Prop_HaveResister extends Property implements TriggeredAffect
 
 	protected int weaponProtection(String kind, int damage, int myLevel, int hisLevel)
 	{
+		if(this.alwaysWeapProt)
+		{
+			int protection = getProtection(kind);
+			return (int)Math.round(CMath.mul(damage,1.0-CMath.div(protection,100.0)));
+		}
 		int protection=remainingProtection;
 		if((System.currentTimeMillis()-lastProtection)>=CMProps.getTickMillis())
 		{
@@ -184,6 +213,16 @@ public class Prop_HaveResister extends Property implements TriggeredAffect
 		&&((msg.value())>0)
 		&&(msg.tool() instanceof Weapon))
 		{
+			if(checkProtection("NON-MAGICAL-WEAPONS") && (!CMLib.flags().isABonusItems((Weapon)msg.tool())))
+			{
+				if((maskString.length()==0)||(CMLib.masking().maskCheck(maskString,mob,false)))
+					msg.setValue(weaponProtection("NON-MAGICAL-WEAPONS",msg.value(),mob.phyStats().level(),msg.source().phyStats().level()));
+			}
+			if(checkProtection("NON-SILVER-WEAPONS") && (((Weapon)msg.tool()).material() != RawMaterial.RESOURCE_SILVER))
+			{
+				if((maskString.length()==0)||(CMLib.masking().maskCheck(maskString,mob,false)))
+					msg.setValue(weaponProtection("NON-SILVER-WEAPONS",msg.value(),mob.phyStats().level(),msg.source().phyStats().level()));
+			}
 			if(checkProtection("WEAPONS"))
 			{
 				if((maskString.length()==0)||(CMLib.masking().maskCheck(maskString,mob,false)))
@@ -296,6 +335,14 @@ public class Prop_HaveResister extends Property implements TriggeredAffect
 						&&(CMLib.dice().rollPercentage() <= getProtection(abilityDomain)))
 						{
 							mob.location().show(msg.source(),mob,CMMsg.MSG_OK_VISUAL,L("<T-NAME> repell(s) the @x1 effects from <S-NAME>.",abilityDomain.toLowerCase().replace('_',' ')));
+							return false;
+						}
+						else
+						if((checkProtection(A.ID()))
+						&&((maskString.length()==0)||(CMLib.masking().maskCheck(maskString,mob,false)))
+						&&(CMLib.dice().rollPercentage() <= getProtection(abilityDomain)))
+						{
+							mob.location().show(msg.source(),mob,CMMsg.MSG_OK_VISUAL,L("<T-NAME> repell(s) @x1 from <S-NAME>.",abilityDomain.toLowerCase().replace('_',' ')));
 							return false;
 						}
 					}

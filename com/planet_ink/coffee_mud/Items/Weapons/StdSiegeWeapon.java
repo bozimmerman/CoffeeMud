@@ -70,6 +70,7 @@ public class StdSiegeWeapon extends StdRideable implements AmmunitionWeapon
 		recoverPhyStats();
 		minRange=1;
 		maxRange=10;
+		setRiderCapacity(0);
 		weaponDamageType=Weapon.TYPE_PIERCING;
 		material=RawMaterial.RESOURCE_WOOD;
 		weaponClassification=Weapon.CLASS_RANGED;
@@ -99,6 +100,12 @@ public class StdSiegeWeapon extends StdRideable implements AmmunitionWeapon
 	public void setWeaponClassification(int newClassification)
 	{
 		weaponClassification = newClassification;
+	}
+
+	@Override
+	public boolean isFreeStanding()
+	{
+		return true;
 	}
 
 	@Override
@@ -141,7 +148,7 @@ public class StdSiegeWeapon extends StdRideable implements AmmunitionWeapon
 				if(CMLib.flags().canBeSeenBy(this,msg.source()))
 				{
 					if(requiresAmmunition())
-						msg.source().tell(L("@x1 remaining: @x2/@x3.",ammunitionType(),""+ammunitionRemaining(),""+ammunitionCapacity()));
+						msg.source().tell(L("@x1 remaining: @x2/@x3.",CMStrings.capitalizeAndLower(ammunitionType()),""+ammunitionRemaining(),""+ammunitionCapacity()));
 					if((subjectToWearAndTear())&&(usesRemaining()<100))
 						msg.source().tell(weaponHealth());
 				}
@@ -154,7 +161,9 @@ public class StdSiegeWeapon extends StdRideable implements AmmunitionWeapon
 					int howMuchToTake=ammunitionCapacity();
 					if(I.ammunitionRemaining()<howMuchToTake)
 						howMuchToTake=I.ammunitionRemaining();
-					setAmmoRemaining(howMuchToTake);
+					if(this.ammunitionCapacity() - this.ammunitionRemaining() < howMuchToTake)
+						howMuchToTake=this.ammunitionCapacity() - this.ammunitionRemaining();
+					setAmmoRemaining(this.ammunitionRemaining() + howMuchToTake);
 					I.setAmmoRemaining(I.ammunitionRemaining()-howMuchToTake);
 					final LinkedList<Ability> removeThese=new LinkedList<Ability>();
 					for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
@@ -197,6 +206,12 @@ public class StdSiegeWeapon extends StdRideable implements AmmunitionWeapon
 						}
 					}
 					setAmmoRemaining(0);
+					final Room R=msg.source().location();
+					if(R!=null)
+					{
+						R.addItem(ammo, ItemPossessor.Expire.Player_Drop);
+						CMLib.commands().postGet(msg.source(), null, ammo, true);
+					}
 				}
 				break;
 			}

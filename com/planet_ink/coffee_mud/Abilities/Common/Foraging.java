@@ -36,17 +36,49 @@ import java.util.*;
 
 public class Foraging extends GatheringSkill
 {
-	@Override public String ID() { return "Foraging"; }
-	private final static String localizedName = CMLib.lang().L("Foraging");
-	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =I(new String[] {"FORAGE","FORAGING"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode(){return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_GATHERINGSKILL;}
-	@Override protected boolean allowedWhileMounted(){return false;}
-	@Override public String supportedResourceString(){return "VEGETATION|HEMP|SILK|COTTON";}
+	@Override
+	public String ID()
+	{
+		return "Foraging";
+	}
 
-	protected Item found=null;
-	protected String foundShortName="";
+	private final static String	localizedName	= CMLib.lang().L("Foraging");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "FORAGE", "FORAGING" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_COMMON_SKILL | Ability.DOMAIN_GATHERINGSKILL;
+	}
+
+	@Override
+	protected boolean allowedWhileMounted()
+	{
+		return false;
+	}
+
+	@Override
+	public String supportedResourceString()
+	{
+		return "VEGETATION|HEMP|SILK|COTTON";
+	}
+
+	protected Item		found			= null;
+	protected String	foundShortName	= "";
+
 	public Foraging()
 	{
 		super();
@@ -58,7 +90,12 @@ public class Foraging extends GatheringSkill
 	{
 		return getDuration(45,mob,level,10);
 	}
-	@Override protected int baseYield() { return 1; }
+
+	@Override
+	protected int baseYield()
+	{
+		return 1;
+	}
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
@@ -81,7 +118,7 @@ public class Foraging extends GatheringSkill
 					if(d<0)
 						str.append(L("You might try elsewhere."));
 					else
-						str.append(L("You might try @x1.",Directions.getInDirectionName(d)));
+						str.append(L("You might try @x1.",CMLib.directions().getInDirectionName(d)));
 					commonTell(mob,str.toString());
 					unInvoke();
 				}
@@ -99,20 +136,27 @@ public class Foraging extends GatheringSkill
 			if(affected instanceof MOB)
 			{
 				final MOB mob=(MOB)affected;
-				if((found!=null)&&(!aborted))
+				if((found!=null)&&(!aborted)&&(mob.location()!=null))
 				{
 					final int amount=((found.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_CLOTH)?
-							   (CMLib.dice().roll(1,10,0)*(abilityCode())):
-							   (CMLib.dice().roll(1,3,0)*(abilityCode()));
-					String s="s";
-					if(amount==1)
-						s="";
-					mob.location().show(mob,null,getActivityMessageType(),L("<S-NAME> manage(s) to gather @x1 pound@x2 of @x3.",""+amount,s,foundShortName));
-					for(int i=0;i<amount;i++)
+							   (CMLib.dice().roll(1,10,0)*(baseYield()+abilityCode())):
+							   (CMLib.dice().roll(1,3,0)*(baseYield()+abilityCode()));
+					final CMMsg msg=CMClass.getMsg(mob,found,this,getCompletedActivityMessageType(),null);
+					msg.setValue(amount);
+					if(mob.location().okMessage(mob, msg))
 					{
-						final Item newFound=(Item)found.copyOf();
-						mob.location().addItem(newFound,ItemPossessor.Expire.Player_Drop);
-						CMLib.commands().postGet(mob,null,newFound,true);
+						String s="s";
+						if(msg.value()==1)
+							s="";
+						msg.modify(L("<S-NAME> manage(s) to gather @x1 pound@x2 of @x3.",""+msg.value(),s,foundShortName));
+						mob.location().send(mob, msg);
+						for(int i=0;i<msg.value();i++)
+						{
+							final Item newFound=(Item)found.copyOf();
+							if(!dropAWinner(mob,newFound))
+								break;
+							CMLib.commands().postGet(mob,null,newFound,true);
+						}
 					}
 				}
 			}

@@ -35,15 +35,37 @@ import java.util.*;
 
 public class Shearing extends CommonSkill
 {
-	@Override public String ID() { return "Shearing"; }
-	private final static String localizedName = CMLib.lang().L("Shearing");
-	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =I(new String[] {"SHEAR","SHEARING"});
-	@Override public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ANIMALAFFINITY; }
-	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override
+	public String ID()
+	{
+		return "Shearing";
+	}
 
-	private MOB sheep=null;
-	protected boolean failed=false;
+	private final static String	localizedName	= CMLib.lang().L("Shearing");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "SHEAR", "SHEARING" });
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_COMMON_SKILL | Ability.DOMAIN_ANIMALAFFINITY;
+	}
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	private MOB			sheep	= null;
+	protected boolean	failed	= false;
+
 	public Shearing()
 	{
 		super();
@@ -59,7 +81,12 @@ public class Shearing extends CommonSkill
 			duration=40;
 		return duration;
 	}
-	@Override protected int baseYield() { return 1; }
+
+	@Override
+	protected int baseYield()
+	{
+		return 1;
+	}
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
@@ -82,9 +109,11 @@ public class Shearing extends CommonSkill
 		{
 			final List<RawMaterial> V=M.charStats().getMyRace().myResources();
 			for(int v=0;v<V.size();v++)
+			{
 				if((V.get(v) != null)
 				&&(V.get(v).material()==RawMaterial.RESOURCE_WOOL))
 					wool.addElement(V.get(v));
+			}
 		}
 		return wool;
 	}
@@ -97,23 +126,30 @@ public class Shearing extends CommonSkill
 			if(affected instanceof MOB)
 			{
 				final MOB mob=(MOB)affected;
-				if((sheep!=null)&&(!aborted))
+				if((sheep!=null)&&(!aborted)&&(mob.location()!=null))
 				{
 					if((failed)||(!mob.location().isInhabitant(sheep)))
 						commonTell(mob,L("You messed up your shearing completely."));
 					else
 					{
-						mob.location().show(mob,null,sheep,getActivityMessageType(),L("<S-NAME> manage(s) to shear <O-NAME>."));
 						spreadImmunity(sheep);
-						final int yield=abilityCode()<=0?1:abilityCode();
-						for(int i=0;i<yield;i++)
+						final int yield=(baseYield()+abilityCode())<=0?1:(baseYield()+abilityCode());
+						final CMMsg msg=CMClass.getMsg(mob,sheep,this,getCompletedActivityMessageType(),null);
+						msg.setValue(yield);
+						if(mob.location().okMessage(mob, msg))
 						{
-							final Vector<RawMaterial> V=getMyWool(sheep);
-							for(int v=0;v<V.size();v++)
+							msg.modify(L("<S-NAME> manage(s) to shear <T-NAME>."));
+							mob.location().send(mob, msg);
+							for(int i=0;i<msg.value();i++)
 							{
-								RawMaterial I=V.elementAt(v);
-								I=(RawMaterial)I.copyOf();
-								mob.location().addItem(I,ItemPossessor.Expire.Monster_EQ);
+								final Vector<RawMaterial> V=getMyWool(sheep);
+								for(int v=0;v<V.size();v++)
+								{
+									RawMaterial I=V.elementAt(v);
+									I=(RawMaterial)I.copyOf();
+									if(!dropAWinner(mob,I))
+										break;
+								}
 							}
 						}
 					}

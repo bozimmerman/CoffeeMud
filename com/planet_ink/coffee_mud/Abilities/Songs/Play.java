@@ -450,7 +450,7 @@ public class Play extends StdAbility
 			if(!songOf.equals(this.instrumentName()))
 				songOf="the "+songOf;
 			if(dir>=0)
-				msgStr=L("^SYou hear @x1 being played @x2!^?",songOf,Directions.getInDirectionName(dir));
+				msgStr=L("^SYou hear @x1 being played @x2!^?",songOf,CMLib.directions().getInDirectionName(dir));
 			else
 				msgStr=L("^SYou hear @x1 being played nearby!^?",songOf);
 		}

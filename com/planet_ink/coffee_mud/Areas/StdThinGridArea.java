@@ -35,8 +35,18 @@ import java.util.*;
 */
 public class StdThinGridArea extends StdGridArea
 {
-	@Override public String ID(){	return "StdThinGridArea";}
-	@Override public long flags(){return Area.FLAG_THIN;}
+	@Override
+	public String ID()
+	{
+		return "StdThinGridArea";
+	}
+
+	@Override
+	public long flags()
+	{
+		return Area.FLAG_THIN;
+	}
+
 	public RoomnumberSet myRoomSet=null;
 
 	@Override
@@ -46,6 +56,7 @@ public class StdThinGridArea extends StdGridArea
 			R.setExpirationDate(System.currentTimeMillis() + WorldMap.ROOM_EXPIRATION_MILLIS);
 		super.addProperRoom(R);
 	}
+
 	@Override
 	public Room getRoom(String roomID)
 	{
@@ -70,7 +81,8 @@ public class StdThinGridArea extends StdGridArea
 		return R;
 	}
 
-	@Override public int getPercentRoomsCached()
+	@Override 
+	public int getPercentRoomsCached()
 	{
 		final double totalRooms=getProperRoomnumbers().roomCountAllAreas();
 		if(totalRooms==0.0)
@@ -79,7 +91,8 @@ public class StdThinGridArea extends StdGridArea
 		return (int)Math.round((currentRooms/totalRooms)*100.0);
 	}
 
-	@Override protected int[] buildAreaIStats()
+	@Override 
+	protected int[] buildAreaIStats()
 	{
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 			return emptyStats;
@@ -98,6 +111,7 @@ public class StdThinGridArea extends StdGridArea
 	{
 		return getProperRoomnumbers().contains(roomID);
 	}
+
 	@Override
 	public boolean isRoom(Room R)
 	{
@@ -109,7 +123,13 @@ public class StdThinGridArea extends StdGridArea
 			return false;
 		return isRoom(R.roomID());
 	}
-	@Override public Enumeration<Room> getProperMap(){return new IteratorEnumeration<Room>(properRooms.values().iterator());}
+
+	@Override
+	public Enumeration<Room> getProperMap()
+	{
+		return new IteratorEnumeration<Room>(properRooms.values().iterator());
+	}
+
 	@Override
 	public Enumeration<Room> getMetroMap()
 	{
@@ -124,5 +144,10 @@ public class StdThinGridArea extends StdGridArea
 			multiEnumerator.addEnumeration(a.next().getMetroMap());
 		return new CompleteRoomEnumerator(multiEnumerator);
 	}
-	@Override public Enumeration<Room> getCompleteMap(){return new CompleteRoomEnumerator(new RoomIDEnumerator(this));}
+
+	@Override
+	public Enumeration<Room> getCompleteMap()
+	{
+		return new CompleteRoomEnumerator(new RoomIDEnumerator(this));
+	}
 }

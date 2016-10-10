@@ -35,17 +35,59 @@ import java.util.*;
 
 public class Skill_TurnUndead extends StdSkill
 {
-	@Override public String ID() { return "Skill_TurnUndead"; }
-	private final static String localizedName = CMLib.lang().L("Turn Undead");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Turned)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_DEATHLORE;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	private static final String[] triggerStrings =I(new String[] {"TURN"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override
+	public String ID()
+	{
+		return "Skill_TurnUndead";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Turn Undead");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Turned)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL | Ability.DOMAIN_DEATHLORE;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "TURN" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
 
 	@Override
 	public int castingQuality(MOB mob, Physical target)
@@ -88,7 +130,25 @@ public class Skill_TurnUndead extends StdSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		final boolean success=proficiencyCheck(mob,((mob.phyStats().level()+(4*getXLEVELLevel(mob)))-target.phyStats().level())*30,auto);
+		int levelAdj=0;
+		final Room R=mob.location();
+		if((R!=null)&&(R.getArea()!=null))
+		{
+			String value=R.getArea().getBlurbFlag(ID());
+			if((value != null)&&(value.length()>0))
+			{
+				for(String s : CMParms.parse(value))
+				{
+					if(s.startsWith("+")&&(CMath.isNumber(value.substring(1))))
+						levelAdj=CMath.s_int(value.substring(1));
+					else
+					if(CMath.isNumber(s))
+						levelAdj=CMath.s_int(value.trim());
+				}
+			}
+		}
+		
+		final boolean success=proficiencyCheck(mob,((mob.phyStats().level()+(4*levelAdj)+(4*getXLEVELLevel(mob)))-target.phyStats().level())*30,auto);
 
 		if(success)
 		{
@@ -98,7 +158,7 @@ public class Skill_TurnUndead extends StdSkill
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					if((mob.phyStats().level()-target.phyStats().level())>6)
+					if((mob.phyStats().level()+levelAdj+(getXLEVELLevel(mob))-target.phyStats().level())>6)
 					{
 						mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,L("<T-NAME> wither(s)"+(auto?".":" under <S-HIS-HER> holy power!")));
 						CMLib.combat().postDamage(mob,target,this,target.curState().getHitPoints(),CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,-1,null);

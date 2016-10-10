@@ -34,7 +34,12 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class PortableHole extends BagOfHolding implements MiscMagic
 {
-	@Override public String ID(){	return "PortableHole";}
+	@Override
+	public String ID()
+	{
+		return "PortableHole";
+	}
+
 	public PortableHole()
 	{
 		super();
@@ -49,8 +54,5 @@ public class PortableHole extends BagOfHolding implements MiscMagic
 		baseGoldValue=15000;
 		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_BONUS);
 		recoverPhyStats();
-
-
-
 	}
 }

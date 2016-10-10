@@ -35,10 +35,17 @@ import java.util.*;
 
 public class Dig extends StdCommand
 {
-	public Dig(){}
+	public Dig()
+	{
+	}
 
-	private final String[] access=I(new String[]{"DIG"});
-	@Override public String[] getAccessWords(){return access;}
+	private final String[]	access	= I(new String[] { "DIG" });
+
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
 	public int getDiggingDepth(Item item)
 	{
@@ -82,11 +89,17 @@ public class Dig extends StdCommand
 	public boolean preExecute(MOB mob, List<String> commands, int metaFlags, int secondsElapsed, double actionsRemaining)
 	throws java.io.IOException
 	{
+		
 		if(secondsElapsed==0)
 		{
 			if(isOccupiedWithOtherWork(mob))
 			{
 				CMLib.commands().doCommandFail(mob,new StringXVector(commands),L("You are too busy to dig right now."));
+				return false;
+			}
+			if(mob.isInCombat())
+			{
+				CMLib.commands().doCommandFail(mob,new StringXVector(commands),L("You are too busy fighting right now."));
 				return false;
 			}
 
@@ -104,6 +117,11 @@ public class Dig extends StdCommand
 		else
 		if((secondsElapsed % 8)==0)
 		{
+			if(mob.isInCombat())
+			{
+				CMLib.commands().doCommandFail(mob,new StringXVector(commands),L("You stop digging."));
+				return false;
+			}
 			final String msgStr=L("<S-NAME> continue(s) digging a hole with <O-NAME>.");
 			Item I=mob.fetchWieldedItem();
 			if(I==null)
@@ -124,14 +142,28 @@ public class Dig extends StdCommand
 	{
 		final CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> stop(s) digging."));
 		if(mob.location().okMessage(mob,msg))
+		{
 			mob.location().send(mob,msg);
+			mob.clearCommandQueue();
+		}
 		return false;
 	}
-	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return 30.0 * mob.phyStats().speed();}
+
+	@Override
+	public double combatActionsCost(final MOB mob, final List<String> cmds)
+	{
+		return 30.0 * mob.phyStats().speed();
+	}
+
 	@Override
 	public double actionsCost(final MOB mob, final List<String> cmds)
 	{
 		return 10.0 * mob.phyStats().speed();
 	}
-	@Override public boolean canBeOrdered(){return true;}
+
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 }

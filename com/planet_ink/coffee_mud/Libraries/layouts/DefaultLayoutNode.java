@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.Layo
 import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.LayoutTags;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.LayoutTypes;
 import com.planet_ink.coffee_mud.Locales.interfaces.Room;
+import com.planet_ink.coffee_mud.core.CMLib;
 import com.planet_ink.coffee_mud.core.Directions;
 import com.planet_ink.coffee_mud.core.collections.SHashtable;
 
@@ -196,7 +197,7 @@ public class DefaultLayoutNode implements LayoutNode
 			{
 				if (dir == d)
 				{
-					buf.append(Directions.getDirectionChar(d).toLowerCase()).append(",");
+					buf.append(CMLib.directions().getDirectionChar(d).toLowerCase()).append(",");
 				}
 			}
 		}

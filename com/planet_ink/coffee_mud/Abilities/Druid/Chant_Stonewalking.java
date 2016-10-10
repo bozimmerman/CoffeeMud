@@ -74,7 +74,8 @@ public class Chant_Stonewalking extends Chant
 			if((R.domainType()==Room.DOMAIN_INDOORS_CAVE)
 			   ||(R.domainType()==Room.DOMAIN_INDOORS_STONE)
 			   ||(R.domainType()==Room.DOMAIN_OUTDOORS_MOUNTAINS)
-			   ||(R.domainType()==Room.DOMAIN_OUTDOORS_ROCKS))
+			   ||(R.domainType()==Room.DOMAIN_OUTDOORS_ROCKS)
+			   ||((R.getAtmosphere()&RawMaterial.MATERIAL_ROCK)!=0))
 			{
 				affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_INVISIBLE);
 				affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_HIDDEN);
@@ -119,7 +120,8 @@ public class Chant_Stonewalking extends Chant
 				if((R.domainType()!=Room.DOMAIN_INDOORS_CAVE)
 				&&(R.domainType()!=Room.DOMAIN_INDOORS_STONE)
 				&&(R.domainType()!=Room.DOMAIN_OUTDOORS_MOUNTAINS)
-				&&(R.domainType()!=Room.DOMAIN_OUTDOORS_ROCKS))
+				&&(R.domainType()!=Room.DOMAIN_OUTDOORS_ROCKS)
+				&&((R.getAtmosphere()&RawMaterial.MATERIAL_ROCK)==0))
 					return Ability.QUALITY_INDIFFERENT;
 			}
 		}
@@ -142,7 +144,8 @@ public class Chant_Stonewalking extends Chant
 		if((R.domainType()!=Room.DOMAIN_INDOORS_CAVE)
 		   &&(R.domainType()!=Room.DOMAIN_INDOORS_STONE)
 		   &&(R.domainType()!=Room.DOMAIN_OUTDOORS_MOUNTAINS)
-		   &&(R.domainType()!=Room.DOMAIN_OUTDOORS_ROCKS))
+		   &&(R.domainType()!=Room.DOMAIN_OUTDOORS_ROCKS)
+		   &&((R.getAtmosphere()&RawMaterial.MATERIAL_ROCK)==0))
 		{
 			mob.tell(L("You must be near walls of stone or massive rock to use this chant."));
 			return false;

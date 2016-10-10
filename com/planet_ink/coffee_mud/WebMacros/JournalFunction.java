@@ -36,7 +36,11 @@ import java.util.*;
 */
 public class JournalFunction extends StdWebMacro
 {
-	@Override public String name() { return "JournalFunction"; }
+	@Override
+	public String name()
+	{
+		return "JournalFunction";
+	}
 
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
@@ -155,11 +159,13 @@ public class JournalFunction extends StdWebMacro
 			// check for dups
 			final List<JournalEntry> chckEntries = CMLib.database().DBReadJournalMsgsNewerThan(journalName, to, msg.date()-1);
 			for(final JournalEntry entry : chckEntries)
+			{
 				if((entry.date() == msg.date())
 				&&(entry.from().equals(msg.from()))
 				&&(entry.subj().equals(msg.subj()))
 				&&(entry.parent().equals(msg.parent())))
 					return "";
+			}
 			CMLib.database().DBWriteJournal(journalName,msg);
 			JournalInfo.clearJournalCache(httpReq, journalName);
 			if(parent!=null)
@@ -178,16 +184,16 @@ public class JournalFunction extends StdWebMacro
 			final String longDesc=fixForumString(httpReq.getUrlParameter("LONGDESC"));
 			final String shortDesc=fixForumString(httpReq.getUrlParameter("SHORTDESC"));
 			final String imgPath=httpReq.getUrlParameter("IMGPATH");
-			final JournalsLibrary.JournalSummaryStats stats = CMLib.journals().getJournalStats(forum);
-			if(stats == null)
+			final JournalsLibrary.JournalMetaData metaData = CMLib.journals().getJournalStats(forum);
+			if(metaData == null)
 				return "Changes not submitted -- No Stats!";
 			if(longDesc!=null)
-				stats.longIntro(clearWebMacros(longDesc));
+				metaData.longIntro(clearWebMacros(longDesc));
 			if(shortDesc!=null)
-				stats.shortIntro(clearWebMacros(shortDesc));
+				metaData.shortIntro(clearWebMacros(shortDesc));
 			if(imgPath!=null)
-				stats.imagePath(clearWebMacros(imgPath));
-			CMLib.database().DBUpdateJournalStats(journalName, stats);
+				metaData.imagePath(clearWebMacros(imgPath));
+			CMLib.database().DBUpdateJournalMetaData(journalName, metaData);
 			CMLib.journals().clearJournalSummaryStats(forum);
 			return "Changed applied.";
 		}
@@ -291,10 +297,10 @@ public class JournalFunction extends StdWebMacro
 						else
 						{
 							CMLib.database().DBWriteJournal(CMProps.getVar(CMProps.Str.MAILBOX),
-															  M.Name(),
-															  toM.Name(),
-															  "RE: "+entry.subj(),
-															  clearWebMacros(replyMsg));
+															M.Name(),
+															toM.Name(),
+															"RE: "+entry.subj(),
+															clearWebMacros(replyMsg));
 							JournalInfo.clearJournalCache(httpReq, journalName);
 							messages.append("Email to #"+cardinalNumber+" queued<BR>");
 						}

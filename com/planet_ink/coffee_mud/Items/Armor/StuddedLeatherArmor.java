@@ -33,7 +33,12 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class StuddedLeatherArmor extends StdArmor
 {
-	@Override public String ID(){	return "StuddedLeatherArmor";}
+	@Override
+	public String ID()
+	{
+		return "StuddedLeatherArmor";
+	}
+
 	public StuddedLeatherArmor()
 	{
 		super();

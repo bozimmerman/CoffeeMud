@@ -76,7 +76,9 @@ public class SlaveTrading extends CommonSkill
 				commonTell(mob,M,null,L("You can't sell <T-NAME> as a slave.  Animals are not slaves."));
 				return false;
 			}
-			if((M.fetchEffect("Skill_Enslave")==null)||(!M.fetchEffect("Skill_Enslave").text().equals(mob.Name())))
+			
+			final Ability oldEnslaveA=M.fetchEffect("Skill_Enslave");
+			if((oldEnslaveA==null)||(!oldEnslaveA.text().equals(mob.Name())))
 			{
 				commonTell(mob,M,null,L("<T-NAME> do(es)n't seem to be your slave."));
 				return false;

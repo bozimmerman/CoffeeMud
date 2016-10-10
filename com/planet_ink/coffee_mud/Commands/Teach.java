@@ -37,10 +37,17 @@ import java.util.Map.Entry;
 
 public class Teach extends StdCommand
 {
-	public Teach(){}
+	public Teach()
+	{
+	}
 
-	private final String[] access=I(new String[]{"TEACH"});
-	@Override public String[] getAccessWords(){return access;}
+	private final String[]	access	= I(new String[] { "TEACH" });
+
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
@@ -97,6 +104,7 @@ public class Teach extends StdCommand
 					theExpertise=def;
 			}
 			if(theExpertise==null)
+			{
 				for(int v=0;v<V.size();v++)
 				{
 					final ExpertiseLibrary.ExpertiseDefinition def=V.get(v);
@@ -104,6 +112,7 @@ public class Teach extends StdCommand
 					&&(theExpertise==null)))
 						theExpertise=def;
 				}
+			}
 			if(theExpertise!=null)
 			{
 				return CMLib.expertises().postTeach(mob,student,theExpertise);
@@ -113,9 +122,23 @@ public class Teach extends StdCommand
 		}
 		return CMLib.expertises().postTeach(mob,student,myAbility);
 	}
-	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandCombatActionCost(ID());}
-	@Override public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandActionCost(ID());}
-	@Override public boolean canBeOrdered(){return true;}
 
+	@Override
+	public double combatActionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandCombatActionCost(ID());
+	}
+
+	@Override
+	public double actionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandActionCost(ID());
+	}
+
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 
 }

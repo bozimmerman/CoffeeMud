@@ -81,6 +81,13 @@ public class XVector<T> extends Vector<T>
 			add(E4);
 	}
 
+	public XVector(T E, T E2, T E3, T E4, T E5)
+	{
+		this(E, E2, E3, E4);
+		if (E5 != null)
+			add(E5);
+	}
+
 	public XVector(Set<T> E)
 	{
 		super();

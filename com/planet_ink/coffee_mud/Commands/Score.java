@@ -35,12 +35,23 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Score extends Affect
 {
-	public Score(){}
+	public Score()
+	{
+	}
 
-	private final String[] access=I(new String[]{"SCORE","SC"});
-	@Override public String[] getAccessWords(){return access;}
+	private final String[]	access	= I(new String[] { "SCORE", "SC" });
 
-	public StringBuilder getScore(MOB mob){return getScore(mob,"");}
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
+
+	public StringBuilder getScore(MOB mob)
+	{
+		return getScore(mob, "");
+	}
+
 	public StringBuilder getScore(MOB mob, String parm)
 	{
 		final StringBuilder msg=new StringBuilder("^N");
@@ -152,11 +163,13 @@ public class Score extends Affect
 				CT=mob.baseCharStats();
 			msg.append("^N^!");
 			for(final int i : CharStats.CODES.BASECODES())
+			{
 				msg.append(CMStrings.padRight("^<HELP^>" + CMStrings.capitalizeAndLower(CharStats.CODES.NAME(i))+"^</HELP^>",15)
 						+": "
 						+CMStrings.padRight(Integer.toString(CT.getStat(i)),2)
 						+"/"
 						+(CT.getMaxStat(i))+"\n\r");
+			}
 			msg.append("^?\n\r");
 		}
 		msg.append(L("You have ^H@x1^? ^<HELP^>hit points^</HELP^>, ^H",mob.curState().getHitPoints()+"/"+mob.maxState().getHitPoints()));

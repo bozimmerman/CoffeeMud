@@ -204,7 +204,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 	{
 		final String name=thisThang.ID();
 		CMLib.catalog().updateCatalogIntegrity(thisThang);
-		CMLib.database().DBCreateData(mob,
+		CMLib.database().DBCreatePlayerData(mob,
 				postalChain(),
 				postalBranch()+";"+thisThang+Math.random(),
 				from+";"
@@ -232,7 +232,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 				if(thisThang.sameAs(I))
 				{
 					found=true;
-					CMLib.database().DBDeleteData(PD.who(),PD.section(),PD.key());
+					CMLib.database().DBDeletePlayerData(PD.who(),PD.section(),PD.key());
 					break;
 				}
 			}
@@ -243,14 +243,14 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 	@Override
 	public void emptyBox(String boxName)
 	{
-		CMLib.database().DBDeleteData(boxName,postalChain());
+		CMLib.database().DBDeletePlayerData(boxName,postalChain());
 	}
 
 	@Override
 	public Map<String, String> getOurOpenBoxes(String boxName)
 	{
 		final Hashtable<String,String> branches=new Hashtable<String,String>();
-		final List<PlayerData> V=CMLib.database().DBReadData(boxName,postalChain());
+		final List<PlayerData> V=CMLib.database().DBReadPlayerData(boxName,postalChain());
 		if(V==null)
 			return branches;
 		for(int v=0;v<V.size();v++)
@@ -272,7 +272,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 	{
 		if(!getOurOpenBoxes(boxName).containsKey(postalBranch()))
 		{
-			CMLib.database().DBCreateData(boxName,
+			CMLib.database().DBCreatePlayerData(boxName,
 					postalChain(),
 					postalBranch()+"/"+forward,
 					"50");
@@ -291,7 +291,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 			if((PD!=null)
 			&&(PD.key().startsWith(postalBranch()+"/")))
 			{
-				CMLib.database().DBDeleteData(PD.who(),PD.section(),PD.key());
+				CMLib.database().DBDeletePlayerData(PD.who(),PD.section(),PD.key());
 			}
 		}
 	}
@@ -314,7 +314,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 
 	public List<PlayerData> getBoxRowPDData(String mob)
 	{
-		return CMLib.database().DBReadData(mob,postalChain());
+		return CMLib.database().DBReadPlayerData(mob,postalChain());
 	}
 
 	@Override
@@ -569,7 +569,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 				{
 					final DatabaseEngine.PlayerData PD=V.get(v);
 					parsed.addElement(parsePostalItemData(PD.xml()));
-					CMLib.database().DBDeleteData(PD.who(),PD.section(),PD.key());
+					CMLib.database().DBDeletePlayerData(PD.who(),PD.section(),PD.key());
 				}
 				PostOffice P=null;
 				for(int v=0;v<parsed.size();v++)
@@ -597,30 +597,32 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 							P.addToBox(fromWhom,I,V2.to,"POSTMASTER",System.currentTimeMillis(),0.0);
 					}
 				}
-				V=CMLib.database().DBReadData(postalChain());
+				V=CMLib.database().DBReadPlayerSectionData(postalChain());
 				TimeClock TC=null;
 				if(getStartRoom()!=null)
 					TC=getStartRoom().getArea().getTimeObj();
 				if((TC!=null)&&(maxMudMonthsHeld()>0))
-				for(int v=0;v<V.size();v++)
 				{
-					final DatabaseEngine.PlayerData V2=V.get(v);
-					if(V2.key().startsWith(postalBranch()+";"))
+					for(int v=0;v<V.size();v++)
 					{
-						final MailPiece data=parsePostalItemData(V2.xml());
-						if((data!=null)&&(getStartRoom()!=null))
+						final DatabaseEngine.PlayerData V2=V.get(v);
+						if(V2.key().startsWith(postalBranch()+";"))
 						{
-							final long time=System.currentTimeMillis()-CMath.s_long(data.time);
-							final long millisPerMudMonth=TC.getDaysInMonth()*CMProps.getMillisPerMudHour()*TC.getHoursInDay();
-							if(time>0)
+							final MailPiece data=parsePostalItemData(V2.xml());
+							if((data!=null)&&(getStartRoom()!=null))
 							{
-								final int months=(int)Math.round(Math.floor(CMath.div(time,millisPerMudMonth)));
-								if(months>maxMudMonthsHeld())
+								final long time=System.currentTimeMillis()-CMath.s_long(data.time);
+								final long millisPerMudMonth=TC.getDaysInMonth()*CMProps.getMillisPerMudHour()*TC.getHoursInDay();
+								if(time>0)
 								{
-									final Item I=makeItem(data);
-									CMLib.database().DBDeleteData(V2.who(),V2.section(),V2.key());
-									if(I!=null)
-										getShop().addStoreInventory(I);
+									final int months=(int)Math.round(Math.floor(CMath.div(time,millisPerMudMonth)));
+									if(months>maxMudMonthsHeld())
+									{
+										final Item I=makeItem(data);
+										CMLib.database().DBDeletePlayerData(V2.who(),V2.section(),V2.key());
+										if(I!=null)
+											getShop().addStoreInventory(I);
+									}
 								}
 							}
 						}

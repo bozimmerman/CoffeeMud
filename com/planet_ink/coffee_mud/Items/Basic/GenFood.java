@@ -14,8 +14,8 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
+
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 /*
@@ -88,6 +88,12 @@ public class GenFood extends StdFood
 		miscText="";
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
 		recoverPhyStats();
+	}
+
+	@Override
+	public void destroy()
+	{
+		super.destroy();
 	}
 
 	private final static String[] MYCODES={"NOURISHMENT","BITE"};

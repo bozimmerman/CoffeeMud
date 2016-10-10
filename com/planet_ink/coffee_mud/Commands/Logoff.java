@@ -53,7 +53,8 @@ public class Logoff extends StdCommand
 			final Session session=mob.session();
 			if((session!=null)
 			&&(session.getLastPKFight()>0)
-			&&((System.currentTimeMillis()-session.getLastPKFight())<(5*60*1000)))
+			&&((System.currentTimeMillis()-session.getLastPKFight())<(5*60*1000))
+			&&(!CMSecurity.isASysOp(mob)))
 			{
 				mob.tell(L("You must wait a few more minutes before you are allowed to logout."));
 				return false;

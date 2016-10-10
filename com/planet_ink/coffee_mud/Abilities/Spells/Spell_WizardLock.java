@@ -117,7 +117,7 @@ public class Spell_WizardLock extends Spell
 		final String targetName=CMParms.combine(commands,0);
 
 		Physical target=null;
-		final int dirCode=Directions.getGoodDirectionCode(targetName);
+		final int dirCode=CMLib.directions().getGoodDirectionCode(targetName);
 		if(dirCode>=0)
 			target=mob.location().getExitInDir(dirCode);
 		if(target==null)

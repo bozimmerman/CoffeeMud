@@ -194,7 +194,7 @@ public class LightSource extends StdItem implements Light
 
 	public static boolean inTheRain(Room room)
 	{
-		if(room==null)
+		if((room==null)||(room.getArea()==null))
 			return false;
 		return (((room.domainType()&Room.INDOORS)==0)
 				&&((room.getArea().getClimateObj().weatherType(room)==Climate.WEATHER_RAIN)
@@ -237,6 +237,7 @@ public class LightSource extends StdItem implements Light
 				mob.tell(L("The water makes @x1 go out.",name()));
 			else
 				mob.tell(L("The rain makes @x1 go out.",name()));
+			durationTicks=1;
 			tick(this,Tickable.TICKID_LIGHT_FLICKERS);
 		}
 
@@ -257,7 +258,7 @@ public class LightSource extends StdItem implements Light
 				if(getDuration()>0)
 				{
 					if(!isLit())
-						msg.addTrailerMsg(CMClass.getMsg(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> light(s) up @x1.",name())));
+						msg.addTrailerMsg(CMClass.getMsg(mob,this,CMMsg.MASK_SOUND|CMMsg.MASK_HANDS|CMMsg.MASK_MOVE|CMMsg.TYP_FIRE,L("<S-NAME> light(s) up @x1.",name())));
 					else
 						mob.tell(L("@x1 is already lit.",name()));
 					light(true);

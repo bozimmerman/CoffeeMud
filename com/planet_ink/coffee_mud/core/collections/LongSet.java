@@ -239,10 +239,12 @@ public class LongSet implements Set<Long>
 		final long[] dely=grp.getAllNumbers();
 		boolean found=true;
 		for (final long element : dely)
+		{
 			if(!remove(element))
 			{
 				found=false;
 			}
+		}
 		return found;
 	}
 	

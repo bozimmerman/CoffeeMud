@@ -206,7 +206,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 		}
 		return null;
 	}
-	
+
 	@Override
 	public LandTitle getLandTitle(Room room)
 	{
@@ -247,7 +247,9 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	public boolean isHomeRoomUpstairs(Room room)
 	{
 		final Room dR=room.getRoomInDir(Directions.DOWN);
-		if((dR!=null)&&(dR.domainType() != Room.DOMAIN_INDOORS_CAVE))
+		if((dR!=null)
+		&&(dR.domainType() != Room.DOMAIN_INDOORS_CAVE)
+		&&((dR.getAtmosphere()&RawMaterial.MATERIAL_ROCK)==0))
 		{
 			if(isHomePeerRoom(dR))
 				return true;
@@ -257,6 +259,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 				final Room pdR=R.getRoomInDir(Directions.DOWN);
 				if((pdR!=null)
 				&&(pdR.domainType() != Room.DOMAIN_INDOORS_CAVE)
+				&&((pdR.getAtmosphere()&RawMaterial.MATERIAL_ROCK)==0)
 				&&(isHomePeerRoom(pdR)))
 					return true;
 			}
@@ -274,7 +277,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 		if((R!=null)
 		&&(R.ID().length()>0)
 		&&(CMath.bset(R.domainType(),Room.INDOORS)))
-			return CMLib.law().getLandTitle(R);
+			return getLandTitle(R);
 		return null;
 	}
 
@@ -282,7 +285,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	{
 		if((R!=null)
 		&&(R.ID().length()>0))
-			return CMLib.law().getLandTitle(R);
+			return getLandTitle(R);
 		return null;
 	}
 
@@ -328,6 +331,8 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	@Override
 	public boolean isHomeRoomDownstairs(Room room)
 	{
+		if(room==null)
+			return false;
 		if(isHomePeerRoom(room.getRoomInDir(Directions.UP)))
 			return true;
 		final Set<Room> peerRooms=getHomePeersOnThisFloor(room,new HashSet<Room>());
@@ -352,10 +357,22 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	}
 
 	@Override
-	public boolean doesHavePriviledgesHere(MOB mob, Room room)
+	public boolean doesHavePrivilegesWith(final MOB mob, final PrivateProperty record)
 	{
-		final PrivateProperty record=getPropertyRecord(room);
-		if(record==null)
+		if((record==null)||(mob==null))
+			return false;
+		if(doesHaveWeakPrivilegesWith(mob,record))
+			return true;
+		final Pair<Clan,Integer> clanRole=mob.getClanRole(record.getOwnerName());
+		if((clanRole!=null)&&(clanRole.first.getAuthority(clanRole.second.intValue(), Clan.Function.HOME_PRIVS)!=Clan.Authority.CAN_NOT_DO))
+			return true;
+		return false;
+	}
+	
+	@Override
+	public boolean doesHaveWeakPrivilegesWith(final MOB mob, final PrivateProperty record)
+	{
+		if((record==null)||(mob==null))
 			return false;
 		if(record.getOwnerName()==null)
 			return false;
@@ -366,7 +383,18 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 		if((record.getOwnerName().equals(mob.getLiegeID())&&(mob.isMarriedToLiege())))
 			return true;
 		final Pair<Clan,Integer> clanRole=mob.getClanRole(record.getOwnerName());
-		if((clanRole!=null)&&(clanRole.first.getAuthority(clanRole.second.intValue(), Clan.Function.HOME_PRIVS)!=Clan.Authority.CAN_NOT_DO))
+		if(clanRole != null)
+			return true;
+		return false;
+	}
+	
+	@Override
+	public boolean doesHavePriviledgesHere(MOB mob, Room room)
+	{
+		final PrivateProperty record=getPropertyRecord(room);
+		if((record==null)||(mob==null))
+			return false;
+		if(doesHavePrivilegesWith(mob,record))
 			return true;
 		if(mob.amFollowing()!=null)
 			return doesHavePriviledgesHere(mob.amFollowing(),room);
@@ -374,9 +402,24 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	}
 
 	@Override
+	public boolean doesHaveWeakPriviledgesHere(MOB mob, Room room)
+	{
+		final PrivateProperty record=getPropertyRecord(room);
+		if((record==null)||(mob==null))
+			return false;
+		if(doesHaveWeakPrivilegesWith(mob,record))
+			return true;
+		if(mob.amFollowing()!=null)
+			return doesHaveWeakPriviledgesHere(mob.amFollowing(),room);
+		return false;
+	}
+
+	@Override
 	public boolean doesAnyoneHavePrivilegesHere(MOB mob, String overrideID, Room R)
 	{
-		if((CMLib.law().doesHavePriviledgesHere(mob,R))||((overrideID.length()>0)&&(mob.Name().equals(overrideID))))
+		if((mob==null)||(R==null))
+			return false;
+		if((doesHavePriviledgesHere(mob,R))||((overrideID.length()>0)&&(mob.Name().equals(overrideID))))
 			return true;
 		if(overrideID.length()>0)
 		{
@@ -387,7 +430,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 		for(int i=0;i<R.numInhabitants();i++)
 		{
 			final MOB M=R.fetchInhabitant(i);
-			if(CMLib.law().doesHavePriviledgesHere(M,R))
+			if(doesHavePriviledgesHere(M,R))
 				return true;
 			if(overrideID.length()>0)
 			{
@@ -488,6 +531,8 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 			return null;
 		if(record.getOwnerName().length()==0)
 			return null;
+		if(record.getOwnerName().startsWith("#"))
+			return null;
 		final Clan clan = CMLib.clans().getClan(record.getOwnerName());
 		if(clan != null)
 			return clan.getResponsibleMember();
@@ -500,6 +545,8 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 		if(record.getOwnerName()==null)
 			return true;
 		if(record.getOwnerName().length()==0)
+			return true;
+		if(record.getOwnerName().startsWith("#"))
 			return true;
 		if(record.getOwnerName().equals(mob.Name()))
 			return true;
@@ -605,13 +652,13 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	
 
 	@Override
-	public void colorRoomForSale(Room R, boolean rental, boolean reset)
+	public void colorRoomForSale(Room R, LandTitle title, boolean reset)
 	{
 		synchronized(("SYNC"+R.roomID()).intern())
 		{
 			R=CMLib.map().getRoom(R);
-			final String theStr=CMLib.lang().L(rental?RENTSTR:SALESTR);
-			final String otherStr=CMLib.lang().L(rental?SALESTR:RENTSTR);
+			final String theStr=CMLib.lang().L(title.rentalProperty()?RENTSTR:SALESTR);
+			final String otherStr=CMLib.lang().L(title.rentalProperty()?SALESTR:RENTSTR);
 			int x=R.description().indexOf(otherStr);
 			while(x>=0)
 			{
@@ -650,11 +697,141 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 				I=CMClass.getItem("GenWallpaper");
 				CMLib.flags().setReadable(I,true);
 				I.setName(("id"));
-				I.setReadableText(CMLib.lang().L("This room is "+CMLib.map().getExtendedRoomID(R)));
-				I.setDescription(CMLib.lang().L("This room is @x1",CMLib.map().getExtendedRoomID(R)));
+				StringBuilder txt = new StringBuilder("");
+				int size = title.getAllTitledRooms().size();
+				txt.append(CMLib.lang().L("This room is @x1.  ",CMLib.map().getExtendedRoomID(R)));
+				if(size > 1)
+					txt.append(CMLib.lang().L("There are @x1 rooms in this lot.  ",""+size));
+				if(!title.allowsExpansionConstruction())
+					txt.append(L("The size of this lot is not expandable."));
+				I.setReadableText(txt.toString());
+				I.setDescription(txt.toString());
 				R.addItem(I);
 				CMLib.database().DBUpdateItems(R);
 			}
 		}
+	}
+
+	protected boolean shopkeeperMobPresent(Room R)
+	{
+		if(R==null)
+			return false;
+		MOB M=null;
+		for(int i=0;i<R.numInhabitants();i++)
+		{
+			M=R.fetchInhabitant(i);
+			if((M.getStartRoom()==R)
+			&&(M.isMonster())
+			&&(CMLib.coffeeShops().getShopKeeper(M)!=null))
+				return true;
+		}
+		return false;
+	}
+
+	@Override
+	public boolean robberyCheck(PrivateProperty record, CMMsg msg)
+	{
+		if(((msg.targetMinor()==CMMsg.TYP_GET)&&(!msg.isTarget(CMMsg.MASK_INTERMSG)))
+		||(msg.targetMinor()==CMMsg.TYP_PUSH)
+		||(msg.targetMinor()==CMMsg.TYP_PULL))
+		{
+			final Room R=msg.source().location();
+			if((msg.target() instanceof Item)
+			&&(((Item)msg.target()).owner() ==R)
+			&&((!(msg.tool() instanceof Item))||(msg.source().isMine(msg.tool())))
+			&&(!msg.sourceMajor(CMMsg.MASK_ALWAYS))
+			&&(record.getOwnerName().length()>0)
+			&&(R!=null)
+			&&(msg.othersMessage()!=null)
+			&&(msg.othersMessage().length()>0)
+			&&(!shopkeeperMobPresent(R))
+			&&(!doesHavePriviledgesHere(msg.source(),R)))
+			{
+				final LegalBehavior B=getLegalBehavior(R);
+				if(B!=null)
+				{
+					for(int m=0;m<R.numInhabitants();m++)
+					{
+						final MOB M=R.fetchInhabitant(m);
+						if(doesHavePriviledgesHere(M,R))
+							return false;
+					}
+					MOB D=null;
+					if(!record.getOwnerName().startsWith("#"))
+					{
+						final Clan C=CMLib.clans().getClan(record.getOwnerName());
+						if(C!=null)
+							D=C.getResponsibleMember();
+						else
+							D=CMLib.players().getLoadPlayer(record.getOwnerName());
+					}
+					if((D!=null)&&(D!=msg.source()))
+						B.accuse(getLegalObject(R),msg.source(),D,new String[]{"PROPERTYROB","THIEF_ROBBERY"});
+				}
+				Ability propertyProp=((Item)msg.target()).fetchEffect("Prop_PrivateProperty");
+				if(propertyProp==null)
+				{
+					propertyProp=CMClass.getAbility("Prop_PrivateProperty");
+					propertyProp.setMiscText("owner=\""+record.getOwnerName()+"\" expiresec=60");
+					((Item)msg.target()).addNonUninvokableEffect(propertyProp);
+				}
+				return true;
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public PrivateProperty getPropertyRecord(final Item item)
+	{
+		if(item==null)
+			return null;
+		if(item.numEffects()==0)
+			return null;
+		for(final Enumeration<Ability> a=item.effects();a.hasMoreElements();)
+		{
+			final Ability A=a.nextElement();
+			if(A instanceof PrivateProperty)
+				return (PrivateProperty)A;
+		}
+		return null;
+	}
+
+	@Override
+	public boolean mayOwnThisItem(final MOB mob, final Item item)
+	{
+		final PrivateProperty record = getPropertyRecord(item);
+		if(record != null)
+		{
+			if(doesHaveWeakPrivilegesWith(mob,record))
+				return true;
+			MOB following=mob.amFollowing();
+			while((following!=null)&&(following!=mob))
+			{
+				if(doesHaveWeakPrivilegesWith(following,record))
+					return true;
+			}
+			if(item.owner() instanceof Room)
+			{
+				final Room R=(Room)item.owner();
+				if(doesHavePriviledgesHere(mob,R))
+					return true;
+			}
+			return false;
+		}
+		if(item.owner() instanceof Room)
+		{
+			final Room R=(Room)item.owner();
+			final PrivateProperty roomRecord = getPropertyRecord(R);
+			if(roomRecord != null)
+			{
+				if(doesHaveWeakPrivilegesWith(mob,roomRecord))
+					return true;
+				if((roomRecord.getOwnerName()!=null)
+				&&(roomRecord.getOwnerName().length()>0))
+					return false;
+			}
+		}
+		return true;
 	}
 }

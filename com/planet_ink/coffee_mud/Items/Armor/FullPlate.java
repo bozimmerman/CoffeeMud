@@ -33,7 +33,12 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class FullPlate extends StdArmor
 {
-	@Override public String ID(){	return "FullPlate";}
+	@Override
+	public String ID()
+	{
+		return "FullPlate";
+	}
+
 	public FullPlate()
 	{
 		super();

@@ -38,7 +38,10 @@ import java.util.*;
 
 public class GrinderClans
 {
-	public String name() { return "GrinderClans"; }
+	public String name()
+	{
+		return "GrinderClans";
+	}
 
 	public static String membersList(Clan C, HTTPRequest httpReq)
 	{

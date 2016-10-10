@@ -75,7 +75,8 @@ public class GenFoodResource extends GenFood implements RawMaterial, Food
 				return;
 			rot.setAffectedOne(null);
 		}
-		rot.executeMsg(this,msg);
+		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.FOODROT))
+			rot.executeMsg(this,msg);
 	}
 
 	@Override
@@ -83,6 +84,12 @@ public class GenFoodResource extends GenFood implements RawMaterial, Food
 	{
 		return false;
 		//CMLib.materials().rebundle(this);
+	}
+	
+	@Override
+	public void destroy()
+	{
+		super.destroy();
 	}
 
 	@Override
@@ -101,8 +108,11 @@ public class GenFoodResource extends GenFood implements RawMaterial, Food
 				return true;
 			rot.setAffectedOne(null);
 		}
-		if(!rot.okMessage(this,msg))
-			return false;
+		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.FOODROT))
+		{
+			if(!rot.okMessage(this,msg))
+				return false;
+		}
 		return super.okMessage(host,msg);
 	}
 

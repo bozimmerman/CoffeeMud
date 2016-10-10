@@ -35,13 +35,20 @@ import java.util.*;
 
 public class Go extends StdCommand
 {
-	public Go(){}
+	public Go()
+	{
+	}
 
-	private final String[] access=I(new String[]{"GO","WALK"});
-	@Override public String[] getAccessWords(){return access;}
+	private final String[]	access	= I(new String[] { "GO", "WALK" });
 
-	protected Command stander=null;
-	protected Vector<String> ifneccvec=null;
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
+
+	protected Command		stander		= null;
+	protected List<String>	ifneccvec	= null;
 
 	public boolean standIfNecessary(MOB mob, int metaFlags, boolean giveMsg)
 		throws java.io.IOException
@@ -88,6 +95,7 @@ public class Go extends StdCommand
 
 		final boolean inAShip =(R instanceof BoardableShip)||(R.getArea() instanceof BoardableShip);
 		final String validDirs = inAShip?Directions.SHIP_NAMES_LIST() : Directions.NAMES_LIST();
+		final boolean running = mob.isAttributeSet(MOB.Attrib.AUTORUN);
 
 		int direction=-1;
 		if(whereStr.equalsIgnoreCase("OUT"))
@@ -121,9 +129,9 @@ public class Go extends StdCommand
 		if(direction<0)
 		{
 			if(mob.isMonster())
-				direction=Directions.getGoodDirectionCode(whereStr);
+				direction=CMLib.directions().getGoodDirectionCode(whereStr);
 			else
-				direction=(inAShip)?Directions.getGoodShipDirectionCode(whereStr):Directions.getGoodCompassDirectionCode(whereStr);
+				direction=(inAShip)?CMLib.directions().getGoodShipDirectionCode(whereStr):CMLib.directions().getGoodCompassDirectionCode(whereStr);
 		}
 		if(direction<0)
 		{
@@ -147,7 +155,12 @@ public class Go extends StdCommand
 		}
 		final String doing=commands.get(0);
 		if(direction>=0)
-			CMLib.tracking().walk(mob,direction,false,false,false,false);
+		{
+			if(running)
+				CMLib.tracking().run(mob,direction,false,false,false,false);
+			else
+				CMLib.tracking().walk(mob,direction,false,false,false,false);
+		}
 		else
 		{
 			Exit E=R.fetchExit(whereStr);
@@ -155,6 +168,7 @@ public class Go extends StdCommand
 				return CMLib.commands().forceStandardCommand(mob, "Enter", commands);
 
 			boolean doneAnything=false;
+			List<List<String>> prequeCommands=new ArrayList<List<String>>();
 			for(int v=1;v<commands.size();v++)
 			{
 				int num=1;
@@ -177,9 +191,9 @@ public class Go extends StdCommand
 				}
 
 				if(mob.isMonster())
-					direction=Directions.getGoodDirectionCode(s);
+					direction=CMLib.directions().getGoodDirectionCode(s);
 				else
-					direction=(inAShip)?Directions.getGoodShipDirectionCode(s):Directions.getGoodCompassDirectionCode(s);
+					direction=(inAShip)?CMLib.directions().getGoodShipDirectionCode(s):CMLib.directions().getGoodCompassDirectionCode(s);
 				if(direction>=0)
 				{
 					doneAnything=true;
@@ -187,6 +201,12 @@ public class Go extends StdCommand
 					{
 						if(mob.isMonster())
 						{
+							if(running)
+							{
+								if(!CMLib.tracking().run(mob,direction,false,false,false,false))
+									return false;
+							}
+							else
 							if(!CMLib.tracking().walk(mob,direction,false,false,false,false))
 								return false;
 						}
@@ -194,8 +214,8 @@ public class Go extends StdCommand
 						{
 							final Vector<String> V=new Vector<String>();
 							V.add(doing);
-							V.add(inAShip?Directions.getShipDirectionName(direction):Directions.getDirectionName(direction));
-							mob.enqueCommand(V,metaFlags,0);
+							V.add(inAShip?CMLib.directions().getShipDirectionName(direction):CMLib.directions().getDirectionName(direction));
+							prequeCommands.add(V);
 						}
 					}
 				}
@@ -203,13 +223,21 @@ public class Go extends StdCommand
 				{
 					E=R.fetchExit(s);
 					if(E!=null)
-						CMLib.commands().forceStandardCommand(mob, "Enter", new XVector<String>("ENTER",s));
+					{
+						if(mob.isMonster())
+							CMLib.commands().forceStandardCommand(mob, "Enter", new XVector<String>("ENTER",s));
+						else
+							prequeCommands.add(new XVector<String>("ENTER",s));
+					}
 					else
 						break;
 				}
 			}
 			if(!doneAnything)
 				mob.tell(L("@x1 which direction?\n\rTry @x2.",CMStrings.capitalizeAndLower(doing),validDirs.toLowerCase()));
+			else
+			if(prequeCommands.size()>0)
+				mob.enqueCommands(prequeCommands, metaFlags);
 		}
 		return false;
 	}

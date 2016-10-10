@@ -48,7 +48,7 @@ CREATE TABLE CMCHAR (
     CMCHID varchar (50) NOT NULL,
 	CMUSERID varchar(50) NOT NULL ,
 	CMPASS varchar(50) NULL ,
-	CMCLAS varchar(200) NULL ,
+	CMCLAS varchar(250) NULL ,
 	CMSTRE int NULL ,
 	CMRACE varchar(50) NULL ,
 	CMDEXT int NULL ,

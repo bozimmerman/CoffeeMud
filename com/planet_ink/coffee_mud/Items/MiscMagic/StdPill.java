@@ -16,7 +16,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 
@@ -38,8 +37,13 @@ import java.util.*;
 
 public class StdPill extends StdFood implements Pill
 {
-	@Override public String ID(){	return "StdPill";}
-	protected Ability theSpell;
+	@Override
+	public String ID()
+	{
+		return "StdPill";
+	}
+
+	protected Ability	theSpell;
 
 	public StdPill()
 	{
@@ -70,25 +74,37 @@ public class StdPill extends StdFood implements Pill
 		if((mob.isMine(this))&&(spells.size()>0))
 		{
 			final MOB caster=CMLib.map().getFactoryMOB(mob.location());
+			boolean destroyCaster = true;
 			for(int i=0;i<spells.size();i++)
 			{
-				final Ability thisOne=(Ability)spells.get(i).copyOf();
+				final Ability thisOneA=(Ability)spells.get(i).copyOf();
 				int level=phyStats().level();
-				final int lowest=CMLib.ableMapper().lowestQualifyingLevel(thisOne.ID());
+				final int lowest=CMLib.ableMapper().lowestQualifyingLevel(thisOneA.ID());
 				if(level<lowest)
 					level=lowest;
 				caster.basePhyStats().setLevel(level);
 				caster.phyStats().setLevel(level);
-				thisOne.invoke(caster,mob,true,level);
+				thisOneA.invoke(caster,mob,true,level);
+				Ability effectA=mob.fetchEffect(thisOneA.ID());
+				if((effectA!=null) && (effectA.invoker() == caster))
+					destroyCaster =  false; 
 			}
-			caster.destroy();
+			if(destroyCaster)
+				caster.destroy();
 		}
 	}
 
 	@Override
 	public String getSpellList()
-	{ return miscText;}
-	@Override public void setSpellList(String list){miscText=list;}
+	{
+		return miscText;
+	}
+
+	@Override
+	public void setSpellList(String list)
+	{
+		miscText = list;
+	}
 
 	public static Vector<Ability> getSpells(SpellHolder me)
 	{
@@ -117,7 +133,11 @@ public class StdPill extends StdFood implements Pill
 		return theSpells;
 	}
 
-	@Override public List<Ability> getSpells(){ return getSpells(this);}
+	@Override
+	public List<Ability> getSpells()
+	{
+		return getSpells(this);
+	}
 
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)

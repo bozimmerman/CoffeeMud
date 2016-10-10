@@ -14,6 +14,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.AbilityMapping;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.AbilityAward;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Achievement;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.AmountAward;
@@ -22,6 +23,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Currenc
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.ExpertiseAward;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.StatAward;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.TitleAward;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary.ExpertiseDefinition;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import com.planet_ink.coffee_mud.core.threads.*;
@@ -59,6 +61,33 @@ public class ListCmd extends StdCommand
 		return access;
 	}
 
+	private enum WikiFlag
+	{
+		NO,
+		WIKILIST,
+		WIKIHELP
+	}
+	
+	private WikiFlag getWikiFlagRemoved(List<String> commands)
+	{
+		if(commands == null)
+			return WikiFlag.NO;
+		for(String s : commands)
+		{
+			if(s.equalsIgnoreCase("wiki"))
+			{
+				commands.remove(s);
+				return WikiFlag.WIKILIST;
+			}
+			if(s.equalsIgnoreCase("wikihelp"))
+			{
+				commands.remove(s);
+				return WikiFlag.WIKIHELP;
+			}
+		}
+		return WikiFlag.NO;
+	}
+	
 	private static class WorldFilter implements Filterer<Area>
 	{
 		private final TimeClock to;
@@ -321,7 +350,7 @@ public class ListCmd extends StdCommand
 		boolean exitOnly = false;
 		boolean zapperMask = false;
 		boolean zapperMask2 = false;
-		MaskingLibrary.CompiledZapperMask compiledZapperMask=null;
+		MaskingLibrary.CompiledZMask compiledZapperMask=null;
 		String who="";
 		if(commands.size()>start)
 			who=commands.get(start).toString().toUpperCase();
@@ -452,7 +481,7 @@ public class ListCmd extends StdCommand
 								||((E.doorName().length()>0)&& CMLib.english().containsString(E.doorName(),rest))
 								||(CMLib.english().containsString(E.viewableText(mob,R).toString(),rest))))
 							{
-								lines.append("^!"+CMStrings.padRight(Directions.getDirectionName(d),17)+"^N| ");
+								lines.append("^!"+CMStrings.padRight(CMLib.directions().getDirectionName(d),17)+"^N| ");
 								lines.append(" (^<LSTROOMID^>"+CMLib.map().getDescriptiveExtendedRoomID(R)+"^</LSTROOMID^>)");
 								lines.append("\n\r");
 							}
@@ -842,6 +871,42 @@ public class ListCmd extends StdCommand
 		}
 	}
 
+	protected Thread findThread(String name,ThreadGroup tGroup, boolean ignoreZeroTickThreads)
+	{
+		final int ac = tGroup.activeCount();
+		final int agc = tGroup.activeGroupCount();
+		final Thread tArray[] = new Thread [ac+1];
+		final ThreadGroup tgArray[] = new ThreadGroup [agc+1];
+
+		tGroup.enumerate(tArray,false);
+		tGroup.enumerate(tgArray,false);
+
+		for (int i = 0; i<ac; ++i)
+		{
+			if (tArray[i] != null)
+			{
+				if((ignoreZeroTickThreads)&&(!tArray[i].isAlive()))
+					continue;
+				if(tArray[i].getName().equalsIgnoreCase(name))
+					return tArray[i];
+			}
+		}
+
+		if (agc > 0)
+		{
+			for (int i = 0; i<agc; ++i)
+			{
+				if (tgArray[i] != null)
+				{
+					Thread T=findThread(name,tgArray[i],ignoreZeroTickThreads);
+					if(T!=null)
+						return T;
+				}
+			}
+		}
+		return null;
+	}
+
 	public StringBuilder listThreads(Session viewerS, MOB mob, boolean ignoreZeroTickThreads, boolean extend)
 	{
 		final StringBuilder lines=new StringBuilder("^xStatus|Name                 ^.^?\n\r");
@@ -852,6 +917,36 @@ public class ListCmd extends StdCommand
 				topTG = topTG.getParent();
 			if (topTG != null)
 				dumpThreadGroup(viewerS,lines,topTG,ignoreZeroTickThreads, extend);
+		}
+		catch (final Exception e)
+		{
+			lines.append ("\n\rBastards! Exception while listing threads: " + e.getMessage() + "\n\r");
+		}
+		return lines;
+
+	}
+
+	public StringBuilder listThread(Session viewerS, MOB mob, String threadname)
+	{
+		final StringBuilder lines=new StringBuilder("^xStatus|Name                 ^.^?\n\r");
+		try
+		{
+			ThreadGroup topTG = Thread.currentThread().getThreadGroup();
+			while (topTG != null && topTG.getParent() != null)
+				topTG = topTG.getParent();
+			if (topTG != null)
+			{
+				Thread T=findThread(threadname,topTG,false);
+				if(T==null)
+					lines.append(L("No thread named @x1 found. Try LIST THREADS.",threadname));
+				else
+				{
+					lines.append("\n\r^HThread: ^N"+T.getName()+"\n\r");
+					final java.lang.StackTraceElement[] s=T.getStackTrace();
+					for (final StackTraceElement element : s)
+						lines.append("\n   "+element.getClassName()+": "+element.getMethodName()+"("+element.getFileName()+": "+element.getLineNumber()+")");
+				}
+			}
 		}
 		catch (final Exception e)
 		{
@@ -1069,33 +1164,25 @@ public class ListCmd extends StdCommand
 
 	public StringBuilder listLinkages(Session viewerS, MOB mob, String rest)
 	{
-		Faction useFaction=null;
-		for(final Enumeration<Faction> e=CMLib.factions().factions();e.hasMoreElements();)
-		{
-			final Faction F=e.nextElement();
-			if(F.showInSpecialReported())
-				useFaction=F;
-		}
 		final StringBuilder buf=new StringBuilder("Links: \n\r");
 		final List<List<Area>> areaLinkGroups=new Vector<List<Area>>();
+		Vector<String> parms=CMParms.parse(rest.toUpperCase());
+		boolean showSubStats = parms.contains("SUBSTATS");
 		Enumeration<Area> a;
-		if(rest.equalsIgnoreCase("world"))
+		if(parms.contains("WORLD"))
 			a=CMLib.map().areas();
 		else
 			a=new XVector<Area>(mob.location().getArea()).elements();
 		for(;a.hasMoreElements();)
 		{
 			final Area A=a.nextElement();
-			buf.append(A.name()+"\t"+A.numberOfProperIDedRooms()+" rooms\t");
+			buf.append("^H"+A.name()+"^N, "+A.numberOfProperIDedRooms()+" rooms, ");
 			if(!A.getProperMap().hasMoreElements())
 			{
 				buf.append("\n\r");
 				continue;
 			}
 			final List<List<Room>> linkedGroups=new Vector<List<Room>>();
-			int numMobs=0;
-			int totalAlignment=0;
-			int totalLevels=0;
 			for(final Enumeration<Room> r=A.getCompleteMap();r.hasMoreElements();)
 			{
 				final Room R=r.nextElement();
@@ -1151,24 +1238,6 @@ public class ListCmd extends StdCommand
 					if((linkedGroups.get(g)).size()==0)
 						linkedGroups.remove(g);
 				}
-
-				for(int m=0;m<R.numInhabitants();m++)
-				{
-					final MOB M=R.fetchInhabitant(m);
-					if((M!=null)
-					&&(M.isMonster())
-					&&(M.getStartRoom()!=null)
-					&&(M.getStartRoom().getArea()==R.getArea()))
-					{
-						numMobs++;
-						if((useFaction!=null)
-						&&(CMLib.factions().getFaction(useFaction.factionID())!=null)
-						&&(M.fetchFaction(useFaction.factionID())!=Integer.MAX_VALUE))
-							totalAlignment+=M.fetchFaction(useFaction.factionID());
-						totalLevels+=M.phyStats().level();
-					}
-				}
-
 			}
 			final StringBuilder ext=new StringBuilder("links ");
 			List<Area> myVec=null;
@@ -1182,7 +1251,20 @@ public class ListCmd extends StdCommand
 					final Room R2=R.rawDoors()[d];
 					if((R2!=null)&&(R2.getArea()!=R.getArea()))
 					{
-						ext.append(Directions.getDirectionName(d)+" to "+R2.getArea().name()+" ("+R.roomID()+"/"+R2.roomID()+") ");
+						ext.append("\n\r   "+CMLib.directions().getDirectionName(d)+": "+R2.getArea().name());
+						if(showSubStats)
+						{
+							int[] areaStats = R2.getArea().getAreaIStats();
+							ext.append(" (");
+							ext.append(L("@x1 mobs, @x2 avg lvl, @x3 med lvl, @x4 avg align",
+									""+areaStats[Area.Stats.POPULATION.ordinal()],
+									""+areaStats[Area.Stats.AVG_LEVEL.ordinal()],
+									""+areaStats[Area.Stats.MED_LEVEL.ordinal()],
+									""+areaStats[Area.Stats.AVG_ALIGNMENT.ordinal()]));
+							ext.append(") ");
+						}
+						else
+							ext.append(" ("+R.roomID()+"/"+R2.roomID()+") ");
 						for(int g=0;g<areaLinkGroups.size();g++)
 						{
 							final List<Area> G=areaLinkGroups.get(g);
@@ -1221,13 +1303,18 @@ public class ListCmd extends StdCommand
 					areaLinkGroups.add(clearVec);
 				}
 			}
-			if(numMobs>0)
-				buf.append(L("@x1 mobs\t@x2 avg levels\t",""+numMobs,""+(totalLevels/numMobs)));
-			if((numMobs>0)&&(useFaction!=null)&&(CMLib.factions().getFaction(useFaction.factionID())!=null))
-				buf.append((totalAlignment/numMobs)+" avg "+useFaction.name());
+			int[] areaStats = A.getAreaIStats();
+			if(areaStats[Area.Stats.POPULATION.ordinal()]>0)
+			{
+				buf.append(L("@x1 mobs, @x2 avg lvl, @x3 med lvl, @x4 avg align",
+						""+areaStats[Area.Stats.POPULATION.ordinal()],
+						""+areaStats[Area.Stats.AVG_LEVEL.ordinal()],
+						""+areaStats[Area.Stats.MED_LEVEL.ordinal()],
+						""+areaStats[Area.Stats.AVG_ALIGNMENT.ordinal()]));
+			}
 			if(linkedGroups.size()>0)
 			{
-				buf.append("\tgroups: "+linkedGroups.size()+" sizes: ");
+				buf.append(", groups: "+linkedGroups.size()+" sizes: ");
 				for(final List<Room> grp : linkedGroups)
 					buf.append(grp.size()+" ");
 			}
@@ -1672,6 +1759,7 @@ public class ListCmd extends StdCommand
 		final boolean shortList=parms.contains("SHORT");
 		if(shortList)
 			parms.remove("SHORT");
+		WikiFlag wiki = getWikiFlagRemoved(parms);
 		final String restRest=CMParms.combine(parms).trim();
 		final StringBuilder lines=new StringBuilder("");
 		if(!these.hasMoreElements())
@@ -1701,22 +1789,102 @@ public class ListCmd extends StdCommand
 			||(CMLib.english().containsString(R.name(), restRest))
 			||(CMLib.english().containsString(R.racialCategory(), restRest)))
 			{
-				if(++column>3)
+				if(wiki == WikiFlag.WIKILIST)
+					lines.append("*[["+R.name()+"|"+R.name()+"]]\n\r");
+				else
+				if(wiki == WikiFlag.WIKIHELP)
 				{
-					lines.append("\n\r");
-					column=1;
+					String statAdj=R.getStatAdjDesc();
+					if(R.getTrainAdjDesc().length()>0)
+						statAdj+=((statAdj.length()>0)?", ":"")+R.getTrainAdjDesc();
+					if(R.getPracAdjDesc().length()>0)
+						statAdj+=((statAdj.length()>0)?", ":"")+R.getPracAdjDesc();
+					String ableStr=R.getSensesChgDesc();
+					if(R.getDispositionChgDesc().length()>0)
+						ableStr+=((ableStr.length()>0)?", ":"")+R.getDispositionChgDesc();
+					if(R.getAbilitiesDesc().length()>0)
+						ableStr+=((ableStr.length()>0)?", ":"")+R.getAbilitiesDesc();
+					String immunoStr="";
+					for(String ableID : R.abilityImmunities())
+					{
+						final Ability A=CMClass.getAbilityPrototype(ableID);
+						if(A!=null)
+							immunoStr+=((immunoStr.length()>0)?", ":"")+A.name();
+					}
+					StringBuilder help=CMLib.help().getHelpText(R.ID(),null,false,true);
+					if(help==null)
+						help=CMLib.help().getHelpText(R.name(),null,false,true);
+					if((help!=null)&&(help.toString().startsWith("<RACE>")))
+						help=new StringBuilder(help.toString().substring(6));
+					else
+						help=new StringBuilder("");
+					String eqStr="";
+					if(R.outfit(null)!=null)
+					{
+						for(final Item I : R.outfit(null))
+						{
+							if(I!=null)
+								eqStr+=((eqStr.length()>0)?", ":"")+I.Name();
+						}
+					}
+					String qualClassesStr="";
+					if(CMProps.isTheme(R.availabilityCode()) && ((R.availabilityCode()&Area.THEME_SKILLONLYMASK)==0))
+					{
+						for(final Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
+						{
+							final CharClass C=c.nextElement();
+							if(((CMProps.isTheme(C.availabilityCode())))
+							&&(C.isAllowedRace(R)))
+							{
+								qualClassesStr+="[["+C.name()+"("+C.baseClass()+")|"+C.name()+"]] ";
+							}
+						}
+					}
+					int maxAge=R.getAgingChart()[Race.AGE_ANCIENT];
+					String lifeExpStr;
+					if(maxAge>Integer.MAX_VALUE/2)
+						lifeExpStr=L("Forever");
+					else
+						lifeExpStr=L("@x1 years",""+maxAge);
+						
+					lines.append("{{RaceTemplate"
+							+ "|Name="+R.name()
+							+ "|Description="+help
+							+ "|Statadj="+statAdj
+							+ "|BonusAbilities="+ableStr
+							+ "|BonusLanguages="+R.getLanguagesDesc()
+							+ "|Immunities="+immunoStr
+							+ "|LifeExpectancy="+lifeExpStr
+							+ "|Startingequipment="+eqStr
+							+ "|Qualifyingclasses="+qualClassesStr
+							+ "}}\n\r");
 				}
-				lines.append(CMStrings.padRight(R.ID()
-											+(R.isGeneric()?"*":"")
-											+" ("+R.racialCategory()+")",COL_LEN));
+				else
+				{
+					if(++column>3)
+					{
+						lines.append("\n\r");
+						column=1;
+					}
+					lines.append(CMStrings.padRight(R.ID()
+								+(R.isGeneric()?"*":"")
+								+" ("+R.racialCategory()+")",COL_LEN));
+				}
 			}
 		}
 		lines.append("\n\r");
 		return lines;
 	}
 
-	public StringBuilder listCharClasses(Session viewerS, Enumeration<CharClass> these, boolean shortList)
+	public StringBuilder listCharClasses(Session viewerS, Enumeration<CharClass> these, List<String> commands)
 	{
+		boolean shortList=false;
+		WikiFlag wiki=this.getWikiFlagRemoved(commands);
+		for(String c : commands)
+		{
+			if(c.equalsIgnoreCase("SHORT"))
+				shortList=true;
+		}
 		final StringBuilder lines=new StringBuilder("");
 		if(!these.hasMoreElements())
 			return lines;
@@ -1732,25 +1900,140 @@ public class ListCmd extends StdCommand
 		else
 		for(final Enumeration<CharClass> e=these;e.hasMoreElements();)
 		{
-			final CharClass thisThang=e.nextElement();
-			if(++column>2)
+			final CharClass C=e.nextElement();
+			if(wiki==WikiFlag.WIKILIST)
 			{
-				lines.append("\n\r");
-				column=1;
+				lines.append("[["+C.name()+"("+C.baseClass()+")|"+C.name()+"]]\n\r");
 			}
-			lines.append(CMStrings.padRight(thisThang.ID()
-										+(thisThang.isGeneric()?"*":"")
-										+" ("+thisThang.baseClass()+")",COL_LEN));
+			else
+			if(wiki==WikiFlag.WIKIHELP)
+			{
+				final Set<Integer> types=new STreeSet<Integer>(new Integer[]{
+					Integer.valueOf(Ability.ACODE_CHANT),
+					Integer.valueOf(Ability.ACODE_COMMON_SKILL),
+					Integer.valueOf(Ability.ACODE_PRAYER),
+					Integer.valueOf(Ability.ACODE_SKILL),
+					Integer.valueOf(Ability.ACODE_SONG),
+					Integer.valueOf(Ability.ACODE_SPELL),
+					Integer.valueOf(Ability.ACODE_THIEF_SKILL),
+					Integer.valueOf(Ability.ACODE_TECH),
+					Integer.valueOf(Ability.ACODE_SUPERPOWER)
+				});
+				StringBuilder help=CMLib.help().getHelpText(C.ID(),null,false,true);
+				if(help==null)
+					help=CMLib.help().getHelpText(C.name(),null,false,true);
+				if((help!=null)&&(help.toString().startsWith("<CHARCLASS>")))
+					help=new StringBuilder(help.toString().substring(11));
+				else
+					help=new StringBuilder("");
+				final List<Item> items=C.outfit(null);
+				StringBuilder outfit=new StringBuilder("");
+				if(items !=null)
+				{
+					for(final Item I : items)
+					{
+						if(I!=null)
+							outfit.append(((outfit.length()>0)?", ":"")+I.name());
+					}
+				}
+				StringBuilder raceStr=new StringBuilder("");
+				for(Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
+				{
+					final Race R=r.nextElement();
+					if((CMProps.isTheme(R.availabilityCode()))
+					&&(((R.availabilityCode()&Area.THEME_SKILLONLYMASK)==0))
+					&&(C.isAllowedRace(R)))
+					{
+						raceStr.append("[["+R.name()+"|"+R.name()+"]] ");
+					}
+				}
+				StringBuilder langStr=new StringBuilder("");
+				for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+				{
+					final Ability A=a.nextElement();
+					if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE)
+					&&(CMLib.ableMapper().getQualifyingLevel(C.ID(),true,A.ID())>=0)
+					&&(CMLib.ableMapper().getSecretSkill(C.ID(),false,A.ID())))
+							langStr.append("[["+A.ID()+"|"+A.name()+"]] ");
+				}
+				lines.append("{{ClassTemplate"
+						+ "|Name="+C.name()
+						+ "|Description="+help.toString()
+						+ "|PrimeStat="+C.getPrimeStatDesc()
+						+ "|Qualifications="+C.getStatQualDesc()
+						+ "|Practices="+C.getPracticeDesc()
+						+ "|Trains="+C.getTrainDesc()
+						+ "|Hitpoints="+C.getHitPointDesc()
+						+ "|Mana="+C.getManaDesc()
+						+ "|Movement="+C.getMovementDesc()
+						+ "|Attack="+C.getAttackDesc()
+						+ "|Damage="+C.getDamageDesc()
+						+ "|MaxStat="+C.getMaxStatDesc()
+						+ "|Bonuses="+C.getOtherBonusDesc()
+						+ "|Weapons="+C.getWeaponLimitDesc()
+						+ "|Armor="+C.getArmorLimitDesc()
+						+ "|Limitations="+C.getOtherLimitsDesc()
+						+ "|StartingEq="+outfit.toString()
+						+ "|Races="+raceStr.toString()
+						+ "|Languages="+langStr.toString());
+				for(int l=1;l<=CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL);l++)
+				{
+					final StringBuilder levelList=new StringBuilder("");
+					final List<Ability> autoGains=new ArrayList<Ability>(3);
+					final List<Ability> qualifies=new ArrayList<Ability>(3);
+					for (final Enumeration<AbilityMapper.AbilityMapping> a = CMLib.ableMapper().getClassAbles(C.ID(),true); a.hasMoreElements(); )
+					{
+						final AbilityMapper.AbilityMapping cimable=a.nextElement();
+						if((cimable.qualLevel() ==l)&&(!cimable.isSecret()))
+						{
+							final Ability A=CMClass.getAbility(cimable.abilityID());
+							if((A!=null)
+							&&(types.contains(Integer.valueOf(A.classificationCode()&Ability.ALL_ACODES))))
+							{
+								if(cimable.autoGain())
+									autoGains.add(A);
+								else
+									qualifies.add(A);
+							}
+						}
+					}
+					for(Ability A : autoGains)
+						levelList.append("[["+A.ID()+"|"+A.name()+"]]&nbsp;&nbsp;&nbsp;&nbsp;");
+					for(Ability A : qualifies)
+						levelList.append("([["+A.ID()+"|"+A.name()+"]])&nbsp;&nbsp;&nbsp;&nbsp;");
+					
+					lines.append("|level"+l+"="+levelList.toString());
+				}
+				lines.append("}}");
+			}
+			else
+			{
+				if(++column>2)
+				{
+					lines.append("\n\r");
+					column=1;
+				}
+				lines.append(CMStrings.padRight(C.ID()
+							+(C.isGeneric()?"*":"")
+							+" ("+C.baseClass()+")",COL_LEN));
+			}
 		}
 		lines.append("\n\r");
 		return lines;
 	}
 
-	public StringBuilder listRaceCats(Session viewerS, Enumeration<Race> these, boolean shortList)
+	public StringBuilder listRaceCats(Session viewerS, Enumeration<Race> these, List<String> commands)
 	{
 		final StringBuilder lines=new StringBuilder("");
 		if(!these.hasMoreElements())
 			return lines;
+		boolean shortList=false;
+		for(String c : commands)
+		{
+			if(c.equalsIgnoreCase("SHORT"))
+				shortList=true;
+		}
+		WikiFlag wiki=this.getWikiFlagRemoved(commands);
 		int column=0;
 		final Vector<String> raceCats=new Vector<String>();
 		Race R=null;
@@ -1769,6 +2052,15 @@ public class ListCmd extends StdCommand
 				sortedC[i]=(String)sortedB[i];
 			lines.append(CMParms.toListString(sortedC));
 		} 
+		else
+		if((wiki==WikiFlag.WIKILIST)||(wiki==WikiFlag.WIKIHELP))
+		{
+			for (final Object element : sortedB)
+			{
+				final String raceCat=(String)element;
+				lines.append("*[["+raceCat+"(RacialCategory)|"+raceCat+"]]\n\r");
+			}
+		}
 		else
 		{
 			for (final Object element : sortedB)
@@ -2083,7 +2375,7 @@ public class ListCmd extends StdCommand
 					{
 						final Room R2=R.rawDoors()[d];
 						if((R2!=null)&&(R2.rawDoors()[Directions.getOpDirectionCode(d)]!=R))
-							str.append(L("@x1: @x2 to @x3\n\r",CMStrings.padRight(R.roomID(),30),Directions.getDirectionName(d),R2.roomID()));
+							str.append(L("@x1: @x2 to @x3\n\r",CMStrings.padRight(R.roomID(),30),CMLib.directions().getDirectionName(d),R2.roomID()));
 					}
 				}
 			}
@@ -2112,7 +2404,7 @@ public class ListCmd extends StdCommand
 					final Room R2=R.rawDoors()[d];
 					final Exit E2=R.getRawExit(d);
 					if((R2==null)&&(E2!=null))
-						str.append(L("@x1: @x2 to @x3 (@x4)\n\r",CMStrings.padRight(R.roomID(),30),Directions.getDirectionName(d),E2.temporaryDoorLink(),E2.displayText()));
+						str.append(L("@x1: @x2 to @x3 (@x4)\n\r",CMStrings.padRight(R.roomID(),30),CMLib.directions().getDirectionName(d),E2.temporaryDoorLink(),E2.displayText()));
 				}
 			}
 		}
@@ -2796,16 +3088,159 @@ public class ListCmd extends StdCommand
 		return buf.toString();
 	}
 
-	public String listExpertises(Session viewerS)
+	public String listExpertises(Session viewerS, List<String> commands)
 	{
+		WikiFlag wiki = getWikiFlagRemoved(commands);
 		final StringBuilder buf=new StringBuilder("^xAll Defined Expertise Codes: ^N\n\r");
 		final int COL_LEN=CMLib.lister().fixColWidth(20.0,viewerS);
+		if(wiki==WikiFlag.WIKILIST)
+		{
+			final Set<String> doneBases=new TreeSet<String>();
+			for(final Enumeration<ExpertiseLibrary.ExpertiseDefinition> e=CMLib.expertises().definitions();e.hasMoreElements();)
+			{
+				ExpertiseLibrary.ExpertiseDefinition def=e.nextElement();
+				if(!doneBases.contains(def.getBaseName()))
+				{
+					doneBases.add(def.getBaseName());
+					String name=def.name();
+					int x=name.lastIndexOf(' ');
+					if(CMath.isRomanNumeral(name.substring(x+1).trim()))
+						name=name.substring(0, x).trim();
+					buf.append("*[["+name+"(Expertise)|"+name+"]]\n\r");
+				}
+			}
+		}
+		else
+		if(wiki==WikiFlag.WIKIHELP)
+		{
+			final Set<String> doneBases=new TreeSet<String>();
+			for(final Enumeration<ExpertiseLibrary.ExpertiseDefinition> e=CMLib.expertises().definitions();e.hasMoreElements();)
+			{
+				ExpertiseLibrary.ExpertiseDefinition def=e.nextElement();
+				if(!doneBases.contains(def.getBaseName()))
+				{
+					doneBases.add(def.getBaseName());
+					String name=def.name();
+					int x=name.lastIndexOf(' ');
+					if(CMath.isRomanNumeral(name.substring(x+1).trim()))
+					{
+						name=name.substring(0, x).trim();
+						ExpertiseLibrary.ExpertiseDefinition defGuess=CMLib.expertises().findDefinition(def.getBaseName()+"1",true);
+						if(defGuess!=null)
+							def=defGuess;
+					}
+					String desc=CMLib.expertises().getExpertiseHelp(def.name().toUpperCase().replaceAll(" ","_"), true);
+					if((desc!=null)&&(desc.startsWith("<EXPERTISE>")))
+						desc=desc.substring(11);
+					else
+						desc="";
+					buf.append("{{ExpertiseTemplate"
+							+ "|Name="+name
+							+ "|Requires="+CMLib.masking().maskDesc(def.allRequirements(),true)
+							+ "|Description="+desc
+							+ "|Cost="+def.costDescription()
+							+ "}}\n\r");
+				}
+			}
+		}
+		else
 		for(final Enumeration<ExpertiseLibrary.ExpertiseDefinition> e=CMLib.expertises().definitions();e.hasMoreElements();)
 		{
 			final ExpertiseLibrary.ExpertiseDefinition def=e.nextElement();
 			buf.append(CMStrings.padRight("^Z"+def.ID(),COL_LEN)+"^?: "
 					  +CMStrings.padRight(def.name(),COL_LEN)+": "
 					  +CMLib.masking().maskDesc(def.allRequirements())+"\n\r");
+		}
+		if(buf.length()==0)
+			return "None defined.";
+		return buf.toString();
+	}
+
+	public String listSocials(Session viewerS, List<String> commands)
+	{
+		WikiFlag wiki = getWikiFlagRemoved(commands);
+		final StringBuilder buf=new StringBuilder("^xAll Defined Socials: ^N\n\r");
+		final int COL_LEN=CMLib.lister().fixColWidth(18.0,viewerS);
+		int col=0;
+		Set<String> baseDone = new HashSet<String>();
+		for(String social : CMLib.socials().getSocialsList())
+		{
+			final Social soc=CMLib.socials().fetchSocial(social,true);
+			if(baseDone.contains(soc.baseName()))
+				continue;
+			baseDone.add(soc.baseName());
+			if(wiki == WikiFlag.WIKILIST)
+				buf.append("*[["+social+"|"+social+"]]\n\r");
+			else
+			if(wiki == WikiFlag.WIKIHELP)
+			{
+				final String TargetNoneYouSee;
+				final String TargetNoneOthersSee;
+				final String TargetSomeoneNoTarget;
+				final String TargetSomeoneYouSee;
+				final String TargetSomeoneTargetSees;
+				final String TargetSomeoneOthersSee;
+				final String TargetSelfYouSee;
+				final String TargetSelfOthersSee;
+				final Social TargetNoneSoc = CMLib.socials().fetchSocial(soc.baseName(), true);
+				if(TargetNoneSoc!=null)
+				{
+					TargetNoneYouSee = TargetNoneSoc.You_see();
+					TargetNoneOthersSee = TargetNoneSoc.Third_party_sees();
+				}
+				else
+				{
+					TargetNoneYouSee = "";
+					TargetNoneOthersSee = "";
+				}
+				final Social TargetSomeoneSoc = CMLib.socials().fetchSocial(soc.baseName()+" <T-NAME>", true);
+				if(TargetSomeoneSoc!=null)
+				{
+					TargetSomeoneNoTarget = TargetSomeoneSoc.See_when_no_target();
+					TargetSomeoneYouSee = TargetSomeoneSoc.You_see();
+					TargetSomeoneOthersSee = TargetSomeoneSoc.Third_party_sees();
+					TargetSomeoneTargetSees=TargetSomeoneSoc.Target_sees();
+				}
+				else
+				{
+					TargetSomeoneNoTarget = "";
+					TargetSomeoneYouSee = "";
+					TargetSomeoneOthersSee = "";
+					TargetSomeoneTargetSees= "";
+				}
+				final Social TargetSelfSoc = CMLib.socials().fetchSocial(soc.baseName()+" SELF", true);
+				if(TargetSelfSoc!=null)
+				{
+					TargetSelfYouSee = TargetSelfSoc.You_see();
+					TargetSelfOthersSee = TargetSelfSoc.Third_party_sees();
+				}
+				else
+				{
+					TargetSelfYouSee = "";
+					TargetSelfOthersSee = "";
+				}
+				buf.append("{{SocialTemplate"
+						+ "|Name="+CMStrings.capitalizeAndLower(soc.baseName())
+						+ "|TargetNoneUSee="+TargetNoneYouSee
+						+ "|TargetNoneTheySee="+TargetNoneOthersSee
+						+ "|TargetSomeoneNoTarget="+TargetSomeoneNoTarget
+						+ "|TargetSomeoneUSee="+TargetSomeoneYouSee
+						+ "|TargetSomeoneTargetSees="+TargetSomeoneTargetSees
+						+ "|TargetSomeoneOthersSee="+TargetSomeoneOthersSee
+						+ "|TargetSelfUSee="+TargetSelfYouSee
+						+ "|TargetSelfOthersSee="+TargetSelfOthersSee
+						+ "}}\n\r");
+			}
+			else
+			{
+				buf.append(CMStrings.padRight(social,COL_LEN)+" ");
+				col++;
+				if(col==4)
+				{
+					col=0;
+					buf.append("\n\r");
+				}
+			}
 		}
 		if(buf.length()==0)
 			return "None defined.";
@@ -3213,6 +3648,9 @@ public class ListCmd extends StdCommand
 		UNLINKEDEXITS("UNLINKEDEXITS",new SecFlag[]{SecFlag.CMDEXITS,SecFlag.CMDROOMS,SecFlag.CMDAREAS}),
 		ITEMS("ITEMS",new SecFlag[]{SecFlag.CMDITEMS}),
 		ARMOR("ARMOR",new SecFlag[]{SecFlag.CMDITEMS}),
+		ABILITYDOMAINS("ABILITYDOMAINS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDABILITIES}),
+		ABILITYCODES("ABILITYCODES",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDABILITIES}),
+		ABILITYFLAGS("ABILITYFLAGS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDABILITIES}),
 		ENVRESOURCES("ENVRESOURCES",new SecFlag[]{SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS}),
 		WEAPONS("WEAPONS",new SecFlag[]{SecFlag.CMDITEMS}),
 		MOBS("MOBS",new SecFlag[]{SecFlag.CMDMOBS}),
@@ -3224,6 +3662,7 @@ public class ListCmd extends StdCommand
 		RACES("RACES",new SecFlag[]{SecFlag.CMDRACES,SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS}),
 		CLASSES("CLASSES",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDCLASSES}),
 		STAFF("STAFF",new SecFlag[]{SecFlag.CMDAREAS}),
+		ABILITIES("ABILITIES",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES,SecFlag.CMDABILITIES}),
 		SPELLS("SPELLS",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES,SecFlag.CMDABILITIES}),
 		SONGS("SONGS",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES,SecFlag.CMDABILITIES}),
 		PRAYERS("PRAYERS",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES,SecFlag.CMDABILITIES}),
@@ -3251,6 +3690,7 @@ public class ListCmd extends StdCommand
 		USERS("USERS",new SecFlag[]{SecFlag.CMDPLAYERS,SecFlag.STAT}),
 		LINKAGES("LINKAGES",new SecFlag[]{SecFlag.CMDAREAS}),
 		REPORTS("REPORTS",new SecFlag[]{SecFlag.LISTADMIN}),
+		THREAD("THREAD",new SecFlag[]{SecFlag.LISTADMIN}),
 		THREADS("THREADS",new SecFlag[]{SecFlag.LISTADMIN}),
 		RESOURCES("RESOURCES",new SecFlag[]{SecFlag.LOADUNLOAD}),
 		ONEWAYDOORS("ONEWAYDOORS",new SecFlag[]{SecFlag.CMDEXITS,SecFlag.CMDROOMS,SecFlag.CMDAREAS}),
@@ -3293,7 +3733,10 @@ public class ListCmd extends StdCommand
 		EXPIRED("EXPIRED",new SecFlag[]{SecFlag.CMDPLAYERS}),
 		SQL("SQL",new SecFlag[]{SecFlag.CMDDATABASE}),
 		SHIPS("SHIPS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDAREAS,SecFlag.CMDPLAYERS}),
+		COMMANDS("COMMANDS",new SecFlag[]{SecFlag.LISTADMIN}),
 		FILEUSE("FILEUSE",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDAREAS}),
+		SOCIALS("SOCIALS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDSOCIALS,SecFlag.AREA_CMDSOCIALS}),
+		AREATYPES("AREATYPES",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDAREAS}),
 		;
 		public String[]			   cmd;
 		public CMSecurity.SecGroup flags;
@@ -3422,6 +3865,131 @@ public class ListCmd extends StdCommand
 		else
 			return null;
 	}
+	
+	public void listCommands(MOB mob, List<String> commands)
+	{
+		
+		String rest="";
+		MOB whoM=mob;
+		WikiFlag wiki = getWikiFlagRemoved(commands);
+		if(commands.size()>1)
+		{
+			rest=commands.get(1);
+			whoM=CMLib.players().getLoadPlayer(rest);
+			if(whoM==null)
+			{
+				mob.tell("No '"+rest+"'");
+				return;
+			}
+		}
+		
+		final StringBuffer commandList=new StringBuffer("");
+		final Vector<String> commandSet=new Vector<String>();
+		int col=0;
+		final HashSet<String> done=new HashSet<String>();
+		for(final Enumeration<Command> e=CMClass.commands();e.hasMoreElements();)
+		{
+			final Command C=e.nextElement();
+			final String[] access=C.getAccessWords();
+			if((access!=null)
+			&&(access.length>0)
+			&&(access[0].length()>0)
+			&&(!done.contains(access[0]))
+			&&(C.securityCheck(whoM)))
+			{
+				done.add(access[0]);
+				commandSet.add(access[0]);
+			}
+		}
+		for(final Enumeration<Ability> a=whoM.allAbilities();a.hasMoreElements();)
+		{
+			final Ability A=a.nextElement();
+			if((A!=null)&&(A.triggerStrings()!=null)&&(A.triggerStrings().length>0)&&(!done.contains(A.triggerStrings()[0])))
+			{
+				done.add(A.triggerStrings()[0]);
+				commandSet.add(A.triggerStrings()[0]);
+			}
+		}
+		Collections.sort(commandSet);
+		final int COL_LEN=CMLib.lister().fixColWidth(19.0,mob);
+		for(final Iterator<String> i=commandSet.iterator();i.hasNext();)
+		{
+			final String s=i.next();
+			if(wiki == WikiFlag.WIKILIST)
+			{
+				commandList.append("*[["+s+"|"+s+"]]\n\r");
+			}
+			else
+			if(wiki == WikiFlag.WIKIHELP)
+			{
+				StringBuilder help=CMLib.help().getHelpText(s,null,false,true);
+				if(help==null)
+				{
+System.out.println(s);
+					continue;
+				}
+				String helpStr=help.toString();
+				if(helpStr.startsWith("<ABILITY>"))
+					continue;
+				String usage="";
+				String example="";
+				String shorts="";
+				while(helpStr.startsWith("Command")||helpStr.startsWith("  "))
+				{
+					int end=helpStr.indexOf("\n");
+					if(end<0)
+						break;
+					helpStr=helpStr.substring(end+1).trim();
+				}
+				while(helpStr.startsWith("Usage")||helpStr.startsWith("  "))
+				{
+					int end=helpStr.indexOf("\n");
+					int start=helpStr.indexOf(":");
+					if((end<0)||(start<0)||(start>end))
+						break;
+					usage += ((usage.length()>0) ? "\n\r" : "" ) + helpStr.substring(start+1,end).trim();
+					helpStr=helpStr.substring(end+1).trim();
+				}
+				while(helpStr.startsWith("Example")||helpStr.startsWith("  "))
+				{
+					int end=helpStr.indexOf("\n");
+					int start=helpStr.indexOf(":");
+					if((end<0)||(start<0)||(start>end))
+						break;
+					example += ((example.length()>0) ? "\n\r" : "" ) + helpStr.substring(start+1,end).trim();
+					helpStr=helpStr.substring(end+1).trim();
+				}
+				while(helpStr.startsWith("Short")||helpStr.startsWith("  "))
+				{
+					int end=helpStr.indexOf("\n");
+					int start=helpStr.indexOf(":");
+					if((end<0)||(start<0)||(start>end))
+						break;
+					shorts += ((example.length()>0) ? "\n\r" : "" ) + helpStr.substring(start+1,end).trim();
+					helpStr=helpStr.substring(end+1).trim();
+				}
+
+				commandList.append("{{CommandTemplate"
+								+ "|Name="+s
+								+ "|Usage="+CMStrings.replaceAllofAny(usage,"[]{}<>|".toCharArray(),"\"\"()()!".toCharArray())
+								+ "|Examples="+example
+								+ "|Shorts="+shorts
+								+ "|Description="+CMStrings.replaceAllofAny(helpStr,"[]{}<>|".toCharArray(),"()()()!".toCharArray())
+								+ "}}\n\r");
+			}
+			else
+			{
+				if (++col > 3)
+				{
+					commandList.append("\n\r");
+					col = 0;
+				}
+				commandList.append(CMStrings.padRight(s,COL_LEN));
+			}
+		}
+		if(mob.session()!=null)
+			mob.session().rawPrint(commandList.toString());
+	}
 
 	public void listManufacturers(MOB mob, List<String> commands)
 	{
@@ -3522,6 +4090,144 @@ public class ListCmd extends StdCommand
 			mob.session().rawPrint(str.toString());
 	}
 
+	public void listAbilities(MOB mob, Session s, List<String> commands, String title, int ofType)
+	{
+		int domain=0;
+		final WikiFlag wiki = this.getWikiFlagRemoved(commands);
+		for(int i=1;i<commands.size();i++)
+		{
+			final String str=commands.get(i);
+			if(domain<=0)
+			{
+				int x=CMParms.indexOf(Ability.DOMAIN_DESCS,str.toUpperCase().trim());
+				if(x>=0)
+				{
+					domain = x << 5;
+					String domainName=CMStrings.capitalizeAllFirstLettersAndLower(Ability.DOMAIN_DESCS[x].toLowerCase().replaceAll("_"," "));
+					title=(domainName+" "+title).trim();
+				}
+				else
+				{
+					s.println("Unknown '"+str+"'");
+					return;
+				}
+			}
+		}
+		if(wiki == WikiFlag.WIKILIST)
+		{
+			if(title.length()==0)
+				title="Abilities";
+			if(domain == 0)
+				s.println("==="+title+"s===");
+			else
+				s.println("==="+title+"===");
+			s.wraplessPrintln(CMLib.lister().reallyWikiList(mob, CMClass.abilities(), ofType|domain).toString());
+		}
+		else
+		if(wiki == WikiFlag.WIKIHELP)
+		{
+			StringBuilder str=new StringBuilder("");
+			for(final Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
+			{
+				final Ability A=e.nextElement();
+				if((ofType>=0)&&(ofType!=Ability.ALL_ACODES))
+				{
+					if((A.classificationCode()&Ability.ALL_ACODES)!=ofType)
+						continue;
+				}
+				if(domain>0)
+				{
+					if((A.classificationCode()&Ability.ALL_DOMAINS)!=domain)
+						continue;
+				}
+				String domainID = Ability.DOMAIN_DESCS[(A.classificationCode()&Ability.ALL_DOMAINS)>>5].toLowerCase();
+				String domainName = CMStrings.capitalizeAllFirstLettersAndLower(domainID.replaceAll("_"," "));
+				StringBuilder availStr=new StringBuilder("");
+				final PairList<String,Integer> avail=CMLib.ableMapper().getAvailabilityList(A, Integer.MAX_VALUE);
+				for(int c=0;c<avail.size();c++)
+				{
+					CharClass C=CMClass.getCharClass(avail.getFirst(c));
+					Integer I=avail.getSecond(c);
+					availStr.append("[["+C.name()+"("+C.baseClass()+")|"+C.name(I.intValue())+"("+I.intValue()+")]] ");
+				}
+				StringBuilder allowsStr=new StringBuilder("");
+				for(Iterator<String> i=CMLib.expertises().filterUniqueExpertiseIDList(CMLib.ableMapper().getAbilityAllowsList(A.ID()));i.hasNext();)
+				{
+					final String ID=i.next();
+					ExpertiseDefinition def=CMLib.expertises().getDefinition(ID);
+					if(def != null)
+					{
+						String name=def.name();
+						int x=name.lastIndexOf(' ');
+						if(CMath.isRomanNumeral(name.substring(x+1).trim()))
+							name=name.substring(0, x).trim();
+						allowsStr.append("[["+name+"(Expertise)|"+name+"]]").append(" ");
+					}
+					else
+					{
+						final Ability A2=CMClass.getAbilityPrototype(ID);
+						if(A2!=null)
+							allowsStr.append("[["+A2.ID()+"|"+A2.name()+"]]").append(" ");
+						else
+							allowsStr.append(ID).append(" ");
+					}
+				}
+				final String cost=CMLib.help().getAbilityCostDesc(A, null);
+				final String quality=CMLib.help().getAbilityQualityDesc(A);
+				final String targets=CMLib.help().getAbilityTargetDesc(A);
+				final String range=CMLib.help().getAbilityRangeDesc(A);
+				StringBuilder help=CMLib.help().getHelpText(A.ID(),null,false,true);
+				String usage="";
+				String example="";
+				String helpStr="";
+				if(help==null)
+					help=CMLib.help().getHelpText(A.name(),null,false,true);
+				if((help!=null)&&(help.toString().startsWith("<ABILITY>")))
+				{
+					helpStr=help.toString().substring(9);
+					while(helpStr.startsWith("Usage")||helpStr.startsWith("  "))
+					{
+						int end=helpStr.indexOf("\n");
+						int start=helpStr.indexOf(":");
+						if((end<0)||(start<0)||(start>end))
+							break;
+						usage += ((usage.length()>0) ? "\n\r" : "" ) + helpStr.substring(start+1,end).trim();
+						helpStr=helpStr.substring(end+1).trim();
+					}
+					while(helpStr.startsWith("Example")||helpStr.startsWith("  "))
+					{
+						int end=helpStr.indexOf("\n");
+						int start=helpStr.indexOf(":");
+						if((end<0)||(start<0)||(start>end))
+							break;
+						example += ((example.length()>0) ? "\n\r" : "" ) + helpStr.substring(start+1,end).trim();
+						helpStr=helpStr.substring(end+1).trim();
+					}
+				}
+				str.append("{{SkillTemplate"
+						+ "|Name="+A.name()
+						+ "|Domain=[["+domainID+"(Domain)|"+domainName+"]]"
+						+ "|Available="+availStr.toString()
+						+ "|Allows="+allowsStr.toString()
+						+ "|UseCost="+cost
+						+ "|Quality="+quality
+						+ "|Targets="+targets
+						+ "|Range="+range
+						+ "|Commands="+CMParms.toListString(A.triggerStrings())
+						+ "|Usage="+CMStrings.replaceAllofAny(usage,"[]{}<>|".toCharArray(),"\"\"()()!".toCharArray())
+						+ "|Examples="+example
+						+ "|Description="+CMStrings.replaceAllofAny(helpStr,"[]{}<>|".toCharArray(),"()()()!".toCharArray())
+						+ "}}\n\r");
+			}
+			s.wraplessPrintln(str.toString());
+		}
+		else
+		{
+			s.println("^H"+title+" Ability IDs:^N");
+			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.abilities(), ofType|domain).toString());
+		}
+	}
+	
 	public void listTimeZones(MOB mob, List<String> commands, Filterer<Area> filter)
 	{
 		if(mob==null)
@@ -3602,6 +4308,7 @@ public class ListCmd extends StdCommand
 		commands.remove(0);
 		List<String> sortBys=null;
 		List<String> colNames=null;
+		WikiFlag wiki=getWikiFlagRemoved(commands);
 		if(commands.size()>0)
 		{
 			List<String> addTos=null;
@@ -3730,20 +4437,59 @@ public class ListCmd extends StdCommand
 		}
 		else
 			a=CMLib.map().areas();
+		Faction theFaction=CMLib.factions().getFaction(CMLib.factions().AlignID());
+		if(theFaction == null)
+		{
+			for(final Enumeration<Faction> e=CMLib.factions().factions();e.hasMoreElements();)
+			{
+				final Faction F=e.nextElement();
+				if(F.showInSpecialReported())
+					theFaction=F;
+			}
+		}
 		for(;a.hasMoreElements();)
 		{
 			final Area A=a.nextElement();
 			if((filter!=null)&&(!filter.passesFilter(A)))
 				continue;
-			for(final Triad<String,String,Integer> head : columns)
+			if(wiki==WikiFlag.WIKILIST)
 			{
-				Object val =getAreaStatFromSomewhere(A,head.second);
-				if(val==null)
-					val="?";
-				if(head==lastColomn)
-					str.append(CMStrings.scrunchWord(val.toString(), head.third.intValue()-1));
-				else
-					str.append(CMStrings.padRight(CMStrings.scrunchWord(val.toString(), head.third.intValue()-1), head.third.intValue()));
+				str.append("*[["+A.name()+"|"+A.name()+"]]");
+			}
+			else
+			if(wiki==WikiFlag.WIKIHELP)
+			{
+				str.append("{{AreaTemplate"
+						+ "|Name="+A.name()
+						+ "|Description="+A.description()
+						+ "|Author="+A.getAuthorID()
+						+ "|Rooms="+A.getAreaIStats()[Area.Stats.VISITABLE_ROOMS.ordinal()]
+						+ "|Population="+A.getAreaIStats()[Area.Stats.POPULATION.ordinal()]
+						+ "|Currency=currencystring"
+						+ "|LevelRange="+A.getAreaIStats()[Area.Stats.MIN_LEVEL.ordinal()]+"-"+A.getAreaIStats()[Area.Stats.MAX_LEVEL.ordinal()]
+						+ "|MedianLevel="+A.getAreaIStats()[Area.Stats.MED_LEVEL.ordinal()]
+						+ "|AvgAlign="+((theFaction!=null)?theFaction.fetchRangeName(A.getAreaIStats()[Area.Stats.AVG_ALIGNMENT.ordinal()]):"")
+						+ "|MedAlignment="+((theFaction!=null)?theFaction.fetchRangeName(A.getAreaIStats()[Area.Stats.MED_ALIGNMENT.ordinal()]):""));
+				int x=1;
+				for(Enumeration<String> f=A.areaBlurbFlags();f.hasMoreElements();)
+				{
+					String flag=f.nextElement();
+					str.append("|Blurb"+x+"Name="+flag);
+				}
+				str.append("}} ");
+			}
+			else
+			{
+				for(final Triad<String,String,Integer> head : columns)
+				{
+					Object val =getAreaStatFromSomewhere(A,head.second);
+					if(val==null)
+						val="?";
+					if(head==lastColomn)
+						str.append(CMStrings.scrunchWord(val.toString(), head.third.intValue()-1));
+					else
+						str.append(CMStrings.padRight(CMStrings.scrunchWord(val.toString(), head.third.intValue()-1), head.third.intValue()));
+				}
 			}
 			str.append("\n\r");
 		}
@@ -3872,6 +4618,9 @@ public class ListCmd extends StdCommand
 		}
 		switch(code)
 		{
+		case COMMANDS:
+			listCommands(mob,commands);
+			break;
 		case UNLINKEDEXITS:
 			s.wraplessPrintln(unlinkedExits(mob.session(), commands));
 			break;
@@ -3922,41 +4671,38 @@ public class ListCmd extends StdCommand
 			break;
 		case CLASSES:
 			s.println("^HCharacter Class IDs:^N");
-			s.wraplessPrintln(listCharClasses(s, CMClass.charClasses(), rest.equalsIgnoreCase("SHORT")).toString());
+			s.wraplessPrintln(listCharClasses(s, CMClass.charClasses(), commands).toString());
 			break;
 		case STAFF:
 			s.wraplessPrintln(listSubOps(mob.session()).toString());
 			break;
+		case ABILITIES:
+			listAbilities(mob,s,commands,"",Ability.ALL_ACODES);
+			break;
 		case SPELLS:
-			s.println("^HSpell Ability IDs:^N");
-			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.abilities(), Ability.ACODE_SPELL).toString());
+			listAbilities(mob,s,commands,"Spell",Ability.ACODE_SPELL);
 			break;
 		case SONGS:
-			s.println("^HSong Ability IDs:^N");
-			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.abilities(), Ability.ACODE_SONG).toString());
+			listAbilities(mob,s,commands,"Song",Ability.ACODE_SONG);
 			break;
 		case PRAYERS:
-			s.println("^HPrayer Ability IDs:^N");
-			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.abilities(), Ability.ACODE_PRAYER).toString());
+			listAbilities(mob,s,commands,"Prayer",Ability.ACODE_PRAYER);
 			break;
 		case PROPERTIES:
 			s.println("^HProperty Ability IDs:^N");
 			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.abilities(), Ability.ACODE_PROPERTY).toString());
 			break;
 		case THIEFSKILLS:
-			s.println("^HThief Skill Ability IDs:^N");
-			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.abilities(), Ability.ACODE_THIEF_SKILL).toString());
+			listAbilities(mob,s,commands,"Thief Skill",Ability.ACODE_THIEF_SKILL);
 			break;
 		case COMMON:
-			s.println("^HCommon Skill Ability IDs:^N");
-			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.abilities(), Ability.ACODE_COMMON_SKILL).toString());
+			listAbilities(mob,s,commands,"Common Skill",Ability.ACODE_COMMON_SKILL);
 			break;
 		case JOURNALS:
 			s.println(listJournals(mob.session()).toString());
 			break;
 		case SKILLS:
-			s.println("^HSkill Ability IDs:^N");
-			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.abilities(), Ability.ACODE_SKILL).toString());
+			listAbilities(mob,s,commands,"Skill",Ability.ACODE_SKILL);
 			break;
 		case QUESTS:
 			s.println(listQuests(mob.session()).toString());
@@ -3968,16 +4714,13 @@ public class ListCmd extends StdCommand
 			s.println(listQuestWinners(mob.session(),rest).toString());
 			break;
 		case DISEASES:
-			s.println("^HDisease Ability IDs:^N");
-			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.abilities(), Ability.ACODE_DISEASE).toString());
+			listAbilities(mob,s,commands,"Disease",Ability.ACODE_DISEASE);
 			break;
 		case POISONS:
-			s.println("^HPoison Ability IDs:^N");
-			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.abilities(), Ability.ACODE_POISON).toString());
+			listAbilities(mob,s,commands,"Poison",Ability.ACODE_POISON);
 			break;
 		case LANGUAGES:
-			s.println("^HLanguage Ability IDs:^N");
-			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.abilities(), Ability.ACODE_LANGUAGE).toString());
+			listAbilities(mob,s,commands,"Language",Ability.ACODE_LANGUAGE);
 			break;
 		case TICKS:
 			s.println(listTicks(mob.session(), CMParms.combine(commands, 1)).toString());
@@ -3993,6 +4736,10 @@ public class ListCmd extends StdCommand
 		case CLANITEMS:
 			s.println("^HClan Item IDs:^N");
 			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.clanItems()).toString());
+			break;
+		case AREATYPES:
+			s.println("^HArea Type IDs:^N");
+			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.areaTypes()).toString());
 			break;
 		case COMMANDJOURNAL:
 			s.println(journalList(mob.session(), listWord).toString());
@@ -4025,7 +4772,7 @@ public class ListCmd extends StdCommand
 		}
 		case RACECATS:
 			s.println("^HRacial Categories:^N");
-			s.wraplessPrintln(listRaceCats(s, CMClass.races(), CMParms.containsIgnoreCase(commands, "SHORT")).toString());
+			s.wraplessPrintln(listRaceCats(s, CMClass.races(), commands).toString());
 			break;
 		case LOG:
 			listLog(mob, commands);
@@ -4039,6 +4786,9 @@ public class ListCmd extends StdCommand
 		case REPORTS:
 			s.println(listReports(mob.session(), mob).toString());
 			break;
+		case THREAD:
+			s.println(listThread(mob.session(), mob, rest).toString());
+			break;
 		case THREADS:
 			s.println(listThreads(mob.session(), mob, CMParms.containsIgnoreCase(commands, "SHORT"), CMParms.containsIgnoreCase(commands, "EXTEND")).toString());
 			break;
@@ -4049,18 +4799,19 @@ public class ListCmd extends StdCommand
 			s.wraplessPrintln(reallyFindOneWays(mob.session(), commands));
 			break;
 		case CHANTS:
-			s.println("^HChant Ability IDs:^N");
-			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.abilities(), Ability.ACODE_CHANT).toString());
+			listAbilities(mob,s,commands,"Chant",Ability.ACODE_CHANT);
 			break;
 		case SUPERPOWERS:
-			s.println("^HSuper Power Ability IDs:^N");
-			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.abilities(), Ability.ACODE_SUPERPOWER).toString());
+			listAbilities(mob,s,commands,"Super Power",Ability.ACODE_SUPERPOWER);
 			break;
 		case COMPONENTS:
 			s.wraplessPrintln(listComponents(mob.session()));
 			break;
 		case EXPERTISES:
-			s.wraplessPrintln(listExpertises(mob.session()));
+			s.wraplessPrintln(listExpertises(mob.session(),commands));
+			break;
+		case SOCIALS:
+			s.wraplessPrintln(listSocials(mob.session(),commands));
 			break;
 		case FACTIONS:
 			s.wraplessPrintln(CMLib.factions().listFactions());
@@ -4150,8 +4901,7 @@ public class ListCmd extends StdCommand
 			listManufacturers(mob, commands);
 			break;
 		case TECHSKILLS:
-			s.println("^HTech Skill Ability IDs:^N");
-			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.abilities(), Ability.ACODE_TECH).toString());
+			listAbilities(mob,s,commands,"Tech Skill",Ability.ACODE_TECH);
 			break;
 		case SOFTWARE:
 			s.println("^HSoftware Item IDs:^N");
@@ -4175,6 +4925,28 @@ public class ListCmd extends StdCommand
 			break;
 		case SHIPS:
 			listShips(mob, commands);
+			break;
+		case ABILITYDOMAINS:
+		{
+			WikiFlag wiki=getWikiFlagRemoved(commands);
+			if(wiki == WikiFlag.NO)
+				s.wraplessPrintln(CMParms.toListString(Ability.DOMAIN_DESCS));
+			else
+			{
+				for(String domain : Ability.DOMAIN_DESCS)
+				{
+					domain = domain.toLowerCase();
+					String domainName = CMStrings.capitalizeAllFirstLettersAndLower(domain.replaceAll("_"," "));
+					s.println("[["+domain+"(Domain)|"+domainName+"]]");
+				}
+			}
+			break;
+		}
+		case ABILITYCODES:
+			s.wraplessPrintln(CMParms.toListString(Ability.ACODE_DESCS_));
+			break;
+		case ABILITYFLAGS:
+			s.wraplessPrintln(CMParms.toListString(Ability.FLAG_DESCS));
 			break;
 		}
 	}

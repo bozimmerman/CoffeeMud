@@ -99,7 +99,7 @@ public class Speculate extends CommonSkill
 								if(RawMaterial.CODES.IS_VALID(resource))
 								{
 									resourceStr=RawMaterial.CODES.NAME(resource);
-									str.append(L("There looks like @x1 @x2.\n\r",resourceStr.toLowerCase(),Directions.getInDirectionName(d)));
+									str.append(L("There looks like @x1 @x2.\n\r",resourceStr.toLowerCase(),CMLib.directions().getInDirectionName(d)));
 								}
 							}
 						}

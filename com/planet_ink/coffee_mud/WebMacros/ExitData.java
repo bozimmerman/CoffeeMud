@@ -36,7 +36,11 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class ExitData extends StdWebMacro
 {
-	@Override public String name() { return "ExitData"; }
+	@Override
+	public String name()
+	{
+		return "ExitData";
+	}
 
 	private static final String[] okparms={
 		"NAME","CLASSES","DISPLAYTEXT","DESCRIPTION",
@@ -89,7 +93,7 @@ public class ExitData extends StdWebMacro
 		final String linkdir=httpReq.getUrlParameter("LINK");
 		if(linkdir==null)
 			return "@break@";
-		final int link=Directions.getGoodDirectionCode(linkdir);
+		final int link=CMLib.directions().getGoodDirectionCode(linkdir);
 		if((link<0)||(link>=Directions.NUM_DIRECTIONS()))
 			return " @break@";
 

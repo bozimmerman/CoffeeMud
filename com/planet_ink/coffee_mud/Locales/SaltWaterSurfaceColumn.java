@@ -62,6 +62,6 @@ public class SaltWaterSurfaceColumn extends WaterSurfaceColumn
 	@Override
 	public List<Integer> resourceChoices()
 	{
-		return UnderSaltWater.roomResources;
+		return SaltWaterSurface.roomResources;
 	}
 }

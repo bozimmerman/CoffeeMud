@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Abilities.Properties;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMath.CompiledOperation;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -11,10 +12,10 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZMask;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
-
 
 import java.util.*;
 
@@ -35,18 +36,34 @@ import java.util.*;
 */
 public class Prop_ModExperience extends Property
 {
-	@Override public String ID() { return "Prop_ModExperience"; }
-	@Override public String name(){ return "Modifying Experience Gained";}
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_AREAS|Ability.CAN_ROOMS;}
-	protected String operationFormula = "";
-	protected boolean selfXP=false;
-	protected LinkedList<CMath.CompiledOperation> operation = null;
-	protected MaskingLibrary.CompiledZapperMask   mask = null;
+	@Override
+	public String ID()
+	{
+		return "Prop_ModExperience";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Modifying Experience Gained";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS | Ability.CAN_ITEMS | Ability.CAN_AREAS | Ability.CAN_ROOMS;
+	}
+
+	protected String					operationFormula	= "";
+	protected boolean					selfXP				= false;
+	protected List<CompiledOperation>	operation			= null;
+	protected CompiledZMask				mask				= null;
 
 	@Override
 	public String accountForYourself()
-	{ return "Modifies experience gained: "+operationFormula;	}
-
+	{
+		return "Modifies experience gained: " + operationFormula;
+	}
 
 	public int translateAmount(int amount, String val)
 	{

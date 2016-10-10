@@ -364,4 +364,22 @@ public interface LegalWarrant extends CMCommon
 	 */
 	public long getLastStateChangeTime();
 
+	/**
+	 * Returns the real time in ms when the warrant can no longer be ignored
+	 * 
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.LegalWarrant#setIgnoreUntilTime(long)
+	 *
+	 * @return the real time in ms when the warrant can no longer be ignored
+	 */
+	public long getIgnoreUntilTime();
+	
+
+	/**
+	 * Sets the real time in ms when the warrant can no longer be ignored
+	 * 
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.LegalWarrant#getIgnoreUntilTime()
+	 *
+	 * @param time the real time in ms when the warrant can no longer be ignored
+	 */
+	public void setIgnoreUntilTime(long time);
 }

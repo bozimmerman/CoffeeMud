@@ -36,7 +36,11 @@ import java.util.*;
 */
 public class NumPlayers extends StdWebMacro
 {
-	@Override public String name()	{return "NumPlayers";}
+	@Override
+	public String name()
+	{
+		return "NumPlayers";
+	}
 
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
@@ -50,21 +54,25 @@ public class NumPlayers extends StdWebMacro
 		{
 			final Enumeration<ThinPlayer> pe=CMLib.players().thinPlayers("",httpReq.getRequestObjects());
 			int x=0;
-			for(;pe.hasMoreElements();pe.nextElement()) x++;
+			for(;pe.hasMoreElements();pe.nextElement()) 
+				x++;
 			return ""+x;
 		}
 		if(parms.containsKey("ACCOUNTS"))
 		{
 			final Enumeration<PlayerAccount> pe=CMLib.players().accounts("",httpReq.getRequestObjects());
 			int x=0;
-			for(;pe.hasMoreElements();pe.nextElement()) x++;
+			for(;pe.hasMoreElements();pe.nextElement()) 
+				x++;
 			return ""+x;
 		}
 
 		int numPlayers=0;
 		for(final Session S : CMLib.sessions().localOnlineIterable())
+		{
 			if((S.mob()!=null)&&(!CMLib.flags().isCloaked(S.mob())))
-			   numPlayers++;
+				numPlayers++;
+		}
 		return Integer.toString(numPlayers);
 	}
 

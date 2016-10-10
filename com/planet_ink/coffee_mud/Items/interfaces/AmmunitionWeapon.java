@@ -99,4 +99,11 @@ public interface AmmunitionWeapon extends Weapon
 	 * @param amount the max number of units of ammunition that can be loaded
 	 */
 	public void setAmmoCapacity(int amount);
+	
+	/**
+	 * Returns true if the weapon is a free-standing missile weapon, meaning
+	 * it can be loaded and fired from the ground, like a siege weapon/catapult.
+	 * @return true if the weapon is free standing, false if held only 
+	 */
+	public boolean isFreeStanding();
 }

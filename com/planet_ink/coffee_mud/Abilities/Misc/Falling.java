@@ -107,6 +107,23 @@ public class Falling extends StdAbility
 		return true;
 	}
 
+	@Override
+	public void setMiscText(String newMiscText)
+	{
+		super.setMiscText(newMiscText);
+		if((newMiscText!=null) && (newMiscText.length()>0))
+		{
+			for(final String parm : CMParms.parse(newMiscText.toUpperCase()))
+			{
+				if(parm.equals("REVERSED"))
+					this.setProficiency(100);
+				else
+				if(parm.equals("NORMAL"))
+					this.setProficiency(0);
+			}
+		}
+	}
+	
 	protected boolean stopFalling(MOB mob)
 	{
 		final Room R=mob.location();
@@ -282,7 +299,9 @@ public class Falling extends StdAbility
 					unInvoke();
 					return true;
 				}
-				if(msg.targetMajor(CMMsg.MASK_MOVE) &&(!hitTheCeiling))
+				if(msg.targetMajor(CMMsg.MASK_MOVE) 
+				&&(!hitTheCeiling)
+				&&(msg.sourceMinor()!=CMMsg.TYP_FLEE))
 				{
 					msg.source().tell(L("You are too busy falling to do that right now."));
 					return false;
@@ -358,5 +377,39 @@ public class Falling extends StdAbility
 
 		}
 		return true;
+	}
+
+	@Override
+	public void setStat(String code, String val)
+	{
+		if(code==null)
+			return;
+		if(code.equalsIgnoreCase("DAMAGE"))
+			this.damageToTake=CMath.s_int(val);
+		else
+		if(code.equalsIgnoreCase("REVERSED"))
+			this.setProficiency(CMath.s_bool(val)?100:0);
+		else
+		if(code.equalsIgnoreCase("NORMAL"))
+			this.setProficiency(CMath.s_bool(val)?0:100);
+		else
+			super.setStat(code, val);
+	}
+	
+	@Override
+	public String getStat(String code)
+	{
+		if(code==null)
+			return "";
+		if(code.equalsIgnoreCase("DAMAGE"))
+			return ""+this.damageToTake;
+		else
+		if(code.equalsIgnoreCase("REVERSED"))
+			return ""+(this.proficiency()==100);
+		else
+		if(code.equalsIgnoreCase("NORMAL"))
+			return ""+(this.proficiency()==0);
+		else
+			return super.getStat(code);
 	}
 }

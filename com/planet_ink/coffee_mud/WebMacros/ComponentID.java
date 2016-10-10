@@ -35,7 +35,11 @@ import java.util.*;
 */
 public class ComponentID extends StdWebMacro
 {
-	@Override public String name() { return "ComponentID"; }
+	@Override
+	public String name()
+	{
+		return "ComponentID";
+	}
 
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)

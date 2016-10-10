@@ -77,7 +77,7 @@ public class VeryAggressive extends Aggressive
 	}
 
 	public void tickVeryAggressively(Tickable ticking, int tickID, boolean wander, boolean mobKiller, boolean misBehave, 
-									boolean levelCheck, MaskingLibrary.CompiledZapperMask mask, String attackMsg)
+									boolean levelCheck, MaskingLibrary.CompiledZMask mask, String attackMsg)
 	{
 		if(tickID!=Tickable.TICKID_MOB)
 			return;

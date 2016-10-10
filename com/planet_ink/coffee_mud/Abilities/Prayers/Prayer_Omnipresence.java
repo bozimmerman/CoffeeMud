@@ -84,7 +84,7 @@ public class Prayer_Omnipresence extends Prayer
 		else
 		{
 			final CMMsg msg=CMClass.getMsg(mob,null,null,verbalCastCode(mob,null,auto),L("^S<S-NAME> @x1 for the power of omnipresence.^?",prayWord(mob)));
-			int numLayers=super.getXLEVELLevel(mob) + 1;
+			int numLayers=super.getXLEVELLevel(mob) + 1 + (2*super.getXMAXRANGELevel(mob));
 			if(CMLib.ableMapper().qualifyingLevel(mob, this)>1)
 				numLayers += ((super.adjustedLevel(mob, 0) / CMLib.ableMapper().qualifyingLevel(mob, this)));
 			if(mob.location().okMessage(mob,msg))

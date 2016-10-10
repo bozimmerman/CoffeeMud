@@ -41,31 +41,56 @@ import java.util.*;
 
 public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSkill
 {
-	@Override public String ID() { return "Shipwright"; }
-	private final static String localizedName = CMLib.lang().L("Ship Building");
-	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =I(new String[] {"SHIPBUILD","SHIPBUILDING","SHIPWRIGHT"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public String supportedResourceString(){return "WOODEN";}
 	@Override
-	public String parametersFormat(){ return
+	public String ID()
+	{
+		return "Shipwright";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Ship Building");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "SHIPBUILD", "SHIPBUILDING", "SHIPWRIGHT" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public String supportedResourceString()
+	{
+		return "WOODEN";
+	}
+
+	@Override
+	public String parametersFormat()
+	{ 
+		return
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\t"
 		+"ITEM_CLASS_ID\tRIDE_BASIS\tCONTAINER_CAPACITY||RIDE_CAPACITY\tCONTAINER_TYPE\t"
-		+"CODED_SPELL_LIST";}
+		+"CODED_SPELL_LIST";
+	}
 
-	private String reTitle=null;
-	private String reDesc=null;
+	private String				reTitle			= null;
+	private String				reDesc			= null;
 	
 	//protected static final int RCP_FINALNAME=0;
 	//protected static final int RCP_LEVEL=1;
 	//protected static final int RCP_TICKS=2;
-	protected static final int RCP_WOOD=3;
-	protected static final int RCP_VALUE=4;
-	protected static final int RCP_CLASSTYPE=5;
-	protected static final int RCP_MISCTYPE=6;
-	protected static final int RCP_CAPACITY=7;
-	protected static final int RCP_CONTAINMASK=8;
-	protected static final int RCP_SPELL=9;
+	protected static final int	RCP_WOOD		= 3;
+	protected static final int	RCP_VALUE		= 4;
+	protected static final int	RCP_CLASSTYPE	= 5;
+	protected static final int	RCP_MISCTYPE	= 6;
+	protected static final int	RCP_CAPACITY	= 7;
+	protected static final int	RCP_CONTAINMASK	= 8;
+	protected static final int	RCP_SPELL		= 9;
 
 	protected Item key=null;
 
@@ -80,8 +105,17 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 		return super.tick(ticking,tickID);
 	}
 
-	@Override public String parametersFile(){ return "shipwright.txt";}
-	@Override protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
+	@Override
+	public String parametersFile()
+	{
+		return "shipwright.txt";
+	}
+
+	@Override
+	protected List<List<String>> loadRecipes()
+	{
+		return super.loadRecipes(parametersFile());
+	}
 
 	@Override
 	public void unInvoke()
@@ -123,7 +157,11 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 					{
 						if(activity == CraftingActivity.MENDING)
 						{
-							buildingI.setUsesRemaining(100);
+							if((buildingI instanceof BoardableShip)
+							&&(buildingI.usesRemaining()<95))
+								buildingI.setUsesRemaining(buildingI.usesRemaining()+5);
+							else
+								buildingI.setUsesRemaining(100);
 							CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.MENDER, 1, this);
 						}
 						else
@@ -153,7 +191,11 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 		super.unInvoke();
 	}
 
-	@Override public boolean supportsDeconstruction() { return true; }
+	@Override
+	public boolean supportsDeconstruction()
+	{
+		return true;
+	}
 
 	@Override
 	public boolean mayICraft(final Item I)
@@ -181,12 +223,21 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 		return false;
 	}
 
-	@Override public boolean supportsMending(Physical item){ return canMend(null,item,true);}
+	@Override
+	public boolean supportsMending(Physical item)
+	{
+		return canMend(null, item, true);
+	}
+
 	@Override
 	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
 	{
 		if(!super.canMend(mob,E,quiet))
 			return false;
+		if((E instanceof BoardableShip)
+		&&(E instanceof Rideable)
+		&&(((Rideable)E).rideBasis()==Rideable.RIDEABLE_ENTERIN))
+			return true;
 		if((!(E instanceof Item))||(!mayICraft((Item)E)))
 		{
 			if(!quiet)
@@ -214,11 +265,16 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 	{
 		if(super.checkStop(mob, commands))
 			return true;
-
+		
+		if(super.checkInfo(mob, commands))
+			return true;
+		
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,L("Shipwright what? Enter \"shipwright list\" for a list, \"shipwright scan\", \"shipwright learn <item>\", \"shipwright mend <item>\", \"shipwright title <text>\", \"shipwright desc <text>\", or \"shipwright stop\" to cancel."));
+			commonTell(mob,L("Shipwright what? Enter \"shipwright list\" for a list, \"shipwright info <item>\", \"shipwright scan\","
+						+ " \"shipwright learn <item>\", \"shipwright mend <item>\", \"shipwright title <text>\", \"shipwright desc <text>\","
+						+ " or \"shipwright stop\" to cancel."));
 			return false;
 		}
 		if((!auto)
@@ -245,10 +301,10 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 				mask="";
 			}
 			final int[] cols={
-					CMLib.lister().fixColWidth(16,mob.session()),
-					CMLib.lister().fixColWidth(5,mob.session()),
-					CMLib.lister().fixColWidth(8,mob.session())
-				};
+				CMLib.lister().fixColWidth(16,mob.session()),
+				CMLib.lister().fixColWidth(5,mob.session()),
+				CMLib.lister().fixColWidth(8,mob.session())
+			};
 			final StringBuffer buf=new StringBuffer(L("@x1 @x2 @x3 Wood required\n\r",CMStrings.padRight(L("Item"),cols[0]),CMStrings.padRight(L("Level"),cols[1]),CMStrings.padRight(L("Capacity"),cols[2])));
 			for(int r=0;r<recipes.size();r++)
 			{
@@ -283,7 +339,15 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 			key=null;
 			messedUp=false;
 			final Vector<String> newCommands=CMParms.parse(CMParms.combine(commands,1));
-			buildingI=getTarget(mob,mob.location(),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
+			final Room R=mob.location();
+			if(R.getArea() instanceof BoardableShip)
+			{
+				buildingI=getTarget(mob,CMLib.map().roomLocation(((BoardableShip)R.getArea()).getShipItem()),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
+				if(buildingI != ((BoardableShip)R.getArea()).getShipItem())
+					buildingI=null;
+			}
+			if(buildingI==null)
+				buildingI=getTarget(mob,mob.location(),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
 			if(!canMend(mob,buildingI,false))
 				return false;
 			activity = CraftingActivity.MENDING;
@@ -412,7 +476,8 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 			}
 
 			final String woodRequiredStr = foundRecipe.get(RCP_WOOD);
-			final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName),autoGenerate);
+			final int[] compData = new int[CF_TOTAL];
+			final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName),autoGenerate,compData);
 			if(componentsFoundList==null)
 				return false;
 			int woodRequired=CMath.s_int(woodRequiredStr);
@@ -424,11 +489,11 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 			final String misctype=foundRecipe.get(RCP_MISCTYPE);
 			bundling=misctype.equalsIgnoreCase("BUNDLE");
 			final int[][] data=fetchFoundResourceData(mob,
-												woodRequired,"wood",pm,
-												0,null,null,
-												false,
-												autoGenerate,
-												null);
+													woodRequired,"wood",pm,
+													0,null,null,
+													false,
+													autoGenerate,
+													null);
 			if(data==null)
 				return false;
 			woodRequired=data[0][FOUND_AMT];
@@ -445,7 +510,8 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 				return false;
 			}
 			duration=getDuration(CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),6);
-			String itemName=replacePercent(foundRecipe.get(RCP_FINALNAME),RawMaterial.CODES.NAME(data[0][FOUND_CODE])).toLowerCase();
+			buildingI.setMaterial(super.getBuildingMaterial(woodRequired, data, compData));
+			String itemName=replacePercent(foundRecipe.get(RCP_FINALNAME),RawMaterial.CODES.NAME(buildingI.material())).toLowerCase();
 			if(misctype.equalsIgnoreCase("BUNDLE"))
 				itemName="a "+woodRequired+"# "+itemName;
 			else
@@ -457,9 +523,8 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 			playSound="saw.wav";
 			buildingI.setDisplayText(L("@x1 lies here",itemName));
 			buildingI.setDescription(itemName+". ");
-			buildingI.basePhyStats().setWeight(getStandardWeight(woodRequired,bundling));
+			buildingI.basePhyStats().setWeight(getStandardWeight(woodRequired+compData[CF_AMOUNT],bundling));
 			buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE)));
-			buildingI.setMaterial(data[0][FOUND_CODE]);
 			buildingI.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL)));
 			buildingI.setSecretIdentity(getBrand(mob));
 			final long canContain=getContainerType(foundRecipe.get(RCP_CONTAINMASK));

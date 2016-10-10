@@ -33,7 +33,12 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class GenShield extends GenArmor implements Shield
 {
-	@Override public String ID(){	return "GenShield";}
+	@Override
+	public String ID()
+	{
+		return "GenShield";
+	}
+
 	public GenShield()
 	{
 		super();
@@ -49,7 +54,12 @@ public class GenShield extends GenArmor implements Shield
 		recoverPhyStats();
 		material=RawMaterial.RESOURCE_OAK;
 	}
-	@Override public boolean isGeneric(){return true;}
+
+	@Override
+	public boolean isGeneric()
+	{
+		return true;
+	}
 
 
 }

@@ -66,4 +66,24 @@ public class Sheep extends StdMOB
 		recoverCharStats();
 	}
 
+	@Override
+	public String description()
+	{
+		if(fetchEffect("TemporaryImmunity")!=null)
+			return L("The poor scrawny creature looks cold");
+		return super.description();
+	}
+	
+	@Override
+	public String displayText(MOB viewer)
+	{
+		final Room R=location();
+		if(R!=null)
+		{
+			if(R.fetchInhabitants("$sheep$").size()>1)
+				return L("A sheep is following the herd around.");
+		}
+		return super.displayText(viewer);
+	}
+	
 }

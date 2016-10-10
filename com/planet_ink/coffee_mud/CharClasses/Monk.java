@@ -115,6 +115,7 @@ public class Monk extends StdCharClass
 		maxStatAdj[CharStats.STAT_STRENGTH]=4;
 		maxStatAdj[CharStats.STAT_DEXTERITY]=4;
 	}
+
 	@Override
 	public void initializeClass()
 	{
@@ -210,7 +211,7 @@ public class Monk extends StdCharClass
 	}
 
 	private final String[] raceRequiredList=new String[]{
-			"Human","Humanoid","Elf","Goblinoid"
+		"Human","Humanoid","Elf","Goblinoid"
 	};
 
 	@Override

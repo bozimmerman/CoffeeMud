@@ -45,7 +45,7 @@ public class Vassals extends StdCommand
 		throws java.io.IOException
 	{
 		mob.tell(L("The following players are in your service:"));
-		List<PlayerLibrary.ThinPlayer> players=CMLib.database().vassals(mob,mob.Name());
+		List<PlayerLibrary.ThinPlayer> players=CMLib.database().vassals(mob.Name());
 		final StringBuilder str=new StringBuilder("");
 		str.append("[");
 		str.append(CMStrings.padRight(L("Race"),8)+" ");

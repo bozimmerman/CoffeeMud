@@ -14,8 +14,8 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
+
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 /*
@@ -80,7 +80,7 @@ public class GenElecWeapon extends StdElecWeapon
 	}
 
 	private final static String[] MYCODES={"MINRANGE","MAXRANGE","WEAPONTYPE","WEAPONCLASS",
-							  			   "POWERCAP","ACTIVATED","POWERREM","MANUFACTURER"};
+							  			   "POWERCAP","ACTIVATED","POWERREM","MANUFACTURER","TECHLEVEL"};
 
 	@Override
 	public String getStat(String code)
@@ -105,6 +105,8 @@ public class GenElecWeapon extends StdElecWeapon
 			return "" + powerRemaining();
 		case 7:
 			return "" + getManufacturerName();
+		case 8:
+			return "" + techLevel();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -141,6 +143,9 @@ public class GenElecWeapon extends StdElecWeapon
 			break;
 		case 7:
 			setManufacturerName(val);
+			break;
+		case 8:
+			setTechLevel(CMath.s_parseIntExpression(val));
 			break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);

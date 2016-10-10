@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.AchievementLoadFlag;
 import com.planet_ink.coffee_mud.Libraries.interfaces.CatalogLibrary.CataData;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -5810,7 +5811,7 @@ public class Import extends StdCommand
 						if(M.playerStats()!=null)
 							M.playerStats().setLastUpdated(System.currentTimeMillis());
 						CMLib.achievements().loadPlayerSkillAwards(M, M.playerStats());
-						CMLib.achievements().loadAccountAchievements(M);
+						CMLib.achievements().loadAccountAchievements(M,AchievementLoadFlag.NORMAL);
 						CMLib.database().DBCreateCharacter(M);
 						CMLib.players().addPlayer(M);
 						Log.sysOut("Import","Imported user: "+M.Name());
@@ -6704,14 +6705,14 @@ public class Import extends StdCommand
 	
 							}
 							if((linkRoom==null)&&(R.rawDoors()[dirCode]!=null))
-								returnAnError(session,"Room: "+R.roomID()+" re-linked "+Directions.getDirectionName(dirCode)+"ward to unknown room #"+linkRoomID+", area="+areaName,compileErrors,commands);
+								returnAnError(session,"Room: "+R.roomID()+" re-linked "+CMLib.directions().getDirectionName(dirCode)+"ward to unknown room #"+linkRoomID+", area="+areaName,compileErrors,commands);
 							R.rawDoors()[dirCode]=linkRoom;
 							if((linkRoom==null)&&(linkRoomID>=0))
 							{
 								if(multiArea)
 									laterLinks.put((R.roomID()+"/"+dirCode),"#"+linkRoomID);
 								else
-									returnAnError(session,"Room: "+R.roomID()+" links "+Directions.getDirectionName(dirCode)+"ward to unknown room #"+linkRoomID+", area="+areaName,compileErrors,commands);
+									returnAnError(session,"Room: "+R.roomID()+" links "+CMLib.directions().getDirectionName(dirCode)+"ward to unknown room #"+linkRoomID+", area="+areaName,compileErrors,commands);
 							}
 						}
 						else
@@ -7393,7 +7394,7 @@ public class Import extends StdCommand
 					}
 					final Room TR=getRoom(doneRooms,doneRooms,"NOAREA",dcode);
 					if((RR==null)&&(TR==null))
-						returnAnError(session,"Room "+R1.roomID()+" links to unknown room "+dcode+" in direction "+Directions.getDirectionName(dir)+".",compileErrors,commands);
+						returnAnError(session,"Room "+R1.roomID()+" links to unknown room "+dcode+" in direction "+CMLib.directions().getDirectionName(dir)+".",compileErrors,commands);
 					else
 					if(RR==null)
 					{

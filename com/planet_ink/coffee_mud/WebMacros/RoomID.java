@@ -35,7 +35,11 @@ import java.util.*;
 */
 public class RoomID extends StdWebMacro
 {
-	@Override public String name() { return "RoomID"; }
+	@Override
+	public String name()
+	{
+		return "RoomID";
+	}
 
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)

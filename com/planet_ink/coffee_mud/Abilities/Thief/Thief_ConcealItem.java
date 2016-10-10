@@ -32,23 +32,73 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Thief_ConcealItem extends ThiefSkill
 {
-	@Override public String ID() { return "Thief_ConcealItem"; }
-	private final static String localizedName = CMLib.lang().L("Conceal Item");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
-	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	private static final String[] triggerStrings =I(new String[] {"ITEMCONCEAL","ICONCEAL","CONCEALITEM"});
-	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALTHY;}
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
-	public int code=0;
+	@Override
+	public String ID()
+	{
+		return "Thief_ConcealItem";
+	}
 
-	@Override public int abilityCode(){return code;}
-	@Override public void setAbilityCode(int newCode){code=newCode;}
+	private final static String	localizedName	= CMLib.lang().L("Conceal Item");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ITEMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_ITEMS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "ITEMCONCEAL", "ICONCEAL", "CONCEALITEM" });
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_THIEF_SKILL | Ability.DOMAIN_STEALTHY;
+	}
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT | USAGE_MANA;
+	}
+
+	public int	code	= 0;
+
+	@Override
+	public int abilityCode()
+	{
+		return code;
+	}
+
+	@Override
+	public void setAbilityCode(int newCode)
+	{
+		code = newCode;
+	}
 
 	@Override
 	public void affectPhyStats(Physical host, PhyStats stats)
@@ -122,7 +172,7 @@ public class Thief_ConcealItem extends ThiefSkill
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,item,L("<S-NAME> attempt(s) to coneal <T-NAME>, but fail(s)."));
+			beneficialVisualFizzle(mob,item,L("<S-NAME> attempt(s) to conceal <T-NAME>, but fail(s)."));
 		return success;
 	}
 }

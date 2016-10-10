@@ -96,6 +96,7 @@ public class Trapper extends Thief
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Thief_SneakAttack",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Thief_Listen",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Thief_WildernessSounds",false,CMParms.parseSemicolons("Thief_Listen", true),null);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Thief_AutoMarkTraps",false,CMParms.parseSemicolons("Thief_MarkTrapped;Thief_DetectTraps", true),null);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Thief_AutoDetectTraps",false,CMParms.parseSemicolons("Thief_DetectTraps", true),null);
@@ -108,6 +109,7 @@ public class Trapper extends Thief
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Thief_Sap",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Thief_Observation",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Skill_WildernessLore",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Thief_Lure",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Thief_PlantItem",false);

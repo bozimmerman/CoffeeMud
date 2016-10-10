@@ -142,7 +142,7 @@ public class CMClass extends ClassLoader
 	/** stat constant for clan items type objects */
 	CLANITEM("com.planet_ink.coffee_mud.Items.interfaces.ClanItem"),
 	/** stat constant for misc tech type objects */
-	TECH("com.planet_ink.coffee_mud.Items.interfaces.Electronics"),
+	TECH("com.planet_ink.coffee_mud.Items.interfaces.Technical"),
 	/** stat constant for misc tech type objects */
 	COMPTECH("com.planet_ink.coffee_mud.Items.interfaces.TechComponent"),
 	/** stat constant for misc tech type objects */
@@ -793,6 +793,12 @@ public class CMClass extends ClassLoader
 	 * @return a new instance of a common object of the given ID
 	 */
 	public static final CMCommon	getCommon(final String calledThis){return (CMCommon)getNewGlobal(c().common,calledThis);}
+	/**
+	 * Returns the prototype instance of a common object of the given ID from your classloader
+	 * @param calledThis the ID() of the object to return
+	 * @return the prototype instance of a common object of the given ID
+	 */
+	public static final CMCommon	getCommonPrototype(final String calledThis){return (CMCommon)getGlobal(c().common,calledThis);}
 	/**
 	 * Returns a reference to the prototype for the command of the given ID from your classloader
 	 * @param word the ID() of the object to return
@@ -2612,16 +2618,18 @@ public class CMClass extends ClassLoader
 					Log.sysOut(Thread.currentThread().getName(),"Prayers loaded    : "+tempV.size());
 					c.abilities.addAll(tempV);
 
+					tempV=loadVectorListToObj(prefix+"Abilities/Thief/","%DEFAULT%",CMObjectType.ABILITY.ancestorName);
+					//size+=tempV.size();
+					c.abilities.addAll(tempV);
+					if(tempV.size()>0)
+						Log.sysOut(Thread.currentThread().getName(),"Thief Skills      : "+tempV.size());
+
 					tempV=loadVectorListToObj(prefix+"Abilities/Archon/","%DEFAULT%",CMObjectType.ABILITY.ancestorName);
 					size+=tempV.size();
 					c.abilities.addAll(tempV);
 
 					tempV=loadVectorListToObj(prefix+"Abilities/Skills/","%DEFAULT%",CMObjectType.ABILITY.ancestorName);
 					size=tempV.size();
-					c.abilities.addAll(tempV);
-
-					tempV=loadVectorListToObj(prefix+"Abilities/Thief/","%DEFAULT%",CMObjectType.ABILITY.ancestorName);
-					size+=tempV.size();
 					c.abilities.addAll(tempV);
 
 					tempV=loadVectorListToObj(prefix+"Abilities/Common/","%DEFAULT%",CMObjectType.ABILITY.ancestorName);

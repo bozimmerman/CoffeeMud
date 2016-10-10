@@ -115,10 +115,10 @@ public class GenElecCompSensor extends StdElecCompSensor
 			setManufacturerName(val);
 			break;
 		case 4:
-			setInstalledFactor(CMath.s_float(val));
+			setInstalledFactor((float)CMath.s_parseMathExpression(val));
 			break;
 		case 5:
-			setRechargeRate(CMath.s_parseLongExpression(val));
+			setRechargeRate((float)CMath.s_parseMathExpression(val));
 			break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);

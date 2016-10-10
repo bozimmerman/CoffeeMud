@@ -35,7 +35,11 @@ import java.util.*;
 */
 public class JournalMessageNext extends StdWebMacro
 {
-	@Override public String name() { return "JournalMessageNext"; }
+	@Override
+	public String name()
+	{
+		return "JournalMessageNext";
+	}
 
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)

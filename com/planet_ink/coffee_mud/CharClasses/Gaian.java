@@ -240,7 +240,11 @@ public class Gaian extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Chant_GrowOak",true);
 	}
 
-	@Override public int availabilityCode(){return Area.THEME_FANTASY;}
+	@Override
+	public int availabilityCode()
+	{
+		return Area.THEME_FANTASY;
+	}
 
 	@Override
 	public boolean isValidClassDivider(MOB killer, MOB killed, MOB mob, Set<MOB> followers)
@@ -316,6 +320,7 @@ public class Gaian extends StdCharClass
 				}
 				else
 				if(room.getArea().getClimateObj().canSeeTheSun(room))
+				{
 					switch(room.getArea().getClimateObj().weatherType(room))
 					{
 					case Climate.WEATHER_BLIZZARD:
@@ -332,6 +337,7 @@ public class Gaian extends StdCharClass
 						affectableState.setMovement(affectableState.getMovement()+(affectableState.getMovement()/4));
 						break;
 					}
+				}
 			}
 		}
 
@@ -383,6 +389,7 @@ public class Gaian extends StdCharClass
 					affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-((classLevel/5)+1));
 				else
 				if(room.getArea().getClimateObj().canSeeTheSun(room))
+				{
 					switch(room.getArea().getClimateObj().weatherType(room))
 					{
 					case Climate.WEATHER_BLIZZARD:
@@ -398,6 +405,7 @@ public class Gaian extends StdCharClass
 						affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+((classLevel/5)+1));
 						break;
 					}
+				}
 			}
 		}
 	}

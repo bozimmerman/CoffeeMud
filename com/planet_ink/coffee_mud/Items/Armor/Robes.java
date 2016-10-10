@@ -33,7 +33,12 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class Robes extends StdArmor
 {
-	@Override public String ID(){	return "Robes";}
+	@Override
+	public String ID()
+	{
+		return "Robes";
+	}
+
 	public Robes()
 	{
 		super();
@@ -50,6 +55,4 @@ public class Robes extends StdArmor
 		recoverPhyStats();
 		material=RawMaterial.RESOURCE_COTTON;
 	}
-
-
 }

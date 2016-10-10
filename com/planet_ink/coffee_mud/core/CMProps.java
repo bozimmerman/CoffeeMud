@@ -191,7 +191,8 @@ public class CMProps extends Properties
 		CHANNELBACKLOG,
 		BLACKLISTFILE,
 		REMORTMASK,
-		REMORTRETAIN
+		REMORTRETAIN,
+		RACEMIXING
 	}
 
 	/**
@@ -209,7 +210,7 @@ public class CMProps extends Properties
 		DAYSCLANDEATH,
 		MINCLANLEVEL,
 		MANACOST,
-		//DBPINGINTMINS,
+		DAYSCLANOVERTHROW,
 		//LANGTRAINCOST,
 		//SKILLTRAINCOST,
 		//COMMONPRACCOST,
@@ -279,7 +280,17 @@ public class CMProps extends Properties
 		DUELTICKDOWN,
 		BASEMINSTAT,
 		DEFSOCTIME,
-		DEFCOMSOCTIME,
+		DEFCOMSOCTIME
+		;
+		
+		public static final int	EXVIEW_DEFAULT		= 0;
+		public static final int	EXVIEW_PARAGRAPH	= 1;
+		public static final int	EXVIEW_MIXED		= 2;
+		public static final int	EXVIEW_BRIEF		= 3;
+		
+		public static final int	EQVIEW_DEFAULT		= 0;
+		public static final int	EQVIEW_MIXED		= 1;
+		public static final int	EQVIEW_PARAGRAPH	= 2;
 	}
 
 	/**
@@ -976,7 +987,7 @@ public class CMProps extends Properties
 					return ""+CMParms.toListString(p().whiteLists.get(CMath.s_valueOf(c, varName)));
 			}
 		}
-		return "";
+		return p().getStr(varName,"");
 	}
 	
 	/**
@@ -2058,6 +2069,7 @@ public class CMProps extends Properties
 		setUpCosts("COMMONCOST",commonCost,CMParms.parseCommas(getStr("COMMONCOST","1 TRAIN"),true));
 		setUpCosts("SKILLCOST",skillsCost,CMParms.parseCommas(getStr("SKILLCOST","1 TRAIN"),true));
 		setUpCosts("LANGCOST",languageCost,CMParms.parseCommas(getStr("LANGCOST","3 PRACTICE"),true));
+		setVar(Str.RACEMIXING,getStr("RACEMIXING"));
 
 		setUpLowVar(Str.BLACKLISTFILE,getStr("BLACKLISTFILE","/resources/ipblock.ini"));
 		setWhitelist(CMProps.WhiteList.CONNS,getStr("WHITELISTIPSCONN"));
@@ -2096,23 +2108,23 @@ public class CMProps extends Properties
 			setIntVar(Int.COMBATSYSTEM,CombatLibrary.CombatSystem.DEFAULT.ordinal());
 		s=getStr("EQVIEW");
 		if("paragraph".equalsIgnoreCase(s))
-			setIntVar(Int.EQVIEW,2);
+			setIntVar(Int.EQVIEW,CMProps.Int.EQVIEW_PARAGRAPH);
 		else
 		if("mixed".equalsIgnoreCase(s))
-			setIntVar(Int.EQVIEW,1);
+			setIntVar(Int.EQVIEW,CMProps.Int.EQVIEW_MIXED);
 		else
-			setIntVar(Int.EQVIEW,0);
+			setIntVar(Int.EQVIEW,CMProps.Int.EQVIEW_DEFAULT);
 		s=getStr("EXVIEW");
 		if("brief".equalsIgnoreCase(s))
-			setIntVar(Int.EXVIEW,3);
+			setIntVar(Int.EXVIEW,CMProps.Int.EXVIEW_BRIEF);
 		else
 		if("paragraph".equalsIgnoreCase(s))
-			setIntVar(Int.EXVIEW,1);
+			setIntVar(Int.EXVIEW,CMProps.Int.EXVIEW_PARAGRAPH);
 		else
 		if("mixed".equalsIgnoreCase(s))
-			setIntVar(Int.EXVIEW,2);
+			setIntVar(Int.EXVIEW,CMProps.Int.EXVIEW_MIXED);
 		else
-			setIntVar(Int.EXVIEW,0);
+			setIntVar(Int.EXVIEW,CMProps.Int.EXVIEW_DEFAULT);
 
 		s=getStr("EXPIRATIONS");
 		List<String> V=CMParms.parseCommas(s,false);
@@ -2160,6 +2172,7 @@ public class CMProps extends Properties
 		setIntVar(Int.MAXCLANMEMBERS,getStr("MAXCLANMEMBERS"));
 		setIntVar(Int.CLANCOST,getStr("CLANCOST"));
 		setIntVar(Int.DAYSCLANDEATH,getStr("DAYSCLANDEATH"));
+		setIntVar(Int.DAYSCLANOVERTHROW,getStr("DAYSCLANOVERTHROW","952"));
 		setIntVar(Int.MINCLANLEVEL,getStr("MINCLANLEVEL"));
 		setIntVar(Int.LASTPLAYERLEVEL,getStr("LASTPLAYERLEVEL"));
 		setIntVar(Int.JOURNALLIMIT,getStr("JOURNALLIMIT"));
@@ -2224,7 +2237,7 @@ public class CMProps extends Properties
 		stateVar=getStr("STARTMOVE");
 		if((stateVar.length()>0)&&(CMath.isNumber(stateVar)))
 			setIntVar(Int.STARTMOVE,CMath.s_int(stateVar));
-
+		
 		setIntVar(Int.MAXITEMSHOWN,getStr("MAXITEMSHOWN"));
 		setIntVar(Int.MUDSTATE,getStr("MUDSTATE"));
 
@@ -2257,7 +2270,15 @@ public class CMProps extends Properties
 		setUpLowVar(Str.FORMULA_MANARECOVER, getStr("FORMULA_MANARECOVER","25+(((@x1 - (@xx*@x3/2.0) - (@xx*@x4/2.0) - (@xx*@x5/2.0))*@x2/50.0) + (@xx*@x6*.5) + (@xx/4.0*@x7) - (@xx/2.0*@x9))"));
 		setUpLowVar(Str.FORMULA_MOVESRECOVER, getStr("FORMULA_MOVESRECOVER","25+(((@x1 - (@xx*@x3/2.0) - (@xx*@x4/2.0) - (@xx*@x5/2.0))*@x2/10.0) + (@xx*@x6*.5) + (@xx/4.0*@x7) + (@xx/4.0*@x8) - (@xx/2.0*@x9))"));
 
-		Directions.instance().reInitialize(getInt("DIRECTIONS"));
+		final LanguageLibrary lang = CMLib.lang();
+		Directions.instance().reInitialize(getInt("DIRECTIONS"), new Directions.DirectionWordTranslator()
+		{
+			@Override
+			public String translate(String string)
+			{
+				return lang.L(string);
+			}
+		});
 
 		resetSecurityVars();
 		statCodeExtensions = getStrsStarting("EXTVAR_");

@@ -2,9 +2,12 @@ package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.core.exceptions.BadEmailAddressException;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMProps.Int;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.AchievementLoadFlag;
 import com.planet_ink.coffee_mud.Libraries.interfaces.CharCreationLibrary.LoginSession;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZMask;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -51,11 +54,14 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		return "CharCreation";
 	}
 
-	public Map<String,String>		startRooms			= new Hashtable<String,String>();
-	public Map<String,String>		deathRooms			= new Hashtable<String,String>();
-	public Map<String,String>		bodyRooms			= new Hashtable<String,String>();
-	public Pair<String,Integer>[]	randomNameVowels 	= null;
-	public Pair<String,Integer>[]	randomNameConsonants= null;
+	public Map<String, String>				startRooms			= new Hashtable<String, String>();
+	public PairList<CompiledZMask, String>	startRoomMasks		= new PairVector<CompiledZMask, String>();
+	public Map<String, String>				deathRooms			= new Hashtable<String, String>();
+	public PairList<CompiledZMask, String>	deathRoomMasks		= new PairVector<CompiledZMask, String>();
+	public Map<String, String>				bodyRooms			= new Hashtable<String, String>();
+	public PairList<CompiledZMask, String>	bodyRoomMasks		= new PairVector<CompiledZMask, String>();
+	public Pair<String, Integer>[]			randomNameVowels	= null;
+	public Pair<String, Integer>[]			randomNameConsonants= null;
 
 	protected final String RECONFIRMSTR="\n\r^WTry entering ^HY^W or ^HN^W: ";
 	
@@ -272,7 +278,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	}
 
 	@Override
-	public List<Race> raceQualifies(MOB mob, int theme)
+	public List<Race> raceQualifies(int theme)
 	{
 		final Vector<Race> qualRaces = new Vector<Race>();
 		final HashSet<String> doneRaces=new HashSet<String>();
@@ -381,6 +387,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		if(S==null)
 			return;
 
+		mob.clearCommandQueue();
 		S.initTelnetMode(mob.getAttributesBitmap());
 		if((mob.isAttributeSet(MOB.Attrib.MXP))
 		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MXP)))
@@ -397,6 +404,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		else
 		if(S.getClientTelnetMode(Session.TELNET_MXP))
 		{
+			S.rawOut("\033[7z\n\r"); // for mudlet mostly.
 			S.changeTelnetMode(Session.TELNET_MXP,false);
 			S.setClientTelnetMode(Session.TELNET_MXP,false);
 		}
@@ -867,7 +875,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		rpt.append("\r\n").append("RACES");
 		int numRaces = 0;
 		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.RACES))
-			numRaces=CMLib.login().raceQualifies(null, CMProps.getIntVar(CMProps.Int.MUDTHEME)&0x07).size();
+			numRaces=CMLib.login().raceQualifies(CMProps.getIntVar(CMProps.Int.MUDTHEME)&0x07).size();
 		rpt.append("\t").append(Long.toString(numRaces));
 		rpt.append("\r\n").append("SKILLS");
 		rpt.append("\t").append(Long.toString(CMLib.ableMapper().numMappedAbilities()));
@@ -1861,35 +1869,35 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				loginObj.state=LoginState.ACCTMENU_SHOWMENU;
 				return null;
 			}
-			PlayerLibrary.ThinPlayer delMeChk = null;
+			PlayerLibrary.ThinPlayer delPlayerChk = null;
 			for(final Enumeration<PlayerLibrary.ThinPlayer> p = acct.getThinPlayers(); p.hasMoreElements();)
 			{
 				final PlayerLibrary.ThinPlayer player = p.nextElement();
 				if(player.name().equalsIgnoreCase(parms[1]))
-					delMeChk=player;
+					delPlayerChk=player;
 			}
 			final String properName=CMStrings.capitalizeAndLower(parms[1]);
-			if(delMeChk==null)
+			if(delPlayerChk==null)
 			{
 				acct.delPlayer(properName);
 				session.println(L("The character '@x1' is unknown.",CMStrings.capitalizeAndLower(parms[1])));
 				loginObj.state=LoginState.ACCTMENU_SHOWMENU;
 				return null;
 			}
-			final PlayerLibrary.ThinPlayer delMe = delMeChk;
+			final PlayerLibrary.ThinPlayer delPlayer = delPlayerChk;
 			if((parms.length>2)&&(parms[parms.length-1].equalsIgnoreCase("<CONFIRMED>")))
 			{
-				final MOB M=CMLib.players().getLoadPlayer(delMe.name());
+				final MOB M=CMLib.players().getLoadPlayer(delPlayer.name());
 				if(M!=null)
 				{
 					CMLib.players().obliteratePlayer(M, true, false);
 				}
-				acct.delPlayer(delMe.name());
-				session.println(L("@x1 has been deleted.",delMe.name()));
+				acct.delPlayer(delPlayer.name());
+				session.println(L("@x1 has been deleted.",delPlayer.name()));
 			}
 			else
 			{
-				session.promptPrint(L("Are you sure you want to retire and delete '@x1' (y/N)?",delMe.name()));
+				session.promptPrint(L("Are you sure you want to retire and delete '@x1' (y/N)?",delPlayer.name()));
 				loginObj.state=LoginState.ACCTMENU_CONFIRMCOMMAND;
 				return LoginResult.INPUT_REQUIRED;
 			}
@@ -1910,14 +1918,14 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				loginObj.state=LoginState.ACCTMENU_SHOWMENU;
 				return null;
 			}
-			PlayerLibrary.ThinPlayer delMe = null;
+			PlayerLibrary.ThinPlayer delPlayer = null;
 			for(final Enumeration<PlayerLibrary.ThinPlayer> p = acct.getThinPlayers(); p.hasMoreElements();)
 			{
 				final PlayerLibrary.ThinPlayer player = p.nextElement();
 				if(player.name().equalsIgnoreCase(parms[1]))
-					delMe=player;
+					delPlayer=player;
 			}
-			if(delMe==null)
+			if(delPlayer==null)
 			{
 				session.println(L("The character '@x1' is unknown.",CMStrings.capitalizeAndLower(parms[1])));
 				loginObj.state=LoginState.ACCTMENU_SHOWMENU;
@@ -1938,7 +1946,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			}
 			if((parms.length>3)&&(parms[parms.length-1].equalsIgnoreCase("<CONFIRMED>")))
 			{
-				final MOB M=CMLib.players().getLoadPlayer(delMe.name());
+				final MOB M=CMLib.players().getLoadPlayer(delPlayer.name());
 				if(M!=null)
 				{
 					acct.delPlayer(M);
@@ -1948,12 +1956,12 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 					M.playerStats().setLastUpdated(System.currentTimeMillis());
 					M.playerStats().setPassword(password);
 					CMLib.database().DBUpdatePlayer(M);
-					session.println(L("@x1 has been exported from your account.",delMe.name()));
+					session.println(L("@x1 has been exported from your account.",delPlayer.name()));
 				}
 			}
 			else
 			{
-				session.promptPrint(L("Are you sure you want to remove character  '@x1' from your account (y/N)?",delMe.name()));
+				session.promptPrint(L("Are you sure you want to remove character  '@x1' from your account (y/N)?",delPlayer.name()));
 				loginObj.state=LoginState.ACCTMENU_CONFIRMCOMMAND;
 				return LoginResult.INPUT_REQUIRED;
 			}
@@ -2467,7 +2475,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		}
 		final StringBuffer listOfRaces=new StringBuffer("[");
 		boolean tmpFirst = true;
-		final List<Race> qualRaces = raceQualifies(mob,loginObj.theme);
+		final List<Race> qualRaces = raceQualifies(loginObj.theme);
 		for(final Race R : qualRaces)
 		{
 			if (!tmpFirst)
@@ -2638,6 +2646,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			mob.recoverCharStats();
 			loginObj.state=LoginState.CHARCR_STATSTART;
 		}
+		CMLib.achievements().loadAccountAchievements(mob,AchievementLoadFlag.CHARCR_PRELOAD);
 		loginObj.baseStats = (CharStats)mob.baseCharStats().copyOf();
 		return null;
 	}
@@ -3259,7 +3268,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			mob.bringToLife(mob.getStartRoom(),true);
 			mob.location().showOthers(mob,mob.location(),CMMsg.MASK_ALWAYS|CMMsg.MSG_ENTER,L("<S-NAME> appears!"));
 		}
-		CMLib.achievements().loadAccountAchievements(mob);
+		CMLib.achievements().loadAccountAchievements(mob,AchievementLoadFlag.CHARCR_POSTLOAD);
 		mob.playerStats().leveledDateTime(0);
 		CMLib.database().DBCreateCharacter(mob);
 		CMLib.players().addPlayer(mob);
@@ -3479,6 +3488,23 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				R.showOthers(follower,R,CMMsg.MASK_ALWAYS|CMMsg.MSG_ENTER,L("<S-NAME> appears!"));
 			}
 		}
+		@SuppressWarnings("unchecked")
+		List<Triad<String,Long,Integer>> accessed= (LinkedList<Triad<String,Long,Integer>>)Resources.staticInstance()._getResource("SYSTEM_IPACCESS_STATS");
+		if(accessed != null)
+		{
+			synchronized(accessed)
+			{
+				for(final Iterator<Triad<String,Long,Integer>> i=accessed.iterator();i.hasNext();)
+				{
+					final Triad<String,Long,Integer> triad=i.next();
+					if(triad.first.equals(session.getAddress()))
+					{
+						i.remove();
+						break;
+					}
+				}
+			}
+		}
 		final PlayerStats pstats = mob.playerStats();
 		if(((pstats.getEmail()==null)||(pstats.getEmail().length()==0))
 		&&(!CMProps.getVar(CMProps.Str.EMAILREQ).toUpperCase().startsWith("OPTION")))
@@ -3620,7 +3646,22 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		String deity=mob.getWorshipCharID().toUpperCase();
 		deity=deity.replace(' ','_');
 		final String align=CMLib.flags().getAlignmentName(mob);
-		String roomID=startRooms.get(race);
+		
+		String roomID=null;
+		if((startRoomMasks.size()>0)&&(mob.isPlayer()))
+		{
+			for(Pair<CompiledZMask,String> p : startRoomMasks)
+			{
+				if(CMLib.masking().maskCheck(p.first, mob, true))
+				{
+					roomID=p.second;
+					break;
+				}
+			}
+		}
+		
+		if((roomID==null)||(roomID.length()==0))
+			roomID=startRooms.get(race);
 		if((roomID==null)||(roomID.length()==0))
 			roomID=startRooms.get(realrace);
 		if(((roomID==null)||(roomID.length()==0)))
@@ -3641,6 +3682,10 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		}
 		if(((roomID==null)||(roomID.length()==0))&&(deity.length()>0))
 			roomID=startRooms.get(deity);
+
+		if(((roomID==null)||(roomID.length()==0)))
+			roomID=startRooms.get(""+mob.phyStats().level());
+
 		if((roomID==null)||(roomID.length()==0))
 			roomID=startRooms.get("ALL");
 
@@ -3664,7 +3709,23 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		String deity=mob.getWorshipCharID().toUpperCase();
 		deity=deity.replace(' ','_');
 		final String align=CMLib.flags().getAlignmentName(mob);
-		String roomID=deathRooms.get(race);
+		
+		String roomID=null;
+		if((deathRoomMasks.size()>0)
+		&&(mob.isPlayer()))
+		{
+			for(Pair<CompiledZMask,String> p : deathRoomMasks)
+			{
+				if(CMLib.masking().maskCheck(p.first, mob, true))
+				{
+					roomID=p.second;
+					break;
+				}
+			}
+		}
+		
+		if(((roomID==null)||(roomID.length()==0)))
+			roomID=deathRooms.get(race);
 		if(((roomID==null)||(roomID.length()==0)))
 			roomID=deathRooms.get(align);
 		if(((roomID==null)||(roomID.length()==0)))
@@ -3683,6 +3744,10 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		}
 		if(((roomID==null)||(roomID.length()==0))&&(deity.length()>0))
 			roomID=deathRooms.get(deity);
+
+		if(((roomID==null)||(roomID.length()==0)))
+			roomID=deathRooms.get(""+mob.phyStats().level());
+		
 		if((roomID==null)||(roomID.length()==0))
 			roomID=deathRooms.get("ALL");
 
@@ -3723,7 +3788,22 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		String deity=mob.getWorshipCharID().toUpperCase();
 		deity=deity.replace(' ','_');
 		final String align=CMLib.flags().getAlignmentName(mob);
-		String roomID=bodyRooms.get(race);
+		
+		String roomID=null;
+		if((bodyRoomMasks.size()>0)&&(mob.isPlayer()))
+		{
+			for(Pair<CompiledZMask,String> p : bodyRoomMasks)
+			{
+				if(CMLib.masking().maskCheck(p.first, mob, true))
+				{
+					roomID=p.second;
+					break;
+				}
+			}
+		}
+		
+		if((roomID==null)||(roomID.length()==0))
+			roomID=bodyRooms.get(race);
 		if((roomID==null)||(roomID.length()==0))
 			roomID=bodyRooms.get(realrace);
 		if(((roomID==null)||(roomID.length()==0)))
@@ -3744,6 +3824,10 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		}
 		if(((roomID==null)||(roomID.length()==0))&&(deity.length()>0))
 			roomID=bodyRooms.get(deity);
+		
+		if(((roomID==null)||(roomID.length()==0)))
+			roomID=bodyRooms.get(""+mob.phyStats().level());
+		
 		if((roomID==null)||(roomID.length()==0))
 			roomID=bodyRooms.get("ALL");
 
@@ -3783,13 +3867,46 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		return val;
 	}
 
-	protected void pageRooms(CMProps page, Map<String, String> table, String start)
+	protected void pageRooms(CMProps page, Map<String, String> table, PairList<CompiledZMask,String> masks, String start)
 	{
+		List<Integer> ints=new ArrayList<Integer>();
 		for(final Enumeration<Object> i=page.keys();i.hasMoreElements();)
 		{
 			final String k=(String)i.nextElement();
 			if(k.startsWith(start+"_"))
-				table.put(k.substring(start.length()+1),page.getProperty(k));
+			{
+				final String kr=k.substring(start.length()+1);
+				if(kr.startsWith("MASK"))
+				{
+					final String m=page.getProperty(k);
+					int x=m.indexOf('=');
+					if(x<0)
+						Log.errOut("INI Entry '"+k+m+"' is malformed!");
+					else
+						masks.add(CMLib.masking().maskCompile(m.substring(x+1).trim()), m.substring(0,x).trim());
+				}
+				else
+				if(CMath.isInteger(kr))
+					ints.add(Integer.valueOf(CMath.s_int(kr)));
+				else
+					table.put(kr,page.getProperty(k));
+			}
+		}
+		Collections.sort(ints);
+		int lastPlayerLevel = CMath.s_int(page.getProperty(Int.LASTPLAYERLEVEL.name()))+10;
+		for(int i=ints.size()-1;i>=0;i--)
+		{
+			final Integer I=ints.get(i);
+			final String k=start+"_"+I.toString();
+			final int upTo=(lastPlayerLevel > I.intValue()) ? lastPlayerLevel : (I.intValue()+1);
+			if(page.containsKey(k))
+			{
+				for(int lvl=I.intValue();lvl<upTo;lvl++)
+				{
+					if(!table.containsKey(""+lvl))
+						table.put(""+lvl,page.getProperty(k));
+				}
+			}
 		}
 		final String thisOne=page.getProperty(start);
 		if((thisOne!=null)&&(thisOne.length()>0))
@@ -3800,21 +3917,24 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	public void initStartRooms(CMProps page)
 	{
 		startRooms=new Hashtable<String,String>();
-		pageRooms(page,startRooms,"START");
+		startRoomMasks=new PairVector<CompiledZMask,String>();
+		pageRooms(page,startRooms,startRoomMasks,"START");
 	}
 
 	@Override
 	public void initDeathRooms(CMProps page)
 	{
 		deathRooms=new Hashtable<String,String>();
-		pageRooms(page,deathRooms,"DEATH");
+		deathRoomMasks=new PairVector<CompiledZMask,String>();
+		pageRooms(page,deathRooms,deathRoomMasks,"DEATH");
 	}
 
 	@Override
 	public void initBodyRooms(CMProps page)
 	{
 		bodyRooms=new Hashtable<String,String>();
-		pageRooms(page,bodyRooms,"MORGUE");
+		bodyRoomMasks=new PairVector<CompiledZMask,String>();
+		pageRooms(page,bodyRooms,bodyRoomMasks,"MORGUE");
 	}
 
 	@Override
@@ -3827,18 +3947,19 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	}
 
 	@Override
-	public void promptPlayerStats(int theme, MOB mob, Session session, int bonusPoints) throws IOException
+	public void promptPlayerStats(int theme, MOB mob, int timeoutSecs, Session session, int bonusPoints) throws IOException
 	{
 		final LoginSessionImpl loginObj=new LoginSessionImpl();
 		if(mob.playerStats()!=null)
 			loginObj.acct=mob.playerStats().getAccount();
 		loginObj.login=mob.Name();
 		loginObj.mob=mob;
+		loginObj.theme=theme;
 		LoginResult res=charcrStatInit(loginObj, session, bonusPoints);
 		while(!session.isStopped())
 		{
 			if(res==LoginResult.INPUT_REQUIRED)
-				loginObj.lastInput=session.blockingIn(90000, true);
+				loginObj.lastInput=session.blockingIn(timeoutSecs*1000, true);
 			if(loginObj.state==LoginState.CHARCR_STATDONE)
 				return;
 			if(loginObj.state.toString().startsWith("CHARCR_STAT"))
@@ -3857,6 +3978,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			loginObj.acct=pStats.getAccount();
 		loginObj.login=mob.Name();
 		loginObj.mob=mob;
+		loginObj.theme=theme;
 		LoginResult res=charcrClassInit(loginObj, session);
 		while((session!=null)&&(!session.isStopped()))
 		{
@@ -3870,6 +3992,56 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				return mob.baseCharStats().getCurrentClass();
 		}
 		return mob.baseCharStats().getCurrentClass();
+	}
+
+	@Override
+	public Race promptRace(int theme, MOB mob, Session session) throws IOException
+	{
+		final LoginSessionImpl loginObj=new LoginSessionImpl();
+		final PlayerStats pStats=mob.playerStats();
+		if(pStats!=null)
+			loginObj.acct=pStats.getAccount();
+		loginObj.login=mob.Name();
+		loginObj.mob=mob;
+		loginObj.theme=theme;
+		LoginResult res=charcrRaceStart(loginObj, session);
+		while((session!=null)&&(!session.isStopped()))
+		{
+			if(res==LoginResult.INPUT_REQUIRED)
+				loginObj.lastInput=session.blockingIn(90000, true);
+			if(loginObj.state==LoginState.CHARCR_RACEDONE)
+				return mob.baseCharStats().getMyRace();
+			if(loginObj.state.toString().startsWith("CHARCR_RACE"))
+				res=loginSubsystem(loginObj, session);
+			else
+				return mob.baseCharStats().getMyRace();
+		}
+		return mob.baseCharStats().getMyRace();
+	}
+
+	@Override
+	public char promptGender(int theme, MOB mob, Session session) throws IOException
+	{
+		final LoginSessionImpl loginObj=new LoginSessionImpl();
+		final PlayerStats pStats=mob.playerStats();
+		if(pStats!=null)
+			loginObj.acct=pStats.getAccount();
+		loginObj.login=mob.Name();
+		loginObj.mob=mob;
+		loginObj.theme=theme;
+		LoginResult res=charcrGenderStart(loginObj, session);
+		while((session!=null)&&(!session.isStopped()))
+		{
+			if(res==LoginResult.INPUT_REQUIRED)
+				loginObj.lastInput=session.blockingIn(90000, true);
+			if(loginObj.state==LoginState.CHARCR_GENDERDONE)
+				return (char)mob.baseCharStats().getStat(CharStats.STAT_GENDER);
+			if(loginObj.state.toString().startsWith("CHARCR_GENDER"))
+				res=loginSubsystem(loginObj, session);
+			else
+				return (char)mob.baseCharStats().getStat(CharStats.STAT_GENDER);
+		}
+		return (char)mob.baseCharStats().getStat(CharStats.STAT_GENDER);
 	}
 
 	@Override

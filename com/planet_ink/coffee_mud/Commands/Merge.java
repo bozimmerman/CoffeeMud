@@ -589,7 +589,7 @@ public class Merge extends StdCommand
 		}
 	}
 
-	private boolean amMerging(CMClass.CMObjectType doType, MaskingLibrary.CompiledZapperMask mask, Environmental E)
+	private boolean amMerging(CMClass.CMObjectType doType, MaskingLibrary.CompiledZMask mask, Environmental E)
 	{
 		if(amMergingType(doType,E))
 		{
@@ -692,7 +692,7 @@ public class Merge extends StdCommand
 		final String ignore=CMParms.getParmStr(theRest,"IGNORE","");
 		final String maskStr=CMParms.getParmStr(theRest,"MASK","");
 		final Set<String> ignores=new SHashSet(CMParms.parseCommas(ignore.toUpperCase(),true));
-		final MaskingLibrary.CompiledZapperMask mask=CMLib.masking().maskCompile(maskStr);
+		final MaskingLibrary.CompiledZMask mask=CMLib.masking().maskCompile(maskStr);
 		if(dbClass.length()==0)
 		{
 			mob.tell(L("This command requires DBCLASS= to be set."));

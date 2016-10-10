@@ -537,30 +537,33 @@ public class StdRoom implements Room
 						if((thatRoom!=null)&&(getRawExit(d)!=null))
 						{
 							thatRoom=CMLib.map().getRoom(thatRoom);
-							thatRoom.giveASky(depth+1);
-							final Room thatSky=thatRoom.rawDoors()[Directions.UP];
-							if((thatSky!=null)
-							&&(thatSky.roomID().length()==0)
-							&&((thatSky instanceof EndlessThinSky)||(thatSky instanceof EndlessSky)))
+							if(thatRoom != null)
 							{
-								Exit xo=getRawExit(d);
-								if(xo!=null)
+								thatRoom.giveASky(depth+1);
+								final Room thatSky=thatRoom.rawDoors()[Directions.UP];
+								if((thatSky!=null)
+								&&(thatSky.roomID().length()==0)
+								&&((thatSky instanceof EndlessThinSky)||(thatSky instanceof EndlessSky)))
 								{
-									if(xo.hasADoor())
-										xo=dnE;
-									sky.rawDoors()[d]=thatSky;
-									sky.setRawExit(d,xo);
+									Exit xo=getRawExit(d);
+									if(xo!=null)
+									{
+										if(xo.hasADoor())
+											xo=dnE;
+										sky.rawDoors()[d]=thatSky;
+										sky.setRawExit(d,xo);
+									}
+									final int opDir=Directions.getOpDirectionCode(d);
+									xo=thatRoom.getRawExit(opDir);
+									if(xo!=null)
+									{
+										if(xo.hasADoor())
+											xo=dnE;
+										thatSky.rawDoors()[opDir]=sky;
+										thatSky.setRawExit(opDir,xo);
+									}
+									((GridLocale)thatSky).clearGrid(null);
 								}
-								final int opDir=Directions.getOpDirectionCode(d);
-								xo=thatRoom.getRawExit(opDir);
-								if(xo!=null)
-								{
-									if(xo.hasADoor())
-										xo=dnE;
-									thatSky.rawDoors()[opDir]=sky;
-									thatSky.setRawExit(opDir,xo);
-								}
-								((GridLocale)thatSky).clearGrid(null);
 							}
 						}
 					}
@@ -570,6 +573,22 @@ public class StdRoom implements Room
 		}
 	}
 
+	@Override
+	public List<Room> getSky()
+	{
+		List<Room> skys = new Vector<Room>(1);
+		if(!skyedYet) 
+			return skys;
+		final Room skyGridRoom=rawDoors()[Directions.UP];
+		if(skyGridRoom!=null)
+		{
+			if(((skyGridRoom.roomID()==null)||(skyGridRoom.roomID().length()==0))
+			&&((skyGridRoom instanceof EndlessSky)||(skyGridRoom instanceof EndlessThinSky)))
+				skys.add(skyGridRoom);
+		}
+		return skys;
+	}
+	
 	@Override
 	public void clearSky()
 	{
@@ -712,6 +731,7 @@ public class StdRoom implements Room
 				break;
 			case CMMsg.TYP_CAST_SPELL:
 			case CMMsg.TYP_DELICATE_HANDS_ACT:
+			case CMMsg.TYP_NOISYMOVEMENT:
 			case CMMsg.TYP_OK_ACTION:
 			case CMMsg.TYP_JUSTICE:
 			case CMMsg.TYP_OK_VISUAL:
@@ -1644,20 +1664,20 @@ public class StdRoom implements Room
 	}
 
 	@Override
-	public void send(MOB source, CMMsg msg)
+	public void send(final MOB source, final CMMsg msg)
 	{
 		source.executeMsg(source,msg);
 		reallySend(source,msg,0);
 	}
 
 	@Override
-	public void sendOthers(MOB source, CMMsg msg)
+	public void sendOthers(final MOB source, final CMMsg msg)
 	{
 		reallySend(source,msg,0);
 	}
 
 	@Override
-	public void showHappens(int allCode, String allMessage)
+	public void showHappens(final int allCode, final String allMessage)
 	{
 		final MOB everywhereMOB=CMLib.map().getFactoryMOB(this);
 		final CMMsg msg=CMClass.getMsg(everywhereMOB,null,null,allCode,allCode,allCode,allMessage);
@@ -1666,7 +1686,7 @@ public class StdRoom implements Room
 	}
 
 	@Override
-	public void showHappens(int allCode, Environmental like, String allMessage)
+	public void showHappens(final int allCode, final Environmental like, final String allMessage)
 	{
 		final MOB everywhereMOB=CMClass.getFactoryMOB();
 		everywhereMOB.setName(like.name());
@@ -1680,7 +1700,7 @@ public class StdRoom implements Room
 	}
 
 	@Override
-	public boolean show(MOB source, Environmental target, int allCode, String allMessage)
+	public boolean show(final MOB source, final Environmental target, final int allCode, final String allMessage)
 	{
 		final CMMsg msg=CMClass.getMsg(source,target,null,allCode,allCode,allCode,allMessage);
 		if((!CMath.bset(allCode,CMMsg.MASK_ALWAYS))&&(!okMessage(source,msg)))
@@ -1690,7 +1710,7 @@ public class StdRoom implements Room
 	}
 
 	@Override
-	public boolean show(MOB source, Environmental target, Environmental tool, int allCode, String allMessage)
+	public boolean show(final MOB source, final Environmental target, final Environmental tool, final int allCode, final String allMessage)
 	{
 		final CMMsg msg=CMClass.getMsg(source,target,tool,allCode,allCode,allCode,allMessage);
 		if((!CMath.bset(allCode,CMMsg.MASK_ALWAYS))&&(!okMessage(source,msg)))
@@ -1885,7 +1905,7 @@ public class StdRoom implements Room
 	}
 
 	@Override
-	public boolean amDestroyed()
+	public final boolean amDestroyed()
 	{
 		return amDestroyed;
 	}
@@ -2078,7 +2098,7 @@ public class StdRoom implements Room
 	@Override
 	public Exit fetchExit(String itemID)
 	{
-		int dir=Directions.getGoodDirectionCode(itemID);
+		int dir=CMLib.directions().getGoodDirectionCode(itemID);
 		Exit E=null;
 		if(dir >= 0)
 			E=getExitInDir(dir);
@@ -2301,9 +2321,9 @@ public class StdRoom implements Room
 				if(exits[e]==E)
 				{
 					if((this instanceof BoardableShip)||(this.getArea() instanceof BoardableShip))
-						return Directions.getShipDirectionName(e);
+						return CMLib.directions().getShipDirectionName(e);
 					else
-						return Directions.getDirectionName(e);
+						return CMLib.directions().getDirectionName(e);
 				}
 			}
 			return E.Name();
@@ -2456,7 +2476,7 @@ public class StdRoom implements Room
 			thingName=newThingName;
 		final Item goodLocation=null;
 		PhysicalAgent found=null;
-		final int dirCode = Directions.getGoodDirectionCode(thingName);
+		final int dirCode = CMLib.directions().getGoodDirectionCode(thingName);
 		final int[] contextNumber=new int[]{0};
 		if(dirCode>=0)
 			found=getRoomInDir(dirCode);
@@ -2598,7 +2618,7 @@ public class StdRoom implements Room
 			for(int d=0;d<exits.length;d++)
 			{
 				if((exits[d]!=null)
-				&&(thingName.equalsIgnoreCase(inShip?Directions.getShipDirectionName(d):Directions.getDirectionName(d))))
+				&&(thingName.equalsIgnoreCase(inShip?CMLib.directions().getShipDirectionName(d):CMLib.directions().getDirectionName(d))))
 					return getExitInDir(d);
 			}
 		}

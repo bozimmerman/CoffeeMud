@@ -57,6 +57,7 @@ public class Alligator extends GreatLizard
 	private final int[]		racialAbilityLevels			= { 1, 1 };
 	private final int[]		racialAbilityProficiencies	= { 100, 100 };
 	private final boolean[]	racialAbilityQuals			= { false, false };
+	private final String[]	racialAbilityParms			= { "", "" };
 
 	@Override
 	protected String[] racialAbilityNames()
@@ -80,6 +81,12 @@ public class Alligator extends GreatLizard
 	protected boolean[] racialAbilityQuals()
 	{
 		return racialAbilityQuals;
+	}
+
+	@Override
+	public String[] racialAbilityParms()
+	{
+		return racialAbilityParms;
 	}
 
 	@Override

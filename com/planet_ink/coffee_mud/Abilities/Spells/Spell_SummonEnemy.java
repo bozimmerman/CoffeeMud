@@ -111,15 +111,52 @@ public class Spell_SummonEnemy extends Spell
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
-		if((affected!=null)
-		&&(affected instanceof MOB)
-		&&(msg.amISource((MOB)affected)||msg.amISource(((MOB)affected).amFollowing())||(msg.source()==invoker()))
-		&&(msg.sourceMinor()==CMMsg.TYP_QUIT))
+		if((affected!=null)&&(affected instanceof MOB))
 		{
-			unInvoke();
-			if(msg.source().playerStats()!=null)
-				msg.source().playerStats().setLastUpdated(0);
+			if((msg.amISource((MOB)affected)
+				||msg.amISource(((MOB)affected).amFollowing())
+				||(msg.source()==invoker()))
+			&&(msg.sourceMinor()==CMMsg.TYP_QUIT))
+			{
+				unInvoke();
+				if(msg.source().playerStats()!=null)
+					msg.source().playerStats().setLastUpdated(0);
+			}
 		}
+	}
+	
+	@Override
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
+	{
+		if(!super.okMessage(myHost, msg))
+			return false;
+		if((affected != null)&&(affected instanceof MOB))
+		{
+			if((msg.source()==affected)
+			&&(msg.sourceMinor()==CMMsg.TYP_DEATH))
+			{
+				final List<Item> destroyMe = new LinkedList<Item>();
+				final List<Item> addMe = new LinkedList<Item>();
+				for(Enumeration<Item> i=msg.source().items();i.hasMoreElements();)
+				{
+					Item I=i.nextElement();
+					if(I!=null)
+					{
+						Item newI = CMLib.utensils().ruinItem(I);
+						if(newI != I)
+						{
+							addMe.add(newI);
+							destroyMe.add(I);
+						}
+					}
+				}
+				for(Item I : destroyMe)
+					I.destroy();
+				for(Item I : addMe)
+					msg.source().addItem(I);
+			}
+		}
+		return true;
 	}
 	
 	@Override

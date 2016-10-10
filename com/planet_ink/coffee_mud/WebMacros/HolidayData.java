@@ -16,6 +16,8 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.*;
 
 /*
@@ -36,7 +38,11 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class HolidayData extends StdWebMacro
 {
-	@Override public String name() { return "HolidayData"; }
+	@Override
+	public String name()
+	{
+		return "HolidayData";
+	}
 
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
@@ -189,7 +195,7 @@ public class HolidayData extends StdWebMacro
 						else
 							old="";
 					}
-					str.append(old+", ");
+					str.append(CMStrings.replaceAll(old,"\"","&quot;")+", ");
 				}
 				if(parms.containsKey("MOOD"))
 				{

@@ -55,6 +55,28 @@ public class Duergar extends Dwarf
 		return localizedStaticName;
 	}
 
+	private final String[]	racialEffectNames			= {  };
+	private final int[]		racialEffectLevels			= {  };
+	private final String[]	racialEffectParms			= {  };
+	
+	@Override
+	protected String[] racialEffectNames()
+	{
+		return racialEffectNames;
+	}
+
+	@Override
+	protected int[] racialEffectLevels()
+	{
+		return racialEffectLevels;
+	}
+
+	@Override
+	protected String[] racialEffectParms()
+	{
+		return racialEffectParms;
+	}
+
 	private final String[]	culturalAbilityNames			= { "Dwarven", "Mining", "Undercommon", "Spell_Invisibility", "Spell_Grow" };
 	private final int[]		culturalAbilityProficiencies	= { 100, 50, 25, 25, 25 };
 
@@ -78,6 +100,12 @@ public class Duergar extends Dwarf
 		affectableStats.setSensesMask(senses|PhyStats.CAN_SEE_DARK);
 	}
 
+	@Override
+	public int getXPAdjustment()
+	{
+		return -10;
+	}
+	
 	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{

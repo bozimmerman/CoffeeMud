@@ -102,6 +102,7 @@ public class Wolf extends StdRace
 	private final int[]		racialAbilityLevels			= { 1 };
 	private final int[]		racialAbilityProficiencies	= { 100 };
 	private final boolean[]	racialAbilityQuals			= { false };
+	private final String[]	racialAbilityParms			= { "" };
 
 	@Override
 	protected String[] racialAbilityNames()
@@ -125,6 +126,12 @@ public class Wolf extends StdRace
 	protected boolean[] racialAbilityQuals()
 	{
 		return racialAbilityQuals;
+	}
+
+	@Override
+	public String[] racialAbilityParms()
+	{
+		return racialAbilityParms;
 	}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
@@ -191,7 +198,7 @@ public class Wolf extends StdRace
 		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
 		{
 			final Ability A=CMClass.getAbility("Disease_Lycanthropy");
-			if((A!=null)&&(((MOB)msg.target()).fetchEffect(A.ID())==null))
+			if((A!=null)&&(((MOB)msg.target()).fetchEffect(A.ID())==null)&&(!CMSecurity.isAbilityDisabled(A.ID())))
 				A.invoke(mob,(MOB)msg.target(),true,0);
 		}
 		super.executeMsg(myHost,msg);

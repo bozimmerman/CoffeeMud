@@ -76,7 +76,7 @@ function maximize(wname,wnum)
     if (minrestore==0)
     {
         minrestore=1 //maximize window
-        document.getElementById(wname+"max").setAttribute("src","restore.gif")
+        document.getElementById(wname+"max").setAttribute("src","/siplet/restore.gif")
         
         saveWidth=document.getElementById(wname).style.width
         saveHeight=document.getElementById(wname).style.height
@@ -92,7 +92,7 @@ function maximize(wname,wnum)
     else
     {
         minrestore=0 //restore window
-        document.getElementById(wname+"max").setAttribute("src","max.gif")
+        document.getElementById(wname+"max").setAttribute("src","/siplet/max.gif")
         document.getElementById(wname).style.width=saveWidth
         document.getElementById(wname).style.height=saveHeight
         document.getElementById(wname).style.left=saveLeft
@@ -171,8 +171,8 @@ function getFrameHTML(wname,wnum)
     s+='<div id="'+wname+'content" style="height:100%">';
     s+='<div id="'+wname+'namer" style="background-color:red"></div>';
     s+='</td><td width=20% align=right>'
-    s+='<img src="max.gif" id="'+wname+'max" onClick="maximize(\''+wname+'\','+wnum+')">';
-    s+='<img src="close.gif" id="'+wname+'close" onClick="closewindow(\''+wname+'\','+wnum+')">';
+    s+='<img src="/siplet/max.gif" id="'+wname+'max" onClick="maximize(\''+wname+'\','+wnum+')">';
+    s+='<img src="/siplet/close.gif" id="'+wname+'close" onClick="closewindow(\''+wname+'\','+wnum+')">';
     s+='</td></tr></table>'
     s+='</div>';
     s+='<div id="'+wname+'extracontent"></div>';

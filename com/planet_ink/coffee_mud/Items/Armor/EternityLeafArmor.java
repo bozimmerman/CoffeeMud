@@ -33,7 +33,12 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class EternityLeafArmor extends StdArmor
 {
-	@Override public String ID(){	return "EternityLeafArmor";}
+	@Override
+	public String ID()
+	{
+		return "EternityLeafArmor";
+	}
+
 	public EternityLeafArmor()
 	{
 		super();
@@ -59,6 +64,4 @@ public class EternityLeafArmor extends StdArmor
 		if((!this.amWearingAt(Wearable.IN_INVENTORY))&&(!this.amWearingAt(Wearable.WORN_HELD)))
 			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SNEAKING);
 	}
-
-
 }

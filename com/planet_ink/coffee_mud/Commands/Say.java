@@ -181,7 +181,7 @@ public class Say extends StdCommand
 				{
 					if(theCommand.equals("YELL"))
 					{
-						final int dir=Directions.getGoodCompassDirectionCode(whom);
+						final int dir=CMLib.directions().getGoodCompassDirectionCode(whom);
 						if(dir >=0)
 						{
 							commands.remove(1);
@@ -192,7 +192,7 @@ public class Say extends StdCommand
 								final Exit E2=R.getExitInDir(dir);
 								if(R2!=null)
 								{
-									theWordSuffix=" "+Directions.getDirectionName(dir);
+									theWordSuffix=" "+CMLib.directions().getDirectionName(dir);
 									yellRooms.add(R2);
 									if((E2!=null)&&(E2.isOpen()))
 									{
@@ -272,10 +272,10 @@ public class Say extends StdCommand
 		else
 			theWord=L(theWord+"(s)");
 		if(CMLib.flags().isAnimalIntelligence(mob))
-			msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_SPEAK,L("^T^<SAY \"@x1\"^><S-NAME> go(es)@x2 '@x3'^</SAY^>^?",CMStrings.removeColors(mob.name()),theWordSuffix,combinedCommands));
+			msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_SPEAK,"^T^<SAY \""+CMStrings.removeColors(mob.name())+"\"^><S-NAME> "+L("go(es)")+theWordSuffix+" '"+combinedCommands+"'^</SAY^>^?");
 		else
 		if(target==null)
-			msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_SPEAK,L("^T^<SAY \"@x1\"^><S-NAME> @x2@x3 '@x4'^</SAY^>^?",CMStrings.removeColors(mob.name()),theWord.toLowerCase(),theWordSuffix,combinedCommands));
+			msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_SPEAK,"^T^<SAY \""+CMStrings.removeColors(mob.name())+"\"^><S-NAME> "+theWord.toLowerCase()+theWordSuffix+" '"+combinedCommands+"'^</SAY^>^?");
 		else
 		{
 			final String fromSelf="^T^<SAY \""+CMStrings.removeColors(target.name())+"\"^><S-NAME> "+theWord.toLowerCase()+theWordSuffix+" <T-NAMESELF> '"+combinedCommands+"'^</SAY^>^?";
@@ -313,8 +313,8 @@ public class Say extends StdCommand
 					int opDirCode=-1;
 					if(dirCode>=0)
 						opDirCode=Directions.getOpDirectionCode(dirCode);
-					final String inDirName=(dirCode<0)?"":(useShipDirs?Directions.getShipInDirectionName(opDirCode):Directions.getInDirectionName(opDirCode));
-					msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_SPEAK,L("^TYou hear someone yell '@x1' @x2^?",combinedCommands,inDirName));
+					final String inDirName=(dirCode<0)?"":(useShipDirs?CMLib.directions().getShipInDirectionName(opDirCode):CMLib.directions().getInDirectionName(opDirCode));
+					msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_SPEAK,L("^TYou hear someone yell ")+"'"+combinedCommands+"' "+inDirName+"^?");
 					if((R2.okMessage(mob,msg))
 					&&((tool==null)||(tool.okMessage(mob,msg))))
 					{

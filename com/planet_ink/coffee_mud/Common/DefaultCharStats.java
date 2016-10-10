@@ -84,12 +84,13 @@ public class DefaultCharStats implements CharStats
 	protected long			unwearableBitmap	= 0;
 	protected int[]			breathables			= null;
 
+	protected Map<String, Integer>	profAdj		= null;
+	
 	public DefaultCharStats()
 	{
 		reset();
-		setMyRace(CMClass.getRace("StdRace"));
-		setCurrentClass(CMClass.getCharClass("StdCharClass"));
 	}
+	
 
 	@Override
 	public void setAllBaseValues(int def)
@@ -114,6 +115,19 @@ public class DefaultCharStats implements CharStats
 	{
 		setAllBaseValues(VALUE_ALLSTATS_DEFAULT);
 		stats[STAT_GENDER]='M';
+		//myClasses;  // never null
+		myLevels = null;
+		//myRace; // never null
+		raceName = null;
+		genderName = null;
+		displayClassName = null;
+		displayClassLevel = null;
+		bodyAlterations = null;
+		unwearableBitmap = 0;
+		breathables = null;
+		profAdj = null;
+		setMyRace(CMClass.getRace("StdRace"));
+		setCurrentClass(CMClass.getCharClass("StdCharClass"));
 	}
 
 	@Override
@@ -150,6 +164,10 @@ public class DefaultCharStats implements CharStats
 			((DefaultCharStats)intoStats).genderName=genderName;
 			((DefaultCharStats)intoStats).displayClassName=displayClassName;
 			((DefaultCharStats)intoStats).displayClassLevel=displayClassLevel;
+			if(profAdj==null)
+				((DefaultCharStats)intoStats).profAdj=null;
+			else
+				((DefaultCharStats)intoStats).profAdj=new TreeMap<String,Integer>(profAdj);
 			if(bodyAlterations==null)
 				((DefaultCharStats)intoStats).bodyAlterations=null;
 			else
@@ -289,6 +307,7 @@ public class DefaultCharStats implements CharStats
 			combined+=myLevels[i].intValue();
 		return combined;
 	}
+
 	public int combinedLevels()
 	{
 		if((myClasses==null)
@@ -607,6 +626,18 @@ public class DefaultCharStats implements CharStats
 	{
 		breathables=newArray;
 	}
+	
+	public void addBreathable(int resource)
+	{
+		final int[] breatheables=getBreathables();
+		if((breatheables.length!=0)&&(CMParms.indexOf(breatheables, resource)<0))
+		{
+			int[] newSet=Arrays.copyOf(breatheables,breatheables.length+1);
+			newSet[newSet.length-1]=resource;
+			Arrays.sort(newSet);
+			this.setBreathables(newSet);
+		}
+	}
 
 	@Override
 	public int getBodyPart(int racialPartNumber)
@@ -731,6 +762,20 @@ public class DefaultCharStats implements CharStats
 			return getStat(STAT_SAVE_DETECTION);
 		case STAT_FAITH:
 			return getStat(STAT_FAITH);
+		case STAT_SAVE_BLUNT:
+			return getStat(STAT_SAVE_BLUNT);
+		case STAT_SAVE_PIERCE:
+			return getStat(STAT_SAVE_PIERCE);
+		case STAT_SAVE_SLASH:
+			return getStat(STAT_SAVE_SLASH);
+		case STAT_SAVE_SPELLS:
+			return getStat(STAT_SAVE_SPELLS);
+		case STAT_SAVE_PRAYERS:
+			return getStat(STAT_SAVE_PRAYERS);
+		case STAT_SAVE_SONGS:
+			return getStat(STAT_SAVE_SONGS);
+		case STAT_SAVE_CHANTS:
+			return getStat(STAT_SAVE_CHANTS);
 		}
 		return getStat(which);
 	}
@@ -748,10 +793,37 @@ public class DefaultCharStats implements CharStats
 			newOne.myLevels=myLevels.clone();
 		if(bodyAlterations!=null)
 			newOne.bodyAlterations=bodyAlterations.clone();
+		if(profAdj!=null)
+			newOne.profAdj = new TreeMap<String,Integer>(profAdj);
 		newOne.stats=stats.clone();
 		return newOne;
 	}
 
+	@Override
+	public int getAbilityAdjustment(String ableID)
+	{
+		
+		final Map<String,Integer> prof=this.profAdj;
+		if(prof == null)
+			return 0;
+		final Integer value = prof.get(ableID);
+		if(value == null)
+			return 0;
+		return value.intValue();
+	}
+
+	@Override
+	public void adjustAbilityAdjustment(String ableID, int newValue)
+	{
+		Map<String,Integer> prof=this.profAdj;
+		if(prof == null)
+		{
+			prof = new TreeMap<String,Integer>();
+			this.profAdj=prof;
+		}
+		prof.put(ableID, Integer.valueOf(newValue));
+	}
+	
 	@Override
 	public void setGenderName(String gname)
 	{
@@ -953,9 +1025,6 @@ public class DefaultCharStats implements CharStats
 	@Override
 	public void setStat(int abilityCode, int value)
 	{
-		if((value>Short.MAX_VALUE)||(value<Short.MIN_VALUE))
-			Log.errOut("Value out of range",new CMException("Value out of range: "+value+" for "+abilityCode));
-		else
 		if(abilityCode<stats.length)
 			stats[abilityCode]=(short)value;
 	}

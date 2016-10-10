@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Abilities.Common;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.Abilities.Properties.Prop_StatTrainer;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -36,15 +37,47 @@ import java.util.*;
 
 public class AnimalHusbandry extends CommonSkill
 {
-	@Override public String ID() { return "AnimalHusbandry"; }
-	private final static String localizedName = CMLib.lang().L("Animal Husbandry");
-	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =I(new String[] {"HUSBAND","ANIMALHUSBANDRY"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ANIMALAFFINITY; }
+	@Override
+	public String ID()
+	{
+		return "AnimalHusbandry";
+	}
 
-	protected MOB[] husbanding=null;
-	protected boolean messedUp=false;
+	private final static String	localizedName	= CMLib.lang().L("Animal Husbandry");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "HUSBAND", "ANIMALHUSBANDRY" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_COMMON_SKILL | Ability.DOMAIN_ANIMALAFFINITY;
+	}
+
+	@Override
+	public CMObject copyOf()
+	{
+		final AnimalHusbandry obj=(AnimalHusbandry)super.copyOf();
+		if(husbanding!=null)
+			obj.husbanding=husbanding.clone();
+		else
+			obj.husbanding=null;
+		return obj;
+	}
+
+	protected MOB[]		husbanding	= null;
+	protected boolean	messedUp	= false;
 
 	public AnimalHusbandry()
 	{

@@ -205,7 +205,12 @@ public class Purist extends Cleric
 	private final String[] raceRequiredList=new String[]{
 		"Human","Humanoid","Dwarf","Elf","HalfElf","Elf-kin","Fairy-kin"
 	};
-	@Override public String[] getRequiredRaceList(){ return raceRequiredList; }
+
+	@Override
+	public String[] getRequiredRaceList()
+	{
+		return raceRequiredList;
+	}
 
 	@SuppressWarnings("unchecked")
 	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{

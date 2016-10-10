@@ -35,7 +35,11 @@ import java.util.*;
 */
 public class HolidayID extends StdWebMacro
 {
-	@Override public String name() { return "HolidayID"; }
+	@Override
+	public String name()
+	{
+		return "HolidayID";
+	}
 
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)

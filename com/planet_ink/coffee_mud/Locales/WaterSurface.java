@@ -87,6 +87,26 @@ public class WaterSurface extends StdRoom implements Drink
 	}
 
 	@Override
+	public List<Room> getSky()
+	{
+		List<Room> skys = new Vector<Room>(1);
+		if(!skyedYet) 
+			return skys;
+		skys.addAll(super.getSky());
+		
+		final Room room=rawDoors()[Directions.DOWN];
+		if(room!=null)
+		{
+			if((room.roomID().length()==0)
+			&&(IsUnderWaterFatClass(room)))
+			{
+				skys.add(room);
+			}
+		}
+		return skys;
+	}
+	
+	@Override
 	public void giveASky(int depth)
 	{
 		if(skyedYet)
@@ -172,9 +192,22 @@ public class WaterSurface extends StdRoom implements Drink
 		}
 	}
 
+	protected void fixUnderwater()
+	{
+		if(!this.skyedYet)
+			giveASky(0);
+		else
+		if(rawDoors()[Directions.DOWN]==null)
+		{
+			clearSky();
+			giveASky(0);
+		}
+	}
+	
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
+		fixUnderwater();
 		switch(CMLib.tracking().isOkWaterSurfaceAffect(this,msg))
 		{
 		case CANCEL:

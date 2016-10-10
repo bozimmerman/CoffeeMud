@@ -37,30 +37,54 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Pottery extends CraftingSkill implements ItemCraftor
 {
-	@Override public String ID() { return "Pottery"; }
-	private final static String localizedName = CMLib.lang().L("Pottery");
-	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =I(new String[] {"POT","POTTERY"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public String supportedResourceString(){return "_CLAY|_CHINA";}
 	@Override
-	public String parametersFormat(){ return
+	public String ID()
+	{
+		return "Pottery";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Pottery");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "POT", "POTTERY" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public String supportedResourceString()
+	{
+		return "_CLAY|_CHINA";
+	}
+
+	@Override
+	public String parametersFormat()
+	{
+		return
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\t"
 		+"ITEM_BASE_VALUE\tITEM_CLASS_ID\tLID_LOCK||STONE_FLAG\t"
-		+"CONTAINER_CAPACITY||LIQUID_CAPACITY\tCODED_SPELL_LIST";}
+		+"CONTAINER_CAPACITY||LIQUID_CAPACITY\tCODED_SPELL_LIST";
+	}
 
 	//protected static final int RCP_FINALNAME=0;
 	//protected static final int RCP_LEVEL=1;
 	//protected static final int RCP_TICKS=2;
-	protected static final int RCP_WOOD=3;
-	protected static final int RCP_VALUE=4;
-	protected static final int RCP_CLASSTYPE=5;
-	protected static final int RCP_MISCTYPE=6;
-	protected static final int RCP_CAPACITY=7;
-	protected static final int RCP_SPELL=8;
+	protected static final int	RCP_WOOD		= 3;
+	protected static final int	RCP_VALUE		= 4;
+	protected static final int	RCP_CLASSTYPE	= 5;
+	protected static final int	RCP_MISCTYPE	= 6;
+	protected static final int	RCP_CAPACITY	= 7;
+	protected static final int	RCP_SPELL		= 8;
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
@@ -78,8 +102,17 @@ public class Pottery extends CraftingSkill implements ItemCraftor
 		return super.tick(ticking,tickID);
 	}
 
-	@Override public String parametersFile(){ return "pottery.txt";}
-	@Override protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
+	@Override
+	public String parametersFile()
+	{
+		return "pottery.txt";
+	}
+
+	@Override
+	protected List<List<String>> loadRecipes()
+	{
+		return super.loadRecipes(parametersFile());
+	}
 
 	@Override
 	protected boolean doLearnRecipe(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -124,7 +157,11 @@ public class Pottery extends CraftingSkill implements ItemCraftor
 		super.unInvoke();
 	}
 
-	@Override public boolean supportsDeconstruction() { return true; }
+	@Override
+	public boolean supportsDeconstruction()
+	{
+		return true;
+	}
 
 	@Override
 	public boolean mayICraft(final Item I)
@@ -193,10 +230,14 @@ public class Pottery extends CraftingSkill implements ItemCraftor
 
 		fireRequired=true;
 
+		if(super.checkInfo(mob, commands))
+			return true;
+		
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,L("Make what? Enter \"pot list\" for a list, \"pot learn <item>\" to gain recipes, or \"pot stop\" to cancel."));
+			commonTell(mob,L("Make what? Enter \"pot list\" for a list, \"pot info <item>\", \"pot learn <item>\" to gain recipes,"
+							+ " or \"pot stop\" to cancel."));
 			return false;
 		}
 		if((!auto)
@@ -223,9 +264,9 @@ public class Pottery extends CraftingSkill implements ItemCraftor
 				mask="";
 			}
 			final int[] cols={
-					CMLib.lister().fixColWidth(26,mob.session()),
-					CMLib.lister().fixColWidth(3,mob.session())
-				};
+				CMLib.lister().fixColWidth(26,mob.session()),
+				CMLib.lister().fixColWidth(3,mob.session())
+			};
 			final StringBuffer buf=new StringBuffer(L("@x1 @x2 Clay required\n\r",CMStrings.padRight(L("Item"),cols[0]),CMStrings.padRight(L("Lvl"),cols[1])));
 			for(int r=0;r<recipes.size();r++)
 			{
@@ -283,7 +324,8 @@ public class Pottery extends CraftingSkill implements ItemCraftor
 		}
 
 		final String woodRequiredStr = foundRecipe.get(RCP_WOOD);
-		final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName),autoGenerate);
+		final int[] compData = new int[CF_TOTAL];
+		final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName),autoGenerate,compData);
 		if(componentsFoundList==null)
 			return false;
 		int woodRequired=CMath.s_int(woodRequiredStr);
@@ -295,11 +337,11 @@ public class Pottery extends CraftingSkill implements ItemCraftor
 		final int[] pm={RawMaterial.RESOURCE_CLAY,RawMaterial.RESOURCE_CHINA};
 		bundling=misctype.equalsIgnoreCase("BUNDLE");
 		final int[][] data=fetchFoundResourceData(mob,
-											woodRequired,"clay",pm,
-											0,null,null,
-											bundling,
-											autoGenerate,
-											null);
+												woodRequired,"clay",pm,
+												0,null,null,
+												bundling,
+												autoGenerate,
+												null);
 		if(data==null)
 			return false;
 		woodRequired=data[0][FOUND_AMT];
@@ -315,7 +357,8 @@ public class Pottery extends CraftingSkill implements ItemCraftor
 			return false;
 		}
 		duration=getDuration(CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),4);
-		String itemName=replacePercent(foundRecipe.get(RCP_FINALNAME),RawMaterial.CODES.NAME(data[0][FOUND_CODE])).toLowerCase();
+		buildingI.setMaterial(super.getBuildingMaterial(woodRequired, data, compData));
+		String itemName=replacePercent(foundRecipe.get(RCP_FINALNAME),RawMaterial.CODES.NAME(buildingI.material())).toLowerCase();
 		if(bundling)
 			itemName="a "+woodRequired+"# "+itemName;
 		else
@@ -326,9 +369,8 @@ public class Pottery extends CraftingSkill implements ItemCraftor
 		verb=L("making @x1",buildingI.name());
 		buildingI.setDisplayText(L("@x1 lies here",itemName));
 		buildingI.setDescription(itemName+". ");
-		buildingI.basePhyStats().setWeight(getStandardWeight(woodRequired,bundling));
+		buildingI.basePhyStats().setWeight(getStandardWeight(woodRequired+compData[CF_AMOUNT],bundling));
 		buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE)));
-		buildingI.setMaterial(data[0][FOUND_CODE]);
 		if(buildingI.name().toUpperCase().indexOf("CHINA ")>=0)
 			buildingI.setMaterial(RawMaterial.RESOURCE_CHINA);
 		buildingI.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL)));

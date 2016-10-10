@@ -36,9 +36,14 @@ import java.util.*;
 */
 public class CMLister extends StdLibrary implements ListingLibrary
 {
-	@Override public String ID(){return "CMLister";}
+	@Override
+	public String ID()
+	{
+		return "CMLister";
+	}
+
 	@SuppressWarnings("unchecked")
-	protected static final Filterer<Object>[] NO_FILTER=new Filterer[0];
+	protected static final Filterer<Object>[]	NO_FILTER	= new Filterer[0];
 
 	protected static final ListStringer stringer=new ListStringer()
 	{
@@ -83,18 +88,28 @@ public class CMLister extends StdLibrary implements ListingLibrary
 	protected static class AbilityTypeFilter implements Filterer<Object>
 	{
 		private final int ofType;
+		private final int ofDomain;
 		public AbilityTypeFilter(int typ)
 		{
-			ofType=typ;
+			ofType=typ&Ability.ALL_ACODES;
+			ofDomain=typ&Ability.ALL_DOMAINS;
 		}
 		@Override
 		public boolean passesFilter(Object obj)
 		{
-			if(ofType>=0)
+			if((ofType>=0)&&(ofType!=Ability.ALL_ACODES))
 			{
 				if(obj instanceof Ability)
 				{
 					if((((Ability)obj).classificationCode()&Ability.ALL_ACODES)!=ofType)
+						return false;
+				}
+			}
+			if(ofDomain>0)
+			{
+				if(obj instanceof Ability)
+				{
+					if((((Ability)obj).classificationCode()&Ability.ALL_DOMAINS)!=ofDomain)
 						return false;
 				}
 			}
@@ -399,9 +414,13 @@ public class CMLister extends StdLibrary implements ListingLibrary
 			final Object thisThang=these.get(key);
 			String list=stringer.stringify(thisThang);
 			if(filters!=null)
+			{
 				for(final Filterer<Object> F : filters)
+				{
 					if(!F.passesFilter(thisThang))
 						list=null;
+				}
+			}
 			if(list!=null)
 			{
 				if(++column>3)
@@ -426,6 +445,7 @@ public class CMLister extends StdLibrary implements ListingLibrary
 	{
 		return reallyList(viewerM,these,buildLikeRoomFilter(likeRoom),stringer);
 	}
+	
 	@Override
 	public StringBuilder reallyList(MOB viewerM, Enumeration<? extends Object> these, Filterer<Object>[] filters, ListStringer stringer)
 	{
@@ -441,9 +461,13 @@ public class CMLister extends StdLibrary implements ListingLibrary
 			final Object thisThang=e.nextElement();
 			String list=stringer.stringify(thisThang);
 			if(filters!=null)
+			{
 				for(final Filterer<Object> F : filters)
+				{
 					if(!F.passesFilter(thisThang))
 						list=null;
+				}
+			}
 			if(list!=null)
 			{
 				if(++column>3)
@@ -458,6 +482,42 @@ public class CMLister extends StdLibrary implements ListingLibrary
 		return lines;
 	}
 
+	@Override
+	public StringBuilder reallyWikiList(MOB viewerM, Enumeration<? extends Object> these, int ofType)
+	{
+		return reallyWikiList(viewerM,these,buildOfTypeFilter(ofType));
+	}
+	
+	@Override
+	public StringBuilder reallyWikiList(MOB viewerM, Enumeration<? extends Object> these, Filterer<Object>[] filters)
+	{
+		final StringBuilder lines=new StringBuilder("");
+		if(!these.hasMoreElements())
+			return lines;
+		for(final Enumeration<? extends Object> e=these;e.hasMoreElements();)
+		{
+			final Object thisObj=e.nextElement();
+			if(thisObj instanceof CMObject)
+			{
+				final CMObject thisThang = (CMObject)thisObj;
+				if(filters!=null)
+				{
+					boolean passes=true;
+					for(final Filterer<Object> F : filters)
+					{
+						if(!F.passesFilter(thisThang))
+							passes=false;
+					}
+					if(!passes)
+						continue;
+				}
+				lines.append("*[["+thisThang.ID()+"|"+thisThang.name()+"]]\n\r");
+			}
+		}
+		return lines;
+	}
+	
+	
 	@Override
 	public StringBuilder reallyList2Cols(MOB viewerM, Enumeration<? extends Object> these)
 	{
@@ -479,9 +539,13 @@ public class CMLister extends StdLibrary implements ListingLibrary
 			final Object thisThang=e.nextElement();
 			String list=stringer.stringify(thisThang);
 			if(filters!=null)
+			{
 				for(final Filterer<Object> F : filters)
+				{
 					if(!F.passesFilter(thisThang))
 						list=null;
+				}
+			}
 			if(list!=null)
 			{
 				if(++column>2)

@@ -112,7 +112,9 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	public Climate getClimateObj()
 	{
 		final Area shipItemArea = getShipItemArea();
-		return (shipItemArea != null) ? shipItemArea.getClimateObj() : CMLib.map().areas().nextElement().getClimateObj();
+		return ((shipItemArea != null) && (shipItemArea != this)) 
+				? shipItemArea.getClimateObj() 
+				: CMLib.map().areas().nextElement().getClimateObj();
 	}
 
 	@Override
@@ -127,11 +129,13 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 		return author;
 	}
 
-	@Override
+	@Override 
 	public TimeClock getTimeObj()
 	{
 		final Area shipItemArea = getShipItemArea();
-		return (shipItemArea != null) ? shipItemArea.getTimeObj() : CMLib.time().globalClock();
+		return ((shipItemArea != null) && (shipItemArea != this)) 
+				? shipItemArea.getTimeObj() 
+				: CMLib.time().globalClock();
 	}
 
 	@Override
@@ -174,7 +178,9 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	public int getAtmosphereCode() 
 	{
 		final Room shipItemRoom = getShipItemRoom();
-		return (shipItemRoom != null) ? shipItemRoom.getAtmosphereCode() : CMLib.map().areas().nextElement().getAtmosphereCode();
+		return ((shipItemRoom != null)&&(shipItemRoom.getArea()!=this)) 
+				? shipItemRoom.getAtmosphereCode() 
+				: RawMaterial.RESOURCE_AIR;
 	}
 	
 	@Override
@@ -192,7 +198,9 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	public int getAtmosphere()
 	{
 		final Room shipItemRoom = getShipItemRoom();
-		return (shipItemRoom != null) ? shipItemRoom.getAtmosphere() : CMLib.map().areas().nextElement().getAtmosphere();
+		return ((shipItemRoom != null)&&(shipItemRoom.getArea()!=this))
+				? shipItemRoom.getAtmosphere() 
+				: RawMaterial.RESOURCE_AIR;
 	}
 	
 	@Override
@@ -242,14 +250,18 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	public int getClimateTypeCode()
 	{
 		final Room shipItemRoom = getShipItemRoom();
-		return (shipItemRoom != null) ? shipItemRoom.getClimateTypeCode() : CMLib.map().areas().nextElement().getClimateTypeCode();
+		return ((shipItemRoom != null)&&(shipItemRoom.getArea()!=this))
+				? shipItemRoom.getClimateTypeCode() 
+				: CLIMASK_NORMAL;
 	}
 	
 	@Override 
 	public int getClimateType() 
 	{
 		final Room shipItemRoom = getShipItemRoom();
-		return (shipItemRoom != null) ? shipItemRoom.getClimateType() : CMLib.map().areas().nextElement().getClimateType();
+		return ((shipItemRoom != null)&&(shipItemRoom.getArea()!=this))
+				? shipItemRoom.getClimateType() 
+				: CLIMASK_NORMAL;
 	}
 	
 	@Override
@@ -333,14 +345,18 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	public int getThemeCode() 
 	{
 		final Area shipItemArea = getShipItemArea();
-		return (shipItemArea != null) ? shipItemArea.getThemeCode() : CMLib.map().areas().nextElement().getThemeCode();
+		return ((shipItemArea != null) && (shipItemArea != this)) 
+				? shipItemArea.getThemeCode() 
+				: Area.THEME_ALLTHEMES;
 	}
 	
 	@Override
 	public int getTheme()
 	{
 		final Area shipItemArea = getShipItemArea();
-		return (shipItemArea != null) ? shipItemArea.getTheme() : CMLib.map().areas().nextElement().getTheme();
+		return ((shipItemArea != null) && (shipItemArea != this))
+				? shipItemArea.getTheme() 
+				: Area.THEME_ALLTHEMES;
 	}
 	
 	@Override
@@ -394,6 +410,9 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	{
 		if((newState==State.ACTIVE)&&(!CMLib.threads().isTicking(this,Tickable.TICKID_AREA)))
 			CMLib.threads().startTickDown(this,Tickable.TICKID_AREA,1);
+		else
+		if((newState==State.STOPPED)&&(CMLib.threads().isTicking(this,Tickable.TICKID_AREA)))
+			CMLib.threads().deleteTick(this, Tickable.TICKID_AREA);
 		flag=newState;
 	}
 
@@ -570,6 +589,12 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
+		if((msg.targetMinor()==CMMsg.TYP_EXPIRE)
+		&&(msg.target() != null)
+		&&(this.getOwnerName().length()>0)
+		&&(CMLib.map().areaLocation(msg.target())==this))
+			return false;
+
 		MsgListener N=null;
 		for(int b=0;b<numBehaviors();b++)
 		{
@@ -594,10 +619,15 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 		||(flag==State.STOPPED)
 		||(!CMLib.flags().allowsMovement(this)))
 		{
-			if((msg.sourceMinor()==CMMsg.TYP_ENTER)
-			||(msg.sourceMinor()==CMMsg.TYP_LEAVE)
-			||(msg.sourceMinor()==CMMsg.TYP_FLEE))
-				return false;
+			if(((msg.sourceMinor()==CMMsg.TYP_ENTER)
+				||(msg.sourceMinor()==CMMsg.TYP_LEAVE)
+				||(msg.sourceMinor()==CMMsg.TYP_FLEE))
+			&&(msg.target() instanceof Room))
+			{
+				if(this.isRoom((Room)msg.target())
+				&&(msg.source().isMonster()))
+					return false;
+			}
 		}
 		
 		if((getThemeCode()>0)&&(!CMath.bset(getThemeCode(),Area.THEME_FANTASY)))
@@ -636,6 +666,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 				break;
 			}
 		}
+		CMLib.law().robberyCheck(this, msg);
 		return true;
 	}
 
@@ -721,7 +752,8 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 				if(CMLib.flags().canBeSeenBy(R, msg.source()) && (msg.source().session()!=null))
 					msg.source().session().print(L("^HOff the bow you see: ^N"));
 				final CMMsg msg2=CMClass.getMsg(msg.source(), R, msg.tool(), msg.sourceCode(), null, msg.targetCode(), null, msg.othersCode(), null);
-				if((msg.source().isAttributeSet(MOB.Attrib.AUTOEXITS))&&(CMProps.getIntVar(CMProps.Int.EXVIEW)!=1))
+				if((msg.source().isAttributeSet(MOB.Attrib.AUTOEXITS))
+				&&(CMProps.getIntVar(CMProps.Int.EXVIEW)!=CMProps.Int.EXVIEW_PARAGRAPH))
 					msg2.addTrailerMsg(CMClass.getMsg(msg.source(),R,null,CMMsg.MSG_LOOK_EXITS,null));
 				if(R.okMessage(msg.source(), msg))
 					R.send(msg.source(),msg2);
@@ -769,6 +801,20 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 		{
 			switch(msg.targetMinor())
 			{
+			case CMMsg.TYP_DROP:
+				if(msg.target() instanceof Item)
+				{
+					final Item I=(Item)msg.target();
+					msg.addTrailerRunnable(new Runnable()
+					{
+						@Override
+						public void run()
+						{
+							I.setExpirationDate(0);
+						}
+					});
+				}
+				break;
 			case CMMsg.TYP_LOOK:
 			case CMMsg.TYP_EXAMINE:
 				if((msg.target() instanceof Exit)&&(((Exit)msg.target()).isOpen()))
@@ -776,7 +822,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 					final Room hereR=msg.source().location();
 					if((hereR!=null)
 					&&((hereR.domainType()&Room.INDOORS)==0)
-					&&(hereR.getArea()==this))
+					&&(hereR.getArea()==this.getShipArea()))
 					{
 						final Room lookingR=hereR.getRoomInDir(CMLib.map().getExitDir(hereR, (Exit)msg.target()));
 						final Room R=CMLib.map().roomLocation(this.shipItem);
@@ -792,7 +838,8 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 					if(msg.targetMinor()==CMMsg.TYP_EXAMINE)
 					{
 						final Room R=CMLib.map().roomLocation(this.shipItem);
-						if((R!=null)&&(!((CMProps.getIntVar(CMProps.Int.EXVIEW)>=2)!=msg.source().isAttributeSet(MOB.Attrib.BRIEF))))
+						if((R!=null)
+						&&(R.getArea()!=this.getShipArea()))
 							lookOverBow(R,msg);
 					}
 				}
@@ -814,6 +861,12 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	public Enumeration<Room> getCompleteMap()
 	{
 		return getProperMap();
+	}
+	
+	@Override
+	public Enumeration<Room> getFilledCompleteMap()
+	{
+		return getFilledProperMap();
 	}
 
 	public List<Room> getMetroCollection()
@@ -1050,11 +1103,12 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	}
 
 	@Override
-	public void unDock(boolean moveToOutside)
+	public Room unDock(boolean moveToOutside)
 	{
 		final Room dock=getIsDocked();
+		Room exitRoom = null;
 		if(dock==null)
-			return;
+			return null;
 		for(final Enumeration<Room> e=getProperMap();e.hasMoreElements();)
 		{
 			final Room R=e.nextElement();
@@ -1065,12 +1119,16 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 					final Room nextR=R.rawDoors()[d];
 					if((nextR!=null)
 					&&((nextR==dock)||(nextR.getArea()!=this)))
+					{
+						exitRoom=R;
 						R.rawDoors()[d]=null;
+					}
 				}
 			}
 		}
 		shipExitCache.clear();
 		savedDock=null;
+		return exitRoom;
 	}
 
 	@Override
@@ -2034,13 +2092,5 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 		if( getShipItem() instanceof PrivateProperty)
 			return ((PrivateProperty)getShipItem()).getTitleID();
 		return null;
-	}
-	
-	@Override
-	public boolean isInCombat()
-	{
-		if( getShipItem() instanceof BoardableShip)
-			return ((BoardableShip)getShipItem()).isInCombat();
-		return false;
 	}
 }

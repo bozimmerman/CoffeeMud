@@ -39,12 +39,21 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class StdShipShieldGenerator extends StdElecCompItem implements ShipShieldGenerator
+public class StdShipShieldGenerator extends StdElecCompItem implements ShipWarComponent
 {
 	@Override
 	public String ID()
 	{
 		return "StdShipShieldGenerator";
+	}
+	
+	public StdShipShieldGenerator()
+	{
+		super();
+		super.setRechargeRate(0.1f);
+		setName("a ship shield generator");
+		setDisplayText("a ship shield generator sits here.");
+		setDescription("");
 	}
 
 	@Override
@@ -53,12 +62,12 @@ public class StdShipShieldGenerator extends StdElecCompItem implements ShipShiel
 		return Technical.TechType.SHIP_SHIELD;
 	}
 	
-	private ShipDir[] 		allPossDirs		= ShipDir.values();
-	private int				numPermitDirs 	= ShipDir.values().length;
-	private int[]			shieldedMsgTypes= AVAIL_DAMAGE_TYPES;
-	private volatile long	lastPowerConsumption = 0;
-	private volatile long	powerSetting		 = Integer.MAX_VALUE;
-	
+	private ShipDir[]		allPossDirs			= ShipDir.values();
+	private int				numPermitDirs		= ShipDir.values().length;
+	private int[]			shieldedMsgTypes	= AVAIL_DAMAGE_TYPES;
+	private volatile long	lastPowerConsumption= 0;
+	private volatile long	powerSetting		= Integer.MAX_VALUE;
+
 	private volatile ShipDir[]  		  currCoverage = null;
 	private volatile Reference<SpaceShip> myShip 	   = null;
 
@@ -72,7 +81,7 @@ public class StdShipShieldGenerator extends StdElecCompItem implements ShipShiel
 	@Override
 	public int powerNeeds()
 	{
-		return (int) Math.min((int) Math.min(powerCapacity,powerSetting) - power, getRechargeRate());
+		return (int) Math.min((int) Math.min(powerCapacity,powerSetting) - power, (int)Math.round((double)powerCapacity*getRechargeRate()));
 	}
 	
 	protected synchronized SpaceShip getMyShip()
@@ -113,13 +122,13 @@ public class StdShipShieldGenerator extends StdElecCompItem implements ShipShiel
 	}
 	
 	@Override
-	public void setShieldedMsgTypes(int[] newTypes)
+	public void setDamageMsgTypes(int[] newTypes)
 	{
 		this.shieldedMsgTypes = newTypes;
 	}
 	
 	@Override
-	public int[] getShieldedMsgTypes()
+	public int[] getDamageMsgTypes()
 	{
 		return shieldedMsgTypes;
 	}
@@ -162,13 +171,15 @@ public class StdShipShieldGenerator extends StdElecCompItem implements ShipShiel
 		final SpaceShip ship = getMyShip(); 
 		if((msg.target() == ship)
 		&&(activated())
-		&&(CMParms.contains(this.getShieldedMsgTypes(), msg.sourceMinor())))
+		&&(CMParms.contains(this.getDamageMsgTypes(), msg.sourceMinor())))
 		{
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_DAMAGE: // laser, energy, some other kind of directed damage
 			{
-				if((msg.value() > 0)&&(this.lastPowerConsumption>0)&&(msg.tool() instanceof SpaceObject))
+				if((msg.value() > 0)
+				&&(this.lastPowerConsumption>0)
+				&&(msg.tool() instanceof SpaceObject))
 				{
 					final SpaceObject weaponO=(SpaceObject)msg.tool();
 					// first decide if it came from a direction im handling
@@ -234,7 +245,7 @@ public class StdShipShieldGenerator extends StdElecCompItem implements ShipShiel
 		return true;
 	}
 
-	protected static void sendComputerMessage(final ShipShieldGenerator me, final String circuitKey, final MOB mob, final Item controlI, final String code)
+	protected static void sendComputerMessage(final ShipWarComponent me, final String circuitKey, final MOB mob, final Item controlI, final String code)
 	{
 		for(final Iterator<Computer> c=CMLib.tech().getComputers(circuitKey);c.hasNext();)
 		{

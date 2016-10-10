@@ -2,5 +2,5 @@
 % Row Boat	4	40	90	35	GenBoat		2	0	
 % Boat	8	60	180	70	GenBoat		4	0	
 % Long Boat	12	90	250	140	GenBoat		8	0	
-% Galley	45	1000	1000	2500	GenBoat		12	0	
+% Longship	45	1000	1000	2500	GenBoat		12	0	
 % Surfboard	30	10	10	15	GenBoat		1	0	

@@ -94,12 +94,13 @@ public class Fighter_Cleave extends FighterSkill
 
 		final MOB mob=(MOB)affected;
 		if((msg.amISource(mob))
-		&&(mob.getVictim()!=null)
-		&&(msg.amITarget(mob.getVictim()))
-		&&(!msg.amITarget(mob))
-		&&(!mob.getVictim().amDead())
 		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
-		&&(msg.tool() instanceof Weapon))
+		&&(!msg.amITarget(mob))
+		&&(msg.amITarget(mob.getVictim()))
+		&&(msg.tool() instanceof Weapon)
+		&&(mob.getVictim() != null)
+		&&(!mob.getVictim().amDead())
+		)
 		{
 			final MOB victim=mob.getVictim();
 			final Weapon w=(Weapon)msg.tool();

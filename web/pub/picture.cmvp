@@ -43,7 +43,7 @@
 	</SELECT>
 	@AddRequestParameter?PLAYER=@@RequestParameter?OLDPLAYER@@ @
 @else@
-    <INPUT TYPE=HIDDEN NAME=PLAYER VALUE="@PlayerData?NAME">
+    <INPUT TYPE=HIDDEN NAME=PLAYER VALUE="@PlayerData?NAME@">
 @endif@
 </FORM>
 <CENTER>

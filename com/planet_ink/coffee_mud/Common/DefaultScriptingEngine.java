@@ -46,8 +46,18 @@ import java.util.regex.Pattern;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class DefaultScriptingEngine implements ScriptingEngine
 {
-	@Override public String ID(){return "DefaultScriptingEngine";}
-	@Override public String name(){return "Default Scripting Engine";}
+	@Override
+	public String ID()
+	{
+		return "DefaultScriptingEngine";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Default Scripting Engine";
+	}
+
 	protected static final Map<String,Integer>	funcH	= new Hashtable<String,Integer>();
 	protected static final Map<String,Integer>	methH	= new Hashtable<String,Integer>();
 	protected static final Map<String,Integer>	progH	= new Hashtable<String,Integer>();
@@ -1399,8 +1409,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				case 'X':
 					if (lastKnownLocation != null)
 					{
-						if ((str.length() > 2) && (Directions.getGoodDirectionCode("" + str.charAt(2)) >= 0))
-							return lastKnownLocation.getExitInDir(Directions.getGoodDirectionCode("" + str.charAt(2)));
+						if ((str.length() > 2) && (CMLib.directions().getGoodDirectionCode("" + str.charAt(2)) >= 0))
+							return lastKnownLocation.getExitInDir(CMLib.directions().getGoodDirectionCode("" + str.charAt(2)));
 						int i = 0;
 						Exit E = null;
 						while (((++i) < 100) || (E != null))
@@ -1458,6 +1468,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				E=monster.findItem(str);
 			if(E==null) 
 				E=CMLib.players().getPlayer(str);
+			if((E==null)&&(source!=null))
+				E=source.findItem(str);
 			if(E instanceof PhysicalAgent)
 				return (PhysicalAgent)E;
 		}
@@ -1703,9 +1715,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						middle = "";
 						Exit E = null;
 						int dir = -1;
-						if ((t < varifyable.length() - 2) && (Directions.getGoodDirectionCode("" + varifyable.charAt(t + 2)) >= 0))
+						if ((t < varifyable.length() - 2) && (CMLib.directions().getGoodDirectionCode("" + varifyable.charAt(t + 2)) >= 0))
 						{
-							dir = Directions.getGoodDirectionCode("" + varifyable.charAt(t + 2));
+							dir = CMLib.directions().getGoodDirectionCode("" + varifyable.charAt(t + 2));
 							E = lastKnownLocation.getExitInDir(dir);
 						}
 						else
@@ -1720,7 +1732,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						if ((dir >= 0) && (E != null))
 						{
 							if (c == 'x')
-								middle = Directions.getDirectionName(dir);
+								middle = CMLib.directions().getDirectionName(dir);
 							else
 								middle = E.name();
 						}
@@ -3087,7 +3099,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 59: // isopen
 			{
 				final String arg1=CMParms.cleanBit(funcParms);
-				final int dir=Directions.getGoodDirectionCode(arg1);
+				final int dir=CMLib.directions().getGoodDirectionCode(arg1);
 				returnable=false;
 				if(dir<0)
 				{
@@ -3110,7 +3122,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 60: // islocked
 			{
 				final String arg1=CMParms.cleanBit(funcParms);
-				final int dir=Directions.getGoodDirectionCode(arg1);
+				final int dir=CMLib.directions().getGoodDirectionCode(arg1);
 				returnable=false;
 				if(dir<0)
 				{
@@ -3476,7 +3488,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				final String arg2=tt[t+1];
 				String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
 				int num=0;
-				MaskingLibrary.CompiledZapperMask MASK=null;
+				MaskingLibrary.CompiledZMask MASK=null;
 				if((arg3.toUpperCase().startsWith("MASK")&&(arg3.substring(4).trim().startsWith("="))))
 				{
 					arg3=arg3.substring(4).trim();
@@ -3486,19 +3498,24 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				for(final Enumeration<Room> e=lastKnownLocation.getArea().getProperMap();e.hasMoreElements();)
 				{
 					final Room R=e.nextElement();
-					for(int m=0;m<R.numInhabitants();m++)
+					if(arg1.equals("*"))
+						num+=R.numInhabitants();
+					else
 					{
-						final MOB M=R.fetchInhabitant(m);
-						if(M==null)
-							continue;
-						if(MASK!=null)
+						for(int m=0;m<R.numInhabitants();m++)
 						{
-							if(CMLib.masking().maskCheck(MASK,M,true))
+							final MOB M=R.fetchInhabitant(m);
+							if(M==null)
+								continue;
+							if(MASK!=null)
+							{
+								if(CMLib.masking().maskCheck(MASK,M,true))
+									num++;
+							}
+							else
+							if(CMLib.english().containsString(M.name(),arg1))
 								num++;
 						}
-						else
-						if(CMLib.english().containsString(M.name(),arg1))
-							num++;
 					}
 				}
 				returnable=simpleEval(scripted,""+num,arg3,arg2,"NUMMOBSINAREA");
@@ -3512,7 +3529,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				final String arg2=tt[t+1];
 				String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
 				int num=0;
-				MaskingLibrary.CompiledZapperMask MASK=null;
+				MaskingLibrary.CompiledZMask MASK=null;
 				if((arg3.toUpperCase().startsWith("MASK")&&(arg3.substring(4).trim().startsWith("="))))
 				{
 					arg3=arg3.substring(4).trim();
@@ -3782,7 +3799,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						if(!name.equalsIgnoreCase("*"))
 						{
 							num=0;
-							MaskingLibrary.CompiledZapperMask MASK=null;
+							MaskingLibrary.CompiledZMask MASK=null;
 							if((name.toUpperCase().startsWith("MASK")&&(name.substring(4).trim().startsWith("="))))
 							{
 								final boolean usePreCompiled = (name.equals(tt[t+0]));
@@ -3937,11 +3954,13 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
 				int ct=0;
 				if(lastKnownLocation!=null)
-				for(int i=0;i<lastKnownLocation.numItems();i++)
 				{
-					final Item I=lastKnownLocation.getItem(i);
-					if((I!=null)&&(I.container()==null))
-						ct++;
+					for(int i=0;i<lastKnownLocation.numItems();i++)
+					{
+						final Item I=lastKnownLocation.getItem(i);
+						if((I!=null)&&(I.container()==null))
+							ct++;
+					}
 				}
 				returnable=simpleEval(scripted,""+ct,arg2,arg1,"NUMITEMSROOM");
 				break;
@@ -4051,6 +4070,154 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					}
 				}
 				returnable=simpleEval(scripted,""+ct,arg3,arg2,"NUMITEMSMOB");
+				break;
+			}
+			case 101: // numitemsshop
+			{
+				if(tlen==1) 
+					tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
+				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
+				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
+				final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
+				PhysicalAgent which=null;
+				if(lastKnownLocation!=null)
+				{
+					if(CMath.isInteger(arg1.trim()))
+						which=lastKnownLocation.fetchInhabitant(CMath.s_int(arg1.trim())-1);
+					else
+						which=lastKnownLocation.fetchInhabitant(arg1);
+					if(which == null)
+						which=this.getArgumentItem(tt[t+0], source, monster, scripted, target, primaryItem, secondaryItem, msg, tmp);
+					if(which == null)
+						which=this.getArgumentMOB(tt[t+0], source, monster, target, primaryItem, secondaryItem, msg, tmp);
+				}
+				int ct=0;
+				if(which!=null)
+				{
+					ShopKeeper shopHere = CMLib.coffeeShops().getShopKeeper(which);
+					if((shopHere == null)&&(scripted instanceof Item))
+						shopHere=CMLib.coffeeShops().getShopKeeper(((Item)which).owner());
+					if((shopHere == null)&&(scripted instanceof MOB))
+						shopHere=CMLib.coffeeShops().getShopKeeper(((MOB)which).location());
+					if(shopHere == null)
+						shopHere=CMLib.coffeeShops().getShopKeeper(lastKnownLocation);
+					if(shopHere!=null)
+					{
+						CoffeeShop shop = shopHere.getShop();
+						if(shop != null)
+						{
+							for(Iterator<Environmental> i=shop.getStoreInventory();i.hasNext();i.next())
+							{
+								ct++;
+							}
+						}
+					}
+				}
+				returnable=simpleEval(scripted,""+ct,arg3,arg2,"NUMITEMSSHOP");
+				break;
+			}
+			case 100: // shopitem
+			{
+				if(tlen==1) 
+					tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
+				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
+				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
+				final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
+				PhysicalAgent where=null;
+				if(lastKnownLocation!=null)
+				{
+					if(CMath.isInteger(arg1.trim()))
+						where=lastKnownLocation.fetchInhabitant(CMath.s_int(arg1.trim())-1);
+					else
+						where=lastKnownLocation.fetchInhabitant(arg1.trim());
+					if(where == null)
+						where=this.getArgumentItem(tt[t+0], source, monster, scripted, target, primaryItem, secondaryItem, msg, tmp);
+					if(where == null)
+						where=this.getArgumentMOB(tt[t+0], source, monster, target, primaryItem, secondaryItem, msg, tmp);
+				}
+				Environmental which=null;
+				int ct=1;
+				if(where!=null)
+				{
+					ShopKeeper shopHere = CMLib.coffeeShops().getShopKeeper(where);
+					if((shopHere == null)&&(scripted instanceof Item))
+						shopHere=CMLib.coffeeShops().getShopKeeper(((Item)where).owner());
+					if((shopHere == null)&&(scripted instanceof MOB))
+						shopHere=CMLib.coffeeShops().getShopKeeper(((MOB)where).location());
+					if(shopHere == null)
+						shopHere=CMLib.coffeeShops().getShopKeeper(lastKnownLocation);
+					if(shopHere!=null)
+					{
+						CoffeeShop shop = shopHere.getShop();
+						if(shop != null)
+						{
+							for(Iterator<Environmental> i=shop.getStoreInventory();i.hasNext();)
+							{
+								Environmental E=i.next();
+								if(ct==CMath.s_int(arg2.trim()))
+								{
+									which = E;
+									break;
+								}
+								ct++;
+							}
+						}
+					}
+					if(which==null)
+						returnable=false;
+					else
+					{
+						returnable=(CMLib.english().containsString(which.name(),arg3)
+									||CMLib.english().containsString(which.Name(),arg3)
+									||CMLib.english().containsString(which.displayText(),arg3));
+						if(returnable)
+							setShopPrice(shopHere,which,tmp);
+					}
+				}
+				else
+					returnable=false;
+				break;
+			}
+			case 102: // shophas
+			{
+				if(tlen==1) 
+					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
+				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
+				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
+				PhysicalAgent where=null;
+				if(lastKnownLocation!=null)
+				{
+					if(CMath.isInteger(arg1.trim()))
+						where=lastKnownLocation.fetchInhabitant(CMath.s_int(arg1.trim())-1);
+					else
+						where=lastKnownLocation.fetchInhabitant(arg1.trim());
+					if(where == null)
+						where=this.getArgumentItem(tt[t+0], source, monster, scripted, target, primaryItem, secondaryItem, msg, tmp);
+					if(where == null)
+						where=this.getArgumentMOB(tt[t+0], source, monster, target, primaryItem, secondaryItem, msg, tmp);
+				}
+				returnable=false;
+				if(where!=null)
+				{
+					ShopKeeper shopHere = CMLib.coffeeShops().getShopKeeper(where);
+					if((shopHere == null)&&(scripted instanceof Item))
+						shopHere=CMLib.coffeeShops().getShopKeeper(((Item)where).owner());
+					if((shopHere == null)&&(scripted instanceof MOB))
+						shopHere=CMLib.coffeeShops().getShopKeeper(((MOB)where).location());
+					if(shopHere == null)
+						shopHere=CMLib.coffeeShops().getShopKeeper(lastKnownLocation);
+					if(shopHere!=null)
+					{
+						CoffeeShop shop = shopHere.getShop();
+						if(shop != null)
+						{
+							final Environmental E=shop.getStock(arg2.trim(), null);
+							returnable = (E!=null);
+							if(returnable)
+								setShopPrice(shopHere,E,tmp);
+						}
+					}
+				}
 				break;
 			}
 			case 43: // roommob
@@ -4821,18 +4988,21 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if((P==null)||(!(P instanceof MOB)))
 					returnable=false;
 				else
-				if(P.fetchEffect("Mood")!=null)
 				{
-					final String sex=P.fetchEffect("Mood").text();
-					if(arg2.equals("=="))
-						returnable=sex.equalsIgnoreCase(arg3);
-					else
-					if(arg2.equals("!="))
-						returnable=!sex.equalsIgnoreCase(arg3);
-					else
+					final Ability moodA=P.fetchEffect("Mood");
+					if(moodA!=null)
 					{
-						logError(scripted,"MOOD","Syntax",funcParms);
-						return returnable;
+						final String sex=moodA.text();
+						if(arg2.equals("=="))
+							returnable=sex.equalsIgnoreCase(arg3);
+						else
+						if(arg2.equals("!="))
+							returnable=!sex.equalsIgnoreCase(arg3);
+						else
+						{
+							logError(scripted,"MOOD","Syntax",funcParms);
+							return returnable;
+						}
 					}
 				}
 				break;
@@ -5340,6 +5510,21 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		return ((Boolean)stack.firstElement()).booleanValue();
 	}
 
+	protected void setShopPrice(ShopKeeper shopHere, Environmental E, Object[] tmp)
+	{
+		if(shopHere instanceof MOB)
+		{
+			ShopKeeper.ShopPrice price = CMLib.coffeeShops().sellingPrice((MOB)shopHere, null, E, shopHere, true);
+			if(price.experiencePrice>0)
+				tmp[SPECIAL_9SHOPHASPRICE] = price.experiencePrice+"xp";
+			else
+			if(price.questPointPrice>0)
+				tmp[SPECIAL_9SHOPHASPRICE] = price.questPointPrice+"qp";
+			else
+				tmp[SPECIAL_9SHOPHASPRICE] = CMLib.beanCounter().abbreviatedPrice((MOB)shopHere,price.absoluteGoldPrice);
+		}
+	}
+	
 	@Override
 	public String functify(PhysicalAgent scripted,
 							MOB source,
@@ -5576,8 +5761,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 58: // isable
 			{
 				final String arg1=CMParms.getCleanBit(funcParms,0);
-				final String arg2=CMParms.getPastBitClean(funcParms,0);
 				final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
+				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(funcParms,0));
 				if((E!=null)&&((E instanceof MOB))&&(!((MOB)E).amDead()))
 				{
 					final ExpertiseLibrary X=(ExpertiseLibrary)CMLib.expertises().findDefinition(arg2,true);
@@ -5599,7 +5784,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 59: // isopen
 			{
 				final String arg1=CMParms.cleanBit(funcParms);
-				final int dir=Directions.getGoodDirectionCode(arg1);
+				final int dir=CMLib.directions().getGoodDirectionCode(arg1);
 				boolean returnable=false;
 				if(dir<0)
 				{
@@ -5623,7 +5808,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 60: // islocked
 			{
 				final String arg1=CMParms.cleanBit(funcParms);
-				final int dir=Directions.getGoodDirectionCode(arg1);
+				final int dir=CMLib.directions().getGoodDirectionCode(arg1);
 				if(dir<0)
 				{
 					final Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
@@ -5973,7 +6158,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(funcParms));
 				int num=0;
-				MaskingLibrary.CompiledZapperMask MASK=null;
+				MaskingLibrary.CompiledZMask MASK=null;
 				if((arg1.toUpperCase().startsWith("MASK")&&(arg1.substring(4).trim().startsWith("="))))
 				{
 					arg1=arg1.substring(4).trim();
@@ -5983,19 +6168,24 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				for(final Enumeration<Room> e=lastKnownLocation.getArea().getProperMap();e.hasMoreElements();)
 				{
 					final Room R=e.nextElement();
-					for(int m=0;m<R.numInhabitants();m++)
+					if(arg1.equals("*"))
+						num+=R.numInhabitants();
+					else
 					{
-						final MOB M=R.fetchInhabitant(m);
-						if(M==null)
-							continue;
-						if(MASK!=null)
+						for(int m=0;m<R.numInhabitants();m++)
 						{
-							if(CMLib.masking().maskCheck(MASK,M,true))
+							final MOB M=R.fetchInhabitant(m);
+							if(M==null)
+								continue;
+							if(MASK!=null)
+							{
+								if(CMLib.masking().maskCheck(MASK,M,true))
+									num++;
+							}
+							else
+							if(CMLib.english().containsString(M.name(),arg1))
 								num++;
 						}
-						else
-						if(CMLib.english().containsString(M.name(),arg1))
-							num++;
 					}
 				}
 				results.append(num);
@@ -6005,7 +6195,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				int num=0;
 				String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(funcParms));
-				MaskingLibrary.CompiledZapperMask MASK=null;
+				MaskingLibrary.CompiledZMask MASK=null;
 				if((arg1.toUpperCase().startsWith("MASK")&&(arg1.substring(4).trim().startsWith("="))))
 				{
 					arg1=arg1.substring(4).trim();
@@ -6183,7 +6373,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if((name.length()>0)&&(!name.equalsIgnoreCase("*")))
 					{
 						num=0;
-						MaskingLibrary.CompiledZapperMask MASK=null;
+						MaskingLibrary.CompiledZMask MASK=null;
 						if((name.toUpperCase().startsWith("MASK")&&(name.substring(4).trim().startsWith("="))))
 						{
 							name=name.substring(4).trim();
@@ -6323,6 +6513,147 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				}
 				if(which!=null)
 					results.append(which.name());
+				break;
+			}
+			case 100: // shopitem
+			{
+				final String arg1raw=CMParms.getCleanBit(funcParms,0);
+				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,arg1raw);
+				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(funcParms,0));
+				PhysicalAgent where=null;
+				if(lastKnownLocation!=null)
+				{
+					if(CMath.isInteger(arg1.trim()))
+						where=lastKnownLocation.fetchInhabitant(CMath.s_int(arg1.trim())-1);
+					else
+						where=lastKnownLocation.fetchInhabitant(arg1.trim());
+					if(where == null)
+						where=this.getArgumentItem(arg1raw, source, monster, scripted, target, primaryItem, secondaryItem, msg, tmp);
+					if(where == null)
+						where=this.getArgumentMOB(arg1raw, source, monster, target, primaryItem, secondaryItem, msg, tmp);
+				}
+				Environmental which=null;
+				int ct=1;
+				if(where!=null)
+				{
+					ShopKeeper shopHere = CMLib.coffeeShops().getShopKeeper(where);
+					if((shopHere == null)&&(scripted instanceof Item))
+						shopHere=CMLib.coffeeShops().getShopKeeper(((Item)where).owner());
+					if((shopHere == null)&&(scripted instanceof MOB))
+						shopHere=CMLib.coffeeShops().getShopKeeper(((MOB)where).location());
+					if(shopHere == null)
+						shopHere=CMLib.coffeeShops().getShopKeeper(lastKnownLocation);
+					if(shopHere!=null)
+					{
+						CoffeeShop shop = shopHere.getShop();
+						if(shop != null)
+						{
+							for(Iterator<Environmental> i=shop.getStoreInventory();i.hasNext();ct++)
+							{
+								Environmental E=i.next();
+								if(ct==CMath.s_int(arg2.trim()))
+								{
+									which = E;
+									setShopPrice(shopHere,E,tmp);
+									break;
+								}
+							}
+						}
+					}
+				}
+				if(which!=null)
+					results.append(which.name());
+				break;
+			}
+			case 101: // numitemsshop
+			{
+				String arg1raw = CMParms.cleanBit(funcParms);
+				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,arg1raw);
+				PhysicalAgent which=null;
+				if(lastKnownLocation!=null)
+				{
+					if(CMath.isInteger(arg1.trim()))
+						which=lastKnownLocation.fetchInhabitant(CMath.s_int(arg1.trim())-1);
+					else
+						which=lastKnownLocation.fetchInhabitant(arg1);
+					if(which == null)
+						which=this.getArgumentItem(arg1raw, source, monster, scripted, target, primaryItem, secondaryItem, msg, tmp);
+					if(which == null)
+						which=this.getArgumentMOB(arg1raw, source, monster, target, primaryItem, secondaryItem, msg, tmp);
+				}
+				int ct=0;
+				if(which!=null)
+				{
+					ShopKeeper shopHere = CMLib.coffeeShops().getShopKeeper(which);
+					if((shopHere == null)&&(scripted instanceof Item))
+						shopHere=CMLib.coffeeShops().getShopKeeper(((Item)which).owner());
+					if((shopHere == null)&&(scripted instanceof MOB))
+						shopHere=CMLib.coffeeShops().getShopKeeper(((MOB)which).location());
+					if(shopHere == null)
+						shopHere=CMLib.coffeeShops().getShopKeeper(lastKnownLocation);
+					if(shopHere!=null)
+					{
+						CoffeeShop shop = shopHere.getShop();
+						if(shop != null)
+						{
+							for(Iterator<Environmental> i=shop.getStoreInventory();i.hasNext();i.next())
+							{
+								ct++;
+							}
+						}
+					}
+				}
+				results.append(""+ct);
+				break;
+			}
+			case 102: // shophas
+			{
+				final String arg1raw=CMParms.cleanBit(funcParms);
+				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,arg1raw);
+				PhysicalAgent where=null;
+				if(lastKnownLocation!=null)
+				{
+					if(CMath.isInteger(arg1.trim()))
+						where=lastKnownLocation.fetchInhabitant(CMath.s_int(arg1.trim())-1);
+					else
+						where=lastKnownLocation.fetchInhabitant(arg1.trim());
+					if(where == null)
+						where=this.getArgumentItem(arg1raw, source, monster, scripted, target, primaryItem, secondaryItem, msg, tmp);
+					if(where == null)
+						where=this.getArgumentMOB(arg1raw, source, monster, target, primaryItem, secondaryItem, msg, tmp);
+				}
+				if(where!=null)
+				{
+					ShopKeeper shopHere = CMLib.coffeeShops().getShopKeeper(where);
+					if((shopHere == null)&&(scripted instanceof Item))
+						shopHere=CMLib.coffeeShops().getShopKeeper(((Item)where).owner());
+					if((shopHere == null)&&(scripted instanceof MOB))
+						shopHere=CMLib.coffeeShops().getShopKeeper(((MOB)where).location());
+					if(shopHere == null)
+						shopHere=CMLib.coffeeShops().getShopKeeper(lastKnownLocation);
+					if(shopHere!=null)
+					{
+						CoffeeShop shop = shopHere.getShop();
+						if(shop != null)
+						{
+							int ct=0;
+							for(Iterator<Environmental> i=shop.getStoreInventory();i.hasNext();i.next())
+								ct++;
+							int which=CMLib.dice().roll(1, ct, -1);
+							ct=0;
+							for(Iterator<Environmental> i=shop.getStoreInventory();i.hasNext();ct++)
+							{
+								final Environmental E=i.next();
+								if(which == ct)
+								{
+									results.append(E.Name());
+									setShopPrice(shopHere,E,tmp);
+									break;
+								}
+							}
+						}
+					}
+				}
 				break;
 			}
 			case 48: // numitemsmob
@@ -6691,8 +7022,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				final String arg1=CMParms.cleanBit(funcParms);
 				final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
-				if((E instanceof MOB)&&(((MOB)E).fetchEffect("Mood")!=null))
-					results.append(CMStrings.capitalizeAndLower(((MOB)E).fetchEffect("Mood").text()));
+				if(E instanceof MOB)
+				{
+					final Ability moodA=((MOB)E).fetchEffect("Mood");
+					if(moodA!=null)
+						results.append(CMStrings.capitalizeAndLower(moodA.text()));
+				}
 				break;
 			}
 			case 22: // baseclass
@@ -8605,6 +8940,125 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				}
 				break;
 			}
+			case 84: // mpoloadshop
+			{
+				// if not mob
+				ShopKeeper addHere = CMLib.coffeeShops().getShopKeeper(scripted);
+				if((addHere == null)&&(scripted instanceof Item))
+					addHere=CMLib.coffeeShops().getShopKeeper(((Item)scripted).owner());
+				if((addHere == null)&&(scripted instanceof MOB))
+					addHere=CMLib.coffeeShops().getShopKeeper(((MOB)scripted).location());
+				if(addHere == null)
+					addHere=CMLib.coffeeShops().getShopKeeper(lastKnownLocation);
+				if(addHere!=null)
+				{
+					if(tt==null)
+					{
+						tt=parseBits(script,si,"Cr");
+						if(tt==null)
+							return null;
+					}
+					String name=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[1]);
+					if(lastKnownLocation!=null)
+					{
+						final ArrayList<Environmental> Is=new ArrayList<Environmental>();
+						int price=-1;
+						if((price = name.indexOf(" PRICE="))>=0)
+						{
+							String rest = name.substring(price+7).trim();
+							name=name.substring(0,price).trim();
+							if(CMath.isInteger(rest))
+								price=CMath.s_int(rest);
+						}
+						Item I=CMClass.getItem(name);
+						if(I!=null)
+							Is.add(I);
+						else
+							findSomethingCalledThis(name,monster,lastKnownLocation,Is,false);
+						for(int i=0;i<Is.size();i++)
+						{
+							if(Is.get(i) instanceof Item)
+							{
+								I=(Item)Is.get(i);
+								if((I!=null)
+								&&(!(I instanceof ArchonOnly)))
+								{
+									I=(Item)I.copyOf();
+									I.recoverPhyStats();
+									CoffeeShop shop = addHere.getShop();
+									if(shop != null)
+									{
+										Environmental E=shop.addStoreInventory(I,1,price);
+										if(E!=null)
+											setShopPrice(addHere, E, tmp);
+									}
+									I.destroy();
+								}
+							}
+						}
+						lastKnownLocation.recoverRoomStats();
+					}
+				}
+				break;
+			}
+			case 85: // mpmloadshop
+			{
+				// if not mob
+				ShopKeeper addHere = CMLib.coffeeShops().getShopKeeper(scripted);
+				if((addHere == null)&&(scripted instanceof Item))
+					addHere=CMLib.coffeeShops().getShopKeeper(((Item)scripted).owner());
+				if((addHere == null)&&(scripted instanceof MOB))
+					addHere=CMLib.coffeeShops().getShopKeeper(((MOB)scripted).location());
+				if(addHere == null)
+					addHere=CMLib.coffeeShops().getShopKeeper(lastKnownLocation);
+				if(addHere!=null)
+				{
+					if(tt==null)
+					{
+						tt=parseBits(script,si,"Cr");
+						if(tt==null)
+							return null;
+					}
+					String name=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[1]);
+					int price=-1;
+					if((price = name.indexOf(" PRICE="))>=0)
+					{
+						String rest = name.substring(price+7).trim();
+						name=name.substring(0,price).trim();
+						if(CMath.isInteger(rest))
+							price=CMath.s_int(rest);
+					}
+					final ArrayList<Environmental> Ms=new ArrayList<Environmental>();
+					MOB m=CMClass.getMOB(name);
+					if(m!=null)
+						Ms.add(m);
+					if(lastKnownLocation!=null)
+					{
+						if(Ms.size()==0)
+							findSomethingCalledThis(name,monster,lastKnownLocation,Ms,true);
+						for(int i=0;i<Ms.size();i++)
+						{
+							if(Ms.get(i) instanceof MOB)
+							{
+								m=(MOB)((MOB)Ms.get(i)).copyOf();
+								m.text();
+								m.recoverPhyStats();
+								m.recoverCharStats();
+								m.resetToMaxState();
+								CoffeeShop shop = addHere.getShop();
+								if(shop != null)
+								{
+									Environmental E=shop.addStoreInventory(m,1,price);
+									if(E!=null)
+										setShopPrice(addHere, E, tmp);
+								}
+								m.destroy();
+							}
+						}
+					}
+				}
+				break;
+			}
 			case 42: // mphide
 			{
 				if(tt==null)
@@ -9216,7 +9670,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					final boolean tattooMinus=tattooName.startsWith("-");
 					if(tattooMinus)
 						tattooName=tattooName.substring(1);
-					final Tattoo pT=CMLib.database().parseTattoo(tattooName);
+					final Tattoo pT=((Tattoo)CMClass.getCommon("DefaultTattoo")).parse(tattooName);
 					final Tattoo T=themob.findTattoo(pT.getTattooName());
 					if(T!=null)
 					{
@@ -9249,7 +9703,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					final boolean tattooMinus=tattooName.startsWith("-");
 					if(tattooMinus)
 						tattooName=tattooName.substring(1);
-					final Tattoo pT=CMLib.database().parseTattoo(tattooName);
+					final Tattoo pT=((Tattoo)CMClass.getCommon("DefaultTattoo")).parse(tattooName);
 					final Tattoo T=themob.findTattoo(pT.getTattooName());
 					if(T!=null)
 					{
@@ -9571,43 +10025,43 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				break;
 			}
 			case 15: // mpat
-			if(lastKnownLocation!=null)
-			{
-				if(tt==null)
+				if(lastKnownLocation!=null)
 				{
-					tt=parseBits(script,si,"Ccp");
 					if(tt==null)
-						return null;
-				}
-				final Room lastPlace=lastKnownLocation;
-				final String roomName=tt[1];
-				if(roomName.length()>0)
-				{
-					final String doWhat=tt[2].trim();
-					Room goHere=null;
-					if(roomName.startsWith("$"))
-						goHere=CMLib.map().roomLocation(this.getArgumentItem(roomName,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp));
-					if(goHere==null)
-						goHere=getRoom(varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,roomName),lastKnownLocation);
-					if(goHere!=null)
 					{
-						goHere.bringMobHere(monster,true);
-						final DVector DV=new DVector(2);
-						DV.addElement("",null);
-						DV.addElement(doWhat,null);
-						lastKnownLocation=goHere;
-						execute(scripted,source,target,monster,primaryItem,secondaryItem,DV,msg,tmp);
-						lastKnownLocation=lastPlace;
-						lastPlace.bringMobHere(monster,true);
-						if(!(scripted instanceof MOB))
+						tt=parseBits(script,si,"Ccp");
+						if(tt==null)
+							return null;
+					}
+					final Room lastPlace=lastKnownLocation;
+					final String roomName=tt[1];
+					if(roomName.length()>0)
+					{
+						final String doWhat=tt[2].trim();
+						Room goHere=null;
+						if(roomName.startsWith("$"))
+							goHere=CMLib.map().roomLocation(this.getArgumentItem(roomName,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp));
+						if(goHere==null)
+							goHere=getRoom(varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,roomName),lastKnownLocation);
+						if(goHere!=null)
 						{
-							goHere.delInhabitant(monster);
-							lastPlace.delInhabitant(monster);
+							goHere.bringMobHere(monster,true);
+							final DVector DV=new DVector(2);
+							DV.addElement("",null);
+							DV.addElement(doWhat,null);
+							lastKnownLocation=goHere;
+							execute(scripted,source,target,monster,primaryItem,secondaryItem,DV,msg,tmp);
+							lastKnownLocation=lastPlace;
+							lastPlace.bringMobHere(monster,true);
+							if(!(scripted instanceof MOB))
+							{
+								goHere.delInhabitant(monster);
+								lastPlace.delInhabitant(monster);
+							}
 						}
 					}
 				}
-			}
-			break;
+				break;
 			case 17: // mptransfer
 			{
 				if(tt==null)
@@ -9705,7 +10159,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								// scripting guide calls for NO text -- empty is probably req tho
 								final CMMsg enterMsg=CMClass.getMsg(follower,newRoom,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER," "+CMLib.protocol().msp("appear.wav",10));
 								final CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,null,CMMsg.MSG_LEAVE," ");
-								if(thisRoom.okMessage(follower,leaveMsg)&&newRoom.okMessage(follower,enterMsg))
+								if((thisRoom!=null)
+								&&thisRoom.okMessage(follower,leaveMsg)
+								&&newRoom.okMessage(follower,enterMsg))
 								{
 									if(follower.isInCombat())
 									{
@@ -9879,9 +10335,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								val="";
 						}
 						if(val.length()>0)
-							CMLib.database().DBReCreateData(which,"SCRIPTABLEVARS",which.toUpperCase()+"_SCRIPTABLEVARS_"+arg2,val);
+							CMLib.database().DBReCreatePlayerData(which,"SCRIPTABLEVARS",which.toUpperCase()+"_SCRIPTABLEVARS_"+arg2,val);
 						else
-							CMLib.database().DBDeleteData(which,"SCRIPTABLEVARS",which.toUpperCase()+"_SCRIPTABLEVARS_"+arg2);
+							CMLib.database().DBDeletePlayerData(which,"SCRIPTABLEVARS",which.toUpperCase()+"_SCRIPTABLEVARS_"+arg2);
 					}
 				}
 				break;
@@ -9902,9 +10358,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					List<PlayerData> V=null;
 					which=getVarHost(E,which,source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp);
 					if(arg2.equals("*"))
-						V=CMLib.database().DBReadData(which,"SCRIPTABLEVARS");
+						V=CMLib.database().DBReadPlayerData(which,"SCRIPTABLEVARS");
 					else
-						V=CMLib.database().DBReadData(which,"SCRIPTABLEVARS",which.toUpperCase()+"_SCRIPTABLEVARS_"+arg2);
+						V=CMLib.database().DBReadPlayerData(which,"SCRIPTABLEVARS",which.toUpperCase()+"_SCRIPTABLEVARS_"+arg2);
 					if((V!=null)&&(V.size()>0))
 					for(int v=0;v<V.size();v++)
 					{
@@ -10526,7 +10982,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					A.setProficiency(CMath.s_int(p2.trim()));
 					A.setMiscText(m2);
 					if(((MOB)newTarget).fetchAbility(A.ID())==null)
+					{
 						((MOB)newTarget).addAbility(A);
+						A.autoInvocation((MOB)newTarget, false);
+					}
 				}
 				break;
 			}
@@ -10808,13 +11267,20 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		if((t[1].length()==0)
 		||(t[1].equals("ALL"))
 		||(t[1].equals("P")
-			&&(t.length>2)
-			&&((t[2].indexOf(NAME)>=0)
-				||(E.ID().equalsIgnoreCase(t[2]))
+			&&(t.length==3)
+			&&((t[2].equalsIgnoreCase(NAME))
 				||(t[2].equalsIgnoreCase("ALL")))))
 			return t[1];
 		for(int i=1;i<t.length;i++)
 		{
+			if(t[i].equals("P") && (i < t.length-1))
+			{
+				if( t[i+1].equalsIgnoreCase(NAME)
+				|| t[i+1].equalsIgnoreCase("ALL"))
+					return t[i];
+				i++;
+			}
+			else
 			if(((" "+NAME+" ").indexOf(" "+t[i]+" ")>=0)
 			||(E.ID().equalsIgnoreCase(t[i]))
 			||(t[i].equalsIgnoreCase("ALL")))
@@ -12138,6 +12604,13 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							  int ticks,
 							  String msg)
 	{
+		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+			return;
+		if(que.size()>25)
+		{
+			this.logError(monster, "UNK", "SYS", "Attempt to que more than 25 events.");
+			que.clear();
+		}
 		if(noDelay)
 			execute(host,source,target,monster,primaryItem,secondaryItem,script,msg,newObjs());
 		else
@@ -12154,6 +12627,13 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							   int ticks,
 							   String msg)
 	{
+		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+			return;
+		if(que.size()>25)
+		{
+			this.logError(monster, "UNK", "SYS", "Attempt to que more than 25 events.");
+			que.clear();
+		}
 		que.add(0,new ScriptableResponse(host,source,target,monster,primaryItem,secondaryItem,script,ticks,msg));
 	}
 

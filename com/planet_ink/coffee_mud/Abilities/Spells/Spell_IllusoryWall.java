@@ -60,7 +60,7 @@ public class Spell_IllusoryWall extends Spell
 	{
 
 		final String whatToOpen=CMParms.combine(commands,0);
-		final int dirCode=Directions.getGoodDirectionCode(whatToOpen);
+		final int dirCode=CMLib.directions().getGoodDirectionCode(whatToOpen);
 		if(dirCode<0)
 		{
 			mob.tell(L("Cast which direction?!"));
@@ -82,10 +82,10 @@ public class Spell_IllusoryWall extends Spell
 		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(!success)
-			beneficialVisualFizzle(mob,null,L("<S-NAME> whisper(s) @x1, but nothing happens.",Directions.getDirectionName(dirCode)));
+			beneficialVisualFizzle(mob,null,L("<S-NAME> whisper(s) @x1, but nothing happens.",CMLib.directions().getDirectionName(dirCode)));
 		else
 		{
-			final CMMsg msg=CMClass.getMsg(mob,exit,this,verbalCastCode(mob,exit,auto),auto?"":L("^S<S-NAME> whisper(s) @x1.^?",Directions.getDirectionName(dirCode)));
+			final CMMsg msg=CMClass.getMsg(mob,exit,this,verbalCastCode(mob,exit,auto),auto?"":L("^S<S-NAME> whisper(s) @x1.^?",CMLib.directions().getDirectionName(dirCode)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

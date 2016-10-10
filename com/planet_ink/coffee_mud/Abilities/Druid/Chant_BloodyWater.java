@@ -141,7 +141,7 @@ public class Chant_BloodyWater extends Chant
 		if(!super.tick(ticking,tickID))
 			return false;
 		final MOB mob=invoker();
-		final int limit = (mob==null)? 10 : (5 + (2 * super.getXLEVELLevel(mob)));
+		final int limit = (mob==null)? 10 : (5 + (2 * (super.getXMAXRANGELevel(mob)+super.getXLEVELLevel(mob))));
 		if((affected instanceof MOB)
 		&&(theRoom!=null))
 		{
@@ -194,7 +194,7 @@ public class Chant_BloodyWater extends Chant
 								bloodyMobs.add(M);
 								Chant_BloodyWater w=(Chant_BloodyWater)this.copyOf();
 								w.theRoom = room;
-								w.theTrail = CMLib.tracking().findBastardTheBestWay(M.location(), destRooms, flags, limit);
+								w.theTrail = CMLib.tracking().findTrailToAnyRoom(M.location(), destRooms, flags, limit);
 								if(w.theTrail != null)
 									w.startTickDown(mob, M, w.tickDown);
 							}

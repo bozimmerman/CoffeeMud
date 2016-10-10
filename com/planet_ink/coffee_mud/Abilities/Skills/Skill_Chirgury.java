@@ -102,7 +102,8 @@ public class Skill_Chirgury extends StdSkill
 		if(target instanceof DeadBody) 
 			C=((DeadBody)target).charStats();
 
-		if((partSet[1] instanceof Integer)
+		if((partSet.length>0)
+		&&(partSet[1] instanceof Integer)
 		&&(C!=null) && (C.getMyRace().bodyMask()[((Integer)partSet[1]).intValue()]<=0))
 		{
 			mob.tell(L("@x1 doesn't have a @x2",target.name(mob),part));
@@ -110,12 +111,16 @@ public class Skill_Chirgury extends StdSkill
 		}
 
 		if(C!=null)
+		{
 			for(final String raceCat : badRaceCats)
+			{
 				if(C.getMyRace().racialCategory().equalsIgnoreCase(raceCat))
 				{
 					mob.tell(L("@x1 doesn't have a @x2",target.name(mob),part));
 					return false;
 				}
+			}
+		}
 
 		if((partCode==0)&&((!(target instanceof MOB))||(target.fetchEffect("Pregnancy")==null)))
 		{

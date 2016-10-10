@@ -87,7 +87,7 @@ public class GenElecItem extends StdElecItem
 		recoverPhyStats();
 	}
 
-	private final static String[] MYCODES={"POWERCAP","ACTIVATED","POWERREM","MANUFACTURER"};
+	private final static String[] MYCODES={"TECHLEVEL","POWERCAP","ACTIVATED","POWERREM","MANUFACTURER"};
 	@Override
 	public String getStat(String code)
 	{
@@ -96,12 +96,14 @@ public class GenElecItem extends StdElecItem
 		switch(getCodeNum(code))
 		{
 		case 0:
-			return "" + powerCapacity();
+			return "" + this.techLevel();
 		case 1:
-			return "" + activated();
+			return "" + powerCapacity();
 		case 2:
-			return "" + powerRemaining();
+			return "" + activated();
 		case 3:
+			return "" + powerRemaining();
+		case 4:
 			return "" + getManufacturerName();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
@@ -117,15 +119,18 @@ public class GenElecItem extends StdElecItem
 		switch(getCodeNum(code))
 		{
 			case 0:
-				setPowerCapacity(CMath.s_parseLongExpression(val));
+				setTechLevel(CMath.s_parseIntExpression(val));
 				break;
 			case 1:
-				activate(CMath.s_bool(val));
+				setPowerCapacity(CMath.s_parseLongExpression(val));
 				break;
 			case 2:
-				setPowerRemaining(CMath.s_parseLongExpression(val));
+				activate(CMath.s_bool(val));
 				break;
 			case 3:
+				setPowerRemaining(CMath.s_parseLongExpression(val));
+				break;
+			case 4:
 				setManufacturerName(val);
 				break;
 		default:

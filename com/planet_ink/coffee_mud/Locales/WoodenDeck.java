@@ -54,11 +54,4 @@ public class WoodenDeck extends StdRoom
 	{
 		return Room.DOMAIN_OUTDOORS_CITY;
 	}
-
-	public static final List<Integer> roomResources=new Vector<Integer>(0);
-	@Override
-	public List<Integer> resourceChoices()
-	{
-		return Road.roomResources;
-	}
 }

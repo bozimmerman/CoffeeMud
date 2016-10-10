@@ -84,10 +84,16 @@ public class CraftingSkill extends GatheringSkill
 	protected boolean			messedUp		= false;
 
 	// common recipe definition indexes
-	protected static final int RCP_FINALNAME=0;
-	protected static final int RCP_LEVEL=1;
-	protected static final int RCP_TICKS=2;
+	protected static final int	RCP_FINALNAME	= 0;
+	protected static final int	RCP_LEVEL		= 1;
+	protected static final int	RCP_TICKS		= 2;
 
+	// for ability component style materials
+	protected static final int	CF_AMOUNT		= 0;
+	protected static final int	CF_HARDNESS		= 1;
+	protected static final int	CF_MATERIAL		= 2;
+	protected static final int	CF_TOTAL		= 3;
+	
 	protected static class CraftParms
 	{
 		public int autoGenerate=0;
@@ -269,6 +275,20 @@ public class CraftingSkill extends GatheringSkill
 		return recipes;
 	}
 
+	protected int getBuildingMaterial(int woodRequired, int[][] foundData, int[] compData)
+	{
+		if((woodRequired == 0) && (compData[CF_MATERIAL] > 0))
+			return compData[CF_MATERIAL];
+		else
+		if((woodRequired==0)&&(foundData[1][FOUND_CODE]>0))
+			return foundData[1][FOUND_CODE];
+		else
+		if((foundData[0][FOUND_CODE]==0)&&(foundData[1][FOUND_CODE]!=0))
+			return foundData[1][FOUND_CODE];
+		else
+			return foundData[0][FOUND_CODE];
+	}
+	
 	protected int adjustWoodRequired(int woodRequired, MOB mob)
 	{
 		int newWoodRequired=woodRequired-(int)Math.round((0.05*woodRequired*getXPCOSTLevel(mob)));
@@ -282,13 +302,19 @@ public class CraftingSkill extends GatheringSkill
 		return newWoodRequired;
 	}
 
-	protected void dropAWinner(MOB mob, Item building)
+	protected String cleanBuildingNameForXP(MOB mob, String name)
+	{
+		return name;
+	}
+	
+	@Override
+	protected boolean dropAWinner(MOB mob, Item buildingI)
 	{
 		final Room R=mob.location();
 		if(R==null)
 			commonTell(mob,L("You are NOWHERE?!"));
 		else
-		if(building==null)
+		if(buildingI==null)
 			commonTell(mob,L("You have built NOTHING?!!"));
 		else
 		{
@@ -317,6 +343,7 @@ public class CraftingSkill extends GatheringSkill
 				else
 				{
 					final LinkedList<String> localLast5Items = mySkill.last4items;
+					String buildingIName = cleanBuildingNameForXP(mob,buildingI.Name().toUpperCase());
 					int lastBaseDuration = this.lastBaseDuration;
 					if(lastBaseDuration > 75)
 						lastBaseDuration = 75;
@@ -324,35 +351,31 @@ public class CraftingSkill extends GatheringSkill
 					double xp = lastBaseDuration * levelXPFactor / 25.0;
 					for(String s : localLast5Items)
 					{
-						if(s.equals(buildingI.Name()))
+						if(s.equals(buildingIName))
 							xp -= (baseXP * 0.25);
 					}
 					if(localLast5Items.size()==5)
 						localLast5Items.removeFirst();
-					localLast5Items.addLast(buildingI.Name());
+					localLast5Items.addLast(buildingIName);
 					if(xp > 0.0)
 						msg.setValue((int)Math.round(xp));
 				}
 			}
 			if(mob.location().okMessage(mob,msg))
 			{
-				R.addItem(building,ItemPossessor.Expire.Player_Drop);
+				R.addItem(buildingI,ItemPossessor.Expire.Player_Drop);
 				R.recoverRoomStats();
 				mob.location().send(mob,msg);
-			
-				boolean foundIt=false;
-				for(int r=0;r<R.numItems();r++)
-				{
-					if(R.getItem(r)==building)
-						foundIt=true;
-				}
-				if(!foundIt)
+				if(!R.isContent(buildingI))
 				{
 					commonTell(mob,L("You have won the common-skill-failure LOTTERY! Congratulations!"));
 					CMLib.leveler().postExperience(mob, null, null,50,false);
 				}
+				else
+					return true;
 			}
 		}
+		return false;
 	}
 
 	protected void addSpells(Physical P, String spells)
@@ -594,6 +617,9 @@ public class CraftingSkill extends GatheringSkill
 					if(req2Desc.equalsIgnoreCase("PRECIOUS"))
 						commonTell(mob,L("You need some sort of precious stones to make that.  There is not enough here.  Are you sure you set it all on the ground first?"));
 					else
+					if(req2Desc.equalsIgnoreCase("WOODEN"))
+						commonTell(mob,L("You need some wood to make that.  There is not enough here.  Are you sure you set it all on the ground first?"));
+					else
 						commonTell(mob,L("You need some @x1 to make that.  There is not enough here.  Are you sure you set it all on the ground first?",req2Desc.toLowerCase()));
 					return null;
 				}
@@ -673,7 +699,7 @@ public class CraftingSkill extends GatheringSkill
 	 * @param asLevel -1, unless being auto-invoked, when it is the level to invoke it at.
 	 * @param autoGenerate 0, unless auto generation, in which case it's a RawMaterial Resource Code number
 	 * @param forceLevels true to override other level modifiers on the items to force the Stock level.
-	 * @param crafted when autoGenerate > 0, this is where the auto generated crafted items are placed
+	 * @param crafted when autoGenerate &gt; 0, this is where the auto generated crafted items are placed
 	 * @return whether the skill successfully invoked.
 	 */
 	protected boolean autoGenInvoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel, int autoGenerate, boolean forceLevels, List<Item> crafted)
@@ -683,13 +709,27 @@ public class CraftingSkill extends GatheringSkill
 	
 	public ItemKeyPair craftItem(String recipeName, int material, boolean forceLevels)
 	{
+		MOB mob=null;
+		try
+		{
+			mob=CMLib.map().getFactoryMOBInAnyRoom();
+			mob.basePhyStats().setLevel(Integer.MAX_VALUE/2);
+			mob.basePhyStats().setSensesMask(mob.basePhyStats().sensesMask()|PhyStats.CAN_SEE_DARK);
+			mob.recoverPhyStats();
+			return craftItem(mob,new XVector<String>(recipeName),material,forceLevels);
+		}
+		finally
+		{
+			if(mob!=null)
+				mob.destroy();
+		}
+	}
+	
+	public ItemKeyPair craftItem(MOB mob, List<String> recipes, int material, boolean forceLevels)
+	{
 		Item building=null;
 		DoorKey key=null;
 		int tries=0;
-		final MOB mob=CMLib.map().getFactoryMOBInAnyRoom();
-		mob.basePhyStats().setLevel(Integer.MAX_VALUE/2);
-		mob.basePhyStats().setSensesMask(mob.basePhyStats().sensesMask()|PhyStats.CAN_SEE_DARK);
-		mob.recoverPhyStats();
 		if(material<0)
 		{
 			List<Integer> rscs=myResources();
@@ -700,7 +740,7 @@ public class CraftingSkill extends GatheringSkill
 		while(((building==null)||(building.name().endsWith(" bundle")))&&(((++tries)<100)))
 		{
 			List<Item> V=new Vector<Item>(1);
-			autoGenInvoke(mob,new XVector<String>(recipeName),null,true,-1,material,forceLevels,V);
+			autoGenInvoke(mob,recipes,null,true,-1,material,forceLevels,V);
 			if(V.size()>0)
 			{
 				if((V.size()>1)&&((V.get(V.size()-2) instanceof DoorKey)))
@@ -712,7 +752,6 @@ public class CraftingSkill extends GatheringSkill
 			else
 				building=null;
 		}
-		mob.destroy();
 		if(building==null)
 			return null;
 		building.setSecretIdentity("");
@@ -753,6 +792,37 @@ public class CraftingSkill extends GatheringSkill
 		}
 		usedNames.clear();
 		return allItems;
+	}
+
+	public boolean checkInfo(MOB mob, List<String> commands)
+	{
+		if((commands!=null)
+		&&(commands.size()>1)
+		&&(commands.get(0).equalsIgnoreCase("info")))
+		{
+			List<String> recipe = new XVector<String>(commands);
+			recipe.remove(0);
+			String recipeName = CMParms.combine(commands);
+			List<Integer> rscs=myResources();
+			if(rscs.size()==0)
+				rscs=new XVector(Integer.valueOf(RawMaterial.RESOURCE_WOOD));
+			final int material=RawMaterial.CODES.MOST_FREQUENT(rscs.get(0).intValue()&RawMaterial.MATERIAL_MASK);
+			ItemKeyPair pair = craftItem(mob,recipe,material,false);
+			if(pair == null)
+			{
+				commonTell(mob,L("You don't know how to make '@x1'",recipeName));
+			}
+			else
+			{
+				final String viewDesc = CMLib.coffeeShops().getViewDescription(mob, pair.item);
+				commonTell(mob,viewDesc);
+				pair.item.destroy();
+				if(pair.key!=null)
+					pair.key.destroy();
+			}
+			return true;
+		}
+		return false;
 	}
 
 	public ItemKeyPair craftItem(String recipeName)
@@ -1235,7 +1305,7 @@ public class CraftingSkill extends GatheringSkill
 		return true;
 	}
 
-	public List<Object> getAbilityComponents(MOB mob, String componentID, String doingWhat, int autoGenerate)
+	public List<Object> getAbilityComponents(MOB mob, String componentID, String doingWhat, int autoGenerate, int[] compData)
 	{
 		if(autoGenerate>0)
 			return new LinkedList<Object>();
@@ -1253,9 +1323,22 @@ public class CraftingSkill extends GatheringSkill
 			componentsRequirements=CMLib.ableComponents().getAbilityComponentMap().get(componentID.toUpperCase());
 		if(componentsRequirements!=null)
 		{
-			final List<Object> components=CMLib.ableComponents().componentCheck(mob,componentsRequirements);
+			final List<Object> components=CMLib.ableComponents().componentCheck(mob,componentsRequirements, true);
 			if(components!=null)
 			{
+				if(compData != null)
+				{
+					for(Object o : components)
+					{
+						if(o instanceof Physical)
+							compData[CF_AMOUNT] += ((Physical)o).phyStats().weight();
+						if((o instanceof Item)&&(compData[CF_MATERIAL]==0))
+						{
+							compData[CF_HARDNESS] = RawMaterial.CODES.HARDNESS(((Item)o).material());
+							compData[CF_MATERIAL] = ((Item)o).material();
+						}
+					}
+				}
 				return components;
 			}
 			final StringBuffer buf=new StringBuffer("");
@@ -1360,6 +1443,9 @@ public class CraftingSkill extends GatheringSkill
 			return false;
 		}
 		activity = CraftingActivity.LEARNING;
+		// checking to see if there is enough space (prop_reqcapacity) to make an
+		// item is unnecessary, because you must first drop the same weight in materials
+		// before you can make the item!
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		displayText=L("You are deconstructing @x1",buildingI.name());

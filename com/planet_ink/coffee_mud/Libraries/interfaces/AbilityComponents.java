@@ -52,15 +52,16 @@ public interface AbilityComponents extends CMLibrary
 	 * @see AbilityComponents#getAbilityComponents(String)
 	 * @param mob the mob whose inventory or room or both to check
 	 * @param req the ability components rules definition
+	 * @param mithrilOK true to allow mithril as a metal substitute
 	 * @return null if missing components, or the list of found components
 	 */
-	public List<Object> componentCheck(MOB mob, List<AbilityComponent> req);
+	public List<Object> componentCheck(MOB mob, List<AbilityComponent> req, boolean mithrilOK);
 	
 	/**
 	 * If the ability component recipe used to build the list of found
 	 * components needed to use a skill requires that any of the componenets
 	 * are destroyed.
-	 * @see AbilityComponents#componentCheck(MOB, List)
+	 * @see AbilityComponents#componentCheck(MOB, List, boolean)
 	 * @param found the components found with componentCheck
 	 * @return the value of the components destroyed
 	 */
@@ -189,62 +190,62 @@ public interface AbilityComponents extends CMLibrary
 	 * Returns the character-class based common skill ability limits
 	 * object applicable to the given mob, or zeroes if there's
 	 * a problem.
-	 * @see AbilityComponents#getCommonSkillLimit(MOB, Ability)
-	 * @see AbilityComponents#getCommonSkillRemainder(MOB, Ability)
-	 * @see AbilityComponents#getCommonSkillRemainders(MOB)
+	 * @see AbilityComponents#getSpecialSkillLimit(MOB, Ability)
+	 * @see AbilityComponents#getSpecialSkillRemainder(MOB, Ability)
+	 * @see AbilityComponents#getSpecialSkillRemainders(MOB)
 	 * @see AbilityLimits
 	 * @param studentM the mob to find limits for
 	 * @return the character-class based common skill ability limits
 	 */
-	public AbilityLimits getCommonSkillLimit(MOB studentM);
+	public AbilityLimits getSpecialSkillLimit(MOB studentM);
 	
 	/**
 	 * Returns the character-class based common skill ability limits
 	 * object applicable to the given mob and the given ability.
-	 * @see AbilityComponents#getCommonSkillLimit(MOB)
-	 * @see AbilityComponents#getCommonSkillRemainder(MOB, Ability)
-	 * @see AbilityComponents#getCommonSkillRemainders(MOB)
+	 * @see AbilityComponents#getSpecialSkillLimit(MOB)
+	 * @see AbilityComponents#getSpecialSkillRemainder(MOB, Ability)
+	 * @see AbilityComponents#getSpecialSkillRemainders(MOB)
 	 * @see AbilityLimits
 	 * @see AbilityLimits#specificSkillLimit()
 	 * @param studentM the mob to find limits for
 	 * @param A the ability object to find limits for
 	 * @return the character-class based common skill ability limits
 	 */
-	public AbilityLimits getCommonSkillLimit(MOB studentM, Ability A);
+	public AbilityLimits getSpecialSkillLimit(MOB studentM, Ability A);
 	
 	/**
 	 * Returns the character-class based common skill ability limits
 	 * object applicable to the given mob and the given ability, and
 	 * then subtracts the number of each common skill already learned
 	 * to derive a remaining number of each type.
-	 * @see AbilityComponents#getCommonSkillLimit(MOB, Ability)
-	 * @see AbilityComponents#getCommonSkillLimit(MOB)
-	 * @see AbilityComponents#getCommonSkillRemainders(MOB)
+	 * @see AbilityComponents#getSpecialSkillLimit(MOB, Ability)
+	 * @see AbilityComponents#getSpecialSkillLimit(MOB)
+	 * @see AbilityComponents#getSpecialSkillRemainders(MOB)
 	 * @see AbilityLimits
 	 * @see AbilityLimits#specificSkillLimit()
 	 * @param studentM the mob to find limits for
 	 * @param A the ability object to find limits for
 	 * @return the character-class based common skill ability remainders
 	 */
-	public AbilityLimits getCommonSkillRemainder(MOB studentM, Ability A);
+	public AbilityLimits getSpecialSkillRemainder(MOB studentM, Ability A);
 	
 	/**
 	 * Returns the character-class based common skill ability limits
 	 * object applicable to the given mob, and
 	 * then subtracts the number of each common skill already learned
 	 * to derive a remaining number of each type.
-	 * @see AbilityComponents#getCommonSkillLimit(MOB, Ability)
-	 * @see AbilityComponents#getCommonSkillLimit(MOB)
-	 * @see AbilityComponents#getCommonSkillRemainder(MOB, Ability)
+	 * @see AbilityComponents#getSpecialSkillLimit(MOB, Ability)
+	 * @see AbilityComponents#getSpecialSkillLimit(MOB)
+	 * @see AbilityComponents#getSpecialSkillRemainder(MOB, Ability)
 	 * @see AbilityLimits
 	 * @param studentM the mob to find limits for
 	 * @return the character-class based common skill ability limits
 	 */
-	public AbilityLimits getCommonSkillRemainders(MOB studentM);
+	public AbilityLimits getSpecialSkillRemainders(MOB studentM);
 	
 	/**
 	 * Ability Limits object, denoting how many of different types
-	 * of common skills that a player can learn, including an
+	 * of common skills and langs that a player can learn, including an
 	 * entry for a specific skill.
 	 * @author Bo Zimmerman
 	 */
@@ -303,6 +304,24 @@ public interface AbilityComponents extends CMLibrary
 		 * @param newVal number of non-crafting skills
 		 */
 		public AbilityLimits nonCraftingSkills(int newVal);
+
+		/**
+		 * Returns max number of language skills
+		 * @return max number of language skills
+		 */
+		public int maxLanguageSkills();
+
+		/**
+		 * Sets number of language skills
+		 * @param newVal number of language skills
+		 */
+		public AbilityLimits languageSkills(int newVal);
+
+		/**
+		 * Returns number of language skills
+		 * @return number of language skills
+		 */
+		public int languageSkills();
 
 		/**
 		 * Returns number of given specific ability type 

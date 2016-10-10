@@ -293,6 +293,13 @@ public class ThinRoom implements Room
 	}
 
 	@Override
+	public List<Room> getSky()
+	{
+		List<Room> skys = new Vector<Room>(0);
+		return skys;
+	}
+	
+	@Override
 	public Area getArea()
 	{
 		return myArea;

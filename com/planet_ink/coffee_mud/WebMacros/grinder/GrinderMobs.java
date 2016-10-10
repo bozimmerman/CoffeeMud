@@ -62,6 +62,7 @@ public class GrinderMobs
 		{
 			this.isGenField=isGeneric;
 		}
+
 		private MOBDataField()
 		{
 			isGenField = true;
@@ -75,7 +76,7 @@ public class GrinderMobs
 		{
 			final String parm=httpReq.getUrlParameter(PhyStats.CAN_SEE_CODES[d]);
 			if((parm!=null)&&(parm.equals("on")))
-			   P.basePhyStats().setSensesMask(P.basePhyStats().sensesMask()|(1<<d));
+				P.basePhyStats().setSensesMask(P.basePhyStats().sensesMask()|(1<<d));
 		}
 		return "";
 	}
@@ -498,8 +499,10 @@ public class GrinderMobs
 					break;
 				case ALIGNMENT: // alignment
 					for(final Faction.Align v : Faction.Align.values())
+					{
 						if(old.equalsIgnoreCase(v.toString()))
 							CMLib.factions().setAlignment(M,v);
+					}
 					break;
 				case MONEY: // money
 					CMLib.beanCounter().setMoney(M,CMath.s_int(old));
@@ -618,8 +621,8 @@ public class GrinderMobs
 						final List<String> V=CMParms.parseSemicolons(old,true);
 						for(final Enumeration<Tattoo> e=M.tattoos();e.hasMoreElements();)
 							M.delTattoo(e.nextElement());
-						for(int v=0;v<V.size();v++)
-							M.addTattoo(CMLib.database().parseTattoo(V.get(v)));
+						for(String tatt : V)
+							M.addTattoo(((Tattoo)CMClass.getCommon("DefaultTattoo")).parse(tatt));
 					}
 					break;
 				case EXPERTISES: // expertises
@@ -696,17 +699,21 @@ public class GrinderMobs
 					break;
 				case TIMELIST: // timed list
 					if(M instanceof Auctioneer)
+					{
 						if(old.length()==0)
 							((Auctioneer)M).setTimedListingPrice(-1.0);
 						else
 							((Auctioneer)M).setTimedListingPrice(CMath.s_double(old));
+					}
 					break;
 				case TIMELISTPCT: // timed list pct
 					if(M instanceof Auctioneer)
+					{
 						if(old.length()==0)
 							((Auctioneer)M).setTimedListingPct(-1.0);
 						else
 							((Auctioneer)M).setTimedListingPct(CMath.s_pct(old));
+					}
 					break;
 				case LIVECUT: // live cut
 					//if(M instanceof Auctioneer)
@@ -717,24 +724,30 @@ public class GrinderMobs
 					break;
 				case TIMECUT: // timed cut
 					if(M instanceof Auctioneer)
+					{
 						if(old.length()==0)
 							((Auctioneer)M).setTimedFinalCutPct(-1.0);
 						else
 							((Auctioneer)M).setTimedFinalCutPct(CMath.s_pct(old));
+					}
 					break;
 				case MAXDAYS: // max days
 					if(M instanceof Auctioneer)
+					{
 						if(old.length()==0)
 							((Auctioneer)M).setMaxTimedAuctionDays(-1);
 						else
 							((Auctioneer)M).setMaxTimedAuctionDays(CMath.s_int(old));
+					}
 					break;
 				case MINDAYS: // min days
 					if(M instanceof Auctioneer)
+					{
 						if(old.length()==0)
 							((Auctioneer)M).setMinTimedAuctionDays(-1);
 						else
 							((Auctioneer)M).setMinTimedAuctionDays(CMath.s_int(old));
+					}
 					break;
 				case ISAUCTION: // is auction
 					break;
@@ -836,7 +849,10 @@ public class GrinderMobs
 							for (final MOB M2 : RoomData.getMOBCache())
 							{
 								if(MATCHING.equals(""+M2))
-								{	O=M2;	break;	}
+								{
+									O=M2;
+									break;
+								}
 							}
 							if(O==null)
 								O=RoomData.getItemFromAnywhere(null,MATCHING);
@@ -850,14 +866,20 @@ public class GrinderMobs
 							{
 								final MOB M2=(MOB)m.nextElement();
 								if(CMClass.classID(M2).equals(MATCHING)&&(!M2.isGeneric()))
-								{	O=(MOB)M2.copyOf(); break;	}
+								{
+									O=(MOB)M2.copyOf();
+									break;
+								}
 							}
 							if(O==null)
 							for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 							{
 								final Ability A2=a.nextElement();
 								if(CMClass.classID(A2).equals(MATCHING))
-								{	O=(Ability)A2.copyOf(); break;	}
+								{
+									O=(Ability)A2.copyOf();
+									break;
+								}
 							}
 							if(O==null)
 								O=RoomData.getItemFromAnywhere(null,MATCHING);
@@ -948,6 +970,9 @@ public class GrinderMobs
 				CMLib.database().DBUpdateMOBs(R);
 				newMobCode=RoomData.getMOBCode(R,M);
 			}
+			final String shopItem=httpReq.getUrlParameter("SHOPITEM");
+			if((shopItem!=null)&&(shopItem.equalsIgnoreCase(mobCode))&&(newMobCode!=null))
+				httpReq.addFakeUrlParameter("SHOPITEM", newMobCode);
 			httpReq.addFakeUrlParameter("MOB",newMobCode);
 			if(!copyMOB.sameAs(M))
 				Log.sysOut("Grinder",whom.Name()+" modified mob "+copyMOB.Name()+((R!=null)?" in room "+R.roomID():"")+".");

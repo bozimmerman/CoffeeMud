@@ -1702,6 +1702,17 @@ of both. Use them only when you need to have a largenormous area with
 not much going on, like a planet-girdling wilderness that surrounds
 your more standard areas, for instance.</td>
     </tr>
+    <tr>
+      <td>SubThinInstance</td>
+      <td>Like a Standard Thin Instance, but with a name requirement.
+&nbsp;If the name of the SubThinInstance has an underscore followed by
+the name of an existing normal area, or a word followed by a space
+followed by the name of an existing area, then this instance will be a
+thin copy of the area whose
+name follows. &nbsp;For example, "New_Midgaard" or "New Midgaard" would
+create a thin
+version of Midgaard.</td>
+    </tr>
   </tbody>
 </table>
 <br>
@@ -2868,6 +2879,12 @@ lock it?</td>
 defaults closed?</td>
     </tr>
     <tr>
+      <td><span style="font-style: italic;">Open Ticks</span></td>
+      <td>If the container has a lid that defaults closed and is NOT
+gettable, this is the number of ticks (4 second periods) after being
+opened, that item will automatically be re-closed.</td>
+    </tr>
+    <tr>
       <td><span style="font-style: italic;">Defaults Locked</span></td>
       <td>If it has a lock, does
 it default locked?</td>
@@ -3109,6 +3126,28 @@ badly cursed item, up to 5 for an extremely high level magical item.</td>
   </tbody>
 </table>
 <br>
+<p><strong><a name="geni26"><font style="background-color: lime;">The
+"GenCloak"</font></a></strong></p>
+<p>A GenCloak is special armor that changes the name of the wearer when
+worn. &nbsp;It may, but need not actually be, a cloak.</p>
+<p>Whenever a GenCloak is created,
+much like the GenArmor above, you are
+presented with a list of properties to fill in. Pressing enter will
+leave the property unchanged. The properties include everything listed
+under GenArmor, plus one more:</p>
+<table style="width: 100%;" bgcolor="yellow" border="1" cellpadding="1"
+ cellspacing="1" width="100%">
+  <tbody>
+    <tr>
+      <td width="25%"><strong>Property</strong></td>
+      <td width="75%"><strong>Description</strong></td>
+    </tr>
+    <tr>
+      <td><em>Cloak Name</em></td>
+      <td>The name that a mob wearing the cloak seems to be</td>
+    </tr>
+  </tbody>
+</table>
 <br>
 <p><strong><a name="geni8"><font style="background-color: lime;">The
 "GenBed" "GenChair", "GenTable", "GenBoat", "GenRideable",
@@ -3327,7 +3366,6 @@ code for the door or container lid which this key opens.</td>
   </tbody>
 </table>
 <br>
-<br>
 <p><strong><a name="geni13"><font style="background-color: lime;">The
 "GenStaff"</font></a></strong></p>
 <p>A GenStaff is a type of
@@ -3542,8 +3580,9 @@ uses remaining field so that the scroll can have a little clarity!</td>
 "GenTitle"</font></a></strong></p>
 <p>A GenTitle is a piece of paper
 which designates ownership of a piece
-of property. A piece of property can only be a room or a set of rooms
-with Prop_RoomForSale, Prop_RoomsForSale, or Prop_LotsForSale on it.
+of property. A piece of property can&nbsp;be a room or a set of rooms
+with Prop_RoomForSale, Prop_RoomsForSale, or Prop_LotsForSale on it, or
+a GenSailingShip.
 Titles are unique in that whenever they are GIVEn to another player,
 the property changes ownership. Although titles can be created by
 archons and given to shopkeepers to sell, the usual method for putting
@@ -3554,7 +3593,7 @@ with titles to all properties for sale in his or her area.</p>
 much like the GenPill above, you are
 presented with a list of properties to fill in. Pressing enter will
 leave the property unchanged. The properties include everything listed
-under GenItem, plus one more:</p>
+under GenItem, plus&nbsp;more:</p>
 <table style="width: 100%;" bgcolor="yellow" border="1" cellpadding="1"
  cellspacing="1" width="100%">
   <tbody>
@@ -3563,12 +3602,23 @@ under GenItem, plus one more:</p>
       <td width="75%"><strong>Description</strong></td>
     </tr>
     <tr>
-      <td><em>Assigned
-Spells</em></td>
-      <td>List here the names of
-the spells which are written upon the
-scroll. Check the list of spells for ones to use. Remember to set the
-uses remaining field so that the scroll can have a little clarity!</td>
+      <td><em>Owner</em></td>
+      <td>The name of the Clan or Player who is the principle owner of
+the property. &nbsp;An empty entry denotes an unowned item. &nbsp;An
+Owner name that starts with the "#" character denotes a special
+property that should be treated as owned for certain legal purposes,
+but not by any real Clan or Player.</td>
+    </tr>
+    <tr>
+      <td><span style="font-style: italic;">Price</span></td>
+      <td>The price, in base value, of the property.</td>
+    </tr>
+    <tr>
+      <td><span style="font-style: italic;">Assigned Property ID</span></td>
+      <td>The ID of the property, whether it be an Area Name, a Room
+ID, or the name of a ship. &nbsp;Remember, just having a title is not
+enough to own anything. &nbsp;The property itself must exist and also
+be similarly designated.</td>
     </tr>
   </tbody>
 </table>
@@ -3684,11 +3734,12 @@ the exits list.</td>
 item that has its self contained instanced area with custom rooms,
 property ownership, and special sailing commands. As an object, they
 have all the properties of the GenPortal above except that the portal
-can be moved around from inside the instanced Area, so long as the
+can be moved around, and still exited from inside the instanced Area,
+so long as the
 special building rules are followed. &nbsp;The GenSailingShip is
 saved
 along with the owning player or clan, and comes back into existence
-when it does.</p>
+when the player or clan does.</p>
 A GenSailingShip is intended to be sold to players or clans through
 shopkeepers that operate in the same area (but not necessarily the same
 room) as either a SeaPort locale room, or the shore to an ocean or big
@@ -3696,23 +3747,78 @@ river. &nbsp;To make one for this purpose, create a GenSailingShip
 item
 in the same room as the shopkeeper, give it a player-modifiable name if
 desired, such as "the sailing ship [NEWNAME]", and then ENTER the ship
-to create the rooms inside the ship. &nbsp;Rooms are created the
+to create the rooms inside the ship. &nbsp;<br>
+<br>
+Rooms
+are created the
 same
 way as in any other area, except that, instead of NORTH, SOUTH, etc.
 you must use ship-directions, such as PORT, STARBOARD, FORE, AFT,
-ABOVE, and BELOW.&nbsp; At least one of the rooms should
-be out of doors, preferably something like a WoodenDeck locale, so that
-players can see what is around the ship. &nbsp;The deck is also a
-good
-place to put some exits that link back to the room with the shopkeeper.
-&nbsp;These exits links will be automatically modified as the ship
-moves. &nbsp;When this is completed, you can add the GenSailingShip
-item to the shopkeepers inventory.<br>
+ABOVE, and BELOW.&nbsp; A ship should generally be built NORTH-SOUTH
+(which is the same as FORE-AFT). &nbsp;At least one of the rooms should
+be outdoors, preferably something like a WoodenDeck locale, so that
+players can see what is around the ship, and so that they have a place
+to build siege weapons. &nbsp;The deck is also the
+place to put some exits that link back to the room with the shopkeeper
+(or whatever, since such exits links will be automatically modified as
+the ship
+moves). &nbsp;<br>
+<br>
+When making NPC ships (ships with no owners), be
+sure to give each ship, and each internal instance area inside, a
+unique name. &nbsp;Many skills and systems need to look up rooms by
+their IDs, but if multiple ships all have the same room ids, the system
+can become confused about which ship is actually being addressed.
+&nbsp;NPC ships can be populated with mobs, shipwright mobs, mobile
+mobs,&nbsp;siege weapons, siege ammunition, etc. &nbsp; Behaviors like
+the Sailor behavior can be given to mobs to make them sail the ship
+around and engage in ship combat.<br>
+<br>
+When designing your sailing ships, be sure to put Prop_ReqCapacity on
+your rooms, especially the deck rooms. &nbsp;This is the only thing
+that can limit the number of siege weapons that players can add to
+their ship. &nbsp;Using parameters of "weight=715" will allow one of
+all of the siege weapons to be built, but not two. &nbsp;Using
+parameters of "weight=400" will allow only one of the light
+weapons,&nbsp;"weight=600" will allow one of the normal or light
+weapons, &nbsp;and weight="900" will allow two light weapons or one
+normal or one light. etc.<br>
+<br>
+When this is completed, you
+can add the GenSailingShip
+item to the shopkeepers inventory. &nbsp;Don't run around with ships in
+your own inventory, or, for goodness sake, inside another ship.<br>
 <br>
 Whenever a GenSailingShip is
-created, much like the GenPortal above,
+created, much like the GenPortal, GenContainer, GenExit, and
+GenRideables,
 you are presented with a list of properties to fill in. Pressing enter
-will leave the property unchanged. &nbsp;<br>
+will leave the property unchanged. <br>
+<br>
+<table style="width: 100%;" bgcolor="yellow" border="1" cellpadding="1"
+ cellspacing="1" width="100%">
+  <tbody>
+    <tr>
+      <td width="25%"><strong>Property</strong></td>
+      <td width="75%"><strong>Description</strong></td>
+    </tr>
+    <tr>
+      <td><em>Owner</em></td>
+      <td>The
+name of the Clan or Player who is the principle owner of the property.
+&nbsp;An empty entry denotes an unowned item. &nbsp;An Owner name that
+starts
+with the "#" character denotes a special property that should be
+treated as owned for certain legal purposes, but not by any real Clan
+or Player.</td>
+    </tr>
+    <tr>
+      <td><span style="font-style: italic;">Price</span></td>
+      <td>The price, in base value, of the property.</td>
+    </tr>
+  </tbody>
+</table>
+<br>
 <br>
 <p><strong><a name="geni21"><font style="background-color: lime;">The
 "GenClanItem", "GenClanCommonContainer", "GenClanApron",
@@ -5541,6 +5647,11 @@ death occurs -- it leaves no body behind.</td>
       <td><span style="font-style: italic;">Player Rideable</span></td>
       <td>if true, players created
 using this race are rideable.</td>
+    </tr>
+    <tr>
+      <td><span style="font-style: italic;">XP Adjustment Pct</span></td>
+      <td>the amount to adjust gained and lost experience by, as a
+percentage of the experience, + or -</td>
     </tr>
     <tr>
       <td><em>PhysStat
@@ -10242,7 +10353,7 @@ Tools</font></a></td>
     </tr>
     <tr>
       <td> <a href="#geni4"><font color="black">GenWeapon</font></a> </td>
-      <td> </td>
+      <td> <a href="#geni26">GenCloak</a></td>
       <td> </td>
       <td> </td>
       <td> </td>

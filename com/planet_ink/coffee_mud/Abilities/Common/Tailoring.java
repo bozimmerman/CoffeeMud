@@ -37,33 +37,57 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Tailoring extends EnhancedCraftingSkill implements ItemCraftor, MendingSkill
 {
-	@Override public String ID() { return "Tailoring"; }
-	private final static String localizedName = CMLib.lang().L("Tailoring");
-	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =I(new String[] {"KNIT","TAILOR","TAILORING"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public String supportedResourceString(){return "CLOTH";}
 	@Override
-	public String parametersFormat(){ return
+	public String ID()
+	{
+		return "Tailoring";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Tailoring");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "KNIT", "TAILOR", "TAILORING" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public String supportedResourceString()
+	{
+		return "CLOTH";
+	}
+
+	@Override
+	public String parametersFormat()
+	{
+		return
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\t"
 		+"ITEM_CLASS_ID\tWEAPON_TYPE||CODED_WEAR_LOCATION||RIDE_BASIS\t"
 		+"CONTAINER_CAPACITY||WEAPON_HANDS_REQUIRED\tBASE_ARMOR_AMOUNT||BASE_DAMAGE\t"
-		+"CONTAINER_TYPE\tCODED_SPELL_LIST";}
+		+"CONTAINER_TYPE\tCODED_SPELL_LIST";
+	}
 
 	//protected static final int RCP_FINALNAME=0;
 	//protected static final int RCP_LEVEL=1;
 	//protected static final int RCP_TICKS=2;
-	protected static final int RCP_WOOD=3;
-	protected static final int RCP_VALUE=4;
-	protected static final int RCP_CLASSTYPE=5;
-	protected static final int RCP_MISCTYPE=6;
-	protected static final int RCP_CAPACITY=7;
-	protected static final int RCP_ARMORDMG=8;
-	protected static final int RCP_CONTAINMASK=9;
-	protected static final int RCP_SPELL=10;
+	protected static final int	RCP_WOOD		= 3;
+	protected static final int	RCP_VALUE		= 4;
+	protected static final int	RCP_CLASSTYPE	= 5;
+	protected static final int	RCP_MISCTYPE	= 6;
+	protected static final int	RCP_CAPACITY	= 7;
+	protected static final int	RCP_ARMORDMG	= 8;
+	protected static final int	RCP_CONTAINMASK	= 9;
+	protected static final int	RCP_SPELL		= 10;
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
@@ -76,8 +100,17 @@ public class Tailoring extends EnhancedCraftingSkill implements ItemCraftor, Men
 		return super.tick(ticking,tickID);
 	}
 
-	@Override public String parametersFile(){ return "tailor.txt";}
-	@Override protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
+	@Override
+	public String parametersFile()
+	{
+		return "tailor.txt";
+	}
+
+	@Override
+	protected List<List<String>> loadRecipes()
+	{
+		return super.loadRecipes(parametersFile());
+	}
 
 	@Override
 	public void unInvoke()
@@ -199,7 +232,12 @@ public class Tailoring extends EnhancedCraftingSkill implements ItemCraftor, Men
 		return (isANativeItem(I.Name()));
 	}
 
-	@Override public boolean supportsMending(Physical item){ return canMend(null,item,true);}
+	@Override
+	public boolean supportsMending(Physical item)
+	{
+		return canMend(null, item, true);
+	}
+
 	@Override
 	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
 	{
@@ -233,11 +271,15 @@ public class Tailoring extends EnhancedCraftingSkill implements ItemCraftor, Men
 		if(super.checkStop(mob, commands))
 			return true;
 
+		if(super.checkInfo(mob, commands))
+			return true;
+		
 		final PairVector<EnhancedExpertise,Integer> enhancedTypes=enhancedTypes(mob,commands);
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,L("Knit what? Enter \"knit list\" for a list, \"knit refit <item>\" to resize, \"knit learn <item>\", \"knit scan\", \"knit mend <item>\", or \"knit stop\" to cancel."));
+			commonTell(mob,L("Knit what? Enter \"knit list\" for a list, \"knit info <item>\", \"knit refit <item>\" to resize,"
+						+ " \"knit learn <item>\", \"knit scan\", \"knit mend <item>\", or \"knit stop\" to cancel."));
 			return false;
 		}
 		if((!auto)
@@ -267,10 +309,10 @@ public class Tailoring extends EnhancedCraftingSkill implements ItemCraftor, Men
 			int toggler=1;
 			final int toggleTop=2;
 			final int[] cols={
-					CMLib.lister().fixColWidth(28,mob.session()),
-					CMLib.lister().fixColWidth(3,mob.session()),
-					CMLib.lister().fixColWidth(5,mob.session())
-				};
+				CMLib.lister().fixColWidth(28,mob.session()),
+				CMLib.lister().fixColWidth(3,mob.session()),
+				CMLib.lister().fixColWidth(5,mob.session())
+			};
 			for(int r=0;r<toggleTop;r++)
 				buf.append((r>0?" ":"")+CMStrings.padRight(L("Item"),cols[0])+" "+CMStrings.padRight(L("Lvl"),cols[1])+" "+CMStrings.padRight(L("Cloth"),cols[2]));
 			buf.append("\n\r");
@@ -395,7 +437,8 @@ public class Tailoring extends EnhancedCraftingSkill implements ItemCraftor, Men
 			}
 
 			final String woodRequiredStr = foundRecipe.get(RCP_WOOD);
-			final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName),autoGenerate);
+			final int[] compData = new int[CF_TOTAL];
+			final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName),autoGenerate,compData);
 			if(componentsFoundList==null)
 				return false;
 			int woodRequired=CMath.s_int(woodRequiredStr);
@@ -407,11 +450,11 @@ public class Tailoring extends EnhancedCraftingSkill implements ItemCraftor, Men
 			bundling=misctype.equalsIgnoreCase("BUNDLE");
 			final int[] pm={RawMaterial.MATERIAL_CLOTH};
 			final int[][] data=fetchFoundResourceData(mob,
-												woodRequired,"cloth",pm,
-												0,null,null,
-												bundling,
-												autoGenerate,
-												enhancedTypes);
+													woodRequired,"cloth",pm,
+													0,null,null,
+													bundling,
+													autoGenerate,
+													enhancedTypes);
 			if(data==null)
 				return false;
 			fixDataForComponents(data,componentsFoundList);
@@ -428,7 +471,8 @@ public class Tailoring extends EnhancedCraftingSkill implements ItemCraftor, Men
 				return false;
 			}
 			duration=getDuration(CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),4);
-			String itemName=replacePercent(foundRecipe.get(RCP_FINALNAME),RawMaterial.CODES.NAME(data[0][FOUND_CODE])).toLowerCase();
+			buildingI.setMaterial(super.getBuildingMaterial(woodRequired, data, compData));
+			String itemName=replacePercent(foundRecipe.get(RCP_FINALNAME),RawMaterial.CODES.NAME(buildingI.material())).toLowerCase();
 			if(bundling)
 				itemName="a "+woodRequired+"# "+itemName;
 			else
@@ -443,10 +487,9 @@ public class Tailoring extends EnhancedCraftingSkill implements ItemCraftor, Men
 			playSound="scissor.wav";
 			buildingI.setDisplayText(L("@x1 lies here",itemName));
 			buildingI.setDescription(itemName+". ");
-			buildingI.basePhyStats().setWeight(getStandardWeight(woodRequired,bundling));
-			final int hardness=RawMaterial.CODES.HARDNESS(data[0][FOUND_CODE])-1;
+			buildingI.basePhyStats().setWeight(getStandardWeight(woodRequired+compData[CF_AMOUNT],bundling));
+			final int hardness=RawMaterial.CODES.HARDNESS(buildingI.material())-1;
 			buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE)));
-			buildingI.setMaterial(data[0][FOUND_CODE]);
 			buildingI.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL)));
 			buildingI.setSecretIdentity(getBrand(mob));
 			final int capacity=CMath.s_int(foundRecipe.get(RCP_CAPACITY));
@@ -473,7 +516,7 @@ public class Tailoring extends EnhancedCraftingSkill implements ItemCraftor, Men
 				}
 				((Armor)buildingI).basePhyStats().setArmor(0);
 				if(armordmg!=0)
-					((Armor)buildingI).basePhyStats().setArmor(armordmg+(abilityCode()-1)+hardness);
+					((Armor)buildingI).basePhyStats().setArmor(armordmg+(baseYield()+abilityCode()-1)+hardness);
 				setWearLocation(buildingI,misctype,0);
 			}
 			if(buildingI instanceof Rideable)

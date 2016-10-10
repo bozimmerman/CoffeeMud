@@ -37,10 +37,17 @@ import java.util.*;
 
 public class ClanResign extends StdCommand
 {
-	public ClanResign(){}
+	public ClanResign()
+	{
+	}
 
-	private final String[] access=I(new String[]{"CLANRESIGN"});
-	@Override public String[] getAccessWords(){return access;}
+	private final String[]	access	= I(new String[] { "CLANRESIGN" });
+
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
 	@Override
 	public boolean execute(final MOB mob, List<String> commands, int metaFlags)
@@ -50,8 +57,13 @@ public class ClanResign extends StdCommand
 
 		Clan chkC=null;
 		for(final Pair<Clan,Integer> c : mob.clans())
+		{
 			if((clanName.length()==0)||(CMLib.english().containsString(c.first.getName(), clanName)))
-			{	chkC=c.first; break; }
+			{
+				chkC = c.first;
+				break;
+			}
+		}
 
 		final Session S=mob.session();
 		final Clan C=chkC;
@@ -64,9 +76,19 @@ public class ClanResign extends StdCommand
 		{
 			S.prompt(new InputCallback(InputCallback.Type.CHOOSE,"N","YN",0)
 			{
-				@Override public void showPrompt() { S.promptPrint(L("Resign from @x1.  Are you absolutely SURE (y/N)?",C.getName()));}
-				@Override public void timedOut() { }
-				@Override public void callBack()
+				@Override
+				public void showPrompt()
+				{
+					S.promptPrint(L("Resign from @x1.  Are you absolutely SURE (y/N)?", C.getName()));
+				}
+
+				@Override
+				public void timedOut()
+				{
+				}
+
+				@Override 
+				public void callBack()
 				{
 					final String check=this.input;
 					if(check.equalsIgnoreCase("Y"))
@@ -94,7 +116,10 @@ public class ClanResign extends StdCommand
 		return false;
 	}
 
-	@Override public boolean canBeOrdered(){return false;}
-
+	@Override
+	public boolean canBeOrdered()
+	{
+		return false;
+	}
 
 }

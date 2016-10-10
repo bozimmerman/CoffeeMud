@@ -36,8 +36,17 @@ import java.util.*;
 
 public class TimsItemTable extends StdWebMacro
 {
-	@Override public String name() { return "TimsItemTable"; }
-	@Override public boolean isAdminMacro()	{return true;}
+	@Override
+	public String name()
+	{
+		return "TimsItemTable";
+	}
+
+	@Override
+	public boolean isAdminMacro()
+	{
+		return true;
+	}
 
 
 	@Override
@@ -138,12 +147,16 @@ public class TimsItemTable extends StdWebMacro
 			{
 				final List<ItemCraftor.ItemKeyPair> pairs=skill.craftAllItemSets(false);
 				if(pairs!=null)
+				{
 					for(final ItemCraftor.ItemKeyPair IP : pairs)
+					{
 						if(IP.item instanceof Weapon)
 							str.append(addRow(IP.item));
 						else
 						if(IP.item instanceof Armor)
 							str.append(addRow(IP.item));
+					}
+				}
 			}
 		}
 		else
@@ -169,7 +182,7 @@ public class TimsItemTable extends StdWebMacro
 						|| (wornCode == Wearable.WORN_HELD)
 						|| (wornCode == Wearable.WORN_WIELD)
 						|| (wornCode == Wearable.WORN_MOUTH))
-						 	continue;
+							continue;
 						final Armor A=CMClass.getArmor("GenArmor");
 						A.setRawProperLocationBitmap(wornCode);
 						A.setMaterial(RawMaterial.RESOURCE_STEEL);
@@ -219,8 +232,10 @@ public class TimsItemTable extends StdWebMacro
 		if(I.displayText().length()==0)
 			return true;
 		for(int i=0;i<V.size();i++)
+		{
 			if(I.sameAs(V.elementAt(i)))
 				return true;
+		}
 		V.addElement(I);
 		return false;
 	}

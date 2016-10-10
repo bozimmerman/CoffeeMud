@@ -36,7 +36,11 @@ import java.util.*;
 
 public class DeityNext extends StdWebMacro
 {
-	@Override public String name() { return "DeityNext"; }
+	@Override
+	public String name()
+	{
+		return "DeityNext";
+	}
 
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)

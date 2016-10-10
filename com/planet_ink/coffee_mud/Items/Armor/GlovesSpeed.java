@@ -33,7 +33,12 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class GlovesSpeed extends StdArmor
 {
-	@Override public String ID(){	return "GlovesSpeed";}
+	@Override
+	public String ID()
+	{
+		return "GlovesSpeed";
+	}
+
 	public GlovesSpeed()
 	{
 		super();

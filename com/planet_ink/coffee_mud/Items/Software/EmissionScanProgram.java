@@ -42,12 +42,16 @@ import java.util.*;
 */
 public class EmissionScanProgram extends GenSoftware
 {
-	@Override public String ID(){	return "EmissionScanProgram";}
+	@Override
+	public String ID()
+	{
+		return "EmissionScanProgram";
+	}
 
-	protected final static short AUTO_TICKDOWN=4;
+	protected final static short	AUTO_TICKDOWN		= 4;
 
-	protected boolean activated=false;
-	protected short activatedTickdown=AUTO_TICKDOWN;
+	protected boolean				activated			= false;
+	protected short					activatedTickdown	= AUTO_TICKDOWN;
 
 	public EmissionScanProgram()
 	{
@@ -60,8 +64,17 @@ public class EmissionScanProgram extends GenSoftware
 		recoverPhyStats();
 	}
 
-	@Override public String getParentMenu() { return ""; }
-	@Override public String getInternalName() { return "";}
+	@Override
+	public String getParentMenu()
+	{
+		return "";
+	}
+
+	@Override
+	public String getInternalName()
+	{
+		return "";
+	}
 
 	public boolean isEmitting(Item I)
 	{
@@ -114,12 +127,12 @@ public class EmissionScanProgram extends GenSoftware
 			}
 			final int dir=dirBuilder.charAt(d)-'a';
 			if(numDone==0)
-				str.append(" ").append(locDesc).append(useShipDirs?Directions.getShipDirectionName(dir):Directions.getDirectionName(dir));
+				str.append(" ").append(locDesc).append(useShipDirs?CMLib.directions().getShipDirectionName(dir):CMLib.directions().getDirectionName(dir));
 			else
 			if(numDone<numTotal-1)
-				str.append(", ").append(locDesc).append(useShipDirs?Directions.getShipDirectionName(dir):Directions.getDirectionName(dir));
+				str.append(", ").append(locDesc).append(useShipDirs?CMLib.directions().getShipDirectionName(dir):CMLib.directions().getDirectionName(dir));
 			else
-				str.append(", and then ").append(locDesc).append(useShipDirs?Directions.getShipInDirectionName(dir):Directions.getInDirectionName(dir));
+				str.append(", and then ").append(locDesc).append(useShipDirs?CMLib.directions().getShipInDirectionName(dir):CMLib.directions().getInDirectionName(dir));
 			numDone++;
 		}
 	}

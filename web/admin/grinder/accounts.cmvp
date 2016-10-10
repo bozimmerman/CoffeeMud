@@ -64,9 +64,9 @@
 	<TR>
 	<TD WIDTH=30%><B><a href="javascript:Sort('NAME')"><FONT COLOR=YELLOW>Name</FONT></a></B></TD>
 	@if?IsExpirationSystem@
-		<TD WIDTH=20%><B><a href="javascript:Sort('ACCOUNTEXPIRATION')"><FONT COLOR=YELLOW>Expires</FONT></a></B></TD>
+		<TD WIDTH=20%><B><a href="javascript:Sort('EXPIRATION')"><FONT COLOR=YELLOW>Expires</FONT></a></B></TD>
 	@else@
-		<TD WIDTH=20%><B><a href="javascript:Sort('LASTDATETIME')"><FONT COLOR=YELLOW>Last On</FONT></a></B></TD>
+		<TD WIDTH=20%><B><a href="javascript:Sort('LAST')"><FONT COLOR=YELLOW>Last On</FONT></a></B></TD>
 	@endif@
 	<TD WIDTH=15%><B><a href="javascript:Sort('EMAIL')"><FONT COLOR=YELLOW>Email</FONT></a></B></TD>
 	<TD WIDTH=35%><B><FONT COLOR=YELLOW>Players</FONT></B></TD>

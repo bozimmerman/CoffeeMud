@@ -339,26 +339,40 @@ public class Clans extends StdLibrary implements ClanManager
 		return null;
 	}
 
+	protected boolean isMember(List<MemberRecord> members, String name)
+	{
+		for(MemberRecord R : members)
+		{
+			if(R.name.equals(name))
+				return true;
+		}
+		return false;
+	}
+	
 	@Override
 	public boolean isFamilyOfMembership(MOB M, List<MemberRecord> members)
 	{
 		if(M == null)
 			return false;
-		if(members.contains(M.Name()))
+		if(isMember(members,M.Name()))
 			return true;
 		if((M.getLiegeID().length()>0)
 		&&(M.isMarriedToLiege())
-		&&(members.contains(M.getLiegeID())))
+		&&(isMember(members,M.getLiegeID())))
 			return true;
+		final String[] familyTattoos = new String[] {"PARENT:","BROTHER:","SISTER:","SIBLING:","BLOODBROTHER:"};
 		for(final Enumeration<Tattoo> e=M.tattoos();e.hasMoreElements();)
 		{
 			final Tattoo T=e.nextElement();
-			if(T.getTattooName().startsWith("PARENT:"))
+			for(final String familyTattoo : familyTattoos)
 			{
-				final String name=T.getTattooName().substring("PARENT:".length());
-				final MOB M2=CMLib.players().getLoadPlayer(name.toLowerCase());
-				if((M2 != null)&&isFamilyOfMembership(M2,members))
-					return true;
+				if(T.getTattooName().startsWith(familyTattoo))
+				{
+					final String name=T.getTattooName().substring(familyTattoo.length());
+					final MOB M2=CMLib.players().getLoadPlayer(name.toLowerCase());
+					if((M2 != null)&&isFamilyOfMembership(M2,members))
+						return true;
+				}
 			}
 		}
 		return false;
@@ -889,7 +903,12 @@ public class Clans extends StdLibrary implements ClanManager
 				}
 				else
 					addExt="";
-				str.append(indt(2)).append("<ABILITY ID=\""+map.abilityID()+"\" PROFF="+map.defaultProficiency()+" LEVEL="+map.qualLevel()+" QUALIFYONLY="+(!map.autoGain())+" "+addExt+"/>\n");
+				str.append(indt(2)).append("<ABILITY ID=\""+map.abilityID()+"\" "
+						+ "PROFF="+map.defaultProficiency()+" "
+						+ "LEVEL="+map.qualLevel()+" "
+						+ "QUALIFYONLY="+(!map.autoGain())+" "
+						+ "PARM=\""+CMLib.xml().parseOutAngleBrackets(map.defaultParm())+"\" "
+						+addExt+"/>\n");
 			}
 			str.append(indt(1)).append("</ABILITIES>\n");
 		}
@@ -1045,7 +1064,9 @@ public class Clans extends StdLibrary implements ClanManager
 			}
 			ClanPosition[] posArray = new ClanPosition[positions.size()];
 			for(final ClanPosition pos : positions)
+			{
 				if((pos.getRoleID()>=0)&&(pos.getRoleID()<positions.size()))
+				{
 					if(posArray[pos.getRoleID()]!=null)
 					{
 						Log.errOut("Clans","Bad ROLEID "+pos.getRoleID()+" in positions list in "+typeName);
@@ -1056,6 +1077,8 @@ public class Clans extends StdLibrary implements ClanManager
 					{
 						posArray[pos.getRoleID()]=pos;
 					}
+				}
+			}
 			if(posArray.length==0)
 			{
 				Log.errOut("Clans","Missing positions in "+typeName);
@@ -1150,6 +1173,7 @@ public class Clans extends StdLibrary implements ClanManager
 					G.setStat("GETRABLEPROF"+x, able.parms().get("PROFF"));
 					G.setStat("GETRABLEQUAL"+x, able.parms().get("QUALIFYONLY"));
 					G.setStat("GETRABLELVL"+x, able.parms().get("LEVEL"));
+					G.setStat("GETRABLEPARM"+x, able.parms().get("PARM"));
 					G.setStat("GETRABLEROLE"+x, able.parms().get("ROLES"));
 				}
 			}

@@ -35,10 +35,18 @@ import java.util.*;
 
 public class Transfer extends At
 {
-	public Transfer(){}
+	public Transfer()
+	{
+	}
 
-	private final String[] access=I(new String[]{"TRANSFER"});
-	@Override public String[] getAccessWords(){return access;}
+	private final String[]	access	= I(new String[] { "TRANSFER" });
+
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
+
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
@@ -110,6 +118,7 @@ public class Transfer extends At
 				}
 			}
 			if(V.size()==0)
+			{
 				for(final Enumeration<Room> r=mob.location().getArea().getProperMap();r.hasMoreElements();)
 				{
 					final Room R=r.nextElement();
@@ -127,6 +136,7 @@ public class Transfer extends At
 					if((!allFlag)&&(V.size()>0))
 						break;
 				}
+			}
 			if(V.size()==0)
 			{
 				try
@@ -148,7 +158,10 @@ public class Transfer extends At
 						if((!allFlag)&&(V.size()>0))
 							break;
 					}
-				}catch(final NoSuchElementException nse){}
+				}
+				catch (final NoSuchElementException nse)
+				{
+				}
 			}
 		}
 		else
@@ -160,6 +173,7 @@ public class Transfer extends At
 					V.add(M);
 			}
 			if(V.size()==0)
+			{
 				for(final Enumeration<Room> r=mob.location().getArea().getProperMap();r.hasMoreElements();)
 				{
 					final Room R=r.nextElement();
@@ -177,6 +191,7 @@ public class Transfer extends At
 					if((!allFlag)&&(V.size()>0))
 						break;
 				}
+			}
 			if(V.size()==0)
 			{
 				try
@@ -198,7 +213,16 @@ public class Transfer extends At
 						if((!allFlag)&&(V.size()>0))
 							break;
 					}
-				}catch(final NoSuchElementException nse){}
+				}
+				catch (final NoSuchElementException nse)
+				{
+				}
+			}
+			if((!allFlag)&&(V.size()==0))
+			{
+				final MOB M=CMLib.players().getLoadPlayer(searchName);
+				if(M!=null)
+					V.add(M);
 			}
 		}
 
@@ -215,8 +239,8 @@ public class Transfer extends At
 		if(CMLib.map().getRoom(cmd.toString())!=null)
 			room=CMLib.map().getRoom(cmd.toString());
 		else
-		if(Directions.getDirectionCode(cmd.toString())>=0)
-			room=mob.location().getRoomInDir(Directions.getDirectionCode(cmd.toString()));
+		if(CMLib.directions().getDirectionCode(cmd.toString())>=0)
+			room=mob.location().getRoomInDir(CMLib.directions().getDirectionCode(cmd.toString()));
 		else
 			room=CMLib.map().findWorldRoomLiberally(mob,cmd.toString(),"RIPME",100,120000);
 
@@ -226,33 +250,40 @@ public class Transfer extends At
 			return false;
 		}
 		for(int i=0;i<V.size();i++)
-		if(V.get(i) instanceof Item)
 		{
-			final Item I=(Item)V.get(i);
-			final Room itemRoom=CMLib.map().roomLocation(I);
-			if((itemRoom!=null)
-			&&(!room.isContent(I))
-			&&(CMSecurity.isAllowed(mob, itemRoom, CMSecurity.SecFlag.TRANSFER))
-			&&(CMSecurity.isAllowed(mob, room, CMSecurity.SecFlag.TRANSFER)))
-				room.moveItemTo(I,ItemPossessor.Expire.Never,ItemPossessor.Move.Followers);
-		}
-		else
-		if(V.get(i) instanceof MOB)
-		{
-			final MOB M=(MOB)V.get(i);
-			final Room mobRoom=CMLib.map().roomLocation(M);
-			if((mobRoom!=null)
-			&&(!room.isInhabitant(M))
-			&&(CMSecurity.isAllowed(mob, mobRoom, CMSecurity.SecFlag.TRANSFER))
-			&&(CMSecurity.isAllowed(mob, room, CMSecurity.SecFlag.TRANSFER)))
+			if(V.get(i) instanceof Item)
 			{
-				if((mob.playerStats().getTranPoofOut().length()>0)&&(mob.location()!=null))
-					M.location().show(M,M.location(),CMMsg.MSG_LEAVE|CMMsg.MASK_ALWAYS,mob.playerStats().getTranPoofOut());
-				room.bringMobHere(M,true);
-				if(mob.playerStats().getTranPoofIn().length()>0)
-					M.location().show(M,M.location(),CMMsg.MSG_ENTER|CMMsg.MASK_ALWAYS,mob.playerStats().getTranPoofIn());
-				if(!M.isMonster())
-					CMLib.commands().postLook(M,true);
+				final Item I=(Item)V.get(i);
+				final Room itemRoom=CMLib.map().roomLocation(I);
+				if((itemRoom!=null)
+				&&(!room.isContent(I))
+				&&(CMSecurity.isAllowed(mob, itemRoom, CMSecurity.SecFlag.TRANSFER))
+				&&(CMSecurity.isAllowed(mob, room, CMSecurity.SecFlag.TRANSFER)))
+					room.moveItemTo(I,ItemPossessor.Expire.Never,ItemPossessor.Move.Followers);
+			}
+			else
+			if(V.get(i) instanceof MOB)
+			{
+				final MOB M=(MOB)V.get(i);
+				final Room mobRoom=CMLib.map().roomLocation(M);
+				if((mobRoom!=null)
+				&&(!room.isInhabitant(M))
+				&&(CMSecurity.isAllowed(mob, mobRoom, CMSecurity.SecFlag.TRANSFER))
+				&&(CMSecurity.isAllowed(mob, room, CMSecurity.SecFlag.TRANSFER)))
+				{
+					if(M.isPlayer() && (!CMLib.flags().isInTheGame(M, true)))
+						M.setLocation(room);
+					else
+					{
+						if((mob.playerStats().getTranPoofOut().length()>0)&&(mob.location()!=null))
+							M.location().show(M,M.location(),CMMsg.MSG_LEAVE|CMMsg.MASK_ALWAYS,mob.playerStats().getTranPoofOut());
+						room.bringMobHere(M,true);
+					}
+					if(mob.playerStats().getTranPoofIn().length()>0)
+						M.location().show(M,M.location(),CMMsg.MSG_ENTER|CMMsg.MASK_ALWAYS,mob.playerStats().getTranPoofIn());
+					if(!M.isMonster() && (room.isInhabitant(M)))
+						CMLib.commands().postLook(M,true);
+				}
 			}
 		}
 		if(mob.playerStats().getTranPoofOut().length()==0)
@@ -260,8 +291,16 @@ public class Transfer extends At
 		return false;
 	}
 
-	@Override public boolean canBeOrdered(){return true;}
-	@Override public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.TRANSFER);}
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 
+	@Override
+	public boolean securityCheck(MOB mob)
+	{
+		return CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.TRANSFER);
+	}
 
 }

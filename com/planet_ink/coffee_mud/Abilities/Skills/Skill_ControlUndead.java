@@ -280,7 +280,25 @@ public class Skill_ControlUndead extends StdSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		final int adjustedCasterLevel = mob.phyStats().level() + (2*getXLEVELLevel(mob));
+		int levelAdj=0;
+		final Room R=mob.location();
+		if((R!=null)&&(R.getArea()!=null))
+		{
+			String value=R.getArea().getBlurbFlag(ID());
+			if((value != null)&&(value.length()>0))
+			{
+				for(String s : CMParms.parse(value))
+				{
+					if(s.startsWith("+")&&(CMath.isNumber(value.substring(1))))
+						levelAdj=CMath.s_int(value.substring(1));
+					else
+					if(CMath.isNumber(s))
+						levelAdj=CMath.s_int(value.trim());
+				}
+			}
+		}
+		
+		final int adjustedCasterLevel = mob.phyStats().level()+levelAdj + (2*getXLEVELLevel(mob));
 		boolean success=proficiencyCheck(mob,(adjustedCasterLevel-target.phyStats().level())*30,auto);
 
 		if(success)

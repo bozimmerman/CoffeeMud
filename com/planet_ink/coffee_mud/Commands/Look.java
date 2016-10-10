@@ -37,8 +37,13 @@ public class Look extends StdCommand
 {
 	public Look(){}
 
-	private final String[] access=I(new String[]{"LOOK","LOO","LO","L"});
-	@Override public String[] getAccessWords(){return access;}
+	private final String[]	access	= I(new String[] { "LOOK", "LOO", "LO", "L" });
+
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
@@ -59,7 +64,9 @@ public class Look extends StdCommand
 			return false;
 		if((commands!=null)&&(commands.size()>1))
 		{
+			int dirCode=-1;
 			Environmental thisThang=null;
+			Environmental lookingTool=null;
 
 			if((commands.size()>2)&&(commands.get(1).equalsIgnoreCase("at")))
 				commands.remove(1);
@@ -68,10 +75,10 @@ public class Look extends StdCommand
 				commands.remove(1);
 			final String ID=CMParms.combine(commands,1);
 
-			if((ID.toUpperCase().startsWith("EXIT"))&&(commands.size()==2)&&(CMProps.getIntVar(CMProps.Int.EXVIEW)!=1))
+			if((ID.toUpperCase().startsWith("EXIT"))&&(commands.size()==2)&&(CMProps.getIntVar(CMProps.Int.EXVIEW)!=CMProps.Int.EXVIEW_PARAGRAPH))
 			{
 				final CMMsg exitMsg=CMClass.getMsg(mob,R,null,CMMsg.MSG_LOOK_EXITS,null);
-				if((CMProps.getIntVar(CMProps.Int.EXVIEW)>=2)!=mob.isAttributeSet(MOB.Attrib.BRIEF))
+				if((CMProps.getIntVar(CMProps.Int.EXVIEW)>=CMProps.Int.EXVIEW_MIXED)!=mob.isAttributeSet(MOB.Attrib.BRIEF))
 					exitMsg.setValue(CMMsg.MASK_OPTIMIZE);
 				if(R.okMessage(mob, exitMsg))
 					R.send(mob, exitMsg);
@@ -80,6 +87,18 @@ public class Look extends StdCommand
 			if(ID.equalsIgnoreCase("SELF")||ID.equalsIgnoreCase("ME"))
 				thisThang=mob;
 
+			dirCode=CMLib.directions().getStrictDirectionCode(ID);
+			if(dirCode>=0)
+			{
+				final Room room=R.getRoomInDir(dirCode);
+				final Exit exit=R.getExitInDir(dirCode);
+				if((room!=null)&&(exit!=null))
+				{
+					thisThang=exit;
+					lookingTool=room;
+				}
+			}
+			
 			if(thisThang==null)
 				thisThang=R.fetchFromMOBRoomFavorsItems(mob,null,ID, noCoinFilter);
 			if(thisThang==null)
@@ -111,11 +130,9 @@ public class Look extends StdCommand
 					}
 				}
 			}
-			int dirCode=-1;
-			Environmental lookingTool=null;
 			if(thisThang==null)
 			{
-				dirCode=Directions.getGoodDirectionCode(ID);
+				dirCode=CMLib.directions().getGoodDirectionCode(ID);
 				if(dirCode>=0)
 				{
 					final Room room=R.getRoomInDir(dirCode);
@@ -142,13 +159,15 @@ public class Look extends StdCommand
 					else
 					if(dirCode>=0)
 						name=((R instanceof BoardableShip)||(R.getArea() instanceof BoardableShip))?
-								Directions.getShipDirectionName(dirCode):Directions.getDirectionName(dirCode);
+								CMLib.directions().getShipDirectionName(dirCode):CMLib.directions().getDirectionName(dirCode);
 				}
 				final CMMsg msg=CMClass.getMsg(mob,thisThang,lookingTool,CMMsg.MSG_LOOK,textMsg+name+".");
-				if((thisThang instanceof Room)&&(mob.isAttributeSet(MOB.Attrib.AUTOEXITS))&&(CMProps.getIntVar(CMProps.Int.EXVIEW)!=1))
+				if((thisThang instanceof Room)
+				&&(mob.isAttributeSet(MOB.Attrib.AUTOEXITS))
+				&&(CMProps.getIntVar(CMProps.Int.EXVIEW)!=CMProps.Int.EXVIEW_PARAGRAPH))
 				{
 					final CMMsg exitMsg=CMClass.getMsg(mob,thisThang,lookingTool,CMMsg.MSG_LOOK_EXITS,null);
-					if((CMProps.getIntVar(CMProps.Int.EXVIEW)>=2)!=mob.isAttributeSet(MOB.Attrib.BRIEF))
+					if((CMProps.getIntVar(CMProps.Int.EXVIEW)>=CMProps.Int.EXVIEW_MIXED)!=mob.isAttributeSet(MOB.Attrib.BRIEF))
 						exitMsg.setValue(CMMsg.MASK_OPTIMIZE);
 					msg.addTrailerMsg(exitMsg);
 				}
@@ -161,17 +180,21 @@ public class Look extends StdCommand
 		else
 		{
 			if((commands!=null)&&(commands.size()>0))
+			{
 				if(commands.get(0).toUpperCase().startsWith("E"))
 				{
 					CMLib.commands().doCommandFail(mob,origCmds,L("Examine what?"));
 					return false;
 				}
+			}
 
 			final CMMsg msg=CMClass.getMsg(mob,R,null,CMMsg.MSG_LOOK,(quiet?null:textMsg+"around."),CMMsg.MSG_LOOK,(quiet?null:textMsg+"at you."),CMMsg.MSG_LOOK,(quiet?null:textMsg+"around."));
-			if((mob.isAttributeSet(MOB.Attrib.AUTOEXITS))&&(CMProps.getIntVar(CMProps.Int.EXVIEW)!=1)&&(CMLib.flags().canBeSeenBy(R,mob)))
+			if((mob.isAttributeSet(MOB.Attrib.AUTOEXITS))
+			&&(CMProps.getIntVar(CMProps.Int.EXVIEW)!=CMProps.Int.EXVIEW_PARAGRAPH)
+			&&(CMLib.flags().canBeSeenBy(R,mob)))
 			{
 				final CMMsg exitMsg=CMClass.getMsg(mob,R,null,CMMsg.MSG_LOOK_EXITS,null);
-				if((CMProps.getIntVar(CMProps.Int.EXVIEW)>=2)!=mob.isAttributeSet(MOB.Attrib.BRIEF))
+				if((CMProps.getIntVar(CMProps.Int.EXVIEW)>=CMProps.Int.EXVIEW_MIXED)!=mob.isAttributeSet(MOB.Attrib.BRIEF))
 					exitMsg.setValue(CMMsg.MASK_OPTIMIZE);
 				msg.addTrailerMsg(exitMsg);
 			}
@@ -181,5 +204,9 @@ public class Look extends StdCommand
 		return false;
 	}
 
-	@Override public boolean canBeOrdered(){return true;}
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 }

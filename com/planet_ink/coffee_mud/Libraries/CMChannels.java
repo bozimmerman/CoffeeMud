@@ -21,6 +21,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.lang.reflect.Method;
 import java.util.*;
 
 /*
@@ -411,7 +412,9 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 				str.append(L(" This is a channel for clans and their allies."));
 			if(flags.contains(ChannelFlag.CLANONLY))
 				str.append(L(" Only members of the same clan can see messages on this channel."));
-			if(flags.contains(ChannelFlag.PLAYERREADONLY)||flags.contains(ChannelFlag.READONLY))
+			if(flags.contains(ChannelFlag.PLAYERREADONLY)
+			||flags.contains(ChannelFlag.READONLY)
+			||flags.contains(ChannelFlag.ARCHONREADONLY))
 				str.append(L(" This channel is read-only."));
 			if(flags.contains(ChannelFlag.SAMEAREA))
 				str.append(L(" Only people in the same area can see messages on this channel."));
@@ -653,6 +656,12 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 				}
 				msg.trailerMsgs().clear();
 			}
+			if(msg.trailerRunnables()!=null)
+			{
+				for(final Runnable r : msg.trailerRunnables())
+					CMLib.threads().executeRunnable(r);
+				msg.trailerRunnables().clear();
+			}
 		}
 		return didIt;
 	}
@@ -660,11 +669,14 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 	@Override
 	public void createAndSendChannelMessage(MOB mob, String channelName, String message, boolean systemMsg)
 	{
+		if(mob == null)
+			return;
 		final int channelInt=getChannelIndex(channelName);
 		if(channelInt<0)
 			return;
 
 		final PlayerStats pStats=mob.playerStats();
+		final Room R=mob.location();
 
 		message=CMProps.applyINIFilter(message,CMProps.Str.CHANNELFILTER);
 		final CMChannel chan=getChannel(channelInt);
@@ -672,12 +684,23 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		channelName=chan.name();
 		final String channelColor="^Q";
 
+		String nameAppendage="";
+		if(chan.flags().contains(ChannelsLibrary.ChannelFlag.ADDACCOUNT)
+		&&(pStats.getAccount()!=null))
+			nameAppendage+=" ("+pStats.getAccount().name()+")";
+		if(chan.flags().contains(ChannelsLibrary.ChannelFlag.ADDROOM)
+		&&(R!=null))
+			nameAppendage+=" in "+CMStrings.replaceAll(R.displayText(mob),"\'","");
+		if(chan.flags().contains(ChannelsLibrary.ChannelFlag.ADDAREA)
+		&&(R!=null)&&(R.getArea()!=null))
+			nameAppendage+=" at "+CMStrings.replaceAll(R.getArea().name(mob),"\'","");
+		
 		CMMsg msg=null;
 		if(systemMsg)
 		{
-			String str="["+channelName+"] '"+message+"'^</CHANNEL^>^?^.";
+			String str="["+channelName+"]"+nameAppendage+" '"+message+"'^</CHANNEL^>^?^.";
 			if((!mob.name().startsWith("^"))||(mob.name().length()>2))
-				str="<S-NAME> "+str;
+				str="<S-NAME>"+nameAppendage+" "+str;
 			msg=CMClass.getMsg(mob,null,null,
 					CMMsg.MASK_CHANNEL|CMMsg.MASK_ALWAYS|CMMsg.MSG_SPEAK,channelColor+"^<CHANNEL \""+channelName+"\"^>"+str,
 					CMMsg.NO_EFFECT,null,
@@ -703,8 +726,8 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 					msgstr=msgstr.trim();
 				else
 					msgstr=" "+msgstr.trim();
-				final String srcstr="^<CHANNEL \""+channelName+"\"^>["+channelName+"] "+mob.name()+msgstr+"^</CHANNEL^>^N^.";
-				final String reststr="^<CHANNEL \""+channelName+"\"^>["+channelName+"] <S-NAME>"+msgstr+"^</CHANNEL^>^N^.";
+				final String srcstr="^<CHANNEL \""+channelName+"\"^>["+channelName+"] "+mob.name()+nameAppendage+msgstr+"^</CHANNEL^>^N^.";
+				final String reststr="^<CHANNEL \""+channelName+"\"^>["+channelName+"] <S-NAME>"+nameAppendage+msgstr+"^</CHANNEL^>^N^.";
 				msg=CMClass.getMsg(mob,null,null,
 						CMMsg.MASK_CHANNEL|CMMsg.MASK_ALWAYS|CMMsg.MSG_SPEAK,channelColor+""+srcstr,
 						CMMsg.NO_EFFECT,null,
@@ -714,10 +737,11 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		else
 		{
 			msg=CMClass.getMsg(mob,null,null,
-					CMMsg.MASK_CHANNEL|CMMsg.MASK_ALWAYS|CMMsg.MSG_SPEAK,L("@x1^<CHANNEL \"@x2\"^>You @x3 '@x4'^</CHANNEL^>^N^.",channelColor,channelName,channelName,message),
+					CMMsg.MASK_CHANNEL|CMMsg.MASK_ALWAYS|CMMsg.MSG_SPEAK,channelColor+"^<CHANNEL \""+channelName+"\"^>"+L("You")+nameAppendage+" "+channelName+" '"+message+"'^</CHANNEL^>^N^.",
 					CMMsg.NO_EFFECT,null,
-					CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),L("@x1^<CHANNEL \"@x2\"^><S-NAME> @x3S '@x4'^</CHANNEL^>^N^.",channelColor,channelName,channelName,message));
+					CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),channelColor+"^<CHANNEL \""+channelName+"\"^><S-NAME>"+nameAppendage+" "+CMLib.english().makePlural(channelName)+" '"+message+"'^</CHANNEL^>^N^.");
 		}
+		
 		if((chan.flags().contains(ChannelsLibrary.ChannelFlag.ACCOUNTOOC)
 			||(chan.flags().contains(ChannelsLibrary.ChannelFlag.ACCOUNTOOCNOADMIN) && (!CMSecurity.isStaff(mob))))
 		&&(pStats!=null)
@@ -732,14 +756,16 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 			if(msg.othersMessage()!=null)
 				msg.setOthersMessage(CMStrings.replaceAll(msg.othersMessage(), "<S-NAME>", accountName));
 		}
+		
 		if(chan.flags().contains(ChannelsLibrary.ChannelFlag.NOLANGUAGE))
 			msg.setTool(getCommonLanguage());
-		
-		final Room R=mob.location();
+
 		CMLib.commands().monitorGlobalMessage(R, msg);
 		if((R!=null)
 		&&((!R.isInhabitant(mob))||(R.okMessage(mob,msg))))
 		{
+			if(chan.flags().contains(ChannelsLibrary.ChannelFlag.TWITTER))
+				tweet(message);
 			final boolean areareq=flags.contains(ChannelsLibrary.ChannelFlag.SAMEAREA);
 			channelQueUp(channelInt,msg);
 			for(final Session S : CMLib.sessions().localOnlineIterable())
@@ -769,6 +795,49 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 			serviceClient=CMLib.threads().startTickDown(this, Tickable.TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK, MudHost.TIME_UTILTHREAD_SLEEP, 1);
 		}
 		return true;
+	}
+
+	/**
+	 * Requires including special library and special configuration.
+	 * @param msg the message to tweet
+	 */
+	private void tweet(String msg)
+	{
+		msg = CMStrings.scrunchWord(CMStrings.removeColors(msg), 140);
+		try
+		{
+			Class<?> cbClass = Class.forName("twitter4j.conf.ConfigurationBuilder");
+			Object cbObj = cbClass.newInstance();
+			Method cbM1=cbClass.getMethod("setOAuthConsumerKey", String.class);
+			cbM1.invoke(cbObj,CMProps.getProp("TWITTER-OAUTHCONSUMERKEY"));
+			Method cbM2=cbClass.getMethod("setOAuthConsumerSecret", String.class);
+			cbM2.invoke(cbObj,CMProps.getProp("TWITTER-OAUTHCONSUMERSECRET"));
+			Method cbM3=cbClass.getMethod("setOAuthAccessToken", String.class);
+			cbM3.invoke(cbObj,CMProps.getProp("TWITTER-OAUTHACCESSTOKEN"));
+			Method cbM4=cbClass.getMethod("setOAuthAccessTokenSecret", String.class);
+			cbM4.invoke(cbObj,CMProps.getProp("TWITTER-OAUTHACCESSTOKENSECRET"));
+			Method cbM5=cbClass.getMethod("build");
+			Object cbBuildObj = cbM5.invoke(cbObj);
+			
+			Class<?> cfClass = Class.forName("twitter4j.conf.Configuration");
+			Class<?> afClass = Class.forName("twitter4j.auth.AuthorizationFactory");
+			Method adM1 = afClass.getMethod("getInstance",cfClass);
+			Object auObj = adM1.invoke(null, cbBuildObj);
+			
+			Class<?> auClass = Class.forName("twitter4j.auth.Authorization");
+			Class<?> tfClass = Class.forName("twitter4j.TwitterFactory");
+			Object tfObj = tfClass.newInstance();
+			Method tfM1 = tfClass.getMethod("getInstance", auClass);
+			Object twObj = tfM1.invoke(tfObj, auObj);
+			
+			Class<?> twClass = Class.forName("twitter4j.Twitter");
+			Method twM1 = twClass.getMethod("updateStatus", String.class);
+			twM1.invoke(twObj, msg);
+		}
+		catch (Exception e)
+		{
+			Log.errOut(e);
+		}
 	}
 
 	@Override 

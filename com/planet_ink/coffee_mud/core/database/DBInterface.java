@@ -159,15 +159,9 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
-	public Tattoo parseTattoo(String tattoo)
+	public List<PlayerLibrary.ThinPlayer> vassals(String liegeID)
 	{
-		return MOBloader.parseTattoo(tattoo);
-	}
-
-	@Override
-	public List<PlayerLibrary.ThinPlayer> vassals(MOB mob, String liegeID)
-	{
-		return MOBloader.vassals(mob, liegeID);
+		return MOBloader.vassals(liegeID);
 	}
 
 	@Override
@@ -189,13 +183,19 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
-	public void DBReadAllClans()
+	public List<Clan> DBReadAllClans()
 	{
-		ClanLoader.DBRead();
+		return ClanLoader.DBRead();
 	}
 
 	@Override
-	public List<MemberRecord> DBClanMembers(String clan)
+	public void DBReadClanItems(Map<String,Clan> clans)
+	{
+		ClanLoader.DBReadClanItems(clans);
+	}
+
+	@Override
+	public List<MemberRecord> DBReadClanMembers(String clan)
 	{
 		return MOBloader.DBClanMembers(clan);
 	}
@@ -261,7 +261,7 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
-	public String[] DBFetchEmailData(String name)
+	public Pair<String, Boolean> DBFetchEmailData(String name)
 	{
 		return MOBloader.DBFetchEmailData(name);
 	}
@@ -417,9 +417,9 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
-	public void DBReadQuests(MudHost myHost)
+	public List<Quest> DBReadQuests()
 	{
-		QuestLoader.DBRead(myHost);
+		return QuestLoader.DBRead();
 	}
 
 	@Override
@@ -465,9 +465,9 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
-	public void DBDeletePlayerJournals(String name)
+	public void DBDeletePlayerPrivateJournalEntries(String name)
 	{
-		JournalLoader.DBDeletePlayerData(name);
+		JournalLoader.DBDeletePlayerPrivateJournalEntries(name);
 	}
 
 	@Override
@@ -477,15 +477,15 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
-	public void DBUpdateJournalStats(String journalID, JournalsLibrary.JournalSummaryStats stats)
+	public void DBUpdateJournalMetaData(String journalID, JournalsLibrary.JournalMetaData metaData)
 	{
-		JournalLoader.DBUpdateJournalStats(journalID, stats);
+		JournalLoader.DBUpdateJournalMetaData(journalID, metaData);
 	}
 
 	@Override
-	public void DBReadJournalSummaryStats(JournalsLibrary.JournalSummaryStats stats)
+	public void DBReadJournalMetaData(String journalID, JournalsLibrary.JournalMetaData metaData)
 	{
-		JournalLoader.DBReadJournalSummaryStats(stats);
+		JournalLoader.DBReadJournalSummaryStats(journalID, metaData);
 	}
 
 	@Override
@@ -507,9 +507,9 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
-	public JournalEntry DBReadJournalEntry(String journalID, String Key)
+	public JournalEntry DBReadJournalEntry(String journalID, String messageKey)
 	{
-		return JournalLoader.DBReadJournalEntry(journalID, Key);
+		return JournalLoader.DBReadJournalEntry(journalID, messageKey);
 	}
 
 	@Override
@@ -632,9 +632,9 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
-	public void DBViewJournalMessage(String key, int views)
+	public void DBUpdateJournalMessageViews(String key, int views)
 	{
-		JournalLoader.DBViewJournalMessage(key, views);
+		JournalLoader.DBUpdateJournalMessageViews(key, views);
 	}
 
 	@Override
@@ -740,6 +740,12 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
+	public void DBDeleteAreaAndRooms(Area A)
+	{
+		RoomLoader.DBDeleteAreaAndRooms(A);
+	}
+
+	@Override
 	public void DBUpdateArea(String areaID, Area A)
 	{
 		RoomLoader.DBUpdate(areaID, A);
@@ -776,15 +782,15 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
-	public List<MOB> DBScanFollowers(MOB mob)
+	public List<MOB> DBScanFollowers(String mobName)
 	{
-		return MOBloader.DBScanFollowers(mob);
+		return MOBloader.DBScanFollowers(mobName);
 	}
 
 	@Override
-	public void DBDeletePlayer(MOB mob, boolean deleteAssets)
+	public void DBDeletePlayer(String mobName)
 	{
-		MOBloader.DBDelete(mob, deleteAssets);
+		MOBloader.DBDelete(mobName);
 	}
 
 	@Override
@@ -800,7 +806,7 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
-	public void DBDeletePlayerData(String name)
+	public void DBDeleteAllPlayerData(String name)
 	{
 		DataLoader.DBDeletePlayer(name);
 	}
@@ -812,81 +818,86 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
-	public List<PlayerData> DBReadData(String playerID, String section)
+	public List<PlayerData> DBReadPlayerData(String playerID, String section)
 	{
 		return DataLoader.DBRead(playerID, section);
 	}
 
 	@Override
-	public List<PlayerData> DBReadDataKey(String section, String keyMask)
+	public List<PlayerData> DBReadPlayerDataByKeyMask(String section, String keyMask)
 	{
 		return DataLoader.DBReadKey(section, keyMask);
 	}
 
 	@Override
-	public List<PlayerData> DBReadDataKey(String key)
+	public List<PlayerData> DBReadPlayerDataEntry(String key)
 	{
 		return DataLoader.DBReadKey(key);
 	}
 
 	@Override
-	public int DBCountData(String playerID, String section)
+	public int DBCountPlayerData(String playerID, String section)
 	{
 		return DataLoader.DBCount(playerID, section);
 	}
 
 	@Override
-	public List<PlayerData> DBReadData(String playerID, String section, String key)
+	public List<PlayerData> DBReadPlayerData(String playerID, String section, String key)
 	{
 		return DataLoader.DBRead(playerID, section, key);
 	}
 
 	@Override
-	public List<PlayerData> DBReadData(String section)
+	public List<PlayerData> DBReadPlayerSectionData(String section)
 	{
 		return DataLoader.DBRead(section);
 	}
 
 	@Override
-	public List<PlayerData> DBReadData(String player, List<String> sections)
+	public List<String> DBReadPlayerDataPlayersBySection(String section)
+	{
+		return DataLoader.DBReadNames(section);
+	}
+	@Override
+	public List<PlayerData> DBReadPlayerData(String player, List<String> sections)
 	{
 		return DataLoader.DBRead(player, sections);
 	}
 
 	@Override
-	public void DBDeleteData(String playerID, String section)
+	public void DBDeletePlayerData(String playerID, String section)
 	{
 		DataLoader.DBDelete(playerID, section);
 	}
 
 	@Override
-	public void DBDeleteData(String playerID, String section, String key)
+	public void DBDeletePlayerData(String playerID, String section, String key)
 	{
 		DataLoader.DBDelete(playerID, section, key);
 	}
 
 	@Override
-	public void DBDeleteData(String section)
+	public void DBDeletePlayerSectionData(String section)
 	{
 		DataLoader.DBDelete(section);
 	}
 
 	@Override
-	public void DBReCreateData(String name, String section, String key, String xml)
+	public PlayerData DBReCreatePlayerData(String name, String section, String key, String xml)
 	{
-		DataLoader.DBReCreate(name, section, key, xml);
+		return DataLoader.DBReCreate(name, section, key, xml);
 	}
 
 	@Override
-	public void DBUpdateData(String key, String xml)
+	public void DBUpdatePlayerData(String key, String xml)
 	{
 		DataLoader.DBUpdate(key, xml);
 	}
 
 	@Override
-	public void DBCreateData(String player, String section, String key, String data)
+	public PlayerData DBCreatePlayerData(String player, String section, String key, String data)
 	{
-		DataLoader.DBCreate(player, section, key, data);
+		return DataLoader.DBCreate(player, section, key, data);
 	}
 
 	@Override
@@ -1156,69 +1167,4 @@ public class DBInterface implements DatabaseEngine
 		}
 		return results;
 	}
-
-	@Override
-	public PlayerData createPlayerData()
-	{
-		return new PlayerData()
-		{
-			private String	who		= "";
-			private String	section	= "";
-			private String	key		= "";
-			private String	xml		= "";
-
-			@Override
-			public String who()
-			{
-				return who;
-			}
-
-			@Override
-			public PlayerData who(String who)
-			{
-				this.who = who;
-				return this;
-			}
-
-			@Override
-			public String section()
-			{
-				return section;
-			}
-
-			@Override
-			public PlayerData section(String section)
-			{
-				this.section = section;
-				return this;
-			}
-
-			@Override
-			public String key()
-			{
-				return key;
-			}
-
-			@Override
-			public PlayerData key(String key)
-			{
-				this.key = key;
-				return this;
-			}
-
-			@Override
-			public String xml()
-			{
-				return xml;
-			}
-
-			@Override
-			public PlayerData xml(String xml)
-			{
-				this.xml = xml;
-				return this;
-			}
-		};
-	}
-
 }

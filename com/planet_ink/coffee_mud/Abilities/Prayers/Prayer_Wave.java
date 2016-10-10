@@ -93,7 +93,7 @@ public class Prayer_Wave extends Prayer
 		final Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if(h==null)
 			return false;
-		int dir=Directions.getGoodDirectionCode(CMParms.combine(commands,0));
+		int dir=CMLib.directions().getGoodDirectionCode(CMParms.combine(commands,0));
 		if(dir<0)
 		{
 			if(mob.isMonster())

@@ -33,7 +33,12 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class GenCloak extends GenArmor
 {
-	@Override public String ID(){	return "GenCloak";}
+	@Override
+	public String ID()
+	{
+		return "GenCloak";
+	}
+
 	public GenCloak()
 	{
 		super();
@@ -55,7 +60,8 @@ public class GenCloak extends GenArmor
 	@Override
 	public void affectPhyStats(Physical host, PhyStats stats)
 	{
-		if(!amWearingAt(Wearable.IN_INVENTORY))
+		super.affectPhyStats(host, stats);
+		if((!amWearingAt(Wearable.IN_INVENTORY))&&(readableText().length()>0))
 			stats.setName(readableText());
 	}
 }

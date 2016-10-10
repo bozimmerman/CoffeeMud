@@ -35,9 +35,19 @@ import java.util.*;
 
 public class Prop_RoomsForSale extends Prop_RoomForSale
 {
-	@Override public String ID() { return "Prop_RoomsForSale"; }
-	@Override public String name(){ return "Putting a cluster of rooms up for sale";}
-	protected String uniqueLotID=null;
+	@Override
+	public String ID()
+	{
+		return "Prop_RoomsForSale";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Putting a cluster of rooms up for sale";
+	}
+
+	protected String	uniqueLotID	= null;
 
 	protected void fillCluster(Room R, List<Room> V)
 	{
@@ -95,6 +105,7 @@ public class Prop_RoomsForSale extends Prop_RoomForSale
 		final String owner=getOwnerName();
 		final int price=getPrice();
 		final boolean rental=rentalProperty();
+		final boolean gridLayout = gridLayout();
 		final int back=backTaxes();
 		String uniqueID="ROOMS_PROPERTY_"+this;
 		if(V.size()>0)
@@ -116,6 +127,7 @@ public class Prop_RoomsForSale extends Prop_RoomForSale
 					A.setPrice(price);
 					A.setBackTaxes(back);
 					A.setRentalProperty(rental);
+					A.setGridLayout(gridLayout);
 					CMLib.database().DBUpdateRoom(R);
 				}
 				if(A instanceof Prop_RoomsForSale)
@@ -153,12 +165,14 @@ public class Prop_RoomsForSale extends Prop_RoomForSale
 						PRFS.lastDayDone=R.getArea().getTimeObj().getDayOfMonth();
 				}
 				if((getOwnerName().length()>0)&&rentalProperty()&&(R.roomID().length()>0))
+				{
 					if(doRentalProperty(R.getArea(),R.roomID(),getOwnerName(),getPrice()))
 					{
 						setOwnerName("");
 						updateTitle();
 						lastItemNums=updateLotWithThisData((Room)affected,this,false,scheduleReset,optPlayerList,lastItemNums);
 					}
+				}
 			}
 			scheduleReset=false;
 		}

@@ -122,12 +122,12 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 	}
 
 	@Override
-	public void unDock(boolean moveToOutside)
+	public Room unDock(boolean moveToOutside)
 	{
 		if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
 			Log.debugOut("SpaceShip "+name()+" is undocking"+(moveToOutside?"into space":""));
 		final Room R=getIsDocked();
-		super.unDock(moveToOutside);
+		Room exitRoom = super.unDock(moveToOutside);
 		if(R instanceof LocationRoom)
 		{
 			setDirection(Arrays.copyOf(((LocationRoom)R).getDirectionFromCore(),2));
@@ -139,6 +139,7 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 			if((o != null)&&(R instanceof LocationRoom))
 				CMLib.map().addObjectToSpace(o,((LocationRoom)R).coordinates());
 		}
+		return exitRoom;
 	}
 
 	@Override
@@ -255,11 +256,7 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 				if((msg.value() > 0)&&(myMass>0))
 				{
 					//TODO: apply non-collision damage to internal systems instead of hull
-					// only when there are no other systems to destroy do we apply damage
-					// to the hull.  Or perhaps only a small portions is applied to the hull.
-					//
-					// Use reliability to see if a system takes tiny damage on every hit, 
-					// even if it is not chosen to absorb any real damage.
+					//  only a portions is applied to the hull.
 					int hullDamage=0;
 					final int baseDamage = msg.value();
 					switch(msg.sourceMinor())
@@ -280,6 +277,29 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 					case CMMsg.TYP_WATER:
 						if(CMLib.dice().getRandomizer().nextDouble() + CMath.div(baseDamage,100) > this.getFinalManufacturer().getReliabilityPct())
 							hullDamage=1;
+						if(hullDamage < usesRemaining())
+						{
+							List<Electronics> list = CMLib.tech().getMakeRegisteredElectronics(CMLib.tech().getElectronicsKey(getShipArea()));
+							for(Iterator<Electronics> i=list.iterator();i.hasNext();)
+							{
+								Electronics E=i.next();
+								if((E.amDestroyed())
+								||(((E.subjectToWearAndTear())&&(E.usesRemaining()>0)))
+								||(E instanceof ElecPanel)
+								||(E instanceof Software)
+								||((E instanceof TechComponent) && (!((TechComponent)E).isInstalled()))
+								||((!(E instanceof TechComponent)) && (!E.activated())))
+									i.remove();
+							}
+							if(list.size()>0)
+							{
+								final Electronics damagedE = list.get(CMLib.dice().roll(1, list.size(), -1));
+								final Room R=CMLib.map().roomLocation(damagedE);
+								CMMsg msg2=(CMMsg)msg.copyOf();
+								if((R!=null)&&(R.okMessage(msg.source(), msg2)))
+									R.send(msg.source(), msg2);
+							}
+						}
 						break;
 					}
 					if(hullDamage >= usesRemaining())
@@ -294,7 +314,6 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 					}
 					else
 					{
-						
 						if(hullDamage>0)
 							setUsesRemaining(usesRemaining() - hullDamage);
 						if(baseDamage > 75)
@@ -337,7 +356,11 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 					// This is technically wrong. Imagine taping a huge object from behind because you 
 					// are going just a tiny bit faster, even though you are both going very fast.
 					// However, the odds of that happening are nothing.  Forget it.
-					double absorbedDamage = Math.floor((previousSpeed * myMass) + (O.speed() * O.getMass()));
+					double absorbedDamage;
+					if(O instanceof ShipWarComponent)
+						absorbedDamage = ((ShipWarComponent)O).phyStats().damage();
+					else
+						absorbedDamage = Math.floor((previousSpeed * myMass) + (O.speed() * O.getMass()));
 					if(absorbedDamage > Integer.MAX_VALUE / 10)
 						absorbedDamage = Integer.MAX_VALUE / 10;
 					
@@ -722,7 +745,7 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES","RESETTIME","RIDEBASIS","MOBSHELD",
 											"POWERCAP","ACTIVATED","POWERREM","MANUFACTURER","AREA","COORDS","RADIUS",
 											"ROLL","DIRECTION","SPEED","FACING","OWNER","PRICE","DEFCLOSED","DEFLOCKED",
-											"PUTSTR","MOUNTSTR","DISMOUNTSTR","EXITNAME"
+											"PUTSTR","MOUNTSTR","DISMOUNTSTR","EXITNAME","TECHLEVEL"
 										  };
 	@Override
 	public String getStat(String code)
@@ -783,6 +806,8 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 			return dismountString;
 		case 25:
 			return "" + doorName();
+		case 26:
+			return "" + techLevel();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -874,6 +899,9 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 			break;
 		case 25:
 			doorName = val;
+			break;
+		case 26:
+			setTechLevel(CMath.s_parseIntExpression(val));
 			break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);

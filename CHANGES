@@ -1,4 +1,76 @@
-# Build 5.9.? Released ??/??/2016
+# Build 5.9.5 Release ??/??/2016
+   1. New chants: Phosphorescence
+   2. Anarchy clan govt type now has Clan Experience spell as an instant benefit.
+   3. Pirates no longer regain lost limbs after death.
+   4. New resource: DIRT.  Mass Grave now populates its room with the stuff.
+   5. GModify now supports query-able stat "CLASSTYPE"
+   6. New Skills: Wilderness Sounds, Hardiness, Stonecunning, Keenvision
+   7. New Prayers: Taint of Evil
+   8. Centaur gets Hardiness, Drow adds Light Sensitivity and Taint of Evil, 
+   9. Duergar get -10% XP, Dwarfs get Stonecunning, Elfs Keenvision
+   10. Races can now have a XP adjustment, see Archon's Guide
+   11. New Language: WormSpeak
+   12. New Chants: BurrowSpeak
+# Build 5.9.4 Released 08/03/2016
+   1. Qualify now shows language limits
+   2. New Prop_NoTeleport exceptions
+   3. ALIAS commands now supports "noecho" prefix to prevent echos.
+   4. New property: Prop_HereEnabler, like the other Prop_Here* and Prop_*Enabler props.
+   5. New Archon ability: Matrix Possess
+   6. Common Skills now support INFO argument to get info on recipe items.
+   7. New Area type: SubThinInstance, for making thin instance clones of existing areas.
+   8. EQUIP LONG now shows all items being worn and tattoos, even at other layers.
+   9. CoffeeMud now supports Twitter.  See the end of the Installation Guide.
+  10. Prop_StatTrainer has new parameter: BASEVALUE, for making it more flexible.
+  11. Prop_StatAdjuster has new parameter: ADJMAX, for giving mobs more POWAH!
+  12. New Spell: Spell_Planeshift, for going to other planes of existence
+  13. Prop_AbsorbDamage has several new parameters, and can now effect rooms/areas
+  14. Clerics and Druids also get planar travelling spells: Plane Walking and Planar Travel
+  15. New racial ability for horse-like races: Buck
+  16. Achievements command has lots of new options
+  17. The Skills Report on the Statistics MUDGrinder page can now group by name, type, domain.
+  18. New Achievement trigger, FACTIONS (with an S), for counting groups of factions.
+  19. Several new REMORTRETAIN options for expanding or fine tuning the remort process.
+  20. New Dragonbreath parameters and types
+  21. Races and Clan Governments now support parameters for granted abilities.
+  22. New internal mob saving throws (more damage mitigators/enhancers), including weapon types.
+  23. Bunch of new races for the outer planes.
+  24. New Thief Skills: Superstitious, Rope Swing, Improved Boarding, Locate Alcohol, Hold Your Liquor
+  25. Papermaking now supports containers, for gift bags, paper sacks, etc.
+  26. MORGUE/DEATH/BODY/START rooms support levels and masks now.
+  27. The Swim skill, when used as a racial ability, does not have a usage cost any more.
+  28. Lassos and Nets no longer do physical damage
+  29. Internal DB: CMCLAS field in CMCHAR table expanded to 250 chars. An optional DB upgrade!
+  30. New ZapperMasks: +ISHOME -ISHOME, for masking mobs who are away from their areas
+  31. Prop_*Adjuster now supports multiplying values, see help on Prop_HaveAdjuster
+  32. Concierge behavior can now create portals if you want.
+  33. Stolen property (property taken from a home or owned ship) cannot be sold to shopkeepers.
+  34. New config option and Command: NOBATTLESPAM, for getting only damage summaries.
+  35. New auto-diseases: Sea Sickness, Scurvy
+  36. Sailing Ship now have TENDER command to extend gangplanks between peaceful ships
+  37. New Skills: Sea Legs, Ride the Rigging, Belay, Buried Treasure, Wenching
+  38. New Skills: Treasure Map, Walk the Plank, Sea Mapping, Plunder, Sea Charting
+  39. New Skills: Dead Reckoning, Sea Navigation, Scuttle, Fence Loot, Pet Spy
+  40. New Skills: Pirate Familiar, Pub Contacts, Combat Repairs, Foul Weather Sailing
+  41. New Skills: Pay Off, Pet Steal, Merchant Flag, Pieces of Eight, Articles
+  42. New Skills: Ramming Speed, Smuggler's Hold, Hide Ship, Intercept Ship, Await Ship
+  43. New Skills: Mast Shot, Warning Shot, Silent Running, Water Tactics, Trawling
+  44. New Skills: Diving, Siege Weapon Specialization, Deep Breath, Avoid Currents
+  45. If it's not already obvious, new char class in beta: Pirate
+  46. Internal: Web Server upgraded to rev 2.4 (SSL fixes and Protocol switching)
+  47. Mundane STAT command now supports HEALTH, RESISTS, ATTRIBUTES
+  48. New Spell: Lighthouse   
+  49. DAYSCLANOVERTHROW separated from DAYSCLANDEATH -- see INI file.
+  50. New Skills: Naval Tactics, Salvaging, Sea Maneuvers, Crows Nest, Hire Crewmember
+  51. New Skills: Morse Code, Stowaway
+  52. Can now LIST AREATYPES
+  53. Individual diseases can now be disabled from the DISABLE= entry in the INI file.
+  54. New Commoner class in beta: Sailor  
+  55. Patroller now works with Sailing Ships.
+  56. New CONFIG option: TELNET-GA, and CONFIG command can now be used to toggle them all.
+  57. New Expertises: Ranged Sailing, Reduced Sailing, Power Sailing, Extended Sailing
+  58. New Achievements for Pirate, Sailor, and Mer
+# Build 5.9.3 Released 05/08/2016
    1. Follower behavior now has a few more options.
    2. STAT [MOBNAME] will now give full editor stats also, and 
    3. STAT [ITEMNAME/AREANAME/EXITNAME/ROOMNAME] now gives editor stats without editing
@@ -10,7 +82,23 @@
    9. Archon QUESTS [QUEST NAME] and LIST QUESTWINNERS can now show all winners of quests.
   10. New CHANNEL flag: NOLANGUAGE, to turn off foreign languages when using the channel.
   11. LIST QUESTNAMES can show a map between quest names (ids) and display names.
-
+  12. LIST ABILITYDOMAINS will show a list of, well, ability domains
+  13. ID on private property will now show size and features, as will VIEW of titles on shopkeepers.
+  14. Scripting trigger matches P syntax now truly is Precise (noteable bug fix).
+  15. Conquerable will now transfer private property to conqueror, see new OWNERSHIP flag.
+  16. Prop_Lot*ForSale and Prop_RoomPlus now support grid-connecting the walls of rooms for looping.
+  17. New Scriptable commands: MPOLOADSHOP and MPMLOADSHOP, and funcs: SHOPHAS, SHOPITEM, NUMITEMSSHOP
+  18. New Achievements trigger: CLASSLEVELSGAINED -- several more achievements that use it also.
+  19. MudChat now supports talking spontaneously on a schedule, and responses may contain scriptable funcs.
+  20. Trailto now accepts full tracking flag set as arguments, as well as other new tweek settings
+  22. Rules for mixing races can now be tweeked a little.  See coffeemud.ini RACEMIXING.
+  21. Can now add/edit items directly to shopkeeper inventory from MUDGrinder!!!
+  22. New item type: GenSiegeWeapon, for combat between ships
+  23. New item type: GenGrapples, for creating a portal between two ship bridges
+  24. New behavior: Sailor, for allowing mobs to sail and fight on the big ships
+  25. New Common Skill: Siegecraft, for making siege weapons for ship combat
+  25. Sailing Ship combat is in beta, see help SAILING and help SHIP COMBAT
+  26. New disable flag: FOODROT for disabling the automatic raw food rottability
 # Build 5.9.2 Released 02/09/2016
    1. Apprentice now gets bonus common skill.
    2. Prop_ItemBinder can now bind to a group.

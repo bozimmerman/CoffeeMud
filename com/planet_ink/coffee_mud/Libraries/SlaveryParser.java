@@ -298,7 +298,7 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
 					}
 					case 'd':
 					{
-						if(Directions.getGoodDirectionCode(req[ri])<0)
+						if(CMLib.directions().getGoodDirectionCode(req[ri])<0)
 							reject=true;
 						else
 						{
@@ -918,12 +918,13 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
 					if(name.equals("my"))
 						name=you.name();
 				}
-				final int dirCode=Directions.getGoodDirectionCode(CMParms.parse(name).firstElement());
+				final int dirCode=CMLib.directions().getGoodDirectionCode(CMParms.parse(name).firstElement());
 				if((dirCode>=0)&&(R.getRoomInDir(dirCode)!=null))
 				{
 					if(CMParms.parse(name).size()>1)
 						cur.set(1,CMParms.combine(CMParms.parse(name),1));
 					step=Step.EVAL;
+					que.remove(0);
 					CMLib.tracking().walk(me,dirCode,false,false);
 					return "HOLD";
 				}

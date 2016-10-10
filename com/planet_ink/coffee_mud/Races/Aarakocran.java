@@ -59,6 +59,7 @@ public class Aarakocran extends Harpy
 	private final int[]		racialAbilityLevels			= { 1 };
 	private final int[]		racialAbilityProficiencies	= { 100 };
 	private final boolean[]	racialAbilityQuals			= { false };
+	private final String[]	racialAbilityParms			= { "" };
 
 	@Override
 	public String[] racialAbilityNames()
@@ -84,6 +85,12 @@ public class Aarakocran extends Harpy
 		return racialAbilityQuals;
 	}
 
+	@Override
+	public String[] racialAbilityParms()
+	{
+		return racialAbilityParms;
+	}
+
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,0 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,1 ,2 };
 
@@ -98,11 +105,19 @@ public class Aarakocran extends Harpy
 	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
-		super.affectCharStats(affectedMOB, affectableStats);
+		//super.affectCharStats(affectedMOB, affectableStats); -- the harpy will set to F
 		affectableStats.setStat(CharStats.STAT_DEXTERITY,affectableStats.getStat(CharStats.STAT_DEXTERITY)+4);
+		affectableStats.setStat(CharStats.STAT_MAX_DEXTERITY_ADJ,affectableStats.getStat(CharStats.STAT_MAX_DEXTERITY_ADJ)+4);
+		affectableStats.setStat(CharStats.STAT_MAX_CONSTITUTION_ADJ,affectableStats.getStat(CharStats.STAT_MAX_CONSTITUTION_ADJ)-2);
 		affectableStats.setStat(CharStats.STAT_CONSTITUTION,affectableStats.getStat(CharStats.STAT_CONSTITUTION)-2);
 	}
 
+	@Override
+	public String getStatAdjDesc()
+	{
+		return super.getStatAdjDesc();
+	}
+	
 	@Override
 	public List<RawMaterial> myResources()
 	{

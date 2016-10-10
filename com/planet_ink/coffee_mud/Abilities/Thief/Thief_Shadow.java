@@ -125,7 +125,7 @@ public class Thief_Shadow extends ThiefSkill
 					dir=d;
 			if((dir>=0)&&(msg.source().location()!=lastRoom))
 			{
-				final String directionWent=Directions.getDirectionName(dir);
+				final String directionWent=CMLib.directions().getDirectionName(dir);
 				final MOB mob=invoker;
 				lastRoom=msg.source().location();
 				if(!mob.isMonster())

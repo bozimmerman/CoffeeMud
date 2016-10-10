@@ -283,7 +283,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 	public Room prepareGridLocale(Room fromRoom, Room toRoom, int direction)
 	{
 		final XYVector xy=getRoomXY(fromRoom);
-		if((xy.x>=0)&&(xy.x<xGridSize())&&(xy.y>=0)&&(xy.y<yGridSize()))
+		if((xy!=null)&&(xy.x>=0)&&(xy.x<xGridSize())&&(xy.y>=0)&&(xy.y<yGridSize()))
 			fillExitsOfGridRoom(fromRoom,xy.x,xy.y);
 		return fromRoom.rawDoors()[direction];
 	}
@@ -681,6 +681,36 @@ public class StdThinGrid extends StdRoom implements GridLocale
 	{
 		getRandomGridChild();
 		return new ConvertingList<ThinGridEntry,Room>(rooms,ThinGridEntryConverter.INSTANCE);
+	}
+
+	@Override
+	public List<Room> getAllRoomsFilled()
+	{
+		getRandomGridChild();
+		final Iterator<Room> r=new ConvertingList<ThinGridEntry,Room>(rooms,ThinGridEntryConverter.INSTANCE).iterator();
+		final Vector<Room> V=new Vector<Room>();
+		Room R=null;
+		for(;r.hasNext();)
+		{
+			R=r.next();
+			try
+			{
+				if(!V.contains(R))
+					V.addElement(R);
+				for(Room R2 : R.getSky())
+				{
+					if(R2 instanceof GridLocale)
+						V.addAll(((GridLocale)R2).getAllRoomsFilled());
+					else
+					if(!V.contains(R2))
+						V.add(R2);
+				}
+			}
+			catch(Exception e)
+			{
+			}
+		}
+		return V;
 	}
 
 	@Override

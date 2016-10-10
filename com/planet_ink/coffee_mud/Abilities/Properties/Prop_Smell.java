@@ -192,8 +192,8 @@ public class Prop_Smell extends Property
 							{
 								emoter.setLocation(R);
 								final String inDir=((R instanceof BoardableShip)||(R.getArea() instanceof BoardableShip))?
-										Directions.getShipInDirectionName(Directions.getOpDirectionCode(d)):
-											Directions.getInDirectionName(Directions.getOpDirectionCode(d));
+										CMLib.directions().getShipInDirectionName(Directions.getOpDirectionCode(d)):
+											CMLib.directions().getInDirectionName(Directions.getOpDirectionCode(d));
 								emoter.setName(L("something @x1",inDir));
 								emoteHere(R,emoter,emote);
 							}

@@ -40,28 +40,53 @@ import java.util.*;
 
 public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, MendingSkill
 {
-	@Override public String ID() { return "JewelMaking"; }
-	private final static String localizedName = CMLib.lang().L("Jewel Making");
-	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =I(new String[] {"JEWEL","JEWELMAKING"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public String supportedResourceString(){return "GLASS|PRECIOUS|SAND";}
 	@Override
-	public String parametersFormat(){ return
+	public String ID()
+	{
+		return "JewelMaking";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Jewel Making");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "JEWEL", "JEWELMAKING" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public String supportedResourceString()
+	{
+		return "GLASS|PRECIOUS|SAND";
+	}
+
+	@Override
+	public String parametersFormat()
+	{
+		return
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\t"
-		+"ITEM_CLASS_ID\tSTATUE||CODED_WEAR_LOCATION\tN_A\tBASE_ARMOR_AMOUNT\tOPTIONAL_RESOURCE_OR_MATERIAL\tCODED_SPELL_LIST";}
+		+"ITEM_CLASS_ID\tSTATUE||CODED_WEAR_LOCATION\tN_A\tBASE_ARMOR_AMOUNT\tOPTIONAL_RESOURCE_OR_MATERIAL\tCODED_SPELL_LIST";
+	}
 
 	//protected static final int RCP_FINALNAME=0;
 	//protected static final int RCP_LEVEL=1;
 	//protected static final int RCP_TICKS=2;
-	protected static final int RCP_WOOD=3;
-	protected static final int RCP_VALUE=4;
-	protected static final int RCP_CLASSTYPE=5;
-	protected static final int RCP_MISCTYPE=6;
-	//private static final int RCP_CAPACITY=7;
-	protected static final int RCP_ARMORDMG=8;
-	protected static final int RCP_EXTRAREQ=9;
-	protected static final int RCP_SPELL=10;
+	protected static final int		RCP_WOOD		= 3;
+	protected static final int		RCP_VALUE		= 4;
+	protected static final int		RCP_CLASSTYPE	= 5;
+	protected static final int		RCP_MISCTYPE	= 6;
+	// private static final int RCP_CAPACITY=7;
+	protected static final int		RCP_ARMORDMG	= 8;
+	protected static final int		RCP_EXTRAREQ	= 9;
+	protected static final int		RCP_SPELL		= 10;
 
 	protected Pair<Item,String> beingDone=null;
 
@@ -84,8 +109,17 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 		return super.tick(ticking,tickID);
 	}
 
-	@Override public String parametersFile(){ return "jewelmaking.txt";}
-	@Override protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
+	@Override
+	public String parametersFile()
+	{
+		return "jewelmaking.txt";
+	}
+
+	@Override
+	protected List<List<String>> loadRecipes()
+	{
+		return super.loadRecipes(parametersFile());
+	}
 
 	@Override
 	protected boolean doLearnRecipe(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -236,7 +270,12 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 		return (isANativeItem(I.Name()));
 	}
 
-	@Override public boolean supportsMending(Physical I){ return canMend(null,I,true);}
+	@Override
+	public boolean supportsMending(Physical I)
+	{
+		return canMend(null, I, true);
+	}
+
 	@Override
 	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
 	{
@@ -272,13 +311,18 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 		if(super.checkStop(mob, commands))
 			return true;
 
+		if(super.checkInfo(mob, commands))
+			return true;
+		
 		fireRequired=true;
 
 		final PairVector<EnhancedExpertise,Integer> enhancedTypes=enhancedTypes(mob,commands);
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,L("Make what? Enter \"jewel list\" for a list.  You may also enter jewel encrust <gem name> <item name>, jewel mount <gem name> <item name>, jewel refit <item name>, jewel learn <item>, jewel scan, jewel mend <item name>, or jewel stop to cancel."));
+			commonTell(mob,L("Make what? Enter \"jewel list\" for a list.  You may also enter jewel encrust <gem name> <item name>, "
+							+ "jewel mount <gem name> <item name>, jewel refit <item name>, jewel info <item>, jewel learn <item>, "
+							+ "jewel scan, jewel mend <item name>, or jewel stop to cancel."));
 			return false;
 		}
 		if((!auto)
@@ -310,10 +354,10 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 			final int toggleTop=2;
 			final StringBuffer buf=new StringBuffer("");
 			final int[] cols={
-					CMLib.lister().fixColWidth(27,mob.session()),
-					CMLib.lister().fixColWidth(3,mob.session()),
-					CMLib.lister().fixColWidth(5,mob.session())
-				};
+				CMLib.lister().fixColWidth(27,mob.session()),
+				CMLib.lister().fixColWidth(3,mob.session()),
+				CMLib.lister().fixColWidth(5,mob.session())
+			};
 			for(int r=0;r<toggleTop;r++)
 				buf.append((r>0?" ":"")+CMStrings.padRight(L("Item"),cols[0])+" "+CMStrings.padRight(L("Lvl"),cols[1])+" "+CMStrings.padRight(L("Metal"),cols[2]));
 			buf.append("\n\r");
@@ -542,7 +586,8 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 				fireRequired=false;
 
 			final String woodRequiredStr = foundRecipe.get(RCP_WOOD);
-			final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName),autoGenerate);
+			final int[] compData = new int[CF_TOTAL];
+			final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName),autoGenerate,compData);
 			if(componentsFoundList==null)
 				return false;
 			int woodRequired=CMath.s_int(woodRequiredStr);
@@ -553,11 +598,11 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 			final String otherRequired=foundRecipe.get(RCP_EXTRAREQ);
 			final int[] pm={RawMaterial.MATERIAL_MITHRIL,RawMaterial.MATERIAL_METAL};
 			final int[][] data=fetchFoundResourceData(mob,
-												woodRequired,"metal",pm,
-												otherRequired.length()>0?1:0,otherRequired,null,
-												false,
-												autoGenerate,
-												enhancedTypes);
+													woodRequired,"metal",pm,
+													otherRequired.length()>0?1:0,otherRequired,null,
+													false,
+													autoGenerate,
+													enhancedTypes);
 			if(data==null)
 				return false;
 			fixDataForComponents(data,componentsFoundList);
@@ -572,9 +617,19 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 				final Physical target=givenTarget;
 				session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0)
 				{
-					@Override public void showPrompt() {session.promptPrint(L("What is this item a representation of?\n\r: "));}
-					@Override public void timedOut() {}
-					@Override public void callBack()
+					@Override
+					public void showPrompt()
+					{
+						session.promptPrint(L("What is this item a representation of?\n\r: "));
+					}
+
+					@Override
+					public void timedOut()
+					{
+					}
+
+					@Override
+					public void callBack()
 					{
 						final String of=this.input;
 						if((of.trim().length()==0)||(of.indexOf('<')>=0))
@@ -590,8 +645,6 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
 
-
-
 			final int lostValue=autoGenerate>0?0:
 				CMLib.materials().destroyResourcesValue(mob.location(),woodRequired,data[0][FOUND_CODE],data[1][FOUND_CODE],null)
 				+CMLib.ableComponents().destroyAbilityComponents(componentsFoundList);
@@ -603,10 +656,11 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 			}
 			duration=getDuration(CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),4);
 			String itemName=null;
+			buildingI.setMaterial(getBuildingMaterial(woodRequired,data,compData));
 			if((otherRequired.length()>0)&&(otherRequired.equalsIgnoreCase("PRECIOUS")))
 				itemName=replacePercent(foundRecipe.get(RCP_FINALNAME),RawMaterial.CODES.NAME((data[1][FOUND_CODE]))).toLowerCase();
 			else
-				itemName=replacePercent(foundRecipe.get(RCP_FINALNAME),RawMaterial.CODES.NAME(data[0][FOUND_CODE])).toLowerCase();
+				itemName=replacePercent(foundRecipe.get(RCP_FINALNAME),RawMaterial.CODES.NAME(buildingI.material())).toLowerCase();
 			if(bundling)
 				itemName="a "+woodRequired+"# "+itemName;
 			else
@@ -624,16 +678,11 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 				buildingI.setDescription(L("@x1 made of @x2.",itemName,RawMaterial.CODES.NAME(data[0][FOUND_CODE]).toLowerCase()));
 			else
 				buildingI.setDescription(itemName+". ");
-			buildingI.basePhyStats().setWeight(getStandardWeight(woodRequired,bundling));
+			buildingI.basePhyStats().setWeight(getStandardWeight(woodRequired+compData[CF_AMOUNT],bundling));
 			buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE))+(woodRequired*(RawMaterial.CODES.VALUE(data[0][FOUND_CODE]))));
 			buildingI.setSecretIdentity(getBrand(mob));
-			if(data[1][FOUND_CODE]==0)
-				buildingI.setMaterial(data[0][FOUND_CODE]);
-			else
-			{
-				buildingI.setMaterial(data[1][FOUND_CODE]);
+			if(buildingI.material()==data[1][FOUND_CODE])
 				buildingI.setBaseValue(buildingI.baseGoldValue()+RawMaterial.CODES.VALUE(data[1][FOUND_CODE]));
-			}
 			buildingI.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL)));
 			//int capacity=CMath.s_int((String)foundRecipe.get(RCP_CAPACITY));
 			final int armordmg=CMath.s_int(foundRecipe.get(RCP_ARMORDMG));
@@ -660,7 +709,6 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 			buildingI.text();
 			buildingI.recoverPhyStats();
 		}
-
 
 		messedUp=!proficiencyCheck(mob,0,auto);
 

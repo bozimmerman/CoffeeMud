@@ -38,7 +38,7 @@ public class Trap_ExitPit extends Trap_ExitRoom
 	@Override
 	public String ID()
 	{
-		return "Trap_EnterPit";
+		return "Trap_ExitPit";
 	}
 
 	private final static String	localizedName	= CMLib.lang().L("Entry Pit Trap");

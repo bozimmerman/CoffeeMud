@@ -119,17 +119,17 @@ See guides/RandomAreas.html for information about documents of this type.
 				<ITEM select="pick-1?2">
 					<ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level">
 						<NAME select="any-1"><NAME>(a(n)) $adj_fancy pointy hat</NAME><NAME>(a(n)) $adj_fancy hat</NAME></NAME>
-						<DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>COTTON</MATERIAL><PROPERWORN>HEAD</PROPERWORN>
+						<DISPLAY>$item_name has been left here</DISPLAY><MATERIAL>COTTON</MATERIAL><PROPERWORN>HEAD</PROPERWORN>
 					</ITEM>
 					<ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level">
 						<NAME select="any-1"><NAME>(a(n)) $adj_fancy sparkling robe</NAME><NAME>(a(n)) $adj_fancy robe</NAME></NAME>
-						<DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>LEATHER</MATERIAL><PROPERWORN>TORSO,LEGS,ARMS</PROPERWORN><WORNAND>true</WORNAND>
+						<DISPLAY>$item_name has been left here</DISPLAY><MATERIAL>LEATHER</MATERIAL><PROPERWORN>TORSO,LEGS,ARMS</PROPERWORN><WORNAND>true</WORNAND>
 					</ITEM>
 				</ITEM>
 				<ITEM select="pick-1">
 					<ITEM pickweight="1" class="GenStaff" LEVEL="$mob_level">
 						<NAME>(a(n)) $adj_fancy staff</NAME>
-						<DISPLAY>$item_name has been left here"</DISPLAY>
+						<DISPLAY>$item_name has been left here</DISPLAY>
 						<MATERIAL>OAK</MATERIAL>
 						<WEAPONCLASS>STAFF</WEAPONCLASS>
 						<WEAPONTYPE>BASHING</WEAPONTYPE>
@@ -652,28 +652,28 @@ See guides/RandomAreas.html for information about documents of this type.
 	<ITEM select="pick-1">
 		<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
 			<NAME>(a(n)) $adj_ragged spear</NAME>
-			<DISPLAY>$item_name has been left here"</DISPLAY>
+			<DISPLAY>$item_name has been left here</DISPLAY>
 			<WEAPONCLASS>POLEARM</WEAPONCLASS>
 			<WEAPONTYPE>PIERCING</WEAPONTYPE>
 			<MATERIAL>OAK</MATERIAL>
 		</ITEM>
 		<ITEM pickweight="2" class="GenWeapon" LEVEL="$mob_level">
 			<NAME>(a(n)) $adj_ragged sword</NAME>
-			<DISPLAY>$item_name has been left here"</DISPLAY>
+			<DISPLAY>$item_name has been left here</DISPLAY>
 			<WEAPONCLASS>SWORD</WEAPONCLASS>
 			<WEAPONTYPE>SLASHING</WEAPONTYPE>
 			<MATERIAL>IRON</MATERIAL>
 		</ITEM>
 		<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
 			<NAME>(a(n)) $adj_ragged dagger</NAME>
-			<DISPLAY>$item_name has been left here"</DISPLAY>
+			<DISPLAY>$item_name has been left here</DISPLAY>
 			<WEAPONCLASS>DAGGER</WEAPONCLASS>
 			<WEAPONTYPE>PIERCING</WEAPONTYPE>
 			<MATERIAL>IRON</MATERIAL>
 		</ITEM>
 		<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
 			<NAME>a spiked $adj_ragged mace</NAME>
-			<DISPLAY>$item_name has been left here"</DISPLAY>
+			<DISPLAY>$item_name has been left here</DISPLAY>
 			<MATERIAL>IRON</MATERIAL>
 			<WEAPONCLASS>BLUNT</WEAPONCLASS>
 			<WEAPONTYPE>BASHING</WEAPONTYPE>
@@ -701,28 +701,28 @@ See guides/RandomAreas.html for information about documents of this type.
 	<ITEM select="pick-1">
 		<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
 			<NAME>(a(n)) $adj_ragged polearm</NAME>
-			<DISPLAY>$item_name has been left here"</DISPLAY>
+			<DISPLAY>$item_name has been left here</DISPLAY>
 			<WEAPONCLASS>POLEARM</WEAPONCLASS>
 			<WEAPONTYPE>PIERCING</WEAPONTYPE>
 			<MATERIAL>IRON</MATERIAL>
 		</ITEM>
 		<ITEM pickweight="2" class="GenWeapon" LEVEL="$mob_level">
 			<NAME>(a(n)) $adj_ragged blade</NAME>
-			<DISPLAY>$item_name has been left here"</DISPLAY>
+			<DISPLAY>$item_name has been left here</DISPLAY>
 			<WEAPONCLASS>SWORD</WEAPONCLASS>
 			<WEAPONTYPE>SLASHING</WEAPONTYPE>
 			<MATERIAL>IRON</MATERIAL>
 		</ITEM>
 		<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
 			<NAME>(a(n)) $adj_ragged frogsticker</NAME>
-			<DISPLAY>$item_name has been left here"</DISPLAY>
+			<DISPLAY>$item_name has been left here</DISPLAY>
 			<WEAPONCLASS>DAGGER</WEAPONCLASS>
 			<WEAPONTYPE>PIERCING</WEAPONTYPE>
 			<MATERIAL>IRON</MATERIAL>
 		</ITEM>
 		<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
 			<NAME>a spiked $adj_ragged club</NAME>
-			<DISPLAY>$item_name has been left here"</DISPLAY>
+			<DISPLAY>$item_name has been left here</DISPLAY>
 			<MATERIAL>WOOD</MATERIAL>
 			<WEAPONCLASS>BLUNT</WEAPONCLASS>
 			<WEAPONTYPE>BASHING</WEAPONTYPE>
@@ -750,28 +750,28 @@ See guides/RandomAreas.html for information about documents of this type.
 	<ITEM select="pick-1">
 		<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
 			<NAME>a gleaming iron polearm</NAME>
-			<DISPLAY>$item_name has been left here"</DISPLAY>
+			<DISPLAY>$item_name has been left here</DISPLAY>
 			<WEAPONCLASS>POLEARM</WEAPONCLASS>
 			<WEAPONTYPE>PIERCING</WEAPONTYPE>
 			<MATERIAL>IRON</MATERIAL>
 		</ITEM>
 		<ITEM pickweight="2" class="GenWeapon" LEVEL="$mob_level">
 			<NAME>a broadsword</NAME>
-			<DISPLAY>$item_name has been left here"</DISPLAY>
+			<DISPLAY>$item_name has been left here</DISPLAY>
 			<WEAPONCLASS>SWORD</WEAPONCLASS>
 			<WEAPONTYPE>SLASHING</WEAPONTYPE>
 			<MATERIAL>IRON</MATERIAL>
 		</ITEM>
 		<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
 			<NAME>a blood soaked dagger</NAME>
-			<DISPLAY>$item_name has been left here"</DISPLAY>
+			<DISPLAY>$item_name has been left here</DISPLAY>
 			<WEAPONCLASS>DAGGER</WEAPONCLASS>
 			<WEAPONTYPE>PIERCING</WEAPONTYPE>
 			<MATERIAL>IRON</MATERIAL>
 		</ITEM>
 		<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
 			<NAME>a spiked club</NAME>
-			<DISPLAY>$item_name has been left here"</DISPLAY>
+			<DISPLAY>$item_name has been left here</DISPLAY>
 			<MATERIAL>WOOD</MATERIAL>
 			<WEAPONCLASS>BLUNT</WEAPONCLASS>
 			<WEAPONTYPE>BASHING</WEAPONTYPE>

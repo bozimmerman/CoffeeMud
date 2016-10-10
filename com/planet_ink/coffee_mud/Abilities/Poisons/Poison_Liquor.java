@@ -37,19 +37,50 @@ import java.util.*;
 
 public class Poison_Liquor extends Poison_Alcohol
 {
-	@Override public String ID() { return "Poison_Liquor"; }
-	private final static String localizedName = CMLib.lang().L("Liquor");
-	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =I(new String[] {"LIQUORUP"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode(){return Ability.ACODE_POISON;}
+	@Override
+	public String ID()
+	{
+		return "Poison_Liquor";
+	}
 
-	@Override protected int alchoholContribution(){return 2;}
-	@Override protected int level(){return 2;}
+	private final static String localizedName = CMLib.lang().L("Liquor");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private static final String[] triggerStrings = I(new String[] { "LIQUORUP" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_POISON;
+	}
+
+	@Override
+	protected int alchoholContribution()
+	{
+		return 2;
+	}
+
+	@Override
+	protected int level()
+	{
+		return 2;
+	}
 
 	@Override
 	public void unInvoke()
 	{
+		int drunkness=this.drunkness;
 		MOB mob=null;
 		if(affected instanceof MOB)
 		{
@@ -63,7 +94,7 @@ public class Poison_Liquor extends Poison_Alcohol
 			CMLib.commands().postStand(mob,true);
 		}
 		super.unInvoke();
-		if((mob!=null)&&(!mob.isInCombat()))
+		if((mob!=null)&&(!mob.isInCombat())&&(drunkness>0))
 			mob.location().show(mob,null,CMMsg.MSG_SLEEP,L("<S-NAME> curl(s) up on the ground and fall(s) asleep."));
 	}
 }

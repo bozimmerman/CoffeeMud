@@ -38,10 +38,23 @@ import com.planet_ink.coffee_mud.core.exceptions.HTTPServerException;
 */
 public class FileData extends StdWebMacro
 {
-	@Override public String name() { return "FileData"; }
+	@Override
+	public String name()
+	{
+		return "FileData";
+	}
 
-	@Override public boolean isAWebPath(){return true;}
-	@Override public boolean preferBinary(){return true;}
+	@Override
+	public boolean isAWebPath()
+	{
+		return true;
+	}
+
+	@Override
+	public boolean preferBinary()
+	{
+		return true;
+	}
 
 	public String getFilename(HTTPRequest httpReq, String filename)
 	{

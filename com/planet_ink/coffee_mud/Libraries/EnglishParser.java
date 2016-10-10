@@ -98,8 +98,10 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	{
 		s=s.toLowerCase();
 		for (final String article : ARTICLES)
+		{
 			if(s.equals(article))
 				return true;
+		}
 		return false;
 	}
 
@@ -406,6 +408,50 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		if(uppStr.startsWith("SOME "))
 			return properIndefiniteArticle(adjective)+" "+adjective+" "+str.substring(4).trim();
 		return properIndefiniteArticle(adjective)+" "+adjective+" "+str.trim();
+	}
+
+	protected int skipSpaces(final String paragraph, int index)
+	{
+		while((index<paragraph.length())&&Character.isWhitespace(paragraph.charAt(index)))
+			index++;
+		if(index>=paragraph.length())
+			return -1;
+		return index;
+	}
+	
+	@Override
+	public String insertAdjectives(String paragraph, String[] adjsToChoose, int pctChance)
+	{
+		if((paragraph.length()==0)||(adjsToChoose==null)||(adjsToChoose.length==0))
+			return paragraph;
+		StringBuilder newParagraph = new StringBuilder("");
+		int startDex=skipSpaces(paragraph,0);
+		if(startDex<0)
+			return paragraph;
+		newParagraph.append(paragraph.substring(0,startDex));
+		int spaceDex=paragraph.indexOf(' ',startDex);
+		while(spaceDex > startDex)
+		{
+			final String word=paragraph.substring(startDex,spaceDex).trim();
+			if(isAnArticle(word) && (CMLib.dice().rollPercentage()<=pctChance))
+			{
+				final String adj=adjsToChoose[CMLib.dice().roll(1, adjsToChoose.length, -1)].toLowerCase();
+				if(word.equalsIgnoreCase("a")||word.equalsIgnoreCase("an"))
+					newParagraph.append(this.startWithAorAn(adj)).append(" ").append(adj);
+				else
+					newParagraph.append(word).append(" ").append(adj);
+			}
+			else
+				newParagraph.append(paragraph.substring(startDex,spaceDex));
+			startDex=skipSpaces(paragraph,spaceDex);
+			if(startDex<0)
+				break;
+			newParagraph.append(paragraph.substring(spaceDex,startDex));
+			spaceDex=paragraph.indexOf(' ',startDex);
+		}
+		if((spaceDex<startDex)&&(startDex>=0)&&(startDex<paragraph.length()))
+			newParagraph.append(paragraph.substring(startDex));
+		return newParagraph.toString();
 	}
 
 	@Override
@@ -1248,7 +1294,25 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			doBugFix=false;
 			Environmental item=null;
 			if(from instanceof MOB)
+			{
 				item=((MOB)from).fetchItem(container,filter,name+addendumStr);
+				// all this for single underlayer items with the same name.. ugh...
+				if((item instanceof Armor) 
+				&& (!allFlag) 
+				&& (filter == Wearable.FILTER_WORNONLY)
+				&& (addendumStr.length()==0))
+				{
+					int subAddendum = 0;
+					Item item2=((MOB)from).fetchItem(container,filter,name+"."+(++subAddendum));
+					while(item2 != null)
+					{
+						if((item2 instanceof Armor)
+						&&(((Armor)item2).getClothingLayer() > ((Armor)item).getClothingLayer()))
+							item=item2;
+						item2=((MOB)from).fetchItem(container,filter,name+"."+(++subAddendum));
+					}
+				}
+			}
 			else
 			if(from instanceof Room)
 				item=((Room)from).fetchFromMOBRoomFavorsItems(mob,container,name+addendumStr,filter);
@@ -1284,7 +1348,10 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 					I=V.get(v);
 					curLayer=(I instanceof Armor)?((Armor)I).getClothingLayer():0;
 					if(curLayer>topLayer)
-					{ which=v; topLayer=curLayer;}
+					{
+						which = v;
+						topLayer = curLayer;
+					}
 				}
 				V2.addElement(V.get(which));
 				V.remove(which);
@@ -1567,11 +1634,11 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		if(CMath.isInteger(itemID))
 		{
 			gold=CMath.s_long(itemID);
-			final double totalAmount=CMLib.beanCounter().getTotalAbsoluteValue(mob,currency);
-			double bestDenomination=CMLib.beanCounter().getBestDenomination(currency,(int)gold,totalAmount);
+			//final double totalAmount=CMLib.beanCounter().getTotalAbsoluteValue(mob,currency);
+			double bestDenomination=CMLib.beanCounter().getBestDenomination(currency,(int)gold,gold);
 			if(bestDenomination==0.0)
 			{
-				bestDenomination=CMLib.beanCounter().getBestDenomination(null,(int)gold,totalAmount);
+				bestDenomination=CMLib.beanCounter().getBestDenomination(null,(int)gold,gold);
 				if(bestDenomination>0.0)
 					currency=null;
 			}
@@ -1798,7 +1865,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	}
 
 	@Override
-	public Object[] parseMoneyStringSDL(MOB mob, String amount, String correctCurrency)
+	public Triad<String, Double, Long> parseMoneyStringSDL(MOB mob, String amount, String correctCurrency)
 	{
 		double b=0;
 		String myCurrency=CMLib.beanCounter().getCurrency(mob);
@@ -1817,7 +1884,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			else
 				myCurrency=CMLib.beanCounter().getCurrency(mob);
 		}
-		return new Object[]{myCurrency,Double.valueOf(denomination),Long.valueOf(Math.round(b/denomination))};
+		return new Triad<String,Double,Long>(myCurrency,Double.valueOf(denomination),Long.valueOf(Math.round(b/denomination)));
 	}
 
 	@Override

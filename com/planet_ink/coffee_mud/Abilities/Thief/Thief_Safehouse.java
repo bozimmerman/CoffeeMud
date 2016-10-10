@@ -165,14 +165,14 @@ public class Thief_Safehouse extends ThiefSkill
 			mob.tell(L("A place like this can't be a safehouse."));
 			if((isGoodSafehouse(R))&&(!isLawHere(R)))
 			{
-				V=CMLib.tracking().findBastardTheBestWay(target,new XVector(R),flags,50+(2*getXLEVELLevel(mob)));
+				V=CMLib.tracking().findTrailToAnyRoom(target,new XVector(R),flags,50+(2*getXLEVELLevel(mob)));
 				final StringBuffer trail=new StringBuffer("");
 				int dir=CMLib.tracking().trackNextDirectionFromHere(V,target,true);
 				while(target!=R)
 				{
 					if((dir<0)||(dir>=Directions.NUM_DIRECTIONS())||(target==null))
 						break;
-					trail.append(Directions.getDirectionName(dir));
+					trail.append(CMLib.directions().getDirectionName(dir));
 					if(target.getRoomInDir(dir)!=R)
 						trail.append(", ");
 					target=target.getRoomInDir(dir);

@@ -172,7 +172,7 @@ public class StdShipEngine extends StdCompGenerator implements ShipEngine
 	
 	/**
 	 * Gets set of available thrust ports on this engine.
-	 * @see ShipEngine#setAvailPorts(Set<ThrustPort>)
+	 * @see ShipEngine#setAvailPorts(TechComponent.ShipDir[])
 	 * @return the set of available thrust ports.
 	 */
 	@Override

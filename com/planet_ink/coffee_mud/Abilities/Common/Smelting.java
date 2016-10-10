@@ -128,7 +128,7 @@ public class Smelting extends CraftingSkill implements CraftorAbility
 				final MOB mob=(MOB)affected;
 				if((buildingI!=null)&&(!aborted))
 				{
-					amountMaking=amountMaking*(abilityCode());
+					amountMaking=amountMaking*(baseYield()+abilityCode());
 					if(messedUp)
 						commonEmote(mob,L("<S-NAME> ruin(s) @x1!",buildingI.name()));
 					else
@@ -137,7 +137,8 @@ public class Smelting extends CraftingSkill implements CraftorAbility
 						final Item copy=(Item)buildingI.copyOf();
 						copy.setMiscText(buildingI.text());
 						copy.recoverPhyStats();
-						mob.location().addItem(copy,ItemPossessor.Expire.Player_Drop);
+						if(!dropAWinner(mob,copy))
+							break;
 					}
 				}
 				buildingI=null;

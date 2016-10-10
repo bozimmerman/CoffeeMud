@@ -92,7 +92,9 @@ public class GenStaff extends GenWeapon implements Wand
 	@Override
 	public int value()
 	{
-		if(usesRemaining()<=0)
+		if((usesRemaining()<=0)
+		&&(readableText.length()>0)
+		&&(this.getSpell()!=null))
 			return 0;
 		return super.value();
 	}

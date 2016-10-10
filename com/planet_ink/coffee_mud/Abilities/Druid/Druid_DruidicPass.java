@@ -132,7 +132,7 @@ public class Druid_DruidicPass extends StdAbility
 			return false;
 		}
 		final String whatToOpen=CMParms.combine(commands,0);
-		final int dirCode=Directions.getGoodDirectionCode(whatToOpen);
+		final int dirCode=CMLib.directions().getGoodDirectionCode(whatToOpen);
 		if(dirCode<0)
 		{
 			mob.tell(L("Pass which direction?!"));
@@ -160,7 +160,7 @@ public class Druid_DruidicPass extends StdAbility
 			if(exit.isOpen())
 				CMLib.tracking().walk(mob,dirCode,false,false);
 			else
-				beneficialVisualFizzle(mob,null,L("<S-NAME> walk(s) @x1, but go(es) no further.",Directions.getDirectionName(dirCode)));
+				beneficialVisualFizzle(mob,null,L("<S-NAME> walk(s) @x1, but go(es) no further.",CMLib.directions().getDirectionName(dirCode)));
 		}
 		else
 		if(exit.isOpen())

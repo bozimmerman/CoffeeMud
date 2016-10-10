@@ -203,7 +203,7 @@ public class Chant_Tsunami extends Chant
 			mob.tell(L("You must be on or near the shore for this chant to work."));
 			return false;
 		}
-		String fromDir = Directions.getFromCompassDirectionName(waterDir);
+		String fromDir = CMLib.directions().getFromCompassDirectionName(waterDir);
 		
 		//targetRooms.add(mobR);
 		TrackingLibrary.TrackingFlags flags=CMLib.tracking().newFlags().plus(TrackingFlag.NOAIR).plus(TrackingFlag.OPENONLY).plus(TrackingFlag.NOWATER);

@@ -38,7 +38,11 @@ import java.util.concurrent.TimeUnit;
 
 public class PlayerData extends StdWebMacro
 {
-	@Override public String name() { return "PlayerData"; }
+	@Override
+	public String name()
+	{
+		return "PlayerData";
+	}
 
 	public final static String[] BASICS={
 		"NAME",
@@ -112,8 +116,10 @@ public class PlayerData extends StdWebMacro
 	public static int getBasicCode(String val)
 	{
 		for(int i=0;i<BASICS.length;i++)
+		{
 			if(val.equalsIgnoreCase(BASICS[i]))
 				return i;
+		}
 		return -1;
 	}
 
@@ -250,7 +256,7 @@ public class PlayerData extends StdWebMacro
 			{
 				final Item I=M.getItem(inv);
 				if((I!=null)&&(I.container()==null))
-					  str.append(I.name()+", ");
+					str.append(I.name()+", ");
 			}
 			break;
 		}
@@ -265,8 +271,8 @@ public class PlayerData extends StdWebMacro
 			break;
 		case 35: 
 			if(M.playerStats()!=null)
-				 str.append(M.playerStats().getLastDateTime()+", ");
-			 break;
+				str.append(M.playerStats().getLastDateTime()+", ");
+			break;
 		case 36:
 			str.append(M.curState().getHitPoints() + ", ");
 			break;
@@ -278,8 +284,8 @@ public class PlayerData extends StdWebMacro
 			break;
 		case 39: 
 			if(M.riding()!=null)
-				 str.append(M.riding().name()+", ");
-			 break;
+				str.append(M.riding().name()+", ");
+			break;
 		case 40:
 			str.append(M.basePhyStats().height() + ", ");
 			break;
@@ -321,16 +327,16 @@ public class PlayerData extends StdWebMacro
 		{
 			if(CMLib.protocol().mxpImagePath(M.image())[0].length()>0)
 				str.append("true, ");
-			 else
-				 str.append("false, ");
-			 break;
+			else
+				str.append("false, ");
+			break;
 		}
 		case 50: if(M.playerStats()!=null)
-				 	str.append(M.playerStats().getNotes()+", ");
-				 break;
+					str.append(M.playerStats().getNotes()+", ");
+				break;
 		case 51:
 			if(M.playerStats()!=null)
-			 {
+			{
 				long lastDateTime=-1;
 				for(int level=0;level<=M.phyStats().level();level++)
 				{
@@ -341,17 +347,17 @@ public class PlayerData extends StdWebMacro
 						lastDateTime = dateTime;
 						str.append("<TR>");
 						if(level==0)
-						 	str.append("<TD><FONT COLOR=WHITE>Created</FONT></TD>");
+							str.append("<TD><FONT COLOR=WHITE>Created</FONT></TD>");
 						else
-						 	str.append("<TD><FONT COLOR=WHITE>"+level+"</FONT></TD>");
+							str.append("<TD><FONT COLOR=WHITE>"+level+"</FONT></TD>");
 						str.append("<TD><FONT COLOR=WHITE>"+CMLib.time().date2String(dateTime)+"</FONT></TD>");
 						str.append("<TD><FONT COLOR=WHITE>"+CMLib.time().date2EllapsedTime(ageMinutes * 60000L,TimeUnit.MINUTES,true)+"</FONT></TD>");
 						str.append("</TR>");
 					}
 				}
 				str.append(", ");
-			 }
-			 break;
+			}
+			break;
 		case 52:
 			str.append(M.basePhyStats().attackAdjustment() + ", ");
 			break;
@@ -383,7 +389,7 @@ public class PlayerData extends StdWebMacro
 		case 58:
 		{
 			for(final Enumeration<Tattoo> e=M.tattoos();e.hasMoreElements();)
-			  str.append(e.nextElement().toString()+", ");
+			 str.append(e.nextElement().toString()+", ");
 			break;
 		}
 		case 59:
@@ -403,13 +409,15 @@ public class PlayerData extends StdWebMacro
 		case 60:
 		{
 			if(M.playerStats()!=null)
+			{
 				for(int b=0;b<M.playerStats().getTitles().size();b++)
 				{
 					final String B=M.playerStats().getTitles().get(b);
 					if(B!=null)
 						str.append(B+", ");
 				}
-				break;
+			}
+			break;
 		}
 		case 61:
 		{
@@ -435,7 +443,7 @@ public class PlayerData extends StdWebMacro
 				else
 					str.append(CMLib.time().date2String(M.playerStats().getAccountExpiration()));
 			}
-			 break;
+			break;
 		}
 		case 64: 
 		{
@@ -596,6 +604,7 @@ public class PlayerData extends StdWebMacro
 				if(CMLib.factions().getFaction(CMLib.factions().AlignID())!=null)
 				{
 					for(final Faction.Align v : Faction.Align.values())
+					{
 						if(v!=Faction.Align.INDIFF)
 						{
 							str.append("<OPTION VALUE="+v.toString());
@@ -603,6 +612,7 @@ public class PlayerData extends StdWebMacro
 								str.append(" SELECTED");
 							str.append(">"+CMStrings.capitalizeAndLower(v.toString().toLowerCase()));
 						}
+					}
 				}
 			}
 			if(parms.containsKey("BASEGENDER"))

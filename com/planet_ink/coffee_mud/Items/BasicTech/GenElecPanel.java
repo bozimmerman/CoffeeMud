@@ -89,7 +89,7 @@ public class GenElecPanel extends StdElecPanel
 		recoverPhyStats();
 	}
 
-	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY", "CONTAINTYPES","RESETTIME","POWERCAP", "ACTIVATED","POWERREM","PANTYPE","DEFCLOSED","DEFLOCKED"};
+	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY", "CONTAINTYPES","RESETTIME","POWERCAP", "ACTIVATED","POWERREM","PANTYPE","DEFCLOSED","DEFLOCKED","TECHLEVEL"};
 	@Override
 	public String getStat(String code)
 	{
@@ -119,6 +119,8 @@ public class GenElecPanel extends StdElecPanel
 			return "" + defaultsClosed();
 		case 10:
 			return "" + defaultsLocked();
+		case 11:
+			return "" + techLevel();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -172,6 +174,9 @@ public class GenElecPanel extends StdElecPanel
 			break;
 		case 10:
 			setDoorsNLocks(hasADoor(), isOpen(), defaultsClosed(), hasALock(), isLocked(), CMath.s_bool(val));
+			break;
+		case 11:
+			setTechLevel(CMath.s_parseIntExpression(val));
 			break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);

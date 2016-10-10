@@ -139,10 +139,21 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		final StringBuilder str=new StringBuilder("");
 		if(E==null)
 			return str.toString();
-		str.append(L("Interested in @x1?",E.name()));
-		str.append(L(" Here is some information for you:"));
 		if(E instanceof Physical)
 			str.append("\n\rLevel      : "+((Physical)E).phyStats().level());
+		if(E instanceof LandTitle)
+		{
+			final LandTitle T=(LandTitle)E;
+			str.append(L("\n\rSize       : ")+L("@x1 room(s)",""+T.getAllTitledRooms().size()));
+			StringBuilder features = new StringBuilder("");
+			if(T.allowsExpansionConstruction())
+				features.append(L(" expandable"));
+			if(T.rentalProperty())
+				features.append(L(" rental"));
+			// this space intentionally left with dynamic string
+			str.append(L("\n\rFeatures   :"+features.toString()));
+		}
+		else
 		if(E instanceof Item)
 		{
 			final Item I=(Item)E;
@@ -191,8 +202,14 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			else
 			if(I instanceof Weapon)
 			{
+				final String handedNess;
+				if(I.rawLogicalAnd() && ((I.rawProperLocationBitmap()&(Item.WORN_HELD|Item.WORN_WIELD))==(Item.WORN_HELD|Item.WORN_WIELD)))
+					handedNess = L(" (2 handed)");
+				else
+					handedNess = "";
 				str.append(L("\n\rWeap. Type : @x1",L(CMStrings.capitalizeAndLower(Weapon.TYPE_DESCS[((Weapon)I).weaponDamageType()]))));
-				str.append(L("\n\rWeap. Class: @x1",L(CMStrings.capitalizeAndLower(Weapon.CLASS_DESCS[((Weapon)I).weaponClassification()]))));
+				str.append(L("\n\rWeap. Class: @x1",L(CMStrings.capitalizeAndLower(Weapon.CLASS_DESCS[((Weapon)I).weaponClassification()]))))
+					.append(handedNess);
 			}
 			else
 			if(I instanceof Armor)
@@ -681,6 +698,12 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 				product = (Environmental)product.copyOf();
 				((RawMaterial) product).basePhyStats().setWeight(1);
 				((RawMaterial) product).phyStats().setWeight(1);
+				int baseValue = ((RawMaterial) product).baseGoldValue();
+				if(baseValue > number)
+					((RawMaterial) product).setBaseValue( (int)Math.round(baseValue / number));
+				else
+				if(baseValue > 0)
+					((RawMaterial) product).setBaseValue( 1);
 			}
 			if(product==null)
 				return val;
@@ -788,6 +811,13 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 					}
 				}
 			}
+			if((product instanceof Item) 
+			&& (!CMLib.law().mayOwnThisItem(buyer, (Item)product))
+			&& (!CMLib.flags().isEvil(seller)))
+			{
+				CMLib.commands().postSay(seller,buyer,L("I don't buy stolen goods."),true,false);
+				return false;
+			}
 			final double yourValue=pawningPrice(seller,buyer,product,shop).absoluteGoldPrice;
 			if(yourValue<2)
 			{
@@ -826,6 +856,13 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 					if(CMLib.flags().isEnspelled(I) || CMLib.flags().isOnFire(I))
 					{
 						CMLib.commands().postSay(seller, buyer, L("I won't buy the contents of that in it's present state."), true, false);
+						return false;
+					}
+					else
+					if((!CMLib.law().mayOwnThisItem(buyer, I))
+					&& (!CMLib.flags().isEvil(seller)))
+					{
+						CMLib.commands().postSay(seller,buyer,L("I don't buy stolen goods."),true,false);
 						return false;
 					}
 				}
@@ -1067,7 +1104,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			if((R.getExitInDir(d)!=null)&&(R.getExitInDir(d).keyName().equals(keyNum)))
 			{
 				final String dirName=((R instanceof BoardableShip)||(R.getArea() instanceof BoardableShip))?
-						Directions.getShipDirectionName(d):Directions.getDirectionName(d);
+						CMLib.directions().getShipDirectionName(d):CMLib.directions().getDirectionName(d);
 				if(addThis.length()>0)
 					return addThis+" and to the "+dirName.toLowerCase();
 				return "to the "+dirName.toLowerCase();
@@ -1129,15 +1166,22 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 				if(V!=null)
 				for(int v=0;v<V.size();v++)
 					V.get(v).removeFromOwnerContainer();
+				if(coreSoldItem instanceof Physical)
+					((Physical)coreSoldItem).delEffect(((Physical)coreSoldItem).fetchEffect("Prop_PrivateProperty"));
 				shop.getShop().addStoreInventory(coreSoldItem,number,-1);
 				if(V!=null)
-				for(int v=0;v<V.size();v++)
 				{
-					final Item item2=V.get(v);
-					if(!shop.doISellThis(item2)||(item2 instanceof DoorKey))
-						item2.destroy();
-					else
-						shop.getShop().addStoreInventory(item2,1,-1);
+					for(int v=0;v<V.size();v++)
+					{
+						final Item item2=V.get(v);
+						if(!shop.doISellThis(item2)||(item2 instanceof DoorKey))
+							item2.destroy();
+						else
+						{
+							item2.delEffect(item2.fetchEffect("Prop_PrivateProperty"));
+							shop.getShop().addStoreInventory(item2,1,-1);
+						}
+					}
 				}
 			}
 			else
@@ -1373,7 +1417,9 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		for(final Enumeration<Item> i=extItems.items();i.hasMoreElements();)
 		{
 			final Item I=i.nextElement();
-			if((I instanceof PrivateProperty)&&(I instanceof BoardableShip))
+			if((I instanceof PrivateProperty)
+			&&(I instanceof BoardableShip)
+			&&(!I.amDestroyed()))
 			{
 				final PrivateProperty P = (PrivateProperty)I;
 				if(CMLib.law().doesOwnThisProperty(buyer,P))

@@ -62,7 +62,7 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 	protected short			chanceToHappen	= -1;
 	protected List<Ability>	spellV			= null;
 	
-	protected MaskingLibrary.CompiledZapperMask compiledMask=null;
+	protected MaskingLibrary.CompiledZMask compiledMask=null;
 	
 	protected List<Ability> unrevocableSpells = null;
 
@@ -411,14 +411,20 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 		if((affected instanceof MOB)
 		   ||(affected instanceof Item))
 		{
-			processing=true;
-			if((lastMOB!=null)
-			&&(host!=lastMOB))
-				removeMyAffectsFrom(lastMOB);
-
-			if((lastMOB==null)&&(host instanceof PhysicalAgent))
-				addMeIfNeccessary((PhysicalAgent)host,host,true,0,maxTicks);
-			processing=false;
+			try
+			{
+				processing=true;
+				if((lastMOB!=null)
+				&&(host!=lastMOB))
+					removeMyAffectsFrom(lastMOB);
+	
+				if((lastMOB==null)&&(host instanceof PhysicalAgent))
+					addMeIfNeccessary((PhysicalAgent)host,host,true,0,maxTicks);
+			}
+			finally
+			{
+				processing=false;
+			}
 		}
 	}
 
