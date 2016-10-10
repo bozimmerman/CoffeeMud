@@ -156,7 +156,7 @@ public class Spell_ClanExperience extends Spell
 			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),L("^S<S-NAME> invoke(s) an experience donation spell between <S-HIM-HERSELF> and @x1.^?",C.name()));
 			if(mob.location().okMessage(mob,msg))
 			{
-				CMLib.leveler().postExperience(mob, null, null, amt, false);
+				//CMLib.leveler().postExperience(mob, null, null, amt, false);
 				C.adjExp(amt);
 				C.update();
 			}
