@@ -4470,11 +4470,10 @@ System.out.println(s);
 						+ "|MedianLevel="+A.getAreaIStats()[Area.Stats.MED_LEVEL.ordinal()]
 						+ "|AvgAlign="+((theFaction!=null)?theFaction.fetchRangeName(A.getAreaIStats()[Area.Stats.AVG_ALIGNMENT.ordinal()]):"")
 						+ "|MedAlignment="+((theFaction!=null)?theFaction.fetchRangeName(A.getAreaIStats()[Area.Stats.MED_ALIGNMENT.ordinal()]):""));
-				int x=1;
 				for(Enumeration<String> f=A.areaBlurbFlags();f.hasMoreElements();)
 				{
 					String flag=f.nextElement();
-					str.append("|Blurb"+x+"Name="+flag);
+					str.append("|"+flag+"="+A.getBlurbFlag(flag));
 				}
 				str.append("}} ");
 			}
