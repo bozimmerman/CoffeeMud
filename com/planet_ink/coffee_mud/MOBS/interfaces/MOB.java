@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.Vector;
 
-
 /*
    Copyright 2001-2016 Bo Zimmerman
 

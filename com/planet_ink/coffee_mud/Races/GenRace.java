@@ -1127,7 +1127,10 @@ public class GenRace extends StdRace
 			{
 				if(healthBuddy==null)
 					healthBuddy=(Race)CMClass.getLoadNewClassInstance(CMObjectType.RACE,val,true);
-			}catch(final Exception e){}
+			}
+			catch(final Exception e)
+			{
+			}
 			break;
 		}
 		case 13:

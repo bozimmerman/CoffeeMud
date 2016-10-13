@@ -43,7 +43,6 @@ public class CharClassData extends StdWebMacro
 		return "CharClassData";
 	}
 
-
 	private String classDropDown(String old)
 	{
 		final StringBuffer str=new StringBuffer("");

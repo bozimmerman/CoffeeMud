@@ -19,8 +19,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 import java.net.URLEncoder;
 
-
-
 /*
    Copyright 2002-2016 Bo Zimmerman
 

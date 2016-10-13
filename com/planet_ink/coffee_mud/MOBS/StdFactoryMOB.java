@@ -21,7 +21,6 @@ import java.util.*;
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
-
 /*
    Copyright 2012-2016 Bo Zimmerman
 

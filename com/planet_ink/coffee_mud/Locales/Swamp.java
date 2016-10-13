@@ -42,7 +42,6 @@ public class Swamp extends StdRoom implements Drink
 	
 	protected int liquidType = RawMaterial.RESOURCE_FRESHWATER;
 	
-
 	public Swamp()
 	{
 		super();

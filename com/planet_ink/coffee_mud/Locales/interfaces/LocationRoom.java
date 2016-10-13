@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.Vector;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
-
 /*
    Copyright 2013-2016 Bo Zimmerman
 

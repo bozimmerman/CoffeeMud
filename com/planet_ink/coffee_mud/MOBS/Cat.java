@@ -40,8 +40,6 @@ public class Cat extends StdMOB
 		return "Cat";
 	}
 
-
-
 	public Cat()
 	{
 		super();
