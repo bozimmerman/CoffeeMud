@@ -398,9 +398,13 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 						{
 							try
 							{
-							if(!msg.source().session().confirm(L("This will cancel your auction on @x1, are you sure (y/N)?",data.getAuctionedItem().name()),"N",10000))
+								if (!msg.source().session().confirm(L("This will cancel your auction on @x1, are you sure (y/N)?", data.getAuctionedItem().name()), "N", 10000))
+									return false;
+							}
+							catch (final Exception e)
+							{
 								return false;
-							}catch(final Exception e){return false;}
+							}
 						}
 					}
 					else
@@ -475,9 +479,13 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 						{
 							try
 							{
-							if(!msg.source().session().confirm(L("This will cancel your auction on @x1, are you sure (y/N)?",data.getAuctionedItem().name()),"N",10000))
+								if (!msg.source().session().confirm(L("This will cancel your auction on @x1, are you sure (y/N)?", data.getAuctionedItem().name()), "N", 10000))
+									return false;
+							}
+							catch (final Exception e)
+							{
 								return false;
-							}catch(final Exception e){return false;}
+							}
 						}
 					}
 					else
@@ -576,7 +584,10 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 						CMLib.beanCounter().subtractMoney(mob,deposit);
 						thisData.getAuctionedItem().destroy();
 						CMLib.commands().postSay(this,mob,L("Your auction for @x1 is now open.  When it is done, you will receive either your winnings automatically, or the returned item automatically.",thisData.getAuctionedItem().name()),true,false);
-					}catch(final Exception e){}
+					}
+					catch(final Exception e)
+					{
+					}
 				}
 				super.executeMsg(myHost,msg);
 				break;

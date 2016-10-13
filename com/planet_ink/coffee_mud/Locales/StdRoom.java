@@ -995,7 +995,10 @@ public class StdRoom implements Room
 						} 
 					});
 				}
-			}catch(final NoSuchElementException e){}
+			}
+			catch(final NoSuchElementException e)
+			{
+			}
 		}
 
 		if(msg.amITarget(this)&&(msg.targetMinor()==CMMsg.TYP_EXPIRE))

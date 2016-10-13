@@ -503,7 +503,10 @@ public class StdGrid extends StdRoom implements GridLocale
 						return R;
 					}
 				}
-			}catch(final Exception e){}
+			}
+			catch(final Exception e)
+			{
+			}
 		}
 		return defaultRoom;
 	}
@@ -638,7 +641,10 @@ public class StdGrid extends StdRoom implements GridLocale
 				{
 					if(subMap[xy[0]-xadjust][xy[1]-yadjust]!=null)
 						return subMap[xy[0]-xadjust][xy[1]-yadjust];
-				}catch(final Exception e){}
+				}
+				catch(final Exception e)
+				{
+				}
 			}
 
 			if(((xy[0]+xadjust)<xGridSize())&&((xy[1]+yadjust)<yGridSize()))
@@ -648,7 +654,10 @@ public class StdGrid extends StdRoom implements GridLocale
 				{
 					if(subMap[xy[0]+xadjust][xy[1]+yadjust]!=null)
 						return subMap[xy[0]+xadjust][xy[1]+yadjust];
-				}catch(final Exception e){}
+				}
+				catch(final Exception e)
+				{
+				}
 			}
 			if(moveAndCheckAgain)
 			{

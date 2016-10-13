@@ -738,7 +738,10 @@ public class StdThinGrid extends StdRoom implements GridLocale
 						return R;
 					}
 				}
-			}catch(final Exception e){}
+			}
+			catch(final Exception e)
+			{
+			}
 		}
 		return defaultRoom;
 	}
@@ -826,7 +829,8 @@ public class StdThinGrid extends StdRoom implements GridLocale
 				if(loc == entry.room)
 					return true;
 			}
-		}catch(final Exception e){} // optimization
+		}
+		catch(final Exception e){} // optimization
 		return false;
 	}
 
@@ -872,7 +876,10 @@ public class StdThinGrid extends StdRoom implements GridLocale
 			for(final ThinGridEntry entry : rooms)
 				if(entry.room==loc)
 					return entry.xy.x;
-		}catch(final Exception x){}
+		}
+		catch(final Exception x)
+		{
+		}
 		return -1;
 	}
 
@@ -949,7 +956,10 @@ public class StdThinGrid extends StdRoom implements GridLocale
 							}
 						}
 					}
-				}catch(final Exception x){}
+				}
+				catch(final Exception x)
+				{
+				}
 			}
 		}
 		super.executeMsg(myHost,msg);
