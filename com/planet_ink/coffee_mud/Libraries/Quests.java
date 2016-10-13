@@ -21,7 +21,6 @@ import java.util.*;
 
 import org.mozilla.javascript.*;
 
-
 /*
    Copyright 2003-2016 Bo Zimmerman
 
@@ -39,7 +38,12 @@ import org.mozilla.javascript.*;
 */
 public class Quests extends StdLibrary implements QuestManager
 {
-	@Override public String ID(){return "Quests";}
+	@Override
+	public String ID()
+	{
+		return "Quests";
+	}
+
 	protected String holidayFilename="quests/holidays/holidays.quest";
 	protected String holidayDefinition="LOAD="+holidayFilename;
 	protected SVector<Quest> quests=new SVector<Quest>();
@@ -397,7 +401,10 @@ public class Quests extends StdLibrary implements QuestManager
 	public String getHolidayName(int index)
 	{
 		final Object resp=getHolidayFile();
-		if(resp instanceof String){ return "";}
+		if(resp instanceof String)
+		{
+			return "";
+		}
 		List<String> steps=null;
 		if(resp instanceof List)
 			steps=(List<String>)resp;
@@ -434,7 +441,10 @@ public class Quests extends StdLibrary implements QuestManager
 	public int getHolidayIndex(String named)
 	{
 		final Object resp=getHolidayFile();
-		if(resp instanceof String){ return -1;}
+		if(resp instanceof String)
+		{
+			return -1;
+		}
 		List<String> steps=null;
 		if(resp instanceof List)
 			steps=(List<String>)resp;
@@ -474,8 +484,10 @@ public class Quests extends StdLibrary implements QuestManager
 	{
 		start=start.toUpperCase().trim();
 		for(int v=0;v<V.size();v++)
+		{
 			if(V.get(v).toUpperCase().trim().startsWith(start))
 				return v;
+		}
 		return -1;
 	}
 
@@ -548,6 +560,7 @@ public class Quests extends StdLibrary implements QuestManager
 			{
 				return settings;
 			}
+
 			@Override
 			public TriadList<String, String, Integer> behaviors()
 			{
@@ -586,14 +599,23 @@ public class Quests extends StdLibrary implements QuestManager
 	{
 		final Object resp=getHolidayFile();
 		if(resp instanceof String)
-		{ mob.tell((String)resp); return;}
+		{
+			mob.tell((String)resp);
+			return;
+		}
 		List<String> steps=null;
 		if(resp instanceof List)
 			steps=(List<String>)resp;
 		else
-		{ mob.tell(L("Unknown error.")); return;}
+		{
+			mob.tell(L("Unknown error."));
+			return;
+		}
 		if((holidayNumber<=0)||(holidayNumber>=steps.size()))
-		{ mob.tell(L("@x1 does not exist as a holiday -- enter LIST HOLIDAYS.",""+holidayNumber)); return;}
+		{
+			mob.tell(L("@x1 does not exist as a holiday -- enter LIST HOLIDAYS.",""+holidayNumber));
+			return;
+		}
 
 		final String step=steps.get(holidayNumber);
 		final HolidayData encodedData=getEncodedHolidayData(step);
@@ -627,8 +649,16 @@ public class Quests extends StdLibrary implements QuestManager
 				showNumber=genMudChat(mob,"MUDCHAT",behaviors,++showNumber,showFlag);
 				showNumber=genBehaviors(mob,behaviors,++showNumber,showFlag);
 				showNumber=genProperties(mob,properties,++showNumber,showFlag);
-				if(showFlag<-900){ ok=true; break;}
-				if(showFlag>0){ showFlag=-1; continue;}
+				if(showFlag<-900)
+				{
+					ok=true;
+					break;
+				}
+				if(showFlag>0)
+				{
+					showFlag=-1;
+					continue;
+				}
 				showFlag=CMath.s_int(mob.session().prompt(L("Edit which? "),""));
 				if(showFlag<=0)
 				{
@@ -945,7 +975,12 @@ public class Quests extends StdLibrary implements QuestManager
 			&&(behaviors.get(b).first.equalsIgnoreCase("MUDCHAT")
 				||behaviors.get(b).first.equalsIgnoreCase("AGGRESSIVE")))
 				continue;
-			if((showFlag>0)&&(showFlag!=showNumber)){ if(b<behaviors.size()) showNumber++; continue;}
+			if((showFlag>0)&&(showFlag!=showNumber))
+			{
+				if(b<behaviors.size()) 
+					showNumber++;
+				continue;
+			}
 			if(b==behaviors.size())
 			{
 				if((mob.session()!=null)&&(!mob.session().isStopped()))
@@ -1005,7 +1040,12 @@ public class Quests extends StdLibrary implements QuestManager
 			if((p<properties.size())
 			&&(properties.get(p).first.equalsIgnoreCase("MOOD")))
 				continue;
-			if((showFlag>0)&&(showFlag!=showNumber)){ if(p<properties.size()) showNumber++; continue;}
+			if((showFlag>0)&&(showFlag!=showNumber))
+			{
+				if(p<properties.size()) 
+					showNumber++;
+				continue;
+			}
 			if(p==properties.size())
 			{
 				if((mob.session()!=null)&&(!mob.session().isStopped()))
@@ -1084,7 +1124,12 @@ public class Quests extends StdLibrary implements QuestManager
 		final List<String> priceV=CMParms.parseCommas(priceStr,true);
 		for(int v=0;v<=priceV.size();v++)
 		{
-			if((showFlag>0)&&(showFlag!=showNumber)){ if(v<priceV.size())showNumber++; continue;}
+			if((showFlag>0)&&(showFlag!=showNumber))
+			{
+				if(v<priceV.size())
+					showNumber++;
+				continue;
+			}
 			if(v==priceV.size())
 			{
 				if((mob.session()!=null)&&(!mob.session().isStopped()))
@@ -1206,7 +1251,12 @@ public class Quests extends StdLibrary implements QuestManager
 		String s=null;
 		for(int v=0;v<=mudChatV.size();v++)
 		{
-			if((showFlag>0)&&(showFlag!=showNumber)){ if(v<mudChatV.size())showNumber++; continue;}
+			if((showFlag>0)&&(showFlag!=showNumber))
+			{
+				if(v<mudChatV.size())
+					showNumber++;
+				continue;
+			}
 			if(v==mudChatV.size())
 			{
 				if((mob.session()!=null)&&(!mob.session().isStopped()))
@@ -1524,8 +1574,10 @@ public class Quests extends StdLibrary implements QuestManager
 		{
 			int maxRow=0;
 			for(int t=1;t<templatesDV.size();t++)
+			{
 				if(((String)templatesDV.elementAt(t,1)).compareTo((String)templatesDV.elementAt(maxRow,1))<0)
 					maxRow=t;
+			}
 			sortedTemplatesDV.addElement(templatesDV.elementAt(maxRow,1),
 										 templatesDV.elementAt(maxRow,2),
 										 templatesDV.elementAt(maxRow,3),
@@ -1950,8 +2002,18 @@ public class Quests extends StdLibrary implements QuestManager
 						}
 						}
 					}
-					if(showFlag<-900){ ok=false; showFlag=0; mob.tell(L("\n\r^HNow verify this page's selections:^.^N")); continue;}
-					if(showFlag>0){ showFlag=-1; continue;}
+					if(showFlag<-900)
+					{
+						ok=false;
+						showFlag=0;
+						mob.tell(L("\n\r^HNow verify this page's selections:^.^N"));
+						continue;
+					}
+					if(showFlag>0)
+					{
+						showFlag=-1;
+						continue;
+					}
 					final String what=mob.session().prompt(L("Edit which (enter 0 to cancel)? "),"");
 					if(what.trim().equals("0"))
 					{

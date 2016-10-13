@@ -19,7 +19,6 @@ import java.util.*;
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
-
 /*
    Copyright 2001-2016 Bo Zimmerman
 
@@ -300,6 +299,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		}
 		return false;
 	}
+
 	@Override
 	public void setSavable(Physical P, boolean truefalse)
 	{
@@ -556,6 +556,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		}
 		return false;
 	}
+
 	@Override
 	public boolean isEvil(Physical P)
 	{
@@ -1544,7 +1545,9 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			{
 				final Ability A=a.nextElement();
 				if((A!=null)&&(CMath.bset(A.flags(),flag)))
-				{ V.addElement(A);}
+				{
+					V.addElement(A);
+				}
 			}
 		}
 		return V;
@@ -1564,6 +1567,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			return true;
 		return false;
 	}
+
 	@Override
 	public boolean canAccess(MOB mob, Room R)
 	{

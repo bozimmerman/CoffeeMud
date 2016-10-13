@@ -34,7 +34,12 @@ import java.util.*;
 */
 public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
 {
-	@Override public String ID(){return "AutoTitles";}
+	@Override
+	public String ID()
+	{
+		return "AutoTitles";
+	}
+
 	private TriadSVector<String,String,MaskingLibrary.CompiledZMask> autoTitles=null;
 
 	private static final String titleFilename = "titles.ini";
@@ -73,12 +78,15 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
 			if(autoTitles==null)
 				reloadAutoTitles();
 			for(final Triad<String,String,MaskingLibrary.CompiledZMask> triad : autoTitles)
+			{
 				if(triad.first.equalsIgnoreCase(title))
 					return "Error: Duplicate title: "+title+"="+mask+"!";
+			}
 			autoTitles.add(new Triad<String,String,MaskingLibrary.CompiledZMask>(title,mask,CMLib.masking().maskCompile(mask)));
 		}
 		return null;
 	}
+
 	@Override
 	public boolean isExistingAutoTitle(String title)
 	{
@@ -86,8 +94,10 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
 			reloadAutoTitles();
 		title=title.trim();
 		for(final Triad<String,String,MaskingLibrary.CompiledZMask> triad : autoTitles)
+		{
 			if(triad.first.equalsIgnoreCase(title))
 				return true;
+		}
 		return false;
 	}
 
@@ -105,8 +115,10 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
 		if(autoTitles==null)
 			reloadAutoTitles();
 		for(final Triad<String,String,MaskingLibrary.CompiledZMask> triad : autoTitles)
+		{
 			if(triad.first.equalsIgnoreCase(title))
 				return triad.second;
+		}
 		return "";
 	}
 
@@ -141,8 +153,14 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
 						{
 							final String tit=CMStrings.removeColors(ptV.get(p)).replace('\'', '`');
 							if(tit.equalsIgnoreCase(fixedTitle))
-							{ pdex=p; break;}
-						}catch(final java.lang.IndexOutOfBoundsException ioe){}
+							{
+								pdex=p;
+								break;
+							}
+						}
+						catch(final java.lang.IndexOutOfBoundsException ioe)
+						{
+						}
 					}
 				}
 
@@ -189,8 +207,14 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
 							{
 								final String tit=CMStrings.removeColors(ptV.get(p)).replace('\'', '`');
 								if(tit.equalsIgnoreCase(fixedTitle))
-								{ pdex=p; break;}
-							}catch(final java.lang.IndexOutOfBoundsException ioe){}
+								{
+									pdex=p;
+									break;
+								}
+							}
+							catch(final java.lang.IndexOutOfBoundsException ioe)
+							{
+							}
 						}
 					}
 					if(pdex>=0)

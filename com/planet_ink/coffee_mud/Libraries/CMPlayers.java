@@ -37,7 +37,11 @@ import java.util.*;
 */
 public class CMPlayers extends StdLibrary implements PlayerLibrary
 {
-	@Override public String ID(){return "CMPlayers";}
+	@Override
+	public String ID()
+	{
+		return "CMPlayers";
+	}
 
 	protected SVector<MOB> 				playersList			= new SVector<MOB>();
 	protected SVector<PlayerAccount>	accountsList		= new SVector<PlayerAccount>();
@@ -485,7 +489,10 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 						}
 					}
 				}
-			}catch(final NoSuchElementException e){}
+			}
+			catch(final NoSuchElementException e)
+			{
+			}
 		}
 		final StringBuffer newNoPurge=new StringBuffer("");
 		final List<String> protectedOnes=Resources.getFileLineVector(Resources.getFileResource("protectedplayers.ini",false));
@@ -1169,8 +1176,10 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 				{
 					final List<Pair<String,Integer>>[][] pStats = CMLib.database().DBScanPridePlayerWinners(PRIDE_TOP_SIZE, (short)5);
 					for(int x=0;x<pStats.length;x++)
+					{
 						for(int y=0;y<pStats[x].length;y++)
 							topPlayers[x][y]=pStats[x][y];
+					}
 					if(CMProps.isUsingAccountSystem())
 					{
 						final List<Pair<String,Integer>>[][] aStats = CMLib.database().DBScanPrideAccountWinners(PRIDE_TOP_SIZE, (short)5);

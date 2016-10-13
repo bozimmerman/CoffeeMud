@@ -22,7 +22,6 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary.RFilter;
 import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary.TrackingFlag;
 import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary.TrackingFlags;
 
-
 /*
    Copyright 2004-2016 Bo Zimmerman
 
@@ -449,6 +448,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		getRadiantRooms(room,V,flags,null,maxDepth,null);
 		return V;
 	}
+
 	@Override
 	public List<Room> getRadiantRooms(final Room room, final RFilters filters, final int maxDepth)
 	{
@@ -651,6 +651,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		return beMobile(mob,dooropen,wander,roomprefer,roomobject,true,status,rooms);
 
 	}
+
 	private boolean beMobile(final MOB mob,
 							 boolean dooropen,
 							 final boolean wander,
@@ -988,8 +989,10 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			return false;
 		final Room oldRoom=M.location();
 		if((oldRoom!=null)&&(oldRoom.isInhabitant(M)))
+		{
 			if(!wanderCheckedAway(M,mindPCs,false))
 				return false;
+		}
 		int dir = getCheckedDir(M,toHere);
 		final Exit exit = (dir < 0) ? null : toHere.getExitInDir(dir);
 		final CMMsg enterMsg=CMClass.getMsg(M,toHere,exit,CMMsg.MSG_ENTER,null);
@@ -1624,6 +1627,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		}
 		return dir;
 	}
+
 	@Override
 	public int findRoomDir(MOB mob, Room R)
 	{
@@ -1634,8 +1638,10 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			return -1;
 		final int dir=-1;
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+		{
 			if(R2.getRoomInDir(d)==R)
 				return d;
+		}
 		return dir;
 	}
 
@@ -1646,8 +1652,10 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			return null;
 		List<Integer> shortest=finalSets.get(0);
 		for(int i=1;i<finalSets.size();i++)
+		{
 			if(finalSets.get(i).size()<shortest.size())
 				shortest=finalSets.get(i);
+		}
 		return shortest;
 	}
 
@@ -1764,7 +1772,11 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		for(int i=0;i<set.size();i++)
 		{
 			final Room R=set.get(i);
-			if(R==R2){ foundAt=i; break;}
+			if(R==R2)
+			{
+				foundAt=i;
+				break;
+			}
 		}
 		if(foundAt<0)
 			return "You can't get to '"+R2.roomID()+"' from here.";

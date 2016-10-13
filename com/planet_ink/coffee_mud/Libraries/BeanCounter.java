@@ -37,7 +37,12 @@ import java.util.*;
 */
 public class BeanCounter extends StdLibrary implements MoneyLibrary
 {
-	@Override public String ID(){return "BeanCounter";}
+	@Override
+	public String ID()
+	{
+		return "BeanCounter";
+	}
+
 	public Hashtable<String,MoneyDenomination[]> currencies=new Hashtable<String,MoneyDenomination[]>();
 	public static Hashtable<String,MoneyDenomination[]> defaultCurrencies=new Hashtable<String,MoneyDenomination[]>();
 	public Vector<String> allCurrencyNames=new Vector<String>();
@@ -522,9 +527,17 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	protected void parseDebt(Vector<DebtItem> debt, final String debtor, String xml)
 	{
 		final List<XMLLibrary.XMLTag> V=CMLib.xml().parseAllXML(xml);
-		if(xml==null){ Log.errOut("BeanCounter","Unable to parse: "+xml); return ;}
+		if(xml==null)
+		{
+			Log.errOut("BeanCounter","Unable to parse: "+xml);
+			return;
+		}
 		final List<XMLLibrary.XMLTag> debtData=CMLib.xml().getContentsFromPieces(V,"DEBT");
-		if(debtData==null){ Log.errOut("BeanCounter","Unable to get debt data"); return ;}
+		if(debtData==null)
+		{
+			Log.errOut("BeanCounter","Unable to get debt data");
+			return;
+		}
 		for(int p=0;p<debtData.size();p++)
 		{
 			final XMLTag ablk=debtData.get(p);
@@ -1097,6 +1110,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	{
 		subtractMoney(mob,null,currency,absoluteAmount);
 	}
+
 	@Override
 	public void subtractMoney(MOB mob, Container container, String currency, double absoluteAmount)
 	{
@@ -1258,8 +1272,10 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 		final List<Coins> V=getStandardCurrency(mob,currency);
 		long gold=0;
 		for(int v=0;v<V.size();v++)
+		{
 			if(V.get(v).getDenomination()==denomination)
 				gold+=V.get(v).getNumberOfCoins();
+		}
 		return gold;
 	}
 

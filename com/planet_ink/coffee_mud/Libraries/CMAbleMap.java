@@ -39,7 +39,11 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class CMAbleMap extends StdLibrary implements AbilityMapper
 {
-	@Override public String ID(){return "CMAbleMap";}
+	@Override
+	public String ID()
+	{
+		return "CMAbleMap";
+	}
 
 	protected Map<String, Map<String, AbilityMapping>>
 										completeAbleMap 			= new SHashtable<String, Map<String, AbilityMapping>>();
@@ -294,7 +298,9 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 												boolean secret,
 												List<String> preReqSkillsList,
 												String extraMask)
-	{ return addCharAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,maxProficiency,defaultParam,autoGain,secret,preReqSkillsList,extraMask,null);}
+	{
+		return addCharAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,maxProficiency,defaultParam,autoGain,secret,preReqSkillsList,extraMask,null);
+	}
 
 
 	@Override
@@ -318,7 +324,11 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 			else
 			{
 				SVector V=(SVector)allows.get(s);
-				if(V==null){ V=new SVector(); allows.put(s,V);}
+				if(V==null)
+				{
+					V=new SVector();
+					allows.put(s,V);
+				}
 				if(!V.contains(ID))
 					V.addElement(ID);
 			}

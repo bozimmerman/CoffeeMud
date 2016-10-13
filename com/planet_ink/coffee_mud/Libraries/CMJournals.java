@@ -39,7 +39,12 @@ import java.util.*;
 */
 public class CMJournals extends StdLibrary implements JournalsLibrary
 {
-	@Override public String ID(){return "CMJournals";}
+	@Override
+	public String ID()
+	{
+		return "CMJournals";
+	}
+
 	public final int QUEUE_SIZE=100;
 	protected final SHashtable<String,CommandJournal>	 commandJournals	= new SHashtable<String,CommandJournal>();
 	protected final SHashtable<String,ForumJournal>	 	 forumJournals		= new SHashtable<String,ForumJournal>();
@@ -363,6 +368,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 			return null;
 		return this.clanForums.get(clan.clanID());
 	}
+
 	@Override
 	public void registerClanForum(Clan clan, String allClanForumDefs)
 	{
@@ -437,7 +443,9 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 							ForumJournalFlags.valueOf(rest.substring(y,x).toUpperCase().trim());
 							flagDexes.addElement(Integer.valueOf(y));
 						}
-						catch(final Exception e){}
+						catch(final Exception e)
+						{
+						}
 					}
 					x=rest.indexOf('=',x+1);
 				}
@@ -454,7 +462,9 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 						final String flagVal = piece.substring(x+1);
 						flags.put(flagVar, flagVal);
 					}
-					catch(final Exception e){}
+					catch(final Exception e)
+					{
+					}
 				}
 			}
 			String mask;
@@ -635,7 +645,10 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 					setThreadStatus(serviceClient,"command journal sweeping");
 				}
 			}
-		}catch(final NoSuchElementException nse){}
+		}
+		catch(final NoSuchElementException nse)
+		{
+		}
 		try
 		{
 			for(final Enumeration<ForumJournal> e=forumJournals();e.hasMoreElements();)
@@ -661,7 +674,10 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 					setThreadStatus(serviceClient,"forum journal sweeping");
 				}
 			}
-		}catch(final NoSuchElementException nse){}
+		}
+		catch(final NoSuchElementException nse)
+		{
+		}
 	}
 
 	@Override
@@ -701,9 +717,17 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 		commandJournals.clear();
 	}
 
-	@Override public int getNumForumJournals() { return forumJournals.size();    }
+	@Override
+	public int getNumForumJournals()
+	{
+		return forumJournals.size();
+	}
 
-	@Override public Enumeration<ForumJournal> forumJournals(){ return forumJournals.elements();}
+	@Override
+	public Enumeration<ForumJournal> forumJournals()
+	{
+		return forumJournals.elements();
+	}
 
 	@Override
 	public ForumJournal getForumJournal(String named)
@@ -968,8 +992,10 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 			}
 			boolean found=false;
 			for(int l=0;l<mylist.size();l++)
+			{
 				if(mylist.get(l).equalsIgnoreCase(userName))
 					found=true;
+			}
 			if(!found)
 			{
 				mylist.add(userName);

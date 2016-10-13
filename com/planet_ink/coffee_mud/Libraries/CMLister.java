@@ -18,7 +18,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2004-2016 Bo Zimmerman
 
@@ -73,6 +72,7 @@ public class CMLister extends StdLibrary implements ListingLibrary
 		{
 			likeRoom=R;
 		}
+
 		@Override
 		public boolean passesFilter(Object obj)
 		{
@@ -94,6 +94,7 @@ public class CMLister extends StdLibrary implements ListingLibrary
 			ofType=typ&Ability.ALL_ACODES;
 			ofDomain=typ&Ability.ALL_DOMAINS;
 		}
+
 		@Override
 		public boolean passesFilter(Object obj)
 		{
@@ -364,41 +365,49 @@ public class CMLister extends StdLibrary implements ListingLibrary
 	{
 		return reallyList(viewerM,these,buildOfTypeFilter(ofType),stringer);
 	}
+
 	@Override
 	public StringBuilder reallyList(MOB viewerM, Map<String,? extends Object> these)
 	{
 		return reallyList(viewerM,these,NO_FILTER,stringer);
 	}
+
 	@Override
 	public StringBuilder reallyList(MOB viewerM, Map<String,? extends Object> these, Room likeRoom)
 	{
 		return reallyList(viewerM,these,buildLikeRoomFilter(likeRoom),stringer);
 	}
+
 	@Override
 	public StringBuilder reallyList(MOB viewerM, Vector<? extends Object> these, int ofType)
 	{
 		return reallyList(viewerM,these.elements(),buildOfTypeFilter(ofType),stringer);
 	}
+
 	@Override
 	public StringBuilder reallyList(MOB viewerM, Enumeration<? extends Object> these, int ofType)
 	{
 		return reallyList(viewerM,these,buildOfTypeFilter(ofType),stringer);
 	}
+
 	@Override
 	public StringBuilder reallyList(MOB viewerM, Vector<? extends Object> these)
 	{
 		return reallyList(viewerM,these.elements(),NO_FILTER,stringer);
 	}
+
 	@Override
 	public StringBuilder reallyList(MOB viewerM, Enumeration<? extends Object> these)
 	{
 		return reallyList(viewerM,these,NO_FILTER,stringer);
 	}
+
 	@Override
 	public StringBuilder reallyList(MOB viewerM, Vector<? extends Object> these, Room likeRoom)
 	{
 		return reallyList(viewerM,these.elements(),buildLikeRoomFilter(likeRoom),stringer);
 	}
+
 	@Override
 	public StringBuilder reallyList(MOB viewerM, Map<String,? extends Object> these, Filterer<Object>[] filters, ListStringer stringer)
 	{
@@ -440,6 +449,7 @@ public class CMLister extends StdLibrary implements ListingLibrary
 	{
 		return reallyList(viewerM,these.elements(),filters,stringer);
 	}
+
 	@Override
 	public StringBuilder reallyList(MOB viewerM, Enumeration<? extends Object> these, Room likeRoom)
 	{

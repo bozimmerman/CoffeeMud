@@ -224,8 +224,10 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 
 		changes.append(newI.name()+":"+newI.basePhyStats().level()+"("+OTLVL+")=>"+TLVL2+"("+TLVL+"), ");
 		for(int i=0;i<oldI.getStatCodes().length;i++)
+		{
 			if((!oldI.getStat(oldI.getStatCodes()[i]).equals(newI.getStat(newI.getStatCodes()[i]))))
 				changes.append(oldI.getStatCodes()[i]+"("+oldI.getStat(newI.getStatCodes()[i])+"->"+newI.getStat(newI.getStatCodes()[i])+"), ");
+		}
 		changes.append("\n\r");
 		oldI.destroy(); // this was a copy
 	}

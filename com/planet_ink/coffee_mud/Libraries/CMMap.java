@@ -97,6 +97,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			roomW = new WeakReference<Room>(room);
 			objW = new WeakReference<PhysicalAgent>(host);
 		}
+
 		@Override
 		public Room room()
 		{
@@ -351,7 +352,10 @@ public class CMMap extends StdLibrary implements WorldMap
 			try
 			{
 				A=areasList.get(CMLib.dice().roll(1,numAreas(),-1));
-			}catch(final ArrayIndexOutOfBoundsException e){}
+			}
+			catch(final ArrayIndexOutOfBoundsException e)
+			{
+			}
 		}
 		return A;
 	}
@@ -393,6 +397,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			}
 		}
 	}
+
 	@Override
 	public MOB deity()
 	{
@@ -910,7 +915,9 @@ public class CMMap extends StdLibrary implements WorldMap
 						O.executeMsg(host,msg);
 				}
 			}
-			catch(final java.lang.ArrayIndexOutOfBoundsException xx){}
+			catch(final java.lang.ArrayIndexOutOfBoundsException xx)
+			{
+			}
 			catch(final Exception x){Log.errOut("CMMap",x);}
 		}
 		return true;
@@ -1556,8 +1563,10 @@ public class CMMap extends StdLibrary implements WorldMap
 	public Deity getDeity(String calledThis)
 	{
 		for (final Deity D : deitiesList)
+		{
 			if (D.Name().equalsIgnoreCase(calledThis))
 				return D;
+		}
 		return null;
 	}
 	
@@ -1696,10 +1705,12 @@ public class CMMap extends StdLibrary implements WorldMap
 		if(!postOfficeList.contains(newOne))
 			postOfficeList.add(newOne);
 	}
+
 	protected void delPostOffice(PostOffice oneToDel)
 	{
 		postOfficeList.remove(oneToDel);
 	}
+
 	@Override
 	public PostOffice getPostOffice(String chain, String areaNameOrBranch)
 	{
@@ -1747,6 +1758,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			auctionHouseList.add(newOne);
 		}
 	}
+
 	protected void delAuctionHouse(Auctioneer oneToDel)
 	{
 		auctionHouseList.remove(oneToDel);
@@ -1786,10 +1798,12 @@ public class CMMap extends StdLibrary implements WorldMap
 		if (!bankList.contains(newOne))
 			bankList.add(newOne);
 	}
+
 	protected void delBank(Banker oneToDel)
 	{
 		bankList.remove(oneToDel);
 	}
+
 	@Override
 	public Banker getBank(String chain, String areaNameOrBranch)
 	{
@@ -1882,8 +1896,10 @@ public class CMMap extends StdLibrary implements WorldMap
 		if((from==null)||(to==null))
 			return -1;
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+		{
 			if(from.getRoomInDir(d)==to)
 				return d;
+		}
 		return -1;
 	}
 
@@ -2024,6 +2040,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		{
 			addSkys = includeSkys;
 		}
+
 		@Override
 		public boolean hasMoreElements()
 		{
@@ -2044,6 +2061,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			}
 			return hasMore;
 		}
+
 		@Override
 		public Room nextElement()
 		{
@@ -3187,6 +3205,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			hosts.add(new LocatedPairImpl(room, host));
 		}
 	}
+
 	protected void delScriptHost(Area area, final PhysicalAgent oneToDel)
 	{
 		if(oneToDel == null)
@@ -3448,7 +3467,8 @@ public class CMMap extends StdLibrary implements WorldMap
 
 		}
 		catch(final java.util.NoSuchElementException e)
-		{}
+		{
+		}
 		setThreadStatus(serviceClient,"title sweeping");
 		final List<String> playerList=CMLib.database().getUserList();
 		try
@@ -3466,7 +3486,8 @@ public class CMMap extends StdLibrary implements WorldMap
 			}
 		}
 		catch(final NoSuchElementException nse)
-		{}
+		{
+		}
 
 		setThreadStatus(serviceClient,"cleaning scripts");
 		for(final String areaKey : scriptHostMap.keySet())
@@ -3583,6 +3604,7 @@ public class CMMap extends StdLibrary implements WorldMap
 						{
 							return statValue;
 						}
+
 						@Override 
 						public void saveData(String filename, int vfsBits, String author, Object O)
 						{

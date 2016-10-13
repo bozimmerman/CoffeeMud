@@ -46,7 +46,11 @@ import org.mozilla.javascript.optimizer.*;
 */
 public class CMProtocols extends StdLibrary implements ProtocolLibrary
 {
-	@Override public String ID(){return "CMProtocols";}
+	@Override
+	public String ID()
+	{
+		return "CMProtocols";
+	}
 
 	// this is the sound support method.
 	// it builds a valid MSP sound code from built-in web server
@@ -900,8 +904,10 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			if(image==null)
 				image=getHashedMXPImage(H,"WEAPON_"+Weapon.TYPE_DESCS[((Weapon)O).weaponDamageType()]);
 			if(O instanceof AmmunitionWeapon)
+			{
 				if(image==null)
 					image=getHashedMXPImage(H,"WEAPON_"+((AmmunitionWeapon)O).ammunitionType().toUpperCase().replace(' ','_'));
+			}
 			if(image==null)
 				image=getHashedMXPImage(H,"WEAPON_*");
 		}
@@ -991,8 +997,10 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		{
 			final Map<String,Object> newO=new HashMap<String,Object>();
 			for(final Object key : ((Map)o).keySet())
+			{
 				if(key instanceof StringBuilder)
 					newO.put(((StringBuilder)key).toString().toUpperCase(), msdpStringify(((Map)o).get(key)));
+			}
 			return newO;
 		}
 		else
@@ -1670,7 +1678,9 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			bout.write(json.getBytes(Session.MSDP_CHARSET));
 			bout.write(Session.TELNETBYTES_END_SB);
 		}
-		catch (final IOException e) {}
+		catch (final IOException e)
+		{
+		}
 		return bout.toByteArray();
 	}
 

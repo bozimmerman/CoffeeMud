@@ -38,7 +38,11 @@ import java.util.Map.Entry;
 */
 public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 {
-	@Override public String ID(){return "ColumbiaUniv";}
+	@Override
+	public String ID()
+	{
+		return "ColumbiaUniv";
+	}
 
 	protected SHashtable<String,ExpertiseLibrary.ExpertiseDefinition> completeEduMap=new SHashtable<String,ExpertiseLibrary.ExpertiseDefinition>();
 	protected SHashtable<String,List<String>> baseEduSetLists=new SHashtable<String,List<String>>();
@@ -1020,8 +1024,10 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 			public boolean meetsCostRequirements(MOB mob)
 			{
 				for(final SkillCost cost : costs)
+				{
 					if(!cost.doesMeetCostRequirements(mob))
 						return false;
+				}
 				return true;
 			}
 			

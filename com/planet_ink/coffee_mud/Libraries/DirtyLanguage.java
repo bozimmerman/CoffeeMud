@@ -36,7 +36,11 @@ import java.util.regex.Pattern;
 */
 public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 {
-	@Override public String ID(){return "DirtyLanguage";}
+	@Override
+	public String ID()
+	{
+		return "DirtyLanguage";
+	}
 
 	protected String language="en";
 	protected String country="TX";
@@ -147,7 +151,11 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 	{
 		final Hashtable<String,DVector> parserSections=new Hashtable<String,DVector>();
 		final CMFile F=new CMFile(filename,null,CMFile.FLAG_FORCEALLOW);
-		if(!F.exists()){ Log.errOut("Language file "+filename+" not found! This mud is in deep doo-doo!"); return null;}
+		if(!F.exists())
+		{
+			Log.errOut("Language file "+filename+" not found! This mud is in deep doo-doo!");
+			return null;
+		}
 		final StringBuffer alldata=F.text();
 		final List<String> V=Resources.getFileLineVector(alldata);
 		String s=null;
@@ -188,7 +196,11 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 			if(s.toUpperCase().startsWith("AUTOIGNORE"))
 			{
 				final int x=s.indexOf(' ');
-				if(x<0){ Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1)); continue;}
+				if(x<0)
+				{
+					Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1));
+					continue;
+				}
 				final Integer I=Integer.valueOf(CMath.s_int(s.substring(x+1).trim()));
 				if(currentSection!=null)
 					currentSection.addElement("AUTOIGNORE",I,s.substring(x+1).trim());
@@ -197,20 +209,40 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 			if(s.toUpperCase().startsWith("DEFINE"))
 			{
 				int regstart=s.indexOf('"');
-				if(regstart<0){ Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1)); continue;}
+				if(regstart<0)
+				{
+					Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1));
+					continue;
+				}
 				int regend=s.indexOf('"',regstart+1);
 				while((regend>regstart)&&(s.charAt(regend-1)=='\\'))
 					regend=s.indexOf('"',regend+1);
-				if(regend<0){ Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1)); continue;}
+				if(regend<0)
+				{
+					Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1));
+					continue;
+				}
 				final String variable=s.substring(regstart+1,regend).toUpperCase();
 				s=s.substring(regend+1).trim();
-				if(!s.toUpperCase().startsWith("AS")){ Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1)); continue;}
+				if(!s.toUpperCase().startsWith("AS"))
+				{
+					Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1));
+					continue;
+				}
 				regstart=s.indexOf('"');
-				if(regstart<0){ Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1)); continue;}
+				if(regstart<0)
+				{
+					Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1));
+					continue;
+				}
 				regend=s.indexOf('"',regstart+1);
 				while((regend>regstart)&&(s.charAt(regend-1)=='\\'))
 					regend=s.indexOf('"',regend+1);
-				if(regend<0){ Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1)); continue;}
+				if(regend<0)
+				{
+					Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1));
+					continue;
+				}
 				String replacement=s.substring(regstart+1,regend);
 				replacement=replaceWithDefinitions(globalDefinitions,localDefinitions,replacement);
 				if(currentSection!=null)
@@ -228,11 +260,19 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 			if(s.toUpperCase().startsWith("IGNOREWHOLE"))
 			{
 				final int regstart=s.indexOf('"');
-				if(regstart<0){ Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1)); continue;}
+				if(regstart<0)
+				{
+					Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1));
+					continue;
+				}
 				int regend=s.indexOf('"',regstart+1);
 				while((regend>regstart)&&(s.charAt(regend-1)=='\\'))
 					regend=s.indexOf('"',regend+1);
-				if(regend<0){ Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1)); continue;}
+				if(regend<0)
+				{
+					Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1));
+					continue;
+				}
 				final String expression=unFilterString(s.substring(regstart+1,regend));
 				currentSectionIgnoreStrs.add(expression.toLowerCase());
 			}
@@ -240,20 +280,40 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 			if(s.toUpperCase().startsWith("REPLACEWHOLE")||s.toUpperCase().startsWith("REPLACEEXACT"))
 			{
 				int regstart=s.indexOf('"');
-				if(regstart<0){ Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1)); continue;}
+				if(regstart<0)
+				{
+					Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1));
+					continue;
+				}
 				int regend=s.indexOf('"',regstart+1);
 				while((regend>regstart)&&(s.charAt(regend-1)=='\\'))
 					regend=s.indexOf('"',regend+1);
-				if(regend<0){ Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1)); continue;}
+				if(regend<0)
+				{
+					Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1));
+					continue;
+				}
 				String expression=unFilterString(s.substring(regstart+1,regend));
 				s=s.substring(regend+1).trim();
-				if(!s.toUpperCase().startsWith("WITH")){ Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1)); continue;}
+				if(!s.toUpperCase().startsWith("WITH"))
+				{
+					Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1));
+					continue;
+				}
 				regstart=s.indexOf('"');
-				if(regstart<0){ Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1)); continue;}
+				if(regstart<0)
+				{
+					Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1));
+					continue;
+				}
 				regend=s.indexOf('"',regstart+1);
 				while((regend>regstart)&&(s.charAt(regend-1)=='\\'))
 					regend=s.indexOf('"',regend+1);
-				if(regend<0){ Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1)); continue;}
+				if(regend<0)
+				{
+					Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1));
+					continue;
+				}
 				final String replacement=unFilterString(s.substring(regstart+1,regend));
 				if(s.toUpperCase().startsWith("REPLACEWHOLE"))
 					currentSectionReplaceStrs.put(expression.toLowerCase(),replacement);
@@ -265,20 +325,40 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 			{
 				final String cmd="REPLACEALL";
 				int regstart=s.indexOf('"');
-				if(regstart<0){ Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1)); continue;}
+				if(regstart<0)
+				{
+					Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1));
+					continue;
+				}
 				int regend=s.indexOf('"',regstart+1);
 				while((regend>regstart)&&(s.charAt(regend-1)=='\\'))
 					regend=s.indexOf('"',regend+1);
-				if(regend<0){ Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1)); continue;}
+				if(regend<0)
+				{
+					Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1));
+					continue;
+				}
 				final String expression=unFilterString(s.substring(regstart+1,regend));
 				s=s.substring(regend+1).trim();
-				if(!s.toUpperCase().startsWith("WITH")){ Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1)); continue;}
+				if(!s.toUpperCase().startsWith("WITH"))
+				{
+					Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1));
+					continue;
+				}
 				regstart=s.indexOf('"');
-				if(regstart<0){ Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1)); continue;}
+				if(regstart<0)
+				{
+					Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1));
+					continue;
+				}
 				regend=s.indexOf('"',regstart+1);
 				while((regend>regstart)&&(s.charAt(regend-1)=='\\'))
 					regend=s.indexOf('"',regend+1);
-				if(regend<0){ Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1)); continue;}
+				if(regend<0)
+				{
+					Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1));
+					continue;
+				}
 				final String replacement=unFilterString(s.substring(regstart+1,regend));
 				if(currentSection!=null)
 					currentSection.addElement(cmd,expression.toLowerCase(),replacement);
@@ -289,24 +369,44 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 			{
 				final String cmd=s.toUpperCase().startsWith("REPLACE")?"REPLACE":"IGNORE";
 				int regstart=s.indexOf('"');
-				if(regstart<0){ Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1)); continue;}
+				if(regstart<0)
+				{
+					Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1));
+					continue;
+				}
 				int regend=s.indexOf('"',regstart+1);
 				while((regend>regstart)&&(s.charAt(regend-1)=='\\'))
 					regend=s.indexOf('"',regend+1);
-				if(regend<0){ Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1)); continue;}
+				if(regend<0)
+				{
+					Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1));
+					continue;
+				}
 				String expression=s.substring(regstart+1,regend);
 				expression=replaceWithDefinitions(globalDefinitions,localDefinitions,expression);
 				s=s.substring(regend+1).trim();
 				String replacement=null;
 				if(cmd.equals("REPLACE"))
 				{
-					if(!s.toUpperCase().startsWith("WITH")){ Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1)); continue;}
+					if(!s.toUpperCase().startsWith("WITH"))
+					{
+						Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1));
+						continue;
+					}
 					regstart=s.indexOf('"');
-					if(regstart<0){ Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1)); continue;}
+					if(regstart<0)
+					{
+						Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1));
+						continue;
+					}
 					regend=s.indexOf('"',regstart+1);
 					while((regend>regstart)&&(s.charAt(regend-1)=='\\'))
 						regend=s.indexOf('"',regend+1);
-					if(regend<0){ Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1)); continue;}
+					if(regend<0)
+					{
+						Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1));
+						continue;
+					}
 					replacement=s.substring(regstart+1,regend);
 					replacement=replaceWithDefinitions(globalDefinitions,localDefinitions,replacement);
 				}
@@ -419,7 +519,10 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 		final String combinedWithTabs=CMParms.combineWithTabs(CMDS,0);
 		MORE_CMDS.add(combinedWithTabs);
 		final DVector parser=CMLib.lang().getLanguageParser("COMMAND-PRE-PROCESSOR");
-		if((parser==null)||(CMDS==null)){ return new XVector<List<String>>(CMDS);}
+		if((parser==null)||(CMDS==null))
+		{
+			return new XVector<List<String>>(CMDS);
+		}
 		Pattern pattern=null;
 		Matcher matcher=null;
 		Command I=null;
@@ -577,8 +680,10 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 				pattern=(Pattern)parser.elementAt(p,2);
 				matcher=pattern.matcher(str);
 				if(matcher.find())
+				{
 					for(int i=0;i<=matcher.groupCount();i++)
 						str=CMStrings.replaceAll(str,"\\"+i,matcher.group(i));
+				}
 				break;
 			}
 			case REPLACEWHOLE:
@@ -675,8 +780,10 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 			return;
 		index=((Integer)fileIndexes.elementAt(index,2)).intValue();
 		for(int f=0;f<fileIndexes.size();f++)
+		{
 			if(((Integer)fileIndexes.elementAt(f,2)).intValue()>index)
 				fileIndexes.setElementAt(f,2,Integer.valueOf(((Integer)fileIndexes.elementAt(f,2)).intValue()+1));
+		}
 		str=filterString(str);
 		final String newStr="IGNOREWHOLE \""+str+"\"";
 		if(index==fileData.size()-1)
@@ -696,21 +803,25 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 	{
 		return basicParser(item,"ITEM-PRE-PROCESSOR",true,true);
 	}
+
 	@Override
 	public String failedItemParser(String item)
 	{
 		return basicParser(item,"ITEM-FAIL-PROCESSOR",true,true);
 	}
+
 	@Override
 	public String filterTranslation(String item)
 	{
 		return basicParser(item,"FILTER-TRANSLATION",false,false);
 	}
+
 	@Override
 	public String sessionTranslation(String item)
 	{
 		return basicParser(item,"SESSION-TRANSLATION",false,false);
 	}
+
 	@Override
 	public String finalTranslation(String item)
 	{

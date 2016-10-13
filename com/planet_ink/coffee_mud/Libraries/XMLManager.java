@@ -37,7 +37,11 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
 */
 public class XMLManager extends StdLibrary implements XMLLibrary
 {
-	@Override public String ID(){return "XMLManager";}
+	@Override
+	public String ID()
+	{
+		return "XMLManager";
+	}
 
 	protected final static String HEX_DIGITS="0123456789ABCDEF";
 	
@@ -731,8 +735,10 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 			return null;
 		final List<XMLTag> pieces = new ArrayList<XMLTag>();
 		for(int v=0;v<V.size();v++)
+		{
 			if(V.get(v).tag().equalsIgnoreCase(tag))
 				pieces.add(V.get(v));
+		}
 		return pieces;
 	}
 
@@ -860,8 +866,10 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 			if(bufDex <= (buf.length()-boundStart.length()))
 			{
 				for(x=0;x<boundStart.length();x++)
+				{
 					if(buf.charAt(bufDex+x)!=boundStart.charAt(x))
 						break;
+				}
 				if(x>=boundStart.length())
 				{
 					int comDex=bufDex+boundStart.length();
@@ -871,8 +879,10 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 						if(buf.charAt(comDex)==boundEnd.charAt(0))
 						{
 							for(x=1;x<boundEnd.length();x++)
+							{
 								if(buf.charAt(comDex+x)!=boundEnd.charAt(x))
 									break;
+							}
 							if(x>=boundEnd.length())
 							{
 								buf.delete(bufDex-1, comDex+boundEnd.length());

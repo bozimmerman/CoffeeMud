@@ -911,8 +911,10 @@ public class GroundWired extends StdLibrary implements TechLibrary
 				return null;
 			final List<Manufacturer> subManufacturers=new ArrayList<Manufacturer>();
 			for(final Manufacturer f : manufacturers.values())
+			{
 				if(CMLib.masking().maskCheck(f.getItemMask(), E, true))
 					subManufacturers.add(f);
+			}
 			for(final Iterator<Manufacturer> f =subManufacturers.iterator();f.hasNext();)
 			{
 				final Manufacturer M=f.next();

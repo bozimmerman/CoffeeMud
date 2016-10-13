@@ -787,7 +787,10 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 				  lastWord=lastWord.substring(0,lastWord.length()-1);
 			for(int i=lastWord.length()-1;i>=0;i--)
 				if(!Character.isLetterOrDigit(lastWord.charAt(i)))
-				{ lastWord=lastWord.substring(i+1); break;}
+				{
+					lastWord=lastWord.substring(i+1);
+					break;
+				}
 		}
 		else
 		{

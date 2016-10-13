@@ -30,7 +30,6 @@ import java.io.PrintWriter;
 import java.net.SocketException;
 import java.util.*;
 
-
 /*
    Copyright 2005-2016 Bo Zimmerman
 
@@ -442,7 +441,13 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			return;
 
 		C=CMClass.getCommand("MOTD");
-		try{ C.execute(mob,CMParms.parse("MOTD NEW PAUSE"),0);}catch(final Exception e){}
+		try
+		{
+			 C.execute(mob,CMParms.parse("MOTD NEW PAUSE"),0);
+		}
+		catch(final Exception e)
+		{
+		}
 	}
 
 	@Override
@@ -792,7 +797,9 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				}
 			}
 		}
-		catch(final Exception e){}
+		catch(final Exception e)
+		{
+		}
 	}
 
 	private String getMSSPPacket()
@@ -1242,7 +1249,13 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			return null;
 		}
 		StringBuffer emailIntro=new CMFile(Resources.buildResourcePath("text")+"email.txt",null,CMFile.FLAG_LOGERRORS).text();
-		try { emailIntro = CMLib.webMacroFilter().virtualPageFilter(emailIntro);}catch(final Exception ex){}
+		try
+		{
+			 emailIntro = CMLib.webMacroFilter().virtualPageFilter(emailIntro);
+		}
+		catch(final Exception ex)
+		{
+		}
 		session.println(null,null,null,emailIntro.toString());
 		loginObj.state=LoginState.ACCTCREATE_EMAILPROMPT;
 		return null;
@@ -1657,7 +1670,13 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		if(cmd.equalsIgnoreCase("?")||(("HELP").startsWith(cmd)))
 		{
 			StringBuffer accountHelp=new CMFile(Resources.buildResourcePath("help")+"accts.txt",null,CMFile.FLAG_LOGERRORS).text();
-			try { accountHelp = CMLib.webMacroFilter().virtualPageFilter(accountHelp);}catch(final Exception ex){}
+			try
+			{
+				 accountHelp = CMLib.webMacroFilter().virtualPageFilter(accountHelp);
+			}
+			catch(final Exception ex)
+			{
+			}
 			session.println(null,null,null,"\n\r\n\r"+accountHelp.toString());
 			loginObj.state=LoginState.ACCTMENU_SHOWMENU;
 			return null;
@@ -2190,7 +2209,13 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	protected LoginResult charcrEmailStart(final LoginSessionImpl loginObj, final Session session)
 	{
 		StringBuffer emailIntro=new CMFile(Resources.buildResourcePath("text")+"email.txt",null,CMFile.FLAG_LOGERRORS).text();
-		try { emailIntro = CMLib.webMacroFilter().virtualPageFilter(emailIntro);}catch(final Exception ex){}
+		try
+		{
+			 emailIntro = CMLib.webMacroFilter().virtualPageFilter(emailIntro);
+		}
+		catch(final Exception ex)
+		{
+		}
 		session.println(null,null,null,emailIntro.toString());
 		loginObj.state=LoginState.CHARCR_EMAILPROMPT;
 		return null;
@@ -2766,7 +2791,13 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		if(prompt.trim().equals("?"))
 		{
 			StringBuffer introText=new CMFile(Resources.buildResourcePath("text")+"stats.txt",null,CMFile.FLAG_LOGERRORS).text();
-			try { introText = CMLib.webMacroFilter().virtualPageFilter(introText);}catch(final Exception ex){}
+			try
+			{
+				 introText = CMLib.webMacroFilter().virtualPageFilter(introText);
+			}
+			catch(final Exception ex)
+			{
+			}
 			session.println(null,null,null,"\n\r\n\r"+introText.toString());
 			loginObj.state=LoginState.CHARCR_STATSTART;
 			return null;
@@ -3558,7 +3589,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			}
 		}
 		catch(final Exception e)
-		{}
+		{
+		}
 
 		if((CMProps.getIntVar(CMProps.Int.MAXCONNSPERIP)>0)
 		&&(numAtAddress>=CMProps.getIntVar(CMProps.Int.MAXCONNSPERIP))

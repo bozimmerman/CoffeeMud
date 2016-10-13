@@ -45,6 +45,7 @@ public class DefaultLayoutNode implements LayoutNode
 	{
 		this.coord = coord;
 	}
+
 	public DefaultLayoutNode(long x, long y)
 	{
 		this.coord = new long[]{x,y};

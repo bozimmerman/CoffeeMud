@@ -904,7 +904,10 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					}
 				}
 			}
-		}catch(final NoSuchElementException e){}
+		}
+		catch(final NoSuchElementException e)
+		{
+		}
 		if(andSave)
 		{
 			CMLib.database().DBUpdateRoom(newRoom);
@@ -1200,7 +1203,12 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			if(!CMProps.getVar(CMProps.Str.AUTOWEATHERPARMS).equalsIgnoreCase("no"))
 			{
 				Behavior B=newArea.fetchBehavior("WeatherAffects");
-				if(B==null){ B=CMClass.getBehavior("WeatherAffects"); B.setSavable(false); newArea.addBehavior(B);}
+				if(B==null)
+				{
+					B=CMClass.getBehavior("WeatherAffects");
+					B.setSavable(false);
+					newArea.addBehavior(B);
+				}
 				B.setParms(CMProps.getVar(CMProps.Str.AUTOWEATHERPARMS));
 			}
 			if(CMProps.getVar(CMProps.Str.AUTOAREAPROPS).trim().length()>0)
@@ -1309,6 +1317,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		}
 		return "";
 	}
+
 	@Override
 	public String unpackAreaFromXML(String buf, Session S, String overrideAreaType, boolean andRooms)
 	{
@@ -1606,8 +1615,10 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		if((R.isGeneric()) &&(!custom.contains(R)))
 			custom.add(R);
 		for(final Ability A : R.racialAbilities(null))
+		{
 			if(A.isGeneric() && !custom.contains(A))
 				custom.add(A);
+		}
 		for(final Ability A : R.racialEffects(null))
 			if(A.isGeneric() && !custom.contains(A))
 				custom.add(A);
@@ -3212,7 +3223,9 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 						((DeadBody)E).setKillerTool(null);
 				}
 			}
-			catch(final Exception e){}
+			catch(final Exception e)
+			{
+			}
 			final String raceID=CMLib.xml().getValFromPieces(buf,"MRACE");
 			if((raceID.length()>0)&&(CMClass.getRace(raceID)!=null))
 			{
@@ -4355,8 +4368,10 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		if(itemCode != null)
 			return itemCode.ordinal();
 		for(GenMOBCode c : GenMOBCode.values())
+		{
 			if(code.startsWith(c.name()))
 				return c.ordinal();
+		}
 		return -1;
 	}
 

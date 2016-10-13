@@ -41,7 +41,12 @@ import java.util.*;
 */
 public class CMChannels extends StdLibrary implements ChannelsLibrary
 {
-	@Override public String ID(){return "CMChannels";}
+	@Override
+	public String ID()
+	{
+		return "CMChannels";
+	}
+
 	public final int QUEUE_SIZE=100;
 
 	public String[]			baseChannelNames= new String[0];

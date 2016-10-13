@@ -94,7 +94,9 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 
 				}
 			}
-			catch(final Exception e){}
+			catch(final Exception e)
+			{
+			}
 			return null;
 		}
 	}
@@ -223,6 +225,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 			items[x++]=item;
 		return items;
 	}
+
 	@Override
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public MOB[] getCatalogMobs()
@@ -928,7 +931,9 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 					}
 				}
 			}
-			catch(final IndexOutOfBoundsException e) {}
+			catch(final IndexOutOfBoundsException e)
+			{
+			}
 		}
 		if(selections==null)
 			return null;
@@ -1172,8 +1177,10 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 		{
 			int num=0;
 			for(int r=0;r<refs.size();r++)
+			{
 				if(refs.elementAt(r).get()!=null)
 					num++;
+			}
 			return num;
 		}
 
@@ -1238,6 +1245,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 			}
 			return null;
 		}
+
 		@Override
 		public synchronized void addReference(Physical P)
 		{
@@ -1262,8 +1270,10 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 		public boolean isReference(Physical P)
 		{
 			for(int r=0;r<refs.size();r++)
+			{
 				if(refs.elementAt(r).get()==P)
 					return true;
+			}
 			return false;
 		}
 

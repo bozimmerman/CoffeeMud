@@ -50,7 +50,11 @@ public class Clans extends StdLibrary implements ClanManager
 	protected Map<String,Clan>  	  	webPathClanMappings = new SHashtable<String,Clan>();
 	protected Map<String,String>		clanWebPathMappings = new SHashtable<String,String>();
 
-	@Override public String ID(){return "Clans";}
+	@Override
+	public String ID()
+	{
+		return "Clans";
+	}
 
 	public boolean isCommonClanRelations(Clan C1, Clan C2, int relation)
 	{
@@ -98,8 +102,10 @@ public class Clans extends StdLibrary implements ClanManager
 	{
 		final List<Pair<Clan,Clan>> pairs=findUncommonRivalrousClans(M1, M2);
 		for(final Pair<Clan,Clan> p : pairs)
+		{
 			if(isCommonClanRelations(p.first,p.second, Clan.REL_WAR))
 				return true;
+		}
 		return false;
 	}
 
@@ -194,8 +200,10 @@ public class Clans extends StdLibrary implements ClanManager
 	{
 		final List<Pair<Clan,Integer>> list=new XVector<Pair<Clan,Integer>>(1,true);
 		for(final Pair<Clan,Integer> c : mob.clans())
+		{
 			if(c.first.isRivalrous())
 				list.add(c);
+		}
 		return list;
 	}
 
@@ -291,8 +299,10 @@ public class Clans extends StdLibrary implements ClanManager
 	public boolean findAnyClanRelations(MOB M1, MOB M2, int relation)
 	{
 		for(final Pair<Clan,Clan> c : getAllClanPairs(M1, M2))
+		{
 			if(getClanRelations(c.first, c.second)==relation)
 				return true;
+		}
 		return false;
 	}
 
@@ -302,8 +312,10 @@ public class Clans extends StdLibrary implements ClanManager
 		if((M1==null)||(M2==null))
 			return false;
 		for(final Pair<Clan,Integer> p : M1.clans())
+		{
 			if(M2.getClanRole(p.first.clanID())!=null)
 				return true;
+		}
 		return false;
 	}
 
@@ -444,9 +456,17 @@ public class Clans extends StdLibrary implements ClanManager
 			CMLib.commands().postChannel(channels.get(i),clanRoles(),msg,true);
 	}
 
-	@Override public Enumeration<String> clansNames(){return all.keys();}
+	@Override
+	public Enumeration<String> clansNames()
+	{
+		return all.keys();
+	}
 
-	@Override public Iterable<Pair<Clan,Integer>> clanRoles(){return all2;}
+	@Override
+	public Iterable<Pair<Clan,Integer>> clanRoles()
+	{
+		return all2;
+	}
 
 	@Override
 	public String translatePrize(Trophy trophy)
@@ -551,8 +571,10 @@ public class Clans extends StdLibrary implements ClanManager
 				final Clan.Function voteFunctionType = (function == Clan.Function.ASSIGN) ? Clan.Function.VOTE_ASSIGN : Clan.Function.VOTE_OTHER;
 				final List<Integer> votingRoles = new Vector<Integer>();
 				for(int i=0;i<C.getRolesList().length;i++)
+				{
 					if(C.getAuthority(i, voteFunctionType)==Clan.Authority.CAN_DO)
 						votingRoles.add(Integer.valueOf(i));
+				}
 				if(votingRoles.size()>0)
 				{
 					final String firstRoleName = C.getRoleName(votingRoles.iterator().next().intValue(), true, true);
@@ -584,7 +606,9 @@ public class Clans extends StdLibrary implements ClanManager
 				return false;
 			}
 		}
-		catch(final java.io.IOException e){}
+		catch(final java.io.IOException e)
+		{
+		}
 		mob.tell(L("Without a vote, this command can not be executed."));
 		return false;
 	}
@@ -605,8 +629,10 @@ public class Clans extends StdLibrary implements ClanManager
 	{
 		ClanGovernment helpG=null;
 		for(final ClanGovernment G : getStockGovernments())
+		{
 			if(G.getName().equalsIgnoreCase(named))
 				helpG=G;
+		}
 		if((helpG==null)&&(exact))
 			return null;
 		if(helpG==null)
@@ -735,16 +761,20 @@ public class Clans extends StdLibrary implements ClanManager
 		final ClanGovernment[] gvts=getStockGovernments();
 		final List<ClanGovernment> govts = new SVector<ClanGovernment>(gvts);
 		for(final ClanGovernment G : gvts)
+		{
 			if(G.getName().equalsIgnoreCase(name))
 				return null;
+		}
 		final ClanGovernment newG=createSampleGovernment();
 		final Set<Integer> takenIDs=new HashSet<Integer>();
 		for(final ClanGovernment g : gvts)
 			takenIDs.add(Integer.valueOf(g.getID()));
 		int newID=CMLib.dice().roll(1, Integer.MAX_VALUE, 0);
 		for(int i=0;i<gvts.length+1;i++)
+		{
 			if(!takenIDs.contains(Integer.valueOf(i)))
 				newID=i;
+		}
 		newG.setID(newID);
 		newG.setName(name);
 		govts.add(newG);
@@ -967,8 +997,10 @@ public class Clans extends StdLibrary implements ClanManager
 		if(category==null)
 			category="";
 		for(final Pair<Clan,Integer> p : M.clans())
+		{
 			if(p.first.getCategory().equalsIgnoreCase(category))
 				list.add(p);
+		}
 		return list;
 	}
 
@@ -1087,8 +1119,10 @@ public class Clans extends StdLibrary implements ClanManager
 			final String	autoRoleStr=clanTypePieceTag.getValFromPieces( "AUTOPOSITION");
 			ClanPosition autoRole=null;
 			for(final ClanPosition pos : positions)
+			{
 				if(pos.getID().equalsIgnoreCase(autoRoleStr) )
 					autoRole=pos;
+			}
 			if(autoRole==null)
 			{
 				Log.errOut("Clans","Illegal role found in xml: "+autoRoleStr);
@@ -1097,8 +1131,10 @@ public class Clans extends StdLibrary implements ClanManager
 			final String	acceptRoleStr=clanTypePieceTag.getValFromPieces( "ACCEPTPOSITION");
 			ClanPosition acceptRole=null;
 			for(final ClanPosition pos : positions)
+			{
 				if(pos.getID().equalsIgnoreCase(acceptRoleStr) )
 					acceptRole=pos;
+			}
 			if(acceptRole==null)
 			{
 				Log.errOut("Clans","Illegal acceptRole found in xml: "+acceptRoleStr);
@@ -1205,8 +1241,10 @@ public class Clans extends StdLibrary implements ClanManager
 		if(governments.size()>0)
 		{
 			for(int i=0;i<govts.length;i++)
+			{
 				if(govts[i]==null)
 					govts[i]=governments.get(0);
+			}
 			return govts;
 		}
 		else

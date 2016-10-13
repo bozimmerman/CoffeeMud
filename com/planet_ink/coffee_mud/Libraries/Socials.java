@@ -39,7 +39,11 @@ import java.io.IOException;
 */
 public class Socials extends StdLibrary implements SocialsList
 {
-	@Override public String ID(){return "Socials";}
+	@Override
+	public String ID()
+	{
+		return "Socials";
+	}
 
 	@Override
 	public void putSocialsInHash(final Map<String,List<Social>> soc, final List<String> lines)
@@ -157,7 +161,12 @@ public class Socials extends StdLibrary implements SocialsList
 		}
 		return soc;
 	}
-	@Override public boolean isLoaded() { return Resources.getResource("PARSED_SOCIALS: "+filename)!=null; }
+
+	@Override
+	public boolean isLoaded()
+	{
+		return Resources.getResource("PARSED_SOCIALS: "+filename)!=null;
+	}
 
 	private String realName(String name)
 	{
@@ -167,6 +176,7 @@ public class Socials extends StdLibrary implements SocialsList
 			shortName=shortName.substring(0,spdex);
 		return shortName;
 	}
+
 	private void put(Map<String,List<Social>> H, String name, Social S)
 	{
 		name=realName(name);
@@ -184,11 +194,13 @@ public class Socials extends StdLibrary implements SocialsList
 			}
 		V2.add(S);
 	}
+
 	@Override
 	public void put(String name, Social S)
 	{
 		put(getSocialHash(),name,S);
 	}
+
 	@Override
 	public void remove(String name)
 	{
@@ -208,6 +220,7 @@ public class Socials extends StdLibrary implements SocialsList
 				break;
 			}
 	}
+
 	@Override
 	public void addSocial(Social S)
 	{
@@ -215,7 +228,11 @@ public class Socials extends StdLibrary implements SocialsList
 		unloadDerivedResources();
 	}
 
-	@Override public int numSocialSets() {return getSocialHash().size();}
+	@Override
+	public int numSocialSets()
+	{
+		return getSocialHash().size();
+	}
 
 	@Override
 	public void unloadSocials()
@@ -527,8 +544,16 @@ public class Socials extends StdLibrary implements SocialsList
 						soc.setSee_when_no_target(CMLib.genEd().prompt(mob,soc.See_when_no_target(),++showNumber,showFlag,L("You-see when no target"),false,true));
 					soc.setMSPfile(CMLib.genEd().prompt(mob,soc.MSPfile(),++showNumber,showFlag,L("Sound file"),true,false));
 					resaveSocials=true;
-					if(showFlag<-900){ ok=true; break;}
-					if(showFlag>0){ showFlag=-1; continue;}
+					if(showFlag<-900)
+					{
+						ok=true;
+						break;
+					}
+					if(showFlag>0)
+					{
+						showFlag=-1;
+						continue;
+					}
 					final String input = mob.session().prompt(L("Edit which (or DELETE)? "),"");
 					showFlag=CMath.s_int(input);
 					if((input!=null)&&(input.equalsIgnoreCase("DELETE")))
@@ -563,14 +588,18 @@ public class Socials extends StdLibrary implements SocialsList
 	public Social fetchSocial(List<Social> set, String name, boolean exactOnly)
 	{
 		for(int s=0;s<set.size();s++)
+		{
 			if(set.get(s).Name().equalsIgnoreCase(name))
 				return set.get(s);
+		}
 		if(exactOnly)
 			return null;
 		name=name.toUpperCase();
 		for(int s=0;s<set.size();s++)
+		{
 			if(set.get(s).Name().toUpperCase().startsWith(name))
 				return set.get(s);
+		}
 		return null;
 	}
 
@@ -666,10 +695,17 @@ public class Socials extends StdLibrary implements SocialsList
 				S=fetchSocial(soc,socialName+theRest,true);
 			else
 			if((S=fetchSocial(soc,socialName+" <T-NAME>",true))==null)
+			{
 				if((S=fetchSocial(soc,socialName+" <I-NAME>",true))==null)
+				{
 					if((S=fetchSocial(soc,socialName+" <E-NAME>",true))==null)
+					{
 						if((S=fetchSocial(soc,socialName+" <V-NAME>",true))==null)
-						{}
+						{
+						}
+					}
+				}
+			}
 		}
 		if((S==null)&&(!exactOnly))
 		{
@@ -691,19 +727,30 @@ public class Socials extends StdLibrary implements SocialsList
 				}
 			}
 			if(socialName==null)
+			{
 				if(backupSocialName == null)
 					socialName=C.get(0);
 				else
 					socialName=backupSocialName;
+			}
 			if(socialName!=null)
+			{
 				if(!tryTargets)
 					S=fetchSocial(soc,socialName+theRest,true);
 				else
 				if((S=fetchSocial(soc,socialName+" <T-NAME>",true))==null)
+				{
 					if((S=fetchSocial(soc,socialName+" <I-NAME>",true))==null)
+					{
 						if((S=fetchSocial(soc,socialName+" <E-NAME>",true))==null)
+						{
 							if((S=fetchSocial(soc,socialName+" <V-NAME>",true))==null)
-							{}
+							{
+							}
+						}
+					}
+				}
+			}
 		}
 		return S;
 	}

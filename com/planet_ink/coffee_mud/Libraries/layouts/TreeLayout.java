@@ -43,6 +43,7 @@ public class TreeLayout extends AbstractLayout
 			this.lSet = d;
 			currNode = new DefaultLayoutNode(coord);
 		}
+
 		private long[] getCoord(long[] curr, int dir) { return lSet.makeNextCoord(curr,dir);}
 
 		private int[] getTurns(int dir)
@@ -97,6 +98,7 @@ public class TreeLayout extends AbstractLayout
 			patchRun(currNode,newStem.currNode);
 			return newStem;
 		}
+
 		public TreeStem secondBranch()
 		{
 			final int[] turns = getTurns(dir);

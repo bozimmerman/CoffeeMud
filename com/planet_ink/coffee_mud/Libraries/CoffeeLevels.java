@@ -19,7 +19,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2006-2016 Bo Zimmerman
 
@@ -37,7 +36,11 @@ import java.util.*;
 */
 public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 {
-	@Override public String ID(){return "CoffeeLevels";}
+	@Override
+	public String ID()
+	{
+		return "CoffeeLevels";
+	}
 
 	public int getManaBonusNextLevel(MOB mob)
 	{
@@ -502,7 +505,10 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 			{
 				if(C!=null)
 					C.execute(mob,new XVector<String>("GTELL",",<S-HAS-HAVE> gained a level."),MUDCmdProcessor.METAFLAG_FORCED);
-			}catch(final Exception e){}
+			}
+			catch(final Exception e)
+			{
+			}
 		}
 		final StringBuffer theNews=new StringBuffer("^xYou have L E V E L E D ! ! ! ! ! ^.^N\n\r\n\r"+CMLib.protocol().msp("levelgain.wav",60));
 		CharClass curClass=mob.baseCharStats().getCurrentClass();

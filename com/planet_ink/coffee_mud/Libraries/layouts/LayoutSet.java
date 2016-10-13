@@ -74,6 +74,7 @@ public class LayoutSet
 		used.remove(getHashCode(n.coord()[0],n.coord()[1]));
 		set.remove(n);
 	}
+
 	public boolean use(LayoutNode n, LayoutTypes nodeType)
 	{
 		if(isUsed(n.coord()))

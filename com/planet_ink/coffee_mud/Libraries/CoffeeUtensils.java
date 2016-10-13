@@ -39,7 +39,11 @@ import java.util.Map.Entry;
 */
 public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 {
-	@Override public String ID(){return "CoffeeUtensils";}
+	@Override
+	public String ID()
+	{
+		return "CoffeeUtensils";
+	}
 
 	private TriadVector<Integer,Integer,MaskingLibrary.CompiledZMask> lootPolicy = null;
 	private final TriadVector<Integer,Integer,MaskingLibrary.CompiledZMask> noLootPolicy = new TriadVector<Integer,Integer,MaskingLibrary.CompiledZMask>();
@@ -213,6 +217,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		}
 		return null;
 	}
+
 	@Override
 	public boolean reachableItem(MOB mob, Environmental E)
 	{

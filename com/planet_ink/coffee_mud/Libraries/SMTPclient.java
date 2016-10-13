@@ -28,7 +28,6 @@ import javax.naming.directory.*;
 
 import com.planet_ink.coffee_mud.core.exceptions.*;
 
-
 /*
    Copyright 2004-2016 Bo Zimmerman
 
@@ -46,7 +45,11 @@ import com.planet_ink.coffee_mud.core.exceptions.*;
 */
 public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.SMTPClient
 {
-	@Override public String ID(){return "SMTPclient";}
+	@Override
+	public String ID()
+	{
+		return "SMTPclient";
+	}
 
 	/** Reply buffer */
 	public BufferedReader reply = null;
@@ -83,6 +86,7 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 	{
 		return new SMTPclient(SMTPServerInfo,port);
 	}
+
 	@Override
 	public SMTPClient getClient(String emailAddress)
 		throws IOException, BadEmailAddressException
@@ -269,7 +273,11 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 	 * @param addy the email address
 	 * @return true if all is good, false otherwise.
 	 */
-	@Override public boolean isValidEmailAddress(String addy){ return getEmailAddressError(addy)<0;}
+	@Override
+	public boolean isValidEmailAddress(String addy)
+	{
+		return getEmailAddressError(addy)<0;
+	}
 
 	/*
 	 * Checks to see if the given string is a valid email address.
@@ -299,8 +307,10 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 		}
 		else
 		for(int l=0;l<localPart.length();l++)
+		{
 			if(EMAIL_VALID_LOCAL_CHARS.indexOf(localPart.charAt(l))<0)
 				return l;
+		}
 		if(localPart.startsWith("."))
 			return 0;
 		if(localPart.endsWith("."))
@@ -308,8 +318,10 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 		if(localPart.length()>64)
 			return x;
 		for(int l=0;l<network.length();l++)
+		{
 			if(EMAIL_VALID_DOMAIN_CHARS.indexOf(network.charAt(l))<0)
 				return x+1+l;
+		}
 		if(network.startsWith("-"))
 			return x+1;
 		if(network.endsWith("-"))
@@ -589,12 +601,17 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 				authType=info.remove(0).toUpperCase().trim();
 			else
 				authType="PLAIN";
-			if(info.size()==0){ authType=""; return;}
+			if(info.size()==0)
+			{
+				authType="";
+				return;
+			}
 			login=info.remove(0);
 			if(info.size()==0)
 				return;
 			password=info.remove(0);
 		}
+
 		private String host="";
 		private String authType="";
 		private String login="";

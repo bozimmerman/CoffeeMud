@@ -24,7 +24,6 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.*;
 
-
 /*
    Copyright 2008-2016 Bo Zimmerman
 
@@ -42,7 +41,11 @@ import java.util.*;
 */
 public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 {
-	@Override public String ID(){return "MUDPercolator";}
+	@Override
+	public String ID()
+	{
+		return "MUDPercolator";
+	}
 
 	protected final static char[] splitters=new char[]{'<','>','='};
 	protected final static Triad<Integer,Integer,Class<?>[]> emptyMetacraftFilter = new Triad<Integer,Integer,Class<?>[]>(Integer.valueOf(-1),Integer.valueOf(-1),new Class<?>[0]);
@@ -66,7 +69,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			try
 			{
 				return mgr.newInstance();
-			}catch(final Exception e)
+			}
+			catch(final Exception e)
 			{
 				return null;
 			}
@@ -120,7 +124,9 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 									tgt.parms().put(parm,srcParmVal);
 								else
 								if(tgtParmVal.equalsIgnoreCase(srcParmVal)||parm.equalsIgnoreCase("ID"))
-								{ /* do nothing -- nothing to do */}
+								{
+									/* do nothing -- nothing to do */
+								}
 								else
 								if(parm.equalsIgnoreCase("REQUIRES"))
 								{
@@ -697,8 +703,10 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			groupDefined = groupDefinitions.get(group);
 
 			for(final LayoutNode node : group)
+			{
 				if(node!=magicRoomNode)
 					processRoom(A,direction,piece,node,groupDefined);
+			}
 			updateLayoutDefinitions(defined,groupDefined,groupDefinitions,roomGroups);
 		}
 
@@ -1494,8 +1502,10 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	{
 		final Set<String> prevSet=new HashSet<String>();
 		for(final String key : defined.keySet())
+		{
 			if(key.toUpperCase().startsWith(prefix.toUpperCase()))
 				prevSet.add(key.toUpperCase());
+		}
 		return prevSet;
 	}
 
@@ -1667,8 +1677,10 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		if(deriveClasses.length==0)
 			return true;
 		for(final Class<?> C : deriveClasses)
+		{
 			if(C.isAssignableFrom(I.getClass()))
 				return true;
+		}
 		return false;
 	}
 
@@ -2584,7 +2596,9 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					}
 					fixed.put(id.var.toUpperCase(),value);
 				}
-				catch(final CMException e) {}
+				catch(final CMException e)
+				{
+				}
 			}
 			final boolean test= CMStrings.parseStringExpression(condition.toUpperCase(),fixed, true);
 			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
@@ -2599,7 +2613,9 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			try {
 				CMStrings.parseStringExpression(condition,fixed, true);
 			}
-			catch(final Exception e1) {}
+			catch(final Exception e1)
+			{
+			}
 			return false;
 		}
 	}
@@ -2949,8 +2965,10 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 								throw new PostProcessException("Unknown room on object "+E2.ID()+" in variable '"+V.var+"'");
 							final List<Room> dirs=new ArrayList<Room>();
 							for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+							{
 								if((R.getRoomInDir(d)!=null)&&(R.getRoomInDir(d).roomID().length()>0))
 									dirs.add(R.getRoomInDir(d));
+							}
 							if(dirs.size()==0)
 								throw new PostProcessException("No anyrooms on object "+E2.ID()+" in variable '"+V.var+"'");
 							E3=dirs.get(CMLib.dice().roll(1, dirs.size(), -1));

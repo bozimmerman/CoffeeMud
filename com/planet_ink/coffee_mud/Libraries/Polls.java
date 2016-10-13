@@ -39,7 +39,12 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
 
 public class Polls extends StdLibrary implements PollManager
 {
-	@Override public String ID(){return "Polls";}
+	@Override
+	public String ID()
+	{
+		return "Polls";
+	}
+
 	public SVector<Poll> pollCache=null;
 
 	@Override
@@ -81,6 +86,7 @@ public class Polls extends StdLibrary implements PollManager
 		}
 		return pollCache;
 	}
+
 	@Override
 	public Poll getPoll(String named)
 	{
@@ -281,8 +287,16 @@ public class Polls extends StdLibrary implements PollManager
 					break;
 				P.getOptions().add(PO);
 			}
-			if(showFlag<-900){ ok=true; break;}
-			if(showFlag>0){ showFlag=-1; continue;}
+			if(showFlag<-900)
+			{
+				ok=true;
+				break;
+			}
+			if(showFlag>0)
+			{
+				showFlag=-1;
+				continue;
+			}
 			showFlag=CMath.s_int(mob.session().prompt(L("Edit which? "),""));
 			if(showFlag<=0)
 			{
@@ -358,11 +372,13 @@ public class Polls extends StdLibrary implements PollManager
 									  P.getResultsXML(),
 									  P.getExpiration());
 	}
+
 	@Override
 	public void updatePollResults(Poll P)
 	{
 		CMLib.database().DBUpdatePollResults(P.getName(),P.getResultsXML());
 	}
+
 	@Override
 	public void updatePoll(String oldName, Poll P)
 	{
@@ -377,6 +393,7 @@ public class Polls extends StdLibrary implements PollManager
 									  P.getResultsXML(),
 									  P.getExpiration());
 	}
+
 	@Override
 	public void deletePoll(Poll P)
 	{

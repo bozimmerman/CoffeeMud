@@ -41,7 +41,11 @@ import java.util.*;
  */
 public class CMAbleParms extends StdLibrary implements AbilityParameters
 {
-	@Override public String ID(){return "CMAbleParms";}
+	@Override
+	public String ID()
+	{
+		return "CMAbleParms";
+	}
 
 	protected Map<String,AbilityParmEditor> DEFAULT_EDITORS = null;
 
@@ -803,8 +807,16 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 							editRow.setElementAt(a,2,newVal);
 						}
 					}
-					if(showFlag<-900){ ok=true; break;}
-					if(showFlag>0){ showFlag=-1; continue;}
+					if(showFlag<-900)
+					{
+						ok=true;
+						break;
+					}
+					if(showFlag>0)
+					{
+						showFlag=-1;
+						continue;
+					}
 					showFlag=CMath.s_int(mob.session().prompt(L("Edit which? "),""));
 					if(showFlag<=0)
 					{
@@ -1395,7 +1407,11 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 							final String con=httpReq.getUrlParameter(fieldName+"_CUST_CON_"+x);
 							if(connector==null)
 								connector="AND";
-							if(connector.equalsIgnoreCase("DEL")||(connector.length()==0)){x++; continue;}
+							if(connector.equalsIgnoreCase("DEL")||(connector.length()==0))
+							{
+								x++;
+								continue;
+							}
 							try
 							{
 								final AbilityComponent able=CMLib.ableComponents().createBlankAbilityComponent();
@@ -1407,7 +1423,9 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 								able.setType(AbilityComponent.CompType.valueOf(typ), strVal);
 								comps.add(able);
 							}
-							catch(final Exception e){}
+							catch(final Exception e)
+							{
+							}
 							x++;
 						}
 						if(comps.size()>0)
@@ -1543,7 +1561,11 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 								final RawMaterial.Material[] M=RawMaterial.Material.values();
 								Arrays.sort(M,new Comparator<RawMaterial.Material>()
 								{
-									@Override public int compare(Material o1, Material o2) { return o1.name().compareToIgnoreCase(o2.name()); }
+									@Override
+									public int compare(Material o1, Material o2)
+									{
+										return o1.name().compareToIgnoreCase(o2.name());
+									}
 								});
 								for(final RawMaterial.Material m : M)
 								{
@@ -1630,7 +1652,12 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					}
 					return str;
 				}
-				@Override public String defaultValue(){ return "1";}
+
+				@Override
+				public String defaultValue()
+				{
+					return "1";
+				}
 			},
 			new AbilityParmEditorImpl("OPTIONAL_AMOUNT_REQUIRED","Amt",ParmType.NUMBER)
 			{
@@ -4518,6 +4545,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			}
 			return false;
 		}
+
 		@Override
 		public String[] fakeUserInput(String oldVal)
 		{
@@ -4793,6 +4821,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			}
 			return choices;
 		}
+
 		public PairList<String,String> createNumberedChoices(String[] S) 
 		{
 			if(choices != null)

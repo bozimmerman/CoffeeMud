@@ -168,7 +168,8 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 				D.set(Calendar.MILLISECOND,0);
 			}
 			catch(final ParseException e)
-			{ }
+			{
+			}
 		}
 		confirmDateAMPM(dateTimeStr,D);
 		return D;
@@ -210,7 +211,9 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 				fmt.parse(dateTimeStr);
 			}
 			catch(final ParseException e)
-			{ return false; }
+			{
+				return false;
+			}
 		}
 		return true;
 	}
@@ -240,7 +243,8 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 			}
 		}
 		catch(final Exception e)
-		{ }
+		{
+		}
 	}
 
 	@Override
@@ -497,6 +501,7 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 		C.setTimeInMillis(time);
 		return C;
 	}
+
 	@Override
 	public String date2String(Calendar C)
 	{

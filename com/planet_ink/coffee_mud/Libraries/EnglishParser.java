@@ -130,8 +130,10 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	{
 		final String lowStr=s.toLowerCase();
 		for (final String article : ARTICLES)
+		{
 			if(lowStr.startsWith(article+" "))
 				return s.substring(article.length()+1);
+		}
 		return s;
 	}
 
@@ -1375,7 +1377,10 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 					I=V.get(v);
 					curLayer=(I instanceof Armor)?((Armor)I).getClothingLayer():0;
 					if(curLayer<topLayer)
-					{ which=v; topLayer=curLayer;}
+					{
+						which=v;
+						topLayer=curLayer;
+					}
 				}
 				V2.addElement(V.get(which));
 				V.remove(which);
@@ -1397,12 +1402,16 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			{
 				List<Coins> V=CMLib.beanCounter().getStandardCurrency((MOB)mine,CMLib.beanCounter().getCurrency(mine));
 				for(int v=0;v<V.size();v++)
+				{
 					if(V.get(v).getNumberOfCoins()>=num)
 						return num;
+				}
 				V=CMLib.beanCounter().getStandardCurrency((MOB)mine,null);
 				for(int v=0;v<V.size();v++)
+				{
 					if(V.get(v).getNumberOfCoins()>=num)
 						return num;
+				}
 			}
 			return CMath.s_long(itemID);
 		}

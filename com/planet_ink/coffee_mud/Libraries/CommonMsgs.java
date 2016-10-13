@@ -218,6 +218,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			return new StringBuilder(V.firstElement());
 		return new StringBuilder("");
 	}
+
 	@Override
 	public StringBuilder getEquipment(MOB viewer, MOB mob)
 	{

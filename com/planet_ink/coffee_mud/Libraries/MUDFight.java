@@ -39,7 +39,11 @@ import java.util.*;
 */
 public class MUDFight extends StdLibrary implements CombatLibrary
 {
-	@Override public String ID(){return "MUDFight";}
+	@Override
+	public String ID()
+	{
+		return "MUDFight";
+	}
 	static final char[] PARENS={'(',')'};
 
 	public String 		lastStr			= "";
@@ -2250,8 +2254,10 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			everyV.addElement(to);
 		final int[][] map=new int[everyV.size()][everyV.size()];
 		for(int x=0;x<map.length;x++)
+		{
 			for(int y=0;y<map.length;y++)
 				map[x][y]=-1;
+		}
 
 		return V;
 	}
@@ -2402,8 +2408,10 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		while(((combatSystem==CombatLibrary.CombatSystem.QUEUE)||(combatSystem==CombatLibrary.CombatSystem.TURNBASED))
 		&&(!fighter.amDead())
 		&&(fighter.dequeCommand()))
-			{}
+			{
+			}
 	}
+
 	protected void subtickAfterAttack(MOB fighter)
 	{
 		// this code is for auto-retargeting of players

@@ -22,7 +22,12 @@ import java.util.*;
 */
 public class Dice extends StdLibrary implements DiceLibrary
 {
-	@Override public String ID(){return "Dice";}
+	@Override
+	public String ID()
+	{
+		return "Dice";
+	}
+
 	private Random randomizer = null;
 	protected LinkedList<CMath.CompiledOperation>  baseNpcHitpointsFormula = null;
 
@@ -33,6 +38,7 @@ public class Dice extends StdLibrary implements DiceLibrary
 			randomizer = new Random(System.currentTimeMillis());
 		return randomizer;
 	}
+
 	public Dice()
 	{
 		super();
@@ -47,13 +53,18 @@ public class Dice extends StdLibrary implements DiceLibrary
 		return super.activate();
 	}
 
-	@Override public void propertiesLoaded() { activate(); }
+	@Override
+	public void propertiesLoaded()
+	{
+		activate();
+	}
 
 	@Override
 	public boolean normalizeAndRollLess(int score)
 	{
 		return (rollPercentage()<normalizeBy5(score));
 	}
+
 	@Override
 	public int normalizeBy5(int score)
 	{
@@ -147,6 +158,7 @@ public class Dice extends StdLibrary implements DiceLibrary
 		newList.remove( not );
 		return pick(newList.toArray(new Object[0]));
 	}
+
 	@Override
 	public Object pick(Object[] set)
 	{
@@ -154,6 +166,7 @@ public class Dice extends StdLibrary implements DiceLibrary
 			return null;
 		return set[randomizer.nextInt(set.length)];
 	}
+
 	@Override
 	public int pick(int[] set, int not)
 	{
@@ -162,8 +175,10 @@ public class Dice extends StdLibrary implements DiceLibrary
 			final int[] newSet = new int[set.length];
 			int numGood = 0;
 			for(final int x : set)
+			{
 				if(x != not)
 					newSet[numGood++] = x;
+			}
 			return pick(Arrays.copyOf( newSet, numGood ));
 		}
 		return pick(set);

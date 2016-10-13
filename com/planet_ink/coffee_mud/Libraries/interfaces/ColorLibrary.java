@@ -195,7 +195,9 @@ public interface ColorLibrary extends CMLibrary
 		{   Color.CYAN.getANSICode(), Color.BGCYAN.getANSICode()},
 		{   Color.PURPLE.getANSICode(), Color.BGPURPLE.getANSICode()},
 		{   Color.DARKGREY.getANSICode(), Color.BGDEFAULT.getANSICode()},
-		{   Color.BLACK.getANSICode(), Color.BGBLACK.getANSICode()}
+		{
+			Color.BLACK.getANSICode(), Color.BGBLACK.getANSICode()
+		}
 	});
 
 	//remaining=aijlnoszAJV

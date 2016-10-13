@@ -236,6 +236,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 			buildSavedClasses();
 		return savedCharClasses;
 	}
+
 	public final List<SavedRace> races()
 	{
 		if(savedClassUpdateTime!=CMClass.getLastClassUpdatedTime())
@@ -5438,15 +5439,19 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					if(CMSecurity.isASysOp(E))
 						return true;
 					for(final Enumeration<Area> e=CMLib.map().areas();e.hasMoreElements();)
+					{
 						if(e.nextElement().amISubOp(E.name()))
 							return true;
+					}
 					break;
 				case _SUBOP: // -subop
 					if(CMSecurity.isASysOp(E))
 						return false;
 					for(final Enumeration<Area> e=CMLib.map().areas();e.hasMoreElements();)
+					{
 						if(e.nextElement().amISubOp(E.name()))
 							return false;
+					}
 					break;
 				case _CLASS: // -class
 					{

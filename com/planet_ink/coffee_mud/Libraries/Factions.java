@@ -886,7 +886,11 @@ public class Factions extends StdLibrary implements FactionManager
 					{
 						final Faction.FRange FR3=e.nextElement();
 						if(FR3.name().equalsIgnoreCase(FR.name())&&(FR3!=FR))
-						{ mob.tell(L("A range already exists with that name!")); error99=true; break;}
+						{
+							mob.tell(L("A range already exists with that name!"));
+							error99=true;
+							break;
+						}
 					}
 					if(error99)
 						mob.tell(L("(no change)"));
@@ -984,7 +988,11 @@ public class Factions extends StdLibrary implements FactionManager
 						myval=i;
 					nextPrompt.append("  "+(i+1)+") "+CMStrings.capitalizeAndLower(Faction.EXPAFFECT_NAMES[i].toLowerCase())+"\n\r");
 				}
-				if(myval<0){ me.setExperienceFlag("NONE"); myval=0;}
+				if(myval<0)
+				{
+					me.setExperienceFlag("NONE");
+					myval=0;
+				}
 				if((showFlag!=showNumber)&&(showFlag>-999))
 				{
 					mob.tell(L("@x1. Affect on experience: @x2",""+showNumber,Faction.EXPAFFECT_NAMES[myval]));
@@ -1670,8 +1678,10 @@ public class Factions extends StdLibrary implements FactionManager
 				}
 
 				for(int n=0;n<oldData.length;n++)
+				{
 					if(newData[n]==null)
 						newData[n]=oldData[n];
+				}
 				if(item==null)
 					me.addReaction(newData[0], newData[1], newData[2], newData[3]);
 				else
@@ -1687,8 +1697,16 @@ public class Factions extends StdLibrary implements FactionManager
 			else
 				me.setLightReactions(false);
 
-			if(showFlag<-900){ ok=true; break;}
-			if(showFlag>0){ showFlag=-1; continue;}
+			if(showFlag<-900)
+			{
+				ok=true;
+				break;
+			}
+			if(showFlag>0)
+			{
+				showFlag=-1;
+				continue;
+			}
 			showFlag=CMath.s_int(mob.session().prompt(L("Edit which? "),""));
 			if(showFlag<=0)
 			{
@@ -1751,8 +1769,10 @@ public class Factions extends StdLibrary implements FactionManager
 					s=s.substring(0,x).trim();
 					int first=s.length()-1;
 					for(;first>=0;first--)
+					{
 						if(!Character.isLetterOrDigit(s.charAt(first)))
 							break;
+					}
 					first=CMLib.factions().isFactionTag(s.substring(first).trim().toUpperCase());
 					if(first>=0)
 						lastCommented=first;

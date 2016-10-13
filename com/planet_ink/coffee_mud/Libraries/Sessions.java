@@ -29,7 +29,11 @@ import com.planet_ink.coffee_mud.core.interfaces.*;
 */
 public class Sessions extends StdLibrary implements SessionsList
 {
-	@Override public String ID(){return "Sessions";}
+	@Override
+	public String ID()
+	{
+		return "Sessions";
+	}
 
 	private volatile long nextSweepTime = System.currentTimeMillis();
 
@@ -48,13 +52,24 @@ public class Sessions extends StdLibrary implements SessionsList
 		}
 	};
 
-	@Override public Iterator<Session> all(){return all.iterator();}
-	@Override public Iterable<Session> allIterable(){return all;}
+	@Override
+	public Iterator<Session> all()
+	{
+		return all.iterator();
+	}
+
+	@Override
+	public Iterable<Session> allIterable()
+	{
+		return all;
+	}
+
 	@Override
 	public Iterator<Session> localOnline()
 	{
 		return new FilteredIterator<Session>(all.iterator(),localOnlineFilter);
 	}
+
 	@Override
 	public Iterable<Session> localOnlineIterable()
 	{
@@ -305,17 +320,23 @@ public class Sessions extends StdLibrary implements SessionsList
 	{
 		// then look for players
 		for(final Session S : localOnlineIterable())
+		{
 			if(S.mob().Name().equalsIgnoreCase(srchStr))
 				return S;
+		}
 		for(final Session S : localOnlineIterable())
+		{
 			if(S.mob().name().equalsIgnoreCase(srchStr))
 				return S;
+		}
 		// keep looking for players
 		if(!exactOnly)
 		{
 			for(final Session S : localOnlineIterable())
+			{
 				if(CMLib.english().containsString(S.mob().Name(),srchStr))
 					return S;
+			}
 			for(final Session S : localOnlineIterable())
 				if(CMLib.english().containsString(S.mob().name(),srchStr))
 					return S;

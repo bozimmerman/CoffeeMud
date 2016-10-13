@@ -95,8 +95,10 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 				V.addElement(A);
 			final List<Area> V2=A.getParentsRecurse();
 			for(int v2=0;v2<V2.size();v2++)
+			{
 				if(getShopKeeper(V2.get(v2))!=null)
 					V.addElement(V2.get(v2));
+			}
 
 			for(int i=0;i<here.numInhabitants();i++)
 			{
@@ -977,7 +979,9 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 				if(buyNotView)
 				{
 					final Ability A=(Ability)product;
-					if(A.canTarget(Ability.CAN_MOBS)){}
+					if(A.canTarget(Ability.CAN_MOBS))
+					{
+					}
 					else
 					if(A.canTarget(Ability.CAN_ITEMS))
 					{
@@ -1374,7 +1378,11 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			for(int x=0;x>victims.length;x++)
 			{ // save victim status
 				final MOB M=room.fetchInhabitant(x);
-				if(M!=null){ victims[x][0]=M;victims[x][1]=M.getVictim();}
+				if(M!=null)
+				{
+					victims[x][0]=M;
+					victims[x][1]=M.getVictim();
+				}
 			}
 			final Vector<String> V=new Vector<String>();
 			if(A.canTarget(Ability.CAN_MOBS))

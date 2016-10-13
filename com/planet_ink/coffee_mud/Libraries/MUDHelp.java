@@ -856,7 +856,10 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 					{
 						thisTag=(String)CMD.executeInternal(forMOB, MUDCmdProcessor.METAFLAG_FORCED, D);
 						helpStr = D.Name().toUpperCase();
-					}catch(final Exception e){}
+					}
+					catch(final Exception e)
+					{
+					}
 				}
 
 			}

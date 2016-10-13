@@ -34,7 +34,12 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 */
 public class CoffeeTables extends StdLibrary implements StatisticsLibrary
 {
-	@Override public String ID(){return "CoffeeTables";}
+	@Override
+	public String ID()
+	{
+		return "CoffeeTables";
+	}
+
 	public CoffeeTableRow todays=null;
 
 	@Override
