@@ -31,7 +31,6 @@ public interface HandOfCards extends Container
 	 */
 	public boolean shuffleDeck();
 
-
 	/**
 	 * Returns the top card item object from the deck
 	 * @return the top card item object from the deck
