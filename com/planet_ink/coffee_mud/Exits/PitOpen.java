@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 /*
    Copyright 2001-2016 Bo Zimmerman
 
@@ -33,8 +32,18 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class PitOpen extends StdOpenDoorway
 {
-	@Override public String ID(){	return "PitOpen";}
-	@Override public String Name(){return "a pit";}
+	@Override
+	public String ID()
+	{
+		return "PitOpen";
+	}
+
+	@Override
+	public String Name()
+	{
+		return "a pit";
+	}
+
 	public PitOpen()
 	{
 		super();

@@ -38,7 +38,13 @@ public class Impassable extends GenExit
 		name="a blocked way";
 		description="It doesn't look like you can go that way.";
 	}
-	@Override public String ID(){	return "Impassable";}
+
+	@Override
+	public String ID()
+	{
+		return "Impassable";
+	}
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{

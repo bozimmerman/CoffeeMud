@@ -15,9 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
-
 /*
    Copyright 2001-2016 Bo Zimmerman
 
@@ -35,8 +32,27 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class Gate extends StdClosedDoorway
 {
-	@Override public String ID(){	return "Gate";}
-	@Override public String Name(){return "a gate";}
-	@Override public String doorName(){return "gate";}
-	@Override public String closedText(){return "a closed gate";}
+	@Override
+	public String ID()
+	{
+		return "Gate";
+	}
+
+	@Override
+	public String Name()
+	{
+		return "a gate";
+	}
+
+	@Override
+	public String doorName()
+	{
+		return "gate";
+	}
+
+	@Override
+	public String closedText()
+	{
+		return "a closed gate";
+	}
 }

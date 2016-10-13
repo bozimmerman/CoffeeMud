@@ -34,7 +34,12 @@ import java.util.*;
 */
 public class GenDoor extends GenExit
 {
-	@Override public String ID(){	return "GenDoor";}
+	@Override
+	public String ID()
+	{
+		return "GenDoor";
+	}
+
 	public GenDoor()
 	{
 		super();

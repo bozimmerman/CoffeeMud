@@ -749,7 +749,11 @@ public class StdExit implements Exit
 		if(amDestroyed())
 			return false;
 
-		if(usage<=0){ destroy(); return false;}
+		if(usage<=0)
+		{
+			destroy();
+			return false;
+		}
 
 		if(tickID==Tickable.TICKID_EXIT_REOPEN)
 		{
@@ -900,6 +904,7 @@ public class StdExit implements Exit
 		}
 		return "";
 	}
+
 	@Override
 	public void setTemporaryDoorLink(String link)
 	{
@@ -956,6 +961,7 @@ public class StdExit implements Exit
 		if(affects.remove(to))
 			to.setAffectedOne(null);
 	}
+
 	@Override
 	public void eachEffect(final EachApplicable<Ability> applier)
 	{
@@ -971,7 +977,9 @@ public class StdExit implements Exit
 					applier.apply(A);
 			}
 		}
-		catch(final ArrayIndexOutOfBoundsException e){}
+		catch(final ArrayIndexOutOfBoundsException e)
+		{
+		}
 	}
 
 	@Override
@@ -1047,8 +1055,10 @@ public class StdExit implements Exit
 		if(to==null)
 			return;
 		for(final Behavior B : behaviors)
+		{
 			if((B!=null)&&(B.ID().equals(to.ID())))
 				return;
+		}
 		// first one! so start ticking...
 		if(behaviors.size()==0)
 			CMLib.threads().startTickDown(this,Tickable.TICKID_EXIT_BEHAVIOR,1);
@@ -1101,7 +1111,9 @@ public class StdExit implements Exit
 		{
 			return behaviors.get(index);
 		}
-		catch(final java.lang.ArrayIndexOutOfBoundsException x){}
+		catch(final java.lang.ArrayIndexOutOfBoundsException x)
+		{
+		}
 		return null;
 	}
 
@@ -1226,7 +1238,9 @@ public class StdExit implements Exit
 					applier.apply(S);
 			}
 		}
-		catch(final ArrayIndexOutOfBoundsException e){}
+		catch(final ArrayIndexOutOfBoundsException e)
+		{
+		}
 	}
 
 	@Override

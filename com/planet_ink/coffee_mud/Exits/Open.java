@@ -32,5 +32,9 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class Open extends StdOpenDoorway
 {
-	@Override public String ID(){	return "Open";}
+	@Override
+	public String ID()
+	{
+		return "Open";
+	}
 }

@@ -16,7 +16,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -36,26 +35,30 @@ import java.util.*;
 */
 public class GenExit extends StdExit implements Modifiable
 {
-	protected String 	name="a walkway";
-	protected String 	description="Looks like an ordinary path from here to there.";
-	protected String 	displayText="";
-	protected String 	closedText="A barrier blocks the way.";
+	protected String	name				= "a walkway";
+	protected String	description			= "Looks like an ordinary path from here to there.";
+	protected String	displayText			= "";
+	protected String	closedText			= "A barrier blocks the way.";
 
-	protected String 	doorName="door";
-	protected String 	closeName="close";
-	protected String 	openName="open";
+	protected String	doorName			= "door";
+	protected String	closeName			= "close";
+	protected String	openName			= "open";
 
-	protected boolean 	hasADoor=false;
-	protected boolean 	doorDefaultsClosed=true;
-	protected boolean 	hasALock=false;
-	protected boolean 	doorDefaultsLocked=false;
-	protected boolean 	isReadable=false;
-	protected int 		openDelayTicks=45;
+	protected boolean	hasADoor			= false;
+	protected boolean	doorDefaultsClosed	= true;
+	protected boolean	hasALock			= false;
+	protected boolean	doorDefaultsLocked	= false;
+	protected boolean	isReadable			= false;
+	protected int		openDelayTicks		= 45;
 
-	protected String 	keyName="";
+	protected String	keyName				= "";
 
+	@Override
+	public String ID()
+	{
+		return "GenExit";
+	}
 
-	@Override public String ID(){	return "GenExit";}
 	public GenExit()
 	{
 		super();
@@ -77,7 +80,12 @@ public class GenExit extends StdExit implements Modifiable
 		openDelayTicks=45;
 	}
 
-	@Override public boolean isGeneric(){return true;}
+	@Override
+	public boolean isGeneric()
+	{
+		return true;
+	}
+
 	@Override
 	public String text()
 	{
@@ -93,16 +101,66 @@ public class GenExit extends StdExit implements Modifiable
 		isLocked=doorDefaultsLocked;
 	}
 
-	@Override public String Name(){ return name;}
-	@Override public void setName(String newName){name=newName;}
-	@Override public String displayText(){ return displayText;}
-	@Override public void setDisplayText(String newDisplayText){ displayText=newDisplayText;}
-	@Override public String description(){ return description;}
-	@Override public void setDescription(String newDescription){ description=newDescription;}
-	@Override public boolean hasADoor(){return hasADoor;}
-	@Override public boolean hasALock(){return hasALock;}
-	@Override public boolean defaultsLocked(){return doorDefaultsLocked;}
-	@Override public boolean defaultsClosed(){return doorDefaultsClosed;}
+	@Override
+	public String Name()
+	{
+		return name;
+	}
+
+	@Override
+	public void setName(String newName)
+	{
+		name=newName;
+	}
+
+	@Override
+	public String displayText()
+	{
+		return displayText;
+	}
+
+	@Override
+	public void setDisplayText(String newDisplayText)
+	{
+		displayText=newDisplayText;
+	}
+
+	@Override
+	public String description()
+	{
+		return description;
+	}
+
+	@Override
+	public void setDescription(String newDescription)
+	{
+		description=newDescription;
+	}
+
+	@Override
+	public boolean hasADoor()
+	{
+		return hasADoor;
+	}
+
+	@Override
+	public boolean hasALock()
+	{
+		return hasALock;
+	}
+
+	@Override
+	public boolean defaultsLocked()
+	{
+		return doorDefaultsLocked;
+	}
+
+	@Override
+	public boolean defaultsClosed()
+	{
+		return doorDefaultsClosed;
+	}
+
 	@Override
 	public void setDoorsNLocks(boolean newHasADoor,
 								  boolean newIsOpen,
@@ -119,12 +177,36 @@ public class GenExit extends StdExit implements Modifiable
 		doorDefaultsLocked=newDefaultsLocked;
 	}
 
-	@Override public boolean isReadable(){ return isReadable;}
+	@Override
+	public boolean isReadable()
+	{
+		return isReadable;
+	}
 
-	@Override public String doorName(){return doorName;}
-	@Override public String closeWord(){return closeName;}
-	@Override public String openWord(){return openName;}
-	@Override public String closedText(){return closedText;}
+	@Override
+	public String doorName()
+	{
+		return doorName;
+	}
+
+	@Override
+	public String closeWord()
+	{
+		return closeName;
+	}
+
+	@Override
+	public String openWord()
+	{
+		return openName;
+	}
+
+	@Override
+	public String closedText()
+	{
+		return closedText;
+	}
+
 	@Override
 	public void setExitParams(String newDoorName,
 							  String newCloseWord,
@@ -137,15 +219,47 @@ public class GenExit extends StdExit implements Modifiable
 		closedText=newClosedText;
 	}
 
-	@Override public String readableText(){ return (isReadable?keyName:"");}
-	@Override public void setReadable(boolean isTrue){isReadable=isTrue;}
-	@Override public void setReadableText(String text) { keyName=temporaryDoorLink()+text; }
+	@Override
+	public String readableText()
+	{
+		return (isReadable?keyName:"");
+	}
 
-	@Override public String keyName()	{ return keyName; }
-	@Override public void setKeyName(String newKeyName){keyName=temporaryDoorLink()+newKeyName;}
+	@Override
+	public void setReadable(boolean isTrue)
+	{
+		isReadable=isTrue;
+	}
 
-	@Override public int openDelayTicks()	{ return openDelayTicks;}
-	@Override public void setOpenDelayTicks(int numTicks){openDelayTicks=numTicks;}
+	@Override
+	public void setReadableText(String text)
+	{
+		keyName=temporaryDoorLink()+text;
+	}
+
+	@Override
+	public String keyName()
+	{
+		return keyName;
+	}
+
+	@Override
+	public void setKeyName(String newKeyName)
+	{
+		keyName=temporaryDoorLink()+newKeyName;
+	}
+
+	@Override
+	public int openDelayTicks()
+	{
+		return openDelayTicks;
+	}
+
+	@Override
+	public void setOpenDelayTicks(int numTicks)
+	{
+		openDelayTicks=numTicks;
+	}
 
 	@Override
 	public String temporaryDoorLink()
@@ -158,6 +272,7 @@ public class GenExit extends StdExit implements Modifiable
 		}
 		return "";
 	}
+
 	@Override
 	public void setTemporaryDoorLink(String link)
 	{
@@ -176,93 +291,161 @@ public class GenExit extends StdExit implements Modifiable
 			keyName="{#"+link+"#}"+keyName;
 	}
 
-	@Override public int getSaveStatIndex(){return getStatCodes().length;}
+	@Override
+	public int getSaveStatIndex()
+	{
+		return getStatCodes().length;
+	}
+
 	private static final String[] CODES={
 		"CLASS","NAME","DISPLAY","DESCRIPTION","DOOR",
 		"LEVEL","ABILITY","ISREADABLE","AFFBEHAV","DISPOSITION",
 		"READABLETEXT","HASADOOR","DEFCLOSED","HASALOCK","DEFLOCKED",
 		"KEYNAME","RESETTIME"
 	};
-	@Override public String[] getStatCodes(){return CODES;}
-	@Override public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
+	@Override
+	public String[] getStatCodes()
+	{
+		return CODES;
+	}
+
+	@Override
+	public boolean isStat(String code)
+	{
+		return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;
+	}
+
 	@Override
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<CODES.length;i++)
+		{
 			if(code.equalsIgnoreCase(CODES[i]))
 				return i;
+		}
 		return -1;
 	}
+
 	@Override
 	public String getStat(String code)
 	{
 		switch(getCodeNum(code))
 		{
-		case 0: return ID(); // class
-		case 1: return name(); // name
-		case 2: return displayText(); // display
-		case 3: return description(); // description
-		case 4: return doorName(); // door
-		case 5: return ""+basePhyStats().level(); // level
-		case 6: return ""+basePhyStats().ability(); // ability
-		case 7: return ""+isReadable(); // isreadable
-		case 8: return CMLib.coffeeMaker().getExtraEnvPropertiesStr(this); // affbehav
-		case 9: return ""+basePhyStats().disposition(); // disposition
-		case 10: return ""+readableText(); // readabletext
-		case 11: return ""+hasADoor(); // hasadoor
-		case 12: return ""+defaultsClosed(); // defclosed
-		case 13: return ""+hasALock(); // hasalock
-		case 14: return ""+defaultsLocked(); // deflocked
-		case 15: return ""+keyName(); // keyname
-		case 16: return ""+openDelayTicks(); // open ticks
+		case 0:
+			return ID(); // class
+		case 1:
+			return name(); // name
+		case 2:
+			return displayText(); // display
+		case 3:
+			return description(); // description
+		case 4:
+			return doorName(); // door
+		case 5:
+			return "" + basePhyStats().level(); // level
+		case 6:
+			return "" + basePhyStats().ability(); // ability
+		case 7:
+			return "" + isReadable(); // isreadable
+		case 8:
+			return CMLib.coffeeMaker().getExtraEnvPropertiesStr(this); // affbehav
+		case 9:
+			return "" + basePhyStats().disposition(); // disposition
+		case 10:
+			return "" + readableText(); // readabletext
+		case 11:
+			return "" + hasADoor(); // hasadoor
+		case 12:
+			return "" + defaultsClosed(); // defclosed
+		case 13:
+			return "" + hasALock(); // hasalock
+		case 14:
+			return "" + defaultsLocked(); // deflocked
+		case 15:
+			return "" + keyName(); // keyname
+		case 16:
+			return "" + openDelayTicks(); // open ticks
 		}
 		return "";
 	}
+
 	@Override
 	public void setStat(String code, String val)
 	{
 		switch(getCodeNum(code))
 		{
-		case 0: return;
-		case 1: setName(val); break; // name
-		case 2: setDisplayText(val); break; // display
-		case 3: setDescription(val); break; // description
-		case 4: doorName=val; break; // door
-		case 5: basePhyStats().setLevel(CMath.parseIntExpression(val)); break; // level
-		case 6: basePhyStats().setAbility(CMath.parseIntExpression(val)); break; // ability
-		case 7: setReadable(CMath.s_bool(val)); break; // isreadable
-		case 8: { // affbehav
-					delAllEffects(true);
-					delAllBehaviors();
-					CMLib.coffeeMaker().setExtraEnvProperties(this,CMLib.xml().parseAllXML(val)); // affbehav
-					break;
-				} // affbehav
-		case 9: { // disposition
-					if(CMath.isInteger(val)||(val.trim().length()==0))
-						basePhyStats().setDisposition(CMath.s_parseIntExpression(val)); // disposition
-					else
-					{
-						basePhyStats().setDisposition(0);
-						final List<String> V=CMParms.parseCommas(val,true);
-						for(final Iterator<String> e=V.iterator();e.hasNext();)
-						{
-							val=e.next();
-							final int dispIndex=CMParms.indexOfIgnoreCase(PhyStats.IS_CODES,val);
-							if(dispIndex>=0)
-								basePhyStats().setDisposition(basePhyStats().disposition()|(int)CMath.pow(2,dispIndex));
-						}
-					}
-					break;
-				} //disposition
-		case 10: setReadableText(val); break; // readabletext
-		case 11: hasADoor=CMath.s_bool(val); break; // hasadoor
-		case 12: doorDefaultsClosed=CMath.s_bool(val); break; // defclosed
-		case 13: hasALock=CMath.s_bool(val); break; // hasalock
-		case 14: doorDefaultsLocked=CMath.s_bool(val); break; // deflocked
-		case 15: setKeyName(val); break; // keyname
-		case 16: setOpenDelayTicks(CMath.s_parseIntExpression(val)); break; // openticks
+		case 0:
+			return;
+		case 1:
+			setName(val);
+			break; // name
+		case 2:
+			setDisplayText(val);
+			break; // display
+		case 3:
+			setDescription(val);
+			break; // description
+		case 4:
+			doorName = val;
+			break; // door
+		case 5:
+			basePhyStats().setLevel(CMath.parseIntExpression(val));
+			break; // level
+		case 6:
+			basePhyStats().setAbility(CMath.parseIntExpression(val));
+			break; // ability
+		case 7:
+			setReadable(CMath.s_bool(val));
+			break; // isreadable
+		case 8:
+		{ // affbehav
+			delAllEffects(true);
+			delAllBehaviors();
+			CMLib.coffeeMaker().setExtraEnvProperties(this, CMLib.xml().parseAllXML(val)); // affbehav
+			break;
+		} // affbehav
+		case 9:
+		{ // disposition
+			if (CMath.isInteger(val) || (val.trim().length() == 0))
+				basePhyStats().setDisposition(CMath.s_parseIntExpression(val)); // disposition
+			else
+			{
+				basePhyStats().setDisposition(0);
+				final List<String> V = CMParms.parseCommas(val, true);
+				for (final Iterator<String> e = V.iterator(); e.hasNext();)
+				{
+					val = e.next();
+					final int dispIndex = CMParms.indexOfIgnoreCase(PhyStats.IS_CODES, val);
+					if (dispIndex >= 0)
+						basePhyStats().setDisposition(basePhyStats().disposition() | (int) CMath.pow(2, dispIndex));
+				}
+			}
+			break;
+		} // disposition
+		case 10:
+			setReadableText(val);
+			break; // readabletext
+		case 11:
+			hasADoor = CMath.s_bool(val);
+			break; // hasadoor
+		case 12:
+			doorDefaultsClosed = CMath.s_bool(val);
+			break; // defclosed
+		case 13:
+			hasALock = CMath.s_bool(val);
+			break; // hasalock
+		case 14:
+			doorDefaultsLocked = CMath.s_bool(val);
+			break; // deflocked
+		case 15:
+			setKeyName(val);
+			break; // keyname
+		case 16:
+			setOpenDelayTicks(CMath.s_parseIntExpression(val));
+			break; // openticks
 		}
 	}
+
 	@Override
 	public boolean sameAs(Environmental E)
 	{
@@ -270,8 +453,10 @@ public class GenExit extends StdExit implements Modifiable
 			return false;
 		final String[] codes=getStatCodes();
 		for(int i=0;i<codes.length;i++)
+		{
 			if(!E.getStat(codes[i]).equals(getStat(codes[i])))
 				return false;
+		}
 		return true;
 	}
 }

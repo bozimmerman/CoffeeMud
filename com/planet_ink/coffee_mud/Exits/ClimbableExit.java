@@ -35,10 +35,30 @@ import java.util.*;
 */
 public class ClimbableExit extends StdExit
 {
-	@Override public String ID(){	return "ClimbableExit";}
-	@Override public String Name(){ return "a sheer surface";}
-	@Override public String displayText(){ return "a sheer surface";}
-	@Override public String description(){ return "Looks like you'll have to climb it.";}
+	@Override
+	public String ID()
+	{
+		return "ClimbableExit";
+	}
+
+	@Override
+	public String Name()
+	{
+		return "a sheer surface";
+	}
+
+	@Override
+	public String displayText()
+	{
+		return "a sheer surface";
+	}
+
+	@Override
+	public String description()
+	{
+		return "Looks like you'll have to climb it.";
+	}
+
 	protected Ability climbA;
 
 	public ClimbableExit()

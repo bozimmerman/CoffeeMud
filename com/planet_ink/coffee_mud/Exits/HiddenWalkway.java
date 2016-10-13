@@ -34,7 +34,12 @@ import java.util.*;
 */
 public class HiddenWalkway extends Open
 {
-	@Override public String ID(){	return "HiddenWalkway";}
+	@Override
+	public String ID()
+	{
+		return "HiddenWalkway";
+	}
+
 	public HiddenWalkway()
 	{
 		super();

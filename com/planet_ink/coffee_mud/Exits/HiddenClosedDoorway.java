@@ -34,8 +34,18 @@ import java.util.*;
 */
 public class HiddenClosedDoorway extends StdClosedDoorway
 {
-	@Override public String ID(){	return "HiddenClosedDoorway";}
-	@Override public String description(){return "a cleverly concealed door.";}
+	@Override
+	public String ID()
+	{
+		return "HiddenClosedDoorway";
+	}
+
+	@Override
+	public String description()
+	{
+		return "a cleverly concealed door.";
+	}
+
 	public HiddenClosedDoorway()
 	{
 		super();

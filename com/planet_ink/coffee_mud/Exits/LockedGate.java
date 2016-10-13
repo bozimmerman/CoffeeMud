@@ -15,9 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
-
 /*
    Copyright 2001-2016 Bo Zimmerman
 
@@ -35,8 +32,27 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class LockedGate extends Gate
 {
-	@Override public String ID(){	return "LockedGate";}
-	@Override public String closedText(){return "a closed, locked gate";}
-	@Override public boolean hasALock(){return true;}
-	@Override public boolean defaultsLocked(){return true;}
+	@Override
+	public String ID()
+	{
+		return "LockedGate";
+	}
+
+	@Override
+	public String closedText()
+	{
+		return "a closed, locked gate";
+	}
+
+	@Override
+	public boolean hasALock()
+	{
+		return true;
+	}
+
+	@Override
+	public boolean defaultsLocked()
+	{
+		return true;
+	}
 }

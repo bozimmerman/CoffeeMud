@@ -34,9 +34,23 @@ import java.util.*;
 */
 public class GapExit extends StdExit
 {
-	@Override public String ID(){	return "GapExit";}
-	@Override public String Name(){ return "a crevasse";}
-	@Override public String description(){return "Looks like you'll have to jump it.";}
+	@Override
+	public String ID()
+	{
+		return "GapExit";
+	}
+
+	@Override
+	public String Name()
+	{
+		return "a crevasse";
+	}
+
+	@Override
+	public String description()
+	{
+		return "Looks like you'll have to jump it.";
+	}
 
 	public int mobWeight(MOB mob)
 	{

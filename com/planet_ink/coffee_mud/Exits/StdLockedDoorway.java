@@ -34,8 +34,27 @@ import java.util.*;
 */
 public class StdLockedDoorway extends StdClosedDoorway
 {
-	@Override public String ID(){	return "StdLockedDoorway";}
-	@Override public boolean hasALock(){return true;}
-	@Override public boolean defaultsLocked(){return true;}
-	@Override public String closedText(){return "a closed, locked door";}
+	@Override
+	public String ID()
+	{
+		return "StdLockedDoorway";
+	}
+
+	@Override
+	public boolean hasALock()
+	{
+		return true;
+	}
+
+	@Override
+	public boolean defaultsLocked()
+	{
+		return true;
+	}
+
+	@Override
+	public String closedText()
+	{
+		return "a closed, locked door";
+	}
 }

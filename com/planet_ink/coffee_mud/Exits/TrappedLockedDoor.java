@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 /*
    Copyright 2001-2016 Bo Zimmerman
 
@@ -33,7 +32,12 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class TrappedLockedDoor extends StdLockedDoorway
 {
-	@Override public String ID(){	return "TrappedLockedDoor";}
+	@Override
+	public String ID()
+	{
+		return "TrappedLockedDoor";
+	}
+
 	public TrappedLockedDoor()
 	{
 		super();
