@@ -72,6 +72,7 @@ public class Thief_Hide extends ThiefSkill
 			{
 				unInvoke();
 				mob.recoverPhyStats();
+				mob.recoverCharStats();
 			}
 			else
 			if((abilityCode()==0)
@@ -84,6 +85,7 @@ public class Thief_Hide extends ThiefSkill
 				{
 					unInvoke();
 					mob.recoverPhyStats();
+					mob.recoverCharStats();
 				}
 				else
 				switch(msg.othersMinor())
@@ -93,6 +95,7 @@ public class Thief_Hide extends ThiefSkill
 					{
 						unInvoke();
 						mob.recoverPhyStats();
+						mob.recoverCharStats();
 					}
 					break;
 				case CMMsg.TYP_OPEN:
@@ -107,6 +110,7 @@ public class Thief_Hide extends ThiefSkill
 					{
 						unInvoke();
 						mob.recoverPhyStats();
+						mob.recoverCharStats();
 					}
 					break;
 				}

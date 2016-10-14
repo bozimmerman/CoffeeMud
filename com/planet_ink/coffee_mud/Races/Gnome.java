@@ -90,6 +90,12 @@ public class Gnome extends StdRace
 		return 0;
 	}
 
+	@Override
+	public int getXPAdjustment()
+	{
+		return 5;
+	}
+
 	private final static String localizedStaticRacialCat = CMLib.lang().L("Gnome");
 
 	@Override
@@ -98,8 +104,8 @@ public class Gnome extends StdRace
 		return localizedStaticRacialCat;
 	}
 
-	private final String[]	culturalAbilityNames			= { "Gnomish", "Digging" };
-	private final int[]		culturalAbilityProficiencies	= { 100, 50 };
+	private final String[]	culturalAbilityNames			= { "Gnomish", "Digging", "Skill_BurrowHide" };
+	private final int[]		culturalAbilityProficiencies	= { 100, 50, 25 };
 
 	@Override
 	public String[] culturalAbilityNames()
@@ -113,6 +119,28 @@ public class Gnome extends StdRace
 		return culturalAbilityProficiencies;
 	}
 
+	private final String[]	racialEffectNames			= { "Chant_Burrowspeak" };
+	private final int[]		racialEffectLevels			= { 1 };
+	private final String[]	racialEffectParms			= { "" };
+	
+	@Override
+	protected String[] racialEffectNames()
+	{
+		return racialEffectNames;
+	}
+
+	@Override
+	protected int[] racialEffectLevels()
+	{
+		return racialEffectLevels;
+	}
+
+	@Override
+	protected String[] racialEffectParms()
+	{
+		return racialEffectParms;
+	}
+	
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,0 ,0 };
 

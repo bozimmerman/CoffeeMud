@@ -92,8 +92,8 @@ public class HalfElf extends StdRace
 		return localizedStaticRacialCat;
 	}
 
-	private final String[]	culturalAbilityNames			= { "Elvish", "Fishing" };
-	private final int[]		culturalAbilityProficiencies	= { 50, 50 };
+	private final String[]	culturalAbilityNames			= { "Elvish", "Fishing", "Skill_CulturalAdaptation" };
+	private final int[]		culturalAbilityProficiencies	= { 50, 50, 50 };
 
 	@Override
 	public String[] culturalAbilityNames()

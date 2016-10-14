@@ -51,7 +51,7 @@ public class Skill_BurrowHide extends StdSkill
 	@Override
 	public String displayText()
 	{
-		return "";
+		return isBuried?L("(Hidden in a Burrow)"):"";
 	}
 
 	@Override
@@ -89,15 +89,136 @@ public class Skill_BurrowHide extends StdSkill
 	{
 		return false;
 	}
+	
+	protected volatile boolean isBuried = false;
 
-	protected boolean	doneThisRound	= false;
+	protected boolean isDiggableRoom(final Room R)
+	{
+		if(R==null)
+			return false;
+		if(((R.domainType()&Room.INDOORS)>0)
+		&&(R.domainType()!=Room.DOMAIN_INDOORS_CAVE)
+		&&((R.getAtmosphere()&RawMaterial.MATERIAL_ROCK)==0))
+			return false;
+		if((R.domainType()==Room.DOMAIN_OUTDOORS_CITY)
+		   ||(R.domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)
+		   ||(R.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
+		   ||(R.domainType()==Room.DOMAIN_OUTDOORS_AIR)
+		   ||(R.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
+			return false;
+		return true;
+	}
+	
+	protected boolean isRodentHere(final Room R, final MOB notM)
+	{
+		if(R==null)
+			return false;
+		for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
+		{
+			final MOB M=m.nextElement();
+			if((M!=null)&&(M!=notM)&&(M.isMonster()))
+			{
+				final Race mR=M.charStats().getMyRace();
+				if(mR.racialCategory().equals("Rodent")
+				||mR.racialCategory().equals("Worm")
+				||mR.racialCategory().equals("Serpent"))
+				{
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(tickID==Tickable.TICKID_MOB)
-			doneThisRound=false;
 		return super.tick(ticking,tickID);
+	}
+
+	@Override
+	public void affectCharStats(MOB affected, CharStats affectableStats)
+	{
+		super.affectCharStats(affected,affectableStats);
+		affectableStats.setStat(CharStats.STAT_SAVE_DETECTION,proficiency()+affectableStats.getStat(CharStats.STAT_SAVE_DETECTION));
+	}
+	@Override
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
+	{
+		super.affectPhyStats(affected,affectableStats);
+		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_HIDDEN);
+		if(CMLib.flags().isSneaking(affected))
+			affectableStats.setDisposition(affectableStats.disposition()-PhyStats.IS_SNEAKING);
+	}
+
+	@Override
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
+	{
+		if(!(affected instanceof MOB))
+			return;
+
+		final MOB mob=(MOB)affected;
+
+		if(msg.amISource(mob) && (isBuried))
+		{
+			if(((msg.sourceMinor()==CMMsg.TYP_ENTER)
+				||(msg.sourceMinor()==CMMsg.TYP_LEAVE)
+				||(msg.sourceMinor()==CMMsg.TYP_FLEE)
+				||(msg.sourceMinor()==CMMsg.TYP_RECALL))
+			&&(!msg.sourceMajor(CMMsg.MASK_ALWAYS))
+			&&(msg.sourceMajor()>0))
+			{
+				isBuried=false;
+				msg.source().tell("You climb out of the burrow.");
+				mob.recoverPhyStats();
+				mob.recoverCharStats();
+			}
+			else
+			if((abilityCode()==0)
+			&&(!msg.sourceMajor(CMMsg.MASK_ALWAYS))
+			&&(msg.othersMinor()!=CMMsg.TYP_LOOK)
+			&&(msg.othersMinor()!=CMMsg.TYP_EXAMINE)
+			&&(msg.othersMajor()>0))
+			{
+				if(msg.othersMajor(CMMsg.MASK_SOUND))
+				{
+					isBuried=false;
+					msg.source().tell("You climb out of the burrow.");
+					mob.recoverPhyStats();
+					mob.recoverCharStats();
+				}
+				else
+				switch(msg.othersMinor())
+				{
+				case CMMsg.TYP_SPEAK:
+				case CMMsg.TYP_CAST_SPELL:
+					{
+						isBuried=false;
+						msg.source().tell("You climb out of the burrow.");
+						mob.recoverPhyStats();
+						mob.recoverCharStats();
+					}
+					break;
+				case CMMsg.TYP_OPEN:
+				case CMMsg.TYP_CLOSE:
+				case CMMsg.TYP_LOCK:
+				case CMMsg.TYP_UNLOCK:
+				case CMMsg.TYP_PUSH:
+				case CMMsg.TYP_PULL:
+					if(((msg.target() instanceof Exit)
+						||((msg.target() instanceof Item)
+						   &&(!msg.source().isMine(msg.target())))))
+					{
+						isBuried=false;
+						msg.source().tell("You climb out of the burrow.");
+						mob.recoverPhyStats();
+						mob.recoverCharStats();
+					}
+					break;
+				}
+			}
+		}
+		return;
 	}
 
 	@Override
@@ -107,7 +228,23 @@ public class Skill_BurrowHide extends StdSkill
 			return true;
 
 		final MOB mob=(MOB)affected;
-
+		final Room R=mob.location();
+		if((msg.targetMinor()==CMMsg.TYP_ENTER)
+		&&(msg.source()!=mob)
+		&&(msg.source().isMonster())
+		&&(!isBuried)
+		&&(msg.target()==R)
+		&&(isDiggableRoom(R))
+		&&(isRodentHere(R,mob))
+		&&(CMLib.flags().isAliveAwakeMobileUnbound(mob, true))
+		&&(CMLib.flags().isAggressiveTo(msg.source(), mob))
+		&&(super.proficiencyCheck(mob, 5*(adjustedLevel(mob,0)-msg.source().phyStats().level()), false)))
+		{
+			mob.tell("Your friends alert you to incoming danger! You quickly burrow out of sight.");
+			isBuried=true;
+			mob.recoverPhyStats();
+			mob.recoverCharStats();
+		}
 		return true;
 	}
 }

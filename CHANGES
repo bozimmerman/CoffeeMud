@@ -4,13 +4,15 @@
    3. Pirates no longer regain lost limbs after death.
    4. New resource: DIRT.  Mass Grave now populates its room with the stuff.
    5. GModify now supports query-able stat "CLASSTYPE"
-   6. New Skills: Wilderness Sounds, Hardiness, Stonecunning, Keenvision
-   7. New Prayers: Taint of Evil
-   8. Centaur gets Hardiness, Drow adds Light Sensitivity and Taint of Evil, 
-   9. Duergar get -10% XP, Dwarfs get Stonecunning, Elfs Keenvision
-   10. Races can now have a XP adjustment, see Archon's Guide
-   11. New Language: WormSpeak
-   12. New Chants: BurrowSpeak
+   6. New Skills: Wilderness Sounds, Hardiness, Stonecunning, Keenvision, Burrow Hide
+   7. New Skills: Cultural Adaptation
+   8. New Prayers: Taint of Evil
+   9. Centaur gets Hardiness, Drow adds Light Sensitivity and Taint of Evil, 
+   10. Duergar get -10% XP, Dwarfs get Stonecunning, Elfs Keenvision
+   11. Races can now have a XP adjustment, see Archon's Guide
+   12. New Language: WormSpeak
+   13. New Chants: BurrowSpeak
+   14. Gnomes get BurrowSpeak and Burrow Hide, Goblins +5% XP, Half Elfs Cultural Adaptation
 # Build 5.9.4 Released 08/03/2016
    1. Qualify now shows language limits
    2. New Prop_NoTeleport exceptions
