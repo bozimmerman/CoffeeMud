@@ -18,8 +18,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 import java.util.Map;
 
-
-
 /*
    Copyright 2003-2016 Bo Zimmerman
 

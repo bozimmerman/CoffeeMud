@@ -456,6 +456,7 @@ public class DefaultPlayerStats implements PlayerStats
 			visitedRoomSet=((RoomnumberSet)CMClass.getCommon("DefaultRoomnumberSet"));
 		return visitedRoomSet;
 	}
+
 	@Override
 	public void addGTellStack(String msg)
 	{
@@ -477,6 +478,7 @@ public class DefaultPlayerStats implements PlayerStats
 			return account.getFriends();
 		return friends;
 	}
+
 	@Override
 	public Set<String> getIgnored()
 	{
@@ -498,6 +500,7 @@ public class DefaultPlayerStats implements PlayerStats
 			return alias.get(named.toUpperCase().trim());
 		return "";
 	}
+
 	@Override
 	public void addAliasName(String named)
 	{
@@ -505,11 +508,13 @@ public class DefaultPlayerStats implements PlayerStats
 		if(getAlias(named).length()==0)
 			alias.put(named,"");
 	}
+
 	@Override
 	public void delAliasName(String named)
 	{
 		alias.remove(named.toUpperCase().trim());
 	}
+
 	@Override
 	public void setAlias(String named, String value)
 	{
@@ -553,6 +558,7 @@ public class DefaultPlayerStats implements PlayerStats
 	{
 		return titles;
 	}
+
 	private String getTitleXML()
 	{
 		if(titles.size()==0)
@@ -589,6 +595,7 @@ public class DefaultPlayerStats implements PlayerStats
 	{
 		return tranpoofin;
 	}
+
 	@Override
 	public String getTranPoofOut()
 	{
@@ -1091,6 +1098,7 @@ public class DefaultPlayerStats implements PlayerStats
 	{
 		return  (account != null) ? account.getAccountExpiration() : accountExpires;
 	}
+
 	@Override
 	public void setAccountExpiration(long newVal)
 	{
@@ -1114,6 +1122,7 @@ public class DefaultPlayerStats implements PlayerStats
 		}
 		return false;
 	}
+
 	@Override
 	public boolean hasVisited(Room R)
 	{

@@ -54,7 +54,8 @@ public class DefaultPoll implements Poll
 		try
 		{
 			return getClass().newInstance();
-		} catch (final Exception e)
+		}
+		catch (final Exception e)
 		{
 			return new DefaultPoll();
 		}
@@ -77,7 +78,8 @@ public class DefaultPoll implements Poll
 		try
 		{
 			return (Poll) this.clone();
-		} catch (final CloneNotSupportedException e)
+		}
+		catch (final CloneNotSupportedException e)
 		{
 			return newInstance();
 		}

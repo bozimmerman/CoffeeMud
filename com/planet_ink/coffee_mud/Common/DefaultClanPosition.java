@@ -34,8 +34,17 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 public class DefaultClanPosition implements ClanPosition
 {
-	@Override public String ID(){return "DefaultClanPosition";}
-	@Override public String name() { return ID();}
+	@Override
+	public String ID()
+	{
+		return "DefaultClanPosition";
+	}
+
+	@Override
+	public String name()
+	{
+		return ID();
+	}
 
 	/** the named ID of the position */
 	protected String 	ID;
@@ -57,9 +66,30 @@ public class DefaultClanPosition implements ClanPosition
 	protected Clan.Authority[] functionChart;
 
 	/** return a new instance of the object*/
-	@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(final Exception e){return new DefaultClanPosition();}}
-	@Override public void initializeClass(){}
-	@Override public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	@Override
+	public CMObject newInstance()
+	{
+		try
+		{
+			return getClass().newInstance();
+		}
+		catch(final Exception e)
+		{
+			return new DefaultClanPosition();
+		}
+	}
+
+	@Override
+	public void initializeClass()
+	{
+	}
+
+	@Override
+	public int compareTo(CMObject o)
+	{
+		return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));
+	}
+
 	@Override
 	public CMObject copyOf()
 	{
@@ -78,86 +108,103 @@ public class DefaultClanPosition implements ClanPosition
 	{
 		return ID;
 	}
+
 	@Override
 	public void setID(String iD)
 	{
 		ID = iD;
 	}
+
 	@Override
 	public int getRoleID()
 	{
 		return roleID;
 	}
+
 	@Override
 	public void setRoleID(int roleID)
 	{
 		this.roleID = roleID;
 	}
+
 	@Override
 	public int getRank()
 	{
 		return rank;
 	}
+
 	@Override
 	public void setRank(int rank)
 	{
 		this.rank = rank;
 	}
+
 	@Override
 	public String getName()
 	{
 		return name;
 	}
+
 	@Override
 	public void setName(String name)
 	{
 		this.name = name;
 	}
+
 	@Override
 	public String getPluralName()
 	{
 		return pluralName;
 	}
+
 	@Override
 	public void setPluralName(String pluralName)
 	{
 		this.pluralName = pluralName;
 	}
+
 	@Override
 	public int getMax()
 	{
 		return max;
 	}
+
 	@Override
 	public void setMax(int max)
 	{
 		this.max = max;
 	}
+
 	@Override
 	public String getInnerMaskStr()
 	{
 		return innerMaskStr;
 	}
+
 	@Override
 	public void setInnerMaskStr(String innerMaskStr)
 	{
 		this.innerMaskStr = innerMaskStr;
 	}
+
 	@Override
 	public boolean isPublic()
 	{
 		return isPublic;
 	}
+
 	@Override
 	public void setPublic(boolean isPublic)
 	{
 		this.isPublic = isPublic;
 	}
+
 	@Override
 	public Clan.Authority[] getFunctionChart()
 	{
 		return functionChart;
 	}
+
 	@Override
 	public void setFunctionChart(Clan.Authority[] functionChart)
 	{
@@ -167,68 +214,127 @@ public class DefaultClanPosition implements ClanPosition
 	private static enum POS_STAT_CODES {
 		ID,RANK,NAME,PLURALNAME,MAX,INNERMASK,ISPUBLIC,FUNCTIONS
 	}
-	@Override public String[] getStatCodes() { return CMParms.toStringArray(POS_STAT_CODES.values());}
-	@Override public int getSaveStatIndex() { return POS_STAT_CODES.values().length;}
+
+	@Override
+	public String[] getStatCodes()
+	{
+		return CMParms.toStringArray(POS_STAT_CODES.values());
+	}
+
+	@Override
+	public int getSaveStatIndex()
+	{
+		return POS_STAT_CODES.values().length;
+	}
+
 	private POS_STAT_CODES getStatIndex(String code) { return (POS_STAT_CODES)CMath.s_valueOf(POS_STAT_CODES.values(),code); }
 	@Override
 	public String getStat(String code)
 	{
 		final POS_STAT_CODES stat = getStatIndex(code);
-		if(stat==null){ return "";}
+		if(stat==null)
+		{
+			return "";
+		}
 		switch(stat)
 		{
-		case NAME: return name;
-		case ID: return ID;
-		case RANK: return Integer.toString(rank);
-		case MAX: return Integer.toString(max);
-		case PLURALNAME: return pluralName;
-		case INNERMASK: return innerMaskStr;
-		case ISPUBLIC: return Boolean.toString(isPublic);
-		case FUNCTIONS:{
-			final StringBuilder str=new StringBuilder("");
-			for(int a=0;a<Clan.Function.values().length;a++)
-				if(functionChart[a]==Clan.Authority.CAN_DO)
+		case NAME:
+			return name;
+		case ID:
+			return ID;
+		case RANK:
+			return Integer.toString(rank);
+		case MAX:
+			return Integer.toString(max);
+		case PLURALNAME:
+			return pluralName;
+		case INNERMASK:
+			return innerMaskStr;
+		case ISPUBLIC:
+			return Boolean.toString(isPublic);
+		case FUNCTIONS:
+		{
+			final StringBuilder str = new StringBuilder("");
+			for (int a = 0; a < Clan.Function.values().length; a++)
+			{
+				if (functionChart[a] == Clan.Authority.CAN_DO)
 				{
-					if(str.length()>0)
+					if (str.length() > 0)
 						str.append(",");
 					str.append(Clan.Function.values()[a]);
 				}
+			}
 			return str.toString();
 		}
-		default: Log.errOut("Clan","getStat:Unhandled:"+stat.toString()); break;
+		default:
+			Log.errOut("Clan", "getStat:Unhandled:" + stat.toString());
+			break;
 		}
 		return "";
 	}
-	@Override public boolean isStat(String code) { return getStatIndex(code)!=null;}
+
+	@Override
+	public boolean isStat(String code)
+	{
+		return getStatIndex(code)!=null;
+	}
+
 	@Override
 	public void setStat(String code, String val)
 	{
 		final POS_STAT_CODES stat = getStatIndex(code);
-		if(stat==null){ return;}
+		if(stat==null)
+		{
+			return;
+		}
 		switch(stat)
 		{
-		case NAME: name=val; break;
-		case ISPUBLIC: isPublic=CMath.s_bool(val); break;
-		case ID: ID=val.toUpperCase().trim(); break;
-		case RANK: rank=CMath.s_int(val); break;
-		case MAX: max=CMath.s_int(val); break;
-		case PLURALNAME: pluralName=val; break;
-		case INNERMASK: innerMaskStr=val; break;
-		case FUNCTIONS:{
-			final List<String> funcs=CMParms.parseCommas(val.toUpperCase().trim(), true);
-			for(int a=0;a<Clan.Function.values().length;a++)
-				if(functionChart[a]!=Clan.Authority.MUST_VOTE_ON)
-					functionChart[a]=Clan.Authority.CAN_NOT_DO;
-			for(final String funcName : funcs)
+		case NAME:
+			name = val;
+			break;
+		case ISPUBLIC:
+			isPublic = CMath.s_bool(val);
+			break;
+		case ID:
+			ID = val.toUpperCase().trim();
+			break;
+		case RANK:
+			rank = CMath.s_int(val);
+			break;
+		case MAX:
+			max = CMath.s_int(val);
+			break;
+		case PLURALNAME:
+			pluralName = val;
+			break;
+		case INNERMASK:
+			innerMaskStr = val;
+			break;
+		case FUNCTIONS:
+		{
+			final List<String> funcs = CMParms.parseCommas(val.toUpperCase().trim(), true);
+			for (int a = 0; a < Clan.Function.values().length; a++)
 			{
-				final Clan.Function func=(Clan.Function)CMath.s_valueOf(Clan.Function.values(), funcName);
-				if(func!=null)
+				if (functionChart[a] != Clan.Authority.MUST_VOTE_ON)
+					functionChart[a] = Clan.Authority.CAN_NOT_DO;
+			}
+			for (final String funcName : funcs)
+			{
+				final Clan.Function func = (Clan.Function) CMath.s_valueOf(Clan.Function.values(), funcName);
+				if (func != null)
 					functionChart[func.ordinal()] = Clan.Authority.CAN_DO;
 			}
 			break;
 		}
-		default: Log.errOut("Clan","setStat:Unhandled:"+stat.toString()); break;
+		default:
+			Log.errOut("Clan", "setStat:Unhandled:" + stat.toString());
+			break;
 		}
 	}
-	@Override public String toString() { return ID;}
+
+	@Override
+	public String toString()
+	{
+		return ID;
+	}
 }

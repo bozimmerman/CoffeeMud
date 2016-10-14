@@ -37,12 +37,42 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
 */
 public class DefaultRoomnumberSet implements RoomnumberSet
 {
-	@Override public String ID(){return "DefaultRoomnumberSet";}
-	@Override public String name() { return ID();}
+	@Override
+	public String ID()
+	{
+		return "DefaultRoomnumberSet";
+	}
+
+	@Override
+	public String name()
+	{
+		return ID();
+	}
+
 	public STreeMap<String,LongSet> root=new STreeMap<String,LongSet>();
-	@Override public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
-	@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(final Exception e){return new DefaultRoomnumberSet();}}
-	@Override public void initializeClass(){}
+	@Override
+	public int compareTo(CMObject o)
+	{
+		return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));
+	}
+
+	@Override
+	public CMObject newInstance()
+	{
+		try
+		{
+			return getClass().newInstance();
+		}
+		catch(final Exception e)
+		{
+			return new DefaultRoomnumberSet();
+		}
+	}
+
+	@Override
+	public void initializeClass()
+	{
+	}
 
 	@Override
 	public CMObject copyOf()
@@ -60,6 +90,7 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 		}
 		return R;
 	}
+
 	@Override
 	public synchronized void add(RoomnumberSet set)
 	{
@@ -223,6 +254,7 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 		ids[0]=(int)(((coded&mask)>>30)&(LongSet.LONG_BITS-LongSet.OPTION_FLAG_LONG));
 		return ids;
 	}
+
 	public String convertRoomID(String prefix, long coded)
 	{
 		if(coded==-1)
@@ -240,7 +272,11 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 		return prefix+"#"+firstID+"#("+secondID+","+thirdID+")";
 	}
 
-	@Override public Iterator<String> getAreaNames(){ return root.keySet().iterator();}
+	@Override
+	public Iterator<String> getAreaNames()
+	{
+		return root.keySet().iterator();
+	}
 
 	private boolean isGrouper(String areaName)
 	{
@@ -397,6 +433,7 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 				getNextID();
 			return nextID!=null;
 		}
+
 		@Override
 		public String nextElement()
 		{
@@ -406,6 +443,7 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 			nextID=null;
 			return next;
 		}
+
 		private void getNextID()
 		{
 			if(nums==null)
@@ -415,7 +453,11 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 					return;
 				areaName=areaNames.next();
 				final LongSet grp=getGrouper(areaName);
-				if(grp==null){ nextID=areaName; return;}
+				if(grp==null)
+				{
+					nextID=areaName;
+					return;
+				}
 				nums=grp.getAllNumbers();
 				n=0;
 			}

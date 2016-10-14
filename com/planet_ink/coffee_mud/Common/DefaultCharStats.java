@@ -100,6 +100,7 @@ public class DefaultCharStats implements CharStats
 		for(final int i : CharStats.CODES.BASECODES())
 			stats[i]=(short)def;
 	}
+
 	@Override
 	public void setAllValues(int def)
 	{
@@ -582,6 +583,7 @@ public class DefaultCharStats implements CharStats
 			myLevels=myNewLevels;
 		}
 	}
+
 	@Override
 	public CharClass getCurrentClass()
 	{

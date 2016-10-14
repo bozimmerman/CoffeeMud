@@ -456,10 +456,12 @@ public interface TimeClock extends Tickable, CMCommon
 		{
 			this.increment=increment;
 		}
+
 		public long getIncrement()
 		{
 			return increment;
 		}
+
 		public long nextPeriod()
 		{
 			final Calendar calendar=Calendar.getInstance();
@@ -603,6 +605,7 @@ public interface TimeClock extends Tickable, CMCommon
 		{
 			todDesc=desc;
 		}
+
 		public String getDesc()
 		{
 			return todDesc;

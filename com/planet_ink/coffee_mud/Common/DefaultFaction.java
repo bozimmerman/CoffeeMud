@@ -399,6 +399,7 @@ public class DefaultFaction implements Faction, MsgListener
 				?(Faction.FAbilityUsage)abilityUsages.get(x)
 				:null;
 	}
+
 	@Override
 	public boolean delFactor(Faction.FZapFactor f)
 	{
@@ -1569,6 +1570,7 @@ public class DefaultFaction implements Faction, MsgListener
 			abilChangeCache.clear();
 		return done;
 	}
+
 	@Override
 	public void clearChangeEvents()
 	{
@@ -1714,6 +1716,7 @@ public class DefaultFaction implements Faction, MsgListener
 			}
 			return compiledTargetZapper;
 		}
+
 		@Override
 		public MaskingLibrary.CompiledZMask compiledSourceZapper()
 		{
@@ -2355,7 +2358,8 @@ public class DefaultFaction implements Faction, MsgListener
 						for (final Ability lightPresenceAbilitie : lightPresenceAbilities)
 						{
 							if(lightPresenceAbilitie.affecting()==null)
-							{}
+							{
+							}
 							else
 							if(lightPresenceAbilitie.affecting()==msg.source())
 								lightPresenceAbilitie.invoke(msg.source(),new Vector<String>(),null,true,0);
@@ -2675,6 +2679,7 @@ public class DefaultFaction implements Faction, MsgListener
 			low = CMath.s_int( v.get(1));
 			high = CMath.s_int( v.get(2));
 		}
+
 		@Override
 		public String toString()
 		{

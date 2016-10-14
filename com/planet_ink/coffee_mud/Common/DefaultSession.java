@@ -599,6 +599,7 @@ public class DefaultSession implements Session
 	{ 
 		return clientTelnetCodes[telnetCode]; 
 	}
+
 	private void changeTelnetMode(OutputStream out, int telnetCode, boolean onOff) throws IOException
 	{
 		final byte[] command={(byte)TELNET_IAC,onOff?(byte)TELNET_WILL:(byte)TELNET_WONT,(byte)telnetCode};
@@ -689,6 +690,7 @@ public class DefaultSession implements Session
 			Log.debugOut("Back-Sent: "+(onOff?"Do":"Don't")+" "+Session.TELNET_DESCS[telnetCode]);
 		setServerTelnetMode(telnetCode,onOff);
 	}
+
 	public void changeTelnetModeBackwards(OutputStream out, int telnetCode, boolean onOff) throws IOException
 	{
 		final byte[] command={(byte)TELNET_IAC,onOff?(byte)TELNET_DO:(byte)TELNET_DONT,(byte)telnetCode};
@@ -698,6 +700,7 @@ public class DefaultSession implements Session
 			Log.debugOut("Back-Sent: "+(onOff?"Do":"Don't")+" "+Session.TELNET_DESCS[telnetCode]);
 		setServerTelnetMode(telnetCode,onOff);
 	}
+
 	@Override
 	public void negotiateTelnetMode(int telnetCode)
 	{
@@ -887,6 +890,7 @@ public class DefaultSession implements Session
 			return terminalWidth;
 		return ((mob!=null)&&(mob.playerStats()!=null))?mob.playerStats().getWrap():78;
 	}
+
 	public int getPageBreak()
 	{
 		if(((mob!=null)&&(mob.playerStats()!=null)))
@@ -900,11 +904,13 @@ public class DefaultSession implements Session
 		}
 		return -1;
 	}
+
 	@Override
 	public boolean isStopped()
 	{
 		return killFlag;
 	}
+
 	public void setKillFlag(boolean truefalse)
 	{
 		killFlag=truefalse;
@@ -938,6 +944,7 @@ public class DefaultSession implements Session
 			return snoops.size()==0;
 		return(snoops.contains(S));
 	}
+
 	@Override
 	public synchronized int snoopSuspension(int change)
 	{
@@ -985,6 +992,7 @@ public class DefaultSession implements Session
 			println("\n\rYou are no longer AFK.");
 		}
 	}
+
 	@Override
 	public String getAfkMessage()
 	{
@@ -1104,11 +1112,13 @@ public class DefaultSession implements Session
 		if(c!=null)
 			rawCharsOut(c.toCharArray());
 	}
+
 	public void rawCharsOut(char c)
 	{
 		final char[] cs={c};
 		rawCharsOut(cs);
 	}
+
 	public void snoopSupportPrint(final String msg, final boolean noCache)
 	{
 		try
@@ -1144,6 +1154,7 @@ public class DefaultSession implements Session
 	{
 		onlyPrint(msg,false);
 	}
+
 	@Override
 	public void onlyPrint(String msg, boolean noCache)
 	{
@@ -1368,6 +1379,7 @@ public class DefaultSession implements Session
 	{
 		colorOnlyPrint(msg+"\n\r",false);
 	}
+
 	@Override
 	public void colorOnlyPrintln(String msg, boolean noCache)
 	{
@@ -1381,6 +1393,7 @@ public class DefaultSession implements Session
 	{
 		colorOnlyPrint(msg,false);
 	}
+
 	@Override
 	public void colorOnlyPrint(String msg, boolean noCache)
 	{
@@ -2295,9 +2308,15 @@ public class DefaultSession implements Session
 		{
 			promptPrint(Message);
 			YN=blockingIn(maxTime, true);
-			if(YN==null){ return Default.toUpperCase(); }
+			if(YN==null)
+			{
+				return Default.toUpperCase();
+			}
 			YN=YN.trim();
-			if(YN.equals("")){ return Default.toUpperCase(); }
+			if(YN.equals(""))
+			{
+				return Default.toUpperCase();
+			}
 			if(YN.length()>1)
 			{
 				if(paramsOut!=null)
@@ -3264,6 +3283,7 @@ public class DefaultSession implements Session
 				theMOB=null;
 			}
 		}
+
 		@Override
 		public long activeTimeMillis()
 		{
@@ -3433,6 +3453,7 @@ public class DefaultSession implements Session
 		{
 			bytes=new int[maxBytesPerChar+1];
 		}
+
 		@Override
 		public int read() throws IOException
 		{
@@ -3445,6 +3466,7 @@ public class DefaultSession implements Session
 				start++;
 			return b;
 		}
+
 		public void write(int b)
 		{
 			bytes[end]=b;

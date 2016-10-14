@@ -251,6 +251,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		&&(CMath.isMathExpression(newDate.substring(x+1))))
 			startDate=newDate;
 	}
+
 	@Override
 	public void setStartMudDate(String newDate)
 	{
@@ -721,8 +722,10 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						q.autoStepAfterDuration=true;
 					}
 					else
+					{
 						if(startLine>=0)
 							q.lastLine=v+1;
+					}
 					return;
 				}
 				if(cmd.equals("RESET"))
@@ -2215,8 +2218,10 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						if(Mstr!=null)
 							V2.add(Mstr);
 						for(int pi=2;pi<p.size();pi++)
+						{
 							if(!V2.contains(p.elementAt(pi)))
 								V2.add(p.elementAt(pi));
+						}
 						sizeDownTo(V2,num);
 						if((V2.size()>0)&&(Mstr==null))
 							Mstr=V2.get(CMLib.dice().roll(1,V2.size(),-1));
@@ -3508,7 +3513,11 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 										((ScriptingEngine)B).endQuest((PhysicalAgent)E,(MOB)E,name());
 									if((V.size()>2)&&(V.get(2) instanceof String))
 									{
-										if(B==null){ B=(Behavior)O; BB.addBehavior(B);}
+										if(B==null)
+										{
+											B=(Behavior)O;
+											BB.addBehavior(B);
+										}
 										B.setParms((String)V.get(2));
 									}
 									else
@@ -3536,7 +3545,11 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 									Ability A=((MOB)E).fetchAbility(((Ability)O).ID());
 									if((V.size()>3)&&(V.get(3) instanceof String))
 									{
-										if(A==null){A=(Ability)O; ((MOB)E).addAbility(A);}
+										if(A==null)
+										{
+											A=(Ability)O;
+											((MOB)E).addAbility(A);
+										}
 										A.setMiscText((String)V.get(3));
 									}
 									else
@@ -3549,7 +3562,11 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 									Ability A=((Physical)E).fetchEffect(((Ability)O).ID());
 									if((V.size()>2)&&(V.get(2) instanceof String))
 									{
-										if(A==null){A=(Ability)O; ((Physical)E).addEffect(A);}
+										if(A==null)
+										{
+											A=(Ability)O;
+											((Physical)E).addEffect(A);
+										}
 										A.setMiscText((String)V.get(2));
 									}
 									else
@@ -5037,8 +5054,13 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 			Object O=null;
 			int code=-1;
 			for(int i=0;i<QOBJS.length;i++)
+			{
 				if(statName.equalsIgnoreCase(QOBJS[i]))
-				{ code=i; break;}
+				{
+					code=i;
+					break;
+				}
+			}
 			switch(code)
 			{
 			case 0:
@@ -5124,10 +5146,13 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		public boolean isStat(String statName)
 		{
 			for (final String element : MYSTERY_QCODES)
+			{
 				if(statName.equalsIgnoreCase(element))
 					return true;
+			}
 			return false;
 		}
+
 		public Object getStat(String statName)
 		{
 			int code=-1;

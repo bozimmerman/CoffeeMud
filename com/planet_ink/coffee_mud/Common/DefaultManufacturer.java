@@ -37,7 +37,12 @@ import java.util.*;
 */
 public class DefaultManufacturer implements Manufacturer
 {
-	@Override public String ID(){return "DefaultManufacturer";}
+	@Override
+	public String ID()
+	{
+		return "DefaultManufacturer";
+	}
+
 	protected String 	name			= "ACME";
 	protected byte 		maxTechLevelDiff= 10;
 	protected byte 		minTechLevelDiff= 0;
@@ -49,11 +54,36 @@ public class DefaultManufacturer implements Manufacturer
 
 	protected MaskingLibrary.CompiledZMask compiledItemMask = null;
 
-	@Override public String name() { return name;}
+	@Override
+	public String name()
+	{
+		return name;
+	}
 
-	@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(final Exception e){return new DefaultPoll();}}
-	@Override public void initializeClass(){}
-	@Override public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	@Override
+	public CMObject newInstance()
+	{
+		try
+		{
+			return getClass().newInstance();
+		}
+		catch(final Exception e)
+		{
+			return new DefaultPoll();
+		}
+	}
+
+	@Override
+	public void initializeClass()
+	{
+	}
+
+	@Override
+	public int compareTo(CMObject o)
+	{
+		return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));
+	}
+
 	@Override
 	public CMObject copyOf()
 	{
@@ -127,6 +157,7 @@ public class DefaultManufacturer implements Manufacturer
 	{
 		return rawItemMask;
 	}
+
 	@Override
 	public void setItemMask(String newMask)
 	{
@@ -151,8 +182,10 @@ public class DefaultManufacturer implements Manufacturer
 		if(types.contains(TechType.ANY))
 			return true;
 		for(final TechType type : types)
+		{
 			if(type == T.getTechType())
 				return true;
+		}
 		return false;
 	}
 

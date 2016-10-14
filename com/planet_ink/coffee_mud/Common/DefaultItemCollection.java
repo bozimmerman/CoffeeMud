@@ -50,8 +50,17 @@ public class DefaultItemCollection implements ItemCollection, CMCommon
 {
 	private final SVector<Item> contents = new SVector<Item>(0);
 
-	@Override public String ID() { return "DefaultItemCollection"; }
-	@Override public String name() { return ID();}
+	@Override
+	public String ID()
+	{
+		return "DefaultItemCollection";
+	}
+
+	@Override
+	public String name()
+	{
+		return ID();
+	}
 
 	@Override
 	public CMObject copyOf()
@@ -79,9 +88,22 @@ public class DefaultItemCollection implements ItemCollection, CMCommon
 		return c;
 	}
 
-	@Override public void initializeClass() {}
-	@Override public CMObject newInstance() { return new DefaultItemCollection(); }
-	@Override public int compareTo(CMObject o) { return o==this?0:1; }
+	@Override
+	public void initializeClass()
+	{
+	}
+
+	@Override
+	public CMObject newInstance()
+	{
+		return new DefaultItemCollection();
+	}
+
+	@Override
+	public int compareTo(CMObject o)
+	{
+		return o==this?0:1;
+	}
 
 	@Override
 	public Item findItem(String itemID)
@@ -91,7 +113,12 @@ public class DefaultItemCollection implements ItemCollection, CMCommon
 			item=(Item)CMLib.english().fetchEnvironmental(contents,itemID,false);
 		return item;
 	}
-	@Override public Enumeration<Item> items() { return contents.elements();}
+
+	@Override
+	public Enumeration<Item> items()
+	{
+		return contents.elements();
+	}
 
 	@Override
 	public Item findItem(Item goodLocation, String itemID)
@@ -157,6 +184,7 @@ public class DefaultItemCollection implements ItemCollection, CMCommon
 			}
 		contents.clear();
 	}
+
 	@Override
 	public void eachItem(final EachApplicable<Item> applier)
 	{
@@ -171,7 +199,9 @@ public class DefaultItemCollection implements ItemCollection, CMCommon
 					applier.apply(I);
 			}
 		}
-		catch(final ArrayIndexOutOfBoundsException e){}
+		catch(final ArrayIndexOutOfBoundsException e)
+		{
+		}
 	}
 
 	@Override
@@ -181,14 +211,17 @@ public class DefaultItemCollection implements ItemCollection, CMCommon
 		{
 			return contents.elementAt(i);
 		}
-		catch(final java.lang.ArrayIndexOutOfBoundsException x){}
+		catch(final java.lang.ArrayIndexOutOfBoundsException x)
+		{
+		}
 		return null;
 	}
-  @Override
-public Item getRandomItem()
-  {
-	  if(numItems()==0)
-	  	return null;
-	  return getItem(CMLib.dice().roll(1,numItems(),-1));
-  }
+
+	@Override
+	public Item getRandomItem()
+	{
+		if(numItems()==0)
+	  		return null;
+		return getItem(CMLib.dice().roll(1,numItems(),-1));
+	}
 }

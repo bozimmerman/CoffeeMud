@@ -39,8 +39,17 @@ import java.util.*;
 
 public class DefaultHttpClient implements HttpClient, Cloneable
 {
-	@Override public String ID(){return "DefaultHttpClient";}
-	@Override public String name() { return ID();}
+	@Override
+	public String ID()
+	{
+		return "DefaultHttpClient";
+	}
+
+	@Override
+	public String name()
+	{
+		return ID();
+	}
 
 	private static enum HState { PREHEAD, INHEAD, INBODY, PRECHUNK, INCHUNK, POSTINCHUNK, POSTCHUNK }
 
@@ -69,7 +78,11 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 			return new DefaultHttpClient();
 		}
 	}
-	@Override public void initializeClass(){}
+
+	@Override
+	public void initializeClass()
+	{
+	}
 
 	@Override
 	public HttpClient header(String key, String value)
@@ -97,6 +110,7 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 		}
 		return this;
 	}
+
 	@Override
 	public HttpClient body(byte[] body)
 	{
@@ -122,12 +136,14 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 		this.connectTimeout=ms;
 		return this;
 	}
+
 	@Override
 	public HttpClient readTimeout(int ms)
 	{
 		this.readTimeout=ms;
 		return this;
 	}
+
 	@Override
 	public HttpClient maxReadBytes(int bytes)
 	{
@@ -417,11 +433,13 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 	{
 		return getRawUrl(urlStr, cookieStr, 1024*1024*10, 10000);
 	}
+
 	@Override
 	public byte[] getRawUrl(final String urlStr)
 	{
 		return getRawUrl(urlStr, null, 1024*1024*10, 10000);
 	}
+
 	@Override
 	public byte[] getRawUrl(final String urlStr, final int maxLength, final int readTimeout)
 	{
@@ -527,7 +545,9 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 				sock.shutdownOutput();
 				sock.close();
 			}
-			catch(final Exception e) {}
+			catch(final Exception e)
+			{
+			}
 			finally
 			{
 				sock=null;
@@ -563,7 +583,11 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 		}
 	}
 
-	@Override public int getTickStatus() { return tickStatus; }
+	@Override
+	public int getTickStatus()
+	{
+		return tickStatus;
+	}
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
@@ -571,7 +595,16 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 		return false;
 	}
 
-	@Override public CMObject copyOf() { try { return (CMObject)this.clone(); } catch (final CloneNotSupportedException e) { return this; } }
+	@Override
+	public CMObject copyOf()
+	{
+		try 
+		{ 
+			return (CMObject)this.clone();
+		}
+		catch (final CloneNotSupportedException e) { return this;
+		}
+	}
 
 	@Override
 	public int compareTo(CMObject o)

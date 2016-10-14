@@ -54,10 +54,23 @@ public class WeakItemCollection implements ItemCollection, CMCommon
 				= new ConvertingList<WeakReference<Item>,Item>(innerContents,
 						new Converter<WeakReference<Item>,Item>()
 						{
-					@Override public Item convert(WeakReference<Item> obj) { return obj.get();}
+					@Override
+					public Item convert(WeakReference<Item> obj)
+					{
+						return obj.get();
+					}
 				});
-	@Override public String ID() { return "WeakItemCollection"; }
-	@Override public String name() { return ID();}
+	@Override
+	public String ID()
+	{
+		return "WeakItemCollection";
+	}
+
+	@Override
+	public String name()
+	{
+		return ID();
+	}
 
 	@Override
 	public CMObject copyOf()
@@ -91,9 +104,22 @@ public class WeakItemCollection implements ItemCollection, CMCommon
 		return c;
 	}
 
-	@Override public void initializeClass() {}
-	@Override public CMObject newInstance() { return new WeakItemCollection(); }
-	@Override public int compareTo(CMObject o) { return o==this?0:1; }
+	@Override
+	public void initializeClass()
+	{
+	}
+
+	@Override
+	public CMObject newInstance()
+	{
+		return new WeakItemCollection();
+	}
+
+	@Override
+	public int compareTo(CMObject o)
+	{
+		return o==this?0:1;
+	}
 
 	@Override
 	public Item findItem(String itemID)
@@ -103,7 +129,12 @@ public class WeakItemCollection implements ItemCollection, CMCommon
 			item=(Item)CMLib.english().fetchEnvironmental(contents,itemID,false);
 		return item;
 	}
-	@Override public Enumeration<Item> items() { return new IteratorEnumeration<Item>(contents.iterator()); }
+
+	@Override
+	public Enumeration<Item> items()
+	{
+		return new IteratorEnumeration<Item>(contents.iterator());
+	}
 
 	@Override
 	public Item findItem(Item goodLocation, String itemID)
@@ -163,6 +194,7 @@ public class WeakItemCollection implements ItemCollection, CMCommon
 			}
 		}
 	}
+
 	@Override
 	public void delAllItems(boolean destroy)
 	{
@@ -191,7 +223,15 @@ public class WeakItemCollection implements ItemCollection, CMCommon
 			if(I==item)
 				return true;
 			if(I==null)
-				try { innerContents.remove(i); }catch(final java.lang.ArrayIndexOutOfBoundsException x){}
+			{
+				try
+				{
+					 innerContents.remove(i); 
+				}
+				catch(final java.lang.ArrayIndexOutOfBoundsException x)
+				{
+				}
+			}
 		}
 		return false;
 	}
@@ -207,9 +247,12 @@ public class WeakItemCollection implements ItemCollection, CMCommon
 			else
 				return I;
 		}
-		catch(final java.lang.ArrayIndexOutOfBoundsException x){}
+		catch(final java.lang.ArrayIndexOutOfBoundsException x)
+		{
+		}
 		return null;
 	}
+
 	@Override
 	public void eachItem(final EachApplicable<Item> applier)
 	{
@@ -223,11 +266,22 @@ public class WeakItemCollection implements ItemCollection, CMCommon
 				if(I!=null)
 					applier.apply(I);
 				else
-					try { innerContents.remove(a); }catch(final java.lang.ArrayIndexOutOfBoundsException x){}
+				{
+					try
+					{
+						 innerContents.remove(a); 
+					}
+					catch(final java.lang.ArrayIndexOutOfBoundsException x)
+					{
+					}
+				}
 			}
 		}
-		catch(final ArrayIndexOutOfBoundsException e){}
+		catch(final ArrayIndexOutOfBoundsException e)
+		{
+		}
 	}
+
 	@Override
 	public Item getRandomItem()
 	{

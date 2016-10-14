@@ -615,7 +615,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		return new CMFile(Resources.makeFileResourceName(named),null,CMFile.FLAG_LOGERRORS).text();
 	}
 
-	@Override public String getScript(){ return myScript;}
+	@Override
+	public String getScript()
+	{
+		return myScript;
+	}
 
 	public void reset()
 	{
@@ -1194,7 +1198,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					}
 				}
 			}
-			catch(final Exception e){}
+			catch(final Exception e)
+			{
+			}
 		}
 		else
 		if(thisName.toUpperCase().trim().startsWith("FROMGENFILE "))
@@ -1228,7 +1234,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					}
 				}
 			}
-			catch(final Exception e){}
+			catch(final Exception e)
+			{
+			}
 		}
 		else
 		{
@@ -3858,8 +3866,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				{
 					int num=0;
 					for(final Session S : CMLib.sessions().localOnlineIterable())
+					{
 						if((S.mob().location()!=null)&&(S.mob().location().getArea()==lastKnownLocation.getArea()))
 							num++;
+					}
 					returnable=simpleEval(scripted,""+num,arg2,arg1,"NUMPCSAREA");
 				}
 				break;
@@ -6222,7 +6232,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								num++;
 						}
 					}
-				}catch(final NoSuchElementException nse){}
+				}
+				catch(final NoSuchElementException nse)
+				{
+				}
 				results.append(num);
 				break;
 			}
@@ -7464,7 +7477,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						ignoreUntilEndScript=false;
 					}
 					else
-					if(ignoreUntilEndScript){}
+					if(ignoreUntilEndScript)
+					{
+					}
 					else
 					if(cmd.equals("ENDIF")&&(depth==0))
 					{
@@ -7564,7 +7579,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						ignoreUntilEndScript=false;
 					}
 					else
-					if(ignoreUntilEndScript){}
+					if(ignoreUntilEndScript)
+					{
+					}
 					else
 					if(cmd.equals("ENDSWITCH")&&(depth==0))
 					{
@@ -12033,8 +12050,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					}
 					break;
 				case 12: // mask_prog
+				{
 					if(!canTrigger(12))
 						break;
+				}
 				//$FALL-THROUGH$
 				case 18: // act_prog
 					if((msg.amISource(monster))
@@ -12646,7 +12665,14 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			for(int q=que.size()-1;q>=0;q--)
 			{
 				ScriptableResponse SB=null;
-				try{SB=que.get(q);}catch(final ArrayIndexOutOfBoundsException x){continue;}
+				try
+				{
+					SB=que.get(q);
+				}
+				catch(final ArrayIndexOutOfBoundsException x)
+				{
+					continue;
+				}
 				if(SB.checkTimeToExecute())
 				{
 					execute(SB.h,SB.s,SB.t,SB.m,SB.pi,SB.si,SB.scr,SB.message,newObjs());

@@ -18,7 +18,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2003-2016 Bo Zimmerman
 
@@ -807,7 +806,12 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 		{
 			this.name=name; this.role=role; this.mobpvps=mobpvps; this.playerpvps=playerpvps;
 		}
-		@Override public String toString() { return name;}
+
+		@Override
+		public String toString()
+		{
+			return name;
+		}
 	}
 	/**
 	 * A internal membership record, as returned by the database,
@@ -936,6 +940,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 			this.description=desc;
 			this.codeString=codeName;
 		}
+
 		public int flagNum(){return (int)Math.round(Math.pow(2.0, ordinal())); }
 	}
 

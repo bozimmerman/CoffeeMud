@@ -598,8 +598,10 @@ public class DefaultCoffeeShop implements CoffeeShop
 			else
 			if(parm!=null)
 			for(int s=0;s<ShopKeeper.DEAL_DESCS.length;s++)
+			{
 				if(parm.equalsIgnoreCase(ShopKeeper.DEAL_DESCS[s]))
 					shop.setWhatIsSoldMask(s);
+			}
 			parm=CMParms.getParmStr(text,"IPREJ","");
 			if(parm!=null)
 				shop.setPrejudiceFactors(parm);

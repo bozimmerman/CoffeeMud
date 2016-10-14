@@ -153,6 +153,7 @@ public class DefaultCharState implements CharState
 		}
 		return true;
 	}
+
 	@Override
 	public int getHunger()
 	{
@@ -395,6 +396,7 @@ public class DefaultCharState implements CharState
 			break;
 		}
 	}
+
 	@Override
 	public String getStat(String code)
 	{

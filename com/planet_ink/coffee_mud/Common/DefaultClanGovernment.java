@@ -581,8 +581,10 @@ public class DefaultClanGovernment implements ClanGovernment
 	{
 		final List<ClanPosition> newPos=new LinkedList<ClanPosition>();
 		for(final ClanPosition P : positions)
+		{
 			if(P!=pos)
 				newPos.add(P);
+		}
 		positions=newPos.toArray(new ClanPosition[0]);
 		positionMap.clear();
 	}
@@ -601,8 +603,10 @@ public class DefaultClanGovernment implements ClanGovernment
 				highestRank=pos.getRank();
 		}
 		if(positions.length>0)
+		{
 			for(int i=0;i<pows.length;i++)
 				pows[i]=positions[0].getFunctionChart()[i];
+		}
 		positions=Arrays.copyOf(positions, positions.length+1);
 		final ClanPosition P=(ClanPosition)CMClass.getCommon("DefaultClanPosition");
 		P.setID(positions.length+""+Math.random());
@@ -626,6 +630,7 @@ public class DefaultClanGovernment implements ClanGovernment
 		positionMap.clear();
 		return P;
 	}
+
 	private static enum GOVT_STAT_CODES 
 	{
 		NAME,AUTOROLE,ACCEPTPOS,SHORTDESC,REQUIREDMASK,ISPUBLIC,ISFAMILYONLY,OVERRIDEMINMEMBERS,
@@ -869,8 +874,10 @@ public class DefaultClanGovernment implements ClanGovernment
 			for (final ClanPosition pos : positions)
 			{
 				for (int a = 0; a < Function.values().length; a++)
+				{
 					if (pos.getFunctionChart()[a] == Authority.MUST_VOTE_ON)
 						pos.getFunctionChart()[a] = Authority.CAN_NOT_DO;
+				}
 				for (final String funcName : funcs)
 				{
 					final Clan.Function func = (Clan.Function) CMath.s_valueOf(Function.values(), funcName);
@@ -1071,8 +1078,10 @@ public class DefaultClanGovernment implements ClanGovernment
 				{
 					int highPos=0;
 					for(int p=1;p<sortedPositions.size();p++)
+					{
 						if(posses[p]>posses[highPos])
 							highPos=p;
+					}
 					posTotalLen--;
 					posses[highPos]--;
 				}
@@ -1453,6 +1462,7 @@ public class DefaultClanGovernment implements ClanGovernment
 							return true;
 						return false;
 					}
+
 					@Override
 					public void rebuild(final ChameleonList<Ability> me)
 					{

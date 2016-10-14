@@ -101,7 +101,10 @@ public class DefaultPlayerAccount implements PlayerAccount
 		}
 	}
 
-	@Override public void initializeClass(){}
+	@Override
+	public void initializeClass()
+	{
+	}
 
 	@Override
 	public CMObject copyOf()
@@ -466,7 +469,9 @@ public class DefaultPlayerAccount implements PlayerAccount
 				if(name.equalsIgnoreCase(mob.Name()))
 					return;
 		}
-		catch(final Exception e) {}
+		catch(final Exception e)
+		{
+		}
 		players.add(mob.Name());
 		thinPlayers.clear();
 	}
@@ -477,8 +482,10 @@ public class DefaultPlayerAccount implements PlayerAccount
 		if(name==null)
 			return null;
 		for(final String pName : players)
+		{
 			if(pName.equalsIgnoreCase(name))
 				return pName;
+		}
 		return null;
 	}
 
@@ -492,7 +499,9 @@ public class DefaultPlayerAccount implements PlayerAccount
 				if(name1.equalsIgnoreCase(name))
 					players.remove(name1);
 		}
-		catch(final Exception e) {}
+		catch(final Exception e)
+		{
+		}
 		thinPlayers.clear();
 	}
 
@@ -508,7 +517,9 @@ public class DefaultPlayerAccount implements PlayerAccount
 				if(name.equalsIgnoreCase(mob.Name()))
 					players.remove(name);
 		}
-		catch(final Exception e) {}
+		catch(final Exception e)
+		{
+		}
 		thinPlayers.clear();
 	}
 

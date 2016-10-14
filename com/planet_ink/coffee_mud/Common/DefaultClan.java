@@ -219,6 +219,7 @@ public class DefaultClan implements Clan
 		else
 			CMLib.database().DBDeletePlayerData(clanID(),"CLANVOTES",clanID()+"/CLANVOTES");
 	}
+
 	@Override
 	public void addVote(ClanVote CV)
 	{
@@ -227,6 +228,7 @@ public class DefaultClan implements Clan
 		votes();
 		voteList.add(CV);
 	}
+
 	@Override
 	public void delVote(ClanVote CV)
 	{
@@ -341,7 +343,11 @@ public class DefaultClan implements Clan
 					return new IteratorEnumeration<Clan.ClanVote>(voteList.iterator());
 				}
 				final List<XMLLibrary.XMLTag> voteData=CMLib.xml().getContentsFromPieces(xml,"BALLOTS");
-				if(voteData==null){ Log.errOut("Clans","Unable to get BALLOTS data."); return new IteratorEnumeration<Clan.ClanVote>(voteList.iterator());}
+				if(voteData==null)
+				{
+					Log.errOut("Clans","Unable to get BALLOTS data.");
+					return new IteratorEnumeration<Clan.ClanVote>(voteList.iterator());
+				}
 				CV.voteStarter=CMLib.xml().getValFromPieces(voteData,"BY");
 				CV.voteStarted=CMLib.xml().getLongFromPieces(voteData,"ON");
 				CV.function=CMLib.xml().getIntFromPieces(voteData,"FUNC");
@@ -531,6 +537,7 @@ public class DefaultClan implements Clan
 			overrideMinClanMembers=Integer.valueOf(amt);
 		}
 	}
+
 	@Override
 	public void setCategory(String newCategory)
 	{
@@ -539,6 +546,7 @@ public class DefaultClan implements Clan
 		else
 			clanCategory=newCategory;
 	}
+
 	@Override
 	public boolean isRivalrous()
 	{
@@ -546,6 +554,7 @@ public class DefaultClan implements Clan
 			return govt().isRivalrous();
 		return isRivalrous.booleanValue();
 	}
+
 	@Override
 	public void setRivalrous(boolean isRivalrous)
 	{
@@ -554,6 +563,7 @@ public class DefaultClan implements Clan
 		else
 			this.isRivalrous=Boolean.valueOf(isRivalrous);
 	}
+
 	@Override
 	public void create()
 	{
@@ -574,6 +584,7 @@ public class DefaultClan implements Clan
 		CMLib.database().DBUpdateClanMembership(M.Name(), clanID(), role);
 		updateClanPrivileges(M);
 	}
+
 	@Override
 	public void delMember(MOB M)
 	{
@@ -612,8 +623,10 @@ public class DefaultClan implements Clan
 			final String title="*, "+CMStrings.capitalizeAndLower(pos.getName())+" of "+name();
 			String existingTitle=null;
 			for(final String titleCheck : M.playerStats().getTitles())
+			{
 				if(titleCheck.equalsIgnoreCase(title))
 					existingTitle=titleCheck;
+			}
 			if((p!=null)
 			&&(p.second.intValue()==pos.getRoleID())
 			&&(getAuthority(p.second.intValue(),Function.CLAN_TITLES)!=Clan.Authority.CAN_NOT_DO))
@@ -1165,7 +1178,11 @@ public class DefaultClan implements Clan
 			return;
 		}
 		final List<XMLLibrary.XMLTag> poliData=CMLib.xml().getContentsFromPieces(xml,"POLITICS");
-		if(poliData==null){ Log.errOut("Clans","Unable to get POLITICS data."); return;}
+		if(poliData==null)
+		{
+			Log.errOut("Clans","Unable to get POLITICS data.");
+			return;
+		}
 		government=CMLib.xml().getIntFromPieces(poliData,"GOVERNMENT");
 		exp=CMLib.xml().getLongFromPieces(poliData,"EXP");
 		setClanLevel(CMLib.xml().getIntFromPieces(poliData,"LEVEL"));

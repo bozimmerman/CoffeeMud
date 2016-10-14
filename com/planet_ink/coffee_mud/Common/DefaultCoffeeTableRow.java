@@ -172,8 +172,10 @@ public class DefaultCoffeeTableRow implements CoffeeTableRow
 		{
 			int ct=0;
 			for(final Session S : CMLib.sessions().localOnlineIterable())
+			{
 				if(S!=null)
 					ct++;
+			}
 			numberOnlineCounter++;
 			numberOnlineTotal+=ct;
 			if(ct>highestOnline)

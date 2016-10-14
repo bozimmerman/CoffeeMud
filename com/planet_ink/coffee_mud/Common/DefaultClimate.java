@@ -274,6 +274,7 @@ public class DefaultClimate implements Climate
 		}
 
 	}
+
 	protected String getWeatherStop(int weatherCode)
 	{
 		if((weatherCode>=0)&&(weatherCode<Climate.NUM_WEATHER))
@@ -463,6 +464,7 @@ public class DefaultClimate implements Climate
 			}
 		}
 	}
+
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{

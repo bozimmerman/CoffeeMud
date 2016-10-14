@@ -37,11 +37,42 @@ import java.util.*;
 */
 public class DefaultLawSet implements Law
 {
-	@Override public String ID(){return "DefaultLawSet";}
-	@Override public String name() { return ID();}
-	@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(final Exception e){return new DefaultLawSet();}}
-	@Override public void initializeClass(){}
-	@Override public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	@Override
+	public String ID()
+	{
+		return "DefaultLawSet";
+	}
+
+	@Override
+	public String name()
+	{
+		return ID();
+	}
+
+	@Override
+	public CMObject newInstance()
+	{
+		try
+		{
+			return getClass().newInstance();
+		}
+		catch(final Exception e)
+		{
+			return new DefaultLawSet();
+		}
+	}
+
+	@Override
+	public void initializeClass()
+	{
+	}
+
+	@Override
+	public int compareTo(CMObject o)
+	{
+		return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));
+	}
+
 	@Override
 	public CMObject copyOf()
 	{
@@ -473,8 +504,11 @@ public class DefaultLawSet implements Law
 						if((evasionBits!=null)
 						&&(evasionBits[Law.BIT_CRIMENAME].length()>0)
 						&&(responsibleMob!=null))
+						{
 							while(getWarrant(responsibleMob,evasionBits[Law.BIT_CRIMENAME],true,debugging)!=null)
-								{}
+							{
+							}
+						}
 					}
 				}
 			}
@@ -489,6 +523,7 @@ public class DefaultLawSet implements Law
 			return messages[which];
 		return "";
 	}
+
 	@Override
 	public String paroleMessages(int which)
 	{
@@ -498,6 +533,7 @@ public class DefaultLawSet implements Law
 			return paroleMessages[which];
 		return "";
 	}
+
 	@Override
 	public int paroleTimes(int which)
 	{
@@ -507,6 +543,7 @@ public class DefaultLawSet implements Law
 			return paroleTimes[which].intValue();
 		return 0;
 	}
+
 	@Override
 	public String jailMessages(int which)
 	{
@@ -516,6 +553,7 @@ public class DefaultLawSet implements Law
 			return jailMessages[which];
 		return "";
 	}
+
 	@Override
 	public int jailTimes(int which)
 	{
@@ -533,6 +571,7 @@ public class DefaultLawSet implements Law
 			return (String)theLaws.get(msg);
 		return "";
 	}
+
 	@Override
 	public boolean isInternalStr(String msg)
 	{
@@ -540,6 +579,7 @@ public class DefaultLawSet implements Law
 			return true;
 		return false;
 	}
+
 	@Override
 	public void setInternalStr(String tag, String value)
 	{
@@ -550,6 +590,7 @@ public class DefaultLawSet implements Law
 			theLaws.put(tag,value);
 		}
 	}
+
 	@Override 
 	public boolean lawIsActivated()
 	{ 
@@ -562,6 +603,7 @@ public class DefaultLawSet implements Law
 		if(theLaws!=null)
 			resetLaw(theLaws);
 	}
+
 	private void resetLaw(Properties laws)
 	{
 		theLaws=laws;
@@ -719,7 +761,13 @@ public class DefaultLawSet implements Law
 		if(theLaws!=null)
 		{
 			final ByteArrayOutputStream out=new ByteArrayOutputStream();
-			try{ theLaws.store(out,"");}catch(final IOException e){}
+			try
+			{
+				 theLaws.store(out,"");
+			}
+			catch(final IOException e)
+			{
+			}
 			String s=CMStrings.replaceAll(out.toString(),"\n\r","~");
 			s=CMStrings.replaceAll(s,"\r\n","~");
 			s=CMStrings.replaceAll(s,"\n","~");

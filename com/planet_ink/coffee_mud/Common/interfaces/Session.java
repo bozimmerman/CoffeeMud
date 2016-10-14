@@ -1289,6 +1289,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 			input="";
 			waiting=true;
 		}
+
 		@Override
 		public void timedOut()
 		{
