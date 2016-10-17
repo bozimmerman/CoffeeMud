@@ -91,13 +91,17 @@ See guides/RandomAreas.html for information about documents of this type.
 		</TITLE>
 		<DESCRIPTION>$oceanfloor_interior_desc</DESCRIPTION>
 		<STRING id="oceanfloor_interior_desc" select="all">
-			<STRING select="any-1" action="PREPEND">
-				<STRING>You find yourself by a $adj_sparse copse of plants in the ${l:room_title}. </STRING>
-				<STRING>You are in a corner of the ${l:room_title}. </STRING>
-				<STRING>The ${oceanfloor_nouns} surrounds you. </STRING>
-				<STRING>The ${oceanfloor_nouns} is all around you. </STRING>
-			</STRING>
-			<STRING select="any-1" action="APPEND">
+             <STRING select="any-1" action="PREPEND">
+                 <STRING>You are ${l:_verb_oceanfloor_tread} along (a(n)) ${l:_oceanfloor_path_name}. </STRING>
+                 <STRING>You are on (a(n)) ${l:_oceanfloor_path_name}. </STRING>
+                 <STRING>The ${l:_oceanfloor_path_name} ${l:_oceanfloor_path_verb} through the $oceanfloor_nouns. </STRING>
+                 <STRING>(A(n)) ${l:_oceanfloor_path_name} ${l:_oceanfloor_path_verb} through the $oceanfloor_nouns. </STRING>
+                 <STRING>You are ${l:_verb_oceanfloor_tread} your way through (a(n)) ${l:_oceanfloor_path_name}. </STRING>
+                 <STRING>You are ${l:_oceanfloor_youare_in} in (a(n)) ${l:_oceanfloor_path_name}. </STRING>
+                 <STRING>The ${l:_oceanfloor_path_name} surrounds you. </STRING>
+                 <STRING>The ${l:_oceanfloor_path_name} is all around you. </STRING>
+             </STRING>
+             <STRING select="any-1" action="APPEND">
 				<STRING>The $adj_large dunes of $areaname are $adj_cramped around you in $adj_impassable walls. </STRING>
 				<STRING>You $verb_oceanfloor_tread your way through the $noun_oceanfloor_brush of the desert. </STRING>
 				<STRING>The desert surrounds you, ${adj_phys_size_tall} $adj_cramped dunes making some directions $adj_impassable. </STRING>
@@ -230,6 +234,30 @@ See guides/RandomAreas.html for information about documents of this type.
 		</MOB>
 	</MOB>
 </MOB>
+
+<STRING id="oceanfloor_path_verb" select="any-1">
+    <STRING>goes</STRING>
+    <STRING>runs</STRING>
+    <STRING>travels</STRING>
+    <STRING>pushes</STRING>
+    <STRING>approaches</STRING>
+    <STRING>reaches</STRING>
+    <STRING>stretches</STRING>
+    <STRING>advances</STRING>
+    <STRING>passes</STRING>
+</STRING>
+<STRING id="oceanfloor_youare_in" select="any-1">
+    <STRING>lost</STRING>
+    <STRING>standing</STRING>
+    <STRING>deep</STRING>
+    <STRING>floating</STRING>
+    <STRING>wandering</STRING>
+    <STRING>meandering</STRING>
+    <STRING>loitering</STRING>
+    <STRING>goofing off</STRING>
+    <STRING>a little lost</STRING>
+    <STRING>totally lost</STRING>
+</STRING>
 
 <STRING id="noun_oceanfloor_plants" select="any-1">
     <STRING>$noun_oceanfloor_plants_adj kelp</STRING>
