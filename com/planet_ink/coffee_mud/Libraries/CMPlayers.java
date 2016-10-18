@@ -520,7 +520,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			String name=deadMOB.Name();
 			if((pStats != null)
 			&&(pStats.getAccount()!=null))
-				name+=" ("+pStats.getAccount()+")";
+				name+=" ("+pStats.getAccount().getAccountName()+")";
 			CMLib.commands().postChannel(channels.get(i),deadMOB.clans(),CMLib.lang().fullSessionTranslation("@x1 has just been deleted.",name),true);
 		}
 		CMLib.coffeeTables().bump(deadMOB,CoffeeTableRow.STAT_PURGES);
