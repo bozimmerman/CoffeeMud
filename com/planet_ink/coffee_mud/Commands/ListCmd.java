@@ -4459,13 +4459,18 @@ System.out.println(s);
 			else
 			if(wiki==WikiFlag.WIKIHELP)
 			{
+				String currency = CMLib.beanCounter().getCurrency(A);
+				if((currency==null)||(currency.trim().length()==0))
+					currency="Gold coins (default)";
+				else
+					currency=CMStrings.capitalizeAndLower(currency);
 				str.append("{{AreaTemplate"
 						+ "|Name="+A.name()
 						+ "|Description="+A.description()
 						+ "|Author="+A.getAuthorID()
 						+ "|Rooms="+A.getAreaIStats()[Area.Stats.VISITABLE_ROOMS.ordinal()]
 						+ "|Population="+A.getAreaIStats()[Area.Stats.POPULATION.ordinal()]
-						+ "|Currency=currencystring"
+						+ "|Currency="+currency
 						+ "|LevelRange="+A.getAreaIStats()[Area.Stats.MIN_LEVEL.ordinal()]+"-"+A.getAreaIStats()[Area.Stats.MAX_LEVEL.ordinal()]
 						+ "|MedianLevel="+A.getAreaIStats()[Area.Stats.MED_LEVEL.ordinal()]
 						+ "|AvgAlign="+((theFaction!=null)?theFaction.fetchRangeName(A.getAreaIStats()[Area.Stats.AVG_ALIGNMENT.ordinal()]):"")
