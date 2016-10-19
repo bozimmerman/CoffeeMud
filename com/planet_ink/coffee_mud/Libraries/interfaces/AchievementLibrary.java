@@ -611,4 +611,15 @@ public interface AchievementLibrary extends CMLibrary
 	 * @return the help entry, or ""
 	 */
 	public String getAchievementsHelp(String ID, boolean exact);
+	
+	/**
+	 * When a player remorts, they lost their account achievement awards, which are restored
+	 * later.  This method is called to remove all account achievement rewards for a specific
+	 * achievement.
+	 * @param mob the mob to lost
+	 * @param awardSet the awards to remove
+	 * @param whether this is happening before or after stat selection
+	 * @return any messages you might want to show the user.
+	 */
+	public String removeAwards(final MOB mob, final Award[] awardSet, final AchievementLoadFlag flag);
 }

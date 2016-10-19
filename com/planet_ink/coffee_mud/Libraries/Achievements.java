@@ -524,9 +524,10 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 								isSave  = isSave  || CharStats.CODES.NAME(t).equals(astat.toUpperCase());
 							final boolean isSavingThrow = isSave;
 							final boolean isPreAwarded=
-									(astat.startsWith("MAX") 
+								(astat.startsWith("MAX") 
 									&& (CharStats.CODES.findWhole(astat,true) >=0)
-									&& (CMParms.contains(CharStats.CODES.MAXCODES(),CharStats.CODES.findWhole(astat,true))));
+									&& (CMParms.contains(CharStats.CODES.MAXCODES(),CharStats.CODES.findWhole(astat,true))))
+								|| astat.endsWith("BONUSCHARSTATS");
 							final boolean isNotPremortAwarded = ((PlayerStats)CMClass.getCommonPrototype("DefaultPlayerStats")).isStat(astat);
 							awardsList.add(new StatAward()
 							{
@@ -587,11 +588,11 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 								isSave  = isSave  || CharStats.CODES.NAME(t).equals(astat.toUpperCase());
 							final boolean isSavingThrow = isSave;
 							final boolean isPreAwarded=
-									(astat.startsWith("MAX") 
+								(astat.startsWith("MAX") 
 									&& (CharStats.CODES.findWhole(astat,true) >=0)
-									&& (CMParms.contains(CharStats.CODES.MAXCODES(),CharStats.CODES.findWhole(astat,true))));
+									&& (CMParms.contains(CharStats.CODES.MAXCODES(),CharStats.CODES.findWhole(astat,true))))
+								|| astat.endsWith("BONUSCHARSTATS");
 							final boolean isNotPremortAwarded = ((PlayerStats)CMClass.getCommonPrototype("DefaultPlayerStats")).isStat(astat);
-							
 							awardsList.add(new StatAward()
 							{
 								final String stat = stat1;
@@ -3283,6 +3284,141 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		}
 		mob.tell(awardMessage.toString());
 		grantAbilitiesAndExpertises(mob);
+	}
+	
+	@Override
+	public String removeAwards(final MOB mob, final Award[] awardSet, final AchievementLoadFlag flag)
+	{
+		if(mob == null)
+			return "";
+		final PlayerStats pStats = mob.playerStats();
+		StringBuilder awardMessage = new StringBuilder("");
+		for(final Award award : awardSet)
+		{
+			switch(flag)
+			{
+			case REMORT_PRELOAD:
+				if(!award.isPreAwarded())
+					continue;
+				if(award.isNotAwardedOnRemort())
+					continue;
+				break;
+			case REMORT_POSTLOAD:
+				if(award.isPreAwarded())
+					continue;
+				if(award.isNotAwardedOnRemort())
+					continue;
+				break;
+			case CHARCR_PRELOAD:
+				if(!award.isPreAwarded())
+					continue;
+				break;
+			case CHARCR_POSTLOAD:
+				if(award.isPreAwarded())
+					continue;
+				break;
+			case NORMAL:
+				break;
+			}
+			switch(award.getType())
+			{
+			case ABILITY:
+			{
+				final AbilityAward aaward = (AbilityAward)award;
+				if((pStats!=null) && (pStats.getExtraQualifiedSkills().containsKey(aaward.getAbilityMapping().abilityID())))
+				{
+					final Ability A=CMClass.getAbility(aaward.getAbilityMapping().abilityID());
+					if(A!=null)
+					{
+						pStats.getExtraQualifiedSkills().remove(A.ID(), aaward.getAbilityMapping());
+						awardMessage.append(L("^HYou have lost your qualification for @x1 at level @x2!\n\r^?",A.name(),""+aaward.getAbilityMapping().qualLevel()));
+					}
+				}
+				break;
+			}
+			case CURRENCY:
+			{
+				// is never un-awarded
+				break;
+			}
+			case STAT:
+			{
+				final StatAward aaward=(StatAward)award;
+				if((mob.playerStats()!=null)
+				&&(mob.playerStats().getAccount()!=null)
+				&&(aaward.getStat().startsWith("ACCOUNT ")))
+				{
+					final String stat = aaward.getStat().substring(8).trim();
+					String value = mob.playerStats().getAccount().getStat(stat);
+					if(CMath.isNumber(value))
+					{
+						int oldVal = CMath.s_int(value);
+						if(oldVal >= aaward.getAmount())
+						{
+							awardMessage.append(L("^HYour account has lost @x1!\n\r^?",aaward.getAmount() + " " + stat));
+							mob.playerStats().getAccount().setStat(stat, "" + (oldVal - aaward.getAmount()));
+						}
+					}
+				}
+				else
+				{
+					String value = CMLib.coffeeMaker().getAnyGenStat(mob, aaward.getStat());
+					if(CMath.isNumber(value))
+					{
+						int oldVal = CMath.s_int(value);
+						if(oldVal >= aaward.getAmount())
+						{
+							awardMessage.append(L("^HYou have lost @x1!\n\r^?",aaward.getAmount() + " " + aaward.getStat()));
+							CMLib.coffeeMaker().setAnyGenStat(mob, aaward.getStat(), "" + (CMath.s_int(value) - aaward.getAmount()));
+						}
+					}
+				}
+				break;
+			}
+			case EXPERTISE:
+			{
+				final ExpertiseAward aaward = (ExpertiseAward)award;
+				if(pStats!=null)
+				{
+					if(pStats.getExtraQualifiedExpertises().containsKey(aaward.getExpertise().ID()))
+					{
+						pStats.getExtraQualifiedExpertises().remove(aaward.getExpertise().ID());
+						awardMessage.append(L("^HYou have lost a qualification for @x1 at level @x2!\n\r^?",aaward.getExpertise().name(),""+aaward.getLevel()));
+					}
+				}
+				break;
+			}
+			case QP:
+			{
+				final AmountAward aaward=(AmountAward)award;
+				if(mob.getQuestPoint() >= aaward.getAmount())
+				{
+					awardMessage.append(L("^HYou have lost @x1 quest points!\n\r^?\n\r",""+aaward.getAmount()));
+					mob.setQuestPoint(mob.getQuestPoint() - aaward.getAmount());
+				}
+				break;
+			}
+			case TITLE:
+			{
+				final TitleAward aaward=(TitleAward)award;
+				if((pStats != null) && (pStats.getTitles().contains(aaward.getTitle())))
+				{
+					pStats.getTitles().remove(aaward.getTitle());
+					awardMessage.append(L("^HYou have lost the title: @x1!\n\r^?",CMStrings.replaceAll(aaward.getTitle(),"*",mob.Name())));
+				}
+				break;
+			}
+			case XP:
+			{
+				// also, never lost
+				break;
+			}
+			default:
+				break;
+			
+			}
+		}
+		return awardMessage.toString();
 	}
 	
 	protected boolean giveAwards(final Achievement A, final Tattooable holder, final MOB mob, final AchievementLoadFlag flag)

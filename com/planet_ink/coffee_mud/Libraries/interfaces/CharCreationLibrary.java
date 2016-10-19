@@ -75,7 +75,7 @@ public interface CharCreationLibrary extends CMLibrary
 	 * @param bonusPoints any bonus points to allocate to stats
 	 * @throws IOException any input errors that occur
 	 */
-	public void promptPlayerStats(int theme, MOB mob, int timeoutSecs, Session session, int bonusPoints) throws IOException;
+	public void promptBaseCharStats(int theme, MOB mob, int timeoutSecs, Session session, int bonusPoints) throws IOException;
 
 	/**
 	 * A blocking call that populates the given mob with a character class
@@ -84,7 +84,7 @@ public interface CharCreationLibrary extends CMLibrary
 	 * through the class selection process.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CharStats
 	 * @see CharCreationLibrary#reRollStats(CharStats, int)
-	 * @see CharCreationLibrary#promptPlayerStats(int, MOB, int, Session, int)
+	 * @see CharCreationLibrary#promptBaseCharStats(int, MOB, int, Session, int)
 	 * @see CharCreationLibrary#promptRace(int, MOB, Session)
 	 * @see CharCreationLibrary#promptGender(int, MOB, Session)
 	 * @see com.planet_ink.coffee_mud.Areas.interfaces.Area#THEME_FANTASY
@@ -102,7 +102,7 @@ public interface CharCreationLibrary extends CMLibrary
 	 * through the race selection process.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CharStats
 	 * @see CharCreationLibrary#reRollStats(CharStats, int)
-	 * @see CharCreationLibrary#promptPlayerStats(int, MOB, int, Session, int)
+	 * @see CharCreationLibrary#promptBaseCharStats(int, MOB, int, Session, int)
 	 * @see CharCreationLibrary#promptCharClass(int, MOB, Session)
 	 * @see CharCreationLibrary#promptGender(int, MOB, Session)
 	 * @see com.planet_ink.coffee_mud.Areas.interfaces.Area#THEME_FANTASY
@@ -120,7 +120,7 @@ public interface CharCreationLibrary extends CMLibrary
 	 * through the gender selection process.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CharStats
 	 * @see CharCreationLibrary#reRollStats(CharStats, int)
-	 * @see CharCreationLibrary#promptPlayerStats(int, MOB, int, Session, int)
+	 * @see CharCreationLibrary#promptBaseCharStats(int, MOB, int, Session, int)
 	 * @see CharCreationLibrary#promptCharClass(int, MOB, Session)
 	 * @see CharCreationLibrary#promptRace(int, MOB, Session)
 	 * @see com.planet_ink.coffee_mud.Areas.interfaces.Area#THEME_FANTASY

@@ -501,7 +501,11 @@ public class Remort extends StdCommand
 									@Override
 									public void run()
 									{
+										final String[] PCODE_RESTORE={
+											"BONUSCHARSTATS"
+										};
 										final PlayerStats pStats = mob.playerStats();
+										final PlayerStats oldPStats =(PlayerStats)pStats.copyOf();
 										try
 										{
 											if(pStats != null)
@@ -576,7 +580,7 @@ public class Remort extends StdCommand
 												// loadAccountAchievements already done by crcrinit in promptplayerstats
 												try
 												{
-													CMLib.login().promptPlayerStats(theme, mob, 300, mob.session(), bonusPointsPerStat[0]);
+													CMLib.login().promptBaseCharStats(theme, mob, 300, mob.session(), bonusPointsPerStat[0]);
 												}
 												catch(Throwable x)
 												{
@@ -589,7 +593,10 @@ public class Remort extends StdCommand
 												recoverEverything(mob);
 											}
 											else
-												CMLib.achievements().loadAccountAchievements(mob,AchievementLoadFlag.REMORT_PRELOAD);											mob.basePhyStats().setSensesMask(0);
+												CMLib.achievements().loadAccountAchievements(mob,AchievementLoadFlag.REMORT_PRELOAD);
+											for(String prevCode : PCODE_RESTORE)
+												pStats.setStat(prevCode, oldPStats.getStat(prevCode));
+											mob.basePhyStats().setSensesMask(0);
 											mob.baseCharStats().getMyRace().startRacing(mob,false);
 											mob.setWimpHitPoint(5);
 											mob.setQuestPoint(questPoint[0]);

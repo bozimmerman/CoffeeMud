@@ -2665,13 +2665,13 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			}
 			session.println(null,null,null,"\n\r\n\r"+introText.toString());
 
-			loginObj.statPoints = getTotalBonusStatPoints(mob.playerStats(), loginObj.acct)+bonusPoints;
 			for(int i=0;i<CharStats.CODES.BASECODES().length;i++)
 				mob.baseCharStats().setStat(CharStats.CODES.BASECODES()[i],CMProps.getIntVar(CMProps.Int.BASEMINSTAT));
 			mob.recoverCharStats();
 			loginObj.state=LoginState.CHARCR_STATSTART;
+			CMLib.achievements().loadAccountAchievements(mob,AchievementLoadFlag.CHARCR_PRELOAD);
+			loginObj.statPoints = getTotalBonusStatPoints(mob.playerStats(), loginObj.acct)+bonusPoints;
 		}
-		CMLib.achievements().loadAccountAchievements(mob,AchievementLoadFlag.CHARCR_PRELOAD);
 		loginObj.baseStats = (CharStats)mob.baseCharStats().copyOf();
 		return null;
 	}
@@ -3979,7 +3979,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	}
 
 	@Override
-	public void promptPlayerStats(int theme, MOB mob, int timeoutSecs, Session session, int bonusPoints) throws IOException
+	public void promptBaseCharStats(int theme, MOB mob, int timeoutSecs, Session session, int bonusPoints) throws IOException
 	{
 		final LoginSessionImpl loginObj=new LoginSessionImpl();
 		if(mob.playerStats()!=null)

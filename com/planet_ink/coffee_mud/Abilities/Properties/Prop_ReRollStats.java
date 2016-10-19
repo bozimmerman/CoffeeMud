@@ -78,7 +78,7 @@ public class Prop_ReRollStats extends Property
 					{
 						try
 						{
-							CMLib.login().promptPlayerStats(M.playerStats().getTheme(), M, 300, M.session(), bonusPointsPerStat);
+							CMLib.login().promptBaseCharStats(M.playerStats().getTheme(), M, 300, M.session(), bonusPointsPerStat);
 							M.recoverCharStats();
 							if(rePickClass)
 								M.baseCharStats().setCurrentClass(CMLib.login().promptCharClass(M.playerStats().getTheme(), M, M.session()));
