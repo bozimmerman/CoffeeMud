@@ -3330,7 +3330,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 					final Ability A=CMClass.getAbility(aaward.getAbilityMapping().abilityID());
 					if(A!=null)
 					{
-						pStats.getExtraQualifiedSkills().remove(A.ID(), aaward.getAbilityMapping());
+						pStats.getExtraQualifiedSkills().remove(A.ID());
 						awardMessage.append(L("^HYou have lost your qualification for @x1 at level @x2!\n\r^?",A.name(),""+aaward.getAbilityMapping().qualLevel()));
 					}
 				}
