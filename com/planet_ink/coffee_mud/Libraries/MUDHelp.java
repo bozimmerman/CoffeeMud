@@ -503,7 +503,6 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 				prepend.append(columnHelper(L("^HLife Exp. :^N"),L("@x1 years",""+R.getAgingChart()[Race.AGE_ANCIENT]),wrap));
 				if(R.getXPAdjustment() != 0)
 					prepend.append(columnHelper(L("^HXP Adjust.:^N"),R.getXPAdjustment()+"%",wrap));
-				prepend.append(columnHelper(L("^HImmunities:^N"),s,wrap));
 				s="";
 				for(String ableID : R.abilityImmunities())
 				{

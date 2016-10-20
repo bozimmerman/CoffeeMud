@@ -95,12 +95,10 @@ public class Spell_Darkness extends Spell
 			return false;
 		}
 
-
 		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
-
 			final CMMsg msg = CMClass.getMsg(mob, target, this, somanticCastCode(mob,target,auto), L("@x1arkness envelopes everyone.^?",(auto?"D":"^S<S-NAME> incant(s) and gesture(s) and d")));
 			if(mob.location().okMessage(mob,msg))
 			{

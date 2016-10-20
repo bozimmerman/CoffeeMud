@@ -622,12 +622,12 @@ public class StdRace implements Race
 	{
 		return true;
 	}
-	
+
 	public String L(final String str, final String ... xs)
 	{
 		return CMLib.lang().fullSessionTranslation(str, xs);
 	}
-	
+
 	@Override
 	public void startRacing(MOB mob, boolean verifyOnly)
 	{
