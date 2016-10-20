@@ -140,15 +140,22 @@ public class Skill_BurrowHide extends StdSkill
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
-		affectableStats.setStat(CharStats.STAT_SAVE_DETECTION,proficiency()+affectableStats.getStat(CharStats.STAT_SAVE_DETECTION));
+		if(isBuried)
+		{
+			affectableStats.setStat(CharStats.STAT_SAVE_DETECTION,proficiency()+affectableStats.getStat(CharStats.STAT_SAVE_DETECTION));
+		}
 	}
+
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_HIDDEN);
-		if(CMLib.flags().isSneaking(affected))
-			affectableStats.setDisposition(affectableStats.disposition()-PhyStats.IS_SNEAKING);
+		if(isBuried)
+		{
+			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_HIDDEN);
+			if(CMLib.flags().isSneaking(affected))
+				affectableStats.setDisposition(affectableStats.disposition()-PhyStats.IS_SNEAKING);
+		}
 	}
 
 	@Override
