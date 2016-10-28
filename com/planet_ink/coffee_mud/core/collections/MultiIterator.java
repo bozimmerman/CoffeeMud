@@ -58,7 +58,6 @@ public class MultiIterator<K> implements Iterator<K>
 			iters.add(I.iterator());
 	}
 
-
 	public MultiIterator()
 	{
 

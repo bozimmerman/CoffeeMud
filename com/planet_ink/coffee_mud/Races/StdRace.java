@@ -228,15 +228,25 @@ public class StdRace implements Race
 		return null;
 	}
 
-	@Override
-	public String[] abilityImmunities()
+	protected int[] culturalAbilityLevel()
 	{
-		return CMParms.toStringArray(this.naturalAbilImmunities);
+		return null;
+	}
+
+	protected boolean[] culturalAbilityAutoGain()
+	{
+		return null;
 	}
 
 	protected int[] culturalAbilityProficiencies()
 	{
 		return null;
+	}
+
+	@Override
+	public String[] abilityImmunities()
+	{
+		return CMParms.toStringArray(this.naturalAbilImmunities);
 	}
 
 	protected boolean uncharmable()
@@ -635,7 +645,11 @@ public class StdRace implements Race
 		&&(culturalAbilityNames()!=null))
 		{
 			for(int a=0;a<culturalAbilityNames().length;a++)
-				CMLib.ableMapper().addCharAbilityMapping(ID(),0,culturalAbilityNames()[a],false);
+			{
+				final int lvl = (culturalAbilityLevel() != null) ? culturalAbilityLevel()[a] : 0;
+				final boolean gain = (culturalAbilityAutoGain() != null) ? culturalAbilityAutoGain()[a] : true;
+				CMLib.ableMapper().addCharAbilityMapping(ID(),lvl,culturalAbilityNames()[a],gain);
+			}
 			mappedCulturalAbilities=true;
 		}
 		for(final Ability A : racialAbilities(mob))
@@ -667,7 +681,9 @@ public class StdRace implements Race
 				for(int a=0;a<culturalAbilityNames().length;a++)
 				{
 					Ability A=CMClass.getAbility(culturalAbilityNames()[a]);
-					if(A!=null)
+					final int lvl = (culturalAbilityLevel()==null) ? 0 : culturalAbilityLevel()[a];
+					final boolean autoGain = (culturalAbilityAutoGain() == null) ? true : culturalAbilityAutoGain()[a];
+					if((A!=null)&&(lvl<=mob.phyStats().level())&&(autoGain))
 					{
 						A.setProficiency(culturalAbilityProficiencies()[a]);
 						mob.addAbility(A);
@@ -1263,6 +1279,10 @@ public class StdRace implements Race
 			{
 				GR.setStat("GETCABLE"+i,culturalAbilityNames()[i]);
 				GR.setStat("GETCABLEPROF"+i,""+culturalAbilityProficiencies()[i]);
+				int lvl = (culturalAbilityLevel() != null) ? culturalAbilityLevel()[i] : 0;
+				GR.setStat("GETCABLELVL"+i,""+lvl);
+				boolean gain = (culturalAbilityAutoGain() != null) ? culturalAbilityAutoGain()[i] : true;
+				GR.setStat("GETCABLEGAIN"+i,""+gain);
 			}
 		}
 
@@ -1601,14 +1621,19 @@ public class StdRace implements Race
 	}
 
 	@Override
-	public PairVector<String,Integer> culturalAbilities()
+	public QuadVector<String,Integer,Integer,Boolean> culturalAbilities()
 	{
-		final PairVector<String,Integer> ables=new PairVector<String,Integer>();
+		final QuadVector<String,Integer,Integer,Boolean> ables=new QuadVector<String,Integer,Integer,Boolean>();
 		if((culturalAbilityNames()!=null)
 		&&(culturalAbilityProficiencies()!=null))
 		{
 			for(int i=0;i<culturalAbilityNames().length;i++)
-				ables.addElement(culturalAbilityNames()[i],Integer.valueOf(culturalAbilityProficiencies()[i]));
+			{
+				final Integer level = Integer.valueOf((culturalAbilityLevel() != null) ? culturalAbilityLevel()[i] : 0); 
+				final Integer prof = Integer.valueOf(culturalAbilityProficiencies()[i]);
+				final Boolean autoGain = Boolean.valueOf((culturalAbilityAutoGain() != null) ? culturalAbilityAutoGain()[i] : true);
+				ables.addElement(culturalAbilityNames()[i],prof,level,autoGain);
+			}
 		}
 		return ables;
 	}
@@ -1804,7 +1829,7 @@ public class StdRace implements Race
 			ables.addAll(racialAbilities(null));
 			ables.addAll(racialEffects(null));
 
-			final PairVector<String,Integer> cables=culturalAbilities();
+			final QuadVector<String,Integer,Integer,Boolean> cables=culturalAbilities();
 			Ability A=null;
 			if(cables!=null)
 			{
@@ -1822,10 +1847,10 @@ public class StdRace implements Race
 			{
 				A=e.next();
 				str = ((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE)?lstr:astr;
-				if(A.proficiency()<=0)
-					str.append(A.name()+", ");
-				else
-					str.append(A.name()+"("+A.proficiency()+"%), ");
+				str.append(A.name());
+				if(A.proficiency()>0)
+					str.append("("+A.proficiency()+"%)");
+				str.append(", ");
 			}
 			abilitiesDesc=astr.toString();
 			if(abilitiesDesc.endsWith(", "))

@@ -46,6 +46,7 @@ public class WillQualify  extends Skills
 	public StringBuffer getQualifiedAbilities(MOB viewerM,
 											  MOB ableM,
 											  String classID,
+											  String raceID,
 											  int maxLevel,
 											  String prefix,
 											  HashSet<Object> types)
@@ -61,7 +62,15 @@ public class WillQualify  extends Skills
 		for (int l = 0; l <= highestLevel; l++)
 		{
 			final StringBuffer thisLine = new StringBuffer("");
-			for (final Enumeration<AbilityMapper.AbilityMapping> a = CMLib.ableMapper().getClassAbles(classID,true); a.hasMoreElements(); )
+			@SuppressWarnings("unchecked")
+			final Enumeration<AbilityMapper.AbilityMapping> emur = new MultiEnumeration<AbilityMapper.AbilityMapping>(
+				new Enumeration[]
+				{
+					CMLib.ableMapper().getClassAbles(classID,true),
+					CMLib.ableMapper().getClassAbles(raceID,false)
+				}
+			);
+			for (final Enumeration<AbilityMapper.AbilityMapping> a = emur; a.hasMoreElements(); )
 			{
 				final AbilityMapper.AbilityMapping cimable=a.nextElement();
 				if((cimable.qualLevel() ==l)&&(!cimable.isSecret()))
@@ -151,7 +160,11 @@ public class WillQualify  extends Skills
 		if(commands.size()>0)
 		{
 			final CharClass C2=CMClass.findCharClass(commands.get(0));
-			if(C2!=null){ C=C2;commands.remove(0);}
+			if (C2 != null)
+			{
+				C = C2;
+				commands.remove(0);
+			}
 		}
 		while(commands.size()>0)
 		{
@@ -227,7 +240,8 @@ public class WillQualify  extends Skills
 		}
 
 		msg.append(L("At level @x1 of class '@x2', you could qualify for:\n\r",""+level,C.name()));
-		msg.append(getQualifiedAbilities(mob,mob,C.ID(),level,"",types));
+		final String raceID = mob.baseCharStats().getMyRace().ID();
+		msg.append(getQualifiedAbilities(mob,mob,C.ID(),raceID,level,"",types));
 		if(!mob.isMonster())
 			mob.session().wraplessPrintln(msg.toString());
 		return false;

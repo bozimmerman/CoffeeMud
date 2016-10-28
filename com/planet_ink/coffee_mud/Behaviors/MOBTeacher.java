@@ -98,7 +98,6 @@ public class MOBTeacher extends CombatAbilities
 		for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 		{
 			A=a.nextElement();
-
 			if((A!=null)
 			&&(((stdCharClass&&(CMLib.ableMapper().lowestQualifyingLevel(A.ID())>0)))
 				||(CMLib.ableMapper().qualifiesByLevel(mob,A)&&(!CMLib.ableMapper().getSecretSkill(className,true,A.ID()))))

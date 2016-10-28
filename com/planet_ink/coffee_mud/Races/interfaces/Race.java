@@ -310,11 +310,13 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, M
 
 	/**
 	 * Return a vector of skills, spells, and other ability ids granted to the given
-	 * mob when they are created as this race.
+	 * mob when they are created as this race.  The entries are the ability id,
+	 * the default proficiency, the level, and whether it is auto-gained.
 	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability
-	 * @return a pairvector of the Ability names, and profficiencies
+	 * @return a quadvector of the Ability IDs, profs, levels, auto-gained 
 	 */
-	public PairVector<String,Integer> culturalAbilities();
+	public QuadVector<String,Integer,Integer,Boolean> culturalAbilities();
+	
 	/**
 	 * Return a vector of skills, spells, and other abilities granted to the given
 	 * mob of the given mobs level.
@@ -323,6 +325,7 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, M
 	 * @return a vector of the Ability objects
 	 */
 	public SearchIDList<Ability> racialAbilities(MOB mob);
+	
 	/**
 	 * Return a vector of skills, spells, and other abilities granted to the given
 	 * mob of the given mobs level.  This method is not functionally used because

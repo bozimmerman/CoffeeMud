@@ -7753,7 +7753,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				{
 					parts.append("("+A.ID()+"/"+E.getStat("GETCABLEPROF"+v)+"), ");
 					ables.addElement(A);
-					data.addElement(A.ID()+";"+E.getStat("GETCABLEPROF"+v));
+					data.addElement(A.ID()+";"+E.getStat("GETCABLEPROF"+v)+";"+E.getStat("GETCABLELVL"+v)+";"+E.getStat("GETCABLEGAIN"+v));
 				}
 			}
 			if(parts.toString().endsWith(", "))
@@ -7790,6 +7790,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						final StringBuffer str=new StringBuffer(A.ID()+";");
 						final String prof=mob.session().prompt(L("Enter the default proficiency level (100): "),"100");
 						str.append((""+CMath.s_int(prof)));
+						final String levelStr=mob.session().prompt(L("Enter the character level (0): "),"0");
+						str.append(";");
+						str.append((""+CMath.s_int(levelStr)));
+						final String gainStr=Boolean.valueOf(mob.session().confirm(L("Enter Y if it is auto-gained (Y/n)? "),"Y")).toString();
+						str.append(";");
+						str.append(gainStr);
 						data.addElement(str.toString());
 						ables.addElement(A);
 						mob.tell(L("@x1 added.",A.name()));
@@ -7815,6 +7821,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						final List<String> V=CMParms.parseSemicolons(data.elementAt(i),false);
 						E.setStat("GETCABLE"+i,V.get(0));
 						E.setStat("GETCABLEPROF"+i,V.get(1));
+						E.setStat("GETCABLELVL"+i,V.get(2));
+						E.setStat("GETCABLEGAIN"+i,V.get(3));
 					}
 				}
 			}

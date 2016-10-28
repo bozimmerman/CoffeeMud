@@ -275,9 +275,9 @@ public class GrinderRaces
 	}
 
 
-	public static DVector cabilities(HTTPRequest httpReq)
+	public static QuadVector<String,Integer,Integer,Boolean> cabilities(HTTPRequest httpReq)
 	{
-		final DVector theclasses=new DVector(2);
+		final QuadVector<String,Integer,Integer,Boolean> theclasses=new QuadVector<String,Integer,Integer,Boolean>();
 		if(httpReq.isUrlParameter("CABLES1"))
 		{
 			int num=1;
@@ -289,7 +289,13 @@ public class GrinderRaces
 					String prof=httpReq.getUrlParameter("CABPOF"+num);
 					if(prof==null)
 						prof="0";
-					theclasses.addElement(behav,prof);
+					String qual=httpReq.getUrlParameter("CABQUA"+num);
+					if(qual==null) 
+						qual="";// null means unchecked
+					String levl=httpReq.getUrlParameter("CABLVL"+num);
+					if(levl==null)
+						levl="0";
+					theclasses.addElement(behav,Integer.valueOf(CMath.s_int(prof)),Integer.valueOf(CMath.s_int(levl)),qual.equals("on")?Boolean.TRUE:Boolean.FALSE);
 				}
 				num++;
 				behav=httpReq.getUrlParameter("CABLES"+num);
@@ -430,17 +436,18 @@ public class GrinderRaces
 		}
 		R.setStat("BREATHES", CMParms.toListString(l));
 
-		DVector DV;
 		setDynAbilities(R,httpReq);
 		setDynEffects(R,httpReq);
 		setDynImmunities(R,httpReq);
 
-		DV=cabilities(httpReq);
-		R.setStat("NUMCABLE", ""+DV.size());
-		for(int i=0;i<DV.size();i++)
+		QuadVector<String,Integer,Integer,Boolean> CV=cabilities(httpReq);
+		R.setStat("NUMCABLE", ""+CV.size());
+		for(int i=0;i<CV.size();i++)
 		{
-			R.setStat("GETCABLE"+i, (String)DV.elementAt(i,1));
-			R.setStat("GETCABLEPROF"+i, (String)DV.elementAt(i,2));
+			R.setStat("GETCABLE"+i, CV.elementAt(i).first);
+			R.setStat("GETCABLEPROF"+i, CV.elementAt(i).second.toString());
+			R.setStat("GETCABLELVL"+i, CV.elementAt(i).third.toString());
+			R.setStat("GETCABLEGAIN"+i, Boolean.valueOf(!CV.elementAt(i).fourth.booleanValue()).toString());
 		}
 		return "";
 	}
