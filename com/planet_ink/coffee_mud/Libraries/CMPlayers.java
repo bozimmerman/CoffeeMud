@@ -623,7 +623,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 					CMLib.factions().updatePlayerFactions(mob,mob.location(), false);
 					setThreadStatus(serviceClient,"just saving "+mob.Name());
 					CMLib.database().DBUpdatePlayerMOBOnly(mob);
-					if((mob.Name().length()==0)||(pStats==null))
+					if(mob.Name().length()==0)
 						continue;
 					setThreadStatus(serviceClient,"saving "+mob.Name()+", "+mob.numItems()+" items");
 					CMLib.database().DBUpdatePlayerItems(mob);

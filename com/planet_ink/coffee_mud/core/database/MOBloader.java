@@ -934,7 +934,7 @@ public class MOBloader
 		if(!pStats.isSavable())
 			return;
 		DBUpdateJustMOB(mob);
-		if((mob.Name().length()==0)||(pStats==null))
+		if(mob.Name().length()==0)
 			return;
 		DBUpdateItems(mob);
 		DBUpdateAbilities(mob);

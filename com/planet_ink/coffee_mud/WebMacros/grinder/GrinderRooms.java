@@ -322,7 +322,6 @@ public class GrinderRooms
 			}
 			for(int m=0;m<allmobs.size();m++)
 			{
-				@SuppressWarnings("cast")
 				final MOB M=allmobs.elementAt(m);
 				if(!R.isInhabitant(M))
 					M.destroy();

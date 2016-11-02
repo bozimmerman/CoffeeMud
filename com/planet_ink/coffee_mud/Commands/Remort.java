@@ -508,8 +508,7 @@ public class Remort extends StdCommand
 										final PlayerStats oldPStats =(PlayerStats)pStats.copyOf();
 										try
 										{
-											if(pStats != null)
-												pStats.setSavable(false); // protect vulnerable weakling from saves so restore works
+											pStats.setSavable(false); // protect vulnerable weakling from saves so restore works
 											final Session sess = mob.session();
 											mob.baseCharStats().setMyClasses("StdCharClass");
 											mob.baseCharStats().setMyLevels("1");
@@ -658,8 +657,7 @@ public class Remort extends StdCommand
 										}
 										finally
 										{
-											if(pStats!=null)
-												pStats.setSavable(true);
+											pStats.setSavable(true);
 										}
 									}
 								};
