@@ -43,11 +43,13 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, M
 	 */
 	@Override
 	public String name();
+
 	/**
 	 * Which racial category this race falls in.
 	 * @return racial category
 	 */
 	public String racialCategory();
+
 	/**
 	 * Returns one or a combination of the Area.THEME_*
 	 * constants from the Area interface.  This bitmap
@@ -62,6 +64,7 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, M
 	 * @return the availability/theme of this race
 	 */
 	public int availabilityCode();
+
 	/**
 	 * After a mob is set or changed to a new race, this method
 	 * should be called to finalize or initialize any settings
@@ -72,6 +75,17 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, M
 	 * @param verifyOnly true flag unless this is a new player character
 	 */
 	public void startRacing(MOB mob, boolean verifyOnly);
+
+	/**
+	 * Typically called when a mob gains a level with this base-race, to allow the race to
+	 * assign any new skills.  Can also be called just to populate a mob with race skills,
+	 * so it should also confirm any lower level skills also.
+	 * @see com.planet_ink.coffee_mud.MOBS.interfaces.MOB#addAbility(Ability)
+	 * @param mob the mob to give abilities to.
+	 * @param isBorrowedRace whether the skills are savable (false) or temporary (true)
+	 */
+	public void grantAbilities(MOB mob, boolean isBorrowedRace);
+
 	/**
 	 * Will initialize a player or mobs height and weight based
 	 * on this races parameters.
@@ -80,33 +94,39 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, M
 	 * @param gender the mobs gender 'M' or 'F'
 	 */
 	public void setHeightWeight(PhyStats stats, char gender);
+
 	/**
 	 * The minimum height of males of this race.
 	 * @return minimum height of males in inches
 	 */
 	public int shortestMale();
+
 	/**
 	 * The minimum height of females of this race.
 	 * @return minimum height of females in inches
 	 */
 	public int shortestFemale();
+
 	/**
 	 * The amount from 0-this to add to the minimum height
 	 * to achieve a random height.
 	 * @return a range of inches to add to the mimiumum height
 	 */
 	public int heightVariance();
+
 	/**
 	 * The lightest weight for a member of this race
 	 * @return the lightest weight for something of this race
 	 */
 	public int lightestWeight();
+
 	/**
 	 * The amount from 0-this to add to the minumum weight
 	 * to achieve a random weight.
 	 * @return a range of pounds to add to the minimum weight
 	 */
 	public int weightVariance();
+
 	/**
 	 * Returns an integer array equal in size and index to the
 	 * Race.AGE_* constants in the Race interface.  Each value
@@ -116,6 +136,7 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, M
 	 * @return an integer array mapping ages to age categories
 	 */
 	public int[] getAgingChart();
+
 	/**
 	 * A bitmap showing which on locations a member of this
 	 * race can not wear clothing, even if the members have one
@@ -125,6 +146,7 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, M
 	 * @return the illegal wear location bitmap
 	 */
 	public long forbiddenWornBits();
+
 	/**
 	 * Returns an array indexed by body part codes as defined by
 	 * the BODY_* constants in the Race interface.  Each value is
@@ -161,6 +183,7 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, M
 	 * @return a vector of Item objects
 	 */
 	public List<Item> outfit(MOB myChar);
+
 	/**
 	 * Returns a description of the given mobs description, by
 	 * consulting the mobs curState().getHitPoints method.
@@ -179,7 +202,7 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, M
 	 * @return the list of Ability IDs.
 	 */
 	public String[] abilityImmunities();
-	
+
 	/**
 	 * Sends back a generic mob name appropriate to a mob of this
 	 * race, at the given gender and age-group.
@@ -198,6 +221,7 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, M
 	 * @return a Weapon object representing claws or teeth, etc..
 	 */
 	public Weapon myNaturalWeapon();
+
 	/**
 	 * Returns resource codes of what this race can breathe as
 	 * an atmosphere.  The list is guarenteed sorted.  If the list
@@ -206,6 +230,7 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, M
 	 * @return a list of resource codes that this race can breathe
 	 */
 	public int[] getBreathables();
+
 	/**
 	 * Returns a list of RawMaterial objects (usually GenFoodResource, GenLiquidResource,
 	 * or GenResource items) representing what is left over of a member of this race
@@ -214,6 +239,7 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, M
 	 * @return a list of rawmaterial objects
 	 */
 	public List<RawMaterial> myResources();
+
 	/**
 	 * Returns the corpse of a member of this race, populates it with the equipment of
 	 * the given mob, and places it in the given room.  If the destroyBodyAfterUse returns
@@ -224,17 +250,20 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, M
 	 * @return the corpse generated and placed in the room
 	 */
 	public DeadBody getCorpseContainer(MOB mob, Room room);
+
 	/**
 	 * Whether this race object represents a Generic Race, or one which is modifiable by
 	 * builders at run-time.
 	 * @return whether this race is modifiable at run-time.
 	 */
 	public boolean isGeneric();
+
 	/**
 	 * Whether this race is usually rideable; helps determine the appropriate java class to use.
 	 * @return whether this race is generally rideable
 	 */
 	public boolean useRideClass();
+
 	/**
 	 * If this race is modifiable at run time, this method will return an xml document
 	 * describing the several attributes of this race.
@@ -243,6 +272,7 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, M
 	 * @return an xml document describing this race
 	 */
 	public String racialParms();
+
 	/**
 	 * If this race is modifiable at run time, this method will use the given xml document
 	 * describing the several attributes of this race to populate this races fields and attributes.
@@ -251,18 +281,21 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, M
 	 * @param parms an xml document describing this race
 	 */
 	public void setRacialParms(String parms);
+
 	/**
 	 * Returns the string describing what folks see when a member of this race enters a room.
 	 * Should give an idea of the gate or walking style of this race.
 	 * @return what people see what this race enters a room
 	 */
 	public String arriveStr();
+
 	/**
 	 * Returns the string describing what folks see when a member of this race leaves a room.
 	 * Should give an idea of the gate or walking style of this race.
 	 * @return what people see what this race leaves a room
 	 */
 	public String leaveStr();
+
 	/**
 	 * This method is called whenever a player gains a level while a member of this race.  If
 	 * there are any special things which need to be done to a player who gains a level, they
@@ -282,6 +315,7 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, M
 	 * @return the adjusted amount of experience to gain
 	 */
 	public int adjustExperienceGain(MOB host, MOB mob, MOB victim, int amount);
+
 	/**
 	 * Returns true if the given race is actually the same as the
 	 * current race.  Usually just ID().equals(ID()), or if either
@@ -291,17 +325,20 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, M
 	 * @return true if its the same as this one, false otherwise
 	 */
 	public boolean canBreedWith(Race R);
+
 	/**
 	 * Whether this race can be associated with a character class.
 	 * @see com.planet_ink.coffee_mud.CharClasses.interfaces.CharClass
 	 * @return whether this race can have a class
 	 */
 	public boolean classless();
+
 	/**
 	 * Whether players of this race can be associated with an experience level.
 	 * @return whether players of this race can have a level
 	 */
 	public boolean leveless();
+
 	/**
 	 * Whether players of this race can gain or lose experience points.
 	 * @return whether players of this race can gain or lose experience points
@@ -316,7 +353,7 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, M
 	 * @return a quadvector of the Ability IDs, profs, levels, auto-gained 
 	 */
 	public QuadVector<String,Integer,Integer,Boolean> culturalAbilities();
-	
+
 	/**
 	 * Return a vector of skills, spells, and other abilities granted to the given
 	 * mob of the given mobs level.
@@ -325,7 +362,7 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, M
 	 * @return a vector of the Ability objects
 	 */
 	public SearchIDList<Ability> racialAbilities(MOB mob);
-	
+
 	/**
 	 * Return a vector of skills, spells, and other abilities granted to the given
 	 * mob of the given mobs level.  This method is not functionally used because
@@ -362,40 +399,46 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, M
 	 * @return xp adjustment 0-100, or -1 - -100 to adjust experience gains by.
 	 */
 	public int getXPAdjustment();
-	
+
 	/**
 	 * Returns a list of the stat adjustments made by this race
 	 * @return a list of the stat adjustments made by this race
 	 */
 	public String getStatAdjDesc();
+
 	/**
 	 * Returns the adjustment to practices made by this race (or nothing)
 	 * @return the adjustment to practices made by this race (or nothing)
 	 */
 	public String getPracAdjDesc();
+
 	/**
 	 * Returns the adjustment to trains made by this race (or nothing)
 	 * @return the adjustment to trains made by this race (or nothing)
 	 */
 	public String getTrainAdjDesc();
+
 	/**
 	 * Returns the list of modifications to senses done by this race
 	 * or nothing.
 	 * @return the list of modifications to senses done by this race
 	 */
 	public String getSensesChgDesc();
+
 	/**
 	 * Returns the list of modifications to disposition done by this race
 	 * or nothing.
 	 * @return the list of modifications to disposition done by this race
 	 */
 	public String getDispositionChgDesc();
+
 	/**
 	 * Returns the list of racial abilities granted to those of this race
 	 * or nothing.
 	 * @return the list of racial abilities granted to those of this race
 	 */
 	public String getAbilitiesDesc();
+
 	/**
 	 * Returns the list of racial languages granted to those of this race
 	 * or nothing.

@@ -298,7 +298,6 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		mob.baseState().setMana(mob.baseState().getMana()+manaGain);
 		theNews.append(manaGain+"^N " + (manaGain!=1?"points":"point") + " of mana,");
 
-
 		if(curClass.getLevelsPerBonusDamage()!=0)
 		{
 			if((adjuster<0)&&(((classLevel+1)%curClass.getLevelsPerBonusDamage())==0))
@@ -568,6 +567,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		}
 
 		curClass.grantAbilities(mob,false);
+		mob.baseCharStats().getMyRace().grantAbilities(mob, false);
 		CMLib.achievements().grantAbilitiesAndExpertises(mob);
 
 		// check for autoinvoking abilities

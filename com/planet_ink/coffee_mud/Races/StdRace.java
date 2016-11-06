@@ -638,6 +638,80 @@ public class StdRace implements Race
 		return CMLib.lang().fullSessionTranslation(str, xs);
 	}
 
+	protected boolean giveMobAbility(MOB mob, Ability A, int proficiency, String defaultParm, boolean isBorrowedRace)
+	{
+		return giveMobAbility(mob,A,proficiency,defaultParm,isBorrowedRace,true);
+	}
+
+	protected boolean giveMobAbility(MOB mob, Ability A, int proficiency, String defaultParm, boolean isBorrowedRace, boolean autoInvoke)
+	{
+		if(mob.fetchAbility(A.ID())==null)
+		{
+			A=(Ability)A.copyOf();
+			A.setSavable(!isBorrowedRace);
+			A.setProficiency(proficiency);
+			A.setMiscText(defaultParm);
+			mob.addAbility(A);
+			if(autoInvoke)
+			{
+				A.autoInvocation(mob, false);
+				final boolean isChild=CMLib.flags().isChild(mob);
+				final boolean isAnimal=CMLib.flags().isAnimalIntelligence(mob);
+				final boolean isMonster=mob.isMonster();
+				if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE)
+				&&(isMonster)
+				&&(!isChild))
+				{
+					if(A.proficiency()>0)
+						A.setProficiency(100);
+					A.invoke(mob,mob,false,0);
+					if(isChild && (!isAnimal))
+					{
+						A=mob.fetchAbility("Common");
+						if(A==null)
+						{
+							A=CMClass.getAbility("Common");
+							if(A!=null)
+								mob.addAbility(A);
+						}
+						if(A!=null)
+							A.setProficiency(100);
+					}
+				}
+			}
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public void grantAbilities(MOB mob, boolean isBorrowedRace)
+	{
+		final PairList<Ability,AbilityMapping> onesToAdd=new PairVector<Ability,AbilityMapping>();
+		for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+		{
+			final Ability A=a.nextElement();
+			final AbilityMapping mapping = CMLib.ableMapper().getQualifyingMapping(ID(), false, A.ID());
+			if((mapping != null)
+			&&(mapping.qualLevel()>0)
+			&&(mapping.qualLevel()<=mob.phyStats().level())
+			&&(mapping.autoGain()))
+			{
+				final String extraMask=mapping.extraMask();
+				if((extraMask==null)
+				||(extraMask.length()==0)
+				||(CMLib.masking().maskCheck(extraMask,mob,true)))
+					onesToAdd.add(A,mapping);
+			}
+		}
+		for(int v=0;v<onesToAdd.size();v++)
+		{
+			final Ability A=onesToAdd.get(v).first;
+			final AbilityMapping map=onesToAdd.get(v).second;
+			giveMobAbility(mob,A,map.defaultProficiency(),map.defaultParm(),isBorrowedRace);
+		}
+	}
+	
 	@Override
 	public void startRacing(MOB mob, boolean verifyOnly)
 	{
@@ -671,10 +745,6 @@ public class StdRace implements Race
 			}
 			setHeightWeight(mob.basePhyStats(),(char)mob.baseCharStats().getStat(CharStats.STAT_GENDER));
 
-			final boolean isChild=CMLib.flags().isChild(mob);
-			final boolean isAnimal=CMLib.flags().isAnimalIntelligence(mob);
-			final boolean isMonster=mob.isMonster();
-			
 			if((culturalAbilityNames()!=null)&&(culturalAbilityProficiencies()!=null)
 			&&(culturalAbilityNames().length==culturalAbilityProficiencies().length))
 			{
@@ -684,31 +754,7 @@ public class StdRace implements Race
 					final int lvl = (culturalAbilityLevel()==null) ? 0 : culturalAbilityLevel()[a];
 					final boolean autoGain = (culturalAbilityAutoGain() == null) ? true : culturalAbilityAutoGain()[a];
 					if((A!=null)&&(lvl<=mob.phyStats().level())&&(autoGain))
-					{
-						A.setProficiency(culturalAbilityProficiencies()[a]);
-						mob.addAbility(A);
-						A.autoInvocation(mob, false);
-						if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE)
-						&&(isMonster)
-						&&(!isChild))
-						{
-							if(A.proficiency()>0)
-								A.setProficiency(100);
-							A.invoke(mob,mob,false,0);
-							if(isChild && (!isAnimal))
-							{
-								A=mob.fetchAbility("Common");
-								if(A==null)
-								{
-									A=CMClass.getAbility("Common");
-									if(A!=null)
-										mob.addAbility(A);
-								}
-								if(A!=null)
-									A.setProficiency(100);
-							}
-						}
-					}
+						giveMobAbility(mob, A,culturalAbilityProficiencies()[a], "", false, true);
 				}
 			}
 		}

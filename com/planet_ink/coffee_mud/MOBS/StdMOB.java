@@ -3599,9 +3599,19 @@ public class StdMOB implements MOB
 						{
 							if((R.amDestroyed())||(A.amDestroyed()))
 							{
-								Log.warnOut("Destroying "+Name()+" because he's not ticking in a real place ("+CMLib.map().getExtendedRoomID(R)+"): ("+A.Name()+").");
-								this.destroy();
-								return false;
+								final Room startR = this.getStartRoom();
+								final Area startA = (startR == null) ? null : startR.getArea();
+								if((startR==null)||(startA==null)||(startR.amDestroyed())||(startA.amDestroyed()))
+								{
+									Log.warnOut("Destroying "+Name()+" because he's not ticking in a real place ("+CMLib.map().getExtendedRoomID(R)+"): ("+A.Name()+").");
+									this.destroy();
+									return false;
+								}
+								else
+								{
+									Log.warnOut("Killing "+Name()+" because he's not ticking in a real place ("+CMLib.map().getExtendedRoomID(R)+"): ("+A.Name()+").");
+									this.killMeDead(false);
+								}
 							}
 							else
 							if(!R.isInhabitant(this)&&(!isPlayer()))
