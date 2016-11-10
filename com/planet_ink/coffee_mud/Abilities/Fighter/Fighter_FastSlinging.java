@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2002-2016 Bo Zimmerman
+   Copyright 2015-2016 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -34,15 +34,15 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Fighter_RapidShot extends FighterSkill
+public class Fighter_FastSlinging extends FighterSkill
 {
 	@Override
 	public String ID()
 	{
-		return "Fighter_RapidShot";
+		return "Fighter_FastSlinging";
 	}
 
-	private final static String	localizedName	= CMLib.lang().L("Rapid Shot");
+	private final static String	localizedName	= CMLib.lang().L("Fast Slinging");
 
 	@Override
 	public String name()
@@ -108,6 +108,7 @@ public class Fighter_RapidShot extends FighterSkill
 			&&(((Weapon)w).weaponClassification()==Weapon.CLASS_RANGED)
 			&&(((AmmunitionWeapon)w).ammunitionType().length()>0)
 			&&((mob.rangeToTarget()>=w.minRange())||((w.phyStats().sensesMask()&PhyStats.SENSE_ITEMNOMINRANGE)==PhyStats.SENSE_ITEMNOMINRANGE))
+			&&(w.name().toLowerCase().indexOf("sling")>=0)
 			&&((mob.fetchAbility(ID())==null)||proficiencyCheck(null,0,false)))
 			{
 				helpProficiency(mob, 0);
