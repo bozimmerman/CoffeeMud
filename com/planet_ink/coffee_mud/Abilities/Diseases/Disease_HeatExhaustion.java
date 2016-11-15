@@ -124,7 +124,7 @@ public class Disease_HeatExhaustion extends Disease
 	}
 
 	protected Room	theRoom		= null;
-	protected int	changeDown	= 300;
+	protected int	changeDown	= 30;
 
 	public Room room(Room R)
 	{
@@ -205,7 +205,7 @@ public class Disease_HeatExhaustion extends Disease
 		}
 		if((--changeDown)<=0)
 		{
-			changeDown=300;
+			changeDown=30;
 			theRoom=null;
 		}
 		return true;
