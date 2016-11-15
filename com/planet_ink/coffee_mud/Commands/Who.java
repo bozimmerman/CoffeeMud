@@ -108,7 +108,7 @@ public class Who extends StdCommand
 		msg.append("\n\r");
 		return msg;
 	}
-	
+
 	public String getWhoName(MOB seenM)
 	{
 		String name=null;
@@ -120,7 +120,19 @@ public class Who extends StdCommand
 			name=name+(" (idle: "+CMLib.time().date2BestShortEllapsedTime(seenM.session().getIdleMillis())+")");
 		return name;
 	}
-	
+
+	public String getPlainWhoName(MOB seenM)
+	{
+		String name=null;
+		if(CMLib.flags().isCloaked(seenM))
+			name="("+seenM.Name()+")";
+		else
+			name=seenM.Name();
+		if((seenM.session()!=null)&&(seenM.session().isAfk()))
+			name=name+(" (idle: "+CMLib.time().date2BestShortEllapsedTime(seenM.session().getIdleMillis())+")");
+		return name;
+	}
+
 	public boolean checkWho(MOB seerM, MOB seenM, Set<String> friends, Filterer<MOB> mobFilter)
 	{
 		if((seenM!=null)
@@ -224,7 +236,7 @@ public class Who extends StdCommand
 					final PlayerStats pStats2=mob2.playerStats();
 					final String accountName = (pStats2 != null) && (pStats2.getAccount() != null) ? pStats2.getAccount().getAccountName() : "?!?";
 					msg.append("["+CMStrings.padRight(accountName,colWidths[0]));
-					final String name=getWhoName(mob2);
+					final String name=getPlainWhoName(mob2);
 					msg.append("] "+CMStrings.padRight(name,colWidths[1]));
 					msg.append("\n\r");
 				}
