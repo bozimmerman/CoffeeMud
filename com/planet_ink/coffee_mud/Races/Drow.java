@@ -100,9 +100,9 @@ public class Drow extends Elf
 	}
 
 	//todo: re-add light sensitivity
-	private final String[]	racialEffectNames			= { "Prayer_TaintOfEvil" };
-	private final int[]		racialEffectLevels			= { 1 };
-	private final String[]	racialEffectParms			= {  "" };
+	private final String[]	racialEffectNames			= { "Prayer_TaintOfEvil", "Spell_LightSensitivity" };
+	private final int[]		racialEffectLevels			= { 1, 1 };
+	private final String[]	racialEffectParms			= {  "", "" };
 
 	@Override
 	protected String[] racialEffectNames()
@@ -122,8 +122,10 @@ public class Drow extends Elf
 		return racialEffectParms;
 	}
 
-	private final String[]	culturalAbilityNames			= { "Drowish", "Spell_Darkness", "Spell_FaerieFire", "Undercommon" };
+	private final String[]	culturalAbilityNames			= { "Drowish", "Spell_DarknessGlobe", "Spell_FaerieFire", "Undercommon" };
 	private final int[]		culturalAbilityProficiencies	= { 75, 25, 25, 25 };
+	private final int[]		culturalAbilityLevels			= { 0, 1, 0, 0 };
+	private final boolean[] culturalAbilityAutoGains		= { true, true, true, true };
 
 	@Override
 	public String[] culturalAbilityNames()
@@ -135,6 +137,18 @@ public class Drow extends Elf
 	public int[] culturalAbilityProficiencies()
 	{
 		return culturalAbilityProficiencies;
+	}
+
+	@Override
+	public int[] culturalAbilityLevels()
+	{
+		return culturalAbilityLevels;
+	}
+
+	@Override
+	protected boolean[] culturalAbilityAutoGains()
+	{
+		return culturalAbilityAutoGains;
 	}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi

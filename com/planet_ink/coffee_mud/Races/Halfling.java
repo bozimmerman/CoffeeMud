@@ -92,8 +92,8 @@ public class Halfling extends StdRace
 		return localizedStaticRacialCat;
 	}
 
-	private final String[]	culturalAbilityNames			= { "Elvish", "Cooking" };
-	private final int[]		culturalAbilityProficiencies	= { 25, 75 };
+	private final String[]	culturalAbilityNames			= { "Elvish", "Cooking", "Fighter_FastSlinging" };
+	private final int[]		culturalAbilityProficiencies	= { 25, 75, 25 };
 
 	@Override
 	public String[] culturalAbilityNames()

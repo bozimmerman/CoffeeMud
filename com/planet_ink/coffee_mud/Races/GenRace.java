@@ -285,13 +285,13 @@ public class GenRace extends StdRace
 	}
 
 	@Override
-	protected int[] culturalAbilityLevel()
+	protected int[] culturalAbilityLevels()
 	{
 		return culturalAbilityLvls;
 	}
 
 	@Override
-	protected boolean[] culturalAbilityAutoGain()
+	protected boolean[] culturalAbilityAutoGains()
 	{
 		return culturalAbilityGains;
 	}

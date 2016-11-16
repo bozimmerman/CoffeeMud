@@ -228,12 +228,12 @@ public class StdRace implements Race
 		return null;
 	}
 
-	protected int[] culturalAbilityLevel()
+	protected int[] culturalAbilityLevels()
 	{
 		return null;
 	}
 
-	protected boolean[] culturalAbilityAutoGain()
+	protected boolean[] culturalAbilityAutoGains()
 	{
 		return null;
 	}
@@ -720,8 +720,8 @@ public class StdRace implements Race
 		{
 			for(int a=0;a<culturalAbilityNames().length;a++)
 			{
-				final int lvl = (culturalAbilityLevel() != null) ? culturalAbilityLevel()[a] : 0;
-				final boolean gain = (culturalAbilityAutoGain() != null) ? culturalAbilityAutoGain()[a] : true;
+				final int lvl = (culturalAbilityLevels() != null) ? culturalAbilityLevels()[a] : 0;
+				final boolean gain = (culturalAbilityAutoGains() != null) ? culturalAbilityAutoGains()[a] : true;
 				CMLib.ableMapper().addCharAbilityMapping(ID(),lvl,culturalAbilityNames()[a],gain);
 			}
 			mappedCulturalAbilities=true;
@@ -751,8 +751,8 @@ public class StdRace implements Race
 				for(int a=0;a<culturalAbilityNames().length;a++)
 				{
 					Ability A=CMClass.getAbility(culturalAbilityNames()[a]);
-					final int lvl = (culturalAbilityLevel()==null) ? 0 : culturalAbilityLevel()[a];
-					final boolean autoGain = (culturalAbilityAutoGain() == null) ? true : culturalAbilityAutoGain()[a];
+					final int lvl = (culturalAbilityLevels()==null) ? 0 : culturalAbilityLevels()[a];
+					final boolean autoGain = (culturalAbilityAutoGains() == null) ? true : culturalAbilityAutoGains()[a];
 					if((A!=null)&&(lvl<=mob.phyStats().level())&&(autoGain))
 						giveMobAbility(mob, A,culturalAbilityProficiencies()[a], "", false, true);
 				}
@@ -1325,9 +1325,9 @@ public class StdRace implements Race
 			{
 				GR.setStat("GETCABLE"+i,culturalAbilityNames()[i]);
 				GR.setStat("GETCABLEPROF"+i,""+culturalAbilityProficiencies()[i]);
-				int lvl = (culturalAbilityLevel() != null) ? culturalAbilityLevel()[i] : 0;
+				int lvl = (culturalAbilityLevels() != null) ? culturalAbilityLevels()[i] : 0;
 				GR.setStat("GETCABLELVL"+i,""+lvl);
-				boolean gain = (culturalAbilityAutoGain() != null) ? culturalAbilityAutoGain()[i] : true;
+				boolean gain = (culturalAbilityAutoGains() != null) ? culturalAbilityAutoGains()[i] : true;
 				GR.setStat("GETCABLEGAIN"+i,""+gain);
 			}
 		}
@@ -1675,9 +1675,9 @@ public class StdRace implements Race
 		{
 			for(int i=0;i<culturalAbilityNames().length;i++)
 			{
-				final Integer level = Integer.valueOf((culturalAbilityLevel() != null) ? culturalAbilityLevel()[i] : 0); 
+				final Integer level = Integer.valueOf((culturalAbilityLevels() != null) ? culturalAbilityLevels()[i] : 0); 
 				final Integer prof = Integer.valueOf(culturalAbilityProficiencies()[i]);
-				final Boolean autoGain = Boolean.valueOf((culturalAbilityAutoGain() != null) ? culturalAbilityAutoGain()[i] : true);
+				final Boolean autoGain = Boolean.valueOf((culturalAbilityAutoGains() != null) ? culturalAbilityAutoGains()[i] : true);
 				ables.addElement(culturalAbilityNames()[i],prof,level,autoGain);
 			}
 		}
