@@ -245,6 +245,7 @@ public class Skill_BurrowHide extends StdSkill
 		&&(isRodentHere(R,mob))
 		&&(CMLib.flags().isAliveAwakeMobileUnbound(mob, true))
 		&&(CMLib.flags().isAggressiveTo(msg.source(), mob))
+		&&(msg.source().mayIFight(mob))
 		&&(super.proficiencyCheck(mob, 5*(adjustedLevel(mob,0)-msg.source().phyStats().level()), false)))
 		{
 			mob.tell("Your friends alert you to incoming danger! You quickly burrow out of sight.");

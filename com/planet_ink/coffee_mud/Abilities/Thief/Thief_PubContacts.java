@@ -340,7 +340,7 @@ public class Thief_PubContacts extends ThiefSkill
 						R.show(M, null, CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> continue(s) offering drinks and making the right friends."));
 						break;
 					case 3:
-						R.show(M, null, CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> continue(s) descretely making friends."));
+						R.show(M, null, CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> continue(s) descreetly making friends."));
 						break;
 					case 4:
 						R.show(M, null, CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> continue(s) drinking and carefully socializing."));

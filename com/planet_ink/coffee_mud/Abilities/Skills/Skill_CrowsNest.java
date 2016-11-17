@@ -250,7 +250,7 @@ public class Skill_CrowsNest extends StdSkill
 												str.append(L("Directly @x1, you see @x2.",CMLib.directions().getInDirectionName(dir),CMLib.english().toEnglishStringList(listOfStuff)));
 											else
 											if(trail.size()==3)
-												str.append(L("Father @x1, you see @x2.",CMLib.directions().getInDirectionName(dir),CMLib.english().toEnglishStringList(listOfStuff)));
+												str.append(L("Farther @x1, you see @x2.",CMLib.directions().getInDirectionName(dir),CMLib.english().toEnglishStringList(listOfStuff)));
 											else
 												str.append(L("Way off @x1, you can barely see @x2.",CMLib.directions().getInDirectionName(dir),CMLib.english().toEnglishStringList(listOfStuff)));
 											mob.tell(str.toString());

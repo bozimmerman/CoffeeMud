@@ -69,7 +69,7 @@ public class Thief_Scratch extends ThiefSkill
 		String str=null;
 		if((success)&&(CMLib.combat().rollToHit(mob, target)))
 		{
-			str=auto?null:L("^F^<FIGHT^><S-NAME> descretely swipe(s) at <T-NAMESELF>!^</FIGHT^>^?");
+			str=auto?null:L("^F^<FIGHT^><S-NAME> descreetly swipe(s) at <T-NAMESELF>!^</FIGHT^>^?");
 			final int attackCode =  CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0);
 			final int hideOverrideCode = CMLib.flags().isHidden(mob)?CMMsg.TYP_LOOK:attackCode;
 			final Set<MOB> combatants=CMLib.combat().getAllFightingAgainst(mob, new HashSet<MOB>(1));

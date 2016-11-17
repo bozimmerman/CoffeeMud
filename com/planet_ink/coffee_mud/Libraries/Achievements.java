@@ -2547,6 +2547,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			{
 				private MaskingLibrary.CompiledZMask playerMask = null;
 				private MaskingLibrary.CompiledZMask itemMask = null;
+				private int num = 1;
 				
 				@Override
 				public Event getEvent()
@@ -2569,7 +2570,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				@Override
 				public int getTargetCount()
 				{
-					return Integer.MIN_VALUE;
+					return num;
 				}
 				
 				@Override
@@ -2602,8 +2603,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 					final Achievement me=this;
 					return new Tracker()
 					{
-						private volatile boolean gotIt=false;
-
 						@Override
 						public Achievement getAchievement() 
 						{
@@ -2613,12 +2612,27 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						@Override
 						public boolean isAchieved(MOB mob) 
 						{
-							return gotIt;
+							return (num>=0) && (getCount(mob) >= num);
 						}
 
 						@Override
 						public int getCount(MOB mob)
 						{
+							if(mob != null)
+							{
+								if((playerMask==null)||(CMLib.masking().maskCheck(playerMask, mob, true)))
+								{
+									int count = 0;
+									final boolean noMask=(itemMask==null);
+									for(Enumeration<Item> i=mob.items();i.hasMoreElements();)
+									{
+										final Item I=i.nextElement();
+										if(noMask || (CMLib.masking().maskCheck(itemMask, I, true)))
+											count++;
+									}
+									return count;
+								}
+							}
 							return 0;
 						}
 
@@ -2630,13 +2644,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 								if((parms[0] instanceof Item)
 								&&((itemMask==null)||(CMLib.masking().maskCheck(itemMask, (Item)parms[0], true))))
 								{
-									gotIt = true;
 									return true;
 								}
 							}
 							return false;
 						}
-						
+
 						@Override
 						public Tracker copyOf()
 						{
@@ -2661,6 +2674,14 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				@Override
 				public String parseParms(final String parms)
 				{
+					final String numStr=CMParms.getParmStr(parms, "NUM", "");
+					if(numStr.trim().length()==0)
+						num=1;
+					else
+					if(!CMath.isInteger(numStr))
+						return "Error: Invalid NUM parameter!";
+					else
+						num=CMath.s_int(numStr);
 					String itemZapperMask=CMStrings.deEscape(CMParms.getParmStr(parms, "ITEMMASK", ""));
 					if(itemZapperMask.trim().length()>0)
 						this.itemMask = CMLib.masking().getPreCompiledMask(itemZapperMask);
