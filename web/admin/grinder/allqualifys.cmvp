@@ -73,9 +73,9 @@
     @back@
     <TR>
         <TD COLSPAN=5>
-                <a href="javascript:AllQualifyItem('ALL',document.RESOURCES.NEW.options[document.RESOURCES.NEW.selectedIndex].value)">
+                <a href="javascript:AllQualifyItem('ALL',document.RESOURCES.NEW1.options[document.RESOURCES.NEW1.selectedIndex].value)">
                 <FONT COLOR=WHITE><B>Create New:</a>
-                <SELECT NAME=NEW>
+                <SELECT NAME=NEW1>
                     @AbilityNext?RESET@
                     @loop@
                         @AbilityNext@
@@ -107,9 +107,9 @@
     @back@
     <TR>
         <TD COLSPAN=5>
-                <a href="javascript:AllQualifyItem('EACH',document.RESOURCES.NEW.options[document.RESOURCES.NEW.selectedIndex].value)">
+                <a href="javascript:AllQualifyItem('EACH',document.RESOURCES.NEW2.options[document.RESOURCES.NEW2.selectedIndex].value)">
                 <FONT COLOR=WHITE><B>Create New:</a>
-                <SELECT NAME=NEW>
+                <SELECT NAME=NEW2>
                     @AbilityNext?RESET@
                     @loop@
                         @AbilityNext@

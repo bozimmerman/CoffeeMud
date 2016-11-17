@@ -69,7 +69,10 @@ public class AllQualifyData extends StdWebMacro
 			if((origiWhich==null) && (allQualMap.get("EACH")!=null))
 				mapped=allQualMap.get("EACH").get(last);
 			if(mapped==null)
-				return "";
+			{
+				mapped = CMLib.ableMapper().newAbilityMapping();
+				mapped.abilityID(last);
+			}
 		}
 		final StringBuilder str=new StringBuilder("");
 		if(parms.containsKey("NAME"))

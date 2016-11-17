@@ -15,82 +15,85 @@
 # The AUTOGAIN tag, if found, denotes that the skill is automatically gained when the
 # level is reached.  The PROF= tag can be used to set a default proficiency.
 
+
 [EACH]
-1 UnderCommon
-1 Common PROF=100 AUTOGAIN
-1 SmokeRings MASK=+CHA 5
-1 Bandaging
-3 FireBuilding AUTOGAIN
-4 Searching
+1 Bandaging 
+1 Common PROF=100 AUTOGAIN 
+1 SmokeRings MASK=+CHA 5 
+1 UnderCommon 
+
+3 FireBuilding AUTOGAIN 
+
+4 Searching 
 
 [ALL]
+1 Digging 
+1 Draconic 
+1 Drilling 
+1 Drowish 
+1 Dwarven 
+1 Elvish 
+1 Fey 
+1 Fishing MASK=+WIS 8 
+1 Foraging 
+1 Gigantic 
+1 Gnomish 
+1 Goblinese 
 1 Herbology 
-1 Fishing MASK=+WIS 8
-1 Foraging
-1 Hunting MASK=+WIS 8
-1 Digging
-1 Drilling
-1 Shearing
+1 Hunting MASK=+WIS 8 
+1 Ignan 
+1 Orcish 
+1 Shearing 
+1 SignLanguage 
+1 Undercommon 
 
-1 Draconic
-1 Drowish
-1 Dwarven
-1 Elvish
-1 Fey
-1 Gigantic
-1 Gnomish
-1 Goblinese
-1 Ignan
-1 Orcish
-1 SignLanguage
-1 Undercommon
+2 Butchering 
+2 Chopping 
+2 Cooking 
+2 Dyeing MASK=+CHA 8 
+2 Embroidering MASK=+CHA 10 REQUIRES=Skill_Write 
+2 Engraving MASK=+CHA 10 REQUIRES=Skill_Write 
+2 Lacquerring MASK=+CHA 8 
 
-2 Butchering
-2 Chopping
-2 Cooking
-2 Dyeing MASK=+CHA 8
-2 Embroidering REQUIRES=Skill_Write MASK=+CHA 10
-2 Engraving REQUIRES=Skill_Write MASK=+CHA 10
-2 Lacquerring MASK=+CHA 8
+3 Blacksmithing MASK=+STR 10 
+3 Carpentry MASK=+CON 10 
+3 ClanCrafting 
+3 LeatherWorking MASK=+CON 10 
+3 Tailoring MASK=+DEX 10 
 
-3 Blacksmithing MASK=+STR 10
-3 ClanCrafting
-3 Carpentry MASK=+CON 10
-3 LeatherWorking MASK=+CON 10
-3 Tailoring MASK=+DEX 10
+4 Costuming MASK=+INT 12 REQUIRES=Tailoring 
+4 Distilling REQUIRES=Cooking 
+4 Mining 
+4 Pottery 
+4 Sculpting MASK=+CON 10 
+4 Weaving MASK=+WIS 10 
 
-4 Mining
-4 Pottery
-4 Sculpting MASK=+CON 10
-4 Costuming REQUIRES=Tailoring MASK=+INT 12
-4 Distilling REQUIRES=Cooking
-4 Weaving MASK=+WIS 10
+5 Armorsmithing MASK=+STR 12 REQUIRES=Blacksmithing(75) 
+5 Baking REQUIRES=Cooking 
+5 Cobbling MASK=+CON 12 REQUIRES=LeatherWorking 
+5 Fletching MASK=+DEX 12 REQUIRES=Specialization_Ranged Carpentry 
+5 FoodPrep REQUIRES=Cooking 
+5 GlassBlowing MASK=+CON 12 
+5 Painting MASK=+CHA 12 
+5 PaperMaking 
+5 ScrimShaw REQUIRES=Sculpting 
+5 Weaponsmithing MASK=+STR 12 REQUIRES=Blacksmithing(75) Specialization_* 
 
-5 Armorsmithing REQUIRES=Blacksmithing(75) MASK=+STR 12
-5 Baking REQUIRES=Cooking
-5 Cobbling REQUIRES=LeatherWorking MASK=+CON 12
-5 FoodPrep REQUIRES=Cooking
-5 GlassBlowing MASK=+CON 12
-5 Painting MASK=+CHA 12
-5 PaperMaking
-5 ScrimShaw REQUIRES=Sculpting
-5 Weaponsmithing REQUIRES=Blacksmithing(75) Specialization_* MASK=+STR 12
-5 Fletching REQUIRES=Specialization_Ranged Carpentry MASK=+DEX 12
+7 MeatCuring 
 
-7 MeatCuring
+10 Construction MASK=+CON 12 REQUIRES=Carpentry 
+10 Farming 
+10 JewelMaking MASK=+WIS 16 REQUIRES=Blacksmithing Pottery 
+10 LockSmith MASK=+DEX 14 REQUIRES=Blacksmithing 
+10 Masonry MASK=+CON 12 REQUIRES=Sculpting 
+10 Shipwright MASK=+WIS 12 REQUIRES=Carpentry 
+10 Siegecraft MASK=+STR 12 REQUIRES=Carpentry 
+10 Smelting MASK=+CON 12 REQUIRES=Blacksmithing 
+10 Speculate MASK=+WIS 10 
+10 Taxidermy MASK=+INT 12 
+10 Wainwrighting MASK=+INT 12 REQUIRES=Carpentry 
 
-10 Construction REQUIRES=Carpentry MASK=+CON 12
-10 Farming
-10 Masonry REQUIRES=Sculpting MASK=+CON 12
-10 Smelting REQUIRES=Blacksmithing MASK=+CON 12
-10 Speculate MASK=+WIS 10
-10 Shipwright REQUIRES=Carpentry MASK=+WIS 12
-10 Siegecraft REQUIRES=Carpentry MASK=+STR 12
-10 Wainwrighting REQUIRES=Carpentry MASK=+INT 12
-10 JewelMaking REQUIRES=Blacksmithing Pottery MASK=+WIS 16
-10 LockSmith REQUIRES=Blacksmithing MASK=+DEX 14
-10 Taxidermy MASK=+INT 12
+15 Excavation MASK=+CON 15 REQUIRES=Sculpting 
+15 Irrigation MASK=+CON 15 REQUIRES=Drilling 
+15 Landscaping MASK=+CON 15 REQUIRES=Farming 
 
-15 Landscaping REQUIRES=Farming MASK=+CON 15
-15 Excavation REQUIRES=Sculpting MASK=+CON 15
-15 Irrigation REQUIRES=Drilling MASK=+CON 15
