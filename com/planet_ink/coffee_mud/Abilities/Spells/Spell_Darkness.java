@@ -32,18 +32,53 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Spell_Darkness extends Spell
 {
-	@Override public String ID() { return "Spell_Darkness"; }
-	private final static String localizedName = CMLib.lang().L("Darkness");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Darkness spell)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return CAN_ROOMS;}
-	@Override protected int canTargetCode(){return CAN_ROOMS;}
-	@Override public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	@Override
+	public String ID()
+	{
+		return "Spell_Darkness";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Darkness");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Darkness spell)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_ROOMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_ROOMS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL | Ability.DOMAIN_EVOCATION;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
 
 	@Override
 	public void unInvoke()
@@ -99,7 +134,7 @@ public class Spell_Darkness extends Spell
 
 		if(success)
 		{
-			final CMMsg msg = CMClass.getMsg(mob, target, this, somanticCastCode(mob,target,auto), L("@x1arkness envelopes everyone.^?",(auto?"D":"^S<S-NAME> incant(s) and gesture(s) and d")));
+			final CMMsg msg = CMClass.getMsg(mob, target, this, verbalCastCode(mob,target,auto), L("@x1arkness envelopes everyone.^?",(auto?"D":"^S<S-NAME> incant(s) and gesture(s) and d")));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
