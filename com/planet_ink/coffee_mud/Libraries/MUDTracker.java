@@ -1276,7 +1276,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		if((exit instanceof PrepositionExit)&&(((PrepositionExit)exit).getEntryPreposition().length()>0))
 			otherDirectionPhrase=((PrepositionExit)exit).getEntryPreposition();
 		else
-			otherDirectionPhrase="from "+((Directions.getOpDirectionCode(directionCode)==Directions.GATE)&&(exit!=null)?exit.name():fromDir);
+			otherDirectionPhrase=L("from "+((Directions.getOpDirectionCode(directionCode)==Directions.GATE)&&(exit!=null)?exit.name():fromDir));
 
 		final int generalMask=always?CMMsg.MASK_ALWAYS:0;
 		final int leaveCode;
@@ -1289,7 +1289,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		final CMMsg leaveMsg;
 		if((mob.riding()!=null)&&(mob.riding().mobileRideBasis()))
 		{
-			final String enterStr=L("<S-NAME> ride(s) @x1 in from @x2.",mob.riding().name(),otherDirectionPhrase);
+			final String enterStr=L("<S-NAME> ride(s) @x1 in @x2.",mob.riding().name(),otherDirectionPhrase);
 			enterMsg=CMClass.getMsg(mob,destRoom,exit,generalMask|CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,enterStr);
 			if(flee)
 				leaveMsg=CMClass.getMsg(mob,thisRoom,opExit,leaveCode,L("You flee @x1.",directionName),leaveCode,null,leaveCode,L("<S-NAME> flee(s) with @x1 @x2.",mob.riding().name()+" "+directionName+"."));
