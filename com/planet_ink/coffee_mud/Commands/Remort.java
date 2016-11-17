@@ -616,6 +616,8 @@ public class Remort extends StdCommand
 												}
 												recoverEverything(mob);
 											}
+											for(Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
+												mob.playerStats().unVisit(a.nextElement());
 											mob.baseCharStats().getCurrentClass().startCharacter(mob, false, false);
 											mob.baseCharStats().getCurrentClass().grantAbilities(mob, false);
 											recoverEverything(mob);

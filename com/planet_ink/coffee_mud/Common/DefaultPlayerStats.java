@@ -1141,19 +1141,25 @@ public class DefaultPlayerStats implements PlayerStats
 	@Override
 	public void unVisit(Room R)
 	{
-		if(roomSet().contains(CMLib.map().getExtendedRoomID(R)))
-			roomSet().remove(CMLib.map().getExtendedRoomID(R));
+		if(R != null)
+		{
+			if(roomSet().contains(CMLib.map().getExtendedRoomID(R)))
+				roomSet().remove(CMLib.map().getExtendedRoomID(R));
+		}
 	}
 
 	@Override
 	public void unVisit(Area A)
 	{
-		Room R;
-		for(final Enumeration<Room> r=A.getCompleteMap();r.hasMoreElements();)
+		if(A != null)
 		{
-			R=r.nextElement();
-			if(roomSet().contains(CMLib.map().getExtendedRoomID(R)))
-				roomSet().remove(CMLib.map().getExtendedRoomID(R));
+			Room R;
+			for(final Enumeration<Room> r=A.getCompleteMap();r.hasMoreElements();)
+			{
+				R=r.nextElement();
+				if(roomSet().contains(CMLib.map().getExtendedRoomID(R)))
+					roomSet().remove(CMLib.map().getExtendedRoomID(R));
+			}
 		}
 	}
 
