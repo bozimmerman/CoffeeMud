@@ -16,6 +16,7 @@
    15. Racial cultural abilities now support level and auto-gain/qualify.
    16. New Spells: Darkness Globe
    17. Achievement type GOTITEM now supports NUM argument.
+   18. New Property: Prop_OpenCommand
 # Build 5.9.4 Released 08/03/2016
    1. Qualify now shows language limits
    2. New Prop_NoTeleport exceptions
