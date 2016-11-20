@@ -808,7 +808,9 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			final String ahelpStr=unfixedHelpStr.toUpperCase();
 			if(!found)
 			{
-				final String s=CMLib.socials().getSocialsHelp(forMOB,helpStr.toUpperCase(), true);
+				String s=CMLib.socials().getSocialsHelp(forMOB,helpStr.toUpperCase(), true);
+				if(s==null)
+					s=CMLib.socials().getSocialsHelp(forMOB,helpStr.toUpperCase().replace('_', ' '),true);
 				if(s!=null)
 				{
 					thisTag=s;
@@ -818,7 +820,9 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			}
 			if(!found)
 			{
-				final String s=CMLib.clans().getGovernmentHelp(forMOB,helpStr.toUpperCase(), true);
+				String s=CMLib.clans().getGovernmentHelp(forMOB,helpStr.toUpperCase(), true);
+				if(s==null)
+					s=CMLib.clans().getGovernmentHelp(forMOB,helpStr.toUpperCase().replace('_', ' '),true);
 				if(s!=null)
 				{
 					thisTag=s;
@@ -828,7 +832,9 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			}
 			if(!found)
 			{
-				final Ability A=CMClass.findAbility(helpStr.toUpperCase(),-1,-1,true);
+				Ability A=CMClass.findAbility(helpStr.toUpperCase(),-1,-1,true);
+				if(A==null)
+					A=CMClass.findAbility(helpStr.toUpperCase().replace('_', ' '),-1,-1,true);
 				if((A!=null)&&(A.isGeneric()))
 				{
 					thisTag=A.getStat("HELP");
@@ -837,7 +843,9 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			}
 			if(!found)
 			{
-				final String s=CMLib.expertises().getExpertiseHelp(helpStr.toUpperCase(),true);
+				String s=CMLib.expertises().getExpertiseHelp(helpStr.toUpperCase(),true);
+				if(s==null)
+					s=CMLib.expertises().getExpertiseHelp(helpStr.toUpperCase().replace('_', ' '),true);
 				if(s!=null)
 				{
 					thisTag=s;
@@ -847,7 +855,9 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			}
 			if(!found)
 			{
-				final Deity D = CMLib.map().getDeity(helpStr);
+				Deity D = CMLib.map().getDeity(helpStr);
+				if(D==null)
+					D = CMLib.map().getDeity(helpStr.replace('_', ' '));
 				if(D != null)
 				{
 					final Command CMD=CMClass.getCommand("Deities");

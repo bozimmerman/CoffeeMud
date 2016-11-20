@@ -4506,6 +4506,7 @@ System.out.println(s);
 		String sort="";
 		if((commands!=null)&&(commands.size()>1))
 			sort=CMParms.combine(commands,1).trim().toUpperCase();
+		
 		final StringBuffer lines=new StringBuffer("\n\r^x");
 		lines.append(CMStrings.padRight("#",3)+"| ");
 		lines.append(CMStrings.padRight(L("Status"),9)+"| ");
@@ -4514,6 +4515,7 @@ System.out.println(s);
 		lines.append(CMStrings.padRight(L("IP"),17)+"| ");
 		lines.append(CMStrings.padRight(L("Idle"),17)+"^.^N\n\r");
 		final Vector<String[]> broken=new Vector<String[]>();
+		final boolean skipUnnamed = (sort.length()>0)&&("NAME".startsWith(sort))||("PLAYER".startsWith(sort));
 		for(final Session S : CMLib.sessions().allIterable())
 		{
 			final String[] set=new String[6];
@@ -4524,6 +4526,9 @@ System.out.println(s);
 				set[2]=CMStrings.padRight(((S.mob().session()==S)?"Yes":"^HNO!^?"),5)+"| ";
 				set[3]="^!"+CMStrings.padRight("^<LSTUSER^>"+S.mob().Name()+"^</LSTUSER^>",17)+"^?| ";
 			}
+			else
+			if(skipUnnamed)
+				continue;
 			else
 			{
 				set[2]=CMStrings.padRight(L("N/A"),5)+"| ";
@@ -4564,7 +4569,7 @@ System.out.println(s);
 				{
 					final String[] S=broken.get(s);
 					if(S[sortNum].compareToIgnoreCase(broken.get(selected)[sortNum])<0)
-					   selected=s;
+						selected=s;
 				}
 				sorted.add(broken.get(selected));
 				broken.remove(selected);
