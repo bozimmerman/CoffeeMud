@@ -41,8 +41,14 @@ public class GenAbility extends StdAbility
 	// data should be stored in a common instance object .. something common to all genability of same id,
 	// but diff to others.n  I'm thinking like a DVector, and just have
 	private String ID="GenAbility";
-	@Override public String ID() { return ID; }
-	private static final Hashtable<String,Object[]> vars=new Hashtable<String,Object[]>();
+
+	@Override
+	public String ID()
+	{
+		return ID;
+	}
+
+	private static final Map<String,Object[]> vars=new Hashtable<String,Object[]>();
 	private static final int V_NAME=0;//S
 	private static final int V_DISP=1;//S
 	private static final int V_TRIG=2;//S[]
@@ -74,6 +80,7 @@ public class GenAbility extends StdAbility
 	private static final int V_TKAF=28;//B
 	private static final int V_CHAN=29;//B
 	private static final int NUM_VS=30;//S
+	
 	private static final Object[] makeEmpty()
 	{
 		final Object[] O=new Object[NUM_VS];
@@ -117,6 +124,7 @@ public class GenAbility extends StdAbility
 		vars.put(ID,O);
 		return O[varNum];
 	}
+
 	private static final void SV(String ID,int varNum,Object O)
 	{
 		if(vars.containsKey(ID))
@@ -128,8 +136,12 @@ public class GenAbility extends StdAbility
 			O2[varNum]=O;
 		}
 	}
-	private ScriptingEngine scriptObj=null;
-	private long scriptParmHash=0;
+
+	private ScriptingEngine	scriptObj		= null;
+	private long			scriptParmHash	= 0;
+	private Runnable		periodicEffect	= null;
+	protected long			timeToNextCast	= 0;
+
 	public ScriptingEngine getScripter()
 	{
 		if(((String)V(ID,V_SCRP)).hashCode()!=scriptParmHash)
@@ -149,32 +161,124 @@ public class GenAbility extends StdAbility
 		}
 		return scriptObj;
 	}
-	private Runnable periodicEffect = null;
 
+	@Override
+	public String Name()
+	{
+		return name();
+	}
 
-	@Override public String Name(){return name();}
-	@Override public String name(){ return (String)V(ID,V_NAME);}
-	@Override public String description(){return "&";}
-	@Override public String displayText(){return (String)V(ID,V_DISP);}
-	@Override public String[] triggerStrings(){return (String[])V(ID,V_TRIG);}
-	@Override public int maxRange(){return adjustedMaxInvokerRange(((Integer)V(ID,V_MAXR)).intValue());}
-	@Override public int minRange(){return ((Integer)V(ID,V_MINR)).intValue();}
-	@Override public boolean isAutoInvoked(){return ((Boolean)V(ID,V_AUTO)).booleanValue();}
-	@Override public long flags(){return ((Integer)V(ID,V_FLAG)).intValue();}
-	@Override public int usageType(){return ((Integer)V(ID,V_USAG)).intValue();}
-	@Override protected int overrideMana(){return ((Integer)V(ID,V_OMAN)).intValue();} //-1=normal, Ability.COST_ALL=all, Ability.COST_PCT
-	@Override public int classificationCode(){ return ((Integer)V(ID,V_CLAS)).intValue(); }
-	@Override protected int canAffectCode(){return ((Integer)V(ID,V_CAFF)).intValue(); }
-	@Override protected int canTargetCode(){return ((Integer)V(ID,V_CTAR)).intValue(); }
-	@Override public int abstractQuality(){return ((Integer)V(ID,V_QUAL)).intValue();}
-	public int tickOverride() { return ((Integer)V(ID,V_TKOV)).intValue();}
+	@Override
+	public String name()
+	{
+		return (String) V(ID, V_NAME);
+	}
 
-	protected long timeToNextCast = 0;
-	@Override protected int getTicksBetweenCasts() { return ((Integer)V(ID,V_TKBC)).intValue();}
-	@Override protected long getTimeOfNextCast(){ return timeToNextCast; }
-	@Override protected void setTimeOfNextCast(long absoluteTime) { timeToNextCast=absoluteTime;}
+	@Override
+	public String description()
+	{
+		return "&";
+	}
 
-	protected boolean isChannelingSkill() { return ((Boolean)V(ID,V_CHAN)).booleanValue(); }
+	@Override
+	public String displayText()
+	{
+		return (String) V(ID, V_DISP);
+	}
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return (String[]) V(ID, V_TRIG);
+	}
+
+	@Override
+	public int maxRange()
+	{
+		return adjustedMaxInvokerRange(((Integer) V(ID, V_MAXR)).intValue());
+	}
+
+	@Override
+	public int minRange()
+	{
+		return ((Integer) V(ID, V_MINR)).intValue();
+	}
+
+	@Override
+	public boolean isAutoInvoked()
+	{
+		return ((Boolean) V(ID, V_AUTO)).booleanValue();
+	}
+
+	@Override
+	public long flags()
+	{
+		return ((Integer) V(ID, V_FLAG)).intValue();
+	}
+
+	@Override
+	public int usageType()
+	{
+		return ((Integer) V(ID, V_USAG)).intValue();
+	}
+
+	@Override
+	protected int overrideMana()
+	{
+		return ((Integer) V(ID, V_OMAN)).intValue();
+	} // -1=normal, Ability.COST_ALL=all, Ability.COST_PCT
+
+	@Override
+	public int classificationCode()
+	{
+		return ((Integer) V(ID, V_CLAS)).intValue();
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return ((Integer) V(ID, V_CAFF)).intValue();
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return ((Integer) V(ID, V_CTAR)).intValue();
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return ((Integer) V(ID, V_QUAL)).intValue();
+	}
+
+	public int tickOverride()
+	{
+		return ((Integer) V(ID, V_TKOV)).intValue();
+	}
+
+	@Override
+	protected int getTicksBetweenCasts()
+	{
+		return ((Integer) V(ID, V_TKBC)).intValue();
+	}
+
+	@Override
+	protected long getTimeOfNextCast()
+	{
+		return timeToNextCast;
+	}
+
+	@Override
+	protected void setTimeOfNextCast(long absoluteTime)
+	{
+		timeToNextCast = absoluteTime;
+	}
+
+	protected boolean isChannelingSkill()
+	{
+		return ((Boolean) V(ID, V_CHAN)).booleanValue();
+	}
 
 	@Override
 	public CMObject newInstance()
@@ -306,19 +410,35 @@ public class GenAbility extends StdAbility
 		int armorCheck=0;
 		switch(classificationCode()&Ability.ALL_ACODES)
 		{
-		case Ability.ACODE_CHANT: armorCheck=CharClass.ARMOR_LEATHER; break;
-		case Ability.ACODE_COMMON_SKILL: break;
-		case Ability.ACODE_DISEASE: break;
-		case Ability.ACODE_LANGUAGE: break;
-		case Ability.ACODE_POISON: break;
-		case Ability.ACODE_PRAYER: break;
-		case Ability.ACODE_PROPERTY: break;
-		case Ability.ACODE_SKILL: break;
-		case Ability.ACODE_SPELL: armorCheck=CharClass.ARMOR_CLOTH; break;
-		case Ability.ACODE_SUPERPOWER: break;
-		case Ability.ACODE_TECH: break;
-		case Ability.ACODE_THIEF_SKILL: armorCheck=CharClass.ARMOR_LEATHER; break;
-		case Ability.ACODE_TRAP: break;
+		case Ability.ACODE_CHANT:
+			armorCheck = CharClass.ARMOR_LEATHER;
+			break;
+		case Ability.ACODE_COMMON_SKILL:
+			break;
+		case Ability.ACODE_DISEASE:
+			break;
+		case Ability.ACODE_LANGUAGE:
+			break;
+		case Ability.ACODE_POISON:
+			break;
+		case Ability.ACODE_PRAYER:
+			break;
+		case Ability.ACODE_PROPERTY:
+			break;
+		case Ability.ACODE_SKILL:
+			break;
+		case Ability.ACODE_SPELL:
+			armorCheck = CharClass.ARMOR_CLOTH;
+			break;
+		case Ability.ACODE_SUPERPOWER:
+			break;
+		case Ability.ACODE_TECH:
+			break;
+		case Ability.ACODE_THIEF_SKILL:
+			armorCheck = CharClass.ARMOR_LEATHER;
+			break;
+		case Ability.ACODE_TRAP:
+			break;
 		default:
 			break;
 		}
@@ -344,18 +464,42 @@ public class GenAbility extends StdAbility
 			int castCode=0;
 			switch(classificationCode()&Ability.ALL_ACODES)
 			{
-			case Ability.ACODE_CHANT: castCode=CMMsg.MSG_CAST_VERBAL_SPELL; break;
-			case Ability.ACODE_COMMON_SKILL: castCode=CMMsg.MSG_NOISYMOVEMENT; break;
-			case Ability.ACODE_DISEASE: castCode=CMMsg.MSG_NOISYMOVEMENT; break;
-			case Ability.ACODE_LANGUAGE: castCode=CMMsg.MSG_OK_VISUAL; break;
-			case Ability.ACODE_POISON: castCode=CMMsg.MSG_NOISYMOVEMENT; break;
-			case Ability.ACODE_PRAYER: castCode=CMMsg.MSG_CAST_SOMANTIC_SPELL; break;
-			case Ability.ACODE_PROPERTY: castCode=CMMsg.MSG_OK_VISUAL; break;
-			case Ability.ACODE_SKILL: castCode=CMMsg.MSG_NOISYMOVEMENT; break;
-			case Ability.ACODE_SPELL: castCode=CMMsg.MSG_CAST_SOMANTIC_SPELL; break;
-			case Ability.ACODE_SUPERPOWER: castCode=CMMsg.MSG_CAST_SOMANTIC_SPELL; break;
-			case Ability.ACODE_THIEF_SKILL: castCode=CMMsg.MSG_THIEF_ACT; break;
-			case Ability.ACODE_TRAP: castCode=CMMsg.MSG_NOISYMOVEMENT; break;
+			case Ability.ACODE_CHANT:
+				castCode = CMMsg.MSG_CAST_VERBAL_SPELL;
+				break;
+			case Ability.ACODE_COMMON_SKILL:
+				castCode = CMMsg.MSG_NOISYMOVEMENT;
+				break;
+			case Ability.ACODE_DISEASE:
+				castCode = CMMsg.MSG_NOISYMOVEMENT;
+				break;
+			case Ability.ACODE_LANGUAGE:
+				castCode = CMMsg.MSG_OK_VISUAL;
+				break;
+			case Ability.ACODE_POISON:
+				castCode = CMMsg.MSG_NOISYMOVEMENT;
+				break;
+			case Ability.ACODE_PRAYER:
+				castCode = CMMsg.MSG_CAST_SOMANTIC_SPELL;
+				break;
+			case Ability.ACODE_PROPERTY:
+				castCode = CMMsg.MSG_OK_VISUAL;
+				break;
+			case Ability.ACODE_SKILL:
+				castCode = CMMsg.MSG_NOISYMOVEMENT;
+				break;
+			case Ability.ACODE_SPELL:
+				castCode = CMMsg.MSG_CAST_SOMANTIC_SPELL;
+				break;
+			case Ability.ACODE_SUPERPOWER:
+				castCode = CMMsg.MSG_CAST_SOMANTIC_SPELL;
+				break;
+			case Ability.ACODE_THIEF_SKILL:
+				castCode = CMMsg.MSG_THIEF_ACT;
+				break;
+			case Ability.ACODE_TRAP:
+				castCode = CMMsg.MSG_NOISYMOVEMENT;
+				break;
 			default:
 				castCode=CMMsg.MSG_CAST_SOMANTIC_SPELL;
 				break;
@@ -373,12 +517,17 @@ public class GenAbility extends StdAbility
 			else
 				msg2=null;
 
-			if(mob.location().okMessage(mob,msg)&&(this.okMessage(mob, msg))
+			if(mob.location().okMessage(mob,msg)
+			&&(this.okMessage(mob, msg))
 			&&((msg2==null)||(mob.location().okMessage(mob,msg2)&&(this.okMessage(mob, msg2)))))
 			{
 				mob.location().send(mob,msg);
 				this.executeMsg(mob, msg);
-				if(msg2!=null){ mob.location().send(mob,msg2); this.executeMsg(mob, msg2);}
+				if (msg2 != null)
+				{
+					mob.location().send(mob, msg2);
+					this.executeMsg(mob, msg2);
+				}
 				if((msg.value()<=0)&&((msg2==null)||(msg2.value()<=0)))
 				{
 					if((canAffectCode()!=0)&&(target!=null))
@@ -430,9 +579,9 @@ public class GenAbility extends StdAbility
 					}
 				}
 				final Physical finalTarget = target;
-				final MOB finalTargetMOB = (finalTarget instanceof MOB)?(MOB)finalTarget:mob;
+				final MOB finalTargetMOB = (finalTarget instanceof MOB) ? (MOB) finalTarget : mob;
 				final int finalCastCode = castCode;
-				final Ability me=this;
+				final Ability me = this;
 				final Runnable skillAction = new Runnable()
 				{
 					@Override
@@ -441,15 +590,18 @@ public class GenAbility extends StdAbility
 						final String DMG=(String)V(ID,V_PDMG);
 						int dmg=0;
 						if(DMG.trim().length()>0)
+						{
 							dmg=CMath.parseIntExpression(DMG,
 									new double[]{mob.phyStats().level(),
 									(finalTarget==null)?mob.phyStats().level():finalTarget.phyStats().level()});
+						}
 						if(((msg.value()<=0)&&((msg2==null)||(msg2.value()<=0)))
 						||(dmg>0))
 						{
 							if((msg.value()>0)||((msg2!=null)&&(msg2.value()>0))&&(dmg>0))
 								dmg=dmg/2;
 							if((success[0])&&(((String)V(ID,V_PCST)).length()>0))
+							{
 								if((finalTarget==null)||(finalTarget instanceof Exit)||(finalTarget instanceof Area)
 								||(mob.location()==CMLib.map().roomLocation(finalTarget)))
 								{
@@ -467,6 +619,7 @@ public class GenAbility extends StdAbility
 									else
 										CMLib.map().roomLocation(finalTarget).show(mob,finalTarget,CMMsg.MSG_OK_ACTION,(String)V(ID,V_PCST));
 								}
+							}
 							if(dmg>0)
 							{
 								CMLib.combat().postDamage(mob,finalTargetMOB,me,dmg,CMMsg.MASK_ALWAYS|((OTH.intValue()<=0)?finalCastCode:OTH.intValue()),Weapon.TYPE_BURSTING,null);
@@ -593,8 +746,10 @@ public class GenAbility extends StdAbility
 	{
 		final ScriptingEngine S=getScripter();
 		if(S!=null)
+		{
 			if(!S.okMessage(myHost,msg))
 				return false;
+		}
 		return true;
 	}
 
@@ -607,8 +762,10 @@ public class GenAbility extends StdAbility
 			return false;
 		final ScriptingEngine S=getScripter();
 		if(S!=null)
+		{
 			if(!S.tick(ticking,tickID))
 				return false;
+		}
 		if(this.periodicEffect!=null)
 			this.periodicEffect.run();
 		return true;
@@ -649,54 +806,95 @@ public class GenAbility extends StdAbility
 										 "TICKAFFECTS", //30B
 										 "CHANNELING" //31B
 										};
-	@Override public String[] getStatCodes(){return CODES;}
+
+	@Override
+	public String[] getStatCodes()
+	{
+		return CODES;
+	}
+
 	@Override
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<CODES.length;i++)
+		{
 			if(code.equalsIgnoreCase(CODES[i]))
 				return i;
+		}
 		return -1;
 	}
+
 	@Override
 	public String getStat(String code)
 	{
 		switch(getCodeNum(code))
 		{
-		case 0: return ID();
-		case 1: return text();
-		case 2: return (String)V(ID,V_NAME);
-		case 3: return (String)V(ID,V_DISP);
-		case 4: return CMParms.toListString((String[])V(ID,V_TRIG));
-		case 5: return convert(Ability.RANGE_CHOICES,((Integer)V(ID,V_MAXR)).intValue(),false);
-		case 6: return convert(Ability.RANGE_CHOICES,((Integer)V(ID,V_MINR)).intValue(),false);
-		case 7: return ((Boolean)V(ID,V_AUTO)).toString();
-		case 8: return convert(Ability.FLAG_DESCS,((Integer)V(ID,V_FLAG)).intValue(),true);
-		case 9: return convertClassAndDomain(((Integer)V(ID,V_CLAS)).intValue());
-		case 10: return ((Integer)V(ID,V_OMAN)).toString();
-		case 11: return convert(Ability.USAGE_DESCS,((Integer)V(ID,V_USAG)).intValue(),true);
-		case 12: return convert(Ability.CAN_DESCS,((Integer)V(ID,V_CAFF)).intValue(),true);
-		case 13: return convert(Ability.CAN_DESCS,((Integer)V(ID,V_CTAR)).intValue(),true);
-		case 14: return convert(Ability.QUALITY_DESCS,((Integer)V(ID,V_QUAL)).intValue(),false);
-		case 15: return ((Ability)V(ID,V_HERE)).text();
-		case 16: return (String)V(ID,V_CMSK);
-		case 17: return (String)V(ID,V_SCRP);
-		case 18: return (String)V(ID,V_TMSK);
-		case 19: return (String)V(ID,V_FZZL);
-		case 20: return (String)V(ID,V_ACST);
-		case 21: return (String)V(ID,V_CAST);
-		case 22: return (String)V(ID,V_PCST);
-		case 23: return convert(CMMsg.TYPE_DESCS,((Integer)V(ID,V_ATT2)).intValue(),false);
-		case 24: return (String)V(ID,V_PAFF);
-		case 25: return (String)V(ID,V_PABL);
-		case 26: return (String)V(ID,V_PDMG);
-		case 27: return (String)V(ID,V_HELP);
-		case 28: return ((Integer)V(ID,V_TKBC)).toString();
-		case 29: return ((Integer)V(ID,V_TKOV)).toString();
-		case 30: return ((Boolean)V(ID,V_TKAF)).toString();
-		case 31: return ((Boolean)V(ID,V_CHAN)).toString();
+		case 0:
+			return ID();
+		case 1:
+			return text();
+		case 2:
+			return (String) V(ID, V_NAME);
+		case 3:
+			return (String) V(ID, V_DISP);
+		case 4:
+			return CMParms.toListString((String[]) V(ID, V_TRIG));
+		case 5:
+			return convert(Ability.RANGE_CHOICES, ((Integer) V(ID, V_MAXR)).intValue(), false);
+		case 6:
+			return convert(Ability.RANGE_CHOICES, ((Integer) V(ID, V_MINR)).intValue(), false);
+		case 7:
+			return ((Boolean) V(ID, V_AUTO)).toString();
+		case 8:
+			return convert(Ability.FLAG_DESCS, ((Integer) V(ID, V_FLAG)).intValue(), true);
+		case 9:
+			return convertClassAndDomain(((Integer) V(ID, V_CLAS)).intValue());
+		case 10:
+			return ((Integer) V(ID, V_OMAN)).toString();
+		case 11:
+			return convert(Ability.USAGE_DESCS, ((Integer) V(ID, V_USAG)).intValue(), true);
+		case 12:
+			return convert(Ability.CAN_DESCS, ((Integer) V(ID, V_CAFF)).intValue(), true);
+		case 13:
+			return convert(Ability.CAN_DESCS, ((Integer) V(ID, V_CTAR)).intValue(), true);
+		case 14:
+			return convert(Ability.QUALITY_DESCS, ((Integer) V(ID, V_QUAL)).intValue(), false);
+		case 15:
+			return ((Ability) V(ID, V_HERE)).text();
+		case 16:
+			return (String) V(ID, V_CMSK);
+		case 17:
+			return (String) V(ID, V_SCRP);
+		case 18:
+			return (String) V(ID, V_TMSK);
+		case 19:
+			return (String) V(ID, V_FZZL);
+		case 20:
+			return (String) V(ID, V_ACST);
+		case 21:
+			return (String) V(ID, V_CAST);
+		case 22:
+			return (String) V(ID, V_PCST);
+		case 23:
+			return convert(CMMsg.TYPE_DESCS, ((Integer) V(ID, V_ATT2)).intValue(), false);
+		case 24:
+			return (String) V(ID, V_PAFF);
+		case 25:
+			return (String) V(ID, V_PABL);
+		case 26:
+			return (String) V(ID, V_PDMG);
+		case 27:
+			return (String) V(ID, V_HELP);
+		case 28:
+			return ((Integer) V(ID, V_TKBC)).toString();
+		case 29:
+			return ((Integer) V(ID, V_TKOV)).toString();
+		case 30:
+			return ((Boolean) V(ID, V_TKAF)).toString();
+		case 31:
+			return ((Boolean) V(ID, V_CHAN)).toString();
 		default:
-			if(code.equalsIgnoreCase("allxml"))
+			if (code.equalsIgnoreCase("allxml"))
 				return getAllXML();
 			break;
 		}
@@ -839,8 +1037,10 @@ public class GenAbility extends StdAbility
 		{
 			final StringBuffer str=new StringBuffer("");
 			for(int i=0;i<options.length;i++)
+			{
 				if((val&(1<<i))>0)
 					str.append(options[i]+",");
+			}
 			if(str.length()>0)
 			{
 				String sstr=str.toString();
@@ -867,24 +1067,37 @@ public class GenAbility extends StdAbility
 			val=V.get(v);
 			int tacod=-1;
 			for(int a=0;a<Ability.ACODE_DESCS.length;a++)
+			{
 				if(val.equalsIgnoreCase(Ability.ACODE_DESCS[a]))
 					tacod=a;
+			}
 			if(tacod<0)
 			{
 				for(int i=0;i<Ability.ACODE_DESCS.length;i++)
+				{
 					if(Ability.ACODE_DESCS[i].toUpperCase().startsWith(val.toUpperCase()))
 						tacod=i;
+				}
 				if(tacod<0)
 				{
 					int tdom=-1;
 					for(int a=0;a<Ability.DOMAIN_DESCS.length;a++)
+					{
 						if(val.equalsIgnoreCase(Ability.DOMAIN_DESCS[a]))
 							tdom=a<<5;
+					}
 					if(tdom<0)
-					for(int i=0;i<Ability.DOMAIN_DESCS.length;i++)
-						if(Ability.DOMAIN_DESCS[i].toUpperCase().startsWith(val.toUpperCase())
-								||Ability.DOMAIN_DESCS[i].toUpperCase().endsWith(val.toUpperCase()))
-						{ tdom=i<<5; break;}
+					{
+						for(int i=0;i<Ability.DOMAIN_DESCS.length;i++)
+						{
+							if(Ability.DOMAIN_DESCS[i].toUpperCase().startsWith(val.toUpperCase())
+									||Ability.DOMAIN_DESCS[i].toUpperCase().endsWith(val.toUpperCase()))
+							{
+								tdom = i << 5;
+								break;
+							}
+						}
+					}
 					if(tdom>=0)
 						dom=tdom;
 				}
@@ -910,12 +1123,18 @@ public class GenAbility extends StdAbility
 		if(CMath.isInteger(val))
 			return CMath.s_int(val);
 		for(int i=0;i<options.length;i++)
+		{
 			if(val.equalsIgnoreCase(options[i]))
 				return mask?(1<<i):i;
+		}
 		if(val.length()>0)
-		for(int i=0;i<options.length;i++)
-			if(options[i].toUpperCase().startsWith(val.toUpperCase()))
-				return mask?(1<<i):i;
+		{
+			for(int i=0;i<options.length;i++)
+			{
+				if(options[i].toUpperCase().startsWith(val.toUpperCase()))
+					return mask?(1<<i):i;
+			}
+		}
 		if(mask)
 		{
 			final List<String> V=CMParms.parseCommas(val,true);
@@ -959,10 +1178,14 @@ public class GenAbility extends StdAbility
 	{
 		final StringBuffer str=new StringBuffer("");
 		for(int c=0;c<getStatCodes().length;c++)
+		{
 			if(!getStatCodes()[c].equals("TEXT"))
+			{
 				str.append("<"+getStatCodes()[c]+">"
-						+CMLib.xml().parseOutAngleBrackets(getStat(getStatCodes()[c]))
-						+"</"+getStatCodes()[c]+">");
+						  +CMLib.xml().parseOutAngleBrackets(getStat(getStatCodes()[c]))
+						  +"</"+getStatCodes()[c]+">");
+			}
+		}
 		return str.toString();
 	}
 }
