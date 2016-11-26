@@ -2858,7 +2858,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							lV=CMParms.parse(text);
 						for(int v2=v+1;v2<lV.size();v2++)
 						{
-							final String str2=V.get(v2);
+							final String str2=lV.get(v2);
 							if(zapCodes.containsKey(str2))
 							{
 								v=v2-1;
@@ -2927,7 +2927,6 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 											}
 											catch(Throwable e2)
 											{
-												e2.printStackTrace();
 											}
 										}
 										if(ancestorC != null)

@@ -239,8 +239,14 @@ public class WandArchon extends StdWand implements ArchonOnly
 						else
 						{
 							mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("@x1 glows brightly at <T-NAME>.",this.name()));
-							if(target.fetchAbility(ID())!=null)
-								target.fetchAbility(ID()).setProficiency(100);
+							if(target.fetchAbility(A.ID())!=null)
+							{
+								target.fetchAbility(A.ID()).setProficiency(100);
+								if(target.fetchEffect(A.ID())!=null)
+								{
+									target.fetchEffect(A.ID()).setProficiency(100);
+								}
+							}
 							else
 							{
 								A.setProficiency(100);

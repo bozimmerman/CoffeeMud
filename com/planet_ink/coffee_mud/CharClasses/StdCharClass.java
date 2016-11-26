@@ -816,7 +816,9 @@ public class StdCharClass implements CharClass
 
 	protected boolean weaponCheck(MOB mob, int sourceCode, Environmental E)
 	{
-		if(E instanceof Item)
+		if((((sourceCode&CMMsg.MINOR_MASK)==CMMsg.TYP_WEAPONATTACK)||((sourceCode&CMMsg.MINOR_MASK)==CMMsg.TYP_THROW))
+		&&(E instanceof Weapon)
+		&&(mob.charStats().getCurrentClass().ID().equals(ID())))
 		{
 			for(DoubleFilterer<Item> F : mob.charStats().getItemProficiencies())
 			{
@@ -826,17 +828,14 @@ public class StdCharClass implements CharClass
 					return (filterResult == DoubleFilterer.Result.ALLOWED) ? true : false;
 				}
 			}
-		}
-		if((((sourceCode&CMMsg.MINOR_MASK)==CMMsg.TYP_WEAPONATTACK)||((sourceCode&CMMsg.MINOR_MASK)==CMMsg.TYP_THROW))
-		&&(E instanceof Weapon)
-		&&(mob.charStats().getCurrentClass().ID().equals(ID()))
-		&&(((requiredWeaponMaterials()!=null)&&(!requiredWeaponMaterials().contains(Integer.valueOf(((Weapon)E).material()&RawMaterial.MATERIAL_MASK))))
-			||((disallowedWeaponClasses(mob)!=null)&&(disallowedWeaponClasses(mob).contains(Integer.valueOf(((Weapon)E).weaponClassification())))))
-		&&(CMLib.dice().rollPercentage()>(mob.charStats().getStat(getAttackAttribute())*2))
-		&&(mob.fetchWieldedItem()!=null))
-		{
-			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> fumble(s) horribly with @x1.",E.name()));
-			return false;
+			if((((requiredWeaponMaterials()!=null)&&(!requiredWeaponMaterials().contains(Integer.valueOf(((Weapon)E).material()&RawMaterial.MATERIAL_MASK))))
+				||((disallowedWeaponClasses(mob)!=null)&&(disallowedWeaponClasses(mob).contains(Integer.valueOf(((Weapon)E).weaponClassification())))))
+			&&(CMLib.dice().rollPercentage()>(mob.charStats().getStat(getAttackAttribute())*2))
+			&&(mob.fetchWieldedItem()!=null))
+			{
+				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> fumble(s) horribly with @x1.",E.name()));
+				return false;
+			}
 		}
 		return true;
 	}
