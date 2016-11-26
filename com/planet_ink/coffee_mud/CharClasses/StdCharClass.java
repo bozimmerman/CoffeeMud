@@ -816,6 +816,17 @@ public class StdCharClass implements CharClass
 
 	protected boolean weaponCheck(MOB mob, int sourceCode, Environmental E)
 	{
+		if(E instanceof Item)
+		{
+			for(DoubleFilterer<Item> F : mob.charStats().getItemProficiencies())
+			{
+				final DoubleFilterer.Result filterResult = F.getFilterResult((Item)E);
+				if(filterResult != DoubleFilterer.Result.NOTAPPLICABLE)
+				{
+					return (filterResult == DoubleFilterer.Result.ALLOWED) ? true : false;
+				}
+			}
+		}
 		if((((sourceCode&CMMsg.MINOR_MASK)==CMMsg.TYP_WEAPONATTACK)||((sourceCode&CMMsg.MINOR_MASK)==CMMsg.TYP_THROW))
 		&&(E instanceof Weapon)
 		&&(mob.charStats().getCurrentClass().ID().equals(ID()))
@@ -1232,7 +1243,6 @@ public class StdCharClass implements CharClass
 		return true;
 	}
 
-
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -1246,8 +1256,10 @@ public class StdCharClass implements CharClass
 			case CMMsg.TYP_WIELD:
 			{
 				if((msg.target() instanceof Weapon)
-				&&(((requiredWeaponMaterials()!=null)&&(!requiredWeaponMaterials().contains(Integer.valueOf(((Weapon)msg.target()).material()&RawMaterial.MATERIAL_MASK))))
-					||((disallowedWeaponClasses(msg.source())!=null)&&(disallowedWeaponClasses(msg.source()).contains(Integer.valueOf(((Weapon)msg.target()).weaponClassification()))))))
+				&&(((requiredWeaponMaterials()!=null)
+						&&(!requiredWeaponMaterials().contains(Integer.valueOf(((Weapon)msg.target()).material()&RawMaterial.MATERIAL_MASK))))
+					||((disallowedWeaponClasses(msg.source())!=null)
+						&&(disallowedWeaponClasses(msg.source()).contains(Integer.valueOf(((Weapon)msg.target()).weaponClassification()))))))
 					msg.addTrailerMsg(CMClass.getMsg(msg.source(),msg.target(),null,CMMsg.TYP_OK_VISUAL,L("<T-NAME> feel(s) a bit strange in your hands."),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
 				break;
 			}

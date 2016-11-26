@@ -72,6 +72,7 @@
 +WEIGHT X (<WORD> those weighing more than X)
 -ARMOR/-DAMAGE/-ATTACK X (<WORD> armor/damage/attack bonus less than X)
 +ARMOR/+DAMAGE/+ATTACK X (<WORD> armor/damage/attack bonus more than X)
++-WEAPONTYPE, +-WEAPONCLASS, and +-WEAPONAMMO for wielded weaponchecks
 -WORNON "+TORSO" etc.. (<WORD> only items wearable on +locations)
 +WORNON "-NECK" etc.. (Do not <WORD> items wearable on -locations)
 -DISPOSITION "+ISHIDDEN" etc.. (<WORD> only with +dispositions)

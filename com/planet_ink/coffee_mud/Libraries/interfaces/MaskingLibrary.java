@@ -61,6 +61,8 @@ public interface MaskingLibrary extends CMLibrary
 		CLASS("CLASSES"),
 		_BASECLASS("-BASECLASSES"),
 		BASECLASS("+BASECLASSES"),
+		_CLASSTYPE("-CLASSTYPE"),
+		CLASSTYPE("CLASSTYPE"),
 		_RACE("-RACES"),
 		RACE("RACES"),
 		_ALIGNMENT("-ALIGNMENTS","-ALIGN"),
@@ -189,6 +191,12 @@ public interface MaskingLibrary extends CMLibrary
 		IFSTAT("+IFSTAT"),
 		_SUBNAME("-SUBNAME"),
 		SUBNAME("+SUBNAME"),
+		_WEAPONCLASS("-WEAPONCLASS"),
+		WEAPONCLASS("+WEAPONCLASS"),
+		_WEAPONTYPE("-WEAPONTYPE"),
+		WEAPONTYPE("+WEAPONTYPE"),
+		_WEAPONAMMO("-WEAPONAMMO"),
+		WEAPONAMMO("+WEAPONAMMO"),
 		;
 		private final String[] keys;
 		private ZapperKey(String... exts)

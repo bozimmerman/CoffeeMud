@@ -415,6 +415,7 @@ public interface CharStats extends CMCommon, Modifiable
 	 * @return the name of this mobs current race.
 	 */
 	public String raceName();
+	
 	/**
 	 * Returns resource codes of what this race can breathe as
 	 * an atmosphere.  The list is guarenteed sorted.  If the list
@@ -456,6 +457,7 @@ public interface CharStats extends CMCommon, Modifiable
 	 * @param newRaceName the name of the mobs apparant race
 	 */
 	public void setRaceName(String newRaceName);
+
 	/**
 	 * Changes the apparant char class of ths mob by setting a new name.  A value of null will
 	 * reset this setting, allowing the mobs TRUE current class to be displayed through the
@@ -467,6 +469,7 @@ public interface CharStats extends CMCommon, Modifiable
 	 * @param newname the name of the mobs apparant current class
 	 */
 	public void setDisplayClassName(String newname);
+
 	/**
 	 * Changes the apparant level of ths mob by setting a new name.  A value of null will
 	 * reset this setting, allowing the mobs TRUE level to be displayed through the
@@ -479,6 +482,7 @@ public interface CharStats extends CMCommon, Modifiable
 	 * @param newlevel the name of the mobs apparant level
 	 */
 	public void setDisplayClassLevel(String newlevel);
+
 	/**
 	 * Returns the displayable name of this mobs current class.  If this method
 	 * is called on the mobs charStats() object, as opposed to baseCharStats(), it
@@ -492,6 +496,7 @@ public interface CharStats extends CMCommon, Modifiable
 	 * @return the name of this mobs current class.
 	 */
 	public String displayClassName();
+
 	/**
 	 * Returns a combination of the displayClassName and displayClassLevel for
 	 * the given mob.  If either are null, authentic values will be used.
@@ -504,6 +509,7 @@ public interface CharStats extends CMCommon, Modifiable
 	 * @return the name of this mobs current class.
 	 */
 	public String displayClassLevel(MOB mob, boolean shortForm);
+
 	/**
 	 * Returns either the given mobs authentic classlevel/total level,
 	 * or the value set through setDisplayClassLevel method.
@@ -556,6 +562,7 @@ public interface CharStats extends CMCommon, Modifiable
 	 * @param gname the name of the mobs gender to display
 	 */
 	public void setGenderName(String gname);
+
 	/**
 	 * Returns the apparant gender of the mob.  If this method
 	 * is called on the mobs charStats() object, as opposed to baseCharStats(), it
@@ -572,31 +579,37 @@ public interface CharStats extends CMCommon, Modifiable
 	 * @return the gender-correct pronoun for this mob
 	 */
 	public String himher();
+
 	/**
 	 * Based on the apparant gender of the mob, return the appropriate word "his", "her", or "its".
 	 * @return the gender-correct pronoun for this mob
 	 */
 	public String hisher();
+
 	/**
 	 * Based on the apparant gender of the mob, return the appropriate word "he", "she", or "it".
 	 * @return the gender-correct pronoun for this mob
 	 */
 	public String heshe();
+
 	/**
 	 * Based on the apparant gender of the mob, return the appropriate word "He", "She", or "It".
 	 * @return the gender-correct pronoun for this mob
 	 */
 	public String HeShe();
+
 	/**
 	 * Based on the apparant gender of the mob, return the appropriate word "sir", "madam", or "sir".
 	 * @return the gender-correct title for this mob
 	 */
 	public String sirmadam();
+
 	/**
 	 * Based on the apparant gender of the mob, return the appropriate word "Sir", "Madam", or "Sir".
 	 * @return the gender-correct title for this mob
 	 */
 	public String SirMadam();
+
 	/**
 	 * Returns the age category for this mob, based on the age stat constant stored here.  The age
 	 * categories are defined in the Race interface as AGE_ constants.
@@ -604,6 +617,7 @@ public interface CharStats extends CMCommon, Modifiable
 	 * @return the numeric age category of this mob
 	 */
 	public int ageCategory();
+
 	/**
 	 * Returns the string name of the age category for this mob, based on the age
 	 * stat constant stored here.  The age category names are defined in the Race
@@ -638,7 +652,50 @@ public interface CharStats extends CMCommon, Modifiable
 	 * @param newValue the numeric value associated with the adjustment.
 	 */
 	public void adjustAbilityAdjustment(String ableID, int newValue);
-	
+
+	/**
+	 * Returns the list of special weapon or armor proficiencies, 
+	 * or special detriments, that this character has.
+	 * Each one is a filterer which, if passes, means the character
+	 * can always use the armor or weapon, even if class or race
+	 * or other considerations might not permit it.
+	 * @see #setItemProficiencies(DoubleFilterer[])
+	 * @return a list of proficiency or deficiency codes
+	 */
+	public DoubleFilterer<Item>[] getItemProficiencies();
+
+	/**
+	 * Sets the list of special weapon or armor proficiencies, 
+	 * or special detriments, that this character has.
+	 * Each one is a filterer which, if passes, means the character
+	 * can always use the armor or weapon, even if class or race
+	 * or other considerations might not permit it.
+	 * @see #getItemProficiencies()
+	 * @see #isProficient(Item)
+	 * @param newArray a list of proficiency or deficiency codes
+	 */
+	public void setItemProficiencies(DoubleFilterer<Item>[] newArray);
+
+	/**
+	 * Adds a new weapon or armor proficiency, compiling it into
+	 * the proficiency filter.  The argument is a zapper mask describing
+	 * the type of item that the player is newly proficient at.
+	 * 
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
+	 * @param zapperMask the zapper mask
+	 */
+	public void addItemProficiency(String zapperMask);
+
+	/**
+	 * Adds a new weapon or armor deficiency, compiling it into
+	 * the deficiency filter.  The argument is a zapper mask describing
+	 * the type of item that the player is newly deficient at.
+	 * 
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
+	 * @param zapperMask the zapper mask
+	 */
+	public void addItemDeficiency(String zapperMask);
+
 	/** string array of abbreviations of each stat code, ordered by numeric value */
 	public static final String[] DEFAULT_STAT_ABBR=
 	{

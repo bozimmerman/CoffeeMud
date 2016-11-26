@@ -632,7 +632,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 			val=-1;
 			if(zapCodes.containsKey(str))
 			{
-				switch(zapCodes.get(str))
+				final ZapperKey key = zapCodes.get(str); 
+				switch(key)
 				{
 				case CLASS: // +class
 					{
@@ -831,6 +832,38 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							buf.append(levelHelp(V.get(v2),'+',L(skipFirstWord?"Only highest class ":"Allows only highest class ")));
 					}
 					break;
+				case _CLASSTYPE: // -classtype
+					{
+						buf.append(L((skipFirstWord?"The":"Requires")+" the following type"+(multipleQuals(V,v,"+")?"s":"")+": "));
+						for(int v2=v+1;v2<V.size();v2++)
+						{
+							final String str2=V.get(v2);
+							if(zapCodes.containsKey(str2))
+								break;
+							if(str2.startsWith("+"))
+								buf.append(str2.substring(1)+", ");
+						}
+						if(buf.toString().endsWith(", "))
+							buf=new StringBuilder(buf.substring(0,buf.length()-2));
+						buf.append(".  ");
+					}
+					break;
+				case CLASSTYPE: // +classtype
+					{
+						buf.append(L("Disallows the following type"+(multipleQuals(V,v,"-")?"s":"")+": "));
+						for(int v2=v+1;v2<V.size();v2++)
+						{
+							final String str2=V.get(v2);
+							if(zapCodes.containsKey(str2))
+								break;
+							if(str2.startsWith("-"))
+								buf.append(str2.substring(1)+", ");
+						}
+						if(buf.toString().endsWith(", "))
+							buf=new StringBuilder(buf.substring(0,buf.length()-2));
+						buf.append(".  ");
+					}
+					break;
 				case _TATTOO: // -Tattoos
 					{
 						buf.append(L((skipFirstWord?"The":"Requires")+" the following tattoo"+(multipleQuals(V,v,"+")?"s":"")+": "));
@@ -850,6 +883,38 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				case TATTOO: // +Tattoos
 					{
 						buf.append(L("Disallows the following tattoo"+(multipleQuals(V,v,"-")?"s":"")+": "));
+						for(int v2=v+1;v2<V.size();v2++)
+						{
+							final String str2=V.get(v2);
+							if(zapCodes.containsKey(str2))
+								break;
+							if(str2.startsWith("-"))
+								buf.append(str2.substring(1)+", ");
+						}
+						if(buf.toString().endsWith(", "))
+							buf=new StringBuilder(buf.substring(0,buf.length()-2));
+						buf.append(".  ");
+					}
+					break;
+				case _WEAPONAMMO: // -WeaponAmmo
+					{
+						buf.append(L((skipFirstWord?"The":"Requires")+" weapons that use: "));
+						for(int v2=v+1;v2<V.size();v2++)
+						{
+							final String str2=V.get(v2);
+							if(zapCodes.containsKey(str2))
+								break;
+							if(str2.startsWith("+"))
+								buf.append(str2.substring(1)+", ");
+						}
+						if(buf.toString().endsWith(", "))
+							buf=new StringBuilder(buf.substring(0,buf.length()-2));
+						buf.append(".  ");
+					}
+					break;
+				case WEAPONAMMO: // +weaponsmmo
+					{
+						buf.append(L("Disallows weapons that use : "));
 						for(int v2=v+1;v2<V.size();v2++)
 						{
 							final String str2=V.get(v2);
@@ -2366,6 +2431,31 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						buf.append(".  ");
 					}
 					break;
+				case _WEAPONTYPE: // -weapontype
+				case WEAPONTYPE: // +weapontype
+				case _WEAPONCLASS: // -weaponclass
+				case WEAPONCLASS: // +weaponclass
+					{
+						if(key == ZapperKey._WEAPONTYPE )
+							buf.append(L((skipFirstWord?"The":"Requires the")+" following type of weapon(s): "));
+						else
+							buf.append(L((skipFirstWord?"The":"Disallows the")+" following type of weapon(s): "));
+						final String cw=(key == ZapperKey._WEAPONTYPE )?"+":"-";
+						for(int v2=v+1;v2<V.size();v2++)
+						{
+							final String str2=V.get(v2);
+							if(zapCodes.containsKey(str2))
+								break;
+							if(str2.startsWith(cw))
+								buf.append(str2.substring(1).toUpperCase().trim()).append(" ");
+						}
+						if(buf.toString().endsWith(", "))
+							buf=new StringBuilder(buf.substring(0,buf.length()-2));
+						if(buf.toString().endsWith("; "))
+							buf=new StringBuilder(buf.substring(0,buf.length()-2));
+						buf.append(".  ");
+					}
+					break;
 				case _GROUPSIZE: // -groupsize
 					val=((++v)<V.size())?CMath.s_int(V.get(v)):0;
 					buf.append(L((skipFirstWord?"A":"Requires a")+" group size of at most @x1.  ",""+val));
@@ -2758,6 +2848,96 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						buf.add(new CompiledZapperMaskEntryImpl(entryType,parms.toArray(new Object[0])));
 					}
 					break;
+				case CLASSTYPE: // +classtype
+				case _CLASSTYPE: // -classtype
+					{
+						final String swc = (entryType == ZapperKey.CLASSTYPE) ? "-" : "+";
+						final ArrayList<Object> parms=new ArrayList<Object>();
+						for(int v2=v+1;v2<V.size();v2++)
+						{
+							final String str2=V.get(v2);
+							if(zapCodes.containsKey(str2))
+							{
+								v=v2-1;
+								break;
+							}
+							else
+							if(str2.startsWith(swc))
+							{
+								final String possClassName = str2.substring(1);
+								String ancestorStr = CMClass.findTypeAncestor(possClassName);
+								Class<?> ancestorC = null;
+								if((ancestorStr != null)&&(ancestorStr.length()>0))
+								{
+									try
+									{
+										ancestorC = Class.forName(ancestorStr);
+									}
+									catch(Exception e)
+									{
+									}
+								}
+								if(ancestorC == null)
+								{
+									try
+									{
+										ancestorC = Class.forName(possClassName);
+									}
+									catch(Exception e)
+									{
+									}
+									if((ancestorC == null)&&(possClassName.indexOf('.')<0))
+									{
+										final String[] prefixes = 
+										{
+											"com.planet_ink.coffee_mud.core.interfaces.",
+											"com.planet_ink.coffee_mud.MOBS.interfaces.",
+											"com.planet_ink.coffee_mud.MOBS.",
+											"com.planet_ink.coffee_mud.Items.interfaces.",
+											"com.planet_ink.coffee_mud.Items.",
+											"com.planet_ink.coffee_mud.Items.Armor.",
+											"com.planet_ink.coffee_mud.Items.Basic.",
+											"com.planet_ink.coffee_mud.Items.BasicTech.",
+											"com.planet_ink.coffee_mud.Items.CompTech.",
+											"com.planet_ink.coffee_mud.Items.MiscMagic.",
+											"com.planet_ink.coffee_mud.Items.Software.",
+											"com.planet_ink.coffee_mud.Items.Weapons.",
+											"com.planet_ink.coffee_mud.Locales.interfaces.",
+											"com.planet_ink.coffee_mud.Locales.",
+											"com.planet_ink.coffee_mud.Exits.interfaces.",
+											"com.planet_ink.coffee_mud.Exits.",
+											"com.planet_ink.coffee_mud.Areas.interfaces.",
+											"com.planet_ink.coffee_mud.Areas.",
+											"com.planet_ink.coffee_mud.Abilities.interfaces.",
+											"com.planet_ink.coffee_mud.Behaviors.interfaces.",
+											"com.planet_ink.coffee_mud.CharClasses.interfaces.",
+											"com.planet_ink.coffee_mud.Races.interfaces.",
+											"com.planet_ink.coffee_mud.Commands.interfaces.",
+											"com.planet_ink.coffee_mud.Libraries.interfaces.",
+										};
+										for(String prefix : prefixes)
+										{
+											try
+											{
+												ancestorC = Class.forName(prefix+possClassName);
+												break;
+											}
+											catch(Exception e2)
+											{
+											}
+										}
+										if(ancestorC != null)
+										{
+											parms.add(ancestorC);
+										}
+									}
+								}
+							}
+							v=V.size();
+						}
+						buf.add(new CompiledZapperMaskEntryImpl(entryType,parms.toArray(new Object[0])));
+					}
+					break;
 				case _BASECLASS: // -baseclass
 					{
 						final ArrayList<Object> parms=new ArrayList<Object>();
@@ -2790,6 +2970,42 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						buf.add(new CompiledZapperMaskEntryImpl(entryType,parms.toArray(new Object[0])));
 					}
 					break;
+				case WEAPONTYPE: // +weapontype
+				case WEAPONCLASS: // +weaponclass
+				case _WEAPONTYPE: // -weapontype
+				case _WEAPONCLASS: // -weaponclass
+					{
+						final String cw=((entryType == ZapperKey._WEAPONCLASS)
+								||(entryType == ZapperKey._WEAPONTYPE)) ? "+":"-";
+						final String[] arr = ((entryType == ZapperKey._WEAPONCLASS)
+								||(entryType == ZapperKey.WEAPONCLASS)) ? Weapon.CLASS_DESCS : Weapon.TYPE_DESCS;
+						final ArrayList<Object> parms=new ArrayList<Object>();
+						for(int v2=v+1;v2<V.size();v2++)
+						{
+							String str2=V.get(v2);
+							if(zapCodes.containsKey(str2))
+							{
+								v=v2-1;
+								break;
+							}
+							else
+							if(str2.startsWith(cw))
+							{
+								str2=str2.substring(1).toUpperCase().trim();
+								int x=CMParms.indexOf(arr,str2);
+								if(x >= 0)
+									parms.add(Integer.valueOf(x));
+								else
+								{
+									v=v2-1;
+									break;
+								}
+							}
+							v=V.size();
+						}
+						buf.add(new CompiledZapperMaskEntryImpl(entryType,parms.toArray(new Object[0])));
+					}
+					break;
 				case _RACE: // -Race
 					{
 						final ArrayList<Object> parms=new ArrayList<Object>();
@@ -2798,7 +3014,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						{
 							if((!cats.contains(R.name)
 							&&(fromHereStartsWith(V,'+',v+1,R.nameStart))))
-							   cats.add(R.name);
+								cats.add(R.name);
 						}
 						for(final String s : cats)
 							parms.add(s);
@@ -2813,7 +3029,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						{
 							if((!cats.contains(R.racialCategory)
 							&&(fromHereStartsWith(V,'+',v+1,R.upperCatName))))
-							   cats.add(R.racialCategory);
+								cats.add(R.racialCategory);
 						}
 						for(final String s : cats)
 							parms.add(s);
@@ -2828,7 +3044,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						{
 							if((!cats.contains(R.racialCategory)
 							&&(fromHereStartsWith(V,'-',v+1,R.upperCatName))))
-							   cats.add(R.racialCategory);
+								cats.add(R.racialCategory);
 						}
 						for(final String s : cats)
 							parms.add(s);
@@ -2841,7 +3057,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						for(final SavedRace R : races())
 						{
 							if(fromHereStartsWith(V,'-',v+1,R.upperName))
-							   parms.add(R.name);
+								parms.add(R.name);
 						}
 						buf.add(new CompiledZapperMaskEntryImpl(entryType,parms.toArray(new Object[0])));
 					}
@@ -3066,6 +3282,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					}
 					break;
 				case _SUBNAME:
+				case _WEAPONAMMO:
 					{
 						final ArrayList<Object> parms=new ArrayList<Object>();
 						for(int v2=v+1;v2<V.size();v2++)
@@ -3166,6 +3383,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					}
 					break;
 				case SUBNAME:
+				case WEAPONAMMO:
 					{
 						final ArrayList<Object> parms=new ArrayList<Object>();
 						for(int v2=v+1;v2<V.size();v2++)
@@ -4006,6 +4224,32 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						return false;
 					break;
 				}
+				case _CLASSTYPE: // -classtype
+				{
+					boolean found=false;
+					final Class<?> eC=E.getClass();
+					for(final Object o : entry.parms())
+					{
+						if(CMClass.checkAncestry(eC, (Class<?>)o))
+						{
+							found=true;
+							break;
+						}
+					}
+					if(!found)
+						return false;
+					break;
+				}
+				case CLASSTYPE: // +classtype
+				{
+					final Class<?> eC=E.getClass();
+					for(final Object o : entry.parms())
+					{
+						if(CMClass.checkAncestry(eC, (Class<?>)o))
+							return false;
+					}
+					break;
+				}
 				case _RACE: // -race
 					if(!CMParms.contains(entry.parms(),actual?mob.baseCharStats().getMyRace().name():mob.charStats().raceName()))
 						return false;
@@ -4255,6 +4499,76 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						{
 							if((mob.findTattoo((String)o)!=null)
 							||((room!=null)&&(room.getArea().getBlurbFlag((String)o)!=null)))
+								return false;
+						}
+					}
+					break;
+				case WEAPONTYPE: // +weapontype
+					{
+						final Environmental W=(E instanceof MOB) ? ((MOB)E).fetchWieldedItem() : E;
+						if(W instanceof Weapon)
+						{
+							if(CMParms.indexOf(entry.parms(), Integer.valueOf(((Weapon)E).weaponDamageType())) >= 0)
+								return false;
+						}
+					}
+					break;
+				case _WEAPONTYPE: // -weapontype
+					{
+						final Environmental W=(E instanceof MOB) ? ((MOB)E).fetchWieldedItem() : E;
+						if(W instanceof Weapon)
+						{
+							if(CMParms.indexOf(entry.parms(), Integer.valueOf(((Weapon)E).weaponDamageType())) < 0)
+								return false;
+						}
+					}
+					break;
+				case WEAPONAMMO: // +weaponammo
+					{
+						final Environmental W=(E instanceof MOB) ? ((MOB)E).fetchWieldedItem() : E;
+						if((W instanceof AmmunitionWeapon)&&(((AmmunitionWeapon)W).requiresAmmunition()))
+						{
+							if(CMParms.indexOf(entry.parms(), ((AmmunitionWeapon)W).ammunitionType()) >= 0)
+								return false;
+						}
+						else
+						{
+							if(CMParms.indexOf(entry.parms(), "") >= 0)
+								return false;
+						}
+					}
+					break;
+				case _WEAPONAMMO: // -weaponammo
+					{
+						final Environmental W=(E instanceof MOB) ? ((MOB)E).fetchWieldedItem() : E;
+						if((W instanceof AmmunitionWeapon)&&(((AmmunitionWeapon)W).requiresAmmunition()))
+						{
+							if(CMParms.indexOf(entry.parms(), ((AmmunitionWeapon)W).ammunitionType()) < 0)
+								return false;
+						}
+						else
+						{
+							if(CMParms.indexOf(entry.parms(), "") < 0)
+								return false;
+						}
+					}
+					break;
+				case WEAPONCLASS: // +weaponclass
+					{
+						final Environmental W=(E instanceof MOB) ? ((MOB)E).fetchWieldedItem() : E;
+						if(W instanceof Weapon)
+						{
+							if(CMParms.indexOf(entry.parms(), Integer.valueOf(((Weapon)E).weaponClassification())) >= 0)
+								return false;
+						}
+					}
+					break;
+				case _WEAPONCLASS: // -weaponclass
+					{
+						final Environmental W=(E instanceof MOB) ? ((MOB)E).fetchWieldedItem() : E;
+						if(W instanceof Weapon)
+						{
+							if(CMParms.indexOf(entry.parms(), Integer.valueOf(((Weapon)E).weaponClassification())) < 0)
 								return false;
 						}
 					}
@@ -6094,8 +6408,16 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				case GENDER: // +gender
 				case GROUPSIZE: // +groupsize
 				case _GROUPSIZE: // -groupsize
-				case _IFSTAT:
-				case IFSTAT:
+				case _IFSTAT: // -ifstat
+				case IFSTAT: // +ifstat
+				case _CLASSTYPE: // -classtype
+				case CLASSTYPE: // +classtype
+				case WEAPONTYPE: // +weapontype
+				case WEAPONCLASS: // +weaponclass
+				case _WEAPONTYPE: // -weapontype
+				case _WEAPONCLASS: // -weaponclass
+				case WEAPONAMMO: // +weaponammo
+				case _WEAPONAMMO: // -weaponammo
 					break;
 				case _IF: // -if
 				case IF: // +if

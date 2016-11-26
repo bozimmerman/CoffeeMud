@@ -72,6 +72,7 @@ public class DefaultCharStats implements CharStats
 	}
 
 	// competency characteristics
+			
 	protected short[]		stats				= new short[CharStats.CODES.instance().total()];
 	protected CharClass[]	myClasses			= null;
 	protected Integer[]		myLevels			= null;
@@ -83,6 +84,10 @@ public class DefaultCharStats implements CharStats
 	protected short[]		bodyAlterations		= null;
 	protected long			unwearableBitmap	= 0;
 	protected int[]			breathables			= null;
+	
+	@SuppressWarnings("unchecked")
+	private static final DoubleFilterer<Item>[]	emptyFiltererArray	= new DoubleFilterer[0]; 
+	protected DoubleFilterer<Item>[]			proficiencies		= emptyFiltererArray;
 
 	protected Map<String, Integer>	profAdj		= null;
 	
@@ -127,6 +132,7 @@ public class DefaultCharStats implements CharStats
 		unwearableBitmap = 0;
 		breathables = null;
 		profAdj = null;
+		proficiencies = emptyFiltererArray;
 		setMyRace(CMClass.getRace("StdRace"));
 		setCurrentClass(CMClass.getCharClass("StdCharClass"));
 	}
@@ -137,6 +143,7 @@ public class DefaultCharStats implements CharStats
 		if(intoStats instanceof DefaultCharStats)
 		{
 			((DefaultCharStats)intoStats).breathables = breathables;
+			((DefaultCharStats)intoStats).proficiencies = proficiencies;
 			if(myClasses==null)
 				((DefaultCharStats)intoStats).myClasses=null;
 			else
@@ -197,6 +204,7 @@ public class DefaultCharStats implements CharStats
 			intoStats.setBodyPartsFromStringAfterRace(getBodyPartsAsString());
 			intoStats.setWearableRestrictionsBitmap(unwearableBitmap);
 			intoStats.setBreathables(breathables);
+			intoStats.setItemProficiencies(proficiencies);
 		}
 	}
 
@@ -629,6 +637,7 @@ public class DefaultCharStats implements CharStats
 		breathables=newArray;
 	}
 	
+	@Override
 	public void addBreathable(int resource)
 	{
 		final int[] breatheables=getBreathables();
@@ -1098,5 +1107,52 @@ public class DefaultCharStats implements CharStats
 				return;
 			}
 		}
+	}
+
+	@Override
+	public DoubleFilterer<Item>[] getItemProficiencies()
+	{
+		return proficiencies;
+	}
+
+	@Override
+	public void setItemProficiencies(DoubleFilterer<Item>[] newArray)
+	{
+		this.proficiencies = newArray;
+	}
+
+	@Override
+	public void addItemProficiency(final String zapperMask)
+	{
+		final DoubleFilterer<Item>[] newerArray = Arrays.copyOf(this.proficiencies, this.proficiencies.length + 1);
+		newerArray[newerArray.length-1] = new DoubleFilterer<Item>()
+		{
+			final MaskingLibrary.CompiledZMask mask = CMLib.masking().getPreCompiledMask(zapperMask);
+			
+			@Override
+			public DoubleFilterer.Result getFilterResult(Item obj)
+			{
+				return CMLib.masking().maskCheck(mask, obj, true) ? DoubleFilterer.Result.ALLOWED : DoubleFilterer.Result.NOTAPPLICABLE; 
+			}
+		};
+		this.proficiencies = newerArray;
+	}
+	
+
+	@Override
+	public void addItemDeficiency(final String zapperMask)
+	{
+		final DoubleFilterer<Item>[] newerArray = Arrays.copyOf(this.proficiencies, this.proficiencies.length + 1);
+		newerArray[newerArray.length-1] = new DoubleFilterer<Item>()
+		{
+			final MaskingLibrary.CompiledZMask mask = CMLib.masking().getPreCompiledMask(zapperMask);
+			
+			@Override
+			public DoubleFilterer.Result getFilterResult(Item obj)
+			{
+				return CMLib.masking().maskCheck(mask, obj, true) ? DoubleFilterer.Result.REJECTED : DoubleFilterer.Result.NOTAPPLICABLE; 
+			}
+		};
+		this.proficiencies = newerArray;
 	}
 }

@@ -654,6 +654,15 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		if((((I instanceof Armor)||(I instanceof Shield)))
 		&&(I.rawProperLocationBitmap()&CharClass.ARMOR_WEARMASK)>0)
 		{
+			DoubleFilterer.Result filterResult = DoubleFilterer.Result.NOTAPPLICABLE;
+			for(DoubleFilterer<Item> F : mob.charStats().getItemProficiencies())
+			{
+				filterResult = F.getFilterResult(I);
+				if(filterResult != DoubleFilterer.Result.NOTAPPLICABLE)
+				{
+					return (filterResult == DoubleFilterer.Result.ALLOWED) ? true : false;
+				}
+			}
 			boolean ok=true;
 			switch(I.material()&RawMaterial.MATERIAL_MASK)
 			{

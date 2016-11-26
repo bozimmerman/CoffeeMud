@@ -2164,11 +2164,15 @@ public class CMClass extends ClassLoader
 	 */
 	public static final boolean checkAncestry(final Class<?> cl, final Class<?> ancestorCl)
 	{
-		if (cl == null) return false;
-		if (cl.isPrimitive() || cl.isInterface()) return false;
-		if ( Modifier.isAbstract( cl.getModifiers()) || !Modifier.isPublic( cl.getModifiers()) ) return false;
-		if (ancestorCl == null) return true;
-		return (ancestorCl.isAssignableFrom(cl)) ;
+		if (cl == null)
+			return false;
+		if (cl.isPrimitive() || cl.isInterface())
+			return false;
+		if (Modifier.isAbstract(cl.getModifiers()) || !Modifier.isPublic(cl.getModifiers()))
+			return false;
+		if (ancestorCl == null)
+			return true;
+		return (ancestorCl.isAssignableFrom(cl));
 	}
 
 	/**
