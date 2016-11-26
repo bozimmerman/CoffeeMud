@@ -15,8 +15,10 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+import com.planet_ink.coffee_mud.core.collections.DoubleFilterer;
 
 import java.util.*;
+
 
 /*
    Copyright 2016-2016 Bo Zimmerman
@@ -125,7 +127,7 @@ public class Proficiency_Weapon extends StdAbility
 		if(myFilter == null)
 		{
 			final String zapMask = getWeaponMask();
-			myFilter = new DoubleFilterer<Item>()
+			myFilter = new com.planet_ink.coffee_mud.core.collections.DoubleFilterer<Item>()
 			{
 				final MaskingLibrary.CompiledZMask mask = CMLib.masking().maskCompile(zapMask);
 				@Override

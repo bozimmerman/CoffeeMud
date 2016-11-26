@@ -2814,6 +2814,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 			return new CompiledZapperMaskImpl(new boolean[]{false,false},buf.toArray(new CompiledZMaskEntry[0]));
 		final Map<String,ZapperKey> zapCodes=getMaskCodes();
 		final List<String> V=CMParms.parse(text.toUpperCase());
+		List<String> lV=null;
 		boolean buildItemFlag=false;
 		boolean buildRoomFlag=false;
 		ZapperKey entryType;
@@ -2853,7 +2854,9 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					{
 						final String swc = (entryType == ZapperKey.CLASSTYPE) ? "-" : "+";
 						final ArrayList<Object> parms=new ArrayList<Object>();
-						for(int v2=v+1;v2<V.size();v2++)
+						if(lV==null)
+							lV=CMParms.parse(text);
+						for(int v2=v+1;v2<lV.size();v2++)
 						{
 							final String str2=V.get(v2);
 							if(zapCodes.containsKey(str2))
@@ -2922,8 +2925,9 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 												ancestorC = Class.forName(prefix+possClassName);
 												break;
 											}
-											catch(Exception e2)
+											catch(Throwable e2)
 											{
+												e2.printStackTrace();
 											}
 										}
 										if(ancestorC != null)
