@@ -2142,6 +2142,70 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						buf.append(".  ");
 					}
 					break;
+				case _IFSTAT:
+					{
+						buf.append(L("Allows only those with "+(multipleQuals(V,v,"-")?"one of the following values":"the following value")+": "));
+						for(int v2=v+1;v2<V.size();v2++)
+						{
+							final String str2=V.get(v2);
+							if(zapCodes.containsKey(str2))
+								break;
+							if(str2.startsWith("+"))
+								buf.append(str2.substring(1)+", ");
+						}
+						if(buf.toString().endsWith(", "))
+							buf=new StringBuilder(buf.substring(0,buf.length()-2));
+						buf.append(".  ");
+					}
+					break;
+				case IFSTAT:
+					{
+						buf.append(L("Disallows those with "+(multipleQuals(V,v,"-")?"one of the following values":"the following value")+": "));
+						for(int v2=v+1;v2<V.size();v2++)
+						{
+							final String str2=V.get(v2);
+							if(zapCodes.containsKey(str2))
+								break;
+							if(str2.startsWith("-"))
+								buf.append(str2.substring(1)+", ");
+						}
+						if(buf.toString().endsWith(", "))
+							buf=new StringBuilder(buf.substring(0,buf.length()-2));
+						buf.append(".  ");
+					}
+					break;
+				case SUBNAME:
+					{
+						buf.append(L("Disallows those with the following partial name"+(multipleQuals(V,v,"-")?"s":"")+": "));
+						for(int v2=v+1;v2<V.size();v2++)
+						{
+							final String str2=V.get(v2);
+							if(zapCodes.containsKey(str2))
+								break;
+							if(str2.startsWith("-"))
+								buf.append(str2.substring(1)+", ");
+						}
+						if(buf.toString().endsWith(", "))
+							buf=new StringBuilder(buf.substring(0,buf.length()-2));
+						buf.append(".  ");
+					}
+					break;
+				case _SUBNAME:
+					{
+						buf.append(L("Allows only those with the following partial name"+(multipleQuals(V,v,"-")?"s":"")+": "));
+						for(int v2=v+1;v2<V.size();v2++)
+						{
+							final String str2=V.get(v2);
+							if(zapCodes.containsKey(str2))
+								break;
+							if(str2.startsWith("+"))
+								buf.append(str2.substring(1)+", ");
+						}
+						if(buf.toString().endsWith(", "))
+							buf=new StringBuilder(buf.substring(0,buf.length()-2));
+						buf.append(".  ");
+					}
+					break;
 				case ITEM: // +Item
 					{
 						buf.append(L("Disallows those with the following item"+(multipleQuals(V,v,"-")?"s":"")+": "));
@@ -3001,6 +3065,25 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						buf.add(new CompiledZapperMaskEntryImpl(entryType,parms.toArray(new Object[0])));
 					}
 					break;
+				case _SUBNAME:
+					{
+						final ArrayList<Object> parms=new ArrayList<Object>();
+						for(int v2=v+1;v2<V.size();v2++)
+						{
+							final String str2=V.get(v2);
+							if(zapCodes.containsKey(str2))
+							{
+								v=v2-1;
+								break;
+							}
+							else
+							if(str2.startsWith("+"))
+								parms.add(str2.substring(1).toLowerCase());
+							v=V.size();
+						}
+						buf.add(new CompiledZapperMaskEntryImpl(entryType,parms.toArray(new Object[0])));
+					}
+					break;
 				case _AREA: // -Area
 					buildRoomFlag=true;
 				//$FALL-THROUGH$
@@ -3077,6 +3160,25 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 								else
 									parms.add(str2.substring(1));
 							}
+							v=V.size();
+						}
+						buf.add(new CompiledZapperMaskEntryImpl(entryType,parms.toArray(new Object[0])));
+					}
+					break;
+				case SUBNAME:
+					{
+						final ArrayList<Object> parms=new ArrayList<Object>();
+						for(int v2=v+1;v2<V.size();v2++)
+						{
+							final String str2=V.get(v2);
+							if(zapCodes.containsKey(str2))
+							{
+								v=v2-1;
+								break;
+							}
+							else
+							if(str2.startsWith("-"))
+								parms.add(str2.substring(1).toLowerCase());
 							v=V.size();
 						}
 						buf.add(new CompiledZapperMaskEntryImpl(entryType,parms.toArray(new Object[0])));
@@ -3404,6 +3506,34 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					buf.add(new CompiledZapperMaskEntryImpl(entryType,new Object[0]));
 					break;
 				}
+				case _IFSTAT:
+				case IFSTAT:
+					{
+						final ArrayList<Object> parms=new ArrayList<Object>();
+						buildItemFlag=true;
+						for(int v2=v+1;v2<V.size();v2++)
+						{
+							final String str2=V.get(v2);
+							if(zapCodes.containsKey(str2))
+							{
+								v=v2-1;
+								break;
+							}
+							else
+							if((str2.startsWith("-"))||(str2.startsWith("+")))
+							{
+								int x=str2.indexOf('=');
+								if(x>0)
+								{
+									parms.add(str2.toUpperCase().substring(1, x));
+									parms.add(str2.substring(x+1));
+								}
+							}
+							v=V.size();
+						}
+						buf.add(new CompiledZapperMaskEntryImpl(entryType,parms.toArray(new Object[0])));
+					}
+					break;
 				case RESOURCE: // +Resource
 				case _RESOURCE: // -Resource
 					{
@@ -4337,6 +4467,87 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							return false;
 					}
 					break;
+				case SUBNAME: // +subname
+					{
+						final String name=(actual?E.Name():E.name()).toLowerCase();
+						for(final Object o : entry.parms())
+						{
+							final String s = (String)o; // already lowercased
+							if(s.startsWith("*"))
+							{
+								if(s.endsWith("*"))
+								{
+									if(name.indexOf(s.substring(1,s.length()-1))>=0)
+									{
+										return false;
+									}
+								}
+								else
+								if(name.endsWith(s.substring(1)))
+								{
+									return false;
+								}
+							}
+							else
+							if(s.endsWith("*"))
+							{
+								if(name.startsWith(s.substring(0,s.length()-1)))
+								{
+									return false;
+								}
+							}
+							else
+							if(name.indexOf(s)>=0)
+							{
+								return false;
+							}
+						}
+					}
+					break;
+				case _SUBNAME: // -subname
+					{
+						boolean found=false;
+						final String name=(actual?E.Name():E.name()).toLowerCase();
+						for(final Object o : entry.parms())
+						{
+							final String s = (String)o; // already lowercased
+							if(s.startsWith("*"))
+							{
+								if(s.endsWith("*"))
+								{
+									if(name.indexOf(s.substring(1,s.length()-1))>=0)
+									{
+										found=true;
+										break;
+									}
+								}
+								else
+								if(name.endsWith(s.substring(1)))
+								{
+									found=true;
+									break;
+								}
+							}
+							else
+							if(s.endsWith("*"))
+							{
+								if(name.startsWith(s.substring(0,s.length()-1)))
+								{
+									found=true;
+									break;
+								}
+							}
+							else
+							if(name.indexOf(s)>=0)
+							{
+								found=true;
+								break;
+							}
+						}
+						if(!found)
+							return false;
+					}
+					break;
 				case _PLAYER: // -player
 					if(!mob.isMonster())
 						return false;
@@ -5239,6 +5450,55 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						}
 					}
 					break;
+				case _IFSTAT:
+					{
+						boolean found=false;
+						if(E instanceof Physical)
+						{
+							for(int i=0;i<entry.parms().length;i+=2)
+							{
+								if(CMLib.coffeeMaker().getAnyGenStat((Physical)E,(String)entry.parms()[i]).equalsIgnoreCase((String)entry.parms()[i+1]))
+								{
+									found=true;
+									break;
+								}
+							}
+						}
+						else
+						{
+							for(int i=0;i<entry.parms().length;i+=2)
+							{
+								if(E.getStat((String)entry.parms()[i]).equalsIgnoreCase((String)entry.parms()[i+1]))
+								{
+									found=true;
+									break;
+								}
+							}
+						}
+						if(!found)
+							return false;
+					}
+					break;
+				case IFSTAT:
+					{
+						if(E instanceof Physical)
+						{
+							for(int i=0;i<entry.parms().length;i+=2)
+							{
+								if(CMLib.coffeeMaker().getAnyGenStat((Physical)E,(String)entry.parms()[i]).equalsIgnoreCase((String)entry.parms()[i+1]))
+									return false;
+							}
+						}
+						else
+						{
+							for(int i=0;i<entry.parms().length;i+=2)
+							{
+								if(E.getStat((String)entry.parms()[i]).equalsIgnoreCase((String)entry.parms()[i+1]))
+									return false;
+							}
+						}
+					}
+					break;
 				case ITEM: // +item
 					{
 						for(final Object o : entry.parms())
@@ -5618,6 +5878,87 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						}
 					}
 					break;
+				case SUBNAME: // +subname
+					{
+						final String name=E.name().toLowerCase();
+						for(final Object o : entry.parms())
+						{
+							final String s = (String)o; // already lowercased
+							if(s.startsWith("*"))
+							{
+								if(s.endsWith("*"))
+								{
+									if(name.indexOf(s.substring(1,s.length()-1))>=0)
+									{
+										return false;
+									}
+								}
+								else
+								if(name.endsWith(s.substring(1)))
+								{
+									return false;
+								}
+							}
+							else
+							if(s.endsWith("*"))
+							{
+								if(name.startsWith(s.substring(0,s.length()-1)))
+								{
+									return false;
+								}
+							}
+							else
+							if(name.indexOf(s)>=0)
+							{
+								return false;
+							}
+						}
+					}
+					break;
+				case _SUBNAME: //-subname
+					{
+						boolean found=false;
+						final String name=E.name().toLowerCase();
+						for(final Object o : entry.parms())
+						{
+							final String s = (String)o; // already lowercased
+							if(s.startsWith("*"))
+							{
+								if(s.endsWith("*"))
+								{
+									if(name.indexOf(s.substring(1,s.length()-1))>=0)
+									{
+										found=true;
+										break;
+									}
+								}
+								else
+								if(name.endsWith(s.substring(1)))
+								{
+									found=true;
+									break;
+								}
+							}
+							else
+							if(s.endsWith("*"))
+							{
+								if(name.startsWith(s.substring(0,s.length()-1)))
+								{
+									found=true;
+									break;
+								}
+							}
+							else
+							if(name.indexOf(s)>=0)
+							{
+								found=true;
+								break;
+							}
+						}
+						if(!found)
+							return false;
+					}
+					break;
 				case _ANYCLASS: // -anyclass
 					{
 						boolean found=false;
@@ -5753,6 +6094,9 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				case GENDER: // +gender
 				case GROUPSIZE: // +groupsize
 				case _GROUPSIZE: // -groupsize
+				case _IFSTAT:
+				case IFSTAT:
+					break;
 				case _IF: // -if
 				case IF: // +if
 					return false;
