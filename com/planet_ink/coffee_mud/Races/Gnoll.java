@@ -107,6 +107,42 @@ public class Gnoll extends StdRace
 		return culturalAbilityProficiencies;
 	}
 
+	private final String[]	racialAbilityNames			= { "Skill_DevourCorpse" };
+	private final int[]		racialAbilityLevels			= { 1 };
+	private final int[]		racialAbilityProficiencies	= { 50 };
+	private final boolean[]	racialAbilityQuals			= { false };
+	private final String[]	racialAbilityParms			= { "" };
+
+	@Override
+	public String[] racialAbilityNames()
+	{
+		return racialAbilityNames;
+	}
+
+	@Override
+	public int[] racialAbilityLevels()
+	{
+		return racialAbilityLevels;
+	}
+
+	@Override
+	public int[] racialAbilityProficiencies()
+	{
+		return racialAbilityProficiencies;
+	}
+
+	@Override
+	public boolean[] racialAbilityQuals()
+	{
+		return racialAbilityQuals;
+	}
+
+	@Override
+	public String[] racialAbilityParms()
+	{
+		return racialAbilityParms;
+	}
+
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,0 ,0 };
 
@@ -129,7 +165,22 @@ public class Gnoll extends StdRace
 	@Override
 	public int availabilityCode()
 	{
-		return Area.THEME_FANTASY | Area.THEME_SKILLONLYMASK;
+		return Area.THEME_FANTASY;
+	}
+
+	@Override
+	public List<Item> outfit(MOB myChar)
+	{
+		if(outfitChoices==null)
+		{
+			final Armor p1=CMClass.getArmor("GenPants");
+			p1.setName(L("a loincloth"));
+			p1.setDisplayText(L("a simple loincloth sits here."));
+			p1.setDescription(L("A simple piece of cloth for wrapping around your mid-parts."));
+			p1.text();
+			outfitChoices.add(p1);
+		}
+		return outfitChoices;
 	}
 
 	@Override
@@ -144,8 +195,16 @@ public class Gnoll extends StdRace
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
 		affectableStats.setStat(CharStats.STAT_INTELLIGENCE,affectableStats.getStat(CharStats.STAT_INTELLIGENCE)-3);
+		affectableStats.setStat(CharStats.STAT_MAX_INTELLIGENCE_ADJ,affectableStats.getStat(CharStats.STAT_MAX_INTELLIGENCE_ADJ)-3);
 		affectableStats.setStat(CharStats.STAT_WISDOM,affectableStats.getStat(CharStats.STAT_WISDOM)-2);
+		affectableStats.setStat(CharStats.STAT_MAX_WISDOM_ADJ,affectableStats.getStat(CharStats.STAT_MAX_WISDOM_ADJ)-2);
 		affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_STRENGTH)+2);
+		affectableStats.setStat(CharStats.STAT_MAX_STRENGTH_ADJ,affectableStats.getStat(CharStats.STAT_MAX_STRENGTH_ADJ)+2);
+		affectableStats.setStat(CharStats.STAT_SAVE_DISEASE,affectableStats.getStat(CharStats.STAT_SAVE_DISEASE)+20);
+		affectableStats.setStat(CharStats.STAT_SAVE_MIND,affectableStats.getStat(CharStats.STAT_SAVE_MIND)-10);
+		affectableStats.setStat(CharStats.STAT_SAVE_FIRE,affectableStats.getStat(CharStats.STAT_SAVE_FIRE)-10);
+		affectableStats.setStat(CharStats.STAT_SAVE_COLD,affectableStats.getStat(CharStats.STAT_SAVE_COLD)+15);
+		affectableStats.setStat(CharStats.STAT_SAVE_POISON,affectableStats.getStat(CharStats.STAT_SAVE_POISON)+10);
 	}
 
 	@Override
