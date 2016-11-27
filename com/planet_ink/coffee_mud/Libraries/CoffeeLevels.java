@@ -318,6 +318,10 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		||(mob.charStats().getCurrentClass().leveless())
 		||(mob.charStats().getMyRace().leveless()))
 			return;
+		final CMMsg msg=CMClass.getMsg(mob,CMMsg.MSG_LEVEL,null,mob.basePhyStats().level()-1);
+		if(!CMLib.map().sendGlobalMessage(mob,CMMsg.TYP_LEVEL,msg))
+			return;
+		
 		mob.tell(L("^ZYou have ****LOST A LEVEL****^.^N\n\r\n\r@x1",CMLib.protocol().msp("doh.wav",60)));
 		if(!mob.isMonster())
 		{

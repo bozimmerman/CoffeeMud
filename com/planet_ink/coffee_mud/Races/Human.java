@@ -145,6 +145,28 @@ public class Human extends StdRace
 		affectableStats.setStat(CharStats.STAT_SAVE_JUSTICE,affectableStats.getStat(CharStats.STAT_SAVE_JUSTICE)+10);
 	}
 
+	private final String[]	racialEffectNames			= { "DiligentStudying" };
+	private final int[]		racialEffectLevels			= { 1 };
+	private final String[]	racialEffectParms			= { "" };
+	
+	@Override
+	protected String[] racialEffectNames()
+	{
+		return racialEffectNames;
+	}
+
+	@Override
+	protected int[] racialEffectLevels()
+	{
+		return racialEffectLevels;
+	}
+
+	@Override
+	protected String[] racialEffectParms()
+	{
+		return racialEffectParms;
+	}
+
 	@Override
 	public List<Item> outfit(MOB myChar)
 	{

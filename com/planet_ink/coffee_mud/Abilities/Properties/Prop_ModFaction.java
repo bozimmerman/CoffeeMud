@@ -35,17 +35,33 @@ import java.util.*;
 */
 public class Prop_ModFaction extends Property
 {
-	@Override public String ID() { return "Prop_ModFaction"; }
-	@Override public String name(){ return "Modifying Faction Gained";}
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_AREAS|Ability.CAN_ROOMS;}
-	protected String operationFormula = "";
-	protected String factionID = "";
-	protected boolean reactions=false;
-	protected boolean gainonly=false;
-	protected boolean lossonly=false;
-	protected LinkedList<CMath.CompiledOperation> operation = null;
-	protected MaskingLibrary.CompiledZMask   mask = null;
+	@Override
+	public String ID()
+	{
+		return "Prop_ModFaction";
+	}
 
+	@Override
+	public String name()
+	{
+		return "Modifying Faction Gained";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS | Ability.CAN_ITEMS | Ability.CAN_AREAS | Ability.CAN_ROOMS;
+	}
+
+	protected String	operationFormula	= "";
+	protected String	factionID			= "";
+	protected boolean	reactions			= false;
+	protected boolean	gainonly			= false;
+	protected boolean	lossonly			= false;
+
+	protected LinkedList<CMath.CompiledOperation>	operation			= null;
+	protected MaskingLibrary.CompiledZMask			mask				= null;
+	
 	@Override
 	public String accountForYourself()
 	{

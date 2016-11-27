@@ -5,7 +5,7 @@
    4. New resource: DIRT.  Mass Grave now populates its room with the stuff.
    5. GModify now supports query-able stat "CLASSTYPE"
    6. New Skills: Wilderness Sounds, Hardiness, Stonecunning, Keenvision, Burrow Hide
-   7. New Skills: Cultural Adaptation, Fast Slinging
+   7. New Skills: Cultural Adaptation, Fast Slinging, Sling Proficiency, Diligent Studying
    8. New Prayers: Taint of Evil
    9. Centaur gets Hardiness, Drow adds Light Sensitivity and Taint of Evil, 
    10. Duergar get -10% XP, Dwarfs get Stonecunning, Elfs Keenvision
@@ -18,7 +18,8 @@
    17. Achievement type GOTITEM now supports NUM argument.
    18. New Property: Prop_OpenCommand
    19. ZapperMask now supports IFSTAT, CLASSTYPE, SUBNAME, WEAPONTYPE, WEAPONCLASS, WEAPONAMMO
-   20. New Skills, Proficiencies for overriding Class Restrictions. 14 in total.
+   20. 14 new Proficiency Skills, for overriding Class Restrictions
+   21. Halflings get Fast Slinging, Sling Proficiency, Humans get Diligent Studying
 # Build 5.9.4 Released 08/03/2016
    1. Qualify now shows language limits
    2. New Prop_NoTeleport exceptions

@@ -427,7 +427,8 @@ public class Druid extends StdCharClass
 	{
 		if((msg.sourceMessage()==null)
 		&&(msg.sourceMinor()==CMMsg.TYP_LEVEL)
-		&&(msg.source().isMonster()))
+		&&(msg.source().isMonster())
+		&&(msg.source().basePhyStats().level() < msg.value()))
 		{
 			final MOB druidM=msg.source().amUltimatelyFollowing();
 			if((druidM!=null)

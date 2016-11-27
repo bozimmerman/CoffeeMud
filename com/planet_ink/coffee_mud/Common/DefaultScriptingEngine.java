@@ -12016,6 +12016,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					}
 					if((msg.sourceMinor()==CMMsg.TYP_LEVEL)&&canTrigger(32)
 					&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster))
+					&&(msg.value() > msg.source().basePhyStats().level())
 					&&(!CMLib.flags().isCloaked(msg.source())))
 					{
 						if(t==null)
