@@ -67,10 +67,17 @@ public class Prop_ModFaction extends Property
 	{
 		final Faction F=(factionID.length()>0)?CMLib.factions().getFaction(factionID):null;
 		final String gainOrLoss=(gainonly)?"gained ":lossonly?"lost ":"";
-		final String factionName=
-			(factionID.length()==0)?"any faction":
-				reactions?"certain factions":
-				((F==null)?"some faction":F.name());
+		final String factionName;
+		if(factionID.length()==0)
+			factionName = "any faction";
+		else
+		if (reactions)
+			factionName = "certain factions";
+		else
+		if(F==null)
+			factionName = "some faction";
+		else
+			factionName = F.name();
 		return "Modifies "+gainOrLoss+"faction with "+factionName+": "+operationFormula;
 	}
 
