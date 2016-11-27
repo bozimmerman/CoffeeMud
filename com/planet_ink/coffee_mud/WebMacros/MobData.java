@@ -75,6 +75,32 @@ public class MobData extends StdWebMacro
 		return str.toString();
 	}
 
+	@SuppressWarnings("unchecked")
+	public static Enumeration<Race> sortedRaces(HTTPRequest httpReq)
+	{
+		if(httpReq.getRequestObjects() != null)
+		{
+			if(httpReq.getRequestObjects().containsKey("SYSTEM_SORTED_RACES"))
+				return ((Vector<Race>)httpReq.getRequestObjects().get("SYSTEM_SORTED_RACES")).elements();
+		}
+		final TreeMap<String,Race> map=new TreeMap<String,Race>();
+		for(Enumeration<Race> r = CMClass.races();r.hasMoreElements();)
+		{
+			final Race R=r.nextElement();
+			map.put(R.name(), R);
+		}
+		final Vector<Race> V=new Vector<Race>(map.size());
+		for(final String raceName : map.keySet())
+		{
+			V.add(map.get(raceName));
+		}
+		if(httpReq.getRequestObjects() != null)
+		{
+			httpReq.getRequestObjects().put("SYSTEM_SORTED_RACES",V);
+		}
+		return V.elements();
+	}
+	
 	public static StringBuffer abilities(MOB E, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize)
 	{
 		final StringBuffer str=new StringBuffer("");
@@ -1257,7 +1283,7 @@ public class MobData extends StdWebMacro
 				case RACE: // race
 					if(firstTime)
 						old=""+M.baseCharStats().getMyRace().ID();
-					for(final Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
+					for(final Enumeration<Race> r=sortedRaces(httpReq);r.hasMoreElements();)
 					{
 						final Race R2=r.nextElement();
 						str.append("<OPTION VALUE=\""+R2.ID()+"\"");

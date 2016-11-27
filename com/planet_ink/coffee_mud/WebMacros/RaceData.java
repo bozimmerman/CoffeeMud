@@ -47,13 +47,13 @@ public class RaceData extends StdWebMacro
 	// HEALTHTEXTS, NATURALWEAPON, PLAYABLE, DISPOSITIONS, STARTINGEQ,
 	// CLASSES, LANGS, EFFECTS
 
-	private String raceDropDown(String old)
+	private String raceDropDown(HTTPRequest httpReq, String old)
 	{
 		final StringBuffer str=new StringBuffer("");
 		str.append("<OPTION VALUE=\"\" "+((old.length()==0)?"SELECTED":"")+">None");
 		Race R2=null;
 		String R2ID=null;
-		for(final Enumeration e=CMClass.races();e.hasMoreElements();)
+		for(final Enumeration e=MobData.sortedRaces(httpReq);e.hasMoreElements();)
 		{
 			R2=(Race)e.nextElement();
 			R2ID="com.planet_ink.coffee_mud.Races."+R2.ID();
@@ -943,7 +943,7 @@ public class RaceData extends StdWebMacro
 						R=R.makeGenRace();
 						old=""+R.getStat("HEALTHRACE");
 					}
-					str.append(raceDropDown(old));
+					str.append(raceDropDown(httpReq,old));
 				}
 				if(parms.containsKey("WEAPONRACE"))
 				{
@@ -953,7 +953,7 @@ public class RaceData extends StdWebMacro
 						R=R.makeGenRace();
 						old=""+R.getStat("WEAPONRACE");
 					}
-					str.append(raceDropDown(old));
+					str.append(raceDropDown(httpReq,old));
 				}
 				if(parms.containsKey("EVENTRACE"))
 				{
@@ -963,7 +963,7 @@ public class RaceData extends StdWebMacro
 						R=R.makeGenRace();
 						old=""+R.getStat("EVENTRACE");
 					}
-					str.append(raceDropDown(old));
+					str.append(raceDropDown(httpReq,old));
 				}
 				if(parms.containsKey("BREATHES"))
 				{

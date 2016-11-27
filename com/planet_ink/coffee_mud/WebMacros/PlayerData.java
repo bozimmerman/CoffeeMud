@@ -547,7 +547,7 @@ public class PlayerData extends StdWebMacro
 				String old=httpReq.getUrlParameter("RACE");
 				if((firstTime)||(old.length()==0))
 					old=""+M.baseCharStats().getMyRace().ID();
-				for(final Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
+				for(final Enumeration<Race> r=MobData.sortedRaces(httpReq);r.hasMoreElements();)
 				{
 					final Race R2=r.nextElement();
 					str.append("<OPTION VALUE=\""+R2.ID()+"\"");

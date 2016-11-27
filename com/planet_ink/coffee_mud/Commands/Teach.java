@@ -61,7 +61,6 @@ public class Teach extends StdCommand
 		}
 		commands.remove(0);
 
-
 		final MOB student=mob.location().fetchInhabitant(commands.get(0));
 		if((student==null)||(!CMLib.flags().canBeSeenBy(student,mob)))
 		{
@@ -69,7 +68,6 @@ public class Teach extends StdCommand
 			return false;
 		}
 		commands.remove(0);
-
 
 		final String abilityName=CMParms.combine(commands,0);
 		final Ability realAbility=CMClass.findAbility(abilityName,student.charStats());

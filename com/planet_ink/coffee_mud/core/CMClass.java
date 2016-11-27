@@ -52,9 +52,9 @@ import org.mozilla.javascript.optimizer.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class CMClass extends ClassLoader
 {
-	protected static boolean debugging=false;
-	protected static volatile long lastUpdateTime=System.currentTimeMillis();
-	protected static final Map<String,Class<?>> classes=new Hashtable<String,Class<?>>();
+	protected static boolean						debugging		= false;
+	protected static volatile long					lastUpdateTime	= System.currentTimeMillis();
+	protected static final Map<String, Class<?>>	classes			= new Hashtable<String, Class<?>>();
 
 	private static CMClass[] clss=new CMClass[256];
 	/**
@@ -162,7 +162,8 @@ public class CMClass extends ClassLoader
 	}
 
 	/** collection of all object types that are classified as "items" of one sort or another */
-	public static final CMObjectType[] OBJECTS_ITEMTYPES = new CMObjectType[]{
+	public static final CMObjectType[] OBJECTS_ITEMTYPES = new CMObjectType[]
+	{
 		CMObjectType.MISCMAGIC,
 		CMObjectType.ITEM,
 		CMObjectType.ARMOR,
@@ -177,30 +178,30 @@ public class CMClass extends ClassLoader
 	/** static int for the web macro object with the longest name, used for web optimization */
 	public static int longestWebMacro=-1;
 
-	protected Hashtable<String,CMCommon> common=new Hashtable<String,CMCommon>();
-	protected XVector<Race> 			 races=new XVector<Race>();
-	protected XVector<CharClass>		 charClasses=new XVector<CharClass>();
-	protected XVector<MOB>  			 MOBs=new XVector<MOB>();
-	protected XVector<Ability>  		 abilities=new XVector<Ability>();
-	protected XVector<Room> 			 locales=new XVector<Room>();
-	protected XVector<Exit> 			 exits=new XVector<Exit>();
-	protected XVector<Item> 			 items=new XVector<Item>();
-	protected XVector<Behavior> 		 behaviors=new XVector<Behavior>();
-	protected XVector<Weapon>   		 weapons=new XVector<Weapon>();
-	protected XVector<Armor>			 armor=new XVector<Armor>();
-	protected XVector<MiscMagic>		 miscMagic=new XVector<MiscMagic>();
-	protected XVector<Technical>  		 tech=new XVector<Technical>();
-	protected XVector<ClanItem> 		 clanItems=new XVector<ClanItem>();
-	protected XVector<Area> 			 areaTypes=new XVector<Area>();
-	protected XVector<Command>  		 commands=new XVector<Command>();
-	protected XVector<CMLibrary>		 libraries=new XVector<CMLibrary>();
-	protected Hashtable<String,WebMacro> webMacros=new Hashtable<String,WebMacro>();
-	protected Hashtable<String,Command>  commandWords=new Hashtable<String,Command>();
+	protected Hashtable<String, CMCommon>	common			= new Hashtable<String, CMCommon>();
+	protected XVector<Race>					races			= new XVector<Race>();
+	protected XVector<CharClass>			charClasses		= new XVector<CharClass>();
+	protected XVector<MOB>					MOBs			= new XVector<MOB>();
+	protected XVector<Ability>				abilities		= new XVector<Ability>();
+	protected XVector<Room>					locales			= new XVector<Room>();
+	protected XVector<Exit>					exits			= new XVector<Exit>();
+	protected XVector<Item>					items			= new XVector<Item>();
+	protected XVector<Behavior>				behaviors		= new XVector<Behavior>();
+	protected XVector<Weapon>				weapons			= new XVector<Weapon>();
+	protected XVector<Armor>				armor			= new XVector<Armor>();
+	protected XVector<MiscMagic>			miscMagic		= new XVector<MiscMagic>();
+	protected XVector<Technical>			tech			= new XVector<Technical>();
+	protected XVector<ClanItem>				clanItems		= new XVector<ClanItem>();
+	protected XVector<Area>					areaTypes		= new XVector<Area>();
+	protected XVector<Command>				commands		= new XVector<Command>();
+	protected XVector<CMLibrary>			libraries		= new XVector<CMLibrary>();
+	protected Hashtable<String, WebMacro>	webMacros		= new Hashtable<String, WebMacro>();
+	protected Hashtable<String, Command>	commandWords	= new Hashtable<String, Command>();
 
-	protected static final LinkedList<CMMsg> MSGS_CACHE=new LinkedList<CMMsg>();
-	protected static final LinkedList<MOB>   MOB_CACHE=new LinkedList<MOB>();
-	protected static final int  			 MAX_MSGS=10000+((Runtime.getRuntime().maxMemory()==Integer.MAX_VALUE)?10000:(int)(Runtime.getRuntime().maxMemory()/10000));
-	protected static final int  			 MAX_MOBS=50+(MAX_MSGS/200);
+	protected static final LinkedList<CMMsg>MSGS_CACHE		= new LinkedList<CMMsg>();
+	protected static final LinkedList<MOB>	MOB_CACHE		= new LinkedList<MOB>();
+	protected static final int				MAX_MSGS		= 10000 + ((Runtime.getRuntime().maxMemory() == Integer.MAX_VALUE) ? 10000 : (int) (Runtime.getRuntime().maxMemory() / 10000));
+	protected static final int				MAX_MOBS		= 50 + (MAX_MSGS / 200);
 
 	/*
 	 * removed to save memory and processing time -- but left for future use
@@ -572,251 +573,533 @@ public class CMClass extends ClassLoader
 	 * An enumeration of all the stored races in this classloader for this thread
 	 * @return an enumeration of all the stored races in this classloader for this thread
 	 */
-	public static final Enumeration<Race>   	races(){return c().races.elements();}
+	public static final Enumeration<Race> races()
+	{
+		return c().races.elements();
+	}
+
 	/**
-	 * An enumeration of all the stored common Objects in this classloader for this thread
-	 * @return an enumeration of all the stored common Objects in this classloader for this thread
+	 * An enumeration of all the stored common Objects in this classloader for
+	 * this thread
+	 * 
+	 * @return an enumeration of all the stored common Objects in this
+	 *         classloader for this thread
 	 */
-	public static final Enumeration<CMCommon>   commonObjects(){return c().common.elements();}
+	public static final Enumeration<CMCommon> commonObjects()
+	{
+		return c().common.elements();
+	}
+
 	/**
-	 * An enumeration of all the stored char Classes in this classloader for this thread
-	 * @return an enumeration of all the stored char Classes in this classloader for this thread
+	 * An enumeration of all the stored char Classes in this classloader for
+	 * this thread
+	 * 
+	 * @return an enumeration of all the stored char Classes in this classloader
+	 *         for this thread
 	 */
-	public static final Enumeration<CharClass>  charClasses(){return c().charClasses.elements();}
+	public static final Enumeration<CharClass> charClasses()
+	{
+		return c().charClasses.elements();
+	}
+
 	/**
-	 * An enumeration of all the stored mob Types in this classloader for this thread
-	 * @return an enumeration of all the stored mob Types in this classloader for this thread
+	 * An enumeration of all the stored mob Types in this classloader for this
+	 * thread
+	 * 
+	 * @return an enumeration of all the stored mob Types in this classloader
+	 *         for this thread
 	 */
-	public static final Enumeration<MOB>		mobTypes(){return c().MOBs.elements();}
+	public static final Enumeration<MOB> mobTypes()
+	{
+		return c().MOBs.elements();
+	}
+
 	/**
-	 * An enumeration of all the stored races in this classloader for this thread
-	 * @return an enumeration of all the stored races in this classloader for this thread
+	 * An enumeration of all the stored races in this classloader for this
+	 * thread
+	 * 
+	 * @return an enumeration of all the stored races in this classloader for
+	 *         this thread
 	 */
-	public static final Enumeration<CMLibrary>  libraries(){return c().libraries.elements();}
+	public static final Enumeration<CMLibrary> libraries()
+	{
+		return c().libraries.elements();
+	}
+
 	/**
-	 * An enumeration of all the stored locales in this classloader for this thread
-	 * @return an enumeration of all the stored locales in this classloader for this thread
+	 * An enumeration of all the stored locales in this classloader for this
+	 * thread
+	 * 
+	 * @return an enumeration of all the stored locales in this classloader for
+	 *         this thread
 	 */
-	public static final Enumeration<Room>   	locales(){return c().locales.elements();}
+	public static final Enumeration<Room> locales()
+	{
+		return c().locales.elements();
+	}
+
 	/**
-	 * An enumeration of all the stored exits in this classloader for this thread
-	 * @return an enumeration of all the stored exits in this classloader for this thread
+	 * An enumeration of all the stored exits in this classloader for this
+	 * thread
+	 * 
+	 * @return an enumeration of all the stored exits in this classloader for
+	 *         this thread
 	 */
-	public static final Enumeration<Exit>   	exits(){return c().exits.elements();}
+	public static final Enumeration<Exit> exits()
+	{
+		return c().exits.elements();
+	}
+
 	/**
-	 * An enumeration of all the stored behaviors in this classloader for this thread
-	 * @return an enumeration of all the stored behaviors in this classloader for this thread
+	 * An enumeration of all the stored behaviors in this classloader for this
+	 * thread
+	 * 
+	 * @return an enumeration of all the stored behaviors in this classloader
+	 *         for this thread
 	 */
-	public static final Enumeration<Behavior>   behaviors(){return c().behaviors.elements();}
+	public static final Enumeration<Behavior> behaviors()
+	{
+		return c().behaviors.elements();
+	}
+
 	/**
-	 * An enumeration of all the stored basic Items in this classloader for this thread
-	 * @return an enumeration of all the stored basic Items in this classloader for this thread
+	 * An enumeration of all the stored basic Items in this classloader for this
+	 * thread
+	 * 
+	 * @return an enumeration of all the stored basic Items in this classloader
+	 *         for this thread
 	 */
-	public static final Enumeration<Item>   	basicItems(){return c().items.elements();}
+	public static final Enumeration<Item> basicItems()
+	{
+		return c().items.elements();
+	}
+
 	/**
-	 * An enumeration of all the stored weapons in this classloader for this thread
-	 * @return an enumeration of all the stored weapons in this classloader for this thread
+	 * An enumeration of all the stored weapons in this classloader for this
+	 * thread
+	 * 
+	 * @return an enumeration of all the stored weapons in this classloader for
+	 *         this thread
 	 */
-	public static final Enumeration<Weapon> 	weapons(){return c().weapons.elements();}
+	public static final Enumeration<Weapon> weapons()
+	{
+		return c().weapons.elements();
+	}
+
 	/**
-	 * An enumeration of all the stored armor in this classloader for this thread
-	 * @return an enumeration of all the stored armor in this classloader for this thread
+	 * An enumeration of all the stored armor in this classloader for this
+	 * thread
+	 * 
+	 * @return an enumeration of all the stored armor in this classloader for
+	 *         this thread
 	 */
-	public static final Enumeration<Armor>  	armor(){return c().armor.elements();}
+	public static final Enumeration<Armor> armor()
+	{
+		return c().armor.elements();
+	}
+
 	/**
-	 * An enumeration of all the stored misc Magic in this classloader for this thread
-	 * @return an enumeration of all the stored misc Magic in this classloader for this thread
+	 * An enumeration of all the stored misc Magic in this classloader for this
+	 * thread
+	 * 
+	 * @return an enumeration of all the stored misc Magic in this classloader
+	 *         for this thread
 	 */
-	public static final Enumeration<MiscMagic>  miscMagic(){return c().miscMagic.elements();}
+	public static final Enumeration<MiscMagic> miscMagic()
+	{
+		return c().miscMagic.elements();
+	}
+
 	/**
-	 * An enumeration of all the stored misc Magic in this classloader for this thread
+	 * An enumeration of all the stored misc Magic in this classloader for this
+	 * thread
+	 * 
 	 * @param f the filterer to help select which ones you want
-	 * @return an enumeration of all the stored misc Magic in this classloader for this thread
+	 * @return an enumeration of all the stored misc Magic in this classloader
+	 *         for this thread
 	 */
-	public static final Enumeration<MiscMagic>  miscMagic(Filterer<MiscMagic> f){return new FilteredEnumeration<MiscMagic>(c().miscMagic.elements(),f);}
+	public static final Enumeration<MiscMagic> miscMagic(Filterer<MiscMagic> f)
+	{
+		return new FilteredEnumeration<MiscMagic>(c().miscMagic.elements(), f);
+	}
+
 	/**
-	 * An enumeration of all the stored misc Tech in this classloader for this thread
-	 * @return an enumeration of all the stored misc Tech in this classloader for this thread
+	 * An enumeration of all the stored misc Tech in this classloader for this
+	 * thread
+	 * 
+	 * @return an enumeration of all the stored misc Tech in this classloader
+	 *         for this thread
 	 */
-	public static final Enumeration<Technical>tech(){return c().tech.elements();}
+	public static final Enumeration<Technical> tech()
+	{
+		return c().tech.elements();
+	}
+
 	/**
-	 * An enumeration of all the stored misc Tech in this classloader for this thread
+	 * An enumeration of all the stored misc Tech in this classloader for this
+	 * thread
+	 * 
 	 * @param f the filterer to help select which ones you want
-	 * @return an enumeration of all the stored misc Tech in this classloader for this thread
+	 * @return an enumeration of all the stored misc Tech in this classloader
+	 *         for this thread
 	 */
-	public static final Enumeration<Technical>tech(Filterer<Technical> f){return new FilteredEnumeration<Technical>(c().tech.elements(),f);}
+	public static final Enumeration<Technical> tech(Filterer<Technical> f)
+	{
+		return new FilteredEnumeration<Technical>(c().tech.elements(), f);
+	}
+
 	/**
-	 * An enumeration of all the stored clan Items in this classloader for this thread
-	 * @return an enumeration of all the stored clan Items in this classloader for this thread
+	 * An enumeration of all the stored clan Items in this classloader for this
+	 * thread
+	 * 
+	 * @return an enumeration of all the stored clan Items in this classloader
+	 *         for this thread
 	 */
-	public static final Enumeration<ClanItem>   clanItems(){return c().clanItems.elements();}
+	public static final Enumeration<ClanItem> clanItems()
+	{
+		return c().clanItems.elements();
+	}
+
 	/**
-	 * An enumeration of all the stored area Types in this classloader for this thread
-	 * @return an enumeration of all the stored area Types in this classloader for this thread
+	 * An enumeration of all the stored area Types in this classloader for this
+	 * thread
+	 * 
+	 * @return an enumeration of all the stored area Types in this classloader
+	 *         for this thread
 	 */
-	public static final Enumeration<Area>   	areaTypes(){return c().areaTypes.elements();}
+	public static final Enumeration<Area> areaTypes()
+	{
+		return c().areaTypes.elements();
+	}
+
 	/**
-	 * An enumeration of all the stored commands in this classloader for this thread
-	 * @return an enumeration of all the stored commands in this classloader for this thread
+	 * An enumeration of all the stored commands in this classloader for this
+	 * thread
+	 * 
+	 * @return an enumeration of all the stored commands in this classloader for
+	 *         this thread
 	 */
-	public static final Enumeration<Command>	commands(){return c().commands.elements();}
+	public static final Enumeration<Command> commands()
+	{
+		return c().commands.elements();
+	}
+
 	/**
-	 * An enumeration of all the stored abilities in this classloader for this thread
-	 * @return an enumeration of all the stored abilities in this classloader for this thread
+	 * An enumeration of all the stored abilities in this classloader for this
+	 * thread
+	 * 
+	 * @return an enumeration of all the stored abilities in this classloader
+	 *         for this thread
 	 */
-	public static final Enumeration<Ability>	abilities(){return c().abilities.elements();}
+	public static final Enumeration<Ability> abilities()
+	{
+		return c().abilities.elements();
+	}
+
 	/**
-	 * An enumeration of all the stored abilities in this classloader for this thread
+	 * An enumeration of all the stored abilities in this classloader for this
+	 * thread
+	 * 
 	 * @param f the filterer to help select which ones you want
-	 * @return an enumeration of all the stored abilities in this classloader for this thread
+	 * @return an enumeration of all the stored abilities in this classloader
+	 *         for this thread
 	 */
-	public static final Enumeration<Ability>	abilities(Filterer<Ability> f){return new FilteredEnumeration<Ability>(c().abilities.elements(),f);}
+	public static final Enumeration<Ability> abilities(Filterer<Ability> f)
+	{
+		return new FilteredEnumeration<Ability>(c().abilities.elements(), f);
+	}
+
 	/**
-	 * An enumeration of all the stored webmacros in this classloader for this thread
-	 * @return an enumeration of all the stored webmacros in this classloader for this thread
+	 * An enumeration of all the stored webmacros in this classloader for this
+	 * thread
+	 * 
+	 * @return an enumeration of all the stored webmacros in this classloader
+	 *         for this thread
 	 */
-	public static final Enumeration<WebMacro>   webmacros(){return c().webMacros.elements();}
+	public static final Enumeration<WebMacro> webmacros()
+	{
+		return c().webMacros.elements();
+	}
 
 	/**
 	 * Returns a random available race prototype from your classloader
+	 * 
 	 * @return a random available race prototype
 	 */
-	public static final Race		randomRace(){return c().races.elementAt((int)Math.round(Math.floor(Math.random()*(c().races.size()))));}
+	public static final Race randomRace()
+	{
+		return c().races.elementAt((int) Math.round(Math.floor(Math.random() * (c().races.size()))));
+	}
+
 	/**
 	 * Returns a random available char class prototype from your classloader
+	 * 
 	 * @return a random available char class prototype
 	 */
-	public static final CharClass   randomCharClass(){return c().charClasses.elementAt((int)Math.round(Math.floor(Math.random()*(c().charClasses.size()))));}
+	public static final CharClass randomCharClass()
+	{
+		return c().charClasses.elementAt((int) Math.round(Math.floor(Math.random() * (c().charClasses.size()))));
+	}
+
 	/**
 	 * Returns a random available ability prototype from your classloader
+	 * 
 	 * @return a random available ability prototype
 	 */
-	public static final Ability 	randomAbility(){ return c().abilities.elementAt((int)Math.round(Math.floor(Math.random()*(c().abilities.size()))));}
+	public static final Ability randomAbility()
+	{
+		return c().abilities.elementAt((int) Math.round(Math.floor(Math.random() * (c().abilities.size()))));
+	}
+
 	/**
 	 * Returns a random available area prototype from your classloader
+	 * 
 	 * @return a random available area prototype
 	 */
-	public static final Area		randomArea(){return c().areaTypes.elementAt((int)Math.round(Math.floor(Math.random()*(c().areaTypes.size()))));}
+	public static final Area randomArea()
+	{
+		return c().areaTypes.elementAt((int) Math.round(Math.floor(Math.random() * (c().areaTypes.size()))));
+	}
+
 	/**
-	 * Returns a new instance of a locale object of the given ID from your classloader
+	 * Returns a new instance of a locale object of the given ID from your
+	 * classloader
+	 * 
 	 * @param calledThis the ID() of the object to return
 	 * @return a new instance of a locale object of the given ID
 	 */
-	public static final Room		getLocale(final String calledThis){ return (Room)getNewGlobal(c().locales,calledThis); }
+	public static final Room getLocale(final String calledThis)
+	{
+		return (Room) getNewGlobal(c().locales, calledThis);
+	}
+
 	/**
-	 * Returns a reference to the prototype for the library of the given ID from your classloader
+	 * Returns a reference to the prototype for the library of the given ID from
+	 * your classloader
+	 * 
 	 * @param calledThis the ID() of the object to return
 	 * @return a reference to the prototype for the library of the given ID
 	 */
-	public static final CMLibrary   getLibrary(final String calledThis) { return (CMLibrary)getGlobal(c().libraries,calledThis); }
+	public static final CMLibrary getLibrary(final String calledThis)
+	{
+		return (CMLibrary) getGlobal(c().libraries, calledThis);
+	}
+
 	/**
-	 * Returns a new instance of a area object of the given ID from your classloader
+	 * Returns a new instance of a area object of the given ID from your
+	 * classloader
+	 * 
 	 * @param calledThis the ID() of the object to return
 	 * @return a new instance of a area object of the given ID
 	 */
-	public static final Area		getAreaType(final String calledThis) { return (Area)getNewGlobal(c().areaTypes,calledThis); }
+	public static final Area getAreaType(final String calledThis)
+	{
+		return (Area) getNewGlobal(c().areaTypes, calledThis);
+	}
+
 	/**
-	 * Returns a new instance of a exit object of the given ID from your classloader
+	 * Returns a new instance of a exit object of the given ID from your
+	 * classloader
+	 * 
 	 * @param calledThis the ID() of the object to return
 	 * @return a new instance of a exit object of the given ID
 	 */
-	public static final Exit		getExit(final String calledThis) { return (Exit)getNewGlobal(c().exits,calledThis);}
+	public static final Exit getExit(final String calledThis)
+	{
+		return (Exit) getNewGlobal(c().exits, calledThis);
+	}
+
 	/**
-	 * Returns a new instance of a MOB object of the given ID from your classloader
+	 * Returns a new instance of a MOB object of the given ID from your
+	 * classloader
+	 * 
 	 * @param calledThis the ID() of the object to return
 	 * @return a new instance of a MOB object of the given ID
 	 */
-	public static final MOB 		getMOB(final String calledThis) { return (MOB)getNewGlobal(c().MOBs,calledThis); }
+	public static final MOB getMOB(final String calledThis)
+	{
+		return (MOB) getNewGlobal(c().MOBs, calledThis);
+	}
+
 	/**
-	 * Returns a new instance of a weapon object of the given ID from your classloader
+	 * Returns a new instance of a weapon object of the given ID from your
+	 * classloader
+	 * 
 	 * @param calledThis the ID() of the object to return
 	 * @return a new instance of a weapon object of the given ID
 	 */
-	public static final Weapon  	getWeapon(final String calledThis) { return (Weapon)getNewGlobal(c().weapons,calledThis); }
+	public static final Weapon getWeapon(final String calledThis)
+	{
+		return (Weapon) getNewGlobal(c().weapons, calledThis);
+	}
+
 	/**
-	 * Returns a new instance of a clan item object of the given ID from your classloader
+	 * Returns a new instance of a clan item object of the given ID from your
+	 * classloader
+	 * 
 	 * @param calledThis the ID() of the object to return
 	 * @return a new instance of a clan item object of the given ID
 	 */
-	public static final ClanItem	getClanItem(final String calledThis) { return (ClanItem)getNewGlobal(c().clanItems,calledThis); }
+	public static final ClanItem getClanItem(final String calledThis)
+	{
+		return (ClanItem) getNewGlobal(c().clanItems, calledThis);
+	}
+
 	/**
-	 * Returns a new instance of a misc magic object of the given ID from your classloader
+	 * Returns a new instance of a misc magic object of the given ID from your
+	 * classloader
+	 * 
 	 * @param calledThis the ID() of the object to return
 	 * @return a new instance of a misc magic object of the given ID
 	 */
-	public static final Item		getMiscMagic(final String calledThis) { return (Item)getNewGlobal(c().miscMagic,calledThis); }
+	public static final Item getMiscMagic(final String calledThis)
+	{
+		return (Item) getNewGlobal(c().miscMagic, calledThis);
+	}
+
 	/**
-	 * Returns a new instance of a misc tech object of the given ID from your classloader
+	 * Returns a new instance of a misc tech object of the given ID from your
+	 * classloader
+	 * 
 	 * @param calledThis the ID() of the object to return
 	 * @return a new instance of a misc tech object of the given ID
 	 */
-	public static final Item		getTech(final String calledThis) { return (Item)getNewGlobal(c().tech,calledThis);}
+	public static final Item getTech(final String calledThis)
+	{
+		return (Item) getNewGlobal(c().tech, calledThis);
+	}
+
 	/**
-	 * Returns a new instance of a armor object of the given ID from your classloader
+	 * Returns a new instance of a armor object of the given ID from your
+	 * classloader
+	 * 
 	 * @param calledThis the ID() of the object to return
 	 * @return a new instance of a armor object of the given ID
 	 */
-	public static final Armor   	getArmor(final String calledThis) { return (Armor)getNewGlobal(c().armor,calledThis); }
+	public static final Armor getArmor(final String calledThis)
+	{
+		return (Armor) getNewGlobal(c().armor, calledThis);
+	}
+
 	/**
-	 * Returns a new instance of a basic item object of the given ID from your classloader
+	 * Returns a new instance of a basic item object of the given ID from your
+	 * classloader
+	 * 
 	 * @param calledThis the ID() of the object to return
 	 * @return a new instance of a basic item object of the given ID
 	 */
-	public static final Item		getBasicItem(final String calledThis) { return (Item)getNewGlobal(c().items,calledThis); }
+	public static final Item getBasicItem(final String calledThis)
+	{
+		return (Item) getNewGlobal(c().items, calledThis);
+	}
+
 	/**
-	 * Returns a new instance of a behavior object of the given ID from your classloader
+	 * Returns a new instance of a behavior object of the given ID from your
+	 * classloader
+	 * 
 	 * @param calledThis the ID() of the object to return
 	 * @return a new instance of a behavior object of the given ID
 	 */
-	public static final Behavior	getBehavior(final String calledThis) { return (Behavior)getNewGlobal(c().behaviors,calledThis); }
+	public static final Behavior getBehavior(final String calledThis)
+	{
+		return (Behavior) getNewGlobal(c().behaviors, calledThis);
+	}
+
 	/**
-	 * Returns a new instance of a ability object of the given ID from your classloader
+	 * Returns a new instance of a ability object of the given ID from your
+	 * classloader
+	 * 
 	 * @param calledThis the ID() of the object to return
 	 * @return a new instance of a ability object of the given ID
 	 */
-	public static final Ability 	getAbility(final String calledThis) { return (Ability)getNewGlobal(c().abilities,calledThis); }
+	public static final Ability getAbility(final String calledThis)
+	{
+		return (Ability) getNewGlobal(c().abilities, calledThis);
+	}
+
 	/**
-	 * Returns the prototype instance of the ability object of the given ID from your classloader
+	 * Returns the prototype instance of the ability object of the given ID from
+	 * your classloader
+	 * 
 	 * @param calledThis the ID() of the object to return
 	 * @return the prototype instance of a ability object of the given ID
 	 */
-	public static final Ability 	getAbilityPrototype(final String calledThis) { return (Ability)getGlobal(c().abilities,calledThis); }
+	public static final Ability getAbilityPrototype(final String calledThis)
+	{
+		return (Ability) getGlobal(c().abilities, calledThis);
+	}
+
 	/**
-	 * Returns a reference to the prototype for the char class of the given ID from your classloader
+	 * Returns a reference to the prototype for the char class of the given ID
+	 * from your classloader
+	 * 
 	 * @param calledThis the ID() of the object to return
 	 * @return a reference to the prototype for the char class of the given ID
 	 */
-	public static final CharClass   getCharClass(final String calledThis){ return (CharClass)getGlobal(c().charClasses,calledThis);}
+	public static final CharClass getCharClass(final String calledThis)
+	{
+		return (CharClass) getGlobal(c().charClasses, calledThis);
+	}
+
 	/**
-	 * Returns a new instance of a common object of the given ID from your classloader
+	 * Returns a new instance of a common object of the given ID from your
+	 * classloader
+	 * 
 	 * @param calledThis the ID() of the object to return
 	 * @return a new instance of a common object of the given ID
 	 */
-	public static final CMCommon	getCommon(final String calledThis){return (CMCommon)getNewGlobal(c().common,calledThis);}
+	public static final CMCommon getCommon(final String calledThis)
+	{
+		return (CMCommon) getNewGlobal(c().common, calledThis);
+	}
+
 	/**
-	 * Returns the prototype instance of a common object of the given ID from your classloader
+	 * Returns the prototype instance of a common object of the given ID from
+	 * your classloader
+	 * 
 	 * @param calledThis the ID() of the object to return
 	 * @return the prototype instance of a common object of the given ID
 	 */
-	public static final CMCommon	getCommonPrototype(final String calledThis){return (CMCommon)getGlobal(c().common,calledThis);}
+	public static final CMCommon getCommonPrototype(final String calledThis)
+	{
+		return (CMCommon) getGlobal(c().common, calledThis);
+	}
+
 	/**
-	 * Returns a reference to the prototype for the command of the given ID from your classloader
+	 * Returns a reference to the prototype for the command of the given ID from
+	 * your classloader
+	 * 
 	 * @param word the ID() of the object to return
 	 * @return a reference to the prototype for the command of the given ID
 	 */
-	public static final Command 	getCommand(final String word){return (Command)getGlobal(c().commands,word);}
+	public static final Command getCommand(final String word)
+	{
+		return (Command) getGlobal(c().commands, word);
+	}
+
 	/**
-	 * Returns a reference to the prototype for the web macro of the given ID from your classloader
+	 * Returns a reference to the prototype for the web macro of the given ID
+	 * from your classloader
+	 * 
 	 * @param macroName the ID() of the object to return
 	 * @return a reference to the prototype for the web macro of the given ID
 	 */
-	public static final WebMacro	getWebMacro(final String macroName){return c().webMacros.get(macroName);}
+	public static final WebMacro getWebMacro(final String macroName)
+	{
+		return c().webMacros.get(macroName);
+	}
+
 	/**
-	 * Returns a reference to the prototype for the race of the given ID from your classloader
+	 * Returns a reference to the prototype for the race of the given ID from
+	 * your classloader
+	 * 
 	 * @param calledThis the ID() of the object to return
 	 * @return a reference to the prototype for the race of the given ID
 	 */
-	public static final Race		getRace(final String calledThis){return (Race)getGlobal(c().races,calledThis);}
+	public static final Race getRace(final String calledThis)
+	{
+		return (Race) getGlobal(c().races, calledThis);
+	}
 
 	/**
 	 * Returns the number of prototypes in the classloader of the given set of types
@@ -1021,7 +1304,10 @@ public class CMClass extends ClassLoader
 	 * Returns the total number of prototypes of all classes in your classloader
 	 * @return the total number of prototypes of all classes in your classloader
 	 */
-	public static final int totalClasses(){ return c().totalLocalClasses();}
+	public static final int totalClasses()
+	{
+		return c().totalLocalClasses();
+	}
 
 	/**
 	 * Deletes the class of the given object type from your classloader
@@ -1149,7 +1435,10 @@ public class CMClass extends ClassLoader
 				final Class<?> ancestorCl = instance().loadClass(o.ancestorName);
 				if(CMClass.checkAncestry(O.getClass(),ancestorCl))
 					return o;
-			}catch(final Exception e){}
+			}
+			catch (final Exception e)
+			{
+			}
 		}
 		return null;
 	}
@@ -1306,9 +1595,13 @@ public class CMClass extends ClassLoader
 		if(x>0)
 		{
 			shortThis=shortThis.substring(x+1);
-			try{
+			try
+			{
 				return classes.get(calledThis).newInstance();
-			}catch(final Exception e){}
+			}
+			catch (final Exception e)
+			{
+			}
 		}
 		for(final CMObjectType o : CMObjectType.values())
 		{
@@ -1386,8 +1679,10 @@ public class CMClass extends ClassLoader
 		{
 			C=c.charClasses.elementAt(i);
 			for(int n=0;n<C.nameSet().length;n++)
+			{
 				if(C.nameSet()[n].equalsIgnoreCase(calledThis))
 					return C;
+			}
 		}
 		return null;
 	}
@@ -1429,7 +1724,6 @@ public class CMClass extends ClassLoader
 				end=mid-1;
 			else
 				start=mid+1;
-
 		}
 		return null;
 	}
@@ -1584,7 +1878,10 @@ public class CMClass extends ClassLoader
 			{
 				final CharClass C=charStats.getMyClass(c);
 				if(CMLib.ableMapper().getQualifyingLevel(C.ID(),true,A.ID())>=0)
-				{    As.add(A); break;}
+				{
+					As.add(A);
+					break;
+				}
 			}
 		}
 		A=(Ability)CMLib.english().fetchEnvironmental(As,calledThis,true);
@@ -1805,6 +2102,7 @@ public class CMClass extends ClassLoader
 	{
 		final char tCode=Thread.currentThread().getThreadGroup().getName().charAt(0);
 		for(final CMObjectType o : CMObjectType.values())
+		{
 			if((tCode==MudHost.MAIN_HOST)||(CMProps.isPrivateToMe(o.toString())))
 			{
 				final Object set = CMClass.getClassSet(o);
@@ -1814,6 +2112,7 @@ public class CMClass extends ClassLoader
 				if(set instanceof Hashtable)
 					initializeClassGroup((Map)set);
 			}
+		}
 	}
 
 	/**
@@ -1981,11 +2280,15 @@ public class CMClass extends ClassLoader
 			{
 				final CMFile[] list=file.listFiles();
 				for (final CMFile element : list)
+				{
 					if((element.getName().indexOf('$')<0)&&(element.getName().toUpperCase().endsWith(".CLASS")))
 						fileList.addElement(element.getVFSPathAndName());
+				}
 				for (final CMFile element : list)
+				{
 					if(element.getName().toUpperCase().endsWith(".JS"))
 						fileList.addElement(element.getVFSPathAndName());
+				}
 			}
 			else
 			{
@@ -2045,12 +2348,14 @@ public class CMClass extends ClassLoader
 						final List V=(List)collection;
 						boolean doNotAdd=false;
 						for(int v=0;v<V.size();v++)
+						{
 							if(getSimpleClassName(V.get(v)).equals(itemName))
 							{
 								V.set(v,O);
 								doNotAdd=true;
 								break;
 							}
+						}
 						if(!doNotAdd)
 							V.add(O);
 					}
@@ -2059,11 +2364,13 @@ public class CMClass extends ClassLoader
 					{
 						final Collection V=(Collection)collection;
 						for(final Object o : V)
+						{
 							if(getSimpleClassName(o).equals(itemName))
 							{
 								V.remove(o);
 								break;
 							}
+						}
 						V.add(O);
 					}
 				}
@@ -2336,7 +2643,9 @@ public class CMClass extends ClassLoader
 					return result;
 				}
 			}
-			catch(final Exception t){}
+			catch (final Exception t)
+			{
+			}
 		}
 		/* Try to load it from our repository */
 		final CMFile CF=new CMFile(pathName,null);
@@ -2436,8 +2745,10 @@ public class CMClass extends ClassLoader
 			C=c().commands.elementAt(c);
 			wordList=C.getAccessWords();
 			if(wordList!=null)
+			{
 				for (final String element : wordList)
 					c().commandWords.put(element.trim().toUpperCase(),C);
+			}
 		}
 	}
 
@@ -2802,11 +3113,13 @@ public class CMClass extends ClassLoader
 
 		// misc startup stuff
 		if((tCode==MudHost.MAIN_HOST)||(CMProps.isPrivateToMe("CHARCLASS")))
+		{
 			for(int i=0;i<c.charClasses.size();i++)
 			{
 				final CharClass C=c.charClasses.elementAt(i);
 				C.copyOf();
 			}
+		}
 		if((tCode==MudHost.MAIN_HOST)||(CMProps.isPrivateToMe("RACE")))
 		{
 			int numRaces=c.races.size();
@@ -2869,7 +3182,10 @@ public class CMClass extends ClassLoader
 	 * Returns a timestamp of the last time there was a change in the full set of classes.
 	 * @return the last time there was a change
 	 */
-	public static long getLastClassUpdatedTime(){ return lastUpdateTime; }
+	public static long getLastClassUpdatedTime()
+	{
+		return lastUpdateTime;
+	}
 
 	/**
 	 * The helper class for full blown JavaScript objects.
@@ -2878,10 +3194,19 @@ public class CMClass extends ClassLoader
 	 */
 	protected static final class JScriptLib extends ScriptableObject
 	{
-		@Override public String getClassName(){ return "JScriptLib";}
-		static final long serialVersionUID=47;
-		public static String[] functions = {"toJavaString"};
-		public String toJavaString(Object O){return Context.toString(O);}
+		@Override
+		public String getClassName()
+		{
+			return "JScriptLib";
+		}
+
+		static final long		serialVersionUID	= 47;
+		public static String[]	functions			= { "toJavaString" };
+
+		public String toJavaString(Object O)
+		{
+			return Context.toString(O);
+		}
 	}
 
 	/**
@@ -3150,8 +3475,10 @@ public class CMClass extends ClassLoader
 	public static final void shutdown()
 	{
 		for (final CMClass cls : clss)
+		{
 			if(cls!=null)
 				cls.unload();
+		}
 		classLoaderSync[0]=false;
 	}
 

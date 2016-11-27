@@ -54,7 +54,7 @@ public class RaceNext extends StdWebMacro
 			return "";
 		}
 		String lastID="";
-		for(final Enumeration r=CMClass.races();r.hasMoreElements();)
+		for(final Enumeration r=MobData.sortedRaces(httpReq);r.hasMoreElements();)
 		{
 			final Race R=(Race)r.nextElement();
 			if((CMProps.isTheme(R.availabilityCode())&&(!CMath.bset(R.availabilityCode(),Area.THEME_SKILLONLYMASK)))
