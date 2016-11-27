@@ -16,10 +16,11 @@
    15. Racial cultural abilities now support level and auto-gain/qualify.
    16. New Spells: Darkness Globe
    17. Achievement type GOTITEM now supports NUM argument.
-   18. New Property: Prop_OpenCommand
+   18. New Properties: Prop_OpenCommand, Bad Reputation
    19. ZapperMask now supports IFSTAT, CLASSTYPE, SUBNAME, WEAPONTYPE, WEAPONCLASS, WEAPONAMMO
    20. 14 new Proficiency Skills, for overriding Class Restrictions
    21. Halflings get Fast Slinging, Sling Proficiency, Humans get Diligent Studying
+   22. Ogres got Bad Reputation
 # Build 5.9.4 Released 08/03/2016
    1. Qualify now shows language limits
    2. New Prop_NoTeleport exceptions

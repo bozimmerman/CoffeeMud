@@ -107,6 +107,28 @@ public class Ogre extends Humanoid
 		return culturalAbilityProficiencies;
 	}
 
+	private final String[]	racialEffectNames			= { "BadReputation" };
+	private final int[]		racialEffectLevels			= { 1 };
+	private final String[]	racialEffectParms			= { "45%" };
+	
+	@Override
+	protected String[] racialEffectNames()
+	{
+		return racialEffectNames;
+	}
+
+	@Override
+	protected int[] racialEffectLevels()
+	{
+		return racialEffectLevels;
+	}
+
+	@Override
+	protected String[] racialEffectParms()
+	{
+		return racialEffectParms;
+	}
+
 	private final int[]	agingChart	= { 0, 2, 6, 30, 69, 104, 136, 142, 148 };
 
 	@Override
