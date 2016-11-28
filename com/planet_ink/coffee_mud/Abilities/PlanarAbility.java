@@ -351,17 +351,20 @@ public class PlanarAbility extends StdAbility
 		}
 	}
 	
-	protected void reEffect(Physical M, String ID, String parms)
+	protected void reEffect(final Physical M, String ID, String parms)
 	{
-		Ability A=M.fetchEffect(ID);
-		if(A!=null)
-			M.delEffect(A);
-		else
-			A=CMClass.getAbility(ID);
-		if(A!=null)
+		if(M!=null)
 		{
-			M.addNonUninvokableEffect(A);
-			A.setMiscText((parms+" "+A.text()).trim());
+			Ability A=M.fetchEffect(ID);
+			if(A!=null)
+				M.delEffect(A);
+			else
+				A=CMClass.getAbility(ID);
+			if(A!=null)
+			{
+				M.addNonUninvokableEffect(A);
+				A.setMiscText((parms+" "+A.text()).trim());
+			}
 		}
 	}
 
@@ -483,7 +486,7 @@ public class PlanarAbility extends StdAbility
 			List<Item> delItems=new ArrayList<Item>(0);
 			for(Enumeration<Item> i=room.items();i.hasMoreElements();)
 			{
-				Item I=i.nextElement();
+				final Item I=i.nextElement();
 				if(I==null)
 					continue;
 				if((I instanceof Exit)&&((I instanceof BoardableShip)))
@@ -526,7 +529,7 @@ public class PlanarAbility extends StdAbility
 				I.destroy();
 			for(Enumeration<MOB> m=room.inhabitants();m.hasMoreElements();)
 			{
-				MOB M=m.nextElement();
+				final MOB M=m.nextElement();
 				if((M!=null)
 				&&(invoker!=null)
 				&&(M.isMonster())
