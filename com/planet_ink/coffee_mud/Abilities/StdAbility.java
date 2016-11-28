@@ -1789,14 +1789,14 @@ public class StdAbility implements Ability
 		}
 		if(student.charStats().getStat(CharStats.STAT_INTELLIGENCE)<2)
 		{
-			teacher.tell(L("@x1 is too stupid to learn '@x2'.",student.name(),name()));
-			student.tell(L("You are too stupid to learn '@x1'.",name()));
+			teacher.tell(L("@x1 is too stupid to learn new skills.",student.name()));
+			student.tell(L("You are too stupid to learn new skills."));
 			return false;
 		}
-		if(qLevel>(student.charStats().getStat(CharStats.STAT_INTELLIGENCE)+15))
+		if(qLevel>(student.charStats().getStat(CharStats.STAT_INTELLIGENCE)+18))
 		{
-			teacher.tell(L("@x1 is not smart enough to learn '@x2'.",student.name(),name()));
-			student.tell(L("You are not of high enough intelligence to learn '@x1'.",name()));
+			teacher.tell(L("@x1 is not smart enough to learn level @x2 skills.",student.name(),qLevel+""));
+			student.tell(L("You are not of high enough intelligence to learn level @x2 skills.",qLevel+""));
 			return false;
 		}
 		final Ability yourAbility=student.fetchAbility(ID());
