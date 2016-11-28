@@ -2,6 +2,8 @@ package com.planet_ink.coffee_mud.Abilities;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.core.exceptions.CMException;
+import com.planet_ink.coffee_mud.core.exceptions.CoffeeMudException;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -161,6 +163,8 @@ public class PlanarAbility extends StdAbility
 		if(newText.length()>0)
 		{
 			this.planeVars=getPlane(newText);
+			if(this.planeVars==null)
+				throw new IllegalArgumentException("Unknown: "+newText);
 			this.roomsDone=new WeakArrayList<Room>();
 			this.planarPrefix=planeVars.get(PlanarVar.PREFIX.toString());
 			this.recoverRate = CMath.s_int(planeVars.get(PlanarVar.RECOVERRATE.toString()));

@@ -1496,6 +1496,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 								for(;e.hasNext();)
 								{
 									final Room R2=e.next();
+									if(R2==null)
+										continue;
 									final String display=R2.displayText().toUpperCase();
 									final String desc=R2.description().toUpperCase();
 									if((mask!=null)&&(!CMLib.masking().maskCheck(mask,R2,true)))

@@ -56,8 +56,11 @@ public class Quests extends StdLibrary implements QuestManager
 		for(int q=0;q<numQuests();q++)
 		{
 			final Quest Q=fetchQuest(q);
-			if(Q.isObjectInUse(E))
-				return Q;
+			if(Q!=null)
+			{
+				if(Q.isObjectInUse(E))
+					return Q;
+			}
 		}
 		return null;
 	}
