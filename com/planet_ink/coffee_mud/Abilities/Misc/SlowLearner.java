@@ -1,4 +1,6 @@
-package com.planet_ink.coffee_mud.Abilities.Thief;
+package com.planet_ink.coffee_mud.Abilities.Misc;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -10,16 +12,14 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
-import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
-   Copyright 2004-2016 Bo Zimmerman
+   Copyright 2016-2016 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -33,15 +33,17 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Thief_Countertracking extends ThiefSkill
+
+
+public class SlowLearner extends StdAbility
 {
 	@Override
 	public String ID()
 	{
-		return "Thief_Countertracking";
+		return "SlowLearner";
 	}
 
-	private final static String	localizedName	= CMLib.lang().L("Counter-Tracking");
+	private final static String	localizedName	= CMLib.lang().L("Slow Learner");
 
 	@Override
 	public String name()
@@ -70,7 +72,13 @@ public class Thief_Countertracking extends ThiefSkill
 	@Override
 	public int abstractQuality()
 	{
-		return Ability.QUALITY_INDIFFERENT;
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PROPERTY;
 	}
 
 	@Override
@@ -85,28 +93,33 @@ public class Thief_Countertracking extends ThiefSkill
 		return false;
 	}
 
+	double changePct = 0.20;
+	
 	@Override
-	public int classificationCode()
+	public void setMiscText(String newMiscText)
 	{
-		return Ability.ACODE_THIEF_SKILL | Ability.DOMAIN_STEALTHY;
+		super.setMiscText(newMiscText);
+		if((newMiscText.length()>0)&&(CMath.isPct(newMiscText)))
+		{
+			changePct = CMath.s_pct(newMiscText);
+		}
+	}
+	
+	@Override
+	public boolean tick(Tickable ticking, int tickID)
+	{
+		if(!super.tick(ticking,tickID))
+			return false;
+		return true;
 	}
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if(!(affected instanceof MOB))
-			return super.okMessage(myHost,msg);
-
-		final MOB mob=(MOB)affected;
-		if((!msg.amISource(mob))
-		&&(msg.target()==mob)
-		&&(msg.tool() instanceof Ability)
-		&&(proficiencyCheck(mob,0,false))
-		&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_TRACKING)))
+		if((msg.sourceMinor()==CMMsg.TYP_EXPCHANGE)
+		&&(msg.source()==affected))
 		{
-			msg.source().tell(L("You can't get a bead on him."));
-			super.helpProficiency(mob, 0);
-			return false;
+			msg.setValue(msg.value() - (int)Math.round(changePct * msg.value()));
 		}
 		return super.okMessage(myHost,msg);
 	}

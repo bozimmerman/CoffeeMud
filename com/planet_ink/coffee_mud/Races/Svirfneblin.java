@@ -98,8 +98,8 @@ public class Svirfneblin extends StdRace
 		return localizedStaticRacialCat;
 	}
 
-	private final String[]	culturalAbilityNames			= { "Gnomish", "Digging", "Undercommon" };
-	private final int[]		culturalAbilityProficiencies	= { 100, 50, 25 };
+	private final String[]	culturalAbilityNames			= { "Gnomish", "Digging", "Undercommon", "Spell_Blur" };
+	private final int[]		culturalAbilityProficiencies	= { 100, 50, 75, 50 };
 
 	@Override
 	public String[] culturalAbilityNames()
@@ -111,6 +111,28 @@ public class Svirfneblin extends StdRace
 	public int[] culturalAbilityProficiencies()
 	{
 		return culturalAbilityProficiencies;
+	}
+
+	private final String[]	racialEffectNames			= { "Spell_Untraceable" };
+	private final int[]		racialEffectLevels			= { 1 };
+	private final String[]	racialEffectParms			= { "" };
+	
+	@Override
+	protected String[] racialEffectNames()
+	{
+		return racialEffectNames;
+	}
+
+	@Override
+	protected int[] racialEffectLevels()
+	{
+		return racialEffectLevels;
+	}
+
+	@Override
+	protected String[] racialEffectParms()
+	{
+		return racialEffectParms;
 	}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi

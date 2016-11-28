@@ -73,6 +73,51 @@ public class Githyanki extends Humanoid
 		return parts;
 	}
 
+	private final int[]	agingChart	= { 0, 1, 5, 40, 100, 150, 200, 230, 260 };
+
+	@Override
+	public int[] getAgingChart()
+	{
+		return agingChart;
+	}
+
+	private final String[]	culturalAbilityNames			= { "Thief_Hide", "Spell_AstralStep"};
+	private final int[]		culturalAbilityProficiencies	= { 25, 5 };
+
+	@Override
+	public String[] culturalAbilityNames()
+	{
+		return culturalAbilityNames;
+	}
+
+	@Override
+	public int[] culturalAbilityProficiencies()
+	{
+		return culturalAbilityProficiencies;
+	}
+
+	private final String[]	racialEffectNames			= { "SlowLearner" };
+	private final int[]		racialEffectLevels			= { 1 };
+	private final String[]	racialEffectParms			= { "20%" };
+	
+	@Override
+	protected String[] racialEffectNames()
+	{
+		return racialEffectNames;
+	}
+
+	@Override
+	protected int[] racialEffectLevels()
+	{
+		return racialEffectLevels;
+	}
+
+	@Override
+	protected String[] racialEffectParms()
+	{
+		return racialEffectParms;
+	}
+
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{

@@ -35,14 +35,45 @@ import java.util.*;
 
 public class Spell_Clairevoyance extends Spell
 {
-	@Override public String ID() { return "Spell_Clairevoyance"; }
-	private final static String localizedName = CMLib.lang().L("Clairevoyance");
-	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "";}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;	}
-	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
-	public static final DVector scries=new DVector(2);
+	@Override
+	public String ID()
+	{
+		return "Spell_Clairevoyance";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Clairevoyance");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public String displayText()
+	{
+		return "";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL | Ability.DOMAIN_DIVINATION;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_OTHERS;
+	}
+
+	public static final PairList<MOB,MOB>	scries	= new PairVector<MOB,MOB>();
 
 	@Override
 	public void unInvoke()
@@ -53,7 +84,7 @@ public class Spell_Clairevoyance extends Spell
 		final MOB mob=(MOB)affected;
 
 		if(canBeUninvoked())
-			scries.removeElement(mob);
+			scries.removeSecond(mob);
 		if((canBeUninvoked())&&(invoker!=null))
 			invoker.tell(invoker,mob,null,L("Your visions of <T-NAME> fade."));
 		super.unInvoke();
@@ -102,8 +133,10 @@ public class Spell_Clairevoyance extends Spell
 		{
 			final StringBuffer scryList=new StringBuffer("");
 			for(int e=0;e<scries.size();e++)
-				if(scries.elementAt(e,2)==mob)
-					scryList.append(((e>0)?", ":"")+((MOB)scries.elementAt(e,1)).name());
+			{
+				if(scries.get(e).second==mob)
+					scryList.append(((e>0)?", ":"")+(scries.get(e).first.name()));
+			}
 			if(scryList.length()>0)
 				mob.tell(L("Cast on or revoke from whom?  You currently have @x1 on the following: @x2.",name(),scryList.toString()));
 			else
@@ -125,7 +158,10 @@ public class Spell_Clairevoyance extends Spell
 					targets=CMLib.map().findInhabitants(CMLib.map().rooms(), mob, mobName, 10);
 				if(targets.size()>0)
 					target=targets.get(CMLib.dice().roll(1,targets.size(),-1));
-			}catch(final NoSuchElementException nse){}
+			}
+			catch (final NoSuchElementException nse)
+			{
+			}
 		}
 		if(target instanceof Deity)
 			target=null;
@@ -151,7 +187,7 @@ public class Spell_Clairevoyance extends Spell
 			return true;
 		}
 		else
-		if((A!=null)||(scries.contains(target)))
+		if((A!=null)||(scries.containsFirst(target)))
 		{
 			mob.tell(L("You can't seem to focus on '@x1'.",mobName));
 			return false;
@@ -171,14 +207,12 @@ public class Spell_Clairevoyance extends Spell
 				mob.location().send(mob,msg);
 				if(newRoom!=mob.location())
 					newRoom.send(target,msg2);
-				scries.addElement(target,mob);
+				scries.add(target,mob);
 				beneficialAffect(mob,target,asLevel,0);
 			}
-
 		}
 		else
 			beneficialVisualFizzle(mob,null,L("<S-NAME> attempt(s) to invoke clairevoyance, but fizzle(s) the spell."));
-
 
 		// return whether it worked
 		return success;

@@ -134,7 +134,8 @@ public class Prop_ModExperience extends Property
 			setMiscText(text());
 		if((msg.sourceMinor()==CMMsg.TYP_EXPCHANGE)
 		&&(operation != null)
-		&&((((msg.target()==affected)||(selfXP && (msg.source()==affected)))   &&(affected instanceof MOB))
+		&&((((msg.target()==affected)||(selfXP && (msg.source()==affected)))
+				&&(affected instanceof MOB))
 		   ||((affected instanceof Item)
 			   &&(msg.source()==((Item)affected).owner())
 			   &&(!((Item)affected).amWearingAt(Wearable.IN_INVENTORY)))

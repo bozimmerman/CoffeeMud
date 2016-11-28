@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2001-2016 Bo Zimmerman
+   Copyright 2016-2016 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -32,15 +32,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Spell_PassDoor extends Spell
+public class Spell_AstralStep extends Spell
 {
 	@Override
 	public String ID()
 	{
-		return "Spell_PassDoor";
+		return "Spell_AstralStep";
 	}
 
-	private final static String	localizedName	= CMLib.lang().L("Pass Door");
+	private final static String	localizedName	= CMLib.lang().L("Astral Step");
 
 	@Override
 	public String name()
@@ -48,7 +48,7 @@ public class Spell_PassDoor extends Spell
 		return localizedName;
 	}
 
-	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Pass Door)");
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Astral Step)");
 
 	@Override
 	public String displayText()
@@ -91,6 +91,8 @@ public class Spell_PassDoor extends Spell
 	{
 		super.affectPhyStats(affected,affectedStats);
 		affectedStats.setDisposition(affectedStats.disposition()|PhyStats.IS_INVISIBLE);
+		affectedStats.setDisposition(affectedStats.disposition()|PhyStats.IS_SNEAKING);
+		affectedStats.setDisposition(affectedStats.disposition()|PhyStats.IS_NOT_SEEN);
 		affectedStats.setHeight(-1);
 	}
 
@@ -104,7 +106,7 @@ public class Spell_PassDoor extends Spell
 		if(canBeUninvoked())
 		{
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> <S-IS-ARE> no longer translucent."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> reappear(s) from the Astral Plane."));
 		}
 
 		super.unInvoke();
@@ -131,16 +133,43 @@ public class Spell_PassDoor extends Spell
 			if(theDir>=0)
 				commands.add(CMLib.directions().getDirectionName(theDir));
 		}
-		final String whatToOpen=CMParms.combine(commands,0);
-		final int dirCode=CMLib.directions().getGoodDirectionCode(whatToOpen);
-		if(!auto)
+		if(commands.size()==0)
 		{
+			mob.tell(L("Pass which direction?!"));
+			return false;
+		}
+		List<Integer> dirs = new LinkedList<Integer>();
+		for(String dirName : commands)
+		{
+			final int dirCode=CMLib.directions().getGoodDirectionCode(dirName);
 			if(dirCode<0)
 			{
-				mob.tell(L("Pass which direction?!"));
+				mob.tell(L("@x1 is not a valid direction?!",dirName));
 				return false;
 			}
+			dirs.add(Integer.valueOf(dirCode));
+		}
+		
+		final int maxDirs = 1 + super.getXLEVELLevel(mob);
+		if(dirs.size() > maxDirs)
+		{
+			mob.tell(L("You can only step in @x1 direction(s).",""+maxDirs));
+			return false;
+		}
 
+		if(dirs.size()==0)
+		{
+			mob.tell(L("Pass which direction?!"));
+			return false;
+		}
+		
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
+			return false;
+		
+		boolean success=false;
+		for(int dirDex = 0; dirDex < dirs.size(); dirDex++)
+		{
+			int dirCode = dirs.get(dirDex).intValue();
 			final Exit exit=mob.location().getExitInDir(dirCode);
 			final Room room=mob.location().getRoomInDir(dirCode);
 
@@ -149,45 +178,52 @@ public class Spell_PassDoor extends Spell
 				mob.tell(L("You can't see anywhere to pass that way."));
 				return false;
 			}
-			//Exit opExit=room.getReverseExit(dirCode);
-			if(exit.isOpen())
+			if((!auto)&&(dirDex==0))
 			{
-				mob.tell(L("But it looks free and clear that way!"));
+				//Exit opExit=room.getReverseExit(dirCode);
+				if(exit.isOpen())
+				{
+					mob.tell(L("But it looks free and clear that way!"));
+					return false;
+				}
+			}
+
+			success=proficiencyCheck(mob,0,auto);
+	
+			if((!success)
+			||(mob.fetchEffect(ID())!=null))
+			{
+				beneficialVisualFizzle(mob,null,L("<S-NAME> step(s) @x1, but go(es) no further.",CMLib.directions().getDirectionName(dirCode)));
 				return false;
 			}
-		}
-
-		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
-			return false;
-
-		final boolean success=proficiencyCheck(mob,0,auto);
-
-		if((!success)
-		||(mob.fetchEffect(ID())!=null))
-			beneficialVisualFizzle(mob,null,L("<S-NAME> walk(s) @x1, but go(es) no further.",CMLib.directions().getDirectionName(dirCode)));
-		else
-		if(auto)
-		{
-			final CMMsg msg=CMClass.getMsg(mob,null,null,verbalCastCode(mob,null,auto),L("^S<S-NAME> shimmer(s) and turn(s) translucent.^?"));
-			if(mob.location().okMessage(mob,msg))
+			else
+			if(auto)
 			{
-				mob.location().send(mob,msg);
-				beneficialAffect(mob,mob,asLevel,5);
-				mob.recoverPhyStats();
+				final CMMsg msg=CMClass.getMsg(mob,null,null,verbalCastCode(mob,null,auto),L("^S<S-NAME> shimmer(s) and disappear(s) through the astral plane.^?"));
+				if(mob.location().okMessage(mob,msg))
+				{
+					mob.location().send(mob,msg);
+					beneficialAffect(mob,mob,asLevel,5);
+					mob.recoverPhyStats();
+				}
+				else
+					return false;
 			}
-		}
-		else
-		{
-			final CMMsg msg=CMClass.getMsg(mob,null,null,verbalCastCode(mob,null,auto),L("^S<S-NAME> shimmer(s) and pass(es) @x1.^?",CMLib.directions().getDirectionName(dirCode)));
-			if(mob.location().okMessage(mob,msg))
+			else
 			{
-				mob.location().send(mob,msg);
-				mob.addEffect(this);
-				mob.recoverPhyStats();
-				mob.tell(L("\n\r\n\r"));
-				CMLib.tracking().walk(mob,dirCode,false,false);
-				mob.delEffect(this);
-				mob.recoverPhyStats();
+				final CMMsg msg=CMClass.getMsg(mob,null,null,verbalCastCode(mob,null,auto),L("^S<S-NAME> shimmer(s) and step(s) @x1 through the astral plane.^?",CMLib.directions().getDirectionName(dirCode)));
+				if(mob.location().okMessage(mob,msg))
+				{
+					mob.location().send(mob,msg);
+					mob.addEffect(this);
+					mob.recoverPhyStats();
+					mob.tell(L("\n\r\n\r"));
+					CMLib.tracking().walk(mob,dirCode,false,false);
+					mob.delEffect(this);
+					mob.recoverPhyStats();
+				}
+				else
+					return false;
 			}
 		}
 		return success;

@@ -32,25 +32,77 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Thief_Assassinate extends ThiefSkill
 {
-	@Override public String ID() { return "Thief_Assassinate"; }
-	private final static String localizedName = CMLib.lang().L("Assassinate");
-	@Override public String name() { return localizedName; }
-	protected String displayText=L("(Tracking)");
-	@Override public String displayText(){ return displayText;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
-	private static final String[] triggerStrings =I(new String[] {"ASSASSINATE"});
-	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public long flags(){return Ability.FLAG_TRACKING;}
-	@Override public int classificationCode() {   return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_DIRTYFIGHTING; }
-	protected List<Room> theTrail=null;
-	public int nextDirection=-2;
-	protected MOB tracking=null;
+	@Override
+	public String ID()
+	{
+		return "Thief_Assassinate";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Assassinate");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	protected String	displayText	= L("(Tracking)");
+
+	@Override
+	public String displayText()
+	{
+		return displayText;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_OTHERS;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "ASSASSINATE" });
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT | USAGE_MANA;
+	}
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_TRACKING;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_THIEF_SKILL | Ability.DOMAIN_DIRTYFIGHTING;
+	}
+
+	protected List<Room>	theTrail		= null;
+	public int				nextDirection	= -2;
+	protected MOB			tracking		= null;
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)

@@ -72,13 +72,13 @@ public class BadReputation extends StdAbility
 	@Override
 	public int abstractQuality()
 	{
-		return Ability.QUALITY_OK_SELF;
+		return Ability.QUALITY_MALICIOUS;
 	}
 
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_SKILL|Ability.DOMAIN_INFLUENTIAL;
+		return Ability.ACODE_PROPERTY;
 	}
 
 	@Override

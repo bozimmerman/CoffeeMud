@@ -14,14 +14,16 @@
    13. New Chants: BurrowSpeak
    14. Gnomes get BurrowSpeak and Burrow Hide, Goblins +5% XP, Half Elfs Cultural Adaptation
    15. Racial cultural abilities now support level and auto-gain/qualify.
-   16. New Spells: Darkness Globe
+   16. New Spells: Darkness Globe, Untraceable, Astral Step
    17. Achievement type GOTITEM now supports NUM argument.
-   18. New Properties: Prop_OpenCommand, Bad Reputation
+   18. New Properties: Prop_OpenCommand, Bad Reputation, Slow Learner
    19. ZapperMask now supports IFSTAT, CLASSTYPE, SUBNAME, WEAPONTYPE, WEAPONCLASS, WEAPONAMMO
    20. 14 new Proficiency Skills, for overriding Class Restrictions
    21. Halflings get Fast Slinging, Sling Proficiency, Humans get Diligent Studying
    22. New Skills: Devour Corpse
-   23. Ogres got Bad Reputation, Gnoll gets Devour Corpse
+   23. Ogres got Bad Reputation, Gnoll gets Devour Corpse, Svirfneblin gets Untraceable
+   24. Githyanki get Astral Step, Slow Learner
+   
 # Build 5.9.4 Released 08/03/2016
    1. Qualify now shows language limits
    2. New Prop_NoTeleport exceptions
