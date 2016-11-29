@@ -119,6 +119,27 @@ public class Githyanki extends Humanoid
 	}
 
 	@Override
+	public List<Item> outfit(MOB myChar)
+	{
+		if(outfitChoices==null)
+		{
+			// Have to, since it requires use of special constructor
+			final Armor s1=CMClass.getArmor("GenShirt");
+			if(s1 == null)
+				return new Vector<Item>();
+			outfitChoices=new Vector<Item>();
+			outfitChoices.add(s1);
+			final Armor s2=CMClass.getArmor("GenShoes");
+			outfitChoices.add(s2);
+			final Armor p1=CMClass.getArmor("GenPants");
+			outfitChoices.add(p1);
+			final Armor s3=CMClass.getArmor("GenBelt");
+			outfitChoices.add(s3);
+		}
+		return outfitChoices;
+	}
+
+	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected, affectableStats);

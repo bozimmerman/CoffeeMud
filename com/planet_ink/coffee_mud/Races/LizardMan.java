@@ -40,6 +40,13 @@ public class LizardMan extends StdRace
 		return "LizardMan";
 	}
 
+	public LizardMan()
+	{
+		super();
+		super.naturalAbilImmunities.add("Disease_Lepresy");
+		super.naturalAbilImmunities.add("Disease_Lycanthropy");
+	}
+	
 	private final static String localizedStaticName = CMLib.lang().L("Lizard Man");
 
 	@Override
@@ -92,8 +99,8 @@ public class LizardMan extends StdRace
 		return localizedStaticRacialCat;
 	}
 
-	private final String[]	culturalAbilityNames			= { "Draconic" };
-	private final int[]		culturalAbilityProficiencies	= { 75 };
+	private final String[]	culturalAbilityNames			= { "Draconic", "Hunting", "Skill_Tailswipe" };
+	private final int[]		culturalAbilityProficiencies	= { 25, 50, 25 };
 
 	@Override
 	public String[] culturalAbilityNames()
@@ -107,6 +114,64 @@ public class LizardMan extends StdRace
 		return culturalAbilityProficiencies;
 	}
 
+	private final String[]	racialAbilityNames			= { "Skill_Swim" };
+	private final String[]	racialAbilityParms			= { "" };
+	private final int[]		racialAbilityLevels			= { 1 };
+	private final int[]		racialAbilityProficiencies	= { 100 };
+	private final boolean[]	racialAbilityQuals			= { false };
+	
+	@Override
+	protected String[] racialAbilityNames()
+	{
+		return racialAbilityNames;
+	}
+
+	@Override
+	protected String[] racialAbilityParms()
+	{
+		return racialAbilityParms;
+	}
+
+	@Override
+	protected int[] racialAbilityLevels()
+	{
+		return racialAbilityLevels;
+	}
+
+	@Override
+	protected int[] racialAbilityProficiencies()
+	{
+		return racialAbilityProficiencies;
+	}
+
+	@Override
+	protected boolean[] racialAbilityQuals()
+	{
+		return racialAbilityQuals;
+	}
+
+	private final String[]	racialEffectNames			= { "Skill_LongBreath" };
+	private final String[]	racialEffectParms			= { "" };
+	private final int[]		racialEffectLevels			= { 1 };
+	
+	@Override
+	protected String[] racialEffectNames()
+	{
+		return racialEffectNames;
+	}
+
+	@Override
+	protected int[] racialEffectLevels()
+	{
+		return racialEffectLevels;
+	}
+
+	@Override
+	protected String[] racialEffectParms()
+	{
+		return racialEffectParms;
+	}
+
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,1 ,0 };
 
@@ -116,7 +181,7 @@ public class LizardMan extends StdRace
 		return parts;
 	}
 
-	private final int[]	agingChart	= { 0, 1, 3, 14, 30, 45, 60, 62, 64 };
+	private final int[]	agingChart	= { 0, 1, 3, 14, 31, 48, 63, 70, 78 };
 
 	@Override
 	public int[] getAgingChart()
@@ -130,7 +195,16 @@ public class LizardMan extends StdRace
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,6);
+		affectableStats.setStat(CharStats.STAT_INTELLIGENCE,affectableStats.getStat(CharStats.STAT_INTELLIGENCE)-1);
+		affectableStats.setStat(CharStats.STAT_MAX_INTELLIGENCE_ADJ,affectableStats.getStat(CharStats.STAT_MAX_INTELLIGENCE_ADJ)-1);
+		affectableStats.setStat(CharStats.STAT_CHARISMA,affectableStats.getStat(CharStats.STAT_CHARISMA)-1);
+		affectableStats.setStat(CharStats.STAT_MAX_CHARISMA_ADJ,affectableStats.getStat(CharStats.STAT_MAX_CHARISMA_ADJ)-1);
+		affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_STRENGTH)+1);
+		affectableStats.setStat(CharStats.STAT_MAX_STRENGTH_ADJ,affectableStats.getStat(CharStats.STAT_MAX_STRENGTH_ADJ)+1);
+		affectableStats.setStat(CharStats.STAT_CONSTITUTION,affectableStats.getStat(CharStats.STAT_CONSTITUTION)+1);
+		affectableStats.setStat(CharStats.STAT_MAX_CONSTITUTION_ADJ,affectableStats.getStat(CharStats.STAT_MAX_CONSTITUTION_ADJ)+1);
+		affectableStats.setStat(CharStats.STAT_SAVE_ELECTRIC,affectableStats.getStat(CharStats.STAT_SAVE_ELECTRIC)+10);
+		affectableStats.setStat(CharStats.STAT_SAVE_WATER,affectableStats.getStat(CharStats.STAT_SAVE_WATER)-10);
 	}
 
 	@Override
@@ -143,6 +217,21 @@ public class LizardMan extends StdRace
 	public String leaveStr()
 	{
 		return "runs";
+	}
+
+	@Override
+	public List<Item> outfit(MOB myChar)
+	{
+		if(outfitChoices==null)
+		{
+			final Armor p1=CMClass.getArmor("GenPants");
+			p1.setName(L("a loincloth"));
+			p1.setDisplayText(L("a simple loincloth sits here."));
+			p1.setDescription(L("A simple piece of cloth for wrapping around your mid-parts."));
+			p1.text();
+			outfitChoices.add(p1);
+		}
+		return outfitChoices;
 	}
 
 	@Override

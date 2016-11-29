@@ -36,16 +36,57 @@ import java.util.*;
 
 public class Fighter_Kick extends FighterSkill
 {
-	@Override public String ID() { return "Fighter_Kick"; }
-	private final static String localizedName = CMLib.lang().L("Kick");
-	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =I(new String[] {"KICK"});
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
-	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_KICKING;}
-	@Override public int usageType(){return USAGE_MOVEMENT;}
+	@Override
+	public String ID()
+	{
+		return "Fighter_Kick";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Kick");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "KICK" });
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL | Ability.DOMAIN_KICKING;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT;
+	}
 
 	@Override
 	public int castingQuality(MOB mob, Physical target)

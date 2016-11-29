@@ -90,6 +90,11 @@ public class Skill_DeepBreath extends StdSkill
 		return false;
 	}
 
+	protected int getMaxBreathTicks(final MOB mob)
+	{
+		return 3 + (super.adjustedLevel((MOB)affected,0)/5);
+	}
+	
 	protected int breatheTicks=-1;
 	
 	@Override
@@ -107,7 +112,7 @@ public class Skill_DeepBreath extends StdSkill
 		&&(breatheTicks != 0))
 		{
 			if(breatheTicks<0)
-				breatheTicks = 3 + (super.adjustedLevel((MOB)affected,0)/5);
+				breatheTicks = getMaxBreathTicks((MOB)affected);
 			if(super.proficiencyCheck((MOB)affected,2*((MOB)affected).charStats().getStat(CharStats.STAT_CONSTITUTION),false))
 			{
 				breatheTicks--;
