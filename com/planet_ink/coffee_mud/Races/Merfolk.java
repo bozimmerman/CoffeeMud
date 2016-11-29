@@ -48,6 +48,14 @@ public class Merfolk extends StdRace
 		return localizedStaticName;
 	}
 
+	public Merfolk()
+	{
+		super();
+		super.naturalAbilImmunities.add("Disease_Scurvy");
+		super.naturalAbilImmunities.add("Disease_SeaSickness");
+		super.naturalAbilImmunities.add("Disease_Lycanthropy");
+	}
+	
 	@Override
 	public int shortestMale()
 	{
@@ -95,6 +103,18 @@ public class Merfolk extends StdRace
 	private final String[]	culturalAbilityNames			= { "Aquan", "Fishing" };
 	private final int[]		culturalAbilityProficiencies	= { 25, 100 };
 
+	@Override
+	public String[] culturalAbilityNames()
+	{
+		return culturalAbilityNames;
+	}
+
+	@Override
+	public int[] culturalAbilityProficiencies()
+	{
+		return culturalAbilityProficiencies;
+	}
+
 	private final String[]					racialAbilityNames			= { "Skill_Swim" };
 	private final int[]						racialAbilityLevels			= { 1 };
 	private final int[]						racialAbilityProficiencies	= { 100 };
@@ -137,18 +157,6 @@ public class Merfolk extends StdRace
 		return breatheAirWaterArray;
 	}
 	
-	@Override
-	public String[] culturalAbilityNames()
-	{
-		return culturalAbilityNames;
-	}
-
-	@Override
-	public int[] culturalAbilityProficiencies()
-	{
-		return culturalAbilityProficiencies;
-	}
-
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,0 ,0 ,1 ,1 ,1 ,1 ,1 ,0 };
 
@@ -203,6 +211,8 @@ public class Merfolk extends StdRace
 		affectableStats.setStat(CharStats.STAT_WISDOM,affectableStats.getStat(CharStats.STAT_WISDOM)-2);
 		affectableStats.setStat(CharStats.STAT_MAX_WISDOM_ADJ,affectableStats.getStat(CharStats.STAT_MAX_WISDOM_ADJ)-2);
 		affectableStats.setStat(CharStats.STAT_SAVE_WATER,affectableStats.getStat(CharStats.STAT_SAVE_WATER)+35);
+		affectableStats.setStat(CharStats.STAT_SAVE_FIRE,affectableStats.getStat(CharStats.STAT_SAVE_FIRE)-20);
+		affectableStats.setStat(CharStats.STAT_SAVE_ELECTRIC,affectableStats.getStat(CharStats.STAT_SAVE_ELECTRIC)-15);
 	}
 
 	@Override

@@ -1069,7 +1069,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	@Override
 	public int getHideScore(Physical seen)
 	{
-		if((seen!=null)&&(isHidden(seen)))
+		if(seen!=null)
 		{
 			int hideFactor=seen.phyStats().level();
 			if(seen instanceof MOB)
@@ -1093,7 +1093,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	@Override
 	public int getDetectScore(MOB seer)
 	{
-		if((seer!=null)&&(canSeeHidden(seer)))
+		if(seer!=null)
 		{
 			int detectFactor=seer.charStats().getStat(CharStats.STAT_WISDOM)/2;
 			if(CMath.bset(seer.basePhyStats().sensesMask(),PhyStats.CAN_SEE_HIDDEN))
@@ -1149,9 +1149,11 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			}
 			else
 			if(!canSeeHidden(seer))
-				return false;
-			//if(this.getHideScore(seenP)>getDetectScore(seer))
-			//    return false;
+			{
+				if((!(seen instanceof MOB))
+				||(getDetectScore(seer)<getHideScore((MOB)seen)))
+					return false;
+			}
 		}
 
 		if((seer!=null)&&(!(seenP instanceof Room)))

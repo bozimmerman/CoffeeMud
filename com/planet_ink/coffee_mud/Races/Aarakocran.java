@@ -40,6 +40,12 @@ public class Aarakocran extends Harpy
 		return "Aarakocran";
 	}
 
+	public Aarakocran()
+	{
+		super();
+		super.naturalAbilImmunities.add("Disease_Lycanthropy");
+	}
+	
 	private final static String localizedStaticName = CMLib.lang().L("Aarakocran");
 
 	@Override
@@ -54,11 +60,33 @@ public class Aarakocran extends Harpy
 		return Wearable.WORN_BACK | Wearable.WORN_ABOUT_BODY | Wearable.WORN_FEET;
 	}
 
-	private final String[]	racialAbilityNames			= { "WingFlying" };
-	private final int[]		racialAbilityLevels			= { 1 };
-	private final int[]		racialAbilityProficiencies	= { 100 };
-	private final boolean[]	racialAbilityQuals			= { false };
-	private final String[]	racialAbilityParms			= { "" };
+	private final int[]	agingChart	= { 0, 1, 1, 10, 20, 35, 40, 43, 45 };
+
+	@Override
+	public int[] getAgingChart()
+	{
+		return agingChart;
+	}
+	private final String[]	culturalAbilityNames			= { "BirdSpeak", "Hunting"};
+	private final int[]		culturalAbilityProficiencies	= { 100, 50};
+
+	@Override
+	public String[] culturalAbilityNames()
+	{
+		return culturalAbilityNames;
+	}
+
+	@Override
+	public int[] culturalAbilityProficiencies()
+	{
+		return culturalAbilityProficiencies;
+	}
+
+	private final String[]	racialAbilityNames			= { "WingFlying", "Skill_EagleEyes" };
+	private final int[]		racialAbilityLevels			= { 1, 1 };
+	private final int[]		racialAbilityProficiencies	= { 100, 50 };
+	private final boolean[]	racialAbilityQuals			= { false, false };
+	private final String[]	racialAbilityParms			= { "", "" };
 
 	@Override
 	public String[] racialAbilityNames()
@@ -105,10 +133,12 @@ public class Aarakocran extends Harpy
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		//super.affectCharStats(affectedMOB, affectableStats); -- the harpy will set to F
-		affectableStats.setStat(CharStats.STAT_DEXTERITY,affectableStats.getStat(CharStats.STAT_DEXTERITY)+4);
-		affectableStats.setStat(CharStats.STAT_MAX_DEXTERITY_ADJ,affectableStats.getStat(CharStats.STAT_MAX_DEXTERITY_ADJ)+4);
-		affectableStats.setStat(CharStats.STAT_MAX_CONSTITUTION_ADJ,affectableStats.getStat(CharStats.STAT_MAX_CONSTITUTION_ADJ)-2);
-		affectableStats.setStat(CharStats.STAT_CONSTITUTION,affectableStats.getStat(CharStats.STAT_CONSTITUTION)-2);
+		affectableStats.setStat(CharStats.STAT_DEXTERITY,affectableStats.getStat(CharStats.STAT_DEXTERITY)+2);
+		affectableStats.setStat(CharStats.STAT_MAX_DEXTERITY_ADJ,affectableStats.getStat(CharStats.STAT_MAX_DEXTERITY_ADJ)+2);
+		affectableStats.setStat(CharStats.STAT_MAX_CONSTITUTION_ADJ,affectableStats.getStat(CharStats.STAT_MAX_CONSTITUTION_ADJ)-1);
+		affectableStats.setStat(CharStats.STAT_CONSTITUTION,affectableStats.getStat(CharStats.STAT_CONSTITUTION)-1);
+		affectableStats.setStat(CharStats.STAT_MAX_CHARISMA_ADJ,affectableStats.getStat(CharStats.STAT_MAX_CHARISMA_ADJ)-1);
+		affectableStats.setStat(CharStats.STAT_CHARISMA,affectableStats.getStat(CharStats.STAT_CHARISMA)-1);
 	}
 
 	@Override
@@ -127,8 +157,10 @@ public class Aarakocran extends Harpy
 				resources.addElement(makeResource
 				(L("some @x1 talons",name().toLowerCase()),RawMaterial.RESOURCE_BONE));
 				for(int i=0;i<2;i++)
+				{
 					resources.addElement(makeResource
 					(L("some @x1 feathers",name().toLowerCase()),RawMaterial.RESOURCE_FEATHERS));
+				}
 				resources.addElement(makeResource
 				(L("some @x1 meat",name().toLowerCase()),RawMaterial.RESOURCE_POULTRY));
 				resources.addElement(makeResource
