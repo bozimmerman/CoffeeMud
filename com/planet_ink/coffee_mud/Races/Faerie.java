@@ -55,6 +55,14 @@ public class Faerie extends SmallElfKin
 		return parts;
 	}
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Fairy-Kin");
+
+	@Override
+	public String racialCategory()
+	{
+		return localizedStaticRacialCat;
+	}
+	
 	private final String[]	racialAbilityNames			= { "WingFlying" };
 	private final int[]		racialAbilityLevels			= { 1 };
 	private final int[]		racialAbilityProficiencies	= { 100 };

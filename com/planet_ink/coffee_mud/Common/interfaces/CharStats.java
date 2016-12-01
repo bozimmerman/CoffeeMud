@@ -262,7 +262,6 @@ public interface CharStats extends CMCommon, Modifiable
 	 */
 	public void setBodyPartsFromStringAfterRace(String str);
 
-
 	/**
 	 * Returns the number of character classes that this mob has 0 or more
 	 * levels in.
@@ -324,18 +323,21 @@ public interface CharStats extends CMCommon, Modifiable
 	 * @param levels the semicolon list of levels
 	 */
 	public void setMyLevels(String levels);
+
 	/**
 	 * Returns the enumerated set of character class names stored here
 	 * as a semicolon list of string names
 	 * @return the semicolon list of character class names
 	 */
 	public String getMyClassesStr();
+
 	/**
 	 * Returns the enumerated set of character class levels stored here
 	 * as a semicolon list of levels.
 	 * @return levels the semicolon list of levels
 	 */
 	public String getMyLevelsStr();
+
 	/**
 	 * Adds the character class to the mob to the given class, automatically
 	 * making the class level 0, and making the class current.
@@ -344,11 +346,13 @@ public interface CharStats extends CMCommon, Modifiable
 	 * @param aClass The charclass object to set the current class to
 	 */
 	public void setCurrentClass(CharClass aClass);
+
 	/**
 	 * Sets the current class level for the mob to the given level.
 	 * @param level The chararacter class level to set the current class to
 	 */
 	public void setCurrentClassLevel(int level);
+
 	/**
 	 * Returns the number of levels this mob has in the given character class.
 	 * -1 means the mob has NO levels in that class.
@@ -357,6 +361,7 @@ public interface CharStats extends CMCommon, Modifiable
 	 * @return the number of levels the mob has in the class, or -1
 	 */
 	public int getClassLevel(CharClass aClass);
+
 	/**
 	 * Returns the number of levels this mob has in the given character class by name.
 	 * -1 means the mob has NO levels in that class.
@@ -365,12 +370,14 @@ public interface CharStats extends CMCommon, Modifiable
 	 * @return the number of levels the mob has in the class, or -1
 	 */
 	public int getClassLevel(String aClass);
+
 	/**
 	 * Returns the combined number of class levels the mob has in all of his classes,
 	 * except for the current one.
 	 * @return combined levels minus the current one.
 	 */
 	public int combinedSubLevels();
+
 	/**
 	 * Returns true if this user is capped by the given
 	 * classes level cap (if one exists)
@@ -390,12 +397,14 @@ public interface CharStats extends CMCommon, Modifiable
 	 * @param level the level to set for the given character class
 	 */
 	public void setClassLevel(CharClass aClass, int level);
+
 	/**
 	 * Returns the race of the mob.
 	 * @see com.planet_ink.coffee_mud.Races.interfaces.Race
 	 * @return the Race of the mob
 	 */
 	public Race getMyRace();
+
 	/**
 	 * Sets the race of the mob.  Race.startRacing should
 	 * be called after this method is.
@@ -404,6 +413,7 @@ public interface CharStats extends CMCommon, Modifiable
 	 * @param newVal the Race of the mob
 	 */
 	public void setMyRace(Race newVal);
+
 	/**
 	 * Returns the displayable name of this mobs current race.  If this method
 	 * is called on the mobs charStats() object, as opposed to baseCharStats(), it
@@ -415,14 +425,34 @@ public interface CharStats extends CMCommon, Modifiable
 	 * @return the name of this mobs current race.
 	 */
 	public String raceName();
+
+	/**
+	 * Returns the term seen when a character arrives into a room
+	 * By default, these come from the current 
+	 * actual race, unless set to something new.
+	 * @see com.planet_ink.coffee_mud.Races.interfaces.Race
+	 * @see #setArriveLeaveStr(String,String)
+	 * @return the arrive string
+	 */
+	public String getArriveStr();
 	
+	/**
+	 * Returns the term seen when a character leaves a room
+	 * By default, these come from the current 
+	 * actual race, unless set to something new.
+	 * @see com.planet_ink.coffee_mud.Races.interfaces.Race
+	 * @see #setArriveLeaveStr(String,String)
+	 * @return the leave string
+	 */
+	public String getLeaveStr();
+
+
 	/**
 	 * Returns resource codes of what this race can breathe as
 	 * an atmosphere.  The list is guarenteed sorted.  If the list
 	 * is empty, the race can breathe anything at all.
 	 * @see com.planet_ink.coffee_mud.Items.interfaces.RawMaterial
 	 * @see #setBreathables(int[])
-	 * @see #addBreathable(int)
 	 * @return a list of resource codes that this race can breathe
 	 */
 	public int[] getBreathables();
@@ -433,30 +463,31 @@ public interface CharStats extends CMCommon, Modifiable
 	 * is empty, the race can breathe anything at all.
 	 * @see com.planet_ink.coffee_mud.Items.interfaces.RawMaterial
 	 * @see #getBreathables()
-	 * @see #addBreathable(int)
 	 * @param newArray a list of resource codes that this race can breathe
 	 */
 	public void setBreathables(int[] newArray);
-	
-	/**
-	 * If necessary, adds the given breatheable resource as an override
-	 * addition to the current list of breatheable resources.
-	 * 
-	 * @see #setBreathables(int[])
-	 * @see #getBreathables()
-	 * @param resource the resources they can now breathe
-	 */
-	public void addBreathable(int resource);
 
 	/**
 	 * Changes the apparant race of ths mob by setting a new name.  A value of null will
 	 * reset this setting, allowing the mobs TRUE race to be displayed through the
 	 * raceName method instead of the string set through this one.
 	 * @see com.planet_ink.coffee_mud.Races.interfaces.Race
-	 * @see #setRaceName(String)
+	 * @see #raceName()
 	 * @param newRaceName the name of the mobs apparant race
 	 */
 	public void setRaceName(String newRaceName);
+
+	/**
+	 * Changes the terms seen when a character arrives into a room
+	 * and leaves it.  By default, these come from the current 
+	 * actual race. 
+	 * @see com.planet_ink.coffee_mud.Races.interfaces.Race
+	 * @see #getArriveStr()
+	 * @see #getLeaveStr()
+	 * @param arriveStr the arrive string
+	 * @param leaveStr the leave string
+	 */
+	public void setArriveLeaveStr(String arriveStr, String leaveStr);
 
 	/**
 	 * Changes the apparant char class of ths mob by setting a new name.  A value of null will

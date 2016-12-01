@@ -2183,12 +2183,12 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			{
 			case ARRIVES:
 				if(seen instanceof MOB)
-					return ((MOB)seen).charStats().getMyRace().arriveStr();
+					return ((MOB)seen).charStats().getArriveStr();
 				else
 					return "arrives";
 			case LEAVES:
 				if(seen instanceof MOB)
-					return ((MOB)seen).charStats().getMyRace().leaveStr();
+					return ((MOB)seen).charStats().getLeaveStr();
 				else
 					return "leaves";
 			default:

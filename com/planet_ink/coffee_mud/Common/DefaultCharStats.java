@@ -84,12 +84,14 @@ public class DefaultCharStats implements CharStats
 	protected short[]		bodyAlterations		= null;
 	protected long			unwearableBitmap	= 0;
 	protected int[]			breathables			= null;
+	protected String		arriveStr			= null;
+	protected String		leaveStr			= null;
+	
+	protected Map<String, Integer>	profAdj			= null;
 	
 	@SuppressWarnings("unchecked")
 	private static final DoubleFilterer<Item>[]	emptyFiltererArray	= new DoubleFilterer[0]; 
 	protected DoubleFilterer<Item>[]			proficiencies		= emptyFiltererArray;
-
-	protected Map<String, Integer>	profAdj		= null;
 	
 	public DefaultCharStats()
 	{
@@ -131,6 +133,8 @@ public class DefaultCharStats implements CharStats
 		bodyAlterations = null;
 		unwearableBitmap = 0;
 		breathables = null;
+		arriveStr = null;
+		leaveStr = null;
 		profAdj = null;
 		proficiencies = emptyFiltererArray;
 		setMyRace(CMClass.getRace("StdRace"));
@@ -142,6 +146,8 @@ public class DefaultCharStats implements CharStats
 	{
 		if(intoStats instanceof DefaultCharStats)
 		{
+			((DefaultCharStats)intoStats).arriveStr = arriveStr;
+			((DefaultCharStats)intoStats).leaveStr = leaveStr;
 			((DefaultCharStats)intoStats).breathables = breathables;
 			((DefaultCharStats)intoStats).proficiencies = proficiencies;
 			if(myClasses==null)
@@ -199,6 +205,7 @@ public class DefaultCharStats implements CharStats
 			intoStats.setRaceName(raceName);
 			intoStats.setRaceName(raceName);
 			intoStats.setGenderName(genderName);
+			intoStats.setArriveLeaveStr(arriveStr,leaveStr);
 			intoStats.setDisplayClassName(displayClassName);
 			intoStats.setDisplayClassLevel(displayClassLevel);
 			intoStats.setBodyPartsFromStringAfterRace(getBodyPartsAsString());
@@ -283,6 +290,30 @@ public class DefaultCharStats implements CharStats
 		return levelStr;
 	}
 
+
+	@Override
+	public String getArriveStr()
+	{
+		if(arriveStr==null)
+			return myRace.arriveStr();
+		return arriveStr;
+	}
+
+	@Override
+	public String getLeaveStr()
+	{
+		if(leaveStr==null)
+			return myRace.leaveStr();
+		return leaveStr;
+	}
+
+	@Override
+	public void setArriveLeaveStr(String arriveStr, String leaveStr)
+	{
+		this.arriveStr = arriveStr;
+		this.leaveStr=leaveStr;
+	}
+	
 	@Override
 	public long getWearableRestrictionsBitmap()
 	{
@@ -637,19 +668,6 @@ public class DefaultCharStats implements CharStats
 		breathables=newArray;
 	}
 	
-	@Override
-	public void addBreathable(int resource)
-	{
-		final int[] breatheables=getBreathables();
-		if((breatheables.length!=0)&&(CMParms.indexOf(breatheables, resource)<0))
-		{
-			int[] newSet=Arrays.copyOf(breatheables,breatheables.length+1);
-			newSet[newSet.length-1]=resource;
-			Arrays.sort(newSet);
-			this.setBreathables(newSet);
-		}
-	}
-
 	@Override
 	public int getBodyPart(int racialPartNumber)
 	{
