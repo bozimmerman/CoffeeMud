@@ -96,28 +96,12 @@ public class Githyanki extends Humanoid
 		return culturalAbilityProficiencies;
 	}
 
-	private final String[]	racialEffectNames			= { "SlowLearner" };
-	private final int[]		racialEffectLevels			= { 1 };
-	private final String[]	racialEffectParms			= { "20%" };
+	@Override
+	public int getXPAdjustment()
+	{
+		return -20;
+	}
 	
-	@Override
-	protected String[] racialEffectNames()
-	{
-		return racialEffectNames;
-	}
-
-	@Override
-	protected int[] racialEffectLevels()
-	{
-		return racialEffectLevels;
-	}
-
-	@Override
-	protected String[] racialEffectParms()
-	{
-		return racialEffectParms;
-	}
-
 	@Override
 	public List<Item> outfit(MOB myChar)
 	{

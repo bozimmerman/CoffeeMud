@@ -92,8 +92,8 @@ public class Orc extends StdRace
 		return localizedStaticRacialCat;
 	}
 
-	private final String[]	culturalAbilityNames			= { "Orcish" };
-	private final int[]		culturalAbilityProficiencies	= { 100 };
+	private final String[]	culturalAbilityNames			= { "Orcish", "Undercommon", "Butchering", "Fighter_ViciousBlow" };
+	private final int[]		culturalAbilityProficiencies	= { 100, 25, 50, 25 };
 
 	@Override
 	public String[] culturalAbilityNames()
@@ -107,6 +107,28 @@ public class Orc extends StdRace
 		return culturalAbilityProficiencies;
 	}
 
+	private final String[]	racialEffectNames			= { "Prayer_TaintOfEvil"};
+	private final int[]		racialEffectLevels			= { 1};
+	private final String[]	racialEffectParms			= { ""};
+	
+	@Override
+	protected String[] racialEffectNames()
+	{
+		return racialEffectNames;
+	}
+
+	@Override
+	protected int[] racialEffectLevels()
+	{
+		return racialEffectLevels;
+	}
+
+	@Override
+	protected String[] racialEffectParms()
+	{
+		return racialEffectParms;
+	}
+
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,0 ,0 };
 
@@ -116,7 +138,7 @@ public class Orc extends StdRace
 		return parts;
 	}
 
-	private final int[]	agingChart	= { 0, 1, 2, 12, 20, 30, 45, 47, 49 };
+	private final int[]	agingChart	= { 0, 4, 8, 48, 80, 120, 180, 200, 220 };
 
 	@Override
 	public int[] getAgingChart()
@@ -143,15 +165,46 @@ public class Orc extends StdRace
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setRacialStat(CharStats.STAT_STRENGTH,12);
-		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,10);
-		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,7);
+		affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_STRENGTH)+2);
+		affectableStats.setStat(CharStats.STAT_MAX_STRENGTH_ADJ,affectableStats.getStat(CharStats.STAT_MAX_STRENGTH_ADJ)+2);
+		affectableStats.setStat(CharStats.STAT_INTELLIGENCE,affectableStats.getStat(CharStats.STAT_INTELLIGENCE)-1);
+		affectableStats.setStat(CharStats.STAT_MAX_INTELLIGENCE_ADJ,affectableStats.getStat(CharStats.STAT_MAX_INTELLIGENCE_ADJ)-1);
+		affectableStats.setStat(CharStats.STAT_WISDOM,affectableStats.getStat(CharStats.STAT_WISDOM)-1);
+		affectableStats.setStat(CharStats.STAT_MAX_WISDOM_ADJ,affectableStats.getStat(CharStats.STAT_MAX_WISDOM_ADJ)-1);
+		affectableStats.setStat(CharStats.STAT_CHARISMA,affectableStats.getStat(CharStats.STAT_CHARISMA)-1);
+		affectableStats.setStat(CharStats.STAT_MAX_CHARISMA_ADJ,affectableStats.getStat(CharStats.STAT_MAX_CHARISMA_ADJ)-1);
+		affectableStats.setStat(CharStats.STAT_SAVE_POISON,affectableStats.getStat(CharStats.STAT_SAVE_POISON)+10);
+		affectableStats.setStat(CharStats.STAT_SAVE_WATER,affectableStats.getStat(CharStats.STAT_SAVE_WATER)-10);
 	}
 
 	@Override
 	public Weapon myNaturalWeapon()
 	{
 		return funHumanoidWeapon();
+	}
+
+	@Override
+	public List<Item> outfit(MOB myChar)
+	{
+		if(outfitChoices==null)
+		{
+			// Have to, since it requires use of special constructor
+			final Armor s1=CMClass.getArmor("GenShirt");
+			if(s1 == null)
+				return new Vector<Item>();
+			outfitChoices=new Vector<Item>();
+			s1.setName(L("a tattered tunic"));
+			s1.setDisplayText(L("a tattered tunic is wadded up here."));
+			outfitChoices.add(s1);
+			final Armor p1=CMClass.getArmor("GenPants");
+			p1.setName("a pair of tattered pants");
+			p1.setDisplayText("a pair of tattered pants lies here");
+			p1.setDescription("a well tailored pair of travelers pants, all shredded and nasty.");
+			outfitChoices.add(p1);
+			final Armor s3=CMClass.getArmor("GenBelt");
+			outfitChoices.add(s3);
+		}
+		return outfitChoices;
 	}
 
 	@Override

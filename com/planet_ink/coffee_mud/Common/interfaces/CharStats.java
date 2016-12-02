@@ -122,8 +122,16 @@ public interface CharStats extends CMCommon, Modifiable
 	public static final int STAT_SAVE_SONGS=38;
 	/** stat constant for  save vs chants*/
 	public static final int STAT_SAVE_CHANTS=39;
+	/** stat constant for  bonus chance % to critical hits with a weapon */
+	public static final int STAT_CRIT_CHANCE_PCT_WEAPON=40;
+	/** stat constant for  bonus chance % to critical hits with magic */
+	public static final int STAT_CRIT_CHANCE_PCT_MAGIC=41;
+	/** stat constant for  bonus damage % to critical hits with a weapon */
+	public static final int STAT_CRIT_DAMAGE_PCT_WEAPON=42;
+	/** stat constant for  bonus damage % to critical hits with magic */
+	public static final int STAT_CRIT_DAMAGE_PCT_MAGIC=43;
 	/** constant for total number of stat codes */
-	public final static int DEFAULT_NUM_STATS=40;
+	public final static int DEFAULT_NUM_STATS=42;
 
 	/**
 	 * Copies the internal data of this object into another of kind.
@@ -770,6 +778,10 @@ public interface CharStats extends CMCommon, Modifiable
 		"vMP",
 		"vMG",
 		"vMC",
+		"cRW",
+		"cRM",
+		"cDW",
+		"cDM"
 	};
 
 	/** string array of descriptions of each stat code, ordered by numeric value */
@@ -814,7 +826,11 @@ public interface CharStats extends CMCommon, Modifiable
 		"SAVE VS SPELLS",
 		"SAVE VS PRAYERS",
 		"SAVE VS SONGS",
-		"SAVE VS CHANTS"
+		"SAVE VS CHANTS",
+		"CRIT WEAPON CHANCE PCT",
+		"CRIT MAGIC CHANCE PCT",
+		"CRIT WEAPON DAMAGE PCT",
+		"CRIT MAGIC DAMAGE PCT"
 	};
 
 	/** string array of descriptions of each stat code, ordered by numeric value */
@@ -859,7 +875,11 @@ public interface CharStats extends CMCommon, Modifiable
 		"SAVESPELLS",
 		"SAVEPRAYERS",
 		"SAVESONGS",
-		"SAVECHANTS"
+		"SAVECHANTS",
+		"CRITPCTWEAPONS",
+		"CRITPCTMAGIC",
+		"CRITDMGWEAPONS",
+		"CRITDMGMAGIC"
 	};
 
 	/** string array of attributable descriptions of each stat code, ordered by numeric value */
@@ -904,7 +924,11 @@ public interface CharStats extends CMCommon, Modifiable
 		"RESISTANT TO SPELLS",
 		"RESISTANT TO PRAYERS",
 		"RESISTANT TO SONGS",
-		"RESISTANT TO CHANTS"
+		"RESISTANT TO CHANTS",
+		"BONUS TO WEAPON CRIT CHANCE",
+		"BONUS TO MAGIC CRIT CHANCE",
+		"BONUS TO WEAPON CRIT DAMAGE",
+		"BONUS TO MAGIC CRIT DAMAGE",
 	};
 
 	/** an appropriate CMMsg MSG type to correspond to the given saving throw, indexed as STAT_SAVE_ constant */
@@ -949,8 +973,12 @@ public interface CharStats extends CMCommon, Modifiable
 		-1, // save slash
 		-1, // save spells
 		-1, // save prayers
-		-1  // save songs
-		-1  // save chants
+		-1, // save songs
+		-1, // save chants
+		-1, // bonus weapon crit chance
+		-1, // bonus magic crit chance
+		-1, // bonus weapon crit damage
+		-1, // bonus magic crit damage
 	};
 
 	/**

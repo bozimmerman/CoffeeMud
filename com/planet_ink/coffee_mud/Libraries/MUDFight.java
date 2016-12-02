@@ -760,11 +760,14 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		final boolean isPVP=(attacker.isPlayer()&&target.isPlayer());
 		baseDamage = (int)Math.round(CMath.parseMathExpression(isPVP?pvpSpellFudgeDamageFormula:spellFudgeDamageFormula, vars, 0.0));
 		vars[0]=baseDamage;
-		final int spellCritChancePct = (int)Math.round(CMath.parseMathExpression(isPVP?pvpSpellCritChanceFormula:spellCritChanceFormula, vars, 0.0));
+		final int spellCritChancePct = (int)Math.round(CMath.parseMathExpression(isPVP?pvpSpellCritChanceFormula:spellCritChanceFormula, vars, 0.0))
+									+ attacker.charStats().getStat(CharStats.STAT_CRIT_CHANCE_PCT_MAGIC);
 		if(CMLib.dice().rollPercentage()<spellCritChancePct)
 		{
 			final int spellCritDamageAmt = (int)Math.round(CMath.parseMathExpression(isPVP?pvpSpellCritDmgFormula:spellCritDmgFormula, vars, 0.0));
 			baseDamage+=spellCritDamageAmt;
+			if(attacker.charStats().getStat(CharStats.STAT_CRIT_DAMAGE_PCT_MAGIC)>0)
+				baseDamage += (int)Math.round(CMath.mul(spellCritDamageAmt,CMath.div(attacker.charStats().getStat(CharStats.STAT_CRIT_DAMAGE_PCT_MAGIC),100.0)));
 		}
 		return baseDamage;
 	}
@@ -848,11 +851,14 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		};
 		if(allowCrits)
 		{
-			final int weaponCritChancePct = (int)Math.round(CMath.parseMathExpression(isPVP?pvpWeaponCritChanceFormula:weaponCritChanceFormula, vars, 0.0));
+			final int weaponCritChancePct = (int)Math.round(CMath.parseMathExpression(isPVP?pvpWeaponCritChanceFormula:weaponCritChanceFormula, vars, 0.0))
+											+ mob.charStats().getStat(CharStats.STAT_CRIT_CHANCE_PCT_WEAPON);
 			if(CMLib.dice().rollPercentage()<weaponCritChancePct)
 			{
 				final int weaponCritDmgAmt = (int)Math.round(CMath.parseMathExpression(isPVP?pvpWeaponCritDmgFormula:weaponCritDmgFormula, vars, 0.0));
 				damageAmount += weaponCritDmgAmt;
+				if(mob.charStats().getStat(CharStats.STAT_CRIT_DAMAGE_PCT_WEAPON)>0)
+					damageAmount += (int)Math.round(CMath.mul(weaponCritDmgAmt,CMath.div(mob.charStats().getStat(CharStats.STAT_CRIT_DAMAGE_PCT_WEAPON),100.0)));
 			}
 		}
 		if(target != null)

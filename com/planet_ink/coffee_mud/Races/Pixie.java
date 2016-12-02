@@ -165,9 +165,15 @@ public class Pixie extends SmallElfKin
 		return culturalAbilityProficiencies;
 	}
 
-	private final String[]	racialEffectNames			= { "SlowLearner", "Allergies" };
-	private final int[]		racialEffectLevels			= { 1, 1 };
-	private final String[]	racialEffectParms			= { "10%","MEAT BEEF PORK POULTRY MUTTON FISH SALMON CARP TROUT SHRIMP TUNA CATFISH DRAGONMEAT" };
+	@Override
+	public int getXPAdjustment()
+	{
+		return -10;
+	}
+	
+	private final String[]	racialEffectNames			= { "Allergies" };
+	private final int[]		racialEffectLevels			= { 1 };
+	private final String[]	racialEffectParms			= { "MEAT BEEF PORK POULTRY MUTTON FISH SALMON CARP TROUT SHRIMP TUNA CATFISH DRAGONMEAT" };
 	
 	@Override
 	protected String[] racialEffectNames()
