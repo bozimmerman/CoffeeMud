@@ -76,6 +76,8 @@ public class Chant_LandLegs extends Chant
 		super.affectPhyStats(affected,affectableStats);
 	}
 
+	protected String arriveStr = L("arrives");
+	protected String leaveStr = L("leaves");
 	protected int[] lastSet=null;
 	protected int[] newSet=null;
 	
@@ -90,6 +92,7 @@ public class Chant_LandLegs extends Chant
 		}
 		if(affectableStats.getBodyPart(Race.BODY_TAIL)>0)
 			affectableStats.alterBodypart(Race.BODY_TAIL, -affectableStats.getBodyPart(Race.BODY_TAIL));
+		affectableStats.setArriveLeaveStr(arriveStr, leaveStr);
 		final int[] breatheables=affectableStats.getBreathables();
 		if(breatheables.length==0)
 			return;
