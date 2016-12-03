@@ -58,7 +58,7 @@ public class RaceCatNext extends StdWebMacro
 		{
 			final Race R=r.nextElement();
 			if((!raceCats.contains(R.racialCategory()))
-			&&((CMProps.isTheme(R.availabilityCode())&&(!CMath.bset(R.availabilityCode(),Area.THEME_SKILLONLYMASK)))
+			&&((CMLib.login().isAvailableRace(R))
 				||(parms.containsKey("ALL"))))
 					raceCats.addElement(R.racialCategory());
 		}

@@ -70,6 +70,8 @@ public class CMSecurity
 	
 	protected final static Set<DisFlag>		disVars		 = new HashSet<DisFlag>();
 	protected final static Set<String>		cmdDisVars	 = new HashSet<String>();
+	protected final static Set<String>		racDisVars	 = new HashSet<String>();
+	protected final static Set<String>		clsDisVars	 = new HashSet<String>();
 	protected final static Set<String>		facDisVars	 = new HashSet<String>();
 	protected final static Set<String>		ablDisVars	 = new HashSet<String>();
 	protected final static Set<String>		expDisVars	 = new HashSet<String>();
@@ -86,10 +88,12 @@ public class CMSecurity
 	private final static CMSecurity[]		secs		 = new CMSecurity[256];
 	private final static Iterator<SecFlag>	EMPTYSECFLAGS= new EnumerationIterator<SecFlag>(new EmptyEnumeration<SecFlag>());
 	
-	private final static String				DISABLE_PREFIX_ABILITY = 	"ABILITY_";
-	private final static String				DISABLE_PREFIX_EXPERTISE = 	"EXPERTISE_";
-	private final static String				DISABLE_PREFIX_COMMAND = 	"COMMAND_";
-	private final static String				DISABLE_PREFIX_FACTION= 	"FACTION_";
+	private final static String				DISABLE_PREFIX_ABILITY		= "ABILITY_";
+	private final static String				DISABLE_PREFIX_EXPERTISE	= "EXPERTISE_";
+	private final static String				DISABLE_PREFIX_COMMAND		= "COMMAND_";
+	private final static String				DISABLE_PREFIX_FACTION		= "FACTION_";
+	private final static String				DISABLE_PREFIX_RACE			= "RACE_";
+	private final static String				DISABLE_PREFIX_CHARCLASS	= "CHARCLASS_";
 
 	/**
 	 * Creates a new thread-group sensitive CMSecurity reference object.
@@ -1010,6 +1014,26 @@ public class CMSecurity
 	}
 
 	/**
+	 * Check to see if the given Race is disabled.
+	 * @param ID the official Race ID
+	 * @return true if it is disabled, false otherwise
+	 */
+	public static final boolean isRaceDisabled(final String ID)
+	{
+		return racDisVars.contains(ID);
+	}
+
+	/**
+	 * Check to see if the given Character Class is disabled.
+	 * @param ID the official Class ID
+	 * @return true if it is disabled, false otherwise
+	 */
+	public static final boolean isCharClassDisabled(final String ID)
+	{
+		return clsDisVars.contains(ID);
+	}
+
+	/**
 	 * Check to see if the given Ability is disabled.
 	 * @param ID the official Ability ID
 	 * @return true if it is disabled, false otherwise
@@ -1105,6 +1129,8 @@ public class CMSecurity
 		if(flag.startsWith(DISABLE_PREFIX_ABILITY) 
 		|| flag.startsWith(DISABLE_PREFIX_EXPERTISE) 
 		|| flag.startsWith(DISABLE_PREFIX_COMMAND) 
+		|| flag.startsWith(DISABLE_PREFIX_RACE) 
+		|| flag.startsWith(DISABLE_PREFIX_CHARCLASS) 
 		|| flag.startsWith(DISABLE_PREFIX_FACTION))
 		{
 			final int underIndex=flag.indexOf('_')+1;
@@ -1138,6 +1164,16 @@ public class CMSecurity
 		if(flag.startsWith(DISABLE_PREFIX_COMMAND))
 		{
 			return cmdDisVars;
+		}
+		else
+		if(flag.startsWith(DISABLE_PREFIX_RACE))
+		{
+			return racDisVars;
+		}
+		else
+		if(flag.startsWith(DISABLE_PREFIX_CHARCLASS))
+		{
+			return clsDisVars;
 		}
 		else
 		if(flag.startsWith(DISABLE_PREFIX_FACTION))
@@ -1283,6 +1319,28 @@ public class CMSecurity
 	public static final Enumeration<String> getDisabledCommandsEnum(final boolean addINIPrefix)
 	{
 		return getSpecialDisabledEnum(cmdDisVars.iterator(), addINIPrefix?DISABLE_PREFIX_COMMAND:"");
+	}
+
+	/**
+	 * Returns an enumeration of the disabled race IDs, 
+	 * complete with flag prefix, if requested.
+	 * @param addINIPrefix true to add the prefix required in the ini file, false for a plain ID
+	 * @return an enumeration of the disabled race IDs
+	 */
+	public static final Enumeration<String> getDisabledRacesEnum(final boolean addINIPrefix)
+	{
+		return getSpecialDisabledEnum(racDisVars.iterator(), addINIPrefix?DISABLE_PREFIX_RACE:"");
+	}
+
+	/**
+	 * Returns an enumeration of the disabled character class IDs, 
+	 * complete with flag prefix, if requested.
+	 * @param addINIPrefix true to add the prefix required in the ini file, false for a plain ID
+	 * @return an enumeration of the disabled character class IDs
+	 */
+	public static final Enumeration<String> getDisabledCharClassEnum(final boolean addINIPrefix)
+	{
+		return getSpecialDisabledEnum(clsDisVars.iterator(), addINIPrefix?DISABLE_PREFIX_CHARCLASS:"");
 	}
 
 	/**

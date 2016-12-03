@@ -249,10 +249,20 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	@Override
 	public boolean canChangeToThisClass(MOB mob, CharClass thisClass, int theme)
 	{
-		if((CMProps.isTheme(thisClass.availabilityCode()))
+		if(isAvailableCharClass(thisClass)
 		&&((theme<0)||(CMath.bset(thisClass.availabilityCode(),theme)))
-		&&(!CMath.bset(thisClass.availabilityCode(),Area.THEME_SKILLONLYMASK))
 		&&((mob==null)||(thisClass.qualifiesForThisClass(mob,true))))
+			return true;
+		return false;
+	}
+	
+	
+	@Override
+	public boolean isAvailableCharClass(CharClass C)
+	{
+		if((CMProps.isTheme(C.availabilityCode()))
+		&&(!CMath.bset(C.availabilityCode(),Area.THEME_SKILLONLYMASK))
+		&&(!CMSecurity.isCharClassDisabled(C.ID())))
 			return true;
 		return false;
 	}
@@ -277,6 +287,17 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	}
 
 	@Override
+	public boolean isAvailableRace(Race R)
+	{
+		if((CMProps.isTheme(R.availabilityCode()))
+		&&(!CMath.bset(R.availabilityCode(),Area.THEME_SKILLONLYMASK))
+		&&((!CMSecurity.isDisabled(CMSecurity.DisFlag.STDRACES))||(R.isGeneric()))
+		&&(!CMSecurity.isRaceDisabled(R.ID())))
+			return true;
+		return false;
+	}
+	
+	@Override
 	public List<Race> raceQualifies(int theme)
 	{
 		final Vector<Race> qualRaces = new Vector<Race>();
@@ -288,9 +309,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				continue;
 			R=CMClass.getRace(R.ID());
 			doneRaces.add(R.ID());
-			if((CMProps.isTheme(R.availabilityCode()))
-			&&(!CMath.bset(R.availabilityCode(),Area.THEME_SKILLONLYMASK))
-			&&((!CMSecurity.isDisabled(CMSecurity.DisFlag.STDRACES))||(R.isGeneric()))
+			if(isAvailableRace(R)
 			&&(CMath.bset(R.availabilityCode(),theme)))
 				qualRaces.add(R);
 		}
@@ -2527,9 +2546,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		else
 		{
 			Race newRace=CMClass.getRace(raceStr);
-			if((newRace!=null)&&((!CMProps.isTheme(newRace.availabilityCode()))
-									||(!CMath.bset(newRace.availabilityCode(),loginObj.theme))
-									||(CMath.bset(newRace.availabilityCode(),Area.THEME_SKILLONLYMASK))))
+			if((newRace!=null)&&((!CMLib.login().isAvailableRace(newRace))
+								||(!CMath.bset(newRace.availabilityCode(),loginObj.theme))))
 				newRace=null;
 			if(newRace==null)
 			{
@@ -2537,9 +2555,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				{
 					final Race R=r.nextElement();
 					if((R.name().equalsIgnoreCase(raceStr))
-					&&(CMProps.isTheme(R.availabilityCode()))
-					&&(CMath.bset(R.availabilityCode(),loginObj.theme))
-					&&(!CMath.bset(R.availabilityCode(),Area.THEME_SKILLONLYMASK)))
+					&&(CMLib.login().isAvailableRace(R))
+					&&(CMath.bset(R.availabilityCode(),loginObj.theme)))
 					{
 						newRace=R;
 						break;
@@ -2552,9 +2569,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				{
 					final Race R=r.nextElement();
 					if((R.name().toUpperCase().startsWith(raceStr.toUpperCase()))
-					&&(CMProps.isTheme(R.availabilityCode()))
-					&&(CMath.bset(R.availabilityCode(),loginObj.theme))
-					&&(!CMath.bset(R.availabilityCode(),Area.THEME_SKILLONLYMASK)))
+					&&(CMLib.login().isAvailableRace(R))
+					&&(CMath.bset(R.availabilityCode(),loginObj.theme)))
 					{
 						newRace=R;
 						break;

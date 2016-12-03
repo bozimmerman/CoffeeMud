@@ -333,10 +333,7 @@ public class CharGen extends StdCommand
 		for(final Enumeration e=CMClass.charClasses();e.hasMoreElements();)
 		{
 			final CharClass C=(CharClass)e.nextElement();
-			if((CMath.bset(C.availabilityCode(),Area.THEME_FANTASY)
-				||CMath.bset(C.availabilityCode(),Area.THEME_HEROIC)
-				||CMath.bset(C.availabilityCode(),Area.THEME_TECHNOLOGY))
-			&&(!CMath.bset(C.availabilityCode(),Area.THEME_SKILLONLYMASK)))
+			if(CMLib.login().isAvailableCharClass(C))
 			{
 				String behav="CombatAbilities";
 				for (final String[] element : CAMATCH)
@@ -438,10 +435,7 @@ public class CharGen extends StdCommand
 				for(final Enumeration e=CMClass.charClasses();e.hasMoreElements();)
 				{
 					final CharClass C=(CharClass)e.nextElement();
-					if((CMath.bset(C.availabilityCode(),Area.THEME_FANTASY)
-						||CMath.bset(C.availabilityCode(),Area.THEME_HEROIC)
-						||CMath.bset(C.availabilityCode(),Area.THEME_TECHNOLOGY))
-					&&(!CMath.bset(C.availabilityCode(),Area.THEME_SKILLONLYMASK))
+					if(CMLib.login().isAvailableCharClass(C)
 					&&(C.baseClass().equalsIgnoreCase(s)||(s.equalsIgnoreCase("charclasse"))))
 					{
 						if(!classCleared)

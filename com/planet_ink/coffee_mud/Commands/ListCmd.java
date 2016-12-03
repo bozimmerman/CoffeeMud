@@ -1828,7 +1828,7 @@ public class ListCmd extends StdCommand
 						}
 					}
 					String qualClassesStr="";
-					if(CMProps.isTheme(R.availabilityCode()) && ((R.availabilityCode()&Area.THEME_SKILLONLYMASK)==0))
+					if(CMLib.login().isAvailableRace(R))
 					{
 						for(final Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
 						{
@@ -1940,8 +1940,7 @@ public class ListCmd extends StdCommand
 				for(Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
 				{
 					final Race R=r.nextElement();
-					if((CMProps.isTheme(R.availabilityCode()))
-					&&(((R.availabilityCode()&Area.THEME_SKILLONLYMASK)==0))
+					if(CMLib.login().isAvailableRace(R)
 					&&(C.isAllowedRace(R)))
 					{
 						raceStr.append("[["+R.name()+"|"+R.name()+"]] ");

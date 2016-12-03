@@ -59,7 +59,7 @@ public class Train extends StdCommand
 		for(final Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
 		{
 			final CharClass C=c.nextElement();
-			if((!CMath.bset(C.availabilityCode(),Area.THEME_SKILLONLYMASK))&&(C.availabilityCode()!=0))
+			if(CMLib.login().isAvailableCharClass(C))
 				V.add(C.name().toUpperCase().trim());
 		}
 		return V;
@@ -116,8 +116,7 @@ public class Train extends StdCommand
 				||(C.name(classLevel).toUpperCase().startsWith(abilityName.toUpperCase())))
 				{
 					if((C.qualifiesForThisClass(mob,false))
-					&&(!CMath.bset(C.availabilityCode(),Area.THEME_SKILLONLYMASK))
-					&&(C.availabilityCode()!=0))
+					&&(CMLib.login().isAvailableCharClass(C)))
 					{
 						abilityCode=TRAIN_CCLASS;
 						theClass=C;
@@ -126,7 +125,7 @@ public class Train extends StdCommand
 				}
 				else
 				if((C.qualifiesForThisClass(mob,true))
-				&&(!CMath.bset(C.availabilityCode(),Area.THEME_SKILLONLYMASK)))
+				&&(CMLib.login().isAvailableCharClass(C)))
 					thingsToTrainFor.append(C.name()+", ");
 			}
 		}

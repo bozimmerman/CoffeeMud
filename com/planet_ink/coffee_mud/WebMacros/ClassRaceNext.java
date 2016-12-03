@@ -63,7 +63,7 @@ public class ClassRaceNext extends StdWebMacro
 		for(final Enumeration r=MobData.sortedRaces(httpReq);r.hasMoreElements();)
 		{
 			final Race R=(Race)r.nextElement();
-			if(((CMProps.isTheme(R.availabilityCode())&&(!CMath.bset(R.availabilityCode(),Area.THEME_SKILLONLYMASK)))
+			if(((CMLib.login().isAvailableRace(R))
 				||(parms.containsKey("ALL")))
 			&&(C.isAllowedRace(R)))
 			{

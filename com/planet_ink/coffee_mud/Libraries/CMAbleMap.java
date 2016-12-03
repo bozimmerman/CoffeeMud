@@ -949,7 +949,7 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 				final CharClass C=CMClass.getCharClass(key);
 				if((C!=null)
 				&&((C.availabilityCode()&theme)==theme)
-				&&((!publicly)||((C.availabilityCode()&Area.THEME_SKILLONLYMASK)==0)))
+				&&((!publicly)||(CMLib.login().isAvailableCharClass(C))))
 					return true;
 			}
 		}

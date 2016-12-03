@@ -26,6 +26,8 @@
    25. Aarakocran gets Eagle Eyes, Merfolk get Land Legs, Orc gets Vicious Blow
    26. New Race: Pixie
    27. (Internal) Char Stats now supports crit damage bonuses for weapons and magic
+   28. Races and Character Class can now, finally, be disabled from the ini/mudgrinder.  See DISABLE=
+   
 # Build 5.9.4 Released 08/03/2016
    1. Qualify now shows language limits
    2. New Prop_NoTeleport exceptions

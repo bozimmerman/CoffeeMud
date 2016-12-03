@@ -177,6 +177,20 @@ public interface CharCreationLibrary extends CMLibrary
 	public List<String> getExpiredAcctOrCharsList();
 
 	/**
+	 * Returns whether the given race may be selected by a user.
+	 * @param R the Race to check
+	 * @return true if it's selectable, false otherwise
+	 */
+	public boolean isAvailableRace(Race R);
+
+	/**
+	 * Returns whether the given character class may be selected by a user.
+	 * @param C the CharClass to check
+	 * @return true if it's selectable, false otherwise
+	 */
+	public boolean isAvailableCharClass(CharClass C);
+
+	/**
 	 * Returns the list of all races that the given mob can choose
 	 * into, given their currrent state, and the given theme.  The mob is
 	 * optional, at which point it is only checking base race rules and theme.

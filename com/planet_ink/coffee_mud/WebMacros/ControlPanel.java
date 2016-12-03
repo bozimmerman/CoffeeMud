@@ -155,6 +155,8 @@ public class ControlPanel extends StdWebMacro
 				enums.addEnumeration(CMSecurity.getDisabledCommandsEnum(true)); 
 				enums.addEnumeration(CMSecurity.getDisabledExpertisesEnum(true)); 
 				enums.addEnumeration(CMSecurity.getDisabledFactionsEnum(true));
+				enums.addEnumeration(CMSecurity.getDisabledRacesEnum(true));
+				enums.addEnumeration(CMSecurity.getDisabledCharClassEnum(true));
 				str.append(CMParms.toListString(enums));
 				return str.toString();
 			}
