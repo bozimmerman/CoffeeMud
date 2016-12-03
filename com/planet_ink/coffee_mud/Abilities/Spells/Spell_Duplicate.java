@@ -65,6 +65,11 @@ public class Spell_Duplicate extends Spell
 			mob.tell(L("That item can not be duplicated."));
 			return false;
 		}
+		if(target instanceof BoardableShip)
+		{
+			mob.tell(L("That item can not be duplicated."));
+			return false;
+		}
 
 		final int value=(target instanceof Coins)?(int)Math.round(((Coins)target).getTotalValue()):target.value();
 		int multiPlier=5+(((target.phyStats().weight())+value)/2);
