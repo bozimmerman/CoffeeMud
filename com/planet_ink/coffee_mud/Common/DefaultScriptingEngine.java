@@ -720,7 +720,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		return results.toString();
 	}
 
-	protected Vector<DVector> parseScripts(String text)
+	protected void buildHashes()
 	{
 		synchronized(funcH)
 		{
@@ -740,6 +740,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					signH.put(SIGNS[i],Integer.valueOf(i));
 			}
 		}
+	}
+	
+	protected Vector<DVector> parseScripts(String text)
+	{
+		buildHashes();
 		text=parseLoads(text,0,null,null);
 		final List<List<String>> V = CMParms.parseDoubleDelimited(text,'~',';');
 		final Vector<DVector> V2=new Vector<DVector>(2);
@@ -2267,6 +2272,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		final int STATE_POSTFUNCQUOTE=5;
 		final int STATE_MAYFUNCTION=6;
 
+		buildHashes();
 		final Vector<String> V=new Vector<String>();
 		if((evaluable==null)||(evaluable.trim().length()==0))
 			return new String[]{};
