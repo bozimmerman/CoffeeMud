@@ -20,9 +20,9 @@
    19. ZapperMask now supports IFSTAT, CLASSTYPE, SUBNAME, WEAPONTYPE, WEAPONCLASS, WEAPONAMMO
    20. 14 new Proficiency Skills, for overriding Class Restrictions
    21. Halflings get Fast Slinging, Sling Proficiency, Humans get Diligent Studying
-   22. New Skills: Devour Corpse, Tail Swipe, Long Breath, Eagle Eyes, Vicious Blow
+   22. New Skills: Devour Corpse, Tail Swipe, Long Breath, Eagle Eyes, Vicious Blow, Mind Suck
    23. Ogres got Bad Reputation, Gnoll gets Devour Corpse, Svirfneblin gets Untraceable
-   24. Githyanki get Astral Step, Lizard Men get Tail Swipe, Long Breath
+   24. Githyanki get Astral Step, Lizard Men get Tail Swipe, Long Breath, MindFlayer get Mind Suck
    25. Aarakocran gets Eagle Eyes, Merfolk get Land Legs, Orc gets Vicious Blow
    26. New Race: Pixie
    27. (Internal) Char Stats now supports crit damage bonuses for weapons and magic

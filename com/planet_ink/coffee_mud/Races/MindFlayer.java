@@ -42,6 +42,16 @@ public class MindFlayer extends Humanoid
 
 	private final static String localizedStaticName = CMLib.lang().L("MindFlayer");
 
+	final String brainStr;
+	final String brainStrs;
+	
+	public MindFlayer()
+	{
+		super();
+		brainStr = L("brain");
+		brainStrs = L("brains");
+	}
+	
 	@Override
 	public String name()
 	{
@@ -79,11 +89,11 @@ public class MindFlayer extends Humanoid
 		return culturalAbilityProficiencies;
 	}
 
-	private final String[]	racialAbilityNames			= { "Spell_DetectSentience", "Spell_CombatPrecognition" };
-	private final int[]		racialAbilityLevels			= { 10, 30 };
-	private final int[]		racialAbilityProficiencies	= { 50, 30 };
-	private final boolean[]	racialAbilityQuals			= { true, false };
-	private final String[]	racialAbilityParms			= { "", "" };
+	private final String[]	racialAbilityNames			= { "Skill_Mindsuck", "Spell_DetectSentience", "Spell_CombatPrecognition" };
+	private final int[]		racialAbilityLevels			= { 1, 10, 30 };
+	private final int[]		racialAbilityProficiencies	= { 100, 50, 30 };
+	private final boolean[]	racialAbilityQuals			= { false, false, false };
+	private final String[]	racialAbilityParms			= { "", "", "" };
 
 	@Override
 	public String[] racialAbilityNames()
@@ -145,6 +155,23 @@ public class MindFlayer extends Humanoid
 		return -25;
 	}
 	
+	@Override
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
+	{
+		if(!super.okMessage(myHost, msg))
+			return false;
+		if((msg.targetMinor()==CMMsg.TYP_EAT)
+		&&(myHost instanceof MOB)
+		&&(msg.amISource((MOB)myHost))
+		&&(!CMStrings.containsWord(msg.target().name(),brainStr))
+		&&(!CMStrings.containsWord(msg.target().name(),brainStrs)))
+		{
+			msg.source().tell(L("You can't eat that!"));
+			return false;
+		}
+		return true;
+	}
+
 	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
