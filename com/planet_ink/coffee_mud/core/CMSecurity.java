@@ -1010,7 +1010,7 @@ public class CMSecurity
 	 */
 	public static final boolean isCommandDisabled(final String ID)
 	{
-		return cmdDisVars.contains(ID);
+		return (ID==null) ? false : cmdDisVars.contains(ID.toUpperCase());
 	}
 
 	/**
@@ -1020,7 +1020,7 @@ public class CMSecurity
 	 */
 	public static final boolean isRaceDisabled(final String ID)
 	{
-		return racDisVars.contains(ID);
+		return (ID==null) ? false : racDisVars.contains(ID.toUpperCase());
 	}
 
 	/**
@@ -1030,7 +1030,7 @@ public class CMSecurity
 	 */
 	public static final boolean isCharClassDisabled(final String ID)
 	{
-		return clsDisVars.contains(ID);
+		return (ID==null) ? false : clsDisVars.contains(ID.toUpperCase());
 	}
 
 	/**
@@ -1040,7 +1040,7 @@ public class CMSecurity
 	 */
 	public static final boolean isAbilityDisabled(final String ID)
 	{
-		return ablDisVars.contains(ID);
+		return (ID==null) ? false : ablDisVars.contains(ID.toUpperCase());
 	}
 
 	/**
@@ -1050,7 +1050,7 @@ public class CMSecurity
 	 */
 	public static final boolean isFactionDisabled(final String ID)
 	{
-		return facDisVars.contains(ID);
+		return (ID==null) ? false : facDisVars.contains(ID.toUpperCase());
 	}
 
 	/**
@@ -1060,7 +1060,7 @@ public class CMSecurity
 	 */
 	public static final boolean isExpertiseDisabled(final String ID)
 	{
-		return expDisVars.contains(ID);
+		return (ID==null) ? false : expDisVars.contains(ID.toUpperCase());
 	}
 
 	/**

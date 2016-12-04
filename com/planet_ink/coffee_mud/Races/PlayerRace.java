@@ -148,26 +148,22 @@ public class PlayerRace extends Human
 		affectableStats.setStat(CharStats.STAT_SAVE_JUSTICE,affectableStats.getStat(CharStats.STAT_SAVE_JUSTICE)+10);
 	}
 
-	private final String[]	racialEffectNames			= { "DiligentStudying" };
-	private final int[]		racialEffectLevels			= { 1 };
-	private final String[]	racialEffectParms			= { "" };
-	
 	@Override
 	protected String[] racialEffectNames()
 	{
-		return racialEffectNames;
+		return null;
 	}
 
 	@Override
 	protected int[] racialEffectLevels()
 	{
-		return racialEffectLevels;
+		return null;
 	}
 
 	@Override
 	protected String[] racialEffectParms()
 	{
-		return racialEffectParms;
+		return null;
 	}
 
 	@Override

@@ -173,6 +173,7 @@ public class Gnoll extends StdRace
 	{
 		if(outfitChoices==null)
 		{
+			outfitChoices = new Vector<Item>();
 			final Armor p1=CMClass.getArmor("GenPants");
 			p1.setName(L("a loincloth"));
 			p1.setDisplayText(L("a simple loincloth sits here."));
