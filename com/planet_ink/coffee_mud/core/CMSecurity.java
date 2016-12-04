@@ -78,6 +78,8 @@ public class CMSecurity
 	protected final static Set<DbgFlag>		dbgVars		 = new HashSet<DbgFlag>();
 	protected final static Set<SaveFlag>	saveFlags 	 = new HashSet<SaveFlag>();
 	protected final static Set<String>		journalFlags = new HashSet<String>(); // global, because of cross-library issues
+	protected final static Set<String>		racEnaVars	 = new HashSet<String>();
+	protected final static Set<String>		clsEnaVars	 = new HashSet<String>();
 
 	protected final long					startTime	 = System.currentTimeMillis();
 	protected CompiledZMask					compiledSysop= null;
@@ -88,12 +90,12 @@ public class CMSecurity
 	private final static CMSecurity[]		secs		 = new CMSecurity[256];
 	private final static Iterator<SecFlag>	EMPTYSECFLAGS= new EnumerationIterator<SecFlag>(new EmptyEnumeration<SecFlag>());
 	
-	private final static String				DISABLE_PREFIX_ABILITY		= "ABILITY_";
-	private final static String				DISABLE_PREFIX_EXPERTISE	= "EXPERTISE_";
-	private final static String				DISABLE_PREFIX_COMMAND		= "COMMAND_";
-	private final static String				DISABLE_PREFIX_FACTION		= "FACTION_";
-	private final static String				DISABLE_PREFIX_RACE			= "RACE_";
-	private final static String				DISABLE_PREFIX_CHARCLASS	= "CHARCLASS_";
+	private final static String				XABLE_PREFIX_ABILITY	= "ABILITY_";
+	private final static String				XABLE_PREFIX_EXPERTISE	= "EXPERTISE_";
+	private final static String				XABLE_PREFIX_COMMAND	= "COMMAND_";
+	private final static String				XABLE_PREFIX_FACTION	= "FACTION_";
+	private final static String				XABLE_PREFIX_RACE		= "RACE_";
+	private final static String				XABLE_PREFIX_CHARCLASS	= "CHARCLASS_";
 
 	/**
 	 * Creates a new thread-group sensitive CMSecurity reference object.
@@ -983,13 +985,248 @@ public class CMSecurity
 	}
 
 	/**
-	 * Returns an enumeration of all basic DisFlags that are currently set,
-	 * meaning all the systems returned are disabled presently.
+	 * Check to see if the given Race is enabled.
+	 * @param ID the official Race ID
+	 * @return true if it is enabled, false otherwise
+	 */
+	public static final boolean isRaceEnabled(final String ID)
+	{
+		return (ID==null) ? false : racEnaVars.contains(ID.toUpperCase());
+	}
+
+	/**
+	 * Check to see if the given Character Class is enabled.
+	 * @param ID the official Class ID
+	 * @return true if it is enabled, false otherwise
+	 */
+	public static final boolean isCharClassEnabled(final String ID)
+	{
+		return (ID==null) ? false : clsEnaVars.contains(ID.toUpperCase());
+	}
+
+	
+	/**
+	 * Since there are several different kinds of enable flags, this method
+	 * will check the prefix of the flag to determine which kind it is, 
+	 * returning the string set that corresponds to one of the special
+	 * ones, such as for abilities, expertises, commands, or factions.
+	 * A return of null means it's probably a random enable flag.
+	 * @param anyFlag the flag for the thing to enable
+	 * @return the correct set that this flag will end up belonging in
+	 */
+	private static final Set<String> getSpecialEnableSet(final String anyFlag)
+	{
+		final String flag = anyFlag.toUpperCase().trim();
+		if(flag.startsWith(XABLE_PREFIX_ABILITY))
+		{
+		}
+		else
+		if(flag.startsWith(XABLE_PREFIX_EXPERTISE))
+		{
+		}
+		else
+		if(flag.startsWith(XABLE_PREFIX_COMMAND))
+		{
+		}
+		else
+		if(flag.startsWith(XABLE_PREFIX_RACE))
+		{
+			return racEnaVars;
+		}
+		else
+		if(flag.startsWith(XABLE_PREFIX_CHARCLASS))
+		{
+			return clsEnaVars;
+		}
+		else
+		if(flag.startsWith(XABLE_PREFIX_FACTION))
+		{
+		}
+		return null;
+	}
+
+	/**
+	 * Returns an enumeration of all basic enables flags that are currently set,
+	 * meaning all the things returned are enabled, but normally disabled presently.
+	 * @return an enumeration of all enable flags that are currently set
+	 */
+	public static Enumeration<Object> getEnablesEnum() 
+	{ 
+		MultiEnumeration m = new MultiEnumeration(getDisabledSpecialsEnum(true));
+		return m;
+	}
+	
+	/**
+	 * Returns an enumeration of the enabled race IDs, 
+	 * complete with flag prefix, if requested.
+	 * @param addINIPrefix true to add the prefix required in the ini file, false for a plain ID
+	 * @return an enumeration of the enabled race IDs
+	 */
+	public static final Enumeration<String> getEnabledRacesEnum(final boolean addINIPrefix)
+	{
+		return getSpecialXabledEnum(racEnaVars.iterator(), addINIPrefix?XABLE_PREFIX_RACE:"");
+	}
+
+	/**
+	 * Returns an enumeration of the enabled character class IDs, 
+	 * complete with flag prefix, if requested.
+	 * @param addINIPrefix true to add the prefix required in the ini file, false for a plain ID
+	 * @return an enumeration of the enabled character class IDs
+	 */
+	public static final Enumeration<String> getEnabledCharClassEnum(final boolean addINIPrefix)
+	{
+		return getSpecialXabledEnum(clsEnaVars.iterator(), addINIPrefix?XABLE_PREFIX_CHARCLASS:"");
+	}
+
+	/**
+	 * Since there are several different kinds of disable flags, this method
+	 * allows of the different kinds to be removed/un-set simply by sending the string.
+	 * The DisFlag objects are covered by this, but so are command disablings,
+	 * abilities, expertises, etc.. 
+	 * @param anyFlag the thing to re-enable
+	 * @return true if anyFlag was a valid thing to re-enable, and false otherwise
+	 */
+	public static final boolean removeAnyEnableVar(final String anyFlag)
+	{
+		final Set<String> set = getSpecialEnableSet(anyFlag);
+		if(set == null)
+		{
+			/*
+			String flag = anyFlag.toUpperCase().trim();
+			final DisFlag disFlag = (DisFlag)CMath.s_valueOf(CMSecurity.DisFlag.values(), flag);
+			if(disFlag!=null)
+			{
+				removeDisableVar(disFlag);
+				return true;
+			}
+			*/
+		}
+		else
+		if(set.size()>0)
+		{
+			final String flag = getFinalSpecialXableFlagName(anyFlag);
+			set.remove(flag);
+		}
+		return true;
+	}
+
+	/**
+	 * Since there are several different kinds of enable flags, this method
+	 * allows of the different kinds to be set simply by sending the string.
+	 * @param anyFlag the thing to enable
+	 * @return true if anyFlag was a valid thing to enable, and false otherwise
+	 */
+	public static final boolean setAnyEnableVar(final String anyFlag)
+	{
+		final Set<String> set = getSpecialEnableSet(anyFlag);
+		if(set == null)
+		{
+			/*
+			String flag = anyFlag.toUpperCase().trim();
+			final DisFlag disFlag = (DisFlag)CMath.s_valueOf(CMSecurity.DisFlag.values(), flag);
+			if(disFlag!=null)
+			{
+				return setDisableVar(disFlag);
+			}
+			*/
+		}
+		else
+		{
+			final String flag = getFinalSpecialXableFlagName(anyFlag);
+			if(!set.contains(flag))
+			{
+				set.add(flag);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Returns whether the feature described by the given anyFlag is enabled.
+	 * Since there are several different kinds of enable flags, this method
+	 * will check the prefix of each flag to determine which kind it is.
+	 * @param anyFlag the flag to check for
+	 * @return true if it's already enabled, and false otherwise
+	 */
+	public static final boolean isAnyFlagEnabled(final String anyFlag)
+	{
+		final Set<String> set = getSpecialEnableSet(anyFlag);
+		if(set == null)
+		{
+			/*
+			String flag = anyFlag.toUpperCase().trim();
+			final DisFlag disFlag = (DisFlag)CMath.s_valueOf(CMSecurity.DisFlag.values(), flag);
+			if(disFlag!=null)
+			{
+				return isDisabled(disFlag);
+			}
+			*/
+		}
+		else
+		if(set.size()>0)
+		{
+			final String flag = anyFlag.toUpperCase().trim();
+			final int underIndex=flag.indexOf('_')+1;
+			final String flagName = getFinalSpecialXableFlagName(flag.substring(underIndex));
+			return set.contains(flagName);
+		}
+		return false;
+	}
+	
+	/**
+	 * Sets all enable flags of all types given a list of comma-delimited
+	 * flag names in a string.
+	 * Since there are several different kinds of enable flags, this method
+	 * will check the prefix of each flag to determine which kind it is. It
+	 * will log an error if any flag is unrecognized. 
+	 * @param commaDelimFlagList the list of flags, comma delimited
+	 */
+	public static final void setAnyEnableVars(final String commaDelimFlagList)
+	{
+		final List<String> V=CMParms.parseCommas(commaDelimFlagList.toUpperCase(),true);
+		for(final String var : V)
+		{
+			if(!setAnyDisableVar(var))
+			{
+				Log.errOut("CMSecurity","Unknown or duplicate enable flag: "+var);
+			}
+		}
+	}
+
+	/**
+	 * Returns an enumeration of the enabled ability IDs, command IDs, charclass IDs, and race IDs 
+	 * complete with flag prefix, if requested.
+	 * @param addINIPrefix true to add the prefix required in the ini file, false for a plain ID
+	 * @return an enumeration of the enabled ability, command, charclass, and race IDs
+	 */
+	public static final Enumeration<String> getEnabledSpecialsEnum(final boolean addINIPrefix)
+	{
+		MultiEnumeration<String> menums = new MultiEnumeration<String>(getEnabledCharClassEnum(addINIPrefix));
+		menums.addEnumeration(getEnabledRacesEnum(true));
+		return menums;
+	}
+
+	/**
+	 * Returns an enumeration of all basic and special DisFlags that are currently set,
+	 * meaning all the standard basic systems returned are disabled presently.
 	 * @return an enumeration of all basic DisFlags that are currently set
 	 */
-	public static Enumeration<DisFlag> getDisablesEnum() 
+	public static Enumeration<DisFlag> getBasicDisablesEnum() 
 	{ 
 		return new IteratorEnumeration<DisFlag>(disVars.iterator());
+	}
+
+	/**
+	 * Returns an enumeration of all disable flags that are currently set,
+	 * meaning all the things returned are disabled presently.
+	 * @return an enumeration of all flags that are currently set
+	 */
+	public static Enumeration<Object> getDisablesEnum() 
+	{ 
+		Enumeration<DisFlag> e=new IteratorEnumeration<DisFlag>(disVars.iterator());
+		MultiEnumeration m = new MultiEnumeration(e);
+		return m.addEnumeration(getDisabledSpecialsEnum(true));
 	}
 
 	/**
@@ -1087,7 +1324,7 @@ public class CMSecurity
 		{
 			final String flag = anyFlag.toUpperCase().trim();
 			final int underIndex=flag.indexOf('_')+1;
-			final String flagName = getFinalSpecialDisableFlagName(flag.substring(underIndex));
+			final String flagName = getFinalSpecialXableFlagName(flag.substring(underIndex));
 			return set.contains(flagName);
 		}
 		return false;
@@ -1114,24 +1351,23 @@ public class CMSecurity
 		}
 	}
 
-	
 	/**
-	 * Since there are several different kinds of disable flags, this method
+	 * Since there are several different kinds of dis/enable flags, this method
 	 * will check the prefix of the flag to determine which kind it is, 
 	 * and return the remaining portion, which is the important definition
 	 * of the flag.
 	 * @param anyFlag the full undetermined flag name
 	 * @return null if its not a special flag, and the sub-portion otherwise 
 	 */
-	private static final String getFinalSpecialDisableFlagName(final String anyFlag)
+	private static final String getFinalSpecialXableFlagName(final String anyFlag)
 	{
 		final String flag = anyFlag.toUpperCase().trim();
-		if(flag.startsWith(DISABLE_PREFIX_ABILITY) 
-		|| flag.startsWith(DISABLE_PREFIX_EXPERTISE) 
-		|| flag.startsWith(DISABLE_PREFIX_COMMAND) 
-		|| flag.startsWith(DISABLE_PREFIX_RACE) 
-		|| flag.startsWith(DISABLE_PREFIX_CHARCLASS) 
-		|| flag.startsWith(DISABLE_PREFIX_FACTION))
+		if(flag.startsWith(XABLE_PREFIX_ABILITY) 
+		|| flag.startsWith(XABLE_PREFIX_EXPERTISE) 
+		|| flag.startsWith(XABLE_PREFIX_COMMAND) 
+		|| flag.startsWith(XABLE_PREFIX_RACE) 
+		|| flag.startsWith(XABLE_PREFIX_CHARCLASS) 
+		|| flag.startsWith(XABLE_PREFIX_FACTION))
 		{
 			final int underIndex=flag.indexOf('_')+1;
 			return flag.substring(underIndex);
@@ -1151,32 +1387,32 @@ public class CMSecurity
 	private static final Set<String> getSpecialDisableSet(final String anyFlag)
 	{
 		final String flag = anyFlag.toUpperCase().trim();
-		if(flag.startsWith(DISABLE_PREFIX_ABILITY))
+		if(flag.startsWith(XABLE_PREFIX_ABILITY))
 		{
 			return ablDisVars;
 		}
 		else
-		if(flag.startsWith(DISABLE_PREFIX_EXPERTISE))
+		if(flag.startsWith(XABLE_PREFIX_EXPERTISE))
 		{
 			return expDisVars;
 		}
 		else
-		if(flag.startsWith(DISABLE_PREFIX_COMMAND))
+		if(flag.startsWith(XABLE_PREFIX_COMMAND))
 		{
 			return cmdDisVars;
 		}
 		else
-		if(flag.startsWith(DISABLE_PREFIX_RACE))
+		if(flag.startsWith(XABLE_PREFIX_RACE))
 		{
 			return racDisVars;
 		}
 		else
-		if(flag.startsWith(DISABLE_PREFIX_CHARCLASS))
+		if(flag.startsWith(XABLE_PREFIX_CHARCLASS))
 		{
 			return clsDisVars;
 		}
 		else
-		if(flag.startsWith(DISABLE_PREFIX_FACTION))
+		if(flag.startsWith(XABLE_PREFIX_FACTION))
 		{
 			return facDisVars;
 		}
@@ -1207,7 +1443,7 @@ public class CMSecurity
 		else
 		if(set.size()>0)
 		{
-			final String flag = getFinalSpecialDisableFlagName(anyFlag);
+			final String flag = getFinalSpecialXableFlagName(anyFlag);
 			set.remove(flag);
 		}
 		return true;
@@ -1235,7 +1471,7 @@ public class CMSecurity
 		}
 		else
 		{
-			final String flag = getFinalSpecialDisableFlagName(anyFlag);
+			final String flag = getFinalSpecialXableFlagName(anyFlag);
 			if(!set.contains(flag))
 			{
 				set.add(flag);
@@ -1252,7 +1488,7 @@ public class CMSecurity
 	 * @param prefix the prefix to add to all iterator strings
 	 * @return the enumeration of the iterator
 	 */
-	private static final Enumeration<String> getSpecialDisabledEnum(final Iterator<String> iter, final String prefix)
+	private static final Enumeration<String> getSpecialXabledEnum(final Iterator<String> iter, final String prefix)
 	{
 		return new Enumeration<String>()
 		{
@@ -1285,6 +1521,8 @@ public class CMSecurity
 		menums.addEnumeration(getDisabledExpertisesEnum(true));
 		menums.addEnumeration(getDisabledCommandsEnum(true));
 		menums.addEnumeration(getDisabledFactionsEnum(true));
+		menums.addEnumeration(getDisabledCharClassEnum(true));
+		menums.addEnumeration(getDisabledRacesEnum(true));
 		return menums;
 	}
 	
@@ -1296,7 +1534,7 @@ public class CMSecurity
 	 */
 	public static final Enumeration<String> getDisabledAbilitiesEnum(final boolean addINIPrefix)
 	{
-		return getSpecialDisabledEnum(ablDisVars.iterator(), addINIPrefix?DISABLE_PREFIX_ABILITY:"");
+		return getSpecialXabledEnum(ablDisVars.iterator(), addINIPrefix?XABLE_PREFIX_ABILITY:"");
 	}
 
 	/**
@@ -1307,7 +1545,7 @@ public class CMSecurity
 	 */
 	public static final Enumeration<String> getDisabledExpertisesEnum(final boolean addINIPrefix)
 	{
-		return getSpecialDisabledEnum(expDisVars.iterator(), addINIPrefix?DISABLE_PREFIX_EXPERTISE:"");
+		return getSpecialXabledEnum(expDisVars.iterator(), addINIPrefix?XABLE_PREFIX_EXPERTISE:"");
 	}
 
 	/**
@@ -1318,7 +1556,7 @@ public class CMSecurity
 	 */
 	public static final Enumeration<String> getDisabledCommandsEnum(final boolean addINIPrefix)
 	{
-		return getSpecialDisabledEnum(cmdDisVars.iterator(), addINIPrefix?DISABLE_PREFIX_COMMAND:"");
+		return getSpecialXabledEnum(cmdDisVars.iterator(), addINIPrefix?XABLE_PREFIX_COMMAND:"");
 	}
 
 	/**
@@ -1329,7 +1567,7 @@ public class CMSecurity
 	 */
 	public static final Enumeration<String> getDisabledRacesEnum(final boolean addINIPrefix)
 	{
-		return getSpecialDisabledEnum(racDisVars.iterator(), addINIPrefix?DISABLE_PREFIX_RACE:"");
+		return getSpecialXabledEnum(racDisVars.iterator(), addINIPrefix?XABLE_PREFIX_RACE:"");
 	}
 
 	/**
@@ -1340,7 +1578,7 @@ public class CMSecurity
 	 */
 	public static final Enumeration<String> getDisabledCharClassEnum(final boolean addINIPrefix)
 	{
-		return getSpecialDisabledEnum(clsDisVars.iterator(), addINIPrefix?DISABLE_PREFIX_CHARCLASS:"");
+		return getSpecialXabledEnum(clsDisVars.iterator(), addINIPrefix?XABLE_PREFIX_CHARCLASS:"");
 	}
 
 	/**
@@ -1351,7 +1589,7 @@ public class CMSecurity
 	 */
 	public static final Enumeration<String> getDisabledFactionsEnum(final boolean addINIPrefix)
 	{
-		return getSpecialDisabledEnum(facDisVars.iterator(), addINIPrefix?DISABLE_PREFIX_FACTION:"");
+		return getSpecialXabledEnum(facDisVars.iterator(), addINIPrefix?XABLE_PREFIX_FACTION:"");
 	}
 
 	/**

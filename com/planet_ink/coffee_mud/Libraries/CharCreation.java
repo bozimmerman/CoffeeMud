@@ -263,7 +263,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		if(C==null)
 			return false;
 		if((CMProps.isTheme(C.availabilityCode()))
-		&&((!CMath.bset(C.availabilityCode(),Area.THEME_SKILLONLYMASK))||(CMSecurity.isCharClassDisabled("+"+C.ID())))
+		&&((!CMath.bset(C.availabilityCode(),Area.THEME_SKILLONLYMASK))||(CMSecurity.isCharClassEnabled(C.ID())))
 		&&(!CMSecurity.isCharClassDisabled(C.ID())))
 			return true;
 		return false;
@@ -292,7 +292,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	public boolean isAvailableRace(Race R)
 	{
 		if((CMProps.isTheme(R.availabilityCode()))
-		&&((!CMath.bset(R.availabilityCode(),Area.THEME_SKILLONLYMASK))||(CMSecurity.isRaceDisabled("+"+R.ID())))
+		&&((!CMath.bset(R.availabilityCode(),Area.THEME_SKILLONLYMASK))||(CMSecurity.isRaceEnabled(R.ID())))
 		&&((!CMSecurity.isDisabled(CMSecurity.DisFlag.STDRACES))||(R.isGeneric()))
 		&&(!CMSecurity.isRaceDisabled(R.ID())))
 			return true;

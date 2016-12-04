@@ -2329,6 +2329,7 @@ public class CMProps extends Properties
 		if(getVar(Str.MULTICLASS).equalsIgnoreCase("DISABLED"))
 			disable+=", CLASSES";
 		CMSecurity.setAnyDisableVars(disable);
+		CMSecurity.setAnyEnableVars(getStr("ENABLE"));
 		CMSecurity.setDebugVars(getStr("DEBUG"));
 		CMSecurity.setSaveFlags(getStr("SAVE"));
 	}

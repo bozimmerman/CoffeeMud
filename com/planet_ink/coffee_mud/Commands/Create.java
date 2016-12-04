@@ -1219,6 +1219,21 @@ public class Create extends StdCommand
 			return true;
 		}
 		else
+		if(commandType.equals("ENABLEFLAG"))
+		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.LISTADMIN))
+				return errorOut(mob);
+			final String named=CMParms.combine(commands,2);
+			if(CMSecurity.isAnyFlagEnabled(named.toUpperCase()))
+				mob.tell(L("'@x1' is already enabled",named));
+			else
+			{
+				mob.tell(L("'@x1' is now enabled",named));
+				CMSecurity.setAnyEnableVar(named.toUpperCase().trim());
+			}
+			return true;
+		}
+		else
 		if(commandType.equals("DEBUGFLAG"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.LISTADMIN))
@@ -1573,7 +1588,7 @@ public class Create extends StdCommand
 					{
 						mob.tell(L("\n\rYou cannot create a '@x1'. However, you might try an EXIT, ITEM, QUEST, FACTION, COMPONENT, GOVERNMENT, HOLIDAY, "
 								+ "CLAN, MOB, RACE, ABILITY, LANGUAGE, CRAFTSKILL, ACHIEVEMENT, MANUFACTURER, ALLQUALIFY, CLASS, POLL, DEBUGFLAG, "
-								+ "WEBSERVER, DISABLEFLAG, NEWS, USER, or ROOM.",commandType));
+								+ "WEBSERVER, DISABLEFLAG, ENABLEFLAG, NEWS, USER, or ROOM.",commandType));
 						return false;
 					}
 				}
@@ -1620,7 +1635,7 @@ public class Create extends StdCommand
 					}
 					mob.tell(L("\n\rYou cannot create a '@x1'. However, you might try an EXIT, ITEM, QUEST, FACTION, MOB, COMPONENT, GOVERNMENT, "
 							+ "MANUFACTURER, HOLIDAY, CLAN, RACE, ABILITY, LANGUAGE, CRAFTSKILL, ALLQUALIFY, ACHIEVEMENT, CLASS, POLL, USER, "
-							+ "WEBSERVER, DEBUGFLAG, NEWS, DISABLEFLAG, ROOM.",commandType));
+							+ "WEBSERVER, DEBUGFLAG, NEWS, DISABLEFLAG, ENABLEFLAG, or ROOM.",commandType));
 					return false;
 				}
 			}

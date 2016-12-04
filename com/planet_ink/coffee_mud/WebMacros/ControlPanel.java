@@ -169,6 +169,29 @@ public class ControlPanel extends StdWebMacro
 			return "";
 		}
 		else
+		if(query.equalsIgnoreCase("ENABLE"))
+		{
+			final String field=parms.get("FIELD");
+			if((field==null)||(field.length()==0))
+				return "";
+			if(field.equalsIgnoreCase("MISC"))
+			{
+				StringBuilder str=new StringBuilder("");
+				final MultiEnumeration<String> enums = new MultiEnumeration<String>(CMSecurity.getEnabledRacesEnum(true));
+				//enums.addEnumeration(CMSecurity.getDisabledRacesEnum(true));
+				enums.addEnumeration(CMSecurity.getEnabledCharClassEnum(true));
+				str.append(CMParms.toListString(enums));
+				return str.toString();
+			}
+			//else
+			//{
+			//	final CMSecurity.DisFlag flag = (CMSecurity.DisFlag)CMath.s_valueOf(CMSecurity.DisFlag.values(), field.toUpperCase().trim());
+			//	if((flag!=null)&&(CMSecurity.isDisabled(flag)))
+			//		return " CHECKED ";
+			//}
+			return "";
+		}
+		else
 		if(query.equalsIgnoreCase("DEBUG"))
 		{
 			final String field=parms.get("FIELD");
@@ -199,6 +222,29 @@ public class ControlPanel extends StdWebMacro
 					CMSecurity.removeAnyDisableVar(field);
 				else
 					CMSecurity.setAnyDisableVar(field);
+			}
+			return "";
+		}
+		else
+		if(query.equalsIgnoreCase("CHANGEENABLE"))
+		{
+			final String field=parms.get("FIELD");
+			if((field==null)||(field.length()==0))
+				return "";
+			final String value=parms.get("VALUE");
+			if(field.equalsIgnoreCase("MISC") && (value != null))
+			{
+				for(Enumeration<String> s=CMSecurity.getEnabledSpecialsEnum(true);s.hasMoreElements();)
+					CMSecurity.removeAnyEnableVar(s.nextElement());
+				for(String s : CMParms.parseCommas(value,true))
+					CMSecurity.setAnyEnableVar(s);
+			}
+			else
+			{
+				if((value!=null)&&(value.equalsIgnoreCase("on"))) // on means remove?!
+					CMSecurity.removeAnyEnableVar(field);
+				else
+					CMSecurity.setAnyEnableVar(field);
 			}
 			return "";
 		}

@@ -87,6 +87,11 @@ public class GetSys extends CM1Command
 					req.sendMsg("[FAIL NO DISABLE "+type+"]");
 			}
 			else
+			if(type.startsWith("ENABLE "))
+			{
+				req.sendMsg("[FAIL NO ENABLE "+type+"]");
+			}
+			else
 			{
 				if(CMProps.isPropName(type))
 					req.sendMsg("[OK "+CMProps.getProp(type)+"]");
@@ -115,7 +120,7 @@ public class GetSys extends CM1Command
 	@SuppressWarnings("rawtypes")
 	protected String getAllProps()
 	{
-		StringBuilder str= new StringBuilder("PROP [?], DEBUG [?], DISABLE [?], ");
+		StringBuilder str= new StringBuilder("PROP [?], DEBUG [?], DISABLE [?], ENABLE [?] ");
 		for(Class<? extends Enum> c : CMProps.PROP_CLASSES)
 		{
 			str.append(CMParms.toListString(c.getEnumConstants()));

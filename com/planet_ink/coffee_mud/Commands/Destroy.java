@@ -1274,6 +1274,21 @@ public class Destroy extends StdCommand
 			return false;
 		}
 		else
+		if(commandType.equals("ENABLEFLAG"))
+		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.LISTADMIN))
+				return errorOut(mob);
+			final String named=CMParms.combine(commands,2);
+			if(!CMSecurity.isAnyFlagEnabled(named.toUpperCase()))
+				mob.tell(L("'@x1' is not enabled",named));
+			else
+			{
+				mob.tell(L("'@x1' is no longer enabled",named));
+				CMSecurity.removeAnyEnableVar(named.toUpperCase().trim());
+			}
+			return false;
+		}
+		else
 		if(commandType.equals("DEBUGFLAG"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.LISTADMIN))
@@ -1730,7 +1745,7 @@ public class Destroy extends StdCommand
 						L("\n\rYou cannot destroy a '@x1'. However, you might try an EXIT, ITEM, AREA, USER, MOB, QUEST, FACTION, "
 								+ "SESSION, TICKS, THREAD, HOLIDAY, JOURNAL, SOCIAL, ACHIEVEMENT, CLASS, ABILITY, MANUFACTURER, "
 								+ "LANGUAGE, COMPONENT, RACE, EXPERTISE, TITLE, CLAN, BAN, GOVERNMENT, NOPURGE, BUG, TYPO, IDEA, "
-								+ "WEBSERVER, POLL, DEBUGFLAG, DISABLEFLAG, or a ROOM.",commandType));
+								+ "WEBSERVER, POLL, DEBUGFLAG, DISABLEFLAG, ENABLEFLAG, or a ROOM.",commandType));
 				}
 			}
 		}

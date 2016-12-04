@@ -50,10 +50,11 @@ public class MultiEnumeration<K> implements Enumeration<K>
 		enums.add(eset);
 	}
 
-	public void addEnumeration(Enumeration<K> set)
+	public MultiEnumeration<K> addEnumeration(Enumeration<K> set)
 	{
 		if(set != null)
 			enums.add(set);
+		return this;
 	}
 
 	@Override
