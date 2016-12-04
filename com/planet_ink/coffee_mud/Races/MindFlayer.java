@@ -150,6 +150,31 @@ public class MindFlayer extends Humanoid
 	}
 
 	@Override
+	public List<Item> outfit(MOB myChar)
+	{
+		if(outfitChoices==null)
+		{
+			// Have to, since it requires use of special constructor
+			final Armor s1=CMClass.getArmor("GenArmor");
+			if(s1 == null)
+				return new Vector<Item>();
+			outfitChoices=new Vector<Item>();
+			s1.setName(L("grey robes"));
+			s1.setDisplayText(L("a pile of grey robes have been left here."));
+			s1.setDescription(L("Just ordinary grey robes."));
+			s1.setRawProperLocationBitmap(Wearable.WORN_ABOUT_BODY|Wearable.WORN_ARMS|Wearable.WORN_TORSO);
+			s1.setRawLogicalAnd(true);
+			s1.text();
+			outfitChoices.add(s1);
+
+			final Armor s3=CMClass.getArmor("GenBelt");
+			outfitChoices.add(s3);
+		}
+		return outfitChoices;
+	}
+
+	
+	@Override
 	public int getXPAdjustment()
 	{
 		return -25;
