@@ -1066,9 +1066,27 @@ public class CMSecurity
 	 */
 	public static final Enumeration<String> getEnabledRacesEnum(final boolean addINIPrefix)
 	{
-		return getSpecialXabledEnum(racEnaVars.keySet().iterator(), addINIPrefix?XABLE_PREFIX_RACE:"");
+		return getSafeEnumerableEnableParmSet(racEnaVars, addINIPrefix?XABLE_PREFIX_RACE:"");
 	}
 
+	/**
+	 * Returns an enumeration of the enabled IDs, with parms, and 
+	 * complete with flag prefix, if requested.
+	 * @param map the enabled set to use
+	 * @param prefix the prefix to add, if any
+	 * @return an enumeration of the enabled IDs
+	 */
+	protected static Enumeration<String> getSafeEnumerableEnableParmSet(final Map<String,String[]> map, final String prefix)
+	{
+		final TreeSet<String> newSet = new TreeSet<String>();
+		for(String key : map.keySet())
+		{
+			if(key != null)
+				newSet.add(prefix + key + ((map.get(key).length==0)?"":(" "+CMParms.combineWSpaces(map.get(key)))));
+		}
+		return new IteratorEnumeration<String>(newSet.iterator());
+	}
+	
 	/**
 	 * Returns an enumeration of the enabled character class IDs, 
 	 * complete with flag prefix, if requested.
@@ -1077,7 +1095,7 @@ public class CMSecurity
 	 */
 	public static final Enumeration<String> getEnabledCharClassEnum(final boolean addINIPrefix)
 	{
-		return getSpecialXabledEnum(clsEnaVars.keySet().iterator(), addINIPrefix?XABLE_PREFIX_CHARCLASS:"");
+		return getSafeEnumerableEnableParmSet(clsEnaVars, addINIPrefix?XABLE_PREFIX_CHARCLASS:"");
 	}
 
 	/**
