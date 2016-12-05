@@ -273,8 +273,8 @@ public class Delver extends StdCharClass
 	}
 
 	private final String[] raceRequiredList=new String[]{
-		"Human","Humanoid","Dwarf","Gnome","Goblinoid","Troll-kin",
-		"HalfElf","Halfling"
+		"Human","Humanoid","Dwarf","Goblinoid","Troll-kin",
+		"HalfElf","Gnoll","LizardMan","Merfolk","Drow"
 	};
 
 	@Override

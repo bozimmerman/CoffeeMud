@@ -351,7 +351,7 @@ public class Sailor extends StdCharClass
 		}
 	}
 	
-	private final String[] raceRequiredList=new String[]{"All","-Equine"};
+	private final String[] raceRequiredList=new String[]{"All","-Equine","-Svirfneblin","-Aarakocran","-Faerie"};
 
 	@Override
 	public String[] getRequiredRaceList()

@@ -137,6 +137,11 @@ public class StdCharClass implements CharClass
 	protected int		maxStatAdj[]	= new int[CharStats.CODES.TOTAL()];
 	protected List<Item>outfitChoices	= null;
 
+	protected long		lastPropsCheckTime		= 0;
+	protected long		previousRaceListHash	= 0;
+	protected String	cachedRaceQualList		= null;
+	protected Map<Race,Boolean>	finalAllowedRaceSet		= new Hashtable<Race,Boolean>();
+
 	@Override
 	public int allowedArmorLevel()
 	{
@@ -423,28 +428,11 @@ public class StdCharClass implements CharClass
 			}
 		}
 		final Race R=mob.baseCharStats().getMyRace();
-		final String[] raceList=getRequiredRaceList();
-		boolean foundOne=raceList.length==0;
-		for(final String raceName : raceList)
-		{
-			if((raceName.equalsIgnoreCase("any")
-				|| raceName.equalsIgnoreCase("all")
-				|| R.ID().equalsIgnoreCase(raceName)
-				|| R.name().equalsIgnoreCase(raceName)
-				|| R.racialCategory().equalsIgnoreCase(raceName))
-			&&(!raceName.equalsIgnoreCase("-"+R.ID()))
-			&&(!raceName.equalsIgnoreCase("-"+R.name()))
-			&&(!raceName.equalsIgnoreCase("-"+R.racialCategory())))
-			{
-				foundOne=true;
-				break;
-			}
-		}
-		if(!foundOne)
+		if(!isAllowedRace(R))
 		{
 			if(!quiet)
 			{
-				mob.tell(L("You need to be a @x1 to be a @x2.",getRaceList(raceList).toString(),name()));
+				mob.tell(L("You need to be a @x1 to be a @x2.",getRaceQualDesc(),name()));
 			}
 			return false;
 		}
@@ -533,47 +521,6 @@ public class StdCharClass implements CharClass
 		return true;
 	}
 
-	private StringBuilder getRaceList(String[] raceList)
-	{
-		final StringBuilder str=new StringBuilder();
-		int end=raceList.length;
-		for(int i=0;i<raceList.length;i++)
-		{
-			if(raceList[i].startsWith("-"))
-				end=i;
-		}
-		if(end == 0)
-			str.append("All");
-		for(int i=0;i<end;i++)
-		{
-			if(i>0)
-			{
-				str.append(", ");
-				if(i==end-1)
-					str.append(L("or "));
-			}
-			if(!raceList[i].startsWith("-"))
-				str.append(CMStrings.capitalizeAndLower(raceList[i]));
-		}
-		if(end<raceList.length)
-		{
-			str.append(" except ");
-			for(int i=end;i<raceList.length;i++)
-			{
-				if(i>end)
-				{
-					str.append(", ");
-					if(i==raceList.length-1)
-						str.append(L("or "));
-				}
-				if(raceList[i].startsWith("-"))
-					str.append(CMStrings.capitalizeAndLower(raceList[i].substring(1)));
-			}
-			
-		}
-		return str;
-	}
-
 	@Override
 	public String getWeaponLimitDesc()
 	{
@@ -618,10 +565,62 @@ public class StdCharClass implements CharClass
 	@Override
 	public String getRaceQualDesc()
 	{
-		final String[] raceList=getRequiredRaceList();
-		if(raceList.length==0)
-			return "All";
-		return getRaceList(raceList).toString();
+		this.checkRaceQualifierChanges();
+		if(this.cachedRaceQualList != null)
+			return this.cachedRaceQualList;
+
+		final XVector<Race> availRaces = new XVector<Race>();
+		final CharCreationLibrary loginLib = CMLib.login();
+		if((!CMClass.races().hasMoreElements())||(CMLib.login()==null))
+			return "None";
+		for(Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
+		{
+			final Race R=r.nextElement();
+			if(loginLib.isAvailableRace(R))
+				availRaces.add(R);
+		}
+		if(availRaces.size()==0)
+		{
+			this.cachedRaceQualList=L("All");
+		}
+		else
+		{
+			final XVector<Race> qualRaces = new XVector<Race>();
+			for(Race R : availRaces)
+			{
+				if(isAllowedRace(R))
+					qualRaces.add(R);
+			}
+			if(qualRaces.size()==availRaces.size())
+			{
+				this.cachedRaceQualList=L("All");
+			}
+			else
+			{
+				final StringBuilder str=new StringBuilder();
+				ArrayList<String> names = new ArrayList<String>(availRaces.size());
+				//if(qualRaces.size()<=(availRaces.size()/2))
+				{
+					for(Race R : qualRaces)
+						names.add(R.name());
+					str.append(CMLib.english().toEnglishStringList(names.toArray(new String[0])));
+				}
+				/*
+				else
+				{
+					str.append(L("All except "));
+					for(Race R : availRaces)
+					{
+						if(!qualRaces.contains(R))
+							names.add(R.name());
+					}
+					str.append(CMLib.english().toEnglishStringList(names.toArray(new String[0])));
+				}
+				*/
+				this.cachedRaceQualList=str.toString();
+			}
+		}
+		return this.cachedRaceQualList;
 	}
 
 	@Override
@@ -629,8 +628,10 @@ public class StdCharClass implements CharClass
 	{
 		final StringBuilder str=new StringBuilder("");
 		for(final int i : CharStats.CODES.BASECODES())
+		{
 			if(maxStatAdjustments()[i]!=0)
 				str.append(CMStrings.capitalizeAndLower(CharStats.CODES.DESC(i))+" ("+(CMProps.getIntVar(CMProps.Int.BASEMAXSTAT)+maxStatAdjustments()[i])+"), ");
+		}
 		str.append(L("Others (@x1)",""+CMProps.getIntVar(CMProps.Int.BASEMAXSTAT)));
 		return str.toString();
 	}
@@ -938,17 +939,62 @@ public class StdCharClass implements CharClass
 			}
 		}
 	}
+
+	protected void checkRaceQualifierChanges()
+	{
+		final String[] requiredRaceList = getRequiredRaceList();
+		synchronized(finalAllowedRaceSet)
+		{
+			if((previousRaceListHash != requiredRaceList.hashCode())
+			||(CMProps.getLastResetTime() != lastPropsCheckTime))
+			{
+				finalAllowedRaceSet.clear();
+				cachedRaceQualList = null;
+				previousRaceListHash = requiredRaceList.hashCode();
+				lastPropsCheckTime = CMProps.getLastResetTime();
+			}
+		}
+	}
 	
 	@Override
 	public boolean isAllowedRace(Race R)
 	{
-		return (CMStrings.containsIgnoreCase(getRequiredRaceList(),"All")
-				||CMStrings.containsIgnoreCase(getRequiredRaceList(),R.ID())
-				||CMStrings.containsIgnoreCase(getRequiredRaceList(),R.name())
-				||CMStrings.containsIgnoreCase(getRequiredRaceList(),R.racialCategory()))
-			&&(!CMStrings.containsIgnoreCase(getRequiredRaceList(),"-"+R.ID()))
-			&&(!CMStrings.containsIgnoreCase(getRequiredRaceList(),"-"+R.name()))
-			&&(!CMStrings.containsIgnoreCase(getRequiredRaceList(),"-"+R.racialCategory()));
+		checkRaceQualifierChanges();
+		synchronized(finalAllowedRaceSet)
+		{
+			final Boolean finalCheck = finalAllowedRaceSet.get(R);
+			if(finalCheck != null)
+				return finalCheck.booleanValue();
+		}
+		
+		final String[] requiredRaceList = getRequiredRaceList();
+		final boolean secondCheck;
+		final String[] overrideRequiredRaceListCheck = CMSecurity.getAnyFlagEnabledParms("CHARCLASS_"+ID());
+		if(CMStrings.containsIgnoreCase(overrideRequiredRaceListCheck,"All")
+		||CMStrings.containsIgnoreCase(overrideRequiredRaceListCheck,R.ID())
+		||CMStrings.containsIgnoreCase(overrideRequiredRaceListCheck,R.name())
+		||CMStrings.containsIgnoreCase(overrideRequiredRaceListCheck,R.racialCategory()))
+			secondCheck = true;
+		else
+		if(CMStrings.containsIgnoreCase(overrideRequiredRaceListCheck,"-"+R.ID())
+		||CMStrings.containsIgnoreCase(overrideRequiredRaceListCheck,"-"+R.name())
+		||CMStrings.containsIgnoreCase(overrideRequiredRaceListCheck,"-"+R.racialCategory()))
+			secondCheck=false;
+		else
+			secondCheck = 
+				(CMStrings.containsIgnoreCase(requiredRaceList,"All")
+				||CMStrings.containsIgnoreCase(requiredRaceList,R.ID())
+				||CMStrings.containsIgnoreCase(requiredRaceList,R.name())
+				||CMStrings.containsIgnoreCase(requiredRaceList,R.racialCategory()))
+			&&(!CMStrings.containsIgnoreCase(requiredRaceList,"-"+R.ID()))
+			&&(!CMStrings.containsIgnoreCase(requiredRaceList,"-"+R.name()))
+			&&(!CMStrings.containsIgnoreCase(requiredRaceList,"-"+R.racialCategory()));
+
+		synchronized(finalAllowedRaceSet)
+		{
+			finalAllowedRaceSet.put(R, Boolean.valueOf(secondCheck));
+		}
+		return secondCheck;
 	}
 
 	@Override

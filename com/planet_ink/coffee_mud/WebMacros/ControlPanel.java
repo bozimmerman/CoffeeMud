@@ -177,10 +177,7 @@ public class ControlPanel extends StdWebMacro
 			if(field.equalsIgnoreCase("MISC"))
 			{
 				StringBuilder str=new StringBuilder("");
-				final MultiEnumeration<String> enums = new MultiEnumeration<String>(CMSecurity.getEnabledRacesEnum(true));
-				//enums.addEnumeration(CMSecurity.getDisabledRacesEnum(true));
-				enums.addEnumeration(CMSecurity.getEnabledCharClassEnum(true));
-				str.append(CMParms.toListString(enums));
+				str.append(CMParms.toListString(CMSecurity.getEnabledSpecialsEnum(true)));
 				return str.toString();
 			}
 			//else

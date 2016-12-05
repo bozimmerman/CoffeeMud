@@ -166,10 +166,13 @@ public class Arcanist extends Thief
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Spell_MagicItem",true);
 	}
 
+	private final String[] raceRequiredList=new String[]{"Drow","Elf","Gnome","HalfElf","Human","Svirfneblin",
+														"Githyanki","Merfolk","Faerie","Orc","Mindflayer"};
+
 	@Override
 	public String[] getRequiredRaceList()
 	{
-		return super.getRequiredRaceList();
+		return raceRequiredList;
 	}
 	
 	@SuppressWarnings("unchecked")

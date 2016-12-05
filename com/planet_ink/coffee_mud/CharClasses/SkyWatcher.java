@@ -285,7 +285,8 @@ public class SkyWatcher extends StdCharClass
 	}
 
 	private final String[] raceRequiredList=new String[]{
-		"Human","Humanoid","Elf","Dwarf","Giant-kin","Duergar","Centaur"
+		"Human","Humanoid","Elf","Giant-kin","Centaur","HalfElf",
+		"LizardMan","Aarakocran","Faerie","Merfolk","-Drow"
 	};
 
 	@Override

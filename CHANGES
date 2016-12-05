@@ -27,7 +27,7 @@
    26. New Race: Pixie
    27. (Internal) Char Stats now supports crit damage bonuses for weapons and magic
    28. Races and Char Class can be disabled, finally, from the ini/mudgrinder.  See DISABLE=
-   29. Disabled Races/Char Classes can be enabled from the ini/mudgrinder.  See ENABLE= 
+   29. Internally disabled Races/Char Classes can be enabled from the ini/mudgrinder.  See ENABLE= 
    
 # Build 5.9.4 Released 08/03/2016
    1. Qualify now shows language limits

@@ -100,7 +100,7 @@ public class Wizard extends Mage
 	@Override
 	public int availabilityCode()
 	{
-		return 0;
+		return Area.THEME_FANTASY | Area.THEME_SKILLONLYMASK;
 	}
 
 	@Override

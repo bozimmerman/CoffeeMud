@@ -244,7 +244,8 @@ public class Healer extends Cleric
 	}
 
 	private final String[] raceRequiredList=new String[]{
-		"Human","Humanoid","Dwarf","Elf","HalfElf","Elf-kin","Fairy-kin"
+		"Human","Humanoid","Dwarf","Elf","HalfElf","Fairy-kin","Svirfneblin",
+		"LizardMan","Aarakocran","Merfolk","Faerie","Elf-kin","-Duergar","-Drow"
 	};
 
 	@Override

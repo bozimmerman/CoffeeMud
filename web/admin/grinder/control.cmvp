@@ -43,6 +43,25 @@
 			}
 			document.INIFORM.submit();
 		}
+		function Enable(checked,field)
+		{
+			document.INIFORM.action='/grinder/control.cmvp';
+			document.INIFORM.INIPAGE.value="SWITCHES";
+			document.INIFORM.QUERY.value='CHANGEENABLE';
+			document.INIFORM.FIELD.value=field;
+			if(field == 'MISC')
+			{
+				document.INIFORM.VALUE.value=checked;
+			}
+			else
+			{
+				if(checked)	
+					document.INIFORM.VALUE.value='';
+				else
+					document.INIFORM.VALUE.value='on';
+			}
+			document.INIFORM.submit();
+		}
 		function Debug(checked,field)
 		{
 			document.INIFORM.action='/grinder/control.cmvp';
@@ -1546,9 +1565,16 @@
 		</TR>
 		@back@
 		<TR>
-		<TD ALIGN=LEFT VALIGN=TOP COLSPAN=4><FONT COLOR=WHITE>Miscellaneous</FONT>
+		<TD ALIGN=LEFT VALIGN=TOP COLSPAN=4><FONT COLOR=WHITE>Miscellaneous Disable</FONT>
 		<TEXTAREA NAME=MISCDISABLE ID=MISCDISABLE ROWS=2 COLS=80>@ControlPanel?QUERY=DISABLE&FIELD=MISC@</TEXTAREA>
+		<TEXTAREA NAME=MISCENABLE ID=MISCENABLE ROWS=2 COLS=80>@ControlPanel?QUERY=ENABLE&FIELD=MISC@</TEXTAREA>
 		<INPUT TYPE=BUTTON NAME=APPLY VALUE=Apply ID=APPLY ONCLICK="Disable(document.INIFORM.MISCDISABLE.value,'MISC');">
+		</TD>
+		</TR>
+		<TR>
+		<TD ALIGN=LEFT VALIGN=TOP COLSPAN=4><FONT COLOR=WHITE>Miscellaneous Enable</FONT>
+		<TEXTAREA NAME=MISCENABLE ID=MISCENABLE ROWS=2 COLS=80>@ControlPanel?QUERY=ENABLE&FIELD=MISC@</TEXTAREA>
+		<INPUT TYPE=BUTTON NAME=APPLY VALUE=Apply ID=APPLY ONCLICK="Enable(document.INIFORM.MISCENABLE.value,'MISC');">
 		</TD>
 		</TR>
 		</TABLE>

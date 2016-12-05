@@ -32,20 +32,20 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class MindFlayer extends Humanoid
+public class Mindflayer extends Humanoid
 {
 	@Override
 	public String ID()
 	{
-		return "MindFlayer";
+		return "Mindflayer";
 	}
 
-	private final static String localizedStaticName = CMLib.lang().L("MindFlayer");
+	private final static String localizedStaticName = CMLib.lang().L("Mindflayer");
 
 	final String brainStr;
 	final String brainStrs;
 	
-	public MindFlayer()
+	public Mindflayer()
 	{
 		super();
 		brainStr = L("brain");

@@ -230,7 +230,7 @@ public class Prancer extends StdCharClass
 	}
 
 	private final String[] raceRequiredList=new String[]{
-		"Human","Humanoid","Elf","Halfling"
+		"Human","Humanoid","Elf","Halfling","Githyanki","Aarakocran","Merfolk","Faerie"
 	};
 
 	@Override

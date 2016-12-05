@@ -216,7 +216,7 @@ public class Charlatan extends StdCharClass
 	}
 
 	private final String[] raceRequiredList=new String[]{
-		"Human","Humanoid","HalfElf"
+		"Human","Humanoid","HalfElf","Drow","Gnome","Svirfneblin"
 	};
 
 	@Override

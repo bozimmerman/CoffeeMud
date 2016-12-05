@@ -283,7 +283,8 @@ public class Mer extends StdCharClass
 	}
 
 	private final String[] raceRequiredList=new String[]{
-		"Human","Humanoid","Elf","Giant-kin","Halfling","Goblin","Drow","HalfElf","Ogre"
+		"Human","Humanoid","Elf","Giant-kin","Goblin","Drow","HalfElf","Ogre",
+		"Gnoll","LizardMan","Merfolk","Faerie"
 	};
 
 	@Override

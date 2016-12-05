@@ -234,7 +234,7 @@ public class Jester extends StdCharClass
 	}
 
 	private final String[] raceRequiredList=new String[]{
-		"Human","Humanoid","Gnome","Halfling","HalfElf"
+		"Human","Humanoid","Gnome","Halfling","HalfElf","Svirfneblin","Merfolk","Faerie"
 	};
 
 	@Override

@@ -68,6 +68,7 @@ public class CMSecurity
 	public static final int JSCRIPT_REQ_APPROVAL = 1;
 	public static final int JSCRIPT_ALL_APPROVAL = 2;
 	
+	protected static final String[] 		emptyStrArray= new String[0];
 	protected final static Set<DisFlag>		disVars		 = new HashSet<DisFlag>();
 	protected final static Set<String>		cmdDisVars	 = new HashSet<String>();
 	protected final static Set<String>		racDisVars	 = new HashSet<String>();
@@ -78,8 +79,9 @@ public class CMSecurity
 	protected final static Set<DbgFlag>		dbgVars		 = new HashSet<DbgFlag>();
 	protected final static Set<SaveFlag>	saveFlags 	 = new HashSet<SaveFlag>();
 	protected final static Set<String>		journalFlags = new HashSet<String>(); // global, because of cross-library issues
-	protected final static Set<String>		racEnaVars	 = new HashSet<String>();
-	protected final static Set<String>		clsEnaVars	 = new HashSet<String>();
+	
+	protected final static Map<String,String[]>	racEnaVars	 = new Hashtable<String,String[]>();
+	protected final static Map<String,String[]>	clsEnaVars	 = new Hashtable<String,String[]>();
 
 	protected final long					startTime	 = System.currentTimeMillis();
 	protected CompiledZMask					compiledSysop= null;
@@ -991,7 +993,7 @@ public class CMSecurity
 	 */
 	public static final boolean isRaceEnabled(final String ID)
 	{
-		return (ID==null) ? false : racEnaVars.contains(ID.toUpperCase());
+		return (ID==null) ? false : racEnaVars.containsKey(ID.toUpperCase());
 	}
 
 	/**
@@ -1001,7 +1003,7 @@ public class CMSecurity
 	 */
 	public static final boolean isCharClassEnabled(final String ID)
 	{
-		return (ID==null) ? false : clsEnaVars.contains(ID.toUpperCase());
+		return (ID==null) ? false : clsEnaVars.containsKey(ID.toUpperCase());
 	}
 
 	
@@ -1014,7 +1016,7 @@ public class CMSecurity
 	 * @param anyFlag the flag for the thing to enable
 	 * @return the correct set that this flag will end up belonging in
 	 */
-	private static final Set<String> getSpecialEnableSet(final String anyFlag)
+	private static final Map<String,String[]> getSpecialEnableMap(final String anyFlag)
 	{
 		final String flag = anyFlag.toUpperCase().trim();
 		if(flag.startsWith(XABLE_PREFIX_ABILITY))
@@ -1052,7 +1054,7 @@ public class CMSecurity
 	 */
 	public static Enumeration<Object> getEnablesEnum() 
 	{ 
-		MultiEnumeration m = new MultiEnumeration(getDisabledSpecialsEnum(true));
+		MultiEnumeration m = new MultiEnumeration(getEnabledSpecialsEnum(true));
 		return m;
 	}
 	
@@ -1064,7 +1066,7 @@ public class CMSecurity
 	 */
 	public static final Enumeration<String> getEnabledRacesEnum(final boolean addINIPrefix)
 	{
-		return getSpecialXabledEnum(racEnaVars.iterator(), addINIPrefix?XABLE_PREFIX_RACE:"");
+		return getSpecialXabledEnum(racEnaVars.keySet().iterator(), addINIPrefix?XABLE_PREFIX_RACE:"");
 	}
 
 	/**
@@ -1075,20 +1077,18 @@ public class CMSecurity
 	 */
 	public static final Enumeration<String> getEnabledCharClassEnum(final boolean addINIPrefix)
 	{
-		return getSpecialXabledEnum(clsEnaVars.iterator(), addINIPrefix?XABLE_PREFIX_CHARCLASS:"");
+		return getSpecialXabledEnum(clsEnaVars.keySet().iterator(), addINIPrefix?XABLE_PREFIX_CHARCLASS:"");
 	}
 
 	/**
-	 * Since there are several different kinds of disable flags, this method
+	 * Since there are several different kinds of enable flags, this method
 	 * allows of the different kinds to be removed/un-set simply by sending the string.
-	 * The DisFlag objects are covered by this, but so are command disablings,
-	 * abilities, expertises, etc.. 
 	 * @param anyFlag the thing to re-enable
 	 * @return true if anyFlag was a valid thing to re-enable, and false otherwise
 	 */
 	public static final boolean removeAnyEnableVar(final String anyFlag)
 	{
-		final Set<String> set = getSpecialEnableSet(anyFlag);
+		final Map<String,String[]> set = getSpecialEnableMap(anyFlag);
 		if(set == null)
 		{
 			/*
@@ -1118,7 +1118,7 @@ public class CMSecurity
 	 */
 	public static final boolean setAnyEnableVar(final String anyFlag)
 	{
-		final Set<String> set = getSpecialEnableSet(anyFlag);
+		final Map<String,String[]> set = getSpecialEnableMap(anyFlag);
 		if(set == null)
 		{
 			/*
@@ -1132,11 +1132,16 @@ public class CMSecurity
 		}
 		else
 		{
-			final String flag = getFinalSpecialXableFlagName(anyFlag);
-			if(!set.contains(flag))
+			List<String> flagList = CMParms.parse(anyFlag.toUpperCase().trim());
+			if(flagList.size()>0)
 			{
-				set.add(flag);
-				return true;
+				final String flag = getFinalSpecialXableFlagName(flagList.get(0));
+				if(!set.containsKey(flag))
+				{
+					flagList.remove(0);
+					set.put(flag,flagList.toArray(new String[0]));
+					return true;
+				}
 			}
 		}
 		return false;
@@ -1151,7 +1156,7 @@ public class CMSecurity
 	 */
 	public static final boolean isAnyFlagEnabled(final String anyFlag)
 	{
-		final Set<String> set = getSpecialEnableSet(anyFlag);
+		final Map<String,String[]> set = getSpecialEnableMap(anyFlag);
 		if(set == null)
 		{
 			/*
@@ -1167,11 +1172,31 @@ public class CMSecurity
 		if(set.size()>0)
 		{
 			final String flag = anyFlag.toUpperCase().trim();
-			final int underIndex=flag.indexOf('_')+1;
-			final String flagName = getFinalSpecialXableFlagName(flag.substring(underIndex));
-			return set.contains(flagName);
+			final String flagName = getFinalSpecialXableFlagName(flag);
+			return set.containsKey(flagName);
 		}
 		return false;
+	}
+
+	/**
+	 * If the feature described by the given anyFlag is enabled, this will
+	 * return any parameters defined along with it.  Normally this is an
+	 * empty string array, but character classes may have race qualification
+	 * flags added after them, which this supports.
+	 * @param anyFlag the flag to check for
+	 * @return an empty array, or an array of parameters after the flag set
+	 */
+	public static final String[] getAnyFlagEnabledParms(final String anyFlag)
+	{
+		final Map<String,String[]> set = getSpecialEnableMap(anyFlag);
+		if((set != null)&&(set.size()>0))
+		{
+			final String flag = anyFlag.toUpperCase().trim();
+			final String flagName = getFinalSpecialXableFlagName(flag);
+			if(set.containsKey(flagName))
+				return set.get(flagName);
+		}
+		return emptyStrArray;
 	}
 	
 	/**
@@ -1187,7 +1212,7 @@ public class CMSecurity
 		final List<String> V=CMParms.parseCommas(commaDelimFlagList.toUpperCase(),true);
 		for(final String var : V)
 		{
-			if(!setAnyDisableVar(var))
+			if(!setAnyEnableVar(var))
 			{
 				Log.errOut("CMSecurity","Unknown or duplicate enable flag: "+var);
 			}
@@ -1323,8 +1348,7 @@ public class CMSecurity
 		if(set.size()>0)
 		{
 			final String flag = anyFlag.toUpperCase().trim();
-			final int underIndex=flag.indexOf('_')+1;
-			final String flagName = getFinalSpecialXableFlagName(flag.substring(underIndex));
+			final String flagName = getFinalSpecialXableFlagName(flag);
 			return set.contains(flagName);
 		}
 		return false;

@@ -365,7 +365,7 @@ public class Druid extends StdCharClass
 
 	private final String[] raceRequiredList=new String[]{
 		"Human","Humanoid","Elf","Vegetation","Dwarf","Giant-kin",
-		"Goblinoid","HalfElf","Centaur"
+		"Goblinoid","HalfElf","Centaur","Gnoll","LizardMan","Aarakocran","Merfolk","Faerie"
 	};
 
 	@Override
