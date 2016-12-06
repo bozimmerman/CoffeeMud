@@ -788,6 +788,7 @@ public class MUD extends Thread implements MudHost
 		}
 		if(S!=null)
 			S.println(CMLib.lang().L("done"));
+		if(debugMem) shutdownMemReport("Map Threads");
 		Log.sysOut(Thread.currentThread().getName(),"Map Threads Stopped.");
 
 		CMProps.setUpAllLowVar(CMProps.Str.MUDSTATUS,"Shutting down services...");
