@@ -129,7 +129,7 @@ public class Goblin extends StdRace
 	@Override
 	public int availabilityCode()
 	{
-		return Area.THEME_FANTASY;
+		return Area.THEME_FANTASY | Area.THEME_SKILLONLYMASK;
 	}
 
 	@Override

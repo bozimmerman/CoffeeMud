@@ -151,7 +151,7 @@ public class Ogre extends Humanoid
 	@Override
 	public int availabilityCode()
 	{
-		return Area.THEME_FANTASY;
+		return Area.THEME_FANTASY | Area.THEME_SKILLONLYMASK;
 	}
 
 	@Override
