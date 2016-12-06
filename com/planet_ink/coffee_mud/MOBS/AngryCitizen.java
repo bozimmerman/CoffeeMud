@@ -72,6 +72,6 @@ public class AngryCitizen extends StdMOB
 		recoverMaxState();
 		resetToMaxState();
 		recoverPhyStats();
-		recoverCharStats();
+		this.charStats = (CharStats)baseCharStats().copyOf();
 	}
 }

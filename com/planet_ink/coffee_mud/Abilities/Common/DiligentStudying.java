@@ -95,16 +95,18 @@ public class DiligentStudying extends StdAbility
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-		if((msg.sourceMinor()==CMMsg.TYP_LEVEL)
-		&&(msg.source() == affected))
+		if(msg.sourceMinor()==CMMsg.TYP_LEVEL)
 		{
-			int amt = (msg.value() - msg.source().basePhyStats().level());
-			int multiplier = CMath.s_int(text());
-			if(multiplier != 0)
-				amt = amt * multiplier;
-			msg.source().setPractices(msg.source().getPractices() + amt);
-			if(msg.source().getPractices()<0)
-				msg.source().setPractices(0);
+			if(msg.source() == affected)
+			{
+				int amt = (msg.value() - msg.source().basePhyStats().level());
+				int multiplier = CMath.s_int(text());
+				if(multiplier != 0)
+					amt = amt * multiplier;
+				msg.source().setPractices(msg.source().getPractices() + amt);
+				if(msg.source().getPractices()<0)
+					msg.source().setPractices(0);
+			}
 		}
 		super.executeMsg(myHost,msg);
 	}

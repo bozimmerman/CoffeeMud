@@ -1137,6 +1137,8 @@ public class StdRace implements Race
 
 		if(racialEffectMap.containsKey(level))
 			return racialEffectMap.get(level);
+		if(!CMClass.abilities().hasMoreElements())
+			return empty;
 		final CMUniqSortSVec<Ability> finalV = new CMUniqSortSVec<Ability>();
 		for(int v=0;v<racialEffectLevels().length;v++)
 		{
