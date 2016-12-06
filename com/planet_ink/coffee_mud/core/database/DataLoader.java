@@ -142,7 +142,7 @@ public class DataLoader
 		return rows;
 	}
 
-	public List<PlayerData> DBReadKey(String section, String keyMask)
+	public List<PlayerData> DBReadByKeyMask(String section, String keyMask)
 	{
 		DBConnection D=null;
 		final Vector<PlayerData> rows=new Vector<PlayerData>();

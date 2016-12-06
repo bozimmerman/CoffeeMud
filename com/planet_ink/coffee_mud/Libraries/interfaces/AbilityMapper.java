@@ -512,6 +512,16 @@ public interface AbilityMapper extends CMLibrary
 	public boolean qualifiesByAnyCharClass(String abilityID);
 
 	/**
+	 * Returns whether the given Ability ID() represents a skill qualified for by
+	 * any existing character class, or race, including All-Qualified abilities.
+	 * @see AbilityMapper#classOnly(String, String)
+	 * @see AbilityMapper#qualifiesByAnyCharClass(String)
+	 * @param abilityID the ability ID()
+	 * @return true if a class or race qualifies for it, false otherwise
+	 */
+	public boolean qualifiesByAnyCharClassOrRace(String abilityID);
+	
+	/**
 	 * Returns whether the given class qualifies for the given ability.
 	 * Does not check all-qualifies list, so this is only class (or race)
 	 * specific qualifications.  Returns true ONLY if the given class

@@ -826,7 +826,7 @@ public class DBInterface implements DatabaseEngine
 	@Override
 	public List<PlayerData> DBReadPlayerDataByKeyMask(String section, String keyMask)
 	{
-		return DataLoader.DBReadKey(section, keyMask);
+		return DataLoader.DBReadByKeyMask(section, keyMask);
 	}
 
 	@Override

@@ -46,14 +46,14 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 	}
 
 	protected Map<String, Map<String, AbilityMapping>>
-										completeAbleMap 			= new SHashtable<String, Map<String, AbilityMapping>>();
-	protected Map<String, Integer>		lowestQualifyingLevelMap	= new SHashtable<String, Integer>();
-	protected Map<String, Integer>		maxProficiencyMap   		= new SHashtable<String, Integer>();
-	protected Map<String, Object>		allows  					= new SHashtable<String, Object>();
+									completeAbleMap 		= new SHashtable<String, Map<String, AbilityMapping>>();
 	protected Map<String, Map<String, AbilityMapping>>
-										reverseAbilityMap   		= new TreeMap<String, Map<String, AbilityMapping>>();
-	protected List<AbilityMapping>		eachClassSet				= null;
-	protected final Integer[]			costOverrides				= new Integer[Cost.values().length];
+									reverseAbilityMap		= new TreeMap<String, Map<String, AbilityMapping>>();
+	protected Map<String, Integer>	lowestQualifyingLevelMap= new SHashtable<String, Integer>();
+	protected Map<String, Integer>	maxProficiencyMap	 	= new SHashtable<String, Integer>();
+	protected Map<String, Object>	allows  				= new SHashtable<String, Object>();
+	protected List<AbilityMapping>	eachClassSet			= null;
+	protected final Integer[]		costOverrides			= new Integer[Cost.values().length];
 
 	@Override
 	public AbilityMapping addCharAbilityMapping(String ID,
@@ -881,6 +881,25 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 				final Map<String, AbilityMapping> ableMap=completeAbleMap.get(C.ID());
 				if(ableMap.containsKey(abilityID))
 					return true;
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public boolean qualifiesByAnyCharClassOrRace(String abilityID)
+	{
+		if(!this.qualifiesByAnyCharClass(abilityID))
+		{
+			for(final Enumeration<Race> e=CMClass.races();e.hasMoreElements();)
+			{
+				final Race R=e.nextElement();
+				if(completeAbleMap.containsKey(R.ID()))
+				{
+					final Map<String, AbilityMapping> ableMap=completeAbleMap.get(R.ID());
+					if(ableMap.containsKey(abilityID))
+						return true;
+				}
 			}
 		}
 		return false;

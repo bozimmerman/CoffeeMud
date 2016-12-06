@@ -1419,7 +1419,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * @param section the section/type of data to delete
 	 */
 	public void DBDeletePlayerData(String playerID, String section);
-
+	
 	/**
 	 * Table category: DBPLAYERDATA
 	 * Reads in all data for the given player which also belongs to any
@@ -1471,6 +1471,8 @@ public interface DatabaseEngine extends CMLibrary
 	 * Reads what is probably a single player data entry, but could be more.
 	 * All fields are required.
 	 * @see DatabaseEngine.PlayerData
+	 * @see DatabaseEngine#DBReadPlayerDataByKeyMask(String, String)
+	 * @see DatabaseEngine#DBReadPlayerDataEntry(String)
 	 * @param playerID the name/userid of the player to read data for
 	 * @param section the section/type of data to return
 	 * @param key the key of the specific entry(s) to return
@@ -1480,57 +1482,85 @@ public interface DatabaseEngine extends CMLibrary
 
 	/**
 	 * Table category: DBPLAYERDATA
-	 * 
-	 * @param section
-	 * @param keyMask
-	 * @return
+	 * Reads a list of data entries in a given section and selecting
+	 * keys by a regular expression.  This is a scanning call by section.
+	 * @see DatabaseEngine.PlayerData
+	 * @see DatabaseEngine#DBReadPlayerData(String, String, String)
+	 * @see DatabaseEngine#DBReadPlayerDataEntry(String)
+	 * @param section the section/type of data to return
+	 * @param keyMask the regular expression to match against keys
+	 * @return the player data entries returned.
 	 */
 	public List<PlayerData> DBReadPlayerDataByKeyMask(String section, String keyMask);
 
 	/**
 	 * Table category: DBPLAYERDATA
-	 * 
-	 * @param key
-	 * @return
+	 * Reads what is probably a single player data entry, but could be more?
+	 * @see DatabaseEngine.PlayerData
+	 * @see DatabaseEngine#DBReadPlayerDataByKeyMask(String, String)
+	 * @see DatabaseEngine#DBReadPlayerData(String, String, String)
+	 * @param key the key of the specific entry(s) to return
+	 * @return the player data entry to return
 	 */
 	public List<PlayerData> DBReadPlayerDataEntry(String key);
 
 	/**
 	 * Table category: DBPLAYERDATA
-	 * 
-	 * @param playerID
-	 * @param section
-	 * @param key
-	 */
-	public void DBDeletePlayerData(String playerID, String section, String key);
-
-	/**
-	 * Table category: DBPLAYERDATA
-	 * 
-	 * @param key
-	 * @param xml
+	 * Updates what is probably a single player data entry, but could be more,
+	 * by setting the xml data itself for a given key.
+	 * All fields are required.
+	 * @see DatabaseEngine.PlayerData
+	 * @see DatabaseEngine#DBDeletePlayerData(String, String, String)
+	 * @see DatabaseEngine#DBReCreatePlayerData(String, String, String, String)
+	 * @param key the key of the specific entry(s) to update
+	 * @param xml the new data to save for this entry.
 	 */
 	public void DBUpdatePlayerData(String key, String xml);
 
 	/**
 	 * Table category: DBPLAYERDATA
+	 * Deletes what is probably a single player data entry, but could be more.
+	 * All fields are required.
+	 * @see DatabaseEngine.PlayerData
+	 * @see DatabaseEngine#DBUpdatePlayerData(String, String)
+	 * @see DatabaseEngine#DBReCreatePlayerData(String, String, String, String)
+	 * @param playerID the name/userid of the player to delete data for
+	 * @param section the section/type of data to delete
+	 * @param key the key of the specific entry(s) to delete
+	 */
+	public void DBDeletePlayerData(String playerID, String section, String key);
+
+	/**
+	 * Table category: DBPLAYERDATA
+	 * Creates or Updates a single player data entry.  This is the same as an
+	 * upset where, if the key already exists, an update is done, otherwise
+	 * an insert is done.
+	 * All fields are required.
+	 * @see DatabaseEngine.PlayerData
+	 * @see DatabaseEngine#DBReCreatePlayerData(String, String, String, String)
+	 * @see DatabaseEngine#DBCreatePlayerData(String, String, String, String)
 	 * 
-	 * @param name
-	 * @param section
-	 * @param key
-	 * @param xml
-	 * @return 
+	 * @param name the userid/player id of the entry to create/update
+	 * @param section the section/type of data to create/update
+	 * @param key the key of the specific entry(s) to create/update
+	 * @param xml the new data to save for this entry.
+	 * @return the filled in PlayerData record, for both create and update
 	 */
 	public PlayerData DBReCreatePlayerData(String name, String section, String key, String xml);
 
 	/**
 	 * Table category: DBPLAYERDATA
+	 * Creates a single player data entry.
+	 * All fields are required.
+	 * @see DatabaseEngine.PlayerData
+	 * @see DatabaseEngine#DBReCreatePlayerData(String, String, String, String)
+	 * @see DatabaseEngine#DBCreatePlayerData(String, String, String, String)
 	 * 
-	 * @param player
-	 * @param section
-	 * @param key
-	 * @param data
-	 * @return 
+	 * @param player the userid/player id of the entry to create
+	 * @param section the section/type of data to create
+	 * @param key the key of the specific entry(s) to create
+	 * @param data the new xml to save for this entry.
+	 * @return the filled in PlayerData record
 	 */
 	public PlayerData DBCreatePlayerData(String player, String section, String key, String data);
 

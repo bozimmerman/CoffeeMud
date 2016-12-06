@@ -875,8 +875,8 @@ public class StdCharClass implements CharClass
 		&&(mob.soulMate()==null))
 		{
 			// the most efficient way of doing this -- just hash em!
-			final Hashtable<String,Ability> alreadyAble=new Hashtable<String,Ability>();
-			final Hashtable<String,Ability> alreadyAff=new Hashtable<String,Ability>();
+			final Map<String,Ability> alreadyAble=new HashMap<String,Ability>();
+			final Map<String,Ability> alreadyAff=new HashMap<String,Ability>();
 			for(final Enumeration<Ability> a=mob.effects();a.hasMoreElements();)
 			{
 				final Ability A=a.nextElement();
