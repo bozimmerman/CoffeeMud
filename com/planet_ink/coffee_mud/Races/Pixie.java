@@ -171,28 +171,6 @@ public class Pixie extends SmallElfKin
 		return -10;
 	}
 	
-	private final String[]	racialEffectNames			= { "Allergies" };
-	private final int[]		racialEffectLevels			= { 1 };
-	private final String[]	racialEffectParms			= { "MEAT BEEF PORK POULTRY MUTTON FISH SALMON CARP TROUT SHRIMP TUNA CATFISH DRAGONMEAT" };
-	
-	@Override
-	protected String[] racialEffectNames()
-	{
-		return racialEffectNames;
-	}
-
-	@Override
-	protected int[] racialEffectLevels()
-	{
-		return racialEffectLevels;
-	}
-
-	@Override
-	protected String[] racialEffectParms()
-	{
-		return racialEffectParms;
-	}
-
 	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
@@ -215,6 +193,31 @@ public class Pixie extends SmallElfKin
 		super.affectPhyStats(affected,affectableStats);
 	}
 	
+	@Override
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
+	{
+		if((myHost instanceof MOB)
+		&&(msg.source()==myHost)
+		&&(msg.target() instanceof Food)
+		&&((((Food)msg.target()).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_FLESH)
+		&&(((Food)msg.target()).material()!=RawMaterial.RESOURCE_WAX))
+		{
+			if(msg.targetMinor()==CMMsg.TYP_EAT)
+			{
+				final Ability A=CMClass.getAbility("Poison_Heartstopper");
+				if(A!=null)
+					A.invoke(msg.source(),msg.source(),true,0);
+			}
+			else
+			if((msg.targetMinor()==CMMsg.TYP_GET)||(msg.targetMinor()==CMMsg.TYP_PUSH)||(msg.targetMinor()==CMMsg.TYP_PULL))
+			{
+				final Ability A=CMClass.getAbility("Poison_Hives");
+				if(A!=null)
+					A.invoke(msg.source(),msg.source(),true,0);
+			}
+		}
+		super.executeMsg(myHost, msg);
+	}
 	@Override
 	public List<Item> outfit(MOB myChar)
 	{
