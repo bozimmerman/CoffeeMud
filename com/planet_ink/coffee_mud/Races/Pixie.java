@@ -196,8 +196,7 @@ public class Pixie extends SmallElfKin
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-		if((myHost instanceof MOB)
-		&&(msg.source()==myHost)
+		if((msg.source()==myHost)
 		&&(msg.target() instanceof Food)
 		&&((((Food)msg.target()).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_FLESH)
 		&&(((Food)msg.target()).material()!=RawMaterial.RESOURCE_WAX))
