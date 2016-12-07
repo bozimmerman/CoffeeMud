@@ -40,7 +40,7 @@ public class Skill_CulturalAdaptation extends StdSkill
 		return "Skill_CulturalAdaptation";
 	}
 
-	private final static String	localizedName	= CMLib.lang().L("Burrow Hide");
+	private final static String	localizedName	= CMLib.lang().L("Cultural Adaption");
 
 	@Override
 	public String name()
