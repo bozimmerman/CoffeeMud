@@ -132,6 +132,8 @@ public class GrinderMobs
 							B.setProficiency(CMath.s_int(prof));
 							B.setMiscText(txt);
 						}
+						else
+							B.setProficiency(75);
 						M.addAbility(B);
 						B.autoInvocation(M, false);
 					}
