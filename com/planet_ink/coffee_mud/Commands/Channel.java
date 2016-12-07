@@ -81,6 +81,13 @@ public class Channel extends StdCommand
 			return false;
 		}
 
+		final ChannelsLibrary.CMChannel chan=CMLib.channels().getChannel(channelInt);
+		if(!CMLib.masking().maskCheck(chan.mask(),mob,true))
+		{
+			mob.tell(L("This channel is not available to you."));
+			return false;
+		}
+		
 		if(commands.size()==0)
 		{
 			int size = CMLib.channels().getChannelQue(channelInt, 0, 5).size();
@@ -104,12 +111,6 @@ public class Channel extends StdCommand
 			final String s=commands.get(i);
 			if(s.indexOf(' ')>=0)
 				commands.set(i,"\""+s+"\"");
-		}
-		final ChannelsLibrary.CMChannel chan=CMLib.channels().getChannel(channelInt);
-		if(!CMLib.masking().maskCheck(chan.mask(),mob,true))
-		{
-			mob.tell(L("This channel is not available to you."));
-			return false;
 		}
 
 		final Set<ChannelsLibrary.ChannelFlag> flags=chan.flags();
