@@ -693,8 +693,8 @@ public class StdRace implements Race
 			final Ability A=a.nextElement();
 			final AbilityMapping mapping = CMLib.ableMapper().getQualifyingMapping(ID(), false, A.ID());
 			if((mapping != null)
-			&&(mapping.qualLevel()>0)
-			&&(mapping.qualLevel()<=mob.phyStats().level())
+			&&(mapping.qualLevel()>=0)
+			&&((mapping.qualLevel()<=mob.phyStats().level())||(mapping.qualLevel()<=1))
 			&&(mapping.autoGain()))
 			{
 				final String extraMask=mapping.extraMask();
@@ -753,7 +753,9 @@ public class StdRace implements Race
 					Ability A=CMClass.getAbility(culturalAbilityNames()[a]);
 					final int lvl = (culturalAbilityLevels()==null) ? 0 : culturalAbilityLevels()[a];
 					final boolean autoGain = (culturalAbilityAutoGains() == null) ? true : culturalAbilityAutoGains()[a];
-					if((A!=null)&&(lvl<=mob.phyStats().level())&&(autoGain))
+					if((A!=null)
+					&&((lvl<=mob.phyStats().level())||(lvl<=1))
+					&&(autoGain))
 						giveMobAbility(mob, A,culturalAbilityProficiencies()[a], "", false, true);
 				}
 			}
@@ -1142,7 +1144,7 @@ public class StdRace implements Race
 		final CMUniqSortSVec<Ability> finalV = new CMUniqSortSVec<Ability>();
 		for(int v=0;v<racialEffectLevels().length;v++)
 		{
-			if((racialEffectLevels()[v]<=level.intValue())
+			if(((racialEffectLevels()[v]<=level.intValue())||(racialEffectLevels()[v]<=1))
 			&&(racialEffectNames().length>v)
 			&&(racialEffectParms().length>v))
 			{

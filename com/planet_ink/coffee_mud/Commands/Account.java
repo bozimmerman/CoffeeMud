@@ -98,6 +98,9 @@ public class Account extends StdCommand
 				msg.append(CMStrings.padRight(levelStr,cols[2]));
 		}
 		msg.append("^w"+bgColor+"] ^b"+bgColor + who.name()+"^N ");
+		final MOB mobOn = CMLib.players().getPlayer(who.name());
+		if((mobOn != null)&&(mobOn.session() != null)&&(!mobOn.session().isStopped()))
+			msg.append("^y*^N");
 		msg.append("\n\r");
 		return msg;
 	}

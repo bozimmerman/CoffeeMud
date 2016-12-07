@@ -1577,8 +1577,16 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	{
 		final PlayerAccount acct=loginObj.acct;
 		final StringBuffer buf = new StringBuffer("");
+		int longest = 12;
+		for(final Enumeration<PlayerLibrary.ThinPlayer> p = acct.getThinPlayers(); p.hasMoreElements();)
+		{
+			final PlayerLibrary.ThinPlayer player = p.nextElement();
+			if(player.name().length()+2 > longest)
+				longest = player.name().length()+2;
+		}
+		longest = CMLib.lister().fixColWidth(longest, session);
 		buf.append("^X");
-		buf.append(CMStrings.padRight(L("Character"),20));
+		buf.append(CMStrings.padRight(L("Character"),longest));
 		buf.append(" " + CMStrings.padRight(L("Race"),10));
 		buf.append(" " + CMStrings.padRight(L("Level"),5));
 		buf.append(" " + CMStrings.padRight(L("Class"),15));
@@ -1587,7 +1595,9 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		{
 			final PlayerLibrary.ThinPlayer player = p.nextElement();
 			buf.append("^H");
-			buf.append(CMStrings.padRight(player.name(),20));
+			final MOB mob=CMLib.players().getPlayer(player.name());
+			final String onc = ((mob == null)||(mob.session()==null)||(mob.session().isStopped())) ?"":" ^y*^?";
+			buf.append(CMStrings.padRight(player.name()+onc,longest));
 			buf.append("^.^N");
 			buf.append(" " + CMStrings.padRight(player.race(),10));
 			buf.append(" " + CMStrings.padRight(""+player.level(),5));

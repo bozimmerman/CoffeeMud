@@ -62,6 +62,7 @@ public interface ListingLibrary extends CMLibrary
 	public int fixColWidth(final double colWidth, final MOB mob);
 	public int fixColWidth(final double colWidth, final Session session);
 	public int fixColWidth(final double colWidth, final double totalWidth);
+	public void fixColWidths(final int[] colWidths, final Session session);
 	
 	public static interface ListStringer
 	{
