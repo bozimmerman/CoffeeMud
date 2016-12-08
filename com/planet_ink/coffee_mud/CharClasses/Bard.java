@@ -275,8 +275,10 @@ public class Bard extends StdCharClass
 							{
 								V2.addAll(((Potion)O).getSpells());
 								for(int v=V2.size()-1;v>=0;v--)
+								{
 									if((V2.get(v).classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_POISON)
 										V2.get(v);
+								}
 							}
 							if(O instanceof Drink)
 							{
