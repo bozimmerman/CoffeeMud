@@ -79,7 +79,9 @@ public class GenAbility extends StdAbility
 	private static final int V_TKOV=27;//I
 	private static final int V_TKAF=28;//B
 	private static final int V_CHAN=29;//B
-	private static final int NUM_VS=30;//S
+	private static final int V_PCSR=30;//S
+	
+	private static final int NUM_VS=31;//S
 	
 	private static final Object[] makeEmpty()
 	{
@@ -114,6 +116,7 @@ public class GenAbility extends StdAbility
 		O[V_TKOV]=Integer.valueOf(0);
 		O[V_TKAF]=Boolean.FALSE;
 		O[V_CHAN]=Boolean.FALSE;
+		O[V_PCSR]=Boolean.TRUE;
 		return O;
 	}
 	private static final Object V(String ID, int varNum)
@@ -141,6 +144,7 @@ public class GenAbility extends StdAbility
 	private long			scriptParmHash	= 0;
 	private Runnable		periodicEffect	= null;
 	protected long			timeToNextCast	= 0;
+	protected boolean		oneTimeChecked	= false;
 
 	public ScriptingEngine getScripter()
 	{
@@ -331,6 +335,7 @@ public class GenAbility extends StdAbility
 	@Override
 	public boolean invoke(final MOB mob, List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
+		oneTimeChecked = false;
 		if((!auto)
 		&&(((String)V(ID,V_CMSK)).length()>0)
 		&&(!CMLib.masking().maskCheck((String)V(ID,V_CMSK), mob,true)))
@@ -532,10 +537,12 @@ public class GenAbility extends StdAbility
 				{
 					if((canAffectCode()!=0)&&(target!=null))
 					{
+						final Ability affectA;
 						if(abstractQuality()==Ability.QUALITY_MALICIOUS)
-							success[0]=maliciousAffect(mob,target,asLevel,tickOverride(),-1)!=null;
+							affectA=maliciousAffect(mob,target,asLevel,tickOverride(),-1);
 						else
-							success[0]=beneficialAffect(mob,target,asLevel,tickOverride())!=null;
+							affectA=beneficialAffect(mob,target,asLevel,tickOverride());
+						success[0]=affectA!=null;
 					}
 					setTimeOfNextCast(mob);
 
@@ -600,24 +607,28 @@ public class GenAbility extends StdAbility
 						{
 							if((msg.value()>0)||((msg2!=null)&&(msg2.value()>0))&&(dmg>0))
 								dmg=dmg/2;
-							if((success[0])&&(((String)V(ID,V_PCST)).length()>0))
+							if((!oneTimeChecked) || (((Boolean)V(ID,V_PCSR)).booleanValue()))
 							{
-								if((finalTarget==null)||(finalTarget instanceof Exit)||(finalTarget instanceof Area)
-								||(mob.location()==CMLib.map().roomLocation(finalTarget)))
+								oneTimeChecked = true;
+								if((success[0])&&(((String)V(ID,V_PCST)).length()>0))
 								{
-									if(dmg>0)
+									if((finalTarget==null)||(finalTarget instanceof Exit)||(finalTarget instanceof Area)
+									||(mob.location()==CMLib.map().roomLocation(finalTarget)))
 									{
-										CMLib.combat().postDamage(mob,finalTargetMOB,me,dmg,CMMsg.MASK_ALWAYS|((OTH.intValue()<=0)?finalCastCode:OTH.intValue()),Weapon.TYPE_BURSTING,(String)V(ID,V_PCST));
-										dmg=0;
+										if(dmg>0)
+										{
+											CMLib.combat().postDamage(mob,finalTargetMOB,me,dmg,CMMsg.MASK_ALWAYS|((OTH.intValue()<=0)?finalCastCode:OTH.intValue()),Weapon.TYPE_BURSTING,(String)V(ID,V_PCST));
+											dmg=0;
+										}
+										else
+										if(dmg<0)
+										{
+											CMLib.combat().postHealing(mob,finalTargetMOB,me,-dmg,CMMsg.MASK_ALWAYS|((OTH.intValue()<=0)?finalCastCode:OTH.intValue()),(String)V(ID,V_PCST));
+											dmg=0;
+										}
+										else
+											CMLib.map().roomLocation(finalTarget).show(mob,finalTarget,CMMsg.MSG_OK_ACTION,(String)V(ID,V_PCST));
 									}
-									else
-									if(dmg<0)
-									{
-										CMLib.combat().postHealing(mob,finalTargetMOB,me,-dmg,CMMsg.MASK_ALWAYS|((OTH.intValue()<=0)?finalCastCode:OTH.intValue()),(String)V(ID,V_PCST));
-										dmg=0;
-									}
-									else
-										CMLib.map().roomLocation(finalTarget).show(mob,finalTarget,CMMsg.MSG_OK_ACTION,(String)V(ID,V_PCST));
 								}
 							}
 							if(dmg>0)
@@ -754,6 +765,24 @@ public class GenAbility extends StdAbility
 	}
 
 	@Override
+	public void unInvoke()
+	{
+		final boolean can=this.canBeUninvoked();
+		final Physical aff = this.affecting();
+		super.unInvoke();
+		if(can && CMLib.flags().isInTheGame(aff, true))
+		{
+			final ScriptingEngine S=getScripter();
+			if(S!=null)
+			{
+				final CMMsg msg3=CMClass.getMsg(invoker(),aff,this,CMMsg.MSG_OK_VISUAL,null,null,"UNINVOKE-"+ID);
+				S.executeMsg(aff, msg3);
+				S.dequeResponses();
+			}
+		}
+	}
+	
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((unInvoked)&&(canBeUninvoked()))
@@ -804,7 +833,8 @@ public class GenAbility extends StdAbility
 										 "TICKSBETWEENCASTS",//28I
 										 "TICKSOVERRIDE",//29I
 										 "TICKAFFECTS", //30B
-										 "CHANNELING" //31B
+										 "CHANNELING", //31B
+										 "POSTCASTMSGREPEAT",//32B
 										};
 
 	@Override
@@ -893,6 +923,8 @@ public class GenAbility extends StdAbility
 			return ((Boolean) V(ID, V_TKAF)).toString();
 		case 31:
 			return ((Boolean) V(ID, V_CHAN)).toString();
+		case 32:
+			return ((Boolean) V(ID, V_PCSR)).toString();
 		default:
 			if (code.equalsIgnoreCase("allxml"))
 				return getAllXML();
@@ -900,6 +932,7 @@ public class GenAbility extends StdAbility
 		}
 		return "";
 	}
+
 	@Override
 	public void setStat(String code, String val)
 	{
@@ -1023,6 +1056,12 @@ public class GenAbility extends StdAbility
 			break;
 		case 31:
 			SV(ID, V_CHAN, Boolean.valueOf(CMath.s_bool(val)));
+			break;
+		case 32:
+			if((val==null)||(val.length()==0))
+				SV(ID, V_PCSR, Boolean.TRUE);
+			else
+				SV(ID, V_PCSR, Boolean.valueOf(CMath.s_bool(val)));
 			break;
 		default:
 			if (code.equalsIgnoreCase("allxml") && ID.equalsIgnoreCase("GenAbility"))

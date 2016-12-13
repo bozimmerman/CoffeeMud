@@ -1734,6 +1734,8 @@ public class StdRace implements Race
 			final Ability A=CMClass.getAbility(able.abilityID());
 			if(A!=null)
 			{
+				if(!able.abilityID().equals(A.ID()))
+					Log.errOut("Badly defined racial ability ID in "+ID()+": "+A.ID());
 				A.setProficiency(CMLib.ableMapper().getDefaultProficiency(ID(),false,A.ID()));
 				A.setSavable(false);
 				A.setMiscText(CMLib.ableMapper().getDefaultParm(ID(),false,A.ID()));

@@ -275,6 +275,14 @@
             </TR>
             <TR>
                 <TD>
+                    <FONT COLOR=YELLOW>Allows Repeating: </FONT><BR>
+                </TD>
+                <TD>
+                    <INPUT TYPE=CHECKBOX NAME=POSTCASTMSGREPEAT @AbilityData?POSTCASTMSGREPEAT@>
+                </TD>
+            </TR>
+            <TR>
+                <TD>
                     <FONT COLOR=YELLOW>Is Auto-Invoking: </FONT><BR>
                 </TD>
                 <TD>

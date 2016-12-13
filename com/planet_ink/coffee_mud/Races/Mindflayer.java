@@ -89,7 +89,7 @@ public class Mindflayer extends Humanoid
 		return culturalAbilityProficiencies;
 	}
 
-	private final String[]	racialAbilityNames			= { "Skill_Mindsuck", "Spell_DetectSentience", "Spell_CombatPrecognition" };
+	private final String[]	racialAbilityNames			= { "Skill_MindSuck", "Spell_DetectSentience", "Spell_CombatPrecognition" };
 	private final int[]		racialAbilityLevels			= { 1, 10, 30 };
 	private final int[]		racialAbilityProficiencies	= { 100, 50, 30 };
 	private final boolean[]	racialAbilityQuals			= { false, false, false };
