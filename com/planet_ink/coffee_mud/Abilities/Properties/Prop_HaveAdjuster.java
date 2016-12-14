@@ -174,6 +174,8 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 			if(CMMSGMAP[c]!=-1)
 				addIfPlussed(parameters[0],"save"+CMStrings.limit(CharStats.CODES.NAME(c).toLowerCase(),3),c,charStatsV);
 		}
+		for(int c = CharStats.STAT_FAITH; c<CharStats.CODES.TOTAL();c++)
+			addIfPlussed(parameters[0],CharStats.CODES.NAME(c).toLowerCase(),c,charStatsV);
 
 		final Vector<Object> charStateV=new Vector<Object>();
 		addIfPlussed(parameters[0],"hit",CharState.STAT_HITPOINTS,charStateV);
