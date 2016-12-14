@@ -103,6 +103,18 @@ public class DiligentStudying extends StdAbility
 				int multiplier = CMath.s_int(text());
 				if(multiplier != 0)
 					amt = amt * multiplier;
+				if(amt == 1)
+					msg.source().tell(L("^NYou gain ^H1^N practice point.\n\r^N"));
+				else
+				if(amt > 1)
+					msg.source().tell(L("^NYou gain ^H@x1^N practice points.\n\r^N",""+amt));
+				else
+				if(amt == -1)
+					msg.source().tell(L("^NYou lose ^H1^N practice point.\n\r^N"));
+				else
+				if(amt < -1)
+					msg.source().tell(L("^NYou lose ^H@x1^N practice points.\n\r^N",""+(-amt)));
+					
 				msg.source().setPractices(msg.source().getPractices() + amt);
 				if(msg.source().getPractices()<0)
 					msg.source().setPractices(0);
