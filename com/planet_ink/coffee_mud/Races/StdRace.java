@@ -687,6 +687,11 @@ public class StdRace implements Race
 	@Override
 	public void grantAbilities(MOB mob, boolean isBorrowedRace)
 	{
+		grantAbilities(mob,isBorrowedRace,false);
+	}
+	
+	protected void grantAbilities(MOB mob, boolean isBorrowedRace, boolean skipCultural)
+	{
 		final String[] alreadyAbilitied = (racialAbilityNames()==null)?new String[0]:racialAbilityNames();
 		final Map<String,AbilityMapping> ableMap=CMLib.ableMapper().getAbleMapping(ID());
 		for(final Map.Entry<String, AbilityMapping> entry : ableMap.entrySet())
@@ -707,6 +712,7 @@ public class StdRace implements Race
 					}
 				}
 				else
+				if(!skipCultural)
 				{
 					final Ability A=CMClass.getAbility(mapping.abilityID());
 					if(A!=null)
@@ -762,27 +768,7 @@ public class StdRace implements Race
 		}
 		else
 		{
-			final String[] alreadyAbilitied = (racialAbilityNames()==null)?new String[0]:racialAbilityNames();
-			final Map<String,AbilityMapping> ableMap=CMLib.ableMapper().getAbleMapping(ID());
-			for(final Map.Entry<String, AbilityMapping> entry : ableMap.entrySet())
-			{
-				final AbilityMapping mapping = entry.getValue();
-				if((mapping != null)
-				&&(mapping.qualLevel()>=0)
-				&&((mapping.qualLevel()<=mob.phyStats().level())||(mapping.qualLevel()<=1))
-				&&(mapping.autoGain()))
-				{
-					if(CMParms.contains(alreadyAbilitied, mapping.abilityID()))
-					{
-						final Ability A=mob.fetchAbility(mapping.abilityID());
-						if((A!=null)&&(mob.fetchEffect(A.ID())==null))
-						{
-							A.setProficiency(mapping.defaultProficiency());
-							A.autoInvocation(mob, false);
-						}
-					}
-				}
-			}
+			grantAbilities(mob,false,true);
 		}
 	}
 
