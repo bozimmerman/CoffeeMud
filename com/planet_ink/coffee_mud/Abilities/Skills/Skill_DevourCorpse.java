@@ -135,7 +135,7 @@ public class Skill_DevourCorpse extends StdSkill
 			}
 			else
 			{
-				mob.tell(L("You failed to eat @x1!",((Physical)msg.target()).name(mob)));
+				mob.tell(L("You failed to eat @x1.",((Physical)msg.target()).name(mob)));
 				return false;
 			}
 		}
