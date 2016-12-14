@@ -5,6 +5,7 @@ import java.util.Comparator;
 import java.util.Map;
 import java.util.Set;
 import java.util.SortedMap;
+import java.util.TreeMap;
 
 /*
    Copyright 2010-2016 Bo Zimmerman
@@ -28,6 +29,11 @@ public class ReadOnlySortedMap<K, V> implements SortedMap<K, V>
 	public ReadOnlySortedMap(SortedMap<K, V> s)
 	{
 		map = s;
+	}
+
+	public ReadOnlySortedMap()
+	{
+		map = new TreeMap<K,V>();
 	}
 
 	@Override

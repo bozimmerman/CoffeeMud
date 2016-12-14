@@ -572,6 +572,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 
 		curClass.grantAbilities(mob,false);
 		mob.baseCharStats().getMyRace().grantAbilities(mob, false);
+		mob.charStats().getMyRace().startRacing(mob, true);
 		CMLib.achievements().grantAbilitiesAndExpertises(mob);
 
 		// check for autoinvoking abilities

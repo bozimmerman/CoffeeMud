@@ -74,6 +74,18 @@ public class Skill_DevourCorpse extends StdSkill
 	}
 
 	@Override
+	public boolean isAutoInvoked()
+	{
+		return true;
+	}
+
+	@Override
+	public boolean canBeUninvoked()
+	{
+		return false;
+	}
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(affected instanceof MOB))
@@ -84,39 +96,46 @@ public class Skill_DevourCorpse extends StdSkill
 		&&(msg.targetMinor()==CMMsg.TYP_EAT)
 		&&(msg.target() instanceof DeadBody))
 		{
-			final int targetWeight = ((Physical)msg.target()).phyStats().weight();
-			if((targetWeight<(mob.phyStats().weight()*3))
-			&&(mob.location()!=null))
+			if(proficiencyCheck(mob,0,false))
 			{
-				if(msg.target() instanceof Food)
-					return super.okMessage(myHost,msg);
-				else
-				if(!(msg.target() instanceof Item))
-					return super.okMessage(myHost,msg);
-				else
-				if((!CMLib.flags().isGettable((Item)msg.target()))
-				||(msg.target().displayText().length()==0)
-				||(!CMLib.utensils().canBePlayerDestroyed(mob, (Item)msg.target(), false)))
+				final int targetWeight = ((Physical)msg.target()).phyStats().weight();
+				if((targetWeight<(mob.phyStats().weight()*3))
+				&&(mob.location()!=null))
 				{
-					mob.tell(L("You can not eat @x1.",((Item)msg.target()).name(mob)));
+					if(msg.target() instanceof Food)
+						return super.okMessage(myHost,msg);
+					else
+					if(!(msg.target() instanceof Item))
+						return super.okMessage(myHost,msg);
+					else
+					if((!CMLib.flags().isGettable((Item)msg.target()))
+					||(msg.target().displayText().length()==0)
+					||(!CMLib.utensils().canBePlayerDestroyed(mob, (Item)msg.target(), false)))
+					{
+						mob.tell(L("You can not eat @x1.",((Item)msg.target()).name(mob)));
+						return false;
+					}
+					if((msg.target() instanceof Container)
+					&&(((Container)msg.target()).getContents().size()>0))
+					{
+						mob.tell(L("You need to get all the equipment out of @x1 first.",((Item)msg.target()).name(mob)));
+						return false;
+					}
+	
+					msg.modify(msg.source(),msg.target(),msg.tool(),
+							  msg.sourceCode()|CMMsg.MASK_ALWAYS|CMMsg.MASK_MALICIOUS,msg.sourceMessage(),
+							  CMMsg.MSG_NOISYMOVEMENT|CMMsg.MASK_MALICIOUS,msg.targetMessage(),
+							  msg.othersCode()|CMMsg.MASK_ALWAYS|CMMsg.MASK_MALICIOUS,msg.othersMessage());
+				}
+				else
+				{
+					mob.tell(L("@x1 is just too large for you to eat!",((Physical)msg.target()).name(mob)));
 					return false;
 				}
-				if((msg.target() instanceof Container)
-				&&(((Container)msg.target()).getContents().size()>0))
-				{
-					mob.tell(L("You need to get all the equipment out of @x1 first.",((Item)msg.target()).name(mob)));
-					return false;
-				}
-
-				msg.modify(msg.source(),msg.target(),msg.tool(),
-						  msg.sourceCode()|CMMsg.MASK_ALWAYS|CMMsg.MASK_MALICIOUS,msg.sourceMessage(),
-						  CMMsg.MSG_NOISYMOVEMENT|CMMsg.MASK_MALICIOUS,msg.targetMessage(),
-						  msg.othersCode()|CMMsg.MASK_ALWAYS|CMMsg.MASK_MALICIOUS,msg.othersMessage());
-
 			}
 			else
 			{
-				mob.tell(L("@x1 is just too large for you to eat!",((Physical)msg.target()).name(mob)));
+				mob.tell(L("You failed to eat @x1!",((Physical)msg.target()).name(mob)));
 				return false;
 			}
 		}

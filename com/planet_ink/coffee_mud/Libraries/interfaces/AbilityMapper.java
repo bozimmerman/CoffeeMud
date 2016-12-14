@@ -352,6 +352,15 @@ public interface AbilityMapper extends CMLibrary
 	public List<AbilityMapping> getUpToLevelListings(String ID, int level, boolean ignoreAll, boolean gainedOnly);
 
 	/**
+	 * Returns the raw Ability mappings for the given class, race, or clan ID.
+	 * Does nto include all-qualified.
+	 * @param ID the charclass ID(), race ID(), or whatever
+	 * @return the map of AbilityIDs to their ability mappings.
+	 */
+	public Map<String,AbilityMapping> getAbleMapping(String ID);
+
+	
+	/**
 	 * Returns the level at which the given class or race qualifies for the given ability ID(),
 	 * optionally checking the All-Qualifies list or not.  Returns -1 for no match.
 	 * @see AbilityMapper#qualifyingLevel(MOB, Ability)

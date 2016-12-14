@@ -160,6 +160,7 @@ public class Mindflayer extends Humanoid
 				return new Vector<Item>();
 			outfitChoices=new Vector<Item>();
 			s1.setName(L("grey robes"));
+			s1.setMaterial(RawMaterial.RESOURCE_COTTON);
 			s1.setDisplayText(L("a pile of grey robes have been left here."));
 			s1.setDescription(L("Just ordinary grey robes."));
 			s1.setRawProperLocationBitmap(Wearable.WORN_ABOUT_BODY|Wearable.WORN_ARMS|Wearable.WORN_TORSO);

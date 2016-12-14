@@ -687,28 +687,40 @@ public class StdRace implements Race
 	@Override
 	public void grantAbilities(MOB mob, boolean isBorrowedRace)
 	{
-		final PairList<Ability,AbilityMapping> onesToAdd=new PairVector<Ability,AbilityMapping>();
-		for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+		final String[] alreadyAbilitied = (racialAbilityNames()==null)?new String[0]:racialAbilityNames();
+		final Map<String,AbilityMapping> ableMap=CMLib.ableMapper().getAbleMapping(ID());
+		for(final Map.Entry<String, AbilityMapping> entry : ableMap.entrySet())
 		{
-			final Ability A=a.nextElement();
-			final AbilityMapping mapping = CMLib.ableMapper().getQualifyingMapping(ID(), false, A.ID());
+			final AbilityMapping mapping = entry.getValue();
 			if((mapping != null)
 			&&(mapping.qualLevel()>=0)
 			&&((mapping.qualLevel()<=mob.phyStats().level())||(mapping.qualLevel()<=1))
 			&&(mapping.autoGain()))
 			{
-				final String extraMask=mapping.extraMask();
-				if((extraMask==null)
-				||(extraMask.length()==0)
-				||(CMLib.masking().maskCheck(extraMask,mob,true)))
-					onesToAdd.add(A,mapping);
+				if(CMParms.contains(alreadyAbilitied, mapping.abilityID()))
+				{
+					final Ability A=mob.fetchAbility(mapping.abilityID());
+					if((A!=null)&&(mob.fetchEffect(A.ID())==null))
+					{
+						A.setProficiency(mapping.defaultProficiency());
+						A.autoInvocation(mob, false);
+					}
+				}
+				else
+				{
+					final Ability A=CMClass.getAbility(mapping.abilityID());
+					if(A!=null)
+					{
+						final String extraMask=mapping.extraMask();
+						if((extraMask==null)
+						||(extraMask.length()==0)
+						||(CMLib.masking().maskCheck(extraMask,mob,true)))
+						{
+							giveMobAbility(mob,A,mapping.defaultProficiency(),mapping.defaultParm(),isBorrowedRace);
+						}
+					}
+				}
 			}
-		}
-		for(int v=0;v<onesToAdd.size();v++)
-		{
-			final Ability A=onesToAdd.get(v).first;
-			final AbilityMapping map=onesToAdd.get(v).second;
-			giveMobAbility(mob,A,map.defaultProficiency(),map.defaultParm(),isBorrowedRace);
 		}
 	}
 	
@@ -728,12 +740,14 @@ public class StdRace implements Race
 		}
 		for(final Ability A : racialAbilities(mob))
 		{
-			if((A!=null)
-			&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE))
+			if(A!=null)
 			{
-				A.autoInvocation(mob, false);
-				A.invoke(mob,mob,false,0);
-				break;
+				if((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE)
+				{
+					A.autoInvocation(mob, false);
+					A.invoke(mob,mob,false,0);
+					break;
+				}
 			}
 		}
 		if(!verifyOnly)
@@ -744,19 +758,29 @@ public class StdRace implements Race
 				mob.setTrains(mob.getTrains()+trainsAtFirstLevel());
 			}
 			setHeightWeight(mob.basePhyStats(),(char)mob.baseCharStats().getStat(CharStats.STAT_GENDER));
-
-			if((culturalAbilityNames()!=null)&&(culturalAbilityProficiencies()!=null)
-			&&(culturalAbilityNames().length==culturalAbilityProficiencies().length))
+			grantAbilities(mob,false);
+		}
+		else
+		{
+			final String[] alreadyAbilitied = (racialAbilityNames()==null)?new String[0]:racialAbilityNames();
+			final Map<String,AbilityMapping> ableMap=CMLib.ableMapper().getAbleMapping(ID());
+			for(final Map.Entry<String, AbilityMapping> entry : ableMap.entrySet())
 			{
-				for(int a=0;a<culturalAbilityNames().length;a++)
+				final AbilityMapping mapping = entry.getValue();
+				if((mapping != null)
+				&&(mapping.qualLevel()>=0)
+				&&((mapping.qualLevel()<=mob.phyStats().level())||(mapping.qualLevel()<=1))
+				&&(mapping.autoGain()))
 				{
-					Ability A=CMClass.getAbility(culturalAbilityNames()[a]);
-					final int lvl = (culturalAbilityLevels()==null) ? 0 : culturalAbilityLevels()[a];
-					final boolean autoGain = (culturalAbilityAutoGains() == null) ? true : culturalAbilityAutoGains()[a];
-					if((A!=null)
-					&&((lvl<=mob.phyStats().level())||(lvl<=1))
-					&&(autoGain))
-						giveMobAbility(mob, A,culturalAbilityProficiencies()[a], "", false, true);
+					if(CMParms.contains(alreadyAbilitied, mapping.abilityID()))
+					{
+						final Ability A=mob.fetchAbility(mapping.abilityID());
+						if((A!=null)&&(mob.fetchEffect(A.ID())==null))
+						{
+							A.setProficiency(mapping.defaultProficiency());
+							A.autoInvocation(mob, false);
+						}
+					}
 				}
 			}
 		}
@@ -1702,14 +1726,14 @@ public class StdRace implements Race
 			for(int i=0;i<racialAbilityNames().length;i++)
 			{
 				CMLib.ableMapper().addDynaAbilityMapping(
-						 ID(),
-						 racialAbilityLevels()[i],
-						 racialAbilityNames()[i],
-						 racialAbilityProficiencies()[i],
-						 racialAbilityParms()[i],
-						 !racialAbilityQuals()[i],
-						 false,
-						 "");
+														 ID(),
+														 racialAbilityLevels()[i],
+														 racialAbilityNames()[i],
+														 racialAbilityProficiencies()[i],
+														 racialAbilityParms()[i],
+														 !racialAbilityQuals()[i],
+														 false,
+														 "");
 			}
 		}
 		if(racialAbilityMap==null)
