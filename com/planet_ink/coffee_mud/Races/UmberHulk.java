@@ -99,7 +99,7 @@ public class UmberHulk extends StdRace
 	}
 
 	protected static Vector<RawMaterial>	resources					= new Vector<RawMaterial>();
-	private final String[]					racialAbilityNames			= { "Chant_StoneWalking", "Spell_Confusion" };
+	private final String[]					racialAbilityNames			= { "Chant_Stonewalking", "Spell_Confusion" };
 	private final int[]						racialAbilityLevels			= { 1, 10 };
 	private final int[]						racialAbilityProficiencies	= { 100, 50 };
 	private final boolean[]					racialAbilityQuals			= { false, false };
