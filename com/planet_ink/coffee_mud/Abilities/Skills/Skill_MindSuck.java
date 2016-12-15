@@ -111,12 +111,12 @@ public class Skill_MindSuck extends StdSkill
 	public boolean suckableBrain(final MOB invoker, final MOB mob)
 	{
 		if((invoker.isInCombat())
+		||(mob.isInCombat())
 		||((CMLib.flags().isAliveAwakeMobileUnbound(mob, false))
 			&&(mob.amFollowing()!=invoker))
 		||(mob.location()!=CMLib.map().roomLocation(invoker))
 		||(mob.amDead())
-		||(mob==invoker)
-		||(!CMLib.flags().isAliveAwakeMobileUnbound(invoker, false)))
+		||(mob==invoker))
 			return false;
 		return true;
 	}
@@ -170,6 +170,13 @@ public class Skill_MindSuck extends StdSkill
 	}
 
 	@Override
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
+	{
+		super.affectPhyStats(affected, affectableStats);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_MOVE);
+	}
+	
+	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
 		if((mob!=null)&&(target!=null))
@@ -213,7 +220,11 @@ public class Skill_MindSuck extends StdSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		int levelDiff = (mob.phyStats().level()-target.phyStats().level())*10;
+		if(levelDiff > 0)
+			levelDiff = 0;
+
+		boolean success=proficiencyCheck(mob,levelDiff,auto);
 
 		if(success)
 		{
@@ -222,13 +233,19 @@ public class Skill_MindSuck extends StdSkill
 						 L("^S<S-NAME> attempt(s) to suck the brain out of <T-NAMESELF> for nourishment.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
+				msg.setSourceCode(msg.sourceCode()&(~CMMsg.MASK_MALICIOUS));
+				msg.setTargetCode(msg.targetCode()&(~CMMsg.MASK_MALICIOUS));
+				msg.setOthersCode(msg.othersCode()&(~CMMsg.MASK_MALICIOUS));
 				mob.location().send(mob,msg);
 				mob.makePeace(true);
 				target.makePeace(true);
 				if(msg.value()<=0)
 				{
 					beneficialAffect(mob,target,asLevel,4);
+					mob.location().recoverPhyStats();
 				}
+				mob.makePeace(true);
+				target.makePeace(true);
 			}
 		}
 		else

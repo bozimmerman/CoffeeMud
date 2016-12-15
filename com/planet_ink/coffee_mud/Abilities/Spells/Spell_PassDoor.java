@@ -110,6 +110,36 @@ public class Spell_PassDoor extends Spell
 		super.unInvoke();
 	}
 
+	protected int highestLevelHere(final MOB mob, final Room R, int highestLevel)
+	{
+		for(Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
+		{
+			final MOB M=m.nextElement();
+			if((M!=null)
+			&& M.isMonster()
+			&&(M.amFollowing()==null)
+			&&(M.phyStats().level()>highestLevel))
+				highestLevel=M.phyStats().level();
+		}
+		for(Enumeration<Item> i=R.items();i.hasMoreElements();)
+		{
+			final Item I=i.nextElement();
+			if((I!=null)
+			&&(I.phyStats().level()>highestLevel))
+				highestLevel = I.phyStats().level();
+		}
+		final LandTitle T=CMLib.law().getLandTitle(R);
+		if((T!=null)
+		&&(!CMLib.law().doesHavePriviledgesHere(mob, R)))
+		{
+			final MOB M = CMLib.law().getPropertyOwner(T);
+			if((M!=null)
+			&&(M.phyStats().level()>highestLevel))
+				highestLevel = M.phyStats().level();
+		}
+		return highestLevel;
+	}
+
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -133,6 +163,7 @@ public class Spell_PassDoor extends Spell
 		}
 		final String whatToOpen=CMParms.combine(commands,0);
 		final int dirCode=CMLib.directions().getGoodDirectionCode(whatToOpen);
+		int adjustment = 0;
 		if(!auto)
 		{
 			if(dirCode<0)
@@ -141,8 +172,9 @@ public class Spell_PassDoor extends Spell
 				return false;
 			}
 
-			final Exit exit=mob.location().getExitInDir(dirCode);
-			final Room room=mob.location().getRoomInDir(dirCode);
+			final Room R=mob.location();
+			final Exit exit=R.getExitInDir(dirCode);
+			final Room room=R.getRoomInDir(dirCode);
 
 			if((exit==null)||(room==null)||(!CMLib.flags().canBeSeenBy(exit,mob)))
 			{
@@ -155,12 +187,19 @@ public class Spell_PassDoor extends Spell
 				mob.tell(L("But it looks free and clear that way!"));
 				return false;
 			}
+			
+			int highestLevel = exit.phyStats().level();
+			highestLevel = highestLevelHere(mob,R,highestLevel);
+			highestLevel = highestLevelHere(mob,room,highestLevel);
+			adjustment = (mob.phyStats().level() - highestLevel) * 5;
+			if(adjustment > 0)
+				adjustment = 0;
 		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		final boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,adjustment,auto);
 
 		if((!success)
 		||(mob.fetchEffect(ID())!=null))

@@ -164,6 +164,7 @@ public class Spell_Enthrall extends Spell
 				if((CMLib.dice().rollPercentage()>50)
 				||((mob.getStartRoom()!=null)
 					&&(mob.getStartRoom().getArea()!=mob.location().getArea())
+					&&(CMLib.flags().canMove(mob))
 					&&(CMLib.flags().isAggressiveTo(mob,null)||(invoker==null)||(!mob.location().isInhabitant(invoker)))))
 						CMLib.tracking().wanderAway(mob,true,true);
 				else

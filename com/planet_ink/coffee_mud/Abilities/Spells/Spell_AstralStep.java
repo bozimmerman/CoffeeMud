@@ -112,6 +112,36 @@ public class Spell_AstralStep extends Spell
 		super.unInvoke();
 	}
 
+	protected int highestLevelHere(final MOB mob, final Room R, int highestLevel)
+	{
+		for(Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
+		{
+			final MOB M=m.nextElement();
+			if((M!=null)
+			&& M.isMonster()
+			&&(M.amFollowing()==null)
+			&&(M.phyStats().level()>highestLevel))
+				highestLevel=M.phyStats().level();
+		}
+		for(Enumeration<Item> i=R.items();i.hasMoreElements();)
+		{
+			final Item I=i.nextElement();
+			if((I!=null)
+			&&(I.phyStats().level()>highestLevel))
+				highestLevel = I.phyStats().level();
+		}
+		final LandTitle T=CMLib.law().getLandTitle(R);
+		if((T!=null)
+		&&(!CMLib.law().doesHavePriviledgesHere(mob, R)))
+		{
+			final MOB M = CMLib.law().getPropertyOwner(T);
+			if((M!=null)
+			&&(M.phyStats().level()>highestLevel))
+				highestLevel = M.phyStats().level();
+		}
+		return highestLevel;
+	}
+	
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -169,26 +199,28 @@ public class Spell_AstralStep extends Spell
 		boolean success=false;
 		for(int dirDex = 0; dirDex < dirs.size(); dirDex++)
 		{
+			final Room R=mob.location();
 			int dirCode = dirs.get(dirDex).intValue();
-			final Exit exit=mob.location().getExitInDir(dirCode);
-			final Room room=mob.location().getRoomInDir(dirCode);
+			final Exit exit=R.getExitInDir(dirCode);
+			final Room room=R.getRoomInDir(dirCode);
 
 			if((exit==null)||(room==null)||(!CMLib.flags().canBeSeenBy(exit,mob)))
 			{
 				mob.tell(L("You can't see anywhere to pass that way."));
 				return false;
 			}
-			if((!auto)&&(dirDex==0))
+			int adjustment = 0;
+			if(!auto)
 			{
-				//Exit opExit=room.getReverseExit(dirCode);
-				if(exit.isOpen())
-				{
-					mob.tell(L("But it looks free and clear that way!"));
-					return false;
-				}
+				int highestLevel = exit.phyStats().level();
+				highestLevel = highestLevelHere(mob,R,highestLevel);
+				highestLevel = highestLevelHere(mob,room,highestLevel);
+				adjustment = (mob.phyStats().level() - highestLevel) * 10;
+				if(adjustment > 0)
+					adjustment = 0;
 			}
 
-			success=proficiencyCheck(mob,0,auto);
+			success=proficiencyCheck(mob,adjustment,auto);
 	
 			if((!success)
 			||(mob.fetchEffect(ID())!=null))
@@ -200,9 +232,9 @@ public class Spell_AstralStep extends Spell
 			if(auto)
 			{
 				final CMMsg msg=CMClass.getMsg(mob,null,null,verbalCastCode(mob,null,auto),L("^S<S-NAME> shimmer(s) and disappear(s) through the astral plane.^?"));
-				if(mob.location().okMessage(mob,msg))
+				if(R.okMessage(mob,msg))
 				{
-					mob.location().send(mob,msg);
+					R.send(mob,msg);
 					beneficialAffect(mob,mob,asLevel,5);
 					mob.recoverPhyStats();
 				}
@@ -212,9 +244,9 @@ public class Spell_AstralStep extends Spell
 			else
 			{
 				final CMMsg msg=CMClass.getMsg(mob,null,null,verbalCastCode(mob,null,auto),L("^S<S-NAME> shimmer(s) and step(s) @x1 through the astral plane.^?",CMLib.directions().getDirectionName(dirCode)));
-				if(mob.location().okMessage(mob,msg))
+				if(R.okMessage(mob,msg))
 				{
-					mob.location().send(mob,msg);
+					R.send(mob,msg);
 					mob.addEffect(this);
 					mob.recoverPhyStats();
 					mob.tell(L("\n\r\n\r"));
