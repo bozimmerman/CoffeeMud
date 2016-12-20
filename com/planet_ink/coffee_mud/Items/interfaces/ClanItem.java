@@ -45,24 +45,25 @@ public interface ClanItem extends Item
 	 * @see ClanItem#setClanItemType(ClanItemType)
 	 * @author Bo Zimmerman
 	 */
-	public enum ClanItemType
+	public enum ClanItemType // ORDER IS SIGNIFICANT UNTIL clancraft.txt format changes
 	{
-		FLAG,
-		BANNER,
-		GAVEL,
-		PROPAGANDA,
-		GATHERITEM,
-		CRAFTITEM,
-		SPECIALSCALES,
-		SPECIALSCAVENGER,
-		SPECIALOTHER,
-		SPECIALTAXER,
-		DONATIONJOURNAL,
-		ANTI_PROPAGANDA,
-		SPECIALAPRON,
-		LEGALBADGE
+		FLAG("Flag"),
+		BANNER("Banner"),
+		GAVEL("Gavel"),
+		PROPAGANDA("Propaganda"),
+		GATHERITEM("Gathering tool"),
+		CRAFTITEM("Crafting tool"),
+		SPECIALSCALES("Justice tool"),
+		SPECIALSCAVENGER("Scavenging tool"),
+		SPECIALOTHER("Clan item"),
+		SPECIALTAXER("Taxing tool"),
+		DONATIONJOURNAL("Journal"),
+		ANTI_PROPAGANDA("Anti-propaganda"),
+		SPECIALAPRON("Merchant tool"),
+		LEGALBADGE("Officer emblem")
 		;
 		private final String ID;
+		private final String displayName;
 		
 		public final static String[] ALL=new String[ClanItemType.values().length];
 		static
@@ -74,15 +75,21 @@ public interface ClanItem extends Item
 			}
 		}
 		
-		private ClanItemType()
+		private ClanItemType(String displayName)
 		{
 			ID = this.name().replace('_', '-');
+			this.displayName=displayName;
 		}
 		
 		@Override
 		public String toString()
 		{
 			return ID;
+		}
+		
+		public String getDisplayName()
+		{
+			return displayName;
 		}
 		
 		/**

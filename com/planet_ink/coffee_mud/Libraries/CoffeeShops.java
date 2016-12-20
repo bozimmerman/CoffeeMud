@@ -142,7 +142,33 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		if(E==null)
 			return str.toString();
 		if(E instanceof Physical)
+		{
 			str.append("\n\rLevel      : "+((Physical)E).phyStats().level());
+			str.append("\n\rType       : ");
+			if(E instanceof LandTitle)
+				str.append(L("Title Document"));
+			else
+			{
+				if(E instanceof Electronics)
+					str.append(L("Electronic"));
+				if(E instanceof BoardableShip)
+					str.append(L("Vessel"));
+				else
+				if(E instanceof ClanItem)
+					str.append(L(((ClanItem)E).getClanItemType().getDisplayName()));
+				else
+				if(E instanceof Weapon)
+					str.append(L("Weapon"));
+				else
+				if(E instanceof Armor)
+					str.append(L("Armor"));
+				else
+				if(E instanceof Container)
+					str.append(L("Container"));
+				else
+					str.append(L("Item"));
+			}
+		}
 		if(E instanceof LandTitle)
 		{
 			final LandTitle T=(LandTitle)E;

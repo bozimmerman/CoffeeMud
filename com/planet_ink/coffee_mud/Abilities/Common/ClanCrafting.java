@@ -152,6 +152,9 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 		if(super.checkStop(mob, commands))
 			return true;
 
+		if(super.checkInfo(mob, commands))
+			return true;
+
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
@@ -391,7 +394,15 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 			else
 			if(CMLib.clans().numClans()>0)
 				((ClanItem)buildingI).setClanID(CMLib.clans().clans().nextElement().clanID());
-			((ClanItem)buildingI).setClanItemType(ClanItem.ClanItemType.values()[CMath.s_int(foundRecipe.get(RCP_CITYPE))]);
+			final String type = foundRecipe.get(RCP_CITYPE);
+			if(CMath.isInteger(type))
+				((ClanItem)buildingI).setClanItemType(ClanItem.ClanItemType.values()[CMath.s_int(type)]);
+			else
+			{
+				ClanItem.ClanItemType cType = (ClanItem.ClanItemType)CMath.s_valueOf(ClanItem.ClanItemType.class, type.toUpperCase().trim());
+				if(cType != null)
+					((ClanItem)buildingI).setClanItemType(cType);
+			}
 			if(((ClanItem)buildingI).getClanItemType()==ClanItem.ClanItemType.PROPAGANDA)
 			{
 				buildingI.setMaterial(RawMaterial.RESOURCE_PAPER);
