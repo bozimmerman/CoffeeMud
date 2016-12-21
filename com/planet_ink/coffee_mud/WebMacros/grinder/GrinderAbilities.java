@@ -165,8 +165,6 @@ public class GrinderAbilities
 		A.setStat("ATTACKCODE",(old==null)?"0":old);
 		old=httpReq.getUrlParameter("POSTCASTDAMAGE");
 		A.setStat("POSTCASTDAMAGE",(old==null)?"":old);
-		old=httpReq.getUrlParameter("POSTCASTMSGREPEAT");
-		A.setStat("POSTCASTMSGREPEAT",(old==null)?"true":Boolean.toString(old.equalsIgnoreCase("on")));
 		V.clear();
 		if(httpReq.isUrlParameter("POSTCASTAFFECT"))
 		{

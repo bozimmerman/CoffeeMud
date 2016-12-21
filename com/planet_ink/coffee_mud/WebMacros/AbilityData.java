@@ -584,15 +584,6 @@ public class AbilityData extends StdWebMacro
 						old=A.getStat("POSTCASTMSG");
 					str.append(old+", ");
 				}
-				if(parms.containsKey("POSTCASTMSGREPEAT"))
-				{
-					String old=httpReq.getUrlParameter("POSTCASTMSGREPEAT");
-					if(old==null)
-						old=A.getStat("POSTCASTMSGREPEAT");
-					else
-						old=old.equalsIgnoreCase("on")?"true":"false";
-					str.append(old.equalsIgnoreCase("true")?"checked":"");
-				}
 				if(parms.containsKey("ATTACKCODE"))
 				{
 					String old=httpReq.getUrlParameter("ATTACKCODE");

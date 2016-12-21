@@ -79,9 +79,8 @@ public class GenAbility extends StdAbility
 	private static final int V_TKOV=27;//I
 	private static final int V_TKAF=28;//B
 	private static final int V_CHAN=29;//B
-	private static final int V_PCSR=30;//S
 	
-	private static final int NUM_VS=31;//S
+	private static final int NUM_VS=30;//S
 	
 	private static final Object[] makeEmpty()
 	{
@@ -116,7 +115,6 @@ public class GenAbility extends StdAbility
 		O[V_TKOV]=Integer.valueOf(0);
 		O[V_TKAF]=Boolean.FALSE;
 		O[V_CHAN]=Boolean.FALSE;
-		O[V_PCSR]=Boolean.TRUE;
 		return O;
 	}
 	private static final Object V(String ID, int varNum)
@@ -145,6 +143,7 @@ public class GenAbility extends StdAbility
 	private Runnable		periodicEffect	= null;
 	protected long			timeToNextCast	= 0;
 	protected boolean		oneTimeChecked	= false;
+	protected List<Ability>	postEffects		= new Vector<Ability>(1);
 
 	public ScriptingEngine getScripter()
 	{
@@ -289,7 +288,7 @@ public class GenAbility extends StdAbility
 	{
 		try
 		{
-			final GenAbility A=this.getClass().newInstance();
+			final GenAbility A = this.getClass().newInstance();
 			A.ID=ID;
 			getScripter();
 			A.scriptParmHash=scriptParmHash;
@@ -299,7 +298,8 @@ public class GenAbility extends StdAbility
 				A.scriptObj.setScript(scriptObj.getScript());
 			}
 			else
-				A.scriptObj=null;
+				A.scriptObj = null;
+			A.postEffects = new ArrayList<Ability>(postEffects);
 			return A;
 		}
 		catch(final Exception e)
@@ -332,10 +332,42 @@ public class GenAbility extends StdAbility
 		return true;
 	}
 
+	protected Set<Ability> getEffectsList(final Physical mob)
+	{
+		final Set<Ability> effects = new HashSet<Ability>();
+		if(mob != null)
+		{
+			for(Enumeration<Ability> a=mob.effects();a.hasMoreElements();)
+			{
+				final Ability A=a.nextElement();
+				if(A!=null)
+					effects.add(A);
+			}
+		}
+		return effects;
+	}
+
+	protected List<Ability> getEffectsDiff(final Physical mob, final Set<Ability> oldEffects)
+	{
+		final ArrayList<Ability> effects = new ArrayList<Ability>();
+		if(mob != null)
+		{
+			final Set<Ability> currentEffects=getEffectsList(mob);
+			for(Iterator<Ability> a=currentEffects.iterator();a.hasNext();)
+			{
+				final Ability A=a.next();
+				if((A!=null)&&(!oldEffects.contains(A)))
+					effects.add(A);
+			}
+		}
+		return effects;
+	}
+
 	@Override
 	public boolean invoke(final MOB mob, List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		oneTimeChecked = false;
+		postEffects.clear();
 		if((!auto)
 		&&(((String)V(ID,V_CMSK)).length()>0)
 		&&(!CMLib.masking().maskCheck((String)V(ID,V_CMSK), mob,true)))
@@ -557,6 +589,7 @@ public class GenAbility extends StdAbility
 							Ability A=null;
 							if(target!=null)
 							{
+								final Set<Ability> oldEffects = getEffectsList(target);
 								for(Enumeration<Ability> a2= ((AbilityContainer)P).abilities();a2.hasMoreElements();)
 								{
 									A=a2.nextElement();
@@ -581,6 +614,7 @@ public class GenAbility extends StdAbility
 										}
 									}
 								}
+								postEffects.addAll(getEffectsDiff(target, oldEffects));
 							}
 						}
 					}
@@ -599,15 +633,18 @@ public class GenAbility extends StdAbility
 						if(DMG.trim().length()>0)
 						{
 							dmg=CMath.parseIntExpression(DMG,
-									new double[]{mob.phyStats().level(),
-									(finalTarget==null)?mob.phyStats().level():finalTarget.phyStats().level()});
+								new double[]
+								{
+									mob.phyStats().level(),
+									(finalTarget==null)?mob.phyStats().level():finalTarget.phyStats().level()
+								});
 						}
 						if(((msg.value()<=0)&&((msg2==null)||(msg2.value()<=0)))
 						||(dmg>0))
 						{
 							if((msg.value()>0)||((msg2!=null)&&(msg2.value()>0))&&(dmg>0))
 								dmg=dmg/2;
-							if((!oneTimeChecked) || (((Boolean)V(ID,V_PCSR)).booleanValue()))
+							if((!oneTimeChecked) || (((Boolean)V(ID,V_TKAF)).booleanValue()))
 							{
 								oneTimeChecked = true;
 								if((success[0])&&(((String)V(ID,V_PCST)).length()>0))
@@ -660,7 +697,11 @@ public class GenAbility extends StdAbility
 							{
 								final Ability P=CMClass.getAbility("Prop_SpellAdder");
 								if(P!=null)
+								{
+									final Set<Ability> oldEffects = getEffectsList(finalTarget);
 									P.invoke(mob,new XVector(afterCast),finalTarget,true,asLevel);
+									postEffects.addAll(getEffectsDiff(finalTarget, oldEffects));
+								}
 							}
 						}
 						if((canAffectCode()!=0)&&(finalTarget!=null)&&(finalTargetMOB.amDead()||(!CMLib.flags().isInTheGame(finalTarget, true))))
@@ -770,14 +811,28 @@ public class GenAbility extends StdAbility
 		final boolean can=this.canBeUninvoked();
 		final Physical aff = this.affecting();
 		super.unInvoke();
-		if(can && CMLib.flags().isInTheGame(aff, true))
+		if(can)
 		{
-			final ScriptingEngine S=getScripter();
-			if(S!=null)
+			final List<Ability> affs = new ArrayList<Ability>(postEffects);
+			postEffects.clear();
+			for(Ability A : affs)
 			{
-				final CMMsg msg3=CMClass.getMsg(invoker(),aff,this,CMMsg.MSG_OK_VISUAL,null,null,"UNINVOKE-"+ID);
-				S.executeMsg(aff, msg3);
-				S.dequeResponses();
+				if((A!=null) && (aff.fetchEffect(A.ID())==A))
+				{
+					A.unInvoke();
+					aff.delEffect(A);
+				}
+			}
+			affs.clear();
+			if(CMLib.flags().isInTheGame(aff, true))
+			{
+				final ScriptingEngine S=getScripter();
+				if(S!=null)
+				{
+					final CMMsg msg3=CMClass.getMsg(invoker(),aff,this,CMMsg.MSG_OK_VISUAL,null,null,"UNINVOKE-"+ID);
+					S.executeMsg(aff, msg3);
+					S.dequeResponses();
+				}
 			}
 		}
 	}
@@ -834,7 +889,6 @@ public class GenAbility extends StdAbility
 										 "TICKSOVERRIDE",//29I
 										 "TICKAFFECTS", //30B
 										 "CHANNELING", //31B
-										 "POSTCASTMSGREPEAT",//32B
 										};
 
 	@Override
@@ -923,8 +977,6 @@ public class GenAbility extends StdAbility
 			return ((Boolean) V(ID, V_TKAF)).toString();
 		case 31:
 			return ((Boolean) V(ID, V_CHAN)).toString();
-		case 32:
-			return ((Boolean) V(ID, V_PCSR)).toString();
 		default:
 			if (code.equalsIgnoreCase("allxml"))
 				return getAllXML();
@@ -1056,12 +1108,6 @@ public class GenAbility extends StdAbility
 			break;
 		case 31:
 			SV(ID, V_CHAN, Boolean.valueOf(CMath.s_bool(val)));
-			break;
-		case 32:
-			if((val==null)||(val.length()==0))
-				SV(ID, V_PCSR, Boolean.TRUE);
-			else
-				SV(ID, V_PCSR, Boolean.valueOf(CMath.s_bool(val)));
 			break;
 		default:
 			if (code.equalsIgnoreCase("allxml") && ID.equalsIgnoreCase("GenAbility"))
