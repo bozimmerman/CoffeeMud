@@ -129,10 +129,10 @@ public class Auction extends Channel implements Tickable
 							AD.getAuctionedItem().name(),CMLib.beanCounter().nameCurrencyShort(AD.getCurrency(),AD.getBid())));
 					break;
 				case STATE_ONCE:
-					V.add(L("@x1 for @x2  going ONCE!",CMLib.beanCounter().nameCurrencyShort(AD.getCurrency(),AD.getBid()),AD.getAuctionedItem().name()));
+					V.add(L("@x1 for @x2 going ONCE!",CMLib.beanCounter().nameCurrencyShort(AD.getCurrency(),AD.getBid()),AD.getAuctionedItem().name()));
 					break;
 				case STATE_TWICE:
-					V.add(L("@x1 for @x2  going TWICE!",CMLib.beanCounter().nameCurrencyShort(AD.getCurrency(),AD.getBid()),AD.getAuctionedItem().name()));
+					V.add(L("@x1 for @x2 going TWICE!",CMLib.beanCounter().nameCurrencyShort(AD.getCurrency(),AD.getBid()),AD.getAuctionedItem().name()));
 					break;
 				case STATE_THREE:
 					V.add(L("@x1 going for @x2! Last chance!",AD.getAuctionedItem().name(),CMLib.beanCounter().nameCurrencyShort(AD.getCurrency(),AD.getBid())));
@@ -186,6 +186,8 @@ public class Auction extends Channel implements Tickable
 							if(!auctioneerM.isMine(AD.getAuctionedItem()))
 								auctioneerM.moveItemTo(AD.getAuctionedItem());
 							V.clear();
+							V.add("AUCTION");
+							V.add("CHANNEL");
 							V.add(L("The auction for @x1 has ended without a winner.",AD.getAuctionedItem().name()));
 							auctioneerM.doCommand(V,MUDCmdProcessor.METAFLAG_FORCED);
 						}
