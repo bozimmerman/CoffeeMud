@@ -132,12 +132,12 @@ public class Shearing extends CommonSkill
 						commonTell(mob,L("You messed up your shearing completely."));
 					else
 					{
-						spreadImmunity(sheep);
 						final int yield=(baseYield()+abilityCode())<=0?1:(baseYield()+abilityCode());
 						final CMMsg msg=CMClass.getMsg(mob,sheep,this,getCompletedActivityMessageType(),null);
 						msg.setValue(yield);
 						if(mob.location().okMessage(mob, msg))
 						{
+							spreadImmunity(sheep);
 							msg.modify(L("<S-NAME> manage(s) to shear <T-NAME>."));
 							mob.location().send(mob, msg);
 							for(int i=0;i<msg.value();i++)

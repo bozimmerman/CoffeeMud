@@ -2934,8 +2934,6 @@ public class StdMOB implements MOB
 				}
 				break;
 			case CMMsg.TYP_GIVE:
-				if (msg.tool() == null)
-					return false;
 				if (!(msg.tool() instanceof Item))
 					return false;
 				if (CMSecurity.isAllowed(this, location(), CMSecurity.SecFlag.ORDER)
