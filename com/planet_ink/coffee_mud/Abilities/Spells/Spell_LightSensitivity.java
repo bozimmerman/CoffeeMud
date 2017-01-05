@@ -81,9 +81,10 @@ public class Spell_LightSensitivity extends Spell
 		super.affectPhyStats(affected,affectableStats);
 		if(!(affected instanceof MOB))
 			return;
-		if(((MOB)affected).location()==null)
+		final Room R=((MOB)affected).location();
+		if(R==null)
 			return;
-		if(CMLib.flags().isInDark(((MOB)affected).location()))
+		if(CMLib.flags().isInDark(R))
 			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_DARK);
 		else
 			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_SEE);
