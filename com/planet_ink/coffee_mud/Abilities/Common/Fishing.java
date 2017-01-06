@@ -166,8 +166,9 @@ public class Fishing extends GatheringSkill
 		}
 		
 		Room fishRoom = mob.location();
-		if((fishRoom.getArea() instanceof BoardableShip)
-		&&(fishRoom.resourceChoices().size()==0)
+		if((fishRoom != null)
+		&&(fishRoom.getArea() instanceof BoardableShip)
+		&&((fishRoom.resourceChoices() == null)||(fishRoom.resourceChoices().size()==0))
 		&&((fishRoom.domainType()&Room.INDOORS)==0))
 			fishRoom = CMLib.map().roomLocation(((BoardableShip)fishRoom.getArea()).getShipItem());
 		int foundFish=-1;
