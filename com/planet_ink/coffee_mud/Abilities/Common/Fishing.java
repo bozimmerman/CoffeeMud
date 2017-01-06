@@ -164,21 +164,28 @@ public class Fishing extends GatheringSkill
 				return super.bundle(mob,commands);
 			return false;
 		}
-
+		
+		Room fishRoom = mob.location();
+		if((fishRoom.getArea() instanceof BoardableShip)
+		&&(fishRoom.resourceChoices().size()==0)
+		&&((fishRoom.domainType()&Room.INDOORS)==0))
+			fishRoom = CMLib.map().roomLocation(((BoardableShip)fishRoom.getArea()).getShipItem());
 		int foundFish=-1;
 		boolean maybeFish=false;
-		if(mob.location()!=null)
+		if(fishRoom!=null)
 		{
 			for(final int fishCode : RawMaterial.CODES.FISHES())
-				if(mob.location().myResource()==fishCode)
+			{
+				if(fishRoom.myResource()==fishCode)
 				{
 					foundFish=fishCode;
 					maybeFish=true;
 				}
 				else
-				if((mob.location().resourceChoices()!=null)
-				&&(mob.location().resourceChoices().contains(Integer.valueOf(fishCode))))
+				if((fishRoom.resourceChoices()!=null)
+				&&(fishRoom.resourceChoices().contains(Integer.valueOf(fishCode))))
 					maybeFish=true;
+			}
 		}
 		if(!maybeFish)
 		{
@@ -193,7 +200,7 @@ public class Fishing extends GatheringSkill
 		if((proficiencyCheck(mob,0,auto))
 		   &&(foundFish>0))
 		{
-			found=(Item)CMLib.materials().makeResource(foundFish,Integer.toString(mob.location().domainType()),false,null);
+			found=(Item)CMLib.materials().makeResource(foundFish,Integer.toString(fishRoom.domainType()),false,null);
 			foundShortName="nothing";
 			if(found!=null)
 				foundShortName=RawMaterial.CODES.NAME(found.material()).toLowerCase();
