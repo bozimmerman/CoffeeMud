@@ -122,7 +122,7 @@ public class StdWeapon extends StdItem implements Weapon, AmmunitionWeapon
 		super.recoverPhyStats();
 		if(phyStats().damage()!=0)
 		{
-			final int ability=super.wornLogicalAnd ? (phyStats().ability()*CMath.numberOfSetBits(super.myWornCode)) : phyStats().ability();
+			final int ability=super.wornLogicalAnd ? (phyStats().ability()*CMath.numberOfSetBits(super.properWornBitmap)) : phyStats().ability();
 			phyStats().setDamage(phyStats().damage()+(ability*2));
 			phyStats().setAttackAdjustment(phyStats().attackAdjustment()+(ability*10));
 		}
