@@ -105,6 +105,90 @@ public class Questwins extends StdCommand
 		return msg.toString();
 	}
 
+	public Quest findScriptedQuest(final MOB mob, String rest)
+	{
+		final List<Quest> quests = new ArrayList<Quest>(mob.numScripts());
+		for(final Enumeration<ScriptingEngine> e=mob.scripts();e.hasMoreElements();)
+		{
+			final ScriptingEngine SE=e.nextElement();
+			if(SE!=null)
+			{
+				if(SE.defaultQuestName().length()>0)
+				{
+					Quest Q=CMLib.quests().fetchQuest(SE.defaultQuestName());
+					if(Q==null) 
+						Q=CMLib.quests().findQuest(SE.defaultQuestName());
+					if(Q!=null)
+						quests.add(Q);
+				}
+			}
+		}
+		return findQuest(quests, rest);
+	}
+	
+	public Quest findQuest(List<Quest> fromList, String rest)
+	{
+		Quest Q=CMLib.quests().findQuest(rest);
+		if(Q==null)
+		{
+			String lowerRest = rest.toLowerCase();
+			for(final Iterator<Quest> q=fromList.iterator();q.hasNext();)
+			{
+				final Quest Q2=q.next();
+				if((Q2!=null)
+				&&(Q2.displayName()!=null)
+				&&(Q2.displayName().length()>0)
+				&&(Q2.displayName().toLowerCase().startsWith(lowerRest)))
+				{
+					Q=Q2;
+					break;
+				}
+			}
+			if(Q==null)
+			{
+				for(final Iterator<Quest> q=fromList.iterator();q.hasNext();)
+				{
+					final Quest Q2=q.next();
+					if((Q2!=null)
+					&&(Q2.displayName()!=null)
+					&&(Q2.displayName().length()>0)
+					&&(CMLib.english().containsString(Q2.displayName().toUpperCase(), rest)))
+					{
+						Q=Q2;
+						break;
+					}
+				}
+			}
+			if(Q==null)
+			{
+				for(final Iterator<Quest> q=fromList.iterator();q.hasNext();)
+				{
+					final Quest Q2=q.next();
+					if((Q2!=null)
+					&&(Q2.name().toLowerCase().startsWith(lowerRest)))
+					{
+						Q=Q2;
+						break;
+					}
+				}
+			}
+			if(Q==null)
+			{
+				for(final Iterator<Quest> q=fromList.iterator();q.hasNext();)
+				{
+					final Quest Q2=q.next();
+					if((Q2!=null)
+					&&(CMLib.english().containsString(Q2.name().toUpperCase(), rest)))
+					{
+						Q=Q2;
+						break;
+					}
+				}
+			}
+		}
+		return Q;
+	}
+
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
@@ -137,7 +221,7 @@ public class Questwins extends StdCommand
 			foundS=null;
 
 			final String rest=CMParms.combine(commands,2);
-			final Quest Q=CMLib.quests().findQuest(rest);
+			final Quest Q=findScriptedQuest(mob, rest);
 			if(Q==null)
 			{
 				mob.tell(L("There is no such quest as '@x1'.",rest));
@@ -192,7 +276,9 @@ public class Questwins extends StdCommand
 					return false;
 				}
 			}
-			final Quest Q=CMLib.quests().findQuest(rest);
+			Quest Q=findScriptedQuest(mob, rest);
+			if(Q==null)
+				Q=findQuest(new XVector<Quest>(CMLib.quests().enumQuests()),rest);
 			if(Q==null)
 			{
 				if(admin)
