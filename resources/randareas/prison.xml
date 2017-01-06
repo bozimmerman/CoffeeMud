@@ -464,7 +464,7 @@ See guides/RandomAreas.html for information about documents of this type.
 <MOB id="prison_mobs" select="all" requires="level_range=int,theme=prison,aggrochance=int">
 	<MOB select="all" condition="$theme='prison' or $theme='random'">
 		<MOB class="GenMob" level="$level_range" id="prison_prisoner" race="$_prisoner_races" gender="$anygender">
-			<NAME>(a(n)) $_prisoner_races prisoner</NAME>
+			<NAME>(a(n)) $mob_race prisoner</NAME>
 			<DISPLAY select="pick-1">
 				<DISPLAY pickweight="1">$mob_name sneaks towards you.</DISPLAY>
 				<DISPLAY pickweight="1">$mob_name charges at you.</DISPLAY>
@@ -548,7 +548,7 @@ See guides/RandomAreas.html for information about documents of this type.
 			<ITEM condition="1?10=1" select="any-1" insert="prison_junk" />
 		</MOB>
 		<MOB class="GenMob" level="$level_range" id="prison_prisonguard" race="$_humanoid_races" gender="$anygender">
-			<NAME>(a(n)) $_humanoid_races prison guard</NAME>
+			<NAME>(a(n)) $mob_race prison guard</NAME>
 			<DISPLAY select="pick-1">
 				<DISPLAY pickweight="1">$mob_name marches towards you.</DISPLAY>
 				<DISPLAY pickweight="1">$mob_name charges at you.</DISPLAY>

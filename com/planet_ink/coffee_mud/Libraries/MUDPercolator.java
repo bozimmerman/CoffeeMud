@@ -2421,6 +2421,12 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			}
 			return "";
 		}
+		if(defPrefix != null)
+		{
+			final Object asPreviouslyDefined = defined.get((defPrefix+tagName).toUpperCase());
+			if(asPreviouslyDefined instanceof String)
+				return strFilter(E,ignoreStats,defPrefix,(String)asPreviouslyDefined,piece, defined);
+		}
 		
 		final String asParm = piece.getParmValue(tagName);
 		if(asParm != null)
