@@ -155,6 +155,7 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 	protected void announceToDeck(final CMMsg msg)
 	{
 		MOB mob = null;
+		final MOB msgSrc = msg.source();
 		try
 		{
 			final Area A=this.getShipArea();
@@ -190,6 +191,7 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 		}
 		finally
 		{
+			msg.setSource(msgSrc);
 			if(mob != null)
 				mob.destroy();
 		}

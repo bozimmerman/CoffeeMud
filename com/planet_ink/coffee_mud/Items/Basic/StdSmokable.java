@@ -141,9 +141,9 @@ public class StdSmokable extends StdContainer implements Light
 				}
 			}
 			msg.modify(msg.source(),msg.target(),msg.tool(),
-						  msg.sourceCode(),L("<S-NAME> light(s) up <T-NAME>."),
-						  msg.targetCode(),L("<S-NAME> light(s) up <T-NAME>."),
-						  msg.othersCode(),L("<S-NAME> light(s) up <T-NAME>."));
+						msg.sourceCode(),L("<S-NAME> light(s) up <T-NAME>."),
+						msg.targetCode(),L("<S-NAME> light(s) up <T-NAME>."),
+						msg.othersCode(),L("<S-NAME> light(s) up <T-NAME>."));
 			return super.okMessage(myHost,msg);
 		case CMMsg.TYP_EXTINGUISH:
 			if((durationTicks==0)||(!isLit()))

@@ -109,14 +109,14 @@ public class Song_Babble extends Song
 				if(numToMess>0)
 					smsg=messChars(smsg,numChars(str));
 				msg.modify(msg.source(),
-							  msg.target(),
-							  null,
-							  msg.sourceCode(),
-							  CMStrings.substituteSayInMessage(msg.sourceMessage(),smsg),
-							  msg.targetCode(),
-							  CMStrings.substituteSayInMessage(msg.targetMessage(),smsg),
-							  msg.othersCode(),
-							  CMStrings.substituteSayInMessage(msg.othersMessage(),smsg));
+							msg.target(),
+							null,
+							msg.sourceCode(),
+							CMStrings.substituteSayInMessage(msg.sourceMessage(),smsg),
+							msg.targetCode(),
+							CMStrings.substituteSayInMessage(msg.targetMessage(),smsg),
+							msg.othersCode(),
+							CMStrings.substituteSayInMessage(msg.othersMessage(),smsg));
 				helpProficiency((MOB)affected, 0);
 			}
 		}

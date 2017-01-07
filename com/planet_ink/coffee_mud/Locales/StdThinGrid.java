@@ -990,14 +990,14 @@ public class StdThinGrid extends StdRoom implements GridLocale
 						return false;
 					}
 					msg.modify(msg.source(),
-							  getAltRoomFrom(mob.location(),direction),
-							  msg.tool(),
-							  msg.sourceCode(),
-							  msg.sourceMessage(),
-							  msg.targetCode(),
-							  msg.targetMessage(),
-							  msg.othersCode(),
-							  msg.othersMessage());
+							   getAltRoomFrom(mob.location(),direction),
+							   msg.tool(),
+							   msg.sourceCode(),
+							   msg.sourceMessage(),
+							   msg.targetCode(),
+							   msg.targetMessage(),
+							   msg.othersCode(),
+							   msg.othersMessage());
 				}
 			}
 		}

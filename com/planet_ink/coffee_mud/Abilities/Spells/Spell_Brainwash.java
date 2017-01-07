@@ -117,14 +117,14 @@ public class Spell_Brainwash extends Spell
 					smsg=smsg+lead+text();
 				str=str+lead+text();
 				msg.modify(msg.source(),
-						  msg.target(),
-						  this,
-						  msg.sourceCode(),
-						  CMStrings.substituteSayInMessage(msg.sourceMessage(),smsg),
-						  msg.targetCode(),
-						  CMStrings.substituteSayInMessage(msg.targetMessage(),str),
-						  msg.othersCode(),
-						  CMStrings.substituteSayInMessage(msg.othersMessage(),str));
+						   msg.target(),
+						   this,
+						   msg.sourceCode(),
+						   CMStrings.substituteSayInMessage(msg.sourceMessage(),smsg),
+						   msg.targetCode(),
+						   CMStrings.substituteSayInMessage(msg.targetMessage(),str),
+						   msg.othersCode(),
+						   CMStrings.substituteSayInMessage(msg.othersMessage(),str));
 				helpProficiency((MOB)affected, 0);
 			}
 		}

@@ -119,8 +119,8 @@ public class Prayer_DrunkenStupor extends Prayer
 		&&(msg.targetMajor()>0))
 		{
 			if((msg.target() !=null)
-				&&(msg.target() instanceof MOB))
-					msg.modify(msg.source(),msg.source().location().fetchInhabitant(CMLib.dice().roll(1,msg.source().location().numInhabitants(),0)-1),msg.tool(),msg.sourceCode(),msg.sourceMessage(),msg.targetCode(),msg.targetMessage(),msg.othersCode(),msg.othersMessage());
+			&&(msg.target() instanceof MOB))
+				msg.modify(msg.source(),msg.source().location().fetchInhabitant(CMLib.dice().roll(1,msg.source().location().numInhabitants(),0)-1),msg.tool(),msg.sourceCode(),msg.sourceMessage(),msg.targetCode(),msg.targetMessage(),msg.othersCode(),msg.othersMessage());
 		}
 		return true;
 	}

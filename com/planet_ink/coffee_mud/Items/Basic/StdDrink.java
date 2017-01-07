@@ -213,10 +213,12 @@ public class StdDrink extends StdContainer implements Drink,Item
 							break;
 					}
 					if(I instanceof Drink)
+					{
 						msg.modify(msg.source(),msg.target(),I,
-								msg.sourceCode(),msg.sourceMessage(),
-								msg.targetCode(),msg.targetMessage(),
-								msg.othersCode(),msg.othersMessage());
+								   msg.sourceCode(),msg.sourceMessage(),
+								   msg.targetCode(),msg.targetMessage(),
+								   msg.othersCode(),msg.othersMessage());
+					}
 					else
 					{
 						msg.source().tell(L("@x1 has nothing you can fill this with.",((Container)msg.tool()).name(msg.source())));
