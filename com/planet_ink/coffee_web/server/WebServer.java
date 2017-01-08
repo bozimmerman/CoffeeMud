@@ -270,14 +270,20 @@ public class WebServer extends Thread
 						}
 						catch(CancelledKeyException x)
 						{
-							handlers.remove(handler);
+							synchronized(handlers) // synched because you can't iterate and modify, and because its a linkedlist
+							{
+								handlers.remove(handler);
+							}
 						}
 					}
 				}
 				else
 				{
 					key.cancel();
-					handlers.remove(handler);
+					synchronized(handlers) // synched because you can't iterate and modify, and because its a linkedlist
+					{
+						handlers.remove(handler);
+					}
 				}
 			}
 			catch(Exception e)
