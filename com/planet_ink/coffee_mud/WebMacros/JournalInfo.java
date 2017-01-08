@@ -96,13 +96,14 @@ public class JournalInfo extends StdWebMacro
 			else
 			{
 				final JournalsLibrary.JournalMetaData metaData = CMLib.journals().getJournalStats(forumJournal);
+				final boolean stuckeyKeys = (metaData == null) ? false : (metaData.stuckyKeys() != null); 
 				final long pageDate = CMath.s_long(page);
 				int limit = CMProps.getIntVar(CMProps.Int.JOURNALLIMIT);
 				if(limit<=0)
 					limit=Integer.MAX_VALUE;
 				msgs = new Vector<JournalEntry>();
 				if((pageDate <= 0)
-				&& (metaData.stuckyKeys()!=null)
+				&& (stuckeyKeys)
 				&& ((dbsearch==null)||(dbsearch.length()==0))
 				&& ((parent != null)&&(parent.length()==0)))
 				{
