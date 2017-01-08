@@ -730,8 +730,7 @@ public class StdRace implements Race
 		}
 	}
 	
-	@Override
-	public void startRacing(MOB mob, boolean verifyOnly)
+	protected void mapCulturalAbilities()
 	{
 		if((!mappedCulturalAbilities)
 		&&(culturalAbilityNames()!=null))
@@ -739,11 +738,23 @@ public class StdRace implements Race
 			for(int a=0;a<culturalAbilityNames().length;a++)
 			{
 				final int lvl = (culturalAbilityLevels() != null) ? culturalAbilityLevels()[a] : 0;
-				final boolean gain = (culturalAbilityAutoGains() != null) ? culturalAbilityAutoGains()[a] : true;
-				CMLib.ableMapper().addCharAbilityMapping(ID(),lvl,culturalAbilityNames()[a],gain);
+				boolean gain = true;
+				if((culturalAbilityAutoGains() != null) && (culturalAbilityAutoGains().length>a))
+					gain = culturalAbilityAutoGains()[a];
+				int prof = 0;
+				if((culturalAbilityProficiencies() != null) && (culturalAbilityProficiencies().length>a))
+					prof = culturalAbilityProficiencies()[a];
+				
+				CMLib.ableMapper().addCharAbilityMapping(ID(),lvl,culturalAbilityNames()[a],prof,"",gain);
 			}
 			mappedCulturalAbilities=true;
 		}
+	}
+	
+	@Override
+	public void startRacing(MOB mob, boolean verifyOnly)
+	{
+		// racialAbilities() call, if necc, will delete ALL mappings
 		for(final Ability A : racialAbilities(mob))
 		{
 			if(A!=null)
@@ -756,6 +767,7 @@ public class StdRace implements Race
 				}
 			}
 		}
+		mapCulturalAbilities();
 		if(!verifyOnly)
 		{
 			if(mob.basePhyStats().level()<=1)
@@ -1708,6 +1720,7 @@ public class StdRace implements Race
 		&&(racialAbilityQuals()!=null))
 		{
 			CMLib.ableMapper().delCharMappings(ID()); // necessary for a "clean start"
+			mappedCulturalAbilities=false; // because of the clean start. :(
 			racialAbilityMap=new Hashtable<Integer,SearchIDList<Ability>>();
 			for(int i=0;i<racialAbilityNames().length;i++)
 			{
