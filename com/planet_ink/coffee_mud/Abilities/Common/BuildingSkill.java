@@ -91,6 +91,14 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 		super();
 	}
 
+	protected boolean canBeDoneSittingDown = false;
+	
+	@Override
+	public boolean canBeDoneSittingDown()
+	{
+		return canBeDoneSittingDown;
+	}
+	
 	protected enum Building
 	{
 		WALL,
@@ -1153,6 +1161,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 			commonTell(mob,L("What kind of @x1, where? Try @x2 list.",name(),CMStrings.capitalizeAndLower(this.triggerStrings()[0])));
 			return false;
 		}
+		canBeDoneSittingDown = false;
 		final String str=commands.get(0);
 		final String[][] data=getRecipeData(mob);
 		LandTitle title = CMLib.law().getLandTitle(mob.location());
@@ -1310,6 +1319,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 		
 		if((doingCode == Building.DEMOLISH)&&(dirName.equalsIgnoreCase("roof"))||(dirName.equalsIgnoreCase("ceiling")))
 		{
+			this.canBeDoneSittingDown = true;
 			final Room upRoom=mob.location().getRoomInDir(Directions.UP);
 			if(isHomePeerRoom(upRoom))
 			{
@@ -1336,6 +1346,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 		else
 		if((doingCode == Building.DEMOLISH)&&(dirName.equalsIgnoreCase("room")))
 		{
+			this.canBeDoneSittingDown = true;
 			if((!CMLib.law().doesOwnThisLand(mob, mob.location()))
 			&&(title!=null)
 			&&(title.getOwnerName().length()>0))
