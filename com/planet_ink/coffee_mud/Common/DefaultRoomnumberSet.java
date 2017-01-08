@@ -127,8 +127,11 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 		if(x<=0)
 		{
 			CI=getGrouper(areaName);
-			if(CI==null)
+			if(CI!=null)
+			{
 				root.remove(areaName);
+				return;
+			}
 		}
 		else
 		if(x>0)
