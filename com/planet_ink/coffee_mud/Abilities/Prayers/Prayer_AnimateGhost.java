@@ -156,7 +156,10 @@ public class Prayer_AnimateGhost extends Prayer
 		newMOB.setName(race+((mob==null)?" poltergeist":" ghost"));
 		newMOB.setDescription(description);
 		newMOB.setDisplayText(L("@x1 is here",newMOB.Name()));
-		newMOB.basePhyStats().setLevel(getUndeadLevel(mob,level,body.phyStats().level()));
+		if(mob == null)
+			newMOB.basePhyStats().setLevel(body.phyStats().level());
+		else
+			newMOB.basePhyStats().setLevel(getUndeadLevel(mob,level,body.phyStats().level()));
 		newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,body.charStats().getStat(CharStats.STAT_GENDER));
 		newMOB.baseCharStats().setMyRace(CMClass.getRace("Spirit"));
 		newMOB.baseCharStats().setBodyPartsFromStringAfterRace(body.charStats().getBodyPartsAsString());

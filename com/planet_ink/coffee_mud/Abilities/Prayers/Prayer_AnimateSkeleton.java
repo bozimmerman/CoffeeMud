@@ -155,7 +155,10 @@ public class Prayer_AnimateSkeleton extends Prayer
 		newMOB.setName(L("@x1 skeleton",race));
 		newMOB.setDescription(description);
 		newMOB.setDisplayText(L("@x1 skeleton is here",race));
-		newMOB.basePhyStats().setLevel(getUndeadLevel(mob,level,body.phyStats().level()));
+		if(mob == null)
+			newMOB.basePhyStats().setLevel(body.phyStats().level());
+		else
+			newMOB.basePhyStats().setLevel(getUndeadLevel(mob,level,body.phyStats().level()));
 		newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,body.charStats().getStat(CharStats.STAT_GENDER));
 		newMOB.baseCharStats().setMyRace(CMClass.getRace("Skeleton"));
 		newMOB.baseCharStats().setBodyPartsFromStringAfterRace(body.charStats().getBodyPartsAsString());
@@ -175,7 +178,7 @@ public class Prayer_AnimateSkeleton extends Prayer
 		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
 		newMOB.baseState().setMana(0);
 		final Behavior B=CMClass.getBehavior("Aggressive");
-		if(B!=null)
+		if((mob!=null)&&(B!=null))
 		{ 
 			B.setParms("+NAMES \"-"+mob.Name()+"\" -LEVEL +>"+newMOB.basePhyStats().level()); 
 			newMOB.addBehavior(B);
