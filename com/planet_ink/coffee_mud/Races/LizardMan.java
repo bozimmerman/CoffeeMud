@@ -99,7 +99,7 @@ public class LizardMan extends StdRace
 		return localizedStaticRacialCat;
 	}
 
-	private final String[]	culturalAbilityNames			= { "Draconic", "Hunting", "Skill_Tailswipe" };
+	private final String[]	culturalAbilityNames			= { "Draconic", "Hunting", "Skill_TailSwipe" };
 	private final int[]		culturalAbilityProficiencies	= { 25, 50, 25 };
 
 	@Override
