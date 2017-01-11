@@ -1741,7 +1741,10 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				if((!CMSecurity.isDisabled(CMSecurity.DisFlag.RACES))
 				&&(!viewedmob.charStats().getCurrentClass().raceless()))
 				{
-					myDescription.append(viewedmob.name(viewermob)+" the ");
+					if (viewedmob.name(viewermob) == viewedmob.Name())
+						myDescription.append(viewedmob.name(viewermob)+" the ");
+					else
+						myDescription.append("The ");
 					if((viewedmob.charStats().getStat(CharStats.STAT_AGE)>0)&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.ALL_AGEING)))
 						myDescription.append(viewedmob.charStats().ageName().toLowerCase()+" ");
 					myDescription.append(viewedmob.charStats().raceName());
