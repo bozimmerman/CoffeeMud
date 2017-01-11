@@ -175,12 +175,12 @@ public class Consider extends StdCommand
 		{
 			final Ability A=mendors.get(m);
 			if(m==0)
-				withWhat.append(L("You could probably help @x1 out with your @x2 skill",target.name(mob),A.name()));
+				withWhat.append(L("You could probably help @x1 out with your @x2 ability",target.name(mob),A.name()));
 			else
 			if(m<mendors.size()-1)
-				withWhat.append(L(", your @x1 skill",A.name()));
+				withWhat.append(L(", your @x1 ability",A.name()));
 			else
-				withWhat.append(L(" or your @x1 skill",A.name()));
+				withWhat.append(L(" or your @x1 ability",A.name()));
 		}
 
 		if(withWhat.length()>0)
