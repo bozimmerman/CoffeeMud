@@ -51,6 +51,12 @@ public class CommonBat extends StdMOB
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);
 		setMoney(0);
 		setWimpHitPoint(0);
+		setLevels(Arrays.asList(1));
+		setLocations(Arrays.asList("Desert","DesertGrid","DesertMaze","FrozenMountains","FrozenPlains","Hills","HillsGrid","IcePlains","IceRoom","Jungle","JungleGrid","Mountains","MountainsGrid","MountainsMaze","MountainSurface","MountainSurfaceGrid","Plains","PlainsGrid","Road","RoadGrid","Shore","Swamp","Woods","WoodsGrid","WoodsMaze"));
+		//"CaveGrid","CaveMaze","CaveRoom","CaveSurface","CityStreet","Desert","DesertGrid","DesertMaze","FrozenMountains","FrozenPlains","GreatLake","Hills","HillsGrid","IcePlains","IceRoom","InTheAir","Jungle","
+		//"JungleGrid","LargeCaveRoom","Mountains","MountainsGrid","MountainsMaze","MountainSurface","MountainSurfaceGrid","OceanGrid","Plains","PlainsGrid","Road","RoadGrid","SaltWaterSurface","SewerMaze","
+		//"SewerRoom","ShallowWater","Shore","Swamp","TreeSurface","UnderSaltWater","UnderSaltWaterGrid","UnderSaltWaterMaze","UnderWater","UnderWaterGrid","UnderWaterMaze","WaterSurface","WetCaveGrid","
+		//"WetCaveRoom","Whirlpool","Woods","WoodsGrid","WoodsMaze
 
 		basePhyStats.setWeight(1 + Math.abs(randomizer.nextInt() % 2));
 

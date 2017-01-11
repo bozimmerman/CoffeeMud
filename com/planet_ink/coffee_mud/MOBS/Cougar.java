@@ -51,6 +51,12 @@ public class Cougar extends StdMOB
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);
 		setMoney(0);
 		basePhyStats.setWeight(100 + Math.abs(randomizer.nextInt() % 55));
+		setLevels(Arrays.asList(3,4,5,6,7,8,9));
+		setLocations(Arrays.asList("FrozenMountains","FrozenPlains","Hills","HillsGrid","IcePlains","Jungle","JungleGrid","Mountains","MountainsGrid","MountainsMaze","MountainSurface","MountainSurfaceGrid"));
+		//"CaveGrid","CaveMaze","CaveRoom","CaveSurface","CityStreet","Desert","DesertGrid","DesertMaze","FrozenMountains","FrozenPlains","GreatLake","Hills","HillsGrid","IcePlains","IceRoom","InTheAir","Jungle","
+		//"JungleGrid","LargeCaveRoom","Mountains","MountainsGrid","MountainsMaze","MountainSurface","MountainSurfaceGrid","OceanGrid","Plains","PlainsGrid","Road","RoadGrid","SaltWaterSurface","SewerMaze","
+		//"SewerRoom","ShallowWater","Shore","Swamp","TreeSurface","UnderSaltWater","UnderSaltWaterGrid","UnderSaltWaterMaze","UnderWater","UnderWaterGrid","UnderWaterMaze","WaterSurface","WetCaveGrid","
+		//"WetCaveRoom","Whirlpool","Woods","WoodsGrid","WoodsMaze
 
 
 		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,1);

@@ -52,6 +52,8 @@ public class Turtle extends StdMOB
 		setMoney(0);
 		basePhyStats.setWeight(20 + Math.abs(randomizer.nextInt() % 55));
 		setWimpHitPoint(2);
+		setLevels(Arrays.asList(1));
+		setLocations(Arrays.asList("CityStreet","Desert","DesertGrid","DesertMaze","FrozenMountains","FrozenPlains","Hills","HillsGrid","IcePlains","IceRoom","Jungle","JungleGrid","LargeCaveRoom","Mountains","MountainsGrid","MountainsMaze","MountainSurface","MountainSurfaceGrid","Plains","PlainsGrid","Road","RoadGrid","SewerMaze","SewerRoom","ShallowWater","Shore","Swamp","WaterSurface","WetCaveGrid","WetCaveRoom","Woods","WoodsGrid","WoodsMaze"));
 
 		basePhyStats().setDamage(4);
 		basePhyStats().setSpeed(.5);

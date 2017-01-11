@@ -55,6 +55,8 @@ public class Pegasus extends StdRideable
 		rideBasis=Rideable.RIDEABLE_AIR;
 
 		basePhyStats.setWeight(1500 + Math.abs(randomizer.nextInt() % 200));
+		setLevels(Arrays.asList(8,9));
+		setLocations(Arrays.asList("Hills","HillsGrid","HillsThinGrid","InTheAir","Mountains","MountainsGrid","MountainsMaze","MountainSurface","MountainSurfaceGrid","Plains","PlainsThinGrid","Woods","WoodsGrid","WoodsMaze","WoodsThinGrid"));
 
 
 		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,8 + Math.abs(randomizer.nextInt() % 3));

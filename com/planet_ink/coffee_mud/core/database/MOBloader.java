@@ -80,6 +80,23 @@ public class MOBloader
 				final String username=DBConnections.getRes(R,"CMUSERID");
 				final String password=DBConnections.getRes(R,"CMPASS");
 				mob.setName(username);
+				mob.setLookDescription("eye", DBConnections.getRes(R,"CMEYEDESC"));
+				mob.setLookDescription("ant", DBConnections.getRes(R,"CMANTDESC"));
+				mob.setLookDescription("eye", DBConnections.getRes(R,"CMEYEDESC"));
+				mob.setLookDescription("ear", DBConnections.getRes(R,"CMEARDESC"));
+				mob.setLookDescription("nose", DBConnections.getRes(R,"CMNOSEDESC"));
+				mob.setLookDescription("mouth", DBConnections.getRes(R,"CMMOUTHDESC"));
+				mob.setLookDescription("tail", DBConnections.getRes(R,"CMTAILDESC"));
+				mob.setLookDescription("wing", DBConnections.getRes(R,"CMWINGDESC"));
+				mob.setLookDescription("skin", DBConnections.getRes(R,"CMSKINDESC"));
+				mob.setLookDescription("hair", DBConnections.getRes(R,"CMHAIRDESC"));
+				mob.setCurrentClaims(CMath.s_int(DBConnections.getRes(R,"CMCLAIMS")));
+				int totalLevels = mob.phyStats().level();				
+				totalLevels = totalLevels/5;
+				mob.setMaxClaims(totalLevels);
+
+				
+				
 				pstats.setPassword(password);
 				stats.setMyClasses(DBConnections.getRes(R,"CMCLAS"));
 				stats.setStat(CharStats.STAT_STRENGTH,CMath.s_int(DBConnections.getRes(R,"CMSTRE")));
@@ -1056,6 +1073,7 @@ public class MOBloader
 				+", CMSAVE=?"
 				+", CMMXML=?"
 				+", CMDESC=?"
+				+", CMCLAIMS="+mob.getCurrentClaims()
 				+"  WHERE CMUSERID='"+mob.Name()+"'"
 				,new String[][]{{
 					pstats.getPrompt(),
@@ -1067,6 +1085,7 @@ public class MOBloader
 					mob.description()+" "
 				}}
 				);
+		Log.debugOut("User '"+mob.Name()+"' has '"+mob.getCurrentClaims()+"' claims.");
 		final List<String> clanStatements=new LinkedList<String>();
 		DBConnection D=null;
 		try
@@ -1447,9 +1466,10 @@ public class MOBloader
 		final PlayerStats pstats=mob.playerStats();
 		if(pstats==null)
 			return;
-		DB.update("INSERT INTO CMCHAR (CMCHID, CMUSERID, CMPASS, CMCLAS, CMRACE, CMGEND "
+		DB.update("INSERT INTO CMCHAR (CMCHID, CMUSERID, CMPASS, CMCLAS, CMRACE, CMGEND, CMANTDESC, CMEYEDESC, CMEARDESC, CMNOSEDESC, CMMOUTHDESC, CMTAILDESC, CMWINGDESC, CMSKINDESC, CMHAIRDESC "
 				+") VALUES ('"+mob.ID()+"','"+mob.Name()+"','"+pstats.getPasswordStr()+"','"+mob.baseCharStats().getMyClassesStr()
 				+"','"+mob.baseCharStats().getMyRace().ID()+"','"+((char)mob.baseCharStats().getStat(CharStats.STAT_GENDER))
+				+"','"+mob.getDescription("antenna")+"','"+mob.getDescription("eye")+"','"+mob.getDescription("ear")+"','"+mob.getDescription("nose")+"','"+mob.getDescription("mouth")+"','"+mob.getDescription("tail")+"','"+mob.getDescription("wing")+"','"+mob.getDescription("skin")+"','"+mob.getDescription("hair")
 				+"')");
 		final PlayerAccount account = pstats.getAccount();
 		if(account != null)

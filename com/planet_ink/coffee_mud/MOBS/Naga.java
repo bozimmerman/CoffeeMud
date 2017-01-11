@@ -51,6 +51,9 @@ public class Naga extends StdMOB
 		CMLib.factions().setAlignment(this,Faction.Align.EVIL);
 		setMoney(20);
 		basePhyStats.setWeight(100 + Math.abs(randomizer.nextInt() % 101));
+		setLevels(Arrays.asList(1,2,3,4,5,6,7,8,9));
+		setLocations(Arrays.asList("Jungle","JungleGrid","LargeCaveRoom","SewerMaze","SewerRoom","ShallowWater","Shore","Swamp","WetCaveGrid","WetCaveRoom"));
+		//CaveGrid,CaveMaze,CaveRoom,CaveSurface,CityStreet,Desert,DesertGrid,DesertMaze,FrozenMountains,FrozenPlains,GreatLake,Hills,HillsGrid,IcePlains,IceRoom,InTheAir,Jungle,JungleGrid,LargeCaveRoom,Mountains,MountainsGrid,MountainsMaze,MountainSurface,MountainSurfaceGrid,OceanGrid,Plains,PlainsGrid,Road,RoadGrid,SaltWaterSurface,SewerMaze,SewerRoom,ShallowWater,Shore,Swamp,TreeSurface,UnderSaltWater,UnderSaltWaterGrid,UnderSaltWaterMaze,UnderWater,UnderWaterGrid,UnderWaterMaze,WaterSurface,WetCaveGrid,WetCaveRoom,Whirlpool,Woods,WoodsGrid,WoodsMaze
 
 		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,13 + Math.abs(randomizer.nextInt() % 6));
 		baseCharStats().setStat(CharStats.STAT_STRENGTH,12 + Math.abs(randomizer.nextInt() % 6));

@@ -56,6 +56,12 @@ public class Centaur extends StdMOB
 		baseCharStats().setStat(CharStats.STAT_STRENGTH,12 + Math.abs(randomizer.nextInt() % 6));
 		baseCharStats().setStat(CharStats.STAT_DEXTERITY,9 + Math.abs(randomizer.nextInt() % 6));
 		baseCharStats().setMyRace(CMClass.getRace("Centaur"));
+		setLevels(Arrays.asList(1,2,3,4,5,6,7,8,9));
+		setLocations(Arrays.asList("Desert","DesertGrid","DesertMaze","FrozenMountains","FrozenPlains","Hills","HillsGrid","IcePlains","IceRoom","Jungle","JungleGrid","Mountains","MountainsGrid","MountainsMaze","MountainSurface","MountainSurfaceGrid","OceanGrid","Plains","PlainsGrid","Road","RoadGrid","Shore","Swamp","Woods","WoodsGrid","WoodsMaze"));
+		//"CaveGrid","CaveMaze","CaveRoom","CaveSurface","CityStreet","Desert","DesertGrid","DesertMaze","FrozenMountains","FrozenPlains","GreatLake","Hills","HillsGrid","IcePlains","IceRoom","InTheAir","Jungle","
+		//"JungleGrid","LargeCaveRoom","Mountains","MountainsGrid","MountainsMaze","MountainSurface","MountainSurfaceGrid","OceanGrid","Plains","PlainsGrid","Road","RoadGrid","SaltWaterSurface","SewerMaze","
+		//"SewerRoom","ShallowWater","Shore","Swamp","TreeSurface","UnderSaltWater","UnderSaltWaterGrid","UnderSaltWaterMaze","UnderWater","UnderWaterGrid","UnderWaterMaze","WaterSurface","WetCaveGrid","
+		//"WetCaveRoom","Whirlpool","Woods","WoodsGrid","WoodsMaze
 
 		basePhyStats().setDamage(7);
 		basePhyStats().setSpeed(2.0);

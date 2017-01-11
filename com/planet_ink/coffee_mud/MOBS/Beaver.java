@@ -49,6 +49,9 @@ public class Beaver extends StdMOB
 		setDescription("It\\`s a small rodent with a large tail and sharp teeth.");
 		setDisplayText("A beaver is hard at work.");
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);
+		setLevels(Arrays.asList(1));
+		setLocations(Arrays.asList("UnderWater","UnderWaterGrid","UnderWaterMaze","UnderWaterThinGrid","WaterSurface","WaterThinSurface","Woods","WoodsGrid","WoodsMaze","WoodsThinGrid","Shore"));
+
 		setMoney(0);
 		basePhyStats.setWeight(20 + Math.abs(randomizer.nextInt() % 55));
 		setWimpHitPoint(2);

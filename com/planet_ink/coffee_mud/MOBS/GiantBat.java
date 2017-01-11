@@ -51,6 +51,8 @@ public class GiantBat extends StdMOB
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);
 		setMoney(0);
 		setWimpHitPoint(0);
+		setLevels(Arrays.asList(6,7,8));
+		setLocations(Arrays.asList("Desert","DesertGrid","DesertMaze","FrozenMountains","FrozenPlains","Hills","HillsGrid","IcePlains","IceRoom","Jungle","JungleGrid","Mountains","MountainsGrid","MountainsMaze","MountainSurface","MountainSurfaceGrid","Plains","PlainsGrid","Road","RoadGrid","Shore","Swamp","Woods","WoodsGrid","WoodsMaze"));
 
 		basePhyStats.setWeight(1 + Math.abs(randomizer.nextInt() % 100));
 

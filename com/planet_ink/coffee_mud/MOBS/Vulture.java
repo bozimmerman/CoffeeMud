@@ -54,6 +54,8 @@ public class Vulture extends StdMOB
 		setWimpHitPoint(2);
 
 		basePhyStats().setDamage(4);
+		setLevels(Arrays.asList(1,2));
+		setLocations(Arrays.asList("Desert","DesertGrid","DesertMaze","FrozenMountains","FrozenPlains","Hills","HillsGrid","IcePlains","Mountains","MountainsGrid","MountainsMaze","MountainSurface","MountainSurfaceGrid","Plains","PlainsGrid","Woods","WoodsGrid","WoodsMaze"));
 
 		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,1);
 

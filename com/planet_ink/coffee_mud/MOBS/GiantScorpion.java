@@ -46,6 +46,8 @@ public class GiantScorpion extends StdMOB
 	{
 		super();
 		final Random randomizer = new Random(System.currentTimeMillis());
+		setLevels(Arrays.asList(4,5,6,7));
+		setLocations(Arrays.asList("Desert","DesertGrid","DesertMaze","FrozenMountains","FrozenPlains","Hills","HillsGrid","IcePlains","IceRoom","Jungle","JungleGrid","Mountains","MountainsGrid","MountainsMaze","MountainSurface","MountainSurfaceGrid","Plains","PlainsGrid","Road","RoadGrid","Shore","Swamp","Woods","WoodsGrid","WoodsMaze"));
 
 		username="a Giant Scorpion";
 		setDescription("The giant scorpion has a green carapace and yellowish green legs and pincers. The segmented tail is black, with a vicious stinger on the end.");

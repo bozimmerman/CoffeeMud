@@ -51,6 +51,9 @@ public class WildEagle extends StdMOB
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);
 		setMoney(0);
 		setWimpHitPoint(0);
+		setLevels(Arrays.asList(2,3,4,5));
+		setLocations(Arrays.asList("Desert","DesertGrid","DesertMaze","FrozenMountains","FrozenPlains","Hills","HillsGrid","IcePlains","Mountains","MountainsGrid","MountainsMaze","MountainSurface","MountainSurfaceGrid","Plains","PlainsGrid","Woods","WoodsGrid","WoodsMaze"));
+
 
 		basePhyStats.setWeight(1 + Math.abs(randomizer.nextInt() % 15));
 

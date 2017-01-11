@@ -52,6 +52,9 @@ public class Elephant extends StdMOB
 		basePhyStats().setDamage(20);
 
 		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,1);
+		setLevels(Arrays.asList(4,5,6,7));
+		setLocations(Arrays.asList("FrozenPlains","IcePlains","Jungle","JungleGrid","Plains","PlainsGrid"));
+		//CaveGrid","CaveMaze","CaveRoom","CaveSurface","CityStreet","Desert","DesertGrid","DesertMaze","FrozenMountains","FrozenPlains","GreatLake","Hills","HillsGrid","IcePlains","IceRoom","InTheAir","Jungle","JungleGrid","LargeCaveRoom","Mountains","MountainsGrid","MountainsMaze","MountainSurface","MountainSurfaceGrid","OceanGrid","Plains","PlainsGrid","Road","RoadGrid","SaltWaterSurface","SewerMaze","SewerRoom","ShallowWater","Shore","Swamp","TreeSurface","UnderSaltWater","UnderSaltWaterGrid","UnderSaltWaterMaze","UnderWater","UnderWaterGrid","UnderWaterMaze","WaterSurface","WetCaveGrid","WetCaveRoom","Whirlpool","Woods","WoodsGrid","WoodsMaze
 
 		basePhyStats().setAbility(0);
 		basePhyStats().setLevel(5);

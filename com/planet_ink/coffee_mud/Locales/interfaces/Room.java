@@ -58,7 +58,7 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	 * @return room ID is the "address" of the primary room on the world map
 	 */
 	public String roomID();
-	
+	public boolean canBeClaimed = true;
 	/**
 	 * Changes the room ID of this room.  This is not related to the ID()
 	 * method.

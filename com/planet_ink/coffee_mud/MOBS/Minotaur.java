@@ -51,6 +51,8 @@ public class Minotaur extends StdMOB
 		CMLib.factions().setAlignment(this,Faction.Align.EVIL);
 		setMoney(0);
 		basePhyStats.setWeight(350 + Math.abs(randomizer.nextInt() % 55));
+		setLevels(Arrays.asList(4,5,6,7,8,9));
+		setLocations(Arrays.asList("CaveGrid,CaveMaze,CaveRoom,CaveSurface,CityStreet,Desert,DesertGrid,DesertMaze,FrozenMountains,FrozenPlains,GreatLake,Hills,HillsGrid,IcePlains,IceRoom,Jungle,JungleGrid,LargeCaveRoom,Mountains,MountainsGrid,MountainsMaze,MountainSurface,MountainSurfaceGrid,Plains,PlainsGrid,Swamp,WetCaveGrid,WetCaveRoom,Woods,WoodsGrid,WoodsMaze"));
 
 
 		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,4 + Math.abs(randomizer.nextInt() % 5));

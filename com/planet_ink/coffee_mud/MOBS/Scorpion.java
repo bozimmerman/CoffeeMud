@@ -44,6 +44,8 @@ public class Scorpion extends StdMOB
 	{
 		super();
 		final Random randomizer = new Random(System.currentTimeMillis());
+		setLevels(Arrays.asList(1,2));
+		setLocations(Arrays.asList("CityStreet","Desert","DesertGrid","DesertMaze","FrozenMountains","FrozenPlains","IcePlains","IceRoom","Jungle","JungleGrid","LargeCaveRoom","Mountains","MountainsGrid","MountainsMaze","MountainSurface","MountainSurfaceGrid","Plains","PlainsGrid","Road","RoadGrid","Woods","WoodsGrid","WoodsMaze"));
 
 		username="a Scorpion";
 		setDescription("The scorpion has a black carapace, legs and pincers. The segmented tail has a vicious stinger on the end.");

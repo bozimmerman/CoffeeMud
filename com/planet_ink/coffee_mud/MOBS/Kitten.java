@@ -52,6 +52,8 @@ public class Kitten extends StdMOB
 		setMoney(0);
 		basePhyStats.setWeight(20 + Math.abs(randomizer.nextInt() % 55));
 		setWimpHitPoint(2);
+		setLevels(Arrays.asList(1));
+		setLocations(Arrays.asList("CityStreet","FrozenPlains","Hills","HillsGrid","IcePlains","Plains","PlainsThinGrid","RoadGrid","SewerMaze","SewerRoom","Shore"));
 
 		addBehavior(CMClass.getBehavior("Follower"));
 		addBehavior(CMClass.getBehavior("MudChat"));

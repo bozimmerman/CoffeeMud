@@ -51,6 +51,8 @@ public class Tiger extends StdMOB
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);
 		setMoney(0);
 		basePhyStats.setWeight(300 + Math.abs(randomizer.nextInt() % 55));
+		setLocations(Arrays.asList("Jungle","JungleGrid","Plains","PlainsGrid"));
+		setLevels(Arrays.asList(3,4,5,6,7));
 
 
 		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,1);

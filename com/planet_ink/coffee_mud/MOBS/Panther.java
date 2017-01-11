@@ -52,7 +52,8 @@ public class Panther extends StdMOB
 		setMoney(0);
 		basePhyStats.setWeight(20 + Math.abs(randomizer.nextInt() % 45));
 		setWimpHitPoint(2);
-
+		setLocations(Arrays.asList("Jungle","JungleGrid","Plains","PlainsGrid"));
+		setLevels(Arrays.asList(3,4,5,6,7));
 		basePhyStats.setWeight(200 + Math.abs(randomizer.nextInt() % 55));
 
 

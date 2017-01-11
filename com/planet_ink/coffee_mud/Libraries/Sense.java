@@ -2060,7 +2060,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 					break;
 				}
 			}
-			if(say.length()>1)
+			if(say.length()>2)
 			{
 				say.append(" ");
 				return say.toString();

@@ -54,6 +54,12 @@ public class Cheetah extends StdMOB
 		setWimpHitPoint(2);
 
 		basePhyStats.setWeight(150 + Math.abs(randomizer.nextInt() % 55));
+		setLevels(Arrays.asList(3,4,5,6,7));
+		setLocations(Arrays.asList("Jungle","JungleGrid","Plains","PlainsGrid"));
+		//"CaveGrid","CaveMaze","CaveRoom","CaveSurface","CityStreet","Desert","DesertGrid","DesertMaze","FrozenMountains","FrozenPlains","GreatLake","Hills","HillsGrid","IcePlains","IceRoom","InTheAir","Jungle","
+		//"JungleGrid","LargeCaveRoom","Mountains","MountainsGrid","MountainsMaze","MountainSurface","MountainSurfaceGrid","OceanGrid","Plains","PlainsGrid","Road","RoadGrid","SaltWaterSurface","SewerMaze","
+		//"SewerRoom","ShallowWater","Shore","Swamp","TreeSurface","UnderSaltWater","UnderSaltWaterGrid","UnderSaltWaterMaze","UnderWater","UnderWaterGrid","UnderWaterMaze","WaterSurface","WetCaveGrid","
+		//"WetCaveRoom","Whirlpool","Woods","WoodsGrid","WoodsMaze
 
 
 		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,1);

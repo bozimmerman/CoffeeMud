@@ -54,6 +54,8 @@ public class BrownBear extends StdMOB
 		setWimpHitPoint(2);
 
 		basePhyStats.setWeight(450 + Math.abs(randomizer.nextInt() % 55));
+		setLevels(Arrays.asList(2,3,4));
+		setLocations(Arrays.asList("CaveGrid","CaveMaze","CaveRoom","CaveSurface","Hills","HillsGrid","LargeCaveRoom","Mountains","MountainsGrid","MountainsMaze","MountainSurface","MountainSurfaceGrid","ShallowWater","WaterSurface","WetCaveGrid","WetCaveRoom","Woods","WoodsGrid","WoodsMaze"));
 
 
 		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,1);

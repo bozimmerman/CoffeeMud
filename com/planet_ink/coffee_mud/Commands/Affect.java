@@ -94,8 +94,8 @@ public class Affect extends StdCommand
 		if(mob.riding()!=null)
 			msg.append(L("^!You are @x1 @x2.^?\n\r",mob.riding().stateString(mob),mob.riding().name()));
 
-		if(mob.isAttributeSet(MOB.Attrib.PLAYERKILL))
-			msg.append(L("^!Your playerkill flag is on.^?\n\r"));
+//		if(mob.isAttributeSet(MOB.Attrib.PLAYERKILL))
+//			msg.append(L("^!Your playerkill flag is on.^?\n\r"));
 
 		if(CMLib.flags().isInvisible(mob))
 			msg.append(L("^!You are invisible.^?\n\r"));

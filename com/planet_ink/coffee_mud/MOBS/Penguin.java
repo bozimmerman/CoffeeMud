@@ -52,6 +52,8 @@ public class Penguin extends StdMOB
 		setMoney(0);
 		basePhyStats.setWeight(30 + Math.abs(randomizer.nextInt() % 55));
 		setWimpHitPoint(2);
+		setLevels(Arrays.asList(1));
+		setLocations(Arrays.asList("Shore", "FrozenMountains", "FrozenPlains","IcePlains"));
 
 		addBehavior(CMClass.getBehavior("Follower"));
 		addBehavior(CMClass.getBehavior("MudChat"));

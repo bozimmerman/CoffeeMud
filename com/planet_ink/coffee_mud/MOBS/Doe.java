@@ -47,6 +47,9 @@ public class Doe extends Deer
 		setDescription("A nervous, but beautifully graceful creation.");
 		setDisplayText("A doe looks up as you happen along.");
 		baseCharStats().setStat(CharStats.STAT_GENDER,'F');
+		setLevels(Arrays.asList(1,2));
+		setLocations(Arrays.asList("Hills","HillsGrid","Plains","PlainsThinGrid","ShallowWater","WaterSurface","Woods","WoodsGrid","WoodsMaze"));
+
 	}
 
 }

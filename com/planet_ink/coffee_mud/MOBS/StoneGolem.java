@@ -48,6 +48,9 @@ public class StoneGolem extends StdMOB
 		setDisplayText("A stone golem stares at you coldly");
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);
 		setMoney(0);
+		setLevels(Arrays.asList(6,7,8,9));
+		setLocations(Arrays.asList("CaveGrid","CaveMaze","CaveRoom","CaveSurface","FrozenMountains","LargeCaveRoom","Mountains","MountainsGrid","MountainsMaze","MountainSurface","MountainSurfaceGrid","WetCaveGrid","WetCaveRoom"));
+
 
 		basePhyStats().setDamage(4);
 

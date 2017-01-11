@@ -44,6 +44,8 @@ public class Spider extends StdMOB
 	{
 		super();
 		final Random randomizer = new Random(System.currentTimeMillis());
+		setLevels(Arrays.asList(1));
+		setLocations(Arrays.asList("CaveGrid","CaveMaze","CaveRoom","CaveSurface","CityStreet","Desert","DesertGrid","DesertMaze","FrozenMountains","FrozenPlains","GreatLake","Hills","HillsGrid","IcePlains","IceRoom","Jungle","JungleGrid","LargeCaveRoom","Mountains","MountainsGrid","MountainsMaze","MountainSurface","MountainSurfaceGrid","Plains","PlainsGrid","Road","RoadGrid","SewerMaze","SewerRoomShore","Swamp","TreeSurface","WaterSurface","WetCaveGrid","WetCaveRoom","Woods","WoodsGrid","WoodsMaze"));
 
 		username="a spider";
 		setDescription("The spider has a carapace, 8 legs and a maw.");

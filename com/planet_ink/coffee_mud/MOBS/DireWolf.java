@@ -53,6 +53,8 @@ public class DireWolf extends StdMOB
 		setWimpHitPoint(0);
 
 		basePhyStats.setWeight(80 + Math.abs(randomizer.nextInt() % 55));
+		setLevels(Arrays.asList(3,4,5,6));
+		setLocations(Arrays.asList("Desert","DesertGrid","DesertMaze","FrozenMountains","FrozenPlains","Hills","HillsGrid","IcePlains","Mountains","MountainsGrid","MountainsMaze","MountainSurface","MountainSurfaceGrid","Plains","PlainsGrid","Woods","WoodsGrid","WoodsMaze"));
 
 
 		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,1);

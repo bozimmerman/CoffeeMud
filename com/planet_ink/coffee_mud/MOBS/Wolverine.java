@@ -51,6 +51,8 @@ public class Wolverine extends StdMOB
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);
 		setMoney(0);
 		setWimpHitPoint(0);
+		setLevels(Arrays.asList(1,2));
+		setLocations(Arrays.asList("Jungle","JungleGrid","Plains","PlainsGrid","TreeSurface","Woods","WoodsGrid","WoodsMaze"));
 
 		basePhyStats.setWeight(20 + Math.abs(randomizer.nextInt() % 15));
 

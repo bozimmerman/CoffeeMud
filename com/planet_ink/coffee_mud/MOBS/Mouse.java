@@ -51,6 +51,8 @@ public class Mouse extends StdMOB
 		setWimpHitPoint(2);
 
 		basePhyStats().setDamage(1);
+		setLevels(Arrays.asList(1));
+		setLocations(Arrays.asList("CityStreet","FrozenPlains","Hills","HillsGrid","IcePlains","Plains","PlainsThinGrid","RoadGrid","SewerMaze","SewerRoom","Shore"));
 
 		baseCharStats().setMyRace(CMClass.getRace("Mouse"));
 		baseCharStats().getMyRace().startRacing(this,false);

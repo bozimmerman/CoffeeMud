@@ -52,6 +52,8 @@ public class Squirrel extends StdMOB
 		setMoney(0);
 		basePhyStats.setWeight(4450 + Math.abs(randomizer.nextInt() % 5));
 		setWimpHitPoint(2);
+		setLevels(Arrays.asList(1));
+		setLocations(Arrays.asList("CityStreet","FrozenMountains","FrozenPlains","HillsGrid","IcePlains","Jungle","JungleGrid","Mountains","MountainsGrid","MountainsMaze","MountainSurface","MountainSurfaceGrid","Plains","PlainsGrid","Road","RoadGrid","TreeSurface","Woods","WoodsGrid","WoodsMaze"));
 
 		basePhyStats().setDamage(2);
 

@@ -51,6 +51,12 @@ public class Centipede extends StdMOB
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);
 		setMoney(0);
 		setWimpHitPoint(2);
+		setLevels(Arrays.asList(1));
+		setLocations(Arrays.asList("CaveGrid","CaveMaze","CaveRoom","CaveSurface","CityStreet","Desert","DesertGrid","DesertMaze","Hills","HillsGrid","HillsThinGrid","InTheAir","Jungle","JungleGrid","JungleThinGrid","Mountains","MountainsGrid","MountainsMaze","MountainSurface","MountainSurfaceGrid","Plains","PlainsThinGrid","Road","RoadThinGrid","Shore","Swamp","SwampGrid","TreeSurface","WetCaveGrid","WetCaveRoom"," Woods","WoodsGrid","WoodsMaze","WoodsThinGrid","Shore"));
+		//CaveGrid,CaveMaze,CaveRoom,CaveSurface,CityStreet,Desert,DesertGrid,DesertMaze,FrozenMountains,FrozenPlains,GreatLake,Hills,HillsGrid,IcePlains,IceRoom,InTheAir,Jungle,
+		//JungleGrid,LargeCaveRoom,Mountains,MountainsGrid,MountainsMaze,MountainSurface,MountainSurfaceGrid,OceanGrid,Plains,PlainsGrid,Road,RoadGrid,SaltWaterSurface,SewerMaze,
+		//SewerRoom,ShallowWater,Shore,Swamp,TreeSurface,UnderSaltWater,UnderSaltWaterGrid,UnderSaltWaterMaze,UnderWater,UnderWaterGrid,UnderWaterMaze,WaterSurface,WetCaveGrid,
+		//WetCaveRoom,Whirlpool,Woods,WoodsGrid,WoodsMaze
 
 		basePhyStats().setWeight(Math.abs(randomizer.nextInt() % 2));
 

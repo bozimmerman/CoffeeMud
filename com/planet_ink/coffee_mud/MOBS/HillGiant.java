@@ -49,6 +49,8 @@ public class HillGiant extends StdMOB
 		CMLib.factions().setAlignment(this,Faction.Align.EVIL);
 		setMoney(0);
 		basePhyStats.setWeight(3500 + CMLib.dice().roll(1, 1000, 0));
+		setLevels(Arrays.asList(4,5,6,7));
+		setLocations(Arrays.asList("FrozenPlains","Hills","HillsGrid","IcePlains","Plains","PlainsGrid"));
 
 
 		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,6 + CMLib.dice().roll(1, 2, 0));

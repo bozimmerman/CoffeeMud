@@ -48,6 +48,8 @@ public class Rattlesnake extends StdMOB
 		setDisplayText("A rattlesnake shakes its tail at you furiously");
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);
 		setMoney(0);
+		setLevels(Arrays.asList(2,3,4,5,6));
+		setLocations(Arrays.asList("CityStreet","Desert","DesertGrid","DesertMaze","FrozenMountains","FrozenPlains","Hills","HillsGrid","IcePlains","IceRoom","Jungle","JungleGrid","LargeCaveRoom","Mountains","MountainsGrid","MountainsMaze","MountainSurface","MountainSurfaceGrid","Plains","PlainsGrid","Road","RoadGrid","Woods","WoodsGrid","WoodsMaze"));
 
 		addBehavior(CMClass.getBehavior("CombatAbilities"));
 		addAbility(CMClass.getAbility("Poison"));

@@ -49,6 +49,8 @@ public class Pig extends StdMOB
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);
 		setMoney(0);
 		setWimpHitPoint(2);
+		setLevels(Arrays.asList(1));
+		setLocations(Arrays.asList("CityStreet","Hills","HillsGrid","Plains","PlainsThinGrid","RoadGrid"));
 
 		basePhyStats().setDamage(1);
 

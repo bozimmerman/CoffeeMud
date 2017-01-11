@@ -48,6 +48,8 @@ public class Frog extends StdMOB
 		setDisplayText("A frog is hopping around.");
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);
 		setMoney(0);
+		setLevels(Arrays.asList(1));
+		setLocations(Arrays.asList("CaveGrid", "CaveMaze", "CaveRoom", "CaveSurface", "CityStreet", "Desert","DesertGrid","DesertMaze","Hills","HillsGrid","Mountains","MountainsGrid","MountainsMaze","MountainSurface","MountainSurfaceGrid","Plains","PlainsGrid","Road","RoadGrid","SewerMaze", "SewerRoom","ShallowWater","WaterSurface","Woods","WoodsGrid","WoodsMaze"));
 
 		basePhyStats().setDamage(6);
 

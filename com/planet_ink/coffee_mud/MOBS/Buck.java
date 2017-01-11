@@ -46,6 +46,10 @@ public class Buck extends Deer
 		username="a buck";
 		setDescription("A nervous, but beautifully graceful creation.");
 		setDisplayText("A buck looks up as you happen along.");
+		setLevels(Arrays.asList(1,2));
+		setLocations(Arrays.asList("Hills","HillsGrid","ShallowWater","WaterSurface","Woods","WoodsGrid","WoodsMaze"));
+		//CaveGrid,CaveMaze,CaveRoom,CaveSurface,CityStreet,Desert,DesertGrid,DesertMaze,FrozenMountains,FrozenPlains,GreatLake,Hills,HillsGrid,IcePlains,IceRoom,InTheAir,Jungle,JungleGrid,LargeCaveRoom,Mountains,MountainsGrid,MountainsMaze,MountainSurface,MountainSurfaceGrid,OceanGrid,Plains,PlainsGrid,Road,RoadGrid,SaltWaterSurface,SewerMaze,SewerRoom,ShallowWater,Shore,Swamp,TreeSurface,UnderSaltWater,UnderSaltWaterGrid,UnderSaltWaterMaze,UnderWater,UnderWaterGrid,UnderWaterMaze,WaterSurface,WetCaveGrid,WetCaveRoom,Whirlpool,Woods,WoodsGrid,WoodsMaze
+
 	}
 
 }
