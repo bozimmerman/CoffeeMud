@@ -1755,7 +1755,7 @@ public class StdRace implements Race
 		for(final AbilityMapper.AbilityMapping able : V)
 		{
 			final Ability A=CMClass.getAbility(able.abilityID());
-			if(A!=null)
+			if((A!=null)&&(CMStrings.contains(racialAbilityNames(),A.ID())))
 			{
 				if(!able.abilityID().equals(A.ID()))
 					Log.errOut("Badly defined racial ability ID in "+ID()+": "+A.ID());
