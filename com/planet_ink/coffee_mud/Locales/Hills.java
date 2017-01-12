@@ -46,6 +46,7 @@ public class Hills extends StdRoom
 		name="the hills";
 		basePhyStats.setWeight(3);
 		recoverPhyStats();
+		canBeClaimed = true;
 	}
 
 	@Override

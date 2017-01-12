@@ -169,7 +169,7 @@ public class Inventory extends StdCommand
 		else
 		{
 			if(list.viewItems.size()>0)
-				msg.append(CMLib.lister().lister(seer,list.viewItems,true,"MItem","",false,seer.isAttributeSet(MOB.Attrib.COMPRESS)));
+				msg.append(CMLib.lister().listerName(seer,list.viewItems,true,"MItem","",false,seer.isAttributeSet(MOB.Attrib.COMPRESS)));
 			if(list.foundButUnseen)
 				msg.append(L("(stuff you can't see right now)"));
 
@@ -195,7 +195,7 @@ public class Inventory extends StdCommand
 	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException
 	{
 		if(!super.checkArguments(internalParameters, args))
-			return Boolean.FALSE;
+			return Boolean.FALSE; 
 		return getInventory((MOB)args[0],mob,null);
 	}
 	

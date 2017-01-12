@@ -417,7 +417,7 @@ public class CMLister extends StdLibrary implements ListingLibrary
 			{
 				numShown++;
 				if (items.size() == 0 && itemCount > 1)
-					say.append("^Nand ");
+					say.append("^N and ");
 				appendReps(reps,say,compress);
 				if((!compress)&&(viewerM!=null)&&(!viewerM.isMonster())&&(viewerM.session().getClientTelnetMode(Session.TELNET_MXP)))
 					say.append(CMLib.protocol().mxpImage(item," H=10 W=10",""," "));

@@ -83,7 +83,7 @@ public class Claim extends StdCommand
 				if(T.getOwnerName().length()>0)
 					mob.tell(L("This property is already claimed."));
 			}
-			else if(mob.location().canBeClaimed == false)
+			else if(mob.location().canBeClaimed == true)
 			{
 				mob.setCurrentClaims(mob.getCurrentClaims()+1);
 				mob.tell(L("This property is becoming yours. You are using "+mob.getCurrentClaims()+" of "+mob.getMaxClaims()+"."));

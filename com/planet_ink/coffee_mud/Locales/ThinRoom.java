@@ -57,6 +57,11 @@ public class ThinRoom implements Room
 	}
 
 	@Override
+	public boolean CanBeClaimed(){
+		return canBeClaimed;
+	}
+
+	@Override
 	public String description()
 	{
 		return "";

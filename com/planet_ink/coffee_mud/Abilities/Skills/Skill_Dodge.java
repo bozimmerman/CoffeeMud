@@ -117,7 +117,23 @@ public class Skill_Dodge extends StdSkill
 			  &&(((Weapon)msg.tool()).weaponClassification()!=Weapon.CLASS_RANGED)
 			  &&(((Weapon)msg.tool()).weaponClassification()!=Weapon.CLASS_THROWN))))
 		{
-			final CMMsg msg2=CMClass.getMsg(mob,msg.source(),this,CMMsg.MSG_QUIETMOVEMENT,L("<S-NAME> dodge(s) the attack by <T-NAME>!"));
+			Random rand = new Random();
+			int  n = rand.nextInt(7) + 1;
+			String str = "";
+			switch (n){
+				case 1: str = "<S-NAME> dodge(s) the attack by <T-NAME>!"; break;
+				case 2: str = "<S-NAME> jump(s) to the side to avoid the attack by <T-NAME>!"; break;
+				case 3: str = "<S-NAME> dodge(s) by twisting and ducking under the attack by <T-NAME>!"; break;
+				case 4: str = "<S-NAME> move(s) gracefully to dodge <T-NAME>!"; break;
+				case 5: str = "<S-NAME> leap(s) to the side to avoid <T-NAME>!"; break;
+				case 6: str = "<S-NAME> spin(s) at the last moment to dodge the attack by <T-NAME>!"; break;
+				case 7: str = "<S-NAME> lean(s) to the side to dodge <T-NAME>!"; break;
+				default: str = "<S-NAME> dodge(s) the attack by <T-NAME>!"; break; 
+			}
+
+
+
+			final CMMsg msg2=CMClass.getMsg(mob,msg.source(),this,CMMsg.MSG_QUIETMOVEMENT,L(str));
 			if((proficiencyCheck(null,mob.charStats().getStat(CharStats.STAT_DEXTERITY)-93+(getXLEVELLevel(mob)),false))
 			&&(msg.source().getVictim()==mob)
 			&&(!doneThisRound)

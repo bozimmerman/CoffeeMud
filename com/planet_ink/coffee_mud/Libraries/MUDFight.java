@@ -442,16 +442,16 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		if(isKnockedOutUponDeath(deadM,killerM))
 		{
 			msg=CMClass.getMsg(deadM,null,killerM,
-					CMMsg.MSG_OK_VISUAL,L("^f^*^<FIGHT^>!!!!!!!!!YOU ARE DEFEATED!!!!!!!!!!^</FIGHT^>^?^.\n\r@x1",msp),
+					CMMsg.MSG_OK_VISUAL,L("^f^*^<FIGHT^>You pass out completely and are defeated!^</FIGHT^>^?^.\n\r@x1",msp),
 					CMMsg.MSG_OK_VISUAL,null,
-					CMMsg.MSG_DEATH,L("^F^<FIGHT^><S-NAME> is DEFEATED!!!^</FIGHT^>^?\n\r@x1",msp));
+					CMMsg.MSG_DEATH,L("^F^<FIGHT^><S-NAME> has been knocked out and is defeated!^</FIGHT^>^?\n\r@x1",msp));
 		}
 		else
 		{
 			msg=CMClass.getMsg(deadM,null,killerM,
-				CMMsg.MSG_OK_VISUAL,L("^f^*^<FIGHT^>!!!!!!!!!!!!!!YOU ARE DEAD!!!!!!!!!!!!!!^</FIGHT^>^?^.\n\r@x1",msp),
+				CMMsg.MSG_OK_VISUAL,L("^f^*^<FIGHT^>You succomb to your wounds. You have died!^</FIGHT^>^?^.\n\r@x1",msp),
 				CMMsg.MSG_OK_VISUAL,null,
-				CMMsg.MSG_DEATH,L("^F^<FIGHT^><S-NAME> is DEAD!!!^</FIGHT^>^?\n\r@x1",msp));
+				CMMsg.MSG_DEATH,L("^F^<FIGHT^><S-NAME> succombs to their wounds and has died!^</FIGHT^>^?\n\r@x1",msp));
 		}
 		CMLib.map().sendGlobalMessage(deadM,CMMsg.TYP_DEATH, CMClass.getMsg(deadM,null,killerM, CMMsg.TYP_DEATH,null, CMMsg.TYP_DEATH,null, CMMsg.TYP_DEATH,null));
 		final CMMsg msg2=CMClass.getMsg(deadM,null,killerM, CMMsg.MSG_DEATH,null, CMMsg.MSG_DEATH,null, CMMsg.MSG_DEATH,null);
@@ -709,6 +709,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			damageTypeMsg = CMMsg.TYP_DAMAGE;
 
 		final CMMsg msg=CMClass.getMsg(attacker,target,weapon,messageCode,damageTypeMsg,messageCode,allDisplayMessage);
+		Log.sysOut(msg.toString());
 		msg.setValue(damage);
 		CMLib.color().fixSourceFightColor(msg);
 		final Room R=target.location();
@@ -1593,10 +1594,27 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	@Override
 	public String standardMissString(final int weaponDamageType, final int weaponClassification, final String weaponName, final boolean useExtendedMissString)
 	{
-		final int listIndex = getWeaponAttackIndex(weaponDamageType, weaponClassification);
-		if(!useExtendedMissString)
-			return CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.MISS_DESCS,listIndex);
-		return CMStrings.replaceAll(CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.WEAPON_MISS_DESCS,listIndex),"<TOOLNAME>",weaponName)+CMLib.protocol().msp("missed.wav",20);
+
+		switch(weaponClassification)
+		{
+		case Weapon.CLASS_RANGED: return CMStrings.replaceAll(CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.WEAPON_MISS_DESCS_CLASS_RANGED,0),"<TOOLNAME>",weaponName);
+		case Weapon.CLASS_THROWN: return CMStrings.replaceAll(CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.WEAPON_MISS_DESCS_CLASS_THROWN,0),"<TOOLNAME>",weaponName);
+		default:
+			switch(weaponDamageType)
+			{
+			case Weapon.TYPE_SLASHING:
+			case Weapon.TYPE_PIERCING:
+				return CMStrings.replaceAll(CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.WEAPON_MISS_DESCS_TYPE_SLASHING_SLICING,0),"<TOOLNAME>",weaponName);
+			case Weapon.TYPE_BASHING:
+				return CMStrings.replaceAll(CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.WEAPON_MISS_DESCS_TYPE_BASHING,0),"<TOOLNAME>",weaponName);
+			case Weapon.TYPE_SHOOT:
+				return CMStrings.replaceAll(CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.WEAPON_MISS_DESCS_CLASS_RANGED,0),"<TOOLNAME>",weaponName);
+			case Weapon.TYPE_LASERING:
+				return CMStrings.replaceAll(CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.WEAPON_MISS_DESCS_CLASS_THROWN,0),"<TOOLNAME>",weaponName);
+			default:
+				return CMStrings.replaceAll(CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.WEAPON_MISS_DESCS_TYPE_SLASHING_SLICING,0),"<TOOLNAME>",weaponName);
+			}
+		}
 	}
 
 

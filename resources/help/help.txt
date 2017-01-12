@@ -1,15 +1,15 @@
-^HMOVEMENT^N                            ^HCOMMUNICATION^?
+^HMOVEMENT^N                        ^HCOMMUNICATION^?
 north south east west up down       gossip chat gratz auction
 recall ride crawl climb swim        answer quote say tell channels
 sleep wake rest stand enter         quiet emote socials yell ask
 
-^HCOMBAT/SPELLS/SKILLS^?                ^HINFORMATION^?
-kill backstab flee wimpy rescue     help credits commands where
-sweep bash disarm dirt trip         areas score gods topics who
-spells skills prayers songs         look exits topics time helplist
+^HCOMBAT/SPELLS/SKILLS^?            ^HINFORMATION^?
+kill backstab flee autoretreat      help credits commands where
+rescue sweep bash disarm dirt       areas score gods topics who
+trip spells skills prayers songs    look exits topics time helplist
 pray practice cast sing chant
                                     ^HGROUPS^?
-^HOBJECTS^?                             follow group gtell split
+^HOBJECTS^?                         follow group gtell split
 inventory equipment look compare    
 get put drop give wear wield        ^HOTHER^?
 hold eat drink fill sniff           ! quit password train learn ansi

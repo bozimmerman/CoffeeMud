@@ -73,6 +73,7 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	 * @param newRoomID the new room ID of this room
 	 */
 	public void setRoomID(String newRoomID);
+	public boolean CanBeClaimed();
 
 	/** Domain type mask denoting whether the room is indoor (has a roof) @see {@link Room#domainType()} */
 	public final static int INDOORS=128;

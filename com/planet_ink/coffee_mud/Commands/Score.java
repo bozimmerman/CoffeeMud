@@ -220,7 +220,9 @@ public class Score extends Affect
 		msg.append(L("Your ^<HELP^>combat prowess^</HELP^> is : ^H@x1^.^N.\n\r",CMLib.combat().fightingProwessStr(mob)));
 		//if(CMLib.flags().canSeeHidden(mob))
 		//    msg.append(L("Your ^<HELP^>observation score^</HELP^> : ^H@x1^?.\n\r",CMLib.flags().getDetectScore(mob)));
-		msg.append(L("Wimpy is set to ^!@x1^? hit points.\n\r",""+mob.getWimpHitPoint()));
+		
+		msg.append(L("Your autoretreat is set to ^!@x1^? hit points.\n\r",""+mob.getWimpHitPoint()));
+		msg.append(L("Your claim max is currently "+mob.getMaxClaims()+" and you're using "+mob.getCurrentClaims()+"\n\r"));
 
 		msg.append(getMOBState(mob));
 		msg.append(getAffects(mob.session(),mob,false,false));

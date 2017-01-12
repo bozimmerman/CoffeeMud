@@ -74,6 +74,9 @@ public class StdRoom implements Room
 	protected SVector<Item>				contents	= new SVector<Item>(1);
 	protected Room						me			= this;
 
+	protected boolean			canBeClaimed		= false;
+
+
 	@SuppressWarnings("rawtypes")
 	protected ApplyAffectPhyStats affectPhyStats 	= new ApplyAffectPhyStats<Physical>(this);
 	// base move points and thirst points per round
@@ -112,6 +115,12 @@ public class StdRoom implements Room
 	public String roomID()
 	{
 		return myID	;
+	}
+
+	@Override
+	public boolean CanBeClaimed()
+	{
+		return canBeClaimed;
 	}
 
 	@Override
