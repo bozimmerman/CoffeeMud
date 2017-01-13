@@ -128,64 +128,63 @@ public class Questwins extends StdCommand
 	
 	public Quest findQuest(List<Quest> fromList, String rest)
 	{
-		Quest Q=CMLib.quests().findQuest(rest);
+		Quest Q=null;
+		String lowerRest = rest.toLowerCase();
+		for(final Iterator<Quest> q=fromList.iterator();q.hasNext();)
+		{
+			final Quest Q2=q.next();
+			if((Q2!=null)
+			&&(Q2.displayName()!=null)
+			&&(Q2.displayName().length()>0)
+			&&(Q2.displayName().toLowerCase().startsWith(lowerRest)))
+			{
+				Q=Q2;
+				break;
+			}
+		}
 		if(Q==null)
 		{
-			String lowerRest = rest.toLowerCase();
 			for(final Iterator<Quest> q=fromList.iterator();q.hasNext();)
 			{
 				final Quest Q2=q.next();
 				if((Q2!=null)
 				&&(Q2.displayName()!=null)
 				&&(Q2.displayName().length()>0)
-				&&(Q2.displayName().toLowerCase().startsWith(lowerRest)))
+				&&(CMLib.english().containsString(Q2.displayName().toUpperCase(), rest)))
 				{
 					Q=Q2;
 					break;
 				}
 			}
-			if(Q==null)
+		}
+		if(Q==null)
+		{
+			for(final Iterator<Quest> q=fromList.iterator();q.hasNext();)
 			{
-				for(final Iterator<Quest> q=fromList.iterator();q.hasNext();)
+				final Quest Q2=q.next();
+				if((Q2!=null)
+				&&(Q2.name().toLowerCase().startsWith(lowerRest)))
 				{
-					final Quest Q2=q.next();
-					if((Q2!=null)
-					&&(Q2.displayName()!=null)
-					&&(Q2.displayName().length()>0)
-					&&(CMLib.english().containsString(Q2.displayName().toUpperCase(), rest)))
-					{
-						Q=Q2;
-						break;
-					}
-				}
-			}
-			if(Q==null)
-			{
-				for(final Iterator<Quest> q=fromList.iterator();q.hasNext();)
-				{
-					final Quest Q2=q.next();
-					if((Q2!=null)
-					&&(Q2.name().toLowerCase().startsWith(lowerRest)))
-					{
-						Q=Q2;
-						break;
-					}
-				}
-			}
-			if(Q==null)
-			{
-				for(final Iterator<Quest> q=fromList.iterator();q.hasNext();)
-				{
-					final Quest Q2=q.next();
-					if((Q2!=null)
-					&&(CMLib.english().containsString(Q2.name().toUpperCase(), rest)))
-					{
-						Q=Q2;
-						break;
-					}
+					Q=Q2;
+					break;
 				}
 			}
 		}
+		if(Q==null)
+		{
+			for(final Iterator<Quest> q=fromList.iterator();q.hasNext();)
+			{
+				final Quest Q2=q.next();
+				if((Q2!=null)
+				&&(CMLib.english().containsString(Q2.name().toUpperCase(), rest)))
+				{
+					Q=Q2;
+					break;
+				}
+			}
+		}
+		if(Q==null)
+			Q=CMLib.quests().findQuest(rest);
 		return Q;
 	}
 
