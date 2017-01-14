@@ -130,7 +130,16 @@ public class Smelting extends CraftingSkill implements CraftorAbility
 				{
 					amountMaking=amountMaking*(baseYield()+abilityCode());
 					if(messedUp)
-						commonEmote(mob,L("<S-NAME> ruin(s) @x1!",buildingI.name()));
+					{
+						final Item copy=(Item)buildingI.copyOf();
+						if(copy instanceof RawMaterial)
+						{
+							copy.basePhyStats().setWeight(amountMaking);
+							copy.phyStats().setWeight(amountMaking);
+							CMLib.materials().adjustResourceName(copy);
+						}
+						commonEmote(mob,L("<S-NAME> ruin(s) @x1!",copy.name()));
+					}
 					else
 					for(int i=0;i<amountMaking;i++)
 					{
