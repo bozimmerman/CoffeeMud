@@ -139,6 +139,7 @@ public class Smelting extends CraftingSkill implements CraftorAbility
 							CMLib.materials().adjustResourceName(copy);
 						}
 						commonEmote(mob,L("<S-NAME> ruin(s) @x1!",copy.name()));
+						copy.destroy();
 					}
 					else
 					for(int i=0;i<amountMaking;i++)
