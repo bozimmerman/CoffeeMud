@@ -327,8 +327,8 @@ public class Tempooking extends CraftingSkill implements ItemCraftor
 		{
 			contents[numIngredients]=ingr;
 			amounts[numIngredients]=oldPotContents.get(contents[numIngredients]).intValue();
+			Log.debugOut((numIngredients+1)+": content: "+ingr+", amount="+amounts[numIngredients]);
 			numIngredients++;
-			Log.debugOut(numIngredients+": content: "+ingr+", amount="+amounts[numIngredients]);
 		}
 
 		int amountMade=0;
