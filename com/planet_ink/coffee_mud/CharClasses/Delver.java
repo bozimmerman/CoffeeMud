@@ -183,7 +183,7 @@ public class Delver extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Chant_SnatchLight",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Chant_Drifting",true);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Chant_DistantFungalGrowth",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Chant_DistantFungalGrowth",false,CMParms.parseSemicolons("Chant_SummonFungus(75)",true));
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Chant_Stonewalking",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Chant_Bury",false);

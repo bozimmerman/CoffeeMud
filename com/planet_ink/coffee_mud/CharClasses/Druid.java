@@ -223,7 +223,7 @@ public class Druid extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Chant_SummonPeace",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Chant_Plague",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Chant_DistantGrowth",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Chant_DistantGrowth",false,CMParms.parseSemicolons("Chant_SummonPlants(75)",true));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Chant_Earthquake",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Chant_PlantMaze",false);

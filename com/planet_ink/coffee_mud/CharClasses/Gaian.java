@@ -149,7 +149,7 @@ public class Gaian extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Druid_DruidicPass",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Druid_MyPlants",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_WildernessLore",false);
-
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Chant_SummonPlants",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Chant_SummonFlower",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Chant_SummonHerb",false);
 
@@ -191,7 +191,7 @@ public class Gaian extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Chant_Shillelagh",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Chant_PlantWall",true);
 
-		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Chant_DistantGrowth",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Chant_DistantGrowth",false,CMParms.parseSemicolons("Chant_SummonPlants(75)",true));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Chant_SummonFlyTrap",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Chant_SummonSeaweed",true);
 
@@ -228,7 +228,7 @@ public class Gaian extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Chant_TapGrapevine",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Chant_GrowFood",false);
 
-		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Chant_DistantIngrowth",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Chant_DistantIngrowth",false,CMParms.parseSemicolons("Chant_SummonHouseplant(75)",true));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Chant_PlantTrap",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Chant_CharmArea",false);
