@@ -330,6 +330,8 @@ public class Minstrel extends StdCharClass
 			if(i!=null)
 			{
 				i.setName(L("pan pipes"));
+				i.setDisplayText("some pan pipes lie here");
+				i.setDescription("A simple musical instrument that minstrels use.");
 				i.basePhyStats().setLevel(1);
 				i.basePhyStats().setWeight(2);
 				i.setBaseValue(0);
