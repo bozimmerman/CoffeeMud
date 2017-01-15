@@ -324,7 +324,22 @@ public class Minstrel extends StdCharClass
 			if(w == null)
 				return new Vector<Item>();
 			outfitChoices=new Vector<Item>();
-			outfitChoices.add(w);
+			if(w!=null)
+				outfitChoices.add(w);
+			final Item i=CMClass.getItem("GenInstrument");
+			if(i!=null)
+			{
+				i.setName(L("pan pipes"));
+				i.basePhyStats().setLevel(1);
+				i.basePhyStats().setWeight(2);
+				i.setBaseValue(0);
+				i.setRawProperLocationBitmap(Wearable.WORN_HELD|Wearable.WORN_MOUTH);
+				i.setRawLogicalAnd(true);
+				i.setMaterial(RawMaterial.RESOURCE_IRON);
+				((MusicalInstrument)i).setInstrumentType(MusicalInstrument.InstrumentType.FLUTES);
+				i.recoverPhyStats();
+				outfitChoices.add(i);
+			}
 		}
 		return outfitChoices;
 	}
