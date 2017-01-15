@@ -640,13 +640,13 @@ public class StdCharClass implements CharClass
 	public String getPracticeDesc()
 	{
 		final StringBuilder str=new StringBuilder("");
-		str.append(L("@x1 +(Wisdom/6)",""+getPracsFirstLevel()));
+		str.append(L("@x1 +[(Wisdom/6)",""+getPracsFirstLevel()));
 		if(getBonusPracLevel()>0)
 			str.append("+"+getBonusPracLevel());
 		else
 		if(getBonusPracLevel()<0)
 			str.append(""+getBonusPracLevel());
-		return str.toString()+L(" per level");
+		return str.toString()+L(" per lvl]");
 	}
 
 	@Override
@@ -675,7 +675,7 @@ public class StdCharClass implements CharClass
 					formula=formula.substring(0, x)+"d"+formula.substring(x+4,y)+formula.substring(y+1);
 			}
 			formula=CMStrings.replaceAlls(formula, hitPointDescReplacePairs);
-			hitPointsDesc=CMProps.getIntVar(CMProps.Int.STARTHP)+" +"+formula+" per lvl";
+			hitPointsDesc=CMProps.getIntVar(CMProps.Int.STARTHP)+" +["+formula+" /lvl]";
 		}
 		return hitPointsDesc;
 	}
@@ -694,7 +694,7 @@ public class StdCharClass implements CharClass
 					formula=formula.substring(0, x)+"d"+formula.substring(x+4,y)+formula.substring(y+1);
 			}
 			formula=CMStrings.replaceAlls(formula, manaDescReplacePairs);
-			manaDesc=CMProps.getIntVar(CMProps.Int.STARTMANA)+" +"+formula+" /lvl";
+			manaDesc=CMProps.getIntVar(CMProps.Int.STARTMANA)+" +["+formula+"/lvl]";
 		}
 		return manaDesc;
 	}
@@ -713,7 +713,7 @@ public class StdCharClass implements CharClass
 					formula=formula.substring(0, x)+"d"+formula.substring(x+4,y)+formula.substring(y+1);
 			}
 			formula=CMStrings.replaceAlls(formula, movementDescReplacePairs);
-			movementDesc=CMProps.getIntVar(CMProps.Int.STARTMOVE)+" +"+formula+" per lvl";
+			movementDesc=CMProps.getIntVar(CMProps.Int.STARTMOVE)+" +["+formula+" /lvl]";
 		}
 		return movementDesc;
 	}
