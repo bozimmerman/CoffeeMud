@@ -77,7 +77,9 @@ public class CraftingSkill extends GatheringSkill
 		MENDING,
 		LEARNING,
 		REFITTING,
-		RETITLING
+		RETITLING,
+		DOORING,
+		DEMOLISH
 	}
 
 	protected CraftingActivity	activity		= CraftingActivity.CRAFTING;
