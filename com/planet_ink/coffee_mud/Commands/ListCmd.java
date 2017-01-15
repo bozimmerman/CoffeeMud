@@ -1800,10 +1800,44 @@ public class ListCmd extends StdCommand
 					if(R.getPracAdjDesc().length()>0)
 						statAdj+=((statAdj.length()>0)?", ":"")+R.getPracAdjDesc();
 					String ableStr=R.getSensesChgDesc();
+					String langStr="";
+					String rableStr="";
+					String cultStr="";
+					String effStr="";
 					if(R.getDispositionChgDesc().length()>0)
 						ableStr+=((ableStr.length()>0)?", ":"")+R.getDispositionChgDesc();
 					if(R.getAbilitiesDesc().length()>0)
-						ableStr+=((ableStr.length()>0)?", ":"")+R.getAbilitiesDesc();
+					{
+						for(Ability A : R.racialAbilities(null))
+						{
+							if((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE)
+								langStr+=("[["+A.ID()+"|"+A.name()+"]] ");
+							else
+								rableStr+=("[["+A.ID()+"|"+A.name()+"]] ");
+						}
+						for(Ability A : R.racialEffects(null))
+						{
+							if((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE)
+								langStr+=("[["+A.ID()+"|"+A.name()+"]] ");
+							else
+								effStr+=("[["+A.ID()+"|"+A.name()+"]] ");
+						}
+						final QuadVector<String,Integer,Integer,Boolean> cables=R.culturalAbilities();
+						if(cables != null)
+						{
+							for(int c=0;c<cables.size();c++)
+							{
+								final Ability A=CMClass.getAbility(cables.getFirst(c));
+								if(A!=null)
+								{
+									if((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE)
+										langStr+=("[["+A.ID()+"|"+A.name()+"]] ");
+									else
+										cultStr+=("[["+A.ID()+"|"+A.name()+"]] ");
+								}
+							}
+						}
+					}
 					String immunoStr="";
 					for(String ableID : R.abilityImmunities())
 					{
@@ -1846,16 +1880,26 @@ public class ListCmd extends StdCommand
 						lifeExpStr=L("Forever");
 					else
 						lifeExpStr=L("@x1 years",""+maxAge);
-						
+					String wearLocs="";
+					for(long wearLoc : Wearable.CODES.ALL())
+					{
+						if((wearLoc!=0)&&((R.forbiddenWornBits()&wearLoc)==0))
+							wearLocs += " " + Wearable.CODES.NAME(wearLoc);
+					}
 					lines.append("{{RaceTemplate"
 							+ "|Name="+R.name()
 							+ "|Description="+help
 							+ "|Statadj="+statAdj
+							+ "|RacialAbilities="+rableStr
+							+ "|CulturalAbilities="+cultStr
+							+ "|RacialEffects="+effStr
 							+ "|BonusAbilities="+ableStr
-							+ "|BonusLanguages="+R.getLanguagesDesc()
+							+ "|BonusLanguages="+langStr
 							+ "|Immunities="+immunoStr
 							+ "|LifeExpectancy="+lifeExpStr
 							+ "|Startingequipment="+eqStr
+							+ "|WearLocs="+wearLocs
+							+ "|ExpMod="+R.getXPAdjustment()+"%"
 							+ "|Qualifyingclasses="+qualClassesStr
 							+ "}}\n\r");
 				}
@@ -1942,9 +1986,7 @@ public class ListCmd extends StdCommand
 					final Race R=r.nextElement();
 					if(CMLib.login().isAvailableRace(R)
 					&&(C.isAllowedRace(R)))
-					{
 						raceStr.append("[["+R.name()+"|"+R.name()+"]] ");
-					}
 				}
 				StringBuilder langStr=new StringBuilder("");
 				for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
@@ -1953,7 +1995,7 @@ public class ListCmd extends StdCommand
 					if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE)
 					&&(CMLib.ableMapper().getQualifyingLevel(C.ID(),true,A.ID())>=0)
 					&&(CMLib.ableMapper().getSecretSkill(C.ID(),false,A.ID())))
-							langStr.append("[["+A.ID()+"|"+A.name()+"]] ");
+						langStr.append("[["+A.ID()+"|"+A.name()+"]] ");
 				}
 				lines.append("{{ClassTemplate"
 						+ "|Name="+C.name()
