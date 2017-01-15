@@ -240,7 +240,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		protected boolean firstRun=true;
 		public abstract String attempt() throws CMException,PostProcessException;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	protected final String PostProcessAttempter(final Map<String,Object> defined, final PostProcessAttempt attempter) throws CMException
 	{
@@ -269,7 +269,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			return null;
 		}
 	}
-	
+
 	protected void fillOutRequiredStatCodeSafe(final Modifiable E, final List<String> ignoreStats, final String defPrefix, 
 			final String tagName, final String statName, final XMLTag piece, final Map<String,Object> defined) throws CMException
 	{
@@ -285,7 +285,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			}
 		});
 	}
-	
+
 	// vars created: ROOM_CLASS, ROOM_TITLE, ROOM_DESCRIPTION, ROOM_CLASSES, ROOM_TITLES, ROOM_DESCRIPTIONS
 	@Override
 	public Room buildRoom(XMLTag piece, Map<String,Object> defined, Exit[] exits, int direction) throws CMException
@@ -409,8 +409,6 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		}
 	}
 
-
-
 	@Override
 	public Area findArea(XMLTag piece, Map<String,Object> defined, int directions) throws CMException
 	{
@@ -491,7 +489,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				return description;
 			}
 		});
-		
+
 		if(fillInArea(piece, defined, A, direction))
 			return A;
 		throw new CMException("Unable to build area for some reason.");
@@ -516,7 +514,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			}
 		}
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	protected Room layOutRooms(Area A, LayoutManager layoutManager, int size, int direction, XMLTag piece, Map<String,Object> defined) throws CMException
 	{
@@ -1686,6 +1684,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 
 	protected List<Item> buildItem(XMLTag piece, Map<String,Object> defined) throws CMException
 	{
+		final Map<String,Object> preContentDefined = new SHashtable<String,Object>(defined);
 		final String classID = findStringNow("class",piece,defined);
 		final List<Item> contents = new Vector<Item>();
 		final List<String> ignoreStats=new XVector<String>();
@@ -1816,6 +1815,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 						contents.remove(i);
 				}
 				if(contents.size()==0)
+				{
 					for(final ItemCraftor skill : craftors)
 					{
 						final List<List<String>> V=skill.matchingRecipeNames(recipe,true);
@@ -1833,6 +1833,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 							}
 						}
 					}
+				}
 				for(int i=contents.size()-1;i>=0;i--)
 				{
 					final Item I=contents.get(i);
@@ -1907,7 +1908,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 
 			if(I instanceof Container)
 			{
-				final List<Item> V= findContents(piece,defined);
+				final List<Item> V= findContents(piece,new SHashtable<String,Object>(preContentDefined));
 				for(int i=0;i<V.size();i++)
 				{
 					final Item I2=V.get(i);
