@@ -120,6 +120,7 @@ public class StdTrap extends StdAbility implements Trap
 		return "";
 	}
 
+	protected List<String> newMessaging=new ArrayList<String>(0);
 	private String invokerName=null;
 
 	public PairVector<MOB,Integer> safeDirs=null;
@@ -239,23 +240,35 @@ public class StdTrap extends StdAbility implements Trap
 	@Override
 	public void setMiscText(String text)
 	{
+		text=text.trim();
 		if(text.startsWith("`"))
 		{
 			final int x=text.indexOf("` ",1);
 			if(x>=0)
 			{
 				invokerName=text.substring(1,x);
-				text=text.substring(x+2);
+				text=text.substring(x+2).trim();
 			}
 		}
-		if(text.trim().startsWith(":"))
+		while(text.startsWith("\""))
+		{
+			final int x=text.indexOf("\"",1);
+			if(x>=0)
+			{
+				newMessaging.add(text.substring(1,x));
+				text=text.substring(x+1).trim();
+			}
+			else
+				break;
+		}
+		if(text.startsWith(":"))
 		{
 			final int x=text.indexOf(':');
 			final int y=text.indexOf(':',x+1);
 			if((x>=0)&&(y>x)&&(CMath.isInteger(text.substring(x+1,y).trim())))
 			{
 				setAbilityCode(CMath.s_int(text.substring(x+1,y).trim()));
-				text=text.substring(y+1);
+				text=text.substring(y+1).trim();
 			}
 		}
 		super.setMiscText(text);

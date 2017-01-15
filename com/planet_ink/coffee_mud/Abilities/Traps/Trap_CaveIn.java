@@ -159,22 +159,34 @@ public class Trap_CaveIn extends StdTrap
 			||(invoker().getGroupMembers(new HashSet<MOB>()).contains(target)))
 				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> avoid(s) setting off a cave-in!"));
 			else
-			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> trigger(s) a cave-in!")))
 			{
-				super.spring(target);
-				if((affected!=null)
-				&&(affected instanceof Room))
+				String triggerMsg = L("<S-NAME> trigger(s) a cave-in!");
+				String damageMsg = L("The cave-in <DAMAGE> <T-NAME>!");
+				if(newMessaging.size()>0)
 				{
-					final Room R=(Room)affected;
-					for(int i=0;i<R.numInhabitants();i++)
+					triggerMsg=newMessaging.get(0);
+					if(newMessaging.size()>1)
+						damageMsg=newMessaging.get(1);
+				}
+				if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,triggerMsg))
+				{
+					super.spring(target);
+					if((affected!=null)
+					&&(affected instanceof Room))
 					{
-						final MOB M=R.fetchInhabitant(i);
-						if((M!=null)&&(M!=invoker()))
-							if(invoker().mayIFight(M))
+						final Room R=(Room)affected;
+						for(int i=0;i<R.numInhabitants();i++)
+						{
+							final MOB M=R.fetchInhabitant(i);
+							if((M!=null)&&(M!=invoker()))
 							{
-								final int damage=CMLib.dice().roll(trapLevel()+abilityCode(),20,1);
-								CMLib.combat().postDamage(invoker(),M,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,Weapon.TYPE_BASHING,L("The cave-in <DAMAGE> <T-NAME>!"));
+								if(invoker().mayIFight(M))
+								{
+									final int damage=CMLib.dice().roll(trapLevel()+abilityCode(),20,1);
+									CMLib.combat().postDamage(invoker(),M,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,Weapon.TYPE_BASHING,damageMsg);
+								}
 							}
+						}
 					}
 				}
 			}
