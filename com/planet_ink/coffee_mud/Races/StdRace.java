@@ -1247,12 +1247,19 @@ public class StdRace implements Race
 
 		final CharStats S1=(CharStats)CMClass.getCommon("DefaultCharStats");
 		S1.setAllValues(0);
+		S1.setStat(CharStats.STAT_GENDER, 'M');
+		
 		final CharStats S2=(CharStats)CMClass.getCommon("DefaultCharStats");
 		S2.setAllValues(10);
+		S2.setStat(CharStats.STAT_GENDER, 'N');
+		
 		final CharStats S3=(CharStats)CMClass.getCommon("DefaultCharStats");
-		S3.setAllValues(11);
+		S3.setAllValues(14);
+		S3.setStat(CharStats.STAT_GENDER, 'F');
+		
 		final CharStats SETSTAT=(CharStats)CMClass.getCommon("DefaultCharStats");
 		SETSTAT.setAllValues(0);
+		
 		final CharStats ADJSTAT=(CharStats)CMClass.getCommon("DefaultCharStats");
 		ADJSTAT.setAllValues(0);
 		affectCharStats(fakeMOB,S1);
@@ -1260,12 +1267,18 @@ public class StdRace implements Race
 		affectCharStats(fakeMOB,S3);
 		for(final int i: CharStats.CODES.ALLCODES())
 		{
+			if(i==CharStats.STAT_GENDER)
+			{
+				if(S1.getStat(i)==S2.getStat(i))
+					SETSTAT.setStat(i,S2.getStat(i));
+			}
+			else
 			if(i!=CharStats.STAT_AGE)
 			{
 				if(CharStats.CODES.isBASE(i))
 				{
 					final int max = CharStats.CODES.toMAXBASE(i);
-					if((S2.getStat(i)==S3.getStat(i))
+					if((Math.abs(S2.getStat(i)-10) != Math.abs(S3.getStat(i)-14))
 					&&(S1.getStat(max)!=0))
 					{
 						SETSTAT.setStat(i,S2.getStat(i));

@@ -137,7 +137,7 @@ public class Cobra extends Snake
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setStat(CharStats.STAT_DEXTERITY,18);
+		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,18);
 	}
 
 	@Override
