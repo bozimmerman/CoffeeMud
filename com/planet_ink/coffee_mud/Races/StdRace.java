@@ -1490,7 +1490,18 @@ public class StdRace implements Race
 		for(int i=0;i<Race.BODYPARTSTR.length;i++)
 		{
 			if((race1.bodyMask()[i]>0)&&(race2.bodyMask()[i]>0))
-				GR.bodyMask()[i]=((race1.bodyMask()[i]+race2.bodyMask()[i])/2);
+			{
+				if(((race1.bodyMask()[i]%2)==0) && ((race2.bodyMask()[i]%2)==0))
+				{
+					int newVal = ((race1.bodyMask()[i]+race2.bodyMask()[i])/2);
+					if((newVal % 2)==0)
+						GR.bodyMask()[i]=newVal;
+					else
+						GR.bodyMask()[i]=newVal+1;
+				}
+				else
+					GR.bodyMask()[i]=((race1.bodyMask()[i]+race2.bodyMask()[i])/2);
+			}
 			else
 			if((race1.bodyMask()[i]<=0)&&(race2.bodyMask()[i]>=0))
 				GR.bodyMask()[i]=race2.bodyMask()[i];
