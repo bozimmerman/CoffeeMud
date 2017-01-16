@@ -110,21 +110,27 @@ public class Dice extends StdLibrary implements DiceLibrary
 	}
 	
 	@Override
-    public int inRange(final int min, final int max)
+	public int inRange(final int min, final int max)
 	{
 		if(max<=min) 
 			return min;
-		int l=randomizer.nextInt() % ((max-min)+1);
-		return min+l;
+		final int l= randomizer.nextInt();
+		if(l < 0)
+			return min + ( -l % ((max-min)+1));
+		else
+			return min + (l % ((max-min)+1));
 	}
 	
 	@Override
-    public long inRange(final long min, final long max)
+	public long inRange(final long min, final long max)
 	{
 		if(max<=min) 
 			return min;
-		long l=randomizer.nextLong() % ((max-min)+1);
-		return min+l;
+		final long l= randomizer.nextLong();
+		if(l < 0)
+			return min + ( -l % ((max-min)+1));
+		else
+			return min + (l % ((max-min)+1));
 	}
 	
 	@Override

@@ -988,8 +988,10 @@ public class Import extends StdCommand
 				if(R2==null)
 				{
 					if(!noPrompt)
+					{
 						if(!mob.session().confirm(L("Custom Race '@x1' found, import (Y/n)?",R.ID()),"Y"))
 							continue;
+					}
 					CMClass.addRace(R);
 					CMLib.database().DBCreateRace(R.ID(),R.racialParms());
 				}
@@ -1000,8 +1002,10 @@ public class Import extends StdCommand
 						continue;
 					else
 					if(!noPrompt)
+					{
 						if(!mob.session().confirm(L("Custom Race '@x1' found which would override your standard race.  Import anyway (Y/n)?",R.ID()),"Y"))
 							continue;
+					}
 					CMClass.addRace(R);
 					CMLib.database().DBCreateRace(R.ID(),R.racialParms());
 				}
@@ -1011,14 +1015,16 @@ public class Import extends StdCommand
 			{
 				final CharClass C=(CharClass)custom.get(c);
 				if(customBother.contains(C.ID()))
-				   continue;
+					continue;
 
 				final CharClass C2=CMClass.getCharClass(C.ID());
 				if(C2==null)
 				{
 					if(!noPrompt)
+					{
 						if(!mob.session().confirm(L("Custom Char Class '@x1' found, import (Y/n)?",C.ID()),"Y"))
 							continue;
+					}
 					CMClass.addCharClass(C);
 					CMLib.database().DBCreateClass(C.ID(),C.classParms());
 				}
@@ -1029,8 +1035,10 @@ public class Import extends StdCommand
 						continue;
 					else
 					if(!noPrompt)
+					{
 						if(!mob.session().confirm(L("Custom Char Class '@x1' found which would override your standard class.  Import anyway (Y/n)?",C.ID()),"Y"))
 							continue;
+					}
 					CMClass.addCharClass(C);
 					CMLib.database().DBCreateClass(C.ID(),C.classParms());
 				}
@@ -1040,14 +1048,16 @@ public class Import extends StdCommand
 			{
 				final Ability A=(Ability)custom.get(c);
 				if(customBother.contains(A.ID()))
-				   continue;
+					continue;
 
 				final Ability A2=CMClass.getAbility(A.ID());
 				if(A2==null)
 				{
 					if(!noPrompt)
+					{
 						if(!mob.session().confirm(L("Custom Ability '@x1' found, import (Y/n)?",A.ID()),"Y"))
 							continue;
+					}
 					CMClass.addClass(CMObjectType.ABILITY, A);
 					CMLib.database().DBCreateAbility(A.ID(),CMClass.getSimpleClassName(A),A.getStat("ALLXML"));
 				}
@@ -1058,8 +1068,10 @@ public class Import extends StdCommand
 						continue;
 					else
 					if(!noPrompt)
+					{
 						if(!mob.session().confirm(L("Custom Ability '@x1' found which would override your standard Ability.  Import anyway (Y/n)?",A.ID()),"Y"))
 							continue;
+					}
 					CMClass.delClass(CMObjectType.ABILITY, A2);
 					CMClass.addClass(CMObjectType.ABILITY, A);
 					CMLib.database().DBCreateAbility(A.ID(),CMClass.getSimpleClassName(A),A.getStat("ALLXML"));
@@ -1070,14 +1082,16 @@ public class Import extends StdCommand
 			{
 				final Manufacturer M=(Manufacturer)custom.get(c);
 				if(customBother.contains(M.name()))
-				   continue;
+					continue;
 
 				final Manufacturer eM=CMLib.tech().getManufacturer(M.name());
 				if(eM==null)
 				{
 					if(!noPrompt)
+					{
 						if(!mob.session().confirm(L("Custom Manufacturer '@x1' found, import (Y/n)?",M.name()),"Y"))
 							continue;
+					}
 					CMLib.tech().addManufacturer(eM);
 				}
 				else
@@ -1086,8 +1100,10 @@ public class Import extends StdCommand
 						continue;
 					else
 					if(!noPrompt)
+					{
 						if(!mob.session().confirm(L("Custom Manufacturer '@x1' found which would override your existing one.  Import anyway (Y/n)?",M.name()),"Y"))
 							continue;
+					}
 					eM.setXml(M.getXml());
 				}
 			}
@@ -6697,7 +6713,10 @@ public class Import extends StdCommand
 											break;
 										}
 									}
-								}catch(final NoSuchElementException e){}
+								}
+								catch (final NoSuchElementException e)
+								{
+								}
 								if(linkRoom==null)
 									X.setTemporaryDoorLink("#"+linkRoomID);
 								else
@@ -7224,7 +7243,6 @@ public class Import extends StdCommand
 					else
 					if(s.length()>0)
 						returnAnError(session,"Reset, unknown command: "+s+", area="+areaName,compileErrors,commands);
-	
 				}
 				// now fix the pet shops!
 				for(final Enumeration<Room> e=petShops.keys();e.hasMoreElements();)
@@ -7239,7 +7257,10 @@ public class Import extends StdCommand
 					{
 						final MOB sk=shopRoom.fetchInhabitant(i);
 						if((sk!=null)&&(sk instanceof ShopKeeper))
-						{ shopKeeper=(ShopKeeper)sk; break;	}
+						{
+							shopKeeper = (ShopKeeper) sk;
+							break;
+						}
 					}
 					if(shopKeeper==null)
 						returnAnError(session,"Unknown shopkeeper not in room: "+storeRoom.roomID()+", area="+areaName,compileErrors,commands);

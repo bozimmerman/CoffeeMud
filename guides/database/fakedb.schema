@@ -166,6 +166,7 @@ CMPDAT string NULL
 CMGRAC
 CMRCID string KEY
 CMRDAT string NULL
+CMRCDT integer NULL
 
 CMCCAC
 CMCCID string KEY

@@ -199,7 +199,8 @@ public class Fishing extends GatheringSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		if((proficiencyCheck(mob,0,auto))
-		   &&(foundFish>0))
+		&&(foundFish>0)
+		&&(fishRoom!=null))
 		{
 			found=(Item)CMLib.materials().makeResource(foundFish,Integer.toString(fishRoom.domainType()),false,null);
 			foundShortName="nothing";

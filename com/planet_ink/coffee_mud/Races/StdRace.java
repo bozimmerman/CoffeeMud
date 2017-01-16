@@ -63,6 +63,7 @@ public class StdRace implements Race
 	protected List<Item>	outfitChoices			= null;
 	protected List<Weapon>	naturalWeaponChoices	= null;
 	protected Set<String>	naturalAbilImmunities	= new HashSet<String>();
+	protected int			usageCount				= 0;
 	
 	protected Map<Integer,SearchIDList<Ability>> racialAbilityMap	= null;
 	protected Map<Integer,SearchIDList<Ability>> racialEffectMap	= null;
@@ -526,7 +527,7 @@ public class StdRace implements Race
 		&&(this.getXPAdjustment()!=0)
 		&&(msg.value()!=0))
 			msg.setValue(msg.value() + (int)Math.round(msg.value() * CMath.div(getXPAdjustment(), 100.0)));
-		
+
 		if((msg.tool() instanceof Social)
 		&&(msg.amITarget(myChar)||(msg.source()==myChar))
 		&&(myChar.location()==msg.source().location())
@@ -750,10 +751,13 @@ public class StdRace implements Race
 			mappedCulturalAbilities=true;
 		}
 	}
-	
+
 	@Override
 	public void startRacing(MOB mob, boolean verifyOnly)
 	{
+		if(CMProps.getBoolVar(CMProps.Bool.POPULATIONSTARTED))
+			usageCount++;
+
 		// racialAbilities() call, if necc, will delete ALL mappings
 		for(final Ability A : racialAbilities(mob))
 		{
@@ -1830,6 +1834,13 @@ public class StdRace implements Race
 	public String racialParms()
 	{
 		return "";
+	}
+
+	@Override
+	public int usageCount(int alter)
+	{
+		usageCount += alter;
+		return usageCount;
 	}
 
 	@Override

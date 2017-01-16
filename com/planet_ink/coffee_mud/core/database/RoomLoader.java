@@ -1044,6 +1044,7 @@ public class RoomLoader
 		// now load the rooms
 		if(rooms!=null)
 		{
+			CMProps.setBoolAllVar(CMProps.Bool.POPULATIONSTARTED, true);
 			for(final Map.Entry<String,Room> entry : rooms.entrySet())
 			{
 				if((((++currentRecordPos)%updateBreak)==0)&&(setStatus))

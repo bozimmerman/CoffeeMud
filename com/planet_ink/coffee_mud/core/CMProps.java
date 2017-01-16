@@ -284,7 +284,8 @@ public class CMProps extends Properties
 		DUELTICKDOWN,
 		BASEMINSTAT,
 		DEFSOCTIME,
-		DEFCOMSOCTIME
+		DEFCOMSOCTIME,
+		RACEEXPIRATIONDAYS,
 		;
 		
 		public static final int	EXVIEW_DEFAULT		= 0;
@@ -309,6 +310,7 @@ public class CMProps extends Properties
 		ROOMDCOMPRESS,
 		MOBDCOMPRESS,
 		MUDSTARTED,
+		POPULATIONSTARTED,
 		EMAILFORWARDING,
 		MOBNOCACHE,
 		ROOMDNOCACHE,
@@ -2193,6 +2195,7 @@ public class CMProps extends Properties
 		setIntVar(Int.MAXCRAFTINGSKILLS,getStr("MAXCRAFTINGSKILLS"),2);
 		setIntVar(Int.MAXNONCRAFTINGSKILLS,getStr("MAXNONCRAFTINGSKILLS"),5);
 		setIntVar(Int.MAXLANGUAGES,getStr("MAXLANGUAGES"),3);
+		setIntVar(Int.RACEEXPIRATIONDAYS,getStr("RACEEXPIRATIONDAYS"),365);
 		setIntVar(Int.WALKCOST,getStr("WALKCOST"),1);
 		setIntVar(Int.RUNCOST,getStr("RUNCOST"),2);
 		setIntVar(Int.AWARERANGE,getStr("AWARERANGE"),0);

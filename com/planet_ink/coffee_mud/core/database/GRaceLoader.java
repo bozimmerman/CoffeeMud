@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.core.database;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMProps.Int;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -39,26 +40,116 @@ import java.util.regex.Pattern;
 public class GRaceLoader
 {
 	protected DBConnector DB=null;
+
 	public GRaceLoader(DBConnector newDB)
 	{
 		DB=newDB;
 	}
+
 	public void DBDeleteRace(String raceID)
 	{
 		DB.update("DELETE FROM CMGRAC WHERE CMRCID='"+raceID+"'");
 	}
+
 	public void DBCreateRace(String raceID, String data)
 	{
 		DB.updateWithClobs(
 		 "INSERT INTO CMGRAC ("
 		 +"CMRCID, "
-		 +"CMRDAT "
+		 +"CMRDAT,"
+		 +"CMRCDT "
 		 +") values ("
 		 +"'"+raceID+"',"
-		 +"?"
+		 +"?,"
+		 +System.currentTimeMillis()
 		 +")",
 		 data+" ");
 	}
+	
+	public void DBPruneOldRaces()
+	{
+		final List<String> updates = new ArrayList<String>(1);
+		final long oneHour = (60L * 60L * 1000L);
+		final long expireDays = CMProps.getIntVar(Int.RACEEXPIRATIONDAYS);
+		final long expireMs = (oneHour * expireDays * 24L);
+		final long oldestDate = System.currentTimeMillis()- expireMs;
+		final long oldestHour = System.currentTimeMillis()- oneHour;
+		final List<DatabaseEngine.AckStats> ackStats = DBReadRaceStats();
+		for(DatabaseEngine.AckStats stat : ackStats)
+		{
+			if(stat.creationDate() != 0)
+			{
+				final Race R=CMClass.getRace(stat.ID());
+				if(R.usageCount(0) == 0)
+				{
+					if(stat.creationDate() < oldestDate)
+					{
+						updates.add("DELETE FROM CMGRAC WHERE CMRCID='"+stat.ID()+"';");
+						CMClass.delRace(R);
+						Log.sysOut("Expiring race '"+R.ID()+": "+R.name()+": "+CMLib.time().date2String(stat.creationDate()));
+					}
+				}
+			}
+			else
+			{
+				final long cDate = CMLib.dice().inRange(oldestDate, oldestHour);
+				updates.add("UPDATE CMGRAC SET CMRCDT="+cDate+" WHERE CMRCID='"+stat.ID()+"';");
+			}
+		}
+		if(updates.size()>0)
+		{
+			try
+			{
+				DB.update(updates.toArray(new String[0]));
+			}
+			catch(final Exception sqle)
+			{
+				Log.errOut("GRaceLoader",sqle);
+			}
+		}
+	}
+
+	protected List<DatabaseEngine.AckStats> DBReadRaceStats()
+	{
+		DBConnection D=null;
+		final List<DatabaseEngine.AckStats> rows=new Vector<DatabaseEngine.AckStats>();
+		try
+		{
+			D=DB.DBFetch();
+			final ResultSet R=D.query("SELECT * FROM CMGRAC");
+			while(R.next())
+			{
+				final String rcid = DBConnections.getRes(R,"CMRCID");
+				final long rfirst = DBConnections.getLongRes(R, "CMRCDT");
+				final DatabaseEngine.AckStats ack=new DatabaseEngine.AckStats()
+				{
+					@Override
+					public String ID()
+					{
+						return rcid;
+					}
+
+					@Override
+					public long creationDate()
+					{
+						return rfirst;
+					}
+				};
+				rows.add(ack);
+			}
+		}
+		catch(final Exception sqle)
+		{
+			Log.errOut("GRaceLoader",sqle);
+		}
+		finally
+		{
+			DB.DBDone(D);
+		}
+		// log comment
+		return rows;
+	}
+	
 	public List<DatabaseEngine.AckRecord> DBReadRaces()
 	{
 		DBConnection D=null;
@@ -96,7 +187,7 @@ public class GRaceLoader
 		}
 		catch(final Exception sqle)
 		{
-			Log.errOut("DataLoader",sqle);
+			Log.errOut("GRaceLoader",sqle);
 		}
 		finally
 		{
@@ -105,5 +196,4 @@ public class GRaceLoader
 		// log comment
 		return rows;
 	}
-
 }

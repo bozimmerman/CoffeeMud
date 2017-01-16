@@ -24,6 +24,7 @@ import java.io.IOException;
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.AckRecord;
+import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.AckStats;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
 /*
    Copyright 2004-2017 Bo Zimmerman
@@ -904,6 +905,12 @@ public class DBInterface implements DatabaseEngine
 	public List<AckRecord> DBReadRaces()
 	{
 		return GRaceLoader.DBReadRaces();
+	}
+
+	@Override
+	public void DBPruneOldRaces()
+	{
+		GRaceLoader.DBPruneOldRaces();
 	}
 
 	@Override

@@ -369,6 +369,11 @@ public class StdGrid extends StdRoom implements GridLocale
 				for(int y=0;y<element.length;y++)
 				{
 					Room R=element[y];
+					if(R==null)
+					{
+						V.clear();
+						return getAllRoomsFilled();
+					}
 					if(!V.contains(R))
 						V.addElement(R);
 					final List<Room> sky = R.getSky();

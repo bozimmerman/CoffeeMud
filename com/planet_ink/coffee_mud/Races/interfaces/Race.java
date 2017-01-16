@@ -445,6 +445,14 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, M
 	 * @return the list of racial languages granted to those of this race
 	 */
 	public String getLanguagesDesc();
+	
+	/**
+	 * Returns the number of registered usages of this race as of the 
+	 * moment of the call.  It includes mobs loaded at boot-time.
+	 * @param alter TODO
+	 * @return the usage count.
+	 */
+	public int usageCount(int alter);
 
 	/** Age constant for an infant */
 	public final static int AGE_INFANT=0;

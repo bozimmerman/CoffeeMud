@@ -1580,6 +1580,12 @@ public interface DatabaseEngine extends CMLibrary
 	/**
 	 * Table category: DBRACE
 	 * 
+	 */
+	public void DBPruneOldRaces();
+
+	/**
+	 * Table category: DBRACE
+	 * 
 	 * @param raceID
 	 */
 	public void DBDeleteRace(String raceID);
@@ -1820,7 +1826,6 @@ public interface DatabaseEngine extends CMLibrary
 	 */
 	public static interface PlayerData
 	{
-
 		/**
 		 * 
 		 * @return
@@ -1882,7 +1887,6 @@ public interface DatabaseEngine extends CMLibrary
 	 */
 	public static interface PollData
 	{
-
 		/**
 		 * 
 		 * @return
@@ -1939,6 +1943,27 @@ public interface DatabaseEngine extends CMLibrary
 	}
 
 	/**
+	 * Table category: DBRACE
+	 * 
+	 * @author Bo Zimmerman
+	 *
+	 */
+	public static interface AckStats
+	{
+		/**
+		 * 
+		 * @return
+		 */
+		public String ID();
+
+		/**
+		 * 
+		 * @return
+		 */
+		public long creationDate();
+	}
+
+	/**
 	 * Table category: DBRACE, DBCHARCLASS, DBABILITY
 	 * 
 	 * @author Bo Zimmerman
@@ -1946,7 +1971,6 @@ public interface DatabaseEngine extends CMLibrary
 	 */
 	public static interface AckRecord
 	{
-
 		/**
 		 * 
 		 * @return
@@ -1965,5 +1989,4 @@ public interface DatabaseEngine extends CMLibrary
 		 */
 		public String typeClass();
 	}
-
 }
