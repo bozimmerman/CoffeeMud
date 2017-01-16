@@ -148,9 +148,9 @@ public class UmberHulk extends StdRace
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setStat(CharStats.STAT_STRENGTH,16);
-		affectableStats.setStat(CharStats.STAT_DEXTERITY,8);
-		affectableStats.setStat(CharStats.STAT_INTELLIGENCE,9);
+		affectableStats.setRacialStat(CharStats.STAT_STRENGTH,16);
+		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,8);
+		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,9);
 	}
 
 	@Override
