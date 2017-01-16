@@ -2575,7 +2575,7 @@ public class Test extends StdCommand
 				if(firstR!=null)
 				{
 					final Race secondR=CMClass.getRace("Human");
-					Race R1=CMLib.utensils().getMixedRace(firstR.ID(),secondR.ID());
+					Race R1=CMLib.utensils().getMixedRace(firstR.ID(),secondR.ID(), false);
 					if(R1!=null)
 					{
 						// well, it didn't crash

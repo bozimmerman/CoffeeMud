@@ -349,7 +349,16 @@ public interface CMMiscUtils extends CMLibrary
 	 * 
 	 * @param race1 the mother race
 	 * @param race2 the father race
+	 * @param ignoreRules TODO
 	 * @return the mixed race
 	 */
-	public Race getMixedRace(String race1, String race2);
+	public Race getMixedRace(String race1, String race2, boolean ignoreRules);
+	
+	/**
+	 * Breaks apart a given generic mixed race ID to figure
+	 * out which races were combined to make it up.
+	 * @param raceID the raceID to break apart
+	 * @return a list of constituant races, or empty.
+	 */
+	public List<Race> getConstituantRaces(final String raceID);
 }

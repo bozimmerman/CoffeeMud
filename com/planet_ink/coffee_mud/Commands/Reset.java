@@ -1036,85 +1036,125 @@ public class Reset extends StdCommand
 				for(final Enumeration e=CMClass.races();e.hasMoreElements();)
 				{
 					final Race R=(Race)e.nextElement();
-					final Vector<Race> racesToBaseFrom=new Vector<Race>();
-					final Race human=CMClass.getRace("Human");
-					final Race halfling=CMClass.getRace("Halfling");
-					if((R.isGeneric())&&(R.ID().length()>1)&&(!R.ID().endsWith("Race"))&&(Character.isUpperCase(R.ID().charAt(0))))
+					if(R.isGeneric())
 					{
-						int lastStart=0;
-						int c=1;
-						while(c<=R.ID().length())
-						{
-							if((c==R.ID().length())||(Character.isUpperCase(R.ID().charAt(c))))
-							{
-								if((lastStart==0)&&(c==R.ID().length())&&(!R.ID().endsWith("ling"))&&(!R.ID().startsWith("Half")))
-									break;
-								final String partial=R.ID().substring(lastStart,c);
-								if(partial.equals("Half")&&(!racesToBaseFrom.contains(human)))
-								{
-									racesToBaseFrom.add(human);
-									lastStart=c;
-								}
-								else
-								{
-									Race R2=CMClass.getRace(partial);
-									if((R2!=null)&&(R2!=R))
-									{
-										racesToBaseFrom.add(R2);
-										lastStart=c;
-									}
-									else
-									if(partial.endsWith("ling"))
-									{
-										if(!racesToBaseFrom.contains(halfling))
-											racesToBaseFrom.add(halfling);
-										lastStart=c;
-										R2=CMClass.getRace(partial.substring(0,partial.length()-4));
-										if(R2!=null)
-											racesToBaseFrom.add(R2);
-									}
-								}
-								if(c==R.ID().length())
-									break;
-							}
-							c++;
-						}
-						final StringBuffer answer=new StringBuffer(R.ID()+": ");
-						for(int i=0;i<racesToBaseFrom.size();i++)
-							answer.append(racesToBaseFrom.get(i).ID()+" ");
-						mob.tell(answer.toString());
+						final List<Race> racesToBaseFrom=CMLib.utensils().getConstituantRaces(R.ID());
 						if(racesToBaseFrom.size()>0)
 						{
-							final long[] ageChart=new long[Race.AGE_ANCIENT+1];
+							final StringBuffer answer=new StringBuffer(R.ID()+": ");
 							for(int i=0;i<racesToBaseFrom.size();i++)
+								answer.append(racesToBaseFrom.get(i).ID()+" ");
+							mob.tell(answer.toString());
+							if(racesToBaseFrom.size()>0)
 							{
-								final Race R2=racesToBaseFrom.get(i);
+								final long[] ageChart=new long[Race.AGE_ANCIENT+1];
+								for(int i=0;i<racesToBaseFrom.size();i++)
+								{
+									final Race R2=racesToBaseFrom.get(i);
+									int lastVal=0;
+									for(int x=0;x<ageChart.length;x++)
+									{
+										int val=R2.getAgingChart()[x];
+										if(val>=Integer.MAX_VALUE)
+											val=lastVal+(x*1000);
+										ageChart[x]+=val;
+										lastVal=val;
+									}
+								}
+								for(int x=0;x<ageChart.length;x++)
+									ageChart[x]=ageChart[x]/racesToBaseFrom.size();
 								int lastVal=0;
+								int thisVal=0;
 								for(int x=0;x<ageChart.length;x++)
 								{
-									int val=R2.getAgingChart()[x];
-									if(val>=Integer.MAX_VALUE)
-										val=lastVal+(x*1000);
-									ageChart[x]+=val;
-									lastVal=val;
+									lastVal=thisVal;
+									thisVal=(int)ageChart[x];
+									if(thisVal<lastVal)
+										thisVal+=lastVal;
+									R.getAgingChart()[x]=thisVal;
 								}
+								CMLib.database().DBDeleteRace(R.ID());
+								CMLib.database().DBCreateRace(R.ID(),R.racialParms());
 							}
-							for(int x=0;x<ageChart.length;x++)
-								ageChart[x]=ageChart[x]/racesToBaseFrom.size();
-							int lastVal=0;
-							int thisVal=0;
-							for(int x=0;x<ageChart.length;x++)
-							{
-								lastVal=thisVal;
-								thisVal=(int)ageChart[x];
-								if(thisVal<lastVal)
-									thisVal+=lastVal;
-								R.getAgingChart()[x]=thisVal;
-							}
-							CMLib.database().DBDeleteRace(R.ID());
-							CMLib.database().DBCreateRace(R.ID(),R.racialParms());
 						}
 					}
+				}
+			}
+		}
+		else
+		if(s.equalsIgnoreCase("genmixedracebuilds")&&(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDRACES)))
+		{
+			if(mob.session().confirm(L("Recreate all the gen-mixed-races?!"), L("N")))
+			{
+				List<Race> racesToDo = new ArrayList<Race>();
+				for(final Enumeration e=CMClass.races();e.hasMoreElements();)
+				{
+					final Race R=(Race)e.nextElement();
+					if(R.isGeneric())
+					{
+						final List<Race> racesToBaseFrom=CMLib.utensils().getConstituantRaces(R.ID());
+						if(racesToBaseFrom.size()>1)
+						{
+							racesToDo.add(R);
+						}
+					}
+				}
+				for(Race R : racesToDo)
+				{
+					CMLib.database().DBDeleteRace(R.ID());
+					CMClass.delRace(R);
+				}
+				for(Race R : racesToDo)
+				{
+					final List<Race> racesToBaseFrom=CMLib.utensils().getConstituantRaces(R.ID());
+					Race R1=racesToBaseFrom.get(0);
+					for(int r=1;r<racesToBaseFrom.size();r++)
+					{
+						Race R2=racesToBaseFrom.get(r);
+						Race R3=CMLib.utensils().getMixedRace(R1.ID(),R2.ID(), false);
+						R1=R3;
+					}
+					if(!R1.ID().equals(R.ID()))
+					{
+						if(R1.ID().equalsIgnoreCase(R.ID()))
+						{
+							String oldID = R.ID();
+							R1.setStat("ID", R.ID());
+							mob.tell("Name Fixed: "+oldID+" into "+R1.ID());
+							CMLib.database().DBDeleteRace(oldID);
+							CMLib.database().DBCreateRace(R1.ID(), R1.racialParms());
+						}
+						else
+						{
+							Race R1R=(Race)R1.copyOf();
+							R1R.setStat("ID", R.ID());
+							if(R.ID().length()!=R1R.ID().length())
+							{
+								mob.tell("Redoing: "+R1R.ID()+" because "+R1.ID()+"!="+R.ID());
+								R1=racesToBaseFrom.get(0);
+								for(int r=1;r<racesToBaseFrom.size();r++)
+								{
+									Race R2=racesToBaseFrom.get(r);
+									Race R3=CMLib.utensils().getMixedRace(R1.ID(),R2.ID(), true);
+									R1=R3;
+								}
+								if(!R1.ID().equals(R.ID()))
+								{
+									mob.tell("UGH -- Giving up on "+R.ID()+" and keeping it...");
+									CMLib.database().DBCreateRace(R.ID(), R.racialParms());
+									CMClass.addRace(R);
+								}
+							}
+							else
+							{
+								CMLib.database().DBCreateRace(R1R.ID(), R1R.racialParms());
+								CMClass.addRace(R1R);
+								mob.tell("Duplicated: "+R1.ID()+" into "+R1R.ID());
+							}
+						}
+					}
+					else
+						mob.tell("Recreated: "+R1.ID());
 				}
 			}
 		}

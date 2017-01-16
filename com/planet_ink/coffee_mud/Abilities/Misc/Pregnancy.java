@@ -244,7 +244,7 @@ public class Pregnancy extends StdAbility implements HealthCondition
 									A=mob.fetchAbility(ID());
 								}
 							}
-							Race R=CMLib.utensils().getMixedRace(race1,race2);
+							Race R=CMLib.utensils().getMixedRace(race1,race2, false);
 							if(R==null)
 								R=mob.baseCharStats().getMyRace();
 							String name=CMLib.english().startWithAorAn(R.makeMobName(gender, 2)).toLowerCase();

@@ -1719,9 +1719,70 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		}
 		return "";
 	}
-	
+
 	@Override
-	public Race getMixedRace(String race1, String race2)
+	public List<Race> getConstituantRaces(final String raceID)
+	{
+		final Vector<Race> racesToBaseFrom=new Vector<Race>();
+		final Race human=CMClass.getRace("Human");
+		final Race halfling=CMClass.getRace("Halfling");
+		if((raceID.length()>1)&&(!raceID.endsWith("Race"))&&(Character.isUpperCase(raceID.charAt(0))))
+		{
+			int lastStart=0;
+			int c=1;
+			while(c<=raceID.length())
+			{
+				if((c==raceID.length())||(Character.isUpperCase(raceID.charAt(c))))
+				{
+					if((lastStart==0)&&(c==raceID.length())&&(!raceID.endsWith("ling"))&&(!raceID.startsWith("Half")))
+						break;
+					final String remainder = raceID.substring(lastStart);
+					for(Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
+					{
+						Race R3=r.nextElement();
+						if((!R3.ID().equals(raceID))
+						&&(!R3.isGeneric())
+						&&(remainder.startsWith(R3.ID()))
+						&&(R3.ID().length()>(c-lastStart)))
+							c=lastStart+R3.ID().length();
+					}
+					final String partial=raceID.substring(lastStart,c);
+					if(partial.equals("Half")
+					&&(!racesToBaseFrom.contains(human)))
+					{
+						racesToBaseFrom.add(human);
+						lastStart=c;
+					}
+					else
+					{
+						Race R2=CMClass.getRace(partial);
+						if((R2!=null)&&(!R2.ID().equals(raceID)))
+						{
+							racesToBaseFrom.add(R2);
+							lastStart=c;
+						}
+						else
+						if(partial.endsWith("ling"))
+						{
+							if(!racesToBaseFrom.contains(halfling))
+								racesToBaseFrom.add(halfling);
+							lastStart=c;
+							R2=CMClass.getRace(partial.substring(0,partial.length()-4));
+							if(R2!=null)
+								racesToBaseFrom.add(R2);
+						}
+					}
+					if(c==raceID.length())
+						break;
+				}
+				c++;
+			}
+		}
+		return racesToBaseFrom;
+	}
+
+	@Override
+	public Race getMixedRace(String race1, String race2, boolean ignoreRules)
 	{
 		if(race1.indexOf(race2)>=0)
 			return CMClass.getRace(race1);
@@ -1729,62 +1790,64 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		if(race2.indexOf(race1)>=0)
 			return CMClass.getRace(race2);
 		
-		String raceMixRules = CMProps.getVar(CMProps.Str.RACEMIXING);
-		if(raceMixRules.trim().length()>0)
+		if(!ignoreRules)
 		{
-			List<String> rules=CMParms.parseCommas(raceMixRules, true);
-			final String urace1=race1.toUpperCase();
-			final String urace2=race2.toUpperCase();
-			for(String rule : rules)
+			String raceMixRules = CMProps.getVar(CMProps.Str.RACEMIXING);
+			if(raceMixRules.trim().length()>0)
 			{
-				rule=rule.trim();
-				if(rule.equalsIgnoreCase("FATHER"))
+				List<String> rules=CMParms.parseCommas(raceMixRules, true);
+				final String urace1=race1.toUpperCase();
+				final String urace2=race2.toUpperCase();
+				for(String rule : rules)
 				{
-					Race R=CMClass.getRace(race2);
-					if(R==null)
-						R=CMClass.findRace(race2);
-					if(R!=null)
-						return R;
-				}
-				else
-				if(rule.equalsIgnoreCase("MOTHER"))
-				{
-					Race R=CMClass.getRace(race1);
-					if(R==null)
-						R=CMClass.findRace(race1);
-					if(R!=null)
-						return R;
-				}
-				else
-				{
-					String chk=raceMixRuleCheck(rule,urace1,urace2);
-					if((chk==null)||(chk.length()==0))
-						chk=raceMixRuleCheck(rule,urace2,urace1);
-					if((chk!=null)&&(chk.length()>0))
+					rule=rule.trim();
+					if(rule.equalsIgnoreCase("FATHER"))
 					{
-						String raceID=CMStrings.replaceAll(chk, " ", "_");
-						Race R=CMClass.getRace(raceID);
+						Race R=CMClass.getRace(race2);
 						if(R==null)
-							R=CMClass.findRace(raceID);
+							R=CMClass.findRace(race2);
 						if(R!=null)
 							return R;
-						else
-						{
-							final Race FIRSTR=CMClass.getRace(race1);
-							final Race SECONDR=CMClass.getRace(race2);
-							R=FIRSTR.mixRace(SECONDR,raceID,chk);
-							if(R.isGeneric() && (!R.ID().equals(race1))&& (!R.ID().equals(race2)))
-							{
-								CMClass.addRace(R);
-								CMLib.database().DBCreateRace(R.ID(),R.racialParms());
-							}
+					}
+					else
+					if(rule.equalsIgnoreCase("MOTHER"))
+					{
+						Race R=CMClass.getRace(race1);
+						if(R==null)
+							R=CMClass.findRace(race1);
+						if(R!=null)
 							return R;
+					}
+					else
+					{
+						String chk=raceMixRuleCheck(rule,urace1,urace2);
+						if((chk==null)||(chk.length()==0))
+							chk=raceMixRuleCheck(rule,urace2,urace1);
+						if((chk!=null)&&(chk.length()>0))
+						{
+							String raceID=CMStrings.replaceAll(chk, " ", "_");
+							Race R=CMClass.getRace(raceID);
+							if(R==null)
+								R=CMClass.findRace(raceID);
+							if(R!=null)
+								return R;
+							else
+							{
+								final Race FIRSTR=CMClass.getRace(race1);
+								final Race SECONDR=CMClass.getRace(race2);
+								R=FIRSTR.mixRace(SECONDR,raceID,chk);
+								if(R.isGeneric() && (!R.ID().equals(race1))&& (!R.ID().equals(race2)))
+								{
+									CMClass.addRace(R);
+									CMLib.database().DBCreateRace(R.ID(),R.racialParms());
+								}
+								return R;
+							}
 						}
 					}
 				}
 			}
 		}
-
 		Race R=null;
 		if(race1.equalsIgnoreCase("Human")||race2.equalsIgnoreCase("Human"))
 		{

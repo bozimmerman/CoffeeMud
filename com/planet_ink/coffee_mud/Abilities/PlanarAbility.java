@@ -549,7 +549,7 @@ public class PlanarAbility extends StdAbility
 						else
 						{
 							final Race secondR=M.charStats().getMyRace();
-							Race R=CMLib.utensils().getMixedRace(firstR.ID(),secondR.ID());
+							Race R=CMLib.utensils().getMixedRace(firstR.ID(),secondR.ID(), false);
 							if(R!=null)
 							{
 								M.baseCharStats().setMyRace(R);
