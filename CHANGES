@@ -1,4 +1,5 @@
 # Build 5.9.5 Release ??/??/2016
+   *. Database Schema Updated for CMGRAC.  See the Installation Guide about running DBUpgrade.
    1. New chants: Phosphorescence, Land Legs, BurrowSpeak
    2. Anarchy clan govt type now has Clan Experience spell as an instant benefit.
    3. Pirates no longer regain lost limbs after death.
@@ -31,6 +32,7 @@
    30. Minstrels now get pan pipes as standard outfit
    31. Trap_CaveIn allows overriding of the messaging.
    32. ShipWright now supports building and demolishing doors on ships.
+   33. 
 # Build 5.9.4 Released 08/03/2016
    1. Qualify now shows language limits
    2. New Prop_NoTeleport exceptions
