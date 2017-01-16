@@ -1543,6 +1543,14 @@ public class StdRace implements Race
 
 		for(final int i: CharStats.CODES.ALLCODES())
 		{
+			if(i==CharStats.STAT_GENDER)
+			{
+				int setStat1=SETSTAT1.getStat(i);
+				int setStat2=SETSTAT2.getStat(i);
+				if((setStat1>0)&&(setStat2>0)&&(setStat1==setStat2))
+					SETSTAT.setStat(i,setStat1);
+			}
+			else
 			if(CharStats.CODES.isBASE(i))
 			{
 				final int newStat=((ADJSTAT1.getStat(i)+ADJSTAT2.getStat(i))/2);
