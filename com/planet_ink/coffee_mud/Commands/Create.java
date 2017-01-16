@@ -37,10 +37,17 @@ import java.io.IOException;
 
 public class Create extends StdCommand
 {
-	public Create(){}
+	public Create()
+	{
+	}
 
-	private final String[] access=I(new String[]{"CREATE"});
-	@Override public String[] getAccessWords(){return access;}
+	private final String[]	access	= I(new String[] { "CREATE" });
+
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
 	public void exits(MOB mob, List<String> commands)
 		throws IOException
@@ -567,6 +574,37 @@ public class Create extends StdCommand
 		Log.sysOut("Mobs",mob.Name()+" created mob "+newMOB.Name()+".");
 	}
 
+	public void mixedrace(MOB mob, List<String> commands)
+			throws IOException
+	{
+		if(commands.size()<3)
+		{
+			mob.tell(L("You have failed to specify the proper fields.\n\rThe format is CREATE MIXEDRACE [RACE ID] [RACE ID]\n\r"));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return;
+		}
+		String raceID1=commands.get(2);
+		String raceID2=CMParms.combine(commands,3);
+		final Race R1=CMClass.getRace(raceID1);
+		if(R1==null)
+		{
+			mob.tell("Unknown race: "+raceID1);
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return;
+		}
+		final Race R2=CMClass.getRace(raceID2);
+		if(R2==null)
+		{
+			mob.tell("Unknown race: "+raceID2);
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return;
+		}
+		
+		final Race R=CMLib.utensils().getMixedRace(R1.ID(), R2.ID(), false);
+		mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("Suddenly, @x1ness instantiates from the Java Plane.",R.name()));
+		Log.sysOut("Mobs",mob.Name()+" created race "+R.ID()+".");
+	}
+	
 	public void races(MOB mob, List<String> commands)
 		throws IOException
 	{
@@ -1092,6 +1130,14 @@ public class Create extends StdCommand
 			races(mob,commands);
 		}
 		else
+		if(commandType.equals("MIXEDRACE"))
+		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDRACES))
+				return errorOut(mob);
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("^S<S-NAME> wave(s) <S-HIS-HER> arms...^?"));
+			mixedrace(mob,commands);
+		}
+		else
 		if(commandType.equals("CLASS"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDCLASSES))
@@ -1587,7 +1633,7 @@ public class Create extends StdCommand
 					else
 					{
 						mob.tell(L("\n\rYou cannot create a '@x1'. However, you might try an EXIT, ITEM, QUEST, FACTION, COMPONENT, GOVERNMENT, HOLIDAY, "
-								+ "CLAN, MOB, RACE, ABILITY, LANGUAGE, CRAFTSKILL, ACHIEVEMENT, MANUFACTURER, ALLQUALIFY, CLASS, POLL, DEBUGFLAG, "
+								+ "CLAN, MOB, RACE, MIXEDRACE, ABILITY, LANGUAGE, CRAFTSKILL, ACHIEVEMENT, MANUFACTURER, ALLQUALIFY, CLASS, POLL, DEBUGFLAG, "
 								+ "WEBSERVER, DISABLEFLAG, ENABLEFLAG, NEWS, USER, or ROOM.",commandType));
 						return false;
 					}
@@ -1634,7 +1680,7 @@ public class Create extends StdCommand
 						return execute(mob,commands,metaFlags);
 					}
 					mob.tell(L("\n\rYou cannot create a '@x1'. However, you might try an EXIT, ITEM, QUEST, FACTION, MOB, COMPONENT, GOVERNMENT, "
-							+ "MANUFACTURER, HOLIDAY, CLAN, RACE, ABILITY, LANGUAGE, CRAFTSKILL, ALLQUALIFY, ACHIEVEMENT, CLASS, POLL, USER, "
+							+ "MANUFACTURER, HOLIDAY, CLAN, RACE, MIXEDRACE, ABILITY, LANGUAGE, CRAFTSKILL, ALLQUALIFY, ACHIEVEMENT, CLASS, POLL, USER, "
 							+ "WEBSERVER, DEBUGFLAG, NEWS, DISABLEFLAG, ENABLEFLAG, or ROOM.",commandType));
 					return false;
 				}
@@ -1643,8 +1689,16 @@ public class Create extends StdCommand
 		return true;
 	}
 
-	@Override public boolean canBeOrdered(){return false;}
-	@Override public boolean securityCheck(MOB mob){return CMSecurity.isAllowedContainsAny(mob,mob.location(),CMSecurity.SECURITY_CMD_GROUP);}
+	@Override
+	public boolean canBeOrdered()
+	{
+		return false;
+	}
 
+	@Override
+	public boolean securityCheck(MOB mob)
+	{
+		return CMSecurity.isAllowedContainsAny(mob, mob.location(), CMSecurity.SECURITY_CMD_GROUP);
+	}
 
 }
