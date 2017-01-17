@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Aarakocran extends Harpy
+public class Aarakocran extends StdRace
 {
 	@Override
 	public String ID()
@@ -52,6 +52,44 @@ public class Aarakocran extends Harpy
 	public String name()
 	{
 		return localizedStaticName;
+	}
+	
+	@Override
+	public int shortestMale()
+	{
+		return 59;
+	}
+
+	@Override
+	public int shortestFemale()
+	{
+		return 59;
+	}
+
+	@Override
+	public int heightVariance()
+	{
+		return 12;
+	}
+
+	@Override
+	public int lightestWeight()
+	{
+		return 160;
+	}
+
+	@Override
+	public int weightVariance()
+	{
+		return 80;
+	}
+
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Avian");
+
+	@Override
+	public String racialCategory()
+	{
+		return localizedStaticRacialCat;
 	}
 
 	@Override
@@ -161,6 +199,73 @@ public class Aarakocran extends Harpy
 		affectableStats.setStat(CharStats.STAT_CONSTITUTION,affectableStats.getStat(CharStats.STAT_CONSTITUTION)-1);
 		affectableStats.setStat(CharStats.STAT_MAX_CHARISMA_ADJ,affectableStats.getStat(CharStats.STAT_MAX_CHARISMA_ADJ)-1);
 		affectableStats.setStat(CharStats.STAT_CHARISMA,affectableStats.getStat(CharStats.STAT_CHARISMA)-1);
+	}
+
+	@Override
+	public Weapon myNaturalWeapon()
+	{
+		if(naturalWeapon==null)
+		{
+			naturalWeapon=CMClass.getWeapon("StdWeapon");
+			naturalWeapon.setName(L("some sharp talons"));
+			naturalWeapon.setMaterial(RawMaterial.RESOURCE_BONE);
+			naturalWeapon.setUsesRemaining(1000);
+			naturalWeapon.setWeaponDamageType(Weapon.TYPE_PIERCING);
+		}
+		return naturalWeapon;
+	}
+
+	@Override
+	public String makeMobName(char gender, int age)
+	{
+		switch(age)
+		{
+			case Race.AGE_INFANT:
+			case Race.AGE_TODDLER:
+				return name().toLowerCase()+" chick";
+			case Race.AGE_CHILD:
+				return "young "+name().toLowerCase();
+			default :
+				return super.makeMobName(gender, age);
+		}
+	}
+
+	@Override
+	public String healthText(MOB viewer, MOB mob)
+	{
+		final double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
+
+		if(pct<.10)
+			return L("^r@x1^r is hovering on deaths door!^N",mob.name(viewer));
+		else
+		if(pct<.20)
+			return L("^r@x1^r is covered in blood and matted feathers.^N",mob.name(viewer));
+		else
+		if(pct<.30)
+			return L("^r@x1^r is bleeding badly from lots of wounds.^N",mob.name(viewer));
+		else
+		if(pct<.40)
+			return L("^y@x1^y has numerous bloody matted feathers.^N",mob.name(viewer));
+		else
+		if(pct<.50)
+			return L("^y@x1^y has some bloody matted feathers.^N",mob.name(viewer));
+		else
+		if(pct<.60)
+			return L("^p@x1^p has a lot of missing feathers.^N",mob.name(viewer));
+		else
+		if(pct<.70)
+			return L("^p@x1^p has a few missing feathers.^N",mob.name(viewer));
+		else
+		if(pct<.80)
+			return L("^g@x1^g has a missing feather.^N",mob.name(viewer));
+		else
+		if(pct<.90)
+			return L("^g@x1^g has a few feathers out of place.^N",mob.name(viewer));
+		else
+		if(pct<.99)
+			return L("^g@x1^g has a some ruffled feathers.^N",mob.name(viewer));
+		else
+			return L("^c@x1^c is in perfect health.^N",mob.name(viewer));
 	}
 
 	@Override

@@ -111,7 +111,7 @@ public class Chant_IllusionaryForest extends Chant
 			break;
 		case 3:
 			newRoom.setDisplayText(L("Light Forest"));
-			newRoom.setDescription(L("A light growth of tall evergreens surrounds you on all sides.  There are no apparant paths, but you can still see the sky through the leaves."));
+			newRoom.setDescription(L("A light growth of tall evergreens surrounds you on all sides.  There are no apparent paths, but you can still see the sky through the leaves."));
 			break;
 		case 4:
 			newRoom.setDisplayText(L("Forest by the stream"));

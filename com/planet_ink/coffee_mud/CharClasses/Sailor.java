@@ -179,7 +179,7 @@ public class Sailor extends StdCharClass
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Skill_CombatRepairs",true);
 
-		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Salvage",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Salvaging",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"MasterFishing",true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Skill_FoulWeatherSailing",false);

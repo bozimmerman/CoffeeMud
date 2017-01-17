@@ -186,7 +186,7 @@ public class Chant_PlantMaze extends Chant
 				desc.append("<P>");
 				desc.append(L("This forest of @x1 is dark and thick here.  Ominous looking @x2 seem to block every path, and the air is perfectly still.",s,s));
 				desc.append("<P>");
-				desc.append(L("A light growth of tall @x1 surrounds you on all sides.  There are no apparant paths, but you can still see the sky between the growths.",s));
+				desc.append(L("A light growth of tall @x1 surrounds you on all sides.  There are no apparent paths, but you can still see the sky between the growths.",s));
 				desc.append("<P>");
 				desc.append(L("A light growth of tall @x1 surrounds you on all sides.  You can hear the sound of a running brook, but can't tell which direction its coming from.",s));
 				desc.append("<P>");

@@ -554,7 +554,7 @@ public class HTTPReqProcessor implements HTTPFileGetter
 	/**
 	 * Retreives a buffer set containing the possibly cached contents of the file. 
 	 * This can trigger file reads, servlet calls and other ways
-	 * of generating body data.  Apparantly UNUSED internally, it must
+	 * of generating body data.  Apparently UNUSED internally, it must
 	 * be for embedded usage.
 	 * 
 	 * @param request the request to generate output for

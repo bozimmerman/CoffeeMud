@@ -1240,6 +1240,7 @@ public class StdRace implements Race
 
 		final PhyStats RS=(PhyStats)CMClass.getCommon("DefaultPhyStats");
 		RS.setAllValues(0);
+		
 		final MOB fakeMOB=CMClass.getFactoryMOB();
 		affectPhyStats(fakeMOB,RS);
 		RS.setRejuv(PhyStats.NO_REJUV);

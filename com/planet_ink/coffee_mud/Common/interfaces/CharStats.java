@@ -476,12 +476,12 @@ public interface CharStats extends CMCommon, Modifiable
 	public void setBreathables(int[] newArray);
 
 	/**
-	 * Changes the apparant race of ths mob by setting a new name.  A value of null will
+	 * Changes the apparent race of ths mob by setting a new name.  A value of null will
 	 * reset this setting, allowing the mobs TRUE race to be displayed through the
 	 * raceName method instead of the string set through this one.
 	 * @see com.planet_ink.coffee_mud.Races.interfaces.Race
 	 * @see #raceName()
-	 * @param newRaceName the name of the mobs apparant race
+	 * @param newRaceName the name of the mobs apparent race
 	 */
 	public void setRaceName(String newRaceName);
 
@@ -498,19 +498,19 @@ public interface CharStats extends CMCommon, Modifiable
 	public void setArriveLeaveStr(String arriveStr, String leaveStr);
 
 	/**
-	 * Changes the apparant char class of ths mob by setting a new name.  A value of null will
+	 * Changes the apparent char class of ths mob by setting a new name.  A value of null will
 	 * reset this setting, allowing the mobs TRUE current class to be displayed through the
 	 * displayClassName method instead of the string set through this one.
 	 * @see com.planet_ink.coffee_mud.CharClasses.interfaces.CharClass
 	 * @see #displayClassName()
 	 * @see #displayClassLevel(MOB, boolean)
 	 * @see #displayClassLevelOnly(MOB)
-	 * @param newname the name of the mobs apparant current class
+	 * @param newname the name of the mobs apparent current class
 	 */
 	public void setDisplayClassName(String newname);
 
 	/**
-	 * Changes the apparant level of ths mob by setting a new name.  A value of null will
+	 * Changes the apparent level of ths mob by setting a new name.  A value of null will
 	 * reset this setting, allowing the mobs TRUE level to be displayed through the
 	 * displayClassLevel method instead of the string set through this one.
 	 * @see com.planet_ink.coffee_mud.CharClasses.interfaces.CharClass
@@ -518,7 +518,7 @@ public interface CharStats extends CMCommon, Modifiable
 	 * @see #displayClassLevel(MOB, boolean)
 	 * @see #displayClassLevelOnly(MOB)
 	 * @see #setDisplayClassName(String)
-	 * @param newlevel the name of the mobs apparant level
+	 * @param newlevel the name of the mobs apparent level
 	 */
 	public void setDisplayClassLevel(String newlevel);
 
@@ -594,7 +594,7 @@ public interface CharStats extends CMCommon, Modifiable
 	public void setWearableRestrictionsBitmap(long bitmap);
 
 	/**
-	 * Sets the apparant gender of the mob. If null is used, this value is reset
+	 * Sets the apparent gender of the mob. If null is used, this value is reset
 	 * and the mobs real gender name will be displayed through the genderName method
 	 * instead of the one set here.
 	 * @see #genderName()
@@ -603,48 +603,48 @@ public interface CharStats extends CMCommon, Modifiable
 	public void setGenderName(String gname);
 
 	/**
-	 * Returns the apparant gender of the mob.  If this method
+	 * Returns the apparent gender of the mob.  If this method
 	 * is called on the mobs charStats() object, as opposed to baseCharStats(), it
 	 * may return something different than charStats().getStat(GENDER)  For this
 	 * reason, you should ONLY use this method when you want to display the mobs
 	 * current gender.
 	 * @see #setGenderName(String)
-	 * @return the apparant gender of the mob
+	 * @return the apparent gender of the mob
 	 */
 	public String genderName();
 
 	/**
-	 * Based on the apparant gender of the mob, return the appropriate word "him", "her", or "it".
+	 * Based on the apparent gender of the mob, return the appropriate word "him", "her", or "it".
 	 * @return the gender-correct pronoun for this mob
 	 */
 	public String himher();
 
 	/**
-	 * Based on the apparant gender of the mob, return the appropriate word "his", "her", or "its".
+	 * Based on the apparent gender of the mob, return the appropriate word "his", "her", or "its".
 	 * @return the gender-correct pronoun for this mob
 	 */
 	public String hisher();
 
 	/**
-	 * Based on the apparant gender of the mob, return the appropriate word "he", "she", or "it".
+	 * Based on the apparent gender of the mob, return the appropriate word "he", "she", or "it".
 	 * @return the gender-correct pronoun for this mob
 	 */
 	public String heshe();
 
 	/**
-	 * Based on the apparant gender of the mob, return the appropriate word "He", "She", or "It".
+	 * Based on the apparent gender of the mob, return the appropriate word "He", "She", or "It".
 	 * @return the gender-correct pronoun for this mob
 	 */
 	public String HeShe();
 
 	/**
-	 * Based on the apparant gender of the mob, return the appropriate word "sir", "madam", or "sir".
+	 * Based on the apparent gender of the mob, return the appropriate word "sir", "madam", or "sir".
 	 * @return the gender-correct title for this mob
 	 */
 	public String sirmadam();
 
 	/**
-	 * Based on the apparant gender of the mob, return the appropriate word "Sir", "Madam", or "Sir".
+	 * Based on the apparent gender of the mob, return the appropriate word "Sir", "Madam", or "Sir".
 	 * @return the gender-correct title for this mob
 	 */
 	public String SirMadam();
