@@ -303,11 +303,11 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 				ing=CMParms.parse(I.name()).lastElement().toUpperCase();
 			else
 				ing=I.name();
-			Integer INT=h.get(ing+"/"+I.secretIdentity().toUpperCase()+"/"+I.Name().toUpperCase()+"/");
+			Integer INT=h.get(ing+"/"+I.rawSecretIdentity().toUpperCase()+"/"+I.Name().toUpperCase()+"/");
 			if(INT==null)
 				INT=Integer.valueOf(0);
 			INT=Integer.valueOf(INT.intValue()+1);
-			h.put(ing+"/"+I.secretIdentity().toUpperCase()+"/"+I.Name().toUpperCase()+"/",INT);
+			h.put(ing+"/"+I.rawSecretIdentity().toUpperCase()+"/"+I.Name().toUpperCase()+"/",INT);
 		}
 		return h;
 	}
@@ -634,7 +634,14 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 			else
 			if(mob!=null)
 				food.setNourishment((food.nourishment()+homeCookValue(mob,10))/finalAmount);
-			if((!messedUp)&&(!rotten))
+			if(rotten)
+			{
+				final Ability A=CMClass.getAbility("Poison_Rotten");
+				if(A!=null)
+					food.addNonUninvokableEffect(A);
+			}
+			else
+			if(!messedUp)
 				CMLib.materials().addEffectsToResource(food);
 			food.basePhyStats().setWeight(food.basePhyStats().weight()/finalAmount);
 			playSound=defaultFoodSound;
@@ -681,6 +688,13 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 			playSound=defaultDrinkSound;
 			buildingI.setMaterial(liquidType);
 			drink.setLiquidType(liquidType);
+			if(rotten)
+			{
+				final Ability A=CMClass.getAbility("Poison_Rotten");
+				if(A!=null)
+					drink.addNonUninvokableEffect(A);
+			}
+			else
 			if(!messedUp)
 				CMLib.materials().addEffectsToResource((Item)drink);
 		}
@@ -838,7 +852,6 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 		final int colWidth=CMLib.lister().fixColWidth(20,mob.session());
 		final int lineWidth=CMLib.lister().fixColWidth(78,mob.session());
 		if((commands.size()>0)
-		
 		&&(commands.get(0)).equalsIgnoreCase("list"))
 		{
 			String mask=CMParms.combine(commands,1);
