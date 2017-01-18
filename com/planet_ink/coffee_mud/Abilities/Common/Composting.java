@@ -232,6 +232,7 @@ public class Composting extends GatheringSkill
 			Item compost = CMClass.getItem("GenItem");
 			compost.setName("a pound of compost");
 			compost.setDisplayText("a pound of compost is lying here");
+			compost.setSecretIdentity("compost");
 			compost.addNonUninvokableEffect(CMClass.getAbility("Prop_Rotten"));
 			compost.basePhyStats().setWeight(1);
 			compost.recoverPhyStats();

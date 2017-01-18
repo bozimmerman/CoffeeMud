@@ -96,6 +96,12 @@ public interface PackagedItems extends Item
 	public void setNumberOfItemsInPackage(int number);
 	
 	/**
+	 * Returns whether this package contains identical items.
+	 * @return true if this package contains identical items
+	 */
+	public boolean areAllItemsTheSame();
+	
+	/**
 	 * Returns the contents of the package as an XML doc.
 	 * @see PackagedItems#setPackageText(String)
 	 * @return  the contents of the package as an XML doc

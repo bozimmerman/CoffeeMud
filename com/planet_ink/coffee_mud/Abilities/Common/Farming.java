@@ -117,6 +117,32 @@ public class Farming extends GatheringSkill
 		return super.tick(ticking,tickID);
 	}
 
+	protected boolean isCompost(final Item I)
+	{
+		return ((I!=null) &&(I.rawSecretIdentity().equals("compost")));
+	}
+	
+	protected int deCompost(final Item I, int doubleRemain)
+	{
+		int amount=0;
+		if(I.phyStats().weight()<=doubleRemain)
+		{
+			amount+=I.phyStats().weight();
+			doubleRemain-=I.phyStats().weight();
+			I.destroy();
+		}
+		else
+		{
+			if(I.basePhyStats().weight()<=doubleRemain)
+				I.destroy();
+			else
+				I.basePhyStats().setWeight(I.basePhyStats().weight()-doubleRemain);
+			amount+=doubleRemain;
+			doubleRemain=0;
+		}
+		return amount;
+	}
+	
 	@Override
 	public void unInvoke()
 	{
@@ -128,7 +154,46 @@ public class Farming extends GatheringSkill
 			{
 				if((found!=null)&&(!isaborted))
 				{
-					final int amount=CMLib.dice().roll(1,7,0)*(baseYield()+abilityCode());
+					int amount=CMLib.dice().roll(1,7,0)*(baseYield()+abilityCode());
+					int doubleRemain = amount;
+					for(Enumeration<Item> i=room.items();i.hasMoreElements();)
+					{
+						final Item I=i.nextElement();
+						if((I instanceof PackagedItems)
+						&&(((PackagedItems)I).areAllItemsTheSame()))
+						{
+							Item I2=((PackagedItems)I).peekFirstItem();
+							while(isCompost(I2))
+							{
+								int amt=deCompost(I2,doubleRemain);
+								if(I2.amDestroyed())
+									((PackagedItems)I).setNumberOfItemsInPackage(((PackagedItems)I).numberOfItemsInPackage()-1);
+								if(amt != 0)
+								{
+									amount += amt;
+									doubleRemain -=amount;
+								}
+								I2.destroy();
+								if(((PackagedItems)I).numberOfItemsInPackage()==0)
+								{
+									I.destroy();
+									break;
+								}
+								I2=((PackagedItems)I).peekFirstItem();
+							}
+							I2.destroy();
+						}
+						else
+						if(isCompost(I))
+						{
+							int amt=deCompost(I,doubleRemain);
+							if(amt != 0)
+							{
+								amount += amt;
+								doubleRemain -=amount;
+							}
+						}
+					}
 					String s="s";
 					if(amount==1)
 						s="";

@@ -150,6 +150,12 @@ public class GenPackagedItems extends GenItem implements PackagedItems
 	}
 
 	@Override
+	public boolean areAllItemsTheSame()
+	{
+		return true;
+	}
+
+	@Override
 	public Item peekFirstItem()
 	{
 		if (packageText().length() == 0)

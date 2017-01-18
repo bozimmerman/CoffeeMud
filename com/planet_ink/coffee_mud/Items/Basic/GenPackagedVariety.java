@@ -157,6 +157,12 @@ public class GenPackagedVariety extends GenItem implements PackagedItems
 		CMLib.coffeeMaker().setPropertiesStr(newOne,idat,true);
 		return (Item)newOne;
 	}
+	
+	@Override
+	public boolean areAllItemsTheSame()
+	{
+		return false;
+	}
 
 	@Override
 	public List<Item> unPackage(int number)
