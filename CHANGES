@@ -34,6 +34,7 @@
    32. ShipWright now supports building and demolishing doors on ships.
    33. Reset genmixedracebuilds will now rebuild all the generic mixed races you have.
    34. Archons can now do CREATE MIXEDRACE raceid1 raceid2
+   35. New common skill: Composting
 # Build 5.9.4 Released 08/03/2016
    1. Qualify now shows language limits
    2. New Prop_NoTeleport exceptions

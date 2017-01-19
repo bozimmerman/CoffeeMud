@@ -96,4 +96,5 @@
 15 Excavation MASK=+CON 15 REQUIRES=Sculpting 
 15 Irrigation MASK=+CON 15 REQUIRES=Drilling 
 15 Landscaping MASK=+CON 15 REQUIRES=Farming 
+15 Composting MASK=+WIS 12 REQUIRES=Farming
 
