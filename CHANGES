@@ -35,6 +35,7 @@
    33. Reset genmixedracebuilds will now rebuild all the generic mixed races you have.
    34. Archons can now do CREATE MIXEDRACE raceid1 raceid2
    35. New common skill: Composting
+   36. Bulilders can now use LIST GENSTATS <class or item> to view named generic stats. 
 # Build 5.9.4 Released 08/03/2016
    1. Qualify now shows language limits
    2. New Prop_NoTeleport exceptions

@@ -3779,6 +3779,7 @@ public class ListCmd extends StdCommand
 		FILEUSE("FILEUSE",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDAREAS}),
 		SOCIALS("SOCIALS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDSOCIALS,SecFlag.AREA_CMDSOCIALS}),
 		AREATYPES("AREATYPES",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDAREAS}),
+		GENSTATS("STATS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDITEMS,SecFlag.CMDMOBS}),
 		;
 		public String[]			   cmd;
 		public CMSecurity.SecGroup flags;
@@ -3967,7 +3968,7 @@ public class ListCmd extends StdCommand
 				StringBuilder help=CMLib.help().getHelpText(s,null,false,true);
 				if(help==null)
 				{
-System.out.println(s);
+					System.out.println(s);
 					continue;
 				}
 				String helpStr=help.toString();
@@ -4078,6 +4079,28 @@ System.out.println(s);
 			mob.session().rawPrint(str.toString());
 	}
 
+	public void listStats(MOB mob, List<String> commands)
+	{
+		String wd=CMParms.combine(commands,1);
+		Object o = CMClass.getObjectOrPrototype(wd);
+		if(o instanceof Modifiable)
+		{
+			if(o instanceof CMObject)
+				mob.tell("Stats for '"+((CMObject)o).ID()+"': "+CMParms.toListString(((Modifiable)o).getStatCodes()));
+			else
+				mob.tell("Stats for '"+o.toString()+"': "+CMParms.toListString(((Modifiable)o).getStatCodes()));
+		}
+		else
+		{
+			@SuppressWarnings("unchecked")
+			PhysicalAgent P=mob.location().fetchFromMOBRoomFavorsItems(mob, null, wd, Filterer.ANYTHING);
+			if(P!=null)
+				mob.tell("Stats for '"+P.ID()+"': "+CMParms.toListString(P.getStatCodes()));
+			else
+				mob.tell("Don't know about any stats for '"+wd+"'.");
+		}
+	}
+	
 	public void listCurrents(MOB mob, List<String> commands)
 	{
 		final StringBuffer str=new StringBuffer("");
@@ -4947,6 +4970,9 @@ System.out.println(s);
 			break;
 		case SPACESHIPAREAS:
 			listAreas(mob, commands, spaceShipsAreaFilter);
+			break;
+		case GENSTATS:
+			listStats(mob, commands);
 			break;
 		case CURRENTS:
 			listCurrents(mob, commands);
