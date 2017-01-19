@@ -51,7 +51,7 @@ public class AnimalSpeak extends StdLanguage
 
 	public static List<String[]>	wordLists	= null;
 	private static boolean			mapped		= false;
-
+	
 	public AnimalSpeak()
 	{
 		super();

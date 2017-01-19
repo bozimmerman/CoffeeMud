@@ -32,8 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
-
 public class Chant_LandLegs extends Chant
 {
 	@Override
@@ -139,8 +137,6 @@ public class Chant_LandLegs extends Chant
 			CMLib.utensils().confirmWearability(mob);
 		}
 	}
-
-
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
