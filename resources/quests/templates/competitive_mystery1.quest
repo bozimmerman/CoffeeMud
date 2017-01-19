@@ -458,6 +458,7 @@ SPEECH_PROG all
 								MPSETVAR $n $QUEST_ID_AGENT '$3'
 								sayto $n Ok, so you think $3 did it.
 								MPCALLFUNC winner
+								BREAK
 							endif
 						endif
 					next
@@ -488,6 +489,7 @@ SPEECH_PROG all
 								MPSETVAR $n $QUEST_ID_TOOL '$3'
 								sayto $n Ok, so you think it was done with $3.
 								MPCALLFUNC winner
+								BREAK
 							endif
 						endif
 					next
@@ -518,6 +520,7 @@ SPEECH_PROG all
 								MPSETVAR $n $QUEST_ID_MOTIVE '$3'
 								sayto $n Ok, so you think the motive was $3.
 								MPCALLFUNC winner
+								BREAK
 							endif
 						endif
 					next

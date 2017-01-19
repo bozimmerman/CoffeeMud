@@ -7800,7 +7800,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							}
 						}
 						tmp[whichVar]=""+toInt;
-						response=execute(scripted,source,target,monster,primaryItem,secondaryItem,V,msg,tmp);
+						if(response == null)
+							response=execute(scripted,source,target,monster,primaryItem,secondaryItem,V,msg,tmp);
+						else
+						if(response.equalsIgnoreCase("break"))
+							response=null;
 					}
 					if(response!=null)
 					{
@@ -7816,7 +7820,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if(tt==null)
 					tt=parseBits(script,si,"C");
 				tickStatus=Tickable.STATUS_END;
-				return null;
+				return "BREAK";
 			case 1: // mpasound
 			{
 				if(tt==null)
