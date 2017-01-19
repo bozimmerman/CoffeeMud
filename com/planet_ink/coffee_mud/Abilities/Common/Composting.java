@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Abilities.Common;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.Abilities.Common.CraftingSkill.EnhancedExpertise;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -74,7 +75,6 @@ public class Composting extends GatheringSkill
 		return "VEGETATION|FLESH";
 	}
 
-	protected Item		found			= null;
 	protected Item		compost			= null;
 	protected Room		room			= null;
 	protected String	foundShortName	= "";
@@ -85,11 +85,6 @@ public class Composting extends GatheringSkill
 		super();
 		displayText=L("You are composting...");
 		verb=L("composting");
-	}
-
-	protected int getDuration(MOB mob, int level)
-	{
-		return getDuration(45,mob,level,15);
 	}
 
 	@Override
@@ -130,11 +125,11 @@ public class Composting extends GatheringSkill
 				{
 					int amount = compost.phyStats().weight();
 					if(amount == 1)
-						room.showHappens(CMMsg.MSG_OK_VISUAL,L("a pounds of @x2 compost is ready here.",""+amount,foundShortName));
+						room.showHappens(CMMsg.MSG_OK_VISUAL,L("A pound of compost is ready here.",""+amount));
 					else
-						room.showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 pound(s) of @x2 compost are ready here.",""+amount,foundShortName));
-					final Item newFound=(Item)compost.copyOf();
-					dropAWinner(null,room,newFound);
+						room.showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 pound(s) of compost are ready here.",""+amount));
+					dropAWinner(invoker,room,compost);
+					compost = null;
 				}
 			}
 		}
@@ -151,7 +146,156 @@ public class Composting extends GatheringSkill
 			return true;
 		return false;
 	}
+
+	protected boolean isCompost(final Item I)
+	{
+		return ((I!=null) &&(I.rawSecretIdentity().equals("compost")));
+	}
 	
+	@Override
+	public boolean bundle(MOB mob, List<String> what)
+	{
+		if((what.size()<3)
+		||((!CMath.isNumber(what.get(1)))&&(!what.get(1).equalsIgnoreCase("ALL"))))
+		{
+			commonTell(mob,L("You must specify an amount to bundle, followed by what to bundle."));
+			return false;
+		}
+		int amount=CMath.s_int(what.get(1));
+		if(what.get(1).equalsIgnoreCase("ALL"))
+			amount=Integer.MAX_VALUE;
+		if(amount<=0)
+		{
+			commonTell(mob,L("@x1 is not an appropriate amount.",""+amount));
+			return false;
+		}
+		int numHere=0;
+		final Room R=mob.location();
+		if(R==null)
+			return false;
+		final String name=CMParms.combine(what,2);
+		int foundResource=-1;
+		Item foundAnyway=null;
+		final Hashtable<String,Ability> foundAblesH=new Hashtable<String,Ability>();
+		Ability A=null;
+		List<Item> foundOnes = new ArrayList<Item>();
+		for(int i=0;i<R.numItems();i++)
+		{
+			final Item I=R.getItem(i);
+			if(CMLib.english().containsString(I.Name(),name))
+			{
+				if(foundAnyway==null)
+					foundAnyway=I;
+				if(this.isCompost(I))
+				{
+					for(final Enumeration<Ability> a=I.effects();a.hasMoreElements();)
+					{
+						A=a.nextElement();
+						if((A!=null)
+						&&(!A.canBeUninvoked())
+						&&(!foundAblesH.containsKey(A.ID())))
+							foundAblesH.put(A.ID(),A);
+					}
+					foundResource=I.material();
+					foundOnes.add(I);
+					numHere+=I.phyStats().weight();
+				}
+			}
+		}
+		if((numHere==0)||(foundResource<0)||(foundOnes.size()<0))
+		{
+			return super.bundle(mob, what);
+		}
+		if(amount==Integer.MAX_VALUE)
+			amount=numHere;
+		if(numHere<amount)
+		{
+			commonTell(mob,L("You only see @x1 pounds of @x2 on the ground here.",""+numHere,name));
+			return false;
+		}
+		if(amount == 1)
+			return true;
+		Item I=CMClass.getItem("GenPackagedStack");
+		I.setMaterial(RawMaterial.RESOURCE_DIRT);
+		Item compostItem = null;
+		for(int i=0;i<foundOnes.size();i++)
+		{
+			Item I2=foundOnes.get(i);
+			if(I2!=null)
+			{
+				if(I2 instanceof PackagedItems)
+					compostItem=((PackagedItems)I2).peekFirstItem();
+				else
+					compostItem=(Item)I2.copyOf();
+				I2.destroy();
+			}
+		}
+		((PackagedItems)I).packageMe(compostItem,amount);
+		if(R.show(mob,null,I,getActivityMessageType(),L("<S-NAME> create(s) <O-NAME>.")))
+		{
+			if((!I.amDestroyed())&&(!R.isContent(I)))
+				R.addItem(I,ItemPossessor.Expire.Player_Drop);
+		}
+		if(compostItem != null)
+			compostItem.destroy();
+		for(final Enumeration<String> e=foundAblesH.keys();e.hasMoreElements();)
+			I.addNonUninvokableEffect((Ability)((Environmental)foundAblesH.get(e.nextElement())).copyOf());
+		R.recoverRoomStats();
+		return true;
+	}
+
+	protected int[][] fetchFoundResourceData(MOB mob, int req1Required, String req1Desc, int[] req1)
+	{
+		final int[][] data=new int[2][2];
+		if((req1Desc!=null)&&(req1Desc.length()==0))
+			req1Desc=null;
+
+		Item firstWood=null;
+		if(req1!=null)
+		{
+			for (final int element : req1)
+			{
+				if((element&RawMaterial.RESOURCE_MASK)==0)
+					firstWood=CMLib.materials().findMostOfMaterial(mob.location(),element);
+				else
+					firstWood=CMLib.materials().findFirstResource(mob.location(),element);
+
+				if(firstWood!=null)
+					break;
+			}
+		}
+		else
+		if(req1Desc!=null)
+			firstWood=CMLib.materials().fetchFoundOtherEncoded(mob.location(),req1Desc);
+		
+		data[0][CraftingSkill.FOUND_AMT]=0;
+		if(firstWood!=null)
+		{
+			data[0][CraftingSkill.FOUND_AMT]=CMLib.materials().findNumberOfResource(mob.location(),firstWood.material());
+			data[0][CraftingSkill.FOUND_CODE]=firstWood.material();
+		}
+
+		if(req1Required>0)
+		{
+			if(data[0][CraftingSkill.FOUND_AMT]==0)
+			{
+				if(req1Desc!=null)
+					commonTell(mob,L("There is no @x1 here to make anything from!  It might need to be put down first.",req1Desc.toLowerCase()));
+				return null;
+			}
+			req1Required=fixResourceRequirement(data[0][CraftingSkill.FOUND_CODE],req1Required);
+		}
+
+		if(req1Required>data[0][CraftingSkill.FOUND_AMT])
+		{
+			commonTell(mob,L("You need @x1 pounds of @x2 to do that.  There is not enough here.  Are you sure you set it all on the ground first?",
+					""+req1Required,RawMaterial.CODES.NAME(data[0][CraftingSkill.FOUND_CODE]).toLowerCase()));
+			return null;
+		}
+		data[0][CraftingSkill.FOUND_AMT]=req1Required;
+		return data;
+	}
+
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -164,10 +308,18 @@ public class Composting extends GatheringSkill
 		{
 			bundling=true;
 			if(super.invoke(mob,commands,givenTarget,auto,asLevel))
-				return super.bundle(mob,commands);
+				return bundle(mob,commands);
 			return false;
 		}
 
+		int amount=CMath.s_int(commands.get(0));
+		if(commands.get(0).equalsIgnoreCase("ALL"))
+			amount=Integer.MAX_VALUE;
+		if(amount<=0)
+			amount=1;
+		else
+			commands.remove(0);
+		
 		verb=L("composting");
 		if(mob.isMonster()
 		&&(!auto)
@@ -210,10 +362,18 @@ public class Composting extends GatheringSkill
 			commonTell(mob,L("Compost what?"));
 			return false;
 		}
-		Item mine=super.getTarget(null, mob.location(), givenTarget, commands, null);
+		foundShortName = CMParms.combine(commands);
+		Item mine=super.getTarget(mob, mob.location(), givenTarget, commands, new Filterer<Environmental>(){
+			@Override
+			public boolean passesFilter(Environmental obj)
+			{
+				return (obj instanceof Item) && (((Item)obj).owner() instanceof Room);
+			}
+			
+		});
 		if(mine==null)
 		{
-			commonTell(mob,L("You'll need to have some @x1 to seed from on the ground first.",foundShortName));
+			commonTell(mob,L("You'll need to have some @x1 on the ground first.",foundShortName));
 			return false;
 		}
 		if(!isCompostable(mob,mine))
@@ -221,11 +381,16 @@ public class Composting extends GatheringSkill
 			commonTell(mob,L("'@x1' is not suitable for composting.",mine.Name()));
 			return false;
 		}
-
-		found=mine;
+		foundShortName = mine.name();
+		Item found=mine;
+		final int[][] data=fetchFoundResourceData(mob,amount,"material",new int[]{mine.material()});
+		if(data==null)
+			return false;
+		
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
+		CMLib.materials().destroyResourcesValue(mob.location(),amount,data[0][CraftingSkill.FOUND_CODE],0,null);
 		this.compost=null;
 		if(proficiencyCheck(mob,0,auto))
 		{
@@ -235,18 +400,21 @@ public class Composting extends GatheringSkill
 			compost.setSecretIdentity("compost");
 			compost.addNonUninvokableEffect(CMClass.getAbility("Prop_Rotten"));
 			compost.basePhyStats().setWeight(1);
+			compost.setMaterial(data[0][CraftingSkill.FOUND_CODE]);
 			compost.recoverPhyStats();
-			if(mine.phyStats().weight()==1)
+			if(amount==1)
 				this.compost=compost;
 			else
 			{
 				this.compost=CMClass.getItem("GenPackagedStack");
-				((PackagedItems)this.compost).packageMe(compost,mine.phyStats().weight());
+				compost.setName("a pound of compost");
+				compost.setDisplayText("a pound of compost is lying here");
+				((PackagedItems)this.compost).packageMe(compost,amount);
 			}
 		}
 
-		mine.destroy();
-		final int duration=getDuration(mob,1);
+		final int duration=getDuration(3+compost.phyStats().weight(),mob,1,1);
+
 		final CMMsg msg=CMClass.getMsg(mob,found,this,getActivityMessageType(),L("<S-NAME> start(s) composting @x1.",foundShortName));
 		verb=L("composting @x1",foundShortName);
 		displayText=L("You are composting @x1",foundShortName);

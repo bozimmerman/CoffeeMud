@@ -78,6 +78,30 @@ public class GatheringSkill extends CommonSkill
 		super.affectPhyStats(affectedEnv, affectableStats);
 	}
 
+	protected static int fixResourceRequirement(int resource, int amt)
+	{
+		if(amt<=0)
+			return amt;
+		switch(resource)
+		{
+		case RawMaterial.RESOURCE_MITHRIL:
+			amt=amt/2;
+			break;
+		case RawMaterial.RESOURCE_ADAMANTITE:
+			amt=amt/3;
+			break;
+		case RawMaterial.RESOURCE_BALSA:
+			amt=amt/2;
+			break;
+		case RawMaterial.RESOURCE_IRONWOOD:
+			amt=amt*2;
+			break;
+		}
+		if(amt<=0)
+			amt=1;
+		return amt;
+	}
+
 	public List<Integer> myResources()
 	{
 		if(supportedResources.containsKey(ID()))

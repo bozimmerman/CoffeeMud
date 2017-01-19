@@ -155,7 +155,8 @@ public class Farming extends GatheringSkill
 				if((found!=null)&&(!isaborted))
 				{
 					int amount=CMLib.dice().roll(1,7,0)*(baseYield()+abilityCode());
-					int doubleRemain = amount;
+					int origAmount = amount; 
+					int doubleRemain = amount * 10;
 					for(Enumeration<Item> i=room.items();i.hasMoreElements();)
 					{
 						final Item I=i.nextElement();
@@ -170,8 +171,8 @@ public class Farming extends GatheringSkill
 									((PackagedItems)I).setNumberOfItemsInPackage(((PackagedItems)I).numberOfItemsInPackage()-1);
 								if(amt != 0)
 								{
-									amount += amt;
-									doubleRemain -=amount;
+									amount += amt * origAmount;
+									doubleRemain -=amt;
 								}
 								I2.destroy();
 								if(((PackagedItems)I).numberOfItemsInPackage()==0)
@@ -189,10 +190,12 @@ public class Farming extends GatheringSkill
 							int amt=deCompost(I,doubleRemain);
 							if(amt != 0)
 							{
-								amount += amt;
-								doubleRemain -=amount;
+								amount += amt * origAmount;
+								doubleRemain -=amt;
 							}
 						}
+						if(doubleRemain <= 0)
+							break;
 					}
 					String s="s";
 					if(amount==1)

@@ -493,30 +493,6 @@ public class CraftingSkill extends GatheringSkill
 	protected static final int FOUND_CODE=0;
 	protected static final int FOUND_AMT=1;
 	
-	protected int fixResourceRequirement(int resource, int amt)
-	{
-		if(amt<=0)
-			return amt;
-		switch(resource)
-		{
-		case RawMaterial.RESOURCE_MITHRIL:
-			amt=amt/2;
-			break;
-		case RawMaterial.RESOURCE_ADAMANTITE:
-			amt=amt/3;
-			break;
-		case RawMaterial.RESOURCE_BALSA:
-			amt=amt/2;
-			break;
-		case RawMaterial.RESOURCE_IRONWOOD:
-			amt=amt*2;
-			break;
-		}
-		if(amt<=0)
-			amt=1;
-		return amt;
-	}
-
 	public List<List<String>> fetchRecipes()
 	{
 		return loadRecipes();
