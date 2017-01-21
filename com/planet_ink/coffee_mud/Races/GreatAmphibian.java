@@ -93,6 +93,7 @@ public class GreatAmphibian extends StdRace
 	}
 
 	protected static Vector<RawMaterial>	resources					= new Vector<RawMaterial>();
+
 	private final String[]					racialAbilityNames			= { "Aquan","Skill_Swim" };
 	private final int[]						racialAbilityLevels			= { 1,1 };
 	private final int[]						racialAbilityProficiencies	= { 100,100 };
@@ -127,6 +128,28 @@ public class GreatAmphibian extends StdRace
 	public String[] racialAbilityParms()
 	{
 		return racialAbilityParms;
+	}
+
+	private final String[]	racialEffectNames			= { "Aquan"};
+	private final int[]		racialEffectLevels			= { 1};
+	private final String[]	racialEffectParms			= { "SPOKEN=TRUE" };
+	
+	@Override
+	protected String[] racialEffectNames()
+	{
+		return racialEffectNames;
+	}
+
+	@Override
+	protected int[] racialEffectLevels()
+	{
+		return racialEffectLevels;
+	}
+
+	@Override
+	protected String[] racialEffectParms()
+	{
+		return racialEffectParms;
 	}
 
 	@Override

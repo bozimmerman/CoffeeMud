@@ -86,11 +86,11 @@ public class Cobra extends Snake
 		return localizedStaticRacialCat;
 	}
 
-	private final String[]	racialAbilityNames			= { "Poison_Heartstopper" };
-	private final int[]		racialAbilityLevels			= { 5 };
-	private final int[]		racialAbilityProficiencies	= { 30 };
-	private final boolean[]	racialAbilityQuals			= { false };
-	private final String[]	racialAbilityParms			= { "" };
+	private final String[]	racialAbilityNames			= { "Poison_Heartstopper", "SnakeSpeak" };
+	private final int[]		racialAbilityLevels			= { 5, 1 };
+	private final int[]		racialAbilityProficiencies	= { 30, 100 };
+	private final boolean[]	racialAbilityQuals			= { false, false };
+	private final String[]	racialAbilityParms			= { "", "" };
 
 	@Override
 	public String[] racialAbilityNames()

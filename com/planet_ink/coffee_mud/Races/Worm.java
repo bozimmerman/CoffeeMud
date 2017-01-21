@@ -153,6 +153,28 @@ public class Worm extends StdRace
 		return racialAbilityParms;
 	}
 
+	private final String[]	racialEffectNames			= { "WormSpeak"};
+	private final int[]		racialEffectLevels			= { 1};
+	private final String[]	racialEffectParms			= { "SPOKEN=TRUE" };
+	
+	@Override
+	protected String[] racialEffectNames()
+	{
+		return racialEffectNames;
+	}
+
+	@Override
+	protected int[] racialEffectLevels()
+	{
+		return racialEffectLevels;
+	}
+
+	@Override
+	protected String[] racialEffectParms()
+	{
+		return racialEffectParms;
+	}
+
 	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{

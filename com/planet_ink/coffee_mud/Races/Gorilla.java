@@ -86,19 +86,62 @@ public class Gorilla extends Monkey
 		return localizedStaticRacialCat;
 	}
 
-	private final String[]	culturalAbilityNames			= { "ApeSpeak" };
-	private final int[]		culturalAbilityProficiencies	= { 100 };
+	private final String[]	racialAbilityNames			= { "ApeSpeak" };
+	private final int[]		racialAbilityLevels			= { 1 };
+	private final int[]		racialAbilityProficiencies	= { 100 };
+	private final boolean[]	racialAbilityQuals			= { false };
+	private final String[]	racialAbilityParms			= { "" };
 
 	@Override
-	public String[] culturalAbilityNames()
+	protected String[] racialAbilityNames()
 	{
-		return culturalAbilityNames;
+		return racialAbilityNames;
 	}
 
 	@Override
-	public int[] culturalAbilityProficiencies()
+	protected int[] racialAbilityLevels()
 	{
-		return culturalAbilityProficiencies;
+		return racialAbilityLevels;
+	}
+
+	@Override
+	protected int[] racialAbilityProficiencies()
+	{
+		return racialAbilityProficiencies;
+	}
+
+	@Override
+	protected boolean[] racialAbilityQuals()
+	{
+		return racialAbilityQuals;
+	}
+
+	@Override
+	public String[] racialAbilityParms()
+	{
+		return racialAbilityParms;
+	}
+
+	private final String[]	racialEffectNames			= { "ApeSpeak"};
+	private final int[]		racialEffectLevels			= { 1};
+	private final String[]	racialEffectParms			= { "SPOKEN=TRUE" };
+	
+	@Override
+	protected String[] racialEffectNames()
+	{
+		return racialEffectNames;
+	}
+
+	@Override
+	protected int[] racialEffectLevels()
+	{
+		return racialEffectLevels;
+	}
+
+	@Override
+	protected String[] racialEffectParms()
+	{
+		return racialEffectParms;
 	}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi

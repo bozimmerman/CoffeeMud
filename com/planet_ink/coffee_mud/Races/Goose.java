@@ -84,6 +84,28 @@ public class Goose extends WaterFowl
 		return racialAbilityParms;
 	}
 
+	private final String[]	racialEffectNames			= { "GooseSpeak"};
+	private final int[]		racialEffectLevels			= { 1};
+	private final String[]	racialEffectParms			= { "SPOKEN=TRUE" };
+	
+	@Override
+	protected String[] racialEffectNames()
+	{
+		return racialEffectNames;
+	}
+
+	@Override
+	protected int[] racialEffectLevels()
+	{
+		return racialEffectLevels;
+	}
+
+	@Override
+	protected String[] racialEffectParms()
+	{
+		return racialEffectParms;
+	}
+
 	@Override
 	public String makeMobName(char gender, int age)
 	{

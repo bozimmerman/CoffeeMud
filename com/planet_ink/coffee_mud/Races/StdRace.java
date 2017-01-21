@@ -1136,6 +1136,14 @@ public class StdRace implements Race
 					{
 						final ChameleonList<Ability> newList = mob.charStats().getMyRace().racialEffects(mob);
 						me.changeMeInto(newList);
+						for(Ability A : newList)
+						{
+							if(A instanceof Language)
+							{
+								A.setProficiency(100);
+								A.invoke(mob,mob,false,0);
+							}
+						}
 					}
 				}
 			});
