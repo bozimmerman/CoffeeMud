@@ -1629,6 +1629,36 @@ public class Test extends StdCommand
 					return false;
 				}
 			}
+			if(what.equalsIgnoreCase("racelangs"))
+			{
+				for(Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
+				{
+					final Race R1=r.nextElement();
+					if(R1!=null)
+					{
+						StringBuffer buf=new StringBuffer("");
+						buf.append(CMStrings.padRight(R1.ID(), 13)).append(" : ");
+						for(Quad<String,Integer,Integer,Boolean> Q : R1.culturalAbilities())
+						{
+							Ability A=CMClass.getAbilityPrototype(Q.first);
+							if(A instanceof Language)
+								buf.append("C:").append(A.ID()).append(" ");
+						}
+						for(Ability A : R1.racialAbilities(null))
+						{
+							if(A instanceof Language)
+								buf.append("R:").append(A.ID()).append(" ");
+						}
+						for(Ability A : R1.racialEffects(null))
+						{
+							if(A instanceof Language)
+								buf.append("E:").append(A.ID()).append(" ");
+						}
+						mob.tell(buf.toString());
+					}
+				}
+			}
+			
 			if((what.equalsIgnoreCase("all_properties"))
 			||(what.equalsIgnoreCase("Prop_HaveResister"))
 			||what.equalsIgnoreCase("all"))
