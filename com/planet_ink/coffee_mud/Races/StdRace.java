@@ -4,6 +4,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.AbilityMappi
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -1136,14 +1137,6 @@ public class StdRace implements Race
 					{
 						final ChameleonList<Ability> newList = mob.charStats().getMyRace().racialEffects(mob);
 						me.changeMeInto(newList);
-						for(Ability A : newList)
-						{
-							if(A instanceof Language)
-							{
-								A.setProficiency(100);
-								A.invoke(mob,mob,false,0);
-							}
-						}
 					}
 				}
 			});
@@ -1153,49 +1146,70 @@ public class StdRace implements Race
 
 	public final List<Ability> racialEffectsList(final MOB mob)
 	{
-		if(racialEffectNames()==null)
+		if(!CMClass.abilities().hasMoreElements())
 			return empty;
-
-		if((racialEffectMap==null)
-		&&(racialEffectNames()!=null)
-		&&(racialEffectLevels()!=null)
-		&&(racialEffectParms()!=null))
-			racialEffectMap=new Hashtable<Integer,SearchIDList<Ability>>();
-
-		if(racialEffectMap==null)
-			return empty;
-
+		List<Ability> finalV = empty;
 		final Integer level;
 		if(mob!=null)
 			level=Integer.valueOf(mob.phyStats().level());
 		else
 			level=Integer.valueOf(Integer.MAX_VALUE);
-
-		if(racialEffectMap.containsKey(level))
-			return racialEffectMap.get(level);
-		if(!CMClass.abilities().hasMoreElements())
-			return empty;
-		final CMUniqSortSVec<Ability> finalV = new CMUniqSortSVec<Ability>();
-		for(int v=0;v<racialEffectLevels().length;v++)
+		if(racialEffectMap==null)
+			racialEffectMap=new Hashtable<Integer,SearchIDList<Ability>>();
+		if((racialEffectNames()!=null)
+		&&(racialEffectLevels()!=null)
+		&&(racialEffectParms()!=null))
 		{
-			if(((racialEffectLevels()[v]<=level.intValue())||(racialEffectLevels()[v]<=1))
-			&&(racialEffectNames().length>v)
-			&&(racialEffectParms().length>v))
+			if(racialEffectMap.containsKey(level))
+				finalV = racialEffectMap.get(level);
+			else
 			{
-				final Ability A=CMClass.getAbility(racialEffectNames()[v]);
-				if(A!=null)
+				if(finalV == empty)
+					finalV = new CMUniqSortSVec<Ability>();
+				for(int v=0;v<racialEffectLevels().length;v++)
 				{
-					// mob was set to null here to make the cache map actually relevant .. see caching below
-					A.setProficiency(CMLib.ableMapper().getMaxProficiency((MOB)null,true,A.ID()));
-					A.setMiscText(racialEffectParms()[v]);
-					A.makeNonUninvokable();
-					A.setSavable(false); // must go AFTER the ablve
-					finalV.add(A);
+					if(((racialEffectLevels()[v]<=level.intValue())||(racialEffectLevels()[v]<=1))
+					&&(racialEffectNames().length>v)
+					&&(racialEffectParms().length>v))
+					{
+						final Ability A=CMClass.getAbility(racialEffectNames()[v]);
+						if(A!=null)
+						{
+							// mob was set to null here to make the cache map actually relevant .. see caching below
+							A.setProficiency(CMLib.ableMapper().getMaxProficiency((MOB)null,true,A.ID()));
+							A.setMiscText(racialEffectParms()[v]);
+							A.makeNonUninvokable();
+							A.setSavable(false); // must go AFTER the ablve
+							finalV.add(A);
+						}
+					}
 				}
 			}
 		}
-		finalV.trimToSize();
-		racialEffectMap.put(level, finalV);
+		if(mob != null)
+		{
+			if(finalV == empty)
+				finalV = new CMUniqSortSVec<Ability>();
+			for(final Ability A : racialAbilities(mob))
+			{
+				if(A.isAutoInvoked())
+				{
+					final Ability A1=(Ability)A.copyOf();
+					A1.makeNonUninvokable();
+					A1.setSavable(false);
+					A1.setInvoker(mob);
+					A1.setStat("ISANAUTOEFFECT", "true");
+					if(A1 instanceof Language)
+						((Language) A1).setBeingSpoken(A1.ID(),true);
+					finalV.add(A1);
+				}
+			}
+		}
+		if(finalV != empty)
+		{
+			((CMUniqSortSVec)finalV).trimToSize();
+			racialEffectMap.put(level, (CMUniqSortSVec)finalV);
+		}
 		return finalV;
 	}
 

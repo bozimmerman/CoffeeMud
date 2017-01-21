@@ -128,28 +128,6 @@ public class Chicken extends StdRace
 		return racialAbilityParms;
 	}
 
-	private final String[]	racialEffectNames			= { "ChickenSpeak"};
-	private final int[]		racialEffectLevels			= { 1};
-	private final String[]	racialEffectParms			= { "SPOKEN=TRUE" };
-	
-	@Override
-	protected String[] racialEffectNames()
-	{
-		return racialEffectNames;
-	}
-
-	@Override
-	protected int[] racialEffectLevels()
-	{
-		return racialEffectLevels;
-	}
-
-	@Override
-	protected String[] racialEffectParms()
-	{
-		return racialEffectParms;
-	}
-
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,0 ,1 ,1 ,0 ,0 ,1 ,2 ,2 ,0 ,0 ,1 ,1 ,0 ,2 };
 

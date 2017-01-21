@@ -980,9 +980,9 @@ public class GenAbility extends StdAbility
 		default:
 			if (code.equalsIgnoreCase("allxml"))
 				return getAllXML();
-			break;
+			else
+				return super.getStat(code);
 		}
-		return "";
 	}
 
 	@Override
@@ -1112,6 +1112,8 @@ public class GenAbility extends StdAbility
 		default:
 			if (code.equalsIgnoreCase("allxml") && ID.equalsIgnoreCase("GenAbility"))
 				parseAllXML(val);
+			else
+				super.setStat(code, val);
 			break;
 		}
 	}
