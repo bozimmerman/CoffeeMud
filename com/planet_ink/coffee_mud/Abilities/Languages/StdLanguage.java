@@ -112,19 +112,20 @@ public class StdLanguage extends StdAbility implements Language
 	private static Map<String, String>	emptyHash	= new Hashtable<String, String>();
 	private static List<String[]>		emptyVector	= new Vector<String[]>();
 	protected boolean					spoken		= false;
+	protected boolean					alwaysSpoken= false;
 	private final static String			consonants	= "bcdfghjklmnpqrstvwxz";
 	private final static String			vowels		= "aeiouy";
 
 	@Override
 	public boolean beingSpoken(String language)
 	{
-		return spoken;
+		return alwaysSpoken || spoken;
 	}
 
 	@Override
 	public void setBeingSpoken(String language, boolean beingSpoken)
 	{
-		spoken = beingSpoken;
+		spoken = alwaysSpoken || beingSpoken;
 	}
 
 	@Override
@@ -139,6 +140,17 @@ public class StdLanguage extends StdAbility implements Language
 		return emptyVector;
 	}
 
+	@Override
+	public void setMiscText(String newMiscText)
+	{
+		if(newMiscText.length()>0)
+		{
+			alwaysSpoken = CMParms.getParmBool(newMiscText,"ALWAYS", false);
+			spoken = CMParms.getParmBool(newMiscText,"SPOKEN", spoken);
+		}
+		super.setMiscText(newMiscText);
+	}
+	
 	@Override
 	public List<String> languagesSupported()
 	{
