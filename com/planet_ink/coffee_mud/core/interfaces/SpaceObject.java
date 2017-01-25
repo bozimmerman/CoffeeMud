@@ -252,9 +252,9 @@ public interface SpaceObject extends Environmental, BoundedObject
 	/** velocity constant for the speed of sound */
 	public static final long VELOCITY_SOUND=34;
 	/** velocity constant for the speed of orbiting */
-	public static final long VELOCITY_ORBITING=11188;
+	public static final long VELOCITY_ORBITING=770;
 	///** velocity constant for the speed required to escape 1g */
-	//public static final long VELOCITY_ESCAPE=15901;
+	public static final long VELOCITY_ESCAPE=680;
 	/** velocity constant for the speed warp 1 */
 	public static final long VELOCITY_WARP1=VELOCITY_LIGHT;
 	/** velocity constant for the speed warp 2 */

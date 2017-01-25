@@ -56,14 +56,10 @@ public class Pregnancy extends StdAbility implements HealthCondition
 	@Override
 	public String getHealthConditionDesc()
 	{
-		final int x=text().indexOf('/');
-		if(x>0)
+		final long start = getPregnancyStartTime();
+		if(start>=0)
 		{
 			final TimeClock C=CMLib.time().localClock(affected);
-			final int y=text().indexOf('/',x+1);
-			if(y<0)
-				return "";
-			final long start=CMath.s_long(text().substring(0,x));
 			final long divisor=CMProps.getTickMillis()*CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY);
 			final long days=(System.currentTimeMillis()-start)/divisor; // down to days;
 			final long months=days/C.getDaysInMonth();
@@ -78,6 +74,79 @@ public class Pregnancy extends StdAbility implements HealthCondition
 		return "";
 	}
 
+	protected long getPregnancyStartTime()
+	{
+		final String text=text();
+		final int x=text.indexOf('/');
+		if(x>0)
+		{
+			final int y=text.indexOf('/',x+1);
+			if(y>=0)
+				return CMath.s_long(text.substring(0,x));
+		}
+		return -1;
+	}
+
+	protected void setPregnancyStartTime(long newTime)
+	{
+		final String text=text();
+		final int x=text.indexOf('/');
+		if(x>0)
+		{
+			final int y=text.indexOf('/',x+1);
+			if(y>=0)
+				this.setMiscText(newTime+text.substring(x));
+		}
+	}
+
+	protected long getPregnancyEndTime()
+	{
+		final int x=text().indexOf('/');
+		if(x>0)
+		{
+			final int y=text().indexOf('/',x+1);
+			if(y>=0)
+				return CMath.s_long(text().substring(x+1,y));
+		}
+		return -1;
+	}
+	
+	protected void setPregnancyEndTime(long newTime)
+	{
+		final String text=text();
+		final int x=text.indexOf('/');
+		if(x>0)
+		{
+			final int y=text.indexOf('/',x+1);
+			if(y>=0)
+				this.setMiscText(text.substring(0,x+1)+newTime+text.substring(y));
+		}
+	}
+
+	@Override
+	public void setStat(String code, String val)
+	{
+		if(code!=null && code.equalsIgnoreCase("PREGSTART"))
+			this.setPregnancyStartTime(CMath.s_long(val));
+		else
+		if(code!=null && code.equalsIgnoreCase("PREGEND"))
+			this.setPregnancyEndTime(CMath.s_long(val));
+		else
+			super.setStat(code, val);
+	}
+
+	@Override
+	public String getStat(String code)
+	{
+		if(code!=null && code.equalsIgnoreCase("PREGSTART"))
+			return ""+this.getPregnancyStartTime();
+		else
+		if(code!=null && code.equalsIgnoreCase("PREGEND"))
+			return ""+this.getPregnancyEndTime();
+		else
+			return super.getStat(code);
+	}
+	
 	@Override
 	public String displayText()
 	{

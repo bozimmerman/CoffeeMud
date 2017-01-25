@@ -700,6 +700,49 @@ public class Spell_Wish extends Spell
 				}
 			}
 
+			if((target instanceof MOB)
+			&&((myWish.indexOf(" END PREGNANCY ")>=0)
+				||(myWish.indexOf(" FINISH PREGNANCY ")>=0)
+				||(myWish.indexOf(" ABORT PREGNANCY ")>=0)
+				||(myWish.indexOf(" ABORTION ")>=0)))
+			{
+				Ability A=target.fetchEffect("Pregnancy");
+				if(target != null)
+				{
+					A.unInvoke();
+					target.delEffect(A);
+					A.setAffectedOne(null);
+					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("@x1 loses @x2 baby!",target.name(),((MOB)target).charStats().hisher()));
+					wishDrain(mob,baseLoss,false);
+					return true;
+				}
+			}
+
+			if((target instanceof MOB)
+			&&((myWish.indexOf(" GIVE BIRTH ")>=0)
+				||(myWish.indexOf(" COME TO TERM ")>=0)
+				||(myWish.indexOf(" HAVE BABY ")>=0)
+				||(myWish.indexOf(" HAVE HER BABY ")>=0)
+				||(myWish.indexOf(" COME TO FULL TERM ")>=0)))
+			{
+				Ability A=target.fetchEffect("Pregnancy");
+				if(target != null)
+				{
+					long pregStart = CMath.s_long(A.getStat("PREGSTART"));
+					long pregEnd = CMath.s_long(A.getStat("PREGEND"));
+					if((pregStart>=0)&&(pregEnd>=0))
+					{
+						long diff = pregEnd - System.currentTimeMillis() + 10000;
+						mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("@x1 start(s) going into labor!",target.name()));
+						A.setStat("PREGSTART", ""+(pregStart - diff));
+						A.setStat("PREGEND", ""+(pregEnd - diff));
+						wishDrain(mob,baseLoss,false);
+						return true;
+					}
+				}
+				
+			}
+
 			// temporary stat changes
 			if((target instanceof MOB)
 			&&((myWish.indexOf(" MORE ")>=0)

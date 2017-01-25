@@ -56,24 +56,15 @@ public class Chant_SpeedBirth extends Chant
 		long end=0;
 		long days=0;
 		long remain=0;
-		String rest=null;
 		if(A!=null)
 		{
-			final int x=A.text().indexOf('/');
-			if(x>0)
+			start = CMath.s_long(A.getStat("PREGSTART"));
+			end = CMath.s_long(A.getStat("PREGEND"));
+			if((start>=0)&&(end>=0))
 			{
-				final int y=A.text().indexOf('/',x+1);
-				if(y>x)
-				{
-					start=CMath.s_long(A.text().substring(0,x));
-					end=CMath.s_long(A.text().substring(x+1,y));
-					remain=end-System.currentTimeMillis();
-					final long divisor=CMProps.getTickMillis()*CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY);
-					days=remain/divisor; // down to days;
-					rest=A.text().substring(y);
-				}
-				else
-					A=null;
+				remain=end-System.currentTimeMillis();
+				final long divisor=CMProps.getTickMillis()*CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY);
+				days=remain/divisor; // down to days;
 			}
 			else
 				A=null;
@@ -102,7 +93,9 @@ public class Chant_SpeedBirth extends Chant
 				}
 				else
 					remain=remain/2;
-				A.setMiscText((start-remain)+"/"+(end-remain)+rest);
+				
+				A.setStat("PREGSTART",""+(start-remain));
+				A.setStat("PREGEND",""+(end-remain));
 				target.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> appear(s) even MORE pregnant!"));
 			}
 		}

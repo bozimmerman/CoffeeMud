@@ -54,7 +54,8 @@ public class RocketShipProgram extends GenShipProgram
 	protected volatile List<TechComponent>		sensors				= null;
 	protected volatile List<TechComponent>		components			= null;
 	
-	protected final List<CMObject> sensorReport = new LinkedList<CMObject>();
+	protected volatile List<ShipEngine> 		launchEngines		= null;
+	protected final List<CMObject>	sensorReport	= new LinkedList<CMObject>();
 
 	public RocketShipProgram()
 	{
@@ -209,6 +210,8 @@ public class RocketShipProgram extends GenShipProgram
 		final String uword=parsed.get(0).toUpperCase();
 		if(uword.equals("ENGINEHELP")
 		||uword.equals("HELP")
+		||uword.equals("STOP")
+		||uword.equals("LAUNCH")
 		||uword.equals("ACTIVATE")
 		||uword.equals("DEACTIVATE")
 		||(uword.startsWith("ENGINE")&&(CMath.isInteger(uword.substring(6))))
@@ -432,6 +435,11 @@ public class RocketShipProgram extends GenShipProgram
 	@Override
 	public boolean checkPowerCurrent(int value)
 	{
+		final List<ShipEngine> engines = launchEngines;
+		if((engines != null) && (engines.size() > 0))
+		{
+			//TODO:
+		}
 		return true;
 	}
 
@@ -451,6 +459,8 @@ public class RocketShipProgram extends GenShipProgram
 			{
 				super.addScreenMessage(L("^HHELP:^N\n\r^N"+"The ACTIVATE command can be used to turn on any engine, "
 					+ "sensor, or other system in your ship.  The DEACTIVATE command will turn off any system specified. "
+					+ "LAUNCH will take your ship off away from the planet. "
+					+ "STOP will attempt to negate all velocity. "
 					+ "Otherwise, see ENGINE help for engine commands."));
 				return;
 			}
@@ -493,6 +503,61 @@ public class RocketShipProgram extends GenShipProgram
 					else
 						msg=CMClass.getMsg(mob, E, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_DEACTIVATE|CMMsg.MASK_CNTRLMSG, null, CMMsg.NO_EFFECT,null);
 				}
+			}
+			else
+			if(uword.equalsIgnoreCase("LAUNCH"))
+			{
+				final SpaceObject spaceObject=CMLib.map().getSpaceObject(this,true);
+				final SpaceShip ship=(spaceObject instanceof SpaceShip)?(SpaceShip)spaceObject:null;
+				if(ship==null)
+				{
+					super.addScreenMessage(L("Error: Malfunctioning hull interface."));
+					return;
+				}
+				if(ship.getIsDocked() == null)
+				{
+					super.addScreenMessage(L("Error: Ship is already launched."));
+					return;
+				}
+				final List<ShipEngine> readyEngines = new ArrayList<ShipEngine>(1);
+				final List<ShipEngine> engines = getEngines();
+				String code=Technical.TechCommand.THRUST.makeCommand(TechComponent.ShipDir.AFT,Double.valueOf(.0000001));
+				for(ShipEngine engineE : engines)
+				{
+					if((CMParms.contains(engineE.getAvailPorts(),TechComponent.ShipDir.AFT))
+					&&(engineE.getMaxThrust()>SpaceObject.ACCELLERATION_G)
+					&&(engineE.getMinThrust()<SpaceObject.ACCELLERATION_PASSOUT))
+					{
+						msg=CMClass.getMsg(mob, engineE, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
+						if(engineE.owner() instanceof Room)
+						{
+							if(((Room)engineE.owner()).okMessage(mob, msg))
+							{
+								((Room)engineE.owner()).send(mob, msg);
+								readyEngines.add(engineE);
+							}
+						}
+						else
+						if(engineE.okMessage(mob, msg))
+						{
+							engineE.executeMsg(mob, msg);
+							readyEngines.add(engineE);
+						}
+					}
+				}
+				if(readyEngines.size()==0)
+				{
+					this.launchEngines = null;
+					super.addScreenMessage(L("Error: Malfunctioning launch thrusters interface."));
+					return;
+				}
+				this.launchEngines=readyEngines;
+				super.addScreenMessage(L("Launch procedure initialized."));
+			}
+			else
+			if(uword.equalsIgnoreCase("STOP"))
+			{
+				//TODO:
 			}
 			else
 			{
