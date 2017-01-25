@@ -1331,7 +1331,7 @@ public class StdDeity extends StdMOB implements Deity
 							blackmarks++;
 							lastBlackmark=System.currentTimeMillis();
 							if(blackmarks==1)
-								M.tell(L("Woshipper, you have disappointed @x1. Make amends or face my wrath!",name()));
+								M.tell(L("Worshipper, you have disappointed @x1. Make amends or face my wrath!",name()));
 						}
 					}
 					else
