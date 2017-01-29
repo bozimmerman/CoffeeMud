@@ -248,7 +248,7 @@ public class JournalInfo extends StdWebMacro
 				return "<P><BLOCKQUOTE style=\"border : solid #000 1px; padding : 3px; margin-left: 1em; margin-bottom:0.2em; background: #f9f9f9 none; color: #000;\">"
 					+"<FONT SIZE=-1>Quoted from "+quotedEntry.from()
 					+" &nbsp;("+CMLib.time().date2String(quotedEntry.date())+"):</FONT><HR>"
-					+ "<I>"+quotedEntry.msg() + "</I></BLOCKQUOTE></P>";
+					+ "<I>"+CMStrings.replaceAll(quotedEntry.msg(),"&","&amp;") + "</I></BLOCKQUOTE></P>";
 			}
 			else
 			if(parms.containsKey("KEY"))

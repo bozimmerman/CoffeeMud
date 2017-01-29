@@ -28,7 +28,8 @@
         }
 		function QuoteReply(which)
 		{
-			if(abort) return;
+			if(abort) 
+				return;
 			abort=true;
 			document.FORUM.FUNCTION.value='REPLY';
 			document.FORUM.JOURNALPARENT.value='';
