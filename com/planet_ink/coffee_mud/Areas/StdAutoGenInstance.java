@@ -372,13 +372,14 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 							if(myDex<0)
 							{
 								myDex=i;
+								myRec = childSearchGroup.get(i);
 								break;
 							}
 							else
 							if((CMLib.flags().isInTheGame(M,true))
 							&&(M.location().getArea()!=instRec.A))
 							{
-								V.remove(M);
+								V.remove(wmob);
 								if((myRec!=null)&&(myRec.mobs!=null))
 									myRec.mobs.add(new WeakReference<MOB>(M));
 							}
