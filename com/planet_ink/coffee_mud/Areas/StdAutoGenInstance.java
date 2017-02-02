@@ -252,39 +252,48 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 					if(A instanceof StdAutoGenInstance)
 					{
 						final StdAutoGenInstance parentA=(StdAutoGenInstance)A;
+						AreaInstanceChild rec = null;
 						synchronized(parentA.instanceChildren)
 						{
 							for(int i=parentA.instanceChildren.size()-1;i>=0;i--)
 							{
-								final List<WeakReference<MOB>> V=parentA.instanceChildren.get(i).mobs;
 								if(parentA.instanceChildren.get(i).A==this)
 								{
-									for(final WeakReference<MOB> wM : V)
-									{
-										final MOB M=wM.get();
-										if((M!=null)
-										&&CMLib.flags().isInTheGame(M,true)
-										&&(M.location()!=null)
-										&&(M.location()!=returnToRoom)
-										&&(M.location().getArea()==this))
-										{
-											returnToRoom.bringMobHere(M, true);
-											CMLib.commands().postLook(M, true);
-										}
-									}
-									parentA.instanceChildren.remove(i);
-									final MOB mob=CMClass.sampleMOB();
-									for(final Enumeration<Room> e=getProperMap();e.hasMoreElements();)
-									{
-										final Room R=e.nextElement();
-										R.executeMsg(mob,CMClass.getMsg(mob,R,null,CMMsg.MSG_EXPIRE,null));
-									}
-									msg.addTrailerMsg(CMClass.getMsg(msg.source(),CMMsg.MSG_OK_ACTION,L("The instance has been reset.")));
-									CMLib.map().delArea(this);
-									destroy();
-									return;
+									rec = parentA.instanceChildren.get(i);
+									break;
 								}
 							}
+						}
+						if(rec != null)
+						{
+							final List<WeakReference<MOB>> V=rec.mobs;
+							for(final WeakReference<MOB> wM : V)
+							{
+								final MOB M=wM.get();
+								if((M!=null)
+								&&CMLib.flags().isInTheGame(M,true)
+								&&(M.location()!=null)
+								&&(M.location()!=returnToRoom)
+								&&(M.location().getArea()==this))
+								{
+									returnToRoom.bringMobHere(M, true);
+									CMLib.commands().postLook(M, true);
+								}
+							}
+							synchronized(parentA.instanceChildren)
+							{
+								parentA.instanceChildren.remove(rec);
+							}
+							final MOB mob=CMClass.sampleMOB();
+							for(final Enumeration<Room> e=getProperMap();e.hasMoreElements();)
+							{
+								final Room R=e.nextElement();
+								R.executeMsg(mob,CMClass.getMsg(mob,R,null,CMMsg.MSG_EXPIRE,null));
+							}
+							msg.addTrailerMsg(CMClass.getMsg(msg.source(),CMMsg.MSG_OK_ACTION,L("The instance has been reset.")));
+							CMLib.map().delArea(this);
+							destroy();
+							return;
 						}
 					}
 					msg.addTrailerMsg(CMClass.getMsg(msg.source(),CMMsg.MSG_OK_ACTION,L("The instance failed to reset.")));
@@ -325,236 +334,246 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 					return false;
 				}
 			}
+			final Set<MOB> grp = msg.source().getGroupMembers(new HashSet<MOB>());
+			final List<AreaInstanceChild> childSearchGroup;
 			synchronized(instanceChildren)
 			{
-				int myDex=-1;
-				for(int i=0;i<instanceChildren.size();i++)
+				childSearchGroup = new XVector<AreaInstanceChild>(instanceChildren);
+			}
+			int myDex=-1;
+			AreaInstanceChild myRec = null;
+			for(int i=0;i<childSearchGroup.size();i++)
+			{
+				final List<WeakReference<MOB>> V=childSearchGroup.get(i).mobs;
+				for (final WeakReference<MOB> weakReference : V)
 				{
-					final List<WeakReference<MOB>> V=instanceChildren.get(i).mobs;
-					for (final WeakReference<MOB> weakReference : V)
+					if(msg.source() == weakReference.get())
 					{
-						if(msg.source() == weakReference.get())
-						{
-							myDex = i;
-							break;
-						}
+						myDex = i;
+						myRec=childSearchGroup.get(i);
+						break;
 					}
 				}
-				final Set<MOB> grp = msg.source().getGroupMembers(new HashSet<MOB>());
-				for(int i=0;i<instanceChildren.size();i++)
+			}
+			for(int i=0;i<childSearchGroup.size();i++)
+			{
+				if(i!=myDex)
 				{
-					if(i!=myDex)
+					final AreaInstanceChild instRec = childSearchGroup.get(i);
+					final List<WeakReference<MOB>> V=instRec.mobs;
+					for(int v=V.size()-1;v>=0;v--)
 					{
-						final List<WeakReference<MOB>> V=instanceChildren.get(i).mobs;
-						for(int v=V.size()-1;v>=0;v--)
+						final WeakReference<MOB> wmob=V.get(v);
+						if(wmob==null)
+							continue;
+						final MOB M=wmob.get();
+						if(grp.contains(M))
 						{
-							final WeakReference<MOB> wmob=V.get(v);
-							if(wmob==null)
-								continue;
-							final MOB M=wmob.get();
-							if(grp.contains(M))
+							if(myDex<0)
 							{
-								if(myDex<0)
-								{
-									myDex=i;
-									break;
-								}
-								else
-								if((CMLib.flags().isInTheGame(M,true))
-								&&(M.location().getArea()!=instanceChildren.get(i).A))
-								{
-									V.remove(M);
-									instanceChildren.get(myDex).mobs.add(new WeakReference<MOB>(M));
-								}
+								myDex=i;
+								break;
+							}
+							else
+							if((CMLib.flags().isInTheGame(M,true))
+							&&(M.location().getArea()!=instRec.A))
+							{
+								V.remove(M);
+								if((myRec!=null)&&(myRec.mobs!=null))
+									myRec.mobs.add(new WeakReference<MOB>(M));
 							}
 						}
 					}
 				}
-				Area redirectA = null;
-				int direction = CMLib.map().getRoomDir(msg.source().location(), (Room)msg.target());
-				if((direction<0)&&(msg.tool() instanceof Exit))
-					direction = CMLib.map().getExitDir(msg.source().location(), (Exit)msg.tool());
-				if(direction < 0)
+			}
+			Area redirectA = null;
+			int direction = CMLib.map().getRoomDir(msg.source().location(), (Room)msg.target());
+			if((direction<0)&&(msg.tool() instanceof Exit))
+				direction = CMLib.map().getExitDir(msg.source().location(), (Exit)msg.tool());
+			if(direction < 0)
+			{
+				msg.source().tell(L("Can't figure out where you're coming from?!"));
+				return false;
+			}
+			if(myDex<0)
+			{
+				final StdAutoGenInstance newA=(StdAutoGenInstance)this.copyOf();
+				newA.properRooms=new STreeMap<String, Room>(new Area.RoomIDComparator());
+				newA.properRoomIDSet = null;
+				newA.metroRoomIDSet = null;
+				newA.blurbFlags=new STreeMap<String,String>();
+				newA.setName((++instanceCounter)+"_"+Name());
+				newA.flags |= Area.FLAG_INSTANCE_CHILD;
+				final Set<MOB> myGroup=msg.source().getGroupMembers(new HashSet<MOB>());
+				final StringBuffer xml = Resources.getFileResource(getGeneratorXmlPath(), true);
+				if((xml==null)||(xml.length()==0))
 				{
-					msg.source().tell(L("Can't figure out where you're coming from?!"));
+					msg.source().tell(L("Unable to load this area.  Please try again later."));
 					return false;
 				}
-				if(myDex<0)
+				final List<XMLLibrary.XMLTag> xmlRoot = CMLib.xml().parseAllXML(xml);
+				final Hashtable<String,Object> definedIDs = new Hashtable<String,Object>();
+				CMLib.percolator().buildDefinedIDSet(xmlRoot,definedIDs);
+				String idName = "";
+				final List<String> idChoices = new Vector<String>();
+				for(final String key : getAutoGenVariables().keySet())
+					if(key.equalsIgnoreCase("AREA_ID")||key.equalsIgnoreCase("AREA_IDS")||key.equalsIgnoreCase("AREAID")||key.equalsIgnoreCase("AREAIDS"))
+						idChoices.addAll(CMParms.parseCommas(getAutoGenVariables().get(key),true));
+				if(idChoices.size()==0)
 				{
-					final StdAutoGenInstance newA=(StdAutoGenInstance)this.copyOf();
-					newA.properRooms=new STreeMap<String, Room>(new Area.RoomIDComparator());
-					newA.properRoomIDSet = null;
-					newA.metroRoomIDSet = null;
-					newA.blurbFlags=new STreeMap<String,String>();
-					newA.setName((++instanceCounter)+"_"+Name());
-					newA.flags |= Area.FLAG_INSTANCE_CHILD;
-					final Set<MOB> myGroup=msg.source().getGroupMembers(new HashSet<MOB>());
-					final StringBuffer xml = Resources.getFileResource(getGeneratorXmlPath(), true);
-					if((xml==null)||(xml.length()==0))
+					for(final Object key : definedIDs.keySet())
 					{
-						msg.source().tell(L("Unable to load this area.  Please try again later."));
-						return false;
-					}
-					final List<XMLLibrary.XMLTag> xmlRoot = CMLib.xml().parseAllXML(xml);
-					final Hashtable<String,Object> definedIDs = new Hashtable<String,Object>();
-					CMLib.percolator().buildDefinedIDSet(xmlRoot,definedIDs);
-					String idName = "";
-					final List<String> idChoices = new Vector<String>();
-					for(final String key : getAutoGenVariables().keySet())
-						if(key.equalsIgnoreCase("AREA_ID")||key.equalsIgnoreCase("AREA_IDS")||key.equalsIgnoreCase("AREAID")||key.equalsIgnoreCase("AREAIDS"))
-							idChoices.addAll(CMParms.parseCommas(getAutoGenVariables().get(key),true));
-					if(idChoices.size()==0)
-					{
-						for(final Object key : definedIDs.keySet())
+						final Object val=definedIDs.get(key);
+						if((key instanceof String)
+						&&(val instanceof XMLTag)
+						&&(((XMLTag)val).tag().equalsIgnoreCase("area")))
 						{
-							final Object val=definedIDs.get(key);
-							if((key instanceof String)
-							&&(val instanceof XMLTag)
-							&&(((XMLTag)val).tag().equalsIgnoreCase("area")))
+							final XMLTag piece=(XMLTag)val; 
+							final String inserter = piece.getParmValue("INSERT");
+							if(inserter!=null)
 							{
-								final XMLTag piece=(XMLTag)val; 
-								final String inserter = piece.getParmValue("INSERT");
-								if(inserter!=null)
+								final List<String> V=CMParms.parseCommas(inserter,true);
+								for(int v=0;v<V.size();v++)
 								{
-									final List<String> V=CMParms.parseCommas(inserter,true);
-									for(int v=0;v<V.size();v++)
-									{
-										String s = V.get(v);
-										if(s.startsWith("$"))
-											s=s.substring(1).trim();
-										final XMLTag insertPiece =(XMLTag)definedIDs.get(s.toUpperCase().trim());
-										if(insertPiece == null)
-											continue;
-										if(insertPiece.tag().equalsIgnoreCase("area"))
-											if(!idChoices.contains(s.toUpperCase().trim()))
-												idChoices.add(s.toUpperCase().trim());
-									}
+									String s = V.get(v);
+									if(s.startsWith("$"))
+										s=s.substring(1).trim();
+									final XMLTag insertPiece =(XMLTag)definedIDs.get(s.toUpperCase().trim());
+									if(insertPiece == null)
+										continue;
+									if(insertPiece.tag().equalsIgnoreCase("area"))
+										if(!idChoices.contains(s.toUpperCase().trim()))
+											idChoices.add(s.toUpperCase().trim());
 								}
-								else
-									idChoices.add((String)key);
 							}
+							else
+								idChoices.add((String)key);
 						}
 					}
+				}
 
-					if(idChoices.size()>0)
-						idName=idChoices.get(CMLib.dice().roll(1, idChoices.size(), -1)).toUpperCase().trim();
+				if(idChoices.size()>0)
+					idName=idChoices.get(CMLib.dice().roll(1, idChoices.size(), -1)).toUpperCase().trim();
 
-					if((!(definedIDs.get(idName) instanceof XMLTag))
-					||(!((XMLTag)definedIDs.get(idName)).tag().equalsIgnoreCase("area")))
+				if((!(definedIDs.get(idName) instanceof XMLTag))
+				||(!((XMLTag)definedIDs.get(idName)).tag().equalsIgnoreCase("area")))
+				{
+					msg.source().tell(L("The area id '@x1' has not been defined in the data file.",idName));
+					return false;
+				}
+				final ScriptingEngine scrptEng=(ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
+				final Object[] scriptObjs = new Object[ScriptingEngine.SPECIAL_NUM_OBJECTS];
+				final List<Double> levels=new ArrayList<Double>();
+				final Set<MOB> followers=msg.source().getGroupMembers(new HashSet<MOB>());
+				if(!followers.contains(msg.source()))
+					followers.add(msg.source());
+				double totalLevels=0.0;
+				for(final MOB M : followers)
+				{
+					final Double D=Double.valueOf(M.basePhyStats().level());
+					levels.add(D);
+					totalLevels+=D.doubleValue();
+				}
+				final Double[] sortedLevels=levels.toArray(new Double[0]);
+				final double lowestLevel=sortedLevels[0].doubleValue();
+				final double medianLevel=sortedLevels[(int)Math.round(Math.floor(sortedLevels.length/2))].doubleValue();
+				final double averageLevel=Math.round(10.0*totalLevels/(sortedLevels.length))/10.0;
+				final double highestLevel=sortedLevels[sortedLevels.length-1].doubleValue();
+				final double groupSize=Double.valueOf(followers.size()).doubleValue();
+				final double values[]={msg.source().basePhyStats().level(),lowestLevel,medianLevel,averageLevel,highestLevel,totalLevels,groupSize};
+				for(final String key : getAutoGenVariables().keySet())
+					if(!(key.equalsIgnoreCase("AREA_ID")||key.equalsIgnoreCase("AREA_IDS")||key.equalsIgnoreCase("AREAID")||key.equalsIgnoreCase("AREAIDS")))
 					{
-						msg.source().tell(L("The area id '@x1' has not been defined in the data file.",idName));
-						return false;
+						final String rawValue = CMath.replaceVariables(getAutoGenVariables().get(key),values);
+						final String val=scrptEng.varify(msg.source(), newA, msg.source(), msg.source(), null, null, msg.sourceMessage(), scriptObjs, rawValue);
+						definedIDs.put(key.toUpperCase(),val);
 					}
-					final ScriptingEngine scrptEng=(ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
-					final Object[] scriptObjs = new Object[ScriptingEngine.SPECIAL_NUM_OBJECTS];
-					final List<Double> levels=new ArrayList<Double>();
-					final Set<MOB> followers=msg.source().getGroupMembers(new HashSet<MOB>());
-					if(!followers.contains(msg.source()))
-						followers.add(msg.source());
-					double totalLevels=0.0;
-					for(final MOB M : followers)
-					{
-						final Double D=Double.valueOf(M.basePhyStats().level());
-						levels.add(D);
-						totalLevels+=D.doubleValue();
-					}
-					final Double[] sortedLevels=levels.toArray(new Double[0]);
-					final double lowestLevel=sortedLevels[0].doubleValue();
-					final double medianLevel=sortedLevels[(int)Math.round(Math.floor(sortedLevels.length/2))].doubleValue();
-					final double averageLevel=Math.round(10.0*totalLevels/(sortedLevels.length))/10.0;
-					final double highestLevel=sortedLevels[sortedLevels.length-1].doubleValue();
-					final double groupSize=Double.valueOf(followers.size()).doubleValue();
-					final double values[]={msg.source().basePhyStats().level(),lowestLevel,medianLevel,averageLevel,highestLevel,totalLevels,groupSize};
-					for(final String key : getAutoGenVariables().keySet())
-						if(!(key.equalsIgnoreCase("AREA_ID")||key.equalsIgnoreCase("AREA_IDS")||key.equalsIgnoreCase("AREAID")||key.equalsIgnoreCase("AREAIDS")))
-						{
-							final String rawValue = CMath.replaceVariables(getAutoGenVariables().get(key),values);
-							final String val=scrptEng.varify(msg.source(), newA, msg.source(), msg.source(), null, null, msg.sourceMessage(), scriptObjs, rawValue);
-							definedIDs.put(key.toUpperCase(),val);
-						}
-					definedIDs.put("AREANAME", Name());
-					if(!definedIDs.containsKey("AREASIZE"))
-						definedIDs.put("AREASIZE", "50");
-					if(!definedIDs.containsKey("LEVEL_RANGE"))
-						definedIDs.put("LEVEL_RANGE", (msg.source().basePhyStats().level()-4)+"?"+(msg.source().basePhyStats().level()));
-					if(!definedIDs.containsKey("AGGROCHANCE"))
-						definedIDs.put("AGGROCHANCE", ""+msg.source().basePhyStats().level());
-					try
-					{
-						XMLTag piece=(XMLTag)definedIDs.get(idName);
-						final List<XMLTag> pieces = CMLib.percolator().getAllChoices(piece.tag(), piece, definedIDs);
-						if(pieces.size()>0)
-							piece=pieces.get(CMLib.dice().roll(1, pieces.size(), -1));
+				definedIDs.put("AREANAME", Name());
+				if(!definedIDs.containsKey("AREASIZE"))
+					definedIDs.put("AREASIZE", "50");
+				if(!definedIDs.containsKey("LEVEL_RANGE"))
+					definedIDs.put("LEVEL_RANGE", (msg.source().basePhyStats().level()-4)+"?"+(msg.source().basePhyStats().level()));
+				if(!definedIDs.containsKey("AGGROCHANCE"))
+					definedIDs.put("AGGROCHANCE", ""+msg.source().basePhyStats().level());
+				try
+				{
+					XMLTag piece=(XMLTag)definedIDs.get(idName);
+					final List<XMLTag> pieces = CMLib.percolator().getAllChoices(piece.tag(), piece, definedIDs);
+					if(pieces.size()>0)
+						piece=pieces.get(CMLib.dice().roll(1, pieces.size(), -1));
 //TODO: fix this
 //FIXME: this can maybe pick town.
-						if(!definedIDs.containsKey("THEME"))
-						{
-							final Map<String,String> unfilled = CMLib.percolator().getUnfilledRequirements(definedIDs,piece);
-							final List<String> themes = CMParms.parseCommas(unfilled.get("THEME"), true);
-							if(themes.size()>0)
-								definedIDs.put("THEME", themes.get(CMLib.dice().roll(1, themes.size(), -1)).toUpperCase().trim());
-						}
-						try
-						{
-							CMLib.percolator().checkRequirements(piece, definedIDs);
-						}
-						catch(final CMException cme)
-						{
-							msg.source().tell(L("Required ids for @x1 were missing: @x2",idName,cme.getMessage()));
-							return false;
-						}
-						for(final MOB M : myGroup)
-							M.tell(L("^x------------------------------------------------------\n\rPreparing to enter @x1, please stand by...\n\r------------------------------------------------------^N^.",Name()));
-						definedIDs.put("ROOMTAG_NODEGATEEXIT", CMLib.directions().getDirectionName(Directions.getOpDirectionCode(direction)));
-						definedIDs.put("ROOMTAG_GATEEXITROOM", msg.source().location());
-						if(!CMLib.percolator().fillInArea(piece, definedIDs, newA, direction))
-						{
-							msg.source().tell(L("Failed to enter the new area.  Try again later."));
-							return false;
-						}
-						CMLib.percolator().postProcess(definedIDs);
+					if(!definedIDs.containsKey("THEME"))
+					{
+						final Map<String,String> unfilled = CMLib.percolator().getUnfilledRequirements(definedIDs,piece);
+						final List<String> themes = CMParms.parseCommas(unfilled.get("THEME"), true);
+						if(themes.size()>0)
+							definedIDs.put("THEME", themes.get(CMLib.dice().roll(1, themes.size(), -1)).toUpperCase().trim());
+					}
+					try
+					{
+						CMLib.percolator().checkRequirements(piece, definedIDs);
 					}
 					catch(final CMException cme)
 					{
-						Log.errOut("StdAutoGenInstance",cme);
-						msg.source().tell(L("Failed to finish entering the new area.  Try again later."));
+						msg.source().tell(L("Required ids for @x1 were missing: @x2",idName,cme.getMessage()));
 						return false;
 					}
-					redirectA=newA;
-					CMLib.map().addArea(newA);
-					newA.setAreaState(Area.State.ACTIVE); // starts ticking
-					final List<WeakReference<MOB>> newMobList = new SVector<WeakReference<MOB>>(5);
-					newMobList.add(new WeakReference<MOB>(msg.source()));
-					final AreaInstanceChild child = new AreaInstanceChild(redirectA,newMobList);
-					instanceChildren.add(child);
-
-					getAreaIStats(); // if this is the first child ever, this will force stat making
-
-					final Room R=redirectA.getRoom(redirectA.Name()+"#0");
-					if(R!=null)
+					for(final MOB M : myGroup)
+						M.tell(L("^x------------------------------------------------------\n\rPreparing to enter @x1, please stand by...\n\r------------------------------------------------------^N^.",Name()));
+					definedIDs.put("ROOMTAG_NODEGATEEXIT", CMLib.directions().getDirectionName(Directions.getOpDirectionCode(direction)));
+					definedIDs.put("ROOMTAG_GATEEXITROOM", msg.source().location());
+					if(!CMLib.percolator().fillInArea(piece, definedIDs, newA, direction))
 					{
-						Exit E=R.getExitInDir(Directions.getOpDirectionCode(direction));
-						if(E==null)
-							E = CMClass.getExit("Open");
-						final int opDir=Directions.getOpDirectionCode(direction);
-						if(R.getRoomInDir(opDir)!=null)
-							msg.source().tell(L("An error has caused the following exit to be one-way."));
-						else
-						{
-							R.setRawExit(opDir, E);
-							R.rawDoors()[opDir]=msg.source().location();
-						}
+						msg.source().tell(L("Failed to enter the new area.  Try again later."));
+						return false;
+					}
+					CMLib.percolator().postProcess(definedIDs);
+				}
+				catch(final CMException cme)
+				{
+					Log.errOut("StdAutoGenInstance",cme);
+					msg.source().tell(L("Failed to finish entering the new area.  Try again later."));
+					return false;
+				}
+				redirectA=newA;
+				CMLib.map().addArea(newA);
+				newA.setAreaState(Area.State.ACTIVE); // starts ticking
+				final List<WeakReference<MOB>> newMobList = new SVector<WeakReference<MOB>>(5);
+				newMobList.add(new WeakReference<MOB>(msg.source()));
+				final AreaInstanceChild child = new AreaInstanceChild(redirectA,newMobList);
+				synchronized(instanceChildren)
+				{
+					instanceChildren.add(child);
+				}
+
+				getAreaIStats(); // if this is the first child ever, this will force stat making
+
+				final Room R=redirectA.getRoom(redirectA.Name()+"#0");
+				if(R!=null)
+				{
+					Exit E=R.getExitInDir(Directions.getOpDirectionCode(direction));
+					if(E==null)
+						E = CMClass.getExit("Open");
+					final int opDir=Directions.getOpDirectionCode(direction);
+					if(R.getRoomInDir(opDir)!=null)
+						msg.source().tell(L("An error has caused the following exit to be one-way."));
+					else
+					{
+						R.setRawExit(opDir, E);
+						R.rawDoors()[opDir]=msg.source().location();
 					}
 				}
-				else
-					redirectA=instanceChildren.get(myDex).A;
-				if(redirectA instanceof StdAutoGenInstance)
+			}
+			else
+			if(myRec != null)
+				redirectA=myRec.A;
+			if(redirectA instanceof StdAutoGenInstance)
+			{
+				final Room R=redirectA.getRoom(redirectA.Name()+"#0");
+				if(R!=null)
 				{
-					final Room R=redirectA.getRoom(redirectA.Name()+"#0");
-					if(R!=null)
-					{
-						msg.setTarget(R);
-					}
+					msg.setTarget(R);
 				}
 			}
 		}

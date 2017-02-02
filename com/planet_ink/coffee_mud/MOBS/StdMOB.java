@@ -5391,13 +5391,13 @@ public class StdMOB implements MOB
 	}
 
 	@Override
-	public void moveItemTo(Item container, ItemPossessor.Expire expire, Move... moveFlags)
+	public void moveItemTo(final Item container, final ItemPossessor.Expire expire, final Move... moveFlags)
 	{
 		moveItemTo(container);
 	}
 
 	@Override
-	public void moveItemTo(Item container)
+	public void moveItemTo(final Item container)
 	{
 		// caller is responsible for recovering any env
 		// stat changes!
@@ -5409,11 +5409,11 @@ public class StdMOB implements MOB
 		if (container.owner() != null)
 		{
 			owner = container.owner();
-			if (container.owner() instanceof Room)
-				((Room) container.owner()).delItem(container);
+			if (owner instanceof Room)
+				((Room) owner).delItem(container);
 			else
-			if (container.owner() instanceof MOB)
-				((MOB) container.owner()).delItem(container);
+			if (owner instanceof MOB)
+				((MOB) owner).delItem(container);
 		}
 		location().delItem(container);
 

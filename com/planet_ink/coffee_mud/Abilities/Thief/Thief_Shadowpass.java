@@ -36,17 +36,63 @@ import java.util.Map.Entry;
 
 public class Thief_Shadowpass extends ThiefSkill
 {
-	@Override public String ID() { return "Thief_Shadowpass"; }
-	private final static String localizedName = CMLib.lang().L("Shadowpass");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	private static final String[] triggerStrings =I(new String[] {"SHADOWPASS"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int usageType(){return USAGE_MOVEMENT;}
-	@Override public long flags(){return Ability.FLAG_TRANSPORTING|super.flags();}
-	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALTHY;}
+	@Override
+	public String ID()
+	{
+		return "Thief_Shadowpass";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Shadowpass");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "SHADOWPASS" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_TRANSPORTING | super.flags();
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_THIEF_SKILL | Ability.DOMAIN_STEALTHY;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -81,12 +127,12 @@ public class Thief_Shadowpass extends ThiefSkill
 			final int direction=CMLib.directions().getGoodDirectionCode(s);
 			if(direction<0)
 				break;
-			if((R.getRoomInDir(direction)==null)||(R.getExitInDir(direction)==null))
+			if((R==null)||(R.getRoomInDir(direction)==null)||(R.getExitInDir(direction)==null))
 				break;
 			for(int i=0;i<num;i++)
 			{
 				R=R.getRoomInDir(direction);
-				if(!CMLib.flags().canAccess(mob,R))
+				if((R==null)||(!CMLib.flags().canAccess(mob,R)))
 					break;
 				trail.add(Integer.valueOf(direction));
 			}
