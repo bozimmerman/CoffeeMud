@@ -417,8 +417,10 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 				String idName = "";
 				final List<String> idChoices = new Vector<String>();
 				for(final String key : getAutoGenVariables().keySet())
+				{
 					if(key.equalsIgnoreCase("AREA_ID")||key.equalsIgnoreCase("AREA_IDS")||key.equalsIgnoreCase("AREAID")||key.equalsIgnoreCase("AREAIDS"))
 						idChoices.addAll(CMParms.parseCommas(getAutoGenVariables().get(key),true));
+				}
 				if(idChoices.size()==0)
 				{
 					for(final Object key : definedIDs.keySet())
@@ -442,8 +444,10 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 									if(insertPiece == null)
 										continue;
 									if(insertPiece.tag().equalsIgnoreCase("area"))
+									{
 										if(!idChoices.contains(s.toUpperCase().trim()))
 											idChoices.add(s.toUpperCase().trim());
+									}
 								}
 							}
 							else
@@ -482,12 +486,14 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 				final double groupSize=Double.valueOf(followers.size()).doubleValue();
 				final double values[]={msg.source().basePhyStats().level(),lowestLevel,medianLevel,averageLevel,highestLevel,totalLevels,groupSize};
 				for(final String key : getAutoGenVariables().keySet())
+				{
 					if(!(key.equalsIgnoreCase("AREA_ID")||key.equalsIgnoreCase("AREA_IDS")||key.equalsIgnoreCase("AREAID")||key.equalsIgnoreCase("AREAIDS")))
 					{
 						final String rawValue = CMath.replaceVariables(getAutoGenVariables().get(key),values);
 						final String val=scrptEng.varify(msg.source(), newA, msg.source(), msg.source(), null, null, msg.sourceMessage(), scriptObjs, rawValue);
 						definedIDs.put(key.toUpperCase(),val);
 					}
+				}
 				definedIDs.put("AREANAME", Name());
 				if(!definedIDs.containsKey("AREASIZE"))
 					definedIDs.put("AREASIZE", "50");
