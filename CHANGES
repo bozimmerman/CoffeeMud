@@ -9,33 +9,33 @@
    7. New Skills: Cultural Adaptation, Fast Slinging, Sling Proficiency, Diligent Studying
    8. New Prayers: Taint of Evil
    9. Centaur gets Hardiness, Drow adds Light Sensitivity and Taint of Evil, 
-   10. Duergar get -10% XP, Dwarfs get Stonecunning, Elfs Keenvision
-   11. Races can now have a XP adjustment, see Archon's Guide
-   12. New Language: WormSpeak
-   13. Gnomes get BurrowSpeak and Burrow Hide, Goblins +5% XP, Half Elfs Cultural Adaptation
-   14. Racial cultural abilities now support level and auto-gain/qualify.
-   15. New Spells: Darkness Globe, Untraceable, Astral Step
-   16. Achievement type GOTITEM now supports NUM argument.
-   17. New Properties: Prop_OpenCommand, Bad Reputation, Slow Learner
-   18. ZapperMask now supports IFSTAT, CLASSTYPE, SUBNAME, WEAPONTYPE, WEAPONCLASS, WEAPONAMMO
-   19. 14 new Proficiency Skills, for overriding Class Restrictions
-   20. Halflings get Fast Slinging, Sling Proficiency, Humans get Diligent Studying
-   21. New Skills: Devour Corpse, Tail Swipe, Long Breath, Eagle Eyes, Vicious Blow, Mind Suck
-   22. Ogres got Bad Reputation, Gnoll gets Devour Corpse, Svirfneblin gets Untraceable
-   23. Githyanki get Astral Step, Lizard Men get Tail Swipe, Long Breath, MindFlayer get Mind Suck
-   24. Aarakocran gets Eagle Eyes, Merfolk get Land Legs, Orc gets Vicious Blow
-   25. New Race: Pixie
-   26. (Internal) Char Stats now supports crit damage bonuses for weapons and magic
-   27. Races and Char Class can be disabled, finally, from the ini/mudgrinder.  See DISABLE=
-   28. Internally disabled Races/Char Classes can be enabled from the ini/mudgrinder.  See ENABLE= 
-   29. Some subtle new GenAbility features: uninvoke script trigger, uninvoking effects
-   30. Minstrels now get pan pipes as standard outfit
-   31. Trap_CaveIn allows overriding of the messaging.
-   32. ShipWright now supports building and demolishing doors on ships.
-   33. Reset genmixedracebuilds will now rebuild all the generic mixed races you have.
-   34. Archons can now do CREATE MIXEDRACE raceid1 raceid2
-   35. New common skill: Composting
-   36. Builders can now use LIST GENSTATS <class or item> to view named generic stats. 
+  10. Duergar get -10% XP, Dwarfs get Stonecunning, Elfs Keenvision
+  11. Races can now have a XP adjustment, see Archon's Guide
+  12. New Language: WormSpeak
+  13. Gnomes get BurrowSpeak and Burrow Hide, Goblins +5% XP, Half Elfs Cultural Adaptation
+  14. Racial cultural abilities now support level and auto-gain/qualify.
+  15. New Spells: Darkness Globe, Untraceable, Astral Step
+  16. Achievement type GOTITEM now supports NUM argument.
+  17. New Properties: Prop_OpenCommand, Bad Reputation, Slow Learner
+  18. ZapperMask now supports IFSTAT, CLASSTYPE, SUBNAME, WEAPONTYPE, WEAPONCLASS, WEAPONAMMO
+  19. 14 new Proficiency Skills, for overriding Class Restrictions
+  20. Halflings get Fast Slinging, Sling Proficiency, Humans get Diligent Studying
+  21. New Skills: Devour Corpse, Tail Swipe, Long Breath, Eagle Eyes, Vicious Blow, Mind Suck
+  22. Ogres got Bad Reputation, Gnoll gets Devour Corpse, Svirfneblin gets Untraceable
+  23. Githyanki get Astral Step, Lizard Men get Tail Swipe, Long Breath, MindFlayer get Mind Suck
+  24. Aarakocran gets Eagle Eyes, Merfolk get Land Legs, Orc gets Vicious Blow
+  25. New Race: Pixie
+  26. (Internal) Char Stats now supports crit damage bonuses for weapons and magic
+  27. Races and Char Class can be disabled, finally, from the ini/mudgrinder.  See DISABLE=
+  28. Internally disabled Races/Char Classes can be enabled from the ini/mudgrinder.  See ENABLE= 
+  29. Some subtle new GenAbility features: uninvoke script trigger, uninvoking effects
+  30. Minstrels now get pan pipes as standard outfit
+  31. Trap_CaveIn allows overriding of the messaging.
+  32. ShipWright now supports building and demolishing doors on ships.
+  33. Reset genmixedracebuilds will now rebuild all the generic mixed races you have.
+  34. Archons can now do CREATE MIXEDRACE raceid1 raceid2
+  35. New common skill: Composting
+  36. Builders can now use LIST GENSTATS <class or item> to view named generic stats. 
 # Build 5.9.4 Released 08/03/2016
    1. Qualify now shows language limits
    2. New Prop_NoTeleport exceptions

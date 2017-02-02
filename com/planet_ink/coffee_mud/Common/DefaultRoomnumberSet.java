@@ -170,10 +170,12 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 	{
 		int total=0;
 		for(final LongSet CMI : root.values())
+		{
 			if(CMI==null)
 				total++;
 			else
 				total+=CMI.size();
+		}
 		return total;
 	}
 
@@ -181,9 +183,13 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 	public boolean isEmpty()
 	{
 		if(!root.isEmpty())
+		{
 			for(final LongSet CMI : root.values())
+			{
 				if((CMI!=null)&&(!CMI.isEmpty()))
 					return false;
+			}
+		}
 		return true;
 	}
 
@@ -356,6 +362,7 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 		String ID=null;
 		String NUMS=null;
 		if((xV!=null)&&(xV.size()>0))
+		{
 			for(int x=0;x<xV.size();x++)
 			{
 				final XMLTag ablk=xV.get(x);
@@ -369,6 +376,7 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 						root.put(ID,null);
 				}
 			}
+		}
 	}
 
 	@Override

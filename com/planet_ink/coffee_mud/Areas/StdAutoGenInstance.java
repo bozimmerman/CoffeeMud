@@ -112,7 +112,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 		if(statData!=null)
 			return statData;
 		List<Area> workList = new LinkedList<Area>();
-		synchronized(("STATS_"+areaName).intern())
+		synchronized(("STATS_"+Name()).intern())
 		{
 			if(parentArea==null)
 			{
