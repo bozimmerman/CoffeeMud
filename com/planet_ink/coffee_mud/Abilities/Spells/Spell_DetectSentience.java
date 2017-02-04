@@ -36,13 +36,43 @@ import java.util.*;
 
 public class Spell_DetectSentience extends Spell
 {
-	@Override public String ID() { return "Spell_DetectSentience"; }
-	private final static String localizedName = CMLib.lang().L("Detect Sentience");
-	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override protected int canAffectCode(){return 0;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
+	@Override
+	public String ID()
+	{
+		return "Spell_DetectSentience";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Detect Sentience");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL | Ability.DOMAIN_DIVINATION;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -75,7 +105,9 @@ public class Spell_DetectSentience extends Spell
 					for(int m=0;m<R.numInhabitants();m++)
 					{
 						final MOB M=R.fetchInhabitant(m);
-						if((M!=null)&&(M.charStats().getStat(CharStats.STAT_INTELLIGENCE)>=2))
+						if((M!=null)
+						&&(M.charStats().getStat(CharStats.STAT_INTELLIGENCE)>=2)
+						&&(M.fetchEffect("Prop_WizInvis")==null))
 						{
 							msg2.setTarget(M);
 							if(R.okMessage(mob,msg2))
