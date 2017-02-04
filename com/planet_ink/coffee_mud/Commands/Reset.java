@@ -1084,21 +1084,36 @@ public class Reset extends StdCommand
 		else
 		if(s.equalsIgnoreCase("genmixedracebuilds")&&(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDRACES)))
 		{
-			if(mob.session().confirm(L("Recreate all the gen-mixed-races?!"), L("N")))
+			List<Race> racesToDo = new ArrayList<Race>();
+			if(rest.length()==0)
 			{
-				List<Race> racesToDo = new ArrayList<Race>();
-				for(final Enumeration e=CMClass.races();e.hasMoreElements();)
+				if(mob.session().confirm(L("Recreate all the gen-mixed-races?!"), L("N")))
 				{
-					final Race R=(Race)e.nextElement();
-					if(R.isGeneric())
+					for(final Enumeration e=CMClass.races();e.hasMoreElements();)
 					{
-						final List<Race> racesToBaseFrom=CMLib.utensils().getConstituantRaces(R.ID());
-						if(racesToBaseFrom.size()>1)
+						final Race R=(Race)e.nextElement();
+						if(R.isGeneric())
 						{
-							racesToDo.add(R);
+							final List<Race> racesToBaseFrom=CMLib.utensils().getConstituantRaces(R.ID());
+							if(racesToBaseFrom.size()>1)
+							{
+								racesToDo.add(R);
+							}
 						}
 					}
 				}
+			}
+			else
+			{
+				final Race R=CMClass.getRace(rest);
+				if(R==null)
+					mob.tell(L("No such race as ",rest));
+				else
+					racesToDo.add(R);
+			}
+				
+			if(racesToDo.size()>0)
+			{
 				for(Race R : racesToDo)
 				{
 					CMLib.database().DBDeleteRace(R.ID());

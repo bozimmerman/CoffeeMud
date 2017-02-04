@@ -109,11 +109,27 @@ public class CMUniqSortSVec<T extends CMObject> extends SVector<T> implements Se
 	public boolean containsAll(Collection<?> arg0)
 	{
 		for(final Object o : arg0)
+		{
 			if(!contains(o))
 				return false;
+		}
 		return true;
 	}
 
+	@Override
+	public Iterator<String> keyIterator()
+	{
+		return new ConvertingIterator<T,String>(this.iterator(),new Converter<T,String>(){
+			@Override
+			public String convert(T obj)
+			{
+				if(obj!=null)
+					return obj.ID(); 
+				return null;
+			}
+		});
+	}
+	
 	@Override
 	public T get(int arg0)
 	{

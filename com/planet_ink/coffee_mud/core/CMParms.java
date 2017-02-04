@@ -2258,6 +2258,38 @@ public class CMParms
 	}
 
 	/**
+	 * Converts the cmobject objects in the given Set to a String List
+	 * by calling ID() on each object.
+	 * @param V the set to convert
+	 * @return a string list of the set
+	 */
+	public final static List<String> toIDList(final Set<? extends CMObject> V)
+	{
+		final Vector<String> s=new Vector<String>();
+		if((V==null)||(V.size()==0))
+			return s;
+		for (final CMObject o : V)
+			s.add(o.ID());
+		return s;
+	}
+
+	/**
+	 * Converts the cmobject objects in the given Collection to a String List
+	 * by calling ID() on each object.
+	 * @param V the Collection to convert
+	 * @return a string list of the Collection
+	 */
+	public final static List<String> toIDList(final Collection<? extends CMObject> V)
+	{
+		final Vector<String> s=new Vector<String>();
+		if((V==null)||(V.size()==0))
+			return s;
+		for (final CMObject o : V)
+			s.add(o.ID());
+		return s;
+	}
+
+	/**
 	 * Converts the environmental objects in the given Set to a String List
 	 * by calling name() on each object.
 	 * @param V the set to convert

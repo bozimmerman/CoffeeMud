@@ -1414,17 +1414,12 @@ public class StdRace implements Race
 	}
 
 	@Override
-	public Race mixRace(Race race, String newRaceID, String newRaceName)
+	public Race mixRace(final Race race, final String newRaceID, final String newRaceName)
 	{
 		final Race GR=(Race)CMClass.getRace("GenRace").copyOf();
-		Race race1=this;
-		Race race2=race;
 		GR.setRacialParms("<RACE><ID>"+newRaceID+"</ID><NAME>"+newRaceName+"</NAME></RACE>");
-		if(!race1.isGeneric())
-			race1=race1.makeGenRace();
-		if(!race2.isGeneric())
-			race2=race2.makeGenRace();
-
+		final Race race1 = (!isGeneric()) ? makeGenRace() :  this;
+		final Race race2 = (!race.isGeneric()) ? race.makeGenRace() : race;
 		final Race nonHuman=(race1.ID().equals("Human"))?race2:race1;
 		final Race otherRace=(nonHuman==race1)?race2:race1;
 		GR.setStat("CAT",nonHuman.racialCategory());
@@ -1667,21 +1662,49 @@ public class StdRace implements Race
 				GR.setStat("GETOFTPARM"+i,outfit.get(i).text());
 		}
 
-		race1.racialAbilities(null);
-		race2.racialAbilities(null);
-		final List<AbilityMapping> dvata1=CMLib.ableMapper().getUpToLevelListings(race1.ID(),Integer.MAX_VALUE,true,false);
-		final List<AbilityMapping> dvata2=CMLib.ableMapper().getUpToLevelListings(race2.ID(),Integer.MAX_VALUE,true,false);
-		final PairList<String,AbilityMapping> dvataf = new PairVector<String,AbilityMapping>();
-		for(int i=0;i<dvata1.size() || i<dvata2.size();i++)
+		final Converter<String,AbilityMapping> race1conv = CMLib.ableMapper().getMapper(race1.ID());
+		final Converter<String,AbilityMapping> race2conv = CMLib.ableMapper().getMapper(race2.ID());
+		final Converter<String,Boolean> isLanguage = new Converter<String,Boolean>()
 		{
-			if(i<dvata1.size())
-				dvataf.add(new Pair<String,AbilityMapping>(dvata1.get(i).abilityID(), dvata1.get(i)));
-			if(i<dvata2.size())
-				dvataf.add(new Pair<String,AbilityMapping>(dvata2.get(i).abilityID(), dvata2.get(i)));
+			@Override
+			public Boolean convert(String obj)
+			{
+				final Ability A=CMClass.getAbility(obj);
+				return Boolean.valueOf((A instanceof Language) && ((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE));
+			}
+		};
+		final boolean[] foundLanguage = new boolean[] { false } ;
+		final Converter<Iterator<AbilityMapping>,Pair<String,AbilityMapping>> mapFix = new Converter<Iterator<AbilityMapping>,Pair<String,AbilityMapping>>()
+		{
+			@Override
+			public Pair<String,AbilityMapping> convert(Iterator<AbilityMapping> i)
+			{
+				if(i.hasNext())
+				{
+					final AbilityMapping r1 = i.next();
+					if(((!foundLanguage[0]) || (!isLanguage.convert(r1.abilityID()).booleanValue())))
+					{
+						foundLanguage[0] = foundLanguage[0] || isLanguage.convert(r1.abilityID()).booleanValue();
+						return new Pair<String,AbilityMapping>(r1.abilityID(), r1);
+					}
+				}
+				return null;
+			}
+		};
+		final List<AbilityMapping> rable1=new ConvertingList<String,AbilityMapping>(CMParms.toIDList(race1.racialAbilities(null)),race1conv);
+		final List<AbilityMapping> rable2=new ConvertingList<String,AbilityMapping>(CMParms.toIDList(race2.racialAbilities(null)),race2conv);
+		final PairList<String,AbilityMapping> dvataf = new PairVector<String,AbilityMapping>();
+		for(Iterator<AbilityMapping> i1=rable1.iterator(), i2=rable2.iterator(); i1.hasNext() || i2.hasNext(); )
+		{
+			final Pair<String,AbilityMapping> p1 = mapFix.convert(i1);
+			if((p1 != null) && (!dvataf.containsFirst(p1.first)))
+				dvataf.add(p1);
+			final Pair<String,AbilityMapping> p2 = mapFix.convert(i2);
+			if((p2 != null) && (!dvataf.containsFirst(p2.first)))
+				dvataf.add(p2);
 		}
 		for(int i=4;i<dvataf.size();i++)
 			dvataf.remove(i);
-
 		if(dvataf.size()>0)
 			GR.setStat("NUMRABLE",""+dvataf.size());
 		else
@@ -1693,6 +1716,32 @@ public class StdRace implements Race
 			GR.setStat("GETRABLEQUAL"+i,""+(!dvataf.get(i).second.autoGain()));
 			GR.setStat("GETRABLEPROF"+i,""+dvataf.get(i).second.defaultProficiency());
 			GR.setStat("GETRABLEPARM"+i, ""+dvataf.get(i).second.defaultParm());
+		}
+
+		final PairList<String,AbilityMapping> cvataf = new PairVector<String,AbilityMapping>();
+		final List<AbilityMapping> cable1=new ConvertingList<String,AbilityMapping>(new XVector<String>(race1.culturalAbilities().firstIterator()),race1conv);
+		final List<AbilityMapping> cable2=new ConvertingList<String,AbilityMapping>(new XVector<String>(race2.culturalAbilities().firstIterator()),race2conv);
+		for(Iterator<AbilityMapping> i1=cable1.iterator(), i2=cable2.iterator(); i1.hasNext() || i2.hasNext(); )
+		{
+			final Pair<String,AbilityMapping> p1 = mapFix.convert(i1);
+			if((p1 != null) && (!cvataf.containsFirst(p1.first)))
+				cvataf.add(p1);
+			final Pair<String,AbilityMapping> p2 = mapFix.convert(i2);
+			if((p2 != null) && (!cvataf.containsFirst(p2.first)))
+				cvataf.add(p2);
+		}
+		for(int i=4;i<cvataf.size();i++)
+			cvataf.remove(i);
+		if(cvataf.size()>0)
+			GR.setStat("NUMCABLE",""+cvataf.size());
+		else
+			GR.setStat("NUMCABLE","");
+		for(int i=0;i<cvataf.size();i++)
+		{
+			GR.setStat("GETCABLE"+i,cvataf.get(i).second.abilityID());
+			GR.setStat("GETCABLELVL"+i,""+cvataf.get(i).second.qualLevel());
+			GR.setStat("GETCABLEGAIN"+i,""+(cvataf.get(i).second.autoGain()));
+			GR.setStat("GETCABLEPROF"+i,""+cvataf.get(i).second.defaultProficiency());
 		}
 
 		final TriadVector<String,Integer,Integer> dataa=new TriadVector<String,Integer,Integer>();

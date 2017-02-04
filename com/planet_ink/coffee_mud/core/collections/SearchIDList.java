@@ -1,6 +1,8 @@
 package com.planet_ink.coffee_mud.core.collections;
 
+import java.util.Iterator;
 import java.util.List;
+
 import com.planet_ink.coffee_mud.core.interfaces.CMObject;
 
 /*
@@ -36,10 +38,17 @@ public interface SearchIDList<T> extends List<T>
 	public T find(String arg0);
 
 	/**
+	 * Iterate through the IDs
+	 * @return the IDs iteration
+	 */
+	public Iterator<String> keyIterator();
+	
+	/**
 	 * Searches the sorted list of objects for one with the
 	 * same ID as the object given.
 	 * @param arg0 the Object like the one to look for
 	 * @return the object or null if not found
 	 */
 	public T find(T arg0);
+	
 }

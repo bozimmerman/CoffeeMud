@@ -2129,6 +2129,19 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 	}
 
 	@Override
+	public final Converter<String,AbilityMapping> getMapper(final String classID)
+	{
+		return new Converter<String,AbilityMapping>()
+		{
+			@Override
+			public AbilityMapping convert(String obj)
+			{
+				return CMLib.ableMapper().getAbleMap(classID, obj);
+			}
+		};
+	}
+
+	@Override
 	public Map<String, Map<String,AbilityMapping>> getAllQualifiesMap(final Map<String,Object> cache)
 	{
 		Map<String, Map<String,AbilityMapping>> bothMaps;

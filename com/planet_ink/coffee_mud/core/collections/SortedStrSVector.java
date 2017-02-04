@@ -41,6 +41,20 @@ public class SortedStrSVector<T> extends SVector<T> implements SearchIDList<T>
 	}
 
 	@Override
+	public Iterator<String> keyIterator()
+	{
+		return new ConvertingIterator<T,String>(this.iterator(),new Converter<T,String>(){
+			@Override
+			public String convert(T obj)
+			{
+				if(obj!=null)
+					return stringer.toString(obj); 
+				return null;
+			}
+		});
+	}
+	
+	@Override
 	public synchronized boolean add(T arg0)
 	{
 		if (arg0 == null)

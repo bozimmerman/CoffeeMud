@@ -921,6 +921,13 @@ public interface AbilityMapper extends CMLibrary
 	public Map<String, Map<String,AbilityMapping>> getAllQualifiesMap(final Map<String,Object> cache);
 
 	/**
+	 * Returns a converter from an ability id to an ability mapping
+	 * @param classID the classid (or 'all') that owns the mapping
+	 * @return the converter
+	 */
+	public Converter<String,AbilityMapping> getMapper(final String classID);
+	
+	/**
 	 * Saves the All-Qualifies list to the filesystem.  This is the list that defines particular
 	 * skills that either ALL classes qualify for together.  Things like Skill_Write, or Swim.
 	 * @see AbilityMapper#getAllQualified(String, boolean, String)
