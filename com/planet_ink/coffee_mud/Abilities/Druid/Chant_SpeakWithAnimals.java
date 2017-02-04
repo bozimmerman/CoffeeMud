@@ -41,6 +41,9 @@ public class Chant_SpeakWithAnimals extends Chant implements Language
 		return "Chant_SpeakWithAnimals";
 	}
 
+	protected static CharStats				charStats		= null;
+	protected static Map<String, Boolean>	raceIDs			= new HashMap<String, Boolean>();
+	
 	private final static String	localizedName	= CMLib.lang().L("Speak With Animals");
 
 	@Override
@@ -93,9 +96,34 @@ public class Chant_SpeakWithAnimals extends Chant implements Language
 		}
 	}
 
+	protected boolean canSpeakWithThis(MOB mob, Ability L)
+	{
+		if(canSpeakWithThis(mob))
+			return true;
+		return false;
+	}
+	
 	protected boolean canSpeakWithThis(MOB mob)
 	{
-		return CMLib.flags().isAnimalIntelligence(mob);
+		if(CMLib.flags().isAnimalIntelligence(mob))
+			return true;
+		if(mob != null)
+		{
+			final Race R=mob.charStats().getMyRace();
+			if(charStats == null)
+				charStats = (CharStats)CMClass.getCommon("DefaultCharStats");
+			synchronized(charStats)
+			{
+				if(!raceIDs.containsKey(R.ID()))
+				{
+					charStats.setStat(CharStats.STAT_INTELLIGENCE, 25);
+					R.affectCharStats(mob, charStats);
+					raceIDs.put(R.ID(), Boolean.valueOf(charStats.getStat(CharStats.STAT_INTELLIGENCE) == 1));
+				}
+				return raceIDs.get(R.ID()).booleanValue();
+			}
+		}
+		return false;
 	}
 
 	protected Language getMyAnimalSpeak(final MOB M, final String ID)
@@ -221,7 +249,7 @@ public class Chant_SpeakWithAnimals extends Chant implements Language
 				if((!msg.amISource(mob))
 				&&(msg.tool() instanceof Ability)
 				&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE)
-				&&(canSpeakWithThis(msg.source()))
+				&&(canSpeakWithThis(msg.source(),(Ability)msg.tool()))
 				&&(mob.fetchEffect(msg.tool().ID())==null)
 				&&(msg.source().charStats().getMyRace().racialAbilities(msg.source()).find(msg.tool().ID())!=null))
 				{
@@ -246,13 +274,12 @@ public class Chant_SpeakWithAnimals extends Chant implements Language
 				else
 				if(msg.amISource(mob)
 				&&(msg.target() instanceof MOB)
-				&&(canSpeakWithThis((MOB)msg.target()))
 				&&((msg.tool()==null) || (!(msg.tool() instanceof Language)) ||(((MOB)msg.target()).charStats().getMyRace().racialAbilities((MOB)msg.target()).find(msg.tool().ID())==null)))
 				{
 					Language lA=this.getAnimalSpeak((MOB)msg.target());
-					if(lA!=null)
+					if((lA!=null)&&(canSpeakWithThis((MOB)msg.target(),lA)))
 						lA=getMyAnimalSpeak(mob,lA.ID());
-					if(lA!=null)
+					if((lA!=null)&&(canSpeakWithThis((MOB)msg.target(),lA)))
 						lA.executeMsg(mob, msg);
 				}
 			}
@@ -300,9 +327,9 @@ public class Chant_SpeakWithAnimals extends Chant implements Language
 						||(((MOB)msg.target()).charStats().getMyRace().racialAbilities((MOB)msg.target()).find(msg.tool().ID())==null)))
 					{
 						Language lA=this.getAnimalSpeak((MOB)msg.target());
-						if(lA!=null)
+						if((lA!=null)&&(canSpeakWithThis((MOB)msg.target(),lA)))
 							lA=getMyAnimalSpeak(mob,lA.ID());
-						if(lA!=null)
+						if((lA!=null)&&(canSpeakWithThis((MOB)msg.target(),lA)))
 							lA.okMessage(mob, msg);
 					}
 				}
