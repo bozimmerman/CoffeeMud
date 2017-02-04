@@ -36,20 +36,55 @@ import java.util.*;
 
 public class Druid_GolemForm extends StdAbility
 {
-	@Override public String ID() { return "Druid_GolemForm"; }
-	private final static String localizedName = CMLib.lang().L("Golem Form");
-	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
-	private static final String[] triggerStrings =I(new String[] {"GOLEMFORM"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
+	@Override
+	public String ID()
+	{
+		return "Druid_GolemForm";
+	}
 
-	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_SHAPE_SHIFTING;}
+	private final static String	localizedName	= CMLib.lang().L("Golem Form");
 
-	public Race newRace=null;
-	public String raceName="";
-	public int raceLevel=0;
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_SELF;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "GOLEMFORM" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL | Ability.DOMAIN_SHAPE_SHIFTING;
+	}
+
+	protected Race		newRace		= null;
+	protected String	raceName	= "";
+	protected int		raceLevel	= 0;
 
 	@Override
 	public String displayText()
@@ -63,18 +98,18 @@ public class Druid_GolemForm extends StdAbility
 	}
 
 	private static String[] shapes={
-	"Steel Golem",
-	"Quartz Golem",
-	"Mithril Golem",
-	"Diamond Golem",
-	"Adamantite Golem"
+		"Steel Golem",
+		"Quartz Golem",
+		"Mithril Golem",
+		"Diamond Golem",
+		"Adamantite Golem"
 	};
 	private static String[] races={
-	"MetalGolem",
-	"StoneGolem",
-	"MetalGolem",
-	"StoneGolem",
-	"MetalGolem"
+		"MetalGolem",
+		"StoneGolem",
+		"MetalGolem",
+		"StoneGolem",
+		"MetalGolem"
 	};
 
 	@Override
@@ -135,7 +170,6 @@ public class Druid_GolemForm extends StdAbility
 			affectableStats.setMyRace(newRace);
 	}
 
-
 	@Override
 	public void affectCharState(MOB affected, CharState affectableState)
 	{
@@ -182,6 +216,7 @@ public class Druid_GolemForm extends StdAbility
 		raceName=getRaceName(classLevel);
 		newRace=getRace(classLevel);
 	}
+
 	public int getRaceLevel(int classLevel)
 	{
 		if(classLevel<5)
@@ -198,10 +233,12 @@ public class Druid_GolemForm extends StdAbility
 		else
 			return 4;
 	}
+
 	public Race getRace(int classLevel)
 	{
 		return CMClass.getRace(races[getRaceLevel(classLevel)]);
 	}
+
 	public String getRaceName(int classLevel)
 	{
 		return shapes[getRaceLevel(classLevel)];
@@ -298,18 +335,17 @@ public class Druid_GolemForm extends StdAbility
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> take(s) on @x1 form.",raceName.toLowerCase()));
 				raceName=getRaceName(classLevel);
+				raceName=CMStrings.capitalizeAndLower(CMLib.english().startWithAorAn(raceName.toLowerCase()));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> take(s) on @x1 form.",raceName.toLowerCase()));
 				newRace=getRace(classLevel);
 				raceLevel=getRaceLevel(classLevel);
 				beneficialAffect(mob,mob,asLevel,Ability.TICKS_FOREVER);
-				raceName=CMStrings.capitalizeAndLower(CMLib.english().startWithAorAn(raceName.toLowerCase()));
 				CMLib.utensils().confirmWearability(mob);
 			}
 		}
 		else
 			beneficialWordsFizzle(mob,null,L("<S-NAME> chant(s) to <S-HIM-HERSELF>, but nothing happens."));
-
 
 		// return whether it worked
 		return success;

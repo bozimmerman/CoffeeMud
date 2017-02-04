@@ -151,7 +151,7 @@ public class MetalGolem extends StdRace
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_GOLEM);
-		affectableStats.setSensesMask(affectableStats.disposition()|PhyStats.CAN_SEE_DARK);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_DARK);
 	}
 
 	@Override
