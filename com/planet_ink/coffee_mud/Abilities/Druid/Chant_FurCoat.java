@@ -32,18 +32,47 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
-
 public class Chant_FurCoat extends Chant
 {
-	@Override public String ID() { return "Chant_FurCoat"; }
-	private final static String localizedName = CMLib.lang().L("Fur Coat");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Fur Coat)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
-	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override
+	public String ID()
+	{
+		return "Chant_FurCoat";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Fur Coat");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Fur Coat)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT | Ability.DOMAIN_SHAPE_SHIFTING;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_SELF;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
 
 	Item theArmor=null;
 
@@ -62,8 +91,10 @@ public class Chant_FurCoat extends Chant
 		}
 		super.unInvoke();
 		if(canBeUninvoked())
+		{
 			if((mob.location()!=null)&&(!mob.amDead()))
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> fur coat vanishes."));
+		}
 	}
 
 	@Override
@@ -88,6 +119,7 @@ public class Chant_FurCoat extends Chant
 			}
 		}
 	}
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -167,7 +199,8 @@ public class Chant_FurCoat extends Chant
 			}
 		}
 
-		if(target.freeWearPositions(Wearable.WORN_TORSO,(short)-2048,(short)0)<=0)
+		if((target.freeWearPositions(Wearable.WORN_TORSO,(short)-2048,(short)0)<=0)
+		&&(target.getWearPositions(Wearable.WORN_TORSO))>0)
 		{
 			mob.tell(L("You are already wearing something on your torso!"));
 			return false;
@@ -191,7 +224,27 @@ public class Chant_FurCoat extends Chant
 				theArmor.setDescription(L("The coat is made of thick black fur."));
 				theArmor.setMaterial(RawMaterial.RESOURCE_FUR);
 				theArmor.basePhyStats().setArmor(2*CMLib.ableMapper().qualifyingClassLevel(mob,this));
-				final long wornCode=(Wearable.WORN_TORSO|Wearable.WORN_ARMS|Wearable.WORN_FEET|Wearable.WORN_WAIST|Wearable.WORN_LEGS);
+				final long[] wearCodes = new long[] 
+				{
+					Wearable.WORN_TORSO, 
+					Wearable.WORN_ARMS,
+					Wearable.WORN_FEET,
+					Wearable.WORN_WAIST,
+					Wearable.WORN_LEGS 
+				};
+				long wornCode = 0;
+				for(final long code : wearCodes)
+				{
+					for(int d=0; d<Race.BODY_WEARVECTOR.length;d++)
+					{
+						if(Race.BODY_WEARVECTOR[d]==code)
+						{
+							if(target.charStats().getBodyPart(d)>0)
+								wornCode |= code;
+							break;
+						}
+					}
+				}
 				theArmor.setRawProperLocationBitmap(wornCode);
 				theArmor.setRawLogicalAnd(true);
 				for(int i=target.numItems()-1;i>=0;i--)
@@ -203,8 +256,8 @@ public class Chant_FurCoat extends Chant
 				final Ability A=CMClass.getAbility("Prop_WearResister");
 				if( A != null )
 				{
-				  A.setMiscText("cold");
-				  theArmor.addNonUninvokableEffect(A);
+					A.setMiscText("cold");
+					theArmor.addNonUninvokableEffect(A);
 				}
 				theArmor.recoverPhyStats();
 				theArmor.text();
