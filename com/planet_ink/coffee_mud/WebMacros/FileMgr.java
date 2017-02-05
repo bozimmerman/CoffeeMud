@@ -122,7 +122,12 @@ public class FileMgr extends StdWebMacro
 			if((filePath.length()>2)&&(!filePath.endsWith("/")))
 				filePath+="/";
 			String prefix="";
-			if(parms.containsKey("VFS")||parms.containsKey("LOCAL")||parms.containsKey("BOTH"))
+			if(parms.containsKey("DEFAULT"))
+				prefix = new CMFile(filePath,M).canVFSEquiv()?"::":"//";
+			else
+			if(parms.containsKey("VFS")
+			||parms.containsKey("LOCAL")
+			||parms.containsKey("BOTH"))
 			{
 				if(filePath.startsWith("//")||filePath.startsWith("::"))
 					filePath=filePath.substring(2);
