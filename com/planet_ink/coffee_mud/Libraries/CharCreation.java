@@ -694,40 +694,59 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 
 	protected void getUniversalStartingItems(int theme, MOB mob)
 	{
-		final List<String> newItemPartsV = CMParms.parseCommas(CMProps.getVar(CMProps.Str.STARTINGITEMS), true);
-		for(String item : newItemPartsV)
+		final String raceID = mob.baseCharStats().getMyRace().ID();
+		final Map<String,List<Item>> itemSets = new HashMap<String,List<Item>>();
+		List<Item> itemPartsV = new ArrayList<Item>();
+		itemSets.put("",itemPartsV);
+		for(String item : CMParms.parseCommas(CMProps.getVar(CMProps.Str.STARTINGITEMS), true))
 		{
 			item=item.trim();
-			int num=1;
-			final int x = item.indexOf(' ');
-			if((x>0)&&(CMath.isInteger(item.substring(0,x).trim())))
+			final Race R1=CMClass.getRace(item);
+			if(R1 != null)
 			{
-				num=CMath.s_int(item.substring(0,x).trim());
-				item=item.substring(x+1);
+				itemPartsV = new ArrayList<Item>();
+				itemSets.put(R1.ID(), itemPartsV);
 			}
-			for(int i=0;i<num;i++)
+			else
 			{
-				Item I=CMClass.getBasicItem(item);
-				if(I==null)
-					I=CMClass.getItem(item);
-				if(I==null)
+				int num=1;
+				final int x = item.indexOf(' ');
+				if((x>0)&&(CMath.isInteger(item.substring(0,x).trim())))
 				{
-					I=CMLib.catalog().getCatalogItem(item);
-					if(I!=null)
+					num=CMath.s_int(item.substring(0,x).trim());
+					item=item.substring(x+1);
+				}
+				for(int i=0;i<num;i++)
+				{
+					Item I=CMClass.getBasicItem(item);
+					if(I==null)
+						I=CMClass.getItem(item);
+					if(I==null)
 					{
-						I=(Item)I.copyOf();
-						CMLib.catalog().changeCatalogUsage(I,true);
+						I=CMLib.catalog().getCatalogItem(item);
+						if(I!=null)
+						{
+							I=(Item)I.copyOf();
+							CMLib.catalog().changeCatalogUsage(I,true);
+						}
 					}
-				}
-				if(I==null)
-				{
-					Log.errOut("CharCreation","Unable to give new STARTINGITEM '"+item+"'");
-				}
-				else
-				{
-					mob.addItem(I);
+					if(I==null)
+						Log.errOut("CharCreation","Unable to give new STARTINGITEM '"+item+"'");
+					else
+						itemPartsV.add(I);
 				}
 			}
+		}
+		final List<Item> myItemPartsV = itemSets.containsKey(raceID) ? itemSets.remove(raceID) : itemSets.remove("");
+		if(myItemPartsV != null)
+		{
+			for(Item item : myItemPartsV)
+				mob.addItem(item);
+		}
+		for(final List<Item> l : itemSets.values())
+		{
+			for(Item I : l)
+				I.destroy();
 		}
 	}
 

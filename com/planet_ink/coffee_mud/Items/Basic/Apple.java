@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2001-2017 Bo Zimmerman
+   Copyright 2017-2017 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -32,24 +32,24 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Ration extends StdFood
+public class Apple extends StdFood
 {
 	@Override
 	public String ID()
 	{
-		return "Ration";
+		return "Apple";
 	}
 
-	public Ration()
+	public Apple()
 	{
 		super();
-		setName("a ration pack");
+		setName("an apple");
 		basePhyStats.setWeight(10);
 		amountOfNourishment=500;
-		setDisplayText("a standard ration pack sits here.");
-		setDescription("Bits of salt dried meat, dried fruit, and hard bread.");
+		setDisplayText("a big juicy apple sits here.");
+		setDescription("It's big and ripe and healthy!");
 		baseGoldValue=15;
-		setMaterial(RawMaterial.RESOURCE_MEAT);
+		setMaterial(RawMaterial.RESOURCE_FRUIT);
 		recoverPhyStats();
 	}
 }
