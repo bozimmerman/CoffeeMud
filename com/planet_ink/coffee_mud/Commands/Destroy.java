@@ -530,12 +530,14 @@ public class Destroy extends StdCommand
 			}
 			else
 			{
-				if(srchMob!=null)
-					deadItem.setOwner(srchMob);
-				else
-				if(srchRoom!=null)
-					deadItem.setOwner(srchRoom);
+				//if(srchMob!=null)
+				//	deadItem.setOwner(srchMob);
+				//else
+				//if(srchRoom!=null)
+				//	deadItem.setOwner(srchRoom);
 				deadItem.destroy();
+				if(srchMob!=null)
+					srchMob.delItem(deadItem);
 				mob.location().delItem(deadItem);
 				deadItem=null;
 				if(!allFlag)

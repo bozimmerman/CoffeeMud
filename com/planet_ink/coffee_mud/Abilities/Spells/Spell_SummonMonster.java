@@ -230,6 +230,7 @@ public class Spell_SummonMonster extends Spell
 			newMOB.recoverCharStats();
 		}
 		newMOB.setMoney(0);
+		newMOB.setMoneyVariation(0);
 		newMOB.setLocation(R);
 		newMOB.basePhyStats().setRejuv(PhyStats.NO_REJUV);
 		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));

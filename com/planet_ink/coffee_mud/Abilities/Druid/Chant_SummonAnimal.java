@@ -374,6 +374,7 @@ public class Chant_SummonAnimal extends Chant
 		newMOB.basePhyStats().setAbility(11);
 		CMLib.leveler().fillOutMOB(newMOB,newMOB.basePhyStats().level());
 		newMOB.setMoney(0);
+		newMOB.setMoneyVariation(0);
 		newMOB.basePhyStats().setRejuv(PhyStats.NO_REJUV);
 		newMOB.recoverCharStats();
 		newMOB.recoverPhyStats();
@@ -388,6 +389,7 @@ public class Chant_SummonAnimal extends Chant
 		genM.setLocation(caster.location());
 		CMLib.leveler().fillOutMOB(genM,genM.basePhyStats().level());
 		genM.setMoney(0);
+		genM.setMoneyVariation(0);
 		genM.basePhyStats().setRejuv(PhyStats.NO_REJUV);
 		genM.recoverCharStats();
 		genM.recoverPhyStats();
