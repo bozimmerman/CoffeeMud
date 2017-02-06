@@ -1677,12 +1677,13 @@ public class StdRace implements Race
 		final Converter<Iterator<AbilityMapping>,Pair<String,AbilityMapping>> mapFix = new Converter<Iterator<AbilityMapping>,Pair<String,AbilityMapping>>()
 		{
 			@Override
-			public Pair<String,AbilityMapping> convert(Iterator<AbilityMapping> i)
+			public Pair<String,AbilityMapping> convert(final Iterator<AbilityMapping> i)
 			{
 				if(i.hasNext())
 				{
 					final AbilityMapping r1 = i.next();
-					if(((!foundLanguage[0]) || (!isLanguage.convert(r1.abilityID()).booleanValue())))
+					if((r1 != null) && 
+					((!foundLanguage[0]) || (!isLanguage.convert(r1.abilityID()).booleanValue())))
 					{
 						foundLanguage[0] = foundLanguage[0] || isLanguage.convert(r1.abilityID()).booleanValue();
 						return new Pair<String,AbilityMapping>(r1.abilityID(), r1);
