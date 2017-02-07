@@ -1264,6 +1264,8 @@ public class StdRace implements Race
 		RS.setAllValues(0);
 		
 		final MOB fakeMOB=CMClass.getFactoryMOB();
+		final Session fakeSession = (Session)CMClass.getCommon("DefaultSession");
+		fakeMOB.setSession(fakeSession);
 		affectPhyStats(fakeMOB,RS);
 		RS.setRejuv(PhyStats.NO_REJUV);
 		GR.setStat("ESTATS",CMLib.coffeeMaker().getPhyStatsStr(RS));
@@ -1288,6 +1290,7 @@ public class StdRace implements Race
 		affectCharStats(fakeMOB,S1);
 		affectCharStats(fakeMOB,S2);
 		affectCharStats(fakeMOB,S3);
+		fakeMOB.setSession(null);
 		for(final int i: CharStats.CODES.ALLCODES())
 		{
 			if(i==CharStats.STAT_GENDER)
