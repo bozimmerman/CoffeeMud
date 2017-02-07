@@ -36,7 +36,9 @@ import java.util.*;
 
 public class Unload extends StdCommand
 {
-	public Unload(){}
+	public Unload()
+	{
+	}
 
 	private final String[]	access	= I(new String[] { "UNLOAD" });
 
@@ -450,8 +452,27 @@ public class Unload extends StdCommand
 		return false;
 	}
 
-	@Override public boolean canBeOrdered(){return true;}
-	@Override public boolean securityCheck(MOB mob){return super.securityCheck(mob);}
-	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandCombatActionCost(ID());}
-	@Override public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandActionCost(ID());}
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
+
+	@Override
+	public boolean securityCheck(MOB mob)
+	{
+		return super.securityCheck(mob);
+	}
+
+	@Override
+	public double combatActionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandCombatActionCost(ID());
+	}
+
+	@Override
+	public double actionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandActionCost(ID());
+	}
 }
