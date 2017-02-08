@@ -743,6 +743,74 @@ public class Spell_Wish extends Spell
 				
 			}
 
+			if(((target instanceof MOB)
+				||(target instanceof CagedAnimal))
+			&&(target != null)
+			&&((myWish.indexOf(" GROW UP ")>=0)
+				||(myWish.indexOf(" BE OLDER ")>=0)
+				||(myWish.indexOf(" GROW OLDER ")>=0)))
+			{
+				final Ability A=target.fetchEffect("Age");
+				if((target instanceof MOB)
+				&&((A==null)||(A.displayText().length()==0)))
+				{
+					final MOB M=(MOB)target;
+					mob.location().show(M,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> age(s) a bit."));
+					int ageCat = M.baseCharStats().ageCategory();
+					if(ageCat < Race.AGE_ANCIENT)
+					{
+						while((M.baseCharStats().ageCategory() == ageCat)
+						||(M.baseCharStats().ageCategory() < Race.AGE_YOUNGADULT))
+						{
+							M.baseCharStats().setStat(CharStats.STAT_AGE, M.baseCharStats().getStat(CharStats.STAT_AGE)+1);
+							if(M.playerStats()!=null)
+								M.playerStats().getBirthday()[PlayerStats.BIRTHDEX_YEAR]--;
+							CMLib.commands().tickAging(M,60000);
+							M.recoverCharStats();
+						}
+						wishDrain(mob,baseLoss,false);
+						return true;
+					}
+				}
+				else
+				{
+					long start=CMath.s_long(A.text());
+					long age=System.currentTimeMillis()-start;
+					final long millisPerMudday=CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY)*CMProps.getTickMillis();
+					if(age<millisPerMudday)
+						age=millisPerMudday;
+					final long millisPerMonth=CMLib.time().globalClock().getDaysInMonth() * millisPerMudday;
+					final long millisPerYear=CMLib.time().globalClock().getMonthsInYear() * millisPerMonth;
+					int ageYears = (int)(age / millisPerYear);
+					final CharStats stats = (CharStats)CMClass.getCommon("DefaultCharStats");
+					stats.setStat(CharStats.STAT_AGE,ageYears);
+					int ageCat = stats.ageCategory();
+					if(ageCat < Race.AGE_ANCIENT)
+					{
+						while((stats.ageCategory() == ageCat)
+						||(stats.ageCategory() < Race.AGE_YOUNGADULT))
+						{
+							stats.setStat(CharStats.STAT_AGE, stats.getStat(CharStats.STAT_AGE)+1);
+							start -= millisPerYear;
+							A.setMiscText(""+start);
+							target.recoverPhyStats();
+							if(target instanceof MOB)
+								((MOB)target).recoverCharStats();
+							if(target instanceof MOB)
+								((MOB)target).recoverPhyStats();
+						}
+						if(target instanceof MOB)
+							mob.location().show((MOB)target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> age(s) a bit."));
+						else
+							mob.location().showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 ages a bit.",target.name()));
+						target.recoverPhyStats();
+						wishDrain(mob,baseLoss,false);
+						return true;
+					}
+				}
+				
+			}
+
 			// temporary stat changes
 			if((target instanceof MOB)
 			&&((myWish.indexOf(" MORE ")>=0)
