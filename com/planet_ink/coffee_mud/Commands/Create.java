@@ -545,6 +545,17 @@ public class Create extends StdCommand
 			doGenerica=newMOB==null;
 		}
 
+		if(newMOB == null)
+		{
+			final Race R=CMClass.getRace(mobID);
+			if(R!=null)
+			{
+				newMOB = CMClass.getMOB("GenMob");
+				newMOB.setName(CMLib.english().startWithAorAn(R.name()));
+				newMOB.setDisplayText(L("@x1 is here.",newMOB.Name()));
+			}
+		}
+		
 		if(newMOB==null)
 		{
 			mob.tell(L("There's no such thing as a '@x1'.\n\r",mobID));
@@ -1668,6 +1679,12 @@ public class Create extends StdCommand
 							if((!execute(mob,V,metaFlags))||(!CMLib.flags().isInTheGame(mob, true)))
 								return false;
 					}
+				}
+				else
+				if(CMClass.getRace(allWord)!=null)
+				{
+					commands.add(1,"MOB");
+					execute(mob,commands,metaFlags);
 				}
 				else
 				{
