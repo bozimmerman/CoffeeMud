@@ -568,8 +568,11 @@ public class Amputation extends StdAbility implements LimbDamage, HealthConditio
 				{
 					for (final int element : aff)
 					{
-						if(((affected instanceof MOB)&&(((MOB)affected).charStats().getBodyPart(element)>0))
-						||((affected instanceof DeadBody)&&(((DeadBody)affected).getSavedMOB() != null)&&(((DeadBody)affected).getSavedMOB().charStats().getBodyPart(element)>0)))
+						if(((affected instanceof MOB)
+							&&(((MOB)affected).charStats().getBodyPart(element)>0))
+						||((affected instanceof DeadBody)
+							&&(((DeadBody)affected).getSavedMOB() != null)
+							&&(((DeadBody)affected).getSavedMOB().charStats().getBodyPart(element)>0)))
 						{
 							String r=Race.BODYPARTSTR[element].toLowerCase();
 							if(gone.startsWith("left "))
@@ -587,6 +590,7 @@ public class Amputation extends StdAbility implements LimbDamage, HealthConditio
 			}
 			if(!theRest.contains(gone))
 				theRest.add(gone);
+			theRest.addAll(missingLimbs);
 			setMiscText(CMParms.combineWith(theRest, ';'));
 		}
 
@@ -767,9 +771,11 @@ public class Amputation extends StdAbility implements LimbDamage, HealthConditio
 			{
 				final List<String> completeSet = completeLimbNameSet(target);
 				for(int v=0;v<completeSet.size();v++)
+				{
 					if((!VN.contains(completeSet.get(v)))
 					&&(findFakeLimb(target,completeSet.get(v))!=null))
 						VN.add(completeSet.get(v));
+				}
 				gone=VN.get(CMLib.dice().roll(1,VN.size(),-1));
 				fakeLimb=findFakeLimb(target,gone);
 			}
