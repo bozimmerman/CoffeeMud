@@ -673,7 +673,7 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 		}
 	}
 	
-	protected void transferOwnership(final MOB buyer, boolean clanSale)
+	protected void transferOwnership(final MOB buyer, final boolean clanSale)
 	{
 		if((getOwnerName().length()>0)&&(!getOwnerName().startsWith("#")))
 		{
@@ -761,6 +761,13 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 						me.dockHere(finalR);
 						buyer.tell(L("You'll find your ship docked at '@x1'.",finalR.displayText(buyer)));
 					}
+					Clan C;
+					if(clanSale && ((C=CMLib.clans().getClan(me.getOwnerName()))!=null))
+					{
+						if(!C.getExtItems().isContent(me))
+							C.getExtItems().addItem(me);
+					}
+					else
 					if ((buyer.playerStats() != null) && (!buyer.playerStats().getExtItems().isContent(me)))
 						buyer.playerStats().getExtItems().addItem(me);
 				}

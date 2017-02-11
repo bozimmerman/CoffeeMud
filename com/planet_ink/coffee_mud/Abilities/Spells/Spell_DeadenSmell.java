@@ -35,14 +35,45 @@ import java.util.*;
 
 public class Spell_DeadenSmell extends Spell
 {
-	@Override public String ID() { return "Spell_DeadenSmell"; }
-	private final static String localizedName = CMLib.lang().L("Deaden Smell");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Deadened Smell)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
+	@Override
+	public String ID()
+	{
+		return "Spell_DeadenSmell";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Deaden Smell");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Deadened Smell)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL | Ability.DOMAIN_TRANSMUTATION;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_OTHERS;
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
