@@ -590,7 +590,8 @@ public class Amputation extends StdAbility implements LimbDamage, HealthConditio
 			}
 			if(!theRest.contains(gone))
 				theRest.add(gone);
-			theRest.addAll(missingLimbs);
+			if(missingLimbs != null)
+				theRest.addAll(missingLimbs);
 			setMiscText(CMParms.combineWith(theRest, ';'));
 		}
 
