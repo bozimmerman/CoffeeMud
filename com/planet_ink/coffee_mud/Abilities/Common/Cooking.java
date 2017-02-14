@@ -517,6 +517,8 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 								name=name.substring(0,name.length()-5);
 							if(name.endsWith(" flesh"))
 								name=name.substring(0,name.length()-6);
+							if(name.toLowerCase().endsWith(L(" bundle")))
+								name = name.substring(0,name.length()-L(" bundle").length());
 							name=name.trim();
 							final int x=name.lastIndexOf(' ');
 							if((x>0)&&(!name.substring(x+1).trim().equalsIgnoreCase("of")))

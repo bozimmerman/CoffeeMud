@@ -96,6 +96,7 @@ public class CaveRoom extends StdRoom
 		Integer.valueOf(RawMaterial.RESOURCE_TIN),
 		Integer.valueOf(RawMaterial.RESOURCE_MITHRIL),
 		Integer.valueOf(RawMaterial.RESOURCE_MUSHROOMS),
+		Integer.valueOf(RawMaterial.RESOURCE_FUNGUS),
 		Integer.valueOf(RawMaterial.RESOURCE_GEM),
 		Integer.valueOf(RawMaterial.RESOURCE_PERIDOT),
 		Integer.valueOf(RawMaterial.RESOURCE_DIAMOND),

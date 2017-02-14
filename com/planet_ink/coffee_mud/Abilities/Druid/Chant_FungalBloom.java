@@ -81,7 +81,8 @@ public class Chant_FungalBloom extends Chant
 			final Item I=R.getItem(i);
 			if((I!=null)
 			&&(I.container()==null)
-			&&(I.material()!=RawMaterial.RESOURCE_MUSHROOMS)
+			&&((I.material()==RawMaterial.RESOURCE_MUSHROOMS)
+				||(I.material()==RawMaterial.RESOURCE_FUNGUS))
 			&&(I.fetchEffect("Bomb_Poison")==null))
 				return I;
 		}
@@ -130,7 +131,8 @@ public class Chant_FungalBloom extends Chant
 			if(target==null)
 				return false;
 		}
-		if(target.material()!=RawMaterial.RESOURCE_MUSHROOMS)
+		if((target.material()!=RawMaterial.RESOURCE_MUSHROOMS)
+		&&(target.material()!=RawMaterial.RESOURCE_FUNGUS))
 		{
 			mob.tell(L("@x1 is not a fungus!",target.name(mob)));
 			return false;

@@ -103,30 +103,47 @@ public class Chant_CrystalGrowth extends Chant
 			{
 				mob.location().send(mob,msg);
 
-				ItemCraftor A=null;
-				switch(CMLib.dice().roll(1,10,0))
-				{
-				case 1:
-				case 2:
-				case 3:
-				case 4:
-					A=(ItemCraftor)CMClass.getAbility("Blacksmithing");
-					break;
-				case 5:
-				case 6:
-				case 7:
-					A=(ItemCraftor)CMClass.getAbility("Armorsmithing");
-					break;
-				case 8:
-				case 9:
-				case 10:
-				default:
-					A=(ItemCraftor)CMClass.getAbility("Weaponsmithing");
-					break;
-				}
 				ItemCraftor.ItemKeyPair pair=null;
-				if(A!=null)
-					pair=A.craftAnyItem(material);
+				int tries=100;
+				while((pair==null)&&(--tries>0))
+				{
+					ItemCraftor A=null;
+					switch(CMLib.dice().roll(1,10,0))
+					{
+					case 1:
+					case 2:
+					case 3:
+					case 4:
+						A=(ItemCraftor)CMClass.getAbility("Blacksmithing");
+						break;
+					case 5:
+					case 6:
+					case 7:
+						A=(ItemCraftor)CMClass.getAbility("Armorsmithing");
+						break;
+					case 8:
+					case 9:
+					case 10:
+					default:
+						A=(ItemCraftor)CMClass.getAbility("Weaponsmithing");
+						break;
+					}
+					if(A!=null)
+						pair=A.craftAnyItem(material);
+					if((pair == null)
+					||(pair.item==null)
+					||(pair.item.phyStats().level()>mob.phyStats().level()))
+					{
+						if(pair!=null)
+						{
+							if(pair.item!=null)
+								pair.item.destroy();
+							if(pair.key!=null)
+								pair.key.destroy();
+						}
+						pair=null;
+					}
+				}
 				if(pair==null)
 				{
 					mob.tell(L("The chant failed for some reason..."));

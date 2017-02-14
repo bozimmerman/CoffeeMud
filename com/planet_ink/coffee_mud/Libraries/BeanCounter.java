@@ -1151,7 +1151,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 			return;
 		clearZeroMoney(mob,null);
 		mob.setMoney(amount);
-		mob.setMoneyVariation(0);
+		//mob.setMoneyVariation(0);			// BZ:DELME
 	}
 
 	@Override
@@ -1160,7 +1160,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 		if(mob==null)
 			return;
 		mob.setMoney(0);
-		mob.setMoneyVariation(0);
+		//mob.setMoneyVariation(0);			// BZ:DELME
 		clearInventoryMoney(mob,currency);
 	}
 
@@ -1254,13 +1254,15 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 		if(((currency==null)||(currency.equals(getCurrency(mob))))&&(mob.getMoney()>0)&&(container==null))
 		{
 			addMoney(mob,getCurrency(mob),(double)mob.getMoney());
+			/* BZ:DELME
 			if(mob.getMoneyVariation()>0.0)
 				CMLib.beanCounter().addMoney(mob, Math.random()*mob.getMoneyVariation());
 			else
 			if(mob.getMoneyVariation()<0.0)
 				CMLib.beanCounter().subtractMoney(mob, -(Math.random()*mob.getMoneyVariation()));
-			mob.setMoney(0);
 			mob.setMoneyVariation(0);
+			*/
+			mob.setMoney(0);
 		}
 		for(int i=0;i<mob.numItems();i++)
 		{

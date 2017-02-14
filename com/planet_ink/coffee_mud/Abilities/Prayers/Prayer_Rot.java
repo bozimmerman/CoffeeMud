@@ -153,6 +153,7 @@ public class Prayer_Rot extends Prayer
 			case RawMaterial.RESOURCE_SUGAR:
 			case RawMaterial.RESOURCE_COCOA:
 			case RawMaterial.RESOURCE_MUSHROOMS:
+			case RawMaterial.RESOURCE_FUNGUS:
 			case RawMaterial.RESOURCE_VINE:
 			case RawMaterial.RESOURCE_FLOWERS:
 			case RawMaterial.RESOURCE_NUTS:

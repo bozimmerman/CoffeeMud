@@ -116,40 +116,86 @@ public class Chant_SummonFungus extends Chant_SummonPlants
 
 	public Item buildFungus(MOB mob, Room room)
 	{
-		final Item newItem=CMClass.getItem("GenFoodResource");
-		newItem.setMaterial(RawMaterial.RESOURCE_MUSHROOMS);
-		switch(CMLib.dice().roll(1,6,0))
+		final Item newItem;
+		if( CMLib.flags().isWateryRoom(room)
+		&& (room instanceof Drink)
+		&& (((Drink)room).liquidType() == RawMaterial.RESOURCE_FRESHWATER))
 		{
-		case 1:
-			newItem.setName(L("a mushroom"));
-			newItem.setDisplayText(L("a mushroom is here."));
-			newItem.setDescription("");
-			break;
-		case 2:
-			newItem.setName(L("a shiitake mushroom"));
-			newItem.setDisplayText(L("a shiitake mushroom grows here."));
-			newItem.setDescription("");
-			break;
-		case 3:
-			newItem.setName(L("a cremini mushroom"));
-			newItem.setDisplayText(L("a cremini mushroom grows here"));
-			newItem.setDescription("");
-			break;
-		case 4:
-			newItem.setName(L("a white mushroom"));
-			newItem.setDisplayText(L("a white mushroom grows here."));
-			newItem.setDescription("");
-			break;
-		case 5:
-			newItem.setName(L("a portabello mushroom"));
-			newItem.setDisplayText(L("a portabello mushroom grows here."));
-			newItem.setDescription("");
-			break;
-		case 6:
-			newItem.setName(L("a wood ear"));
-			newItem.setDisplayText(L("a wood ear grows here."));
-			newItem.setDescription("");
-			break;
+			newItem=CMClass.getItem("GenResource");
+			newItem.setMaterial(RawMaterial.RESOURCE_FUNGUS);
+			switch(CMLib.dice().roll(1,6,0))
+			{
+			case 1:
+				newItem.setName(L("an aquaphila fungus"));
+				newItem.setDisplayText(L("an aquaphila fungus grows here."));
+				newItem.setDescription("");
+				break;
+			case 2:
+				newItem.setName(L("a canalisporum fungus"));
+				newItem.setDisplayText(L("a canalisporum fungus grows here."));
+				newItem.setDescription("");
+				break;
+			case 3:
+				newItem.setName(L("an elagantimyces fungus"));
+				newItem.setDisplayText(L("an elagantimyces fungus grows here"));
+				newItem.setDescription("");
+				break;
+			case 4:
+				newItem.setName(L("a jeranium fungus"));
+				newItem.setDisplayText(L("a jeranium fungus grows here."));
+				newItem.setDescription("");
+				break;
+			case 5:
+				newItem.setName(L("a yinmingella  fungus"));
+				newItem.setDisplayText(L("a yinmingella fungus grows here."));
+				newItem.setDescription("");
+				break;
+			default:
+			case 6:
+				newItem.setName(L("a nidulispora fungus"));
+				newItem.setDisplayText(L("a nidulispora fungus grows here."));
+				newItem.setDescription("");
+				break;
+			}
+		}
+		else
+		{
+			newItem=CMClass.getItem("GenFoodResource");
+			newItem.setMaterial(RawMaterial.RESOURCE_MUSHROOMS);
+			switch(CMLib.dice().roll(1,6,0))
+			{
+			case 1:
+				newItem.setName(L("a mushroom"));
+				newItem.setDisplayText(L("a mushroom is here."));
+				newItem.setDescription("");
+				break;
+			case 2:
+				newItem.setName(L("a shiitake mushroom"));
+				newItem.setDisplayText(L("a shiitake mushroom grows here."));
+				newItem.setDescription("");
+				break;
+			case 3:
+				newItem.setName(L("a cremini mushroom"));
+				newItem.setDisplayText(L("a cremini mushroom grows here"));
+				newItem.setDescription("");
+				break;
+			case 4:
+				newItem.setName(L("a white mushroom"));
+				newItem.setDisplayText(L("a white mushroom grows here."));
+				newItem.setDescription("");
+				break;
+			case 5:
+				newItem.setName(L("a portabello mushroom"));
+				newItem.setDisplayText(L("a portabello mushroom grows here."));
+				newItem.setDescription("");
+				break;
+			default:
+			case 6:
+				newItem.setName(L("a wood ear"));
+				newItem.setDisplayText(L("a wood ear grows here."));
+				newItem.setDescription("");
+				break;
+			}
 		}
 		newItem.setSecretIdentity(mob.Name());
 		newItem.setMiscText(newItem.text());
