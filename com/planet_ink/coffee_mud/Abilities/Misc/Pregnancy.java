@@ -319,6 +319,12 @@ public class Pregnancy extends StdAbility implements HealthCondition
 							String name=CMLib.english().startWithAorAn(R.makeMobName(gender, 2)).toLowerCase();
 							babe.setName(name);
 							CMLib.factions().setAlignment(babe,Faction.Align.GOOD);
+							if((mob.isMonster())&&(otherParentM!=null)&&(!otherParentM.isMonster()))
+							{
+								for(final Pair<Clan,Integer> p : CMLib.clans().findRivalrousClans(otherParentM))
+									babe.setClan(p.first.clanID(),p.first.getAutoPosition());
+							}
+							else
 							for(final Pair<Clan,Integer> p : CMLib.clans().findRivalrousClans(mob))
 								babe.setClan(p.first.clanID(),p.first.getAutoPosition());
 							babe.setLiegeID(mob.getLiegeID());
