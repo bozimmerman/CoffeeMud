@@ -196,6 +196,7 @@ public class Chant_SummonAnimal extends Chant
 				final MOB target = determineMonster(mob, adjustedLevel(mob,asLevel));
 				target.bringToLife(newRoom,true);
 				CMLib.beanCounter().clearZeroMoney(target,null);
+				target.setMoneyVariation(0);
 				newRoom.showOthers(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> appears!"));
 				newRoom.recoverRoomStats();
 				target.setStartRoom(null);

@@ -195,6 +195,7 @@ public class Chant_SummonRockGolem extends Chant
 		newMOB.resetToMaxState();
 		newMOB.bringToLife(caster.location(),true);
 		CMLib.beanCounter().clearZeroMoney(newMOB,null);
+		newMOB.setMoneyVariation(0);
 		newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> appears out of the cave walls!"));
 		final MOB victim=caster.getVictim();
 		newMOB.setStartRoom(null); // keep before postFollow for Conquest

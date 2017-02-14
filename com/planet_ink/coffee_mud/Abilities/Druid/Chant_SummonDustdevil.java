@@ -310,6 +310,7 @@ public class Chant_SummonDustdevil extends Chant
 		newMOB.resetToMaxState();
 		newMOB.bringToLife(caster.location(),true);
 		CMLib.beanCounter().clearZeroMoney(newMOB,null);
+		newMOB.setMoneyVariation(0);
 		newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> appear(s)!"));
 		newMOB.setStartRoom(null);
 		return(newMOB);

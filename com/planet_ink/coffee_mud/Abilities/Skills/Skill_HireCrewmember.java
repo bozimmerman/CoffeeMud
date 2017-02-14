@@ -575,6 +575,7 @@ public class Skill_HireCrewmember extends StdSkill
 			targetM.text();
 			targetM.bringToLife(R,true);
 			CMLib.beanCounter().clearZeroMoney(targetM,null);
+			targetM.setMoneyVariation(0);
 			//targetM.location().showOthers(targetM,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> appears!"));
 			R.recoverRoomStats();
 			targetM.setStartRoom(null);

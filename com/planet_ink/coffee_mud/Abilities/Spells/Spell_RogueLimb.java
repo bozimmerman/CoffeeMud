@@ -163,6 +163,7 @@ public class Spell_RogueLimb extends Spell
 					rogueLimb.setStartRoom(null);
 					rogueLimb.bringToLife(mob.location(),true);
 					CMLib.beanCounter().clearZeroMoney(rogueLimb,null);
+					rogueLimb.setMoneyVariation(0);
 					rogueLimb.setVictim(target);
 					maliciousAffect(mob,target,asLevel,0,-1);
 					rogueLimb.setVictim(target);

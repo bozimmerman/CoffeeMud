@@ -967,12 +967,6 @@ public class StdRace implements Race
 		}
 
 		final Vector<Item> items=new Vector<Item>();
-		CMLib.beanCounter().getTotalAbsoluteNativeValue(mob); // converts mob.get-Money();
-		if(mob.getMoneyVariation()>0.0)
-			CMLib.beanCounter().addMoney(mob, Math.random()*mob.getMoneyVariation());
-		else
-		if(mob.getMoneyVariation()<0.0)
-			CMLib.beanCounter().subtractMoney(mob, -(Math.random()*mob.getMoneyVariation()));
 		final Hashtable<Item,Container> containerMap=new Hashtable<Item,Container>();
 		final Hashtable<Item,Container> itemMap=new Hashtable<Item,Container>();
 		final LinkedList<Item> itemsToGo=new LinkedList<Item>();

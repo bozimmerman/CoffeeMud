@@ -149,46 +149,47 @@ public class Spell_PryingEye extends Spell
 			{
 				mob.location().send(mob,msg);
 				final Room R=mob.location();
-				final MOB eyeM=CMClass.getMOB("StdMOB");
-				eyeM.basePhyStats().setLevel(1);
-				eyeM.basePhyStats().setDisposition(eyeM.basePhyStats().disposition() | PhyStats.IS_FLYING);
-				eyeM.basePhyStats().setSensesMask(eyeM.basePhyStats().sensesMask() | PhyStats.CAN_NOT_HEAR);
-				eyeM.setName(L("a floating eye"));
-				eyeM.setDisplayText(L("a single eye floats around here"));
-				CMLib.factions().setAlignment(eyeM,Faction.Align.NEUTRAL);
-				eyeM.baseCharStats().setMyRace(CMClass.getRace("Unique"));
-				eyeM.baseCharStats().getMyRace().startRacing(eyeM,false);
-				eyeM.recoverMaxState();
-				eyeM.resetToMaxState();
-				eyeM.recoverPhyStats();
-				eyeM.recoverCharStats();
-				CMLib.leveler().fillOutMOB(eyeM,1);
-				eyeM.baseState().setHitPoints(CMLib.dice().rollHP(1, 4));
-				eyeM.baseState().setMovement(10000);
-				eyeM.setMoney(0);
-				eyeM.setMoneyVariation(0);
-				eyeM.setLocation(R);
-				eyeM.basePhyStats().setRejuv(PhyStats.NO_REJUV);
-				eyeM.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
-				eyeM.recoverCharStats();
-				eyeM.recoverPhyStats();
-				eyeM.recoverMaxState();
-				eyeM.resetToMaxState();
-				eyeM.bringToLife(R,true);
-				CMLib.beanCounter().clearZeroMoney(eyeM,null);
-				R.showOthers(eyeM,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> appears!"));
-				eyeM.setStartRoom(null); // keep before postFollow for Conquest
-				if(eyeM.amDead()||eyeM.amDestroyed())
+				final MOB newMOB=CMClass.getMOB("StdMOB");
+				newMOB.basePhyStats().setLevel(1);
+				newMOB.basePhyStats().setDisposition(newMOB.basePhyStats().disposition() | PhyStats.IS_FLYING);
+				newMOB.basePhyStats().setSensesMask(newMOB.basePhyStats().sensesMask() | PhyStats.CAN_NOT_HEAR);
+				newMOB.setName(L("a floating eye"));
+				newMOB.setDisplayText(L("a single eye floats around here"));
+				CMLib.factions().setAlignment(newMOB,Faction.Align.NEUTRAL);
+				newMOB.baseCharStats().setMyRace(CMClass.getRace("Unique"));
+				newMOB.baseCharStats().getMyRace().startRacing(newMOB,false);
+				newMOB.recoverMaxState();
+				newMOB.resetToMaxState();
+				newMOB.recoverPhyStats();
+				newMOB.recoverCharStats();
+				CMLib.leveler().fillOutMOB(newMOB,1);
+				newMOB.baseState().setHitPoints(CMLib.dice().rollHP(1, 4));
+				newMOB.baseState().setMovement(10000);
+				newMOB.setMoney(0);
+				newMOB.setMoneyVariation(0);
+				newMOB.setLocation(R);
+				newMOB.basePhyStats().setRejuv(PhyStats.NO_REJUV);
+				newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
+				newMOB.recoverCharStats();
+				newMOB.recoverPhyStats();
+				newMOB.recoverMaxState();
+				newMOB.resetToMaxState();
+				newMOB.bringToLife(R,true);
+				CMLib.beanCounter().clearZeroMoney(newMOB,null);
+				newMOB.setMoneyVariation(0);
+				R.showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> appears!"));
+				newMOB.setStartRoom(null); // keep before postFollow for Conquest
+				if(newMOB.amDead()||newMOB.amDestroyed())
 					return false;
-				eyeM.setSession(mob.session());
-				beneficialAffect(mob,eyeM,asLevel,Ability.TICKS_ALMOST_FOREVER);
-				final Spell_PryingEye A=(Spell_PryingEye)eyeM.fetchEffect(ID());
+				newMOB.setSession(mob.session());
+				beneficialAffect(mob,newMOB,asLevel,Ability.TICKS_ALMOST_FOREVER);
+				final Spell_PryingEye A=(Spell_PryingEye)newMOB.fetchEffect(ID());
 				if(A==null)
-					eyeM.destroy();
+					newMOB.destroy();
 				else
 				{
 					mob.addEffect(A);
-					A.setAffectedOne(eyeM);
+					A.setAffectedOne(newMOB);
 					A.dirs=directions;
 				}
 			}

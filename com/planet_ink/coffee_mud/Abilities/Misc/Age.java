@@ -327,6 +327,7 @@ public class Age extends StdAbility
 						babe.text();
 						babe.bringToLife(R,true);
 						CMLib.beanCounter().clearZeroMoney(babe,null);
+						babe.setMoneyVariation(0);
 						babe.setFollowing(following);
 						R.show(babe,null,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> JUST TOOK <S-HIS-HER> FIRST STEPS!!!"));
 						I.destroy();

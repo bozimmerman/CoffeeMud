@@ -2551,7 +2551,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					item.wearAt(Wearable.WORN_WIELD);
 			}
 		}
-		if(variableEq)
+		if(variableEq || (M.getMoneyVariation() != 0))
 			M.flagVariableEq();
 	}
 

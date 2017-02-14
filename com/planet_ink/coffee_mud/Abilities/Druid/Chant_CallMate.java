@@ -270,6 +270,7 @@ public class Chant_CallMate extends Chant
 		newMOB.resetToMaxState();
 		newMOB.bringToLife(caster.location(),true);
 		CMLib.beanCounter().clearZeroMoney(newMOB,null);
+		newMOB.setMoneyVariation(0);
 		if(victim != null)
 		{
 			if(victim.getVictim()!=newMOB)

@@ -213,41 +213,42 @@ public class Spell_PhantomHound extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				final MOB beast=CMClass.getMOB("GenMOB");
-				beast.setName(L("the phantom hound"));
-				beast.setDisplayText(L("the phantom hound is here"));
-				beast.setStartRoom(null);
-				beast.setDescription(L("This is the most ferocious beast you have ever seen."));
-				beast.basePhyStats().setAttackAdjustment(mob.phyStats().attackAdjustment()+100);
-				beast.basePhyStats().setArmor(mob.basePhyStats().armor()-20);
-				beast.basePhyStats().setDamage(75);
-				beast.basePhyStats().setLevel(mob.phyStats().level()+(2*getXLEVELLevel(mob)));
-				beast.basePhyStats().setSensesMask(PhyStats.CAN_SEE_DARK|PhyStats.CAN_SEE_HIDDEN|PhyStats.CAN_SEE_INVISIBLE|PhyStats.CAN_SEE_SNEAKERS);
-				beast.baseCharStats().setMyRace(CMClass.getRace("Dog"));
-				beast.baseCharStats().getMyRace().startRacing(beast,false);
+				final MOB newMOB=CMClass.getMOB("GenMOB");
+				newMOB.setName(L("the phantom hound"));
+				newMOB.setDisplayText(L("the phantom hound is here"));
+				newMOB.setStartRoom(null);
+				newMOB.setDescription(L("This is the most ferocious beast you have ever seen."));
+				newMOB.basePhyStats().setAttackAdjustment(mob.phyStats().attackAdjustment()+100);
+				newMOB.basePhyStats().setArmor(mob.basePhyStats().armor()-20);
+				newMOB.basePhyStats().setDamage(75);
+				newMOB.basePhyStats().setLevel(mob.phyStats().level()+(2*getXLEVELLevel(mob)));
+				newMOB.basePhyStats().setSensesMask(PhyStats.CAN_SEE_DARK|PhyStats.CAN_SEE_HIDDEN|PhyStats.CAN_SEE_INVISIBLE|PhyStats.CAN_SEE_SNEAKERS);
+				newMOB.baseCharStats().setMyRace(CMClass.getRace("Dog"));
+				newMOB.baseCharStats().getMyRace().startRacing(newMOB,false);
 				for(final int i : CharStats.CODES.SAVING_THROWS())
-					beast.baseCharStats().setStat(i,200);
-				beast.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
-				beast.basePhyStats().setAbility(100);
-				beast.baseState().setMana(100);
-				beast.baseState().setMovement(1000);
-				beast.recoverPhyStats();
-				beast.recoverCharStats();
-				beast.recoverMaxState();
-				beast.resetToMaxState();
-				beast.text();
-				beast.bringToLife(mob.location(),true);
-				CMLib.beanCounter().clearZeroMoney(beast,null);
-				beast.location().showOthers(beast,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> appears!"));
-				beast.setStartRoom(null);
+					newMOB.baseCharStats().setStat(i,200);
+				newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
+				newMOB.basePhyStats().setAbility(100);
+				newMOB.baseState().setMana(100);
+				newMOB.baseState().setMovement(1000);
+				newMOB.recoverPhyStats();
+				newMOB.recoverCharStats();
+				newMOB.recoverMaxState();
+				newMOB.resetToMaxState();
+				newMOB.text();
+				newMOB.bringToLife(mob.location(),true);
+				CMLib.beanCounter().clearZeroMoney(newMOB,null);
+				newMOB.setMoneyVariation(0);
+				newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> appears!"));
+				newMOB.setStartRoom(null);
 				victim=mob.getVictim();
 				if(victim!=null)
 				{
-					victim.setVictim(beast);
-					beast.setVictim(victim);
+					victim.setVictim(newMOB);
+					newMOB.setVictim(victim);
 				}
 				pointsLeft=100+(5*this.adjustedLevel(mob, asLevel));
-				beneficialAffect(mob,beast,asLevel,0);
+				beneficialAffect(mob,newMOB,asLevel,0);
 			}
 		}
 		else

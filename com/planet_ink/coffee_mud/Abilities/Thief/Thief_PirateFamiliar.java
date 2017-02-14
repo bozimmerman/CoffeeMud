@@ -352,6 +352,7 @@ public class Thief_PirateFamiliar extends ThiefSkill
 		newMOB.recoverMaxState();
 		newMOB.resetToMaxState();
 		CMLib.beanCounter().clearZeroMoney(newMOB,null);
+		newMOB.setMoneyVariation(0);
 		newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> arrives!"));
 		caster.location().recoverRoomStats();
 		return(newMOB);

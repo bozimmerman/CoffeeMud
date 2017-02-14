@@ -159,6 +159,7 @@ public class Spell_SummonArmy extends Spell
 					newMOB.resetToMaxState();
 					newMOB.bringToLife(mob.location(),true);
 					CMLib.beanCounter().clearZeroMoney(newMOB,null);
+					newMOB.setMoneyVariation(0);
 					newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> appears!"));
 					newMOB.setStartRoom(null); // keep before postFollow for Conquest
 					newMOB.setVictim(mob.getVictim());

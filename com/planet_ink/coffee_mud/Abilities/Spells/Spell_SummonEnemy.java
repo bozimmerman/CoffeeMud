@@ -220,9 +220,9 @@ public class Spell_SummonEnemy extends Spell
 			return null;
 		if(caster.location().getArea()==null)
 			return null;
-		MOB monster=null;
+		MOB newMOB=null;
 		int tries=10000;
-		while((monster==null)&&((--tries)>0))
+		while((newMOB==null)&&((--tries)>0))
 		{
 			final Room room=CMLib.map().getRandomRoom();
 			if((room!=null)&&CMLib.flags().canAccess(caster,room)&&(room.numInhabitants()>0))
@@ -240,23 +240,24 @@ public class Spell_SummonEnemy extends Spell
 					|| (CMLib.flags().isEvil(caster)&&CMLib.flags().isGood(mob)))
 				&&(caster.mayIFight(mob))
 				)
-					monster=mob;
+					newMOB=mob;
 			}
 		}
-		if(monster==null)
+		if(newMOB==null)
 			return null;
-		monster=(MOB)monster.copyOf();
-		monster.basePhyStats().setRejuv(PhyStats.NO_REJUV);
-		monster.recoverCharStats();
-		monster.recoverPhyStats();
-		monster.recoverMaxState();
-		monster.resetToMaxState();
-		monster.text();
-		monster.bringToLife(caster.location(),true);
-		CMLib.beanCounter().clearZeroMoney(monster,null);
-		monster.location().showOthers(monster,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> appears!"));
+		newMOB=(MOB)newMOB.copyOf();
+		newMOB.basePhyStats().setRejuv(PhyStats.NO_REJUV);
+		newMOB.recoverCharStats();
+		newMOB.recoverPhyStats();
+		newMOB.recoverMaxState();
+		newMOB.resetToMaxState();
+		newMOB.text();
+		newMOB.bringToLife(caster.location(),true);
+		CMLib.beanCounter().clearZeroMoney(newMOB,null);
+		newMOB.setMoneyVariation(0);
+		newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> appears!"));
 		caster.location().recoverRoomStats();
-		monster.setStartRoom(null);
-		return(monster);
+		newMOB.setStartRoom(null);
+		return(newMOB);
 	}
 }

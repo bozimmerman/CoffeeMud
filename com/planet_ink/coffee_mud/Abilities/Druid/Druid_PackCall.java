@@ -229,6 +229,7 @@ public class Druid_PackCall extends StdAbility
 					newMOB.resetToMaxState();
 					newMOB.bringToLife(mob.location(),true);
 					CMLib.beanCounter().clearZeroMoney(newMOB,null);
+					newMOB.setMoneyVariation(0);
 					if(victim.getVictim()!=newMOB)
 						victim.setVictim(newMOB);
 					final int dir=choices.elementAt(CMLib.dice().roll(1,choices.size(),-1)).intValue();

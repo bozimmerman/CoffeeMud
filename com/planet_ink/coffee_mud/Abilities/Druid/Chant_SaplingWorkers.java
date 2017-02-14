@@ -256,6 +256,7 @@ public class Chant_SaplingWorkers extends Chant
 		newMOB.resetToMaxState();
 		newMOB.bringToLife(caster.location(),true);
 		CMLib.beanCounter().clearZeroMoney(newMOB,null);
+		newMOB.setMoneyVariation(0);
 		newMOB.setAttributesBitmap(0);
 		newMOB.setAttribute(MOB.Attrib.AUTOASSIST,true);
 		newMOB.setStartRoom(null);

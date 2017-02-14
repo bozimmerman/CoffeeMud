@@ -207,6 +207,7 @@ public class Prayer_AnimateGhost extends Prayer
 		newMOB.text();
 		newMOB.bringToLife(R,true);
 		CMLib.beanCounter().clearZeroMoney(newMOB,null);
+		newMOB.setMoneyVariation(0);
 		//R.showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> appears!"));
 		int it=0;
 		while(it<newMOB.location().numItems())

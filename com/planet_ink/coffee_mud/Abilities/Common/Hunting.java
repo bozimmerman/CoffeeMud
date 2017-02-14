@@ -141,6 +141,7 @@ public class Hunting extends CommonSkill
 					found.addNonUninvokableEffect(A);
 					found.bringToLife(nearByRoom(),true);
 					CMLib.beanCounter().clearZeroMoney(found,null);
+					found.setMoneyVariation(0);
 				}
 				else
 				{
