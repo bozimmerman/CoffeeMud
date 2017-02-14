@@ -1433,6 +1433,7 @@ public class StdRace implements Race
 		GR.setStat("VHEIGHT",""+((race1.heightVariance()+race2.heightVariance())/2));
 		GR.setStat("PLAYER",""+CMProps.getIntVar(CMProps.Int.MUDTHEME));
 		GR.setStat("LEAVE",nonHuman.leaveStr());
+		GR.setStat("AVAIL",""+(availabilityCode()|race.availabilityCode()|Area.THEME_SKILLONLYMASK));
 		GR.setStat("ARRIVE",nonHuman.arriveStr());
 		GR.setStat("HEALTHRACE",otherRace.getStat("HEALTHRACE"));
 		GR.setStat("EVENTRACE",otherRace.getStat("EVENTRACE"));
