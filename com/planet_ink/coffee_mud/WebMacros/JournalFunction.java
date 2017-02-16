@@ -261,8 +261,11 @@ public class JournalFunction extends StdWebMacro
 			if(!doThemAll)
 				entry.cardinal(cardinalNumber);
 			final String to=entry.to();
+			final String author=entry.from();
 			if((M!=null)
-			&&(CMSecurity.isAllowedAnywhere(M,CMSecurity.SecFlag.JOURNALS)||(to.equalsIgnoreCase(M.Name())))
+			&&(CMSecurity.isAllowedAnywhere(M,CMSecurity.SecFlag.JOURNALS)
+				||(to.equalsIgnoreCase(M.Name()))
+				||(author.equalsIgnoreCase(M.Name())))
 			&&((forum==null)||(forum.authorizationCheck(M, ForumJournalFlags.READ))))
 			{
 				if(parms.containsKey("REPLY"))
