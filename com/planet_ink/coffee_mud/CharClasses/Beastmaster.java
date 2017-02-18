@@ -166,7 +166,7 @@ public class Beastmaster extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Chant_EelShock",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Chant_Hunger",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Chant_Yearning",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Chant_CheetahBurst",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Druid_ShapeShift2",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Fighter_Cleave",false);
@@ -179,23 +179,25 @@ public class Beastmaster extends StdCharClass
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_Trip",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Chant_FurCoat",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Chant_AnimalCompanion",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Skill_Disarm",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Chant_Camelback",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Chant_CallCompanion",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Fighter_Intimidate",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Chant_CharmAnimal",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Chant_EnhanceBody",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Druid_ShapeShift3",true);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Chant_CheetahBurst",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Chant_Fertility",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Chant_CallMate",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Chant_BullStrength",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Skill_Attack2",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Fighter_Pin",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Chant_BreatheWater",true);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Chant_BullStrength",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Chant_Yearning",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Thief_Bind",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Chant_SummonAnimal",true);

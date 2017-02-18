@@ -664,6 +664,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 			if(bundling)
 				itemName="a "+woodRequired+"# "+itemName;
 			else
+			if(!CMLib.english().startsWithAnArticle(itemName))
 				itemName=CMLib.english().startWithAorAn(itemName);
 			buildingI.setName(itemName);
 			startStr=L("<S-NAME> start(s) making @x1.",buildingI.name());

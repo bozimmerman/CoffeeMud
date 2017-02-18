@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Abilities.Prayers;
+package com.planet_ink.coffee_mud.Abilities.Druid;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2005-2017 Bo Zimmerman
+   Copyright 2017-2017 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -33,15 +33,15 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Prayer_CallUndead extends Prayer
+public class Chant_CallCompanion extends Chant
 {
 	@Override
 	public String ID()
 	{
-		return "Prayer_CallUndead";
+		return "Chant_CallCompanion";
 	}
 
-	private final static String	localizedName	= CMLib.lang().L("Call Undead");
+	private final static String	localizedName	= CMLib.lang().L("Call Companion");
 
 	@Override
 	public String name()
@@ -58,7 +58,7 @@ public class Prayer_CallUndead extends Prayer
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_PRAYER | Ability.DOMAIN_DEATHLORE;
+		return Ability.ACODE_PRAYER | Ability.DOMAIN_ANIMALAFFINITY;
 	}
 
 	@Override
@@ -70,7 +70,7 @@ public class Prayer_CallUndead extends Prayer
 	@Override
 	public long flags()
 	{
-		return Ability.FLAG_UNHOLY | Ability.FLAG_TRANSPORTING | Ability.FLAG_SUMMONING;
+		return Ability.FLAG_TRANSPORTING | Ability.FLAG_SUMMONING;
 	}
 
 	@Override
@@ -82,12 +82,12 @@ public class Prayer_CallUndead extends Prayer
 		for(Iterator<MOB> m=H.iterator();m.hasNext();)
 		{
 			final MOB M=m.next();
-			if(!CMLib.flags().isUndead(M))
+			if(!CMLib.flags().isAnimalIntelligence(M))
 				m.remove();
 		}
 		if((H.size()==0)||((H.size()==1)&&(H.contains(mob))))
 		{
-			mob.tell(L("You don't have any controlled undead!"));
+			mob.tell(L("You don't have any animal companions!"));
 			return false;
 		}
 
@@ -115,7 +115,7 @@ public class Prayer_CallUndead extends Prayer
 
 		if(target==null)
 		{
-			mob.tell(L("Either they are all en route, or you can not fixate on your undead."));
+			mob.tell(L("Either they are all en route, or you can not fixate on your animal companions."));
 			return false;
 		}
 
@@ -127,7 +127,7 @@ public class Prayer_CallUndead extends Prayer
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> call(s) <S-HIS-HER> undead to come to <S-HIM-HER>!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> chant(s) for <S-HIS-HER> animal companions to come to <S-HIM-HER>!^?"));
 			if((mob.location().okMessage(mob,msg))&&(oldRoom != null)&&(oldRoom.okMessage(mob,msg)))
 			{
 				mob.location().send(mob,msg);
@@ -143,7 +143,7 @@ public class Prayer_CallUndead extends Prayer
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,null,L("<S-NAME> attempt(s) to call <S-HIS-HER> undead, but fail(s)."));
+			beneficialWordsFizzle(mob,null,L("<S-NAME> attempt(s) to call <S-HIS-HER> animal companions, but fail(s)."));
 
 		// return whether it worked
 		return success;

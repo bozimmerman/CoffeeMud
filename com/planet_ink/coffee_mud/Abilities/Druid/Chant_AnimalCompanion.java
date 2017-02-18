@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2017-2017 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -32,15 +32,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Chant_AnimalGrowth extends Chant
+public class Chant_AnimalCompanion extends Chant
 {
 	@Override
 	public String ID()
 	{
-		return "Chant_AnimalGrowth";
+		return "Chant_AnimalCompanion";
 	}
 
-	private final static String	localizedName	= CMLib.lang().L("Animal Growth");
+	private final static String	localizedName	= CMLib.lang().L("Animal Companion");
 
 	@Override
 	public String name()
@@ -51,10 +51,10 @@ public class Chant_AnimalGrowth extends Chant
 	@Override
 	public int abstractQuality()
 	{
-		return Ability.QUALITY_BENEFICIAL_OTHERS;
+		return Ability.QUALITY_OK_OTHERS;
 	}
 
-	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Animal Growth)");
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Animal Companion)");
 
 	@Override
 	public String displayText()
@@ -65,7 +65,7 @@ public class Chant_AnimalGrowth extends Chant
 	@Override
 	protected int canAffectCode()
 	{
-		return Ability.CAN_MOBS;
+		return 0;
 	}
 
 	@Override
@@ -81,65 +81,11 @@ public class Chant_AnimalGrowth extends Chant
 	}
 
 	@Override
-	public void unInvoke()
+	protected int overrideMana()
 	{
-		// undo the affects of this spell
-		if(!(affected instanceof MOB))
-			return;
-		final MOB mob=(MOB)affected;
-
-		super.unInvoke();
-
-		if((canBeUninvoked())&&(mob.location()!=null)&&(!mob.amDead()))
-			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> shrink(s) back down to size."));
+		return Ability.COST_PCT-90;
 	}
-
-	@Override
-	public void affectCharStats(MOB affectedMOB, CharStats affectedStats)
-	{
-		super.affectCharStats(affectedMOB,affectedStats);
-		affectedStats.setStat(CharStats.STAT_STRENGTH, affectedStats.getStat(CharStats.STAT_STRENGTH)+5);
-		affectedStats.setStat(CharStats.STAT_DEXTERITY, affectedStats.getStat(CharStats.STAT_DEXTERITY)-3);
-		affectedStats.setStat(CharStats.STAT_WEIGHTADJ, affectedStats.getStat(CharStats.STAT_WEIGHTADJ)
-														+(affectedMOB.basePhyStats().weight()*3));
-	}
-
-	@Override
-	public void affectPhyStats(Physical affected, PhyStats affectedStats)
-	{
-		super.affectPhyStats(affected,affectedStats);
-		affectedStats.setHeight(affectedStats.height()*2);
-		String oldName=affected.Name().toUpperCase();
-		if(oldName.startsWith("A "))
-			oldName=affected.Name().substring(2).trim();
-		else
-		if(oldName.startsWith("AN "))
-			oldName=affected.Name().substring(3).trim();
-		else
-		if(oldName.startsWith("THE "))
-			oldName=affected.Name().substring(4).trim();
-		else
-		if(oldName.startsWith("SOME "))
-			oldName=affected.Name().substring(5).trim();
-		else
-			oldName=affected.Name();
-		affectedStats.setName(L("An ENORMOUS @x1",oldName));
-	}
-
-	@Override
-	public int castingQuality(MOB mob, Physical target)
-	{
-		if(mob!=null)
-		{
-			if(target instanceof MOB)
-			{
-				if(!CMLib.flags().isAnimalIntelligence((MOB)target))
-					return Ability.QUALITY_INDIFFERENT;
-			}
-		}
-		return super.castingQuality(mob,target);
-	}
-
+	
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -151,7 +97,30 @@ public class Chant_AnimalGrowth extends Chant
 			mob.tell(L("This chant only works on animals."));
 			return false;
 		}
+		if(target.amFollowing()!=mob)
+		{
+			mob.tell(L("This chant only works on animal followers."));
+			return false;
+		}
 
+		if(mob.isInCombat())
+		{
+			mob.tell(L("Not while you are fighting!"));
+			return false;
+		}
+		
+		if(target.isInCombat())
+		{
+			mob.tell(target,null,null,L("Not while <S-NAME> <S-IS-ARE> fighting!"));
+			return false;
+		}
+		
+		if(CMLib.flags().isSleeping(target) || (!CMLib.flags().canBeHeardSpeakingBy(mob,target)))
+		{
+			mob.tell(target,null,null,L("<S-NAME> cannot make the oath with you right now!"));
+			return false;
+		}
+		
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -159,17 +128,40 @@ public class Chant_AnimalGrowth extends Chant
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> chant(s) to <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> chant(s) an oath to <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				target.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> grow(s) to an ENORMOUS size!"));
-				beneficialAffect(mob,target,asLevel,0);
-				mob.location().recoverRoomStats();
+				for(Enumeration<Ability> a=target.effects();a.hasMoreElements();)
+				{
+					Ability A=a.nextElement();
+					if((A!=null)&&((A.flags()&Ability.FLAG_CHARMING)!=0)&&(A.canBeUninvoked()))
+					{
+						A.unInvoke();
+						mob.makePeace(true);
+						target.makePeace(true);
+						if(target.amFollowing()!=mob)
+							target.setFollowing(mob);
+					}
+				}
+				mob.makePeace(true);
+				target.makePeace(true);
+				if(target.amFollowing()!=mob)
+					target.setFollowing(mob);
+				Ability A=target.fetchEffect("Loyalty");
+				if(A==null)
+				{
+					A=CMClass.getAbility("Loyalty");
+					A.setMiscText("NAME="+mob.Name());
+					A.setSavable(true);
+					target.addNonUninvokableEffect(A);
+					mob.tell(mob,target,null,L("<T-NAME> is now loyal to you."));
+					mob.location().recoverRoomStats();
+				}
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,L("<S-NAME> chant(s) to <T-NAMESELF>, but nothing happens."));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> chant(s) an oath to <T-NAMESELF>, but nothing happens."));
 
 		// return whether it worked
 		return success;

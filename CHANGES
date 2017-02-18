@@ -1,6 +1,6 @@
 # Build 5.9.5 Release ??/??/2016
    *. Database Schema Updated for CMGRAC.  See the Installation Guide about running DBUpgrade.
-   1. New chants: Phosphorescence, Land Legs, BurrowSpeak
+   1. New chants: Phosphorescence, Land Legs, BurrowSpeak, Call Companions, Animal Companion
    2. Anarchy clan govt type now has Clan Experience spell as an instant benefit.
    3. Pirates no longer regain lost limbs after death.
    4. New resource: DIRT.  Mass Grave now populates its room with the stuff.
