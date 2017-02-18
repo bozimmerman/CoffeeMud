@@ -36,18 +36,60 @@ import java.util.*;
 
 public class Chant_CharmAnimal extends Chant
 {
-	@Override public String ID() { return "Chant_CharmAnimal"; }
-	private final static String localizedName = CMLib.lang().L("Charm Animal");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Charmed)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public long flags(){return Ability.FLAG_CHARMING;}
+	@Override
+	public String ID()
+	{
+		return "Chant_CharmAnimal";
+	}
 
-	protected MOB charmer=null;
+	private final static String	localizedName	= CMLib.lang().L("Charm Animal");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Charmed)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT | Ability.DOMAIN_ANIMALAFFINITY;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_CHARMING;
+	}
+
+	protected MOB	charmer	= null;
+
 	protected MOB getCharmer()
 	{
 		if(charmer!=null)
@@ -185,7 +227,6 @@ public class Chant_CharmAnimal extends Chant
 			{
 				if(!CMLib.flags().isAnimalIntelligence((MOB)target))
 					return Ability.QUALITY_INDIFFERENT;
-
 			}
 		}
 		return super.castingQuality(mob,target);

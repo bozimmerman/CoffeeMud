@@ -773,11 +773,11 @@ See guides/RandomAreas.html for information about documents of this type.
 					<WEAPONTYPE>SLASHING</WEAPONTYPE>
 				</ITEM>
 				<SHOPINVENTORY>
-					<ITEM class="GenRideable" name="a $adj_mammal_color horse" display="$mob_name is here" number=20/>
-					<ITEM class="GenRideable" name="a $adj_mammal_color horse" display="$mob_name is here" number=20/>
-					<ITEM class="GenRideable" name="a $adj_mammal_color horse" display="$mob_name is here" number=20/>
-					<ITEM class="GenRideable" name="a $adj_mammal_color horse" display="$mob_name is here" number=20/>
-					<ITEM class="GenRideable" name="a $adj_mammal_color horse" display="$mob_name is here" number=20/>
+					<MOB class="GenHorse" name="a $adj_mammal_color horse" display="$mob_name is here" number=20/>
+					<MOB class="GenHorse" name="a $adj_mammal_color horse" display="$mob_name is here" number=20/>
+					<MOB class="GenHorse" name="a $adj_mammal_color horse" display="$mob_name is here" number=20/>
+					<MOB class="GenHorse" name="a $adj_mammal_color horse" display="$mob_name is here" number=20/>
+					<MOB class="GenHorse" name="a $adj_mammal_color horse" display="$mob_name is here" number=20/>
 				</SHOPINVENTORY>
 			</MOB>
 		</ROOM>
