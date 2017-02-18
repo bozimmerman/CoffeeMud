@@ -77,6 +77,10 @@ public class StdItem implements Item
 	{
 		super();
 		//CMClass.bumpCounter(this,CMClass.CMObjectType.ITEM);//removed for mem & perf
+		if(basePhyStats == null)
+			basePhyStats = (PhyStats) CMClass.getCommon("DefaultPhyStats");
+		if(phyStats == null)
+			phyStats = (PhyStats) CMClass.getCommon("DefaultPhyStats");
 		basePhyStats().setWeight(1);
 		basePhyStats().setArmor(0);
 		xtraValues=CMProps.getExtraStatCodesHolder(this);

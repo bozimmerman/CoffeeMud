@@ -413,7 +413,7 @@ public class Composting extends GatheringSkill
 			}
 		}
 
-		final int duration=getDuration(3+compost.phyStats().weight(),mob,1,1);
+		final int duration=compost == null ? getDuration(3+1,mob,1,1) : getDuration(3+compost.phyStats().weight(),mob,1,1);
 
 		final CMMsg msg=CMClass.getMsg(mob,found,this,getActivityMessageType(),L("<S-NAME> start(s) composting @x1.",foundShortName));
 		verb=L("composting @x1",foundShortName);
