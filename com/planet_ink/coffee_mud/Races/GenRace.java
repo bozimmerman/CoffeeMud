@@ -1363,6 +1363,7 @@ public class GenRace extends StdRace
 				culturalAbilityLvls=new int[CMath.s_int(val)];
 				culturalAbilityGains=new boolean[CMath.s_int(val)];
 			}
+			this.mappedCulturalAbilities=false;
 			break;
 		}
 		case 30:
@@ -1370,6 +1371,7 @@ public class GenRace extends StdRace
 			if(culturalAbilityNames==null)
 				culturalAbilityNames=new String[num+1];
 			culturalAbilityNames[num]=val;
+			this.mappedCulturalAbilities=false;
 			break;
 		}
 		case 31:
@@ -1377,6 +1379,7 @@ public class GenRace extends StdRace
 			if(culturalAbilityProfs==null)
 				culturalAbilityProfs=new int[num+1];
 			culturalAbilityProfs[num]=CMath.s_int(val);
+			this.mappedCulturalAbilities=false;
 			break;
 		}
 		case 32:
@@ -1384,6 +1387,7 @@ public class GenRace extends StdRace
 			if(culturalAbilityLvls==null)
 				culturalAbilityLvls=new int[num+1];
 			culturalAbilityLvls[num]=CMath.s_int(val);
+			this.mappedCulturalAbilities=false;
 			break;
 		}
 		case 33:
@@ -1391,6 +1395,7 @@ public class GenRace extends StdRace
 			if(culturalAbilityGains==null)
 				culturalAbilityGains=new boolean[num+1];
 			culturalAbilityGains[num]=CMath.s_bool(val);
+			this.mappedCulturalAbilities=false;
 			break;
 		}
 		case 34:
