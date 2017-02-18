@@ -121,6 +121,21 @@ public class Chant_AnimalCompanion extends Chant
 			return false;
 		}
 		
+		int numLoyal = 0;
+		for(int f=0;f<mob.numFollowers();f++)
+		{
+			final MOB M=mob.fetchFollower(f);
+			if((M!=mob)
+			&&(CMLib.flags().isAnimalIntelligence(M))
+			&&(M.fetchEffect("Loyalty")!=null))
+				numLoyal++;
+		}
+		if(numLoyal > this.getXLEVELLevel(mob))
+		{
+			mob.tell(L("You lack the expertise to swear another oath."));
+			return false;
+		}
+		
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
