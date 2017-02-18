@@ -120,6 +120,7 @@ public class Archon_Freeze extends ArchonSkill
 			case CMMsg.TYP_ENTER:
 			case CMMsg.TYP_ADVANCE:
 			case CMMsg.TYP_LEAVE:
+			case CMMsg.TYP_RECALL:
 			case CMMsg.TYP_FLEE:
 				mob.tell(L("You are frozen, and cant go anywhere."));
 				return false;
