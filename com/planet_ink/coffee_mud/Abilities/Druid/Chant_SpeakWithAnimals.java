@@ -110,15 +110,26 @@ public class Chant_SpeakWithAnimals extends Chant implements Language
 		if(mob != null)
 		{
 			final Race R=mob.charStats().getMyRace();
-			if(charStats == null)
-				charStats = (CharStats)CMClass.getCommon("DefaultCharStats");
-			synchronized(charStats)
+			synchronized(raceIDs)
 			{
 				if(!raceIDs.containsKey(R.ID()))
 				{
-					charStats.setStat(CharStats.STAT_INTELLIGENCE, 25);
-					R.affectCharStats(mob, charStats);
-					raceIDs.put(R.ID(), Boolean.valueOf(charStats.getStat(CharStats.STAT_INTELLIGENCE) == 1));
+					MOB M=null;
+					try
+					{
+						M=CMClass.getFactoryMOB();
+						M.baseCharStats().setMyRace(R);
+						M.baseCharStats().setStat(CharStats.STAT_INTELLIGENCE, 10);
+						M.charStats().setMyRace(R);
+						M.charStats().setStat(CharStats.STAT_INTELLIGENCE, 10);
+						R.affectCharStats(M, M.charStats());
+						raceIDs.put(R.ID(), Boolean.valueOf(M.charStats().getStat(CharStats.STAT_INTELLIGENCE) == 1));
+					}
+					finally
+					{
+						if(M!=null)
+							M.destroy();
+					}
 				}
 				return raceIDs.get(R.ID()).booleanValue();
 			}
