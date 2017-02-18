@@ -182,6 +182,7 @@ public class Chant_CallMate extends Chant
 			return false;
 		}
 		
+		/*
 		String raceCat = mob.charStats().getMyRace().racialCategory();
 		if((raceCat.equalsIgnoreCase("Fish"))||(raceCat.equalsIgnoreCase("Sea Mammal")))
 		{
@@ -196,6 +197,7 @@ public class Chant_CallMate extends Chant
 			mob.tell(L("You are not in the proper form to call on a mate here."));
 			return false;
 		}
+		*/
 		
 		if(mob.getGroupMembers(new HashSet<MOB>()).size()>1)
 		{
