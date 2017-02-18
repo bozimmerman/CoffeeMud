@@ -77,26 +77,30 @@ public class AnimalBonding extends CommonSkill
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(canBeUninvoked())
+		if(text().length()==0)
 		{
-			if((affected!=null)
-			&&(affected instanceof MOB)
-			&&(tickID==Tickable.TICKID_MOB))
+			if(canBeUninvoked())
 			{
-				final MOB mob=(MOB)affected;
-				if((bonding==null)||(mob.location()==null))
+				if((affected!=null)
+				&&(affected instanceof MOB)
+				&&(tickID==Tickable.TICKID_MOB))
 				{
-					messedUp=true;
-					unInvoke();
-				}
-				if(!mob.location().isInhabitant(bonding))
-				{
-					messedUp=true;
-					unInvoke();
+					final MOB mob=(MOB)affected;
+					if((bonding==null)||(mob.location()==null))
+					{
+						messedUp=true;
+						unInvoke();
+					}
+					if(!mob.location().isInhabitant(bonding))
+					{
+						messedUp=true;
+						unInvoke();
+					}
 				}
 			}
+			return super.tick(ticking,tickID);
 		}
-		return super.tick(ticking,tickID);
+		return ! this.unInvoked;
 	}
 
 	@Override

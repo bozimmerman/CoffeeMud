@@ -118,7 +118,7 @@ public class Druid_ShapeShift extends StdAbility
 	private static double[]   armadj=
 	{1.0	  ,.5   	  ,.4   	 ,.5	   ,1.0			  ,.3   	,1.0		  ,.2   	    ,.2   	   ,0.5			,.3};
 	private static double[]   spdadj=
-	{0.2	  ,.0   	  ,.0   	 ,.0	   ,0.0			  ,.0   	,0.3		  ,.0   	    ,.0   	   ,1.0   	   ,0.2};
+	{0.2	  ,.0   	  ,.0   	 ,.0	   ,0.0			  ,.0   	,0.3		  ,.0   	    ,.0   	   ,1.0   		,0.2};
 
 	private static String[] forms={"Rodent form",
 								   "Feline form",
