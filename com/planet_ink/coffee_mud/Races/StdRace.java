@@ -336,10 +336,10 @@ public class StdRace implements Race
 				{
 				case 'M':
 				case 'm':
-					return L("boy infant @x1", name().toLowerCase());
+					return L("baby boy @x1", name().toLowerCase());
 				case 'F':
 				case 'f':
-					return L("girl infant @x1", name().toLowerCase());
+					return L("baby girl @x1", name().toLowerCase());
 				default:
 					return L("baby @x1", name().toLowerCase());
 				}

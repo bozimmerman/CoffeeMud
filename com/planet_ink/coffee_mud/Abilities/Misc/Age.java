@@ -723,6 +723,7 @@ public class Age extends StdAbility
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
+		final Physical affected = this.affected;
 		if((affected!=null)
 		&&(!affected.amDestroyed()))
 		{
@@ -760,17 +761,19 @@ public class Age extends StdAbility
 			&&((msg.target()==affected)||(msg.tool()==affected))
 			&&(CMLib.flags().isInTheGame((Item)affected,true)))
 			{
-				Behavior B=((Item)affected).fetchBehavior("Emoter");
 				final Item baby=(Item)affected;
-				if(B==null)
+				Behavior B=baby.fetchBehavior("Emoter");
+				if(B!=null)
 				{
+					/*
 					B=CMClass.getBehavior("Emoter");
 					if(B!=null)
 						baby.addBehavior(B);
-				}
+					*/
+				//}
 				// no else please
-				if(B!=null)
-				{
+				//if(B!=null)
+				//{
 					if(baby.owner() instanceof Room)
 					{
 						if(!B.getParms().equalsIgnoreCase(downBabyEmoter))
@@ -828,7 +831,7 @@ public class Age extends StdAbility
 					if((mob==null)&&(((Item)affected).owner() instanceof Room))
 						mob=((Room)((Item)affected).owner()).fetchInhabitant(0);
 
-					if((soil)&&(affected.fetchEffect("Soiled")==null)&&(mob!=null))
+					if((soil)&&(affected.fetchEffect("Soiled")==null)&&(mob!=null)&&(!affected.name().toLowerCase().endsWith(" egg")))
 					{
 						final Ability A=CMClass.getAbility("Soiled");
 						if(A!=null)

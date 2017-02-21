@@ -454,6 +454,22 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	}
 	
 	@Override
+	public boolean isEggLayer(final Race race)
+	{
+		final String[] eggLayers = new String[] 
+		{
+			"Amphibian",
+			"Avian",
+			"Dragon",
+			"Reptile",
+			"Serpent",
+			"Lizard Man",
+			"Fish"
+		};
+		return (race == null) ? false : CMStrings.containsIgnoreCase(eggLayers, race.racialCategory());
+	}
+
+	@Override
 	public boolean isFish(MOB mob)
 	{
 		return (mob != null) 
