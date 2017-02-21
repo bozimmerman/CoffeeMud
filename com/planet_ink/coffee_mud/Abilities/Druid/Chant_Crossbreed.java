@@ -33,17 +33,41 @@ import java.util.List;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
-
 public class Chant_Crossbreed extends Chant
 {
-	@Override public String ID() { return "Chant_Crossbreed"; }
-	private final static String localizedName = CMLib.lang().L("Crossbreed");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Crossbreed)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_BREEDING;}
-	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
+	@Override
+	public String ID()
+	{
+		return "Chant_Crossbreed";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Crossbreed");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Crossbreed)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT | Ability.DOMAIN_BREEDING;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_OTHERS;
+	}
 
 	@Override
 	public void unInvoke()
@@ -78,19 +102,19 @@ public class Chant_Crossbreed extends Chant
 			&&(msg.sourceMinor()!=CMMsg.TYP_CHANNEL)
 			&&(myChar.charStats().getStat(CharStats.STAT_GENDER)!=mate.charStats().getStat(CharStats.STAT_GENDER))
 			&&((mate.charStats().getStat(CharStats.STAT_GENDER)==('M'))
-			   ||(mate.charStats().getStat(CharStats.STAT_GENDER)==('F')))
+				||(mate.charStats().getStat(CharStats.STAT_GENDER)==('F')))
 			&&((myChar.charStats().getStat(CharStats.STAT_GENDER)==('M'))
-			   ||(myChar.charStats().getStat(CharStats.STAT_GENDER)==('F')))
+				||(myChar.charStats().getStat(CharStats.STAT_GENDER)==('F')))
 			&&(!mate.charStats().getMyRace().canBreedWith(myChar.charStats().getMyRace()))
 			&&(myChar.location()==mate.location())
 			&&(myChar.fetchWornItems(Wearable.WORN_LEGS|Wearable.WORN_WAIST,(short)-2048,(short)0).size()==0)
 			&&(mate.fetchWornItems(Wearable.WORN_LEGS|Wearable.WORN_WAIST,(short)-2048,(short)0).size()==0)
 			&&((mate.charStats().getStat(CharStats.STAT_AGE)==0)
-					||((mate.charStats().ageCategory()>Race.AGE_CHILD)
-							&&(mate.charStats().ageCategory()<Race.AGE_OLD)))
+				||((mate.charStats().ageCategory()>Race.AGE_CHILD)
+					&&(mate.charStats().ageCategory()<Race.AGE_OLD)))
 			&&((myChar.charStats().getStat(CharStats.STAT_AGE)==0)
-					||((myChar.charStats().ageCategory()>Race.AGE_CHILD)
-							&&(myChar.charStats().ageCategory()<Race.AGE_OLD))))
+				||((myChar.charStats().ageCategory()>Race.AGE_CHILD)
+					&&(myChar.charStats().ageCategory()<Race.AGE_OLD))))
 			{
 				MOB female=myChar;
 				MOB male=mate;
@@ -134,7 +158,6 @@ public class Chant_Crossbreed extends Chant
 		}
 		else
 			return beneficialWordsFizzle(mob,target,L("<S-NAME> chant(s) to <T-NAMESELF>, but the magic fades."));
-
 
 		// return whether it worked
 		return success;

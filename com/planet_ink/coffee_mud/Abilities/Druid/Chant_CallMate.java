@@ -220,6 +220,9 @@ public class Chant_CallMate extends Chant
 				final MOB target = determineMonster(mob, mob.charStats().getMyRace());
 				beneficialAffect(mob,target,asLevel,Integer.MAX_VALUE / 2);
 				mob.location().show(target, null,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> answers the call."));
+				final Chant_Crossbreed A=(Chant_Crossbreed)CMClass.getAbility("Chant_Crossbreed");
+				A.setInvoker(mob);
+				A.beneficialAffect(mob,target,asLevel,Ability.TICKS_ALMOST_FOREVER);
 				CMLib.commands().postFollow(target,mob,false);
 				if(target.amFollowing()!=mob)
 					mob.tell(L("@x1 seems unwilling to follow you.",target.name(mob)));
