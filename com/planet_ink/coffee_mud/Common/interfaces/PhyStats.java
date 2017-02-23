@@ -482,6 +482,8 @@ public interface PhyStats extends CMCommon, Modifiable
 	public final static int SENSE_CONTENTSUNSEEN=128;
 	/** a bit setting, as from sensesMask(), flagging this room as allowing GET even when sitting */
 	public final static int SENSE_ROOMCRUNCHEDIN=256;
+	/** a bit setting, as from sensesMask(), flagging this item as not being auto-wearable in percolator */
+	public final static int SENSE_ITEMNOAUTOWEAR=256;
 	/** a bit setting, as from sensesMask(), flagging this item/room as being unexplorable */
 	public final static int SENSE_ROOMUNEXPLORABLE=512;
 	/** a bit setting, as from sensesMask(), flagging this item/room as not allowing movement */
@@ -501,7 +503,7 @@ public interface PhyStats extends CMCommon, Modifiable
 	/** a bit setting, as from sensesMask(), flagging this ...  */
 	public final static int SENSE_INSIDEACCESSIBLE=131072;
 	/** a bit setting, as from sensesMask(), flagging this as a busy item that can't do other things ...  */
-	public final static int SENSE_CAN_NOT_WORK=262144;
+	//public final static int SENSE_CAN_NOT_WORK=262144;
 	/** a bit setting, as from sensesMask(), flagging this ...  */
 	//public final static int SENSE_ROOMCIRCUITED=524288;
 	/** a bit setting, as from sensesMask(), flagging this mob as not respawning when being camped*/

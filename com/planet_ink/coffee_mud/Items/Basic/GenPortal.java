@@ -118,8 +118,11 @@ public class GenPortal extends StdPortal
 		recoverPhyStats();
 	}
 
-	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES","RESETTIME","RIDEBASIS","MOBSHELD","EXITNAME","CLOSEDTEXT",
-											"PUTSTR","MOUNTSTR","DISMOUNTSTR","DEFCLOSED","DEFLOCKED"};
+	private final static String[] MYCODES={ "HASLOCK","HASLID","CAPACITY","CONTAINTYPES","RESETTIME",
+											"RIDEBASIS","MOBSHELD","EXITNAME","CLOSEDTEXT",
+											"PUTSTR","MOUNTSTR","DISMOUNTSTR","DEFCLOSED",
+											"DEFLOCKED","CLOSEWORD","OPENWORD","CLOSEDTEXT"
+										  };
 	@Override
 	public String getStat(String code)
 	{
@@ -155,6 +158,12 @@ public class GenPortal extends StdPortal
 			return "" + defaultsClosed();
 		case 13:
 			return "" + defaultsLocked();
+		case 14:
+			return this.closeWord();
+		case 15:
+			return this.openWord();
+		case 16:
+			return this.closedText();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -207,6 +216,15 @@ public class GenPortal extends StdPortal
 			break;
 		case 13:
 			setDoorsNLocks(hasADoor(), isOpen(), defaultsClosed(), hasALock(), isLocked(), CMath.s_bool(val));
+			break;
+		case 14:
+			//this.closeName = val;
+			break;
+		case 15:
+			//this.openName = val;
+			break;
+		case 16:
+			this.closedText = val;
 			break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);

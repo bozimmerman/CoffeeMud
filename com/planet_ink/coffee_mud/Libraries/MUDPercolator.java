@@ -1329,7 +1329,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			final Item I=items.get(i);
 			M.addItem(I);
 			I.setSavable(true);
-			I.wearIfPossible(M);
+			if((I.phyStats().sensesMask()&PhyStats.SENSE_ITEMNOAUTOWEAR)==0)
+				I.wearIfPossible(M);
 		}
 		final List<Ability> aV = findAffects(M,piece,defined,null);
 		for(int i=0;i<aV.size();i++)
@@ -1688,6 +1689,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		final String classID = findStringNow("class",piece,defined);
 		final List<Item> contents = new Vector<Item>();
 		final List<String> ignoreStats=new XVector<String>();
+		final int senseFlag = CMath.s_bool(findStringNow("nowear",piece,defined)) ? PhyStats.SENSE_ITEMNOAUTOWEAR : 0;
 		if(classID.toLowerCase().startsWith("metacraft"))
 		{
 			final String classRest=classID.substring(9).toLowerCase().trim();
@@ -1734,7 +1736,10 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 								skillContents.remove(i);
 						}
 						if(skillContents.size()>0)
-							contents.add((Item)skillContents.get(CMLib.dice().roll(1,skillContents.size(),-1)).item.copyOf());
+						{
+							final Item I=(Item)skillContents.get(CMLib.dice().roll(1,skillContents.size(),-1)).item.copyOf();
+							contents.add(I);
+						}
 					}
 				}
 			}
@@ -1761,7 +1766,10 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					}
 				}
 				if((skillContents!=null)&&(skillContents.size()>0))
-					contents.add((Item)skillContents.get(CMLib.dice().roll(1,skillContents.size(),-1)).item.copyOf());
+				{
+					final Item I=(Item)skillContents.get(CMLib.dice().roll(1,skillContents.size(),-1)).item.copyOf();
+					contents.add(I);
+				}
 			}
 			else
 			if(recipe.toLowerCase().startsWith("all"))
@@ -1783,7 +1791,10 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 								skillContents.remove(i);
 						}
 						while((skillContents!=null)&&(skillContents.size()>0))
-							contents.add((Item)skillContents.remove(0).item.copyOf());
+						{
+							final Item I=(Item)skillContents.remove(0).item.copyOf();
+							contents.add(I);
+						}
 						if(recipe.length()>0)
 							break;
 					}
@@ -1936,6 +1947,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			I.text();
 			I.setMiscText(I.text());
 			I.recoverPhyStats();
+			I.phyStats().setSensesMask(I.phyStats().sensesMask()|senseFlag);
 		}
 		return contents;
 	}

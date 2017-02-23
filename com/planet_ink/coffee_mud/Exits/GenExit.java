@@ -298,10 +298,10 @@ public class GenExit extends StdExit implements Modifiable
 	}
 
 	private static final String[] CODES={
-		"CLASS","NAME","DISPLAY","DESCRIPTION","DOOR",
-		"LEVEL","ABILITY","ISREADABLE","AFFBEHAV","DISPOSITION",
-		"READABLETEXT","HASADOOR","DEFCLOSED","HASALOCK","DEFLOCKED",
-		"KEYNAME","RESETTIME"
+		"CLASS", "NAME", "DISPLAY", "DESCRIPTION", "DOOR",
+		"LEVEL", "ABILITY", "ISREADABLE", "AFFBEHAV", "DISPOSITION",
+		"READABLETEXT", "HASADOOR", "DEFCLOSED", "HASALOCK", "DEFLOCKED",
+		"KEYNAME", "RESETTIME","CLOSEWORD","OPENWORD","CLOSEDTEXT"
 	};
 	@Override
 	public String[] getStatCodes()
@@ -365,6 +365,12 @@ public class GenExit extends StdExit implements Modifiable
 			return "" + keyName(); // keyname
 		case 16:
 			return "" + openDelayTicks(); // open ticks
+		case 17:
+			return this.closeWord();
+		case 18:
+			return this.openWord();
+		case 19:
+			return this.closedText();
 		}
 		return "";
 	}
@@ -443,6 +449,15 @@ public class GenExit extends StdExit implements Modifiable
 		case 16:
 			setOpenDelayTicks(CMath.s_parseIntExpression(val));
 			break; // openticks
+		case 17:
+			this.closeName = val;
+			break;
+		case 18:
+			this.openName = val;
+			break;
+		case 19:
+			this.closedText = val;
+			break;
 		}
 	}
 
