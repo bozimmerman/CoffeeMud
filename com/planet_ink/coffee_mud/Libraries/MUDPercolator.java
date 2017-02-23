@@ -1327,9 +1327,10 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		for(int i=0;i<items.size();i++)
 		{
 			final Item I=items.get(i);
+			final boolean wearable = (I.phyStats().sensesMask()&PhyStats.SENSE_ITEMNOAUTOWEAR)==0;
 			M.addItem(I);
 			I.setSavable(true);
-			if((I.phyStats().sensesMask()&PhyStats.SENSE_ITEMNOAUTOWEAR)==0)
+			if(wearable)
 				I.wearIfPossible(M);
 		}
 		final List<Ability> aV = findAffects(M,piece,defined,null);
@@ -1689,7 +1690,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		final String classID = findStringNow("class",piece,defined);
 		final List<Item> contents = new Vector<Item>();
 		final List<String> ignoreStats=new XVector<String>();
-		final int senseFlag = CMath.s_bool(findStringNow("nowear",piece,defined)) ? PhyStats.SENSE_ITEMNOAUTOWEAR : 0;
+		final int senseFlag = CMath.s_bool(findOptionalStringNow(null,null,null,"nowear",piece,defined,false)) ? PhyStats.SENSE_ITEMNOAUTOWEAR : 0;
 		if(classID.toLowerCase().startsWith("metacraft"))
 		{
 			final String classRest=classID.substring(9).toLowerCase().trim();
