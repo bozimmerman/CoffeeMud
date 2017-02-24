@@ -32,33 +32,74 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
-
 public class Skill_Enslave extends StdSkill
 {
-	@Override public String ID() { return "Skill_Enslave"; }
-	private final static String localizedName = CMLib.lang().L("Enslave");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	private static final String[] triggerStrings =I(new String[] {"ENSLAVE"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Enslaved)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_CRIMINAL; }
+	@Override
+	public String ID()
+	{
+		return "Skill_Enslave";
+	}
 
-	protected String masterName="";
-	protected String oldLeige="";
-	protected List<Pair<Clan,Integer>> oldClans=null;
-	protected MOB masterMOB=null;
-	protected SlaveryLibrary.GeasSteps STEPS=null;
-	protected int masterAnger=0;
-	protected int speedDown=0;
-	protected final static int HUNGERTICKMAX=4;
-	protected final static int SPEEDMAX=2;
-	protected int hungerTickDown=HUNGERTICKMAX;
-	protected Room lastRoom=null;
+	private final static String	localizedName	= CMLib.lang().L("Enslave");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "ENSLAVE" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Enslaved)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL | Ability.DOMAIN_CRIMINAL;
+	}
+
+	protected String	masterName		= "";
+	protected String	oldLeige		= "";
+	protected MOB		masterMOB		= null;
+	protected int		masterAnger		= 0;
+	protected int		speedDown		= 0;
+	protected int		hungerTickDown	= HUNGERTICKMAX;
+	protected Room		lastRoom		= null;
+	
+	protected List<Pair<Clan, Integer>>	oldClans		= null;
+	protected SlaveryLibrary.GeasSteps	STEPS			= null;
+	protected final static int			HUNGERTICKMAX	= 4;
+	protected final static int			SPEEDMAX		= 2;
 
 	@Override
 	public void setMiscText(String txt)
@@ -117,6 +158,7 @@ public class Skill_Enslave extends StdSkill
 		}
 		else
 		if((msg.sourceMinor()==CMMsg.TYP_SPEAK)
+		&&(msg.targetMinor()!=CMMsg.TYP_ORDER)
 		&&(msg.sourceMessage()!=null)
 		&&(msg.sourceMessage().length()>0))
 		{
@@ -143,7 +185,8 @@ public class Skill_Enslave extends StdSkill
 				}
 			}
 			else
-			if((msg.amITarget(mob))&&(mob.getLiegeID().length()>0))
+			if((msg.amITarget(mob))
+			&&(mob.getLiegeID().length()>0))
 			{
 				if((msg.tool()==null)
 				||((msg.tool() instanceof Ability)
@@ -226,8 +269,10 @@ public class Skill_Enslave extends StdSkill
 				{
 					final Ability A=mob.fetchEffect(a);
 					if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL))
+					{
 						if(!A.tick(ticking,tickID))
 							mob.delEffect(A);
+					}
 				}
 			}
 			if((--hungerTickDown)<=0)
@@ -263,14 +308,23 @@ public class Skill_Enslave extends StdSkill
 					{
 						final Item I=mob.getItem(i);
 						if(I instanceof Food)
-						{ f=(Food)I; break;}
+						{
+							f = (Food) I;
+							break;
+						}
 					}
 					if(f==null)
 						CMLib.commands().postSay(mob,null,L("I am hungry."),false,false);
 					else
 					{
 						final Command C=CMClass.getCommand("Eat");
-						try{C.execute(mob,CMParms.parse("EAT \""+f.Name()+"$\""),MUDCmdProcessor.METAFLAG_ORDER);}catch(final Exception e){}
+						try
+						{
+							C.execute(mob, CMParms.parse("EAT \"" + f.Name() + "$\""), MUDCmdProcessor.METAFLAG_ORDER);
+						}
+						catch (final Exception e)
+						{
+						}
 					}
 				}
 				if(mob.curState().getThirst()<=0)
@@ -280,14 +334,23 @@ public class Skill_Enslave extends StdSkill
 					{
 						final Item I=mob.getItem(i);
 						if(I instanceof Drink)
-						{ d=(Drink)I; break;}
+						{
+							d = (Drink) I;
+							break;
+						}
 					}
 					if(d==null)
 						CMLib.commands().postSay(mob,null,L("I am thirsty."),false,false);
 					else
 					{
 						final Command C=CMClass.getCommand("Drink");
-						try{C.execute(mob,CMParms.parse("DRINK \""+d.Name()+"$\""),MUDCmdProcessor.METAFLAG_ORDER);}catch(final Exception e){}
+						try
+						{
+							C.execute(mob, CMParms.parse("DRINK \"" + d.Name() + "$\""), MUDCmdProcessor.METAFLAG_ORDER);
+						}
+						catch (final Exception e)
+						{
+						}
 					}
 				}
 			}

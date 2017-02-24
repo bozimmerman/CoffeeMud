@@ -32,13 +32,19 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Order extends StdCommand
 {
-	public Order(){}
+	public Order()
+	{
+	}
 
-	private final String[] access=I(new String[]{"ORDER"});
-	@Override public String[] getAccessWords(){return access;}
+	private final String[]	access	= I(new String[] { "ORDER" });
+
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
@@ -67,8 +73,16 @@ public class Order extends StdCommand
 		String whomToOrder=commands.get(0);
 		final Vector<MOB> V=new Vector<MOB>();
 		boolean allFlag=whomToOrder.equalsIgnoreCase("all");
-		if(whomToOrder.toUpperCase().startsWith("ALL.")){ allFlag=true; whomToOrder="ALL "+whomToOrder.substring(4);}
-		if(whomToOrder.toUpperCase().endsWith(".ALL")){ allFlag=true; whomToOrder="ALL "+whomToOrder.substring(0,whomToOrder.length()-4);}
+		if (whomToOrder.toUpperCase().startsWith("ALL."))
+		{
+			allFlag = true;
+			whomToOrder = "ALL " + whomToOrder.substring(4);
+		}
+		if (whomToOrder.toUpperCase().endsWith(".ALL"))
+		{
+			allFlag = true;
+			whomToOrder = "ALL " + whomToOrder.substring(0, whomToOrder.length() - 4);
+		}
 		int addendum=1;
 		String addendumStr="";
 		boolean doBugFix = true;
@@ -174,9 +188,23 @@ public class Order extends StdCommand
 		}
 		return false;
 	}
-	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandCombatActionCost(ID());}
-	@Override public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandActionCost(ID());}
-	@Override public boolean canBeOrdered(){return true;}
 
+	@Override
+	public double combatActionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandCombatActionCost(ID());
+	}
+
+	@Override
+	public double actionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandActionCost(ID());
+	}
+
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 
 }

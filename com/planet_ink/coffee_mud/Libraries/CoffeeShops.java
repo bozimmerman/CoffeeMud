@@ -1357,10 +1357,12 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		product.bringToLife(seller.location(),true);
 		if(slaveA!=null)
 		{
+			slaveA=product.fetchEffect("Skill_Enslave");
 			product.setLiegeID("");
 			product.setClan("", Integer.MIN_VALUE); // delete all sequence
 			product.setStartRoom(null);
-			slaveA.setMiscText(mobFor.Name());
+			if(slaveA!=null)
+				slaveA.setMiscText(mobFor.Name());
 			product.text();
 		}
 		CMLib.commands().postFollow(product,mobFor,false);
