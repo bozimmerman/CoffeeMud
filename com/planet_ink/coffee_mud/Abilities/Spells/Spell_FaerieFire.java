@@ -71,7 +71,7 @@ public class Spell_FaerieFire extends Spell
 	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
-		if(mob!=null)
+		if((mob!=null)&&(mob.isMonster()))
 		{
 			if(target instanceof MOB)
 			{
