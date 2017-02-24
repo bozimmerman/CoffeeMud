@@ -136,6 +136,7 @@ public class InTheAir extends StdRoom
 			return true;
 		if((msg.sourceMinor()==CMMsg.TYP_SIT)
 		&&(!(msg.target() instanceof Exit))
+		&&(!(msg.target() instanceof DeadBody))
 		&&(!msg.sourceMajor(CMMsg.MASK_ALWAYS)))
 		{
 			msg.source().tell(CMLib.lang().L("You can't sit here."));
