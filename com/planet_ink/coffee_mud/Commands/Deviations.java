@@ -292,7 +292,7 @@ public class Deviations extends StdCommand
 												CMLib.leveler().getLevelAttack(M)),5)+" ");
 				mobResults.append(CMStrings.padRight(""+getDeviation(
 												M.basePhyStats().damage(),
-												(int)Math.round(CMath.div(CMLib.leveler().getLevelMOBDamage(M),M.basePhyStats().speed()))),5)+" ");
+												CMLib.leveler().getLevelMOBDamage(M)),5)+" ");
 				mobResults.append(CMStrings.padRight(""+getDeviation(
 												M.basePhyStats().armor(),
 												CMLib.leveler().getLevelMOBArmor(M)),5)+" ");

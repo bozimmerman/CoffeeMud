@@ -9511,8 +9511,6 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genWeight(mob,me,++showNumber,showFlag);
 			genClan(mob,me,++showNumber,showFlag);
 			genSpeed(mob,me,++showNumber,showFlag);
-			if((oldLevel<2)&&(me.basePhyStats().level()>1))
-				me.basePhyStats().setDamage((int)Math.round(CMath.div(me.basePhyStats().damage(),me.basePhyStats().speed())));
 			genAttack(mob,me,++showNumber,showFlag);
 			genDamage(mob,me,++showNumber,showFlag);
 			genArmor(mob,me,++showNumber,showFlag);

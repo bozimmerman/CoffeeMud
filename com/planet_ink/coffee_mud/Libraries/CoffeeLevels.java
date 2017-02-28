@@ -215,6 +215,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		mob.basePhyStats().setSpeed(getLevelMOBSpeed(mob));
 		mob.basePhyStats().setArmor(getLevelMOBArmor(mob));
 		mob.basePhyStats().setDamage(getLevelMOBDamage(mob));
+		//mob.basePhyStats().setDamage((int)Math.round(CMath.div(getLevelMOBDamage(mob),mob.basePhyStats().speed())));
 		mob.basePhyStats().setAttackAdjustment(getLevelAttack(mob));
 		mob.setMoney(CMLib.dice().roll(1,level,0)+CMLib.dice().roll(1,10,0));
 		mob.baseState().setHitPoints(CMLib.dice().rollHP(mob.basePhyStats().level(),mob.basePhyStats().ability()));
