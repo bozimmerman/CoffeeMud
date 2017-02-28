@@ -290,33 +290,35 @@ public class StdGrid extends StdRoom implements GridLocale
 			if(grid!=null)
 			{
 				final XYVector xy=((GridLocale)loc).getRoomXY(oldLoc);
-				if((xy.x>=0)&&(xy.y>=0))
-				switch(opDirection)
+				if((xy!=null)&&(xy.x>=0)&&(xy.y>=0))
 				{
-				case Directions.EAST:
-					if((((GridLocale)loc).yGridSize()==yGridSize()))
-						return grid[grid.length-1][xy.y];
-					break;
-				case Directions.WEST:
-					if((((GridLocale)loc).yGridSize()==yGridSize()))
-						return grid[0][xy.y];
-					break;
-				case Directions.NORTHWEST:
-					return grid[0][0];
-				case Directions.NORTHEAST:
-					return grid[grid.length-1][0];
-				case Directions.NORTH:
-					if((((GridLocale)loc).xGridSize()==xGridSize()))
-						return grid[xy.x][0];
-					break;
-				case Directions.SOUTH:
-					if((((GridLocale)loc).xGridSize()==xGridSize()))
-						return grid[xy.x][grid[0].length-1];
-					break;
-				case Directions.SOUTHEAST:
-					return grid[grid.length-1][grid[0].length-1];
-				case Directions.SOUTHWEST:
-					return grid[0][grid[0].length-1];
+					switch(opDirection)
+					{
+					case Directions.EAST:
+						if((((GridLocale)loc).yGridSize()==yGridSize()))
+							return grid[grid.length-1][xy.y];
+						break;
+					case Directions.WEST:
+						if((((GridLocale)loc).yGridSize()==yGridSize()))
+							return grid[0][xy.y];
+						break;
+					case Directions.NORTHWEST:
+						return grid[0][0];
+					case Directions.NORTHEAST:
+						return grid[grid.length-1][0];
+					case Directions.NORTH:
+						if((((GridLocale)loc).xGridSize()==xGridSize()))
+							return grid[xy.x][0];
+						break;
+					case Directions.SOUTH:
+						if((((GridLocale)loc).xGridSize()==xGridSize()))
+							return grid[xy.x][grid[0].length-1];
+						break;
+					case Directions.SOUTHEAST:
+						return grid[grid.length-1][grid[0].length-1];
+					case Directions.SOUTHWEST:
+						return grid[0][grid[0].length-1];
+					}
 				}
 			}
 		}
