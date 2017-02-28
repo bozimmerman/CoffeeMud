@@ -184,7 +184,12 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 	{
 		return CMProps.getNormalSkillGainCost(ID());
 	}
-	
+
+	protected boolean canDescTitleHere(final Room R)
+	{
+		return true;
+	}
+
 	@Override
 	public void unInvoke()
 	{
@@ -1602,6 +1607,11 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 		
 		if(doingCode == Building.TITLE)
 		{
+			if(!canDescTitleHere(mob.location()))
+			{
+				commonTell(mob,L("You can't do that here."));
+				return false;
+			}
 			final String titleStr=CMParms.combine(commands,1);
 			if(titleStr.length()==0)
 			{
@@ -1632,6 +1642,13 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 				commonTell(mob,L("You must specify an exit direction or the word room, followed by a description for it."));
 				return false;
 			}
+
+			if(!canDescTitleHere(mob.location()))
+			{
+				commonTell(mob,L("You can't do that here."));
+				return false;
+			}
+
 			if(CMLib.directions().getGoodDirectionCode(commands.get(1))>=0)
 			{
 				dir=CMLib.directions().getGoodDirectionCode(commands.get(1));

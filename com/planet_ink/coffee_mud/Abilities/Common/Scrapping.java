@@ -124,12 +124,15 @@ public class Scrapping extends CommonSkill
 								s="";
 							msg.modify(L("<S-NAME> manage(s) to scrap @x1 pound@x2 of @x3.",""+msg.value(),s,foundShortName));
 							mob.location().send(mob, msg);
-							for(int i=0;i<msg.value();i++)
+							if(found.material() != RawMaterial.RESOURCE_NOTHING)
 							{
-								final Item newFound=(Item)found.copyOf();
-								if(!dropAWinner(mob,newFound))
-									break;
-								CMLib.commands().postGet(mob,null,newFound,true);
+								for(int i=0;i<msg.value();i++)
+								{
+									final Item newFound=(Item)found.copyOf();
+									if(!dropAWinner(mob,newFound))
+										break;
+									CMLib.commands().postGet(mob,null,newFound,true);
+								}
 							}
 						}
 					}

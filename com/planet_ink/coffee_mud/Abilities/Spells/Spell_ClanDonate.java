@@ -76,7 +76,7 @@ public class Spell_ClanDonate extends Spell
 	@Override
 	protected int overrideMana()
 	{
-		return 5;
+		return Ability.COST_PCT + 50;
 	}
 
 	@Override

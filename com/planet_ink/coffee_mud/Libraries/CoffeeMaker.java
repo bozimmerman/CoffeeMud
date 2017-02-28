@@ -4205,6 +4205,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			return "" + I.rawLogicalAnd(); // wornand
 		case BASEGOLD:
 			return "" + I.baseGoldValue(); // basegold
+		case ISGETTABLE:
+			return "" + (!CMath.bset(I.basePhyStats().sensesMask(), PhyStats.SENSE_ITEMNOTGET)); // isgettable
 		case ISREADABLE:
 			return "" + (CMath.bset(I.basePhyStats().sensesMask(), PhyStats.SENSE_ITEMREADABLE)); // isreadable
 		case ISDROPPABLE:
@@ -4290,6 +4292,9 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		case BASEGOLD:
 			I.setBaseValue(CMath.s_parseIntExpression(val));
 			break; // basegold
+		case ISGETTABLE:
+			CMLib.flags().setGettable(I, CMath.s_bool(val));
+			break; // isgettable
 		case ISREADABLE:
 			CMLib.flags().setReadable(I, CMath.s_bool(val));
 			break; // isreadable

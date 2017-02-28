@@ -92,6 +92,14 @@ public class Landscaping extends BuildingSkill
 	}
 
 	@Override
+	protected boolean canDescTitleHere(final Room R)
+	{
+		return (R!=null)
+				&&((R.domainType()&Room.INDOORS)==0)
+				&&(R.domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER);
+	}
+
+	@Override
 	protected int[][] getBasicMaterials(final MOB mob, int woodRequired, String miscType)
 	{
 		if(miscType.length()==0)

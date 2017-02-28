@@ -92,6 +92,23 @@ public class Irrigation extends BuildingSkill
 	}
 
 	@Override
+	protected boolean canDescTitleHere(final Room R)
+	{
+		if(R!=null)
+		{
+			switch(R.domainType())
+			{
+			case Room.DOMAIN_INDOORS_UNDERWATER:
+			case Room.DOMAIN_OUTDOORS_UNDERWATER:
+			case Room.DOMAIN_INDOORS_WATERSURFACE:
+			case Room.DOMAIN_OUTDOORS_WATERSURFACE:
+				return true;
+			}
+		}
+		return false;
+	}
+
+	@Override
 	protected int[][] getBasicMaterials(final MOB mob, int woodRequired, String miscType)
 	{
 		if(miscType.length()==0)

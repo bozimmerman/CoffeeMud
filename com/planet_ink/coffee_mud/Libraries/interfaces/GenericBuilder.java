@@ -51,6 +51,7 @@ public interface GenericBuilder extends CMLibrary
 		WORNAND,
 		BASEGOLD,
 		ISREADABLE,
+		ISGETTABLE,
 		ISDROPPABLE,
 		ISREMOVABLE,
 		MATERIAL,
