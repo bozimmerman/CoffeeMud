@@ -551,8 +551,8 @@ public class Reset extends StdCommand
 				return false;
 			}
 			rest=(commands.size()>0)?CMParms.combine(commands,0):"";
-			int levelLow = 1;
-			int levelHigh = 100;
+			//int levelLow = 1;
+			//int levelHigh = 100;
 			
 			final Session sess=mob.session();
 			if((sess==null)||(!sess.confirm("Re-Level this area to between, ","N")))

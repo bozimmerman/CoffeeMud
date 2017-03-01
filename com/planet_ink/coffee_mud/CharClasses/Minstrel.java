@@ -324,7 +324,7 @@ public class Minstrel extends StdCharClass
 			if(w == null)
 				return new Vector<Item>();
 			outfitChoices=new Vector<Item>();
-			if(w!=null)
+			//if(w!=null)
 				outfitChoices.add(w);
 			final Item i=CMClass.getItem("GenInstrument");
 			if(i!=null)

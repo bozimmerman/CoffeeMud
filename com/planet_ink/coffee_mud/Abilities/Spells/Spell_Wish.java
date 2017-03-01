@@ -707,7 +707,7 @@ public class Spell_Wish extends Spell
 				||(myWish.indexOf(" ABORTION ")>=0)))
 			{
 				Ability A=target.fetchEffect("Pregnancy");
-				if(target != null)
+				if(A != null)
 				{
 					A.unInvoke();
 					target.delEffect(A);
@@ -726,7 +726,7 @@ public class Spell_Wish extends Spell
 				||(myWish.indexOf(" COME TO FULL TERM ")>=0)))
 			{
 				Ability A=target.fetchEffect("Pregnancy");
-				if(target != null)
+				if(A != null)
 				{
 					long pregStart = CMath.s_long(A.getStat("PREGSTART"));
 					long pregEnd = CMath.s_long(A.getStat("PREGEND"));

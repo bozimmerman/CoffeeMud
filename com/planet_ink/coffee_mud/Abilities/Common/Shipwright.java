@@ -131,11 +131,11 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 			String openWord=null;
 			String closedWord=null;
 			String displayText="";
-			if(closeWord == null)
+			//if(closeWord == null)
 				closeWord="close";
-			if(openWord == null)
+			//if(openWord == null)
 				openWord="open";
-			if(closedWord == null)
+			//if(closedWord == null)
 				closedWord=CMLib.english().startWithAorAn("closed door");
 			room=CMLib.map().getRoom(room);
 			final Exit X=CMClass.getExit("GenDoor");
