@@ -84,7 +84,7 @@ public class Troll extends StdRace
 		return 0;
 	}
 
-	private final static String localizedStaticRacialCat = CMLib.lang().L("Troll-kin");
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Giant-kin");
 
 	@Override
 	public String racialCategory()

@@ -413,7 +413,7 @@ public class Mage extends StdCharClass
 	}
 
 	private final String[] raceRequiredList=new String[]{
-		"Human","Elf","Gith","Dragon","Humanoid","Illithid",
+		"Human","Elf","Dragon","Humanoid","Illithid",
 		"Gnome","Fairy-kin","HalfElf","Mindflayer","Svirfneblin",
 		"Githyanki","Merfolk","Faerie","Orc"
 	};

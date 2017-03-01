@@ -38,6 +38,7 @@
   36. Builders can now use LIST GENSTATS <class or item> to view named generic stats. 
   37. Universal Starting Items can now be distinguished by race.
   38. New GenExit/GenPortal tags, and new NOWEAR flag for items in MUDPercolator
+  39. Some of the one-off Racial Categories have been consolidated.
 # Build 5.9.4 Released 08/03/2016
    1. Qualify now shows language limits
    2. New Prop_NoTeleport exceptions

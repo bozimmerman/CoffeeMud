@@ -1172,6 +1172,12 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					if(!(o instanceof Modifiable))
 						throw new CMException("Invalid copystat: '"+s+"' on piece '"+piece.tag()+"', Data: "+CMParms.toKeyValueSlashListString(piece.parms())+":"+CMStrings.limit(piece.value(),100));
 					final Modifiable E2=(Modifiable)o;
+					if(o instanceof MOB)
+					{
+						((MOB)E2).setBaseCharStats((CharStats)((MOB)o).baseCharStats().copyOf());
+						((MOB)E2).setBasePhyStats((PhyStats)((MOB)o).basePhyStats().copyOf());
+						((MOB)E2).setBaseState((CharState)((MOB)o).baseState().copyOf());
+					}
 					fillOutCopyStats(E,E2);
 				}
 				else
@@ -1181,7 +1187,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 						throw new CMException("Invalid copystat: '"+s+"' on piece '"+piece.tag()+"', Data: "+CMParms.toKeyValueSlashListString(piece.parms())+":"+CMStrings.limit(piece.value(),100));
 					final BuildCallback callBack=new BuildCallback()
 					{
-						@Override public void willBuild(Environmental E2, XMLTag XMLTag)
+						@Override 
+						public void willBuild(Environmental E2, XMLTag XMLTag)
 						{
 							fillOutCopyStats(E,E2);
 						}

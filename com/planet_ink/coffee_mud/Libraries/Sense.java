@@ -463,7 +463,6 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			"Dragon",
 			"Reptile",
 			"Ophidian",
-			"Lizard Man",
 			"Fish"
 		};
 		return (race == null) ? false : CMStrings.containsIgnoreCase(eggLayers, race.racialCategory());

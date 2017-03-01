@@ -84,7 +84,7 @@ public class Gnoll extends StdRace
 		return 0;
 	}
 
-	private final static String localizedStaticRacialCat = CMLib.lang().L("Gnoll");
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Canine");
 
 	@Override
 	public String racialCategory()

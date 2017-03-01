@@ -277,7 +277,7 @@ public class Ranger extends StdCharClass
 	}
 	
 	private final String[] raceRequiredList=new String[]{
-		"Human","Humanoid","Troll-kin","Elf","Centaur","Gnoll",
+		"Human","Humanoid","Giant-kin","Elf","Centaur","Gnoll",
 		"Githyanki","LizardMan","Aarakocran","Merfolk",
 		"Faerie","Orc"
 	};

@@ -56,7 +56,7 @@ public class Githyanki extends Humanoid
 		return Area.THEME_FANTASY | Area.THEME_SKILLONLYMASK;
 	}
 
-	private final static String localizedStaticRacialCat = CMLib.lang().L("Gith");
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Humanoid");
 
 	@Override
 	public String racialCategory()

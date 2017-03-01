@@ -91,7 +91,7 @@ public class LizardMan extends StdRace
 		return 0;
 	}
 
-	private final static String localizedStaticRacialCat = CMLib.lang().L("Lizard Man");
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Reptile");
 
 	@Override
 	public String racialCategory()
