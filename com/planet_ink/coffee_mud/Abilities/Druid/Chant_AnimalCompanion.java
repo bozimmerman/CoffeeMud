@@ -161,7 +161,9 @@ public class Chant_AnimalCompanion extends Chant
 				}
 				mob.makePeace(true);
 				target.makePeace(true);
-				if((target.basePhyStats().rejuv()>0)&&(target.basePhyStats().rejuv()!=PhyStats.NO_REJUV))
+				if((target.basePhyStats().rejuv()>0)
+				&&(target.basePhyStats().rejuv()!=PhyStats.NO_REJUV)
+				&&(target.getStartRoom()!=null))
 				{
 					final MOB oldTarget=target;
 					target = (MOB) target.copyOf();
