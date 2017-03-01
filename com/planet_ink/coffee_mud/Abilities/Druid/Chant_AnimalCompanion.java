@@ -115,7 +115,7 @@ public class Chant_AnimalCompanion extends Chant
 			return false;
 		}
 		
-		if(CMLib.flags().isSleeping(target) || (!CMLib.flags().canBeHeardSpeakingBy(mob,target)))
+		if(CMLib.flags().isSleeping(target) || (!CMLib.flags().canBeHeardSpeakingBy(mob,target)) || (!target.isMonster()))
 		{
 			mob.tell(target,null,null,L("<S-NAME> cannot make the oath with you right now!"));
 			return false;
@@ -147,6 +147,7 @@ public class Chant_AnimalCompanion extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
+				final MOB targetCopy = (MOB)target.copyOf();
 				for(Enumeration<Ability> a=target.effects();a.hasMoreElements();)
 				{
 					Ability A=a.nextElement();
@@ -159,6 +160,22 @@ public class Chant_AnimalCompanion extends Chant
 							target.setFollowing(mob);
 					}
 				}
+				if(target.amDestroyed() || target.amDead())
+				{
+					target=targetCopy;
+					target.basePhyStats().setRejuv(PhyStats.NO_REJUV);
+					target.phyStats().setRejuv(PhyStats.NO_REJUV);
+					target.text();
+					target.bringToLife(mob.location(), false);
+				}
+				else
+				if(target.location() != mob.location())
+				{
+					mob.location().bringMobHere(target, true);
+					targetCopy.destroy();
+				}
+				else
+					targetCopy.destroy();
 				mob.makePeace(true);
 				target.makePeace(true);
 				if((target.basePhyStats().rejuv()>0)

@@ -90,7 +90,7 @@ public class Chant_SummonAnimal extends Chant
 	@Override
 	public long flags()
 	{
-		return Ability.FLAG_SUMMONING;
+		return Ability.FLAG_SUMMONING|Ability.FLAG_CHARMING;
 	}
 
 	@Override
@@ -369,7 +369,6 @@ public class Chant_SummonAnimal extends Chant
 			}
 		}
 
-		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
 		newMOB.setLocation(caster.location());
 		newMOB.basePhyStats().setLevel(level);
 		newMOB.basePhyStats().setAbility(11);
@@ -384,10 +383,12 @@ public class Chant_SummonAnimal extends Chant
 		
 		MOB genM = CMClass.getMOB("GenMob");
 		for(String stat : genM.getStatCodes())
-		{
 			genM.setStat(stat, CMLib.coffeeMaker().getGenMobStat(newMOB,stat));
-		}
+		genM.setBaseCharStats((CharStats)newMOB.baseCharStats().copyOf());
+		genM.setBasePhyStats((PhyStats)newMOB.basePhyStats().copyOf());
+		genM.setBaseState((CharState)newMOB.baseState().copyOf());
 		genM.setLocation(caster.location());
+		genM.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
 		CMLib.leveler().fillOutMOB(genM,genM.basePhyStats().level());
 		genM.setMoney(0);
 		genM.setMoneyVariation(0);

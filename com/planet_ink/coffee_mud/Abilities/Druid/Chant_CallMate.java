@@ -91,7 +91,7 @@ public class Chant_CallMate extends Chant
 	@Override
 	public long flags()
 	{
-		return Ability.FLAG_SUMMONING;
+		return Ability.FLAG_SUMMONING|Ability.FLAG_CHARMING;
 	}
 
 	@Override
