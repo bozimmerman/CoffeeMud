@@ -1201,6 +1201,23 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 						}
 					}
 				}
+				for(final Enumeration<Object> e=helpFile.keys();e.hasMoreElements();)
+				{
+					final String key=(String)e.nextElement();
+					String entry=(String)helpFile.get(key);
+					final int x=entry.indexOf("<ZAP=");
+					if(x>=0)
+					{
+						final int y=entry.indexOf('>',x);
+						if(y>(x+5))
+						{
+							final String word=entry.substring(x+5,y).trim();
+							entry=entry.substring(0,x)+CMLib.masking().maskHelp("\n\r",word)+entry.substring(y+1);
+							helpFile.remove(key);
+							helpFile.put(key,entry);
+						}
+					}
+				}
 				Resources.submitResource("MAIN HELP FILE",helpFile);
 			}
 			return helpFile;
