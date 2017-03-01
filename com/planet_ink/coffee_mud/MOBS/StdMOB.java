@@ -3642,15 +3642,15 @@ public class StdMOB implements MOB
 								CMLib.combat().postDamage(killerM, this, this, 
 														(int) Math.round(CMath.mul(Math.random(), basePhyStats().level() + 2)), 
 														CMMsg.MASK_ALWAYS | CMMsg.TYP_WATER, -1, 
-														L("^Z<S-NAME> <S-IS-ARE> drowning in @x1!^.^?",RawMaterial.CODES.NAME(atmo).toLowerCase()) + CMLib.protocol().msp("choke.wav", 10));
+														L("^Z<T-NAME> <T-IS-ARE> drowning in @x1!^.^?",RawMaterial.CODES.NAME(atmo).toLowerCase()) + CMLib.protocol().msp("choke.wav", 10));
 							}
 							else
 							{
 								final String msgStr;
 								if(atmo == 0)
-									msgStr=L("^Z<S-NAME> can't breathe!^.^?") + CMLib.protocol().msp("choke.wav", 10);
+									msgStr=L("^Z<T-NAME> can't breathe!^.^?") + CMLib.protocol().msp("choke.wav", 10);
 								else
-									msgStr=L("^Z<S-NAME> <S-IS-ARE> choking on @x1!^.^?");
+									msgStr=L("^Z<T-NAME> <T-IS-ARE> choking on @x1!^.^?",RawMaterial.CODES.NAME(atmo).toLowerCase());
 								final MOB killerM = CMLib.combat().getBreatheKiller(this);
 								CMLib.combat().postDamage(killerM, this, this, 
 														(int) Math.round(CMath.mul(Math.random(), basePhyStats().level() + 2)), 

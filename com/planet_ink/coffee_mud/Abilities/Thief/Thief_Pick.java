@@ -35,21 +35,72 @@ import java.util.*;
 
 public class Thief_Pick extends ThiefSkill
 {
-	@Override public String ID() { return "Thief_Pick"; }
-	private final static String localizedName = CMLib.lang().L("Pick Locks");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_EXITS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	private static final String[] triggerStrings =I(new String[] {"PICK"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
-	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_CRIMINAL;}
-	public int code=0;
-	public Vector<String> lastDone=new Vector<String>();
+	@Override
+	public String ID()
+	{
+		return "Thief_Pick";
+	}
 
-	@Override public int abilityCode(){return code;}
-	@Override public void setAbilityCode(int newCode){code=newCode;}
+	private final static String	localizedName	= CMLib.lang().L("Pick Locks");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_ITEMS | Ability.CAN_EXITS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "PICK" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT | USAGE_MANA;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_THIEF_SKILL | Ability.DOMAIN_CRIMINAL;
+	}
+
+	public int				code		= 0;
+	public Vector<String>	lastDone	= new Vector<String>();
+
+	@Override
+	public int abilityCode()
+	{
+		return code;
+	}
+
+	@Override
+	public void setAbilityCode(int newCode)
+	{
+		code = newCode;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -79,7 +130,7 @@ public class Thief_Pick extends ThiefSkill
 			beneficialVisualFizzle(mob,unlockThis,L("<S-NAME> attempt(s) to pick the lock on <T-NAME> and fail(s)."));
 		else
 		{
-			CMMsg msg=CMClass.getMsg(mob,unlockThis,this,auto?CMMsg.MSG_OK_VISUAL:(CMMsg.MSG_THIEF_ACT),CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,null);
+			CMMsg msg=CMClass.getMsg(mob,unlockThis,this,auto?CMMsg.MSG_OK_VISUAL:(CMMsg.MSG_DELICATE_SMALL_HANDS_ACT),CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,null);
 			msg.setValue(0);
 			if(mob.location().okMessage(mob,msg))
 			{
