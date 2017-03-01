@@ -55,9 +55,11 @@ public class CommonSpeaker extends StdBehavior
 	public void setParms(String parameters)
 	{
 		super.setParms(parameters);
-		language=parameters;
+		if(parameters.trim().length()>0)
+			language=parameters;
+		else
+			language="Common";
 	}
-	
 	
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
