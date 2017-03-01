@@ -64,7 +64,7 @@ public class Chant_Burrowspeak extends Chant_SpeakWithAnimals
 		{
 			final Race R=mob.charStats().getMyRace();
 			if(R.racialCategory().equals("Rodent")
-			||R.racialCategory().equals("Serpent")
+			||R.racialCategory().equals("Ophidian")
 			||R.racialCategory().equals("Worm"))
 				return true;
 		}

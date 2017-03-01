@@ -84,7 +84,7 @@ public class Snake extends StdRace
 		return ~(Wearable.WORN_EYES);
 	}
 
-	private final static String localizedStaticRacialCat = CMLib.lang().L("Serpent");
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Ophidian");
 
 	@Override
 	public String racialCategory()

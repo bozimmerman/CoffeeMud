@@ -84,7 +84,7 @@ public class Naga extends Python
 		return Wearable.WORN_LEGS | Wearable.WORN_FEET;
 	}
 
-	private final static String localizedStaticRacialCat = CMLib.lang().L("Serpent");
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Ophidian");
 
 	@Override
 	public String racialCategory()

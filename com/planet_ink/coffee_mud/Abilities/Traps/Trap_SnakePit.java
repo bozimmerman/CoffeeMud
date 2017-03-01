@@ -86,7 +86,7 @@ public class Trap_SnakePit extends Trap_RoomPit
 			if(I instanceof CagedAnimal)
 			{
 				final MOB M=((CagedAnimal)I).unCageMe();
-				if((M!=null)&&(M.baseCharStats().getMyRace().racialCategory().equalsIgnoreCase("Serpent")))
+				if((M!=null)&&(M.baseCharStats().getMyRace().racialCategory().equalsIgnoreCase("Ophidian")))
 					return I;
 			}
 		}

@@ -51,7 +51,7 @@ public class GardenSnake extends Snake
 
 	protected static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
 
-	private final static String localizedStaticRacialCat = CMLib.lang().L("Serpent");
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Ophidian");
 
 	@Override
 	public String racialCategory()

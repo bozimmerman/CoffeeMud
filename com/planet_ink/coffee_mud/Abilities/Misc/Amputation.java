@@ -660,11 +660,11 @@ public class Amputation extends StdAbility implements LimbDamage, HealthConditio
 			while(commands.size()>1)
 				commands.remove(1);
 		}
-		if(choice.toUpperCase().startsWith("RIGHT "))
-			choice=choice.substring(6).trim();
-		else
-		if(choice.toUpperCase().startsWith("LEFT "))
-			choice=choice.substring(5).trim();
+		//if(choice.toUpperCase().startsWith("RIGHT "))
+		//	choice=choice.substring(6).trim();
+		//else
+		//if(choice.toUpperCase().startsWith("LEFT "))
+		//	choice=choice.substring(5).trim();
 		final MOB target=super.getTarget(mob,commands,givenTarget,false,true);
 		if(target==null)
 			return false;

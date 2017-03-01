@@ -462,7 +462,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			"Avian",
 			"Dragon",
 			"Reptile",
-			"Serpent",
+			"Ophidian",
 			"Lizard Man",
 			"Fish"
 		};

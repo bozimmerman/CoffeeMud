@@ -78,7 +78,7 @@ public class Python extends Snake
 		return 20;
 	}
 
-	private final static String localizedStaticRacialCat = CMLib.lang().L("Serpent");
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Ophidian");
 
 	@Override
 	public String racialCategory()
