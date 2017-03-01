@@ -32,19 +32,57 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
-
 public class Prayer_CorpseWalk extends Prayer
 {
-	@Override public String ID() { return "Prayer_CorpseWalk"; }
-	private final static String localizedName = CMLib.lang().L("Corpse Walk");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_DEATHLORE;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public long flags(){return Ability.FLAG_TRANSPORTING|Ability.FLAG_UNHOLY;}
-	@Override protected int overrideMana(){return Ability.COST_PCT+50;}
+	@Override
+	public String ID()
+	{
+		return "Prayer_CorpseWalk";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Corpse Walk");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER | Ability.DOMAIN_DEATHLORE;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_TRANSPORTING | Ability.FLAG_UNHOLY;
+	}
+
+	@Override
+	protected int overrideMana()
+	{
+		return Ability.COST_PCT + 50;
+	}
 
 	public Item findCorpseRoom(List<Item> candidates)
 	{
@@ -143,8 +181,6 @@ public class Prayer_CorpseWalk extends Prayer
 		}
 		else
 			beneficialVisualFizzle(mob,corpseItem,L("<S-NAME> @x1, but nothing happens.",prayWord(mob)));
-
-
 		// return whether it worked
 		return success;
 	}

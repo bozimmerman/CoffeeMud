@@ -35,15 +35,55 @@ import java.util.*;
 
 public class Prayer_Refuge extends Prayer
 {
-	@Override public String ID() { return "Prayer_Refuge"; }
-	private final static String localizedName = CMLib.lang().L("Refuge");
-	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	@Override protected int canAffectCode(){return CAN_ITEMS;}
-	@Override protected int canTargetCode(){return CAN_ITEMS;}
-	@Override public int classificationCode(){	return Ability.ACODE_PRAYER|Ability.DOMAIN_RESTORATION;}
-	@Override protected int overrideMana(){return Ability.COST_PCT+25;}
-	@Override public long flags(){return Ability.FLAG_NEUTRAL|Ability.FLAG_TRANSPORTING;}
+	@Override
+	public String ID()
+	{
+		return "Prayer_Refuge";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Refuge");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_ITEMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_ITEMS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER | Ability.DOMAIN_RESTORATION;
+	}
+
+	@Override
+	protected int overrideMana()
+	{
+		return Ability.COST_PCT + 25;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_NEUTRAL | Ability.FLAG_TRANSPORTING;
+	}
 
 	@Override
 	public boolean okMessage(Environmental host, CMMsg msg)
@@ -65,7 +105,7 @@ public class Prayer_Refuge extends Prayer
 	{
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_BONUS);
 	}
-	
+
 	public Room getRefuge(Item I)
 	{
 		Room R=CMLib.map().getRoom(text());
@@ -95,7 +135,8 @@ public class Prayer_Refuge extends Prayer
 						return;
 					final Room thisRoom=msg.source().location();
 					final Ability thisA=this;
-					msg.addTrailerRunnable(new Runnable(){
+					msg.addTrailerRunnable(new Runnable()
+					{
 						@Override
 						public void run()
 						{
@@ -162,12 +203,9 @@ public class Prayer_Refuge extends Prayer
 				target.recoverPhyStats();
 				mob.recoverPhyStats();
 			}
-
 		}
 		else
 			beneficialVisualFizzle(mob,target,L("<S-NAME> point(s) at <T-NAMESELF>, but fail(s) to properly pray."));
-
-
 		// return whether it worked
 		return success;
 	}

@@ -35,14 +35,49 @@ import java.util.*;
 
 public class Spell_Gate extends Spell
 {
-	@Override public String ID() { return "Spell_Gate"; }
-	private final static String localizedName = CMLib.lang().L("Gate");
-	@Override public String name() { return localizedName; }
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
-	@Override protected int overrideMana(){return Ability.COST_PCT+50;}
-	@Override public long flags(){return Ability.FLAG_TRANSPORTING;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override
+	public String ID()
+	{
+		return "Spell_Gate";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Gate");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL | Ability.DOMAIN_CONJURATION;
+	}
+
+	@Override
+	protected int overrideMana()
+	{
+		return Ability.COST_PCT + 50;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_TRANSPORTING;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
 
 	public boolean isBadRoom(final Room room, final MOB mob, final Room newRoom)
 	{
@@ -56,7 +91,6 @@ public class Spell_Gate extends Spell
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-
 		if((auto||mob.isMonster())&&((commands.size()<1)||((commands.get(0)).equals(mob.name()))))
 		{
 			commands.clear();
@@ -115,7 +149,6 @@ public class Spell_Gate extends Spell
 			mob.tell(L("You can't seem to fixate on '@x1', perhaps they don't exist?",CMParms.combine(commands,0)));
 			return false;
 		}
-
 
 		int adjustment=target.phyStats().level()-(mob.phyStats().level()+(2*getXLEVELLevel(mob)));
 		if(target.isMonster())

@@ -35,18 +35,69 @@ import java.util.*;
 
 public class Spell_Summon extends Spell
 {
-	@Override public String ID() { return "Spell_Summon"; }
-	private final static String localizedName = CMLib.lang().L("Summon");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Summoned)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canTargetCode(){return 0;}
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int overrideMana(){return Ability.COST_PCT+50;}
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
-	@Override public long flags(){return Ability.FLAG_TRANSPORTING|Ability.FLAG_SUMMONING;}
-	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override
+	public String ID()
+	{
+		return "Spell_Summon";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Summon");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Summoned)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int overrideMana()
+	{
+		return Ability.COST_PCT + 50;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL | Ability.DOMAIN_CONJURATION;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_TRANSPORTING | Ability.FLAG_SUMMONING;
+	}
+
+	@Override
+	public int enchantQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
 
 	@Override
 	public void unInvoke()
@@ -66,7 +117,6 @@ public class Spell_Summon extends Spell
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-
 		String areaName=CMParms.combine(commands,0).trim().toUpperCase();
 		if((commands.size()<1)&&(!auto))
 		{
@@ -118,7 +168,10 @@ public class Spell_Summon extends Spell
 				if(target != null)
 					oldRoom=target.location();
 			}
-		}catch(final NoSuchElementException nse){}
+		}
+		catch (final NoSuchElementException nse)
+		{
+		}
 
 		if((oldRoom==null)||(target==null))
 		{
@@ -170,12 +223,9 @@ public class Spell_Summon extends Spell
 				else
 					mob.tell(L("Some powerful magic stifles the spell."));
 			}
-
 		}
 		else
 			beneficialWordsFizzle(mob,null,L("<S-NAME> attempt(s) to summon '@x1', but fail(s).",areaName));
-
-
 		// return whether it worked
 		return success;
 	}

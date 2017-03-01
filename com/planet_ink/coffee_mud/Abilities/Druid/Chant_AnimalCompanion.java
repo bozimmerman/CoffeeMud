@@ -83,7 +83,7 @@ public class Chant_AnimalCompanion extends Chant
 	@Override
 	protected int overrideMana()
 	{
-		return Ability.COST_PCT + 90;
+		return Ability.COST_PCT + 10;
 	}
 	
 	@Override

@@ -227,7 +227,6 @@ public class Spell_ReverseGravity extends Spell
 
 		if(success)
 		{
-
 			final CMMsg msg = CMClass.getMsg(mob, target, this, verbalCastCode(mob,target,auto), L((auto?"G":"^S<S-NAME> speak(s) and wave(s) and g")+"ravity begins to reverse!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
