@@ -89,7 +89,7 @@ public class Chant_AnimalCompanion extends Chant
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		final MOB target=getTarget(mob,commands,givenTarget);
+		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null)
 			return false;
 		if(!CMLib.flags().isAnimalIntelligence(target))
@@ -161,6 +161,16 @@ public class Chant_AnimalCompanion extends Chant
 				}
 				mob.makePeace(true);
 				target.makePeace(true);
+				if((target.basePhyStats().rejuv()>0)&&(target.basePhyStats().rejuv()!=PhyStats.NO_REJUV))
+				{
+					final MOB oldTarget=target;
+					target = (MOB) target.copyOf();
+					target.basePhyStats().setRejuv(PhyStats.NO_REJUV);
+					target.phyStats().setRejuv(PhyStats.NO_REJUV);
+					target.text();
+					oldTarget.killMeDead(false);
+					target.bringToLife(mob.location(), false);
+				}
 				if(target.amFollowing()!=mob)
 					target.setFollowing(mob);
 				Ability A=target.fetchEffect("Loyalty");
