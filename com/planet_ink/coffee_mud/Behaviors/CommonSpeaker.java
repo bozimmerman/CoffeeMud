@@ -35,16 +35,30 @@ import java.util.*;
 */
 public class CommonSpeaker extends StdBehavior
 {
-	@Override public String ID(){return "CommonSpeaker";}
+	@Override
+	public String ID()
+	{
+		return "CommonSpeaker";
+	}
 
 	@Override
 	public String accountForYourself()
 	{
-		return "common speaking";
+		return language+" speaking";
 	}
 
 	int tickTocker=1;
 	int tickTock=0;
+	String language="Common";
+	
+	@Override
+	public void setParms(String parameters)
+	{
+		super.setParms(parameters);
+		language=parameters;
+	}
+	
+	
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -54,9 +68,14 @@ public class CommonSpeaker extends StdBehavior
 			return true;
 		if(--tickTock>0)
 			return true;
+		if(!(ticking instanceof Environmental))
+			return true;
 
-		final Ability L=CMClass.getAbility("Common");
-		if(L!=null)
+		final Ability L=CMClass.getAbility(language);
+		if(L==null)
+			Log.errOut("CommonSpeaker on "+ticking.name()+" in "+CMLib.map().getExtendedRoomID(CMLib.map().roomLocation((Environmental)ticking))
+					+" has unknown language '"+language+"'");
+		else
 			L.invoke((MOB)ticking,null,true,0);
 		if((++tickTocker)==100)
 			tickTocker=99;
