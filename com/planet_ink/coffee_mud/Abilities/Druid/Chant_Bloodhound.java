@@ -36,21 +36,52 @@ import java.util.*;
 
 public class Chant_Bloodhound extends Chant
 {
-	@Override public String ID() { return "Chant_Bloodhound"; }
-	private final static String localizedName = CMLib.lang().L("Bloodhound");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Bloodhound)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
+	@Override
+	public String ID()
+	{
+		return "Chant_Bloodhound";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Bloodhound");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Bloodhound)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT | Ability.DOMAIN_SHAPE_SHIFTING;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_SELF;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
 		if((affected instanceof MOB)&&(CMLib.flags().canSmell((MOB)affected)))
-			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_DARK);
+			affectableStats.setSensesMask((affectableStats.sensesMask()|PhyStats.CAN_SEE_DARK) & (~PhyStats.CAN_NOT_SEE));
 	}
 
 
