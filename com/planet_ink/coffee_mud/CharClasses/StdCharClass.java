@@ -1361,21 +1361,48 @@ public class StdCharClass implements CharClass
 	}
 
 	@Override
-	public boolean isValidClassDivider(MOB killer, MOB killed, MOB mob, Set<MOB> followers)
+	public boolean canBeADivider(MOB killer, MOB killed, MOB mob, Set<MOB> followers)
 	{
-		return isValidClassBeneficiary(killer,killed,mob,followers);
+		return true;
+	}
+
+	@Override
+	public boolean canBeABenificiary(MOB killer, MOB killed, MOB mob, Set<MOB> followers)
+	{
+		return true;
+	}
+
+	@Override
+	public boolean isValidClassDivider(MOB killer, MOB killed, final MOB mob, Set<MOB> followers)
+	{
+		if(mob != null)
+		{
+			if(!mob.charStats().getCurrentClass().canBeADivider(killer, killed, mob, followers))
+				return false;
+			if((mob!=killed)
+			&&(!mob.amDead())
+			&&((mob.getVictim()==killed)
+			 ||(followers.contains(mob))
+			 ||(mob==killer)))
+				return true;
+		}
+		return false;
 	}
 
 	@Override
 	public boolean isValidClassBeneficiary(MOB killer, MOB killed, MOB mob, Set<MOB> followers)
 	{
-		if((mob!=null)
-		&&(mob!=killed)
-		&&(!mob.amDead())
-		&&((mob.getVictim()==killed)
-		 ||(followers.contains(mob))
-		 ||(mob==killer)))
-			return true;
+		if(mob != null)
+		{
+			if(!mob.charStats().getCurrentClass().canBeABenificiary(killer, killed, mob, followers))
+				return false;
+			if((mob!=killed)
+			&&(!mob.amDead())
+			&&((mob.getVictim()==killed)
+			 ||(followers.contains(mob))
+			 ||(mob==killer)))
+				return true;
+		}
 		return false;
 	}
 
