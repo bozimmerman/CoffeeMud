@@ -32,26 +32,59 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
-
 public class Prayer_Avatar extends Prayer
 {
-	@Override public String ID() { return "Prayer_Avatar"; }
-	private final static String localizedName = CMLib.lang().L("Avatar");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
-	@Override public long flags(){return Ability.FLAG_UNHOLY;}
+	@Override
+	public String ID()
+	{
+		return "Prayer_Avatar";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Avatar");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER | Ability.DOMAIN_COMMUNING;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_SELF;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_UNHOLY;
+	}
+
 	@Override
 	public String displayText()
 	{
-		if((invoker()!=null)&&(invoker().getWorshipCharID().length()>0))
-			return "(You are the AVATAR of "+invoker().getWorshipCharID()+")";
+		if ((invoker() != null) && (invoker().getWorshipCharID().length() > 0))
+			return "(You are the AVATAR of " + invoker().getWorshipCharID() + ")";
 		return "(You are the AVATAR of the gods)";
 	}
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
 
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
 
 	@Override
 	public void unInvoke()
@@ -117,7 +150,10 @@ public class Prayer_Avatar extends Prayer
 				{
 					final MOB M=R.fetchInhabitant(m);
 					if((M!=null)&&(M!=mob)&&(mob.mayPhysicallyAttack(M)))
-					{ attack=M; break;}
+					{
+						attack = M;
+						break;
+					}
 				}
 				if(attack==null)
 				{
@@ -144,7 +180,10 @@ public class Prayer_Avatar extends Prayer
 							{
 								final MOB M=R2.fetchInhabitant(m);
 								if((M!=null)&&(M!=mob)&&(mob.mayPhysicallyAttack(M)))
-								{ attack=M; break;}
+								{
+									attack = M;
+									break;
+								}
 							}
 						}
 					}
@@ -188,7 +227,6 @@ public class Prayer_Avatar extends Prayer
 		else
 			levels=adjustedLevel(mob,asLevel);
 
-
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -206,7 +244,6 @@ public class Prayer_Avatar extends Prayer
 		}
 		else
 			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1, but nothing happens.",prayWord(mob)));
-
 
 		// return whether it worked
 		return success;
