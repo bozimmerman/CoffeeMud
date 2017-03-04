@@ -534,6 +534,7 @@ public class StdLanguage extends StdAbility implements Language
 	{
 		if(!auto)
 		{
+			boolean alreadySpeaking=false;
 			for(final Enumeration<Ability> a=mob.effects();a.hasMoreElements();)
 			{
 				final Ability A=a.nextElement();
@@ -542,13 +543,19 @@ public class StdLanguage extends StdAbility implements Language
 					if(mob.isMonster())
 						A.setProficiency(100);
 					if(A.ID().equals(ID()))
+					{
+						alreadySpeaking = ((Language)A).beingSpoken(A.ID());
 						((Language)A).setBeingSpoken(ID(),true);
+					}
 					else
 						((Language)A).setBeingSpoken(ID(),false);
 				}
 			}
 			isAnAutoEffect=false;
-			mob.tell(L("You are now speaking @x1.",name()));
+			if(alreadySpeaking)
+				mob.tell(L("You were already speaking @x1.",name()));
+			else
+				mob.tell(L("You are now speaking @x1.",name()));
 		}
 		else
 			setBeingSpoken(ID(),true);

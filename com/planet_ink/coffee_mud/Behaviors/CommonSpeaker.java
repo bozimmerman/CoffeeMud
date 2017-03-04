@@ -59,6 +59,8 @@ public class CommonSpeaker extends StdBehavior
 			language=parameters;
 		else
 			language="Common";
+		tickTocker=1;
+		tickTock=0;
 	}
 	
 	@Override
@@ -73,12 +75,25 @@ public class CommonSpeaker extends StdBehavior
 		if(!(ticking instanceof Environmental))
 			return true;
 
-		final Ability L=CMClass.getAbility(language);
+		final Ability L=CMClass.getAbilityPrototype(language);
 		if(L==null)
 			Log.errOut("CommonSpeaker on "+ticking.name()+" in "+CMLib.map().getExtendedRoomID(CMLib.map().roomLocation((Environmental)ticking))
 					+" has unknown language '"+language+"'");
 		else
-			L.invoke((MOB)ticking,null,true,0);
+		{
+			final Ability A=((MOB)ticking).fetchAbility(L.ID());
+			if(A==null)
+			{
+				final Ability lA=CMClass.getAbility(L.ID());
+				lA.setProficiency(100);
+				lA.setSavable(false);
+				((MOB)ticking).addAbility(lA);
+				lA.autoInvocation((MOB)ticking, false);
+				lA.invoke((MOB)ticking,null,false,0);
+			}
+			else
+				A.invoke((MOB)ticking,null,false,0);
+		}
 		if((++tickTocker)==100)
 			tickTocker=99;
 		tickTock=tickTocker;
