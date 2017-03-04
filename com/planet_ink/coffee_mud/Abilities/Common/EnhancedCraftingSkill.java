@@ -217,7 +217,6 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 		}
 	}
 
-
 	private final static int atLeast1(int value, double pct)
 	{
 		int change=(int)Math.round(CMath.mul(value,pct));
@@ -580,18 +579,21 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 					{
 					case 0:
 						applyName(item,def.getData()[stage]);
-						item.basePhyStats().setArmor(item.basePhyStats().armor()+1);
+						if(item.basePhyStats().armor()>0)
+							item.basePhyStats().setArmor(item.basePhyStats().armor()+1);
 						item.setBaseValue(atLeast1(item.baseGoldValue(),0.1));
 						break;
 					case 1:
 						applyName(item,def.getData()[stage]);
-						item.basePhyStats().setArmor(atLeast1(item.basePhyStats().armor(),0.1)+1);
+						if(item.basePhyStats().armor()>0)
+							item.basePhyStats().setArmor(atLeast1(item.basePhyStats().armor(),0.1)+1);
 						item.setBaseValue(atLeast1(item.baseGoldValue(),0.2));
 						affect.bumpTickDown(Math.round(0.25 * affect.tickDown));
 						break;
 					case 2:
 						applyName(item,def.getData()[stage]);
-						item.basePhyStats().setArmor(atLeast1(item.basePhyStats().armor(),0.25)+1);
+						if(item.basePhyStats().armor()>0)
+							item.basePhyStats().setArmor(atLeast1(item.basePhyStats().armor(),0.25)+1);
 						item.setBaseValue(atLeast1(item.baseGoldValue(),0.3));
 						//addStatAdjustment(item,"CON","+1");
 						affect.bumpTickDown(Math.round(0.5 * affect.tickDown));
