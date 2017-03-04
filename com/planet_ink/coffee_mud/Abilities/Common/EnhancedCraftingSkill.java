@@ -572,28 +572,25 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 				}
 				case DURACRAFT:
 				{
-					if(!(item instanceof Armor))
-						commonTell(mob,L("@x1 only applies to armor.",def.getData()[stage]));
+					if((!(item instanceof Armor))||(item.basePhyStats().armor()==0))
+						commonTell(mob,L("@x1 only applies to protective armor.",def.getData()[stage]));
 					else
 					switch(stage)
 					{
 					case 0:
 						applyName(item,def.getData()[stage]);
-						if(item.basePhyStats().armor()>0)
-							item.basePhyStats().setArmor(item.basePhyStats().armor()+1);
+						item.basePhyStats().setArmor(item.basePhyStats().armor()+1);
 						item.setBaseValue(atLeast1(item.baseGoldValue(),0.1));
 						break;
 					case 1:
 						applyName(item,def.getData()[stage]);
-						if(item.basePhyStats().armor()>0)
-							item.basePhyStats().setArmor(atLeast1(item.basePhyStats().armor(),0.1)+1);
+						item.basePhyStats().setArmor(atLeast1(item.basePhyStats().armor(),0.1)+1);
 						item.setBaseValue(atLeast1(item.baseGoldValue(),0.2));
 						affect.bumpTickDown(Math.round(0.25 * affect.tickDown));
 						break;
 					case 2:
 						applyName(item,def.getData()[stage]);
-						if(item.basePhyStats().armor()>0)
-							item.basePhyStats().setArmor(atLeast1(item.basePhyStats().armor(),0.25)+1);
+						item.basePhyStats().setArmor(atLeast1(item.basePhyStats().armor(),0.25)+1);
 						item.setBaseValue(atLeast1(item.baseGoldValue(),0.3));
 						//addStatAdjustment(item,"CON","+1");
 						affect.bumpTickDown(Math.round(0.5 * affect.tickDown));
