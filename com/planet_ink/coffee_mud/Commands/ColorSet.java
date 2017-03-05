@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ChannelsLibrary.CMChannel;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ColorLibrary.Color;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -187,6 +188,7 @@ public class ColorSet extends StdCommand
 		if(clookup[0]==null)
 			return false;
 		final List<Pair<String,Integer>> theSet= new ArrayList<Pair<String,Integer>>();
+		// don't localize these, as the prompt will handle it.
 		theSet.add(new Pair<String,Integer>("Normal Text",Integer.valueOf('N')));
 		theSet.add(new Pair<String,Integer>("Highlighted Text",Integer.valueOf('H')));
 		theSet.add(new Pair<String,Integer>("Your Fight Text",Integer.valueOf('f')));
@@ -205,8 +207,9 @@ public class ColorSet extends StdCommand
 		theSet.add(new Pair<String,Integer>("Channel Colors",Integer.valueOf('Q')));
 		for(int i=0;i<CMLib.channels().getNumChannels();i++)
 		{
+			CMChannel C = CMLib.channels().getChannel(i);
 			if((clookup[0][128+i]!=null)&&(clookup[0][128+i].length()>0))
-				theSet.add(new Pair<String,Integer>(CMLib.channels().getChannelNames()[i],Integer.valueOf(128+i)));
+				theSet.add(new Pair<String,Integer>(C.name(),Integer.valueOf(128+i)));
 		}
 
 		final InputCallback[] IC=new InputCallback[1];
@@ -218,7 +221,7 @@ public class ColorSet extends StdCommand
 				final StringBuffer buf=new StringBuffer("");
 				for(int i=0;i<theSet.size();i++)
 				{
-					buf.append("\n\r^H"+CMStrings.padLeft(""+(i+1),2)+"^N) "+CMStrings.padRight(theSet.get(i).first,20)+": ");
+					buf.append("\n\r^H"+CMStrings.padLeft(""+(i+1),2)+"^N) "+CMStrings.padRight(L(theSet.get(i).first),20)+": ");
 					if(clookup[0][theSet.get(i).second.intValue()]!=null)
 						buf.append(colorDescription(clookup[0][theSet.get(i).second.intValue()]));
 					buf.append("^N");
@@ -232,7 +235,8 @@ public class ColorSet extends StdCommand
 			{
 			}
 
-			@Override public void callBack()
+			@Override
+			public void callBack()
 			{
 				if(input.trim().length()==0)
 					return;
@@ -248,7 +252,7 @@ public class ColorSet extends StdCommand
 							for(int x=0;x<theSet.size();x++)
 							{
 								final Pair<String,Integer> entry = theSet.get(x);
-								if(entry.first.equals(potChannelName))
+								if(entry.first.equals(potChannelName) || L(entry.first).equals(potChannelName))
 								{
 									newEntry = entry;
 									input = ""+(x+1);
@@ -303,7 +307,8 @@ public class ColorSet extends StdCommand
 							{
 							}
 
-							@Override public void callBack()
+							@Override
+							public void callBack()
 							{
 								final int colorNum=CMath.s_int(this.input);
 								if(colorNum<0)
@@ -358,7 +363,8 @@ public class ColorSet extends StdCommand
 							{
 							}
 
-							@Override public void callBack()
+							@Override
+							public void callBack()
 							{
 								final int colorNum1=CMath.s_int(this.input);
 								if(colorNum1<0)
@@ -409,7 +415,10 @@ public class ColorSet extends StdCommand
 		return false;
 	}
 
-	@Override public boolean canBeOrdered(){return true;}
-
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 
 }
