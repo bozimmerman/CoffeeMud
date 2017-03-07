@@ -88,6 +88,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		{
 			playersList.remove(oneToDel);
 			playerLocations.removeFirst(oneToDel);
+			Resources.removePersonalMap(oneToDel);
 		}
 	}
 

@@ -167,7 +167,15 @@ public class Scholar extends StdCharClass
 	@Override
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		
+		if(msg.source()==myHost)
+		{
+			if((msg.targetMinor()==CMMsg.TYP_WRITE)
+			&&(msg.target() instanceof Item))
+			{
+				final Map<String,Object> persMap = Resources.getPersonalMap(myHost, true);
+				//TODO: 1xp for every 10 chars, but how to catch journal writing?!
+			}
+		}
 		super.executeMsg(myHost, msg);
 	}
 	

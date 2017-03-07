@@ -192,6 +192,16 @@ public class Resources
 	{ 	
 		r()._removeResource(ID);
 	}
+
+	/**
+	 * Checks the current resources for the current calling thread group for the ID.
+	 * @param ID the resource ID to check for
+	 * @return true if found, false otherwise
+	 */
+	public static final boolean isResource(final String ID)
+	{ 	
+		return r()._isResource(ID);
+	}
 	
 	/**
 	 * Does a case-insensitive instring search of all resources for the
@@ -420,6 +430,60 @@ public class Resources
 	}
 
 	/**
+	 * Returns the string/object map assigned to the given object key.  If
+	 * createIfNecc is set, then a missing map will be created and returned.
+	 * Otherwise this returns false.  The internal object map is Weak, so no worries about
+	 * leaving behind unused garbage.  Just be careful with the returned map, which
+	 * is NOT weak.
+	 * @see Resources#getPersonalMap(Object, boolean)
+	 * @param key the key to look for
+	 * @param createIfNecc true to create the missing map
+	 * @return the map, or null
+	 */
+	public static final Map<String,Object> getPersonalMap(final Object key, final boolean createIfNecc)
+	{
+		final Resources r = r();
+		if(!r._isResource("SYSTEM_PERSONAL_MAPS"))
+			r._submitResource("SYSTEM_PERSONAL_MAPS", new java.util.WeakHashMap<Object,Map<String,Object>>());
+		@SuppressWarnings("unchecked")
+		final Map<Object,Map<String,Object>> rsc=(Map<Object,Map<String,Object>>)r()._getResource("SYSTEM_PERSONAL_MAPS");
+		if(rsc != null)
+		{
+			synchronized(rsc)
+			{
+				final Map<String,Object> map = rsc.get(key);
+				if(map != null)
+					return map;
+				if(createIfNecc)
+				{
+					final Map<String,Object> myMap = new TreeMap<String,Object>();
+					rsc.put(key,myMap);
+					return myMap;
+				}
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Removes and Deletes the string/object map assigned to the given object key. 
+	 * @see Resources#getPersonalMap(Object, boolean)
+	 * @param key the key to look for
+	 */
+	public static final void removePersonalMap(final Object key)
+	{
+		@SuppressWarnings("unchecked")
+		final Map<Object,Map<String,Object>> rsc=(Map<Object,Map<String,Object>>)getResource("SYSTEM_PERSONAL_MISC");
+		if(rsc != null)
+		{
+			synchronized(rsc)
+			{
+				rsc.remove(key);
+			}
+		}
+	}
+	
+	/**
 	 * A multi-list is, in code, a string-key map of string lists.  In a file, it is represented
 	 * by a string key on one line, followed by the list entries, followed by a blank line.
 	 * Obviously, no blank list entries are permitted.
@@ -622,6 +686,16 @@ public class Resources
 			return O;
 		}
 		return null;
+	}
+
+	/**
+	 * Checks the resource object with the given case insensitive ID.
+	 * @param ID the key of the object to look for
+	 * @return true if found, false otherwise
+	 */
+	public final boolean _isResource(final String ID)
+	{
+		return resources.containsKey(ID);
 	}
 
 	/**
