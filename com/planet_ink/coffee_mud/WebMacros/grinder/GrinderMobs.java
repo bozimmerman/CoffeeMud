@@ -476,7 +476,8 @@ public class GrinderMobs
 					M.baseCharStats().setMyRace(CMClass.getRace(old));
 					break;
 				case GENDER: // gender
-					M.baseCharStats().setStat(CharStats.STAT_GENDER,old.charAt(0));
+					if(old.length()>0)
+						M.baseCharStats().setStat(CharStats.STAT_GENDER,old.charAt(0));
 					break;
 				case HEIGHT: // height
 					M.basePhyStats().setHeight(CMath.s_int(old));

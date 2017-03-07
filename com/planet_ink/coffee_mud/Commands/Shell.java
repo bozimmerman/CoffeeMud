@@ -292,6 +292,9 @@ public class Shell extends StdCommand
 				return false;
 			}
 			final StringBuffer msg=new StringBuffer("\n\r^y .\n\r^y ..\n\r");
+			final int COL1_LEN=CMLib.lister().fixColWidth(35.0, mob);
+			final int COL2_LEN=CMLib.lister().fixColWidth(20.0, mob);
+			final int COL3_LEN=CMLib.lister().fixColWidth(20.0, mob);
 			for (final CMFile dir : dirs)
 			{
 				final CMFile entry=dir;
@@ -305,9 +308,9 @@ public class Shell extends StdCommand
 						msg.append("^R+");
 					else
 						msg.append("^r-");
-					msg.append("^y"+CMStrings.padRight(entry.getName(),25));
-					msg.append("^w"+CMStrings.padRight(CMLib.time().date2String(entry.lastModified()),20));
-					msg.append("^w"+CMStrings.padRight(entry.author(),20));
+					msg.append("^y"+CMStrings.padRight(entry.getName(),COL1_LEN));
+					msg.append("^w"+CMStrings.padRight(CMLib.time().date2String(entry.lastModified()),COL2_LEN));
+					msg.append("^w"+CMStrings.padRight(entry.author(),COL3_LEN));
 					msg.append("\n\r");
 				}
 			}
@@ -326,9 +329,9 @@ public class Shell extends StdCommand
 						msg.append("^R+");
 					else
 						msg.append("^r-");
-					msg.append("^w"+CMStrings.padRight(entry.getName(),25));
-					msg.append("^w"+CMStrings.padRight(CMLib.time().date2String(entry.lastModified()),20));
-					msg.append("^w"+CMStrings.padRight(entry.author(),20));
+					msg.append("^w"+CMStrings.padRight(entry.getName(),COL1_LEN));
+					msg.append("^w"+CMStrings.padRight(CMLib.time().date2String(entry.lastModified()),COL2_LEN));
+					msg.append("^w"+CMStrings.padRight(entry.author(),COL3_LEN));
 					msg.append("\n\r");
 				}
 			}

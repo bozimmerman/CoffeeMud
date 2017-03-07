@@ -33,8 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
-
 public class Disease extends StdAbility implements DiseaseAffect
 {
 	@Override
@@ -199,6 +197,7 @@ public class Disease extends StdAbility implements DiseaseAffect
 		}
 		return false;
 	}
+
 	protected boolean catchIt(MOB mob)
 	{
 		if(mob==null)
@@ -390,7 +389,6 @@ public class Disease extends StdAbility implements DiseaseAffect
 				if(target.getVictim()!=tvictim)
 					target.setVictim(tvictim);
 			}
-
 		}
 		return success;
 	}

@@ -616,8 +616,10 @@ public class StdAbility implements Ability
 				affected.addEffect(this);
 			room.recoverRoomStats();
 			if(invoker()!=affected)
+			{
 				for(int c=0;c<mob.charStats().numClasses();c++)
 					tickTime=mob.charStats().getMyClass(c).classDurationModifier(mob,this,tickTime);
+			}
 		}
 		else
 		{
@@ -644,9 +646,9 @@ public class StdAbility implements Ability
 	{
 		final CharStats charStats = caster.charStats();
 		return  charStats.getAbilityAdjustment("level+"+ID())
-		+ charStats.getAbilityAdjustment("level+"+Ability.ACODE_DESCS[classificationCode()&Ability.ALL_ACODES])
-		+ charStats.getAbilityAdjustment("level+"+Ability.DOMAIN_DESCS[(classificationCode()&Ability.ALL_DOMAINS)>> 5])
-		+ charStats.getAbilityAdjustment("level+*");
+			+ charStats.getAbilityAdjustment("level+"+Ability.ACODE_DESCS[classificationCode()&Ability.ALL_ACODES])
+			+ charStats.getAbilityAdjustment("level+"+Ability.DOMAIN_DESCS[(classificationCode()&Ability.ALL_DOMAINS)>> 5])
+			+ charStats.getAbilityAdjustment("level+*");
 	}
 	
 	@Override
@@ -899,7 +901,7 @@ public class StdAbility implements Ability
 		||((givenTarget==null)
 		   &&(!CMLib.flags().canBeSeenBy(target,mob))
 		   &&((!CMLib.flags().canBeHeardMovingBy(target,mob))
-				   ||((target instanceof MOB)&&(!((MOB)target).isInCombat())))))
+				||((target instanceof MOB)&&(!((MOB)target).isInCombat())))))
 		{
 			if(targetName.trim().length()==0)
 				mob.tell(L("You don't see that here."));
@@ -1416,7 +1418,7 @@ public class StdAbility implements Ability
 			}
 
 			if(CMath.bset(usageType(),Ability.USAGE_MOVEMENT)
-			   &&(CMLib.flags().isBound(mob)))
+			&&(CMLib.flags().isBound(mob)))
 			{
 				mob.tell(L("You are bound!"));
 				return false;
