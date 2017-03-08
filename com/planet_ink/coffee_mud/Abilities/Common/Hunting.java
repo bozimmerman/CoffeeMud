@@ -210,7 +210,7 @@ public class Hunting extends CommonSkill
 		final int resourceType=mob.location().myResource();
 		if((proficiencyCheck(mob,0,auto))
 		   &&(nearByRoom()!=null)
-		   &&(resourceType!=RawMaterial.RESOURCE_FISH)
+		   &&(!CMParms.contains(RawMaterial.CODES.FISHES(), resourceType))
 		   &&(((resourceType&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_FLESH)
 		   ||(resourceType==RawMaterial.RESOURCE_BLOOD)
 		   ||(resourceType==RawMaterial.RESOURCE_BONE)
@@ -223,7 +223,13 @@ public class Hunting extends CommonSkill
 		   ||(resourceType==RawMaterial.RESOURCE_WOOL)
 		   ||((resourceType&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LEATHER)))
 		{
-			found=(MOB)CMLib.materials().makeResource(resourceType,Integer.toString(mob.location().domainType()),false,null);
+			PhysicalAgent E=CMLib.materials().makeResource(resourceType,Integer.toString(mob.location().domainType()),false,null);
+			if(!(E instanceof MOB))
+			{
+				Log.errOut("Hunting","Failed to convert resource "+resourceType+" to mob.");
+				return false;
+			}
+			found=(MOB)E;
 			foundShortName="nothing";
 			if(found!=null)
 			{
