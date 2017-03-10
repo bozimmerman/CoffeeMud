@@ -61,22 +61,24 @@ public class StdJournal extends StdItem
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(msg.amITarget(this))
-		switch(msg.targetMinor())
 		{
-		case CMMsg.TYP_WRITE:
-		{
-			final String adminReq=getAdminReq().trim();
-			final boolean admin=((adminReq.length()>0)&&CMLib.masking().maskCheck(adminReq,msg.source(),true))
-							||CMSecurity.isJournalAccessAllowed(msg.source(),Name());
-			if((!CMLib.masking().maskCheck(getWriteReq(),msg.source(),true))
-			&&(!admin)
-			&&(!(CMSecurity.isAllowed(msg.source(),msg.source().location(),CMSecurity.SecFlag.JOURNALS))))
+			switch(msg.targetMinor())
 			{
-				msg.source().tell(L("You are not allowed to write on @x1",name()));
-				return false;
+			case CMMsg.TYP_WRITE:
+			{
+				final String adminReq=getAdminReq().trim();
+				final boolean admin=((adminReq.length()>0)&&CMLib.masking().maskCheck(adminReq,msg.source(),true))
+								||CMSecurity.isJournalAccessAllowed(msg.source(),Name());
+				if((!CMLib.masking().maskCheck(getWriteReq(),msg.source(),true))
+				&&(!admin)
+				&&(!(CMSecurity.isAllowed(msg.source(),msg.source().location(),CMSecurity.SecFlag.JOURNALS))))
+				{
+					msg.source().tell(L("You are not allowed to write on @x1",name()));
+					return false;
+				}
+				return true;
 			}
-			return true;
-		}
+			}
 		}
 		return super.okMessage(myHost,msg);
 	}
@@ -86,331 +88,354 @@ public class StdJournal extends StdItem
 	{
 		final MOB mob=msg.source();
 		if(msg.amITarget(this))
-		switch(msg.targetMinor())
 		{
-		case CMMsg.TYP_READ:
-			if(!CMLib.flags().canBeSeenBy(this,mob))
-				mob.tell(L("You can't see that!"));
-			else
-			if((!mob.isMonster())
-			&&(mob.playerStats()!=null))
+			switch(msg.targetMinor())
 			{
-				final String adminReq=getAdminReq().trim();
-				final boolean admin=((adminReq.length()>0)&&CMLib.masking().maskCheck(adminReq,mob,true))
-								||CMSecurity.isJournalAccessAllowed(mob,Name());
-				final long lastTime=mob.playerStats().getLastDateTime();
-				if((!admin)&&(!CMLib.masking().maskCheck(getReadReq(),mob,true)))
+			case CMMsg.TYP_READ:
+			{
+				final Room R=mob.location();
+				if(!CMLib.flags().canBeSeenBy(this,mob))
+					mob.tell(L("You can't see that!"));
+				else
+				if((!mob.isMonster())
+				&&(mob.playerStats()!=null))
 				{
-					mob.tell(L("You are not allowed to read @x1.",name()));
-					return;
-				}
-				int which=-1;
-				boolean newOnly=false;
-				boolean all=false;
-				final Vector<String> parse=CMParms.parse(msg.targetMessage());
-				for(int v=0;v<parse.size();v++)
-				{
-					final String s=parse.elementAt(v);
-					if(CMath.s_long(s)>0)
-						which=CMath.s_int(msg.targetMessage());
-					else
-					if(s.equalsIgnoreCase("NEW"))
-						newOnly=true;
-					else
-					if(s.equalsIgnoreCase("ALL")||s.equalsIgnoreCase("OLD"))
-						all=true;
-				}
-				JournalEntry read=DBRead(mob,Name(),which-1,lastTime, newOnly, all);
-				boolean megaRepeat=true;
-				while((megaRepeat) && (read!=null))
-				{
-					megaRepeat=false;
-					final String from=read.from();
-					StringBuffer entry=read.derivedBuildMessage();
-					boolean mineAble=false;
-					if(entry.charAt(0)=='#')
+					final String adminReq=getAdminReq().trim();
+					final boolean admin=((adminReq.length()>0)&&CMLib.masking().maskCheck(adminReq,mob,true))
+									||CMSecurity.isJournalAccessAllowed(mob,Name());
+					final long lastTime=mob.playerStats().getLastDateTime();
+					if((!admin)&&(!CMLib.masking().maskCheck(getReadReq(),mob,true)))
 					{
-						which=-1;
-						entry.setCharAt(0,' ');
-					}
-					if((entry.charAt(0)=='*')
-					   ||(admin)
-					   ||(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.JOURNALS)))
-					{
-						mineAble=true;
-						entry.setCharAt(0,' ');
-					}
-					else
-					if((newOnly)&&(msg.value()>0))
+						mob.tell(L("You are not allowed to read @x1.",name()));
 						return;
-					mob.tell(entry.toString()+"\n\r");
-					if((entry.toString().trim().length()>0)
-					&&(which>0)
-					&&(CMLib.masking().maskCheck(getWriteReq(),mob,true)
-						||(admin)
-						||(CMSecurity.isAllowed(msg.source(),msg.source().location(),CMSecurity.SecFlag.JOURNALS))))
+					}
+					int which=-1;
+					boolean newOnly=false;
+					boolean all=false;
+					final Vector<String> parse=CMParms.parse(msg.targetMessage());
+					for(int v=0;v<parse.size();v++)
 					{
-						boolean repeat=true;
-						while((repeat)&&(mob.session()!=null)&&(!mob.session().isStopped()))
+						final String s=parse.elementAt(v);
+						if(CMath.s_long(s)>0)
+							which=CMath.s_int(msg.targetMessage());
+						else
+						if(s.equalsIgnoreCase("NEW"))
+							newOnly=true;
+						else
+						if(s.equalsIgnoreCase("ALL")||s.equalsIgnoreCase("OLD"))
+							all=true;
+					}
+					JournalEntry read=DBRead(mob,Name(),which-1,lastTime, newOnly, all);
+					boolean megaRepeat=true;
+					while((megaRepeat) && (read!=null))
+					{
+						megaRepeat=false;
+						final String from=read.from();
+						StringBuffer entry=read.derivedBuildMessage();
+						boolean mineAble=false;
+						if(entry.charAt(0)=='#')
 						{
-							repeat=false;
-							try
+							which=-1;
+							entry.setCharAt(0,' ');
+						}
+						if((entry.charAt(0)=='*')
+						   ||(admin)
+						   ||(CMSecurity.isAllowed(mob,R,CMSecurity.SecFlag.JOURNALS)))
+						{
+							mineAble=true;
+							entry.setCharAt(0,' ');
+						}
+						else
+						if((newOnly)&&(msg.value()>0))
+							return;
+						mob.tell(entry.toString()+"\n\r");
+						if((entry.toString().trim().length()>0)
+						&&(which>0)
+						&&(CMLib.masking().maskCheck(getWriteReq(),mob,true)
+							||(admin)
+							||(CMSecurity.isAllowed(msg.source(),R,CMSecurity.SecFlag.JOURNALS))))
+						{
+							boolean repeat=true;
+							while((repeat)&&(mob.session()!=null)&&(!mob.session().isStopped()))
 							{
-								String prompt="";
-								String cmds="";
-								if(CMLib.masking().maskCheck(getReplyReq(),mob,true)
-								||admin
-								||(CMSecurity.isAllowed(msg.source(),msg.source().location(),CMSecurity.SecFlag.JOURNALS)))
+								repeat=false;
+								try
 								{
-									prompt+="^<MENU^>R^</MENU^>)eply ";
-									cmds+="R";
-								}
-								if((CMProps.getVar(CMProps.Str.MAILBOX).length()>0)
-								&&(from.length()>0))
-									prompt+="^<MENU^>E^</MENU^>)mail "; cmds+="E";
-								if(msg.value()>0)
-								{
-									prompt+="S)top ";
-									cmds+="S";
-								}
-								else
-								{
-									prompt+="^<MENU^>N^</MENU^>)ext ";
-									cmds+="N";
-								}
-								if(mineAble)
-								{
-									prompt+="^<MENU^>D^</MENU^>)elete ";
-									cmds+="D";
-								}
-								if((admin)
-								||(CMSecurity.isAllowed(msg.source(),msg.source().location(),CMSecurity.SecFlag.JOURNALS)))
-								{
-									prompt+="^<MENU^>T^</MENU^>)ransfer ";
-									cmds+="T";
-								}
-								prompt+="or RETURN: ";
-								final String s=mob.session().choose(prompt,cmds+"\n","\n");
-								if(s.equalsIgnoreCase("S"))
-									msg.setValue(0);
-								else
-								if(s.equalsIgnoreCase("N"))
-								{
-									while(entry!=null)
+									String prompt="";
+									String cmds="";
+									if(CMLib.masking().maskCheck(getReplyReq(),mob,true)
+									||admin
+									||(CMSecurity.isAllowed(msg.source(),R,CMSecurity.SecFlag.JOURNALS)))
 									{
-										which++;
-										read=DBRead(mob,Name(),which-1,lastTime, newOnly, all);
-										entry=read.derivedBuildMessage();
-										if(entry==null)
-											break;
-										if(entry.toString().trim().length()>0)
+										prompt+="^<MENU^>R^</MENU^>)eply ";
+										cmds+="R";
+									}
+									if((CMProps.getVar(CMProps.Str.MAILBOX).length()>0)
+									&&(from.length()>0))
+										prompt+="^<MENU^>E^</MENU^>)mail "; cmds+="E";
+									if(msg.value()>0)
+									{
+										prompt+="S)top ";
+										cmds+="S";
+									}
+									else
+									{
+										prompt+="^<MENU^>N^</MENU^>)ext ";
+										cmds+="N";
+									}
+									if(mineAble)
+									{
+										prompt+="^<MENU^>D^</MENU^>)elete ";
+										cmds+="D";
+									}
+									if((admin)
+									||(CMSecurity.isAllowed(msg.source(),R,CMSecurity.SecFlag.JOURNALS)))
+									{
+										prompt+="^<MENU^>T^</MENU^>)ransfer ";
+										cmds+="T";
+									}
+									prompt+="or RETURN: ";
+									final String s=mob.session().choose(prompt,cmds+"\n","\n");
+									if(s.equalsIgnoreCase("S"))
+										msg.setValue(0);
+									else
+									if(s.equalsIgnoreCase("N"))
+									{
+										while(entry!=null)
 										{
-											if(entry.charAt(0)=='#')
-												return;
-											if((entry.charAt(0)=='*')||(!newOnly))
+											which++;
+											read=DBRead(mob,Name(),which-1,lastTime, newOnly, all);
+											entry=read.derivedBuildMessage();
+											if(entry==null)
 												break;
-										}
-									}
-									megaRepeat=true;
-								}
-								else
-								if(s.equalsIgnoreCase("E"))
-								{
-									final MOB M=CMLib.players().getLoadPlayer(from);
-									if((M==null)||(M.playerStats()==null)||(M.playerStats().getEmail().indexOf('@')<0))
-									{
-										mob.tell(L("Player '@x1' does not exist, or has no email address.",from));
-										repeat=true;
-									}
-									else
-									if(!mob.session().choose(L("Send email to @x1 (Y/n)?",M.Name()),L("YN\n"),"Y").equalsIgnoreCase("N"))
-									{
-										final String replyMsg=mob.session().prompt(L("Enter your email response\n\r: "));
-										if((replyMsg.trim().length()>0) && (read != null))
-										{
-											CMLib.database().DBWriteJournal(CMProps.getVar(CMProps.Str.MAILBOX),
-																			  mob.Name(),
-																			  M.Name(),
-																			  "RE: "+read.subj(),
-																			  replyMsg);
-											mob.tell(L("Email queued."));
-										}
-										else
-										{
-											mob.tell(L("Aborted."));
-											repeat=true;
-										}
-									}
-									else
-										repeat=true;
-								}
-								else
-								if(s.equalsIgnoreCase("T"))
-								{
-									String journal;
-									try {
-										journal=mob.session().prompt(L("Enter the journal to transfer this msg to: "),"",30000);
-									}
-									catch(final IOException e)
-									{
-										mob.tell(L("Timed out."));
-										repeat=true;
-										continue;
-									}
-									journal=journal.trim();
-									if(journal.length()>0)
-									{
-										String realName=null;
-										for(final Enumeration<JournalsLibrary.CommandJournal> e=CMLib.journals().commandJournals();e.hasMoreElements();)
-										{
-											final JournalsLibrary.CommandJournal CMJ=e.nextElement();
-											if(journal.equalsIgnoreCase(CMJ.NAME())
-											||journal.equalsIgnoreCase(CMJ.NAME()+"S"))
+											if(entry.toString().trim().length()>0)
 											{
-												realName="SYSTEM_"+CMJ.NAME()+"S";
-												break;
+												if(entry.charAt(0)=='#')
+													return;
+												if((entry.charAt(0)=='*')||(!newOnly))
+													break;
 											}
 										}
-										if(realName==null)
-											realName=CMLib.database().DBGetRealJournalName(journal);
-										if(realName==null)
-											realName=CMLib.database().DBGetRealJournalName(journal.toUpperCase());
-										if(realName==null)
-											mob.tell(L("The journal '@x1' does not presently exist.  Aborted.",journal));
-										else
-										{
-											final List<JournalEntry> journal2;
-											if(!getSortBy().toUpperCase().startsWith("CREAT"))
-												journal2=CMLib.database().DBReadJournalMsgsByUpdateDate(Name(), true);
-											else
-												journal2=CMLib.database().DBReadJournalMsgsByCreateDate(Name(), true);
-											final JournalEntry entry2=journal2.get(which-1);
-											CMLib.database().DBDeleteJournal(Name(),entry2.key());
-											CMLib.database().DBWriteJournal(realName,
-																			  entry2.from(),
-																			  entry2.to(),
-																			  entry2.subj(),
-																			  entry2.msg());
-											msg.setValue(-1);
-										}
-										mob.tell(L("Message transferred."));
+										megaRepeat=true;
 									}
 									else
-										mob.tell(L("Aborted."));
-								}
-								else
-								if(s.equalsIgnoreCase("D"))
-								{
-									read=DBRead(mob,Name(),which-1,lastTime, newOnly, all);
-									if(read != null)
+									if(s.equalsIgnoreCase("E"))
 									{
-										CMLib.database().DBDeleteJournal(Name(),read.key());
-										msg.setValue(-1);
-										mob.tell(L("Entry deleted."));
-									}
-									else
-										mob.tell(L("Failed to delete entry."));
-								}
-								else
-								if(s.equalsIgnoreCase("R"))
-								{
-									if(read != null)
-									{
-										final String replyMsg=mob.session().prompt(L("Enter your response\n\r: "));
-										if(replyMsg.trim().length()>0)
+										final MOB M=CMLib.players().getLoadPlayer(from);
+										if((M==null)||(M.playerStats()==null)||(M.playerStats().getEmail().indexOf('@')<0))
 										{
-											CMLib.database().DBWriteJournalReply(Name(),read.key(),mob.Name(),"","",replyMsg);
-											mob.tell(L("Reply added."));
-										}
-										else
-										{
-											mob.tell(L("Aborted."));
+											mob.tell(L("Player '@x1' does not exist, or has no email address.",from));
 											repeat=true;
 										}
+										else
+										if(!mob.session().choose(L("Send email to @x1 (Y/n)?",M.Name()),L("YN\n"),"Y").equalsIgnoreCase("N"))
+										{
+											final String replyMsg=mob.session().prompt(L("Enter your email response\n\r: "));
+											if((replyMsg.trim().length()>0) && (read != null))
+											{
+												CMLib.database().DBWriteJournal(CMProps.getVar(CMProps.Str.MAILBOX),
+																				  mob.Name(),
+																				  M.Name(),
+																				  "RE: "+read.subj(),
+																				  replyMsg);
+												mob.tell(L("Email queued."));
+											}
+											else
+											{
+												mob.tell(L("Aborted."));
+												repeat=true;
+											}
+										}
+										else
+											repeat=true;
+									}
+									else
+									if(s.equalsIgnoreCase("T"))
+									{
+										String journal;
+										try {
+											journal=mob.session().prompt(L("Enter the journal to transfer this msg to: "),"",30000);
+										}
+										catch(final IOException e)
+										{
+											mob.tell(L("Timed out."));
+											repeat=true;
+											continue;
+										}
+										journal=journal.trim();
+										if(journal.length()>0)
+										{
+											String realName=null;
+											for(final Enumeration<JournalsLibrary.CommandJournal> e=CMLib.journals().commandJournals();e.hasMoreElements();)
+											{
+												final JournalsLibrary.CommandJournal CMJ=e.nextElement();
+												if(journal.equalsIgnoreCase(CMJ.NAME())
+												||journal.equalsIgnoreCase(CMJ.NAME()+"S"))
+												{
+													realName="SYSTEM_"+CMJ.NAME()+"S";
+													break;
+												}
+											}
+											if(realName==null)
+												realName=CMLib.database().DBGetRealJournalName(journal);
+											if(realName==null)
+												realName=CMLib.database().DBGetRealJournalName(journal.toUpperCase());
+											if(realName==null)
+												mob.tell(L("The journal '@x1' does not presently exist.  Aborted.",journal));
+											else
+											{
+												final List<JournalEntry> journal2;
+												if(!getSortBy().toUpperCase().startsWith("CREAT"))
+													journal2=CMLib.database().DBReadJournalMsgsByUpdateDate(Name(), true);
+												else
+													journal2=CMLib.database().DBReadJournalMsgsByCreateDate(Name(), true);
+												final JournalEntry entry2=journal2.get(which-1);
+												CMLib.database().DBDeleteJournal(Name(),entry2.key());
+												CMLib.database().DBWriteJournal(realName,
+																				  entry2.from(),
+																				  entry2.to(),
+																				  entry2.subj(),
+																				  entry2.msg());
+												msg.setValue(-1);
+											}
+											mob.tell(L("Message transferred."));
+										}
+										else
+											mob.tell(L("Aborted."));
+									}
+									else
+									if(s.equalsIgnoreCase("D"))
+									{
+										read=DBRead(mob,Name(),which-1,lastTime, newOnly, all);
+										if(read != null)
+										{
+											CMLib.database().DBDeleteJournal(Name(),read.key());
+											msg.setValue(-1);
+											mob.tell(L("Entry deleted."));
+										}
+										else
+											mob.tell(L("Failed to delete entry."));
+									}
+									else
+									if(s.equalsIgnoreCase("R"))
+									{
+										if(read != null)
+										{
+											final String replyMsg=mob.session().prompt(L("Enter your response\n\r: "));
+											if(replyMsg.trim().length()>0)
+											{
+												CMLib.database().DBWriteJournalReply(Name(),read.key(),mob.Name(),"","",replyMsg);
+												if(R!=null)
+													R.send(mob, ((CMMsg)msg.copyOf()).modify(CMMsg.MSG_WROTE, L("Reply added."), CMMsg.MSG_WROTE, replyMsg, -1, null));
+											}
+											else
+											{
+												mob.tell(L("Aborted."));
+												repeat=true;
+											}
+										}
 									}
 								}
-							}
-							catch(final IOException e)
-							{
-								Log.errOut("JournalItem",e.getMessage());
+								catch(final IOException e)
+								{
+									Log.errOut("JournalItem",e.getMessage());
+								}
 							}
 						}
+						else
+						if(which<0)
+							mob.tell(description());
+						else
+							mob.tell(L("That message is private."));
 					}
-					else
-					if(which<0)
-						mob.tell(description());
-					else
-						mob.tell(L("That message is private."));
+					return;
 				}
 				return;
 			}
-			return;
-		case CMMsg.TYP_WRITE:
-			try
+			case CMMsg.TYP_WRITE:
 			{
-				final String adminReq=getAdminReq().trim();
-				final boolean admin=((adminReq.length()>0)&&CMLib.masking().maskCheck(adminReq,mob,true))
-								||CMSecurity.isJournalAccessAllowed(mob,Name());
-				if((msg.targetMessage().toUpperCase().startsWith("DEL"))
-				   &&(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.JOURNALS)||admin)
-				   &&(!mob.isMonster()))
+				try
 				{
-					if(mob.session().confirm(L("Delete all journal entries? Are you sure (y/N)?"),"N"))
-						CMLib.database().DBDeleteJournal(name(),null);
-				}
-				else
-				if(!mob.isMonster())
-				{
-					String to="ALL";
-					if(CMath.s_bool(getParm("PRIVATE")))
-						to=mob.Name();
-					else
-					if(CMath.s_bool(getParm("MAILBOX"))
-					||mob.session().confirm(L("Is this a private message (y/N)?"),"N"))
+					final Room R=mob.location();
+					final String adminReq=getAdminReq().trim();
+					final boolean admin=((adminReq.length()>0)&&CMLib.masking().maskCheck(adminReq,mob,true))
+									||CMSecurity.isJournalAccessAllowed(mob,Name());
+					if((msg.targetMessage().toUpperCase().startsWith("DEL"))
+					   &&(CMSecurity.isAllowed(mob,R,CMSecurity.SecFlag.JOURNALS)||admin)
+					   &&(!mob.isMonster()))
 					{
-						to=mob.session().prompt(L("To whom:"));
-						if(((!to.toUpperCase().trim().startsWith("MASK=")
-								||(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.JOURNALS)&&(!admin))))
-						&&(!CMLib.players().playerExists(to)))
+						if(mob.session().confirm(L("Delete all journal entries? Are you sure (y/N)?"),"N"))
+							CMLib.database().DBDeleteJournal(name(),null);
+					}
+					else
+					if(!mob.isMonster())
+					{
+						String to="ALL";
+						String subject;
+						final String message;
+						if(msg.targetMessage().length()>1)
 						{
-							mob.tell(L("I'm sorry, there is no such user."));
+							message=msg.targetMessage();
+							subject=CMStrings.ellipse(message, 40);
+						}
+						else
+						{
+							if(CMath.s_bool(getParm("PRIVATE")))
+								to=mob.Name();
+							else
+							if(CMath.s_bool(getParm("MAILBOX"))
+							||mob.session().confirm(L("Is this a private message (y/N)?"),"N"))
+							{
+								to=mob.session().prompt(L("To whom:"));
+								if(((!to.toUpperCase().trim().startsWith("MASK=")
+										||(!CMSecurity.isAllowed(mob,R,CMSecurity.SecFlag.JOURNALS)&&(!admin))))
+								&&(!CMLib.players().playerExists(to)))
+								{
+									mob.tell(L("I'm sorry, there is no such user."));
+									return;
+								}
+							}
+							subject=mob.session().prompt(L("Enter a subject: "));
+							if(subject.trim().length()==0)
+							{
+								mob.tell(L("Aborted."));
+								return;
+							}
+							if((subject.toUpperCase().startsWith("MOTD")||subject.toUpperCase().startsWith("MOTM")||subject.toUpperCase().startsWith("MOTY"))
+							   &&(!admin)
+							   &&(!(CMSecurity.isAllowed(mob,R,CMSecurity.SecFlag.JOURNALS))))
+								subject=subject.substring(4);
+							message=mob.session().prompt(L("Enter your message\n\r: "));
+							if(message.trim().length()==0)
+							{
+								mob.tell(L("Aborted."));
+								return;
+							}
+						}
+						if(message.startsWith("<cmvp>")
+						&&(!admin)
+						&&(!(CMSecurity.isAllowed(mob,R,CMSecurity.SecFlag.JOURNALS))))
+						{
+							mob.tell(L("Illegal code, aborted."));
 							return;
 						}
+						CMLib.database().DBWriteJournal(Name(),mob.Name(),to,subject,message);
+						if((R!=null)&&(msg.targetMessage().length()<=1))
+							R.send(mob, ((CMMsg)msg.copyOf()).modify(CMMsg.MSG_WROTE, L("Journal entry added."), CMMsg.MSG_WROTE, subject+"\n\r"+message, -1, null));
+						else
+							mob.tell(L("Journal entry added."));
 					}
-					String subject=mob.session().prompt(L("Enter a subject: "));
-					if(subject.trim().length()==0)
-					{
-						mob.tell(L("Aborted."));
-						return;
-					}
-					if((subject.toUpperCase().startsWith("MOTD")||subject.toUpperCase().startsWith("MOTM")||subject.toUpperCase().startsWith("MOTY"))
-					   &&(!admin)
-					   &&(!(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.JOURNALS))))
-						subject=subject.substring(4);
-					final String message=mob.session().prompt(L("Enter your message\n\r: "));
-					if(message.trim().length()==0)
-					{
-						mob.tell(L("Aborted."));
-						return;
-					}
-					if(message.startsWith("<cmvp>")
-					&&(!admin)
-					&&(!(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.JOURNALS))))
-					{
-						mob.tell(L("Illegal code, aborted."));
-						return;
-					}
-
-					CMLib.database().DBWriteJournal(Name(),mob.Name(),to,subject,message);
-					mob.tell(L("Journal entry added."));
+					return;
+				}
+				catch(final IOException e)
+				{
+					Log.errOut("JournalItem",e.getMessage());
 				}
 				return;
 			}
-			catch(final IOException e)
-			{
-				Log.errOut("JournalItem",e.getMessage());
+			default:
+				break;
 			}
-			return;
 		}
 		else
 		if((msg.targetMinor()==CMMsg.TYP_ENTER)

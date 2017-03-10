@@ -644,6 +644,22 @@ public interface CMMsg extends CMCommon
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceMessage()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#targetMessage()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#othersMessage()
+	 * @param newAllCode the new source, target, and others code of this event
+	 * @param allMessage the new source, target, and others message of this event
+	 * @return this
+	 */
+	public CMMsg modify(final int newAllCode, final String allMessage);
+
+	/**
+	 * Modifies one of more fields in this event. Sets target and tool to NULL.
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#source()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#target()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceCode()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#targetCode()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#othersCode()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceMessage()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#targetMessage()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#othersMessage()
 	 * @param allMessage the new source, target, and others message of this event
 	 * @return this
 	 */
@@ -739,6 +755,31 @@ public interface CMMsg extends CMCommon
 						final Environmental target,
 						final Environmental tool,
 						final int newSourceCode,
+						final String sourceMessage,
+						final int newTargetCode,
+						final String targetMessage,
+						final int newOthersCode,
+						final String othersMessage);
+	
+	/**
+	 * Modifies one of more fields in this event.
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#source()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#target()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceCode()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#targetCode()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#othersCode()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceMessage()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#targetMessage()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#othersMessage()
+	 * @param newSourceCode the new source code for this event
+	 * @param sourceMessage the new source message for this event
+	 * @param newTargetCode the new target code for this event
+	 * @param targetMessage the new target message for this event
+	 * @param newOthersCode the new others code for this event
+	 * @param othersMessage the new others message for this event
+	 * @return this
+	 */
+	public CMMsg modify(final int newSourceCode,
 						final String sourceMessage,
 						final int newTargetCode,
 						final String targetMessage,
@@ -1134,6 +1175,8 @@ public interface CMMsg extends CMCommon
 	public static final int TYP_WEATHER=123;
 	/** MINOR_MASK minor action code type, denoting a completed item generation activty */
 	public static final int TYP_ITEMSGENERATED=124;
+	/** MINOR_MASK minor action code type, denoting a completed item generation activty */
+	public static final int TYP_WROTE=125;
 
 	/** MINOR_MASK minor action code type, denoting a channel action -- 2000-2047 are channels*/
 	public static final int TYP_CHANNEL=2000; //(2000-2047 are channels)
@@ -1161,7 +1204,8 @@ public interface CMMsg extends CMCommon
 		"LIFE", "BID", "CLANEVENT", "UNLOAD", "DUELCHALLENGE", "LEGALWARRANT", "DIG",
 		"PREINVOKE","POSSESS","DISPOSSESS","POWERCURRENT","CONTEMPLATE","POUR","LOOKEXITS",
 		"LASER","SONIC","REPAIR","ENHANCE","INSTALL","COLLISION","AROMA","DUELLOSS",
-		"COMMANDFAIL","METACOMMAND", "ITEMGENERATED", "ATTACKMISS", "WEATHER","ITEMSGENERATED"
+		"COMMANDFAIL","METACOMMAND", "ITEMGENERATED", "ATTACKMISS", "WEATHER","ITEMSGENERATED",
+		"WROTE"
 	};
 
 	/** Index string descriptions of all the MAJOR_MASK code MAKS_s */
@@ -1473,6 +1517,8 @@ public interface CMMsg extends CMCommon
 	public static final int MSG_ATTACKMISS=MASK_HANDS|MASK_SOUND|MASK_MOVE|TYP_ATTACKMISS;
 	/** combined MAJOR and MINOR codes for useful event message type for weather effects */
 	public static final int MSG_WEATHER=MASK_HANDS|MASK_SOUND|MASK_MOVE|MASK_ALWAYS|TYP_WEATHER;
+	/** combined MAJOR and MINOR codes for useful event message type for a fail to target in a command */
+	public static final int MSG_WROTE=MASK_ALWAYS|TYP_WROTE;
 	
 	/**
 	 * An enum to use for an external message check from inside 

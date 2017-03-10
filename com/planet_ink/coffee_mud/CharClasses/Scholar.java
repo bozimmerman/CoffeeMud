@@ -164,16 +164,61 @@ public class Scholar extends StdCharClass
 		return false;
 	}
 
+	//TODO:
+	/*
+Formula for mapmaking:  gains 10xp per room on map, only earns xp for a room once.
+All classes qualify for Scholar.  Scholar qualifies for no classes (not even other commoners).  (“Those that can’t…teach”).
+Can memorize 2 abilities plus 1 for each additional 15 levels.  Abilities at lvl 0 and 0%, go away when attempted, or used for training, scribing or potions, similar to Arcanist.
+	 */
+
+	@Override
+	public int addedExpertise(final MOB host, final ExpertiseLibrary.Flag expertiseCode, final String abilityID)
+	{
+		if((expertiseCode == ExpertiseLibrary.Flag.XPCOST)
+		&&(abilityID.equals("ScrollScribing")))
+			return 7;
+		return 0;
+	}
+
 	@Override
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		if(msg.source()==myHost)
 		{
-			if((msg.targetMinor()==CMMsg.TYP_WRITE)
-			&&(msg.target() instanceof Item))
+			if(((msg.targetMinor()==CMMsg.TYP_WRITE)
+				||(msg.targetMinor()==CMMsg.TYP_WROTE))
+			&&(msg.target() instanceof Item)
+			&&(msg.targetMessage()!=null)
+			&&(msg.targetMessage().length()>0))
 			{
-				final Map<String,Object> persMap = Resources.getPersonalMap(myHost, true);
-				//TODO: 1xp for every 10 chars, but how to catch journal writing?!
+				final String msgStr =msg.targetMessage().trim();
+				int numChars = msgStr.length()-CMStrings.countChars(msgStr, ' ');
+				if(numChars > 10)
+				{
+					final Map<String,Object> persMap = Resources.getPersonalMap(myHost, true);
+					if(persMap != null)
+					{
+						int xp = numChars/10;
+						long[] xpTrap = (long[])persMap.get("SCHOLAR_WRITEXP");
+						if(xpTrap == null)
+						{
+							xpTrap = new long[2];
+							persMap.put("SCHOLAR_WRITEXP", xpTrap);
+						}
+						if(System.currentTimeMillis() > xpTrap[1])
+						{
+							xpTrap[0]=0;
+							xpTrap[1]=System.currentTimeMillis() + TimeManager.MILI_HOUR;
+						}
+						if(xpTrap[0]<100)
+						{
+							if(100-xpTrap[0]<xp)
+								xp=(int)(100-xpTrap[0]);
+							xpTrap[0]+=xp;
+							CMLib.leveler().postExperience(msg.source(), null, null, xp, false);
+						}
+					}
+				}
 			}
 		}
 		super.executeMsg(myHost, msg);

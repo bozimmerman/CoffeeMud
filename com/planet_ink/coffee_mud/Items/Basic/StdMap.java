@@ -415,29 +415,29 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 	}
 
 
-	public MapRoom getProcessedRoomAt(Hashtable<Room,MapRoom> processed, int x, int y)
+	public MapRoom getProcessedRoomAt(Map<Room,MapRoom> processed, int x, int y)
 	{
-		for(final Enumeration<MapRoom> e=processed.elements();e.hasMoreElements();)
+		for(final Iterator<MapRoom> e=processed.values().iterator();e.hasNext();)
 		{
-			final MapRoom room=e.nextElement();
+			final MapRoom room=e.next();
 			if((room.x==x)&&(room.y==y))
 				return room;
 		}
 		return null;
 	}
 
-	public MapRoom getRoom(Hashtable<Room,MapRoom> allRooms, Room droom)
+	public MapRoom getRoom(Map<Room,MapRoom> allRooms, Room droom)
 	{
 		return allRooms.get(droom);
 	}
 
 	public final static int CLUSTERSIZE=3;
 
-	public boolean isEmptyCluster(Hashtable<Room,MapRoom> processed, int x, int y)
+	public boolean isEmptyCluster(Map<Room,MapRoom> processed, int x, int y)
 	{
-		for(final Enumeration<MapRoom> e=processed.elements();e.hasMoreElements();)
+		for(final Iterator<MapRoom> e=processed.values().iterator();e.hasNext();)
 		{
-			final MapRoom room=e.nextElement();
+			final MapRoom room=e.next();
 			if((((room.x>x-CLUSTERSIZE)&&(room.x<x+CLUSTERSIZE))
 			&&((room.y>y-CLUSTERSIZE)&&(room.y<y+CLUSTERSIZE)))
 			||((room.x==x)&&(room.y==y)))
@@ -446,10 +446,10 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 		return true;
 	}
 
-	public void findEmptyCluster(Hashtable<Room,MapRoom> processed, Vector<Integer> XY)
+	public void findEmptyCluster(Map<Room,MapRoom> processed, List<Integer> XY)
 	{
-		final int x=XY.elementAt(0).intValue();
-		final int y=XY.elementAt(1).intValue();
+		final int x=XY.get(0).intValue();
+		final int y=XY.get(1).intValue();
 		int spacing=CLUSTERSIZE;
 		while(true)
 		{
@@ -490,8 +490,8 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 				}
 				if(isEmptyCluster(processed,x+(spacing*xadjust),y+(spacing*yadjust)))
 				{
-					XY.setElementAt(Integer.valueOf(x+(spacing*xadjust)),0);
-					XY.setElementAt(Integer.valueOf(y+(spacing*yadjust)),1);
+					XY.set(0,Integer.valueOf(x+(spacing*xadjust)));
+					XY.set(1,Integer.valueOf(y+(spacing*yadjust)));
 					return;
 				}
 			}
@@ -552,16 +552,16 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 		return true;
 	}
 
-	public void placeRooms(Hashtable<Room,MapRoom> areaMap)
+	public void placeRooms(final Map<Room,MapRoom> areaMap)
 	{
 		if(areaMap==null)
 			return;
 		if(areaMap.size()==0)
 			return;
 
-		for(final Enumeration<MapRoom> e=areaMap.elements();e.hasMoreElements();)
+		for(final Iterator<MapRoom> e=areaMap.values().iterator();e.hasNext();)
 		{
-			final MapRoom room=e.nextElement();
+			final MapRoom room=e.next();
 			room.x=0;
 			room.y=0;
 			for(int d=0;d<Directions.NUM_DIRECTIONS()-1;d++)
@@ -576,14 +576,14 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 			}
 		}
 
-		final Hashtable<Room,MapRoom> processed=new Hashtable<Room,MapRoom>();
+		final Map<Room,MapRoom> processed=new HashMap<Room,MapRoom>();
 		boolean doneSomething=true;
 		while((areaMap.size()>processed.size())&&(doneSomething))
 		{
 			doneSomething=false;
-			for(final Enumeration<MapRoom> e=areaMap.elements();e.hasMoreElements();)
+			for(final Iterator<MapRoom> e=areaMap.values().iterator();e.hasNext();)
 			{
-				final MapRoom room=e.nextElement();
+				final MapRoom room=e.next();
 				if((processed.get(room.r)==null)&&(okToPlace(room)))
 				{
 					placeRoom(room,areaMap,0,0,processed,true,true,0);
@@ -682,10 +682,10 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 	}
 
 	public void placeRoom(MapRoom room,
-						  Hashtable<Room,MapRoom> areaMap,
+						  Map<Room,MapRoom> areaMap,
 						  int favoredX,
 						  int favoredY,
-						  Hashtable<Room,MapRoom> processed,
+						  Map<Room,MapRoom> processed,
 						  boolean doNotDefer,
 						  boolean passTwo,
 						  int depth)
@@ -700,9 +700,9 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 			// maybe someone else will take care of it?
 			if(!doNotDefer)
 			{
-				for(final Enumeration<MapRoom> e=areaMap.elements();e.hasMoreElements();)
+				for(final Iterator<MapRoom> e=areaMap.values().iterator();e.hasNext();)
 				{
-					final MapRoom roomToBlame=e.nextElement();
+					final MapRoom roomToBlame=e.next();
 					if(roomToBlame!=room)
 					{
 						for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)

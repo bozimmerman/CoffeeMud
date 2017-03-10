@@ -86,113 +86,137 @@ public class StdBook extends StdItem
 	{
 		final MOB mob=msg.source();
 		if(msg.amITarget(this))
-		switch(msg.targetMinor())
 		{
-		case CMMsg.TYP_READ:
-			if(!CMLib.flags().canBeSeenBy(this,mob))
-				mob.tell(L("You can't see that!"));
-			else
-			if((!mob.isMonster())
-			&&(mob.playerStats()!=null))
+			switch(msg.targetMinor())
 			{
-				final String adminReq=getAdminReq().trim();
-				final boolean admin=(adminReq.length()>0)&&CMLib.masking().maskCheck(adminReq,mob,true);
-				final long lastTime=mob.playerStats().getLastDateTime();
-				if((admin)&&(!CMLib.masking().maskCheck(getReadReq(),mob,true)))
+			case CMMsg.TYP_READ:
+			{
+				final Room R=mob.location();
+				if(!CMLib.flags().canBeSeenBy(this,mob))
+					mob.tell(L("You can't see that!"));
+				else
+				if((!mob.isMonster())
+				&&(mob.playerStats()!=null))
 				{
-					mob.tell(L("You are not allowed to read @x1.",name()));
+					final String adminReq=getAdminReq().trim();
+					final boolean admin=(adminReq.length()>0)&&CMLib.masking().maskCheck(adminReq,mob,true);
+					final long lastTime=mob.playerStats().getLastDateTime();
+					if((admin)&&(!CMLib.masking().maskCheck(getReadReq(),mob,true)))
+					{
+						mob.tell(L("You are not allowed to read @x1.",name()));
+						return;
+					}
+					int which=-1;
+					boolean newOnly=false;
+					boolean all=false;
+					final Vector<String> parse=CMParms.parse(msg.targetMessage());
+					for(int v=0;v<parse.size();v++)
+					{
+						final String s=parse.elementAt(v);
+						if(CMath.s_long(s)>0)
+							which=CMath.s_int(msg.targetMessage());
+						else
+						if(s.equalsIgnoreCase("NEW"))
+							newOnly=true;
+						else
+						if(s.equalsIgnoreCase("ALL")||s.equalsIgnoreCase("OLD"))
+							all=true;
+					}
+					final Triad<String,String,StringBuffer> read=DBRead(mob,Name(),which-1,lastTime, newOnly, all);
+					boolean megaRepeat=true;
+					while(megaRepeat)
+					{
+						megaRepeat=false;
+						final StringBuffer entry=read.third;
+						if(entry.charAt(0)=='#')
+						{
+							which=-1;
+							entry.setCharAt(0,' ');
+						}
+						if((entry.charAt(0)=='*')
+						   ||(admin)
+						   ||(CMSecurity.isAllowed(mob,R,CMSecurity.SecFlag.JOURNALS)))
+							entry.setCharAt(0,' ');
+						else
+						if((newOnly)&&(msg.value()>0))
+							return;
+						mob.tell(entry.toString()+"\n\r");
+						if((entry.toString().trim().length()>0)
+						&&(which>0)
+						&&(CMLib.masking().maskCheck(getWriteReq(),mob,true)
+							||(admin)
+							||(CMSecurity.isAllowed(msg.source(),msg.source().location(),CMSecurity.SecFlag.JOURNALS))))
+						{
+						}
+						else
+						if(which<0)
+							mob.tell(description());
+					}
 					return;
 				}
-				int which=-1;
-				boolean newOnly=false;
-				boolean all=false;
-				final Vector<String> parse=CMParms.parse(msg.targetMessage());
-				for(int v=0;v<parse.size();v++)
+				return;
+			}
+			case CMMsg.TYP_WRITE:
+			{
+				try
 				{
-					final String s=parse.elementAt(v);
-					if(CMath.s_long(s)>0)
-						which=CMath.s_int(msg.targetMessage());
-					else
-					if(s.equalsIgnoreCase("NEW"))
-						newOnly=true;
-					else
-					if(s.equalsIgnoreCase("ALL")||s.equalsIgnoreCase("OLD"))
-						all=true;
+					final Room R=mob.location();
+					final String adminReq=getAdminReq().trim();
+					final boolean admin=(adminReq.length()>0)&&CMLib.masking().maskCheck(adminReq,mob,true);
+					if(!mob.isMonster())
+					{
+						final String to="ALL";
+						String subject;
+						final String message;
+						if(msg.targetMessage().length()>1)
+						{
+							message=msg.targetMessage();
+							int numMessages=CMLib.database().DBCountJournal(Name(), null, to);
+							subject=L("Chapter @x1",""+(numMessages+1));
+						}
+						else
+						{
+							subject=mob.session().prompt(L("Enter the name of the chapter (Chapter 1: Start of book),etc : "));
+							if(subject.trim().length()==0)
+							{
+								mob.tell(L("Aborted."));
+								return;
+							}
+							final String messageTitle="The contents of this chapter";
+							mob.session().println(L("\n\rEnter the contents of this chapter:"));
+							final List<String> vbuf=new Vector<String>();
+							if(CMLib.journals().makeMessage(mob, messageTitle, vbuf, true)==JournalsLibrary.MsgMkrResolution.CANCELFILE)
+							{
+								mob.tell(L("Aborted."));
+								return;
+							}
+							message=CMParms.combineWith(vbuf, "\\n");
+						}
+						if(message.startsWith("<cmvp>")
+						&&(!admin)
+						&&(!(CMSecurity.isAllowed(mob,R,CMSecurity.SecFlag.JOURNALS))))
+						{
+							mob.tell(L("Illegal code, aborted."));
+							return;
+						}
+	
+						CMLib.database().DBWriteJournal(Name(),mob.Name(),to,subject,message);
+						if((R!=null)&&(msg.targetMessage().length()<=1))
+							R.send(mob, ((CMMsg)msg.copyOf()).modify(CMMsg.MSG_WROTE, L("Chapter added."), CMMsg.MSG_WROTE, subject+"\n\r"+message, -1, null));
+						else
+							mob.tell(L("Chapter added."));
+					}
+					return;
 				}
-				final Triad<String,String,StringBuffer> read=DBRead(mob,Name(),which-1,lastTime, newOnly, all);
-				boolean megaRepeat=true;
-				while(megaRepeat)
+				catch(final IOException e)
 				{
-					megaRepeat=false;
-					final StringBuffer entry=read.third;
-					if(entry.charAt(0)=='#')
-					{
-						which=-1;
-						entry.setCharAt(0,' ');
-					}
-					if((entry.charAt(0)=='*')
-					   ||(admin)
-					   ||(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.JOURNALS)))
-						entry.setCharAt(0,' ');
-					else
-					if((newOnly)&&(msg.value()>0))
-						return;
-					mob.tell(entry.toString()+"\n\r");
-					if((entry.toString().trim().length()>0)
-					&&(which>0)
-					&&(CMLib.masking().maskCheck(getWriteReq(),mob,true)
-						||(admin)
-						||(CMSecurity.isAllowed(msg.source(),msg.source().location(),CMSecurity.SecFlag.JOURNALS))))
-					{
-					}
-					else
-					if(which<0)
-						mob.tell(description());
+					Log.errOut("JournalItem",e.getMessage());
 				}
 				return;
 			}
-			return;
-		case CMMsg.TYP_WRITE:
-			try
-			{
-				final String adminReq=getAdminReq().trim();
-				final boolean admin=(adminReq.length()>0)&&CMLib.masking().maskCheck(adminReq,mob,true);
-				if(!mob.isMonster())
-				{
-					final String to="ALL";
-					final String subject=mob.session().prompt(L("Enter the name of the chapter (Chapter 1: Start of book),etc : "));
-					if(subject.trim().length()==0)
-					{
-						mob.tell(L("Aborted."));
-						return;
-					}
-					final String messageTitle="The contents of this chapter";
-					mob.session().println(L("\n\rEnter the contents of this chapter:"));
-					final List<String> vbuf=new Vector<String>();
-					if(CMLib.journals().makeMessage(mob, messageTitle, vbuf, true)==JournalsLibrary.MsgMkrResolution.CANCELFILE)
-					{
-						mob.tell(L("Aborted."));
-						return;
-					}
-					final String message=CMParms.combineWith(vbuf, "\\n");
-					if(message.startsWith("<cmvp>")
-					&&(!admin)
-					&&(!(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.JOURNALS))))
-					{
-						mob.tell(L("Illegal code, aborted."));
-						return;
-					}
-
-					CMLib.database().DBWriteJournal(Name(),mob.Name(),to,subject,message);
-					mob.tell(L("Chapter added."));
-				}
-				return;
+			default:
+				break;
 			}
-			catch(final IOException e)
-			{
-				Log.errOut("JournalItem",e.getMessage());
-			}
-			return;
 		}
 		super.executeMsg(myHost,msg);
 	}

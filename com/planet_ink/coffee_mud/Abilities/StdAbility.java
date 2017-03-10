@@ -366,8 +366,12 @@ public class StdAbility implements Ability
 			if(usageCache[Ability.CACHEINDEX_EXPERTISE]!=null)
 				return usageCache[Ability.CACHEINDEX_EXPERTISE][code.ordinal()];
 			final int[] xFlagCache=new int[ExpertiseLibrary.Flag.values().length];
+			final CharClass charClass = mob.baseCharStats().getCurrentClass();
 			for(ExpertiseLibrary.Flag flag : ExpertiseLibrary.Flag.values())
-				xFlagCache[flag.ordinal()]=CMLib.expertises().getApplicableExpertiseLevel(ID(),flag,mob);
+			{
+				xFlagCache[flag.ordinal()]=CMLib.expertises().getApplicableExpertiseLevel(ID(),flag,mob)
+											+charClass.addedExpertise(mob, flag, ID());
+			}
 			usageCache[Ability.CACHEINDEX_EXPERTISE]=xFlagCache;
 			return xFlagCache[code.ordinal()];
 		}

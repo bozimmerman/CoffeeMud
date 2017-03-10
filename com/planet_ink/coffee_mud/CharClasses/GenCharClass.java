@@ -206,6 +206,12 @@ public class GenCharClass extends StdCharClass
 	}
 
 	@Override
+	public int addedExpertise(final MOB host, final ExpertiseLibrary.Flag expertiseCode, final String abilityID)
+	{
+		return 0;
+	}
+	
+	@Override
 	public SecGroup getSecurityFlags(int classLevel)
 	{
 		if(securityGroups.length==0)

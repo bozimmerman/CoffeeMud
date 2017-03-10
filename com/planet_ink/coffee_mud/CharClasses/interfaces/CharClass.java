@@ -257,6 +257,17 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	public int adjustExperienceGain(MOB host, MOB mob, MOB victim, int amount);
 
 	/**
+	 * Whenever a uses a skill, this method can return any additional expertise
+	 * granted explicitly by the class.
+	 * @see ExpertiseLibrary.Flag
+	 * @param host the player or mob whose class is being queried
+	 * @param expertiseCode the expertise code
+	 * @param abilityID the Ability ID
+	 * @return the inherent expertise level for this
+	 */
+	public int addedExpertise(MOB host, ExpertiseLibrary.Flag expertiseCode, final String abilityID);
+
+	/**
 	 * This method is called whenever a player loses a level while a member of this class.  If
 	 * there are any special things which need to be done to a player who loses a level, they
 	 * can be done in this method.  By default, it doesn't do anything.

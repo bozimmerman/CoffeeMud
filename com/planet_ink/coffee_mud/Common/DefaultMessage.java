@@ -366,6 +366,36 @@ public class DefaultMessage implements CMMsg
 		return this;
 	}
 	
+	@Override
+	public CMMsg modify(int newAllCode, String allMessage)
+	{
+		targetMsg=allMessage;
+		sourceMsg=allMessage;
+		othersMsg=allMessage;
+		sourceMajorMask=newAllCode&CMMsg.MAJOR_MASK;
+		sourceMinorType=newAllCode&CMMsg.MINOR_MASK;
+		targetMajorMask=sourceMajorMask;
+		othersMajorMask=sourceMajorMask;
+		targetMinorType=sourceMinorType;
+		othersMinorType=sourceMinorType;
+		return this;
+	}
+
+	@Override
+	public CMMsg modify(int newSourceCode, String sourceMessage, int newTargetCode, String targetMessage, int newOthersCode, String othersMessage)
+	{
+		sourceMsg=sourceMessage;
+		targetMsg=targetMessage;
+		targetMajorMask=newTargetCode&CMMsg.MAJOR_MASK;
+		sourceMajorMask=newSourceCode&CMMsg.MAJOR_MASK;
+		othersMajorMask=newOthersCode&CMMsg.MAJOR_MASK;
+		targetMinorType=newTargetCode&CMMsg.MINOR_MASK;
+		sourceMinorType=newSourceCode&CMMsg.MINOR_MASK;
+		othersMinorType=newOthersCode&CMMsg.MINOR_MASK;
+		othersMsg=othersMessage;
+		return this;
+	}
+
 	@Override 
 	public final MOB source()
 	{ 

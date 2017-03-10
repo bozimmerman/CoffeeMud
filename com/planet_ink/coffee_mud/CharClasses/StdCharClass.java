@@ -869,6 +869,12 @@ public class StdCharClass implements CharClass
 	}
 
 	@Override
+	public int addedExpertise(final MOB host, final ExpertiseLibrary.Flag expertiseCode, final String abilityID)
+	{
+		return 0;
+	}
+
+	@Override
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)
 	{
 		if(CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.ALLSKILLS)
