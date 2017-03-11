@@ -580,6 +580,8 @@ public class Thief_TreasureMap extends ThiefSkill
 				desc.append(L("@x1 to @x2, then ",CMLib.directions().getDirectionName(dir).toLowerCase(),nextR.name()));
 			
 			insertLink(coord,lastWidth,dir,nextR.name(),trailCt,theMap);
+			if(R!=null)
+				R.send(mob, CMClass.getMsg(mob, item, this, CMMsg.MSG_WROTE, null, CMMsg.MSG_WROTE, CMLib.map().getExtendedRoomID(nextR),-1,null));
 			lastWidth=nextR.name().length()+2;
 			room=nextR;
 			trailCt=0;

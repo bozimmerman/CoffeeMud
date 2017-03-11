@@ -166,7 +166,6 @@ public class Scholar extends StdCharClass
 
 	//TODO:
 	/*
-Formula for mapmaking:  gains 10xp per room on map, only earns xp for a room once.
 All classes qualify for Scholar.  Scholar qualifies for no classes (not even other commoners).  (“Those that can’t…teach”).
 Can memorize 2 abilities plus 1 for each additional 15 levels.  Abilities at lvl 0 and 0%, go away when attempted, or used for training, scribing or potions, similar to Arcanist.
 	 */
@@ -174,9 +173,8 @@ Can memorize 2 abilities plus 1 for each additional 15 levels.  Abilities at lvl
 	@Override
 	public int addedExpertise(final MOB host, final ExpertiseLibrary.Flag expertiseCode, final String abilityID)
 	{
-		if((expertiseCode == ExpertiseLibrary.Flag.XPCOST)
-		&&(abilityID.equals("ScrollScribing")))
-			return 7;
+		if((expertiseCode == ExpertiseLibrary.Flag.XPCOST) && (abilityID.equals("ScrollScribing")))
+			return 15;
 		return 0;
 	}
 
@@ -191,31 +189,38 @@ Can memorize 2 abilities plus 1 for each additional 15 levels.  Abilities at lvl
 			&&(msg.targetMessage()!=null)
 			&&(msg.targetMessage().length()>0))
 			{
-				final String msgStr =msg.targetMessage().trim();
-				int numChars = msgStr.length()-CMStrings.countChars(msgStr, ' ');
-				if(numChars > 10)
+				if((msg.tool() instanceof Ability)
+				&&(msg.targetMinor()==CMMsg.TYP_WROTE)
+				&&(msg.tool().ID().equals("Skill_Map")||msg.tool().ID().equals("Thief_TreasureMap")||msg.tool().ID().equals("Skill_SeaMapping")))
+					CMLib.leveler().postExperience(msg.source(), null, null, 10, false);
+				else
 				{
-					final Map<String,Object> persMap = Resources.getPersonalMap(myHost, true);
-					if(persMap != null)
+					final String msgStr =msg.targetMessage().trim();
+					int numChars = msgStr.length()-CMStrings.countChars(msgStr, ' ');
+					if(numChars > 10)
 					{
-						int xp = numChars/10;
-						long[] xpTrap = (long[])persMap.get("SCHOLAR_WRITEXP");
-						if(xpTrap == null)
+						final Map<String,Object> persMap = Resources.getPersonalMap(myHost, true);
+						if(persMap != null)
 						{
-							xpTrap = new long[2];
-							persMap.put("SCHOLAR_WRITEXP", xpTrap);
-						}
-						if(System.currentTimeMillis() > xpTrap[1])
-						{
-							xpTrap[0]=0;
-							xpTrap[1]=System.currentTimeMillis() + TimeManager.MILI_HOUR;
-						}
-						if(xpTrap[0]<100)
-						{
-							if(100-xpTrap[0]<xp)
-								xp=(int)(100-xpTrap[0]);
-							xpTrap[0]+=xp;
-							CMLib.leveler().postExperience(msg.source(), null, null, xp, false);
+							int xp = numChars/10;
+							long[] xpTrap = (long[])persMap.get("SCHOLAR_WRITEXP");
+							if(xpTrap == null)
+							{
+								xpTrap = new long[2];
+								persMap.put("SCHOLAR_WRITEXP", xpTrap);
+							}
+							if(System.currentTimeMillis() > xpTrap[1])
+							{
+								xpTrap[0]=0;
+								xpTrap[1]=System.currentTimeMillis() + TimeManager.MILI_HOUR;
+							}
+							if(xpTrap[0]<100)
+							{
+								if(100-xpTrap[0]<xp)
+									xp=(int)(100-xpTrap[0]);
+								xpTrap[0]+=xp;
+								CMLib.leveler().postExperience(msg.source(), null, null, xp, false);
+							}
 						}
 					}
 				}
@@ -223,7 +228,7 @@ Can memorize 2 abilities plus 1 for each additional 15 levels.  Abilities at lvl
 		}
 		super.executeMsg(myHost, msg);
 	}
-	
+
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
