@@ -358,19 +358,19 @@ public class StdAbility implements Ability
 		return castingQuality(mob,target,abstractQuality());
 	}
 
-	protected synchronized int expertise(MOB mob, ExpertiseLibrary.Flag code)
+	protected synchronized static int expertise(final MOB mob, final Ability A, final ExpertiseLibrary.Flag code)
 	{
-		if((mob!=null)&&(this.isNowAnAutoEffect()||(this.canBeUninvoked())||this.isAutoInvoked()))
+		if((mob!=null)&&(A.isNowAnAutoEffect()||(A.canBeUninvoked())||A.isAutoInvoked()))
 		{
-			final int[][] usageCache=mob.getAbilityUsageCache(ID());
+			final int[][] usageCache=mob.getAbilityUsageCache(A.ID());
 			if(usageCache[Ability.CACHEINDEX_EXPERTISE]!=null)
 				return usageCache[Ability.CACHEINDEX_EXPERTISE][code.ordinal()];
 			final int[] xFlagCache=new int[ExpertiseLibrary.Flag.values().length];
 			final CharClass charClass = mob.baseCharStats().getCurrentClass();
 			for(ExpertiseLibrary.Flag flag : ExpertiseLibrary.Flag.values())
 			{
-				xFlagCache[flag.ordinal()]=CMLib.expertises().getApplicableExpertiseLevel(ID(),flag,mob)
-											+charClass.addedExpertise(mob, flag, ID());
+				xFlagCache[flag.ordinal()]=CMLib.expertises().getApplicableExpertiseLevel(A.ID(),flag,mob)
+											+charClass.addedExpertise(mob, flag, A.ID());
 			}
 			usageCache[Ability.CACHEINDEX_EXPERTISE]=xFlagCache;
 			return xFlagCache[code.ordinal()];
@@ -380,57 +380,57 @@ public class StdAbility implements Ability
 
 	protected int getX1Level(MOB mob)
 	{
-		return expertise(mob, ExpertiseLibrary.Flag.X1);
+		return expertise(mob, this, ExpertiseLibrary.Flag.X1);
 	}
 
 	protected int getX2Level(MOB mob)
 	{
-		return expertise(mob, ExpertiseLibrary.Flag.X2);
+		return expertise(mob, this, ExpertiseLibrary.Flag.X2);
 	}
 
 	protected int getX3Level(MOB mob)
 	{
-		return expertise(mob, ExpertiseLibrary.Flag.X3);
+		return expertise(mob, this, ExpertiseLibrary.Flag.X3);
 	}
 
 	protected int getX4Level(MOB mob)
 	{
-		return expertise(mob, ExpertiseLibrary.Flag.X4);
+		return expertise(mob, this, ExpertiseLibrary.Flag.X4);
 	}
 
 	protected int getX5Level(MOB mob)
 	{
-		return expertise(mob, ExpertiseLibrary.Flag.X5);
+		return expertise(mob, this, ExpertiseLibrary.Flag.X5);
 	}
 
 	protected int getXLEVELLevel(MOB mob)
 	{
-		return expertise(mob, ExpertiseLibrary.Flag.LEVEL);
+		return expertise(mob, this, ExpertiseLibrary.Flag.LEVEL);
 	}
 
 	protected int getXLOWCOSTLevel(MOB mob)
 	{
-		return expertise(mob, ExpertiseLibrary.Flag.LOWCOST);
+		return expertise(mob, this, ExpertiseLibrary.Flag.LOWCOST);
 	}
 
 	protected int getXLOWFREECOSTLevel(MOB mob)
 	{
-		return expertise(mob, ExpertiseLibrary.Flag.LOWFREECOST);
+		return expertise(mob, this, ExpertiseLibrary.Flag.LOWFREECOST);
 	}
 
 	protected int getXMAXRANGELevel(MOB mob)
 	{
-		return expertise(mob, ExpertiseLibrary.Flag.MAXRANGE);
+		return expertise(mob, this, ExpertiseLibrary.Flag.MAXRANGE);
 	}
 
 	protected int getXTIMELevel(MOB mob)
 	{
-		return expertise(mob, ExpertiseLibrary.Flag.TIME);
+		return expertise(mob, this, ExpertiseLibrary.Flag.TIME);
 	}
 
 	protected int getXPCOSTLevel(MOB mob)
 	{
-		return expertise(mob, ExpertiseLibrary.Flag.XPCOST);
+		return expertise(mob, this, ExpertiseLibrary.Flag.XPCOST);
 	}
 
 	protected int getXPCOSTAdjustment(MOB mob, int xpLoss)
