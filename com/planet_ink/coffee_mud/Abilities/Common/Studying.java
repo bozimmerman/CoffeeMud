@@ -280,8 +280,20 @@ When level, look ahead to see if a skill you taught is coming, and if so, untaug
 			this.type1=type1;
 			this.type2=type2;
 		}
+		public boolean doesRuleApplyTo(final Ability A)
+		{
+			return (A!=null) 
+					&& (((A.classificationCode()&Ability.ALL_ACODES)==type1)
+						||((A.classificationCode()&Ability.ALL_ACODES)==type2));
+		}
+		public int numAllowed(final int classLevel)
+		{
+			if(classLevel < aboveLevel)
+				return 0;
+			return num + (num * (int)Math.round(Math.floor((classLevel-aboveLevel) / perLevels)));
+		}
 	}
-	
+
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -307,7 +319,7 @@ When level, look ahead to see if a skill you taught is coming, and if so, untaug
 						}
 						if(str.length()>0)
 							str.append(", ");
-						str.append(A.Name());
+						str.append(CMStrings.padRight(L(Ability.ACODE_DESCS[A.abilityCode()&Ability.ALL_ACODES]), 12)+": "+A.Name()+"\n\r");
 					}
 				}
 			}
@@ -341,15 +353,42 @@ When level, look ahead to see if a skill you taught is coming, and if so, untaug
 			return false;
 		}
 		final int lowestQualifyingLevel = CMLib.ableMapper().lowestQualifyingLevel(A.ID());
-		int level = CMLib.ableMapper().qualifyingClassLevel(mob, this);
-		if((level >=0)
+		final int classLevel = CMLib.ableMapper().qualifyingClassLevel(mob, this);
+		if((classLevel >=0)
 		&&(!auto)
-		&&(level < lowestQualifyingLevel))
+		&&(classLevel < lowestQualifyingLevel))
 		{
 			mob.tell(L("You aren't qualified to be taught @x1.",A.Name()));
 			return false;
 		}
-		
+		perLevelLimits limitObj = null;
+		for(perLevelLimits l : perLevelLimits.values())
+		{
+			if(l.doesRuleApplyTo(A))
+				limitObj = l;
+		}
+		if(limitObj == null)
+		{
+			mob.tell(L("You can not study that sort of skill."));
+			return false;
+		}
+		int numAllowed = limitObj.numAllowed(classLevel);
+		int numHas = 0;
+		final List<List<String>> taughts = CMParms.parseDoubleDelimited(text(), ';', ',');
+		for(final List<String> l : taughts)
+		{
+			if(l.size()>0)
+			{
+				final Ability A1=CMClass.getAbility(l.get(0));
+				if(limitObj.doesRuleApplyTo(A1))
+					numHas++;
+			}
+		}
+		if(numHas >= numAllowed)
+		{
+			mob.tell(L("You may not study any more @x1 at this time.",CMLib.english().makePlural(Ability.ACODE_DESCS[A.abilityCode()&Ability.ALL_ACODES])));
+			return false;
+		}
 		if(!super.invoke(mob, commands, givenTarget, auto, asLevel))
 			return false;
 		return true;
