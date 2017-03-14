@@ -133,6 +133,43 @@ public class Scholar extends StdCharClass
 	{
 		super.initializeClass();
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Write",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Swim",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Herbology",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Recall",100,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Studying",true);
+		
+/*
+1	Studying (G),Herbology (G),  Swim (Q), Write (GAIN), Recall (GAIN), 		
+2	Tagging (G)		
+3	PaperMaking (G), Combat Logging (Q)		
+4	Organizing (Q), Thief_Mark (Q)		
+5	Dissertating  (G), Skill_WandUse(Q), Smoke Signals (Q)		
+6	Copywriting (G), Morse Code (Q)		
+7	Edit (G), Identify Poison (Q), Druid_KnowPlants		
+8	Skill_SeaMapping (G), RevealText (Q)		
+9	Bookcopying (G), Semaphore (Q), Wilderness Lore (Q)		
+10	Speculating (G), Subtitling (Q), Siegecraft (Q)		
+11	Thief_Lore (G), Skillcraft (Q), InvisibleInk (Q)		
+12	Studying (G), Honorary Degree: Commonerness (Q)		
+13	Cataloging (G), Songcraft (Q), Skill_Map (Q)		
+14	Honorary Degree: Fighterness (Q), Thief_Observere (Q), Thief_AnalyzeMark (Q)		
+15	Spell_DetectMagic (Q)  Spellcraft (Q), Plant Lore (Q)		
+16	 Instructing (G), Honorary Degree: Bardness (Q), Taxidermy (Q)		
+17	 Shush (Q)  Prayercraft (Q), Appraise (Q)			
+18	Recipecopying (G) Honorary Degree: Thiefness (Q), 		
+19	ScrollScribing (Q)  Chantcraft (Q)		
+20	Publish (Q) Honorary Degree: Mageness (Q)		
+21	Revise (Q), Encrypting (Q)		
+22	Surveying (G), Honorary Degree: Druidness (Q)		
+23	Lecturing (G)		
+24	Honorary Degree: Clericness (Q), Thief_Comprehension		
+25	Enrolling (G)		
+26			
+27			
+28			
+29			
+30	 Guildmaster (G)		
+ */
 		
 //		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Costuming",false,CMParms.parseSemicolons("Tailoring",true));
 	}
@@ -166,7 +203,6 @@ public class Scholar extends StdCharClass
 
 	//TODO:
 	/*
-All classes qualify for Scholar.  Scholar qualifies for no classes (not even other commoners).  (“Those that can’t…teach”).
 Can memorize 2 abilities plus 1 for each additional 15 levels.  Abilities at lvl 0 and 0%, go away when attempted, or used for training, scribing or potions, similar to Arcanist.
 	 */
 

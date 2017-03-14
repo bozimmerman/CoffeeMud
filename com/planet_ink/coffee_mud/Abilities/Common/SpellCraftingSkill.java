@@ -34,14 +34,26 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
-
 public class SpellCraftingSkill extends CraftingSkill
 {
-	@Override public String ID() { return "SpellCraftingSkill"; }
-	private final static String localizedName = CMLib.lang().L("Spell Crafting Skill");
-	@Override public String name() { return localizedName; }
-	public SpellCraftingSkill(){super();}
+	@Override
+	public String ID()
+	{
+		return "SpellCraftingSkill";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Spell Crafting Skill");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	public SpellCraftingSkill()
+	{
+		super();
+	}
 
 	protected String getCraftableSpellName(List<String> commands)
 	{
@@ -62,16 +74,35 @@ public class SpellCraftingSkill extends CraftingSkill
 		List<String> spellFound=null;
 		final List<List<String>> recipes=loadRecipes();
 		for(final List<String> V : recipes)
-			if(V.get(RCP_FINALNAME).equalsIgnoreCase(spellName))
-			{ spellFound=V; break;}
-		if(spellFound==null)
-			for(final List<String> V : recipes)
-				if(CMLib.english().containsString(V.get(RCP_FINALNAME),spellName))
-				{ spellFound=V; break;}
-		if(spellFound==null)
-			for(final List<String> V : recipes)
-				if(V.get(RCP_FINALNAME).toLowerCase().indexOf(spellName.toLowerCase())>=0)
-				{ spellFound=V; break;}
+		{
+			if (V.get(RCP_FINALNAME).equalsIgnoreCase(spellName))
+			{
+				spellFound = V;
+				break;
+			}
+		}
+		if (spellFound == null)
+		{
+			for (final List<String> V : recipes)
+			{
+				if (CMLib.english().containsString(V.get(RCP_FINALNAME), spellName))
+				{
+					spellFound = V;
+					break;
+				}
+			}
+		}
+		if (spellFound == null)
+		{
+			for (final List<String> V : recipes)
+			{
+				if (V.get(RCP_FINALNAME).toLowerCase().indexOf(spellName.toLowerCase()) >= 0)
+				{
+					spellFound = V;
+					break;
+				}
+			}
+		}
 		return spellFound;
 	}
 
