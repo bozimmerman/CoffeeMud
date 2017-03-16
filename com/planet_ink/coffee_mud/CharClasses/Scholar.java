@@ -139,7 +139,6 @@ public class Scholar extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Studying",true);
 		
 /*
-1	Studying (G),Herbology (G),  Swim (Q), Write (GAIN), Recall (GAIN), 		
 2	Tagging (G)		
 3	PaperMaking (G), Combat Logging (Q)		
 4	Organizing (Q), Thief_Mark (Q)		
@@ -201,11 +200,6 @@ public class Scholar extends StdCharClass
 		return false;
 	}
 
-	//TODO:
-	/*
-Can memorize 2 abilities plus 1 for each additional 15 levels.  Abilities at lvl 0 and 0%, go away when attempted, or used for training, scribing or potions, similar to Arcanist.
-	 */
-
 	@Override
 	public int addedExpertise(final MOB host, final ExpertiseLibrary.Flag expertiseCode, final String abilityID)
 	{
@@ -261,6 +255,20 @@ Can memorize 2 abilities plus 1 for each additional 15 levels.  Abilities at lvl
 					}
 				}
 			}
+		}
+		else
+		if((msg.tool() instanceof Ability)
+		&&(myHost instanceof MOB)
+		&&(((MOB)myHost).getVictim()!=msg.source())
+		&&(msg.source().getVictim()!=myHost)
+		&&(CMLib.dice().rollPercentage()<25)
+		&&(msg.source().fetchAbility(msg.tool().ID())!=null)
+		&&(((MOB)myHost).fetchAbility(msg.tool().ID())!=null)
+		&&(((MOB)myHost).getGroupMembers(new TreeSet<MOB>()).contains(msg.source())))
+		{
+			final Ability A=(Ability)msg.tool();
+			if((A!=null)&&(A.isSavable()))
+				A.helpProficiency(msg.source(), 0);
 		}
 		super.executeMsg(myHost, msg);
 	}
@@ -328,6 +336,6 @@ Can memorize 2 abilities plus 1 for each additional 15 levels.  Abilities at lvl
 	@Override
 	public String getOtherBonusDesc()
 	{
-		return L("Earn experience from teaching skills, making maps, writing books and journals. Learns skills by study, and gives bonus profficiency gains for group members.");
+		return L("Earn experience from teaching skills, making maps, writing books and journals. Gives bonus profficiency gains for group members.");
 	}
 }

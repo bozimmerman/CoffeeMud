@@ -32,21 +32,71 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Thief_CarefulStep extends ThiefSkill
 {
-	@Override public String ID() { return "Thief_CarefulStep"; }
-	private final static String localizedName = CMLib.lang().L("Careful Step");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public double castingTime(final MOB mob, final List<String> cmds){return CMProps.getSkillActionCost(ID(),CMath.div(CMProps.getIntVar(CMProps.Int.DEFABLETIME),50.0));}
-	@Override public double combatCastingTime(final MOB mob, final List<String> cmds){return CMProps.getSkillCombatActionCost(ID(),CMath.div(CMProps.getIntVar(CMProps.Int.DEFCOMABLETIME),50.0));}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	private static final String[] triggerStrings =I(new String[] {"CARESTEP","CAREFULSTEP"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int usageType(){return USAGE_MOVEMENT;}
-	@Override public int classificationCode() {   return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_ACROBATIC; }
+	@Override
+	public String ID()
+	{
+		return "Thief_CarefulStep";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Careful Step");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public double castingTime(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getSkillActionCost(ID(), CMath.div(CMProps.getIntVar(CMProps.Int.DEFABLETIME), 50.0));
+	}
+
+	@Override
+	public double combatCastingTime(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getSkillCombatActionCost(ID(), CMath.div(CMProps.getIntVar(CMProps.Int.DEFCOMABLETIME), 50.0));
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "CARESTEP", "CAREFULSTEP" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_THIEF_SKILL | Ability.DOMAIN_ACROBATIC;
+	}
 
 	@Override
 	public boolean preInvoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel, int secondsElapsed, double actionsRemaining)
@@ -81,6 +131,7 @@ public class Thief_CarefulStep extends ThiefSkill
 		}
 		return true;
 	}
+
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{

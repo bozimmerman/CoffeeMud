@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Session.InputCallback;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
@@ -17,6 +18,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.MOB.Attrib;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.io.IOException;
 import java.util.*;
 /*
    Copyright 2017-2017 Bo Zimmerman
@@ -49,6 +51,47 @@ public class Studying extends CommonSkill
 		return localizedName;
 	}
 
+	protected static enum perLevelLimits 
+	{
+		COMMON(1,6,1, ACODE_COMMON_SKILL, ACODE_LANGUAGE),
+		SKILL(1,6,2,ACODE_SKILL, ACODE_THIEF_SKILL),
+		SONG(1,6,3,ACODE_SONG, -1),
+		SPELL(1,6,4,ACODE_SPELL, -1),
+		CHANT(1,6,5,ACODE_CHANT, -1),
+		PRAYER(1,6,6,ACODE_PRAYER, -1)
+		;
+		private int type1 = -1;
+		private int type2 = -1;
+		private int num = 1;
+		private int perLevels = 1;
+		private int aboveLevel = 1;
+		private perLevelLimits(int num, int perLevels, int aboveLevel, int type1, int type2)
+		{
+			this.num=num;
+			this.perLevels=perLevels;
+			this.aboveLevel=aboveLevel;
+			this.type1=type1;
+			this.type2=type2;
+		}
+		public boolean doesRuleApplyTo(final Ability A)
+		{
+			return (A!=null) 
+					&& (((A.classificationCode()&Ability.ALL_ACODES)==type1)
+						||((A.classificationCode()&Ability.ALL_ACODES)==type2));
+		}
+		public int numAllowed(final int classLevel)
+		{
+			if(classLevel < aboveLevel)
+				return 0;
+			return num + (num * (int)Math.round(Math.floor((classLevel-aboveLevel) / perLevels)));
+		}
+	}
+
+	protected perLevelLimits getSupportedSkillType()
+	{
+		return null;
+	}
+	
 	@Override
 	public boolean isAutoInvoked()
 	{
@@ -61,29 +104,24 @@ public class Studying extends CommonSkill
 		return !isAnAutoEffect;
 	}
 
+	
 /*
  * 	TODO:
 
 When the command is initiated, it looks like a reverse TEACH.  It will provide the teaching character 
 with a y/n dialogue option if they want to train the scholar, and it will tell them about how long to 
-train the scholar.  Training time should be (Skill’s qualifying level by the teaching character in minutes 
-minus 10 seconds per level the teacher has over that, minus 15 seconds per expertise the scholar has, with 
-a minimum of 1 minute).  
+train the scholar.  .  
 
 We could also make this 6 different abilities – Common Skill Studying, Skills 
 Studying, Songs Studying, Chants Studying, Spells Studying, and Prayers Studying if you would prefer…
 granting each ability at the lowest level above (1,2,3,4,5,6).
 
-EDUCATING expertise provides reduced study time, increased proficiency (unless at 100%), and I would 
-suggest one additional skill per ability type.
 
-Can’t study things until your class level is higher than the lowestqualifyinglevel overall.
-
-When level, look ahead to see if a skill you taught is coming, and if so, untaught it.
  */
 	
 	protected Ability teachingA = null;
 	protected volatile boolean distributed = false;
+	protected boolean successfullyTaught = false;
 	protected List<Ability> skillList = new LinkedList<Ability>();
 	
 	@Override
@@ -97,7 +135,7 @@ When level, look ahead to see if a skill you taught is coming, and if so, untaug
 	public String displayText()
 	{
 		if(this.isNowAnAutoEffect())
-			return "";
+			return L("(Scholarly)"); // prevents it from being uninvokeable through autoaffects
 		final MOB invoker=this.invoker;
 		final Ability teachingA = this.teachingA;
 		final Physical affected = this.affected;
@@ -136,11 +174,79 @@ When level, look ahead to see if a skill you taught is coming, and if so, untaug
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
+		if((msg.source() == affected)
+		&&(!canBeUninvoked())
+		&&(msg.tool() instanceof Ability))
+		{
+			final MOB mob=msg.source();
+			if(msg.tool().ID().equals("Spell_Scribe")
+			||msg.tool().ID().equals("Spell_EnchantWand")
+			||msg.tool().ID().equals("Spell_MagicItem")
+			||msg.tool().ID().equals("Spell_StoreSpell")
+			||msg.tool().ID().equals("Spell_WardArea"))
+			{
+				final Ability A=mob.fetchAbility(msg.tool().text());
+				if((A!=null)&&(!A.isSavable()))
+					forget(mob,A.ID());
+			}
+			final Ability A=mob.fetchAbility(msg.tool().ID());
+			if((A!=null)&&(!A.isSavable())
+			&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL))
+				forget(mob,A.ID());
+		}
 	}
 
+	protected boolean forget(final MOB mob, final String abilityID)
+	{
+		if(mob == null)
+			return false;
+		final Studying studA=(Studying)mob.fetchAbility(ID());
+		final Studying effA=(Studying)mob.fetchEffect(ID());
+		if((studA != null) && (effA != null))
+		{
+			final List<String> strList = CMParms.parseSemicolons(studA.text(), true);
+			for(int i=0;i<strList.size();i++)
+			{
+				if(strList.get(i).startsWith(abilityID+","))
+				{
+					strList.remove(i);
+					break;
+				}
+			}
+			final String text=CMParms.combineWith(strList,';');
+			for(final Ability A : effA.skillList)
+			{
+				if(A.ID().equalsIgnoreCase(abilityID))
+				{
+					mob.delAbility(A);
+					effA.setMiscText(text);
+					studA.setMiscText(text);
+				}
+			}
+			return true;
+		}
+		return false;
+	}
+	
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
+		if(!canBeUninvoked())
+		{
+			if((msg.source()==affected)
+			&&(msg.tool() instanceof Ability)
+			&&(skillList.contains(msg.tool())))
+			{
+				msg.source().tell(L("You don't know how to do that."));
+				return false;
+			}
+			else
+			if((msg.target()==affected)
+			&&(msg.targetMinor()==CMMsg.TYP_TEACH)
+			&&(msg.tool() instanceof Ability))
+				forget((MOB)msg.target(),msg.tool().ID());
+		}
+			
 		return super.okMessage(myHost,msg);
 	}
 	
@@ -222,7 +328,7 @@ When level, look ahead to see if a skill you taught is coming, and if so, untaug
 	@Override
 	public void unInvoke()
 	{
-		if(canBeUninvoked() 
+		if( canBeUninvoked() 
 		&& (!super.unInvoked) 
 		&& (affected instanceof MOB)
 		&& (!aborted))
@@ -236,21 +342,26 @@ When level, look ahead to see if a skill you taught is coming, and if so, untaug
 			&&(mob.location()!=null)
 			&&(invoker.location()==mob.location()))
 			{
-				final Ability A=invoker.fetchAbility(ID());
-				final Ability fA=invoker.fetchEffect(ID());
-				final Ability mTeachingA=mob.fetchAbility(teachingA.ID());
-				if((A==null)||(fA==null)||(mTeachingA==null)||(!A.isSavable())||(!fA.isNowAnAutoEffect()))
-					aborted=true;
-				else
+				if(this.successfullyTaught)
 				{
-					final StringBuilder str=new StringBuilder(A.text());
-					if(str.length()>0)
-						str.append(';');
-					final int prof = mTeachingA.proficiency() + (5 * super.expertise(mob, mTeachingA, ExpertiseLibrary.Flag.LEVEL));
-					str.append(mTeachingA.ID()).append(',').append(prof);
-					fA.setMiscText(str.toString()); // and this should do it.
-					A.setMiscText(str.toString()); // and this should be savable
+					final Ability A=invoker.fetchAbility(ID());
+					final Ability fA=invoker.fetchEffect(ID());
+					final Ability mTeachingA=mob.fetchAbility(teachingA.ID());
+					if((A==null)||(fA==null)||(mTeachingA==null)||(!A.isSavable())||(!fA.isNowAnAutoEffect()))
+						aborted=true;
+					else
+					{
+						final StringBuilder str=new StringBuilder(A.text());
+						if(str.length()>0)
+							str.append(';');
+						final int prof = mTeachingA.proficiency() + (5 * super.expertise(mob, mTeachingA, ExpertiseLibrary.Flag.LEVEL));
+						str.append(mTeachingA.ID()).append(',').append(prof);
+						fA.setMiscText(str.toString()); // and this should do it.
+						A.setMiscText(str.toString()); // and this should be savable
+					}
 				}
+				else
+					mob.location().show(mob,invoker,getActivityMessageType(),L("<S-NAME> fail(s) to teach <T-NAME> @x1.",teachingA.name()));
 				// let super announce it
 			}
 		}
@@ -258,44 +369,8 @@ When level, look ahead to see if a skill you taught is coming, and if so, untaug
 		super.unInvoke();
 	}
 
-	protected static enum perLevelLimits 
-	{
-		COMMON(1,6,1, ACODE_COMMON_SKILL, ACODE_LANGUAGE),
-		SKILL(1,6,2,ACODE_SKILL, ACODE_THIEF_SKILL),
-		SONG(1,6,3,ACODE_SONG, -1),
-		SPELL(1,6,4,ACODE_SPELL, -1),
-		CHANT(1,6,5,ACODE_CHANT, -1),
-		PRAYER(1,6,6,ACODE_PRAYER, -1)
-		;
-		private int type1 = -1;
-		private int type2 = -1;
-		private int num = 1;
-		private int perLevels = 1;
-		private int aboveLevel = 1;
-		private perLevelLimits(int num, int perLevels, int aboveLevel, int type1, int type2)
-		{
-			this.num=num;
-			this.perLevels=perLevels;
-			this.aboveLevel=aboveLevel;
-			this.type1=type1;
-			this.type2=type2;
-		}
-		public boolean doesRuleApplyTo(final Ability A)
-		{
-			return (A!=null) 
-					&& (((A.classificationCode()&Ability.ALL_ACODES)==type1)
-						||((A.classificationCode()&Ability.ALL_ACODES)==type2));
-		}
-		public int numAllowed(final int classLevel)
-		{
-			if(classLevel < aboveLevel)
-				return 0;
-			return num + (num * (int)Math.round(Math.floor((classLevel-aboveLevel) / perLevels)));
-		}
-	}
-
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, List<String> commands, Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(commands.size()==0)
 		{
@@ -324,6 +399,18 @@ When level, look ahead to see if a skill you taught is coming, and if so, untaug
 				}
 			}
 			mob.tell(str.toString());
+		}
+		if(commands.get(0).equalsIgnoreCase("FORGET") && (commands.size()>1))
+		{
+			commands.remove(0);
+			final Ability A=CMClass.findAbility(CMParms.combine(commands));
+			if(A!=null)
+			{
+				if(forget(mob,A.ID()))
+					mob.tell(L("You have forgotten @x1.",A.name()));
+				else
+					mob.tell(L("You haven't studied @x1.",A.name()));
+			}
 		}
 		if(commands.size()<2)
 		{
@@ -361,6 +448,13 @@ When level, look ahead to see if a skill you taught is coming, and if so, untaug
 			mob.tell(L("You aren't qualified to be taught @x1.",A.Name()));
 			return false;
 		}
+		final int teacherClassLevel = CMLib.ableMapper().qualifyingClassLevel(target, this);
+		if((teacherClassLevel <0)
+		&&(!auto))
+		{
+			mob.tell(L("@x1 isn't qualified to teach @x2.",target.name(mob),A.Name()));
+			return false;
+		}
 		perLevelLimits limitObj = null;
 		for(perLevelLimits l : perLevelLimits.values())
 		{
@@ -370,6 +464,11 @@ When level, look ahead to see if a skill you taught is coming, and if so, untaug
 		if(limitObj == null)
 		{
 			mob.tell(L("You can not study that sort of skill."));
+			return false;
+		}
+		if((getSupportedSkillType()!=null) && (getSupportedSkillType()!=limitObj))
+		{
+			mob.tell(L("You can not study that sort of skill with this one."));
 			return false;
 		}
 		int numAllowed = limitObj.numAllowed(classLevel);
@@ -391,6 +490,93 @@ When level, look ahead to see if a skill you taught is coming, and if so, untaug
 		}
 		if(!super.invoke(mob, commands, givenTarget, auto, asLevel))
 			return false;
+
+		final double quickPct = getXTIMELevel(mob) * 0.05;
+		final int teachTicks = (int)(((teacherClassLevel * 60000L) 
+							- (10000L * (classLevel-teacherClassLevel)) 
+							- (15000L * super.getXLEVELLevel(mob))) / CMProps.getTickMillis());
+		final int duration=teachTicks-(int)Math.round(CMath.mul(teachTicks, quickPct));
+		final long minutes = (duration * CMProps.getTickMillis() / 60000L);
+		final long seconds = (duration * CMProps.getTickMillis() / 1000L);
+		
+		/*
+			Training time should be (Skill’s qualifying level by the teaching character in minutes 
+			minus 10 seconds per level the teacher has over that, minus 15 seconds per expertise the scholar has, with 
+			a minimum of 1 minute)
+		*/
+		successfullyTaught = super.proficiencyCheck(mob, 0, auto);
+		{
+			final Session sess = target.session();
+			final Ability thisOne=this;
+			final Runnable R=new Runnable()
+			{
+				final MOB		M	= mob;
+				final MOB		tM	= target;
+				final Ability	tA	= A;
+				final Ability	oA	= thisOne;
+				
+				@Override
+				public void run()
+				{
+					verb=L("teaching @x1 about @x2",M.name(tM),tA.name());
+					displayText=L("You are @x1",verb);
+					String str=L("<T-NAME> start(s) teaching <S-NAME> about @x1.",tA.Name());
+					final CMMsg msg=CMClass.getMsg(mob,target,oA,CMMsg.MSG_NOISYMOVEMENT|(auto?CMMsg.MASK_ALWAYS:0),str);
+					final Room R=mob.location();
+					if(R!=null)
+					{
+						if(R.okMessage(mob,msg))
+						{
+							R.send(mob, msg);
+							//final Studying sA = (Studying)
+							beneficialAffect(mob,mob,asLevel,duration);
+							
+						}
+					}
+				}
+				
+			};
+			if(target.isMonster() || (sess==null))
+				R.run();
+			else
+			{
+				sess.prompt(new InputCallback(InputCallback.Type.CONFIRM,"N",0)
+				{
+					@Override
+					public void showPrompt()
+					{
+						String timeStr;
+						if(minutes<2)
+							timeStr = CMLib.lang().L("@x1 seconds",""+seconds);
+						else
+							timeStr = CMLib.lang().L("@x1 minutes",""+minutes);
+						sess.promptPrint(L("\n\r@x1 wants you to try to teach @x2 about @x3. It will take around @x4.  Is that OK (y/N)? ",
+								mob.name(target), target.charStats().himher(), A.name(), timeStr));
+					}
+
+					@Override
+					public void timedOut()
+					{
+					}
+
+					@Override
+					public void callBack()
+					{
+						if (this.input.equals("Y"))
+						{
+							try
+							{
+								R.run();
+							}
+							catch (Exception e)
+							{
+							}
+						}
+					}
+				});
+			}
+		}
+			
 		return true;
 	}
 }

@@ -32,21 +32,68 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Thief_Con extends ThiefSkill
 {
-	@Override public String ID() { return "Thief_Con"; }
-	private final static String localizedName = CMLib.lang().L("Con");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
-	private static final String[] triggerStrings =I(new String[] {"CON"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public boolean disregardsArmorCheck(MOB mob){return true;}
-	@Override public int classificationCode() {   return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_DECEPTIVE; }
-	protected MOB lastChecked=null;
-	@Override public double castingTime(final MOB mob, final List<String> cmds){return CMProps.getSkillActionCost(ID(),CMath.div(CMProps.getIntVar(CMProps.Int.DEFABLETIME),20.0));}
+	@Override
+	public String ID()
+	{
+		return "Thief_Con";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Con");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_OTHERS;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "CON" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public boolean disregardsArmorCheck(MOB mob)
+	{
+		return true;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_THIEF_SKILL | Ability.DOMAIN_DECEPTIVE;
+	}
+
+	protected MOB	lastChecked	= null;
+
+	@Override
+	public double castingTime(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getSkillActionCost(ID(), CMath.div(CMProps.getIntVar(CMProps.Int.DEFABLETIME), 20.0));
+	}
+
 	@Override
 	public boolean preInvoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel, int secondsElapsed, double actionsRemaining)
 	{
@@ -116,7 +163,6 @@ public class Thief_Con extends ThiefSkill
 			mob.tell(L("Con @x1 into doing what?",target.charStats().himher()));
 			return false;
 		}
-
 
 		if(commands.get(0).toUpperCase().startsWith("FOL"))
 		{

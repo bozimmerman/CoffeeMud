@@ -325,8 +325,6 @@ public class StdLanguage extends StdAbility implements Language
 		return newStr.toString();
 	}
 
-
-
 	protected Language getMyTranslator(String id, Physical P, Language winner)
 	{
 		if(P==null)
@@ -535,6 +533,7 @@ public class StdLanguage extends StdAbility implements Language
 		if(!auto)
 		{
 			boolean alreadySpeaking=false;
+			boolean found=false;
 			for(final Enumeration<Ability> a=mob.effects();a.hasMoreElements();)
 			{
 				final Ability A=a.nextElement();
@@ -544,6 +543,7 @@ public class StdLanguage extends StdAbility implements Language
 						A.setProficiency(100);
 					if(A.ID().equals(ID()))
 					{
+						found=true;
 						alreadySpeaking = ((Language)A).beingSpoken(A.ID());
 						((Language)A).setBeingSpoken(ID(),true);
 					}
@@ -552,10 +552,15 @@ public class StdLanguage extends StdAbility implements Language
 				}
 			}
 			isAnAutoEffect=false;
-			if(alreadySpeaking)
-				mob.tell(L("You were already speaking @x1.",name()));
+			if(found)
+			{
+				if(alreadySpeaking)
+					mob.tell(L("You were already speaking @x1.",name()));
+				else
+					mob.tell(L("You are now speaking @x1.",name()));
+			}
 			else
-				mob.tell(L("You are now speaking @x1.",name()));
+				mob.tell(L("You are now speaking Common."));
 		}
 		else
 			setBeingSpoken(ID(),true);

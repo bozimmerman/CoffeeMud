@@ -731,7 +731,8 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 				return false;
 			if(!theA.canBeLearnedBy(teacher,student))
 				return false;
-			if(student.fetchAbility(theA.ID())!=null)
+			final Ability studA=student.fetchAbility(theA.ID());
+			if((studA!=null)&&(studA.isSavable()))
 			{
 				if(teacher.isMonster())
 					CMLib.commands().postSay(teacher,student,L("You already know '@x1'.",teachWhat),true,false);

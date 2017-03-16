@@ -35,18 +35,68 @@ import java.util.*;
 */
 public class Skill_Spellcraft extends StdSkill
 {
-	@Override public String ID() { return "Skill_Spellcraft"; }
-	private final static String localizedName = CMLib.lang().L("Spellcraft");
-	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "";}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
-	@Override public boolean isAutoInvoked(){return true;}
-	@Override public boolean canBeUninvoked(){return false;}
-	@Override public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_ARCANELORE;}
-	public String lastID="";
-	public int craftType(){return Ability.ACODE_SPELL;}
+	@Override
+	public String ID()
+	{
+		return "Skill_Spellcraft";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Spellcraft");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public String displayText()
+	{
+		return "";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_SELF;
+	}
+
+	@Override
+	public boolean isAutoInvoked()
+	{
+		return true;
+	}
+
+	@Override
+	public boolean canBeUninvoked()
+	{
+		return false;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL | Ability.DOMAIN_ARCANELORE;
+	}
+
+	public String	lastID	= "";
+
+	public int craftType()
+	{
+		return Ability.ACODE_SPELL;
+	}
 
 	@Override
 	public boolean autoInvocation(MOB mob, boolean force)
