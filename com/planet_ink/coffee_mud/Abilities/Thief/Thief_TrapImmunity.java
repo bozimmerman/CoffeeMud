@@ -35,16 +35,61 @@ import java.util.*;
 */
 public class Thief_TrapImmunity extends ThiefSkill
 {
-	@Override public String ID() { return "Thief_TrapImmunity"; }
-	private final static String localizedName = CMLib.lang().L("Trap Immunity");
-	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "";}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
-	@Override public boolean isAutoInvoked(){return true;}
-	@Override public boolean canBeUninvoked(){return false;}
-	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_DETRAP;}
+	@Override
+	public String ID()
+	{
+		return "Thief_TrapImmunity";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Trap Immunity");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public String displayText()
+	{
+		return "";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_SELF;
+	}
+
+	@Override
+	public boolean isAutoInvoked()
+	{
+		return true;
+	}
+
+	@Override
+	public boolean canBeUninvoked()
+	{
+		return false;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_THIEF_SKILL | Ability.DOMAIN_DETRAP;
+	}
 
 	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
@@ -61,6 +106,7 @@ public class Thief_TrapImmunity extends ThiefSkill
 		final MOB mob=(MOB)affected;
 		if(msg.amITarget(mob)
 		&&(!msg.amISource(mob))
+		&&(msg.sourceMinor()!=CMMsg.TYP_TEACH)
 		&&(msg.tool() instanceof Trap))
 		{
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> deftly avoid(s) a trap."));

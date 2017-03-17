@@ -115,7 +115,7 @@ public class Prayer_DarkeningAura extends Prayer
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> <IS-ARE> surrounded by a dark aura!"));
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> <S-IS-ARE> surrounded by a dark aura!"));
 					maliciousAffect(mob,target,asLevel,0,-1);
 				}
 			}

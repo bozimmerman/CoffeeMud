@@ -1061,8 +1061,10 @@ public class CraftingSkill extends GatheringSkill
 			}
 		}
 		for(int i=0;i<I.numBehaviors();i++)
+		{
 			if(I.fetchBehavior( i ) instanceof ScriptingEngine)
 				return false;
+		}
 		if(I.numScripts()>0)
 			return false;
 		if(CMLib.flags().flaggedBehaviors(I, Behavior.FLAG_POTENTIALLYAUTODEATHING).size()>0)
