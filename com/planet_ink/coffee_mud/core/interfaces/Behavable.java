@@ -121,7 +121,7 @@ public interface Behavable
 	public int numScripts();
 
 	/**
-	 * Retreive one of the enumerated scripts running on this
+	 * Retrieve one of the enumerated scripts running on this
 	 * object
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine
 	 * @param x which script to return

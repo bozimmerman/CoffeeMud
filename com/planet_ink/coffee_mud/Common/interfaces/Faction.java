@@ -74,11 +74,11 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 	public String getTagValue(String tag);
 
 	/**
-	 * Retreives an entry for an ini properties definition document that describes this faction.
+	 * Retrieves an entry for an ini properties definition document that describes this faction.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#getINIDef(String, String)
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#initializeFaction(StringBuffer, String)
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#TAG_NAMES
-	 * @param tag the tag to retreive a properties definition for
+	 * @param tag the tag to retrieve a properties definition for
 	 * @param delimeter if the tag represents a list, this is the delimiter for entries.
 	 * @return the ini properties definition entry for the tag
 	 */

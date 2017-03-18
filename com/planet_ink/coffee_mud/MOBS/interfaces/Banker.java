@@ -37,7 +37,7 @@ import java.util.Vector;
 /**
  * A Banker is a kind of shopkeeper that belongs to a "chain" which
  * shares access to a common store of player/clan accounts to hold money
- * and items.  Players must go to a banker in the same chain to retreive 
+ * and items.  Players must go to a banker in the same chain to retrieve 
  * money and items deposited with the chain.  Bankers respond to new
  * commands such as DEPOSIT and WITHDRAW that normal shopkeepers do not.
  * Bankers also respect marriage by giving both parters access to each

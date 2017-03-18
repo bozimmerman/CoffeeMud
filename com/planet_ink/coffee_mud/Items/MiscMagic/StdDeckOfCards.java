@@ -176,7 +176,7 @@ public class StdDeckOfCards extends StdHandOfCards implements DeckOfCards
 		if((cardsCache==null)||(cardsCache.size()==0))
 			return false;
 
-		// first retreive all our cards by looping
+		// first retrieve all our cards by looping
 		// through our cached list.  If we already
 		// have a card, make sure its faced-down
 		for(int i=0;i<cardsCache.size();i++)

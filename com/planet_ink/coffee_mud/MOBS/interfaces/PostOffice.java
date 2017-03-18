@@ -39,7 +39,7 @@ import java.util.Vector;
  * shares access to a common store of post office boxes to hold items
  * for players.  Post officers simulate delivery by transferring the
  * items given to them into the appropriate boxes.  Players must then
- * go to a post office in the same chain to retreive items delivered
+ * go to a post office in the same chain to retrieve items delivered
  * to them.  
  * Post offices can serve an entire clan, or a single player.
  * They can handle several different types of charges, including COD.

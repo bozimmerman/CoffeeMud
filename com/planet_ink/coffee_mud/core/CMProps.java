@@ -586,7 +586,7 @@ public class CMProps extends Properties
 	/** retrieve a local .ini file entry as a string
 	*
 	* Usage:  String s=getPrivateStr("TAG");
-	* @param tagToGet   the property tag to retreive.
+	* @param tagToGet   the property tag to retrieve.
 	* @return String   the value of the .ini file tag
 	*/
 	public final String getPrivateStr(final String tagToGet)
@@ -600,7 +600,7 @@ public class CMProps extends Properties
 	/** retrieve raw local .ini file entry as a string
 	*
 	* Usage:  String s=getRawPrivateStr("TAG");
-	* @param tagToGet   the property tag to retreive.
+	* @param tagToGet   the property tag to retrieve.
 	* @return String   the value of the .ini file tag
 	*/
 	public final String getRawPrivateStr(final String tagToGet)
@@ -611,7 +611,7 @@ public class CMProps extends Properties
 	/** retrieve a particular .ini file entry as a string
 	*
 	* Usage:  String s=getStr(p,"TAG");
-	* @param tagToGet    the property tag to retreive.
+	* @param tagToGet    the property tag to retrieve.
 	* @return String	the value of the .ini file tag
 	*/
 	public final String getStr(final String tagToGet)
@@ -627,7 +627,7 @@ public class CMProps extends Properties
 	/** retrieve a particular .ini file entry as a string, or use a default
 	*
 	* Usage:  String s=getStr(p,"TAG");
-	* @param tagToGet    the property tag to retreive.
+	* @param tagToGet    the property tag to retrieve.
 	* @param defaultVal the value to return if the property does not exist
 	* @return String	the value of the .ini file tag
 	*/
@@ -644,7 +644,7 @@ public class CMProps extends Properties
 	/** retrieve particular .ini file entrys as a string array
 	*
 	* Usage:  String s=getStrsStarting(p,"TAG");
-	* @param tagStartersToGet    the property tag to retreive.
+	* @param tagStartersToGet    the property tag to retrieve.
 	* @return String	the value of the .ini file tag
 	*/
 	public final String[][] getStrsStarting(String tagStartersToGet)
@@ -676,7 +676,7 @@ public class CMProps extends Properties
 	/** retrieve a particular .ini file entry as a boolean
 	*
 	* Usage:  boolean i=getBoolean("TAG");
-	* @param tagToGet   the property tag to retreive.
+	* @param tagToGet   the property tag to retrieve.
 	* @return int   the value of the .ini file tag
 	*/
 	public final boolean getBoolean(final String tagToGet)
@@ -690,7 +690,7 @@ public class CMProps extends Properties
 	/** retrieve a particular .ini file entry as a double
 	*
 	* Usage:  double i=getDouble("TAG");
-	* @param tagToGet    the property tag to retreive.
+	* @param tagToGet    the property tag to retrieve.
 	* @return int    the value of the .ini file tag
 	*/
 	public final double getDouble(final String tagToGet)
@@ -708,7 +708,7 @@ public class CMProps extends Properties
 	/** retrieve a particular .ini file entry as an integer
 	*
 	* Usage:  int i=getInt("TAG");
-	* @param tagToGet    the property tag to retreive.
+	* @param tagToGet    the property tag to retrieve.
 	* @return int    the value of the .ini file tag
 	*/
 	public final int getInt(final String tagToGet)
@@ -726,7 +726,7 @@ public class CMProps extends Properties
 	/** retrieve a particular .ini file entry as a long
 	*
 	* Usage:  long i=getInt("TAG");
-	* @param tagToGet    the property tag to retreive.
+	* @param tagToGet    the property tag to retrieve.
 	* @return long the value of the .ini file tag
 	*/
 	public final long getLong(final String tagToGet)
@@ -918,7 +918,7 @@ public class CMProps extends Properties
 	}
 
 	/**
-	 * Retreive one of the pre-processed coffeemud.ini entries for
+	 * Retrieve one of the pre-processed coffeemud.ini entries for
 	 * the callers thread group.
 	 * @param varNum the Str enum of the entry to get
 	 * @return the value of the property.
@@ -1050,7 +1050,7 @@ public class CMProps extends Properties
 	}
 	
 	/**
-	 * Retreive one of the pre-processed coffeemud.ini entries for
+	 * Retrieve one of the pre-processed coffeemud.ini entries for
 	 * this prop object
 	 * @param varNum the Str enum of the entry to get
 	 * @return the value of the property.
@@ -1068,7 +1068,7 @@ public class CMProps extends Properties
 	}
 	
 	/**
-	 * Retreive one of the pre-processed coffeemud.ini entries for
+	 * Retrieve one of the pre-processed coffeemud.ini entries for
 	 * the callers thread group.
 	 * @param varNum the Int enum of the entry to get
 	 * @return the value of the property.
@@ -1086,7 +1086,7 @@ public class CMProps extends Properties
 	}
 
 	/**
-	 * Retreive one of the pre-processed coffeemud.ini entries for
+	 * Retrieve one of the pre-processed coffeemud.ini entries for
 	 * theis props object.
 	 * @param varNum the Int enum of the entry to get
 	 * @return the value of the property.
@@ -1104,7 +1104,7 @@ public class CMProps extends Properties
 	}
 	
 	/**
-	 * Retreive one of the pre-processed coffeemud.ini lists for
+	 * Retrieve one of the pre-processed coffeemud.ini lists for
 	 * the callers thread group.
 	 * @param varType the StrList enum of the list to get
 	 * @return the list from the properties.
@@ -1122,7 +1122,7 @@ public class CMProps extends Properties
 	}
 
 	/**
-	 * Retreive one of the pre-processed coffeemud.ini lists for
+	 * Retrieve one of the pre-processed coffeemud.ini lists for
 	 * the callers thread group, as a hashed set of values.
 	 * @param varType the StrList enum of the set list to get
 	 * @return the list set from the properties.
@@ -1152,7 +1152,7 @@ public class CMProps extends Properties
 	}
 
 	/**
-	 * Retreive one of the pre-processed coffeemud.ini entries for
+	 * Retrieve one of the pre-processed coffeemud.ini entries for
 	 * the callers thread group.
 	 * @param varNum the Bool enum of the entry to get
 	 * @return the value of the property.
@@ -1170,7 +1170,7 @@ public class CMProps extends Properties
 	}
 
 	/**
-	 * Retreive one of the pre-processed coffeemud.ini entries for
+	 * Retrieve one of the pre-processed coffeemud.ini entries for
 	 * this prop object.
 	 * @param varNum the Bool enum of the entry to get
 	 * @return the value of the property.

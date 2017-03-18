@@ -70,13 +70,13 @@ public interface MudHost
 	public void shutdown(Session S, boolean keepItDown, String externalCommand);
 
 	/**
-	 * Retreive a string telling the status of mud startup or shutdown
+	 * Retrieve a string telling the status of mud startup or shutdown
 	 * @return status of mud startup or shutdown
 	 */
 	public String getStatus();
 
 	/**
-	 * Retreive the number of seconds since startup
+	 * Retrieve the number of seconds since startup
 	 * @return number of seconds since startup
 	 */
 	public long getUptimeSecs();

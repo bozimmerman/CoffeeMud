@@ -20,7 +20,7 @@ import com.planet_ink.coffee_web.http.HTTPException;
 */
 
 /**
- * Retreives Web Server File Data
+ * Retrieves Web Server File Data
  * @author Bo Zimmerman
  *
  */
@@ -41,7 +41,7 @@ public interface HTTPFileGetter
 	public DataBuffers generateOutput(HTTPRequest request) throws HTTPException;
 	
 	/**
-	 * Retreives a buffer set containing the possibly cached contents of the file. 
+	 * Retrieves a buffer set containing the possibly cached contents of the file. 
 	 * This can trigger file reads, servlet calls and other ways
 	 * of generating body data.
 	 * 

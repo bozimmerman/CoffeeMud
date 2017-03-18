@@ -54,7 +54,7 @@ public class KeyPairSearchTree<V>
 	}
 	
 	/**
-	 * Retreive teh value for the longest key that
+	 * Retrieve teh value for the longest key that
 	 * the given string starts with
 	 * @param fullStr the string that might start with a key
 	 * @return the value

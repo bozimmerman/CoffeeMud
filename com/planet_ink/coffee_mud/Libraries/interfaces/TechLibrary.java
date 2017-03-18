@@ -105,7 +105,7 @@ public interface TechLibrary extends CMLibrary
 	public boolean seekBatteryPower(final ElecPanel E, final String key);
 
 	/**
-	 * Retreives the default manufacturer for new products
+	 * Retrieves the default manufacturer for new products
 	 * @return the default manufacturer for new products
 	 */
 	public Manufacturer getDefaultManufacturer();

@@ -322,7 +322,7 @@ public interface CatalogLibrary extends CMLibrary
 	 * shop items.  This is used typically for catalogging.
 	 * @see CatalogLibrary#updateRoomContent(String, List)
 	 * @see CatalogLibrary.RoomContent
-	 * @param R the room to retreive content from
+	 * @param R the room to retrieve content from
 	 * @return the list of items and mobs in the room
 	 */
 	public List<RoomContent> roomContent(Room R);

@@ -111,7 +111,7 @@ public interface LandTitle extends PrivateProperty
 	public void setBackTaxes(int amount);
 
 	/**
-	 * If back taxes is owned on this property, this is how the value is retreived.  The
+	 * If back taxes is owned on this property, this is how the value is retrieved.  The
 	 * value should be in base coffeemud currency
 	 * @return amount the back  taxes owed
 	 */

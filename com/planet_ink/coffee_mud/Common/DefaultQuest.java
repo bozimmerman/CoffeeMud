@@ -3885,7 +3885,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		}
 	}
 
-	// retreive the list of previous winners
+	// retrieve the list of previous winners
 	@Override
 	public Map<String, Long> getWinners()
 	{

@@ -932,7 +932,7 @@ public class Resources
 	 * properties tend to be internal data maintained by the system for internal use, and resaved
 	 * as necessary.
 	 * 
-	 * This method retreives all properties in a given section into a string map.  If they are
+	 * This method retrieves all properties in a given section into a string map.  If they are
 	 * not cached, this method will cache all properties of all sections.
 	 * 
 	 * @param section the section in the resource properties to get entries from

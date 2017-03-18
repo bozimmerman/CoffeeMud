@@ -28,7 +28,7 @@ package com.planet_ink.coffee_mud.core.collections;
 public class KeyPairWildSearchTree<V> extends KeyPairSearchTree<V>
 {
 	/**
-	 * Retreive the value for the longest key that
+	 * Retrieve the value for the longest key that
 	 * the given string starts with, with wildcard support
 	 * @param fullStr the string that might start with a key
 	 * @param startNode the search node to start with
@@ -89,7 +89,7 @@ public class KeyPairWildSearchTree<V> extends KeyPairSearchTree<V>
 	}
 	
 	/**
-	 * Retreive the value for the longest key that
+	 * Retrieve the value for the longest key that
 	 * the given string starts with
 	 * @param fullStr the string that might start with a key
 	 * @return the value
