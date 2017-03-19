@@ -1786,6 +1786,9 @@ public class Arrest extends StdBehavior implements LegalBehavior
 	{
 		if((laws.basicCrimes().containsKey("NUDITY"))
 		&&(!testMOB.isMonster())
+		&&(!CMLib.flags().isGolem(testMOB))
+		&&(!CMLib.flags().isInsect(testMOB))
+		&&(!CMLib.flags().isAPlant(testMOB))
 		&&(testMOB.fetchFirstWornItem(Wearable.WORN_LEGS)==null)
 		&&(testMOB.getWearPositions(Wearable.WORN_LEGS)>0)
 		&&(testMOB.fetchFirstWornItem(Wearable.WORN_WAIST)==null)

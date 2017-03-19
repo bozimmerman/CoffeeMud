@@ -87,6 +87,7 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 	}
 
 	protected boolean	sprung	= false;
+	protected int		attempts = 0;
 
 	@Override
 	public boolean disabled()
@@ -125,7 +126,7 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 	@Override
 	public int getReset()
 	{
-		return 0;
+		return CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY);
 	}
 
 	@Override
@@ -174,15 +175,31 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 		final Trap T=(Trap)copyOf();
 		T.setInvoker(mob);
 		P.addEffect(T);
-		CMLib.threads().startTickDown(T,Tickable.TICKID_TRAP_DESTRUCTION,CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY)+(2*getXLEVELLevel(mob)));
+		final int duration = CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY)+(2*getXLEVELLevel(mob));
+		CMLib.threads().startTickDown(T,Tickable.TICKID_TRAP_DESTRUCTION,duration);
 		return T;
 	}
 
 	@Override
 	public void spring(MOB M)
 	{
-		if((!sprung)&&(CMLib.dice().rollPercentage()+(2*getXLEVELLevel(invoker()))>M.charStats().getSave(CharStats.STAT_SAVE_TRAPS)))
+		if((!sprung)
+		&&(CMLib.dice().rollPercentage()+(2*getXLEVELLevel(invoker()))>M.charStats().getSave(CharStats.STAT_SAVE_TRAPS)))
+		{
 			CMLib.combat().postDeath(invoker(),M,null);
+			if(M.amDead())
+			{
+				sprung=true;
+				//tickDown=getReset();
+				//CMLib.threads().startTickDown(this,Tickable.TICKID_TRAP_RESET,1);
+			}
+		}
+		if((--attempts)<0)
+		{
+			sprung=true;
+			if(affected != null)
+				unInvoke();
+		}
 	}
 
 	@Override
@@ -212,9 +229,8 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 		&&(!sprung)
 		&&(invoker()!=null)
 		&&(invoker().mayIFight(msg.source()))
-		&&((canBeUninvoked())||(!CMLib.law().doesHavePriviledgesHere(msg.source(),(Room)affected)))
-		&&(CMLib.dice().rollPercentage()>msg.source().charStats().getSave(CharStats.STAT_SAVE_TRAPS)))
-			CMLib.combat().postDeath(invoker(),msg.source(),msg);
+		&&((canBeUninvoked())||(!CMLib.law().doesHavePriviledgesHere(msg.source(),(Room)affected))))
+			spring(msg.source());
 		super.executeMsg(myHost,msg);
 	}
 
@@ -260,7 +276,7 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 		int amount=0;
 		if(resource!=null)
 			amount=CMLib.materials().findNumberOfResource(mob.location(),resource.material());
-		if(amount<100)
+		if((amount<100)||(resource==null))
 		{
 			mob.tell(L("You need 100 pounds of raw metal to build this trap."));
 			return false;
@@ -283,13 +299,17 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
+			attempts =  (RawMaterial.CODES.HARDNESS(resource.material())+super.getXLEVELLevel(mob))*2; 
 			if(success)
 			{
 				mob.tell(L("You have set the trap."));
 				setTrap(mob,trapThis,mob.charStats().getClassLevel(mob.charStats().getCurrentClass()),(CMLib.ableMapper().qualifyingClassLevel(mob,this)-CMLib.ableMapper().lowestQualifyingLevel(ID()))+1,false);
 				final Thief_DeathTrap T=(Thief_DeathTrap)trapThis.fetchEffect(ID());
 				if(T!=null)
+				{
 					T.setMiscText(mob.Name());
+					T.attempts=attempts;
+				}
 			}
 			else
 			{
