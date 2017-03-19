@@ -93,15 +93,31 @@ public class Spell_DarknessGlobe extends Spell
 		return true;
 	}
 
+	protected volatile boolean norecurse = false;
+	
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		final Room R=CMLib.map().roomLocation(affected);
-		if(R!=null)
+		if((R!=null) && (!norecurse))
 		{
-			R.phyStats().setDisposition(R.phyStats().disposition()|PhyStats.IS_DARK);
+			if(!CMath.bset(R.phyStats().disposition(),PhyStats.IS_DARK))
+				R.phyStats().setDisposition(R.phyStats().disposition()|PhyStats.IS_DARK);
 			if(CMath.bset(R.phyStats().disposition(),PhyStats.IS_LIGHTSOURCE))
 				R.phyStats().setDisposition(R.phyStats().disposition()-PhyStats.IS_LIGHTSOURCE);
+			synchronized(this)
+			{
+				norecurse = true;
+				try
+				{
+					for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
+						m.nextElement().recoverPhyStats();
+				}
+				finally
+				{
+					norecurse=false;
+				}
+			}
 		}
 	}
 
