@@ -34,13 +34,19 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Account extends StdCommand
 {
-	public Account(){}
+	public Account()
+	{
+	}
 
-	private final String[] access=I(new String[]{"ACCOUNT"});
-	@Override public String[] getAccessWords(){return access;}
+	private final String[]	access	= I(new String[] { "ACCOUNT" });
+
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
 	public static StringBuffer showCharLong(String bgColor, MOB seer, ThinPlayer who)
 	{
@@ -48,11 +54,14 @@ public class Account extends StdCommand
 		final StringBuffer msg=new StringBuffer("");
 		msg.append("[^w"+bgColor);
 		final int[] cols={
-				CMLib.lister().fixColWidth(10,seer.session()),
-				CMLib.lister().fixColWidth(10,seer.session()),
-				CMLib.lister().fixColWidth(5,seer.session())
-			};
-		CharClass C=CMClass.getCharClass(who.charClass());
+			CMLib.lister().fixColWidth(10,seer.session()),
+			CMLib.lister().fixColWidth(10,seer.session()),
+			CMLib.lister().fixColWidth(5,seer.session())
+		};
+		final MOB pM=CMLib.players().getPlayer(who.name());
+		CharClass C=(pM!=null)?pM.charStats().getCurrentClass():null;
+		if(C==null)
+			C=CMClass.getCharClass(who.charClass());
 		if(C==null)
 			C=CMClass.findCharClass(who.charClass());
 		if(C==null)
@@ -63,7 +72,9 @@ public class Account extends StdCommand
 			C=mob.charStats().getCurrentClass();
 		}
 		
-		Race R=CMClass.getRace(who.race());
+		Race R=(pM!=null)?pM.charStats().getMyRace():null;
+		if(R==null)
+			R=CMClass.getRace(who.race());
 		if(R==null)
 			R=CMClass.getRace(who.race());
 		if(R==null)
@@ -82,7 +93,9 @@ public class Account extends StdCommand
 				msg.append(CMStrings.padRight(R.name(),cols[0])+" ");
 		}
 		
-		String levelStr=""+who.level();
+		String levelStr=(pM!=null)?(""+pM.phyStats().level()):null;
+		if(levelStr == null)
+			levelStr=""+who.level();
 		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES))
 		{
 			if(R.classless())

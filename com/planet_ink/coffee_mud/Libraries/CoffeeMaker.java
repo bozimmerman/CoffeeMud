@@ -1209,7 +1209,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					B.setSavable(false);
 					newArea.addBehavior(B);
 				}
-				B.setParms(CMProps.getVar(CMProps.Str.AUTOWEATHERPARMS));
+				if(!B.isSavable())
+					B.setParms(CMProps.getVar(CMProps.Str.AUTOWEATHERPARMS));
 			}
 			if(CMProps.getVar(CMProps.Str.AUTOAREAPROPS).trim().length()>0)
 			{
