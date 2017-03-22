@@ -112,7 +112,7 @@ When the command is initiated, it looks like a reverse TEACH.  It will provide t
 with a y/n dialogue option if they want to train the scholar, and it will tell them about how long to 
 train the scholar.  .  
 
-We could also make this 6 different abilities – Common Skill Studying, Skills 
+We could also make this 6 different abilities, Common Skill Studying, Skills 
 Studying, Songs Studying, Chants Studying, Spells Studying, and Prayers Studying if you would prefer
 granting each ability at the lowest level above (1,2,3,4,5,6).
 
