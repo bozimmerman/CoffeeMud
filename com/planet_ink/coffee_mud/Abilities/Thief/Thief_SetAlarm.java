@@ -247,39 +247,41 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 					if((!M.isInCombat())
 					&&(!mobsDone.contains(M))
 					&&(CMLib.flags().canHear(M))
-					&&(!CMLib.flags().isTracking(M))
-					&&(R.show(invoker, M, this, CMMsg.MSG_NOISE|CMMsg.MASK_MALICIOUS,L("<T-NAME> hear(s) a loud alarm @x1.",CMLib.directions().getInDirectionName(dir))))
-					&&(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.STAT_SAVE_MIND))
-					&&(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.STAT_SAVE_TRAPS)))
+					&&(!CMLib.flags().isTracking(M)))
 					{
-						if(CMLib.tracking().autoTrack(M, room1))
+						if((R.show(invoker, M, this, CMMsg.MSG_NOISE|CMMsg.MASK_MALICIOUS,L("<T-NAME> hear(s) a loud alarm @x1.",CMLib.directions().getInDirectionName(dir))))
+						&&(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.STAT_SAVE_MIND))
+						&&(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.STAT_SAVE_TRAPS)))
 						{
-							mobsDone.add(M);
-							Ability A=CMClass.getAbility("WanderHomeLater");
-							if(A!=null)
+							if(CMLib.tracking().autoTrack(M, room1))
 							{
-								final int ticks=trackLvl*2;
-								A.setMiscText("ONCE=true MINTICKS="+ticks+" MAXTICKS="+ticks+" IGNOREPCS=true RESPECTFOLLOW=true");
-								M.addEffect(A);
-								A.setSavable(false);
-								A.makeLongLasting();
-							}
-							A=M.fetchEffect("TemporaryImmunity");
-							if(A==null)
-							{
-								A=CMClass.getAbility("TemporaryImmunity");
+								mobsDone.add(M);
+								Ability A=CMClass.getAbility("WanderHomeLater");
 								if(A!=null)
 								{
+									final int ticks=trackLvl*2;
+									A.setMiscText("ONCE=true MINTICKS="+ticks+" MAXTICKS="+ticks+" IGNOREPCS=true RESPECTFOLLOW=true");
+									M.addEffect(A);
 									A.setSavable(false);
 									A.makeLongLasting();
-									M.addEffect(A);
-									A.makeLongLasting();
 								}
+								levels-=M.phyStats().level();
 							}
-							if(A!=null)
-								A.setMiscText("+"+ID());
-							levels-=M.phyStats().level();
 						}
+						Ability A=M.fetchEffect("TemporaryImmunity");
+						if(A==null)
+						{
+							A=CMClass.getAbility("TemporaryImmunity");
+							if(A!=null)
+							{
+								A.setSavable(false);
+								A.makeLongLasting();
+								M.addEffect(A);
+								A.makeLongLasting();
+							}
+						}
+						if((A!=null)&&(A.text().indexOf(ID())<0))
+							A.setMiscText("+"+ID());
 					}
 				}
 			}
