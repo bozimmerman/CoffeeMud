@@ -428,6 +428,7 @@ public class Age extends StdAbility
 						newMan.setClan(p.first.clanID(),p.second.intValue());
 					int theme=Area.THEME_FANTASY;
 					int highestLegacyLevel=0;
+					final List<MOB> parents=new ArrayList<MOB>(2);
 					for(final Enumeration<Tattoo> e=newMan.tattoos();e.hasMoreElements();)
 					{
 						final Tattoo T=e.nextElement();
@@ -436,6 +437,7 @@ public class Age extends StdAbility
 							final MOB M=CMLib.players().getLoadPlayer(T.getTattooName().substring(7));
 							if(M!=null)
 							{
+								parents.add(M);
 								if(M.basePhyStats().level()>highestParentLevel)
 									highestParentLevel=M.basePhyStats().level();
 								for(int i=0;i<M.baseCharStats().numClasses();i++)
@@ -529,11 +531,11 @@ public class Age extends StdAbility
 						for(int i=0;i<highestLegacyLevel+1;i++)
 							newMan.playerStats().addLegacyLevel(highestBaseClass);
 					}
-					final int bonusPoints=newMan.playerStats().getTotalLegacyLevels()+1;
+					//final int bonusPoints=newMan.playerStats().getTotalLegacyLevels()+1;
 					final Ability reRollA=CMClass.getAbility("Prop_ReRollStats");
 					if(reRollA!=null)
 					{
-						reRollA.setMiscText("BONUSPOINTS="+bonusPoints+" PICKCLASS=TRUE");
+						reRollA.setMiscText("PICKCLASS=TRUE");
 						newMan.setSavable(true);
 						newMan.addNonUninvokableEffect(reRollA);
 					}
@@ -547,12 +549,6 @@ public class Age extends StdAbility
 						newMan.moveItemTo(babe.getItem(i));
 					CMLib.utensils().outfit(newMan,newMan.baseCharStats().getMyRace().outfit(newMan));
 					CMLib.utensils().outfit(newMan,newMan.baseCharStats().getCurrentClass().outfit(newMan));
-					for(final int i : CharStats.CODES.BASECODES())
-					{
-						if(newMan.baseCharStats().getStat(i)<CMProps.getIntVar(CMProps.Int.BASEMAXSTAT))
-							newMan.baseCharStats().setStat(i,newMan.baseCharStats().getStat(i)+bonusPoints);
-						newMan.baseCharStats().setStat(CharStats.STAT_MAX_STRENGTH_ADJ+i,bonusPoints);
-					}
 					newMan.playerStats().setLastDateTime(System.currentTimeMillis());
 					newMan.playerStats().setLastUpdated(System.currentTimeMillis());
 					newMan.recoverCharStats();
@@ -570,6 +566,15 @@ public class Age extends StdAbility
 					CMLib.achievements().loadAccountAchievements(newMan,AchievementLoadFlag.NORMAL);
 					CMLib.database().DBCreateCharacter(newMan);
 					CMLib.players().addPlayer(newMan);
+
+					newMan.setSession((Session)CMClass.getCommon("DefaultSession"));
+					CMLib.achievements().possiblyBumpAchievement(newMan, AchievementLibrary.Event.PLAYERBORN, 1);
+					newMan.setSession(null);
+					for(final MOB parentM : parents)
+					{
+						if(parentM.isPlayer())
+							CMLib.achievements().possiblyBumpAchievement(parentM, AchievementLibrary.Event.PLAYERBORNPARENT, 1, newMan);
+					}
 
 					if((liege != null) && (liege.session() != null))
 						newMan.playerStats().setLastIP(liege.session().getAddress());

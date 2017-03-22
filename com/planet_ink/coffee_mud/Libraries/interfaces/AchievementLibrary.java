@@ -82,6 +82,10 @@ public interface AchievementLibrary extends CMLibrary
 		REMORT("Remorting",new String[]{"NUM","PLAYERMASK"}),
 		GOTITEM("Got an item",new String[]{"NUM","ITEMMASK","PLAYERMASK"}),
 		FACTIONS("A group of factions",new String[]{"VALUE","ABOVEBELOW","IDMASK","NUM"}),
+		BIRTHS("Births",new String[]{"NUM","ZAPPERMASK","PLAYERMASK"}),
+		RACEBIRTH("Race Creation",new String[]{"NUM","ZAPPERMASK","PLAYERMASK"}),
+		PLAYERBORN("Being a Player Born",new String[]{"PLAYERMASK"}),
+		PLAYERBORNPARENT("Being a Player Parent",new String[]{"NUM","ZAPPERMASK","PLAYERMASK"}),
 		;
 		private final String[] parameters;
 		private final String displayName;

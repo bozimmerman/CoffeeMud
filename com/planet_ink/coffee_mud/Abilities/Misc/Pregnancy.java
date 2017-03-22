@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Abilities.Misc;
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMClass.CMObjectType;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -305,9 +306,14 @@ public class Pregnancy extends StdAbility implements HealthCondition
 									A = mob.fetchAbility(ID());
 								}
 							}
+							final int numRaces = CMClass.numPrototypes(CMObjectType.RACE);
+							boolean newRaceGenerated = false;
 							Race R = CMLib.utensils().getMixedRace(race1, race2, false);
 							if (R == null)
 								R = mob.baseCharStats().getMyRace();
+							else
+							if(numRaces > CMClass.numPrototypes(CMObjectType.RACE))
+								newRaceGenerated = true;
 							String name = CMLib.english().startWithAorAn(R.makeMobName(gender, 2)).toLowerCase();
 							babe.setName(name);
 							CMLib.factions().setAlignment(babe, Faction.Align.GOOD);
@@ -317,6 +323,7 @@ public class Pregnancy extends StdAbility implements HealthCondition
 									babe.setClan(p.first.clanID(), p.first.getAutoPosition());
 							}
 							else
+							if(!mob.isMonster())
 							{
 								for (final Pair<Clan, Integer> p : CMLib.clans().findRivalrousClans(mob))
 									babe.setClan(p.first.clanID(), p.first.getAutoPosition());
@@ -379,6 +386,15 @@ public class Pregnancy extends StdAbility implements HealthCondition
 							babe.recoverPhyStats();
 							babe.recoverMaxState();
 							babe.resetToMaxState();
+							CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.BIRTHS, 1, babe);
+							if((otherParentM != null) && (otherParentM.isPlayer()))
+								CMLib.achievements().possiblyBumpAchievement(otherParentM, AchievementLibrary.Event.BIRTHS, 1, babe);
+							if(newRaceGenerated)
+							{
+								CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.RACEBIRTH, 1, babe);
+								if((otherParentM != null) && (otherParentM.isPlayer()))
+									CMLib.achievements().possiblyBumpAchievement(otherParentM, AchievementLibrary.Event.RACEBIRTH, 1, babe);
+							}
 							final Item I = CMClass.getItem("GenCaged");
 							((CagedAnimal) I).cageMe(babe);
 							((CagedAnimal) I).setCageFlagsBitmap(CagedAnimal.CAGEFLAG_TO_MOB_PROGRAMMATICALLY);

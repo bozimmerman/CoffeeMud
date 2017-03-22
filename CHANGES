@@ -41,6 +41,8 @@
   39. Some of the one-off Racial Categories have been consolidated.
   40. CommonSpeaker behavior now allows a language argument.
   41. New standard Locales: LongRoad, LongerRoad, LongestRoad - cost more movement
+  42. New Achievement triggers: playerborn, births, racebirth, playerbornparent
+  43. Babies born as players no longer get bonuses per se -- only through acheivements. 
 # Build 5.9.4 Released 08/03/2016
    1. Qualify now shows language limits
    2. New Prop_NoTeleport exceptions
