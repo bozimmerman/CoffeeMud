@@ -75,6 +75,7 @@ public class WanderHomeLater extends StdAbility
 	private boolean	ignoreFollow	= false;
 	private boolean	once			= false;
 	private boolean	destroy			= false;
+	private boolean	respectFollow	= false;
 	private int		currentWait		= 0;
 	private int		minTicks		= 0;
 	private int		maxTicks		= 0;
@@ -87,6 +88,7 @@ public class WanderHomeLater extends StdAbility
 		destroy=CMParms.getParmBool(newMiscText,"destroy", destroy);
 		ignorePCs=CMParms.getParmBool(newMiscText,"ignorepcs", ignorePCs);
 		ignoreFollow=CMParms.getParmBool(newMiscText,"ignorefollow", ignoreFollow);
+		respectFollow=CMParms.getParmBool(newMiscText,"respectfollow", ignoreFollow);
 		once=CMParms.getParmBool(newMiscText,"once", once);
 		minTicks=CMParms.getParmInt(newMiscText, "minticks", minTicks);
 		maxTicks=CMParms.getParmInt(newMiscText, "maxticks", maxTicks);
@@ -129,6 +131,9 @@ public class WanderHomeLater extends StdAbility
 				unInvoke();
 			else
 			if(M.amDead() && (once))
+				unInvoke();
+			else
+			if(respectFollow && (M.amFollowing()!=null) && (M.amFollowing().location()==M.location()))
 				unInvoke();
 			else
 			if(CMLib.flags().canActAtAll(M)

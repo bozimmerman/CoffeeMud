@@ -204,7 +204,20 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			return this;
 		}
 	}
-	
+
+	@Override
+	public boolean autoTrack(MOB mob, Room destR)
+	{
+		CMLib.tracking().stopTracking(mob);
+		final Ability A=CMClass.getAbility("Skill_Track");
+		if(A!=null)
+		{
+			A.invoke(mob,CMParms.parse("\""+CMLib.map().getExtendedRoomID(destR)+"\" "),destR,true,0);
+			return true;
+		}
+		return false;
+	}
+
 	protected List<String> getDirectionCommandSet(int direction)
 	{
 		final Integer dir=Integer.valueOf(direction);

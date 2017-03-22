@@ -89,6 +89,8 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 	protected boolean	sprung	= false;
 	public Room			room1	= null;
 	public Room			room2	= null;
+	protected int		trackLvl= 10;
+	protected int		levels	= 1000;
 
 	@Override
 	public boolean isABomb()
@@ -200,18 +202,19 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 			return false;
 		if((affected==null)||(!(affected instanceof Exit))||(room1==null)||(room2==null))
 			return false;
-		if(sprung)
+		if(sprung && (levels>0))
 		{
 			final List<Room> rooms=new ArrayList<Room>();
 			TrackingLibrary.TrackingFlags flags;
 			flags = CMLib.tracking().newFlags()
 					.plus(TrackingLibrary.TrackingFlag.OPENONLY)
 					.plus(TrackingLibrary.TrackingFlag.AREAONLY);
-			CMLib.tracking().getRadiantRooms(room1,rooms,flags,null,10+(getXLEVELLevel(invoker())*2),null);
-			CMLib.tracking().getRadiantRooms(room2,rooms,flags,null,10+(getXLEVELLevel(invoker())*2),null);
+			CMLib.tracking().getRadiantRooms(room1,rooms,flags,null,trackLvl,null);
+			CMLib.tracking().getRadiantRooms(room2,rooms,flags,null,trackLvl,null);
 			final List<MOB> mobsDone=new ArrayList<MOB>();
 			room1.showHappens(CMMsg.MSG_NOISE,L("A horrible alarm is going off here."));
 			room2.showHappens(CMMsg.MSG_NOISE,L("A horrible alarm is going off here."));
+			final List<MOB> mobsAvailable = new ArrayList<MOB>(rooms.size());
 			for(int r=0;r<rooms.size();r++)
 			{
 				final Room R=rooms.get(r);
@@ -220,7 +223,6 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 					final int dir=CMLib.tracking().radiatesFromDir(R,rooms);
 					if(dir>=0)
 					{
-						R.showHappens(CMMsg.MSG_NOISE,L("You hear a loud alarm @x1.",CMLib.directions().getInDirectionName(dir)));
 						for(int i=0;i<R.numInhabitants();i++)
 						{
 							final MOB M=R.fetchInhabitant(i);
@@ -228,18 +230,58 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 							&&(M.isMonster())
 							&&(!M.isInCombat())
 							&&(CMLib.flags().isMobile(M))
-							&&(!mobsDone.contains(M))
-							&&(CMLib.flags().canHear(M))
-							&&(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.STAT_SAVE_MIND))
-							&&(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.STAT_SAVE_TRAPS)))
-							{
-								mobsDone.add(M);
-								CMLib.tracking().walk(M,dir,false,false);
-							}
+							&&(!mobsAvailable.contains(M))
+							&&(CMLib.flags().canHear(M)))
+								mobsAvailable.add(M);
 						}
 					}
 				}
-
+			}
+			while((mobsAvailable.size()>0)&&(levels>0))
+			{
+				final MOB M=mobsAvailable.remove(CMLib.dice().roll(1, mobsAvailable.size(), -1));
+				final Room R=M.location();
+				final int dir=CMLib.tracking().radiatesFromDir(R,rooms);
+				if(dir>=0)
+				{
+					if((!M.isInCombat())
+					&&(!mobsDone.contains(M))
+					&&(CMLib.flags().canHear(M))
+					&&(!CMLib.flags().isTracking(M))
+					&&(R.show(invoker, M, this, CMMsg.MSG_NOISE|CMMsg.MASK_MALICIOUS,L("<T-NAME> hear(s) a loud alarm @x1.",CMLib.directions().getInDirectionName(dir))))
+					&&(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.STAT_SAVE_MIND))
+					&&(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.STAT_SAVE_TRAPS)))
+					{
+						if(CMLib.tracking().autoTrack(M, room1))
+						{
+							mobsDone.add(M);
+							Ability A=CMClass.getAbility("WanderHomeLater");
+							if(A!=null)
+							{
+								final int ticks=trackLvl*2;
+								A.setMiscText("ONCE=true MINTICKS="+ticks+" MAXTICKS="+ticks+" IGNOREPCS=true RESPECTFOLLOW=true");
+								M.addEffect(A);
+								A.setSavable(false);
+								A.makeLongLasting();
+							}
+							A=M.fetchEffect("TemporaryImmunity");
+							if(A==null)
+							{
+								A=CMClass.getAbility("TemporaryImmunity");
+								if(A!=null)
+								{
+									A.setSavable(false);
+									A.makeLongLasting();
+									M.addEffect(A);
+									A.makeLongLasting();
+								}
+							}
+							if(A!=null)
+								A.setMiscText("+"+ID());
+							levels-=M.phyStats().level();
+						}
+					}
+				}
 			}
 		}
 		return true;
@@ -270,23 +312,33 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 		{
 			invoker=mob;
 			mob.location().send(mob,msg);
+			final int levelsLeftToDo = (mob.phyStats().level() * 2) + (2 * super.getXLEVELLevel(mob));
+			final int trackLevel = 5 + (super.adjustedLevel(mob, asLevel)/10) + super.getXLEVELLevel(mob);
 			if(success)
 			{
 				sprung=false;
 				room1=mob.location();
 				room2=mob.location().getRoomInDir(dirCode);
 				mob.tell(L("You have set the alarm."));
-				beneficialAffect(mob,alarmThis,asLevel,0);
+				final Thief_SetAlarm A = (Thief_SetAlarm)beneficialAffect(mob,alarmThis,asLevel,trackLevel);
+				if(A!=null)
+				{
+					A.levels = levelsLeftToDo;
+					A.trackLvl= trackLevel;
+				}
 			}
 			else
 			{
 				if(CMLib.dice().rollPercentage()>50)
 				{
-					beneficialAffect(mob,alarmThis,asLevel,0);
-					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> trigger(s) the alarm on accident!"));
-					final Trap T=(Trap)alarmThis.fetchEffect(ID());
-					if(T!=null)
-						T.spring(mob);
+					final Thief_SetAlarm A = (Thief_SetAlarm)beneficialAffect(mob,alarmThis,asLevel,trackLevel);
+					if(A!=null)
+					{
+						mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> trigger(s) the alarm on accident!"));
+						A.levels = levelsLeftToDo;
+						A.trackLvl= trackLevel;
+						A.spring(mob);
+					}
 				}
 				else
 				{

@@ -166,7 +166,7 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 		V.add(CMLib.materials().makeItemResource(RawMaterial.RESOURCE_IRON));
 		return V;
 	}
-	
+
 	@Override
 	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
 	{
@@ -229,7 +229,8 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 		&&(!sprung)
 		&&(invoker()!=null)
 		&&(invoker().mayIFight(msg.source()))
-		&&((canBeUninvoked())||(!CMLib.law().doesHavePriviledgesHere(msg.source(),(Room)affected))))
+		&&((canBeUninvoked())||(!CMLib.law().doesHavePriviledgesHere(msg.source(),(Room)affected)))
+		&&(!invoker().getGroupMembers(new HashSet<MOB>()).contains(msg.source())))
 			spring(msg.source());
 		super.executeMsg(myHost,msg);
 	}

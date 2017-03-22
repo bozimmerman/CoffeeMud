@@ -134,6 +134,15 @@ public class Skill_Track extends StdSkill
 	}
 
 	@Override
+	public void unInvoke()
+	{
+		if(!unInvoked)
+		{
+		}
+		super.unInvoke();
+	}
+	
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -287,7 +296,8 @@ public class Skill_Track extends StdSkill
 		final Room thisRoom=mob.location();
 
 		final List<Ability> V=CMLib.flags().flaggedAffects(mob,Ability.FLAG_TRACKING);
-		for(final Ability A : V) A.unInvoke();
+		for(final Ability A : V) 
+			A.unInvoke();
 		if(V.size()>0)
 		{
 			mob.tell(L("You stop tracking."));
