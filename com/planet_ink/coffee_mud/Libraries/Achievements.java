@@ -96,8 +96,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		final Event eventType = (Event)CMath.s_valueOf(Event.class, eventStr.toUpperCase().trim());
 		if(eventType == null)
 			return "Error: Blank or unknown achievement type: "+eventStr+"!";
-		if(tattoo.equalsIgnoreCase("ACH_PLAYERBORN"))
-			System.out.println("hi");
 		final String displayStr=CMStrings.deEscape(CMParms.getParmStr(params, "DISPLAY", ""));
 		final String titleStr=CMStrings.deEscape(CMParms.getParmStr(params, "TITLE", ""));
 		String rewardStr=CMStrings.deEscape(CMParms.getParmStr(params, "REWARDS", ""));
