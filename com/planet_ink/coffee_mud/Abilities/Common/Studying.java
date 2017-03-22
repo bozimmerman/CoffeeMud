@@ -500,7 +500,7 @@ granting each ability at the lowest level above (1,2,3,4,5,6).
 		final long seconds = (duration * CMProps.getTickMillis() / 1000L);
 		
 		/*
-			Training time should be (Skill’s qualifying level by the teaching character in minutes 
+			Training time should be (Skill's qualifying level by the teaching character in minutes 
 			minus 10 seconds per level the teacher has over that, minus 15 seconds per expertise the scholar has, with 
 			a minimum of 1 minute)
 		*/
