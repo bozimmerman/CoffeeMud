@@ -32,20 +32,59 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
-
 public class Prayer_UnholyPortent extends Prayer
 {
-	@Override public String ID() { return "Prayer_UnholyPortent"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_UnholyPortent";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Unholy Portent");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Unholy Portent)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CURSING;}
-	@Override public long flags(){return Ability.FLAG_UNHOLY;}
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
-	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER | Ability.DOMAIN_CURSING;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_UNHOLY;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_MOBS;
+	}
 
 	@Override
 	public void unInvoke()
@@ -101,8 +140,6 @@ public class Prayer_UnholyPortent extends Prayer
 		}
 		else
 			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to curse <T-NAMESELF>, but nothing happens."));
-
-
 		// return whether it worked
 		return success;
 	}
