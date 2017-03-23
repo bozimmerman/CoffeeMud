@@ -136,6 +136,16 @@ public interface CombatLibrary extends CMLibrary
 	public int adjustedArmor(MOB mob);
 
 	/**
+	 * Returns the given armor value, after adjusting for
+	 * hunger, thirst, fatigue, position, and dexterity.
+	 * Assumes an average random mob.
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#armor()
+	 * @param armorValue the base armor value to start from
+	 * @return the given adjusted armor value
+	 */
+	public int adjustedArmor(int armorValue);
+	
+	/**
 	 * Returns the given mobs attack bonus, after adjusting for
 	 * hunger, thirst, fatigue, position, and strength.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#armor()
@@ -144,6 +154,16 @@ public interface CombatLibrary extends CMLibrary
 	 * @return the given mobs adjusted attack bonus
 	 */
 	public int adjustedAttackBonus(MOB mob, MOB target);
+
+	/**
+	 * Returns the given attack bonus, after adjusting for
+	 * hunger, thirst, fatigue, position, and strength.
+	 * Assumes an average mob otherwise.
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#armor()
+	 * @param baseAttack the base attack bonus to work from.
+	 * @return the given adjusted attack bonus
+	 */
+	public int adjustedAttackBonus(int baseAttack);
 
 	/**
 	 * Returns the given mob (or weapons, if provided) damage bonus,

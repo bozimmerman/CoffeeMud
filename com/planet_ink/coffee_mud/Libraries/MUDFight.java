@@ -199,6 +199,20 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	}
 
 	@Override
+	public int adjustedAttackBonus(int baseAttack)
+	{
+		final double[] vars = {baseAttack,
+						CharStats.VALUE_ALLSTATS_DEFAULT,
+						CharStats.VALUE_ALLSTATS_DEFAULT,
+						 0,//strength bonus
+						 0.0,//hunger
+						 0.0,//thirst
+						 0.0//fatigue
+						};
+		return (int)Math.round(CMath.parseMathExpression(attackAdjustmentFormula, vars, 0.0));
+	}
+
+	@Override
 	public void postItemDamage(MOB mob, Item I, Environmental tool, int damageAmount, int messageType, String message)
 	{
 		if(mob==null)
@@ -315,6 +329,23 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		return (int)Math.round(CMath.parseMathExpression(armorAdjustmentFormula, vars, 0.0));
 	}
 
+	@Override
+	public int adjustedArmor(int armorValue)
+	{
+		final double[] vars = {
+				armorValue,
+				CharStats.VALUE_ALLSTATS_DEFAULT,
+				CharStats.VALUE_ALLSTATS_DEFAULT,
+				0, //dexBonus,
+				0.0,//hungry
+				0.0,//thirsty
+				0.0,//fatigued
+				1.0,//sitting
+				1.0 //sleeping
+				};
+		return (int)Math.round(CMath.parseMathExpression(armorAdjustmentFormula, vars, 0.0));
+	}
+	
 	@Override
 	public boolean rollToHit(MOB attacker, MOB defender)
 	{
@@ -1534,36 +1565,132 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		return getStandardHitWordInternal(type, damnCode);
 	}
 
+	protected String getExtremeValue(int extreme)
+	{
+		final StringBuilder str=new StringBuilder("");
+		for(char c : CMath.convertToRoman(extreme).toCharArray())
+		{
+			switch(c)
+			{
+			case 'I': 
+				str.append(CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.EXTREME_ADVS,0)).append(" ");
+				break;
+			case 'V': 
+				str.append(CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.EXTREME_ADVS,1)).append(" ");
+				break;
+			case 'X': 
+				str.append(CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.EXTREME_ADVS,2)).append(" ");
+				break;
+			case 'L': 
+				str.append(CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.EXTREME_ADVS,3)).append(" ");
+				break;
+			case 'C': 
+				str.append(CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.EXTREME_ADVS,4)).append(" ");
+				break;
+			case 'D': 
+				str.append(CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.EXTREME_ADVS,5)).append(" ");
+				break;
+			case 'M': 
+				str.append(CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.EXTREME_ADVS,6)).append(" ");
+				break;
+			}
+		}
+		return str.toString();
+	}
+	
 	@Override
 	public String armorStr(MOB mob)
 	{
+		final int prowessCode = CMProps.getIntVar(CMProps.Int.COMBATPROWESS);
+		if(CMProps.Int.Prowesses.NONE.is(prowessCode))
+			return "";
 		final int armor = -adjustedArmor(mob);
-		final int ARMOR_CEILING=CMProps.getListFileFirstInt(CMProps.ListFile.ARMOR_DESCS_CEILING);
-		final int numArmorDescs = CMProps.getListFileIndexedListSize(CMProps.ListFile.ARMOR_DESCS);
-		return (armor<0)?CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.ARMOR_DESCS,0):(
-			   (armor>=ARMOR_CEILING)?
-					   CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.ARMOR_DESCS,numArmorDescs-1)
-					   +(CMStrings.repeatWithLimit('!',((armor-ARMOR_CEILING)/100),10))
-					   +"^. ("+armor+")"
-					:
-					   (CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.ARMOR_DESCS,(int)Math.round(Math.floor(CMath.mul(CMath.div(armor,ARMOR_CEILING),numArmorDescs))))
-					   +"^. ("+armor+")"));
+		final StringBuilder str=new StringBuilder("");
+		if(CMProps.Int.Prowesses.ARMOR_ADJ.is(prowessCode)||CMProps.Int.Prowesses.ARMOR_ADV.is(prowessCode))
+		{
+			System.out.println("Player: "+armor+", Mob="+(-adjustedArmor(CMLib.leveler().getLevelMOBArmor(mob))));
+			final int normalizedArmor = (int)Math.round(Math.ceil(CMath.div(armor + adjustedArmor(CMLib.leveler().getLevelMOBArmor(mob)),5.0)));
+			int adjIndex = normalizedArmor + 2;
+			int extreme = 0;
+			final int normalizedMax = CMProps.getListFileIndexedListSize(CMProps.ListFile.ARMOR_ADJS);
+			if(adjIndex < 0)
+			{
+				extreme = -adjIndex;
+				adjIndex = 0;
+			}
+			if(adjIndex >= normalizedMax)
+			{
+				extreme = normalizedMax-adjIndex;
+				adjIndex = normalizedMax-1;
+			}
+			if((extreme != 0)&&(CMProps.Int.Prowesses.ARMOR_ADV.is(prowessCode)))
+				str.append(this.getExtremeValue(extreme));
+			if(CMProps.Int.Prowesses.ARMOR_ADJ.is(prowessCode))
+				str.append(CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.ARMOR_ADJS,adjIndex)).append(" ");
+		}
+		if(CMProps.Int.Prowesses.ARMOR_ABSOLUTE.is(prowessCode))
+		{
+			final int ARMOR_CEILING=CMProps.getListFileFirstInt(CMProps.ListFile.ARMOR_DESCS_CEILING);
+			final int numArmorDescs = CMProps.getListFileIndexedListSize(CMProps.ListFile.ARMOR_DESCS);
+			str.append((armor<0)?CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.ARMOR_DESCS,0):(
+				   (armor>=ARMOR_CEILING)?
+						   CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.ARMOR_DESCS,numArmorDescs-1)
+						   +(CMStrings.repeatWithLimit('!',((armor-ARMOR_CEILING)/100),10))
+						:
+						   (CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.ARMOR_DESCS,(int)Math.round(Math.floor(CMath.mul(CMath.div(armor,ARMOR_CEILING),numArmorDescs)))))));
+			str.append(" ");
+		}
+		if(CMProps.Int.Prowesses.ARMOR_NUMBER.is(prowessCode))
+			str.append("^. ("+armor+")");
+		return str.toString().trim();
 	}
 
 	@Override
 	public String fightingProwessStr(MOB mob)
 	{
-		final int prowess = adjustedAttackBonus(mob,null) - ATTACK_ADJUSTMENT;
-		final int PROWESS_CEILING=CMProps.getListFileFirstInt(CMProps.ListFile.PROWESS_DESCS_CEILING);
-		final int numProwessDescs = CMProps.getListFileIndexedListSize(CMProps.ListFile.PROWESS_DESCS);
-		return (prowess<0)?CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.PROWESS_DESCS,0):(
-			   (prowess>=PROWESS_CEILING)
-										 ?
-								 CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.PROWESS_DESCS,numProwessDescs-1)
-								 +(CMStrings.repeatWithLimit('!',((prowess-PROWESS_CEILING)/100),10)+"^. ("+prowess+")")
-										 :
-								 (CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.PROWESS_DESCS,(int)Math.round(Math.floor(CMath.mul(CMath.div(prowess,PROWESS_CEILING),numProwessDescs))))
-								 +"^. ("+prowess+")"));
+		final int prowessCode = CMProps.getIntVar(CMProps.Int.COMBATPROWESS);
+		if(CMProps.Int.Prowesses.NONE.is(prowessCode))
+			return "";
+		final int attackProwess = adjustedAttackBonus(mob,null) - ATTACK_ADJUSTMENT;
+		final StringBuilder str=new StringBuilder("");
+		if(CMProps.Int.Prowesses.COMBAT_ADJ.is(prowessCode)||CMProps.Int.Prowesses.COMBAT_ADV.is(prowessCode))
+		{
+			System.out.println("Player: "+attackProwess+", Mob="+(adjustedAttackBonus(CMLib.leveler().getLevelAttack(mob))- ATTACK_ADJUSTMENT));
+			final int normalizedAttack = (int)Math.round(Math.ceil(CMath.div(attackProwess - (adjustedAttackBonus(CMLib.leveler().getLevelAttack(mob))- ATTACK_ADJUSTMENT),12.0)));
+			final int normalizedMax = CMProps.getListFileIndexedListSize(CMProps.ListFile.COMBAT_ADJS);
+			final int medianValue = normalizedMax / 2;
+			int adjIndex = normalizedAttack + medianValue;
+			int extreme = 0;
+			if(adjIndex < 0)
+			{
+				extreme = -adjIndex;
+				adjIndex = 0;
+			}
+			if(adjIndex >= normalizedMax)
+			{
+				extreme = normalizedMax-adjIndex;
+				adjIndex = normalizedMax-1;
+			}
+			if((extreme != 0)&&(CMProps.Int.Prowesses.COMBAT_ADV.is(prowessCode)))
+				str.append(this.getExtremeValue(extreme));
+			if(CMProps.Int.Prowesses.COMBAT_ADJ.is(prowessCode))
+				str.append(CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.COMBAT_ADJS,adjIndex)).append(" ");
+		}
+		if(CMProps.Int.Prowesses.COMBAT_ABSOLUTE.is(prowessCode))
+		{
+			final int PROWESS_CEILING=CMProps.getListFileFirstInt(CMProps.ListFile.PROWESS_DESCS_CEILING);
+			final int numProwessDescs = CMProps.getListFileIndexedListSize(CMProps.ListFile.PROWESS_DESCS);
+			str.append((attackProwess<0)?CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.PROWESS_DESCS,0):(
+				   (attackProwess>=PROWESS_CEILING)
+											 ?
+									 CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.PROWESS_DESCS,numProwessDescs-1)
+									 +(CMStrings.repeatWithLimit('!',((attackProwess-PROWESS_CEILING)/100),10))
+											 :
+									 (CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.PROWESS_DESCS,(int)Math.round(Math.floor(CMath.mul(CMath.div(attackProwess,PROWESS_CEILING),numProwessDescs)))))));
+		}
+		if(CMProps.Int.Prowesses.COMBAT_NUMBER.is(prowessCode))
+			str.append("^. ("+attackProwess+")");
+		return str.toString().trim();
 	}
 
 	protected int getWeaponAttackIndex(final int weaponDamageType, final int weaponClassification)

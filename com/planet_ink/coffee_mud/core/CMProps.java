@@ -286,6 +286,7 @@ public class CMProps extends Properties
 		DEFSOCTIME,
 		DEFCOMSOCTIME,
 		RACEEXPIRATIONDAYS,
+		COMBATPROWESS,
 		;
 		
 		public static final int	EXVIEW_DEFAULT		= 0;
@@ -296,6 +297,35 @@ public class CMProps extends Properties
 		public static final int	EQVIEW_DEFAULT		= 0;
 		public static final int	EQVIEW_MIXED		= 1;
 		public static final int	EQVIEW_PARAGRAPH	= 2;
+		
+		public enum Prowesses
+		{
+			NONE(0),
+			ARMOR_ABSOLUTE(1),
+			ARMOR_NUMBER(2),
+			ARMOR_ADV(4),
+			ARMOR_ADJ(8),
+			COMBAT_ABSOLUTE(16),
+			COMBAT_NUMBER(32),
+			COMBAT_ADV(64),
+			COMBAT_ADJ(128),
+			COMBAT_NOUN(256),
+			DAMAGE_ABSOLUTE(512),
+			DAMAGE_NUMBER(1024)
+			;
+			public int value;
+			private Prowesses(int val)
+			{
+				value=val;
+			}
+			public boolean is(int val)
+			{
+				if(value == 0)
+					return val==0;
+				else
+					return (val & value) == value;
+			}
+		}
 	}
 
 	/**
@@ -361,6 +391,10 @@ public class CMProps extends Properties
 		PROWESS_DESCS,
 		ARMOR_DESCS_CEILING,
 		ARMOR_DESCS,
+		ARMOR_ADJS,
+		EXTREME_ADVS,
+		COMBAT_ADJS,
+		COMBAT_NOUNS,
 		EXP_CHART,
 		ARMOR_MISFITS,
 		MAGIC_WORDS,
@@ -2235,6 +2269,28 @@ public class CMProps extends Properties
 		setIntVar(Int.INJBLEEDPCTHP,	(V.size()>7) ? CMath.s_int(V.get(7)) : 20);
 		setIntVar(Int.INJBLEEDPCTCHANCE,(V.size()>8) ? CMath.s_int(V.get(8)) : 100);
 
+		List<String> prowesses = CMParms.parseCommas(getStr("PROWESSOPTIONS"), true);
+		int prowValue = Int.Prowesses.ARMOR_ABSOLUTE.value|
+						Int.Prowesses.ARMOR_NUMBER.value|
+						Int.Prowesses.COMBAT_ABSOLUTE.value|
+						Int.Prowesses.COMBAT_NUMBER.value;
+		if(prowesses.size() > 0)
+		{
+			prowValue = 0;
+			for(String prow : prowesses)
+			{
+				final Int.Prowesses P = (Int.Prowesses)CMath.s_valueOf(Int.Prowesses.class, prow.toUpperCase().replace('-','_').trim());
+				if(P == null)
+					Log.errOut("CMProps","Invalid PROWESSOPTIONS value: "+prow);
+				else
+				if(P.value == 0)
+					prowValue = 0;
+				else
+					prowValue |= P.value;
+			}
+		}
+		setIntVar(Int.COMBATPROWESS, prowValue);
+		
 		String stateVar=getStr("STARTHP");
 		if((stateVar.length()>0)&&(CMath.isNumber(stateVar)))
 			setIntVar(Int.STARTHP,CMath.s_int(stateVar));
