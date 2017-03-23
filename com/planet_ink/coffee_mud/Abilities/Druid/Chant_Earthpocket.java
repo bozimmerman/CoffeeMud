@@ -83,7 +83,7 @@ public class Chant_Earthpocket extends Chant
 		final MOB mob=(MOB)affected;
 		super.unInvoke();
 
-		if(canBeUninvoked() && (pocket!=null) && (!pocket.amDestroyed()))
+		if((pocket!=null) && (!pocket.amDestroyed()))
 		{
 			mob.tell(L("Your earthpocket fades away, dumping its contents into your inventory!"));
 			final List<Item> V=pocket.getDeepContents();
