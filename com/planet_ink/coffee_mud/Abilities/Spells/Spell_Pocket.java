@@ -32,16 +32,45 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Spell_Pocket extends Spell
 {
-	@Override public String ID() { return "Spell_Pocket"; }
-	private final static String localizedName = CMLib.lang().L("Pocket");
-	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override protected int canTargetCode(){return CAN_ITEMS|CAN_MOBS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;	}
-	@Override public int overrideMana(){return 200;}
+	@Override
+	public String ID()
+	{
+		return "Spell_Pocket";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Pocket");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_ITEMS | CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL | Ability.DOMAIN_EVOCATION;
+	}
+
+	@Override
+	public int overrideMana()
+	{
+		return 200;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -157,7 +186,6 @@ public class Spell_Pocket extends Spell
 		}
 		else
 			maliciousFizzle(mob,target,L("<S-NAME> point(s) at <T-NAMESELF> and utter(s) a little fizzled spell!"));
-
 
 		// return whether it worked
 		return success;

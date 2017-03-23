@@ -32,16 +32,45 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Spell_Duplicate extends Spell
 {
-	@Override public String ID() { return "Spell_Duplicate"; }
-	private final static String localizedName = CMLib.lang().L("Duplicate");
-	@Override public String name() { return localizedName; }
-	@Override protected int canTargetCode(){return CAN_ITEMS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
-	@Override protected int overrideMana(){return Ability.COST_ALL;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override
+	public String ID()
+	{
+		return "Spell_Duplicate";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Duplicate");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_ITEMS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL | Ability.DOMAIN_ALTERATION;
+	}
+
+	@Override
+	protected int overrideMana()
+	{
+		return Ability.COST_ALL;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -70,8 +99,14 @@ public class Spell_Duplicate extends Spell
 			mob.tell(L("That item can not be duplicated."));
 			return false;
 		}
+		if(target instanceof PackagedItems)
+		{
+			mob.tell(L("That item can not be duplicated."));
+			return false;
+		}
 
-		final int value=(target instanceof Coins)?(int)Math.round(((Coins)target).getTotalValue()):target.value();
+		int value=0;
+		value = (target instanceof Coins)?(int)Math.round(((Coins)target).getTotalValue()):target.value();
 		int multiPlier=5+(((target.phyStats().weight())+value)/2);
 		multiPlier+=(target.numEffects()*10);
 		multiPlier+=(target instanceof Potion)?10:0;
@@ -126,11 +161,9 @@ public class Spell_Duplicate extends Spell
 					mob.recoverPhyStats();
 				}
 			}
-
 		}
 		else
 			beneficialWordsFizzle(mob,target,L("<S-NAME> hold(s) <T-NAMESELF> tightly and incant(s), the spell fizzles."));
-
 
 		// return whether it worked
 		return success;
