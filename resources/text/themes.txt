@@ -4,5 +4,5 @@
 
 ^XTechnological:^.^? See the future on distant worlds and the reaches of space as you build a trade empire.
 
-^XHeroic       :^.^? Play a superhero or supervillian in this struggle for notoriety and dominance.
+^XHeroic       :^.^? Play a superhero or supervillain in this struggle for notoriety and dominance.
 
