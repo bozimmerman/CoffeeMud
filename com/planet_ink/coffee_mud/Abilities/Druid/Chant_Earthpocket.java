@@ -32,18 +32,47 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
-
 public class Chant_Earthpocket extends Chant
 {
-	@Override public String ID() { return "Chant_Earthpocket"; }
-	private final static String localizedName = CMLib.lang().L("Earthpocket");
-	@Override public String name() { return localizedName; }
-	@Override public String displayText() { return L("(Earthpocket: "+(super.tickDown/CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY))+")"); }
-	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;}
-	private Container pocket=null;
+	@Override
+	public String ID()
+	{
+		return "Chant_Earthpocket";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Earthpocket");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public String displayText()
+	{
+		return L("(Earthpocket: " + (super.tickDown / CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY)) + ")");
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_SELF;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT | Ability.DOMAIN_ROCKCONTROL;
+	}
+
+	private Container	pocket	= null;
 
 	@Override
 	public void unInvoke()
@@ -109,17 +138,27 @@ public class Chant_Earthpocket extends Chant
 			else
 			if(pocket.owner() instanceof Room)
 			{
-				if(((MOB)affected).location()!=null)
+				final Room mobR=((MOB)affected).location();
+				if(mobR!=null)
 				{
-					if((((MOB)affected).location().domainType()==Room.DOMAIN_INDOORS_CAVE)
-					||((((MOB)affected).location().getAtmosphere()&RawMaterial.MATERIAL_ROCK)!=0))
+					if((mobR.domainType()==Room.DOMAIN_INDOORS_CAVE)
+					||((mobR.getAtmosphere()&RawMaterial.MATERIAL_ROCK)!=0))
 					{
 						if(CMath.bset(pocket.basePhyStats().disposition(),PhyStats.IS_NOT_SEEN))
 						{
 							pocket.basePhyStats().setDisposition(pocket.basePhyStats().disposition()-PhyStats.IS_NOT_SEEN);
 							pocket.recoverPhyStats();
 						}
-						((MOB)affected).location().moveItemTo(pocket);
+						if(!mobR.isContent(pocket))
+						{
+							final Room R=CMLib.map().roomLocation(pocket);
+							mobR.moveItemTo(pocket);
+							if(mobR.isContent(pocket))
+							{
+								if((R!=mobR)&&(R.isContent(pocket)))
+									R.delItem(pocket);
+							}
+						}
 					}
 					else
 					if(!CMath.bset(pocket.basePhyStats().disposition(),PhyStats.IS_NOT_SEEN))
