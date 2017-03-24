@@ -1002,6 +1002,7 @@ public interface CharStats extends CMCommon, Modifiable
 		private String[]		shortNames					= new String[0];
 		private String[]		statAttributionDescriptions	= new String[0];
 		private int[]			statCMMsgMapping			= new int[0];
+		private int				longestBaseCodeName			= -1;
 		private final Map<Integer,Integer> rvsStatCMMsgMapping	= new Hashtable<Integer,Integer>();
 
 		public CODES()
@@ -1118,7 +1119,29 @@ public interface CharStats extends CMCommon, Modifiable
 		 * Returns an array of the numeric codes for all base stats
 		 * @return an array of the numeric codes for all base stats
 		 */
-		public static int[] BASECODES() { return c().baseStatCodes;}
+		public static int[] BASECODES()
+		{
+			return c().baseStatCodes;
+		}
+
+		/**
+		 * Returns the longest base code name
+		 * @return the longest base code name
+		 */
+		public static int LONNGEST_BASECODE_NAME()
+		{
+			final CODES c=c();
+			if(c.longestBaseCodeName<0)
+			{
+				int longest=-1;
+				for(int code : c.baseStatCodes)
+				{
+					if(c.statNames[code].length()>c.longestBaseCodeName)
+						c.longestBaseCodeName=c.statNames[code].length();
+				}
+			}
+			return c.longestBaseCodeName;
+		}
 
 		/**
 		 * Returns the name of all base stats

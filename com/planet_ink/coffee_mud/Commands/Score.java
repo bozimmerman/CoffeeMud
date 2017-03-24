@@ -162,15 +162,16 @@ public class Score extends Affect
 			if(parm.equalsIgnoreCase("BASE")) 
 				CT=mob.baseCharStats();
 			msg.append("^N^!");
+			final int longest=CharStats.CODES.LONNGEST_BASECODE_NAME();
 			for(final int i : CharStats.CODES.BASECODES())
 			{
-				msg.append(CMStrings.padRight("^<HELP^>" + CMStrings.capitalizeAndLower(CharStats.CODES.NAME(i))+"^</HELP^>",15)
-						+": "
+				msg.append(CMStrings.padRight("^<HELP^>" + CMStrings.capitalizeAndLower(CharStats.CODES.NAME(i))+"^</HELP^>",longest)
+						+": ^H"
 						+CMStrings.padRight(Integer.toString(CT.getStat(i)),2)
 						+"/"
-						+(CT.getMaxStat(i))+"\n\r");
+						+(CT.getMaxStat(i))+"^?\n\r");
 			}
-			msg.append("^?\n\r");
+			msg.append("^N\n\r");
 		}
 		msg.append(L("You have ^H@x1^? ^<HELP^>hit points^</HELP^>, ^H",mob.curState().getHitPoints()+"/"+mob.maxState().getHitPoints()));
 		msg.append(L("@x1^? ^<HELP^>mana^</HELP^>, and ^H",mob.curState().getMana()+"/"+mob.maxState().getMana()));
@@ -213,15 +214,15 @@ public class Score extends Affect
 				final int factionAmt=mob.fetchFaction(factionID);
 				final Faction.FRange FR=CMLib.factions().getRange(factionID,factionAmt);
 				if((FR!=null)&&(F.showInScore()))
-					msg.append(L("^NYour ")+CMStrings.padRight(L("^<HELP^>@x1^</HELP^> is",F.name()),18)+": ^H"+FR.name()+" ^.("+factionAmt+").\n\r");
+					msg.append(L("^NYour ")+CMStrings.padRight(L("^<HELP^>@x1^</HELP^>",F.name()),15)+": ^H"+FR.name()+" ^.("+factionAmt+")\n\r");
 			}
 		}
 		if((CMProps.getIntVar(CMProps.Int.COMBATPROWESS)&CMProps.Int.ANY_ARMOR_PROWESS)!=0)
-			msg.append(L("Your ^<HELP^>armored defence^</HELP^> is: ^H@x1^.^N.\n\r",CMLib.combat().armorStr(mob)));
+			msg.append(L("Your ^<HELP^>armored defence^</HELP^>: ^H@x1^.^N\n\r",CMLib.combat().armorStr(mob)));
 		if((CMProps.getIntVar(CMProps.Int.COMBATPROWESS)&CMProps.Int.ANY_COMBAT_PROWESS)!=0)
-			msg.append(L("Your ^<HELP^>combat prowess^</HELP^> is : ^H@x1^.^N.\n\r",CMLib.combat().fightingProwessStr(mob)));
+			msg.append(L("Your ^<HELP^>combat prowess^</HELP^> : ^H@x1^.^N\n\r",CMLib.combat().fightingProwessStr(mob)));
 		if((CMProps.getIntVar(CMProps.Int.COMBATPROWESS)&CMProps.Int.ANY_DAMAGE_PROWESS)!=0)
-			msg.append(L("Your ^<HELP^>damage threat^</HELP^> is  : ^H@x1^.^N.\n\r",CMLib.combat().damageProwessStr(mob)));
+			msg.append(L("Your ^<HELP^>damage threat^</HELP^>  : ^H@x1^.^N\n\r",CMLib.combat().damageProwessStr(mob)));
 		//if(CMLib.flags().canSeeHidden(mob))
 		//    msg.append(L("Your ^<HELP^>observation score^</HELP^> : ^H@x1^?.\n\r",CMLib.flags().getDetectScore(mob)));
 		msg.append(L("Wimpy is set to ^!@x1^? hit points.\n\r",""+mob.getWimpHitPoint()));
