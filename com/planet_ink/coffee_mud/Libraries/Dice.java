@@ -29,7 +29,7 @@ public class Dice extends StdLibrary implements DiceLibrary
 	}
 
 	private Random randomizer = null;
-	protected LinkedList<CMath.CompiledOperation>  baseNpcHitpointsFormula = null;
+	protected CMath.CompiledFormula  baseNpcHitpointsFormula = null;
 
 	@Override
 	public synchronized Random getRandomizer()

@@ -298,6 +298,19 @@ public class CMProps extends Properties
 		public static final int	EQVIEW_MIXED		= 1;
 		public static final int	EQVIEW_PARAGRAPH	= 2;
 		
+		public static final int ANY_ARMOR_PROWESS =	Prowesses.ARMOR_ADV.value 
+													| Prowesses.ARMOR_ADJ.value 
+													| Prowesses.ARMOR_ABSOLUTE.value 
+													| Prowesses.ARMOR_NUMBER.value;  
+		public static final int ANY_COMBAT_PROWESS =Prowesses.COMBAT_ABSOLUTE.value 
+													| Prowesses.COMBAT_NUMBER.value 
+													| Prowesses.COMBAT_ADV.value 
+													| Prowesses.COMBAT_ADJ.value
+													| Prowesses.COMBAT_NOUN.value;
+		public static final int ANY_DAMAGE_PROWESS =Prowesses.DAMAGE_ABSOLUTE.value 
+													| Prowesses.DAMAGE_ADV.value 
+													| Prowesses.DAMAGE_ADJ.value 
+													| Prowesses.DAMAGE_NUMBER.value;
 		public enum Prowesses
 		{
 			NONE(0),
@@ -311,7 +324,9 @@ public class CMProps extends Properties
 			COMBAT_ADJ(128),
 			COMBAT_NOUN(256),
 			DAMAGE_ABSOLUTE(512),
-			DAMAGE_NUMBER(1024)
+			DAMAGE_ADV(1024),
+			DAMAGE_ADJ(2048),
+			DAMAGE_NUMBER(4096)
 			;
 			public int value;
 			private Prowesses(int val)
@@ -392,6 +407,9 @@ public class CMProps extends Properties
 		ARMOR_DESCS_CEILING,
 		ARMOR_DESCS,
 		ARMOR_ADJS,
+		DAMAGE_DESCS_CEILING,
+		DAMAGE_DESCS,
+		DAMAGE_ADJS,
 		EXTREME_ADVS,
 		COMBAT_ADJS,
 		COMBAT_NOUNS,

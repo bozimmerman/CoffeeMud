@@ -59,7 +59,7 @@ public class Prop_ModFaction extends Property
 	protected boolean	gainonly			= false;
 	protected boolean	lossonly			= false;
 
-	protected LinkedList<CMath.CompiledOperation>	operation			= null;
+	protected CMath.CompiledFormula	operation			= null;
 	protected MaskingLibrary.CompiledZMask			mask				= null;
 	
 	@Override

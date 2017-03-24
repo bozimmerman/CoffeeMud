@@ -326,7 +326,7 @@ public interface ClanGovernment extends Modifiable, CMCommon
 	 *
 	 * @return the compiled xp calculation formula
 	 */
-	public LinkedList<CMath.CompiledOperation> getXPCalculationFormula();
+	public CMath.CompiledFormula getXPCalculationFormula();
 
 	/**
 	 * Checks if is default.

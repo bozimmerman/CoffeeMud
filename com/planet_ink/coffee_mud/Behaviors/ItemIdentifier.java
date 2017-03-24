@@ -40,7 +40,7 @@ public class ItemIdentifier extends StdBehavior
 		return "ItemIdentifier";
 	}
 
-	private LinkedList<CMath.CompiledOperation> costFormula = null;
+	private CMath.CompiledFormula costFormula = null;
 
 	@Override
 	public String accountForYourself()

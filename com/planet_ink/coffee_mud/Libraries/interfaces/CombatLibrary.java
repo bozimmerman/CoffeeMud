@@ -175,9 +175,22 @@ public interface CombatLibrary extends CMLibrary
 	 * @param target the target being hit, or null
 	 * @param bonusDamage any bonus to base damage
 	 * @param allowCrits true to apply crit if crit damage occurs
+	 * @param biasHigh random numbers are always biased high
 	 * @return the total adjusted damage
 	 */
-	public int adjustedDamage(MOB mob, Weapon weapon, MOB target, int bonusDamage, boolean allowCrits);
+	public int adjustedDamage(MOB mob, Weapon weapon, MOB target, int bonusDamage, boolean allowCrits, boolean biasHigh);
+
+	/**
+	 * Returns the given unarmed damage bonus,
+	 * after adjusting for hunger, thirst, fatigue, position, and
+	 * strength, from the proper damage formula, which assumes a
+	 * standard unarmed mob with average stats.
+	 * @param baseDamage base damage
+	 * @param level the level of the mob
+	 * @param biasHigh random numbers are always biased high
+	 * @return the total adjusted damage
+	 */
+	public int adjustedDamage(int baseDamage, int level, boolean biasHigh);
 
 	/**
 	 * Gathers the given attackers adjusted attack and the given defenders adjusted armor,
@@ -482,6 +495,14 @@ public interface CombatLibrary extends CMLibrary
 	 * @return the displayable attack string
 	 */
 	public String fightingProwessStr(MOB mob);
+
+	/**
+	 * Returns the friendly damage prowess string for the given mob,
+	 * describing how well damagy they are.
+	 * @param mob the mob who damages
+	 * @return the displayable damage string
+	 */
+	public String damageProwessStr(MOB mob);
 
 	/**
 	 * Given the weapon type and amount of damage,

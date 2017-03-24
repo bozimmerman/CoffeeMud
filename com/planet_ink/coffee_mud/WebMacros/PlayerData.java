@@ -180,7 +180,7 @@ public class PlayerData extends StdWebMacro
 			str.append(CMStrings.capitalizeAndLower(CMStrings.removeColors(CMLib.combat().armorStr(M))) + ", ");
 			break;
 		case 13:
-			str.append(CMLib.combat().adjustedDamage(M, null, null, 0, false) + ", ");
+			str.append(CMLib.combat().adjustedDamage(M, null, null, 0, false, true) + ", ");
 			break;
 		case 14:
 			str.append(Math.round(CMath.div(M.getAgeMinutes(), 60.0)) + ", ");

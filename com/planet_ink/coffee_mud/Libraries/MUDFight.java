@@ -51,33 +51,33 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	public Object[][][] hitWordIndex	= null;
 	public Object[][][] hitWordsChanged	= null;
 	
-	protected LinkedList<CMath.CompiledOperation>	attackAdjustmentFormula			= null;
-	protected LinkedList<CMath.CompiledOperation>	armorAdjustmentFormula			= null;
-	protected LinkedList<CMath.CompiledOperation>	attackerFudgeBonusFormula		= null;
-	protected LinkedList<CMath.CompiledOperation>	pvpAttackerFudgeBonusFormula	= null;
-	protected LinkedList<CMath.CompiledOperation>	spellFudgeDamageFormula			= null;
-	protected LinkedList<CMath.CompiledOperation>	pvpSpellFudgeDamageFormula		= null;
-	protected LinkedList<CMath.CompiledOperation>	spellCritChanceFormula			= null;
-	protected LinkedList<CMath.CompiledOperation>	pvpSpellCritChanceFormula		= null;
-	protected LinkedList<CMath.CompiledOperation>	spellCritDmgFormula				= null;
-	protected LinkedList<CMath.CompiledOperation>	pvpSpellCritDmgFormula			= null;
-	protected LinkedList<CMath.CompiledOperation>	targetedRangedDamageFormula		= null;
-	protected LinkedList<CMath.CompiledOperation>	pvpTargetedRangedDamageFormula	= null;
-	protected LinkedList<CMath.CompiledOperation>	rangedFudgeDamageFormula		= null;
-	protected LinkedList<CMath.CompiledOperation>	pvpRangedFudgeDamageFormula		= null;
-	protected LinkedList<CMath.CompiledOperation>	targetedMeleeDamageFormula		= null;
-	protected LinkedList<CMath.CompiledOperation>	pvpTargetedMeleeDamageFormula	= null;
-	protected LinkedList<CMath.CompiledOperation>	meleeFudgeDamageFormula			= null;
-	protected LinkedList<CMath.CompiledOperation>	pvpMeleeFudgeDamageFormula		= null;
-	protected LinkedList<CMath.CompiledOperation>	staticRangedDamageFormula		= null;
-	protected LinkedList<CMath.CompiledOperation>	staticMeleeDamageFormula		= null;
-	protected LinkedList<CMath.CompiledOperation>	weaponCritChanceFormula			= null;
-	protected LinkedList<CMath.CompiledOperation>	pvpWeaponCritChanceFormula		= null;
-	protected LinkedList<CMath.CompiledOperation>	weaponCritDmgFormula			= null;
-	protected LinkedList<CMath.CompiledOperation>	pvpWeaponCritDmgFormula			= null;
-	protected LinkedList<CMath.CompiledOperation>	stateHitPointRecoverFormula		= null;
-	protected LinkedList<CMath.CompiledOperation>	stateManaRecoverFormula			= null;
-	protected LinkedList<CMath.CompiledOperation>	stateMovesRecoverFormula		= null;
+	protected CMath.CompiledFormula	attackAdjustmentFormula			= null;
+	protected CMath.CompiledFormula	armorAdjustmentFormula			= null;
+	protected CMath.CompiledFormula	attackerFudgeBonusFormula		= null;
+	protected CMath.CompiledFormula	pvpAttackerFudgeBonusFormula	= null;
+	protected CMath.CompiledFormula	spellFudgeDamageFormula			= null;
+	protected CMath.CompiledFormula	pvpSpellFudgeDamageFormula		= null;
+	protected CMath.CompiledFormula	spellCritChanceFormula			= null;
+	protected CMath.CompiledFormula	pvpSpellCritChanceFormula		= null;
+	protected CMath.CompiledFormula	spellCritDmgFormula				= null;
+	protected CMath.CompiledFormula	pvpSpellCritDmgFormula			= null;
+	protected CMath.CompiledFormula	targetedRangedDamageFormula		= null;
+	protected CMath.CompiledFormula	pvpTargetedRangedDamageFormula	= null;
+	protected CMath.CompiledFormula	rangedFudgeDamageFormula		= null;
+	protected CMath.CompiledFormula	pvpRangedFudgeDamageFormula		= null;
+	protected CMath.CompiledFormula	targetedMeleeDamageFormula		= null;
+	protected CMath.CompiledFormula	pvpTargetedMeleeDamageFormula	= null;
+	protected CMath.CompiledFormula	meleeFudgeDamageFormula			= null;
+	protected CMath.CompiledFormula	pvpMeleeFudgeDamageFormula		= null;
+	protected CMath.CompiledFormula	staticRangedDamageFormula		= null;
+	protected CMath.CompiledFormula	staticMeleeDamageFormula		= null;
+	protected CMath.CompiledFormula	weaponCritChanceFormula			= null;
+	protected CMath.CompiledFormula	pvpWeaponCritChanceFormula		= null;
+	protected CMath.CompiledFormula	weaponCritDmgFormula			= null;
+	protected CMath.CompiledFormula	pvpWeaponCritDmgFormula			= null;
+	protected CMath.CompiledFormula	stateHitPointRecoverFormula		= null;
+	protected CMath.CompiledFormula	stateManaRecoverFormula			= null;
+	protected CMath.CompiledFormula	stateMovesRecoverFormula		= null;
 
 	private static final int ATTACK_ADJUSTMENT = 50;
 
@@ -804,7 +804,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	}
 
 	@Override
-	public int adjustedDamage(MOB mob, Weapon weapon, MOB target, int bonusDamage, boolean allowCrits)
+	public int adjustedDamage(final MOB mob, final Weapon weapon, final MOB target, final int bonusDamage, final boolean allowCrits, final boolean biasHigh)
 	{
 		double damageAmount=0.0;
 		Physical useDmg = null;
@@ -832,10 +832,15 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 					CMLib.flags().isSleeping(target)?1:0,
 					CMLib.flags().isSitting(target)?1:0
 			};
+			CMath.CompiledFormula formula;
 			if(rangedAttack)
-				damageAmount = CMath.parseMathExpression(isPVP?pvpTargetedRangedDamageFormula:targetedRangedDamageFormula, vars, 0.0);
+				formula = isPVP?pvpTargetedRangedDamageFormula:targetedRangedDamageFormula;
 			else
-				damageAmount = CMath.parseMathExpression(isPVP?pvpTargetedMeleeDamageFormula:targetedMeleeDamageFormula, vars, 0.0);
+				formula = isPVP?pvpTargetedMeleeDamageFormula:targetedMeleeDamageFormula;
+			if(biasHigh)
+				damageAmount = CMath.parseMathExpression(formula, CMath.NotRandomHigh, vars, 0.0);
+			else
+				damageAmount = CMath.parseMathExpression(formula, vars, 0.0);
 		}
 		else
 		{
@@ -851,10 +856,15 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 					0,
 					0
 			};
+			CMath.CompiledFormula formula;
 			if((weapon!=null)&&((weapon.weaponClassification()==Weapon.CLASS_RANGED)||(weapon.weaponClassification()==Weapon.CLASS_THROWN)))
-				damageAmount = CMath.parseMathExpression(staticRangedDamageFormula, vars, 0.0);
+				formula = staticRangedDamageFormula;
 			else
-				damageAmount = CMath.parseMathExpression(staticMeleeDamageFormula, vars, 0.0);
+				formula = staticMeleeDamageFormula;
+			if(biasHigh)
+				damageAmount = CMath.parseMathExpression(formula, CMath.NotRandomHigh, vars, 0.0);
+			else
+				damageAmount = CMath.parseMathExpression(formula, vars, 0.0);
 		}
 
 		final int maxDex = mob.charStats().getMaxStat(CharStats.STAT_DEXTERITY);
@@ -884,9 +894,14 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		{
 			final int weaponCritChancePct = (int)Math.round(CMath.parseMathExpression(isPVP?pvpWeaponCritChanceFormula:weaponCritChanceFormula, vars, 0.0))
 											+ mob.charStats().getStat(CharStats.STAT_CRIT_CHANCE_PCT_WEAPON);
-			if(CMLib.dice().rollPercentage()<weaponCritChancePct)
+			if((CMLib.dice().rollPercentage()<weaponCritChancePct)||(biasHigh))
 			{
-				final int weaponCritDmgAmt = (int)Math.round(CMath.parseMathExpression(isPVP?pvpWeaponCritDmgFormula:weaponCritDmgFormula, vars, 0.0));
+				CMath.CompiledFormula formula = isPVP?pvpWeaponCritDmgFormula:weaponCritDmgFormula;
+				final int weaponCritDmgAmt;
+				if(biasHigh)
+					weaponCritDmgAmt = (int)Math.round(CMath.parseMathExpression(formula, CMath.NotRandomHigh, vars, 0.0));
+				else
+					weaponCritDmgAmt = (int)Math.round(CMath.parseMathExpression(formula, vars, 0.0));
 				damageAmount += weaponCritDmgAmt;
 				if(mob.charStats().getStat(CharStats.STAT_CRIT_DAMAGE_PCT_WEAPON)>0)
 					damageAmount += (int)Math.round(CMath.mul(weaponCritDmgAmt,CMath.div(mob.charStats().getStat(CharStats.STAT_CRIT_DAMAGE_PCT_WEAPON),100.0)));
@@ -895,14 +910,41 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		if(target != null)
 		{
 			vars[0] = damageAmount;
+			CMath.CompiledFormula formula;
 			if(rangedAttack)
-				damageAmount = CMath.parseMathExpression(isPVP?pvpRangedFudgeDamageFormula:rangedFudgeDamageFormula, vars, 0.0);
+				formula = isPVP?pvpRangedFudgeDamageFormula:rangedFudgeDamageFormula;
 			else
-				damageAmount = CMath.parseMathExpression(isPVP?pvpMeleeFudgeDamageFormula:meleeFudgeDamageFormula, vars, 0.0);
+				formula = isPVP?pvpMeleeFudgeDamageFormula:meleeFudgeDamageFormula;
+			if(biasHigh)
+				damageAmount = CMath.parseMathExpression(formula, CMath.NotRandomHigh, vars, 0.0);
+			else
+				damageAmount = CMath.parseMathExpression(formula, vars, 0.0);
 		}
 		return (int)Math.round(damageAmount);
 	}
 
+	@Override
+	public int adjustedDamage(int baseDamage, int level, boolean biasHigh)
+	{
+		double damageAmount=0.0;
+		final double[] vars = {
+				baseDamage,
+				CharStats.VALUE_ALLSTATS_DEFAULT,
+				level,
+				0,
+				0.0,//hunger
+				0.0,//thirst
+				0.0,//fatigue
+				0,
+				0,
+				0
+		};
+		if(biasHigh)
+			damageAmount = CMath.parseMathExpression(staticMeleeDamageFormula, CMath.NotRandomHigh, vars, 0.0);
+		else
+			damageAmount = CMath.parseMathExpression(staticMeleeDamageFormula, vars, 0.0);
+		return (int)Math.round(damageAmount);
+	}
 
 	@Override
 	public void recoverTick(final MOB mob)
@@ -1032,7 +1074,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		if(item instanceof Weapon)
 		{
 			weapon=(Weapon)item;
-			damageInt=adjustedDamage(source,weapon,target,0,true);
+			damageInt=adjustedDamage(source,weapon,target,0,true,false);
 		}
 		if(success)
 			postWeaponDamage(source,target,item,damageInt);
@@ -1068,7 +1110,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		// if you are in combat, this needs to happen regardless
 		//if(!mayIAttack(source, attacker, defender))
 		//	return;
-		int damageInt=adjustedDamage(source,weapon,null,0,false);
+		int damageInt=adjustedDamage(source,weapon,null,0,false,false);
 		int damageType=Weapon.TYPE_BASHING;
 		if(weapon != null)
 			damageType= weapon.weaponDamageType();
@@ -1608,11 +1650,12 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		final StringBuilder str=new StringBuilder("");
 		if(CMProps.Int.Prowesses.ARMOR_ADJ.is(prowessCode)||CMProps.Int.Prowesses.ARMOR_ADV.is(prowessCode))
 		{
-			System.out.println("Player: "+armor+", Mob="+(-adjustedArmor(CMLib.leveler().getLevelMOBArmor(mob))));
+			//System.out.println("Player: "+armor+", Mob="+(-adjustedArmor(CMLib.leveler().getLevelMOBArmor(mob))));
 			final int normalizedArmor = (int)Math.round(Math.ceil(CMath.div(armor + adjustedArmor(CMLib.leveler().getLevelMOBArmor(mob)),5.0)));
-			int adjIndex = normalizedArmor + 2;
-			int extreme = 0;
 			final int normalizedMax = CMProps.getListFileIndexedListSize(CMProps.ListFile.ARMOR_ADJS);
+			final int medianValue = normalizedMax / 2;
+			int adjIndex = normalizedArmor + medianValue;
+			int extreme = 0;
 			if(adjIndex < 0)
 			{
 				extreme = -adjIndex;
@@ -1641,8 +1684,8 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			str.append(" ");
 		}
 		if(CMProps.Int.Prowesses.ARMOR_NUMBER.is(prowessCode))
-			str.append("^. ("+armor+")");
-		return str.toString().trim();
+			str.append("^.("+armor+")");
+		return str.toString().trim()+"^.";
 	}
 
 	@Override
@@ -1655,7 +1698,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		final StringBuilder str=new StringBuilder("");
 		if(CMProps.Int.Prowesses.COMBAT_ADJ.is(prowessCode)||CMProps.Int.Prowesses.COMBAT_ADV.is(prowessCode))
 		{
-			System.out.println("Player: "+attackProwess+", Mob="+(adjustedAttackBonus(CMLib.leveler().getLevelAttack(mob))- ATTACK_ADJUSTMENT));
+			//System.out.println("Player: "+attackProwess+", Mob="+(adjustedAttackBonus(CMLib.leveler().getLevelAttack(mob))- ATTACK_ADJUSTMENT));
 			final int normalizedAttack = (int)Math.round(Math.ceil(CMath.div(attackProwess - (adjustedAttackBonus(CMLib.leveler().getLevelAttack(mob))- ATTACK_ADJUSTMENT),12.0)));
 			final int normalizedMax = CMProps.getListFileIndexedListSize(CMProps.ListFile.COMBAT_ADJS);
 			final int medianValue = normalizedMax / 2;
@@ -1688,17 +1731,76 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 											 :
 									 (CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.PROWESS_DESCS,(int)Math.round(Math.floor(CMath.mul(CMath.div(attackProwess,PROWESS_CEILING),numProwessDescs)))))));
 		}
+		if(CMProps.Int.Prowesses.COMBAT_NOUN.is(prowessCode))
+		{
+			final int normalizedMax = CMProps.getListFileIndexedListSize(CMProps.ListFile.COMBAT_ADJS);
+			final double divisor = CMath.div(CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL),normalizedMax);
+			int nounIndex = (int)Math.round(CMath.div(mob.phyStats().level()-1, divisor));
+			if(nounIndex > normalizedMax)
+				nounIndex = normalizedMax;
+			str.append(CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.COMBAT_NOUNS,nounIndex)).append(" ");
+		}
 		if(CMProps.Int.Prowesses.COMBAT_NUMBER.is(prowessCode))
-			str.append("^. ("+attackProwess+")");
-		return str.toString().trim();
+			str.append("^.("+attackProwess+")");
+		return str.toString().trim()+"^.";
+	}
+
+	@Override
+	public String damageProwessStr(MOB mob)
+	{
+		final int prowessCode = CMProps.getIntVar(CMProps.Int.COMBATPROWESS);
+		if(CMProps.Int.Prowesses.NONE.is(prowessCode))
+			return "";
+		final int damageProwess = this.adjustedDamage(mob, (Weapon)mob.fetchWieldedItem(), null, 0, false,true);
+		final StringBuilder str=new StringBuilder("");
+		if(CMProps.Int.Prowesses.DAMAGE_ADJ.is(prowessCode)||CMProps.Int.Prowesses.DAMAGE_ADV.is(prowessCode))
+		{
+			//System.out.println("Player: "+damageProwess+", Mob="+(adjustedAttackBonus(CMLib.leveler().getLevelMOBDamage(mob))- ATTACK_ADJUSTMENT));
+			final int normalizedDamage = (int)Math.round(Math.ceil(CMath.div(damageProwess - (adjustedDamage(CMLib.leveler().getLevelMOBDamage(mob),mob.phyStats().level(),true)),3.0)));
+			final int normalizedMax = CMProps.getListFileIndexedListSize(CMProps.ListFile.DAMAGE_ADJS);
+			final int medianValue = normalizedMax / 2;
+			int adjIndex = normalizedDamage + medianValue;
+			int extreme = 0;
+			if(adjIndex < 0)
+			{
+				extreme = -adjIndex;
+				adjIndex = 0;
+			}
+			if(adjIndex >= normalizedMax)
+			{
+				extreme = normalizedMax-adjIndex;
+				adjIndex = normalizedMax-1;
+			}
+			if((extreme != 0)&&(CMProps.Int.Prowesses.DAMAGE_ADV.is(prowessCode)))
+				str.append(this.getExtremeValue(extreme));
+			if(CMProps.Int.Prowesses.DAMAGE_ADJ.is(prowessCode))
+				str.append(CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.DAMAGE_ADJS,adjIndex)).append(" ");
+		}
+		if(CMProps.Int.Prowesses.DAMAGE_ABSOLUTE.is(prowessCode))
+		{
+			final int DAMAGE_CEILING=CMProps.getListFileFirstInt(CMProps.ListFile.DAMAGE_DESCS_CEILING);
+			final int numProwessDescs = CMProps.getListFileIndexedListSize(CMProps.ListFile.DAMAGE_DESCS);
+			str.append((damageProwess<0)?CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.DAMAGE_DESCS,0):(
+				   (damageProwess>=DAMAGE_CEILING)
+											 ?
+									 CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.DAMAGE_DESCS,numProwessDescs-1)
+									 +(CMStrings.repeatWithLimit('!',((damageProwess-DAMAGE_CEILING)/100),10))
+											 :
+									 (CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.DAMAGE_DESCS,(int)Math.round(Math.floor(CMath.mul(CMath.div(damageProwess,DAMAGE_CEILING),numProwessDescs)))))));
+		}
+		if(CMProps.Int.Prowesses.DAMAGE_NUMBER.is(prowessCode))
+			str.append("^.("+damageProwess+")");
+		return str.toString().trim()+"^.";
 	}
 
 	protected int getWeaponAttackIndex(final int weaponDamageType, final int weaponClassification)
 	{
 		switch(weaponClassification)
 		{
-		case Weapon.CLASS_RANGED: return (weaponDamageType==Weapon.TYPE_LASERING) ? 5 : 0;
-		case Weapon.CLASS_THROWN: return (weaponDamageType==Weapon.TYPE_LASERING) ? 5 : 1;
+		case Weapon.CLASS_RANGED:
+			return (weaponDamageType == Weapon.TYPE_LASERING) ? 5 : 0;
+		case Weapon.CLASS_THROWN:
+			return (weaponDamageType == Weapon.TYPE_LASERING) ? 5 : 1;
 		default:
 			switch(weaponDamageType)
 			{

@@ -38,7 +38,7 @@ public class ItemRefitter extends StdBehavior
 {
 	@Override public String ID(){return "ItemRefitter";}
 
-	private LinkedList<CMath.CompiledOperation> costFormula = null;
+	private CMath.CompiledFormula costFormula = null;
 
 	@Override
 	public String accountForYourself()

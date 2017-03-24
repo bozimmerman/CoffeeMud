@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.WebMacros;
 import com.planet_ink.coffee_web.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMath.CompiledFormula;
 import com.planet_ink.coffee_mud.core.CMath.CompiledOperation;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -50,7 +51,7 @@ public class StatRejuvCharts extends StdWebMacro
 		return s;
 	}
 
-	public final int avgMath(final int stat, final int level, final int add, final LinkedList<CompiledOperation> formula)
+	public final int avgMath(final int stat, final int level, final int add, final CompiledFormula formula)
 	{
 		final double[] variables={
 				level,
@@ -143,9 +144,9 @@ public class StatRejuvCharts extends StdWebMacro
 		final int sh=CMProps.getIntVar(CMProps.Int.STARTHP);
 		final int sm=CMProps.getIntVar(CMProps.Int.STARTMANA);
 		final int sv=CMProps.getIntVar(CMProps.Int.STARTMOVE);
-		final Map<CharClass,LinkedList<CompiledOperation>> hpformulas=new Hashtable<CharClass,LinkedList<CompiledOperation>>(); 
-		final Map<CharClass,LinkedList<CompiledOperation>> mnformulas=new Hashtable<CharClass,LinkedList<CompiledOperation>>(); 
-		final Map<CharClass,LinkedList<CompiledOperation>> mvformulas=new Hashtable<CharClass,LinkedList<CompiledOperation>>(); 
+		final Map<CharClass,CompiledFormula> hpformulas=new Hashtable<CharClass,CompiledFormula>(); 
+		final Map<CharClass,CompiledFormula> mnformulas=new Hashtable<CharClass,CompiledFormula>(); 
+		final Map<CharClass,CompiledFormula> mvformulas=new Hashtable<CharClass,CompiledFormula>(); 
 		for(final Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
 		{
 			final CharClass C1=c.nextElement();
@@ -181,9 +182,9 @@ public class StatRejuvCharts extends StdWebMacro
 		buf.append("</TR>");
 		
 		
-		LinkedList<CMath.CompiledOperation> stateHitPointRecoverFormula = null;
-		LinkedList<CMath.CompiledOperation> stateManaRecoverFormula = null;
-		LinkedList<CMath.CompiledOperation> stateMovesRecoverFormula  = null;
+		CMath.CompiledFormula stateHitPointRecoverFormula = null;
+		CMath.CompiledFormula stateManaRecoverFormula = null;
+		CMath.CompiledFormula stateMovesRecoverFormula  = null;
 		stateHitPointRecoverFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.Str.FORMULA_HITPOINTRECOVER));
 		stateManaRecoverFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.Str.FORMULA_MANARECOVER));
 		stateMovesRecoverFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.Str.FORMULA_MOVESRECOVER));

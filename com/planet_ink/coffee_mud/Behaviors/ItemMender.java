@@ -38,7 +38,7 @@ public class ItemMender extends StdBehavior
 {
 	@Override public String ID(){return "ItemMender";}
 
-	private LinkedList<CMath.CompiledOperation> costFormula = null;
+	private CMath.CompiledFormula costFormula = null;
 
 	@Override
 	public String accountForYourself()

@@ -108,7 +108,7 @@ public class DefaultClanGovernment implements ClanGovernment
 	public static final SearchIDList<Ability>  emptyIDs = new CMUniqSortSVec<Ability>(1);
 	public static final List<Ability>		   empty 	= new ReadOnlyList<Ability>(new Vector<Ability>());
 	public static final String 				   DEFAULT_XP_FORMULA = "(500 * @x1) + (1000 * @x1 * @x1 * @x1)";
-	public LinkedList<CMath.CompiledOperation> xpCalculationFormula = CMath.compileMathExpression(DEFAULT_XP_FORMULA);
+	public CMath.CompiledFormula xpCalculationFormula = CMath.compileMathExpression(DEFAULT_XP_FORMULA);
 
 	// derived and internal vars
 	protected Map<Integer,Map<Integer,SearchIDList<Ability>>>
@@ -379,7 +379,7 @@ public class DefaultClanGovernment implements ClanGovernment
 	}
 
 	@Override
-	public LinkedList<CMath.CompiledOperation> getXPCalculationFormula()
+	public CMath.CompiledFormula getXPCalculationFormula()
 	{
 		return xpCalculationFormula;
 	}

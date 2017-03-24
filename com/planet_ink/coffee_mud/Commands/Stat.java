@@ -463,7 +463,7 @@ public class Stat  extends Skills
 		final double num=5000;
 		for(int i=0;i<num;i++)
 		{
-			total+=CMLib.combat().adjustedDamage(M,null,null,0,true);
+			total+=CMLib.combat().adjustedDamage(M,null,null,0,true, false);
 		}
 		return (int)Math.round(Math.floor(total / num));
 	}
@@ -990,9 +990,9 @@ public class Stat  extends Skills
 					}
 					recoverMOB(target);
 					recoverMOB(M);
-					reportOnDiffMOB("Other Stuff", CMLib.combat().adjustedDamage(target,null,null,0, false)-M.basePhyStats().damage(), str);
+					reportOnDiffMOB("Other Stuff", CMLib.combat().adjustedDamage(target,null,null,0, false, false)-M.basePhyStats().damage(), str);
 					str.append("^W-------------------------\n\r");
-					str.append("^C"+CMStrings.padRight(L("Total"),40)+": ^W"+CMLib.combat().adjustedDamage(target, null, null, 0, false)+"\n\r");
+					str.append("^C"+CMStrings.padRight(L("Total"),40)+": ^W"+CMLib.combat().adjustedDamage(target, null, null, 0, false, false)+"\n\r");
 					str.append("\n\r");
 					base=(int)Math.round(M.phyStats().speed()*100);
 					str.append("^C"+CMStrings.padRight(L("Base Attacks%"),40)+": ^W"+base+"\n\r");

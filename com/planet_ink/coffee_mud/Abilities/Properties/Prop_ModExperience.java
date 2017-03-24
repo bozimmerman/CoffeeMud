@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Abilities.Properties;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMath.CompiledFormula;
 import com.planet_ink.coffee_mud.core.CMath.CompiledOperation;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -54,10 +55,10 @@ public class Prop_ModExperience extends Property
 		return Ability.CAN_MOBS | Ability.CAN_ITEMS | Ability.CAN_AREAS | Ability.CAN_ROOMS;
 	}
 
-	protected String					operationFormula	= "";
-	protected boolean					selfXP				= false;
-	protected List<CompiledOperation>	operation			= null;
-	protected CompiledZMask				mask				= null;
+	protected String			operationFormula	= "";
+	protected boolean			selfXP				= false;
+	protected CompiledFormula	operation			= null;
+	protected CompiledZMask		mask				= null;
 
 	@Override
 	public String accountForYourself()

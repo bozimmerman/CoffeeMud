@@ -397,7 +397,7 @@ public class DefaultClan implements Clan
 			exp=newexp;
 			if(exp<0)
 				exp=0;
-			final LinkedList<CMath.CompiledOperation> form = govt().getXPCalculationFormula();
+			final CMath.CompiledFormula form = govt().getXPCalculationFormula();
 			if(oldxp < exp) // we gained
 			{
 				double nextLevelXP = CMath.parseMathExpression(form, new double[]{getClanLevel()}, 0.0);
@@ -729,7 +729,7 @@ public class DefaultClan implements Clan
 							&&(mobClanRole!=null)
 							&&(getAuthority(mobClanRole.second.intValue(),Function.LIST_MEMBERS)!=Authority.CAN_NOT_DO);
 		final boolean sysmsgs=(mob!=null)&&mob.isAttributeSet(MOB.Attrib.SYSOPMSGS);
-		final LinkedList<CMath.CompiledOperation> form = govt().getXPCalculationFormula();
+		final CMath.CompiledFormula form = govt().getXPCalculationFormula();
 		final double nextLevelXP = CMath.parseMathExpression(form, new double[]{getClanLevel()}, 0.0);
 		msg.append("^x"+CMStrings.padRight(L(getGovernmentName()+" Profile"),COLBL_WIDTH)+":^.^N "+clanID()+"\n\r");
 		msg.append("-----------------------------------------------------------------\n\r");
