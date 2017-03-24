@@ -160,6 +160,7 @@ public class Truce extends StdAbility
 		if((msg.targetMajor(CMMsg.MASK_MALICIOUS))
 		&&(((msg.source()==mob)&&(msg.target()!=null)&&(isTruceWith(msg.target().Name())))
 			||((msg.target()==mob)&&(isTruceWith(msg.source().Name()))))
+		&&((!(msg.tool() instanceof DiseaseAffect))||(((DiseaseAffect)msg.tool()).isMalicious()))
 		&&(!msg.sourceMajor(CMMsg.MASK_ALWAYS)))
 		{
 			msg.source().tell(msg.source(),msg.target(),null,L("You have made peace with <T-NAMESELF>."));

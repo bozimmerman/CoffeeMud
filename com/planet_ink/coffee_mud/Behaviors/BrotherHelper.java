@@ -102,6 +102,7 @@ public class BrotherHelper extends StdBehavior
 		&&(CMLib.flags().canBeSeenBy(target,observer))
 		&&(isBrother(target,observer,nameOnly))
 		&&(!isBrother(source,observer,nameOnly))
+		&&((!(msg.tool() instanceof DiseaseAffect))||(((DiseaseAffect)msg.tool()).isMalicious()))
 		&&(R!=null))
 		{
 			int numInFray=0;

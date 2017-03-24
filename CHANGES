@@ -44,6 +44,7 @@
   42. New Achievement triggers: playerborn, births, racebirth, playerbornparent
   43. Babies born as players no longer get bonuses per se -- only through acheivements. 
   44. New INI entry: PROWESSOPTIONS, for controlling how combat/armor prowess is displayed.
+  45. New Archon Skill: Infect, for giving mobs/players random diseases.
 # Build 5.9.4 Released 08/03/2016
    1. Qualify now shows language limits
    2. New Prop_NoTeleport exceptions

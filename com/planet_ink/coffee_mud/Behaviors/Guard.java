@@ -62,6 +62,7 @@ public class Guard extends StdBehavior
 		&&(!observer.isInCombat())
 		&&(CMLib.flags().canBeSeenBy(source,observer))
 		&&(CMLib.flags().canBeSeenBy(target,observer))
+		&&((!(msg.tool() instanceof DiseaseAffect))||(((DiseaseAffect)msg.tool()).isMalicious()))
 		&&(!BrotherHelper.isBrother(source,observer,false)))
 			Aggressive.startFight(observer,source,true,false,null);
 	}

@@ -60,6 +60,7 @@ public class MOBHelper extends StdBehavior
 		&&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
 		&&(CMLib.flags().canBeSeenBy(attacker,monster))
 		&&(CMLib.flags().canBeSeenBy(victim,monster))
+		&&((!(msg.tool() instanceof DiseaseAffect))||(((DiseaseAffect)msg.tool()).isMalicious()))
 		&&(victim.isMonster()))
 			Aggressive.startFight(monster,attacker,true,false,null);
 	}
