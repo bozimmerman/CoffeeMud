@@ -32,16 +32,35 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
-
 public class Speculate extends CommonSkill
 {
-	@Override public String ID() { return "Speculate"; }
-	private final static String localizedName = CMLib.lang().L("Speculating");
-	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =I(new String[] {"SPECULATE","SPECULATING"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_NATURELORE; }
+	@Override
+	public String ID()
+	{
+		return "Speculate";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Speculating");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "SPECULATE", "SPECULATING" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_COMMON_SKILL | Ability.DOMAIN_NATURELORE;
+	}
 
 	protected boolean success=false;
 	public Speculate()

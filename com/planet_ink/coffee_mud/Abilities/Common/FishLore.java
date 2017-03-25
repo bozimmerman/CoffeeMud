@@ -10,7 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
-import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2003-2017 Bo Zimmerman
+   Copyright 2017-2017 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -32,15 +32,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class PlantLore extends CommonSkill
+public class FishLore extends CommonSkill
 {
 	@Override
 	public String ID()
 	{
-		return "PlantLore";
+		return "FishLore";
 	}
 
-	private final static String	localizedName	= CMLib.lang().L("Plant Lore");
+	private final static String	localizedName	= CMLib.lang().L("Fish Lore");
 
 	@Override
 	public String name()
@@ -48,7 +48,7 @@ public class PlantLore extends CommonSkill
 		return localizedName;
 	}
 
-	private static final String[]	triggerStrings	= I(new String[] { "PLANTLORE", "PSPECULATE" });
+	private static final String[] triggerStrings =I(new String[] {"FISHLORE","FSPECULATE"});
 
 	@Override
 	public String[] triggerStrings()
@@ -63,11 +63,11 @@ public class PlantLore extends CommonSkill
 	}
 
 	protected boolean success=false;
-	public PlantLore()
+	public FishLore()
 	{
 		super();
-		displayText=L("You are observing plant growth...");
-		verb=L("observing plant growths");
+		displayText=L("You are finding fish...");
+		verb=L("finding");
 	}
 
 	@Override
@@ -80,10 +80,11 @@ public class PlantLore extends CommonSkill
 			{
 				if(success==false)
 				{
-					final StringBuffer str=new StringBuffer(L("Your growth observation attempt failed.\n\r"));
+					final StringBuffer str=new StringBuffer(L("Your fish finding attempt failed.\n\r"));
 					commonTell(mob,str.toString());
 					unInvoke();
 				}
+
 			}
 		}
 		return super.tick(ticking,tickID);
@@ -94,85 +95,79 @@ public class PlantLore extends CommonSkill
 	{
 		if(canBeUninvoked())
 		{
-			if((affected!=null)&&(affected instanceof MOB)&&(!helping))
+			if(affected instanceof MOB)
 			{
 				final MOB mob=(MOB)affected;
 				final Room room=mob.location();
 				if((success)&&(!aborted)&&(room!=null))
 				{
-					if((room.domainType()&Room.INDOORS)==0)
+					int resource=room.myResource()&RawMaterial.RESOURCE_MASK;
+					if(RawMaterial.CODES.IS_VALID(resource))
 					{
 						final StringBuffer str=new StringBuffer("");
-						final Vector<Room> V=new Vector<Room>();
-						TrackingLibrary.TrackingFlags flags;
-						flags = CMLib.tracking().newFlags()
-								.plus(TrackingLibrary.TrackingFlag.OPENONLY)
-								.plus(TrackingLibrary.TrackingFlag.AREAONLY)
-								.plus(TrackingLibrary.TrackingFlag.NOAIR);
-						int range=2+(getXLEVELLevel(mob)/2)+super.getXMAXRANGELevel(mob);
-						CMLib.tracking().getRadiantRooms(room,V,flags,null,range,null);
-						for(int v=0;v<V.size();v++)
+						if(CMParms.contains(RawMaterial.CODES.FISHES(),resource))
 						{
-							final Room R=V.elementAt(v);
-							final int material=R.myResource()&RawMaterial.MATERIAL_MASK;
-							final int resource=R.myResource()&RawMaterial.RESOURCE_MASK;
-							if(!RawMaterial.CODES.IS_VALID(resource))
-								continue;
-							if((material!=RawMaterial.MATERIAL_VEGETATION)
-							&&(resource!=RawMaterial.RESOURCE_COTTON)
-							&&(resource!=RawMaterial.RESOURCE_HEMP)
-							&&(resource!=RawMaterial.RESOURCE_SAP)
-							&&(material!=RawMaterial.MATERIAL_WOODEN))
-								continue;
 							final String resourceStr=RawMaterial.CODES.NAME(resource);
-							if(R==room)
-								str.append(L("You think this spot would be good for @x1.\n\r",resourceStr.toLowerCase()));
-							else
+							str.append(L("You think this spot would be good for @x1.\n\r",resourceStr.toLowerCase()));
+						}
+						for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+						{
+							final Room room2=room.getRoomInDir(d);
+							if((room2!=null)
+							&&(room.getExitInDir(d)!=null)
+							&&(room.getExitInDir(d).isOpen()))
 							{
-								int isAdjacent=-1;
-								for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+								resource=room2.myResource()&RawMaterial.RESOURCE_MASK;
+								if(RawMaterial.CODES.IS_VALID(resource) && CMParms.contains(RawMaterial.CODES.FISHES(),resource))
 								{
-									final Room room2=room.getRoomInDir(d);
-									if(room2==R)
-										isAdjacent=d;
+									final String resourceStr=RawMaterial.CODES.NAME(resource);
+									str.append(L("There looks like @x1 @x2.\n\r",resourceStr.toLowerCase(),CMLib.directions().getInDirectionName(d)));
 								}
-								if(isAdjacent>=0)
-									str.append(L("There looks like @x1 @x2.\n\r",resourceStr.toLowerCase(),CMLib.directions().getInDirectionName(isAdjacent)));
-								else
-								{
-									int d=CMLib.tracking().radiatesFromDir(R,V);
-									if(d>=0)
-									{
-										d=Directions.getOpDirectionCode(d);
-										str.append(L("There looks like @x1 far @x2.\n\r",resourceStr.toLowerCase(),CMLib.directions().getInDirectionName(d)));
-									}
-								}
-
 							}
 						}
 						commonTell(mob,str.toString());
 					}
 					else
-						commonTell(mob,L("You don't find any good plant life around here."));
+						commonTell(mob,L("You don't find any good fishing spots around here."));
 				}
 			}
 		}
 		super.unInvoke();
 	}
 
+
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		if(super.checkStop(mob, commands))
+		final Room R=mob.location();
+		if(super.checkStop(mob, commands) || (R == null))
 			return true;
-		verb=L("observing plant growth");
+		verb=L("finding");
 		success=false;
+		
+		Room fishRoom=null;
+		if((mob.riding()!=null)&&(mob.riding().rideBasis()==Rideable.RIDEABLE_WATER))
+			fishRoom=R;
+		else
+		if(CMLib.flags().isWateryRoom(R))
+			fishRoom=R;
+		else
+		if((R.getArea() instanceof BoardableShip)
+		&&((R.domainType()&Room.INDOORS)==0))
+			fishRoom=CMLib.map().roomLocation(((BoardableShip)R.getArea()).getShipItem());
+		
+		if(fishRoom==null)
+		{
+			this.commonTell(mob, L("You need to be on the water, or in a boat to use this skill."));
+			return false;
+		}
+		
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		if(proficiencyCheck(mob,0,auto))
 			success=true;
-		final int duration=getDuration(45,mob,1,5);
-		final CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),L("<S-NAME> start(s) observing the growth in this area."));
+		final int duration=getDuration(45,mob,1,10);
+		final CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),L("<S-NAME> start(s) finding fish in this area."));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

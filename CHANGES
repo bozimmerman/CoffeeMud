@@ -47,7 +47,7 @@
   45. New Archon Skill: Infect, for giving mobs/players random diseases.
   46. Unpaid property taxes now generate both tell and email warnings.
   47. INVENTORY command now has LONG argument, similar to LONGLOOK.
-  48. New common skill: Tanning
+  48. New common skills: Tanning, Fish Lore
 # Build 5.9.4 Released 08/03/2016
    1. Qualify now shows language limits
    2. New Prop_NoTeleport exceptions
