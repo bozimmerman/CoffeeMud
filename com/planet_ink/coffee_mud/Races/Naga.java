@@ -92,8 +92,8 @@ public class Naga extends Python
 		return localizedStaticRacialCat;
 	}
 
-	private final String[]	culturalAbilityNames			= { "Draconic" };
-	private final int[]		culturalAbilityProficiencies	= { 100 };
+	private final String[]	culturalAbilityNames			= { "Draconic","SnakeSpeak" };
+	private final int[]		culturalAbilityProficiencies	= { 100, 100 };
 
 	@Override
 	public String[] culturalAbilityNames()

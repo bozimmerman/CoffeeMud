@@ -46,8 +46,9 @@ public class Naga extends StdMOB
 		final Random randomizer = new Random(System.currentTimeMillis());
 
 		username="a naga";
-		setDescription("A serpent whose upper body is that of a man, and lower body that of a snake.");
 		setDisplayText("A naga is here");
+		setDescription("A sharp-featured humanoid head crowns the powerful, sinuous body of this snake-like monstrosity."
+				+ " Two slender arms extend from the body of the Naga just below the head.");
 		CMLib.factions().setAlignment(this,Faction.Align.EVIL);
 		setMoney(20);
 		basePhyStats.setWeight(100 + Math.abs(randomizer.nextInt() % 101));
