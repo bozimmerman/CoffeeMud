@@ -481,7 +481,8 @@ public class DefaultLawSet implements Law
 							owedOnThisLand-=(paid/particulars.size());
 							if(owedOnThisLand>0)
 							{
-								T.setBackTaxes((int)Math.round((T.backTaxes())+owedOnThisLand));
+								int oldBackTaxes = T.backTaxes();
+								T.setBackTaxes((int)Math.round(oldBackTaxes+owedOnThisLand));
 								if(CMath.div(T.getPrice(),T.backTaxes())<2.0)
 								{
 									final Clan clanC=CMLib.clans().getClan(T.getOwnerName());
@@ -504,10 +505,12 @@ public class DefaultLawSet implements Law
 										notifyPlayer(T.getOwnerName(),"",owed,T.landPropertyID(),"@x1 property lost on @x3.",
 												"@x1 has lost the title to @x4 due to failure to pay property taxes.");
 									}
+									T.setBackTaxes(0);
 									T.setOwnerName("");
 									T.updateTitle();
 								}
 								else
+								if(T.backTaxes() > oldBackTaxes)
 								{
 									owesButNotConfiscated=true;
 									T.updateTitle();
@@ -526,13 +529,13 @@ public class DefaultLawSet implements Law
 								final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CLANINFO);
 								for(int i=0;i<channels.size();i++)
 								{
-									CMLib.commands().postChannel(channels.get(i),clanSet,CMLib.lang().L("@x1 owes @x2 in back taxes.  Sufficient were not found in a local bank account."
+									CMLib.commands().postChannel(channels.get(i),clanSet,CMLib.lang().L("@x1 owes @x2 in back taxes.  Sufficient funds were not found in a local bank account."
 											+ "  Failure to pay could result in loss of property. ",clanC.name(),amountOwed),false);
 								}
 								if(M!=null)
 								{
 									notifyPlayer(M.Name(),clanC.name(),owed,"","Taxes Owed by @x1 on @x3.",
-											"@x1 owes @x2 in back taxes.  Sufficient were not found in a local bank account.  Failure to pay could result in loss of property.");
+											"@x1 owes @x2 in back taxes.  Sufficient funds were not found in a local bank account.  Failure to pay could result in loss of property.");
 								}
 							}
 							else
