@@ -1293,6 +1293,24 @@ public class Stat  extends Skills
 					found=true;
 				}
 				else
+				if(thisStat.equals("ATTACK"))
+				{
+					str.append(CMLib.combat().fightingProwessStr(M)).append(" ");
+					found=true;
+				}
+				else
+				if(thisStat.equals("ARMOR"))
+				{
+					str.append(CMLib.combat().armorStr(M)).append(" ");
+					found=true;
+				}
+				else
+				if(thisStat.equals("DAMAGE"))
+				{
+					str.append(CMLib.combat().damageProwessStr(M)).append(" ");
+					found=true;
+				}
+				else
 				if(thisStat.equals("QUESTPOINTS"))
 				{
 					str.append(M.getQuestPoint()).append(" ");
