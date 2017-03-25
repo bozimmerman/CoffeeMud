@@ -1133,7 +1133,6 @@ public interface CharStats extends CMCommon, Modifiable
 			final CODES c=c();
 			if(c.longestBaseCodeName<0)
 			{
-				int longest=-1;
 				for(int code : c.baseStatCodes)
 				{
 					if(c.statNames[code].length()>c.longestBaseCodeName)
