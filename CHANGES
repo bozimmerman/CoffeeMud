@@ -24,7 +24,7 @@
   22. Ogres got Bad Reputation, Gnoll gets Devour Corpse, Svirfneblin gets Untraceable
   23. Githyanki get Astral Step, Lizard Men get Tail Swipe, Long Breath, MindFlayer get Mind Suck
   24. Aarakocran gets Eagle Eyes, Merfolk get Land Legs, Orc gets Vicious Blow
-  25. New Race: Pixie
+  25. New Standard Race: Pixie
   26. (Internal) Char Stats now supports crit damage bonuses for weapons and magic
   27. Races and Char Class can be disabled, finally, from the ini/mudgrinder.  See DISABLE=
   28. Internally disabled Races/Char Classes can be enabled from the ini/mudgrinder.  See ENABLE= 
