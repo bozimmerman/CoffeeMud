@@ -787,10 +787,10 @@ public class GrinderFlatMap
 		return buf;
 	}
 
-
 	protected String roomColorStyle(GrinderRoom GR)
 	{
-		switch (GR.room().domainType())
+		final Room R=GR.room();
+		switch (R.domainType())
 		{
 		case Room.DOMAIN_INDOORS_AIR:
 			return ("BGCOLOR=\"#FFFFFF\"");
@@ -825,6 +825,23 @@ public class GrinderFlatMap
 		case Room.DOMAIN_OUTDOORS_MOUNTAINS:
 			return ("BGCOLOR=\"#996600\"");
 		case Room.DOMAIN_OUTDOORS_PLAINS:
+			if(R.ID().endsWith("Road"))
+			{
+				final int length=R.basePhyStats().weight(); 
+				if(length < 5)
+					return ("BGCOLOR=\"#CCCCCC\"");
+				else
+				if(length < 10)
+					return ("BGCOLOR=\"#AAAAAA\"");
+				else
+				if(length < 15)
+					return ("BGCOLOR=\"#888888\"");
+				else
+				if(length < 20)
+					return ("BGCOLOR=\"#888888\"");
+				else
+					return ("BGCOLOR=\"#666666\"");
+			}
 			return ("BGCOLOR=\"#00FF00\"");
 		case Room.DOMAIN_OUTDOORS_ROCKS:
 			return ("BGCOLOR=\"#996600\"");
