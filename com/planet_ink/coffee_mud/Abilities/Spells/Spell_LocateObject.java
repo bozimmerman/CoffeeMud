@@ -32,20 +32,43 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Spell_LocateObject extends Spell
 {
-	@Override public String ID() { return "Spell_LocateObject"; }
-	private final static String localizedName = CMLib.lang().L("Locate Object");
-	@Override public String name() { return localizedName; }
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override
+	public String ID()
+	{
+		return "Spell_LocateObject";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Locate Object");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL | Ability.DOMAIN_DIVINATION;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-
 		if(commands.size()<1)
 		{
 			mob.tell(L("Locate what?"));
@@ -60,30 +83,30 @@ public class Spell_LocateObject extends Spell
 		&&((CMath.s_int(s)>0)
 			||(s.startsWith(">"))
 			||(s.startsWith("<"))))
+		{
+			levelAdjust=true;
+			boolean lt=true;
+			if(s.startsWith(">"))
 			{
-				levelAdjust=true;
-				boolean lt=true;
-				if(s.startsWith(">"))
-				{
-					lt=false;
-					s=s.substring(1);
-				}
-				else
-				if(s.startsWith("<"))
-					s=s.substring(1);
-				final int levelFind=CMath.s_int(s);
-
-				if(lt)
-					maxLevel=levelFind;
-				else
-					minLevel=levelFind;
-
-				commands.remove(commands.size()-1);
-				if(commands.size()>1)
-					s=commands.get(commands.size()-1);
-				else
-					s="";
+				lt=false;
+				s=s.substring(1);
 			}
+			else
+			if(s.startsWith("<"))
+				s=s.substring(1);
+			final int levelFind=CMath.s_int(s);
+
+			if(lt)
+				maxLevel=levelFind;
+			else
+				minLevel=levelFind;
+
+			commands.remove(commands.size()-1);
+			if(commands.size()>1)
+				s=commands.get(commands.size()-1);
+			else
+				s="";
+		}
 		final String what=CMParms.combine(commands,0);
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -145,23 +168,27 @@ public class Spell_LocateObject extends Spell
 						inhab=room.fetchInhabitant(i);
 						if(inhab==null)
 							break;
-
-						item=inhab.findItem(what);
-						SK=CMLib.coffeeShops().getShopKeeper(inhab);
-						if((item==null)&&(SK!=null))
-							item=SK.getShop().getStock(what,mob);
-						if((item instanceof Item)
-						&&(CMLib.flags().canBeLocated((Item)item))
-						&&(((Item)item).phyStats().level()>minLevel)
-						&&(((Item)item).phyStats().level()<maxLevel))
+						if(((!CMLib.flags().isCloaked(inhab))
+						||((CMSecurity.isAllowedAnywhere(mob,CMSecurity.SecFlag.CLOAK)||CMSecurity.isAllowedAnywhere(mob,CMSecurity.SecFlag.WIZINV))
+							&&(mob.phyStats().level()>=inhab.phyStats().level()))))
 						{
-							final CMMsg msg2=CMClass.getMsg(mob,inhab,this,verbalCastCode(mob,null,auto),null);
-							if(room.okMessage(mob,msg2))
+							item=inhab.findItem(what);
+							SK=CMLib.coffeeShops().getShopKeeper(inhab);
+							if((item==null)&&(SK!=null))
+								item=SK.getShop().getStock(what,mob);
+							if((item instanceof Item)
+							&&(CMLib.flags().canBeLocated((Item)item))
+							&&(((Item)item).phyStats().level()>minLevel)
+							&&(((Item)item).phyStats().level()<maxLevel))
 							{
-								room.send(mob,msg2);
-								final String str=L("@x1@x2 is being carried by @x3 in a place called '@x4'.",item.name(),((!levelAdjust)?"":("("+((Item)item).phyStats().level()+")")),inhab.name(),room.displayText(mob));
-								itemsFound.add(str);
-								break;
+								final CMMsg msg2=CMClass.getMsg(mob,inhab,this,verbalCastCode(mob,null,auto),null);
+								if(room.okMessage(mob,msg2))
+								{
+									room.send(mob,msg2);
+									final String str=L("@x1@x2 is being carried by @x3 in a place called '@x4'.",item.name(),((!levelAdjust)?"":("("+((Item)item).phyStats().level()+")")),inhab.name(),room.displayText(mob));
+									itemsFound.add(str);
+									break;
+								}
 							}
 						}
 					}
