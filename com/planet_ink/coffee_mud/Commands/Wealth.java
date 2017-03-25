@@ -43,7 +43,7 @@ public class Wealth extends Inventory
 	private final static Class[][] internalParameters=new Class[][]{{MOB.class}};
 
 	@Override
-	public StringBuilder getInventory(MOB seer, MOB mob, String mask)
+	public StringBuilder getInventory(MOB seer, MOB mob, String mask, boolean longInv)
 	{
 		final StringBuilder msg=new StringBuilder("");
 		final InventoryList list = fetchInventory(seer,mob);
@@ -58,7 +58,7 @@ public class Wealth extends Inventory
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
-		final StringBuilder msg=getInventory(mob,mob,CMParms.combine(commands,1));
+		final StringBuilder msg=getInventory(mob,mob,CMParms.combine(commands,1),false);
 		if(msg.length()==0)
 			mob.tell(L("You have no money on you."));
 		else
@@ -73,7 +73,7 @@ public class Wealth extends Inventory
 		if(!super.checkArguments(internalParameters, args))
 			return "";
 		final MOB M=(MOB)args[0];
-		return getInventory(M,mob,null).toString();
+		return getInventory(M,mob,null,false).toString();
 	}
 	
 	public int ticksToExecute()

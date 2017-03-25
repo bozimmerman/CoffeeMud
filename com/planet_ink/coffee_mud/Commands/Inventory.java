@@ -41,7 +41,7 @@ public class Inventory extends StdCommand
 
 	private final String[]	access	= I(new String[] { "INVENTORY", "INV", "I" });
 
-	private final static Class[][] internalParameters=new Class[][]{ {MOB.class} };
+	private final static Class[][] internalParameters=new Class[][]{ {MOB.class}, {MOB.class,Boolean.class} };
 	@Override
 	public String[] getAccessWords()
 	{
@@ -129,7 +129,7 @@ public class Inventory extends StdCommand
 		return msg.toString();
 	}
 
-	public StringBuilder getInventory(MOB seer, MOB mob, String mask)
+	public StringBuilder getInventory(MOB seer, MOB mob, String mask, boolean longInv)
 	{
 		final StringBuilder msg=new StringBuilder("");
 		final InventoryList list = fetchInventory(seer,mob);
@@ -169,7 +169,7 @@ public class Inventory extends StdCommand
 		else
 		{
 			if(list.viewItems.size()>0)
-				msg.append(CMLib.lister().lister(seer,list.viewItems,true,"MItem","",false,seer.isAttributeSet(MOB.Attrib.COMPRESS)));
+				msg.append(CMLib.lister().lister(seer,list.viewItems,true,"MItem","",longInv,seer.isAttributeSet(MOB.Attrib.COMPRESS)));
 			if(list.foundButUnseen)
 				msg.append(L("(stuff you can't see right now)"));
 
@@ -182,7 +182,15 @@ public class Inventory extends StdCommand
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
-		final StringBuilder msg=getInventory(mob,mob,CMParms.combine(commands,1));
+		boolean longInv=false;
+		if((commands!=null)
+		&&(commands.size()>1)
+		&&(commands.get(1).equalsIgnoreCase("long")))
+		{
+			commands.remove(1);
+			longInv=true;
+		}
+		final StringBuilder msg=getInventory(mob,mob,CMParms.combine(commands,1),longInv);
 		if(msg.length()==0)
 			mob.tell(L("^HYou are carrying:\n\r^!Nothing!^?\n\r"));
 		else
@@ -194,9 +202,12 @@ public class Inventory extends StdCommand
 	@Override
 	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException
 	{
+		boolean longInv=false;
 		if(!super.checkArguments(internalParameters, args))
 			return Boolean.FALSE;
-		return getInventory((MOB)args[0],mob,null);
+		if((args.length>1)&&(args[1] instanceof Boolean))
+			longInv=((Boolean)args[1]).booleanValue();
+		return getInventory((MOB)args[0],mob,null,longInv);
 	}
 	
 	@Override
