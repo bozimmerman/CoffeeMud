@@ -336,6 +336,48 @@ public class DefaultLawSet implements Law
 		return new Law.TreasurySet(treasuryR,container);
 	}
 
+	protected boolean sendGameMail(final String mailBox, final String subject, String message)
+	{
+		if(CMProps.getIntVar(CMProps.Int.MAXMAILBOX)>0)
+		{
+			final int count=CMLib.database().DBCountJournal(CMProps.getVar(CMProps.Str.MAILBOX),null,mailBox);
+			if(count>=CMProps.getIntVar(CMProps.Int.MAXMAILBOX))
+				return false;
+		}
+		message+=CMLib.lang().L("\n\r\n\rThis message was sent through the @x1 mail server at @x2, port @x3"
+				+".  Please contact the administrators regarding any abuse of this system.\n\r",
+				CMProps.getVar(CMProps.Str.MUDNAME),CMProps.getVar(CMProps.Str.MUDDOMAIN),CMProps.getVar(CMProps.Str.MUDPORTS));
+		CMLib.database().DBWriteJournal(CMProps.getVar(CMProps.Str.MAILBOX), mailBox, mailBox, subject, message);
+		return true;
+	}
+
+	protected boolean notifyPlayer(final String ownerName, String owerName, final double owed, final String fourWord, final String subject, String message)
+	{
+		MOB M=CMLib.players().getPlayer(ownerName);
+		if((M!=null)&&(CMLib.flags().isInTheGame(M, true)))
+		{
+			final String amountOwed = CMLib.beanCounter().nameCurrencyLong(M, owed);
+			if(owerName.length()==0)
+				owerName=M.Name();
+			M.tell(CMLib.lang().L(message,owerName,amountOwed,CMProps.getVar(CMProps.Str.MUDNAME),fourWord));
+		}
+		else
+		{
+			M=CMLib.players().getLoadPlayer(ownerName);
+			if(M!=null)
+			{
+				if(owerName.length()==0)
+					owerName=M.Name();
+				final String amountOwed = CMLib.beanCounter().nameCurrencyLong(M, owed);
+				final String subj = CMLib.lang().L(subject,owerName,amountOwed,CMProps.getVar(CMProps.Str.MUDNAME),fourWord);
+				final String msg = CMLib.lang().L(message,owerName,amountOwed,CMProps.getVar(CMProps.Str.MUDNAME),fourWord);
+				return sendGameMail(M.Name(), subj, msg);
+			}
+			return false;
+		}
+		return true;
+	}
+	
 	@Override
 	public void propertyTaxTick(Area A, boolean debugging)
 	{
@@ -402,31 +444,34 @@ public class DefaultLawSet implements Law
 				owed+=CMath.mul(totalValue,tax);
 
 				if(owed>0)
-				for(int p=0;p<particulars.size();p++)
 				{
-					T=(particulars.elementAt(p));
-					if(T.backTaxes()<0)
+					for(int p=0;p<particulars.size();p++)
 					{
-						if((-T.backTaxes())>=owed)
+						T=(particulars.elementAt(p));
+						if(T.backTaxes()<0)
 						{
-							paid+=owed;
-							T.setBackTaxes((int)Math.round((T.backTaxes())+owed));
+							if((-T.backTaxes())>=owed)
+							{
+								paid+=owed;
+								T.setBackTaxes((int)Math.round((T.backTaxes())+owed));
+								T.updateTitle();
+								break;
+							}
+							paid+=(-T.backTaxes());
+							T.setBackTaxes(0);
 							T.updateTitle();
-							break;
 						}
-						paid+=(-T.backTaxes());
-						T.setBackTaxes(0);
-						T.updateTitle();
 					}
 				}
 				if(owed>0)
 				{
 					owed-=paid;
-					if((owed>0)&&(!CMLib.beanCounter().modifyLocalBankGold(A,
-									owner,
-									CMLib.utensils().getFormattedDate(A)+": Withdrawal of "+owed+": Taxes on property: "+properties.toString(),
-									CMLib.beanCounter().getCurrency(A),
-								   -owed)))
+					if((owed>0)
+					&&(!CMLib.beanCounter().modifyLocalBankGold(A,
+						owner,
+						CMLib.utensils().getFormattedDate(A)+": Withdrawal of "+owed+": Taxes on property: "+properties.toString(),
+						CMLib.beanCounter().getCurrency(A),
+						-owed)))
 					{
 						boolean owesButNotConfiscated=false;
 						for(int p=0;p<particulars.size();p++)
@@ -437,20 +482,28 @@ public class DefaultLawSet implements Law
 							if(owedOnThisLand>0)
 							{
 								T.setBackTaxes((int)Math.round((T.backTaxes())+owedOnThisLand));
-								if((T.getPrice()/T.backTaxes())<4)
+								if(CMath.div(T.getPrice(),T.backTaxes())<2.0)
 								{
 									final Clan clanC=CMLib.clans().getClan(T.getOwnerName());
 									if(clanC!=null)
 									{
+										final MOB M=clanC.getResponsibleMember();
 										final List<Pair<Clan,Integer>> clanSet=new Vector<Pair<Clan,Integer>>();
 										clanSet.add(new Pair<Clan,Integer>(C,Integer.valueOf(0)));
 										final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CLANINFO);
 										for(int i=0;i<channels.size();i++)
 											CMLib.commands().postChannel(channels.get(i),clanSet,CMLib.lang().L("@x1 has lost the title to @x2 due to failure to pay property taxes.",T.getOwnerName(),T.landPropertyID()),false);
+										if(M!=null)
+										{
+											notifyPlayer(M.Name(),clanC.name(),owed,"","@x1 lost property on @x3.",
+													"@x1 has lost the title to @x4 due to failure to pay property taxes.");
+										}
 									}
 									else
-									if(CMLib.players().getPlayer(T.getOwnerName())!=null)
-										CMLib.players().getPlayer(T.getOwnerName()).tell(CMLib.lang().L("You have lost the title to @x1 due to failure to pay property taxes.",T.landPropertyID()));
+									{
+										notifyPlayer(T.getOwnerName(),"",owed,T.landPropertyID(),"@x1 property lost on @x3.",
+												"@x1 has lost the title to @x4 due to failure to pay property taxes.");
+									}
 									T.setOwnerName("");
 									T.updateTitle();
 								}
@@ -461,20 +514,46 @@ public class DefaultLawSet implements Law
 								}
 							}
 						}
-						if((owesButNotConfiscated)
-						&&(evasionBits!=null)
-						&&(evasionBits[Law.BIT_CRIMENAME].length()>0)
-						&&(responsibleMob!=null))
+						if(owesButNotConfiscated)
 						{
-							legalDetails.fillOutWarrant(responsibleMob,
-													   this,
-													   A,
-													   null,
-													   evasionBits[Law.BIT_CRIMELOCS],
-													   evasionBits[Law.BIT_CRIMEFLAGS],
-													   evasionBits[Law.BIT_CRIMENAME],
-													   evasionBits[Law.BIT_SENTENCE],
-													   evasionBits[Law.BIT_WARNMSG]);
+							final Clan clanC=CMLib.clans().getClan(owner);
+							if(clanC!=null)
+							{
+								final MOB M=clanC.getResponsibleMember();
+								final String amountOwed = CMLib.beanCounter().nameCurrencyLong(M, owed);
+								final List<Pair<Clan,Integer>> clanSet=new Vector<Pair<Clan,Integer>>();
+								clanSet.add(new Pair<Clan,Integer>(C,Integer.valueOf(0)));
+								final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CLANINFO);
+								for(int i=0;i<channels.size();i++)
+								{
+									CMLib.commands().postChannel(channels.get(i),clanSet,CMLib.lang().L("@x1 owes @x2 in back taxes.  Sufficient were not found in a local bank account."
+											+ "  Failure to pay could result in loss of property. ",clanC.name(),amountOwed),false);
+								}
+								if(M!=null)
+								{
+									notifyPlayer(M.Name(),clanC.name(),owed,"","Taxes Owed by @x1 on @x3.",
+											"@x1 owes @x2 in back taxes.  Sufficient were not found in a local bank account.  Failure to pay could result in loss of property.");
+								}
+							}
+							else
+							{
+								notifyPlayer(owner,"",owed,"","Taxes Owed by @x1 on @x3.",
+										"@x1 owes @x2 in back taxes.  Sufficient were not found in a local bank account.  Failure to pay could result in loss of property.");
+							}
+							if((evasionBits!=null)
+							&&(evasionBits[Law.BIT_CRIMENAME].length()>0)
+							&&(responsibleMob!=null))
+							{
+								legalDetails.fillOutWarrant(responsibleMob,
+															this,
+															A,
+															null,
+															evasionBits[Law.BIT_CRIMELOCS],
+															evasionBits[Law.BIT_CRIMEFLAGS],
+															evasionBits[Law.BIT_CRIMENAME],
+															evasionBits[Law.BIT_SENTENCE],
+															evasionBits[Law.BIT_WARNMSG]);
+							}
 						}
 					}
 					else
