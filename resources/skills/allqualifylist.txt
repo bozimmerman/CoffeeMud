@@ -65,6 +65,7 @@
 4 Distilling REQUIRES=Cooking 
 4 Mining 
 4 Pottery 
+4 Tanning
 4 Sculpting MASK=+CON 10 
 4 Weaving MASK=+WIS 10 
 
