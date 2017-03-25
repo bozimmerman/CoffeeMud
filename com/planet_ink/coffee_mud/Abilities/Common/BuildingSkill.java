@@ -722,6 +722,8 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 			String desc = recipe[DAT_MISC];
 			String addParms = recipe[DAT_PROPERTIES];
 			String localeClass = recipe[DAT_CLASS];
+			if(desc.equals("0"))
+				desc="";
 			
 			int opDir = Directions.getOpDirectionCode(dir);
 			room=CMLib.map().getRoom(room);
