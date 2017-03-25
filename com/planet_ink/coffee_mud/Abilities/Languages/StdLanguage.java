@@ -75,7 +75,7 @@ public class StdLanguage extends StdAbility implements Language
 	@Override
 	protected int canAffectCode()
 	{
-		return Ability.CAN_MOBS;
+		return Ability.CAN_MOBS|Ability.CAN_ITEMS;
 	}
 
 	@Override
