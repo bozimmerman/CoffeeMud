@@ -4521,7 +4521,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		final String achievementFilename = getAchievementFilename();
 		final List<String> V=Resources.getFileLineVector(Resources.getRawFileResource(achievementFilename,true));
 		Resources.removeResource(achievementFilename);
-		V.addAll(Resources.getFileLineVector(Resources.getRawFileResource(achievementFilename+".2",true)));
+		V.addAll(Resources.getFileLineVector(Resources.getRawFileResource(achievementFilename+".2",false)));
 		Resources.removeResource(achievementFilename+".2");
 		String WKID=null;
 		Agent agent = Agent.PLAYER;
