@@ -145,12 +145,6 @@ public class Song extends StdAbility
 	}
 
 	@Override
-	public void unInvoke()
-	{
-		super.unInvoke();
-	}
-	
-	@Override
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		super.executeMsg(host,msg);
