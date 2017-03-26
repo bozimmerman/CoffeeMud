@@ -63,6 +63,7 @@ public class FishLore extends CommonSkill
 	}
 
 	protected boolean success=false;
+	protected Room fishRoom=null;
 	public FishLore()
 	{
 		super();
@@ -73,7 +74,9 @@ public class FishLore extends CommonSkill
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
+		if ((affected != null) 
+		&& (affected instanceof MOB) 
+		&& (tickID == Tickable.TICKID_MOB))
 		{
 			final MOB mob=(MOB)affected;
 			if(tickUp==6)
@@ -98,16 +101,16 @@ public class FishLore extends CommonSkill
 			if(affected instanceof MOB)
 			{
 				final MOB mob=(MOB)affected;
-				final Room room=mob.location();
+				final Room room=fishRoom;
 				if((success)&&(!aborted)&&(room!=null))
 				{
+					final StringBuffer str=new StringBuffer("");
 					int resource=room.myResource()&RawMaterial.RESOURCE_MASK;
 					if(RawMaterial.CODES.IS_VALID(resource))
 					{
-						final StringBuffer str=new StringBuffer("");
-						if(CMParms.contains(RawMaterial.CODES.FISHES(),resource))
+						if(CMParms.contains(RawMaterial.CODES.FISHES(),room.myResource()))
 						{
-							final String resourceStr=RawMaterial.CODES.NAME(resource);
+							final String resourceStr=RawMaterial.CODES.NAME(room.myResource());
 							str.append(L("You think this spot would be good for @x1.\n\r",resourceStr.toLowerCase()));
 						}
 						for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
@@ -118,16 +121,16 @@ public class FishLore extends CommonSkill
 							&&(room.getExitInDir(d).isOpen()))
 							{
 								resource=room2.myResource()&RawMaterial.RESOURCE_MASK;
-								if(RawMaterial.CODES.IS_VALID(resource) && CMParms.contains(RawMaterial.CODES.FISHES(),resource))
+								if(RawMaterial.CODES.IS_VALID(resource) && CMParms.contains(RawMaterial.CODES.FISHES(),room2.myResource()))
 								{
-									final String resourceStr=RawMaterial.CODES.NAME(resource);
+									final String resourceStr=RawMaterial.CODES.NAME(room2.myResource());
 									str.append(L("There looks like @x1 @x2.\n\r",resourceStr.toLowerCase(),CMLib.directions().getInDirectionName(d)));
 								}
 							}
 						}
 						commonTell(mob,str.toString());
 					}
-					else
+					if(str.length()==0)
 						commonTell(mob,L("You don't find any good fishing spots around here."));
 				}
 			}
@@ -142,10 +145,15 @@ public class FishLore extends CommonSkill
 		final Room R=mob.location();
 		if(super.checkStop(mob, commands) || (R == null))
 			return true;
-		verb=L("finding");
+		verb=L("finding fish");
 		success=false;
+		fishRoom=null;
 		
-		Room fishRoom=null;
+		if((R.domainType()&Room.INDOORS)>0)
+		{
+			commonTell(mob,L("You can't do this indoors!"));
+			return false;
+		}
 		if((mob.riding()!=null)&&(mob.riding().rideBasis()==Rideable.RIDEABLE_WATER))
 			fishRoom=R;
 		else

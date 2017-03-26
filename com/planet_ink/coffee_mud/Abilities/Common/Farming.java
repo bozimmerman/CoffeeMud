@@ -311,16 +311,18 @@ public class Farming extends GatheringSkill
 				}
 			}
 			if(mine==null)
-			for(int i=0;i<mob.numItems();i++)
 			{
-				final Item I2=mob.getItem(i);
-				if(plantable(mob,I2))
+				for(int i=0;i<mob.numItems();i++)
 				{
-					commands.add(RawMaterial.CODES.NAME(I2.material()));
-					mine=(Item)I2.copyOf();
-					if(mob.location().findItem(null,mob.location().getContextName(I2))==null)
-						mob.location().addItem(mine,ItemPossessor.Expire.Resource);
-					break;
+					final Item I2=mob.getItem(i);
+					if(plantable(mob,I2))
+					{
+						commands.add(RawMaterial.CODES.NAME(I2.material()));
+						mine=(Item)I2.copyOf();
+						if(mob.location().findItem(null,mob.location().getContextName(I2))==null)
+							mob.location().addItem(mine,ItemPossessor.Expire.Resource);
+						break;
+					}
 				}
 			}
 			if(mine==null)
@@ -353,6 +355,7 @@ public class Farming extends GatheringSkill
 			}
 		}
 		if(code<0)
+		{
 			for(final int cd : codes.all())
 			{
 				final String str=codes.name(cd).toUpperCase();
@@ -367,6 +370,7 @@ public class Farming extends GatheringSkill
 					break;
 				}
 			}
+		}
 		if(code<0)
 		{
 			commonTell(mob,L("You've never heard of '@x1'.",CMParms.combine(commands,0)));
@@ -377,8 +381,12 @@ public class Farming extends GatheringSkill
 		for(int i=0;i<mob.location().numItems();i++)
 		{
 			final Item I=mob.location().getItem(i);
-			if(plantable(mob,I)&&(I.material()==code))
-			{ mine=I; break;}
+			if(plantable(mob,I)
+			&&(I.material()==code))
+			{
+				mine = I;
+				break;
+			}
 		}
 		if(mine==null)
 		{
@@ -402,7 +410,8 @@ public class Farming extends GatheringSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		if((proficiencyCheck(mob,0,auto))&&(isPotentialCrop(mob.location(),code)))
+		if((proficiencyCheck(mob,0,auto))
+		&&(isPotentialCrop(mob.location(),code)))
 		{
 			found=(Item)CMLib.materials().makeResource(code,Integer.toString(mob.location().domainType()),false,null);
 			if((found!=null)

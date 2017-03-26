@@ -69,6 +69,7 @@ public class SaltWaterSurface extends WaterSurface
 	static
 	{
 		roomResources.add(Integer.valueOf(RawMaterial.RESOURCE_SALMON));
+		roomResources.add(Integer.valueOf(RawMaterial.RESOURCE_FISH));
 	}
 	
 	@Override

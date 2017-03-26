@@ -220,6 +220,7 @@ public class Age extends StdAbility
 
 	protected void doThang()
 	{
+		final Physical affected=this.affected;
 		if(affected==null)
 			return;
 		if(text().length()==0)
@@ -240,7 +241,9 @@ public class Age extends StdAbility
 		}
 
 		final int ellapsed=(int)Math.round(Math.floor(CMath.div(CMath.div(System.currentTimeMillis()-l,CMProps.getTickMillis()),divisor)));
-		if((affected instanceof Item)&&(affected instanceof CagedAnimal)&&(!(affected instanceof DeadBody)))
+		if((affected instanceof Item)
+		&&(affected instanceof CagedAnimal)
+		&&(!(affected instanceof DeadBody)))
 		{
 			((Item)affected).setExpirationDate(0);
 			if(getMyRace()==null)
@@ -542,7 +545,13 @@ public class Age extends StdAbility
 					newMan.recoverCharStats();
 					newMan.baseCharStats().getMyRace().startRacing(newMan,false);
 					newMan.playerStats().setTheme(theme);
-					try { newMan.baseCharStats().setMyClasses(";"+CMLib.login().promptCharClass(theme, newMan, null).name()); } catch (final IOException e){}
+					try
+					{
+						newMan.baseCharStats().setMyClasses(";" + CMLib.login().promptCharClass(theme, newMan, null).name());
+					}
+					catch (final IOException e)
+					{
+					}
 					newMan.baseCharStats().setMyLevels(";1");
 					newMan.baseCharStats().getCurrentClass().startCharacter(newMan,false,false);
 					for(int i=0;i<babe.numItems();i++)
