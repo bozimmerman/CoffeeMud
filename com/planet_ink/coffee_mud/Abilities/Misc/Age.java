@@ -333,11 +333,24 @@ public class Age extends StdAbility
 						babe.setMoneyVariation(0);
 						babe.setFollowing(following);
 						R.show(babe,null,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> JUST TOOK <S-HIS-HER> FIRST STEPS!!!"));
-						final ItemPossessor poss = I.owner();
-						if(poss != null)
-							poss.delItem(I);
-						I.setOwner(null);
-						I.destroy();
+						I.delEffect(this);
+						Runnable run=new Runnable()
+						{
+							final Item I2=I;
+							@Override
+							public void run()
+							{
+								final ItemPossessor poss = I2.owner();
+								if(poss != null)
+									poss.delItem(I2);
+								I2.setOwner(null);
+								I2.destroy();
+							}
+						};
+						run.run();
+						// this oughta kill it, but good.
+						CMLib.threads().scheduleRunnable(run, 100);
+						CMLib.threads().scheduleRunnable(run, 1000);
 						if(!CMLib.flags().isAnimalIntelligence(babe))
 							CMLib.database().DBReCreatePlayerData(leigeM.Name(),"HEAVEN",leigeM.Name()+"/HEAVEN/"+text(),babe.ID()+"/"+babe.basePhyStats().ability()+"/"+babe.text());
 					}
