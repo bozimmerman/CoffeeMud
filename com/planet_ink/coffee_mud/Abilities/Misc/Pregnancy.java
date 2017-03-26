@@ -218,10 +218,13 @@ public class Pregnancy extends StdAbility implements HealthCondition
 	@Override
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
-		if ((msg.target() == affected) && ((msg.targetMinor() == CMMsg.TYP_LOOK) || (msg.targetMinor() == CMMsg.TYP_EXAMINE)) && (CMLib.flags().canBeSeenBy(affected, msg.source())) && (affected instanceof MOB)
-				&& ((daysRemaining > 0) && (monthsRemaining <= 3)))
+		if ((msg.target() == affected) 
+		&& ((msg.targetMinor() == CMMsg.TYP_LOOK) || (msg.targetMinor() == CMMsg.TYP_EXAMINE)) 
+		&& (CMLib.flags().canBeSeenBy(affected, msg.source())) 
+		&& (affected instanceof MOB)
+		&& ((daysRemaining > 0) && (monthsRemaining <= 3)))
 		{
-			msg.addTrailerMsg(CMClass.getMsg(msg.source(), null, null, CMMsg.MSG_OK_VISUAL, L("\n\r<S-NAME> <S-IS-ARE> obviously with child.\n\r"), CMMsg.NO_EFFECT, null, CMMsg.NO_EFFECT, null));
+			msg.addTrailerMsg(CMClass.getMsg((MOB)affected, null, null, CMMsg.MSG_OK_VISUAL, L("\n\r<S-NAME> <S-IS-ARE> obviously with child.\n\r"), CMMsg.NO_EFFECT, null, CMMsg.NO_EFFECT, null));
 		}
 		super.executeMsg(host, msg);
 	}

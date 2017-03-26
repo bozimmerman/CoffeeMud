@@ -286,7 +286,7 @@ public class Baiting extends GatheringSkill
 		if(R.okMessage(mob,msg) && fishRoom.okMessage(mob, msg))
 		{
 			R.send(mob,msg);
-			fishRoom.send(mob,msg);
+			fishRoom.sendOthers(mob,msg);
 			beneficialAffect(mob,mob,asLevel,duration);
 		}
 		return true;

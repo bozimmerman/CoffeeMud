@@ -333,6 +333,10 @@ public class Age extends StdAbility
 						babe.setMoneyVariation(0);
 						babe.setFollowing(following);
 						R.show(babe,null,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> JUST TOOK <S-HIS-HER> FIRST STEPS!!!"));
+						final ItemPossessor poss = I.owner();
+						if(poss != null)
+							poss.delItem(I);
+						I.setOwner(null);
 						I.destroy();
 						if(!CMLib.flags().isAnimalIntelligence(babe))
 							CMLib.database().DBReCreatePlayerData(leigeM.Name(),"HEAVEN",leigeM.Name()+"/HEAVEN/"+text(),babe.ID()+"/"+babe.basePhyStats().ability()+"/"+babe.text());

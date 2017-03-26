@@ -33,31 +33,98 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Song extends StdAbility
 {
-	@Override public String ID() { return "Song"; }
-	private final static String localizedName = CMLib.lang().L("a Song");
-	@Override public String name() { return localizedName; }
-	@Override public String displayText() { return "("+songOf()+")"; }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	private static final String[] triggerStrings =I(new String[] {"SING","SI"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode(){return Ability.ACODE_SONG|Ability.DOMAIN_SINGING;}
-	@Override public int maxRange(){return adjustedMaxInvokerRange(2);}
+	@Override
+	public String ID()
+	{
+		return "Song";
+	}
 
-	protected boolean HAS_QUANTITATIVE_ASPECT(){return true;}
-	protected boolean skipStandardSongInvoke(){return false;}
-	protected boolean mindAttack(){return abstractQuality()==Ability.QUALITY_MALICIOUS;}
-	protected boolean skipStandardSongTick(){return false;}
-	protected boolean maliciousButNotAggressiveFlag(){return false;}
-	protected boolean skipSimpleStandardSongTickToo(){return false;}
-	protected String songOf(){return L("Song of ")+name();}
-	protected long timeOut = 0;
-	protected Vector<Room> commonRoomSet=null;
-	protected Room originRoom=null;
+	private final static String	localizedName	= CMLib.lang().L("a Song");
 
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public String displayText()
+	{
+		return "(" + songOf() + ")";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "SING", "SI" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SONG | Ability.DOMAIN_SINGING;
+	}
+
+	@Override
+	public int maxRange()
+	{
+		return adjustedMaxInvokerRange(2);
+	}
+
+	protected boolean HAS_QUANTITATIVE_ASPECT()
+	{
+		return true;
+	}
+
+	protected boolean skipStandardSongInvoke()
+	{
+		return false;
+	}
+
+	protected boolean mindAttack()
+	{
+		return abstractQuality() == Ability.QUALITY_MALICIOUS;
+	}
+
+	protected boolean skipStandardSongTick()
+	{
+		return false;
+	}
+
+	protected boolean maliciousButNotAggressiveFlag()
+	{
+		return false;
+	}
+
+	protected boolean skipSimpleStandardSongTickToo()
+	{
+		return false;
+	}
+
+	protected String songOf()
+	{
+		return L("Song of ") + name();
+	}
+
+	protected long		timeOut			= 0;
+	protected List<Room>commonRoomSet	= null;
+	protected Room		originRoom		= null;
 
 	@Override
 	public int adjustedLevel(MOB mob, int asLevel)
@@ -78,6 +145,12 @@ public class Song extends StdAbility
 	}
 
 	@Override
+	public void unInvoke()
+	{
+		super.unInvoke();
+	}
+	
+	@Override
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		super.executeMsg(host,msg);
@@ -86,8 +159,10 @@ public class Song extends StdAbility
 		&&(!unInvoked))
 		{
 			if(((msg.sourceMinor()==CMMsg.TYP_SPEAK)
-					||((msg.sourceMinor()==CMMsg.TYP_CAST_SPELL)&&(CMath.bset(msg.sourceCode(), CMMsg.MASK_SOUND))))
+				||((msg.sourceMinor()==CMMsg.TYP_CAST_SPELL)&&(CMath.bset(msg.sourceCode(), CMMsg.MASK_SOUND))))
 			&&(!(msg.tool() instanceof Song))
+			&&(!(msg.tool() instanceof Play))
+			&&(!(msg.tool() instanceof Dance))
 			&&(!msg.sourceMajor(CMMsg.MASK_CHANNEL)))
 			{
 				if(msg.source().location()!=null)
@@ -173,7 +248,7 @@ public class Song extends StdAbility
 		final MOB mob=(MOB)affected;
 		if((affected==invoker())&&(invoker()!=null)&&(invoker().location()!=originRoom))
 		{
-			final Vector<Room> V=getInvokerScopeRoomSet(null);
+			final List<Room> V=getInvokerScopeRoomSet(null);
 			commonRoomSet.clear();
 			commonRoomSet.addAll(V);
 			originRoom=invoker().location();
@@ -236,6 +311,7 @@ public class Song extends StdAbility
 	protected void unsingAll(MOB mob, MOB invoker)
 	{
 		if(mob!=null)
+		{
 			for(int a=mob.numEffects()-1;a>=0;a--)
 			{
 				final Ability A=mob.fetchEffect(a);
@@ -243,11 +319,13 @@ public class Song extends StdAbility
 				&&((invoker==null)||(A.invoker()==null)||(A.invoker()==invoker)))
 					((Song)A).unsingMe(mob,invoker);
 			}
+		}
 	}
 
 	protected void unsingAllByThis(MOB mob, MOB invoker)
 	{
 		if(mob!=null)
+		{
 			for(int a=mob.numEffects()-1;a>=0;a--)
 			{
 				final Ability A=mob.fetchEffect(a);
@@ -256,6 +334,7 @@ public class Song extends StdAbility
 				&&((invoker==null)||(A.invoker()==null)||(A.invoker()==invoker)))
 					((Song)A).unsingMe(mob,invoker);
 			}
+		}
 	}
 
 	protected boolean unsingMe(MOB mob, MOB invoker)
@@ -268,8 +347,10 @@ public class Song extends StdAbility
 		{
 			final Song S=(Song)A;
 			if(S.timeOut==0)
+			{
 				S.timeOut = System.currentTimeMillis()
 						  + (CMProps.getTickMillis() * (((invoker()!=null)&&(invoker()!=mob))?super.getXTIMELevel(invoker()):0));
+			}
 			if(System.currentTimeMillis() >= S.timeOut)
 			{
 				A.unInvoke();
@@ -279,13 +360,13 @@ public class Song extends StdAbility
 		return true;
 	}
 
-	protected Vector<Room> getInvokerScopeRoomSet(MOB backupMob)
+	protected List<Room> getInvokerScopeRoomSet(MOB backupMob)
 	{
 		if((invoker()==null)
 		||(invoker().location()==null))
 		{
 			if((backupMob!=null)&&(backupMob.location()!=null))
-				 return new XVector<Room>(backupMob.location());
+				return new XVector<Room>(backupMob.location());
 			return new Vector<Room>();
 		}
 		final int depth=getXMAXRANGELevel(invoker());
@@ -411,7 +492,7 @@ public class Song extends StdAbility
 				str=L("^S<S-NAME> start(s) the @x1 over again.^?",songOf());
 			for(int v=0;v<commonRoomSet.size();v++)
 			{
-				final Room R=commonRoomSet.elementAt(v);
+				final Room R=commonRoomSet.get(v);
 				final String msgStr=getCorrectMsgString(R,str,v);
 				final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),msgStr);
 				if(R.okMessage(mob,msg))
