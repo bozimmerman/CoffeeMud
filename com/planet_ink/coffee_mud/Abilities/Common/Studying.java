@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Abilities.Common;
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.SecFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -228,6 +229,17 @@ granting each ability at the lowest level above (1,2,3,4,5,6).
 		return false;
 	}
 	
+	@Override
+	public boolean autoInvocation(MOB mob, boolean force)
+	{
+		if(isAutoInvoked())
+		{
+			if(CMSecurity.isAllowedEverywhere(mob, SecFlag.ALLSKILLS))
+				return false;
+		}
+		return super.autoInvocation(mob, force);
+	}
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
