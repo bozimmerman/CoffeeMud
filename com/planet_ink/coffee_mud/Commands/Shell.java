@@ -49,20 +49,30 @@ public class Shell extends StdCommand
 	}
 
 	protected static DVector pwds=new DVector(2);
-	protected String[][] SUB_CMDS={
-			{"$","DIRECTORY","LS"},
-			{">","COPY","CP"},
-			{".","CHANGEDIRECTORY","CD","GO"},
-			{"-","DELETE","RM","RD"},
-			{"\\","TYPE","CAT","TP"},
-			{"+","MAKEDIRECTORY","MKDIR","MD"},
-			{"*","FINDFILE","FF"},
-			{"&","SEARCHTEXT","GREP","ST"},
-			{"/","EDIT"},
-			{"~","MOVE","MV"},
-			{"?","COMPAREFILES","DIFF","CF"},
-	};
-
+	
+	protected enum SubCmds
+	{
+		DIRECTORY('$',"DIRECTORY","LS"),
+		COPY('>',"COPY","CP"),
+		CHANGEDIRECTORY('.',"CHANGEDIRECTORY","CD","GO"),
+		DELETE('-',"DELETE","RM","RD"),
+		TYPE('\\',"TYPE","CAT","TP"),
+		MAKEDIRECTORY('+',"MAKEDIRECTORY","MKDIR","MD"),
+		FINDFILE('*',"FINDFILE","FF"),
+		SEARCHTEXT('&',"SEARCHTEXT","GREP","ST"),
+		EDIT('/',"EDIT"),
+		MOVE('~',"MOVE","MV"),
+		COMPAREFILES('?',"COMPAREFILES","DIFF","CF")
+		;
+		public String c;
+		public String[] rest;
+		private SubCmds(char shortName, String... longers)
+		{
+			c=""+shortName;
+			rest=longers;
+		}
+	}
+	
 	protected final static String[] badTextExtensions={
 		".ZIP",".JPE",".JPG",".GIF",".CLASS",".WAV",".BMP",".JPEG",".GZ",".TGZ",".JAR"
 	};
@@ -235,12 +245,12 @@ public class Shell extends StdCommand
 			mob.tell(L("Current directory: /@x1",pwd));
 			return false;
 		}
-		int cmd=-1;
 		String first=commands.get(0).toUpperCase();
 		final StringBuffer allcmds=new StringBuffer("");
-		for(int i=0;i<SUB_CMDS.length;i++)
+		SubCmds cmd = null;
+		for(final SubCmds sub : SubCmds.values())
 		{
-			final String shortcut=SUB_CMDS[i][0];
+			final String shortcut=""+sub.c;
 			if(first.startsWith(shortcut))
 			{
 				first=first.substring(shortcut.length()).trim();
@@ -251,38 +261,43 @@ public class Shell extends StdCommand
 					else
 						commands.add(first);
 				}
-				cmd=i;
+				cmd=sub;
 				break;
 			}
-			for(int x=1;x<SUB_CMDS[i].length;x++)
+			for(final String s : sub.rest)
 			{
-				if(SUB_CMDS[i][x].startsWith(first.toUpperCase()))
+				if(s.startsWith(first.toUpperCase()))
 				{
-					cmd=i;
+					cmd=sub;
 					break;
 				}
-				if(x==1)
+				if(s==sub.rest[0])
 				{
-					allcmds.append(SUB_CMDS[i][x]+" (");
-					for(int x2=0;x2<SUB_CMDS[i].length;x2++)
+					allcmds.append(s+" (");
+					for(String s2 : sub.rest)
 					{
-						if(x2!=x)
+						if(s2 != s)
 						{
-							allcmds.append(SUB_CMDS[i][x2]);
-							if(x2<SUB_CMDS[i].length-1)
+							allcmds.append(s2);
+							if(s2!=sub.rest[sub.rest.length-1])
 								allcmds.append("/");
 						}
 					}
 					allcmds.append("), ");
 				}
 			}
-			if(cmd>=0)
+			if(cmd != null)
 				break;
+		}
+		if(cmd == null)
+		{
+			mob.tell(L("'@x1' is an unknown command.  Valid commands are: @x2and SHELL alone to check your current directory.",first,allcmds.toString()));
+			return false;
 		}
 		final boolean killOnSession=((mob.session()!=null)&&(!mob.session().isStopped())); 
 		switch(cmd)
 		{
-		case 0: // directory
+		case DIRECTORY: // directory
 		{
 			final cp_options opts=new cp_options(commands);
 			final CMFile[] dirs=CMFile.getFileList(incorporateBaseDir(pwd,CMParms.combine(commands,1)),mob,opts.recurse,true);
@@ -339,7 +354,7 @@ public class Shell extends StdCommand
 				mob.session().colorOnlyPrintln(msg.toString());
 			break;
 		}
-		case 1: // copy
+		case COPY: // copy
 		{
 			final cp_options opts=new cp_options(commands);
 			if(commands.size()==2)
@@ -475,7 +490,7 @@ public class Shell extends StdCommand
 			}
 			break;
 		}
-		case 2: // cd
+		case CHANGEDIRECTORY: // cd
 		{
 			final CMFile newDir=new CMFile(incorporateBaseDir(pwd,CMParms.combine(commands,1)),mob);
 			final String changeTo=newDir.getVFSPathAndName();
@@ -495,7 +510,7 @@ public class Shell extends StdCommand
 			pwds.add(mob,pwd);
 			return true;
 		}
-		case 3: // delete
+		case DELETE: // delete
 		{
 			final cp_options opts=new cp_options(commands);
 			final CMFile[] dirs=CMFile.getFileList(incorporateBaseDir(pwd,CMParms.combine(commands,1)),mob,opts.recurse,false);
@@ -534,7 +549,7 @@ public class Shell extends StdCommand
 			}
 			break;
 		}
-		case 4: // type
+		case TYPE: // type
 		{
 			final CMFile[] dirs=CMFile.getFileList(incorporateBaseDir(pwd,CMParms.combine(commands,1)),mob,false,false);
 			if(dirs==null)
@@ -570,7 +585,7 @@ public class Shell extends StdCommand
 			}
 			break;
 		}
-		case 5: // makedirectory
+		case MAKEDIRECTORY: // makedirectory
 		{
 			final CMFile CF=new CMFile(incorporateBaseDir(pwd,CMParms.combine(commands,1)),mob);
 			if(CF.exists())
@@ -591,7 +606,7 @@ public class Shell extends StdCommand
 			mob.tell(L("Directory '/@x1' created.",CF.getAbsolutePath()));
 			break;
 		}
-		case 6: // findfiles
+		case FINDFILE: // findfiles
 		{
 			String substring=CMParms.combine(commands,1).trim();
 			if(substring.length()==0)
@@ -626,7 +641,7 @@ public class Shell extends StdCommand
 				mob.session().colorOnlyPrintln(msg.toString());
 			return false;
 		}
-		case 7: // searchtext
+		case SEARCHTEXT: // searchtext
 		{
 			String substring=CMParms.combine(commands,1).trim();
 			if(substring.length()==0)
@@ -691,7 +706,7 @@ public class Shell extends StdCommand
 				mob.session().colorOnlyPrintln(msg.toString());
 			return false;
 		}
-		case 8: // edit
+		case EDIT: // edit
 		{
 			final CMFile file=new CMFile(incorporateBaseDir(pwd,CMParms.combine(commands,1)),mob);
 			if((!file.canWrite())
@@ -726,7 +741,7 @@ public class Shell extends StdCommand
 				return true;
 			return false;
 		}
-		case 9: // move
+		case MOVE: // move
 		{
 			final cp_options opts=new cp_options(commands);
 			if(commands.size()==2)
@@ -886,7 +901,7 @@ public class Shell extends StdCommand
 			}
 			break;
 		}
-		case 10: // compare files
+		case COMPAREFILES: // compare files
 		{
 			if(commands.size()==2)
 				commands.add(".");
