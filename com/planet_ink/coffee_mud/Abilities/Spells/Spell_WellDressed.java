@@ -32,21 +32,58 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Spell_WellDressed extends Spell
 {
-	@Override public String ID() { return "Spell_WellDressed"; }
-	private final static String localizedName = CMLib.lang().L("Well Dressed");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Well Dressed)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SKILL;}
-	protected int dressCode=1;
+	@Override
+	public String ID()
+	{
+		return "Spell_WellDressed";
+	}
 
-	private static final String[] triggerStrings =I(new String[] {"CAST"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
+	private final static String	localizedName	= CMLib.lang().L("Well Dressed");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Well Dressed)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_OTHERS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		//return Ability.ACODE_SPELL | Ability.DOMAIN_ILLUSION;
+		return Ability.ACODE_SKILL;
+	}
+
+	protected int					dressCode		= 1;
+
+	private static final String[]	triggerStrings	= I(new String[] { "CAST" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
 
 	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
@@ -64,7 +101,11 @@ public class Spell_WellDressed extends Spell
 			dressCode=CMath.s_int(newText);
 	}
 
-	@Override public String text(){return ""+dressCode;}
+	@Override
+	public String text()
+	{
+		return "" + dressCode;
+	}
 
 	@Override
 	public void unInvoke()
@@ -107,7 +148,6 @@ public class Spell_WellDressed extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-
 		// now see if it worked
 		final boolean success=proficiencyCheck(mob,0,auto);
 
@@ -129,7 +169,6 @@ public class Spell_WellDressed extends Spell
 		}
 		else
 			return beneficialWordsFizzle(mob,target,L("<S-NAME> speak(s) exquisitely to <T-NAMESELF>, but nothing more happens."));
-
 
 		// return whether it worked
 		return success;

@@ -33,24 +33,63 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Skill_Revoke extends StdSkill
 {
-	@Override public String ID() { return "Skill_Revoke"; }
-	private final static String localizedName = CMLib.lang().L("Revoke");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_ROOMS|Ability.CAN_EXITS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	private static final String[] triggerStrings =I(new String[] {"REVOKE"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode(){return Ability.ACODE_SKILL;}
-	@Override public int maxRange(){return adjustedMaxInvokerRange(10);}
+	@Override
+	public String ID()
+	{
+		return "Skill_Revoke";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Revoke");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_MOBS | Ability.CAN_ITEMS | Ability.CAN_ROOMS | Ability.CAN_EXITS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "REVOKE" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL | Ability.DOMAIN_NEUTRALIZATION;
+	}
+
+	@Override
+	public int maxRange()
+	{
+		return adjustedMaxInvokerRange(10);
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-
 		final String whatToRevoke=CMParms.combine(commands,0);
 
 		Physical target=null;
@@ -59,7 +98,7 @@ public class Skill_Revoke extends StdSkill
 			target=mob.location();
 		else
 		if(whatToRevoke.equalsIgnoreCase("room"))
-		   target=mob.location();
+			target=mob.location();
 		else
 		if(whatToRevoke.equalsIgnoreCase("self"))
 			target=mob;
@@ -108,7 +147,6 @@ public class Skill_Revoke extends StdSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
@@ -123,5 +161,4 @@ public class Skill_Revoke extends StdSkill
 			beneficialVisualFizzle(mob,target,L("<S-NAME> attempt(s) to revoke @x1 from @x2, but flub(s) it.",revokeThis.name(),target.name()));
 		return success;
 	}
-
 }

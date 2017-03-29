@@ -33,26 +33,77 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Ranger_Track extends StdAbility
 {
-	@Override public String ID() { return "Ranger_Track"; }
-	private final static String localizedName = CMLib.lang().L("Track");
-	@Override public String name() { return localizedName; }
+	@Override
+	public String ID()
+	{
+		return "Ranger_Track";
+	}
 
-	protected String displayText=L("(Tracking)");
-	@Override public String displayText(){ return displayText;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
-	private static final String[] triggerStrings =I(new String[] {"TRACK"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_COMBATLORE;}
-	@Override public long flags(){return Ability.FLAG_TRACKING;}
-	@Override public int usageType(){return USAGE_MOVEMENT;}
+	private final static String	localizedName	= CMLib.lang().L("Track");
 
-	protected List<Room> theTrail=null;
-	public int nextDirection=-2;
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	protected String	displayText	= L("(Tracking)");
+
+	@Override
+	public String displayText()
+	{
+		return displayText;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_OTHERS;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "TRACK" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL | Ability.DOMAIN_COMBATLORE;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_TRACKING;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT;
+	}
+
+	protected List<Room>	theTrail		= null;
+	public int				nextDirection	= -2;
+
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -215,8 +266,6 @@ public class Ranger_Track extends StdAbility
 		}
 		else
 			return beneficialVisualFizzle(mob,null,L("<S-NAME> attempt(s) to track @x1, but can't find the trail.",mobName));
-
-
 		// return whether it worked
 		return success;
 	}

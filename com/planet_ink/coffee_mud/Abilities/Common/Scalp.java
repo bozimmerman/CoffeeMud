@@ -35,16 +35,39 @@ import java.util.*;
 
 public class Scalp extends CommonSkill
 {
-	@Override public String ID() { return "Scalp"; }
-	private final static String localizedName = CMLib.lang().L("Scalping");
-	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =I(new String[] {"SCALP","SCALPING"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	public static Vector<DeadBody> lastSoManyScalps=new Vector<DeadBody>();
-	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_ANATOMY;}
+	@Override
+	public String ID()
+	{
+		return "Scalp";
+	}
 
-	private DeadBody body=null;
-	protected boolean failed=false;
+	private final static String	localizedName	= CMLib.lang().L("Scalping");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "SCALP", "SCALPING" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	public static Vector<DeadBody>	lastSoManyScalps	= new Vector<DeadBody>();
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL | Ability.DOMAIN_ANATOMY;
+	}
+
+	private DeadBody	body	= null;
+	protected boolean	failed	= false;
+
 	public Scalp()
 	{
 		super();
@@ -63,6 +86,7 @@ public class Scalp extends CommonSkill
 			unInvoke();
 		return super.tick(ticking,tickID);
 	}
+
 	@Override
 	public void unInvoke()
 	{
@@ -105,7 +129,6 @@ public class Scalp extends CommonSkill
 		super.unInvoke();
 	}
 
-
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -146,7 +169,6 @@ public class Scalp extends CommonSkill
 		{
 			commonTell(mob,L("@x1 has already been scalped.",I.name(mob)));
 			return false;
-
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

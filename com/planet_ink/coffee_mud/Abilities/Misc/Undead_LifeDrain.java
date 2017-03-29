@@ -92,7 +92,7 @@ public class Undead_LifeDrain extends StdAbility
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_SKILL;
+		return Ability.ACODE_SKILL |Ability.DOMAIN_DEATHLORE;
 	}
 
 	@Override

@@ -32,26 +32,89 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Skill_Slip extends StdSkill
 {
-	boolean doneTicking=false;
-	@Override public String ID() { return "Skill_Slip"; }
-	private final static String localizedName = CMLib.lang().L("Slip");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Slipped)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	private static final String[] triggerStrings =I(new String[] {"SLIPPIFY"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_DIRTYFIGHTING;}
-	@Override public long flags(){return Ability.FLAG_MOVING;}
-	protected int enhancement=0;
-	@Override public int abilityCode(){return enhancement;}
-	@Override public void setAbilityCode(int newCode){enhancement=newCode;}
-	@Override public int usageType(){return USAGE_MOVEMENT;}
+	boolean	doneTicking	= false;
+
+	@Override
+	public String ID()
+	{
+		return "Skill_Slip";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Slip");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Slipped)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "SLIPPIFY" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL | Ability.DOMAIN_DIRTYFIGHTING;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_MOVING;
+	}
+
+	protected int	enhancement	= 0;
+
+	@Override
+	public int abilityCode()
+	{
+		return enhancement;
+	}
+
+	@Override
+	public void setAbilityCode(int newCode)
+	{
+		enhancement = newCode;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT;
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)

@@ -33,17 +33,51 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class ThiefSkill extends StdAbility
 {
-	@Override public String ID() { return "ThiefSkill"; }
-	private final static String localizedName = CMLib.lang().L("a Thief Skill");
-	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
-	@Override public int classificationCode(){	return Ability.ACODE_THIEF_SKILL;}
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override
+	public String ID()
+	{
+		return "ThiefSkill";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("a Thief Skill");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	public int enchantQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_THIEF_SKILL;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -125,7 +159,6 @@ public class ThiefSkill extends StdAbility
 					mob.tell(mob,unlockThis,null,L("<T-NAME> is closed!"));
 				return null;
 			}
-
 		}
 		else
 		if(unlockThis instanceof Container)

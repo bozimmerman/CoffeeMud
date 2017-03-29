@@ -67,9 +67,11 @@ public class Reset extends StdCommand
 			public boolean passesFilter(Ability A)
 			{
 				final int classCode=A.classificationCode()&Ability.ALL_ACODES;
-				if((classCode == Ability.ACODE_SKILL)
-				||(classCode == Ability.ACODE_THIEF_SKILL)
-				||(A.ID().startsWith("Paladin_")))
+				if(((classCode == Ability.ACODE_SKILL)
+					||(classCode == Ability.ACODE_THIEF_SKILL)
+					||(A.ID().startsWith("Paladin_")))
+				&&((A.classificationCode()&Ability.ALL_DOMAINS)!=0)
+				&&((A.classificationCode()&Ability.ALL_DOMAINS)!=Ability.DOMAIN_ARCHON))
 					return true;
 				return false;
 			}
@@ -570,6 +572,19 @@ public class Reset extends StdCommand
 				mob.tell("Which? "+CMParms.toListString(helpSets.values())+", ALL");
 				return false;
 			}
+			Boolean skipPrompt=null;
+			if(rest.toLowerCase().startsWith("noprompt "))
+			{
+				rest=rest.substring(9);
+				skipPrompt=Boolean.FALSE;
+			}
+			else
+			if(rest.toLowerCase().startsWith("yesprompt "))
+			{
+				rest=rest.substring(10);
+				skipPrompt=Boolean.TRUE;
+			}
+
 			if(rest.equalsIgnoreCase("ALL"))
 			{
 				sets.addAll(Arrays.asList(helpSets.values()));
@@ -729,7 +744,10 @@ public class Reset extends StdCommand
 					finalTxt.append(p.second);
 					finalTxt.append("\n\r");
 				}
-				if((mob.session()!=null)&&(mob.session().confirm("Save (y/N)?", "N")))
+				if((skipPrompt==Boolean.TRUE)
+				||((skipPrompt==null)
+					&&(mob.session()!=null)
+					&&(mob.session().confirm("Save (y/N)?", "N"))))
 					F.saveText(finalTxt);
 			}
 			return true;
