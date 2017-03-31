@@ -1085,10 +1085,10 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		if(list==null)
 			return 0;
 		int context=1;
-		for(final Object O : list)
+		for(final Environmental O : list)
 		{
-			if((((Environmental)O).Name().equalsIgnoreCase(E.Name()))
-			||(((Environmental)O).name().equalsIgnoreCase(E.name())))
+			if((O.Name().equalsIgnoreCase(E.Name()))
+			||(O.name().equalsIgnoreCase(E.name())))
 			{
 				if(O==E)
 					return context<2?0:context;
