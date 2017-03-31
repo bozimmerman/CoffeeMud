@@ -32,22 +32,61 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
-
 public class Prayer_FreezeMetal extends Prayer
 {
-	@Override public String ID() { return "Prayer_FreezeMetal"; }
-	private final static String localizedName = CMLib.lang().L("Freeze Metal");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Frozen)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CURSING;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override protected int canAffectCode(){return CAN_ITEMS;}
-	@Override protected int canTargetCode(){return CAN_ITEMS|CAN_MOBS;}
-	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_WATERBASED;}
+	@Override
+	public String ID()
+	{
+		return "Prayer_FreezeMetal";
+	}
 
-	protected Vector<Item> affectedItems=new Vector<Item>();
+	private final static String	localizedName	= CMLib.lang().L("Freeze Metal");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Frozen)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER | Ability.DOMAIN_CURSING;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_ITEMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_ITEMS | CAN_MOBS;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_HOLY | Ability.FLAG_WATERBASED;
+	}
+
+	protected List<Item> affectedItems=new Vector<Item>();
 	
 	@Override
 	public void setMiscText(String newText)
@@ -101,10 +140,10 @@ public class Prayer_FreezeMetal extends Prayer
 		{
 			final Item item=mob.getItem(i);
 			if((item!=null)
-			   &&(!item.amWearingAt(Wearable.IN_INVENTORY))
-			   &&(CMLib.flags().isMetal(item))
-			   &&(item.container()==null)
-			   &&(!mob.amDead()))
+			&&(!item.amWearingAt(Wearable.IN_INVENTORY))
+			&&(CMLib.flags().isMetal(item))
+			&&(item.container()==null)
+			&&(!mob.amDead()))
 			{
 				final MOB invoker=(invoker()!=null) ? invoker() : mob;
 				final int damage=CMLib.dice().roll(1,3+super.getXLEVELLevel(invoker())+(2*super.getX1Level(invoker())),1);
@@ -112,7 +151,13 @@ public class Prayer_FreezeMetal extends Prayer
 				CMLib.combat().postDamage(invoker,mob,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_COLD,Weapon.TYPE_BURSTING,item.name()+" <DAMAGE> <T-NAME>!");
 			}
 		}
-		if((!mob.isInCombat())&&(mob.isMonster())&&(mob!=invoker)&&(invoker!=null)&&(mob.location()==invoker.location())&&(mob.location().isInhabitant(invoker))&&(CMLib.flags().canBeSeenBy(invoker,mob)))
+		if((!mob.isInCombat())
+		&&(mob.isMonster())
+		&&(mob!=invoker)
+		&&(invoker!=null)
+		&&(mob.location()==invoker.location())
+		&&(mob.location().isInhabitant(invoker))
+		&&(CMLib.flags().canBeSeenBy(invoker,mob)))
 			CMLib.combat().postAttack(mob,invoker,mob.fetchWieldedItem());
 		return true;
 	}
@@ -129,18 +174,19 @@ public class Prayer_FreezeMetal extends Prayer
 		}
 
 		if(canBeUninvoked())
-		if(affected instanceof MOB)
 		{
-			for(int i=0;i<affectedItems.size();i++)
+			if(affected instanceof MOB)
 			{
-				final Item I=affectedItems.elementAt(i);
-				Ability A=I.fetchEffect(this.ID());
-				while(A!=null)
+				for(int i=0;i<affectedItems.size();i++)
 				{
-					I.delEffect(A);
-					A=I.fetchEffect(this.ID());
+					final Item I=affectedItems.get(i);
+					Ability A=I.fetchEffect(this.ID());
+					for(int x=0; ((x<3) && (A!=null)); x++)
+					{
+						I.delEffect(A);
+						A=I.fetchEffect(this.ID());
+					}
 				}
-
 			}
 		}
 		super.unInvoke();
@@ -166,7 +212,10 @@ public class Prayer_FreezeMetal extends Prayer
 			{
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
-					success=maliciousAffect(mob,target,asLevel,0,-1)!=null;
+				{
+					final int duration = adjustMaliciousTickdownTime(mob,target,adjustedLevel(mob,asLevel),asLevel);
+					success=maliciousAffect(mob,target,asLevel,duration,-1)!=null;
+				}
 			}
 		}
 		else

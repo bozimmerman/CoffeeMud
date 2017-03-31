@@ -33,22 +33,57 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
-
 public class Chant_ChargeMetal extends Chant
 {
-	@Override public String ID() { return "Chant_ChargeMetal"; }
-	private final static String localizedName = CMLib.lang().L("Charge Metal");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Charged)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override protected int canAffectCode(){return CAN_ITEMS;}
-	@Override protected int canTargetCode(){return CAN_ITEMS|CAN_MOBS;}
-	private WeakReference<CMMsg> lastMsg=null;
+	@Override
+	public String ID()
+	{
+		return "Chant_ChargeMetal";
+	}
 
-	protected List<Item> affectedItems=new Vector<Item>();
+	private final static String	localizedName	= CMLib.lang().L("Charge Metal");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Charged)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT | Ability.DOMAIN_ENDURING;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_ITEMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_ITEMS | CAN_MOBS;
+	}
+
+	private WeakReference<CMMsg>	lastMsg			= null;
+
+	protected List<Item>			affectedItems	= new Vector<Item>();
 
 	@Override
 	public void setMiscText(String newText)
@@ -106,6 +141,7 @@ public class Chant_ChargeMetal extends Chant
 			lastMsg=new WeakReference<CMMsg>(msg);
 			msg.source().location().show(mob,null,I,CMMsg.MSG_OK_VISUAL,L("<O-NAME> attracts a charge to <S-NAME>!"));
 			if(mob.okMessage(mob, msg))
+			{
 				msg.modify(msg.source(),
 							mob,
 							msg.tool(),
@@ -115,6 +151,7 @@ public class Chant_ChargeMetal extends Chant
 							msg.targetMessage(),
 							msg.othersCode(),
 							msg.othersMessage());
+			}
 		}
 		return true;
 	}
@@ -131,18 +168,19 @@ public class Chant_ChargeMetal extends Chant
 		}
 
 		if(canBeUninvoked())
-		if(affected instanceof MOB)
 		{
-			for(int i=0;i<affectedItems.size();i++)
+			if(affected instanceof MOB)
 			{
-				final Item I=affectedItems.get(i);
-				Ability A=I.fetchEffect(this.ID());
-				while(A!=null)
+				for(int i=0;i<affectedItems.size();i++)
 				{
-					I.delEffect(A);
-					A=I.fetchEffect(this.ID());
+					final Item I=affectedItems.get(i);
+					Ability A=I.fetchEffect(this.ID());
+					for(int x=0;(x<3) && (A!=null); x++)
+					{
+						I.delEffect(A);
+						A=I.fetchEffect(this.ID());
+					}
 				}
-
 			}
 		}
 		super.unInvoke();
@@ -195,7 +233,10 @@ public class Chant_ChargeMetal extends Chant
 			{
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
-					success=maliciousAffect(mob,I,asLevel,0,-1)!=null;
+				{
+					final int duration = adjustMaliciousTickdownTime(mob,target,adjustedLevel(mob,asLevel),asLevel);
+					success=maliciousAffect(mob,I,asLevel,duration,-1)!=null;
+				}
 			}
 		}
 		else

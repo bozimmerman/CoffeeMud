@@ -32,21 +32,61 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Spell_HeatMetal extends Spell
 {
-	@Override public String ID() { return "Spell_HeatMetal"; }
-	private final static String localizedName = CMLib.lang().L("Heat Metal");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Heated)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override protected int canAffectCode(){return CAN_ITEMS;}
-	@Override protected int canTargetCode(){return CAN_ITEMS|CAN_MOBS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
-	@Override public long flags(){return Ability.FLAG_HEATING;}
+	@Override
+	public String ID()
+	{
+		return "Spell_HeatMetal";
+	}
 
-	protected Vector<Item> affectedItems=new Vector<Item>();
+	private final static String	localizedName	= CMLib.lang().L("Heat Metal");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Heated)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_ITEMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_ITEMS | CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL | Ability.DOMAIN_ALTERATION;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_HEATING;
+	}
+
+	protected Vector<Item>	affectedItems	= new Vector<Item>();
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
@@ -85,10 +125,10 @@ public class Spell_HeatMetal extends Spell
 		{
 			final Item item=mob.getItem(i);
 			if((item!=null)
-			   &&(!item.amWearingAt(Wearable.IN_INVENTORY))
-			   &&(CMLib.flags().isMetal(item))
-			   &&(item.container()==null)
-			   &&(!mob.amDead()))
+			&&(!item.amWearingAt(Wearable.IN_INVENTORY))
+			&&(CMLib.flags().isMetal(item))
+			&&(item.container()==null)
+			&&(!mob.amDead()))
 			{
 				final int damage=CMLib.dice().roll(1,6,1);
 				CMLib.combat().postDamage(invoker,mob,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BURSTING,item.name()+" <DAMAGE> <T-NAME>!");
@@ -120,7 +160,6 @@ public class Spell_HeatMetal extends Spell
 			return;
 		}
 
-
 		if(affected instanceof MOB)
 		{
 			final Vector<Item> affectedItems=this.affectedItems;
@@ -131,20 +170,17 @@ public class Spell_HeatMetal extends Spell
 				{
 					final Item I=affectedItems.elementAt(i);
 					Ability A=I.fetchEffect(this.ID());
-					while(A!=null)
+					for(int x=0;(x<3) && (A!=null);x++)
 					{
 						I.delEffect(A);
 						A=I.fetchEffect(this.ID());
 					}
-
 				}
 			}
 		}
 		else
 			super.unInvoke();
 	}
-
-
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -166,7 +202,10 @@ public class Spell_HeatMetal extends Spell
 			{
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
-					success=maliciousAffect(mob,target,asLevel,0,-1)!=null;
+				{
+					final int duration = adjustMaliciousTickdownTime(mob,target,adjustedLevel(mob,asLevel),asLevel);
+					success=maliciousAffect(mob,target,asLevel,duration,-1)!=null;
+				}
 			}
 		}
 		else

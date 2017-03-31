@@ -237,7 +237,7 @@ public class StdAbility implements Ability
 		return CMLib.expertises().createNewSkillCost(rawCost.type(),Double.valueOf(value));
 	}
 
-	public int practicesToPractice(MOB mob)
+	protected int practicesToPractice(MOB mob)
 	{
 		if(mob!=null)
 		{
@@ -253,7 +253,7 @@ public class StdAbility implements Ability
 		return 1;
 	}
 
-	public void setTimeOfNextCast(MOB caster)
+	protected void setTimeOfNextCast(MOB caster)
 	{
 		long newTime=(getTicksBetweenCasts()*CMProps.getTickMillis());
 		double mul=1.0;
@@ -314,7 +314,7 @@ public class StdAbility implements Ability
 		return CMLib.lang().fullSessionTranslation(str, xs);
 	}
 
-	public static String[] I(final String[] str)
+	protected static String[] I(final String[] str)
 	{
 		for(int i=0;i<str.length;i++)
 			str[i]=CMLib.lang().commandWordTranslation(str[i]);
@@ -441,7 +441,7 @@ public class StdAbility implements Ability
 		return xpLoss-(int)Math.round(CMath.mul(xpLoss,CMath.mul(.05,xLevel)));
 	}
 
-	public int adjustedMaxInvokerRange(int max)
+	protected int adjustedMaxInvokerRange(int max)
 	{
 		if(invoker==null)
 			return max;
@@ -608,8 +608,10 @@ public class StdAbility implements Ability
 		&&(classificationCode() != (Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_BUILDINGSKILL)))
 			tickTime+=addedTickTime(invokerMOB,tickTime);
 		if(invoker()!=null)
+		{
 			for(int c=0;c<invoker().charStats().numClasses();c++)
 				tickTime=invoker().charStats().getMyClass(c).classDurationModifier(invoker(),this,tickTime);
+		}
 		if(affected instanceof MOB)
 		{
 			final MOB mob=(MOB)affected;
@@ -684,7 +686,7 @@ public class StdAbility implements Ability
 		return level;
 	}
 
-	public int experienceLevels(MOB caster, int asLevel)
+	protected int experienceLevels(MOB caster, int asLevel)
 	{
 		if(caster==null)
 			return 1;
@@ -764,12 +766,12 @@ public class StdAbility implements Ability
 		return false;
 	}
 
-	public MOB getTarget(MOB mob, List commands, Environmental givenTarget)
+	protected MOB getTarget(MOB mob, List commands, Environmental givenTarget)
 	{
 		return getTarget(mob,commands,givenTarget,false,false);
 	}
 
-	public MOB getTarget(MOB mob, List commands, Environmental givenTarget, boolean quiet, boolean alreadyAffOk)
+	protected MOB getTarget(MOB mob, List commands, Environmental givenTarget, boolean quiet, boolean alreadyAffOk)
 	{
 		String targetName=CMParms.combine(commands,0);
 		MOB target=null;
@@ -847,17 +849,17 @@ public class StdAbility implements Ability
 	}
 
 
-	public Physical getAnyTarget(MOB mob, List<String> commands, Physical givenTarget, Filterer<Environmental> filter)
+	protected Physical getAnyTarget(MOB mob, List<String> commands, Physical givenTarget, Filterer<Environmental> filter)
 	{
 		return getAnyTarget(mob,commands,givenTarget,filter,false,false);
 	}
 
-	public Physical getAnyTarget(MOB mob, List<String> commands, Physical givenTarget, Filterer<Environmental> filter, boolean checkOthersInventory)
+	protected Physical getAnyTarget(MOB mob, List<String> commands, Physical givenTarget, Filterer<Environmental> filter, boolean checkOthersInventory)
 	{
 		return getAnyTarget(mob,commands,givenTarget,filter,checkOthersInventory,false);
 	}
 
-	public Physical getAnyTarget(MOB mob, List<String> commands, Physical givenTarget, Filterer<Environmental> filter, boolean checkOthersInventory, boolean alreadyAffOk)
+	protected Physical getAnyTarget(MOB mob, List<String> commands, Physical givenTarget, Filterer<Environmental> filter, boolean checkOthersInventory, boolean alreadyAffOk)
 	{
 		final Room R=mob.location();
 		String targetName=CMParms.combine(commands,0);
@@ -869,7 +871,7 @@ public class StdAbility implements Ability
 			target=mob.getVictim();
 		else
 		if(targetName.equalsIgnoreCase("self")||targetName.equalsIgnoreCase("me"))
-		   target=mob;
+			target=mob;
 		else
 		if((targetName.length()==0)&&(mob.isInCombat())&&(abstractQuality()==Ability.QUALITY_MALICIOUS))
 			target=mob.getVictim();
@@ -947,12 +949,12 @@ public class StdAbility implements Ability
 		return null;
 	}
 
-	public Item getTarget(MOB mob, Room location, Environmental givenTarget, List<String> commands, Filterer<Environmental> filter)
+	protected Item getTarget(MOB mob, Room location, Environmental givenTarget, List<String> commands, Filterer<Environmental> filter)
 	{
 		return getTarget(mob,location,givenTarget,null,commands,filter);
 	}
 
-	public Item getTarget(MOB mob, Room location, Environmental givenTarget, Item container, List<String> commands, Filterer<Environmental> filter)
+	protected Item getTarget(MOB mob, Room location, Environmental givenTarget, Item container, List<String> commands, Filterer<Environmental> filter)
 	{
 		String targetName=CMParms.combine(commands,0);
 
@@ -1484,7 +1486,7 @@ public class StdAbility implements Ability
 		return true;
 	}
 
-	public boolean checkComponents(MOB mob)
+	protected boolean checkComponents(MOB mob)
 	{
 		if((mob!=null)
 		&&(mob.session()!=null)
@@ -1509,7 +1511,7 @@ public class StdAbility implements Ability
 		return true;
 	}
 
-	public Set<MOB> properTargets(MOB mob, Environmental givenTarget, boolean auto)
+	protected Set<MOB> properTargets(MOB mob, Environmental givenTarget, boolean auto)
 	{
 		Set<MOB> h=CMLib.combat().properTargets(this,mob,auto);
 		if((givenTarget instanceof MOB)
@@ -1523,29 +1525,36 @@ public class StdAbility implements Ability
 		return h;
 	}
 
-	public int getMaliciousTickdownTime(MOB mob, Physical target, int tickAdjustmentFromStandard, int asLevel)
+	protected int adjustMaliciousTickdownTime(final MOB mob, final Physical target, final int baseTicks, final int asLevel)
 	{
-		if(tickAdjustmentFromStandard<=0)
+		int tickDown = baseTicks;
+		if((target!=null)
+		&&(asLevel<=0)
+		&&(mob!=null)
+		&&(!(target instanceof Room)))
 		{
-			tickAdjustmentFromStandard=((int)Math.round(CMath.mul(adjustedLevel(mob,asLevel),1.3)))+25;
-			if((target!=null)&&(asLevel<=0)&&(mob!=null)&&(!(target instanceof Room)))
-			{
-				double levelDiff = CMath.div(mob.phyStats().level(),target.phyStats().level());
-				levelDiff = Math.min(levelDiff,CMProps.getIntVar(CMProps.Int.EXPRATE));
-				tickAdjustmentFromStandard=(int)Math.round(CMath.mul(tickAdjustmentFromStandard,levelDiff));
-				if((tickAdjustmentFromStandard>(CMProps.getTicksPerHour()/3))
-				||(mob instanceof Deity))
-					tickAdjustmentFromStandard=(int)(CMProps.getTicksPerHour()/3);
-			}
-
-			if((tickAdjustmentFromStandard>(CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY)))
+			double levelDiff = CMath.div(mob.phyStats().level(),target.phyStats().level());
+			levelDiff = Math.min(levelDiff,CMProps.getIntVar(CMProps.Int.EXPRATE));
+			tickDown=(int)Math.round(CMath.mul(tickDown,levelDiff));
+			if((tickDown>(CMProps.getTicksPerHour()/3))
 			||(mob instanceof Deity))
-				tickAdjustmentFromStandard=(CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY));
-
-			if(tickAdjustmentFromStandard<2)
-				tickAdjustmentFromStandard=2;
+				tickDown=(int)(CMProps.getTicksPerHour()/3);
 		}
-		return tickAdjustmentFromStandard;
+
+		if((tickDown>(CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY)))
+		||(mob instanceof Deity))
+			tickDown=(CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY));
+
+		if(tickDown<2)
+			tickDown=2;
+		return tickDown;
+	}
+	
+	protected int getMaliciousTickdownTime(final MOB mob, final Physical target, final int tickAdjustmentFromStandard, final int asLevel)
+	{
+		if(tickAdjustmentFromStandard>0)
+			return tickAdjustmentFromStandard;
+		return adjustMaliciousTickdownTime(mob,target,((int)Math.round(CMath.mul(adjustedLevel(mob,asLevel),1.3)))+25,asLevel);
 	}
 
 
@@ -1574,7 +1583,7 @@ public class StdAbility implements Ability
 		return newOne;
 	}
 
-	public boolean beneficialWordsFizzle(MOB mob, Environmental target, String message)
+	protected boolean beneficialWordsFizzle(MOB mob, Environmental target, String message)
 	{
 		// it didn't work, but tell everyone you tried.
 		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_SPEAK,"^T"+message+"^?");
@@ -1586,7 +1595,7 @@ public class StdAbility implements Ability
 		return false;
 	}
 
-	public boolean beneficialVisualFizzle(MOB mob, Environmental target, String message)
+	protected boolean beneficialVisualFizzle(MOB mob, Environmental target, String message)
 	{
 		// it didn't work, but tell everyone you tried.
 		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_OK_VISUAL,message);
@@ -1599,7 +1608,7 @@ public class StdAbility implements Ability
 		return false;
 	}
 
-	public boolean maliciousFizzle(MOB mob, Environmental target, String message)
+	protected boolean maliciousFizzle(MOB mob, Environmental target, String message)
 	{
 		// it didn't work, but tell everyone you tried.
 		final String targetMessage;
@@ -1620,18 +1629,22 @@ public class StdAbility implements Ability
 	}
 
 
-	public int getBeneficialTickdownTime(MOB mob, Environmental target, int tickAdjustmentFromStandard, int asLevel)
+	protected int adjustBeneficialTickdownTime(final MOB mob, final Environmental target, final int baseTicks)
 	{
-		if(tickAdjustmentFromStandard<=0)
-		{
-			tickAdjustmentFromStandard=(adjustedLevel(mob,asLevel)*5)+60;
-			if((tickAdjustmentFromStandard>(CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY)))
-			||(mob instanceof Deity))
-				tickAdjustmentFromStandard=(CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY));
-			if(tickAdjustmentFromStandard<5)
-				tickAdjustmentFromStandard=5;
-		}
-		return tickAdjustmentFromStandard;
+		int tickDown = baseTicks;
+		if((tickDown>(CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY)))
+		||(mob instanceof Deity))
+			tickDown=(CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY));
+		if(tickDown<5)
+			tickDown=5;
+		return tickDown;
+	}
+
+	protected int getBeneficialTickdownTime(MOB mob, Environmental target, int tickAdjustmentFromStandard, int asLevel)
+	{
+		if(tickAdjustmentFromStandard>0)
+			return tickAdjustmentFromStandard;
+		return adjustBeneficialTickdownTime(mob,target,(adjustedLevel(mob,asLevel)*5)+60);
 	}
 
 	public Ability beneficialAffect(MOB mob, Physical target, int asLevel, int tickAdjustmentFromStandard)
@@ -1644,7 +1657,7 @@ public class StdAbility implements Ability
 		return newOne;
 	}
 
-	public void spreadImmunity(MOB mob)
+	protected void spreadImmunity(MOB mob)
 	{
 		if((mob==null)||(mob.fetchEffect(ID())!=null))
 			return;
