@@ -1800,17 +1800,19 @@ public class CMFile extends File
 	 * @param user user, for security checks
 	 * @param recurse true to recurse deep dirs, false otherwise
 	 * @param expandDirs if path is a dir, return contents, otherwise self
+	 * @param skipDirs if recursing dirs, this will skip listed paths
 	 * @return list for a directory at a given path
 	 */
-	public static final CMFile[] getFileList(final String path, final MOB user, final boolean recurse, final boolean expandDirs)
+	public static final CMFile[] getFileList(final String path, final MOB user, final boolean recurse, final boolean expandDirs, Set<String> skipDirs)
 	{
 		final boolean demandLocal=path.trim().startsWith("//");
 		final boolean demandVFS=path.trim().startsWith("::");
 		CMFile dirTest=new CMFile(path,user);
-		if((dirTest.exists())&&(dirTest.isDirectory())&&(dirTest.canRead())&&(!recurse))
-		{
+		if((dirTest.exists())
+		&&(dirTest.isDirectory())
+		&&(dirTest.canRead())
+		&&(!recurse))
 			return expandDirs ? dirTest.listFiles() : new CMFile[] { dirTest };
-		}
 		final String vsPath=vfsifyFilename(path);
 		String fixedName=vsPath;
 		final int x=vsPath.lastIndexOf('/');
@@ -1823,32 +1825,40 @@ public class CMFile extends File
 		final CMFile dir=new CMFile((demandLocal?"//":demandVFS?"::":"")+fixedPath,user);
 		if((!dir.exists())||(!dir.isDirectory())||(!dir.canRead()))
 			return null;
-		final Vector<CMFile> set=new Vector<CMFile>();
+		final List<CMFile> set=new ArrayList<CMFile>();
 		CMFile[] cset=dir.listFiles();
 		fixedName=fixedName.toUpperCase();
+		final boolean skipDirsSet = (skipDirs != null) && (skipDirs.size()>0);
 		for (final CMFile element : cset)
 		{
-			if((recurse)&&(element.isDirectory())&&(element.canRead()))
+			if((recurse)
+			&&(element.isDirectory())
+			&&(element.canRead()))
 			{
-				final CMFile[] CF2=getFileList(element.getVFSPathAndName()+"/"+fixedName,user,true,expandDirs);
+				if((skipDirsSet)
+				&&(skipDirs != null)
+				&&(skipDirs.contains(element.getVFSPathAndName())))
+					continue;
+				final CMFile[] CF2=getFileList(element.getVFSPathAndName()+"/"+fixedName,user,true,expandDirs,skipDirs);
 				for (final CMFile element2 : CF2)
-					set.addElement(element2);
+					set.add(element2);
 			}
 			final String name=element.getName().toUpperCase();
 			if(CMStrings.filenameMatcher(name,fixedName))
-				set.addElement(element);
+				set.add(element);
 		}
 		if(set.size()==1)
 		{
-			dirTest=set.firstElement();
-			if((dirTest.exists())&&(dirTest.isDirectory())&&(dirTest.canRead())&&(!recurse))
-			{
+			dirTest=set.get(0);
+			if((dirTest.exists())
+			&&(dirTest.isDirectory())
+			&&(dirTest.canRead())
+			&&(!recurse))
 				return expandDirs ? dirTest.listFiles() : new CMFile[] { dirTest };
-			}
 		}
 		cset=new CMFile[set.size()];
 		for(int s=0;s<set.size();s++)
-			cset[s]=set.elementAt(s);
+			cset[s]=set.get(s);
 		return cset;
 	}
 

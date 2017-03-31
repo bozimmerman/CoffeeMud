@@ -90,7 +90,7 @@ public class FileNext extends StdWebMacro
 			CMFile[] dirs=(CMFile[])httpReq.getRequestObjects().get(pathKey);
 			if(dirs==null)
 			{
-				dirs=CMFile.getFileList(path,M,false,true);
+				dirs=CMFile.getFileList(path,M,false,true,null);
 				httpReq.getRequestObjects().put(pathKey, dirs);
 				for(final CMFile file : dirs)
 				{

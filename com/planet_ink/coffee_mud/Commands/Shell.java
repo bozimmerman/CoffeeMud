@@ -294,13 +294,14 @@ public class Shell extends StdCommand
 			mob.tell(L("'@x1' is an unknown command.  Valid commands are: @x2and SHELL alone to check your current directory.",first,allcmds.toString()));
 			return false;
 		}
+		final Set<String> skipHash = new XHashSet<String>(new String[]{"resources/map","resources/catalog","./.svn"});
 		final boolean killOnSession=((mob.session()!=null)&&(!mob.session().isStopped())); 
 		switch(cmd)
 		{
 		case DIRECTORY: // directory
 		{
 			final cp_options opts=new cp_options(commands);
-			final CMFile[] dirs=CMFile.getFileList(incorporateBaseDir(pwd,CMParms.combine(commands,1)),mob,opts.recurse,true);
+			final CMFile[] dirs=CMFile.getFileList(incorporateBaseDir(pwd,CMParms.combine(commands,1)),mob,opts.recurse,true,skipHash);
 			if(dirs==null)
 			{
 				mob.tell(L("^xError: invalid directory!^N"));
@@ -368,7 +369,7 @@ public class Shell extends StdCommand
 			}
 			final String source=commands.get(1);
 			String target=CMParms.combine(commands,2);
-			final CMFile[] dirs=CMFile.getFileList(incorporateBaseDir(pwd,source),mob,opts.recurse,true);
+			final CMFile[] dirs=CMFile.getFileList(incorporateBaseDir(pwd,source),mob,opts.recurse,true,skipHash);
 			if(dirs==null)
 			{
 				mob.tell(L("^xError: invalid source!^N"));
@@ -513,7 +514,7 @@ public class Shell extends StdCommand
 		case DELETE: // delete
 		{
 			final cp_options opts=new cp_options(commands);
-			final CMFile[] dirs=CMFile.getFileList(incorporateBaseDir(pwd,CMParms.combine(commands,1)),mob,opts.recurse,false);
+			final CMFile[] dirs=CMFile.getFileList(incorporateBaseDir(pwd,CMParms.combine(commands,1)),mob,opts.recurse,false,skipHash);
 			if(dirs==null)
 			{
 				mob.tell(L("^xError: invalid filename!^N"));
@@ -551,7 +552,7 @@ public class Shell extends StdCommand
 		}
 		case TYPE: // type
 		{
-			final CMFile[] dirs=CMFile.getFileList(incorporateBaseDir(pwd,CMParms.combine(commands,1)),mob,false,false);
+			final CMFile[] dirs=CMFile.getFileList(incorporateBaseDir(pwd,CMParms.combine(commands,1)),mob,false,false,skipHash);
 			if(dirs==null)
 			{
 				mob.tell(L("^xError: invalid filename!^N"));
@@ -611,7 +612,7 @@ public class Shell extends StdCommand
 			String substring=CMParms.combine(commands,1).trim();
 			if(substring.length()==0)
 				substring="*";
-			final CMFile[] dirs=CMFile.getFileList(incorporateBaseDir(pwd,substring),mob,true,true);
+			final CMFile[] dirs=CMFile.getFileList(incorporateBaseDir(pwd,substring),mob,true,true,skipHash);
 			final StringBuffer msg=new StringBuffer("");
 			if(dirs.length==0)
 			{
@@ -649,7 +650,7 @@ public class Shell extends StdCommand
 				mob.tell(L("^xError: you must specify a search string^N"));
 				return false;
 			}
-			final CMFile[] dirs=CMFile.getFileList(incorporateBaseDir(pwd,"*"),mob,true,true);
+			final CMFile[] dirs=CMFile.getFileList(incorporateBaseDir(pwd,"*"),mob,true,true,skipHash);
 			if(dirs.length==0)
 			{
 				mob.tell(L("^xError: no files found!^N"));
@@ -756,7 +757,7 @@ public class Shell extends StdCommand
 			}
 			final String source=commands.get(1);
 			String target=CMParms.combine(commands,2);
-			final CMFile[] dirs=CMFile.getFileList(incorporateBaseDir(pwd,source),mob,opts.recurse,true);
+			final CMFile[] dirs=CMFile.getFileList(incorporateBaseDir(pwd,source),mob,opts.recurse,true,skipHash);
 			if(dirs==null)
 			{
 				mob.tell(L("^xError: invalid source!^N"));

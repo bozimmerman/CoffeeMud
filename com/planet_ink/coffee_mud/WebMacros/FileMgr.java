@@ -81,8 +81,13 @@ public class FileMgr extends StdWebMacro
 		for(int l=0;l<list.length;l++)
 		{
 			final CMFile F2=new CMFile(path+list[l],null,CMFile.FLAG_LOGERRORS);
-			if(F2.isDirectory() && !(path+list[l]).equalsIgnoreCase("/resources/map"))
-				compileFilenamesList(F2,regex,V);
+			if(F2.isDirectory())
+			{
+				if (!(path+list[l]).equalsIgnoreCase("/resources/map")
+				&& !(path+list[l]).equalsIgnoreCase("/resources/catalog")
+				&& !(path+list[l]).equalsIgnoreCase("/./.svn"))
+					compileFilenamesList(F2,regex,V);
+			}
 			else
 			if(matches(regex,F2.getName()))
 				V.addElement(F.getAbsolutePath()+"/"+list[l]);
