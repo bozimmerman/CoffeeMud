@@ -1736,8 +1736,8 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			final int normalizedMax = CMProps.getListFileIndexedListSize(CMProps.ListFile.COMBAT_NOUNS);
 			final double divisor = CMath.div(CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL),normalizedMax);
 			int nounIndex = (int)Math.round(CMath.div(mob.phyStats().level()-1, divisor));
-			if(nounIndex > normalizedMax)
-				nounIndex = normalizedMax;
+			if(nounIndex >= normalizedMax)
+				nounIndex = normalizedMax-1;
 			str.append(CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.COMBAT_NOUNS,nounIndex)).append(" ");
 		}
 		if(CMProps.Int.Prowesses.COMBAT_NUMBER.is(prowessCode))
