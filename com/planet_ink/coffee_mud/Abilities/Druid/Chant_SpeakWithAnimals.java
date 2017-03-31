@@ -92,7 +92,10 @@ public class Chant_SpeakWithAnimals extends Chant implements Language
 		if(canBeUninvoked())
 		{
 			sayYouAreDone(mob);
-			mudChatters.clear();
+			synchronized(mudChatters)
+			{
+				mudChatters.clear();
+			}
 		}
 	}
 
@@ -233,11 +236,14 @@ public class Chant_SpeakWithAnimals extends Chant implements Language
 							B.tick(M, Tickable.TICKID_MOB);
 					}
 				}
-				for(final Iterator<MOB> i= mudChatters.keySet().iterator();i.hasNext();)
+				synchronized(mudChatters)
 				{
-					final MOB M=i.next();
-					if(M.location()!=room)
-						i.remove();
+					for(final Iterator<MOB> i= mudChatters.keySet().iterator();i.hasNext();)
+					{
+						final MOB M=i.next();
+						if(M.location()!=room)
+							i.remove();
+					}
 				}
 			}
 		}

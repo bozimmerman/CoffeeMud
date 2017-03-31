@@ -159,7 +159,7 @@ public class Skill_SeaNavigation extends StdSkill
 				mob.tell(L("There are no chart points yet.  Try SEACHART LIST."));
 				return false;
 			}
-			int chartPointIndex=CMath.s_int(commands.get(1));
+			int chartPointIndex=CMath.s_int(parm);
 			if((chartPointIndex<1)||(chartPointIndex>rooms.size()))
 			{
 				mob.tell(L("'@x1' is not a valid chart point number to get the distance to.   Try LIST.",""+chartPointIndex));

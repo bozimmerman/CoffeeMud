@@ -78,10 +78,13 @@ public class Chant_PredictTides extends Chant
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		boolean isWateryEnough = CMLib.flags().isWateryRoom(mob.location());
+		final Room R=mob.location();
+		if(R==null)
+			return false;
+		boolean isWateryEnough = CMLib.flags().isWateryRoom(R);
 		if(!isWateryEnough)
 		{
-			if(mob.location().resourceChoices().contains(Integer.valueOf(RawMaterial.RESOURCE_FISH)))
+			if(R.resourceChoices().contains(Integer.valueOf(RawMaterial.RESOURCE_FISH)))
 				isWateryEnough = true;
 		}
 		
@@ -96,10 +99,10 @@ public class Chant_PredictTides extends Chant
 					 L("^S<S-NAME> chant(s) and gaze(s) upon the waters.^?")
 					:L("^S<S-NAME> chant(s) and gaze(s) toward the distant waters.^?");
 			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":msgStr);
-			if(mob.location().okMessage(mob,msg))
+			if(R.okMessage(mob,msg))
 			{
-				mob.location().send(mob,msg);
-				mob.tell(mob.location().getArea().getTimeObj().getTidePhase(mob.location()).getDesc());
+				R.send(mob,msg);
+				mob.tell(R.getArea().getTimeObj().getTidePhase(R).getDesc());
 			}
 		}
 		else
