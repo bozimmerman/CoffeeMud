@@ -1458,7 +1458,7 @@ public class RoomData extends StdWebMacro
 					str.append("<TD WIDTH=90%>");
 					str.append("<SELECT ONCHANGE=\"DelItem(this);\" NAME=ITEM"+(i+1)+">");
 					str.append("<OPTION VALUE=\"\">Delete!");
-					final String code=getAppropriateCode(I,R,useRoomItems?classes:new Vector<Item>(),itemlist);
+					final String code=getAppropriateCode(I,R,useRoomItems?classes:new ArrayList<Item>(),itemlist);
 					str.append("<OPTION SELECTED VALUE=\""+code+"\">"+I.Name()+" ("+I.ID()+")");
 					str.append("</SELECT><BR>");
 					str.append("<FONT COLOR=WHITE SIZE=-1>");
