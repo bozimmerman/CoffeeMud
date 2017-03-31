@@ -1168,6 +1168,37 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return E.name()+"."+number;
 	}
 
+	@Override
+	public List<String> getAllContextNames(Collection<? extends Environmental> list, Filterer<Environmental> filter)
+	{
+		if(list==null) 
+			return new ArrayList<String>();
+		final List<String> flist = new Vector<String>(list.size());
+		Map<String,int[]> prevFound = new HashMap<String,int[]>();
+		for(Environmental E : list)
+		{
+			if((filter!=null)&&(!filter.passesFilter(E)))
+			{
+				flist.add("");
+				continue;
+			}
+			final String key = E.Name()+((E instanceof Item)?("/"+((Item)E).container()):"");
+			if(!prevFound.containsKey(key))
+			{
+				final int[] ct=new int[]{1};
+				prevFound.put(key, ct);
+				flist.add(E.name());
+			}
+			else
+			{
+				final int[] ct=prevFound.get(key);
+				ct[0]++;
+				flist.add(E.name()+"."+ct[0]);
+			}
+		}
+		return flist;
+	}
+
 	@Override 
 	public String getContextSameName(ItemCollection cont, Environmental E)
 	{

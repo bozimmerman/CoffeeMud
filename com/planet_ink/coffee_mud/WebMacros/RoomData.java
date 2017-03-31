@@ -1384,9 +1384,9 @@ public class RoomData extends StdWebMacro
 
 			if(parms.containsKey("ITEMLIST"))
 			{
-				final Vector<Item> classes=new Vector<Item>();
-				final Vector<Object> containers=new Vector<Object>();
-				final Vector<Boolean> beingWorn=new Vector<Boolean>();
+				final List<Item> classes=new ArrayList<Item>();
+				final List<Object> containers=new ArrayList<Object>();
+				final List<Boolean> beingWorn=new ArrayList<Boolean>();
 				List<Item> itemlist=null;
 				if(httpReq.isUrlParameter("ITEM1"))
 				{
@@ -1401,8 +1401,8 @@ public class RoomData extends StdWebMacro
 						final Item I2=getItemFromAnywhere(R,MATCHING);
 						if(I2!=null)
 						{
-							classes.addElement(I2);
-							beingWorn.addElement(Boolean.valueOf((WORN!=null)&&(WORN.equalsIgnoreCase("on"))));
+							classes.add(I2);
+							beingWorn.add(Boolean.valueOf((WORN!=null)&&(WORN.equalsIgnoreCase("on"))));
 							final String CONTAINER=httpReq.getUrlParameter("ITEMCONT"+i);
 							cstrings.addElement((CONTAINER==null)?"":CONTAINER);
 						}
@@ -1413,7 +1413,7 @@ public class RoomData extends StdWebMacro
 						Item C2=null;
 						if(CONTAINER.length()>0)
 							C2=(Item)CMLib.english().fetchEnvironmental(classes,CONTAINER,true);
-						containers.addElement((C2!=null)?(Object)C2:"");
+						containers.add((C2!=null)?(Object)C2:"");
 					}
 				}
 				else
@@ -1424,25 +1424,35 @@ public class RoomData extends StdWebMacro
 						if(I2!=null)
 						{
 							CMLib.catalog().updateCatalogIntegrity(I2);
-							classes.addElement(I2);
-							containers.addElement((I2.container()==null)?"":(Object)I2.container());
-							beingWorn.addElement(Boolean.valueOf(!I2.amWearingAt(Wearable.IN_INVENTORY)));
+							classes.add(I2);
+							containers.add((I2.container()==null)?"":(Object)I2.container());
+							beingWorn.add(Boolean.valueOf(!I2.amWearingAt(Wearable.IN_INVENTORY)));
 						}
 					}
 					itemlist=contributeItems(classes);
 				}
 				str.append("<TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>");
-				final List<Container> classesContainers = new ArrayList<Container>(0);
-				for(int i2=0;i2<classes.size();i2++)
+				final Map<Container,String> classesContainers = new TreeMap<Container,String>();
 				{
-					final Item I=classes.get(i2);
-					if(I instanceof Container)
-						classesContainers.add((Container)I);
+					final List<String> allContextNames=CMLib.english().getAllContextNames(classes, new Filterer<Environmental>()
+					{
+						@Override
+						public boolean passesFilter(Environmental obj)
+						{
+							return obj instanceof Container;
+						}
+					});
+					for(int i2=0;i2<classes.size();i2++)
+					{
+						final Item I=classes.get(i2);
+						if(I instanceof Container)
+							classesContainers.put((Container)I,allContextNames.get(i2));
+					}
 				}
 				for(int i=0;i<classes.size();i++)
 				{
-					final Item I=classes.elementAt(i);
-					final Item C=(classes.contains(containers.elementAt(i))?(Item)containers.elementAt(i):null);
+					final Item I=classes.get(i);
+					final Item C=(classes.contains(containers.get(i))?(Item)containers.get(i):null);
 					//Boolean W=(Boolean)beingWorn.elementAt(i);
 					str.append("<TR>");
 					str.append("<TD WIDTH=90%>");
@@ -1455,12 +1465,11 @@ public class RoomData extends StdWebMacro
 					str.append("Container: ");
 					str.append("<SELECT NAME=ITEMCONT"+(i+1)+">");
 					str.append("<OPTION VALUE=\"\" "+((C==null)?"SELECTED":"")+">On the ground");
-					for(int i2=0;i2<classesContainers.size();i2++)
+					for(Container C2 : classesContainers.keySet())
 					{
-						final Container C2=(Container)classes.get(i2);
 						if(C2 != I)
 						{
-							final String name=CMLib.english().getContextName(classes,C2);
+							final String name=classesContainers.get(C2);
 							str.append("<OPTION "+((C2==C)?"SELECTED":"")+" VALUE=\""+name+"\">"+name+" ("+C2.ID()+")");
 						}
 					}

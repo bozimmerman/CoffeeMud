@@ -71,6 +71,7 @@ public interface EnglishParsing extends CMLibrary
 	public int getContextNumber(Collection<? extends Environmental> list, Environmental E);
 	public int getContextNumber(ItemCollection cont, Environmental E);
 	public String getContextName(Collection<? extends Environmental> list, Environmental E);
+	public List<String> getAllContextNames(Collection<? extends Environmental> list, Filterer<Environmental> filter);
 	public String getContextName(Environmental[] list, Environmental E);
 	public String getContextName(ItemCollection cont, Environmental E);
 	public int getContextSameNumber(Environmental[] list, Environmental E);
