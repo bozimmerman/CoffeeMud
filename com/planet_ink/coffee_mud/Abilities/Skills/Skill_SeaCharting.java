@@ -312,7 +312,7 @@ public class Skill_SeaCharting extends StdSkill
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,null,L("<S-NAME> can't seem to figure out where <S-HE-SHE> is on <S-HIS-HER> nautical charts."));
+			return beneficialVisualFizzle(mob,null,L("<S-NAME> can't seem to figure out where <S-HE-SHE> <S-IS-ARE> on <S-HIS-HER> nautical charts."));
 
 		return success;
 	}

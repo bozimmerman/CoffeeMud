@@ -266,7 +266,7 @@ public class Skill_SeaNavigation extends StdSkill
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,null,L("<S-NAME> can't seem to figure out where <S-HE-SHE> is."));
+			return beneficialVisualFizzle(mob,null,L("<S-NAME> can't seem to figure out where <S-HE-SHE> <S-IS-ARE>."));
 
 		return success;
 	}
