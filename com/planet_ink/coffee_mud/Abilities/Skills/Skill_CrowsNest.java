@@ -400,7 +400,7 @@ public class Skill_CrowsNest extends StdSkill
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,null,L("<S-NAME> attempt(s) to climb up into the Crow`s Nest, but slips."));
+			return beneficialVisualFizzle(mob,null,L("<S-NAME> attempt(s) to climb up into the Crow`s Nest, but slip(s)."));
 		return success;
 	}
 }
