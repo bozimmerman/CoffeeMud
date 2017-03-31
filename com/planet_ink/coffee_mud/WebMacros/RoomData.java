@@ -1432,6 +1432,13 @@ public class RoomData extends StdWebMacro
 					itemlist=contributeItems(classes);
 				}
 				str.append("<TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>");
+				final List<Container> classesContainers = new ArrayList<Container>(0);
+				for(int i2=0;i2<classes.size();i2++)
+				{
+					final Item I=classes.get(i2);
+					if(I instanceof Container)
+						classesContainers.add((Container)I);
+				}
 				for(int i=0;i<classes.size();i++)
 				{
 					final Item I=classes.elementAt(i);
@@ -1448,11 +1455,11 @@ public class RoomData extends StdWebMacro
 					str.append("Container: ");
 					str.append("<SELECT NAME=ITEMCONT"+(i+1)+">");
 					str.append("<OPTION VALUE=\"\" "+((C==null)?"SELECTED":"")+">On the ground");
-					for(int i2=0;i2<classes.size();i2++)
+					for(int i2=0;i2<classesContainers.size();i2++)
 					{
-						if((classes.elementAt(i2) instanceof Container)&&(i2!=i))
+						final Container C2=(Container)classes.get(i2);
+						if(C2 != I)
 						{
-							final Container C2=(Container)classes.elementAt(i2);
 							final String name=CMLib.english().getContextName(classes,C2);
 							str.append("<OPTION "+((C2==C)?"SELECTED":"")+" VALUE=\""+name+"\">"+name+" ("+C2.ID()+")");
 						}
