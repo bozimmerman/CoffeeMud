@@ -84,7 +84,7 @@ public class Disease_SeaSickness extends Disease
 	@Override
 	protected int DISEASE_TICKS()
 	{
-		return 400;
+		return 40;
 	}
 
 	@Override
