@@ -129,7 +129,6 @@ public class Insect extends StdRace
 	{
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SNEAKING);
-		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_GOLEM);
 	}
 
 	@Override
