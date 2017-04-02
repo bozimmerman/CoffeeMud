@@ -32,20 +32,59 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
-
 public class Prayer_DeathGuard extends Prayer
 {
-	@Override public String ID() { return "Prayer_DeathGuard"; }
-	private final static String localizedName = CMLib.lang().L("Death Guard");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Death Guard)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HEALING;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	@Override public long flags(){return Ability.FLAG_HOLY;}
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
-	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
+	@Override
+	public String ID()
+	{
+		return "Prayer_DeathGuard";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Death Guard");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Death Guard)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER | Ability.DOMAIN_HEALING;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_OTHERS;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_HOLY;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_MOBS;
+	}
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
@@ -115,7 +154,7 @@ public class Prayer_DeathGuard extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 for a a death guard over <T-YOUPOSS>, but there is no answer.",prayWord(mob)));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 for a a death guard over <T-NAMESELF>, but there is no answer.",prayWord(mob)));
 
 
 		// return whether it worked
