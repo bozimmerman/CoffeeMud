@@ -778,7 +778,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		return false;
 	}
 
-	public LoginResult prelimChecks(Session session, String login, PlayerLibrary.ThinnerPlayer player)
+	public LoginResult prelimChecks(Session session, MOB pickedMOB, String login, String email)
 	{
 		if(CMSecurity.isBanned(login))
 		{
@@ -786,7 +786,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			session.stopSession(false,false,false);
 			return LoginResult.NO_LOGIN;
 		}
-		if((player.email!=null)&&CMSecurity.isBanned(player.email))
+		if((email!=null)&&CMSecurity.isBanned(email))
 		{
 			session.println(L("\n\rYou are unwelcome.  No one likes you here. Go away.\n\r\n\r"));
 			session.stopSession(false,false,false);
@@ -797,7 +797,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			final MOB M=S.mob();
 			if((M!=null)
 			&&(S!=session)
-			&&(M==player.loadedMOB))
+			&&(M==pickedMOB))
 			{
 				final Room oldRoom=M.location();
 				if(oldRoom!=null)
@@ -1459,7 +1459,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		loginObj.password=loginObj.lastInput;
 		if(loginObj.player.matchesPassword(loginObj.password))
 		{
-			final LoginResult prelimResults = prelimChecks(session,loginObj.login,loginObj.player);
+			final LoginResult prelimResults = prelimChecks(session,loginObj.mob,loginObj.login,loginObj.player.email);
 			if(prelimResults!=null)
 			{
 				if(prelimResults==LoginResult.NO_LOGIN)
@@ -2130,48 +2130,60 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			loginObj.state=LoginState.ACCTMENU_SHOWMENU;
 			return null;
 		}
-		int numAccountOnline=0;
-		for(final Session S : CMLib.sessions().allIterable())
-		{
-			if((S.mob()!=null)
-			&&(S.mob().playerStats()!=null)
-			&&(S.mob().playerStats().getAccount()==acct))
-				numAccountOnline++;
-		}
-		int maxConnectionsPerAccount = CMProps.getIntVar(CMProps.Int.MAXCONNSPERACCOUNT);
-		if(maxConnectionsPerAccount > 0)
-			maxConnectionsPerAccount += acct.getBonusCharsOnlineLimit();
-		if((maxConnectionsPerAccount>0)
-		&&(numAccountOnline>=maxConnectionsPerAccount)
-		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MAXCONNSPERACCOUNT))
-		&&(!CMProps.isOnWhiteList(CMProps.WhiteList.CONNS, session.getAddress()))
-		&&(!CMProps.isOnWhiteList(CMProps.WhiteList.LOGINS, playMe.accountName))
-		&&(!CMProps.isOnWhiteList(CMProps.WhiteList.LOGINS, playMe.name))
-		&&(!acct.isSet(PlayerAccount.AccountFlag.MAXCONNSOVERRIDE)))
-		{
-			session.println(L("You may only have @x1 of your characters on at one time.",""+CMProps.getIntVar(CMProps.Int.MAXCONNSPERACCOUNT)));
-			loginObj.state=LoginState.ACCTMENU_SHOWMENU;
-			return null;
-		}
-
+		session.setMob(realMOB);
 		playMe.loadedMOB=realMOB;
-		final LoginResult prelimResults = prelimChecks(session,playMe.name,playMe);
-		if(prelimResults!=null)
-			return prelimResults;
-		if(isExpired(acct,session,realMOB))
+		if(this.completePlayerLogin(session, wizi)!=LoginResult.NORMAL_LOGIN)
 		{
-			loginObj.state=LoginState.ACCTMENU_SHOWMENU;
-			return null;
-		}
-		final LoginResult completeResult=completeCharacterLogin(session,playMe.name, wizi);
-		if(completeResult == LoginResult.NO_LOGIN)
-		{
+			session.setMob(null);
+			playMe.loadedMOB=null;
 			loginObj.state=LoginState.ACCTMENU_SHOWMENU;
 			return null;
 		}
 		return LoginResult.NORMAL_LOGIN;
 	}
 
+	@Override
+	public LoginResult completePlayerLogin(final Session session, boolean wizi) throws IOException
+	{
+		final MOB realMOB = session.mob();
+		final PlayerAccount acct = realMOB.playerStats().getAccount();
+		if(acct != null)
+		{
+			int numAccountOnline=0;
+			for(final Session S : CMLib.sessions().allIterable())
+			{
+				if((S.mob()!=null)
+				&&(S.mob().playerStats()!=null)
+				&&(S.mob().playerStats().getAccount()==acct))
+					numAccountOnline++;
+			}
+			int maxConnectionsPerAccount = CMProps.getIntVar(CMProps.Int.MAXCONNSPERACCOUNT);
+			if(maxConnectionsPerAccount > 0)
+				maxConnectionsPerAccount += acct.getBonusCharsOnlineLimit();
+			if((maxConnectionsPerAccount>0)
+			&&(numAccountOnline>=maxConnectionsPerAccount)
+			&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MAXCONNSPERACCOUNT))
+			&&(!CMProps.isOnWhiteList(CMProps.WhiteList.CONNS, session.getAddress()))
+			&&(!CMProps.isOnWhiteList(CMProps.WhiteList.LOGINS, acct.getAccountName()))
+			&&(!CMProps.isOnWhiteList(CMProps.WhiteList.LOGINS, realMOB.Name()))
+			&&(!acct.isSet(PlayerAccount.AccountFlag.MAXCONNSOVERRIDE)))
+			{
+				session.println(L("You may only have @x1 of your characters on at one time.",""+CMProps.getIntVar(CMProps.Int.MAXCONNSPERACCOUNT)));
+				return null;
+			}
+		}
+
+		final LoginResult prelimResults = prelimChecks(session,realMOB,realMOB.Name(),realMOB.playerStats().getEmail());
+		if(prelimResults!=null)
+			return prelimResults;
+		if(isExpired(acct,session,realMOB))
+			return null;
+		final LoginResult completeResult=completeCharacterLogin(session,realMOB.Name(), wizi);
+		if(completeResult == LoginResult.NO_LOGIN)
+			return null;
+		return LoginResult.NORMAL_LOGIN;
+	}
+	
 	protected LoginResult charcrStart(final LoginSessionImpl loginObj, final Session session)
 	{
 		session.setStatus(Session.SessionStatus.CHARCREATE);
@@ -3540,7 +3552,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	}
 
 	@Override
-	public LoginResult completeLogin(final Session session, final MOB mob, final Room startRoom, final boolean resetStats) throws IOException
+	public LoginResult finishLogin(final Session session, final MOB mob, final Room startRoom, final boolean resetStats) throws IOException
 	{
 		if(loginsDisabled(mob))
 			return LoginResult.NO_LOGIN;
@@ -3711,7 +3723,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				startRoom = CMLib.map().getStartRoom(mob);
 
 		}
-		return this.completeLogin(session, mob, startRoom, resetStats);
+		return this.finishLogin(session, mob, startRoom, resetStats);
 	}
 
 	@Override

@@ -2768,14 +2768,29 @@ public class DefaultSession implements Session
 	public boolean autoLogin(String name, String password)
 	{
 		name = CMStrings.capitalizeAndLower(name);
-		final MOB mob=CMLib.players().getPlayer(name);
+		final MOB mob=CMLib.players().getLoadPlayer(name);
 		if((mob==null)||(mob.playerStats()==null))
 			return false;
 		PlayerLibrary.ThinnerPlayer player=new PlayerLibrary.ThinnerPlayer();
 		player.password=mob.playerStats().getPasswordStr();
 		if(!player.matchesPassword(password))
 			return false;
-		setMob(mob);
+		try
+		{
+			setMob(mob);
+			if(CMLib.login().completePlayerLogin(this,false) == CharCreationLibrary.LoginResult.NORMAL_LOGIN)
+			{
+				this.nonBlockingIn(false);
+			}
+			else
+			{
+				setMob(null);
+				return false;
+			}
+		}
+		catch(Exception e)
+		{
+		}
 		return setLoggedInState(LoginResult.NORMAL_LOGIN);
 	}
 	

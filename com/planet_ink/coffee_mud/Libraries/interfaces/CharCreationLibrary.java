@@ -379,7 +379,17 @@ public interface CharCreationLibrary extends CMLibrary
 	 * @return the LoginResult status of having tried to complete their login
 	 * @throws IOException any I/O errors during the process
 	 */
-	public LoginResult completeLogin(final Session session, final MOB mob, final Room startRoom, final boolean resetStats) throws IOException;
+	public LoginResult finishLogin(final Session session, final MOB mob, final Room startRoom, final boolean resetStats) throws IOException;
+	
+	/**
+	 * Takes the given session and mobs login by putting the mob into the given start room
+	 * in the world, checking their email, and seeing if they are allowed in.  It does the
+	 * complete login
+	 * @param session the session trying to login, with the mob to login
+	 * @return the LoginResult status of having tried to complete their login
+	 * @throws IOException any I/O errors during the process
+	 */
+	public LoginResult completePlayerLogin(final Session session, boolean wizi) throws IOException;
 	
 	/**
 	 * Creates a new Login Session for the given Session, which will start the login state machine process

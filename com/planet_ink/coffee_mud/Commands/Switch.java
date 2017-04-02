@@ -126,7 +126,7 @@ public class Switch extends StdCommand
 				CMLib.commands().monitorGlobalMessage(room, msg);
 				target.setSession(s1);
 				s1.setMob(target);
-				if(CMLib.login().completeLogin(s1, target, target.location(), resetStats) != CharCreationLibrary.LoginResult.NORMAL_LOGIN)
+				if(CMLib.login().finishLogin(s1, target, target.location(), resetStats) != CharCreationLibrary.LoginResult.NORMAL_LOGIN)
 					s1.stopSession(true, true, true);
 				else
 				{

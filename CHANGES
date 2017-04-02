@@ -48,6 +48,7 @@
   46. Unpaid property taxes now generate both tell and email warnings.
   47. INVENTORY command now has LONG argument, similar to LONGLOOK.
   48. New common skills: Tanning, Fish Lore, Baiting
+  49. GMCP changes: char.login, char.items.contents, room.mobiles, room.items.*, room.players
 # Build 5.9.4 Released 08/03/2016
    1. Qualify now shows language limits
    2. New Prop_NoTeleport exceptions
