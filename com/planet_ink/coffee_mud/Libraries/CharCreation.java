@@ -77,6 +77,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	public enum LoginState
 	{
 		LOGIN_START,
+		LOGIN_AUTOLOGIN,
 		LOGIN_NAME,
 		LOGIN_ACCTCHAR_PWORD,
 		LOGIN_PASS_START,
@@ -4248,7 +4249,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		}
 		return CMStrings.capitalizeFirstLetter(name.toString());
 	}
-
+	
 	public LoginResult loginSystem(Session session, LoginSessionImpl loginObj) throws IOException
 	{
 		if(session==null)
@@ -4261,6 +4262,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			{
 				switch(loginObj.state)
 				{
+				case LOGIN_AUTOLOGIN:
+					return LoginResult.NORMAL_LOGIN;
 				case LOGIN_START:
 				case LOGIN_NAME:
 				case ACCTMENU_SHOWMENU:

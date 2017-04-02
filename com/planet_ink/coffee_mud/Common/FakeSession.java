@@ -755,4 +755,10 @@ public class FakeSession implements Session
 	{
 		return false;
 	}
+
+	@Override
+	public boolean autoLogin(String name, String password)
+	{
+		return false;
+	}
 }

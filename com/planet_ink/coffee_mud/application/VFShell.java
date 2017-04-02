@@ -857,6 +857,12 @@ public class VFShell
 					{
 						return 0;
 					}
+
+					@Override
+					public boolean autoLogin(String name, String password)
+					{
+						return false;
+					}
 				};
 				fakeMob.setSession(session);
 				fakeMob.setSoulMate(fakeMob);

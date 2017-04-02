@@ -227,6 +227,16 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	public boolean isPendingLogin(final String otherLoginName);
 
 	/**
+	 * If the session is in a non-logged in state (or even if it
+	 * is), this will automatically login the user with the given
+	 * name and password, and switch the session to the main loop.
+	 * @param name the username
+	 * @param password the password
+	 * @return true if the login succeeded
+	 */
+	public boolean autoLogin(String name, String password);
+	
+	/**
 	 * Medium-level text output method.  Does full
 	 * filtering of special characters and codes.
 	 * Does not manage the prompt, and should NOT be used for prompts.

@@ -7,6 +7,7 @@ import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
 import com.planet_ink.coffee_mud.core.MiniJSON.MJSONException;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.CharCreationLibrary.LoginSession;
 import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.ThinPlayer;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -1489,10 +1490,18 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			return buf.toByteArray();
 		switch(type)
 		{
-		case COMMANDS: buf.write(msdpListToMsdpArray(MSDPCommand.values())); break;
-		case LISTS: buf.write(msdpListToMsdpArray(MSDPListable.values())); break;
-		case CONFIGURABLE_VARIABLES: buf.write(msdpListToMsdpArray(MSDPConfigurableVar.values())); break;
-		case REPORTABLE_VARIABLES: buf.write(msdpListToMsdpArray(MSDPVariable.values())); break;
+		case COMMANDS:
+			buf.write(msdpListToMsdpArray(MSDPCommand.values()));
+			break;
+		case LISTS:
+			buf.write(msdpListToMsdpArray(MSDPListable.values()));
+			break;
+		case CONFIGURABLE_VARIABLES:
+			buf.write(msdpListToMsdpArray(MSDPConfigurableVar.values()));
+			break;
+		case REPORTABLE_VARIABLES:
+			buf.write(msdpListToMsdpArray(MSDPVariable.values()));
+			break;
 		case REPORTED_VARIABLES:
 		{
 			final List<String> set=new Vector<String>(reportables.size());
@@ -1501,8 +1510,12 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			buf.write(msdpListToMsdpArray(set.toArray(new Object[0])));
 			break;
 		}
-		case SENDABLE_VARIABLES: buf.write(msdpListToMsdpArray(MSDPVariable.values())); break;
-		default: buf.write((byte)'?'); break;
+		case SENDABLE_VARIABLES:
+			buf.write(msdpListToMsdpArray(MSDPVariable.values()));
+			break;
+		default:
+			buf.write((byte) '?');
+			break;
 		}
 		return buf.toByteArray();
 	}
@@ -1583,7 +1596,9 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 					}
 					else
 					if(o instanceof List)
+					{
 						for(final Object o2 : ((List)o))
+						{
 							if(o2 instanceof String)
 							{
 								final MSDPVariable type=(MSDPVariable)CMath.s_valueOf(MSDPVariable.class, ((String)o2).toUpperCase().trim());
@@ -1591,6 +1606,8 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 									reportables.put(type, getMsdpComparable(session, type));
 								buf.write(processMsdpSend(session,(String)o2));
 							}
+						}
+					}
 				}
 			}
 			if(cmds.containsKey(MSDPCommand.SEND.toString()))
@@ -1602,11 +1619,13 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				}
 				else
 				if(o instanceof List)
+				{
 					for(final Object o2 : ((List)o))
+					{
 						if(o2 instanceof String)
-						{
 							buf.write(processMsdpSend(session,(String)o2));
-						}
+					}
+				}
 			}
 			if(cmds.containsKey(MSDPCommand.LIST.toString()))
 			{
@@ -1617,11 +1636,13 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				}
 				else
 				if(o instanceof List)
+				{
 					for(final Object o2 : ((List)o))
+					{
 						if(o2 instanceof String)
-						{
 							buf.write(Session.MSDP_VAR);buf.write(((String)o2).getBytes(Session.MSDP_CHARSET));buf.write(Session.MSDP_VAL);buf.write(processMsdpList(session,(String)o2,reportables));
-						}
+					}
+				}
 			}
 			if(cmds.containsKey(MSDPCommand.UNREPORT.toString()))
 			{
@@ -1634,13 +1655,17 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				}
 				else
 				if(o instanceof List)
+				{
 					for(final Object o2 : ((List)o))
+					{
 						if(o2 instanceof String)
 						{
 							final MSDPVariable type=(MSDPVariable)CMath.s_valueOf(MSDPVariable.class, ((String)o2).toUpperCase().trim());
 							if(type != null)
 								reportables.remove(type);
 						}
+					}
+				}
 			}
 			if(cmds.containsKey(MSDPCommand.RESET.toString()))
 			{
@@ -1651,9 +1676,13 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				}
 				else
 				if(o instanceof List)
+				{
 					for(final Object o2 : ((List)o))
+					{
 						if(o2 instanceof String)
 							resetMsdpConfigurable(session, (String)o2);
+					}
+				}
 			}
 			if(buf.size()==0)
 				return null;
@@ -1755,6 +1784,24 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 					StringBuilder str=new StringBuilder(allDoc);
 					str.setCharAt(pkgSepIndex, '_');
 					return processGmcpStr(session,str.toString(),supportables);
+				}
+				case char_login:
+				{
+					if(mob==null)
+					{
+						if(json!=null)
+							json=json.getCheckedJSONObject("root");
+						if(json!=null)
+						{
+							final String name=json.getCheckedString("name");
+							final String pw=json.getCheckedString("password");
+							if(session.autoLogin(name, pw))
+							{
+								return processGmcpStr(session,"char.statusvars",supportables);
+							}
+						}
+					}
+					break;
 				}
 				case core_hello:
 				{
@@ -1864,6 +1911,117 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 					}
 					break;
 				}
+				case room_items_inv:
+				{
+					if(mob != null)
+					{
+						final Room R=mob.location();
+						if(R!=null)
+						{
+							final StringBuilder doc=new StringBuilder("room.items.list {");
+							doc.append("\"location\":\"room\",");
+							doc.append("\"items\":[");
+							for(int i=0;i<R.numItems();i++)
+							{
+								final Item I=R.getItem(i);
+								if((I!=null)&&(I.container()==null))
+								{
+									doc.append("{");
+									doc.append("\"id\":").append(I.hashCode()).append(",");
+									doc.append("\"name\":\"").append(MiniJSON.toJSONString(I.Name())).append("\",");
+									final String attribs = makeGMCPAttribs(I);
+									if(attribs.length()>0)
+										doc.append("\"attrib\":\"").append(attribs.toString()).append("\",");
+									doc.append("}");
+								}
+							}
+							doc.append("]");
+							doc.append("}");
+							return doc.toString();
+						}
+					}
+					break;
+				}
+				case room_items_contents:
+				{
+					if(mob != null)
+					{
+						final Room R=mob.location();
+						if((R!=null) && (json != null))
+						{
+							final long hashCode = json.getCheckedLong("root").hashCode();
+							final StringBuilder doc=new StringBuilder("room.items.list {");
+							doc.append("\"location\":\""+hashCode+"\",");
+							doc.append("\"items\":[");
+							for(int i=0;i<R.numItems();i++)
+							{
+								final Item I=R.getItem(i);
+								if((I!=null)
+								&&(I.container()!=null)
+								&&(I.container().hashCode()==hashCode))
+								{
+									doc.append("{");
+									doc.append("\"id\":").append(I.hashCode()).append(",");
+									doc.append("\"name\":\"").append(MiniJSON.toJSONString(I.Name())).append("\",");
+									final String attribs = makeGMCPAttribs(I);
+									if(attribs.length()>0)
+										doc.append("\"attrib\":\"").append(attribs.toString()).append("\",");
+									doc.append("}");
+								}
+							}
+							doc.append("]");
+							doc.append("}");
+							return doc.toString();
+						}
+					}
+					break;
+				}
+				case room_mobiles:
+				{
+					if(mob != null)
+					{
+						final Room R=mob.location();
+						if(R!=null)
+						{
+							final StringBuilder doc=new StringBuilder("room.mobiles {");
+							for(int r=0;r<R.numInhabitants();r++)
+							{
+								final MOB M=R.fetchInhabitant(r);
+								if((M!=null)&&(!M.isPlayer()))
+								{
+									final String lname=(M.Name().equals(M.name())?M.titledName():M.name(mob));
+									doc.append("\""+M.Name()+"\":\"").append(MiniJSON.toJSONString(lname)).append("\",");
+								}
+							}
+							doc.append("}");
+							return doc.toString();
+						}
+					}
+					break;
+				}
+				case room_players:
+				{
+					if(mob != null)
+					{
+						final Room R=mob.location();
+						if(R!=null)
+						{
+							final StringBuilder doc=new StringBuilder("room.players {");
+							for(int r=0;r<R.numInhabitants();r++)
+							{
+								final MOB M=R.fetchInhabitant(r);
+								if((M!=null)&&(M.isPlayer()))
+								{
+									final String lname=(M.Name().equals(M.name())?M.titledName():M.name(mob));
+									doc.append("\""+M.Name()+"\":\"").append(MiniJSON.toJSONString(lname)).append("\",");
+								}
+							}
+							doc.append("}");
+							return doc.toString();
+						}
+					}
+					break;
+				}
 				case char_items_inv:
 				{
 					if(mob != null)
@@ -1874,7 +2032,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 						for(int i=0;i<mob.numItems();i++)
 						{
 							final Item I=mob.getItem(i);
-							if(I!=null)
+							if((I!=null)&&(I.container()==null))
 							{
 								doc.append("{");
 								doc.append("\"id\":").append(I.hashCode()).append(",");
@@ -1897,14 +2055,16 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 					{
 						if(json != null)
 						{
-							Long hashCode = json.getCheckedLong("root");
+							final long hashCode = json.getCheckedLong("root").hashCode();
 							final StringBuilder doc=new StringBuilder("char.items.list {");
 							doc.append("\"location\":\""+hashCode+"\",");
 							doc.append("\"items\":[");
 							for(int i=0;i<mob.numItems();i++)
 							{
 								final Item I=mob.getItem(i);
-								if(I!=null)
+								if((I!=null)
+								&&(I.container()!=null)
+								&&(I.container().hashCode()==hashCode))
 								{
 									doc.append("{");
 									doc.append("\"id\":").append(I.hashCode()).append(",");
@@ -2026,10 +2186,10 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 							state=12;
 						doc.append("\"state\":").append(state).append(",");
 						doc.append("\"pos\":\"").append(
-								CMLib.flags().isSleeping(mob)?"Sleeping":
-								CMLib.flags().isSitting(mob)?"Sitting":
-								"Standing"
-								).append("\"");
+									CMLib.flags().isSleeping(mob)?"Sleeping":
+									CMLib.flags().isSitting(mob)?"Sitting":
+									"Standing"
+									).append("\"");
 						final MOB vicM=mob.getVictim();
 						if(vicM!=null)
 						{
@@ -2080,6 +2240,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 								.append("\"id\":\"").append(roomID).append("\",")
 								.append("\"name\":\"").append(MiniJSON.toJSONString(room.displayText(mob))).append("\",")
 								.append("\"zone\":\"").append(MiniJSON.toJSONString(room.getArea().name())).append("\",")
+								.append("\"desc\":\"").append(MiniJSON.toJSONString(room.description(mob))).append("\",")
 								.append("\"terrain\":\"").append(domType.toLowerCase()).append("\",")
 								.append("\"details\":\"").append("\",")
 								.append("\"exits\":{");

@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Session.SessionStatus;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
@@ -2762,7 +2763,61 @@ public class DefaultSession implements Session
 			activeMillis=0;
 		}
 	}
+	
+	@Override
+	public boolean autoLogin(String name, String password)
+	{
+		name = CMStrings.capitalizeAndLower(name);
+		final MOB mob=CMLib.players().getPlayer(name);
+		if((mob==null)||(mob.playerStats()==null))
+			return false;
+		PlayerLibrary.ThinnerPlayer player=new PlayerLibrary.ThinnerPlayer();
+		player.password=mob.playerStats().getPasswordStr();
+		if(!player.matchesPassword(password))
+			return false;
+		setMob(mob);
+		return setLoggedInState(LoginResult.NORMAL_LOGIN);
+	}
+	
+	protected boolean setLoggedInState(final LoginResult loginResult)
+	{
+		setStatus(SessionStatus.LOGIN2);
+		if((mob!=null)&&(mob.playerStats()!=null))
+			acct=mob.playerStats().getAccount();
+		if((!killFlag)&&((mob!=null)))
+		{
+			if(mob.playerStats()!=null)
+				CMLib.threads().suspendResumeRecurse(mob, false, false);
+			userLoginTime=System.currentTimeMillis();
+			final StringBuilder loginMsg=new StringBuilder("");
+			loginMsg.append(getAddress()).append(" "+terminalType)
+			.append(((mob.isAttributeSet(MOB.Attrib.MXP)&&getClientTelnetMode(Session.TELNET_MXP)))?" MXP":"")
+			.append(getClientTelnetMode(Session.TELNET_MSDP)?" MSDP":"")
+			.append(getClientTelnetMode(Session.TELNET_ATCP)?" ATCP":"")
+			.append(getClientTelnetMode(Session.TELNET_GMCP)?" GMCP":"")
+			.append((getClientTelnetMode(Session.TELNET_COMPRESS)||getClientTelnetMode(Session.TELNET_COMPRESS2))?" CMP":"")
+			.append(((mob.isAttributeSet(MOB.Attrib.ANSI)&&getClientTelnetMode(Session.TELNET_ANSI)))?" ANSI":"")
+			.append(", character login: "+mob.Name());
+			Log.sysOut(loginMsg.toString());
+			if(loginResult != CharCreationLibrary.LoginResult.NO_LOGIN)
+			{
+				final CMMsg msg = CMClass.getMsg(mob,null,CMMsg.MSG_LOGIN,null);
+				if(!CMLib.map().sendGlobalMessage(mob,CMMsg.TYP_LOGIN,msg))
+					setKillFlag(true);
+				else
+					CMLib.commands().monitorGlobalMessage(mob.location(), msg);
+			}
+		}
 
+		needPrompt=true;
+		if((!killFlag)&&(mob!=null))
+		{
+			setStatus(SessionStatus.MAINLOOP);
+			return true;
+		}
+		return false;
+	}
+	
 	public void loginSystem()
 	{
 		try
@@ -2803,40 +2858,8 @@ public class DefaultSession implements Session
 				}
 				case NORMAL_LOGIN:
 				{
-					setStatus(SessionStatus.LOGIN2);
-					if((mob!=null)&&(mob.playerStats()!=null))
-						acct=mob.playerStats().getAccount();
-					if((!killFlag)&&((mob!=null)))
-					{
-						if(mob.playerStats()!=null)
-							CMLib.threads().suspendResumeRecurse(mob, false, false);
-						userLoginTime=System.currentTimeMillis();
-						final StringBuilder loginMsg=new StringBuilder("");
-						loginMsg.append(getAddress()).append(" "+terminalType)
-						.append(((mob.isAttributeSet(MOB.Attrib.MXP)&&getClientTelnetMode(Session.TELNET_MXP)))?" MXP":"")
-						.append(getClientTelnetMode(Session.TELNET_MSDP)?" MSDP":"")
-						.append(getClientTelnetMode(Session.TELNET_ATCP)?" ATCP":"")
-						.append(getClientTelnetMode(Session.TELNET_GMCP)?" GMCP":"")
-						.append((getClientTelnetMode(Session.TELNET_COMPRESS)||getClientTelnetMode(Session.TELNET_COMPRESS2))?" CMP":"")
-						.append(((mob.isAttributeSet(MOB.Attrib.ANSI)&&getClientTelnetMode(Session.TELNET_ANSI)))?" ANSI":"")
-						.append(", character login: "+mob.Name());
-						Log.sysOut(loginMsg.toString());
-						if(loginResult != CharCreationLibrary.LoginResult.NO_LOGIN)
-						{
-							final CMMsg msg = CMClass.getMsg(mob,null,CMMsg.MSG_LOGIN,null);
-							if(!CMLib.map().sendGlobalMessage(mob,CMMsg.TYP_LOGIN,msg))
-								setKillFlag(true);
-							else
-								CMLib.commands().monitorGlobalMessage(mob.location(), msg);
-						}
-					}
-
-					needPrompt=true;
-					if((!killFlag)&&(mob!=null))
-					{
-						setStatus(SessionStatus.MAINLOOP);
+					if(setLoggedInState(loginResult))
 						return;
-					}
 				}
 				}
 				setStatus(SessionStatus.LOGIN);

@@ -59,6 +59,7 @@ public interface ProtocolLibrary extends CMLibrary
 		core_keepalive,
 		core_ping,
 		core_goodbye,
+		char_login,
 		char_vitals,
 		char_statusvars,
 		char_status,
@@ -70,6 +71,10 @@ public interface ProtocolLibrary extends CMLibrary
 		char_skills_get,
 		group,
 		room_info, // means they want room.wrongdir
+		room_items_inv,
+		room_items_contents,
+		room_mobiles,
+		room_players,
 		comm_channel,
 		comm_channel_players,
 		ire_composer_setbuffer,
