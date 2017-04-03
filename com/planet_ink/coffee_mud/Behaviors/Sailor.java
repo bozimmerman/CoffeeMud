@@ -41,6 +41,7 @@ public class Sailor extends StdBehavior
 	protected boolean		combatIsOver	= false;
 	protected boolean		peaceMover		= false;
 	protected boolean		combatMover		= true;
+	protected boolean		wanderOK		= false;
 	protected boolean		combatTech		= true;
 	protected boolean		boarder			= false;
 	protected boolean		defender		= false;
@@ -140,11 +141,15 @@ public class Sailor extends StdBehavior
 		if(boarder || defender)
 		{
 			final Item hisShipI=getShip(M);
-			if(hisShipI == this.loyalShipItem)
+			if((hisShipI == this.loyalShipItem)||(this.loyalShipItem==null))
 				return false;
 			if(this.loyalShipItem instanceof SailingShip)
 			{
 				final SailingShip myShip=(SailingShip)this.loyalShipItem;
+				final ItemTicker I1=(ItemTicker)myShip.fetchEffect("ItemRejuv");
+				final ItemTicker I2=(ItemTicker)hisShipI.fetchEffect("ItemRejuv");
+				if((I1!=null)&&(I2!=null)&&(I1.properLocation()==I2.properLocation()))
+					return false;
 				final PhysicalAgent myCombatTarget=myShip.getCombatant();
 				if((myCombatTarget != null)
 				&&(myCombatTarget == hisShipI))
@@ -176,6 +181,7 @@ public class Sailor extends StdBehavior
 		boarder = CMParms.getParmBool(newParms, "BOARDER", false);
 		defender = CMParms.getParmBool(newParms, "DEFENDER", false);
 		aggressive = CMParms.getParmBool(newParms, "AGGRO", false);
+		wanderOK = CMParms.getParmBool(newParms, "WANDER", false);
 		aggrMobs = CMParms.getParmBool(newParms, "AGGROMOBS", false);
 		aggrLvlChk = CMParms.getParmBool(newParms, "AGGROLEVELCHECK", false);
 		aggrMask = CMLib.masking().maskCompile(CMParms.getParmStr(newParms, "AGGROMASK", ""));
@@ -839,18 +845,29 @@ public class Sailor extends StdBehavior
 							ourSpeed = 1;
 						ourSpeed=CMLib.dice().roll(1, ourSpeed, 0);
 						XVector<String> course=new XVector<String>("COURSE");
-						String lastDir = CMLib.directions().getDirectionName(CMLib.dice().roll(1, 4, -1));
-						while(ourSpeed > 0)
+						Room curRoom=CMLib.map().roomLocation(loyalShipItem);
+						Integer lastDir = Integer.valueOf(CMLib.dice().roll(1, 4, -1));
+						int tries=99;
+						while((ourSpeed > 0)&&(--tries>0) && (curRoom!=null))
 						{
+							Integer nextDir=lastDir;
 							if(ourSpeed == 1)
 							{
 								if(CMLib.dice().rollPercentage()<30)
 									course.add(CMLib.directions().getDirectionName(CMLib.dice().roll(1, 4, -1)));
-								else
-									course.add(lastDir);
 							}
-							else
-								course.add(lastDir);
+							if(nextDir != null)
+							{
+								final Room nextRoom=curRoom.getRoomInDir(nextDir.intValue());
+								if((nextRoom == null)
+								||((!wanderOK)&&(nextRoom.getArea()!=curRoom.getArea())))
+									nextDir = null;
+							}
+							if(nextDir != null)
+							{
+								course.add(CMLib.directions().getDirectionName(nextDir.intValue()));
+								curRoom=curRoom.getRoomInDir(nextDir.intValue());
+							}
 							ourSpeed--;
 						}
 						mob.enqueCommand(course, 0, 0);

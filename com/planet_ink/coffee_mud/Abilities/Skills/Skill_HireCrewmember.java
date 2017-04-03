@@ -210,7 +210,7 @@ public class Skill_HireCrewmember extends StdSkill
 					sailor.setParms("FIGHTMOVER=true FIGHTTECH=false TICKBONUS="+abilityCode());
 					break;
 				case CAPTAIN:
-					sailor.setParms("PEACEMOVER=true FIGHTMOVER=false FIGHTTECH=false TICKBONUS="+abilityCode());
+					sailor.setParms("PEACEMOVER=true WANDEROK=true FIGHTMOVER=false FIGHTTECH=false TICKBONUS="+abilityCode());
 					break;
 				case TRAWLER:
 					if(agent instanceof MOB)
