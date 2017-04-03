@@ -318,10 +318,22 @@ public class Prop_ReqCapacity extends Property implements TriggeredAffect
 					final Item targetI=(Item)msg.target();
 					Room R=null;
 					if(affected instanceof Room)
+					{
 						R=(Room)affected;
+						if((msg.source().location() != R)
+						&&(msg.targetMinor()!=CMMsg.TYP_PUSH)
+						&&(msg.targetMinor()!=CMMsg.TYP_PULL))
+							break;
+					}
 					else
 					if(myHost instanceof Room)
+					{
 						R=(Room)myHost;
+						if((msg.source().location() != R)
+						&&(msg.targetMinor()!=CMMsg.TYP_PUSH)
+						&&(msg.targetMinor()!=CMMsg.TYP_PULL))
+							break;
+					}
 					else
 						R=msg.source().location();
 					if((!indoorOnly)||((R.domainType()&Room.INDOORS)==Room.INDOORS))
