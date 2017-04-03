@@ -277,7 +277,8 @@ public class BrokenLimbs extends StdAbility implements LimbDamage, HealthConditi
 			case CMMsg.TYP_WEAPONATTACK:
 			{
 				final MOB mob=msg.source();
-				if(((brokenParts[Race.BODY_HAND]<0)||(brokenParts[Race.BODY_ARM]<0))&&(msg.tool() == mob.fetchWieldedItem()))
+				if(((brokenParts[Race.BODY_HAND]<0)||(brokenParts[Race.BODY_ARM]<0))
+				&&(msg.tool() == mob.fetchWieldedItem()))
 				{
 					mob.tell(L("Your broken limbs make the attack impossible!"));
 					return false;

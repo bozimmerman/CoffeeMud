@@ -55,6 +55,7 @@ public class Sheep extends StdMOB
 		basePhyStats().setAbility(0);
 		basePhyStats().setLevel(1);
 		basePhyStats().setArmor(90);
+		baseCharStats().setStat(CharStats.STAT_GENDER, CMLib.dice().rollPercentage()>50?'M':'F');
 		baseCharStats().setMyRace(CMClass.getRace("Sheep"));
 		baseCharStats().getMyRace().startRacing(this,false);
 

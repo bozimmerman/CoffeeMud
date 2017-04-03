@@ -245,11 +245,11 @@ public class AnimalHusbandry extends CommonSkill
 				else
 				if(M.charStats().getStat(CharStats.STAT_GENDER)=='F')
 				{
-					if(!M.isGeneric())
-					{
-						commonTell(mob,L("I'm sorry, @x1 just won't work out as a mother.",M.name(mob)));
-						return false;
-					}
+					//if(!M.isGeneric())
+					//{
+					//	commonTell(mob,L("I'm sorry, @x1 just won't work out as a mother.",M.name(mob)));
+					//	return false;
+					//}
 					if(husbanding[1]!=null)
 					{
 						commonTell(mob,L("You can't use two females!"));
