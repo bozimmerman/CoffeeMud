@@ -50,12 +50,14 @@ public class RocketShipProgram extends GenShipProgram
 
 	protected String noActivationMenu="^rNo engine systems found.\n\r";
 
-	protected volatile List<ShipEngine>			engines				= null;
-	protected volatile List<TechComponent>		sensors				= null;
-	protected volatile List<TechComponent>		components			= null;
+	protected volatile List<ShipEngine>		engines		= null;
+	protected volatile List<TechComponent>	sensors		= null;
+	protected volatile List<TechComponent>	components	= null;
 	
-	protected volatile List<ShipEngine> 		launchEngines		= null;
-	protected final List<CMObject>	sensorReport	= new LinkedList<CMObject>();
+	protected volatile double			lastThrust		= 0;
+	protected volatile double			lastSpeed		= 0;
+	protected volatile List<ShipEngine> launchEngines	= null;
+	protected final List<CMObject>		sensorReport	= new LinkedList<CMObject>();
 
 	public RocketShipProgram()
 	{
@@ -438,7 +440,90 @@ public class RocketShipProgram extends GenShipProgram
 		final List<ShipEngine> engines = launchEngines;
 		if((engines != null) && (engines.size() > 0))
 		{
-			//TODO:
+			final SpaceObject spaceObject=CMLib.map().getSpaceObject(this,true);
+			final List<SpaceObject> orbs=CMLib.map().getSpaceObjectsWithin(spaceObject,0,SpaceObject.Distance.LightMinute.dm);
+			if(spaceObject.speed()>0)
+			{
+				for(final SpaceObject orb : orbs)
+				{
+					if(orb instanceof Area)
+					{
+						final long distance=CMLib.map().getDistanceFrom(spaceObject, orb);
+						if((distance > (orb.radius()*SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS))
+						||(distance > orb.radius()*SpaceObject.MULTIPLIER_ORBITING_RADIUS_MAX))
+						{
+							//TODO: only if it is the proper direction away .. is this what I actually launched from?
+							//System.out.println("*****LAUNCH COMPLETE++++");
+							//this.launchEngines=null;
+							//this.lastSpeed=0.0;
+							//this.lastThrust=0;
+						}
+						if(((distance > orb.radius())&&(distance < (orb.radius()*SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS)))
+						||((distance > orb.radius()*SpaceObject.MULTIPLIER_ORBITING_RADIUS_MIN)&&(distance<orb.radius()*SpaceObject.MULTIPLIER_ORBITING_RADIUS_MAX)))
+						{
+							final double[] directionFromMeToOrb = CMLib.map().getDirection(spaceObject, orb);
+							final double[] myDirection=spaceObject.direction();
+							myDirection[0]=directionFromMeToOrb[0]+Math.PI;
+							if(myDirection[0] > (2*Math.PI))
+								myDirection[0] = Math.abs(myDirection[0]-(2*Math.PI));
+							myDirection[1]=directionFromMeToOrb[1]+(Math.PI/2.0);
+							if(myDirection[1] > Math.PI)
+								myDirection[1] = Math.abs(myDirection[1]-Math.PI);
+//TODO: delme
+System.out.println("("+directionFromMeToOrb[0]+","+directionFromMeToOrb[1]+") <-> ("+myDirection[0]+","+myDirection[1]+")");
+						}
+					}
+				}
+			}
+
+			final SpaceShip ship=(spaceObject instanceof SpaceShip)?(SpaceShip)spaceObject:null;
+			if(ship != null)
+			{
+				for(final ShipEngine engineE : engines)
+				{
+//TODO: delme
+System.out.println("Engine "+engineE.Name()+", lastThrust="+lastThrust+", lastSpeed="+lastSpeed);
+					if(this.lastThrust<=0)
+					{
+						this.lastThrust=2.0 * CMath.div(ship.getMass(), engineE.getSpecificImpulse());
+						if(this.lastThrust < engineE.getMinThrust())
+							this.lastThrust= engineE.getMinThrust();
+						if(this.lastThrust < 1)
+							this.lastThrust=1;
+						this.lastSpeed=0.0;
+					}
+					else
+					{
+						double lastAccelleration = spaceObject.speed() - this.lastSpeed;
+						this.lastSpeed=spaceObject.speed();
+						if(lastAccelleration > SpaceObject.ACCELLERATION_TYPICALROCKET)
+							this.lastThrust = Math.round(lastThrust * .8);
+						else
+						if(lastAccelleration < 1)
+							this.lastThrust = Math.round(lastThrust * 1.5);
+					}
+//TODO: delme
+System.out.println("New Thrust="+this.lastThrust);
+					final MOB mob=CMClass.getFactoryMOB();
+					try
+					{
+						final String code=Technical.TechCommand.THRUST.makeCommand(TechComponent.ShipDir.AFT,Double.valueOf(this.lastThrust));
+						CMMsg msg=CMClass.getMsg(mob, engineE, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
+						if(engineE.owner() instanceof Room)
+						{
+							if(((Room)engineE.owner()).okMessage(mob, msg))
+								((Room)engineE.owner()).send(mob, msg);
+						}
+						else
+						if(engineE.okMessage(mob, msg))
+							engineE.executeMsg(mob, msg);
+					}
+					finally
+					{
+						mob.destroy();
+					}
+				}
+			}
 		}
 		return true;
 	}
@@ -551,6 +636,8 @@ public class RocketShipProgram extends GenShipProgram
 					super.addScreenMessage(L("Error: Malfunctioning launch thrusters interface."));
 					return;
 				}
+				this.lastSpeed=0.0;
+				this.lastThrust=0;
 				this.launchEngines=readyEngines;
 				super.addScreenMessage(L("Launch procedure initialized."));
 			}
