@@ -101,11 +101,13 @@ public class GoatDoe extends Goat implements Drink
 			I.recoverPhyStats();
 			I.setContainer(container);
 			if(container.owner()!=null)
+			{
 				if(container.owner() instanceof MOB)
 					((MOB)container.owner()).addItem(I);
 				else
 				if(container.owner() instanceof Room)
 					((Room)container.owner()).addItem(I,ItemPossessor.Expire.Resource);
+			}
 		}
 	}
 
