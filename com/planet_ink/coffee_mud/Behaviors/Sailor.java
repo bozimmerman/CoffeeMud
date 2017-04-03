@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZMask;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -45,6 +46,8 @@ public class Sailor extends StdBehavior
 	protected boolean		defender		= false;
 	protected boolean		aggressive		= false;
 	protected boolean		aggrMobs		= false;
+	protected boolean		aggrLvlChk		= false;
+	protected CompiledZMask aggrMask		= null;
 	protected boolean		areaOnly		= true;
 	protected boolean		wimpy			= true;
 	//protected int			targetShipDist	= -1;
@@ -174,6 +177,8 @@ public class Sailor extends StdBehavior
 		defender = CMParms.getParmBool(newParms, "DEFENDER", false);
 		aggressive = CMParms.getParmBool(newParms, "AGGRO", false);
 		aggrMobs = CMParms.getParmBool(newParms, "AGGROMOBS", false);
+		aggrLvlChk = CMParms.getParmBool(newParms, "AGGROLEVELCHECK", false);
+		aggrMask = CMLib.masking().maskCompile(CMParms.getParmStr(newParms, "AGGROMASK", ""));
 		wimpy = CMParms.getParmBool(newParms, "WIMPY", true);
 		loyalShipArea	= null;
 		loyalShipItem	= null;
@@ -431,7 +436,9 @@ public class Sailor extends StdBehavior
 								if((M!=null)
 								&&(M!=mob)
 								&&(mob.mayPhysicallyAttack(M))
-								&&(grantsAggressivenessTo(M)))
+								&&(grantsAggressivenessTo(M))
+								&&((!aggrLvlChk)||(mob.phyStats().level()<(M.phyStats().level()+5)))
+								&&(CMLib.masking().maskCheck(aggrMask,M,false)))
 								{
 									if(CMLib.combat().postAttack(mob, M, mob.fetchWieldedItem()))
 									{
@@ -722,42 +729,99 @@ public class Sailor extends StdBehavior
 								||((I instanceof Rideable)&&(((Rideable)I).rideBasis()==Rideable.RIDEABLE_WATER)))
 							&&(CMLib.flags().canBeSeenBy(I, mob)))
 							{
-								boolean hasPlayer = false;
-								if(!aggrMobs)
+								final LinkedList<MOB> elligible=new LinkedList<MOB>();
+								if(I instanceof Rideable)
 								{
-									if(I instanceof Rideable)
+									for(Enumeration<Rider> r=((Rideable)I).riders();r.hasMoreElements();)
 									{
-										for(Enumeration<Rider> r=((Rideable)I).riders();r.hasMoreElements();)
-										{
-											Rider R=r.nextElement();
-											if((R instanceof MOB)&&(((MOB)R).isPlayer()))
-												hasPlayer=true;
-										}
+										Rider R=r.nextElement();
+										if((R instanceof MOB)
+										&&((aggrMobs) || (((MOB)R).isPlayer())))
+											elligible.add((MOB)R);
 									}
-									if(I instanceof BoardableShip)
+								}
+								if(I instanceof BoardableShip)
+								{
+									Area shipArea=((BoardableShip)I).getShipArea();
+									if(shipArea!=null)
 									{
-										Area shipArea=((BoardableShip)I).getShipArea();
-										if(shipArea!=null)
+										for(Enumeration<Room> r=shipArea.getProperMap();r.hasMoreElements();)
 										{
-											for(Enumeration<Room> r=shipArea.getProperMap();r.hasMoreElements();)
+											Room R=r.nextElement();
+											if(R!=null)
 											{
-												Room R=r.nextElement();
-												if(R!=null)
+												for(Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
 												{
-													for(Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
-													{
-														final MOB M=m.nextElement();
-														if((M!=null)&&(M.isPlayer()))
-															hasPlayer=true;
-													}
+													final MOB M=m.nextElement();
+													if((M!=null)
+													&&((aggrMobs) || M.isPlayer()))
+														elligible.add(M);
 												}
 											}
 										}
 									}
 								}
-								if(aggrMobs || hasPlayer)
+								if(elligible.size()>0)
 								{
-									mob.enqueCommand(new XVector<String>("TARGET",mobRoom.getContextName(I)), 0, 0);
+									MOB captaiM = null;
+									for(final MOB M : elligible)
+									{
+										if((M.isPlayer())
+										&&(CMLib.law().doesHaveWeakPriviledgesHere(M, M.location())))
+											captaiM=M;
+									}
+									if(captaiM == null)
+									{
+										MOB[] Ms=new MOB[5];
+										for(final MOB M : elligible)
+										{
+											if(!M.isPlayer())
+											{
+												final Sailor oS=(Sailor)M.fetchBehavior(ID());
+												if(oS!=null)
+												{
+													if(oS.combatMover)
+														Ms[0]=M;
+													if(oS.peaceMover)
+														Ms[1]=M;
+													if(oS.combatTech)
+														Ms[2]=M;
+													if(oS.boarder)
+														Ms[3]=M;
+													if(oS.defender)
+														Ms[4]=M;
+												}
+											}
+										}
+										for(int x=0;x<Ms.length;x++)
+										{
+											if(Ms[x]!=null)
+												captaiM=Ms[x];
+										}
+									}
+									if(captaiM == null)
+									{
+										for(final MOB M : elligible)
+										{
+											if((!M.isPlayer())
+											&&(CMLib.law().doesHaveWeakPriviledgesHere(M, M.location())))
+												captaiM=M;
+										}
+									}
+									if(captaiM==null)
+									{
+										for(final MOB M : elligible)
+										{
+											if(M.isPlayer())
+												captaiM=M;
+										}
+									}
+									if(captaiM==null)
+										captaiM=elligible.get(0);
+									if((captaiM!=null)
+									&&((!aggrLvlChk)||(mob.phyStats().level()<(captaiM.phyStats().level()+5)))
+									&&(CMLib.masking().maskCheck(aggrMask,captaiM,false)))
+										mob.enqueCommand(new XVector<String>("TARGET",mobRoom.getContextName(I)), 0, 0);
 								}
 							}
 						}
