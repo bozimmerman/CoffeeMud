@@ -54,7 +54,7 @@ public class Transfer extends At
 		Room room=null;
 		if(commands.size()<3)
 		{
-			mob.tell(L("Transfer whom where? Try all or a mob name, followerd by a Room ID, target player name, area name, or room text!"));
+			mob.tell(L("Transfer whom where? Try all or a mob name or item followed by item name, followerd by a Room ID, target player name, inventory, area name, or room text!"));
 			return false;
 		}
 		commands.remove(0);
@@ -88,8 +88,10 @@ public class Transfer extends At
 		if((searchName.length()==0)&&(allFlag))
 		{
 			if(itemFlag)
+			{
 				for(int i=0;i<curRoom.numItems();i++)
 					V.add(curRoom.getItem(i));
+			}
 			else
 			for(int i=0;i<curRoom.numInhabitants();i++)
 			{
@@ -232,7 +234,14 @@ public class Transfer extends At
 			return false;
 		}
 
+		boolean inventoryFlag=false;
 		final StringBuffer cmd = new StringBuffer(CMParms.combine(commands,1));
+		if(cmd.toString().equalsIgnoreCase("inventory"))
+		{
+			room=mob.location();
+			inventoryFlag=true;
+		}
+		else
 		if(cmd.toString().equalsIgnoreCase("here")||cmd.toString().equalsIgnoreCase("."))
 			room=mob.location();
 		else
@@ -256,10 +265,15 @@ public class Transfer extends At
 				final Item I=(Item)V.get(i);
 				final Room itemRoom=CMLib.map().roomLocation(I);
 				if((itemRoom!=null)
-				&&(!room.isContent(I))
+				&&((!room.isContent(I))||(inventoryFlag))
 				&&(CMSecurity.isAllowed(mob, itemRoom, CMSecurity.SecFlag.TRANSFER))
 				&&(CMSecurity.isAllowed(mob, room, CMSecurity.SecFlag.TRANSFER)))
-					room.moveItemTo(I,ItemPossessor.Expire.Never,ItemPossessor.Move.Followers);
+				{
+					if(inventoryFlag)
+						mob.moveItemTo(I,ItemPossessor.Expire.Never,ItemPossessor.Move.Followers);
+					else
+						room.moveItemTo(I,ItemPossessor.Expire.Never,ItemPossessor.Move.Followers);
+				}
 			}
 			else
 			if(V.get(i) instanceof MOB)
