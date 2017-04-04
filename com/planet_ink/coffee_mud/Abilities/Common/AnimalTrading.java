@@ -32,18 +32,49 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class AnimalTrading extends CommonSkill
 {
-	@Override public String ID() { return "AnimalTrading"; }
-	private final static String localizedName = CMLib.lang().L("Animal Trading");
-	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =I(new String[] {"ANIMALTRADING","ANIMALTRADE","ANIMALSELL","ASELL"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
-	@Override public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ANIMALAFFINITY; }
-	protected Vector<String> recentlyTraded=new Vector<String>();
+	@Override
+	public String ID()
+	{
+		return "AnimalTrading";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Animal Trading");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "ANIMALTRADING", "ANIMALTRADE", "ANIMALSELL", "ASELL" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_COMMON_SKILL | Ability.DOMAIN_ANIMALAFFINITY;
+	}
+
+	protected Vector<String>	recentlyTraded	= new Vector<String>();
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -94,7 +125,10 @@ public class AnimalTrading extends CommonSkill
 				if((I!=null)
 				&&(I instanceof Container)
 				&&((((Container)I).containTypes()&Container.CONTAIN_CAGED)==Container.CONTAIN_CAGED))
-				{ cage=I; break;}
+				{
+					cage = I;
+					break;
+				}
 			}
 			if(cage==null)
 			for(int i=0;i<mob.numItems();i++)
@@ -103,7 +137,10 @@ public class AnimalTrading extends CommonSkill
 				if((I!=null)
 				&&(I instanceof Container)
 				&&((((Container)I).containTypes()&Container.CONTAIN_CAGED)==Container.CONTAIN_CAGED))
-				{ cage=I; break;}
+				{
+					cage = I;
+					break;
+				}
 			}
 			if(commands.size()>0)
 			{

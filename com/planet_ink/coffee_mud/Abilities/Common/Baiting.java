@@ -156,6 +156,7 @@ public class Baiting extends GatheringSkill
 		final Room R=mob.location();
 		if(super.checkStop(mob, commands) || (R==null))
 			return true;
+		
 		bundling=false;
 		if((!auto)
 		&&(commands.size()>0)
@@ -167,6 +168,17 @@ public class Baiting extends GatheringSkill
 			return false;
 		}
 
+		if((!auto)
+		&&(commands.size()>0)
+		&&((commands.get(0)).equalsIgnoreCase("list")))
+		{
+			final StringBuilder str=new StringBuilder("Types of fishes:\n\r");
+			for(int fishCode : RawMaterial.CODES.FISHES())
+				str.append(RawMaterial.CODES.NAME(fishCode)).append("\n\r");
+			mob.tell(str.toString());
+			return false;
+		}
+		
 		verb=L("baiting");
 		fishRoom=null;
 		if(!auto)
