@@ -262,7 +262,17 @@ public class StdLawBook extends StdItem
 		{"A crime ONLY if witness is in the same room","witness"},
 		{"A crime ONLY if witness is NOT in the same room","!witness"},
 		{"A crime ONLY if perpetrator is in combat.","combat"},
-		{"A crime ONLY if perpetrator is NOT in combat.","!combat"}
+		{"A crime ONLY if perpetrator is NOT in combat.","!combat"},
+		{"Ignore this crime 1% of the time","ignore99"},
+		{"Ignore this crime 5% of the time","ignore95"},
+		{"Ignore this crime 10% of the time","!ignore90"},
+		{"Ignore this crime 25% of the time","!ignore75"},
+		{"Ignore this crime 50% of the time","!ignore50"},
+		{"Ignore this crime 50% of the time","ignore50"},
+		{"Ignore this crime 75% of the time","ignore75"},
+		{"Ignore this crime 90% of the time","ignore90"},
+		{"Ignore this crime 95% of the time","ignore95"},
+		{"Ignore this crime 99% of the time","ignore99"},
 	};
 
 	//	@SupressWarnings

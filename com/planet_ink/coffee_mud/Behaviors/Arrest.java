@@ -1548,6 +1548,28 @@ public class Arrest extends StdBehavior implements LegalBehavior
 					}
 				}
 				else
+				if(str.startsWith("IGNORE")&&(str.length()<9))
+				{
+					final int chanceToIgnore = CMath.s_int(str.substring(6));
+					if(CMLib.dice().rollPercentage()<=chanceToIgnore)
+					{
+						if(CMSecurity.isDebugging(CMSecurity.DbgFlag.ARREST))
+							Log.debugOut("ARREST","("+lastAreaName+"): "+criminalM.name()+", data: "+crimeLocs+"->"+crimeFlags+"->"+crime+"->"+sentence+"* Ignore chance.");
+						return false;
+					}
+				}
+				else
+				if(str.startsWith("!IGNORE")&&(str.length()<10))
+				{
+					final int chanceToIgnore = 100-CMath.s_int(str.substring(7));
+					if(CMLib.dice().rollPercentage()<=chanceToIgnore)
+					{
+						if(CMSecurity.isDebugging(CMSecurity.DbgFlag.ARREST))
+							Log.debugOut("ARREST","("+lastAreaName+"): "+criminalM.name()+", data: "+crimeLocs+"->"+crimeFlags+"->"+crime+"->"+sentence+"* !Ignore chance.");
+						return false;
+					}
+				}
+				else
 				if(str.endsWith("COMBAT")&&(str.length()<8))
 				{
 					if(criminalM.isInCombat())
