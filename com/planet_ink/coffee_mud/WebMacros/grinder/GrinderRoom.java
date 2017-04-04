@@ -66,14 +66,13 @@ public class GrinderRoom
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
 			final GrinderDir D=new GrinderDir();
+			R.clearSky();
 			final Room R2=R.rawDoors()[d];
 			if(R2!=null)
-			{
 				D.room=R2.roomID();
-				final Exit E2=R.getRawExit(d);
-				if(E2!=null)
-					D.exit=E2;
-			}
+			final Exit E2=R.getRawExit(d);
+			if(E2!=null)
+				D.exit=E2;
 			doors[d]=D;
 		}
 	}

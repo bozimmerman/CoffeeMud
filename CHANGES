@@ -50,6 +50,7 @@
   48. New common skills: Tanning, Fish Lore, Baiting
   49. GMCP changes: char.login, char.items.contents, room.mobiles, room.items.*, room.players
   50. Sailor behavior now supports aggro mask and relative level checks, and wander flag.
+  51. You can now create unlinked exits in the MUDGrinder.
 # Build 5.9.4 Released 08/03/2016
    1. Qualify now shows language limits
    2. New Prop_NoTeleport exceptions

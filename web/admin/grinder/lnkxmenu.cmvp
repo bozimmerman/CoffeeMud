@@ -16,6 +16,14 @@
 			document.AREAEDIT.action=action;
 			document.AREAEDIT.submit();
 		}
+
+		function Clicked2(action)
+		{
+			document.AREAEDIT.CLASSES.value='Open';
+			document.AREAEDIT.action=action;
+			document.AREAEDIT.submit();
+		}
+
 		function LinkExternally(action)
 		{
 			document.AREAEDIT.target='MENU';
@@ -34,6 +42,7 @@
 <INPUT TYPE=HIDDEN NAME=ROOM VALUE="@RequestParameter?ROOM@">
 <INPUT TYPE=HIDDEN NAME=LINK VALUE="@RequestParameter?LINK@">
 <INPUT TYPE=HIDDEN NAME=LINKSTO VALUE="@RequestParameter?LINKSTO@">
+<INPUT TYPE=HIDDEN NAME=CLASSES VALUE="">
 <INPUT TYPE=HIDDEN NAME=OLDROOM VALUE="@RequestParameter?OLDROOM@">
 <INPUT TYPE=HIDDEN NAME=OLDLINK VALUE="@RequestParameter?OLDLINK@">
 <IMG SRC="/grinder/images/grinder.gif" WIDTH=80 HEIGHT=80 ALT="" ALIGN=LEFT BORDER="0">
@@ -45,6 +54,7 @@
 <INPUT TYPE=BUTTON NAME=LINKTOAREA VALUE="Link Areas" ONCLICK="LinkExternally('/grinder/linkarea.cmvp');">
 @endif@
 <INPUT TYPE=BUTTON NAME=NEWROOM VALUE="Create New Room" ONCLICK="Clicked('/grinder/createroom.cmvp');">
+<INPUT TYPE=BUTTON NAME=NEWEXIT VALUE="Create Unlinked Exit" ONCLICK="Clicked2('/grinder/editexitform.cmvp');">
 <INPUT TYPE=CHECKBOX NAME=COPYROOM><FONT SIZE=-1><B>Copy @RequestParameter?ROOM@</B></FONT>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <INPUT TYPE=BUTTON NAME=CANCEL VALUE="Cancel" ONCLICK="Clicked('/grinder/modarea.cmvp');"></P>

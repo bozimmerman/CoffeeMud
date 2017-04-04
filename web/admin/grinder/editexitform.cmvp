@@ -39,7 +39,7 @@
 		function ReShow()
 		{
 			document.AREAEDIT.action='/grinder/editexitform.cmvp';
-			document.AREAEDIT.target='MAP';
+			//document.AREAEDIT.target='MAP';
 			document.AREAEDIT.submit();
 		}
 	//-->
@@ -59,7 +59,7 @@
 <INPUT TYPE=HIDDEN NAME=MAPSTYLE VALUE="@RequestParameter?MAPSTYLE@">
 <INPUT TYPE=HIDDEN NAME=MAPLEVEL VALUE="@RequestParameter?MAPLEVEL@">
 <INPUT TYPE=HIDDEN NAME=ACTION VALUE="MODIFYEXIT">
-<TABLE WIDTH=600 BORDER=1 CELLSPACING=0 CELLPADDIN=0>
+<TABLE WIDTH=600 BORDER=1 CELLSPACING=0 CELLPADDING=0>
 <TR>
 	<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Exit Class:</B></FONT></TD>
     <TD WIDTH=450 COLSPAN=2>

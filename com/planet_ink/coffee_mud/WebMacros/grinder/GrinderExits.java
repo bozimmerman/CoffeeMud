@@ -63,8 +63,6 @@ public class GrinderExits
 		{
 			R=CMLib.map().getRoom(R);
 			Exit X=R.getRawExit(dir);
-			if(X==null)
-				return "No Exit to edit?!";
 
 			// important generic<->non generic swap!
 			final String newClassID=httpReq.getUrlParameter("CLASSES");
@@ -73,6 +71,8 @@ public class GrinderExits
 				X=CMClass.getExit(newClassID);
 				R.setRawExit(dir,X);
 			}
+			if(X==null)
+				return "No Exit to edit?!";
 
 			for(int o=0;o<okparms.length;o++)
 			{

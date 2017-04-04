@@ -888,12 +888,20 @@ public class GrinderFlatMap
 	{
 		if((room==null)
 		||(room.doors==null)
-		||(d>=room.doors.length)) return "";
-		final GrinderDir dir=room.doors[d];
+		||(d>=room.doors.length)) 
+			return "";
+		
 		String dirLetter=""+CMLib.directions().getDirectionChar(d);
+		final GrinderDir dir=room.doors[d];
 		GrinderRoom roomPointer=null;
 		if((dir==null)||(dir.room.length()==0))
-			return "<a href=\"javascript:EC('"+CMLib.directions().getDirectionName(d)+"','"+room.roomID+"');\"><IMG BORDER=0 SRC=\"images/E"+dirLetter+".gif\"></a>";
+		{
+			final Exit exit=(dir==null)?null:dir.exit;
+			if(exit != null)
+				return "<a href=\"javascript:EC('"+CMLib.directions().getDirectionName(d)+"','"+room.roomID+"');\"><IMG BORDER=0 SRC=\"images/UE"+dirLetter+".gif\"></a>";
+			else
+				return "<a href=\"javascript:EC('"+CMLib.directions().getDirectionName(d)+"','"+room.roomID+"');\"><IMG BORDER=0 SRC=\"images/E"+dirLetter+".gif\"></a>";
+		}
 		else
 		if((d==Directions.UP)||(d==Directions.DOWN))
 		{
