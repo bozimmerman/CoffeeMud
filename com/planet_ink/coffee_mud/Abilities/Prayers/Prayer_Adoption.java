@@ -85,6 +85,7 @@ public class Prayer_Adoption extends Prayer
 			return false;
 		}
 		MOB child=mob.location().fetchInhabitant(name2);
+		
 		if((child==null)||(!CMLib.flags().canBeSeenBy(mob,child)))
 		{
 			mob.tell(L("You don't see @x1 here!",name2));
@@ -105,11 +106,14 @@ public class Prayer_Adoption extends Prayer
 			return false;
 		}
 
-		Tattoo tattChk=child.findTattoo("PARENT:");
-		if(tattChk!=null)
+		if(child instanceof MOB)
 		{
-			mob.tell(L("@x1 already has parents.",child.name()));
-			return false;
+			Tattoo tattChk=child.findTattoo("PARENT:");
+			if(tattChk!=null)
+			{
+				mob.tell(L("@x1 already has parents.",child.name()));
+				return false;
+			}
 		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
