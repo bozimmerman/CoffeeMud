@@ -32,18 +32,47 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Spell_FloatingDisc extends Spell
 {
-	@Override public String ID() { return "Spell_FloatingDisc"; }
-	private final static String localizedName = CMLib.lang().L("Floating Disc");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return CAN_ITEMS;}
-	@Override protected int canTargetCode(){return CAN_ITEMS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override
+	public String ID()
+	{
+		return "Spell_FloatingDisc";
+	}
 
-	boolean wasntMine=false;
+	private final static String	localizedName	= CMLib.lang().L("Floating Disc");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_ITEMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_ITEMS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL | Ability.DOMAIN_EVOCATION;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	boolean	wasntMine	= false;
 
 	@Override
 	public void unInvoke()
@@ -57,7 +86,6 @@ public class Spell_FloatingDisc extends Spell
 		final MOB mob=invoker;
 		final Item item=(Item)affected;
 		super.unInvoke();
-
 
 		if(canBeUninvoked())
 		{
@@ -143,6 +171,7 @@ public class Spell_FloatingDisc extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
+				// don't worry, the changes are temporary
 				final long properWornCode=((Item)target).rawProperLocationBitmap();
 				final boolean properWornLogical=((Item)target).rawLogicalAnd();
 				((Item)target).setRawLogicalAnd(false);
@@ -151,18 +180,16 @@ public class Spell_FloatingDisc extends Spell
 				((Item)target).setRawLogicalAnd(properWornLogical);
 				((Item)target).setRawProperLocationBitmap(properWornCode);
 				((Item)target).recoverPhyStats();
+				
 				beneficialAffect(mob,target,asLevel,(mob.phyStats().level()+(2*getXLEVELLevel(mob)))*30);
+				((Item)target).recoverPhyStats();
 				mob.recoverPhyStats();
 				mob.recoverMaxState();
 				mob.recoverCharStats();
 			}
-
 		}
 		else
 			beneficialWordsFizzle(mob,target,L("<S-NAME> attempt(s) to invoke a floating disc, but fail(s)."));
-
-
-
 		// return whether it worked
 		return success;
 	}

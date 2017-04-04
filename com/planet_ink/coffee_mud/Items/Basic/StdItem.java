@@ -605,7 +605,8 @@ public class StdItem implements Item
 				if((this instanceof Armor)&&(!CMath.bset(((Armor)this).getClothingLayer(),Armor.LAYERMASK_SEETHROUGH)))
 					affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_TASTE);
 			}
-			if((!amWearingAt(Wearable.WORN_FLOATING_NEARBY))
+			final Item ultiCon=ultimateContainer(null);
+			if(((ultiCon==null)||(!ultiCon.amWearingAt(Wearable.WORN_FLOATING_NEARBY)))
 			&&((!(affected instanceof MOB))||(((MOB)affected).riding()!=this)))
 				affectableStats.setWeight(affectableStats.weight()+phyStats().weight());
 		}

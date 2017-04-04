@@ -134,8 +134,7 @@ public class Thief_Scuttle extends ThiefSkill
 		}
 		
 		if((boatRoom==null)
-		||((boatRoom.domainType()!=Room.DOMAIN_INDOORS_WATERSURFACE)
-			&&(boatRoom.domainType()!=Room.DOMAIN_INDOORS_WATERSURFACE)))
+		||(!CMLib.flags().isWaterySurfaceRoom(boatRoom)))
 		{
 			mob.tell(L("The boat must be on the waves to scuttle it."));
 			return false;
