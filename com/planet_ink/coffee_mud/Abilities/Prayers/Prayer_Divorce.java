@@ -33,16 +33,39 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
-
 public class Prayer_Divorce extends Prayer
 {
-	@Override public String ID() { return "Prayer_Divorce"; }
-	private final static String localizedName = CMLib.lang().L("Divorce");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CORRUPTION;}
-	@Override public long flags(){return Ability.FLAG_UNHOLY;}
-	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
+	@Override
+	public String ID()
+	{
+		return "Prayer_Divorce";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Divorce");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER | Ability.DOMAIN_CORRUPTION;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_UNHOLY;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_OTHERS;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -138,7 +161,10 @@ public class Prayer_Divorce extends Prayer
 							}
 						}
 					}
-				}catch(final NoSuchElementException e){}
+				}
+				catch (final NoSuchElementException e)
+				{
+				}
 			}
 		}
 		else

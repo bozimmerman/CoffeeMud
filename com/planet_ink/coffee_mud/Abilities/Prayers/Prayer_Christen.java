@@ -32,17 +32,45 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
-
 public class Prayer_Christen extends Prayer
 {
-	@Override public String ID() { return "Prayer_Christen"; }
-	private final static String localizedName = CMLib.lang().L("Christen");
-	@Override public String name() { return localizedName; }
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	@Override public long flags(){return Ability.FLAG_HOLY;}
+	@Override
+	public String ID()
+	{
+		return "Prayer_Christen";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Christen");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER | Ability.DOMAIN_EVANGELISM;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_OTHERS;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_HOLY;
+	}
 
 	@Override
 	public int castingQuality(MOB mob, Physical target)
@@ -76,7 +104,9 @@ public class Prayer_Christen extends Prayer
 		if(target==null)
 			return false;
 
-		if((!(target instanceof CagedAnimal))||(target.phyStats().ability()<=0)||(!target.isGeneric()))
+		if((!(target instanceof CagedAnimal))
+		||(target.phyStats().ability()<=0)
+		||(!target.isGeneric()))
 		{
 			mob.tell(L("You may only christen a child."));
 			return false;
@@ -130,8 +160,6 @@ public class Prayer_Christen extends Prayer
 		}
 		else
 			beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 over <T-NAME>, but lose(s) <S-HIS-HER> concentration.",prayWord(mob)));
-
-
 		// return whether it worked
 		return success;
 	}
