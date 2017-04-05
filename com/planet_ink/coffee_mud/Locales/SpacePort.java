@@ -84,8 +84,10 @@ public class SpacePort extends StdRoom implements LocationRoom
 	{
 		switch(getLocCodeNum(code))
 		{
-		case 0: return CMParms.toListString(this.getDirectionFromCore());
-		default: return super.getStat(code);
+		case 0:
+			return CMParms.toListString(this.getDirectionFromCore());
+		default:
+			return super.getStat(code);
 		}
 	}
 
@@ -94,8 +96,12 @@ public class SpacePort extends StdRoom implements LocationRoom
 	{
 		switch(getLocCodeNum(code))
 		{
-		case 0: this.setDirectionFromCore(CMParms.toDoubleArray(CMParms.parseCommas(val,true))); break;
-		default: super.setStat(code, val); break;
+		case 0:
+			this.setDirectionFromCore(CMParms.toDoubleArray(CMParms.parseCommas(val, true)));
+			break;
+		default:
+			super.setStat(code, val);
+			break;
 		}
 	}
 
@@ -110,6 +116,7 @@ public class SpacePort extends StdRoom implements LocationRoom
 	}
 
 	private static String[] codes=null;
+	
 	@Override
 	public String[] getStatCodes()
 	{

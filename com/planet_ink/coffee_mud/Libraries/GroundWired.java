@@ -369,11 +369,25 @@ public class GroundWired extends StdLibrary implements TechLibrary
 
 	protected long getMinDistance(long[] myCoords, long[] yourCoords, double x1, double y1, double z1, double f1)
 	{
+		if(f1==0)
+			return 0;
 		final double[] M0M1=new double[] { 
 			myCoords[0]-yourCoords[0], 
 			myCoords[1]-yourCoords[1], 
 			myCoords[2]-yourCoords[2] 
 		};
+		if(M0M1[0]==0)
+		{
+			if(M0M1[1]==0)
+				return Math.round((myCoords[2]-yourCoords[2])/f1);
+			else
+			if(M0M1[2]==0)
+				return Math.round((myCoords[1]-yourCoords[1])/f1);
+		}
+		else
+		if((M0M1[1]==0)&&(M0M1[2]==0))
+			return Math.round((myCoords[0]-yourCoords[0])/f1);
+
 		final double[] scalarProduct=  new double[] {
 			(M0M1[1]*z1-M0M1[2]*y1),
 			(M0M1[2]*x1-M0M1[0]*z1), 
