@@ -136,8 +136,9 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 		if(moveToOutside)
 		{
 			final SpaceObject o = getShipSpaceObject();
+			long[] newCoordinates = CMLib.map().moveSpaceObject(((LocationRoom)R).coordinates(), direction(), radius());
 			if((o != null)&&(R instanceof LocationRoom))
-				CMLib.map().addObjectToSpace(o,((LocationRoom)R).coordinates());
+				CMLib.map().addObjectToSpace(o,newCoordinates);
 		}
 		return exitRoom;
 	}

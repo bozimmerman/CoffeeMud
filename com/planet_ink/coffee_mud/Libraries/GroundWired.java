@@ -433,21 +433,30 @@ public class GroundWired extends StdLibrary implements TechLibrary
 					if(cO != O)
 					{
 						final long minDistance=getMinDistance(myCoords,cO.coordinates(),x1,y1,z1,f1);
+						final long currentDistance=CMLib.map().getDistanceFrom(myCoords, cO.coordinates());
+						final double[] directionTo=CMLib.map().getDirection(O, cO);
+//TODO:BZ:DELME
+System.out.println("currentDistance="+currentDistance+", minDistance="+minDistance);
 						if(((cO instanceof Area)||(cO.getMass() >= asteroidMass))
+						&&(currentDistance > (O.radius()+cO.radius()))
 						&&(oMass < moonletMass))
 						{
 							if(minDistance<(cO.radius()*SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS))
 							{
-								final double[] directionTo=CMLib.map().getDirection(O, cO);
 								// can this cause slip-through?
 								final long mass = Math.max(1,oMass / 1000);
 								if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
 									Log.debugOut("SpaceShip "+O.name()+" is gravitating "+(SpaceObject.ACCELLERATION_G * mass)+" towards " +cO.Name());
-								CMLib.map().moveSpaceObject(O, directionTo, SpaceObject.ACCELLERATION_G * mass); 
+								long amountToMove = SpaceObject.ACCELLERATION_G * mass;
+								final long minMove=currentDistance - (O.radius()+cO.radius());
+								if(amountToMove > minMove)
+									amountToMove = minMove;
+								CMLib.map().moveSpaceObject(O, directionTo, amountToMove); 
 								inAirFlag = true;
 							}
 						}
 						if ((minDistance<(O.radius()+cO.radius()))
+						&&((speed>0)||(cO.speed()>0))
 						&&((oMass < moonletMass)||(cO.getMass() < moonletMass)))
 						{
 							final MOB host=CMLib.map().deity();

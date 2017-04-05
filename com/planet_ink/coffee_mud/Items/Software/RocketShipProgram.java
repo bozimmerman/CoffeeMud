@@ -469,7 +469,7 @@ public class RocketShipProgram extends GenShipProgram
 							myDirection[1]=directionFromMeToOrb[1]+(Math.PI/2.0);
 							if(myDirection[1] > Math.PI)
 								myDirection[1] = Math.abs(myDirection[1]-Math.PI);
-//TODO: delme
+//TODO:BZ:DELME
 System.out.println("("+directionFromMeToOrb[0]+","+directionFromMeToOrb[1]+") <-> ("+myDirection[0]+","+myDirection[1]+")");
 						}
 					}
@@ -481,15 +481,15 @@ System.out.println("("+directionFromMeToOrb[0]+","+directionFromMeToOrb[1]+") <-
 			{
 				for(final ShipEngine engineE : engines)
 				{
-//TODO: delme
+//TODO:BZ:DELME
 System.out.println("Engine "+engineE.Name()+", lastThrust="+lastThrust+", lastSpeed="+lastSpeed);
 					if(this.lastThrust<=0)
 					{
 						this.lastThrust=2.0 * CMath.div(ship.getMass(), engineE.getSpecificImpulse());
 						if(this.lastThrust < engineE.getMinThrust())
 							this.lastThrust= engineE.getMinThrust();
-						if(this.lastThrust < 1)
-							this.lastThrust=1;
+						if(this.lastThrust < 0.5)
+							this.lastThrust=0.5;
 						this.lastSpeed=0.0;
 					}
 					else
