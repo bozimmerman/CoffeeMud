@@ -593,17 +593,16 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 	
 	protected void doGravityChanges()
 	{
-		boolean gravStatus = getShipFlag(ShipFlag.IN_THE_AIR) || (this.getIsDocked()!=null);
-		//TODO: FIX THIS -- it is BROKEN! A docked ship has no gravity?!
-		if(gravStatus == getShipFlag(ShipFlag.NO_GRAVITY))
+		final boolean gravExistsNow = getShipFlag(ShipFlag.IN_THE_AIR) || (this.getIsDocked()!=null);
+		if(gravExistsNow == getShipFlag(ShipFlag.NO_GRAVITY)) // opposite, so it needs changing
 		{
 			final Ability floater = getGravityFloat();
 			if(floater != null)
 			{
 				final SpaceObject spaceObject=getShipSpaceObject();
-				final String code=Technical.TechCommand.GRAVITYCHANGE.makeCommand(Boolean.valueOf(gravStatus));
+				final String code=Technical.TechCommand.GRAVITYCHANGE.makeCommand(Boolean.valueOf(gravExistsNow));
 				final String msgStr;
-				if(gravStatus)
+				if(gravExistsNow)
 					msgStr=L("You feel the pull of gravity returning.");
 				else
 					msgStr=L("You no longer feel the pull of gravity.");
@@ -618,7 +617,7 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 							cancelled=true;
 					}
 				}
-				setShipFlag(ShipFlag.NO_GRAVITY, !gravStatus);
+				setShipFlag(ShipFlag.NO_GRAVITY, !gravExistsNow);
 				if(cancelled)
 				{
 					return;
@@ -638,13 +637,13 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 						{
 							final MOB M=R.fetchInhabitant(i);
 							if(M!=null)
-								floater.invoke(floater.invoker(), M, gravStatus, 0);
+								floater.invoke(floater.invoker(), M, gravExistsNow, 0);
 						}
 						for(int i=0;i<R.numItems();i++)
 						{
 							final Item I=R.getItem(i);
 							if(I!=null)
-								floater.invoke(floater.invoker(), I, gravStatus, 0);
+								floater.invoke(floater.invoker(), I, gravExistsNow, 0);
 						}
 					}
 				}

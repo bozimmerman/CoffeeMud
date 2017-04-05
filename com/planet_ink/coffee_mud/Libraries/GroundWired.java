@@ -367,7 +367,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 		return true;
 	}
 
-	protected long getMaxDistance(long[] myCoords, long[] yourCoords, double x1, double y1, double z1, double f1)
+	protected long getMinDistance(long[] myCoords, long[] yourCoords, double x1, double y1, double z1, double f1)
 	{
 		final double[] M0M1=new double[] { 
 			myCoords[0]-yourCoords[0], 
@@ -418,7 +418,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 				{
 					if(cO != O)
 					{
-						final long minDistance=getMaxDistance(myCoords,cO.coordinates(),x1,y1,z1,f1);
+						final long minDistance=getMinDistance(myCoords,cO.coordinates(),x1,y1,z1,f1);
 						if(((cO instanceof Area)||(cO.getMass() >= asteroidMass))
 						&&(oMass < moonletMass))
 						{
