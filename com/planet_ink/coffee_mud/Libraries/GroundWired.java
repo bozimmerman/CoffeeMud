@@ -367,17 +367,17 @@ public class GroundWired extends StdLibrary implements TechLibrary
 		return true;
 	}
 
-	protected long getMinDistance(long[] myCoords, long[] yourCoords, double x1, double y1, double z1, double f1, double speed)
+	protected long getMinDistance(long[] myCoords, long[] otherCoords, double x, double y, double z, double f, double speed)
 	{
-		final double[] M0M1=new double[] { 
-			myCoords[0]-yourCoords[0], 
-			myCoords[1]-yourCoords[1], 
-			myCoords[2]-yourCoords[2] 
+		final double[] M0M=new double[] { 
+			myCoords[0]-otherCoords[0], 
+			myCoords[1]-otherCoords[1], 
+			myCoords[2]-otherCoords[2] 
 		};
-		final double[] M1M1=new double[] { 
-			myCoords[0]+(x1*speed),
-			myCoords[1]+(y1*speed),
-			myCoords[2]+(z1*speed)
+		final double[] M1M=new double[] { 
+			myCoords[0]+(x*speed),
+			myCoords[1]+(y*speed),
+			myCoords[2]+(z*speed)
 		};
 		/*
 		if(M0M1[0]==0)
@@ -392,23 +392,23 @@ public class GroundWired extends StdLibrary implements TechLibrary
 		if((M0M1[1]==0)&&(M0M1[2]==0))
 			return Math.round((myCoords[0]-yourCoords[0])/f1);
 		*/
-		final double[] scalarProduct=  new double[] {
-			((M0M1[0]*M1M1[1])-(M0M1[1]*M1M1[0])),
-			((M0M1[1]*M1M1[2])-(M0M1[2]*M1M1[1])), 
-			((M0M1[2]*M1M1[0])-(M0M1[0]*M1M1[2]))
+		final double[] SP=  new double[] {
+			((M0M[0]*M1M[1])-(M0M[1]*M1M[0])),
+			((M0M[1]*M1M[2])-(M0M[2]*M1M[1])), 
+			((M0M[2]*M1M[0])-(M0M[0]*M1M[2]))
 		};
 		if(speed==0)
 		{
 			return Math.round(Math.sqrt(
-					(M0M1[0]*M0M1[0])
-					+(M0M1[1]*M0M1[1])
-					+(M0M1[2]*M0M1[2])));
+					(M0M[0]*M0M[0])
+					+(M0M[1]*M0M[1])
+					+(M0M[2]*M0M[2])));
 		}
 		else
 			return Math.round(Math.sqrt(
-					(scalarProduct[0]*scalarProduct[0])
-					+(scalarProduct[1]*scalarProduct[1])
-					+(scalarProduct[2]*scalarProduct[2])) / speed);
+					(SP[0]*SP[0])
+					+(SP[1]*SP[1])
+					+(SP[2]*SP[2])) / speed);
 	}
 
 	public void runSpace()
