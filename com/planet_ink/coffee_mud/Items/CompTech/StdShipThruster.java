@@ -304,7 +304,6 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipEngine
 			activeThrust = thrust;
 		
 		final double accelleration=activeThrust;
-		
 		if((amount > 1)&&((portDir!=TechComponent.ShipDir.AFT) || (me.getThrust() > oldThrust)))
 			tellWholeShip(me,mob,CMMsg.MSG_NOISE,CMLib.lang().L("You feel a "+rumbleWord+" and hear the blast of @x1.",me.name(mob)));
 		if(accelleration == 0)

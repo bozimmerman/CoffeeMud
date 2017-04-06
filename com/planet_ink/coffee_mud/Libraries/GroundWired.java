@@ -367,15 +367,19 @@ public class GroundWired extends StdLibrary implements TechLibrary
 		return true;
 	}
 
-	protected long getMinDistance(long[] myCoords, long[] yourCoords, double x1, double y1, double z1, double f1)
+	protected long getMinDistance(long[] myCoords, long[] yourCoords, double x1, double y1, double z1, double f1, double speed)
 	{
-		if(f1==0)
-			return 0;
 		final double[] M0M1=new double[] { 
 			myCoords[0]-yourCoords[0], 
 			myCoords[1]-yourCoords[1], 
 			myCoords[2]-yourCoords[2] 
 		};
+		final double[] M1M1=new double[] { 
+			myCoords[0]+(x1*speed),
+			myCoords[1]+(y1*speed),
+			myCoords[2]+(z1*speed)
+		};
+		/*
 		if(M0M1[0]==0)
 		{
 			if(M0M1[1]==0)
@@ -387,16 +391,24 @@ public class GroundWired extends StdLibrary implements TechLibrary
 		else
 		if((M0M1[1]==0)&&(M0M1[2]==0))
 			return Math.round((myCoords[0]-yourCoords[0])/f1);
-
+		*/
 		final double[] scalarProduct=  new double[] {
-			(M0M1[1]*z1-M0M1[2]*y1),
-			(M0M1[2]*x1-M0M1[0]*z1), 
-			(M0M1[0]*y1-M0M1[1]*x1)
+			((M0M1[0]*M1M1[1])-(M0M1[1]*M1M1[0])),
+			((M0M1[1]*M1M1[2])-(M0M1[2]*M1M1[1])), 
+			((M0M1[2]*M1M1[0])-(M0M1[0]*M1M1[2]))
 		};
-		return Math.round(Math.sqrt(
-				(scalarProduct[0]*scalarProduct[0])
-				+(scalarProduct[1]*scalarProduct[1])
-				+(scalarProduct[2]*scalarProduct[2])) / f1);
+		if(speed==0)
+		{
+			return Math.round(Math.sqrt(
+					(M0M1[0]*M0M1[0])
+					+(M0M1[1]*M0M1[1])
+					+(M0M1[2]*M0M1[2])));
+		}
+		else
+			return Math.round(Math.sqrt(
+					(scalarProduct[0]*scalarProduct[0])
+					+(scalarProduct[1]*scalarProduct[1])
+					+(scalarProduct[2]*scalarProduct[2])) / speed);
 	}
 
 	public void runSpace()
@@ -432,7 +444,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 				{
 					if(cO != O)
 					{
-						final long minDistance=getMinDistance(myCoords,cO.coordinates(),x1,y1,z1,f1);
+						final long minDistance=getMinDistance(myCoords,cO.coordinates(),x1,y1,z1,f1,speed);
 						final long currentDistance=CMLib.map().getDistanceFrom(myCoords, cO.coordinates());
 						final double[] directionTo=CMLib.map().getDirection(O, cO);
 //TODO:BZ:DELME

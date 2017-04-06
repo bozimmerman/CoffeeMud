@@ -529,7 +529,11 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 					final boolean readFlag=false;
 					final MOB M=msg.source();
 					if(msgs.size()==0)
-						M.location().show(M, this, null, CMMsg.MASK_ALWAYS|CMMsg.TYP_OK_VISUAL, CMMsg.NO_EFFECT, CMMsg.NO_EFFECT, L("<T-NAME> says '^N\n\rUnknown activation command. Please read the screen for a menu of TYPEable commands.\n\r^.^N'"));
+					{
+						final Room R=M.location();
+						if(R!=null)
+							R.show(M, this, null, CMMsg.MASK_ALWAYS|CMMsg.TYP_OK_VISUAL, CMMsg.NO_EFFECT, CMMsg.NO_EFFECT, L("<T-NAME> says '^N\n\rUnknown activation command. Please read the screen for a menu of TYPEable commands.\n\r^.^N'"));
+					}
 					else
 					{
 						double damageFailChance=1.0;

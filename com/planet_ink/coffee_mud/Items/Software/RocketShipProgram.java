@@ -56,6 +56,7 @@ public class RocketShipProgram extends GenShipProgram
 	
 	protected volatile double			lastThrust		= 0;
 	protected volatile double			lastSpeed		= 0;
+	protected volatile List<Double>		bestGuessThrusts= new ArrayList<Double>();
 	protected volatile List<ShipEngine> launchEngines	= null;
 	protected final List<CMObject>		sensorReport	= new LinkedList<CMObject>();
 
@@ -457,6 +458,7 @@ public class RocketShipProgram extends GenShipProgram
 							//this.launchEngines=null;
 							//this.lastSpeed=0.0;
 							//this.lastThrust=0;
+							//bestGuessThrusts.clear();
 						}
 						if(((distance > orb.radius())&&(distance < (orb.radius()*SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS)))
 						||((distance > orb.radius()*SpaceObject.MULTIPLIER_ORBITING_RADIUS_MIN)&&(distance<orb.radius()*SpaceObject.MULTIPLIER_ORBITING_RADIUS_MAX)))
@@ -488,19 +490,44 @@ System.out.println("Engine "+engineE.Name()+", lastThrust="+lastThrust+", lastSp
 						this.lastThrust=2.0 * CMath.div(ship.getMass(), engineE.getSpecificImpulse());
 						if(this.lastThrust < engineE.getMinThrust())
 							this.lastThrust= engineE.getMinThrust();
-						if(this.lastThrust < 0.5)
-							this.lastThrust=0.5;
+						if(this.lastThrust < 0.001)
+							this.lastThrust=0.001;
 						this.lastSpeed=0.0;
 					}
 					else
+					if((spaceObject.speed()==0)&&(this.lastSpeed==0))
+						this.lastThrust *= 1.2;
+					else
 					{
-						double lastAccelleration = spaceObject.speed() - this.lastSpeed;
+						final double lastAccelleration = spaceObject.speed() - this.lastSpeed;
 						this.lastSpeed=spaceObject.speed();
-						if(lastAccelleration > SpaceObject.ACCELLERATION_TYPICALROCKET)
-							this.lastThrust = Math.round(lastThrust * .8);
+						if(lastAccelleration > 0)
+						{
+							bestGuessThrusts.add(new Double(lastAccelleration / this.lastThrust));
+							double allGuesses=0.0;
+							for(final Double d : bestGuessThrusts)
+								allGuesses += d.doubleValue();
+							double bestGuess = allGuesses / bestGuessThrusts.size();
+							if(bestGuess > this.lastThrust * 2.0)
+								bestGuess = this.lastThrust * 2.0;
+//TODO: delme
+System.out.println("Last Accelleration="+lastAccelleration+", bg="+bestGuess);
+							this.lastThrust = SpaceObject.ACCELLERATION_TYPICALROCKET / bestGuess;
+						}
 						else
-						if(lastAccelleration < 1)
-							this.lastThrust = Math.round(lastThrust * 1.5);
+						if(bestGuessThrusts.size()>1)
+						{
+							bestGuessThrusts.remove(bestGuessThrusts.size()-1);
+							double allGuesses=0.0;
+							for(final Double d : bestGuessThrusts)
+								allGuesses += d.doubleValue();
+							final double bestGuess = allGuesses / bestGuessThrusts.size();
+//TODO: delme
+System.out.println("-Last Accelleration="+lastAccelleration+", bg="+bestGuess);
+							this.lastThrust = SpaceObject.ACCELLERATION_TYPICALROCKET / bestGuess;
+						}
+						else
+							this.lastThrust *= 1.2;
 					}
 //TODO: delme
 System.out.println("New Thrust="+this.lastThrust);

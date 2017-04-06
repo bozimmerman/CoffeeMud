@@ -239,7 +239,10 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 											// to eliminate all speed, do a complicated gforce calc, and re-speed
 											this.setSpeed(0);
 										}
-										CMLib.map().moveSpaceObject(this,facing(),Math.round((amount-1.0)*inAirFactor));
+										final long finalThrust = Math.round((amount-1.0)*inAirFactor);
+//TODO:BZ:DELME
+System.out.println("Final Thrust="+finalThrust+", based on "+amount+" raw thrust.");
+										CMLib.map().moveSpaceObject(this,facing(),finalThrust);
 										break;
 									}
 									}
