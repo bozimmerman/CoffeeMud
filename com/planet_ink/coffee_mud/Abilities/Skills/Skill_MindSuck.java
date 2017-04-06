@@ -93,10 +93,14 @@ public class Skill_MindSuck extends StdSkill
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
-		if(affected instanceof MOB)
+		/*
+		if((affected!=null)
+		&&((msg.source()==affected)||(msg.source()==invoker))
+		&&((msg.targetMinor()==CMMsg.TYP_LEAVE)||(msg.targetMinor()==CMMsg.TYP_RECALL)))
 		{
-			
+			unInvoke();
 		}
+		*/
 	}
 
 	@Override
