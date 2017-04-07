@@ -140,6 +140,24 @@ public class Spell_IceSheet extends Spell
 	}
 
 	@Override
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if((mob != null)&&(target instanceof MOB))
+		{
+			if(CMLib.flags().isFlying(target))
+				return Ability.QUALITY_INDIFFERENT;
+			final Set<MOB> grp=mob.getGroupMembers(new HashSet<MOB>());
+			grp.remove(mob);
+			for(final MOB M : grp)
+			{
+				if(!CMLib.flags().isFlying(M))
+					return Ability.QUALITY_INDIFFERENT;
+			}
+		}
+		return super.castingQuality(mob, target);
+	}
+	
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof Room)))
