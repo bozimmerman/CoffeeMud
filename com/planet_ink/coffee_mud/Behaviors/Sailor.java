@@ -41,7 +41,6 @@ public class Sailor extends StdBehavior
 	protected boolean		combatIsOver	= false;
 	protected boolean		peaceMover		= false;
 	protected boolean		combatMover		= true;
-	protected boolean		wanderOK		= false;
 	protected boolean		combatTech		= true;
 	protected boolean		boarder			= false;
 	protected boolean		defender		= false;
@@ -181,7 +180,6 @@ public class Sailor extends StdBehavior
 		boarder = CMParms.getParmBool(newParms, "BOARDER", false);
 		defender = CMParms.getParmBool(newParms, "DEFENDER", false);
 		aggressive = CMParms.getParmBool(newParms, "AGGRO", false);
-		wanderOK = CMParms.getParmBool(newParms, "WANDER", false);
 		aggrMobs = CMParms.getParmBool(newParms, "AGGROMOBS", false);
 		aggrLvlChk = CMParms.getParmBool(newParms, "AGGROLEVELCHECK", false);
 		aggrMask = CMLib.masking().maskCompile(CMParms.getParmStr(newParms, "AGGROMASK", ""));
@@ -854,13 +852,13 @@ public class Sailor extends StdBehavior
 							if(ourSpeed == 1)
 							{
 								if(CMLib.dice().rollPercentage()<30)
-									course.add(CMLib.directions().getDirectionName(CMLib.dice().roll(1, 4, -1)));
+									nextDir=Integer.valueOf(CMLib.dice().roll(1, 4, -1));
 							}
 							if(nextDir != null)
 							{
 								final Room nextRoom=curRoom.getRoomInDir(nextDir.intValue());
 								if((nextRoom == null)
-								||((!wanderOK)&&(nextRoom.getArea()!=curRoom.getArea())))
+								||((areaOnly)&&(nextRoom.getArea()!=curRoom.getArea())))
 									nextDir = null;
 							}
 							if(nextDir != null)
