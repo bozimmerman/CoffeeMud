@@ -367,55 +367,12 @@ public class GroundWired extends StdLibrary implements TechLibrary
 		return true;
 	}
 
-	protected long getMinDistance(long[] myCoords, long[] otherCoords, double x, double y, double z, double f, double speed)
-	{
-		final double[] M0M=new double[] { 
-			myCoords[0]-otherCoords[0], 
-			myCoords[1]-otherCoords[1], 
-			myCoords[2]-otherCoords[2] 
-		};
-		final double[] M1M=new double[] { 
-			myCoords[0]+(x*speed),
-			myCoords[1]+(y*speed),
-			myCoords[2]+(z*speed)
-		};
-		/*
-		if(M0M1[0]==0)
-		{
-			if(M0M1[1]==0)
-				return Math.round((myCoords[2]-yourCoords[2])/f1);
-			else
-			if(M0M1[2]==0)
-				return Math.round((myCoords[1]-yourCoords[1])/f1);
-		}
-		else
-		if((M0M1[1]==0)&&(M0M1[2]==0))
-			return Math.round((myCoords[0]-yourCoords[0])/f1);
-		*/
-		final double[] SP=  new double[] {
-			((M0M[0]*M1M[1])-(M0M[1]*M1M[0])),
-			((M0M[1]*M1M[2])-(M0M[2]*M1M[1])), 
-			((M0M[2]*M1M[0])-(M0M[0]*M1M[2]))
-		};
-		if(speed==0)
-		{
-			return Math.round(Math.sqrt(
-					(M0M[0]*M0M[0])
-					+(M0M[1]*M0M[1])
-					+(M0M[2]*M0M[2])));
-		}
-		else
-			return Math.round(Math.sqrt(
-					(SP[0]*SP[0])
-					+(SP[1]*SP[1])
-					+(SP[2]*SP[2])) / speed);
-	}
-
 	public void runSpace()
 	{
 		final long moonletMass = SpaceObject.MULTIPLIER_PLANET_MASS* SpaceObject.Distance.MoonRadius.dm / 10;
 		final long asteroidMass = moonletMass / 5;
-		for(final Enumeration<SpaceObject> o = CMLib.map().getSpaceObjects(); o.hasMoreElements(); )
+		final WorldMap map = CMLib.map();
+		for(final Enumeration<SpaceObject> o = map.getSpaceObjects(); o.hasMoreElements(); )
 		{
 			final SpaceObject O=o.nextElement();
 			if(!(O instanceof Area))
@@ -428,29 +385,30 @@ public class GroundWired extends StdLibrary implements TechLibrary
 				BoundedCube cube=O.getBounds();
 				final double speed=O.speed();
 				final long[] myCoords=O.coordinates();
+				final long[] endCoords;
 				if(speed>=1)
 				{
-					CMLib.map().moveSpaceObject(O);
+					map.moveSpaceObject(O);
+					endCoords=Arrays.copyOf(O.coordinates(),3);
 					cube=cube.expand(O.direction(),(long)speed);
 				}
-				final double x1=Math.cos(O.direction()[0])*Math.sin(O.direction()[1]);
-				final double y1=Math.sin(O.direction()[0])*Math.sin(O.direction()[1]);
-				final double z1=Math.cos(O.direction()[1]);
-				final double f1 = Math.sqrt((x1*x1)+(y1*y1)+(z1*z1));
+				else
+					endCoords=myCoords;
 				boolean inAirFlag = false;
-				final List<SpaceObject> cOs=CMLib.map().getSpaceObjectsWithin(O, 0, SpaceObject.Distance.LightMinute.dm);
+				final List<SpaceObject> cOs=map.getSpaceObjectsWithin(O, 0, SpaceObject.Distance.LightMinute.dm);
 				final long oMass = O.getMass();
 				for(final SpaceObject cO : cOs)
 				{
 					if(cO != O)
 					{
-						final long minDistance=getMinDistance(myCoords,cO.coordinates(),x1,y1,z1,f1,speed);
-						final long currentDistance=CMLib.map().getDistanceFrom(myCoords, cO.coordinates());
-						final double[] directionTo=CMLib.map().getDirection(O, cO);
+						final long prevDistance=map.getDistanceFrom(myCoords, cO.coordinates());
+						final long curDistance = map.getDistanceFrom(endCoords, cO.coordinates());
+						final long minDistance=Math.round(Math.sqrt((prevDistance*prevDistance)+(curDistance*curDistance)));
+						final double[] directionTo=map.getDirection(O, cO);
 //TODO:BZ:DELME
-System.out.println("currentDistance="+currentDistance+", minDistance="+minDistance);
+System.out.println("currentDistance="+prevDistance+", minDistance="+minDistance);
 						if(((cO instanceof Area)||(cO.getMass() >= asteroidMass))
-						&&(currentDistance > (O.radius()+cO.radius()))
+						&&(prevDistance > (O.radius()+cO.radius()))
 						&&(oMass < moonletMass))
 						{
 							if(minDistance<(cO.radius()*SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS))
@@ -460,10 +418,10 @@ System.out.println("currentDistance="+currentDistance+", minDistance="+minDistan
 								if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
 									Log.debugOut("SpaceShip "+O.name()+" is gravitating "+(SpaceObject.ACCELLERATION_G * mass)+" towards " +cO.Name());
 								long amountToMove = SpaceObject.ACCELLERATION_G * mass;
-								final long minMove=currentDistance - (O.radius()+cO.radius());
+								final long minMove=prevDistance - (O.radius()+cO.radius());
 								if(amountToMove > minMove)
 									amountToMove = minMove;
-								CMLib.map().moveSpaceObject(O, directionTo, amountToMove); 
+								map.moveSpaceObject(O, directionTo, amountToMove); 
 								inAirFlag = true;
 							}
 						}
@@ -471,7 +429,7 @@ System.out.println("currentDistance="+currentDistance+", minDistance="+minDistan
 						&&((speed>0)||(cO.speed()>0))
 						&&((oMass < moonletMass)||(cO.getMass() < moonletMass)))
 						{
-							final MOB host=CMLib.map().deity();
+							final MOB host=map.deity();
 							CMMsg msg=CMClass.getMsg(host, O, cO, CMMsg.MSG_COLLISION,null);
 							if(O.okMessage(host, msg))
 								O.executeMsg(host, msg);
