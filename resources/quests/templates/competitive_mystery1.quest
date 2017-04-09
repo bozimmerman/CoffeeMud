@@ -61,7 +61,7 @@
 #Use double-quotes around multi-word names.
 #If you specified an area or room above, then the mob must be located there.
 #You may optionally have the quest manager select a 'random' mob by entering
-#a mob name of ANY MASK= followed by a Zapper Mask (see help on 
+#a mob name of ANY, or ANY MASK= followed by a Zapper Mask (see help on 
 #ZAPPERMASKS for information on zapper mask syntax).
 #Remember, if the quest manager can not find your mob, the quest will not
 #be started.
@@ -91,7 +91,7 @@
 #Use double-quotes around multi-word names.
 #If you specified an area or room above, then the mob must be located there.
 #You may optionally have the quest manager select a 'random' mob by entering
-#a mob name of ANY MASK= followed by a Zapper Mask (see help on 
+#a mob name of ANY, or ANY MASK= followed by a Zapper Mask (see help on 
 #ZAPPERMASKS for information on zapper mask syntax).
 #Remember, if the quest manager can not find your mob, the quest will not
 #be started.
@@ -230,10 +230,10 @@
 #$WITNESS_RADIUS=$EXPRESSION=5
 #
 #Witness Names: You may enter here the names of one or more mobs around the victim, putting double
-#quotes around multi-word names, and separating multiple names with spaces.  You may also use the
-#ANY MASK= syntax and include a Zapper Mask that described what sort of mobs can be used as witnesses.
-#A witness may be chosen multiple times to hold many different clues.  If you like, you may even set
-#it up so that only ONE mob knows all of the clues, but that's not recommended.
+#quotes around multi-word names, and separating multiple names with spaces.  You may also use 
+#ANY, or the ANY MASK= syntax and include a Zapper Mask that described what sort of mobs can be used 
+#as witnesses.  A witness may be chosen multiple times to hold many different clues.  If you like, 
+#you may even set it up so that only ONE mob knows all of the clues, but that's not recommended.
 #$WITNESS_NAMES=$NAME=ANY MASK=+INT 6
 #
 #!QUESTMAKER_PAGE The Motives
