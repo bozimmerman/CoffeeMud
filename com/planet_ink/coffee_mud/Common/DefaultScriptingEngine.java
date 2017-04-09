@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.AccountStats.PrideStat;
+import com.planet_ink.coffee_mud.Common.interfaces.Session.InputCallback;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
@@ -7342,21 +7343,35 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	}
 
 	@Override
+	public String execute(final PhysicalAgent scripted,
+						  final MOB source,
+						  final Environmental target,
+						  final MOB monster,
+						  final Item primaryItem,
+						  final Item secondaryItem,
+						  final DVector script,
+						  final String msg,
+						  final Object[] tmp)
+	{
+		return execute(scripted,source,target,monster,primaryItem,secondaryItem,script,msg,tmp,1);
+	}
+
 	public String execute(PhysicalAgent scripted,
 						  MOB source,
 						  Environmental target,
 						  MOB monster,
 						  Item primaryItem,
 						  Item secondaryItem,
-						  DVector script,
+						  final DVector script,
 						  String msg,
-						  Object[] tmp)
+						  final Object[] tmp,
+						  final int startLine)
 	{
 		tickStatus=Tickable.STATUS_START;
 		String s=null;
 		String[] tt=null;
 		String cmd=null;
-		for(int si=1;si<script.size();si++)
+		for(int si=startLine;si<script.size();si++)
 		{
 			s=((String)script.elementAt(si,1)).trim();
 			tt=(String[])script.elementAt(si,2);
@@ -7975,7 +7990,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				{
 					try
 					{
-						final String value=((MOB)newTarget).session().prompt(promptStr,60000);
+						final String value=((MOB)newTarget).session().prompt(promptStr,120000);
 						setVar(newTarget.Name(),var,value);
 					}
 					catch(final Exception e) 
@@ -8008,6 +8023,62 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					{
 						return "";
 					}
+					/*
+					 * this is how to do non-blocking, which doesn't help stuff waiting
+					 * for a response from the original execute method
+					final Session session = ((MOB)newTarget).session();
+					if(session != null)
+					{
+						try
+						{
+							final int lastLineNum=si;
+							final JScriptEvent continueEvent=new JScriptEvent(
+																		this,
+																		scripted,
+																		source,
+																		target,
+																		monster,
+																		primaryItem,
+																		secondaryItem,
+																		msg,
+																		tmp);
+							((MOB)newTarget).session().prompt(new InputCallback(InputCallback.Type.PROMPT,"",0){
+								private final JScriptEvent event=continueEvent;
+								private final int lineNum=lastLineNum;
+								private final String scope=newTarget.Name();
+								private final String varName=var;
+								private final String promptStrMsg=promptStr;
+								private final DVector lastScript=script;
+
+								@Override
+								public void showPrompt()
+								{
+									session.promptPrint(promptStrMsg);
+								}
+	
+								@Override
+								public void timedOut()
+								{
+									event.executeEvent(lastScript, lineNum+1);
+								}
+								
+								@Override
+								public void callBack()
+								{
+									final String value=this.input;
+									if((value.trim().length()==0)||(value.indexOf('<')>=0))
+										return;
+									setVar(scope,varName,value);
+									event.executeEvent(lastScript, lineNum+1);
+								}
+							});
+						}
+						catch(final Exception e) 
+						{
+							return "";
+						}
+					}
+					 */
 				}
 				break;
 			}
@@ -12924,6 +12995,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				};
 			}
 			return super.get(name, start);
+		}
+
+		public void executeEvent(final DVector script, final int lineNum)
+		{
+			c.execute(h, s, t, m, pi, si, script, message, objs, lineNum);
 		}
 
 		public JScriptEvent(DefaultScriptingEngine scrpt,
