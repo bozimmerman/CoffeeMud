@@ -1149,7 +1149,8 @@ public class MobData extends StdWebMacro
 					M=RoomData.getMOBFromCode(R,mobCode);
 				else
 					M=RoomData.getMOBFromCode(RoomData.getMOBCache(),mobCode);
-				if((M==null)||(!M.isSavable()))
+				if((M==null)
+				||((!M.isSavable())&&((R==null)||(R.isSavable()))))
 				{
 					final StringBuffer str=new StringBuffer("No MOB?!");
 					str.append(" Got: "+mobCode);

@@ -139,7 +139,8 @@ public class RoomData extends StdWebMacro
 			if(M==M2)
 				return Long.toString( ( M.ID() + "/" + M.Name() + "/" + M.displayText() ).hashCode() << 5 ) + code;
 			else
-			if((M2!=null)&&(M2.isSavable()))
+			if((M2!=null)
+			&&((M2.isSavable())||((R!=null)&&(!R.isSavable()))))
 				code++;
 		}
 		return "";
@@ -388,7 +389,8 @@ public class RoomData extends StdWebMacro
 		{
 			if(M.isGeneric())
 			{
-				if((getReferenceMOB(M)==null)&&(M.isSavable()))
+				if((getReferenceMOB(M)==null)
+				&&((M.isSavable())||((M.location()!=null)&&(!M.location().isSavable()))))
 				{
 					final MOB M3=(MOB)M.copyOf();
 					M3.setExpirationDate(System.currentTimeMillis());
@@ -704,7 +706,8 @@ public class RoomData extends StdWebMacro
 					{
 						final MOB M=m.next();
 						boolean found=false;
-						if((M!=null)&&(M.isSavable()))
+						if((M!=null)
+						&&((M.isSavable())||((R2!=null)&&(!R2.isSavable()))))
 						{
 							for(final Enumeration<MOB> m2 =R2.inhabitants();m2.hasMoreElements();)
 							{
@@ -714,7 +717,8 @@ public class RoomData extends StdWebMacro
 									if(!checkedMobs.contains(M2))
 									{
 										CMLib.catalog().updateCatalogIntegrity(M2);
-										if((M2.isSavable())&&(M2.sameAs(M)))
+										if(((M2.isSavable())||((R2!=null)&&(!R2.isSavable())))
+										&&(M2.sameAs(M)))
 										{
 											found=true;
 											checkedMobs.add(M2);
@@ -732,7 +736,8 @@ public class RoomData extends StdWebMacro
 					{
 						final Item I=i.next();
 						boolean found=false;
-						if((I!=null)&&(I.isSavable()))
+						if((I!=null)
+						&&(I.isSavable()||((R2!=null)&&(!R2.isSavable()))))
 						{
 							for(final Enumeration<Item> i2 =R2.items();i2.hasMoreElements();)
 							{
@@ -742,7 +747,8 @@ public class RoomData extends StdWebMacro
 									if(!checkedItems.contains(I2))
 									{
 										CMLib.catalog().updateCatalogIntegrity(I2);
-										if((I2.isSavable())&&(I2.sameAs(I)))
+										if((I2.isSavable()||((R2!=null)&&(!R2.isSavable())))
+										&&(I2.sameAs(I)))
 										{
 											found=true;
 											checkedItems.add(I2);
@@ -1327,7 +1333,7 @@ public class RoomData extends StdWebMacro
 						if(M!=null)
 						{
 							CMLib.catalog().updateCatalogIntegrity(M);
-							if(M.isSavable())
+							if((M.isSavable())||((R!=null)&&(!R.isSavable())))
 								classes.addElement(M);
 						}
 					}

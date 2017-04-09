@@ -4311,7 +4311,6 @@ public class StdMOB implements MOB
 				return false;
 		}
 		return true;
-
 	}
 
 	@Override
