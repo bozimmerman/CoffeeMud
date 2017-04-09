@@ -1135,10 +1135,10 @@ public class Directions
 	 */
 	public static final int getRelativeDirection(int[] xyFrom, int[] xyTo, boolean useBase4)
 	{
-		double x =  xyTo[0] - xyFrom[0];
-		double y =  xyTo[1] - xyFrom[1];
-		double rads = Math.atan2(x,y);
-		int dir= (int)Math.round(rads * 180.0 / Math.PI);
+		final double x =  xyTo[0] - xyFrom[0];
+		final double y =  xyTo[1] - xyFrom[1];
+		final double rads = Math.atan2(x,y);
+		final int dir= (int)Math.round(rads * 180.0 / Math.PI);
 		if(useBase4)
 		{
 			if((dir < -135)||(dir > 135))

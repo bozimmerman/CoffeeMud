@@ -257,7 +257,7 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 									}
 									}
 									facing[0]=Math.abs(facing[0]%(2*Math.PI));
-									facing[1]=Math.abs(facing[1]%(2*Math.PI));  // should that really be 2*?
+									facing[1]=Math.abs(facing[1]%(Math.PI));  // should that really be 2*?
 								}
 							}
 						}

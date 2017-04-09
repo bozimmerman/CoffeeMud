@@ -52,8 +52,8 @@ public class CMMap extends StdLibrary implements WorldMap
 		return "CMMap";
 	}
 
+	public final double			PI_TIMES_2				= Math.PI*2.0;
 	public final double			PI_BY_2					= Math.PI/2.0;
-	public final double			PI_BY_4					= Math.PI/4.0;
 	public final int			QUADRANT_WIDTH  		= 10;
 	public static MOB   		deityStandIn			= null;
 	public long 				lastVReset  			= 0;
@@ -533,20 +533,20 @@ public class CMMap extends StdLibrary implements WorldMap
 	public void moveSpaceObject(SpaceObject O, double[] newDirection, long newAccelleration)
 	{
 		final double directionYaw = O.direction()[0];
-		final double directionPitch = (O.direction()[1] > PI_BY_2) ? Math.abs(PI_BY_2-O.direction()[1]) : O.direction()[1];
+		final double directionPitch = (O.direction()[1] > Math.PI) ? Math.abs(Math.PI-O.direction()[1]) : O.direction()[1];
 
 		final double facingYaw = newDirection[0];
-		final double facingPitch = (newDirection[1] > PI_BY_2) ? Math.abs(PI_BY_2-newDirection[1]) : newDirection[1];
+		final double facingPitch = (newDirection[1] > Math.PI) ? Math.abs(Math.PI-newDirection[1]) : newDirection[1];
 
 		final double currentSpeed = O.speed();
 		final double acceleration = newAccelleration;
 
 		double yawDelta = (directionYaw >  facingYaw) ? (directionYaw - facingYaw) : (facingYaw - directionYaw);
-		if(yawDelta > PI_BY_2)
-			yawDelta=Math.PI-yawDelta;
+		if(yawDelta > Math.PI)
+			yawDelta=PI_TIMES_2-yawDelta;
 		double pitchDelta = (directionPitch >  facingPitch) ? (directionPitch - facingPitch) : (facingPitch - directionPitch);
-		if(pitchDelta > PI_BY_4)
-			pitchDelta=PI_BY_2-pitchDelta;
+		if(pitchDelta > PI_BY_2)
+			pitchDelta=Math.PI-pitchDelta;
 		
 		final double anglesDelta = yawDelta + pitchDelta;
 		final double accelerationMultiplier = acceleration / currentSpeed;
@@ -557,14 +557,14 @@ public class CMMap extends StdLibrary implements WorldMap
 		else
 			newDirectionYaw = directionYaw + ((directionYaw > facingYaw) ? -(accelerationMultiplier * Math.sin(yawDelta)) : (accelerationMultiplier * Math.sin(yawDelta)));
 		if (newDirectionYaw < 0.0)
-			newDirectionYaw = (Math.PI * 2.0) + newDirectionYaw;
+			newDirectionYaw = PI_TIMES_2 + newDirectionYaw;
 		double newDirectionPitch;
 		if(pitchDelta < 0.1)
 			newDirectionPitch = directionPitch;
 		else
 			newDirectionPitch = directionPitch + ((directionPitch > facingPitch) ? -(accelerationMultiplier * Math.sin(pitchDelta)) : (accelerationMultiplier * Math.sin(pitchDelta)));
 		if (newDirectionPitch < 0.0)
-			newDirectionPitch = (Math.PI * 2.0) + newDirectionPitch;
+			newDirectionPitch = PI_TIMES_2 + newDirectionPitch;
 
 		double newSpeed = currentSpeed + (acceleration * Math.cos(anglesDelta));
 		if(newSpeed < 0)

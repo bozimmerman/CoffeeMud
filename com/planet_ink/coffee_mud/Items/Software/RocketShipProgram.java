@@ -571,6 +571,7 @@ public class RocketShipProgram extends GenShipProgram
 				final MOB M=CMClass.getFactoryMOB();
 				try
 				{
+					final double accellerationTarget = SpaceObject.ACCELLERATION_TYPICALROCKET-1.0;
 					for(ShipEngine engineE : engines)
 					{
 						if((CMParms.contains(engineE.getAvailPorts(),TechComponent.ShipDir.AFT))
@@ -579,7 +580,7 @@ public class RocketShipProgram extends GenShipProgram
 						{
 							int tries=10000;
 							double lastTryAmt=0.001;
-							CMMsg deactMsg=CMClass.getMsg(M, engineE, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_DEACTIVATE, null, CMMsg.NO_EFFECT,null);
+							final CMMsg deactMsg=CMClass.getMsg(M, engineE, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_DEACTIVATE, null, CMMsg.NO_EFFECT,null);
 							msg=CMClass.getMsg(mob, engineE, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, null, CMMsg.NO_EFFECT,null);
 							while((readyEngines.size()==0)&&(--tries>0))
 							{
@@ -589,13 +590,13 @@ public class RocketShipProgram extends GenShipProgram
 								this.trySendMsgToItem(mob, engineE, msg);
 								if((this.lastThrust!=null)&&(this.lastThrust.doubleValue()>0.0))
 								{
-									if(this.lastThrust.doubleValue() >= (SpaceObject.ACCELLERATION_TYPICALROCKET *0.9))
+									if(this.lastThrust.doubleValue() >= (accellerationTarget *0.9))
 										readyEngines.add(engineE);
 									else
 									{
 										this.trySendMsgToItem(mob, engineE, deactMsg);
 										double newDivider=this.lastThrust.doubleValue() / lastTryAmt;
-										lastTryAmt = SpaceObject.ACCELLERATION_TYPICALROCKET / newDivider;
+										lastTryAmt = accellerationTarget / newDivider;
 									}
 								}
 								else
