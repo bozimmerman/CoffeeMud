@@ -92,8 +92,10 @@ public class Goblin extends StdRace
 		return localizedStaticRacialCat;
 	}
 
-	private final String[]	culturalAbilityNames			= { "Goblinese", "Orcish", "Mining" };
-	private final int[]		culturalAbilityProficiencies	= { 100, 50, 75 };
+	private final String[]	culturalAbilityNames		= { "Goblinese", "Orcish", "Mining", "Excavation" };
+	private final int[]		culturalAbilityProficiencies= { 100, 50, 75, 25 };
+	private final int[]		culturalAbilityLevels		= { 0,    0,  0,  5 };
+	private final boolean[]	culturalAbilityGains		= { true, true, true, true };
 
 	@Override
 	public String[] culturalAbilityNames()
@@ -105,6 +107,18 @@ public class Goblin extends StdRace
 	public int[] culturalAbilityProficiencies()
 	{
 		return culturalAbilityProficiencies;
+	}
+
+	@Override
+	protected int[] culturalAbilityLevels()
+	{
+		return culturalAbilityLevels;
+	}
+
+	@Override
+	protected boolean[] culturalAbilityAutoGains()
+	{
+		return culturalAbilityGains;
 	}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
