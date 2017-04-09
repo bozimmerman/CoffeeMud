@@ -3050,7 +3050,7 @@ public class ListCmd extends StdCommand
 
 	public List<String> getMyCmdWords(MOB mob)
 	{
-		final Vector<String> V=new Vector<String>();
+		final ArrayList<String> V=new ArrayList<String>();
 		for (final ListCmdEntry cmd : ListCmdEntry.values())
 		{
 			if((CMSecurity.isAllowedAnywhereContainsAny(mob, cmd.flags))
@@ -3064,6 +3064,7 @@ public class ListCmd extends StdCommand
 			||CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.LISTADMIN))
 				V.add(CMJ.NAME()+"S");
 		}
+		Collections.sort(V);
 		return V;
 	}
 
