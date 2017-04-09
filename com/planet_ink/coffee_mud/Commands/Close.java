@@ -35,14 +35,20 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Close extends StdCommand
 {
-	public Close(){}
+	public Close()
+	{
+	}
 
-	private final String[] access=I(new String[]{"CLOSE","CLOS","CLO","CL"});
-	@Override public String[] getAccessWords(){return access;}
-	
-	private final static Class[][] internalParameters=new Class[][]{{Environmental.class,String.class,Integer.class}};
-	
-	
+	private final String[]	access	= I(new String[] { "CLOSE", "CLOS", "CLO", "CL" });
+
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
+
+	private final static Class[][]	internalParameters	= new Class[][] { { Environmental.class, String.class, Integer.class } };
+
 	public boolean closeMe(final MOB mob, final Environmental closeThis, final String whatToClose, int dirCode)
 	{
 		final boolean useShipDirs=(mob.location() instanceof BoardableShip)||(mob.location().getArea() instanceof BoardableShip);
@@ -57,9 +63,16 @@ public class Close extends StdCommand
 			{
 				mob.location().send(msg.source(),msg);
 				if(dirCode<0)
-				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
-					if(mob.location().getExitInDir(d)==closeThis)
-					{dirCode=d; break;}
+				{
+					for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+					{
+						if(mob.location().getExitInDir(d)==closeThis)
+						{
+							dirCode = d;
+							break;
+						}
+					}
+				}
 
 				if((dirCode>=0)&&(mob.location().getRoomInDir(dirCode)!=null))
 				{
@@ -121,11 +134,23 @@ public class Close extends StdCommand
 			return Boolean.FALSE;
 		return Boolean.valueOf(closeMe(mob, (Environmental)args[0], (String)args[1], ((Integer)args[2]).intValue()));
 	}
-	
-	
-	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandCombatActionCost(ID());}
-	@Override public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandActionCost(ID());}
-	@Override public boolean canBeOrdered(){return true;}
 
+	@Override
+	public double combatActionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandCombatActionCost(ID());
+	}
+
+	@Override
+	public double actionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandActionCost(ID());
+	}
+
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 
 }

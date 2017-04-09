@@ -499,7 +499,7 @@ public class StdExit implements Exit
 		{
 			if(closeWord().length()==0)
 				setExitParams(doorName(),openWord(),"close",closedText());
-			if(isOpen)
+			if(isOpen())
 			{
 				if(!hasADoor())
 				{
