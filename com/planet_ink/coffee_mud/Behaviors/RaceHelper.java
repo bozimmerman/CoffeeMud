@@ -69,7 +69,7 @@ public class RaceHelper extends StdBehavior
 				String reason="THAT`S MY FRIEND!! CHARGE!!";
 				if((observer.charStats().getMyRace().ID().equals(target.charStats().getMyRace().ID()))
 				&&(!observer.charStats().getMyRace().ID().equals(source.charStats().getMyRace().ID())))
-					reason=observer.charStats().getMyRace().ID().toUpperCase()+"s UNITE! CHARGE!";
+					reason=observer.charStats().getMyRace().ID().toUpperCase()+"S UNITE! CHARGE!";
 				Aggressive.startFight(observer,source,true,false,reason);
 			}
 		}
