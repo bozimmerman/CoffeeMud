@@ -384,16 +384,12 @@ public class GroundWired extends StdLibrary implements TechLibrary
 					continue;
 				BoundedCube cube=O.getBounds();
 				final double speed=O.speed();
-				final long[] myCoords=O.coordinates();
-				final long[] endCoords;
+				final long[] startCoords=Arrays.copyOf(O.coordinates(),3);
 				if(speed>=1)
 				{
 					map.moveSpaceObject(O);
-					endCoords=Arrays.copyOf(O.coordinates(),3);
 					cube=cube.expand(O.direction(),(long)speed);
 				}
-				else
-					endCoords=myCoords;
 				boolean inAirFlag = false;
 				final List<SpaceObject> cOs=map.getSpaceObjectsWithin(O, 0, SpaceObject.Distance.LightMinute.dm);
 				final long oMass = O.getMass();
@@ -401,12 +397,9 @@ public class GroundWired extends StdLibrary implements TechLibrary
 				{
 					if(cO != O)
 					{
-						final long prevDistance=map.getDistanceFrom(myCoords, cO.coordinates());
-						final long curDistance = map.getDistanceFrom(endCoords, cO.coordinates());
-						final long minDistance=Math.round(Math.sqrt((prevDistance*prevDistance)+(curDistance*curDistance)));
+						final long prevDistance=map.getDistanceFrom(startCoords, cO.coordinates());
+						final double minDistance=map.getMinDistanceFrom(O, prevDistance, cO);
 						final double[] directionTo=map.getDirection(O, cO);
-//TODO:BZ:DELME
-System.out.println("currentDistance="+prevDistance+", minDistance="+minDistance);
 						if(((cO instanceof Area)||(cO.getMass() >= asteroidMass))
 						&&(prevDistance > (O.radius()+cO.radius()))
 						&&(oMass < moonletMass))
@@ -418,7 +411,7 @@ System.out.println("currentDistance="+prevDistance+", minDistance="+minDistance)
 								if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
 									Log.debugOut("SpaceShip "+O.name()+" is gravitating "+(SpaceObject.ACCELLERATION_G * mass)+" towards " +cO.Name());
 								long amountToMove = SpaceObject.ACCELLERATION_G * mass;
-								final long minMove=prevDistance - (O.radius()+cO.radius());
+								final long minMove=Math.round(prevDistance - (O.radius()+cO.radius()));
 								if(amountToMove > minMove)
 									amountToMove = minMove;
 								map.moveSpaceObject(O, directionTo, amountToMove); 

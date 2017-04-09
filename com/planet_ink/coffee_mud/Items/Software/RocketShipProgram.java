@@ -54,9 +54,7 @@ public class RocketShipProgram extends GenShipProgram
 	protected volatile List<TechComponent>	sensors		= null;
 	protected volatile List<TechComponent>	components	= null;
 	
-	protected volatile double			lastThrust		= 0;
-	protected volatile double			lastSpeed		= 0;
-	protected volatile List<Double>		bestGuessThrusts= new ArrayList<Double>();
+	protected volatile Double			lastThrust		= null;
 	protected volatile List<ShipEngine> launchEngines	= null;
 	protected final List<CMObject>		sensorReport	= new LinkedList<CMObject>();
 
@@ -435,6 +433,18 @@ public class RocketShipProgram extends GenShipProgram
 		return true;
 	}
 
+	protected void trySendMsgToItem(final MOB mob, Item engineE, CMMsg msg)
+	{
+		if(engineE.owner() instanceof Room)
+		{
+			if(((Room)engineE.owner()).okMessage(mob, msg))
+				((Room)engineE.owner()).send(mob, msg);
+		}
+		else
+		if(engineE.okMessage(mob, msg))
+			engineE.executeMsg(mob, msg);
+	}
+	
 	@Override
 	public boolean checkPowerCurrent(int value)
 	{
@@ -454,8 +464,8 @@ public class RocketShipProgram extends GenShipProgram
 						||(distance > orb.radius()*SpaceObject.MULTIPLIER_ORBITING_RADIUS_MAX))
 						{
 							//TODO: only if it is the proper direction away .. is this what I actually launched from?
-							//System.out.println("*****LAUNCH COMPLETE++++");
-							//this.launchEngines=null;
+							System.out.println("*****LAUNCH COMPLETE++++");
+							this.launchEngines=null;
 							//this.lastSpeed=0.0;
 							//this.lastThrust=0;
 							//bestGuessThrusts.clear();
@@ -472,12 +482,12 @@ public class RocketShipProgram extends GenShipProgram
 							if(myDirection[1] > Math.PI)
 								myDirection[1] = Math.abs(myDirection[1]-Math.PI);
 //TODO:BZ:DELME
-System.out.println("("+directionFromMeToOrb[0]+","+directionFromMeToOrb[1]+") <-> ("+myDirection[0]+","+myDirection[1]+")");
+System.out.println("(dir2orb="+directionFromMeToOrb[0]+","+directionFromMeToOrb[1]+"), mydir=("+myDirection[0]+","+myDirection[1]+")");
 						}
 					}
 				}
 			}
-
+			/*
 			final SpaceShip ship=(spaceObject instanceof SpaceShip)?(SpaceShip)spaceObject:null;
 			if(ship != null)
 			{
@@ -551,6 +561,7 @@ System.out.println("New Thrust="+this.lastThrust);
 					}
 				}
 			}
+			*/
 		}
 		return true;
 	}
@@ -633,29 +644,52 @@ System.out.println("New Thrust="+this.lastThrust);
 				}
 				final List<ShipEngine> readyEngines = new ArrayList<ShipEngine>(1);
 				final List<ShipEngine> engines = getEngines();
-				String code=Technical.TechCommand.THRUST.makeCommand(TechComponent.ShipDir.AFT,Double.valueOf(.0000001));
-				for(ShipEngine engineE : engines)
+				final MOB M=CMClass.getFactoryMOB();
+				try
 				{
-					if((CMParms.contains(engineE.getAvailPorts(),TechComponent.ShipDir.AFT))
-					&&(engineE.getMaxThrust()>SpaceObject.ACCELLERATION_G)
-					&&(engineE.getMinThrust()<SpaceObject.ACCELLERATION_PASSOUT))
+					for(ShipEngine engineE : engines)
 					{
-						msg=CMClass.getMsg(mob, engineE, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
-						if(engineE.owner() instanceof Room)
+						if((CMParms.contains(engineE.getAvailPorts(),TechComponent.ShipDir.AFT))
+						&&(engineE.getMaxThrust()>SpaceObject.ACCELLERATION_G)
+						&&(engineE.getMinThrust()<SpaceObject.ACCELLERATION_PASSOUT))
 						{
-							if(((Room)engineE.owner()).okMessage(mob, msg))
+							int tries=100;
+							double lastTryAmt=0.001;
+							CMMsg deactMsg=CMClass.getMsg(M, engineE, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_DEACTIVATE, null, CMMsg.NO_EFFECT,null);
+							msg=CMClass.getMsg(mob, engineE, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, null, CMMsg.NO_EFFECT,null);
+							while((readyEngines.size()==0)&&(--tries>0))
 							{
-								((Room)engineE.owner()).send(mob, msg);
-								readyEngines.add(engineE);
+								this.lastThrust=null;
+								final String code=Technical.TechCommand.THRUST.makeCommand(TechComponent.ShipDir.AFT,Double.valueOf(lastTryAmt));
+								msg.setTargetMessage(code);
+								this.trySendMsgToItem(mob, engineE, msg);
+								if((this.lastThrust!=null)&&(this.lastThrust.doubleValue()>0.0))
+								{
+	//TODO:BZ:DELME
+	System.out.println("LASTTHRUST="+this.lastThrust.doubleValue()+", based on="+lastTryAmt);
+									if(this.lastThrust.doubleValue() >= (SpaceObject.ACCELLERATION_TYPICALROCKET *0.9))
+										readyEngines.add(engineE);
+									else
+									{
+										this.trySendMsgToItem(mob, engineE, deactMsg);
+										double newDivider=this.lastThrust.doubleValue() / lastTryAmt;
+										lastTryAmt = SpaceObject.ACCELLERATION_TYPICALROCKET / newDivider;
+	//TODO:BZ:DELME
+	System.out.println("NEWTRY="+lastTryAmt+", baed on divider="+newDivider);
+									}
+								}
+								else
+								{
+									this.trySendMsgToItem(mob, engineE, deactMsg);
+									lastTryAmt *= 2;
+								}
 							}
 						}
-						else
-						if(engineE.okMessage(mob, msg))
-						{
-							engineE.executeMsg(mob, msg);
-							readyEngines.add(engineE);
-						}
 					}
+				}
+				finally
+				{
+					M.destroy();
 				}
 				if(readyEngines.size()==0)
 				{
@@ -663,10 +697,11 @@ System.out.println("New Thrust="+this.lastThrust);
 					super.addScreenMessage(L("Error: Malfunctioning launch thrusters interface."));
 					return;
 				}
-				this.lastSpeed=0.0;
-				this.lastThrust=0;
+				//this.lastSpeed=0.0;
+				//this.lastThrust=0;
 				this.launchEngines=readyEngines;
 				super.addScreenMessage(L("Launch procedure initialized."));
+				return;
 			}
 			else
 			if(uword.equalsIgnoreCase("STOP"))
@@ -843,6 +878,27 @@ System.out.println("New Thrust="+this.lastThrust);
 			}
 			}
 		}
+		else
+		if((msg.target() instanceof SpaceShip)
+		&&(lastThrust==null)
+		&&(msg.targetMinor()==CMMsg.TYP_ACTIVATE)
+		&&(msg.isTarget(CMMsg.MASK_CNTRLMSG))
+		&&(msg.targetMessage()!=null))
+		{
+			final String[] parts=msg.targetMessage().split(" ");
+			final TechCommand command=TechCommand.findCommand(parts);
+			if(command == TechCommand.THRUSTED)
+			{
+				final Object[] parms=command.confirmAndTranslate(parts);
+				if((parms!=null)&&(parms[0]==ShipDir.AFT))
+				{
+					this.lastThrust=(Double)parms[1];
+//TODO:BZ:DELME:
+System.out.println("Software saw thrust of "+this.lastThrust);
+				}
+			}
+		}
+
 		if((container() instanceof Computer)
 		&&(msg.target() == container())
 		&&(msg.targetMinor() == CMMsg.TYP_DEACTIVATE))

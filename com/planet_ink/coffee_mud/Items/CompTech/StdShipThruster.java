@@ -248,7 +248,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipEngine
 	
 	private static int getFuelToConsume(final ShipEngine me, final Manufacturer manufacturer, double thrust)
 	{
-		return (int)Math.round(
+		final int fuel=(int)Math.round(
 			CMath.ceiling(
 				thrust
 				*me.getFuelEfficiency()
@@ -256,6 +256,9 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipEngine
 				/ getFuelDivisor()
 			)
 		);
+		if((thrust>0)&&(fuel<=0))
+			return 1;
+		return fuel;
 	}
 	
 	public static boolean executeThrust(final ShipEngine me, final String circuitKey, final MOB mob, final Software controlI, final TechComponent.ShipDir portDir, final double amount)

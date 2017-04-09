@@ -52,6 +52,8 @@ public class CMMap extends StdLibrary implements WorldMap
 		return "CMMap";
 	}
 
+	public final double			PI_BY_2					= Math.PI/2.0;
+	public final double			PI_BY_4					= Math.PI/4.0;
 	public final int			QUADRANT_WIDTH  		= 10;
 	public static MOB   		deityStandIn			= null;
 	public long 				lastVReset  			= 0;
@@ -531,23 +533,22 @@ public class CMMap extends StdLibrary implements WorldMap
 	public void moveSpaceObject(SpaceObject O, double[] newDirection, long newAccelleration)
 	{
 		final double directionYaw = O.direction()[0];
-		double directionPitch = O.direction()[1];
-		if(directionPitch > Math.PI)
-			directionPitch = Math.abs(Math.PI-directionPitch);
+		final double directionPitch = (O.direction()[1] > PI_BY_2) ? Math.abs(PI_BY_2-O.direction()[1]) : O.direction()[1];
 
 		final double facingYaw = newDirection[0];
-		double facingPitch = newDirection[1];
-		if(facingPitch > Math.PI)
-			facingPitch = Math.abs(Math.PI-facingPitch);
+		final double facingPitch = (newDirection[1] > PI_BY_2) ? Math.abs(PI_BY_2-newDirection[1]) : newDirection[1];
 
 		final double currentSpeed = O.speed();
 		final double acceleration = newAccelleration;
 
-		final double directionCombinedAngle = directionYaw + directionPitch;
-		final double facingCombinedAngle = facingYaw + facingPitch;
-		final double anglesDelta = (directionCombinedAngle >  facingCombinedAngle) ? (directionCombinedAngle - facingCombinedAngle) : (facingCombinedAngle - directionCombinedAngle);
-		final double yawDelta = (directionYaw >  facingYaw) ? (directionYaw - facingYaw) : (facingYaw - directionYaw);
-		final double pitchDelta = (directionPitch >  facingPitch) ? (directionPitch - facingPitch) : (facingPitch - directionPitch);
+		double yawDelta = (directionYaw >  facingYaw) ? (directionYaw - facingYaw) : (facingYaw - directionYaw);
+		if(yawDelta > PI_BY_2)
+			yawDelta=Math.PI-yawDelta;
+		double pitchDelta = (directionPitch >  facingPitch) ? (directionPitch - facingPitch) : (facingPitch - directionPitch);
+		if(pitchDelta > PI_BY_4)
+			pitchDelta=PI_BY_2-pitchDelta;
+		
+		final double anglesDelta = yawDelta + pitchDelta;
 		final double accelerationMultiplier = acceleration / currentSpeed;
 
 		double newDirectionYaw;
@@ -576,6 +577,10 @@ public class CMMap extends StdLibrary implements WorldMap
 		if((O.direction()[0]>Math.PI)&&(O.direction()[1]<=Math.PI))
 			newDirectionPitch=Math.PI+newDirectionPitch;
 
+//TODO:BZ:DELME
+System.out.println("DIR CHANGE="+O.direction()[0]+","+O.direction()[1]+" + "+newDirection[0]+","+newDirection[1]+" = "+newDirectionYaw+","+newDirectionPitch);
+//TODO:BZ:DELME
+System.out.println("DIR DELTA="+anglesDelta+", yaw delta="+yawDelta+", pitchDelta="+pitchDelta);
 		O.direction()[0]=newDirectionYaw;
 		O.direction()[1]=newDirectionPitch;
 		O.setSpeed(newSpeed);
@@ -3785,6 +3790,34 @@ public class CMMap extends StdLibrary implements WorldMap
 				return myFiles.toArray(new CMFile.CMVFSFile[0]);
 			}
 		};
+	}
+
+	@Override
+	public double getMinDistanceFrom(SpaceObject FROM, long prevDistance, SpaceObject TO)
+	{
+		final long curDistance = getDistanceFrom(FROM.coordinates(), TO.coordinates());
+		final double baseDistance=FROM.speed();
+		final double cd2=(curDistance * curDistance);
+		final double pd2=(prevDistance * prevDistance);
+		final double sp2=(baseDistance * baseDistance);
+		final double angleCurDistance=Math.acos((pd2+sp2-cd2) / (2.0 * baseDistance * prevDistance));
+		final double anglePrevDistance=Math.acos((cd2+sp2-pd2) / (2.0 * baseDistance * curDistance));
+		final long minDistance;
+		if(angleCurDistance > 1.5708)
+			minDistance=curDistance;
+		else
+		if(anglePrevDistance > 1.5708)
+			minDistance=prevDistance;
+		else
+		{
+			final double s=(prevDistance + curDistance + baseDistance)/2.0;
+			final double area = Math.pow((s*(s-prevDistance)*(s-curDistance)*(s-baseDistance)),0.5);
+			final double height=2.0 * (area/baseDistance);
+			minDistance=Math.round(height);
+		}
+		//TODO:BZ:DELME
+		System.out.println("currentDistance="+prevDistance+", minDistance="+minDistance+", angles="+angleCurDistance+", "+anglePrevDistance);
+		return minDistance;
 	}
 
 }

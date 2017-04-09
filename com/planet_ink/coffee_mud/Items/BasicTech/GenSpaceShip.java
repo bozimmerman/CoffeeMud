@@ -239,10 +239,22 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 											// to eliminate all speed, do a complicated gforce calc, and re-speed
 											this.setSpeed(0);
 										}
-										final long finalThrust = Math.round((amount-1.0)*inAirFactor);
+										final double finalRawThrust = (amount-1.0)*inAirFactor;
+										final long finalThrust = Math.round(finalRawThrust);
+										CMLib.map().moveSpaceObject(this,facing(),finalThrust);
+										final String code=Technical.TechCommand.THRUSTED.makeCommand(dir,Double.valueOf(finalRawThrust));
+										final MOB mob=CMClass.getFactoryMOB();
+										try
+										{
+											final CMMsg msg2=CMClass.getMsg(mob, this, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
+											this.sendComputerMessage(mob, msg2);
+										}
+										finally
+										{
+											mob.destroy();
+										}
 //TODO:BZ:DELME
 System.out.println("Final Thrust="+finalThrust+", based on "+amount+" raw thrust.");
-										CMLib.map().moveSpaceObject(this,facing(),finalThrust);
 										break;
 									}
 									}
@@ -691,7 +703,11 @@ System.out.println("Final Thrust="+finalThrust+", based on "+amount+" raw thrust
 	public void setDirection(double[] dir)
 	{
 		if(dir!=null)
+		{
+//TODO:BZ:DELME
+System.out.println(name()+" DIR CHANGE: "+dir[0]+","+dir[1]);
 			direction=dir;
+		}
 	}
 	
 	@Override 
@@ -703,6 +719,8 @@ System.out.println("Final Thrust="+finalThrust+", based on "+amount+" raw thrust
 	@Override 
 	public void setSpeed(double v)
 	{
+//TODO:BZ:DELME
+System.out.println(name()+" SPEED CHANGE: "+v);
 		speed=v;
 	}
 
