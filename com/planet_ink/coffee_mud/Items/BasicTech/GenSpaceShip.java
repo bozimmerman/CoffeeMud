@@ -253,8 +253,6 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 										{
 											mob.destroy();
 										}
-//TODO:BZ:DELME
-System.out.println("Final Thrust="+finalThrust+", based on "+amount+" raw thrust.");
 										break;
 									}
 									}
@@ -703,11 +701,7 @@ System.out.println("Final Thrust="+finalThrust+", based on "+amount+" raw thrust
 	public void setDirection(double[] dir)
 	{
 		if(dir!=null)
-		{
-//TODO:BZ:DELME
-System.out.println(name()+" DIR CHANGE: "+dir[0]+","+dir[1]);
 			direction=dir;
-		}
 	}
 	
 	@Override 
@@ -719,8 +713,6 @@ System.out.println(name()+" DIR CHANGE: "+dir[0]+","+dir[1]);
 	@Override 
 	public void setSpeed(double v)
 	{
-//TODO:BZ:DELME
-System.out.println(name()+" SPEED CHANGE: "+v);
 		speed=v;
 	}
 

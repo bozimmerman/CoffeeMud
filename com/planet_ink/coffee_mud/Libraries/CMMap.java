@@ -577,10 +577,6 @@ public class CMMap extends StdLibrary implements WorldMap
 		if((O.direction()[0]>Math.PI)&&(O.direction()[1]<=Math.PI))
 			newDirectionPitch=Math.PI+newDirectionPitch;
 
-//TODO:BZ:DELME
-System.out.println("DIR CHANGE="+O.direction()[0]+","+O.direction()[1]+" + "+newDirection[0]+","+newDirection[1]+" = "+newDirectionYaw+","+newDirectionPitch);
-//TODO:BZ:DELME
-System.out.println("DIR DELTA="+anglesDelta+", yaw delta="+yawDelta+", pitchDelta="+pitchDelta);
 		O.direction()[0]=newDirectionYaw;
 		O.direction()[1]=newDirectionPitch;
 		O.setSpeed(newSpeed);
@@ -3815,8 +3811,6 @@ System.out.println("DIR DELTA="+anglesDelta+", yaw delta="+yawDelta+", pitchDelt
 			final double height=2.0 * (area/baseDistance);
 			minDistance=Math.round(height);
 		}
-		//TODO:BZ:DELME
-		System.out.println("currentDistance="+prevDistance+", minDistance="+minDistance+", angles="+angleCurDistance+", "+anglePrevDistance);
 		return minDistance;
 	}
 
