@@ -1834,6 +1834,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		Item w=null;
 		if((laws.basicCrimes().containsKey("ARMED"))
 		&&((!testMOB.isMonster())||(!myArea.inMyMetroArea(CMLib.map().getStartArea(testMOB))))
+		&&(!testMOB.isInCombat())
 		&&((w=testMOB.fetchWieldedItem())!=null)
 		&&(w instanceof Weapon)
 		&&(testMOB.getPeaceTime()>(2*MOB.END_SHEATH_TIME))
