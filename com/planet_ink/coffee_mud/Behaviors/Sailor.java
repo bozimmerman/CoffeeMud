@@ -865,8 +865,10 @@ public class Sailor extends StdBehavior
 							{
 								course.add(CMLib.directions().getDirectionName(nextDir.intValue()));
 								curRoom=curRoom.getRoomInDir(nextDir.intValue());
+								ourSpeed--;
 							}
-							ourSpeed--;
+							if((tries<20)&&(ourSpeed>1))
+								ourSpeed=1;
 						}
 						mob.enqueCommand(course, 0, 0);
 					}

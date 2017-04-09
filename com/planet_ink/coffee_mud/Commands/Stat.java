@@ -623,10 +623,16 @@ public class Stat  extends Skills
 				msg.append(stat).append(", ");
 			for(String stat : mob.phyStats().getStatCodes())
 				msg.append(stat).append(", ");
-			msg.append("XP, XPTNL, XPFNL, QUESTPOINTS, TRAINS, PRACTICES, HEALTH, RESISTS, ATTRIBUTES, ");
+			msg.append("XP, XPTNL, XPFNL, QUESTPOINTS, TRAINS, PRACTICES, HEALTH, RESISTS, ATTRIBUTES");
+			for(Enumeration<Faction> f=CMLib.factions().factions();f.hasMoreElements();)
+			{
+				final Faction F=f.nextElement();
+				if((F!=null)&&(F.showInScore()))
+					msg.append(", "+F.name().toUpperCase().replace(' ','_'));
+			}
 			if(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.STAT))
 			{
-				msg.append(L("[MOB/PLAYER NAME], [NUMBER] [DAYS/WEEKS/MONTHS], "));
+				msg.append(L(", [MOB/PLAYER NAME], [NUMBER] [DAYS/WEEKS/MONTHS], "));
 				for (final String[] element : ABLETYPE_DESCS)
 					msg.append(element[0]+", ");
 				msg.append(CMParms.toListString(Ability.ACODE_DESCS));
@@ -1387,6 +1393,20 @@ public class Stat  extends Skills
 				}
 				if(!found)
 				{
+					for(Enumeration<Faction> f=CMLib.factions().factions();f.hasMoreElements();)
+					{
+						final Faction F=f.nextElement();
+						if((F!=null)
+						&&(F.showInScore())
+						&&(thisStat.equals(F.name().toUpperCase().replace(' ','_'))))
+						{
+							str.append(mob.fetchFaction(F.factionID())).append(" ");
+							found=true;
+						}
+					}
+				}
+				if(!found)
+				{
 					for(String stat : M.curState().getStatCodes())
 					{
 						if(stat.startsWith(thisStat))
@@ -1439,6 +1459,20 @@ public class Stat  extends Skills
 								str.append(M.phyStats().getStat(stat)).append(" ");
 							found=true;
 							break;
+						}
+					}
+				}
+				if(!found)
+				{
+					for(Enumeration<Faction> f=CMLib.factions().factions();f.hasMoreElements();)
+					{
+						final Faction F=f.nextElement();
+						if((F!=null)
+						&&(F.showInScore())
+						&&(F.name().toUpperCase().replace(' ','_').startsWith(thisStat)))
+						{
+							str.append(mob.fetchFaction(F.factionID())).append(" ");
+							found=true;
 						}
 					}
 				}
