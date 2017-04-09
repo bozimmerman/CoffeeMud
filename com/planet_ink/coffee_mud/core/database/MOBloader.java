@@ -1336,6 +1336,36 @@ public class MOBloader
 			return;
 		final List<DBPreparedBatchEntry> statements=new LinkedList<DBPreparedBatchEntry>();
 		statements.add(new DBPreparedBatchEntry("DELETE FROM CMCHFO WHERE CMUSERID='"+mob.Name()+"'"));
+		
+		// prevent rejuving map mobs from getting text() called and wiping 
+		// out their original specs
+		for(int f=0;f<mob.numFollowers();f++)
+		{
+			final MOB thisMOB=mob.fetchFollower(f);
+			if((thisMOB!=null)
+			&&(thisMOB.isMonster())
+			&&(!thisMOB.isPossessing())
+			&&(CMLib.flags().isSavable(thisMOB))
+			&&(thisMOB.basePhyStats().rejuv()>0)
+			&&(thisMOB.basePhyStats().rejuv()!=PhyStats.NO_REJUV))
+			{
+				final Room loc=thisMOB.location();
+				final Integer order = Integer.valueOf(mob.fetchFollowerOrder(thisMOB));
+				thisMOB.setFollowing(null);
+				mob.delFollower(thisMOB);
+				final MOB newFol = (MOB) thisMOB.copyOf();
+				newFol.basePhyStats().setRejuv(PhyStats.NO_REJUV);
+				newFol.phyStats().setRejuv(PhyStats.NO_REJUV);
+				newFol.text();
+				thisMOB.killMeDead(false);
+				mob.addFollower(newFol, order.intValue());
+				if(CMLib.flags().isInTheGame(mob, true)
+				&&(!CMLib.flags().isInTheGame(newFol, true))
+				&&(loc!=null))
+					newFol.bringToLife(loc, false);
+			}
+		}
+		
 		for(int f=0;f<mob.numFollowers();f++)
 		{
 			final MOB thisMOB=mob.fetchFollower(f);

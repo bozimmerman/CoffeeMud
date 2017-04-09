@@ -1918,7 +1918,7 @@ public class StdMOB implements MOB
 		else
 			return (String) miscText;
 	}
-
+	
 	@Override
 	public String miscTextFormat()
 	{
