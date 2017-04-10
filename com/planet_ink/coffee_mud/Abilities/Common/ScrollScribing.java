@@ -298,23 +298,27 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 				mask="";
 			}
 			final StringBuffer buf=new StringBuffer(L("Scrolls you know how to enscribe:\n\r"));
-			final int colWidth=CMLib.lister().fixColWidth(25,mob.session());
-			buf.append(CMStrings.padRight(L("Spell"),colWidth)+" "+CMStrings.padRight(L("Spell"),colWidth)+" "+CMStrings.padRight(L("Spell"),colWidth));
+			final int colWidth=CMLib.lister().fixColWidth(22,mob.session());
+			final int col2Width=CMLib.lister().fixColWidth(12,mob.session());
+			final String headerPart="^H"+CMStrings.padRight(L("Spell"),colWidth)+" "+CMStrings.padRight(L("Materials"),col2Width);
+			buf.append(headerPart).append("^w| ^H").append(headerPart).append("^.^N\n\r");
 			int toggler=1;
-			final int toggleTop=3;
+			final int toggleTop=2;
 			for(int r=0;r<recipes.size();r++)
 			{
 				final List<String> V=recipes.get(r);
 				if(V.size()>0)
 				{
 					final String spell=V.get(0);
+					final String matts=CMStrings.capitalizeAndLower(V.get(1));
 					final Ability A=mob.fetchAbility(spell);
 					if((A!=null)
 					&&((spellLevel(mob,A)>=0)||(allFlag))
 					&&((xlevel(mob)>=spellLevel(mob,A))||(allFlag))
 					&&((mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(spell,mask)))
 					{
-						buf.append(CMStrings.padRight(A.name(),colWidth)+((toggler!=toggleTop)?" ":"\n\r"));
+						buf.append(CMStrings.padRight(A.name(),colWidth)).append(" ");
+						buf.append(CMStrings.padRight(matts,col2Width)+((toggler!=toggleTop)?"^w| ^N":"\n\r"));
 						if(++toggler>toggleTop)
 							toggler=1;
 					}
