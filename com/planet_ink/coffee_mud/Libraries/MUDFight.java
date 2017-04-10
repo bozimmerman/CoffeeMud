@@ -116,7 +116,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		if(serviceClient==null)
 		{
 			name="THCombat"+Thread.currentThread().getThreadGroup().getName().charAt(0);
-			serviceClient=CMLib.threads().startTickDown(this, Tickable.TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK, CMProps.getTickMillis(), 4);
+			serviceClient=CMLib.threads().startTickDown(this, Tickable.TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK, CMProps.getTickMillis(), TICKS_PER_SHIP_COMBAT);
 		}
 		return true;
 	}

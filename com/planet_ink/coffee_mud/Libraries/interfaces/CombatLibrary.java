@@ -82,6 +82,11 @@ public interface CombatLibrary extends CMLibrary
 	}
 
 	/**
+	 * Number of normal 4-second ticks per ship combat round
+	 */
+	public static final int TICKS_PER_SHIP_COMBAT = 4;
+	
+	/**
 	 * Returns all the mobs in the same room as the given mob, which 
 	 * that aren't in the mobs group.  It doesn't check
 	 * combatability, and as such, is pretty loose.
