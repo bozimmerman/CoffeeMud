@@ -103,7 +103,7 @@ public class Skill_BoulderThrowing extends StdSkill
 			if(affected instanceof MOB)
 			{
 				final MOB mob=(MOB)affected;
-				final Room R=mob.location();
+				final Room R=(mob!=null)?mob.location():null;
 				final Area A=(R != null) ? R.getArea() : null;
 				final Item shipItem=(A instanceof BoardableShip) ? ((BoardableShip)A).getShipItem() : null;
 				if((mob!=null)
