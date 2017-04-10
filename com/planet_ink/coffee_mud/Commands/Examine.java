@@ -39,7 +39,7 @@ public class Examine extends StdCommand
 	{
 	}
 
-	private final String[]	access	= I(new String[] { "EXAMINE", "EXAM", "EXA", "LONGLOOK", "LLOOK", "LL" });
+	private final String[]	access	= I(new String[] { "EXAMINE", "EXAM", "EXA", "LONGLOOK", "LLOOK", "LL", "ID" });
 
 	@Override
 	public String[] getAccessWords()
