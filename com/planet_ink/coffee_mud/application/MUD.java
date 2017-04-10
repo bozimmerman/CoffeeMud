@@ -1939,8 +1939,15 @@ public class MUD extends Thread implements MudHost
 			{
 				if(execExternalCommand!=null)
 				{
-					//Runtime r=Runtime.getRuntime();
-					//Process p=r.exec(external);
+					final Runtime r=Runtime.getRuntime();
+					try
+					{
+						r.exec(execExternalCommand);
+					}
+					catch (IOException e)
+					{
+						Log.errOut(e);
+					}
 					Log.sysOut("Attempted to execute '"+execExternalCommand+"'.");
 					execExternalCommand=null;
 					bringDown=true;
