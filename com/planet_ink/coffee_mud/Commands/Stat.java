@@ -1400,7 +1400,7 @@ public class Stat  extends Skills
 						&&(F.showInScore())
 						&&(thisStat.equals(F.name().toUpperCase().replace(' ','_'))))
 						{
-							str.append(mob.fetchFaction(F.factionID())).append(" ");
+							str.append(M.fetchFaction(F.factionID())).append(" ");
 							found=true;
 						}
 					}
@@ -1471,7 +1471,7 @@ public class Stat  extends Skills
 						&&(F.showInScore())
 						&&(F.name().toUpperCase().replace(' ','_').startsWith(thisStat)))
 						{
-							str.append(mob.fetchFaction(F.factionID())).append(" ");
+							str.append(M.fetchFaction(F.factionID())).append(" ");
 							found=true;
 						}
 					}
