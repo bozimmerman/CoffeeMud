@@ -104,17 +104,19 @@ public class Skill_BoulderThrowing extends StdSkill
 			{
 				final MOB mob=(MOB)affected;
 				final Room R=mob.location();
-				if((mob!=null)&&(mob.isMonster())&&(R!=null)&&(!mob.isInCombat()))
+				final Area A=(R != null) ? R.getArea() : null;
+				final Item shipItem=(A instanceof BoardableShip) ? ((BoardableShip)A).getShipItem() : null;
+				if((mob!=null)
+				&&(mob.isMonster())
+				&&(shipItem instanceof SailingShip)
+				&&(!mob.isInCombat()))
 				{
 					final Item ammoI=mob.fetchHeldItem();
 					if(ammoI instanceof Ammunition)
 					{
 						if(tickDownThisShipCombatRound==0)
 						{
-							final Area A=R.getArea();
-							final Item shipItem=(A instanceof BoardableShip) ? ((BoardableShip)A).getShipItem() : null;
-							if((shipItem instanceof SailingShip)
-							&&(((SailingShip)shipItem).isInCombat()))
+							if(((SailingShip)shipItem).isInCombat())
 								CMLib.commands().forceStandardCommand(mob, "Throw", new XVector<String>("THROW",ammoI.Name()));
 						}
 					}
@@ -137,6 +139,7 @@ public class Skill_BoulderThrowing extends StdSkill
 						if(holdI!=null)
 							CMLib.commands().forceStandardCommand(mob, "Hold", new XVector<String>("HOLD",holdI.Name()));
 						else
+						if(R!=null)
 						{
 							for(final Enumeration<Item> i=R.items();i.hasMoreElements();)
 							{
