@@ -374,7 +374,9 @@ public class StdGrid extends StdRoom implements GridLocale
 					if(R==null)
 					{
 						V.clear();
-						return getAllRoomsFilled();
+						if(!this.amDestroyed())
+							return getAllRoomsFilled();
+						return V;
 					}
 					if(!V.contains(R))
 						V.addElement(R);
