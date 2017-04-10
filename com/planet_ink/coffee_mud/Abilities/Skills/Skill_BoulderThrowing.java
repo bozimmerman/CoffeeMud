@@ -104,7 +104,7 @@ public class Skill_BoulderThrowing extends StdSkill
 			{
 				final MOB mob=(MOB)affected;
 				final Room R=mob.location();
-				if((mob!=null)&&(mob.isMonster())&&(R!=null))
+				if((mob!=null)&&(mob.isMonster())&&(R!=null)&&(!mob.isInCombat()))
 				{
 					final Item ammoI=mob.fetchHeldItem();
 					if(ammoI instanceof Ammunition)

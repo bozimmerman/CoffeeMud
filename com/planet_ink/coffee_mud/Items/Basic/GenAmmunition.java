@@ -128,8 +128,9 @@ public class GenAmmunition extends StdItem implements Ammunition
 		switch(msg.targetMinor())
 		{
 		case CMMsg.TYP_HOLD:
-			mob.tell(L("You can't hold @x1.",name()));
-			return false;
+			//mob.tell(L("You can't hold @x1.",name()));
+			//return false;
+			break;
 		case CMMsg.TYP_WEAR:
 			mob.tell(L("You can't wear @x1.",name()));
 			return false;

@@ -1404,6 +1404,10 @@ public class StdItem implements Item
 		case CMMsg.TYP_CAST_SPELL:
 		case CMMsg.TYP_POISON: // for use poison
 			return true;
+		case CMMsg.TYP_EXTINGUISH:
+			if(CMLib.flags().isOnFire(this))
+				return true;
+			break;
 		case CMMsg.TYP_FILL:
 			if(this instanceof Drink)
 				return true;
@@ -1562,6 +1566,18 @@ public class StdItem implements Item
 		case CMMsg.TYP_WRITE:
 			if(isReadable() && (!(this instanceof Electronics)))
 				setReadableText((readableText()+" "+msg.targetMessage()).trim());
+			break;
+		case CMMsg.TYP_EXTINGUISH:
+			if(CMLib.flags().isOnFire(this))
+			{
+				final Ability A=fetchEffect("Burning");
+				if(A!=null)
+				{
+					A.setAbilityCode(0);
+					A.unInvoke();
+					delEffect(A);
+				}
+			}
 			break;
 		case CMMsg.TYP_EXPIRE:
 		case CMMsg.TYP_DEATH:
