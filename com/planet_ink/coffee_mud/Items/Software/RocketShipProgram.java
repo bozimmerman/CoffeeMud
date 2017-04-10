@@ -814,8 +814,6 @@ public class RocketShipProgram extends GenShipProgram
 				if((parms!=null)&&(parms[0]==ShipDir.AFT))
 				{
 					this.lastThrust=(Double)parms[1];
-//TODO:BZ:DELME:
-System.out.println("Software saw thrust of "+this.lastThrust);
 				}
 			}
 		}
