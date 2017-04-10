@@ -154,10 +154,13 @@ public class AbilityData extends StdWebMacro
 					}
 					String lastID="";
 					String clast = httpReq.getUrlParameter("CLASS");
+					boolean showAll=parms.containsKey("ALL");
+					boolean includeSkillOnly=parms.containsKey("INCLUDESKILLONLY");
 					for(final Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
 					{
 						final CharClass C=c.nextElement();
-						if(((CMProps.isTheme(C.availabilityCode()))||(parms.containsKey("ALL")))
+						if(((CMProps.isTheme(C.availabilityCode()))||showAll)
+						&&((!CMath.bset(C.availabilityCode(), Area.THEME_SKILLONLYMASK))||includeSkillOnly||showAll)
 						&&(CMLib.ableMapper().getQualifyingLevel(C.ID(), true, A.ID())>=0))
 						{
 							if((clast==null)||((clast.length()>0)&&(clast.equals(lastID))&&(!C.ID().equals(lastID))))

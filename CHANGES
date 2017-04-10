@@ -34,7 +34,7 @@
   32. ShipWright now supports building and demolishing doors on ships.
   33. Reset genmixedracebuilds will now rebuild all the generic mixed races you have.
   34. Archons can now do CREATE MIXEDRACE raceid1 raceid2
-  35. New common skill: Composting
+  35. New common skills: Composting, Tanning, Fish Lore, Baiting
   36. Builders can now use LIST GENSTATS <class or item> to view named generic stats. 
   37. Universal Starting Items can now be distinguished by race.
   38. New GenExit/GenPortal tags, and new NOWEAR flag for items in MUDPercolator
@@ -47,7 +47,7 @@
   45. New Archon Skill: Infect, for giving mobs/players random diseases.
   46. Unpaid property taxes now generate both tell and email warnings.
   47. INVENTORY command now has LONG argument, similar to LONGLOOK.
-  48. New common skills: Tanning, Fish Lore, Baiting
+  48. New Skills: Boulder Throwing 
   49. GMCP changes: char.login, char.items.contents, room.mobiles, room.items.*, room.players
   50. Sailor behavior now supports aggro mask and relative level checks.
   51. You can now create unlinked exits in the MUDGrinder.

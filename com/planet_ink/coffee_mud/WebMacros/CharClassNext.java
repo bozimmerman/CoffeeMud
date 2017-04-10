@@ -54,11 +54,14 @@ public class CharClassNext extends StdWebMacro
 				httpReq.removeUrlParameter("CLASS");
 			return "";
 		}
+		boolean includeSkillOnly=parms.containsKey("INCLUDESKILLONLY");
+		boolean includeAll=parms.containsKey("ALL");
 		String lastID="";
-		for(final Enumeration c=CMClass.charClasses();c.hasMoreElements();)
+		for(final Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
 		{
-			final CharClass C=(CharClass)c.nextElement();
-			if(((CMProps.isTheme(C.availabilityCode()))||(parms.containsKey("ALL")))
+			final CharClass C=c.nextElement();
+			if(((CMProps.isTheme(C.availabilityCode()))||includeAll)
+			&&((!CMath.bset(C.availabilityCode(), Area.THEME_SKILLONLYMASK))||includeSkillOnly||includeAll)
 			&&((base==null)||(base.length()==0)||(C.baseClass().equalsIgnoreCase(base))))
 			{
 				if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!C.ID().equals(lastID))))

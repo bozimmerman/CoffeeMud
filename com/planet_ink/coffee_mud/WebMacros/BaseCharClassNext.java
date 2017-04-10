@@ -55,10 +55,13 @@ public class BaseCharClassNext extends StdWebMacro
 		}
 		String lastID="";
 		final Vector<String> baseClasses=new Vector<String>();
+		boolean showAll=parms.containsKey("ALL");
+		boolean includeSkillOnly=parms.containsKey("INCLUDESKILLONLY");
 		for(final Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
 		{
 			final CharClass C=c.nextElement();
-			if((CMProps.isTheme(C.availabilityCode()))||(parms.containsKey("ALL")))
+			if(((CMProps.isTheme(C.availabilityCode()))||showAll)
+			&&((!CMath.bset(C.availabilityCode(), Area.THEME_SKILLONLYMASK))||includeSkillOnly||showAll))
 			{
 				if(!baseClasses.contains(C.baseClass()))
 					baseClasses.addElement(C.baseClass());
