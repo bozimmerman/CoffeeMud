@@ -1787,7 +1787,9 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 					Weapon weapon=null;
 					if((msg.tool() instanceof Weapon))
 						weapon=(Weapon)msg.tool();
-					if((weapon!=null)&&(msg.source().riding()!=null)&&(owner() instanceof Room))
+					if((weapon!=null)
+					&&(((msg.source().riding()!=null)&&(owner() instanceof Room))
+						||((msg.source().location()!=null) && (weapon.owner()==null))))
 					{
 						final Room shipRoom=(Room)owner();
 						final boolean isHit=msg.value()>0;
@@ -1842,7 +1844,22 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 							}
 						}
 						else
-							CMLib.combat().postShipWeaponAttackResult(msg.source(), msg.source().riding(), this, weapon, isHit);
+						{
+							PhysicalAgent attacker;
+							if(msg.source().riding() instanceof BoardableShip)
+								attacker=msg.source().riding();
+							else
+							{
+								final Room R=msg.source().location();
+								if((R!=null)
+								&&(R.getArea() instanceof BoardableShip))
+									attacker=((BoardableShip)R.getArea()).getShipItem();
+								else
+									attacker=null;
+							}
+							if(attacker != null)
+								CMLib.combat().postShipWeaponAttackResult(msg.source(), attacker, this, weapon, isHit);
+						}
 					}
 				}
 				break;

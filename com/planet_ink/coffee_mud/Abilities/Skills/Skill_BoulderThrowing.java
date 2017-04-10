@@ -184,7 +184,7 @@ public class Skill_BoulderThrowing extends StdSkill
 					final Room shipR=(shipItem != null)?CMLib.map().roomLocation(shipItem):null;
 					
 					final String str;
-					if(cmd.size()>0)
+					if(cmd.size()>2)
 					{
 						str=cmd.get(cmd.size()-1);
 						cmd.remove(str);
@@ -197,7 +197,7 @@ public class Skill_BoulderThrowing extends StdSkill
 					else
 						return true;
 					
-					final String what=CMParms.combine(cmd,0);
+					final String what=CMParms.combine(cmd,1);
 					Item item=mob.fetchItem(null,Wearable.FILTER_WORNONLY,what);
 					if(item==null)
 						item=mob.findItem(null,what);
@@ -223,7 +223,7 @@ public class Skill_BoulderThrowing extends StdSkill
 							msg.setSourceMessage(L("You can't throw that at another ship."));
 						else
 						if((shipItem instanceof SailingShip)
-						&&((R.domainType()&Room.INDOORS)!=0))
+						&&((R.domainType()&Room.INDOORS)==0))
 						{
 							final SailingShip sailShip=(SailingShip)shipItem;
 							if(sailShip.isInCombat() && (sailShip.getCombatant()==target))
@@ -232,9 +232,13 @@ public class Skill_BoulderThrowing extends StdSkill
 								{
 									boulderThrower=(AmmunitionWeapon)CMClass.getWeapon("GenSiegeWeapon");
 									boulderThrower.setAmmoCapacity(1);
+									boulderThrower.setWeaponClassification(Weapon.CLASS_THROWN);
+									boulderThrower.setWeaponDamageType(Weapon.TYPE_BASHING);
 								}
 								final AmmunitionWeapon weapon=boulderThrower;
 								final Ammunition ammo=(Ammunition)item;
+								boulderThrower.setOwner(null);
+								weapon.setAmmunitionType(ammo.ammunitionType());
 								weapon.setName(ammo.Name());
 								weapon.setRanges(0, 1+(mob.charStats().getStat(CharStats.STAT_STRENGTH)-10)/2);
 								final int distance=sailShip.rangeToTarget();
@@ -279,13 +283,12 @@ public class Skill_BoulderThrowing extends StdSkill
 											weapon.addEffect(A1);
 										}
 									}
-									if(ammo.ammunitionRemaining()<=0)
-										ammo.destroy();
-								
 									tickDownThisShipCombatRound=CombatLibrary.TICKS_PER_SHIP_COMBAT;
 									for(int i=0;i<distance;i++)
 										wasHit = wasHit && super.proficiencyCheck(mob, -50+mob.charStats().getStat(CharStats.STAT_DEXTERITY)+(super.getXLEVELLevel(mob)*2), false);
 									CMLib.combat().postShipAttack(mob, shipItem, target, weapon, wasHit);
+									if(ammo.ammunitionRemaining()<=0)
+										ammo.destroy();
 								}
 							}
 							else
@@ -298,5 +301,14 @@ public class Skill_BoulderThrowing extends StdSkill
 			}
 		}
 		return true;
+	}
+	
+	@Override
+	public void executeMsg(Environmental myHost, CMMsg msg)
+	{
+		if((this.boulderThrower!=null)
+		&&(msg.tool()==this.boulderThrower))
+			this.boulderThrower.executeMsg(myHost, msg);
+		super.executeMsg(myHost, msg);
 	}
 }
