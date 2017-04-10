@@ -117,6 +117,35 @@ public class Giant extends StdRace
 		return Area.THEME_FANTASY | Area.THEME_SKILLONLYMASK;
 	}
 
+	private final String[]	culturalAbilityNames		= { "Gigantic", "Skill_BoulderThrowing"};
+	private final int[]		culturalAbilityProficiencies= { 100, 75};
+	private final int[]		culturalAbilityLevels		= { 0, 15 };
+	private final boolean[]	culturalAbilityGains		= { true, true};
+
+	@Override
+	public String[] culturalAbilityNames()
+	{
+		return culturalAbilityNames;
+	}
+
+	@Override
+	public int[] culturalAbilityProficiencies()
+	{
+		return culturalAbilityProficiencies;
+	}
+
+	@Override
+	protected int[] culturalAbilityLevels()
+	{
+		return culturalAbilityLevels;
+	}
+
+	@Override
+	protected boolean[] culturalAbilityAutoGains()
+	{
+		return culturalAbilityGains;
+	}
+	
 	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
