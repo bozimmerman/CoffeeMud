@@ -84,19 +84,20 @@ public class Create extends StdCommand
 
 		final Exit opExit=mob.location().getRawExit(direction);
 		final Room opRoom=mob.location().rawDoors()[direction];
-
 		Exit reverseExit=null;
-		if(opRoom!=null)
-			reverseExit=opRoom.getRawExit(Directions.getOpDirectionCode(direction));
-		if(reverseExit!=null)
+		if(opExit != null)
 		{
-			if((thisExit.isGeneric())&&(reverseExit.isGeneric()))
+			if(opRoom!=null)
+				reverseExit=opRoom.getRawExit(Directions.getOpDirectionCode(direction));
+			if(reverseExit!=null)
 			{
-				thisExit=(Exit)reverseExit.copyOf();
-				CMLib.genEd().modifyGenExit(mob,thisExit,-1);
+				if((thisExit.isGeneric())&&(reverseExit.isGeneric())&&(thisExit.ID().equals(reverseExit.ID())))
+				{
+					thisExit=(Exit)reverseExit.copyOf();
+					CMLib.genEd().modifyGenExit(mob,thisExit,-1);
+				}
 			}
 		}
-
 
 		final boolean useShipDirs=(mob.location() instanceof BoardableShip)||(mob.location().getArea() instanceof BoardableShip);
 		mob.location().setRawExit(direction,thisExit);
