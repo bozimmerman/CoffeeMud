@@ -158,7 +158,7 @@ public class Skill_MindSuck extends StdSkill
 				mob.location().show(invoker,mob,CMMsg.MSG_OK_VISUAL,L("<S-NAME> finish consuming the brain of <T-NAME>."));
 				final boolean hungry=invoker.curState().getHunger()<=0;
 				CMLib.combat().postDeath(invoker, mob, null);
-				final boolean full=!invoker.curState().adjHunger(CharState.DEFAULT_HUNGER_FULL,invoker.maxState().maxHunger(invoker.baseWeight()));
+				final boolean full=!invoker.curState().adjHunger(CMProps.getIntVar(CMProps.Int.HUNGER_FULL),invoker.maxState().maxHunger(invoker.baseWeight()));
 				if((hungry)&&(invoker.curState().getHunger()>0))
 					invoker.tell(L("You are no longer hungry."));
 				else

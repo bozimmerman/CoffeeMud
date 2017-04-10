@@ -614,6 +614,30 @@ public class CMStrings
 	}
 
 	/**
+	 * Rebuilds the given string by deleting any instances of a given character
+	 * The search is case-sensitive.
+	 * @param str the string to rebuild without those characters
+	 * @param thisChar the character to remove from the string
+	 * @return the rebuilt string, without the character
+	 */
+	public final static String deleteAllofChar(final String str, final char thisChar)
+	{
+		if((str==null)
+		||(str.length()==0)
+		||(str.indexOf(thisChar)<0))
+			return str;
+		final StringBuilder buf=new StringBuilder(str);
+		for(int i=buf.length()-1;i>=0;i--)
+		{
+			if(buf.charAt(i)==thisChar)
+			{
+				buf.deleteCharAt(i);
+			}
+		}
+		return buf.toString();
+	}
+
+	/**
 	 * Finds all instances of the second parameter string in the first string,
 	 * replaces them with the third word.  Returns the string with or without changes. 
 	 * The search is case sensitive

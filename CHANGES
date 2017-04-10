@@ -1,3 +1,7 @@
+# Build 5.9.6 Release ??/??/2017
+   *. Sections in the default coffeemud.ini file were moved around.  Don't be alarmed. :)
+   1. Hunger and Thirst system can now be tweeked.  See coffeemud.ini file
+
 # Build 5.9.5 Release 04/10/2017
    *. Database Schema Updated for CMGRAC.  See the Installation Guide about running DBUpgrade.
    1. New chants: Phosphorescence, Land Legs, BurrowSpeak, Call Companions, Animal Companion

@@ -139,9 +139,9 @@ public class Undead extends StdRace
 	public void affectCharState(MOB affectedMOB, CharState affectableState)
 	{
 		super.affectCharState(affectedMOB, affectableState);
-		affectableState.setHunger(CharState.DEFAULT_HUNGER_FULL+10);
+		affectableState.setHunger(CMProps.getIntVar(CMProps.Int.HUNGER_FULL)+10);
 		affectedMOB.curState().setHunger(affectableState.getHunger());
-		affectableState.setThirst(CharState.DEFAULT_THIRST_FULL+10);
+		affectableState.setThirst(CMProps.getIntVar(CMProps.Int.THIRST_FULL)+10);
 		affectedMOB.curState().setThirst(affectableState.getThirst());
 	}
 

@@ -33,7 +33,6 @@ TECH
    *. Radiation Props: Alpha (damage), Beta (?!), Gamma (Mutation if in too long)
 
 NON-TECH
-   *. Move ticks hunger/thirst to the ini file
    *. Allow GMODIFY to change room types.
    *. Wants and Needs engine - similar to slavery system
    *. Builder Achievements, Archon Achievements, Clan Achievements, Timed achievements (within a time period)

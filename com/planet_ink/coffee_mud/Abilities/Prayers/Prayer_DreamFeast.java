@@ -76,8 +76,8 @@ public class Prayer_DreamFeast extends Prayer
 			if(affected instanceof MOB)
 			{
 				((MOB)affected).tell(L("You wake up feeling full and content."));
-				((MOB)affected).curState().setHunger(CharState.DEFAULT_HUNGER_FULL);
-				((MOB)affected).curState().setThirst(CharState.DEFAULT_THIRST_FULL);
+				((MOB)affected).curState().setHunger(CMProps.getIntVar(CMProps.Int.HUNGER_FULL));
+				((MOB)affected).curState().setThirst(CMProps.getIntVar(CMProps.Int.THIRST_FULL));
 			}
 			unInvoke();
 		}

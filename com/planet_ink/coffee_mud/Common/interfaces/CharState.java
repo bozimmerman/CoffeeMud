@@ -54,10 +54,6 @@ public interface CharState extends CMCommon, Modifiable
 	/** stat constant for number of other stat constants */
 	public final static int STAT_NUMSTATS=7;
 
-	/** constant representing default not hungry*/
-	public final static int DEFAULT_THIRST_FULL = 500;
-	/** constant representing default not thirsty*/
-	public final static int DEFAULT_HUNGER_FULL = 1000;
 	/** constant representing how many ticks between hunger/thirst messages*/
 	public final static int ANNOYANCE_DEFAULT_TICKS=60;
 	/** constant representing something*/

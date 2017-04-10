@@ -287,6 +287,12 @@ public class CMProps extends Properties
 		DEFCOMSOCTIME,
 		RACEEXPIRATIONDAYS,
 		COMBATPROWESS,
+		HUNGER_FULL,
+		HUNGER_GAIN_PCT,
+		HUNGER_LOSS_PCT,
+		THIRST_FULL,
+		THIRST_GAIN_PCT,
+		THIRST_LOSS_PCT,
 		;
 		
 		public static final int	EXVIEW_DEFAULT		= 0;
@@ -495,6 +501,7 @@ public class CMProps extends Properties
 	protected final Set<String>[]sysLstFileSet		= new Set[ListFile.values().length];
 	protected final String[]	 sysVars			= new String[Str.values().length];
 	protected final Integer[]	 sysInts			= new Integer[Int.values().length];
+	protected final Double[]	 sysIntsAsFloat		= new Double[Int.values().length];
 	protected final Boolean[]	 sysBools			= new Boolean[Bool.values().length];
 	protected final String[][]	 sysLists			= new String[StrList.values().length][];
 	protected final Object[]	 sysLstFileLists	= new Object[ListFile.values().length];
@@ -1076,6 +1083,7 @@ public class CMProps extends Properties
 				if(c == Int.class)
 				{
 					p().sysInts[((Str)CMath.s_valueOf(c, varName)).ordinal()] = Integer.valueOf(CMath.s_int(value));
+					p().sysIntsAsFloat[((Str)CMath.s_valueOf(c, varName)).ordinal()] = null;
 					return true;
 				}
 				else
@@ -1118,7 +1126,7 @@ public class CMProps extends Properties
 			return "";
 		}
 	}
-	
+
 	/**
 	 * Retrieve one of the pre-processed coffeemud.ini entries for
 	 * the callers thread group.
@@ -1130,6 +1138,50 @@ public class CMProps extends Properties
 		try 
 		{ 
 			return p().sysInts[varNum.ordinal()].intValue(); 
+		}
+		catch(final Exception t) 
+		{
+			return -1;
+		}
+	}
+
+	/**
+	 * Retrieve one of the pre-processed coffeemud.ini entries for
+	 * the callers thread group. These are in variables permanently
+	 * translated to floats for easy access
+	 * @param varNum the Int enum of the entry to get
+	 * @return the value of the property as a double.
+	 */
+	public static final double getIntVarAsDouble(final Int varNum)
+	{
+		try 
+		{ 
+			Double d=p().sysIntsAsFloat[varNum.ordinal()];
+			if(d==null)
+				p().sysIntsAsFloat[varNum.ordinal()]=Double.valueOf(p().sysInts[varNum.ordinal()].doubleValue());
+			return d.doubleValue();
+		}
+		catch(final Exception t) 
+		{
+			return -1;
+		}
+	}
+
+	/**
+	 * Retrieve one of the pre-processed coffeemud.ini entries for
+	 * the callers thread group. These are in variables permanently
+	 * translated from 0-100 to pct (0-1) for easy access
+	 * @param varNum the Int enum of the entry to get
+	 * @return the value of the property as a pct double.
+	 */
+	public static final double getIntVarAsPct(final Int varNum)
+	{
+		try 
+		{ 
+			Double d=p().sysIntsAsFloat[varNum.ordinal()];
+			if(d==null)
+				p().sysIntsAsFloat[varNum.ordinal()]=Double.valueOf(p().sysInts[varNum.ordinal()].doubleValue()/100.0);
+			return d.doubleValue();
 		}
 		catch(final Exception t) 
 		{
@@ -1280,6 +1332,7 @@ public class CMProps extends Properties
 		if(varNum==null)
 			return ;
 		p().sysInts[varNum.ordinal()]=Integer.valueOf(val);
+		p().sysIntsAsFloat[varNum.ordinal()] = null;
 	}
 
 	/**
@@ -1296,6 +1349,7 @@ public class CMProps extends Properties
 		if(val==null)
 			val="0";
 		p().sysInts[varNum.ordinal()]=Integer.valueOf(CMath.s_int(val.trim()));
+		p().sysIntsAsFloat[varNum.ordinal()] = null;
 	}
 
 	/**
@@ -1314,6 +1368,7 @@ public class CMProps extends Properties
 		if((val==null)||(val.length()==0))
 			val=""+defaultValue;
 		p().sysInts[varNum.ordinal()]=Integer.valueOf(CMath.s_int(val.trim()));
+		p().sysIntsAsFloat[varNum.ordinal()] = null;
 	}
 
 	/**
@@ -2128,6 +2183,14 @@ public class CMProps extends Properties
 		setUpCosts("SKILLCOST",skillsCost,CMParms.parseCommas(getStr("SKILLCOST","1 TRAIN"),true));
 		setUpCosts("LANGCOST",languageCost,CMParms.parseCommas(getStr("LANGCOST","3 PRACTICE"),true));
 		setVar(Str.RACEMIXING,getStr("RACEMIXING"));
+		String[] hungerCodes=CMParms.parseCommas(getStr("HUNGER","500,100,100"),true).toArray(new String[3]);
+		setIntVar(Int.HUNGER_FULL,hungerCodes.length>0?CMath.s_int(hungerCodes[0]):500);
+		setIntVar(Int.HUNGER_GAIN_PCT,hungerCodes.length>1?CMath.s_int(CMStrings.deleteAllofChar(hungerCodes[1], '%')):100);
+		setIntVar(Int.HUNGER_LOSS_PCT,hungerCodes.length>2?CMath.s_int(CMStrings.deleteAllofChar(hungerCodes[2], '%')):100);
+		String[] thirstCodes=CMParms.parseCommas(getStr("THIRST","1000,100,100"),true).toArray(new String[3]);
+		setIntVar(Int.THIRST_FULL,thirstCodes.length>0?CMath.s_int(thirstCodes[0]):500);
+		setIntVar(Int.THIRST_GAIN_PCT,thirstCodes.length>1?CMath.s_int(CMStrings.deleteAllofChar(thirstCodes[1], '%')):100);
+		setIntVar(Int.THIRST_LOSS_PCT,thirstCodes.length>2?CMath.s_int(CMStrings.deleteAllofChar(thirstCodes[2], '%')):100);
 
 		setUpLowVar(Str.BLACKLISTFILE,getStr("BLACKLISTFILE","/resources/ipblock.ini"));
 		setWhitelist(CMProps.WhiteList.CONNS,getStr("WHITELISTIPSCONN"));

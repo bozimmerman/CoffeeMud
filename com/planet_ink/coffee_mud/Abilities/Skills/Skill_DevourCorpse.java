@@ -171,7 +171,7 @@ public class Skill_DevourCorpse extends StdSkill
 					A.invoke(mob, mob, true, 0);
 				}
 			}
-			final boolean full=!mob.curState().adjHunger(CharState.DEFAULT_HUNGER_FULL,mob.maxState().maxHunger(mob.baseWeight()));
+			final boolean full=!mob.curState().adjHunger(CMProps.getIntVar(CMProps.Int.HUNGER_FULL),mob.maxState().maxHunger(mob.baseWeight()));
 			if((hungry)&&(mob.curState().getHunger()>0))
 				mob.tell(L("You are no longer hungry."));
 			else

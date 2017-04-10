@@ -45,12 +45,14 @@ public class DefaultCharState implements CharState
 		return ID();
 	}
 
-	protected final static int[]	DEFAULT_STATES	= { 10, 100, 50, DEFAULT_HUNGER_FULL, DEFAULT_THIRST_FULL, 0, 0 };
+	protected final static int[]	DEFAULT_STATES	= { 10, 100, 50, 500, 1000, 0, 0 };
 	protected int[]					states			= DEFAULT_STATES.clone();
 	protected long					fatigue			= 0;
 
 	public DefaultCharState()
 	{
+		DEFAULT_STATES[STAT_HUNGER]=CMProps.getIntVar(CMProps.Int.HUNGER_FULL);
+		DEFAULT_STATES[STAT_THIRST]=CMProps.getIntVar(CMProps.Int.THIRST_FULL);
 	}
 
 	@Override
@@ -179,8 +181,15 @@ public class DefaultCharState implements CharState
 	@Override
 	public boolean adjHunger(int byThisMuch, int max)
 	{
-		if((byThisMuch>0)&&(states[STAT_HUNGER]==Integer.MAX_VALUE))
-			return false;
+		if(byThisMuch>0)
+		{
+			if(states[STAT_HUNGER]==Integer.MAX_VALUE)
+				return false;
+			byThisMuch=(int)Math.round(CMProps.getIntVarAsPct(CMProps.Int.HUNGER_GAIN_PCT)*byThisMuch);
+		}
+		else
+			byThisMuch=(int)Math.round(CMProps.getIntVarAsPct(CMProps.Int.HUNGER_LOSS_PCT)*byThisMuch);
+			
 		states[STAT_HUNGER]+=byThisMuch;
 		if(states[STAT_HUNGER]<0)
 		{
@@ -234,8 +243,14 @@ public class DefaultCharState implements CharState
 	@Override
 	public boolean adjThirst(int byThisMuch, int max)
 	{
-		if((byThisMuch>0)&&(states[STAT_THIRST]==Integer.MAX_VALUE))
-			return false;
+		if(byThisMuch>0)
+		{
+			if(states[STAT_THIRST]==Integer.MAX_VALUE)
+				return false;
+			byThisMuch=(int)Math.round(CMProps.getIntVarAsPct(CMProps.Int.THIRST_GAIN_PCT)*byThisMuch);
+		}
+		else
+			byThisMuch=(int)Math.round(CMProps.getIntVarAsPct(CMProps.Int.THIRST_LOSS_PCT)*byThisMuch);
 		states[STAT_THIRST]+=byThisMuch;
 		if(states[STAT_THIRST]<0)
 		{
