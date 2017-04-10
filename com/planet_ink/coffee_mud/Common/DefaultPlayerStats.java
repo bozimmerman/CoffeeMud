@@ -730,7 +730,7 @@ public class DefaultPlayerStats implements PlayerStats
 			+((savedPose.length()>0)?"<POSE>"+CMLib.xml().parseOutAngleBrackets(savedPose)+"</POSE>":"")
 			+((tranpoofin.length()>0)?"<TRANPOOFIN>"+CMLib.xml().parseOutAngleBrackets(tranpoofin)+"</TRANPOOFIN>":"")
 			+((tranpoofout.length()>0)?"<TRANPOOFOUT>"+CMLib.xml().parseOutAngleBrackets(tranpoofout)+"</TRANPOOFOUT>":"")
-			+"<DATES>"+this.getLevelDateTimesStr()+"</DATES>"
+			+"<DATES>"+CMLib.xml().parseOutAngleBrackets(this.getLevelDateTimesStr())+"</DATES>"
 			+"<SECGRPS>"+CMLib.xml().parseOutAngleBrackets(getSetSecurityFlags(null))+"</SECGRPS>"
 			+"<AUTOINVSET>"+CMLib.xml().parseOutAngleBrackets(getStat("AUTOINVSET"))+"</AUTOINVSET>"
 			+roomSet().xml()
@@ -932,7 +932,7 @@ public class DefaultPlayerStats implements PlayerStats
 			notes="";
 		notes=xmlLib.restoreAngleBrackets(notes);
 
-		str=xmlLib.getValFromPieces(xml,"DATES");
+		str=xmlLib.restoreAngleBrackets(xmlLib.getValFromPieces(xml,"DATES"));
 		if(debug)
 			Log.debugOut("DATES="+str);
 		if(str==null)
