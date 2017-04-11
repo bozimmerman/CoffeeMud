@@ -1950,7 +1950,7 @@ public class MUD extends Thread implements MudHost
 						else
 						if(new File(".\\restart.bat").exists())
 						{
-							r.exec("cmd.exe /c start restart.bat");
+							r.exec("cmd.exe /c restart.bat");
 							Log.sysOut("Attempted to execute 'restart.bat' in "+new File(".").getCanonicalPath());
 						}
 					}
