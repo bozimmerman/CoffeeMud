@@ -1937,13 +1937,22 @@ public class MUD extends Thread implements MudHost
 			}
 			if(!bringDown)
 			{
-				if(execExternalCommand!=null)
+				if((execExternalCommand!=null)&&(execExternalCommand.equalsIgnoreCase("hard")))
 				{
 					final Runtime r=Runtime.getRuntime();
 					try
 					{
-						r.exec(execExternalCommand);
-						Log.sysOut("Attempted to execute '"+execExternalCommand+"' in "+new File(".").getCanonicalPath());
+						if(new File("./restart.sh").exists())
+						{
+							r.exec("sh restart.sh");
+							Log.sysOut("Attempted to execute 'restart.sh' in "+new File(".").getCanonicalPath());
+						}
+						else
+						if(new File(".\\restart.bat").exists())
+						{
+							r.exec("cmd.exe /c start restart.bat");
+							Log.sysOut("Attempted to execute 'restart.bat' in "+new File(".").getCanonicalPath());
+						}
 					}
 					catch (IOException e)
 					{
