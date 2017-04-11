@@ -1943,12 +1943,12 @@ public class MUD extends Thread implements MudHost
 					try
 					{
 						r.exec(execExternalCommand);
+						Log.sysOut("Attempted to execute '"+execExternalCommand+"' in "+new File(".").getCanonicalPath());
 					}
 					catch (IOException e)
 					{
 						Log.errOut(e);
 					}
-					Log.sysOut("Attempted to execute '"+execExternalCommand+"'.");
 					execExternalCommand=null;
 					bringDown=true;
 				}
