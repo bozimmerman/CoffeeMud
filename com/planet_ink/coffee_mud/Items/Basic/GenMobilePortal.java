@@ -61,6 +61,12 @@ public class GenMobilePortal extends GenPortal implements Rideable, Exit
 			{
 				myStationaryPortal=null;
 				final Room destR=getDestinationRoom(R);
+				if(destR==null)
+				{
+					msg.source().tell(L("Something has gone wrong!"));
+					Log.errOut("GenMobilePortal","Destination not found: "+readableText());
+					return;
+				}
 				final Vector<Item> choices=new Vector<Item>();
 				for(int i=0;i<destR.numItems();i++)
 				{
