@@ -640,13 +640,20 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		final Set<MOB> mobsThere=CMLib.players().getPlayersHere(R);
 		if(mobsThere.size()>0)
 		{
-			for(final MOB inhab : mobsThere)
+			try
 			{
-				if((inhab.session()!=null)
-				&&(CMSecurity.isAllowed(inhab,R,CMSecurity.SecFlag.CMDMOBS)||CMSecurity.isAllowed(inhab,R,CMSecurity.SecFlag.CMDROOMS))
-				&&(CMLib.flags().isInTheGame(inhab, true))
-				&&((!sysMsgsOnly) || inhab.isAttributeSet(MOB.Attrib.SYSOPMSGS)))
-					return true;
+				for(final MOB inhab : mobsThere)
+				{
+					if((inhab.session()!=null)
+					&&(CMSecurity.isAllowed(inhab,R,CMSecurity.SecFlag.CMDMOBS)||CMSecurity.isAllowed(inhab,R,CMSecurity.SecFlag.CMDROOMS))
+					&&(CMLib.flags().isInTheGame(inhab, true))
+					&&((!sysMsgsOnly) || inhab.isAttributeSet(MOB.Attrib.SYSOPMSGS)))
+						return true;
+				}
+			}
+			catch(java.util.ConcurrentModificationException e)
+			{
+				return isAnAdminHere(R,sysMsgsOnly);
 			}
 		}
 		return false;
