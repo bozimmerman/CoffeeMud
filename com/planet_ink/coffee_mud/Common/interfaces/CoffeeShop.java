@@ -102,6 +102,12 @@ public interface CoffeeShop extends CMCommon
 	public Iterator<Environmental> getStoreInventory();
 
 	/**
+	 * Returns a iterator of all the ShelfProduct objects this shop has for sale.
+	 * @return a iterator of all the shelves at the shop.
+	 */
+	public Iterator<ShelfProduct> getStoreShelves();
+
+	/**
 	 * Returns a iterator of all the Environmental objects this shop has for sale
 	 * which match the given search string.
 	 * Will only return one of each item, even if multiple are available.

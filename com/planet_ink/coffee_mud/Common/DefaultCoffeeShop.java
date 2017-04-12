@@ -8,6 +8,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.CoffeeShop.ShelfProduct;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -233,6 +234,12 @@ public class DefaultCoffeeShop implements CoffeeShop
 		return new ConvertingIterator<ShelfProduct,Environmental>(storeInventory.iterator(),converter);
 	}
 
+	@Override
+	public Iterator<ShelfProduct> getStoreShelves()
+	{
+		return storeInventory.iterator();
+	}
+	
 	@Override
 	public Iterator<Environmental> getStoreInventory(String srchStr)
 	{

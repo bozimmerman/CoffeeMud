@@ -102,7 +102,7 @@ public class GModify extends StdCommand
 		return new String[]{value,""};
 	}
 
-	public static void setStat(Environmental E, String stat, String value)
+	public static Environmental setStat(Environmental E, String stat, String value)
 	{
 		if((stat!=null)&&(stat.length()>0))
 		{
@@ -170,6 +170,7 @@ public class GModify extends StdCommand
 			else
 				E.setStat(stat,value);
 		}
+		return E;
 	}
 
 	public static void gmodifydebugtell(MOB mob, String msg)
@@ -179,16 +180,19 @@ public class GModify extends StdCommand
 		Log.sysOut("GMODIFY",msg);
 	}
 
-	private static boolean tryModfy(MOB mob,
-									Room room,
-									Environmental E,
-									DVector changes,
-									DVector onfields,
-									boolean noisy)
+	private static Environmental tryModfy(MOB mob, Room room, Environmental E, DVector changes, DVector onfields, boolean noisy)
 	{
 		if((mob.session()==null)||(mob.session().isStopped()))
-			return false;
-		try{Thread.sleep(1);}catch(final Exception e){mob.session().stopSession(false,false,false);return false;}
+			return null;
+		try
+		{
+			Thread.sleep(1);
+		}
+		catch (final Exception e)
+		{
+			mob.session().stopSession(false, false, false);
+			return null;
+		}
 		boolean didAnything=false;
 		if(noisy)
 			gmodifydebugtell(mob,E.name()+"/"+CMClass.classID(E));
@@ -374,7 +378,7 @@ public class GModify extends StdCommand
 							Log.sysOut("GMODIFY",E.Name()+" in "+room.roomID()+" was DESTROYED by "+mob.Name()+"!");
 							E.destroy();
 						}
-						return true;
+						return E;
 					}
 					continue;
 				}
@@ -401,7 +405,7 @@ public class GModify extends StdCommand
 				if(!getStat(E,field).equals(value))
 				{
 					Log.sysOut("GMODIFY","The "+CMStrings.capitalizeAndLower(field)+" field on "+E.Name()+" in "+room.roomID()+" was changed from "+getStat(E,field)+" to "+value+".");
-					setStat(E,field,value);
+					E=setStat(E,field,value);
 					didAnything=true;
 				}
 			}
@@ -421,7 +425,7 @@ public class GModify extends StdCommand
 			if(CMLib.flags().isCataloged(E) && (E instanceof Physical))
 				CMLib.catalog().updateCatalog((Physical)E);
 		}
-		return didAnything;
+		return didAnything?E:null;
 	}
 
 	public void addEnumeratedStatCodes(Enumeration<? extends Modifiable> e, Set<String> allKnownFields, StringBuffer allFieldsMsg)
@@ -758,39 +762,78 @@ public class GModify extends StdCommand
 				boolean savemobs=false;
 				boolean saveitems=false;
 				boolean saveroom=false;
-				if(tryModfy(mob,R,R,changes,onfields,noisy))
+				final Room possNewRoom=(Room)tryModfy(mob,R,R,changes,onfields,noisy);
+				if(possNewRoom!=null)
+				{
+					R=possNewRoom;
 					saveroom=true;
-				for(int i=0;i<R.numItems();i++)
+				}
+				for(int i=R.numItems()-1;i>=0;i--)
 				{
 					final Item I=R.getItem(i);
-					if((I!=null)&&(tryModfy(mob,R,I,changes,onfields,noisy)))
+					if(I==null)
+						continue;
+					final Item newI=(Item)tryModfy(mob,R,I,changes,onfields,noisy);
+					if(newI!=null)
+					{
 						saveitems=true;
+						if(newI.amDestroyed() || (newI != I))
+							R.delItem(I);
+						if(I!=newI)
+							R.addItem(newI);
+					}
 				}
-				for(int m=0;m<R.numInhabitants();m++)
+				for(int m=R.numInhabitants()-1;m>=0;m--)
 				{
-					final MOB M=R.fetchInhabitant(m);
+					MOB M=R.fetchInhabitant(m);
 					if((M!=null)&&(M.isSavable()))
 					{
-						if(tryModfy(mob,R,M,changes,onfields,noisy))
+						final MOB newM=(MOB)tryModfy(mob,R,M,changes,onfields,noisy);
+						if(newM!=null)
+						{
 							savemobs=true;
+							if(newM.amDestroyed() || (newM != M))
+								R.delInhabitant(M);
+							if(M!=newM)
+								R.addInhabitant(newM);
+							M=newM;
+						}
 						if(!M.amDestroyed())
 						{
-							for(int i=0;i<M.numItems();i++)
+							for(int i=M.numItems()-1;i>=0;i--)
 							{
 								final Item I=M.getItem(i);
-								if((I!=null)&&(tryModfy(mob,R,I,changes,onfields,noisy)))
+								if(I==null)
+									continue;
+								final Item newI=(Item)tryModfy(mob,R,I,changes,onfields,noisy);
+								if(newI!=null)
+								{
 									savemobs=true;
+									if(newI.amDestroyed() || (newI != I))
+										M.delItem(I);
+									if(I!=newI)
+										M.addItem(newI);
+								}
 							}
 							final ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(M);
 							if(SK!=null)
 							{
-								for(final Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
+								for(final Iterator<CoffeeShop.ShelfProduct> i=SK.getShop().getStoreShelves();i.hasNext();)
 								{
-									final Environmental E2=i.next();
+									final CoffeeShop.ShelfProduct P=i.next();
+									final Environmental E2=P.product;
 									if((E2 instanceof Item)||(E2 instanceof MOB))
 									{
-										if(tryModfy(mob,R,E2,changes,onfields,noisy))
+										final Environmental E3=tryModfy(mob,R,E2,changes,onfields,noisy);
+										if(E3!=null)
+										{
 											savemobs=true;
+											if(E3.amDestroyed())
+												i.remove();
+											else
+											if(E2!=E3)
+												P.product=E3;
+										}
 									}
 								}
 							}

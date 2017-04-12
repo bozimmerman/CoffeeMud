@@ -61,6 +61,7 @@ public class AuctionCoffeeShop implements CoffeeShop
 	}
 
 	public static final Vector<Environmental> emptyV=new Vector<Environmental>();
+	public static final Vector<ShelfProduct> emptyV2=new Vector<ShelfProduct>();
 	public String auctionShop="";
 	protected WeakReference<ShopKeeper> shopKeeper=null;
 
@@ -145,6 +146,12 @@ public class AuctionCoffeeShop implements CoffeeShop
 	public Iterator<Environmental> getStoreInventory()
 	{
 		return emptyV.iterator();
+	}
+
+	@Override
+	public Iterator<ShelfProduct> getStoreShelves()
+	{
+		return emptyV2.iterator();
 	}
 
 	@Override

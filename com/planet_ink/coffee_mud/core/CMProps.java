@@ -1158,7 +1158,10 @@ public class CMProps extends Properties
 		{ 
 			Double d=p().sysIntsAsFloat[varNum.ordinal()];
 			if(d==null)
-				p().sysIntsAsFloat[varNum.ordinal()]=Double.valueOf(p().sysInts[varNum.ordinal()].doubleValue());
+			{
+				d=Double.valueOf(p().sysInts[varNum.ordinal()].doubleValue());
+				p().sysIntsAsFloat[varNum.ordinal()]=d;
+			}
 			return d.doubleValue();
 		}
 		catch(final Exception t) 
@@ -1180,7 +1183,10 @@ public class CMProps extends Properties
 		{ 
 			Double d=p().sysIntsAsFloat[varNum.ordinal()];
 			if(d==null)
-				p().sysIntsAsFloat[varNum.ordinal()]=Double.valueOf(p().sysInts[varNum.ordinal()].doubleValue()/100.0);
+			{
+				d=Double.valueOf(p().sysInts[varNum.ordinal()].doubleValue()/100.0);
+				p().sysIntsAsFloat[varNum.ordinal()]=d;
+			}
 			return d.doubleValue();
 		}
 		catch(final Exception t) 
