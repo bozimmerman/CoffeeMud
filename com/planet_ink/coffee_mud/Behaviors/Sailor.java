@@ -140,7 +140,7 @@ public class Sailor extends StdBehavior
 		if(boarder || defender)
 		{
 			final Item hisShipI=getShip(M);
-			if((hisShipI == this.loyalShipItem)||(this.loyalShipItem==null))
+			if((hisShipI == this.loyalShipItem)||(this.loyalShipItem==null)||(hisShipI==null))
 				return false;
 			if(this.loyalShipItem instanceof SailingShip)
 			{
