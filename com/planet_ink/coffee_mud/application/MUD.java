@@ -466,34 +466,32 @@ public class MUD extends Thread implements MudHost
 		Log.debugOut("Memory: "+blockName+": "+(total-free)+"/"+total);
 	}
 
-	public static void globalShutdown(Session S, boolean keepItDown, String externalCommand)
+	public static void globalShutdown(final Session S, final boolean keepItDown, final String externalCommand)
 	{
 		CMProps.setBoolAllVar(CMProps.Bool.MUDSTARTED,false);
 		CMProps.setBoolAllVar(CMProps.Bool.MUDSHUTTINGDOWN,true);
 		final AtomicLong shutdownStateTime = new AtomicLong(System.currentTimeMillis());
-		if((MUD.execExternalCommand!=null)&&(MUD.execExternalCommand.equalsIgnoreCase("hard")))
+		final long shutdownTimeout = 5 * 60 * 1000;
+		final Thread shutdownWatchThread = new Thread(new Runnable()
 		{
-			new Thread(new Runnable()
+			@Override
+			public void run()
 			{
-				final static long timeout = 10 * 60 * 1000;
-	
-				@Override
-				public void run()
+				while(shutdownStateTime.get()!=0)
 				{
-					while(shutdownStateTime.get()!=0)
+					final long ellapsed=System.currentTimeMillis()-shutdownStateTime.get();
+					if(ellapsed > shutdownTimeout)
 					{
-						final long ellapsed=System.currentTimeMillis()-shutdownStateTime.get();
-						if(ellapsed > timeout)
-						{
+						if((externalCommand!=null)&&(externalCommand.equalsIgnoreCase("hard")))
 							MUD.execExternalRestart();
-							break;
-						}
-						CMLib.s_sleep(10 * 1000);
+						Log.errOut("** Shutdown timeout. **");
+						break;
 					}
+					CMLib.s_sleep(10 * 1000);
 				}
-				
-			}).start();
-		}
+			}
+		});
+		shutdownWatchThread.start();
 
 		final boolean debugMem = CMSecurity.isDebugging(CMSecurity.DbgFlag.SHUTDOWN);
 		if(debugMem) shutdownMemReport("BaseLine");
@@ -546,8 +544,9 @@ public class MUD extends Thread implements MudHost
 				{
 					try
 					{
-						shutdownStateTime.set(System.currentTimeMillis());
-						((PlayerLibrary)e.nextElement()).savePlayers();
+						final PlayerLibrary lib = (PlayerLibrary)e.nextElement();
+						shutdownStateTime.set(System.currentTimeMillis()+(lib.numPlayers()*(60 * 1000)));
+						lib.savePlayers();
 					}
 					catch (final Throwable ex)
 					{
@@ -647,6 +646,7 @@ public class MUD extends Thread implements MudHost
 			{
 				try
 				{
+					shutdownStateTime.set(System.currentTimeMillis()+(5*shutdownTimeout));
 					final CMLibrary library = e.nextElement();
 					library.shutdown();
 					if(debugMem) shutdownMemReport(library.ID());
@@ -817,7 +817,7 @@ public class MUD extends Thread implements MudHost
 			{
 				try
 				{
-					shutdownStateTime.set(System.currentTimeMillis());
+					shutdownStateTime.set(System.currentTimeMillis()+(5*shutdownTimeout));
 					final CMLibrary library = e.nextElement();
 					if(S!=null)
 						S.print(library.name()+"...");
@@ -845,7 +845,7 @@ public class MUD extends Thread implements MudHost
 			{
 				try
 				{
-					shutdownStateTime.set(System.currentTimeMillis());
+					shutdownStateTime.set(System.currentTimeMillis()+(5*shutdownTimeout));
 					final CMLibrary library=e.nextElement();
 					if(S!=null)
 						S.print(library.name()+"...");
@@ -874,7 +874,7 @@ public class MUD extends Thread implements MudHost
 				{
 					try
 					{
-						shutdownStateTime.set(System.currentTimeMillis());
+						shutdownStateTime.set(System.currentTimeMillis()+(5*shutdownTimeout));
 						final CMLibrary library=e.nextElement();
 						if(S!=null)
 							S.print(library.name()+"...");
@@ -959,6 +959,7 @@ public class MUD extends Thread implements MudHost
 		if(S!=null)
 			S.stopSession(true,true,false);
 		shutdownStateTime.set(0);
+		shutdownWatchThread.interrupt();
 		checkedSleep(500);
 		System.gc();
 		System.runFinalization();
@@ -984,6 +985,7 @@ public class MUD extends Thread implements MudHost
 		CMLib.hosts().clear();
 		if(!keepItDown)
 			CMProps.setBoolAllVar(CMProps.Bool.MUDSHUTTINGDOWN,false);
+		Log.debugOut("Used memory = "+(Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()));
 	}
 
 	private static boolean startWebServer(final CMProps page, String serverName)
