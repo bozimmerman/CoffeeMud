@@ -185,10 +185,10 @@ public class Skill_Dirt extends StdSkill
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
+		final Room R=mob.location();
 		final MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null)
+		if((target==null)||(R==null))
 			return false;
-
 
 		if(!hereOK(mob))
 		{
@@ -235,10 +235,10 @@ public class Skill_Dirt extends StdSkill
 		{
 			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),auto?L("Dirt flies at <T-NAME>!"):L("^F^<FIGHT^><S-NAME> kick(s) dirt at <T-NAMESELF>.^</FIGHT^>^?"));
 			CMLib.color().fixSourceFightColor(msg);
-			if(mob.location().okMessage(mob,msg))
+			if(R.okMessage(mob,msg))
 			{
-				mob.location().send(mob,msg);
-				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> <S-IS-ARE> blinded!"));
+				R.send(mob,msg);
+				R.show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> <S-IS-ARE> blinded!"));
 				maliciousAffect(mob,target,asLevel,3+(getXLEVELLevel(mob)/3),-1);
 			}
 		}
