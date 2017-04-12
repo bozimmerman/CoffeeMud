@@ -147,7 +147,9 @@ public class Sailor extends StdBehavior
 				final SailingShip myShip=(SailingShip)this.loyalShipItem;
 				final ItemTicker I1=(ItemTicker)myShip.fetchEffect("ItemRejuv");
 				final ItemTicker I2=(ItemTicker)hisShipI.fetchEffect("ItemRejuv");
-				if((I1!=null)&&(I2!=null)&&(I1.properLocation()==I2.properLocation()))
+				if((I1!=null)
+				&&(I2!=null)
+				&&(I1.properLocation()==I2.properLocation()))
 					return false;
 				final PhysicalAgent myCombatTarget=myShip.getCombatant();
 				if((myCombatTarget != null)
