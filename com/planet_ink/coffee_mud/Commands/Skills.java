@@ -35,14 +35,21 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Skills extends StdCommand
 {
-	public Skills(){}
+	public Skills()
+	{
+	}
 
-	private final String[] access=I(new String[]{"SKILLS","SK"});
-	@Override public String[] getAccessWords(){return access;}
+	private final String[]	access	= I(new String[] { "SKILLS", "SK" });
+
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
 	protected boolean parsedOutIndividualSkill(MOB mob, String qual, int acode)
 	{
-		return parsedOutIndividualSkill(mob,qual,new XVector(Integer.valueOf(acode)));
+		return parsedOutIndividualSkill(mob, qual, new XVector(Integer.valueOf(acode)));
 	}
 
 	protected boolean parsedOutIndividualSkill(MOB mob, String qual, Vector<Integer> acodes)
@@ -177,7 +184,6 @@ public class Skills extends StdCommand
 			domainName[0]+=" ";
 	}
 
-
 	protected StringBuilder getAbilities(MOB viewerM, MOB ableM, int ofType, int ofDomain, boolean addQualLine, int maxLevel)
 	{
 		final ArrayList<Integer> V=new ArrayList<Integer>();
@@ -195,7 +201,7 @@ public class Skills extends StdCommand
 	{
 		final int COL_LEN1=CMLib.lister().fixColWidth(3.0,viewerM);
 		final int COL_LEN2=CMLib.lister().fixColWidth(18.0,viewerM);
-		final int COL_LEN3=CMLib.lister().fixColWidth(19.0,viewerM);
+		final int COL_LEN3=CMLib.lister().fixColWidth(18.0,viewerM);
 		int highestLevel=0;
 		final int lowestLevel=ableM.phyStats().level()+1;
 		final StringBuilder msg=new StringBuilder("");
@@ -229,15 +235,17 @@ public class Skills extends StdCommand
 				{
 					if(thisLine.length()==0)
 						thisLine.append("\n\rLevel ^!"+l+"^?:\n\r");
-					if((++col)>3)
+					col++;
+					thisLine.append("^N[^H").append(CMStrings.padRight(Integer.toString(A.proficiency()),COL_LEN1));
+					thisLine.append("%^?]^N");
+					thisLine.append(" ");//+(A.isAutoInvoked()?"^H.^N":" ")
+					if(col < 3)
+						thisLine.append(CMStrings.padRight("^<HELP^>",A.name(),"^</HELP^>",COL_LEN2));
+					else
 					{
-						thisLine.append("\n\r");
-						col=1;
+						thisLine.append(CMStrings.limit("^<HELP^>",A.name(),"^</HELP^>\n\r",COL_LEN3));
+						col=0;
 					}
-					thisLine.append("^N[^H"+CMStrings.padRight(Integer.toString(A.proficiency()),COL_LEN1)
-									+"%^?]^N"
-									+" "//+(A.isAutoInvoked()?"^H.^N":" ")
-									+CMStrings.padRight("^<HELP^>"+A.name()+"^</HELP^>",(col==3)?COL_LEN2:COL_LEN3));
 				}
 			}
 			if(thisLine.length()>0)
@@ -283,7 +291,10 @@ public class Skills extends StdCommand
 		return false;
 	}
 
-	@Override public boolean canBeOrdered(){return true;}
-
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 
 }

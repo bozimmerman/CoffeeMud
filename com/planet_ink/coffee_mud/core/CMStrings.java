@@ -2123,6 +2123,32 @@ public class CMStrings
 			return thisStr+SPACES;
 		return thisStr+SPACES.substring(0,thisMuch-lenMinusColors);
 	}
+
+	
+	/**
+	 * Pads the string to the right with spaces until it is the length 
+	 * of the given number. If the string is already larger than the given number, the 
+	 * string is truncated at the end until it is the given length.  If the string
+	 * must be truncated, any color codes are also removed.
+	 * This method removes any special CoffeeMud/ANSI color codes before calculating
+	 * length.
+	 * @param prefixColorStr the string to prefix the padded string with
+	 * @param thisStr the string to pad or truncate
+	 * @param suffixColorStr the string to suffix the string before padding
+	 * @param thisMuch the final minimum length of the string.
+	 * @return the string padded, or unchanged if already too long
+	 */
+	public final static String padRight(final String prefixColorStr, final String thisStr, final String suffixColorStr, final int thisMuch)
+	{
+		final int lenMinusColors=lengthMinusColors(thisStr);
+		if(lenMinusColors==thisMuch)
+			return prefixColorStr + thisStr+suffixColorStr;
+		if(lenMinusColors>thisMuch)
+			return prefixColorStr + removeColors(thisStr).substring(0,thisMuch)+suffixColorStr;
+		if(thisMuch-lenMinusColors >= SPACES.length())
+			return prefixColorStr + thisStr + suffixColorStr + SPACES;
+		return prefixColorStr + thisStr + suffixColorStr + SPACES.substring(0,thisMuch-lenMinusColors);
+	}
 	
 	/**
 	 * Pads the string to the right with the given character until it is the length 
@@ -2147,6 +2173,26 @@ public class CMStrings
 		for(int i=0;i<thisMuch-lenMinusColors;i++)
 			str.append(c);
 		return str.toString();
+	}
+	
+	/**
+	 * Truncates the given string if the string is larger than the given number, 
+	 * or returns it unchanged otherwise. If the string is larger than the given 
+	 * number, color codes are removed.
+	 * This method removes any special CoffeeMud/ANSI color codes before calculating
+	 * length.
+	 * @param prefixColorStr the string to prefix the padded string with
+	 * @param thisStr the string to pad or truncate
+	 * @param suffixColorStr the string to suffix the string before padding
+	 * @param thisMuch the final maximum length of the string.
+	 * @return the string truncated, or unchanged if not long enough
+	 */
+	public final static String limit(final String prefixColorStr, final String thisStr, final String suffixColorStr, final int thisMuch)
+	{
+		final int lenMinusColors=lengthMinusColors(thisStr);
+		if(lenMinusColors>thisMuch)
+			return prefixColorStr+removeColors(thisStr).substring(0,thisMuch)+suffixColorStr;
+		return prefixColorStr+thisStr+suffixColorStr;
 	}
 	
 	/**

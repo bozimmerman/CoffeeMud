@@ -35,10 +35,17 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Spells  extends Skills
 {
-	public Spells(){}
+	public Spells()
+	{
+	}
 
-	private final String[] access=I(new String[]{"SPELLS","SP"});
-	@Override public String[] getAccessWords(){return access;}
+	private final String[]	access	= I(new String[] { "SPELLS", "SP" });
+
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
@@ -60,7 +67,10 @@ public class Spells  extends Skills
 		return false;
 	}
 
-	@Override public boolean canBeOrdered(){return true;}
-
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 
 }
