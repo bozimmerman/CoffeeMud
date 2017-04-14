@@ -2154,7 +2154,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			{
 				if((S.mob()!=null)
 				&&(S.mob().playerStats()!=null)
-				&&(S.mob().playerStats().getAccount()==acct))
+				&&(S.mob().playerStats().getAccount()==acct)
+				&&(CMLib.flags().isInTheGame(S.mob(), true)))
 					numAccountOnline++;
 			}
 			int maxConnectionsPerAccount = CMProps.getIntVar(CMProps.Int.MAXCONNSPERACCOUNT);
