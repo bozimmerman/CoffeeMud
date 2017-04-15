@@ -359,7 +359,6 @@ public interface AbilityMapper extends CMLibrary
 	 */
 	public Map<String,AbilityMapping> getAbleMapping(String ID);
 
-	
 	/**
 	 * Returns the level at which the given class or race qualifies for the given ability ID(),
 	 * optionally checking the All-Qualifies list or not.  Returns -1 for no match.
@@ -385,7 +384,7 @@ public interface AbilityMapper extends CMLibrary
 	 * @return the level at which the give class or race qualifies, or null
 	 */
 	public AbilityMapping getQualifyingMapping(String ID, boolean checkAll, String abilityID);
-	
+
 	/**
 	 * Returns the lowest class or player level at which the given mob (by race or 
 	 * class) qualified for the given ability if any. Returns -1 for no match.
@@ -529,7 +528,7 @@ public interface AbilityMapper extends CMLibrary
 	 * @return true if a class or race qualifies for it, false otherwise
 	 */
 	public boolean qualifiesByAnyCharClassOrRace(String abilityID);
-	
+
 	/**
 	 * Returns whether the given class qualifies for the given ability.
 	 * Does not check all-qualifies list, so this is only class (or race)
@@ -727,7 +726,7 @@ public interface AbilityMapper extends CMLibrary
 	 * @return the raw formatted pre-requisite string.
 	 */
 	public String getPreReqStrings(String ID, boolean checkAll, String abilityID);
-	
+
 	/**
 	 * Returns whether the given ability, for the given charclass, race, or clan
 	 * government ID, and optionally checking the All Qualifies list, is gained
@@ -768,7 +767,7 @@ public interface AbilityMapper extends CMLibrary
 	 * @return true if its secret, false otherwise
 	 */
 	public boolean getAllSecretSkill(String abilityID);
-	
+
 	/**
 	 * Returns whether the given ability ID() represents a skill that is secret to
 	 * the given mob, by whatever class, race, or clan they qualify for it by.
@@ -777,7 +776,7 @@ public interface AbilityMapper extends CMLibrary
 	 * @return true if the ability is secret for this mob, false otherwise
 	 */
 	public boolean getSecretSkill(MOB mob, String abilityID);
-	
+
 	/**
 	 * Returns whether the given Ability ID() is secret in every mapping (race, class,
 	 * govt clan id, all qualifies) or not.
@@ -785,7 +784,7 @@ public interface AbilityMapper extends CMLibrary
 	 * @return true if its secret everywhere, false otherwise
 	 */
 	public boolean getSecretSkill(String abilityID);
-	
+
 	/**
 	 * Returns any mapping-based overrides to the standard system white
 	 * standards for casting costs (the amount of mana or moves to use a skill).
@@ -800,7 +799,7 @@ public interface AbilityMapper extends CMLibrary
 	 * @return an integer array of the mapping-based overrides to usage costs
 	 */
 	public Integer[] getCostOverrides(String ID, boolean checkAll, String abilityID);
-	
+
 	/**
 	 * Returns any All-Qualifies overrides to the standard system white
 	 * standards for casting costs (the amount of mana or moves to use a skill).
@@ -813,7 +812,7 @@ public interface AbilityMapper extends CMLibrary
 	 * @return an integer array of the mapping-based overrides to usage costs
 	 */
 	public Integer[] getAllCostOverrides(String abilityID);
-	
+
 	/**
 	 * Returns any mapping-based overrides to the standard system white
 	 * standards for casting costs (the amount of mana or moves to use a skill)
@@ -828,7 +827,7 @@ public interface AbilityMapper extends CMLibrary
 	 * @return an integer array of the mapping-based overrides to usage costs
 	 */
 	public Integer[] getCostOverrides(MOB mob, String abilityID);
-	
+
 	/**
 	 * Returns the first mapping-based override to the standard system white
 	 * standards for casting costs (the amount of mana or moves to use a skill).
@@ -841,7 +840,7 @@ public interface AbilityMapper extends CMLibrary
 	 * @return an integer array of the mapping-based overrides to usage costs
 	 */
 	public Integer[] getCostOverrides(String abilityID);
-	
+
 	/**
 	 * Returns the default argument/parameter to add to the given Ability by ID()
 	 * when gained by the class, race, clan ID, optionally also checking the
@@ -854,7 +853,7 @@ public interface AbilityMapper extends CMLibrary
 	 * @return the default misc-text arguments for this mapped Ability
 	 */
 	public String getDefaultParm(String ID, boolean checkAll, String abilityID);
-	
+
 	/**
 	 * Returns the default proficiency to give to the given Ability by ID()
 	 * when gained by the class, race, clan ID, optionally also checking the
@@ -867,7 +866,7 @@ public interface AbilityMapper extends CMLibrary
 	 * @return the default proficiency argument for this mapped Ability, usually 0
 	 */
 	public int getDefaultProficiency(String ID, boolean checkAll, String abilityID);
-	
+
 	/**
 	 * Returns the max allowed proficiency for those with the given Ability by ID()
 	 * when carried by the class, race, clan ID, optionally also checking the
@@ -881,7 +880,7 @@ public interface AbilityMapper extends CMLibrary
 	 * @return the max proficiency for someone with this this mapped Ability, usually 100
 	 */
 	public int getMaxProficiency(String ID, boolean checkAll, String abilityID);
-	
+
 	/**
 	 * Returns the max allowed proficiency for those with the given Ability by ID()
 	 * when carried by any class, race, clan ID, while also checking the
@@ -893,7 +892,7 @@ public interface AbilityMapper extends CMLibrary
 	 * @return the max proficiency for everyone with this this mapped Ability, usually 100
 	 */
 	public int getMaxProficiency(String abilityID);
-	
+
 	/**
 	 * Returns the max allowed proficiency for those with the given Ability by ID()
 	 * when carried by the mob by class, race, clan ID, optionally also checking the
@@ -926,7 +925,7 @@ public interface AbilityMapper extends CMLibrary
 	 * @return the converter
 	 */
 	public Converter<String,AbilityMapping> getMapper(final String classID);
-	
+
 	/**
 	 * Saves the All-Qualifies list to the filesystem.  This is the list that defines particular
 	 * skills that either ALL classes qualify for together.  Things like Skill_Write, or Swim.
@@ -1010,14 +1009,14 @@ public interface AbilityMapper extends CMLibrary
 		 * @return this
 		 */
 		public AbilityMapping		ID(String newValue);
-		
+
 		/**
 		 * Returns the ability ID() this mapping belongs to.
 		 * @see AbilityMapper.AbilityMapping#abilityID(String)
 		 * @return the ability ID() this mapping belongs to.
 		 */
 		public String				abilityID();
-		
+
 		/**
 		 * Sets the ability ID() this mapping belongs to.
 		 * @see AbilityMapper.AbilityMapping#abilityID()
@@ -1025,14 +1024,14 @@ public interface AbilityMapper extends CMLibrary
 		 * @return this
 		 */
 		public AbilityMapping		abilityID(String newValue);
-		
+
 		/**
 		 * Returns the class/race/clan qualifying level.
 		 * @see AbilityMapper.AbilityMapping#qualLevel(int)
 		 * @return the class/race/clan qualifying level.
 		 */
 		public int					qualLevel();
-		
+
 		/**
 		 * Sets the class/race/clan qualifying level.
 		 * @see AbilityMapper.AbilityMapping#qualLevel()
@@ -1040,7 +1039,7 @@ public interface AbilityMapper extends CMLibrary
 		 * @return this
 		 */
 		public AbilityMapping		qualLevel(int newValue);
-		
+
 		/**
 		 * Returns true if the skill is automatically gained, false
 		 * if it must be trained.
@@ -1048,7 +1047,7 @@ public interface AbilityMapper extends CMLibrary
 		 * @return true if the skill is automatically gained
 		 */
 		public boolean				autoGain();
-		
+
 		/**
 		 * Sets true if the skill is automatically gained, false
 		 * if it must be trained.
@@ -1057,7 +1056,7 @@ public interface AbilityMapper extends CMLibrary
 		 * @return this
 		 */
 		public AbilityMapping		autoGain(boolean newValue);
-		
+
 		/**
 		 * Returns the default proficiency of the skill gained under
 		 * this mapping.
@@ -1065,7 +1064,7 @@ public interface AbilityMapper extends CMLibrary
 		 * @return the default proficiency of the skill gained
 		 */
 		public int					defaultProficiency();
-		
+
 		/**
 		 * Sets the default proficiency of the skill gained under
 		 * this mapping.
@@ -1074,7 +1073,7 @@ public interface AbilityMapper extends CMLibrary
 		 * @return this
 		 */
 		public AbilityMapping		defaultProficiency(int newValue);
-		
+
 		/**
 		 * Returns the maximum proficiency of the skill gained under
 		 * this mapping.
@@ -1082,7 +1081,7 @@ public interface AbilityMapper extends CMLibrary
 		 * @return the maximum proficiency of the skill gained
 		 */
 		public int					maxProficiency();
-		
+
 		/**
 		 * Sets the maximum proficiency of the skill gained under
 		 * this mapping.
@@ -1091,7 +1090,7 @@ public interface AbilityMapper extends CMLibrary
 		 * @return this
 		 */
 		public AbilityMapping		maxProficiency(int newValue);
-		
+
 		/**
 		 * Returns the default argument/parameter applies to skills
 		 * gained under this mapping.
@@ -1099,7 +1098,7 @@ public interface AbilityMapper extends CMLibrary
 		 * @return the default argument/parameter
 		 */
 		public String				defaultParm();
-		
+
 		/**
 		 * Sets the default argument/parameter applies to skills
 		 * gained under this mapping.
@@ -1116,7 +1115,7 @@ public interface AbilityMapper extends CMLibrary
 		 * @return whether this skill is secret and unseen
 		 */
 		public boolean				isSecret();
-		
+
 		/**
 		 * Sets whether this skill is secret and unseen even when
 		 * qualified for.
@@ -1125,7 +1124,7 @@ public interface AbilityMapper extends CMLibrary
 		 * @return this
 		 */
 		public AbilityMapping		isSecret(boolean newValue);
-		
+
 		/**
 		 * Gets whether this skill is qualified for identically
 		 * by all classes, thus sharing a mapping.
@@ -1133,7 +1132,7 @@ public interface AbilityMapper extends CMLibrary
 		 * @return whether this skill is qualified for by all classes
 		 */
 		public boolean				isAllQualified();
-		
+
 		/**
 		 * Sets whether this skill is qualified for identically
 		 * by all classes, thus sharing a mapping.
@@ -1142,7 +1141,7 @@ public interface AbilityMapper extends CMLibrary
 		 * @return this
 		 */
 		public AbilityMapping		isAllQualified(boolean newValue);
-		
+
 		/**
 		 * Gets the coded form of the pre-requisites skills needed
 		 * to train or gain this skill.
@@ -1152,7 +1151,7 @@ public interface AbilityMapper extends CMLibrary
 		 * @return the coded form of the pre-requisites skills needed
 		 */
 		public DVector				skillPreReqs();
-		
+
 		/**
 		 * Sets the coded form of the pre-requisites skills needed
 		 * to train or gain this skill.
@@ -1180,7 +1179,7 @@ public interface AbilityMapper extends CMLibrary
 		 * @return this
 		 */
 		public AbilityMapping		extraMask(String newValue);
-		
+
 		/**
 		 * Gets the uncoded raw string form of the pre-requisite skills
 		 * needed to train or gain this skill
@@ -1190,7 +1189,7 @@ public interface AbilityMapper extends CMLibrary
 		 * @return the uncoded raw string form of the pre-requisite skills
 		 */
 		public String				originalSkillPreReqList();
-		
+
 		/**
 		 * Sets the uncoded raw string form of the pre-requisite skills
 		 * needed to train or gain this skill
@@ -1201,7 +1200,7 @@ public interface AbilityMapper extends CMLibrary
 		 * @return this
 		 */
 		public AbilityMapping		originalSkillPreReqList(String newValue);
-		
+
 		/**
 		 * Gets the array of cost overrides, indexed by the Costs enum, or
 		 * null if there is no overrides of the basic costs.
@@ -1210,7 +1209,7 @@ public interface AbilityMapper extends CMLibrary
 		 * @return the array of cost overrides, or null
 		 */
 		public Integer[]			costOverrides();
-		
+
 		/**
 		 * Sets the array of cost overrides, indexed by the Costs enum, or
 		 * null if there is no overrides of the basic costs.
@@ -1220,7 +1219,7 @@ public interface AbilityMapper extends CMLibrary
 		 * @return this
 		 */
 		public AbilityMapping		costOverrides(Integer[] newValue);
-		
+
 		/**
 		 * Gets whether this skill is qualified for identically
 		 * by all classes, thus sharing a mapping.  This is true 
@@ -1230,7 +1229,7 @@ public interface AbilityMapper extends CMLibrary
 		 * @return whether this skill is qualified for by all classes
 		 */
 		public boolean				allQualifyFlag();
-		
+
 		/**
 		 * Sets whether this skill is qualified for identically
 		 * by all classes, thus sharing a mapping.  This is true 
@@ -1241,7 +1240,7 @@ public interface AbilityMapper extends CMLibrary
 		 * @return this
 		 */
 		public AbilityMapping		allQualifyFlag(boolean newValue);
-		
+
 		/**
 		 * Gets a key/value pair mappings of extraneous information to
 		 * store with this ability mapping.
@@ -1249,8 +1248,7 @@ public interface AbilityMapper extends CMLibrary
 		 * @return a key/value pair mappings of extraneous information
 		 */
 		public Map<String, String>	extFields();
-		
-		
+
 		/**
 		 * Sets a key/value pair mappings of extraneous information to
 		 * store with this ability mapping.
@@ -1259,7 +1257,7 @@ public interface AbilityMapper extends CMLibrary
 		 * @return this
 		 */
 		public AbilityMapping		extFields(Map<String, String> newValue);
-		
+
 		/**
 		 * Returns a copy of this mapping.  It's a deep copy.
 		 * @return a copy of this mapping.  It's a deep copy.
