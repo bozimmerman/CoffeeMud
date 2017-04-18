@@ -35,15 +35,35 @@ import java.util.*;
 */
 public class Prop_ItemNoRuin extends Property
 {
-	@Override public String ID() { return "Prop_ItemNoRuin"; }
-	@Override public String name(){ return "Prevents deletion/corruption from corpses";}
-	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
+	@Override
+	public String ID()
+	{
+		return "Prop_ItemNoRuin";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Prevents deletion/corruption from corpses";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ITEMS;
+	}
 
 	@Override
 	public String accountForYourself()
-	{ return "A Prize";    }
+	{
+		return "A Prize";
+	}
 
-	@Override public long flags(){return Ability.FLAG_ADJUSTER;}
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_ADJUSTER;
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
