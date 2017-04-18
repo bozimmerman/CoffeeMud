@@ -33,12 +33,11 @@ TECH
    *. Radiation Props: Alpha (damage), Beta (?!), Gamma (Mutation if in too long)
 
 NON-TECH
-   *. Allow GMODIFY to change room types.
-   *. Wants and Needs engine - similar to slavery system
    *. Builder Achievements, Archon Achievements, Clan Achievements, Timed achievements (within a time period)
+   *. Simple Desires quest behavior - see Tim's Wants and Needs doc
+   *. Wants and Needs engine - similar to slavery system
    *. Port Siplet to C++ and shove it inside a Chromium window.
    *. Start on Spell Research?
-   *. Simple Desires quest behavior - see Tim's Wants and Needs doc
    *. RandomQuests based off the Percolator engine -- a way to randomly generate different quests.
    *. retest private libs, private dbtables, private classes, private area objects, private players
    *. OLC for players?  Play with PennMush more. Port 4201
