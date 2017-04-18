@@ -1213,12 +1213,14 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				{
 					final Room R2=r.nextElement();
 					for(int d=0;d<R2.rawDoors().length;d++)
+					{
 						if(R2.rawDoors()[d]==oldR)
 						{
 							R2.rawDoors()[d]=R;
 							if(R2 instanceof GridLocale)
 								((GridLocale)R2).buildGrid();
 						}
+					}
 				}
 			}
 			catch (final NoSuchElementException e)
@@ -1694,15 +1696,15 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			return;
 
 		if((E instanceof Wand)
-		 ||(E instanceof SpellHolder)
-		 ||(E instanceof Light)
-		 ||(E instanceof Container)
-		 ||(E instanceof Ammunition)
-		 ||((E instanceof ClanItem)
-			 &&((((ClanItem)E).getClanItemType()==ClanItem.ClanItemType.GATHERITEM)
-				 ||(((ClanItem)E).getClanItemType()==ClanItem.ClanItemType.CRAFTITEM)
-				 ||(((ClanItem)E).getClanItemType()==ClanItem.ClanItemType.SPECIALAPRON)))
-		 ||(E instanceof DoorKey))
+		||(E instanceof SpellHolder)
+		||(E instanceof Light)
+		||(E instanceof Container)
+		||(E instanceof Ammunition)
+		||((E instanceof ClanItem)
+			&&((((ClanItem)E).getClanItemType()==ClanItem.ClanItemType.GATHERITEM)
+				||(((ClanItem)E).getClanItemType()==ClanItem.ClanItemType.CRAFTITEM)
+				||(((ClanItem)E).getClanItemType()==ClanItem.ClanItemType.SPECIALAPRON)))
+		||(E instanceof DoorKey))
 			CMLib.flags().setReadable(E,false);
 		else
 		if((CMClass.classID(E).endsWith("Readable"))
@@ -1726,14 +1728,14 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			return;
 
 		if(E.isReadable()
-		 ||(E instanceof SpellHolder)
-		 ||(E instanceof Ammunition)
-		 ||(E instanceof Recipe)
-		 ||(E instanceof Exit)
-		 ||(E instanceof Wand)
-		 ||(E instanceof ClanItem)
-		 ||(E instanceof Light)
-		 ||(E instanceof DoorKey))
+		||(E instanceof SpellHolder)
+		||(E instanceof Ammunition)
+		||(E instanceof Recipe)
+		||(E instanceof Exit)
+		||(E instanceof Wand)
+		||(E instanceof ClanItem)
+		||(E instanceof Light)
+		||(E instanceof DoorKey))
 		{
 			boolean ok=false;
 			while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))

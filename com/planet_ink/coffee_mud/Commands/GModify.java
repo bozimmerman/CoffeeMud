@@ -106,6 +106,40 @@ public class GModify extends StdCommand
 	{
 		if((stat!=null)&&(stat.length()>0))
 		{
+			if(stat.equals("CLASS")
+			&&(E.isStat("CLASS")))
+			{
+				if(E instanceof Room)
+				{
+					final Room newRoom=CMClass.getLocale(value);
+					if(newRoom!=null)
+					{
+						final Room R=CMLib.genEd().changeRoomType((Room)E,newRoom);
+						R.recoverRoomStats();
+						return R;
+					}
+				}
+				else
+				{
+					final CMClass.CMObjectType type=CMClass.getObjectType(E);
+					final Environmental newObj=(Environmental)CMClass.getByType(value, type);
+					if((newObj instanceof Physical)&&(E instanceof Physical))
+					{
+						final Physical P1=(Physical)E;
+						final Physical P2=(Physical)newObj;
+						P2.basePhyStats().setLevel(P1.basePhyStats().level());
+						P2.phyStats().setLevel(P1.basePhyStats().level());
+						P2.basePhyStats().setAbility(P1.basePhyStats().ability());
+						P2.phyStats().setAbility(P1.basePhyStats().ability());
+						P2.setMiscText(P1.text());
+						P2.text();
+						P2.recoverPhyStats();
+						return P2;
+					}
+				}
+				return null;
+			}
+			else
 			if((stat.equalsIgnoreCase("REJUV"))
 			&&(E instanceof Physical))
 				((Physical)E).basePhyStats().setRejuv(CMath.s_int(value));
