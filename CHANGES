@@ -2,6 +2,7 @@
    *. Sections in the default coffeemud.ini file were moved around.  Don't be alarmed. :)
    1. Hunger and Thirst system can now be tweeked.  See coffeemud.ini file
    2. Entering SHUTDOWN RESTART HARD will now attempt to run a restart.sh/restart.bat.
+   3. GMODIFY now supports changing the CLASS of objects, including rooms.
 
 # Build 5.9.5 Release 04/10/2017
    *. Database Schema Updated for CMGRAC.  See the Installation Guide about running DBUpgrade.
