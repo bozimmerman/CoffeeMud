@@ -190,6 +190,8 @@ public class WaterSurface extends StdRoom implements Drink
 				skyedYet=false;
 			}
 		}
+		else
+			skyedYet=false;
 	}
 
 	protected void fixUnderwater()

@@ -620,6 +620,8 @@ public class StdRoom implements Room
 				skyedYet=false;
 			}
 		}
+		else
+			skyedYet=false;
 	}
 
 	@Override
