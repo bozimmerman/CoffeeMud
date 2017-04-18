@@ -52,6 +52,14 @@ public class Studying extends CommonSkill
 		return localizedName;
 	}
 
+	private static final String[]	triggerStrings	= I(new String[] { "STUDY", "STUDYING" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+	
 	protected static enum perLevelLimits 
 	{
 		COMMON(1,6,1, ACODE_COMMON_SKILL, ACODE_LANGUAGE),
@@ -445,7 +453,7 @@ granting each ability at the lowest level above (1,2,3,4,5,6).
 			return false;
 		}
 		final String skillName = CMParms.combine(commands);
-		final Ability A=CMClass.findAbility(skillName, mob);
+		final Ability A=CMClass.findAbility(skillName, target);
 		if(A==null)
 		{
 			mob.tell(L("@x1 doesn't know '@x2'.",target.name(mob),skillName));

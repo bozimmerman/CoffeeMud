@@ -180,7 +180,7 @@ public class Scholar extends StdCharClass
 		if((msg.sourceMinor()==CMMsg.TYP_EXPCHANGE)
 		&&(msg.source()==myHost)
 		&&(msg.target() instanceof MOB)
-		&&(((MOB)msg.target()).amDead())
+		&&(((MOB)msg.target()).amDead()||(((MOB)msg.target()).curState().getHitPoints()<=0))
 		&&(msg.value()>0))
 		{
 			msg.setValue(0);
