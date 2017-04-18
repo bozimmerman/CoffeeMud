@@ -1256,6 +1256,19 @@ public class DefaultPlayerStats implements PlayerStats
 	}
 
 	@Override
+	public String leveledRoomID(int level)
+	{
+		if(levelInfo.size()==0)
+			levelInfo.add(Integer.valueOf(0),Long.valueOf(System.currentTimeMillis()),"",Long.valueOf(0));
+		for(int l=1;l<levelInfo.size();l++)
+		{
+			if(level<levelInfo.elementAtFirst(l).intValue())
+				return levelInfo.elementAtThird(l-1);
+		}
+		return "";
+	}
+
+	@Override
 	public long leveledMinutesPlayed(int level)
 	{
 		if(levelInfo.size()==0)

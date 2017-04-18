@@ -77,6 +77,16 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats, Conting
 	public long leveledDateTime(int level);
 
 	/**
+	 * The roomID that the player gained the given level
+	 * 
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#setLeveledDateTime(int, long, Room)
+	 *
+	 * @param level  the level to check for
+	 * @return roomID that the player gained the given level
+	 */
+	public String leveledRoomID(int level);
+
+	/**
 	 * The number of minutes played when the player gained the given level
 	 *
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#setLeveledDateTime(int, long, Room)

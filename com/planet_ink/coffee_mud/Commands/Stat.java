@@ -813,6 +813,7 @@ public class Stat  extends Skills
 						{
 							final long dateTime=target.playerStats().leveledDateTime(level);
 							final long ageMinutes=target.playerStats().leveledMinutesPlayed(level);
+						 	final String roomID=target.playerStats().leveledRoomID(level);
 							if((dateTime>1529122205)&&(dateTime!=lastDateTime))
 							{
 								lastDateTime = dateTime;
@@ -821,7 +822,12 @@ public class Stat  extends Skills
 								else
 								 	str.append(CMStrings.padRight(""+level,8));
 								str.append(CMStrings.padRight(CMLib.time().date2String(dateTime),21));
-							 	str.append(""+CMLib.time().date2EllapsedTime(ageMinutes * 60000L,TimeUnit.MINUTES,true));
+								str.append(CMStrings.padRight(""+CMLib.time().date2EllapsedTime(ageMinutes * 60000L,TimeUnit.MINUTES,true),17));
+								final Room R=CMLib.map().getRoom(roomID);
+								if(R==null)
+									str.append(roomID);
+								else
+									str.append(CMStrings.limit(R.displayText(), 25)).append("("+roomID+")");
 								str.append("\n\r");
 							}
 						}
