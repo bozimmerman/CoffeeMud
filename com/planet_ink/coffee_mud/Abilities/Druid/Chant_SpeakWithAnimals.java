@@ -398,7 +398,7 @@ public class Chant_SpeakWithAnimals extends Chant implements Language
 		if(success)
 		{
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?L("<T-NAME> attain(s) the ability to "+canSpeakWithWhat()+"!"):L("^S<S-NAME> chant(s) to <S-NAMESELF>, becoming one with the "+canSpeakWithWhatNoun()+"!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,null,auto),auto?L("<T-NAME> attain(s) the ability to "+canSpeakWithWhat()+"!"):L("^S<S-NAME> chant(s) to <S-NAMESELF>, becoming one with the "+canSpeakWithWhatNoun()+"!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
