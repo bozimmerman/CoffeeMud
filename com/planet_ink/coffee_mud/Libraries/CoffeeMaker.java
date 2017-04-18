@@ -2522,13 +2522,14 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				return;
 			}
 			final long wornCode=CMLib.xml().getLongFromPieces(idat,"IWORN");
-			if((newOne instanceof Container)&&(((Container)newOne).capacity()>0))
-				IIDmap.put(CMLib.xml().getValFromPieces(idat,"IID"),(Container)newOne);
 			final String ILOC=CMLib.xml().getValFromPieces(idat,"ILOC");
 			M.addItem(newOne);
 			if(ILOC.length()>0)
 				LOCmap.put(newOne,ILOC);
 			setPropertiesStr(newOne,idat,true);
+			if((newOne instanceof Container)
+			&&(((Container)newOne).capacity()>0))
+				IIDmap.put(CMLib.xml().getValFromPieces(idat,"IID"),(Container)newOne);
 			if(newOne instanceof Electronics)
 				variableEq=true;
 			else
