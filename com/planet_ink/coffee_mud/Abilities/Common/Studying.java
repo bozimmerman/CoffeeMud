@@ -214,25 +214,28 @@ granting each ability at the lowest level above (1,2,3,4,5,6).
 		if((studA != null) && (effA != null))
 		{
 			final List<String> strList = CMParms.parseSemicolons(studA.text(), true);
+			boolean removed=false;
 			for(int i=0;i<strList.size();i++)
 			{
 				if(strList.get(i).startsWith(abilityID+","))
 				{
 					strList.remove(i);
+					removed = true;
 					break;
 				}
 			}
-			final String text=CMParms.combineWith(strList,';');
-			for(final Ability A : effA.skillList)
+			if(removed)
 			{
-				if(A.ID().equalsIgnoreCase(abilityID))
+				final String text=CMParms.combineWith(strList,';');
+				for(final Ability A : effA.skillList)
 				{
-					mob.delAbility(A);
-					effA.setMiscText(text);
-					studA.setMiscText(text);
+					if(A.ID().equalsIgnoreCase(abilityID))
+						mob.delAbility(A);
 				}
+				effA.setMiscText(text);
+				studA.setMiscText(text);
+				return true;
 			}
-			return true;
 		}
 		return false;
 	}
@@ -345,6 +348,7 @@ granting each ability at the lowest level above (1,2,3,4,5,6).
 		}
 		return true;
 	}
+
 	@Override
 	public void unInvoke()
 	{
@@ -419,6 +423,7 @@ granting each ability at the lowest level above (1,2,3,4,5,6).
 				}
 			}
 			mob.tell(str.toString());
+			return true;
 		}
 		if(commands.get(0).equalsIgnoreCase("FORGET") && (commands.size()>1))
 		{
@@ -431,6 +436,7 @@ granting each ability at the lowest level above (1,2,3,4,5,6).
 				else
 					mob.tell(L("You haven't studied @x1.",A.name()));
 			}
+			return true;
 		}
 		if(commands.size()<2)
 		{
@@ -512,8 +518,9 @@ granting each ability at the lowest level above (1,2,3,4,5,6).
 			return false;
 
 		final double quickPct = getXTIMELevel(mob) * 0.05;
-		final int teachTicks = (int)(((teacherClassLevel * 60000L) 
-							- (10000L * (classLevel-teacherClassLevel)) 
+		final int teacherQualifyingLevel = CMLib.ableMapper().qualifyingLevel(target, A);
+		final int teachTicks = (int)(((teacherQualifyingLevel * 60000L) 
+							- (10000L * (teacherClassLevel-teacherQualifyingLevel)) 
 							- (15000L * super.getXLEVELLevel(mob))) / CMProps.getTickMillis());
 		final int duration=teachTicks-(int)Math.round(CMath.mul(teachTicks, quickPct));
 		final long minutes = (duration * CMProps.getTickMillis() / 60000L);
@@ -527,30 +534,33 @@ granting each ability at the lowest level above (1,2,3,4,5,6).
 		successfullyTaught = super.proficiencyCheck(mob, 0, auto);
 		{
 			final Session sess = target.session();
-			final Ability thisOne=this;
+			final Studying thisOne=this;
+			thisOne.verb=L("teaching @x1 about @x2",mob.name(target),A.name());
+			thisOne.displayText=L("You are @x1",verb);
 			final Runnable R=new Runnable()
 			{
 				final MOB		M	= mob;
 				final MOB		tM	= target;
 				final Ability	tA	= A;
-				final Ability	oA	= thisOne;
+				final Studying	oA	= thisOne;
 				
 				@Override
 				public void run()
 				{
-					verb=L("teaching @x1 about @x2",M.name(tM),tA.name());
-					displayText=L("You are @x1",verb);
 					String str=L("<T-NAME> start(s) teaching <S-NAME> about @x1.",tA.Name());
-					final CMMsg msg=CMClass.getMsg(mob,target,oA,CMMsg.MSG_NOISYMOVEMENT|(auto?CMMsg.MASK_ALWAYS:0),str);
-					final Room R=mob.location();
+					final CMMsg msg=CMClass.getMsg(M,tM,oA,CMMsg.MSG_NOISYMOVEMENT|(auto?CMMsg.MASK_ALWAYS:0),str);
+					final Room R=M.location();
 					if(R!=null)
 					{
-						if(R.okMessage(mob,msg))
+						if(R.okMessage(M,msg))
 						{
-							R.send(mob, msg);
-							//final Studying sA = (Studying)
-							beneficialAffect(mob,mob,asLevel,duration);
-							
+							R.send(M, msg);
+							oA.teachingA=tA;
+							int ticks=duration;
+							if(ticks < 1)
+								ticks = 1;
+							oA.beneficialAffect(M,tM,asLevel,ticks);
+							oA.teachingA=null;
 						}
 					}
 				}
@@ -560,6 +570,7 @@ granting each ability at the lowest level above (1,2,3,4,5,6).
 				R.run();
 			else
 			{
+				mob.tell(L("If @x1 agrees to teach you, you will begin studying together.",target.name(mob)));
 				sess.prompt(new InputCallback(InputCallback.Type.CONFIRM,"N",0)
 				{
 					@Override
