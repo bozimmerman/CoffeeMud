@@ -1195,11 +1195,11 @@ public class StdRace implements Race
 					finalV.add(A1);
 				}
 			}
-		}
-		if(finalV != empty)
-		{
-			((CMUniqSortSVec)finalV).trimToSize();
-			racialEffectMap.put(level, (CMUniqSortSVec)finalV);
+			if((finalV != empty)&&(CMProps.getBoolVar(CMProps.Bool.MUDSTARTED)))
+			{
+				((CMUniqSortSVec)finalV).trimToSize();
+				racialEffectMap.put(level, (CMUniqSortSVec)finalV);
+			}
 		}
 		return finalV;
 	}
