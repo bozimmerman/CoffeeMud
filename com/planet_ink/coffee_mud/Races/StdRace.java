@@ -1150,32 +1150,29 @@ public class StdRace implements Race
 			level=Integer.valueOf(Integer.MAX_VALUE);
 		if(racialEffectMap==null)
 			racialEffectMap=new Hashtable<Integer,SearchIDList<Ability>>();
+		if(racialEffectMap.containsKey(level))
+			return racialEffectMap.get(level);
 		if((racialEffectNames()!=null)
 		&&(racialEffectLevels()!=null)
 		&&(racialEffectParms()!=null))
 		{
-			if(racialEffectMap.containsKey(level))
-				finalV = racialEffectMap.get(level);
-			else
+			if(finalV == empty)
+				finalV = new CMUniqSortSVec<Ability>();
+			for(int v=0;v<racialEffectLevels().length;v++)
 			{
-				if(finalV == empty)
-					finalV = new CMUniqSortSVec<Ability>();
-				for(int v=0;v<racialEffectLevels().length;v++)
+				if(((racialEffectLevels()[v]<=level.intValue())||(racialEffectLevels()[v]<=1))
+				&&(racialEffectNames().length>v)
+				&&(racialEffectParms().length>v))
 				{
-					if(((racialEffectLevels()[v]<=level.intValue())||(racialEffectLevels()[v]<=1))
-					&&(racialEffectNames().length>v)
-					&&(racialEffectParms().length>v))
+					final Ability A=CMClass.getAbility(racialEffectNames()[v]);
+					if(A!=null)
 					{
-						final Ability A=CMClass.getAbility(racialEffectNames()[v]);
-						if(A!=null)
-						{
-							// mob was set to null here to make the cache map actually relevant .. see caching below
-							A.setProficiency(CMLib.ableMapper().getMaxProficiency((MOB)null,true,A.ID()));
-							A.setMiscText(racialEffectParms()[v]);
-							A.makeNonUninvokable();
-							A.setSavable(false); // must go AFTER the ablve
-							finalV.add(A);
-						}
+						// mob was set to null here to make the cache map actually relevant .. see caching below
+						A.setProficiency(CMLib.ableMapper().getMaxProficiency((MOB)null,true,A.ID()));
+						A.setMiscText(racialEffectParms()[v]);
+						A.makeNonUninvokable();
+						A.setSavable(false); // must go AFTER the ablve
+						finalV.add(A);
 					}
 				}
 			}
