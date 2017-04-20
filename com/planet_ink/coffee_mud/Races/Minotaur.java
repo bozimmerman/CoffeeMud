@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Minotaur extends Cow
+public class Minotaur extends StdRace
 {
 	@Override
 	public String ID()
@@ -128,8 +128,119 @@ public class Minotaur extends Cow
 	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
+		super.affectCharStats(affectedMOB, affectableStats);
 		affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_STRENGTH)+5);
 	}
+
+	private final String[]	racialAbilityNames			= { "Skill_Buck" };
+	private final int[]		racialAbilityLevels			= { 4 };
+	private final int[]		racialAbilityProficiencies	= { 50 };
+	private final boolean[]	racialAbilityQuals			= { false };
+	private final String[]	racialAbilityParms			= { "" };
+
+	@Override
+	protected String[] racialAbilityNames()
+	{
+		return racialAbilityNames;
+	}
+
+	@Override
+	protected int[] racialAbilityLevels()
+	{
+		return racialAbilityLevels;
+	}
+
+	@Override
+	protected int[] racialAbilityProficiencies()
+	{
+		return racialAbilityProficiencies;
+	}
+
+	@Override
+	protected boolean[] racialAbilityQuals()
+	{
+		return racialAbilityQuals;
+	}
+
+	@Override
+	public String[] racialAbilityParms()
+	{
+		return racialAbilityParms;
+	}
+
+	private final String[]	culturalAbilityNames		= { "CowSpeak" };
+	private final int[]		culturalAbilityProficiencies= { 100 };
+	private final int[]		culturalAbilityLevels		= { 1 };
+	private final boolean[]	culturalAbilityGains		= { true };
+
+	@Override
+	public String[] culturalAbilityNames()
+	{
+		return culturalAbilityNames;
+	}
+
+	@Override
+	public int[] culturalAbilityProficiencies()
+	{
+		return culturalAbilityProficiencies;
+	}
+
+	@Override
+	protected int[] culturalAbilityLevels()
+	{
+		return culturalAbilityLevels;
+	}
+
+	@Override
+	protected boolean[] culturalAbilityAutoGains()
+	{
+		return culturalAbilityGains;
+	}
+
+	@Override
+	public int availabilityCode()
+	{
+		return Area.THEME_FANTASY | Area.THEME_SKILLONLYMASK;
+	}
+
+	@Override
+	public String healthText(MOB viewer, MOB mob)
+	{
+		final double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
+
+		if(pct<.10)
+			return L("^r@x1^r is hovering on deaths door!^N",mob.name(viewer));
+		else
+		if(pct<.20)
+			return L("^r@x1^r is covered in blood and matted hair.^N",mob.name(viewer));
+		else
+		if(pct<.30)
+			return L("^r@x1^r is bleeding badly from lots of wounds.^N",mob.name(viewer));
+		else
+		if(pct<.40)
+			return L("^y@x1^y has large patches of bloody matted fur.^N",mob.name(viewer));
+		else
+		if(pct<.50)
+			return L("^y@x1^y has some bloody matted fur.^N",mob.name(viewer));
+		else
+		if(pct<.60)
+			return L("^p@x1^p has a lot of cuts and gashes.^N",mob.name(viewer));
+		else
+		if(pct<.70)
+			return L("^p@x1^p has a few cut patches.^N",mob.name(viewer));
+		else
+		if(pct<.80)
+			return L("^g@x1^g has a cut patch of fur.^N",mob.name(viewer));
+		else
+		if(pct<.90)
+			return L("^g@x1^g has some disheveled fur.^N",mob.name(viewer));
+		else
+		if(pct<.99)
+			return L("^g@x1^g has some misplaced hairs.^N",mob.name(viewer));
+		else
+			return L("^c@x1^c is in perfect health.^N",mob.name(viewer));
+	}
+	
 
 	@Override
 	public String makeMobName(char gender, int age)
@@ -184,4 +295,5 @@ public class Minotaur extends Cow
 		}
 		return resources;
 	}
+	
 }
