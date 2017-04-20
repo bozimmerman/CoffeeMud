@@ -1150,7 +1150,7 @@ public class StdRace implements Race
 			level=Integer.valueOf(Integer.MAX_VALUE);
 		if(racialEffectMap==null)
 			racialEffectMap=new Hashtable<Integer,SearchIDList<Ability>>();
-		if(racialEffectMap.containsKey(level))
+		if(racialEffectMap.containsKey(level) && (mob != null))
 			return racialEffectMap.get(level);
 		if((racialEffectNames()!=null)
 		&&(racialEffectLevels()!=null)
