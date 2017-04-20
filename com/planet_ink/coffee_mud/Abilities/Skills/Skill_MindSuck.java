@@ -169,7 +169,14 @@ public class Skill_MindSuck extends StdSkill
 			if((!mob.amDead())
 			&&(mob.location()==invoker.location())
 			&&(CMLib.flags().canBeSeenBy(invoker, mob)))
+			{
+				if((invoker!=null)&&(invoker.location()!=null))
+					invoker.location().show(invoker,mob,CMMsg.MSG_OK_VISUAL,L("<S-NAME> lose(s) <S-HIS-HER> grip on <T-NAME>!"));
 				CMLib.combat().postAttack(mob, invoker, mob.fetchWieldedItem());
+			}
+			else
+			if((!mob.amDead())&&(invoker!=null)&&(invoker.location()!=null))
+				invoker.location().show(invoker,mob,CMMsg.MSG_OK_VISUAL,L("<S-NAME> lose(s) <S-HIS-HER> grip on <T-NAME>, who staggers away."));
 		}
 	}
 
