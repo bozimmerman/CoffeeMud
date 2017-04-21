@@ -1198,6 +1198,9 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 		return true;
 	}
 
+	// better message url:
+	// http://groups.yahoo.com/api/v1/groups/coffeemud/messages/1/raw
+	// all you need is a login token and its done.
 	private static class YahooGroupSession
 	{
 		protected HttpClient	H				= null;
