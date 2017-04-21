@@ -1566,35 +1566,58 @@ public interface DatabaseEngine extends CMLibrary
 
 	/**
 	 * Table category: DBPLAYERDATA
-	 * 
+	 * Initializes the artifact ability tickers by reading them
+	 * from the CMPDAT table, creating a Prop_Artifact ability,
+	 * and setting it to start ticking.
 	 */
 	public void DBReadArtifacts();
 
 	/**
 	 * Table category: DBRACE
+	 * Reads all records from the CMGRAC table and returns the 
+	 * AckRecord for all of them in a list, to do with as you please.
+	 * These are the generic races.
 	 * 
-	 * @return
+	 * @see DatabaseEngine.AckRecord
+	 * @see DatabaseEngine#DBPruneOldRaces()
+	 * @see DatabaseEngine#DBDeleteRace(String)
+	 * @see DatabaseEngine#DBCreateRace(String, String)
+	 * 
+	 * @return the generic race records
 	 */
 	public List<AckRecord> DBReadRaces();
 
 	/**
 	 * Table category: DBRACE
+	 * Deletes entries in the generic race (CMGRAC) table
+	 * that are older than RACEEXPIRATIONDAYS old (see ini file).
 	 * 
+	 * @see DatabaseEngine#DBReadRaces()
+	 * @see DatabaseEngine#DBDeleteRace(String)
+	 * @see DatabaseEngine#DBCreateRace(String, String)
 	 */
 	public void DBPruneOldRaces();
 
 	/**
 	 * Table category: DBRACE
-	 * 
-	 * @param raceID
+	 * Removes a generic race from the CMGRAC table.
+	 * @see DatabaseEngine#DBReadRaces()
+	 * @see DatabaseEngine#DBPruneOldRaces()
+	 * @see DatabaseEngine#DBCreateRace(String, String)
+	 * @param raceID the ID of the race to delete
 	 */
 	public void DBDeleteRace(String raceID);
 
 	/**
 	 * Table category: DBRACE
-	 * 
-	 * @param raceID
-	 * @param data
+	 * Creates a new entry in the generic races (CMGRAC)
+	 * table with the given unique ID and xml definition
+	 * data.
+	 * @see DatabaseEngine#DBReadRaces()
+	 * @see DatabaseEngine#DBPruneOldRaces()
+	 * @see DatabaseEngine#DBDeleteRace(String)
+	 * @param raceID the unique RaceID
+	 * @param data the xml data defining the generic race
 	 */
 	public void DBCreateRace(String raceID, String data);
 
