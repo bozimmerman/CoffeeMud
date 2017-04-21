@@ -1349,7 +1349,7 @@ public class CMath
 
 	/**
 	 * Pre-compiles an expression for faster evaluation later on.
-	 * @see CMath#parseMathExpression(List, double[], double)
+	 * @see CMath#parseMathExpression(CompiledFormula, double[], double)
 	 * @param formula the math expression as a string
 	 * @return the pre-compiled expression
 	 * @throws ArithmeticException a parse error, typically arithmetic

@@ -40,8 +40,8 @@ public interface SessionsList extends CMLibrary
 	/**
 	 * Determines the correct thread group for the given theme, and marks the
 	 * given session appropriately.
-	 * @param session
-	 * @param theme
+	 * @param session the session to move
+	 * @param theme the theme of the group to assign it to
 	 */
 	public void moveSessionToCorrectThreadGroup(final Session session, int theme);
 }

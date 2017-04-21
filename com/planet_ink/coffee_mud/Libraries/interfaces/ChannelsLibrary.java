@@ -276,11 +276,12 @@ public interface ChannelsLibrary extends CMLibrary
 	/**
 	 * Creates a new channel object.
 	 * @see ChannelsLibrary.CMChannel
+	 * @see ChannelsLibrary.ChannelFlag
 	 * @param name the channel name
 	 * @param i3Name empty string, or the mapped name of the i3 channel
 	 * @param imc2Name empty string, or the mapped name of the imc2 channel
 	 * @param mask the zapper mask for who may read the channel
-	 * @param flags
+	 * @param flags the channel flags to set for the given channel
 	 * @param colorOverrideANSI empty string for default, or the color code for this channel
 	 * @param colorOverrideWords empty string for default, or the color code for this channel
 	 * @return the newly created channel object

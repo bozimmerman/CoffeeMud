@@ -377,6 +377,7 @@ public interface CombatLibrary extends CMLibrary
 	 * posts a miss. replaceDataTag is called to ensure a proper damage word.
 	 * Generates a CMMsg message and sends it to the common room.
 	 * @see CombatLibrary#replaceDamageTag(String, int, int, View)
+	 * @param source the agent of the attack
 	 * @param attacker the attacker
 	 * @param defender the target
 	 * @param weapon the weapon used

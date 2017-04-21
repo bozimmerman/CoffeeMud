@@ -261,7 +261,7 @@ public interface AbilityParameters extends CMLibrary
 	 * @param mob the mob who is editing this recipe file
 	 * @param recipeFilename the unpathed regular filename of the recipe file to edit
 	 * @param recipeFormat the recipe format from the crafting skill recipe format string
-	 * @throws java.io.IOException
+	 * @throws java.io.IOException an i/o error in session communication
 	 */
 	public void modifyRecipesList(MOB mob, String recipeFilename, String recipeFormat) throws java.io.IOException;
 	
@@ -339,6 +339,7 @@ public interface AbilityParameters extends CMLibrary
 	 * @param C the ItemCraftor skill
 	 * @param I the Item to return a recipe for
 	 * @return the recipe line for that ItemCraftor Item
+	 * @throws CMException a recipe syntax error in generating the recipe
 	 */
 	public String makeRecipeFromItem(final ItemCraftor C, final Item I) throws CMException;
 

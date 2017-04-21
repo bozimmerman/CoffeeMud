@@ -966,6 +966,7 @@ public interface AbilityMapper extends CMLibrary
 		/**
 		 * sets the level at which this mapping qualifies for the given Ability ID
 		 * @param newLevel the level at which this mapping qualifies for the given Ability ID
+		 * @return this
 		 */
 		public QualifyingID qualifyingLevel(int newLevel);
 	}

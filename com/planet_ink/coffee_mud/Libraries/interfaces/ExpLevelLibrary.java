@@ -67,6 +67,7 @@ public interface ExpLevelLibrary extends CMLibrary
 	 * If the given item is a boardable, this method will post the given
 	 * amount of experience to all abord.
 	 * @param possibleShip the ship to give experience to
+	 * @param amount amount of experience to give to each person found
 	 * @return true if experience is posted, false otherwise
 	 */
 	public boolean postExperienceToAllAboard(Physical possibleShip, int amount);

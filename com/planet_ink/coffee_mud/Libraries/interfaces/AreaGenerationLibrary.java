@@ -113,6 +113,7 @@ public interface AreaGenerationLibrary extends CMLibrary
 	 * it returns a map of the undefined or mis-defined ids as keys, mapped to the data type name.
 	 * @param defined the defined id set from the entire xml document, and the user
 	 * @param piece the xml tag piece you want to build
+	 * @return a map of the undefined or mis-defined ids as keys, mapped to the data type name
 	 */
 	public Map<String,String> getUnfilledRequirements(Map<String,Object> defined, XMLTag piece);
 	

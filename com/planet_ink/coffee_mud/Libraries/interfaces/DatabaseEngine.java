@@ -229,7 +229,6 @@ public interface DatabaseEngine extends CMLibrary
 	 * item or mob contents.  The rooms are not actually
 	 * added to the Area or the map.
 	 * @param areaName the area name of rooms to load
-	 * @param reportStatus
 	 * @param reportStatus true to populate global status, false otherwise
 	 * @return the rooms loaded
 	 */
@@ -1089,7 +1088,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * Table category: DBJOURNALS
 	 * Writes a new journal entry formatted for the email system and generates
 	 * a new message key.
-	 * @see CMProps.Str.MAILBOX
+	 * @see CMProps.Str#MAILBOX
 	 * @param mailBoxID the journal name/id of the email system MAILBOX
 	 * @param journalSource the name/id of the journal that originated the message 
 	 * @param from who the author of the email
@@ -1129,7 +1128,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * Table category: DBJOURNALS
 	 * For forum journals, updates the number of replies registered with the
 	 * parent message represented by the given message Key.
-	 * @see DatabaseEngine#DBReadJournalMetaData(com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.JournalMetaData)
+	 * @see DatabaseEngine#DBReadJournalMetaData(String, com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.JournalMetaData)
 	 * @see DatabaseEngine#DBUpdateJournalMetaData(String, com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.JournalMetaData)
 	 * @param messageKey the key of the parent op message
 	 * @param numReplies the new number of replies to register
@@ -1152,7 +1151,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * Primarily for forum journals, this method updates all of the given
 	 * meta data, such as the intro, and so forth by deleting the old 
 	 * record and re-inserting it into the database.
-	 * @see DatabaseEngine#DBReadJournalMetaData(com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.JournalMetaData)
+	 * @see DatabaseEngine#DBReadJournalMetaData(String, com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.JournalMetaData)
 	 * @see DatabaseEngine#DBUpdateMessageReplies(String, int)
 	 * @param journalID the name of the journals whose stats to update
 	 * @param metaData the metadata to resave into the database

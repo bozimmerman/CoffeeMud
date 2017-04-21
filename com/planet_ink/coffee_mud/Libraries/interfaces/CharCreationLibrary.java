@@ -91,6 +91,7 @@ public interface CharCreationLibrary extends CMLibrary
 	 * @param theme the theme code to use for class selection
 	 * @param mob the mob who is getting the new char class
 	 * @param session the session which might help allocate the points
+	 * @return null or the char class selected
 	 * @throws IOException any input errors that occur
 	 */
 	public CharClass promptCharClass(int theme, MOB mob, Session session) throws IOException;
@@ -283,7 +284,7 @@ public interface CharCreationLibrary extends CMLibrary
 	 * @param login the name of the new character
 	 * @param session the session of the character creating person
 	 * @return the results of the effort
-	 * @throws java.io.IOException
+	 * @throws java.io.IOException an i/o error with the telnet session
 	 */
 	public LoginResult createCharacter(String login, Session session) throws java.io.IOException;
 	
@@ -386,6 +387,7 @@ public interface CharCreationLibrary extends CMLibrary
 	 * in the world, checking their email, and seeing if they are allowed in.  It does the
 	 * complete login
 	 * @param session the session trying to login, with the mob to login
+	 * @param wizi true if the player should login wizinvisible
 	 * @return the LoginResult status of having tried to complete their login
 	 * @throws IOException any I/O errors during the process
 	 */

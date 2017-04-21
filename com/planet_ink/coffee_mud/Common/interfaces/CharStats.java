@@ -710,7 +710,8 @@ public interface CharStats extends CMCommon, Modifiable
 	 * can always use the armor or weapon, even if class or race
 	 * or other considerations might not permit it.
 	 * @see #getItemProficiencies()
-	 * @see #isProficient(Item)
+	 * @see #addItemDeficiency(String)
+	 * @see #addItemProficiency(String)
 	 * @param newArray a list of proficiency or deficiency codes
 	 */
 	public void setItemProficiencies(DoubleFilterer<Item>[] newArray);
@@ -719,6 +720,9 @@ public interface CharStats extends CMCommon, Modifiable
 	 * Adds a new weapon or armor proficiency, compiling it into
 	 * the proficiency filter.  The argument is a zapper mask describing
 	 * the type of item that the player is newly proficient at.
+	 * 
+	 * @see #getItemProficiencies()
+	 * @see #addItemDeficiency(String)
 	 * 
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
 	 * @param zapperMask the zapper mask
@@ -729,6 +733,9 @@ public interface CharStats extends CMCommon, Modifiable
 	 * Adds a new weapon or armor deficiency, compiling it into
 	 * the deficiency filter.  The argument is a zapper mask describing
 	 * the type of item that the player is newly deficient at.
+	 * 
+	 * @see #getItemProficiencies()
+	 * @see #addItemProficiency(String)
 	 * 
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
 	 * @param zapperMask the zapper mask

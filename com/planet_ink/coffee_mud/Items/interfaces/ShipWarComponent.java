@@ -81,7 +81,7 @@ public interface ShipWarComponent extends TechComponent
 	 * of the ship.  This tells the system the complete set of 
 	 * coverage by the shield or weapon, even if it is 
 	 * incapable of covering them all at once.
-	 * @see ShipWarComponent#setPermittedDirections(ShipDir[])
+	 * @see #setPermittedDirections(ShipDir[])
 	 * @return the total set of ship directions
 	 */
 	public ShipDir[] getPermittedDirections();
@@ -94,7 +94,7 @@ public interface ShipWarComponent extends TechComponent
 	 * as per the ShipDir list order.
 	 * @see ShipDir
 	 * @see ShipWarComponent#getPermittedDirections() 
-	 * @see ShipWarComponent#setPermittedNumDirections(int) 
+	 * @see #setPermittedNumDirections(int) 
 	 * @param numDirs the total number of sections covered
 	 */
 	public void setPermittedNumDirections(int numDirs);

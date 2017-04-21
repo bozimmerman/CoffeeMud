@@ -603,7 +603,7 @@ public interface AchievementLibrary extends CMLibrary
 	 * When a player remorts, they keep their player achievements, but the rewards
 	 * are removed.  This method is called to re-reward all player achievement rewards.
 	 * @param mob the mob to award
-	 * @param whether this is happening before or after stat selection
+	 * @param flag this is happening before or after stat selection
 	 */
 	public void reloadPlayerAwards(MOB mob, AchievementLoadFlag flag);
 	
@@ -622,7 +622,7 @@ public interface AchievementLibrary extends CMLibrary
 	 * achievement.
 	 * @param mob the mob to lost
 	 * @param awardSet the awards to remove
-	 * @param whether this is happening before or after stat selection
+	 * @param flag whether this is happening before or after stat selection
 	 * @return any messages you might want to show the user.
 	 */
 	public String removeAwards(final MOB mob, final Award[] awardSet, final AchievementLoadFlag flag);

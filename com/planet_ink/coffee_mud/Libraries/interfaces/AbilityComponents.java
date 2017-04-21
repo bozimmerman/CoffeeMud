@@ -266,6 +266,7 @@ public interface AbilityComponents extends CMLibrary
 		/**
 		 * Sets number of common skills
 		 * @param newVal number of common skills
+		 * @return this
 		 */
 		public AbilityLimits commonSkills(int newVal);
 
@@ -284,6 +285,7 @@ public interface AbilityComponents extends CMLibrary
 		/**
 		 * Sets number of crafting skills
 		 * @param newVal number of crafting skills
+		 * @return this
 		 */
 		public AbilityLimits craftingSkills(int newVal);
 
@@ -302,6 +304,7 @@ public interface AbilityComponents extends CMLibrary
 		/**
 		 * Sets number of non-crafting skills
 		 * @param newVal number of non-crafting skills
+		 * @return this
 		 */
 		public AbilityLimits nonCraftingSkills(int newVal);
 
@@ -314,6 +317,7 @@ public interface AbilityComponents extends CMLibrary
 		/**
 		 * Sets number of language skills
 		 * @param newVal number of language skills
+		 * @return this
 		 */
 		public AbilityLimits languageSkills(int newVal);
 
@@ -333,7 +337,8 @@ public interface AbilityComponents extends CMLibrary
 		/**
 		 * Sets number of given specific ability type 
 		 * limit.
-		 * @return a new number
+		 * @param newVal a new number
+		 * @return this
 		 */
 		public AbilityLimits specificSkillLimit(int newVal);
 	}

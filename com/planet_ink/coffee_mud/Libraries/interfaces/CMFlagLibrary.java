@@ -861,6 +861,7 @@ public interface CMFlagLibrary extends CMLibrary
 	 * and not bound up.  With optional explanation!
 	 * @see CMFlagLibrary#isAliveAwakeMobile(MOB, boolean)
 	 * @param mob the mob to check
+	 * @param quiet true to not tell the mob what's wrong
 	 * @return true if he/she is alive, awake, etc
 	 */
 	public boolean isAliveAwakeMobileUnbound(MOB mob, boolean quiet);
@@ -870,6 +871,7 @@ public interface CMFlagLibrary extends CMLibrary
 	 * With optional explanation!
 	 * @see CMFlagLibrary#isAliveAwakeMobileUnbound(MOB, boolean)
 	 * @param mob the mob to check
+	 * @param quiet true to not tell the mob what's wrong
 	 * @return true if he/she is alive, awake, etc
 	 */
 	public boolean isAliveAwakeMobile(MOB mob, boolean quiet);
