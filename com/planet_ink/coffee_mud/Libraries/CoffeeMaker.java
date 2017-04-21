@@ -1621,8 +1621,10 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				custom.add(A);
 		}
 		for(final Ability A : R.racialEffects(null))
+		{
 			if(A.isGeneric() && !custom.contains(A))
 				custom.add(A);
+		}
 	}
 
 	protected void possiblyAddCustomClass(final MOB mob, Set<CMObject> custom)
