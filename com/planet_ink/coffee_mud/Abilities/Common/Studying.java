@@ -260,7 +260,7 @@ granting each ability at the lowest level above (1,2,3,4,5,6).
 			&&(msg.tool() instanceof Ability)
 			&&(skillList.contains(msg.tool())))
 			{
-				msg.source().tell(L("You don't know how to do that."));
+				msg.source().tell(L("You don't know how to do that in practice."));
 				return false;
 			}
 			else
@@ -276,8 +276,6 @@ granting each ability at the lowest level above (1,2,3,4,5,6).
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(ticking, tickID))
-			return false;
 		if(!canBeUninvoked())
 		{
 			final MOB mob=(MOB)affected;
@@ -330,21 +328,25 @@ granting each ability at the lowest level above (1,2,3,4,5,6).
 			}
 		}
 		else
-		if((affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
 		{
-			final MOB mob=(MOB)affected;
-			final MOB invoker=this.invoker();
-			if((invoker == null)
-			||(invoker == mob)
-			||(invoker.location()!=mob.location())
-			||(invoker.isInCombat())
-			||(invoker.location()!=activityRoom)
-			||(!CMLib.flags().isAliveAwakeMobileUnbound(invoker,true)))
+			if((affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
 			{
-				aborted=true;
-				unInvoke();
-				return false;
+				final MOB mob=(MOB)affected;
+				final MOB invoker=this.invoker();
+				if((invoker == null)
+				||(invoker == mob)
+				||(invoker.location()!=mob.location())
+				||(invoker.isInCombat())
+				||(invoker.location()!=activityRoom)
+				||(!CMLib.flags().isAliveAwakeMobileUnbound(invoker,true)))
+				{
+					aborted=true;
+					unInvoke();
+					return false;
+				}
 			}
+			if(!super.tick(ticking, tickID))
+				return false;
 		}
 		return true;
 	}
@@ -577,11 +579,14 @@ granting each ability at the lowest level above (1,2,3,4,5,6).
 					public void showPrompt()
 					{
 						String timeStr;
-						if(minutes<2)
-							timeStr = CMLib.lang().L("@x1 seconds",""+seconds);
+						if(seconds<=0)
+							timeStr = CMLib.lang().L("no time at all",""+seconds);
 						else
-							timeStr = CMLib.lang().L("@x1 minutes",""+minutes);
-						sess.promptPrint(L("\n\r@x1 wants you to try to teach @x2 about @x3. It will take around @x4.  Is that OK (y/N)? ",
+						if(minutes<2)
+							timeStr = CMLib.lang().L("around @x1 seconds",""+seconds);
+						else
+							timeStr = CMLib.lang().L("around @x1 minutes",""+minutes);
+						sess.promptPrint(L("\n\r@x1 wants you to try to teach @x2 about @x3. It will take @x4.  Is that OK (y/N)? ",
 								mob.name(target), target.charStats().himher(), A.name(), timeStr));
 					}
 
