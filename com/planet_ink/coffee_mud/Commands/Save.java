@@ -207,7 +207,8 @@ public class Save extends StdCommand
 			}
 			if(firstCommand.equals("AREA"))
 			{
-				if((mob.session()!=null)&&(mob.session().confirm(L("Doing this assumes every mob and item in every room in this area is correctly placed.  Are you sure (N/y)?"),"N")))
+				if((mob.session()!=null)
+				&&(mob.session().confirm(L("Doing this assumes every mob and item in every room in this area is correctly placed.  Are you sure (N/y)?"),"N")))
 				{
 					final Area A=mob.location().getArea();
 					boolean saved = false;

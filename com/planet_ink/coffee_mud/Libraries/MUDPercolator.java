@@ -3126,4 +3126,134 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	{
 		return findStringNow(null,null,null,tagName,piece,defined);
 	}
+	
+	protected int makeNewLevel(int level, int oldMin, int oldMax, int newMin, int newMax)
+	{
+		final double oldRange = oldMax-oldMin;
+		final double myOldRange = level - oldMin;
+		final double pctOfOldRange = myOldRange/oldRange;
+		final double newRange = newMax-newMin;
+		return newMin + (int)Math.round(pctOfOldRange * newRange);
+	}
+	
+	@Override
+	public boolean relevelRoom(Room room, int oldMin, int oldMax, int newMin, int newMax)
+	{
+		boolean changeMade=false;
+		try
+		{
+			room.toggleMobility(false);
+			CMLib.threads().suspendResumeRecurse(room, false, true);
+			if(CMLib.law().getLandTitle(room)!=null)
+				return false;
+			for(Enumeration<Item> i=room.items();i.hasMoreElements();)
+			{
+				final Item I=i.nextElement();
+				if(I==null)
+					continue;
+				if((I instanceof Weapon)||(I instanceof Armor))
+				{
+					int newILevel=makeNewLevel(I.phyStats().level(),oldMin,oldMax,newMin,newMax);
+					if(newILevel <= 0)
+						newILevel = 1;
+					if(newILevel != I.phyStats().level())
+					{
+						changeMade=true;
+						CMLib.itemBuilder().itemFix(I, newILevel, null);
+						I.basePhyStats().setLevel(newILevel);
+						I.phyStats().setLevel(newILevel);
+						CMLib.itemBuilder().balanceItemByLevel(I);
+						I.text();
+					}
+				}
+			}
+			for(Enumeration<MOB> m=room.inhabitants();m.hasMoreElements();)
+			{
+				final MOB M=m.nextElement();
+				if((M!=null)
+				&&(M.isMonster())
+				&&(M.getStartRoom()==room))
+				{
+					int newLevel=makeNewLevel(M.phyStats().level(),oldMin,oldMax,newMin,newMax);
+					if(newLevel <= 0)
+						newLevel = 1;
+					if(newLevel != M.phyStats().level())
+					{
+						changeMade=true;
+						M.basePhyStats().setLevel(newLevel);
+						M.phyStats().setLevel(newLevel);
+						CMLib.leveler().fillOutMOB(M,M.basePhyStats().level());
+					}
+					for(Enumeration<Item> mi=M.items();mi.hasMoreElements();)
+					{
+						Item mI=mi.nextElement();
+						if(mI!=null)
+						{
+							int newILevel=makeNewLevel(mI.phyStats().level(),oldMin,oldMax,newMin,newMax);
+							if(newILevel <= 0)
+								newILevel = 1;
+							if(newILevel != mI.phyStats().level())
+							{
+								changeMade=true;
+								mI.basePhyStats().setLevel(newILevel);
+								mI.phyStats().setLevel(newILevel);
+								CMLib.itemBuilder().balanceItemByLevel(mI);
+								mI.text();
+							}
+						}
+					}
+					final ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(M);
+					if(SK!=null)
+					{
+						for(final Iterator<CoffeeShop.ShelfProduct> i=SK.getShop().getStoreShelves();i.hasNext();)
+						{
+							final CoffeeShop.ShelfProduct P=i.next();
+							final Environmental E2=P.product;
+							if((E2 instanceof Item)||(E2 instanceof MOB))
+							{
+								final Physical P2=(Physical)E2;
+								newLevel=makeNewLevel(P2.phyStats().level(),oldMin,oldMax,newMin,newMax);
+								if(newLevel <= 0)
+									newLevel = 1;
+								if(newLevel != P2.phyStats().level())
+								{
+									changeMade=true;
+									P2.basePhyStats().setLevel(newLevel);
+									P2.phyStats().setLevel(newLevel);
+									if(E2 instanceof Item)
+										CMLib.itemBuilder().balanceItemByLevel((Item)E2);
+									else
+									if(E2 instanceof MOB)
+										CMLib.leveler().fillOutMOB((MOB)E2,P2.basePhyStats().level());
+									E2.text();
+								}
+							}
+						}
+					}
+					M.text();
+					M.recoverCharStats();
+					M.recoverMaxState();
+					M.recoverPhyStats();
+					M.recoverCharStats();
+					M.recoverMaxState();
+					M.recoverPhyStats();
+					M.resetToMaxState();
+				}
+			}
+		}
+		catch(Exception e)
+		{
+			Log.errOut(e);
+			changeMade=false;
+		}
+		finally
+		{
+			room.recoverRoomStats();
+			CMLib.threads().suspendResumeRecurse(room, false, false);
+			room.toggleMobility(true);
+			room.recoverRoomStats();
+		}
+		return changeMade;
+	}
+
 }

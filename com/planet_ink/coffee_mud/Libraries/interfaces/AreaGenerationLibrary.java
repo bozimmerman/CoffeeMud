@@ -197,6 +197,18 @@ public interface AreaGenerationLibrary extends CMLibrary
 	public List<XMLTag> getAllChoices(String tagName, XMLTag piece, Map<String,Object> defined) throws CMException;
 
 	/**
+	 * Adjusts the levels of all mobs, items, and mob-items in the room by adjusting 
+	 * them from their place in an existing range to a new range.Does not save -- that's up to you.
+	 * @param room the room to adjust
+	 * @param oldMin current minimum level range for the rooms area
+	 * @param oldMax current maximum level range for the rooms area
+	 * @param newMin new minimum level range for the rooms area
+	 * @param newMax new maximum level range for the rooms area 
+	 * @return true if the room was modified, false otherwise.
+	 */
+	public boolean relevelRoom(Room room, int oldMin, int oldMax, int newMin, int newMax);
+	
+	/**
 	 * Area generators work by first laying out a set of rooms into a
 	 * configuration called a Layout. Layouts are scalable configurations
 	 * that can handle any size, or originating direction of entry. 
@@ -471,4 +483,5 @@ public interface AreaGenerationLibrary extends CMLibrary
 		nesw,
 		nwse
 	}
+	
 }

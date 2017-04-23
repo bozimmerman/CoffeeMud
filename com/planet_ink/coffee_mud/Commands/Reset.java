@@ -6,6 +6,7 @@ import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.Save.SaveTask;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
@@ -546,21 +547,63 @@ public class Reset extends StdCommand
 		else
 		if(s.equalsIgnoreCase("relevel"))
 		{
+			if(mob.location()==null)
+				return false;
+			final Area A=mob.location().getArea();
+			if(A==null)
+				return false;
+			if(CMath.bset(A.flags(), Area.FLAG_INSTANCE_CHILD))
+			{
+				mob.tell(L("You can not do that here."));
+				return false;
+			}
 			commands.remove(0);
 			if(commands.size()<=0)
 			{
-				mob.tell(L("You need to specify a level range X - Y."));
+				mob.tell(L("You need to specify a new level range X - Y."));
 				return false;
 			}
 			rest=(commands.size()>0)?CMParms.combine(commands,0):"";
-			//int levelLow = 1;
-			//int levelHigh = 100;
-			
-			final Session sess=mob.session();
-			if((sess==null)||(!sess.confirm("Re-Level this area to between, ","N")))
+			int x=rest.indexOf('-');
+			if(x<0)
 			{
-				//relevel(mob.location(), levelLow, levelHigh);
-				mob.tell(L("Done."));
+				mob.tell(L("You need to specify a new level range X - Y."));
+				return false;
+			}
+			final int levelLow = CMath.s_int(rest.substring(0,x).trim());
+			final int levelHigh = CMath.s_int(rest.substring(x+1).trim());
+			if((levelLow < 1)||(levelHigh<levelLow))
+			{
+				mob.tell(L("Illegal range "+rest.substring(0,x).trim()+" to "+rest.substring(x+1).trim()));
+				return false;
+			}
+			final Session sess=mob.session();
+			if((sess==null)
+			||(sess.confirm(L("Re-Level the area '@x1' to between @x2 and @x3 (y/N)?",A.name(),""+levelLow,""+levelHigh),"N")))
+			{
+				if(sess!=null)
+					sess.print(L("Working..."));
+				final int[] stats = A.getAreaIStats();
+				final int oldMinLevel = stats[Area.Stats.MIN_LEVEL.ordinal()];
+				final int oldMaxLevel = stats[Area.Stats.MAX_LEVEL.ordinal()];
+				for(final Enumeration<String> r=A.getProperRoomnumbers().getRoomIDs();r.hasMoreElements();)
+				{
+					if(sess!=null)
+						sess.print(".");
+					final Room R=CMLib.map().getRoom(r.nextElement());
+					if(R!=null)
+					{
+						final Room room=CMLib.coffeeMaker().makeNewRoomContent(R,false);
+						if(CMLib.percolator().relevelRoom(room, oldMinLevel, oldMaxLevel, levelLow, levelHigh))
+						{
+							CMLib.database().DBUpdateItems(room);
+							CMLib.database().DBUpdateMOBs(room);
+							CMLib.map().resetRoom(R, true);
+						}
+					}
+				}
+				if(sess!=null)
+					sess.print(L("Done."));
 			}
 		}
 		else
