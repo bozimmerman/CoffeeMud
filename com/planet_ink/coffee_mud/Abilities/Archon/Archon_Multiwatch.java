@@ -370,11 +370,11 @@ public class Archon_Multiwatch extends ArchonSkill
 				}
 				report.append("^x"+key+"^?^., Syncs: "+sync+"\n\r");
 				report.append(CMStrings.padRight(L("Name"),25)
-							  +CMStrings.padRight(L("Speech"),15)
-							  +CMStrings.padRight(L("Socials"),15)
-							  +CMStrings.padRight(L("CMD"),10)
-							  +CMStrings.padRight(L("ORDERS"),10)
-							  +"\n\r");
+							 +CMStrings.padRight(L("Speech"),15)
+							 +CMStrings.padRight(L("Socials"),15)
+							 +CMStrings.padRight(L("CMD"),10)
+							 +CMStrings.padRight(L("ORDERS"),10)
+							 +"\n\r");
 				for(int v=0;v<V.size();v++)
 				{
 					final MOB M=V.get(v);
