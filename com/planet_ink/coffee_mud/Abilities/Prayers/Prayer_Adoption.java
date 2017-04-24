@@ -71,6 +71,9 @@ public class Prayer_Adoption extends Prayer
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
+		final Room R=mob.location();
+		if(R==null)
+			return false;
 		if(commands.size()<2)
 		{
 			mob.tell(L("Who is adopting whom?"));
@@ -78,13 +81,13 @@ public class Prayer_Adoption extends Prayer
 		}
 		final String name2=commands.get(commands.size()-1);
 		final String name1=CMParms.combine(commands,0,commands.size()-1);
-		MOB parent=mob.location().fetchInhabitant(name1);
+		MOB parent=R.fetchInhabitant(name1);
 		if((parent==null)||(!CMLib.flags().canBeSeenBy(mob,parent)))
 		{
 			mob.tell(L("You don't see @x1 here!",name1));
 			return false;
 		}
-		MOB child=mob.location().fetchInhabitant(name2);
+		final MOB child=R.fetchInhabitant(name2);
 		
 		if((child==null)||(!CMLib.flags().canBeSeenBy(mob,child)))
 		{
@@ -106,14 +109,11 @@ public class Prayer_Adoption extends Prayer
 			return false;
 		}
 
-		if(child instanceof MOB)
+		Tattoo tattChk=child.findTattoo("PARENT:");
+		if(tattChk!=null)
 		{
-			Tattoo tattChk=child.findTattoo("PARENT:");
-			if(tattChk!=null)
-			{
-				mob.tell(L("@x1 already has parents.",child.name()));
-				return false;
-			}
+			mob.tell(L("@x1 already has parents.",child.name()));
+			return false;
 		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -137,9 +137,9 @@ public class Prayer_Adoption extends Prayer
 		if(success)
 		{
 			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":L("^S<S-NAME> @x1 to bless the adoption of @x3 by @x2.^?",prayForWord(mob),parent.name(),child.name()));
-			if(mob.location().okMessage(mob,msg))
+			if(R.okMessage(mob,msg))
 			{
-				mob.location().send(mob,msg);
+				R.send(mob,msg);
 				child.addTattoo("PARENT:"+parent.Name());
 			 }
 		}
