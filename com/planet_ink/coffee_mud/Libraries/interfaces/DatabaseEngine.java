@@ -1622,89 +1622,155 @@ public interface DatabaseEngine extends CMLibrary
 
 	/**
 	 * Table category: DBCHARCLASS
+	 * Reads all records from the CMCCAC table and returns the 
+	 * AckRecord for all of them in a list, to do with as you please.
+	 * These are the generic charclasses.
 	 * 
-	 * @return
+	 * @see DatabaseEngine.AckRecord
+	 * @see DatabaseEngine#DBDeleteClass(String)
+	 * @see DatabaseEngine#DBCreateClass(String, String)
+	 * 
+	 * @return the generic charclass records
 	 */
 	public List<AckRecord> DBReadClasses();
 
 	/**
 	 * Table category: DBCHARCLASS
-	 * 
-	 * @param classID
+	 * Removes a generic charclass from the CMCCAC table.
+	 * @see DatabaseEngine#DBReadClasses()
+	 * @see DatabaseEngine#DBCreateClass(String, String)
+	 * @param classID the ID of the charclass to delete
 	 */
 	public void DBDeleteClass(String classID);
 
 	/**
 	 * Table category: DBCHARCLASS
-	 * 
-	 * @param classID
-	 * @param data
+	 * Creates a new entry in the generic charclasses (CMCCAC)
+	 * table with the given unique ID and xml definition
+	 * data.
+	 * @see DatabaseEngine#DBReadClasses()
+	 * @see DatabaseEngine#DBDeleteClass(String)
+	 * @param classID the unique CharClassID
+	 * @param data the xml data defining the generic charclass
 	 */
 	public void DBCreateClass(String classID,String data);
 
 	/**
 	 * Table category: DBABILITY
+	 * Reads all records from the CMGAAC table and returns the 
+	 * AckRecord for all of them in a list, to do with as you please.
+	 * These are the generic abilities.
 	 * 
-	 * @return
+	 * @see DatabaseEngine.AckRecord
+	 * @see DatabaseEngine#DBDeleteAbility(String)
+	 * @see DatabaseEngine#DBCreateAbility(String, String)
+	 * 
+	 * @return the generic ability records
 	 */
 	public List<AckRecord> DBReadAbilities();
 
 	/**
-	 * 
-	 * @param classID
+	 * Removes a generic ability from the CMGAAC table.
+	 * @see DatabaseEngine#DBReadAbilities()
+	 * @see DatabaseEngine#DBCreateAbility(String, String)
+	 * @param classID the ID of the ability to delete
 	 */
 	public void DBDeleteAbility(String classID);
 
 	/**
 	 * Table category: DBABILITY
-	 * 
-	 * @param classID
-	 * @param typeClass
-	 * @param data
+	 * Creates a new entry in the generic ability (CMGAAC)
+	 * table with the given unique ID and xml definition
+	 * data.
+	 * @see DatabaseEngine#DBReadAbilities()
+	 * @see DatabaseEngine#DBDeleteAbility(String)
+	 * @param classID the unique AbilityID
+	 * @param typeClass the Ability class ID to base off of (GenAbility, etc.)
+	 * @param data the xml data defining the generic ability
 	 */
 	public void DBCreateAbility(String classID, String typeClass, String data);
 
 	/**
 	 * Table category: DBSTATS
+	 * Reads a days worth of stats from the CMSTAT table in 
+	 * the database.  Returning as a CofeeTableRow object
+	 * populated with the days data. The start time has the
+	 * correct date, and an hr/min/sec/ms of 0s.
 	 * 
-	 * @param startTime
-	 * @return
+	 * @see DatabaseEngine#DBUpdateStat(long, String)
+	 * @see DatabaseEngine#DBDeleteStat(long)
+	 * @see DatabaseEngine#DBCreateStat(long, long, String)
+	 * @see DatabaseEngine#DBReadStats(long, long)
+	 * @see CoffeeTableRow
+	 * @param startTime the timestamp of the day start
+	 * @return the row of data for that day.
 	 */
-	public Object DBReadStat(long startTime);
+	public CoffeeTableRow DBReadStat(long startTime);
 
 	/**
 	 * Table category: DBSTATS
+	 * Deletes a days worth of stats from the CMSTAT table
+	 * in the database.   The start time has the
+	 * correct date, and an hr/min/sec/ms of 0s.
+	 * @see DatabaseEngine#DBUpdateStat(long, String)
+	 * @see DatabaseEngine#DBCreateStat(long, long, String)
+	 * @see DatabaseEngine#DBReadStats(long, long)
+	 * @see DatabaseEngine#DBReadStat(long)
 	 * 
-	 * @param startTime
+	 * @param startTime the timestamp of the day to delete
 	 */
 	public void DBDeleteStat(long startTime);
 
 	/**
 	 * Table category: DBSTATS
+	 * Creates a days worth of stats in the CMSTAT table
+	 * in the database.   The start time has the
+	 * correct date, and an hr/min/sec/ms of 0s. The
+	 * end time is whatever.
+	 * @see DatabaseEngine#DBUpdateStat(long, String)
+	 * @see DatabaseEngine#DBDeleteStat(long)
+	 * @see DatabaseEngine#DBReadStats(long, long)
+	 * @see DatabaseEngine#DBReadStat(long)
 	 * 
-	 * @param startTime
-	 * @param endTime
-	 * @param data
-	 * @return
+	 * @param startTime the timestamp of the day start
+	 * @param endTime the timestamp of the day end
+	 * @param data the xml data to insert.
+	 * @return true if insert was successful, false otherwise
 	 */
 	public boolean DBCreateStat(long startTime,long endTime,String data);
 
 	/**
 	 * Table category: DBSTATS
+	 * Updates a single days worth of stats in the CMSTAT table
+	 * in the database.   The start time has the
+	 * correct date, and an hr/min/sec/ms of 0s.
+	 * @see DatabaseEngine#DBDeleteStat(long)
+	 * @see DatabaseEngine#DBCreateStat(long, long, String)
+	 * @see DatabaseEngine#DBReadStats(long, long)
+	 * @see DatabaseEngine#DBReadStat(long)
 	 * 
-	 * @param startTime
-	 * @param data
-	 * @return
+	 * @param startTime the timestamp of the day start
+	 * @param data the xml data to use.
+	 * @return true if the update succeeded, false otherwise
 	 */
 	public boolean DBUpdateStat(long startTime, String data);
 
 	/**
 	 * Table category: DBSTATS
+	 * Read all or a group of statistic rows within a time range.
+	 * Each row represents a rl 'day' of data.
+
+	 * @see DatabaseEngine#DBUpdateStat(long, String)
+	 * @see DatabaseEngine#DBDeleteStat(long)
+	 * @see DatabaseEngine#DBCreateStat(long, long, String)
+	 * @see DatabaseEngine#DBReadStat(long)
+	 * @see CoffeeTableRow
 	 * 
-	 * @param startTime
-	 * @return
+	 * @param startTime the timestamp of the first row
+	 * @param longTime 0, or the end time of the last row.
+	 * @return the group of statistics requested.
 	 */
-	public List<CoffeeTableRow> DBReadStats(long startTime);
+	public List<CoffeeTableRow> DBReadStats(long startTime, long endTime);
 
 	/**
 	 * Table category: DBPOLLS

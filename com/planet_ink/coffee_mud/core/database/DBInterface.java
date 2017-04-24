@@ -968,7 +968,7 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
-	public Object DBReadStat(long startTime)
+	public CoffeeTableRow DBReadStat(long startTime)
 	{
 		return StatLoader.DBRead(startTime);
 	}
@@ -992,9 +992,9 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
-	public List<CoffeeTableRow> DBReadStats(long startTime)
+	public List<CoffeeTableRow> DBReadStats(long startTime, long endTime)
 	{
-		return StatLoader.DBReadAfter(startTime);
+		return StatLoader.DBReadAfter(startTime, endTime);
 	}
 
 	@Override

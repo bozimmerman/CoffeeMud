@@ -71,7 +71,7 @@ public class StatLoader
 		return T;
 	}
 
-	public List<CoffeeTableRow> DBReadAfter(long startTime)
+	public List<CoffeeTableRow> DBReadAfter(long startTime, long endTime)
 	{
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMSTAT)))
 			Log.debugOut("StatLoader","Reading content of Stats since "+CMLib.time().date2String(startTime));
@@ -82,14 +82,25 @@ public class StatLoader
 		{
 			D=DB.DBFetch();
 			final ResultSet R=D.query("SELECT * FROM CMSTAT WHERE CMSTRT>"+startTime);
-			while(R.next())
+			try
 			{
-				T=(CoffeeTableRow)CMClass.getCommon("DefaultCoffeeTableRow");
-				final long strTime=DBConnections.getLongRes(R,"CMSTRT");
-				final long endTime=DBConnections.getLongRes(R,"CMENDT");
-				final String data=DBConnections.getRes(R,"CMDATA");
-				T.populate(strTime,endTime,data);
-				rows.add(T);
+				while(R.next())
+				{
+					T=(CoffeeTableRow)CMClass.getCommon("DefaultCoffeeTableRow");
+					final long strTime=DBConnections.getLongRes(R,"CMSTRT");
+					final long enTime=DBConnections.getLongRes(R,"CMENDT");
+					if((endTime!=0)
+					&&(endTime > strTime)
+					&&(endTime >= enTime))
+						break;
+					final String data=DBConnections.getRes(R,"CMDATA");
+					T.populate(strTime,endTime,data);
+					rows.add(T);
+				}
+			}
+			finally
+			{
+				R.close();
 			}
 		}
 		catch(final Exception sqle)
