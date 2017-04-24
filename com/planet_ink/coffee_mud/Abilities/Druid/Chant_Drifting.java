@@ -32,19 +32,53 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
-
 public class Chant_Drifting extends Chant
 {
-	@Override public String ID() { return "Chant_Drifting"; }
-	private final static String localizedName = CMLib.lang().L("Drifting");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Drifting)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
-	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public long flags(){return Ability.FLAG_MOVING;}
+	@Override
+	public String ID()
+	{
+		return "Chant_Drifting";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Drifting");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Drifting)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT | Ability.DOMAIN_ENDURING;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_SELF;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_MOVING;
+	}
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
@@ -71,8 +105,12 @@ public class Chant_Drifting extends Chant
 			&&(msg.target() instanceof Room)
 			&&(mob.location()!=null)
 			&&((mob.location().getRoomInDir(Directions.UP)==msg.target())
-			   ||(mob.location().getRoomInDir(Directions.DOWN)==msg.target())))
+			   ||(mob.location().getRoomInDir(Directions.DOWN)==msg.target()))
+			&&((((Room)msg.target()).domainType()==Room.DOMAIN_INDOORS_AIR)
+				||(((Room)msg.target()).domainType()==Room.DOMAIN_OUTDOORS_AIR)
+				||(CMLib.flags().isInFlight((Room)msg.target()))))
 			{
+				
 				mob.tell(L("You can not seem to direct your flying that way."));
 				return false;
 			}
