@@ -1289,12 +1289,12 @@ public class CMParms
 	 * @param delimiter the delimieter to use between key/pairs
 	 * @return the combined string
 	 */
-	public final static String combineEQParms(final Map<String,String> parms, final char delimiter)
+	public final static String combineEQParms(final Map<String,?> parms, final char delimiter)
 	{
 		final StringBuilder str=new StringBuilder("");
 		for(final String key : parms.keySet())
 		{
-			final String val=parms.get(key);
+			final String val=parms.get(key).toString();
 			if(val.indexOf(delimiter)>0)
 				str.append(key).append("=\"").append(parms.get(key)).append('\"').append(delimiter);
 			else

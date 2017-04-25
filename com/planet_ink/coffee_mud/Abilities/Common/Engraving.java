@@ -32,20 +32,44 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
-
 public class Engraving extends CommonSkill
 {
-	@Override public String ID() { return "Engraving"; }
-	private final static String localizedName = CMLib.lang().L("Engraving");
-	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =I(new String[] {"ENGRAVE","ENGRAVING"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_CALLIGRAPHY; }
+	@Override
+	public String ID()
+	{
+		return "Engraving";
+	}
 
-	protected Item found=null;
-	protected String writing="";
-	@Override protected boolean canBeDoneSittingDown() { return true; }
+	private final static String	localizedName	= CMLib.lang().L("Engraving");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "ENGRAVE", "ENGRAVING" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_COMMON_SKILL | Ability.DOMAIN_CALLIGRAPHY;
+	}
+
+	protected Item		found	= null;
+	protected String	writing	= "";
+
+	@Override
+	protected boolean canBeDoneSittingDown()
+	{
+		return true;
+	}
 
 	public Engraving()
 	{
