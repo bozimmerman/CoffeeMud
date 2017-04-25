@@ -291,9 +291,9 @@ public class Age extends StdAbility
 						if((!parents.contains(following))
 						&&(parents.size()>0))
 						{
-							Iterator<MOB> i=parents.iterator();
-							MOB M=i.next();
-							if(!M.isMonster())
+							final Iterator<MOB> i=parents.iterator();
+							final MOB M=i.next();
+							if((M!=null)&&(!M.isMonster()))
 							{
 								leigeM=M;
 								if(M.location()==R)
