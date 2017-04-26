@@ -3158,11 +3158,14 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 						newILevel = 1;
 					if(newILevel != I.phyStats().level())
 					{
+						final int levelDiff = newILevel - I.phyStats().level();
 						changeMade=true;
-						CMLib.itemBuilder().itemFix(I, newILevel, null);
+						final int effectiveLevel =CMLib.itemBuilder().timsLevelCalculator(I) + levelDiff; 
+						I.basePhyStats().setLevel(effectiveLevel);
+						I.phyStats().setLevel(effectiveLevel);
+						CMLib.itemBuilder().itemFix(I, effectiveLevel, null);
 						I.basePhyStats().setLevel(newILevel);
 						I.phyStats().setLevel(newILevel);
-						CMLib.itemBuilder().balanceItemByLevel(I);
 						I.text();
 					}
 				}
@@ -3183,7 +3186,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 						final double spdDif = M.basePhyStats().speed() - CMLib.leveler().getLevelMOBSpeed(M);
 						final int armDif = M.basePhyStats().armor()-CMLib.leveler().getLevelMOBArmor(M);
 						final int dmgDif = M.basePhyStats().damage()-CMLib.leveler().getLevelMOBDamage(M);
-						final int attDif = M.basePhyStats().attackAdjustment()-CMLib.leveler().getLevelMOBDamage(M);
+						final int attDif = M.basePhyStats().attackAdjustment()-CMLib.leveler().getLevelAttack(M);
 						M.basePhyStats().setLevel(newLevel);
 						M.phyStats().setLevel(newLevel);
 						CMLib.leveler().fillOutMOB(M,M.basePhyStats().level());
@@ -3207,7 +3210,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 								final int effectiveLevel =CMLib.itemBuilder().timsLevelCalculator(mI) + levelDiff; 
 								mI.basePhyStats().setLevel(effectiveLevel);
 								mI.phyStats().setLevel(effectiveLevel);
-								CMLib.itemBuilder().balanceItemByLevel(mI);
+								CMLib.itemBuilder().itemFix(mI, effectiveLevel, null);
 								mI.basePhyStats().setLevel(newILevel);
 								mI.phyStats().setLevel(newILevel);
 								mI.text();
@@ -3237,7 +3240,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 										final int effectiveLevel =CMLib.itemBuilder().timsLevelCalculator(I2) + levelDiff; 
 										I2.basePhyStats().setLevel(effectiveLevel);
 										I2.phyStats().setLevel(effectiveLevel);
-										CMLib.itemBuilder().balanceItemByLevel(I2);
+										CMLib.itemBuilder().itemFix(I2, effectiveLevel, null);
 									}
 									P2.basePhyStats().setLevel(newLevel);
 									P2.phyStats().setLevel(newLevel);

@@ -598,8 +598,11 @@ public class Reset extends StdCommand
 						{
 							CMLib.database().DBUpdateItems(room);
 							CMLib.database().DBUpdateMOBs(room);
+							room.destroy();
 							CMLib.map().resetRoom(R, true);
 						}
+						else
+							room.destroy();
 					}
 				}
 				if(sess!=null)
