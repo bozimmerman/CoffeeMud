@@ -137,12 +137,16 @@ public class Tagging extends CommonSkill
 							if(Character.isUpperCase(c))
 								id.append(c);
 						}
-						int num=0;
-						while(usedShortKeys.contains(String.format("%1$02d", Integer.valueOf(num))))
-							num++;
-						final String finalPrefixKey=String.format("%1$02d", Integer.valueOf(num));
-						usedShortKeys.add(finalPrefixKey);
-						id.append(finalPrefixKey);
+						String suffix="";
+						int x=I.ID().lastIndexOf(id.charAt(id.length()-1));
+						int y=1;
+						while(usedShortKeys.contains(id+suffix) && (x>0))
+						{
+							suffix=I.ID().substring(x,x+y);
+							y++;
+						}
+						id.append(id.toString()+suffix);
+						usedShortKeys.add(id.toString());
 						tagPrefixes.put(iKey, id.toString());
 					}
 				}
@@ -183,12 +187,23 @@ public class Tagging extends CommonSkill
 	{
 		if(super.checkStop(mob, commands))
 			return true;
-		boolean remove=commands.get(commands.size()-1).toString().equalsIgnoreCase("remove");
-		if(remove)
-			commands.remove(commands.size()-1);
+		boolean remove=false;
+		if(commands.size()>0)
+		{
+			remove=commands.get(0).toString().equalsIgnoreCase("remove");
+			if(remove)
+				commands.remove(0);
+		}
+		boolean replace=false;
+		if(commands.size()>0)
+		{
+			replace=commands.get(0).toString().equalsIgnoreCase("replace");
+			if(replace)
+				commands.remove(0);
+		}
 		if(commands.size()<1)
 		{
-			commonTell(mob,L("You must specify what you want to tag.  Add the word remove to remove a tag."));
+			commonTell(mob,L("You must specify what you want to tag.  Start with the word remove to remove a tag."));
 			return false;
 		}
 		String what=CMParms.combine(commands);
