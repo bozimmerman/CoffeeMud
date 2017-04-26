@@ -3180,15 +3180,17 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					if(newLevel != M.phyStats().level())
 					{
 						changeMade=true;
-						double spdDif = M.basePhyStats().speed() - CMLib.leveler().getLevelMOBSpeed(M);
-						int armDif = M.basePhyStats().armor()-CMLib.leveler().getLevelMOBArmor(M);
-						int dmgDif = M.basePhyStats().damage()-CMLib.leveler().getLevelMOBDamage(M);
-						int attDif = M.basePhyStats().attackAdjustment()-CMLib.leveler().getLevelMOBDamage(M);
-						int ablDif = M.basePhyStats().ability()-CMProps.getMobHPBase();
+						final double spdDif = M.basePhyStats().speed() - CMLib.leveler().getLevelMOBSpeed(M);
+						final int armDif = M.basePhyStats().armor()-CMLib.leveler().getLevelMOBArmor(M);
+						final int dmgDif = M.basePhyStats().damage()-CMLib.leveler().getLevelMOBDamage(M);
+						final int attDif = M.basePhyStats().attackAdjustment()-CMLib.leveler().getLevelMOBDamage(M);
 						M.basePhyStats().setLevel(newLevel);
 						M.phyStats().setLevel(newLevel);
 						CMLib.leveler().fillOutMOB(M,M.basePhyStats().level());
-						M.baseState().se
+						M.basePhyStats().setSpeed(M.basePhyStats().speed()+spdDif);
+						M.basePhyStats().setArmor(M.basePhyStats().armor()+armDif);
+						M.basePhyStats().setDamage(M.basePhyStats().damage()+dmgDif);
+						M.basePhyStats().setAttackAdjustment(M.basePhyStats().attackAdjustment()+attDif);
 					}
 					for(Enumeration<Item> mi=M.items();mi.hasMoreElements();)
 					{
@@ -3200,10 +3202,14 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 								newILevel = 1;
 							if(newILevel != mI.phyStats().level())
 							{
+								final int levelDiff = newILevel - mI.phyStats().level();
 								changeMade=true;
+								final int effectiveLevel =CMLib.itemBuilder().timsLevelCalculator(mI) + levelDiff; 
+								mI.basePhyStats().setLevel(effectiveLevel);
+								mI.phyStats().setLevel(effectiveLevel);
+								CMLib.itemBuilder().balanceItemByLevel(mI);
 								mI.basePhyStats().setLevel(newILevel);
 								mI.phyStats().setLevel(newILevel);
-								CMLib.itemBuilder().balanceItemByLevel(mI);
 								mI.text();
 							}
 						}
@@ -3224,11 +3230,17 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 								if(newLevel != P2.phyStats().level())
 								{
 									changeMade=true;
+									if(E2 instanceof Item)
+									{
+										Item I2=(Item)E2;
+										final int levelDiff = newLevel - I2.phyStats().level();
+										final int effectiveLevel =CMLib.itemBuilder().timsLevelCalculator(I2) + levelDiff; 
+										I2.basePhyStats().setLevel(effectiveLevel);
+										I2.phyStats().setLevel(effectiveLevel);
+										CMLib.itemBuilder().balanceItemByLevel(I2);
+									}
 									P2.basePhyStats().setLevel(newLevel);
 									P2.phyStats().setLevel(newLevel);
-									if(E2 instanceof Item)
-										CMLib.itemBuilder().balanceItemByLevel((Item)E2);
-									else
 									if(E2 instanceof MOB)
 										CMLib.leveler().fillOutMOB((MOB)E2,P2.basePhyStats().level());
 									E2.text();
