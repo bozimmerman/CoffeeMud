@@ -51,7 +51,7 @@ public class GenShopkeeper extends StdShopKeeper
 		username = "a generic shopkeeper";
 		setDescription("He looks like he wants to sell something to you.");
 		setDisplayText("A generic shopkeeper stands here.");
-		basePhyStats().setAbility(11); // his only off-default
+		basePhyStats().setAbility(CMProps.getMobHPBase()); // his only off-default
 	}
 
 	@Override

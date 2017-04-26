@@ -293,6 +293,7 @@ public class CMProps extends Properties
 		THIRST_FULL,
 		THIRST_GAIN_PCT,
 		THIRST_LOSS_PCT,
+		MOB_HP_BASE
 		;
 		
 		public static final int	EXVIEW_DEFAULT		= 0;
@@ -1142,6 +1143,23 @@ public class CMProps extends Properties
 		catch(final Exception t) 
 		{
 			return -1;
+		}
+	}
+
+	/**
+	 * Retrieve the base MOB hit point base
+	 * @return the value of the base.
+	 */
+	public static final int getMobHPBase()
+	{
+		try 
+		{ 
+			final int x=p().sysInts[Int.MOB_HP_BASE.ordinal()].intValue();
+			return (x<=0)?11:x;
+		}
+		catch(final Exception t) 
+		{
+			return 11;
 		}
 	}
 
@@ -2197,6 +2215,7 @@ public class CMProps extends Properties
 		setIntVar(Int.THIRST_FULL,thirstCodes.length>0?CMath.s_int(thirstCodes[0]):500);
 		setIntVar(Int.THIRST_GAIN_PCT,thirstCodes.length>1?CMath.s_int(CMStrings.deleteAllofChar(thirstCodes[1], '%')):100);
 		setIntVar(Int.THIRST_LOSS_PCT,thirstCodes.length>2?CMath.s_int(CMStrings.deleteAllofChar(thirstCodes[2], '%')):100);
+		setIntVar(Int.MOB_HP_BASE,CMath.s_int(getStr("MOB_HP_BASE","11")));
 
 		setUpLowVar(Str.BLACKLISTFILE,getStr("BLACKLISTFILE","/resources/ipblock.ini"));
 		setWhitelist(CMProps.WhiteList.CONNS,getStr("WHITELISTIPSCONN"));

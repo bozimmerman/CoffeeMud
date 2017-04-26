@@ -610,7 +610,7 @@ public class CharGen extends StdCommand
 								M1.recoverPhyStats();
 								M1.setLocation(R);
 								M1.baseCharStats().getMyRace().setHeightWeight(M1.basePhyStats(),(char)M1.baseCharStats().getStat(CharStats.STAT_GENDER));
-								M1.basePhyStats().setAbility(11);
+								M1.basePhyStats().setAbility(CMProps.getMobHPBase());
 								M1.recoverCharStats();
 								M1.recoverPhyStats();
 								M1.recoverMaxState();
@@ -690,7 +690,7 @@ public class CharGen extends StdCommand
 								M2.recoverPhyStats();
 								M2.setLocation(R);
 								M2.baseCharStats().getMyRace().setHeightWeight(M2.basePhyStats(),(char)M2.baseCharStats().getStat(CharStats.STAT_GENDER));
-								M2.basePhyStats().setAbility(11);
+								M2.basePhyStats().setAbility(CMProps.getMobHPBase());
 								M2.recoverCharStats();
 								M2.recoverPhyStats();
 								M2.recoverMaxState();

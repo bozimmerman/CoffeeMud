@@ -1781,7 +1781,6 @@ public class Reset extends StdCommand
 							if(finalR.isGeneric())
 							{
 								compareRaces(originalRace.ID(),originalRace,finalR,mob);
-								//TODO: check it out.
 							}
 							else
 								mob.tell("Failed single race:"+race2.ID());
@@ -1810,7 +1809,6 @@ public class Reset extends StdCommand
 							mob.tell("Can't find "+race1.ID()+"-"+race2.ID());
 						else
 							compareRaces(race1.ID()+race2.ID(),compareR,finalR,mob);
-						//TODO: check it out.
 					}
 					else
 						mob.tell("Failed single race:"+race2.ID());

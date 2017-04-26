@@ -371,7 +371,7 @@ public class Chant_SummonAnimal extends Chant
 
 		newMOB.setLocation(caster.location());
 		newMOB.basePhyStats().setLevel(level);
-		newMOB.basePhyStats().setAbility(11);
+		newMOB.basePhyStats().setAbility(CMProps.getMobHPBase());
 		CMLib.leveler().fillOutMOB(newMOB,newMOB.basePhyStats().level());
 		newMOB.setMoney(0);
 		newMOB.setMoneyVariation(0);

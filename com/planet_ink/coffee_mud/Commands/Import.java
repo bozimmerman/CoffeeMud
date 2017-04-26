@@ -2710,7 +2710,7 @@ public class Import extends StdCommand
 	{
 		int i=str.indexOf('d');
 		if(i<0)
-			return 11;
+			return CMProps.getMobHPBase();
 		final int roll=CMath.s_int(str.substring(0,i).trim());
 		str=str.substring(i+1).trim();
 
@@ -3117,7 +3117,7 @@ public class Import extends StdCommand
 				M.basePhyStats().setLevel(CMath.s_int(CMParms.getCleanBit(codeStr2,0).trim()));
 				if(M.basePhyStats().level()==0)
 					M.basePhyStats().setLevel(1);
-				int baseHP=11;
+				int baseHP=CMProps.getMobHPBase();
 				if(circleFormat)
 					baseHP=getDRoll(CMParms.getCleanBit(codeStr2,2));
 				else
@@ -3165,7 +3165,7 @@ public class Import extends StdCommand
 			}
 			else
 			{
-				M.basePhyStats().setAbility(11);
+				M.basePhyStats().setAbility(CMProps.getMobHPBase());
 				int baseLevel=CMath.s_int(CMParms.getCleanBit(codeStr2,0).trim());
 				while(baseLevel>25)
 					baseLevel=(int)Math.round(CMath.div(baseLevel,2.0));
@@ -3174,7 +3174,7 @@ public class Import extends StdCommand
 			if(M.basePhyStats().level()==0)
 				M.basePhyStats().setLevel(1);
 			if(M.getWimpHitPoint()==2)
-				M.setWimpHitPoint(((int)Math.round(CMath.div(M.basePhyStats().level()*(11+M.basePhyStats().ability()),8.0)))+1);
+				M.setWimpHitPoint(((int)Math.round(CMath.div(M.basePhyStats().level()*(CMProps.getMobHPBase()+M.basePhyStats().ability()),8.0)))+1);
 
 			M.basePhyStats().setArmor(CMLib.leveler().getLevelMOBArmor(M));
 			M.basePhyStats().setAttackAdjustment(CMLib.leveler().getLevelAttack(M));

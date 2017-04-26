@@ -245,7 +245,7 @@ public class Dice extends StdLibrary implements DiceLibrary
 	{
 		int i=str.indexOf('d');
 		if(i<0)
-			return 11;
+			return CMProps.getMobHPBase();
 		final int roll=CMath.s_int(str.substring(0,i).trim());
 		str=str.substring(i+1).trim();
 

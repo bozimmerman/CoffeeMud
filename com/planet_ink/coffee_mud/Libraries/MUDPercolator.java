@@ -3180,9 +3180,15 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					if(newLevel != M.phyStats().level())
 					{
 						changeMade=true;
+						double spdDif = M.basePhyStats().speed() - CMLib.leveler().getLevelMOBSpeed(M);
+						int armDif = M.basePhyStats().armor()-CMLib.leveler().getLevelMOBArmor(M);
+						int dmgDif = M.basePhyStats().damage()-CMLib.leveler().getLevelMOBDamage(M);
+						int attDif = M.basePhyStats().attackAdjustment()-CMLib.leveler().getLevelMOBDamage(M);
+						int ablDif = M.basePhyStats().ability()-CMProps.getMobHPBase();
 						M.basePhyStats().setLevel(newLevel);
 						M.phyStats().setLevel(newLevel);
 						CMLib.leveler().fillOutMOB(M,M.basePhyStats().level());
+						M.baseState().se
 					}
 					for(Enumeration<Item> mi=M.items();mi.hasMoreElements();)
 					{

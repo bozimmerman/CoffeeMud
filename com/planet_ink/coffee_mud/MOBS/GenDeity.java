@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
+
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 /*
@@ -46,7 +47,7 @@ public class GenDeity extends StdDeity
 		username="a generic deity";
 		setDescription("He is a run-of-the-mill deity.");
 		setDisplayText("A generic deity stands here.");
-		basePhyStats().setAbility(11); // his only off-default
+		basePhyStats().setAbility(CMProps.getMobHPBase()); // his only off-default
 		recoverMaxState();
 		resetToMaxState();
 		recoverPhyStats();

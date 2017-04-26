@@ -32,23 +32,67 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Spell_Tourettes extends Spell implements DiseaseAffect
 {
-	@Override public String ID() { return "Spell_Tourettes"; }
-	private final static String localizedName = CMLib.lang().L("Tourettes");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Tourettes)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
-	@Override public int difficultyLevel(){return 5;}
-	@Override public boolean isMalicious(){ return true;}
+	@Override
+	public String ID()
+	{
+		return "Spell_Tourettes";
+	}
 
-	int plagueDown=4;
+	private final static String	localizedName	= CMLib.lang().L("Tourettes");
 
-	@Override public int spreadBitmap(){return DiseaseAffect.SPREAD_PROXIMITY;}
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Tourettes)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL | Ability.DOMAIN_ENCHANTMENT;
+	}
+
+	@Override
+	public int difficultyLevel()
+	{
+		return 5;
+	}
+
+	@Override
+	public boolean isMalicious()
+	{
+		return true;
+	}
+
+	int	plagueDown	= 4;
+
+	@Override
+	public int spreadBitmap()
+	{
+		return DiseaseAffect.SPREAD_PROXIMITY;
+	}
 
 	@Override
 	public String getHealthConditionDesc()
@@ -76,7 +120,6 @@ public class Spell_Tourettes extends Spell implements DiseaseAffect
 		}
 	}
 
-
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -103,36 +146,96 @@ public class Spell_Tourettes extends Spell implements DiseaseAffect
 				String say="Penis wrinkle!";
 				switch(CMLib.dice().roll(1,30,0))
 				{
-				case 1: say="You are a very bad "+target.charStats().displayClassName()+"!"; break;
-				case 2: say="I think all "+target.charStats().raceName()+"s are stupid!"; break;
-				case 3: say="Damn flark!"; break;
-				case 4: say="Squeegee!"; break;
-				case 5: say="Ding dong!"; break;
-				case 6: say="Goober!"; break;
-				case 7: say="Noodle"+((target.charStats().getStat(CharStats.STAT_GENDER)=='M')?"boy":"girl")+"!"; break;
-				case 8: say="Groin scratcher!"; break;
-				case 9: say="Geek!"; break;
-				case 10: say="Dork!"; break;
-				case 11: say="Orc kisser!"; break;
-				case 12: say="Jerk!"; break;
-				case 13: say="Tuddleworm!"; break;
-				case 14: say="Poopie diaper!"; break;
-				case 15: say="Panty stain!"; break;
-				case 16: say="Blah blah blah blah blah!"; break;
-				case 17: say="Hairpit sniffer!"; break;
-				case 18: say="Gluteous maximus cavity!"; break;
-				case 19: say="Uncle copulator!"; break;
-				case 20: say="Toe jam eater!"; break;
-				case 21: say="Partial excrement!"; break;
-				case 22: say="Female dog!"; break;
-				case 23: say="Illegitimate offspring!"; break;
-				case 24: say="You are overweight!"; break;
-				case 25: say="You smell funny!"; break;
-				case 26: say="You aren't very smart!"; break;
-				case 27: say="You.. you.. ah nevermind."; break;
-				case 28: say="Yokle!"; break;
-				case 29: say="Ugly head!"; break;
-				case 30: say="Goop"+((target.charStats().getStat(CharStats.STAT_GENDER)=='M')?"boy":"girl")+"!";  break;
+				case 1:
+					say = "You are a very bad " + target.charStats().displayClassName() + "!";
+					break;
+				case 2:
+					say = "I think all " + target.charStats().raceName() + "s are stupid!";
+					break;
+				case 3:
+					say = "Damn flark!";
+					break;
+				case 4:
+					say = "Squeegee!";
+					break;
+				case 5:
+					say = "Ding dong!";
+					break;
+				case 6:
+					say = "Goober!";
+					break;
+				case 7:
+					say = "Noodle" + ((target.charStats().getStat(CharStats.STAT_GENDER) == 'M') ? "boy" : "girl") + "!";
+					break;
+				case 8:
+					say = "Groin scratcher!";
+					break;
+				case 9:
+					say = "Geek!";
+					break;
+				case 10:
+					say = "Dork!";
+					break;
+				case 11:
+					say = "Orc kisser!";
+					break;
+				case 12:
+					say = "Jerk!";
+					break;
+				case 13:
+					say = "Tuddleworm!";
+					break;
+				case 14:
+					say = "Poopie diaper!";
+					break;
+				case 15:
+					say = "Panty stain!";
+					break;
+				case 16:
+					say = "Blah blah blah blah blah!";
+					break;
+				case 17:
+					say = "Hairpit sniffer!";
+					break;
+				case 18:
+					say = "Gluteous maximus cavity!";
+					break;
+				case 19:
+					say = "Uncle copulator!";
+					break;
+				case 20:
+					say = "Toe jam eater!";
+					break;
+				case 21:
+					say = "Partial excrement!";
+					break;
+				case 22:
+					say = "Female dog!";
+					break;
+				case 23:
+					say = "Illegitimate offspring!";
+					break;
+				case 24:
+					say = "You are overweight!";
+					break;
+				case 25:
+					say = "You smell funny!";
+					break;
+				case 26:
+					say = "You aren't very smart!";
+					break;
+				case 27:
+					say = "You.. you.. ah nevermind.";
+					break;
+				case 28:
+					say = "Yokle!";
+					break;
+				case 29:
+					say = "Ugly head!";
+					break;
+				case 30:
+					say = "Goop" + ((target.charStats().getStat(CharStats.STAT_GENDER) == 'M') ? "boy" : "girl") + "!";
+					break;
 				}
 				CMLib.commands().postSay(mob,target,L(say),false,false);
 				if((target!=invoker)&&(target!=mob)&&(target.fetchEffect(ID())==null))

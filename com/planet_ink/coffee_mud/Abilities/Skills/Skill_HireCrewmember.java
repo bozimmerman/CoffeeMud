@@ -552,7 +552,7 @@ public class Skill_HireCrewmember extends StdSkill
 			}
 			targetM.setDisplayText(L("@x1 stands here",targetM.Name()));
 			targetM.setDescription("");
-			targetM.basePhyStats().setAbility(11);
+			targetM.basePhyStats().setAbility(CMProps.getMobHPBase());
 			targetM.basePhyStats().setDisposition(targetM.basePhyStats().disposition()|PhyStats.IS_FLYING);
 			targetM.basePhyStats().setLevel(level);
 			targetM.basePhyStats().setRejuv(PhyStats.NO_REJUV);

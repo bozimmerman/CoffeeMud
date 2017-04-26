@@ -3984,17 +3984,31 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		int x=0;
 		int lastBar=0;
 		for(int y=0;y<props.length();y++)
+		{
 			if(props.charAt(y)=='|')
 			{
-				try{nums[x]=Double.valueOf(props.substring(lastBar,y)).doubleValue();}
-				catch(final Exception e){nums[x]=CMath.s_int(props.substring(lastBar,y));}
+				try
+				{
+					nums[x] = Double.valueOf(props.substring(lastBar, y)).doubleValue();
+				}
+				catch (final Exception e)
+				{
+					nums[x] = CMath.s_int(props.substring(lastBar, y));
+				}
 				x++;
 				lastBar=y+1;
 			}
+		}
 		if(lastBar<props.length())
 		{
-			try{nums[x]=Double.valueOf(props.substring(lastBar)).doubleValue();}
-			catch(final Exception e){nums[x]=CMath.s_int(props.substring(lastBar));}
+			try
+			{
+				nums[x] = Double.valueOf(props.substring(lastBar)).doubleValue();
+			}
+			catch (final Exception e)
+			{
+				nums[x] = CMath.s_int(props.substring(lastBar));
+			}
 		}
 		E.setAbility((int)Math.round(nums[0]));
 		E.setArmor((int)Math.round(nums[1]));

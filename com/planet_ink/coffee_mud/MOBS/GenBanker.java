@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
+
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 /*
@@ -50,7 +51,7 @@ public class GenBanker extends StdBanker
 		username="a generic banker";
 		setDescription("He looks like he wants your money.");
 		setDisplayText("A generic banker stands here.");
-		basePhyStats().setAbility(11); // his only off-default
+		basePhyStats().setAbility(CMProps.getMobHPBase()); // his only off-default
 	}
 
 	@Override

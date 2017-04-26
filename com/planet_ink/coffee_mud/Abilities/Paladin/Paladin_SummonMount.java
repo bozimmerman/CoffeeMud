@@ -231,7 +231,7 @@ public class Paladin_SummonMount extends StdAbility
 
 		final MOB newMOB=CMClass.getMOB("GenRideable");
 		final Rideable ride=(Rideable)newMOB;
-		newMOB.basePhyStats().setAbility(11);
+		newMOB.basePhyStats().setAbility(CMProps.getMobHPBase());
 		newMOB.basePhyStats().setLevel(level);
 		newMOB.basePhyStats().setWeight(500);
 		CMLib.factions().setAlignment(newMOB,Faction.Align.GOOD);
