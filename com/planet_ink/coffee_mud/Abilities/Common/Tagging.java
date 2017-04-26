@@ -261,7 +261,7 @@ public class Tagging extends CommonSkill
 		found=target;
 		if((!proficiencyCheck(mob,0,auto))||(!write.proficiencyCheck(mob,0,auto)))
 			writing="";
-		final int duration=getDuration(30,mob,1,3);
+		final int duration=getDuration(20,mob,1,11)-super.getXLEVELLevel(mob);
 		final CMMsg msg=CMClass.getMsg(mob,target,this,getActivityMessageType(),remove?L("<S-NAME> start(s) untagging <T-NAME>."):L("<S-NAME> start(s) tagging <T-NAME>."));
 		if(mob.location().okMessage(mob,msg))
 		{
