@@ -4,6 +4,7 @@
    2. Entering SHUTDOWN RESTART HARD will now attempt to run a restart.sh/restart.bat.
    3. GMODIFY now supports changing the CLASS of objects, including rooms.
    4. RESET RELEVEL tool added to refactor an areas level range.
+   5. New skills: Studying, Tagging
 
 # Build 5.9.5 Release 04/10/2017
    *. Database Schema Updated for CMGRAC.  See the Installation Guide about running DBUpgrade.
