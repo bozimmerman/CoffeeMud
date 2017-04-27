@@ -132,7 +132,7 @@ public class Tagging extends CommonSkill
 						final String iType = CMClass.getObjectType(I).name();
 						final String iKey = iType+"/"+I.ID();
 						final StringBuilder id=new StringBuilder("");
-						for(char c : I.ID().toCharArray())
+						for(final char c : I.ID().toCharArray())
 						{
 							if(Character.isUpperCase(c))
 								id.append(c);
