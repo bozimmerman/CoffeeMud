@@ -138,7 +138,7 @@ public class Tagging extends CommonSkill
 								id.append(c);
 						}
 						String suffix="";
-						int x=I.ID().lastIndexOf(id.charAt(id.length()-1));
+						final int x=I.ID().lastIndexOf(id.charAt(id.length()-1));
 						int y=1;
 						while(usedShortKeys.contains(id+suffix) && (x>0))
 						{
