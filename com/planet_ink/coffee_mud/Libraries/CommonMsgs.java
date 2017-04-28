@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.lang.ref.WeakReference;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2016 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -218,7 +218,6 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			return new StringBuilder(V.firstElement());
 		return new StringBuilder("");
 	}
-
 	@Override
 	public StringBuilder getEquipment(MOB viewer, MOB mob)
 	{
@@ -914,15 +913,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				response.append(L("It is mostly made of a kind of @x1.  ",RawMaterial.Material.findByMask(item.material()&RawMaterial.MATERIAL_MASK).noun()));
 			else
 				response.append(L("It is mostly made of @x1.  ",RawMaterial.CODES.NAME(item.material()).toLowerCase()));
-			if(item instanceof Recipe)
-			{
-				final String[] recipeCodeLines = ((Recipe)item).getRecipeCodeLines();
-				final int usedPages = (recipeCodeLines == null) ? 0 : recipeCodeLines.length;
-				final int totalRecipePages = ((Recipe)item).getTotalRecipePages();
-				final int remainingRecipePages = totalRecipePages - usedPages;
-				if(((Recipe)item).getTotalRecipePages()>1)
-					response.append( L("There are @x1 blank pages remaining out of @x2 total.  ",""+remainingRecipePages,""+totalRecipePages));
-			}
+			if((item instanceof Recipe)&&((Recipe)item).getTotalRecipePages()>1)
+				response.append( L("There are @x1 blank pages/entries remaining.  ",""+((Recipe)item).getTotalRecipePages()));
 			if(item instanceof Ammunition)
 				response.append(L("It is @x1 ammunition of type '@x2'.  ",""+((Ammunition)item).ammunitionRemaining(),((Ammunition)item).ammunitionType()));
 			else
@@ -983,7 +975,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 	{
 		if(item.expirationDate()==0)
 			return "N/A";
-		if(item.expirationDate() < System.currentTimeMillis())
+		if(item.expirationDate() > System.currentTimeMillis())
 			return "*IMMINENT*";
 		return ""+CMLib.time().date2EllapsedTime((item.expirationDate()-System.currentTimeMillis()), TimeUnit.MINUTES, false);
 	}
@@ -1341,42 +1333,73 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 
 		if((compressedItems != null) && (compressedItems.size()>0))
 		{
-			final StringBuilder itemStr=CMLib.lister().lister(mob,compressedItems,false,"RItem"," \"*\"",false,true);
+			final StringBuilder itemStr=CMLib.lister().listerName(mob,compressedItems,false,"RItem"," \"*\"",false,true);
 			if(itemStr.length()>0)
 				finalLookStr.append(itemStr).append("\n\r\n\r");
 		}
-		final StringBuilder itemStr=CMLib.lister().lister(mob,viewItems,false,"RItem"," \"*\"",lookCode==LOOK_LONG,compress);
+		final StringBuilder itemStr=CMLib.lister().listerName(mob,viewItems,false,"RItem"," \"*\"",lookCode==LOOK_LONG,compress);
 		if(itemStr.length()>0)
-			finalLookStr.append(itemStr);
-
+			finalLookStr.append("You see "+itemStr);
 		int mobsInTheDarkness=0;
+		int mobCount = 0;
+		int lastVisible = 0 ;
+		for(int i=0;i<room.numInhabitants();i++)
+		{
+			final MOB mob2=room.fetchInhabitant(i);
+			if(CMLib.flags().canBeSeenBy(mob2,mob))
+			{
+				lastVisible = i;
+			}
+		}
 		for(int i=0;i<room.numInhabitants();i++)
 		{
 			final MOB mob2=room.fetchInhabitant(i);
 			if((mob2!=null)&&(mob2!=mob))
 			{
-				final String displayText=mob2.displayText(mob);
+				//final String displayText=mob2.displayText(mob);
+				final String displayText=mob2.name();
 				if((displayText.length()>0)
 				||(sysmsgs))
 				{
 					if(CMLib.flags().canBeSeenBy(mob2,mob))
 					{
+						if (mobCount == 0)
+							finalLookStr.append(" You also see ");
+						
+						mobCount = mobCount + 1;
 						if((!compress)&&(!mob.isMonster())&&(sess.getClientTelnetMode(Session.TELNET_MXP)))
 							finalLookStr.append(CMLib.protocol().mxpImage(mob2," H=10 W=10",""," "));
-						finalLookStr.append("^M^<RMob \""+CMStrings.removeColors(mob2.name())+"\"^>");
-						if(compress)
-							finalLookStr.append(CMLib.flags().getDispositionBlurbs(mob2,mob)+"^M ");
-						if(displayText.length()>0)
-							finalLookStr.append(CMStrings.endWithAPeriod(CMStrings.capitalizeFirstLetter(displayText)));
-						else
-							finalLookStr.append(CMStrings.endWithAPeriod(CMStrings.capitalizeFirstLetter(mob2.name())));
-						finalLookStr.append("^</RMob^>");
+						finalLookStr.append("^M^<RMob \""+CMStrings.removeColors(mob2.titledName())+"\"^>");
+						String s = "";
+						if (lastVisible == mobCount && mobCount > 1)
+						{
+							finalLookStr.append("^N and ^M");
+						}
+						//s = mob2.titledName();
+						s = mob2.titledName()+CMLib.flags().getDispositionBlurbs(mob2,mob)+"^M";
+						finalLookStr.append(s);
 						if(sysmsgs)
 							finalLookStr.append("^H("+CMClass.classID(mob2)+")^N ");
 						if(!compress)
 							finalLookStr.append(CMLib.flags().getDispositionBlurbs(mob2,mob)+"^N\n\r");
-						else
-							finalLookStr.append("^N");
+						finalLookStr.append("^</RMob^>");
+
+						if (lastVisible == mobCount && mobCount > 1)
+						{
+							finalLookStr.append("^N.");
+						}
+						else if (lastVisible == mobCount && mobCount < 2)
+						{
+							finalLookStr.append("^N.");
+						}
+						else if (lastVisible != mobCount+1){
+							finalLookStr.append("^N, ");
+						}
+
+
+						
+//						else
+//							finalLookStr.append("^N");
 					}
 					else
 					if(CMLib.flags().canBarelyBeSeenBy(mob2,mob))
@@ -1391,7 +1414,9 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		{
 			if(compress)
 				finalLookStr.append("\n\r");
+			
 			mob.tell(finalLookStr.toString());
+
 			if((CMProps.getIntVar(CMProps.Int.AWARERANGE)>0)
 			&&(!mob.isAttributeSet(MOB.Attrib.AUTOMAP)))
 			{
@@ -1716,7 +1741,10 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				if((!CMSecurity.isDisabled(CMSecurity.DisFlag.RACES))
 				&&(!viewedmob.charStats().getCurrentClass().raceless()))
 				{
-					myDescription.append(viewedmob.name(viewermob)+" the ");
+					if (viewedmob.name(viewermob) == viewedmob.Name())
+						myDescription.append(viewedmob.name(viewermob)+" the ");
+					else
+						myDescription.append("The ");
 					if((viewedmob.charStats().getStat(CharStats.STAT_AGE)>0)&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.ALL_AGEING)))
 						myDescription.append(viewedmob.charStats().ageName().toLowerCase()+" ");
 					myDescription.append(viewedmob.charStats().raceName());
@@ -1729,7 +1757,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 					myDescription.append("is here.\n\r");
 			}
 			if(viewedmob.phyStats().height()>0)
-				myDescription.append(viewedmob.charStats().HeShe()+" is "+viewedmob.phyStats().height()+" inches tall and weighs "+viewedmob.basePhyStats().weight()+" pounds.\n\r");
+				myDescription.append(viewedmob.charStats().HeShe()+" is "+viewedmob.phyStats().height()+" inches tall and weighs "+viewedmob.basePhyStats().weight()+" pounds. \n\r"+viewedmob.charStats().HeShe()+" has "+viewedmob.getDescription("hair")+" hair, "+ viewedmob.getDescription("eye")+" eyes and "+viewedmob.getDescription("ear")+" ears. "+viewedmob.charStats().HeShe()+" has a "+viewedmob.getDescription("nose")+" nose, a "+viewedmob.getDescription("mouth")+" mouth and "+viewedmob.getDescription("skin")+" skin.\n\r");
 			if((longlook)&&(viewermob.charStats().getStat(CharStats.STAT_INTELLIGENCE)>12))
 			{
 				final CharStats C=(CharStats)CMClass.getCommon("DefaultCharStats");

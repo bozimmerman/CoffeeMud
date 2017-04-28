@@ -48,6 +48,8 @@ public class Python extends StdMOB
 		setDisplayText("A python wants to give you a hug.");
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);
 		setMoney(0);
+		setLevels(Arrays.asList(5,6,7,8,9));
+		setLocations(Arrays.asList("Desert","DesertGrid","DesertMaze","FrozenMountains","FrozenPlains","Hills","HillsGrid","IcePlains","IceRoom","Jungle","JungleGrid","LargeCaveRoom","Mountains","MountainsGrid","MountainsMaze","MountainSurface","MountainSurfaceGrid","Plains","PlainsGrid","Road","RoadGrid","Swamp","TreeSurface","WetCaveGrid","WetCaveRoom","Woods","WoodsGrid","WoodsMaze"));
 
 		basePhyStats().setDamage(7);
 

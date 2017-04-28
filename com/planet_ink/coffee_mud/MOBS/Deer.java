@@ -49,6 +49,8 @@ public class Deer extends StdMOB
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);
 		setMoney(0);
 		setWimpHitPoint(0);
+		setLevels(Arrays.asList(1,2));
+		setLocations(Arrays.asList("Hills","HillsGrid","Plains","PlainsThinGrid","ShallowWater","WaterSurface","Woods","WoodsGrid","WoodsMaze"));
 
 		basePhyStats().setDamage(1);
 		basePhyStats().setSpeed(2.0);

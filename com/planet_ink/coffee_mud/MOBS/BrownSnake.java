@@ -53,6 +53,9 @@ public class BrownSnake extends StdMOB
 		addAbility(CMClass.getAbility("Poison"));
 
 		basePhyStats().setDamage(4);
+		setLevels(Arrays.asList(1,2));
+		setLocations(Arrays.asList("CaveGrid","CaveMaze","CaveRoom","CaveSurface","Desert","DesertGrid","DesertMaze","Hills","HillsGrid","Jungle","JungleGrid","LargeCaveRoom","Mountains","MountainsGrid","MountainsMaze","MountainSurface","MountainSurfaceGrid","ShallowWater","WaterSurface","WetCaveGrid","WetCaveRoom","Woods","WoodsGrid","WoodsMaze"));
+		//CaveGrid,CaveMaze,CaveRoom,CaveSurface,CityStreet,Desert,DesertGrid,DesertMaze,FrozenMountains,FrozenPlains,GreatLake,Hills,HillsGrid,IcePlains,IceRoom,InTheAir,Jungle,JungleGrid,LargeCaveRoom,Mountains,MountainsGrid,MountainsMaze,MountainSurface,MountainSurfaceGrid,OceanGrid,Plains,PlainsGrid,Road,RoadGrid,SaltWaterSurface,SewerMaze,SewerRoom,ShallowWater,Shore,Swamp,TreeSurface,UnderSaltWater,UnderSaltWaterGrid,UnderSaltWaterMaze,UnderWater,UnderWaterGrid,UnderWaterMaze,WaterSurface,WetCaveGrid,WetCaveRoom,Whirlpool,Woods,WoodsGrid,WoodsMaze
 
 		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,1);
 

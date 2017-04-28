@@ -158,6 +158,39 @@ public class CMLister extends StdLibrary implements ListingLibrary
 			return CMStrings.capitalizeFirstLetter(item.name())+(sysmsgs?" ^H("+CMClass.classID(item)+")^N":"");
 	}
 
+		@Override
+	public String itemSeenStringName(MOB viewerM, Environmental item, boolean useName, boolean longLook, boolean sysmsgs)
+	{
+		if(useName)
+		{
+			if(item instanceof Physical)
+				return ((Physical)item).name(viewerM)+(sysmsgs?" ^H("+CMClass.classID(item)+")^N":"");
+			else
+				return item.name()+(sysmsgs?" ^H("+CMClass.classID(item)+")^N":"");
+		}
+		else
+		if((longLook)&&(item instanceof Item)&&(((Item)item).container()!=null))
+			return "     "+((Item)item).name(viewerM)+(sysmsgs?" ^H("+CMClass.classID(item)+")^N":"");
+		else
+		if(!item.name().equals(item.Name()))
+		{
+			if(item instanceof Physical)
+				return L("@x1 is here.",((Physical)item).name(viewerM))+(sysmsgs?" ^H("+CMClass.classID(item)+")^N":"");
+			else
+				return L("@x1 is here.",item.name())+(sysmsgs?" ^H("+CMClass.classID(item)+")^N":"");
+		}
+		else
+		if(item.Name().length()>0)
+		{
+			if(item instanceof Physical)
+				return ((Physical)item).Name()+(sysmsgs?" ^H("+CMClass.classID(item)+")^N":"");
+			else
+				return item.Name()+(sysmsgs?" ^H("+CMClass.classID(item)+")^N":"");
+		}
+		else
+			return item.name()+(sysmsgs?" ^H("+CMClass.classID(item)+")^N":"");
+	}
+
 	@Override
 	public int getReps(MOB viewerM,
 					   Environmental item,
@@ -347,6 +380,122 @@ public class CMLister extends StdLibrary implements ListingLibrary
 		}
 		return say;
 	}
+
+	@Override
+	public StringBuilder listerName(MOB viewerM,
+								List<? extends Environmental> items,
+								boolean useName,
+								String tag,
+								String tagParm,
+								boolean longLook,
+								boolean compress)
+	{
+		final boolean nameTagParm=((tagParm!=null)&&(tagParm.indexOf('*')>=0));
+		final StringBuilder say=new StringBuilder("");
+		Environmental item=null;
+		final boolean sysmsgs=(viewerM!=null)?viewerM.isAttributeSet(MOB.Attrib.SYSOPMSGS):false;
+		int numShown=0;
+		final int maxToShow=CMProps.getIntVar(CMProps.Int.MAXITEMSHOWN);
+		int itemCount = items.size();
+		while(items.size()>0)
+		{
+			if((maxToShow>0)&&(!longLook)&&(!sysmsgs)&&(!useName)&&(numShown>=maxToShow))
+			{
+				say.append(summarizeTheRest(viewerM,items,compress));
+				items.clear();
+				break;
+			}
+			item=items.get(0);
+			items.remove(item);
+			final int reps=getReps(viewerM,item,items,useName,longLook);
+			final String displayText=(item instanceof Physical)?((Physical)item).Name():item.Name();
+			
+			if(CMLib.flags().canBeSeenBy(item,viewerM)
+			&&((displayText.length()>0)
+				||sysmsgs
+				||useName))
+			{
+				numShown++;
+				if (items.size() == 0 && itemCount > 1)
+					say.append("^Nand ");
+				appendReps(reps,say,compress);
+				if((!compress)&&(viewerM!=null)&&(!viewerM.isMonster())&&(viewerM.session().getClientTelnetMode(Session.TELNET_MXP)))
+					say.append(CMLib.protocol().mxpImage(item," H=10 W=10",""," "));
+				say.append("^I");
+
+				if(tag!=null)
+				{
+					if(nameTagParm){
+						say.append("^<"+tag+CMStrings.replaceAll(tagParm,"*",CMStrings.removeColors(item.name()))+"^>");
+				
+					}
+					else
+						say.append("^<"+tag+tagParm+"^>");
+				}
+
+
+				if((compress)&&(item instanceof Physical))
+					say.append(CMLib.flags().getDispositionBlurbs((Physical)item,viewerM)+"^I");
+				if (items.size() == 0)
+					say.append("^I"+itemSeenStringName(viewerM,item,useName,longLook,sysmsgs)+"^N.");
+				else if (items.size() > 1)
+					say.append(itemSeenStringName(viewerM,item,useName,longLook,sysmsgs)+"^N, ^I");
+				else
+					say.append(itemSeenStringName(viewerM,item,useName,longLook,sysmsgs));	
+				itemCount++;
+				if(tag!=null)
+					say.append("^</"+tag+"^>");
+				if((!compress)&&(item instanceof Physical))
+					say.append(CMLib.flags().getDispositionBlurbs((Physical)item,viewerM)+"^N\n\r");
+				else
+					say.append("^N");
+
+				if((longLook)
+				&&(item instanceof Container)
+				&&(((Container)item).container()==null)
+				&&(((Container)item).isOpen())
+				&&(!((Container)item).hasADoor())
+				&&(!CMLib.flags().canBarelyBeSeenBy(item,viewerM)))
+				{
+					final List<Item> V=new Vector<Item>();
+					V.addAll(((Container)item).getContents());
+					Item item2=null;
+					if(compress&&V.size()>0) 
+						say.append("{");
+					while(V.size()>0)
+					{
+						item2=V.get(0);
+						V.remove(0);
+						final int reps2=getReps(viewerM,item2,V,useName,false);
+						if(CMLib.flags().canBeSeenBy(item2,viewerM)
+						&&((item2.displayText(viewerM).length()>0)
+							||sysmsgs
+							||(useName)))
+						{
+							if(!compress) 
+								say.append("      ");
+							appendReps(reps2,say,compress);
+							if((!compress)&&(viewerM!=null)&&(!viewerM.isMonster())&&(viewerM.session().getClientTelnetMode(Session.TELNET_MXP)))
+								say.append(CMLib.protocol().mxpImage(item," H=10 W=10",""," "));
+							say.append("^I");
+							if(compress)
+								say.append(CMLib.flags().getDispositionBlurbs(item2,viewerM)+"^I");
+							say.append(CMStrings.endWithAPeriod(itemSeenString(viewerM,item2,useName,longLook,sysmsgs)));
+							if(!compress)
+								say.append(CMLib.flags().getDispositionBlurbs(item2,viewerM)+"^N\n\r");
+							else
+								say.append("^N");
+						}
+						if(compress&&(V.size()==0))
+							say.append("} ");
+					}
+				}
+			}
+		}
+		return say;
+	}
+
+
 
 	@SuppressWarnings("unchecked")
 	protected Filterer<Object>[] buildOfTypeFilter(int ofType)

@@ -353,6 +353,8 @@ public class CMLib
 		return (ListingLibrary)l().libraries[Library.LISTER.ordinal()];
 	}
 	
+
+
 	/**
 	 * Returns a reference to this threads money handling library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.MoneyLibrary

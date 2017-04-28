@@ -49,6 +49,8 @@ public class Gorilla extends StdMOB
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);
 		setMoney(0);
 		setWimpHitPoint(2);
+		setLevels(Arrays.asList(2,3,4));
+		setLocations(Arrays.asList("Jungle","JungleGrid","TreeSurface","Woods","WoodsGrid","WoodsMaze"));
 
 		basePhyStats().setDamage(1);
 

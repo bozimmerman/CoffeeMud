@@ -51,6 +51,8 @@ public class StoneGiant extends StdMOB
 		CMLib.factions().setAlignment(this,Faction.Align.EVIL);
 		setMoney(0);
 		basePhyStats.setWeight(8000 + Math.abs(randomizer.nextInt() % 1001));
+		setLevels(Arrays.asList(6,7,8,9));
+		setLocations(Arrays.asList("CaveGrid","CaveMaze","CaveRoom","CaveSurface","FrozenMountains","LargeCaveRoom","Mountains","MountainsGrid","MountainsMaze","MountainSurface","MountainSurfaceGrid","WetCaveGrid","WetCaveRoom"));
 
 
 		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,8 + Math.abs(randomizer.nextInt() % 3));

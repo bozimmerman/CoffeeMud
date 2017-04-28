@@ -52,6 +52,9 @@ public class Duck extends StdMOB
 		setMoney(0);
 		basePhyStats.setWeight(5 + Math.abs(randomizer.nextInt() % 10));
 		setWimpHitPoint(2);
+		setLevels(Arrays.asList(1));
+		setLocations(Arrays.asList("CityStreet","Hills","HillsGrid","Plains","PlainsGrid","Road","RoadGrid","ShallowWater","Shore","WaterSurface"));
+		//CaveGrid","CaveMaze","CaveRoom","CaveSurface","CityStreet","Desert","DesertGrid","DesertMaze","FrozenMountains","FrozenPlains","GreatLake","Hills","HillsGrid","IcePlains","IceRoom","InTheAir","Jungle","JungleGrid","LargeCaveRoom","Mountains","MountainsGrid","MountainsMaze","MountainSurface","MountainSurfaceGrid","OceanGrid","Plains","PlainsGrid","Road","RoadGrid","SaltWaterSurface","SewerMaze","SewerRoom","ShallowWater","Shore","Swamp","TreeSurface","UnderSaltWater","UnderSaltWaterGrid","UnderSaltWaterMaze","UnderWater","UnderWaterGrid","UnderWaterMaze","WaterSurface","WetCaveGrid","WetCaveRoom","Whirlpool","Woods","WoodsGrid","WoodsMaze
 
 		addBehavior(CMClass.getBehavior("Follower"));
 		addBehavior(CMClass.getBehavior("MudChat"));

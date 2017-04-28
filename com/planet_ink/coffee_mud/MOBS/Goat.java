@@ -49,6 +49,8 @@ public class Goat extends StdMOB
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);
 		setMoney(0);
 		setWimpHitPoint(0);
+		setLevels(Arrays.asList(1));
+		setLocations(Arrays.asList("CityStreet","FrozenPlains","Hills","HillsGrid","IcePlains","Plains","PlainsThinGrid","RoadGrid","SewerMaze","SewerRoom","Shore"));
 
 		basePhyStats().setDamage(1);
 		basePhyStats().setSpeed(1.0);

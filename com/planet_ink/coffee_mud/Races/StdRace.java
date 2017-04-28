@@ -51,6 +51,11 @@ public class StdRace implements Race
 	protected static final List empty					= new ReadOnlyVector(1);
 	//  												   an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] 	parts					= {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};
+	//antenna, eyes, ears, head, neck, arms, hands. torso, legs, foot, nose, gills, mouth, waist, tail, wing
+	private static final String[] partsNames={"antenna" ,"eye" ,"ear" ,"head" ,"neck" ,"arm" ,"hand" ,"torso" ,"leg" ,"foot" ,"nose" ,"gills" , "mouth", "waist" ,"tail" ,"wing" };
+
+
+	
 	protected static final SearchIDList emptyIDs = new CMUniqSortSVec(1);
 
 	private final int[]		agingChart				= { 0, 1, 3, 15, 35, 53, 70, 74, 78 };
@@ -69,6 +74,23 @@ public class StdRace implements Race
 	protected Map<Integer,SearchIDList<Ability>> racialAbilityMap	= null;
 	protected Map<Integer,SearchIDList<Ability>> racialEffectMap	= null;
 
+//	ant, eye, ear, nose, mouth, tail, wing, skin, hair
+	protected String[] partsDescription		= {"","","","","","","","", ""};
+	protected String[] antennaDescription	= {"long", "short", "twisted", "thin", "thick", "striped"};
+	protected String[] antennaColor			= {"white", "gray", "silver", "black", "dark gray", "opaque"};
+	protected String[] eyeDescription		= {"small", "beady", "slanted", "deep-set", "heavy-lidded", "narrow", "wide", "squinting", "twinkling", "darting"};
+	protected String[] eyeColor				= {"amber", "black", "ebony", "blue", "crystal blue", "ice blue", "brown", "gray", "green", "emerald", "hazel", "violet"};
+	protected String[] earDescription		= {"low set", "protruding", "forward slanting", "backward slanting", "small", "large"};
+	protected String[] noseDescription		= {"turned-up", "snub", "large", "small", "bulbous", "bumpy", "sturdy"};
+	protected String[] mouthDescription		= {"natural", "thin", "thick", "pouty", "full", "oval", "downturned", "upturned", "uneven"};
+	protected String[] tailDescription		= {"thin", "thick", "bushy", "ratlike", "rounded", "forked", "indented", "squared", "pointed", "speckled", "striped", "spotted"};
+	protected String[] wingColor			= {"spotted", "striped", "wavy", "dotted", "speckled", "colorful", "drab", "sparkling", "dark", "bright"};
+	protected String[] skinDescription		= {"normal", "oily", "dry", "patched", "pocketed", "smooth", "bumpy", "natural"};
+	protected String[] skinColor			= {};
+	protected String[] hairDescription		= {"long", "short", "stringy", "oily", "patchy", "straight", "wavy", "curly", "bald", "thinning"};
+	protected String[] hairColor			= {"white", "black", "auburn", "blonde", "gray", "black", "dark", "light", "streaked"};
+	
+	
 	private final static String localizedStaticName = CMLib.lang().L("StdRace");
 
 	@Override
@@ -152,9 +174,148 @@ public class StdRace implements Race
 	}
 
 	@Override
+	public String[] getHairDescription()
+	{
+		return hairDescription;
+	}
+	@Override
+	public String[] getHairColor()
+	{
+		return hairColor;
+	}
+	@Override
+	public String[] getAntennaDescription()
+	{
+		return antennaDescription;
+	}
+	@Override
+	public String[] getAntennaColor()
+	{
+		return antennaColor;
+	}
+	@Override
+	public String[] getEyeDescription()
+	{
+		return eyeDescription;
+	}
+	@Override
+	public String[] getEyeColor()
+	{
+		return eyeColor;
+	}
+	@Override
+	public String[] getEarDescription()
+	{
+		return earDescription;
+	}
+	@Override
+	public String[] getNoseDescription()
+	{
+		return noseDescription;
+	}
+	@Override
+	public String[] getMouthDescription()
+	{
+		return mouthDescription;
+	}
+	@Override
+	public String[] getTailDescription()
+	{
+		return tailDescription;
+	}
+	@Override
+	public String[] getWingColor()
+	{
+		return wingColor;
+	}
+	@Override
+	public String[] getSkinDescription()
+	{
+		return skinDescription;
+	}
+	@Override
+	public String[] getSkinColor()
+	{
+		return skinColor;
+	}
+
+	@Override
+	public void setHairColor(String[] c)
+	{
+		hairColor = c;
+	}
+	@Override
+	public void setHairDescription(String[] d)
+	{
+		hairDescription = d;
+	}
+	@Override
+	public void setAntennaDescription(String[] d)
+	{
+		antennaDescription = d;
+	}
+	@Override
+	public void setAntennaColor(String[] c)
+	{
+		antennaColor = c;
+	}
+	@Override
+	public void setEyeDescription(String[] d)
+	{
+		eyeDescription = d;
+	}
+	@Override
+	public void getEyeColor(String[] c)
+	{
+		eyeColor = c;
+	}
+	@Override
+	public void setEarDescription(String[] d)
+	{
+		earDescription = d;
+	}
+	@Override
+	public void setNoseDescription(String[] d)
+	{
+		noseDescription = d;
+	}
+	@Override
+	public void setMouthDescription(String[] d)
+	{
+		mouthDescription = d;
+	}
+	@Override
+	public void setTailDescription(String[] d)
+	{
+		tailDescription = d;
+	}
+	@Override
+	public void setWingColor(String[] c)
+	{
+		wingColor = c;
+	}
+	@Override
+	public void setSkinDescription(String[] d)
+	{
+		skinDescription = d;
+	}
+	@Override
+	public void setSkinColor(String[] c)
+	{
+		skinColor = c;
+	}
+	
+	
+	@Override
 	public int[] bodyMask()
 	{
 		return parts;
+	}
+	
+	@Override
+	public String[] getPartsNames()
+	{
+		return partsNames;
 	}
 
 	@Override

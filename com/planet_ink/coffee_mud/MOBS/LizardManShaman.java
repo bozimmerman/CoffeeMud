@@ -56,6 +56,8 @@ public class LizardManShaman extends LizardMan
 		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,9);
 		baseCharStats().setStat(CharStats.STAT_CHARISMA,2);
 		baseCharStats().setStat(CharStats.STAT_STRENGTH,18);
+		setLevels(Arrays.asList(1,2,3,4,5,6,7,8,9));
+		setLocations(Arrays.asList("CaveGrid,CaveMaze,CaveRoom,CaveSurface,CityStreet,Desert,DesertGrid,DesertMaze,FrozenMountains,FrozenPlains,GreatLake,Hills,HillsGrid,IcePlains,IceRoom,Jungle,JungleGrid,LargeCaveRoom,Mountains,MountainsGrid,MountainsMaze,MountainSurface,MountainSurfaceGrid,Plains,PlainsGrid,Road,RoadGrid,SewerMaze,SewerRoom,Shore,Swamp,WetCaveGrid,WetCaveRoom,Woods,WoodsGrid,WoodsMaze"));
 
 		baseCharStats().setMyRace(CMClass.getRace("LizardMan"));
 		basePhyStats().setAbility(0);

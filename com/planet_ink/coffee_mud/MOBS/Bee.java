@@ -52,6 +52,9 @@ public class Bee extends StdMOB
 		basePhyStats.setWeight(1);
 		setWimpHitPoint(2);
 
+		setLevels(Arrays.asList(1));
+		setLocations(Arrays.asList("CityStreet","Hills","HillsGrid","HillsThinGrid","InTheAir","Jungle","JungleGrid","JungleThinGrid","Mountains","MountainsGrid","MountainsMaze","MountainSurface","MountainSurfaceGrid","Plains","PlainsThinGrid","Road","RoadThinGrid","Shore","Swamp","SwampGrid","TreeSurface","Woods","WoodsGrid","WoodsMaze","WoodsThinGrid","Shore"));
+		
 		addBehavior(CMClass.getBehavior("Follower"));
 		addBehavior(CMClass.getBehavior("CombatAbilities"));
 		basePhyStats().setDamage(1);

@@ -52,6 +52,8 @@ public class Horse extends StdRideable
 		setMoney(0);
 		basePhyStats.setWeight(700 + Math.abs(randomizer.nextInt() % 200));
 		setWimpHitPoint(2);
+		setLevels(Arrays.asList(1,2,3,4));
+		setLocations(Arrays.asList("CityStreet","Hills","HillsGrid","HillsThinGrid","Plains","PlainsThinGrid","Road","RoadThinGrid","Shore"));
 
 		basePhyStats().setDamage(4);
 		setRideBasis(Rideable.RIDEABLE_LAND);

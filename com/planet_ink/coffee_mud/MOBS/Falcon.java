@@ -53,6 +53,8 @@ public class Falcon extends StdMOB
 		setWimpHitPoint(0);
 
 		basePhyStats.setWeight(1 + Math.abs(randomizer.nextInt() % 6));
+		setLevels(Arrays.asList(3,4,5,6));
+		setLocations(Arrays.asList("Desert","DesertGrid","DesertMaze","FrozenMountains","FrozenPlains","Hills","HillsGrid","IcePlains","Mountains","MountainsGrid","MountainsMaze","MountainSurface","MountainSurfaceGrid","Plains","PlainsGrid","Woods","WoodsGrid","WoodsMaze"));
 
 
 		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,1);

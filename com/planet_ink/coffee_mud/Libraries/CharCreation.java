@@ -130,6 +130,30 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		CHARCR_FACTIONNEXT,
 		CHARCR_FACTIONDONE,
 		CHARCR_FACTIONPICK,
+		CHARCR_EYEDESCRIPTIONSTART,
+		CHARCR_EYEDESCRIPTIONPICK,
+		CHARCR_EYECOLORSTART,
+		CHARCR_EYECOLORPICK,
+		CHARCR_EARDESCRIPTIONSTART,
+		CHARCR_EARDESCRIPTIONPICK,
+		CHARCR_NOSEDESCRIPTIONSTART,
+		CHARCR_NOSEDESCRIPTIONPICK,
+		CHARCR_MOUTHDESCRIPTIONSTART,
+		CHARCR_MOUTHDESCRIPTIONPICK,
+		CHARCR_TAILDESCRIPTIONSTART,
+		CHARCR_TAILDESCRIPTIONPICK,
+		CHARCR_WINGDESCRIPTIONSTART,
+		CHARCR_WINGDESCRIPTIONPICK,
+		CHARCR_HAIRDESCRIPTIONSTART,
+		CHARCR_HAIRDESCRIPTIONPICK,
+		CHARCR_HAIRCOLORSTART,
+		CHARCR_HAIRCOLORPICK,
+		CHARCR_SKINDESCRIPTIONSTART,
+		CHARCR_SKINDESCRIPTIONPICK,
+		CHARCR_SKINCOLORSTART,
+		CHARCR_SKINCOLORPICK,
+//		CHARCR_PICKFACE,
+//		CHARCR_PICKBUILD,
 		CHARCR_FINISH
 	}
 	
@@ -1049,6 +1073,50 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			return charcrFactionPick(loginObj, session);
 		case CHARCR_FACTIONDONE:
 			return charcrFactionDone(loginObj, session);
+		case CHARCR_HAIRDESCRIPTIONSTART:
+			return charcrHairDescriptionStart(loginObj, session);
+		case CHARCR_HAIRDESCRIPTIONPICK:
+			return charcrHairDescriptionPick(loginObj, session);
+		case CHARCR_HAIRCOLORSTART:
+			return charcrHairColorStart(loginObj, session);
+		case CHARCR_HAIRCOLORPICK:
+			return charcrHairColorPick(loginObj, session);
+		case CHARCR_EYECOLORSTART:
+			return charcrEyeColorStart(loginObj, session);
+		case CHARCR_EYECOLORPICK:
+			return charcrEyeColorPick(loginObj, session);
+		case CHARCR_EYEDESCRIPTIONPICK:
+			return charcrEyeDescriptionPick(loginObj, session);
+		case CHARCR_EYEDESCRIPTIONSTART:
+			return charcrEyeDescriptionStart(loginObj, session);
+		case CHARCR_EARDESCRIPTIONSTART:
+			return charcrEarDescriptionStart(loginObj, session);
+		case CHARCR_EARDESCRIPTIONPICK:
+			return charcrEarDescriptionPick(loginObj, session);
+		case CHARCR_NOSEDESCRIPTIONSTART:
+			return charcrNoseDescriptionStart(loginObj, session);
+		case CHARCR_NOSEDESCRIPTIONPICK:
+			return charcrNoseDescriptionPick(loginObj, session);
+		case CHARCR_MOUTHDESCRIPTIONPICK:
+			return charcrMouthDescriptionPick(loginObj, session);
+		case CHARCR_MOUTHDESCRIPTIONSTART:
+			return charcrMouthDescriptionStart(loginObj, session);
+		case CHARCR_TAILDESCRIPTIONSTART:
+			return charcrTailDescriptionStart(loginObj, session);
+		case CHARCR_TAILDESCRIPTIONPICK:
+			return charcrTailDescriptionPick(loginObj, session);
+		case CHARCR_WINGDESCRIPTIONSTART:
+			return charcrWingDescriptionStart(loginObj, session);
+		case CHARCR_WINGDESCRIPTIONPICK:
+			return charcrWingDescriptionPick(loginObj, session);
+//		case CHARCR_SKINCOLORPICK:
+	//		return charcrSkinColorPick(loginObj, session);
+//		case CHARCR_SKINCOLORSTART:
+	//		return charcrSkinColorStart(loginObj, session);
+		case CHARCR_SKINDESCRIPTIONSTART:
+			return charcrSkinDescriptionStart(loginObj, session);
+		case CHARCR_SKINDESCRIPTIONPICK:
+			return charcrSkinDescriptionPick(loginObj, session);
 		case CHARCR_FINISH:
 			return charcrFinish(loginObj, session);
 		default:
@@ -2580,6 +2648,595 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		loginObj.state=LoginState.CHARCR_RACEENTERED;
 		return LoginResult.INPUT_REQUIRED;
 	}
+	
+	
+	protected LoginResult charcrHairDescriptionStart(final LoginSessionImpl loginObj, final Session session)
+	{
+		MOB mob=loginObj.mob;
+		session.setMob(loginObj.mob);
+		StringBuffer listOfHairs=new StringBuffer("[");
+		Race R = mob.charStats().getMyRace();
+		List<String> hairs = Arrays.asList(R.getHairDescription());
+
+		for (String hair: hairs)
+		{
+			listOfHairs.append("^H"+hair+"^N"+", ");
+		}
+		session.println(L("\n\r^!Please choose a hair type (?):^N"));
+		session.print(listOfHairs.toString());
+		session.promptPrint("\n\r: ");
+		loginObj.state=LoginState.CHARCR_HAIRDESCRIPTIONPICK;
+		//loginObj.state=LoginState.CHARCR_FINISH;
+		return LoginResult.INPUT_REQUIRED;
+	}
+	
+	protected LoginResult charcrHairDescriptionPick(final LoginSessionImpl loginObj, final Session session)
+	{
+		final MOB mob=loginObj.mob;
+		Race R = mob.charStats().getMyRace();
+		String choice=loginObj.lastInput.toLowerCase().trim();
+		List<String> hairs = Arrays.asList(R.getHairDescription());		
+		if(choice.length()>0)
+		{
+			if(hairs.contains(choice))
+			{
+				mob.setLookDescription("hair", choice);
+				session.println(L("\n\r^!You are a "+R.ID()+" with "+choice+" hair.^N"));				
+				loginObj.state=LoginState.CHARCR_HAIRCOLORSTART;
+				return null;
+			}
+			else
+			{
+				session.println(L("\n\r^!Please pick a valid hair choice^N"));
+				loginObj.state=LoginState.CHARCR_HAIRDESCRIPTIONSTART;
+				return null;
+			}
+		}
+		else
+		{
+			session.println(L("\n\r^!Please pick a valid hair choice^N"));
+			loginObj.state=LoginState.CHARCR_HAIRDESCRIPTIONSTART;
+			return null;
+		}
+	}
+
+	protected LoginResult charcrHairColorStart(final LoginSessionImpl loginObj, final Session session)
+	{
+		MOB mob=loginObj.mob;
+		session.setMob(loginObj.mob);
+		StringBuffer listOfHairs=new StringBuffer("[");
+		Race R = mob.charStats().getMyRace();
+		List<String> hairs = Arrays.asList(R.getHairColor());
+
+		for (String hair: hairs)
+		{
+			listOfHairs.append("^H"+hair+"^N"+", ");
+		}
+		session.println(L("\n\r^!Please choose a hair color (?):^N"));
+		session.print(listOfHairs.toString());
+		session.promptPrint("\n\r: ");
+		loginObj.state=LoginState.CHARCR_HAIRCOLORPICK;
+		//loginObj.state=LoginState.CHARCR_FINISH;
+		return LoginResult.INPUT_REQUIRED;
+	}
+	
+	protected LoginResult charcrHairColorPick(final LoginSessionImpl loginObj, final Session session)
+	{
+		final MOB mob=loginObj.mob;
+		Race R = mob.charStats().getMyRace();
+		String choice=loginObj.lastInput.toLowerCase().trim();
+		List<String> hairs = Arrays.asList(R.getHairColor());		
+		if(choice.length()>0)
+		{
+			if(hairs.contains(choice))
+			{
+				String h = mob.getDescription("hair");
+				h = h + " "+ choice;
+				mob.setLookDescription("hair", h);
+				session.println(L("\n\r^!You are a "+R.ID()+" with "+h+" hair.^N"));				
+//				loginObj.state=LoginState.CHARCR_FINISH;
+				loginObj.state=LoginState.CHARCR_EYECOLORSTART;
+				return null;
+			}
+			else
+			{
+				session.println(L("\n\r^!Please pick a valid hair color^N"));
+				loginObj.state=LoginState.CHARCR_HAIRCOLORSTART;
+				return null;
+			}
+
+		}
+		else
+		{
+			session.println(L("\n\r^!Please pick a valid hair choice^N"));
+			loginObj.state=LoginState.CHARCR_HAIRCOLORSTART;
+			return null;
+			
+		}
+	}
+
+	protected LoginResult charcrEyeColorStart(final LoginSessionImpl loginObj, final Session session)
+	{
+		MOB mob=loginObj.mob;
+		session.setMob(loginObj.mob);
+		StringBuffer listOfEyes=new StringBuffer("[");
+		Race R = mob.charStats().getMyRace();
+		List<String> eyes = Arrays.asList(R.getEyeColor());
+
+		for (String eye: eyes)
+		{
+			listOfEyes.append("^H"+eye+"^N"+", ");
+		}
+		session.println(L("\n\r^!Please choose an eye color (?):^N"));
+		session.print(listOfEyes.toString());
+		session.promptPrint("\n\r: ");
+		loginObj.state=LoginState.CHARCR_EYECOLORPICK;
+		return LoginResult.INPUT_REQUIRED;
+	}
+	
+	protected LoginResult charcrEyeColorPick(final LoginSessionImpl loginObj, final Session session)
+	{
+		final MOB mob=loginObj.mob;
+		Race R = mob.charStats().getMyRace();
+		String choice=loginObj.lastInput.toLowerCase().trim();
+		List<String> eyes = Arrays.asList(R.getEyeColor());		
+		if(choice.length()>0)
+		{
+			if(eyes.contains(choice))
+			{
+				String h = choice;
+				mob.setLookDescription("eye", h);
+				session.println(L("\n\r^!You are a "+R.ID()+" with "+mob.getDescription("hair")+" hair. You have "+ mob.getDescription("eye")+" eyes.^N"));				
+//				loginObj.state=LoginState.CHARCR_FINISH;
+				loginObj.state=LoginState.CHARCR_EYEDESCRIPTIONSTART;
+				return null;
+			}
+			else
+			{
+				session.println(L("\n\r^!Please pick a valid eye color^N"));
+				loginObj.state=LoginState.CHARCR_EYECOLORSTART;
+				return null;
+			}
+
+		}
+		else
+		{
+			session.println(L("\n\r^!Please pick a valid eye choice^N"));
+			loginObj.state=LoginState.CHARCR_EYECOLORSTART;
+			return null;
+			
+		}
+	}
+	
+	protected LoginResult charcrEyeDescriptionStart(final LoginSessionImpl loginObj, final Session session)
+	{
+		MOB mob=loginObj.mob;
+		session.setMob(loginObj.mob);
+		StringBuffer listOfEyes=new StringBuffer("[");
+		Race R = mob.charStats().getMyRace();
+		List<String> eyes = Arrays.asList(R.getEyeDescription());
+
+		for (String eye: eyes)
+		{
+			listOfEyes.append("^H"+eye+"^N"+", ");
+		}
+		session.println(L("\n\r^!Please choose an eye type (?):^N"));
+		session.print(listOfEyes.toString());
+		session.promptPrint("\n\r: ");
+		loginObj.state=LoginState.CHARCR_EYEDESCRIPTIONPICK;
+		return LoginResult.INPUT_REQUIRED;
+	}
+	
+	protected LoginResult charcrEyeDescriptionPick(final LoginSessionImpl loginObj, final Session session)
+	{
+		final MOB mob=loginObj.mob;
+		Race R = mob.charStats().getMyRace();
+		String choice=loginObj.lastInput.toLowerCase().trim();
+		List<String> eyes = Arrays.asList(R.getEyeDescription());		
+		if(choice.length()>0)
+		{
+			if(eyes.contains(choice))
+			{
+				String h = mob.getDescription("eye");
+				h = h + " "+ choice;
+				mob.setLookDescription("eye", h);
+				session.println(L("\n\r^!You are a "+R.ID()+" with "+mob.getDescription("hair")+" hair. You have "+mob.getDescription("eye")+" eyes.^N"));				
+//				loginObj.state=LoginState.CHARCR_FINISH;
+				loginObj.state=LoginState.CHARCR_EARDESCRIPTIONSTART;
+				return null;
+			}
+			else
+			{
+				session.println(L("\n\r^!Please pick a valid eye color^N"));
+				loginObj.state=LoginState.CHARCR_HAIRCOLORSTART;
+				return null;
+			}
+
+		}
+		else
+		{
+			session.println(L("\n\r^!Please pick a valid eye choice^N"));
+			loginObj.state=LoginState.CHARCR_HAIRCOLORSTART;
+			return null;
+			
+		}
+	}
+	
+	protected LoginResult charcrEarDescriptionStart(final LoginSessionImpl loginObj, final Session session)
+	{
+		MOB mob=loginObj.mob;
+		session.setMob(loginObj.mob);
+		StringBuffer listOfEars=new StringBuffer("[");
+		Race R = mob.charStats().getMyRace();
+		List<String> ears = Arrays.asList(R.getEarDescription());
+
+		for (String ear: ears)
+		{
+			listOfEars.append("^H"+ear+"^N"+", ");
+		}
+		session.println(L("\n\r^!Please choose an ear type (?):^N"));
+		session.print(listOfEars.toString());
+		session.promptPrint("\n\r: ");
+		loginObj.state=LoginState.CHARCR_EARDESCRIPTIONPICK;
+		return LoginResult.INPUT_REQUIRED;
+	}
+	
+	protected LoginResult charcrEarDescriptionPick(final LoginSessionImpl loginObj, final Session session)
+	{
+		final MOB mob=loginObj.mob;
+		Race R = mob.charStats().getMyRace();
+		String choice=loginObj.lastInput.toLowerCase().trim();
+		List<String> ears = Arrays.asList(R.getEarDescription());		
+		if(choice.length()>0)
+		{
+			if(ears.contains(choice))
+			{
+				String h = choice;
+				mob.setLookDescription("ear", h);
+				session.println(L("\n\r^!You are a "+R.ID()+" with "+mob.getDescription("hair")+" hair. You have "+ mob.getDescription("eye")+" eyes and "+mob.getDescription("ear")+" ears.^N"));				
+//				loginObj.state=LoginState.CHARCR_FINISH;
+				loginObj.state=LoginState.CHARCR_NOSEDESCRIPTIONSTART;
+				return null;
+			}
+			else
+			{
+				session.println(L("\n\r^!Please pick a valid ear type.^N"));
+				loginObj.state=LoginState.CHARCR_EARDESCRIPTIONSTART;
+				return null;
+			}
+
+		}
+		else
+		{
+			session.println(L("\n\r^!Please pick a valid ear choice.^N"));
+			loginObj.state=LoginState.CHARCR_EARDESCRIPTIONSTART;
+			return null;			
+		}
+	}
+	
+	protected LoginResult charcrNoseDescriptionStart(final LoginSessionImpl loginObj, final Session session)
+	{
+		MOB mob=loginObj.mob;
+		session.setMob(loginObj.mob);
+		StringBuffer listOfNoses=new StringBuffer("[");
+		Race R = mob.charStats().getMyRace();
+		List<String> noses = Arrays.asList(R.getNoseDescription());
+
+		for (String nose: noses)
+		{
+			listOfNoses.append("^H"+nose+"^N"+", ");
+		}
+		session.println(L("\n\r^!Please choose a nose type (?):^N"));
+		session.print(listOfNoses.toString());
+		session.promptPrint("\n\r: ");
+		loginObj.state=LoginState.CHARCR_NOSEDESCRIPTIONPICK;
+		return LoginResult.INPUT_REQUIRED;
+	}
+	
+	protected LoginResult charcrNoseDescriptionPick(final LoginSessionImpl loginObj, final Session session)
+	{
+		final MOB mob=loginObj.mob;
+		Race R = mob.charStats().getMyRace();
+		String choice=loginObj.lastInput.toLowerCase().trim();
+		List<String> noses = Arrays.asList(R.getNoseDescription());		
+		if(choice.length()>0)
+		{
+			if(noses.contains(choice))
+			{
+				String h = choice;
+				mob.setLookDescription("nose", h);
+				session.println(L("\n\r^!You are a "+R.ID()+" with "+mob.getDescription("hair")+" hair. You have "+ mob.getDescription("eye")+" eyes and "+mob.getDescription("ear")+" ears. You also have a "+mob.getDescription("nose")+" nose.^N"));				
+//				loginObj.state=LoginState.CHARCR_FINISH;
+				loginObj.state=LoginState.CHARCR_MOUTHDESCRIPTIONSTART;
+				return null;
+			}
+			else
+			{
+				session.println(L("\n\r^!Please pick a valid nose color^N"));
+				loginObj.state=LoginState.CHARCR_NOSEDESCRIPTIONSTART;
+				return null;
+			}
+
+		}
+		else
+		{
+			session.println(L("\n\r^!Please pick a valid nose choice^N"));
+			loginObj.state=LoginState.CHARCR_NOSEDESCRIPTIONSTART;
+			return null;
+			
+		}
+	}
+
+	protected LoginResult charcrMouthDescriptionStart(final LoginSessionImpl loginObj, final Session session)
+	{
+		MOB mob=loginObj.mob;
+		session.setMob(loginObj.mob);
+		StringBuffer listOfMouths=new StringBuffer("[");
+		Race R = mob.charStats().getMyRace();
+		List<String> mouths = Arrays.asList(R.getMouthDescription());
+
+		for (String mouth: mouths)
+		{
+			listOfMouths.append("^H"+mouth+"^N"+", ");
+		}
+		session.println(L("\n\r^!Please choose a mouth type (?):^N"));
+		session.print(listOfMouths.toString());
+		session.promptPrint("\n\r: ");
+		loginObj.state=LoginState.CHARCR_MOUTHDESCRIPTIONPICK;
+		return LoginResult.INPUT_REQUIRED;
+	}
+	
+	protected LoginResult charcrMouthDescriptionPick(final LoginSessionImpl loginObj, final Session session)
+	{
+		final MOB mob=loginObj.mob;
+		Race R = mob.charStats().getMyRace();
+		String choice=loginObj.lastInput.toLowerCase().trim();
+		List<String> mouths = Arrays.asList(R.getMouthDescription());		
+		if(choice.length()>0)
+		{
+			if(mouths.contains(choice))
+			{
+				String h = choice;
+				mob.setLookDescription("mouth", h);
+				session.println(L("\n\r^!You are a "+R.ID()+" with "+mob.getDescription("hair")+" hair. You have "+ mob.getDescription("eye")+" eyes and "+mob.getDescription("ear")+" ears. You have a "+mob.getDescription("nose")+" nose and a "+mob.getDescription("mouth")+" mouth.^N"));				
+//				loginObj.state=LoginState.CHARCR_FINISH;
+				if (R.bodyMask()[14] > 0)
+					loginObj.state=LoginState.CHARCR_TAILDESCRIPTIONSTART;
+				else if (R.bodyMask()[15] > 0)
+					loginObj.state=LoginState.CHARCR_WINGDESCRIPTIONSTART;
+				else
+					loginObj.state=LoginState.CHARCR_SKINDESCRIPTIONSTART;
+
+				return null;
+			}
+			else
+			{
+				session.println(L("\n\r^!Please pick a valid mouth type.^N"));
+				loginObj.state=LoginState.CHARCR_MOUTHDESCRIPTIONSTART;
+				return null;
+			}
+
+		}
+		else
+		{
+			session.println(L("\n\r^!Please pick a valid mouth choice^N"));
+			loginObj.state=LoginState.CHARCR_MOUTHDESCRIPTIONSTART;
+			return null;
+			
+		}
+	}
+	
+	protected LoginResult charcrTailDescriptionStart(final LoginSessionImpl loginObj, final Session session)
+	{
+		MOB mob=loginObj.mob;
+		session.setMob(loginObj.mob);
+		StringBuffer listOfTails=new StringBuffer("[");
+		Race R = mob.charStats().getMyRace();
+		List<String> tails = Arrays.asList(R.getTailDescription());
+			for (String tail: tails)
+			{
+				listOfTails.append("^H"+tail+"^N"+", ");
+			}
+			session.println(L("\n\r^!Please choose a tail type (?):^N"));
+			session.print(listOfTails.toString());
+			session.promptPrint("\n\r: ");
+			loginObj.state=LoginState.CHARCR_TAILDESCRIPTIONPICK;
+			return LoginResult.INPUT_REQUIRED;
+			
+	}
+	
+	protected LoginResult charcrTailDescriptionPick(final LoginSessionImpl loginObj, final Session session)
+	{
+		final MOB mob=loginObj.mob;
+		Race R = mob.charStats().getMyRace();
+		String choice=loginObj.lastInput.toLowerCase().trim();
+		List<String> tails = Arrays.asList(R.getTailDescription());		
+		if(choice.length()>0)
+		{
+			if(tails.contains(choice))
+			{
+				String h = choice;
+				mob.setLookDescription("tail", h);
+				session.println(L("\n\r^!You are a "+R.ID()+" with "+mob.getDescription("hair")+" hair. You have "+ mob.getDescription("eye")+"eyes and "+mob.getDescription("ear")+"ears. You have "+mob.getDescription("nose")+" and a "+mob.getDescription("mouth")+" mouth. You also have a "+mob.getDescription("tail")+" tail.^N"));				
+//				loginObj.state=LoginState.CHARCR_FINISH;
+				loginObj.state=LoginState.CHARCR_WINGDESCRIPTIONSTART;
+				return null;
+			}
+			else
+			{
+				session.println(L("\n\r^!Please pick a valid tail type.^N"));
+				loginObj.state=LoginState.CHARCR_TAILDESCRIPTIONSTART;
+				return null;
+			}
+
+		}
+		else
+		{
+			session.println(L("\n\r^!Please pick a valid tail choice^N"));
+			loginObj.state=LoginState.CHARCR_TAILDESCRIPTIONSTART;
+			return null;
+		}
+	}
+	
+	protected LoginResult charcrWingDescriptionStart(final LoginSessionImpl loginObj, final Session session)
+	{
+		MOB mob=loginObj.mob;
+		session.setMob(loginObj.mob);
+		StringBuffer listOfWings=new StringBuffer("[");
+		Race R = mob.charStats().getMyRace();
+		List<String> wings = Arrays.asList(R.getWingColor()); 	
+			for (String wing: wings)
+			{
+				listOfWings.append("^H"+wing+"^N"+", ");
+			}
+			session.println(L("\n\r^!Please choose a wing type (?):^N"));
+			session.print(listOfWings.toString());
+			session.promptPrint("\n\r: ");
+			loginObj.state=LoginState.CHARCR_WINGDESCRIPTIONPICK;
+			return LoginResult.INPUT_REQUIRED;
+
+	}
+	
+	protected LoginResult charcrWingDescriptionPick(final LoginSessionImpl loginObj, final Session session)
+	{
+		final MOB mob=loginObj.mob;
+		Race R = mob.charStats().getMyRace();
+		String choice=loginObj.lastInput.toLowerCase().trim();
+		List<String> wings = Arrays.asList(R.getWingColor());		
+		if(choice.length()>0)
+		{
+			if(wings.contains(choice))
+			{
+				String h = choice;
+				mob.setLookDescription("wing", h);
+				session.println(L("\n\r^!You are a "+R.ID()+" with "+mob.getDescription("hair")+" hair. You have "+ mob.getDescription("eye")+"eyes and "+mob.getDescription("ear")+"ears. You have "+mob.getDescription("nose")+" and a "+mob.getDescription("mouth")+" mouth. You also have a "+mob.getDescription("tail")+" tail and "+mob.getDescription("wing")+" wings.^N"));				
+//				loginObj.state=LoginState.CHARCR_FINISH;
+				loginObj.state=LoginState.CHARCR_SKINDESCRIPTIONSTART;
+				return null;
+			}
+			else
+			{
+				session.println(L("\n\r^!Please pick a valid wing type.^N"));
+				loginObj.state=LoginState.CHARCR_WINGDESCRIPTIONSTART;
+				return null;
+			}
+
+		}
+		else
+		{
+			session.println(L("\n\r^!Please pick a valid wing choice^N"));
+			loginObj.state=LoginState.CHARCR_WINGDESCRIPTIONSTART;
+			return null;
+		}
+	}
+	
+	protected LoginResult charcrSkinDescriptionStart(final LoginSessionImpl loginObj, final Session session)
+	{
+		MOB mob=loginObj.mob;
+		session.setMob(loginObj.mob);
+		StringBuffer listOfSkins=new StringBuffer("[");
+		Race R = mob.charStats().getMyRace();
+		List<String> skins = Arrays.asList(R.getSkinDescription());
+
+		for (String skin: skins)
+		{
+			listOfSkins.append("^H"+skin+"^N"+", ");
+		}
+		session.println(L("\n\r^!Please choose a skin type (?):^N"));
+		session.print(listOfSkins.toString());
+		session.promptPrint("\n\r: ");
+		loginObj.state=LoginState.CHARCR_SKINDESCRIPTIONPICK;
+		return LoginResult.INPUT_REQUIRED;
+	}
+	
+	protected LoginResult charcrSkinDescriptionPick(final LoginSessionImpl loginObj, final Session session)
+	{
+		final MOB mob=loginObj.mob;
+		Race R = mob.charStats().getMyRace();
+		String choice=loginObj.lastInput.toLowerCase().trim();
+		List<String> skins = Arrays.asList(R.getSkinDescription());		
+		if(choice.length()>0)
+		{
+			if(skins.contains(choice))
+			{
+				String h = mob.getDescription("skin");
+				h = h + " "+ choice;
+				mob.setLookDescription("skin", h);
+				session.println(L("\n\r^!You are a "+R.ID()+" with "+mob.getDescription("hair")+" hair. You have "+ mob.getDescription("eye")+" eyes and "+mob.getDescription("ear")+" ears. You have a "+mob.getDescription("nose")+" nose, a "+mob.getDescription("mouth")+" mouth and "+mob.getDescription("skin")+" skin.^N"));				
+//				loginObj.state=LoginState.CHARCR_FINISH;
+				loginObj.state=LoginState.CHARCR_FINISH;
+				return null;
+			}
+			else
+			{
+				session.println(L("\n\r^!Please pick a valid skin type.^N"));
+				loginObj.state=LoginState.CHARCR_SKINDESCRIPTIONSTART;
+				return null;
+			}
+
+		}
+		else
+		{
+			session.println(L("\n\r^!Please pick a valid skin choice^N"));
+			loginObj.state=LoginState.CHARCR_SKINDESCRIPTIONSTART;
+			return null;
+			
+		}
+	}
+
+	protected LoginResult charcrSkinColorStart(final LoginSessionImpl loginObj, final Session session)
+	{
+		MOB mob=loginObj.mob;
+		session.setMob(loginObj.mob);
+		StringBuffer listOfSkins=new StringBuffer("[");
+		Race R = mob.charStats().getMyRace();
+		List<String> skins = Arrays.asList(R.getSkinDescription());
+
+		for (String skin: skins)
+		{
+			listOfSkins.append("^H"+skin+"^N"+", ");
+		}
+		session.println(L("\n\r^!Please choose a skin color (?):^N"));
+		session.print(listOfSkins.toString());
+		session.promptPrint("\n\r: ");
+		loginObj.state=LoginState.CHARCR_SKINCOLORPICK;
+		return LoginResult.INPUT_REQUIRED;
+	}
+	
+	protected LoginResult charcrSkinColorPick(final LoginSessionImpl loginObj, final Session session)
+	{
+		final MOB mob=loginObj.mob;
+		Race R = mob.charStats().getMyRace();
+		String choice=loginObj.lastInput.toLowerCase().trim();
+		List<String> skins = Arrays.asList(R.getSkinColor());		
+		if(choice.length()>0)
+		{
+			if(skins.contains(choice))
+			{
+				String h = mob.getDescription("skin");
+				h = h + " "+ choice;
+				mob.setLookDescription("skin", h);
+				session.println(L("\n\r^!You are a "+R.ID()+" with "+mob.getDescription("hair")+" hair. You have "+ mob.getDescription("eye")+"eyes and "+mob.getDescription("ear")+"ears. You have "+mob.getDescription("nose")+", a "+mob.getDescription("mouth")+" mouth and "+mob.getDescription("skin")+"^N"));				
+				loginObj.state=LoginState.CHARCR_FINISH;
+//				loginObj.state=LoginState.CHARCR_SKINCOLORSTART;
+				return null;
+			}
+			else
+			{
+				session.println(L("\n\r^!Please pick a valid skin color.^N"));
+				loginObj.state=LoginState.CHARCR_SKINCOLORSTART;
+				return null;
+			}
+
+		}
+		else
+		{
+			session.println(L("\n\r^!Please pick a valid skin choice^N"));
+			loginObj.state=LoginState.CHARCR_SKINDESCRIPTIONSTART;
+			return null;
+			
+		}
+	}
 
 	protected LoginResult charcrRaceReEntered(final LoginSessionImpl loginObj, final Session session)
 	{
@@ -2778,7 +3435,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				session.println(L("\n\rThis would qualify you for ^H@x1^N.",buildQualifyingClassList(mob,qualifyingClassListV,"and")));
 			if(randomRoll)
 			{
-				session.promptPrint(L("^!Would you like to re-roll (y/N)?^N"));
+				session.promptPrint(L("^!Would you like to re-roll (y/N)?^N^N"));
 				loginObj.state=LoginState.CHARCR_STATCONFIRM;
 				return LoginResult.INPUT_REQUIRED;
 			}
@@ -3154,7 +3811,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			loginObj.state=LoginState.CHARCR_CLASSDONE;
 		else
 		{
-			session.promptPrint(L("^NIs ^H@x1^N correct (Y/n)?",mob.baseCharStats().getCurrentClass().name()));
+			session.promptPrint(L("^NIs ^H@x1^N correct (Y/n)?^N",mob.baseCharStats().getCurrentClass().name()));
 			return LoginResult.INPUT_REQUIRED;
 		}
 		return null;
@@ -3319,6 +3976,12 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				CMLib.beanCounter().giveSomeoneMoney(mob, currency, denomination * num);
 		}
 
+		loginObj.state=LoginState.CHARCR_HAIRDESCRIPTIONSTART;
+		return LoginResult.INPUT_REQUIRED;
+	}
+	
+	protected LoginResult charcrFinish(final LoginSessionImpl loginObj, final Session session)
+	{
 		StringBuffer introText=new CMFile(Resources.buildResourcePath("text")+"newchardone.txt",null,CMFile.FLAG_LOGERRORS).text();
 		try
 		{
@@ -3328,12 +3991,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		{
 		}
 		session.println(null,null,null,"\n\r\n\r"+introText.toString());
-		loginObj.state=LoginState.CHARCR_FINISH;
-		return LoginResult.INPUT_REQUIRED;
-	}
 
-	protected LoginResult charcrFinish(final LoginSessionImpl loginObj, final Session session)
-	{
 		final MOB mob=loginObj.mob;
 		final boolean emailPassword=((CMProps.getVar(CMProps.Str.EMAILREQ).toUpperCase().startsWith("PASS"))
 				 &&(CMProps.getVar(CMProps.Str.MAILBOX).length()>0));

@@ -114,6 +114,8 @@ public class StdMOB implements MOB
 	protected long				peaceTime		= 0;
 	protected boolean			kickFlag		= false;
 	protected MOB				me				= this;
+	protected int 				currentClaims 	= 0;
+	protected int 				maxClaims 	= 0;
 
 	protected int				tickStatus		= Tickable.STATUS_NOT;
 
@@ -134,6 +136,18 @@ public class StdMOB implements MOB
 	protected SHashtable<String, FData>		factions		= new SHashtable<String, FData>(1);
 	protected volatile WeakReference<Item>	possWieldedItem	= null;
 	protected volatile WeakReference<Item>	possHeldItem	= null;
+	protected List<String>					locations		= new ArrayList();   //Where can this mob be spawned? RAM
+	protected List<Integer>					levels			= new ArrayList();	  //What level zone can this spawn in?  RAM
+	//										ant, eye, ear, nose, mouth, tail, wing, skin, hair
+	protected String antennaDescription		= "";
+	protected String eyeDescription			= "";
+	protected String earDescription			= "";
+	protected String noseDescription		= "";
+	protected String mouthDescription		= "";
+	protected String tailDescription		= "";
+	protected String wingDescription		= "";
+	protected String skinDescription		= "";
+	protected String hairDescription		= "";
 
 	protected	ApplyAffectPhyStats<Ability>affectPhyStats	= new ApplyAffectPhyStats<Ability>(this);
 	protected	ApplyRecAffectPhyStats<Item>recoverAffectP	= new ApplyRecAffectPhyStats<Item>(this);
@@ -152,6 +166,114 @@ public class StdMOB implements MOB
 		basePhyStats().setLevel(1);
 		xtraValues = CMProps.getExtraStatCodesHolder(this);
 	}
+	
+	@Override
+	public void setLookDescription(String part, String s)
+	{
+		if (part == "antenna")
+			antennaDescription = s;
+		if (part == "eye")
+			eyeDescription = s;
+		if (part == "ear")
+			earDescription = s;
+		if (part == "nose")
+			noseDescription = s;
+		if (part == "mouth")
+			mouthDescription = s;
+		if (part == "tail")
+			tailDescription = s;
+		if (part == "wing")
+			wingDescription = s;
+		if (part == "skin")
+			skinDescription = s;
+		if (part == "hair")
+			hairDescription = s;
+	}
+	
+
+	@Override
+	public String getDescription(String part)
+	{
+		String s = "";
+		if (part == "antenna")
+			s = antennaDescription;
+		if (part == "eye")
+			s = eyeDescription;
+		if (part == "ear")
+			s = earDescription;
+		if (part == "nose")
+			s = noseDescription;
+		if (part == "mouth")
+			s = mouthDescription;
+		if (part == "tail")
+			s = tailDescription;
+		if (part == "wing")
+			s = wingDescription;
+		if (part == "skin")
+			s = skinDescription;
+		if (part == "hair")
+			s = hairDescription;
+		return s;
+	}
+
+	
+	@Override
+	public void setLocations(List<String> l)
+	{
+		locations = l;
+	}
+	
+	@Override
+	public List<String> getLocations()
+	{
+		return locations;
+	}
+	
+	@Override
+	public void setLevels(List<Integer> l)
+	{
+		levels = l;
+	}
+	
+	@Override
+	public List<Integer> getLevels()
+	{
+		return levels;
+	}
+	
+	@Override
+	public void setCurrentClaims(int i)	
+	{
+		currentClaims = i;
+	}
+
+	@Override
+	public int getCurrentClaims()
+	{
+		return currentClaims;
+	}
+	
+	@Override
+	public int getMaxClaims()
+	{
+		int Levels = phyStats().level();
+		double total = Levels/5;
+		return (int)total;
+	}
+
+	@Override
+	public void setMaxClaims(int i)
+	{
+		maxClaims = i;
+	}
+
+	
+	@Override
+	public void addMaxClaims()
+	{
+		maxClaims = maxClaims+1;
+	}
+
 
 	private static class QMCommand
 	{
@@ -757,7 +879,7 @@ public class StdMOB implements MOB
 	@Override
 	public boolean isGeneric()
 	{
-		return false;
+		return true;
 	}
 
 	@Override

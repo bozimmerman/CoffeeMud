@@ -49,6 +49,8 @@ public class Parakeet extends StdMOB
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);
 		setMoney(0);
 		setWimpHitPoint(0);
+		setLevels(Arrays.asList(1));
+		setLocations(Arrays.asList("CityStreet","Hills","HillsGrid","HillsThinGrid","InTheAir","Jungle","JungleGrid","JungleThinGrid","Mountains","MountainsGrid","MountainsMaze","MountainSurface","MountainSurfaceGrid","Plains","PlainsThinGrid","Road","RoadThinGrid","Shore","Swamp","SwampGrid","TreeSurface","Woods","WoodsGrid","WoodsMaze","WoodsThinGrid","Shore"));
 
 		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,1);
 

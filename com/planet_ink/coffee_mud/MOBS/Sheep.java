@@ -49,6 +49,8 @@ public class Sheep extends StdMOB
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);
 		setMoney(0);
 		setWimpHitPoint(0);
+		setLevels(Arrays.asList(1));
+		setLocations(Arrays.asList("CityStreet","FrozenMountains","FrozenPlains","Hills","HillsGrid","IcePlains","IceRoom","Plains","PlainsGrid","Road","RoadGrid","Woods","WoodsGrid","WoodsMaze"));
 
 		basePhyStats().setDamage(1);
 		basePhyStats().setSpeed(1.0);

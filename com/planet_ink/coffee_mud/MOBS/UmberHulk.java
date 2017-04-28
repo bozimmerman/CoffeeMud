@@ -53,6 +53,8 @@ public class UmberHulk extends StdMOB
 		setMoney(10);
 		basePhyStats.setWeight(350);
 		setWimpHitPoint(0);
+		setLevels(Arrays.asList(6,7,8,9));
+		setLocations(Arrays.asList("CaveGrid","CaveMaze","CaveRoom","CaveSurface","Desert","DesertGrid","DesertMaze","FrozenMountains","FrozenPlains","Hills","HillsGrid","IcePlains","IceRoom","Jungle","JungleGrid","LargeCaveRoom","Mountains","MountainsGrid","MountainsMaze","MountainSurface","MountainSurfaceGrid","Plains","PlainsGrid","Road","RoadGrid","SewerMaze","SewerRoom","ShallowWater","Shore","Swamp","WaterSurface","WetCaveGrid","WetCaveRoom","Woods","WoodsGrid","WoodsMaze"));
 
 		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,8);
 		baseCharStats().setStat(CharStats.STAT_CHARISMA,2);

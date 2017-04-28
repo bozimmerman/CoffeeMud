@@ -52,6 +52,8 @@ public class Troll extends StdMOB
 		setMoney(10);
 		basePhyStats.setWeight(350);
 		setWimpHitPoint(0);
+		setLevels(Arrays.asList(1,2,3,4,5,6,7,8,9));
+		setLocations(Arrays.asList("CaveGrid","CaveMaze","CaveRoom","CaveSurface","Desert","DesertGrid","DesertMaze","FrozenMountains","FrozenPlains","Hills","HillsGrid","IcePlains","IceRoom","Jungle","JungleGrid","LargeCaveRoom","Mountains","MountainsGrid","MountainsMaze","MountainSurface","MountainSurfaceGrid","Plains","PlainsGrid","Road","RoadGrid","SewerMaze","SewerRoom","ShallowWater","Shore","Swamp","WaterSurface","WetCaveGrid","WetCaveRoom","Woods","WoodsGrid","WoodsMaze"));
 
 		final int addedInt = (int)Math.round(Math.random() * 3.0);
 		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,8 + addedInt);

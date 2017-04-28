@@ -41,6 +41,9 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, M
 	 * Return a nice, displayable name for this race
 	 * @return the races name
 	 */
+	
+	public String[] getPartsNames();
+	
 	@Override
 	public String name();
 
@@ -63,6 +66,35 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, M
 	 * @see com.planet_ink.coffee_mud.Areas.interfaces.Area
 	 * @return the availability/theme of this race
 	 */
+	public String[] getAntennaDescription();
+	public String[] getAntennaColor();
+	public String[] getEyeDescription();
+	public String[] getEyeColor();
+	public String[] getEarDescription();
+	public String[] getNoseDescription();
+	public String[] getMouthDescription();
+	public String[] getTailDescription();
+	public String[] getWingColor();
+	public String[] getSkinDescription();
+	public String[] getSkinColor();
+	public String[] getHairColor();
+	public String[] getHairDescription();
+	public void setAntennaDescription(String[] d);
+	public void setAntennaColor(String[] c);
+	public void setEyeDescription(String[] d);
+	public void getEyeColor(String[] c);
+	public void setEarDescription(String[] d);
+	public void setNoseDescription(String[] d);
+	public void setMouthDescription(String[] d);
+	public void setTailDescription(String[] d);
+	public void setWingColor(String[] c);
+	public void setSkinDescription(String[] d);
+	public void setSkinColor(String[] c);
+	public void setHairColor(String[] c);
+	public void setHairDescription(String[] d);
+
+	
+	
 	public int availabilityCode();
 
 	/**

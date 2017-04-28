@@ -47,6 +47,8 @@ public class Gnoll extends StdMOB
 		setDescription("a 7 foot tall creature with a body resembling a large human and the head of a hyena.");
 		setDisplayText("A nasty Gnoll stands here.");
 		CMLib.factions().setAlignment(this,Faction.Align.EVIL);
+		setLevels(Arrays.asList(1,2,3,4,5,6,7,8,9));
+		setLocations(Arrays.asList("CaveGrid","CaveMaze","CaveRoom","CaveSurface","CityStreet","Desert","DesertGrid","DesertMaze","FrozenMountains","FrozenPlains","Hills","HillsGrid","IcePlains","IceRoom","Jungle","JungleGrid","LargeCaveRoom","Mountains","MountainsGrid","MountainsMaze","MountainSurface","MountainSurfaceGrid","Plains","PlainsGrid","Road","RoadGrid","SewerMaze","SewerRoom","ShallowWater","Shore","Swamp","WaterSurface","WetCaveGrid","WetCaveRoom","Woods","WoodsGrid","WoodsMaze"));
 		setMoney(20);
 		basePhyStats.setWeight(300);
 		setWimpHitPoint(0);

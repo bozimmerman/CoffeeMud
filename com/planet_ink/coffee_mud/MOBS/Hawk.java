@@ -44,6 +44,8 @@ public class Hawk extends StdMOB
 	{
 		super();
 		final Random randomizer = new Random(System.currentTimeMillis());
+		setLevels(Arrays.asList(3,4,5,6));
+		setLocations(Arrays.asList("Desert","DesertGrid","DesertMaze","FrozenMountains","FrozenPlains","Hills","HillsGrid","IcePlains","Mountains","MountainsGrid","MountainsMaze","MountainSurface","MountainSurfaceGrid","Plains","PlainsGrid","Woods","WoodsGrid","WoodsMaze"));
 
 		username="a hawk";
 		setDescription("a hunting bird with a narrow face, shark beak, and nasty talons.");

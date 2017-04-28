@@ -45,6 +45,22 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 							 Tattooable, FactionMember, MUDCmdProcessor, Followable<MOB>, Combatant
 {
 	public static long AGE_MILLIS_THRESHOLD = 120000;
+	
+	public static int maxClaims = 0;
+	
+	public List<String> getLocations();
+	public List<Integer> getLevels();
+	public void setLocations(List<String> l);
+	public void setLevels(List<Integer> l);
+	public void setLookDescription(String part, String s);
+	public String getDescription(String part);	
+	public void setCurrentClaims(int i);	
+	public int getCurrentClaims();
+	public void addMaxClaims();
+	public int getMaxClaims();
+	public void setMaxClaims(int i);
+
+	
 
 	/**
 	 * Returns the raw numeric attributes bitmap
@@ -1109,6 +1125,8 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 		private final int bitCode;
 		private final boolean autoReverse;
 		private final String desc;
+		public int currentClaims = 0;
+		public int maxClaims = 1;
 		
 		private Attrib(boolean reversed, String desc)
 		{

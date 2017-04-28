@@ -52,6 +52,8 @@ public class Puppy extends StdMOB
 		setMoney(0);
 		basePhyStats.setWeight(20 + Math.abs(randomizer.nextInt() % 55));
 		setWimpHitPoint(2);
+		setLevels(Arrays.asList(1));
+		setLocations(Arrays.asList("CityStreet","Hills","HillsGrid","Plains","PlainsThinGrid","RoadGrid"));
 
 		Behavior B=CMClass.getBehavior("Follower");
 		if(B!=null)

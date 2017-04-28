@@ -49,7 +49,8 @@ public class Ape extends StdMOB
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);
 		setMoney(0);
 		setWimpHitPoint(2);
-
+		setLevels(Arrays.asList(1,2));
+		setLocations(Arrays.asList("Jungle","JungleGrid","TreeSurface","Woods","WoodsGrid","WoodsMaze"));
 		basePhyStats().setDamage(1);
 
 		baseCharStats().setMyRace(CMClass.getRace("Ape"));
