@@ -87,6 +87,20 @@ public class Chant_PredictTides extends Chant
 			if((R.resourceChoices()!=null)
 			&&(R.resourceChoices().contains(Integer.valueOf(RawMaterial.RESOURCE_FISH))))
 				isWateryEnough = true;
+			final Area A=R.getArea();
+			if(A instanceof BoardableShip)
+			{
+				final Room R2=CMLib.map().roomLocation(((BoardableShip)A).getShipItem());
+				if(R2!=null)
+				{
+					if(CMLib.flags().isWateryRoom(R2))
+						isWateryEnough = true;
+					else
+					if((R2.resourceChoices()!=null)
+					&&(R2.resourceChoices().contains(Integer.valueOf(RawMaterial.RESOURCE_FISH))))
+						isWateryEnough = true;
+				}
+			}
 		}
 		
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
