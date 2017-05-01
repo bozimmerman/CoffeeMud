@@ -84,7 +84,8 @@ public class Chant_PredictTides extends Chant
 		boolean isWateryEnough = CMLib.flags().isWateryRoom(R);
 		if(!isWateryEnough)
 		{
-			if(R.resourceChoices().contains(Integer.valueOf(RawMaterial.RESOURCE_FISH)))
+			if((R.resourceChoices()!=null)
+			&&(R.resourceChoices().contains(Integer.valueOf(RawMaterial.RESOURCE_FISH))))
 				isWateryEnough = true;
 		}
 		
