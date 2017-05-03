@@ -191,9 +191,9 @@ public class Skill_Convert extends StdSkill
 		}
 
 		final boolean success=proficiencyCheck(mob,0,auto);
-		boolean targetMadeSave=auto || CMLib.dice().roll(1,100,0)>(target.charStats().getSave(CharStats.STAT_FAITH));
-		if(CMSecurity.isASysOp(mob))
-			targetMadeSave=false;
+		boolean targetMadeSave=(givenTarget == target) || CMLib.dice().roll(1,100,0)>(target.charStats().getSave(CharStats.STAT_FAITH));
+		//if(CMSecurity.isASysOp(mob))
+		//	targetMadeSave=false;
 		if((!target.isMonster())
 		&&(success)
 		&&(targetMadeSave)
@@ -209,7 +209,7 @@ public class Skill_Convert extends StdSkill
 		&&(!target.isMonster())
 		&&(target!=mob))
 		{
-			if(auto)
+			if(givenTarget == target)
 				targetMadeSave=!success;
 			else
 			{
@@ -219,7 +219,7 @@ public class Skill_Convert extends StdSkill
 					final Deity tD=D;
 					final MOB t=target;
 					final Ability A=this;
-					tsess.prompt(new InputCallback(InputCallback.Type.CONFIRM, "N", 10000L) {
+					tsess.prompt(new InputCallback(InputCallback.Type.CONFIRM, "N", 30000L) {
 						
 						final Session session = tsess;
 						final Deity D=tD;
@@ -240,7 +240,7 @@ public class Skill_Convert extends StdSkill
 						public void callBack()
 						{
 							if(this.confirmed)
-								me.invoke(mob, oldCommands, target, true, asLevel);
+								me.invoke(mob, oldCommands, target, false, asLevel);
 							else
 							{
 								if(CMLib.flags().isInTheGame(mob, true))
