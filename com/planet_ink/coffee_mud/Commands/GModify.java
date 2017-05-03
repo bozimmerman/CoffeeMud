@@ -77,7 +77,7 @@ public class GModify extends StdCommand
 			if((stat.equalsIgnoreCase("GENDER"))
 			&&(E instanceof MOB))
 			{
-				return ""+((MOB)E).baseCharStats().getStat(CharStats.STAT_GENDER);
+				return Character.toString((char)((MOB)E).baseCharStats().getStat(CharStats.STAT_GENDER));
 			}
 			else
 			if(stat.equalsIgnoreCase("CLASSTYPE"))

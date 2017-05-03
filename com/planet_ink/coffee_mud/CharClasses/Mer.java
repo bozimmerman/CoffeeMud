@@ -329,6 +329,7 @@ public class Mer extends StdCharClass
 	@Override
 	public void affectCharStats(final MOB affected, final CharStats affectableStats)
 	{
+		super.affectCharStats(affected, affectableStats);
 		// this is necessary because the race happens AFTER the breathe is modified,
 		// so we're actually adding water breathing to baseStat race (human, whatever)
 		affected.eachEffect(new EachApplicable<Ability>()
