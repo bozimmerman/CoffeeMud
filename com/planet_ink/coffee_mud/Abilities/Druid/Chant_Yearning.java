@@ -32,17 +32,41 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
-
 public class Chant_Yearning extends Chant
 {
-	@Override public String ID() { return "Chant_Yearning"; }
-	private final static String localizedName = CMLib.lang().L("Yearning");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Sexual Yearnings)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_BREEDING;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+	@Override
+	public String ID()
+	{
+		return "Chant_Yearning";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Yearning");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Sexual Yearnings)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT | Ability.DOMAIN_BREEDING;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
 
 	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
@@ -96,12 +120,12 @@ public class Chant_Yearning extends Chant
 	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
-		 if(mob!=null)
-		 {
-			 if(mob.isInCombat())
-				 return Ability.QUALITY_INDIFFERENT;
-		 }
-		 return super.castingQuality(mob,target);
+		if(mob!=null)
+		{
+			if(mob.isInCombat())
+				return Ability.QUALITY_INDIFFERENT;
+		}
+		return super.castingQuality(mob,target);
 	}
 
 	@Override
@@ -130,7 +154,6 @@ public class Chant_Yearning extends Chant
 		}
 		else
 			return maliciousFizzle(mob,target,L("<S-NAME> chant(s) to <T-NAMESELF>, but the magic fades."));
-
 
 		// return whether it worked
 		return success;

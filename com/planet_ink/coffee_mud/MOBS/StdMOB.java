@@ -2694,7 +2694,7 @@ public class StdMOB implements MOB
 					}
 					break;
 				case CMMsg.TYP_CAST_SPELL:
-					if (charStats().getStat(CharStats.STAT_INTELLIGENCE) < 5)
+					if(charStats().getStat(CharStats.STAT_INTELLIGENCE) < 5)
 					{
 						tell(L("You aren't smart enough to do magic."));
 						return false;

@@ -35,19 +35,60 @@ import java.util.*;
 
 public class Chant_FindMate extends Chant
 {
-	@Override public String ID() { return "Chant_FindMate"; }
-	private final static String localizedName = CMLib.lang().L("Find Mate");
-	@Override public String name() { return localizedName; }
-	protected String displayText=L("(Tracking a mate)");
-	@Override public String displayText(){ return displayText;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_BREEDING;}
-	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
-	@Override public long flags(){return Ability.FLAG_TRACKING;}
+	@Override
+	public String ID()
+	{
+		return "Chant_FindMate";
+	}
 
-	protected List<Room> theTrail=null;
-	public int nextDirection=-2;
+	private final static String	localizedName	= CMLib.lang().L("Find Mate");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	protected String	displayText	= L("(Tracking a mate)");
+
+	@Override
+	public String displayText()
+	{
+		return displayText;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT | Ability.DOMAIN_BREEDING;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_OTHERS;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_TRACKING;
+	}
+
+	protected List<Room>	theTrail		= null;
+	public int				nextDirection	= -2;
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
@@ -57,17 +98,17 @@ public class Chant_FindMate extends Chant
 		if(tickID==Tickable.TICKID_MOB)
 		{
 			if((theTrail==null)
-			||(affected == null)
 			||(!(affected instanceof MOB)))
 				return false;
 
 			final MOB mob=(MOB)affected;
-			if(mob.location()!=null)
+			final Room R=mob.location();
+			if(R!=null)
 			{
 				MOB mate=null;
-				for(int i=0;i<mob.location().numInhabitants();i++)
+				for(int i=0;i<R.numInhabitants();i++)
 				{
-					final MOB M=mob.location().fetchInhabitant(i);
+					final MOB M=R.fetchInhabitant(i);
 					if(isSuitableMate(M,mob))
 					{ mate=M; break;}
 				}
@@ -110,12 +151,18 @@ public class Chant_FindMate extends Chant
 			if(nextDirection>=0)
 			{
 				mob.tell(L("You want to continue @x1.",CMLib.directions().getDirectionName(nextDirection)));
-				final Room nextRoom=mob.location().getRoomInDir(nextDirection);
-				if((nextRoom!=null)&&(nextRoom.getArea()==mob.location().getArea()))
+				if(R!=null)
 				{
-					final int dir=nextDirection;
-					nextDirection=-2;
-					CMLib.tracking().walk(mob,dir,false,false);
+					final Room nextRoom=R.getRoomInDir(nextDirection);
+					if((nextRoom!=null)
+					&&((nextRoom.getArea()==mob.location().getArea())||(!mob.isMonster())))
+					{
+						final int dir=nextDirection;
+						nextDirection=-2;
+						CMLib.tracking().walk(mob,dir,false,false);
+					}
+					else
+						unInvoke();
 				}
 				else
 					unInvoke();
