@@ -972,6 +972,7 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 		&&(msg.source().location()==owner())
 		&&(CMLib.flags().isWateryRoom(msg.source().location()))
 		&&(!CMLib.flags().isFlying(msg.source()))
+		&&(!CMLib.flags().isFalling((Physical)msg.target()))
 		&&(!CMLib.law().doesHavePriviledgesHere(msg.source(), super.getDestinationRoom(msg.source().location()))))
 		{
 			final Rideable ride=msg.source().riding();
