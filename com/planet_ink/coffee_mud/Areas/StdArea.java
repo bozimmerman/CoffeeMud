@@ -1051,6 +1051,7 @@ public class StdArea implements Area
 			||(msg.sourceMinor()==CMMsg.TYP_FLEE)))
 				flag=State.ACTIVE;
 		}
+		
 		if((flag==State.FROZEN)||(flag==State.STOPPED)||(!CMLib.flags().allowsMovement(this)))
 		{
 			if((msg.sourceMinor()==CMMsg.TYP_ENTER)

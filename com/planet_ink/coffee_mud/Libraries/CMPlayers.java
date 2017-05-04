@@ -68,7 +68,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	}
 
 	@Override
-	public synchronized void addPlayer(MOB newOne)
+	public synchronized void addPlayer(final MOB newOne)
 	{
 		if(getPlayer(newOne.Name())!=null)
 			return;
@@ -82,7 +82,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	}
 
 	@Override
-	public synchronized void delPlayer(MOB oneToDel)
+	public synchronized void delPlayer(final MOB oneToDel)
 	{
 		if(oneToDel != null)
 		{
@@ -93,13 +93,13 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	}
 
 	@Override
-	public Set<MOB> getPlayersHere(Room room)
+	public Set<MOB> getPlayersHere(final Room room)
 	{
 		return playerLocations.getSecond(room);
 	}
 
 	@Override
-	public void changePlayersLocation(MOB mob, Room room)
+	public void changePlayersLocation(final MOB mob, final Room room)
 	{
 		if(mob != null)
 		{
@@ -112,7 +112,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 
 
 	@Override
-	public MOB getLoadPlayerByEmail(String email)
+	public MOB getLoadPlayerByEmail(final String email)
 	{
 		for(final Enumeration<MOB> e=players();e.hasMoreElements();)
 		{
@@ -130,7 +130,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	}
 
 	@Override
-	public PlayerAccount getLoadAccount(String calledThis)
+	public PlayerAccount getLoadAccount(final String calledThis)
 	{
 		PlayerAccount A = getAccount(calledThis);
 		if(A!=null)
@@ -144,7 +144,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	}
 
 	@Override
-	public synchronized void addAccount(PlayerAccount acct)
+	public synchronized void addAccount(final PlayerAccount acct)
 	{
 		if(acct==null)
 			return;
@@ -159,7 +159,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	}
 
 	@Override
-	public PlayerAccount getLoadAccountByEmail(String email)
+	public PlayerAccount getLoadAccountByEmail(final String email)
 	{
 		if(!CMProps.isUsingAccountSystem())
 			return null;
@@ -214,7 +214,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	}
 
 	@Override
-	public MOB getLoadPlayer(String last)
+	public MOB getLoadPlayer(final String last)
 	{
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 			return null;

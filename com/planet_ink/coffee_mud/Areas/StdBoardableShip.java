@@ -629,8 +629,26 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 					return false;
 			}
 		}
-		
-		if((getThemeCode()>0)&&(!CMath.bset(getThemeCode(),Area.THEME_FANTASY)))
+
+		if(!msg.source().isMonster())
+		{
+			final Area areaLoc=((BoardableShip)this).getShipArea();
+			if(areaLoc instanceof StdArea)
+			{
+				final StdArea otherArea=(StdArea)areaLoc;
+				otherArea.lastPlayerTime=System.currentTimeMillis();
+				if((otherArea.flag==State.PASSIVE)
+				&&((msg.sourceMinor()==CMMsg.TYP_ENTER)
+				  ||(msg.sourceMinor()==CMMsg.TYP_LEAVE)
+				  ||(msg.sourceMinor()==CMMsg.TYP_FLEE)
+				  ||(msg.sourceMinor()==CMMsg.TYP_ADVANCE)
+				  ||(msg.sourceMinor()==CMMsg.MSG_NOISYMOVEMENT)))
+					otherArea.flag=State.ACTIVE;
+			}
+		}
+
+		if((getThemeCode()>0)
+		&&(!CMath.bset(getThemeCode(),Area.THEME_FANTASY)))
 		{
 			if((CMath.bset(msg.sourceMajor(),CMMsg.MASK_MAGIC))
 			||(CMath.bset(msg.targetMajor(),CMMsg.MASK_MAGIC))
@@ -650,7 +668,6 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 					else
 						room.showHappens(CMMsg.MSG_OK_VISUAL,L("Magic doesn't seem to work there."));
 				}
-	
 				return false;
 			}
 		}

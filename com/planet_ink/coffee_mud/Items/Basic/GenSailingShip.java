@@ -57,11 +57,11 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 	protected volatile Room				shipCombatRoom		= null;
 	protected PairList<Item, int[]>		coordinates			= null;
 	protected PairList<Weapon, int[]>	aimings				= new PairVector<Weapon, int[]>();
-	
+
 	protected int					maxHullPoints	= -1;
 	protected volatile int			lastSpamCt		= 0;
 	protected volatile String		lastSpamMsg		= "";
-	
+
 	public GenSailingShip()
 	{
 		super();
@@ -87,13 +87,13 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 		else
 			phyStats().setDisposition(phyStats().disposition()|PhyStats.IS_FALLING);
 	}
-	
+
 	@Override
 	protected String getAreaClassType()
 	{
 		return "StdBoardableShip";
 	}
-	
+
 	@Override
 	protected Room createFirstRoom()
 	{
@@ -101,7 +101,7 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 		R.setDisplayText(L("The Deck"));
 		return R;
 	}
-	
+
 	@Override
 	public Area getShipArea()
 	{
@@ -130,13 +130,13 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 		TENDER
 		;
 	}
-	
+
 	protected void announceToDeck(final String msgStr)
 	{
 		final CMMsg msg=CMClass.getMsg(null, CMMsg.MSG_OK_ACTION, msgStr);
 		announceToDeck(msg);
 	}
-	
+
 	@Override
 	public int getShipSpeed()
 	{
@@ -151,7 +151,7 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 			return 1;
 		return speed;
 	}
-	
+
 	protected void announceToDeck(final CMMsg msg)
 	{
 		MOB mob = null;
@@ -196,7 +196,7 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 				mob.destroy();
 		}
 	}
-	
+
 	protected void announceActionToDeckOrUnderdeck(final MOB mob, final CMMsg msg, int INDOORS)
 	{
 		final Area A=this.getShipArea();
@@ -216,19 +216,19 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 			}
 		}
 	}
-	
+
 	protected void announceActionToDeck(final MOB mob, final String msgStr)
 	{
 		final CMMsg msg=CMClass.getMsg(mob, CMMsg.MSG_OK_ACTION, msgStr);
 		announceActionToDeckOrUnderdeck(mob,msg, 0);
 	}
-	
+
 	protected void announceActionToDeck(final MOB mob, final Environmental target, final Environmental tool, final String msgStr)
 	{
 		final CMMsg msg=CMClass.getMsg(mob, target, tool, CMMsg.MSG_OK_ACTION, msgStr);
 		announceActionToDeckOrUnderdeck(mob,msg, 0);
 	}
-	
+
 	protected void announceActionToUnderDeck(final MOB mob, final String msgStr)
 	{
 		final CMMsg msg=CMClass.getMsg(mob, CMMsg.MSG_OK_ACTION, msgStr);
@@ -240,7 +240,7 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 		final PhysicalAgent targetedShip = this.targetedShip;
 		return getOtherShipInfo(targetedShip);
 	}
-	
+
 	protected String getOtherShipInfo(PhysicalAgent targetedShip)
 	{
 		if((targetedShip != null)&&(targetedShip instanceof GenSailingShip))
@@ -307,7 +307,7 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 		}
 		return null;
 	}
-	
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -2176,7 +2176,9 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 					{
 						final String directionName = CMLib.directions().getDirectionName(direction);
 						final int[] newCoords = Directions.adjustXYByDirections(tacticalCoords[0], tacticalCoords[1], direction);
-						final CMMsg maneuverMsg=CMClass.getMsg(mob,thisRoom,null,CMMsg.MSG_ADVANCE,newCoords[0]+","+newCoords[1],CMMsg.MSG_ADVANCE,directionName,
+						final CMMsg maneuverMsg=CMClass.getMsg(mob, thisRoom, null,
+																CMMsg.MSG_ADVANCE,newCoords[0]+","+newCoords[1],
+																CMMsg.MSG_ADVANCE,directionName,
 																CMMsg.MSG_ADVANCE,L("<S-NAME> maneuver(s) @x1.",directionName));
 						if(thisRoom.okMessage(mob, maneuverMsg))
 						{
@@ -2198,8 +2200,10 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 						final int gradualDirection=Directions.getGradualDirectionCode(directionFacing, direction);
 						final String directionName = CMLib.directions().getDirectionName(gradualDirection);
 						final String finalDirectionName = CMLib.directions().getDirectionName(direction);
-						final CMMsg maneuverMsg=CMClass.getMsg(mob,thisRoom,null,CMMsg.MSG_ADVANCE,directionName,CMMsg.MSG_ADVANCE,finalDirectionName,
-								CMMsg.MSG_ADVANCE,L("<S-NAME> change(s) course, turning @x1.",directionName));
+						final CMMsg maneuverMsg=CMClass.getMsg(mob, thisRoom, null,
+																CMMsg.MSG_ADVANCE,directionName,
+																CMMsg.MSG_ADVANCE,finalDirectionName,
+																CMMsg.MSG_ADVANCE,L("<S-NAME> change(s) course, turning @x1.",directionName));
 						if(thisRoom.okMessage(mob, maneuverMsg))
 						{
 							thisRoom.send(mob, maneuverMsg);
@@ -2320,7 +2324,7 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 			}
 		}
 	}
-	
+
 	protected boolean steer(final MOB mob, final Room R, final int dir)
 	{
 		directionFacing = dir;
@@ -2341,7 +2345,7 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 		}
 		return false;
 	}
-	
+
 	protected boolean beginSail(final MOB mob, final Room R, final int dir)
 	{
 		directionFacing = dir;
