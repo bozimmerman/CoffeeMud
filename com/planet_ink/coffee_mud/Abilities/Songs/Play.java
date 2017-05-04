@@ -275,6 +275,7 @@ public class Play extends StdAbility
 		&&(instrument!=null))
 		{
 			if((msg.sourceMinor()==CMMsg.TYP_SPEAK)
+			&&(!CMath.bset(msg.sourceMajor(), CMMsg.MASK_CHANNEL))
 			&&(instrument.amWearingAt(Wearable.WORN_MOUTH)))
 			{
 				if(msg.source().location()!=null)

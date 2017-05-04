@@ -84,12 +84,12 @@ public class Chant_PlantPass extends Chant
 	{
 		return "plants";
 	}
-	
+
 	protected boolean isAcceptableTargetRoom(MOB mob, Room newRoom)
 	{
 		return true;
 	}
-	
+
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -180,11 +180,9 @@ public class Chant_PlantPass extends Chant
 					}
 				}
 			}
-
 		}
 		else
 			beneficialVisualFizzle(mob,myPlant,L("<S-NAME> chant(s) to <T-NAMESELF>, but nothing happens."));
-
 
 		// return whether it worked
 		return success;

@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Druid_MyPlants extends StdAbility
 {
 	@Override
@@ -83,21 +82,20 @@ public class Druid_MyPlants extends StdAbility
 	}
 
 	private static final Map<String,WeakArrayList<Item>> allPlants = new Hashtable<String,WeakArrayList<Item>>();
-	
-	
+
 	public static void addNewPlant(MOB mob, Item I)
 	{
 		final List<Item> myPlants = getMyPlants(mob);
 		if(!myPlants.contains(I))
 			myPlants.add(I);
 	}
-	
+
 	public static void removeLostPlant(MOB mob, Item I)
 	{
 		final List<Item> myPlants = getMyPlants(mob);
 		myPlants.remove(I);
 	}
-	
+
 	public static boolean isMyPlant(Item I, MOB mob)
 	{
 		if((I!=null)
@@ -215,7 +213,7 @@ public class Druid_MyPlants extends StdAbility
 			}
 		}
 	}
-	
+
 	public static List<Item> getMyPlants(MOB mob)
 	{
 		List<Item> myPlants = allPlants.get(mob.Name());
