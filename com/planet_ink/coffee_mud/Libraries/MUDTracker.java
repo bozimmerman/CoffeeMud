@@ -54,9 +54,13 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 
 	protected static class RFilterNode
 	{
-		private RFilterNode next=null;
-		private final RFilter filter;
-		public RFilterNode(RFilter fil){ this.filter=fil;}
+		private RFilterNode		next	= null;
+		private final RFilter	filter;
+
+		public RFilterNode(RFilter fil)
+		{
+			this.filter = fil;
+		}
 
 	}
 
@@ -496,7 +500,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 	{
 		return new DefaultTrackingFlags();
 	}
-	
+
 	@Override
 	public void getRadiantRooms(final Room room, List<Room> rooms, final RFilters filters, final Room radiateTo, final int maxDepth, final Set<Room> ignoreRooms)
 	{
@@ -621,6 +625,41 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			depth++;
 		}
 		return false;
+	}
+
+	@Override
+	public Room getRadiantRoomTarget(final Room room, final RFilters filters, final RFilter radiateTo)
+	{
+		if(room==null)
+			return null;
+		final TreeSet<Room> H=new TreeSet<Room>();
+		Room R1=null;
+		Room R=null;
+		Exit E=null;
+
+		int d=0;
+		LinkedList<Room> roomsToDo=new LinkedList<Room>();
+		roomsToDo.add(room);
+		while(roomsToDo.size()>0)
+		{
+			R1=roomsToDo.removeFirst();
+			for(d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+			{
+				R=R1.getRoomInDir(d);
+				E=R1.getExitInDir(d);
+
+				if((R==null)
+				||(E==null)
+				||(H.contains(R))
+				||(filters.isFilteredOut(R1, R, E, d)))
+					continue;
+				roomsToDo.add(R);
+				H.add(R);
+				if(!radiateTo.isFilteredOut(R1, R, E, d)) // R can't be null here, so if they are equal, time to go!
+					return R1;
+			}
+		}
+		return null;
 	}
 
 	@Override
@@ -1910,9 +1949,9 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		{
 			final Item I=room.getItem(i);
 			if((I!=null)
-			   &&(I instanceof Rideable)
-			   &&(CMLib.flags().canBeSeenBy(I,mob))
-			   &&(((Rideable)I).rideBasis()==Rideable.RIDEABLE_LADDER))
+			&&(I instanceof Rideable)
+			&&(CMLib.flags().canBeSeenBy(I,mob))
+			&&(((Rideable)I).rideBasis()==Rideable.RIDEABLE_LADDER))
 				return (Rideable)I;
 		}
 		return null;

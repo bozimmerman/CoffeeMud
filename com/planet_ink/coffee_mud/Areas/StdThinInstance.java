@@ -13,6 +13,8 @@ import com.planet_ink.coffee_mud.Items.Basic.StdItem;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary.RFilter;
+import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary.RFilters;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
@@ -169,10 +171,32 @@ public class StdThinInstance extends StdThinArea
 		}
 		return R;
 	}
-
-	protected Set<MOB> getProtectedMobSet(final Area childA, final List<WeakReference<MOB>> registeredMobList)
+	
+	protected static boolean isInThisArea(final Area childA, final MOB mob)
 	{
-		final Set<MOB> protectTheseMobsList=new HashSet<MOB>();
+		if(mob != null)
+		{
+			final Room R=mob.location();
+			if(R!=null)
+			{
+				final Area A=R.getArea();
+				if(R.getArea()==childA)
+					return true;
+				if(A instanceof BoardableShip)
+				{
+					final Room R2=CMLib.map().roomLocation(((BoardableShip)A).getShipItem());
+					if((R2!=null)
+					&&(R2.getArea()==childA))
+						return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	protected Set<Physical> getProtectedSet(final Area childA, final List<WeakReference<MOB>> registeredMobList)
+	{
+		final Set<Physical> protectTheseList=new HashSet<Physical>();
 		for(final WeakReference<MOB> wmob : registeredMobList)
 		{
 			final MOB M=wmob.get();
@@ -182,7 +206,7 @@ public class StdThinInstance extends StdThinArea
 				if(CMLib.flags().isInTheGame(M,true)
 				&&(R!=null)
 				&&(R.getArea()==childA))
-					protectTheseMobsList.add(M);
+					protectTheseList.add(M);
 			}
 		}
 		for(final Enumeration<MOB> m = CMLib.players().players();m.hasMoreElements();)
@@ -193,47 +217,166 @@ public class StdThinInstance extends StdThinArea
 				final Room R=M.location();
 				if((R!=null)
 				&&(R.getArea()==childA))
-					protectTheseMobsList.add(M);
+					protectTheseList.add(M);
 			}
 		}
-		final List<MOB> addFollowers=new ArrayList<MOB>(0);
-		for(final MOB pmob : protectTheseMobsList)
+		for(final Enumeration<BoardableShip> s = CMLib.map().ships();s.hasMoreElements();)
 		{
-			final Set<MOB> grp=pmob.getGroupMembers(new HashSet<MOB>());
-			for(final MOB M : grp)
+			final BoardableShip B=s.nextElement();
+			if(B!=null)
 			{
-				if(pmob!=M)
+				final Item I=B.getShipItem();
+				if((I!=null)
+				&&(I.baseGoldValue()>2)
+				&&(I.owner() instanceof Room))
 				{
-					final Room R=M.location();
+					final Room R=(Room)I.owner();
 					if((R!=null)
-					&&(R.getArea()==childA))
-						addFollowers.add(M);
+					&&(R.getArea()==childA)
+					&&(B instanceof PrivateProperty)
+					&&(((PrivateProperty)B).getOwnerName()!=null)
+					&&(((PrivateProperty)B).getOwnerName().length()>0))
+					{
+						protectTheseList.add(I);
+					}
 				}
 			}
 		}
-		protectTheseMobsList.addAll(addFollowers);
-		return protectTheseMobsList;
+		final List<MOB> addFollowers=new ArrayList<MOB>(0);
+		for(final Physical p : protectTheseList)
+		{
+			if(p instanceof MOB)
+			{
+				final MOB pmob=(MOB)p;
+				final Set<MOB> grp=pmob.getGroupMembers(new HashSet<MOB>());
+				for(final MOB M : grp)
+				{
+					if(pmob!=M)
+					{
+						final Room R=M.location();
+						if((R!=null)
+						&&(R.getArea()==childA))
+							addFollowers.add(M);
+					}
+				}
+			}
+		}
+		protectTheseList.addAll(addFollowers);
+		return protectTheseList;
 	}
 
+	protected static class EmptyFilters implements RFilters
+	{
+		@Override
+		public boolean isFilteredOut(Room hostR, Room R, Exit E, int dir)
+		{
+			return false;
+		}
+
+		@Override
+		public RFilters plus(RFilter filter)
+		{
+			return this;
+		}
+
+		@Override
+		public RFilters minus(RFilter filter)
+		{
+			return this;
+		}
+
+		@Override
+		public RFilters copyOf()
+		{
+			return this;
+		}
+	}
+
+	protected static class AllWaterFilters extends EmptyFilters
+	{
+		@Override
+		public boolean isFilteredOut(Room hostR, Room R, Exit E, int dir)
+		{
+			return (!(CMLib.flags().isWateryRoom(hostR)||CMLib.flags().isWateryRoom(R)));
+		}
+	}
+	
+	protected static class OutOfAreaFilter implements RFilter
+	{
+		protected final Area A1;
+		
+		public OutOfAreaFilter(Area A1)
+		{
+			this.A1=A1;
+		}
+		
+		@Override
+		public boolean isFilteredOut(Room hostR, Room R, Exit E, int dir)
+		{
+			return (R.getArea()==A1);
+		}
+	}
+	
 	protected boolean flushInstance(int index)
 	{
 		final Area childA=instanceChildren.get(index).A;
 		if(childA.getAreaState() != Area.State.ACTIVE) // this is the one and only criteria -- if its not active, flush it.
 		{
 			final AreaInstanceChild child = instanceChildren.remove(index);
-			final Set<MOB> protectedMobsList = getProtectedMobSet(childA, child.mobs);
-			for(final MOB wmob : protectedMobsList)
+			final Set<Physical> protectedList = getProtectedSet(childA, child.mobs);
+			Room returnBoatsToR = null;
+			for(final Physical P : protectedList)
 			{
-				if((wmob.location()!=null)
-				&&(wmob.location().getArea()==childA))
+				if(P instanceof MOB)
 				{
-					final Room startRoom=wmob.getStartRoom();
-					if(startRoom != null)
+					final MOB wmob=(MOB)P;
+					final Room R=wmob.location();
+					if((R!=null)
+					&&(R.getArea()==childA))
 					{
-						if(wmob.location().isInhabitant(wmob))
-							startRoom.bringMobHere(wmob, true);
-						if(wmob.location()!=startRoom)
-							wmob.setLocation(startRoom);
+						final Room startRoom=wmob.getStartRoom();
+						if(startRoom != null)
+						{
+							if(R.isInhabitant(wmob))
+								startRoom.bringMobHere(wmob, true);
+							if(wmob.location()!=startRoom)
+								wmob.setLocation(startRoom);
+						}
+					}
+				}
+				else
+				if(P instanceof Item)
+				{
+					final Item I = (Item)P;
+					Room startRoom = returnBoatsToR;
+					Room R=CMLib.map().roomLocation(I);
+					if(R!=null)
+					{
+						if((startRoom == null)
+						&&(I instanceof Rideable)
+						&&(((Rideable)I).rideBasis()==Rideable.RIDEABLE_WATER))
+						{
+							Room R1=CMLib.tracking().getRadiantRoomTarget(R, new AllWaterFilters(), new OutOfAreaFilter(childA));
+							if(R1!=null)
+							{
+								returnBoatsToR=R1;
+								startRoom=R1;
+							}
+						}
+						if(startRoom == null)
+						{
+							Room R1=CMLib.tracking().getRadiantRoomTarget(R, new AllWaterFilters(), new OutOfAreaFilter(childA));
+							if(R1!=null)
+								startRoom=R1;
+						}
+						if(startRoom != null)
+						{
+							if(R.isHere(I))
+								startRoom.moveItemTo(I);
+							R=CMLib.map().roomLocation(I);
+							if(R!=startRoom)
+								I.setOwner(startRoom);
+						}
 					}
 				}
 			}
@@ -286,7 +429,7 @@ public class StdThinInstance extends StdThinArea
 		}
 		return false;
 	}
-	
+
 	@Override
 	public void destroy()
 	{
