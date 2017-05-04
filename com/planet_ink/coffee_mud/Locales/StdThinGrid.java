@@ -601,36 +601,42 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		final Room oldLoc=loc;
 		if(loc.getGridParent()!=null)
 			loc=loc.getGridParent();
-		if((oldLoc!=loc)&&(loc instanceof GridLocale))
+		if((oldLoc!=loc)
+		&&(loc instanceof GridLocale))
 		{
 			final XYVector xy=((GridLocale)loc).getRoomXY(oldLoc);
-			if((xy.x>=0)&&(xy.y>=0))
-			switch(opDirection)
+			if(xy != null)
 			{
-			case Directions.EAST:
-				if((((GridLocale)loc).yGridSize()==yGridSize()))
-					return getMakeGridRoom(xGridSize()-1,xy.y);
-				break;
-			case Directions.WEST:
-				if((((GridLocale)loc).yGridSize()==yGridSize()))
-					return getMakeGridRoom(0,xy.y);
-				break;
-			case Directions.NORTH:
-				if((((GridLocale)loc).xGridSize()==xGridSize()))
-					return getMakeGridRoom(xy.x,0);
-				break;
-			case Directions.NORTHWEST:
-				return getMakeGridRoom(0,0);
-			case Directions.SOUTHEAST:
-				return getMakeGridRoom(xGridSize()-1,yGridSize()-1);
-			case Directions.NORTHEAST:
-				return getMakeGridRoom(xGridSize()-1,0);
-			case Directions.SOUTHWEST:
-				return getMakeGridRoom(0,yGridSize()-1);
-			case Directions.SOUTH:
-				if((((GridLocale)loc).xGridSize()==xGridSize()))
-					return getMakeGridRoom(xy.x,yGridSize()-1);
-				break;
+				if((xy.x>=0)&&(xy.y>=0))
+				{
+					switch(opDirection)
+					{
+					case Directions.EAST:
+						if((((GridLocale)loc).yGridSize()==yGridSize()))
+							return getMakeGridRoom(xGridSize()-1,xy.y);
+						break;
+					case Directions.WEST:
+						if((((GridLocale)loc).yGridSize()==yGridSize()))
+							return getMakeGridRoom(0,xy.y);
+						break;
+					case Directions.NORTH:
+						if((((GridLocale)loc).xGridSize()==xGridSize()))
+							return getMakeGridRoom(xy.x,0);
+						break;
+					case Directions.NORTHWEST:
+						return getMakeGridRoom(0,0);
+					case Directions.SOUTHEAST:
+						return getMakeGridRoom(xGridSize()-1,yGridSize()-1);
+					case Directions.NORTHEAST:
+						return getMakeGridRoom(xGridSize()-1,0);
+					case Directions.SOUTHWEST:
+						return getMakeGridRoom(0,yGridSize()-1);
+					case Directions.SOUTH:
+						if((((GridLocale)loc).xGridSize()==xGridSize()))
+							return getMakeGridRoom(xy.x,yGridSize()-1);
+						break;
+					}
+				}
 			}
 		}
 		int x=0;
