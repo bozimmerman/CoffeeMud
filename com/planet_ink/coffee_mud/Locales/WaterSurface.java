@@ -146,8 +146,11 @@ public class WaterSurface extends StdRoom implements Drink
 				if((thatRoom!=null)&&(getRawExit(dir)!=null))
 				{
 					thatRoom=CMLib.map().getRoom(thatRoom);
-					thatRoom.giveASky(depth+1);
-					thatSea=thatRoom.rawDoors()[Directions.DOWN];
+					if(thatRoom != null)
+					{
+						thatRoom.giveASky(depth+1);
+						thatSea=thatRoom.rawDoors()[Directions.DOWN];
+					}
 				}
 				if((thatSea!=null)
 				&&(thatSea.roomID().length()==0)
