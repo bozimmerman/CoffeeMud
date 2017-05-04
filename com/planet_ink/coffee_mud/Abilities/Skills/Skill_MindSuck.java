@@ -151,7 +151,7 @@ public class Skill_MindSuck extends StdSkill
 
 		super.unInvoke();
 
-		if(canBeUninvoked())
+		if(canBeUninvoked() && (invoker != null))
 		{
 			if(suckableBrain)
 			{
@@ -170,12 +170,12 @@ public class Skill_MindSuck extends StdSkill
 			&&(mob.location()==invoker.location())
 			&&(CMLib.flags().canBeSeenBy(invoker, mob)))
 			{
-				if((invoker!=null)&&(invoker.location()!=null))
+				if(invoker.location()!=null)
 					invoker.location().show(invoker,mob,CMMsg.MSG_OK_VISUAL,L("<S-NAME> lose(s) <S-HIS-HER> grip on <T-NAME>!"));
 				CMLib.combat().postAttack(mob, invoker, mob.fetchWieldedItem());
 			}
 			else
-			if((!mob.amDead())&&(invoker!=null)&&(invoker.location()!=null))
+			if((!mob.amDead())&&(invoker.location()!=null))
 				invoker.location().show(invoker,mob,CMMsg.MSG_OK_VISUAL,L("<S-NAME> lose(s) <S-HIS-HER> grip on <T-NAME>, who staggers away."));
 		}
 	}

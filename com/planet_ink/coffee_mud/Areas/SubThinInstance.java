@@ -103,7 +103,7 @@ public class SubThinInstance extends StdThinInstance
 	}
 
 	@Override
-	protected Area createRedirectArea(MOB mob)
+	protected Area createRedirectArea(List<MOB> mobs)
 	{
 		if(instanceChildren.size()==0)
 		{
@@ -116,12 +116,16 @@ public class SubThinInstance extends StdThinInstance
 				addProperRoomnumber(convertToMyArea(e.nextElement()));
 			setAreaState(Area.State.ACTIVE); // starts ticking
 			final List<WeakReference<MOB>> newMobList = new SVector<WeakReference<MOB>>(5);
-			newMobList.add(new WeakReference<MOB>(mob));
+			for(final MOB mob : mobs)
+				newMobList.add(new WeakReference<MOB>(mob));
 			final AreaInstanceChild child = new AreaInstanceChild(this,newMobList);
 			instanceChildren.add(child);
 		}
 		else
-			instanceChildren.get(0).mobs.add(new WeakReference<MOB>(mob));
+		{
+			for(final MOB mob : mobs)
+				instanceChildren.get(0).mobs.add(new WeakReference<MOB>(mob));
+		}
 		return this;
 	}	
 }
