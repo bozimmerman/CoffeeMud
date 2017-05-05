@@ -2259,13 +2259,13 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 						exit.executeMsg(mob,enterMsg);
 						thisRoom.sendOthers(mob, leaveMsg);
 						this.unDock(false);
-						destRoom.moveItemTo(this);
+						((Room)enterMsg.target()).moveItemTo(this);
 						ticksSinceMove=0;
-						this.dockHere(destRoom);
+						this.dockHere(((Room)enterMsg.target()));
 						//this.sendAreaMessage(leaveMsg, true);
 						if(opExit!=null)
 							opExit.executeMsg(mob,leaveMsg);
-						destRoom.send(mob, enterMsg);
+						((Room)enterMsg.target()).send(mob, enterMsg);
 						haveEveryoneLookOverBow();
 						return SailResult.CONTINUE;
 					}

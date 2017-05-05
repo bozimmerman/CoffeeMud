@@ -202,7 +202,8 @@ public class WaterSurface extends StdRoom implements Drink
 		if(!this.skyedYet)
 			giveASky(0);
 		else
-		if(rawDoors()[Directions.DOWN]==null)
+		if((rawDoors()[Directions.DOWN]==null)
+		||(this.exits[Directions.DOWN]==null))
 		{
 			clearSky();
 			giveASky(0);
@@ -228,6 +229,7 @@ public class WaterSurface extends StdRoom implements Drink
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
+		fixUnderwater();
 		super.executeMsg(myHost,msg);
 		UnderWater.sinkAffects(this,msg);
 	}

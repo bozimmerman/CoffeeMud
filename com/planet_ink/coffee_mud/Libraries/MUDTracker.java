@@ -656,7 +656,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 				roomsToDo.add(R);
 				H.add(R);
 				if(!radiateTo.isFilteredOut(R1, R, E, d)) // R can't be null here, so if they are equal, time to go!
-					return R1;
+					return R;
 			}
 		}
 		return null;

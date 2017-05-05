@@ -655,7 +655,7 @@ public class StdThinInstance extends StdThinArea
 			if(msg.source().isMonster()
 			&&(msg.source().riding() instanceof BoardableShip))
 			{
-				Area subA=((BoardableShip)msg.source()).getShipArea();
+				Area subA=((BoardableShip)msg.source().riding()).getShipArea();
 				for(Enumeration<Room> r=subA.getProperMap();r.hasMoreElements();)
 				{
 					final Room R=r.nextElement();
