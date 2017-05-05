@@ -655,7 +655,9 @@ public class StdThinInstance extends StdThinArea
 			if(msg.source().isMonster()
 			&&(msg.source().riding() instanceof BoardableShip))
 			{
-				Area subA=((BoardableShip)msg.source().riding()).getShipArea();
+				final List<MOB> mobSet=new LinkedList<MOB>();
+				boolean playerFound=false;
+				final Area subA=((BoardableShip)msg.source().riding()).getShipArea();
 				for(Enumeration<Room> r=subA.getProperMap();r.hasMoreElements();)
 				{
 					final Room R=r.nextElement();
@@ -665,9 +667,16 @@ public class StdThinInstance extends StdThinArea
 						{
 							final MOB M=m.nextElement();
 							if(M!=null)
-								grp.add(M);
+							{
+								mobSet.add(M);
+								playerFound = playerFound || (!M.isMonster());
+							}
 						}
 					}
+				}
+				if(playerFound)
+				{
+					grp.addAll(mobSet);
 				}
 			}
 			synchronized(instanceChildren)
