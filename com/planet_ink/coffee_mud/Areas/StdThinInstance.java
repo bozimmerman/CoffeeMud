@@ -646,7 +646,8 @@ public class StdThinInstance extends StdThinArea
 		&&(msg.target() instanceof Room)
 		&&(doesManageMobLists())
 		&&(isRoom((Room)msg.target()))
-		//&&(!CMSecurity.isAllowed(msg.source(),(Room)msg.target(),CMSecurity.SecFlag.CMDAREAS)) //TODO: BZ: FiXME!
+		&&((!CMSecurity.isAllowed(msg.source(),(Room)msg.target(),CMSecurity.SecFlag.CMDAREAS))
+			||(!msg.source().isAttributeSet(MOB.Attrib.SYSOPMSGS)))
 		&&(((msg.source().getStartRoom()==null)||(msg.source().getStartRoom().getArea()!=this))))
 		{
 			int myDex=-1;
