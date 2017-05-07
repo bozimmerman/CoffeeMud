@@ -130,7 +130,7 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 							eraseFromScrollItem(fromTheScroll,theSpell,theSpellLevel);
 						buildingI=buildScrollItem((Scroll)buildingI, theSpell, theSpellLevel);
 						if(buildingI.secretIdentity().length()==0)
-							buildingI.setSecretIdentity(getBrand(mob));
+							setBrand(mob, buildingI);
 
 					}
 				}

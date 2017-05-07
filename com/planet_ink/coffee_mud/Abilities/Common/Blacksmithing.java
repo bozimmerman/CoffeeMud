@@ -436,7 +436,7 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 		buildingI.basePhyStats().setWeight(getStandardWeight(woodRequired+compData[CF_AMOUNT],bundling));
 		buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE))+(woodRequired*(RawMaterial.CODES.VALUE(data[0][FOUND_CODE]))));
 		buildingI.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL)));
-		buildingI.setSecretIdentity(getBrand(mob));
+		setBrand(mob, buildingI);
 		final int capacity=CMath.s_int(foundRecipe.get(RCP_CAPACITY));
 		final String spell=(foundRecipe.size()>RCP_SPELL)?foundRecipe.get(RCP_SPELL).trim():"";
 		addSpells(buildingI,spell);

@@ -489,7 +489,7 @@ public class Costuming extends EnhancedCraftingSkill implements ItemCraftor, Men
 			final int hardness=RawMaterial.CODES.HARDNESS(buildingI.material())-1;
 			buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE)));
 			buildingI.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL)));
-			buildingI.setSecretIdentity(getBrand(mob));
+			setBrand(mob, buildingI);
 			final int capacity=CMath.s_int(foundRecipe.get(RCP_CAPACITY));
 			final long canContain=getContainerType(foundRecipe.get(RCP_CONTAINMASK));
 			final int armordmg=CMath.s_int(foundRecipe.get(RCP_ARMORDMG));

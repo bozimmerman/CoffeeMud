@@ -348,7 +348,7 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 		buildingI.setMaterial(super.getBuildingMaterial(woodRequired, data, compData));
 		final String spell=(foundRecipe.size()>RCP_SPELL)?foundRecipe.get(RCP_SPELL).trim():"";
 		addSpells(buildingI,spell);
-		buildingI.setSecretIdentity(getBrand(mob));
+		setBrand(mob, buildingI);
 		if(((data[0][FOUND_CODE]&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN)
 		||(data[0][FOUND_CODE]==RawMaterial.RESOURCE_RICE))
 			buildingI.setMaterial(RawMaterial.RESOURCE_PAPER);

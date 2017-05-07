@@ -541,7 +541,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 			buildingI.setDescription(itemName+". ");
 			buildingI.basePhyStats().setWeight(getStandardWeight(woodRequired+compData[CF_AMOUNT],bundling));
 			buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE))*multiplier);
-			buildingI.setSecretIdentity(getBrand(mob));
+			setBrand(mob, buildingI);
 			final int hardness=RawMaterial.CODES.HARDNESS(buildingI.material())-2;
 			buildingI.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL))+hardness);
 			final int capacity=CMath.s_int(foundRecipe.get(RCP_CAPACITY));

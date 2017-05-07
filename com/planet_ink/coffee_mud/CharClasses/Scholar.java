@@ -141,11 +141,14 @@ public class Scholar extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Tagging",true);
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"PaperMaking",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Skill_CombatLog",false);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Thief_Mark",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Organizing",false);
+		
+		
 		
 /*
-2	Tagging (G)		
-3	PaperMaking (G), Combat Logging (Q)		
-4	Organizing (Q), Thief_Mark (Q)		
 5	Dissertating  (G), Skill_WandUse(Q), Smoke Signals (Q)		
 6	Copywriting (G), Morse Code (Q)		
 7	Edit (G), Identify Poison (Q), Druid_KnowPlants		

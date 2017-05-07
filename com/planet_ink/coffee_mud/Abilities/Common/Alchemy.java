@@ -396,7 +396,7 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 			oldName=buildingI.name();
 			buildingI.destroy();
 			buildingI=buildItem(theSpell, theSpellLevel);
-			buildingI.setSecretIdentity(getBrand(mob));
+			setBrand(mob, buildingI);
 
 			int duration=CMLib.ableMapper().qualifyingLevel(mob,theSpell)*5;
 			if(duration<10)

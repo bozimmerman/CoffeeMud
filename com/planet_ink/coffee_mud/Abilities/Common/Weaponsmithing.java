@@ -507,7 +507,7 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 			buildingI.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL))+(hardness*3));
 			if(buildingI.basePhyStats().level()<1)
 				buildingI.basePhyStats().setLevel(1);
-			buildingI.setSecretIdentity(getBrand(mob));
+			setBrand(mob, buildingI);
 			if(bundling)
 				buildingI.setBaseValue(lostValue);
 			addSpells(buildingI,spell);

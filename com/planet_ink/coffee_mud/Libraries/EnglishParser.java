@@ -72,6 +72,31 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	}
 
 	@Override
+	public String toEnglishStringList(final Class<? extends Enum<?>> enumer, boolean andOr)
+	{
+		Enum<?>[] V=enumer.getEnumConstants();
+		if((V==null)||(V.length==0))
+		{
+			return "";
+		}
+		if(V.length==1)
+			return V[0].toString();
+		final StringBuffer s=new StringBuffer("");
+		for(int v=0;v<V.length-1;v++)
+		{
+			if(v>0)
+				s.append(", ");
+			s.append(V[v].toString());
+		}
+		if(andOr)
+			s.append(" and ");
+		else
+			s.append(" or ");
+		s.append(V[V.length-1].toString());
+		return s.toString();
+	}
+
+	@Override
 	public String toEnglishStringList(final Collection<? extends Object> V)
 	{
 		if((V==null)||(V.isEmpty()))
@@ -2265,7 +2290,9 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 						||E.name().equalsIgnoreCase(srchStr)
 						||E.Name().equalsIgnoreCase(srchStr))
 						{
-							if((!allFlag)||(E instanceof Ability)||((E.displayText()!=null)&&(E.displayText().length()>0)))
+							if((!allFlag)
+							||(E instanceof Ability)
+							||((E.displayText()!=null)&&(E.displayText().length()>0)))
 							{
 								if((--myOccurrance)<=0)
 									return E;
@@ -2285,7 +2312,9 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 						||containsString(E.Name(),srchStr)
 						||containsString(E.displayText(),srchStr)
 						||((E instanceof MOB)&&containsString(((MOB)E).genericName(),srchStr)))
-					&&((!allFlag)||(E instanceof Ability)||((E.displayText()!=null)&&(E.displayText().length()>0))))
+					&&((!allFlag)
+						||(E instanceof Ability)
+						||((E.displayText()!=null)&&(E.displayText().length()>0))))
 					{
 						if((--myOccurrance)<=0)
 							return E;
@@ -2343,7 +2372,9 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 						||containsString(E.Name(),srchStr)
 						||containsString(E.displayText(),srchStr)
 						||((E instanceof MOB)&&containsString(((MOB)E).genericName(),srchStr)))
-					&&((!allFlag)||(E instanceof Ability)||((E.displayText()!=null)&&(E.displayText().length()>0))))
+					&&((!allFlag)
+						||(E instanceof Ability)
+						||((E.displayText()!=null)&&(E.displayText().length()>0))))
 					{
 						if((--myOccurrance)<=0)
 							return E;
@@ -2524,7 +2555,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 					  ||(I.Name().equalsIgnoreCase(srchStr))
 					  ||(I.name().equalsIgnoreCase(srchStr))))
 					{
-						if((!allFlag)||((I.displayText()!=null)&&(I.displayText().length()>0)))
+						if((!allFlag)
+						||((I.displayText()!=null)&&(I.displayText().length()>0)))
 						{
 							if((--myOccurrance)<=0)
 								return I;
@@ -2546,7 +2578,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 					&&(I.container()==goodLocation)
 					&&(filter.passesFilter(I))
 					&&(containsString(I.name(),srchStr)||containsString(I.Name(),srchStr))
-					&&((!allFlag)||((I.displayText()!=null)&&(I.displayText().length()>0))))
+					&&((!allFlag)
+						||((I.displayText()!=null)&&(I.displayText().length()>0))))
 					{
 						if((--myOccurrance)<=0)
 							return I;
@@ -2810,7 +2843,9 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 						||E.Name().equalsIgnoreCase(srchStr)
 						||E.name().equalsIgnoreCase(srchStr))
 						{
-							if((!allFlag)||(E instanceof Ability)||((E.displayText()!=null)&&(E.displayText().length()>0)))
+							if((!allFlag)
+							||(E instanceof Ability)
+							||((E.displayText()!=null)&&(E.displayText().length()>0)))
 							{
 								if((--myOccurrance)<=0)
 									return E;

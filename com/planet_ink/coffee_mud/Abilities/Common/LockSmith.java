@@ -354,7 +354,7 @@ public class LockSmith extends CraftingSkill
 		buildingI.basePhyStats().setWeight(woodRequired);
 		buildingI.setBaseValue(1);
 		buildingI.basePhyStats().setLevel(1);
-		buildingI.setSecretIdentity(getBrand(mob));
+		setBrand(mob, buildingI);
 		buildingI.recoverPhyStats();
 		buildingI.text();
 		buildingI.recoverPhyStats();

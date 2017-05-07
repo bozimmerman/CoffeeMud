@@ -19,7 +19,7 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /*
-   Copyright 2001-2017 Bo Zimmerman
+   Copyright 2017-2017 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -146,7 +146,7 @@ public class Skill_CombatLog extends StdSkill
 	protected String getReport(final Session session, final MOB mob, final int level)
 	{
 		StringBuilder rep = new StringBuilder("");
-		rep.append(L("Combat statistics for @x1: \n\r",mob.name()));
+		rep.append(L("Combat statistics for @x1 \n\r",mob.name()));
 		if(stats.size() == CombatStat.values().length)
 		{
 			final Map<CombatStat,long[]> stats = new Hashtable<CombatStat,long[]>();
@@ -478,8 +478,22 @@ public class Skill_CombatLog extends StdSkill
 			else
 			if("WRITE".startsWith(cmd))
 			{
-				//TODO:
-				return true;
+				Skill_Write write=(Skill_Write)mob.fetchAbility("Skill_Write");
+				if(write == null)
+				{
+					mob.tell(L("You don't know how to write!"));
+					return false;
+				}
+				if(commands.size()<2)
+				{
+					mob.tell(L("Write the report on what?"));
+					return false;
+				}
+				String onWhat=CMParms.combine(commands,1);
+				List<String> writeParms=new ArrayList<String>();
+				writeParms.add(onWhat);
+				writeParms.add(this.getReport(null, loggingM, super.getXLEVELLevel(mob)));
+				return write.invoke(mob, writeParms, null, auto, asLevel);
 			}
 			else
 			{

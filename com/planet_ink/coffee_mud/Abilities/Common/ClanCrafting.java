@@ -384,7 +384,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 		final int capacity=CMath.s_int(foundRecipe.get(RCP_CAPACITY));
 		final long canContain=getContainerType(foundRecipe.get(RCP_CONTAINMASK));
 		final int armordmg=CMath.s_int(foundRecipe.get(RCP_ARMORDMG));
-		buildingI.setSecretIdentity(getBrand(mob));
+		setBrand(mob, buildingI);
 		final String spell=(foundRecipe.size()>RCP_SPELL)?foundRecipe.get(RCP_SPELL).trim():"";
 		if(buildingI instanceof ClanItem)
 		{

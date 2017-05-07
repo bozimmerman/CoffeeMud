@@ -782,7 +782,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 			buildingI.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL))+(hardness));
 			if(buildingI.basePhyStats().level()<1)
 				buildingI.basePhyStats().setLevel(1);
-			buildingI.setSecretIdentity(getBrand(mob));
+			setBrand(mob, buildingI);
 			final int capacity=CMath.s_int(foundRecipe.get(RCP_CAPACITY));
 			final long canContain=getContainerType(foundRecipe.get(RCP_CONTAINMASK));
 			final int armordmg=CMath.s_int(foundRecipe.get(RCP_ARMORDMG));

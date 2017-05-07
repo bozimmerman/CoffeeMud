@@ -449,7 +449,7 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 			buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE)));
 			final int level=CMath.s_int(foundRecipe.get(RCP_LEVEL));
 			buildingI.basePhyStats().setLevel(level+hardness);
-			buildingI.setSecretIdentity(getBrand(mob));
+			setBrand(mob, buildingI);
 			final String ammotype=foundRecipe.get(RCP_AMMOTYPE);
 			final int capacity=CMath.s_int(foundRecipe.get(RCP_AMOCAPACITY));
 			final int maxrange=CMath.s_int(foundRecipe.get(RCP_MAXRANGE));

@@ -359,7 +359,7 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 		buildingI.basePhyStats().setWeight(woodRequired);
 		buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE))+(woodRequired*(RawMaterial.CODES.VALUE(data[0][FOUND_CODE]))));
 		buildingI.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL)));
-		buildingI.setSecretIdentity(getBrand(mob));
+		setBrand(mob, buildingI);
 		final int capacity=CMath.s_int(foundRecipe.get(RCP_CAPACITY));
 		final int armordmg=CMath.s_int(foundRecipe.get(RCP_ARMORDMG));
 		final int hardness=RawMaterial.CODES.HARDNESS(buildingI.material())-3;

@@ -216,7 +216,7 @@ public class Taxidermy extends CraftingSkill
 			buildingI.setDisplayText(pose);
 		}
 		buildingI.setDescription(desc);
-		buildingI.setSecretIdentity(getBrand(mob));
+		setBrand(mob, buildingI);
 		buildingI.recoverPhyStats();
 		displayText=L("You are stuffing @x1",I.name());
 		verb=L("stuffing @x1",I.name());

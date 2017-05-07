@@ -681,7 +681,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 				buildingI.setDescription(itemName+". ");
 			buildingI.basePhyStats().setWeight(getStandardWeight(woodRequired+compData[CF_AMOUNT],bundling));
 			buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE))+(woodRequired*(RawMaterial.CODES.VALUE(data[0][FOUND_CODE]))));
-			buildingI.setSecretIdentity(getBrand(mob));
+			setBrand(mob, buildingI);
 			if(buildingI.material()==data[1][FOUND_CODE])
 				buildingI.setBaseValue(buildingI.baseGoldValue()+RawMaterial.CODES.VALUE(data[1][FOUND_CODE]));
 			buildingI.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL)));
