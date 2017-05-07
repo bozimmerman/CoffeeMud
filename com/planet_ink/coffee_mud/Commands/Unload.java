@@ -66,6 +66,7 @@ public class Unload extends StdCommand
 			return false;
 		}
 		final String str=CMParms.combine(commands,1);
+		String what=commands.get(1);
 		if(tryArchon)
 		{
 			Item I=mob.fetchWieldedItem();
@@ -87,11 +88,11 @@ public class Unload extends StdCommand
 						tryArchon=false;
 				}
 			}
-			for(final String aList : ARCHON_LIST)
-			{
-				if(str.equalsIgnoreCase(aList))
-					tryArchon=true;
-			}
+		}
+		for(final String aList : ARCHON_LIST)
+		{
+			if(what.equalsIgnoreCase(aList))
+				tryArchon=true;
 		}
 		if(!tryArchon)
 		{
@@ -126,7 +127,62 @@ public class Unload extends StdCommand
 		}
 		else
 		{
-			String what=commands.get(1);
+			// Area Unloading
+			if((commands.get(1).equalsIgnoreCase("AREA"))
+			&&(CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.CMDAREAS))
+			&&(CMLib.map().getArea(CMParms.combine(commands,2))!=null))
+			{
+				final String which=CMParms.combine(commands,2);
+				if(mob.session().confirm(L("Are you sure you want to unload area '@x1' (y/N)?",which), "N"))
+				{
+					Area A=null;
+					if(which.length()>0)
+						A=CMLib.map().getArea(which);
+					if(A==null)
+						mob.tell(L("Unknown Area '@x1'.  Use AREAS.",which));
+					else
+					{
+						LinkedList<Room> rooms=new LinkedList<Room>();
+						for(Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
+						{
+							try 
+							{
+								final Room R=r.nextElement();
+								if(R!=null)
+								{
+									rooms.add(R);
+									CMLib.map().emptyRoom(R, null, true);
+								}
+							} 
+							catch(Exception e) 
+							{
+							}
+						}
+						for(Iterator<Room> r=rooms.iterator();r.hasNext();)
+						{
+							try 
+							{
+								final Room R=r.next();
+								A.delProperRoom(R);
+								if(R instanceof GridLocale)
+									((GridLocale)R).clearGrid(R);
+								R.destroy();
+								if(R instanceof GridLocale)
+									((GridLocale)R).clearGrid(null);
+							} 
+							catch(Exception e) 
+							{
+							}
+						}
+						rooms.clear();
+						A.destroy();
+						CMLib.map().delArea(A);
+						mob.tell(L("Area '@x1' has been unloaded.",A.Name()));
+					}
+				}
+				return false;
+			}
+			else
 			if((what.equalsIgnoreCase("CLASS")||(CMClass.findObjectType(what)!=null))
 			&&(CMSecurity.isASysOp(mob)))
 			{
@@ -307,22 +363,6 @@ public class Unload extends StdCommand
 						return false;
 					}
 					mob.tell(L("Unknown Faction '@x1'.  Use LIST FACTIONS.",which));
-					return false;
-				}
-			}
-			else
-			// Area Unloading
-			if((commands.get(1).equalsIgnoreCase("AREA"))
-			&&(CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.CMDAREAS)))
-			{
-				final String which=CMParms.combine(commands,2);
-				Area A=null;
-				if(which.length()>0)
-					A=CMLib.map().getArea(which);
-				if(A==null)
-					mob.tell(L("Unknown Area '@x1'.  Use AREAS.",which));
-				else
-				{
 					return false;
 				}
 			}

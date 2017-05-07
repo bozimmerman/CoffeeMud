@@ -334,11 +334,23 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
+	public String DBIsAreaName(String name)
+	{
+		return RoomLoader.DBIsAreaName(name);
+	}
+	
+	@Override
 	public Room DBReadRoom(String roomID, boolean reportStatus)
 	{
 		return RoomLoader.DBReadRoomData(roomID, reportStatus);
 	}
 
+	@Override
+	public boolean DBReadAreaFull(String areaName)
+	{
+		return RoomLoader.DBReadAreaFull(areaName);
+	}
+	
 	@Override
 	public void DBReadAllRooms(RoomnumberSet roomsToRead)
 	{
@@ -393,6 +405,12 @@ public class DBInterface implements DatabaseEngine
 		RoomLoader.DBReadContent(roomID, thisRoom, null, null, false, makeLive);
 	}
 
+	@Override
+	public Area DBReadAreaObject(String areaName)
+	{
+		return RoomLoader.DBReadAreaObject(areaName);
+	}
+	
 	@Override
 	public RoomnumberSet DBReadAreaRoomList(String areaName, boolean reportStatus)
 	{

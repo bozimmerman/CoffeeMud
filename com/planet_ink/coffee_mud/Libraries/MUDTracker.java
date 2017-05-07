@@ -1840,7 +1840,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		if(foundAt<0)
 			return "You can't get to '"+R2.roomID()+"' from here.";
 		Room checkR=R2;
-		final List<Room> trailV=new Vector<Room>();
+		final List<Room> trailV=new ArrayList<Room>();
 		trailV.add(R2);
 		final HashSet<Area> areasDone=new HashSet<Area>();
 		boolean didSomething=false;
@@ -1868,7 +1868,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			if(!didSomething)
 				return "You can't get there from here.";
 		}
-		final List<String> theDirTrail=new Vector<String>();
+		final List<String> theDirTrail=new ArrayList<String>();
 		final List<Room> empty=new ReadOnlyVector<Room>();
 		for(int s=trailV.size()-1;s>=1;s--)
 		{

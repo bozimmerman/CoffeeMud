@@ -56,6 +56,31 @@ public class RoomLoader
 		public Hashtable<String,Hashtable<MOB, String>> mobRides=new Hashtable<String,Hashtable<MOB, String>>();
 	}
 
+	public String DBIsAreaName(String name)
+	{
+		DBConnection D=null;
+		try
+		{
+			D=DB.DBFetch();
+			final ResultSet R=D.query("SELECT CMAREA FROM CMAREA WHERE CMAREA LIKE '"+name+"'");
+			if(R.next())
+			{
+				final String areaName=R.getString("CMAREA");
+				R.close();
+				return areaName;
+			}
+		}
+		catch(final SQLException sqle)
+		{
+			Log.errOut("Area",sqle);
+		}
+		finally
+		{
+			DB.DBDone(D);
+		}
+		return null;
+	}
+	
 	public void DBReadArea(Area A)
 	{
 		DBConnection D=null;
@@ -82,6 +107,85 @@ public class RoomLoader
 		{
 			DB.DBDone(D);
 		}
+	}
+	
+	public boolean DBReadAreaFull(String areaName)
+	{
+		if(CMLib.map().getArea(areaName)!=null)
+			return false;
+		final Area A=DBReadAreaObject(areaName);
+		if(A==null)
+			return false;
+		final RoomnumberSet unloadedRooms=(RoomnumberSet)CMClass.getCommon("DefaultRoomnumberSet");
+		for(Enumeration<String> ids = CMLib.map().roomIDs();ids.hasMoreElements();)
+			unloadedRooms.add(ids.nextElement());
+
+		RoomnumberSet set = CMLib.database().DBReadAreaRoomList(areaName, false);
+		CMLib.map().addArea(A);
+		final Map<String,Room> rooms=DBReadRoomData(null,set,false,null,unloadedRooms);
+
+		DBReadRoomExits(null,rooms,false,unloadedRooms);
+
+		DBReadContent(null,null,rooms,unloadedRooms,false,true);
+
+		for(final Map.Entry<String,Room> entry : rooms.entrySet())
+		{
+			final Room thisRoom=entry.getValue();
+			thisRoom.startItemRejuv();
+			thisRoom.recoverRoomStats();
+		}
+		return true;
+	}
+	
+	public Area DBReadAreaObject(String areaName)
+	{
+		DBConnection D=null;
+		try
+		{
+			D=DB.DBFetch();
+			final ResultSet R=D.query("SELECT * FROM CMAREA WHERE CMAREA = '" + areaName + "'");
+			recordCount=DB.getRecordCount(D,R);
+			updateBreak=CMath.s_int("1"+zeroes.substring(0,(""+(recordCount/100)).length()-1));
+			while(R.next())
+			{
+				currentRecordPos=R.getRow();
+				areaName=DBConnections.getRes(R,"CMAREA");
+				final String areaType=DBConnections.getRes(R,"CMTYPE");
+				Area A=CMClass.getAreaType(areaType);
+				if(A==null)
+					A=CMClass.getAreaType("StdArea");
+				if(A==null)
+				{
+					Log.errOut("Could not read area: "+areaName);
+					continue;
+				}
+				A.setName(areaName);
+				A.setClimateType((int)DBConnections.getLongRes(R,"CMCLIM"));
+				A.setSubOpList(DBConnections.getRes(R,"CMSUBS"));
+				A.setDescription(DBConnections.getRes(R,"CMDESC"));
+				final String miscData=DBConnections.getRes(R,"CMROTX");
+				A.setTheme((int)DBConnections.getLongRes(R,"CMTECH"));
+				if((currentRecordPos%updateBreak)==0)
+					CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: Loading Areas ("+currentRecordPos+" of "+recordCount+")");
+				R.close();
+				A.setMiscText(miscData);
+				A.setAreaState(Area.State.ACTIVE);
+				return A;
+			}
+		}
+		catch(final SQLException sqle)
+		{
+			Log.errOut("Area",sqle);
+		}
+		catch(final Exception sqle)
+		{
+			Log.errOut("Area",sqle);
+		}
+		finally
+		{
+			DB.DBDone(D);
+		}
+		return null;
 	}
 
 	protected void DBReadAllAreas()

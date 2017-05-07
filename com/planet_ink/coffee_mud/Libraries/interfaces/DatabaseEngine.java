@@ -177,9 +177,63 @@ public interface DatabaseEngine extends CMLibrary
 	 * Reloads the basic data of the given area, with a prefilled Name.
 	 * It does not load or alter rooms or anything like that, only
 	 * the internal variables of the area.
+	 * 
+	 * @see DatabaseEngine#DBIsAreaName(String)
+	 * @see DatabaseEngine#DBReadAreaRoomList(String, boolean)
+	 * @see DatabaseEngine#DBReadAreaObject(String)
+	 * @see DatabaseEngine#DBReadAreaFull(String)
+	 * 
 	 * @param A the area to reload
 	 */
 	public void DBReadAreaData(Area A);
+
+	/**
+	 * Table category: DBMAP
+	 * Reloads the basic data of the given area by exact Name.
+	 * It does not load or alter rooms or anything like that, only
+	 * the internal variables of the area. Does not add the 
+	 * area to the map.
+	 * 
+	 * @see DatabaseEngine#DBIsAreaName(String)
+	 * @see DatabaseEngine#DBReadAreaRoomList(String, boolean)
+	 * @see DatabaseEngine#DBReadAreaData(Area)
+	 * @see DatabaseEngine#DBReadAreaFull(String)
+	 * 
+	 * @param areaName the name of the area to load
+	 */
+	public Area DBReadAreaObject(String areaName);
+
+	/**
+	 * Table category: DBMAP
+	 * Reloads the given area by exact Name. This includes the
+	 * rooms, and the mobs, and the items, and it adds it to the
+	 * map.  It's complete and total and working.
+	 * 
+	 * @see DatabaseEngine#DBIsAreaName(String)
+	 * @see DatabaseEngine#DBReadAreaRoomList(String, boolean)
+	 * @see DatabaseEngine#DBReadAreaData(Area)
+	 * @see DatabaseEngine#DBReadAreaObject(String)
+	 * 
+	 * @param areaName the name of the area to load
+	 */
+	public boolean DBReadAreaFull(String areaName);
+
+	/**
+	 * Table category: DBMAP
+	 * 
+	 * Checks for the database for an area with approximately the
+	 * given name, returning the correct name if found, false
+	 * otherwise.
+	 * 
+	 * @see DatabaseEngine#DBReadAreaData(Area)
+	 * @see DatabaseEngine#DBReadAreaRoomList(String, boolean)
+	 * @see DatabaseEngine#DBReadAreaObject(String)
+	 * @see DatabaseEngine#DBReadAreaFull(String)
+	 * 
+	 * @param name the name to search for (hopefully case insensitive)
+	 * @return the real name, case-correct, or NULL if not found
+	 */
+	public String DBIsAreaName(String name);
 
 	/**
 	 * Table category: DBMAP

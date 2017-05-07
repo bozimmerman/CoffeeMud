@@ -202,6 +202,45 @@ public class Load extends StdCommand
 				}
 			}
 			else
+			if(what.equalsIgnoreCase("AREA")
+			&&(CMLib.database().DBIsAreaName(name)!=null))
+			{
+				final String areaName = CMLib.database().DBIsAreaName(name);
+				if(CMLib.map().getArea(areaName)!=null)
+					mob.tell(L("Area '@x1' already loaded.  Either unload it first, or be happy with what you have.",name));
+				else
+				{
+					mob.tell(L("Loading area '@x1'...",areaName));
+					if(CMLib.database().DBReadAreaFull(areaName))
+					{
+						final Area newAreaA=CMLib.map().getArea(areaName);
+						for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
+						{
+							final Room R=r.nextElement();
+							final Area randomRoomArea = R.getArea();
+							final int numDirs=Directions.NUM_DIRECTIONS();
+							if(!R.getArea().Name().equals(areaName))
+							{
+								for(int d=0;d<numDirs;d++)
+								{
+									final Room R1=R.rawDoors()[d];
+									if((R1!=null)
+									&&(R1.roomID().length()>0)
+									&&(R1.getArea()!=randomRoomArea)
+									&&(R1.getArea()!=newAreaA)
+									&&(R1.getArea().Name().equals(areaName)))
+										R.rawDoors()[d]=newAreaA.getRoom(R1.roomID());
+								}
+							}
+						}
+						mob.tell(L("Done."));
+					}
+					else
+						mob.tell(L("Fail."));
+				}
+				return false;
+			}
+			else
 			if(CMSecurity.isASysOp(mob))
 			{
 				try

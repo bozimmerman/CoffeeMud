@@ -5,6 +5,7 @@
    3. GMODIFY now supports changing the CLASS of objects, including rooms.
    4. RESET RELEVEL tool added to refactor an areas level range.
    5. New skills: Studying, Tagging
+   6. Areas can now be unloaded.  And then loaded back again.  See UNLOAD and LOAD.
 
 # Build 5.9.5 Release 04/10/2017
    *. Database Schema Updated for CMGRAC.  See the Installation Guide about running DBUpgrade.
