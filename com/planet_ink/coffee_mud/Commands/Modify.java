@@ -37,10 +37,17 @@ import java.io.IOException;
 */
 public class Modify extends StdCommand
 {
-	public Modify(){}
+	public Modify()
+	{
+	}
 
 	private final String[] access=I(new String[]{"MODIFY","MOD"});
-	@Override public String[] getAccessWords(){return access;}
+
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
 	@SuppressWarnings("rawtypes")
 	private final static Class[][] internalParameters=new Class[][]{{Environmental.class}};
@@ -279,7 +286,11 @@ public class Modify extends StdCommand
 			newRoom.getArea().fillInAreaRoom(newRoom);
 			return;
 		}
-		if(commands.size()<3) { flunkRoomCmd(mob); return;}
+		if (commands.size() < 3)
+		{
+			flunkRoomCmd(mob);
+			return;
+		}
 
 		final String command=commands.get(2).toUpperCase();
 		String restStr="";
@@ -288,7 +299,11 @@ public class Modify extends StdCommand
 
 		if(command.equalsIgnoreCase("AREA"))
 		{
-			if(commands.size()<4) { flunkRoomCmd(mob); return;}
+			if (commands.size() < 4)
+			{
+				flunkRoomCmd(mob);
+				return;
+			}
 			boolean confirmed=false;
 			String areaType="";
 			if((commands.size()>4)&&(CMClass.getAreaType(commands.get(commands.size()-1).toString())!=null))
@@ -375,7 +390,11 @@ public class Modify extends StdCommand
 		else
 		if(command.equalsIgnoreCase("NAME"))
 		{
-			if(commands.size()<4) { flunkRoomCmd(mob); return;}
+			if (commands.size() < 4)
+			{
+				flunkRoomCmd(mob);
+				return;
+			}
 			mob.location().setDisplayText(restStr);
 			CMLib.database().DBUpdateRoom(mob.location());
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("There is something different about this place...\n\r"));
@@ -383,7 +402,11 @@ public class Modify extends StdCommand
 		else
 		if(command.equalsIgnoreCase("CLASS"))
 		{
-			if(commands.size()<4) { flunkRoomCmd(mob); return;}
+			if (commands.size() < 4)
+			{
+				flunkRoomCmd(mob);
+				return;
+			}
 			final Room newRoom=CMClass.getLocale(restStr);
 			if(newRoom==null)
 			{
@@ -396,7 +419,11 @@ public class Modify extends StdCommand
 		else
 		if((command.equalsIgnoreCase("XGRID"))&&(mob.location() instanceof GridLocale))
 		{
-			if(commands.size()<4) { flunkRoomCmd(mob); return;}
+			if (commands.size() < 4)
+			{
+				flunkRoomCmd(mob);
+				return;
+			}
 			((GridLocale)mob.location()).setXGridSize(CMath.s_int(restStr));
 			((GridLocale)mob.location()).buildGrid();
 			CMLib.database().DBUpdateRoom(mob.location());
@@ -405,7 +432,11 @@ public class Modify extends StdCommand
 		else
 		if((command.equalsIgnoreCase("YGRID"))&&(mob.location() instanceof GridLocale))
 		{
-			if(commands.size()<4) { flunkRoomCmd(mob); return;}
+			if (commands.size() < 4)
+			{
+				flunkRoomCmd(mob);
+				return;
+			}
 			((GridLocale)mob.location()).setYGridSize(CMath.s_int(restStr));
 			((GridLocale)mob.location()).buildGrid();
 			CMLib.database().DBUpdateRoom(mob.location());
@@ -414,7 +445,11 @@ public class Modify extends StdCommand
 		else
 		if(command.equalsIgnoreCase("DESCRIPTION"))
 		{
-			if(commands.size()<4) { flunkRoomCmd(mob); return;}
+			if (commands.size() < 4)
+			{
+				flunkRoomCmd(mob);
+				return;
+			}
 			mob.location().setDescription(restStr);
 			CMLib.database().DBUpdateRoom(mob.location());
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The very nature of reality changes.\n\r"));
@@ -538,7 +573,11 @@ public class Modify extends StdCommand
 		}
 		else
 		{
-			if(commands.size()<3) { flunkAreaCmd(mob); return;}
+			if (commands.size() < 3)
+			{
+				flunkAreaCmd(mob);
+				return;
+			}
 
 			String command=commands.get(2).toUpperCase();
 			final STreeSet<String> helpSet=new STreeSet<String>();
@@ -561,7 +600,11 @@ public class Modify extends StdCommand
 
 			if(command.equalsIgnoreCase("NAME"))
 			{
-				if(commands.size()<4) { flunkAreaCmd(mob); return;}
+				if (commands.size() < 4)
+				{
+					flunkAreaCmd(mob);
+					return;
+				}
 				myArea.setName(restStr);
 			}
 			else
@@ -587,33 +630,54 @@ public class Modify extends StdCommand
 			else
 			if(command.equalsIgnoreCase("DESC"))
 			{
-				if(commands.size()<4) { flunkAreaCmd(mob); return;}
+				if (commands.size() < 4)
+				{
+					flunkAreaCmd(mob);
+					return;
+				}
 				myArea.setDescription(restStr);
 			}
 			else
 			if(command.equalsIgnoreCase("FILE"))
 			{
-				if(commands.size()<4) { flunkAreaCmd(mob); return;}
+				if (commands.size() < 4)
+				{
+					flunkAreaCmd(mob);
+					return;
+				}
 				myArea.setArchivePath(restStr);
 			}
 			else
 			if((command.equalsIgnoreCase("XGRID"))&&(myArea instanceof GridZones))
 			{
-				if(commands.size()<4) { flunkAreaCmd(mob); return;}
+				if (commands.size() < 4)
+				{
+					flunkAreaCmd(mob);
+					return;
+				}
 				((GridZones)myArea).setXGridSize(CMath.s_int(restStr));
 			}
 			else
 			if((command.equalsIgnoreCase("YGRID"))&&(myArea instanceof GridZones))
 			{
-				if(commands.size()<4) { flunkAreaCmd(mob); return;}
+				if (commands.size() < 4)
+				{
+					flunkAreaCmd(mob);
+					return;
+				}
 				((GridZones)myArea).setYGridSize(CMath.s_int(restStr));
 			}
 			else
 			if(command.equalsIgnoreCase("CLIMATE"))
 			{
-				if(commands.size()<4) { flunkAreaCmd(mob); return;}
+				if (commands.size() < 4)
+				{
+					flunkAreaCmd(mob);
+					return;
+				}
 				int newClimate=0;
 				for(int i=0;i<restStr.length();i++)
+				{
 					switch(Character.toUpperCase(restStr.charAt(i)))
 					{
 					case 'R':
@@ -639,6 +703,7 @@ public class Modify extends StdCommand
 						mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a powerful spell."));
 						return;
 					}
+				}
 				myArea.setClimateType(newClimate);
 			}
 			else
@@ -726,8 +791,10 @@ public class Modify extends StdCommand
 			CMLib.map().renameRooms(myArea,oldName,allMyDamnRooms);
 		}
 		for(Area A : alsoUpdateAreas)
+		{
 			if((A!=myArea)&&(!A.Name().equals(myArea.Name())))
 				CMLib.database().DBUpdateArea(A.Name(),A);
+		}
 		Log.sysOut("Rooms",mob.Name()+" modified area "+myArea.Name()+".");
 	}
 
@@ -871,8 +938,16 @@ public class Modify extends StdCommand
 					}
 					}
 
-					if((showFlag<-900)||(cmdDex>=0)){ ok=true; break;}
-					if(showFlag>0){ showFlag=-1; continue;}
+					if ((showFlag < -900) || (cmdDex >= 0))
+					{
+						ok = true;
+						break;
+					}
+					if (showFlag > 0)
+					{
+						showFlag = -1;
+						continue;
+					}
 					showFlag=CMath.s_int(mob.session().prompt(L("Edit which? "),""));
 					if(showFlag<=0)
 					{
@@ -912,7 +987,10 @@ public class Modify extends StdCommand
 					}
 				}
 			}
-		}catch(final NoSuchElementException e){}
+		}
+		catch (final NoSuchElementException e)
+		{
+		}
 		if(!prevExit.sameAs(thisExit))
 			Log.sysOut("CreateEdit",mob.Name()+" modified exit "+thisExit.ID()+".");
 		prevExit.destroy();
@@ -1311,24 +1389,26 @@ public class Modify extends StdCommand
 		allSocials = CMLib.socials().getSocialsSet(name);
 		boolean changed = allSocials.size() != oldSocials.size();
 		if(!changed)
-		for(int a=0;a<oldSocials.size();a++)
 		{
-			final Social oldSocial = oldSocials.get(a);
-			boolean found = false;
-			for(int a2=0;a2<allSocials.size();a2++)
+			for(int a=0;a<oldSocials.size();a++)
 			{
-				final Social newSocial = allSocials.get(a2);
-				if(oldSocial.name().equals(newSocial.name()))
+				final Social oldSocial = oldSocials.get(a);
+				boolean found = false;
+				for(int a2=0;a2<allSocials.size();a2++)
 				{
-					found = true;
-					changed = !oldSocial.sameAs(newSocial);
-					break;
+					final Social newSocial = allSocials.get(a2);
+					if(oldSocial.name().equals(newSocial.name()))
+					{
+						found = true;
+						changed = !oldSocial.sameAs(newSocial);
+						break;
+					}
 				}
+				if(!found)
+					changed = true;
+				if(changed)
+					break;
 			}
-			if(!found)
-				changed = true;
-			if(changed)
-				break;
 		}
 		if(changed)
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The happiness of all mankind has just fluxuated!"));
@@ -1510,7 +1590,6 @@ public class Modify extends StdCommand
 		String restStr="";
 		if(commands.size()>4)
 			restStr=CMParms.combine(commands,4);
-
 
 		final MOB modMOB=mob.location().fetchInhabitant(mobID);
 		if(modMOB==null)
@@ -1926,9 +2005,10 @@ public class Modify extends StdCommand
 			final Item I=CMClass.getItem("StdJournal");
 			I.setName(L("SYSTEM_NEWS"));
 			I.setDescription(L("Enter `LIST NEWS [NUMBER]` to read an entry.%0D%0AEnter CREATE NEWS to add new entries. "));
-			final CMMsg newMsg=CMClass.getMsg(mob,I,null,CMMsg.MSG_WRITE|CMMsg.MASK_ALWAYS,null,
-					CMMsg.MSG_WRITE|CMMsg.MASK_ALWAYS,CMParms.combine(commands,2),
-					CMMsg.MSG_WRITE|CMMsg.MASK_ALWAYS,null);
+			final CMMsg newMsg=CMClass.getMsg(mob,I,null,
+											CMMsg.MSG_WRITE|CMMsg.MASK_ALWAYS,null,
+											CMMsg.MSG_WRITE|CMMsg.MASK_ALWAYS,CMParms.combine(commands,2),
+											CMMsg.MSG_WRITE|CMMsg.MASK_ALWAYS,null);
 			if(mob.location().okMessage(mob,newMsg)&&I.okMessage(mob, newMsg))
 			{
 				mob.location().send(mob,newMsg);
@@ -2009,12 +2089,18 @@ public class Modify extends StdCommand
 				final String name=CMParms.combine(commands,2);
 				ClanGovernment G = null;
 				for(final ClanGovernment g : CMLib.clans().getStockGovernments())
+				{
 					if(g.getName().equalsIgnoreCase(name))
 						G=g;
+				}
 				if(G==null)
+				{
 					for(final ClanGovernment g : CMLib.clans().getStockGovernments())
+					{
 						if(g.getName().toLowerCase().startsWith(name.toLowerCase()))
 							G=g;
+					}
+				}
 				if(G==null)
 					mob.tell(L("Government '@x1' is unknown.  Try list governments.",name));
 				else
