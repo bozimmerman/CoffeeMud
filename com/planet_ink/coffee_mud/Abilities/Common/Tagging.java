@@ -183,6 +183,7 @@ public class Tagging extends CommonSkill
 					}
 					if(!writing.equals("REMOVE"))
 					{
+						writing=this.getTag(found);
 						found.setDescription(desc+getTagLabel()+writing);
 						found.setDisplayText(disp+"("+getTagLabel().trim()+writing+")");
 						commonTell(mob,L("The tag number is @x1.",writing));
@@ -270,7 +271,7 @@ public class Tagging extends CommonSkill
 		}
 		else
 		{
-			writing=this.getTag(target);
+			writing="TAG1";
 			verb=L("tagging @x1",target.name());
 		}
 		displayText=L("You are @x1",verb);
