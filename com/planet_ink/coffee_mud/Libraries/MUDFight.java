@@ -78,7 +78,9 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	protected CMath.CompiledFormula	stateHitPointRecoverFormula		= null;
 	protected CMath.CompiledFormula	stateManaRecoverFormula			= null;
 	protected CMath.CompiledFormula	stateMovesRecoverFormula		= null;
-
+	protected CMath.CompiledFormula totalCombatExperienceFormula	= null;
+	protected CMath.CompiledFormula individualCombatExpFormula		= null;
+	
 	private static final int ATTACK_ADJUSTMENT = 50;
 
 	@Override
@@ -113,6 +115,9 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		stateManaRecoverFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.Str.FORMULA_MANARECOVER));
 		stateMovesRecoverFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.Str.FORMULA_MOVESRECOVER));
 		
+		totalCombatExperienceFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.Str.FORMULA_TOTALCOMBATXP));
+		individualCombatExpFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.Str.FORMULA_INDCOMBATXP));
+
 		if(serviceClient==null)
 		{
 			name="THCombat"+Thread.currentThread().getThreadGroup().getName().charAt(0);
@@ -2681,21 +2686,35 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	public void dispenseExperience(Set<MOB> killers, Set<MOB> dividers, MOB killed)
 	{
 		int totalLevels=0;
-		int expAmount=100;
-		int expAddition=25;
+		int totalSquaredLevels=0;
 
-		//FORMULA_TOTALCOMBATXP=100
 		for (final MOB mob : dividers)
 		{
-			totalLevels += (mob.phyStats().level()*mob.phyStats().level());
-			expAmount += expAddition;
-			expAddition -= expAddition/4;
+			totalSquaredLevels += (mob.phyStats().level()*mob.phyStats().level());
+			totalLevels += mob.phyStats().level();
 		}
+
+		final double[] totalVars={
+			dividers.size(),
+			totalSquaredLevels,
+			totalLevels,
+			killers.size()
+		};
+		final double expAmount = CMath.parseMathExpression(this.totalCombatExperienceFormula, totalVars, 0.0);
+		
+		final double[] indiVars = {
+			expAmount,
+			0.0,
+			totalSquaredLevels,
+			0.0,
+			totalLevels,
+			killers.size()
+		};
 		for (final MOB mob : killers)
 		{
-			int myAmount=(int)Math.round(CMath.mul(expAmount,CMath.div(mob.phyStats().level()*mob.phyStats().level(),totalLevels)));
-			if(myAmount>100)
-				myAmount=100;
+			indiVars[1]=mob.phyStats().level()*mob.phyStats().level();
+			indiVars[3]=mob.phyStats().level();
+			final int myAmount=(int)Math.round(CMath.parseMathExpression(this.individualCombatExpFormula, indiVars, 0.0));
 			CMLib.leveler().postExperience(mob,killed,"",myAmount,false);
 		}
 	}

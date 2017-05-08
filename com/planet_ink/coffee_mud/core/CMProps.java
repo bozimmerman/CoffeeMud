@@ -196,7 +196,9 @@ public class CMProps extends Properties
 		BLACKLISTFILE,
 		REMORTMASK,
 		REMORTRETAIN,
-		RACEMIXING
+		RACEMIXING,
+		FORMULA_TOTALCOMBATXP,
+		FORMULA_INDCOMBATXP,
 	}
 
 	/**
@@ -2438,6 +2440,8 @@ public class CMProps extends Properties
 		setUpLowVar(Str.FORMULA_HITPOINTRECOVER, getStr("FORMULA_HITPOINTRECOVER","5+(((@x1 - (@xx*@x3/2.0) - (@xx*@x4/2.0))*@x2/9.0) + (@xx*@x6*.5) + (@xx/4.0*@x7) - (@xx/2.0*@x9))"));
 		setUpLowVar(Str.FORMULA_MANARECOVER, getStr("FORMULA_MANARECOVER","25+(((@x1 - (@xx*@x3/2.0) - (@xx*@x4/2.0) - (@xx*@x5/2.0))*@x2/50.0) + (@xx*@x6*.5) + (@xx/4.0*@x7) - (@xx/2.0*@x9))"));
 		setUpLowVar(Str.FORMULA_MOVESRECOVER, getStr("FORMULA_MOVESRECOVER","25+(((@x1 - (@xx*@x3/2.0) - (@xx*@x4/2.0) - (@xx*@x5/2.0))*@x2/10.0) + (@xx*@x6*.5) + (@xx/4.0*@x7) + (@xx/4.0*@x8) - (@xx/2.0*@x9))"));
+		setUpLowVar(Str.FORMULA_TOTALCOMBATXP, getStr("FORMULA_TOTALCOMBATXP","100 + ((25*@x1) - (@x1*((25*@x1)^.5)))"));
+		setUpLowVar(Str.FORMULA_INDCOMBATXP, getStr("FORMULA_INDCOMBATXP","(@x1 * (@x2 / @x3)) < 100"));
 
 		final LanguageLibrary lang = CMLib.lang();
 		Directions.instance().reInitialize(getInt("DIRECTIONS"), new Directions.DirectionWordTranslator()
