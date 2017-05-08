@@ -4242,12 +4242,13 @@ public class ListCmd extends StdCommand
 				final String quality=CMLib.help().getAbilityQualityDesc(A);
 				final String targets=CMLib.help().getAbilityTargetDesc(A);
 				final String range=CMLib.help().getAbilityRangeDesc(A);
-				StringBuilder help=CMLib.help().getHelpText(A.ID(),null,false,true);
+				final boolean archon = ofType == Ability.ACODE_PROPERTY;
+				StringBuilder help=CMLib.help().getHelpText(A.ID(),null,archon,true);
 				String usage="";
 				String example="";
 				String helpStr="";
 				if(help==null)
-					help=CMLib.help().getHelpText(A.name(),null,false,true);
+					help=CMLib.help().getHelpText(A.name(),null,archon,true);
 				if((help!=null)&&(help.toString().startsWith("<ABILITY>")))
 				{
 					helpStr=help.toString().substring(9);
@@ -4291,6 +4292,87 @@ public class ListCmd extends StdCommand
 		{
 			s.println("^H"+title+" Ability IDs:^N");
 			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.abilities(), ofType|domain).toString());
+		}
+	}
+	
+	public void listBehaviors(MOB mob, Session s, List<String> commands, String title)
+	{
+		int domain=0;
+		final WikiFlag wiki = this.getWikiFlagRemoved(commands);
+		if(wiki == WikiFlag.WIKILIST)
+		{
+			if(title.length()==0)
+				title="Behaviors";
+			if(domain == 0)
+				s.println("==="+title+"s===");
+			else
+				s.println("==="+title+"===");
+			s.wraplessPrintln(CMLib.lister().reallyWikiList(mob, CMClass.behaviors(), 0).toString());
+		}
+		else
+		if(wiki == WikiFlag.WIKIHELP)
+		{
+			StringBuilder str=new StringBuilder("");
+			for(final Enumeration<Behavior> e=CMClass.behaviors();e.hasMoreElements();)
+			{
+				final Behavior B=e.nextElement();
+				StringBuilder help=CMLib.help().getHelpText(B.ID(),null,true,true);
+				String usage="";
+				String example="";
+				String targets="";
+				String helpStr="";
+				if(help==null)
+					help=CMLib.help().getHelpText(B.name(),null,false,true);
+				if((help!=null)&&(help.toString().length()>0))
+				{
+					helpStr=help.toString();
+					if(helpStr.startsWith("Behavior"))
+					{
+						int end=helpStr.indexOf("\n");
+						helpStr=helpStr.substring(end+1).trim();
+					}
+					if(helpStr.startsWith("Targets"))
+					{
+						int end=helpStr.indexOf("\n");
+						int start=helpStr.indexOf(":");
+						if((end<0)||(start<0)||(start>end))
+							break;
+						targets += ((targets.length()>0) ? "\n\r" : "" ) + helpStr.substring(start+1,end).trim();
+						helpStr=helpStr.substring(end+1).trim();
+					}
+					while(helpStr.startsWith("Parameters")||helpStr.startsWith("  "))
+					{
+						int end=helpStr.indexOf("\n");
+						int start=helpStr.indexOf(":");
+						if((end<0)||(start<0)||(start>end))
+							break;
+						usage += ((usage.length()>0) ? "\n\r" : "" ) + helpStr.substring(start+1,end).trim();
+						helpStr=helpStr.substring(end+1).trim();
+					}
+					while(helpStr.startsWith("Example")||helpStr.startsWith("  "))
+					{
+						int end=helpStr.indexOf("\n");
+						int start=helpStr.indexOf(":");
+						if((end<0)||(start<0)||(start>end))
+							break;
+						example += ((example.length()>0) ? "\n\r" : "" ) + helpStr.substring(start+1,end).trim();
+						helpStr=helpStr.substring(end+1).trim();
+					}
+				}
+				str.append("{{BehaviorTemplate"
+						+ "|Name="+B.name()
+						+ "|Targets="+CMStrings.replaceAllofAny(targets,"[]{}<>|".toCharArray(),"\"\"()()!".toCharArray())
+						+ "|Usage="+CMStrings.replaceAllofAny(usage,"[]{}<>|".toCharArray(),"\"\"()()!".toCharArray())
+						+ "|Examples="+example
+						+ "|Description="+CMStrings.replaceAllofAny(helpStr,"[]{}<>|".toCharArray(),"()()()!".toCharArray())
+						+ "}}\n\r");
+			}
+			s.wraplessPrintln(str.toString());
+		}
+		else
+		{
+			s.println("^H"+title+" Behavior IDs:^N");
+			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.behaviors(), 0).toString());
 		}
 	}
 	
@@ -4733,8 +4815,8 @@ public class ListCmd extends StdCommand
 			s.wraplessPrintln(CMLib.lister().reallyList(mob, new IteratorEnumeration<String>(Arrays.asList(CMParms.combine(Room.DOMAIN_INDOORS_DESCS, Room.DOMAIN_OUTDOOR_DESCS)).iterator())).toString());
 			break;
 		case BEHAVIORS:
-			s.println("^HBehavior IDs:^N");
-			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.behaviors()).toString());
+			//s.println("^HBehavior IDs:^N");
+			listBehaviors(mob,s,commands,"Behaviors");
 			break;
 		case EXITS:
 			s.println("^HExit IDs:^N");
@@ -4764,8 +4846,8 @@ public class ListCmd extends StdCommand
 			listAbilities(mob,s,commands,"Prayer",Ability.ACODE_PRAYER);
 			break;
 		case PROPERTIES:
-			s.println("^HProperty Ability IDs:^N");
-			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.abilities(), Ability.ACODE_PROPERTY).toString());
+			//s.println("^HProperty Ability IDs:^N");
+			listAbilities(mob,s,commands,"Properties",Ability.ACODE_PROPERTY);
 			break;
 		case THIEFSKILLS:
 			listAbilities(mob,s,commands,"Thief Skill",Ability.ACODE_THIEF_SKILL);
