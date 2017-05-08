@@ -417,7 +417,7 @@ public class Pirate extends Thief
 		&&(msg.source() != msg.target()))
 		{
 			if(msg.target() instanceof MOB)
-				msg.setValue(msg.value() * 2);
+				msg.setValue(msg.value() * 3);
 			else
 			if(msg.target() == null)
 			{

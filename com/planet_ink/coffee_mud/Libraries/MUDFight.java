@@ -2684,6 +2684,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		int expAmount=100;
 		int expAddition=25;
 
+		//FORMULA_TOTALCOMBATXP=100
 		for (final MOB mob : dividers)
 		{
 			totalLevels += (mob.phyStats().level()*mob.phyStats().level());

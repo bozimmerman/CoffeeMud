@@ -92,8 +92,8 @@ public class Dryad extends StdRace
 		return localizedStaticRacialCat;
 	}
 
-	private final String[]	culturalAbilityNames			= { "Fey" };
-	private final int[]		culturalAbilityProficiencies	= { 50 };
+	private final String[]	culturalAbilityNames			= { "Fey", "Druid_PlantForm" };
+	private final int[]		culturalAbilityProficiencies	= { 50, 60 };
 
 	@Override
 	public String[] culturalAbilityNames()
@@ -107,11 +107,11 @@ public class Dryad extends StdRace
 		return culturalAbilityProficiencies;
 	}
 
-	private final String[]	racialAbilityNames			= { "Chant_GrowOak", "Druid_PlantForm" };
-	private final int[]		racialAbilityLevels			= { 1, 10 };
-	private final int[]		racialAbilityProficiencies	= { 100, 60 };
-	private final boolean[]	racialAbilityQuals			= { false, false };
-	private final String[]	racialAbilityParms			= { "", "" };
+	private final String[]	racialAbilityNames			= { "Chant_GrowOak" };
+	private final int[]		racialAbilityLevels			= { 1};
+	private final int[]		racialAbilityProficiencies	= { 100};
+	private final boolean[]	racialAbilityQuals			= { false };
+	private final String[]	racialAbilityParms			= { "" };
 
 	@Override
 	public String[] racialAbilityNames()
