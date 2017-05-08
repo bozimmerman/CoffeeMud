@@ -1546,6 +1546,41 @@ public class CMath
 		return finalValue;
 	}
 
+	protected double doOperation(final char operation, double finalValue, final double curValue)
+	{
+		switch(operation)
+		{
+		case '+':
+			finalValue += curValue;
+			break;
+		case '-':
+			finalValue -= curValue;
+			break;
+		case '%':
+			finalValue %= curValue;
+			break;
+		case '*':
+			finalValue *= curValue;
+			break;
+		case '/':
+			finalValue /= curValue;
+			break;
+		case '?':
+			finalValue = ((curValue - finalValue + 0.5) * rand.nextDouble()) + finalValue;
+			break;
+		case '<':
+			finalValue = finalValue < curValue ? finalValue : curValue;
+			break;
+		case '>':
+			finalValue = finalValue > curValue ? finalValue : curValue;
+			break;
+		case '^':
+			finalValue = Math.pow(finalValue, curValue);
+			break;
+		}
+		return finalValue;
+	}
+	
 	/**
 	 * Returns the result of evaluating the given math
 	 * expression.  An expression can be a double or int
