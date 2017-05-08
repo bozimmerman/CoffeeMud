@@ -1546,6 +1546,14 @@ public class CMath
 		return finalValue;
 	}
 
+	/**
+	 * Performs the operation between the finalValue and the curValue.
+	 * 
+	 * @param operation +, -, etc..
+	 * @param finalValue the left hand number
+	 * @param curValue the right hand number
+	 * @return the result of the operation
+	 */
 	protected double doOperation(final char operation, double finalValue, final double curValue)
 	{
 		switch(operation)
