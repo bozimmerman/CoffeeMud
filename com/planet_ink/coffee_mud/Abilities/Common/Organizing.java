@@ -147,11 +147,10 @@ public class Organizing extends CommonSkill
 									result=new Integer(o1.phyStats().level()).compareTo(new Integer(o2.phyStats().level()));
 									break;
 								case NAME:
-									result=o1.Name().compareTo(o2.Name());
+									result=CMLib.english().cleanArticles(o1.Name()).compareTo(CMLib.english().cleanArticles(o2.Name()));
 									break;
 								case TAG:
-									result=0;
-									//TODO:
+									result=Tagging.getCurrentTag(o1).compareTo(Tagging.getCurrentTag(o2));
 									break;
 								case TYPE:
 									result = CMClass.getObjectType(o1).name().compareTo(CMClass.getObjectType(o2).name());
@@ -166,8 +165,7 @@ public class Organizing extends CommonSkill
 									break;
 								}
 								if((result == 0)&&(orgaT != OrganizeBy.NAME))
-									result=o1.Name().compareTo(o2.Name());
-								// TODO Auto-generated method stub
+									result=CMLib.english().cleanArticles(o1.Name()).compareTo(CMLib.english().cleanArticles(o2.Name()));
 								return result;
 							}
 						};
@@ -205,7 +203,6 @@ public class Organizing extends CommonSkill
 	public boolean invoke(final MOB mob, List<String> commands, Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Room R=mob.location();
-		final List<String> originalCommands = new XVector<String>(commands);
 		if(super.checkStop(mob, commands)||(R==null))
 			return true;
 		
@@ -220,12 +217,12 @@ public class Organizing extends CommonSkill
 			return false;
 		}
 
-		final String orgaTypeName = commands.remove(commands.size()-1);
+		final String orgaTypeName = commands.remove(commands.size()-1).toUpperCase().trim();
 		orgaType = (OrganizeBy)CMath.s_valueOf(OrganizeBy.class, orgaTypeName);
 		if(orgaType == null)
 		{
 			commonTell(mob,L("'@x1' is invalid. Try one of these: "
-					+CMLib.english().toEnglishStringList(OrganizeBy.class,false)));
+					+CMLib.english().toEnglishStringList(OrganizeBy.class,false),orgaTypeName));
 			return false;
 		}
 		
@@ -243,7 +240,7 @@ public class Organizing extends CommonSkill
 		}
 		else
 		{
-			Physical I=super.getAnyTarget(mob, originalCommands, givenTarget, Wearable.FILTER_ANY, false);
+			Physical I=super.getAnyTarget(mob, commands, givenTarget, Wearable.FILTER_ANY, false);
 			if((!(I instanceof ItemPossessor)) && (!(I instanceof Container)))
 			{
 				commonTell(mob,L("You cannot organize the contents of '@x1'.",str));

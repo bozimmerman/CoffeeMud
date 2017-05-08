@@ -83,9 +83,22 @@ public class Tagging extends CommonSkill
 		verb=L("tagging");
 	}
 
-	protected String getTagLabel()
+	public static final String getTagLabel()
 	{
-		return L(" Tag #");
+		return CMLib.lang().L(" Tag #");
+	}
+	
+	public static final String getCurrentTag(final Item I)
+	{
+		final String label="("+getTagLabel().trim();
+		final int y=I.displayText().indexOf(label);
+		if(y>=0)
+		{
+			final int z=I.displayText().indexOf(')',y+1);
+			if(z>=0)
+				return I.displayText().substring(y+label.length(),z);
+		}
+		return "";
 	}
 	
 	@Override
@@ -106,7 +119,7 @@ public class Tagging extends CommonSkill
 		}
 	}
 
-	public String getTag(Item itemI)
+	public String getNextTag(Item itemI)
 	{
 		final String type = CMClass.getObjectType(itemI).name();
 		final String itemKey = type+"/"+itemI.ID();
@@ -183,7 +196,7 @@ public class Tagging extends CommonSkill
 					}
 					if(!writing.equals("REMOVE"))
 					{
-						writing=this.getTag(found);
+						writing=getNextTag(found);
 						found.setDescription(desc+getTagLabel()+writing);
 						found.setDisplayText(disp+"("+getTagLabel().trim()+writing+")");
 						commonTell(mob,L("The tag number is @x1.",writing));
