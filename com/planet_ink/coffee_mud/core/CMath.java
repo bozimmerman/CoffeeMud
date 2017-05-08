@@ -1176,6 +1176,7 @@ public class CMath
 				case '\\':
 				case '/':
 				case '?':
+				case '^':
 				{
 					lastOperation=(char)c;
 					c=st.nextToken();
@@ -1207,6 +1208,9 @@ public class CMath
 				case '/':
 				case '\\':
 					finalValue /= curValue;
+					break;
+				case '^':
+					finalValue = Math.pow(finalValue, curValue);
 					break;
 				case '?':
 					finalValue = ((curValue - finalValue + 0.5) * rand.nextDouble()) + finalValue;
@@ -1426,6 +1430,7 @@ public class CMath
 				case '?':
 				case '<':
 				case '>':
+				case '^':
 				{
 					lastOperation=(char)c;
 					c=st.nextToken();
@@ -1443,6 +1448,7 @@ public class CMath
 				case '?':
 				case '<':
 				case '>':
+				case '^':
 					list.add(new CompiledOperation(lastOperation));
 					break;
 				case '/':
@@ -1530,13 +1536,15 @@ public class CMath
 				case '>':
 					finalValue = finalValue > curValue ? finalValue : curValue;
 					break;
+				case '^':
+					finalValue = Math.pow(finalValue, curValue);
+					break;
 				}
 				break;
 			}
 		}
 		return finalValue;
 	}
-
 
 	/**
 	 * Returns the result of evaluating the given math
