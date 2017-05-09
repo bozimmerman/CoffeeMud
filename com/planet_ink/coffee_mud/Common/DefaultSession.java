@@ -216,6 +216,12 @@ public class DefaultSession implements Session
 	}
 
 	@Override
+	public Socket getSocket()
+	{
+		return sock[0];
+	}
+
+	@Override
 	public long getStartTime()
 	{
 		return this.lastStart;
@@ -319,6 +325,15 @@ public class DefaultSession implements Session
 						return !killFlag;
 					} 
 				}, 0, 100, 1);
+			}
+
+			if((sock[0] == null)||(!sock[0].isConnected()))
+			{
+				rawout=new BufferedOutputStream(new ByteArrayOutputStream());
+				rawin=new BufferedInputStream(new ByteArrayInputStream(new byte[0]));
+				in=new BufferedReader(new InputStreamReader(rawin));
+				out=new PrintWriter(new OutputStreamWriter(rawout));
+				return;
 			}
 
 			sock[0].setSoTimeout(SOTIMEOUT);

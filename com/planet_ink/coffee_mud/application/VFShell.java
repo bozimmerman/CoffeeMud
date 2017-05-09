@@ -253,6 +253,12 @@ public class VFShell
 					}
 
 					@Override
+					public Socket getSocket()
+					{
+						return null;
+					}
+
+					@Override
 					public int getGroupID()
 					{
 						return Thread.currentThread().getThreadGroup().getName().charAt(0);

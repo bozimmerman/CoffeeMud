@@ -15,6 +15,9 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.io.IOException;
+import java.net.Socket;
+import java.net.SocketException;
 import java.util.*;
 
 /*
@@ -68,6 +71,60 @@ public class Switch extends StdCommand
 		{
 			sysopOverride = true;
 			commands.remove(1);
+		}
+		if((commands.size()>1)&&(CMath.isInteger(commands.get(1))))
+		{
+			final int port=CMath.s_int(commands.get(1));
+			MudHost switchToHost = null;
+			for(int i=0;i<CMLib.hosts().size();i++)
+			{
+				MudHost host = CMLib.hosts().get(i);
+				if(host.getPort()==port)
+				{
+					switchToHost=host;
+					break;
+				}
+			}
+			if((switchToHost == null)||(mob.session()==null))
+				mob.tell(L("You can't switch to '@x1'.",commands.get(1)));
+			else
+			{
+				mob.clearCommandQueue();
+				final Room room=mob.location();
+				final CMMsg msg=CMClass.getMsg(mob,null,CMMsg.MSG_QUIT,L("<S-NAME> get(s) a far away look, then fades away...."));
+				if((room != null) && (room.okMessage(mob,msg)))
+				{
+					final Socket sock = s1.getSocket();
+					CMLib.map().sendGlobalMessage(mob,CMMsg.TYP_QUIT, msg);
+					s1.initializeSession(new Socket(), s1.getGroupName(),"");
+					s1.stopSession(false,false, false); // this should call prelogout and later loginlogoutthread to cause msg SEND
+					CMLib.commands().monitorGlobalMessage(room, msg);
+					//s1.stopSession(false,false, false);
+					//s1.setMob(null);
+					//mob.setSession(null);
+					final MudHost newHost = switchToHost;
+					CMLib.threads().executeRunnable(new Runnable()
+					{
+						@Override
+						public void run()
+						{
+							try
+							{
+								final long time=System.currentTimeMillis();
+								while((CMLib.sessions().isSession(s1))
+								&&((System.currentTimeMillis()-time)<60000))
+									CMLib.s_sleep(1000);
+								newHost.acceptConnection(sock);
+							}
+							catch (Exception e)
+							{
+								Log.errOut(e);
+							}
+						}
+					});
+				}
+			}
+			return false;
 		}
 		final String MOBname=CMParms.combine(commands,1);
 		MOB target=CMLib.players().getPlayer(MOBname);

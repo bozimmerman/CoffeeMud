@@ -68,20 +68,21 @@ public class CMSecurity
 	public static final int JSCRIPT_REQ_APPROVAL = 1;
 	public static final int JSCRIPT_ALL_APPROVAL = 2;
 	
-	protected static final String[] 		emptyStrArray= new String[0];
-	protected final static Set<DisFlag>		disVars		 = new HashSet<DisFlag>();
-	protected final static Set<String>		cmdDisVars	 = new HashSet<String>();
-	protected final static Set<String>		racDisVars	 = new HashSet<String>();
-	protected final static Set<String>		clsDisVars	 = new HashSet<String>();
-	protected final static Set<String>		facDisVars	 = new HashSet<String>();
-	protected final static Set<String>		ablDisVars	 = new HashSet<String>();
-	protected final static Set<String>		expDisVars	 = new HashSet<String>();
-	protected final static Set<DbgFlag>		dbgVars		 = new HashSet<DbgFlag>();
-	protected final static Set<SaveFlag>	saveFlags 	 = new HashSet<SaveFlag>();
-	protected final static Set<String>		journalFlags = new HashSet<String>(); // global, because of cross-library issues
+	protected static final String[] emptyStrArray= new String[0];
 	
-	protected final static Map<String,String[]>	racEnaVars	 = new Hashtable<String,String[]>();
-	protected final static Map<String,String[]>	clsEnaVars	 = new Hashtable<String,String[]>();
+	protected final Set<DisFlag>	disVars		 = new HashSet<DisFlag>();
+	protected final Set<String>		cmdDisVars	 = new HashSet<String>();
+	protected final Set<String>		racDisVars	 = new HashSet<String>();
+	protected final Set<String>		clsDisVars	 = new HashSet<String>();
+	protected final Set<String>		facDisVars	 = new HashSet<String>();
+	protected final Set<String>		ablDisVars	 = new HashSet<String>();
+	protected final Set<String>		expDisVars	 = new HashSet<String>();
+	protected final Set<DbgFlag>	dbgVars		 = new HashSet<DbgFlag>();
+	protected final Set<SaveFlag>	saveFlags 	 = new HashSet<SaveFlag>();
+	protected final Set<String>		journalFlags = new HashSet<String>(); // global, because of cross-library issues
+	
+	protected final Map<String,String[]>	racEnaVars	 = new Hashtable<String,String[]>();
+	protected final Map<String,String[]>	clsEnaVars	 = new Hashtable<String,String[]>();
 
 	protected final long					startTime	 = System.currentTimeMillis();
 	protected CompiledZMask					compiledSysop= null;
@@ -177,7 +178,7 @@ public class CMSecurity
 	public static final void registerJournal(String journalName)
 	{
 		journalName=journalName.toUpperCase().trim();
-		journalFlags.add(journalName);
+		instance().journalFlags.add(journalName);
 	}
 
 	/**
@@ -339,7 +340,7 @@ public class CMSecurity
 	 */
 	public static Enumeration<String> getJournalSecurityFlags()
 	{
-		return new IteratorEnumeration<String>(journalFlags.iterator());
+		return new IteratorEnumeration<String>(instance().journalFlags.iterator());
 	}
 
 	/**
@@ -797,7 +798,8 @@ public class CMSecurity
 	 */
 	public static final boolean isSaveFlag(final SaveFlag key)
 	{
-		return (saveFlags.size()>0) && saveFlags.contains(key);
+		final CMSecurity inst = instance();
+		return (inst.saveFlags.size()>0) && inst.saveFlags.contains(key);
 	}
 
 	/**
@@ -881,7 +883,7 @@ public class CMSecurity
 	 */
 	public static Enumeration<DbgFlag> getDebugEnum()
 	{
-		return new IteratorEnumeration<DbgFlag>(dbgVars.iterator());
+		return new IteratorEnumeration<DbgFlag>(instance().dbgVars.iterator());
 	}
 
 	/**
@@ -891,7 +893,8 @@ public class CMSecurity
 	 */
 	public static final boolean isDebugging(final DbgFlag key)
 	{
-		return ((dbgVars.size()>0)&&dbgVars.contains(key))||debuggingEverything;
+		final CMSecurity inst = instance();
+		return ((inst.dbgVars.size()>0)&&inst.dbgVars.contains(key))||debuggingEverything;
 	}
 
 	/**
@@ -916,9 +919,10 @@ public class CMSecurity
 	 */
 	public static final boolean setDebugVar(final DbgFlag var)
 	{
-		if((var!=null)&&(!dbgVars.contains(var)))
+		final CMSecurity inst = instance();
+		if((var!=null)&&(!inst.dbgVars.contains(var)))
 		{
-			dbgVars.add(var);
+			inst.dbgVars.add(var);
 			return true;
 		}
 		return false;
@@ -931,8 +935,9 @@ public class CMSecurity
 	 */
 	public static final boolean removeDebugVar(final DbgFlag var)
 	{
-		if((var!=null)&&(dbgVars.size()>0))
-			return dbgVars.remove(var);
+		final CMSecurity inst = instance();
+		if((var!=null)&&(inst.dbgVars.size()>0))
+			return inst.dbgVars.remove(var);
 		return false;
 	}
 
@@ -974,16 +979,17 @@ public class CMSecurity
 	public static final void setDebugVars(final String varList)
 	{
 		final List<String> V=CMParms.parseCommas(varList.toUpperCase(),true);
-		dbgVars.clear();
+		final CMSecurity inst = instance();
+		inst.dbgVars.clear();
 		for(final String var : V)
 		{
 			final DbgFlag flag=(DbgFlag)CMath.s_valueOf(DbgFlag.values(),var);
 			if(flag==null)
 				Log.errOut("CMSecurity","Unable DEBUG flag: "+var);
 			else
-				dbgVars.add(flag);
+				inst.dbgVars.add(flag);
 		}
-		debuggingEverything = dbgVars.contains(DbgFlag.EVERYTHING);
+		debuggingEverything = inst.dbgVars.contains(DbgFlag.EVERYTHING);
 	}
 
 	/**
@@ -993,7 +999,7 @@ public class CMSecurity
 	 */
 	public static final boolean isRaceEnabled(final String ID)
 	{
-		return (ID==null) ? false : racEnaVars.containsKey(ID.toUpperCase());
+		return (ID==null) ? false : instance().racEnaVars.containsKey(ID.toUpperCase());
 	}
 
 	/**
@@ -1003,7 +1009,7 @@ public class CMSecurity
 	 */
 	public static final boolean isCharClassEnabled(final String ID)
 	{
-		return (ID==null) ? false : clsEnaVars.containsKey(ID.toUpperCase());
+		return (ID==null) ? false : instance().clsEnaVars.containsKey(ID.toUpperCase());
 	}
 
 	
@@ -1033,12 +1039,12 @@ public class CMSecurity
 		else
 		if(flag.startsWith(XABLE_PREFIX_RACE))
 		{
-			return racEnaVars;
+			return instance().racEnaVars;
 		}
 		else
 		if(flag.startsWith(XABLE_PREFIX_CHARCLASS))
 		{
-			return clsEnaVars;
+			return instance().clsEnaVars;
 		}
 		else
 		if(flag.startsWith(XABLE_PREFIX_FACTION))
@@ -1066,7 +1072,7 @@ public class CMSecurity
 	 */
 	public static final Enumeration<String> getEnabledRacesEnum(final boolean addINIPrefix)
 	{
-		return getSafeEnumerableEnableParmSet(racEnaVars, addINIPrefix?XABLE_PREFIX_RACE:"");
+		return getSafeEnumerableEnableParmSet(instance().racEnaVars, addINIPrefix?XABLE_PREFIX_RACE:"");
 	}
 
 	/**
@@ -1095,7 +1101,7 @@ public class CMSecurity
 	 */
 	public static final Enumeration<String> getEnabledCharClassEnum(final boolean addINIPrefix)
 	{
-		return getSafeEnumerableEnableParmSet(clsEnaVars, addINIPrefix?XABLE_PREFIX_CHARCLASS:"");
+		return getSafeEnumerableEnableParmSet(instance().clsEnaVars, addINIPrefix?XABLE_PREFIX_CHARCLASS:"");
 	}
 
 	/**
@@ -1257,7 +1263,7 @@ public class CMSecurity
 	 */
 	public static Enumeration<DisFlag> getBasicDisablesEnum() 
 	{ 
-		return new IteratorEnumeration<DisFlag>(disVars.iterator());
+		return new IteratorEnumeration<DisFlag>(instance().disVars.iterator());
 	}
 
 	/**
@@ -1267,7 +1273,7 @@ public class CMSecurity
 	 */
 	public static Enumeration<Object> getDisablesEnum() 
 	{ 
-		Enumeration<DisFlag> e=new IteratorEnumeration<DisFlag>(disVars.iterator());
+		Enumeration<DisFlag> e=new IteratorEnumeration<DisFlag>(instance().disVars.iterator());
 		MultiEnumeration m = new MultiEnumeration(e);
 		return m.addEnumeration(getDisabledSpecialsEnum(true));
 	}
@@ -1280,7 +1286,7 @@ public class CMSecurity
 	 */
 	public static final boolean isDisabled(final DisFlag flag)
 	{
-		return disVars.contains(flag);
+		return instance().disVars.contains(flag);
 	}
 
 	/**
@@ -1290,7 +1296,7 @@ public class CMSecurity
 	 */
 	public static final boolean isCommandDisabled(final String ID)
 	{
-		return (ID==null) ? false : cmdDisVars.contains(ID.toUpperCase());
+		return (ID==null) ? false : instance().cmdDisVars.contains(ID.toUpperCase());
 	}
 
 	/**
@@ -1300,7 +1306,7 @@ public class CMSecurity
 	 */
 	public static final boolean isRaceDisabled(final String ID)
 	{
-		return (ID==null) ? false : racDisVars.contains(ID.toUpperCase());
+		return (ID==null) ? false : instance().racDisVars.contains(ID.toUpperCase());
 	}
 
 	/**
@@ -1310,7 +1316,7 @@ public class CMSecurity
 	 */
 	public static final boolean isCharClassDisabled(final String ID)
 	{
-		return (ID==null) ? false : clsDisVars.contains(ID.toUpperCase());
+		return (ID==null) ? false : instance().clsDisVars.contains(ID.toUpperCase());
 	}
 
 	/**
@@ -1320,7 +1326,7 @@ public class CMSecurity
 	 */
 	public static final boolean isAbilityDisabled(final String ID)
 	{
-		return (ID==null) ? false : ablDisVars.contains(ID.toUpperCase());
+		return (ID==null) ? false : instance().ablDisVars.contains(ID.toUpperCase());
 	}
 
 	/**
@@ -1330,7 +1336,7 @@ public class CMSecurity
 	 */
 	public static final boolean isFactionDisabled(final String ID)
 	{
-		return (ID==null) ? false : facDisVars.contains(ID.toUpperCase());
+		return (ID==null) ? false : instance().facDisVars.contains(ID.toUpperCase());
 	}
 
 	/**
@@ -1340,7 +1346,7 @@ public class CMSecurity
 	 */
 	public static final boolean isExpertiseDisabled(final String ID)
 	{
-		return (ID==null) ? false : expDisVars.contains(ID.toUpperCase());
+		return (ID==null) ? false : instance().expDisVars.contains(ID.toUpperCase());
 	}
 
 	/**
@@ -1383,7 +1389,8 @@ public class CMSecurity
 	public static final void setAnyDisableVars(final String commaDelimFlagList)
 	{
 		final List<String> V=CMParms.parseCommas(commaDelimFlagList.toUpperCase(),true);
-		disVars.clear();
+		final CMSecurity inst=instance();
+		inst.disVars.clear();
 		for(final String var : V)
 		{
 			if(!setAnyDisableVar(var))
@@ -1426,37 +1433,37 @@ public class CMSecurity
 	 * @param anyFlag the flag for the thing to disable or re-enable
 	 * @return the correct set that this flag will end up belonging in
 	 */
-	private static final Set<String> getSpecialDisableSet(final String anyFlag)
+	private final static Set<String> getSpecialDisableSet(final String anyFlag)
 	{
 		final String flag = anyFlag.toUpperCase().trim();
 		if(flag.startsWith(XABLE_PREFIX_ABILITY))
 		{
-			return ablDisVars;
+			return instance().ablDisVars;
 		}
 		else
 		if(flag.startsWith(XABLE_PREFIX_EXPERTISE))
 		{
-			return expDisVars;
+			return instance().expDisVars;
 		}
 		else
 		if(flag.startsWith(XABLE_PREFIX_COMMAND))
 		{
-			return cmdDisVars;
+			return instance().cmdDisVars;
 		}
 		else
 		if(flag.startsWith(XABLE_PREFIX_RACE))
 		{
-			return racDisVars;
+			return instance().racDisVars;
 		}
 		else
 		if(flag.startsWith(XABLE_PREFIX_CHARCLASS))
 		{
-			return clsDisVars;
+			return instance().clsDisVars;
 		}
 		else
 		if(flag.startsWith(XABLE_PREFIX_FACTION))
 		{
-			return facDisVars;
+			return instance().facDisVars;
 		}
 		return null;
 	}
@@ -1499,7 +1506,7 @@ public class CMSecurity
 	 * @param anyFlag the thing to disable
 	 * @return true if anyFlag was a valid thing to disable, and false otherwise
 	 */
-	public static final boolean setAnyDisableVar(final String anyFlag)
+	public final static boolean setAnyDisableVar(final String anyFlag)
 	{
 		final Set<String> set = getSpecialDisableSet(anyFlag);
 		if(set == null)
@@ -1576,7 +1583,7 @@ public class CMSecurity
 	 */
 	public static final Enumeration<String> getDisabledAbilitiesEnum(final boolean addINIPrefix)
 	{
-		return getSpecialXabledEnum(ablDisVars.iterator(), addINIPrefix?XABLE_PREFIX_ABILITY:"");
+		return getSpecialXabledEnum(instance().ablDisVars.iterator(), addINIPrefix?XABLE_PREFIX_ABILITY:"");
 	}
 
 	/**
@@ -1587,7 +1594,7 @@ public class CMSecurity
 	 */
 	public static final Enumeration<String> getDisabledExpertisesEnum(final boolean addINIPrefix)
 	{
-		return getSpecialXabledEnum(expDisVars.iterator(), addINIPrefix?XABLE_PREFIX_EXPERTISE:"");
+		return getSpecialXabledEnum(instance().expDisVars.iterator(), addINIPrefix?XABLE_PREFIX_EXPERTISE:"");
 	}
 
 	/**
@@ -1598,7 +1605,7 @@ public class CMSecurity
 	 */
 	public static final Enumeration<String> getDisabledCommandsEnum(final boolean addINIPrefix)
 	{
-		return getSpecialXabledEnum(cmdDisVars.iterator(), addINIPrefix?XABLE_PREFIX_COMMAND:"");
+		return getSpecialXabledEnum(instance().cmdDisVars.iterator(), addINIPrefix?XABLE_PREFIX_COMMAND:"");
 	}
 
 	/**
@@ -1609,7 +1616,7 @@ public class CMSecurity
 	 */
 	public static final Enumeration<String> getDisabledRacesEnum(final boolean addINIPrefix)
 	{
-		return getSpecialXabledEnum(racDisVars.iterator(), addINIPrefix?XABLE_PREFIX_RACE:"");
+		return getSpecialXabledEnum(instance().racDisVars.iterator(), addINIPrefix?XABLE_PREFIX_RACE:"");
 	}
 
 	/**
@@ -1620,7 +1627,7 @@ public class CMSecurity
 	 */
 	public static final Enumeration<String> getDisabledCharClassEnum(final boolean addINIPrefix)
 	{
-		return getSpecialXabledEnum(clsDisVars.iterator(), addINIPrefix?XABLE_PREFIX_CHARCLASS:"");
+		return getSpecialXabledEnum(instance().clsDisVars.iterator(), addINIPrefix?XABLE_PREFIX_CHARCLASS:"");
 	}
 
 	/**
@@ -1631,7 +1638,7 @@ public class CMSecurity
 	 */
 	public static final Enumeration<String> getDisabledFactionsEnum(final boolean addINIPrefix)
 	{
-		return getSpecialXabledEnum(facDisVars.iterator(), addINIPrefix?XABLE_PREFIX_FACTION:"");
+		return getSpecialXabledEnum(instance().facDisVars.iterator(), addINIPrefix?XABLE_PREFIX_FACTION:"");
 	}
 
 	/**
@@ -1641,9 +1648,10 @@ public class CMSecurity
 	 */
 	public static final boolean setDisableVar(final DisFlag flag)
 	{
-		if((flag!=null)&&(!disVars.contains(flag)))
+		final CMSecurity inst=instance();
+		if((flag!=null)&&(!inst.disVars.contains(flag)))
 		{
-			disVars.add(flag);
+			inst.disVars.add(flag);
 			return true;
 		}
 		return false;
@@ -1656,9 +1664,10 @@ public class CMSecurity
 	 */
 	public static final boolean removeDisableVar(final DisFlag flag)
 	{
-		if((flag!=null)&&(disVars.size()>0))
+		final CMSecurity inst = instance();
+		if((flag!=null)&&(inst.disVars.size()>0))
 		{
-			return disVars.remove(flag);
+			return inst.disVars.remove(flag);
 		}
 		return false;
 	}
@@ -1670,13 +1679,14 @@ public class CMSecurity
 	public static final void setSaveFlags(final String flagsListStr)
 	{
 		final List<String> flagsList=CMParms.parseCommas(flagsListStr.toUpperCase(),true);
-		saveFlags.clear();
+		final CMSecurity inst = instance();
+		inst.saveFlags.clear();
 		for(final String flag : flagsList)
 		{
 			SaveFlag flagObj = (SaveFlag)CMath.s_valueOf(CMSecurity.SaveFlag.class, flag);
 			if(flagObj != null)
 			{
-				saveFlags.add(flagObj);
+				inst.saveFlags.add(flagObj);
 			}
 		}
 	}
@@ -1689,9 +1699,10 @@ public class CMSecurity
 	{
 		if(flag != null)
 		{
-			if(!saveFlags.contains(flag))
+			final CMSecurity inst=instance();
+			if(!inst.saveFlags.contains(flag))
 			{
-				saveFlags.add(flag);
+				inst.saveFlags.add(flag);
 			}
 		}
 	}
@@ -1704,9 +1715,10 @@ public class CMSecurity
 	{
 		if(flag != null)
 		{
-			if(saveFlags.size()>0)
+			final CMSecurity inst=instance();
+			if(inst.saveFlags.size()>0)
 			{
-				saveFlags.remove(flag);
+				inst.saveFlags.remove(flag);
 			}
 		}
 	}

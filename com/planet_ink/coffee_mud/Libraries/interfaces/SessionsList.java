@@ -36,6 +36,7 @@ public interface SessionsList extends CMLibrary
 	public Session getAllSessionAt(int index);
 	public void add(Session s);
 	public void remove(Session s);
+	public boolean isSession(Session s);
 	
 	/**
 	 * Determines the correct thread group for the given theme, and marks the

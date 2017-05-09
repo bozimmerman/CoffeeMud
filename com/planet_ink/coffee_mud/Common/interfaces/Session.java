@@ -54,6 +54,13 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	public void initializeSession(Socket s, String groupName, String introTextStr);
 
 	/**
+	 * Returns the underlying socket serving this session, or null if none
+	 * is connected
+	 * @return the socket, or null
+	 */
+	public Socket getSocket();
+
+	/**
 	 * Returns the group name to which this session belongs
 	 * @return the thread group name
 	 */

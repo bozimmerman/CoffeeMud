@@ -133,6 +133,12 @@ public class Sessions extends StdLibrary implements SessionsList
 	}
 
 	@Override
+	public synchronized boolean isSession(Session s)
+	{
+		return all.contains(s);
+	}
+	
+	@Override
 	public void stopSessionAtAllCosts(Session S)
 	{
 		if(S==null)

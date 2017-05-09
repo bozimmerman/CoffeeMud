@@ -1757,11 +1757,13 @@ public class MUD extends Thread implements MudHost
 				{
 					int numStopped=0;
 					for(final MUD m : hostMuds)
+					{
 						if(m.state==MudState.STOPPED)
 							numStopped++;
 						else
 						if(m.state!=MudState.STARTING)
 							oneStarted=true;
+					}
 					if(numStopped==hostMuds.size())
 					{
 						Log.errOut("HOST#"+this.threadCode+" could not start any listeners.");
@@ -1781,11 +1783,13 @@ public class MUD extends Thread implements MudHost
 				{
 					Thread joinable=null;
 					for(int i=0;i<CMLib.hosts().size();i++)
+					{
 						if(CMLib.hosts().get(i) instanceof Thread)
 						{
 							joinable=(Thread)CMLib.hosts().get(i);
 							break;
 						}
+					}
 					if(joinable!=null)
 					{
 						hostStarted=true;
