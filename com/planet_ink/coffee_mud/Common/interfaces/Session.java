@@ -54,13 +54,6 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	public void initializeSession(Socket s, String groupName, String introTextStr);
 
 	/**
-	 * Returns the underlying socket serving this session, or null if none
-	 * is connected
-	 * @return the socket, or null
-	 */
-	public Socket getSocket();
-
-	/**
 	 * Returns the group name to which this session belongs
 	 * @return the thread group name
 	 */
@@ -237,6 +230,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 * If the session is in a non-logged in state (or even if it
 	 * is), this will automatically login the user with the given
 	 * name and password, and switch the session to the main loop.
+	 * Sending null for name/password will reset the login session.
 	 * @param name the username
 	 * @param password the password
 	 * @return true if the login succeeded

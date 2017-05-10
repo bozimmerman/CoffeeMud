@@ -267,9 +267,11 @@ public class MUD extends Thread implements MudHost
 							final CMFile[] files=introDir.listFiles();
 							final Vector<String> choices=new Vector<String>();
 							for (final CMFile file : files)
+							{
 								if(file.getName().toLowerCase().startsWith("intro")
 								&&file.getName().toLowerCase().endsWith(".txt"))
 									choices.addElement("text/"+file.getName());
+							}
 							if(choices.size()>0)
 								introFilename=choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
 						}
@@ -288,7 +290,9 @@ public class MUD extends Thread implements MudHost
 					}
 				}
 				else
-				if((CMLib.database()!=null)&&(CMLib.database().isConnected())&&(CMLib.encoder()!=null))
+				if((CMLib.database()!=null)
+				&&(CMLib.database().isConnected())
+				&&(CMLib.encoder()!=null))
 				{
 					StringBuffer rejectText;
 
@@ -319,7 +323,13 @@ public class MUD extends Thread implements MudHost
 				}
 				else
 				{
-					try{sock.close();}catch(final Exception e){}
+					try
+					{
+						sock.close();
+					}
+					catch (final Exception e)
+					{
+					}
 					sock = null;
 				}
 			}
@@ -343,8 +353,10 @@ public class MUD extends Thread implements MudHost
 		if(lang.length()==0)
 			return "English";
 		for (final String[] element : LanguageLibrary.ISO_LANG_CODES)
+		{
 			if(lang.equals(element[0]))
 				return element[1];
+		}
 		return "English";
 	}
 

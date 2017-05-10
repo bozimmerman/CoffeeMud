@@ -8,8 +8,10 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Session.SessionStatus;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.Sessions;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -94,34 +96,28 @@ public class Switch extends StdCommand
 				final CMMsg msg=CMClass.getMsg(mob,null,CMMsg.MSG_QUIT,L("<S-NAME> get(s) a far away look, then fades away...."));
 				if((room != null) && (room.okMessage(mob,msg)))
 				{
-					final Socket sock = s1.getSocket();
 					CMLib.map().sendGlobalMessage(mob,CMMsg.TYP_QUIT, msg);
-					s1.initializeSession(new Socket(), s1.getGroupName(),"");
-					s1.stopSession(false,false, false); // this should call prelogout and later loginlogoutthread to cause msg SEND
-					CMLib.commands().monitorGlobalMessage(room, msg);
+					//s1.initializeSession(new Socket(), s1.getGroupName(),"");
+					//s1.stopSession(false,false, false); // this should call prelogout and later loginlogoutthread to cause msg SEND
+					s1.logout(true); // this should call prelogout and later loginlogoutthread to cause msg SEND
 					//s1.stopSession(false,false, false);
 					//s1.setMob(null);
 					//mob.setSession(null);
 					final MudHost newHost = switchToHost;
-					CMLib.threads().executeRunnable(new Runnable()
+					final ThreadGroup newG=((Thread)newHost).getThreadGroup();
+					final String newName = newG.getName();
+					if(CMLib.library(s1.getGroupName().charAt(0), CMLib.Library.SESSIONS)
+					!= CMLib.library(newName.charAt(0), CMLib.Library.SESSIONS))
 					{
-						@Override
-						public void run()
-						{
-							try
-							{
-								final long time=System.currentTimeMillis();
-								while((CMLib.sessions().isSession(s1))
-								&&((System.currentTimeMillis()-time)<60000))
-									CMLib.s_sleep(1000);
-								newHost.acceptConnection(sock);
-							}
-							catch (Exception e)
-							{
-								Log.errOut(e);
-							}
-						}
-					});
+						((Sessions)CMLib.library(s1.getGroupName().charAt(0), CMLib.Library.SESSIONS)).remove(s1);
+						((Sessions)CMLib.library(newName.charAt(0), CMLib.Library.SESSIONS)).add(s1);
+					}
+					s1.setGroupName(newName);
+					CMLib.commands().monitorGlobalMessage(room, msg);
+					s1.setMob(null);
+					s1.setAccount(null);
+					
+					s1.autoLogin(null, null);
 				}
 			}
 			return false;

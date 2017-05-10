@@ -216,12 +216,6 @@ public class DefaultSession implements Session
 	}
 
 	@Override
-	public Socket getSocket()
-	{
-		return sock[0];
-	}
-
-	@Override
 	public long getStartTime()
 	{
 		return this.lastStart;
@@ -2782,6 +2776,17 @@ public class DefaultSession implements Session
 	@Override
 	public boolean autoLogin(String name, String password)
 	{
+		if(name==null)
+		{
+			if(password!=null)
+				return false;
+			this.loginSession=null;
+			setStatus(SessionStatus.LOGIN);
+			return true;
+		}
+		else
+		if(password==null)
+			return false;
 		name = CMStrings.capitalizeAndLower(name);
 		final MOB mob=CMLib.players().getLoadPlayer(name);
 		if((mob==null)||(mob.playerStats()==null))
