@@ -240,19 +240,23 @@ public class Spell_HelpingHand extends Spell
 			if(mob.isMonster() && (mob.getGroupMembers(new HashSet<MOB>()).size()>1))
 			{
 				for(MOB M : mob.getGroupMembers(new HashSet<MOB>()))
+				{
 					if((M!=mob)&&(M.isPlayer()))
 					{
 						commands.add(M.Name());
 						break;
 					}
+				}
 				if(commands.size()<1)
 				{
 					for(MOB M : mob.getGroupMembers(new HashSet<MOB>()))
+					{
 						if(M!=mob)
 						{
 							commands.add(M.Name());
 							break;
 						}
+					}
 				}
 			}
 			if(commands.size()<1)

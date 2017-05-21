@@ -168,6 +168,7 @@ public class Spell_Repulsion extends Spell
 		if(success)
 		{
 			if(mob.location().show(mob,null,this,somanticCastCode(mob,null,auto),auto?"":L("^S<S-NAME> wave(s) <S-HIS-HER> arms and cast(s) a spell.^?")))
+			{
 				for (final Object element : h)
 				{
 					final MOB target=(MOB)element;
@@ -205,6 +206,7 @@ public class Spell_Repulsion extends Spell
 						}
 					}
 				}
+			}
 		}
 		else
 			return maliciousFizzle(mob,null,L("<S-NAME> wave(s) <S-HIS-HER> arms, but the spell fizzles."));

@@ -180,12 +180,14 @@ public class Spell_GroupStatus extends Spell
 		if(canBeUninvoked())
 		{
 			if(groupMembers!=null)
+			{
 				for(final Pair<MOB,Ability> Gs : groupMembers)
 				{
 					final Ability A=Gs.second;
 					if((A!=null)&&(A.invoker()==mob))
 						A.unInvoke();
 				}
+			}
 			groupMembers=null;
 		}
 		super.unInvoke();

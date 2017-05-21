@@ -215,11 +215,13 @@ public class Spell_WizardLock extends Spell
 					final Room R=mob.location();
 					Room R2=null;
 					for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+					{
 						if(R.getExitInDir(d)==target)
 						{
 							R2=R.getRoomInDir(d);
 							break;
 						}
+					}
 					if((CMLib.law().doesOwnThisLand(mob,R))
 					||((R2!=null)&&(CMLib.law().doesOwnThisLand(mob,R2))))
 					{
@@ -246,6 +248,7 @@ public class Spell_WizardLock extends Spell
 					{
 						final Room R=mob.location();
 						if(!CMLib.law().doesHavePriviledgesHere(mob,R))
+						{
 							for(final Enumeration<Ability> a=R.effects();a.hasMoreElements();)
 							{
 								final Ability A=a.nextElement();
@@ -253,6 +256,7 @@ public class Spell_WizardLock extends Spell
 								   &&(((LandTitle)A).getOwnerName().length()>0))
 									lock.setMiscText(lock.text()+" MALICIOUS");
 							}
+						}
 					}
 				}
 			}

@@ -106,6 +106,7 @@ public class Spell_MassInvisibility extends Spell
 		if(success)
 		{
 			if(mob.location().show(mob,null,this,somanticCastCode(mob,null,auto),auto?"":L("^S<S-NAME> wave(s) <S-HIS-HER> arms and speak(s) softly.^?")))
+			{
 				for (final Object element : h)
 				{
 					final MOB target=(MOB)element;
@@ -120,6 +121,7 @@ public class Spell_MassInvisibility extends Spell
 						spell.beneficialAffect(mob,target,asLevel,0);
 					}
 				}
+			}
 		}
 		else
 			return beneficialVisualFizzle(mob,null,L("<S-NAME> wave(s) <S-HIS-HER> arms and speak(s) softly, but the spell fizzles."));

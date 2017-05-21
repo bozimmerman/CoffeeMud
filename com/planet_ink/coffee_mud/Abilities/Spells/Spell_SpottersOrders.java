@@ -201,12 +201,14 @@ public class Spell_SpottersOrders extends Spell
 		if(canBeUninvoked())
 		{
 			if(groupMembers!=null)
+			{
 				for(final Triad<MOB,Ability,long[]> Ms : groupMembers)
 				{
 					final Ability A=Ms.second;
 					if((A!=null)&&(A.invoker()==mob))
 						A.unInvoke();
 				}
+			}
 			groupMembers=null;
 		}
 		super.unInvoke();

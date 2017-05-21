@@ -92,6 +92,7 @@ public class Spell_MassSlow extends Spell
 		if(success)
 		{
 			if(mob.location().show(mob,null,this,somanticCastCode(mob,null,auto),auto?"":L("^S<S-NAME> whisper(s) and wave(s) <S-HIS-HER> arms.^?")))
+			{
 				for (final Object element : h)
 				{
 					final MOB target=(MOB)element;
@@ -120,6 +121,7 @@ public class Spell_MassSlow extends Spell
 					else
 						maliciousFizzle(mob,target,L("<T-NAME> seem(s) unaffected by the Slow spell from <S-NAME>."));
 				}
+			}
 		}
 		else
 			return maliciousFizzle(mob,null,L("<S-NAME> whisper(s) a spell slowly, but the spell fizzles."));

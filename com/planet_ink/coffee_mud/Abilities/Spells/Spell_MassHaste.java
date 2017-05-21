@@ -92,6 +92,7 @@ public class Spell_MassHaste extends Spell
 		if(success)
 		{
 			if(mob.location().show(mob,null,this,somanticCastCode(mob,null,auto),auto?"":L("^S<S-NAME> wave(s) <S-HIS-HER> arms and speak(s) quickly.^?")))
+			{
 				for (final Object element : h)
 				{
 					final MOB target=(MOB)element;
@@ -108,6 +109,7 @@ public class Spell_MassHaste extends Spell
 						haste.beneficialAffect(mob,target,asLevel,0);
 					}
 				}
+			}
 		}
 		else
 			return beneficialVisualFizzle(mob,null,L("<S-NAME> wave(s) <S-HIS-HER> arms and speak(s) quickly, but the spell fizzles."));

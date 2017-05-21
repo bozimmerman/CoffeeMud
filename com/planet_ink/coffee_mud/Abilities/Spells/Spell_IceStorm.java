@@ -98,6 +98,7 @@ public class Spell_IceStorm extends Spell
 		if(success)
 		{
 			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),L(auto?"A ferocious ice storm appears!":"^S<S-NAME> evoke(s) a ferocious ice storm!^?")+CMLib.protocol().msp("spelldam2.wav",40)))
+			{
 				for (final Object element : h)
 				{
 					final MOB target=(MOB)element;
@@ -119,6 +120,7 @@ public class Spell_IceStorm extends Spell
 						CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_COLD,Weapon.TYPE_FROSTING,L("The lumps of hail <DAMAGE> <T-NAME>!@x1",CMLib.protocol().msp("hail.wav",40)));
 					}
 				}
+			}
 		}
 		else
 			return maliciousFizzle(mob,null,L("<S-NAME> attempt(s) to evoke an ice storm, but the spell fizzles."));

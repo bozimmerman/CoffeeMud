@@ -115,6 +115,7 @@ public class Spell_Augury extends Spell
 				{
 					final MOB mon=room.fetchInhabitant(m);
 					if(mon!=null)
+					{
 						for(final Enumeration<Behavior> e=mob.behaviors();e.hasMoreElements();)
 						{
 							final Behavior B=e.nextElement();
@@ -124,6 +125,7 @@ public class Spell_Augury extends Spell
 								break;
 							}
 						}
+					}
 				}
 				mob.location().send(mob,msg);
 				if((aggressiveMonster)

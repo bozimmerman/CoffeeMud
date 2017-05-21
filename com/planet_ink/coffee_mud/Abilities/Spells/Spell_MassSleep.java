@@ -106,6 +106,7 @@ public class Spell_MassSleep extends Spell
 		if(success)
 		{
 			if(mob.location().show(mob,null,this,somanticCastCode(mob,null,auto),auto?"":L("^S<S-NAME> whisper(s) and wave(s) <S-HIS-HER> arms.^?")))
+			{
 				for (final Object element : h)
 				{
 					final MOB target=(MOB)element;
@@ -134,6 +135,7 @@ public class Spell_MassSleep extends Spell
 					else
 						maliciousFizzle(mob,target,L("<T-NAME> seem(s) unaffected by the Sleep spell from <S-NAME>."));
 				}
+			}
 		}
 		else
 			return maliciousFizzle(mob,null,L("<S-NAME> whisper(s) a sleeping spell, but the spell fizzles."));

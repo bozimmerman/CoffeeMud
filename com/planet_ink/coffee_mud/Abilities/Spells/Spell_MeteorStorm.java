@@ -93,6 +93,7 @@ public class Spell_MeteorStorm extends Spell
 		{
 
 			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),L(auto?"A devastating meteor shower erupts!":"^S<S-NAME> conjur(s) up a devastating meteor shower!^?")+CMLib.protocol().msp("meteor.wav",40)))
+			{
 				for (final Object element : h)
 				{
 					final MOB target=(MOB)element;
@@ -112,6 +113,7 @@ public class Spell_MeteorStorm extends Spell
 							CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BASHING,L("The meteors <DAMAGE> <T-NAME>!"));
 					}
 				}
+			}
 		}
 		else
 			return maliciousFizzle(mob,null,L("<S-NAME> attempt(s) to invoke a meteoric spell, but the spell fizzles."));

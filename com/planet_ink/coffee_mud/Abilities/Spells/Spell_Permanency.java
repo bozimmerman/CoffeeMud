@@ -148,11 +148,13 @@ public class Spell_Permanency extends Spell
 						final Room R=mob.location();
 						Room R2=null;
 						for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+						{
 							if(R.getExitInDir(d)==target)
 							{
 								R2=R.getRoomInDir(d);
 								break;
 							}
+						}
 						if((CMLib.law().doesOwnThisLand(mob,R))
 						||((R2!=null)&&(CMLib.law().doesOwnThisLand(mob,R2))))
 							CMLib.database().DBUpdateExits(R);

@@ -198,6 +198,7 @@ public class Spell_PolymorphObject extends Spell
 			}
 		}
 		if(intoI == null)
+		{
 			for(ItemCraftor A : getCraftingSkills())
 			{
 				List<List<String>> L = A.matchingRecipeNames(intoWhat, true);
@@ -211,6 +212,7 @@ public class Spell_PolymorphObject extends Spell
 					}
 				}
 			}
+		}
 		if(intoI == null)
 			intoI = mob.findItem(intoWhat);
 		if(intoI == null)

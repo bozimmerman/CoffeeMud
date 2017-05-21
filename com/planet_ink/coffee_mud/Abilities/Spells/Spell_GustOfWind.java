@@ -155,6 +155,7 @@ public class Spell_GustOfWind extends Spell
 		if(success)
 		{
 			if(R.show(mob,null,this,verbalCastCode(mob,null,auto),auto?L("A horrendous wind gust blows through here."):L("^S<S-NAME> blow(s) at <S-HIS-HER> enemies.^?")))
+			{
 				for (final Object element : h)
 				{
 					final MOB target=(MOB)element;
@@ -185,6 +186,7 @@ public class Spell_GustOfWind extends Spell
 						}
 					}
 				}
+			}
 		}
 		else
 			return maliciousFizzle(mob,null,L("<S-NAME> blow(s), but find(s) <S-HE-SHE> is only full of hot air."));
