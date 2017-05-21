@@ -1754,6 +1754,8 @@ public class CMFile extends File
 	 */
 	public static final String vfsifyFilename(String filename)
 	{
+		if(filename == null)
+			return "";
 		filename=filename.trim();
 		if(filename.startsWith("::"))
 			filename=filename.substring(2);

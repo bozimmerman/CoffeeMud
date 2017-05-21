@@ -4015,7 +4015,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			}
 			if(behaviorstr.length()>0)
 				behaviorstr=behaviorstr.substring(0,behaviorstr.length()-2);
-			mob.tell(L("@x1. Behaviors: '@x2'.",""+showNumber,behaviorstr));
+			mob.tell(L("@x1. Behaviors: '@x2'.",""+showNumber,behaviorstr.replace('@','_')));
 			if((showFlag!=showNumber)&&(showFlag>-999))
 				return;
 			behave=mob.session().prompt(L("Enter a behavior to add/remove (?)\n\r:"),"");

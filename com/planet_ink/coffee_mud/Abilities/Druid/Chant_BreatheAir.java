@@ -127,6 +127,8 @@ public class Chant_BreatheAir extends Chant
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=super.getTarget(mob, commands, givenTarget, false, false);
+		if(target == null)
+			return false;
 		if((target.fetchEffect(this.ID())!=null)
 		||(CMParms.contains(target.charStats().getBreathables(),RawMaterial.RESOURCE_AIR)))
 		{

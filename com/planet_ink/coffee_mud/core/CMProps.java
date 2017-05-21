@@ -1812,7 +1812,11 @@ public class CMProps extends Properties
 				{
 					rawListData=new Properties();
 					CMProps p=p();
-					final String listFileName=p.getProperty("LISTFILE");
+					String listFileName;
+					if(p.containsKey("LISTFILE"))
+						listFileName=p.getProperty("LISTFILE");
+					else
+						listFileName = props['0'].getProperty("LISTFILE");
 					final CMFile F=new CMFile(listFileName,null,CMFile.FLAG_LOGERRORS);
 					if(F.exists())
 					{
