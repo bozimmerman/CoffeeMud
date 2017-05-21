@@ -21,7 +21,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2003-2017 Bo Zimmerman
 
@@ -40,12 +39,33 @@ import java.util.*;
 
 public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 {
-	@Override public String ID() { return "Herbalism"; }
+	@Override
+	public String ID()
+	{
+		return "Herbalism";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Herbalism");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"HERBALISM","HERBREW","HBREW"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override protected ExpertiseLibrary.SkillCostDefinition getRawTrainingCost() { return CMProps.getNormalSkillGainCost(ID()); }
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	protected ExpertiseLibrary.SkillCostDefinition getRawTrainingCost()
+	{
+		return CMProps.getNormalSkillGainCost(ID());
+	}
+
 	@Override
 	public String parametersFormat(){ return
 		"SPELL_ID\tITEM_LEVEL\t"
@@ -83,12 +103,29 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 		return super.tick(ticking,tickID);
 	}
 
-	@Override public String parametersFile(){ return "herbalism.txt";}
-	@Override protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
+	@Override
+	public String parametersFile()
+	{
+		return "herbalism.txt";
+	}
 
-	@Override public ItemKeyPair craftItem(String recipe) { return craftItem(recipe,0,false); }
+	@Override
+	protected List<List<String>> loadRecipes()
+	{
+		return super.loadRecipes(parametersFile());
+	}
 
-	@Override public boolean supportsDeconstruction() { return true; }
+	@Override
+	public ItemKeyPair craftItem(String recipe)
+	{
+		return craftItem(recipe,0,false);
+	}
+
+	@Override
+	public boolean supportsDeconstruction()
+	{
+		return true;
+	}
 
 	@Override
 	public String getDecodedComponentsDescription(final MOB mob, final List<String> recipe)
@@ -154,7 +191,6 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 		}
 		return false;
 	}
-
 
 	@Override
 	public void unInvoke()
@@ -384,7 +420,10 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 						final Item I=V.get(v);
 						if(CMLib.english().containsString(I.Name(),ingredient)
 						||(RawMaterial.CODES.NAME(I.material()).equalsIgnoreCase(ingredient)))
-						{ ok=true; break;}
+						{
+							ok=true;
+							break;
+						}
 					}
 					if(!ok)
 					{
@@ -404,7 +443,10 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 					if(ingredient.length()>0)
 						if(CMLib.english().containsString(I.Name(),ingredient)
 						||(RawMaterial.CODES.NAME(I.material()).equalsIgnoreCase(ingredient)))
-						{ ok=true; break;}
+						{
+							ok=true;
+							break;
+						}
 				}
 				if(!ok)
 				{

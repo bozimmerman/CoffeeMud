@@ -15,8 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
 import java.util.*;
 
 /*
@@ -74,7 +72,8 @@ public class Prop_FightSpellCast extends Prop_SpellAdder
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
-	{}
+	{
+	}
 
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)

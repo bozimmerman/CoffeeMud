@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -35,9 +34,24 @@ import java.util.*;
 */
 public class Prop_Socials extends Property
 {
-	@Override public String ID() { return "Prop_Socials"; }
-	@Override public String name(){ return "Local Social creating property";}
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_ROOMS|Ability.CAN_EXITS|Ability.CAN_AREAS;}
+	@Override
+	public String ID()
+	{
+		return "Prop_Socials";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Local Social creating property";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_ROOMS|Ability.CAN_EXITS|Ability.CAN_AREAS;
+	}
+
 	protected final Map<String,List<Social>> socials=new TreeMap<String,List<Social>>();
 
 	protected boolean wornOnly=false;
@@ -155,6 +169,5 @@ public class Prop_Socials extends Property
 		}
 		return super.okMessage(myHost,msg);
 	}
-
 
 }

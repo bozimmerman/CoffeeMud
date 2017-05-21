@@ -57,5 +57,4 @@ public class SmallMace extends StdWeapon
 		weaponClassification=Weapon.CLASS_BLUNT;
 	}
 
-
 }

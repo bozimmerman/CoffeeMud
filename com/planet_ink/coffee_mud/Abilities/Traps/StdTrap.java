@@ -273,6 +273,7 @@ public class StdTrap extends StdAbility implements Trap
 		}
 		super.setMiscText(text);
 	}
+
 	@Override
 	public String text()
 	{
@@ -581,7 +582,6 @@ public class StdTrap extends StdAbility implements Trap
 		super.setInvoker(mob);
 	}
 
-
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -687,7 +687,6 @@ public class StdTrap extends StdAbility implements Trap
 	{
 		return CMLib.materials().findNumberOfResource(room, resource);
 	}
-	
 	
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)

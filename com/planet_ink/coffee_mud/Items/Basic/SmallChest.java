@@ -51,6 +51,4 @@ public class SmallChest extends LockableContainer
 		recoverPhyStats();
 	}
 
-
-
 }

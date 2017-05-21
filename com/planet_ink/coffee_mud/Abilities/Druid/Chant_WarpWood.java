@@ -35,13 +35,43 @@ import java.util.*;
 
 public class Chant_WarpWood extends Chant
 {
-	@Override public String ID() { return "Chant_WarpWood"; }
+	@Override
+	public String ID()
+	{
+		return "Chant_WarpWood";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Warp Wood");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_MOBS|Ability.CAN_ITEMS;
+	}
 
 	public Item getPossibility(MOB mobTarget)
 	{
@@ -141,7 +171,6 @@ public class Chant_WarpWood extends Chant
 		}
 		else
 			return maliciousFizzle(mob,null,L("<S-NAME> chant(s), but nothing happens."));
-
 
 		// return whether it worked
 		return success;

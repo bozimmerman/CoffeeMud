@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -35,9 +34,23 @@ import java.util.*;
 */
 public class Prop_SpellReflecting extends Property implements TriggeredAffect
 {
-	@Override public String ID() { return "Prop_SpellReflecting"; }
-	@Override public String name(){ return "Spell reflecting property";}
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
+	@Override
+	public String ID()
+	{
+		return "Prop_SpellReflecting";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Spell reflecting property";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS|Ability.CAN_ITEMS;
+	}
 
 	protected int minLevel=1;
 	protected int maxLevel=30;
@@ -47,10 +60,23 @@ public class Prop_SpellReflecting extends Property implements TriggeredAffect
 	protected int uses=100;
 	protected long lastFade=0;
 
-	@Override public int abilityCode(){return uses;}
-	@Override public void setAbilityCode(int newCode){uses=newCode;}
+	@Override
+	public int abilityCode()
+	{
+		return uses;
+	}
 
-	@Override public long flags(){return Ability.FLAG_IMMUNER;}
+	@Override
+	public void setAbilityCode(int newCode)
+	{
+		uses=newCode;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_IMMUNER;
+	}
 
 	@Override
 	public int triggerMask()
@@ -156,6 +182,5 @@ public class Prop_SpellReflecting extends Property implements TriggeredAffect
 		}
 		return super.okMessage(myHost,msg);
 	}
-
 
 }

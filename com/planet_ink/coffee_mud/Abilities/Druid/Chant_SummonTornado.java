@@ -35,15 +35,55 @@ import java.util.*;
 
 public class Chant_SummonTornado extends Chant
 {
-	@Override public String ID() { return "Chant_SummonTornado"; }
-	@Override public String name(){return renderedMundane?"tornado":"Summon Tornado";}
+	@Override
+	public String ID()
+	{
+		return "Chant_SummonTornado";
+	}
+
+	@Override
+	public String name()
+	{
+		return renderedMundane?"tornado":"Summon Tornado";
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Inside a Tornado)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;}
-	@Override public long flags(){return Ability.FLAG_MOVING|Ability.FLAG_WEATHERAFFECTING;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_MOVING|Ability.FLAG_WEATHERAFFECTING;
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
@@ -101,7 +141,6 @@ public class Chant_SummonTornado extends Chant
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 

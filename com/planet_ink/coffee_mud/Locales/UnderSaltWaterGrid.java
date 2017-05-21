@@ -64,7 +64,6 @@ public class UnderSaltWaterGrid extends UnderWaterGrid
 		return 0;
 	}
 
-
 	@Override
 	public String getGridChildLocaleID()
 	{

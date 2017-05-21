@@ -16,7 +16,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -37,12 +36,42 @@ import java.util.*;
 
 public class FighterSkill extends StdAbility
 {
-	@Override public String ID() { return "FighterSkill"; }
+	@Override
+	public String ID()
+	{
+		return "FighterSkill";
+	}
+
 	private final static String localizedName = CMLib.lang().L("FighterSkill");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){ return Ability.ACODE_SKILL;}
-	@Override public int usageType(){return USAGE_MOVEMENT;}
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
 
 }

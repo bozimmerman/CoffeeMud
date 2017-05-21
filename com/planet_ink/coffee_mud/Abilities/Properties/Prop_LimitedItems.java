@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -36,9 +35,24 @@ import java.util.*;
 
 public class Prop_LimitedItems extends Property
 {
-	@Override public String ID() { return "Prop_LimitedItems"; }
-	@Override public String name(){ return "Limited Item";}
-	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
+	@Override
+	public String ID()
+	{
+		return "Prop_LimitedItems";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Limited Item";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ITEMS;
+	}
+
 	public static Map<String,List<Item>> instances=new Hashtable<String,List<Item>>();
 	public static boolean[] playersLoaded=new boolean[1];
 	protected boolean norecurse=false;

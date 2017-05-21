@@ -199,12 +199,14 @@ public class StdElecPanel extends StdElecContainer implements ElecPanel
 				final MOB M=CMLib.map().getFactoryMOB(locR);
 				final CMMsg deactivateMsg = CMClass.getMsg(M, null, null, CMMsg.MASK_ALWAYS|CMMsg.MASK_CNTRLMSG|CMMsg.MSG_DEACTIVATE,null);
 				for(final Item I : this.getDeepContents())
+				{
 					if(I instanceof Electronics)
 					{
 						deactivateMsg.setTarget(I);
 						if(locR.okMessage(M, deactivateMsg))
 							locR.send(M, deactivateMsg);
 					}
+				}
 				break;
 			}
 			case CMMsg.TYP_POWERCURRENT:

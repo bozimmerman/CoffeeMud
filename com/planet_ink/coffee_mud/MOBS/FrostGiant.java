@@ -50,7 +50,6 @@ public class FrostGiant extends StdMOB
 		setMoney(0);
 		basePhyStats.setWeight(3500 + CMLib.dice().roll(1, 1000, 0));
 
-
 		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,10 + CMLib.dice().roll(1, 6, 0));
 		baseCharStats().setStat(CharStats.STAT_STRENGTH,29);
 		baseCharStats().setStat(CharStats.STAT_DEXTERITY,9);

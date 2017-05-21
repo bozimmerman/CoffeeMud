@@ -66,8 +66,10 @@ public class ReadOnlyMultiList<K> implements List<K>
 	public boolean contains(Object o)
 	{
 		for (final List<K> l : lists)
+		{
 			if (l.contains(o))
 				return true;
+		}
 		return false;
 	}
 
@@ -136,8 +138,10 @@ public class ReadOnlyMultiList<K> implements List<K>
 	public boolean containsAll(Collection<?> c)
 	{
 		for (final List<K> l : lists)
+		{
 			if (l.containsAll(c))
 				return true;
+		}
 		return false;
 	}
 

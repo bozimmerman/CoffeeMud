@@ -115,6 +115,7 @@ public class GenFoodResource extends GenFood implements RawMaterial, Food
 	}
 
 	protected String domainSource=null;
+
 	@Override
 	public String domainSource()
 	{

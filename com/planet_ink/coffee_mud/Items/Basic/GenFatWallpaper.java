@@ -41,6 +41,7 @@ public class GenFatWallpaper extends GenWallpaper
 	}
 
 	protected String	displayText="";
+
 	@Override
 	public String displayText()
 	{
@@ -54,6 +55,7 @@ public class GenFatWallpaper extends GenWallpaper
 	}
 
 	protected long expirationDate=0;
+
 	@Override
 	public long expirationDate()
 	{
@@ -143,10 +145,12 @@ public class GenFatWallpaper extends GenWallpaper
 		if(!super.sameAs(E))
 			return false;
 		for(int i=0;i<CODES.length;i++)
+		{
 			if(!E.getStat(CODES[i]).equals(getStat(CODES[i])))
 			{
 				return false;
 			}
+		}
 		return true;
 	}
 }

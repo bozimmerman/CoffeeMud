@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2006-2017 Bo Zimmerman
 
@@ -36,18 +35,58 @@ import java.util.*;
 
 public class Thief_EscapeBonds extends ThiefSkill
 {
-	@Override public String ID() { return "Thief_EscapeBonds"; }
-	private final static String localizedName = CMLib.lang().L("Escape Bonds");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Slipping from your bonds)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_BINDING;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	private static final String[] triggerStrings =I(new String[] {"ESCAPEBONDS","ESCAPE"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override
+	public String ID()
+	{
+		return "Thief_EscapeBonds";
+	}
 
+	private final static String localizedName = CMLib.lang().L("Escape Bonds");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Slipping from your bonds)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_BINDING;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	private static final String[] triggerStrings =I(new String[] {"ESCAPEBONDS","ESCAPE"});
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
@@ -57,10 +96,16 @@ public class Thief_EscapeBonds extends ThiefSkill
 			final MOB mob=(MOB)affected;
 			if((!CMLib.flags().isAliveAwakeMobile(mob,true))
 			||(!CMLib.flags().isBound(mob)))
-			{ unInvoke(); return false;}
+			{
+				unInvoke();
+				return false;
+			}
 			final List<Ability> V=CMLib.flags().flaggedAffects(mob,Ability.FLAG_BINDING);
 			if(V.size()==0)
-			{ unInvoke(); return false;}
+			{
+				unInvoke();
+				return false;
+			}
 			final int newStrength=mob.charStats().getStat(CharStats.STAT_STRENGTH)
 						   +getXLEVELLevel(mob)
 						   +(mob.charStats().getStat(CharStats.STAT_DEXTERITY)*2);
@@ -107,7 +152,6 @@ public class Thief_EscapeBonds extends ThiefSkill
 		}
 		return super.castingQuality(mob,target);
 	}
-
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)

@@ -35,17 +35,63 @@ import java.util.*;
 
 public class Prayer_SenseInvisible extends Prayer
 {
-	@Override public String ID() { return "Prayer_SenseInvisible"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_SenseInvisible";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Sense Invisible");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Sense Invisible)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
-	@Override public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	@Override public long flags(){return Ability.FLAG_NEUTRAL;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_SELF;
+	}
+
+	@Override
+	public int enchantQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_SELF;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_NEUTRAL;
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
@@ -82,12 +128,17 @@ public class Prayer_SenseInvisible extends Prayer
 				final Room R=((MOB)target).location();
 				boolean found=false;
 				if(R!=null)
+				{
 					for(int r=0;r<R.numInhabitants();r++)
 					{
 						final MOB M=R.fetchInhabitant(r);
 						if((M!=null)&&(M!=mob)&&(M!=target)&&(CMLib.flags().isInvisible(M)))
-						{ found=true; break;}
+						{
+							found=true;
+							break;
+						}
 					}
+				}
 				if(!found)
 					return Ability.QUALITY_INDIFFERENT;
 			}
@@ -123,7 +174,6 @@ public class Prayer_SenseInvisible extends Prayer
 		}
 		else
 			return beneficialWordsFizzle(mob,null,L("<S-NAME> @x1 for divine revelation, but <S-HIS-HER> prayer is not heard.",prayWord(mob)));
-
 
 		// return whether it worked
 		return success;

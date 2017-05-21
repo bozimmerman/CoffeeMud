@@ -56,7 +56,6 @@ public interface SpellHolder extends Item
 	 */
 	public String getSpellList();
 	
-	
 	/**
 	 * Sets the list of abilities that this item contains as
 	 * a semicolon-delimited list, with any spell arguments

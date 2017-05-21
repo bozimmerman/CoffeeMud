@@ -35,17 +35,64 @@ import java.util.*;
 
 public class Prayer_SenseLife extends Prayer
 {
-	@Override public String ID() { return "Prayer_SenseLife"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_SenseLife";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Sense Life");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Sense Life)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
-	@Override public long flags(){return Ability.FLAG_NEUTRAL;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int enchantQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_SELF;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_SELF;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_NEUTRAL;
+	}
+
 	protected Room lastRoom=null;
 
 	@Override
@@ -150,7 +197,6 @@ public class Prayer_SenseLife extends Prayer
 		}
 		else
 			return beneficialWordsFizzle(mob,null,L("<S-NAME> listen(s) to @x1 for a message, but there is no answer.",hisHerDiety(mob)));
-
 
 		// return whether it worked
 		return success;

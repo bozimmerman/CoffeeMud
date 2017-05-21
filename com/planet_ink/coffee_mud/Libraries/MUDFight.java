@@ -1833,7 +1833,6 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		return CMStrings.replaceAll(CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.WEAPON_MISS_DESCS,listIndex),"<TOOLNAME>",weaponName)+CMLib.protocol().msp("missed.wav",20);
 	}
 
-
 	@Override
 	public String standardHitString(final int weaponDamageType, final int weaponClass, final int damageAmount, final String weaponName)
 	{
@@ -1888,7 +1887,6 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		if(msg.tool() instanceof Ability)
 			tool=((Ability)msg.tool()).name();
 		
-
 		String tackOn=null;
 		switch(msg.targetMinor())
 		{

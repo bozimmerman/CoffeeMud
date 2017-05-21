@@ -35,23 +35,93 @@ import java.util.*;
 
 public class Disease_Fever extends Disease
 {
-	@Override public String ID() { return "Disease_Fever"; }
-	private final static String localizedName = CMLib.lang().L("Fever");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Fever)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public boolean putInCommandlist(){return false;}
-	@Override public int difficultyLevel(){return 1;}
+	@Override
+	public String ID()
+	{
+		return "Disease_Fever";
+	}
 
-	@Override protected int DISEASE_TICKS(){return 15;}
-	@Override protected int DISEASE_DELAY(){return 3;}
-	@Override protected String DISEASE_DONE(){return L("You head stops hurting.");}
-	@Override protected String DISEASE_START(){return L("^G<S-NAME> come(s) down with a fever.^?");}
-	@Override protected String DISEASE_AFFECT(){return "";}
-	@Override public int abilityCode(){return 0;}
+	private final static String localizedName = CMLib.lang().L("Fever");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Fever)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public boolean putInCommandlist()
+	{
+		return false;
+	}
+
+	@Override
+	public int difficultyLevel()
+	{
+		return 1;
+	}
+
+	@Override
+	protected int DISEASE_TICKS()
+	{
+		return 15;
+	}
+
+	@Override
+	protected int DISEASE_DELAY()
+	{
+		return 3;
+	}
+
+	@Override
+	protected String DISEASE_DONE()
+	{
+		return L("You head stops hurting.");
+	}
+
+	@Override
+	protected String DISEASE_START()
+	{
+		return L("^G<S-NAME> come(s) down with a fever.^?");
+	}
+
+	@Override
+	protected String DISEASE_AFFECT()
+	{
+		return "";
+	}
+
+	@Override
+	public int abilityCode()
+	{
+		return 0;
+	}
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)

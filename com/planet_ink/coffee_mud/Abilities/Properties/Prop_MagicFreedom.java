@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -35,15 +34,35 @@ import java.util.*;
 */
 public class Prop_MagicFreedom extends Property
 {
-	@Override public String ID() { return "Prop_MagicFreedom"; }
-	@Override public String name(){ return "Magic Neutralizing";}
-	@Override protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS;}
+	@Override
+	public String ID()
+	{
+		return "Prop_MagicFreedom";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Magic Neutralizing";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ROOMS|Ability.CAN_AREAS;
+	}
 
 	@Override
 	public String accountForYourself()
-	{ return "Anti-Magic Field";	}
+	{
+		return "Anti-Magic Field";
+	}
 
-	@Override public long flags(){return Ability.FLAG_IMMUNER;}
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_IMMUNER;
+	}
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)

@@ -524,7 +524,6 @@ public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor,
 			buildingI.recoverPhyStats();
 		}
 
-
 		messedUp=!proficiencyCheck(mob,0,auto);
 
 		if(bundling)

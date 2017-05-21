@@ -33,21 +33,70 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Fighter_FlyingKick extends FighterSkill
 {
-	@Override public String ID() { return "Fighter_FlyingKick"; }
+	@Override
+	public String ID()
+	{
+		return "Fighter_FlyingKick";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Flying Kick");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"FLYINGKICK","FLYKICK"});
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
-	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_KICKING;}
-	@Override public int minRange(){return 1;}
-	@Override public int maxRange(){return adjustedMaxInvokerRange(5);}
-	@Override public int usageType(){return USAGE_MOVEMENT;}
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL|Ability.DOMAIN_KICKING;
+	}
+
+	@Override
+	public int minRange()
+	{
+		return 1;
+	}
+
+	@Override
+	public int maxRange()
+	{
+		return adjustedMaxInvokerRange(5);
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT;
+	}
 
 	@Override
 	public int castingQuality(MOB mob, Physical target)

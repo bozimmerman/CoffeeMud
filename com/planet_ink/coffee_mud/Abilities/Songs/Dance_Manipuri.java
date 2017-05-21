@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2003-2017 Bo Zimmerman
 
@@ -36,11 +35,31 @@ import java.util.*;
 
 public class Dance_Manipuri extends Dance
 {
-	@Override public String ID() { return "Dance_Manipuri"; }
+	@Override
+	public String ID()
+	{
+		return "Dance_Manipuri";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Manipuri");
-	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
-	@Override protected String danceOf(){return name()+" Dance";}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_SELF;
+	}
+
+	@Override
+	protected String danceOf()
+	{
+		return name()+" Dance";
+	}
 
 	protected Room lastRoom=null;
 	protected int count=3;
@@ -62,6 +81,7 @@ public class Dance_Manipuri extends Dance
 			count--;
 		return true;
 	}
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{

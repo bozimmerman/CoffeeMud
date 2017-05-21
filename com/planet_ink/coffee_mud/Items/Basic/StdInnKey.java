@@ -54,7 +54,6 @@ public class StdInnKey extends StdKey implements InnKey
 		recoverPhyStats();
 	}
 
-
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{

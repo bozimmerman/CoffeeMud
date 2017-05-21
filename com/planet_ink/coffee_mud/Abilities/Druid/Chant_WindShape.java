@@ -33,19 +33,53 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Chant_WindShape extends Chant
 {
-	@Override public String ID() { return "Chant_WindShape"; }
-	private final static String localizedName = CMLib.lang().L("Wind Shape");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Wind Shape)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;}
+	@Override
+	public String ID()
+	{
+		return "Chant_WindShape";
+	}
 
+	private final static String localizedName = CMLib.lang().L("Wind Shape");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Wind Shape)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_SELF;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;
+	}
 
 	@Override
 	public void unInvoke()
@@ -81,6 +115,7 @@ public class Chant_WindShape extends Chant
 		}
 		return true;
 	}
+
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -110,7 +145,6 @@ public class Chant_WindShape extends Chant
 		}
 		else
 			return beneficialWordsFizzle(mob,target,L("<S-NAME> chant(s) for a new form, but nothing happens."));
-
 
 		// return whether it worked
 		return success;

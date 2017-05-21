@@ -109,7 +109,6 @@ public class Thief_MarkerSpying extends ThiefSkill
 		return Ability.ACODE_THIEF_SKILL | Ability.DOMAIN_STEALTHY;
 	}
 
-
 	public MOB getMark(MOB mob)
 	{
 		if(mob!=null)

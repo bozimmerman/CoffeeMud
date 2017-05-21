@@ -212,7 +212,11 @@ public class Poison_Alcohol extends Poison
 		if(!(affected instanceof MOB))
 			return true;
 
-		if(disableHappiness){disableHappiness=false; return true;}
+		if(disableHappiness)
+		{
+			disableHappiness=false;
+			return true;
+		}
 
 		final MOB mob=(MOB)affected;
 		if(mob==null)

@@ -75,7 +75,6 @@ public class UmberHulk extends StdMOB
 		recoverCharStats();
 	}
 
-
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -106,7 +105,7 @@ public class UmberHulk extends StdMOB
 	  Ability confuse=CMClass.getAbility("Spell_Confusion");
 		confuse.setProficiency(75);
 		if(this.fetchAbility(confuse.ID())==null)
-		   this.addAbility(confuse);
+			this.addAbility(confuse);
 		else
 			confuse =this.fetchAbility(confuse.ID());
 
@@ -114,6 +113,5 @@ public class UmberHulk extends StdMOB
 			confuse.invoke(this,null,false,0);
 		return true;
 	}
-
 
 }

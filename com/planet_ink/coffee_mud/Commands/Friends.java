@@ -38,7 +38,12 @@ public class Friends extends StdCommand
 	public Friends(){}
 
 	private final String[] access=I(new String[]{"FRIENDS"});
-	@Override public String[] getAccessWords(){return access;}
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
+
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
@@ -71,7 +76,8 @@ public class Friends extends StdCommand
 			}
 			name=CMStrings.capitalizeAndLower(name);
 			if(name.equals("All"))
-			{}
+			{
+			}
 			else
 			if(!CMLib.players().playerExists(name))
 			{
@@ -111,7 +117,10 @@ public class Friends extends StdCommand
 		return false;
 	}
 
-	@Override public boolean canBeOrdered(){return false;}
-
+	@Override
+	public boolean canBeOrdered()
+	{
+		return false;
+	}
 
 }

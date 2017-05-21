@@ -218,7 +218,6 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 		return super.invoker();
 	}
 
-
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -265,7 +264,6 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 		return super.castingQuality(mob,target);
 	}
 
-	
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{

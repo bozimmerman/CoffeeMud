@@ -25,7 +25,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 import java.io.Serializable;
 
-
 /*
    Copyright 2003-2017 Bo Zimmerman
 
@@ -122,8 +121,6 @@ public class IMudInterface implements ImudServices, Serializable
 		{ "^w^*", "%^WHITE%^%^BOLD%^%^FLASH%^",   "\033[1;5;37m" }  // White
 	};
 
-
-
 	public IMudInterface(String Name, String Version, int Port, String i3status, List<CMChannel> Channels)
 	{
 		if(Name!=null)
@@ -186,7 +183,10 @@ public class IMudInterface implements ImudServices, Serializable
 					for (final String[] element : i3ansi_conversion)
 					{
 						if(code.equals(element[1]))
-						{found=element[0]; break;}
+						{
+							found=element[0];
+							break;
+						}
 					}
 					if(found!=null)
 					{
@@ -199,7 +199,6 @@ public class IMudInterface implements ImudServices, Serializable
 		}
 		return buf.toString();
 	}
-
 
 	public String socialFixIn(String str)
 	{
@@ -261,7 +260,7 @@ public class IMudInterface implements ImudServices, Serializable
 				CMMsg msg=null;
 
 				if((ck.sender_mud!=null)&&(ck.sender_mud.equalsIgnoreCase(getMudName())))
-				   return;
+					return;
 				if((ck.channel==null)||(ck.channel.length()==0))
 					return;
 				final String channelColor="^Q";
@@ -353,7 +352,8 @@ public class IMudInterface implements ImudServices, Serializable
 					try
 					{
 					lpk.send();
-					}catch(final Exception e){Log.errOut("IMudClient",e);}
+					}
+					catch(final Exception e){Log.errOut("IMudClient",e);}
 				}
 			}
 			break;
@@ -397,7 +397,8 @@ public class IMudInterface implements ImudServices, Serializable
 				try
 				{
 					pkt.send();
-				}catch(final Exception e){Log.errOut("IMudClient",e);}
+				}
+				catch(final Exception e){Log.errOut("IMudClient",e);}
 			}
 			break;
 		case Packet.FINGER_REPLY:
@@ -441,7 +442,8 @@ public class IMudInterface implements ImudServices, Serializable
 				try
 				{
 					pkt.send();
-				}catch(final Exception e){Log.errOut("IMudClient",e);}
+				}
+				catch(final Exception e){Log.errOut("IMudClient",e);}
 			}
 			break;
 		case Packet.MAUTH_REPLY:
@@ -530,7 +532,8 @@ public class IMudInterface implements ImudServices, Serializable
 				try
 				{
 				wkr.send();
-				}catch(final Exception e){Log.errOut("IMudClient",e);}
+				}
+				catch(final Exception e){Log.errOut("IMudClient",e);}
 			}
 			break;
 		case Packet.CHAN_USER_REQ:
@@ -549,7 +552,8 @@ public class IMudInterface implements ImudServices, Serializable
 					try
 					{
 						wkr.send();
-					}catch(final Exception e){Log.errOut("IMudClient",e);}
+					}
+					catch(final Exception e){Log.errOut("IMudClient",e);}
 				}
 			}
 			break;
@@ -583,7 +587,8 @@ public class IMudInterface implements ImudServices, Serializable
 				try
 				{
 				wkr.send();
-				}catch(final Exception e){Log.errOut("IMudClient",e);}
+				}
+				catch(final Exception e){Log.errOut("IMudClient",e);}
 			}
 			break;
 		case Packet.TELL:
@@ -647,7 +652,6 @@ public class IMudInterface implements ImudServices, Serializable
 		}
 		return false;
 	}
-
 
 	/**
 	 * Remote a channel
@@ -746,7 +750,6 @@ public class IMudInterface implements ImudServices, Serializable
 	{
 		return port;
 	}
-
 
 	/**
 	 * Given a remote channel name, returns the mask

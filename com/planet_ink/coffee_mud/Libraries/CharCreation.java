@@ -257,7 +257,6 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		return false;
 	}
 	
-	
 	@Override
 	public boolean isAvailableCharClass(CharClass C)
 	{
@@ -691,7 +690,6 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		}
 		return list.toString();
 	}
-
 
 	protected void getUniversalStartingItems(int theme, MOB mob)
 	{

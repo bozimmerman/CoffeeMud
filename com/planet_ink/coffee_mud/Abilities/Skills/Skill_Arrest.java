@@ -35,17 +35,62 @@ import java.util.*;
 
 public class Skill_Arrest extends StdSkill
 {
-	@Override public String ID() { return "Skill_Arrest"; }
+	@Override
+	public String ID()
+	{
+		return "Skill_Arrest";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Arrest");
-	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "";}
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public String displayText()
+	{
+		return "";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_OTHERS;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"ARREST"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int usageType(){return USAGE_MOVEMENT;}
-	@Override public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_LEGAL; }
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL|Ability.DOMAIN_LEGAL;
+	}
 
 	public static List<LegalWarrant> getWarrantsOf(MOB target, Area legalA)
 	{

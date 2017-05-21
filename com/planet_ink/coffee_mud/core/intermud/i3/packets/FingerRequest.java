@@ -41,6 +41,7 @@ public class FingerRequest extends Packet
 		super();
 		type = Packet.FINGER_REQUEST;
 	}
+
 	public FingerRequest(Vector v) throws InvalidPacketException {
 		super(v);
 		try

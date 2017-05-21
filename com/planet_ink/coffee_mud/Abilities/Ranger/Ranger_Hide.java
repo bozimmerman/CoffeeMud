@@ -217,7 +217,6 @@ public class Ranger_Hide extends StdAbility
 		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_DESERT))
 			str=L("You creep behind some rocks and remain completely still.");
 
-
 		boolean success=(highestMOB==null)||proficiencyCheck(mob,levelDiff*10,auto);
 
 		if(!success)

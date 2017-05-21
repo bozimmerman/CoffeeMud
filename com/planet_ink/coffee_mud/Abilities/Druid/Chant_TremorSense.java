@@ -100,8 +100,10 @@ public class Chant_TremorSense extends Chant
 		super.unInvoke();
 
 		if(canBeUninvoked())
+		{
 			if((mob.location()!=null)&&(!mob.amDead()))
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> tremor sense fades."));
+		}
 		for(int r=0;r<rooms.size();r++)
 		{
 			final Room R=rooms.elementAt(r);
@@ -213,7 +215,6 @@ public class Chant_TremorSense extends Chant
 		}
 		else
 			return beneficialWordsFizzle(mob,target,L("<S-NAME> chant(s), but nothing happens."));
-
 
 		// return whether it worked
 		return success;

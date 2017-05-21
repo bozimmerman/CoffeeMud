@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.lang.ref.WeakReference;
 import java.util.*;
 
@@ -37,9 +36,24 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class MOBReSave extends ActiveTicker
 {
-	@Override public String ID(){return "MOBReSave";}
-	@Override protected int canImproveCode(){return Behavior.CAN_MOBS;}
-	@Override public long flags(){return 0;}
+	@Override
+	public String ID()
+	{
+		return "MOBReSave";
+	}
+
+	@Override
+	protected int canImproveCode()
+	{
+		return Behavior.CAN_MOBS;
+	}
+
+	@Override
+	public long flags()
+	{
+		return 0;
+	}
+
 	protected static HashSet<Room> roomsReset=new HashSet<Room>();
 	protected boolean noRecurse=false;
 	protected CharStats startStats=null;
@@ -80,6 +94,7 @@ public class MOBReSave extends ActiveTicker
 			rebuiltParms.append(" "+CharStats.CODES.ABBR(c)+"="+M.baseCharStats().getStat(c));
 		return rebuiltParms.toString();
 	}
+
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -101,8 +116,10 @@ public class MOBReSave extends ActiveTicker
 				synchronized(startStats)
 				{
 					for(final int c: CharStats.CODES.ALLCODES())
+					{
 						if(startStats.getStat(c)>0)
 							mob.baseCharStats().setStat(c,startStats.getStat(c));
+					}
 					startStats=null;
 				}
 			}
@@ -115,6 +132,5 @@ public class MOBReSave extends ActiveTicker
 		noRecurse=false;
 		return true;
 	}
-
 
 }

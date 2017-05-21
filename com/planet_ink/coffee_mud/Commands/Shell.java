@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2005-2017 Bo Zimmerman
 
@@ -179,8 +178,10 @@ public class Shell extends StdCommand
 			}
 		}
 		for(final CMFile F : files)
+		{
 			if(!dirsH.contains(F))
 				dirs.add(F);
+		}
 		return dirs;
 	}
 

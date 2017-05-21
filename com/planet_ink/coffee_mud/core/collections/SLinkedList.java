@@ -139,6 +139,7 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public synchronized void add(int arg0, K arg1)
 	{
@@ -147,6 +148,7 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public synchronized boolean add(K arg0)
 	{
@@ -155,6 +157,7 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public synchronized boolean addAll(Collection<? extends K> arg0)
 	{
@@ -163,6 +166,7 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public synchronized boolean addAll(int arg0, Collection<? extends K> arg1)
 	{
@@ -171,6 +175,7 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public synchronized void addFirst(K arg0)
 	{
@@ -179,6 +184,7 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public synchronized void addLast(K arg0)
 	{
@@ -187,6 +193,7 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public synchronized void clear()
 	{
@@ -258,6 +265,7 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public synchronized boolean offer(K arg0)
 	{
@@ -266,6 +274,7 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public synchronized boolean offerFirst(K arg0)
 	{
@@ -274,6 +283,7 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public synchronized boolean offerLast(K arg0)
 	{
@@ -300,6 +310,7 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public synchronized K poll()
 	{
@@ -308,6 +319,7 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public synchronized K pollFirst()
 	{
@@ -316,6 +328,7 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public synchronized K pollLast()
 	{
@@ -324,6 +337,7 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public synchronized K pop()
 	{
@@ -332,6 +346,7 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public synchronized void push(K arg0)
 	{
@@ -340,6 +355,7 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public synchronized K remove()
 	{
@@ -348,6 +364,7 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public synchronized K remove(int arg0)
 	{
@@ -356,6 +373,7 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public synchronized boolean remove(Object arg0)
 	{
@@ -364,6 +382,7 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public synchronized K removeFirst()
 	{
@@ -372,6 +391,7 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public synchronized boolean removeFirstOccurrence(Object arg0)
 	{
@@ -380,6 +400,7 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public synchronized K removeLast()
 	{
@@ -388,6 +409,7 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public synchronized boolean removeLastOccurrence(Object arg0)
 	{
@@ -396,6 +418,7 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public synchronized K set(int arg0, K arg1)
 	{
@@ -464,6 +487,7 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public synchronized boolean removeAll(Collection<?> c)
 	{
@@ -472,6 +496,7 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public synchronized boolean retainAll(Collection<?> c)
 	{

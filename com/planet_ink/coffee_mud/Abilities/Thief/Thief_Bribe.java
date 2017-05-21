@@ -35,17 +35,58 @@ import java.util.*;
 
 public class Thief_Bribe extends ThiefSkill
 {
-	@Override public String ID() { return "Thief_Bribe"; }
+	@Override
+	public String ID()
+	{
+		return "Thief_Bribe";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Bribe");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_OTHERS;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"BRIBE"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public boolean disregardsArmorCheck(MOB mob){return true;}
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public boolean disregardsArmorCheck(MOB mob)
+	{
+		return true;
+	}
+
 	protected MOB lastChecked=null;
-	@Override public int classificationCode() {   return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_INFLUENTIAL; }
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_INFLUENTIAL;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -110,7 +151,6 @@ public class Thief_Bribe extends ThiefSkill
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-
 
 		final double amountRequired=CMLib.beanCounter().getTotalAbsoluteNativeValue(target)
 						+((double)((100l-((mob.charStats().getStat(CharStats.STAT_CHARISMA)+(2l*getXLEVELLevel(mob)))*2)))*target.phyStats().level());

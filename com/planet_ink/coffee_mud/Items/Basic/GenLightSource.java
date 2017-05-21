@@ -54,7 +54,6 @@ public class GenLightSource extends LightSource
 		setDuration(200);
 	}
 
-
 	@Override
 	public void setDuration(int duration)
 	{
@@ -118,6 +117,7 @@ public class GenLightSource extends LightSource
 	}
 
 	private static String[] codes=null;
+
 	@Override
 	public String[] getStatCodes()
 	{

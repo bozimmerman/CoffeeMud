@@ -165,6 +165,7 @@ public class EndlessSky extends StdGrid
 			final Exit ox=CMClass.getExit("Open");
 			subMap=new Room[xsize][ysize];
 			for(int x=0;x<subMap.length;x++)
+			{
 				for(int y=0;y<subMap[x].length;y++)
 				{
 					final Room newRoom=getGridRoom(x,y);
@@ -187,6 +188,7 @@ public class EndlessSky extends StdGrid
 
 					}
 				}
+			}
 			buildFinalLinks();
 			if((subMap[0][0]!=null)
 			&&(subMap[0][0].rawDoors()[Directions.UP]==null)

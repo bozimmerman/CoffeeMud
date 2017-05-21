@@ -33,26 +33,80 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Prayer_Doomspout extends Prayer implements DiseaseAffect
 {
-	@Override public String ID() { return "Prayer_Doomspout"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_Doomspout";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Doomspout");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	@Override public long flags(){return Ability.FLAG_UNHOLY;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_UNHOLY;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Doomspout)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
-	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
-	@Override public int difficultyLevel(){return 7;}
-	@Override public boolean isMalicious(){ return true;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	public int difficultyLevel()
+	{
+		return 7;
+	}
+
+	@Override
+	public boolean isMalicious()
+	{
+		return true;
+	}
 	int plagueDown=4;
 	String godName="The Demon";
 	protected boolean ispoke=false;
 
-	@Override public int spreadBitmap(){return DiseaseAffect.SPREAD_PROXIMITY;}
+	@Override
+	public int spreadBitmap()
+	{
+		return DiseaseAffect.SPREAD_PROXIMITY;
+	}
 
 	@Override
 	public String getHealthConditionDesc()
@@ -151,11 +205,13 @@ public class Prayer_Doomspout extends Prayer implements DiseaseAffect
 		super.unInvoke();
 
 		if(canBeUninvoked())
+		{
 			if((mob.location()!=null)&&(!mob.amDead()))
 			{
 				spreadImmunity(mob);
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> doomspout disease clear up."));
 			}
+		}
 	}
 
 	@Override
@@ -206,7 +262,6 @@ public class Prayer_Doomspout extends Prayer implements DiseaseAffect
 		}
 		else
 			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to inflict a disease upon <T-NAMESELF>, but flub(s) it."));
-
 
 		// return whether it worked
 		return success;

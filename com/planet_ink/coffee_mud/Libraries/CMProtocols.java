@@ -890,11 +890,13 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			{"TORSO","FEET","LEGS","HANDS","ARMS","HEAD","EARS","EYES","MOUTH",
 			 "NECK","FINGERS","WRIST","BACK","WAIST","BODY","FLOATER","HELD","WIELDED"};
 			for(int i=0;i<bits.length;i++)
+			{
 				if(CMath.bset(A.rawProperLocationBitmap(),bits[i]))
 				{
 					image=getHashedMXPImage(H,"ARMOR_"+bitdesc[i]);
 					break;
 				}
+			}
 			if(image==null)
 				image=getHashedMXPImage(H,"ARMOR_*");
 		}

@@ -35,15 +35,35 @@ import java.util.*;
 
 public class Prop_Smell extends Property
 {
-	@Override public String ID() { return "Prop_Smell"; }
-	@Override public String name(){ return "A Smell";}
-	@Override protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS|Ability.CAN_ITEMS;}
+	@Override
+	public String ID()
+	{
+		return "Prop_Smell";
+	}
+
+	@Override
+	public String name()
+	{
+		return "A Smell";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS|Ability.CAN_ITEMS;
+	}
+
 	protected DVector smells=null;
 	protected final static int FLAG_EMOTE=512;
 	protected final static int FLAG_BROADCAST=1024;
 	protected boolean lastWasBroadcast=false;
 
-	@Override public String accountForYourself(){ return "";	}
+	@Override
+	public String accountForYourself()
+	{
+		return "";
+	}
+
 	@Override
 	public void setMiscText(String newStr)
 	{
@@ -73,6 +93,7 @@ public class Prop_Smell extends Property
 			smells=null;
 		}
 	}
+
 	public DVector getSmells()
 	{
 		if(smells!=null)

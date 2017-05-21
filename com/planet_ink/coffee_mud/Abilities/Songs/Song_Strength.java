@@ -18,7 +18,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2001-2017 Bo Zimmerman
 
@@ -37,11 +36,31 @@ import java.util.*;
 
 public class Song_Strength extends Song
 {
-	@Override public String ID() { return "Song_Strength"; }
+	@Override
+	public String ID()
+	{
+		return "Song_Strength";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Strength");
-	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	@Override protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_OTHERS;
+	}
+
+	@Override
+	protected boolean HAS_QUANTITATIVE_ASPECT()
+	{
+		return false;
+	}
 
 	protected int amount=0;
 

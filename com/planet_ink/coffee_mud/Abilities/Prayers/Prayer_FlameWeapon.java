@@ -33,19 +33,60 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Prayer_FlameWeapon extends Prayer
 {
-	@Override public String ID() { return "Prayer_FlameWeapon"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_FlameWeapon";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Flame Weapon");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Enflamed)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	@Override protected int canAffectCode(){return CAN_ITEMS;}
-	@Override protected int canTargetCode(){return CAN_ITEMS;}
-	@Override public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_HEATING|Ability.FLAG_FIREBASED;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_ITEMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_ITEMS;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_UNHOLY|Ability.FLAG_HEATING|Ability.FLAG_FIREBASED;
+	}
+
 	protected boolean notAgain=false;
 
 	@Override
@@ -94,7 +135,6 @@ public class Prayer_FlameWeapon extends Prayer
 			}finally{notAgain=false;}
 		}
 	}
-
 
 	@Override
 	public void unInvoke()
@@ -146,12 +186,17 @@ public class Prayer_FlameWeapon extends Prayer
 			{
 				target=mob.fetchWieldedItem();
 				if(target==null)
+				{
 					for(int i=0;i<mob.location().numItems();i++)
 					{
 						final Item I2=mob.location().getItem(i);
 						if((I2!=null)&&(I2.container()==null)&&(I2 instanceof Weapon))
-						{ target=I2; break;}
+						{
+							target=I2;
+							break;
+						}
 					}
+				}
 			}
 			if(!(target instanceof Weapon))
 			{

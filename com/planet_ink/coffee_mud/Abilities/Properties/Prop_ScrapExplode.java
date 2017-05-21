@@ -39,9 +39,23 @@ import java.util.*;
 
 public class Prop_ScrapExplode extends Property {
 
-	@Override public String ID() { return "Prop_ScrapExplode"; }
-	@Override public String name() { return "Scrap Explode"; }
-	@Override protected int canAffectCode() { return Ability.CAN_ITEMS; }
+	@Override
+	public String ID()
+	{
+		return "Prop_ScrapExplode";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Scrap Explode";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ITEMS;
+	}
 
 	@Override
 	public void executeMsg(Environmental myHost, CMMsg affect)

@@ -38,7 +38,11 @@ public class Formation extends StdCommand
 	public Formation(){}
 
 	private final String[] access=I(new String[]{"FORMATION"});
-	@Override public String[] getAccessWords(){return access;}
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
@@ -52,6 +56,7 @@ public class Formation extends StdCommand
 		{
 			final StringBuffer str=new StringBuffer("");
 			for(int i=0;i<done.length;i++)
+			{
 				if(done[i]!=null)
 				{
 					if(i==0)
@@ -62,6 +67,7 @@ public class Formation extends StdCommand
 						str.append(((i2>0)?", ":"")+done[i].get(i2).name());
 					str.append("\n\r");
 				}
+			}
 			mob.session().colorOnlyPrintln(str.toString());
 		}
 		else
@@ -91,7 +97,10 @@ public class Formation extends StdCommand
 					continue;
 				if(CMLib.english().containsString(M.name(),name)
 				   ||CMLib.english().containsString(M.Name(),name))
-				{who=M; break;}
+				{
+					who=M;
+					break;
+				}
 			}
 			if(who==null)
 			{
@@ -104,11 +113,13 @@ public class Formation extends StdCommand
 			{
 				int leaderRow=-1;
 				for(int f=0;f<done.length;f++)
+				{
 					if((done[f]!=null)&&(done[f].contains(leader)))
 					{
 						leaderRow=f;
 						break;
 					}
+				}
 				if(leaderRow<0)
 					CMLib.commands().doCommandFail(mob,origCmds,L("You do not exist."));
 				else
@@ -124,6 +135,10 @@ public class Formation extends StdCommand
 		return false;
 	}
 
-	@Override public boolean canBeOrdered(){return true;}
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 
 }

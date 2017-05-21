@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2001-2017 Bo Zimmerman
 
@@ -67,7 +66,6 @@ public class Specialization_Natural extends Specialization_Weapon
 			helpProficiency((MOB)affected, 0);
 		super.executeMsg(myHost, msg);
 	}
-
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)

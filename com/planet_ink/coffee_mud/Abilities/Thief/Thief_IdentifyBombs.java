@@ -15,10 +15,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
 import java.util.*;
-
 
 /*
    Copyright 2004-2017 Bo Zimmerman
@@ -37,17 +34,63 @@ import java.util.*;
 */
 public class Thief_IdentifyBombs extends ThiefSkill
 {
-	@Override public String ID() { return "Thief_IdentifyBombs"; }
+	@Override
+	public String ID()
+	{
+		return "Thief_IdentifyBombs";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Identify Bombs");
-	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "";}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
-	@Override public boolean isAutoInvoked(){return true;}
-	@Override public boolean canBeUninvoked(){return false;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public String displayText()
+	{
+		return "";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_SELF;
+	}
+
+	@Override
+	public boolean isAutoInvoked()
+	{
+		return true;
+	}
+
+	@Override
+	public boolean canBeUninvoked()
+	{
+		return false;
+	}
+
 	protected Room lastRoom=null;
-	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_DETRAP;}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_DETRAP;
+	}
 
 	public String trapCheck(Physical P)
 	{
@@ -80,6 +123,7 @@ public class Thief_IdentifyBombs extends ThiefSkill
 			final Container C=(Container)P;
 			final List<Item> V=C.getDeepContents();
 			for(int v=0;v<V.size();v++)
+			{
 				if(trapCheck(V.get(v)).length()>0)
 				{
 					if(CMLib.dice().rollPercentage()==1)
@@ -89,6 +133,7 @@ public class Thief_IdentifyBombs extends ThiefSkill
 					}
 					msg.append(L("@x1 contains a bomb.",C.name()));
 				}
+			}
 		}
 		else
 		if((P instanceof Item)&&(CMLib.flags().canBeSeenBy(P,mob)))
@@ -134,6 +179,7 @@ public class Thief_IdentifyBombs extends ThiefSkill
 				{
 					final Environmental E2=i.next();
 					if(E2 instanceof Item)
+					{
 						if(trapCheck((Item)E2).length()>0)
 						{
 							if(CMLib.dice().rollPercentage()==1)
@@ -143,6 +189,7 @@ public class Thief_IdentifyBombs extends ThiefSkill
 							}
 							return P.name()+" has a bomb in stock.";
 						}
+					}
 				}
 			}
 		}

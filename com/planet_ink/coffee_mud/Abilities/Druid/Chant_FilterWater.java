@@ -33,7 +33,6 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Chant_FilterWater extends Chant
 {
 	@Override
@@ -221,7 +220,6 @@ public class Chant_FilterWater extends Chant
 		}
 		else
 			return beneficialWordsFizzle(mob,target,L("<S-NAME> chants at <T-NAMESELF>, but nothing happens."));
-
 
 		// return whether it worked
 		return success;

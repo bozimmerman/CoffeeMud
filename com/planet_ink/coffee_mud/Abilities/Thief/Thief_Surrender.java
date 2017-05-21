@@ -35,15 +35,50 @@ import java.util.*;
 
 public class Thief_Surrender extends ThiefSkill
 {
-	@Override public String ID() { return "Thief_Surrender"; }
+	@Override
+	public String ID()
+	{
+		return "Thief_Surrender";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Surrender");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_SELF;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"SURRENDER"});
-	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_INFLUENTIAL;}
-	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_INFLUENTIAL;
+	}
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)

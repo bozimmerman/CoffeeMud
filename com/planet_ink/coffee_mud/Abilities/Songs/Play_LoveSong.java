@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2003-2017 Bo Zimmerman
 
@@ -36,11 +35,31 @@ import java.util.*;
 
 public class Play_LoveSong extends Play
 {
-	@Override public String ID() { return "Play_LoveSong"; }
+	@Override
+	public String ID()
+	{
+		return "Play_LoveSong";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Love Song");
-	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	@Override protected String songOf(){return CMLib.english().startWithAorAn(name());}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_OTHERS;
+	}
+
+	@Override
+	protected String songOf()
+	{
+		return CMLib.english().startWithAorAn(name());
+	}
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
@@ -99,7 +118,10 @@ public class Play_LoveSong extends Play
 						mob.tell(L("You feel lovingly towards @x1.",M.name(mob)));
 						break;
 					}
-				}catch(final Exception e){}
+				}
+				catch(final Exception e)
+				{
+				}
 			}
 		}
 		return true;

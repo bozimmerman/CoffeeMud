@@ -82,8 +82,10 @@ public class GetStat extends CM1Command
 	{
 		final char c=getTypeCode(P);
 		for(int i=0;i<STATTYPES.length;i++)
+		{
 			if(STATTYPES[i].equalsIgnoreCase(type))
 				return TYPESTYPE[i].indexOf(c)>=0;
+		}
 		return false;
 	}
 
@@ -92,8 +94,10 @@ public class GetStat extends CM1Command
 		final char c=getTypeCode(P);
 		final List<String> majorCodes = new LinkedList<String>();
 		for(int i=0;i<STATTYPES.length;i++)
+		{
 			if(TYPESTYPE[i].indexOf(c)>=0)
 				majorCodes.add(STATTYPES[i]);
+		}
 		return majorCodes.toArray(new String[0]);
 	}
 
@@ -437,11 +441,13 @@ public class GetStat extends CM1Command
 			req.close();
 		}
 	}
+
 	@Override
 	public boolean passesSecurityCheck(MOB user, PhysicalAgent target)
 	{
 		return (user != null);
 	}
+
 	@Override
 	public String getHelp(MOB user, PhysicalAgent target, String rest)
 	{

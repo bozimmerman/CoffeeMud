@@ -33,7 +33,6 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Chant_EelShock extends Chant
 {
 	@Override
@@ -143,7 +142,7 @@ public class Chant_EelShock extends Chant
 
 		final Area currentArea = location.getArea();
 		if(currentArea.getClimateObj().weatherType(location) == Climate.WEATHER_RAIN ||
-		   currentArea.getClimateObj().weatherType(location) == Climate.WEATHER_THUNDERSTORM)
+			currentArea.getClimateObj().weatherType(location) == Climate.WEATHER_THUNDERSTORM)
 			return true;
 		return false;
 	}

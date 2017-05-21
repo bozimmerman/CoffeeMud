@@ -38,7 +38,11 @@ public class Dress extends StdCommand
 	public Dress(){}
 
 	private final String[] access=I(new String[]{"DRESS"});
-	@Override public String[] getAccessWords(){return access;}
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
@@ -90,11 +94,16 @@ public class Dress extends StdCommand
 					else
 					{
 						for(final long wornCode : Wearable.CODES.ALL())
+						{
 							if(wornCode != Wearable.IN_INVENTORY)
 							{
 								if(item.fitsOn(wornCode)&&(wornCode!=Wearable.WORN_HELD))
-								{ item.wearAt(wornCode); break;}
+								{
+									item.wearAt(wornCode);
+									break;
+								}
 							}
+						}
 						if(item.amWearingAt(Wearable.IN_INVENTORY))
 							item.wearAt(Wearable.WORN_HELD);
 					}
@@ -146,9 +155,23 @@ public class Dress extends StdCommand
 			CMLib.commands().doCommandFail(mob,origCmds,L("@x1 won't let you.",target.name(mob)));
 		return false;
 	}
-	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandCombatActionCost(ID());}
-	@Override public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandActionCost(ID());}
-	@Override public boolean canBeOrdered(){return true;}
 
+	@Override
+	public double combatActionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandCombatActionCost(ID());
+	}
+
+	@Override
+	public double actionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandActionCost(ID());
+	}
+
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 
 }

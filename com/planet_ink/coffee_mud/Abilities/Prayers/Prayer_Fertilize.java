@@ -33,17 +33,51 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Prayer_Fertilize extends Prayer
 {
-	@Override public String ID() { return "Prayer_Fertilize"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_Fertilize";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Fertilize");
-	@Override public String name() { return localizedName; }
-	@Override protected int canTargetCode(){return 0;}
-	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}
-	@Override public long flags(){return Ability.FLAG_NEUTRAL;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ROOMS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_NEUTRAL;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
@@ -52,6 +86,7 @@ public class Prayer_Fertilize extends Prayer
 		{
 			final Room R=(Room)affected;
 			if((R.myResource()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_VEGETATION)
+			{
 				for(int m=0;m<R.numInhabitants();m++)
 				{
 					final MOB M=R.fetchInhabitant(m);
@@ -68,6 +103,7 @@ public class Prayer_Fertilize extends Prayer
 							A.setAbilityCode(1);
 					}
 				}
+			}
 		}
 		return super.tick(ticking,tickID);
 
@@ -111,7 +147,6 @@ public class Prayer_Fertilize extends Prayer
 		}
 		else
 			beneficialWordsFizzle(mob,null,L("<S-NAME> @x1 to make the land fruitful, but nothing happens.",prayForWord(mob)));
-
 
 		// return whether it worked
 		return success;

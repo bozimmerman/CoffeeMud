@@ -56,7 +56,6 @@ public class GenMultiPotion extends GenDrink implements Potion
 		recoverPhyStats();
 	}
 
-
 	@Override
 	public boolean isGeneric()
 	{

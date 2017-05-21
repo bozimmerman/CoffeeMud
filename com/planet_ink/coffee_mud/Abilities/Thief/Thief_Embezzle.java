@@ -35,17 +35,63 @@ import java.util.*;
 
 public class Thief_Embezzle extends ThiefSkill
 {
-	@Override public String ID() { return "Thief_Embezzle"; }
+	@Override
+	public String ID()
+	{
+		return "Thief_Embezzle";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Embezzle");
-	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "";}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public String displayText()
+	{
+		return "";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"EMBEZZLE"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode() {   return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_CRIMINAL; }
-	@Override public boolean disregardsArmorCheck(MOB mob){return true;}
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_CRIMINAL;
+	}
+
+	@Override
+	public boolean disregardsArmorCheck(MOB mob)
+	{
+		return true;
+	}
+
 	public List<MOB> mobs=new Vector<MOB>();
 	private final LinkedList<Pair<MOB,Integer>> lastOnes=new LinkedList<Pair<MOB,Integer>>();
 

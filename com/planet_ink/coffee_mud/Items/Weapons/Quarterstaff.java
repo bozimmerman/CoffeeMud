@@ -59,5 +59,4 @@ public class Quarterstaff extends StdWeapon
 		weaponClassification=Weapon.CLASS_STAFF;
 	}
 
-
 }

@@ -201,7 +201,6 @@ public class Prayer_Avatar extends Prayer
 		return super.tick(ticking,tickID);
 	}
 
-
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{

@@ -18,7 +18,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.sql.*;
 import java.util.*;
 
-
 /*
    Copyright 2005-2017 Bo Zimmerman
 
@@ -41,6 +40,7 @@ public class PollLoader
 	{
 		DB=newDB;
 	}
+
 	public DatabaseEngine.PollData DBRead(String name)
 	{
 		DBConnection D=null;
@@ -132,7 +132,6 @@ public class PollLoader
 		// log comment
 		return null;
 	}
-
 
 	public List<DatabaseEngine.PollData> DBReadList()
 	{

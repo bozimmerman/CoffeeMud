@@ -60,7 +60,6 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 
 	protected final static List<Pair<String,Integer>> emptyPride = new ReadOnlyVector<Pair<String,Integer>>(1);
 
-
 	@Override
 	public int numPlayers()
 	{
@@ -109,7 +108,6 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 				playerLocations.change(mob, room);
 		}
 	}
-
 
 	@Override
 	public MOB getLoadPlayerByEmail(final String email)

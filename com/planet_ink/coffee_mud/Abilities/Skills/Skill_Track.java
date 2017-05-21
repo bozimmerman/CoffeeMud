@@ -228,8 +228,10 @@ public class Skill_Track extends StdSkill
 										reMoveV.add(F.first);
 								}
 								for(final MOB M : reMoveV)
+								{
 									if(CMLib.flags().isBoundOrHeld(M))
 										CMLib.tracking().walk(M,dir,false,false);
+								}
 								if(reclose)
 								{
 									final Exit opExit=nextRoom.getExitInDir(opDirection);

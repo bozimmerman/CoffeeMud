@@ -431,7 +431,6 @@ public interface TimeClock extends Tickable, CMCommon
 	 */
 	public void initializeINIClock(CMProps page);
 
-
 	/**
 	 * Causes the world to visibly react to a change in time
 	 */

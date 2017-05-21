@@ -278,7 +278,6 @@ public class TemporaryAffects extends StdAbility
 				finishInit((CMObject)set[0]);
 	}
 
-
 	public void finishInit(CMObject A)
 	{
 		if(affected == null)

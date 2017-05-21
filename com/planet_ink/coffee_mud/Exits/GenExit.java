@@ -303,6 +303,7 @@ public class GenExit extends StdExit implements Modifiable
 		"READABLETEXT", "HASADOOR", "DEFCLOSED", "HASALOCK", "DEFLOCKED",
 		"KEYNAME", "RESETTIME","CLOSEWORD","OPENWORD","CLOSEDTEXT"
 	};
+
 	@Override
 	public String[] getStatCodes()
 	{

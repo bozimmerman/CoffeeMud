@@ -33,18 +33,54 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Chant_StoneFriend extends Chant
 {
-	@Override public String ID() { return "Chant_StoneFriend"; }
+	@Override
+	public String ID()
+	{
+		return "Chant_StoneFriend";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Stone Friend");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Charmed)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
 	@Override public long flags(){return 0;} // NOT charming because golems are resistant to that.
 
 	protected MOB charmer=null;
@@ -65,7 +101,6 @@ public class Chant_StoneFriend extends Chant
 			return invoker;
 		return charmer;
 	}
-
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)

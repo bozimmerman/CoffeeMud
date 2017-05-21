@@ -234,7 +234,6 @@ public interface LegalBehavior extends Behavior
 	 */
 	public void setControlPoints(String clanID, int newControlPoints);
 
-
 	/**
 	 * Returns the number of control points earned by the given clanID. Not
 	 * applicable if the legal behavior doesn't permit government changes or conquest.

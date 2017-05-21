@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2004-2017 Bo Zimmerman
 
@@ -36,12 +35,37 @@ import java.util.*;
 
 public class Prayer_BirdsEye extends Prayer
 {
-	@Override public String ID() { return "Prayer_BirdsEye"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_BirdsEye";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Birds Eye");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
-	@Override public long flags(){return Ability.FLAG_NEUTRAL;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_NEUTRAL;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)

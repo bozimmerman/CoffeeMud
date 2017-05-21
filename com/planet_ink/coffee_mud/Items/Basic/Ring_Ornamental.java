@@ -68,7 +68,6 @@ public class Ring_Ornamental extends Ring
 		recoverPhyStats();
 	}
 
-
 	@Override
 	public void recoverPhyStats()
 	{

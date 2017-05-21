@@ -35,12 +35,32 @@ import java.util.*;
 
 public class Hunting extends CommonSkill
 {
-	@Override public String ID() { return "Hunting"; }
+	@Override
+	public String ID()
+	{
+		return "Hunting";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Hunting");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"HUNT","HUNTING"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode(){return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_GATHERINGSKILL;}
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_GATHERINGSKILL;
+	}
 
 	protected MOB found=null;
 	protected String foundShortName="";
@@ -167,7 +187,10 @@ public class Hunting extends CommonSkill
 				{
 					final Room R=mob.location().getRoomInDir(d);
 					if((R!=null)&&(R==found.location()))
-					{ CMLib.tracking().walk(mob,d,false,false); break;}
+					{
+						CMLib.tracking().walk(mob,d,false,false);
+						break;
+					}
 				}
 			}
 		}
@@ -195,7 +218,6 @@ public class Hunting extends CommonSkill
 		}
 		super.unInvoke();
 	}
-
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)

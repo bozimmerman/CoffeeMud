@@ -35,16 +35,56 @@ import java.util.*;
 
 public class Skill_Warrants extends BardSkill
 {
-	@Override public String ID() { return "Skill_Warrants"; }
+	@Override
+	public String ID()
+	{
+		return "Skill_Warrants";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Warrants");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"WARRANTS"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_LEGAL; }
-	@Override public boolean disregardsArmorCheck(MOB mob){return true;}
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL|Ability.DOMAIN_LEGAL;
+	}
+
+	@Override
+	public boolean disregardsArmorCheck(MOB mob)
+	{
+		return true;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)

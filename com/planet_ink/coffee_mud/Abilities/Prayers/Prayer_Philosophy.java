@@ -35,15 +35,51 @@ import java.util.*;
 
 public class Prayer_Philosophy extends Prayer
 {
-	@Override public String ID() { return "Prayer_Philosophy"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_Philosophy";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Philosophy");
-	@Override public String name() { return localizedName; }
-	@Override public long flags(){return Ability.FLAG_HOLY;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_HOLY;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Philosophy spell)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_OTHERS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
 
 	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
@@ -71,7 +107,6 @@ public class Prayer_Philosophy extends Prayer
 		affectableStats.setStat(CharStats.STAT_WISDOM,affectableStats.getStat(CharStats.STAT_WISDOM) + increase);
 	}
 
-
 	@Override
 	public void unInvoke()
 	{
@@ -84,8 +119,6 @@ public class Prayer_Philosophy extends Prayer
 			mob.tell(L("You stop pondering life and the mysteries of the universe."));
 	}
 
-
-
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -95,7 +128,6 @@ public class Prayer_Philosophy extends Prayer
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-
 
 		// now see if it worked
 		final boolean success=proficiencyCheck(mob,0,auto);
@@ -112,7 +144,6 @@ public class Prayer_Philosophy extends Prayer
 		}
 		else
 			return beneficialWordsFizzle(mob,target,L("<S-NAME> give(s) <T-NAMESELF> something to think about, but it just confuses <T-HIM-HER>."));
-
 
 		// return whether it worked
 		return success;

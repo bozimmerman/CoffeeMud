@@ -35,20 +35,69 @@ import java.util.*;
 
 public class Poison_Peppersauce extends Poison
 {
-	@Override public String ID() { return "Poison_Peppersauce"; }
+	@Override
+	public String ID()
+	{
+		return "Poison_Peppersauce";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Peppersauce");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"POISONSAUCE"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
 
 	@Override protected int POISON_TICKS(){return 10;} // 0 means no adjustment!
-	@Override protected int POISON_DELAY(){return 1;}
-	@Override protected String POISON_DONE(){return "Your eyes clear up.";}
-	@Override protected String POISON_START(){return "^G<S-NAME> go(es) blind!^?";}
-	@Override protected String POISON_AFFECT(){return "";}
-	@Override protected String POISON_CAST(){return "^F^<FIGHT^><S-NAME> poison(s) <T-NAMESELF>!^</FIGHT^>^?";}
-	@Override protected String POISON_FAIL(){return "<S-NAME> attempt(s) to poison <T-NAMESELF>, but fail(s).";}
-	@Override protected int POISON_DAMAGE(){return 0;}
+	@Override
+	protected int POISON_DELAY()
+	{
+		return 1;
+	}
+
+	@Override
+	protected String POISON_DONE()
+	{
+		return "Your eyes clear up.";
+	}
+
+	@Override
+	protected String POISON_START()
+	{
+		return "^G<S-NAME> go(es) blind!^?";
+	}
+
+	@Override
+	protected String POISON_AFFECT()
+	{
+		return "";
+	}
+
+	@Override
+	protected String POISON_CAST()
+	{
+		return "^F^<FIGHT^><S-NAME> poison(s) <T-NAMESELF>!^</FIGHT^>^?";
+	}
+
+	@Override
+	protected String POISON_FAIL()
+	{
+		return "<S-NAME> attempt(s) to poison <T-NAMESELF>, but fail(s).";
+	}
+
+	@Override
+	protected int POISON_DAMAGE()
+	{
+		return 0;
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)

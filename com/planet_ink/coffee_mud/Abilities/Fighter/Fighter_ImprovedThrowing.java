@@ -35,16 +35,61 @@ import java.util.*;
 
 public class Fighter_ImprovedThrowing extends FighterSkill
 {
-	@Override public String ID() { return "Fighter_ImprovedThrowing"; }
+	@Override
+	public String ID()
+	{
+		return "Fighter_ImprovedThrowing";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Improved Throwing");
-	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "";}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_WEAPON_USE;}
-	@Override public boolean isAutoInvoked(){return true;}
-	@Override public boolean canBeUninvoked(){return false;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public String displayText()
+	{
+		return "";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_SELF;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL|Ability.DOMAIN_WEAPON_USE;
+	}
+
+	@Override
+	public boolean isAutoInvoked()
+	{
+		return true;
+	}
+
+	@Override
+	public boolean canBeUninvoked()
+	{
+		return false;
+	}
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
@@ -62,7 +107,6 @@ public class Fighter_ImprovedThrowing extends FighterSkill
 		}
 		return super.okMessage(myHost,msg);
 	}
-
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)

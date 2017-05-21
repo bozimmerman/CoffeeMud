@@ -33,17 +33,47 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Chant_Camelback extends Chant
 {
-	@Override public String ID() { return "Chant_Camelback"; }
+	@Override
+	public String ID()
+	{
+		return "Chant_Camelback";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Camelback");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Camelback)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_SELF;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
 
 	@Override
 	public void affectCharState(MOB affected, CharState affectableMaxState)
@@ -52,7 +82,6 @@ public class Chant_Camelback extends Chant
 		affectableMaxState.setThirst(999999);
 		affected.curState().setThirst(affectableMaxState.getThirst());
 	}
-
 
 	@Override
 	public void unInvoke()

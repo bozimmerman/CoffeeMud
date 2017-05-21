@@ -56,7 +56,6 @@ public class GenGrapples extends StdGrapples
 		return true;
 	}
 
-
 	@Override
 	public String text()
 	{
@@ -100,6 +99,7 @@ public class GenGrapples extends StdGrapples
 	}
 
 	private static String[] codes=null;
+
 	@Override
 	public String[] getStatCodes()
 	{

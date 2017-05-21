@@ -115,7 +115,6 @@ public interface PackagedItems extends Item
 	 */
 	public void setPackageText(String text);
 	
-
 	/**
 	 * Returns the flag bitmap describing how this item behaves.
 	 * @see PackagedItems#PACKAGE_FLAG_TO_ITEMS_PROGRAMMATICALLY

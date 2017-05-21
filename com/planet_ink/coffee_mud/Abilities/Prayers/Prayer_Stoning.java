@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2004-2017 Bo Zimmerman
 
@@ -36,16 +35,62 @@ import java.util.*;
 
 public class Prayer_Stoning extends Prayer
 {
-	@Override public String ID() { return "Prayer_Stoning"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_Stoning";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Stoning");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
-	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
-	@Override public long flags(){return Ability.FLAG_UNHOLY;}
-	@Override public String displayText(){ return "";}
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
-	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_OTHERS;
+	}
+
+	@Override
+	public int enchantQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_UNHOLY;
+	}
+
+	@Override
+	public String displayText()
+	{
+		return "";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
 	protected Vector<MOB> cits=new Vector<MOB>();
 
 	@Override
@@ -162,7 +207,6 @@ public class Prayer_Stoning extends Prayer
 		}
 		else
 			return maliciousFizzle(mob,target,L("<S-NAME> call(s) for the stoning of <T-NAMESELF>."));
-
 
 		// return whether it worked
 		return success;

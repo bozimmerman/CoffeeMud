@@ -35,23 +35,94 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 public class Disease_Alzheimers extends Disease
 {
-	@Override public String ID() { return "Disease_Alzheimers"; }
-	private final static String localizedName = CMLib.lang().L("Alzheimers");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Alzheimers)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public boolean putInCommandlist(){return false;}
-	@Override public int difficultyLevel(){return 9;}
+	@Override
+	public String ID()
+	{
+		return "Disease_Alzheimers";
+	}
 
-	@Override protected int DISEASE_TICKS(){return 34;}
-	@Override protected int DISEASE_DELAY(){return 5;}
-	@Override protected String DISEASE_DONE(){return L("Your alzheimers is cured!");}
-	@Override protected String DISEASE_START(){return L("^G<S-NAME> feel(s) like <S-HE-SHE> <S-HAS-HAVE> forgotten something.^?");}
-	@Override protected String DISEASE_AFFECT(){return "";}
-	@Override public int abilityCode(){return 0;}
+	private final static String localizedName = CMLib.lang().L("Alzheimers");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Alzheimers)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public boolean putInCommandlist()
+	{
+		return false;
+	}
+
+	@Override
+	public int difficultyLevel()
+	{
+		return 9;
+	}
+
+	@Override
+	protected int DISEASE_TICKS()
+	{
+		return 34;
+	}
+
+	@Override
+	protected int DISEASE_DELAY()
+	{
+		return 5;
+	}
+
+	@Override
+	protected String DISEASE_DONE()
+	{
+		return L("Your alzheimers is cured!");
+	}
+
+	@Override
+	protected String DISEASE_START()
+	{
+		return L("^G<S-NAME> feel(s) like <S-HE-SHE> <S-HAS-HAVE> forgotten something.^?");
+	}
+
+	@Override
+	protected String DISEASE_AFFECT()
+	{
+		return "";
+	}
+
+	@Override
+	public int abilityCode()
+	{
+		return 0;
+	}
+
 	protected int everyTick=0;
 
 	@Override

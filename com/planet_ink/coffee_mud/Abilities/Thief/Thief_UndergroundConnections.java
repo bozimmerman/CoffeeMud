@@ -35,17 +35,63 @@ import java.util.*;
 
 public class Thief_UndergroundConnections extends ThiefSkill
 {
-	@Override public String ID() { return "Thief_UndergroundConnections"; }
+	@Override
+	public String ID()
+	{
+		return "Thief_UndergroundConnections";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Underground Connections");
-	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "";}
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public String displayText()
+	{
+		return "";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_SELF;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"UNDERGROUNDCONNECTIONS"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
-	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STREETSMARTS;}
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT|USAGE_MANA;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STREETSMARTS;
+	}
+
 	protected List<Integer> pathOut=null;
 	protected int hygieneLoss=0;
 	protected String theNoun=null;
@@ -151,6 +197,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 				group.removeElementAt(g);
 		}
 	}
+
 	public void bringMOBSLikeHere(Vector<Room> rooms, Room newRoom, Vector<MOB> group, String enterStr, String leaveStr)
 	{
 		for(int g=group.size()-1;g>=0;g--)
@@ -163,6 +210,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 				rooms.addElement(R);
 		}
 	}
+
 	public boolean bringMOBHere(Room newRoom, MOB follower, String leaveStr, String enterStr)
 	{
 		final Room thisRoom=follower.location();
@@ -256,7 +304,10 @@ public class Thief_UndergroundConnections extends ThiefSkill
 					&&(checkR.getArea()==A)
 					&&(!CMath.bset(checkR.domainType(),Room.INDOORS))
 					&&(trail.indexOf(checkR)<c))
-					{	finalTos.addElement(R); break;}
+					{
+						finalTos.addElement(R);
+						break;
+					}
 				}
 			}
 		}
@@ -269,7 +320,10 @@ public class Thief_UndergroundConnections extends ThiefSkill
 			{
 				R=R.getRoomInDir(thisTrail.get(t).intValue());
 				if((R==null)||(CMath.bset(R.domainType(),Room.INDOORS)))
-				{ allTrails.remove(a); break;}
+				{
+					allTrails.remove(a);
+					break;
+				}
 			}
 		}
 		if(allTrails.size()==0)

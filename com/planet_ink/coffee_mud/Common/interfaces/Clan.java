@@ -845,7 +845,6 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 		"Passed"
 	});
 
-
 	/** Stat variables associated with clan objects. */
 	public final static String[] CLAN_STATS={
 		"ACCEPTANCE", // 0

@@ -42,6 +42,7 @@ public class Gnomish extends StdLanguage
 	}
 
 	private final static String localizedName = CMLib.lang().L("Gnomish");
+
 	@Override
 	public String name()
 	{

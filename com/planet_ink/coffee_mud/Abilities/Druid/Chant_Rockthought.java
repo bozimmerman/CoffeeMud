@@ -33,18 +33,53 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Chant_Rockthought extends Chant
 {
-	@Override public String ID() { return "Chant_Rockthought"; }
+	@Override
+	public String ID()
+	{
+		return "Chant_Rockthought";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Rockthought");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Rockthought)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_MOBS;
+	}
 	CMMsg stubb=null;
 
 	@Override
@@ -118,7 +153,6 @@ public class Chant_Rockthought extends Chant
 		}
 		else
 			return maliciousFizzle(mob,target,L("<S-NAME> chant(s) at <T-NAMESELF>, but nothing happens."));
-
 
 		// return whether it worked
 		return success;

@@ -33,17 +33,47 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Prayer_CurseMinds extends Prayer
 {
-	@Override public String ID() { return "Prayer_CurseMinds"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_CurseMinds";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Curse Minds");
-	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CURSING;}
-	@Override public long flags(){return Ability.FLAG_UNHOLY;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_CURSING;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_UNHOLY;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Cursed Mind)");
-	@Override public String displayText() { return localizedStaticDisplay; }
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
 
 	boolean notAgain=false;
 
@@ -86,7 +116,6 @@ public class Prayer_CurseMinds extends Prayer
 		affectableStats.setStat(CharStats.STAT_SAVE_MIND,affectableStats.getStat(CharStats.STAT_SAVE_MIND)-50);
 	}
 
-
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -122,7 +151,6 @@ public class Prayer_CurseMinds extends Prayer
 
 		if(nothingDone)
 			return maliciousFizzle(mob,null,L("<S-NAME> attempt(s) to curse everyone, but flub(s) it."));
-
 
 		// return whether it worked
 		return success;

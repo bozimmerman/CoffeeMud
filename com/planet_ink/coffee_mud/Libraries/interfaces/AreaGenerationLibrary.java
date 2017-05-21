@@ -437,7 +437,6 @@ public interface AreaGenerationLibrary extends CMLibrary
 		NODEEXITS
 	}
 
-
 	/**
 	 * Enum of the type of room layoutnode.
 	 * @see AreaGenerationLibrary.LayoutNode

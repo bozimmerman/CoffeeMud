@@ -25,7 +25,6 @@ import java.net.URL;
 import org.mozilla.javascript.*;
 import org.mozilla.javascript.optimizer.*;
 
-
 /*
    Copyright 2001-2017 Bo Zimmerman
 
@@ -216,6 +215,7 @@ public class CMClass extends ClassLoader
 			for(int i=0;i<OBJECT_TOTAL;i++)
 				OBJECT_CACHE[i]=new WeakHashMap<CMObject,Object>();
 	}
+
 	public final static void bumpCounter(final CMObject O, final int which)
 	{
 		if(KEEP_OBJECT_CACHE)
@@ -248,11 +248,12 @@ public class CMClass extends ClassLoader
 	{
 		StringBuffer str=new StringBuffer("");
 		for(int i=0;i<OBJECT_TOTAL;i++)
+		{
 			if(OBJECT_CREATIONS[i]>0)
 				str.append(L("@x1: Created: @x2, Destroyed: @x3, Remaining: @x4\n\r",CMStrings.padRight(OBJECT_DESCS[i],12),OBJECT_CREATIONS[i],OBJECT_DESTRUCTIONS[i],(OBJECT_CREATIONS[i]-OBJECT_DESTRUCTIONS[i])));
+		}
 		return str.toString();
 	}
-
 
 	public static final long numRemainingObjectCounts(final int type)
 	{
@@ -462,13 +463,13 @@ public class CMClass extends ClassLoader
 		{
 			final int itemtypeord = ((Integer)nameOrOrdinal).intValue();
 			if((itemtypeord>=0)&&(itemtypeord<CMObjectType.values().length))
-			  return CMClass.CMObjectType.values()[itemtypeord];
+				return CMClass.CMObjectType.values()[itemtypeord];
 		}
 		if(nameOrOrdinal instanceof Long)
 		{
 			final int itemtypeord = ((Long)nameOrOrdinal).intValue();
 			if((itemtypeord>=0)&&(itemtypeord<CMObjectType.values().length))
-			  return CMClass.CMObjectType.values()[itemtypeord];
+				return CMClass.CMObjectType.values()[itemtypeord];
 		}
 		final String s=nameOrOrdinal.toString();
 		if(s.length()==0)
@@ -1517,7 +1518,10 @@ public class CMClass extends ClassLoader
 			final String pathLess=makeDotClassPath(path);
 			if(classes.containsKey(pathLess))
 				return (classes.get(pathLess)).newInstance();
-		}catch(final Exception e){}
+		}
+		catch(final Exception e)
+		{
+		}
 		final Vector<Object> V=new Vector<Object>(1);
 		if(!loadListToObj(V,makeFilePath(path),classType.ancestorName,quiet))
 			return null;
@@ -1550,7 +1554,10 @@ public class CMClass extends ClassLoader
 			final String pathLess=makeDotClassPath(path);
 			if(classes.containsKey(pathLess))
 				return true;
-		}catch(final Exception e){}
+		}
+		catch(final Exception e)
+		{
+		}
 		final Vector<Object> V=new Vector<Object>(1);
 		if(!loadListToObj(V,makeFilePath(path),classType.ancestorName,true))
 			return false;
@@ -1799,7 +1806,6 @@ public class CMClass extends ClassLoader
 		return B;
 	}
 
-
 	/**
 	 * Searches for a Behavior object using the given search term and filters.
 	 * This "finder" matches the name only, no ID.
@@ -1938,7 +1944,6 @@ public class CMClass extends ClassLoader
 			return O.newInstance();
 		return null;
 	}
-
 
 	/**
 	 * Given a map of CMObjects with ID()s defined, this will return the one matched by the given class name.
@@ -2258,7 +2263,6 @@ public class CMClass extends ClassLoader
 		return loadListToObj(collection, filePath, ancestorCl, quiet);
 	}
 
-
 	/**
 	 * Given a java collection type of some sort (hashtable, vector, etc), a file path,
 	 * and the class of an interface/ancestor that classes must implement, this method will load all classes
@@ -2503,7 +2507,6 @@ public class CMClass extends ClassLoader
 	 // * will always want the class resolved before it is returned
 	 // * to them.
 	 // */
-
 
 	/**
 	 * Returns the ID() if the object is a CMObject, and otherwise

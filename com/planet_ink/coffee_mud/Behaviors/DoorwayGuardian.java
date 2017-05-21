@@ -35,7 +35,11 @@ import java.util.regex.Pattern;
 */
 public class DoorwayGuardian extends StdBehavior
 {
-	@Override public String ID(){return "DoorwayGuardian";}
+	@Override
+	public String ID()
+	{
+		return "DoorwayGuardian";
+	}
 
 	private boolean nosneak=false;
 	private boolean always=false;
@@ -112,6 +116,7 @@ public class DoorwayGuardian extends StdBehavior
 			return null;
 		final Room room=monster.location();
 		if(dirs!=null)
+		{
 			for (final Integer integer : dirs)
 			{
 				final int dir=integer.intValue();
@@ -121,6 +126,7 @@ public class DoorwayGuardian extends StdBehavior
 					return exits;
 				}
 			}
+		}
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
 			final Exit E=room.getExitInDir(d);
@@ -132,7 +138,6 @@ public class DoorwayGuardian extends StdBehavior
 		}
 		return null;
 	}
-
 
 	@Override
 	public boolean okMessage(Environmental oking, CMMsg msg)

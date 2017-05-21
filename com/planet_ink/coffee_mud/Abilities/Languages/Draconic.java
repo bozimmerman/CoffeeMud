@@ -42,6 +42,7 @@ public class Draconic extends StdLanguage
 	}
 
 	private final static String localizedName = CMLib.lang().L("Draconic");
+
 	@Override
 	public String name()
 	{

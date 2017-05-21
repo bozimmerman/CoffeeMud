@@ -176,7 +176,6 @@ public class Undead extends StdRace
 		return true;
 	}
 
-	
 	@Override
 	public String makeMobName(char gender, int age)
 	{

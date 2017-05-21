@@ -35,8 +35,17 @@ import java.util.*;
 
 public class NiceAbilities extends ActiveTicker
 {
-	@Override public String ID(){return "NiceAbilities";}
-	@Override protected int canImproveCode(){return Behavior.CAN_MOBS;}
+	@Override
+	public String ID()
+	{
+		return "NiceAbilities";
+	}
+
+	@Override
+	protected int canImproveCode()
+	{
+		return Behavior.CAN_MOBS;
+	}
 
 	private List<Ability> mySkills=null;
 	private int numAllSkills=-1;

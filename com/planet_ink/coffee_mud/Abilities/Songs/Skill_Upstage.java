@@ -33,21 +33,70 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Skill_Upstage extends BardSkill
 {
-	@Override public String ID() { return "Skill_Upstage"; }
+	@Override
+	public String ID()
+	{
+		return "Skill_Upstage";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Upstage");
-	@Override public String name() { return localizedName; }
-	@Override public String displayText() { return L("(Upstaging "+(invoker()==null?"an actor":invoker().name())+")"); }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public String displayText()
+	{
+		return L("(Upstaging "+(invoker()==null?"an actor":invoker().name())+")");
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"UPSTAGE"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_THEATRE;}
-	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
-	@Override public long flags(){return Ability.FLAG_MOVING;}
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL|Ability.DOMAIN_THEATRE;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT|USAGE_MANA;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_MOVING;
+	}
 	
 	protected int previousRange = 0;
 	protected MOB previousVictim = null;

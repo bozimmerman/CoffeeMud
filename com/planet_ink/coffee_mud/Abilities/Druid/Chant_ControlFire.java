@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.List;
 
-
 /*
    Copyright 2002-2017 Bo Zimmerman
 
@@ -34,19 +33,63 @@ import java.util.List;
    limitations under the License.
 */
 
-
 public class Chant_ControlFire extends Chant
 {
-	@Override public String ID() { return "Chant_ControlFire"; }
+	@Override
+	public String ID()
+	{
+		return "Chant_ControlFire";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Control Fire");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int maxRange(){return adjustedMaxInvokerRange(5);}
-	@Override public int minRange(){return 0;}
-	@Override public long flags(){return Ability.FLAG_FIREBASED;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int maxRange()
+	{
+		return adjustedMaxInvokerRange(5);
+	}
+
+	@Override
+	public int minRange()
+	{
+		return 0;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_FIREBASED;
+	}
 
 	private Item getFireSource(MOB target)
 	{
@@ -90,7 +133,6 @@ public class Chant_ControlFire extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-
 		final boolean success=proficiencyCheck(mob,0,auto);
 
 		final Item fireSource=getFireSource(target);
@@ -117,7 +159,6 @@ public class Chant_ControlFire extends Chant
 		}
 		else
 			return maliciousFizzle(mob,target,L("<S-NAME> chant(s) at <T-NAMESELF>, but nothing happens."));
-
 
 		// return whether it worked
 		return success;

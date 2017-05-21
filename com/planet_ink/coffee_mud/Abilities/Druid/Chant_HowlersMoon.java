@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2003-2017 Bo Zimmerman
 
@@ -36,16 +35,58 @@ import java.util.*;
 
 public class Chant_HowlersMoon extends Chant
 {
-	@Override public String ID() { return "Chant_HowlersMoon"; }
+	@Override
+	public String ID()
+	{
+		return "Chant_HowlersMoon";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Howlers Moon");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Howlers Moon)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
-	@Override protected int canAffectCode(){return CAN_MOBS|CAN_ROOMS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_MOONALTERING;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public int enchantQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS|CAN_ROOMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT|Ability.DOMAIN_MOONALTERING;
+	}
+
 	protected int ticksTicked=0;
 	protected int fromDir=-1;
 
@@ -192,7 +233,6 @@ public class Chant_HowlersMoon extends Chant
 		return super.castingQuality(mob,target);
 	}
 
-
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -219,7 +259,6 @@ public class Chant_HowlersMoon extends Chant
 				return false;
 			}
 		}
-
 
 		if((mob.location().domainType()&Room.INDOORS)>0)
 		{

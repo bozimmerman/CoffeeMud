@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2003-2017 Bo Zimmerman
 
@@ -35,7 +34,11 @@ import java.util.*;
 */
 public class GoldLooter extends StdBehavior
 {
-	@Override public String ID(){return "GoldLooter";}
+	@Override
+	public String ID()
+	{
+		return "GoldLooter";
+	}
 
 	int tickTocker=1;
 	int tickTock=0;

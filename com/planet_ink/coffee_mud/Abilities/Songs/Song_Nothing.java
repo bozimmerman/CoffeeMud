@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2001-2017 Bo Zimmerman
 
@@ -36,18 +35,43 @@ import java.util.*;
 
 public class Song_Nothing extends Song
 {
-	@Override public String ID() { return "Song_Nothing"; }
+	@Override
+	public String ID()
+	{
+		return "Song_Nothing";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Nothing");
-	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	@Override protected boolean skipStandardSongInvoke(){return true;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	protected boolean skipStandardSongInvoke()
+	{
+		return true;
+	}
+
 	public Song_Nothing()
 	{
 		super();
 		setProficiency(100);
 	}
-	@Override public void setProficiency(int newProficiency){	super.setProficiency(100);}
 
+	@Override
+	public void setProficiency(int newProficiency)
+	{
+		super.setProficiency(100);
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)

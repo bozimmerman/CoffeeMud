@@ -17,8 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.List;
 
-
-
 /*
    Copyright 2003-2017 Bo Zimmerman
 
@@ -35,19 +33,60 @@ import java.util.List;
    limitations under the License.
 */
 
-
 public class Chant_ControlWeather extends Chant
 {
-	@Override public String ID() { return "Chant_ControlWeather"; }
+	@Override
+	public String ID()
+	{
+		return "Chant_ControlWeather";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Control Weather");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return Ability.CAN_AREAS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_AREAS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;
+	}
+
 	public int controlCode=0;
-	@Override public int abilityCode(){return controlCode;}
-	@Override public void setAbilityCode(int code){ super.setAbilityCode(code); controlCode=code;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+
+	@Override
+	public int abilityCode()
+	{
+		return controlCode;
+	}
+
+	@Override
+	public void setAbilityCode(int code)
+	{
+		super.setAbilityCode(code);
+		controlCode=code;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)

@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2003-2017 Bo Zimmerman
 
@@ -101,6 +100,7 @@ public class Chant_SummonFlower extends Chant_SummonPlants
 			processing=false;
 		}
 	}
+
 	public Item buildFlower(MOB mob, Room room)
 	{
 		final Item newItem=CMClass.getItem("GenItem");

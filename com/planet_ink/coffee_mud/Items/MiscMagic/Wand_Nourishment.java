@@ -54,7 +54,6 @@ public class Wand_Nourishment extends StdWand
 		secretWord="SHAZAM";
 	}
 
-
 	@Override
 	public void setSpell(Ability theSpell)
 	{

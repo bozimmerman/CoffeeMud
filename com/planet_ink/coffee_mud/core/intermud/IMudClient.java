@@ -24,8 +24,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 import java.net.*;
 
-
-
 /*
    Copyright 2003-2017 Bo Zimmerman
 
@@ -44,19 +42,86 @@ import java.net.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class IMudClient implements I3Interface
 {
-	@Override public String ID(){return "IMudClient";}
-	@Override public String name() { return ID();}
-	@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(final Exception e){return new IMudClient();}}
-	@Override public void initializeClass(){}
-	@Override public CMObject copyOf(){try{return (CMObject)this.clone();}catch(final Exception e){return newInstance();}}
-	@Override public String L(final String str, final String ... xs) { return CMLib.lang().fullSessionTranslation(str, xs); }
-	@Override public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
-	@Override public boolean activate(){ return true;}
-	@Override public boolean shutdown(){ return true;}
-	@Override public void propertiesLoaded(){}
-	@Override public TickClient getServiceClient() { return null;}
+	@Override
+	public String ID()
+	{
+		return "IMudClient";
+	}
+
+	@Override
+	public String name()
+	{
+		return ID();
+	}
+
+	@Override
+	public CMObject newInstance()
+	{
+		try
+		{
+			return getClass().newInstance();
+		}
+		catch(final Exception e)
+		{
+			return new IMudClient();
+		}
+	}
+
+	@Override
+	public void initializeClass()
+	{
+	}
+
+	@Override
+	public CMObject copyOf()
+	{
+		try
+		{
+			return (CMObject)this.clone();
+		}
+		catch(final Exception e)
+		{
+			return newInstance();
+		}
+	}
+
+	@Override
+	public String L(final String str, final String ... xs)
+	{
+		return CMLib.lang().fullSessionTranslation(str, xs);
+	}
+
+	@Override
+	public int compareTo(CMObject o)
+	{
+		return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));
+	}
+
+	@Override
+	public boolean activate()
+	{
+		return true;
+	}
+
+	@Override
+	public boolean shutdown()
+	{
+		return true;
+	}
+
+	@Override
+	public void propertiesLoaded()
+	{
+	}
+
+	@Override
+	public TickClient getServiceClient()
+	{
+		return null;
+	}
 
 	public IMC2Driver imc2=null;
+
 	@Override
 	public void registerIMC2(Object O)
 	{
@@ -92,7 +157,8 @@ public class IMudClient implements I3Interface
 			try
 			{
 			wk.send();
-			}catch(final Exception e){Log.errOut("IMudClient",e);}
+			}
+			catch(final Exception e){Log.errOut("IMudClient",e);}
 		}
 		else
 		if(imc2online()&&(imc2.getIMC2Mud(mudName)!=null))
@@ -117,6 +183,7 @@ public class IMudClient implements I3Interface
 			return false;
 		return imc2.imc_active==IMC2Driver.IA_UP;
 	}
+
 	@Override
 	public void imc2mudInfo(MOB mob, String parms)
 	{
@@ -163,7 +230,8 @@ public class IMudClient implements I3Interface
 		try
 		{
 		ck.send();
-		}catch(final Exception e){Log.errOut("IMudClient",e);}
+		}
+		catch(final Exception e){Log.errOut("IMudClient",e);}
 	}
 
 	@Override
@@ -183,7 +251,8 @@ public class IMudClient implements I3Interface
 		try
 		{
 		ck.send();
-		}catch(final Exception e){Log.errOut("IMudClient",e);}
+		}
+		catch(final Exception e){Log.errOut("IMudClient",e);}
 	}
 
 	@Override
@@ -210,7 +279,8 @@ public class IMudClient implements I3Interface
 		try
 		{
 		ck.send();
-		}catch(final Exception e){Log.errOut("IMudClient",e);}
+		}
+		catch(final Exception e){Log.errOut("IMudClient",e);}
 	}
 
 	@Override
@@ -235,7 +305,8 @@ public class IMudClient implements I3Interface
 		try
 		{
 		ck.send();
-		}catch(final Exception e){Log.errOut("IMudClient",e);}
+		}
+		catch(final Exception e){Log.errOut("IMudClient",e);}
 	}
 
 	@Override
@@ -254,7 +325,8 @@ public class IMudClient implements I3Interface
 		try
 		{
 		ck.send();
-		}catch(final Exception e){Log.errOut("IMudClient",e);}
+		}
+		catch(final Exception e){Log.errOut("IMudClient",e);}
 	}
 
 	@Override
@@ -299,7 +371,8 @@ public class IMudClient implements I3Interface
 			try
 			{
 			tk.send();
-			}catch(final Exception e){Log.errOut("IMudClient",e);}
+			}
+			catch(final Exception e){Log.errOut("IMudClient",e);}
 		}
 		else
 		if(imc2online()&&(imc2.getIMC2Mud(mudName)!=null))
@@ -422,7 +495,8 @@ public class IMudClient implements I3Interface
 			try
 			{
 				ck.send();
-			}catch(final Exception e){Log.errOut("IMudClient",e);}
+			}
+			catch(final Exception e){Log.errOut("IMudClient",e);}
 		}
 		else
 		if(imc2online()&&(imc2.getAnIMC2Channel(channelName)!=null))
@@ -510,7 +584,8 @@ public class IMudClient implements I3Interface
 			try
 			{
 			ck.send();
-			}catch(final Exception e){Log.errOut("IMudClient",e);}
+			}
+			catch(final Exception e){Log.errOut("IMudClient",e);}
 		}
 		if(imc2online())
 			imc2.imc_send_whois(mob.Name(),mobName,mob.phyStats().level());
@@ -529,7 +604,8 @@ public class IMudClient implements I3Interface
 			try
 			{
 			ck.send();
-			}catch(final Exception e){Log.errOut("IMudClient",e);}
+			}
+			catch(final Exception e){Log.errOut("IMudClient",e);}
 		}
 	}
 
@@ -556,7 +632,8 @@ public class IMudClient implements I3Interface
 			try
 			{
 			ck.send();
-			}catch(final Exception e){Log.errOut("IMudClient",e);}
+			}
+			catch(final Exception e){Log.errOut("IMudClient",e);}
 		}
 		if(imc2online())
 			imc2.imc_send_whois(mob.Name(),mobName,mob.phyStats().level());

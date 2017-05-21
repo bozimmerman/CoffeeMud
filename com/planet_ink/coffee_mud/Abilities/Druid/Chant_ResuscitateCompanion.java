@@ -37,14 +37,49 @@ import java.util.*;
 
 public class Chant_ResuscitateCompanion extends Chant implements MendingSkill
 {
-	@Override public String ID() { return "Chant_ResuscitateCompanion"; }
+	@Override
+	public String ID()
+	{
+		return "Chant_ResuscitateCompanion";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Resuscitate Companion");
-	@Override public String name() { return localizedName; }
-	@Override public String displayText() { return ""; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
-	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public String displayText()
+	{
+		return "";
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_ITEMS;
+	}
 	
 	private final List<WeakReference<DeadBody>> companionMobs=new LinkedList<WeakReference<DeadBody>>();
 

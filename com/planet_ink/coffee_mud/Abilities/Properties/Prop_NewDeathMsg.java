@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -35,13 +34,29 @@ import java.util.*;
 */
 public class Prop_NewDeathMsg extends Property
 {
-	@Override public String ID() { return "Prop_NewDeathMsg"; }
-	@Override public String name(){ return "NewDeathMsg";}
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
+	@Override
+	public String ID()
+	{
+		return "Prop_NewDeathMsg";
+	}
+
+	@Override
+	public String name()
+	{
+		return "NewDeathMsg";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS;
+	}
 
 	@Override
 	public String accountForYourself()
-	{ return "Changed death msg";	}
+	{
+		return "Changed death msg";
+	}
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)

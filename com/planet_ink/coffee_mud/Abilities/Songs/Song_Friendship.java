@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2001-2017 Bo Zimmerman
 
@@ -36,13 +35,43 @@ import java.util.*;
 
 public class Song_Friendship extends Song
 {
-	@Override public String ID() { return "Song_Friendship"; }
+	@Override
+	public String ID()
+	{
+		return "Song_Friendship";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Friendship");
-	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	@Override protected boolean skipStandardSongInvoke(){return true;}
-	@Override protected boolean maliciousButNotAggressiveFlag(){return true;}
-	@Override public long flags(){return Ability.FLAG_CHARMING;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	protected boolean skipStandardSongInvoke()
+	{
+		return true;
+	}
+
+	@Override
+	protected boolean maliciousButNotAggressiveFlag()
+	{
+		return true;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_CHARMING;
+	}
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)

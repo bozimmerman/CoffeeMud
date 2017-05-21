@@ -33,20 +33,56 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Chant_Tangle extends Chant
 {
-	@Override public String ID() { return "Chant_Tangle"; }
+	@Override
+	public String ID()
+	{
+		return "Chant_Tangle";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Tangle");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Tangled)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public int maxRange(){return adjustedMaxInvokerRange(2);}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public int maxRange()
+	{
+		return adjustedMaxInvokerRange(2);
+	}
+
 	public Item thePlants=null;
 	public int amountRemaining=0;
-	@Override public long flags(){return Ability.FLAG_BINDING;}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_BINDING;
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
@@ -54,6 +90,7 @@ public class Chant_Tangle extends Chant
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_BOUND);
 	}
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -158,7 +195,6 @@ public class Chant_Tangle extends Chant
 		}
 		else
 			return maliciousFizzle(mob,null,L("<S-NAME> chant(s), but the magic fades."));
-
 
 		// return whether it worked
 		return success;

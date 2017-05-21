@@ -315,7 +315,7 @@ public class BrokenLimbs extends StdAbility implements LimbDamage, HealthConditi
 			target=(MOB)givenTarget;
 		else
 		if((targetName.length()==0)&&(mob.isInCombat())&&(abstractQuality()==Ability.QUALITY_MALICIOUS)&&(mob.getVictim()!=null))
-		   target=mob.getVictim();
+			target=mob.getVictim();
 		else
 		if((targetName.length()==0)&&(abstractQuality()!=Ability.QUALITY_MALICIOUS))
 			target=mob;
@@ -385,7 +385,7 @@ public class BrokenLimbs extends StdAbility implements LimbDamage, HealthConditi
 		if(affected==null)
 			return brokenLimbsList;
 		if((!(affected instanceof MOB))&&(!(affected instanceof DeadBody)))
-		   return brokenLimbsList;
+			return brokenLimbsList;
 		brokenLimbsList=CMParms.parseSemicolons(text(),true);
 		brokenParts=new int[Race.BODY_PARTS];
 		boolean right=false;

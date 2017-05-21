@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -35,9 +34,14 @@ import java.util.*;
 */
 public class Prop_MOBEmoter extends Property
 {
-	@Override public String ID(){return "Prop_MOBEmoter";}
+	@Override
+	public String ID()
+	{
+		return "Prop_MOBEmoter";
+	}
 
 	Behavior emoter=null;
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -49,6 +53,7 @@ public class Prop_MOBEmoter extends Property
 		}
 		emoter.executeMsg(myHost,msg);
 	}
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -61,6 +66,7 @@ public class Prop_MOBEmoter extends Property
 		}
 		return emoter.okMessage(myHost,msg);
 	}
+
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{

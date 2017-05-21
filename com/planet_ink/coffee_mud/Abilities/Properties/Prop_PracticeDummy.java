@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -36,14 +35,32 @@ import java.util.*;
 public class Prop_PracticeDummy extends Property
 {
 	boolean disabled=false;
-	@Override public String ID() { return "Prop_PracticeDummy"; }
-	@Override public String name(){ return "Practice Dummy";}
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
+
+	@Override
+	public String ID()
+	{
+		return "Prop_PracticeDummy";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Practice Dummy";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
 	protected boolean unkillable=true;
 
 	@Override
 	public String accountForYourself()
-	{ return "Undefeatable";	}
+	{
+		return "Undefeatable";
+	}
 
 	@Override
 	public void setMiscText(String newMiscText)
@@ -67,7 +84,6 @@ public class Prop_PracticeDummy extends Property
 		if(unkillable)
 			affectableStats.setArmor(100);
 	}
-
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)

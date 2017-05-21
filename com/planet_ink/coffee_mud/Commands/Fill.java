@@ -38,7 +38,12 @@ public class Fill extends StdCommand
 	public Fill(){}
 
 	private final String[] access=I(new String[]{"FILL"});
-	@Override public String[] getAccessWords(){return access;}
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
+
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
@@ -75,11 +80,13 @@ public class Fill extends StdCommand
 		{
 			int fromDex=commands.size()-1;
 			for(int i=commands.size()-2;i>=1;i--)
+			{
 				if(commands.get(i).equalsIgnoreCase("from"))
 				{
 					fromDex=i;
 					commands.remove(i);
 				}
+			}
 			final String thingToFillFrom=CMParms.combine(commands,fromDex);
 			fillFromThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,thingToFillFrom,Wearable.FILTER_ANY);
 			if((fillFromThis==null)||(!CMLib.flags().canBeSeenBy(fillFromThis,mob)))
@@ -100,8 +107,16 @@ public class Fill extends StdCommand
 		String addendumStr="";
 		final Vector<Environmental> V=new Vector<Environmental>();
 		boolean allFlag=(commands.size()>0)?commands.get(0).equalsIgnoreCase("all"):false;
-		if(thingToFill.toUpperCase().startsWith("ALL.")){ allFlag=true; thingToFill="ALL "+thingToFill.substring(4);}
-		if(thingToFill.toUpperCase().endsWith(".ALL")){ allFlag=true; thingToFill="ALL "+thingToFill.substring(0,thingToFill.length()-4);}
+		if(thingToFill.toUpperCase().startsWith("ALL."))
+		{
+			allFlag=true;
+			thingToFill="ALL "+thingToFill.substring(4);
+		}
+		if(thingToFill.toUpperCase().endsWith(".ALL"))
+		{
+			allFlag=true;
+			thingToFill="ALL "+thingToFill.substring(0,thingToFill.length()-4);
+		}
 		boolean doBugFix = true;
 		while(doBugFix || ((allFlag)&&(maxToFill<addendum)))
 		{
@@ -134,9 +149,23 @@ public class Fill extends StdCommand
 		}
 		return false;
 	}
-	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandCombatActionCost(ID());}
-	@Override public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandActionCost(ID());}
-	@Override public boolean canBeOrdered(){return true;}
 
+	@Override
+	public double combatActionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandCombatActionCost(ID());
+	}
+
+	@Override
+	public double actionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandActionCost(ID());
+	}
+
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 
 }

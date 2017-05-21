@@ -313,7 +313,6 @@ public class CMFile extends File
 			}
 		}
 
-
 		/**
 		 * Get the full path of this VFS file and name
 		 * @return the full path and name of this vfs file
@@ -1249,8 +1248,10 @@ public class CMFile extends File
 	{
 		final StringBuffer text=new StringBuffer(CMStrings.bytesToStr(bytes));
 		for(int i=0;i<text.length();i++)
+		{
 			if((text.charAt(i)<0)||(text.charAt(i)>127))
 				return null;
+		}
 		return text;
 	}
 
@@ -1783,8 +1784,10 @@ public class CMFile extends File
 			if(myRsc.charAt(i)=='\n')
 			{
 				for(i=myRsc.length()-1;i>=0;i--)
+				{
 					if(myRsc.charAt(i)=='\r')
 						myRsc.deleteCharAt(i);
+				}
 				return myRsc;
 			}
 		}

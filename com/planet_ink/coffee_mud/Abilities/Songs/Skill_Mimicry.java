@@ -35,16 +35,57 @@ import java.util.*;
 
 public class Skill_Mimicry extends BardSkill
 {
-	@Override public String ID() { return "Skill_Mimicry"; }
+	@Override
+	public String ID()
+	{
+		return "Skill_Mimicry";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Mimicry");
-	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "";}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public String displayText()
+	{
+		return "";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_OTHERS;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"MIMICRY","MIMIC"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_FOOLISHNESS;}
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL|Ability.DOMAIN_FOOLISHNESS;
+	}
+
 	protected CMMsg lastMsg=null;
 	protected boolean disabled=false;
 

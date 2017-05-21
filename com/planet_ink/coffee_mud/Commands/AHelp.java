@@ -38,7 +38,11 @@ public class AHelp extends StdCommand
 	public AHelp(){}
 
 	private final String[] access=I(new String[]{"ARCHELP","AHELP"});
-	@Override public String[] getAccessWords(){return access;}
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
@@ -161,8 +165,16 @@ public class AHelp extends StdCommand
 		return false;
 	}
 
-	@Override public boolean canBeOrdered(){return true;}
-	@Override public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.AHELP);}
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 
+	@Override
+	public boolean securityCheck(MOB mob)
+	{
+		return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.AHELP);
+	}
 
 }

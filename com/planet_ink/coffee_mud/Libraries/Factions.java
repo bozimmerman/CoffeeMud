@@ -585,7 +585,6 @@ public class Factions extends StdLibrary implements FactionManager
 		return null;
 	}
 
-
 	@Override
 	public void updatePlayerFactions(MOB mob, Room R, boolean forceAutoCheck)
 	{
@@ -1381,7 +1380,6 @@ public class Factions extends StdLibrary implements FactionManager
 						CA.setHigh(CA.low());
 				}
 			}
-
 
 			// Affects/Behaviors
 			++showNumber;

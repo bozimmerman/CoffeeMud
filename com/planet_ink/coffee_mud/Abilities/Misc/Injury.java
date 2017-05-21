@@ -529,7 +529,11 @@ public class Injury extends StdAbility implements LimbDamage, HealthCondition
 		for(int i=0;i<TRANSLATE.length;i++)
 		{
 			final int y1=message.indexOf(TRANSLATE[i][0],x);
-			if((y1>x)&&(y1<y)){ y=y1; which=i;}
+			if((y1>x)&&(y1<y))
+			{
+				y=y1;
+				which=i;
+			}
 		}
 		if(which>=0)
 			message=message.substring(0,y)+TRANSLATE[which][1]+" "+loc+message.substring(y+TRANSLATE[which][0].length());

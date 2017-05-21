@@ -36,16 +36,61 @@ import java.util.*;
 
 public class Ranger_Enemy1 extends StdAbility
 {
-	@Override public String ID() { return "Ranger_Enemy1"; }
+	@Override
+	public String ID()
+	{
+		return "Ranger_Enemy1";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Favored Enemy 1");
-	@Override public String name() { return localizedName; }
-	@Override public String displayText() { return L("(Enemy of the "+text()+")"); }
-	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public boolean isAutoInvoked(){return true;}
-	@Override public boolean canBeUninvoked(){return false;}
-	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_MARTIALLORE;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public String displayText()
+	{
+		return L("(Enemy of the "+text()+")");
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_SELF;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public boolean isAutoInvoked()
+	{
+		return true;
+	}
+
+	@Override
+	public boolean canBeUninvoked()
+	{
+		return false;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL|Ability.DOMAIN_MARTIALLORE;
+	}
 
 	@Override
 	public String text()

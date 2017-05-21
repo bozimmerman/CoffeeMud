@@ -22,7 +22,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-
 /*
    Copyright 2015-2017 Bo Zimmerman
 
@@ -182,7 +181,6 @@ public class Prayer_MassGrave extends Prayer
 		return super.okMessage(host,msg);
 	}
 
-	
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{

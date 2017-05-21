@@ -74,7 +74,8 @@ public class FingerReply extends Packet {
 			idle_time = v.elementAt(11).toString();
 			ip_time = v.elementAt(12).toString();
 			extra = v.elementAt(13).toString();
-			}catch(final Exception e){ }
+			}
+			catch(final Exception e){ }
 		}
 		catch( final ClassCastException e )
 		{

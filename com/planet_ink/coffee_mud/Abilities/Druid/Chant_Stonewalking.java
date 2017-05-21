@@ -33,17 +33,47 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Chant_Stonewalking extends Chant
 {
-	@Override public String ID() { return "Chant_Stonewalking"; }
+	@Override
+	public String ID()
+	{
+		return "Chant_Stonewalking";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Stonewalking");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Stonewalking spell)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_SELF;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
 
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
@@ -85,7 +115,6 @@ public class Chant_Stonewalking extends Chant
 		}
 	}
 
-
 	@Override
 	public void unInvoke()
 	{
@@ -96,6 +125,7 @@ public class Chant_Stonewalking extends Chant
 		super.unInvoke();
 
 		if(canBeUninvoked())
+		{
 			if((mob.location()!=null)&&(!mob.amDead()))
 			{
 				final Room R=mob.location();
@@ -107,6 +137,7 @@ public class Chant_Stonewalking extends Chant
 				else
 					mob.tell(L("Your stone walk has ended."));
 			}
+		}
 	}
 
 	@Override

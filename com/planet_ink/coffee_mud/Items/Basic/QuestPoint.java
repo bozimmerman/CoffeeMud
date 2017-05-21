@@ -56,7 +56,6 @@ public class QuestPoint extends StdItem
 		recoverPhyStats();
 	}
 
-
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{

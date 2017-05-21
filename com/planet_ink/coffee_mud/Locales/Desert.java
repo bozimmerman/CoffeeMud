@@ -70,6 +70,7 @@ public class Desert extends StdRoom
 		Integer.valueOf(RawMaterial.RESOURCE_DATES)
 	};
 	public static final List<Integer> roomResources=new Vector<Integer>(Arrays.asList(resourceList));
+
 	@Override
 	public List<Integer> resourceChoices()
 	{

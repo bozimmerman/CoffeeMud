@@ -108,7 +108,6 @@ public interface Exit extends PhysicalAgent, Readable, CloseableLockable
 							  String newOpenWord,
 							  String newClosedText);
 
-
 	/**
 	 * If this exit represents a route to a room not yet created, but whose room id
 	 * is already known, this will return that designated room id.

@@ -33,17 +33,51 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Chant_ExplosiveDecompression extends Chant
 {
-	@Override public String ID() { return "Chant_ExplosiveDecompression"; }
+	@Override
+	public String ID()
+	{
+		return "Chant_ExplosiveDecompression";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Explosive Decompression");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
-	@Override protected int canTargetCode(){return Ability.CAN_ROOMS;}
-	@Override public boolean bubbleAffect(){return true;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ROOMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_ROOMS;
+	}
+
+	@Override
+	public boolean bubbleAffect()
+	{
+		return true;
+	}
 
 	@Override
 	public void affectPhyStats(Physical affecting, PhyStats stats)

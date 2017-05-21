@@ -33,19 +33,59 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Prayer_DivineGuidance extends Prayer
 {
-	@Override public String ID() { return "Prayer_DivineGuidance"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_DivineGuidance";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Divine Guidance");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Awaiting Divine Guidance)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
-	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
-	@Override public long flags(){return Ability.FLAG_HOLY;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_OTHERS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_HOLY;
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)

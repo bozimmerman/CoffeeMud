@@ -35,13 +35,43 @@ import java.util.*;
 
 public class Chant_GrowClub extends Chant
 {
-	@Override public String ID() { return "Chant_GrowClub"; }
+	@Override
+	public String ID()
+	{
+		return "Chant_GrowClub";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Grow Club");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
-	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return 0;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_SELF;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
 
 	@Override
 	public int castingQuality(MOB mob, Physical target)
@@ -111,7 +141,13 @@ public class Chant_GrowClub extends Chant
 				newItem.basePhyStats().setLevel(level);
 				newItem.basePhyStats().setAttackAdjustment(0);
 				int damage=6;
-				try{ damage=(((level+(2*getXLEVELLevel(mob)))-1)/2)+2;}catch(final Exception t){}
+				try
+				{
+					 damage=(((level+(2*getXLEVELLevel(mob)))-1)/2)+2;
+				}
+				catch(final Exception t)
+				{
+				}
 				if(damage<6)
 					damage=6;
 				newItem.basePhyStats().setDamage(damage+super.getX1Level(mob));

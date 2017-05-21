@@ -1,6 +1,5 @@
 package com.planet_ink.coffee_mud.core.exceptions;
 
-
 /*
    Copyright 2016-2017 Bo Zimmerman
 
@@ -26,6 +25,7 @@ public class CharStatOutOfRangeException extends CMException
 	{
 		super(s);
 	}
+
 	public CharStatOutOfRangeException(String s, Exception e)
 	{
 		super(s,e);

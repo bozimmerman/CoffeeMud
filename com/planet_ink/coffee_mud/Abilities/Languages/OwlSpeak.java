@@ -42,6 +42,7 @@ public class OwlSpeak extends AnimalSpeak
 	}
 
 	private final static String localizedName = CMLib.lang().L("OwlSpeak");
+
 	@Override
 	public String name()
 	{

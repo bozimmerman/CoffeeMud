@@ -35,12 +35,37 @@ import java.util.*;
 
 public class Prayer_CureBlindness extends Prayer implements MendingSkill
 {
-	@Override public String ID() { return "Prayer_CureBlindness"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_CureBlindness";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Cure Blindness");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_RESTORATION;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
-	@Override public long flags(){return Ability.FLAG_HOLY;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_RESTORATION;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_OTHERS;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_HOLY;
+	}
 
 	@Override
 	public boolean supportsMending(Physical item)

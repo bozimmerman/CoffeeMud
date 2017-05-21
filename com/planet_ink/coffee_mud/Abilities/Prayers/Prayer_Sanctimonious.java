@@ -35,16 +35,57 @@ import java.util.*;
 
 public class Prayer_Sanctimonious extends Prayer
 {
-	@Override public String ID() { return "Prayer_Sanctimonious"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_Sanctimonious";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Sanctimonious");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Sanctimonious)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
-	@Override public long flags(){return Ability.FLAG_HOLY;}
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_SELF;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_HOLY;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
@@ -125,7 +166,6 @@ public class Prayer_Sanctimonious extends Prayer
 		}
 		else
 			return beneficialWordsFizzle(mob,null,L("<S-NAME> @x1 for sanctimoniousness, but there is no answer.",prayWord(mob)));
-
 
 		// return whether it worked
 		return success;

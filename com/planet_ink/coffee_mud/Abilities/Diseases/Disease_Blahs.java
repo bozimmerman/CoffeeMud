@@ -35,23 +35,93 @@ import java.util.*;
 
 public class Disease_Blahs extends Disease
 {
-	@Override public String ID() { return "Disease_Blahs"; }
-	private final static String localizedName = CMLib.lang().L("Blahs");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(The Blahs)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public boolean putInCommandlist(){return false;}
-	@Override public int difficultyLevel(){return 4;}
+	@Override
+	public String ID()
+	{
+		return "Disease_Blahs";
+	}
 
-	@Override protected int DISEASE_TICKS(){return 99999;}
-	@Override protected int DISEASE_DELAY(){return 20;}
-	@Override protected String DISEASE_DONE(){return L("You feel a little better.");}
-	@Override protected String DISEASE_START(){return L("^G<S-NAME> get(s) the blahs.^?");}
-	@Override protected String DISEASE_AFFECT(){return L("<S-NAME> sigh(s).");}
-	@Override public int spreadBitmap(){return DiseaseAffect.SPREAD_CONSUMPTION;}
+	private final static String localizedName = CMLib.lang().L("Blahs");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String localizedStaticDisplay = CMLib.lang().L("(The Blahs)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public boolean putInCommandlist()
+	{
+		return false;
+	}
+
+	@Override
+	public int difficultyLevel()
+	{
+		return 4;
+	}
+
+	@Override
+	protected int DISEASE_TICKS()
+	{
+		return 99999;
+	}
+
+	@Override
+	protected int DISEASE_DELAY()
+	{
+		return 20;
+	}
+
+	@Override
+	protected String DISEASE_DONE()
+	{
+		return L("You feel a little better.");
+	}
+
+	@Override
+	protected String DISEASE_START()
+	{
+		return L("^G<S-NAME> get(s) the blahs.^?");
+	}
+
+	@Override
+	protected String DISEASE_AFFECT()
+	{
+		return L("<S-NAME> sigh(s).");
+	}
+
+	@Override
+	public int spreadBitmap()
+	{
+		return DiseaseAffect.SPREAD_CONSUMPTION;
+	}
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)

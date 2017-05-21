@@ -39,7 +39,11 @@ public class Restring extends StdCommand
 	public Restring(){}
 
 	private final String[] access=I(new String[]{"RESTRING"});
-	@Override public String[] getAccessWords(){return access;}
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
 	public boolean errorOut(MOB mob)
 	{
@@ -110,8 +114,16 @@ public class Restring extends StdCommand
 					CMLib.genEd().genName(mob,thang,++showNumber,showFlag);
 					CMLib.genEd().genDisplayText(mob,thang,++showNumber,showFlag);
 					CMLib.genEd().genDescription(mob,thang,++showNumber,showFlag);
-					if(showFlag<-900){ ok=true; break;}
-					if(showFlag>0){ showFlag=-1; continue;}
+					if(showFlag<-900)
+					{
+						ok=true;
+						break;
+					}
+					if(showFlag>0)
+					{
+						showFlag=-1;
+						continue;
+					}
 					showFlag=CMath.s_int(mob.session().prompt(L("Edit which? "),""));
 					if(showFlag<=0)
 					{
@@ -128,13 +140,17 @@ public class Restring extends StdCommand
 		return false;
 	}
 
-	@Override public boolean canBeOrdered(){return true;}
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
+
 	@Override
 	public boolean securityCheck(MOB mob)
 	{
 		return CMSecurity.isAllowedContainsAny(mob,mob.location(),CMSecurity.SECURITY_CMD_GROUP)
 			 ||CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.RESTRING);
 	}
-
 
 }

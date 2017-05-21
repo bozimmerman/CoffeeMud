@@ -261,7 +261,6 @@ public class Thief_PetSteal extends ThiefSkill
 				return;
 			}
 			
-			
 			Thief_PetSteal affect = (Thief_PetSteal)beneficialAffect(mob,target,0,0);
 			if(affect != null)
 			{

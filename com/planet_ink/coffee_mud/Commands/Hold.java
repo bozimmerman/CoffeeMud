@@ -38,7 +38,12 @@ public class Hold extends StdCommand
 	public Hold(){}
 
 	private final String[] access=I(new String[]{"HOLD","HOL","HO","H"});
-	@Override public String[] getAccessWords(){return access;}
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
+
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
@@ -55,6 +60,7 @@ public class Hold extends StdCommand
 			CMLib.commands().doCommandFail(mob,origCmds,L("You don't seem to be carrying that."));
 		else
 		for(int i=0;i<items.size();i++)
+		{
 			if((items.size()==1)||(items.get(i).canWear(mob,Wearable.WORN_HELD)))
 			{
 				final Item item=items.get(i);
@@ -71,11 +77,26 @@ public class Hold extends StdCommand
 				if(mob.location().okMessage(mob,newMsg))
 					mob.location().send(mob,newMsg);
 			}
+		}
 		return false;
 	}
-	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandCombatActionCost(ID());}
-	@Override public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandActionCost(ID());}
-	@Override public boolean canBeOrdered(){return true;}
 
+	@Override
+	public double combatActionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandCombatActionCost(ID());
+	}
+
+	@Override
+	public double actionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandActionCost(ID());
+	}
+
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 
 }

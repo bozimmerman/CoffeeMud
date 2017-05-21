@@ -54,7 +54,6 @@ public class Scorpion extends StdMOB
 
 		basePhyStats().setWeight(Math.abs(randomizer.nextInt() % 2));
 
-
 		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,1);
 		baseCharStats().setStat(CharStats.STAT_STRENGTH,1);
 		baseCharStats().setStat(CharStats.STAT_DEXTERITY,15);

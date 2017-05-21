@@ -51,7 +51,6 @@ public class StdShipEngine extends StdCompGenerator implements ShipEngine
 	
 	protected TechComponent.ShipDir[] ports 		= TechComponent.ShipDir.values(); 
 	
-
 	public StdShipEngine()
 	{
 		super();

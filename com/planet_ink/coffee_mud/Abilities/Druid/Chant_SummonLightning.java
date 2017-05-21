@@ -33,17 +33,55 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Chant_SummonLightning extends Chant
 {
-	@Override public String ID() { return "Chant_SummonLightning"; }
-	@Override public String name(){ return renderedMundane?"lightning":"Summon Lightning";}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public int maxRange(){return adjustedMaxInvokerRange(10);}
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;}
-	@Override public long flags(){return Ability.FLAG_WEATHERAFFECTING|Ability.FLAG_AIRBASED;}
+	@Override
+	public String ID()
+	{
+		return "Chant_SummonLightning";
+	}
+
+	@Override
+	public String name()
+	{
+		return renderedMundane?"lightning":"Summon Lightning";
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public int maxRange()
+	{
+		return adjustedMaxInvokerRange(10);
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_WEATHERAFFECTING|Ability.FLAG_AIRBASED;
+	}
 
 	@Override
 	public int castingQuality(MOB mob, Physical target)
@@ -83,7 +121,6 @@ public class Chant_SummonLightning extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-
 		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
@@ -104,7 +141,6 @@ public class Chant_SummonLightning extends Chant
 		}
 		else
 			return maliciousFizzle(mob,target,L("<S-NAME> chant(s) at <T-NAMESELF>, but the magic fades."));
-
 
 		// return whether it worked
 		return success;

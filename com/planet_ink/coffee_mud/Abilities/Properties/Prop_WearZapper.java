@@ -15,8 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
 import java.util.*;
 
 /*
@@ -36,9 +34,23 @@ import java.util.*;
 */
 public class Prop_WearZapper extends Prop_HaveZapper
 {
-	@Override public String ID() { return "Prop_WearZapper"; }
-	@Override public String name(){ return "Restrictions to wielding/wearing/holding";}
-	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
+	@Override
+	public String ID()
+	{
+		return "Prop_WearZapper";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Restrictions to wielding/wearing/holding";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ITEMS;
+	}
 
 	@Override
 	public String accountForYourself()

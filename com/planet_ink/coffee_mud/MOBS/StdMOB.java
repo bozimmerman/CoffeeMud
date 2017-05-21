@@ -876,6 +876,7 @@ public class StdMOB implements MOB
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public void recoverCharStats()
 	{
@@ -1001,6 +1002,7 @@ public class StdMOB implements MOB
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public void recoverMaxState()
 	{
@@ -4262,6 +4264,7 @@ public class StdMOB implements MOB
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public Set<? extends Rider> getGroupMembersAndRideables(Set<? extends Rider> list)
 	{
@@ -4367,6 +4370,7 @@ public class StdMOB implements MOB
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public Enumeration<Ability> allAbilities()
 	{
@@ -4736,6 +4740,7 @@ public class StdMOB implements MOB
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public Enumeration<Ability> effects()
 	{
@@ -4907,6 +4912,7 @@ public class StdMOB implements MOB
 		return new Enumeration<String>()
 		{
 			final Iterator<Entry<String,Integer>> i=expertises.entrySet().iterator();
+
 			@Override 
 			public boolean hasMoreElements() 
 			{ 
@@ -4923,7 +4929,6 @@ public class StdMOB implements MOB
 			}
 		};
 	}
-
 
 	/** Manipulation of the scripts list */
 	@Override

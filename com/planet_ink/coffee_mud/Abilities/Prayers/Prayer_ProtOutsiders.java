@@ -160,7 +160,6 @@ public class Prayer_ProtOutsiders extends Prayer
 		else
 			return beneficialWordsFizzle(mob,null,L("<S-NAME> @x1 for protection, but there is no answer.",prayWord(mob)));
 
-
 		// return whether it worked
 		return success;
 	}

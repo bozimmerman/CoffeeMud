@@ -35,23 +35,93 @@ import java.util.*;
 
 public class Disease_Tinnitus extends Disease
 {
-	@Override public String ID() { return "Disease_Tinnitus"; }
-	private final static String localizedName = CMLib.lang().L("Tinnitus");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Tinnitus)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public boolean putInCommandlist(){return false;}
+	@Override
+	public String ID()
+	{
+		return "Disease_Tinnitus";
+	}
 
-	@Override protected int DISEASE_TICKS(){return 100;}
-	@Override protected int DISEASE_DELAY(){return 1;}
-	@Override protected String DISEASE_DONE(){return L("Your ears stop ringing.");}
-	@Override protected String DISEASE_START(){return L("^G<S-NAME> come(s) down with tinnitus.^?");}
-	@Override protected String DISEASE_AFFECT(){return "";}
-	@Override public int abilityCode(){return 0;}
-	@Override public int difficultyLevel(){return 4;}
+	private final static String localizedName = CMLib.lang().L("Tinnitus");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Tinnitus)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public boolean putInCommandlist()
+	{
+		return false;
+	}
+
+	@Override
+	protected int DISEASE_TICKS()
+	{
+		return 100;
+	}
+
+	@Override
+	protected int DISEASE_DELAY()
+	{
+		return 1;
+	}
+
+	@Override
+	protected String DISEASE_DONE()
+	{
+		return L("Your ears stop ringing.");
+	}
+
+	@Override
+	protected String DISEASE_START()
+	{
+		return L("^G<S-NAME> come(s) down with tinnitus.^?");
+	}
+
+	@Override
+	protected String DISEASE_AFFECT()
+	{
+		return "";
+	}
+
+	@Override
+	public int abilityCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int difficultyLevel()
+	{
+		return 4;
+	}
 
 	protected boolean ringing=false;
 

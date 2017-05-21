@@ -35,15 +35,50 @@ import java.util.*;
 
 public class Skill_Puppeteer extends BardSkill
 {
-	@Override public String ID() { return "Skill_Puppeteer"; }
+	@Override
+	public String ID()
+	{
+		return "Skill_Puppeteer";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Puppeteer");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return CAN_ITEMS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_ITEMS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"PUPPETEER","PUPPET"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_FOOLISHNESS;}
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL|Ability.DOMAIN_FOOLISHNESS;
+	}
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
@@ -199,7 +234,6 @@ public class Skill_Puppeteer extends BardSkill
 		}
 		else
 			mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,L("<T-NAME> twitch(es) oddly, but does nothing more."));
-
 
 		// return whether it worked
 		return success;

@@ -35,15 +35,51 @@ import java.util.*;
 
 public class Chant_RustCurse extends Chant
 {
-	@Override public String ID() { return "Chant_RustCurse"; }
+	@Override
+	public String ID()
+	{
+		return "Chant_RustCurse";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Rust Curse");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Rust Curse)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
 
 	@Override
 	public void unInvoke()
@@ -55,7 +91,6 @@ public class Chant_RustCurse extends Chant
 		if((canBeUninvoked())&&(M!=null)&&(!M.amDead()))
 			M.tell(L("You don't feel so damp any more."));
 	}
-
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
@@ -86,8 +121,10 @@ public class Chant_RustCurse extends Chant
 			}
 			if(goodChoices)
 			for(int i=choices.size()-1;i>=0;i--)
+			{
 				if(choices.elementAt(i).amWearingAt(Wearable.IN_INVENTORY))
 					choices.removeElementAt(i);
+			}
 			if(choices.size()>0)
 			{
 				final Item I=choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));

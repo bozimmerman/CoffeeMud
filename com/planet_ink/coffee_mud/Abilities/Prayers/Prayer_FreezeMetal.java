@@ -162,7 +162,6 @@ public class Prayer_FreezeMetal extends Prayer
 		return true;
 	}
 
-
 	@Override
 	public void unInvoke()
 	{

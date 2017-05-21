@@ -35,19 +35,65 @@ import java.util.*;
 
 public class Thief_Robbery extends ThiefSkill
 {
-	@Override public String ID() { return "Thief_Robbery"; }
+	@Override
+	public String ID()
+	{
+		return "Thief_Robbery";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Robbery");
-	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "";}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALING;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public String displayText()
+	{
+		return "";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALING;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"ROBBERY","ROB"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
 	public List<MOB> mobs=new Vector<MOB>();
 	private final PairVector<MOB,Integer> lastOnes=new PairVector<MOB,Integer>();
-	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT|USAGE_MANA;
+	}
 
 	protected int timesPicked(MOB target)
 	{

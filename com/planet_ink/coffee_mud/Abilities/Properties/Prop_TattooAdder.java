@@ -34,9 +34,23 @@ import java.util.*;
 */
 public class Prop_TattooAdder extends Property
 {
-	@Override public String ID() { return "Prop_TattooAdder"; }
-	@Override public String name(){ return "A TattooAdder";}
-	@Override protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_MOBS|Ability.CAN_EXITS;}
+	@Override
+	public String ID()
+	{
+		return "Prop_TattooAdder";
+	}
+
+	@Override
+	public String name()
+	{
+		return "A TattooAdder";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ITEMS|Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_MOBS|Ability.CAN_EXITS;
+	}
 	int tattooCode=-1;
 
 	public int tattooCode()
@@ -82,7 +96,6 @@ public class Prop_TattooAdder extends Property
 
 		boolean tattooPlus=true;
 		boolean tattooMinus=false;
-
 
 		if(tattooName.startsWith("+-")||tattooName.startsWith("-+"))
 		{
@@ -138,7 +151,6 @@ public class Prop_TattooAdder extends Property
 			}
 		}
 	}
-
 
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)

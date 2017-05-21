@@ -35,23 +35,93 @@ import java.util.*;
 
 public class Disease_Arthritis extends Disease
 {
-	@Override public String ID() { return "Disease_Arthritis"; }
-	private final static String localizedName = CMLib.lang().L("Arthritis");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Arthritis)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public boolean putInCommandlist(){return false;}
-	@Override public int difficultyLevel(){return 4;}
+	@Override
+	public String ID()
+	{
+		return "Disease_Arthritis";
+	}
 
-	@Override protected int DISEASE_TICKS(){return 999999;}
-	@Override protected int DISEASE_DELAY(){return 50;}
-	@Override protected String DISEASE_DONE(){return L("Your arthritis clears up.");}
-	@Override protected String DISEASE_START(){return L("^G<S-NAME> look(s) like <S-HE-SHE> <S-IS-ARE> in pain.^?");}
-	@Override protected String DISEASE_AFFECT(){return "";}
-	@Override public int abilityCode(){return 0;}
+	private final static String localizedName = CMLib.lang().L("Arthritis");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Arthritis)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public boolean putInCommandlist()
+	{
+		return false;
+	}
+
+	@Override
+	public int difficultyLevel()
+	{
+		return 4;
+	}
+
+	@Override
+	protected int DISEASE_TICKS()
+	{
+		return 999999;
+	}
+
+	@Override
+	protected int DISEASE_DELAY()
+	{
+		return 50;
+	}
+
+	@Override
+	protected String DISEASE_DONE()
+	{
+		return L("Your arthritis clears up.");
+	}
+
+	@Override
+	protected String DISEASE_START()
+	{
+		return L("^G<S-NAME> look(s) like <S-HE-SHE> <S-IS-ARE> in pain.^?");
+	}
+
+	@Override
+	protected String DISEASE_AFFECT()
+	{
+		return "";
+	}
+
+	@Override
+	public int abilityCode()
+	{
+		return 0;
+	}
 
 	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)

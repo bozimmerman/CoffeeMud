@@ -56,5 +56,4 @@ public class Dirk extends Dagger
 		recoverPhyStats();
 	}
 
-
 }

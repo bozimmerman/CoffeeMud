@@ -38,7 +38,12 @@ public class WizList extends StdCommand
 	public WizList(){}
 
 	private final String[] access=I(new String[]{"WIZLIST"});
-	@Override public String[] getAccessWords(){return access;}
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
+
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
@@ -91,7 +96,10 @@ public class WizList extends StdCommand
 		return false;
 	}
 
-	@Override public boolean canBeOrdered(){return true;}
-
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 
 }

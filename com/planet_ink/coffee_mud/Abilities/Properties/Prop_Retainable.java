@@ -15,8 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
 import java.util.*;
 
 /*
@@ -36,9 +34,24 @@ import java.util.*;
 */
 public class Prop_Retainable extends Property
 {
-	@Override public String ID() { return "Prop_Retainable"; }
-	@Override public String name(){ return "Ability to set Price/Retainability of a pet.";}
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
+	@Override
+	public String ID()
+	{
+		return "Prop_Retainable";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Ability to set Price/Retainability of a pet.";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
 	protected Room lastRoom=null;
 
 	protected long payPeriodLengthInMilliseconds=0;
@@ -49,7 +62,9 @@ public class Prop_Retainable extends Property
 
 	@Override
 	public String accountForYourself()
-	{ return "Retainable";	}
+	{
+		return "Retainable";
+	}
 
 	@Override
 	public void setMiscText(String text)
@@ -79,7 +94,6 @@ public class Prop_Retainable extends Property
 			}
 		}
 	}
-
 
 	public void quit(MOB mob, String msg)
 	{

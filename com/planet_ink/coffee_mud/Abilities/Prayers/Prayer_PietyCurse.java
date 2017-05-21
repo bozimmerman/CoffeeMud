@@ -33,19 +33,59 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Prayer_PietyCurse extends Prayer
 {
-	@Override public String ID() { return "Prayer_PietyCurse"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_PietyCurse";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Piety Curse");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Piety Curse)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CURSING;}
-	@Override public long flags(){return Ability.FLAG_HOLY;}
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
-	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_CURSING;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_HOLY;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_MOBS;
+	}
 	
 	private static String[] UNPIOUS_SOCIALS = 
 		{"AARGH","BITE","BLEED","BOAST","BONK","BOUNCE","BRICK","BURP","CAMEL","CHALLENGE","CHARGE",
@@ -174,7 +214,6 @@ public class Prayer_PietyCurse extends Prayer
 		}
 		else
 			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to curse <T-NAMESELF> piously, but nothing happens."));
-
 
 		// return whether it worked
 		return success;

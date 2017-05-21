@@ -79,6 +79,7 @@ public class RebuildReferenceDocs extends StdWebMacro
 					return "[Unwrittable: "+df.getName()+"]";
 				final byte[] savable = CMLib.webMacroFilter().virtualPageFilter(httpReq, httpReq.getRequestObjects(), processStartTime, lastFoundMacro, new StringBuffer(new String(sf.raw()))).toString().getBytes();
 				for(int b=0;b<savable.length-5;b++)
+				{
 					if((savable[b]=='.') &&(savable[b+1]=='c') &&(savable[b+2]=='m') &&(savable[b+3]=='v') &&(savable[b+4]=='p'))
 					{
 						savable[b+1]='h';
@@ -87,6 +88,7 @@ public class RebuildReferenceDocs extends StdWebMacro
 						savable[b+4]='l';
 						b+=4;
 					}
+				}
 				df.saveRaw(savable);
 			}
 		}

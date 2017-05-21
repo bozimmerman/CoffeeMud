@@ -38,7 +38,11 @@ public class IMC2 extends StdCommand
 	public IMC2(){}
 
 	private final String[] access=I(new String[]{"IMC2"});
-	@Override public String[] getAccessWords(){return access;}
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
 	public void IMC2Error(MOB mob)
 	{
@@ -84,7 +88,8 @@ public class IMC2 extends StdCommand
 			try
 			{
 				mob.tell(CMLib.hosts().get(0).executeCommand("START IMC2"));
-			}catch(final Exception e){ Log.errOut("IMC2Cmd",e);}
+			}
+			catch(final Exception e){ Log.errOut("IMC2Cmd",e);}
 		}
 		else
 			IMC2Error(mob);
@@ -92,7 +97,10 @@ public class IMC2 extends StdCommand
 		return false;
 	}
 
-	@Override public boolean canBeOrdered(){return true;}
-
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 
 }

@@ -33,15 +33,34 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class AnimalTaming extends CommonSkill
 {
-	@Override public String ID() { return "AnimalTaming"; }
+	@Override
+	public String ID()
+	{
+		return "AnimalTaming";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Animal Taming");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"TAME","TAMING","ANIMALTAMING"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ANIMALAFFINITY; }
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ANIMALAFFINITY;
+	}
 
 	protected Physical taming=null;
 	protected boolean messedUp=false;
@@ -51,6 +70,7 @@ public class AnimalTaming extends CommonSkill
 		displayText=L("You are taming...");
 		verb=L("taming");
 	}
+
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -137,7 +157,6 @@ public class AnimalTaming extends CommonSkill
 		super.unInvoke();
 	}
 
-
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -178,7 +197,10 @@ public class AnimalTaming extends CommonSkill
 				if((I!=null)
 				&&(I instanceof Container)
 				&&((((Container)I).containTypes()&Container.CONTAIN_CAGED)==Container.CONTAIN_CAGED))
-				{ cage=I; break;}
+				{
+					cage=I;
+					break;
+				}
 			}
 			if(commands.size()>0)
 			{

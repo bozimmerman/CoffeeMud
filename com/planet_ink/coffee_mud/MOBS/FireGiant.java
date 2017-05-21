@@ -52,7 +52,6 @@ public class FireGiant extends StdMOB
 		setMoney(0);
 		basePhyStats.setWeight(6500 + Math.abs(randomizer.nextInt() % 1001));
 
-
 		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,8 + Math.abs(randomizer.nextInt() % 3));
 		baseCharStats().setStat(CharStats.STAT_STRENGTH,20);
 		baseCharStats().setStat(CharStats.STAT_DEXTERITY,13);
@@ -81,6 +80,5 @@ public class FireGiant extends StdMOB
 		super.recoverCharStats();
 		charStats().setStat(CharStats.STAT_SAVE_FIRE,charStats().getStat(CharStats.STAT_SAVE_FIRE)+100);
 	}
-
 
 }

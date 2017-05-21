@@ -59,5 +59,4 @@ public class BattleAxe extends Sword
 		weaponClassification=Weapon.CLASS_AXE;
 	}
 
-
 }

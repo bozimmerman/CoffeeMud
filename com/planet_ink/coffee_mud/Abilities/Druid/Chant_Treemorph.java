@@ -33,16 +33,41 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Chant_Treemorph extends Chant
 {
-	@Override public String ID() { return "Chant_Treemorph"; }
+	@Override
+	public String ID()
+	{
+		return "Chant_Treemorph";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Treemorph");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Treemorph)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
 	Item tree=null;
 	Race treeForm=null;
 
@@ -193,8 +218,6 @@ public class Chant_Treemorph extends Chant
 		}
 	}
 
-
-
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -204,7 +227,6 @@ public class Chant_Treemorph extends Chant
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-
 
 		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+(2*getXLEVELLevel(mob)));
 		if(levelDiff<0)

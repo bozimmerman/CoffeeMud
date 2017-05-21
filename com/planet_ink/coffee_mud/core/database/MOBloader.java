@@ -47,6 +47,7 @@ public class MOBloader
 	{
 		DB=newDB;
 	}
+
 	protected Room emptyRoom=null;
 
 	public MOB DBReadUserOnly(final String name, final String[] locationID)
@@ -153,8 +154,10 @@ public class MOBloader
 				
 				// check for a non-existant birthday and fix it
 				if(pstats.getBirthday()==null)
+				{
 					stats.setStat(CharStats.STAT_AGE,
 						pstats.initializeBirthday(CMLib.time().localClock(mob.getStartRoom()),(int)Math.round(CMath.div(mob.getAgeMinutes(),60.0)),stats.getMyRace()));
+				}
 				
 				final TimeClock C=CMLib.time().localClock(mob.getStartRoom());
 				// check for a messed up/reset birthday and fix it
@@ -1101,12 +1104,14 @@ public class MOBloader
 				R.close();
 			}
 			for(final Pair<Clan,Integer> p : mob.clans())
+			{
 				if(!savedClans.contains(p.first.clanID().toUpperCase()))
 				{
 					clanStatements.add("INSERT INTO CMCHCL (CMUSERID, CMCLAN, CMCLRO, CMCLSTS) values ('"+mob.Name()+"','"+p.first.clanID()+"',"+p.second.intValue()+",'0;0')");
 					if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CLANMEMBERS))
 						Log.debugOut("User '"+mob.Name()+"' was added to clan '"+p.first.clanID()+"' as role "+p.second.intValue());
 				}
+			}
 		}
 		catch(final Exception sqle)
 		{

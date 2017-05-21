@@ -36,12 +36,16 @@ import java.util.*;
 */
 public class Planet extends StdThinPlanet
 {
-	@Override public String ID(){ return "Planet";}
+	@Override
+	public String ID()
+	{
+		return "Planet";
+	}
+
 	public Planet()
 	{
 		super();
 
-		
 		coordinates=new long[]{Math.round(Long.MAX_VALUE*Math.random()),Math.round(Long.MAX_VALUE*Math.random()),Math.round(Long.MAX_VALUE*Math.random())};
 		Random random=new Random(System.currentTimeMillis());
 		radius=SpaceObject.Distance.PlanetRadius.dm + (random.nextLong() % Math.round(CMath.mul(SpaceObject.Distance.PlanetRadius.dm,0.30)));

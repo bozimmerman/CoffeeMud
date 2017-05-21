@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2003-2017 Bo Zimmerman
 
@@ -128,7 +127,7 @@ public class SpecialistMage extends Mage
 			return super.okMessage(myHost,msg);
 		final MOB myChar=(MOB)myHost;
 		if((msg.tool()==null)||(!(msg.tool() instanceof Ability)))
-		   return super.okMessage(myChar,msg);
+			return super.okMessage(myChar,msg);
 		final int domain=((Ability)msg.tool()).classificationCode()&Ability.ALL_DOMAINS;
 		if(msg.amISource(myChar)
 		&&(myChar.isMine(msg.tool())))
@@ -138,7 +137,7 @@ public class SpecialistMage extends Mage
 			&&(!CMLib.ableMapper().getDefaultGain(ID(),true,msg.tool().ID())))
 			{
 				if(CMLib.dice().rollPercentage()>
-				   (myChar.charStats().getStat(CharStats.STAT_INTELLIGENCE)*((myChar.charStats().getCurrentClass().ID().equals(ID()))?1:2)))
+					(myChar.charStats().getStat(CharStats.STAT_INTELLIGENCE)*((myChar.charStats().getCurrentClass().ID().equals(ID()))?1:2)))
 				{
 					myChar.location().show(myChar,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> fizzle(s) a spell."));
 					return false;

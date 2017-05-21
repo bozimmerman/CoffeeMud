@@ -33,18 +33,57 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Prayer_DailyBread extends Prayer
 {
-	@Override public String ID() { return "Prayer_DailyBread"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_DailyBread";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Daily Bread");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
-	@Override public long flags(){return Ability.FLAG_UNHOLY;}
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
-	@Override protected int overrideMana(){return 100;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_OTHERS;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_UNHOLY;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	protected int overrideMana()
+	{
+		return 100;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -117,7 +156,6 @@ public class Prayer_DailyBread extends Prayer
 		}
 		else
 			maliciousFizzle(mob,target,auto?"":L("<S-NAME> @x1 for <T-NAMESELF> to provide <S-HIS-HER> daily bread, but nothing happens.",prayWord(mob)));
-
 
 		// return whether it worked
 		return success;

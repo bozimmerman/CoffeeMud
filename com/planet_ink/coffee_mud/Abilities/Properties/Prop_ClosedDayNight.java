@@ -386,7 +386,6 @@ public class Prop_ClosedDayNight extends Property
 		return true;
 	}
 
-
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{

@@ -33,17 +33,47 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Chant_SongWard extends Chant
 {
-	@Override public String ID() { return "Chant_SongWard"; }
+	@Override
+	public String ID()
+	{
+		return "Chant_SongWard";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Song Ward");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Song Ward)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PRESERVING;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_SELF;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT|Ability.DOMAIN_PRESERVING;
+	}
 
 	@Override
 	public void unInvoke()
@@ -74,7 +104,6 @@ public class Chant_SongWard extends Chant
 		return super.castingQuality(mob,target);
 	}
 
-
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -97,7 +126,6 @@ public class Chant_SongWard extends Chant
 		return super.okMessage(myHost,msg);
 	}
 
-
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -109,7 +137,6 @@ public class Chant_SongWard extends Chant
 			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already affected by @x1.",name()));
 			return false;
 		}
-
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

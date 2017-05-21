@@ -42,6 +42,7 @@ public class LocateQueryPacket extends Packet {
 		super();
 		type = Packet.LOCATE_QUERY;
 	}
+
 	public LocateQueryPacket(Vector v) throws InvalidPacketException {
 		super(v);
 		try

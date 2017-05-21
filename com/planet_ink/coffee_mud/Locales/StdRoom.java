@@ -1188,6 +1188,7 @@ public class StdRoom implements Room
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public void recoverPhyStats()
 	{
@@ -1987,6 +1988,7 @@ public class StdRoom implements Room
 	private static final ReadOnlyVector<MOB> emptyMOBV=new ReadOnlyVector<MOB>(1);
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public List<MOB> fetchInhabitants(String inhabitantID)
 	{
@@ -2766,6 +2768,7 @@ public class StdRoom implements Room
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public Enumeration<Ability> effects()
 	{
@@ -2811,8 +2814,10 @@ public class StdRoom implements Room
 		if(behaviors==null)
 			behaviors=new SVector<Behavior>(1);
 		for(final Behavior B : behaviors)
+		{
 			if(B.ID().equals(to.ID()))
-			   return;
+				return;
+		}
 		if(behaviors.isEmpty())
 			CMLib.threads().startTickDown(this,Tickable.TICKID_ROOM_BEHAVIOR,1);
 		to.startBehavior(this);
@@ -2853,6 +2858,7 @@ public class StdRoom implements Room
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public Enumeration<Behavior> behaviors()
 	{
@@ -2951,7 +2957,7 @@ public class StdRoom implements Room
 			scripts.clear();
 		scripts=null;
 		if(didSomething && ((behaviors==null)||(behaviors.isEmpty())))
-		  CMLib.threads().deleteTick(this,Tickable.TICKID_ROOM_BEHAVIOR);
+			CMLib.threads().deleteTick(this,Tickable.TICKID_ROOM_BEHAVIOR);
 	}
 
 	@Override
@@ -2961,6 +2967,7 @@ public class StdRoom implements Room
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public Enumeration<ScriptingEngine> scripts()
 	{

@@ -38,7 +38,12 @@ public class Weather extends StdCommand
 	public Weather(){}
 
 	private final String[] access=I(new String[]{"WEATHER"});
-	@Override public String[] getAccessWords(){return access;}
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
+
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
@@ -63,7 +68,10 @@ public class Weather extends StdCommand
 		return false;
 	}
 
-	@Override public boolean canBeOrdered(){return true;}
-
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 
 }

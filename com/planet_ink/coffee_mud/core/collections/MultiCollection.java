@@ -212,6 +212,7 @@ public class MultiCollection<T> implements Collection<T>
 	}
 
 	@SuppressWarnings("hiding")
+
 	@Override
 	public <T> T[] toArray(T[] arg0) 
 	{

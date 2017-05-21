@@ -34,7 +34,6 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class AnimalHusbandry extends CommonSkill
 {
 	@Override
@@ -175,7 +174,6 @@ public class AnimalHusbandry extends CommonSkill
 		}
 		super.unInvoke();
 	}
-
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)

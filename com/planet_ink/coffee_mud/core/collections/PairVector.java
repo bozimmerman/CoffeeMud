@@ -106,6 +106,7 @@ public class PairVector<T, K> extends Vector<Pair<T, K>> implements PairList<T, 
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public boolean contains(Object o)
 	{
@@ -117,6 +118,7 @@ public class PairVector<T, K> extends Vector<Pair<T, K>> implements PairList<T, 
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public int indexOf(Object o)
 	{
@@ -129,6 +131,7 @@ public class PairVector<T, K> extends Vector<Pair<T, K>> implements PairList<T, 
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public synchronized int indexOf(Object o, int index)
 	{

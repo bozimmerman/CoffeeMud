@@ -155,7 +155,6 @@ public class SocialData extends StdWebMacro
 		if((last==null)&&(!parms.containsKey("EDIT")))
 			return " @break@";
 
-
 		final String replaceCommand=httpReq.getUrlParameter("REPLACE");
 		if((replaceCommand != null)
 		&& (replaceCommand.length()>0)
@@ -416,7 +415,6 @@ public class SocialData extends StdWebMacro
 					if(parms.containsKey("GETEXTRA")
 					&&(CMath.s_int(parms.get("GETEXTRA"))<numxtras))
 						str.append(TYPES.elementAt(BTYPES.length+CMath.s_int(parms.get("GETEXTRA")))+", ");
-
 
 					for(int t=0;t<TYPES.size();t++)
 					{

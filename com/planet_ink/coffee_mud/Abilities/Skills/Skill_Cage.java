@@ -35,17 +35,62 @@ import java.util.*;
 
 public class Skill_Cage extends StdSkill
 {
-	@Override public String ID() { return "Skill_Cage"; }
+	@Override
+	public String ID()
+	{
+		return "Skill_Cage";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Cage");
-	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "";}
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public String displayText()
+	{
+		return "";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"CAGE"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_ANIMALAFFINITY;}
-	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL|Ability.DOMAIN_ANIMALAFFINITY;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT|USAGE_MANA;
+	}
 
 	@Override
 	public int castingQuality(MOB mob, Physical target)
@@ -67,7 +112,10 @@ public class Skill_Cage extends StdSkill
 				if((I!=null)
 				&&(I instanceof Container)
 				&&((((Container)I).containTypes()&Container.CONTAIN_CAGED)==Container.CONTAIN_CAGED))
-				{ cage=I; break;}
+				{
+					cage=I;
+					break;
+				}
 			}
 			if(commands.size()>0)
 			{
@@ -152,7 +200,6 @@ public class Skill_Cage extends StdSkill
 		}
 		else
 			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to cage <T-NAME> and fail(s)."));
-
 
 		// return whether it worked
 		return success;

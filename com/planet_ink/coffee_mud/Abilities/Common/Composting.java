@@ -79,7 +79,6 @@ public class Composting extends GatheringSkill
 	protected Room		room			= null;
 	protected String	foundShortName	= "";
 
-	
 	public Composting()
 	{
 		super();

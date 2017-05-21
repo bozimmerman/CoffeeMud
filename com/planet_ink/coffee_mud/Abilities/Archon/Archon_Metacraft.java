@@ -200,14 +200,20 @@ public class Archon_Metacraft extends ArchonSkill
 			{
 				skill=(ItemCraftor)craftingSkills.get(i);
 				final List<List<String>> V=skill.matchingRecipeNames(recipe,false);
-				if((V!=null)&&(V.size()>0)){ skillsToUse.add(skill);}
+				if((V!=null)&&(V.size()>0))
+				{
+					skillsToUse.add(skill);
+				}
 			}
 			if(skillsToUse.size()==0)
 			for(int i=0;i<craftingSkills.size();i++)
 			{
 				skill=(ItemCraftor)craftingSkills.get(i);
 				final List<List<String>> V=skill.matchingRecipeNames(recipe,true);
-				if((V!=null)&&(V.size()>0)){ skillsToUse.add(skill);}
+				if((V!=null)&&(V.size()>0))
+				{
+					skillsToUse.add(skill);
+				}
 			}
 		}
 		if(skillsToUse.size()==0)

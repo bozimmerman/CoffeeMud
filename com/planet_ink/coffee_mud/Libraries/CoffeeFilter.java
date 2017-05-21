@@ -62,7 +62,6 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 		return tagTable;
 	}
 
-
 	@Override
 	public String simpleOutFilter(String msg)
 	{
@@ -786,11 +785,13 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 			while((lastWord.length()>0)&&(!Character.isLetterOrDigit(lastWord.charAt(lastWord.length()-1))))
 				  lastWord=lastWord.substring(0,lastWord.length()-1);
 			for(int i=lastWord.length()-1;i>=0;i--)
+			{
 				if(!Character.isLetterOrDigit(lastWord.charAt(i)))
 				{
 					lastWord=lastWord.substring(i+1);
 					break;
 				}
+			}
 		}
 		else
 		{
@@ -1435,7 +1436,6 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 				loop++;
 			}
 
-
 			if((len<buf.length())
 			&&(loop!=lastSp)
 			&&(lastSp>=0)
@@ -1507,7 +1507,6 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 			Log.debugOut("CoffeeFilter","OUTPUT: "+(((S!=null)&&(S.mob()!=null))?S.mob().Name():"")+": "+buf.toString());
 		return buf.toString();
 	}
-
 
 	@Override
 	public String simpleInFilter(StringBuilder input)

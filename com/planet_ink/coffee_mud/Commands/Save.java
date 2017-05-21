@@ -39,7 +39,11 @@ public class Save extends StdCommand
 	public Save(){}
 
 	private final String[] access=I(new String[]{"SAVE"});
-	@Override public String[] getAccessWords(){return access;}
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
 	public enum SaveTask
 	{
@@ -124,7 +128,6 @@ public class Save extends StdCommand
 			return true;
 		}
 	}
-
 
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
@@ -330,13 +333,17 @@ public class Save extends StdCommand
 		return false;
 	}
 
-	@Override public boolean canBeOrdered(){return true;}
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
+
 	@Override
 	public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDROOMS)
 												 ||CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDPLAYERS)
 												 ||CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDFACTIONS)
 												 ||CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDQUESTS)
 												 ||CMSecurity.isSaveFlag(CMSecurity.SaveFlag.NOPLAYERS);}
-
 
 }

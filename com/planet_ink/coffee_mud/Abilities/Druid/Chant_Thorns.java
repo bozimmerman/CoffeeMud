@@ -33,17 +33,47 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Chant_Thorns extends Chant
 {
-	@Override public String ID() { return "Chant_Thorns"; }
+	@Override
+	public String ID()
+	{
+		return "Chant_Thorns";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Thorns");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Thorns)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_OTHERS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
 	final static String msgStr=CMLib.lang().L("The thorns around <S-NAME> <DAMAGE> <T-NAME>!");
 	protected long oncePerTickTime=0;
 
@@ -78,7 +108,6 @@ public class Chant_Thorns extends Chant
 		final MOB source=msg.source();
 		if(source.location()==null)
 			return;
-
 
 		if(msg.amITarget(mob))
 		{
@@ -147,7 +176,6 @@ public class Chant_Thorns extends Chant
 		}
 		else
 			return beneficialWordsFizzle(mob,target,L("<S-NAME> chant(s), but nothing happens."));
-
 
 		// return whether it worked
 		return success;

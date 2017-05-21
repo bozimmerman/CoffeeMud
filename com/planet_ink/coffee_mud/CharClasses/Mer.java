@@ -19,7 +19,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2016-2017 Bo Zimmerman
 
@@ -381,6 +380,7 @@ public class Mer extends StdCharClass
 			}
 		}
 	}
+
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
@@ -400,7 +400,6 @@ public class Mer extends StdCharClass
 			}
 		}
 	}
-
 
 	@Override
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)

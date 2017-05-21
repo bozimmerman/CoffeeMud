@@ -574,7 +574,6 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 		}
 	}
 	
-	
 	protected Ability getGravityFloat()
 	{
 		if(gravityFloaterA == null)

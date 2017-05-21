@@ -55,5 +55,4 @@ public class LeatherBoots extends StdArmor
 		material=RawMaterial.RESOURCE_LEATHER;
 	}
 
-
 }

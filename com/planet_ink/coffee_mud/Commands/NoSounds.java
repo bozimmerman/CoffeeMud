@@ -38,7 +38,12 @@ public class NoSounds extends StdCommand
 	public NoSounds(){}
 
 	private final String[] access=I(new String[]{"NOSOUNDS","NOMSP"});
-	@Override public String[] getAccessWords(){return access;}
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
+
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
@@ -59,6 +64,15 @@ public class NoSounds extends StdCommand
 		return false;
 	}
 
-	@Override public boolean canBeOrdered(){return true;}
-	@Override public boolean securityCheck(MOB mob){return super.securityCheck(mob)&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MSP));}
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
+
+	@Override
+	public boolean securityCheck(MOB mob)
+	{
+		return super.securityCheck(mob)&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MSP));
+	}
 }

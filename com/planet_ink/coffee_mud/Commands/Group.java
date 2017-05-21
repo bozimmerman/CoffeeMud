@@ -38,7 +38,11 @@ public class Group extends StdCommand
 	public Group(){}
 
 	private final String[] access=I(new String[]{"GROUP","GR"});
-	@Override public String[] getAccessWords(){return access;}
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
 	public static StringBuffer showWhoLong(MOB seer, MOB who)
 	{
@@ -123,7 +127,10 @@ public class Group extends StdCommand
 		return false;
 	}
 
-	@Override public boolean canBeOrdered(){return true;}
-
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 
 }

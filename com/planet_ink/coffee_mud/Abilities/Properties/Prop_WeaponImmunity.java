@@ -35,9 +35,24 @@ import java.util.*;
 
 public class Prop_WeaponImmunity extends Property implements TriggeredAffect
 {
-	@Override public String ID() { return "Prop_WeaponImmunity"; }
-	@Override public String name(){ return "Weapon Immunity";}
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
+	@Override
+	public String ID()
+	{
+		return "Prop_WeaponImmunity";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Weapon Immunity";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS|Ability.CAN_ITEMS;
+	}
+
 	public Hashtable<String,Object> flags=new Hashtable<String,Object>();
 
 	@Override
@@ -46,8 +61,11 @@ public class Prop_WeaponImmunity extends Property implements TriggeredAffect
 		return TriggeredAffect.TRIGGER_BEING_HIT;
 	}
 
-
-	@Override public long flags(){return Ability.FLAG_IMMUNER;}
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_IMMUNER;
+	}
 
 	@Override
 	public String accountForYourself()
@@ -55,6 +73,7 @@ public class Prop_WeaponImmunity extends Property implements TriggeredAffect
 		final String id="Weapon Immunities for the wearer: "+text();
 		return id;
 	}
+
 	@Override
 	public void setMiscText(String newValue)
 	{

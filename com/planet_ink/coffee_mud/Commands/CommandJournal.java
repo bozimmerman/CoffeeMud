@@ -39,6 +39,7 @@ public class CommandJournal extends StdCommand
 	public CommandJournal(){}
 
 	public static String[] access=null;
+
 	@Override
 	public String[] getAccessWords()
 	{
@@ -71,7 +72,7 @@ public class CommandJournal extends StdCommand
 		final String second=(commands.size()>2)?(String)commands.get(2):"";
 		final String rest=(commands.size()>3)?CMParms.combine(commands,3):"";
 		if(!("TRANSFER".startsWith(first.toUpperCase().trim())))
-		   return false;
+			return false;
 		if(!CMSecurity.isJournalAccessAllowed(mob,security))
 		{
 			mob.tell(L("Transfer not allowed."));
@@ -139,7 +140,7 @@ public class CommandJournal extends StdCommand
 		final String first=commands.get(1);
 		final String second=(commands.size()>2)?CMParms.combine(commands,2):"";
 		if(!("REVIEW".startsWith(first.toUpperCase().trim())))
-		   return false;
+			return false;
 		if(!CMSecurity.isJournalAccessAllowed(mob,security))
 			return false;
 		if((second.length()>0)&&(!CMath.isNumber(second)))
@@ -251,7 +252,10 @@ public class CommandJournal extends StdCommand
 		return true;
 	}
 
-	@Override public boolean canBeOrdered(){return false;}
-
+	@Override
+	public boolean canBeOrdered()
+	{
+		return false;
+	}
 
 }

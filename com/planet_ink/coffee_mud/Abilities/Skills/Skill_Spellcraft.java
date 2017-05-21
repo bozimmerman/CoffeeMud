@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -126,7 +125,7 @@ public class Skill_Spellcraft extends StdSkill
 	{
 		super.executeMsg(myHost,msg);
 		if(!(affected instanceof MOB))
-		   return;
+			return;
 		final MOB mob=(MOB)affected;
 		if((msg.sourceMinor()==CMMsg.TYP_CAST_SPELL)
 		&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))

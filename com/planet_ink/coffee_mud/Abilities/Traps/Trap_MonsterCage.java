@@ -121,7 +121,6 @@ public class Trap_MonsterCage extends StdTrap
 		return super.tick(ticking,tickID);
 	}
 
-
 	@Override
 	public void unInvoke()
 	{

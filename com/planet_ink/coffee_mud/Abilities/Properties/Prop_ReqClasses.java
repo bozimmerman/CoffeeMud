@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -36,13 +35,32 @@ import java.util.*;
 
 public class Prop_ReqClasses extends Property implements TriggeredAffect
 {
-	@Override public String ID() { return "Prop_ReqClasses"; }
-	@Override public String name(){ return "Class Limitations";}
-	@Override protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS;}
+	@Override
+	public String ID()
+	{
+		return "Prop_ReqClasses";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Class Limitations";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS;
+	}
+
 	private boolean noFollow=false;
 	private boolean noSneak=false;
 
-	@Override public long flags(){return Ability.FLAG_ZAPPER;}
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_ZAPPER;
+	}
 
 	@Override
 	public int triggerMask()

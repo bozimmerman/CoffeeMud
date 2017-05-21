@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -35,8 +34,18 @@ import java.util.*;
 */
 public class CorpseEater extends ActiveTicker
 {
-	@Override public String ID(){return "CorpseEater";}
-	@Override protected int canImproveCode(){return Behavior.CAN_MOBS;}
+	@Override
+	public String ID()
+	{
+		return "CorpseEater";
+	}
+
+	@Override
+	protected int canImproveCode()
+	{
+		return Behavior.CAN_MOBS;
+	}
+
 	private boolean EatItems=false;
 	public CorpseEater()
 	{
@@ -57,7 +66,6 @@ public class CorpseEater extends ActiveTicker
 		super.setParms(newParms);
 		EatItems=(newParms.toUpperCase().indexOf("EATITEMS") > 0);
 	}
-
 
 	public static MOB makeMOBfromCorpse(DeadBody corpse, String type)
 	{

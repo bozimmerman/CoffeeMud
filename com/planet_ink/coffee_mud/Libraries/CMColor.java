@@ -48,7 +48,6 @@ public class CMColor extends StdLibrary implements ColorLibrary
 	
 	private final Map<String, SpecialColor> nameMap = new Hashtable<String, SpecialColor>();
 
-	
 	private static class ColorStateImpl implements ColorState
 	{
 		public final char foregroundCode;

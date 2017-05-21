@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.List;
 
-
 /*
    Copyright 2004-2017 Bo Zimmerman
 

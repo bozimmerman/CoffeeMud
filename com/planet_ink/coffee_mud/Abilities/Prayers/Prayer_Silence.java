@@ -35,16 +35,57 @@ import java.util.*;
 
 public class Prayer_Silence extends Prayer
 {
-	@Override public String ID() { return "Prayer_Silence"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_Silence";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Silent");
-	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CORRUPTION;}
-	@Override public long flags(){return Ability.FLAG_UNHOLY;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_CORRUPTION;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_UNHOLY;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Silenced)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
-	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_MOBS;
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
@@ -99,8 +140,6 @@ public class Prayer_Silence extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-
-
 		boolean success=proficiencyCheck(mob,-((target.charStats().getStat(CharStats.STAT_WISDOM)*2)+(levelDiff*5)),auto);
 		if(success)
 		{
@@ -117,7 +156,6 @@ public class Prayer_Silence extends Prayer
 		}
 		else
 			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to silence <T-NAMESELF>, but flub(s) it."));
-
 
 		// return whether it worked
 		return success;

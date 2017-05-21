@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -35,9 +34,23 @@ import java.util.*;
 */
 public class Prop_NoPKill extends Property
 {
-	@Override public String ID() { return "Prop_NoPKill"; }
-	@Override public String name(){ return "No Player Killing";}
-	@Override protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS;}
+	@Override
+	public String ID()
+	{
+		return "Prop_NoPKill";
+	}
+
+	@Override
+	public String name()
+	{
+		return "No Player Killing";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ROOMS|Ability.CAN_AREAS;
+	}
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)

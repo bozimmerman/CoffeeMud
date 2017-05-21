@@ -59,5 +59,4 @@ public class GenWater extends GenDrink
 		recoverPhyStats();
 	}
 
-
 }

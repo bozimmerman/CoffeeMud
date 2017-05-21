@@ -18,7 +18,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 public class Sailor extends StdBehavior
 {
 
@@ -198,6 +197,7 @@ public class Sailor extends StdBehavior
 		S.loyalShipItem=null;
 		return S;
 	}
+
 	@Override
 	public boolean okMessage(Environmental affecting, CMMsg msg)
 	{

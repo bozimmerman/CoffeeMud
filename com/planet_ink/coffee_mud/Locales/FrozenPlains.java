@@ -50,6 +50,7 @@ public class FrozenPlains extends Plains
 	public static final Integer[] resourceList={
 		Integer.valueOf(RawMaterial.RESOURCE_FUR)};
 	public static final List<Integer> roomResources=new Vector<Integer>(Arrays.asList(resourceList));
+
 	@Override
 	public List<Integer> resourceChoices()
 	{

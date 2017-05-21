@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -35,7 +34,11 @@ import java.util.*;
 */
 public class ObjectGuardian extends StdBehavior
 {
-	@Override public String ID(){return "ObjectGuardian";}
+	@Override
+	public String ID()
+	{
+		return "ObjectGuardian";
+	}
 
 	protected boolean sentinal=false;
 

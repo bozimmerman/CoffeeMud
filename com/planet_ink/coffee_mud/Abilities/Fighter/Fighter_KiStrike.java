@@ -33,20 +33,60 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Fighter_KiStrike extends FighterSkill
 {
-	@Override public String ID() { return "Fighter_KiStrike"; }
+	@Override
+	public String ID()
+	{
+		return "Fighter_KiStrike";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Ki Strike");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Ki Strike)");
-	@Override public String displayText() { return localizedStaticDisplay; }
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"KISTRIKE","KI"});
-	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
-	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_PUNCHING;}
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_SELF;
+	}
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL|Ability.DOMAIN_PUNCHING;
+	}
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)

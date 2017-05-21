@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -36,23 +35,94 @@ import java.util.*;
 
 public class Disease_Leeches extends Disease
 {
-	@Override public String ID() { return "Disease_Leeches"; }
-	private final static String localizedName = CMLib.lang().L("Leeches");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Leeches)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public boolean putInCommandlist(){return false;}
+	@Override
+	public String ID()
+	{
+		return "Disease_Leeches";
+	}
 
-	@Override protected int DISEASE_TICKS(){return 35;}
-	@Override protected int DISEASE_DELAY(){return 7;}
-	@Override protected String DISEASE_DONE(){return L("The leeches get full and fall off.");}
-	@Override protected String DISEASE_START(){return L("^G<S-NAME> <S-HAS-HAVE> leeches covering <S-HIM-HER>!^?");}
-	@Override protected String DISEASE_AFFECT(){return L("<S-NAME> cringe(s) from the leeches.");}
-	@Override public int spreadBitmap(){return DiseaseAffect.SPREAD_STD;}
-	@Override public int difficultyLevel(){return 0;}
+	private final static String localizedName = CMLib.lang().L("Leeches");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Leeches)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public boolean putInCommandlist()
+	{
+		return false;
+	}
+
+	@Override
+	protected int DISEASE_TICKS()
+	{
+		return 35;
+	}
+
+	@Override
+	protected int DISEASE_DELAY()
+	{
+		return 7;
+	}
+
+	@Override
+	protected String DISEASE_DONE()
+	{
+		return L("The leeches get full and fall off.");
+	}
+
+	@Override
+	protected String DISEASE_START()
+	{
+		return L("^G<S-NAME> <S-HAS-HAVE> leeches covering <S-HIM-HER>!^?");
+	}
+
+	@Override
+	protected String DISEASE_AFFECT()
+	{
+		return L("<S-NAME> cringe(s) from the leeches.");
+	}
+
+	@Override
+	public int spreadBitmap()
+	{
+		return DiseaseAffect.SPREAD_STD;
+	}
+
+	@Override
+	public int difficultyLevel()
+	{
+		return 0;
+	}
+
 	protected int hp=Integer.MAX_VALUE;
 	protected String thename="";
 
@@ -109,6 +179,7 @@ public class Disease_Leeches extends Disease
 		if(affectableStats.getStat(CharStats.STAT_CHARISMA)<=0)
 			affectableStats.setStat(CharStats.STAT_CHARISMA,1);
 	}
+
 	@Override
 	public void affectCharState(MOB affected, CharState affectableState)
 	{

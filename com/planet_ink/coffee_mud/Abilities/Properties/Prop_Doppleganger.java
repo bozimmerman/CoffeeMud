@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -35,9 +34,23 @@ import java.util.*;
 */
 public class Prop_Doppleganger extends Property
 {
-	@Override public String ID() { return "Prop_Doppleganger"; }
-	@Override public String name(){ return "Doppleganger";}
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
+	@Override
+	public String ID()
+	{
+		return "Prop_Doppleganger";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Doppleganger";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS|Ability.CAN_ITEMS;
+	}
 	//protected boolean lastLevelChangers=true;
 	protected Physical lastOwner=null;
 	private int maxLevel=Integer.MAX_VALUE;
@@ -49,11 +62,17 @@ public class Prop_Doppleganger extends Property
 	protected boolean matchPlayersFollowersOnly=false;
 	protected int asMaterial=-1;
 
-	@Override public long flags(){return Ability.FLAG_ADJUSTER;}
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_ADJUSTER;
+	}
 
 	@Override
 	public String accountForYourself()
-	{ return "Level Changer";	}
+	{
+		return "Level Changer";
+	}
 
 	@Override
 	public void setMiscText(String text)

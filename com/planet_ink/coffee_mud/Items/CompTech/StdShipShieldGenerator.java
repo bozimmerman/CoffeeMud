@@ -259,7 +259,6 @@ public class StdShipShieldGenerator extends StdElecCompItem implements ShipWarCo
 		}
 	}
 	
-	
 	@Override
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{

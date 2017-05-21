@@ -42,6 +42,7 @@ public class ChannelWhoRequest extends Packet {
 		super();
 		type = Packet.CHAN_WHO_REQ;
 	}
+
 	public ChannelWhoRequest(Vector v) throws InvalidPacketException {
 		super(v);
 		try

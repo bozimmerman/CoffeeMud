@@ -35,13 +35,44 @@ import java.util.*;
 
 public class Prayer_SenseProfessions extends Prayer
 {
-	@Override public String ID() { return "Prayer_SenseProfessions"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_SenseProfessions";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Sense Professions");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
-	@Override public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	@Override public long flags(){return Ability.FLAG_HOLY;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;
+	}
+
+	@Override
+	public int enchantQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_SELF;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_HOLY;
+	}
+
 	protected int senseWhat() { return ACODE_COMMON_SKILL; }
 	protected String senseWhatStr() { return "professions"; }
 
@@ -84,7 +115,6 @@ public class Prayer_SenseProfessions extends Prayer
 		}
 		else
 			beneficialWordsFizzle(mob,target,auto?"":L("<S-NAME> @x1 and peer(s) at <T-NAMESELF>, but then blink(s).",prayWord(mob)));
-
 
 		// return whether it worked
 		return success;

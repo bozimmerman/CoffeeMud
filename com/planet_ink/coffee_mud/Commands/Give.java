@@ -48,7 +48,9 @@ public class Give extends StdCommand
 	@SuppressWarnings("rawtypes")
 	private final static Class[][] internalParameters=new Class[][]
 	{
-		{Item.class,MOB.class,Boolean.class}
+		{
+			Item.class,MOB.class,Boolean.class
+		}
 	};
 
 	@Override

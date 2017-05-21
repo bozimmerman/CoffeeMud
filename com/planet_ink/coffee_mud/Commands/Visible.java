@@ -38,7 +38,11 @@ public class Visible extends StdCommand
 	public Visible(){}
 
 	private final String[] access=I(new String[]{"VISIBLE","VIS"});
-	@Override public String[] getAccessWords(){return access;}
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
 	public static java.util.List<Ability> returnOffensiveAffects(Physical fromMe)
 	{
@@ -58,7 +62,8 @@ public class Visible extends StdCommand
 						offenders.add(A);
 				}
 				catch(final Exception e)
-				{}
+				{
+				}
 			}
 		}
 		newMOB.destroy();
@@ -94,8 +99,23 @@ public class Visible extends StdCommand
 		mob.location().recoverRoomStats();
 		return false;
 	}
-	@Override public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandActionCost(ID());}
-	@Override public double combatActionsCost(MOB mob, List<String> cmds){return 0.25;}
-	@Override public boolean canBeOrdered(){return true;}
+
+	@Override
+	public double actionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandActionCost(ID());
+	}
+
+	@Override
+	public double combatActionsCost(MOB mob, List<String> cmds)
+	{
+		return 0.25;
+	}
+
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 
 }

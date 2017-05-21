@@ -42,6 +42,7 @@ public class Semaphore extends StdLanguage
 	}
 
 	private final static String localizedName = CMLib.lang().L("Semaphore");
+
 	@Override
 	public String name()
 	{
@@ -95,6 +96,7 @@ public class Semaphore extends StdLanguage
 	}
 	
 	public static List<String[]> wordLists=null;
+
 	@Override
 	public List<String[]> translationVector(String language)
 	{

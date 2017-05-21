@@ -35,22 +35,78 @@ import java.util.*;
 
 public class Thief_Distract extends ThiefSkill
 {
-	@Override public String ID() { return "Thief_Distract"; }
+	@Override
+	public String ID()
+	{
+		return "Thief_Distract";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Distract");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Distracted)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"DISTRACT"});
-	@Override public int classificationCode() {   return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_DECEPTIVE; }
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int usageType(){return USAGE_MOVEMENT;}
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_DECEPTIVE;
+	}
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT;
+	}
 
 	public int code=0;
-	@Override public int abilityCode(){return code;}
-	@Override public void setAbilityCode(int newCode){code=newCode;}
+
+	@Override
+	public int abilityCode()
+	{
+		return code;
+	}
+
+	@Override
+	public void setAbilityCode(int newCode)
+	{
+		code=newCode;
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)

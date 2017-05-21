@@ -33,16 +33,45 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Prayer_MajorInfusion extends Prayer implements MendingSkill
 {
-	@Override public String ID() { return "Prayer_MajorInfusion"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_MajorInfusion";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Major Infusion");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HEALING;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	@Override public long flags(){return Ability.FLAG_NEUTRAL;}
-	@Override protected long minCastWaitTime(){return CMProps.getTickMillis()/2;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_HEALING;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_OTHERS;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_NEUTRAL;
+	}
+
+	@Override
+	protected long minCastWaitTime()
+	{
+		return CMProps.getTickMillis()/2;
+	}
 
 	@Override
 	public boolean supportsMending(Physical item)

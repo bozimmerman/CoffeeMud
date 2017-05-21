@@ -547,7 +547,9 @@ public class Log extends java.util.logging.Logger
 				if(f.exists())
 					f.delete();
 			}
-			catch(final Exception e){}
+			catch(final Exception e)
+			{
+			}
 			
 			for(int i=numberOfLogs-1;i>0;i--)
 			{
@@ -558,7 +560,10 @@ public class Log extends java.util.logging.Logger
 					final File f=new File(logPath,logName+inumm1+".log");
 					if(f.exists())
 						f.renameTo(new File(logPath,logName+inum+".log"));
-				}catch(final Exception e){}
+				}
+				catch(final Exception e)
+				{
+				}
 			}
 		}
 		final String name=logName+".log";
@@ -568,7 +573,6 @@ public class Log extends java.util.logging.Logger
 			System.setErr(new PrintStream(fileStream));
 		return fileStream;
 	}
-
 
 	/**
 	* Start all of the log files in the info temp directory
@@ -657,6 +661,7 @@ public class Log extends java.util.logging.Logger
 		return new LogReader()
 		{
 			BufferedReader reader = null;
+
 			@Override
 			public String nextLine()
 			{
@@ -679,11 +684,14 @@ public class Log extends java.util.logging.Logger
 					if(reader.ready())
 						line=reader.readLine();
 				}
-				catch ( final IOException ignore ){}
+				catch ( final IOException ignore )
+				{
+				}
 				if(line==null)
 					close();
 				return line;
 			}
+
 			@Override
 			public void close()
 			{
@@ -695,7 +703,9 @@ public class Log extends java.util.logging.Logger
 						reader = null;
 					}
 				}
-				catch ( final IOException ignore ){}
+				catch ( final IOException ignore )
+				{
+				}
 			}
 		};
 	}
@@ -728,7 +738,6 @@ public class Log extends java.util.logging.Logger
 	{
 		return logPath.getAbsolutePath();
 	}
-
 
 	/**
 	* Will be used to create a standardized log header for file logs
@@ -1537,7 +1546,6 @@ public class Log extends java.util.logging.Logger
 		return l.getWriter(Type.error,l.getConfig(Type.error),priority)!=null;
 	}
 	
-	
 	/**
 	 * Returns whether help channel writer is allocated for current thread for given priority.
 	 * @param priority priority level to check for writer at
@@ -1548,7 +1556,6 @@ public class Log extends java.util.logging.Logger
 		final Log l=l(); 
 		return l.getWriter(Type.help,l.getConfig(Type.help),priority)!=null;
 	}
-	
 	
 	/**
 	 * Returns whether debug channel writer is allocated for current thread for given priority.
@@ -1561,7 +1568,6 @@ public class Log extends java.util.logging.Logger
 		return l.getWriter(Type.debug,l.getConfig(Type.debug),priority)!=null;
 	}
 	
-	
 	/**
 	 * Returns whether info channel writer is allocated for current thread for given priority.
 	 * @param priority priority level to check for writer at
@@ -1572,7 +1578,6 @@ public class Log extends java.util.logging.Logger
 		final Log l=l();
 		return l.getWriter(Type.info,l.getConfig(Type.info),priority)!=null;
 	}
-	
 	
 	/**
 	 * Returns whether warning channel writer is allocated for current thread for given priority.
@@ -1585,7 +1590,6 @@ public class Log extends java.util.logging.Logger
 		return l.getWriter(Type.warning,l.getConfig(Type.warning),priority)!=null;
 	}
 	
-	
 	/**
 	 * Returns whether kill-log channel writer is allocated for current thread for given priority.
 	 * @param priority priority level to check for writer at
@@ -1597,7 +1601,6 @@ public class Log extends java.util.logging.Logger
 		return l.getWriter(Type.kills,l.getConfig(Type.kills),priority)!=null;
 	}
 	
-	
 	/**
 	 * Returns whether combat-log channel writer is allocated for current thread for given priority.
 	 * @param priority priority level to check for writer at
@@ -1608,7 +1611,6 @@ public class Log extends java.util.logging.Logger
 		final Log l=l();
 		return l.getWriter(Type.combat,l.getConfig(Type.combat),priority)!=null;
 	}
-	
 	
 	/**
 	 * Returns whether access-log channel writer is allocated for current thread for given priority.
@@ -1689,7 +1691,10 @@ public class Log extends java.util.logging.Logger
 		}
 	}
 
-	@Override public synchronized void addHandler(Handler handler){}
+	@Override
+	public synchronized void addHandler(Handler handler)
+	{
+	}
 	//Log a CONFIG message.
 	@Override
 	public void	config(final String msg)

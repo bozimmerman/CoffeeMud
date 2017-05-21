@@ -35,20 +35,70 @@ import java.util.*;
 
 public class Thief_Peek extends ThiefSkill
 {
-	@Override public String ID() { return "Thief_Peek"; }
+	@Override
+	public String ID()
+	{
+		return "Thief_Peek";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Peek");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALING;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALING;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"PEEK"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT|USAGE_MANA;
+	}
+
 	public int code=0;
 
-	@Override public int abilityCode(){return code;}
-	@Override public void setAbilityCode(int newCode){code=newCode;}
+	@Override
+	public int abilityCode()
+	{
+		return code;
+	}
+
+	@Override
+	public void setAbilityCode(int newCode)
+	{
+		code=newCode;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -83,7 +133,6 @@ public class Thief_Peek extends ThiefSkill
 			discoverChance=95;
 		if(discoverChance<5)
 			discoverChance=5;
-
 
 		if(!success)
 		{

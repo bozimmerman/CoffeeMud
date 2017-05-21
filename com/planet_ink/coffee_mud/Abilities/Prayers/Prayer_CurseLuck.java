@@ -35,15 +35,52 @@ import java.util.*;
 
 public class Prayer_CurseLuck extends Prayer
 {
-	@Override public String ID() { return "Prayer_CurseLuck"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_CurseLuck";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Curse Luck");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Cursed Luck)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CURSING;}
-	@Override public long flags(){return Ability.FLAG_UNHOLY;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_CURSING;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_UNHOLY;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
 	protected HashSet<Environmental> permProts=new HashSet<Environmental>();
 	protected int prots=4;
 	boolean notAgain=false;

@@ -81,7 +81,4 @@ public class Teacher extends StdMOB
 		recoverCharStats();
 	}
 
-
-
-
 }

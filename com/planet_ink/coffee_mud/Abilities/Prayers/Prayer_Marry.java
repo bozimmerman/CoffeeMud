@@ -35,12 +35,37 @@ import java.util.*;
 
 public class Prayer_Marry extends Prayer
 {
-	@Override public String ID() { return "Prayer_Marry"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_Marry";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Marry");
-	@Override public String name() { return localizedName; }
-	@Override public long flags(){return Ability.FLAG_HOLY;}
-	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_BLESSING;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_HOLY;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_OTHERS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_BLESSING;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)

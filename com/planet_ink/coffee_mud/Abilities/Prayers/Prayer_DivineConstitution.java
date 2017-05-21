@@ -33,19 +33,60 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Prayer_DivineConstitution extends Prayer
 {
-	@Override public String ID() { return "Prayer_DivineConstitution"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_DivineConstitution";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Divine Constitution");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Divine Constitution)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HEALING;}
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
-	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	@Override public long flags(){return Ability.FLAG_HOLY;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_HEALING;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_OTHERS;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_HOLY;
+	}
+
 	protected int conPts=1;
 	protected int xtraHPs=0;
 	protected int maxPoints=6;
@@ -144,7 +185,6 @@ public class Prayer_DivineConstitution extends Prayer
 		}
 		else
 			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 for <T-NAMESELF> to have divine constitution, but nothing happens.",prayWord(mob)));
-
 
 		// return whether it worked
 		return success;

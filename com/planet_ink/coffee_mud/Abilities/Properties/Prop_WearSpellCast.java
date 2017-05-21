@@ -15,8 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
 import java.util.*;
 
 /*
@@ -36,12 +34,30 @@ import java.util.*;
 */
 public class Prop_WearSpellCast extends Prop_HaveSpellCast
 {
-	@Override public String ID() { return "Prop_WearSpellCast"; }
-	@Override public String name(){ return "Casting spells when worn";}
-	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
+	@Override
+	public String ID()
+	{
+		return "Prop_WearSpellCast";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Casting spells when worn";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ITEMS;
+	}
+
 	@Override
 	public String accountForYourself()
-	{ return spellAccountingsWithMask("Casts "," on the wearer.");}
+	{
+		return spellAccountingsWithMask("Casts "," on the wearer.");
+	}
+
 	public boolean checked=false;
 	public boolean disabled=false;
 	public boolean layered=false;
@@ -54,7 +70,11 @@ public class Prop_WearSpellCast extends Prop_HaveSpellCast
 
 	public void check(MOB mob, Armor A)
 	{
-		if(!layered){ checked=true; disabled=false;}
+		if(!layered)
+		{
+			checked=true;
+			disabled=false;
+		}
 		final boolean oldDisabled=disabled;
 		if(A.amWearingAt(Wearable.IN_INVENTORY))
 		{
@@ -112,6 +132,7 @@ public class Prop_WearSpellCast extends Prop_HaveSpellCast
 		else
 			super.executeMsg(host,msg);
 	}
+
 	@Override
 	public boolean addMeIfNeccessary(PhysicalAgent source, Physical target, boolean makeLongLasting, int asLevel, short maxTicks)
 	{

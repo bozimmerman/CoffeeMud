@@ -35,16 +35,57 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Skill_Juggle extends BardSkill
 {
-	@Override public String ID() { return "Skill_Juggle"; }
+	@Override
+	public String ID()
+	{
+		return "Skill_Juggle";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Juggle");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"JUGGLE"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_FOOLISHNESS;}
-	@Override public int usageType(){return USAGE_MOVEMENT;}
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL|Ability.DOMAIN_FOOLISHNESS;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT;
+	}
+
 	protected SVector<Item> juggles=new SVector<Item>();
 	protected long lastJuggle=-1;
 	protected boolean pause=false;
@@ -86,7 +127,10 @@ public class Skill_Juggle extends BardSkill
 				{
 					final Item I2=V.elementAt(ii);
 					if(I2.name().equals(I.name()))
-					{ back=true; break;}
+					{
+						back=true;
+						break;
+					}
 				}
 				if(back)
 					continue;
@@ -95,7 +139,10 @@ public class Skill_Juggle extends BardSkill
 				{
 					final Item I2=V.elementAt(ii);
 					if(I2.name().equals(I.name()))
-					{ morethanone=true; break;}
+					{
+						morethanone=true;
+						break;
+					}
 				}
 				str.append(I.name()+(morethanone?"s":"")+" ");
 			}
@@ -164,7 +211,13 @@ public class Skill_Juggle extends BardSkill
 		for(int i=0;i<juggles.size();i++)
 		{
 			Item I=null;
-			try{I=juggles.elementAt(i);}catch(final Exception e){}
+			try
+			{
+				I=juggles.elementAt(i);
+			}
+			catch(final Exception e)
+			{
+			}
 			if((I==null)
 			||(I.owner()==null)
 			||((I.owner() instanceof MOB)&&(I.owner()!=M))
@@ -295,7 +348,7 @@ public class Skill_Juggle extends BardSkill
 				if(mob.location()!=null)
 				{
 					if(!mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> juggle(s) @x1 items in the air.",""+juggles.size())))
-					   unInvoke();
+						unInvoke();
 					else
 					if(mob.isInCombat())
 					{
@@ -399,8 +452,16 @@ public class Skill_Juggle extends BardSkill
 
 		final Vector<Item> V=new Vector<Item>();
 		boolean allFlag=commands.get(0).equalsIgnoreCase("all");
-		if(whatToJuggle.toUpperCase().startsWith("ALL.")){ allFlag=true; whatToJuggle="ALL "+whatToJuggle.substring(4);}
-		if(whatToJuggle.toUpperCase().endsWith(".ALL")){ allFlag=true; whatToJuggle="ALL "+whatToJuggle.substring(0,whatToJuggle.length()-4);}
+		if(whatToJuggle.toUpperCase().startsWith("ALL."))
+		{
+			allFlag=true;
+			whatToJuggle="ALL "+whatToJuggle.substring(4);
+		}
+		if(whatToJuggle.toUpperCase().endsWith(".ALL"))
+		{
+			allFlag=true;
+			whatToJuggle="ALL "+whatToJuggle.substring(0,whatToJuggle.length()-4);
+		}
 		int addendum=1;
 		String addendumStr="";
 		boolean doBugFix = true;
@@ -467,7 +528,6 @@ public class Skill_Juggle extends BardSkill
 		}
 		else
 			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> attempt(s) to juggle, but messes up."));
-
 
 		// return whether it worked
 		return success;

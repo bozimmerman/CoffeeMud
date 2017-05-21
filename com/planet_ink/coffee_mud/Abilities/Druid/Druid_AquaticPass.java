@@ -34,7 +34,6 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Druid_AquaticPass extends StdAbility
 {
 	@Override
@@ -145,7 +144,6 @@ public class Druid_AquaticPass extends StdAbility
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 

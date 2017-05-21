@@ -34,7 +34,6 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Addictions extends StdAbility
 {
 	@Override

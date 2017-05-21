@@ -94,6 +94,7 @@ public class Trap_Spark extends StdTrap
 			V.add(CMLib.materials().makeItemResource(RawMaterial.RESOURCE_IRON));
 		return V;
 	}
+
 	@Override
 	public boolean canSetTrapOn(MOB mob, Physical P)
 	{

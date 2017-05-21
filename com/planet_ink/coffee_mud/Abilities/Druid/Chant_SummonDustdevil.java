@@ -279,6 +279,7 @@ public class Chant_SummonDustdevil extends Chant
 		// return whether it worked
 		return success;
 	}
+
 	public MOB determineMonster(MOB caster, int material)
 	{
 		final MOB newMOB=CMClass.getMOB("GenMOB");

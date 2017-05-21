@@ -36,23 +36,78 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Ranger_Camouflage extends StdAbility
 {
-	@Override public String ID() { return "Ranger_Camouflage"; }
+	@Override
+	public String ID()
+	{
+		return "Ranger_Camouflage";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Camouflage");
-	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "";}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
-	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_NATURELORE;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public String displayText()
+	{
+		return "";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_OTHERS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_NATURELORE;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"CAMOUFLAGE"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT|USAGE_MANA;
+	}
+
 	public int code=0;
 	private int bonus=0;
 	private int prof=0;
 
-	@Override public int abilityCode(){return code;}
-	@Override public void setAbilityCode(int newCode){code=newCode;}
+	@Override
+	public int abilityCode()
+	{
+		return code;
+	}
+
+	@Override
+	public void setAbilityCode(int newCode)
+	{
+		code=newCode;
+	}
 
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
@@ -122,6 +177,7 @@ public class Ranger_Camouflage extends StdAbility
 		super.affectCharStats(affected,affectableStats);
 		affectableStats.setStat(CharStats.STAT_SAVE_DETECTION,prof+bonus+affectableStats.getStat(CharStats.STAT_SAVE_DETECTION));
 	}
+
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
@@ -182,7 +238,6 @@ public class Ranger_Camouflage extends StdAbility
 		final MOB highestMOB=Ranger_Hide.getHighestLevelMOB(mob,notList);
 		final int levelDiff=(mob.phyStats().level()+(2*getXLEVELLevel(mob)))-Ranger_Hide.getMOBLevel(highestMOB);
 
-		
 		final String str;
 		if(target instanceof MOB)
 			str=L("You carefully camoflauge <T-NAMESELF> and direct <T-HIM-HER> to hold still.");

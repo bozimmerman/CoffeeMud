@@ -18,7 +18,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2002-2017 Bo Zimmerman
 
@@ -214,8 +213,10 @@ public class Ranger_FindWater extends StdAbility
 		}
 		else
 		if((I.container()!=null)&&(I.container().container()==container))
+		{
 			if(msg.toString().indexOf(I.container().name()+" contains some sort of liquid.")<0)
 				msg.append(L("@x1 contains some sort of liquid.\n\r",I.container().name()));
+		}
 		return msg.toString();
 	}
 
@@ -297,7 +298,6 @@ public class Ranger_FindWater extends StdAbility
 		}
 		return msg.toString();
 	}
-
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)

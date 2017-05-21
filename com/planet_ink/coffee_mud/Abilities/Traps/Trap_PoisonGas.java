@@ -117,6 +117,7 @@ public class Trap_PoisonGas extends StdTrap
 		V.add(I);
 		return V;
 	}
+
 	@Override
 	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
 	{

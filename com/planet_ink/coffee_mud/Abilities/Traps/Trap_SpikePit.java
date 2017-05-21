@@ -124,6 +124,7 @@ public class Trap_SpikePit extends Trap_RoomPit
 		}
 		return V;
 	}
+
 	@Override
 	public boolean canSetTrapOn(MOB mob, Physical P)
 	{

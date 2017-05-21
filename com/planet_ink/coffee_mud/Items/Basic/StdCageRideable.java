@@ -55,8 +55,6 @@ public class StdCageRideable extends StdRideable
 		recoverPhyStats();
 	}
 
-
-
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -71,12 +69,14 @@ public class StdCageRideable extends StdRideable
 				isOpen=wasOpen;
 			}
 			if(behaviors!=null)
+			{
 				for(final Behavior B : behaviors)
 				{
 					if(B!=null)
 						B.executeMsg(this,msg);
 				}
 
+			}
 			for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
 			{
 				final Ability A=a.nextElement();

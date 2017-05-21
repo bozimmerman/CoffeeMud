@@ -70,7 +70,6 @@ public class OpenPrepositional extends StdOpenDoorway implements PrepositionExit
 		}
 	}
 	
-	
 	@Override
 	public String getEntryPreposition()
 	{

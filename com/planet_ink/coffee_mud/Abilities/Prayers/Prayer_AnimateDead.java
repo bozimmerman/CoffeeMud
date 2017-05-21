@@ -33,7 +33,6 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Prayer_AnimateDead extends Prayer
 {
 	@Override
@@ -234,7 +233,6 @@ public class Prayer_AnimateDead extends Prayer
 		}
 		else
 			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 for dark powers, but fail(s) miserably.",prayWord(mob)));
-
 
 		// return whether it worked
 		return success;

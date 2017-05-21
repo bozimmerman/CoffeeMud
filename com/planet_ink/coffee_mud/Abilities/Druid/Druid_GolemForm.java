@@ -194,7 +194,6 @@ public class Druid_GolemForm extends StdAbility
 		}
 	}
 
-
 	@Override
 	public void unInvoke()
 	{

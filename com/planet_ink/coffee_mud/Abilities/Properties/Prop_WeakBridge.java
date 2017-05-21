@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -36,9 +35,23 @@ import java.util.*;
 
 public class Prop_WeakBridge extends Property implements TriggeredAffect
 {
-	@Override public String ID() { return "Prop_WeakBridge"; }
-	@Override public String name(){ return "Weak Rickity Bridge";}
-	@Override protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_EXITS;}
+	@Override
+	public String ID()
+	{
+		return "Prop_WeakBridge";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Weak Rickity Bridge";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ROOMS|Ability.CAN_EXITS;
+	}
 
 	protected boolean bridgeIsUp=true;
 	protected int max=400;
@@ -54,7 +67,9 @@ public class Prop_WeakBridge extends Property implements TriggeredAffect
 
 	@Override
 	public String accountForYourself()
-	{ return "Weak and Rickity";	}
+	{
+		return "Weak and Rickity";
+	}
 
 	@Override
 	public void setMiscText(String newText)
@@ -100,7 +115,6 @@ public class Prop_WeakBridge extends Property implements TriggeredAffect
 		return weight+mob.phyStats().weight();
 	}
 
-
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -136,6 +150,7 @@ public class Prop_WeakBridge extends Property implements TriggeredAffect
 		}
 		super.executeMsg(myHost,msg);
 	}
+
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
@@ -145,6 +160,7 @@ public class Prop_WeakBridge extends Property implements TriggeredAffect
 		&&(bridgeIsUp))
 			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SLEEPING);
 	}
+
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{

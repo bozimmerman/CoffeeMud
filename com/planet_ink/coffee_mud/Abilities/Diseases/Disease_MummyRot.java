@@ -34,25 +34,90 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Disease_MummyRot extends StdAbility implements DiseaseAffect
 {
-	@Override public String ID() { return "Disease_MummyRot"; }
+	@Override
+	public String ID()
+	{
+		return "Disease_MummyRot";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Mummy Rot");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Mummy Rot)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public boolean putInCommandlist(){return false;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public boolean putInCommandlist()
+	{
+		return false;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"MUMMYROT"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode(){return Ability.ACODE_DISEASE;}
-	@Override public int abilityCode(){return 0;}
-	@Override public int spreadBitmap() { return 0; }
-	@Override public int difficultyLevel(){return 2;}
-	@Override public boolean isMalicious(){ return true;}
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_DISEASE;
+	}
+
+	@Override
+	public int abilityCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int spreadBitmap()
+	{
+		return 0;
+	}
+
+	@Override
+	public int difficultyLevel()
+	{
+		return 2;
+	}
+
+	@Override
+	public boolean isMalicious()
+	{
+		return true;
+	}
 
 	int conDown=1;
 	int diseaseTick=0;

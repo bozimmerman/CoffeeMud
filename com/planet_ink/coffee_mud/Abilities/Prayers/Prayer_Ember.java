@@ -33,15 +33,39 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Prayer_Ember extends Prayer
 {
-	@Override public String ID() { return "Prayer_Ember"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_Ember";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Ember");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	@Override public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_FIREBASED;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_UNHOLY|Ability.FLAG_FIREBASED;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)

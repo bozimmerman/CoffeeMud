@@ -106,6 +106,7 @@ public class Test extends StdCommand
 			return false;
 		return true;
 	}
+
 	public boolean isAnyAdjusted(MOB mob)
 	{
 		if(mob.phyStats().ability()>=10)

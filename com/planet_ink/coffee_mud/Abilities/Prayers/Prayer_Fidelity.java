@@ -33,17 +33,47 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Prayer_Fidelity extends Prayer
 {
-	@Override public String ID() { return "Prayer_Fidelity"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_Fidelity";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Fidelity");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Fidelity)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_WARDING;}
-	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
-	@Override public long flags(){return Ability.FLAG_HOLY;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_WARDING;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_OTHERS;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_HOLY;
+	}
 
 	@Override
 	public void unInvoke()
@@ -108,7 +138,6 @@ public class Prayer_Fidelity extends Prayer
 		}
 		else
 			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 for <T-NAMESELF>, but the magic fades.",prayWord(mob)));
-
 
 		// return whether it worked
 		return success;

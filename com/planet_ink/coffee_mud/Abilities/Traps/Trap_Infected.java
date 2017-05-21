@@ -104,6 +104,7 @@ public class Trap_Infected extends StdTrap
 		}
 		return null;
 	}
+
 	@Override
 	public List<Item> getTrapComponents()
 	{

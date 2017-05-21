@@ -36,7 +36,12 @@ import java.util.*;
 */
 public class Moon extends StdThinPlanet
 {
-	@Override public String ID(){ return "Moon";}
+	@Override
+	public String ID()
+	{
+		return "Moon";
+	}
+
 	public Moon()
 	{
 		super();

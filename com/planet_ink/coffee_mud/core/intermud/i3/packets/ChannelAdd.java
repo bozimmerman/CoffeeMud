@@ -16,7 +16,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.Vector;
 
 /**
@@ -43,6 +42,7 @@ public class ChannelAdd extends Packet  {
 		super();
 		type = Packet.CHAN_ADD;
 	}
+
 	public ChannelAdd(Vector v) throws InvalidPacketException {
 		super(v);
 		try
@@ -55,7 +55,6 @@ public class ChannelAdd extends Packet  {
 			throw new InvalidPacketException();
 		}
 	}
-
 
 	public ChannelAdd(int t, String chan, String who)
 	{

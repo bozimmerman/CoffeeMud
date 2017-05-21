@@ -35,13 +35,43 @@ import java.util.*;
 
 public class Chant_GrowFood extends Chant
 {
-	@Override public String ID() { return "Chant_GrowFood"; }
+	@Override
+	public String ID()
+	{
+		return "Chant_GrowFood";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Grow Food");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return 0;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -70,16 +100,22 @@ public class Chant_GrowFood extends Chant
 		final StringBuffer buf=new StringBuffer(L("Food types known:\n\r"));
 		final List<Integer> codes = RawMaterial.CODES.COMPOSE_RESOURCES(RawMaterial.MATERIAL_VEGETATION);
 		for(final Integer code : codes)
+		{
 			if(!CMParms.contains(Chant_SummonSeed.NON_SEEDS,code))
 			{
 				choices.addElement(code);
 				final String desc=RawMaterial.CODES.NAME(code.intValue());
 				if((s.length()>0)&&(CMLib.english().containsString(desc,s)))
 					material=code.intValue();
-				if(col==4){ buf.append("\n\r"); col=0;}
+				if(col==4)
+				{
+					buf.append("\n\r");
+					col=0;
+				}
 				col++;
 				buf.append(CMStrings.padRight(CMStrings.capitalizeAndLower(desc),15));
 			}
+		}
 		if(s.equalsIgnoreCase("list"))
 		{
 			mob.tell(buf.toString()+"\n\r\n\r");

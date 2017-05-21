@@ -126,7 +126,6 @@ public interface AccountStats extends CMCommon
 	 */
 	public void setPassword(String newPassword);
 
-
 	/**
 	 * The last IP address this player logged in from.
 	 *
@@ -144,7 +143,6 @@ public interface AccountStats extends CMCommon
 	 * @param ip the last IP address this player logged in from.
 	 */
 	public void setLastIP(String ip);
-
 
 	/**
 	 * If the ACCOUNT system is used, this returns the time, in milis since
@@ -167,7 +165,6 @@ public interface AccountStats extends CMCommon
 	 * @param newVal the time, in milis, that this player expires.
 	 */
 	public void setAccountExpiration(long newVal);
-
 
 	/**
 	 * Returns the administrative notes entered about this player.

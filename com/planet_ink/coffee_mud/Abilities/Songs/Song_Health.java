@@ -15,9 +15,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
-
 
 /*
    Copyright 2001-2017 Bo Zimmerman
@@ -36,10 +34,25 @@ import java.util.*;
 */
 public class Song_Health extends Song
 {
-	@Override public String ID() { return "Song_Health"; }
+	@Override
+	public String ID()
+	{
+		return "Song_Health";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Health");
-	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_OTHERS;
+	}
 
 	@Override
 	public int castingQuality(MOB mob, Physical target)
@@ -61,6 +74,7 @@ public class Song_Health extends Song
 		if(invoker!=null)
 			affectedState.setHitPoints(affectedState.getHitPoints()+(adjustedLevel(invoker(),0)*5));
 	}
+
 	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectedStats)
 	{

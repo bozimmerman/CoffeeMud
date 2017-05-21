@@ -342,6 +342,7 @@ public class CMProps extends Properties
 			{
 				value=val;
 			}
+
 			public boolean is(int val)
 			{
 				if(value == 0)
@@ -1569,7 +1570,6 @@ public class CMProps extends Properties
 		return false;
 	}
 
-
 	/**
 	 * Retrurns true if the given chk string matches one of the entries in the given WhiteList type for the
 	 * callers thread group.
@@ -2021,7 +2021,6 @@ public class CMProps extends Properties
 	{
 		return p().privateSet.containsKey(s.toUpperCase().trim());
 	}
-
 
 	/**
 	 * Returns the set of properties that are private to the callers thread group.  The base
@@ -2887,7 +2886,8 @@ public class CMProps extends Properties
 		try
 		{
 			name = O.ID();
-		}catch (final NullPointerException e)
+		}
+		catch (final NullPointerException e)
 		{
 			name = O.getClass().getSimpleName();
 		}

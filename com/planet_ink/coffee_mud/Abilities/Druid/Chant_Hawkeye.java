@@ -33,17 +33,47 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Chant_Hawkeye extends Chant
 {
-	@Override public String ID() { return "Chant_Hawkeye"; }
+	@Override
+	public String ID()
+	{
+		return "Chant_Hawkeye";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Hawkeye");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Hawkeye)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_SELF;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
 
 	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
@@ -58,7 +88,6 @@ public class Chant_Hawkeye extends Chant
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_HIDDEN);
 	}
-
 
 	@Override
 	public void unInvoke()
@@ -83,12 +112,17 @@ public class Chant_Hawkeye extends Chant
 				final Room R=((MOB)target).location();
 				boolean found=false;
 				if(R!=null)
+				{
 					for(int r=0;r<R.numInhabitants();r++)
 					{
 						final MOB M=R.fetchInhabitant(r);
 						if((M!=null)&&(M!=mob)&&(M!=target)&&(CMLib.flags().isHidden(M)))
-						{ found=true; break;}
+						{
+							found=true;
+							break;
+						}
 					}
+				}
 				if(!found)
 					return Ability.QUALITY_INDIFFERENT;
 			}

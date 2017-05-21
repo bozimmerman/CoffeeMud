@@ -761,6 +761,7 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 											"ROLL","DIRECTION","SPEED","FACING","OWNER","PRICE","DEFCLOSED","DEFLOCKED",
 											"PUTSTR","MOUNTSTR","DISMOUNTSTR","EXITNAME","TECHLEVEL"
 										  };
+
 	@Override
 	public String getStat(String code)
 	{

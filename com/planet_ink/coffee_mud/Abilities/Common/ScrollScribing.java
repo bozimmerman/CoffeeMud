@@ -35,7 +35,6 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 {
 	@Override

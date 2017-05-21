@@ -35,15 +35,51 @@ import java.util.*;
 
 public class Skill_Chirgury extends StdSkill
 {
-	@Override public String ID() { return "Skill_Chirgury"; }
+	@Override
+	public String ID()
+	{
+		return "Skill_Chirgury";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Chirurgy");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return CAN_ITEMS;}
-	@Override protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_ITEMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_ITEMS|Ability.CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"CHIRURGY"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_ANATOMY;}
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL|Ability.DOMAIN_ANATOMY;
+	}
+
 	public static final Object[][] parts={{"FETUS"},
 										  {"BLOOD"},
 										  {"HEART",Integer.valueOf(Race.BODY_TORSO)},
@@ -265,7 +301,6 @@ public class Skill_Chirgury extends StdSkill
 		}
 		else
 			beneficialWordsFizzle(mob,target,auto?"":L("<S-NAME> attempt(s) to cut open <T-NAME>, but lose(s) concentration."));
-
 
 		// return whether it worked
 		return success;

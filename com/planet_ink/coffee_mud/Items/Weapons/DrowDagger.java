@@ -58,6 +58,4 @@ public class DrowDagger extends Dagger
 		weaponDamageType=TYPE_BASHING;
 	}
 
-
-
 }

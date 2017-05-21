@@ -110,7 +110,6 @@ public interface ColorLibrary extends CMLibrary
 			return isBasicColor;
 		}
 		
-		
 		/**
 		 * True if its a basic 16 color, including black.
 		 * @return its a basic 16 color, including black.
@@ -291,7 +290,6 @@ public interface ColorLibrary extends CMLibrary
 	 * Color code prefix to designate background ansi color
 	 */
 	public static final char COLORCODE_BANSI256='|';
-
 
 	/**
 	 * A color state is a class saved for users so the system knows

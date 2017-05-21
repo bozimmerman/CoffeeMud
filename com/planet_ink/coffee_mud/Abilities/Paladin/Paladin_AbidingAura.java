@@ -36,10 +36,25 @@ import java.util.*;
 
 public class Paladin_AbidingAura extends PaladinSkill
 {
-	@Override public String ID() { return "Paladin_AbidingAura"; }
+	@Override
+	public String ID()
+	{
+		return "Paladin_AbidingAura";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Abiding Aura");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_HOLYPROTECTION;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL|Ability.DOMAIN_HOLYPROTECTION;
+	}
 	
 	protected Map<MOB,Runnable> abiding=new SHashtable<MOB,Runnable>();
 	
@@ -48,7 +63,6 @@ public class Paladin_AbidingAura extends PaladinSkill
 		super();
 		paladinsGroup=new HashSet<MOB>();
 	}
-
 
 	@Override
 	public boolean okMessage(Environmental host, CMMsg msg)

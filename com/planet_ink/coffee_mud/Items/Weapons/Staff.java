@@ -83,7 +83,6 @@ public class Staff extends StdWeapon implements Wand
 		return secretWord;
 	}
 
-
 	@Override
 	public void setSpell(Ability theSpell)
 	{

@@ -37,7 +37,6 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Construction extends BuildingSkill
 {
 	@Override

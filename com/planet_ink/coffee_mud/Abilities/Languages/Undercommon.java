@@ -43,6 +43,7 @@ public class Undercommon extends StdLanguage
 	}
 
 	private final static String localizedName = CMLib.lang().L("Undercommon");
+
 	@Override
 	public String name()
 	{

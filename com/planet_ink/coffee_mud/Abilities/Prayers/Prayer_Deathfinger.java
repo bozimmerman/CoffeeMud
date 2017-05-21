@@ -33,16 +33,45 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Prayer_Deathfinger extends Prayer
 {
-	@Override public String ID() { return "Prayer_Deathfinger"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_Deathfinger";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Deathfinger");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_VEXING;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	@Override public long flags(){return Ability.FLAG_UNHOLY;}
-	@Override protected int overrideMana(){return 150;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_VEXING;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_UNHOLY;
+	}
+
+	@Override
+	protected int overrideMana()
+	{
+		return 150;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -77,7 +106,6 @@ public class Prayer_Deathfinger extends Prayer
 		}
 		else
 			return maliciousFizzle(mob,target,L("<S-NAME> point(s) in rage at <T-NAMESELF> and @x1, but @x2 does nothing.",prayWord(mob),hisHerDiety(mob)));
-
 
 		// return whether it worked
 		return success;

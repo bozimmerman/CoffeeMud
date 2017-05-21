@@ -34,17 +34,51 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Prayer_SenseFaithful extends Prayer
 {
-	@Override public String ID() { return "Prayer_SenseFaithful"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_SenseFaithful";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Sense Faithful");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	@Override public long flags(){return Ability.FLAG_HOLY;}
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return 0;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_HOLY;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -68,6 +102,7 @@ public class Prayer_SenseFaithful extends Prayer
 				final String deityName=mob.getWorshipCharID();
 				Command C=CMClass.getCommand("Who");
 				if(C!=null)
+				{
 					try
 					{
 						if(mob.session()!=null)
@@ -80,12 +115,13 @@ public class Prayer_SenseFaithful extends Prayer
 									}
 									
 								}).toString());
-					} catch (IOException e) { }
+					}
+					catch (IOException e) { }
+				}
 			}
 		}
 		else
 			beneficialWordsFizzle(mob,null,auto?"":L("<S-NAME> @x1 for knowledge of the faithful, but nothing happens.",prayWord(mob)));
-
 
 		// return whether it worked
 		return success;

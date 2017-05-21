@@ -236,7 +236,6 @@ public class Chant_PlantTrap extends Chant implements Trap
 		return super.castingQuality(mob,target);
 	}
 
-	
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{

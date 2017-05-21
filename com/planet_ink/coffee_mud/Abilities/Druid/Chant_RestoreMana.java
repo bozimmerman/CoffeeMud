@@ -33,18 +33,57 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Chant_RestoreMana extends Chant
 {
-	@Override public String ID() { return "Chant_RestoreMana"; }
+	@Override
+	public String ID()
+	{
+		return "Chant_RestoreMana";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Restore Mana");
-	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "";}
-	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
-	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
-	@Override protected int overrideMana(){return 50;}
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PRESERVING;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public String displayText()
+	{
+		return "";
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_OTHERS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	protected int overrideMana()
+	{
+		return 50;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT|Ability.DOMAIN_PRESERVING;
+	}
 
 	@Override
 	public int castingQuality(MOB mob, Physical target)

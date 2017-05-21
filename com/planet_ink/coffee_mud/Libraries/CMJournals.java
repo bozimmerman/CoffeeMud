@@ -1035,6 +1035,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 		if(mylist==null)
 			return false;
 		for(int l=mylist.size()-1;l>=0;l--)
+		{
 			if(mylist.get(l).equalsIgnoreCase(userName))
 			{
 				mylist.remove(l);
@@ -1054,6 +1055,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 					CMLib.database().DBWriteJournalEmail(CMProps.getVar(CMProps.Str.MAILBOX),journalName,journalName,userName,unsubscribeTitle,unsubscribedMsg);
 				}
 			}
+		}
 		if(updateMailingLists && saveMailingList)
 		{
 			Resources.updateCachedMultiLists("mailinglists.txt");

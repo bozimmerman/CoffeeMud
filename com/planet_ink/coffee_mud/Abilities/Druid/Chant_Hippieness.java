@@ -33,17 +33,48 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Chant_Hippieness extends Chant
 {
-	@Override public String ID() { return "Chant_Hippieness"; }
+	@Override
+	public String ID()
+	{
+		return "Chant_Hippieness";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Hippieness");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Feeling Groovy)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_SELF;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
 	protected List<Pair<Clan,Integer>> oldClans=null;
 
 	@Override
@@ -148,7 +179,6 @@ public class Chant_Hippieness extends Chant
 		}
 		return true;
 	}
-
 
 	@Override
 	public void unInvoke()

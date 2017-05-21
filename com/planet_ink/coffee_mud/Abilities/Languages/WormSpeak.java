@@ -11,6 +11,7 @@ public class WormSpeak extends AnimalSpeak
 	}
 
 	private final static String localizedName = CMLib.lang().L("Worm Speak");
+
 	@Override
 	public String name()
 	{

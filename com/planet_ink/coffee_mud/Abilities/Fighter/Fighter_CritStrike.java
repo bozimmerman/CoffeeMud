@@ -35,16 +35,61 @@ import java.util.*;
 
 public class Fighter_CritStrike extends FighterSkill
 {
-	@Override public String ID() { return "Fighter_CritStrike"; }
+	@Override
+	public String ID()
+	{
+		return "Fighter_CritStrike";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Critical Strike");
-	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "";}
-	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public boolean isAutoInvoked(){return true;}
-	@Override public boolean canBeUninvoked(){return false;}
-	@Override public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_MARTIALLORE;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public String displayText()
+	{
+		return "";
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_SELF;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public boolean isAutoInvoked()
+	{
+		return true;
+	}
+
+	@Override
+	public boolean canBeUninvoked()
+	{
+		return false;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL|Ability.DOMAIN_MARTIALLORE;
+	}
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)

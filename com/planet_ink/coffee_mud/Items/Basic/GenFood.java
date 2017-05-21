@@ -57,7 +57,6 @@ public class GenFood extends StdFood
 		decayTime=0;
 	}
 
-
 	@Override
 	public boolean isGeneric()
 	{
@@ -139,6 +138,7 @@ public class GenFood extends StdFood
 	}
 
 	private static String[] codes=null;
+
 	@Override
 	public String[] getStatCodes()
 	{

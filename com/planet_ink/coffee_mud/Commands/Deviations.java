@@ -21,7 +21,6 @@ import java.util.*;
 * <p>Portions Copyright (c) 2003 Jeremy Vyska</p>
 * <p>Portions Copyright (c) 2004-2017 Bo Zimmerman</p>
 
-
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
@@ -336,7 +335,6 @@ public class Deviations extends StdCommand
 		mob.tell(deviations(mob,CMParms.combine(commands,1)).toString());
 		return false;
 	}
-
 
 	@Override
 	public boolean securityCheck(MOB mob)

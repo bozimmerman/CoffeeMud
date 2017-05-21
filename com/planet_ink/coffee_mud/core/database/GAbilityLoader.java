@@ -20,7 +20,6 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
 /*
    Copyright 2008-2017 Bo Zimmerman
 
@@ -43,6 +42,7 @@ public class GAbilityLoader
 	{
 		DB=newDB;
 	}
+
 	public List<DatabaseEngine.AckRecord> DBReadAbilities()
 	{
 		DBConnection D=null;
@@ -90,6 +90,7 @@ public class GAbilityLoader
 		// log comment
 		return rows;
 	}
+
 	public void DBCreateAbility(String classID, String typeClass, String data)
 	{
 		DB.updateWithClobs(
@@ -104,6 +105,7 @@ public class GAbilityLoader
 		 +")",
 		 data+" ");
 	}
+
 	public void DBDeleteAbility(String classID)
 	{
 		DB.update("DELETE FROM CMGAAC WHERE CMGAID='"+classID+"'");

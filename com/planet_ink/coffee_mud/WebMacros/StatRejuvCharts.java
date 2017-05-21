@@ -174,13 +174,11 @@ public class StatRejuvCharts extends StdWebMacro
 			}
 		}
 		
-		
 		buf.append("<P><TABLE WIDTH=100% BORDER=1>");
 		buf.append("<TR><TD><B><FONT COLOR=WHITE>STATS:</FONT></B></TD>");
 		for(int stats=4;stats<=MAX_STAT;stats+=SKIP_STAT)
 			buf.append("<TD><B><FONT COLOR=WHITE>"+stats+"</FONT></B></TD>");
 		buf.append("</TR>");
-		
 		
 		CMath.CompiledFormula stateHitPointRecoverFormula = null;
 		CMath.CompiledFormula stateManaRecoverFormula = null;
@@ -221,7 +219,6 @@ public class StatRejuvCharts extends StdWebMacro
 					isFlying?1.0:0.0,
 					isSwimming?1.0:0.0
 				};
-
 
 				if((which!=null)&&(which.equals("HP")))
 				{

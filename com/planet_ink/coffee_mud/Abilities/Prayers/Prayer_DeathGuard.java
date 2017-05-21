@@ -156,7 +156,6 @@ public class Prayer_DeathGuard extends Prayer
 		else
 			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 for a a death guard over <T-NAMESELF>, but there is no answer.",prayWord(mob)));
 
-
 		// return whether it worked
 		return success;
 	}

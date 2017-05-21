@@ -241,7 +241,6 @@ public class Minotaur extends StdRace
 			return L("^c@x1^c is in perfect health.^N",mob.name(viewer));
 	}
 	
-
 	@Override
 	public String makeMobName(char gender, int age)
 	{

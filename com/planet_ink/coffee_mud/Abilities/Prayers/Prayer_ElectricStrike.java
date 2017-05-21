@@ -33,15 +33,39 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Prayer_ElectricStrike extends Prayer
 {
-	@Override public String ID() { return "Prayer_ElectricStrike"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_ElectricStrike";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Electric Strike");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	@Override public long flags(){return Ability.FLAG_NEUTRAL;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_NEUTRAL;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -74,7 +98,6 @@ public class Prayer_ElectricStrike extends Prayer
 		}
 		else
 			return maliciousFizzle(mob,target,L("<S-NAME> @x1, but nothing happens.",prayWord(mob)));
-
 
 		// return whether it worked
 		return success;

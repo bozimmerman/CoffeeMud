@@ -49,7 +49,6 @@ public class GenKey extends GenItem implements DoorKey
 		setMaterial(RawMaterial.RESOURCE_IRON);
 	}
 
-
 	@Override
 	public boolean isGeneric()
 	{

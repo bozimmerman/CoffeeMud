@@ -547,7 +547,6 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 	 */
 	public boolean delChangeEvent(Faction.FactionChangeEvent event);
 
-
 	/**
 	 * Removes all FactionChangeEvents
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent
@@ -568,7 +567,6 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 	 * @param event the applicable event object for this faction
 	 */
 	public void executeChange(MOB source, MOB target, FactionChangeEvent event);
-
 
 	/**
 	 * Computed completed at runtime, this method returns all possible valid FactionChangeEvent
@@ -878,7 +876,6 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 	 */
 	public boolean delAbilityUsage(FAbilityUsage usage);
 
-
 	/**
 	 * Return the bitmap of internal-use flags for this faction.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#setInternalFlags(long)
@@ -927,7 +924,6 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		 * @return true if the event id is valid
 		 */
 		public boolean setEventID(String newID);
-
 
 		/**
 		 * A derivative of the event id, this will return a value of 0 or above
@@ -986,7 +982,6 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		 * @param newFlagCache the new list of applicable flags
 		 */
 		public void setFlags(String newFlagCache);
-
 
 		/**
 		 * A derivative of the flag cache, this method returns whether the flag was set that
@@ -1179,7 +1174,6 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		/** some non-ability-related event trigger ids */
 		public static final String[] MISC_TRIGGERS={"MURDER","TIME","ADDOUTSIDER","KILL","BRIBE","TALK","MUDCHAT","ARRESTED"};
 	}
-
 
 	/**
 	 * The foundation of any Faction, the Faction Range represents a range of values that constitutes
@@ -1507,7 +1501,6 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		 */
 		public String MOBMask();
 
-
 		/**
 		 * The compiled mask to tell which mobs to apply this factor to
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FZapFactor#setMOBMask(String)
@@ -1564,7 +1557,6 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		 */
 		public String presentMOBMask();
 
-
 		/**
 		 * The compiled mask to tell which mobs to apply this reaction to
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FReactionItem#setPresentMOBMask(String)
@@ -1601,7 +1593,6 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		 */
 		public String parameters();
 		
-
 		/**
 		 * The parameters for the ability/behavior/command above returned in
 		 * runtime form so that parameters are adjusted with the given name

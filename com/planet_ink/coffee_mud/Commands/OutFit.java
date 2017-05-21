@@ -38,7 +38,12 @@ public class OutFit extends StdCommand
 	public OutFit(){}
 
 	private final String[] access=I(new String[]{"OUTFIT"});
-	@Override public String[] getAccessWords(){return access;}
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
+
 	@Override
 	public boolean preExecute(MOB mob, List<String> commands, int metaFlags, int secondsElapsed, double actionsRemaining)
 	throws java.io.IOException
@@ -53,6 +58,7 @@ public class OutFit extends StdCommand
 			mob.tell(L("You invoke a plea for mystical outfitting and await the answer."));
 		return true;
 	}
+
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
@@ -77,17 +83,23 @@ public class OutFit extends StdCommand
 		mob.recoverPhyStats();
 		return false;
 	}
+
 	@Override
 	public double combatActionsCost(final MOB mob, final List<String> cmds)
 	{
 		return CMProps.getCommandCombatActionCost(ID(),CMath.div(CMProps.getIntVar(CMProps.Int.DEFCOMCMDTIME),25.0));
 	}
+
 	@Override
 	public double actionsCost(MOB mob, List<String> cmds)
 	{
 		return CMProps.getCommandActionCost(ID(),CMath.div(CMProps.getIntVar(CMProps.Int.DEFCMDTIME),25.0));
 	}
-	@Override public boolean canBeOrdered(){return false;}
 
+	@Override
+	public boolean canBeOrdered()
+	{
+		return false;
+	}
 
 }

@@ -226,7 +226,7 @@ public class StdRideable extends StdMOB implements Rideable
 			{
 				final Ability A=a.nextElement();
 				if((A!=null)&&(A.bubbleAffect()))
-				   A.affectCharStats(affected,affectableStats);
+					A.affectCharStats(affected,affectableStats);
 			}
 		}
 	}
@@ -241,7 +241,7 @@ public class StdRideable extends StdMOB implements Rideable
 			{
 				final Ability A=a.nextElement();
 				if((A!=null)&&(A.bubbleAffect()))
-				   A.affectCharState(affected,affectableStats);
+					A.affectCharState(affected,affectableStats);
 			}
 		}
 	}
@@ -266,7 +266,7 @@ public class StdRideable extends StdMOB implements Rideable
 				{
 					final Ability A=a.nextElement();
 					if((A!=null)&&(A.bubbleAffect()))
-					   A.affectPhyStats(affected,affectableStats);
+						A.affectPhyStats(affected,affectableStats);
 				}
 			}
 		}

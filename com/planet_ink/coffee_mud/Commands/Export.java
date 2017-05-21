@@ -39,11 +39,17 @@ public class Export extends StdCommand
 	public Export(){}
 
 	private final String[] access=I(new String[]{"EXPORT"});
-	@Override public String[] getAccessWords(){return access;}
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
 	@SuppressWarnings("rawtypes")
 	private final static Class[][] internalParameters=new Class[][]{
-		{String.class,String.class,String.class,Integer.class,null,Area.class,Room.class}
+		{
+			String.class,String.class,String.class,Integer.class,null,Area.class,Room.class
+		}
 	};
 
 	public void reallyExport(MOB mob, Session S, String fileName, String xml)
@@ -638,7 +644,10 @@ public class Export extends StdCommand
 						//if(S!=null) S.rawPrint(".");
 						buf.append(CMLib.coffeeMaker().getRoomMobs(R,custom,files,found).toString());
 					}
-				}catch(final NoSuchElementException e){}
+				}
+				catch(final NoSuchElementException e)
+				{
+				}
 				xml=buf.toString()+"</MOBS>";
 				if(S!=null)
 					S.rawPrintln("!");

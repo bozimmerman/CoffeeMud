@@ -35,15 +35,56 @@ import java.util.*;
 
 public class Prayer_UnholyArmament extends Prayer
 {
-	@Override public String ID() { return "Prayer_UnholyArmament"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_UnholyArmament";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Unholy Armament");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
-	@Override public long flags(){return Ability.FLAG_UNHOLY;}
-	@Override protected int overrideMana(){return Ability.COST_ALL;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_SELF;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_UNHOLY;
+	}
+
+	@Override
+	protected int overrideMana()
+	{
+		return Ability.COST_ALL;
+	}
+
 	public static final long[] checkOrder={
 		Wearable.WORN_WIELD,
 		Wearable.WORN_TORSO,
@@ -215,7 +256,6 @@ public class Prayer_UnholyArmament extends Prayer
 			break;
 		}
 
-
 		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if((success)&&(I!=null))
@@ -230,7 +270,6 @@ public class Prayer_UnholyArmament extends Prayer
 		}
 		else
 			return beneficialWordsFizzle(mob, null,L("<S-NAME> @x1 for armament, but flub(s) it.",prayWord(mob)));
-
 
 		// return whether it worked
 		return success;

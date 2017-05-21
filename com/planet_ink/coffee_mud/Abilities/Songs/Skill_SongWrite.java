@@ -35,15 +35,50 @@ import java.util.*;
 
 public class Skill_SongWrite extends BardSkill
 {
-	@Override public String ID() { return "Skill_SongWrite"; }
+	@Override
+	public String ID()
+	{
+		return "Skill_SongWrite";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Song Write");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return CAN_ITEMS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_ITEMS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"SONGWRITE"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_CALLIGRAPHY;}
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL|Ability.DOMAIN_CALLIGRAPHY;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -100,12 +135,14 @@ public class Skill_SongWrite extends BardSkill
 
 		final List<Ability> spells=scroll.getSpells();
 		for(final Ability spell: spells)
+		{
 			if(spell.ID().equals(scrollThis.ID()))
 			{
 				mob.tell(L("That spell is already written on @x1.",scroll.name()));
 				return false;
 			}
 
+		}
 		// lose all the mana!
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -139,7 +176,6 @@ public class Skill_SongWrite extends BardSkill
 		}
 		else
 			beneficialWordsFizzle(mob,target,L("<S-NAME> attempt(s) to write music on <T-NAMESELF>, singing softly, and looking very frustrated."));
-
 
 		// return whether it worked
 		return success;

@@ -39,7 +39,11 @@ public class NoFollow extends Follow
 	public NoFollow(){}
 
 	private final String[] access=I(new String[]{"NOFOLLOW","NOFOL"});
-	@Override public String[] getAccessWords(){return access;}
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
@@ -94,7 +98,10 @@ public class NoFollow extends Follow
 		return false;
 	}
 
-	@Override public boolean canBeOrdered(){return true;}
-
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 
 }

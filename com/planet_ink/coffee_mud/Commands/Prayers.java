@@ -38,7 +38,12 @@ public class Prayers extends Skills
 	public Prayers(){}
 
 	private final String[] access=I(new String[]{"PRAYERS"});
-	@Override public String[] getAccessWords(){return access;}
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
+
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
@@ -59,7 +64,10 @@ public class Prayers extends Skills
 		return false;
 	}
 
-	@Override public boolean canBeOrdered(){return true;}
-
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 
 }

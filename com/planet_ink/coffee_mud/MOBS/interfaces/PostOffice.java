@@ -185,7 +185,6 @@ public interface PostOffice extends ShopKeeper
 	 */
 	public double minimumPostage();
 
-
 	/**
 	 * Sets the minimum postage to send a package from this branch.
 	 * @see PostOffice#minimumPostage()
@@ -216,7 +215,6 @@ public interface PostOffice extends ShopKeeper
 	 * @return the fee charged per pound per mud month
 	 */
 	public double holdFeePerPound();
-
 
 	/**
 	 * Sets the fee charged per pound per mud month to hold a 

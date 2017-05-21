@@ -35,16 +35,57 @@ import java.util.*;
 
 public class Prayer_Bless extends Prayer implements MendingSkill
 {
-	@Override public String ID() { return "Prayer_Bless"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_Bless";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Bless");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Blessed)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
-	@Override protected int canTargetCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_BLESSING;}
-	@Override public long flags(){return Ability.FLAG_HOLY;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS|Ability.CAN_ITEMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_MOBS|Ability.CAN_ITEMS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_OTHERS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_BLESSING;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_HOLY;
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
@@ -61,12 +102,9 @@ public class Prayer_Bless extends Prayer implements MendingSkill
 			affectableStats.setAbility(affectableStats.ability()+1);
 	}
 
-
-
 	@Override
 	public void unInvoke()
 	{
-
 
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
@@ -118,6 +156,7 @@ public class Prayer_Bless extends Prayer implements MendingSkill
 				A.unInvoke();
 		}
 	}
+
 	public static void endLowerBlessings(Physical target, int level)
 	{
 		final List<Ability> V=CMLib.flags().domainAffects(target,Ability.DOMAIN_BLESSING);
@@ -128,6 +167,7 @@ public class Prayer_Bless extends Prayer implements MendingSkill
 				A.unInvoke();
 		}
 	}
+
 	public static void endLowerCurses(Physical target, int level)
 	{
 		final List<Ability> V=CMLib.flags().domainAffects(target,Ability.DOMAIN_CURSING);

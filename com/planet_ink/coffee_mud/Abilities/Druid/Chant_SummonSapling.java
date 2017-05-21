@@ -35,17 +35,63 @@ import java.util.*;
 
 public class Chant_SummonSapling extends Chant
 {
-	@Override public String ID() { return "Chant_SummonSapling"; }
+	@Override
+	public String ID()
+	{
+		return "Chant_SummonSapling";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Summon Sapling");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Summon Sapling)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
-	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public long flags(){return Ability.FLAG_SUMMONING;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_SELF;
+	}
+
+	@Override
+	public int enchantQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_SUMMONING;
+	}
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
@@ -190,6 +236,7 @@ public class Chant_SummonSapling extends Chant
 		// return whether it worked
 		return success;
 	}
+
 	public MOB determineMonster(MOB caster, int material)
 	{
 		final MOB victim=caster.getVictim();

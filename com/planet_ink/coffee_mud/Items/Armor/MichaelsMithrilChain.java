@@ -75,5 +75,4 @@ public class MichaelsMithrilChain extends StdArmor
 		return true;
 	}
 
-
 }

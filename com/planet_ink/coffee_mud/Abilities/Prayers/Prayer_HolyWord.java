@@ -33,19 +33,59 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Prayer_HolyWord extends Prayer implements MendingSkill
 {
-	@Override public String ID() { return "Prayer_HolyWord"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_HolyWord";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Holy Word");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Holy Word)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
-	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_BLESSING;}
-	@Override public long flags(){return Ability.FLAG_HOLY;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_BLESSING;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_HOLY;
+	}
 
 	@Override
 	public boolean supportsMending(Physical item)
@@ -80,8 +120,6 @@ public class Prayer_HolyWord extends Prayer implements MendingSkill
 			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-20-(4*xlvl));
 		}
 	}
-
-
 
 	@Override
 	public void unInvoke()
@@ -168,7 +206,6 @@ public class Prayer_HolyWord extends Prayer implements MendingSkill
 				return false;
 			}
 		}
-
 
 		// return whether it worked
 		return success;

@@ -157,7 +157,6 @@ public class Skill_FireBreathing extends BardSkill
 		else
 			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to breathe fire at <T-NAMESELF>, but only puff(s) smoke."));
 
-
 		// return whether it worked
 		return success;
 	}

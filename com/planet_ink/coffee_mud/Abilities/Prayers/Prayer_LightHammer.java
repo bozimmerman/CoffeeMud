@@ -33,15 +33,39 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Prayer_LightHammer extends Prayer
 {
-	@Override public String ID() { return "Prayer_LightHammer"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_LightHammer";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Hammer of Light");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_VEXING;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	@Override public long flags(){return Ability.FLAG_HOLY;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_VEXING;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_HOLY;
+	}
 
 	@Override
 	public int castingQuality(MOB mob, Physical target)
@@ -90,7 +114,6 @@ public class Prayer_LightHammer extends Prayer
 		}
 		else
 			return maliciousFizzle(mob,target,L("<S-NAME> @x1, but nothing happens.",prayWord(mob)));
-
 
 		// return whether it worked
 		return success;

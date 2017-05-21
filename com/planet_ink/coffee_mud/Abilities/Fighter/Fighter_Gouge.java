@@ -37,19 +37,71 @@ import java.util.*;
 public class Fighter_Gouge extends MonkSkill
 {
 	boolean doneTicking=false;
-	@Override public String ID() { return "Fighter_Gouge"; }
+
+	@Override
+	public String ID()
+	{
+		return "Fighter_Gouge";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Gouge");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Gouged Eyes)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"GOUGE"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_DIRTYFIGHTING;}
-	@Override protected int overrideMana(){return 100;}
-	@Override public int usageType(){return USAGE_MOVEMENT;}
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL|Ability.DOMAIN_DIRTYFIGHTING;
+	}
+
+	@Override
+	protected int overrideMana()
+	{
+		return 100;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT;
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
@@ -159,11 +211,13 @@ public class Fighter_Gouge extends MonkSkill
 				final List<String> remainingLimbList=ampuA.unaffectedLimbSet();
 				String gone=null;
 				for(int i=0;i<remainingLimbList.size();i++)
+				{
 					if(remainingLimbList.get(i).toUpperCase().endsWith("EYE"))
 					{
 						gone=remainingLimbList.get(i);
 						break;
 					}
+				}
 				if(gone!=null)
 				{
 					Ability injuryA=CMClass.getAbility("Injury");

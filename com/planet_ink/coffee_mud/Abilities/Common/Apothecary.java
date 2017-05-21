@@ -33,22 +33,70 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Apothecary extends Cooking
 {
-	@Override public String ID() { return "Apothecary"; }
-	private final static String localizedName = CMLib.lang().L("Apothecary");
-	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =I(new String[] {"APOTHECARY","MIX"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public String supportedResourceString(){return "MISC";}
-	@Override public String cookWordShort(){return "mix";}
-	@Override public String cookWord(){return "mixing";}
-	@Override public boolean honorHerbs(){return false;}
-	@Override protected ExpertiseLibrary.SkillCostDefinition getRawTrainingCost() { return CMProps.getNormalSkillGainCost(ID()); }
+	@Override
+	public String ID()
+	{
+		return "Apothecary";
+	}
 
-	@Override public String parametersFile(){ return "poisons.txt";}
-	@Override protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
+	private final static String localizedName = CMLib.lang().L("Apothecary");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private static final String[] triggerStrings =I(new String[] {"APOTHECARY","MIX"});
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public String supportedResourceString()
+	{
+		return "MISC";
+	}
+
+	@Override
+	public String cookWordShort()
+	{
+		return "mix";
+	}
+
+	@Override
+	public String cookWord()
+	{
+		return "mixing";
+	}
+
+	@Override
+	public boolean honorHerbs()
+	{
+		return false;
+	}
+
+	@Override
+	protected ExpertiseLibrary.SkillCostDefinition getRawTrainingCost()
+	{
+		return CMProps.getNormalSkillGainCost(ID());
+	}
+
+	@Override
+	public String parametersFile()
+	{
+		return "poisons.txt";
+	}
+
+	@Override
+	protected List<List<String>> loadRecipes()
+	{
+		return super.loadRecipes(parametersFile());
+	}
 
 	public Apothecary()
 	{
@@ -58,7 +106,11 @@ public class Apothecary extends Cooking
 		defaultDrinkSound = "hotspring.wav";
 	}
 
-	@Override public boolean supportsDeconstruction() { return false; }
+	@Override
+	public boolean supportsDeconstruction()
+	{
+		return false;
+	}
 
 	@Override
 	public boolean mayICraft(final Item I)

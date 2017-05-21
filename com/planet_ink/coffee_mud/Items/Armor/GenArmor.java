@@ -58,13 +58,11 @@ public class GenArmor extends StdArmor
 		material=RawMaterial.RESOURCE_LEATHER;
 	}
 
-
 	@Override
 	public boolean isGeneric()
 	{
 		return true;
 	}
-
 
 	@Override
 	public String text()
@@ -188,6 +186,7 @@ public class GenArmor extends StdArmor
 	}
 
 	private static String[] codes=null;
+
 	@Override
 	public String[] getStatCodes()
 	{

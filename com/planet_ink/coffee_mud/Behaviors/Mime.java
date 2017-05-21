@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -38,8 +37,17 @@ public class Mime extends ActiveTicker
 	protected volatile boolean disabled=false;
 	protected volatile CMMsg lastMsg=null;
 
-	@Override public String ID(){return "Mime";}
-	@Override public long flags(){return Behavior.FLAG_MOBILITY;}
+	@Override
+	public String ID()
+	{
+		return "Mime";
+	}
+
+	@Override
+	public long flags()
+	{
+		return Behavior.FLAG_MOBILITY;
+	}
 
 	@Override
 	public String accountForYourself()
@@ -53,11 +61,13 @@ public class Mime extends ActiveTicker
 		minTicks=1; maxTicks=1; chance=100;
 		tickReset();
 	}
+
 	@Override
 	protected int canImproveCode(){return Behavior.CAN_MOBS
 										  |Behavior.CAN_EXITS
 										  |Behavior.CAN_ITEMS
 										  |Behavior.CAN_ROOMS;}
+
 	@Override
 	public void executeMsg(Environmental affecting, CMMsg msg)
 	{

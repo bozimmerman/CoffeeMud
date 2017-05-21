@@ -35,17 +35,57 @@ import java.util.*;
 
 public class Prayer_DarkeningAura extends Prayer
 {
-	@Override public String ID() { return "Prayer_DarkeningAura"; }
-	private final static String localizedName = CMLib.lang().L("Darkening Aura");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CORRUPTION;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	@Override public long flags(){return Ability.FLAG_UNHOLY;}
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Darkening Aura)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
-	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
+	@Override
+	public String ID()
+	{
+		return "Prayer_DarkeningAura";
+	}
 
+	private final static String localizedName = CMLib.lang().L("Darkening Aura");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_CORRUPTION;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_UNHOLY;
+	}
+
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Darkening Aura)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_MOBS;
+	}
 
 	@Override
 	public void unInvoke()
@@ -122,7 +162,6 @@ public class Prayer_DarkeningAura extends Prayer
 		}
 		else
 			return maliciousFizzle(mob,target,L("<S-NAME> @x1 for a darkening aura, but nothing happens.",prayWord(mob)));
-
 
 		// return whether it worked
 		return success;

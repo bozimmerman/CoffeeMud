@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2003-2017 Bo Zimmerman
 
@@ -34,18 +33,46 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class CageBuilding extends Wainwrighting
 {
-	@Override public String ID() { return "CageBuilding"; }
-	private final static String localizedName = CMLib.lang().L("Cage Building");
-	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =I(new String[] {"BUILDCAGE","CAGEBUILDING"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public String supportedResourceString(){return "WOODEN";}
+	@Override
+	public String ID()
+	{
+		return "CageBuilding";
+	}
 
-	@Override public String parametersFile(){ return "cagebuilding.txt";}
-	@Override protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
+	private final static String localizedName = CMLib.lang().L("Cage Building");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private static final String[] triggerStrings =I(new String[] {"BUILDCAGE","CAGEBUILDING"});
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public String supportedResourceString()
+	{
+		return "WOODEN";
+	}
+
+	@Override
+	public String parametersFile()
+	{
+		return "cagebuilding.txt";
+	}
+
+	@Override
+	protected List<List<String>> loadRecipes()
+	{
+		return super.loadRecipes(parametersFile());
+	}
 
 	@Override
 	public boolean mayICraft(final Item I)

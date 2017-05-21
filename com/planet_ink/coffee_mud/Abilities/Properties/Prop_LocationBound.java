@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 /*
    Copyright 2005-2017 Bo Zimmerman
 
@@ -33,9 +32,23 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class Prop_LocationBound extends Property
 {
-	@Override public String ID() { return "Prop_LocationBound"; }
-	@Override public String name(){ return "Leave the specified area, or room";}
-	@Override protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_MOBS;}
+	@Override
+	public String ID()
+	{
+		return "Prop_LocationBound";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Leave the specified area, or room";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ITEMS|Ability.CAN_MOBS;
+	}
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)

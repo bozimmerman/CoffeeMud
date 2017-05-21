@@ -1084,7 +1084,7 @@ public class StdExit implements Exit
 			behaviors.clear();
 		behaviors=null;
 		if(didSomething && ((scripts==null)||(scripts.size()==0)))
-		  CMLib.threads().deleteTick(this,Tickable.TICKID_EXIT_BEHAVIOR);
+			CMLib.threads().deleteTick(this,Tickable.TICKID_EXIT_BEHAVIOR);
 	}
 
 	@Override
@@ -1195,7 +1195,7 @@ public class StdExit implements Exit
 			scripts.clear();
 		scripts=null;
 		if(didSomething && ((behaviors==null)||(behaviors.size()==0)))
-		  CMLib.threads().deleteTick(this,Tickable.TICKID_EXIT_BEHAVIOR);
+			CMLib.threads().deleteTick(this,Tickable.TICKID_EXIT_BEHAVIOR);
 	}
 
 	@Override

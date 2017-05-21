@@ -152,6 +152,7 @@ public class STreeSet<K> implements Serializable, Iterable<K>, Collection<K>, Na
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public synchronized boolean add(K e)
 	{
@@ -160,6 +161,7 @@ public class STreeSet<K> implements Serializable, Iterable<K>, Collection<K>, Na
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public synchronized boolean addAll(Collection<? extends K> c)
 	{
@@ -174,6 +176,7 @@ public class STreeSet<K> implements Serializable, Iterable<K>, Collection<K>, Na
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public synchronized void clear()
 	{
@@ -268,6 +271,7 @@ public class STreeSet<K> implements Serializable, Iterable<K>, Collection<K>, Na
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public synchronized K pollFirst()
 	{
@@ -276,6 +280,7 @@ public class STreeSet<K> implements Serializable, Iterable<K>, Collection<K>, Na
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public synchronized K pollLast()
 	{
@@ -284,6 +289,7 @@ public class STreeSet<K> implements Serializable, Iterable<K>, Collection<K>, Na
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public synchronized boolean remove(Object o)
 	{
@@ -334,6 +340,7 @@ public class STreeSet<K> implements Serializable, Iterable<K>, Collection<K>, Na
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public synchronized boolean removeAll(Collection<?> arg0)
 	{
@@ -348,6 +355,7 @@ public class STreeSet<K> implements Serializable, Iterable<K>, Collection<K>, Na
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public synchronized boolean retainAll(Collection<?> arg0)
 	{

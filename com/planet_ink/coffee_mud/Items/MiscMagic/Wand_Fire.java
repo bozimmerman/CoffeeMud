@@ -56,7 +56,6 @@ public class Wand_Fire extends StdWand
 		secretWord="BLAZE, BURN";
 	}
 
-
 	@Override
 	public void setSpell(Ability theSpell)
 	{
@@ -70,7 +69,6 @@ public class Wand_Fire extends StdWand
 		super.setMiscText(newText);
 		secretWord="BLAZE, BURN";
 	}
-
 
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)

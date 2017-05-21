@@ -33,16 +33,45 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Chant_AntTrain extends Chant
 {
-	@Override public String ID() { return "Chant_AntTrain"; }
+	@Override
+	public String ID()
+	{
+		return "Chant_AntTrain";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Ant Train");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;}
-	@Override protected int canAffectCode(){return CAN_ITEMS;}
-	@Override protected int canTargetCode(){return CAN_ITEMS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_ITEMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_ITEMS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_SELF;
+	}
 
 	boolean wasntMine=false;
 
@@ -58,7 +87,6 @@ public class Chant_AntTrain extends Chant
 		final MOB mob=invoker;
 		final Item item=(Item)affected;
 		super.unInvoke();
-
 
 		if(canBeUninvoked())
 		{
@@ -80,7 +108,6 @@ public class Chant_AntTrain extends Chant
 			mob.recoverPhyStats();
 		}
 	}
-
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
@@ -165,8 +192,6 @@ public class Chant_AntTrain extends Chant
 		}
 		else
 			beneficialWordsFizzle(mob,target,L("<S-NAME> chant(s) for ants, but fail(s)."));
-
-
 
 		// return whether it worked
 		return success;

@@ -94,6 +94,7 @@ public class Trap_Avalanche extends StdTrap
 			V.add(CMLib.materials().makeItemResource(RawMaterial.RESOURCE_STONE));
 		return V;
 	}
+
 	@Override
 	public boolean canSetTrapOn(MOB mob, Physical P)
 	{

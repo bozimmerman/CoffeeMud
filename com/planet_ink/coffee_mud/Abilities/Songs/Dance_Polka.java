@@ -15,9 +15,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
-
 
 /*
    Copyright 2003-2017 Bo Zimmerman
@@ -36,11 +34,31 @@ import java.util.*;
 */
 public class Dance_Polka extends Dance
 {
-	@Override public String ID() { return "Dance_Polka"; }
+	@Override
+	public String ID()
+	{
+		return "Dance_Polka";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Polka");
-	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	@Override public long flags(){return super.flags()|Ability.FLAG_INTOXICATING;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public long flags()
+	{
+		return super.flags()|Ability.FLAG_INTOXICATING;
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
@@ -54,7 +72,6 @@ public class Dance_Polka extends Dance
 
 		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-adjustedLevel(invoker(),0));
 	}
-
 
 	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
@@ -116,7 +133,7 @@ public class Dance_Polka extends Dance
 			return true;
 
 		if(!(msg.target() instanceof MOB))
-		   return true;
+			return true;
 
 		if((msg.amISource((MOB)affected))
 		&&(msg.sourceMessage()!=null)

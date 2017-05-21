@@ -35,17 +35,64 @@ import java.util.*;
 
 public class Prayer_GuardianHearth extends Prayer
 {
-	@Override public String ID() { return "Prayer_GuardianHearth"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_GuardianHearth";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Guardian Hearth");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Guardian Hearth)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_WARDING;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	@Override protected int canAffectCode(){return CAN_ROOMS;}
-	@Override protected int canTargetCode(){return CAN_ROOMS;}
-	@Override protected int overrideMana(){return Ability.COST_ALL;}
-	@Override public long flags(){return Ability.FLAG_NEUTRAL;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_WARDING;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_ROOMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_ROOMS;
+	}
+
+	@Override
+	protected int overrideMana()
+	{
+		return Ability.COST_ALL;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_NEUTRAL;
+	}
+
 	protected static HashSet<Integer> prots=null;
 
 	@Override
@@ -60,7 +107,7 @@ public class Prayer_GuardianHearth extends Prayer
 			final int[] CMMSGMAP=CharStats.CODES.CMMSGMAP();
 			for(final int i : CharStats.CODES.SAVING_THROWS())
 				if(CMMSGMAP[i]>=0)
-				   prots.add(Integer.valueOf(CMMSGMAP[i]));
+					prots.add(Integer.valueOf(CMMSGMAP[i]));
 		}
 		final Room R=(Room)affected;
 		if(((msg.tool() instanceof Trap)
@@ -85,7 +132,6 @@ public class Prayer_GuardianHearth extends Prayer
 		}
 		return super.okMessage(myHost,msg);
 	}
-
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)

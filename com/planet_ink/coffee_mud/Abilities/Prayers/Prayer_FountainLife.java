@@ -33,20 +33,60 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Prayer_FountainLife extends Prayer
 {
-	@Override public String ID() { return "Prayer_FountainLife"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_FountainLife";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Fountain of Life");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	@Override public long flags(){return Ability.FLAG_HOLY;}
-	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
-	@Override protected int canTargetCode(){return 0;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_HOLY;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ITEMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
 	protected Room SpringLocation=null;
 	protected Item littleSpring=null;
-	@Override protected int overrideMana(){return Ability.COST_ALL;}
+
+	@Override
+	protected int overrideMana()
+	{
+		return Ability.COST_ALL;
+	}
 
 	@Override
 	public void unInvoke()
@@ -73,7 +113,6 @@ public class Prayer_FountainLife extends Prayer
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-
 
 		// now see if it worked
 		final boolean success=proficiencyCheck(mob,0,auto);

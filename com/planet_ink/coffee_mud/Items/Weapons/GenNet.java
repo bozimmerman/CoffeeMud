@@ -57,7 +57,6 @@ public class GenNet extends StdNet
 		return true;
 	}
 
-
 	@Override
 	public String text()
 	{

@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -35,14 +34,31 @@ import java.util.*;
 */
 public class Prop_RoomView extends Property
 {
-	@Override public String ID() { return "Prop_RoomView"; }
-	@Override public String name(){ return "Different Room View";}
-	@Override protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_ITEMS|Ability.CAN_EXITS;}
+	@Override
+	public String ID()
+	{
+		return "Prop_RoomView";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Different Room View";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ROOMS|Ability.CAN_ITEMS|Ability.CAN_EXITS;
+	}
+
 	protected Room newRoom=null;
 
 	@Override
 	public String accountForYourself()
-	{ return "Different View of "+text();	}
+	{
+		return "Different View of "+text();
+	}
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)

@@ -42,6 +42,7 @@ public class Goblinese extends StdLanguage
 	}
 
 	private final static String localizedName = CMLib.lang().L("Goblinese");
+
 	@Override
 	public String name()
 	{

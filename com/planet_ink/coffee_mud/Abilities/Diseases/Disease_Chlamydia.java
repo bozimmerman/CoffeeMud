@@ -35,23 +35,93 @@ import java.util.*;
 
 public class Disease_Chlamydia extends Disease
 {
-	@Override public String ID() { return "Disease_Chlamydia"; }
-	private final static String localizedName = CMLib.lang().L("Chlamydia");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Chlamydia)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public boolean putInCommandlist(){return false;}
-	@Override public int difficultyLevel(){return 5;}
+	@Override
+	public String ID()
+	{
+		return "Disease_Chlamydia";
+	}
 
-	@Override protected int DISEASE_TICKS(){return CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY)*10;}
-	@Override protected int DISEASE_DELAY(){return CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY);}
-	@Override protected String DISEASE_DONE(){return L("Your chlamydia clears up.");}
-	@Override protected String DISEASE_START(){return L("^G<S-NAME> scratch(es) <S-HIS-HER> privates.^?");}
-	@Override protected String DISEASE_AFFECT(){return L("<S-NAME> scratch(es) <S-HIS-HER> privates.");}
-	@Override public int spreadBitmap(){return DiseaseAffect.SPREAD_STD;}
+	private final static String localizedName = CMLib.lang().L("Chlamydia");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Chlamydia)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public boolean putInCommandlist()
+	{
+		return false;
+	}
+
+	@Override
+	public int difficultyLevel()
+	{
+		return 5;
+	}
+
+	@Override
+	protected int DISEASE_TICKS()
+	{
+		return CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY)*10;
+	}
+
+	@Override
+	protected int DISEASE_DELAY()
+	{
+		return CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY);
+	}
+
+	@Override
+	protected String DISEASE_DONE()
+	{
+		return L("Your chlamydia clears up.");
+	}
+
+	@Override
+	protected String DISEASE_START()
+	{
+		return L("^G<S-NAME> scratch(es) <S-HIS-HER> privates.^?");
+	}
+
+	@Override
+	protected String DISEASE_AFFECT()
+	{
+		return L("<S-NAME> scratch(es) <S-HIS-HER> privates.");
+	}
+
+	@Override
+	public int spreadBitmap()
+	{
+		return DiseaseAffect.SPREAD_STD;
+	}
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)

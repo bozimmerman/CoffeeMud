@@ -132,7 +132,7 @@ public class ClanVote extends StdCommand
 						for(int vs=0;vs<CV.votes.size();vs++)
 						{
 							if(CV.votes.getFirst(vs).equals(mob.Name()))
-							   myVote=CV.votes.getSecond(vs);
+								myVote=CV.votes.getSecond(vs);
 							if(CV.votes.getSecond(vs).booleanValue())
 								yeas++;
 							else

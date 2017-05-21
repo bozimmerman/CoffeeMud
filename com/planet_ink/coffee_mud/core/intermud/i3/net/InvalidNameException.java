@@ -32,7 +32,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  * An exception thrown for invalid user names.
  */
 
-
 /**
  * This class is thrown whenever an attempt to create
  * a bad user name is made.

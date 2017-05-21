@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -36,8 +35,18 @@ import java.util.*;
 
 public class Thiefness extends CombatAbilities
 {
-	@Override public String ID(){return "Thiefness";}
-	@Override public long flags(){return Behavior.FLAG_TROUBLEMAKING;}
+	@Override
+	public String ID()
+	{
+		return "Thiefness";
+	}
+
+	@Override
+	public long flags()
+	{
+		return Behavior.FLAG_TROUBLEMAKING;
+	}
+
 	protected int tickDown=0;
 
 	@Override

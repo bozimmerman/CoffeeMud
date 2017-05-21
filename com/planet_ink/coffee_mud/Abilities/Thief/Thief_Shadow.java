@@ -35,26 +35,81 @@ import java.util.*;
 
 public class Thief_Shadow extends ThiefSkill
 {
-	@Override public String ID() { return "Thief_Shadow"; }
+	@Override
+	public String ID()
+	{
+		return "Thief_Shadow";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Shadow");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
 		// can NOT have a display text since the ability instance
 		// is shared between the invoker and the target
-	@Override public String displayText(){return "";}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
-	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALTHY;}
+	@Override
+	public String displayText()
+	{
+		return "";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_OTHERS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALTHY;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"SHADOW"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
 	public MOB shadowing=null;
 	protected Room lastRoom=null;
 	private long lastTogether=0;
-	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT|USAGE_MANA;
+	}
+
 	public int code=0;
 
-	@Override public int abilityCode(){return code;}
-	@Override public void setAbilityCode(int newCode){code=newCode;}
+	@Override
+	public int abilityCode()
+	{
+		return code;
+	}
+
+	@Override
+	public void setAbilityCode(int newCode)
+	{
+		code=newCode;
+	}
 
 	public boolean stillAShadower()
 	{
@@ -121,8 +176,10 @@ public class Thief_Shadow extends ThiefSkill
 		{
 			int dir=-1;
 			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+			{
 				if(shadowing.location().getReverseExit(d)==msg.tool())
 					dir=d;
+			}
 			if((dir>=0)&&(msg.source().location()!=lastRoom))
 			{
 				final String directionWent=CMLib.directions().getDirectionName(dir);

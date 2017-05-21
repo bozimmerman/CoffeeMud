@@ -57,7 +57,6 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 	protected List<AbilityMapping>	eachClassSet			= null;
 	protected final Integer[]		costOverrides			= new Integer[Cost.values().length];
 	
-
 	@Override
 	public AbilityMapping addCharAbilityMapping(String ID,
 												int qualLevel,
@@ -227,7 +226,6 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 		return addCharAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,100,defaultParam,autoGain,secret,new Vector<String>(),extraMasks);
 	}
 
-
 	@Override
 	public AbilityMapping addCharAbilityMapping(String ID,
 												int qualLevel,
@@ -304,7 +302,6 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 	{
 		return addCharAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,maxProficiency,defaultParam,autoGain,secret,preReqSkillsList,extraMask,null);
 	}
-
 
 	@Override
 	public void addPreRequisites(String ID, List<String> preReqSkillsList, String extraMask)

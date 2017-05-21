@@ -81,7 +81,6 @@ public class StdPowder extends StdItem implements MagicDust
 		destroy();
 	}
 
-
 // That which makes Powders work.  They're an item that when successfully dusted on a target, are 'cast' on the target
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)

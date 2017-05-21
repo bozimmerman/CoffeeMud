@@ -33,17 +33,51 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Chant_BestowName extends Chant
 {
-	@Override public String ID() { return "Chant_BestowName"; }
+	@Override
+	public String ID()
+	{
+		return "Chant_BestowName";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Bestow Name");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_BREEDING;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
-	@Override public String displayText(){return "";}
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
-	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT|Ability.DOMAIN_BREEDING;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_OTHERS;
+	}
+
+	@Override
+	public String displayText()
+	{
+		return "";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_MOBS;
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectedStats)
@@ -99,7 +133,6 @@ public class Chant_BestowName extends Chant
 		if(target.name().indexOf(' ')>=0)
 			myName=myName+", "+target.name();
 
-
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -119,7 +152,6 @@ public class Chant_BestowName extends Chant
 		}
 		else
 			return beneficialWordsFizzle(mob,target,L("<S-NAME> chant(s) to <T-NAMESELF>, but nothing happens."));
-
 
 		// return whether it worked
 		return success;

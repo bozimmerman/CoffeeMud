@@ -128,7 +128,6 @@ public class Archon_Multiwatch extends ArchonSkill
 		return false;
 	}
 
-
 	@Override
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
@@ -181,7 +180,6 @@ public class Archon_Multiwatch extends ArchonSkill
 			}
 		}
 	}
-
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
@@ -289,7 +287,10 @@ public class Archon_Multiwatch extends ArchonSkill
 			for(final Session S : CMLib.sessions().localOnlineIterable())
 			{
 				if((S!=null)&&(S.mob()!=null)&&(S.mob().fetchEffect(ID())!=null))
-				{ foundLegacy=true; break;}
+				{
+					foundLegacy=true;
+					break;
+				}
 			}
 			if((DATA.size()==0)&&(IPS.size()==0)&&(!foundLegacy))
 			{

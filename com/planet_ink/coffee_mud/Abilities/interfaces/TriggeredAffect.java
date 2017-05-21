@@ -57,7 +57,6 @@ public interface TriggeredAffect extends Ability
 	/** denotes a property whose affects are triggered by hitting somethign with the thing*/
 	public final static int TRIGGER_HITTING_WITH=128;
 
-
 	/**
 	 * This method returns a mask of TRIGGER_* constants denoting what triggers the properties
 	 * @see TriggeredAffect#TRIGGER_ALWAYS

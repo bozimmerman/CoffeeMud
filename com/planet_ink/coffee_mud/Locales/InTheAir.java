@@ -54,7 +54,6 @@ public class InTheAir extends StdRoom
 		return Room.DOMAIN_OUTDOORS_AIR;
 	}
 
-
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{

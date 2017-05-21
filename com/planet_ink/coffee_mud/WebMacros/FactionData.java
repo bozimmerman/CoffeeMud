@@ -60,7 +60,6 @@ public class FactionData extends StdWebMacro
 			httpReq.addFakeUrlParameter("REPLACE","");
 		}
 
-
 		String last=httpReq.getUrlParameter("FACTION");
 		if(last==null)
 			return " @break@";
@@ -239,11 +238,11 @@ public class FactionData extends StdWebMacro
 						Fset=F.choices();
 					}
 
-
 					String value=httpReq.getUrlParameter(prefix+"0");
 					String mask="";
 					int v=0;
 					if((value==null)&&(Fset!=null))
+					{
 						for(;Fset.hasMoreElements();)
 						{
 							String def=Fset.nextElement();
@@ -271,6 +270,7 @@ public class FactionData extends StdWebMacro
 							v++;
 						}
 
+					}
 					int num=0;
 					int showNum=-1;
 					while(httpReq.getUrlParameter(prefix+num)!=null)
@@ -307,6 +307,7 @@ public class FactionData extends StdWebMacro
 							final String def=e.nextElement();
 							final Faction.FactionChangeEvent[] Es=F.getChangeEvents(def);
 							if(Es!=null)
+							{
 								for (final FactionChangeEvent E : Es)
 								{
 									httpReq.addFakeUrlParameter("CHANGESTRIGGER"+v,def);
@@ -323,6 +324,7 @@ public class FactionData extends StdWebMacro
 									httpReq.addFakeUrlParameter("CHANGESMASK"+v,E.targetZapper());
 									v++;
 								}
+							}
 						}
 					}
 
@@ -467,6 +469,7 @@ public class FactionData extends StdWebMacro
 					String faction=httpReq.getUrlParameter("RELATIONS0");
 					int x=0;
 					if(faction==null)
+					{
 						for(final Enumeration<String> e=F.relationFactions();e.hasMoreElements();x++)
 						{
 							final String def=e.nextElement();
@@ -475,6 +478,7 @@ public class FactionData extends StdWebMacro
 							httpReq.addFakeUrlParameter("RELATIONSAMT"+x,CMath.toPct(pctD));
 						}
 
+					}
 					int num=0;
 					int showNum=-1;
 					while(httpReq.getUrlParameter("RELATIONS"+num)!=null)

@@ -123,6 +123,7 @@ public class GenPortal extends StdPortal
 											"PUTSTR","MOUNTSTR","DISMOUNTSTR","DEFCLOSED",
 											"DEFLOCKED","CLOSEWORD","OPENWORD","CLOSEDTEXT"
 										  };
+
 	@Override
 	public String getStat(String code)
 	{
@@ -244,6 +245,7 @@ public class GenPortal extends StdPortal
 	}
 
 	private static String[] codes=null;
+
 	@Override
 	public String[] getStatCodes()
 	{

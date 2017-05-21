@@ -35,13 +35,43 @@ import java.util.*;
 
 public class Prayer_Gateway extends Prayer
 {
-	@Override public String ID() { return "Prayer_Gateway"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_Gateway";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Gateway");
-	@Override public String name() { return localizedName; }
-	@Override protected int canTargetCode(){return 0;}
-	@Override public long flags(){return Ability.FLAG_NEUTRAL|Ability.FLAG_TRANSPORTING;}
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_NEUTRAL|Ability.FLAG_TRANSPORTING;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
 
 	Room newRoom=null;
 	Room oldRoom=null;
@@ -91,7 +121,10 @@ public class Prayer_Gateway extends Prayer
 			final List<Room> rooms=CMLib.map().findRooms(CMLib.map().rooms(), mob, areaName,true,10);
 			if(rooms.size()>0)
 				newRoom=rooms.get(CMLib.dice().roll(1,rooms.size(),-1));
-		}catch(final NoSuchElementException e){}
+		}
+		catch(final NoSuchElementException e)
+		{
+		}
 
 		if(newRoom==null)
 		{
@@ -144,7 +177,6 @@ public class Prayer_Gateway extends Prayer
 		}
 		else
 			beneficialWordsFizzle(mob,null,L("<S-NAME> @x1 for a gateway, but nothing happens.",prayWord(mob)));
-
 
 		// return whether it worked
 		return success;

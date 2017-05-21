@@ -156,7 +156,6 @@ public class Chant_ChargeMetal extends Chant
 		return true;
 	}
 
-
 	@Override
 	public void unInvoke()
 	{

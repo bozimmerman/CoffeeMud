@@ -50,7 +50,6 @@ public class FileMgr extends StdWebMacro
 		return true;
 	}
 
-
 	public boolean matches(String s1, String s2)
 	{
 		if(s1.length()==0)
@@ -104,7 +103,6 @@ public class FileMgr extends StdWebMacro
 				V.addElement(files.elementAt(f));
 		}
 	}
-
 
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)

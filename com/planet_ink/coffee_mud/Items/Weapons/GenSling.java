@@ -57,7 +57,6 @@ public class GenSling extends StdSling
 		return true;
 	}
 
-
 	@Override
 	public String text()
 	{

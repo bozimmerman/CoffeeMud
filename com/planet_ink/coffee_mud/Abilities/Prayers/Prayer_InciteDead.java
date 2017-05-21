@@ -35,12 +35,37 @@ import java.util.*;
 
 public class Prayer_InciteDead extends Prayer
 {
-	@Override public String ID() { return "Prayer_InciteDead"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_InciteDead";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Incite Dead");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_DEATHLORE;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	@Override public long flags(){return Ability.FLAG_UNHOLY;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_DEATHLORE;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_UNHOLY;
+	}
 
 	@Override
 	public int castingQuality(MOB mob, Physical target)
@@ -116,7 +141,6 @@ public class Prayer_InciteDead extends Prayer
 
 		if(nothingDone)
 			return maliciousFizzle(mob,null,L("<S-NAME> attempt(s) to incite the dead, but flub(s) it."));
-
 
 		// return whether it worked
 		return success;

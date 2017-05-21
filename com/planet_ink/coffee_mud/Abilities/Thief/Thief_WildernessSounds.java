@@ -111,7 +111,6 @@ public class Thief_WildernessSounds extends ThiefSkill
 		return true;
 	}
 	
-
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{

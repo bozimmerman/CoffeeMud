@@ -48,5 +48,4 @@ public class Ruler extends Quarterstaff
 		material=RawMaterial.RESOURCE_OAK;
 	}
 
-
 }

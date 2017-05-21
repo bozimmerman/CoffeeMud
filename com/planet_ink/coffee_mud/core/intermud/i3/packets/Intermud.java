@@ -271,13 +271,48 @@ public class Intermud implements Runnable, Persistent, Serializable
 			save_thread=CMLib.threads().startTickDown(new Tickable()
 			{
 				private final int tickStatus=Tickable.STATUS_NOT;
-				@Override public String ID() { return "I3SaveTick"+Thread.currentThread().getThreadGroup().getName().charAt(0); }
-				@Override public CMObject newInstance() { return this; }
-				@Override public CMObject copyOf() { return this; }
-				@Override public void initializeClass() { }
-				@Override public int compareTo(CMObject o) { return (o==this)?0:1; }
-				@Override public String name() { return ID(); }
-				@Override public int getTickStatus() { return tickStatus; }
+
+				@Override
+				public String ID()
+				{
+					return "I3SaveTick"+Thread.currentThread().getThreadGroup().getName().charAt(0);
+				}
+
+				@Override
+				public CMObject newInstance()
+				{
+					return this;
+				}
+
+				@Override
+				public CMObject copyOf()
+				{
+					return this;
+				}
+
+				@Override
+				public void initializeClass()
+				{
+				}
+
+				@Override
+				public int compareTo(CMObject o)
+				{
+					return (o==this)?0:1;
+				}
+
+				@Override
+				public String name()
+				{
+					return ID();
+				}
+
+				@Override
+				public int getTickStatus()
+				{
+					return tickStatus;
+				}
+
 				@Override public boolean tick(Tickable ticking, int tickID)
 				{
 					try
@@ -305,7 +340,9 @@ public class Intermud implements Runnable, Persistent, Serializable
 											CMLib.hosts().get(0).executeCommand("START I3");
 											Log.errOut("I3SaveTick","Restarted your Intermud system.  To stop receiving these messages, DISABLE the I3 system.");
 										}
-										catch(final Exception e){}
+										catch(final Exception e)
+										{
+										}
 									}
 								});
 							}
@@ -490,8 +527,10 @@ public class Intermud implements Runnable, Persistent, Serializable
 					final Vector v = (Vector)info;
 					int total=0;
 					for(int vi=0;vi<v.size();vi++)
+					{
 						if(v.elementAt(vi) instanceof String)
 							total+=((String)v.elementAt(vi)).length();
+					}
 					if(total<1024)
 					{
 						mud.state = ((Integer)v.elementAt(0)).intValue();
@@ -537,7 +576,10 @@ public class Intermud implements Runnable, Persistent, Serializable
 		{
 			System.gc();
 			Thread.sleep(1500);
-		}catch(final Exception e){}
+		}
+		catch(final Exception e)
+		{
+		}
 		final long free=Runtime.getRuntime().freeMemory()/1024;
 		final long total=Runtime.getRuntime().totalMemory()/1024;
 		Log.errOut("Intermud", "Memory usage: "+(total-free)+"kb");
@@ -597,7 +639,9 @@ public class Intermud implements Runnable, Persistent, Serializable
 								CMLib.hosts().get(0).executeCommand("START I3");
 								Log.errOut("Intermud","Restarted your Intermud system.  To stop receiving these messages, DISABLE the I3 system.");
 							}
-							catch(final Exception e){}
+							catch(final Exception e)
+							{
+							}
 						}
 					});
 				}
@@ -631,7 +675,9 @@ public class Intermud implements Runnable, Persistent, Serializable
 						while(skipped<len)
 							skipped+=input.skipBytes(len);
 					}
-					catch( final java.io.IOException e ) {}
+					catch( final java.io.IOException e )
+					{
+					}
 					Log.errOut("Intermud","Got illegal packet: "+skipped+"/"+len+" bytes.");
 					continue;
 				}
@@ -1002,8 +1048,20 @@ public class Intermud implements Runnable, Persistent, Serializable
 	{
 		connected = false;
 		shutdown=true;
-		try { if(input!=null) input.close();}catch(final Exception e){}
-		try { if(connection!=null) connection.close();}catch(final Exception e){}
+		try
+		{
+			 if(input!=null) input.close();
+		}
+		catch(final Exception e)
+		{
+		}
+		try
+		{
+			 if(connection!=null) connection.close();
+		}
+		catch(final Exception e)
+		{
+		}
 		if(save_thread!=null)
 		{
 			CMLib.threads().deleteTick(save_thread, -1);
@@ -1011,12 +1069,16 @@ public class Intermud implements Runnable, Persistent, Serializable
 		}
 		try { save(); }
 		catch( final PersistenceException e ) { }
-		try { if(input_thread!=null) CMLib.killThread(input_thread,100,1); }catch(final Exception e){}
+		try
+		{
+			 if(input_thread!=null) CMLib.killThread(input_thread,100,1); 
+		}
+		catch(final Exception e)
+		{
+		}
 		input_thread=null;
 		shutdown=false;
 	}
-
-
 
 	/**
 	 * Adds a channel to the channel list.

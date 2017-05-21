@@ -34,7 +34,6 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Prayer extends StdAbility
 {
 	@Override
@@ -109,24 +108,28 @@ public class Prayer extends StdAbility
 			return " in the name of "+mob.getMyDeity().name();
 		return "";
 	}
+
 	protected String againstTheGods(MOB mob)
 	{
 		if(mob.getMyDeity()!=null)
 			return " against "+mob.getMyDeity().name();
 		return " against the gods";
 	}
+
 	protected String hisHerDiety(MOB mob)
 	{
 		if(mob.getMyDeity()!=null)
 			return mob.getMyDeity().name();
 		return "<S-HIS-HER> god";
 	}
+
 	protected String ofDiety(MOB mob)
 	{
 		if(mob.getMyDeity()!=null)
 			return " of "+mob.getMyDeity().name();
 		return "";
 	}
+
 	protected String prayingWord(MOB mob)
 	{
 		if(mob.getMyDeity()!=null)

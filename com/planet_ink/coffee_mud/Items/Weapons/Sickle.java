@@ -57,6 +57,4 @@ public class Sickle extends StdWeapon
 		weaponClassification=Weapon.CLASS_EDGED;
 	}
 
-
-
 }

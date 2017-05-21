@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -35,7 +34,11 @@ import java.util.*;
 */
 public class GoodGuardian extends StdBehavior
 {
-	@Override public String ID(){return "GoodGuardian";}
+	@Override
+	public String ID()
+	{
+		return "GoodGuardian";
+	}
 
 	protected long deepBreath=System.currentTimeMillis();
 
@@ -56,6 +59,7 @@ public class GoodGuardian extends StdBehavior
 			if((inhab!=null)&&(inhab.isInCombat()))
 			{
 				if(inhab.isMonster())
+				{
 					for(final Enumeration<Behavior> e=inhab.behaviors();e.hasMoreElements();)
 					{
 						final Behavior B=e.nextElement();
@@ -63,6 +67,7 @@ public class GoodGuardian extends StdBehavior
 							return inhab;
 					}
 
+				}
 				if((BrotherHelper.isBrother(inhab,observer,false))&&(victim==null))
 					victim=inhab.getVictim();
 

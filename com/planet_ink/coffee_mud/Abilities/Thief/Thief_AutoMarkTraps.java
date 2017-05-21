@@ -35,16 +35,56 @@ import java.util.*;
 
 public class Thief_AutoMarkTraps extends ThiefSkill
 {
-	@Override public String ID() { return "Thief_AutoMarkTraps"; }
-	@Override public String displayText() {return L("(Automarking traps)");}
+	@Override
+	public String ID()
+	{
+		return "Thief_AutoMarkTraps";
+	}
+
+	@Override
+	public String displayText()
+	{
+		return L("(Automarking traps)");
+	}
+
 	private final static String localizedName = CMLib.lang().L("AutoMark Traps");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"AUTOMARKTRAPS"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
-	@Override public int classificationCode(){	return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_ALERT;}
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_SELF;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_ALERT;
+	}
 
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)

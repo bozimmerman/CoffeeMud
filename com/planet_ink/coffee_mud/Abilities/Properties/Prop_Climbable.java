@@ -16,7 +16,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -36,16 +35,35 @@ import java.util.*;
 */
 public class Prop_Climbable extends Property
 {
-	@Override public String ID() { return "Prop_Climbable"; }
-	@Override public String name(){ return "Room/Exit navigation limitation";}
-	@Override protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ROOMS|Ability.CAN_ITEMS;}
+	@Override
+	public String ID()
+	{
+		return "Prop_Climbable";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Room/Exit navigation limitation";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_EXITS|Ability.CAN_ROOMS|Ability.CAN_ITEMS;
+	}
+
 	@Override
 	public String accountForYourself()
 	{ 
 		return "Must be climbed through.";	
 	}
 
-	@Override public long flags(){return Ability.FLAG_ADJUSTER;}
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_ADJUSTER;
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)

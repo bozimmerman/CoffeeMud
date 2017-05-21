@@ -33,19 +33,58 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Fighter_BodyToss extends MonkSkill
 {
-	@Override public String ID() { return "Fighter_BodyToss"; }
+	@Override
+	public String ID()
+	{
+		return "Fighter_BodyToss";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Body Toss");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"BODYTOSS"});
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_GRAPPLING;}
-	@Override public int usageType(){return USAGE_MOVEMENT;}
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL|Ability.DOMAIN_GRAPPLING;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT;
+	}
 
 	@Override
 	public int castingQuality(MOB mob, Physical target)

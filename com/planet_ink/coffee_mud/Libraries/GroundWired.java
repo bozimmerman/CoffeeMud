@@ -330,6 +330,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 		return new FilteredIterator<Room>(new ConvertingIterator<Computer,Room>(getComputers(key),computerRoomConverter), new Filterer<Room>()
 		{
 			private final Set<Room> done=new HashSet<Room>();
+
 			@Override 
 			public boolean passesFilter(Room obj)
 			{

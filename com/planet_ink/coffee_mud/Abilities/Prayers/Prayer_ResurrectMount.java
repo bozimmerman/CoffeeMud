@@ -35,16 +35,62 @@ import java.util.*;
 */
 public class Prayer_ResurrectMount extends Prayer_Resurrect
 {
-	@Override public String ID() { return "Prayer_ResurrectMount"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_ResurrectMount";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Resurrect Mount");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_DEATHLORE;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	@Override public long flags(){return Ability.FLAG_HOLY;}
-	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}
-	@Override public boolean isAutoInvoked() { return true; }
-	@Override public boolean canBeUninvoked() { return false; }
-	@Override protected boolean canResurrectNormalMobs() { return true; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_DEATHLORE;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_HOLY;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_ITEMS;
+	}
+
+	@Override
+	public boolean isAutoInvoked()
+	{
+		return true;
+	}
+
+	@Override
+	public boolean canBeUninvoked()
+	{
+		return false;
+	}
+
+	@Override
+	protected boolean canResurrectNormalMobs()
+	{
+		return true;
+	}
+
 	protected volatile Rideable lastRider = null;
 	protected PairList<Integer,Rideable> ridden=new PairVector<Integer,Rideable>();
 
@@ -110,7 +156,5 @@ public class Prayer_ResurrectMount extends Prayer_Resurrect
 		}
 		return true;
 	}
-
-
 
 }

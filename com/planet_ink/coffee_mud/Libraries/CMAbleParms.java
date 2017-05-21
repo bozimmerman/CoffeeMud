@@ -2156,12 +2156,14 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					final Container C=(Container)I;
 					final StringBuilder str=new StringBuilder("");
 					for(int i=1;i<Container.CONTAIN_DESCS.length;i++)
+					{
 						if(CMath.isSet(C.containTypes(), i-1))
 						{
 							if(str.length()>0)
 								str.append("|");
 							str.append(Container.CONTAIN_DESCS[i]);
 						}
+					}
 					return str.toString();
 				}
 			},
@@ -2200,12 +2202,14 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						return "LID";
 					final StringBuilder str=new StringBuilder("");
 					for(int i=1;i<Container.CONTAIN_DESCS.length;i++)
+					{
 						if(CMath.isSet(C.containTypes(), i-1))
 						{
 							if(str.length()>0)
 								str.append("|");
 							str.append(Container.CONTAIN_DESCS[i]);
 						}
+					}
 					return str.toString();
 				}
 			},

@@ -62,7 +62,6 @@ public class GenHandBow extends StdBow
 		return true;
 	}
 
-
 	@Override
 	public String text()
 	{

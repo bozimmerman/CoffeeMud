@@ -25,7 +25,6 @@ import java.util.*;
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
-
 /*
    Copyright 2004-2017 Bo Zimmerman
 
@@ -230,7 +229,6 @@ public class GenCharClass extends StdCharClass
 		return g;
 	}
 
-
 	@Override
 	public boolean isGeneric()
 	{
@@ -424,6 +422,7 @@ public class GenCharClass extends StdCharClass
 		}
 		return true;
 	}
+
 	@Override
 	public String getStatQualDesc()
 	{
@@ -443,7 +442,6 @@ public class GenCharClass extends StdCharClass
 			return C.ID();
 		return C.getClass().getName();
 	}
-
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)

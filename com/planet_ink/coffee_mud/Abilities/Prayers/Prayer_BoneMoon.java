@@ -33,19 +33,60 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Prayer_BoneMoon extends Prayer
 {
-	@Override public String ID() { return "Prayer_BoneMoon"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_BoneMoon";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Bone Moon");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Bone Moon)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
-	@Override protected int canTargetCode(){return Ability.CAN_ROOMS;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_MOONALTERING;}
-	@Override public long flags(){return Ability.FLAG_UNHOLY;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ROOMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_ROOMS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_MOONALTERING;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_UNHOLY;
+	}
+
 	protected int level=1;
 
 	@Override
@@ -160,7 +201,6 @@ public int castingQuality(MOB mob, Physical target)
 		}
 		else
 			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 for the Bone Moon, but <S-HIS-HER> plea is not answered.",prayWord(mob)));
-
 
 		// return whether it worked
 		return success;

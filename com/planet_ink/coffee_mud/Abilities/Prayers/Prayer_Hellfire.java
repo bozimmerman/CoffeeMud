@@ -33,15 +33,39 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Prayer_Hellfire extends Prayer
 {
-	@Override public String ID() { return "Prayer_Hellfire"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_Hellfire";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Hellfire");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_VEXING;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	@Override public long flags(){return Ability.FLAG_UNHOLY;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_VEXING;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_UNHOLY;
+	}
 
 	@Override
 	public int castingQuality(MOB mob, Physical target)
@@ -92,7 +116,6 @@ public class Prayer_Hellfire extends Prayer
 		}
 		else
 			return maliciousFizzle(mob,target,L("<S-NAME> @x1, but nothing emerges.",prayWord(mob)));
-
 
 		// return whether it worked
 		return success;

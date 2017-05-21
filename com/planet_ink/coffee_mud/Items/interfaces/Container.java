@@ -160,7 +160,6 @@ public interface Container extends Item, CloseableLockable
 	/** Container Type flag that means the container can hold raw resources */
 	public static final int CONTAIN_RAWMATERIALS=65536;
 	
-	
 	/**
 	 * Ordinal list of the names of all the container bitmask types.
 	 * @see Container#setContainTypes(long)

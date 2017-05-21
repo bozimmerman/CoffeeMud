@@ -33,19 +33,59 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Prayer_Cannibalism extends Prayer
 {
-	@Override public String ID() { return "Prayer_Cannibalism"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_Cannibalism";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Inflict Cannibalism");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Cannibalism)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
-	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CURSING;}
-	@Override public long flags(){return Ability.FLAG_UNHOLY;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_CURSING;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_UNHOLY;
+	}
 
 	@Override
 	public void unInvoke()
@@ -109,7 +149,7 @@ public class Prayer_Cannibalism extends Prayer
 		if(!super.tick(ticking,tickID))
 			return false;
 		if(!(affected instanceof MOB))
-		   return true;
+			return true;
 		final MOB M=(MOB)affected;
 		if((M.location()!=null)&&(!CMLib.flags().isSleeping(M)))
 		{
@@ -168,7 +208,6 @@ public class Prayer_Cannibalism extends Prayer
 		return true;
 	}
 
-
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -178,8 +217,6 @@ public class Prayer_Cannibalism extends Prayer
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-
-
 
 		final boolean success=proficiencyCheck(mob,-((target.charStats().getStat(CharStats.STAT_WISDOM)*2)),auto);
 		if(success)
@@ -199,7 +236,6 @@ public class Prayer_Cannibalism extends Prayer
 		}
 		else
 			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to inflict cannibalistic urges upon <T-NAMESELF>, but flub(s) it."));
-
 
 		// return whether it worked
 		return success;

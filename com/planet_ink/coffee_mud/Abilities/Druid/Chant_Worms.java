@@ -33,20 +33,65 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Chant_Worms extends Chant implements DiseaseAffect
 {
-	@Override public String ID() { return "Chant_Worms"; }
+	@Override
+	public String ID()
+	{
+		return "Chant_Worms";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Worms");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Worms)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public int abilityCode(){return 0;}
-	@Override public int spreadBitmap() { return 0; }
-	@Override public int difficultyLevel(){return 1;}
-	@Override public boolean isMalicious(){ return true;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public int abilityCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int spreadBitmap()
+	{
+		return 0;
+	}
+
+	@Override
+	public int difficultyLevel()
+	{
+		return 1;
+	}
+
+	@Override
+	public boolean isMalicious()
+	{
+		return true;
+	}
 
 	int plagueDown=5;
 
@@ -97,13 +142,14 @@ public class Chant_Worms extends Chant implements DiseaseAffect
 		super.unInvoke();
 
 		if(canBeUninvoked())
+		{
 			if((mob.location()!=null)&&(!mob.amDead()))
 			{
 				spreadImmunity(mob);
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> worms disease is cured."));
 			}
+		}
 	}
-
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -136,7 +182,6 @@ public class Chant_Worms extends Chant implements DiseaseAffect
 		}
 		else
 			return maliciousFizzle(mob,target,L("<S-NAME> chant(s) at <T-NAMESELF>, but nothing happens."));
-
 
 		// return whether it worked
 		return success;

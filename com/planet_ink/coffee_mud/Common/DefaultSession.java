@@ -371,6 +371,7 @@ public class DefaultSession implements Session
 			prompt(new TickingCallback(250)
 			{
 				private final long firstIACIn=lastIACIn;
+
 				@Override public boolean tick(int counter)
 				{
 					try
@@ -545,7 +546,6 @@ public class DefaultSession implements Session
 		else
 			fakeInput=new StringBuffer(input);
 	}
-
 
 	private void negotiateTelnetMode(OutputStream out, int optionCode)
 	throws IOException
@@ -2340,7 +2340,6 @@ public class DefaultSession implements Session
 			paramsOut.addAll(CMParms.cleanParameterList(rest));
 		return YN;
 	}
-
 
 	@Override
 	public void stopSession(boolean removeMOB, boolean dropSession, boolean killThread)

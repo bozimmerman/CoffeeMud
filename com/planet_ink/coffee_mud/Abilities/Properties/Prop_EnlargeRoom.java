@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -35,15 +34,35 @@ import java.util.*;
 */
 public class Prop_EnlargeRoom extends Property
 {
-	@Override public String ID() { return "Prop_EnlargeRoom"; }
-	@Override public String name(){ return "Change a rooms movement requirements";}
-	@Override protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS;}
+	@Override
+	public String ID()
+	{
+		return "Prop_EnlargeRoom";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Change a rooms movement requirements";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ROOMS|Ability.CAN_AREAS;
+	}
 
 	@Override
 	public String accountForYourself()
-	{ return "Enlarged";	}
+	{
+		return "Enlarged";
+	}
 
-	@Override public long flags(){return Ability.FLAG_ADJUSTER;}
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_ADJUSTER;
+	}
 
 	protected double dval(String s)
 	{

@@ -416,8 +416,13 @@ public class Prop_RoomForSale extends Property implements LandTitle
 					playerExists=optPlayerList.contains(T.getOwnerName());
 				if(!playerExists)
 				for(int i=0;i<optPlayerList.size();i++)
+				{
 					if(optPlayerList.get(i).equalsIgnoreCase(T.getOwnerName()))
-					{ playerExists=true; break;}
+					{
+						playerExists=true;
+						break;
+					}
+				}
 				if(!playerExists)
 				{
 					T.setOwnerName("");

@@ -200,7 +200,11 @@ public class ClanCreate extends StdCommand
 											public void callBack()
 											{
 												final String govt=this.input;
-												if(govt.length()==0){ mob.tell(L("Aborted.")); return;}
+												if(govt.length()==0)
+												{
+													mob.tell(L("Aborted."));
+													return;
+												}
 												int govtType=-1;
 												int newRoleID=-1;
 												for(final ClanGovernment gvt : CMLib.clans().getStockGovernments())

@@ -33,18 +33,53 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Chant_DeepThoughts extends Chant
 {
-	@Override public String ID() { return "Chant_DeepThoughts"; }
+	@Override
+	public String ID()
+	{
+		return "Chant_DeepThoughts";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Deep Thoughts");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Thinking deep thoughts)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
-	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_SELF;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
 	long lastTime=0;
 
 	@Override

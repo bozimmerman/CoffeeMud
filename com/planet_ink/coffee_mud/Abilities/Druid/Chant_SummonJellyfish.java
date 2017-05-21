@@ -143,7 +143,6 @@ public class Chant_SummonJellyfish extends Chant
 		}
 	}
 
-
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -209,7 +208,6 @@ public class Chant_SummonJellyfish extends Chant
 		}
 		else
 			return maliciousFizzle(mob,null,L("<S-NAME> chants(s) to the waters, but the magic fizzles."));
-
 
 		// return whether it worked
 		return success;

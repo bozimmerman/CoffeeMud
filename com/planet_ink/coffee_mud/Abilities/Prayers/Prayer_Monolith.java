@@ -35,18 +35,69 @@ import java.util.*;
 
 public class Prayer_Monolith extends Prayer
 {
-	@Override public String ID() { return "Prayer_Monolith"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_Monolith";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Monolith");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Monolith)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int maxRange(){return adjustedMaxInvokerRange(10);}
-	@Override public int minRange(){return 1;}
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
-	@Override protected int canAffectCode(){return CAN_ITEMS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public long flags(){return Ability.FLAG_NEUTRAL;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int maxRange()
+	{
+		return adjustedMaxInvokerRange(10);
+	}
+
+	@Override
+	public int minRange()
+	{
+		return 1;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_SELF;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_ITEMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_NEUTRAL;
+	}
 
 	private final static int TYP_ICE=0;
 	private final static int TYP_FIRE=1;
@@ -247,7 +298,6 @@ public class Prayer_Monolith extends Prayer
 		return super.tick(ticking,tickID);
 	}
 
-
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -270,7 +320,6 @@ public class Prayer_Monolith extends Prayer
 			return false;
 
 		final Physical target = mob.location();
-
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 

@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2003-2017 Bo Zimmerman
 
@@ -120,6 +119,7 @@ public class ResourceOverride extends ActiveTicker
 			}
 		}
 	}
+
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{

@@ -122,6 +122,7 @@ public class Skill_Attack2 extends StdSkill
 		if((freeToNerf)&& (affectableStats.attackAdjustment()>0))
 			affectableStats.setAttackAdjustment((int)Math.round(affectableStats.attackAdjustment() * nerfAmount()));
 	}
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{

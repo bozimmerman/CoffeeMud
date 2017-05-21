@@ -33,19 +33,59 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Prayer_DivineLuck extends Prayer
 {
-	@Override public String ID() { return "Prayer_DivineLuck"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_DivineLuck";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Divine Luck");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Divine Luck)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
-	@Override public long flags(){return Ability.FLAG_NEUTRAL;}
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_SELF;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_NEUTRAL;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
 
 	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
@@ -77,8 +117,6 @@ public class Prayer_DivineLuck extends Prayer
 				affectableStats.setArmor(affectableStats.armor()-5-xlvl);
 		}
 	}
-
-
 
 	@Override
 	public void unInvoke()
@@ -122,7 +160,6 @@ public class Prayer_DivineLuck extends Prayer
 		}
 		else
 			return beneficialWordsFizzle(mob,null,L("<S-NAME> @x1, but as luck would have it, there's no answer.",prayWord(mob)));
-
 
 		// return whether it worked
 		return success;

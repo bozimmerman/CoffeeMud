@@ -15,8 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
 import java.util.*;
 
 /*
@@ -36,9 +34,23 @@ import java.util.*;
 */
 public class Prop_HaveZapper extends Property implements TriggeredAffect
 {
-	@Override public String ID() { return "Prop_HaveZapper"; }
-	@Override public String name(){ return "Restrictions to ownership";}
-	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
+	@Override
+	public String ID()
+	{
+		return "Prop_HaveZapper";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Restrictions to ownership";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ITEMS;
+	}
 
 	protected boolean actual=false;
 	protected int percent=100;
@@ -47,7 +59,11 @@ public class Prop_HaveZapper extends Property implements TriggeredAffect
 
 	protected String defaultMessage() { return "<O-NAME> flashes and flies out of <S-HIS-HER> hands!";}
 
-	@Override public long flags(){return Ability.FLAG_ZAPPER;}
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_ZAPPER;
+	}
 
 	@Override
 	public int triggerMask()

@@ -33,17 +33,51 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Chant_GiveLife extends Chant
 {
-	@Override public String ID() { return "Chant_GiveLife"; }
+	@Override
+	public String ID()
+	{
+		return "Chant_GiveLife";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Give Life");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;}
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
-	@Override public long flags(){return Ability.FLAG_NOORDERING;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_OTHERS;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_NOORDERING;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -116,7 +150,6 @@ public class Chant_GiveLife extends Chant
 		}
 		else
 			return beneficialWordsFizzle(mob,target,L("<S-NAME> chants for <T-NAMESELF>, but nothing happens."));
-
 
 		// return whether it worked
 		return success;

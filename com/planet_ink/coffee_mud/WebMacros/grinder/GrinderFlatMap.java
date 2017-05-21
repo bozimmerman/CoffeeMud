@@ -204,7 +204,6 @@ public class GrinderFlatMap
 		}
 	}
 
-
 	public void placeRooms()
 	{
 		if((areaMap==null)||(hashRooms==null)||(area instanceof GridZones))
@@ -925,7 +924,6 @@ public class GrinderFlatMap
 		else
 			return "<a href=\"javascript:CEX('"+dirName+"','"+room.roomID+"','"+dir.room+"');\"><IMG SRC=\"images/O"+dirLetter+theRest;
 	}
-
 
 	public int[] newXY(int[] xy, int dir)
 	{

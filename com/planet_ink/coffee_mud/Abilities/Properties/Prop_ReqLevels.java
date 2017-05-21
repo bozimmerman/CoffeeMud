@@ -35,15 +35,34 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Prop_ReqLevels extends Property implements TriggeredAffect
 {
-	@Override public String ID() { return "Prop_ReqLevels"; }
-	@Override public String name(){ return "Level Limitations";}
-	@Override protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS;}
+	@Override
+	public String ID()
+	{
+		return "Prop_ReqLevels";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Level Limitations";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS;
+	}
+
 	private boolean noFollow=false;
 	private boolean noSneak=false;
 	private boolean allFlag=false;
 	private final boolean sysopFlag=false;
 
-	@Override public long flags(){return Ability.FLAG_ZAPPER;}
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_ZAPPER;
+	}
 
 	@Override
 	public int triggerMask()
@@ -150,6 +169,7 @@ public class Prop_ReqLevels extends Property implements TriggeredAffect
 		}
 		return false;
 	}
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{

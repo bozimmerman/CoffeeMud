@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -35,9 +34,23 @@ import java.util.*;
 */
 public class Prop_RideAdjuster extends Prop_HaveAdjuster
 {
-	@Override public String ID() { return "Prop_RideAdjuster"; }
-	@Override public String name(){ return "Adjustments to stats when ridden";}
-	@Override protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_MOBS;}
+	@Override
+	public String ID()
+	{
+		return "Prop_RideAdjuster";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Adjustments to stats when ridden";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ITEMS|Ability.CAN_MOBS;
+	}
 
 	@Override
 	public String accountForYourself()
@@ -45,7 +58,11 @@ public class Prop_RideAdjuster extends Prop_HaveAdjuster
 		return super.fixAccoutingsWithMask("Affects on the mounted: "+parameters[0],parameters[1]);
 	}
 
-	@Override public int triggerMask() { return TriggeredAffect.TRIGGER_MOUNT; }
+	@Override
+	public int triggerMask()
+	{
+		return TriggeredAffect.TRIGGER_MOUNT;
+	}
 
 	@Override
 	public boolean canApply(MOB mob)

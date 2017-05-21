@@ -82,7 +82,6 @@ public interface ItemCollection extends CMObject
 	 */
 	public Item findItem(Item goodLocation, String itemID);
 
-
 	/**
 	 * Returns the item in this possessor that matches the
 	 * given itemID, whether by full name, description, class ID,

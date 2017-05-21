@@ -33,20 +33,59 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Prayer_AiryForm extends Prayer
 {
-	@Override public String ID() { return "Prayer_AiryForm"; }
-	private final static String localizedName = CMLib.lang().L("Airyform");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Airyform)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
-	@Override public long flags(){return Ability.FLAG_NEUTRAL;}
+	@Override
+	public String ID()
+	{
+		return "Prayer_AiryForm";
+	}
 
+	private final static String localizedName = CMLib.lang().L("Airyform");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Airyform)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_SELF;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_NEUTRAL;
+	}
 
 	@Override
 	public void unInvoke()
@@ -84,6 +123,7 @@ public class Prayer_AiryForm extends Prayer
 		}
 		return true;
 	}
+
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -108,7 +148,6 @@ public class Prayer_AiryForm extends Prayer
 		}
 		else
 			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 for a new form, but <S-HIS-HER> plea is not answered.",prayWord(mob)));
-
 
 		// return whether it worked
 		return success;

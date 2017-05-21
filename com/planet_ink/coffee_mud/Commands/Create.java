@@ -306,7 +306,6 @@ public class Create extends StdCommand
 			}
 		}
 	
-
 		if(newItem.subjectToWearAndTear())
 			newItem.setUsesRemaining(100);
 		if(newItem instanceof SpaceObject)

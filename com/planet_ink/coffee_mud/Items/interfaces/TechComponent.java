@@ -57,7 +57,6 @@ public interface TechComponent extends Electronics
 	 */
 	public void setInstalledFactor(float pct);
 
-	
 	/**
 	 * Returns whether this item is installed properly, which is 
 	 * according to internal rules of each component type.

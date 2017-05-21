@@ -48,5 +48,4 @@ public class LockableContainer extends StdContainer
 		setMaterial(RawMaterial.RESOURCE_OAK);
 	}
 
-
 }

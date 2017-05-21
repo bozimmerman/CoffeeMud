@@ -33,7 +33,6 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Prayer_BloodMoon extends Prayer
 {
 	@Override
@@ -123,6 +122,7 @@ public class Prayer_BloodMoon extends Prayer
 		}
 		return true;
 	}
+
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{

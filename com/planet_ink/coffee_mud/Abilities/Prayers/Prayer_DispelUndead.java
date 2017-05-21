@@ -33,15 +33,39 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Prayer_DispelUndead extends Prayer
 {
-	@Override public String ID() { return "Prayer_DispelUndead"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_DispelUndead";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Dispel Undead");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_NEUTRALIZATION;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	@Override public long flags(){return Ability.FLAG_HOLY;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_NEUTRALIZATION;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_HOLY;
+	}
 
 	@Override
 	public int castingQuality(MOB mob, Physical target)
@@ -86,7 +110,6 @@ public class Prayer_DispelUndead extends Prayer
 		}
 		else
 			return maliciousFizzle(mob,target,L("<S-NAME> point(s) at <T-NAMESELF> and @x1, but nothing happens.",prayWord(mob)));
-
 
 		// return whether it worked
 		return success;

@@ -162,7 +162,6 @@ public class Chant_SpeakWithAnimals extends Chant implements Language
 		return null;
 	}
 
-	
 	protected Language getAnimalSpeak(final MOB M)
 	{
 		if((M!=null)

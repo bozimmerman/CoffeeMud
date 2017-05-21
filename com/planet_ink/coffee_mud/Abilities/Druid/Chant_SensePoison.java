@@ -35,13 +35,43 @@ import java.util.*;
 
 public class Chant_SensePoison extends Chant
 {
-	@Override public String ID() { return "Chant_SensePoison"; }
+	@Override
+	public String ID()
+	{
+		return "Chant_SensePoison";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Sense Poison");
-	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return CAN_MOBS|CAN_ITEMS;}
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PRESERVING;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_OTHERS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS|CAN_ITEMS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT|Ability.DOMAIN_PRESERVING;
+	}
 
 	public List<Ability> returnOffensiveAffects(Physical fromMe)
 	{
@@ -97,7 +127,6 @@ public class Chant_SensePoison extends Chant
 		}
 		else
 			beneficialWordsFizzle(mob,target,auto?"":L("<S-NAME> chant(s) over <T-NAME>, but receives no insight."));
-
 
 		// return whether it worked
 		return success;

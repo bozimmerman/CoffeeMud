@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2003-2017 Bo Zimmerman
 
@@ -35,8 +34,17 @@ import java.util.*;
 */
 public class LinkedWeather extends StdBehavior
 {
-	@Override public String ID(){return "LinkedWeather";}
-	@Override protected int canImproveCode(){return Behavior.CAN_AREAS;}
+	@Override
+	public String ID()
+	{
+		return "LinkedWeather";
+	}
+
+	@Override
+	protected int canImproveCode()
+	{
+		return Behavior.CAN_AREAS;
+	}
 
 	protected long lastWeather=-1;
 	protected long lastPending=-1;
@@ -67,7 +75,7 @@ public class LinkedWeather extends StdBehavior
 			if(x>=0)
 			{
 				if(s.indexOf("ROLL",x+1)>=0)
-				   rolling=true;
+					rolling=true;
 				s=s.substring(0,x);
 			}
 			final Area A=CMLib.map().getArea(s);

@@ -35,19 +35,71 @@ import java.util.*;
 
 public class Disease_FrostBite extends Disease
 {
-	@Override public String ID() { return "Disease_FrostBite"; }
+	@Override
+	public String ID()
+	{
+		return "Disease_FrostBite";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Frost Bite");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private String where="feet";
-	@Override public String displayText() { return L("(Frost bitten "+where+")"); }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public boolean putInCommandlist(){return false;}
-	@Override public int difficultyLevel(){return 1;}
+
+	@Override
+	public String displayText()
+	{
+		return L("(Frost bitten "+where+")");
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public boolean putInCommandlist()
+	{
+		return false;
+	}
+
+	@Override
+	public int difficultyLevel()
+	{
+		return 1;
+	}
+
 	public int[] limbsAffectable={Race.BODY_EAR,Race.BODY_ANTENEA,Race.BODY_FOOT,Race.BODY_HAND,Race.BODY_NOSE};
-	@Override protected int DISEASE_TICKS(){return (CMProps.getIntVar( CMProps.Int.TICKSPERMUDDAY ) / 2);}
-	@Override protected int DISEASE_DELAY(){return 50;}
+	@Override
+	protected int DISEASE_TICKS()
+	{
+		return (CMProps.getIntVar( CMProps.Int.TICKSPERMUDDAY ) / 2);
+	}
+
+	@Override
+	protected int DISEASE_DELAY()
+	{
+		return 50;
+	}
+
 	@Override
 	protected String DISEASE_DONE()
 	{
@@ -55,9 +107,24 @@ public class Disease_FrostBite extends Disease
 			return L("Your frost bite heals.");
 		return L("Your frost bite has cost you dearly.");
 	}
-	@Override protected String DISEASE_START(){return L("^G<S-NAME> <S-IS-ARE> getting frost bite.^?");}
-	@Override protected String DISEASE_AFFECT(){return "";}
-	@Override public int abilityCode(){return 0;}
+
+	@Override
+	protected String DISEASE_START()
+	{
+		return L("^G<S-NAME> <S-IS-ARE> getting frost bite.^?");
+	}
+
+	@Override
+	protected String DISEASE_AFFECT()
+	{
+		return "";
+	}
+
+	@Override
+	public int abilityCode()
+	{
+		return 0;
+	}
 
 	@Override
 	public void unInvoke()

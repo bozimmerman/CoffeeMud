@@ -98,6 +98,7 @@ public class Jungle extends StdRoom
 		Integer.valueOf(RawMaterial.RESOURCE_FEATHERS)
 	};
 	public static final List<Integer> roomResources=new Vector<Integer>(Arrays.asList(resourceList));
+
 	@Override
 	public List<Integer> resourceChoices()
 	{

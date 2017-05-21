@@ -61,7 +61,10 @@ public class ChannelUserReply extends Packet {
 				case 1: gender='F'; break;
 				case 2: gender='N'; break;
 				}
-			}catch(final Exception e){}
+			}
+			catch(final Exception e)
+			{
+			}
 		}
 		catch( final ClassCastException e )
 		{

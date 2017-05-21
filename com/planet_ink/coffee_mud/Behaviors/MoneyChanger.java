@@ -34,7 +34,11 @@ import java.util.*;
 */
 public class MoneyChanger extends StdBehavior
 {
-	@Override public String ID(){return "MoneyChanger";}
+	@Override
+	public String ID()
+	{
+		return "MoneyChanger";
+	}
 
 	protected Map<String,Double> rates=new Hashtable<String,Double>();
 	protected double spaceMaxCut=0.0;
@@ -42,7 +46,6 @@ public class MoneyChanger extends StdBehavior
 	protected double cut=0.05;
 	private boolean complainedAboutSpaceError=false;
 	
-
 	@Override
 	public String accountForYourself()
 	{

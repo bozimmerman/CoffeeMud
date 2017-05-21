@@ -33,21 +33,66 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Fighter_LightningStrike extends MonkSkill
 {
-	@Override public String ID() { return "Fighter_LightningStrike"; }
+	@Override
+	public String ID()
+	{
+		return "Fighter_LightningStrike";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Lightning Strike");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Exhausted)");
-	@Override public String displayText() { return localizedStaticDisplay; }
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"LIGHTNINGSTRIKE","LSTRIKE"});
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
-	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_MARTIALLORE;}
-	@Override public int usageType(){return USAGE_MOVEMENT;}
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL|Ability.DOMAIN_MARTIALLORE;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT;
+	}
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
@@ -155,7 +200,6 @@ public class Fighter_LightningStrike extends MonkSkill
 			return false;
 		}
 
-
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -177,8 +221,10 @@ public class Fighter_LightningStrike extends MonkSkill
 				final int num=getXLEVELLevel(mob)+CMLib.ableMapper().qualifyingClassLevel(mob,this);
 				final Room R=target.location();
 				for(int i=0;(i<num) && (target.location()==R);i++)
+				{
 					if((!target.amDead())&&(!anyWeapons(mob)))
 						CMLib.combat().postAttack(mob,target,null);
+				}
 				if((!anyWeapons(mob))&&(msg.value()<=0))
 				{
 					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> collapse(s) in exhaustion."));

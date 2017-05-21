@@ -120,7 +120,6 @@ public class Barghest extends Demon
 		return racialAbilityParms;
 	}
 
-
 	private final String[]	culturalAbilityNames			= { "Undercommon" };
 	private final int[]		culturalAbilityProficiencies	= { 25 };
 

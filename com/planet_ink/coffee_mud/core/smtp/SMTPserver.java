@@ -22,9 +22,6 @@ import java.util.*;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-
-
-
 import com.planet_ink.coffee_mud.core.exceptions.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZMask;
@@ -50,15 +47,54 @@ public class SMTPserver extends Thread implements Tickable
 	public static final float  HOST_VERSION_MINOR=(float)1.0;
 	public static final String ServerVersionString = "CoffeeMud SMTPserver/" + HOST_VERSION_MAJOR + "." + HOST_VERSION_MINOR;
 
-	@Override public String ID(){return "SMTPserver";}
-	@Override public String name(){return "SMTPserver";}
-	@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(final Exception e){return new SMTPserver(mud);}}
+	@Override
+	public String ID()
+	{
+		return "SMTPserver";
+	}
+
+	@Override
+	public String name()
+	{
+		return "SMTPserver";
+	}
+
+	@Override
+	public CMObject newInstance()
+	{
+		try
+		{
+			return getClass().newInstance();
+		}
+		catch(final Exception e)
+		{
+			return new SMTPserver(mud);
+		}
+	}
+
 	@Override
 	public void initializeClass()
 	{
 	}
-	@Override public CMObject copyOf(){try{return (SMTPserver)this.clone();}catch(final Exception e){return newInstance();}}
-	@Override public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+
+	@Override
+	public CMObject copyOf()
+	{
+		try
+		{
+			return (SMTPserver)this.clone();
+		}
+		catch(final Exception e)
+		{
+			return newInstance();
+		}
+	}
+
+	@Override
+	public int compareTo(CMObject o)
+	{
+		return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));
+	}
 
 	public int	 		tickStatus=STATUS_NOT;
 	public boolean 		isOK = false;
@@ -96,7 +132,12 @@ public class SMTPserver extends Thread implements Tickable
 		setDaemon(true);
 	}
 
-	@Override public int getTickStatus(){return tickStatus;}
+	@Override
+	public int getTickStatus()
+	{
+		return tickStatus;
+	}
+
 	public MudHost getMUD()	{return mud;}
 	public String domainName(){return domain;}
 	public String mailboxName(){return CMProps.getVar(CMProps.Str.MAILBOX);}
@@ -155,8 +196,10 @@ public class SMTPserver extends Thread implements Tickable
 					page.getStr("UNSUBSCRIBEDMSG")
 				};
 			for(int i=0;i<msgs.length;i++)
+			{
 				if(msgs[i]==null)
 					msgs[i]="";
+			}
 			CMProps.setListVar(CMProps.StrList.SUBSCRIPTION_STRS, msgs);
 		}
 
@@ -284,21 +327,25 @@ public class SMTPserver extends Thread implements Tickable
 			return null;
 		return set.get(journal.toUpperCase().trim());
 	}
+
 	public boolean isAForwardingJournal(String journal)
 	{
 		final JournalsLibrary.SMTPJournal jrnl=getAJournal(journal);
 		return jrnl != null ? jrnl.forward() : false;
 	}
+
 	public boolean isASubscribeOnlyJournal(String journal)
 	{
 		final JournalsLibrary.SMTPJournal jrnl=getAJournal(journal);
 		return jrnl != null ? jrnl.subscribeOnly() : false;
 	}
+
 	public boolean isAKeepAllJournal(String journal)
 	{
 		final JournalsLibrary.SMTPJournal jrnl=getAJournal(journal);
 		return jrnl != null ? jrnl.keepAll() : false;
 	}
+
 	public MaskingLibrary.CompiledZMask getJournalCriteria(String journal)
 	{
 		final JournalsLibrary.SMTPJournal jrnl=getAJournal(journal);
@@ -335,12 +382,10 @@ public class SMTPserver extends Thread implements Tickable
 			return;
 		}
 
-
 		if (page.getInt("BACKLOG") > 0)
 			q_len = page.getInt("BACKLOG");
 
 		InetAddress bindAddr = null;
-
 
 		if (page.getStr("BIND") != null && page.getStr("BIND").length() > 0)
 		{
@@ -362,7 +407,6 @@ public class SMTPserver extends Thread implements Tickable
 			Log.sysOut(getName(),"Started on port: "+page.getInt("PORT"));
 			if (bindAddr != null)
 				Log.sysOut(getName(),"Bound to: "+bindAddr.toString());
-
 
 			serverOK = true;
 
@@ -411,13 +455,18 @@ public class SMTPserver extends Thread implements Tickable
 		}
 	}
 
-
 	// sends shutdown message to both log and optional session
 	// then just calls interrupt
 	private void shutdown(Session S)
 	{
 		Log.sysOut(getName(),"Shutting down.");
-		try{servsock.close(); Thread.sleep(100);}catch(final Exception e){}
+		try
+		{
+			servsock.close(); Thread.sleep(100);
+		}
+		catch(final Exception e)
+		{
+		}
 		threadPool.shutdown();
 		if(getTickStatus()==Tickable.STATUS_NOT)
 			tick(this,Tickable.TICKID_READYTOSTOP);
@@ -432,7 +481,6 @@ public class SMTPserver extends Thread implements Tickable
 	}
 
 	public void shutdown()	{shutdown(null);}
-
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
@@ -570,7 +618,13 @@ public class SMTPserver extends Thread implements Tickable
 			new Thread(Thread.currentThread().getThreadGroup(),massMailer,"MassMailer"+Thread.currentThread().getThreadGroup().getName().charAt(0)).start();
 		}
 		System.gc();
-		try{Thread.sleep(1000);}catch(final Exception ex){}
+		try
+		{
+			Thread.sleep(1000);
+		}
+		catch(final Exception ex)
+		{
+		}
 		tickStatus=STATUS_NOT;
 		return true;
 	}
@@ -606,6 +660,7 @@ public class SMTPserver extends Thread implements Tickable
 			return Integer.MAX_VALUE;
 		return x;
 	}
+
 	public int getJournalDays()
 	{
 		final String s=page.getStr("JOURNALDAYS");
@@ -616,6 +671,7 @@ public class SMTPserver extends Thread implements Tickable
 			return (365*20);
 		return x;
 	}
+
 	public long getMaxMsgSize()
 	{
 		final String s=page.getStr("MAXMSGSIZE");

@@ -312,7 +312,6 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 		return h;
 	}
 
-
 	public Vector<Object> countIngredients(List<String> Vr)
 	{
 		final String[] contents=new String[oldPotContents.size()];
@@ -369,6 +368,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 		{
 			codedList.addElement(Integer.valueOf(-amountMade));
 			for(int i=0;i<contents.length;i++)
+			{
 				if(amounts[i]<0)
 				{
 					String content=contents[i];
@@ -376,6 +376,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 						content=content.substring(0,content.indexOf('/'));
 					codedList.addElement(content);
 				}
+			}
 		}
 		else
 		{
@@ -614,12 +615,15 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 			{
 				final String materialFoodName=replacePercent(finalRecipe.get(RCP_FINALFOOD),"").trim().toUpperCase();
 				for(int i=0;i<RawMaterial.CODES.TOTAL();i++)
+				{
 					if(materialFoodName.equals(RawMaterial.CODES.NAME(i)))
 					{
 						material=i;
 						break;
 					}
+				}
 				if((contents!=null)&&(material<0))
+				{
 					for(int v=0;v<contents.size();v++)
 					{
 						final Item I=contents.get(v);
@@ -628,6 +632,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 							material=((Drink)I).liquidType();
 							break;
 						}
+				}
 				}
 			}
 			food.setMaterial(material<0?RawMaterial.RESOURCE_BEEF:material);

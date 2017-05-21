@@ -35,17 +35,64 @@ import java.util.*;
 
 public class Prayer_SenseDisease extends Prayer
 {
-	@Override public String ID() { return "Prayer_SenseDisease"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_SenseDisease";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Sense Disease");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Sense Disease)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
-	@Override public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
-	@Override public long flags(){return Ability.FLAG_HOLY;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;
+	}
+
+	@Override
+	public int enchantQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_SELF;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_SELF;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_HOLY;
+	}
+
 	protected Room lastRoom=null;
 
 	@Override
@@ -74,6 +121,7 @@ public class Prayer_SenseDisease extends Prayer
 		}
 		return null;
 	}
+
 	private static final Vector<Physical> empty=new ReadOnlyVector<Physical>();
 	public Vector<Physical> diseased(MOB mob, Room R)
 	{
@@ -193,7 +241,6 @@ public class Prayer_SenseDisease extends Prayer
 		}
 		else
 			return beneficialWordsFizzle(mob,null,L("<S-NAME> listen(s) to @x1 for a message, but there is no answer.",hisHerDiety(mob)));
-
 
 		// return whether it worked
 		return success;

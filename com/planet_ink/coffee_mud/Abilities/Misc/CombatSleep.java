@@ -140,7 +140,6 @@ public class CombatSleep extends StdAbility implements HealthCondition
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SLEEPING);
 	}
 
-
 	@Override
 	public void unInvoke()
 	{
@@ -188,7 +187,6 @@ public class CombatSleep extends StdAbility implements HealthCondition
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-
 
 		boolean success=proficiencyCheck(mob,0,auto);
 

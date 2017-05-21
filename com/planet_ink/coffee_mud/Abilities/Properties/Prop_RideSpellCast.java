@@ -15,8 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
 import java.util.*;
 
 /*
@@ -37,13 +35,31 @@ import java.util.*;
 
 public class Prop_RideSpellCast extends Prop_HaveSpellCast
 {
-	@Override public String ID() { return "Prop_RideSpellCast"; }
-	@Override public String name(){ return "Casting spells when ridden";}
-	@Override protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_MOBS;}
+	@Override
+	public String ID()
+	{
+		return "Prop_RideSpellCast";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Casting spells when ridden";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ITEMS|Ability.CAN_MOBS;
+	}
+
 	protected Vector<Rider> lastRiders=new Vector<Rider>();
+
 	@Override
 	public String accountForYourself()
-	{ return spellAccountingsWithMask("Casts "," on those mounted.");}
+	{
+		return spellAccountingsWithMask("Casts "," on those mounted.");
+	}
 
 	@Override
 	public void setMiscText(String newText)
@@ -52,7 +68,11 @@ public class Prop_RideSpellCast extends Prop_HaveSpellCast
 		lastRiders=new Vector<Rider>();
 	}
 
-	@Override public int triggerMask() { return TriggeredAffect.TRIGGER_MOUNT; }
+	@Override
+	public int triggerMask()
+	{
+		return TriggeredAffect.TRIGGER_MOUNT;
+	}
 
 	@Override
 	public void affectPhyStats(Physical host, PhyStats affectableStats)

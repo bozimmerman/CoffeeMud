@@ -35,16 +35,57 @@ import java.util.*;
 
 public class Prayer_ProtPoison extends Prayer
 {
-	@Override public String ID() { return "Prayer_ProtPoison"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_ProtPoison";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Protection Poison");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Protection/Poison)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
-	@Override public long flags(){return Ability.FLAG_NEUTRAL;}
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
-	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_SELF;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_NEUTRAL;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_MOBS;
+	}
 
 	@Override
 	public void unInvoke()
@@ -91,7 +132,6 @@ public class Prayer_ProtPoison extends Prayer
 		return true;
 	}
 
-
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -121,7 +161,6 @@ public class Prayer_ProtPoison extends Prayer
 		}
 		else
 			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 for protection from poisons, but go(es) unanswered.",prayWord(mob)));
-
 
 		// return whether it worked
 		return success;

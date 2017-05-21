@@ -38,7 +38,11 @@ public class Deities extends StdCommand
 	public Deities(){}
 
 	private final String[] access=I(new String[]{"DEITIES","GODS","DEITY"});
-	@Override public String[] getAccessWords(){return access;}
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
 	private final static Class[][] internalParameters=new Class[][]{{Deity.class}};
 
@@ -135,7 +139,11 @@ public class Deities extends StdCommand
 			if(str.length()==0)
 			{
 				col++;
-				if(col>4){ msg.append("\n\r"); col=0;}
+				if(col>4)
+				{
+					msg.append("\n\r");
+					col=0;
+				}
 				msg.append(CMStrings.padRight("^H"+D.name()+"^?",colWidth));
 			}
 		}
@@ -145,7 +153,10 @@ public class Deities extends StdCommand
 		return false;
 	}
 
-	@Override public boolean canBeOrdered(){return true;}
-
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 
 }

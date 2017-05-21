@@ -526,7 +526,6 @@ public class StdItem implements Item
 		recoverPhyStats();
 	}
 
-
 	@Override
 	public int material()
 	{
@@ -1870,7 +1869,7 @@ public class StdItem implements Item
 			behaviors.clear();
 		behaviors=null;
 		if(didSomething && ((scripts==null)||(scripts.isEmpty())))
-		  CMLib.threads().deleteTick(this,Tickable.TICKID_ITEM_BEHAVIOR);
+			CMLib.threads().deleteTick(this,Tickable.TICKID_ITEM_BEHAVIOR);
 	}
 
 	@Override

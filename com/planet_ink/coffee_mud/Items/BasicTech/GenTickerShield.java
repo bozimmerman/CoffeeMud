@@ -208,7 +208,6 @@ public class GenTickerShield extends StdElecItem implements Armor
 		super.executeMsg(host, msg);
 	}
 
-
 	@Override
 	public short getClothingLayer()
 	{
@@ -349,6 +348,7 @@ public class GenTickerShield extends StdElecItem implements Armor
 	}
 
 	private static String[] codes=null;
+
 	@Override
 	public String[] getStatCodes()
 	{

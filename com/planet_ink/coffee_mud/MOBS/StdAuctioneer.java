@@ -261,7 +261,6 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 		return null;
 	}
 
-
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{

@@ -36,20 +36,66 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Prayer_AuraDivineEdict extends Prayer
 {
-	@Override public String ID() { return "Prayer_AuraDivineEdict"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_AuraDivineEdict";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Aura of the Divine Edict");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Edict Aura)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
-	@Override protected int overrideMana(){return Ability.COST_ALL;}
-	@Override public long flags(){return Ability.FLAG_HOLY;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_SELF;
+	}
+
+	@Override
+	protected int overrideMana()
+	{
+		return Ability.COST_ALL;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_HOLY;
+	}
+
 	protected String godName="the gods";
 	protected boolean noRecurse=false;
-
 
 	@Override
 	public void unInvoke()
@@ -179,7 +225,6 @@ public class Prayer_AuraDivineEdict extends Prayer
 		}
 		else
 			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 for an aura of divine edict, but <S-HIS-HER> plea is not answered.",prayWord(mob)));
-
 
 		// return whether it worked
 		return success;

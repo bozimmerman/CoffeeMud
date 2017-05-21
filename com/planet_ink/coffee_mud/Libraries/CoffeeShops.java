@@ -762,7 +762,6 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			if(!(product instanceof Ability))
 				buyPrice=CMath.mul(buyPrice,1.0-devalue(shop,product,number));
 	
-	
 			final double sellPrice=sellingPrice(seller,buyer,product,shop,false).absoluteGoldPrice;
 	
 			if(buyPrice>sellPrice)
@@ -782,7 +781,6 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		}
 		return val;
 	}
-
 
 	@Override
 	public double getSalesTax(Room homeRoom, MOB seller)
@@ -911,7 +909,6 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		CMLib.commands().postSay(seller,buyer,L("I'm sorry, I'm not buying those."),true,false);
 		return false;
 	}
-
 
 	@Override
 	public boolean standardBuyEvaluation(MOB seller,

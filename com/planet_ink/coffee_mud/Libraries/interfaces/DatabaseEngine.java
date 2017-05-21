@@ -1120,7 +1120,6 @@ public interface DatabaseEngine extends CMLibrary
 	 */
 	public void DBDeleteJournal(String journalID, String msgKeyOrNull);
 
-
 	/**
 	 * Table category: DBJOURNALS
 	 * Updates the existing journal message record in the database. 

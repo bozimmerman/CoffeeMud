@@ -57,5 +57,4 @@ public class Sabre extends StdWeapon
 		weaponClassification=Weapon.CLASS_SWORD;
 	}
 
-
 }

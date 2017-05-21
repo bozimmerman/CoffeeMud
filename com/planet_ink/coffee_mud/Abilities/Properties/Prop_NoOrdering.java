@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 /*
    Copyright 2006-2017 Bo Zimmerman
 
@@ -33,9 +32,23 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class Prop_NoOrdering extends Property
 {
-	@Override public String ID() { return "Prop_NoOrdering"; }
-	@Override public String name(){ return "Group/Ordering Neutralizing";}
-	@Override protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_MOBS;}
+	@Override
+	public String ID()
+	{
+		return "Prop_NoOrdering";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Group/Ordering Neutralizing";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_MOBS;
+	}
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)

@@ -35,13 +35,44 @@ import java.util.*;
 
 public class Chant_Grapevine extends Chant
 {
-	@Override public String ID() { return "Chant_Grapevine"; }
+	@Override
+	public String ID()
+	{
+		return "Chant_Grapevine";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Grapevine");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
-	@Override protected int canTargetCode(){return 0;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS|Ability.CAN_ITEMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
 	protected List<Ability> myChants=new Vector<Ability>();
 
 	@Override
@@ -151,7 +182,6 @@ public class Chant_Grapevine extends Chant
 		}
 		else
 			beneficialVisualFizzle(mob,myPlant,L("<S-NAME> chant(s) to <T-NAMESELF>, but nothing happens."));
-
 
 		// return whether it worked
 		return success;

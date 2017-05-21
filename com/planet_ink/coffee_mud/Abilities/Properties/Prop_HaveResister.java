@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -162,7 +161,6 @@ public class Prop_HaveResister extends Property implements TriggeredAffect
 		}
 		super.affectCharStats(affectedMOB,affectedStats);
 	}
-
 
 	public boolean checkProtection(String protType)
 	{

@@ -35,23 +35,94 @@ import java.util.*;
 
 public class Disease_Narcolepsy extends Disease
 {
-	@Override public String ID() { return "Disease_Narcolepsy"; }
-	private final static String localizedName = CMLib.lang().L("Narcolepsy");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Narcolepsy)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public boolean putInCommandlist(){return false;}
+	@Override
+	public String ID()
+	{
+		return "Disease_Narcolepsy";
+	}
 
-	@Override protected int DISEASE_TICKS(){return 99999;}
-	@Override protected int DISEASE_DELAY(){return (int)(CMProps.getMillisPerMudHour()/CMProps.getTickMillis());}
-	@Override protected String DISEASE_DONE(){return L("Your narcolepsy is cured!");}
-	@Override protected String DISEASE_START(){return L("^G<S-NAME> seem(s) sleepy.^?");}
-	@Override protected String DISEASE_AFFECT(){return L("<S-NAME> <S-IS-ARE> getting sleepy...");}
-	@Override public int abilityCode(){return 0;}
-	@Override public int difficultyLevel(){return 6;}
+	private final static String localizedName = CMLib.lang().L("Narcolepsy");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Narcolepsy)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public boolean putInCommandlist()
+	{
+		return false;
+	}
+
+	@Override
+	protected int DISEASE_TICKS()
+	{
+		return 99999;
+	}
+
+	@Override
+	protected int DISEASE_DELAY()
+	{
+		return (int)(CMProps.getMillisPerMudHour()/CMProps.getTickMillis());
+	}
+
+	@Override
+	protected String DISEASE_DONE()
+	{
+		return L("Your narcolepsy is cured!");
+	}
+
+	@Override
+	protected String DISEASE_START()
+	{
+		return L("^G<S-NAME> seem(s) sleepy.^?");
+	}
+
+	@Override
+	protected String DISEASE_AFFECT()
+	{
+		return L("<S-NAME> <S-IS-ARE> getting sleepy...");
+	}
+
+	@Override
+	public int abilityCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int difficultyLevel()
+	{
+		return 6;
+	}
+
 	protected int attDown=1;
 
 	@Override
@@ -75,7 +146,13 @@ public class Disease_Narcolepsy extends Disease
 			if(!CMLib.flags().isSleeping(mob))
 			{
 				final Command C=CMClass.getCommand("Sleep");
-				try{if(C!=null) C.execute(mob,CMParms.parse("Sleep"),MUDCmdProcessor.METAFLAG_FORCED);}catch(final Exception e){}
+				try
+				{
+					if(C!=null) C.execute(mob,CMParms.parse("Sleep"),MUDCmdProcessor.METAFLAG_FORCED);
+				}
+				catch(final Exception e)
+				{
+				}
 			}
 			return true;
 		}

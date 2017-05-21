@@ -33,16 +33,45 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Chant_MuddyGrounds extends Chant
 {
-	@Override public String ID() { return "Chant_MuddyGrounds"; }
+	@Override
+	public String ID()
+	{
+		return "Chant_MuddyGrounds";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Muddy Grounds");
-	@Override public String name() { return localizedName; }
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ROOMS;
+	}
 
 	@Override
 	public void unInvoke()
@@ -69,7 +98,7 @@ public class Chant_MuddyGrounds extends Chant
 			{
 				final MOB M=R.fetchInhabitant(m);
 				if((M!=null)&&(M.isInCombat()))
-				   M.curState().adjMovement(-1,M.maxState());
+					M.curState().adjMovement(-1,M.maxState());
 			}
 		}
 		return super.tick(ticking,tickID);
@@ -136,7 +165,6 @@ public class Chant_MuddyGrounds extends Chant
 		}
 		else
 			beneficialWordsFizzle(mob,null,L("<S-NAME> chant(s) to the ground, but nothing happens."));
-
 
 		// return whether it worked
 		return success;

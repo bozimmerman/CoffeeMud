@@ -821,7 +821,6 @@ public class JournalLoader
 		}
 	}
 
-
 	public void DBDelete(String journal, String messageKey)
 	{
 		journal = DB.injectionClean(journal);

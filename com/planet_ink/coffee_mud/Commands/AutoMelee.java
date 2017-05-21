@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2004-2017 Bo Zimmerman
 
@@ -39,7 +38,12 @@ public class AutoMelee extends StdCommand
 	public AutoMelee(){}
 
 	private final String[] access=I(new String[]{"AUTOMELEE"});
-	@Override public String[] getAccessWords(){return access;}
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
+
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
@@ -68,6 +72,10 @@ public class AutoMelee extends StdCommand
 		return false;
 	}
 
-	@Override public boolean canBeOrdered(){return true;}
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 }
 

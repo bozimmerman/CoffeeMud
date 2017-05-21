@@ -147,7 +147,6 @@ public class CharGen extends StdCommand
 		}
 	}
 
-
 	protected MOB levelMOBup(final int level, final CharClass C, final boolean player)
 	{
 		final MOB mob=CMClass.getFactoryMOB();

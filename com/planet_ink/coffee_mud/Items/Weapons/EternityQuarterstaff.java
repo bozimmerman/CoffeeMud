@@ -63,8 +63,6 @@ public class EternityQuarterstaff extends Quarterstaff
 
 	}
 
-
-
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{

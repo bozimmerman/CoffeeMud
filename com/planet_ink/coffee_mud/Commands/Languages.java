@@ -38,7 +38,12 @@ public class Languages extends Skills
 	public Languages(){}
 
 	private final String[] access=I(new String[]{"LANGUAGES","LANGS"});
-	@Override public String[] getAccessWords(){return access;}
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
+
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
@@ -52,7 +57,10 @@ public class Languages extends Skills
 		return false;
 	}
 
-	@Override public boolean canBeOrdered(){return true;}
-
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 
 }

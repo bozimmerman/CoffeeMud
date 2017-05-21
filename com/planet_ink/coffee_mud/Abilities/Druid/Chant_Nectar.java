@@ -184,7 +184,6 @@ public class Chant_Nectar extends Chant
 			}
 		}
 
-
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 

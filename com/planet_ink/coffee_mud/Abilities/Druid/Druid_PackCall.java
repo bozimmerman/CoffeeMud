@@ -36,18 +36,64 @@ import java.util.*;
 
 public class Druid_PackCall extends StdAbility
 {
-	@Override public String ID() { return "Druid_PackCall"; }
+	@Override
+	public String ID()
+	{
+		return "Druid_PackCall";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Pack Call");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Pack Call)");
-	@Override public String displayText() { return localizedStaticDisplay; }
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"PACKCALL"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_ANIMALAFFINITY;}
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_SELF;
+	}
+
+	@Override
+	public int enchantQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL|Ability.DOMAIN_ANIMALAFFINITY;
+	}
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)

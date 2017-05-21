@@ -33,16 +33,45 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Prayer_DemonicConsumption extends Prayer
 {
-	@Override public String ID() { return "Prayer_DemonicConsumption"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_DemonicConsumption";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Demonic Consumption");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_VEXING;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override protected int canTargetCode(){return CAN_ITEMS|CAN_MOBS;}
-	@Override public long flags(){return Ability.FLAG_UNHOLY;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_VEXING;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_ITEMS|CAN_MOBS;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_UNHOLY;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -62,7 +91,6 @@ public class Prayer_DemonicConsumption extends Prayer
 		
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-
 
 		boolean success=false;
 		int affectType=CMMsg.MSG_CAST_VERBAL_SPELL;
@@ -135,7 +163,6 @@ public class Prayer_DemonicConsumption extends Prayer
 		}
 		else
 			maliciousFizzle(mob,target,L("<S-NAME> point(s) at <T-NAMESELF> and @x1 treacherously, but fizzle(s) the magic!",prayWord(mob)));
-
 
 		// return whether it worked
 		return success;

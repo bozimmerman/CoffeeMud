@@ -58,7 +58,6 @@ public interface PlayingCard extends Item
 	 */
 	public boolean isFaceUp();
 
-
 	/**
 	 * Sets the card as face up
 	 * @see PlayingCard#isFaceUp()

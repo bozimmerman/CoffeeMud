@@ -22,6 +22,7 @@ public class ReadOnlyCollection<K> implements Collection<K>
 	{
 		col=c;
 	}
+
 	@Override
 	public boolean add(K e)
 	{

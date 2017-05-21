@@ -15,8 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
 import java.util.*;
 
 /*
@@ -255,7 +253,7 @@ public class TaxCollector extends StdBehavior
 	public boolean okMessage(Environmental oking, CMMsg msg)
 	{
 		if((oking==null)||(!(oking instanceof MOB)))
-		   return super.okMessage(oking,msg);
+			return super.okMessage(oking,msg);
 		final MOB mob=(MOB)oking;
 		if(msg.amITarget(mob)
 		&&(msg.targetMinor()==CMMsg.TYP_GIVE)

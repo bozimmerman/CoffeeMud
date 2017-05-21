@@ -35,13 +35,43 @@ import java.util.*;
 
 public class Chant_MagneticEarth extends Chant
 {
-	@Override public String ID() { return "Chant_MagneticEarth"; }
+	@Override
+	public String ID()
+	{
+		return "Chant_MagneticEarth";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Magnetic Earth");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
-	@Override protected int canTargetCode(){return Ability.CAN_ROOMS;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ROOMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_ROOMS;
+	}
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
@@ -94,6 +124,7 @@ public class Chant_MagneticEarth extends Chant
 	}
 
 	protected boolean checked=false;
+
 	@Override
 	public void executeMsg(Environmental host, CMMsg msg)
 	{

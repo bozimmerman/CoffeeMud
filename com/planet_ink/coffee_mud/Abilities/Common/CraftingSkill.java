@@ -236,7 +236,11 @@ public class CraftingSkill extends GatheringSkill
 			if((I instanceof Recipe)
 			&&(((Recipe)I).getCommonSkillID().equalsIgnoreCase(ID())))
 			{
-				if(!clonedYet){ recipes=new XVector<List<String>>(recipes); clonedYet=true;}
+				if(!clonedYet)
+				{
+					recipes=new XVector<List<String>>(recipes);
+					clonedYet=true;
+				}
 				final StringBuffer allRecipeLines=new StringBuffer("");
 				if(((Recipe)I).getRecipeCodeLines().length>0)
 				{

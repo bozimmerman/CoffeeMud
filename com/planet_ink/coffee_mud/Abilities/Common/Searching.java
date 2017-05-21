@@ -33,15 +33,35 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Searching extends CommonSkill
 {
-	@Override public String ID() { return "Searching"; }
+	@Override
+	public String ID()
+	{
+		return "Searching";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Searching");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"SEARCH","SEARCHING"});
-	@Override public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ALERT; }
-	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ALERT;
+	}
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
 	protected Room searchRoom=null;
 	private int bonusThisRoom=0;
 

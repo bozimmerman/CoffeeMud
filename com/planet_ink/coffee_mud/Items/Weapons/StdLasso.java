@@ -114,5 +114,4 @@ public class StdLasso extends StdWeapon
 			super.executeMsg(myHost,msg);
 	}
 
-
 }

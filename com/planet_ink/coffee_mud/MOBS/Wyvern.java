@@ -56,7 +56,6 @@ public class Wyvern extends StdMOB
 
 		basePhyStats().setWeight(2000 + Math.abs(randomizer.nextInt() % 550));
 
-
 		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,5 + Math.abs(randomizer.nextInt() % 3));
 		baseCharStats().setStat(CharStats.STAT_STRENGTH,18);
 		baseCharStats().setStat(CharStats.STAT_DEXTERITY,13);
@@ -79,7 +78,6 @@ public class Wyvern extends StdMOB
 		recoverPhyStats();
 		recoverCharStats();
 	}
-
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
@@ -132,6 +130,5 @@ public class Wyvern extends StdMOB
 		}
 		return true;
 	}
-
 
 }

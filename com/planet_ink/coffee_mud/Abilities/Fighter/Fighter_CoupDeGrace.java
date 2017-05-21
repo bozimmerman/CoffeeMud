@@ -33,21 +33,70 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Fighter_CoupDeGrace extends FighterSkill
 {
-	@Override public String ID() { return "Fighter_CoupDeGrace"; }
+	@Override
+	public String ID()
+	{
+		return "Fighter_CoupDeGrace";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Coup de Grace");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"COUP","COUPDEGRACE"});
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
-	@Override public int maxRange(){return adjustedMaxInvokerRange(0);}
-	@Override public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_DIRTYFIGHTING;}
-	@Override public int usageType(){return USAGE_MOVEMENT;}
-	@Override protected int overrideMana(){return 150;}
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	public int maxRange()
+	{
+		return adjustedMaxInvokerRange(0);
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL|Ability.DOMAIN_DIRTYFIGHTING;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT;
+	}
+
+	@Override
+	protected int overrideMana()
+	{
+		return 150;
+	}
 
 	@Override
 	public int castingQuality(MOB mob, Physical target)

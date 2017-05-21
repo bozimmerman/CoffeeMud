@@ -110,7 +110,6 @@ public interface Law extends CMCommon
 	 */
 	public boolean hasModifiableLaws();
 
-
 	/**
 	 * Returns one of the raw property entries used to construct
 	 * the legal definitions.

@@ -35,13 +35,32 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Prop_ReqRaces extends Property implements TriggeredAffect
 {
-	@Override public String ID() { return "Prop_ReqRaces"; }
-	@Override public String name(){ return "Room/Exit Race Limitations";}
-	@Override protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS;}
+	@Override
+	public String ID()
+	{
+		return "Prop_ReqRaces";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Room/Exit Race Limitations";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS;
+	}
+
 	private boolean noFollow=false;
 	private boolean noSneak=false;
 
-	@Override public long flags(){return Ability.FLAG_ZAPPER;}
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_ZAPPER;
+	}
 
 	@Override
 	public int triggerMask()
@@ -68,7 +87,6 @@ public class Prop_ReqRaces extends Property implements TriggeredAffect
 		super.setMiscText(txt);
 	}
 
-
 	public boolean passesMuster(MOB mob)
 	{
 		if(mob==null)
@@ -89,6 +107,7 @@ public class Prop_ReqRaces extends Property implements TriggeredAffect
 
 		return true;
 	}
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{

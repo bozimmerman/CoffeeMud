@@ -54,7 +54,6 @@ public class Wolverine extends StdMOB
 
 		basePhyStats.setWeight(20 + Math.abs(randomizer.nextInt() % 15));
 
-
 		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,1);
 		baseCharStats().setStat(CharStats.STAT_STRENGTH,10);
 		baseCharStats().setStat(CharStats.STAT_DEXTERITY,14);

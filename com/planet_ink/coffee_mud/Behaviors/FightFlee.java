@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -35,8 +34,18 @@ import java.util.*;
 */
 public class FightFlee extends ActiveTicker
 {
-	@Override public String ID(){return "FightFlee";}
-	@Override protected int canImproveCode(){return Behavior.CAN_MOBS;}
+	@Override
+	public String ID()
+	{
+		return "FightFlee";
+	}
+
+	@Override
+	protected int canImproveCode()
+	{
+		return Behavior.CAN_MOBS;
+	}
+
 	public FightFlee()
 	{
 		super();

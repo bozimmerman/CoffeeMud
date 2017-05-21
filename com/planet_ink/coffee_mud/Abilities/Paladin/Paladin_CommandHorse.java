@@ -36,15 +36,50 @@ import java.util.*;
 
 public class Paladin_CommandHorse extends StdAbility
 {
-	@Override public String ID() { return "Paladin_CommandHorse"; }
+	@Override
+	public String ID()
+	{
+		return "Paladin_CommandHorse";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Command Horse");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"COMMANDHORSE"});
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_ANIMALAFFINITY;}
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	public int enchantQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL|Ability.DOMAIN_ANIMALAFFINITY;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -113,7 +148,6 @@ public class Paladin_CommandHorse extends StdAbility
 		}
 		else
 			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to command <T-NAMESELF>, but it definitely didn't work."));
-
 
 		// return whether it worked
 		return success;

@@ -140,7 +140,6 @@ public class IMudPeer implements PersistentPeer
 		myID=ob.getClass().getName().substring(ob.getClass().getName().lastIndexOf('.')+1);
 	}
 
-
 	/**
 	 * An implementation uses this to tell its Persistent
 	 * that it is in the middle of restoring.
@@ -148,5 +147,7 @@ public class IMudPeer implements PersistentPeer
 	 */
 	@Override
 	public boolean isRestoring()
-	{return isRestoring;}
+	{
+		return isRestoring;
+	}
 }

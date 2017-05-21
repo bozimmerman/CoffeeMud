@@ -354,6 +354,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public void postProcess(final Map<String,Object> defined) throws CMException
 	{
@@ -384,6 +385,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	{
 		if(n != null)
 		for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+		{
 			if(n.links().containsKey(Integer.valueOf(d)))
 			{
 				final LayoutNode offN=n.links().get(Integer.valueOf(d));
@@ -396,6 +398,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					layoutRecursiveFill(offN,nodesDone,group,type);
 				}
 			}
+		}
 	}
 
 	protected void layoutFollow(LayoutNode n, LayoutTypes type, int direction, HashSet<LayoutNode> nodesAlreadyGrouped, List<LayoutNode> group)
@@ -618,6 +621,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 						int topDir=-1;
 						int topSize=-1;
 						for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+						{
 							if(node.links().get(Integer.valueOf(d))!=null)
 							{
 								final List<LayoutNode> grpCopy=new XVector<LayoutNode>(group);
@@ -631,6 +635,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 									topDir=d;
 								}
 							}
+						}
 						if(topDir>=0)
 						{
 							layoutFollow(node,LayoutTypes.street,topDir,nodesAlreadyGrouped,group);
@@ -2183,6 +2188,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		R=(Race)CMClass.getRace("GenRace").copyOf();
 		int numStatsFound=0;
 		for(String stat : R.getStatCodes())
+		{
 			try
 			{
 				if(findOptionalString(null, null, null, stat, piece, defined, false)!=null)
@@ -2192,6 +2198,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			{
 				numStatsFound++;
 			}
+		}
 		if(numStatsFound<5)
 			throw new CMException("Too few fields to build race on classID '"+classID+"', Data: "+CMParms.toKeyValueSlashListString(piece.parms())+":"+CMStrings.limit(piece.value(),100));
 		R.setRacialParms("<RACE><ID>"+CMStrings.capitalizeAndLower(classID)+"</ID><NAME>"+CMStrings.capitalizeAndLower(classID)+"</NAME></RACE>");

@@ -67,7 +67,6 @@ public class GenBoffWeapon extends StdBoffWeapon
 		return true;
 	}
 
-
 	@Override
 	public String text()
 	{

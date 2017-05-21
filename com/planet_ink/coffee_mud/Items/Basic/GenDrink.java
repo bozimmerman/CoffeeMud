@@ -60,7 +60,6 @@ public class GenDrink extends StdDrink
 		recoverPhyStats();
 	}
 
-
 	@Override
 	public boolean isGeneric()
 	{

@@ -38,7 +38,11 @@ public class Compare extends StdCommand
 	public Compare(){}
 
 	private final String[] access=I(new String[]{"COMPARE","COMP"});
-	@Override public String[] getAccessWords(){return access;}
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
@@ -104,7 +108,10 @@ public class Compare extends StdCommand
 					if(compareThisCode==compareThatCode)
 					{
 						if(!I.amWearingAt(Wearable.IN_INVENTORY))
-						{ toThis=I; break;}
+						{
+							toThis=I;
+							break;
+						}
 						if(possible==null)
 							possible=I;
 					}
@@ -170,9 +177,23 @@ public class Compare extends StdCommand
 			CMLib.commands().doCommandFail(mob,origCmds,L("You can't compare @x1 and @x2.",compareThis.name(),toThis.name()));
 		return false;
 	}
-	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandCombatActionCost(ID());}
-	@Override public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandActionCost(ID());}
-	@Override public boolean canBeOrdered(){return true;}
 
+	@Override
+	public double combatActionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandCombatActionCost(ID());
+	}
+
+	@Override
+	public double actionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandActionCost(ID());
+	}
+
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 
 }

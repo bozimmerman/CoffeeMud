@@ -256,8 +256,10 @@ public class DBConnections
 	{
 		int num=0;
 		for(final DBConnection conn : connections)
+		{
 			if(conn.inUse())
 				num++;
+		}
 		return num;
 	}
 
@@ -265,8 +267,10 @@ public class DBConnections
 	{
 		int num=0;
 		for(final DBConnection conn : connections)
+		{
 			if(!conn.inUse())
 				num++;
+		}
 		return num;
 	}
 
@@ -493,7 +497,6 @@ public class DBConnections
 			}
 		}
 
-
 		consecutiveFailures=0;
 		disconnected=false;
 		lockedUp=false;
@@ -549,7 +552,6 @@ public class DBConnections
 		if(!D.ready())
 			connections.remove(D);
 	}
-
 
 	/**
 	 * When reading a database table, this routine will read in
@@ -719,7 +721,9 @@ public class DBConnections
 			p.put("shutdown", "true");
 			//DriverManager.getConnection(DBService,p);
 		}
-		catch(final Exception e){}
+		catch(final Exception e)
+		{
+		}
 
 	}
 
@@ -770,7 +774,6 @@ public class DBConnections
 
 		}
 	}
-
 
 	/**
 	 * Queue up a failed write/update for later processing.
@@ -956,7 +959,6 @@ public class DBConnections
 		return Result;
 	}
 
-
 	/** list the connections
 	 *
 	 * Usage: listConnections(out);
@@ -1021,8 +1023,10 @@ public class DBConnections
 		if(disconnected)
 			status.append("#101 DBCONNECTIONS REPORTING A DISCONNECTED STATE\n");
 		if((lockedUp)||(disconnected))
+		{
 			for(final DBConnection conn : connections)
 				DBDone(conn);
+		}
 		return status;
 	}
 }

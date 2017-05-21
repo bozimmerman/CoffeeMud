@@ -34,8 +34,17 @@ import java.util.*;
 */
 public class RandomTraps extends ActiveTicker
 {
-	@Override public String ID(){return "RandomTraps";}
-	@Override protected int canImproveCode(){return Behavior.CAN_ROOMS|Behavior.CAN_AREAS;}
+	@Override
+	public String ID()
+	{
+		return "RandomTraps";
+	}
+
+	@Override
+	protected int canImproveCode()
+	{
+		return Behavior.CAN_ROOMS|Behavior.CAN_AREAS;
+	}
 
 	protected Vector<Physical> maintained=new Vector<Physical>();
 	protected int minTraps=1;
@@ -52,7 +61,11 @@ public class RandomTraps extends ActiveTicker
 	protected Set<Integer> restrictedLocales=null;
 	private int tickStatus=Tickable.STATUS_NOT;
 
-	@Override public int getTickStatus(){return tickStatus;}
+	@Override
+	public int getTickStatus()
+	{
+		return tickStatus;
+	}
 
 	public RandomTraps()
 	{
@@ -172,8 +185,10 @@ public class RandomTraps extends ActiveTicker
 						s=s.substring(1).toUpperCase().trim();
 						int code=-1;
 						for(int i=0;i<Room.DOMAIN_INDOORS_DESCS.length;i++)
+						{
 							if(Room.DOMAIN_INDOORS_DESCS[i].startsWith(s))
 								code=Room.INDOORS+i;
+						}
 						if(code>=0)
 						{
 							if((c=='+')&&(restrictedLocales.contains(Integer.valueOf(code))))
@@ -302,7 +317,6 @@ public class RandomTraps extends ActiveTicker
 					}
 					if(R==null)
 						continue;
-
 
 					if((doAnyDoors)||(doAnyLockedDoors))
 					for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)

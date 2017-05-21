@@ -110,8 +110,10 @@ public class TrackingVector<T> extends Vector<T>
 			{
 				final List<WeakReference<TrackingVector<T>>> l = tracker.get(e);
 				for (final WeakReference<TrackingVector<T>> ref : l)
+				{
 					if (ref.get() != null)
 						ref.get().removeOnlyFromMe(e);
+				}
 				tracker.remove(e);
 			}
 		}

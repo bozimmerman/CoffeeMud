@@ -58,7 +58,6 @@ public class FlamingSword extends Longsword
 		weaponDamageType=TYPE_SLASHING;
 	}
 
-
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{

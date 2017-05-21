@@ -33,17 +33,48 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Prayer_DivinePerspective extends Prayer
 {
-	@Override public String ID() { return "Prayer_DivinePerspective"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_DivinePerspective";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Divine Perspective");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Perspective)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
-	@Override public long flags(){return Ability.FLAG_HOLY;}
-	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_HOLY;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_SELF;
+	}
+
 	public String mobName="";
 	public boolean noRecurse=false;
 
@@ -55,8 +86,10 @@ public class Prayer_DivinePerspective extends Prayer
 			return;
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
+		{
 			if(invoker!=null)
 				invoker.tell(L("The perspective of '@x1' fades from your mind.",mob.name(invoker)));
+		}
 		super.unInvoke();
 
 	}
@@ -126,7 +159,6 @@ public class Prayer_DivinePerspective extends Prayer
 		}
 		else
 			beneficialVisualFizzle(mob,null,L("<S-NAME> attempt(s) to invoke the holy perspective of @x1, but fail(s).",target.Name()));
-
 
 		// return whether it worked
 		return success;

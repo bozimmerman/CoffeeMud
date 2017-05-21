@@ -57,6 +57,7 @@ public class GenPackagedVariety extends GenItem implements PackagedItems
 
 	protected byte[]	readableText=null;
 	protected int numberOfItemsInPackage = 0;
+
 	@Override
 	public String readableText()
 	{
@@ -273,7 +274,6 @@ public class GenPackagedVariety extends GenItem implements PackagedItems
 	{
 		numberOfItemsInPackage = number;
 	}
-	
 	
 	@Override
 	public int getPackageFlagsBitmap() 

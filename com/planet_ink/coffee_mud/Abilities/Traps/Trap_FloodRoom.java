@@ -132,7 +132,6 @@ public class Trap_FloodRoom extends StdTrap
 		}
 	}
 
-
 	@Override
 	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
 	{
@@ -148,7 +147,6 @@ public class Trap_FloodRoom extends StdTrap
 		}
 		return super.setTrap(mob,P,trapBonus,qualifyingClassLevel,perm);
 	}
-
 
 	@Override
 	public boolean canSetTrapOn(MOB mob, Physical P)

@@ -320,7 +320,6 @@ public class Thief_Assassinate extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-
 		final boolean success=proficiencyCheck(mob,0,auto);
 
 		int range=50 + super.getXLEVELLevel(mob)+(5*super.getXMAXRANGELevel(mob));
@@ -350,7 +349,10 @@ public class Thief_Assassinate extends ThiefSkill
 					if(R.fetchInhabitant(mobName)!=null)
 						rooms.addElement(R);
 				}
-			}catch(final NoSuchElementException nse){}
+			}
+			catch(final NoSuchElementException nse)
+			{
+			}
 		}
 
 		final TrackingLibrary.TrackingFlags flags=CMLib.tracking().newFlags();
@@ -387,7 +389,6 @@ public class Thief_Assassinate extends ThiefSkill
 		}
 		else
 			return beneficialVisualFizzle(mob,tracking,L("<S-NAME> attempt(s) to track <T-NAMESELF> for assassination, but fail(s)."));
-
 
 		// return whether it worked
 		return success;

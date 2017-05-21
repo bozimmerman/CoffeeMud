@@ -33,16 +33,45 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Chant_MeteorStrike extends Chant
 {
-	@Override public String ID() { return "Chant_MeteorStrike"; }
+	@Override
+	public String ID()
+	{
+		return "Chant_MeteorStrike";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Meteor Strike");
-	@Override public String name() { return localizedName; }
-	@Override public int maxRange(){return adjustedMaxInvokerRange(5);}
-	@Override public int minRange(){return 1;}
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int maxRange()
+	{
+		return adjustedMaxInvokerRange(5);
+	}
+
+	@Override
+	public int minRange()
+	{
+		return 1;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
 
 	@Override
 	public int castingQuality(MOB mob, Physical target)
@@ -87,6 +116,7 @@ public class Chant_MeteorStrike extends Chant
 		{
 
 			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),L(auto?"A devastating meteor shower erupts!":"^S<S-NAME> chant(s) for a devastating meteor shower!^?")+CMLib.protocol().msp("meteor.wav",40)))
+			{
 				for (final Object element : h)
 				{
 					final MOB target=(MOB)element;
@@ -106,10 +136,10 @@ public class Chant_MeteorStrike extends Chant
 							CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BASHING,L("The meteors <DAMAGE> <T-NAME>!"));
 					}
 				}
+			}
 		}
 		else
 			return maliciousFizzle(mob,null,L("<S-NAME> chant(s) to the sky, but nothing happens."));
-
 
 		// return whether it worked
 		return success;

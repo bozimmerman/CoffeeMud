@@ -38,7 +38,12 @@ public class Commands extends StdCommand
 	public Commands(){}
 
 	private final String[] access=I(new String[]{"COMMANDS"});
-	@Override public String[] getAccessWords(){return access;}
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
+
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
@@ -85,7 +90,11 @@ public class Commands extends StdCommand
 			for(final Iterator<String> i=commandSet.iterator();i.hasNext();)
 			{
 				final String s=i.next();
-				if(++col>3){ commandList.append("\n\r"); col=0;}
+				if(++col>3)
+				{
+					commandList.append("\n\r");
+					col=0;
+				}
 				commandList.append(CMStrings.padRight("^<HELP^>"+s+"^</HELP^>",COL_LEN));
 			}
 			commandList.append("\n\r\n\rEnter HELP 'COMMAND' for more information on these commands.\n\r");
@@ -94,5 +103,9 @@ public class Commands extends StdCommand
 		return false;
 	}
 
-	@Override public boolean canBeOrdered(){return true;}
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 }

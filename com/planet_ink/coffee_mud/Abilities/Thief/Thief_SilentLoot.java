@@ -35,16 +35,56 @@ import java.util.*;
 
 public class Thief_SilentLoot extends ThiefSkill
 {
-	@Override public String ID() { return "Thief_SilentLoot"; }
-	@Override public String displayText() {return L("(Silent AutoLoot)");}
+	@Override
+	public String ID()
+	{
+		return "Thief_SilentLoot";
+	}
+
+	@Override
+	public String displayText()
+	{
+		return L("(Silent AutoLoot)");
+	}
+
 	private final static String localizedName = CMLib.lang().L("Silent AutoLoot");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALING;}
-	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALING;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_SELF;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"SILENTLOOT"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
 
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)

@@ -137,4 +137,3 @@ public class Skill_CulturalAdaptation extends StdSkill
 
 }
 
-

@@ -158,7 +158,6 @@ public class LightningMephit extends Mephit
 		return body;
 	}
 	
-
 	protected static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
 
 	@Override

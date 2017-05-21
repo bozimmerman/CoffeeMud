@@ -34,7 +34,11 @@ import java.util.*;
 */
 public class Drowness extends StdBehavior
 {
-	@Override public String ID(){return "Drowness";}
+	@Override
+	public String ID()
+	{
+		return "Drowness";
+	}
 
 	@Override
 	public String accountForYourself()
@@ -306,7 +310,6 @@ public class Drowness extends StdBehavior
 		mob.addAbility(p14);
 
 	}
-
 
 	public boolean checkStatus(MOB mob)
 	{

@@ -370,7 +370,6 @@ public interface CombatLibrary extends CMLibrary
 	 */
 	public CMMsg postWeaponAttackResult(MOB source, MOB target, Item item, boolean success);
 
-
 	/**
 	 * This method handles both a hit or a miss with a weapon between two
 	 * ships in combat.  The hit, obviously, posts damage, while the miss, 
@@ -721,7 +720,6 @@ public interface CombatLibrary extends CMLibrary
 	 * @return true if an attack was tried, false if not.
 	 */
 	public boolean postRevengeAttack(MOB attacker, MOB defender);
-	
 	
 	/**
 	 * Every tick, this method is called.  If the given mob is not

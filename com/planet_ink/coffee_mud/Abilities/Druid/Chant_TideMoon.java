@@ -33,7 +33,6 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Chant_TideMoon extends Chant
 {
 	@Override
@@ -148,7 +147,6 @@ public class Chant_TideMoon extends Chant
 		}
 		else
 			return beneficialWordsFizzle(mob,null,L("<S-NAME> chant(s) to the moon, but the magic fades"));
-
 
 		// return whether it worked
 		return success;

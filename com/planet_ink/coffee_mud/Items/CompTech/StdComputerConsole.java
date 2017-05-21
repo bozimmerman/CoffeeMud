@@ -223,7 +223,6 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 		return (I instanceof Software) && (((Software)I).getTechType()==TechType.SHIP_SOFTWARE);
 	}
 
-
 	@Override
 	public boolean subjectToWearAndTear()
 	{
@@ -250,11 +249,13 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 			final List<Item> list=getContents();
 			final LinkedList<Software> softwareList=new LinkedList<Software>();
 			for(final Item I : list)
+			{
 				if(I instanceof Software)
 				{
 					((Software)I).setCircuitKey(circuitKey);
 					softwareList.add((Software)I);
 				}
+			}
 			nextSoftwareCheck=System.currentTimeMillis()+(10*1000);
 			software=softwareList;
 		}

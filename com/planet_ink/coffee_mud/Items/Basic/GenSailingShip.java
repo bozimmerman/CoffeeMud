@@ -2619,6 +2619,7 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 											"AREA","OWNER","PRICE","PUTSTR","MOUNTSTR","DISMOUNTSTR","DEFCLOSED","DEFLOCKED",
 											"EXITNAME"
 										  };
+
 	@Override
 	public String getStat(String code)
 	{

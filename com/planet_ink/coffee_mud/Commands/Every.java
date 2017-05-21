@@ -38,8 +38,11 @@ public class Every extends StdCommand
 	public Every(){}
 
 	private final String[] access=I(new String[]{"EVERY"});
-	@Override public String[] getAccessWords(){return access;}
-	
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 	
 	private enum EveryWhat {
 		MOB,
@@ -48,7 +51,6 @@ public class Every extends StdCommand
 		EXIT
 	}
 
-	
 	protected List<String> makeNewCommands(List<String> commands, String replace)
 	{
 		final XVector<String> newCommands=new XVector<String>(commands);
@@ -247,6 +249,15 @@ public class Every extends StdCommand
 		return false;
 	}
 
-	@Override public boolean canBeOrdered(){return false;}
-	@Override public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.EVERY);}
+	@Override
+	public boolean canBeOrdered()
+	{
+		return false;
+	}
+
+	@Override
+	public boolean securityCheck(MOB mob)
+	{
+		return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.EVERY);
+	}
 }

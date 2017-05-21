@@ -86,7 +86,6 @@ public class Thief_Listen extends ThiefSkill
 	protected String			lastSaid	= "";
 	protected Set<ListenFlag>	flags		= new TreeSet<ListenFlag>(Arrays.asList(new ListenFlag[] { ListenFlag.INDOORS }));
 	
-	
 	@Override
 	public CMObject copyOf()
 	{

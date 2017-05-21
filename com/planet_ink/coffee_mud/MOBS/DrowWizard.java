@@ -100,7 +100,6 @@ public class DrowWizard extends DrowElf
 		if(dark==null)
 			return;
 
-
 		dark.setProficiency(100);
 		dark.setSavable(false);
 		this.addAbility(dark);
@@ -246,7 +245,7 @@ public class DrowWizard extends DrowElf
 		Ability dark=CMClass.getAbility("Spell_Darkness");
 		dark.setProficiency(100);
 		if(this.fetchAbility(dark.ID())==null)
-		   this.addAbility(dark);
+			this.addAbility(dark);
 		else
 			dark =this.fetchAbility(dark.ID());
 
@@ -254,8 +253,5 @@ public class DrowWizard extends DrowElf
 			dark.invoke(this,null,false,0);
 		return true;
 	}
-
-
-
 
 }

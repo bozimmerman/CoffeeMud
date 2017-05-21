@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -36,18 +35,39 @@ import java.util.*;
 
 public class Prop_ClosedSeason extends Property
 {
-	@Override public String ID() { return "Prop_ClosedSeason"; }
-	@Override public String name(){ return "Contingent Visibility";}
-	@Override protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_MOBS|Ability.CAN_EXITS|Ability.CAN_ROOMS;}
+	@Override
+	public String ID()
+	{
+		return "Prop_ClosedSeason";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Contingent Visibility";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ITEMS|Ability.CAN_MOBS|Ability.CAN_EXITS|Ability.CAN_ROOMS;
+	}
+
 	protected Vector<String> closedV=null;
 	boolean doneToday=false;
 	private Area exitArea=null;
 
 	@Override
 	public String accountForYourself()
-	{ return "";	}
+	{
+		return "";
+	}
 
-	@Override public long flags(){return Ability.FLAG_ADJUSTER;}
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_ADJUSTER;
+	}
 
 	@Override
 	public void setMiscText(String text)

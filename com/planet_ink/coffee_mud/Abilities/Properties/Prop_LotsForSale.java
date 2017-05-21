@@ -205,6 +205,7 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 				postWork.add(new Runnable()
 				{
 					final Room room=R2;
+
 					@Override
 					public void run()
 					{
@@ -228,6 +229,7 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 						E.setDoorsNLocks(E.hasADoor(),E.isOpen(),E.defaultsClosed(),false,false,false);
 						postWork.add(new Runnable(){
 							final Room room=R2;
+
 							@Override
 							public void run()
 							{
@@ -334,6 +336,7 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 				{
 					final Room room = R2;
 					final LandTitle title=newTitle;
+
 					@Override
 					public void run()
 					{
@@ -353,6 +356,7 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 			postWork.add(new Runnable()
 			{
 				final Set<Room> updateExits2=new SHashSet<Room>(updateExits);
+
 				@Override
 				public void run()
 				{

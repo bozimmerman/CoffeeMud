@@ -32,9 +32,23 @@ import java.util.*;
 */
 public class Prop_ItemSlotFiller extends Property
 {
-	@Override public String ID() { return "Prop_ItemSlotFiller"; }
-	@Override public String name(){ return "Provides for enhanced item slots.";}
-	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
+	@Override
+	public String ID()
+	{
+		return "Prop_ItemSlotFiller";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Provides for enhanced item slots.";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ITEMS;
+	}
 
 	protected int 			slotCount	= 1;
 	protected String		slotType	= "";

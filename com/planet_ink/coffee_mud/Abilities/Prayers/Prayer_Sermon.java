@@ -35,16 +35,57 @@ import java.util.*;
 
 public class Prayer_Sermon extends Prayer
 {
-	@Override public String ID() { return "Prayer_Sermon"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_Sermon";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Sermon");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Sermon)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
-	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public long flags(){return Ability.FLAG_CHARMING|Ability.FLAG_NEUTRAL;}
-	@Override protected int overrideMana(){return Ability.COST_ALL;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_OTHERS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_CHARMING|Ability.FLAG_NEUTRAL;
+	}
+
+	@Override
+	protected int overrideMana()
+	{
+		return Ability.COST_ALL;
+	}
 
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
@@ -148,7 +189,6 @@ public class Prayer_Sermon extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-
 		boolean success=proficiencyCheck(mob,-(h.size()*3),auto);
 
 		if(success)
@@ -180,7 +220,6 @@ public class Prayer_Sermon extends Prayer
 		}
 		else
 			return beneficialWordsFizzle(mob,null,L("<S-NAME> forget(s) how <S-YOUPOSS> sermon to @x1 goes.",hisHerDiety(mob)));
-
 
 		// return whether it worked
 		return success;

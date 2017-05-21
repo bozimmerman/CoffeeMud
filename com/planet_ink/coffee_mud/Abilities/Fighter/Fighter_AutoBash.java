@@ -34,19 +34,59 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Fighter_AutoBash extends FighterSkill
 {
-	@Override public String ID() { return "Fighter_AutoBash"; }
+	@Override
+	public String ID()
+	{
+		return "Fighter_AutoBash";
+	}
+
 	private final static String localizedName = CMLib.lang().L("AutoBash");
-	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "";}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public String displayText()
+	{
+		return "";
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"AUTOBASH"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_SHIELDUSE;}
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_SELF;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL|Ability.DOMAIN_SHIELDUSE;
+	}
+
 	protected volatile int numberOfShields=-1;
 
 	@Override

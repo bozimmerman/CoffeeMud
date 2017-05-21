@@ -260,7 +260,6 @@ public class DBConnection
 		return false;
 	}
 
-
 	/**
 	 * set up this connection for use
 	 *
@@ -326,7 +325,6 @@ public class DBConnection
 		}
 		return false;
 	}
-
 
 	/**
 	 * set up this connection for use as a prepared statement
@@ -696,7 +694,6 @@ public class DBConnection
 			return "";
 		return lastError;
 	}
-
 
 	/**
 	 * returns the prepared statement, if creates

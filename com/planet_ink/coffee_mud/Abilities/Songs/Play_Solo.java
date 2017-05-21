@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2003-2017 Bo Zimmerman
 
@@ -36,14 +35,49 @@ import java.util.*;
 
 public class Play_Solo extends Play
 {
-	@Override public String ID() { return "Play_Solo"; }
+	@Override
+	public String ID()
+	{
+		return "Play_Solo";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Solo");
-	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	@Override protected boolean persistantSong(){return false;}
-	@Override protected boolean skipStandardSongTick(){return true;}
-	@Override protected String songOf(){return CMLib.english().startWithAorAn(name());}
-	@Override protected boolean skipStandardSongInvoke(){return true;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_OTHERS;
+	}
+
+	@Override
+	protected boolean persistantSong()
+	{
+		return false;
+	}
+
+	@Override
+	protected boolean skipStandardSongTick()
+	{
+		return true;
+	}
+
+	@Override
+	protected String songOf()
+	{
+		return CMLib.english().startWithAorAn(name());
+	}
+
+	@Override
+	protected boolean skipStandardSongInvoke()
+	{
+		return true;
+	}
 
 	@Override
 	public boolean okMessage(Environmental E, CMMsg msg)

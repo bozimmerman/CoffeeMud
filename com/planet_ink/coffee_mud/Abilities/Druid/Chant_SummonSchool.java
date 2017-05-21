@@ -114,6 +114,7 @@ public class Chant_SummonSchool extends Chant
 			unInvoke();
 		return true;
 	}
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{

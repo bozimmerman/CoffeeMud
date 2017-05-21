@@ -85,7 +85,6 @@ public interface Places extends PhysicalAgent
 	 */
 	public int getClimateType();
 
-
 	/**	Bitmap climate flag meaning that the area has inherited weather.  @see com.planet_ink.coffee_mud.core.interfaces.Places#climateType() */
 	public final static int CLIMASK_INHERIT = -1;
 	/**	Bitmap climate flag meaning that the area has normal weather.  @see com.planet_ink.coffee_mud.core.interfaces.Places#climateType() */

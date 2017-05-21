@@ -38,7 +38,11 @@ public class GConsider extends StdCommand
 	public GConsider(){}
 
 	private final String[] access=I(new String[]{"GCONSIDER","GCOS","GCO"});
-	@Override public String[] getAccessWords(){return access;}
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
 	public int relativeLevelDiff(MOB mob1, Set<MOB> mobs)
 	{
@@ -73,7 +77,6 @@ public class GConsider extends StdCommand
 
 		return levelDiffed*(levelDiff<0.0?-1:1);
 	}
-
 
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
@@ -164,9 +167,23 @@ public class GConsider extends StdCommand
 			return false;
 		}
 	}
-	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandCombatActionCost(ID());}
-	@Override public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandActionCost(ID());}
-	@Override public boolean canBeOrdered(){return true;}
 
+	@Override
+	public double combatActionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandCombatActionCost(ID());
+	}
+
+	@Override
+	public double actionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandActionCost(ID());
+	}
+
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 
 }

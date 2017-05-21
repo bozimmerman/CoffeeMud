@@ -33,18 +33,53 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Chant_MagneticField extends Chant
 {
-	@Override public String ID() { return "Chant_MagneticField"; }
+	@Override
+	public String ID()
+	{
+		return "Chant_MagneticField";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Magnetic Field");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Magnetic Field chant)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public long flags(){return Ability.FLAG_PARALYZING;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_PARALYZING;
+	}
 
 	public boolean wearingHeldMetal(Environmental affected)
 	{
@@ -105,7 +140,6 @@ public class Chant_MagneticField extends Chant
 		return true;
 	}
 
-
 	@Override
 	public void unInvoke()
 	{
@@ -134,7 +168,6 @@ public class Chant_MagneticField extends Chant
 			levelDiff=0;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-
 
 		boolean success=proficiencyCheck(mob,-(levelDiff*2),auto);
 

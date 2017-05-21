@@ -614,7 +614,6 @@ public class Arrest extends StdBehavior implements LegalBehavior
 			A.unInvoke();
 	}
 
-
 	public void dismissOfficer(MOB officer)
 	{
 		if(officer==null)
@@ -1139,7 +1138,6 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		}
 		return room;
 	}
-
 
 	public boolean isTroubleMaker(MOB M)
 	{
@@ -1830,7 +1828,6 @@ public class Arrest extends StdBehavior implements LegalBehavior
 						   info[Law.BIT_WARNMSG]);
 		}
 
-
 		Item w=null;
 		if((laws.basicCrimes().containsKey("ARMED"))
 		&&((!testMOB.isMonster())||(!myArea.inMyMetroArea(CMLib.map().getStartArea(testMOB))))
@@ -2375,7 +2372,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		case Law.STATE_SEEKING:
 			{
 				if((officer==null)||(!W.criminal().location().isInhabitant(officer)))
-				   officer=null;
+					officer=null;
 				if(officer==null)
 					officer=getElligibleOfficer(laws,myArea,W.criminal(),W.victim());
 				W.setTravelAttemptTime(0);
@@ -2876,7 +2873,11 @@ public class Arrest extends StdBehavior implements LegalBehavior
 					{
 
 						Ability A=W.criminal().fetchEffect("Prisoner");
-						if(A!=null){ A.unInvoke(); W.criminal().delEffect(A);}
+						if(A!=null)
+						{
+							A.unInvoke();
+							W.criminal().delEffect(A);
+						}
 
 						makePeace(officer.location());
 						W.setJail(jail);
@@ -2947,7 +2948,11 @@ public class Arrest extends StdBehavior implements LegalBehavior
 					if((jail!=null)&&(time>=0))
 					{
 						Ability A=W.criminal().fetchEffect("Prisoner");
-						if(A!=null){ A.unInvoke(); W.criminal().delEffect(A);}
+						if(A!=null)
+						{
+							A.unInvoke();
+							W.criminal().delEffect(A);
+						}
 
 						makePeace(officer.location());
 						W.setJail(jail);

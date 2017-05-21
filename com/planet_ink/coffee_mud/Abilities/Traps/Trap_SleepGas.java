@@ -120,6 +120,7 @@ public class Trap_SleepGas extends StdTrap
 		V.addElement(I);
 		return V;
 	}
+
 	@Override
 	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
 	{
@@ -150,6 +151,7 @@ public class Trap_SleepGas extends StdTrap
 		}
 		return true;
 	}
+
 	@Override
 	public void spring(MOB target)
 	{

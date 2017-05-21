@@ -73,7 +73,6 @@ public class Patroller extends ActiveTicker
 		return "regular patrolling";
 	}
 
-	
 	public Patroller()
 	{
 		super();
@@ -82,6 +81,7 @@ public class Patroller extends ActiveTicker
 		diameter=20;
 		tickReset();
 	}
+
 	@Override
 	public void setParms(String newParms)
 	{
@@ -117,6 +117,7 @@ public class Patroller extends ActiveTicker
 		if(path.length()>0)
 			V.addElement(path);
 		if(V.size()>1)
+		{
 			for(int i=V.size()-1;i>=0;i--)
 			{
 				s=V.elementAt(i);
@@ -129,6 +130,7 @@ public class Patroller extends ActiveTicker
 				if(i<(V.size()-1))
 					V.addElement(V.elementAt(i));
 			}
+		}
 		V.trimToSize();
 		cachedSteps = V;
 		return cachedSteps;
@@ -343,12 +345,14 @@ public class Patroller extends ActiveTicker
 						if(correction!=null)
 						{
 							for(int r=0;r<correction.size();r++)
+							{
 								if(((GridLocale)R).isMyGridChild(correction.get(r)))
 								{
 									GridLocaleFixed=true;
 									R=correction.get(r);
 									break;
 								}
+							}
 						}
 						if(!GridLocaleFixed)
 						{

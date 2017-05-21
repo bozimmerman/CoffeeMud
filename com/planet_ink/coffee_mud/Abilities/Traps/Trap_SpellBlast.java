@@ -134,6 +134,7 @@ public class Trap_SpellBlast extends StdTrap
 		}
 		return true;
 	}
+
 	@Override
 	public void spring(MOB target)
 	{

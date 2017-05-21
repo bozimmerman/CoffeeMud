@@ -33,18 +33,53 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Prayer_Demonshield extends Prayer
 {
-	@Override public String ID() { return "Prayer_Demonshield"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_Demonshield";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Demonshield");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Demonshield)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_HEATING|Ability.FLAG_FIREBASED;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_OTHERS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_UNHOLY|Ability.FLAG_HEATING|Ability.FLAG_FIREBASED;
+	}
 	final static String msgStr=CMLib.lang().L("The unholy flames around <S-NAME> flare and <DAMAGE> <T-NAME>!");
 	protected long oncePerTickTime=0;
 
@@ -79,7 +114,6 @@ public class Prayer_Demonshield extends Prayer
 		final MOB source=msg.source();
 		if(source.location()==null)
 			return;
-
 
 		if(msg.amITarget(mob))
 		{
@@ -147,7 +181,6 @@ public class Prayer_Demonshield extends Prayer
 		}
 		else
 			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1, but only sparks emerge.",prayWord(mob)));
-
 
 		// return whether it worked
 		return success;

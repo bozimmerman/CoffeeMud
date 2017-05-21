@@ -84,6 +84,7 @@ public class ReadOnlyListSet<K> implements Set<K>
 			}
 
 			@SuppressWarnings("unchecked")
+
 			@Override
 			public K next()
 			{

@@ -58,7 +58,6 @@ public interface JournalsLibrary extends CMLibrary
 	public JournalMetaData getJournalStats(ForumJournal journal);
 	public void clearJournalSummaryStats(ForumJournal journal);
 
-
 	public enum MsgMkrResolution { SAVEFILE, CANCELFILE }
 
 	public MsgMkrResolution makeMessage(final MOB mob, final String messageTitle, final List<String> vbuf, boolean autoAdd) throws IOException;

@@ -94,6 +94,7 @@ public class DBInterface implements DatabaseEngine
 		this.ClanLoader = 		new ClanLoader(privacyV.contains(DatabaseTables.DBCLANS.toString()) ? DB : oldBaseDB);
 		this.BackLogLoader = 	new BackLogLoader(privacyV.contains(DatabaseTables.DBBACKLOG.toString()) ? DB : oldBaseDB);
 	}
+
 	@Override
 	public CMObject newInstance()
 	{
@@ -877,6 +878,7 @@ public class DBInterface implements DatabaseEngine
 	{
 		return DataLoader.DBReadNames(section);
 	}
+
 	@Override
 	public List<PlayerData> DBReadPlayerData(String player, List<String> sections)
 	{

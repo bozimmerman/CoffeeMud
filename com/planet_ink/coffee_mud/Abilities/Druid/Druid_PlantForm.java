@@ -36,15 +36,50 @@ import java.util.*;
 
 public class Druid_PlantForm extends StdAbility
 {
-	@Override public String ID() { return "Druid_PlantForm"; }
+	@Override
+	public String ID()
+	{
+		return "Druid_PlantForm";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Plant Form");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_SHAPE_SHIFTING;}
-	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL|Ability.DOMAIN_SHAPE_SHIFTING;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_SELF;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"PLANTFORM"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
 
 	public Race newRace=null;
 	public String raceName="";
@@ -125,7 +160,6 @@ public class Druid_PlantForm extends StdAbility
 		}
 	}
 
-
 	@Override
 	public void unInvoke()
 	{
@@ -145,6 +179,7 @@ public class Druid_PlantForm extends StdAbility
 		raceName=getRaceName(classLevel);
 		newRace=getRace(classLevel);
 	}
+
 	public int getRaceLevel(int classLevel)
 	{
 		if(classLevel<5)
@@ -158,10 +193,12 @@ public class Druid_PlantForm extends StdAbility
 		else
 			return 3;
 	}
+
 	public Race getRace(int classLevel)
 	{
 		return CMClass.getRace(races[getRaceLevel(classLevel)]);
 	}
+
 	public String getRaceName(int classLevel)
 	{
 		return shapes[getRaceLevel(classLevel)];
@@ -296,7 +333,6 @@ public class Druid_PlantForm extends StdAbility
 		}
 		else
 			beneficialWordsFizzle(mob,null,L("<S-NAME> chant(s) to <S-HIM-HERSELF>, but nothing happens."));
-
 
 		// return whether it worked
 		return success;

@@ -33,15 +33,30 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Prayer_ReligiousDoubt extends Prayer
 {
 	public static final long DOUBT_TIME=TimeManager.MILI_HOUR;
 
-	@Override public String ID() { return "Prayer_ReligiousDoubt"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_ReligiousDoubt";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Religious Doubt");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;
+	}
+
 	@Override
 	public String displayText()
 	{
@@ -49,7 +64,13 @@ public class Prayer_ReligiousDoubt extends Prayer
 			return "";
 		return "(Religious Doubt)";
 	}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
 	protected int tickUp=0;
 	protected boolean otherSide=false;
 
@@ -79,7 +100,6 @@ public class Prayer_ReligiousDoubt extends Prayer
 		}
 		return super.tick(ticking,tickID);
 	}
-
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
@@ -126,7 +146,6 @@ public class Prayer_ReligiousDoubt extends Prayer
 		}
 		else
 			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 for <T-NAMESELF>, but the magic fades.",prayWord(mob)));
-
 
 		// return whether it worked
 		return success;

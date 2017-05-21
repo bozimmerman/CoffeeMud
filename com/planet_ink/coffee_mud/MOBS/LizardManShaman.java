@@ -131,5 +131,4 @@ public class LizardManShaman extends LizardMan
 		return false;
 	}
 
-
 }

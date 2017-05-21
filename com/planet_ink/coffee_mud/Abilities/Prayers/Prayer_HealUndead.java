@@ -33,15 +33,39 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Prayer_HealUndead extends Prayer implements MendingSkill
 {
-	@Override public String ID() { return "Prayer_HealUndead"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_HealUndead";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Heal Undead");
-	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HEALING;}
-	@Override public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_HEALINGMAGIC;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_OTHERS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_HEALING;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_UNHOLY|Ability.FLAG_HEALINGMAGIC;
+	}
 
 	@Override
 	public boolean supportsMending(Physical item)
@@ -106,7 +130,6 @@ public class Prayer_HealUndead extends Prayer implements MendingSkill
 		}
 		else
 			beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 for <T-NAMESELF>, but nothing happens.",prayWord(mob)));
-
 
 		// return whether it worked
 		return success;

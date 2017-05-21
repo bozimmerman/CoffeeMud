@@ -35,16 +35,56 @@ import java.util.*;
 
 public class Skill_Bash extends StdSkill
 {
-	@Override public String ID() { return "Skill_Bash"; }
+	@Override
+	public String ID()
+	{
+		return "Skill_Bash";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Shield Bash");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"BASH"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_SHIELDUSE;}
-	@Override public int usageType(){return USAGE_MOVEMENT;}
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL|Ability.DOMAIN_SHIELDUSE;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT;
+	}
 
 	@Override
 	public int castingQuality(MOB mob, Physical target)
@@ -67,7 +107,10 @@ public class Skill_Bash extends StdSkill
 		{
 			final Item I=mob.getItem(i);
 			if((I!=null)&&(I instanceof Shield)&&(!I.amWearingAt(Wearable.IN_INVENTORY)))
-			{ thisShield=I; break;}
+			{
+				thisShield=I;
+				break;
+			}
 		}
 		return thisShield;
 	}

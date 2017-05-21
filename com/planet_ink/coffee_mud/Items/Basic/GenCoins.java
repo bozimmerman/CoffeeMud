@@ -89,11 +89,13 @@ public class GenCoins extends GenItem implements Coins
 		{
 			final RawMaterial.CODES codes = RawMaterial.CODES.instance();
 			for(int s=0;s<codes.total();s++)
+			{
 				if(CMLib.english().containsString(name(),codes.name(s)))
 				{
 					setMaterial(codes.get(s));
 					break;
 				}
+			}
 		}
 		setDescription(CMLib.beanCounter().getConvertableDescription(getCurrency(),getDenomination()));
 	}
@@ -267,6 +269,7 @@ public class GenCoins extends GenItem implements Coins
 	}
 
 	private static String[] codes=null;
+
 	@Override
 	public String[] getStatCodes()
 	{

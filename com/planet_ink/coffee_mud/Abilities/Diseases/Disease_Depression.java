@@ -35,23 +35,93 @@ import java.util.*;
 
 public class Disease_Depression extends Disease
 {
-	@Override public String ID() { return "Disease_Depression"; }
-	private final static String localizedName = CMLib.lang().L("Depression");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Depression)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public boolean putInCommandlist(){return false;}
-	@Override public int difficultyLevel(){return 4;}
+	@Override
+	public String ID()
+	{
+		return "Disease_Depression";
+	}
 
-	@Override protected int DISEASE_TICKS(){return 900;}
-	@Override protected int DISEASE_DELAY(){return 20;}
-	@Override protected String DISEASE_DONE(){return L("You feel better.");}
-	@Override protected String DISEASE_START(){return L("^G<S-NAME> seem(s) depressed.^?");}
-	@Override protected String DISEASE_AFFECT(){return L("<S-NAME> moap(s).");}
-	@Override public int abilityCode(){return 0;}
+	private final static String localizedName = CMLib.lang().L("Depression");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Depression)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public boolean putInCommandlist()
+	{
+		return false;
+	}
+
+	@Override
+	public int difficultyLevel()
+	{
+		return 4;
+	}
+
+	@Override
+	protected int DISEASE_TICKS()
+	{
+		return 900;
+	}
+
+	@Override
+	protected int DISEASE_DELAY()
+	{
+		return 20;
+	}
+
+	@Override
+	protected String DISEASE_DONE()
+	{
+		return L("You feel better.");
+	}
+
+	@Override
+	protected String DISEASE_START()
+	{
+		return L("^G<S-NAME> seem(s) depressed.^?");
+	}
+
+	@Override
+	protected String DISEASE_AFFECT()
+	{
+		return L("<S-NAME> moap(s).");
+	}
+
+	@Override
+	public int abilityCode()
+	{
+		return 0;
+	}
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
@@ -115,7 +185,13 @@ public class Disease_Depression extends Disease
 		&&((CMLib.dice().rollPercentage()==1)||(CMLib.flags().isSitting(mob))))
 		{
 			final Command C=CMClass.getCommand("Sleep");
-			try{C.execute(mob,new XVector<String>("Sleep"),MUDCmdProcessor.METAFLAG_FORCED);}catch(final Exception e){}
+			try
+			{
+				C.execute(mob,new XVector<String>("Sleep"),MUDCmdProcessor.METAFLAG_FORCED);
+			}
+			catch(final Exception e)
+			{
+			}
 		}
 		if((mob.curState().getFatigue()<CharState.FATIGUED_MILLIS)
 		&&(mob.maxState().getFatigue()>Long.MIN_VALUE/2))

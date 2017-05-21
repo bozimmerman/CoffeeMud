@@ -17,7 +17,6 @@ import java.lang.reflect.Method;
 import java.net.Socket;
 import java.util.*;
 
-
 /**
  * IMC2 version 0.10 - an inter-mud communications protocol
  * Copyright (C) 1996 - 1997 Oliver Jowet: oliver@randomly.org
@@ -180,18 +179,26 @@ public final class IMC2Driver extends Thread {
 		{
 		if(c_thread!=null)
 			c_thread.shutdown();
-		}catch(final Exception e){}
+		}
+		catch(final Exception e)
+		{
+		}
 		try
 		{
 		if(c_thread2!=null)
 			c_thread2.shutdown();
-		}catch(final Exception e){}
+		}
+		catch(final Exception e)
+		{
+		}
 		CMLib.killThread(this,500,1);
 
 		int i=0;
 		while (((++i)<60)&&((!c_thread.isShutdown)||(!c_thread2.isShutdown)||(!isShutdown)))
 			try { sleep(1000);    }
-			catch (final Exception ex) {}
+			catch (final Exception ex)
+			{
+			}
 	}
 
 	final public static String[] explodeNicely(String s, String separator)
@@ -266,7 +273,8 @@ public final class IMC2Driver extends Thread {
 			out = new DataOutputStream(sa.getOutputStream());
 		}
 		catch(final Exception e)
-		{ }
+		{
+		}
 
 		this_imcmud.state = IMC_CONNECTING;
 		this_imcmud.insize = 1024;
@@ -326,7 +334,6 @@ public final class IMC2Driver extends Thread {
 		imc_addkey(out, "channel", "*");
 		imc_send(out);
 	}
-
 
 	final public boolean imc_startup( boolean force,
 									  String loginName,
@@ -663,7 +670,6 @@ public final class IMC2Driver extends Thread {
 		return null;
 	}
 
-
 	/* return 'mud' from 'player@mud' */
 	final String imc_mudof(String fullname )
 	{
@@ -857,13 +863,10 @@ public final class IMC2Driver extends Thread {
 		do_send_packet(p);
 	}
 
-
-
 	final void imc_loop()
 	{
 		return;
 	}
-
 
 //
 	// list of all active call_out's in the game
@@ -978,7 +981,6 @@ public final class IMC2Driver extends Thread {
 		return str.toString();
 	}
 
-
 	final String update_wholist()
 	{
 		final StringBuffer str=new StringBuffer("Players on "+CMProps.getVar(CMProps.Str.MUDNAME)+":\\n\\r");
@@ -986,7 +988,13 @@ public final class IMC2Driver extends Thread {
 		if(C!=null)
 		{
 			String msg=null;
-			try{msg=(String)C.executeInternal(null,0);}catch(final Exception e){}
+			try
+			{
+				msg=(String)C.executeInternal(null,0);
+			}
+			catch(final Exception e)
+			{
+			}
 			if(msg!=null)
 			{
 				msg=CMStrings.replaceAll(msg,"\n\r","\\n\\r");
@@ -1052,7 +1060,6 @@ public final class IMC2Driver extends Thread {
 		imc_send(out);
 	}
 
-
 	final void imc_recv_ping(imc_char_data from, String path, String sender)
 	{
 		final PACKET out = new PACKET();
@@ -1067,7 +1074,6 @@ public final class IMC2Driver extends Thread {
 
 		imc_send(out);
 	}
-
 
 	final void imc_recv_tell(imc_char_data d, String from, String text)
 	{
@@ -1112,7 +1118,7 @@ public final class IMC2Driver extends Thread {
 		String channelName=channel;
 		CMMsg msg=null;
 		if(from.toUpperCase().endsWith(imc_name.toUpperCase()))
-		   return;
+			return;
 		if(channelName.length()==0)
 			return;
 		channelName=read_channel_name(channelName);
@@ -1154,7 +1160,6 @@ public final class IMC2Driver extends Thread {
 		if(R!=null)
 			R.destroy();
 	}
-
 
 	final void imc_recv_is_alive(imc_char_data d, String from, String path,
 						   String version, String netname)
@@ -1219,7 +1224,6 @@ public final class IMC2Driver extends Thread {
 		   Log.debugOut("IMC2Driver",text.toString());
 	   //send_to_player(d.name, text.toString());
    }
-
 
 	final String read_channel_name(String channame)
 	{
@@ -1289,13 +1293,13 @@ public final class IMC2Driver extends Thread {
 		channels.put(c.name, c);
    }
 
-
 	/* get the value of "key" from "p"; if it isn't present, return "def" */
 	final String imc_getkey( PACKET p, String key, String def )
 	{
 	   int i;
 
 	   for( i = 0; i < PACKET.IMC_MAX_KEYS; i++ )
+	{
 		  if( !p.key[i].equals("") && p.key[i].equalsIgnoreCase(key))
 		  {
 			  if(p.value[i].startsWith("\""))
@@ -1303,6 +1307,7 @@ public final class IMC2Driver extends Thread {
 			  return p.value[i];
 		  }
 
+	}
 	   return def;
 	}
 
@@ -1312,14 +1317,15 @@ public final class IMC2Driver extends Thread {
 	   int i;
 
 	   for( i = 0; i < PACKET.IMC_MAX_KEYS; i++ )
+	{
 		  if( !p.key[i].equals("") && p.key[i].equalsIgnoreCase(key) )
 		  {
 			  return CMath.s_int(p.value[i]);
 		  }
 
+	}
 	   return def;
 	}
-
 
 	final public Hashtable query_channels()
 	{
@@ -1490,7 +1496,9 @@ public final class IMC2Driver extends Thread {
 					sleep(reconnectBackoffTime);
 					reconnectBackoffTime=reconnectBackoffTime*2;
 				}
-				catch (final Exception ex) {}
+				catch (final Exception ex)
+				{
+				}
 				this.imc_startup(true,
 								 imc_name,
 								 imc_siteinfo.host,
@@ -1526,7 +1534,9 @@ public final class IMC2Driver extends Thread {
 				sleep(reconnectBackoffTime);
 				reconnectBackoffTime=reconnectBackoffTime*2;
 			}
-			catch (final Exception ex) {}
+			catch (final Exception ex)
+			{
+			}
 			this.imc_startup(true,
 							 imc_name,
 							 imc_siteinfo.host,
@@ -1562,7 +1572,6 @@ public final class IMC2Driver extends Thread {
 			imc_addkey(out, "flags", imc_siteinfo.flags);
 		imc_send(out);
 	}
-
 
 	/* send a keepalive to everyone */
 	final public void imc_request_keepalive()
@@ -1637,7 +1646,9 @@ public final class IMC2Driver extends Thread {
 						seq = 0;
 					}
 				}
-				catch (final Exception e) {}
+				catch (final Exception e)
+				{
+				}
 
 			}
 			isShutdown=true;
@@ -1680,7 +1691,9 @@ public final class IMC2Driver extends Thread {
 				{
 					sleep(100);
 				}
-				catch (final Exception e) {}
+				catch (final Exception e)
+				{
+				}
 			}
 			isShutdown=true;
 		}
@@ -1770,8 +1783,10 @@ public final class IMC2Driver extends Thread {
 			return "IMC is not active.";
 
 		if (imc_mudof(to).equals("*"))
+		{
 			return "You cannot send tell to everyone!";
 				/* don't let them do this */
+		}
 
 		setdata(out, from);
 
@@ -1892,7 +1907,9 @@ public final class IMC2Driver extends Thread {
 			{
 				sleep(2000);
 			}
-			catch (final Exception e) {}
+			catch (final Exception e)
+			{
+			}
 			isShutdown=true;
 		}
 	}

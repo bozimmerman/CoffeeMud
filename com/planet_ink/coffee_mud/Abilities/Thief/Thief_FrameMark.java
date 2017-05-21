@@ -35,16 +35,56 @@ import java.util.*;
 
 public class Thief_FrameMark extends ThiefSkill
 {
-	@Override public String ID() { return "Thief_FrameMark"; }
+	@Override
+	public String ID()
+	{
+		return "Thief_FrameMark";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Frame Mark");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
-	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"FRAME"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override protected int overrideMana(){return 50;}
-	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STREETSMARTS;}
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	protected int overrideMana()
+	{
+		return 50;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STREETSMARTS;
+	}
 
 	public MOB getMark(MOB mob)
 	{
@@ -53,6 +93,7 @@ public class Thief_FrameMark extends ThiefSkill
 			return A.mark;
 		return null;
 	}
+
 	public int getMarkTicks(MOB mob)
 	{
 		final Thief_Mark A=(Thief_Mark)mob.fetchEffect("Thief_Mark");
@@ -60,6 +101,7 @@ public class Thief_FrameMark extends ThiefSkill
 			return A.ticks;
 		return -1;
 	}
+
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{

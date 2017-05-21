@@ -35,14 +35,49 @@ import java.util.*;
 
 public class Prayer_Nullification extends Prayer
 {
-	@Override public String ID() { return "Prayer_Nullification"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_Nullification";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Nullification");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_NEUTRALIZATION;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
-	@Override public long flags(){return Ability.FLAG_NEUTRAL;}
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return 0;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_NEUTRALIZATION;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_OTHERS;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_NEUTRAL;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
 
 	@Override
 	public int castingQuality(MOB mob, Physical target)

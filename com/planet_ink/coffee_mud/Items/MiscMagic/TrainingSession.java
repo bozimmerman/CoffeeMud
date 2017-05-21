@@ -56,7 +56,6 @@ public class TrainingSession extends StdItem implements MiscMagic
 		recoverPhyStats();
 	}
 
-
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{

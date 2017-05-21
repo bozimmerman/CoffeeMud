@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2016-2017 Bo Zimmerman
 
@@ -310,7 +309,6 @@ public class Skill_NavalTactics extends StdSkill
 		return true;
 	}
 	
-	
 	@Override
 	public void unInvoke()
 	{
@@ -419,7 +417,6 @@ public class Skill_NavalTactics extends StdSkill
 		}
 		else
 			return beneficialWordsFizzle(mob,myShipItem,L("<S-NAME> attempt(s) to adjust naval tactics, but fail(s)."));
-
 
 		// return whether it worked
 		return success;

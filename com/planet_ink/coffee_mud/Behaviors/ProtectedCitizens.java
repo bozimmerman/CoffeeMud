@@ -36,8 +36,18 @@ import java.util.*;
 
 public class ProtectedCitizens extends ActiveTicker
 {
-	@Override public String ID(){return "ProtectedCitizens";}
-	@Override protected int canImproveCode(){return Behavior.CAN_MOBS|Behavior.CAN_AREAS|Behavior.CAN_ROOMS;}
+	@Override
+	public String ID()
+	{
+		return "ProtectedCitizens";
+	}
+
+	@Override
+	protected int canImproveCode()
+	{
+		return Behavior.CAN_MOBS|Behavior.CAN_AREAS|Behavior.CAN_ROOMS;
+	}
+
 	protected static MaskingLibrary.CompiledZMask citizenZapper=null;
 	protected static MaskingLibrary.CompiledZMask helperZapper=null;
 	protected static String[] defclaims={"Help! I'm being attacked!","Help me!!"};
@@ -79,10 +89,18 @@ public class ProtectedCitizens extends ActiveTicker
 		if(citizenZapper!=null)
 			return citizenZapper;
 		final String s=getParmsNoTicks();
-		if(s.length()==0){ citizenZapper=CMLib.masking().createEmptyMask(); return citizenZapper;}
+		if(s.length()==0)
+		{
+			citizenZapper=CMLib.masking().createEmptyMask();
+			return citizenZapper;
+		}
 		final char c=';';
 		final int x=s.indexOf(c);
-		if(x<0){ citizenZapper=CMLib.masking().createEmptyMask(); return citizenZapper;}
+		if(x<0)
+		{
+			citizenZapper=CMLib.masking().createEmptyMask();
+			return citizenZapper;
+		}
 		citizenZapper=CMLib.masking().getPreCompiledMask(s.substring(0,x));
 		return citizenZapper;
 	}
@@ -92,13 +110,25 @@ public class ProtectedCitizens extends ActiveTicker
 		if(helperZapper!=null)
 			return helperZapper;
 		String s=getParmsNoTicks();
-		if(s.length()==0){ helperZapper=CMLib.masking().createEmptyMask(); return helperZapper;}
+		if(s.length()==0)
+		{
+			helperZapper=CMLib.masking().createEmptyMask();
+			return helperZapper;
+		}
 		final char c=';';
 		int x=s.indexOf(c);
-		if(x<0){ helperZapper=CMLib.masking().createEmptyMask(); return helperZapper;}
+		if(x<0)
+		{
+			helperZapper=CMLib.masking().createEmptyMask();
+			return helperZapper;
+		}
 		s=s.substring(x+1).trim();
 		x=s.indexOf(c);
-		if(x<0){ helperZapper=CMLib.masking().createEmptyMask(); return helperZapper;}
+		if(x<0)
+		{
+			helperZapper=CMLib.masking().createEmptyMask();
+			return helperZapper;
+		}
 		helperZapper=CMLib.masking().getPreCompiledMask(s.substring(0,x));
 		return helperZapper;
 	}
@@ -109,17 +139,31 @@ public class ProtectedCitizens extends ActiveTicker
 			return claims;
 		String s=getParmsNoTicks();
 		if(s.length()==0)
-		{ claims=defclaims; return claims;}
+		{
+			claims=defclaims;
+			return claims;
+		}
 
 		final char c=';';
 		int x=s.indexOf(c);
-		if(x<0)	{ claims=defclaims; return claims;}
+		if(x<0)
+		{
+			claims=defclaims;
+			return claims;
+		}
 		s=s.substring(x+1).trim();
 		x=s.indexOf(c);
-		if(x<0)	{ claims=defclaims; return claims;}
+		if(x<0)
+		{
+			claims=defclaims;
+			return claims;
+		}
 		s=s.substring(x+1).trim();
 		if(s.length()==0)
-		{ claims=defclaims; return claims;}
+		{
+			claims=defclaims;
+			return claims;
+		}
 		final Vector<String> V=new Vector<String>();
 		x=s.indexOf(c);
 		while(x>=0)
@@ -220,6 +264,7 @@ public class ProtectedCitizens extends ActiveTicker
 		{
 			final Room R=rooms.elementAt(r);
 			if(R.getArea().Name().equals(thisRoom.getArea().Name()))
+			{
 				for(int i=0;i<R.numInhabitants();i++)
 				{
 					final MOB M=R.fetchInhabitant(i);
@@ -241,7 +286,10 @@ public class ProtectedCitizens extends ActiveTicker
 						{
 							final List<MOB> assers = assisters.get(hostM);
 							if(assers.contains(M))
-							{ notAllowed=true; break;}
+							{
+								notAllowed=true;
+								break;
+							}
 						}
 						if(!notAllowed)
 						{
@@ -260,6 +308,7 @@ public class ProtectedCitizens extends ActiveTicker
 					if(assistance>=maxAssistance)
 						return true;
 				}
+			}
 		}
 		return true;
 	}
@@ -274,16 +323,20 @@ public class ProtectedCitizens extends ActiveTicker
 				assistMOB((MOB)ticking);
 			else
 			if(ticking instanceof Room)
+			{
 				for(int i=0;i<((Room)ticking).numInhabitants();i++)
 					assistMOB(((Room)ticking).fetchInhabitant(i));
+			}
 			else
 			if(ticking instanceof Area)
+			{
 				for(final Enumeration<Room> r=((Area)ticking).getMetroMap();r.hasMoreElements();)
 				{
 					final Room R=r.nextElement();
 					for(int i=0;i<R.numInhabitants();i++)
 						assistMOB(R.fetchInhabitant(i));
 				}
+			}
 		}
 		return true;
 	}

@@ -33,17 +33,46 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Unbinding extends CommonSkill
 {
-	@Override public String ID() { return "Unbinding"; }
+	@Override
+	public String ID()
+	{
+		return "Unbinding";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Unbinding");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"UNBIND","UNTIE"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_BINDING; }
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_BINDING;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_MOBS;
+	}
 	MOB found=null;
 	Ability removing=null;
 
@@ -57,7 +86,7 @@ public class Unbinding extends CommonSkill
 			{
 				List<Ability> affects=null;
 				if(found!=null)
-				   affects=CMLib.flags().flaggedAffects(found,Ability.FLAG_BINDING);
+					affects=CMLib.flags().flaggedAffects(found,Ability.FLAG_BINDING);
 				if((affects!=null)&&(affects.size()>0))
 				{
 					removing=affects.get(0);
@@ -119,7 +148,6 @@ public class Unbinding extends CommonSkill
 		}
 		super.unInvoke();
 	}
-
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)

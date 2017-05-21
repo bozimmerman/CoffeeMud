@@ -16,9 +16,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
-
 
 /*
    Copyright 2003-2017 Bo Zimmerman
@@ -37,12 +35,37 @@ import java.util.*;
 */
 public class Play_Spiritual extends Play
 {
-	@Override public String ID() { return "Play_Spiritual"; }
+	@Override
+	public String ID()
+	{
+		return "Play_Spiritual";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Spiritual");
-	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	@Override protected String songOf(){return L("Spiritual Music");}
-	@Override protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_OTHERS;
+	}
+
+	@Override
+	protected String songOf()
+	{
+		return L("Spiritual Music");
+	}
+
+	@Override
+	protected boolean HAS_QUANTITATIVE_ASPECT()
+	{
+		return false;
+	}
 
 	@Override
 	public int castingQuality(MOB mob, Physical target)

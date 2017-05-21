@@ -35,9 +35,24 @@ import java.util.*;
 
 public class Fighter_CaveTactics extends Fighter_FieldTactics
 {
-	@Override public String ID() { return "Fighter_CaveTactics"; }
+	@Override
+	public String ID()
+	{
+		return "Fighter_CaveTactics";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Cave Tactics");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private static final Integer[] landClasses = {Integer.valueOf(Room.DOMAIN_INDOORS_CAVE)};
-	@Override public Integer[] landClasses(){return landClasses;}
+	@Override
+	public Integer[] landClasses()
+	{
+		return landClasses;
+	}
 }

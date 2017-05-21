@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2003-2017 Bo Zimmerman
 
@@ -34,21 +33,64 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Distilling extends Cooking
 {
-	@Override public String ID() { return "Distilling"; }
-	private final static String localizedName = CMLib.lang().L("Distilling");
-	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =I(new String[] {"DISTILLING"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public String cookWordShort(){return "distill";}
-	@Override public String cookWord(){return "distilling";}
-	@Override public boolean honorHerbs(){return false;}
-	@Override public String supportedResourceString(){return "MISC";}
+	@Override
+	public String ID()
+	{
+		return "Distilling";
+	}
 
-	@Override public String parametersFile(){ return "liquors.txt";}
-	@Override protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
+	private final static String localizedName = CMLib.lang().L("Distilling");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private static final String[] triggerStrings =I(new String[] {"DISTILLING"});
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public String cookWordShort()
+	{
+		return "distill";
+	}
+
+	@Override
+	public String cookWord()
+	{
+		return "distilling";
+	}
+
+	@Override
+	public boolean honorHerbs()
+	{
+		return false;
+	}
+
+	@Override
+	public String supportedResourceString()
+	{
+		return "MISC";
+	}
+
+	@Override
+	public String parametersFile()
+	{
+		return "liquors.txt";
+	}
+
+	@Override
+	protected List<List<String>> loadRecipes()
+	{
+		return super.loadRecipes(parametersFile());
+	}
 
 	public Distilling()
 	{

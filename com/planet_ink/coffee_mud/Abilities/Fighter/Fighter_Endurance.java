@@ -35,16 +35,61 @@ import java.util.*;
 
 public class Fighter_Endurance extends FighterSkill
 {
-	@Override public String ID() { return "Fighter_Endurance"; }
+	@Override
+	public String ID()
+	{
+		return "Fighter_Endurance";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Endurance");
-	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "";}
-	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public boolean isAutoInvoked(){return true;}
-	@Override public boolean canBeUninvoked(){return false;}
-	@Override public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_FITNESS; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public String displayText()
+	{
+		return "";
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_SELF;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public boolean isAutoInvoked()
+	{
+		return true;
+	}
+
+	@Override
+	public boolean canBeUninvoked()
+	{
+		return false;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL|Ability.DOMAIN_FITNESS;
+	}
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)

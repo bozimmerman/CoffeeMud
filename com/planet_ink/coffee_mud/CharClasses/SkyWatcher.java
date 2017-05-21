@@ -18,7 +18,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2003-2017 Bo Zimmerman
 
@@ -339,6 +338,7 @@ public class SkyWatcher extends StdCharClass
 			}
 		}
 	}
+
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
@@ -358,7 +358,6 @@ public class SkyWatcher extends StdCharClass
 			}
 		}
 	}
-
 
 	@Override
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)

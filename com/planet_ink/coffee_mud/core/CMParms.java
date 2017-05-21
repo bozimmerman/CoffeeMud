@@ -686,7 +686,6 @@ public class CMParms
 		return V;
 	}
 
-
 	/**
 	 * Parses the given string by the given delimiter.
 	 * @param s the string to parse
@@ -2321,7 +2320,6 @@ public class CMParms
 		return s;
 	}
 
-
 	/**
 	 * Converts the given object to a string.  If the object is null, returns "null".
 	 * If the object is a List, Array, Iterator, or Enumeration, it converts it to a 
@@ -2856,7 +2854,6 @@ public class CMParms
 		return newa;
 	}
 
-	
 	/**
 	 * Parses the given string of the form KEY=VALUE/KEY=VALUE/etc into a new
 	 * String key/value map.
@@ -3137,8 +3134,10 @@ public class CMParms
 		if(theList==null) 
 			return -1;
 		for(int i=0;i<theList.length;i++)
+		{
 			if(theList[i]==x)
 				return i;
+		}
 		return -1;
 	}
 
@@ -3285,8 +3284,10 @@ public class CMParms
 		if(str==null) 
 			return -1;
 		for(int i=0;i<theList.size();i++)
+		{
 			if(theList.get(i).toString().equalsIgnoreCase(str))
 				return i;
+		}
 		return -1;
 	}
 
@@ -3312,8 +3313,10 @@ public class CMParms
 	public final static boolean contains(final Enumeration<String> e, final String str)
 	{
 		for(;e.hasMoreElements();)
+		{
 			if(e.nextElement().equalsIgnoreCase(str))
 				return true;
+		}
 		return false;
 	}
 
@@ -3326,8 +3329,10 @@ public class CMParms
 	public final static boolean contains(final char[] theList, final char c)
 	{
 		for(final char c2 : theList)
+		{
 			if(c2==c)
 				return true;
+		}
 		return false;
 	}
 
@@ -3340,8 +3345,10 @@ public class CMParms
 	public final static boolean contains(final byte[] theList, final byte b)
 	{
 		for(final byte b2 : theList)
+		{
 			if(b2==b)
 				return true;
+		}
 		return false;
 	}
 

@@ -33,21 +33,67 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Chant_PlantSnare extends Chant
 {
-	@Override public String ID() { return "Chant_PlantSnare"; }
+	@Override
+	public String ID()
+	{
+		return "Chant_PlantSnare";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Plant Snare");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Snared)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public int maxRange(){return adjustedMaxInvokerRange(2);}
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return 0;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public int maxRange()
+	{
+		return adjustedMaxInvokerRange(2);
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
 	public int amountRemaining=0;
-	@Override public long flags(){return Ability.FLAG_BINDING;}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_BINDING;
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
@@ -55,6 +101,7 @@ public class Chant_PlantSnare extends Chant
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_BOUND);
 	}
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -155,6 +202,7 @@ public class Chant_PlantSnare extends Chant
 		if(success)
 		{
 			if(room.show(mob,null,this,verbalCastCode(mob,null,auto),auto?"":L("^S<S-NAME> chant(s) to the plants around <S-HIM-HER>.^?")))
+			{
 				for (final Object element : h)
 				{
 					final MOB target=(MOB)element;
@@ -175,10 +223,10 @@ public class Chant_PlantSnare extends Chant
 						}
 					}
 				}
+			}
 		}
 		else
 			return maliciousFizzle(mob,null,L("<S-NAME> chant(s), but the magic fades."));
-
 
 		// return whether it worked
 		return success;

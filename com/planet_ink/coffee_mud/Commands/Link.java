@@ -39,7 +39,12 @@ public class Link extends At
 	public Link(){}
 
 	private final String[] access=I(new String[]{"LINK"});
-	@Override public String[] getAccessWords(){return access;}
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
+
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
@@ -213,10 +218,16 @@ public class Link extends At
 			CMLib.database().DBUpdateExits(room);
 	}
 
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 
-
-	@Override public boolean canBeOrdered(){return true;}
-	@Override public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDEXITS);}
-
+	@Override
+	public boolean securityCheck(MOB mob)
+	{
+		return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDEXITS);
+	}
 
 }

@@ -38,7 +38,13 @@ import java.util.*;
 public class ExtAbility extends StdAbility implements ExtendableAbility
 {
 	private String ID="ExtAbility";
-	@Override public String ID() { return ID; }
+
+	@Override
+	public String ID()
+	{
+		return ID;
+	}
+
 	private StatsAffecting	statsAffector = null;
 	private MsgListener		msgListener = null;
 	private Tickable		tickable = null;
@@ -63,6 +69,7 @@ public class ExtAbility extends StdAbility implements ExtendableAbility
 		this.msgListener=code;
 		return this;
 	}
+
 	@Override
 	public ExtendableAbility setTickable(Tickable code) 
 	{

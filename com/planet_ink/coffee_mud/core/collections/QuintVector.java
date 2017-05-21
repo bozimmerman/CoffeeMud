@@ -109,6 +109,7 @@ public class QuintVector<T, K, L, M, N> extends Vector<Quint<T, K, L, M, N>> imp
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public boolean contains(Object o)
 	{
@@ -120,6 +121,7 @@ public class QuintVector<T, K, L, M, N> extends Vector<Quint<T, K, L, M, N>> imp
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public int indexOf(Object o)
 	{
@@ -132,6 +134,7 @@ public class QuintVector<T, K, L, M, N> extends Vector<Quint<T, K, L, M, N>> imp
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public synchronized int indexOf(Object o, int index)
 	{

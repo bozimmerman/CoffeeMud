@@ -33,22 +33,73 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Fighter_WeaponSharpening extends FighterSkill
 {
-	@Override public String ID() { return "Fighter_WeaponSharpening"; }
+	@Override
+	public String ID()
+	{
+		return "Fighter_WeaponSharpening";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Weapon Sharpening");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	protected String displayString="Sharpening";
-	@Override public String displayText() { return L("("+displayString+")"); }
+
+	@Override
+	public String displayText()
+	{
+		return L("("+displayString+")");
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"WEAPONSHARPENING","SHARPEN"});
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
-	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}
-	@Override public int maxRange(){return adjustedMaxInvokerRange(0);}
-	@Override public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_WEAPON_USE;}
-	@Override public int usageType(){return USAGE_MANA;}
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ITEMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_ITEMS;
+	}
+
+	@Override
+	public int maxRange()
+	{
+		return adjustedMaxInvokerRange(0);
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL|Ability.DOMAIN_WEAPON_USE;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MANA;
+	}
+
 	protected final static int TICKS_TO_SHARPEN=8;
 	protected Item weapon=null;
 	protected int damageBonus = 1;
@@ -104,7 +155,11 @@ public class Fighter_WeaponSharpening extends FighterSkill
 			final MOB mob=(MOB)affected;
 			beneficialAffect(mob,weapon,0,0);
 			final Ability A=weapon.fetchEffect(ID());
-			if(A!=null){ A.setMiscText(text()); A.makeLongLasting();}
+			if(A!=null)
+			{
+				A.setMiscText(text());
+				A.makeLongLasting();
+			}
 			weapon.recoverPhyStats();
 			if(mob.location()!=null)
 				mob.location().recoverRoomStats();
@@ -220,7 +275,11 @@ public class Fighter_WeaponSharpening extends FighterSkill
 				{
 					beneficialAffect(mob,weapon,asLevel,0);
 					final Ability A=weapon.fetchEffect(ID());
-					if(A!=null){ A.setMiscText(""+bonus); A.makeLongLasting();}
+					if(A!=null)
+					{
+						A.setMiscText(""+bonus);
+						A.makeLongLasting();
+					}
 					weapon.recoverPhyStats();
 					mob.location().recoverRoomStats();
 				}

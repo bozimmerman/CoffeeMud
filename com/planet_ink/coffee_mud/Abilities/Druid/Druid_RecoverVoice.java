@@ -36,16 +36,50 @@ import java.util.*;
 
 public class Druid_RecoverVoice extends StdAbility
 {
-	@Override public String ID() { return "Druid_RecoverVoice"; }
-	private final static String localizedName = CMLib.lang().L("Recover Voice");
-	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return 0;}
-	private static final String[] triggerStrings =I(new String[] {"VRECOVER","RECOVERVOICE"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_FITNESS; }
+	@Override
+	public String ID()
+	{
+		return "Druid_RecoverVoice";
+	}
 
+	private final static String localizedName = CMLib.lang().L("Recover Voice");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_SELF;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	private static final String[] triggerStrings =I(new String[] {"VRECOVER","RECOVERVOICE"});
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL|Ability.DOMAIN_FITNESS;
+	}
 
 	public List<Ability> returnOffensiveAffects(MOB caster, Physical fromMe)
 	{

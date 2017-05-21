@@ -35,18 +35,68 @@ import java.util.*;
 
 public class Thief_Snipe extends ThiefSkill
 {
-	@Override public String ID() { return "Thief_Snipe"; }
+	@Override
+	public String ID()
+	{
+		return "Thief_Snipe";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Snipe");
-	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "";}
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public String displayText()
+	{
+		return "";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_OTHERS;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"SNIPE"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override protected int overrideMana(){return 100;}
-	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
-	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_DIRTYFIGHTING;}
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	protected int overrideMana()
+	{
+		return 100;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT|USAGE_MANA;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_DIRTYFIGHTING;
+	}
 
 	@Override
 	public int castingQuality(MOB mob, Physical target)

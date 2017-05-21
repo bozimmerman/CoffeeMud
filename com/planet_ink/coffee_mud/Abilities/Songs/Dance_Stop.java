@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2003-2017 Bo Zimmerman
 
@@ -36,18 +35,38 @@ import java.util.*;
 
 public class Dance_Stop extends Dance
 {
-	@Override public String ID() { return "Dance_Stop"; }
+	@Override
+	public String ID()
+	{
+		return "Dance_Stop";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Stop");
-	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
 	protected boolean skipStandardSongInvoke(){return true;}
 	public Dance_Stop()
 	{
 		super();
 		setProficiency(100);
 	}
-	@Override public void setProficiency(int newProficiency){	super.setProficiency(100);}
 
+	@Override
+	public void setProficiency(int newProficiency)
+	{
+		super.setProficiency(100);
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)

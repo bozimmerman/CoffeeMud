@@ -22,7 +22,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2003-2017 Bo Zimmerman
 
@@ -38,7 +37,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 
 public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSkill
 {
@@ -764,7 +762,6 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 			buildingI.text();
 			buildingI.recoverPhyStats();
 		}
-
 
 		messedUp=!proficiencyCheck(mob,0,auto);
 

@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -36,14 +35,34 @@ import java.util.*;
 
 public class Poison_Rotten extends Poison
 {
-	@Override public String ID() { return "Poison_Rotten"; }
+	@Override
+	public String ID()
+	{
+		return "Poison_Rotten";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Rotten");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"POISONROTT"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
 
 	@Override protected int POISON_TICKS(){return 50;} // 0 means no adjustment!
-	@Override protected int POISON_DELAY(){return 5;}
+	@Override
+	protected int POISON_DELAY()
+	{
+		return 5;
+	}
+
 	@Override
 	protected boolean POISON_AFFECTTARGET()
 	{
@@ -55,6 +74,7 @@ public class Poison_Rotten extends Poison
 				return false;
 		return true;
 	}
+
 	@Override
 	protected String POISON_START_TARGETONLY()
 	{
@@ -66,6 +86,7 @@ public class Poison_Rotten extends Poison
 				return "^G"+affected.name()+" was rotten! Blech!^?";
 		return "";
 	}
+
 	@Override
 	protected String POISON_START()
 	{
@@ -73,6 +94,7 @@ public class Poison_Rotten extends Poison
 			return "^G"+affected.name()+" was rotten! <S-NAME> bend(s) over with horrid stomach pains!^?";
 		return "^G<S-NAME> bend(s) over with horrid stomach pains!^?";
 	}
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -83,10 +105,30 @@ public class Poison_Rotten extends Poison
 		&&(CMLib.flags().canSmell(msg.source())))
 			msg.source().tell(msg.source(),affected,null,L("<T-NAME> smell(s) rotten!"));
 	}
-	@Override protected String POISON_AFFECT(){return "^G<S-NAME> moan(s) and clutch(es) <S-HIS-HER> stomach.";}
-	@Override protected String POISON_CAST(){return "^F^<FIGHT^><S-NAME> poison(s) <T-NAMESELF>!^</FIGHT^>^?";}
-	@Override protected String POISON_FAIL(){return "<S-NAME> attempt(s) to poison <T-NAMESELF>, but fail(s).";}
-	@Override protected int POISON_DAMAGE(){return CMLib.dice().roll(1,3,1);}
+
+	@Override
+	protected String POISON_AFFECT()
+	{
+		return "^G<S-NAME> moan(s) and clutch(es) <S-HIS-HER> stomach.";
+	}
+
+	@Override
+	protected String POISON_CAST()
+	{
+		return "^F^<FIGHT^><S-NAME> poison(s) <T-NAMESELF>!^</FIGHT^>^?";
+	}
+
+	@Override
+	protected String POISON_FAIL()
+	{
+		return "<S-NAME> attempt(s) to poison <T-NAMESELF>, but fail(s).";
+	}
+
+	@Override
+	protected int POISON_DAMAGE()
+	{
+		return CMLib.dice().roll(1,3,1);
+	}
 
 	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)

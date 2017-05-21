@@ -38,17 +38,22 @@ public class Snoop extends StdCommand
 	public Snoop(){}
 
 	private final String[] access=I(new String[]{"SNOOP"});
-	@Override public String[] getAccessWords(){return access;}
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
 	protected List<Session> snoopingOn(Session S)
 	{
 		final List<Session> V=new Vector<Session>();
 		for(final Session S2 : CMLib.sessions().allIterable())
+		{
 			if(S2.isBeingSnoopedBy(S))
 				V.add(S2);
+		}
 		return V;
 	}
-
 
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
@@ -59,6 +64,7 @@ public class Snoop extends StdCommand
 			return false;
 		boolean doneSomething=false;
 		for(final Session S : CMLib.sessions().allIterable())
+		{
 			if(S.isBeingSnoopedBy(mob.session()))
 			{
 				if(S.mob()!=null)
@@ -68,6 +74,7 @@ public class Snoop extends StdCommand
 				doneSomething=true;
 				S.setBeingSnoopedBy(mob.session(),false);
 			}
+		}
 		if(commands.size()==0)
 		{
 			if(!doneSomething)
@@ -121,8 +128,16 @@ public class Snoop extends StdCommand
 		return false;
 	}
 
-	@Override public boolean canBeOrdered(){return true;}
-	@Override public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.SNOOP);}
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 
+	@Override
+	public boolean securityCheck(MOB mob)
+	{
+		return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.SNOOP);
+	}
 
 }

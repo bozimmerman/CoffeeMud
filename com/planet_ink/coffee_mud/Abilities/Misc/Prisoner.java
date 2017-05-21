@@ -80,6 +80,7 @@ public class Prisoner extends StdAbility
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected instanceof MOB)&&(msg.amISource((MOB)affected)))
+		{
 			if(msg.sourceMinor()==CMMsg.TYP_RECALL)
 			{
 				if(msg.source().location()!=null)
@@ -108,6 +109,7 @@ public class Prisoner extends StdAbility
 				msg.source().location().show(msg.source(),null,CMMsg.MSG_OK_ACTION,L("<S-NAME> attempt(s) to escape parole, but a geas prevents <S-HIM-HER>."));
 				return false;
 			}
+		}
 		return super.okMessage(myHost,msg);
 	}
 

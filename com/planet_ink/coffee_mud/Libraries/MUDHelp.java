@@ -691,7 +691,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 							{
 								prepend.append(A.triggerStrings()[i]);
 								if(i<(A.triggerStrings().length-1))
-								   prepend.append(", ");
+									prepend.append(", ");
 							}
 						}
 					}

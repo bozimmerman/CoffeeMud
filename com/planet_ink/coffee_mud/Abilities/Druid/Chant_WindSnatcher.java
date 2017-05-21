@@ -33,19 +33,53 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Chant_WindSnatcher extends Chant
 {
-	@Override public String ID() { return "Chant_WindSnatcher"; }
-	private final static String localizedName = CMLib.lang().L("Wind Snatcher");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Wind Snatcher)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;}
+	@Override
+	public String ID()
+	{
+		return "Chant_WindSnatcher";
+	}
 
+	private final static String localizedName = CMLib.lang().L("Wind Snatcher");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Wind Snatcher)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_SELF;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;
+	}
 
 	public String[] windSpells={
 		"Chant_WindGust",
@@ -57,10 +91,13 @@ public class Chant_WindSnatcher extends Chant
 	public boolean isSpell(String ID)
 	{
 		for (final String windSpell : windSpells)
+		{
 			if(windSpell.equalsIgnoreCase(ID))
 				return true;
+		}
 		return false;
 	}
+
 	@Override
 	public void unInvoke()
 	{
@@ -88,7 +125,10 @@ public class Chant_WindSnatcher extends Chant
 					boolean found=false;
 					for (final String windSpell : windSpells)
 						if(victim.fetchAbility(windSpell)!=null)
-						{ found=true; break;}
+						{
+							found=true;
+							break;
+						}
 					if(!found)
 						return Ability.QUALITY_INDIFFERENT;
 				}
@@ -114,6 +154,7 @@ public class Chant_WindSnatcher extends Chant
 		}
 		return true;
 	}
+
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -143,7 +184,6 @@ public class Chant_WindSnatcher extends Chant
 		}
 		else
 			return beneficialWordsFizzle(mob,target,L("<S-NAME> chant(s) for the wind snatcher, but nothing happens."));
-
 
 		// return whether it worked
 		return success;

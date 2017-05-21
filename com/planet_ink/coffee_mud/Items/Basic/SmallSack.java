@@ -50,6 +50,4 @@ public class SmallSack extends StdContainer
 		recoverPhyStats();
 	}
 
-
-
 }

@@ -20,7 +20,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2016-2017 Bo Zimmerman
 
@@ -36,7 +35,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 
 public class Irrigation extends BuildingSkill
 {

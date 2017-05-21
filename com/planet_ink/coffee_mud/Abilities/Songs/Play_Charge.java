@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2003-2017 Bo Zimmerman
 
@@ -36,12 +35,37 @@ import java.util.*;
 
 public class Play_Charge extends Play
 {
-	@Override public String ID() { return "Play_Charge"; }
+	@Override
+	public String ID()
+	{
+		return "Play_Charge";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Charge!");
-	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected boolean persistantSong(){return false;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_OTHERS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected boolean persistantSong()
+	{
+		return false;
+	}
 	List<String> chcommands=null;
 
 	@Override

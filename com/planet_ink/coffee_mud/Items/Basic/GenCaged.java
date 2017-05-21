@@ -56,6 +56,7 @@ public class GenCaged extends GenItem implements CagedAnimal
 	}
 
 	protected byte[]	readableText=null;
+
 	@Override
 	public String readableText()
 	{

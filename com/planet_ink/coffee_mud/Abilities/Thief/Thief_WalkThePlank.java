@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2016-2017 Bo Zimmerman
 
@@ -271,7 +270,6 @@ public class Thief_WalkThePlank extends ThiefSkill
 		}
 		else
 			return maliciousFizzle(mob,target,L("<S-NAME> call(s) for <T-NAME> to walk the plank, but <T-HIM-HER> won't budge."));
-
 
 		// return whether it worked
 		return success;

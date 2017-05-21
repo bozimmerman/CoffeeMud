@@ -239,7 +239,6 @@ public class StdHandOfCards extends StdContainer implements MiscMagic, HandOfCar
 		return true;
 	}
 
-
 	// getContentsEncoded()
 	// This method builds a string array equal in size to the deck.
 	// It then returns the contents of the deck encoded in
@@ -293,7 +292,6 @@ public class StdHandOfCards extends StdContainer implements MiscMagic, HandOfCar
 			addCard(card);
 		}
 	}
-
 
 	// sortByValueAceLow()
 	// This method is a sort of anti-shuffle.  It puts the cards in

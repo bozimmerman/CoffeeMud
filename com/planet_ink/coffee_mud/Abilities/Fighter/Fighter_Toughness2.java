@@ -35,7 +35,17 @@ import java.util.*;
 
 public class Fighter_Toughness2 extends Fighter_Toughness
 {
-	@Override public String ID() { return "Fighter_Toughness2"; }
+	@Override
+	public String ID()
+	{
+		return "Fighter_Toughness2";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Toughness II");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
 }

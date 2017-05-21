@@ -33,7 +33,6 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Chant_SiftWrecks extends Chant
 {
 	@Override
@@ -150,7 +149,6 @@ public class Chant_SiftWrecks extends Chant
 		}
 		else
 			beneficialWordsFizzle(mob,null,L("<S-NAME> chant(s) to @x1 for knowledge, but nothing happens.",myCoral.Name()));
-
 
 		// return whether it worked
 		return success;

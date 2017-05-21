@@ -157,7 +157,6 @@ public class Amputation extends StdAbility implements LimbDamage, HealthConditio
 												{-1}//wing
 												};
 
-
 	@Override
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
@@ -272,7 +271,7 @@ public class Amputation extends StdAbility implements LimbDamage, HealthConditio
 			target=(MOB)givenTarget;
 		else
 		if((targetName.length()==0)&&(mob.isInCombat())&&(abstractQuality()==Ability.QUALITY_MALICIOUS)&&(mob.getVictim()!=null))
-		   target=mob.getVictim();
+			target=mob.getVictim();
 		else
 		if((targetName.length()==0)&&(abstractQuality()!=Ability.QUALITY_MALICIOUS))
 			target=mob;
@@ -325,7 +324,7 @@ public class Amputation extends StdAbility implements LimbDamage, HealthConditio
 		if(affected==null)
 			return missingLimbs;
 		if((!(affected instanceof MOB))&&(!(affected instanceof DeadBody)))
-		   return missingLimbs;
+			return missingLimbs;
 		missingLimbs=CMParms.parseSemicolons(text(),true);
 		amputations=new int[Race.BODY_PARTS];
 		badWearLocations=0;
@@ -576,10 +575,10 @@ public class Amputation extends StdAbility implements LimbDamage, HealthConditio
 						{
 							String r=Race.BODYPARTSTR[element].toLowerCase();
 							if(gone.startsWith("left "))
-							   r="left "+r;
+								r="left "+r;
 							else
 							if(gone.startsWith("right "))
-							   r="right "+r;
+								r="right "+r;
 							if(missingLimbs == null)
 								this.affectedLimbNameSet();
 							if(!missingLimbs.contains(r))

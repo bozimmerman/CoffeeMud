@@ -100,7 +100,6 @@ public class Assassin extends GenMob
 			addItem(d);
 		}
 
-
 		recoverMaxState();
 		resetToMaxState();
 		recoverPhyStats();

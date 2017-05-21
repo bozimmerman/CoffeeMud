@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -35,14 +34,28 @@ import java.util.*;
 */
 public class Prop_Uncampable extends Property
 {
-	@Override public String ID() { return "Prop_Uncampable"; }
-	@Override public String name(){ return "Can't be camped on";}
+	@Override
+	public String ID()
+	{
+		return "Prop_Uncampable";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Can't be camped on";
+	}
+
 	@Override
 	protected int canAffectCode(){return Ability.CAN_MOBS
 										 |Ability.CAN_ITEMS
 										 |Ability.CAN_ROOMS;}
 	
-	@Override public long flags(){return Ability.FLAG_ADJUSTER;}
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_ADJUSTER;
+	}
 	
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)

@@ -18,8 +18,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.Enumeration;
 import java.util.List;
 
-
-
 /*
    Copyright 2003-2017 Bo Zimmerman
 
@@ -36,25 +34,62 @@ import java.util.List;
    limitations under the License.
 */
 
-
 public class Chant_DeathMoon extends Chant
 {
-	@Override public String ID() { return "Chant_DeathMoon"; }
+	@Override
+	public String ID()
+	{
+		return "Chant_DeathMoon";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Death Moon");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Death Moon)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	@Override protected int canAffectCode(){return CAN_ROOMS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_MOONALTERING;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_ROOMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT|Ability.DOMAIN_MOONALTERING;
+	}
 
 	@Override
 	public void unInvoke()
 	{
 		if(canBeUninvoked())
+		{
 			if(affected instanceof Room)
 				((Room)affected).showHappens(CMMsg.MSG_OK_VISUAL,L("The death moon sets."));
+		}
 
 		super.unInvoke();
 
@@ -143,7 +178,6 @@ public class Chant_DeathMoon extends Chant
 				return false;
 			}
 		}
-
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

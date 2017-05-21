@@ -33,17 +33,47 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Chant_Dragonsight extends Chant
 {
-	@Override public String ID() { return "Chant_Dragonsight"; }
+	@Override
+	public String ID()
+	{
+		return "Chant_Dragonsight";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Dragonsight");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Dragonsight)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_SELF;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
 
 	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
@@ -51,6 +81,7 @@ public class Chant_Dragonsight extends Chant
 		super.affectCharStats(affected,affectableStats);
 		affectableStats.setStat(CharStats.STAT_SAVE_OVERLOOKING,affected.phyStats().level()+(2*getXLEVELLevel(invoker()))+100+affectableStats.getStat(CharStats.STAT_SAVE_OVERLOOKING));
 	}
+
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
@@ -60,7 +91,6 @@ public class Chant_Dragonsight extends Chant
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_INVISIBLE);
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_SNEAKERS);
 	}
-
 
 	@Override
 	public void unInvoke()
@@ -85,13 +115,18 @@ public class Chant_Dragonsight extends Chant
 				final Room R=((MOB)target).location();
 				boolean found=CMLib.flags().isInDark(target);
 				if(R!=null)
+				{
 					for(int r=0;r<R.numInhabitants();r++)
 					{
 						final MOB M=R.fetchInhabitant(r);
 						if((M!=null)&&(M!=mob)&&(M!=target)
 						&&(CMLib.flags().isHidden(M)||CMLib.flags().isInvisible(M)))
-						{ found=true; break;}
+						{
+							found=true;
+							break;
+						}
 					}
+				}
 				if(!found)
 					return Ability.QUALITY_INDIFFERENT;
 			}

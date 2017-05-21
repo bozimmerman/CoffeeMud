@@ -33,7 +33,6 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Chant_CharmAnimal extends Chant
 {
 	@Override
@@ -107,7 +106,6 @@ public class Chant_CharmAnimal extends Chant
 			return invoker;
 		return charmer;
 	}
-
 
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)

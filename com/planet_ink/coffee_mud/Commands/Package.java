@@ -38,7 +38,11 @@ public class Package extends StdCommand
 	public Package(){}
 
 	private final String[] access=I(new String[]{"PACKAGE"});
-	@Override public String[] getAccessWords(){return access;}
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
@@ -60,8 +64,16 @@ public class Package extends StdCommand
 
 		String whatToGet=CMParms.combine(commands,0);
 		boolean allFlag=(commands.size()>0)?commands.get(0).equalsIgnoreCase("all"):false;
-		if(whatToGet.toUpperCase().startsWith("ALL.")){ allFlag=true; whatToGet="ALL "+whatToGet.substring(4);}
-		if(whatToGet.toUpperCase().endsWith(".ALL")){ allFlag=true; whatToGet="ALL "+whatToGet.substring(0,whatToGet.length()-4);}
+		if(whatToGet.toUpperCase().startsWith("ALL."))
+		{
+			allFlag=true;
+			whatToGet="ALL "+whatToGet.substring(4);
+		}
+		if(whatToGet.toUpperCase().endsWith(".ALL"))
+		{
+			allFlag=true;
+			whatToGet="ALL "+whatToGet.substring(0,whatToGet.length()-4);
+		}
 		final Vector<Item> V=new Vector<Item>();
 		int addendum=1;
 		String addendumStr="";
@@ -132,9 +144,23 @@ public class Package extends StdCommand
 		}
 		return false;
 	}
-	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandCombatActionCost(ID());}
-	@Override public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandActionCost(ID());}
-	@Override public boolean canBeOrdered(){return true;}
 
+	@Override
+	public double combatActionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandCombatActionCost(ID());
+	}
+
+	@Override
+	public double actionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandActionCost(ID());
+	}
+
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 
 }

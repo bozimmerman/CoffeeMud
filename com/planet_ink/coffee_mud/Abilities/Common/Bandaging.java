@@ -33,17 +33,46 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Bandaging extends CommonSkill implements MendingSkill
 {
-	@Override public String ID() { return "Bandaging"; }
+	@Override
+	public String ID()
+	{
+		return "Bandaging";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Bandaging");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"BANDAGE","BANDAGING"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
-	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_ANATOMY;}
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL|Ability.DOMAIN_ANATOMY;
+	}
 
 	protected Physical bandaging=null;
 	protected boolean messedUp=false;
@@ -53,6 +82,7 @@ public class Bandaging extends CommonSkill implements MendingSkill
 		displayText=L("You are bandaging...");
 		verb=L("bandaging");
 	}
+
 	@Override
 	public boolean supportsMending(Physical item)
 	{

@@ -35,17 +35,63 @@ import java.util.*;
 
 public class Thief_TapRoom extends ThiefSkill
 {
-	@Override public String ID() { return "Thief_TapRoom"; }
+	@Override
+	public String ID()
+	{
+		return "Thief_TapRoom";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Tap Room");
-	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "";}
-	@Override protected int canAffectCode(){return CAN_ITEMS;}
-	@Override protected int canTargetCode(){return CAN_ROOMS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public String displayText()
+	{
+		return "";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_ITEMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_ROOMS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_SELF;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"TAPROOM"});
-	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_ALERT;}
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_ALERT;
+	}
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT|USAGE_MANA;
+	}
+
 	public boolean norecurse=false;
 
 	public boolean isMyPair(List<String> myParsedTextV, Item I)
@@ -192,8 +238,10 @@ public class Thief_TapRoom extends ThiefSkill
 						}
 						boolean ok=lastRoom==newRoom;
 						for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+						{
 							if(newRoom.getRoomInDir(d)==lastRoom)
 								ok=true;
+						}
 						final List<RawMaterial> lineV=getAvailableLine(msg.source());
 						if((!ok)||(lineV.size()==0)||(lastRoom==null)||(pairA==null)||(pairA.getParsedText().size()<2))
 						{

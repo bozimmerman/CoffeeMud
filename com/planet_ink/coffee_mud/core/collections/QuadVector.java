@@ -69,6 +69,7 @@ public class QuadVector<T, K, L, M> extends Vector<Quad<T, K, L, M>> implements 
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public boolean contains(Object o)
 	{
@@ -80,6 +81,7 @@ public class QuadVector<T, K, L, M> extends Vector<Quad<T, K, L, M>> implements 
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public int indexOf(Object o)
 	{
@@ -92,6 +94,7 @@ public class QuadVector<T, K, L, M> extends Vector<Quad<T, K, L, M>> implements 
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public synchronized int indexOf(Object o, int index)
 	{

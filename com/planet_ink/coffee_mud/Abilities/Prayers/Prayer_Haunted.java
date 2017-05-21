@@ -33,19 +33,60 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Prayer_Haunted extends Prayer
 {
-	@Override public String ID() { return "Prayer_Haunted"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_Haunted";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Haunted");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Haunted)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
-	@Override protected int canTargetCode(){return Ability.CAN_ROOMS;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_DEATHLORE;}
-	@Override public long flags(){return Ability.FLAG_UNHOLY;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ROOMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_ROOMS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_DEATHLORE;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_UNHOLY;
+	}
+
 	protected int level=14;
 	protected int numDone=0;
 	protected int numMax=Integer.MAX_VALUE;
@@ -64,7 +105,7 @@ public class Prayer_Haunted extends Prayer
 		super.unInvoke();
 
 		if((canBeUninvoked())&&(R!=null))
-		   R.showHappens(CMMsg.MSG_OK_VISUAL,L("The haunted aura fades."));
+			R.showHappens(CMMsg.MSG_OK_VISUAL,L("The haunted aura fades."));
 	}
 
 	@Override
@@ -96,7 +137,6 @@ public class Prayer_Haunted extends Prayer
 		}
 		return super.tick(ticking,tickID);
 	}
-
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -135,7 +175,6 @@ public class Prayer_Haunted extends Prayer
 		}
 		else
 			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 for a haunting, but <S-HIS-HER> plea is not answered.",prayWord(mob)));
-
 
 		// return whether it worked
 		return success;

@@ -812,7 +812,6 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		return room;
 	}
 
-
 	protected void logError(Environmental scripted, String cmdName, String errType, String errMsg)
 	{
 		if(scripted!=null)
@@ -856,7 +855,6 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			return (x == 0);
 		}
 	}
-
 
 	protected boolean simpleEval(Environmental scripted, String arg1, String arg2, String cmp, String cmdName)
 	{

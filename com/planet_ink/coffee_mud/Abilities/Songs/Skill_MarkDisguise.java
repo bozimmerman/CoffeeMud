@@ -18,7 +18,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2003-2017 Bo Zimmerman
 
@@ -37,11 +36,26 @@ import java.util.*;
 
 public class Skill_MarkDisguise extends Skill_Disguise
 {
-	@Override public String ID() { return "Skill_MarkDisguise"; }
+	@Override
+	public String ID()
+	{
+		return "Skill_MarkDisguise";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Mark Disguise");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"MARKDISGUISE"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
 	
 	private MOB mark=null;
 	
@@ -52,6 +66,7 @@ public class Skill_MarkDisguise extends Skill_Disguise
 			return A.mark;
 		return null;
 	}
+
 	public int getMarkTicks(MOB mob)
 	{
 		final Thief_Mark A=(Thief_Mark)mob.fetchEffect("Thief_Mark");
@@ -135,6 +150,5 @@ public class Skill_MarkDisguise extends Skill_Disguise
 			return beneficialVisualFizzle(mob,null,L("<S-NAME> turn(s) away and then back, but look(s) the same."));
 		return success;
 	}
-
 
 }

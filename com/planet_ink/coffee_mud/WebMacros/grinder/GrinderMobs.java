@@ -293,7 +293,6 @@ public class GrinderMobs
 		return "";
 	}
 
-
 	public static String items(MOB M, Vector<Item> allitems, HTTPRequest httpReq)
 	{
 		if(httpReq.isUrlParameter("ITEM1"))
@@ -419,7 +418,7 @@ public class GrinderMobs
 					{
 						final MOB M2=R.fetchInhabitant(m);
 						if((M2!=null)&&(M2.isSavable()))
-						   str.append(M2.Name()+"="+RoomData.getMOBCode(R,M2));
+							str.append(M2.Name()+"="+RoomData.getMOBCode(R,M2));
 					}
 				}
 				return str.toString();

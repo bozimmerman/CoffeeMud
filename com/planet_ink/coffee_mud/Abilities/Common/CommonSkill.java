@@ -34,7 +34,6 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class CommonSkill extends StdAbility
 {
 	@Override
@@ -435,7 +434,9 @@ public class CommonSkill extends StdAbility
 			{
 				final int material=room.myResource();
 				if(materials.contains(Integer.valueOf(material&RawMaterial.MATERIAL_MASK)))
-				{possibilities.addElement(Integer.valueOf(d));}
+				{
+					possibilities.addElement(Integer.valueOf(d));
+				}
 			}
 		}
 		if(possibilities.size()==0)

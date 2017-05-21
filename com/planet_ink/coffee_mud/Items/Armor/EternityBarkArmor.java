@@ -56,5 +56,4 @@ public class EternityBarkArmor extends StdArmor
 		material=RawMaterial.RESOURCE_WOOD;
 	}
 
-
 }

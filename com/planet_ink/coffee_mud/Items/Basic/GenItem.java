@@ -103,6 +103,7 @@ public class GenItem extends StdItem
 	}
 
 	private static String[] codes=null;
+
 	@Override
 	public String[] getStatCodes()
 	{

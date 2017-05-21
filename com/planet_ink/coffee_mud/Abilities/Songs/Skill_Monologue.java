@@ -33,20 +33,65 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Skill_Monologue extends BardSkill
 {
-	@Override public String ID() { return "Skill_Monologue"; }
+	@Override
+	public String ID()
+	{
+		return "Skill_Monologue";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Monologue");
-	@Override public String name() { return localizedName; }
-	@Override public String displayText() { return L("(Listening to "+(invoker()==null?"an actor":invoker().name())+"'s monologue)"); }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public String displayText()
+	{
+		return L("(Listening to "+(invoker()==null?"an actor":invoker().name())+"'s monologue)");
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"MONOLOGUE"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_THEATRE;}
-	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL|Ability.DOMAIN_THEATRE;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT|USAGE_MANA;
+	}
+
 	private volatile long lastTimeHeard = 0;
 
 	@Override

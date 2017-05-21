@@ -39,7 +39,11 @@ public class WhoIs extends Who
 	public WhoIs(){}
 
 	private final String[] access=I(new String[]{"WHOIS"});
-	@Override public String[] getAccessWords(){return access;}
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
@@ -120,7 +124,10 @@ public class WhoIs extends Who
 		return false;
 	}
 
-	@Override public boolean canBeOrdered(){return true;}
-
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 
 }

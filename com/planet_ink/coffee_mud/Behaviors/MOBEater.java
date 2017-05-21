@@ -111,6 +111,7 @@ public class MOBEater extends ActiveTicker
 						}
 					}
 				}
+
 				@Override
 				public boolean okMessage(Environmental myHost, CMMsg msg) 
 				{

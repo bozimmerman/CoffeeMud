@@ -126,6 +126,7 @@ public class GenDeity extends StdDeity
 	}
 
 	private static String[] codes=null;
+
 	@Override
 	public String[] getStatCodes()
 	{

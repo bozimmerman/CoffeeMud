@@ -33,16 +33,45 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Chant_SummonSeed extends Chant
 {
-	@Override public String ID() { return "Chant_SummonSeed"; }
+	@Override
+	public String ID()
+	{
+		return "Chant_SummonSeed";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Summon Seeds");
-	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;
+	}
 
 	public static final Integer[] NON_SEEDS={Integer.valueOf(RawMaterial.RESOURCE_ASH),
 											Integer.valueOf(RawMaterial.RESOURCE_SOAP),
@@ -71,7 +100,11 @@ public class Chant_SummonSeed extends Chant
 					foundShortName=CMStrings.capitalizeAndLower(str);
 					break;
 				}
-				if(col==4){ buf.append("\n\r"); col=0;}
+				if(col==4)
+				{
+					buf.append("\n\r");
+					col=0;
+				}
 				col++;
 				buf.append(CMStrings.padRight(CMStrings.capitalizeAndLower(str),15));
 			}

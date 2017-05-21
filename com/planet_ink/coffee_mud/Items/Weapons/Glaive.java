@@ -59,7 +59,4 @@ public class Glaive extends StdWeapon
 		weaponClassification=Weapon.CLASS_POLEARM;
 	}
 
-
-
-
 }

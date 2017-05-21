@@ -58,8 +58,6 @@ public class StdPill extends StdFood implements Pill
 		material=RawMaterial.RESOURCE_CORN;
 	}
 
-
-
 	@Override
 	public String secretIdentity()
 	{

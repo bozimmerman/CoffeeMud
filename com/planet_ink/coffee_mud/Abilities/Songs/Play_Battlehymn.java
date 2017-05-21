@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2003-2017 Bo Zimmerman
 
@@ -35,11 +34,31 @@ import java.util.*;
 */
 public class Play_Battlehymn extends Play
 {
-	@Override public String ID() { return "Play_Battlehymn"; }
+	@Override
+	public String ID()
+	{
+		return "Play_Battlehymn";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Battlehymn");
-	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	@Override protected String songOf(){return CMLib.english().startWithAorAn(name());}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_OTHERS;
+	}
+
+	@Override
+	protected String songOf()
+	{
+		return CMLib.english().startWithAorAn(name());
+	}
 
 	protected int timesTicking=0;
 

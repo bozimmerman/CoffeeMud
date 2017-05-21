@@ -42,7 +42,12 @@ public class MOTD extends StdCommand
 	public MOTD(){}
 
 	private final String[] access=I(new String[]{"MOTD","NEWS"});
-	@Override public String[] getAccessWords(){return access;}
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
+
 	private static Vector<String> DEFAULT_CMD=new ReadOnlyVector<String>(new String[]{"MOTD","AGAIN"});
 
 	@Override
@@ -254,7 +259,9 @@ public class MOTD extends StdCommand
 						mob.session().println(L("No @x1 to re-read.",what));
 				}
 			}
-			catch(final HTTPRedirectException e){}
+			catch(final HTTPRedirectException e)
+			{
+			}
 			return false;
 		}
 		if(parm.equals("ON"))
@@ -335,8 +342,10 @@ public class MOTD extends StdCommand
 		return results;
 	}
 
-
-	@Override public boolean canBeOrdered(){return true;}
-
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 
 }

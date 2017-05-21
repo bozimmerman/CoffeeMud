@@ -33,7 +33,6 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Chant_HighTide extends Chant
 {
 	@Override
@@ -128,7 +127,6 @@ public class Chant_HighTide extends Chant
 		}
 		return super.okMessage(myHost,msg);
 	}
-
 
 	@Override
 	public void unInvoke()

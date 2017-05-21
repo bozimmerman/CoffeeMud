@@ -38,7 +38,12 @@ public class Southwest extends Go
 	public Southwest(){}
 
 	private final String[] access=I(new String[]{"SOUTHWEST","SW"});
-	@Override public String[] getAccessWords(){return access;}
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
+
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
@@ -51,7 +56,12 @@ public class Southwest extends Go
 			CMLib.tracking().walk(mob, Directions.SOUTHWEST, false,false,false);
 		return false;
 	}
-	@Override public boolean canBeOrdered(){return true;}
+
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 
 	@Override
 	public boolean securityCheck(MOB mob)

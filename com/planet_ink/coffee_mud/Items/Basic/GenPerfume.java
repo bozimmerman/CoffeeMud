@@ -53,7 +53,6 @@ public class GenPerfume extends StdPerfume
 		recoverPhyStats();
 	}
 
-
 	@Override
 	public boolean isGeneric()
 	{

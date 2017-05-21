@@ -36,10 +36,25 @@ import java.util.*;
 
 public class Paladin_PaladinsMount extends PaladinSkill
 {
-	@Override public String ID() { return "Paladin_PaladinsMount"; }
+	@Override
+	public String ID()
+	{
+		return "Paladin_PaladinsMount";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Paladin`s Mount");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_ANIMALAFFINITY;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL|Ability.DOMAIN_ANIMALAFFINITY;
+	}
 	
 	protected boolean pass=false;
 	

@@ -78,12 +78,16 @@ public class DefaultItemCollection implements ItemCollection, CMCommon
 			final Item I=contents.get(i);
 			final Item I2=c.contents.get(i);
 			if(I.container() != null)
+			{
 				for(int i2=0;i2<contents.size();i2++)
+				{
 					if(I.container() == contents.get(i2))
 					{
 						I2.setContainer((Container)c.contents.get(i2));
 						break;
 					}
+				}
+			}
 		}
 		return c;
 	}
@@ -176,12 +180,14 @@ public class DefaultItemCollection implements ItemCollection, CMCommon
 	public void delAllItems(boolean destroy)
 	{
 		if(destroy)
+		{
 			for(int i=numItems()-1;i>=0;i--)
 			{
 				final Item I=getItem(i);
 				if(I!=null)
 					I.destroy();
 			}
+		}
 		contents.clear();
 	}
 

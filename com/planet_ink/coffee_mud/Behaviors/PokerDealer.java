@@ -43,7 +43,11 @@ import java.util.*;
 
 public class PokerDealer extends StdBehavior
 {
-	@Override public String ID(){return "PokerDealer";}
+	@Override
+	public String ID()
+	{
+		return "PokerDealer";
+	}
 
 	// the poker dealer operates as a state machine
 	// each state tells this behavior what to expect, and
@@ -67,7 +71,6 @@ public class PokerDealer extends StdBehavior
 	// progress in the game.  The deal is round 0, after
 	// a draw or the next card is round 1, and so forth.
 	private int roundOfPlay=0;
-
 
 	// the following constants are used to determine
 	// how long the dealer will wait before starting
@@ -137,8 +140,10 @@ public class PokerDealer extends StdBehavior
 			gameRules=CMath.s_int(str);
 		else
 		for(int i=0;i<GAME_DESCS.length;i++)
+		{
 			if(str.equalsIgnoreCase(GAME_DESCS[i]))
 				gameRules=i;
+		}
 		anti=CMParms.getParmDouble(newParms,"ANTI",1.0);
 		minPlayers=CMParms.getParmInt(newParms,"MINPLAYERS",2);
 	}
@@ -178,7 +183,6 @@ public class PokerDealer extends StdBehavior
 		{"RASE",Integer.valueOf(PLAYER_BET_ACT_RAISE)}
 	};
 
-
 	// this is the list of possible hands
 	// 5ofakind is not REALLY possible, since
 	// wild cards are not yet supported, but
@@ -195,7 +199,6 @@ public class PokerDealer extends StdBehavior
 	private static final int HAND_1PAIR=2<<20;
 	private static final int HAND_HIGHCARD=1<<20;
 	private static final int HAND_MASK=15<<20;
-
 
 	// this method just returns the amount of
 	// anti as a displayable string.
@@ -215,7 +218,6 @@ public class PokerDealer extends StdBehavior
 			return CMClass.getMsg((MOB)host,target,null,code,message);
 		return CMClass.getMsg(CMLib.map().deity(),target,null,code,message);
 	}
-
 
 	// this method will communicate something to a
 	// player or players.  If the host of this
@@ -282,6 +284,7 @@ public class PokerDealer extends StdBehavior
 		int numHigherThanPlayer=0;
 		int numEqualToPlayer=0;
 		for(int p=0;p<pot.size();p++)
+		{
 			if(pot.elementAt(p,1)!=player)
 			{
 				final Double potAmount=(Double)pot.elementAt(p,2);
@@ -291,6 +294,7 @@ public class PokerDealer extends StdBehavior
 				if(potAmount.doubleValue()>inPot.doubleValue())
 					numHigherThanPlayer++;
 			}
+		}
 		if(numHigherThanPlayer>0)
 			return -1;
 		if(numEqualToPlayer>0)
@@ -453,6 +457,7 @@ public class PokerDealer extends StdBehavior
 					// betting the other players out of the game.
 					final double totalDown=amountToCall+theMoneyDropped.getTotalValue();
 					for(int p=0;p<pot.size();p++)
+					{
 						if(pot.elementAt(p,1)!=playerDroppingMoney)
 						{
 							final MOB mob =(MOB)pot.elementAt(p,1);
@@ -463,6 +468,7 @@ public class PokerDealer extends StdBehavior
 							}
 						}
 
+					}
 					// if they are raising, we just change the drop message
 					// to our fancy gamblers prose.
 					final String newMessage="<S-NAME> raise(s) <T-NAMESELF>.";
@@ -473,7 +479,6 @@ public class PokerDealer extends StdBehavior
 		}
 		return true;
 	}
-
 
 	// this method will handle the betting and drawing rounds
 	// by changing whose turn it is and, if necessary,
@@ -490,11 +495,13 @@ public class PokerDealer extends StdBehavior
 		MOB nextPlayer=(MOB)pot.elementAt(0,1);
 		if(whoseTurn!=null)
 		for(int p=0;p<pot.size()-1;p++)
+		{
 			if(pot.elementAt(p,1)==whoseTurn)
 			{
 				nextPlayer=(MOB)pot.elementAt(p+1,1);
 				break;
 			}
+		}
 		whoseTurn=nextPlayer;
 
 		// if we still have more players to consider...
@@ -530,7 +537,6 @@ public class PokerDealer extends StdBehavior
 			break;
 		}
 	}
-
 
 	// general system event handler.
 	// when events in the same room as this behavior occur,
@@ -610,8 +616,13 @@ public class PokerDealer extends StdBehavior
 							final int score=determineHand(hand);
 							int insertHere=-1;
 							for(int ii=0;ii<scores.size();ii++)
+							{
 								if(((Integer)scores.elementAt(ii,1)).intValue()>=score)
-								{ insertHere=ii; break;}
+								{
+									insertHere=ii;
+									break;
+								}
+							}
 							if(insertHere<0)
 								scores.addElement(Integer.valueOf(score),hand);
 							else
@@ -759,7 +770,10 @@ public class PokerDealer extends StdBehavior
 						if((!CMath.isInteger(parsed.elementAt(i)))
 						||(CMath.s_int(parsed.elementAt(i))<=0)
 						||(CMath.s_int(parsed.elementAt(i))>hand.numberOfCards()))
-						{ numbersOK=false; break;}
+						{
+							numbersOK=false;
+							break;
+						}
 
 					// if it checks out, we remove the specified cards,
 					// and deal new ones.
@@ -770,8 +784,10 @@ public class PokerDealer extends StdBehavior
 						final Vector<Item> removed=new Vector<Item>();
 						// make a list of cards to remove
 						for(int i=0;i<parsed.size();i++)
+						{
 							if(!removed.contains(cards.get(CMath.s_int(parsed.elementAt(i))-1)))
 								removed.addElement(cards.get(CMath.s_int(parsed.elementAt(i))-1));
+						}
 						// remove them from our cards list
 						for(int i=0;i<removed.size();i++)
 							cards.remove(removed.elementAt(i));
@@ -797,7 +813,6 @@ public class PokerDealer extends StdBehavior
 		}
 	}
 
-
 	// The heart of poker.
 	// it determines the best hand held.
 	// it returns a numeric score for the hand
@@ -816,11 +831,13 @@ public class PokerDealer extends StdBehavior
 			int tempSuitCount=0;
 			int tempFlushSuit=0;
 			for(int c=0;c<cards.size();c++)
+			{
 				if(((PlayingCard)cards.get(c)).getBitEncodedSuit()==suit)
 				{
 					tempSuitCount++;
 					tempFlushSuit=((PlayingCard)cards.get(c)).getBitEncodedSuit();
 				}
+			}
 			if(tempSuitCount>=5)
 			{
 				flushSuit=tempFlushSuit;
@@ -856,8 +873,10 @@ public class PokerDealer extends StdBehavior
 			{
 				highStraightCard=((PlayingCard)cards.get(window+4)).getBitEncodedValue();
 				for(int c=window+1;c<window+5;c++)
+				{
 					if(((PlayingCard)cards.get(c)).getBitEncodedValue()!=(((PlayingCard)cards.get(c-1)).getBitEncodedValue()+1))
 						highStraightCard=-1;
+				}
 				if(highStraightCard>=0)
 					break;
 			}
@@ -891,8 +910,10 @@ public class PokerDealer extends StdBehavior
 		{
 			int num=0;
 			for(int i=1;i<matches.size();i++)
+			{
 				if(((Integer)matches.elementAt(i,2)).intValue()<=((Integer)matches.elementAt(num,2)).intValue())
 					num=i;
+			}
 			sortedMatches.addElement(matches.elementAt(num,1),matches.elementAt(num,2));
 			matches.removeElementAt(num);
 		}
@@ -928,8 +949,10 @@ public class PokerDealer extends StdBehavior
 		&&(((Integer)matches.elementAt(matches.size()-1,2)).intValue()==4))
 		{
 			for(int c=cards.size()-1;c>=0;c--)
+			{
 				if(((PlayingCard)cards.get(c)).getBitEncodedValue()!=((Integer)matches.elementAt(matches.size()-1,1)).intValue())
 					return HAND_4OFAKIND+(((Integer)matches.elementAt(matches.size()-1,1)).intValue()<<15)+((PlayingCard)cards.get(c)).getBitEncodedValue();
+			}
 			return HAND_4OFAKIND+(((Integer)matches.elementAt(matches.size()-1,1)).intValue()<<15);
 		}
 
@@ -967,11 +990,13 @@ public class PokerDealer extends StdBehavior
 			int addValue=0;
 			int addTimes=0;
 			for(int c=cards.size()-1;c>=0;c--)
+			{
 				if(((PlayingCard)cards.get(c)).getBitEncodedValue()!=value)
 				{
 					if((++addTimes)<4)
 						addValue=(addValue<<4)+((PlayingCard)cards.get(c)).getBitEncodedValue();
 				}
+			}
 			return HAND_3OFAKIND+(value<<15)+addValue;
 		}
 
@@ -1002,11 +1027,13 @@ public class PokerDealer extends StdBehavior
 			int addValue=0;
 			int addTimes=0;
 			for(int c=cards.size()-1;c>=0;c--)
+			{
 				if(((PlayingCard)cards.get(c)).getBitEncodedValue()!=value)
 				{
 					if((++addTimes)<4)
 						addValue=(addValue<<4)+((PlayingCard)cards.get(c)).getBitEncodedValue();
 				}
+			}
 			return HAND_1PAIR+(value<<15)+addValue;
 		}
 
@@ -1020,7 +1047,6 @@ public class PokerDealer extends StdBehavior
 		}
 		return HAND_HIGHCARD+addValue;
 	}
-
 
 	// this method calls the determineHand
 	// method repeatedly for all players,
@@ -1071,14 +1097,15 @@ public class PokerDealer extends StdBehavior
 		{
 			int topNum=0;
 			for(int i=1;i<unsortedScores.size();i++)
+			{
 				if(((Integer)unsortedScores.elementAt(i,2)).intValue()<=((Integer)unsortedScores.elementAt(topNum,2)).intValue())
 					topNum=i;
+			}
 			sortedScores.addElement(unsortedScores.elementAt(topNum,1),unsortedScores.elementAt(topNum,2));
 			unsortedScores.removeElementAt(topNum);
 		}
 		return sortedScores;
 	}
-
 
 	// rips the score integer apart to
 	// determine all the goodness about
@@ -1241,8 +1268,10 @@ public class PokerDealer extends StdBehavior
 			final MOB winner=(MOB)scores.elementAt(scores.size()-1,1);
 			communicate(host,null,"The winner is "+winner.name()+", who has "+describeHand(((Integer)scores.elementAt(scores.size()-1,2)).intValue())+".",null);
 			for(int d=scores.size()-1;d>=0;d--)
+			{
 				if(scores.elementAt(d,1)!=winner)
 					communicate(host,null,((MOB)scores.elementAt(d,1)).name()+" had "+describeHand(((Integer)scores.elementAt(d,2)).intValue())+".",null);
+			}
 
 			// if the winner is here, give them all the gold on
 			// the ground
@@ -1276,7 +1305,6 @@ public class PokerDealer extends StdBehavior
 		else
 			communicate(host,null,"There was no winner in this game, and so the pot carries over to the next game.",null);
 	}
-
 
 	// deal cards to the given player
 	// this method deals the number
@@ -1378,7 +1406,6 @@ public class PokerDealer extends StdBehavior
 			dealToPlayer(host,player,numberOfCards,numberFaceUp);
 		}
 	}
-
 
 	// this method is called by the service engine
 	// every 3-4 seconds.  It is used to initiate
@@ -1593,6 +1620,7 @@ public class PokerDealer extends StdBehavior
 						final MOB winner=(MOB)scores.elementAt(scores.size()-1,1);
 						final DVector theRest=new DVector(2);
 						for(int p=0;p<pot.size();p++)
+						{
 							if(startAdding||pot.elementAt(p,1)==winner)
 							{
 								startAdding=true;
@@ -1600,6 +1628,7 @@ public class PokerDealer extends StdBehavior
 							}
 							else
 								theRest.addElement(pot.elementAt(p,1),pot.elementAt(p,2));
+						}
 						for(int p=0;p<theRest.size();p++)
 							newPot.addElement(theRest.elementAt(p,1),theRest.elementAt(p,2));
 						pot=newPot;

@@ -84,6 +84,7 @@ public class GenTub extends StdTub
 
 	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES","RESETTIME","RIDEBASIS","MOBSHELD",
 											"QUENCHED","LIQUIDHELD","LIQUIDTYPE","DEFCLOSED","DEFLOCKED"};
+
 	@Override
 	public String getStat(String code)
 	{
@@ -151,6 +152,7 @@ public class GenTub extends StdTub
 	}
 
 	private static String[] codes=null;
+
 	@Override
 	public String[] getStatCodes()
 	{

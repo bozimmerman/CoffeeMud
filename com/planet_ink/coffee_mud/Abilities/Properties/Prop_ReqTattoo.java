@@ -35,12 +35,31 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Prop_ReqTattoo extends Property implements TriggeredAffect
 {
-	@Override public String ID() { return "Prop_ReqTattoo"; }
-	@Override public String name(){ return "Tattoo Limitations";}
-	@Override protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS|Ability.CAN_ITEMS;}
+	@Override
+	public String ID()
+	{
+		return "Prop_ReqTattoo";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Tattoo Limitations";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS|Ability.CAN_ITEMS;
+	}
+
 	private String themsg="";
 
-	@Override public long flags(){return Ability.FLAG_ZAPPER;}
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_ZAPPER;
+	}
 
 	@Override
 	public String accountForYourself()
@@ -54,7 +73,12 @@ public class Prop_ReqTattoo extends Property implements TriggeredAffect
 		return TriggeredAffect.TRIGGER_ENTER;
 	}
 
-	@Override public String text(){ return themsg+";"+super.text();}
+	@Override
+	public String text()
+	{
+		return themsg+";"+super.text();
+	}
+
 	@Override
 	public void setMiscText(String newText)
 	{

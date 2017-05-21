@@ -38,7 +38,11 @@ public class I3Cmd extends StdCommand
 	public I3Cmd(){}
 
 	private final String[] access=I(new String[]{"I3"});
-	@Override public String[] getAccessWords(){return access;}
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
 	public void i3Error(MOB mob)
 	{
@@ -72,7 +76,11 @@ public class I3Cmd extends StdCommand
 		else
 		if(str.equalsIgnoreCase("add"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.I3)){ i3Error(mob); return false;}
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.I3))
+			{
+				i3Error(mob);
+				return false;
+			}
 			if(commands.size()<2)
 			{
 				mob.tell(L("You did not specify a channel name!"));
@@ -86,7 +94,11 @@ public class I3Cmd extends StdCommand
 		else
 		if(str.equalsIgnoreCase("delete"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.I3)){ i3Error(mob); return false;}
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.I3))
+			{
+				i3Error(mob);
+				return false;
+			}
 			if(commands.size()<2)
 			{
 				mob.tell(L("You did not specify a channel name!"));
@@ -97,7 +109,11 @@ public class I3Cmd extends StdCommand
 		else
 		if(str.equalsIgnoreCase("listen"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.I3)){ i3Error(mob); return false;}
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.I3))
+			{
+				i3Error(mob);
+				return false;
+			}
 			if(commands.size()<2)
 			{
 				mob.tell(L("You did not specify a channel name!"));
@@ -108,17 +124,26 @@ public class I3Cmd extends StdCommand
 		else
 		if(str.equalsIgnoreCase("ping"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.I3)){ i3Error(mob); return false;}
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.I3))
+			{
+				i3Error(mob);
+				return false;
+			}
 			CMLib.intermud().i3pingRouter(mob);
 		}
 		else
 		if(str.equalsIgnoreCase("restart"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.I3)){ i3Error(mob); return false;}
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.I3))
+			{
+				i3Error(mob);
+				return false;
+			}
 			try
 			{
 				mob.tell(CMLib.hosts().get(0).executeCommand("START I3"));
-			}catch(final Exception e){ Log.errOut("I3Cmd",e);}
+			}
+			catch(final Exception e){ Log.errOut("I3Cmd",e);}
 		}
 		else
 		if(str.equalsIgnoreCase("locate"))
@@ -133,7 +158,11 @@ public class I3Cmd extends StdCommand
 		else
 		if(str.equalsIgnoreCase("silence"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.I3)){ i3Error(mob); return false;}
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.I3))
+			{
+				i3Error(mob);
+				return false;
+			}
 			if(commands.size()<2)
 			{
 				mob.tell(L("You did not specify a channel name!"));
@@ -150,7 +179,10 @@ public class I3Cmd extends StdCommand
 		return false;
 	}
 
-	@Override public boolean canBeOrdered(){return true;}
-
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 
 }

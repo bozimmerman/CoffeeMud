@@ -60,5 +60,4 @@ public class GenShield extends GenArmor implements Shield
 		return true;
 	}
 
-
 }

@@ -33,15 +33,40 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Chant_SpeedAging extends Chant
 {
-	@Override public String ID() { return "Chant_SpeedAging"; }
+	@Override
+	public String ID()
+	{
+		return "Chant_SpeedAging";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Speed Aging");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return 0;}
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_BREEDING;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT|Ability.DOMAIN_BREEDING;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
 	@Override
 	protected int overrideMana()
 	{
@@ -191,7 +216,6 @@ public class Chant_SpeedAging extends Chant
 			return maliciousFizzle(mob,target,L("<S-NAME> chant(s) to <T-NAMESELF>, but the magic fades."));
 		else
 			return beneficialWordsFizzle(mob,target,L("<S-NAME> chant(s) to <T-NAMESELF>, but the magic fades."));
-
 
 		// return whether it worked
 		return success;

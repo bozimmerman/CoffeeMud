@@ -281,12 +281,14 @@ public class DefaultLawSet implements Law
 		if((W==null)||(W.criminal()==null))
 			return;
 		if(warrants.contains(W))
+		{
 			for(int w=0;w<warrants.size();w++)
 			{
 				final LegalWarrant W2=warrants.elementAt(w);
 				if(W2.criminal()==W.criminal())
 					W2.setState(state);
 			}
+		}
 	}
 
 	@Override
@@ -934,7 +936,6 @@ public class DefaultLawSet implements Law
 		}
 		return null;
 	}
-
 
 	@Override
 	public LegalWarrant getWarrant(MOB mob, int which)

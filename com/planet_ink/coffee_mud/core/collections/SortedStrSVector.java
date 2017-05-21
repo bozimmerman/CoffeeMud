@@ -147,6 +147,7 @@ public class SortedStrSVector<T> extends SVector<T> implements SearchIDList<T>
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public synchronized int indexOf(Object arg0)
 	{

@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -35,16 +34,62 @@ import java.util.*;
 */
 public class Skill_Songcraft extends BardSkill
 {
-	@Override public String ID() { return "Skill_Songcraft"; }
+	@Override
+	public String ID()
+	{
+		return "Skill_Songcraft";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Songcraft");
-	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "";}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
-	@Override public boolean isAutoInvoked(){return true;}
-	@Override public boolean canBeUninvoked(){return false;}
-	@Override public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_ARCANELORE;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public String displayText()
+	{
+		return "";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_SELF;
+	}
+
+	@Override
+	public boolean isAutoInvoked()
+	{
+		return true;
+	}
+
+	@Override
+	public boolean canBeUninvoked()
+	{
+		return false;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL|Ability.DOMAIN_ARCANELORE;
+	}
+
 	public String lastID="";
 	public int craftType(){return Ability.ACODE_SONG;}
 
@@ -53,7 +98,7 @@ public class Skill_Songcraft extends BardSkill
 	{
 		super.executeMsg(myHost,msg);
 		if(!(affected instanceof MOB))
-		   return;
+			return;
 		final MOB mob=(MOB)affected;
 		if((msg.sourceMinor()==CMMsg.TYP_CAST_SPELL)
 		&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))

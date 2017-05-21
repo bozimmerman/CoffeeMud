@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -36,15 +35,45 @@ import java.util.*;
 
 public class Prayer_DoomAura extends Prayer_BladeBarrier
 {
-	@Override public String ID() { return "Prayer_DoomAura"; }
-	private final static String localizedName = CMLib.lang().L("Doom Aura");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Doom Aura)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CORRUPTION;}
-	@Override public long flags(){return Ability.FLAG_UNHOLY;}
+	@Override
+	public String ID()
+	{
+		return "Prayer_DoomAura";
+	}
 
-	@Override protected String startStr() { return "An aura of doom appears around <T-NAME>!^?"; }
+	private final static String localizedName = CMLib.lang().L("Doom Aura");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Doom Aura)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_CORRUPTION;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_UNHOLY;
+	}
+
+	@Override
+	protected String startStr()
+	{
+		return "An aura of doom appears around <T-NAME>!^?";
+	}
 
 	@Override
 	protected void doDamage(MOB srcM, MOB targetM, int damage)

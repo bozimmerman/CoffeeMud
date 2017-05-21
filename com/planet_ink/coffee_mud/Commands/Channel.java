@@ -37,7 +37,11 @@ import java.util.*;
 public class Channel extends StdCommand
 {
 	public Channel(){}
-	@Override public String[] getAccessWords() { return CMLib.channels().getChannelNames(); }
+	@Override
+	public String[] getAccessWords()
+	{
+		return CMLib.channels().getChannelNames();
+	}
 
 	private final static Class[][] internalParameters=new Class[][]{{Boolean.class,String.class,String.class}};
 
@@ -196,7 +200,15 @@ public class Channel extends StdCommand
 		return false;
 	}
 
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 
-	@Override public boolean canBeOrdered(){return true;}
-	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandCombatActionCost(ID());}
+	@Override
+	public double combatActionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandCombatActionCost(ID());
+	}
 }

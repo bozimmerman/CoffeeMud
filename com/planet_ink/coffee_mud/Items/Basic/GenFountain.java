@@ -57,5 +57,4 @@ public class GenFountain extends GenWater
 		recoverPhyStats();
 	}
 
-
 }

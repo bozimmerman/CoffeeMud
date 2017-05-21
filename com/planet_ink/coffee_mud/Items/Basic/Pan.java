@@ -51,6 +51,4 @@ public class Pan extends StdDrink
 		recoverPhyStats();
 	}
 
-
-
 }

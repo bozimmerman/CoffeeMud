@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -35,8 +34,18 @@ import java.util.*;
 */
 public class Vagrant extends StdBehavior
 {
-	@Override public String ID(){return "Vagrant";}
-	@Override protected int canImproveCode(){return Behavior.CAN_MOBS;}
+	@Override
+	public String ID()
+	{
+		return "Vagrant";
+	}
+
+	@Override
+	protected int canImproveCode()
+	{
+		return Behavior.CAN_MOBS;
+	}
+
 	protected int sleepForTicks=0;
 	protected int wakeForTicks=0;
 
@@ -50,7 +59,7 @@ public class Vagrant extends StdBehavior
 	public boolean okMessage(Environmental oking, CMMsg msg)
 	{
 		if((oking==null)||(!(oking instanceof MOB)))
-		   return super.okMessage(oking,msg);
+			return super.okMessage(oking,msg);
 		final MOB mob=(MOB)oking;
 		if(msg.amITarget(mob)
 		   &&(((msg.sourceMajor()&CMMsg.MASK_MOVE)>0)||((msg.sourceMajor()&CMMsg.MASK_HANDS)>0)))

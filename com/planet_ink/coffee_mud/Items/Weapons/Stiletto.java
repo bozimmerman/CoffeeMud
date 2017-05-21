@@ -56,6 +56,4 @@ public class Stiletto extends Dagger
 		weaponDamageType=TYPE_PIERCING;
 	}
 
-
-
 }

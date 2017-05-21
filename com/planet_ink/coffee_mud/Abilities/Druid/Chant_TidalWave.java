@@ -35,7 +35,6 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Chant_TidalWave extends Chant
 {
 	@Override
@@ -226,7 +225,6 @@ public class Chant_TidalWave extends Chant
 		return super.castingQuality(mob,target);
 	}
 
-	
 	protected Room getWashRoom(Physical target, int dir)
 	{
 		if(target instanceof Room)

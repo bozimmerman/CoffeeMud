@@ -35,23 +35,93 @@ import java.util.*;
 
 public class Disease_Lyme extends Disease
 {
-	@Override public String ID() { return "Disease_Lyme"; }
-	private final static String localizedName = CMLib.lang().L("Lyme Disease");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Lyme Disease)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public boolean putInCommandlist(){return false;}
+	@Override
+	public String ID()
+	{
+		return "Disease_Lyme";
+	}
 
-	@Override protected int DISEASE_TICKS(){return 9*CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY);}
-	@Override protected int DISEASE_DELAY(){return CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY);}
-	@Override protected String DISEASE_DONE(){return L("Your lyme disease goes away.");}
-	@Override protected String DISEASE_START(){return L("^G<S-NAME> get(s) lyme disease!^?");}
-	@Override protected String DISEASE_AFFECT(){return "";}
-	@Override public int spreadBitmap(){return DiseaseAffect.SPREAD_CONSUMPTION|DiseaseAffect.SPREAD_DAMAGE;}
-	@Override public int difficultyLevel(){return 5;}
+	private final static String localizedName = CMLib.lang().L("Lyme Disease");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Lyme Disease)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public boolean putInCommandlist()
+	{
+		return false;
+	}
+
+	@Override
+	protected int DISEASE_TICKS()
+	{
+		return 9*CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY);
+	}
+
+	@Override
+	protected int DISEASE_DELAY()
+	{
+		return CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY);
+	}
+
+	@Override
+	protected String DISEASE_DONE()
+	{
+		return L("Your lyme disease goes away.");
+	}
+
+	@Override
+	protected String DISEASE_START()
+	{
+		return L("^G<S-NAME> get(s) lyme disease!^?");
+	}
+
+	@Override
+	protected String DISEASE_AFFECT()
+	{
+		return "";
+	}
+
+	@Override
+	public int spreadBitmap()
+	{
+		return DiseaseAffect.SPREAD_CONSUMPTION|DiseaseAffect.SPREAD_DAMAGE;
+	}
+
+	@Override
+	public int difficultyLevel()
+	{
+		return 5;
+	}
 	int days=0;
 
 	@Override

@@ -15,8 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
 import java.util.*;
 
 /*
@@ -37,7 +35,12 @@ import java.util.*;
 
 public class Emoter extends ActiveTicker
 {
-	@Override public String ID(){return "Emoter";}
+	@Override
+	public String ID()
+	{
+		return "Emoter";
+	}
+
 	protected int expires=0;
 	public Emoter()
 	{
@@ -45,7 +48,6 @@ public class Emoter extends ActiveTicker
 		minTicks=10;maxTicks=30;chance=50;expires=0;
 		tickReset();
 	}
-
 
 	@Override
 	public void setParms(String newParms)
@@ -68,8 +70,13 @@ public class Emoter extends ActiveTicker
 		public String msg;
 		public boolean broadcast;
 		public EmoteObj(EMOTE_TYPE type, String msg, boolean broadcast)
-		{ this.type=type; this.msg=msg; this.broadcast=broadcast;}
+		{
+			this.type=type;
+			this.msg=msg;
+			this.broadcast=broadcast;
+		}
 	}
+
 	protected static enum EMOTE_TYPE { EMOTE_VISUAL, EMOTE_SOUND, EMOTE_SMELL, EMOTE_SOCIAL }
 	protected EMOTE_TYPE emoteType=EMOTE_TYPE.EMOTE_VISUAL;
 
@@ -103,6 +110,7 @@ public class Emoter extends ActiveTicker
 			return false;
 		return true;
 	}
+
 	protected void setEmoteTypes(Vector<String> V, boolean respectOnlyBeginningAndEnd)
 	{
 		if(respectOnlyBeginningAndEnd)
@@ -131,7 +139,11 @@ public class Emoter extends ActiveTicker
 		String newParms=getParms();
 		char c=';';
 		int x=newParms.indexOf(c);
-		if(x<0){ c='/'; x=newParms.indexOf(c);}
+		if(x<0)
+		{
+			c='/';
+			x=newParms.indexOf(c);
+		}
 		if(x>0)
 		{
 			final String oldParms=newParms.substring(0,x);
@@ -223,8 +235,10 @@ public class Emoter extends ActiveTicker
 			if(inroomIDs.contains(ID))
 				return true;
 			for(final String roomID : inroomIDs)
+			{
 				if(ID.endsWith(roomID))
 					return true;
+			}
 			return false;
 		}
 		return true;
@@ -265,6 +279,7 @@ public class Emoter extends ActiveTicker
 		}
 		msg=CMClass.getMsg(emoter,null,CMMsg.MSG_EMOTE,str);
 		if(room.okMessage(emoter,msg))
+		{
 			for(int i=0;i<room.numInhabitants();i++)
 			{
 				final MOB M=room.fetchInhabitant(i);
@@ -288,6 +303,7 @@ public class Emoter extends ActiveTicker
 						break;
 					}
 			}
+		}
 		if(oldLoc!=null)
 			emoter.setLocation(oldLoc);
 	}
@@ -389,5 +405,4 @@ public class Emoter extends ActiveTicker
 		return true;
 	}
 }
-
 

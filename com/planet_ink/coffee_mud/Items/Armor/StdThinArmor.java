@@ -101,7 +101,6 @@ public class StdThinArmor extends StdItem implements Armor
 		return mob.freeWearPositions(where,getClothingLayer(),getLayerAttributes())>0;
 	}
 
-
 	@Override
 	public SizeDeviation getSizingDeviation(MOB mob)
 	{

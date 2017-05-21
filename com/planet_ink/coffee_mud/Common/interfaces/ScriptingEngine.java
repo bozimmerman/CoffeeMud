@@ -106,7 +106,6 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 	 */
 	public void dequeResponses();
 
-
 	/**
 	 * Creates a mob from the Tickable object sent, possibly saving it
 	 * locally to this object for use later.  If the object is a mob,
@@ -195,7 +194,6 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 	 * @return the script or load command(s)
 	 */
 	public String getScript();
-
 
 	/**
 	 * Returns the hey used to cache the script or load commands in here.

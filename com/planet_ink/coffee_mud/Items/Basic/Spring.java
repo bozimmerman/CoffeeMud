@@ -57,5 +57,4 @@ public class Spring extends StdDrink
 		recoverPhyStats();
 	}
 
-
 }

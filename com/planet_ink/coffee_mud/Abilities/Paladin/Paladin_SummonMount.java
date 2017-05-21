@@ -226,6 +226,7 @@ public class Paladin_SummonMount extends StdAbility
 		// return whether it worked
 		return success;
 	}
+
 	public MOB determineMonster(MOB caster, int level)
 	{
 

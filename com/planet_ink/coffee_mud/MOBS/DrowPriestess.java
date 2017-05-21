@@ -101,7 +101,6 @@ public class DrowPriestess extends DrowElf
 		if(dark==null)
 			return;
 
-
 		dark.setProficiency(100);
 		dark.setSavable(false);
 		this.addAbility(dark);
@@ -260,8 +259,5 @@ public class DrowPriestess extends DrowElf
 			dark.invoke(this,null,false,0);
 		return true;
 	}
-
-
-
 
 }

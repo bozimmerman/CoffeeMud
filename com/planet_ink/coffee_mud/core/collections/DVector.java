@@ -48,6 +48,7 @@ public class DVector implements Cloneable, NList<Object>, java.io.Serializable
 		dimensions=dim;
 		stuff=new SVector<Object[]>(1);
 	}
+
 	public DVector(int dim, int startingSize)
 	{
 		if(dim<1)
@@ -79,10 +80,13 @@ public class DVector implements Cloneable, NList<Object>, java.io.Serializable
 		}
 		else
 		for(final Enumeration<Object[]> e=stuff.elements();e.hasMoreElements();x++)
+		{
 			if(O.equals(e.nextElement()[0]))
 				return x;
+		}
 		return -1;
 	}
+
 	public synchronized Object[] elementsAt(int x)
 	{
 		if((x<0)||(x>=stuff.size()))
@@ -155,49 +159,60 @@ public class DVector implements Cloneable, NList<Object>, java.io.Serializable
 			throw new java.lang.IndexOutOfBoundsException();
 		stuff.addElement(O);
 	}
+
 	public synchronized void addElement(Object... Os)
 	{
 		if(dimensions!=Os.length)
 			throw new java.lang.IndexOutOfBoundsException();
 		stuff.addElement(Os);
 	}
+
 	public synchronized void add(Object... Os)
 	{
 		if(dimensions!=Os.length)
 			throw new java.lang.IndexOutOfBoundsException();
 		stuff.addElement(Os);
 	}
+
 	public boolean contains(Object O)
 	{
 		return indexOf(O)>=0;
 	}
+
 	public synchronized boolean containsIgnoreCase(String S)
 	{
 		if(S==null)
 			return indexOf(null)>=0;
 		for (final Object[] name : stuff)
+		{
 			if(S.equalsIgnoreCase(name[0].toString()))
 				return true;
+		}
 		return false;
 	}
+
 	public int size()
 	{
 		return stuff.size();
 	}
+
 	public synchronized void removeElementAt(int i)
 	{
 		if(i>=0)
 			stuff.removeElementAt(i);
 	}
+
 	public synchronized void remove(int i)
 	{
 		if(i>=0)
 			stuff.removeElementAt(i);
 	}
+
 	public synchronized void removeElement(Object O)
 	{
 		removeElementAt(indexOf(O));
 	}
+
 	public synchronized List<Object> getDimensionList(int dim)
 	{
 		final Vector<Object> V=new Vector<Object>(stuff.size());
@@ -207,6 +222,7 @@ public class DVector implements Cloneable, NList<Object>, java.io.Serializable
 			V.addElement(name[dim-1]);
 		return V;
 	}
+
 	public synchronized List<Object> getRowList(int row)
 	{
 		final Vector<Object> V=new Vector<Object>(dimensions);
@@ -215,6 +231,7 @@ public class DVector implements Cloneable, NList<Object>, java.io.Serializable
 			V.add(element);
 		return V;
 	}
+
 	public synchronized Object elementAt(int i, int dim)
 	{
 		if(dimensions<dim)

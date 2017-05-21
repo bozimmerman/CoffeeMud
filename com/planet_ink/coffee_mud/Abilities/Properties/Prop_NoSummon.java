@@ -32,13 +32,31 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class Prop_NoSummon extends Property
 {
-	@Override public String ID() { return "Prop_NoSummon"; }
-	@Override public String name(){ return "Summon Spell Neutralizing";}
-	@Override protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_MOBS;}
+	@Override
+	public String ID()
+	{
+		return "Prop_NoSummon";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Summon Spell Neutralizing";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_MOBS;
+	}
+
 	protected boolean nonAggroOK=false;
 
-
-	@Override public long flags(){return Ability.FLAG_IMMUNER;}
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_IMMUNER;
+	}
 
 	@Override
 	public void setMiscText(String text)
@@ -46,6 +64,7 @@ public class Prop_NoSummon extends Property
 		nonAggroOK=CMParms.parse(text.toUpperCase()).contains("ALLOWNONAGGR");
 
 	}
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{

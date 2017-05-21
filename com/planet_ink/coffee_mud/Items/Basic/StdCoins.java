@@ -87,11 +87,13 @@ public class StdCoins extends StdItem implements Coins
 		{
 			final RawMaterial.CODES codes = RawMaterial.CODES.instance();
 			for(int s=0;s<codes.total();s++)
+			{
 				if(CMLib.english().containsString(name(),codes.name(s)))
 				{
 					setMaterial(codes.get(s));
 					break;
 				}
+			}
 		}
 		setDescription(CMLib.beanCounter().getConvertableDescription(getCurrency(),getDenomination()));
 	}

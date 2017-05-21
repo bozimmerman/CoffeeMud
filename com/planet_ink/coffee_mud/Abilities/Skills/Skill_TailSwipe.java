@@ -33,7 +33,6 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Skill_TailSwipe extends StdSkill
 {
 	@Override

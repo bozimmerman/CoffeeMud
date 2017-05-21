@@ -35,14 +35,45 @@ import java.util.*;
 
 public class Prayer_MassParalyze extends Prayer
 {
-	@Override public String ID() { return "Prayer_MassParalyze"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_MassParalyze";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Mass Paralyze");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CORRUPTION;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	@Override public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_PARALYZING;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_CORRUPTION;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_UNHOLY|Ability.FLAG_PARALYZING;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Paralyzed)");
-	@Override public String displayText() { return localizedStaticDisplay; }
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
@@ -110,7 +141,6 @@ public class Prayer_MassParalyze extends Prayer
 
 		if(nothingDone)
 			return maliciousFizzle(mob,null,L("<S-NAME> attempt(s) to paralyze everyone, but flub(s) it."));
-
 
 		// return whether it worked
 		return success;

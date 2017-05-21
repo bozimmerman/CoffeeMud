@@ -57,6 +57,4 @@ public class Wineskin extends StdDrink
 		recoverPhyStats();
 	}
 
-
-
 }

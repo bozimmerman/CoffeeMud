@@ -33,16 +33,45 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Chant_Reabsorb extends Chant
 {
-	@Override public String ID() { return "Chant_Reabsorb"; }
+	@Override
+	public String ID()
+	{
+		return "Chant_Reabsorb";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Reabsorb");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
-	@Override protected int canTargetCode(){return CAN_ITEMS;}
-	@Override protected int canAffectCode(){return 0;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_ITEMS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
 
 	@Override
 	public int castingQuality(MOB mob, Physical target)
@@ -70,7 +99,6 @@ public class Chant_Reabsorb extends Chant
 		}
 		return super.castingQuality(mob,target);
 	}
-
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -138,7 +166,6 @@ public class Chant_Reabsorb extends Chant
 		}
 		else
 			return maliciousFizzle(mob,target,L("<S-NAME> chant(s) at <T-NAME>, but nothing happens."));
-
 
 		// return whether it worked
 		return success;

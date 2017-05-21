@@ -15,9 +15,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
-
 
 /*
    Copyright 2001-2017 Bo Zimmerman
@@ -36,10 +34,26 @@ import java.util.*;
 */
 public class Song_Blasting extends Song
 {
-	@Override public String ID() { return "Song_Blasting"; }
+	@Override
+	public String ID()
+	{
+		return "Song_Blasting";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Blasting");
-	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_OTHERS;
+	}
+
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{

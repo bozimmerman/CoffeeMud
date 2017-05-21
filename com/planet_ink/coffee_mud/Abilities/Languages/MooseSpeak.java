@@ -42,6 +42,7 @@ public class MooseSpeak extends AnimalSpeak
 	}
 
 	private final static String localizedName = CMLib.lang().L("Moose Speak");
+
 	@Override
 	public String name()
 	{

@@ -31,7 +31,12 @@ import java.util.*;
 
 public class Thief_Racketeer extends ThiefSkill
 {
-	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_CRIMINAL;}
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_CRIMINAL;
+	}
+
 	@Override
 	public String ID()
 	{
@@ -67,6 +72,7 @@ public class Thief_Racketeer extends ThiefSkill
 	{
 		return Ability.QUALITY_MALICIOUS;
 	}
+
 	private static final String[] triggerStrings={"RACKETEER"};
 
 	@Override
@@ -80,6 +86,7 @@ public class Thief_Racketeer extends ThiefSkill
 	{
 		return true;
 	}
+
 	public Vector<MOB> mobs=new Vector<MOB>();
 
 	@Override

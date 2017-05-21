@@ -56,5 +56,4 @@ public class Shortsword extends Sword
 		weaponDamageType=TYPE_PIERCING;
 	}
 
-
 }

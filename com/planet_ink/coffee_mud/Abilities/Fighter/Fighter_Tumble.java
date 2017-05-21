@@ -33,29 +33,75 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Fighter_Tumble extends FighterSkill
 {
 	public int hits=0;
-	@Override public String ID() { return "Fighter_Tumble"; }
+
+	@Override
+	public String ID()
+	{
+		return "Fighter_Tumble";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Tumble");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Tumbling)");
-	@Override public String displayText() { return localizedStaticDisplay; }
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"TUMBLE"});
-	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_ACROBATIC;}
-	@Override public int usageType(){return USAGE_MOVEMENT;}
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_SELF;
+	}
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL|Ability.DOMAIN_ACROBATIC;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT;
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
 		if((invoker==null)&&(affected instanceof MOB))
-		   invoker=(MOB)affected;
+			invoker=(MOB)affected;
 		if(invoker!=null)
 		{
 			final float f=(float)CMath.mul(0.2,getXLEVELLevel(invoker));

@@ -33,7 +33,6 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Prayer_Bloatbomb extends Prayer implements Trap
 {
 	@Override

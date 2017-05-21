@@ -166,7 +166,6 @@ public class CMLib
 		return CMath.instance();
 	}
 	
-
 	/**
 	 * Returns reference to the string parameter utility class.
 	 * @see com.planet_ink.coffee_mud.core.CMParms
@@ -273,8 +272,10 @@ public class CMLib
 			return mudThreads.firstElement();
 		else
 		for(int i=0;i<mudThreads.size();i++)
+		{
 			if(mudThreads.elementAt(i).getPort()==port)
 				return mudThreads.elementAt(i);
+		}
 		return null;
 	}
 
@@ -288,8 +289,10 @@ public class CMLib
 	{
 		final Vector<CMLibrary> V=new Vector<CMLibrary>();
 		for(final Library lbry : Library.values())
+		{
 			if(l().libraries[lbry.ordinal()]!=null)
 				V.add(l().libraries[lbry.ordinal()]);
+		}
 		return V.elements();
 	}
 
@@ -896,8 +899,20 @@ public class CMLib
 				int att=0;
 				while((att++<attempts)&&t.isAlive())
 				{
-					try { Thread.sleep(sleepTime); }catch(final Exception e){}
-					try { t.interrupt(); }catch(final Exception e){}
+					try
+					{
+						 Thread.sleep(sleepTime); 
+					}
+					catch(final Exception e)
+					{
+					}
+					try
+					{
+						 t.interrupt(); 
+					}
+					catch(final Exception e)
+					{
+					}
 				}
 				stillAlive=t.isAlive();
 			}
@@ -912,9 +927,13 @@ public class CMLib
 					Log.errOut(dump.toString());
 				}
 			}
-			catch(final java.lang.ThreadDeath td) {}
+			catch(final java.lang.ThreadDeath td)
+			{
+			}
 		}
-		catch(final Throwable th){}
+		catch(final Throwable th)
+		{
+		}
 
 	}
 
@@ -946,10 +965,12 @@ public class CMLib
 		for(final Library lbry : Library.values())
 		{
 			if((!CMProps.isPrivateToMe(lbry.toString())&&(libs[MudHost.MAIN_HOST]!=lib)))
-			{}
+			{
+			}
 			else
 			if(lib.libraries[lbry.ordinal()]==null)
-			{}
+			{
+			}
 			else
 				lib.libraries[lbry.ordinal()].propertiesLoaded();
 		}
@@ -1037,8 +1058,10 @@ public class CMLib
 	{
 		int x=0;
 		for (final boolean element : l().registered)
+		{
 			if(element)
 				x++;
+		}
 		return x;
 	}
 	
@@ -1051,8 +1074,10 @@ public class CMLib
 	{
 		final StringBuffer str=new StringBuffer("");
 		for(int i=0;i<l().registered.length;i++)
+		{
 			if(!l().registered[i])
 				str.append(""+i+", ");
+		}
 		return str.toString();
 	}
 }

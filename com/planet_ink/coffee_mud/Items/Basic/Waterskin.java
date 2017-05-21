@@ -56,6 +56,4 @@ public class Waterskin extends StdDrink
 		recoverPhyStats();
 	}
 
-
-
 }

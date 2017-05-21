@@ -38,7 +38,11 @@ public class Sheath extends StdCommand
 	public Sheath(){}
 
 	private final String[] access=I(new String[]{"SHEATH"});
-	@Override public String[] getAccessWords(){return access;}
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
 	public static Vector<Container> getSheaths(MOB mob)
 	{
@@ -153,8 +157,16 @@ public class Sheath extends StdCommand
 			int addendum=1;
 			String addendumStr="";
 			boolean allFlag=(commands.size()>0)?commands.get(0).equalsIgnoreCase("all"):false;
-			if(thingToPut.toUpperCase().startsWith("ALL.")){ allFlag=true; thingToPut="ALL "+thingToPut.substring(4);}
-			if(thingToPut.toUpperCase().endsWith(".ALL")){ allFlag=true; thingToPut="ALL "+thingToPut.substring(0,thingToPut.length()-4);}
+			if(thingToPut.toUpperCase().startsWith("ALL."))
+			{
+				allFlag=true;
+				thingToPut="ALL "+thingToPut.substring(4);
+			}
+			if(thingToPut.toUpperCase().endsWith(".ALL"))
+			{
+				allFlag=true;
+				thingToPut="ALL "+thingToPut.substring(0,thingToPut.length()-4);
+			}
 			boolean doBugFix = true;
 			while(doBugFix || allFlag)
 			{
@@ -179,7 +191,10 @@ public class Sheath extends StdCommand
 							{
 								final Container sheath=sheaths.get(i);
 								if(sheath.canContain(putThis))
-								{tempContainer=sheath; break;}
+								{
+									tempContainer=sheath;
+									break;
+								}
 							}
 							if(tempContainer==null)
 								items.remove(putThis);
@@ -220,17 +235,23 @@ public class Sheath extends StdCommand
 		}
 		return false;
 	}
+
 	@Override
 	public double actionsCost(final MOB mob, final List<String> cmds)
 	{
 		return CMProps.getCommandActionCost(ID(), CMath.div(CMProps.getIntVar(CMProps.Int.DEFCMDTIME),200.0));
 	}
+
 	@Override
 	public double combatActionsCost(MOB mob, List<String> cmds)
 	{
 		return CMProps.getCommandCombatActionCost(ID(), CMath.div(CMProps.getIntVar(CMProps.Int.DEFCOMCMDTIME),200.0));
 	}
-	@Override public boolean canBeOrdered(){return true;}
 
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 
 }

@@ -28,8 +28,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  * caused the problem.
  */
 
-
-
 import java.util.Enumeration;
 import java.util.NoSuchElementException;
 
@@ -136,7 +134,7 @@ public Object nextElement()
 		throw new NoSuchElementException();
 	e = exception;
 	if( e instanceof PersistenceException )
-	  exception = ((PersistenceException)e).getPriorException();
+		exception = ((PersistenceException)e).getPriorException();
 	else exception = null;
 	return e;
   }

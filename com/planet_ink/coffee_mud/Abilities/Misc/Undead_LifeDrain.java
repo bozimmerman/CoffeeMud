@@ -34,7 +34,6 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Undead_LifeDrain extends StdAbility
 {
 	@Override
@@ -106,7 +105,6 @@ public class Undead_LifeDrain extends StdAbility
 			return false;
 
 		final boolean success=proficiencyCheck(mob,0,auto);
-
 
 		if(success)
 		{

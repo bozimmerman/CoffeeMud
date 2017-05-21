@@ -117,7 +117,6 @@ public interface ClanManager extends CMLibrary
 	 */
 	public long getLastGovernmentLoad();
 
-
 	/**
 	 * Returns the clan which may or may not be assigned to the absolute file path specified.
 	 * @param sitePath the absolute path of the web dir assigned to this clan

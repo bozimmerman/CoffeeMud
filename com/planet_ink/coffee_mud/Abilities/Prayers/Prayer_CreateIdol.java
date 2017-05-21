@@ -33,18 +33,57 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Prayer_CreateIdol extends Prayer
 {
-	@Override public String ID() { return "Prayer_CreateIdol"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_CreateIdol";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Create Idol");
-	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CURSING;}
-	@Override public long flags(){return Ability.FLAG_UNHOLY;}
-	@Override protected int canAffectCode(){return CAN_ITEMS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public boolean bubbleAffect(){return true;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_CURSING;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_UNHOLY;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_ITEMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public boolean bubbleAffect()
+	{
+		return true;
+	}
 
 	@Override
 	public void affectPhyStats(Physical aff, PhyStats affectableStats)
@@ -84,7 +123,6 @@ public class Prayer_CreateIdol extends Prayer
 			affectableState.setMovement(20);
 		}
 	}
-
 
 	@Override
 	public boolean okMessage(Environmental host, CMMsg msg)

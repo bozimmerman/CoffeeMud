@@ -89,7 +89,6 @@ public class Skill_AwaitShip extends StdSkill
 		return Ability.ACODE_SKILL | Ability.DOMAIN_SEATRAVEL;
 	}
 	
-
 	@Override
 	public boolean invoke(final MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{

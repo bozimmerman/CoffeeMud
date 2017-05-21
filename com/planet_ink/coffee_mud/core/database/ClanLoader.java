@@ -19,7 +19,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.sql.*;
 import java.util.*;
 
-
 /**
  * Portions Copyright (c) 2003 Jeremy Vyska
  * Portions Copyright (c) 2004-2017 Bo Zimmerman
@@ -42,6 +41,7 @@ public class ClanLoader
 	{
 		DB=newDB;
 	}
+
 	protected int currentRecordPos=1;
 	protected int recordCount=0;
 

@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2002-2017 Bo Zimmerman
 
@@ -36,14 +35,45 @@ import java.util.*;
 
 public class Chant_LocatePlants extends Chant
 {
-	@Override public String ID() { return "Chant_LocatePlants"; }
+	@Override
+	public String ID()
+	{
+		return "Chant_LocatePlants";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Locate Plants");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Locating Plants)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
-	@Override public long flags(){return Ability.FLAG_TRACKING;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_SELF;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_TRACKING;
+	}
 
 	protected List<Room> theTrail=null;
 	public int nextDirection=-2;

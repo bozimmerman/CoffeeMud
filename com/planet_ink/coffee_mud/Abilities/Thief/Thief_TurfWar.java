@@ -35,27 +35,88 @@ import java.util.*;
 
 public class Thief_TurfWar extends ThiefSkill
 {
-	@Override public String ID() { return "Thief_TurfWar"; }
+	@Override
+	public String ID()
+	{
+		return "Thief_TurfWar";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Turf War");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Turf War)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return CAN_ROOMS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_ROOMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"TURFWAR"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
-	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STREETSMARTS;}
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT|USAGE_MANA;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STREETSMARTS;
+	}
+
 	public static Ability sparringRoomA=null;
 	protected MOB defender=null;
 	protected boolean defenderPKILLON=false;
 
-
 	protected long timeToNextCast = 0;
-	@Override protected int getTicksBetweenCasts() { return CMProps.getIntVar(CMProps.Int.TICKSPERMUDMONTH);}
-	@Override protected long getTimeOfNextCast(){ return timeToNextCast; }
-	@Override protected void setTimeOfNextCast(long absoluteTime) { timeToNextCast=absoluteTime;}
+
+	@Override
+	protected int getTicksBetweenCasts()
+	{
+		return CMProps.getIntVar(CMProps.Int.TICKSPERMUDMONTH);
+	}
+
+	@Override
+	protected long getTimeOfNextCast()
+	{
+		return timeToNextCast;
+	}
+
+	@Override
+	protected void setTimeOfNextCast(long absoluteTime)
+	{
+		timeToNextCast=absoluteTime;
+	}
 
 	public static synchronized Ability getSparringRoom()
 	{
@@ -253,8 +314,10 @@ public class Thief_TurfWar extends ThiefSkill
 			if(target.fetchEffect(ID())!=null)
 			{
 				for(final Session S : CMLib.sessions().localOnlineIterable())
+				{
 					if((S.mob()!=null)&&(S.mob()!=mob)&&(isADefender(R,S.mob())))
 						S.mob().tell(L("@x1 has declared a turf war at '@x2'.  You must immediately go and defend it to keep your tag.",mob.name(mob),R.displayText(mob)));
+				}
 				setTimeOfNextCast(mob);
 			}
 		}

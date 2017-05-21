@@ -665,11 +665,13 @@ public class DefaultMessage implements CMMsg
 			if((I==null)&&(minor >= 0))
 			{
 				for(int i=0;i<TYPE_DESCS.length;i++)
+				{
 					if(TYPE_DESCS[i].startsWith(code2))
 					{ 
 						I=Integer.valueOf(i); 
 						break;
 					}
+				}
 			}
 			if((I==null)&&(major > 0))
 			{
@@ -685,11 +687,13 @@ public class DefaultMessage implements CMMsg
 			if((I==null)&&(major > 0))
 			{
 				for(int i=0;i<MASK_DESCS.length;i++)
+				{
 					if(MASK_DESCS[i].startsWith(code2))
 					{ 
 						I=Integer.valueOf((int)CMath.pow(2,11+i)); 
 						break;
 					}
+				}
 			}
 			if(I==null)
 			{

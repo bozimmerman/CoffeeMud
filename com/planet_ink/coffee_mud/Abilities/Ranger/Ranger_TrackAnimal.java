@@ -36,23 +36,73 @@ import java.util.*;
 
 public class Ranger_TrackAnimal extends StdAbility
 {
-	@Override public String ID() { return "Ranger_TrackAnimal"; }
+	@Override
+	public String ID()
+	{
+		return "Ranger_TrackAnimal";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Track Animal");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	protected String displayText=L("(tracking an animal)");
-	@Override public String displayText(){ return displayText;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
+
+	@Override
+	public String displayText()
+	{
+		return displayText;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_SELF;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"TRACKANIMAL"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_COMBATLORE;}
-	@Override public long flags(){return Ability.FLAG_TRACKING;}
-	@Override public int usageType(){return USAGE_MOVEMENT;}
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL|Ability.DOMAIN_COMBATLORE;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_TRACKING;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT;
+	}
 
 	protected List<Room> theTrail=null;
 	public int nextDirection=-2;
-
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
@@ -223,7 +273,6 @@ public class Ranger_TrackAnimal extends StdAbility
 		}
 		else
 			return beneficialVisualFizzle(mob,null,L("<S-NAME> attempt(s) to track an animal, but can't find the trail."));
-
 
 		// return whether it worked
 		return success;

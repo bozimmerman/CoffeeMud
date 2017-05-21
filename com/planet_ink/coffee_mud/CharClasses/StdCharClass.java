@@ -20,8 +20,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
-
 /*
    Copyright 2001-2017 Bo Zimmerman
 
@@ -295,6 +293,7 @@ public class StdCharClass implements CharClass
 		names[0]=name();
 		return names;
 	}
+
 	@Override
 	public void initializeClass()
 	{
@@ -1222,7 +1221,6 @@ public class StdCharClass implements CharClass
 		return CR;
 	}
 
-
 	@Override
 	public void endCharacter(MOB mob)
 	{
@@ -1260,6 +1258,7 @@ public class StdCharClass implements CharClass
 	{
 
 	}
+
 	@Override
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
 	{

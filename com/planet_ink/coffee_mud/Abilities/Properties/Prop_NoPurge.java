@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -35,9 +34,23 @@ import java.util.*;
 */
 public class Prop_NoPurge extends Property
 {
-	@Override public String ID() { return "Prop_NoPurge"; }
-	@Override public String name(){ return "Prevents automatic purging";}
-	@Override protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_ITEMS;}
+	@Override
+	public String ID()
+	{
+		return "Prop_NoPurge";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Prevents automatic purging";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ROOMS|Ability.CAN_ITEMS;
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
@@ -71,6 +84,7 @@ public class Prop_NoPurge extends Property
 				((Item)affected).setExpirationDate(0);
 		}
 	}
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{

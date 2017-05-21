@@ -33,19 +33,59 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Prayer_Benediction extends Prayer
 {
-	@Override public String ID() { return "Prayer_Benediction"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_Benediction";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Benediction");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Benediction)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	@Override public long flags(){return Ability.FLAG_HOLY;}
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
-	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_OTHERS;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_HOLY;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_MOBS;
+	}
 
 	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
@@ -62,8 +102,10 @@ public class Prayer_Benediction extends Prayer
 			mob.charStats().getMyClass(c).affectCharStats(mob,chk);
 		int num=0;
 		for(final int i: CharStats.CODES.MAXCODES())
+		{
 			if(chk.getStat(i)>0)
 				num++;
+		}
 		for(final int i: CharStats.CODES.BASECODES())
 			if(chk.getStat(CharStats.CODES.toMAXBASE(i))>0)
 				affectableStats.setStat(i,affectableStats.getStat(i)+(pts/num));
@@ -106,7 +148,6 @@ public class Prayer_Benediction extends Prayer
 		}
 		else
 			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 for a benediction over <T-YOUPOSS>  but there is no answer.",prayWord(mob)));
-
 
 		// return whether it worked
 		return success;

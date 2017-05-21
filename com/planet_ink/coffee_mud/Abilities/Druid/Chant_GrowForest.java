@@ -35,13 +35,43 @@ import java.util.*;
 
 public class Chant_GrowForest extends Chant
 {
-	@Override public String ID() { return "Chant_GrowForest"; }
+	@Override
+	public String ID()
+	{
+		return "Chant_GrowForest";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Grow Forest");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return 0;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -64,6 +94,7 @@ public class Chant_GrowForest extends Chant
 
 		final List<Integer> codes = RawMaterial.CODES.COMPOSE_RESOURCES(RawMaterial.MATERIAL_WOODEN);
 		for(final Integer code : codes)
+		{
 			if(code.intValue()!=RawMaterial.RESOURCE_WOOD)
 			{
 				choices.addElement(code);
@@ -71,6 +102,7 @@ public class Chant_GrowForest extends Chant
 				if((s.length()>0)&&(CMLib.english().containsString(desc,s)))
 					material=code.intValue();
 			}
+		}
 		if((material<0)&&(s.length()>0))
 		{
 			mob.tell(L("'@x1' is not a recognized form of tree!",s));

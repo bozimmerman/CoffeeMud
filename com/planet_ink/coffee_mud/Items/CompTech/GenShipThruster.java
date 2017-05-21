@@ -89,7 +89,6 @@ public class GenShipThruster extends StdShipThruster
 										   "SPECIMPL","FUELEFF","MINTHRUST","ISCONST","AVAILPORTS",
 										   "RECHRATE"};
 	
-	
 	@Override
 	public String getStat(String code)
 	{

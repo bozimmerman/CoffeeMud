@@ -35,16 +35,57 @@ import java.util.*;
 
 public class Thief_ConcealWalkway extends ThiefSkill
 {
-	@Override public String ID() { return "Thief_ConcealWalkway"; }
+	@Override
+	public String ID()
+	{
+		return "Thief_ConcealWalkway";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Conceal Walkway");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
-	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ITEMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_ITEMS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"WALKWAYCONCEAL","WALKCONCEAL","WCONCEAL","CONCEALWALKWAY"});
-	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALTHY;}
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALTHY;
+	}
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT|USAGE_MANA;
+	}
+
 	public int code=Integer.MIN_VALUE;
 
 	@Override
@@ -54,7 +95,13 @@ public class Thief_ConcealWalkway extends ThiefSkill
 			code=CMath.s_int(text());
 		return code;
 	}
-	@Override public void setAbilityCode(int newCode){code=newCode; super.miscText=""+newCode;}
+
+	@Override
+	public void setAbilityCode(int newCode)
+	{
+		code=newCode;
+		super.miscText=""+newCode;
+	}
 
 	@Override
 	public void affectPhyStats(Physical host, PhyStats stats)
@@ -112,8 +159,10 @@ public class Thief_ConcealWalkway extends ThiefSkill
 			chkE=mob.location().getExitInDir(CMLib.directions().getGoodDirectionCode(typed));
 		int direction=-1;
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+		{
 			if(mob.location().getExitInDir(d)==chkE)
 				direction=d;
+		}
 		if((!(chkE instanceof Exit))||(!CMLib.flags().canBeSeenBy(chkE,mob))||(direction<0))
 		{
 			mob.tell(L("You don't see any directions called '@x1' here.",typed));

@@ -171,7 +171,6 @@ public class Chant_Goodberry extends Chant
 		else
 			beneficialWordsFizzle(mob,target,L("<S-NAME> chant(s) to <T-NAMESELF>, but nothing happens."));
 
-
 		// return whether it worked
 		return success;
 	}

@@ -35,18 +35,69 @@ import java.util.*;
 
 public class Prayer_Contagion extends Prayer implements DiseaseAffect
 {
-	@Override public String ID() { return "Prayer_Contagion"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_Contagion";
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Contagion)");
-	@Override public String displayText() { return localizedStaticDisplay; }
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
 	private final static String localizedName = CMLib.lang().L("Contagion");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CORRUPTION;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	@Override public long flags(){return Ability.FLAG_NEUTRAL;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int difficultyLevel(){return 0;}
-	@Override public boolean isMalicious(){ return true;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_CORRUPTION;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_NEUTRAL;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int difficultyLevel()
+	{
+		return 0;
+	}
+
+	@Override
+	public boolean isMalicious()
+	{
+		return true;
+	}
 
 	@Override
 	public String getHealthConditionDesc()
@@ -69,7 +120,11 @@ public class Prayer_Contagion extends Prayer implements DiseaseAffect
 		super.unInvoke();
 	}
 
-	@Override public int spreadBitmap(){return DiseaseAffect.SPREAD_PROXIMITY;}
+	@Override
+	public int spreadBitmap()
+	{
+		return DiseaseAffect.SPREAD_PROXIMITY;
+	}
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
@@ -143,7 +198,6 @@ public class Prayer_Contagion extends Prayer implements DiseaseAffect
 		}
 		else
 			return maliciousFizzle(mob,target,L("<S-NAME> point(s) at <T-NAMESELF> and @x1, but nothing happens.",prayWord(mob)));
-
 
 		// return whether it worked
 		return success;

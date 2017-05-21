@@ -33,7 +33,6 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Archon_Injure extends ArchonSkill
 {
 	@Override

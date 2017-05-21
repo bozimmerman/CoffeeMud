@@ -88,6 +88,7 @@ public class GenShipEngine extends StdShipEngine
 										   "MANUFACTURER","INSTFACT","DEFCLOSED","DEFLOCKED",
 										   "MAXTHRUST","SPECIMPL","FUELEFF","MINTHRUST","ISCONST","AVAILPORTS",
 										   "RECHRATE"};
+
 	@Override
 	public String getStat(String code)
 	{

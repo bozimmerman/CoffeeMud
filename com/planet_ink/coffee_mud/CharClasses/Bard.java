@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2001-2017 Bo Zimmerman
 
@@ -122,6 +121,7 @@ public class Bard extends StdCharClass
 		super();
 		maxStatAdj[CharStats.STAT_CHARISMA]=7;
 	}
+
 	@Override
 	public void initializeClass()
 	{
@@ -344,7 +344,6 @@ public class Bard extends StdCharClass
 		}
 	}
 
-
 	@Override
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)
 	{
@@ -373,7 +372,6 @@ public class Bard extends StdCharClass
 			return true;
 		return super.weaponCheck(mob,sourceCode,E);
 	}
-
 
 	private final String[] raceRequiredList=new String[]{
 		"Human","Humanoid","Elf","Dwarf","Halfling","Elf-kin","Centaur",

@@ -34,7 +34,11 @@ import java.util.*;
 */
 public class PlayerHelper extends StdBehavior
 {
-	@Override public String ID(){return "PlayerHelper";}
+	@Override
+	public String ID()
+	{
+		return "PlayerHelper";
+	}
 
 	@Override
 	public String accountForYourself()

@@ -31,7 +31,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  * The Input class accepts user input.
  */
 
-
 /**
  * This class is designed to accept user input
  * outside of any command parsing structure.

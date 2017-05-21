@@ -89,7 +89,6 @@ public class Follow extends StdCommand
 		}
 	}
 
-
 	public boolean processFollow(MOB mob, MOB tofollow, boolean quiet)
 	{
 		if(mob==null)

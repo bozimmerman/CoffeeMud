@@ -35,11 +35,25 @@ import java.util.*;
 
 public class Paladin_DiseaseImmunity extends PaladinSkill
 {
-	@Override public String ID() { return "Paladin_DiseaseImmunity"; }
-	private final static String localizedName = CMLib.lang().L("Disease Immunity");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_HOLYPROTECTION;}
+	@Override
+	public String ID()
+	{
+		return "Paladin_DiseaseImmunity";
+	}
 
+	private final static String localizedName = CMLib.lang().L("Disease Immunity");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL|Ability.DOMAIN_HOLYPROTECTION;
+	}
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
@@ -56,6 +70,7 @@ public class Paladin_DiseaseImmunity extends PaladinSkill
 			return false;
 		return super.okMessage(myHost,msg);
 	}
+
 	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{

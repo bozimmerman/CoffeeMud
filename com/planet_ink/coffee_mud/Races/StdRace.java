@@ -2047,7 +2047,6 @@ public class StdRace implements Race
 		}
 	}
 
-
 	protected static String[] CODES={"CLASS","PARMS"};
 
 	@Override

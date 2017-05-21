@@ -65,7 +65,11 @@ public class AutoAffects extends StdCommand
 			&&((!(P instanceof MOB))||(((MOB)P).fetchAbility(A.ID())!=null))
 			&&(A.isAutoInvoked()))
 			{
-				if(((++colnum)>NUM_COLS)||(disp.length()>COL_LEN)){ msg.append("\n\r"); colnum=0;}
+				if(((++colnum)>NUM_COLS)||(disp.length()>COL_LEN))
+				{
+					msg.append("\n\r");
+					colnum=0;
+				}
 				msg.append("^S"+CMStrings.padRightPreserve("^<HELPNAME NAME='"+A.Name()+"'^>"+disp+"^</HELPNAME^>",COL_LEN));
 				if(disp.length()>COL_LEN)
 					colnum=99;

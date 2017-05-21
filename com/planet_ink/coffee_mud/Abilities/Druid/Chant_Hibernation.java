@@ -33,21 +33,56 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Chant_Hibernation extends Chant
 {
-	@Override public String ID() { return "Chant_Hibernation"; }
+	@Override
+	public String ID()
+	{
+		return "Chant_Hibernation";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Hibernation");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Hibernating)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;}
-	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_SELF;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
 	private CharState oldState=null;
 	protected int roundsHibernating=0;
-
 
 	@Override
 	public void unInvoke()
@@ -104,6 +139,7 @@ public class Chant_Hibernation extends Chant
 		}
 		return super.okMessage(myHost,msg);
 	}
+
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{

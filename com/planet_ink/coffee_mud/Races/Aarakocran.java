@@ -105,6 +105,7 @@ public class Aarakocran extends StdRace
 	{
 		return agingChart;
 	}
+
 	private final String[]	culturalAbilityNames			= { "BirdSpeak", "Hunting"};
 	private final int[]		culturalAbilityProficiencies	= { 100, 50};
 

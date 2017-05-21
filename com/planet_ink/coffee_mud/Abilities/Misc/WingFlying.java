@@ -34,7 +34,6 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class WingFlying extends StdAbility implements HealthCondition
 {
 	@Override
@@ -167,7 +166,6 @@ public class WingFlying extends StdAbility implements HealthCondition
 		else
 			str=L("<S-NAME> start(s) flapping <S-HIS-HER> wings.");
 
-
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -190,7 +188,6 @@ public class WingFlying extends StdAbility implements HealthCondition
 		}
 		else
 			return beneficialVisualFizzle(mob,target,L("<T-NAME> fumble(s) trying to use <T-HIS-HER> wings."));
-
 
 		// return whether it worked
 		return success;

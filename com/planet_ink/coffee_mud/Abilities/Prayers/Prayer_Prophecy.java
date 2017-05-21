@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2011-2017 Bo Zimmerman
 
@@ -36,14 +35,45 @@ import java.util.*;
 
 public class Prayer_Prophecy extends Prayer
 {
-	@Override public String ID() { return "Prayer_Prophecy"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_Prophecy";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Prophecy");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(In a Prophetic Trance)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public long flags(){return Ability.FLAG_HOLY;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_HOLY;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;
+	}
 
 	@Override
 	public void unInvoke()
@@ -95,8 +125,10 @@ public class Prayer_Prophecy extends Prayer
 				{
 					Pair<Integer,Quest> highP=null;
 					for(final Pair<Integer,Quest> P : prophesies)
+					{
 						if((highP==null)||(P.first.intValue()>highP.first.intValue()))
 							highP=P;
+					}
 					if((highP==null)||(highP.first.intValue() > ticksRemaining))
 					{
 						prophesies.remove(highP);

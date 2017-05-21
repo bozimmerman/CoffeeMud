@@ -35,16 +35,57 @@ import java.util.*;
 
 public class Thief_ConcealDoor extends ThiefSkill
 {
-	@Override public String ID() { return "Thief_ConcealDoor"; }
+	@Override
+	public String ID()
+	{
+		return "Thief_ConcealDoor";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Conceal Door");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
-	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALTHY;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ITEMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_ITEMS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALTHY;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"DOORCONCEAL","DCONCEAL","CONCEALDOOR"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT|USAGE_MANA;
+	}
+
 	public int code=Integer.MIN_VALUE;
 
 	@Override
@@ -54,7 +95,13 @@ public class Thief_ConcealDoor extends ThiefSkill
 			code=CMath.s_int(text());
 		return code;
 	}
-	@Override public void setAbilityCode(int newCode){code=newCode; super.miscText=""+newCode;}
+
+	@Override
+	public void setAbilityCode(int newCode)
+	{
+		code=newCode;
+		super.miscText=""+newCode;
+	}
 
 	@Override
 	public void affectPhyStats(Physical host, PhyStats stats)
@@ -148,7 +195,6 @@ public class Thief_ConcealDoor extends ThiefSkill
 			return false;
 		}
 
-
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -166,8 +212,13 @@ public class Thief_ConcealDoor extends ThiefSkill
 				final Room R=mob.location();
 				Room R2=null;
 				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+				{
 					if(R.getExitInDir(d)==X)
-					{ R2=R.getRoomInDir(d); break;}
+					{
+						R2=R.getRoomInDir(d);
+						break;
+					}
+				}
 				if((CMLib.law().doesOwnThisLand(mob,R))
 				||((R2!=null)&&(CMLib.law().doesOwnThisLand(mob,R2))))
 				{

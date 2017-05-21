@@ -264,7 +264,6 @@ public class Thief_SetDecoys extends ThiefSkill implements Trap
 		return super.castingQuality(mob,target);
 	}
 
-	
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{

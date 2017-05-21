@@ -35,14 +35,49 @@ import java.util.*;
 
 public class Prayer_RemoveDeathMark extends Prayer implements MendingSkill
 {
-	@Override public String ID() { return "Prayer_RemoveDeathMark"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_RemoveDeathMark";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Remove Death Mark");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_NEUTRALIZATION;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	@Override public long flags(){return Ability.FLAG_HOLY;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_NEUTRALIZATION;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_OTHERS;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_HOLY;
+	}
 
 	@Override
 	public boolean supportsMending(Physical item)
@@ -113,7 +148,6 @@ public class Prayer_RemoveDeathMark extends Prayer implements MendingSkill
 		}
 		else
 			return beneficialWordsFizzle(mob,target,L("<S-NAME> call(s) on @x1 to release <T-NAME> from a death mark, but nothing happens.",hisHerDiety(mob)));
-
 
 		// return whether it worked
 		return success;

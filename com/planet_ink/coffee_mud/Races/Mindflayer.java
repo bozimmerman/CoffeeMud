@@ -174,7 +174,6 @@ public class Mindflayer extends Humanoid
 		return outfitChoices;
 	}
 
-	
 	@Override
 	public int getXPAdjustment()
 	{

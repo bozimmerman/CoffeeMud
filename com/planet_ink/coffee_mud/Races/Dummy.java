@@ -92,7 +92,6 @@ public class Dummy extends Doll
 		affectableStats.setArmor(100);
 	}
 
-
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{

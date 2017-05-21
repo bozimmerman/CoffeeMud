@@ -498,7 +498,7 @@ public class GModify extends StdCommand
 			return false;
 		}
 		if((commands.size()>0)&&
-		   commands.get(0).equalsIgnoreCase("?"))
+			commands.get(0).equalsIgnoreCase("?"))
 		{
 			final StringBuffer allFieldsMsg=new StringBuffer("");
 			final Set<String> allKnownFields=new TreeSet<String>();
@@ -514,9 +514,8 @@ public class GModify extends StdCommand
 			return false;
 		}
 		
-		
 		if((commands.size()>0)&&
-		   commands.get(0).equalsIgnoreCase("room"))
+			commands.get(0).equalsIgnoreCase("room"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.GMODIFY))
 			{
@@ -528,7 +527,7 @@ public class GModify extends StdCommand
 		}
 		else
 		if((commands.size()>0)&&
-		   commands.get(0).equalsIgnoreCase("area"))
+			commands.get(0).equalsIgnoreCase("area"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.GMODIFY))
 			{
@@ -540,7 +539,7 @@ public class GModify extends StdCommand
 		}
 		else
 		if((commands.size()>0)&&
-		   commands.get(0).equalsIgnoreCase("world"))
+			commands.get(0).equalsIgnoreCase("world"))
 		{
 			if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.GMODIFY))
 			{
@@ -746,8 +745,10 @@ public class GModify extends StdCommand
 			}
 			else
 			if(placesToDo.get(i) instanceof Room)
+			{
 				if(mob.session()!=null)
 					mob.session().rawPrint(".");
+			}
 			else
 				return false;
 		}

@@ -140,7 +140,6 @@ public interface MUDCmdProcessor
 	 */
 	public int commandQueSize();
 	
-
 	/**
 	 * Forces this processor to parse the given command string tokens,
 	 * determine a command to execute, and then execute it, 

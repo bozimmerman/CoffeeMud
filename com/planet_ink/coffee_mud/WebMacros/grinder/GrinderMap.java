@@ -553,7 +553,6 @@ public class GrinderMap extends GrinderFlatMap
 		return buf;
 	}
 
-
 	@Override
 	protected GrinderRoom getRoomInDir(GrinderRoom room, int d)
 	{

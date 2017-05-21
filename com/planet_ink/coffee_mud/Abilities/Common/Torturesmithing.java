@@ -19,7 +19,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2004-2017 Bo Zimmerman
 
@@ -411,7 +410,6 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 		buildingI.recoverPhyStats();
 		buildingI.text();
 		buildingI.recoverPhyStats();
-
 
 		messedUp=!proficiencyCheck(mob,0,auto);
 

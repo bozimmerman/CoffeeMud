@@ -58,6 +58,4 @@ public class DrowQuarterstaff extends Mace
 		weaponDamageType=TYPE_BASHING;
 	}
 
-
-
 }

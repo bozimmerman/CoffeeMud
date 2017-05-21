@@ -99,6 +99,7 @@ public class Trap_Greasy extends StdTrap
 		V.add(CMClass.getBasicItem("OilFlask"));
 		return V;
 	}
+
 	@Override
 	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
 	{
@@ -127,6 +128,7 @@ public class Trap_Greasy extends StdTrap
 		}
 		return true;
 	}
+
 	@Override
 	public void spring(MOB target)
 	{

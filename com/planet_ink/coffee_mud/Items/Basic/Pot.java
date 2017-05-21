@@ -55,6 +55,4 @@ public class Pot extends StdDrink
 		recoverPhyStats();
 	}
 
-
-
 }

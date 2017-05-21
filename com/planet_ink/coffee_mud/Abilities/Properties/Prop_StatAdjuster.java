@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -59,6 +58,7 @@ public class Prop_StatAdjuster extends Property
 		for (final int i : CharStats.CODES.BASECODES())
 			all25[i] = 0;
 	}
+
 	protected int[]					stats	= all25;
 
 	@Override
@@ -119,6 +119,7 @@ public class Prop_StatAdjuster extends Property
 			}
 		}
 	}
+
 	@Override
 	public void setMiscText(String newMiscText)
 	{
@@ -153,7 +154,6 @@ public class Prop_StatAdjuster extends Property
 		return super.getStat(code);
 	}
 	
-
 	@Override
 	public void setStat(String code, String val)
 	{

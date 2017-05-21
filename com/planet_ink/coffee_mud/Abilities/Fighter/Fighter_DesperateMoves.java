@@ -35,9 +35,20 @@ import java.util.*;
 
 public class Fighter_DesperateMoves extends FighterSkill
 {
-	@Override public String ID() { return "Fighter_DesperateMoves"; }
+	@Override
+	public String ID()
+	{
+		return "Fighter_DesperateMoves";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Desperate Moves");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	@Override public String displayText()
 	{
 		if((affected==invoker)&&(invoker!=null)&&(invoker.curState().getHitPoints()<(int)Math.round(CMath.div(invoker.maxState().getHitPoints(),10.0))))
@@ -45,12 +56,42 @@ public class Fighter_DesperateMoves extends FighterSkill
 		else
 			return "";
 	}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	@Override public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_EVASIVE;}
-	@Override public boolean isAutoInvoked(){return true;}
-	@Override public boolean canBeUninvoked(){return false;}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_SELF;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL|Ability.DOMAIN_EVASIVE;
+	}
+
+	@Override
+	public boolean isAutoInvoked()
+	{
+		return true;
+	}
+
+	@Override
+	public boolean canBeUninvoked()
+	{
+		return false;
+	}
 
 	@Override
 	public boolean okMessage(Environmental myHost, CMMsg msg)

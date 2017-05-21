@@ -59,5 +59,4 @@ public class StdSpear extends StdWeapon
 		setRawLogicalAnd(false);
 	}
 
-
 }

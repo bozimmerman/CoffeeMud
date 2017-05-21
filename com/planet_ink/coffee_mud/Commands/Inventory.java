@@ -85,8 +85,10 @@ public class Inventory extends StdCommand
 						lst.moneyItems.put(((Coins)thisItem).getCurrency(),coinsV);
 					}
 					for(insertAt=0;insertAt<coinsV.size();insertAt++)
+					{
 						if(coinsV.get(insertAt).getDenomination()>((Coins)thisItem).getDenomination())
 							break;
+					}
 					if(insertAt>=coinsV.size())
 						coinsV.add((Coins)thisItem);
 					else

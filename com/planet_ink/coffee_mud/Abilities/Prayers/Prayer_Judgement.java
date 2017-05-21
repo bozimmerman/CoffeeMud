@@ -33,19 +33,59 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Prayer_Judgement extends Prayer
 {
-	@Override public String ID() { return "Prayer_Judgement"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_Judgement";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Judgement");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Judgement)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CURSING;}
-	@Override public long flags(){return Ability.FLAG_HOLY;}
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
-	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_CURSING;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_HOLY;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_MOBS;
+	}
 	
 	@Override
 	protected int overrideMana()
@@ -64,7 +104,6 @@ public class Prayer_Judgement extends Prayer
 		"HSHAKE","HUG","KISS","LOVE","MASSAGE","NOD","NUZZLE","PAT","PATPAT","PET","PRAY","PURR","SALUTE",
 		"SERENADE","SMILE","SMOOCH","SNUGGLE","SPOON","SSMILE","STROKE","SUPPORT","SWEET","THANK","TICKLE","TOAST"};
 	
-
 	@Override
 	public void unInvoke()
 	{
@@ -218,7 +257,6 @@ public class Prayer_Judgement extends Prayer
 		}
 		else
 			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to curse <T-NAMESELF>, but nothing happens."));
-
 
 		// return whether it worked
 		return success;

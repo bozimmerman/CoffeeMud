@@ -33,19 +33,60 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Prayer_BladeBarrier extends Prayer
 {
-	@Override public String ID() { return "Prayer_BladeBarrier"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_BladeBarrier";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Blade Barrier");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Blade Barrier)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
-	@Override public long flags(){return Ability.FLAG_HOLY;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_SELF;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_HOLY;
+	}
+
 	protected long oncePerTickTime=0;
 
 	protected String startStr() { return "A barrier of blades begin to spin around <T-NAME>!^?"; }
@@ -136,7 +177,6 @@ public class Prayer_BladeBarrier extends Prayer
 		}
 		else
 			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 for divine protection, but nothing happens.",prayWord(mob)));
-
 
 		// return whether it worked
 		return success;

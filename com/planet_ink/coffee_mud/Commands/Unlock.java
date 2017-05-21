@@ -38,7 +38,11 @@ public class Unlock extends StdCommand
 	public Unlock(){}
 
 	private final String[] access=I(new String[]{"UNLOCK","UNL","UN"});
-	@Override public String[] getAccessWords(){return access;}
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
@@ -74,9 +78,14 @@ public class Unlock extends StdCommand
 				mob.location().send(msg.source(),msg);
 				if(dirCode<0)
 				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+				{
 					if(mob.location().getExitInDir(d)==unlockThis)
-					{dirCode=d; break;}
+					{
+						dirCode=d;
+						break;
+					}
 
+				}
 				if((dirCode>=0)&&(mob.location().getRoomInDir(dirCode)!=null))
 				{
 					final Room opR=mob.location().getRoomInDir(dirCode);
@@ -103,9 +112,23 @@ public class Unlock extends StdCommand
 			mob.location().send(mob,msg);
 		return false;
 	}
-	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandCombatActionCost(ID());}
-	@Override public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandActionCost(ID());}
-	@Override public boolean canBeOrdered(){return true;}
 
+	@Override
+	public double combatActionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandCombatActionCost(ID());
+	}
+
+	@Override
+	public double actionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandActionCost(ID());
+	}
+
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 
 }

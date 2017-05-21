@@ -1,7 +1,6 @@
 package com.planet_ink.coffee_mud.core.exceptions;
 import java.util.*;
 
-
 /*
    Copyright 2014-2017 Bo Zimmerman
 
@@ -26,6 +25,7 @@ public class StatOutOfRangeException extends CoffeeMudException
 	{
 		super(s);
 	}
+
 	public StatOutOfRangeException(String s, Exception e)
 	{
 		super(s,e);

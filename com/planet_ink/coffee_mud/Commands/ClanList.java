@@ -89,7 +89,10 @@ public class ClanList extends StdCommand
 				if((C!=thisClan)
 				&&((thisClan.getClanRelations(C.clanID())==Clan.REL_WAR)
 					||(C.getClanRelations(thisClan.clanID())==Clan.REL_WAR)))
-				{ war=true; break;}
+				{
+					war=true;
+					break;
+				}
 			}
 			String status=(war)?"At War":"Active";
 			switch(thisClan.getStatus())

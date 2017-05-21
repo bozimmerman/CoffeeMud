@@ -50,7 +50,6 @@ public class PollData extends StdWebMacro
 		if((last==null)&&(!parms.containsKey("EDIT")))
 			return " @break@";
 
-
 		final String replaceCommand=httpReq.getUrlParameter("REPLACE");
 		if((replaceCommand != null)
 		&& (replaceCommand.length()>0)

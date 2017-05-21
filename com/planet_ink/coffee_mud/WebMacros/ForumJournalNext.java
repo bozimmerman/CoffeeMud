@@ -48,6 +48,7 @@ public class ForumJournalNext extends StdWebMacro
 	public static MOB guestM = null;
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
 	{

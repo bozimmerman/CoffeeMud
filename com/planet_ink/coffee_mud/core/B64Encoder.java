@@ -114,7 +114,6 @@ public class B64Encoder
 		return b4;
 	}
 
-
 	static
 	{
 		byte[] __bytes;
@@ -232,7 +231,6 @@ public class B64Encoder
 		return B64encodeBytes( source, off, len, NO_OPTIONS );
 	}   // end encodeBytes
 
-
 	public static String B64encodeBytes( byte[] source, int off, int len, int options )
 	{
 		final int dontBreakLines = ( options & DONT_BREAK_LINES );
@@ -243,7 +241,6 @@ public class B64Encoder
 			final java.io.ByteArrayOutputStream  baos  = new java.io.ByteArrayOutputStream();
 			java.util.zip.GZIPOutputStream gzos  = null;
 			B64OutputStream 		b64os = null;
-
 
 			try
 			{
@@ -343,13 +340,13 @@ public class B64Encoder
 						  | ( ( DECODABET[ source[ srcOffset + 2 ] ] & 0xFF ) <<  6)
 						  | ( ( DECODABET[ source[ srcOffset + 3 ] ] & 0xFF )      );
 
-
 			destination[ destOffset 	] = (byte)( outBuff >> 16 );
 			destination[ destOffset + 1 ] = (byte)( outBuff >>  8 );
 			destination[ destOffset + 2 ] = (byte)( outBuff 	  );
 
 			return 3;
-			}catch( final Exception e)
+			}
+			catch( final Exception e)
 			{
 				Log.errOut("CMEncoder",e);
 				return -1;
@@ -438,7 +435,8 @@ public class B64Encoder
 
 				}
 				catch( final java.io.IOException e )
-				{}
+				{
+				}
 				finally
 				{
 					try{ if(baos!=null)baos.close(); } catch( final Exception e ){}
@@ -801,6 +799,7 @@ public class B64Encoder
 				}
 			}
 		}
+
 		@Override
 		public void write( byte[] theBytes, int off, int len ) throws java.io.IOException
 		{

@@ -143,6 +143,7 @@ public class GenCageRideable extends StdCageRideable
 	}
 
 	private static String[] codes=null;
+
 	@Override
 	public String[] getStatCodes()
 	{

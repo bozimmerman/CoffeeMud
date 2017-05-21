@@ -51,13 +51,11 @@ public class Goblin extends StdMOB
 		baseCharStats().setMyRace(CMClass.getRace("Goblin"));
 		baseCharStats().getMyRace().startRacing(this,false);
 
-
 		recoverMaxState();
 		resetToMaxState();
 		recoverPhyStats();
 		recoverCharStats();
 	}
-
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)

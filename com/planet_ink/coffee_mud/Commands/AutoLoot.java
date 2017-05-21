@@ -38,7 +38,11 @@ public class AutoLoot extends StdCommand
 	public AutoLoot(){}
 
 	private final String[] access=I(new String[]{"AUTOLOOT"});
-	@Override public String[] getAccessWords(){return access;}
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
@@ -64,6 +68,10 @@ public class AutoLoot extends StdCommand
 		return false;
 	}
 
-	@Override public boolean canBeOrdered(){return true;}
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 }
 

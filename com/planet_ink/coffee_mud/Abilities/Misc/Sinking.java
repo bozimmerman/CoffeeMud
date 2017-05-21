@@ -34,7 +34,6 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Sinking extends StdAbility
 {
 	@Override
@@ -276,7 +275,6 @@ public class Sinking extends StdAbility
 					&&(mob.Name().equals(item.name())))
 						mob.destroy();
 				}
-				
 				
 			}
 			if(reversed())

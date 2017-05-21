@@ -54,7 +54,6 @@ public class DireWolf extends StdMOB
 
 		basePhyStats.setWeight(80 + Math.abs(randomizer.nextInt() % 55));
 
-
 		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,1);
 		baseCharStats().setStat(CharStats.STAT_STRENGTH,15);
 		baseCharStats().setStat(CharStats.STAT_DEXTERITY,14);

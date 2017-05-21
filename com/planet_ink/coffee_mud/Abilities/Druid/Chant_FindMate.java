@@ -110,7 +110,10 @@ public class Chant_FindMate extends Chant
 				{
 					final MOB M=R.fetchInhabitant(i);
 					if(isSuitableMate(M,mob))
-					{ mate=M; break;}
+					{
+						mate=M;
+						break;
+					}
 				}
 				if(mate!=null)
 				{
@@ -170,7 +173,6 @@ public class Chant_FindMate extends Chant
 		}
 		return true;
 	}
-
 
 	@Override
 	public void affectPhyStats(Physical affectedEnv, PhyStats affectableStats)
@@ -254,7 +256,10 @@ public class Chant_FindMate extends Chant
 			{
 				final MOB M=R.fetchInhabitant(i);
 				if(isSuitableMate(M,target))
-				{ rooms.addElement(R); break;}
+				{
+					rooms.addElement(R);
+					break;
+				}
 			}
 		}
 		checkSet=null;
@@ -288,7 +293,6 @@ public class Chant_FindMate extends Chant
 		}
 		else
 			beneficialWordsFizzle(mob,target,L("<S-NAME> chant(s) to <T-NAMESELF>, but nothing happen(s)."));
-
 
 		// return whether it worked
 		return success;

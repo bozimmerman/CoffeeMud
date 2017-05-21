@@ -524,7 +524,9 @@ public class BribeGateGuard extends StdBehavior
 						observer.doCommand(CMParms.parse("OPEN " + CMLib.directions().getDirectionName(dir)),MUDCmdProcessor.METAFLAG_FORCED);
 					observer.doCommand(CMParms.parse("BOW " + source.Name()),MUDCmdProcessor.METAFLAG_FORCED);
 				}
-				catch (final Exception e1) {}
+				catch (final Exception e1)
+				{
+				}
 			}
 			else
 			if(getBalance(source) == price())
@@ -537,7 +539,9 @@ public class BribeGateGuard extends StdBehavior
 						observer.doCommand(CMParms.parse("OPEN " +CMLib.directions().getDirectionName(dir)),MUDCmdProcessor.METAFLAG_FORCED);
 					observer.doCommand(CMParms.parse("BOW " + source.Name()),MUDCmdProcessor.METAFLAG_FORCED);
 				}
-				catch (final Exception e1) {}
+				catch (final Exception e1)
+				{
+				}
 			}
 			else
 			if(getBalance(source) < price())

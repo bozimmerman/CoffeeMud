@@ -35,8 +35,17 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class ResetWhole extends StdBehavior
 {
-	@Override public String ID(){return "ResetWhole";}
-	@Override protected int canImproveCode(){return Behavior.CAN_ROOMS|Behavior.CAN_AREAS;}
+	@Override
+	public String ID()
+	{
+		return "ResetWhole";
+	}
+
+	@Override
+	protected int canImproveCode()
+	{
+		return Behavior.CAN_ROOMS|Behavior.CAN_AREAS;
+	}
 
 	protected long lastAccess=-1;
 	long time=1800000;
@@ -56,7 +65,9 @@ public class ResetWhole extends StdBehavior
 			time=Long.parseLong(parameters);
 			time=time*CMProps.getTickMillis();
 		}
-		catch(final Exception e){}
+		catch(final Exception e)
+		{
+		}
 	}
 	
 	@Override
@@ -107,7 +118,10 @@ public class ResetWhole extends StdBehavior
 					{
 						final Behavior B=e.nextElement();
 						if((B!=null)&&(B.ID().equals(ID())))
-						{ R=null; break;}
+						{
+							R=null;
+							break;
+						}
 					}
 					if((R!=null)&&(!this.isRoomBeingCamped(R)))
 					{

@@ -56,5 +56,4 @@ public class Scimitar extends Sword
 		weaponDamageType=TYPE_SLASHING;
 	}
 
-
 }

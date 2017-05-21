@@ -38,7 +38,12 @@ public class Fire extends StdCommand
 	public Fire(){}
 
 	private final String[] access=I(new String[]{"FIRE"});
-	@Override public String[] getAccessWords(){return access;}
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
+
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
@@ -49,7 +54,7 @@ public class Fire extends StdCommand
 
 		Environmental target=mob.location().fetchFromRoomFavorMOBs(null,rest);
 		if((target!=null)&&(!target.name().equalsIgnoreCase(rest))&&(rest.length()<4))
-		   target=null;
+			target=null;
 		if((target!=null)&&(!CMLib.flags().canBeSeenBy(target,mob)))
 			target=null;
 		if(target==null)
@@ -62,9 +67,23 @@ public class Fire extends StdCommand
 		}
 		return false;
 	}
-	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandCombatActionCost(ID());}
-	@Override public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandActionCost(ID());}
-	@Override public boolean canBeOrdered(){return true;}
 
+	@Override
+	public double combatActionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandCombatActionCost(ID());
+	}
+
+	@Override
+	public double actionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandActionCost(ID());
+	}
+
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 
 }

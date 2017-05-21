@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -36,24 +35,96 @@ import java.util.*;
 
 public class Disease_Gangrene extends Disease
 {
-	@Override public String ID() { return "Disease_Gangrene"; }
-	private final static String localizedName = CMLib.lang().L("Gangrene");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Gangrene)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public boolean putInCommandlist(){return false;}
-	@Override public int difficultyLevel(){return 4;}
+	@Override
+	public String ID()
+	{
+		return "Disease_Gangrene";
+	}
 
-	@Override protected int DISEASE_TICKS(){return 100*CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY);}
-	@Override protected int DISEASE_DELAY(){return 5;}
+	private final static String localizedName = CMLib.lang().L("Gangrene");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Gangrene)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public boolean putInCommandlist()
+	{
+		return false;
+	}
+
+	@Override
+	public int difficultyLevel()
+	{
+		return 4;
+	}
+
+	@Override
+	protected int DISEASE_TICKS()
+	{
+		return 100*CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY);
+	}
+
+	@Override
+	protected int DISEASE_DELAY()
+	{
+		return 5;
+	}
+
 	protected int lastHP=Integer.MAX_VALUE;
-	@Override protected String DISEASE_DONE(){return L("Your gangrous wounds feel better.");}
-	@Override protected String DISEASE_START(){return L("^G<S-NAME> look(s) like <S-HE-SHE> <S-HAS-HAVE> gangrous wounds.^?");}
-	@Override protected String DISEASE_AFFECT(){return L("<S-NAME> wince(s) in pain.");}
-	@Override public int abilityCode(){return 0;}
+
+	@Override
+	protected String DISEASE_DONE()
+	{
+		return L("Your gangrous wounds feel better.");
+	}
+
+	@Override
+	protected String DISEASE_START()
+	{
+		return L("^G<S-NAME> look(s) like <S-HE-SHE> <S-HAS-HAVE> gangrous wounds.^?");
+	}
+
+	@Override
+	protected String DISEASE_AFFECT()
+	{
+		return L("<S-NAME> wince(s) in pain.");
+	}
+
+	@Override
+	public int abilityCode()
+	{
+		return 0;
+	}
+
 	protected int tickUpToDay=0;
 	protected int daysSick=0;
 	private boolean norecurse=false;
@@ -75,7 +146,10 @@ public class Disease_Gangrene extends Disease
 		}
 		final MOB mob=(MOB)affected;
 		if(mob.curState().getHitPoints()>=mob.maxState().getHitPoints())
-		{ unInvoke(); return false;}
+		{
+			unInvoke();
+			return false;
+		}
 		if(lastHP<mob.curState().getHitPoints())
 			mob.curState().setHitPoints(mob.curState().getHitPoints()
 							-((mob.curState().getHitPoints()-lastHP)/2));
@@ -99,6 +173,7 @@ public class Disease_Gangrene extends Disease
 		lastHP=mob.curState().getHitPoints();
 		return true;
 	}
+
 	@Override
 	public void affectCharState(MOB affected, CharState affectableState)
 	{
@@ -119,6 +194,7 @@ public class Disease_Gangrene extends Disease
 			}
 		}
 	}
+
 	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{

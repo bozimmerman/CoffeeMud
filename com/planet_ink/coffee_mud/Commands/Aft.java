@@ -37,7 +37,12 @@ public class Aft extends Go
 	public Aft(){}
 
 	private final String[] access=I(new String[]{"AFT"});
-	@Override public String[] getAccessWords(){return access;}
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
+
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
@@ -60,7 +65,12 @@ public class Aft extends Go
 			CMLib.tracking().walk(mob, direction, false,false,false);
 		return false;
 	}
-	@Override public boolean canBeOrdered(){return true;}
+
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 
 	@Override
 	public boolean securityCheck(MOB mob)

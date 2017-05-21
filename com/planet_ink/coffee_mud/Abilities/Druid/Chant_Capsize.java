@@ -35,7 +35,6 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Chant_Capsize extends Chant
 {
 	@Override

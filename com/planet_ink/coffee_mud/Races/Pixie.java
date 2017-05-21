@@ -217,6 +217,7 @@ public class Pixie extends SmallElfKin
 		}
 		super.executeMsg(myHost, msg);
 	}
+
 	@Override
 	public List<Item> outfit(MOB myChar)
 	{
@@ -252,6 +253,7 @@ public class Pixie extends SmallElfKin
 		}
 		return outfitChoices;
 	}
+
 	@Override
 	public Weapon myNaturalWeapon()
 	{

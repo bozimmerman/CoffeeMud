@@ -34,20 +34,60 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Paladin_Defend extends StdAbility
 {
-	@Override public String ID() { return "Paladin_Defend"; }
+	@Override
+	public String ID()
+	{
+		return "Paladin_Defend";
+	}
+
 	private final static String localizedName = CMLib.lang().L("All Defence");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"DEFENCE"});
-	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_EVASIVE;}
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_SELF;
+	}
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL|Ability.DOMAIN_EVASIVE;
+	}
+
 	public boolean fullRound=false;
-	@Override public int usageType(){return USAGE_MOVEMENT;}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT;
+	}
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
@@ -119,7 +159,6 @@ public class Paladin_Defend extends StdAbility
 		return true;
 	}
 
-
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -161,7 +200,6 @@ public class Paladin_Defend extends StdAbility
 		}
 		else
 			return beneficialVisualFizzle(mob,null,L("<S-NAME> attempt(s) to assume an all-out defensive posture, but fail(s)."));
-
 
 		// return whether it worked
 		return success;

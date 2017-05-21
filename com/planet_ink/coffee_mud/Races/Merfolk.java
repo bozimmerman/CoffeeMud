@@ -188,7 +188,6 @@ public class Merfolk extends StdRace
 		return "flops";
 	}
 
-	
 	@Override
 	public int availabilityCode()
 	{

@@ -238,7 +238,6 @@ public class GrinderFactions
 			num++;
 		}
 
-
 		num=0;
 		for(final Enumeration<Faction.FReactionItem> e=F.reactions();e.hasMoreElements();)
 			F.delReaction(e.nextElement());

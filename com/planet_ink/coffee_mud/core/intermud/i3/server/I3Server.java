@@ -122,10 +122,16 @@ public class I3Server
 			{
 				final ShutdownPacket shutdown=new ShutdownPacket();
 				shutdown.send();
-			}catch(final Exception e){}
+			}
+			catch(final Exception e)
+			{
+			}
 		serverClient.shutdown();
 		started=false;
-		}catch(final Exception e){}
+		}
+		catch(final Exception e)
+		{
+		}
 	}
 
 	static public void removeObject(ServerObject ob)

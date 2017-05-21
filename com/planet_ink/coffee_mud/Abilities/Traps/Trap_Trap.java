@@ -183,6 +183,7 @@ public class Trap_Trap extends StdAbility implements Trap
 			mob.location().show(mob,affected,this,CMMsg.MSG_OK_ACTION,L("<S-NAME> avoid(s) a gas trap set in <T-NAME>."));
 		else
 		if(mob.location().show(mob,affected,this,CMMsg.MSG_OK_ACTION,L("<S-NAME> trigger(s) a trap set in <T-NAME>!")))
+		{
 			if(mob.phyStats().level()>15)
 			{
 				mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The room fills with gas!"));
@@ -216,6 +217,7 @@ public class Trap_Trap extends StdAbility implements Trap
 					CMLib.combat().postDamage(invoker(),target,this,dmg,CMMsg.MASK_ALWAYS|CMMsg.MASK_MALICIOUS|CMMsg.TYP_GAS,Weapon.TYPE_GASSING,L("A sudden blast of gas <DAMAGE> <T-NAME>!"));
 				}
 			}
+		}
 	}
 
 	public void needle(MOB mob)

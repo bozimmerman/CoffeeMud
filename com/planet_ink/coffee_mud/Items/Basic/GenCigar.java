@@ -115,6 +115,7 @@ public class GenCigar extends StdSmokable
 	}
 
 	private static String[] codes=null;
+
 	@Override
 	public String[] getStatCodes()
 	{

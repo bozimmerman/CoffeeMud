@@ -95,6 +95,7 @@ public class SHashtable<K, F> implements CMap<K, F>, java.io.Serializable
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public synchronized void clear()
 	{
@@ -174,6 +175,7 @@ public class SHashtable<K, F> implements CMap<K, F>, java.io.Serializable
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public synchronized F put(K arg0, F arg1)
 	{
@@ -182,6 +184,7 @@ public class SHashtable<K, F> implements CMap<K, F>, java.io.Serializable
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public synchronized F remove(Object arg0)
 	{
@@ -208,6 +211,7 @@ public class SHashtable<K, F> implements CMap<K, F>, java.io.Serializable
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public synchronized void putAll(Map<? extends K, ? extends F> arg0)
 	{

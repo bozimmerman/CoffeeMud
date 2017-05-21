@@ -36,12 +36,26 @@ import java.util.*;
 
 public class Prop_InstantDeath extends Property
 {
-	@Override public String ID(){return "Prop_InstantDeath";}
-	@Override public long flags() { return super.flags()|Ability.FLAG_POTENTIALLY_DEADLY; }
-	@Override protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_ITEMS|Ability.CAN_MOBS;}
+	@Override
+	public String ID()
+	{
+		return "Prop_InstantDeath";
+	}
+
+	@Override
+	public long flags()
+	{
+		return super.flags()|Ability.FLAG_POTENTIALLY_DEADLY;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_ITEMS|Ability.CAN_MOBS;
+	}
+
 	protected CompiledZMask mask=null;
 	protected volatile boolean[] killTrigger={false};
-
 
 	public Prop_InstantDeath()
 	{
@@ -92,10 +106,14 @@ public class Prop_InstantDeath extends Property
 			return (MOB)ticking;
 		else
 		if(ticking instanceof Item)
+		{
 			if(((Item)ticking).owner() != null)
+			{
 				if(((Item)ticking).owner() instanceof MOB)
 					return (MOB)((Item)ticking).owner();
+			}
 
+		}
 		return null;
 	}
 
@@ -112,10 +130,14 @@ public class Prop_InstantDeath extends Property
 			return mob.location();
 
 		if(ticking instanceof Item)
+		{
 			if(((Item)ticking).owner() != null)
+			{
 				if(((Item)ticking).owner() instanceof Room)
 					return (Room)((Item)ticking).owner();
+			}
 
+		}
 		return null;
 	}
 

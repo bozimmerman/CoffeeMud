@@ -34,9 +34,23 @@ import java.util.*;
 */
 public class Prop_Tattoo extends Property
 {
-	@Override public String ID() { return "Prop_Tattoo"; }
-	@Override public String name(){ return "A Tattoo";}
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
+	@Override
+	public String ID()
+	{
+		return "Prop_Tattoo";
+	}
+
+	@Override
+	public String name()
+	{
+		return "A Tattoo";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS;
+	}
 
 	public static List<String> getTattoos(MOB mob)
 	{

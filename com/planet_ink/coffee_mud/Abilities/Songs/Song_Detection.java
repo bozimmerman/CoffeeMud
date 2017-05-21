@@ -15,9 +15,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
-
 
 /*
    Copyright 2001-2017 Bo Zimmerman
@@ -36,11 +34,31 @@ import java.util.*;
 */
 public class Song_Detection extends Song
 {
-	@Override public String ID() { return "Song_Detection"; }
+	@Override
+	public String ID()
+	{
+		return "Song_Detection";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Awareness");
-	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
-	@Override protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_OTHERS;
+	}
+
+	@Override
+	protected boolean HAS_QUANTITATIVE_ASPECT()
+	{
+		return false;
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)

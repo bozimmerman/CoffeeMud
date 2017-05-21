@@ -133,7 +133,6 @@ public class GrinderRaces
 		return CMLib.coffeeMaker().getCharStateStr(adjCState);
 	}
 
-
 	public static List<Item> itemList(List<? extends Item> items, char c, HTTPRequest httpReq, boolean one)
 	{
 		if(items==null)
@@ -273,7 +272,6 @@ public class GrinderRaces
 		for(int i=0;i<theclasses.size();i++)
 			M.setStat("GETIABLE"+i, theclasses.get(i));
 	}
-
 
 	public static QuadVector<String,Integer,Integer,Boolean> cabilities(HTTPRequest httpReq)
 	{

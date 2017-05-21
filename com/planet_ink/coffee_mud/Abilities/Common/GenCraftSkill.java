@@ -23,7 +23,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 import java.util.regex.Pattern;
 
-
 /*
    Copyright 2011-2017 Bo Zimmerman
 
@@ -75,7 +74,6 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 	private static final int	V_CNST			= 10;	// B
 	private static final int	NUM_VS			= 11;	// S
 
-	
 	// 
 
 	@Override

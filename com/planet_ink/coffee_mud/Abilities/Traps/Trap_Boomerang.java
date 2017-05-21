@@ -84,6 +84,7 @@ public class Trap_Boomerang extends StdTrap
 			msg.setOthersCode(CMMsg.NO_EFFECT);
 		}
 	}
+
 	@Override
 	public void spring(MOB target)
 	{

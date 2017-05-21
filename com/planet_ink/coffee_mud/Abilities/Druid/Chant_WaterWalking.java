@@ -33,16 +33,42 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Chant_WaterWalking extends Chant
 {
-	@Override public String ID() { return "Chant_WaterWalking"; }
+	@Override
+	public String ID()
+	{
+		return "Chant_WaterWalking";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Water Walking");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Water Walking)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
-	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_SELF;
+	}
+
 	protected boolean triggerNow=false;
 
 	@Override
@@ -53,13 +79,12 @@ public class Chant_WaterWalking extends Chant
 		{
 			final MOB mob=(MOB)affected;
 			if(triggerNow||
-			   ((mob.location()!=null)
+				((mob.location()!=null)
 				&&((mob.location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)
 				   ||(mob.location().domainType()==Room.DOMAIN_INDOORS_WATERSURFACE))))
 				affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_FLYING);
 		}
 	}
-
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
@@ -125,8 +150,6 @@ public class Chant_WaterWalking extends Chant
 		if(canBeUninvoked())
 			mob.tell(L("You have a sinking feeling that your water walking ability is gone."));
 	}
-
-
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)

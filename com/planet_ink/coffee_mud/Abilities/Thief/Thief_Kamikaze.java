@@ -35,16 +35,56 @@ import java.util.*;
 
 public class Thief_Kamikaze extends ThiefSkill
 {
-	@Override public String ID() { return "Thief_Kamikaze"; }
+	@Override
+	public String ID()
+	{
+		return "Thief_Kamikaze";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Kamikaze");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_OTHERS;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"KAMIKAZE"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public boolean disregardsArmorCheck(MOB mob){return true;}
-	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_CRIMINAL;}
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public boolean disregardsArmorCheck(MOB mob)
+	{
+		return true;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_CRIMINAL;
+	}
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
@@ -84,7 +124,6 @@ public class Thief_Kamikaze extends ThiefSkill
 		}
 		return true;
 	}
-
 
 	@Override
 	public void unInvoke()
@@ -131,7 +170,6 @@ public class Thief_Kamikaze extends ThiefSkill
 			mob.tell(L("Send @x1 which direction?",target.charStats().himher()));
 			return false;
 		}
-
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

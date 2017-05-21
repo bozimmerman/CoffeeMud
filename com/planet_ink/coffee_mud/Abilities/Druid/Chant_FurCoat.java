@@ -153,7 +153,6 @@ public class Chant_FurCoat extends Chant
 		return true;
 	}
 
-
 	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{

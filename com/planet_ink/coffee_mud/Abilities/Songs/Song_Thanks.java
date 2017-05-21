@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2002-2017 Bo Zimmerman
 
@@ -36,12 +35,37 @@ import java.util.*;
 
 public class Song_Thanks extends Song
 {
-	@Override public String ID() { return "Song_Thanks"; }
+	@Override
+	public String ID()
+	{
+		return "Song_Thanks";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Thanks");
-	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	@Override protected boolean skipStandardSongInvoke(){return true;}
-	@Override protected boolean maliciousButNotAggressiveFlag(){return true;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	protected boolean skipStandardSongInvoke()
+	{
+		return true;
+	}
+
+	@Override
+	protected boolean maliciousButNotAggressiveFlag()
+	{
+		return true;
+	}
 
 	@Override
 	public int castingQuality(MOB mob, Physical target)
@@ -122,6 +146,7 @@ public class Song_Thanks extends Song
 		}
 		return true;
 	}
+
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{

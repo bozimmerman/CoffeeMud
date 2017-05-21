@@ -102,7 +102,6 @@ public class Thief_Trap extends ThiefSkill
 		return super.castingQuality(mob,target);
 	}
 
-	
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{

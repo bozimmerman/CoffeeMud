@@ -398,6 +398,7 @@ public class JournalFunction extends StdWebMacro
 							messages.append("Transfer #"+cardinalNumber+" not completed -- No journal!<BR>");
 						String realName=null;
 						if(journal!=null)
+						{
 							for(final Enumeration<JournalsLibrary.CommandJournal> e=CMLib.journals().commandJournals();e.hasMoreElements();)
 							{
 								final JournalsLibrary.CommandJournal CMJ=e.nextElement();
@@ -409,6 +410,7 @@ public class JournalFunction extends StdWebMacro
 									break;
 								}
 							}
+						}
 						if(realName==null)
 							realName=CMLib.database().DBGetRealJournalName(journal);
 						if((realName==null)&&(journal!=null))

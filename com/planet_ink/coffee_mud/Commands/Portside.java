@@ -38,7 +38,12 @@ public class Portside extends Go
 	public Portside(){}
 
 	private final String[] access=I(new String[]{"PORTSIDE","PORT"});
-	@Override public String[] getAccessWords(){return access;}
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
+
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
@@ -61,7 +66,12 @@ public class Portside extends Go
 			CMLib.tracking().walk(mob, direction, false,false,false);
 		return false;
 	}
-	@Override public boolean canBeOrdered(){return true;}
+
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 
 	@Override
 	public boolean securityCheck(MOB mob)

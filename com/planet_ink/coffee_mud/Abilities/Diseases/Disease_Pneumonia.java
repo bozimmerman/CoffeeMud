@@ -35,23 +35,93 @@ import java.util.*;
 
 public class Disease_Pneumonia extends Disease
 {
-	@Override public String ID() { return "Disease_Pneumonia"; }
-	private final static String localizedName = CMLib.lang().L("Pneumonia");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Pneumonia)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public boolean putInCommandlist(){return false;}
+	@Override
+	public String ID()
+	{
+		return "Disease_Pneumonia";
+	}
 
-	@Override protected int DISEASE_TICKS(){return 38;}
-	@Override protected int DISEASE_DELAY(){return 3;}
-	@Override protected String DISEASE_DONE(){return L("Your pneumonia clears up.");}
-	@Override protected String DISEASE_START(){return L("^G<S-NAME> come(s) down with pneumonia.^?");}
-	@Override protected String DISEASE_AFFECT(){return L("<S-NAME> shake(s) feverishly.");}
-	@Override public int spreadBitmap(){return DiseaseAffect.SPREAD_CONSUMPTION|DiseaseAffect.SPREAD_PROXIMITY|DiseaseAffect.SPREAD_CONTACT|DiseaseAffect.SPREAD_STD;}
-	@Override public int difficultyLevel(){return 3;}
+	private final static String localizedName = CMLib.lang().L("Pneumonia");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Pneumonia)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public boolean putInCommandlist()
+	{
+		return false;
+	}
+
+	@Override
+	protected int DISEASE_TICKS()
+	{
+		return 38;
+	}
+
+	@Override
+	protected int DISEASE_DELAY()
+	{
+		return 3;
+	}
+
+	@Override
+	protected String DISEASE_DONE()
+	{
+		return L("Your pneumonia clears up.");
+	}
+
+	@Override
+	protected String DISEASE_START()
+	{
+		return L("^G<S-NAME> come(s) down with pneumonia.^?");
+	}
+
+	@Override
+	protected String DISEASE_AFFECT()
+	{
+		return L("<S-NAME> shake(s) feverishly.");
+	}
+
+	@Override
+	public int spreadBitmap()
+	{
+		return DiseaseAffect.SPREAD_CONSUMPTION|DiseaseAffect.SPREAD_PROXIMITY|DiseaseAffect.SPREAD_CONTACT|DiseaseAffect.SPREAD_STD;
+	}
+
+	@Override
+	public int difficultyLevel()
+	{
+		return 3;
+	}
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)

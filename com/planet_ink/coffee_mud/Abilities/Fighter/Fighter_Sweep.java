@@ -33,19 +33,58 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Fighter_Sweep extends FighterSkill
 {
-	@Override public String ID() { return "Fighter_Sweep"; }
+	@Override
+	public String ID()
+	{
+		return "Fighter_Sweep";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Sweep");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"SWEEP"});
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_DIRTYFIGHTING;}
-	@Override public int usageType(){return USAGE_MOVEMENT;}
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL|Ability.DOMAIN_DIRTYFIGHTING;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT;
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
@@ -55,6 +94,7 @@ public class Fighter_Sweep extends FighterSkill
 		affectableStats.setAttackAdjustment((int)Math.round(CMath.div(affectableStats.attackAdjustment(),2.0-f)));
 		affectableStats.setDamage((int)Math.round(CMath.div(affectableStats.damage(),3.0-f)));
 	}
+
 	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
@@ -64,8 +104,10 @@ public class Fighter_Sweep extends FighterSkill
 			if(h.size()<2)
 				return Ability.QUALITY_INDIFFERENT;
 			for(final MOB M : h)
+			{
 				if((M.rangeToTarget()<0)||(M.rangeToTarget()>0))
 					h.remove(M);
+			}
 			if(h.size()<2)
 				return Ability.QUALITY_INDIFFERENT;
 		}
@@ -87,8 +129,10 @@ public class Fighter_Sweep extends FighterSkill
 		}
 		final Set<MOB> h=properTargets(mob,givenTarget,false);
 		for(final MOB M : h)
+		{
 			if((M.rangeToTarget()<0)||(M.rangeToTarget()>0))
 				h.remove(M);
+		}
 
 		if(h.size()==0)
 		{

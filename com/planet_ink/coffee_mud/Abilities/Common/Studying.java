@@ -82,12 +82,14 @@ public class Studying extends CommonSkill
 			this.type1=type1;
 			this.type2=type2;
 		}
+
 		public boolean doesRuleApplyTo(final Ability A)
 		{
 			return (A!=null) 
 					&& (((A.classificationCode()&Ability.ALL_ACODES)==type1)
 						||((A.classificationCode()&Ability.ALL_ACODES)==type2));
 		}
+
 		public int numAllowed(final int classLevel)
 		{
 			if(classLevel < aboveLevel)
@@ -113,7 +115,6 @@ public class Studying extends CommonSkill
 		return !isAnAutoEffect;
 	}
 
-	
 /*
  * 	TODO:
 
@@ -124,7 +125,6 @@ train the scholar.  .
 We could also make this 6 different abilities, Common Skill Studying, Skills 
 Studying, Songs Studying, Chants Studying, Spells Studying, and Prayers Studying if you would prefer
 granting each ability at the lowest level above (1,2,3,4,5,6).
-
 
  */
 	

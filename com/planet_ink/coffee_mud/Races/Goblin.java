@@ -258,7 +258,6 @@ public class Goblin extends StdRace
 		return outfitChoices;
 	}
 
-
 	@Override
 	public List<RawMaterial> myResources()
 	{

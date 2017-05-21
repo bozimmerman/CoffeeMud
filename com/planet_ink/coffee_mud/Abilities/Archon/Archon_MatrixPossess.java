@@ -120,11 +120,9 @@ public class Archon_MatrixPossess extends ArchonSkill
 			}
 		}
 			
-		
 		return true;
 	}
 
-	
 	protected MOB possessingM = null;
 	
 	@Override

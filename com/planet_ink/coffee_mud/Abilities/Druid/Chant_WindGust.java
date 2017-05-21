@@ -33,20 +33,65 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Chant_WindGust extends Chant
 {
-	@Override public String ID() { return "Chant_WindGust"; }
-	@Override public String name(){ return renderedMundane?"wind gust":"Wind Gust";}
+	@Override
+	public String ID()
+	{
+		return "Chant_WindGust";
+	}
+
+	@Override
+	public String name()
+	{
+		return renderedMundane?"wind gust":"Wind Gust";
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Blown Down)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int maxRange(){return adjustedMaxInvokerRange(4);}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int maxRange()
+	{
+		return adjustedMaxInvokerRange(4);
+	}
+
 	public boolean doneTicking=false;
-	@Override public long flags(){return Ability.FLAG_MOVING;}
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_MOVING;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
@@ -114,6 +159,7 @@ public class Chant_WindGust extends Chant
 		if(success)
 		{
 			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),L(auto?"^JA horrendous wind gust blows through here.^?":"^S<S-NAME> chant(s) at <S-HIS-HER> enemies.^?")+CMLib.protocol().msp("wind.wav",40)))
+			{
 				for (final Object element : h)
 				{
 					final MOB target=(MOB)element;
@@ -150,10 +196,10 @@ public class Chant_WindGust extends Chant
 						}
 					}
 				}
+			}
 		}
 		else
 			return maliciousFizzle(mob,null,L("<S-NAME> chant(s), but nothing happens."));
-
 
 		// return whether it worked
 		return success;

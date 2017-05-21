@@ -39,7 +39,11 @@ public class AutoInvoke extends StdCommand
 	public AutoInvoke(){}
 
 	private final String[] access=I(new String[]{"AUTOINVOKE"});
-	@Override public String[] getAccessWords(){return access;}
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 	
 	protected enum AutoInvokeCommand
 	{
@@ -285,6 +289,10 @@ public class AutoInvoke extends StdCommand
 		return false;
 	}
 
-	@Override public boolean canBeOrdered(){return true;}
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 
 }

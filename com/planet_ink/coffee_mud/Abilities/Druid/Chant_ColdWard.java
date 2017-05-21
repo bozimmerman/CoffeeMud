@@ -17,8 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.List;
 
-
-
 /*
    Copyright 2003-2017 Bo Zimmerman
 
@@ -35,17 +33,41 @@ import java.util.List;
    limitations under the License.
 */
 
-
 public class Chant_ColdWard extends Chant
 {
-	@Override public String ID() { return "Chant_ColdWard"; }
-	private final static String localizedName = CMLib.lang().L("Cold Ward");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Cold Ward)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PRESERVING;}
+	@Override
+	public String ID()
+	{
+		return "Chant_ColdWard";
+	}
 
+	private final static String localizedName = CMLib.lang().L("Cold Ward");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Cold Ward)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_SELF;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT|Ability.DOMAIN_PRESERVING;
+	}
 
 	@Override
 	public void unInvoke()
@@ -60,6 +82,7 @@ public class Chant_ColdWard extends Chant
 		super.unInvoke();
 
 	}
+
 	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectedStats)
 	{

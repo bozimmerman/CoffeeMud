@@ -173,6 +173,7 @@ public class TriadVector<T, K, L> extends Vector<Triad<T, K, L>> implements Tria
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public boolean contains(Object o)
 	{
@@ -184,6 +185,7 @@ public class TriadVector<T, K, L> extends Vector<Triad<T, K, L>> implements Tria
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public int indexOf(Object o)
 	{
@@ -196,6 +198,7 @@ public class TriadVector<T, K, L> extends Vector<Triad<T, K, L>> implements Tria
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public synchronized int indexOf(Object o, int index)
 	{

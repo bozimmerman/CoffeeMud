@@ -153,7 +153,6 @@ public class Butchering extends GatheringSkill
 		super.unInvoke();
 	}
 
-
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{

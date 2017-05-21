@@ -35,23 +35,93 @@ import java.util.*;
 
 public class Disease_SARS extends Disease
 {
-	@Override public String ID() { return "Disease_SARS"; }
-	private final static String localizedName = CMLib.lang().L("SARS");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(SARS Virus)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public boolean putInCommandlist(){return false;}
+	@Override
+	public String ID()
+	{
+		return "Disease_SARS";
+	}
 
-	@Override protected int DISEASE_TICKS(){return 30;}
-	@Override protected int DISEASE_DELAY(){return 5;}
-	@Override protected String DISEASE_DONE(){return L("Your sars clears up.");}
-	@Override protected String DISEASE_START(){return L("^G<S-NAME> come(s) down with sars.^?");}
-	@Override protected String DISEASE_AFFECT(){return L("<S-NAME> wheeze(s).");}
-	@Override public int spreadBitmap(){return DiseaseAffect.SPREAD_CONSUMPTION|DiseaseAffect.SPREAD_PROXIMITY|DiseaseAffect.SPREAD_CONTACT|DiseaseAffect.SPREAD_STD;}
-	@Override public int difficultyLevel(){return 2;}
+	private final static String localizedName = CMLib.lang().L("SARS");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String localizedStaticDisplay = CMLib.lang().L("(SARS Virus)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public boolean putInCommandlist()
+	{
+		return false;
+	}
+
+	@Override
+	protected int DISEASE_TICKS()
+	{
+		return 30;
+	}
+
+	@Override
+	protected int DISEASE_DELAY()
+	{
+		return 5;
+	}
+
+	@Override
+	protected String DISEASE_DONE()
+	{
+		return L("Your sars clears up.");
+	}
+
+	@Override
+	protected String DISEASE_START()
+	{
+		return L("^G<S-NAME> come(s) down with sars.^?");
+	}
+
+	@Override
+	protected String DISEASE_AFFECT()
+	{
+		return L("<S-NAME> wheeze(s).");
+	}
+
+	@Override
+	public int spreadBitmap()
+	{
+		return DiseaseAffect.SPREAD_CONSUMPTION|DiseaseAffect.SPREAD_PROXIMITY|DiseaseAffect.SPREAD_CONTACT|DiseaseAffect.SPREAD_STD;
+	}
+
+	@Override
+	public int difficultyLevel()
+	{
+		return 2;
+	}
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)

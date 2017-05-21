@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -35,10 +34,27 @@ import java.util.*;
 */
 public class Prop_ItemTransReceiver extends Property
 {
-	@Override public String ID() { return "Prop_ItemTransReceiver"; }
-	@Override public String name(){ return "Item Transporter Receiver";}
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_ROOMS;}
+	@Override
+	public String ID()
+	{
+		return "Prop_ItemTransReceiver";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Item Transporter Receiver";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_ROOMS;
+	}
+
 	@Override
 	public String accountForYourself()
-	{ return "Item Transporter Receiver";	}
+	{
+		return "Item Transporter Receiver";
+	}
 }

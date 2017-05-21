@@ -669,6 +669,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		int highestLevelPC = 0;
 		final Room R=mob.location();
 		if(R!=null)
+		{
 			for(int m=0;m<R.numInhabitants();m++)
 			{
 				final MOB M=R.fetchInhabitant(m);
@@ -676,6 +677,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 					highestLevelPC = M.phyStats().level();
 			}
 
+		}
 		final Set<MOB> group=mob.getGroupMembers(new HashSet<MOB>());
 		CharClass charClass=null;
 		Race charRace=null;

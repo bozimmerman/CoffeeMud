@@ -14,7 +14,11 @@ public class CMNSortSVec<T extends CMObject> extends SortedStrSVector<T> impleme
 	@SuppressWarnings("rawtypes")
 	private static final SortedStrSVector.Str idStringer=new SortedStrSVector.Str<CMObject>()
 	{
-		@Override public String toString(CMObject t) { return t.name(); }
+		@Override
+		public String toString(CMObject t)
+		{
+			return t.name();
+		}
 	};
 
 	@SuppressWarnings("unchecked")

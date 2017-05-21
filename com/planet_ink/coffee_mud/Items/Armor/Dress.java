@@ -55,5 +55,4 @@ public class Dress extends StdArmor
 		material=RawMaterial.RESOURCE_COTTON;
 	}
 
-
 }

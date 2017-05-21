@@ -33,20 +33,64 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Thief_DeepCut extends ThiefSkill
 {
-	@Override public String ID() { return "Thief_DeepCut"; }
+	@Override
+	public String ID()
+	{
+		return "Thief_DeepCut";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Deep Cut");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"DEEPCUT"});
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public String displayText(){return "";}
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
-	@Override public int classificationCode(){ return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_MARTIALLORE;}
-	@Override public int usageType(){return USAGE_MOVEMENT;}
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public String displayText()
+	{
+		return "";
+	}
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_MARTIALLORE;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT;
+	}
 
 	protected String gone="";
 	protected MOB target=null;
@@ -85,7 +129,7 @@ public class Thief_DeepCut extends ThiefSkill
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB))||(target==null))
-		   return super.okMessage(myHost,msg);
+			return super.okMessage(myHost,msg);
 		final MOB mob=(MOB)affected;
 		if(msg.amISource(mob)
 		&&(msg.amITarget(target))
@@ -218,11 +262,13 @@ public class Thief_DeepCut extends ThiefSkill
 			}
 			else
 			for(int i=0;i<remainingLimbList.size();i++)
+			{
 				if(remainingLimbList.get(i).toUpperCase().startsWith(off.toUpperCase()))
 				{
 					gone=remainingLimbList.get(i);
 					break;
 				}
+			}
 			if(gone.length()==0)
 			{
 				mob.tell(L("'@x1' is not a valid body part.",off));

@@ -35,12 +35,37 @@ import java.util.*;
 
 public class Prayer_MoralBalance extends Prayer
 {
-	@Override public String ID() { return "Prayer_MoralBalance"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_MoralBalance";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Moral Balance");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
-	@Override public long flags(){return Ability.FLAG_HOLY | Ability.FLAG_UNHOLY;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_OTHERS;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_HOLY | Ability.FLAG_UNHOLY;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -51,7 +76,6 @@ public class Prayer_MoralBalance extends Prayer
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 		CMMsg msg2=null;
@@ -89,7 +113,6 @@ public class Prayer_MoralBalance extends Prayer
 				mob.location().send(mob,msg2);
 			return beneficialWordsFizzle(mob,target,L("<S-NAME> point(s) at <T-NAMESELF> and @x1, but nothing happens.",prayWord(mob)));
 		}
-
 
 		// return whether it worked
 		return success;

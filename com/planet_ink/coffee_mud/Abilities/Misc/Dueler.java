@@ -240,9 +240,17 @@ public class Dueler extends StdAbility
 			Dueler A;
 			Dueler tA;
 			A=(Dueler)mob.fetchEffect(ID());
-			if(A!=null){ A.unInvoke(); mob.delEffect(A); }
+			if(A!=null)
+			{
+				A.unInvoke();
+				mob.delEffect(A);
+			}
 			A=(Dueler)tmob.fetchEffect(ID());
-			if(A!=null){ A.unInvoke(); tmob.delEffect(A); }
+			if(A!=null)
+			{
+				A.unInvoke();
+				tmob.delEffect(A);
+			}
 			A=(Dueler)newInstance();
 			tA=(Dueler)newInstance();
 			A.otherDueler=tA;

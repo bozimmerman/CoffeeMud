@@ -93,7 +93,6 @@ public interface AbilityComponents extends CMLibrary
 	 */
 	public String getAbilityComponentDesc(MOB mob, List<AbilityComponent> req);
 	
-	
 	/**
 	 * Returns a friendly readable description of a specific component in 
 	 * the given decoded ability components definition list.  If the 

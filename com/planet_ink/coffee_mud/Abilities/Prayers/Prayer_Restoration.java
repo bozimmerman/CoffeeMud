@@ -35,13 +35,43 @@ import java.util.*;
 
 public class Prayer_Restoration extends Prayer implements MendingSkill
 {
-	@Override public String ID() { return "Prayer_Restoration"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_Restoration";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Restoration");
-	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HEALING;}
-	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_HEALINGMAGIC;}
-	@Override protected int overrideMana(){return Ability.COST_ALL;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_OTHERS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_HEALING;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_HOLY|Ability.FLAG_HEALINGMAGIC;
+	}
+
+	@Override
+	protected int overrideMana()
+	{
+		return Ability.COST_ALL;
+	}
 
 	@Override
 	public boolean supportsMending(Physical item)
@@ -55,7 +85,7 @@ public class Prayer_Restoration extends Prayer implements MendingSkill
 		caster.basePhyStats().setLevel(CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL));
 		caster.phyStats().setLevel(CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL));
 		if(
-		  (item.fetchEffect("Amputation")!=null)
+			(item.fetchEffect("Amputation")!=null)
 		||(item.fetchEffect("Injury")!=null)
 		||(item.fetchEffect("BrokenLimbs")!=null)
 		||(item.fetchEffect("Fighter_AtemiStrike")!=null)
@@ -100,7 +130,6 @@ public class Prayer_Restoration extends Prayer implements MendingSkill
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 
@@ -287,7 +316,6 @@ public class Prayer_Restoration extends Prayer implements MendingSkill
 		}
 		else
 			beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 over <T-NAMESELF>, but @x2 does not heed.",prayWord(mob),hisHerDiety(mob)));
-
 
 		// return whether it worked
 		return success;

@@ -34,7 +34,6 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Paladin_HolyStrike extends StdAbility
 {
 	@Override
@@ -105,7 +104,7 @@ public class Paladin_HolyStrike extends StdAbility
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
-		   return super.okMessage(myHost,msg);
+			return super.okMessage(myHost,msg);
 		final MOB mob=(MOB)affected;
 		if(msg.amISource(invoker)
 		&&(msg.amITarget(mob))

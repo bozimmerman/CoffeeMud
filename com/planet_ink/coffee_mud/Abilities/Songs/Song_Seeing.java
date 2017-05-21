@@ -15,9 +15,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
-
 
 /*
    Copyright 2001-2017 Bo Zimmerman
@@ -36,11 +34,25 @@ import java.util.*;
 */
 public class Song_Seeing extends Song
 {
-	@Override public String ID() { return "Song_Seeing"; }
-	private final static String localizedName = CMLib.lang().L("Seeing");
-	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
+	@Override
+	public String ID()
+	{
+		return "Song_Seeing";
+	}
 
+	private final static String localizedName = CMLib.lang().L("Seeing");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_OTHERS;
+	}
 
 	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
@@ -61,13 +73,18 @@ public class Song_Seeing extends Song
 				final Room R=((MOB)target).location();
 				boolean found=false;
 				if(R!=null)
+				{
 					for(int r=0;r<R.numInhabitants();r++)
 					{
 						final MOB M=R.fetchInhabitant(r);
 						if((M!=null)&&(M!=mob)&&(M!=target)
 						&&(CMLib.flags().isHidden(M)))
-						{ found=true; break;}
+						{
+							found=true;
+							break;
+						}
 					}
+				}
 				if(found)
 					return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_OTHERS);
 			}

@@ -124,7 +124,6 @@ public class CMLister extends StdLibrary implements ListingLibrary
 		return CMLister.stringer;
 	}
 
-	
 	@Override
 	public String itemSeenString(MOB viewerM, Environmental item, boolean useName, boolean longLook, boolean sysmsgs)
 	{
@@ -526,7 +525,6 @@ public class CMLister extends StdLibrary implements ListingLibrary
 		}
 		return lines;
 	}
-	
 	
 	@Override
 	public StringBuilder reallyList2Cols(MOB viewerM, Enumeration<? extends Object> these)

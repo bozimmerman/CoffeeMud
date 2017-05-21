@@ -130,7 +130,6 @@ public class Merchant extends CommonSkill implements ShopKeeper
 		return shop.makeXML();
 	}
 
-
 	@Override
 	public String budget()
 	{
@@ -191,6 +190,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			return true;
 		return CMath.bset(whatIsSoldMask>>8, CMath.pow(2,mask-1));
 	}
+
 	@Override
 	public void addSoldType(int mask)
 	{
@@ -284,6 +284,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			factors=new String[0];
 		pricingAdjustments=factors;
 	}
+
 	protected Area getStartArea()
 	{
 		Area A=CMLib.map().getStartArea(affected);
@@ -293,6 +294,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			A=CMLib.map().areas().nextElement();
 		return A;
 	}
+
 	@Override
 	public int finalInvResetRate()
 	{
@@ -300,6 +302,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			return invResetRate();
 		return getStartArea().finalInvResetRate();
 	}
+
 	@Override
 	public String finalPrejudiceFactors()
 	{
@@ -307,6 +310,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			return prejudiceFactors();
 		return getStartArea().finalPrejudiceFactors();
 	}
+
 	@Override
 	public String finalIgnoreMask()
 	{
@@ -314,6 +318,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			return ignoreMask();
 		return getStartArea().finalIgnoreMask();
 	}
+
 	@Override
 	public String[] finalItemPricingAdjustments()
 	{
@@ -322,6 +327,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			return itemPricingAdjustments();
 		return getStartArea().finalItemPricingAdjustments();
 	}
+
 	@Override
 	public Pair<Long, TimePeriod> finalBudget()
 	{
@@ -486,7 +492,6 @@ public class Merchant extends CommonSkill implements ShopKeeper
 		}
 		return false;
 	}
-
 
 	public boolean canPossiblyVend(Environmental E, Environmental what)
 	{
@@ -693,8 +698,16 @@ public class Merchant extends CommonSkill implements ShopKeeper
 		String itemName=CMParms.combine(commands,0);
 		final Vector<Item> V=new Vector<Item>();
 		boolean allFlag=commands.get(0).equalsIgnoreCase("all");
-		if(itemName.toUpperCase().startsWith("ALL.")){ allFlag=true; itemName="ALL "+itemName.substring(4);}
-		if(itemName.toUpperCase().endsWith(".ALL")){ allFlag=true; itemName="ALL "+itemName.substring(0,itemName.length()-4);}
+		if(itemName.toUpperCase().startsWith("ALL."))
+		{
+			allFlag=true;
+			itemName="ALL "+itemName.substring(4);
+		}
+		if(itemName.toUpperCase().endsWith(".ALL"))
+		{
+			allFlag=true;
+			itemName="ALL "+itemName.substring(0,itemName.length()-4);
+		}
 		int addendum=1;
 		String addendumStr="";
 		boolean doBugFix = true;

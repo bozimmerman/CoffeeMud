@@ -106,6 +106,7 @@ public class GenSoftware extends StdProgram
 	}
 
 	private static String[] codes=null;
+
 	@Override
 	public String[] getStatCodes()
 	{

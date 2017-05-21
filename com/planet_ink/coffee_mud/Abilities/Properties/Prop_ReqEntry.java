@@ -35,15 +35,34 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Prop_ReqEntry extends Property implements TriggeredAffect
 {
-	@Override public String ID() { return "Prop_ReqEntry"; }
-	@Override public String name(){ return "All Room/Exit Limitations";}
-	@Override protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS;}
+	@Override
+	public String ID()
+	{
+		return "Prop_ReqEntry";
+	}
+
+	@Override
+	public String name()
+	{
+		return "All Room/Exit Limitations";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS;
+	}
+
 	private boolean noFollow=false;
 	private boolean noSneak=false;
 	private String maskS="";
 	private String message="";
 
-	@Override public long flags(){return Ability.FLAG_ZAPPER;}
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_ZAPPER;
+	}
 
 	@Override
 	public int triggerMask()
@@ -101,6 +120,7 @@ public class Prop_ReqEntry extends Property implements TriggeredAffect
 			return true;
 		return CMLib.masking().maskCheck(maskS,mob,false);
 	}
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -122,8 +142,10 @@ public class Prop_ReqEntry extends Property implements TriggeredAffect
 						((MOB)e.next()).getRideBuddies(H);
 				}
 				for(final Iterator e=H.iterator();e.hasNext();)
+				{
 					if(passesMuster((MOB)e.next()))
 						return super.okMessage(myHost,msg);
+				}
 				msg.source().tell((message.length()==0)?L("You can not go that way."):message);
 				return false;
 			}

@@ -34,11 +34,32 @@ import java.util.*;
 */
 public class Prop_StayAboard extends Property
 {
-	@Override public String ID() { return "Prop_StayAboard"; }
-	@Override public String name(){ return "Stays on mounted thing";}
-	@Override protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_MOBS;}
+	@Override
+	public String ID()
+	{
+		return "Prop_StayAboard";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Stays on mounted thing";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ITEMS|Ability.CAN_MOBS;
+	}
+
 	protected Rideable rideable=null;
-	@Override public String accountForYourself() { return "Stays on anything mounted to.";}
+
+	@Override
+	public String accountForYourself()
+	{
+		return "Stays on anything mounted to.";
+	}
+
 	protected boolean noRepeat=false;
 
 	@Override

@@ -58,6 +58,4 @@ public class Cestus extends StdWeapon
 
 	}
 
-
-
 }

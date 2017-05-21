@@ -35,12 +35,37 @@ import java.util.*;
 
 public class Prayer_Awaken extends Prayer implements MendingSkill
 {
-	@Override public String ID() { return "Prayer_Awaken"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_Awaken";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Awaken");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_RESTORATION;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
-	@Override public long flags(){return Ability.FLAG_NEUTRAL;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_RESTORATION;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_OTHERS;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_NEUTRAL;
+	}
 
 	@Override
 	public boolean supportsMending(Physical item)
@@ -76,7 +101,8 @@ public class Prayer_Awaken extends Prayer implements MendingSkill
 					 	offenders.add(A);
 				}
 				catch(final Exception e)
-				{}
+				{
+				}
 			}
 		}
 		newMOB.destroy();

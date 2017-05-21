@@ -33,7 +33,6 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Chant_SummonFlyTrap extends Chant
 {
 	@Override
@@ -209,6 +208,7 @@ public class Chant_SummonFlyTrap extends Chant
 		// return whether it worked
 		return success;
 	}
+
 	public MOB determineMonster(MOB caster)
 	{
 		final MOB newMOB=CMClass.getMOB("GenMOB");

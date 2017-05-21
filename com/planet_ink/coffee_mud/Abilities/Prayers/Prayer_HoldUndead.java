@@ -35,15 +35,51 @@ import java.util.*;
 
 public class Prayer_HoldUndead extends Prayer
 {
-	@Override public String ID() { return "Prayer_HoldUndead"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_HoldUndead";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Hold Undead");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_NEUTRALIZATION;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	@Override public long flags(){return Ability.FLAG_NEUTRAL;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_NEUTRALIZATION;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_NEUTRAL;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Hold Undead)");
-	@Override public String displayText() { return localizedStaticDisplay; }
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
 
 	@Override
 	public int castingQuality(MOB mob, Physical target)
@@ -140,7 +176,6 @@ public class Prayer_HoldUndead extends Prayer
 
 		if(nothingDone)
 			return maliciousFizzle(mob,null,L("<S-NAME> attempt(s) to hold the undead, but flub(s) it."));
-
 
 		// return whether it worked
 		return success;

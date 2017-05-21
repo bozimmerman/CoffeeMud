@@ -35,8 +35,18 @@ import java.util.*;
 
 public class ItemGenerator extends ActiveTicker
 {
-	@Override public String ID(){return "ItemGenerator";}
-	@Override protected int canImproveCode(){return Behavior.CAN_ROOMS|Behavior.CAN_AREAS|Behavior.CAN_ITEMS|Behavior.CAN_MOBS;}
+	@Override
+	public String ID()
+	{
+		return "ItemGenerator";
+	}
+
+	@Override
+	protected int canImproveCode()
+	{
+		return Behavior.CAN_ROOMS|Behavior.CAN_AREAS|Behavior.CAN_ITEMS|Behavior.CAN_MOBS;
+	}
+
 	protected static volatile Tickable[] builerTick=new Tickable[1];
 
 	protected Vector<Item>		maintained			= new Vector<Item>();
@@ -98,8 +108,10 @@ public class ItemGenerator extends ActiveTicker
 					s=s.substring(1).toUpperCase().trim();
 					int code=-1;
 					for(int i=0;i<Room.DOMAIN_INDOORS_DESCS.length;i++)
+					{
 						if(Room.DOMAIN_INDOORS_DESCS[i].startsWith(s))
 							code=Room.INDOORS+i;
+					}
 					if(code>=0)
 					{
 						if((c=='+')&&(restrictedLocales.contains(Integer.valueOf(code))))
@@ -143,7 +155,6 @@ public class ItemGenerator extends ActiveTicker
 		tickReset();
 	}
 
-
 	public boolean okRoomForMe(Room newRoom)
 	{
 		if(newRoom==null)
@@ -178,17 +189,51 @@ public class ItemGenerator extends ActiveTicker
 		return I.owner()==CMLib.map().roomLocation(thang);
 	}
 
-
 	protected class ItemGenerationTicker implements Tickable
 	{
-		@Override public String ID(){return "ItemGenerationTicker";}
-		@Override public String name(){return "ItemGenerationTicker";}
-		@Override public CMObject newInstance(){return this;}
-		@Override public void initializeClass(){}
-		@Override public CMObject copyOf(){return this;}
-		@Override public int compareTo(CMObject o){return (o==this)?1:0;}
+		@Override
+		public String ID()
+		{
+			return "ItemGenerationTicker";
+		}
+
+		@Override
+		public String name()
+		{
+			return "ItemGenerationTicker";
+		}
+
+		@Override
+		public CMObject newInstance()
+		{
+			return this;
+		}
+
+		@Override
+		public void initializeClass()
+		{
+		}
+
+		@Override
+		public CMObject copyOf()
+		{
+			return this;
+		}
+
+		@Override
+		public int compareTo(CMObject o)
+		{
+			return (o==this)?1:0;
+		}
+
 		private final int tickStatus=0;
-		@Override public int getTickStatus(){return tickStatus;}
+
+		@Override
+		public int getTickStatus()
+		{
+			return tickStatus;
+		}
+
 		@Override
 		public boolean tick(Tickable host, int tickID)
 		{
@@ -317,7 +362,10 @@ public class ItemGenerator extends ActiveTicker
 				{
 					I=items.elementAt(i);
 					value=CMath.div(maxValue,I.value()+1.0);
-					if(pickedTotal<=value){ break;}
+					if(pickedTotal<=value)
+					{
+						break;
+					}
 					pickedTotal-=value;
 				}
 				if(I!=null)

@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2002-2017 Bo Zimmerman
 
@@ -36,17 +35,48 @@ import java.util.*;
 
 public class Chant_LocateAnimals extends Chant
 {
-	@Override public String ID() { return "Chant_LocateAnimals"; }
+	@Override
+	public String ID()
+	{
+		return "Chant_LocateAnimals";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Locate Animals");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;
+	}
+
 	protected String displayText=L("(Locating Animals)");
-	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
-	@Override public String displayText(){return displayText;}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_SELF;
+	}
+
+	@Override
+	public String displayText()
+	{
+		return displayText;
+	}
 
 	protected List<Room> theTrail=null;
 	public int nextDirection=-2;
-	@Override public long flags(){return Ability.FLAG_TRACKING;}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_TRACKING;
+	}
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
@@ -189,7 +219,6 @@ public class Chant_LocateAnimals extends Chant
 		}
 		else
 			return beneficialVisualFizzle(mob,null,L("<S-NAME> chant(s) for the animals, but nothing happens."));
-
 
 		// return whether it worked
 		return success;

@@ -35,7 +35,6 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Archon_Record extends ArchonSkill
 {
 	@Override

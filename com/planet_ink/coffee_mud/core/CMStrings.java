@@ -805,7 +805,6 @@ public class CMStrings
 		return newStr.toString();
 	}
 
-
 	/**
 	 * Finds all instances of the second parameter word in the first string,
 	 * and replaces it with the third word.  Returns the first string with or without changes. The
@@ -992,8 +991,10 @@ public class CMStrings
 			c[i]=Character.toUpperCase(c[i]);
 		i++;
 		for(;i<c.length;i++)
+		{
 			if(!Character.isLowerCase(c[i]))
 				c[i]=Character.toLowerCase(c[i]);
+		}
 		return new String(c).trim();
 	}
 
@@ -1266,7 +1267,6 @@ public class CMStrings
 		return false;
 	}
 
-
 	/**
 	 * Checks whether the given character array contains the given character and
 	 * if so, returns the index in the array of the character
@@ -1323,7 +1323,6 @@ public class CMStrings
 		}
 		return false;
 	}
-
 
 	/**
 	 * Returns whether the given string array contains a string that
@@ -2071,7 +2070,6 @@ public class CMStrings
 		return thisStr.substring(0,thisMuch);
 	}
 	
-	
 	/**
 	 * Truncates the given string if the string is larger than the given number, 
 	 * or returns it unchanged otherwise.
@@ -2124,7 +2122,6 @@ public class CMStrings
 		return thisStr+SPACES.substring(0,thisMuch-lenMinusColors);
 	}
 
-	
 	/**
 	 * Pads the string to the right with spaces until it is the length 
 	 * of the given number. If the string is already larger than the given number, the 
@@ -2404,6 +2401,7 @@ public class CMStrings
 				token.numValue = Double.parseDouble(value);
 			return token;
 		}
+
 		private StringExpToken() { }
 	}
 

@@ -83,6 +83,7 @@ public class Mountains extends StdRoom
 		Integer.valueOf(RawMaterial.RESOURCE_QUARTZ),
 		Integer.valueOf(RawMaterial.RESOURCE_PLATINUM)};
 	public static final List<Integer> roomResources=new Vector<Integer>(Arrays.asList(resourceList));
+
 	@Override
 	public List<Integer> resourceChoices()
 	{

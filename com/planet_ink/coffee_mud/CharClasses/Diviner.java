@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 /*
    Copyright 2003-2017 Bo Zimmerman
 
@@ -70,7 +69,6 @@ public class Diviner extends SpecialistMage
 	{
 		super.initializeClass();
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Skill_Spellcraft",false);
-
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Spell_AnalyzeDweomer",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Spell_SolveMaze",25,true);

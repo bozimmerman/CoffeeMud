@@ -51,7 +51,6 @@ public class GenJournal extends StdJournal
 		setMaterial(RawMaterial.RESOURCE_PAPER);
 	}
 
-
 	@Override
 	public boolean isGeneric()
 	{
@@ -111,6 +110,7 @@ public class GenJournal extends StdJournal
 	}
 
 	private static String[] codes=null;
+
 	@Override
 	public String[] getStatCodes()
 	{

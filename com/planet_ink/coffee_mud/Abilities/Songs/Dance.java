@@ -36,17 +36,63 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Dance extends StdAbility
 {
-	@Override public String ID() { return "Dance"; }
+	@Override
+	public String ID()
+	{
+		return "Dance";
+	}
+
 	private final static String localizedName = CMLib.lang().L("a Dance");
-	@Override public String name() { return localizedName; }
-	@Override public String displayText() { return L("("+danceOf()+")"); }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public String displayText()
+	{
+		return L("("+danceOf()+")");
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"DANCE","DA"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode(){return Ability.ACODE_SONG|Ability.DOMAIN_DANCING;}
-	@Override public int usageType(){return USAGE_MOVEMENT;}
-	@Override public int maxRange(){return adjustedMaxInvokerRange(2);}
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SONG|Ability.DOMAIN_DANCING;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT;
+	}
+
+	@Override
+	public int maxRange()
+	{
+		return adjustedMaxInvokerRange(2);
+	}
+
 	protected int invokerManaCost=-1;
 	protected long timeOut=0;
 	protected Vector<Room> commonRoomSet=null;
@@ -67,7 +113,6 @@ public class Dance extends StdAbility
 			affectableStats.addAmbiance("performing the "+danceOf().toLowerCase());
 		super.affectPhyStats(affectedEnv, affectableStats);
 	}
-
 
 	@Override
 	public int adjustedLevel(MOB mob, int asLevel)
@@ -147,6 +192,7 @@ public class Dance extends StdAbility
 	protected void undanceAll(MOB mob, MOB invoker)
 	{
 		if(mob!=null)
+		{
 			for(int a=mob.numEffects()-1;a>=0;a--)
 			{
 				final Ability A=mob.fetchEffect(a);
@@ -154,11 +200,13 @@ public class Dance extends StdAbility
 				&&((invoker==null)||(A.invoker()==null)||(A.invoker()==invoker)))
 					((Dance)A).undanceMe(mob,invoker);
 			}
+		}
 	}
 
 	protected void undanceAllByThis(MOB mob, MOB invoker)
 	{
 		if(mob!=null)
+		{
 			for(int a=mob.numEffects()-1;a>=0;a--)
 			{
 				final Ability A=mob.fetchEffect(a);
@@ -167,6 +215,7 @@ public class Dance extends StdAbility
 				&&((invoker==null)||(A.invoker()==null)||(A.invoker()==invoker)))
 					((Dance)A).undanceMe(mob,invoker);
 			}
+		}
 	}
 
 	protected boolean undanceMe(MOB mob, MOB invoker)

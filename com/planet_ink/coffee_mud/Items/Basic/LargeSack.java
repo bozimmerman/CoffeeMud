@@ -50,6 +50,4 @@ public class LargeSack extends StdContainer
 		recoverPhyStats();
 	}
 
-
-
 }

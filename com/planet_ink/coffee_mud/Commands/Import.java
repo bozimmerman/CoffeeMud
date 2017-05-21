@@ -43,7 +43,11 @@ public class Import extends StdCommand
 	public Import(){}
 
 	private final String[] access=I(new String[]{"IMPORT"});
-	@Override public String[] getAccessWords(){return access;}
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
 	private final static Class[][] internalParameters=new Class[][]
 	{
@@ -262,7 +266,6 @@ public class Import extends StdCommand
 		{"(null)",""+RawMaterial.RESOURCE_NOTHING}
 	};
 
-
 	protected static String getAreaName(List<String> V)
 	{
 		V=new XVector<String>(V);
@@ -383,8 +386,10 @@ public class Import extends StdCommand
 		if(hashedRoomSet.containsKey(calledThis))
 			return hashedRoomSet.get(calledThis);
 		for(final String key : hashedRoomSet.keySet())
+		{
 			if(key.endsWith("#"+calledThis))
 				return hashedRoomSet.get(key);
+		}
 		return null;
 	}
 
@@ -457,7 +462,10 @@ public class Import extends StdCommand
 					}
 				}
 			}
-		}catch(final NoSuchElementException e){}
+		}
+		catch(final NoSuchElementException e)
+		{
+		}
 		while(true)
 		{
 			Room foundOne=null;
@@ -745,6 +753,7 @@ public class Import extends StdCommand
 			return "";
 		return V.get(0);
 	}
+
 	protected static String eatLine(List<String> V)
 	{
 		if(V.size()==0)
@@ -753,6 +762,7 @@ public class Import extends StdCommand
 		V.remove(0);
 		return s;
 	}
+
 	protected static String eatNextLine(List<String> V)
 	{
 		String s="";
@@ -947,7 +957,7 @@ public class Import extends StdCommand
 			String filename=e.next();
 			final String data=files.get(filename);
 			if(customBother.contains(filename))
-			   continue;
+				continue;
 
 			if((!filename.startsWith("//"))&&(!filename.startsWith("::")))
 			{
@@ -982,7 +992,7 @@ public class Import extends StdCommand
 			{
 				final Race R=(Race)custom.get(c);
 				if(customBother.contains(R.ID()))
-				   continue;
+					continue;
 
 				final Race R2=CMClass.getRace(R.ID());
 				if(R2==null)
@@ -1116,7 +1126,7 @@ public class Import extends StdCommand
 		{
 			word=word.toUpperCase().trim();
 			if((word.startsWith("'"))||(word.startsWith("`")))
-			   word=word.substring(1);
+				word=word.substring(1);
 			if(word.length()<3)
 				return "";
 			if(word.startsWith("NONE"))
@@ -2503,7 +2513,9 @@ public class Import extends StdCommand
 			{ "polearm","8"},
 			{ "bow","0"},
 			{ "arrow","3"},
-			{ "lance","3"}
+			{
+				"lance","3"
+			}
 		};
 		str1=str1.toLowerCase().trim();
 		if(str1.startsWith("'"))
@@ -2593,7 +2605,7 @@ public class Import extends StdCommand
 		{
 			str4=str4.toUpperCase().trim();
 			if(str4.startsWith("'"))
-			   str4=str4.substring(1);
+				str4=str4.substring(1);
 			if(str4.startsWith("POUND"))
 				val4=7;
 			else
@@ -2784,7 +2796,6 @@ public class Import extends StdCommand
 			}
 		}
 
-
 		for(int m=0;m<mobData.size();m++)
 		{
 			List<String> objV=null;
@@ -2879,7 +2890,6 @@ public class Import extends StdCommand
 				codeStr4=eatNextLine(objV);
 				codeStr5=eatNextLine(objV);
 			}
-
 
 			if((!mobID.startsWith("#"))
 			||((mobName.length()==0)
@@ -3026,7 +3036,7 @@ public class Import extends StdCommand
 			if(CMath.isSet(affFlag,6))
 			{
 				if(CMLib.flags().isEvil(M))
-				   M.addNonUninvokableEffect(CMClass.getAbility("Prayer_UnholyWord"));
+					M.addNonUninvokableEffect(CMClass.getAbility("Prayer_UnholyWord"));
 				else
 				   M.addNonUninvokableEffect(CMClass.getAbility("Prayer_HolyWord"));
 				M.addNonUninvokableEffect(CMClass.getAbility("Prayer_Sanctuary"));
@@ -3505,7 +3515,8 @@ public class Import extends StdCommand
 									}
 								}
 							}
-						}catch(final Exception e)
+						}
+						catch(final Exception e)
 						{
 							returnAnError(session,"Unknown MobPrg: "+mobprg,compileErrors,commands);
 						}
@@ -4071,7 +4082,9 @@ public class Import extends StdCommand
 			{ "jewelry",""},
 			{ "jukebox",""},
 			{ "tattoo",""},
-			{ "pipe","32"}
+			{
+				"pipe","32"
+			}
 			};
 
 			if(circleForm)
@@ -4579,8 +4592,10 @@ public class Import extends StdCommand
 				I.basePhyStats().setDisposition(I.basePhyStats().disposition()|PhyStats.IS_GOOD);
 
 			if(CMath.isSet(extraFlag,18))
+			{
 				if((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_METAL)
 					I.setMaterial(RawMaterial.RESOURCE_GLASS);
+			}
 
 			if(CMath.isSet(extraFlag,20))
 				I.basePhyStats().setSensesMask(I.basePhyStats().sensesMask()|PhyStats.SENSE_UNLOCATABLE);
@@ -4819,7 +4834,6 @@ public class Import extends StdCommand
 							//if(CMath.isSet(res,18)) no light resistance
 							//if(CMath.isSet(res,18)) no sound resistance
 						}
-
 
 					}
 				}
@@ -5093,10 +5107,12 @@ public class Import extends StdCommand
 	public static boolean isBadID(String id)
 	{
 		for(int i=0;i<id.length();i++)
+		{
 			if(Character.isLetter(id.charAt(i)))
 			{
 				return true;
 			}
+		}
 		return false;
 	}
 
@@ -5436,7 +5452,10 @@ public class Import extends StdCommand
 												break;
 											}
 										}
-									}catch(final NoSuchElementException e){}
+									}
+									catch(final NoSuchElementException e)
+									{
+									}
 								}
 								if(!temporarilyDeleteArea(mob,reLinkTable,areaName))
 									return false;
@@ -5898,7 +5917,6 @@ public class Import extends StdCommand
 				return returnAnError(session,e.getMessage(),compileErrors,commands);
 			}
 	
-	
 			final List<String> V=Resources.getFileLineVector(buf);
 	
 			// sort the data into general blocks, and identify area
@@ -6071,7 +6089,10 @@ public class Import extends StdCommand
 							{
 							if(!session.confirm(L("Would you like to continue (y/N)"),"N"))
 								return false;
-							}catch(final Exception e){}
+							}
+							catch(final Exception e)
+							{
+							}
 						}
 						continue;
 					}
@@ -6249,7 +6270,9 @@ public class Import extends StdCommand
 						{ "noswim",		"7"}, // means it requires a boat
 						{ "unused",		"8"},
 						{ "air",		"9"},
-						{ "desert",		"10"}
+						{
+							"desert",		"10"
+						}
 					};
 					boolean circleFormat=false;
 					if((CMParms.numBits(codeLine)>=6)||(CMParms.numBits(codeLine)==4)) // wierder circlemud exception
@@ -6550,11 +6573,13 @@ public class Import extends StdCommand
 								break;
 							default:
 								for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+								{
 									if(R.rawDoors()[d]==null)
 									{
 										dirCode=d;
 										break;
 									}
+								}
 								break;
 							}
 							else
@@ -6562,11 +6587,13 @@ public class Import extends StdCommand
 								dirCode=Directions.GATE;
 							else
 							for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+							{
 								if(R.rawDoors()[d]==null)
 								{
 									dirCode=d;
 									break;
 								}
+							}
 							if((dirCode<0)||(dirCode>=Directions.NUM_DIRECTIONS()))
 							{
 								returnAnError(session,"Room: "+R.roomID()+", Unknown direction code: "+dirCode+", aborting exit, area="+areaName,compileErrors,commands);
@@ -6593,10 +6620,14 @@ public class Import extends StdCommand
 							final long doorState=getBitMask(codeStr,1);
 							final long linkRoomID=getBitMask(codeStr,2);
 							if(CMParms.numBits(codeStr)==11) // wierd circle format
-							{ /* all is well */}
+							{
+								/* all is well */
+							}
 							else
 							if(CMParms.numBits(codeStr)==4)
-							{ /* all is still well -- from the wld format I guess. */ }
+							{
+								/* all is still well -- from the wld format I guess. */
+							}
 							else
 							if(CMParms.numBits(codeStr)==5)
 							{

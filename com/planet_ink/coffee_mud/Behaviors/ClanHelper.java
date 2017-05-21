@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -35,7 +34,11 @@ import java.util.*;
 */
 public class ClanHelper extends StdBehavior
 {
-	@Override public String ID(){return "ClanHelper";}
+	@Override
+	public String ID()
+	{
+		return "ClanHelper";
+	}
 
 	@Override
 	public String accountForYourself()
@@ -47,6 +50,7 @@ public class ClanHelper extends StdBehavior
 	}
 
 	protected boolean mobKiller=false;
+
 	@Override
 	public void startBehavior(PhysicalAgent forMe)
 	{
@@ -93,11 +97,13 @@ public class ClanHelper extends StdBehavior
 			{
 				Clan C=null;
 				for(final Triad<Clan,Integer,Integer> t : list)
+				{
 					if(source.getClanRole(t.first.clanID())==null)
 					{
 						C=t.first;
 						break;
 					}
+				}
 				String reason="WE ARE UNDER ATTACK!! CHARGE!!";
 				if(C!=null)
 					reason=C.getName().toUpperCase()+"S UNITE! CHARGE!";

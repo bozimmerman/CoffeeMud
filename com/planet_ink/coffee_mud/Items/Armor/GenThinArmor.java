@@ -58,7 +58,6 @@ public class GenThinArmor extends StdThinArmor
 		material=RawMaterial.RESOURCE_LEATHER;
 	}
 
-
 	@Override
 	public boolean isGeneric()
 	{
@@ -140,6 +139,7 @@ public class GenThinArmor extends StdThinArmor
 	}
 
 	private static String[] codes=null;
+
 	@Override
 	public String[] getStatCodes()
 	{

@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2004-2017 Bo Zimmerman
 
@@ -34,15 +33,39 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Prayer_Annul extends Prayer
 {
-	@Override public String ID() { return "Prayer_Annul"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_Annul";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Annul");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_NEUTRALIZATION;}
-	@Override public long flags(){return Ability.FLAG_NEUTRAL;}
-	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_NEUTRALIZATION;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_NEUTRAL;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_OTHERS;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -60,7 +83,6 @@ public class Prayer_Annul extends Prayer
 			mob.tell(L("@x1 must remove the wedding band first.",target.name(mob)));
 			return false;
 		}
-
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

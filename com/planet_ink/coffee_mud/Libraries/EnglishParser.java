@@ -413,7 +413,6 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return str;
 	}
 
-
 	@Override
 	public boolean startsWithAnArticle(String s)
 	{
@@ -578,7 +577,6 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		&&(C.securityCheck(mob))
 		&&(!CMSecurity.isCommandDisabled(CMClass.classID(C).toUpperCase())))
 			return C;
-
 
 		social=CMLib.socials().fetchSocial(commands,false,true);
 		if(social!=null)
@@ -908,7 +906,6 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return CMParms.parseSpaces(CMLib.english().stripPunctuation(thisStr), true);
 	}
 
-	
 	public boolean equalsPunctuationless(char[] strC, char[] str2C)
 	{
 		if((strC.length==0)&&(str2C.length==0))

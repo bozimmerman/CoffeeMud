@@ -37,13 +37,43 @@ import java.util.*;
 
 public class Prayer_Resurrect extends Prayer implements MendingSkill
 {
-	@Override public String ID() { return "Prayer_Resurrect"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_Resurrect";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Resurrect");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_DEATHLORE;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	@Override public long flags(){return Ability.FLAG_HOLY;}
-	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_DEATHLORE;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_HOLY;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_ITEMS;
+	}
 	
 	protected boolean canResurrectNormalMobs() 
 	{ 
@@ -116,12 +146,14 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
 			if(P==null)
 				return false;
 			for(int i=0;i<allObjs.size();i++)
+			{
 				if(allObjs.elementAt(i)==P)
 				{
 					nonPlayerData=allDataPs.elementAt(i);
 					body=P;
 					break;
 				}
+			}
 		}
 		if(nonPlayerData==null)
 		{
@@ -227,7 +259,6 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
 		}
 		else
 			beneficialWordsFizzle(mob,body,auto?"":L("<S-NAME> attempt(s) to resurrect <T-NAMESELF>, but nothing happens."));
-
 
 		// return whether it worked
 		return success;

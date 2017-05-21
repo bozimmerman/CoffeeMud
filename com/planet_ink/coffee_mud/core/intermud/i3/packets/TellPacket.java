@@ -34,7 +34,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  * The I3 tell packet
  */
 
-
 import java.util.Vector;
 
 /**

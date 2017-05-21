@@ -84,7 +84,6 @@ public class Dolphin extends Seal
 		return breatheAirWaterArray;
 	}
 	
-
 	private final int[]	agingChart	= { 0, 2, 5, 8, 15, 25, 35, 45, 50 };
 
 	@Override

@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2004-2017 Bo Zimmerman
 
@@ -34,16 +33,46 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Chant_CaveFishing extends Chant
 {
-	@Override public String ID() { return "Chant_CaveFishing"; }
+	@Override
+	public String ID()
+	{
+		return "Chant_CaveFishing";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Cave Fishing");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return CAN_ROOMS;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_ROOMS;
+	}
+
 	protected int previousResource=-1;
 
 	@Override
@@ -91,7 +120,6 @@ public class Chant_CaveFishing extends Chant
 			mob.tell(L("This chant cannot be used outdoors."));
 			return false;
 		}
-
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -35,17 +34,41 @@ import java.util.*;
 */
 public class Prop_RoomLit extends Property
 {
-	@Override public String ID() { return "Prop_RoomLit"; }
-	@Override public String name(){ return "Lighting Property";}
-	@Override protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS;}
-	@Override public boolean bubbleAffect(){return true;}
+	@Override
+	public String ID()
+	{
+		return "Prop_RoomLit";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Lighting Property";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ROOMS|Ability.CAN_AREAS;
+	}
+
+	@Override
+	public boolean bubbleAffect()
+	{
+		return true;
+	}
 
 	@Override
 	public String accountForYourself()
-	{ return "Always Lit";	}
+	{
+		return "Always Lit";
+	}
 
-
-	@Override public long flags(){return Ability.FLAG_ADJUSTER;}
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_ADJUSTER;
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)

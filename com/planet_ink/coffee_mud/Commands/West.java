@@ -38,7 +38,12 @@ public class West extends Go
 	public West(){}
 
 	private final String[] access=I(new String[]{"WEST","W"});
-	@Override public String[] getAccessWords(){return access;}
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
+
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
@@ -51,7 +56,12 @@ public class West extends Go
 			CMLib.tracking().walk(mob, Directions.WEST, false,false,false);
 		return false;
 	}
-	@Override public boolean canBeOrdered(){return true;}
+
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 
 	@Override
 	public boolean securityCheck(MOB mob)

@@ -28,6 +28,7 @@ public class DBUpgradeConversions
 		if(out!=null) 
 			out.println(str);
 	}
+
 	private static void p(PrintStream out, String str)
 	{
 		if(out!=null) 

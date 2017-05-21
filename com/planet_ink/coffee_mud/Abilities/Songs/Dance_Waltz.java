@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2003-2017 Bo Zimmerman
 
@@ -36,10 +35,26 @@ import java.util.*;
 
 public class Dance_Waltz extends Dance
 {
-	@Override public String ID() { return "Dance_Waltz"; }
+	@Override
+	public String ID()
+	{
+		return "Dance_Waltz";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Waltz");
-	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_SELF;
+	}
+
 	private int[] statadd=null;
 
 	@Override

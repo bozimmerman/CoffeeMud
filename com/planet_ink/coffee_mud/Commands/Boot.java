@@ -38,7 +38,12 @@ public class Boot extends StdCommand
 	public Boot(){}
 
 	private final String[] access=I(new String[]{"BOOT"});
-	@Override public String[] getAccessWords(){return access;}
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
+
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
@@ -85,8 +90,16 @@ public class Boot extends StdCommand
 		return false;
 	}
 
-	@Override public boolean canBeOrdered(){return true;}
-	@Override public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.BOOT);}
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 
+	@Override
+	public boolean securityCheck(MOB mob)
+	{
+		return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.BOOT);
+	}
 
 }

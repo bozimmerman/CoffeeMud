@@ -35,12 +35,37 @@ import java.util.*;
 
 public class Prayer_Thunderbolt extends Prayer
 {
-	@Override public String ID() { return "Prayer_Thunderbolt"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_Thunderbolt";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Thunderbolt");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	@Override public long flags(){return Ability.FLAG_NEUTRAL;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_NEUTRAL;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -73,7 +98,6 @@ public class Prayer_Thunderbolt extends Prayer
 		}
 		else
 			return maliciousFizzle(mob,target,L("<S-NAME> @x1, but nothing happens.",prayWord(mob)));
-
 
 		// return whether it worked
 		return success;

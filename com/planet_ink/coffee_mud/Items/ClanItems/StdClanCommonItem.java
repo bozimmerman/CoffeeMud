@@ -187,7 +187,6 @@ public class StdClanCommonItem extends StdClanItem
 			stats.setSensesMask(stats.sensesMask()|PhyStats.CAN_SEE_DARK);
 	}
 
-
 	@Override
 	public void setReadableText(String newText)
 	{

@@ -35,16 +35,58 @@ import java.util.*;
 
 public class Prayer_AuraFear extends Prayer
 {
-	@Override public String ID() { return "Prayer_AuraFear"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_AuraFear";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Aura of Fear");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Fear Aura)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ROOMS|Ability.CAN_ITEMS;}
-	@Override protected int canTargetCode(){return Ability.CAN_MOBS|Ability.CAN_ROOMS|Ability.CAN_ITEMS;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	@Override public long flags(){return Ability.FLAG_UNHOLY;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS|Ability.CAN_ROOMS|Ability.CAN_ITEMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_MOBS|Ability.CAN_ROOMS|Ability.CAN_ITEMS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_UNHOLY;
+	}
+
 	private int ratingTickDown=4;
 
 	public Prayer_AuraFear()
@@ -53,7 +95,6 @@ public class Prayer_AuraFear extends Prayer
 
 		ratingTickDown = 4;
 	}
-
 
 	@Override
 	public void unInvoke()
@@ -112,7 +153,13 @@ public class Prayer_AuraFear extends Prayer
 						if((!CMLib.flags().isMobile(M))||(!M.isInCombat()))
 						{
 							final Command C=CMClass.getCommand("Sit");
-							try{if(C!=null) C.execute(M,new XVector<String>("Sit"),MUDCmdProcessor.METAFLAG_FORCED);}catch(final Exception e){}
+							try
+							{
+								if(C!=null) C.execute(M,new XVector<String>("Sit"),MUDCmdProcessor.METAFLAG_FORCED);
+							}
+							catch(final Exception e)
+							{
+							}
 							if(CMLib.flags().isSitting(M))
 							{
 								R.show(M,null,affected,CMMsg.MASK_EYES|CMMsg.MSG_HANDS|CMMsg.MASK_SOUND,L("<S-NAME> cringe(s) in fear at the sight of <O-NAME>."));
@@ -126,7 +173,13 @@ public class Prayer_AuraFear extends Prayer
 						{
 							R.show(M,null,affected,CMMsg.MASK_EYES|CMMsg.MSG_NOISE,L("<S-NAME> scream(s) in fear at the sight of <O-NAME>."));
 							final Command C=CMClass.getCommand("Flee");
-							try{if(C!=null) C.execute(M,new XVector<String>("Flee"),MUDCmdProcessor.METAFLAG_FORCED);}catch(final Exception e){}
+							try
+							{
+								if(C!=null) C.execute(M,new XVector<String>("Flee"),MUDCmdProcessor.METAFLAG_FORCED);
+							}
+							catch(final Exception e)
+							{
+							}
 						}
 						else
 						{
@@ -140,7 +193,13 @@ public class Prayer_AuraFear extends Prayer
 						{
 							R.show(M,null,affected,CMMsg.MASK_EYES|CMMsg.MSG_NOISE,L("<S-NAME> scream(s) in fear at the sight of <O-NAME>."));
 							final Command C=CMClass.getCommand("Flee");
-							try{if(C!=null) C.execute(M,new XVector<String>("Flee"),MUDCmdProcessor.METAFLAG_FORCED);}catch(final Exception e){}
+							try
+							{
+								if(C!=null) C.execute(M,new XVector<String>("Flee"),MUDCmdProcessor.METAFLAG_FORCED);
+							}
+							catch(final Exception e)
+							{
+							}
 						}
 						else
 						{
@@ -193,10 +252,8 @@ public class Prayer_AuraFear extends Prayer
 		else
 			return maliciousFizzle(mob,target,L("<S-NAME> @x1 for an aura of fear, but <S-HIS-HER> plea is not answered.",prayWord(mob)));
 
-
 		// return whether it worked
 		return success;
 	}
 }
-
 

@@ -38,7 +38,12 @@ public class Sounds extends StdCommand
 	public Sounds(){}
 
 	private final String[] access=I(new String[]{"SOUNDS","MSP"});
-	@Override public String[] getAccessWords(){return access;}
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
+
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
@@ -72,7 +77,13 @@ public class Sounds extends StdCommand
 				session.changeTelnetMode(Session.TELNET_MSP,true);
 				for(int i=0;((i<5)&&(!session.getClientTelnetMode(Session.TELNET_MSP)));i++)
 				{
-					try{mob.session().prompt("",500);}catch(final Exception e){}
+					try
+					{
+						mob.session().prompt("",500);
+					}
+					catch(final Exception e)
+					{
+					}
 				}
 				if(session.getClientTelnetMode(Session.TELNET_MSP))
 				{
@@ -98,6 +109,15 @@ public class Sounds extends StdCommand
 		return false;
 	}
 
-	@Override public boolean canBeOrdered(){return true;}
-	@Override public boolean securityCheck(MOB mob){return super.securityCheck(mob)&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MSP));}
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
+
+	@Override
+	public boolean securityCheck(MOB mob)
+	{
+		return super.securityCheck(mob)&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MSP));
+	}
 }

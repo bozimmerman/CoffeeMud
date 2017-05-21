@@ -35,16 +35,57 @@ import java.util.*;
 
 public class Thief_SilentGold extends ThiefSkill
 {
-	@Override public String ID() { return "Thief_SilentGold"; }
-	@Override public String displayText() {return L("(Silent AutoGold)");}
+	@Override
+	public String ID()
+	{
+		return "Thief_SilentGold";
+	}
+
+	@Override
+	public String displayText()
+	{
+		return L("(Silent AutoGold)");
+	}
+
 	private final static String localizedName = CMLib.lang().L("Silent AutoGold");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALING;}
-	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALING;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_SELF;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"SILENTGOLD"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
 	private CMMsg lastMsg=null;
 
 	@Override

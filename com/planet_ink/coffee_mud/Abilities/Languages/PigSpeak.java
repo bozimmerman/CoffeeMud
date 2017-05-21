@@ -42,6 +42,7 @@ public class PigSpeak extends AnimalSpeak
 	}
 
 	private final static String localizedName = CMLib.lang().L("Pig Speak");
+
 	@Override
 	public String name()
 	{

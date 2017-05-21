@@ -35,10 +35,26 @@ import java.util.*;
 
 public class Paladin_Courage extends PaladinSkill
 {
-	@Override public String ID() { return "Paladin_Courage"; }
+	@Override
+	public String ID()
+	{
+		return "Paladin_Courage";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Paladin`s Courage");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_HOLYPROTECTION;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL|Ability.DOMAIN_HOLYPROTECTION;
+	}
+
 	public Paladin_Courage()
 	{
 		super();

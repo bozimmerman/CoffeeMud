@@ -60,6 +60,7 @@ public class WeakItemCollection implements ItemCollection, CMCommon
 						return obj.get();
 					}
 				});
+
 	@Override
 	public String ID()
 	{
@@ -93,12 +94,16 @@ public class WeakItemCollection implements ItemCollection, CMCommon
 			if((I!=null)&&(I2!=null))
 			{
 				if(I.container() != null)
+				{
 					for(int i2=0;i2<contents.size();i2++)
+					{
 						if(I.container() == contents.get(i2))
 						{
 							I2.setContainer((Container)c.contents.get(i2));
 							break;
 						}
+					}
+				}
 			}
 		}
 		return c;
@@ -199,12 +204,14 @@ public class WeakItemCollection implements ItemCollection, CMCommon
 	public void delAllItems(boolean destroy)
 	{
 		if(destroy)
+		{
 			for(int i=numItems()-1;i>=0;i--)
 			{
 				final Item I=getItem(i);
 				if(I!=null)
 					I.destroy();
 			}
+		}
 		innerContents.clear();
 	}
 

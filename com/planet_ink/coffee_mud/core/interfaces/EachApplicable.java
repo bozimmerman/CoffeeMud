@@ -41,6 +41,7 @@ public interface EachApplicable<T>
 		{
 			this.me=me;
 		}
+
 		@Override
 		public void apply(T a) 
 		{

@@ -15,9 +15,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
-
 
 /*
    Copyright 2001-2017 Bo Zimmerman
@@ -36,10 +34,26 @@ import java.util.*;
 */
 public class Song_Clumsiness extends Song
 {
-	@Override public String ID() { return "Song_Clumsiness"; }
+	@Override
+	public String ID()
+	{
+		return "Song_Clumsiness";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Clumsiness");
-	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
@@ -53,6 +67,7 @@ public class Song_Clumsiness extends Song
 										-invoker().charStats().getStat(CharStats.STAT_CHARISMA))
 										-(adjustedLevel(invoker(),0)*2));
 	}
+
 	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{

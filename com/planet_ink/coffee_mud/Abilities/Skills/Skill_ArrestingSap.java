@@ -213,12 +213,14 @@ public class Skill_ArrestingSap extends StdSkill implements HealthCondition
 		target.makePeace(true);
 		final Room R=target.location();
 		if(R!=null)
+		{
 			for(int i=0;i<R.numInhabitants();i++)
 			{
 				final MOB M=R.fetchInhabitant(i);
 				if((M!=null)&&(M.getVictim()==target))
 					M.setVictim(null);
 			}
+		}
 	}
 
 	@Override

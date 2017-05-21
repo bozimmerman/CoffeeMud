@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2001-2017 Bo Zimmerman
 
@@ -35,10 +34,26 @@ import java.util.*;
 */
 public class Song_Death extends Song
 {
-	@Override public String ID() { return "Song_Death"; }
+	@Override
+	public String ID()
+	{
+		return "Song_Death";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Death");
-	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
 	@Override protected int getXMAXRANGELevel(MOB mob){return 0;} // people are complaining about multi-room death
 
 	@Override

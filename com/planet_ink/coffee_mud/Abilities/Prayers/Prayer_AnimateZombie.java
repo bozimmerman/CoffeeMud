@@ -33,7 +33,6 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Prayer_AnimateZombie extends Prayer
 {
 	@Override

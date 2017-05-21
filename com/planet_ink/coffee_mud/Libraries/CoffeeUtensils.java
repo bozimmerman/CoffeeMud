@@ -181,7 +181,6 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		return theTrap;
 	}
 
-
 	@Override
 	public void setTrapped(Physical myThang)
 	{
@@ -637,7 +636,6 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		while(!nothingDone);
 	}
 
-
 	@Override
 	public MOB getMobPossessingAnother(MOB mob)
 	{
@@ -652,7 +650,6 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		}
 		return null;
 	}
-
 
 	@Override
 	public boolean armorCheck(MOB mob, Item I, int allowedArmorLevel)
@@ -760,7 +757,6 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		}
 		return true;
 	}
-
 
 	@Override
 	public List<DeadBody> getDeadBodies(Environmental E)

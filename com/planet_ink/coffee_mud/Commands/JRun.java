@@ -40,7 +40,12 @@ public class JRun extends StdCommand
 	public JRun(){}
 
 	private final String[] access=I(new String[]{"JRUN"});
-	@Override public String[] getAccessWords(){return access;}
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
+
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
@@ -80,7 +85,11 @@ public class JRun extends StdCommand
 
 	protected static class JScriptWindow extends ScriptableObject
 	{
-		@Override public String getClassName(){ return "JScriptWindow";}
+		@Override
+		public String getClassName()
+		{
+			return "JScriptWindow";
+		}
 		static final long serialVersionUID=45;
 		MOB s=null;
 		List<String> v=null;
@@ -94,16 +103,29 @@ public class JRun extends StdCommand
 				return "";
 			return v.get(i);
 		}
+
 		public static String[] functions = { "mob", "numParms", "getParm", "getParms", "toJavaString"};
 		public String getParms(){return (v==null)?"":CMParms.combineQuoted(v,0);}
 		public JScriptWindow(MOB executor, List<String> parms){s=executor; v=parms;}
 		public String toJavaString(Object O){return Context.toString(O);}
 	}
 
+	@Override
+	public boolean canBeOrdered()
+	{
+		return false;
+	}
 
-	@Override public boolean canBeOrdered(){return false;}
-	@Override public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.JSCRIPTS);}
+	@Override
+	public boolean securityCheck(MOB mob)
+	{
+		return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.JSCRIPTS);
+	}
 
-	@Override public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	@Override
+	public int compareTo(CMObject o)
+	{
+		return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));
+	}
 
 }

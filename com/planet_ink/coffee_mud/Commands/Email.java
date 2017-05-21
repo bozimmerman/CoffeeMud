@@ -40,7 +40,11 @@ public class Email extends StdCommand
 	public Email(){}
 
 	private final String[] access=I(new String[]{"EMAIL"});
-	@Override public String[] getAccessWords(){return access;}
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
@@ -307,7 +311,10 @@ public class Email extends StdCommand
 		return true;
 	}
 
-	@Override public boolean canBeOrdered(){return false;}
-
+	@Override
+	public boolean canBeOrdered()
+	{
+		return false;
+	}
 
 }

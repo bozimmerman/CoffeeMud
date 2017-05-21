@@ -114,7 +114,6 @@ public interface Manufacturer extends CMCommon
 	 */
 	public double getReliabilityPct();
 
-
 	/**
 	 * Sets a pct, from 0-2, to multiply by the amt of damage taken,
 	 * and the chance of failure, esp. when damaged.  A 1.0 means perfectly

@@ -52,7 +52,6 @@ public class Minotaur extends StdMOB
 		setMoney(0);
 		basePhyStats.setWeight(350 + Math.abs(randomizer.nextInt() % 55));
 
-
 		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,4 + Math.abs(randomizer.nextInt() % 5));
 		baseCharStats().setStat(CharStats.STAT_STRENGTH,18);
 		baseCharStats().setStat(CharStats.STAT_DEXTERITY,15);

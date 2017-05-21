@@ -33,7 +33,6 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Prayer_Designation extends Prayer
 {
 	@Override
@@ -143,7 +142,6 @@ public class Prayer_Designation extends Prayer
 		if(target.name().indexOf(' ')>=0)
 			myName=myName+", "+target.name();
 
-
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -163,7 +161,6 @@ public class Prayer_Designation extends Prayer
 		}
 		else
 			return beneficialWordsFizzle(mob,target,L("<S-NAME> pray(s) at <T-NAMESELF>, but nothing happens."));
-
 
 		// return whether it worked
 		return success;

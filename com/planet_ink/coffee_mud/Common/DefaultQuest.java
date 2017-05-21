@@ -3296,7 +3296,6 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		return false;
 	}
 
-
 	@Override
 	public boolean startQuest()
 	{
@@ -3593,7 +3592,6 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		}
 		stoppingQuest=false;
 	}
-
 
 	// this will cause a quest to begin parsing its next "step".
 	// this will clear out unpreserved objects from previous
@@ -4036,7 +4034,6 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		enterDormantState();
 		return false;
 	}
-
 
 	@Override
 	public void runtimeRegisterAbility(MOB mob, String abilityID, String parms, boolean give)
@@ -4783,7 +4780,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		for(int i=0;i<CCODES.length;i++)
 		{
 			if(!E.getStat(CCODES[i]).equals(getStat(CCODES[i])))
-			   return false;
+				return false;
 		}
 		return true;
 	}
@@ -4951,7 +4948,6 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	{
 		return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));
 	}
-
 
 	/**
 	 * Objects selected for use by a quest can be preserved or released from

@@ -48,7 +48,6 @@ public class Halberd extends StdWeapon
 	{
 		super();
 
-
 		final Random randomizer = new Random(System.currentTimeMillis());
 		final int HalberdType = Math.abs(randomizer.nextInt() % 3);
 
@@ -95,7 +94,5 @@ public class Halberd extends StdWeapon
 				break;
 		}
 	}
-
-
 
 }

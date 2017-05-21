@@ -37,7 +37,11 @@ import java.util.*;
 public class Top extends StdCommand
 {
 	private final String[] access=I(new String[]{"TOP"});
-	@Override public String[] getAccessWords(){return access;}
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
 	@Override
 	public boolean execute(final MOB mob, List<String> commands, int metaFlags) throws java.io.IOException
@@ -57,7 +61,6 @@ public class Top extends StdCommand
 				return true;
 			}
 		}
-
 
 		List<Pair<String,Integer>> set1;
 		List<Pair<String,Integer>> set2;

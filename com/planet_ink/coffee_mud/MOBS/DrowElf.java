@@ -88,7 +88,6 @@ public class DrowElf extends StdMOB
 		baseCharStats().setMyRace(CMClass.getRace("Elf"));
 		baseCharStats().getMyRace().startRacing(this,false);
 
-
 		recoverMaxState();
 		resetToMaxState();
 		recoverPhyStats();
@@ -124,7 +123,7 @@ public class DrowElf extends StdMOB
 		dark.setProficiency(100);
 		dark.setSavable(false);
 		if(this.fetchAbility(dark.ID())==null)
-		   this.addAbility(dark);
+			this.addAbility(dark);
 		else
 			dark=this.fetchAbility(dark.ID());
 
@@ -132,7 +131,5 @@ public class DrowElf extends StdMOB
 			dark.invoke(this,null,true,0);
 		return true;
 	}
-
-
 
 }

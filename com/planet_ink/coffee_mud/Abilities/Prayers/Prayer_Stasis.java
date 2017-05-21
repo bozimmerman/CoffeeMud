@@ -35,16 +35,57 @@ import java.util.*;
 
 public class Prayer_Stasis extends Prayer
 {
-	@Override public String ID() { return "Prayer_Stasis"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_Stasis";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Stasis");
-	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_NEUTRALIZATION;}
-	@Override public long flags(){return Ability.FLAG_NEUTRAL;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_OTHERS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_NEUTRALIZATION;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_NEUTRAL;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(In stasis)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
-	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_MOBS;
+	}
 
 	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
@@ -53,6 +94,7 @@ public class Prayer_Stasis extends Prayer
 		for(final int i : CharStats.CODES.SAVING_THROWS())
 			affectableStats.setStat(i,affectableStats.getStat(i)+100);
 	}
+
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
@@ -126,7 +168,6 @@ public class Prayer_Stasis extends Prayer
 		}
 		else
 			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 to place <T-NAMESELF> into stasis, but flub(s) it.",prayForWord(mob)));
-
 
 		// return whether it worked
 		return success;

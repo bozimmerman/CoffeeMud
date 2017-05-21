@@ -78,5 +78,4 @@ public class ShieldWeapon extends StdWeapon implements Shield
 		setShield(shield);
 	}
 
-
 }

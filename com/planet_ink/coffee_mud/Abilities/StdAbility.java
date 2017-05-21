@@ -848,7 +848,6 @@ public class StdAbility implements Ability
 		return target;
 	}
 
-
 	protected Physical getAnyTarget(MOB mob, List<String> commands, Physical givenTarget, Filterer<Environmental> filter)
 	{
 		return getAnyTarget(mob,commands,givenTarget,filter,false,false);
@@ -1557,7 +1556,6 @@ public class StdAbility implements Ability
 		return adjustMaliciousTickdownTime(mob,target,((int)Math.round(CMath.mul(adjustedLevel(mob,asLevel),1.3)))+25,asLevel);
 	}
 
-
 	public Ability maliciousAffect(MOB mob, Physical target, int asLevel, int tickAdjustmentFromStandard, int additionAffectCheckCode)
 	{
 		final Room room=mob.location();
@@ -1627,7 +1625,6 @@ public class StdAbility implements Ability
 			room.send(mob,msg);
 		return false;
 	}
-
 
 	protected int adjustBeneficialTickdownTime(final MOB mob, final Environmental target, final int baseTicks)
 	{

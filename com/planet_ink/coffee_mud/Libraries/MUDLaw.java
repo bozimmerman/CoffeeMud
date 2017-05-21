@@ -650,7 +650,6 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 		return isLegalOfficerHere(mob) || isLegalJudgeHere(mob);
 	}
 	
-
 	@Override
 	public void colorRoomForSale(Room R, LandTitle title, boolean reset)
 	{

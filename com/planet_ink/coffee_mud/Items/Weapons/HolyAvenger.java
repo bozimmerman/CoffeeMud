@@ -59,8 +59,6 @@ public class HolyAvenger extends TwoHandedSword
 		setRawLogicalAnd(true);
 	}
 
-
-
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{

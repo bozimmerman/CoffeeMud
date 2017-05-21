@@ -16,7 +16,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -37,7 +36,11 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class CombatAbilities extends StdBehavior
 {
-	@Override public String ID(){return "CombatAbilities";}
+	@Override
+	public String ID()
+	{
+		return "CombatAbilities";
+	}
 
 	public int				combatMode	= 0;
 	public Map<MOB,int[]>	aggro		= null;
@@ -130,11 +133,13 @@ public class CombatAbilities extends StdBehavior
 		{
 			final String s=V.elementAt(v).toUpperCase();
 			for(int i=0;i<names.length;i++)
+			{
 				if(names[i].startsWith(s))
 				{
 					combatMode=i;
 					V.removeElementAt(v);
 				}
+			}
 		}
 		return CMParms.combine(V,0);
 	}
@@ -237,8 +242,10 @@ public class CombatAbilities extends StdBehavior
 				final int[] stats=C.maxStatAdjustments();
 				int numStats=0;
 				for(final int stat : CharStats.CODES.BASECODES())
+				{
 					if(stats[stat]!=0)
 						numStats++;
+				}
 				if(numStats==0)
 					return;
 				int numPoints=mob.phyStats().level();
@@ -247,8 +254,10 @@ public class CombatAbilities extends StdBehavior
 				numPoints=numPoints/numStats;
 				final StringBuilder parm=new StringBuilder("");
 				for(final int stat : CharStats.CODES.BASECODES())
+				{
 					if(stats[stat]!=0)
 						parm.append(CMStrings.limit(CharStats.CODES.NAME(stat),3)).append("=").append(numPoints).append(" ");
+				}
 				if(parm.length()>0)
 				{
 					mob.addNonUninvokableEffect(A);
@@ -434,7 +443,6 @@ public class CombatAbilities extends StdBehavior
 		Ability tryA=null;
 		// now find a skill to use
 		Ability A=null;
-
 
 		MOB target = null;
 		int victimQuality=Ability.QUALITY_INDIFFERENT;
@@ -627,7 +635,9 @@ public class CombatAbilities extends StdBehavior
 				{
 					useSkill(mob,null,null);
 				}
-				catch(final CMException cme){}
+				catch(final CMException cme)
+				{
+				}
 			}
 			return true;
 		}
@@ -829,8 +839,8 @@ public class CombatAbilities extends StdBehavior
 		return true;
 	}
 
-
 	protected static String[] CODES=null;
+
 	@Override
 	public String[] getStatCodes()
 	{
@@ -851,15 +861,19 @@ public class CombatAbilities extends StdBehavior
 		}
 		return CODES;
 	}
+
 	@Override
 	protected int getCodeNum(String code)
 	{
 		final String[] CODES=getStatCodes();
 		for(int i=0;i<CODES.length;i++)
+		{
 			if(code.equalsIgnoreCase(CODES[i]))
 				return i;
+		}
 		return -1;
 	}
+
 	@Override
 	public String getStat(String code)
 	{
@@ -880,6 +894,7 @@ public class CombatAbilities extends StdBehavior
 		}
 		return "";
 	}
+
 	@Override
 	public void setStat(String code, String val)
 	{

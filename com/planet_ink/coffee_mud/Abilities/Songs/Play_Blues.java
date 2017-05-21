@@ -15,9 +15,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
-
 
 /*
    Copyright 2003-2017 Bo Zimmerman
@@ -36,12 +34,37 @@ import java.util.*;
 */
 public class Play_Blues extends Play
 {
-	@Override public String ID() { return "Play_Blues"; }
+	@Override
+	public String ID()
+	{
+		return "Play_Blues";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Blues");
-	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	@Override protected boolean maliciousButNotAggressiveFlag(){return true;}
-	@Override protected String songOf(){return L("the Blues");}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	protected boolean maliciousButNotAggressiveFlag()
+	{
+		return true;
+	}
+
+	@Override
+	protected String songOf()
+	{
+		return L("the Blues");
+	}
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
@@ -70,6 +93,7 @@ public class Play_Blues extends Play
 		}
 		return true;
 	}
+
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -88,6 +112,7 @@ public class Play_Blues extends Play
 		}
 		return true;
 	}
+
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
@@ -98,6 +123,7 @@ public class Play_Blues extends Play
 											-((invoker().charStats().getStat(CharStats.STAT_CHARISMA)/4)
 													+(adjustedLevel(invoker(),0))));
 	}
+
 	@Override
 	public void affectCharStats(MOB mob, CharStats stats)
 	{

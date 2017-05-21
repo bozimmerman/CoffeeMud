@@ -33,24 +33,68 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Chant_Earthquake extends Chant
 {
-	@Override public String ID() { return "Chant_Earthquake"; }
+	@Override
+	public String ID()
+	{
+		return "Chant_Earthquake";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Quake");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Quaking)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public int maxRange(){return adjustedMaxInvokerRange(3);}
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return 0;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public int maxRange()
+	{
+		return adjustedMaxInvokerRange(3);
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
 	protected boolean oncePerRd=false;
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
-	{ oncePerRd=false; return super.tick(ticking,tickID);}
+	{
+		oncePerRd=false;
+		return super.tick(ticking,tickID);
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
@@ -83,7 +127,6 @@ public class Chant_Earthquake extends Chant
 		}
 		return super.okMessage(myHost,msg);
 	}
-
 
 	@Override
 	public void unInvoke()
@@ -144,6 +187,7 @@ public class Chant_Earthquake extends Chant
 		{
 
 			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),L(auto?"":"^S<S-NAME> chant(s) thunderously.^?")+CMLib.protocol().msp("earthquake.wav",40)))
+			{
 				for (final Object element : h)
 				{
 					final MOB target=(MOB)element;
@@ -171,10 +215,10 @@ public class Chant_Earthquake extends Chant
 						}
 					}
 				}
+			}
 		}
 		else
 			return maliciousFizzle(mob,null,L("<S-NAME> attempt(s) to invoke a thunderous spell, but the spell fizzles."));
-
 
 		// return whether it worked
 		return success;

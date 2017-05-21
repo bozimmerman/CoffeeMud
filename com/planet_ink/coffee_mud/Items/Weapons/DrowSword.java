@@ -58,6 +58,4 @@ public class DrowSword extends Longsword
 		weaponDamageType=TYPE_SLASHING;
 	}
 
-
-
 }

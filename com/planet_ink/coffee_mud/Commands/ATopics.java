@@ -38,7 +38,11 @@ public class ATopics extends StdCommand
 	public ATopics(){}
 
 	private final String[] access=I(new String[]{"ARCTOPICS","ATOPICS"});
-	@Override public String[] getAccessWords(){return access;}
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
 	public static void doTopics(MOB mob, Properties rHelpFile, String helpName, String resName)
 	{
@@ -67,7 +71,6 @@ public class ATopics extends StdCommand
 			mob.session().colorOnlyPrintln(CMLib.lang().L("@x1\n\r\n\rEnter @x2 (TOPIC NAME) for more information.",topicBuffer.toString(),helpName),false);
 	}
 
-
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
@@ -84,8 +87,16 @@ public class ATopics extends StdCommand
 		return false;
 	}
 
-	@Override public boolean canBeOrdered(){return true;}
-	@Override public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.AHELP);}
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 
+	@Override
+	public boolean securityCheck(MOB mob)
+	{
+		return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.AHELP);
+	}
 
 }

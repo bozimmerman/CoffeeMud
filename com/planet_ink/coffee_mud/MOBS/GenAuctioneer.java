@@ -117,6 +117,7 @@ public class GenAuctioneer extends StdAuctioneer
 										   "TIMEPCT","LIVECUT","TIMECUT",
 										   "MAXADAYS","MINADAYS",
 										   "IGNOREMASK","PRICEMASKS"};
+
 	@Override
 	public String getStat(String code)
 	{
@@ -182,6 +183,7 @@ public class GenAuctioneer extends StdAuctioneer
 	}
 
 	private static String[] codes=null;
+
 	@Override
 	public String[] getStatCodes()
 	{

@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2003-2017 Bo Zimmerman
 
@@ -101,6 +100,7 @@ public class Chant_SummonHouseplant extends Chant_SummonPlants
 			processing=false;
 		}
 	}
+
 	@Override
 	public boolean rightPlace(MOB mob,boolean auto)
 	{

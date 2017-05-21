@@ -98,6 +98,7 @@ public class ListCmd extends StdCommand
 			else
 				to=CMLib.time().globalClock();
 		}
+
 		@Override
 		public boolean passesFilter(Area obj)
 		{
@@ -707,7 +708,10 @@ public class ListCmd extends StdCommand
 					}
 				}
 			}
-		}catch(final NoSuchElementException nse){}
+		}
+		catch(final NoSuchElementException nse)
+		{
+		}
 		return lines;
 	}
 
@@ -967,8 +971,10 @@ public class ListCmd extends StdCommand
 			{
 				final java.util.List<String> files=B.externalFiles();
 				if(files != null)
+				{
 					for(int f=0;f<files.size();f++)
 						DV.add(files.get(f),E,R,M,I,B);
+				}
 				final String nonFiles=((ScriptingEngine)B).getVar("*","COFFEEMUD_SYSTEM_INTERNAL_NONFILENAME_SCRIPT");
 				if(nonFiles.trim().length()>0)
 					DV.add("*Custom*"+nonFiles.trim(),E,R,M,I,B);
@@ -979,8 +985,10 @@ public class ListCmd extends StdCommand
 			final ScriptingEngine SE=e.nextElement();
 			final java.util.List<String> files=SE.externalFiles();
 			if(files != null)
+			{
 				for(int f=0;f<files.size();f++)
 					DV.add(files.get(f),E,R,M,I,SE);
+			}
 			final String nonFiles=SE.getVar("*","COFFEEMUD_SYSTEM_INTERNAL_NONFILENAME_SCRIPT");
 			if(nonFiles.trim().length()>0)
 				DV.add("*Custom*"+nonFiles.trim(),E,R,M,I,SE);
@@ -1344,7 +1352,6 @@ public class ListCmd extends StdCommand
 		return buf;
 	}
 
-
 	public StringBuilder journalList(Session viewerS, String partialjournal)
 	{
 		final StringBuilder buf=new StringBuilder("");
@@ -1382,7 +1389,10 @@ public class ListCmd extends StdCommand
 		{
 			System.gc();
 			Thread.sleep(1500);
-		}catch(final Exception e){}
+		}
+		catch(final Exception e)
+		{
+		}
 		final StringBuilder buf=new StringBuilder("");
 		final long totalTime=System.currentTimeMillis()-CMSecurity.getStartTime();
 		buf.append(L("The system has been running for ^H@x1^?.\n\r",""+CMLib.english().returnTime(totalTime,0)));
@@ -1496,7 +1506,7 @@ public class ListCmd extends StdCommand
 				{
 					final PlayerLibrary.ThinPlayer U=oldSet.get(u);
 					if(lib.getThinSortValue(selected,sortBy).compareTo(lib.getThinSortValue(U,sortBy))>0)
-					   selected=U;
+						selected=U;
 				}
 				if(selected!=null)
 				{
@@ -1511,7 +1521,7 @@ public class ListCmd extends StdCommand
 				{
 					final PlayerLibrary.ThinPlayer U=oldSet.get(u);
 					if(CMath.s_long(lib.getThinSortValue(selected,sortBy))>CMath.s_long(lib.getThinSortValue(U,sortBy)))
-					   selected=U;
+						selected=U;
 				}
 				if(selected!=null)
 				{
@@ -2430,7 +2440,6 @@ public class ListCmd extends StdCommand
 			Log.rawSysOut(str.toString());
 		return str.toString();
 	}
-
 
 	protected String unlinkedExits(Session viewerS, List<String> commands)
 	{
@@ -3789,6 +3798,7 @@ public class ListCmd extends StdCommand
 			this.cmd=new String[]{cmd};
 			this.flags=new CMSecurity.SecGroup(flags);
 		}
+
 		private ListCmdEntry(String[] cmd, SecFlag[] flags)
 		{
 			this.cmd=cmd;

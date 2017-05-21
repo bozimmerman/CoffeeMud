@@ -177,7 +177,6 @@ public class Druid_ShapeShift extends StdAbility
 		}
 	}
 
-
 	@Override
 	public void unInvoke()
 	{
@@ -269,7 +268,6 @@ public class Druid_ShapeShift extends StdAbility
 	{
 		return shapes[getRaceLevel(classLevel)][raceCode];
 	}
-
 
 	public static boolean isShapeShifted(MOB mob)
 	{
@@ -547,7 +545,6 @@ public class Druid_ShapeShift extends StdAbility
 		}
 		else
 			beneficialWordsFizzle(mob,null,L("<S-NAME> chant(s) to <S-HIM-HERSELF>, but nothing happens."));
-
 
 		// return whether it worked
 		return success;

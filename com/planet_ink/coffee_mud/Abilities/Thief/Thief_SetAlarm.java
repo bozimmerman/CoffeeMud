@@ -184,7 +184,10 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-		if(sprung){	return;	}
+		if(sprung)
+		{
+			return;
+		}
 		super.executeMsg(myHost,msg);
 
 		if((msg.amITarget(affected))&&(msg.targetMinor()==CMMsg.TYP_OPEN))
@@ -289,7 +292,6 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 		return true;
 	}
 
-	
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{

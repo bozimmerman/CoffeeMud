@@ -33,19 +33,60 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Prayer_DrunkenStupor extends Prayer
 {
-	@Override public String ID() { return "Prayer_DrunkenStupor"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_DrunkenStupor";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Drunken Stupor");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CURSING;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	@Override public long flags(){return Ability.FLAG_NEUTRAL|Ability.FLAG_INTOXICATING;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_CURSING;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_NEUTRAL|Ability.FLAG_INTOXICATING;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Drunken Stupor)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
-	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
 	public Ability inebriation=null;
 
 	protected Ability getInebriation()
@@ -69,7 +110,6 @@ public class Prayer_DrunkenStupor extends Prayer
 													-((MOB)affected).phyStats().level()
 													-(2*getXLEVELLevel(invoker())));
 	}
-
 
 	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
@@ -99,7 +139,6 @@ public class Prayer_DrunkenStupor extends Prayer
 			A.executeMsg(myHost, msg);
 		super.executeMsg(myHost, msg);
 	}
-
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
@@ -137,7 +176,6 @@ public class Prayer_DrunkenStupor extends Prayer
 			mob.tell(L("You feel sober now."));
 	}
 
-
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -167,7 +205,6 @@ public class Prayer_DrunkenStupor extends Prayer
 		}
 		else
 			return maliciousFizzle(mob,target,L("<S-NAME> @x1 to inflict a drunken stupor upon <T-NAMESELF>, but flub(s) it.",prayForWord(mob)));
-
 
 		// return whether it worked
 		return success;

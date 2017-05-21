@@ -49,5 +49,4 @@ public class EnumerationIterator<K> implements Iterator<K>
 		throw new java.lang.UnsupportedOperationException();
 	}
 
-
 }

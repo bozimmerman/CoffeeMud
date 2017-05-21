@@ -35,13 +35,32 @@ import java.util.*;
 
 public class Prop_ReqNoMOB extends Property implements TriggeredAffect
 {
-	@Override public String ID() { return "Prop_ReqNoMOB"; }
-	@Override public String name(){ return "Monster Limitations";}
-	@Override protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS;}
+	@Override
+	public String ID()
+	{
+		return "Prop_ReqNoMOB";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Monster Limitations";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS;
+	}
+
 	private boolean noFollow=false;
 	private boolean noSneak=false;
 
-	@Override public long flags(){return Ability.FLAG_ZAPPER;}
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_ZAPPER;
+	}
 
 	@Override
 	public int triggerMask()
@@ -68,7 +87,6 @@ public class Prop_ReqNoMOB extends Property implements TriggeredAffect
 		super.setMiscText(txt);
 	}
 
-
 	public boolean passesMuster(MOB mob)
 	{
 		if(mob==null)
@@ -79,6 +97,7 @@ public class Prop_ReqNoMOB extends Property implements TriggeredAffect
 			return true;
 		return !mob.isMonster();
 	}
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{

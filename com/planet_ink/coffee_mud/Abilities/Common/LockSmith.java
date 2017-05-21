@@ -18,7 +18,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2003-2017 Bo Zimmerman
 
@@ -35,15 +34,34 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class LockSmith extends CraftingSkill
 {
-	@Override public String ID() { return "LockSmith"; }
+	@Override
+	public String ID()
+	{
+		return "LockSmith";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Locksmithing");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"LOCKSMITH","LOCKSMITHING"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public String supportedResourceString(){return "METAL|MITHRIL";}
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public String supportedResourceString()
+	{
+		return "METAL|MITHRIL";
+	}
 
 	private String keyCode="";
 	protected Physical workingOn=null;
@@ -121,11 +139,13 @@ public class LockSmith extends CraftingSkill
 						{
 							int dir=-1;
 							for(final int d : Directions.CODES())
+							{
 								if(mob.location().getExitInDir(d)==workingOn)
 								{
 									dir=d;
 									break;
 								}
+							}
 							if((messedUp)||(dir<0))
 							{
 								if(delock)

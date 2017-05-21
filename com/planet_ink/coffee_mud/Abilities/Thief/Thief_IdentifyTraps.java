@@ -35,15 +35,51 @@ import java.util.*;
 
 public class Thief_IdentifyTraps extends ThiefSkill
 {
-	@Override public String ID() { return "Thief_IdentifyTraps"; }
+	@Override
+	public String ID()
+	{
+		return "Thief_IdentifyTraps";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Identify Traps");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_EXITS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_ITEMS|Ability.CAN_EXITS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"IDENTIFYTRAPS","IDTRAP"});
-	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_ALERT;}
-	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_ALERT;
+	}
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
 	protected Environmental lastChecked=null;
 
 	@Override
@@ -105,7 +141,13 @@ public class Thief_IdentifyTraps extends ThiefSkill
 		{
 			if(dirCode<0)
 			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
-				if(mob.location().getExitInDir(d)==unlockThis){ dirCode=d; break;}
+			{
+				if(mob.location().getExitInDir(d)==unlockThis)
+				{
+					dirCode=d;
+					break;
+				}
+			}
 			if(dirCode>=0)
 			{
 				final Exit exit=mob.location().getReverseExit(dirCode);

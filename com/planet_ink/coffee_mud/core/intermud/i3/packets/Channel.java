@@ -22,7 +22,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.io.Serializable;
 
-
 /**
  * This class represents an I3 channel.  The ChannelList
  * class keeps a list of this channels for tracking.

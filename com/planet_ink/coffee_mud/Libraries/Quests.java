@@ -273,7 +273,6 @@ public class Quests extends StdLibrary implements QuestManager
 		return str.toString();
 	}
 
-
 	protected void promptText(MOB mob, TriadList<String,String,Integer> sets, String var, int showNumber, int showFlag, String prompt, String help, boolean emptyOK)
 	throws java.io.IOException
 	{
@@ -1346,7 +1345,6 @@ public class Quests extends StdLibrary implements QuestManager
 			behaviors.add(var,(finalVal.toString().trim().length()==0)?"":("+"+finalVal.toString()),Integer.valueOf(behaviors.size()));
 		return showNumber;
 	}
-
 
 	@Override
 	public List<List<String>> parseQuestCommandLines(List<?> script, String cmdOnly, int startLine)

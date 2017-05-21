@@ -15,9 +15,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
-
 
 /*
    Copyright 2001-2017 Bo Zimmerman
@@ -36,12 +34,28 @@ import java.util.*;
 */
 public class Song_Lullibye extends Song
 {
-	@Override public String ID() { return "Song_Lullibye"; }
+	@Override
+	public String ID()
+	{
+		return "Song_Lullibye";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Lullaby");
-	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
 
 	boolean asleep=false;
+
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
@@ -53,7 +67,6 @@ public class Song_Lullibye extends Song
 		if(asleep)
 			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SLEEPING);
 	}
-
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
@@ -100,7 +113,6 @@ public class Song_Lullibye extends Song
 
 		if(msg.source()!=affected)
 			return true;
-
 
 		if((!msg.sourceMajor(CMMsg.MASK_ALWAYS))
 		&&((msg.targetMinor()==CMMsg.TYP_STAND)||(msg.sourceMinor()==CMMsg.TYP_SIT))&&(asleep))

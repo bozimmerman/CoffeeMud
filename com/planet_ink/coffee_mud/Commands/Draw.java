@@ -38,7 +38,11 @@ public class Draw extends Get
 	public Draw(){}
 
 	private final String[] access=I(new String[]{"DRAW"});
-	@Override public String[] getAccessWords(){return access;}
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
 	public Vector<Container> getSheaths(MOB mob)
 	{
@@ -154,8 +158,16 @@ public class Draw extends Get
 				containers=sheaths;
 			whatToGet=CMParms.combine(commands,0);
 			allFlag=commands.get(0).equalsIgnoreCase("all");
-			if(whatToGet.toUpperCase().startsWith("ALL.")){ allFlag=true; whatToGet="ALL "+whatToGet.substring(4);}
-			if(whatToGet.toUpperCase().endsWith(".ALL")){ allFlag=true; whatToGet="ALL "+whatToGet.substring(0,whatToGet.length()-4);}
+			if(whatToGet.toUpperCase().startsWith("ALL."))
+			{
+				allFlag=true;
+				whatToGet="ALL "+whatToGet.substring(4);
+			}
+			if(whatToGet.toUpperCase().endsWith(".ALL"))
+			{
+				allFlag=true;
+				whatToGet="ALL "+whatToGet.substring(0,whatToGet.length()-4);
+			}
 		}
 		boolean doneSomething=false;
 		while((c<containers.size())||(containers.size()==0))
@@ -172,7 +184,7 @@ public class Draw extends Get
 				doBugFix=false;
 				Environmental getThis=null;
 				if((container!=null)&&(mob.isMine(container)))
-				   getThis=mob.findItem(container,whatToGet+addendumStr);
+					getThis=mob.findItem(container,whatToGet+addendumStr);
 				if(getThis==null)
 					break;
 				if(getThis instanceof Weapon)
@@ -231,8 +243,17 @@ public class Draw extends Get
 		}
 		return false;
 	}
-	@Override public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandActionCost(ID());}
-	@Override public boolean canBeOrdered(){return true;}
 
+	@Override
+	public double actionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandActionCost(ID());
+	}
+
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 
 }

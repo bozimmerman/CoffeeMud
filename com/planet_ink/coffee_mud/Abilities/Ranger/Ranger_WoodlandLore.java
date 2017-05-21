@@ -96,7 +96,7 @@ public class Ranger_WoodlandLore extends StdAbility
 	{
 		super.affectPhyStats(affected,affectableStats);
 		if((invoker==null)&&(affected instanceof MOB))
-		   invoker=(MOB)affected;
+			invoker=(MOB)affected;
 		if(CMLib.flags().isInWilderness(invoker))
 		{
 			final int xlvl=super.getXLEVELLevel(invoker());

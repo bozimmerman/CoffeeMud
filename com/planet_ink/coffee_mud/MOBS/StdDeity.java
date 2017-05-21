@@ -703,7 +703,7 @@ public class StdDeity extends StdMOB implements Deity
 					break;
 				case RANDOM:
 					if(CMLib.dice().rollPercentage()<=CMath.s_int(DT.parm1))
-					   yup=true;
+						yup=true;
 					break;
 				case YOUSAY:
 					if(v<=0)
@@ -821,7 +821,7 @@ public class StdDeity extends StdMOB implements Deity
 				}
 				case CHECK:
 					if(CMLib.masking().maskCheck(DT.parm1,msg.source(),true))
-					   yup=true;
+						yup=true;
 					break;
 				case PUTTHING:
 					if((msg.target() instanceof Container)

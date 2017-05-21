@@ -78,7 +78,6 @@ public class Prop_ImproveGather extends Property
 		improves=skills.toArray(new String[skills.size()]);
 	}
 
-	
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{

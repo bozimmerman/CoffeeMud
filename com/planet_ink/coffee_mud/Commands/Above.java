@@ -37,7 +37,12 @@ public class Above extends Go
 	public Above(){}
 
 	private final String[] access=I(new String[]{"ABOVE"});
-	@Override public String[] getAccessWords(){return access;}
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
+
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
@@ -50,7 +55,12 @@ public class Above extends Go
 			CMLib.tracking().walk(mob, Directions.UP, false,false,false);
 		return false;
 	}
-	@Override public boolean canBeOrdered(){return true;}
+
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 
 	@Override
 	public boolean securityCheck(MOB mob)

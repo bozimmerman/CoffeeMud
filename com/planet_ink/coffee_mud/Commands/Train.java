@@ -37,7 +37,11 @@ public class Train extends StdCommand
 	public Train(){}
 
 	private final String[] access=I(new String[]{"TRAIN","TR","TRA"});
-	@Override public String[] getAccessWords(){return access;}
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
 	private static final int	TRAIN_HITPOINTS	= 101;
 	private static final int	TRAIN_MANA		= 102;

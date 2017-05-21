@@ -50,7 +50,6 @@ public class HillGiant extends StdMOB
 		setMoney(0);
 		basePhyStats.setWeight(3500 + CMLib.dice().roll(1, 1000, 0));
 
-
 		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,6 + CMLib.dice().roll(1, 2, 0));
 		baseCharStats().setStat(CharStats.STAT_STRENGTH,20);
 		baseCharStats().setStat(CharStats.STAT_DEXTERITY,13);

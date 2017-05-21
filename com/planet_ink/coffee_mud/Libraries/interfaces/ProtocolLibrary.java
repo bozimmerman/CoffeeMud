@@ -89,7 +89,6 @@ public interface ProtocolLibrary extends CMLibrary
 		maplevel
 	}
 	
-	
 	/**
 	 * Interface allowing java or javascript plugins to the MCP protocol
 	 * @author Bo Zimmerman

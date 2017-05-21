@@ -15,8 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
 import java.util.*;
 
 /*
@@ -36,7 +34,12 @@ import java.util.*;
 */
 public class Wimpy extends StdBehavior
 {
-	@Override public String ID(){return "Wimpy";}
+	@Override
+	public String ID()
+	{
+		return "Wimpy";
+	}
+
 	protected int tickWait=0;
 	protected int tickDown=0;
 	protected boolean veryWimpy=false;

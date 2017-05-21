@@ -18,7 +18,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2003-2017 Bo Zimmerman
 
@@ -122,6 +121,7 @@ public class Barbarian extends StdCharClass
 		maxStatAdj[CharStats.STAT_STRENGTH]=4;
 		maxStatAdj[CharStats.STAT_CONSTITUTION]=4;
 	}
+
 	@Override
 	public void initializeClass()
 	{

@@ -15,8 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
 import java.util.*;
 
 /*
@@ -36,7 +34,11 @@ import java.util.*;
 */
 public class AlignHelper extends StdBehavior
 {
-	@Override public String ID(){return "AlignHelper";}
+	@Override
+	public String ID()
+	{
+		return "AlignHelper";
+	}
 
 	@Override
 	public String accountForYourself()

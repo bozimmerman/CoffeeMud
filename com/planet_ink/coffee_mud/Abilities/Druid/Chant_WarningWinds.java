@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2003-2017 Bo Zimmerman
 
@@ -139,8 +138,10 @@ public class Chant_WarningWinds extends Chant
 						{
 							String far="far ";
 							for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+							{
 								if(lastRoom.getRoomInDir(d)==R)
 									far="";
+							}
 							dir=Directions.getOpDirectionCode(dir);
 							if(fighting)
 								((MOB)affected).tell(L("The winds tell of fighting @x1@x2.",far,CMLib.directions().getInDirectionName(dir)));

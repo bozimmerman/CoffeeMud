@@ -35,20 +35,69 @@ import java.util.*;
 
 public class Poison_Heartstopper extends Poison
 {
-	@Override public String ID() { return "Poison_Heartstopper"; }
+	@Override
+	public String ID()
+	{
+		return "Poison_Heartstopper";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Heartstopper");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"POISONSTOP"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
 
 	@Override protected int POISON_TICKS(){return 8;} // 0 means no adjustment!
-	@Override protected int POISON_DELAY(){return 1;}
-	@Override protected String POISON_DONE(){return "The poison runs its course.";}
-	@Override protected String POISON_START(){return "^G<S-NAME> turn(s) green!^?";}
-	@Override protected String POISON_AFFECT(){return "^G<S-NAME> gag(s) and cringe(s) in pain.";}
-	@Override protected String POISON_CAST(){return "^F^<FIGHT^><S-NAME> poison(s) <T-NAMESELF>!^</FIGHT^>^?";}
-	@Override protected String POISON_FAIL(){return "<S-NAME> attempt(s) to poison <T-NAMESELF>, but fail(s).";}
-	@Override protected int POISON_DAMAGE(){return (invoker!=null)?CMLib.dice().roll(1,19,1):0;}
+	@Override
+	protected int POISON_DELAY()
+	{
+		return 1;
+	}
+
+	@Override
+	protected String POISON_DONE()
+	{
+		return "The poison runs its course.";
+	}
+
+	@Override
+	protected String POISON_START()
+	{
+		return "^G<S-NAME> turn(s) green!^?";
+	}
+
+	@Override
+	protected String POISON_AFFECT()
+	{
+		return "^G<S-NAME> gag(s) and cringe(s) in pain.";
+	}
+
+	@Override
+	protected String POISON_CAST()
+	{
+		return "^F^<FIGHT^><S-NAME> poison(s) <T-NAMESELF>!^</FIGHT^>^?";
+	}
+
+	@Override
+	protected String POISON_FAIL()
+	{
+		return "<S-NAME> attempt(s) to poison <T-NAMESELF>, but fail(s).";
+	}
+
+	@Override
+	protected int POISON_DAMAGE()
+	{
+		return (invoker!=null)?CMLib.dice().roll(1,19,1):0;
+	}
 
 	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)

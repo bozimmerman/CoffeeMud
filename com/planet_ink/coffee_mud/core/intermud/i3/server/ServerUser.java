@@ -33,8 +33,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  * user connection object.
  */
 
-
-
 /**
  * The ServerUser interface prescribes behaviours which
  * must be defined by any user connection used with

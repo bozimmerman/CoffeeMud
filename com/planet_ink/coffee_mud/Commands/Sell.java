@@ -65,7 +65,6 @@ public class Sell extends StdCommand
 		if(maxToDo<0)
 			return false;
 
-
 		String whatName=CMParms.combine(commands,0);
 		final Vector<Item> V=new Vector<Item>();
 		boolean allFlag=commands.get(0).equalsIgnoreCase("all");

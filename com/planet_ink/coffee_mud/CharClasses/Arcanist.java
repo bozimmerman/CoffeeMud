@@ -67,6 +67,7 @@ public class Arcanist extends Thief
 		maxStatAdj[CharStats.STAT_DEXTERITY]=4;
 		maxStatAdj[CharStats.STAT_INTELLIGENCE]=4;
 	}
+
 	@Override
 	public void initializeClass()
 	{
@@ -284,7 +285,7 @@ public class Arcanist extends Thief
 	{
 		super.executeMsg(myHost,msg);
 		if((myHost==null)||(!(myHost instanceof MOB)))
-		   return;
+			return;
 		final MOB mob=(MOB)myHost;
 		if(msg.amISource(mob))
 		{

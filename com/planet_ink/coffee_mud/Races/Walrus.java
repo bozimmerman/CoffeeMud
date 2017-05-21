@@ -84,7 +84,6 @@ public class Walrus extends Seal
 		return breatheAirWaterArray;
 	}
 	
-
 	private final int[]	agingChart	= { 0, 2, 5, 8, 10, 15, 25, 28, 30 };
 
 	@Override

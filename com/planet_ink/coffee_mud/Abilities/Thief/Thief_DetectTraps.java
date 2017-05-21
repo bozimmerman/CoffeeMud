@@ -35,15 +35,51 @@ import java.util.*;
 
 public class Thief_DetectTraps extends ThiefSkill
 {
-	@Override public String ID() { return "Thief_DetectTraps"; }
+	@Override
+	public String ID()
+	{
+		return "Thief_DetectTraps";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Detect Traps");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_EXITS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	@Override public int classificationCode(){	return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_ALERT;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_ITEMS|Ability.CAN_EXITS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_ALERT;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"CHECK"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
 	protected Environmental lastChecked=null;
 
 	@Override
@@ -80,7 +116,13 @@ public class Thief_DetectTraps extends ThiefSkill
 		{
 			if(dirCode<0)
 			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
-				if(mob.location().getExitInDir(d)==unlockThis){ dirCode=d; break;}
+			{
+				if(mob.location().getExitInDir(d)==unlockThis)
+				{
+					dirCode=d;
+					break;
+				}
+			}
 			if(dirCode>=0)
 			{
 				final Exit exit=mob.location().getReverseExit(dirCode);

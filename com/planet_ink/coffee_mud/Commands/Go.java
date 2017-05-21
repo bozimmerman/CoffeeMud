@@ -251,5 +251,9 @@ public class Go extends StdCommand
 		return CMProps.getCommandActionCost(ID(), cost);
 	}
 
-	@Override public boolean canBeOrdered(){return true;}
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 }

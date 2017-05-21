@@ -35,9 +35,20 @@ import java.util.*;
 
 public class Skill_Disguise extends BardSkill
 {
-	@Override public String ID() { return "Skill_Disguise"; }
+	@Override
+	public String ID()
+	{
+		return "Skill_Disguise";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Disguise");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	@Override
 	public String description()
 	{
@@ -49,14 +60,45 @@ public class Skill_Disguise extends BardSkill
 				ret.append(what+" ");
 		return ret.toString();
 	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(In Disguise)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_SELF;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"DISGUISE"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_DECEPTIVE;}
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL|Ability.DOMAIN_DECEPTIVE;
+	}
 
 	protected final static String[] whats={
 		//0!	 1! 	 2!    3!     4!	   5!     6!	  7!		  8!
@@ -77,8 +119,10 @@ public class Skill_Disguise extends BardSkill
 	{
 		final StringBuilder str=new StringBuilder("");
 		for(int i=0;i<whats.length;i++)
+		{
 			if(values[i]!=null)
 				str.append(" ").append(whats[i]).append("=\"").append(values[i]).append("\"");
+		}
 		return str.toString();
 	}
 	
@@ -124,7 +168,7 @@ public class Skill_Disguise extends BardSkill
 		if(!super.okMessage(myHost,msg))
 			return false;
 		if((myHost==null)||(!(myHost instanceof MOB)))
-		   return true;
+			return true;
 		final MOB mob=(MOB)myHost;
 		if(msg.amITarget(mob)
 		&&(CMLib.flags().canBeSeenBy(mob,msg.source()))
@@ -144,12 +188,13 @@ public class Skill_Disguise extends BardSkill
 		}
 		return true;
 	}
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
 		if((myHost==null)||(!(myHost instanceof MOB)))
-		   return;
+			return;
 		final MOB mob=(MOB)myHost;
 		if(msg.amITarget(this)
 		&&(CMLib.flags().canBeSeenBy(mob,msg.source()))
@@ -202,8 +247,10 @@ public class Skill_Disguise extends BardSkill
 		final String what=commands.get(0);
 		int which=-1;
 		for(int i=0;i<whats.length;i++)
+		{
 			if(whats[i].startsWith(what.toUpperCase()))
 				which=i;
+		}
 		if(which<0)
 		{
 			mob.tell(L("Disguise what? '@x1' is not a valid choice.  Valid choices are: @x2.",what,validChoices));
@@ -369,7 +416,11 @@ public class Skill_Disguise extends BardSkill
 					beneficialAffect(mob,mob,asLevel,0);
 				if(A==null)
 					A=(Skill_Disguise)mob.fetchEffect("Skill_Disguise");
-				if(A!=null){ A.values[which]=how; A.makeLongLasting();}
+				if(A!=null)
+				{
+					A.values[which]=how;
+					A.makeLongLasting();
+				}
 				mob.recoverCharStats();
 				mob.recoverPhyStats();
 				mob.location().recoverRoomStats();

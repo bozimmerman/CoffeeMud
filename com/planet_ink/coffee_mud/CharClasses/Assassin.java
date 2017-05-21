@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 /*
    Copyright 2003-2017 Bo Zimmerman
 
@@ -73,12 +72,14 @@ public class Assassin extends Thief
 	{
 		return L("Strong resistance to all poisons at 21st level.");
 	}
+
 	public Assassin()
 	{
 		super();
 		maxStatAdj[CharStats.STAT_DEXTERITY]=4;
 		maxStatAdj[CharStats.STAT_WISDOM]=4;
 	}
+
 	@Override
 	public void initializeClass()
 	{

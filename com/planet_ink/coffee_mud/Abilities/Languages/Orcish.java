@@ -42,6 +42,7 @@ public class Orcish extends StdLanguage
 	}
 
 	private final static String localizedName = CMLib.lang().L("Orcish");
+
 	@Override
 	public String name()
 	{

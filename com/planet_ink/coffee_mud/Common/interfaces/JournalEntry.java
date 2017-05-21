@@ -75,6 +75,7 @@ public interface JournalEntry extends CMCommon, Cloneable
 	public StringBuffer derivedBuildMessage();
 	public JournalEntry derivedBuildMessage(StringBuffer msg);
 	public int compareTo(JournalEntry o);
+
 	@Override
 	public JournalEntry copyOf();
 

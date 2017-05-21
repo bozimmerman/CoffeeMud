@@ -15,9 +15,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
-
 
 /*
    Copyright 2003-2017 Bo Zimmerman
@@ -36,10 +34,26 @@ import java.util.*;
 */
 public class Play_Background extends Play
 {
-	@Override public String ID() { return "Play_Background"; }
+	@Override
+	public String ID()
+	{
+		return "Play_Background";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Background");
-	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_OTHERS;
+	}
+
 	@Override
 	public void affectCharStats(MOB mob, CharStats stats)
 	{

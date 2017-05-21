@@ -85,6 +85,7 @@ public class Fey extends StdLanguage
 	}
 
 	private static final Hashtable<String,String> hashwords=new Hashtable<String,String>();
+
 	@Override
 	public Map<String, String> translationHash(String language)
 	{

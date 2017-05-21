@@ -56,5 +56,4 @@ public class Rapier extends Sword
 		weaponDamageType=TYPE_PIERCING;
 	}
 
-
 }

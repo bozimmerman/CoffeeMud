@@ -34,7 +34,6 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class ArchonSkill extends StdAbility
 {
 	@Override
@@ -99,7 +98,7 @@ public class ArchonSkill extends StdAbility
 			target=(MOB)givenTarget;
 		else
 		if((targetName.length()==0)&&(mob.isInCombat())&&(castingQuality(mob,mob.getVictim())==Ability.QUALITY_MALICIOUS))
-		   target=mob.getVictim();
+			target=mob.getVictim();
 		else
 		if((targetName.length()==0)&&(castingQuality(mob,mob)==Ability.QUALITY_BENEFICIAL_SELF))
 			target=mob;
@@ -108,7 +107,7 @@ public class ArchonSkill extends StdAbility
 			target=mob;
 		else
 		if(targetName.equalsIgnoreCase("self")||targetName.equalsIgnoreCase("me"))
-		   target=mob;
+			target=mob;
 		else
 		if(targetName.length()>0)
 		{
@@ -131,7 +130,6 @@ public class ArchonSkill extends StdAbility
 
 		if((target!=null)&&((!playerOnly)||(!target.isMonster())))
 			targetName=target.name();
-
 
 		if(((target==null)||((playerOnly)&&(target.isMonster())))
 		||((givenTarget==null)&&(!CMLib.flags().canBeSeenBy(target,mob))&&((!CMLib.flags().canBeHeardMovingBy(target,mob))||(!target.isInCombat()))))

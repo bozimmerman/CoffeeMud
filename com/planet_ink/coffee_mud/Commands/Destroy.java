@@ -69,8 +69,16 @@ public class Destroy extends StdCommand
 
 		String mobID=CMParms.combine(commands,2);
 		boolean allFlag=commands.get(2).equalsIgnoreCase("all");
-		if(mobID.toUpperCase().startsWith("ALL.")){ allFlag=true; mobID="ALL "+mobID.substring(4);}
-		if(mobID.toUpperCase().endsWith(".ALL")){ allFlag=true; mobID="ALL "+mobID.substring(0,mobID.length()-4);}
+		if(mobID.toUpperCase().startsWith("ALL."))
+		{
+			allFlag=true;
+			mobID="ALL "+mobID.substring(4);
+		}
+		if(mobID.toUpperCase().endsWith(".ALL"))
+		{
+			allFlag=true;
+			mobID="ALL "+mobID.substring(0,mobID.length()-4);
+		}
 		MOB deadMOB=mob.location().fetchInhabitant(mobID);
 		boolean doneSomething=false;
 		while(deadMOB!=null)
@@ -174,7 +182,6 @@ public class Destroy extends StdCommand
 			return false;
 		}
 
-
 		final String name=CMStrings.capitalizeAndLower(CMParms.combine(commands,2));
 		final boolean found=CMLib.players().playerExists(name);
 
@@ -196,7 +203,6 @@ public class Destroy extends StdCommand
 		}
 		return true;
 	}
-
 
 	public Thread findThreadGroup(String threadName,ThreadGroup tGroup)
 	{
@@ -240,7 +246,6 @@ public class Destroy extends StdCommand
 		}
 		return null;
 	}
-
 
 	public Thread findThread(String threadName)
 	{
@@ -321,8 +326,10 @@ public class Destroy extends StdCommand
 			}
 
 			if(!confirmed)
+			{
 				if(!mob.session().confirm(L("You are fixing to permanantly destroy Room \"@x1\".  Are you ABSOLUTELY SURE (y/N)",deadRoom.roomID()),"N"))
 					return;
+			}
 			CMLib.map().obliterateRoom(deadRoom);
 			mob.tell(L("The sound of massive destruction rings in your ears."));
 			mob.location().showOthers(mob,null,CMMsg.MSG_NOISE,L("The sound of massive destruction rings in your ears."));
@@ -488,8 +495,16 @@ public class Destroy extends StdCommand
 
 		int max=Integer.MAX_VALUE;
 		boolean allFlag=commands.get(2).equalsIgnoreCase("all");
-		if(itemID.toUpperCase().startsWith("ALL.")){ allFlag=true; itemID="ALL "+itemID.substring(4);}
-		if(itemID.toUpperCase().endsWith(".ALL")){ allFlag=true; itemID="ALL "+itemID.substring(0,itemID.length()-4);}
+		if(itemID.toUpperCase().startsWith("ALL."))
+		{
+			allFlag=true;
+			itemID="ALL "+itemID.substring(4);
+		}
+		if(itemID.toUpperCase().endsWith(".ALL"))
+		{
+			allFlag=true;
+			itemID="ALL "+itemID.substring(0,itemID.length()-4);
+		}
 		boolean doneSomething=false;
 		Item deadItem=getItem(allFlag,srchRoom,srchContainer,srchMob,itemID);
 		
@@ -996,8 +1011,16 @@ public class Destroy extends StdCommand
 
 			String whatToDrop=CMParms.combine(commands,0);
 			boolean allFlag=(commands.size()>0)?commands.get(0).equalsIgnoreCase("all"):false;
-			if(whatToDrop.toUpperCase().startsWith("ALL.")){ allFlag=true; whatToDrop="ALL "+whatToDrop.substring(4);}
-			if(whatToDrop.toUpperCase().endsWith(".ALL")){ allFlag=true; whatToDrop="ALL "+whatToDrop.substring(0,whatToDrop.length()-4);}
+			if(whatToDrop.toUpperCase().startsWith("ALL."))
+			{
+				allFlag=true;
+				whatToDrop="ALL "+whatToDrop.substring(4);
+			}
+			if(whatToDrop.toUpperCase().endsWith(".ALL"))
+			{
+				allFlag=true;
+				whatToDrop="ALL "+whatToDrop.substring(0,whatToDrop.length()-4);
+			}
 			int addendum=1;
 			String addendumStr="";
 			boolean doBugFix = true;
@@ -1326,12 +1349,14 @@ public class Destroy extends StdCommand
 				final StringBuffer newNoPurge=new StringBuffer("");
 				final List<String> protectedOnes=Resources.getFileLineVector(Resources.getFileResource("protectedplayers.ini",false));
 				if((protectedOnes!=null)&&(protectedOnes.size()>0))
+				{
 					for(int b=0;b<protectedOnes.size();b++)
 					{
 						final String B=protectedOnes.get(b);
 						if(((b+1)!=which)&&(B.trim().length()>0))
 							newNoPurge.append(B+"\n");
 					}
+				}
 				Resources.updateFileResource("::protectedplayers.ini",newNoPurge);
 				mob.tell(L("Ok."));
 			}
@@ -1454,20 +1479,24 @@ public class Destroy extends StdCommand
 			String name=CMParms.combine(commands,2);
 			int which=-1;
 			for(int v=0;v<V.size();v++)
+			{
 				if(V.get(v).equalsIgnoreCase(name))
 				{
 					name=V.get(v);
 					which=v;
 					break;
 				}
+			}
 			if(which<0)
 			for(int v=0;v<V.size();v++)
+			{
 				if(V.get(v).startsWith(name))
 				{
 					name=V.get(v);
 					which=v;
 					break;
 				}
+			}
 			if(which<0)
 				mob.tell(L("Please enter a valid journal name to delete.  Use List Journals for more information."));
 			else
@@ -1647,8 +1676,10 @@ public class Destroy extends StdCommand
 				final String name=CMParms.combine(commands,2);
 				ClanGovernment G=null;
 				for(final ClanGovernment g : CMLib.clans().getStockGovernments())
+				{
 					if(g.getName().equalsIgnoreCase(name))
 						G=g;
+				}
 				if(G==null)
 					mob.tell(L("Government '@x1' is unknown.  Try list governments.",name));
 				else
@@ -1697,7 +1728,13 @@ public class Destroy extends StdCommand
 				Room theRoom=null;
 				if(allWord.length()>0)
 				{
-					try{ theRoom=CMLib.map().getRoom(allWord); }catch(final NoSuchElementException e){}
+					try
+					{
+						 theRoom=CMLib.map().getRoom(allWord); 
+					}
+					catch(final NoSuchElementException e)
+					{
+					}
 				}
 				if(theRoom!=null)
 				{

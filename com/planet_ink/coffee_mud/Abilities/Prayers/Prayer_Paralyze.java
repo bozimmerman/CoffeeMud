@@ -165,7 +165,6 @@ public class Prayer_Paralyze extends Prayer
 		else
 			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to paralyze <T-NAMESELF>, but flub(s) it."));
 
-
 		// return whether it worked
 		return success;
 	}

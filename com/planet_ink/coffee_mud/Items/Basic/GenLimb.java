@@ -98,6 +98,7 @@ public class GenLimb extends StdLimb
 	}
 
 	private static String[] codes=null;
+
 	@Override
 	public String[] getStatCodes()
 	{

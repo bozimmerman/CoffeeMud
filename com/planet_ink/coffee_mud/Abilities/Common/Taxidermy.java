@@ -36,12 +36,33 @@ import java.util.*;
 
 public class Taxidermy extends CraftingSkill
 {
-	@Override public String ID() { return "Taxidermy"; }
+	@Override
+	public String ID()
+	{
+		return "Taxidermy";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Taxidermy");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"STUFF","TAXIDERMY"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public String supportedResourceString(){return "BODIES";}
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public String supportedResourceString()
+	{
+		return "BODIES";
+	}
+
 	public String parametersFormat(){ return "POSE_NAME\nPOSE_DESCRIPTION\n...\n";}
 
 	protected String foundShortName="";
@@ -115,7 +136,6 @@ public class Taxidermy extends CraftingSkill
 		}
 		return V;
 	}
-
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)

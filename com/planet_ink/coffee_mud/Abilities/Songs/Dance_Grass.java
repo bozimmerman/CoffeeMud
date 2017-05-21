@@ -15,9 +15,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
-
 
 /*
    Copyright 2003-2017 Bo Zimmerman
@@ -36,12 +34,33 @@ import java.util.*;
 */
 public class Dance_Grass extends Dance
 {
-	@Override public String ID() { return "Dance_Grass"; }
+	@Override
+	public String ID()
+	{
+		return "Dance_Grass";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Grass");
-	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_SELF;
+	}
+
 	public static Ability kick=null;
-	@Override protected String danceOf(){return name()+" Dance";}
+
+	@Override
+	protected String danceOf()
+	{
+		return name()+" Dance";
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)

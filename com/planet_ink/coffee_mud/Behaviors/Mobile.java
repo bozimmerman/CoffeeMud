@@ -89,7 +89,6 @@ public class Mobile extends ActiveTicker implements MobileBehavior
 		tickReset();
 	}
 
-
 	public boolean okRoomForMe(MOB mob, Room currentRoom, Room newRoom, boolean ignoreAtmosphere)
 	{
 		if(newRoom==null)
@@ -172,8 +171,10 @@ public class Mobile extends ActiveTicker implements MobileBehavior
 					s=s.substring(1).toUpperCase().trim();
 					int code=-1;
 					for(int i=0;i<Room.DOMAIN_INDOORS_DESCS.length;i++)
+					{
 						if(Room.DOMAIN_INDOORS_DESCS[i].startsWith(s))
 							code=Room.INDOORS+i;
+					}
 					if(code>=0)
 					{
 						if((c=='+')&&(restrictedLocales.contains(Integer.valueOf(code))))
@@ -184,8 +185,10 @@ public class Mobile extends ActiveTicker implements MobileBehavior
 					}
 					code=-1;
 					for(int i=0;i<Room.DOMAIN_OUTDOOR_DESCS.length;i++)
+					{
 						if(Room.DOMAIN_OUTDOOR_DESCS[i].startsWith(s))
 							code=i;
+					}
 					if(code>=0)
 					{
 						if((c=='+')&&(restrictedLocales.contains(Integer.valueOf(code))))

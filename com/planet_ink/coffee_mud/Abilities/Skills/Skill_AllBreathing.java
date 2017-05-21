@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2001-2017 Bo Zimmerman
 
@@ -35,16 +34,61 @@ import java.util.*;
 */
 public class Skill_AllBreathing extends StdSkill
 {
-	@Override public String ID() { return "Skill_AllBreathing"; }
+	@Override
+	public String ID()
+	{
+		return "Skill_AllBreathing";
+	}
+
 	private final static String localizedName = CMLib.lang().L("All Breathing");
-	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "";}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	@Override public int classificationCode(){return Ability.ACODE_SKILL;}
-	@Override public boolean isAutoInvoked(){return true;}
-	@Override public boolean canBeUninvoked(){return false;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public String displayText()
+	{
+		return "";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_SELF;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL;
+	}
+
+	@Override
+	public boolean isAutoInvoked()
+	{
+		return true;
+	}
+
+	@Override
+	public boolean canBeUninvoked()
+	{
+		return false;
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
@@ -56,7 +100,9 @@ public class Skill_AllBreathing extends StdSkill
 		if(!CMLib.flags().canBreathe(mob))
 			affectableStats.setSensesMask(affectableStats.sensesMask()-PhyStats.CAN_NOT_BREATHE);
 	}
+
 	private static final int[] allBreathe=new int[0];
+
 	@Override
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
 	{

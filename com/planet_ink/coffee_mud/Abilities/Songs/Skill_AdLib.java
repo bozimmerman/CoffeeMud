@@ -35,17 +35,62 @@ import java.util.*;
 
 public class Skill_AdLib extends BardSkill
 {
-	@Override public String ID() { return "Skill_AdLib"; }
+	@Override
+	public String ID()
+	{
+		return "Skill_AdLib";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Ad Lib");
-	@Override public String name() { return localizedName; }
-	@Override public String displayText() { return L("(Waiting to Ad Lib @x1)",adLibbingM==null?"no one":adLibbingM.name(invoker())); }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public String displayText()
+	{
+		return L("(Waiting to Ad Lib @x1)",adLibbingM==null?"no one":adLibbingM.name(invoker()));
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"ADLIB"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_THEATRE;}
-	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL|Ability.DOMAIN_THEATRE;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT|USAGE_MANA;
+	}
 	
 	protected MOB adLibbingM = null;
 
@@ -75,7 +120,7 @@ public class Skill_AdLib extends BardSkill
 	{
 		super.executeMsg(myHost,msg);
 		if(!(affected instanceof MOB))
-		   return;
+			return;
 		final MOB mob=(MOB)affected;
 		if((msg.source()==adLibbingM)
 		&&(msg.sourceMessage()!=null)

@@ -52,7 +52,6 @@ public class GenReadable extends GenItem
 		recoverPhyStats();
 	}
 
-
 	@Override
 	public boolean isGeneric()
 	{

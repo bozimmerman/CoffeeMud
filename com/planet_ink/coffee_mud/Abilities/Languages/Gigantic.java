@@ -42,6 +42,7 @@ public class Gigantic extends StdLanguage
 	}
 
 	private final static String localizedName = CMLib.lang().L("Gigantic");
+
 	@Override
 	public String name()
 	{

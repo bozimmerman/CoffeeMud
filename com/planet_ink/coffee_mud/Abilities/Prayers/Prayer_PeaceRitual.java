@@ -35,16 +35,58 @@ import java.util.*;
 
 public class Prayer_PeaceRitual extends Prayer
 {
-	@Override public String ID() { return "Prayer_PeaceRitual"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_PeaceRitual";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Peace Ritual");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Peace Ritual)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_NEUTRALIZATION;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
-	@Override public long flags(){return Ability.FLAG_HOLY;}
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return 0;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_NEUTRALIZATION;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_SELF;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_HOLY;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
 	public Clan clan1=null;
 	public Clan clan2=null;
 	public Iterable<Pair<Clan,Integer>> clan2Set=null;
@@ -197,7 +239,6 @@ public class Prayer_PeaceRitual extends Prayer
 		}
 		else
 			return beneficialWordsFizzle(mob,null,L("<S-NAME> @x1 for peace between @x2 and @x3, but there is no answer.",prayWord(mob),clan1.name(),clan2.name()));
-
 
 		// return whether it worked
 		return success;

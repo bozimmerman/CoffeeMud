@@ -82,7 +82,6 @@ public class DrowWarrior extends DrowElf
 		baseCharStats().setMyRace(CMClass.getRace("Elf"));
 		baseCharStats().getMyRace().startRacing(this,false);
 
-
 		addNaturalAbilities();
 
 		recoverMaxState();
@@ -149,7 +148,6 @@ public class DrowWarrior extends DrowElf
 		final Ability dark=CMClass.getAbility("Spell_Darkness");
 		if(dark==null)
 			return;
-
 
 		dark.setProficiency(100);
 		dark.setSavable(false);
@@ -311,7 +309,7 @@ public class DrowWarrior extends DrowElf
 		dark.setSavable(false);
 		dark.setProficiency(100);
 		if(this.fetchAbility(dark.ID())==null)
-		   this.addAbility(dark);
+			this.addAbility(dark);
 		else
 			dark=this.fetchAbility(dark.ID());
 
@@ -319,8 +317,5 @@ public class DrowWarrior extends DrowElf
 			dark.invoke(this,null,false,0);
 		return true;
 	}
-
-
-
 
 }

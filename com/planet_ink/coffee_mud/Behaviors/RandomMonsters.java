@@ -35,8 +35,17 @@ import java.util.*;
 
 public class RandomMonsters extends ActiveTicker
 {
-	@Override public String ID(){return "RandomMonsters";}
-	@Override protected int canImproveCode(){return Behavior.CAN_ROOMS|Behavior.CAN_AREAS;}
+	@Override
+	public String ID()
+	{
+		return "RandomMonsters";
+	}
+
+	@Override
+	protected int canImproveCode()
+	{
+		return Behavior.CAN_ROOMS|Behavior.CAN_AREAS;
+	}
 
 	protected Vector<MOB> maintained=new Vector<MOB>();
 	protected int tickStatus=0;
@@ -73,7 +82,6 @@ public class RandomMonsters extends ActiveTicker
 		}
 		return null;
 	}
-
 
 	@Override
 	public void setParms(String newParms)
@@ -119,8 +127,10 @@ public class RandomMonsters extends ActiveTicker
 						s=s.substring(1).toUpperCase().trim();
 						int code=-1;
 						for(int i=0;i<Room.DOMAIN_INDOORS_DESCS.length;i++)
+						{
 							if(Room.DOMAIN_INDOORS_DESCS[i].startsWith(s))
 								code=Room.INDOORS+i;
+						}
 						if(code>=0)
 						{
 							if((c=='+')&&(restrictedLocales.contains(Integer.valueOf(code))))
@@ -131,8 +141,10 @@ public class RandomMonsters extends ActiveTicker
 						}
 						code=-1;
 						for(int i=0;i<Room.DOMAIN_OUTDOOR_DESCS.length;i++)
+						{
 							if(Room.DOMAIN_OUTDOOR_DESCS[i].startsWith(s))
 								code=i;
+						}
 						if(code>=0)
 						{
 							if((c=='+')&&(restrictedLocales.contains(Integer.valueOf(code))))
@@ -163,7 +175,6 @@ public class RandomMonsters extends ActiveTicker
 		super();
 		tickReset();
 	}
-
 
 	public boolean okRoomForMe(MOB M, Room newRoom)
 	{
@@ -283,7 +294,11 @@ public class RandomMonsters extends ActiveTicker
 		return true;
 	}
 
-	@Override public int getTickStatus(){return tickStatus;}
+	@Override
+	public int getTickStatus()
+	{
+		return tickStatus;
+	}
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)

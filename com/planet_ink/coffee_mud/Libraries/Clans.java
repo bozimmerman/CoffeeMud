@@ -426,11 +426,13 @@ public class Clans extends StdLibrary implements ClanManager
 			CMLib.threads().deleteTick(C,Tickable.TICKID_CLAN);
 			all.remove(C.clanID().toUpperCase());
 			for(final Pair<Clan,Integer> p : all2)
+			{
 				if(p.first==C)
 				{
 					all2.remove(p);
 					break;
 				}
+			}
 			setClanWebSiteMappings(C,null); // will delete mapping
 			CMLib.journals().registerClanForum(C,null); // will remove mapping
 			CMLib.map().sendGlobalMessage(CMLib.map().deity(), CMMsg.TYP_CLANEVENT,
@@ -644,12 +646,16 @@ public class Clans extends StdLibrary implements ClanManager
 			final List<ClanGovernment> gtypes=new Vector<ClanGovernment>();
 			String name=null;
 			for(final ClanGovernment G : getStockGovernments())
+			{
 				for(final ClanPosition P : G.getPositions())
+				{
 					if(P.getName().equalsIgnoreCase(named)||P.getPluralName().equalsIgnoreCase(named))
 					{
 						gtypes.add(G);
 						name=P.getName();
 					}
+				}
+			}
 			if(gtypes.size()==0)
 			{
 				if(exact)
@@ -710,10 +716,12 @@ public class Clans extends StdLibrary implements ClanManager
 			for(final ClanGovernment G2 : gvts)
 				usedTypeIDs.add(Integer.valueOf(G2.getID()));
 			for(int i=0;i<gvts.length;i++)
+			{
 				if(!usedTypeIDs.contains(Integer.valueOf(i)))
 				{
 					id=i; break;
 				}
+			}
 		}
 
 		final ClanGovernment G=(ClanGovernment)CMClass.getCommon("DefaultClanGovernment");
@@ -1230,6 +1238,7 @@ public class Clans extends StdLibrary implements ClanManager
 		}
 		final ClanGovernment[] govts=new ClanGovernment[governments.size()];
 		for(final ClanGovernment govt : governments)
+		{
 			if((govt.getID() < 0)||(govt.getID() >=governments.size()) || (govts[govt.getID()]!=null))
 			{
 				Log.errOut("Clans","Bad TYPEID "+govt.getID());
@@ -1238,6 +1247,7 @@ public class Clans extends StdLibrary implements ClanManager
 			else
 				govts[govt.getID()]=govt;
 
+		}
 		if(governments.size()>0)
 		{
 			for(int i=0;i<govts.length;i++)
@@ -1327,7 +1337,6 @@ public class Clans extends StdLibrary implements ClanManager
 	{
 		return webPathClanMappings.get(sitePath.toLowerCase());
 	}
-
 
 	@Override
 	public void clanAnnounce(MOB mob, String msg)

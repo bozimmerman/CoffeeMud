@@ -33,16 +33,46 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Chant_PlantBed extends Chant
 {
-	@Override public String ID() { return "Chant_PlantBed"; }
+	@Override
+	public String ID()
+	{
+		return "Chant_PlantBed";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Plant Bed");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
-	@Override protected int canTargetCode(){return 0;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ITEMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
 	protected Item peaPod=null;
 
 	@Override

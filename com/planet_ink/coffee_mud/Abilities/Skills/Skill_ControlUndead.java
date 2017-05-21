@@ -109,7 +109,6 @@ public class Skill_ControlUndead extends StdSkill
 		return charmer;
 	}
 
-
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -340,7 +339,6 @@ public class Skill_ControlUndead extends StdSkill
 		}
 		else
 			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to control <T-NAMESELF>, but fail(s)."));
-
 
 		// return whether it worked
 		return success;

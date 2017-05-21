@@ -154,6 +154,7 @@ public class Prop_AreaForSale extends Property implements LandTitle
 		final String s=CMParms.parse(text().substring(x+3)).firstElement();
 		return CMath.s_int(s.substring(0,s.length()-1));
 	}
+
 	@Override
 	public void setBackTaxes(int tax)
 	{

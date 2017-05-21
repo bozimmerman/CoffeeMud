@@ -33,15 +33,39 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Prayer_Anger extends Prayer
 {
-	@Override public String ID() { return "Prayer_Anger"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_Anger";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Anger");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	@Override public long flags(){return Ability.FLAG_UNHOLY;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_UNHOLY;
+	}
 
 	private boolean anyoneIsFighting(Room R)
 	{
@@ -116,7 +140,6 @@ public class Prayer_Anger extends Prayer
 		}
 		else
 			maliciousFizzle(mob,null,L("<S-NAME> @x1 for rage, but nothing happens.",prayWord(mob)));
-
 
 		// return whether it worked
 		return success;

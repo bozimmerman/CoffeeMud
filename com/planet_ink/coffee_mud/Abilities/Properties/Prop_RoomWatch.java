@@ -34,15 +34,32 @@ import java.util.*;
 
 public class Prop_RoomWatch extends Property
 {
-	@Override public String ID() { return "Prop_RoomWatch"; }
-	@Override public String name(){ return "Different Room Can Watch";}
-	@Override protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_ITEMS;}
+	@Override
+	public String ID()
+	{
+		return "Prop_RoomWatch";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Different Room Can Watch";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ROOMS|Ability.CAN_ITEMS;
+	}
+
 	protected Vector<Room> newRooms=null;
 	protected String prefix=null;
 
 	@Override
 	public String accountForYourself()
-	{ return "Different View of "+text();	}
+	{
+		return "Different View of "+text();
+	}
 
 	@Override
 	public void setMiscText(String newText)

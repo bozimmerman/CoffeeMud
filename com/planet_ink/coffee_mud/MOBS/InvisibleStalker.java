@@ -52,7 +52,6 @@ public class InvisibleStalker extends StdMOB
 		setMoney(0);
 		basePhyStats.setWeight(10 + Math.abs(randomizer.nextInt() % 10));
 
-
 		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,12 + Math.abs(randomizer.nextInt() % 3));
 		baseCharStats().setStat(CharStats.STAT_STRENGTH,20);
 		baseCharStats().setStat(CharStats.STAT_DEXTERITY,13);

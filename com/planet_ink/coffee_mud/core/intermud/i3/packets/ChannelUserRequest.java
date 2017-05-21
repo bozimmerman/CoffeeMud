@@ -42,6 +42,7 @@ public class ChannelUserRequest extends Packet {
 		super();
 		type = Packet.CHAN_USER_REQ;
 	}
+
 	public ChannelUserRequest(Vector v) throws InvalidPacketException {
 		super(v);
 		try

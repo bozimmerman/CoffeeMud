@@ -18,7 +18,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.Enumeration;
 import java.util.List;
 
-
 /*
    Copyright 2003-2017 Bo Zimmerman
 
@@ -34,7 +33,6 @@ import java.util.List;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 
 public class Chant_ControlPlant extends Chant
 {
@@ -121,7 +119,6 @@ public class Chant_ControlPlant extends Chant
 			return false;
 		}
 
-
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -148,7 +145,6 @@ public class Chant_ControlPlant extends Chant
 		}
 		else
 			beneficialVisualFizzle(mob,myPlant,L("<S-NAME> chant(s) to <T-NAMESELF>, but nothing happens."));
-
 
 		// return whether it worked
 		return success;

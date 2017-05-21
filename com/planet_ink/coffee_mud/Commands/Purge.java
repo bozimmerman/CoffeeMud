@@ -38,7 +38,11 @@ public class Purge extends StdCommand
 	public Purge(){}
 
 	private final String[] access=I(new String[]{"PURGE"});
-	@Override public String[] getAccessWords(){return access;}
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
 	public boolean errorOut(MOB mob)
 	{
@@ -57,8 +61,16 @@ public class Purge extends StdCommand
 
 		String mobID=CMParms.combine(commands,2);
 		boolean allFlag=commands.get(2).equalsIgnoreCase("all");
-		if(mobID.toUpperCase().startsWith("ALL.")){ allFlag=true; mobID="ALL "+mobID.substring(4);}
-		if(mobID.toUpperCase().endsWith(".ALL")){ allFlag=true; mobID="ALL "+mobID.substring(0,mobID.length()-4);}
+		if(mobID.toUpperCase().startsWith("ALL."))
+		{
+			allFlag=true;
+			mobID="ALL "+mobID.substring(4);
+		}
+		if(mobID.toUpperCase().endsWith(".ALL"))
+		{
+			allFlag=true;
+			mobID="ALL "+mobID.substring(0,mobID.length()-4);
+		}
 		MOB deadMOB=mob.location().fetchInhabitant(mobID);
 		boolean doneSomething=false;
 		while(deadMOB!=null)
@@ -85,7 +97,6 @@ public class Purge extends StdCommand
 		}
 		return true;
 	}
-
 
 	public boolean items(MOB mob, List<String> commands)
 	{
@@ -132,8 +143,16 @@ public class Purge extends StdCommand
 		}
 
 		boolean allFlag=commands.get(2).equalsIgnoreCase("all");
-		if(itemID.toUpperCase().startsWith("ALL.")){ allFlag=true; itemID="ALL "+itemID.substring(4);}
-		if(itemID.toUpperCase().endsWith(".ALL")){ allFlag=true; itemID="ALL "+itemID.substring(0,itemID.length()-4);}
+		if(itemID.toUpperCase().startsWith("ALL."))
+		{
+			allFlag=true;
+			itemID="ALL "+itemID.substring(4);
+		}
+		if(itemID.toUpperCase().endsWith(".ALL"))
+		{
+			allFlag=true;
+			itemID="ALL "+itemID.substring(0,itemID.length()-4);
+		}
 		boolean doneSomething=false;
 		Item deadItem=null;
 		if(!allFlag)
@@ -162,7 +181,6 @@ public class Purge extends StdCommand
 		}
 		return true;
 	}
-
 
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
@@ -215,8 +233,16 @@ public class Purge extends StdCommand
 		return false;
 	}
 
-	@Override public boolean canBeOrdered(){return true;}
-	@Override public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.PURGE);}
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 
+	@Override
+	public boolean securityCheck(MOB mob)
+	{
+		return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.PURGE);
+	}
 
 }

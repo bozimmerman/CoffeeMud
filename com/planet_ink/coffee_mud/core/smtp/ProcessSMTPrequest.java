@@ -45,7 +45,6 @@ public class ProcessSMTPrequest implements Runnable
 	private final static long IDLE_TIMEOUT=10000;
 	private static volatile AtomicInteger instanceCnt = new AtomicInteger(0);
 
-
 	private Socket  		 sock;
 	private SMTPserver  	 server=null;
 	private StringBuffer	 data=null;
@@ -312,6 +311,7 @@ public class ProcessSMTPrequest implements Runnable
 											{
 												final StringBuffer newStr=new StringBuffer(s2);
 												for(int c1=0;c1<newStr.length()-2;c1++)
+												{
 													if(newStr.charAt(c1)=='=')
 													{
 														if(("0123456789ABCDEF".indexOf(Character.toUpperCase(newStr.charAt(c1+1)))>=0)
@@ -322,6 +322,7 @@ public class ProcessSMTPrequest implements Runnable
 															newStr.replace(c1,c1+3,""+((char)x));
 														}
 													}
+												}
 												s2=newStr.toString();
 											}
 											if(s2!=null)
@@ -439,7 +440,9 @@ public class ProcessSMTPrequest implements Runnable
 									}
 								}
 							}
-							catch(final IOException e){}
+							catch(final IOException e)
+							{
+							}
 
 							if((replyData!=null)&&(new String(replyData).startsWith("250")))
 							{
@@ -981,7 +984,6 @@ public class ProcessSMTPrequest implements Runnable
 					else
 						replyData=lastReplyData;//("500 Command Unrecognized: \""+cmd+"\""+cr).getBytes();
 
-
 					if ((replyData != null))
 					{
 						respQueue.add(replyData);
@@ -1025,8 +1027,10 @@ public class ProcessSMTPrequest implements Runnable
 			final StringBuilder msg = new StringBuilder(errorMessage==null?"EMPTY e.getMessage()":errorMessage);
 			final StackTraceElement[] ts = e.getStackTrace();
 			if(ts != null)
+			{
 				for(final StackTraceElement t : ts)
 					msg.append(" ").append(t.getFileName()).append("(").append(t.getLineNumber()).append(")");
+			}
 			Log.errOut(runnableName,"Exception: " + msg.toString() );
 		}
 

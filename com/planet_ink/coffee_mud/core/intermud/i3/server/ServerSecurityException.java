@@ -32,8 +32,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  * An exception for attempts to violate server security
  */
 
-
-
 /**
  * This exception gets thrown by the server when some
  * class tries to perform an operation it should not

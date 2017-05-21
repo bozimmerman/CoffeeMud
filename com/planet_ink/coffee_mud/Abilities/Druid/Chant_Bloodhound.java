@@ -33,7 +33,6 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Chant_Bloodhound extends Chant
 {
 	@Override
@@ -83,7 +82,6 @@ public class Chant_Bloodhound extends Chant
 		if((affected instanceof MOB)&&(CMLib.flags().canSmell((MOB)affected)))
 			affectableStats.setSensesMask((affectableStats.sensesMask()|PhyStats.CAN_SEE_DARK) & (~PhyStats.CAN_NOT_SEE));
 	}
-
 
 	@Override
 	public void unInvoke()

@@ -20,7 +20,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2016-2017 Bo Zimmerman
 
@@ -214,6 +213,7 @@ public class Pirate extends Thief
 				{
 					private final String amuText = A.text();
 					private final MOB mob=msg.source();
+
 					@Override
 					public void run()
 					{
@@ -256,6 +256,7 @@ public class Pirate extends Thief
 							pirate.addNonUninvokableEffect(A=new StdAbility()
 							{
 								private final Map<MOB,Long> timeOuts = new SHashtable<MOB,Long>();
+
 								@Override
 								public String ID()
 								{

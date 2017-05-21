@@ -54,7 +54,6 @@ public class Owl extends StdMOB
 
 		basePhyStats.setWeight(1 + Math.abs(randomizer.nextInt() % 6));
 
-
 		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,1);
 		baseCharStats().setStat(CharStats.STAT_STRENGTH,5);
 		baseCharStats().setStat(CharStats.STAT_DEXTERITY,17);

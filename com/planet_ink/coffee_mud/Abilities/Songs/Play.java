@@ -585,7 +585,11 @@ public class Play extends StdAbility
 						// malicious songs must not affect the invoker!
 						int msgType=CMMsg.MASK_MAGIC|CMMsg.MASK_SOUND|CMMsg.TYP_CAST_SPELL;
 						int mndMsgType=CMMsg.MASK_MAGIC|CMMsg.MASK_SOUND|CMMsg.MASK_MALICIOUS|CMMsg.TYP_MIND;
-						if(auto){ msgType|=CMMsg.MASK_ALWAYS; mndMsgType|=CMMsg.MASK_ALWAYS;}
+						if(auto)
+						{
+							msgType|=CMMsg.MASK_ALWAYS;
+							mndMsgType|=CMMsg.MASK_ALWAYS;
+						}
 						if((castingQuality(mob,follower)==Ability.QUALITY_MALICIOUS)&&(follower!=mob))
 							msgType=msgType|CMMsg.MASK_MALICIOUS;
 

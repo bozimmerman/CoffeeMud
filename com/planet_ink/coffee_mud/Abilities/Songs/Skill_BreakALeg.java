@@ -33,20 +33,64 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Skill_BreakALeg extends BardSkill
 {
-	@Override public String ID() { return "Skill_BreakALeg"; }
+	@Override
+	public String ID()
+	{
+		return "Skill_BreakALeg";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Break A Leg");
-	@Override public String name() { return localizedName; }
-	@Override public String displayText() { return L("(Feeling a leg pain)"); }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public String displayText()
+	{
+		return L("(Feeling a leg pain)");
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"BREAKALEG"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_THEATRE;}
-	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL|Ability.DOMAIN_THEATRE;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT|USAGE_MANA;
+	}
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)

@@ -63,7 +63,6 @@ public class MultiListListIterator<K> implements ListIterator<K>
 			iters.add(I.listIterator());
 	}
 
-
 	public MultiListListIterator()
 	{
 

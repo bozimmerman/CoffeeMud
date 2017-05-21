@@ -34,7 +34,6 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Prayer_AnimalSpirit extends Prayer
 {
 	@Override
@@ -138,22 +137,26 @@ public class Prayer_AnimalSpirit extends Prayer
 			this.displayName=displayName;
 			this.raceID=raceID;
 		}
+
 		private AnimalSpirit(String displayName)
 		{
 			this.displayName=displayName;
 			this.raceID=null;
 		}
+
 		private AnimalSpirit()
 		{
 			this.displayName=null;
 			this.raceID=null;
 		}
+
 		public String getRaceID()
 		{
 			if(raceID == null)
 				return this.name();
 			return raceID;
 		}
+
 		@Override
 		public String toString()
 		{
@@ -224,7 +227,6 @@ public class Prayer_AnimalSpirit extends Prayer
 		}
 		else
 			beneficialWordsFizzle(mob,null,L("<S-NAME> go(s) on a vision quest, but nothing happens."));
-
 
 		// return whether it worked
 		return success;

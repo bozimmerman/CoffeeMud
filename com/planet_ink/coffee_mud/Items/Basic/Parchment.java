@@ -49,6 +49,4 @@ public class Parchment extends GenReadable
 		setMaterial(RawMaterial.RESOURCE_PAPER);
 	}
 
-
-
 }

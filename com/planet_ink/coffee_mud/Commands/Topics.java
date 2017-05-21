@@ -38,7 +38,12 @@ public class Topics extends ATopics
 	public Topics(){}
 
 	private final String[] access=I(new String[]{"TOPICS"});
-	@Override public String[] getAccessWords(){return access;}
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
+
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
@@ -55,8 +60,15 @@ public class Topics extends ATopics
 		return false;
 	}
 
-	@Override public boolean canBeOrdered(){return true;}
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 
-
-	@Override public boolean securityCheck(MOB mob){return true;}
+	@Override
+	public boolean securityCheck(MOB mob)
+	{
+		return true;
+	}
 }

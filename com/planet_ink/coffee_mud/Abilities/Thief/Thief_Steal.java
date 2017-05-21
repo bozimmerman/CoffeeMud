@@ -35,20 +35,70 @@ import java.util.*;
 
 public class Thief_Steal extends ThiefSkill
 {
-	@Override public String ID() { return "Thief_Steal"; }
+	@Override
+	public String ID()
+	{
+		return "Thief_Steal";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Steal");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALING;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALING;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"STEAL"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT|USAGE_MANA;
+	}
+
 	public int code=0;
 
-	@Override public int abilityCode(){return code;}
-	@Override public void setAbilityCode(int newCode){code=newCode;}
+	@Override
+	public int abilityCode()
+	{
+		return code;
+	}
+
+	@Override
+	public void setAbilityCode(int newCode)
+	{
+		code=newCode;
+	}
 
 	protected PairVector<MOB,Integer> lastOnes=new PairVector<MOB,Integer>();
 	protected int timesPicked(MOB target)
@@ -87,7 +137,6 @@ public class Thief_Steal extends ThiefSkill
 		}
 		return super.castingQuality(mob,target);
 	}
-
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -157,7 +206,11 @@ public class Thief_Steal extends ThiefSkill
 			levelDiff=-(levelDiff*((!CMLib.flags().canBeSeenBy(mob,target))?5:15));
 		else
 			levelDiff=-(levelDiff*((!CMLib.flags().canBeSeenBy(mob,target))?1:2));
-		if(!CMLib.flags().isAliveAwakeMobile(target,true)){levelDiff=100;discoverChance=0;}
+		if(!CMLib.flags().isAliveAwakeMobile(target,true))
+		{
+			levelDiff=100;
+			discoverChance=0;
+		}
 
 		final boolean success=proficiencyCheck(mob,levelDiff,auto);
 

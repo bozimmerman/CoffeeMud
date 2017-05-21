@@ -35,18 +35,60 @@ import java.util.*;
 
 public class Thief_Comprehension extends ThiefSkill
 {
-	@Override public String ID() { return "Thief_Comprehension"; }
+	@Override
+	public String ID()
+	{
+		return "Thief_Comprehension";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Linguistic Comprehension");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Lang. Comprehension)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_SELF;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"COMPREHEND","COMPREHENSION"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public boolean disregardsArmorCheck(MOB mob){return true;}
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public boolean disregardsArmorCheck(MOB mob)
+	{
+		return true;
+	}
+
 	protected Vector<CMMsg> queue=new Vector<CMMsg>();
-	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STREETSMARTS;}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STREETSMARTS;
+	}
 
 	@Override
 	public void unInvoke()
@@ -113,7 +155,6 @@ public class Thief_Comprehension extends ThiefSkill
 			}
 		}
 	}
-
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)

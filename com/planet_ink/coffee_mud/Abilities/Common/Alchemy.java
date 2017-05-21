@@ -36,20 +36,50 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 {
-	@Override public String ID() { return "Alchemy"; }
+	@Override
+	public String ID()
+	{
+		return "Alchemy";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Alchemy");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"BREW","ALCHEMY"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public String supportedResourceString(){return "MISC";}
-	@Override public String parametersFormat(){ return "SPELL_ID\tRESOURCE_NAME";}
-	@Override protected ExpertiseLibrary.SkillCostDefinition getRawTrainingCost() { return CMProps.getNormalSkillGainCost(ID()); }
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public String supportedResourceString()
+	{
+		return "MISC";
+	}
+
+	@Override
+	public String parametersFormat()
+	{
+		return "SPELL_ID\tRESOURCE_NAME";
+	}
+
+	@Override
+	protected ExpertiseLibrary.SkillCostDefinition getRawTrainingCost()
+	{
+		return CMProps.getNormalSkillGainCost(ID());
+	}
 
 	String oldName="";
 	protected Ability theSpell=null;
+
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -91,10 +121,23 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 		return super.doLearnRecipe( mob, commands, givenTarget, auto, asLevel );
 	}
 
-	@Override public String parametersFile(){ return "alchemy.txt";}
-	@Override protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
+	@Override
+	public String parametersFile()
+	{
+		return "alchemy.txt";
+	}
 
-	@Override public boolean supportsDeconstruction() { return false; }
+	@Override
+	protected List<List<String>> loadRecipes()
+	{
+		return super.loadRecipes(parametersFile());
+	}
+
+	@Override
+	public boolean supportsDeconstruction()
+	{
+		return false;
+	}
 
 	@Override
 	public String getDecodedComponentsDescription(final MOB mob, final List<String> recipe)
@@ -180,7 +223,11 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 		}
 	}
 
-	@Override public ItemKeyPair craftItem(String recipe) { return craftItem(recipe,0,false); }
+	@Override
+	public ItemKeyPair craftItem(String recipe)
+	{
+		return craftItem(recipe,0,false);
+	}
 
 	protected Item buildItem(Ability theSpell, int level)
 	{

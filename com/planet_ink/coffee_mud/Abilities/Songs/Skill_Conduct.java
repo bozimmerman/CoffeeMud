@@ -35,18 +35,58 @@ import java.util.*;
 
 public class Skill_Conduct extends BardSkill
 {
-	@Override public String ID() { return "Skill_Conduct"; }
-	private final static String localizedName = CMLib.lang().L("Conduct Symphony");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Conduct Symphony)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	private static final String[] triggerStrings =I(new String[] {"CONDUCT"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_PLAYING;}
-	@Override public int maxRange(){return adjustedMaxInvokerRange(2);}
+	@Override
+	public String ID()
+	{
+		return "Skill_Conduct";
+	}
 
+	private final static String localizedName = CMLib.lang().L("Conduct Symphony");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Conduct Symphony)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	private static final String[] triggerStrings =I(new String[] {"CONDUCT"});
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL|Ability.DOMAIN_PLAYING;
+	}
+
+	@Override
+	public int maxRange()
+	{
+		return adjustedMaxInvokerRange(2);
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)

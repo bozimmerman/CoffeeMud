@@ -35,15 +35,56 @@ import java.util.*;
 
 public class Prayer_UndeniableFaith extends Prayer
 {
-	@Override public String ID() { return "Prayer_UndeniableFaith"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_UndeniableFaith";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Undeniable Faith");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public long flags(){return Ability.FLAG_NEUTRAL|Ability.FLAG_CHARMING;}
-	@Override protected int overrideMana(){return 100;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_OTHERS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_NEUTRAL|Ability.FLAG_CHARMING;
+	}
+
+	@Override
+	protected int overrideMana()
+	{
+		return 100;
+	}
+
 	protected String godName="";
 	private static DVector convertStack=new DVector(2);
 
@@ -62,7 +103,7 @@ public class Prayer_UndeniableFaith extends Prayer
 		if(!super.tick(ticking,tickID))
 			return false;
 		if(!(affected instanceof MOB))
-		   return true;
+			return true;
 		final MOB M=(MOB)affected;
 		if(M.location()!=null)
 		{
@@ -105,7 +146,6 @@ public class Prayer_UndeniableFaith extends Prayer
 		}
 		return super.okMessage(host,msg);
 	}
-
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -158,7 +198,11 @@ public class Prayer_UndeniableFaith extends Prayer
 		final boolean success=proficiencyCheck(mob,-(levelDiff*25),auto);
 		int type=verbalCastCode(mob,target,auto);
 		int mal=CMMsg.MASK_MALICIOUS;
-		if(auto){ type=CMath.unsetb(type,CMMsg.MASK_MALICIOUS); mal=0;}
+		if(auto)
+		{
+			type=CMath.unsetb(type,CMMsg.MASK_MALICIOUS);
+			mal=0;
+		}
 		if(success)
 		{
 			final CMMsg msg=CMClass.getMsg(mob,target,this,type,auto?"":L("^S<S-NAME> @x1 for <T-NAMESELF> to BELIEVE!^?",prayWord(mob)));
@@ -184,7 +228,6 @@ public class Prayer_UndeniableFaith extends Prayer
 		}
 		else
 			beneficialWordsFizzle(mob,target,auto?"":L("<S-NAME> @x1 for <T-NAMESELF>, but nothing happens.",prayWord(mob)));
-
 
 		// return whether it worked
 		return success;

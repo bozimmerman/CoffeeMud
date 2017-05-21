@@ -134,6 +134,7 @@ public class Aggressive extends StdBehavior
 		}
 		return false;
 	}
+
 	public boolean pickAFight(MOB observer, MaskingLibrary.CompiledZMask mask, boolean mobKiller, boolean misBehave, boolean levelCheck, String attackMsg)
 	{
 		if(!canFreelyBehaveNormal(observer))

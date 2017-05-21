@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2011-2017 Bo Zimmerman
 
@@ -36,15 +35,49 @@ import java.util.*;
 
 public class Prayer_LowerLaw extends Prayer
 {
-	@Override public String ID() { return "Prayer_LowerLaw"; }
-	private final static String localizedName = CMLib.lang().L("Lower Law");
-	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "";}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public long flags(){return Ability.FLAG_HOLY;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
+	@Override
+	public String ID()
+	{
+		return "Prayer_LowerLaw";
+	}
 
+	private final static String localizedName = CMLib.lang().L("Lower Law");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public String displayText()
+	{
+		return "";
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_HOLY;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;
+	}
 
 	public void possiblyAddLaw(Law L, Vector<String> V, String code)
 	{
@@ -88,8 +121,10 @@ public class Prayer_LowerLaw extends Prayer
 					possiblyAddLaw(L,crimes,"RESISTINGARREST");
 					possiblyAddLaw(L,crimes,"PROPERTYROB");
 					for(final String key : L.abilityCrimes().keySet())
+					{
 						if(key.startsWith("$"))
 							crimes.add(key.substring(1));
+					}
 					if(L.taxLaws().containsKey("TAXEVASION"))
 						crimes.add(((String[])L.taxLaws().get("TAXEVASION"))[Law.BIT_CRIMENAME]);
 					for(int x=0;x<L.bannedSubstances().size();x++)

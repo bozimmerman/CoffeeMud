@@ -228,6 +228,7 @@ public class MultiList<T> implements List<T>
 	}
 
 	@SuppressWarnings("hiding")
+
 	@Override
 	public <T> T[] toArray(T[] arg0) 
 	{
@@ -363,6 +364,5 @@ public class MultiList<T> implements List<T>
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 
 }

@@ -25,8 +25,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  * to some data store.
  */
 
-
-
 /**
  * Specified methods which must be implemented by
  * objects wishing to be saved.

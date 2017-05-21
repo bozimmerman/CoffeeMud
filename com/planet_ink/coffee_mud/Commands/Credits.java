@@ -38,13 +38,24 @@ public class Credits extends StdCommand
 	public Credits(){}
 
 	private final String[] access=I(new String[]{"CREDITS"});
-	@Override public String[] getAccessWords(){return access;}
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
+
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		StringBuffer credits=new CMFile(Resources.buildResourcePath("text")+"credits.txt",null,CMFile.FLAG_LOGERRORS).text();
-		try { credits = CMLib.webMacroFilter().virtualPageFilter(credits);}catch(final Exception ex){}
+		try
+		{
+			 credits = CMLib.webMacroFilter().virtualPageFilter(credits);
+		}
+		catch(final Exception ex)
+		{
+		}
 		if((credits!=null)&&(mob.session()!=null)&&(credits.length()>0))
 			mob.session().colorOnlyPrintln(credits.toString());
 		else
@@ -52,7 +63,10 @@ public class Credits extends StdCommand
 		return false;
 	}
 
-	@Override public boolean canBeOrdered(){return true;}
-
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 
 }

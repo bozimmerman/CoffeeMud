@@ -104,6 +104,7 @@ public class Prop_AstralSpirit extends Property
 				inhab.setVictim(null);
 		}
 	}
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{

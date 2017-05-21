@@ -58,6 +58,4 @@ public class DrowMace extends Mace
 		weaponDamageType=TYPE_BASHING;
 	}
 
-
-
 }

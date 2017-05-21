@@ -35,7 +35,6 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Chant_Tsunami extends Chant
 {
 	@Override
@@ -183,7 +182,6 @@ public class Chant_Tsunami extends Chant
 		return super.castingQuality(mob,target);
 	}
 
-	
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{

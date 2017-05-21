@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2002-2017 Bo Zimmerman
 
@@ -34,16 +33,41 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Chant_PredictWeather extends Chant
 {
-	@Override public String ID() { return "Chant_PredictWeather"; }
+	@Override
+	public String ID()
+	{
+		return "Chant_PredictWeather";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Predict Weather");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Predict Weather)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;}
-	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_SELF;
+	}
 	String lastPrediction="";
 
 	@Override
@@ -58,6 +82,7 @@ public class Chant_PredictWeather extends Chant
 		if(canBeUninvoked())
 			mob.tell(L("Your senses are no longer sensitive to the weather."));
 	}
+
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -77,7 +102,6 @@ public class Chant_PredictWeather extends Chant
 		}
 		return true;
 	}
-
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)

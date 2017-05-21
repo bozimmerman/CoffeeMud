@@ -86,7 +86,6 @@ public class Wear extends StdCommand
 		return false;
 	}
 
-
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException

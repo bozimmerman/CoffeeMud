@@ -20,7 +20,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2016-2017 Bo Zimmerman
 
@@ -469,7 +468,6 @@ public class Skill_HireCrewmember extends StdSkill
 		return false;
 	}
 
-
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -596,7 +594,6 @@ public class Skill_HireCrewmember extends StdSkill
 		}
 		else
 			return beneficialWordsFizzle(mob,null,L("<S-NAME> offer(s) @x1 to potential sailors, but no one is interested.",moneyStr));
-
 
 		// return whether it worked
 		return success;

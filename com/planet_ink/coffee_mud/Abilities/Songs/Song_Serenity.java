@@ -15,9 +15,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
-
 
 /*
    Copyright 2001-2017 Bo Zimmerman
@@ -36,12 +34,37 @@ import java.util.*;
 */
 public class Song_Serenity extends Song
 {
-	@Override public String ID() { return "Song_Serenity"; }
+	@Override
+	public String ID()
+	{
+		return "Song_Serenity";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Serenity");
-	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	@Override protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
-	@Override protected boolean maliciousButNotAggressiveFlag(){return true;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	protected boolean HAS_QUANTITATIVE_ASPECT()
+	{
+		return false;
+	}
+
+	@Override
+	protected boolean maliciousButNotAggressiveFlag()
+	{
+		return true;
+	}
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)

@@ -176,7 +176,6 @@ public class StdGrid extends StdRoom implements GridLocale
 		return null;
 	}
 
-
 	@Override
 	public Room prepareRoomInDir(Room fromRoom, int direction)
 	{
@@ -833,6 +832,7 @@ public class StdGrid extends StdRoom implements GridLocale
 			subMap=new Room[xsize][ysize];
 			final Exit ox=CMClass.getExit("Open");
 			for(int x=0;x<subMap.length;x++)
+			{
 				for(int y=0;y<subMap[x].length;y++)
 				{
 					final Room newRoom=getGridRoom(x,y);
@@ -851,6 +851,7 @@ public class StdGrid extends StdRoom implements GridLocale
 						}
 					}
 				}
+			}
 			buildFinalLinks();
 			fillInTheExtraneousExternals(subMap,ox);
 		}

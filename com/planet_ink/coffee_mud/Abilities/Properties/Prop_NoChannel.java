@@ -34,16 +34,33 @@ import java.util.*;
 */
 public class Prop_NoChannel extends Property
 {
-	@Override public String ID() { return "Prop_NoChannel"; }
-	@Override public String name(){ return "Channel Neutralizing";}
-	@Override protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS;}
+	@Override
+	public String ID()
+	{
+		return "Prop_NoChannel";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Channel Neutralizing";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ROOMS|Ability.CAN_AREAS;
+	}
+
 	protected List<String> channels=null;
 	protected boolean receive=true;
 	protected boolean sendOK=false;
 
 	@Override
 	public String accountForYourself()
-	{ return "No Channeling Field"; }
+	{
+		return "No Channeling Field";
+	}
 
 	@Override
 	public void setMiscText(String newText)
@@ -65,7 +82,6 @@ public class Prop_NoChannel extends Property
 	{
 		if(!super.okMessage(myHost,msg))
 			return false;
-
 
 		if(msg.othersMajor(CMMsg.MASK_CHANNEL))
 		{

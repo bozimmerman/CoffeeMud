@@ -2156,12 +2156,14 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			for (final int mask : disps)
 			{
 				for(int num=0;num<PhyStats.IS_DESCS.length;num++)
+				{
 					if(mask==CMath.pow(2,num))
 					{
 						mob.session().println("    "+letter+") "+CMStrings.padRight(PhyStats.IS_DESCS[num],20)+":"+((E.disposition()&mask)!=0));
 						letters+=letter;
 						break;
 					}
+				}
 				letter++;
 			}
 			c=mob.session().choose(L("Enter one to change, or ENTER when done: "),letters+"\n","\n").toUpperCase();
@@ -2465,12 +2467,14 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			for (final int mask : senses)
 			{
 				for(int num=0;num<PhyStats.CAN_SEE_DESCS.length;num++)
+				{
 					if(mask==CMath.pow(2,num))
 					{
 						letters+=letter;
 						mob.session().println("    "+letter+") "+CMStrings.padRight(PhyStats.CAN_SEE_DESCS[num],20)+":"+((E.sensesMask()&mask)!=0));
 						break;
 					}
+				}
 				letter++;
 			}
 			c=mob.session().choose(L("Enter one to change, or ENTER when done: "),letters+"\n","\n").toUpperCase();
@@ -2957,7 +2961,6 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		me.setPractices(CMath.s_int(mob.session().prompt(L("*. Practice Points ("+me.getPractices()+"): ",""+me.getPractices()))));
 		me.setQuestPoint(CMath.s_int(mob.session().prompt(L("*. Quest Points ("+me.getQuestPoint()+"): ",""+me.getQuestPoint()))));
 	}
-	
 	
 	protected void genLayer(MOB mob, Armor E, int showNumber, int showFlag) throws IOException
 	{
@@ -4402,7 +4405,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 								{
 									boolean alreadyHasIt=false;
 									if(M.getShop().doIHaveThisInStock(item.Name(),null))
-									   alreadyHasIt=true;
+										alreadyHasIt=true;
 
 									if(!alreadyHasIt)
 									{
@@ -9332,7 +9335,6 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		}
 	}
 
-
 	protected void modifyGenInstrument(MOB mob, MusicalInstrument me, int showFlag)
 		throws IOException
 	{
@@ -9390,7 +9392,6 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				mob.tell(L("\n\rThe data entered exceeds the string limit of @x1 characters.",""+maxLength));
 		}
 	}
-
 
 	@Override
 	public void modifyGenExit(MOB mob, Exit me, int showFlag)
@@ -9450,7 +9451,6 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				mob.tell(L("\n\rThe data entered exceeds the string limit of @x1 characters.",""+maxLength));
 		}
 	}
-
 
 	protected MOB possibleCatalogSwap(final MOB editorMOB, final MOB me) throws IOException
 	{
@@ -9729,7 +9729,6 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		}
 	}
 
-
 	protected void genClanStatus(MOB mob, Clan C, int showNumber, int showFlag)
 	{
 		if((showFlag>0)&&(showFlag!=showNumber))
@@ -9820,7 +9819,6 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			return -1;
 		return CMath.s_int(newStr);
 	}
-
 
 	protected void genClanRole(MOB mob, Clan C, int showNumber, int showFlag)
 	throws IOException

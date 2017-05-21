@@ -33,12 +33,22 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Fighter_Pin extends FighterSkill
 {
-	@Override public String ID() { return "Fighter_Pin"; }
+	@Override
+	public String ID()
+	{
+		return "Fighter_Pin";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Pin");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	@Override
 	public String displayText()
 	{
@@ -46,14 +56,50 @@ public class Fighter_Pin extends FighterSkill
 			return "(Pinning)";
 		return "(Pinned)";
 	}
+
 	private static final String[] triggerStrings =I(new String[] {"PIN"});
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
-	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_GRAPPLING;}
-	@Override public long flags(){return Ability.FLAG_BINDING;}
-	@Override public int usageType(){return USAGE_MOVEMENT;}
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL|Ability.DOMAIN_GRAPPLING;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_BINDING;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT;
+	}
+
 	protected MOB pairedWith=null;
 
 	@Override
@@ -146,8 +192,6 @@ public class Fighter_Pin extends FighterSkill
 		}
 	}
 
-
-
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -194,9 +238,15 @@ public class Fighter_Pin extends FighterSkill
 					Fighter_Pin targetPin = (Fighter_Pin)target.fetchEffect(ID());
 					Fighter_Pin sourcePin = (Fighter_Pin)mob.fetchEffect(ID());
 					if((targetPin != null) && (sourcePin == null))
-					{	targetPin.unInvoke(); targetPin = null;}
+					{
+						targetPin.unInvoke();
+						targetPin = null;
+					}
 					if((sourcePin != null) && (targetPin == null))
-					{	sourcePin.unInvoke(); sourcePin = null;}
+					{
+						sourcePin.unInvoke();
+						sourcePin = null;
+					}
 					if(sourcePin != null)
 						sourcePin.pairedWith = target;
 					if(targetPin != null)

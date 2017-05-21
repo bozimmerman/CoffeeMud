@@ -96,7 +96,6 @@ public class DefaultClanGovernment implements ClanGovernment
 	/**  Whether this is the default government  */
 	public boolean	isDefault 		 = false;
 	
-	
 	/** The list of ClanPosition objects for each holdable position in this government */
 	public ClanPosition[] 				positions;
 	/** Whether an unfilled topRole is automatically filled by those who meet its innermask  */
@@ -771,6 +770,7 @@ public class DefaultClanGovernment implements ClanGovernment
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public void setStat(String code, String val)
 	{
@@ -1101,6 +1101,7 @@ public class DefaultClanGovernment implements ClanGovernment
 			final Object lineDraw = new Object()
 			{
 				private static final String line = "----------------------------------------------------------------------------";
+
 				@Override
 				public String toString()
 				{

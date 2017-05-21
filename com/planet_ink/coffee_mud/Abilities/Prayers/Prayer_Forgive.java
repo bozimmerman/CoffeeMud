@@ -35,14 +35,49 @@ import java.util.*;
 
 public class Prayer_Forgive extends Prayer
 {
-	@Override public String ID() { return "Prayer_Forgive"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_Forgive";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Forgive");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
-	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
-	@Override protected int canAffectCode(){return 0;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
-	@Override public long flags(){return Ability.FLAG_HOLY;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_OTHERS;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_HOLY;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -98,7 +133,6 @@ public class Prayer_Forgive extends Prayer
 		}
 		else
 			beneficialWordsFizzle(mob,null,L("<S-NAME> @x1 to forgive @x2, but nothing happens.",prayForWord(mob),name));
-
 
 		// return whether it worked
 		return success;

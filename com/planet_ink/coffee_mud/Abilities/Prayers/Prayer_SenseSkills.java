@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -35,9 +34,29 @@ import java.util.*;
 */
 public class Prayer_SenseSkills extends Prayer_SenseProfessions
 {
-	@Override public String ID() { return "Prayer_SenseSkills"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_SenseSkills";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Sense Skills");
-	@Override public String name() { return localizedName; }
-	@Override protected int senseWhat() { return ACODE_SKILL; }
-	@Override protected String senseWhatStr() { return "skills"; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int senseWhat()
+	{
+		return ACODE_SKILL;
+	}
+
+	@Override
+	protected String senseWhatStr()
+	{
+		return "skills";
+	}
 }

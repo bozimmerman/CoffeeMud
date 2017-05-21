@@ -36,13 +36,43 @@ import java.util.*;
 
 public class Prayer_TrueResurrection extends Prayer_Resurrect
 {
-	@Override public String ID() { return "Prayer_TrueResurrection"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_TrueResurrection";
+	}
+
 	private final static String localizedName = CMLib.lang().L("True Resurrection");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_DEATHLORE;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	@Override public long flags(){return Ability.FLAG_HOLY;}
-	@Override protected int canTargetCode(){return 0;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_DEATHLORE;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_HOLY;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
 
 	public Item findCorpseRoom(List<Item> candidates)
 	{

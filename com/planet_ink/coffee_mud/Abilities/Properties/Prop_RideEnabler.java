@@ -15,8 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
 import java.util.*;
 
 /*
@@ -37,16 +35,37 @@ import java.util.*;
 
 public class Prop_RideEnabler extends Prop_HaveEnabler
 {
-	@Override public String ID() { return "Prop_RideEnabler"; }
-	@Override public String name(){ return "Granting skills when ridden";}
-	@Override protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_MOBS;}
+	@Override
+	public String ID()
+	{
+		return "Prop_RideEnabler";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Granting skills when ridden";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ITEMS|Ability.CAN_MOBS;
+	}
+
 	protected Vector<Rider> lastRiders=new Vector<Rider>();
 
 	@Override
 	public String accountForYourself()
-	{ return spellAccountingsWithMask("Grants "," to those mounted.");}
+	{
+		return spellAccountingsWithMask("Grants "," to those mounted.");
+	}
 
-	@Override public int triggerMask() { return TriggeredAffect.TRIGGER_MOUNT; }
+	@Override
+	public int triggerMask()
+	{
+		return TriggeredAffect.TRIGGER_MOUNT;
+	}
 
 	@Override
 	public void setMiscText(String newText)

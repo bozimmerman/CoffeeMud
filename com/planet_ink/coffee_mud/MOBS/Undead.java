@@ -72,5 +72,4 @@ public class Undead extends StdMOB
 		recoverCharStats();
 	}
 
-
 }

@@ -33,16 +33,45 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Chant_GroveWalk extends Chant
 {
-	@Override public String ID() { return "Chant_GroveWalk"; }
+	@Override
+	public String ID()
+	{
+		return "Chant_GroveWalk";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Grove Walk");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return 0;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -53,7 +82,6 @@ public class Chant_GroveWalk extends Chant
 			return false;
 		}
 		final String areaName=CMParms.combine(commands,0).trim().toUpperCase();
-
 
 		Room newRoom=null;
 		final boolean hereok=mob.location().findItem(null,"DruidicMonument")!=null;
@@ -74,7 +102,10 @@ public class Chant_GroveWalk extends Chant
 				if(newRoom!=null)
 					break;
 			}
-		}catch(final NoSuchElementException e){}
+		}
+		catch(final NoSuchElementException e)
+		{
+		}
 		if(!hereok)
 		{
 			mob.tell(L("There is no druidic monument here.  You can only use this chant in a druidic grove."));
@@ -126,7 +157,6 @@ public class Chant_GroveWalk extends Chant
 		}
 		else
 			beneficialVisualFizzle(mob,newRoom,L("<S-NAME> chant(s) and walk(s) around, but nothing happens."));
-
 
 		// return whether it worked
 		return success;

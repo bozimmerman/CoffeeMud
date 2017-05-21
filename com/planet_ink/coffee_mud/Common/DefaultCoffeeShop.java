@@ -385,11 +385,13 @@ public class DefaultCoffeeShop implements CoffeeShop
 			}
 		}
 		for(final ShelfProduct SP : storeInventory)
+		{
 			if(shopCompare(SP.product,thisThang))
 			{
 				storeInventory.remove(SP);
 				SP.product.destroy();
 			}
+		}
 	}
 
 	@Override
@@ -410,7 +412,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 				item=CMLib.english().fetchEnvironmental(titles,name,false);
 		}
 		if(item!=null)
-		   return true;
+			return true;
 		return false;
 	}
 
@@ -456,7 +458,6 @@ public class DefaultCoffeeShop implements CoffeeShop
 		}
 		return item;
 	}
-
 
 	@Override
 	public Environmental removeStock(String name, MOB mob)

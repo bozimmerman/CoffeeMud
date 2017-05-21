@@ -136,6 +136,9 @@ public interface GridZones extends Environmental
 		public int x;
 		public int y;
 		public XYVector(int x, int y)
-		{ this.x=x; this.y=y;}
+		{
+			this.x=x;
+			this.y=y;
+		}
 	}
 }

@@ -35,18 +35,70 @@ import java.util.*;
 
 public class Prayer_HealingAura extends Prayer
 {
-	@Override public String ID() { return "Prayer_HealingAura"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_HealingAura";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Healing Aura");
-	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HEALING;}
-	@Override public long flags(){return Ability.FLAG_NEUTRAL;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_OTHERS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_HEALING;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_NEUTRAL;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Healing Aura)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public boolean  canBeUninvoked(){return false;}
-	@Override public boolean  isAutoInvoked(){return true;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public boolean  canBeUninvoked()
+	{
+		return false;
+	}
+
+	@Override
+	public boolean  isAutoInvoked()
+	{
+		return true;
+	}
+
 	protected int fiveDown=5;
 	protected int tenDown=10;
 	protected int twentyDown=20;
@@ -68,7 +120,7 @@ public class Prayer_HealingAura extends Prayer
 		if(!super.tick(ticking,tickID))
 			return false;
 		if(!(affected instanceof MOB))
-		   return false;
+			return false;
 		if(tickID!=Tickable.TICKID_MOB)
 			return true;
 		final MOB myChar=(MOB)affected;
@@ -77,6 +129,7 @@ public class Prayer_HealingAura extends Prayer
 
 		final Set<MOB> followers=myChar.getGroupMembers(new HashSet<MOB>());
 		if(myChar.location()!=null)
+		{
 			for(int i=0;i<myChar.location().numInhabitants();i++)
 			{
 				final MOB M=myChar.location().fetchInhabitant(i);
@@ -84,6 +137,7 @@ public class Prayer_HealingAura extends Prayer
 				&&((M.getVictim()==null)||(!followers.contains(M.getVictim()))))
 					followers.add(M);
 			}
+		}
 		if((fiveDown)<=0)
 		{
 			fiveDown=5;

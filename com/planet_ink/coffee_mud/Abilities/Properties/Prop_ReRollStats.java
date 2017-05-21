@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.io.IOException;
 import java.util.*;
 
@@ -36,9 +35,24 @@ import java.util.*;
 */
 public class Prop_ReRollStats extends Property
 {
-	@Override public String ID() { return "Prop_ReRollStats"; }
-	@Override public String name(){ return "Re Roll Stats";}
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
+	@Override
+	public String ID()
+	{
+		return "Prop_ReRollStats";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Re Roll Stats";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
 	protected int bonusPointsPerStat=0;
 	protected boolean reRollFlag=true;
 	protected boolean rePickClass=false;
@@ -86,7 +100,9 @@ public class Prop_ReRollStats extends Property
 							M.delEffect(me);
 							M.baseCharStats().getCurrentClass().grantAbilities(M, false);
 						}
-						catch (final IOException e){}
+						catch (final IOException e)
+						{
+						}
 					}
 				});
 			}

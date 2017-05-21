@@ -88,6 +88,7 @@ public class MobileAggressive extends Mobile
 		misbehave=V.contains("MISBEHAVE");
 		this.mask=CMLib.masking().getPreCompiledMask(newParms);
 	}
+
 	@Override
 	public boolean grantsAggressivenessTo(MOB M)
 	{

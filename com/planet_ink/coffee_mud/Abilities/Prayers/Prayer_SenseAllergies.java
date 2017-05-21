@@ -35,13 +35,43 @@ import java.util.*;
 
 public class Prayer_SenseAllergies extends Prayer
 {
-	@Override public String ID() { return "Prayer_SenseAllergies"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_SenseAllergies";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Sense Allergies");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
-	@Override public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	@Override public long flags(){return Ability.FLAG_HOLY;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;
+	}
+
+	@Override
+	public int enchantQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_SELF;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_HOLY;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -90,7 +120,6 @@ public class Prayer_SenseAllergies extends Prayer
 			beneficialWordsFizzle(mob,target,auto?"":L("<S-NAME> close(s) <T-HIS-HER> eyes and peer(s) into <T-HIS-HER> own nostrils, but then blink(s)."));
 		else
 			beneficialWordsFizzle(mob,target,auto?"":L("<S-NAME> peer(s) into the nostrils of <T-NAMESELF>, but then blink(s)."));
-
 
 		// return whether it worked
 		return success;

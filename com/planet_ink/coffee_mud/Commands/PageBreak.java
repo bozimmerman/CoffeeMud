@@ -38,7 +38,11 @@ public class PageBreak extends StdCommand
 	public PageBreak(){}
 
 	private final String[] access=I(new String[]{"PAGEBREAK"});
-	@Override public String[] getAccessWords(){return access;}
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
@@ -71,8 +75,11 @@ public class PageBreak extends StdCommand
 		return false;
 	}
 
-	@Override public boolean canBeOrdered(){return true;}
-
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 
 }
 

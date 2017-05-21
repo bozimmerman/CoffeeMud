@@ -48,5 +48,4 @@ public class Broom extends Quarterstaff
 		material=RawMaterial.RESOURCE_OAK;
 	}
 
-
 }

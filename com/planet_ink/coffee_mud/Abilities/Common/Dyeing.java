@@ -33,22 +33,46 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Dyeing extends CommonSkill
 {
-	@Override public String ID() { return "Dyeing"; }
+	@Override
+	public String ID()
+	{
+		return "Dyeing";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Dyeing");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"DYE","DYEING"});
-	@Override public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ARTISTIC; }
-	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ARTISTIC;
+	}
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
 
 	protected Item found=null;
 	protected String writing="";
 	protected boolean brightFlag = false;
 	protected boolean lightFlag = false;
 	protected boolean darkFlag = false;
-	@Override protected boolean canBeDoneSittingDown() { return true; }
+
+	@Override
+	protected boolean canBeDoneSittingDown()
+	{
+		return true;
+	}
 
 	public Dyeing()
 	{
@@ -142,7 +166,6 @@ public class Dyeing extends CommonSkill
 		}
 		super.unInvoke();
 	}
-
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)

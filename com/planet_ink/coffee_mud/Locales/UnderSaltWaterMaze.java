@@ -62,7 +62,6 @@ public class UnderSaltWaterMaze extends UnderWaterMaze
 		return 0;
 	}
 
-
 	@Override
 	public String getGridChildLocaleID()
 	{

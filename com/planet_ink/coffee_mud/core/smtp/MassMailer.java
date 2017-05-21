@@ -126,7 +126,6 @@ public class MassMailer implements Runnable
 		return false;
 	}
 
-
 	@Override
 	public void run()
 	{

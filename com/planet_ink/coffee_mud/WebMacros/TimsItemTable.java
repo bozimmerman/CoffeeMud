@@ -48,7 +48,6 @@ public class TimsItemTable extends StdWebMacro
 		return true;
 	}
 
-
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
 	{

@@ -1278,7 +1278,6 @@ public interface RawMaterial extends Item
 			return data[code & RESOURCE_MASK][2];
 		}
 
-
 		/**
 		 * Returns the resource code of the most frequently found
 		 * resource of the given material mask

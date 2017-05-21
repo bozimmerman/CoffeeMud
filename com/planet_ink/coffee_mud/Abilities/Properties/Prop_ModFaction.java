@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -119,10 +118,16 @@ public class Prop_ModFaction extends Property
 		{
 			factionID=s.substring(0,x).trim();
 			if(factionID.startsWith("+"))
-			{ gainonly=true; factionID=factionID.substring(1).trim();}
+			{
+				gainonly=true;
+				factionID=factionID.substring(1).trim();
+			}
 			else
 			if(factionID.startsWith("-"))
-			{ lossonly=true; factionID=factionID.substring(1).trim();}
+			{
+				lossonly=true;
+				factionID=factionID.substring(1).trim();
+			}
 			s=s.substring(x+1).trim();
 		}
 		if(factionID.trim().equalsIgnoreCase("REACTION"))

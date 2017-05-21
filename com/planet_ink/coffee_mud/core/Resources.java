@@ -8,8 +8,6 @@ import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.util.*;
 
-
-
 /*
    Copyright 2001-2017 Bo Zimmerman
 

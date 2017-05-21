@@ -236,6 +236,7 @@ public class SortedListWrap<T extends Comparable<T>> implements List<T>
 	}
 
 	@SuppressWarnings("hiding")
+
 	@Override
 	public <T> T[] toArray(T[] arg0)
 	{

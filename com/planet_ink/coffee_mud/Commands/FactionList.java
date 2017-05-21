@@ -37,7 +37,12 @@ public class FactionList extends StdCommand
 	public FactionList(){}
 
 	private final String[] access=I(new String[]{"FACTIONS","FAC"});
-	@Override public String[] getAccessWords(){return access;}
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
+
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
@@ -104,8 +109,10 @@ public class FactionList extends StdCommand
 		return bar.toString();
 	}
 
-
-	@Override public boolean canBeOrdered(){return true;}
-
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 
 }

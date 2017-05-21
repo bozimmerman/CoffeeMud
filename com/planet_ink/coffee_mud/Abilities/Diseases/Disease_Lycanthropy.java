@@ -35,26 +35,97 @@ import java.util.*;
 
 public class Disease_Lycanthropy extends Disease
 {
-	@Override public String ID() { return "Disease_Lycanthropy"; }
-	private final static String localizedName = CMLib.lang().L("Lycanthropy");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Lycanthropy)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public boolean putInCommandlist(){return false;}
+	@Override
+	public String ID()
+	{
+		return "Disease_Lycanthropy";
+	}
 
-	@Override protected int DISEASE_TICKS(){return 9999999;}
-	@Override protected int DISEASE_DELAY(){return 50;}
-	@Override protected String DISEASE_DONE(){return L("Your lycanthropy is cured.");}
-	@Override protected String DISEASE_START(){return L("^G<S-NAME> feel(s) different.^?");}
-	@Override protected String DISEASE_AFFECT(){return "";}
+	private final static String localizedName = CMLib.lang().L("Lycanthropy");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Lycanthropy)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public boolean putInCommandlist()
+	{
+		return false;
+	}
+
+	@Override
+	protected int DISEASE_TICKS()
+	{
+		return 9999999;
+	}
+
+	@Override
+	protected int DISEASE_DELAY()
+	{
+		return 50;
+	}
+
+	@Override
+	protected String DISEASE_DONE()
+	{
+		return L("Your lycanthropy is cured.");
+	}
+
+	@Override
+	protected String DISEASE_START()
+	{
+		return L("^G<S-NAME> feel(s) different.^?");
+	}
+
+	@Override
+	protected String DISEASE_AFFECT()
+	{
+		return "";
+	}
+
 	protected boolean DISEASE_STD(){return false;}
-	@Override public int difficultyLevel(){return 8;}
+	@Override
+	public int difficultyLevel()
+	{
+		return 8;
+	}
 
 	protected boolean changed=false;
-	@Override public int spreadBitmap(){return DiseaseAffect.SPREAD_CONSUMPTION|DiseaseAffect.SPREAD_DAMAGE;}
+
+	@Override
+	public int spreadBitmap()
+	{
+		return DiseaseAffect.SPREAD_CONSUMPTION|DiseaseAffect.SPREAD_DAMAGE;
+	}
+
 	protected List<Room> deathTrail=null;
 	protected Race theRace=null;
 	protected Race lycanRace()
@@ -81,6 +152,7 @@ public class Disease_Lycanthropy extends Disease
 			lycanRace().setHeightWeight(affectableStats,'M');
 		}
 	}
+
 	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
@@ -158,7 +230,7 @@ public class Disease_Lycanthropy extends Disease
 			return;
 		}
 		if((deathTrail!=null)&&(!deathTrail.contains(mob.location())))
-		   deathTrail=null;
+			deathTrail=null;
 		if(deathTrail==null)
 		{
 			final Vector<Room> rooms=new Vector<Room>();

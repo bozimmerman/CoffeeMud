@@ -35,12 +35,37 @@ import java.util.*;
 
 public class Chant_MetalMold extends Chant
 {
-	@Override public String ID() { return "Chant_MetalMold"; }
+	@Override
+	public String ID()
+	{
+		return "Chant_MetalMold";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Metal Mold");
-	@Override public String name() { return localizedName; }
-	@Override protected int canTargetCode(){return CAN_MOBS|CAN_ITEMS;}
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS|CAN_ITEMS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
 
 	private Item findMobTargetItem(MOB mobTarget)
 	{
@@ -126,8 +151,6 @@ public class Chant_MetalMold extends Chant
 			return maliciousFizzle(mob,target,L("<S-NAME> chant(s) at <T-NAME> for mold, but nothing happens."));
 		else
 			return maliciousFizzle(mob,null,L("<S-NAME> chant(s) for mold, but nothing happens."));
-
-
 
 		// return whether it worked
 		return success;

@@ -56,7 +56,6 @@ public class Natural extends StdWeapon
 		weaponClassification=Weapon.CLASS_NATURAL;
 	}
 
-
 	@Override
 	public String hitString(int damageAmount)
 	{

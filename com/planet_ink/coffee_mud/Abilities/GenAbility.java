@@ -117,6 +117,7 @@ public class GenAbility extends StdAbility
 		O[V_CHAN]=Boolean.FALSE;
 		return O;
 	}
+
 	private static final Object V(String ID, int varNum)
 	{
 		if(vars.containsKey(ID))
@@ -777,6 +778,7 @@ public class GenAbility extends StdAbility
 		if(isChannelingSkill())
 			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_AUTO_ATTACK);
 	}
+
 	@Override
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
 	{
@@ -785,6 +787,7 @@ public class GenAbility extends StdAbility
 			A.affectCharStats(affectedMob,affectableStats);
 
 	}
+
 	@Override
 	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
 	{
@@ -856,7 +859,12 @@ public class GenAbility extends StdAbility
 	}
 
 	// lots of work to be done here
-	@Override public int getSaveStatIndex(){return getStatCodes().length;}
+	@Override
+	public int getSaveStatIndex()
+	{
+		return getStatCodes().length;
+	}
+
 	private static final String[] CODES={"CLASS",//0
 										 "TEXT",//1
 										 "NAME",//2S
@@ -1261,6 +1269,7 @@ public class GenAbility extends StdAbility
 				setStat(statCode,CMLib.xml().restoreAngleBrackets(value));
 		}
 	}
+
 	private String getAllXML()
 	{
 		final StringBuffer str=new StringBuffer("");

@@ -33,7 +33,6 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Chant_Farsight extends Chant
 {
 	@Override
@@ -84,7 +83,6 @@ public class Chant_Farsight extends Chant
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-
 
 		boolean success=proficiencyCheck(mob,0,auto);
 

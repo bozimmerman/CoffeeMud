@@ -38,7 +38,11 @@ public class Crawl extends Go
 	public Crawl(){}
 
 	private final String[] access=I(new String[]{"CRAWL","CR"});
-	@Override public String[] getAccessWords(){return access;}
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
 	@Override
 	public boolean preExecute(MOB mob, List<String> commands, int metaFlags, int secondsElapsed, double actionsRemaining)
@@ -55,6 +59,7 @@ public class Crawl extends Go
 		}
 		return true;
 	}
+
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
@@ -77,17 +82,23 @@ public class Crawl extends Go
 		}
 		return false;
 	}
+
 	@Override
 	public double actionsCost(final MOB mob, final List<String> cmds)
 	{
 		return CMProps.getCommandActionCost(ID(), CMath.greater(CMath.div(CMProps.getIntVar(CMProps.Int.DEFCMDTIME),50.0),1.0));
 	}
+
 	@Override
 	public double combatActionsCost(MOB mob, List<String> cmds)
 	{
 		return CMProps.getCommandCombatActionCost(ID(), CMath.greater(CMath.div(CMProps.getIntVar(CMProps.Int.DEFCOMCMDTIME),50.0),2.0));
 	}
-	@Override public boolean canBeOrdered(){return true;}
 
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 
 }

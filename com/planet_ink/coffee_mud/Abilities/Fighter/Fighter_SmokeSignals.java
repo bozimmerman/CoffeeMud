@@ -33,7 +33,6 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Fighter_SmokeSignals extends FighterSkill
 {
 	@Override
@@ -173,7 +172,6 @@ public class Fighter_SmokeSignals extends FighterSkill
 			mob.tell(L("You won't be able to get a signal up in these weather conditions."));
 			return false;
 		}
-
 
 		if(commands.size()==0)
 		{

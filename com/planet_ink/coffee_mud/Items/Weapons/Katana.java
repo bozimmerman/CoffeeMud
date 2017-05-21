@@ -56,5 +56,4 @@ public class Katana extends Sword
 		weaponDamageType=TYPE_SLASHING;
 	}
 
-
 }

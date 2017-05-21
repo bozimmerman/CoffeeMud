@@ -55,7 +55,6 @@ public class BrownBear extends StdMOB
 
 		basePhyStats.setWeight(450 + Math.abs(randomizer.nextInt() % 55));
 
-
 		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,1);
 		baseCharStats().setStat(CharStats.STAT_STRENGTH,18);
 		baseCharStats().setStat(CharStats.STAT_DEXTERITY,16);

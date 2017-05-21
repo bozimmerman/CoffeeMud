@@ -55,7 +55,6 @@ public class GlowingMageArmor extends StdArmor
 		recoverPhyStats();
 	}
 
-
 	@Override
 	public boolean isSavable()
 	{

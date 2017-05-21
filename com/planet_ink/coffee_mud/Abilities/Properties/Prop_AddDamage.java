@@ -34,9 +34,24 @@ import java.util.*;
 */
 public class Prop_AddDamage extends Property implements TriggeredAffect
 {
-	@Override public String ID() { return "Prop_AddDamage"; }
-	@Override public String name(){ return "Additional Damage";}
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
+	@Override
+	public String ID()
+	{
+		return "Prop_AddDamage";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Additional Damage";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS|Ability.CAN_ITEMS;
+	}
+
 	protected int weaponDamageType=Weapon.TYPE_NATURAL;
 	protected int typeOfEffect=CMMsg.TYP_WEAPONATTACK;
 	protected double pctDamage=0.0;

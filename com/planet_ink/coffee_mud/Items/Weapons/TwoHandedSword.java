@@ -58,5 +58,4 @@ public class TwoHandedSword extends Sword
 		weaponDamageType=TYPE_SLASHING;
 	}
 
-
 }

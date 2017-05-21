@@ -33,7 +33,6 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Prayer_FeedTheDead extends Prayer
 {
 	@Override
@@ -158,7 +157,6 @@ public class Prayer_FeedTheDead extends Prayer
 		}
 		else
 			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 for <T-NAMESELF> to be fed, but nothing happens.",prayWord(mob)));
-
 
 		// return whether it worked
 		return success;

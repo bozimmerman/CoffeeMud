@@ -34,7 +34,6 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Paralysis extends StdAbility implements HealthCondition
 {
 	@Override
@@ -178,7 +177,6 @@ public class Paralysis extends StdAbility implements HealthCondition
 		}
 		else
 			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to paralyze <T-NAMESELF>, but fail(s)!"));
-
 
 		// return whether it worked
 		return success;

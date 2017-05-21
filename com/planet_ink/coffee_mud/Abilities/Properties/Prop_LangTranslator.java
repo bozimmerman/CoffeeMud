@@ -69,7 +69,9 @@ public class Prop_LangTranslator extends Property implements Language
 
 	@Override
 	public String accountForYourself()
-	{ return "Translates spoken language";	}
+	{
+		return "Translates spoken language";
+	}
 
 	@Override
 	public void setMiscText(String text)
@@ -99,6 +101,7 @@ public class Prop_LangTranslator extends Property implements Language
 	{
 		return Arrays.asList(langs.toArrayFirst(new String[0]));
 	}
+
 	@Override
 	public boolean translatesLanguage(String language)
 	{
@@ -122,8 +125,10 @@ public class Prop_LangTranslator extends Property implements Language
 	public int getProficiency(String language)
 	{
 		for(int i=0;i<langs.size();i++)
+		{
 			if(langs.get(i).first.equalsIgnoreCase(language))
 				return langs.get(i).second.intValue();
+		}
 		return 0;
 	}
 

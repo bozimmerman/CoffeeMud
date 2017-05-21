@@ -35,22 +35,72 @@ import java.util.*;
 
 public class Prayer_Tremor extends Prayer
 {
-	@Override public String ID() { return "Prayer_Tremor"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_Tremor";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Tremor");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Tremor)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public int maxRange(){return adjustedMaxInvokerRange(3);}
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public long flags(){return Ability.FLAG_NEUTRAL;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public int maxRange()
+	{
+		return adjustedMaxInvokerRange(3);
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_NEUTRAL;
+	}
+
 	protected boolean oncePerRd=false;
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
-	{ oncePerRd=false; return super.tick(ticking,tickID);}
+	{
+		oncePerRd=false;
+		return super.tick(ticking,tickID);
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
@@ -62,7 +112,6 @@ public class Prayer_Tremor extends Prayer
 		// can get them out of it.
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SITTING);
 	}
-
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
@@ -129,6 +178,7 @@ public class Prayer_Tremor extends Prayer
 		{
 
 			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),L(auto?"":"^S<S-NAME> "+prayWord(mob)+" thunderously.^?")+CMLib.protocol().msp("earthquake.wav",40)))
+			{
 				for (final Object element : h)
 				{
 					final MOB target=(MOB)element;
@@ -156,10 +206,10 @@ public class Prayer_Tremor extends Prayer
 						}
 					}
 				}
+			}
 		}
 		else
 			return maliciousFizzle(mob,null,L("<S-NAME> @x1 thunderously, but nothing happens.",prayWord(mob)));
-
 
 		// return whether it worked
 		return success;

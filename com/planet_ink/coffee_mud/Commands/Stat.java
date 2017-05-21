@@ -39,7 +39,11 @@ public class Stat  extends Skills
 	public Stat(){}
 
 	private final String[] access=I(new String[]{"STAT"});
-	@Override public String[] getAccessWords(){return access;}
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
 	public static final int ABLETYPE_EQUIPMENT=-2;
 	public static final int ABLETYPE_INVENTORY=-3;
@@ -95,8 +99,10 @@ public class Stat  extends Skills
 	{
 		StringBuilder str=new StringBuilder("");
 		for(int i=0;i<PhyStats.CAN_SEE_DESCS.length;i++)
+		{
 			if(CMath.isSet(senseMask, i))
 				str.append(PhyStats.CAN_SEE_DESCS[i].replace(' ','_')).append(" ");
+		}
 		if(str.length()==0)
 			str.append("NONE");
 		return str.toString().trim();
@@ -106,8 +112,10 @@ public class Stat  extends Skills
 	{
 		StringBuilder str=new StringBuilder("");
 		for(int i=0;i<PhyStats.IS_DESCS.length;i++)
+		{
 			if(CMath.isSet(dispositionMask, i))
 				str.append(PhyStats.IS_DESCS[i].replace(' ','_')).append(" ");
+		}
 		if(str.length()==0)
 			str.append("NONE");
 		return str.toString().trim();
@@ -311,7 +319,11 @@ public class Stat  extends Skills
 						V.remove(v);
 					}
 				}
-				if(set.size()==0){ set.addAll(V); V.clear();}
+				if(set.size()==0)
+				{
+					set.addAll(V);
+					V.clear();
+				}
 				for(int s=0;s<set.size();s++)
 				{
 					final CoffeeTableRow T=set.get(s);
@@ -753,11 +765,13 @@ public class Stat  extends Skills
 					str.append(L("Titles:"));
 					final StringBuffer ttl=new StringBuffer("");
 					if(target.playerStats()!=null)
+					{
 						for(int t=0;t<target.playerStats().getTitles().size();t++)
 						{
 							final String title = target.playerStats().getTitles().get(t);
 							ttl.append(" "+title+",");
 						}
+					}
 					if(ttl.length()==0)
 						ttl.append(L(" None!"));
 					ttl.deleteCharAt(ttl.length()-1);
@@ -1498,12 +1512,14 @@ public class Stat  extends Skills
 		M.recoverMaxState();
 		M.resetToMaxState();
 	}
+
 	public void testMOB(MOB target,MOB M, Environmental test)
 	{
 		test.affectCharStats(target,M.charStats());
 		test.affectPhyStats(target,M.phyStats());
 		test.affectCharState(target,M.maxState());
 	}
+
 	public void reportOnDiffMOB(String name, int diff, StringBuilder str)
 	{
 		if(diff>0)

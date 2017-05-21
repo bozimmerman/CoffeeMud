@@ -180,11 +180,11 @@ public class Chant_WhisperWard extends Chant implements Trap
 		unInvoke();
 		return;
 	}
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
-
 
 		if(affected==null)
 		{
@@ -230,8 +230,6 @@ public class Chant_WhisperWard extends Chant implements Trap
 
 	}
 
-
-	
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -298,7 +296,6 @@ public class Chant_WhisperWard extends Chant implements Trap
 		}
 		else
 			beneficialWordsFizzle(mob,target,L("<S-NAME> chant(s) to <T-NAMESELF>, but the magic fizzles."));
-
 
 		// return whether it worked
 		return success;

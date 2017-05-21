@@ -56,7 +56,6 @@ public class Lantern extends LightSource
 		baseGoldValue=60;
 	}
 
-
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{

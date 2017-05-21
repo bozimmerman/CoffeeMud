@@ -17,8 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
-
 /*
    Copyright 2003-2017 Bo Zimmerman
 
@@ -131,6 +129,7 @@ public class Gaian extends StdCharClass
 		maxStatAdj[CharStats.STAT_CONSTITUTION]=4;
 		maxStatAdj[CharStats.STAT_WISDOM]=4;
 	}
+
 	@Override
 	public void initializeClass()
 	{
@@ -260,7 +259,6 @@ public class Gaian extends StdCharClass
 		return false;
 	}
 
-
 	private final String[] raceRequiredList=new String[]{
 		"Human","Elf","Vegetation","Humanoid","Centaur",
 		"LizardMan","Aarakocran","Merfolk","Faerie","-Drow"
@@ -343,6 +341,7 @@ public class Gaian extends StdCharClass
 		}
 
 	}
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{

@@ -3,7 +3,6 @@ package com.planet_ink.coffee_mud.core.collections;
 import java.io.Serializable;
 import java.util.*;
 
-
 /*
    Copyright 2012-2017 Bo Zimmerman
 
@@ -33,6 +32,7 @@ public class CMList<K> implements Serializable, Cloneable, Iterable<K>, Collecti
 		public CMListNode randPrev=null;
 		public CMListNode(K obj) { this.obj=obj;}
 	}
+
 	private volatile CMListNode randNode=null;
 	private volatile CMListNode head=null;
 	private volatile CMListNode tail=null;
@@ -253,12 +253,14 @@ public class CMList<K> implements Serializable, Cloneable, Iterable<K>, Collecti
 		{
 			CMListNode curr=head;
 			for(int i=1;i<arg0;i++)
+			{
 				if(curr.next!=null)
 				{
 					if(!curr.active)
 						i--;
 					curr=curr.next;
 				}
+			}
 			return curr;
 		}
 	}
@@ -410,7 +412,13 @@ public class CMList<K> implements Serializable, Cloneable, Iterable<K>, Collecti
 						nextNode=nextNode.next;
 				}
 			}
-			@Override public boolean hasMoreElements() { return nextNode != null; }
+
+			@Override
+			public boolean hasMoreElements()
+			{
+				return nextNode != null;
+			}
+
 			@Override
 			public K nextElement()
 			{
@@ -440,7 +448,13 @@ public class CMList<K> implements Serializable, Cloneable, Iterable<K>, Collecti
 						nextNode=nextNode.prev;
 				}
 			}
-			@Override public boolean hasNext() { return nextNode != null; }
+
+			@Override
+			public boolean hasNext()
+			{
+				return nextNode != null;
+			}
+
 			@Override
 			public K next()
 			{
@@ -451,6 +465,7 @@ public class CMList<K> implements Serializable, Cloneable, Iterable<K>, Collecti
 				makeNext();
 				return obj;
 			}
+
 			@Override
 			public void remove()
 			{
@@ -551,7 +566,12 @@ public class CMList<K> implements Serializable, Cloneable, Iterable<K>, Collecti
 				}
 			}
 
-			@Override public boolean hasNext() { return nextNode != null; }
+			@Override
+			public boolean hasNext()
+			{
+				return nextNode != null;
+			}
+
 			@Override
 			public K next()
 			{
@@ -562,17 +582,25 @@ public class CMList<K> implements Serializable, Cloneable, Iterable<K>, Collecti
 				makeNext();
 				return obj;
 			}
+
 			@Override
 			public void remove()
 			{
 				removeNode(lastNode);
 			}
+
 			@Override
 			public void add(K arg0)
 			{
 				addAfter(prevNode,arg0);
 			}
-			@Override public boolean hasPrevious() { return prevNode != null; }
+
+			@Override
+			public boolean hasPrevious()
+			{
+				return prevNode != null;
+			}
+
 			@Override
 			public int nextIndex()
 			{
@@ -580,6 +608,7 @@ public class CMList<K> implements Serializable, Cloneable, Iterable<K>, Collecti
 					return size;
 				return nextIndex;
 			}
+
 			@Override
 			public K previous()
 			{
@@ -590,6 +619,7 @@ public class CMList<K> implements Serializable, Cloneable, Iterable<K>, Collecti
 				makePrev();
 				return obj;
 			}
+
 			@Override
 			public int previousIndex()
 			{
@@ -597,6 +627,7 @@ public class CMList<K> implements Serializable, Cloneable, Iterable<K>, Collecti
 					return -1;
 				return nextIndex-1;
 			}
+
 			@Override
 			public void set(K arg0)
 			{
@@ -775,6 +806,7 @@ public class CMList<K> implements Serializable, Cloneable, Iterable<K>, Collecti
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public synchronized <T> T[] toArray(T[] arg0)
 	{
@@ -837,8 +869,10 @@ public class CMList<K> implements Serializable, Cloneable, Iterable<K>, Collecti
 	public boolean containsAll(Collection<?> c)
 	{
 		for(final Object o : c)
+		{
 			if(!contains(o))
 				return false;
+		}
 		return true;
 	}
 

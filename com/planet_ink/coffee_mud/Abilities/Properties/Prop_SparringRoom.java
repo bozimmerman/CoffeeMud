@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -35,9 +34,23 @@ import java.util.*;
 */
 public class Prop_SparringRoom extends Property
 {
-	@Override public String ID() { return "Prop_SparringRoom"; }
-	@Override public String name(){ return "Player Death Neutralizing";}
-	@Override protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_MOBS;}
+	@Override
+	public String ID()
+	{
+		return "Prop_SparringRoom";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Player Death Neutralizing";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_MOBS;
+	}
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)

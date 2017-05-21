@@ -34,12 +34,23 @@ import java.util.*;
 */
 public class Prop_WearResister extends Prop_HaveResister
 {
-	@Override public String ID() { return "Prop_WearResister"; }
-	@Override public String name(){ return "Resistance due to worn";}
+	@Override
+	public String ID()
+	{
+		return "Prop_WearResister";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Resistance due to worn";
+	}
 
 	@Override
 	public String accountForYourself()
-	{ return "The wearer gains resistances: "+describeResistance(text());}
+	{
+		return "The wearer gains resistances: "+describeResistance(text());
+	}
 
 	public boolean checked=false;
 	public boolean disabled=false;
@@ -53,7 +64,11 @@ public class Prop_WearResister extends Prop_HaveResister
 
 	public void check(MOB mob, Armor A)
 	{
-		if(!layered){ checked=true; disabled=false;}
+		if(!layered)
+		{
+			checked=true;
+			disabled=false;
+		}
 		if(A.amWearingAt(Wearable.IN_INVENTORY))
 		{
 			checked=false;

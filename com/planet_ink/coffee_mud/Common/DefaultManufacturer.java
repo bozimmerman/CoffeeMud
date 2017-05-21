@@ -145,7 +145,6 @@ public class DefaultManufacturer implements Manufacturer
 		return reliability;
 	}
 
-
 	@Override
 	public void setReliabilityPct(double pct)
 	{

@@ -33,18 +33,54 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Chant_Unbreakable extends Chant
 {
-	@Override public String ID() { return "Chant_Unbreakable"; }
+	@Override
+	public String ID()
+	{
+		return "Chant_Unbreakable";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Unbreakable");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Unbreakable)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PRESERVING;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	@Override protected int canAffectCode(){return CAN_ITEMS;}
-	@Override protected int canTargetCode(){return CAN_ITEMS;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT|Ability.DOMAIN_PRESERVING;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_ITEMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_ITEMS;
+	}
+
 	protected int maintainCondition=100;
 
 	@Override
@@ -85,8 +121,6 @@ public class Chant_Unbreakable extends Chant
 		return true;
 	}
 
-
-
 	@Override
 	public void unInvoke()
 	{
@@ -100,7 +134,6 @@ public class Chant_Unbreakable extends Chant
 		}
 		super.unInvoke();
 	}
-
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)

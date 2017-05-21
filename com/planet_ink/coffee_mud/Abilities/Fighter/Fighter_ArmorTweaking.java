@@ -33,20 +33,65 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Fighter_ArmorTweaking extends FighterSkill
 {
-	@Override public String ID() { return "Fighter_ArmorTweaking"; }
+	@Override
+	public String ID()
+	{
+		return "Fighter_ArmorTweaking";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Armor Tweaking");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"ARMORTWEAK","TWEAK"});
-	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
-	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}
-	@Override public int maxRange(){return adjustedMaxInvokerRange(0);}
-	@Override public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_ARMORUSE;}
-	@Override public int usageType(){return USAGE_MANA;}
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_OTHERS;
+	}
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ITEMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_ITEMS;
+	}
+
+	@Override
+	public int maxRange()
+	{
+		return adjustedMaxInvokerRange(0);
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL|Ability.DOMAIN_ARMORUSE;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MANA;
+	}
+
 	private int armorBonus = 1;
 
 	@Override
@@ -149,7 +194,11 @@ public class Fighter_ArmorTweaking extends FighterSkill
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,armor,asLevel,0);
 				final Ability A=armor.fetchEffect(ID());
-				if(A!=null){ A.setMiscText(""+bonus); A.makeLongLasting();}
+				if(A!=null)
+				{
+					A.setMiscText(""+bonus);
+					A.makeLongLasting();
+				}
 				armor.recoverPhyStats();
 				mob.location().recoverRoomStats();
 			}

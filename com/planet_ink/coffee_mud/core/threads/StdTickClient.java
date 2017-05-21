@@ -3,7 +3,6 @@ import com.planet_ink.coffee_mud.core.CMProps;
 import com.planet_ink.coffee_mud.core.Log;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 
-
 /*
    Copyright 2013-2017 Bo Zimmerman
 
@@ -49,7 +48,6 @@ public class StdTickClient implements TickClient
 		}
 		return "?";
 	}
-
 
 	@Override
 	public final Tickable getClientObject()

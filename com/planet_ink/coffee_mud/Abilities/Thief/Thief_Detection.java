@@ -35,17 +35,59 @@ import java.util.*;
 
 public class Thief_Detection extends ThiefSkill
 {
-	@Override public String ID() { return "Thief_Detection"; }
+	@Override
+	public String ID()
+	{
+		return "Thief_Detection";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Detection");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Detecting hidden...)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"DETECT","DETECTION"});
-	@Override public int classificationCode(){	return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_ALERT;}
-	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_ALERT;
+	}
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
 	protected Room lastRoom=null;
 	private int bonusThisRoom=0;
 
@@ -78,7 +120,10 @@ public class Thief_Detection extends ThiefSkill
 		if(affected instanceof MOB)
 		{
 			if(!CMLib.flags().isAliveAwakeMobile((MOB)affected,true))
-			{ unInvoke(); return false;}
+			{
+				unInvoke();
+				return false;
+			}
 			if(((MOB)affected).location()!=lastRoom)
 			{
 				lastRoom=((MOB)affected).location();
@@ -105,12 +150,14 @@ public class Thief_Detection extends ThiefSkill
 
 			final Room R=mob.location();
 			if(R!=null)
+			{
 				for(int r=0;r<R.numInhabitants();r++)
 				{
 					final MOB M=R.fetchInhabitant(r);
 					if((M!=null)&&(M!=mob)&&(CMLib.flags().isHidden(M)))
 						return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_SELF);
 				}
+			}
 		}
 		return super.castingQuality(mob,target);
 	}

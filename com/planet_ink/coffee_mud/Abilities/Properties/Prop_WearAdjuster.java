@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -35,8 +34,17 @@ import java.util.*;
 */
 public class Prop_WearAdjuster extends Prop_HaveAdjuster
 {
-	@Override public String ID() { return "Prop_WearAdjuster"; }
-	@Override public String name(){ return "Adjustments to stats when worn";}
+	@Override
+	public String ID()
+	{
+		return "Prop_WearAdjuster";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Adjustments to stats when worn";
+	}
 
 	@Override
 	public String accountForYourself()
@@ -56,7 +64,11 @@ public class Prop_WearAdjuster extends Prop_HaveAdjuster
 
 	public void check(MOB mob, Armor A)
 	{
-		if(!layered){ checked=true; disabled=false;}
+		if(!layered)
+		{
+			checked=true;
+			disabled=false;
+		}
 		if(A.amWearingAt(Wearable.IN_INVENTORY))
 		{
 			checked=false;

@@ -36,16 +36,56 @@ import java.util.*;
 
 public class Ranger_Sneak extends StdAbility
 {
-	@Override public String ID() { return "Ranger_Sneak"; }
+	@Override
+	public String ID()
+	{
+		return "Ranger_Sneak";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Woodland Sneak");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"WSNEAK"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_STEALTHY;}
-	@Override public int usageType(){return USAGE_MOVEMENT;}
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL|Ability.DOMAIN_STEALTHY;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT;
+	}
 
 	public int getMOBLevel(MOB meMOB)
 	{
@@ -53,6 +93,7 @@ public class Ranger_Sneak extends StdAbility
 			return 0;
 		return meMOB.phyStats().level();
 	}
+
 	public MOB getHighestLevelMOB(MOB meMOB, Vector<MOB> not)
 	{
 		if(meMOB==null)

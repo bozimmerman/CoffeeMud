@@ -290,7 +290,6 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 			return false;
 		}
 
-
 		@Override
 		public int getIntFromPieces(String tag, int defVal)
 		{
@@ -380,7 +379,6 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 				return true;
 			return false;
 		}
-
 
 		@Override
 		public int getIntFromPieces(String tag)
@@ -753,7 +751,6 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 		return false;
 	}
 
-
 	@Override
 	public int getIntFromPieces(List<XMLTag> V, String tag)
 	{
@@ -788,7 +785,6 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 			return true;
 		return false;
 	}
-
 
 	@Override
 	public int getIntFromPieces(List<XMLTag> V, String tag, int defVal)
@@ -900,7 +896,6 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 			}
 		}
 	}
-
 
 	protected void startState(final char c)
 	{
@@ -1309,7 +1304,6 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 		return Blob.substring(start+1).trim();
 	}
 
-
 	@Override
 	public String returnXMLValue(String Blob, String Tag)
 	{
@@ -1343,6 +1337,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 		final StringBuffer str=new StringBuffer("");
 		if(V!=null)
 		for(final String s : V)
+		{
 			if(s!=null)
 			{
 				if(s.trim().length()==0)
@@ -1350,6 +1345,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 				else
 					str.append("<X>"+parseOutAngleBrackets(s)+"</X>");
 			}
+		}
 		return str.toString();
 	}
 

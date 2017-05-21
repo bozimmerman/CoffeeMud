@@ -170,7 +170,6 @@ public class CMSecurity
 		instance().compiledSysop=CMLib.masking().maskCompile(zapCheck);
 	}
 
-
 	/**
 	 * Registers a new journal security flag, which is typically just its name
 	 * @param journalName the journal security flag, or just the name/ID of the journal
@@ -417,7 +416,11 @@ public class CMSecurity
 	public static final List<String> getAccessibleDirs(final MOB mob, final Room room)
 	{
 		final List<String> DIRSV=new Vector<String>();
-		if(isASysOp(mob)){ DIRSV.add("/"); return DIRSV; }
+		if(isASysOp(mob))
+		{
+			DIRSV.add("/");
+			return DIRSV;
+		}
 		if(mob==null)
 			return DIRSV;
 		if((mob.playerStats()==null)
@@ -508,7 +511,6 @@ public class CMSecurity
 		}
 		return false;
 	}
-
 
 	/**
 	 * Checks whether the given user/player mob, in the given room location, can see a directory at the given
@@ -788,7 +790,6 @@ public class CMSecurity
 		return isAllowedEverywhere(mob,flag.getRegularAlias());
 	}
 
-
 	/**
 	 * Returns whether the given save flag is set, denoting something
 	 * that should not be saved but normally is, or something that
@@ -1012,7 +1013,6 @@ public class CMSecurity
 		return (ID==null) ? false : instance().clsEnaVars.containsKey(ID.toUpperCase());
 	}
 
-	
 	/**
 	 * Since there are several different kinds of enable flags, this method
 	 * will check the prefix of the flag to determine which kind it is, 
@@ -1870,7 +1870,6 @@ public class CMSecurity
 		return false;
 	}
 
-
 	/**
 	 * Removes the given player name, account name, or ip address  from the official ::/resources/banned.ini file. 
 	 * It also removes it from the cached ban list.
@@ -2228,7 +2227,6 @@ public class CMSecurity
 			return numAllFlags;
 		}
 		
-		
 		/**
 		 * Converts this object to a ; delimited string
 		 * @return a ; delimited representation of this object.
@@ -2296,6 +2294,7 @@ public class CMSecurity
 					}
 					return true;
 				}
+
 				@Override
 				public boolean hasNext()
 				{
@@ -2303,6 +2302,7 @@ public class CMSecurity
 						return doNext();
 					return p.hasNext();
 				}
+
 				@Override
 				public SecPath next()
 				{
@@ -2310,7 +2310,11 @@ public class CMSecurity
 						return p.next();
 					throw new java.util.NoSuchElementException();
 				}
-				@Override public void remove() {}
+
+				@Override
+				public void remove()
+				{
+				}
 			};
 		}
 		
@@ -2341,6 +2345,7 @@ public class CMSecurity
 					}
 					return true;
 				}
+
 				@Override
 				public boolean hasNext()
 				{
@@ -2348,6 +2353,7 @@ public class CMSecurity
 						return doNext();
 					return p.hasNext();
 				}
+
 				@Override
 				public SecFlag next()
 				{
@@ -2355,7 +2361,11 @@ public class CMSecurity
 						return p.next();
 					throw new java.util.NoSuchElementException();
 				}
-				@Override public void remove() {}
+
+				@Override
+				public void remove()
+				{
+				}
 			};
 		}
 	}

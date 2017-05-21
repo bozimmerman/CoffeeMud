@@ -35,12 +35,37 @@ import java.util.*;
 
 public class Prayer_MassHarm extends Prayer
 {
-	@Override public String ID() { return "Prayer_MassHarm"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_MassHarm";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Mass Harm");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_VEXING;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	@Override public long flags(){return Ability.FLAG_UNHOLY;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_VEXING;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_UNHOLY;
+	}
 
 	@Override
 	public int castingQuality(MOB mob, Physical target)
@@ -93,7 +118,6 @@ public class Prayer_MassHarm extends Prayer
 					maliciousFizzle(mob,target,L("<S-NAME> sweep(s) <S-HIS-HER> hands over <T-NAMESELF>, @x1, but @x2 does not heed.",prayingWord(mob),hisHerDiety(mob)));
 			}
 		}
-
 
 		// return whether it worked
 		return success;

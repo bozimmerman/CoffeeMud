@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2003-2017 Bo Zimmerman
 
@@ -126,9 +125,14 @@ public class Song_Ode extends Song
 			}
 			int wa=-1;
 			for(int i=0;i<stuff.length;i++)
+			{
 				if(CMath.s_int(stuff[i][0])==CMMsg.TYP_WEAPONATTACK)
-				{ wa=i; break;}
+				{
+					wa=i;
+					break;
+				}
 
+			}
 			if(wa>=0)
 				counts[wa]=counts[wa]/25;
 
@@ -215,8 +219,10 @@ public class Song_Ode extends Song
 						ticks=1;
 					final int stat=CMath.s_int(chk[2]);
 					if(CharStats.CODES.isBASE(stat))
+					{
 						if(ticks>5)
 							ticks=5;
+					}
 					affectableStats.setStat(stat,affectableStats.getStat(stat)+ticks+getXLEVELLevel(invoker()));
 				}
 			}
@@ -325,7 +331,6 @@ public class Song_Ode extends Song
 			final String[] chk=stuff[I.intValue()];
 			invoker().location().show(invoker(),this,whom,CMMsg.MSG_SPEAK,L("<S-NAME> sing(s) '@x1'.",chk[3]));
 		}
-
 
 		if(!super.tick(ticking,tickID))
 			return false;

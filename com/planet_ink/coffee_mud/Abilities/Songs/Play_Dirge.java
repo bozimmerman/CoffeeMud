@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2003-2017 Bo Zimmerman
 
@@ -36,16 +35,61 @@ import java.util.*;
 
 public class Play_Dirge extends Play
 {
-	@Override public String ID() { return "Play_Dirge"; }
+	@Override
+	public String ID()
+	{
+		return "Play_Dirge";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Dirge");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return 0;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	@Override protected boolean persistantSong(){return false;}
-	@Override protected boolean skipStandardSongTick(){return true;}
-	@Override protected String songOf(){return CMLib.english().startWithAorAn(name());}
-	@Override protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
-	@Override protected boolean skipStandardSongInvoke(){return true;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_OTHERS;
+	}
+
+	@Override
+	protected boolean persistantSong()
+	{
+		return false;
+	}
+
+	@Override
+	protected boolean skipStandardSongTick()
+	{
+		return true;
+	}
+
+	@Override
+	protected String songOf()
+	{
+		return CMLib.english().startWithAorAn(name());
+	}
+
+	@Override
+	protected boolean HAS_QUANTITATIVE_ASPECT()
+	{
+		return false;
+	}
+
+	@Override
+	protected boolean skipStandardSongInvoke()
+	{
+		return true;
+	}
 
 	@Override
 	public int castingQuality(MOB mob, Physical target)

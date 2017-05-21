@@ -75,7 +75,4 @@ public class Orc extends StdMOB
 		recoverCharStats();
 	}
 
-
-
-
 }

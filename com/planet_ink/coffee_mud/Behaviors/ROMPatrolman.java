@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -36,7 +35,11 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class ROMPatrolman extends StdBehavior
 {
-	@Override public String ID(){return "ROMPatrolman";}
+	@Override
+	public String ID()
+	{
+		return "ROMPatrolman";
+	}
 	int tickTock=0;
 
 	@Override
@@ -61,7 +64,6 @@ public class ROMPatrolman extends StdBehavior
 					victim=inhab.getVictim();
 			}
 		}
-
 
 		if(victim==null)
 			return;

@@ -49,6 +49,7 @@ public class ThievesCant extends StdLanguage
 	}
 
 	private final static String localizedName = CMLib.lang().L("Thieves Cant");
+
 	@Override
 	public String name()
 	{
@@ -90,6 +91,7 @@ public class ThievesCant extends StdLanguage
 	}
 
 	private static final Hashtable<String,String> hashwords=new Hashtable<String,String>();
+
 	@Override
 	public Map<String, String> translationHash(String language)
 	{

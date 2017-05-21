@@ -234,6 +234,7 @@ public class Chant_CallMate extends Chant
 		// return whether it worked
 		return success;
 	}
+
 	public MOB determineMonster(MOB caster, Race R)
 	{
 		final MOB victim=caster.getVictim();

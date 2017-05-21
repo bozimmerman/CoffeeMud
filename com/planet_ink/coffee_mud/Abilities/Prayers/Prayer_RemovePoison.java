@@ -35,12 +35,37 @@ import java.util.*;
 
 public class Prayer_RemovePoison extends Prayer implements MendingSkill
 {
-	@Override public String ID() { return "Prayer_RemovePoison"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_RemovePoison";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Remove Poison");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_RESTORATION;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
-	@Override public long flags(){return Ability.FLAG_HOLY;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_RESTORATION;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_OTHERS;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_HOLY;
+	}
 
 	@Override
 	public boolean supportsMending(Physical item)
@@ -119,7 +144,6 @@ public class Prayer_RemovePoison extends Prayer implements MendingSkill
 		else
 		if(!auto)
 			beneficialWordsFizzle(mob,target,auto?"":L("<S-NAME> @x1 that <T-NAME> be purified of <T-HIS-HER> poisons, but there is no answer.",prayWord(mob)));
-
 
 		// return whether it worked
 		return success;

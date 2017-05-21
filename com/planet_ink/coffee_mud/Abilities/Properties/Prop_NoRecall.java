@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -35,15 +34,35 @@ import java.util.*;
 */
 public class Prop_NoRecall extends Property
 {
-	@Override public String ID() { return "Prop_NoRecall"; }
-	@Override public String name(){ return "Recall Neuralizing";}
-	@Override protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_ITEMS;}
+	@Override
+	public String ID()
+	{
+		return "Prop_NoRecall";
+	}
 
-	@Override public long flags(){return Ability.FLAG_ZAPPER;}
+	@Override
+	public String name()
+	{
+		return "Recall Neuralizing";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_ITEMS;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_ZAPPER;
+	}
 
 	@Override
 	public String accountForYourself()
-	{ return "No Recall Field";	}
+	{
+		return "No Recall Field";
+	}
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)

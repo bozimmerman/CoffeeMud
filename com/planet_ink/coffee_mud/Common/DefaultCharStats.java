@@ -98,7 +98,6 @@ public class DefaultCharStats implements CharStats
 		reset();
 	}
 	
-
 	@Override
 	public void setAllBaseValues(int def)
 	{
@@ -289,7 +288,6 @@ public class DefaultCharStats implements CharStats
 			levelStr=levelStr.substring(1);
 		return levelStr;
 	}
-
 
 	@Override
 	public String getArriveStr()
@@ -1156,7 +1154,6 @@ public class DefaultCharStats implements CharStats
 		this.proficiencies = newerArray;
 	}
 	
-
 	@Override
 	public void addItemDeficiency(final String zapperMask)
 	{

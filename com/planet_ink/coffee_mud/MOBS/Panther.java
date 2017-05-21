@@ -55,7 +55,6 @@ public class Panther extends StdMOB
 
 		basePhyStats.setWeight(200 + Math.abs(randomizer.nextInt() % 55));
 
-
 		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,1);
 		baseCharStats().setStat(CharStats.STAT_STRENGTH,12);
 		baseCharStats().setStat(CharStats.STAT_DEXTERITY,17);

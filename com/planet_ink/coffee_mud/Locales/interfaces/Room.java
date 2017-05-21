@@ -945,7 +945,6 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	 */
 	public void delInhabitant(MOB mob);
 	
-	
 	/**
 	 * Removes all the mobs from this room as inhabitants and
 	 * optionally destroys the mob objects as well.
@@ -1007,7 +1006,6 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	 */
 	public boolean isInhabitant(MOB mob);
 	
-
 	/**
 	 * Applies the given applier Java code to each mob in this room
 	 * @see Room#fetchInhabitant(String)
@@ -1150,7 +1148,6 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	 * @return the mob, item, or exit that matches the search string
 	 */
 	public PhysicalAgent fetchFromMOBRoomFavorsItems(MOB mob, Item goodLocation, String thingName, Filterer<Environmental> filter);
-	
 	
 	/**
 	 * Searches the given mob and this room for a mob, item, or exit that

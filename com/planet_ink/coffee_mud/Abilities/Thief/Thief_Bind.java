@@ -35,22 +35,88 @@ import java.util.*;
 
 public class Thief_Bind extends ThiefSkill
 {
-	@Override public String ID() { return "Thief_Bind"; }
+	@Override
+	public String ID()
+	{
+		return "Thief_Bind";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Bind");
-	@Override public String name() { return localizedName; }
-	@Override public String displayText() { return L("(Bound by "+ropeName+")"); }
-	@Override protected int canAffectCode(){return CAN_MOBS|CAN_ROOMS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_BINDING;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public String displayText()
+	{
+		return L("(Bound by "+ropeName+")");
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS|CAN_ROOMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_BINDING;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"BIND"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
 	protected int maxRange=0;
-	@Override public int maxRange(){return maxRange;}
-	@Override public int minRange(){return 0;}
-	@Override public long flags(){return Ability.FLAG_BINDING;}
-	@Override public int usageType(){return USAGE_MOVEMENT;}
-	@Override public boolean bubbleAffect(){return affected instanceof Room;}
+
+	@Override
+	public int maxRange()
+	{
+		return maxRange;
+	}
+
+	@Override
+	public int minRange()
+	{
+		return 0;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_BINDING;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT;
+	}
+
+	@Override
+	public boolean bubbleAffect()
+	{
+		return affected instanceof Room;
+	}
 
 	public int amountRemaining=500;
 	public String ropeName="the ropes";
@@ -61,6 +127,7 @@ public class Thief_Bind extends ThiefSkill
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_BOUND);
 	}
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -97,7 +164,6 @@ public class Thief_Bind extends ThiefSkill
 		}
 		return super.okMessage(myHost,msg);
 	}
-
 
 	@Override
 	public void setAffectedOne(Physical P)
@@ -171,7 +237,6 @@ public class Thief_Bind extends ThiefSkill
 			return false;
 		}
 
-
 		final MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null)
 			return false;
@@ -227,7 +292,6 @@ public class Thief_Bind extends ThiefSkill
 		}
 		else
 			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to bind <T-NAME> and fail(s)."));
-
 
 		// return whether it worked
 		return success;

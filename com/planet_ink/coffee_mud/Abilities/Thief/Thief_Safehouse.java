@@ -35,18 +35,64 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Thief_Safehouse extends ThiefSkill
 {
-	@Override public String ID() { return "Thief_Safehouse"; }
+	@Override
+	public String ID()
+	{
+		return "Thief_Safehouse";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Safehouse");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Safehouse)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return CAN_ROOMS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_ROOMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"SAFEHOUSE"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
-	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STREETSMARTS;}
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT|USAGE_MANA;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STREETSMARTS;
+	}
 
 	@Override
 	public boolean okMessage(Environmental host, CMMsg msg)
@@ -115,12 +161,14 @@ public class Thief_Safehouse extends ThiefSkill
 		if(target==null)
 			return false;
 		if((target.domainType()==Room.DOMAIN_INDOORS_WOOD)||(target.domainType()==Room.DOMAIN_INDOORS_STONE))
+		{
 			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 			{
 				final Room R=target.getRoomInDir(d);
 				if((R!=null)&&(R.domainType()==Room.DOMAIN_OUTDOORS_CITY))
 					return true;
 			}
+		}
 		return false;
 	}
 

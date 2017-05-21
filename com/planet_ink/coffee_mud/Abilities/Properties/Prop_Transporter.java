@@ -34,9 +34,24 @@ import java.util.*;
 */
 public class Prop_Transporter extends Property implements TriggeredAffect
 {
-	@Override public String ID() { return "Prop_Transporter"; }
-	@Override public String name(){ return "Room entering adjuster";}
-	@Override protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ROOMS;}
+	@Override
+	public String ID()
+	{
+		return "Prop_Transporter";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Room entering adjuster";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_EXITS|Ability.CAN_ROOMS;
+	}
+
 	protected int transCode=-1;
 	protected String roomID = "START";
 	protected boolean sendEnter = false; 
@@ -62,7 +77,9 @@ public class Prop_Transporter extends Property implements TriggeredAffect
 	
 	@Override
 	public String accountForYourself()
-	{ return "Zap them elsewhere";	}
+	{
+		return "Zap them elsewhere";
+	}
 
 	@Override
 	public int triggerMask()

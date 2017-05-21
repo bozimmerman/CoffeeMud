@@ -31,6 +31,7 @@ public class DoubleMap<K,F> implements java.util.Map<K,F>, java.io.Serializable
 	{
 		final Vector<String> V=new Vector<String>(size());
 		for(final Object S : keySet())
+		{
 			if(S!=null)
 			{
 				final Object O = get(S);
@@ -39,6 +40,7 @@ public class DoubleMap<K,F> implements java.util.Map<K,F>, java.io.Serializable
 				else
 					V.add(S.toString() + divider + O.toString());
 			}
+		}
 		return V;
 	}
 

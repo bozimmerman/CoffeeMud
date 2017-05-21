@@ -15,9 +15,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
-
 
 /*
    Copyright 2003-2017 Bo Zimmerman
@@ -36,12 +34,33 @@ import java.util.*;
 */
 public class Dance_Swing extends Dance
 {
-	@Override public String ID() { return "Dance_Swing"; }
+	@Override
+	public String ID()
+	{
+		return "Dance_Swing";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Swing");
-	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_OTHERS;
+	}
+
 	protected boolean doneThisRound=false;
-	@Override protected String danceOf(){return name()+" Dancing";}
+
+	@Override
+	protected String danceOf()
+	{
+		return name()+" Dancing";
+	}
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)

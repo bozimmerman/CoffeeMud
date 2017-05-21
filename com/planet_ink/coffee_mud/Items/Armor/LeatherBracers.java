@@ -55,5 +55,4 @@ public class LeatherBracers extends StdArmor
 		material=RawMaterial.RESOURCE_LEATHER;
 	}
 
-
 }

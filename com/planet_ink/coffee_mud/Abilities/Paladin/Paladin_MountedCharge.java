@@ -34,21 +34,71 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Paladin_MountedCharge extends StdAbility
 {
-	@Override public String ID() { return "Paladin_MountedCharge"; }
+	@Override
+	public String ID()
+	{
+		return "Paladin_MountedCharge";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Mounted Charge");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"MOUNTEDCHARGE","MCHARGE"});
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
-	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_ANIMALAFFINITY;}
-	@Override public int usageType(){return USAGE_MOVEMENT;}
-	@Override public int minRange(){return 1;}
-	@Override public int maxRange(){return 99;}
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL|Ability.DOMAIN_ANIMALAFFINITY;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT;
+	}
+
+	@Override
+	public int minRange()
+	{
+		return 1;
+	}
+
+	@Override
+	public int maxRange()
+	{
+		return 99;
+	}
+
 	public boolean done=false;
 
 	@Override
@@ -66,8 +116,10 @@ public class Paladin_MountedCharge extends StdAbility
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(tickID==Tickable.TICKID_MOB)
+		{
 			if(done)
 				unInvoke();
+		}
 		return super.tick(ticking,tickID);
 	}
 

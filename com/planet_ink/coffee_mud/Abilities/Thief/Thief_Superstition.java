@@ -119,7 +119,6 @@ public class Thief_Superstition extends ThiefSkill
 		}
 	}
 	
-
 	@Override
 	public String displayText()
 	{

@@ -33,16 +33,45 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Prayer_Faithless extends Prayer
 {
-	@Override public String ID() { return "Prayer_Faithless"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_Faithless";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Faithless");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	@Override public long flags(){return Ability.FLAG_UNHOLY;}
-	@Override protected int overrideMana(){return 100;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_UNHOLY;
+	}
+
+	@Override
+	protected int overrideMana()
+	{
+		return 100;
+	}
 
 	@Override
 	public int castingQuality(MOB mob, Physical target)
@@ -94,7 +123,11 @@ public class Prayer_Faithless extends Prayer
 			D=CMLib.map().getDeity(target.getWorshipCharID());
 		int type=verbalCastCode(mob,target,auto);
 		int mal=CMMsg.MASK_MALICIOUS;
-		if(auto){ type=CMath.unsetb(type,CMMsg.MASK_MALICIOUS); mal=0;}
+		if(auto)
+		{
+			type=CMath.unsetb(type,CMMsg.MASK_MALICIOUS);
+			mal=0;
+		}
 		if((success)&&(D!=null))
 		{
 			final CMMsg msg=CMClass.getMsg(mob,target,this,type,auto?"":L("^S<S-NAME> @x1 for <T-NAMESELF> to lose faith!^?",prayWord(mob)));
@@ -112,7 +145,6 @@ public class Prayer_Faithless extends Prayer
 		}
 		else
 			maliciousFizzle(mob,target,auto?"":L("<S-NAME> @x1 for <T-NAMESELF>, but nothing happens.",prayWord(mob)));
-
 
 		// return whether it worked
 		return success;

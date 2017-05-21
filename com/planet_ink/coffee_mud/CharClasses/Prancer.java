@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2003-2017 Bo Zimmerman
 
@@ -129,6 +128,7 @@ public class Prancer extends StdCharClass
 		maxStatAdj[CharStats.STAT_CHARISMA]=4;
 		maxStatAdj[CharStats.STAT_STRENGTH]=4;
 	}
+
 	@Override
 	public void initializeClass()
 	{
@@ -270,8 +270,6 @@ public class Prancer extends StdCharClass
 		}
 		return outfitChoices;
 	}
-
-
 
 	@Override
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)

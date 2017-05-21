@@ -405,6 +405,7 @@ public class GenGraviticSensor extends GenElecCompSensor
 		return new Filterer<SpaceObject>()
 		{
 			final SpaceObject spaceMe = CMLib.map().getSpaceObject(me, true);
+
 			@Override
 			public boolean passesFilter(SpaceObject obj)
 			{

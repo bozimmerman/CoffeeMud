@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2002-2017 Bo Zimmerman
 
@@ -36,11 +35,31 @@ import java.util.*;
 
 public class Song_Mercy extends Song
 {
-	@Override public String ID() { return "Song_Mercy"; }
+	@Override
+	public String ID()
+	{
+		return "Song_Mercy";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Mercy");
-	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
-	@Override protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_OTHERS;
+	}
+
+	@Override
+	protected boolean HAS_QUANTITATIVE_ASPECT()
+	{
+		return false;
+	}
 
 	protected Room lastRoom=null;
 	protected int count=3;
@@ -62,6 +81,7 @@ public class Song_Mercy extends Song
 			count--;
 		return true;
 	}
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{

@@ -34,20 +34,64 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Paladin_HealingHands extends StdAbility
 {
-	@Override public String ID() { return "Paladin_HealingHands"; }
+	@Override
+	public String ID()
+	{
+		return "Paladin_HealingHands";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Healing Hands");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"HANDS"});
-	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
-	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_HEALING;}
-	@Override public long flags(){return Ability.FLAG_HEALINGMAGIC;}
-	@Override protected long minCastWaitTime(){return CMProps.getTickMillis();}
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_SELF;
+	}
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL|Ability.DOMAIN_HEALING;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_HEALINGMAGIC;
+	}
+
+	@Override
+	protected long minCastWaitTime()
+	{
+		return CMProps.getTickMillis();
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -93,7 +137,6 @@ public class Paladin_HealingHands extends StdAbility
 		}
 		else
 			return beneficialVisualFizzle(mob,mob,L("<S-NAME> lay(s) <S-HIS-HER> healing hands onto <T-NAMESELF>, but <S-HIS-HER> god does not heed."));
-
 
 		// return whether it worked
 		return success;

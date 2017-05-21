@@ -33,7 +33,6 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Chant_DistantFungalGrowth extends Chant
 {
 	@Override
@@ -137,7 +136,6 @@ public class Chant_DistantFungalGrowth extends Chant
 		}
 		else
 			beneficialWordsFizzle(mob,null,L("<S-NAME> chant(s) about a far away place, but the magic fades."));
-
 
 		// return whether it worked
 		return success;

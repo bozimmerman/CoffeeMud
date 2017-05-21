@@ -222,7 +222,6 @@ public class Thief_Caltrops extends ThiefSkill implements Trap
 		return true;
 	}
 
-	
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{

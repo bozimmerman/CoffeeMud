@@ -52,7 +52,6 @@ public class GenLawBook extends StdLawBook
 		recoverPhyStats();
 	}
 
-
 	@Override
 	public boolean isGeneric()
 	{
@@ -102,6 +101,7 @@ public class GenLawBook extends StdLawBook
 	}
 
 	private static String[] codes=null;
+
 	@Override
 	public String[] getStatCodes()
 	{

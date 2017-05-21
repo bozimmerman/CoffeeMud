@@ -35,17 +35,63 @@ import java.util.*;
 
 public class Power_WebSpinning extends SuperPower
 {
-	@Override public String ID() { return "Power_WebSpinning"; }
+	@Override
+	public String ID()
+	{
+		return "Power_WebSpinning";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Web Spinning");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Webbed)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int maxRange(){return adjustedMaxInvokerRange(5);}
-	@Override public int minRange(){return 1;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override protected int canAffectCode(){return CAN_MOBS|CAN_ITEMS|CAN_EXITS;}
-	@Override protected int canTargetCode(){return CAN_MOBS|CAN_ITEMS|CAN_EXITS;}
-	@Override public long flags(){return Ability.FLAG_BINDING;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int maxRange()
+	{
+		return adjustedMaxInvokerRange(5);
+	}
+
+	@Override
+	public int minRange()
+	{
+		return 1;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS|CAN_ITEMS|CAN_EXITS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS|CAN_ITEMS|CAN_EXITS;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_BINDING;
+	}
 
 	public int amountRemaining=0;
 
@@ -55,6 +101,7 @@ public class Power_WebSpinning extends SuperPower
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_BOUND);
 	}
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -160,7 +207,6 @@ public class Power_WebSpinning extends SuperPower
 		}
 		else
 			return maliciousFizzle(mob,null,L("<S-NAME> spin(s) a web towards <T-NAMESELF>, but miss(es)."));
-
 
 		// return whether it worked
 		return success;

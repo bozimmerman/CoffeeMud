@@ -1219,12 +1219,13 @@ public class CMath
 				c=st.nextToken();
 			}
 		}
-		catch(final IOException e){}
+		catch(final IOException e)
+		{
+		}
 		if(inParen)
 			throw new ArithmeticException("')' was missing from this expression");
 		return finalValue;
 	}
-
 
 	/**
 	 * A class that extends Random, only it always returns the highest possible
@@ -1459,7 +1460,9 @@ public class CMath
 				c=st.nextToken();
 			}
 		}
-		catch(final IOException e){}
+		catch(final IOException e)
+		{
+		}
 		if(inParen)
 			throw new ArithmeticException("')' was missing from this expression");
 		return list;
@@ -1746,7 +1749,6 @@ public class CMath
 			return 0.0;
 		}
 	}
-
 
 	/**
 	 * Returns the absolute value (X&gt;=0) of the
@@ -2233,7 +2235,6 @@ public class CMath
 		};
 	}
 
-
 	/**
 	 * @see java.lang.Math#round(double)
 	 * @param d the real number
@@ -2368,7 +2369,6 @@ public class CMath
 	{
 		return BigInteger.valueOf(l1).multiply(BigInteger.valueOf(l2));
 	}
-	
 	
 	/**
 	 * Generates a big integer from multiply two numbers, rounding when necessary

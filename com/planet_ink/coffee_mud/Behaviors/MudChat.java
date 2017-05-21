@@ -69,7 +69,6 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 	protected final static int	RESPONSE_DELAY		= 2;
 	protected final static int	TALK_WAIT_DELAY		= 8;
 	
-
 	@Override
 	public String accountForYourself()
 	{
@@ -162,7 +161,6 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 			names.add("");
 		return new ChattyGroup(names.toArray(new String[0]),masks.toArray(new MaskingLibrary.CompiledZMask[0]));
 	}
-
 
 	protected static synchronized ChattyGroup[] getChatGroups(String parms)
 	{
@@ -365,7 +363,6 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 
 	}
 
-
 	protected static ChattyGroup matchChatGroup(MOB meM, String myName, ChattyGroup[] chatGroups)
 	{
 		myName=myName.toUpperCase();
@@ -509,7 +506,6 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 			}
 		}
 	}
-
 
 	protected boolean match(MOB speaker, String expression, String message, String[] rest)
 	{

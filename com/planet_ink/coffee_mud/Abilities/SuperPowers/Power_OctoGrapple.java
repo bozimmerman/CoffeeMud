@@ -33,12 +33,22 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Power_OctoGrapple extends SuperPower
 {
-	@Override public String ID() { return "Power_OctoGrapple"; }
+	@Override
+	public String ID()
+	{
+		return "Power_OctoGrapple";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Octo-Grapple");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	@Override
 	public String displayText()
 	{
@@ -46,14 +56,49 @@ public class Power_OctoGrapple extends SuperPower
 			return "(Grappling)";
 		return "(Grappled)";
 	}
+
 	private static final String[] triggerStrings =I(new String[] {"GRAPPLE"});
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SKILL;}
-	@Override public long flags(){return Ability.FLAG_BINDING;}
-	@Override public int usageType(){return USAGE_MOVEMENT;}
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_BINDING;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT;
+	}
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
@@ -115,6 +160,7 @@ public class Power_OctoGrapple extends SuperPower
 		if(affected==invoker)
 			affectableStats.alterBodypart(Race.BODY_ARM,-2);
 	}
+
 	@Override
 	public void unInvoke()
 	{
@@ -147,8 +193,6 @@ public class Power_OctoGrapple extends SuperPower
 			}
 		}
 	}
-
-
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)

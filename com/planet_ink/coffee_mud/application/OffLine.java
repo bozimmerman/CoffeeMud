@@ -68,7 +68,11 @@ public class OffLine extends Thread implements MudHost
 		super("MUD-OffLineServer");
 	}
 
-	@Override public ThreadGroup threadGroup() { return Thread.currentThread().getThreadGroup(); }
+	@Override
+	public ThreadGroup threadGroup()
+	{
+		return Thread.currentThread().getThreadGroup();
+	}
 
 	public static void fatalStartupError(Thread t, int type)
 	{
@@ -94,7 +98,6 @@ public class OffLine extends Thread implements MudHost
 		System.out.println(errorInternal);
 		CMLib.killThread(t,500,1);
 	}
-
 
 	private static boolean initHost(Thread t)
 	{
@@ -188,7 +191,13 @@ public class OffLine extends Thread implements MudHost
 		if (acceptConnections)
 		{
 			String address="unknown";
-			try{address=sock.getInetAddress().getHostAddress().trim();}catch(final Exception e){}
+			try
+			{
+				address=sock.getInetAddress().getHostAddress().trim();
+			}
+			catch(final Exception e)
+			{
+			}
 			System.out.println("Connection from "+address+": "+port);
 			// now see if they are banned!
 			int proceed=0;
@@ -225,7 +234,10 @@ public class OffLine extends Thread implements MudHost
 					autoblocked.addElement(address.toUpperCase());
 					proceed=2;
 				}
-			}catch(final java.lang.ArrayIndexOutOfBoundsException e){}
+			}
+			catch(final java.lang.ArrayIndexOutOfBoundsException e)
+			{
+			}
 
 			accessed.addElement(address,Long.valueOf(System.currentTimeMillis()));
 			if(proceed!=0)
@@ -255,7 +267,6 @@ public class OffLine extends Thread implements MudHost
 					rawout.write('\n');
 					rawout.write('\n');
 					rawout.flush();
-
 
 					//out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(rawout, "UTF-8")));
 					//in = new BufferedReader(new InputStreamReader(rawin, "UTF-8"));
@@ -371,6 +382,7 @@ public class OffLine extends Thread implements MudHost
 
 		System.out.println("Off-Line Server on port "+port+" stopped!");
 	}
+
 	@Override
 	public String getStatus()
 	{
@@ -386,6 +398,7 @@ public class OffLine extends Thread implements MudHost
 	public static void defaultShutdown()
 	{
 	}
+
 	@Override
 	public void interrupt()
 	{
@@ -402,11 +415,13 @@ public class OffLine extends Thread implements MudHost
 		}
 		super.interrupt();
 	}
+
 	@Override
 	public String getHost()
 	{
 		return host;
 	}
+
 	@Override
 	public int getPort()
 	{
@@ -503,11 +518,36 @@ public class OffLine extends Thread implements MudHost
 			e.printStackTrace();
 		}
 	}
-	@Override public void setAcceptConnections(boolean truefalse){ acceptConnections=truefalse;}
-	@Override public boolean isAcceptingConnections(){ return acceptConnections;}
-	@Override public List<Runnable> getOverdueThreads(){return new Vector<Runnable>();}
-	@Override public long getUptimeSecs() { return (System.currentTimeMillis()-startupTime)/1000;}
-	@Override public String getLanguage() { return "English";}
+
+	@Override
+	public void setAcceptConnections(boolean truefalse)
+	{
+		acceptConnections=truefalse;
+	}
+
+	@Override
+	public boolean isAcceptingConnections()
+	{
+		return acceptConnections;
+	}
+
+	@Override
+	public List<Runnable> getOverdueThreads()
+	{
+		return new Vector<Runnable>();
+	}
+
+	@Override
+	public long getUptimeSecs()
+	{
+		return (System.currentTimeMillis()-startupTime)/1000;
+	}
+
+	@Override
+	public String getLanguage()
+	{
+		return "English";
+	}
 
 	@Override
 	public String executeCommand(String cmd)

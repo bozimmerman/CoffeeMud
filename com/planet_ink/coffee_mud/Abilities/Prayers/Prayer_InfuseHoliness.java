@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2004-2017 Bo Zimmerman
 
@@ -36,19 +35,71 @@ import java.util.*;
 
 public class Prayer_InfuseHoliness extends Prayer
 {
-	@Override public String ID() { return "Prayer_InfuseHoliness"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_InfuseHoliness";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Infuse Holiness");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Infused Holiness)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
-	@Override public long flags(){return Ability.FLAG_HOLY;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_ROOMS|Ability.CAN_EXITS;}
-	@Override protected int canTargetCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_ROOMS|Ability.CAN_EXITS;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_HOLY;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_ROOMS|Ability.CAN_EXITS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_ROOMS|Ability.CAN_EXITS;
+	}
+
 	protected int serviceRunning=0;
-	@Override public int abilityCode(){return serviceRunning;}
-	@Override public void setAbilityCode(int newCode){serviceRunning=newCode;}
+
+	@Override
+	public int abilityCode()
+	{
+		return serviceRunning;
+	}
+
+	@Override
+	public void setAbilityCode(int newCode)
+	{
+		serviceRunning=newCode;
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
@@ -66,13 +117,14 @@ public class Prayer_InfuseHoliness extends Prayer
 		if((affected==null))
 			return;
 		if(canBeUninvoked())
+		{
 			if(affected instanceof MOB)
 				((MOB)affected).tell(L("Your infused holiness fades."));
+		}
 
 		super.unInvoke();
 
 	}
-
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)

@@ -38,7 +38,12 @@ public class Hire extends StdCommand
 	public Hire(){}
 
 	private final String[] access=I(new String[]{"HIRE"});
-	@Override public String[] getAccessWords(){return access;}
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
+
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
@@ -46,7 +51,7 @@ public class Hire extends StdCommand
 		final String rest=CMParms.combine(commands,1);
 		Environmental target=mob.location().fetchFromRoomFavorMOBs(null,rest);
 		if((target!=null)&&(!target.name().equalsIgnoreCase(rest))&&(rest.length()<4))
-		   target=null;
+			target=null;
 		if((target!=null)&&(!CMLib.flags().canBeSeenBy(target,mob)))
 			target=null;
 		CMMsg msg=null;
@@ -58,9 +63,23 @@ public class Hire extends StdCommand
 			mob.location().send(mob,msg);
 		return false;
 	}
-	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandCombatActionCost(ID());}
-	@Override public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandActionCost(ID());}
-	@Override public boolean canBeOrdered(){return true;}
 
+	@Override
+	public double combatActionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandCombatActionCost(ID());
+	}
+
+	@Override
+	public double actionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandActionCost(ID());
+	}
+
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 
 }

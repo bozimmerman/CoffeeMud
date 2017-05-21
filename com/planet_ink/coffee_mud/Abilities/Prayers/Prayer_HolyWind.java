@@ -33,21 +33,67 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Prayer_HolyWind extends Prayer
 {
-	@Override public String ID() { return "Prayer_HolyWind"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_HolyWind";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Holy Wind");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Blown Down)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int maxRange(){return adjustedMaxInvokerRange(4);}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int maxRange()
+	{
+		return adjustedMaxInvokerRange(4);
+	}
+
 	public boolean doneTicking=false;
-	@Override public long flags(){return Ability.FLAG_MOVING|Ability.FLAG_NEUTRAL;}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_MOVING|Ability.FLAG_NEUTRAL;
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
@@ -115,6 +161,7 @@ public class Prayer_HolyWind extends Prayer
 		if(success)
 		{
 			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),L(auto?"A horrendous wind gust blows through here.":"^S<S-NAME> "+prayWord(mob)+" for the holy wind to blow through here.^?")+CMLib.protocol().msp("wind.wav",40)))
+			{
 				for (final Object element : h)
 				{
 					final MOB target=(MOB)element;
@@ -151,10 +198,10 @@ public class Prayer_HolyWind extends Prayer
 						}
 					}
 				}
+			}
 		}
 		else
 			return maliciousFizzle(mob,null,L("<S-NAME> @x1, but nothing happens.",prayWord(mob)));
-
 
 		// return whether it worked
 		return success;

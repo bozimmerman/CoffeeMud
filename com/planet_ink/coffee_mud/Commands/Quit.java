@@ -39,7 +39,11 @@ public class Quit extends StdCommand
 	public Quit(){}
 
 	private final String[] access=I(new String[]{"QUIT","QUI","Q"});
-	@Override public String[] getAccessWords(){return access;}
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
 	public static void dispossess(MOB mob, boolean force)
 	{
@@ -84,7 +88,12 @@ public class Quit extends StdCommand
 					{
 						session.promptPrint(L("\n\rQuit -- are you sure (y/N)?"));
 					}
-					@Override public void timedOut() {}
+
+					@Override
+					public void timedOut()
+					{
+					}
+
 					@Override
 					public void callBack()
 					{
@@ -106,7 +115,10 @@ public class Quit extends StdCommand
 		return false;
 	}
 
-	@Override public boolean canBeOrdered(){return false;}
-
+	@Override
+	public boolean canBeOrdered()
+	{
+		return false;
+	}
 
 }

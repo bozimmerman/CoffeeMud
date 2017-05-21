@@ -32,17 +32,64 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class Skill_Resistance extends StdSkill
 {
-	@Override public String ID() { return "Skill_Resistance"; }
+	@Override
+	public String ID()
+	{
+		return "Skill_Resistance";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Resistance");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	protected String displayText="";
-	@Override public String displayText(){ return displayText;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	@Override public int classificationCode(){return Ability.ACODE_SKILL;}
-	@Override public boolean isAutoInvoked(){return true;}
-	@Override public boolean canBeUninvoked(){return false;}
+
+	@Override
+	public String displayText()
+	{
+		return displayText;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_SELF;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL;
+	}
+
+	@Override
+	public boolean isAutoInvoked()
+	{
+		return true;
+	}
+
+	@Override
+	public boolean canBeUninvoked()
+	{
+		return false;
+	}
+
 	public int resistanceCode=0;
 
 	@Override
@@ -51,8 +98,10 @@ public class Skill_Resistance extends StdSkill
 		super.setMiscText(newText);
 		resistanceCode=0;
 		for(final int i : CharStats.CODES.SAVING_THROWS())
+		{
 			if(newText.equalsIgnoreCase(CharStats.CODES.NAME(i))||newText.equalsIgnoreCase(CharStats.CODES.DESC(i)))
 				resistanceCode=i;
+		}
 		if(resistanceCode>0)
 			displayText=L("(Resistance to @x1)",newText.trim().toLowerCase());
 	}

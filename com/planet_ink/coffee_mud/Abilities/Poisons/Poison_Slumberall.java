@@ -35,20 +35,70 @@ import java.util.*;
 
 public class Poison_Slumberall extends Poison
 {
-	@Override public String ID() { return "Poison_Slumberall"; }
+	@Override
+	public String ID()
+	{
+		return "Poison_Slumberall";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Slumberall");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"POISONSLEEP"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
 
 	@Override protected int POISON_TICKS(){return 50;} // 0 means no adjustment!
-	@Override protected int POISON_DELAY(){return 1;}
-	@Override protected String POISON_DONE(){return "You don't feel so drowsy anymore.";}
-	@Override protected String POISON_START(){return null;}
-	@Override protected String POISON_AFFECT(){return "";}
-	@Override protected String POISON_CAST(){return "^F^<FIGHT^><S-NAME> poison(s) <T-NAMESELF>!^</FIGHT^>^?";}
-	@Override protected String POISON_FAIL(){return "<S-NAME> attempt(s) to poison <T-NAMESELF>, but fail(s).";}
-	@Override protected int POISON_DAMAGE(){return 0;}
+	@Override
+	protected int POISON_DELAY()
+	{
+		return 1;
+	}
+
+	@Override
+	protected String POISON_DONE()
+	{
+		return "You don't feel so drowsy anymore.";
+	}
+
+	@Override
+	protected String POISON_START()
+	{
+		return null;
+	}
+
+	@Override
+	protected String POISON_AFFECT()
+	{
+		return "";
+	}
+
+	@Override
+	protected String POISON_CAST()
+	{
+		return "^F^<FIGHT^><S-NAME> poison(s) <T-NAMESELF>!^</FIGHT^>^?";
+	}
+
+	@Override
+	protected String POISON_FAIL()
+	{
+		return "<S-NAME> attempt(s) to poison <T-NAMESELF>, but fail(s).";
+	}
+
+	@Override
+	protected int POISON_DAMAGE()
+	{
+		return 0;
+	}
+
 	protected boolean fallenYet=false;
 
 	@Override
@@ -68,6 +118,7 @@ public class Poison_Slumberall extends Poison
 		}
 		super.unInvoke();
 	}
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -92,7 +143,6 @@ public class Poison_Slumberall extends Poison
 		}
 		return super.okMessage(myHost,msg);
 	}
-
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)

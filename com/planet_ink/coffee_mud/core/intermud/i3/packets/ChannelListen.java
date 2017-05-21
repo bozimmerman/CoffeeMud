@@ -16,7 +16,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.Vector;
 
 /**
@@ -44,6 +43,7 @@ public class ChannelListen extends Packet  {
 		super();
 		type = Packet.CHAN_LISTEN;
 	}
+
 	public ChannelListen(Vector v) throws InvalidPacketException {
 		super(v);
 		try
@@ -57,7 +57,6 @@ public class ChannelListen extends Packet  {
 			throw new InvalidPacketException();
 		}
 	}
-
 
 	public ChannelListen(int t, String chan, String setonoff)
 	{

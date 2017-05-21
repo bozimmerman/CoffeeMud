@@ -134,8 +134,10 @@ public class Areas extends StdCommand
 			{
 				int statVal=-1;
 				for(int x=0;x<Area.Stats.values().length;x++)
+				{
 					if(s.toUpperCase().endsWith("="+Area.Stats.values()[x].name()))
 						statVal=x;
+				}
 				if(statVal<0)
 				{
 					mob.tell(L("There was an error in your SORT= qualifier: '@x1' is unknown.",s.substring(5)));

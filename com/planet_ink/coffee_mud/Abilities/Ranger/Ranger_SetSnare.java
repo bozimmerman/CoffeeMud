@@ -36,16 +36,56 @@ import java.util.*;
 
 public class Ranger_SetSnare extends StdAbility
 {
-	@Override public String ID() { return "Ranger_SetSnare"; }
+	@Override
+	public String ID()
+	{
+		return "Ranger_SetSnare";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Set Snare");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
-	@Override protected int canTargetCode(){return Ability.CAN_ROOMS;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_TRAPPING;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ROOMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_ROOMS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL|Ability.DOMAIN_TRAPPING;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"SETSNARE"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT|USAGE_MANA;
+	}
 
 	protected int maxLevel(){return Integer.MAX_VALUE;}
 

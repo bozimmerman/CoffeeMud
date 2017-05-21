@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.List;
 
-
 /*
    Copyright 2003-2017 Bo Zimmerman
 
@@ -34,16 +33,45 @@ import java.util.List;
    limitations under the License.
 */
 
-
 public class Chant_ClearMoon extends Chant
 {
-	@Override public String ID() { return "Chant_ClearMoon"; }
+	@Override
+	public String ID()
+	{
+		return "Chant_ClearMoon";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Clear Moon");
-	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_MOONALTERING;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT|Ability.DOMAIN_MOONALTERING;
+	}
 
 	public void clearMoons(Physical P)
 	{
@@ -63,7 +91,6 @@ public class Chant_ClearMoon extends Chant
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 

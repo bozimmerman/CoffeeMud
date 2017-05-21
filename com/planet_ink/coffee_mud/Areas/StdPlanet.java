@@ -189,6 +189,7 @@ public class StdPlanet extends StdTimeZone implements SpaceObject
 		}
 		return -1;
 	}
+
 	private static String[] codes=null;
 	
 	@Override

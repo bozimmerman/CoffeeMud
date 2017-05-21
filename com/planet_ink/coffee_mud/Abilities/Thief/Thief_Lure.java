@@ -187,7 +187,6 @@ public class Thief_Lure extends ThiefSkill implements Trap
 		return null;
 	}
 
-	
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{

@@ -51,7 +51,6 @@ public class GenBook extends StdBook
 		setMaterial(RawMaterial.RESOURCE_PAPER);
 	}
 
-
 	@Override
 	public boolean isGeneric()
 	{
@@ -111,6 +110,7 @@ public class GenBook extends StdBook
 	}
 
 	private static String[] codes=null;
+
 	@Override
 	public String[] getStatCodes()
 	{

@@ -216,7 +216,6 @@ public interface Wearable extends Environmental
 	 */
 	public boolean compareProperLocations(Item toThis);
 
-
 	/** worn code constant, representing  being unworn altogether */
 	public static final long IN_INVENTORY=0;
 	/** worn code constant, worn on the head */

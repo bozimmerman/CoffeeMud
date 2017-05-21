@@ -33,16 +33,41 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Chant_Sunray extends Chant
 {
-	@Override public String ID() { return "Chant_Sunray"; }
+	@Override
+	public String ID()
+	{
+		return "Chant_Sunray";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Sunray");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Sunray)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
@@ -104,7 +129,6 @@ public class Chant_Sunray extends Chant
 			return false;
 		}
 
-
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
@@ -121,7 +145,6 @@ public class Chant_Sunray extends Chant
 		}
 		else
 			return maliciousFizzle(mob,target,L("<S-NAME> chant(s) to <T-NAMESELF>, but the magic fades."));
-
 
 		// return whether it worked
 		return success;

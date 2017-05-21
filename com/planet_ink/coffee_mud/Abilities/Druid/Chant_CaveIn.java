@@ -33,18 +33,53 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Chant_CaveIn extends Chant
 {
-	@Override public String ID() { return "Chant_CaveIn"; }
+	@Override
+	public String ID()
+	{
+		return "Chant_CaveIn";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Cave-In");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return Ability.CAN_MOBS|CAN_EXITS;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_MOBS|CAN_EXITS;
+	}
+
 	public int amountRemaining=0;
-	@Override public long flags(){return Ability.FLAG_PARALYZING;}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_PARALYZING;
+	}
 
 	@Override
 	public boolean okMessage(Environmental host, CMMsg msg)
@@ -165,7 +200,6 @@ public class Chant_CaveIn extends Chant
 		}
 		else
 			return maliciousFizzle(mob,target,L("<S-NAME> chant(s) at <T-NAMESELF>, but nothing happens."));
-
 
 		// return whether it worked
 		return success;

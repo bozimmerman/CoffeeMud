@@ -177,7 +177,6 @@ public class Chant_Earthpocket extends Chant
 		}
 	}
 
-
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{

@@ -213,6 +213,7 @@ public class Trap_RoomPit extends StdTrap
 		if(unSpring)
 			sprung=false;
 	}
+
 	public void finishSpringing(MOB target)
 	{
 		if((!invoker().mayIFight(target))||(target.phyStats().weight()<5))

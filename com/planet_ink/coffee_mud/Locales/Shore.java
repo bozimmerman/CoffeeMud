@@ -66,6 +66,7 @@ public class Shore extends StdRoom
 		Integer.valueOf(RawMaterial.RESOURCE_SAND)
 	};
 	public static final List<Integer> roomResources=new Vector<Integer>(Arrays.asList(resourceList));
+
 	@Override
 	public List<Integer> resourceChoices()
 	{

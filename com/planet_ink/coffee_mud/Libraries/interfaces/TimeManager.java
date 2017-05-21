@@ -124,7 +124,6 @@ public interface TimeManager extends CMLibrary
 	 */
 	public String getTheTimeZone(String theID);
 
-
 	/**
 	 * Returns the month for a given date
 	 *
@@ -189,7 +188,6 @@ public interface TimeManager extends CMLibrary
 	* @return String The hour
 	**/
 	public String date2HRString(long time);
-
 
 	/**
 	* Returns the Minutes portion of a given Time

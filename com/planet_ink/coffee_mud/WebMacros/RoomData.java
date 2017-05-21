@@ -281,7 +281,6 @@ public class RoomData extends StdWebMacro
 		return null;
 	}
 
-
 	public static MOB getMOBFromCatalog(String MATCHING)
 	{
 		if(!MATCHING.startsWith("CATALOG-"))
@@ -294,7 +293,6 @@ public class RoomData extends StdWebMacro
 		}
 		return M2;
 	}
-
 
 	public static Item getItemFromCatalog(String MATCHING)
 	{
@@ -322,7 +320,6 @@ public class RoomData extends StdWebMacro
 			return (E instanceof Item)?getItemCode(classes,(Item)E):getMOBCode(classes,(MOB)E);
 		return E.ID();
 	}
-
 
 	public static Item getItemFromAnywhere(Object allitems, String MATCHING)
 	{
@@ -924,6 +921,7 @@ public class RoomData extends StdWebMacro
 		final HTTPRequest mergeReq=new HTTPRequest()
 		{
 			public final Hashtable<String,String> params=mergeParams;
+
 			@Override
 			public String getHost()
 			{

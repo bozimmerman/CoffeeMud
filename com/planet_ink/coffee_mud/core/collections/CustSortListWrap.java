@@ -3,7 +3,6 @@ package com.planet_ink.coffee_mud.core.collections;
 import java.io.Serializable;
 import java.util.*;
 
-
 /*
    Copyright 2013-2017 Bo Zimmerman
 
@@ -29,6 +28,7 @@ public class CustSortListWrap<T extends Comparable<T>> extends SortedListWrap<T>
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override protected int compareTo(T arg0, Object arg1)
 	{
 

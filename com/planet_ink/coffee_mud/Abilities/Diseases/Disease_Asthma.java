@@ -35,23 +35,93 @@ import java.util.*;
 
 public class Disease_Asthma extends Disease
 {
-	@Override public String ID() { return "Disease_Asthma"; }
-	private final static String localizedName = CMLib.lang().L("Asthma");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Asthma)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public boolean putInCommandlist(){return false;}
-	@Override public int difficultyLevel(){return 2;}
+	@Override
+	public String ID()
+	{
+		return "Disease_Asthma";
+	}
 
-	@Override protected int DISEASE_TICKS(){return 99999;}
-	@Override protected int DISEASE_DELAY(){return 5;}
-	@Override protected String DISEASE_DONE(){return L("Your asthma clears up.");}
-	@Override protected String DISEASE_START(){return L("^G<S-NAME> start(s) wheezing.^?");}
-	@Override protected String DISEASE_AFFECT(){return L("<S-NAME> wheeze(s) loudly.");}
-	@Override public int abilityCode(){return 0;}
+	private final static String localizedName = CMLib.lang().L("Asthma");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Asthma)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public boolean putInCommandlist()
+	{
+		return false;
+	}
+
+	@Override
+	public int difficultyLevel()
+	{
+		return 2;
+	}
+
+	@Override
+	protected int DISEASE_TICKS()
+	{
+		return 99999;
+	}
+
+	@Override
+	protected int DISEASE_DELAY()
+	{
+		return 5;
+	}
+
+	@Override
+	protected String DISEASE_DONE()
+	{
+		return L("Your asthma clears up.");
+	}
+
+	@Override
+	protected String DISEASE_START()
+	{
+		return L("^G<S-NAME> start(s) wheezing.^?");
+	}
+
+	@Override
+	protected String DISEASE_AFFECT()
+	{
+		return L("<S-NAME> wheeze(s) loudly.");
+	}
+
+	@Override
+	public int abilityCode()
+	{
+		return 0;
+	}
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)

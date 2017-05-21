@@ -33,7 +33,6 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Prayer_EarthMud extends Prayer
 {
 	@Override
@@ -105,7 +104,7 @@ public class Prayer_EarthMud extends Prayer
 			{
 				final MOB M=R.fetchInhabitant(m);
 				if((M!=null)&&(M.isInCombat()))
-				   M.curState().adjMovement(-1,M.maxState());
+					M.curState().adjMovement(-1,M.maxState());
 			}
 		}
 		return super.tick(ticking,tickID);
@@ -163,7 +162,6 @@ public class Prayer_EarthMud extends Prayer
 		}
 		else
 			beneficialWordsFizzle(mob,null,L("<S-NAME> @x1, but nothing happens.",prayWord(mob)));
-
 
 		// return whether it worked
 		return success;

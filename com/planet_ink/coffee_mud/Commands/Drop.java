@@ -52,7 +52,9 @@ public class Drop extends StdCommand
 	private final static Class[][] internalParameters=new Class[][]
 	{
 		{Environmental.class,Boolean.class,Boolean.class,Boolean.class},
-		{Item.class,Boolean.class,Boolean.class}
+		{
+			Item.class,Boolean.class,Boolean.class
+		}
 	};
 
 	public boolean drop(MOB mob, Environmental dropThis, boolean quiet, boolean optimize, boolean intermediate)
@@ -133,8 +135,16 @@ public class Drop extends StdCommand
 
 		whatToDrop=CMParms.combine(commands,0);
 		boolean allFlag=(commands.size()>0)?commands.get(0).equalsIgnoreCase("all"):false;
-		if(whatToDrop.toUpperCase().startsWith("ALL.")){ allFlag=true; whatToDrop="ALL "+whatToDrop.substring(4);}
-		if(whatToDrop.toUpperCase().endsWith(".ALL")){ allFlag=true; whatToDrop="ALL "+whatToDrop.substring(0,whatToDrop.length()-4);}
+		if(whatToDrop.toUpperCase().startsWith("ALL."))
+		{
+			allFlag=true;
+			whatToDrop="ALL "+whatToDrop.substring(4);
+		}
+		if(whatToDrop.toUpperCase().endsWith(".ALL"))
+		{
+			allFlag=true;
+			whatToDrop="ALL "+whatToDrop.substring(0,whatToDrop.length()-4);
+		}
 		int addendum=1;
 		String addendumStr="";
 		final boolean onlyGoldFlag=mob.hasOnlyGoldInInventory();

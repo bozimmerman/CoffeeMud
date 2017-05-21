@@ -17,8 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
-
 /*
    Copyright 2002-2017 Bo Zimmerman
 
@@ -132,6 +130,7 @@ public class Druid extends StdCharClass
 		super();
 		maxStatAdj[CharStats.STAT_CONSTITUTION]=7;
 	}
+
 	@Override
 	public void initializeClass()
 	{
@@ -347,7 +346,6 @@ public class Druid extends StdCharClass
 		}
 	}
 
-
 	@Override
 	public void affectCharState(MOB affected, CharState affectableState)
 	{
@@ -362,7 +360,6 @@ public class Druid extends StdCharClass
 			}
 		}
 	}
-
 
 	private final String[] raceRequiredList=new String[]{
 		"Human","Humanoid","Elf","Vegetation","Dwarf","Giant-kin",

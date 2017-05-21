@@ -34,12 +34,33 @@ import java.util.*;
 */
 public class Thief_SlickCaltrops extends Thief_Caltrops
 {
-	@Override public String ID() { return "Thief_SlickCaltrops"; }
+	@Override
+	public String ID()
+	{
+		return "Thief_SlickCaltrops";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Slick Caltrops");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"SLICKCALTROPS"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public String caltropTypeName(){return CMLib.lang().L("slick ");}
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public String caltropTypeName()
+	{
+		return CMLib.lang().L("slick ");
+	}
+
 	@Override
 	public void spring(MOB mob)
 	{

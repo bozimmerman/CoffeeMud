@@ -18,7 +18,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2017-2017 Bo Zimmerman
 
@@ -225,7 +224,6 @@ public class Organizing extends CommonSkill
 					+CMLib.english().toEnglishStringList(OrganizeBy.class,false),orgaTypeName));
 			return false;
 		}
-		
 		
 		final String str=CMParms.combine(commands);
 		building=null;

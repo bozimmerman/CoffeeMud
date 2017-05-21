@@ -408,7 +408,6 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 		return date2HRString(makeCalendar(time));
 	}
 
-
 	@Override
 	public String date2MINString(long time)
 	{
@@ -794,7 +793,6 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 			return CMath.isMathExpression(val);
 		return CMath.isMathExpression(val.substring(0,x).trim());
 	}
-
 
 	@Override
 	public int parseTickExpression(String val)

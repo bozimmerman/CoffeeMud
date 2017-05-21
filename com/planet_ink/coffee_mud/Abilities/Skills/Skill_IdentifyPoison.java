@@ -35,15 +35,50 @@ import java.util.*;
 
 public class Skill_IdentifyPoison extends StdSkill
 {
-	@Override public String ID() { return "Skill_IdentifyPoison"; }
+	@Override
+	public String ID()
+	{
+		return "Skill_IdentifyPoison";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Identify Poison");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_ITEMS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"IDPOISON","IDENTIFYPOISON"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_POISONING;}
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL|Ability.DOMAIN_POISONING;
+	}
 
 	public List<Ability> returnOffensiveAffects(Physical fromMe)
 	{
@@ -89,7 +124,6 @@ public class Skill_IdentifyPoison extends StdSkill
 		}
 		else
 			beneficialWordsFizzle(mob,target,auto?"":L("<S-NAME> sniff(s) and taste(s) <T-NAME>, but receives no insight."));
-
 
 		// return whether it worked
 		return success;

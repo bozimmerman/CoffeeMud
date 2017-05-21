@@ -39,7 +39,11 @@ public class Poof extends StdCommand
 	public Poof(){}
 
 	private final String[] access=I(new String[]{"POOF"});
-	@Override public String[] getAccessWords(){return access;}
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
 	public boolean errorOut(MOB mob)
 	{
@@ -63,8 +67,16 @@ public class Poof extends StdCommand
 			final String tranPoofIn=CMLib.genEd().prompt(mob,mob.playerStats().getTranPoofIn(),++showNumber,showFlag,L("Transfer-in"),true,true);
 			final String tranPoofOut=CMLib.genEd().prompt(mob,mob.playerStats().getTranPoofOut(),++showNumber,showFlag,L("Transfer-out"),true,true);
 			mob.playerStats().setPoofs(poofIn,poofOut,tranPoofIn,tranPoofOut);
-			if(showFlag<-900){ ok=true; break;}
-			if(showFlag>0){ showFlag=-1; continue;}
+			if(showFlag<-900)
+			{
+				ok=true;
+				break;
+			}
+			if(showFlag>0)
+			{
+				showFlag=-1;
+				continue;
+			}
 			showFlag=CMath.s_int(mob.session().prompt(L("Edit which? "),""));
 			if(showFlag<=0)
 			{
@@ -75,8 +87,16 @@ public class Poof extends StdCommand
 		return false;
 	}
 
-	@Override public boolean canBeOrdered(){return true;}
-	@Override public boolean securityCheck(MOB mob){return CMSecurity.isAllowedContainsAny(mob,mob.location(),CMSecurity.SECURITY_GOTO_GROUP);}
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 
+	@Override
+	public boolean securityCheck(MOB mob)
+	{
+		return CMSecurity.isAllowedContainsAny(mob,mob.location(),CMSecurity.SECURITY_GOTO_GROUP);
+	}
 
 }

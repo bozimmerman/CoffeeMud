@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2007-2017 Bo Zimmerman
 
@@ -108,6 +107,7 @@ public class Wizard extends Mage
 	{
 		return L("Can memorize any spell for casting without expending a training point.");
 	}
+
 	@Override
 	public String getOtherLimitsDesc()
 	{
@@ -119,7 +119,7 @@ public class Wizard extends Mage
 	{
 		super.executeMsg(myHost,msg);
 		if((myHost==null)||(!(myHost instanceof MOB)))
-		   return;
+			return;
 		final MOB mob=(MOB)myHost;
 		if(msg.amISource(mob)&&(msg.tool() instanceof Ability))
 		{
@@ -174,7 +174,7 @@ public class Wizard extends Mage
 			return super.okMessage(myHost,msg);
 		final MOB myChar=(MOB)myHost;
 		if((msg.tool()==null)||(!(msg.tool() instanceof Ability)))
-		   return super.okMessage(myChar,msg);
+			return super.okMessage(myChar,msg);
 		if(msg.amISource(myChar)
 		&&(myChar.isMine(msg.tool())))
 		{
@@ -182,7 +182,7 @@ public class Wizard extends Mage
 			&&(!CMLib.ableMapper().getDefaultGain(ID(),true,msg.tool().ID())))
 			{
 				if(CMLib.dice().rollPercentage()>
-				   (myChar.charStats().getStat(CharStats.STAT_INTELLIGENCE)*((myChar.charStats().getCurrentClass().ID().equals(ID()))?1:2)))
+					(myChar.charStats().getStat(CharStats.STAT_INTELLIGENCE)*((myChar.charStats().getCurrentClass().ID().equals(ID()))?1:2)))
 				{
 					myChar.location().show(myChar,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> fizzle(s) a spell."));
 					return false;

@@ -109,7 +109,8 @@ public class Prop_UseSpellCast extends Prop_SpellAdder
 
 	@Override
 	public void affectPhyStats(Physical host, PhyStats affectableStats)
-	{}
+	{
+	}
 
 	@Override
 	public int triggerMask()

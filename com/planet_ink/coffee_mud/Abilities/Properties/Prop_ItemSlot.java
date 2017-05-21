@@ -32,10 +32,29 @@ import java.util.*;
 */
 public class Prop_ItemSlot extends Property
 {
-	@Override public String ID() { return "Prop_ItemSlot"; }
-	@Override public String name(){ return "Has slots for enhancement items";}
-	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
-	@Override public boolean bubbleAffect(){return true;}
+	@Override
+	public String ID()
+	{
+		return "Prop_ItemSlot";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Has slots for enhancement items";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ITEMS;
+	}
+
+	@Override
+	public boolean bubbleAffect()
+	{
+		return true;
+	}
 	
 	protected Item[] 	slots		= new Item[0];
 	protected Ability[] slotProps	= new Ability[0];

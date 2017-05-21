@@ -17,8 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
-
 /*
    Copyright 2004-2017 Bo Zimmerman
 
@@ -131,6 +129,7 @@ public class Delver extends StdCharClass
 		maxStatAdj[CharStats.STAT_CONSTITUTION]=4;
 		maxStatAdj[CharStats.STAT_STRENGTH]=4;
 	}
+
 	@Override
 	public void initializeClass()
 	{

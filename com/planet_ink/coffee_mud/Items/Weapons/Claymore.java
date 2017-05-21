@@ -48,7 +48,6 @@ public class Claymore extends Sword
 	{
 		super();
 
-
 		final Random randomizer = new Random(System.currentTimeMillis());
 		final int claymoreType = Math.abs(randomizer.nextInt() % 3);
 
@@ -67,8 +66,6 @@ public class Claymore extends Sword
 		material=RawMaterial.RESOURCE_STEEL;
 		weaponDamageType=TYPE_SLASHING;
 	}
-
-
 
 	public void setItemDescription(int level)
 	{
@@ -99,6 +96,5 @@ public class Claymore extends Sword
 				break;
 		}
 	}
-
 
 }

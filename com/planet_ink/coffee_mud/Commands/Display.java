@@ -38,7 +38,12 @@ public class Display extends StdCommand
 	public Display(){}
 
 	private final String[] access=I(new String[]{"DISPLAY","SHOW"});
-	@Override public String[] getAccessWords(){return access;}
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
+
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
@@ -75,8 +80,16 @@ public class Display extends StdCommand
 		String addendumStr="";
 		final Vector<Environmental> V=new Vector<Environmental>();
 		boolean allFlag=(commands.size()>0)?commands.get(0).equalsIgnoreCase("all"):false;
-		if(thingToGive.toUpperCase().startsWith("ALL.")){ allFlag=true; thingToGive="ALL "+thingToGive.substring(4);}
-		if(thingToGive.toUpperCase().endsWith(".ALL")){ allFlag=true; thingToGive="ALL "+thingToGive.substring(0,thingToGive.length()-4);}
+		if(thingToGive.toUpperCase().startsWith("ALL."))
+		{
+			allFlag=true;
+			thingToGive="ALL "+thingToGive.substring(4);
+		}
+		if(thingToGive.toUpperCase().endsWith(".ALL"))
+		{
+			allFlag=true;
+			thingToGive="ALL "+thingToGive.substring(0,thingToGive.length()-4);
+		}
 		boolean doBugFix = true;
 		while(doBugFix || ((allFlag)&&(addendum<=maxToGive)))
 		{
@@ -117,9 +130,23 @@ public class Display extends StdCommand
 		}
 		return false;
 	}
-	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandCombatActionCost(ID());}
-	@Override public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandActionCost(ID());}
-	@Override public boolean canBeOrdered(){return true;}
 
+	@Override
+	public double combatActionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandCombatActionCost(ID());
+	}
+
+	@Override
+	public double actionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandActionCost(ID());
+	}
+
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 
 }

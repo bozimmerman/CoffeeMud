@@ -59,7 +59,6 @@ public class GrinderHolidays
 		return newVAL;
 	}
 
-
 	public static String createModifyHoliday(HTTPRequest httpReq, java.util.Map<String,String> parms, String holidayName)
 	{
 		int index=CMLib.quests().getHolidayIndex(holidayName);

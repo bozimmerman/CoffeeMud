@@ -15,9 +15,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
-
 
 /*
    Copyright 2003-2017 Bo Zimmerman
@@ -36,11 +34,31 @@ import java.util.*;
 */
 public class Play_Ballad extends Play
 {
-	@Override public String ID() { return "Play_Ballad"; }
+	@Override
+	public String ID()
+	{
+		return "Play_Ballad";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Ballad");
-	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	@Override protected String songOf(){return CMLib.english().startWithAorAn(name());}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_OTHERS;
+	}
+
+	@Override
+	protected String songOf()
+	{
+		return CMLib.english().startWithAorAn(name());
+	}
 
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
@@ -93,6 +111,7 @@ public class Play_Ballad extends Play
 			}
 		}
 	}
+
 	@Override
 	public void affectCharStats(MOB mob, CharStats stats)
 	{
@@ -100,6 +119,7 @@ public class Play_Ballad extends Play
 		if(invoker()!=null)
 			stats.setStat(CharStats.STAT_SAVE_MIND,stats.getStat(CharStats.STAT_SAVE_MIND)+adjustedLevel(invoker(),0));
 	}
+
 	@Override
 	public void affectPhyStats(Physical mob, PhyStats stats)
 	{

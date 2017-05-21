@@ -67,7 +67,6 @@ public class CharClassData extends StdWebMacro
 		return str.toString();
 	}
 
-
 	public static StringBuffer cabilities(MOB mob, CharClass E, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize, String font)
 	{
 		final StringBuffer str=new StringBuffer("");

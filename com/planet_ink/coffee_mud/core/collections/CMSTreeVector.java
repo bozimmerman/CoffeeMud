@@ -273,12 +273,15 @@ public class CMSTreeVector<T extends CMObject> implements Serializable, Iterable
 	{
 		final int oldSize=size();
 		for(final T o : V)
+		{
 			if(!c.contains(o))
 				remove(o);
+		}
 		return oldSize < size();
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public synchronized T set(int index, T element)
 	{
@@ -327,6 +330,7 @@ public class CMSTreeVector<T extends CMObject> implements Serializable, Iterable
 	}
 
 	@SuppressWarnings("hiding")
+
 	@Override
 	public synchronized <T> T[] toArray(T[] a)
 	{
@@ -347,6 +351,7 @@ public class CMSTreeVector<T extends CMObject> implements Serializable, Iterable
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public synchronized void add(int index, T element)
 	{
@@ -361,6 +366,7 @@ public class CMSTreeVector<T extends CMObject> implements Serializable, Iterable
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public synchronized boolean add(T e)
 	{
@@ -386,18 +392,22 @@ public class CMSTreeVector<T extends CMObject> implements Serializable, Iterable
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public synchronized boolean addAll(Collection<? extends T> c)
 	{
 		V=(Vector<T>)V.clone();
 		boolean kaplah=false;
 		for(final Object o : c)
+		{
 			if(o instanceof CMObject)
 				kaplah = addBoth((T)o) || kaplah;
+		}
 		return kaplah;
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public synchronized boolean addAll(int index, Collection<? extends T> c)
 	{
@@ -419,6 +429,7 @@ public class CMSTreeVector<T extends CMObject> implements Serializable, Iterable
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public synchronized void clear()
 	{
@@ -442,6 +453,7 @@ public class CMSTreeVector<T extends CMObject> implements Serializable, Iterable
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public synchronized boolean remove(Object o)
 	{
@@ -478,6 +490,7 @@ public class CMSTreeVector<T extends CMObject> implements Serializable, Iterable
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public synchronized T remove(int index)
 	{
@@ -492,6 +505,7 @@ public class CMSTreeVector<T extends CMObject> implements Serializable, Iterable
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public synchronized boolean removeAll(Collection<?> c)
 	{

@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -36,8 +35,18 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class FasterRecovery extends StdBehavior
 {
-	@Override public String ID(){return "FasterRecovery";}
-	@Override protected int canImproveCode(){return Behavior.CAN_ROOMS|Behavior.CAN_AREAS|Behavior.CAN_ITEMS;}
+	@Override
+	public String ID()
+	{
+		return "FasterRecovery";
+	}
+
+	@Override
+	protected int canImproveCode()
+	{
+		return Behavior.CAN_ROOMS|Behavior.CAN_AREAS|Behavior.CAN_ITEMS;
+	}
+
 	protected int burst=0;
 	protected int health=0;
 	protected int hits=0;
@@ -50,7 +59,6 @@ public class FasterRecovery extends StdBehavior
 		return "faster recovering";
 	}
 
-
 	@Override
 	public void setParms(String parameters)
 	{
@@ -61,6 +69,7 @@ public class FasterRecovery extends StdBehavior
 		mana=getVal(parameters,"MANA",0)-1;
 		move=getVal(parameters,"MOVE",0)-1;
 	}
+
 	public static int getVal(String text, String key, int defaultValue)
 	{
 		text=text.toUpperCase();
@@ -129,6 +138,7 @@ public class FasterRecovery extends StdBehavior
 			M.curState().setHitPoints(oldHP);
 		}
 	}
+
 	public void doBe(Room room, int burst, int health, int hits, int mana, int move)
 	{
 		if(room==null)
@@ -140,6 +150,7 @@ public class FasterRecovery extends StdBehavior
 				doBe(M,burst,health,hits,mana,move);
 		}
 	}
+
 	public void doBe(Area area, int burst, int health, int hits, int mana, int move)
 	{
 		if(area==null)
@@ -150,6 +161,7 @@ public class FasterRecovery extends StdBehavior
 			doBe(R,burst,health,hits,mana,move);
 		}
 	}
+
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{

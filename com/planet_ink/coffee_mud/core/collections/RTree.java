@@ -435,10 +435,12 @@ public class RTree<T extends BoundedObject>
 		final BoundedCube box = new BoundedCube(Long.MIN_VALUE, Long.MAX_VALUE, Long.MIN_VALUE, Long.MAX_VALUE, Long.MIN_VALUE, Long.MAX_VALUE);
 		query(results, box, root);
 	}
+
 	public void query(Collection<T> results, BoundedCube box)
 	{
 		query(results, box, root);
 	}
+
 	private void query(Collection<T> results, BoundedCube box, RTreeNode node)
 	{
 		if (node == null) return;
@@ -470,6 +472,7 @@ public class RTree<T extends BoundedObject>
 	{
 		return queryOne(box,root);
 	}
+
 	private T queryOne(BoundedCube box, RTreeNode node)
 	{
 		if (node == null) return null;
@@ -509,6 +512,7 @@ public class RTree<T extends BoundedObject>
 	{
 		query(results, px, py, pz, root);
 	}
+
 	private void query(Collection<T> results, long px, long py, long pz, RTreeNode node)
 	{
 		if (node == null) return;
@@ -628,8 +632,6 @@ public class RTree<T extends BoundedObject>
 			splitter.split(n);
 		}
 	}
-
-
 
 	/**
 	 * Returns whether the given object is in the tree

@@ -23,7 +23,6 @@ import java.util.concurrent.TimeUnit;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_web.interfaces.HTTPRequest;
 
-
 /*
    Copyright 2001-2017 Bo Zimmerman
 
@@ -373,7 +372,6 @@ public class ServiceEngine implements ThreadEngine
 		}
 		return foundOne;
 	}
-
 
 	@Override
 	public synchronized boolean setTickPending(Tickable E, int tickID)
@@ -1254,13 +1252,13 @@ public class ServiceEngine implements ThreadEngine
 		}
 		String codeWord=null;
 		if(CMath.bset(code,Tickable.STATUS_BEHAVIOR))
-		   codeWord="Behavior?!";
+			codeWord="Behavior?!";
 		else
 		if(CMath.bset(code,Tickable.STATUS_SCRIPT))
 			codeWord="Script?!";
 		 else
 		if(CMath.bset(code,Tickable.STATUS_AFFECT))
-		   codeWord="Effect?!";
+			codeWord="Effect?!";
 		else
 		switch((int)code)
 		{
@@ -1291,6 +1289,7 @@ public class ServiceEngine implements ThreadEngine
 		}
 		return codeWord;
 	}
+
 	public void insertOrderDeathInOrder(DVector DV, long lastStart, String msg, TickableGroup tock)
 	{
 		if(DV.size()>0)

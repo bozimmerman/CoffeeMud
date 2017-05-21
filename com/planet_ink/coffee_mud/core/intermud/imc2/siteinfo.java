@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 /**
  * IMC2 version 0.10 - an inter-mud communications protocol
  * Copyright (C) 1996 - 1997 Oliver Jowett: oliver@randomly.org

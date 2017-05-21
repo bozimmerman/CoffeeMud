@@ -33,21 +33,66 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Chant_SummonInsects extends Chant
 {
-	@Override public String ID() { return "Chant_SummonInsects"; }
+	@Override
+	public String ID()
+	{
+		return "Chant_SummonInsects";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Summon Insects");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(In a swarm of insects)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public int maxRange(){return adjustedMaxInvokerRange(5);}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public int maxRange()
+	{
+		return adjustedMaxInvokerRange(5);
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
 	Room castingLocation=null;
-	@Override public long flags(){return Ability.FLAG_SUMMONING;}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_SUMMONING;
+	}
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
@@ -146,7 +191,6 @@ public class Chant_SummonInsects extends Chant
 		}
 		else
 			return maliciousFizzle(mob,null,L("<S-NAME> chant(s), but the magic fizzles."));
-
 
 		// return whether it worked
 		return success;

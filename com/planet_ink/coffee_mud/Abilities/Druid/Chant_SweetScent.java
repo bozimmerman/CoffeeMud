@@ -143,7 +143,7 @@ public class Chant_SweetScent extends Chant
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(
-		  (CMLib.flags().isWateryRoom(mob.location()))
+			(CMLib.flags().isWateryRoom(mob.location()))
 		||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_AIR)
 		||(mob.location().domainType()==Room.DOMAIN_INDOORS_AIR)
 		   )

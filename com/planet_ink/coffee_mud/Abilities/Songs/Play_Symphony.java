@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2003-2017 Bo Zimmerman
 
@@ -36,9 +35,20 @@ import java.util.*;
 
 public class Play_Symphony extends Play
 {
-	@Override public String ID() { return "Play_Symphony"; }
+	@Override
+	public String ID()
+	{
+		return "Play_Symphony";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Symphony");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	@Override
 	public int abstractQuality()
 	{
@@ -50,6 +60,7 @@ public class Play_Symphony extends Play
 		else
 			return Ability.QUALITY_BENEFICIAL_OTHERS;
 	}
+
 	public final static int CODE_UPSAVE=1;
 	public final static int CODE_UPDAMAGEPER3=2;
 	public final static int CODE_UPSTAT=3;
@@ -72,7 +83,11 @@ public class Play_Symphony extends Play
 
 	public int getToDoCode()
 	{
-		if(instrument==null){ toDoCode=-1; return toDoCode;}
+		if(instrument==null)
+		{
+			toDoCode=-1;
+			return toDoCode;
+		}
 		if(toDoCode>0)
 			return toDoCode;
 		final int ilvl=instrument.phyStats().level();
@@ -645,6 +660,7 @@ public class Play_Symphony extends Play
 			break;
 		}
 	}
+
 	@Override
 	public void affectPhyStats(Physical mob, PhyStats stats)
 	{
@@ -687,7 +703,7 @@ public class Play_Symphony extends Play
 		if(!super.tick(ticking,tickID))
 			return false;
 		if(!(affected instanceof MOB))
-		   return true;
+			return true;
 		int per=-1;
 		int addedLevel=0;
 		switch(toDoCode)

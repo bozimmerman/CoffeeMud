@@ -306,12 +306,14 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 						{
 							final List<String> l=respHeaders.get("Content-Length");
 							for(final String s : l)
+							{
 								if(CMath.isInteger(s))
 								{
 									final int possMax=CMath.s_int(s);
 									if((maxBytes==0)||(possMax<maxBytes))
 										maxBytes=possMax;
 								}
+							}
 							state=HState.INBODY;
 						}
 						else
@@ -475,7 +477,6 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 		return this.method(Method.HEAD).doRequest(url);
 	}
 
-
 	@Override
 	public byte[] getRawUrl(final String urlStr, String cookieStr, final int maxLength, final int readTimeout)
 	{
@@ -556,7 +557,6 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 			}
 		}
 	}
-
 
 	@Override
 	public Map<String,List<String>> getHeaders(final String urlStr)

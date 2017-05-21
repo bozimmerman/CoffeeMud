@@ -415,4 +415,3 @@ public class WandArchon extends StdWand implements ArchonOnly
 	}
 }
 
-

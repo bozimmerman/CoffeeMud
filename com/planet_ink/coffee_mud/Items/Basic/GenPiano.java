@@ -66,7 +66,6 @@ public class GenPiano extends GenRideable implements MusicalInstrument
 		super.recoverPhyStats();
 	}
 
-
 	@Override
 	public InstrumentType getInstrumentType()
 	{
@@ -115,5 +114,4 @@ public class GenPiano extends GenRideable implements MusicalInstrument
 		readableText = ("" + type.ordinal());
 	}
 	
-
 }

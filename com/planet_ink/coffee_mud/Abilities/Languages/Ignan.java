@@ -26,6 +26,7 @@ public class Ignan extends StdLanguage
 	}
 
 	private final static String localizedName = CMLib.lang().L("Ignan");
+
 	@Override
 	public String name()
 	{
@@ -67,6 +68,7 @@ public class Ignan extends StdLanguage
 	}
 
 	private static final Hashtable<String,String> hashwords=new Hashtable<String,String>();
+
 	@Override
 	public Map<String, String> translationHash(String language)
 	{
@@ -304,6 +306,4 @@ public class Ignan extends StdLanguage
 		return hashwords;
 		}
 	}
-
-
 

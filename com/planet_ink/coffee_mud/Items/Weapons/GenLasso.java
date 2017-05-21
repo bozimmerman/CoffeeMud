@@ -57,7 +57,6 @@ public class GenLasso extends StdLasso
 		return true;
 	}
 
-
 	@Override
 	public String text()
 	{

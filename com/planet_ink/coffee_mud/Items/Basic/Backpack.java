@@ -51,6 +51,4 @@ public class Backpack extends CloseableContainer
 		recoverPhyStats();
 	}
 
-
-
 }

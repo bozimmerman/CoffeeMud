@@ -199,7 +199,6 @@ public class UnderWaterColumnGrid extends UnderWaterGrid
 		return findCenterRoom(opDirection);
 	}
 
-
 	@Override
 	public void buildGrid()
 	{

@@ -18,7 +18,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2003-2017 Bo Zimmerman
 
@@ -88,6 +87,7 @@ public class Oracle extends Cleric
 		maxStatAdj[CharStats.STAT_WISDOM]=4;
 		maxStatAdj[CharStats.STAT_INTELLIGENCE]=4;
 	}
+
 	@Override
 	public void initializeClass()
 	{
@@ -129,7 +129,6 @@ public class Oracle extends Cleric
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Prayer_MinorInfusion",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_Prayercraft",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Prayer_RemoveParalysis",false);
-
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Prayer_DivineGuidance",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Skill_WildernessLore",false);

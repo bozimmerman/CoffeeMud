@@ -35,14 +35,49 @@ import java.util.*;
 
 public class Chant_MagmaCannon extends Chant
 {
-	@Override public String ID() { return "Chant_MagmaCannon"; }
+	@Override
+	public String ID()
+	{
+		return "Chant_MagmaCannon";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Magma Cannon");
-	@Override public String name() { return localizedName; }
-	@Override public int maxRange(){return adjustedMaxInvokerRange(5);}
-	@Override public int minRange(){return 1;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public int classificationCode(){ return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
-	@Override public long flags(){return Ability.FLAG_FIREBASED;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int maxRange()
+	{
+		return adjustedMaxInvokerRange(5);
+	}
+
+	@Override
+	public int minRange()
+	{
+		return 1;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_FIREBASED;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)

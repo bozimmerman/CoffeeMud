@@ -32,11 +32,29 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class Prop_NoTeleportOut extends Property
 {
-	@Override public String ID() { return "Prop_NoTeleportOut"; }
-	@Override public String name(){ return "Teleport OUT OF Spell Neutralizing";}
-	@Override protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS;}
+	@Override
+	public String ID()
+	{
+		return "Prop_NoTeleportOut";
+	}
 
-	@Override public long flags(){return Ability.FLAG_ZAPPER;}
+	@Override
+	public String name()
+	{
+		return "Teleport OUT OF Spell Neutralizing";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ROOMS|Ability.CAN_AREAS;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_ZAPPER;
+	}
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)

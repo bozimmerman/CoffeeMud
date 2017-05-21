@@ -359,7 +359,6 @@ public class DefaultClimate implements Climate
 			// reset the weather ticker!
 			weatherTicker=WEATHER_TICK_DOWN;
 
-
 			String say=null;
 			int goodWeatherTotal=0;
 			int possibleNextWeather=nextWeather;

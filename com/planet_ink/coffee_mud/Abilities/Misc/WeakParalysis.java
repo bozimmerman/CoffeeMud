@@ -34,7 +34,6 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class WeakParalysis extends StdAbility
 {
 	@Override
@@ -129,7 +128,6 @@ public class WeakParalysis extends StdAbility
 			mob.tell(L("The paralysis eases out of your muscles."));
 	}
 
-
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -156,7 +154,6 @@ public class WeakParalysis extends StdAbility
 		}
 		else
 			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to paralyze <T-NAMESELF>, but fail(s)!"));
-
 
 		// return whether it worked
 		return success;

@@ -70,6 +70,7 @@ public class VeryAggressive extends Aggressive
 		tickWait=CMParms.getParmInt(newParms,"delay",0);
 		tickDown=tickWait;
 	}
+
 	@Override
 	public boolean grantsAggressivenessTo(MOB M)
 	{

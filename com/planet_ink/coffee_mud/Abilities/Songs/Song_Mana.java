@@ -15,9 +15,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
-
 
 /*
    Copyright 2001-2017 Bo Zimmerman
@@ -36,10 +34,25 @@ import java.util.*;
 */
 public class Song_Mana extends Song
 {
-	@Override public String ID() { return "Song_Mana"; }
+	@Override
+	public String ID()
+	{
+		return "Song_Mana";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Mana");
-	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_OTHERS;
+	}
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)

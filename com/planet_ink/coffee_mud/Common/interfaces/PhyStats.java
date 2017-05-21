@@ -57,7 +57,6 @@ public interface PhyStats extends CMCommon, Modifiable
 	 */
 	public int sensesMask(); // mobs, run-time items
 
-
 	/**
 	 * Sets a bitmask for sense related flags of mobs (CAN_ constants), or
 	 * miscellaneous runtime flags for items and other Physicals (SENSE_ constants).
@@ -584,7 +583,6 @@ public interface PhyStats extends CMCommon, Modifiable
 	public final static int IS_UNATTACKABLE=2097152;
 	/** a bit setting, as from disposition(), flagging this object as a custom word for the above*/
 	public final static int IS_CUSTOM=4194304;
-
 
 	/** STAT codes, indexed by the 2nd root of the various IS_ disposition() bitmasks */
 	public static final String[] IS_CODES={

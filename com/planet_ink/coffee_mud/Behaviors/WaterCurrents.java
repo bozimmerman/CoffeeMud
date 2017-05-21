@@ -237,6 +237,7 @@ public class WaterCurrents extends ActiveTicker
 		}
 		return true;
 	}
+
 	protected static final String[] empty={};
 	protected static final String[] CODES={"CLASS","TEXT"};
 	

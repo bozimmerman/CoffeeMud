@@ -36,6 +36,7 @@ import java.util.*;
 public class GenLanguage extends StdLanguage
 {
 	public String ID = "GenLanguage";
+
 	@Override
 	public String ID()
 	{
@@ -152,6 +153,7 @@ public class GenLanguage extends StdLanguage
 										 "HASHEDWORDS",//2S
 										 "HELP",//27I
 										};
+
 	@Override
 	public String[] getStatCodes()
 	{

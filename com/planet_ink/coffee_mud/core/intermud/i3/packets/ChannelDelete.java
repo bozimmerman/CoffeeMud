@@ -16,7 +16,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.Vector;
 
 /**
@@ -43,6 +42,7 @@ public class ChannelDelete extends Packet  {
 		super();
 		type = Packet.CHAN_REMOVE;
 	}
+
 	public ChannelDelete(Vector v) throws InvalidPacketException {
 		super(v);
 		try
@@ -56,7 +56,6 @@ public class ChannelDelete extends Packet  {
 			throw new InvalidPacketException();
 		}
 	}
-
 
 	public ChannelDelete(int t, String chan, String who)
 	{

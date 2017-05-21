@@ -35,13 +35,43 @@ import java.util.*;
 
 public class Prayer_ChainStrike extends Prayer
 {
-	@Override public String ID() { return "Prayer_ChainStrike"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_ChainStrike";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Chain Strike");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}
-	@Override public long flags(){return Ability.FLAG_NEUTRAL|Ability.FLAG_AIRBASED;}
-	@Override public int maxRange(){return adjustedMaxInvokerRange(2);}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_NEUTRAL|Ability.FLAG_AIRBASED;
+	}
+
+	@Override
+	public int maxRange()
+	{
+		return adjustedMaxInvokerRange(2);
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -102,7 +132,11 @@ public class Prayer_ChainStrike extends Prayer
 							{
 								CMLib.combat().postDamage(mob,target,this,dmg,CMMsg.MASK_ALWAYS|CMMsg.TYP_ELECTRIC,Weapon.TYPE_STRIKING,L("The strike <DAMAGE> <T-NAME>!"));
 								damage = (int)Math.round(CMath.div(damage,2.0));
-								if(damage<2){ damage=0; break;}
+								if(damage<2)
+								{
+									damage=0;
+									break;
+								}
 							}
 						}
 					}
@@ -113,7 +147,6 @@ public class Prayer_ChainStrike extends Prayer
 		}
 		else
 			return maliciousFizzle(mob,null,L("<S-NAME> @x1 for a ferocious spell, but nothing happens.",prayWord(mob)));
-
 
 		// return whether it worked
 		return success;

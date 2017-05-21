@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -35,9 +34,19 @@ import java.util.*;
 */
 public class Skill_TwoDaggerFighting extends Skill_TwoWeaponFighting
 {
-	@Override public String ID() { return "Skill_TwoDaggerFighting"; }
+	@Override
+	public String ID()
+	{
+		return "Skill_TwoDaggerFighting";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Two Dagger Fighting");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)

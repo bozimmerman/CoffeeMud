@@ -78,7 +78,6 @@ public class Farming extends GatheringSkill
 	protected Room		room			= null;
 	protected String	foundShortName	= "";
 
-	
 	public Farming()
 	{
 		super();

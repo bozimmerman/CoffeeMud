@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2002-2017 Bo Zimmerman
 
@@ -34,18 +33,53 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Chant_FeelHeat extends Chant
 {
-	@Override public String ID() { return "Chant_FeelHeat"; }
+	@Override
+	public String ID()
+	{
+		return "Chant_FeelHeat";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Feel Heat");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Feel Heat)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
@@ -65,7 +99,6 @@ public class Chant_FeelHeat extends Chant
 		}
 		return true;
 	}
-
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
@@ -108,7 +141,6 @@ public class Chant_FeelHeat extends Chant
 		}
 		return true;
 	}
-
 
 	@Override
 	public void unInvoke()

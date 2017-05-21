@@ -187,11 +187,13 @@ public class Socials extends StdLibrary implements SocialsList
 			H.put(name,V2);
 		}
 		for(int v=0;v<V2.size();v++)
+		{
 			if(V2.get(v).Name().equalsIgnoreCase(S.Name()))
 			{
 				V2.remove(v);
 				break;
 			}
+		}
 		V2.add(S);
 	}
 
@@ -209,6 +211,7 @@ public class Socials extends StdLibrary implements SocialsList
 		if(V2==null)
 			return;
 		for(int v=0;v<V2.size();v++)
+		{
 			if(V2.get(v).Name().equalsIgnoreCase(name))
 			{
 				V2.remove(v);
@@ -219,6 +222,7 @@ public class Socials extends StdLibrary implements SocialsList
 				}
 				break;
 			}
+		}
 	}
 
 	@Override
@@ -254,7 +258,6 @@ public class Socials extends StdLibrary implements SocialsList
 		unloadSocials();
 		return true;
 	}
-
 
 	@Override
 	public void modifySocialOthersCode(MOB mob, Social me, int showNumber, int showFlag)
@@ -365,7 +368,6 @@ public class Socials extends StdLibrary implements SocialsList
 		else
 			mob.session().println(L("(no change)"));
 	}
-
 
 	@Override
 	public boolean modifySocialInterface(MOB mob, String socialString)
@@ -501,12 +503,14 @@ public class Socials extends StdLibrary implements SocialsList
 					newOne=" "+newOne;
 				if(!pickNewSocial)
 				for(int i=0;i<socials.size();i++)
+				{
 					if(socials.get(i).Name().equals(name+newOne))
 					{
 						mob.tell(L("This social already exists.  Pick it off the list above."));
 						pickNewSocial=true;
 						break;
 					}
+				}
 				if(!pickNewSocial)
 				{
 					soc=makeDefaultSocial(name,newOne);
@@ -1039,7 +1043,6 @@ public class Socials extends StdLibrary implements SocialsList
 		othMOB.destroy();
 		return help.toString();
 	}
-
 
 	@Override
 	@SuppressWarnings("unchecked")

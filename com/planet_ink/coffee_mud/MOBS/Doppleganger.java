@@ -83,8 +83,6 @@ public class Doppleganger extends StdMOB
 		recoverCharStats();
 	}
 
-
-
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{

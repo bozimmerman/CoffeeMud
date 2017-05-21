@@ -97,7 +97,6 @@ public class AuctionCoffeeShop implements CoffeeShop
 	{
 	}
 
-
 	@Override
 	public CoffeeShop build(ShopKeeper SK)
 	{
@@ -241,7 +240,6 @@ public class AuctionCoffeeShop implements CoffeeShop
 	public void destroyStoreInventory()
 	{
 	}
-
 
 	@Override
 	public Environmental removeStock(String name, MOB mob)

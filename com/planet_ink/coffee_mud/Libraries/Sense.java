@@ -268,7 +268,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			return (Room)((Item)E).owner();
 		else
 		if((E instanceof Item)&&(((Item)E).owner() instanceof MOB))
-		   return ((MOB)((Item)E).owner()).location();
+			return ((MOB)((Item)E).owner()).location();
 		else
 		if(E instanceof Ability)
 			return roomLocation(((Ability)E).affecting());
@@ -593,7 +593,6 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			 &&((Container)I).isOpen();
 	}
 	
-
 	@Override
 	public boolean isTracking(MOB M)
 	{
@@ -730,7 +729,6 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		}
 		return false;
 	}
-
 
 	@Override
 	public String getAlignmentName(Environmental E)
@@ -1375,7 +1373,6 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		return false;
 	}
 
-
 	@Override
 	public boolean isInFlight(Physical P)
 	{
@@ -1436,12 +1433,12 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		return V;
 	}
 
-
 	@Override
 	public List<Ability> domainAnyAffects(final Physical P, final int domain)
 	{
 		final Vector<Ability> V=new Vector<Ability>(1);
 		if(P!=null)
+		{
 			if(domain>Ability.ALL_ACODES)
 			{
 				P.eachEffect(new EachApplicable<Ability>()
@@ -1466,6 +1463,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 					}
 				});
 			}
+		}
 		return V;
 	}
 

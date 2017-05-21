@@ -407,7 +407,6 @@ public interface XMLLibrary extends CMLibrary
 		 */
 		public int outerEndIndex();
 		
-
 		/**
 		 * Return a parameter value within an XML tag
 		 * &lt;TAG Parameter="VALUE"&gt;

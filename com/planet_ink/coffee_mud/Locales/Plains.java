@@ -80,6 +80,7 @@ public class Plains extends StdRoom
 		Integer.valueOf(RawMaterial.RESOURCE_LEATHER),
 		Integer.valueOf(RawMaterial.RESOURCE_WOOL)};
 	public static final List<Integer> roomResources=new Vector<Integer>(Arrays.asList(resourceList));
+
 	@Override
 	public List<Integer> resourceChoices()
 	{

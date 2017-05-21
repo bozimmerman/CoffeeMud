@@ -512,14 +512,17 @@ public class Property implements Ability
 		case 1: setMiscText(val); break;
 		}
 	}
+
 	@Override
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof Property))
 			return false;
 		for(int i=0;i<CODES.length;i++)
+		{
 			if(!E.getStat(CODES[i]).equals(getStat(CODES[i])))
 				return false;
+		}
 		return true;
 	}
 

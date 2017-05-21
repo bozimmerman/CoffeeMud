@@ -57,5 +57,4 @@ public class OilFlask extends StdDrink
 		recoverPhyStats();
 	}
 
-
 }

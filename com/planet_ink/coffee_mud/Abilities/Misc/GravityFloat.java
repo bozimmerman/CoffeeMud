@@ -35,7 +35,6 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class GravityFloat extends StdAbility
 {
 	@Override
@@ -418,7 +417,6 @@ public class GravityFloat extends StdAbility
 		}
 		return hasGravity;
 	}
-	
 	
 	@Override
 	public boolean invoke(final MOB mob, List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)

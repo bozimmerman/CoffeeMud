@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -36,10 +35,20 @@ import java.util.*;
 
 public class DelayedTransporter extends ActiveTicker
 {
-	@Override public String ID(){return "DelayedTransporter";}
+	@Override
+	public String ID()
+	{
+		return "DelayedTransporter";
+	}
+
 	protected Hashtable<String,Integer> transportees=new Hashtable<String,Integer>();
 	protected Vector<String> destRoomNames=new Vector<String>();
-	@Override protected int canImproveCode(){return Behavior.CAN_ITEMS|Behavior.CAN_MOBS|Behavior.CAN_ROOMS;}
+
+	@Override
+	protected int canImproveCode()
+	{
+		return Behavior.CAN_ITEMS|Behavior.CAN_MOBS|Behavior.CAN_ROOMS;
+	}
 
 	@Override
 	public String accountForYourself()
@@ -53,7 +62,6 @@ public class DelayedTransporter extends ActiveTicker
 		minTicks=5;maxTicks=5;chance=100;
 		tickReset();
 	}
-
 
 	@Override
 	public void setParms(String newParms)
@@ -105,6 +113,7 @@ public class DelayedTransporter extends ActiveTicker
 				}
 				boolean gone=false;
 				if(I.intValue()>=minTicks)
+				{
 					if((CMLib.dice().rollPercentage()<chance)||(I.intValue()>maxTicks))
 					{
 						final String roomName=destRoomNames.elementAt(CMLib.dice().roll(1,destRoomNames.size(),-1));
@@ -116,6 +125,7 @@ public class DelayedTransporter extends ActiveTicker
 						transportees.remove(inhab.Name());
 						gone=true;
 					}
+				}
 				if(!gone)
 				{
 					I=Integer.valueOf(I.intValue()+1);

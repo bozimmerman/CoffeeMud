@@ -57,5 +57,4 @@ public class Whip extends StdWeapon
 		weaponClassification=Weapon.CLASS_FLAILED;
 	}
 
-
 }

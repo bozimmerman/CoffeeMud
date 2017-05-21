@@ -1547,7 +1547,6 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		return walk(mob,directionCode,flee,nolook,false);
 	}
 
-	
 	@Override
 	public boolean walk(Item I, int directionCode)
 	{

@@ -18,7 +18,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.sql.*;
 import java.util.*;
 
-
 /*
    Copyright 2004-2017 Bo Zimmerman
 
@@ -41,6 +40,7 @@ public class StatLoader
 	{
 		DB=newDB;
 	}
+
 	public CoffeeTableRow DBRead(long startTime)
 	{
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMSTAT)))
@@ -128,6 +128,7 @@ public class StatLoader
 			Log.errOut("DataLoader",sqle);
 		}
 	}
+
 	public boolean DBUpdate(long startTime, String data)
 	{
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMSTAT)))
@@ -143,6 +144,7 @@ public class StatLoader
 		}
 		return (result != -1);
 	}
+
 	public boolean DBCreate(long startTime, long endTime, String data)
 	{
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMSTAT)))

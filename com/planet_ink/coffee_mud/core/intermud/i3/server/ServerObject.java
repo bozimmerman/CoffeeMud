@@ -32,8 +32,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  * An interface for mudlib object's to implement
  */
 
-
-
 /**
  * The ServerObject interface prescribes methods which
  * must be defined in any object in the mudlib.

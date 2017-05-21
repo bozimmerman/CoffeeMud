@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -35,8 +34,18 @@ import java.util.*;
 */
 public class AntiVagrant extends ActiveTicker
 {
-	@Override public String ID(){return "AntiVagrant";}
-	@Override protected int canImproveCode(){return Behavior.CAN_MOBS;}
+	@Override
+	public String ID()
+	{
+		return "AntiVagrant";
+	}
+
+	@Override
+	protected int canImproveCode()
+	{
+		return Behavior.CAN_MOBS;
+	}
+
 	protected int speakDown=3;
 	protected MOB target=null;
 	protected boolean kickout=false;
@@ -115,7 +124,6 @@ public class AntiVagrant extends ActiveTicker
 		}
 	}
 
-
 	@Override
 	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
@@ -136,7 +144,11 @@ public class AntiVagrant extends ActiveTicker
 			return true;
 
 		// believe it or not, this is for arrest behavior.
-		if(speakDown>0)	{	speakDown--;return true;	}
+		if(speakDown>0)
+		{
+			speakDown--;
+			return true;
+		}
 
 		if((canFreelyBehaveNormal(ticking))&&(canAct(ticking,tickID)))
 		{

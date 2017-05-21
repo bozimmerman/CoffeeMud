@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2016-2017 Bo Zimmerman
 
@@ -143,7 +142,6 @@ public class Chant_FeedingFrenzy extends Chant
 			this.aggro.tick(ticking, tickID);
 		return true;
 	}
-
 
 	final TrackingLibrary.TrackingFlags flags = CMLib.tracking().newFlags()
 			.plus(TrackingLibrary.TrackingFlag.AREAONLY)

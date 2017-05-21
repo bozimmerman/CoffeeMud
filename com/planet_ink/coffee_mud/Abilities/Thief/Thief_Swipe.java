@@ -35,20 +35,70 @@ import java.util.*;
 
 public class Thief_Swipe extends ThiefSkill
 {
-	@Override public String ID() { return "Thief_Swipe"; }
+	@Override
+	public String ID()
+	{
+		return "Thief_Swipe";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Swipe gold");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALING;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALING;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"SWIPE"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT|USAGE_MANA;
+	}
+
 	public int code=0;
 
-	@Override public int abilityCode(){return code;}
-	@Override public void setAbilityCode(int newCode){code=newCode;}
+	@Override
+	public int abilityCode()
+	{
+		return code;
+	}
+
+	@Override
+	public void setAbilityCode(int newCode)
+	{
+		code=newCode;
+	}
 
 	private final PairVector<MOB,Integer> lastOnes=new PairVector<MOB,Integer>();
 	protected int timesPicked(MOB target)
@@ -70,7 +120,6 @@ public class Thief_Swipe extends ThiefSkill
 		lastOnes.addElement(target,Integer.valueOf(times+1));
 		return times+1;
 	}
-
 
 	@Override
 	public int castingQuality(MOB mob, Physical target)
@@ -139,7 +188,11 @@ public class Thief_Swipe extends ThiefSkill
 			levelDiff=-(levelDiff*((!CMLib.flags().canBeSeenBy(mob,target))?5:15));
 		else
 			levelDiff=-(levelDiff*((!CMLib.flags().canBeSeenBy(mob,target))?1:2));
-		if(!CMLib.flags().isAliveAwakeMobile(target,true)){levelDiff=100;discoverChance=0;}
+		if(!CMLib.flags().isAliveAwakeMobile(target,true))
+		{
+			levelDiff=100;
+			discoverChance=0;
+		}
 		final boolean success=proficiencyCheck(mob,levelDiff,auto);
 
 		if(!success)

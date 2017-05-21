@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -35,9 +34,24 @@ import java.util.*;
 */
 public class Prop_Trashcan extends Property
 {
-	@Override public String ID() { return "Prop_Trashcan"; }
-	@Override public String name(){ return "Auto purges items put into a container";}
-	@Override protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_ROOMS;}
+	@Override
+	public String ID()
+	{
+		return "Prop_Trashcan";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Auto purges items put into a container";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ITEMS|Ability.CAN_ROOMS;
+	}
+
 	protected SLinkedList<Item> trashables=new SLinkedList<Item>();
 	protected int tickDelay=0;
 	protected volatile long lastAddition=0;

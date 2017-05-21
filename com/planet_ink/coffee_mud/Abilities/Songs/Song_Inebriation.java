@@ -15,9 +15,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
-
 
 /*
    Copyright 2001-2017 Bo Zimmerman
@@ -36,10 +34,26 @@ import java.util.*;
 */
 public class Song_Inebriation extends Song
 {
-	@Override public String ID() { return "Song_Inebriation"; }
+	@Override
+	public String ID()
+	{
+		return "Song_Inebriation";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Drunkenness");
-	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
@@ -52,7 +66,6 @@ public class Song_Inebriation extends Song
 
 		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-adjustedLevel(invoker(),0));
 	}
-
 
 	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
@@ -114,7 +127,7 @@ public class Song_Inebriation extends Song
 			return true;
 
 		if(!(msg.target() instanceof MOB))
-		   return true;
+			return true;
 
 		if((msg.amISource((MOB)affected))
 		&&(msg.sourceMessage()!=null)

@@ -42,6 +42,7 @@ public class Blah extends StdLanguage
 	}
 
 	private final static String localizedName = CMLib.lang().L("Blah");
+
 	@Override
 	public String name()
 	{

@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -35,12 +34,31 @@ import java.util.*;
 */
 public class Prop_Invisibility extends Property
 {
-	@Override public String ID() { return "Prop_Invisibility"; }
-	@Override public String name(){ return "Persistant Invisibility";}
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_EXITS;}
+	@Override
+	public String ID()
+	{
+		return "Prop_Invisibility";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Persistant Invisibility";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_EXITS;
+	}
+
 	protected int ticksSinceLoss=100;
 
-	@Override public long flags(){return Ability.FLAG_ADJUSTER;}
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_ADJUSTER;
+	}
 
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)

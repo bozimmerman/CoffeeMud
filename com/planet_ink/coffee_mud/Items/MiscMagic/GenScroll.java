@@ -56,7 +56,6 @@ public class GenScroll extends StdScroll
 		material=RawMaterial.RESOURCE_PAPER;
 	}
 
-
 	@Override
 	public boolean isGeneric()
 	{

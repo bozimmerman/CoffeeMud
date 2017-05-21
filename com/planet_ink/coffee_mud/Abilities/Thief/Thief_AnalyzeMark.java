@@ -34,17 +34,67 @@ import java.util.*;
 */
 public class Thief_AnalyzeMark extends ThiefSkill
 {
-	@Override public String ID() { return "Thief_AnalyzeMark"; }
+	@Override
+	public String ID()
+	{
+		return "Thief_AnalyzeMark";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Analyze Mark");
-	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "";}
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
-	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	@Override public boolean isAutoInvoked(){return true;}
-	@Override public boolean canBeUninvoked(){return false;}
-	@Override public boolean disregardsArmorCheck(MOB mob){return true;}
-	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_COMBATLORE;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public String displayText()
+	{
+		return "";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	public boolean isAutoInvoked()
+	{
+		return true;
+	}
+
+	@Override
+	public boolean canBeUninvoked()
+	{
+		return false;
+	}
+
+	@Override
+	public boolean disregardsArmorCheck(MOB mob)
+	{
+		return true;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_COMBATLORE;
+	}
 
 	public MOB getMark(MOB mob)
 	{
@@ -53,6 +103,7 @@ public class Thief_AnalyzeMark extends ThiefSkill
 			return A.mark;
 		return null;
 	}
+
 	public int getMarkTicks(MOB mob)
 	{
 		final Thief_Mark A=(Thief_Mark)mob.fetchEffect("Thief_Mark");

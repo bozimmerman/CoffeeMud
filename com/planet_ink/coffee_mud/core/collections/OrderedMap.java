@@ -31,6 +31,7 @@ public class OrderedMap<K,J> extends Hashtable<K,J> implements Iterable<J>
 	private static final Iterator empty=EmptyIterator.INSTANCE;
 
 	@SuppressWarnings("unchecked")
+
 	@Override public Iterator<J> iterator()
 	{
 		if(size()==0)
@@ -39,6 +40,7 @@ public class OrderedMap<K,J> extends Hashtable<K,J> implements Iterable<J>
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override public synchronized J put(K key, J value)
 	{
 		final ArrayList<J> newList;

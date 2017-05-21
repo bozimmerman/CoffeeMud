@@ -35,8 +35,18 @@ import java.util.*;
 
 public class GetsAllEquipped extends ActiveTicker
 {
-	@Override public String ID(){return "GetsAllEquipped";}
-	@Override protected int canImproveCode(){return Behavior.CAN_MOBS;}
+	@Override
+	public String ID()
+	{
+		return "GetsAllEquipped";
+	}
+
+	@Override
+	protected int canImproveCode()
+	{
+		return Behavior.CAN_MOBS;
+	}
+
 	public GetsAllEquipped()
 	{
 		super();

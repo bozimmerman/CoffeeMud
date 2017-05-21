@@ -99,6 +99,7 @@ public class CMUniqSortSVec<T extends CMObject> extends SVector<T> implements Se
 	{
 		throw new java.lang.UnsupportedOperationException();
 	}
+
 	@Override
 	public boolean contains(Object arg0)
 	{

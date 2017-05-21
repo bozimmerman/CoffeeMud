@@ -787,11 +787,18 @@ public interface Area extends Economics, PhysicalAgent, Places
 		{
 			roomEnumerators=enums;
 		}
+
 		public CompleteRoomEnumerator(Enumeration<Room> enu)
 		{
 			roomEnumerators=new MultiEnumeration<Room>(enu);
 		}
-		@Override public boolean hasMoreElements(){return roomEnumerators.hasMoreElements();}
+
+		@Override
+		public boolean hasMoreElements()
+		{
+			return roomEnumerators.hasMoreElements();
+		}
+
 		@Override
 		public Room nextElement()
 		{

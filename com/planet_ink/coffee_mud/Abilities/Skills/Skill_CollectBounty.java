@@ -35,21 +35,62 @@ import java.util.*;
 
 public class Skill_CollectBounty extends StdSkill
 {
-	@Override public String ID() { return "Skill_CollectBounty"; }
+	@Override
+	public String ID()
+	{
+		return "Skill_CollectBounty";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Collect Bounty");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_OTHERS;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"COLLECTBOUNTY","BOUNTY"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_LEGAL; }
-	@Override public int usageType(){return USAGE_MANA;}
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL|Ability.DOMAIN_LEGAL;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MANA;
+	}
 
 	public List<LegalWarrant> getWarrantsOf(MOB target, Room R)
 	{
 		return getWarrantsOf(target,CMLib.law().getLegalObject(R));
 	}
+
 	public List<LegalWarrant> getWarrantsOf(MOB target, Area legalA)
 	{
 		LegalBehavior B=null;
@@ -108,15 +149,16 @@ public class Skill_CollectBounty extends StdSkill
 			B=CMLib.law().getLegalBehavior(R);
 		final Area legalA=CMLib.law().getLegalObject(R);
 		if((B!=null)&&(R!=null))
+		{
 			for(int i=0;i<R.numInhabitants();i++)
 			{
 				final MOB M=R.fetchInhabitant(i);
 				if((M!=null)&&(M!=mob)&&(M!=target)&&(B.isJudge(legalA,M)))
 					return M;
 			}
+		}
 		return null;
 	}
-
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -209,5 +251,4 @@ public class Skill_CollectBounty extends StdSkill
 	}
 
 }
-
 

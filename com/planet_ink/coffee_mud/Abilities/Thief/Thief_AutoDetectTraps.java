@@ -35,16 +35,56 @@ import java.util.*;
 
 public class Thief_AutoDetectTraps extends ThiefSkill
 {
-	@Override public String ID() { return "Thief_AutoDetectTraps"; }
-	@Override public String displayText() {return L("(Autodetecting traps)");}
+	@Override
+	public String ID()
+	{
+		return "Thief_AutoDetectTraps";
+	}
+
+	@Override
+	public String displayText()
+	{
+		return L("(Autodetecting traps)");
+	}
+
 	private final static String localizedName = CMLib.lang().L("AutoDetect Traps");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_SELF;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"AUTODETECTTRAPS"});
-	@Override public int classificationCode(){	return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_ALERT;}
-	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_ALERT;
+	}
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
 
 	protected Room roomToCheck=null;
 

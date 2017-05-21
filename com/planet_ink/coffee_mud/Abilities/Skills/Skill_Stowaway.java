@@ -222,7 +222,6 @@ public class Skill_Stowaway extends StdSkill
 		return true;
 	}
 	
-	
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{

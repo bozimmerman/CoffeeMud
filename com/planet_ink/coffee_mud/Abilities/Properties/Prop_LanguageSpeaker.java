@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -35,9 +34,24 @@ import java.util.*;
 */
 public class Prop_LanguageSpeaker extends Property
 {
-	@Override public String ID() { return "Prop_LanguageSpeaker"; }
-	@Override public String name(){ return "Forces language speaking";}
-	@Override protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_MOBS|Ability.CAN_ITEMS;}
+	@Override
+	public String ID()
+	{
+		return "Prop_LanguageSpeaker";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Forces language speaking";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_MOBS|Ability.CAN_ITEMS;
+	}
+
 	protected boolean doPlayers=false;
 	protected boolean noMobs=false;
 	protected boolean homeOnly=false;

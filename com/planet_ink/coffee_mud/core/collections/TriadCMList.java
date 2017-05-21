@@ -100,24 +100,30 @@ public final class TriadCMList<T, K, L> extends CMList<Triad<T, K, L>>
 	public boolean containsFirst(T t)
 	{
 		for (final Iterator<Triad<T, K, L>> i = iterator(); i.hasNext();)
+		{
 			if ((t == null) ? i.next() == null : t.equals(i.next().first))
 				return true;
+		}
 		return false;
 	}
 
 	public boolean containsSecond(K k)
 	{
 		for (final Iterator<Triad<T, K, L>> i = iterator(); i.hasNext();)
+		{
 			if ((k == null) ? i.next() == null : k.equals(i.next().second))
 				return true;
+		}
 		return false;
 	}
 
 	public boolean containsThird(L l)
 	{
 		for (final Iterator<Triad<T, K, L>> i = iterator(); i.hasNext();)
+		{
 			if ((l == null) ? i.next() == null : l.equals(i.next().third))
 				return true;
+		}
 		return false;
 	}
 

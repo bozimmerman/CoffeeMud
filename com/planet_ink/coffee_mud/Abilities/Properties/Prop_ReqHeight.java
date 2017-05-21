@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -35,11 +34,29 @@ import java.util.*;
 */
 public class Prop_ReqHeight extends Property implements TriggeredAffect
 {
-	@Override public String ID() { return "Prop_ReqHeight"; }
-	@Override public String name(){ return "Height Restrictions";}
-	@Override protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS;}
+	@Override
+	public String ID()
+	{
+		return "Prop_ReqHeight";
+	}
 
-	@Override public long flags(){return Ability.FLAG_ZAPPER;}
+	@Override
+	public String name()
+	{
+		return "Height Restrictions";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_ZAPPER;
+	}
 
 	@Override
 	public int triggerMask()
@@ -49,7 +66,9 @@ public class Prop_ReqHeight extends Property implements TriggeredAffect
 
 	@Override
 	public String accountForYourself()
-	{ return "Height limit: "+CMath.s_int(text());	}
+	{
+		return "Height limit: "+CMath.s_int(text());
+	}
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)

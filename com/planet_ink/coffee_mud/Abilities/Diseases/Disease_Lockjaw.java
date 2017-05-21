@@ -35,23 +35,93 @@ import java.util.*;
 
 public class Disease_Lockjaw extends Disease
 {
-	@Override public String ID() { return "Disease_Lockjaw"; }
-	private final static String localizedName = CMLib.lang().L("Lockjaw");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Lockjaw)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public boolean putInCommandlist(){return false;}
-	@Override public int difficultyLevel(){return 2;}
+	@Override
+	public String ID()
+	{
+		return "Disease_Lockjaw";
+	}
 
-	@Override protected int DISEASE_TICKS(){return 9999999;}
-	@Override protected int DISEASE_DELAY(){return CMProps.getIntVar( CMProps.Int.TICKSPERMUDDAY );}
-	@Override protected String DISEASE_DONE(){return L("Your lockjaw is cured.");}
-	@Override protected String DISEASE_START(){return L("^G<S-NAME> get(s) lockjaw!^?");}
-	@Override protected String DISEASE_AFFECT(){return "";}
-	@Override public int spreadBitmap(){return DiseaseAffect.SPREAD_CONSUMPTION;}
+	private final static String localizedName = CMLib.lang().L("Lockjaw");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Lockjaw)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public boolean putInCommandlist()
+	{
+		return false;
+	}
+
+	@Override
+	public int difficultyLevel()
+	{
+		return 2;
+	}
+
+	@Override
+	protected int DISEASE_TICKS()
+	{
+		return 9999999;
+	}
+
+	@Override
+	protected int DISEASE_DELAY()
+	{
+		return CMProps.getIntVar( CMProps.Int.TICKSPERMUDDAY );
+	}
+
+	@Override
+	protected String DISEASE_DONE()
+	{
+		return L("Your lockjaw is cured.");
+	}
+
+	@Override
+	protected String DISEASE_START()
+	{
+		return L("^G<S-NAME> get(s) lockjaw!^?");
+	}
+
+	@Override
+	protected String DISEASE_AFFECT()
+	{
+		return "";
+	}
+
+	@Override
+	public int spreadBitmap()
+	{
+		return DiseaseAffect.SPREAD_CONSUMPTION;
+	}
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
@@ -76,6 +146,7 @@ public class Disease_Lockjaw extends Disease
 		}
 		return true;
 	}
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{

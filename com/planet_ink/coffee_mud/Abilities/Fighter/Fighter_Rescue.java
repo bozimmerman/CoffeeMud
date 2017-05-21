@@ -33,20 +33,64 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Fighter_Rescue extends FighterSkill
 {
-	@Override public String ID() { return "Fighter_Rescue"; }
+	@Override
+	public String ID()
+	{
+		return "Fighter_Rescue";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Rescue");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"RESCUE","RES"});
-	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
-	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_MARTIALLORE;}
-	@Override public int usageType(){return USAGE_MOVEMENT;}
-	@Override public long flags(){return FLAG_AGGROFYING;}
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_OTHERS;
+	}
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL|Ability.DOMAIN_MARTIALLORE;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT;
+	}
+
+	@Override
+	public long flags()
+	{
+		return FLAG_AGGROFYING;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)

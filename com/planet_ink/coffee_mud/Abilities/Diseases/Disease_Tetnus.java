@@ -35,23 +35,94 @@ import java.util.*;
 
 public class Disease_Tetnus extends Disease
 {
-	@Override public String ID() { return "Disease_Tetnus"; }
-	private final static String localizedName = CMLib.lang().L("Tetanus");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Tetanus)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public boolean putInCommandlist(){return false;}
+	@Override
+	public String ID()
+	{
+		return "Disease_Tetnus";
+	}
 
-	@Override protected int DISEASE_TICKS(){return CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY)*6;}
-	@Override protected int DISEASE_DELAY(){return CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY);}
-	@Override protected String DISEASE_DONE(){return L("Your tetnus clears up!");}
-	@Override protected String DISEASE_START(){return L("^G<S-NAME> seem(s) ill.^?");}
-	@Override protected String DISEASE_AFFECT(){return L("<S-NAME> <S-IS-ARE> getting slower...");}
-	@Override public int spreadBitmap(){return DiseaseAffect.SPREAD_CONSUMPTION;}
-	@Override public int difficultyLevel(){return 0;}
+	private final static String localizedName = CMLib.lang().L("Tetanus");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Tetanus)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public boolean putInCommandlist()
+	{
+		return false;
+	}
+
+	@Override
+	protected int DISEASE_TICKS()
+	{
+		return CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY)*6;
+	}
+
+	@Override
+	protected int DISEASE_DELAY()
+	{
+		return CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY);
+	}
+
+	@Override
+	protected String DISEASE_DONE()
+	{
+		return L("Your tetnus clears up!");
+	}
+
+	@Override
+	protected String DISEASE_START()
+	{
+		return L("^G<S-NAME> seem(s) ill.^?");
+	}
+
+	@Override
+	protected String DISEASE_AFFECT()
+	{
+		return L("<S-NAME> <S-IS-ARE> getting slower...");
+	}
+
+	@Override
+	public int spreadBitmap()
+	{
+		return DiseaseAffect.SPREAD_CONSUMPTION;
+	}
+
+	@Override
+	public int difficultyLevel()
+	{
+		return 0;
+	}
+
 	protected int dexDown=1;
 
 	@Override

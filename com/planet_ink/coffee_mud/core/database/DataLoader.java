@@ -21,7 +21,6 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
 /*
    Copyright 2003-2017 Bo Zimmerman
 
@@ -82,6 +81,7 @@ public class DataLoader
 		// log comment
 		return rows;
 	}
+
 	public List<PlayerData> DBReadAllPlayerData(String playerID)
 	{
 		DBConnection D=null;

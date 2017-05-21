@@ -46,7 +46,6 @@ import java.net.*;
 import java.util.*;
 import java.sql.*;
 
-
 /*
    Copyright 2000-2017 Bo Zimmerman
 
@@ -158,7 +157,8 @@ public class MUD extends Thread implements MudHost
 						address=sock.getInetAddress().getHostAddress().trim();
 					}
 					catch(final Exception e)
-					{}
+					{
+					}
 					int proceed=0;
 					if(CMSecurity.isBanned(address))
 						proceed=1;
@@ -1756,7 +1756,6 @@ public class MUD extends Thread implements MudHost
 				hostMuds.add(mud);
 				mud.start();
 
-
 				if(hostMuds.size()==0)
 				{
 					Log.errOut("HOST#"+this.threadCode+" could not start any listeners.");
@@ -1969,8 +1968,10 @@ public class MUD extends Thread implements MudHost
 				{
 					numPending=0;
 					for(final HostGroup g : myGroups)
+					{
 						if(!g.failedToStart() && !g.isStarted())
 							numPending++;
+					}
 					if(mainGroup.failedToStart())
 						break;
 					checkedSleep(100);
@@ -1987,7 +1988,14 @@ public class MUD extends Thread implements MudHost
 					for(int i=0;i<CMLib.hosts().size();i++)
 						CMLib.hosts().get(i).setAcceptConnections(true);
 					Log.sysOut(Thread.currentThread().getName(),"Initialization complete.");
-					try{mainGroup.join();}catch(final Exception e){e.printStackTrace(); Log.errOut(Thread.currentThread().getName(),e); }
+					try
+					{
+						mainGroup.join();
+					}
+					catch(final Exception e)
+					{
+						e.printStackTrace(); Log.errOut(Thread.currentThread().getName(),e); 
+					}
 					Runtime.getRuntime().removeShutdownHook(shutdownHook);
 				}
 			}

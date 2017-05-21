@@ -15,8 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
 import java.util.*;
 
 /*
@@ -36,7 +34,11 @@ import java.util.*;
 */
 public class ItemRefitter extends StdBehavior
 {
-	@Override public String ID(){return "ItemRefitter";}
+	@Override
+	public String ID()
+	{
+		return "ItemRefitter";
+	}
 
 	private CMath.CompiledFormula costFormula = null;
 
@@ -80,6 +82,7 @@ public class ItemRefitter extends StdBehavior
 			}
 		}
 	}
+
 	@Override
 	public boolean okMessage(Environmental affecting, CMMsg msg)
 	{

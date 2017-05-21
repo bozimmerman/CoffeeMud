@@ -33,15 +33,34 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Domesticating extends CommonSkill
 {
-	@Override public String ID() { return "Domesticating"; }
+	@Override
+	public String ID()
+	{
+		return "Domesticating";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Domesticating");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"DOMESTICATE","DOMESTICATING"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ANIMALAFFINITY; }
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ANIMALAFFINITY;
+	}
 
 	protected MOB taming=null;
 	protected boolean messedUp=false;
@@ -99,7 +118,6 @@ public class Domesticating extends CommonSkill
 		}
 		super.unInvoke();
 	}
-
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)

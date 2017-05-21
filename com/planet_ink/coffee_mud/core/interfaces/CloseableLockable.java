@@ -81,7 +81,6 @@ public interface CloseableLockable extends Physical
 	 */
 	public boolean defaultsLocked();
 
-
 	/**
 	 * For exits with a door, this returns whether this
 	 * defaults in a closed state.

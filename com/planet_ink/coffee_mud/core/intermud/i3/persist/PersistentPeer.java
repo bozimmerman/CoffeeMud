@@ -26,7 +26,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  * object.
  */
 
-
 /**
  * Any object which should persist over time should
  * have a PersistentPeer which handles saving it.

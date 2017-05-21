@@ -152,12 +152,14 @@ public class Alias extends StdCommand
 								return;
 							}
 							for(int i=0;i<commandStr.length();i++)
+							{
 								if(!Character.isLetterOrDigit(commandStr.charAt(i)))
 								{
 									mob.tell(L("Your alias name may only contain letters and numbers without spaces. "));
 									session.prompt(IC[0].reset());
 									return;
 								}
+							}
 							pStats.addAliasName(commandStr);
 							modifyAlias(mob,session,pStats,commandStr,IC);
 						}

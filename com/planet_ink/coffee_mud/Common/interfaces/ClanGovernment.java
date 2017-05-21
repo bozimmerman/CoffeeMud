@@ -222,7 +222,6 @@ public interface ClanGovernment extends Modifiable, CMCommon
 	 */
 	public void setRivalrous(boolean isRivalrous);
 
-
 	/**
 	 * Gets the override min members.
 	 *

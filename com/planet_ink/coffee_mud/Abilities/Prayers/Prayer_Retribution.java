@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -36,15 +35,45 @@ import java.util.*;
 
 public class Prayer_Retribution extends Prayer_BladeBarrier
 {
-	@Override public String ID() { return "Prayer_Retribution"; }
-	private final static String localizedName = CMLib.lang().L("Retribution");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Retribution)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;}
-	@Override public long flags(){return Ability.FLAG_NEUTRAL;}
+	@Override
+	public String ID()
+	{
+		return "Prayer_Retribution";
+	}
 
-	@Override protected String startStr() { return "The power of retribution fills <T-NAME>!^?"; }
+	private final static String localizedName = CMLib.lang().L("Retribution");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Retribution)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_NEUTRAL;
+	}
+
+	@Override
+	protected String startStr()
+	{
+		return "The power of retribution fills <T-NAME>!^?";
+	}
 
 	@Override
 	protected void doDamage(MOB srcM, MOB targetM, int damage)

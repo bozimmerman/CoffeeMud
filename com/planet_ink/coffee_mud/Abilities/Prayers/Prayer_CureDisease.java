@@ -35,12 +35,38 @@ import java.util.*;
 
 public class Prayer_CureDisease extends Prayer implements MendingSkill
 {
-	@Override public String ID() { return "Prayer_CureDisease"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_CureDisease";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Cure Disease");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_RESTORATION;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
-	@Override public long flags(){return Ability.FLAG_HOLY;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_RESTORATION;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_OTHERS;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_HOLY;
+	}
+
 	protected int abilityCode=0;
 
 	@Override
@@ -49,7 +75,6 @@ public class Prayer_CureDisease extends Prayer implements MendingSkill
 		super.setAbilityCode(newCode);
 		this.abilityCode=newCode;
 	}
-
 
 	@Override
 	public boolean supportsMending(Physical item)
@@ -133,7 +158,6 @@ public class Prayer_CureDisease extends Prayer implements MendingSkill
 		else
 		if(!auto)
 			beneficialWordsFizzle(mob,target,auto?"":L("<S-NAME> @x1 for <T-NAMESELF>, but nothing happens.",prayWord(mob)));
-
 
 		// return whether it worked
 		return success;

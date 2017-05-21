@@ -19,7 +19,6 @@ import java.sql.*;
 import java.net.*;
 import java.util.*;
 
-
 /*
    Copyright 2013-2017 Bo Zimmerman
 
@@ -100,7 +99,9 @@ public class StdTickGroup implements TickableGroup, Cloneable
 			T.tickers.addAll(tickers);
 			return T;
 		}
-		catch(final Exception e){}
+		catch(final Exception e)
+		{
+		}
 		return this;
 	}
 
@@ -121,8 +122,10 @@ public class StdTickGroup implements TickableGroup, Cloneable
 	{
 		int x=0;
 		for(final TickClient C : tickers)
+		{
 			if(i==(x++))
 				return C;
+		}
 		return null;
 	}
 
@@ -282,6 +285,7 @@ public class StdTickGroup implements TickableGroup, Cloneable
 	{
 		tickers.remove(C);
 	}
+
 	@Override
 	public void addTicker(TickClient C)
 	{

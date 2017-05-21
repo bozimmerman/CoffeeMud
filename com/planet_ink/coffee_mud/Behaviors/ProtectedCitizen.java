@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -36,8 +35,18 @@ import java.util.*;
 
 public class ProtectedCitizen extends ActiveTicker
 {
-	@Override public String ID(){return "ProtectedCitizen";}
-	@Override protected int canImproveCode(){return Behavior.CAN_MOBS;}
+	@Override
+	public String ID()
+	{
+		return "ProtectedCitizen";
+	}
+
+	@Override
+	protected int canImproveCode()
+	{
+		return Behavior.CAN_MOBS;
+	}
+
 	protected static String zapper=null;
 	protected static String defcityguard="cityguard";
 	protected static String[] defclaims={"Help! I'm being attacked!","Help me!!"};
@@ -80,15 +89,28 @@ public class ProtectedCitizen extends ActiveTicker
 			return zapper;
 		final String s=getParmsNoTicks();
 		if(s.length()==0)
-		{ cityguard=defcityguard; return "-NAME \"+"+cityguard+"\"";}
+		{
+			cityguard=defcityguard;
+			return "-NAME \"+"+cityguard+"\"";
+		}
 		char c=';';
 		int x=s.indexOf(c);
-		if(x<0){ c='/'; x=s.indexOf(c);}
 		if(x<0)
-		{ cityguard=defcityguard; return "-NAME \"+"+cityguard+"\"";}
+		{
+			c='/';
+			x=s.indexOf(c);
+		}
+		if(x<0)
+		{
+			cityguard=defcityguard;
+			return "-NAME \"+"+cityguard+"\"";
+		}
 		cityguard=s.substring(0,x).trim();
 		if(cityguard.length()==0)
-		{ cityguard=defcityguard; return "-NAME \"+"+cityguard+"\"";}
+		{
+			cityguard=defcityguard;
+			return "-NAME \"+"+cityguard+"\"";
+		}
 		if((cityguard.indexOf('+')>0)
 		||(cityguard.indexOf('-')>0)
 		||(cityguard.indexOf('>')>0)
@@ -182,6 +204,7 @@ public class ProtectedCitizen extends ActiveTicker
 			final Room R=V.elementAt(v);
 			MOB M=null;
 			if(R.getArea().Name().equals(mob.location().getArea().Name()))
+			{
 				for(int i=0;i<R.numInhabitants();i++)
 				{
 					final MOB M2=R.fetchInhabitant(i);
@@ -200,6 +223,7 @@ public class ProtectedCitizen extends ActiveTicker
 						M=M2; break;
 					}
 				}
+			}
 			if(M!=null)
 			{
 				if(R==mob.location())

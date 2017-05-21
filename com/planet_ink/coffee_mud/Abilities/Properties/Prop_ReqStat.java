@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -36,12 +35,31 @@ import java.util.*;
 
 public class Prop_ReqStat extends Property implements TriggeredAffect
 {
-	@Override public String ID() { return "Prop_ReqStat"; }
-	@Override public String name(){ return "Require stat values";}
-	@Override protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS|Ability.CAN_ITEMS;}
+	@Override
+	public String ID()
+	{
+		return "Prop_ReqStat";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Require stat values";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS|Ability.CAN_ITEMS;
+	}
+
 	private boolean noSneak=false;
 
-	@Override public long flags(){return Ability.FLAG_ZAPPER;}
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_ZAPPER;
+	}
 
 	@Override
 	public int triggerMask()
@@ -73,7 +91,6 @@ public class Prop_ReqStat extends Property implements TriggeredAffect
 		}
 		super.setMiscText(txt);
 	}
-
 
 	@Override
 	public String accountForYourself()

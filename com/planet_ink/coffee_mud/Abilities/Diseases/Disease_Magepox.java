@@ -35,23 +35,93 @@ import java.util.*;
 
 public class Disease_Magepox extends Disease
 {
-	@Override public String ID() { return "Disease_Magepox"; }
-	private final static String localizedName = CMLib.lang().L("Magepox");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Magepox)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public boolean putInCommandlist(){return false;}
+	@Override
+	public String ID()
+	{
+		return "Disease_Magepox";
+	}
 
-	@Override protected int DISEASE_TICKS(){return CMProps.getIntVar( CMProps.Int.TICKSPERMUDDAY );}
-	@Override protected int DISEASE_DELAY(){return 15;}
-	@Override protected String DISEASE_DONE(){return L("Your magepox clears up.");}
-	@Override protected String DISEASE_START(){return L("^G<S-NAME> come(s) down with the Magepox.^?");}
-	@Override protected String DISEASE_AFFECT(){return L("<S-NAME> watch(es) new mystical sores appear on <S-HIS-HER> body.");}
-	@Override public int spreadBitmap(){return DiseaseAffect.SPREAD_PROXIMITY;}
-	@Override public int difficultyLevel(){return 9;}
+	private final static String localizedName = CMLib.lang().L("Magepox");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Magepox)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public boolean putInCommandlist()
+	{
+		return false;
+	}
+
+	@Override
+	protected int DISEASE_TICKS()
+	{
+		return CMProps.getIntVar( CMProps.Int.TICKSPERMUDDAY );
+	}
+
+	@Override
+	protected int DISEASE_DELAY()
+	{
+		return 15;
+	}
+
+	@Override
+	protected String DISEASE_DONE()
+	{
+		return L("Your magepox clears up.");
+	}
+
+	@Override
+	protected String DISEASE_START()
+	{
+		return L("^G<S-NAME> come(s) down with the Magepox.^?");
+	}
+
+	@Override
+	protected String DISEASE_AFFECT()
+	{
+		return L("<S-NAME> watch(es) new mystical sores appear on <S-HIS-HER> body.");
+	}
+
+	@Override
+	public int spreadBitmap()
+	{
+		return DiseaseAffect.SPREAD_PROXIMITY;
+	}
+
+	@Override
+	public int difficultyLevel()
+	{
+		return 9;
+	}
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)

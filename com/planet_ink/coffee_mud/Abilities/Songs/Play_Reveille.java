@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2003-2017 Bo Zimmerman
 
@@ -36,13 +35,43 @@ import java.util.*;
 
 public class Play_Reveille extends Play
 {
-	@Override public String ID() { return "Play_Reveille"; }
+	@Override
+	public String ID()
+	{
+		return "Play_Reveille";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Reveille");
-	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected boolean skipStandardSongTick(){return true;}
-	@Override protected boolean skipStandardSongInvoke(){return true;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_OTHERS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected boolean skipStandardSongTick()
+	{
+		return true;
+	}
+
+	@Override
+	protected boolean skipStandardSongInvoke()
+	{
+		return true;
+	}
 
 	@Override
 	public int castingQuality(MOB mob, Physical target)
@@ -95,11 +124,13 @@ public class Play_Reveille extends Play
 					{
 						final Room R3=R.getRoomInDir(d);
 						if((R3!=null)&&(!commonRoomSet.contains(R3)))
+						{
 							for(int i=0;i<R3.numInhabitants();i++)
 							{
 								final MOB M=R3.fetchInhabitant(i);
 								h.add(M);
 							}
+						}
 					}
 
 					for(final MOB follower : h)

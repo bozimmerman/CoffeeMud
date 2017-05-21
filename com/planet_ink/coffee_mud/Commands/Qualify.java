@@ -39,7 +39,11 @@ public class Qualify  extends Skills
 	public Qualify(){}
 
 	private final String[] access=I(new String[]{"QUALIFY","QUAL"});
-	@Override public String[] getAccessWords(){return access;}
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 	
 	protected final static int SKILL_ANY=-1;
 	protected final static int SKILL_CRAFTING_ONLY=-2;

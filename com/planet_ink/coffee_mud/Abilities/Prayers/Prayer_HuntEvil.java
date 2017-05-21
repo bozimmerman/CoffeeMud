@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2004-2017 Bo Zimmerman
 
@@ -36,15 +35,46 @@ import java.util.*;
 
 public class Prayer_HuntEvil extends Prayer
 {
-	@Override public String ID() { return "Prayer_HuntEvil"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_HuntEvil";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Hunt Evil");
-	@Override public String name() { return localizedName; }
-	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_TRACKING;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_HOLY|Ability.FLAG_TRACKING;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Hunting Evil)");
-	@Override public String displayText() { return localizedStaticDisplay; }
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
 	protected String word(){return "evil";}
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_NEUTRALIZATION;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_NEUTRALIZATION;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_SELF;
+	}
 
 	protected List<Room> theTrail=null;
 	public int nextDirection=-2;
@@ -185,7 +215,6 @@ public class Prayer_HuntEvil extends Prayer
 		}
 		else
 			return beneficialVisualFizzle(mob,null,L("<S-NAME> @x1 for the trail to @x2, but nothing happens.",prayWord(mob),word()));
-
 
 		// return whether it worked
 		return success;

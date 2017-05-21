@@ -129,6 +129,7 @@ public class GrinderRooms
 				if(climate>=0)
 				{
 					for(int i=1;;i++)
+					{
 						if(httpReq.isUrlParameter("CLIMATE"+(Integer.toString(i))))
 						{
 							int newVal=CMath.s_int(httpReq.getUrlParameter("CLIMATE"+(Integer.toString(i))));
@@ -141,6 +142,7 @@ public class GrinderRooms
 						}
 						else
 							break;
+					}
 				}
 				R.setClimateType(climate);
 			}
@@ -306,7 +308,6 @@ public class GrinderRooms
 			}
 			else
 				return "No Item Data!";
-
 
 			for(int i=0;i<allitems.size();i++)
 			{

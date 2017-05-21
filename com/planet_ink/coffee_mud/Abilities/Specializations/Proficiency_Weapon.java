@@ -19,7 +19,6 @@ import com.planet_ink.coffee_mud.core.collections.DoubleFilterer;
 
 import java.util.*;
 
-
 /*
    Copyright 2016-2017 Bo Zimmerman
 
@@ -130,6 +129,7 @@ public class Proficiency_Weapon extends StdAbility
 			myFilter = new com.planet_ink.coffee_mud.core.collections.DoubleFilterer<Item>()
 			{
 				final MaskingLibrary.CompiledZMask mask = CMLib.masking().maskCompile(zapMask);
+
 				@Override
 				public com.planet_ink.coffee_mud.core.collections.DoubleFilterer.Result getFilterResult(Item obj)
 				{
@@ -151,7 +151,6 @@ public class Proficiency_Weapon extends StdAbility
 			}
 		}
 	}
-
 
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)

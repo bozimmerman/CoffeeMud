@@ -38,7 +38,11 @@ public class Announce extends StdCommand
 	public Announce(){}
 
 	private final String[] access=I(new String[]{"ANNOUNCE","ANNOUNCETO","ANNOUNCEMSG"});
-	@Override public String[] getAccessWords(){return access;}
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
 	public void sendAnnounce(MOB from, String announcement, Session S)
 	{
@@ -149,8 +153,16 @@ public class Announce extends StdCommand
 		return false;
 	}
 
-	@Override public boolean canBeOrdered(){return true;}
-	@Override public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.ANNOUNCE);}
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 
+	@Override
+	public boolean securityCheck(MOB mob)
+	{
+		return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.ANNOUNCE);
+	}
 
 }

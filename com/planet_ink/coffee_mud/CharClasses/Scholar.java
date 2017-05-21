@@ -128,6 +128,7 @@ public class Scholar extends StdCharClass
 		maxStatAdj[CharStats.STAT_WISDOM]=6;
 		maxStatAdj[CharStats.STAT_INTELLIGENCE]=6;
 	}
+
 	@Override
 	public void initializeClass()
 	{
@@ -149,7 +150,6 @@ public class Scholar extends StdCharClass
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Dissertating",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Skill_WandUse",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Fighter_SmokeSignals",false);
-		
 		
 /*
 5	Dissertating  (G), Skill_WandUse(Q), Smoke Signals (Q)		

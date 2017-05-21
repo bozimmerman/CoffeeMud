@@ -44,7 +44,11 @@ public class JConsole extends StdCommand
 	public JConsole(){}
 
 	private final String[] access=I(new String[]{"JCONSOLE"});
-	@Override public String[] getAccessWords(){return access;}
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
 	public static final Set<String> methH=new SHashSet<String>(ScriptingEngine.methods);
 	public static final Set<String> funcH=new SHashSet<String>(ScriptingEngine.funcs);
@@ -100,8 +104,17 @@ public class JConsole extends StdCommand
 			myScope.c.tick(mob, Tickable.TICKID_MOB); // set lastknownlocation
 			IC[0]=new InputCallback(InputCallback.Type.PROMPT)
 			{
-				@Override public void showPrompt() { session.print(addMode[0]?".":">"); }
-				@Override public void timedOut() { }
+				@Override
+				public void showPrompt()
+				{
+					session.print(addMode[0]?".":">");
+				}
+
+				@Override
+				public void timedOut()
+				{
+				}
+
 				@Override public void callBack()
 				{
 					if(this.input.equalsIgnoreCase("exit"))
@@ -152,7 +165,11 @@ public class JConsole extends StdCommand
 
 	protected static class JScriptEvent extends ScriptableObject
 	{
-		@Override public String getClassName(){ return "JScriptEvent";}
+		@Override
+		public String getClassName()
+		{
+			return "JScriptEvent";
+		}
 		static final long serialVersionUID=4223;
 		final MOB mob;
 		final public ScriptingEngine c;
@@ -167,6 +184,7 @@ public class JConsole extends StdCommand
 		{
 			c.setVar(host,var.toUpperCase(),value);
 		}
+
 		public String getVar(String host, String var)
 		{ 
 			return c.getVar(host,var);
@@ -229,23 +247,102 @@ public class JConsole extends StdCommand
 						final String[][] EVAL={sargs};
 						return Boolean.valueOf(c.eval(mob,mob,null,mob,null,null,"",objs,EVAL,0));
 					}
-					@Override public void delete(String arg0) { }
-					@Override public void delete(int arg0) { }
-					@Override public Object get(String arg0, Scriptable arg1) { return null; }
-					@Override public Object get(int arg0, Scriptable arg1) { return null; }
-					@Override public String getClassName() { return null; }
-					@Override public Object getDefaultValue(Class<?> arg0) { return null; }
-					@Override public Object[] getIds() { return null; }
-					@Override public Scriptable getParentScope() { return null; }
-					@Override public Scriptable getPrototype() { return null; }
-					@Override public boolean has(String arg0, Scriptable arg1) { return false; }
-					@Override public boolean has(int arg0, Scriptable arg1) { return false; }
-					@Override public boolean hasInstance(Scriptable arg0) { return false; }
-					@Override public void put(String arg0, Scriptable arg1, Object arg2) { }
-					@Override public void put(int arg0, Scriptable arg1, Object arg2) { }
-					@Override public void setParentScope(Scriptable arg0) { }
-					@Override public void setPrototype(Scriptable arg0) { }
-					@Override public Scriptable construct(Context arg0, Scriptable arg1, Object[] arg2) { return null; }
+
+					@Override
+					public void delete(String arg0)
+					{
+					}
+
+					@Override
+					public void delete(int arg0)
+					{
+					}
+
+					@Override
+					public Object get(String arg0, Scriptable arg1)
+					{
+						return null;
+					}
+
+					@Override
+					public Object get(int arg0, Scriptable arg1)
+					{
+						return null;
+					}
+
+					@Override
+					public String getClassName()
+					{
+						return null;
+					}
+
+					@Override
+					public Object getDefaultValue(Class<?> arg0)
+					{
+						return null;
+					}
+
+					@Override
+					public Object[] getIds()
+					{
+						return null;
+					}
+
+					@Override
+					public Scriptable getParentScope()
+					{
+						return null;
+					}
+
+					@Override
+					public Scriptable getPrototype()
+					{
+						return null;
+					}
+
+					@Override
+					public boolean has(String arg0, Scriptable arg1)
+					{
+						return false;
+					}
+
+					@Override
+					public boolean has(int arg0, Scriptable arg1)
+					{
+						return false;
+					}
+
+					@Override
+					public boolean hasInstance(Scriptable arg0)
+					{
+						return false;
+					}
+
+					@Override
+					public void put(String arg0, Scriptable arg1, Object arg2)
+					{
+					}
+
+					@Override
+					public void put(int arg0, Scriptable arg1, Object arg2)
+					{
+					}
+
+					@Override
+					public void setParentScope(Scriptable arg0)
+					{
+					}
+
+					@Override
+					public void setPrototype(Scriptable arg0)
+					{
+					}
+
+					@Override
+					public Scriptable construct(Context arg0, Scriptable arg1, Object[] arg2)
+					{
+						return null;
+					}
 				};
 			}
 			return super.get(name, start);
@@ -260,8 +357,27 @@ public class JConsole extends StdCommand
 		}
 	}
 
-	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandCombatActionCost(ID());}
-	@Override public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandActionCost(ID());}
-	@Override public boolean canBeOrdered(){return false;}
-	@Override public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.JSCRIPTS);}
+	@Override
+	public double combatActionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandCombatActionCost(ID());
+	}
+
+	@Override
+	public double actionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandActionCost(ID());
+	}
+
+	@Override
+	public boolean canBeOrdered()
+	{
+		return false;
+	}
+
+	@Override
+	public boolean securityCheck(MOB mob)
+	{
+		return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.JSCRIPTS);
+	}
 }

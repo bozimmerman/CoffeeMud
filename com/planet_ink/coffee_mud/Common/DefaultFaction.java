@@ -876,7 +876,6 @@ public class DefaultFaction implements Faction, MsgListener
 		return mine;
 	}
 
-
 	@Override
 	public FactionChangeEvent[] findAbilityChangeEvents(Ability key)
 	{
@@ -1502,6 +1501,7 @@ public class DefaultFaction implements Faction, MsgListener
 	}
 
 	private static String _ALL_TYPES=null;
+
 	@Override
 	public String ALL_CHANGE_EVENT_TYPES()
 	{
@@ -2147,6 +2147,7 @@ public class DefaultFaction implements Faction, MsgListener
 		}
 
 		@SuppressWarnings("unchecked")
+
 		@Override
 		public void setValue(int newValue)
 		{

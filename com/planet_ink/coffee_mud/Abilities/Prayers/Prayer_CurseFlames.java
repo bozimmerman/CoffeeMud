@@ -33,19 +33,63 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Prayer_CurseFlames extends Prayer
 {
-	@Override public String ID() { return "Prayer_CurseFlames"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_CurseFlames";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Curse Flames");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CURSING;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_FIREBASED;}
-	@Override public int maxRange(){return adjustedMaxInvokerRange(5);}
-	@Override public int minRange(){return 0;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_CURSING;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_UNHOLY|Ability.FLAG_FIREBASED;
+	}
+
+	@Override
+	public int maxRange()
+	{
+		return adjustedMaxInvokerRange(5);
+	}
+
+	@Override
+	public int minRange()
+	{
+		return 0;
+	}
 
 	@Override
 	public int castingQuality(MOB mob, Physical target)
@@ -97,7 +141,6 @@ public class Prayer_CurseFlames extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-
 		final boolean success=proficiencyCheck(mob,0,auto);
 
 		final Item fireSource=getFireSource(target);
@@ -121,7 +164,6 @@ public class Prayer_CurseFlames extends Prayer
 		}
 		else
 			return maliciousFizzle(mob,target,L("<S-NAME> point(s) at <T-NAMESELF> and @x1, but nothing happens.",prayWord(mob)));
-
 
 		// return whether it worked
 		return success;

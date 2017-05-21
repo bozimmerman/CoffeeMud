@@ -42,6 +42,7 @@ public class WolfSpeak extends AnimalSpeak
 	}
 
 	private final static String localizedName = CMLib.lang().L("Wolf Speak");
+
 	@Override
 	public String name()
 	{

@@ -53,6 +53,4 @@ public class HorseCart extends StdRideable
 		recoverPhyStats();
 	}
 
-
-
 }

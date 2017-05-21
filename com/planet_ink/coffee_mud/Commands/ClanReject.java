@@ -142,7 +142,10 @@ public class ClanReject extends StdCommand
 		return false;
 	}
 
-	@Override public boolean canBeOrdered(){return false;}
-
+	@Override
+	public boolean canBeOrdered()
+	{
+		return false;
+	}
 
 }

@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -35,15 +34,35 @@ import java.util.*;
 */
 public class Prop_RideResister extends Prop_HaveResister
 {
-	@Override public String ID() { return "Prop_RideResister"; }
-	@Override public String name(){ return "Resistance due to riding";}
-	@Override protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_MOBS;}
+	@Override
+	public String ID()
+	{
+		return "Prop_RideResister";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Resistance due to riding";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ITEMS|Ability.CAN_MOBS;
+	}
 
 	@Override
 	public String accountForYourself()
-	{ return "Those mounted gain resistances: "+describeResistance(text());}
+	{
+		return "Those mounted gain resistances: "+describeResistance(text());
+	}
 
-	@Override public int triggerMask() { return TriggeredAffect.TRIGGER_MOUNT; }
+	@Override
+	public int triggerMask()
+	{
+		return TriggeredAffect.TRIGGER_MOUNT;
+	}
 
 	@Override
 	public boolean canResist(Environmental E)

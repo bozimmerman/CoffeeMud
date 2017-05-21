@@ -15,8 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
 import java.util.*;
 
 /*
@@ -37,18 +35,44 @@ import java.util.*;
 
 public class Prop_HereSpellCast extends Prop_HaveSpellCast
 {
-	@Override public String ID() { return "Prop_HereSpellCast"; }
-	@Override public String name(){ return "Casting spells when here";}
-	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
-	@Override public boolean bubbleAffect(){return true;}
+	@Override
+	public String ID()
+	{
+		return "Prop_HereSpellCast";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Casting spells when here";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ROOMS;
+	}
+
+	@Override
+	public boolean bubbleAffect()
+	{
+		return true;
+	}
+
 	protected int lastNum=-1;
 	private Vector<MOB> lastMOBs=new Vector<MOB>();
 
 	@Override
 	public String accountForYourself()
-	{ return spellAccountingsWithMask("Casts "," on those here.");}
+	{
+		return spellAccountingsWithMask("Casts "," on those here.");
+	}
 
-	@Override public int triggerMask() { return TriggeredAffect.TRIGGER_ENTER; }
+	@Override
+	public int triggerMask()
+	{
+		return TriggeredAffect.TRIGGER_ENTER;
+	}
 
 	@Override
 	public void setMiscText(String newText)

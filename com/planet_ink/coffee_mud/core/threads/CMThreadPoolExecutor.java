@@ -99,7 +99,11 @@ public class CMThreadPoolExecutor extends ThreadPoolExecutor
 		}
 	}
 
-	@Override public int getActiveCount() { return active.size(); }
+	@Override
+	public int getActiveCount()
+	{
+		return active.size();
+	}
 
 	public boolean isActive(Runnable r)
 	{

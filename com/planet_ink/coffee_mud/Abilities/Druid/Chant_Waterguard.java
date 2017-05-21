@@ -33,7 +33,6 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Chant_Waterguard extends Chant
 {
 	@Override
@@ -97,7 +96,6 @@ public class Chant_Waterguard extends Chant
 		super.unInvoke();
 	}
 
-
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -131,7 +129,6 @@ public class Chant_Waterguard extends Chant
 		}
 		return true;
 	}
-
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)

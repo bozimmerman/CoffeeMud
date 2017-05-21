@@ -35,23 +35,94 @@ import java.util.*;
 
 public class Disease_Migraines extends Disease
 {
-	@Override public String ID() { return "Disease_Migraines"; }
-	private final static String localizedName = CMLib.lang().L("Migraine Headaches");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Migraine Headaches)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public boolean putInCommandlist(){return false;}
+	@Override
+	public String ID()
+	{
+		return "Disease_Migraines";
+	}
 
-	@Override protected int DISEASE_TICKS(){return 99999;}
-	@Override protected int DISEASE_DELAY(){return 50;}
-	@Override protected String DISEASE_DONE(){return L("Your headaches stop.");}
-	@Override protected String DISEASE_START(){return L("^G<S-NAME> get(s) terrible headaches.^?");}
-	@Override protected String DISEASE_AFFECT(){return "";}
-	@Override public int abilityCode(){return 0;}
-	@Override public int difficultyLevel(){return 4;}
+	private final static String localizedName = CMLib.lang().L("Migraine Headaches");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Migraine Headaches)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public boolean putInCommandlist()
+	{
+		return false;
+	}
+
+	@Override
+	protected int DISEASE_TICKS()
+	{
+		return 99999;
+	}
+
+	@Override
+	protected int DISEASE_DELAY()
+	{
+		return 50;
+	}
+
+	@Override
+	protected String DISEASE_DONE()
+	{
+		return L("Your headaches stop.");
+	}
+
+	@Override
+	protected String DISEASE_START()
+	{
+		return L("^G<S-NAME> get(s) terrible headaches.^?");
+	}
+
+	@Override
+	protected String DISEASE_AFFECT()
+	{
+		return "";
+	}
+
+	@Override
+	public int abilityCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int difficultyLevel()
+	{
+		return 4;
+	}
+
 	public HashSet<Ability> forgotten=new HashSet<Ability>();
 	public HashSet<Ability> remember=new HashSet<Ability>();
 

@@ -35,13 +35,44 @@ import java.util.*;
 
 public class Chant_DelayPoison extends Chant
 {
-	@Override public String ID() { return "Chant_DelayPoison"; }
+	@Override
+	public String ID()
+	{
+		return "Chant_DelayPoison";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Delay Poison");
-	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PRESERVING;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_OTHERS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT|Ability.DOMAIN_PRESERVING;
+	}
+
 	protected List<Ability> poisonAffects=null;
 
 	public List<Ability> returnOffensiveAffects(Physical fromMe)
@@ -128,7 +159,6 @@ public class Chant_DelayPoison extends Chant
 		}
 		else
 			beneficialWordsFizzle(mob,target,auto?"":L("<S-NAME> chant(s) for <T-NAME>, but nothing happens."));
-
 
 		// return whether it worked
 		return success;

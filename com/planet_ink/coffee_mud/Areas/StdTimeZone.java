@@ -34,7 +34,11 @@ import java.util.*;
 */
 public class StdTimeZone extends StdArea
 {
-	@Override public String ID(){	return "StdTimeZone";}
+	@Override
+	public String ID()
+	{
+		return "StdTimeZone";
+	}
 
 	public StdTimeZone()
 	{
@@ -52,7 +56,12 @@ public class StdTimeZone extends StdArea
 		return O;
 	}
 
-	@Override public TimeClock getTimeObj(){return myClock;}
+	@Override
+	public TimeClock getTimeObj()
+	{
+		return myClock;
+	}
+
 	@Override
 	public void setName(String newName)
 	{

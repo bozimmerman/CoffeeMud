@@ -33,17 +33,47 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Prayer_GodLight extends Prayer
 {
-	@Override public String ID() { return "Prayer_GodLight"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_GodLight";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Godlight");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Godlight)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public long flags(){return Ability.FLAG_HOLY;}
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_HOLY;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
@@ -73,7 +103,6 @@ public class Prayer_GodLight extends Prayer
 		if(canBeUninvoked())
 			mob.tell(L("Your vision returns."));
 	}
-
 
 	@Override
 	public int castingQuality(MOB mob, Physical target)
@@ -152,7 +181,6 @@ public class Prayer_GodLight extends Prayer
 		}
 		else
 			return maliciousFizzle(mob,target,L("<S-NAME> point(s) at <T-NAMESELF> and @x1, but nothing happens.",prayWord(mob)));
-
 
 		// return whether it worked
 		return success;

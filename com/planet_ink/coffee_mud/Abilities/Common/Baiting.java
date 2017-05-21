@@ -78,7 +78,6 @@ public class Baiting extends GatheringSkill
 	protected Room		fishRoom		= null;
 	protected String	foundShortName	= "";
 
-	
 	public Baiting()
 	{
 		super();

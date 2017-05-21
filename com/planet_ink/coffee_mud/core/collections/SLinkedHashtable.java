@@ -81,6 +81,7 @@ public class SLinkedHashtable<K, F> implements java.util.Map<K, F>, java.io.Seri
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public synchronized void clear()
 	{
@@ -165,6 +166,7 @@ public class SLinkedHashtable<K, F> implements java.util.Map<K, F>, java.io.Seri
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public synchronized F put(K arg0, F arg1)
 	{
@@ -173,6 +175,7 @@ public class SLinkedHashtable<K, F> implements java.util.Map<K, F>, java.io.Seri
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public synchronized F remove(Object arg0)
 	{
@@ -199,6 +202,7 @@ public class SLinkedHashtable<K, F> implements java.util.Map<K, F>, java.io.Seri
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public synchronized void putAll(Map<? extends K, ? extends F> arg0)
 	{

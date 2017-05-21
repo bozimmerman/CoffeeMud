@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2001-2017 Bo Zimmerman
 
@@ -35,10 +34,26 @@ import java.util.*;
 */
 public class Song_Protection extends Song
 {
-	@Override public String ID() { return "Song_Protection"; }
+	@Override
+	public String ID()
+	{
+		return "Song_Protection";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Protection");
-	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_OTHERS;
+	}
+
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
@@ -47,7 +62,6 @@ public class Song_Protection extends Song
 			return;
 		affectableStats.setArmor(affectableStats.armor()-super.adjustedLevel(invoker(),0));
 	}
-
 
 	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)

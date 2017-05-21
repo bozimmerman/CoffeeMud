@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -36,8 +35,18 @@ import java.util.*;
 
 public class Prop_Hidden extends Property
 {
-	@Override public String ID() { return "Prop_Hidden"; }
-	@Override public String name(){ return "Persistant Hiddenness";}
+	@Override
+	public String ID()
+	{
+		return "Prop_Hidden";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Persistant Hiddenness";
+	}
+
 	@Override
 	protected int canAffectCode(){return Ability.CAN_MOBS
 										 |Ability.CAN_ITEMS
@@ -46,7 +55,11 @@ public class Prop_Hidden extends Property
 	protected int ticksSinceLoss=100;
 	protected boolean unLocatable=false;
 
-	@Override public long flags(){return Ability.FLAG_ADJUSTER;}
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_ADJUSTER;
+	}
 
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)

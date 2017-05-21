@@ -48,5 +48,4 @@ public class NeedleChest extends LargeChest
 		setMaterial(RawMaterial.RESOURCE_OAK);
 	}
 
-
 }

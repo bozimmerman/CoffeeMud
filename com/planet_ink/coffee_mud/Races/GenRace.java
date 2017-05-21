@@ -556,7 +556,6 @@ public class GenRace extends StdRace
 			str.append("</REFFECTS>");
 		}
 
-
 		if((culturalAbilityNames==null)||(culturalAbilityNames.length==0))
 			str.append("<CABILITIES/>");
 		else
@@ -838,7 +837,6 @@ public class GenRace extends StdRace
 				racialEffectLevels[x]=iblk.getIntFromPieces("RFLEVEL");
 			}
 		}
-
 
 		xV=CMLib.xml().getContentsFromPieces(raceData,"CABILITIES");
 		culturalAbilityNames=null;

@@ -168,11 +168,22 @@ public class Expire extends StdCommand
 	}
 
 	private final String[] access=I(new String[]{"EXPIRE"});
-	@Override public String[] getAccessWords(){return access;}
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
+	@Override
+	public boolean canBeOrdered()
+	{
+		return false;
+	}
 
-	@Override public boolean canBeOrdered(){return false;}
-	@Override public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDPLAYERS);}
-
+	@Override
+	public boolean securityCheck(MOB mob)
+	{
+		return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDPLAYERS);
+	}
 
 }

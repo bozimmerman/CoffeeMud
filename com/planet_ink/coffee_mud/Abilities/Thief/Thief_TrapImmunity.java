@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -102,7 +101,7 @@ public class Thief_TrapImmunity extends ThiefSkill
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(affected instanceof MOB))
-		   return super.okMessage(myHost,msg);
+			return super.okMessage(myHost,msg);
 		final MOB mob=(MOB)affected;
 		if(msg.amITarget(mob)
 		&&(!msg.amISource(mob))

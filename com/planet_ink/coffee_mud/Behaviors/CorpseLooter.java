@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2003-2017 Bo Zimmerman
 
@@ -35,7 +34,11 @@ import java.util.*;
 */
 public class CorpseLooter extends StdBehavior
 {
-	@Override public String ID(){return "CorpseLooter";}
+	@Override
+	public String ID()
+	{
+		return "CorpseLooter";
+	}
 
 	@Override
 	public String accountForYourself()
@@ -45,6 +48,7 @@ public class CorpseLooter extends StdBehavior
 
 	int tickTocker=1;
 	int tickTock=0;
+
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{

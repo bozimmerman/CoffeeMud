@@ -35,23 +35,94 @@ import java.util.*;
 
 public class Disease_Malaria extends Disease
 {
-	@Override public String ID() { return "Disease_Malaria"; }
-	private final static String localizedName = CMLib.lang().L("Malaria");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Malaria)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public boolean putInCommandlist(){return false;}
+	@Override
+	public String ID()
+	{
+		return "Disease_Malaria";
+	}
 
-	@Override protected int DISEASE_TICKS(){return 9*CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY);}
-	@Override protected int DISEASE_DELAY(){return 5;}
-	@Override protected String DISEASE_DONE(){return L("Your malaria clears up.");}
-	@Override protected String DISEASE_START(){return L("^G<S-NAME> come(s) down with malaria.^?");}
-	@Override protected String DISEASE_AFFECT(){return L("<S-NAME> ache(s) and sneeze(s). AAAAAAAAAAAAAACHOOO!!!!");}
-	@Override public int spreadBitmap(){return DiseaseAffect.SPREAD_CONSUMPTION|DiseaseAffect.SPREAD_PROXIMITY|DiseaseAffect.SPREAD_CONTACT|DiseaseAffect.SPREAD_STD;}
-	@Override public int difficultyLevel(){return 1;}
+	private final static String localizedName = CMLib.lang().L("Malaria");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Malaria)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public boolean putInCommandlist()
+	{
+		return false;
+	}
+
+	@Override
+	protected int DISEASE_TICKS()
+	{
+		return 9*CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY);
+	}
+
+	@Override
+	protected int DISEASE_DELAY()
+	{
+		return 5;
+	}
+
+	@Override
+	protected String DISEASE_DONE()
+	{
+		return L("Your malaria clears up.");
+	}
+
+	@Override
+	protected String DISEASE_START()
+	{
+		return L("^G<S-NAME> come(s) down with malaria.^?");
+	}
+
+	@Override
+	protected String DISEASE_AFFECT()
+	{
+		return L("<S-NAME> ache(s) and sneeze(s). AAAAAAAAAAAAAACHOOO!!!!");
+	}
+
+	@Override
+	public int spreadBitmap()
+	{
+		return DiseaseAffect.SPREAD_CONSUMPTION|DiseaseAffect.SPREAD_PROXIMITY|DiseaseAffect.SPREAD_CONTACT|DiseaseAffect.SPREAD_STD;
+	}
+
+	@Override
+	public int difficultyLevel()
+	{
+		return 1;
+	}
+
 	private boolean norecurse=false;
 	protected int conDown=0;
 	protected int tickUp=0;

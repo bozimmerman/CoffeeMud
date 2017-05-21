@@ -295,7 +295,6 @@ public class GrinderAreas
 			IGNOREMASK="";
 		A.setIgnoreMask(CMLib.coffeeFilter().safetyFilter(IGNOREMASK));
 
-
 		if(A instanceof AutoGenArea)
 		{
 			String AGXMLPATH=httpReq.getUrlParameter("AGXMLPATH");

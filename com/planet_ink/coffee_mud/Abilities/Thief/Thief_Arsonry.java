@@ -35,15 +35,50 @@ import java.util.*;
 
 public class Thief_Arsonry extends ThiefSkill
 {
-	@Override public String ID() { return "Thief_Arsonry"; }
+	@Override
+	public String ID()
+	{
+		return "Thief_Arsonry";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Arsonry");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_ITEMS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"ARSON","ARSONRY"});
-	@Override public int classificationCode() {   return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_CRIMINAL; }
-	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_CRIMINAL;
+	}
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -103,7 +138,10 @@ public class Thief_Arsonry extends ThiefSkill
 		{
 			final Item I=mob.getItem(i);
 			if((I!=null)&&(CMLib.flags().isOnFire(I))&&(CMLib.flags().canBeSeenBy(I,mob)))
-			{ proceed=true; break;}
+			{
+				proceed=true;
+				break;
+			}
 		}
 		if(!proceed)
 		{

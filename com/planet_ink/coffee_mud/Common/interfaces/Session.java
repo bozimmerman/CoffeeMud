@@ -1376,7 +1376,6 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	/** For MSDP protocol, denotes array done*/
 	public static final char MSDP_ARRAY_CLOSE	= 6;
 
-
 	/**
 	 * The status of the session, from opening handshake, to final goodbyes
 	 * @author Bo Zimmerman

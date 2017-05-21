@@ -33,16 +33,42 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Chant_Shamblermorph extends Chant
 {
-	@Override public String ID() { return "Chant_Shamblermorph"; }
+	@Override
+	public String ID()
+	{
+		return "Chant_Shamblermorph";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Shamblermorph");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Shamblermorph)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
-	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_OTHERS;
+	}
+
 	protected static Race treeForm=null;
 
 	@Override
@@ -108,7 +134,6 @@ public class Chant_Shamblermorph extends Chant
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-
 
 		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+(2*getXLEVELLevel(mob)));
 		if(levelDiff<0)

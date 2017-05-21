@@ -142,7 +142,13 @@ public class SetStat extends GetStat
 							{
 								final MOB M=CMClass.sampleMOB();
 								M.setLocation(CMLib.map().roomLocation((Physical)mod));
-								try{A.invoke(M, CMParms.parse(restValue), (Physical)mod, true, 0);}catch(final Exception e){}
+								try
+								{
+									A.invoke(M, CMParms.parse(restValue), (Physical)mod, true, 0);
+								}
+								catch(final Exception e)
+								{
+								}
 								M.destroy();
 								req.sendMsg("[OK "+firstValue+"]");
 							}

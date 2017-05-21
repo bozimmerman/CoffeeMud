@@ -83,6 +83,7 @@ public class Login extends CM1Command
 			req.close();
 		}
 	}
+
 	@Override 
 	public boolean passesSecurityCheck(MOB user, PhysicalAgent target)
 	{

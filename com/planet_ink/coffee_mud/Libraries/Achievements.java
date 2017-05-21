@@ -490,7 +490,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 									return def;
 								}
 								
-
 								@Override
 								public boolean isPreAwarded()
 								{
@@ -535,6 +534,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 								final boolean savingThrow = isSavingThrow;
 								final boolean preAwarded = isPreAwarded;
 								final boolean noRemort = isNotPremortAwarded;
+
 								@Override
 								public AwardType getType()
 								{
@@ -2002,6 +2002,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			A=new Achievement()
 			{
 				final Set<String> achievementList = new TreeSet<String>();
+
 				@Override
 				public Event getEvent()
 				{
@@ -2142,6 +2143,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			A=new Achievement()
 			{
 				final Set<String> roomIDs = new TreeSet<String>();
+
 				@Override
 				public Event getEvent()
 				{
@@ -3551,6 +3553,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 	}
 	
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public synchronized Enumeration<Achievement> achievements(Agent agent)
 	{
@@ -4364,6 +4367,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 	}
 	
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public void resaveAchievements(final String modifyTattoo)
 	{
@@ -4466,7 +4470,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		}
 		return false;
 	}
-	
 	
 	private boolean evaluateAchievement(final Achievement A, final PlayerStats pStats, final PlayerAccount aStats, final MOB mob)
 	{

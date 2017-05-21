@@ -33,20 +33,52 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Prayer_FleshRock extends Prayer
 {
-	@Override public String ID() { return "Prayer_FleshRock"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_FleshRock";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Flesh Rock");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Flesh to Rock)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CORRUPTION;}
-	@Override public long flags(){return Ability.FLAG_NEUTRAL;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_CORRUPTION;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_NEUTRAL;
+	}
+
 	protected CharState prevState=null;
 
 	public Item statue=null;
+
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -145,7 +177,6 @@ public class Prayer_FleshRock extends Prayer
 		}
 	}
 
-
 	@Override
 	public void unInvoke()
 	{
@@ -176,7 +207,6 @@ public class Prayer_FleshRock extends Prayer
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-
 
 		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+(2*getXLEVELLevel(mob)));
 		if(levelDiff<0)

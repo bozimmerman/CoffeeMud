@@ -33,15 +33,34 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Embroidering extends CommonSkill
 {
-	@Override public String ID() { return "Embroidering"; }
+	@Override
+	public String ID()
+	{
+		return "Embroidering";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Embroidering");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"EMBROIDER","EMBROIDERING"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_CALLIGRAPHY; }
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_CALLIGRAPHY;
+	}
 
 	protected Item found=null;
 	protected String writing="";
@@ -51,7 +70,12 @@ public class Embroidering extends CommonSkill
 		displayText=L("You are embroidering...");
 		verb=L("embroidering");
 	}
-	@Override protected boolean canBeDoneSittingDown() { return true; }
+
+	@Override
+	protected boolean canBeDoneSittingDown()
+	{
+		return true;
+	}
 
 	@Override
 	public void unInvoke()

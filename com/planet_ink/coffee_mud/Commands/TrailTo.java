@@ -85,7 +85,10 @@ public class TrailTo extends StdCommand
 				for(int v=0;v<roomList.size();v++)
 				{
 					final Room R=CMLib.map().getRoom(roomList.get(v));
-					if(R==null){ return "Ignored room "+roomList.get(v)+" is unknown!";}
+					if(R==null)
+					{
+						return "Ignored room "+roomList.get(v)+" is unknown!";
+					}
 					if(!ignoreRooms.contains(R))
 						ignoreRooms.add(R);
 				}

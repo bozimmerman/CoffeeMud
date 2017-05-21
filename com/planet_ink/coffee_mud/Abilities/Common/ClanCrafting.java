@@ -21,7 +21,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2004-2017 Bo Zimmerman
 
@@ -38,17 +37,38 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class ClanCrafting extends CraftingSkill implements ItemCraftor
 {
-	@Override public String ID() { return "ClanCrafting"; }
+	@Override
+	public String ID()
+	{
+		return "ClanCrafting";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Clan Crafting");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"CLANCRAFT"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public String supportedResourceString(){return "WOODEN|METAL|MITHRIL";}
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public String supportedResourceString()
+	{
+		return "WOODEN|METAL|MITHRIL";
+	}
+
 	protected int expRequired = 0;
 	protected Clan myClan=null;
+
 	@Override
 	public String parametersFormat(){ return
 		"ITEM_NAME\tRESOURCE_NAME_AMOUNT_MATERIAL_REQUIRED\tRESOURCE_NAME_AMOUNT_MATERIAL_REQUIRED\t"
@@ -73,10 +93,23 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 	protected static final int RCP_REQUIREDSKILL=14;
 
 	public Hashtable<String,String> parametersFields(){ return new Hashtable<String,String>();}
-	@Override public String parametersFile(){ return "clancraft.txt";}
-	@Override protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
+	@Override
+	public String parametersFile()
+	{
+		return "clancraft.txt";
+	}
 
-	@Override public boolean supportsDeconstruction() { return false; }
+	@Override
+	protected List<List<String>> loadRecipes()
+	{
+		return super.loadRecipes(parametersFile());
+	}
+
+	@Override
+	public boolean supportsDeconstruction()
+	{
+		return false;
+	}
 
 	@Override
 	public void unInvoke()
@@ -425,15 +458,16 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 		}
 
 		if(buildingI instanceof Container)
+		{
 			if(capacity>0)
 			{
 				((Container)buildingI).setCapacity(capacity+amt1+amt2);
 				((Container)buildingI).setContainTypes(canContain);
 			}
+		}
 		buildingI.recoverPhyStats();
 		buildingI.text();
 		buildingI.recoverPhyStats();
-
 
 		messedUp=!proficiencyCheck(mob,0,auto);
 

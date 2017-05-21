@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2004-2017 Bo Zimmerman
 
@@ -289,7 +288,6 @@ public class Gaoler extends StdCharClass
 			}
 		}
 	}
-
 
 	private final String[] raceRequiredList = new String[] { "All" };
 

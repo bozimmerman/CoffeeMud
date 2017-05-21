@@ -68,7 +68,6 @@ public class EndlessThinSky extends StdThinGrid
 		return Room.DOMAIN_OUTDOORS_AIR;
 	}
 
-
 	@Override
 	public CMObject newInstance()
 	{
@@ -191,7 +190,6 @@ public class EndlessThinSky extends StdThinGrid
 			if(R2!=null)
 				linkRoom(R,R2,Directions.SOUTH,ox,ox);
 		}
-
 
 		if((x==0)&&(doorsR[Directions.WEST]==null))
 		{

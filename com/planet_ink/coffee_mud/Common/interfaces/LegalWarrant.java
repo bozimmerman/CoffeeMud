@@ -373,7 +373,6 @@ public interface LegalWarrant extends CMCommon
 	 */
 	public long getIgnoreUntilTime();
 	
-
 	/**
 	 * Sets the real time in ms when the warrant can no longer be ignored
 	 * 

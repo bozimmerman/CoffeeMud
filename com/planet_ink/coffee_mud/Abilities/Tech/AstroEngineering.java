@@ -35,7 +35,6 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class AstroEngineering extends TechSkill
 {
 	@Override

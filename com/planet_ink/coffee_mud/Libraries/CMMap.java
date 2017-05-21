@@ -743,12 +743,14 @@ public class CMMap extends StdLibrary implements WorldMap
 		if(o instanceof Room)
 			return getSpaceObject(((Room)o).getArea(),ignoreMobs);
 		if(o instanceof Area)
+		{
 			for(final Enumeration<Area> a=((Area)o).getParents();a.hasMoreElements();)
 			{
 				final SpaceObject obj=getSpaceObject(a.nextElement(),ignoreMobs);
 				if(obj != null)
 					return obj;
 			}
+		}
 		return null;
 	}
 
@@ -2163,7 +2165,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			return (Room)((Item)E).owner();
 		else
 		if((E instanceof Item)&&(((Item)E).owner() instanceof MOB))
-		   return ((MOB)((Item)E).owner()).location();
+			return ((MOB)((Item)E).owner()).location();
 		else
 		if(E instanceof Ability)
 			return roomLocation(((Ability)E).affecting());
@@ -2421,6 +2423,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	public CMMsg resetMsg=null;
+
 	@Override
 	public void resetRoom(Room room)
 	{
@@ -2751,6 +2754,7 @@ public class CMMap extends StdLibrary implements WorldMap
 				final MultiEnumeratorBuilder<Room> roomer = new MultiEnumeratorBuilder<Room>()
 				{
 					@SuppressWarnings("unchecked")
+
 					@Override
 					public MultiEnumeration<Room> getList()
 					{
@@ -3147,7 +3151,6 @@ public class CMMap extends StdLibrary implements WorldMap
 		return space.count();
 	}
 
-	
 	protected boolean isAScriptHost(final Area area, final PhysicalAgent host)
 	{
 		if(area == null)
@@ -3212,12 +3215,16 @@ public class CMMap extends StdLibrary implements WorldMap
 		if(oneToDel == null)
 			return;
 		if(area == null)
+		{
 			for(final Area A : areasList)
+			{
 				if(isAScriptHost(A,oneToDel))
 				{
 					area = A;
 					break;
 				}
+			}
+		}
 		if(area == null)
 			return;
 		synchronized(getScriptHostSemaphore(area))
@@ -3556,7 +3563,6 @@ public class CMMap extends StdLibrary implements WorldMap
 				expireM.destroy();
 		}
 	}
-
 
 	protected final static char[] cmfsFilenameifyChars=new char[]{'/','\\',' '};
 

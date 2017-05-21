@@ -30,7 +30,11 @@ public class Experience extends StdCommand
 	public Experience(){}
 
 	private final String[] access=I(new String[]{"EXPERIENCE","EXPER","XP","EXP"});
-	@Override public String[] getAccessWords(){return access;}
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
 	public StringBuffer getScore(MOB mob)
 	{
@@ -59,7 +63,6 @@ public class Experience extends StdCommand
 			}
 		}
 
-
 		return msg;
 	}
 
@@ -76,6 +79,11 @@ public class Experience extends StdCommand
 			mob.session().wraplessPrintln(msg.toString());
 		return false;
 	}
+
 	public int ticksToExecute(){return 0;}
-	@Override public boolean canBeOrdered(){return true;}
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 }

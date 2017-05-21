@@ -48,5 +48,4 @@ public class TrappedChest extends LargeChest
 		isLocked=false;
 	}
 
-
 }

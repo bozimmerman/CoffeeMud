@@ -34,12 +34,29 @@ import java.util.*;
 */
 public class Prop_PeaceMaker extends Property
 {
-	@Override public String ID() { return "Prop_PeaceMaker"; }
-	@Override public String name(){ return "Strike Neuralizing";}
-	@Override protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_MOBS;}
+	@Override
+	public String ID()
+	{
+		return "Prop_PeaceMaker";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Strike Neuralizing";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_MOBS;
+	}
+
 	@Override
 	public String accountForYourself()
-	{ return "Peace Maker";	}
+	{
+		return "Peace Maker";
+	}
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)

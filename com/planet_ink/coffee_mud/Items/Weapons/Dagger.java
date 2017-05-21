@@ -57,6 +57,4 @@ public class Dagger extends StdWeapon
 		recoverPhyStats();
 	}
 
-
-
 }

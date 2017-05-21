@@ -35,19 +35,48 @@ import java.util.*;
 
 public class FireBuilding extends CommonSkill
 {
-	@Override public String ID() { return "FireBuilding"; }
+	@Override
+	public String ID()
+	{
+		return "FireBuilding";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Fire Building");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"LIGHT","FIREBUILD","FIREBUILDING"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_NATURELORE; }
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_NATURELORE;
+	}
 
 	public Item lighting=null;
 	protected int durationOfBurn=0;
 	protected boolean failed=false;
 
-	@Override protected boolean canBeDoneSittingDown() { return true; }
-	@Override protected boolean allowedInTheDark() { return true; }
+	@Override
+	protected boolean canBeDoneSittingDown()
+	{
+		return true;
+	}
+
+	@Override
+	protected boolean allowedInTheDark()
+	{
+		return true;
+	}
 
 	@Override
 	public void unInvoke()

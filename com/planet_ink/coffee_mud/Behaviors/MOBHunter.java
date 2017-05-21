@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /**
@@ -40,9 +39,24 @@ import java.util.*;
 
 public class MOBHunter extends ActiveTicker
 {
-	@Override public String ID(){return "MOBHunter";}
-	@Override protected int canImproveCode(){return Behavior.CAN_MOBS;}
-	@Override public long flags(){return Behavior.FLAG_MOBILITY|Behavior.FLAG_POTENTIALLYAGGRESSIVE;}
+	@Override
+	public String ID()
+	{
+		return "MOBHunter";
+	}
+
+	@Override
+	protected int canImproveCode()
+	{
+		return Behavior.CAN_MOBS;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Behavior.FLAG_MOBILITY|Behavior.FLAG_POTENTIALLYAGGRESSIVE;
+	}
+
 	protected boolean debug=false;
 	int radius=20;
 
@@ -76,6 +90,7 @@ public class MOBHunter extends ActiveTicker
 		super.setParms(newParms);
 		radius=CMParms.getParmInt(newParms,"radius",radius);
 	}
+
 	protected MOB findPrey(MOB mob)
 	{
 		MOB prey=null;

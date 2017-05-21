@@ -105,6 +105,7 @@ public class ThiefSkill extends StdAbility
 			return 0;
 		return meMOB.phyStats().level();
 	}
+
 	public MOB getHighestLevelMOB(MOB meMOB, Vector<MOB> not)
 	{
 		if(meMOB==null)

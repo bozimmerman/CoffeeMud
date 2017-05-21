@@ -42,6 +42,7 @@ public class DeerSpeak extends AnimalSpeak
 	}
 
 	private final static String localizedName = CMLib.lang().L("Deer Speak");
+
 	@Override
 	public String name()
 	{

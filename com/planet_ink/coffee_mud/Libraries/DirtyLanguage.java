@@ -480,7 +480,6 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 		return translationSections.get(parser);
 	}
 
-
 	@Override
 	public void clear()
 	{

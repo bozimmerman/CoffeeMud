@@ -42,7 +42,11 @@ public class Merge extends StdCommand
 	public Merge(){}
 
 	private final String[] access=I(new String[]{"MERGE"});
-	@Override public String[] getAccessWords(){return access;}
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
 	public static String getStat(Environmental E, String stat)
 	{
@@ -197,11 +201,13 @@ public class Merge extends StdCommand
 			final Environmental E=(Environmental)e.nextElement();
 			final String[] fields=E.getStatCodes();
 			for(int x=0;x<fields.length;x++)
+			{
 				if(!allKnownFields.contains(fields[x]))
 				{
 					allKnownFields.add(fields[x]);
 					allFieldsMsg.append(fields[x]+" ");
 				}
+			}
 		}
 	}
 
@@ -223,11 +229,11 @@ public class Merge extends StdCommand
 			return false;
 		}
 		if((commands.size()>0)&&
-		   commands.get(0).equalsIgnoreCase("noprompt"))
+			commands.get(0).equalsIgnoreCase("noprompt"))
 			commands.remove(0);
 
 		if((commands.size()>0)&&
-		   commands.get(0).equalsIgnoreCase("?"))
+			commands.get(0).equalsIgnoreCase("?"))
 		{
 			final StringBuffer allFieldsMsg=new StringBuffer("");
 			final Vector<String> allKnownFields=new Vector<String>();
@@ -255,7 +261,7 @@ public class Merge extends StdCommand
 			scope="ROOM";
 		}
 		if((commands.size()>0)&&
-		   commands.get(0).equalsIgnoreCase("area"))
+			commands.get(0).equalsIgnoreCase("area"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.MERGE))
 			{
@@ -267,7 +273,7 @@ public class Merge extends StdCommand
 			scope="AREA";
 		}
 		if((commands.size()>0)&&
-		   commands.get(0).equalsIgnoreCase("world"))
+			commands.get(0).equalsIgnoreCase("world"))
 		{
 			if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.MERGE))
 			{
@@ -464,8 +470,10 @@ public class Merge extends StdCommand
 			}
 			else
 			if(placesToDo.get(i) instanceof Room)
+			{
 				if(mob.session()!=null)
 					mob.session().rawPrint(".");
+			}
 			else
 				return false;
 		}
@@ -658,8 +666,16 @@ public class Merge extends StdCommand
 			}
 			if(showNumber==0)
 				return didSomething;
-			if(showFlag<-900){ ok=true; break;}
-			if(showFlag>0){ showFlag=-1; continue;}
+			if(showFlag<-900)
+			{
+				ok=true;
+				break;
+			}
+			if(showFlag>0)
+			{
+				showFlag=-1;
+				continue;
+			}
 			showFlag=CMath.s_int(mob.session().prompt(L("Edit which? "),""));
 			if(showFlag<=0)
 			{
@@ -809,7 +825,10 @@ public class Merge extends StdCommand
 					{
 						final MOB M1=m.nextElement();
 						if(M1.Name().equalsIgnoreCase(dbM.Name())&&((--ctr)<=0))
-						{ M=M1; break;}
+						{
+							M=M1;
+							break;
+						}
 					}
 					if(M==null)
 					{
@@ -862,7 +881,10 @@ public class Merge extends StdCommand
 							{
 								final Item I1=i.nextElement();
 								if(I1.Name().equalsIgnoreCase(dbI.Name())&&((--ctr)<=0))
-								{ I=I1; break;}
+								{
+									I=I1;
+									break;
+								}
 							}
 							if(I==null)
 							{
@@ -949,7 +971,10 @@ public class Merge extends StdCommand
 					{
 						final Item I1=i.nextElement();
 						if(I1.Name().equalsIgnoreCase(dbI.Name())&&((--ctr)<=0))
-						{ I=I1; break;}
+						{
+							I=I1;
+							break;
+						}
 					}
 					if(I==null)
 					{
@@ -1010,7 +1035,8 @@ public class Merge extends StdCommand
 			dbR.destroy();
 		}
 		mob.tell(L("Done"));
-		}catch(final CMException cme)
+		}
+		catch(final CMException cme)
 		{
 			mob.tell(L("Cancelled."));
 		}
@@ -1018,8 +1044,16 @@ public class Merge extends StdCommand
 		return true;
 	}
 
-	@Override public boolean canBeOrdered(){return true;}
-	@Override public boolean securityCheck(MOB mob){return CMSecurity.isAllowedAnywhere(mob,CMSecurity.SecFlag.MERGE);}
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 
+	@Override
+	public boolean securityCheck(MOB mob)
+	{
+		return CMSecurity.isAllowedAnywhere(mob,CMSecurity.SecFlag.MERGE);
+	}
 
 }

@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2016-2017 Bo Zimmerman
 
@@ -174,6 +173,5 @@ public class Chant_SummonCoral extends Chant_SummonPlants
 		}
 		return true;
 	}
-
 
 }

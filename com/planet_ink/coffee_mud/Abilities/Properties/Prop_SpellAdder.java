@@ -208,7 +208,6 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 		return spellH;
 	}
 
-
 	public MOB getBestInvokerMOB(Environmental target)
 	{
 		if(target instanceof MOB)

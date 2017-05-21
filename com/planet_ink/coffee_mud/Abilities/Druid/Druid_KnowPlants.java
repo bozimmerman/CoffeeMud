@@ -34,18 +34,52 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Druid_KnowPlants extends StdAbility
 {
-	@Override public String ID() { return "Druid_KnowPlants"; }
+	@Override
+	public String ID()
+	{
+		return "Druid_KnowPlants";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Know Plants");
-	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_SELF;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_ITEMS;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"KNOWPLANT"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_NATURELORE;}
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL|Ability.DOMAIN_NATURELORE;
+	}
 
 	public static boolean isPlant(Item I)
 	{

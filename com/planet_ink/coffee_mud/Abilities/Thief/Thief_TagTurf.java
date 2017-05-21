@@ -35,18 +35,64 @@ import java.util.*;
 
 public class Thief_TagTurf extends ThiefSkill
 {
-	@Override public String ID() { return "Thief_TagTurf"; }
+	@Override
+	public String ID()
+	{
+		return "Thief_TagTurf";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Tag Turf");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Tagged)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return CAN_ROOMS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_ROOMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"TAGTURF","TURFTAG"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
-	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STREETSMARTS;}
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT|USAGE_MANA;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STREETSMARTS;
+	}
 
 	@Override
 	public boolean okMessage(Environmental host, CMMsg msg)
@@ -128,8 +174,6 @@ public class Thief_TagTurf extends ThiefSkill
 			mob.tell(L("You can't tag anothers property!"));
 			return false;
 		}
-
-
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 

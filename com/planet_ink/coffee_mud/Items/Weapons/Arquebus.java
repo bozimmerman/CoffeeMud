@@ -66,8 +66,6 @@ public class Arquebus extends StdWeapon
 		weaponDamageType=Weapon.TYPE_PIERCING;
 	}
 
-
-
 //	protected boolean isBackfire()
 //	{
 //

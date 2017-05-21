@@ -144,6 +144,7 @@ public class SHashSet<K> implements Serializable, Iterable<K>, Collection<K>, Se
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public synchronized boolean add(K e)
 	{
@@ -157,6 +158,7 @@ public class SHashSet<K> implements Serializable, Iterable<K>, Collection<K>, Se
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public synchronized boolean addAll(Collection<? extends K> c)
 	{
@@ -165,6 +167,7 @@ public class SHashSet<K> implements Serializable, Iterable<K>, Collection<K>, Se
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public synchronized void clear()
 	{
@@ -199,6 +202,7 @@ public class SHashSet<K> implements Serializable, Iterable<K>, Collection<K>, Se
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public synchronized boolean remove(Object o)
 	{
@@ -225,6 +229,7 @@ public class SHashSet<K> implements Serializable, Iterable<K>, Collection<K>, Se
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public synchronized boolean removeAll(Collection<?> arg0)
 	{
@@ -239,6 +244,7 @@ public class SHashSet<K> implements Serializable, Iterable<K>, Collection<K>, Se
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public synchronized boolean retainAll(Collection<?> arg0)
 	{

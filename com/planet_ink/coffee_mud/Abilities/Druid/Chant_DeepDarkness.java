@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.List;
 
-
 /*
    Copyright 2004-2017 Bo Zimmerman
 
@@ -34,18 +33,53 @@ import java.util.List;
    limitations under the License.
 */
 
-
 public class Chant_DeepDarkness extends Chant
 {
-	@Override public String ID() { return "Chant_DeepDarkness"; }
+	@Override
+	public String ID()
+	{
+		return "Chant_DeepDarkness";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Deep Darkness");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Deep Darkness spell)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	@Override protected int canAffectCode(){return CAN_ROOMS;}
-	@Override protected int canTargetCode(){return CAN_ROOMS;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_ROOMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_ROOMS;
+	}
 
 	@Override
 	public void unInvoke()
@@ -64,7 +98,6 @@ public class Chant_DeepDarkness extends Chant
 			room.showHappens(CMMsg.MSG_OK_VISUAL, L("The deep darkness starts to lift."));
 		}
 	}
-
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
@@ -93,7 +126,6 @@ public class Chant_DeepDarkness extends Chant
 		affectableStats.setDisposition(affectableStats.disposition() |  PhyStats.IS_DARK);
 	}
 
-
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -107,7 +139,6 @@ public class Chant_DeepDarkness extends Chant
 			mob.tell(mob,null,null,L("Deep Darkness is already been here!"));
 			return false;
 		}
-
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 

@@ -33,18 +33,57 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Prayer_Heresy extends Prayer
 {
-	@Override public String ID() { return "Prayer_Heresy"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_Heresy";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Heresy");
-	@Override public String name() { return localizedName; }
-	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
-	@Override protected int canAffectCode(){return 0;}
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	@Override public long flags(){return Ability.FLAG_UNHOLY;}
-	@Override protected int overrideMana(){return 100;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_UNHOLY;
+	}
+
+	@Override
+	protected int overrideMana()
+	{
+		return 100;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)

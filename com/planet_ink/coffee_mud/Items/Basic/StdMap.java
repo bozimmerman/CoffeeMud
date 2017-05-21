@@ -154,7 +154,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 				if(room!=null)
 				{
 					if(
-					  ((x>0)&&(grid[x-1][y]!=null))
+						((x>0)&&(grid[x-1][y]!=null))
 					||((y>0)&&(grid[x][y-1]!=null))
 					||((x>0)&&(y>0)&&(grid[x-1][y-1]!=null))
 					||((y<(grid[0].length-1))&&(grid[x][y+1]!=null))
@@ -226,7 +226,6 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 		clearTheSkys(mapRooms);
 		return mapRooms;
 	}
-
 
 	public StringBuffer[][] finishMapMaking(int width)
 	{
@@ -343,7 +342,6 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 		return myMap;
 	}
 
-
 	public char dirChar(int dirCode, MapRoom[][] grid, int x, int y, char wall)
 	{
 		final MapRoom room=grid[x][y];
@@ -413,7 +411,6 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 		}
 		return ' ';
 	}
-
 
 	public MapRoom getProcessedRoomAt(Map<Room,MapRoom> processed, int x, int y)
 	{

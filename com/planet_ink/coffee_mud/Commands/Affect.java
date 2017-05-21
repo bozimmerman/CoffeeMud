@@ -36,7 +36,11 @@ import java.util.concurrent.TimeUnit;
 public class Affect extends StdCommand
 {
 	private final String[] access=I(new String[]{"AFFECTS","AFFECT","AFF","AF"});
-	@Override public String[] getAccessWords(){return access;}
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
 //	private final static Class[][] internalParameters=new Class[][]{{Physical.class}};
 
@@ -220,7 +224,11 @@ public class Affect extends StdCommand
 		return false;
 	}
 
-	@Override public boolean canBeOrdered(){return true;}
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 
 	@Override
 	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException

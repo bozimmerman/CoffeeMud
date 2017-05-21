@@ -178,9 +178,25 @@ public class CM1Server extends Thread
 			finally
 			{
 				if(servSelector != null)
-					try {servSelector.close();}catch(final Exception e){}
+				{
+					try
+					{
+						servSelector.close();
+					}
+					catch(final Exception e)
+					{
+					}
+				}
 				if(servChan != null)
-					try {servChan.close();}catch(final Exception e){}
+				{
+					try
+					{
+						servChan.close();
+					}
+					catch(final Exception e)
+					{
+					}
+				}
 				for(final SocketChannel schan : handlers.keySet())
 				{
 					try

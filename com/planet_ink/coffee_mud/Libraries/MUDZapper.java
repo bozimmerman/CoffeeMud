@@ -427,7 +427,6 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		return false;
 	}
 
-
 	protected boolean skillFlagCheck(final List<String> V, final char plusMinus, final int fromHere, final MOB mob)
 	{
 		for(int v=fromHere;v<V.size();v++)
@@ -4151,6 +4150,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public boolean maskCheck(final CompiledZMask cset, final Environmental E, final boolean actual)
 	{
@@ -4915,6 +4915,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						{
 							final String clanID=((ClanItem)E).clanID();
 							for(final Object o : entry.parms())
+							{
 								if(o instanceof String)
 								{
 									if((clanID.equalsIgnoreCase((String)o))
@@ -4934,6 +4935,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 										break;
 									}
 								}
+							}
 						}
 						else
 						if(E instanceof MOB)

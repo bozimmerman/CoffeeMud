@@ -59,5 +59,4 @@ public class WarHammer extends StdWeapon
 		weaponClassification=Weapon.CLASS_HAMMER;
 	}
 
-
 }

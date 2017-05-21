@@ -33,7 +33,6 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Archon_Hush extends ArchonSkill
 {
 	@Override
@@ -107,7 +106,6 @@ public class Archon_Hush extends ArchonSkill
 	{
 		if(!super.okMessage(myHost,msg))
 			return false;
-
 
 		if(((msg.sourceMinor()==CMMsg.TYP_TELL)
 			||(msg.othersMajor(CMMsg.MASK_CHANNEL)))

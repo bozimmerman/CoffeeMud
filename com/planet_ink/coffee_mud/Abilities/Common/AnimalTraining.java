@@ -33,15 +33,34 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class AnimalTraining extends CommonSkill
 {
-	@Override public String ID() { return "AnimalTraining"; }
+	@Override
+	public String ID()
+	{
+		return "AnimalTraining";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Animal Training");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"ANIMALTRAINING"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ANIMALAFFINITY; }
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ANIMALAFFINITY;
+	}
 
 	protected Physical taming=null;
 	protected String skillto="";
@@ -131,7 +150,6 @@ public class AnimalTraining extends CommonSkill
 		super.unInvoke();
 	}
 
-
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -218,7 +236,10 @@ public class AnimalTraining extends CommonSkill
 				if((I!=null)
 				&&(I instanceof Container)
 				&&((((Container)I).containTypes()&Container.CONTAIN_CAGED)==Container.CONTAIN_CAGED))
-				{ cage=I; break;}
+				{
+					cage=I;
+					break;
+				}
 			}
 			if(commands.size()>0)
 			{

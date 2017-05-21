@@ -144,6 +144,7 @@ public class Skill_CrowsNest extends StdSkill
 						final Exit E=(Exit)msg.target();
 						final int targetMinor=msg.targetMinor();
 						final int targetCode=msg.targetCode();
+
 						@Override
 						public void run()
 						{
@@ -197,6 +198,7 @@ public class Skill_CrowsNest extends StdSkill
 					msg.addTrailerRunnable(new Runnable(){
 						final Skill_CrowsNest selfA=self;
 						final Room shipR=shipRR;
+
 						@Override
 						public void run()
 						{
@@ -269,7 +271,6 @@ public class Skill_CrowsNest extends StdSkill
 		}
 		return true;
 	}
-	
 	
 	@Override
 	public void unInvoke()

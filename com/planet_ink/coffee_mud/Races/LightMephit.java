@@ -159,7 +159,6 @@ public class LightMephit extends Mephit
 		return body;
 	}
 	
-
 	protected static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
 
 	@Override

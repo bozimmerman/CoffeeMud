@@ -36,8 +36,18 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Nanny extends StdBehavior
 {
-	@Override public String ID(){return "Nanny";}
-	@Override protected int canImproveCode(){return Behavior.CAN_MOBS;}
+	@Override
+	public String ID()
+	{
+		return "Nanny";
+	}
+
+	@Override
+	protected int canImproveCode()
+	{
+		return Behavior.CAN_MOBS;
+	}
+
 	protected boolean watchesBabies=true;
 	protected boolean watchesChildren=true;
 	protected boolean watchesMounts=false;
@@ -84,8 +94,10 @@ public class Nanny extends StdBehavior
 			return 0.0;
 		double amt=0.0;
 		for(final Payment P : payments)
+		{
 			if(P.mommyM==mob)
 				amt+=P.paid;
+		}
 		return amt;
 	}
 
@@ -94,8 +106,10 @@ public class Nanny extends StdBehavior
 		if(P==null)
 			return false;
 		for(final DropOff D : dropOffs)
+		{
 			if(D.baby==P)
 				return true;
+		}
 		return false;
 	}
 
@@ -104,8 +118,10 @@ public class Nanny extends StdBehavior
 		if(P==null)
 			return false;
 		for(final DropOff D : associations)
+		{
 			if((D.mommyM==P)||(D.baby==P))
 				return true;
+		}
 		return false;
 	}
 
@@ -114,11 +130,13 @@ public class Nanny extends StdBehavior
 		if(mob==null)
 			return;
 		for(final Payment P : payments)
+		{
 			if(P.mommyM==mob)
 			{
 				P.paid += amt;
 				return;
 			}
+		}
 		payments.add(new Payment(mob,amt));
 	}
 
@@ -127,10 +145,14 @@ public class Nanny extends StdBehavior
 		if(mob==null)
 			return;
 		for(final Payment P : payments)
+		{
 			if(P.mommyM==mob)
 				payments.remove(P);
+		}
 		if(dropOffs != null)
+		{
 			for(final DropOff D : dropOffs)
+			{
 				if(D.mommyM==mob)
 				{
 					boolean found=false;
@@ -141,6 +163,8 @@ public class Nanny extends StdBehavior
 					dropOffs.remove(D);
 					changedSinceLastSave=true;
 				}
+			}
+		}
 	}
 
 	public double getAllOwedBy(MOB mob)
@@ -155,6 +179,7 @@ public class Nanny extends StdBehavior
 			return 0.0;
 		double amt=0.0;
 		for(final DropOff D : dropOffs)
+		{
 			if(D.mommyM==mob)
 			{
 				long t=System.currentTimeMillis()-D.dropOffTime;
@@ -162,6 +187,7 @@ public class Nanny extends StdBehavior
 				if(t>0)
 					amt+=(t*hourlyRate);
 			}
+		}
 		return amt;
 	}
 
@@ -222,6 +248,7 @@ public class Nanny extends StdBehavior
 	public String getOwedFor(String currency, PhysicalAgent P)
 	{
 		for(final DropOff D : dropOffs)
+		{
 			if(D.baby==P)
 			{
 				long t=System.currentTimeMillis()-D.dropOffTime;
@@ -229,6 +256,7 @@ public class Nanny extends StdBehavior
 				if(t>0)
 					return CMLib.beanCounter().abbreviatedPrice(currency, (t+hourlyRate))+" for watching "+P.name();
 			}
+		}
 		return "";
 	}
 
@@ -244,6 +272,7 @@ public class Nanny extends StdBehavior
 			return "";
 		final StringBuffer owed=new StringBuffer("");
 		for(final DropOff D : dropOffs)
+		{
 			if(D.mommyM==mob)
 			{
 				long t=System.currentTimeMillis()-D.dropOffTime;
@@ -251,6 +280,7 @@ public class Nanny extends StdBehavior
 				if(t>0)
 					owed.append(CMLib.beanCounter().abbreviatedPrice(currency, (t*hourlyRate))+" for "+D.baby.name()+", ");
 			}
+		}
 		String s=owed.toString();
 		if(s.endsWith(", "))
 			s=s.substring(0,s.length()-2);
@@ -491,18 +521,20 @@ public class Nanny extends StdBehavior
 		return null;
 	}
 
-
 	public void addAssociationsIfNecessary(Set<PhysicalAgent> H)
 	{
 		PhysicalAgent P=null;
 		for(final Object o : H)
+		{
 			if(o instanceof PhysicalAgent)
 			{
 				P=(PhysicalAgent)o;
 				if((P instanceof Rider)&&(((Rider)P).riding()!=null)&&(!H.contains(((Rider)P).riding())))
 					H.add(P);
 			}
+		}
 		for(final Object o : H)
+		{
 			if(o instanceof PhysicalAgent)
 			{
 				P=(PhysicalAgent)o;
@@ -527,6 +559,7 @@ public class Nanny extends StdBehavior
 					}
 				}
 			}
+		}
 	}
 
 	public List<PhysicalAgent> myCurrentAssocs(MOB mob)
@@ -919,7 +952,6 @@ public class Nanny extends StdBehavior
 				CMLib.database().DBUpdateTheseMOBs(R,mobsToSave);
 			}
 
-
 			final Vector<Item> itemsToSave=new Vector<Item>();
 			if(ticking instanceof Item)
 				itemsToSave.addElement((Item)ticking);
@@ -993,8 +1025,10 @@ public class Nanny extends StdBehavior
 						boolean comb=false;
 						if(V!=null)
 						for(int v=0;v<V.size();v++)
+						{
 							if(((Item)V.get(v)).material()==RawMaterial.RESOURCE_FUR)
 								comb=true;
+						}
 						if(comb)
 							R.show(mob, PA, CMMsg.MSG_QUIETMOVEMENT,L("<S-NAME> groom(s) <T-NAME>."));
 						else

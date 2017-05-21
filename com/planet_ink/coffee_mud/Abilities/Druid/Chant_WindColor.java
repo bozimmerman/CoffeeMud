@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2003-2017 Bo Zimmerman
 
@@ -301,7 +300,11 @@ public class Chant_WindColor extends Chant
 			return "";
 		boolean foundOne=false;
 		for (final int color : colors)
-			if(color>0){foundOne=true; break;}
+			if(color>0)
+			{
+				foundOne=true;
+				break;
+			}
 		if(!foundOne)
 			return "";
 

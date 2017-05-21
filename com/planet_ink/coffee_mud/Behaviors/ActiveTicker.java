@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -35,8 +34,17 @@ import java.util.*;
 */
 public class ActiveTicker extends StdBehavior
 {
-	@Override public String ID(){return "ActiveTicker";}
-	@Override protected int canImproveCode(){return Behavior.CAN_ITEMS|Behavior.CAN_MOBS|Behavior.CAN_ROOMS|Behavior.CAN_EXITS|Behavior.CAN_AREAS;}
+	@Override
+	public String ID()
+	{
+		return "ActiveTicker";
+	}
+
+	@Override
+	protected int canImproveCode()
+	{
+		return Behavior.CAN_ITEMS|Behavior.CAN_MOBS|Behavior.CAN_ROOMS|Behavior.CAN_EXITS|Behavior.CAN_AREAS;
+	}
 
 	protected int minTicks=10;
 	protected int maxTicks=30;
@@ -73,7 +81,11 @@ public class ActiveTicker extends StdBehavior
 		String parms=getParms();
 		char c=';';
 		int x=parms.indexOf(c);
-		if(x<0){ c='/'; x=parms.indexOf(c);}
+		if(x<0)
+		{
+			c='/';
+			x=parms.indexOf(c);
+		}
 		if(x>0)
 		{
 			if((x+1)>parms.length())
@@ -92,8 +104,10 @@ public class ActiveTicker extends StdBehavior
 		switch(tickID)
 		{
 		case Tickable.TICKID_AREA:
+		{
 			if(!(ticking instanceof Area))
 				break;
+		}
 		//$FALL-THROUGH$
 		case Tickable.TICKID_MOB:
 		case Tickable.TICKID_ITEM_BEHAVIOR:

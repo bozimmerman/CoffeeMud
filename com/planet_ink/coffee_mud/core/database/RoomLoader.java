@@ -522,7 +522,9 @@ public class RoomLoader
 					newRoom=allRooms.get(nextRoomID);
 					final Exit newExit=CMClass.getExit(exitID);
 					if(nextRoomID.length()==0)
-					{ /* this is likely a room link (rebuilt by import at a later time) */}
+					{
+						/* this is likely a room link (rebuilt by import at a later time) */
+					}
 					else
 					if(newRoom==null)
 					{
@@ -538,7 +540,9 @@ public class RoomLoader
 								newRoom=otherA.getRoom(nextRoomID);
 						}
 						if(newRoom!=null)
-						{ /* its all worked out now */}
+						{
+							/* its all worked out now */
+						}
 						else
 						if(otherA==null)
 							Log.errOut("RoomLoader","Unknown area for unlinked room #"+nextRoomID+" in "+roomID);
@@ -772,7 +776,10 @@ public class RoomLoader
 			{
 				final PhysicalAgent P=i.nextElement();
 				if((debug)&&((lastName==null)||(!lastName.equals(P.Name()))))
-				{lastName=P.Name(); Log.debugOut("RoomLoader","Loading object(s): "+P.Name());}
+				{
+					lastName=P.Name();
+					Log.debugOut("RoomLoader","Loading object(s): "+P.Name());
+				}
 				if(P instanceof Item)
 				{
 					room.addItem((Item)P);
@@ -1165,7 +1172,6 @@ public class RoomLoader
 			Log.debugOut("RoomLoader","Done reading content of "+((thisRoomID!=null)?thisRoomID:"ALL"));
 	}
 
-
 	private List<Item> DBGetContents(Room room)
 	{
 		if((!room.isSavable())||(room.amDestroyed()))
@@ -1442,7 +1448,6 @@ public class RoomLoader
 		DBUpdateTheseMOBs(room,mobs);
 	}
 
-
 	public void DBUpdateAll(Room room)
 	{
 		if((!room.isSavable())||(room.amDestroyed()))
@@ -1475,7 +1480,6 @@ public class RoomLoader
 			Log.debugOut("RoomLoader","Done updating room "+room.roomID());
 	}
 
-
 	public void DBReCreate(Room room, String oldID)
 	{
 		if((!room.isSavable())||(room.amDestroyed()))
@@ -1490,6 +1494,7 @@ public class RoomLoader
 		+"WHERE CMROID='"+oldID+"'");
 
 		if(CMProps.getBoolVar(CMProps.Bool.MOBNOCACHE))
+		{
 			for(int m=0;m<room.numInhabitants();m++)
 			{
 				final MOB M=room.fetchInhabitant(m);
@@ -1497,6 +1502,7 @@ public class RoomLoader
 					M.setMiscText(M.text());
 			}
 
+		}
 		DB.update(
 		"UPDATE CMROCH SET "
 		+"CMROID='"+room.roomID()+"' "

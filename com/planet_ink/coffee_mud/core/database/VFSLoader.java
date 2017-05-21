@@ -19,7 +19,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.sql.*;
 import java.util.*;
 
-
 /*
    Copyright 2005-2017 Bo Zimmerman
 
@@ -213,6 +212,5 @@ public class VFSLoader
 			DB.DBDone(D);
 		}
 	}
-
 
 }

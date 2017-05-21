@@ -18,7 +18,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2016-2017 Bo Zimmerman
 
@@ -418,7 +417,6 @@ public class Thief_Articles extends ThiefSkill
 		}
 		else
 			return beneficialWordsFizzle(mob,target,L("<S-NAME> offer(s) <T-NAME> the pirate articles, but <T-HIM-HER> isn't convinced."));
-
 
 		// return whether it worked
 		return success;

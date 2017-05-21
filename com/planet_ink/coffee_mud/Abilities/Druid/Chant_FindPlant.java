@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2004-2017 Bo Zimmerman
 
@@ -36,13 +35,44 @@ import java.util.*;
 
 public class Chant_FindPlant extends Chant
 {
-	@Override public String ID() { return "Chant_FindPlant"; }
+	@Override
+	public String ID()
+	{
+		return "Chant_FindPlant";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Find Plant");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
-	@Override public String displayText() { return L("(Finding "+lookingFor+")"); }
-	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
-	@Override public long flags(){return Ability.FLAG_TRACKING;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;
+	}
+
+	@Override
+	public String displayText()
+	{
+		return L("(Finding "+lookingFor+")");
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_SELF;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_TRACKING;
+	}
+
 	protected String lookingFor="plants";
 	protected List<Room> theTrail=null;
 	protected int nextDirection=-2;
@@ -66,7 +96,7 @@ public class Chant_FindPlant extends Chant
 				for(int m=0;m<okResources().length;m++)
 				{
 					if(!allResources.contains(Integer.valueOf(okResources()[m])))
-					   allResources.addElement(Integer.valueOf(okResources()[m]));
+						allResources.addElement(Integer.valueOf(okResources()[m]));
 				}
 			}
 			for(final int cd : RawMaterial.CODES.ALL())
@@ -78,7 +108,7 @@ public class Chant_FindPlant extends Chant
 						if((cd&RawMaterial.MATERIAL_MASK)==okMaterials()[m])
 						{
 							if(!allResources.contains(Integer.valueOf(cd)))
-							   allResources.addElement(Integer.valueOf(cd));
+								allResources.addElement(Integer.valueOf(cd));
 						}
 					}
 				}

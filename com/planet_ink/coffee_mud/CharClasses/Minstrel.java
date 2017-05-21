@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2003-2017 Bo Zimmerman
 
@@ -123,6 +122,7 @@ public class Minstrel extends StdCharClass
 		maxStatAdj[CharStats.STAT_CHARISMA]=4;
 		maxStatAdj[CharStats.STAT_INTELLIGENCE]=4;
 	}
+
 	@Override
 	public void initializeClass()
 	{

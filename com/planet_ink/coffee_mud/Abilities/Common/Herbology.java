@@ -33,20 +33,45 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Herbology extends CommonSkill
 {
-	@Override public String ID() { return "Herbology"; }
+	@Override
+	public String ID()
+	{
+		return "Herbology";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Herbology");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"HERBOLOGY"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_NATURELORE; }
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_NATURELORE;
+	}
+
 	public String parametersFormat(){ return "HERB_NAME";}
 
 	protected Item found=null;
 	protected boolean messedUp=false;
-	@Override protected boolean canBeDoneSittingDown() { return true; }
+
+	@Override
+	protected boolean canBeDoneSittingDown()
+	{
+		return true;
+	}
 
 	public Herbology()
 	{
@@ -93,7 +118,6 @@ public class Herbology extends CommonSkill
 		}
 		super.unInvoke();
 	}
-
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)

@@ -33,7 +33,6 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Chant_WaterHammer extends Chant
 {
 	@Override
@@ -155,7 +154,6 @@ public class Chant_WaterHammer extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-
 		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
@@ -176,7 +174,6 @@ public class Chant_WaterHammer extends Chant
 		}
 		else
 			return maliciousFizzle(mob,target,L("<S-NAME> chant(s) at <T-NAMESELF>, but the magic fades."));
-
 
 		// return whether it worked
 		return success;

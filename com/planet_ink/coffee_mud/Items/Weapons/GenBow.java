@@ -60,7 +60,6 @@ public class GenBow extends StdBow
 		return true;
 	}
 
-
 	@Override
 	public String text()
 	{

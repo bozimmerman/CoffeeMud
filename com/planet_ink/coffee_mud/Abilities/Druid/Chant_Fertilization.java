@@ -33,16 +33,45 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Chant_Fertilization extends Chant
 {
-	@Override public String ID() { return "Chant_Fertilization"; }
+	@Override
+	public String ID()
+	{
+		return "Chant_Fertilization";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Fertilization");
-	@Override public String name() { return localizedName; }
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
-	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ROOMS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
@@ -51,6 +80,7 @@ public class Chant_Fertilization extends Chant
 		{
 			final Room R=(Room)affected;
 			if((R.myResource()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_VEGETATION)
+			{
 				for(int m=0;m<R.numInhabitants();m++)
 				{
 					final MOB M=R.fetchInhabitant(m);
@@ -67,6 +97,7 @@ public class Chant_Fertilization extends Chant
 							A.setAbilityCode(3);
 					}
 				}
+			}
 		}
 		return super.tick(ticking,tickID);
 
@@ -108,7 +139,6 @@ public class Chant_Fertilization extends Chant
 		}
 		else
 			beneficialWordsFizzle(mob,null,L("<S-NAME> chant(s) to make the land fruitful, but nothing happens."));
-
 
 		// return whether it worked
 		return success;

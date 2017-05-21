@@ -35,24 +35,95 @@ import java.util.*;
 
 public class Disease_Lepresy extends Disease
 {
-	@Override public String ID() { return "Disease_Lepresy"; }
-	private final static String localizedName = CMLib.lang().L("Leprosy");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Leprosy)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public boolean putInCommandlist(){return false;}
+	@Override
+	public String ID()
+	{
+		return "Disease_Lepresy";
+	}
 
-	@Override protected int DISEASE_TICKS(){return 999999;}
-	@Override protected int DISEASE_DELAY(){return 10;}
+	private final static String localizedName = CMLib.lang().L("Leprosy");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Leprosy)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public boolean putInCommandlist()
+	{
+		return false;
+	}
+
+	@Override
+	protected int DISEASE_TICKS()
+	{
+		return 999999;
+	}
+
+	@Override
+	protected int DISEASE_DELAY()
+	{
+		return 10;
+	}
+
 	protected int lastHP=Integer.MAX_VALUE;
-	@Override protected String DISEASE_DONE(){return L("Your leprosy is cured!");}
-	@Override protected String DISEASE_START(){return L("^G<S-NAME> look(s) pale!^?");}
-	@Override protected String DISEASE_AFFECT(){return "";}
-	@Override public int spreadBitmap(){return DiseaseAffect.SPREAD_CONSUMPTION;}
-	@Override public int difficultyLevel(){return 4;}
+
+	@Override
+	protected String DISEASE_DONE()
+	{
+		return L("Your leprosy is cured!");
+	}
+
+	@Override
+	protected String DISEASE_START()
+	{
+		return L("^G<S-NAME> look(s) pale!^?");
+	}
+
+	@Override
+	protected String DISEASE_AFFECT()
+	{
+		return "";
+	}
+
+	@Override
+	public int spreadBitmap()
+	{
+		return DiseaseAffect.SPREAD_CONSUMPTION;
+	}
+
+	@Override
+	public int difficultyLevel()
+	{
+		return 4;
+	}
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)

@@ -42,6 +42,7 @@ public class BigCatSpeak extends AnimalSpeak
 	}
 
 	private final static String localizedName = CMLib.lang().L("BigCat Speak");
+
 	@Override
 	public String name()
 	{

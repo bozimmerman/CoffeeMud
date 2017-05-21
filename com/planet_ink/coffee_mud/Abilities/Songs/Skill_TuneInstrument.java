@@ -36,15 +36,50 @@ import java.util.*;
 
 public class Skill_TuneInstrument extends BardSkill
 {
-	@Override public String ID() { return "Skill_TuneInstrument"; }
+	@Override
+	public String ID()
+	{
+		return "Skill_TuneInstrument";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Tune Instrument");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return CAN_ITEMS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_ITEMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"TUNEINSTRUMENT","TUNE"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_ARTISTIC;}
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL|Ability.DOMAIN_ARTISTIC;
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
@@ -81,7 +116,6 @@ public class Skill_TuneInstrument extends BardSkill
 		}
 		else
 			mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,L("<S-NAME> attempt(s) to tune <T-NAMESELF>, but mess(es) up."));
-
 
 		// return whether it worked
 		return success;

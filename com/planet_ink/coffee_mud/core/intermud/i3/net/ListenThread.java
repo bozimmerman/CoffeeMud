@@ -91,7 +91,9 @@ public class ListenThread extends Thread
 			clients.clear();
 			this.interrupt();
 		}
-		catch(final Exception e){}
+		catch(final Exception e)
+		{
+		}
 	}
 
 	public Socket nextSocket()

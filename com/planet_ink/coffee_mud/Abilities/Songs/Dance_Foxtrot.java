@@ -15,9 +15,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
-
 
 /*
    Copyright 2003-2017 Bo Zimmerman
@@ -36,10 +34,26 @@ import java.util.*;
 */
 public class Dance_Foxtrot extends Dance
 {
-	@Override public String ID() { return "Dance_Foxtrot"; }
+	@Override
+	public String ID()
+	{
+		return "Dance_Foxtrot";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Foxtrot");
-	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_OTHERS;
+	}
+
 	protected int ticks=1;
 	protected int increment=1;
 

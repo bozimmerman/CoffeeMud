@@ -35,13 +35,43 @@ import java.util.*;
 
 public class Chant_NeutralizePoison extends Chant implements MendingSkill
 {
-	@Override public String ID() { return "Chant_NeutralizePoison"; }
+	@Override
+	public String ID()
+	{
+		return "Chant_NeutralizePoison";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Neutralize Poison");
-	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PRESERVING;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_OTHERS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT|Ability.DOMAIN_PRESERVING;
+	}
 
 	@Override
 	public boolean supportsMending(Physical item)
@@ -119,7 +149,6 @@ public class Chant_NeutralizePoison extends Chant implements MendingSkill
 		}
 		else
 			beneficialWordsFizzle(mob,target,auto?"":L("<S-NAME> chant(s) for <T-NAME>, but nothing happens."));
-
 
 		// return whether it worked
 		return success;

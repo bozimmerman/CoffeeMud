@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2003-2017 Bo Zimmerman
 
@@ -34,17 +33,47 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Chant_Reincarnation extends Chant
 {
-	@Override public String ID() { return "Chant_Reincarnation"; }
+	@Override
+	public String ID()
+	{
+		return "Chant_Reincarnation";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Reincarnation");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Reincarnation Geas)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_BREEDING;}
-	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
-	@Override protected int overrideMana(){return 200;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT|Ability.DOMAIN_BREEDING;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_OTHERS;
+	}
+
+	@Override
+	protected int overrideMana()
+	{
+		return 200;
+	}
 
 	Race newRace=null;
 
@@ -64,6 +93,7 @@ public class Chant_Reincarnation extends Chant
 				affectableStats.setWeight(affectableStats.weight()+oldAdd);
 		}
 	}
+
 	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{

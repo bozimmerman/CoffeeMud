@@ -116,6 +116,7 @@ public class GenPostman extends StdPostman
 									 "POSTCHAIN","POSTMIN","POSTLBS",
 									 "POSTHOLD","POSTNEW","POSTHELD",
 									 "IGNOREMASK","PRICEMASKS"};
+
 	@Override
 	public String getStat(String code)
 	{
@@ -174,6 +175,7 @@ public class GenPostman extends StdPostman
 	}
 
 	private static String[] codes=null;
+
 	@Override
 	public String[] getStatCodes()
 	{

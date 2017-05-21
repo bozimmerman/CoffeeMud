@@ -225,6 +225,7 @@ public class Skill_Convert extends StdSkill
 						final Deity D=tD;
 						final MOB target=t;
 						final Ability me=A;
+
 						@Override
 						public void showPrompt()
 						{
@@ -268,7 +269,11 @@ public class Skill_Convert extends StdSkill
 			if(target.getMyDeity()!=null)
 			{
 				final Ability A=target.fetchEffect(ID());
-				if(A!=null){ A.unInvoke(); target.delEffect(A);}
+				if(A!=null)
+				{
+					A.unInvoke();
+					target.delEffect(A);
+				}
 				final CMMsg msg2=CMClass.getMsg(target,D,this,CMMsg.MSG_REBUKE,null);
 				if((mob.location().okMessage(mob,msg2))&&((dRoom==null)||(dRoom.okMessage(mob,msg2))))
 				{

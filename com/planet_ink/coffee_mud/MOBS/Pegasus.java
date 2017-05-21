@@ -56,7 +56,6 @@ public class Pegasus extends StdRideable
 
 		basePhyStats.setWeight(1500 + Math.abs(randomizer.nextInt() % 200));
 
-
 		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,8 + Math.abs(randomizer.nextInt() % 3));
 		baseCharStats().setStat(CharStats.STAT_STRENGTH,11);
 		baseCharStats().setStat(CharStats.STAT_DEXTERITY,17);

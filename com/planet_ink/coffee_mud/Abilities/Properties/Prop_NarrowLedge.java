@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -36,9 +35,23 @@ import java.util.*;
 
 public class Prop_NarrowLedge extends Property
 {
-	@Override public String ID() { return "Prop_NarrowLedge"; }
-	@Override public String name(){ return "The Narrow Ledge";}
-	@Override protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_EXITS;}
+	@Override
+	public String ID()
+	{
+		return "Prop_NarrowLedge";
+	}
+
+	@Override
+	public String name()
+	{
+		return "The Narrow Ledge";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ROOMS|Ability.CAN_EXITS;
+	}
 
 	protected int check=16;
 	protected String name="the narrow ledge";
@@ -46,7 +59,9 @@ public class Prop_NarrowLedge extends Property
 
 	@Override
 	public String accountForYourself()
-	{ return "Very narrow";	}
+	{
+		return "Very narrow";
+	}
 
 	@Override
 	public void setMiscText(String newText)
@@ -94,6 +109,7 @@ public class Prop_NarrowLedge extends Property
 		}
 		return true;
 	}
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -121,6 +137,7 @@ public class Prop_NarrowLedge extends Property
 		}
 		super.executeMsg(myHost,msg);
 	}
+
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{

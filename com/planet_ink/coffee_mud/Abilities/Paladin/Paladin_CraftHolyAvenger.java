@@ -18,7 +18,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2003-2017 Bo Zimmerman
 
@@ -35,14 +34,28 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Paladin_CraftHolyAvenger extends EnhancedCraftingSkill
 {
-	@Override public String ID() { return "Paladin_CraftHolyAvenger"; }
+	@Override
+	public String ID()
+	{
+		return "Paladin_CraftHolyAvenger";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Craft Holy Avenger");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"CRAFTHOLY","CRAFTHOLYAVENGER","CRAFTAVENGER"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
@@ -80,7 +93,6 @@ public class Paladin_CraftHolyAvenger extends EnhancedCraftingSkill
 		}
 		super.unInvoke();
 	}
-
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)

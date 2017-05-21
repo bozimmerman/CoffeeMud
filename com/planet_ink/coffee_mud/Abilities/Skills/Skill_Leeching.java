@@ -35,15 +35,50 @@ import java.util.*;
 
 public class Skill_Leeching extends StdSkill
 {
-	@Override public String ID() { return "Skill_Leeching"; }
+	@Override
+	public String ID()
+	{
+		return "Skill_Leeching";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Leeching");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"LEECH","LEECHING"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_ANATOMY;}
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL|Ability.DOMAIN_ANATOMY;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -82,7 +117,6 @@ public class Skill_Leeching extends StdSkill
 		}
 		else
 			beneficialWordsFizzle(mob,target,auto?"":L("<S-NAME> attempt(s) to apply leeches to <T-NAME>, but fail(s)."));
-
 
 		// return whether it worked
 		return success;

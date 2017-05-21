@@ -62,5 +62,4 @@ public class StdSling extends StdWeapon
 		setRawLogicalAnd(false);
 	}
 
-
 }

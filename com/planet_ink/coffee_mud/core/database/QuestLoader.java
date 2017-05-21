@@ -40,6 +40,7 @@ public class QuestLoader
 	{
 		DB=newDB;
 	}
+
 	public List<Quest> DBRead()
 	{
 		List<Quest> quests=new LinkedList<Quest>();
@@ -101,7 +102,6 @@ public class QuestLoader
 		return quests;
 	}
 
-
 	public void DBUpdateQuest(Quest Q)
 	{
 		if(Q==null)
@@ -122,6 +122,7 @@ public class QuestLoader
 		+"?"
 		+")", new String[][]{{Q.script()+" ",Q.getWinnerStr()+" "}});
 	}
+
 	public void DBUpdateQuests(List<Quest> quests)
 	{
 		if(quests==null)

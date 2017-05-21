@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -35,7 +34,11 @@ import java.util.*;
 */
 public class MobileGoodGuardian extends Mobile
 {
-	@Override public String ID(){return "MobileGoodGuardian";}
+	@Override
+	public String ID()
+	{
+		return "MobileGoodGuardian";
+	}
 
 	@Override
 	public String accountForYourself()
@@ -64,11 +67,13 @@ public class MobileGoodGuardian extends Mobile
 
 		// ridden things dont wander!
 		if(ticking instanceof Rideable)
+		{
 			if(((Rideable)ticking).numRiders()>0)
 			{
 				tickStatus=Tickable.STATUS_NOT;
 				return true;
 			}
+		}
 		tickStatus=Tickable.STATUS_MISC+2;
 		if(((mob.amFollowing()!=null)&&(mob.location()==mob.amFollowing().location()))
 		||(!CMLib.flags().canTaste(mob)))

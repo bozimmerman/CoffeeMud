@@ -57,7 +57,6 @@ public class GenSpear extends StdSpear
 		return true;
 	}
 
-
 	@Override
 	public String text()
 	{

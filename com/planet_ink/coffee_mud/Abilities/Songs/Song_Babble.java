@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2002-2017 Bo Zimmerman
 
@@ -36,15 +35,46 @@ import java.util.*;
 
 public class Song_Babble extends Song
 {
-	@Override public String ID() { return "Song_Babble"; }
+	@Override
+	public String ID()
+	{
+		return "Song_Babble";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Babble");
-	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
 	protected final static String consonants="bcdfghjklmnpqrstvwxz";
 	protected final static String vowels="aeiouy";
-	@Override protected boolean skipStandardSongInvoke(){return true;}
-	@Override protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
-	@Override protected boolean maliciousButNotAggressiveFlag(){return true;}
+
+	@Override
+	protected boolean skipStandardSongInvoke()
+	{
+		return true;
+	}
+
+	@Override
+	protected boolean HAS_QUANTITATIVE_ASPECT()
+	{
+		return false;
+	}
+
+	@Override
+	protected boolean maliciousButNotAggressiveFlag()
+	{
+		return true;
+	}
 
 	protected int numChars(String words)
 	{
@@ -63,6 +93,7 @@ public class Song_Babble extends Song
 			return Character.toUpperCase(make);
 		return Character.toLowerCase(make);
 	}
+
 	protected String messChars(String words, int numToMess)
 	{
 		numToMess=numToMess/2;

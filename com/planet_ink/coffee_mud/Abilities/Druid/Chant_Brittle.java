@@ -33,16 +33,46 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Chant_Brittle extends Chant
 {
-	@Override public String ID() { return "Chant_Brittle"; }
+	@Override
+	public String ID()
+	{
+		return "Chant_Brittle";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Brittle");
-	@Override public String name() { return localizedName; }
-	@Override protected int canTargetCode(){return CAN_MOBS|CAN_ITEMS;}
-	@Override protected int canAffectCode(){return CAN_ITEMS;}
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS|CAN_ITEMS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_ITEMS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
 	protected int oldCondition=-1;
 	protected boolean noRecurse=true;
 
@@ -161,7 +191,6 @@ public class Chant_Brittle extends Chant
 		}
 		else
 			return maliciousFizzle(mob,null,L("<S-NAME> chant(s), but nothing happens."));
-
 
 		// return whether it worked
 		return success;

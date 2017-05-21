@@ -67,7 +67,6 @@ public class GenWeapon extends StdWeapon
 		return true;
 	}
 
-
 	@Override
 	public String text()
 	{

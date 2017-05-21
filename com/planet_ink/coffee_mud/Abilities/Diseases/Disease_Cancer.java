@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 /*
    Copyright 2003-2017 Bo Zimmerman
 
@@ -34,23 +33,94 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 public class Disease_Cancer extends Disease
 {
-	@Override public String ID() { return "Disease_Cancer"; }
-	private final static String localizedName = CMLib.lang().L("Cancer");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Cancer)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public boolean putInCommandlist(){return false;}
-	@Override public int difficultyLevel(){return 5;}
+	@Override
+	public String ID()
+	{
+		return "Disease_Cancer";
+	}
 
-	@Override protected int DISEASE_TICKS(){return 99999;}
-	@Override protected int DISEASE_DELAY(){return CMProps.getIntVar( CMProps.Int.TICKSPERMUDDAY );}
-	@Override protected String DISEASE_DONE(){return L("Your cancer is cured!");}
-	@Override protected String DISEASE_START(){return L("^G<S-NAME> seem(s) ill.^?");}
-	@Override protected String DISEASE_AFFECT(){return L("<S-NAME> <S-IS-ARE> getting sicker...");}
-	@Override public int abilityCode(){return 0;}
+	private final static String localizedName = CMLib.lang().L("Cancer");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Cancer)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public boolean putInCommandlist()
+	{
+		return false;
+	}
+
+	@Override
+	public int difficultyLevel()
+	{
+		return 5;
+	}
+
+	@Override
+	protected int DISEASE_TICKS()
+	{
+		return 99999;
+	}
+
+	@Override
+	protected int DISEASE_DELAY()
+	{
+		return CMProps.getIntVar( CMProps.Int.TICKSPERMUDDAY );
+	}
+
+	@Override
+	protected String DISEASE_DONE()
+	{
+		return L("Your cancer is cured!");
+	}
+
+	@Override
+	protected String DISEASE_START()
+	{
+		return L("^G<S-NAME> seem(s) ill.^?");
+	}
+
+	@Override
+	protected String DISEASE_AFFECT()
+	{
+		return L("<S-NAME> <S-IS-ARE> getting sicker...");
+	}
+
+	@Override
+	public int abilityCode()
+	{
+		return 0;
+	}
+
 	protected int conDown=1;
 	private boolean norecurse=false;
 

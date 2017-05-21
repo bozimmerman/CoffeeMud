@@ -42,6 +42,7 @@ public class Dwarven extends StdLanguage
 	}
 
 	private final static String localizedName = CMLib.lang().L("Dwarven");
+
 	@Override
 	public String name()
 	{

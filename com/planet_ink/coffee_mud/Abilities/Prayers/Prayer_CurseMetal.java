@@ -187,8 +187,6 @@ public class Prayer_CurseMetal extends Prayer
 		super.unInvoke();
 	}
 
-
-
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{

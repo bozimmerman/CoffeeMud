@@ -185,6 +185,7 @@ public class Reset extends StdCommand
 		{
 			this(filePath,true,filter);
 		}
+
 		private helpSets(String filePath, boolean useName, Filterer<Ability> filter)
 		{
 			file=filePath;
@@ -261,7 +262,7 @@ public class Reset extends StdCommand
 					poss="?";
 					for(final String mat : RawMaterial.CODES.NAMES())
 						if(mat.indexOf(str.toUpperCase())>=0)
-						   poss=mat;
+							poss=mat;
 				}
 				else
 					poss=RawMaterial.CODES.NAME(possMat);
@@ -437,8 +438,10 @@ public class Reset extends StdCommand
 			return;
 		changes.append(newM.name()+":"+newM.basePhyStats().level()+", ");
 		for(int i=0;i<oldM.getStatCodes().length;i++)
+		{
 			if((!oldM.getStat(oldM.getStatCodes()[i]).equals(newM.getStat(newM.getStatCodes()[i]))))
 				changes.append(oldM.getStatCodes()[i]+"("+oldM.getStat(oldM.getStatCodes()[i])+"->"+newM.getStat(newM.getStatCodes()[i])+"), ");
+		}
 		changes.append("\n\r");
 		newM.destroy(); // this was a copy
 	}
@@ -2113,7 +2116,7 @@ public class Reset extends StdCommand
 												{
 													final Race R3=(Race)e.nextElement();
 													if(R3.ID().toUpperCase().startsWith(str.toUpperCase()))
-													   poss=R3.name();
+														poss=R3.name();
 												}
 											}
 											if(poss.length()==0)
@@ -2122,7 +2125,7 @@ public class Reset extends StdCommand
 												{
 													final Race R3=(Race)e.nextElement();
 													if(R3.ID().toUpperCase().indexOf(str.toUpperCase())>=0)
-													   poss=R3.name();
+														poss=R3.name();
 												}
 											}
 											if(poss.length()==0)
@@ -2131,7 +2134,7 @@ public class Reset extends StdCommand
 												{
 													final Race R3=(Race)e.nextElement();
 													if(R3.name().toUpperCase().startsWith(str.toUpperCase()))
-													   poss=R3.name();
+														poss=R3.name();
 												}
 											}
 											if(poss.length()==0)
@@ -2140,7 +2143,7 @@ public class Reset extends StdCommand
 												{
 													final Race R3=(Race)e.nextElement();
 													if(R3.name().toUpperCase().indexOf(str.toUpperCase())>=0)
-													   poss=R3.name();
+														poss=R3.name();
 												}
 											}
 											mob.tell(L(" '@x1' is not a valid race.  Try '@x2'.",str,poss));

@@ -39,6 +39,7 @@ public class CMUniqNameSortSVec<T extends CMObject> extends CMUniqSortSVec<T>
 	}
 	
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public synchronized SVector<T> copyOf()
 	{

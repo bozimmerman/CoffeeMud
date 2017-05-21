@@ -82,7 +82,6 @@ public class Prop_Adjuster extends Prop_HaveAdjuster
 		return false;
 	}
 
-	
 	@Override
 	public int triggerMask()
 	{

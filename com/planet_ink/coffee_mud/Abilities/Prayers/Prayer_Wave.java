@@ -103,7 +103,10 @@ public class Prayer_Wave extends Prayer
 					final Room destRoom=mob.location().getRoomInDir(d);
 					final Exit exitRoom=mob.location().getExitInDir(d);
 					if((destRoom!=null)||(exitRoom!=null)||(d!=Directions.UP))
-					{ dir=d; break;}
+					{
+						dir=d;
+						break;
+					}
 				}
 				if(dir<0)
 					return false;

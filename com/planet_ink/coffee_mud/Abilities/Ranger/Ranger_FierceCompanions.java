@@ -18,7 +18,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2014-2017 Bo Zimmerman
 
@@ -36,18 +35,70 @@ import java.util.*;
 */
 public class Ranger_FierceCompanions extends StdAbility
 {
-	@Override public String ID() { return "Ranger_FierceCompanions"; }
+	@Override
+	public String ID()
+	{
+		return "Ranger_FierceCompanions";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Fierce Companions");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedDisplayText = CMLib.lang().L("(Fierce Companions)");
-	@Override public String displayText() { return activated ? localizedDisplayText : ""; }
-	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_ANIMALAFFINITY;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
-	@Override public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public boolean isAutoInvoked(){return true;}
-	@Override public boolean canBeUninvoked(){return false;}
+
+	@Override
+	public String displayText()
+	{
+		return activated ? localizedDisplayText : "";
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL|Ability.DOMAIN_ANIMALAFFINITY;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_SELF;
+	}
+
+	@Override
+	public int enchantQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_SELF;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public boolean isAutoInvoked()
+	{
+		return true;
+	}
+
+	@Override
+	public boolean canBeUninvoked()
+	{
+		return false;
+	}
+
 	protected volatile boolean activated=false;
 	
 	@Override
@@ -79,11 +130,13 @@ public class Ranger_FierceCompanions extends StdAbility
 		{
 			final Set<MOB> companions=((MOB)affected).getGroupMembers(new HashSet<MOB>());
 			for(MOB M : companions)
+			{
 				if((M!=affected)&&(CMLib.flags().isAnimalIntelligence(M))&&(M.location()==((MOB)affected).location())&&(!M.amDead())&&(M.isInCombat()))
 				{
 					found=true;
 					break;
 				}
+			}
 			if(CMLib.dice().rollPercentage()==1)
 				super.helpProficiency((MOB)affected, 0);
 		}

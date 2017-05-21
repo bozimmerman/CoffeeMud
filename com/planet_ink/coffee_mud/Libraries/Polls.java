@@ -453,7 +453,6 @@ public class Polls extends StdLibrary implements PollManager
 		return true;
 	}
 
-
 	@Override
 	public Poll loadPollByName(String name)
 	{

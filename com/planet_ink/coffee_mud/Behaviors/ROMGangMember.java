@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -35,7 +34,11 @@ import java.util.*;
 */
 public class ROMGangMember extends StdBehavior
 {
-	@Override public String ID(){return "ROMGangMember";}
+	@Override
+	public String ID()
+	{
+		return "ROMGangMember";
+	}
 
 	int tickTock=5;
 
@@ -75,7 +78,6 @@ public class ROMGangMember extends StdBehavior
 			}
 		}
 
-
 		if(victim==null)
 			return;
 		Item weapon=observer.fetchWieldedItem();
@@ -110,7 +112,6 @@ public class ROMGangMember extends StdBehavior
 
 		CMLib.combat().postAttack(observer,victim,weapon);
 	}
-
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)

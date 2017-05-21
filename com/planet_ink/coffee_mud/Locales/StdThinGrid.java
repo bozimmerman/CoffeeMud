@@ -393,7 +393,6 @@ public class StdThinGrid extends StdRoom implements GridLocale
 			R.basePhyStats().setSensesMask(mask|PhyStats.SENSE_ROOMGRIDSYNC);
 		}
 
-
 		// the adjacent rooms created by this method should also take
 		// into account the possibility that they are on the edge.
 		// it does NOT

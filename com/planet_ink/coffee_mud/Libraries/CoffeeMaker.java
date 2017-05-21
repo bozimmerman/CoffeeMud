@@ -1479,11 +1479,11 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			final MOB mob=(MOB)E1;
 			final MOB dup=(MOB)E2;
 			if(!CMClass.classID(mob).equals(CMClass.classID(dup)))
-			   str.append(CMClass.classID(mob)+"!="+CMClass.classID(dup)+"\n\r");
+				str.append(CMClass.classID(mob)+"!="+CMClass.classID(dup)+"\n\r");
 			if(mob.basePhyStats().level()!=dup.basePhyStats().level())
-			   str.append("Level- "+mob.basePhyStats().level()+"!="+dup.basePhyStats().level()+"\n\r");
+				str.append("Level- "+mob.basePhyStats().level()+"!="+dup.basePhyStats().level()+"\n\r");
 			if(mob.basePhyStats().ability()!=dup.basePhyStats().ability())
-			   str.append("Ability- "+mob.basePhyStats().ability()+"!="+dup.basePhyStats().ability()+"\n\r");
+				str.append("Ability- "+mob.basePhyStats().ability()+"!="+dup.basePhyStats().ability()+"\n\r");
 			if(!mob.text().equals(dup.text()))
 				str.append(logTextDiff(mob.text(),dup.text()));
 		}
@@ -1493,13 +1493,13 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			final Item item=(Item)E1;
 			final Item dup=(Item)E2;
 			if(!CMClass.classID(item).equals(CMClass.classID(dup)))
-			   str.append(CMClass.classID(item)+"!="+CMClass.classID(dup)+"\n\r");
+				str.append(CMClass.classID(item)+"!="+CMClass.classID(dup)+"\n\r");
 			if(item.basePhyStats().level()!=dup.basePhyStats().level())
-			   str.append("Level- "+item.basePhyStats().level()+"!="+dup.basePhyStats().level()+"\n\r");
+				str.append("Level- "+item.basePhyStats().level()+"!="+dup.basePhyStats().level()+"\n\r");
 			if(item.basePhyStats().ability()!=dup.basePhyStats().ability())
-			   str.append("Ability- "+item.basePhyStats().ability()+"!="+dup.basePhyStats().ability()+"\n\r");
+				str.append("Ability- "+item.basePhyStats().ability()+"!="+dup.basePhyStats().ability()+"\n\r");
 			if(item.usesRemaining()!=dup.usesRemaining())
-			   str.append("Uses- "+item.usesRemaining()+"!="+dup.usesRemaining()+"\n\r");
+				str.append("Uses- "+item.usesRemaining()+"!="+dup.usesRemaining()+"\n\r");
 			if(!item.text().equals(dup.text()))
 				str.append(logTextDiff(item.text(),dup.text()));
 		}
@@ -1878,7 +1878,6 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		newMOB.resetToMaxState();
 		return newMOB;
 	}
-
 
 	@Override
 	public String addMOBsFromXML(String xmlBuffer, List<MOB> addHere, Session S)

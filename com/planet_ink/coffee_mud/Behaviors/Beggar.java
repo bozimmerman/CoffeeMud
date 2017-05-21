@@ -16,7 +16,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -36,7 +35,11 @@ import java.util.*;
 */
 public class Beggar extends StdBehavior
 {
-	@Override public String ID(){return "Beggar";}
+	@Override
+	public String ID()
+	{
+		return "Beggar";
+	}
 	Vector<MOB> mobsHitUp=new Vector<MOB>();
 	int tickTock=0;
 

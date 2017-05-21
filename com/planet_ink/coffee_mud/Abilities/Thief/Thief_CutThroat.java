@@ -35,22 +35,80 @@ import java.util.*;
 
 public class Thief_CutThroat extends ThiefSkill
 {
-	@Override public String ID() { return "Thief_CutThroat"; }
+	@Override
+	public String ID()
+	{
+		return "Thief_CutThroat";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Cut Throat");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Throat Cutting)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"CUTTHROAT","CT"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int usageType(){return USAGE_MOVEMENT;}
-	@Override public int classificationCode() {   return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_DIRTYFIGHTING; }
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_DIRTYFIGHTING;
+	}
+
 	protected String lastMOB="";
 	protected int controlCode=0;
-	@Override public int abilityCode(){return controlCode;}
-	@Override public void setAbilityCode(int newCode){super.setAbilityCode(newCode); controlCode=newCode;}
+
+	@Override
+	public int abilityCode()
+	{
+		return controlCode;
+	}
+
+	@Override
+	public void setAbilityCode(int newCode)
+	{
+		super.setAbilityCode(newCode);
+		controlCode=newCode;
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)

@@ -16,7 +16,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -37,8 +36,18 @@ import java.util.*;
 
 public class InstantDeath extends ActiveTicker
 {
-	@Override public String ID(){return "InstantDeath";}
-	@Override public long flags() { return super.flags()|Behavior.FLAG_POTENTIALLYAUTODEATHING; }
+	@Override
+	public String ID()
+	{
+		return "InstantDeath";
+	}
+
+	@Override
+	public long flags()
+	{
+		return super.flags()|Behavior.FLAG_POTENTIALLYAUTODEATHING;
+	}
+
 	protected CompiledZMask mask=null;
 
 	public InstantDeath()

@@ -56,5 +56,4 @@ public class DragonClaw extends Natural
 		weaponClassification=Weapon.CLASS_NATURAL;
 	}
 
-
 }

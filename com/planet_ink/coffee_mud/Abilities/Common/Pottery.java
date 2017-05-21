@@ -410,7 +410,6 @@ public class Pottery extends CraftingSkill implements ItemCraftor
 		buildingI.text();
 		buildingI.recoverPhyStats();
 
-
 		messedUp=!proficiencyCheck(mob,0,auto);
 
 		if(bundling)

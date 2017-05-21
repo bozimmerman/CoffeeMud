@@ -1441,6 +1441,7 @@ public class DefaultPlayerStats implements PlayerStats
 									 "SAVEDPOSE","THEME", "LEGLEVELS","BONUSCOMMON",
 									 "BONUSCRAFT","BONUSNONCRAFT","BONUSLANGS",
 									 "BONUSCHARSTATS","AUTOINVSET"};
+
 	@Override
 	public String getStat(String code)
 	{

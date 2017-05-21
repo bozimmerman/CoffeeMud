@@ -125,7 +125,6 @@ public class Chant_SpellWard extends Chant
 		return super.okMessage(myHost,msg);
 	}
 
-
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{

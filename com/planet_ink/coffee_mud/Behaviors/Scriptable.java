@@ -34,8 +34,17 @@ import java.util.*;
 */
 public class Scriptable extends StdBehavior implements ScriptingEngine
 {
-	@Override public String ID(){return "Scriptable";}
-	@Override protected int canImproveCode(){return Behavior.CAN_MOBS|Behavior.CAN_ITEMS|Behavior.CAN_ROOMS;}
+	@Override
+	public String ID()
+	{
+		return "Scriptable";
+	}
+
+	@Override
+	protected int canImproveCode()
+	{
+		return Behavior.CAN_MOBS|Behavior.CAN_ITEMS|Behavior.CAN_ROOMS;
+	}
 
 	protected ScriptingEngine engine = null;
 	protected ScriptingEngine engine()
@@ -66,7 +75,11 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 		engine().registerDefaultQuest(questName);
 	}
 
-	@Override public MOB getMakeMOB(Tickable ticking){ return engine().getMakeMOB(ticking);}
+	@Override
+	public MOB getMakeMOB(Tickable ticking)
+	{
+		return engine().getMakeMOB(ticking);
+	}
 
 	@Override
 	public boolean endQuest(PhysicalAgent hostObj, MOB mob, String quest)
@@ -96,14 +109,25 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 	{
 		return engine().externalFiles();
 	}
+
 	@Override
 	public String getScriptResourceKey()
 	{
 		return engine().getScriptResourceKey();
 	}
 
-	@Override public String getParms() { return engine().getScript();}
-	@Override public String[] parseEval(String evaluable) throws ScriptParseException { return engine().parseEval(evaluable);}
+	@Override
+	public String getParms()
+	{
+		return engine().getScript();
+	}
+
+	@Override
+	public String[] parseEval(String evaluable) throws ScriptParseException
+	{
+		return engine().parseEval(evaluable);
+	}
+
 	@Override
 	public void setParms(String newParms)
 	{
@@ -111,19 +135,47 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 		super.setParms("");
 	}
 
-	@Override public String getVar(String context, String variable){ return engine().getVar(context, variable);}
+	@Override
+	public String getVar(String context, String variable)
+	{
+		return engine().getVar(context, variable);
+	}
 
-	@Override public boolean isVar(String context, String variable){ return engine().isVar(context, variable);}
+	@Override
+	public boolean isVar(String context, String variable)
+	{
+		return engine().isVar(context, variable);
+	}
 
-	@Override public void setVar(String context, String variable, String value){ engine().setVar(context, variable, value);}
+	@Override
+	public void setVar(String context, String variable, String value)
+	{
+		engine().setVar(context, variable, value);
+	}
 
-	@Override public String defaultQuestName() { return engine().defaultQuestName();}
+	@Override
+	public String defaultQuestName()
+	{
+		return engine().defaultQuestName();
+	}
 
-	@Override public void setVarScope(String scope){ engine().setVarScope(scope); }
+	@Override
+	public void setVarScope(String scope)
+	{
+		engine().setVarScope(scope);
+	}
 
-	@Override public String getVarScope() { return engine().getVarScope(); }
+	@Override
+	public String getVarScope()
+	{
+		return engine().getVarScope();
+	}
 
-	@Override public String getLocalVarXML(){ return engine().getLocalVarXML(); }
+	@Override
+	public String getLocalVarXML()
+	{
+		return engine().getLocalVarXML();
+	}
 
 	@Override
 	public void setLocalVarXML(String xml)
@@ -147,9 +199,17 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 		return engine().eval(scripted, source, target, monster, primaryItem, secondaryItem, msg, tmp, eval, startEval);
 	}
 
-	@Override public String getScript() { return engine().getScript();}
+	@Override
+	public String getScript()
+	{
+		return engine().getScript();
+	}
 
-	@Override public void setScript(String newParms){ engine().setScript(newParms);}
+	@Override
+	public void setScript(String newParms)
+	{
+		engine().setScript(newParms);
+	}
 
 	@Override
 	public String execute(PhysicalAgent scripted,
@@ -189,7 +249,11 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 		return engine().tick(ticking, tickID);
 	}
 
-	@Override public void dequeResponses() { engine().dequeResponses();}
+	@Override
+	public void dequeResponses()
+	{
+		engine().dequeResponses();
+	}
 
 	@Override
 	public String varify(MOB source, Environmental target,
@@ -198,6 +262,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 	{
 		return engine().varify(source, target, scripted, monster, primaryItem, secondaryItem, msg, tmp, varifyable);
 	}
+
 	@Override
 	public String functify(PhysicalAgent scripted, MOB source, Environmental target, MOB monster, Item primaryItem,
 							Item secondaryItem, String msg, Object[] tmp, String evaluable)

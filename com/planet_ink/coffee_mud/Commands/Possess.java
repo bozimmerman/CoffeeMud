@@ -131,7 +131,8 @@ public class Possess extends StdCommand
 						}
 					}
 					catch(final NoSuchElementException e)
-					{}
+					{
+					}
 				}
 			}
 			if((target==null)||(!target.isMonster()))
@@ -165,7 +166,8 @@ public class Possess extends StdCommand
 					}
 				}
 				catch(final NoSuchElementException e)
-				{}
+				{
+				}
 			}
 		}
 		if((target==null)||(!target.isMonster())||(!CMLib.flags().isInTheGame(target,true)))
@@ -235,7 +237,6 @@ public class Possess extends StdCommand
 	{
 		return true;
 	}
-
 
 	@Override
 	public boolean securityCheck(MOB mob)

@@ -42,6 +42,7 @@ public class Druidic extends StdLanguage
 	}
 
 	private final static String localizedName = CMLib.lang().L("Druidic");
+
 	@Override
 	public String name()
 	{

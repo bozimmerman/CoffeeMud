@@ -33,7 +33,6 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Chant_MoveSky extends Chant
 {
 	@Override
@@ -115,7 +114,6 @@ public class Chant_MoveSky extends Chant
 		}
 		else
 			return beneficialWordsFizzle(mob,null,L("<S-NAME> chant(s), but the magic fades"));
-
 
 		// return whether it worked
 		return success;

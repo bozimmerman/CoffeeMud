@@ -38,7 +38,11 @@ public class Lock extends StdCommand
 	public Lock(){}
 
 	private final String[] access=I(new String[]{"LOCK","LOC"});
-	@Override public String[] getAccessWords(){return access;}
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
@@ -84,12 +88,14 @@ public class Lock extends StdCommand
 				mob.location().send(msg.source(),msg);
 				if(dirCode<0)
 				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+				{
 					if(mob.location().getExitInDir(d)==lockThis)
 					{
 						dirCode=d; 
 						break;
 					}
 
+				}
 				if((dirCode>=0)&&(mob.location().getRoomInDir(dirCode)!=null))
 				{
 					final Room opR=mob.location().getRoomInDir(dirCode);
@@ -117,7 +123,10 @@ public class Lock extends StdCommand
 		return false;
 	}
 
-	@Override public boolean canBeOrdered(){return true;}
-
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 
 }

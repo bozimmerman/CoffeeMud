@@ -35,21 +35,76 @@ import java.util.*;
 
 public class Skill_Imitation extends BardSkill
 {
-	@Override public String ID() { return "Skill_Imitation"; }
+	@Override
+	public String ID()
+	{
+		return "Skill_Imitation";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Imitate");
-	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "";}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public String displayText()
+	{
+		return "";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_SELF;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"IMITATE"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public boolean isAutoInvoked(){return true;}
-	@Override public boolean canBeUninvoked(){return false;}
-	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_DECEPTIVE;}
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public boolean isAutoInvoked()
+	{
+		return true;
+	}
+
+	@Override
+	public boolean canBeUninvoked()
+	{
+		return false;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL|Ability.DOMAIN_DECEPTIVE;
+	}
+
 	public String lastID="";
 	public int craftType(){return Ability.ACODE_SPELL;}
-	@Override public int usageType(){return USAGE_MOVEMENT;}
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT;
+	}
 
 	public STreeMap<String,String> immitations=new STreeMap<String,String>();
 	public String[] lastOnes=new String[2];
@@ -59,7 +114,7 @@ public class Skill_Imitation extends BardSkill
 	{
 		super.executeMsg(myHost,msg);
 		if((myHost==null)||(!(myHost instanceof MOB)))
-		   return;
+			return;
 		final MOB mob=(MOB)myHost;
 		if(msg.tool()!=null)
 		{

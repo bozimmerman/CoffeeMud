@@ -88,7 +88,6 @@ public class StdArea implements Area
 	protected final static int[]	emptyStats				= new int[Area.Stats.values().length];
 	protected final static String[] empty					= new String[0];
 	
-
 	@Override
 	public void initializeClass()
 	{
@@ -1376,6 +1375,7 @@ public class StdArea implements Area
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public Enumeration<Ability> effects()
 	{

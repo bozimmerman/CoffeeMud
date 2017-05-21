@@ -94,7 +94,10 @@ public class LongSet implements Set<Long>
 		while(start<=end)
 		{
 			mid=(end+start)/2;
-			if((mid>0)&&((longArray[mid-1]&NEXT_FLAGL)>0)){mid--;}
+			if((mid>0)&&((longArray[mid-1]&NEXT_FLAGL)>0))
+			{
+				mid--;
+			}
 			if(y<(longArray[mid]&LONG_BITS))
 				end=mid-1;
 			else
@@ -115,7 +118,6 @@ public class LongSet implements Set<Long>
 		return (-start)-1;
 	}
 
-	
 	public int[] getAllIntNumbers()
 	{
 		int count=0;
@@ -145,7 +147,6 @@ public class LongSet implements Set<Long>
 		return nums;
 	}
 
-	
 	public long[] getAllNumbers()
 	{
 		final long[] nums=new long[size()];
@@ -175,14 +176,12 @@ public class LongSet implements Set<Long>
 		return nums;
 	}
 
-	
 	@Override
 	public boolean isEmpty()
 	{
 		return intArray.length == 0 && longArray.length == 0;
 	}
 
-	
 	@Override
 	public int size()
 	{
@@ -360,7 +359,6 @@ public class LongSet implements Set<Long>
 		}
 	}
 
-	
 	public LongSet add(LongSet grp)
 	{
 		if(grp==null)
@@ -371,7 +369,6 @@ public class LongSet implements Set<Long>
 		return this;
 	}
 
-	
 	public synchronized LongSet add(long x)
 	{
 		if(x==-1)
@@ -1088,6 +1085,7 @@ public class LongSet implements Set<Long>
 	}
 
 	@SuppressWarnings("unchecked")
+
 	@Override
 	public <T> T[] toArray(T[] a) 
 	{

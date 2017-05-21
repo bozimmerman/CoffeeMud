@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2004-2017 Bo Zimmerman
 
@@ -36,12 +35,38 @@ import java.util.*;
 
 public class Prayer_Position extends Prayer
 {
-	@Override public String ID() { return "Prayer_Position"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_Position";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Position");
-	@Override public String name() { return localizedName; }
-	@Override public long flags(){return Ability.FLAG_NEUTRAL;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_NEUTRAL;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;
+	}
+
 	public Room lastPosition=null;
 
 	protected int getRoomDirection(Room R, Room toRoom, Vector<Room> ignore)
@@ -53,6 +78,7 @@ public class Prayer_Position extends Prayer
 				return d;
 		return -1;
 	}
+
 	public String trailTo(Room R1, Room R2)
 	{
 		final Vector<Room> set=new Vector<Room>();
@@ -64,7 +90,11 @@ public class Prayer_Position extends Prayer
 		for(int i=0;i<set.size();i++)
 		{
 			final Room R=set.elementAt(i);
-			if(R==R2){ foundAt=i; break;}
+			if(R==R2)
+			{
+				foundAt=i;
+				break;
+			}
 		}
 		if(foundAt<0)
 			return "You can't get to '"+R2.roomID()+"' from here.";

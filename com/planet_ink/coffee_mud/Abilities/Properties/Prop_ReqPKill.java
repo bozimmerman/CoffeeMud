@@ -34,11 +34,29 @@ import java.util.*;
 */
 public class Prop_ReqPKill extends Property implements TriggeredAffect
 {
-	@Override public String ID() { return "Prop_ReqPKill"; }
-	@Override public String name(){ return "Playerkill ONLY Zone";}
-	@Override protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS;}
+	@Override
+	public String ID()
+	{
+		return "Prop_ReqPKill";
+	}
 
-	@Override public long flags(){return Ability.FLAG_ZAPPER;}
+	@Override
+	public String name()
+	{
+		return "Playerkill ONLY Zone";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_ZAPPER;
+	}
 
 	@Override
 	public int triggerMask()

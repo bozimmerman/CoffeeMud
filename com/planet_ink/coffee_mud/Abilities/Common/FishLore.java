@@ -138,7 +138,6 @@ public class FishLore extends CommonSkill
 		super.unInvoke();
 	}
 
-
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{

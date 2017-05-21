@@ -120,7 +120,6 @@ public class Remort extends StdCommand
 			return false;
 		}
 		
-		
 		final int[] newLevel = new int[] { 1 };
 		final int[] newMana = new int[] { CMProps.getIntVar(CMProps.Int.STARTMANA) };
 		final int[] newDamage = new int[] { 0 };

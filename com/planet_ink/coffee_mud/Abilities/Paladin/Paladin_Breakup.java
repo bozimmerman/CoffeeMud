@@ -34,19 +34,58 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Paladin_Breakup extends StdAbility
 {
-	@Override public String ID() { return "Paladin_Breakup"; }
+	@Override
+	public String ID()
+	{
+		return "Paladin_Breakup";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Breakup Fight");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"BREAKUP"});
-	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
-	@Override public int usageType(){return USAGE_MOVEMENT;}
-	@Override public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_LEGAL; }
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_OTHERS;
+	}
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL|Ability.DOMAIN_LEGAL;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -90,7 +129,6 @@ public class Paladin_Breakup extends StdAbility
 		}
 		else
 			beneficialVisualFizzle(mob,target,L("<S-NAME> attempt(s) to break up <T-NAME>'s fight, but fail(s)."));
-
 
 		// return whether it worked
 		return success;

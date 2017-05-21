@@ -54,7 +54,6 @@ public class Woods extends StdRoom
 		return Room.DOMAIN_OUTDOORS_WOODS;
 	}
 
-
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -106,6 +105,7 @@ public class Woods extends StdRoom
 		Integer.valueOf(RawMaterial.RESOURCE_FEATHERS),
 		Integer.valueOf(RawMaterial.RESOURCE_LEATHER)};
 	public static final List<Integer> roomResources=new Vector<Integer>(Arrays.asList(resourceList));
+
 	@Override
 	public List<Integer> resourceChoices()
 	{

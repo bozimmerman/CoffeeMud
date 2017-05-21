@@ -35,23 +35,93 @@ import java.util.*;
 
 public class Disease_PoisonIvy extends Disease
 {
-	@Override public String ID() { return "Disease_PoisonIvy"; }
-	private final static String localizedName = CMLib.lang().L("Poison Ivy");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Poison Ivy)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public boolean putInCommandlist(){return false;}
+	@Override
+	public String ID()
+	{
+		return "Disease_PoisonIvy";
+	}
 
-	@Override protected int DISEASE_TICKS(){return 35;}
-	@Override protected int DISEASE_DELAY(){return 5;}
-	@Override protected String DISEASE_DONE(){return L("Your poison ivy clears up.");}
-	@Override protected String DISEASE_START(){return L("^G<S-NAME> <S-IS-ARE> covered in poison ivy.^?");}
-	@Override protected String DISEASE_AFFECT(){return L("<S-NAME> scratch(es) <S-HIM-HERSELF>.");}
-	@Override public int spreadBitmap(){return DiseaseAffect.SPREAD_CONTACT|DiseaseAffect.SPREAD_STD;}
-	@Override public int difficultyLevel(){return 3;}
+	private final static String localizedName = CMLib.lang().L("Poison Ivy");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Poison Ivy)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public boolean putInCommandlist()
+	{
+		return false;
+	}
+
+	@Override
+	protected int DISEASE_TICKS()
+	{
+		return 35;
+	}
+
+	@Override
+	protected int DISEASE_DELAY()
+	{
+		return 5;
+	}
+
+	@Override
+	protected String DISEASE_DONE()
+	{
+		return L("Your poison ivy clears up.");
+	}
+
+	@Override
+	protected String DISEASE_START()
+	{
+		return L("^G<S-NAME> <S-IS-ARE> covered in poison ivy.^?");
+	}
+
+	@Override
+	protected String DISEASE_AFFECT()
+	{
+		return L("<S-NAME> scratch(es) <S-HIM-HERSELF>.");
+	}
+
+	@Override
+	public int spreadBitmap()
+	{
+		return DiseaseAffect.SPREAD_CONTACT|DiseaseAffect.SPREAD_STD;
+	}
+
+	@Override
+	public int difficultyLevel()
+	{
+		return 3;
+	}
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)

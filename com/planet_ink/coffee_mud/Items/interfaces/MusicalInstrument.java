@@ -92,7 +92,6 @@ public interface MusicalInstrument extends Item
 	 */
 	public InstrumentType getInstrumentType();
 	
-	
 	/**
 	 * Returns the instrument type name of this instrument
 	 * @see InstrumentType

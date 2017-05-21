@@ -35,8 +35,17 @@ import java.util.*;
 
 public class MovingRoom extends ActiveTicker
 {
-	@Override public String ID(){return "MovingRoom";}
-	@Override protected int canImproveCode(){return Behavior.CAN_ROOMS;}
+	@Override
+	public String ID()
+	{
+		return "MovingRoom";
+	}
+
+	@Override
+	protected int canImproveCode()
+	{
+		return Behavior.CAN_ROOMS;
+	}
 
 	public Vector<String>			listOfRooms		= new Vector<String>();
 	protected List<String>			roomInfos		= new Vector<String>();
@@ -94,7 +103,11 @@ public class MovingRoom extends ActiveTicker
 
 		char c=';';
 		int x=myParms.indexOf(c);
-		if(x<0){ c='/'; x=myParms.indexOf(c);}
+		if(x<0)
+		{
+			c='/';
+			x=myParms.indexOf(c);
+		}
 		if(x>0)
 		{
 			final String parmText=myParms.substring(0,x);
@@ -177,6 +190,7 @@ public class MovingRoom extends ActiveTicker
 		mapInfo.addElement(CMLib.xml().returnXMLValue(theFullBlock, "LINEPRINTNAME"));
 		mapInfo.addElement(CMLib.xml().returnXMLValue(theFullBlock, "DISPLOC"));
 	}
+
 	protected String fixOutputString(String incoming, Room busstopRoom)
 	{
 		String repWord="";
@@ -242,6 +256,7 @@ public class MovingRoom extends ActiveTicker
 		repWord = fixOutputString(repWord,busstopRoom);
 		return repWord;
 	}
+
 	protected void removeStubs(Room busstopRoom1,Room busstopRoom2)
 	{
 		if (!stubs.isEmpty())
@@ -255,6 +270,7 @@ public class MovingRoom extends ActiveTicker
 				busstopRoom2.setDescription(busstopRoom2.description().substring(0,i).trim());
 		}
 	}
+
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{

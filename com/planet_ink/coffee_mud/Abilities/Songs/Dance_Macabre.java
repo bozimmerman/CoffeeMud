@@ -15,9 +15,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
-
 
 /*
    Copyright 2003-2017 Bo Zimmerman
@@ -36,11 +34,31 @@ import java.util.*;
 */
 public class Dance_Macabre extends Dance
 {
-	@Override public String ID() { return "Dance_Macabre"; }
+	@Override
+	public String ID()
+	{
+		return "Dance_Macabre";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Macabre");
-	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	@Override protected String danceOf(){return name()+" Dance";}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_OTHERS;
+	}
+
+	@Override
+	protected String danceOf()
+	{
+		return name()+" Dance";
+	}
 
 	protected boolean activated=false;
 
@@ -83,6 +101,5 @@ public class Dance_Macabre extends Dance
 		}
 		return super.tick(ticking,tickID);
 	}
-
 
 }

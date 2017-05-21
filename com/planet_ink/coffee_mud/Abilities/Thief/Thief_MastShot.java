@@ -235,7 +235,6 @@ public class Thief_MastShot extends ThiefSkill
 			return false;
 		}
 		
-		
 		final String weaponName=CMParms.combine(commands);
 		
 		if(!CMLib.flags().isStanding(mob)&&(!auto))

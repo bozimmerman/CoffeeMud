@@ -150,6 +150,7 @@ public class GenCage extends StdCage
 	}
 
 	private static String[] codes=null;
+
 	@Override
 	public String[] getStatCodes()
 	{

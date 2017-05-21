@@ -56,8 +56,6 @@ public class StdFood extends StdItem implements Food
 		recoverPhyStats();
 	}
 
-
-
 	@Override
 	public int nourishment()
 	{

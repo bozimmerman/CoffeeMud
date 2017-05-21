@@ -15,8 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
 import java.util.*;
 
 /*
@@ -36,9 +34,23 @@ import java.util.*;
 */
 public class Prop_UseSpellCast2 extends Prop_UseSpellCast
 {
-	@Override public String ID() { return "Prop_UseSpellCast2"; }
-	@Override public String name(){ return "Casting spells when used";}
-	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
+	@Override
+	public String ID()
+	{
+		return "Prop_UseSpellCast2";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Casting spells when used";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ITEMS;
+	}
 
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)

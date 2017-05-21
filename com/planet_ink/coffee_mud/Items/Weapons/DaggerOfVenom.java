@@ -59,7 +59,6 @@ public class DaggerOfVenom extends Dagger
 		recoverPhyStats();
 	}
 
-
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{

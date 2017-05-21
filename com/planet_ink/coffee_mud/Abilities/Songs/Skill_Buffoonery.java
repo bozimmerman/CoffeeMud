@@ -35,16 +35,56 @@ import java.util.*;
 
 public class Skill_Buffoonery extends BardSkill
 {
-	@Override public String ID() { return "Skill_Buffoonery"; }
+	@Override
+	public String ID()
+	{
+		return "Skill_Buffoonery";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Buffoonery");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"BUFFOONERY"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_FOOLISHNESS;}
-	@Override public int usageType(){return USAGE_MOVEMENT;}
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL|Ability.DOMAIN_FOOLISHNESS;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT;
+	}
 
 	protected Vector<Long> getFreeWearingPositions(MOB target)
 	{
@@ -59,8 +99,10 @@ public class Skill_Buffoonery extends BardSkill
 				pos[i]=true;
 
 		for(int i=0;i<pos.length;i++)
+		{
 			if(!pos[i])
 				V.addElement(Long.valueOf(codes.all_ordered()[i]));
+		}
 		return V;
 	}
 

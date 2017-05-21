@@ -49,7 +49,6 @@ public class Dragon extends StdMOB
 
 	protected Ability dragonbreath = null;
 
-
 	// ===== Defined Values for Dragon Ages
 	public final static int HATCHLING			= 0;	// 10
 	public final static int VERYYOUNG			= 1;	// 10
@@ -74,7 +73,6 @@ public class Dragon extends StdMOB
 	public final static int BRONZE				= 7;
 	public final static int SILVER				= 8;
 	public final static int GOLD				= 9;
-
 
 	// ===== Defined Value for holding the Dragon Type
 	protected int DragonColor(){ return basePhyStats().ability();}
@@ -179,7 +177,6 @@ public class Dragon extends StdMOB
 
 		// ===== Dragons never flee.
 		setWimpHitPoint(0);
-
 
 		// ===== Dragons get tougher with age
 		for(final int i : CharStats.CODES.BASECODES())

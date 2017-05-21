@@ -17,8 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.List;
 
-
-
 /*
    Copyright 2004-2017 Bo Zimmerman
 
@@ -35,12 +33,22 @@ import java.util.List;
    limitations under the License.
 */
 
-
 public class Disease_Obesity extends Disease
 {
-	@Override public String ID() { return "Disease_Obesity"; }
+	@Override
+	public String ID()
+	{
+		return "Disease_Obesity";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Obesity");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	@Override
 	public String displayText()
 	{
@@ -56,19 +64,80 @@ public class Disease_Obesity extends Disease
 		else
 			return "(Morbid obesity)";
 	}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public boolean putInCommandlist(){return false;}
-	@Override public int difficultyLevel(){return 10;}
 
-	@Override protected int DISEASE_TICKS(){return 999999;}
-	@Override protected int DISEASE_DELAY(){return 50;}
-	@Override protected String DISEASE_DONE(){return L("You've become fit and trim!");}
-	@Override protected String DISEASE_START(){return L("^G<S-NAME> look(s) like <S-HE-SHE> <S-HAS-HAVE> been gaining some weight.^?");}
-	@Override protected String DISEASE_AFFECT(){return "";}
-	@Override public int abilityCode(){return 0;}
-	@Override public boolean canBeUninvoked(){canBeUninvoked=!(amountOfFat()>0);return super.canBeUninvoked();}
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public boolean putInCommandlist()
+	{
+		return false;
+	}
+
+	@Override
+	public int difficultyLevel()
+	{
+		return 10;
+	}
+
+	@Override
+	protected int DISEASE_TICKS()
+	{
+		return 999999;
+	}
+
+	@Override
+	protected int DISEASE_DELAY()
+	{
+		return 50;
+	}
+
+	@Override
+	protected String DISEASE_DONE()
+	{
+		return L("You've become fit and trim!");
+	}
+
+	@Override
+	protected String DISEASE_START()
+	{
+		return L("^G<S-NAME> look(s) like <S-HE-SHE> <S-HAS-HAVE> been gaining some weight.^?");
+	}
+
+	@Override
+	protected String DISEASE_AFFECT()
+	{
+		return "";
+	}
+
+	@Override
+	public int abilityCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public boolean canBeUninvoked()
+	{
+		canBeUninvoked=!(amountOfFat()>0);
+		return super.canBeUninvoked();
+	}
+
 	protected long lastLoss=-1;
 	protected int fatAmount=-1;
 
@@ -103,6 +172,7 @@ public class Disease_Obesity extends Disease
 			affectableStats.getStat(CharStats.STAT_WEIGHTADJ)
 			+(int)Math.round(CMath.mul(affectedMob.basePhyStats().weight(),CMath.div(CMath.s_int(text()),100.0))));
 	}
+
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{

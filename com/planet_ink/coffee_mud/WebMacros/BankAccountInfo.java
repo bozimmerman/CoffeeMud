@@ -47,6 +47,7 @@ public class BankAccountInfo extends StdWebMacro
 		double balance=0.0;
 		MoneyLibrary.DebtItem debt=null;
 		List<Item> items=new Vector<Item>(1);
+
 		@Override
 		public void finalize() throws Throwable
 		{

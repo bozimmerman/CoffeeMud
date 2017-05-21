@@ -127,7 +127,6 @@ public class Directions
 	private String	DIRECTION_NAMES		= DIRECTION_7_NAMES;
 	private String	DIRECTION_SHIPNAMES	= DIRECTION_7_SHIPNAMES;
 	
-	
 	private int NUM_DIRECTIONS=7;
 
 	private Object[][] DIRECTIONS_COMPASS_CHART=
@@ -379,7 +378,6 @@ public class Directions
 		return "";
 	}
 
-
 	/**
 	 * Given the direction code, returns the formal name of that direction, capitalized.
 	 * @param code the direction code
@@ -534,7 +532,6 @@ public class Directions
 		}
 		return -1;
 	}
-
 
 	/**
 	 * Given a string which is supposed to be a direction name of any type,

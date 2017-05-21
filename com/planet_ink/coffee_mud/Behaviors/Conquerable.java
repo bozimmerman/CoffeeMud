@@ -430,16 +430,20 @@ public class Conquerable extends Arrest
 	protected boolean hasItemSameAs(MOB M, Item I)
 	{
 		for(final Enumeration<Item> i=M.items();i.hasMoreElements();)
+		{
 			if(I.sameAs(i.nextElement()))
 				return true;
+		}
 		return false;
 	}
 
 	protected boolean hasItemSameName(MOB M, String name)
 	{
 		for(final Enumeration<Item> i=M.items();i.hasMoreElements();)
+		{
 			if(name.equals(i.nextElement().Name()))
 				return true;
+		}
 		return false;
 	}
 
@@ -1022,7 +1026,6 @@ public class Conquerable extends Arrest
 		}
 	}
 
-
 	protected boolean flagFound(Area A, String clanID)
 	{
 		final Clan C=CMLib.clans().findClan(clanID);
@@ -1106,7 +1109,10 @@ public class Conquerable extends Arrest
 			for(int v=0;v<clanControlPoints.size();v++)
 			{
 				if(((String)clanControlPoints.elementAt(v,1)).equalsIgnoreCase(clanID))
-				{ index=v; break;}
+				{
+					index=v;
+					break;
+				}
 			}
 			if((holdingClan.length()>0)
 			&&(!clanID.equals(holdingClan))
@@ -1171,7 +1177,6 @@ public class Conquerable extends Arrest
 		}
 		return true;
 	}
-
 
 	protected static String[] warCrys()
 	{

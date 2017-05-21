@@ -42,6 +42,7 @@ public class FowlSpeak extends AnimalSpeak
 	}
 
 	private final static String localizedName = CMLib.lang().L("Fowl Speak");
+
 	@Override
 	public String name()
 	{

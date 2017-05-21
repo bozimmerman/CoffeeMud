@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -35,11 +34,29 @@ import java.util.*;
 */
 public class Prop_RideZapper extends Prop_HaveZapper
 {
-	@Override public String ID() { return "Prop_RideZapper"; }
-	@Override public String name(){ return "Restrictions to riding";}
-	@Override protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_MOBS;}
+	@Override
+	public String ID()
+	{
+		return "Prop_RideZapper";
+	}
 
-	@Override protected String defaultMessage() { return "<O-NAME> zaps <S-NAME>, making <S-HIM-HER> jump up!";}
+	@Override
+	public String name()
+	{
+		return "Restrictions to riding";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ITEMS|Ability.CAN_MOBS;
+	}
+
+	@Override
+	protected String defaultMessage()
+	{
+		return "<O-NAME> zaps <S-NAME>, making <S-HIM-HER> jump up!";
+	}
 
 	@Override
 	public String accountForYourself()

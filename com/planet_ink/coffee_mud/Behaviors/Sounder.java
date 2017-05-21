@@ -35,11 +35,22 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Sounder extends StdBehavior
 {
-	@Override public String ID(){return "Sounder";}
+	@Override
+	public String ID()
+	{
+		return "Sounder";
+	}
+
 	protected int minTicks=23;
 	protected int maxTicks=23;
 	protected int tickDown=(int)Math.round(Math.random()*(maxTicks-minTicks))+minTicks;
-	@Override protected int canImproveCode(){return Behavior.CAN_ITEMS|Behavior.CAN_MOBS|Behavior.CAN_ROOMS|Behavior.CAN_EXITS|Behavior.CAN_AREAS;}
+
+	@Override
+	protected int canImproveCode()
+	{
+		return Behavior.CAN_ITEMS|Behavior.CAN_MOBS|Behavior.CAN_ROOMS|Behavior.CAN_EXITS|Behavior.CAN_AREAS;
+	}
+
 	protected int[] triggers=null;
 	protected String[] strings=null;
 	protected static int UNDER_MASK=1023;
@@ -66,6 +77,7 @@ public class Sounder extends StdBehavior
 	{
 		tickDown=(int)Math.round(Math.random()*(maxTicks-minTicks))+minTicks;
 	}
+
 	@Override
 	public void setParms(String newParms)
 	{

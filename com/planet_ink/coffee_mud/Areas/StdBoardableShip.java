@@ -276,6 +276,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 			return phyStats().newName();
 		return name;
 	}
+
 	@Override
 	public void setName(String newName)
 	{
@@ -303,6 +304,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	{
 		return phyStats;
 	}
+
 	@Override
 	public PhyStats basePhyStats()
 	{
@@ -387,6 +389,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	{ 
 		return this.shipItem != null ? shipItem.getHomePortID() : ""; 
 	}
+
 	@Override 
 	public void setHomePortID(String portID) 
 	{ 
@@ -560,6 +563,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	{
 		return CMLib.coffeeMaker().getPropertiesStr(this,true);
 	}
+
 	@Override
 	public void setMiscText(String newMiscText)
 	{
@@ -1072,7 +1076,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 		{
 			final Ability A=a.nextElement();
 			if((A!=null)&&(A.ID().equals(ID)))
-			   return A;
+				return A;
 		}
 		return null;
 	}
@@ -1348,7 +1352,9 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 		{
 			return behaviors.elementAt(index);
 		}
-		catch(final java.lang.ArrayIndexOutOfBoundsException x){}
+		catch(final java.lang.ArrayIndexOutOfBoundsException x)
+		{
+		}
 		return null;
 	}
 
@@ -1416,7 +1422,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 			scripts.clear();
 		scripts=null;
 		if(didSomething && ((behaviors==null)||(behaviors.size()==0)))
-		  CMLib.threads().deleteTick(this,Tickable.TICKID_ITEM_BEHAVIOR);
+			CMLib.threads().deleteTick(this,Tickable.TICKID_ITEM_BEHAVIOR);
 	}
 
 	@Override
@@ -1963,8 +1969,10 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	{
 		final String[] CODES=getStatCodes();
 		for(int i=0;i<CODES.length;i++)
+		{
 			if(code.equalsIgnoreCase(CODES[i]))
 				return i;
+		}
 		return -1;
 	}
 
@@ -1994,6 +2002,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 		}
 		return "";
 	}
+
 	@Override
 	public void setStat(String code, String val)
 	{
@@ -2051,6 +2060,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 		}
 		}
 	}
+
 	@Override
 	public boolean sameAs(Environmental E)
 	{

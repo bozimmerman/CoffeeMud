@@ -33,7 +33,6 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Chant_Flood extends Chant
 {
 	@Override
@@ -85,7 +84,6 @@ public class Chant_Flood extends Chant
 	{
 		return 0;
 	}
-
 
 	@Override
 	public void unInvoke()

@@ -454,7 +454,6 @@ public interface CharStats extends CMCommon, Modifiable
 	 */
 	public String getLeaveStr();
 
-
 	/**
 	 * Returns resource codes of what this race can breathe as
 	 * an atmosphere.  The list is guarenteed sorted.  If the list

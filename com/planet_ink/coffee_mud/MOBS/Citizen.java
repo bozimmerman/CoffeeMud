@@ -68,7 +68,4 @@ public class Citizen extends StdMOB
 		recoverCharStats();
 	}
 
-
-
-
 }

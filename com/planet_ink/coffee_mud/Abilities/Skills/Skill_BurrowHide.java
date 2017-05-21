@@ -257,4 +257,3 @@ public class Skill_BurrowHide extends StdSkill
 	}
 }
 
-

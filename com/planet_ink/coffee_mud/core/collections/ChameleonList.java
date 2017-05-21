@@ -48,7 +48,6 @@ public class ChameleonList<K> implements List<K>, SizedIterable<K>
 		this.signaler = signaler;
 	}
 
-
 	public void changeMeInto(final ChameleonList<K> fromList)
 	{
 		this.list=fromList.list;

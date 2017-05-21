@@ -316,6 +316,7 @@ public class AutoPlayTester
 			}
 			catch(final Exception e) { return null; }
 		}
+
 		public Object waitForOptions(Object regexO)
 		{
 			try
@@ -326,6 +327,7 @@ public class AutoPlayTester
 			}
 			catch(final Exception e) { return null; }
 		}
+
 		public Object waitForMultiMatch(Object regexO, Object numMatches)
 		{
 			try
@@ -334,6 +336,7 @@ public class AutoPlayTester
 			}
 			catch(final Exception e) { return null; }
 		}
+
 		public boolean writeLine(Object O)
 		{
 			try

@@ -54,6 +54,4 @@ public class Torch extends LightSource
 		baseGoldValue=1;
 	}
 
-
-
 }

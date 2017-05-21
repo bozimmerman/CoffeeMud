@@ -142,7 +142,6 @@ public class Scrapping extends CommonSkill
 		super.unInvoke();
 	}
 
-
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -166,7 +165,10 @@ public class Scrapping extends CommonSkill
 		case RawMaterial.MATERIAL_ENERGY:
 		case RawMaterial.MATERIAL_GAS:
 		case RawMaterial.MATERIAL_VEGETATION:
-			{ okMaterial=false; break;}
+			{
+				okMaterial=false;
+				break;
+			}
 		}
 		if(!okMaterial)
 		{

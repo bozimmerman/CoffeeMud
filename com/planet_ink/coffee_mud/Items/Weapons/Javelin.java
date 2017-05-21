@@ -60,5 +60,4 @@ public class Javelin extends StdWeapon
 		weaponClassification=Weapon.CLASS_THROWN;
 	}
 
-
 }

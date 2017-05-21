@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 /*
    Copyright 2003-2017 Bo Zimmerman
 
@@ -34,24 +33,96 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 public class Disease_Anthrax extends Disease
 {
-	@Override public String ID() { return "Disease_Anthrax"; }
-	private final static String localizedName = CMLib.lang().L("Anthrax");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Anthrax)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public boolean putInCommandlist(){return false;}
-	@Override public int difficultyLevel(){return 2;}
+	@Override
+	public String ID()
+	{
+		return "Disease_Anthrax";
+	}
 
-	@Override protected int DISEASE_TICKS(){return CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY)*10;}
-	@Override protected int DISEASE_DELAY(){return 15;}
+	private final static String localizedName = CMLib.lang().L("Anthrax");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Anthrax)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public boolean putInCommandlist()
+	{
+		return false;
+	}
+
+	@Override
+	public int difficultyLevel()
+	{
+		return 2;
+	}
+
+	@Override
+	protected int DISEASE_TICKS()
+	{
+		return CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY)*10;
+	}
+
+	@Override
+	protected int DISEASE_DELAY()
+	{
+		return 15;
+	}
+
 	protected int lastHP=Integer.MAX_VALUE;
-	@Override protected String DISEASE_DONE(){return L("Your anthrax wounds clear up.");}
-	@Override protected String DISEASE_START(){return L("^G<S-NAME> look(s) ill.^?");}
-	@Override protected String DISEASE_AFFECT(){return L("<S-NAME> watch(s) black necrotic wounds appear on <S-HIS-HER> flesh.");}
-	@Override public int spreadBitmap(){return DiseaseAffect.SPREAD_CONSUMPTION|DiseaseAffect.SPREAD_CONTACT;}
+
+	@Override
+	protected String DISEASE_DONE()
+	{
+		return L("Your anthrax wounds clear up.");
+	}
+
+	@Override
+	protected String DISEASE_START()
+	{
+		return L("^G<S-NAME> look(s) ill.^?");
+	}
+
+	@Override
+	protected String DISEASE_AFFECT()
+	{
+		return L("<S-NAME> watch(s) black necrotic wounds appear on <S-HIS-HER> flesh.");
+	}
+
+	@Override
+	public int spreadBitmap()
+	{
+		return DiseaseAffect.SPREAD_CONSUMPTION|DiseaseAffect.SPREAD_CONTACT;
+	}
+
 	private boolean norecurse=false;
 	protected int conDown=0;
 	protected int conTickDown=60;

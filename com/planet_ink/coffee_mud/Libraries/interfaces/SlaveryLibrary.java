@@ -69,7 +69,6 @@ public interface SlaveryLibrary extends CMLibrary
 	public String cleanWord(String s);
 	public GeasSteps processRequest(MOB you, MOB me, String req);
 
-
 	public static interface GeasStep
 	{
 		public boolean botherIfAble(String msgOrQ);

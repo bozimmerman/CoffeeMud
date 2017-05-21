@@ -35,14 +35,45 @@ import java.util.*;
 
 public class Prayer_MassDeafness extends Prayer
 {
-	@Override public String ID() { return "Prayer_MassDeafness"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_MassDeafness";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Mass Deafness");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CORRUPTION;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	@Override public long flags(){return Ability.FLAG_UNHOLY;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_CORRUPTION;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_UNHOLY;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Deafness)");
-	@Override public String displayText() { return localizedStaticDisplay; }
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
@@ -84,7 +115,6 @@ public class Prayer_MassDeafness extends Prayer
 			mob.tell(L("Your hearing returns."));
 	}
 
-
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -118,7 +148,6 @@ public class Prayer_MassDeafness extends Prayer
 
 		if(nothingDone)
 			return maliciousFizzle(mob,null,L("<S-NAME> attempt(s) to deafen everyone, but flub(s) it."));
-
 
 		// return whether it worked
 		return success;

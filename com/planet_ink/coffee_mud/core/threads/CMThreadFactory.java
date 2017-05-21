@@ -36,10 +36,12 @@ public class CMThreadFactory implements ThreadFactory
 		this.serverName=serverName;
 		this.threadGroup=Thread.currentThread().getThreadGroup();
 	}
+
 	public void setServerName(String newName)
 	{
 		this.serverName=newName;
 	}
+
 	@Override
 	public Thread newThread(Runnable r)
 	{
@@ -47,6 +49,7 @@ public class CMThreadFactory implements ThreadFactory
 		active.add(t);
 		return t;
 	}
+
 	public Collection<Thread> getThreads()
 	{
 		return active;

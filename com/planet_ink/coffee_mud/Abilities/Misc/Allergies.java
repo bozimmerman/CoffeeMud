@@ -109,7 +109,6 @@ public class Allergies extends StdAbility implements HealthCondition
 		return "Suffers from allergies to "+CMLib.english().toEnglishStringList(list)+".";
 	}
 
-
 	@Override
 	public void setMiscText(String newText)
 	{

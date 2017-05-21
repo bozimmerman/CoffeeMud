@@ -52,7 +52,6 @@ public class Tiger extends StdMOB
 		setMoney(0);
 		basePhyStats.setWeight(300 + Math.abs(randomizer.nextInt() % 55));
 
-
 		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,1);
 		baseCharStats().setStat(CharStats.STAT_STRENGTH,13);
 		baseCharStats().setStat(CharStats.STAT_DEXTERITY,17);

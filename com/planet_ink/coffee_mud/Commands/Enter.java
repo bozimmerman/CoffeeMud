@@ -96,7 +96,11 @@ public class Enter extends Go
 		CMLib.tracking().walk(mob,dir,false,false,false);
 		return false;
 	}
-	@Override public boolean canBeOrdered(){return true;}
 
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 
 }

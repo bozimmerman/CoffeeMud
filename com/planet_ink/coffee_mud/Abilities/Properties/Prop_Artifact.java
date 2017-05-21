@@ -349,7 +349,10 @@ public class Prop_Artifact extends Property
 												&&(M.name().equals(MOBname))
 												&&(M.getStartRoom()==R)
 												&&(!doneMOBs.contains(M)))
-												{ foundMOB=M; break;}
+												{
+													foundMOB=M;
+													break;
+												}
 											}
 										}
 										final Area A=R.getArea();

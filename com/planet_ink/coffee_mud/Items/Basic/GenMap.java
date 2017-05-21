@@ -119,6 +119,7 @@ public class GenMap extends StdMap
 	}
 
 	private static String[] codes=null;
+
 	@Override
 	public String[] getStatCodes()
 	{

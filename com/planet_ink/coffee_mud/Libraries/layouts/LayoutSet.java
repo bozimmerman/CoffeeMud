@@ -131,7 +131,6 @@ public class LayoutSet
 		return getNode(next.coord());
 	}
 
-
 	public void drawABox(int width, int height)
 	{
 		LayoutNode n = new DefaultLayoutNode(new long[]{0,0});

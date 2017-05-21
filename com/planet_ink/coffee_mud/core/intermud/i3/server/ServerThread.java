@@ -61,13 +61,46 @@ public class ServerThread implements Tickable
 		intermuds=imud;
 	}
 
-	@Override public String ID() { return "I3ServerThread"; }
-	@Override public CMObject newInstance() { return this; }
-	@Override public CMObject copyOf() { return this; }
-	@Override public void initializeClass() { }
-	@Override public int compareTo(CMObject o) { return (o==this)?0:1; }
-	@Override public String name() { return "I3UserThread"+Thread.currentThread().getThreadGroup().getName().charAt(0); }
-	@Override public int getTickStatus() { return tickStatus; }
+	@Override
+	public String ID()
+	{
+		return "I3ServerThread";
+	}
+
+	@Override
+	public CMObject newInstance()
+	{
+		return this;
+	}
+
+	@Override
+	public CMObject copyOf()
+	{
+		return this;
+	}
+
+	@Override
+	public void initializeClass()
+	{
+	}
+
+	@Override
+	public int compareTo(CMObject o)
+	{
+		return (o==this)?0:1;
+	}
+
+	@Override
+	public String name()
+	{
+		return "I3UserThread"+Thread.currentThread().getThreadGroup().getName().charAt(0);
+	}
+
+	@Override
+	public int getTickStatus()
+	{
+		return tickStatus;
+	}
 
 	protected synchronized ServerObject copyObject(String str) throws ObjectLoadException {
 		ServerObject ob;
@@ -205,7 +238,6 @@ public class ServerThread implements Tickable
 			for(i=0; i<users.length; i++)
 			{
 				final ServerUser interactive = users[i];
-
 
 				if( interactive.getDestructed() )
 				{

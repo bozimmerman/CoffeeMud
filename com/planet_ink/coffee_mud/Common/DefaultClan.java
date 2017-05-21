@@ -295,12 +295,14 @@ public class DefaultClan implements Clan
 	{
 		long points=0;
 		if(controlledAreas!=null)
+		{
 			for(final Area A : controlledAreas)
 			{
 				final LegalBehavior B=CMLib.law().getLegalBehavior(A);
 				if(B!=null)
 					points+=B.controlPoints();
 			}
+		}
 		return points;
 	}
 
@@ -1470,7 +1472,6 @@ public class DefaultClan implements Clan
 			return 0;
 		return govt().getPositions()[roleID].getMax();
 	}
-
 
 	@Override
 	public String getRoleName(int roleID, boolean titleCase, boolean plural)

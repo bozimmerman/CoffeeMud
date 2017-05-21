@@ -34,14 +34,35 @@ import java.util.*;
 */
 public class Prop_Crawlspace extends Property
 {
-	@Override public String ID() { return "Prop_Crawlspace"; }
-	@Override public String name(){ return "Room navigation limitation";}
-	@Override protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ROOMS|Ability.CAN_AREAS;}
+	@Override
+	public String ID()
+	{
+		return "Prop_Crawlspace";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Room navigation limitation";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_EXITS|Ability.CAN_ROOMS|Ability.CAN_AREAS;
+	}
+
 	@Override
 	public String accountForYourself()
-	{ return "Must be crawled through.";	}
+	{
+		return "Must be crawled through.";
+	}
 
-	@Override public long flags(){return Ability.FLAG_ADJUSTER;}
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_ADJUSTER;
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)

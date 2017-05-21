@@ -104,8 +104,6 @@ public class StdSmokable extends StdContainer implements Light
 		lit=isLit;
 	}
 
-
-
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{

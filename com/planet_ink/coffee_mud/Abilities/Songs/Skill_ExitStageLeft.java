@@ -35,17 +35,62 @@ import java.util.*;
 
 public class Skill_ExitStageLeft extends BardSkill
 {
-	@Override public String ID() { return "Skill_ExitStageLeft"; }
+	@Override
+	public String ID()
+	{
+		return "Skill_ExitStageLeft";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Exit Stage Left");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"EXITSTAGELEFT"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_THEATRE;}
-	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
-	@Override public long flags(){return Ability.FLAG_MOVING|Ability.FLAG_TRANSPORTING;}
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL|Ability.DOMAIN_THEATRE;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT|USAGE_MANA;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_MOVING|Ability.FLAG_TRANSPORTING;
+	}
 
 	@Override
 	public void unInvoke()

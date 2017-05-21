@@ -529,7 +529,6 @@ public class RaceData extends StdWebMacro
 		return str;
 	}
 
-
 	public static StringBuffer dynEffects(String ID, Modifiable obj, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize, String font)
 	{
 		final StringBuffer str=new StringBuffer("");
@@ -1094,7 +1093,6 @@ public class RaceData extends StdWebMacro
 						str.append("<OPTION VALUE="+i+" "+((i==mask)?"SELECTED":"")+">"+Area.THEME_PHRASE_EXT[i]);
 					str.append(", ");
 				}
-
 
 				if(parms.containsKey("PLAYABLE"))
 					str.append(Area.THEME_PHRASE_EXT[R.availabilityCode()]+", ");

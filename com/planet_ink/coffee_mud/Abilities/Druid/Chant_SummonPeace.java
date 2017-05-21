@@ -33,16 +33,45 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Chant_SummonPeace extends Chant
 {
-	@Override public String ID() { return "Chant_SummonPeace"; }
+	@Override
+	public String ID()
+	{
+		return "Chant_SummonPeace";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Summon Peace");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PRESERVING;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return 0;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT|Ability.DOMAIN_PRESERVING;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -79,7 +108,6 @@ public class Chant_SummonPeace extends Chant
 		}
 		else
 			beneficialWordsFizzle(mob,null,L("<S-NAME> chant(s) for peace, but nothing happens."));
-
 
 		// return whether it worked
 		return success;

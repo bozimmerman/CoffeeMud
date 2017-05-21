@@ -35,17 +35,63 @@ import java.util.*;
 
 public class Thief_ContractHit extends ThiefSkill
 {
-	@Override public String ID() { return "Thief_ContractHit"; }
+	@Override
+	public String ID()
+	{
+		return "Thief_ContractHit";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Contract Hit");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
-	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"CONTRACTHIT"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public boolean disregardsArmorCheck(MOB mob){return true;}
-	@Override public int classificationCode() {   return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_CRIMINAL; }
-	@Override public String displayText(){return "";}
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public boolean disregardsArmorCheck(MOB mob)
+	{
+		return true;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_CRIMINAL;
+	}
+
+	@Override
+	public String displayText()
+	{
+		return "";
+	}
+
 	protected boolean done=false;
 	protected boolean readyToHit=false;
 	protected boolean hitting=false;
@@ -215,7 +261,10 @@ public class Thief_ContractHit extends ThiefSkill
 		try
 		{
 			V=CMLib.map().findInhabitants(CMLib.map().rooms(), mob,CMParms.combine(commands,0), 10);
-		}catch(final NoSuchElementException nse){}
+		}
+		catch(final NoSuchElementException nse)
+		{
+		}
 		MOB target=null;
 		if(V.size()>0)
 			target=V.get(CMLib.dice().roll(1,V.size(),-1));

@@ -249,7 +249,6 @@ public class StdLawBook extends StdItem
 			+"Sentence";
 	}
 
-
 	public final static String[][] locflags={
 		{"Only a crime if the person is not at home","!home"},
 		{"A crime ONLY if the person is at home","home"},
@@ -1280,7 +1279,6 @@ public class StdLawBook extends StdItem
 			}
 		}
 	}
-
 
 	public void doJailPolicy(Area A, LegalBehavior B, Law theLaw, MOB mob, boolean allowedToModify)
 		throws IOException

@@ -41,7 +41,12 @@ public class Description extends StdCommand
 	
 	private final int CHAR_LIMIT = 128 * 1024;
 	
-	@Override public String[] getAccessWords(){return access;}
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
+
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
@@ -64,7 +69,10 @@ public class Description extends StdCommand
 		return false;
 	}
 
-	@Override public boolean canBeOrdered(){return false;}
-
+	@Override
+	public boolean canBeOrdered()
+	{
+		return false;
+	}
 
 }

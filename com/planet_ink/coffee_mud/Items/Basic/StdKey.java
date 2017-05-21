@@ -52,7 +52,6 @@ public class StdKey extends StdItem implements DoorKey
 		recoverPhyStats();
 	}
 
-
 	@Override
 	public void setKey(String keyName)
 	{

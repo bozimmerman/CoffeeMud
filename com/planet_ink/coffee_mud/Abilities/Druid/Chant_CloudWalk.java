@@ -19,8 +19,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-
-
 /*
    Copyright 2003-2017 Bo Zimmerman
 
@@ -37,18 +35,53 @@ import java.util.Set;
    limitations under the License.
 */
 
-
 public class Chant_CloudWalk extends Chant
 {
-	@Override public String ID() { return "Chant_CloudWalk"; }
+	@Override
+	public String ID()
+	{
+		return "Chant_CloudWalk";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Cloud Walk");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Cloud Walk)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
 
 	@Override
 	public void unInvoke()
@@ -58,8 +91,10 @@ public class Chant_CloudWalk extends Chant
 			return;
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
+		{
 			if((mob.location()!=null)&&(!mob.amDead()))
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> float(s) down to the ground."));
+		}
 
 		super.unInvoke();
 
@@ -71,7 +106,6 @@ public class Chant_CloudWalk extends Chant
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_FLYING);
 	}
-
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
@@ -86,7 +120,7 @@ public class Chant_CloudWalk extends Chant
 			if(mob!=invoker)
 			{
 				if((mob.location()==null)||(!mob.location().isInhabitant(invoker)))
-				   unInvoke();
+					unInvoke();
 			}
 			else
 			{

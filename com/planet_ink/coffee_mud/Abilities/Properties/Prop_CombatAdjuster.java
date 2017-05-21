@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -101,6 +100,7 @@ public class Prop_CombatAdjuster extends Property implements TriggeredAffect
 		if(allset[6]>=0)
 			affectableStats.setSpeed(allset[6]);
 	}
+
 	@Override
 	public void affectCharState(MOB mob, CharState maxState)
 	{
@@ -120,6 +120,7 @@ public class Prop_CombatAdjuster extends Property implements TriggeredAffect
 		if(allset[5]>=0)
 			maxState.setMovement(allset[5]);
 	}
+
 	@Override
 	public void setMiscText(String newMiscText)
 	{

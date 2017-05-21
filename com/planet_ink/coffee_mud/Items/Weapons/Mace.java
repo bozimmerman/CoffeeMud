@@ -57,5 +57,4 @@ public class Mace extends StdWeapon
 		weaponClassification=Weapon.CLASS_BLUNT;
 	}
 
-
 }

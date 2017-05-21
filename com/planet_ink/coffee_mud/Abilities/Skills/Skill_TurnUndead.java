@@ -106,7 +106,6 @@ public class Skill_TurnUndead extends StdSkill
 		return super.castingQuality(mob,target);
 	}
 
-
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -174,7 +173,6 @@ public class Skill_TurnUndead extends StdSkill
 		}
 		else
 			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to turn <T-NAMESELF>, but fail(s)."));
-
 
 		// return whether it worked
 		return success;

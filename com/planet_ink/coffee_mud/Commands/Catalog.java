@@ -120,7 +120,6 @@ public class Catalog extends StdCommand
 		return true;
 	}
 
-
 	public Physical findCatalog(CatalogKind whatKind, String ID, boolean exactOnly)
 	{
 		final Object[] data=new Object[]{null,null};
@@ -389,6 +388,7 @@ public class Catalog extends StdCommand
 								mob.tell(L("That is not a valid new catagory to create."));
 							else
 							if(session!=null)
+							{
 								session.prompt(new InputCallback(InputCallback.Type.CONFIRM,"N")
 								{
 									@Override
@@ -413,6 +413,7 @@ public class Catalog extends StdCommand
 										}
 									}
 								});
+							}
 						}
 						else
 						{

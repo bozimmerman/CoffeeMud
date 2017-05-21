@@ -193,7 +193,6 @@ public class UnderWaterThinGrid extends StdThinGrid
 				linkRoom(R,R2,Directions.SOUTH,ox,ox);
 		}
 
-
 		if((x==0)&&(R.rawDoors()[Directions.WEST]==null))
 		{
 			R2=getMakeSingleGridRoom(xGridSize()-1,y);

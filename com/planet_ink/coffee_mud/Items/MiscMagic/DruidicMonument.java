@@ -56,5 +56,4 @@ public class DruidicMonument extends StdItem implements MiscMagic
 		recoverPhyStats();
 	}
 
-
 }

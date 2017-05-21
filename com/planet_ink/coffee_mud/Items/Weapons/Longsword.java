@@ -56,5 +56,4 @@ public class Longsword extends Sword
 		weaponDamageType=TYPE_SLASHING;
 	}
 
-
 }

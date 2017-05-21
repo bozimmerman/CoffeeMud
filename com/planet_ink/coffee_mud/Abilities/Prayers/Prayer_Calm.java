@@ -33,16 +33,45 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Prayer_Calm extends Prayer
 {
-	@Override public String ID() { return "Prayer_Calm"; }
+	@Override
+	public String ID()
+	{
+		return "Prayer_Calm";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Calm");
-	@Override public String name() { return localizedName; }
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_NEUTRALIZATION;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	@Override public long flags(){return Ability.FLAG_HOLY;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_NEUTRALIZATION;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_OTHERS;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_HOLY;
+	}
 
 	@Override
 	public int castingQuality(MOB mob, Physical target)
@@ -93,7 +122,6 @@ public class Prayer_Calm extends Prayer
 		}
 		else
 			beneficialWordsFizzle(mob,null,L("<S-NAME> @x1 for calmness, but nothing happens.",prayWord(mob)));
-
 
 		// return whether it worked
 		return success;

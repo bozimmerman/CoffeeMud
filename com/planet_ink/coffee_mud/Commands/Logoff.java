@@ -39,7 +39,11 @@ public class Logoff extends StdCommand
 	public Logoff(){}
 
 	private final String[] access=I(new String[]{"LOGOFF","LOGOUT"});
-	@Override public String[] getAccessWords(){return access;}
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
 	@Override
 	public boolean execute(final MOB mob, List<String> commands, int metaFlags)
@@ -70,7 +74,11 @@ public class Logoff extends StdCommand
 						{
 							session.promptPrint(L("\n\rLogout -- are you sure (y/N)?"));
 						}
-						@Override public void timedOut() {}
+
+						@Override
+						public void timedOut()
+						{
+						}
 
 						@Override
 						public void callBack()
@@ -98,7 +106,10 @@ public class Logoff extends StdCommand
 		return false;
 	}
 
-	@Override public boolean canBeOrdered(){return false;}
-
+	@Override
+	public boolean canBeOrdered()
+	{
+		return false;
+	}
 
 }
