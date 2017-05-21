@@ -166,7 +166,12 @@ public class Prop_Smell extends Property
 	{
 		final CMMsg msg=CMClass.getMsg(emoter,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_AROMA,str);
 		if(room.okMessage(emoter,msg))
-			room.send(emoter, msg);
+		{
+			if(CMLib.flags().canSmell(emoter))
+				room.send(emoter, msg);
+			else
+				room.sendOthers(emoter, msg);
+		}
 	}
 
 	@Override

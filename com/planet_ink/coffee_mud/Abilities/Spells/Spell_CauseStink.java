@@ -151,7 +151,10 @@ public class Spell_CauseStink extends Spell
 				final CMMsg msg=CMClass.getMsg(mob,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_AROMA,str);
 				if(room.okMessage(mob,msg))
 				{
-					room.send(mob, msg);
+					if(CMLib.flags().canSmell(mob))
+						room.send(mob, msg);
+					else
+						room.sendOthers(mob, msg);
 				}
 				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 				{
