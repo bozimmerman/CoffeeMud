@@ -34,12 +34,22 @@ import java.util.*;
 */
 public class GoodExecutioner  extends StdBehavior
 {
-	@Override public String ID(){return "GoodExecutioner";}
-	@Override public long flags(){return Behavior.FLAG_POTENTIALLYAGGRESSIVE;}
-	private boolean doPlayers=false;
-	private boolean norecurse=false;
-	protected long deepBreath=System.currentTimeMillis();
-	private final DVector protectedOnes = new DVector(2);
+	@Override
+	public String ID()
+	{
+		return "GoodExecutioner";
+	}
+
+	@Override
+	public long flags()
+	{
+		return Behavior.FLAG_POTENTIALLYAGGRESSIVE;
+	}
+
+	private boolean			doPlayers		= false;
+	private boolean			norecurse		= false;
+	protected long			deepBreath		= System.currentTimeMillis();
+	private final DVector	protectedOnes	= new DVector(2);
 
 	@Override
 	public void setParms(String newParms)
@@ -78,7 +88,10 @@ public class GoodExecutioner  extends StdBehavior
 			
 			return ((CMLib.flags().isEvil(M))||(M.baseCharStats().getCurrentClass().baseClass().equalsIgnoreCase("Thief")));
 		}
-		finally{ norecurse=false;}
+		finally
+		{
+			norecurse = false;
+		}
 	}
 
 	@Override

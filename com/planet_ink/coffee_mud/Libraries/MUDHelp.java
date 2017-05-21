@@ -741,6 +741,8 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 		if((R!=null)&&(R.isGeneric()))
 			thisTag="<RACE>"+R.getStat("HELP");
 
+		if(helpStr.equals("!"))
+			helpStr="EXCLAMATION_POINT";
 		boolean found=false;
 		if(thisTag==null)
 			thisTag=rHelpFile.getProperty(helpStr);

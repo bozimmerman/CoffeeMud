@@ -4358,6 +4358,8 @@ public class ListCmd extends StdCommand
 						example += ((example.length()>0) ? "\n\r" : "" ) + helpStr.substring(start+1,end).trim();
 						helpStr=helpStr.substring(end+1).trim();
 					}
+					if(helpStr.trim().startsWith("Description: "))
+						helpStr=helpStr.substring(13).trim();
 				}
 				str.append("{{BehaviorTemplate"
 						+ "|Name="+B.name()
