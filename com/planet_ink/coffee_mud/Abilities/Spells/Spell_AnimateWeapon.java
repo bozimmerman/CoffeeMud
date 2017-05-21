@@ -92,10 +92,12 @@ public class Spell_AnimateWeapon extends Spell
 				if((!isHit)||(!(item instanceof Weapon)))
 					invoker().location().show(invoker(),victiM,item,CMMsg.MSG_OK_ACTION,L("<O-NAME> attacks <T-NAME> and misses!"));
 				else
+				{
 					CMLib.combat().postDamage(invoker(),victiM,item,
 											CMLib.dice().roll(1,item.phyStats().damage(),5),
 											CMMsg.MASK_ALWAYS|CMMsg.TYP_WEAPONATTACK,
 											((Weapon)item).weaponDamageType(),L("@x1 attacks and <DAMAGE> <T-NAME>!",affected.name()));
+				}
 			}
 			else
 			if(CMLib.dice().rollPercentage()>75)
@@ -136,6 +138,7 @@ public class Spell_AnimateWeapon extends Spell
 			return false;
 		}
 		if(msg.amITarget(affected))
+		{
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_GET:
@@ -145,6 +148,7 @@ public class Spell_AnimateWeapon extends Spell
 				unInvoke();
 				break;
 			}
+		}
 		return true;
 	}
 

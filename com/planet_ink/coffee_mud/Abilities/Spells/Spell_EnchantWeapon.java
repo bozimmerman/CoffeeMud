@@ -119,7 +119,6 @@ public class Spell_EnchantWeapon extends Spell
 				target.recoverPhyStats();
 				mob.recoverPhyStats();
 			}
-
 		}
 		else
 			beneficialWordsFizzle(mob,target,L("<S-NAME> hold(s) <T-NAMESELF> tightly and whisper(s), but fail(s) to cast a spell."));

@@ -117,6 +117,7 @@ public class Spell_EnchantWand extends Spell
 				wandThis=(Spell)A;
 		}
 		if(wandThis==null)
+		{
 			for(final Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
 			{
 				final Ability A=a.nextElement();
@@ -127,6 +128,7 @@ public class Spell_EnchantWand extends Spell
 				&&(!A.ID().equals(this.ID())))
 					wandThis=(Spell)A;
 			}
+		}
 		if(wandThis==null)
 		{
 			mob.tell(L("You don't know how to enchant anything with '@x1'.",spellName));
