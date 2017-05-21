@@ -35,15 +35,52 @@ import java.util.*;
 
 public class Spell_MindLight extends Spell
 {
-	@Override public String ID() { return "Spell_MindLight"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_MindLight";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Mind Light");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Mind Light spell)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return CAN_ROOMS;}
-	@Override protected int canTargetCode(){return CAN_ROOMS;}
-	@Override public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_ROOMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_ROOMS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
 
 	@Override
 	public void unInvoke()
@@ -72,7 +109,7 @@ public class Spell_MindLight extends Spell
 		if((invoker()!=null)&&(canBeUninvoked()))
 		{
 			if(!R.isInhabitant(invoker()))
-			   unInvoke();
+				unInvoke();
 			return false;
 		}
 		for(int m=0;m<R.numInhabitants();m++)
@@ -89,7 +126,6 @@ public class Spell_MindLight extends Spell
 		return true;
 	}
 
-
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -103,7 +139,6 @@ public class Spell_MindLight extends Spell
 			mob.tell(mob,null,null,L("The Mind Light is already here!"));
 			return false;
 		}
-
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 

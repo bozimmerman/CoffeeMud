@@ -35,12 +35,34 @@ import java.util.*;
 
 public class Spell_Youth extends Spell
 {
-	@Override public String ID() { return "Spell_Youth"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_Youth";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Youth");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	public int overridemana(){return Ability.COST_ALL;}
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_OTHERS;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -105,7 +127,6 @@ public class Spell_Youth extends Spell
 		}
 		else
 			beneficialVisualFizzle(mob,target,L("<S-NAME> wave(s) <S-HIS-HER> arms around <T-NAMESELF>, but the spell fizzles."));
-
 
 		// return whether it worked
 		return success;

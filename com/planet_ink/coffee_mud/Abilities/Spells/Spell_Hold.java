@@ -35,15 +35,52 @@ import java.util.*;
 
 public class Spell_Hold extends Spell
 {
-	@Override public String ID() { return "Spell_Hold"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_Hold";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Hold");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Hold spell)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
-	@Override public long flags(){return Ability.FLAG_PARALYZING;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_PARALYZING;
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
@@ -51,7 +88,6 @@ public class Spell_Hold extends Spell
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_MOVE);
 	}
-
 
 	@Override
 	public void unInvoke()
@@ -68,8 +104,6 @@ public class Spell_Hold extends Spell
 			CMLib.commands().postStand(mob,true);
 		}
 	}
-
-
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)

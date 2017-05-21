@@ -35,14 +35,46 @@ import java.util.*;
 
 public class Spell_Friends extends Spell
 {
-	@Override public String ID() { return "Spell_Friends"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_Friends";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Friends");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Friends spell)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_SELF;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;
+	}
 
 	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
@@ -50,7 +82,6 @@ public class Spell_Friends extends Spell
 		super.affectCharStats(affected,affectableStats);
 		affectableStats.setStat(CharStats.STAT_CHARISMA,affectableStats.getStat(CharStats.STAT_CHARISMA) + 6);
 	}
-
 
 	@Override
 	public void unInvoke()
@@ -64,8 +95,6 @@ public class Spell_Friends extends Spell
 			mob.tell(L("You begin to feel more like your regular cranky self."));
 	}
 
-
-
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -78,7 +107,6 @@ public class Spell_Friends extends Spell
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-
 
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
@@ -97,7 +125,6 @@ public class Spell_Friends extends Spell
 		}
 		else
 			return beneficialVisualFizzle(mob,target,L("<S-NAME> incant(s) gracefully to <T-NAMESELF>, but nothing more happens."));
-
 
 		// return whether it worked
 		return success;

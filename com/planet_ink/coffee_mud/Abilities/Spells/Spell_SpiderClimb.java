@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2004-2017 Bo Zimmerman
 
@@ -36,6 +35,7 @@ import java.util.*;
 
 public class Spell_SpiderClimb extends Spell
 {
+
 	@Override
 	public String ID()
 	{
@@ -85,6 +85,7 @@ public class Spell_SpiderClimb extends Spell
 				affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_CLIMBING);
 		}
 	}
+
 	@Override
 	public void unInvoke()
 	{

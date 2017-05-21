@@ -34,6 +34,7 @@ import java.util.*;
 */
 public class Spell_Tourettes extends Spell implements DiseaseAffect
 {
+
 	@Override
 	public String ID()
 	{

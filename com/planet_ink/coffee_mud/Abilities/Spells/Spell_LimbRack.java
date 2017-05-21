@@ -35,14 +35,47 @@ import java.util.*;
 
 public class Spell_LimbRack extends Spell
 {
-	@Override public String ID() { return "Spell_LimbRack"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_LimbRack";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Limb Rack");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Being pulled apart)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;
+	}
+
 	public List<String> limbsToRemove=new Vector<String>();
 
 	@Override
@@ -155,7 +188,6 @@ public class Spell_LimbRack extends Spell
 		}
 		else
 			return maliciousFizzle(mob,target,L("<S-NAME> incant(s) stretchingly at <T-NAMESELF>, but flub(s) the spell."));
-
 
 		// return whether it worked
 		return success;

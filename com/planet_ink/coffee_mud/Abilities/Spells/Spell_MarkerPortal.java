@@ -35,13 +35,44 @@ import java.util.*;
 
 public class Spell_MarkerPortal extends Spell
 {
-	@Override public String ID() { return "Spell_MarkerPortal"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_MarkerPortal";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Marker Portal");
-	@Override public String name() { return localizedName; }
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
-	@Override public long flags(){return Ability.FLAG_TRANSPORTING;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_TRANSPORTING;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
 
 	Room newRoom=null;
 	Room oldRoom=null;
@@ -95,7 +126,10 @@ public class Spell_MarkerPortal extends Spell
 				if(newRoom!=null)
 					break;
 			}
-		}catch(final NoSuchElementException nse){}
+		}
+		catch(final NoSuchElementException nse)
+		{
+		}
 		if(newRoom==null)
 		{
 			mob.tell(L("You can't seem to focus on your marker.  Are you sure you've already summoned it?"));
@@ -172,7 +206,6 @@ public class Spell_MarkerPortal extends Spell
 		}
 		else
 			beneficialWordsFizzle(mob,null,L("<S-NAME> attempt(s) to conjur a portal, but fizzle(s) the spell."));
-
 
 		// return whether it worked
 		return success;

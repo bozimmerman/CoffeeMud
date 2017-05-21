@@ -35,12 +35,39 @@ import java.util.*;
 
 public class Spell_Breadcrumbs extends Spell
 {
-	@Override public String ID() { return "Spell_Breadcrumbs"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_Breadcrumbs";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Breadcrumbs");
-	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_SELF;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;
+	}
+
 	public Vector<Room> trail=null;
 
 	@Override
@@ -62,26 +89,31 @@ public class Spell_Breadcrumbs extends Spell
 	{
 		final StringBuffer str=new StringBuffer(L("(Breadcrumb Trail: "));
 		if(trail!=null)
-		synchronized(trail)
 		{
-			Room lastRoom=null;
-			for(int v=trail.size()-1;v>=0;v--)
+			synchronized(trail)
 			{
-				final Room R=trail.elementAt(v);
-				if(lastRoom!=null)
+				Room lastRoom=null;
+				for(int v=trail.size()-1;v>=0;v--)
 				{
-					int dir=-1;
-					for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+					final Room R=trail.elementAt(v);
+					if(lastRoom!=null)
 					{
-						if(lastRoom.getRoomInDir(d)==R)
-						{ dir=d; break;}
+						int dir=-1;
+						for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+						{
+							if(lastRoom.getRoomInDir(d)==R)
+							{
+								dir=d;
+								break;
+							}
+						}
+						if(dir>=0)
+							str.append(CMLib.directions().getDirectionName(dir)+" ");
+						else
+							str.append(L("Unknown "));
 					}
-					if(dir>=0)
-						str.append(CMLib.directions().getDirectionName(dir)+" ");
-					else
-						str.append(L("Unknown "));
+					lastRoom=R;
 				}
-				lastRoom=R;
 			}
 		}
 		return str.toString()+")";

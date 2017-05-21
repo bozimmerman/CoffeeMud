@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2001-2017 Bo Zimmerman
 
@@ -36,15 +35,52 @@ import java.util.*;
 
 public class Spell_MagicalAura extends Spell
 {
-	@Override public String ID() { return "Spell_MagicalAura"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_MagicalAura";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Magical Aura");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Magical Aura)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_ROOMS|Ability.CAN_EXITS;}
-	@Override protected int canTargetCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_ROOMS|Ability.CAN_EXITS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_SELF;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_ROOMS|Ability.CAN_EXITS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_ROOMS|Ability.CAN_EXITS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
@@ -60,8 +96,10 @@ public class Spell_MagicalAura extends Spell
 		if((affected==null))
 			return;
 		if(canBeUninvoked())
+		{
 			if(affected instanceof MOB)
 				((MOB)affected).tell(L("Your magical aura fades."));
+		}
 
 		super.unInvoke();
 

@@ -35,6 +35,7 @@ import java.util.*;
 
 public class Spell_ReverseGravity extends Spell
 {
+
 	@Override
 	public String ID()
 	{

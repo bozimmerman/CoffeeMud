@@ -35,12 +35,38 @@ import java.util.*;
 
 public class Spell_FakeFood extends Spell
 {
-	@Override public String ID() { return "Spell_FakeFood"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_FakeFood";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Fake Food");
-	@Override public String name() { return localizedName; }
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -93,7 +119,6 @@ public class Spell_FakeFood extends Spell
 		}
 		else
 			beneficialVisualFizzle(mob,null,L("<S-NAME> dramatically attempt(s) to invoke a spell, but fizzle(s) the spell."));
-
 
 		// return whether it worked
 		return success;

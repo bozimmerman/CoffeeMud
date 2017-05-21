@@ -35,16 +35,58 @@ import java.util.*;
 
 public class Spell_Repulsion extends Spell
 {
-	@Override public String ID() { return "Spell_Repulsion"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_Repulsion";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Repulsion");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Repulsion)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int maxRange(){return adjustedMaxInvokerRange(3);}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ABJURATION;}
-	@Override public long flags(){return Ability.FLAG_MOVING;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int maxRange()
+	{
+		return adjustedMaxInvokerRange(3);
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_ABJURATION;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_MOVING;
+	}
 
 	public int amountRemaining=0;
 
@@ -155,8 +197,10 @@ public class Spell_Repulsion extends Spell
 									target.setRangeToTarget(level);
 								if(target.getVictim()!=null)
 									target.getVictim().setRangeToTarget(target.rangeToTarget());
-								if(mob.getVictim()==null) mob.setVictim(null); // correct range
-								if(target.getVictim()==null) target.setVictim(null); // correct range
+								if(mob.getVictim()==null) 
+									mob.setVictim(null); // correct range
+								if(target.getVictim()==null) 
+									target.setVictim(null); // correct range
 							}
 						}
 					}
@@ -164,7 +208,6 @@ public class Spell_Repulsion extends Spell
 		}
 		else
 			return maliciousFizzle(mob,null,L("<S-NAME> wave(s) <S-HIS-HER> arms, but the spell fizzles."));
-
 
 		// return whether it worked
 		return success;

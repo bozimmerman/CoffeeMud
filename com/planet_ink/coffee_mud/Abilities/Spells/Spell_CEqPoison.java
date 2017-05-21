@@ -37,12 +37,27 @@ import java.util.*;
  * @version 1.0.0.0
  */
 
-
 public class Spell_CEqPoison extends Spell_BaseClanEq {
-@Override public String ID() { return "Spell_CEqPoison"; }
+
+@Override
+public String ID()
+{
+	return "Spell_CEqPoison";
+}
+
 private final static String localizedName = CMLib.lang().L("ClanEnchant Poison");
-	@Override public String name() { return localizedName; }
-@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+@Override
+public int abstractQuality()
+{
+	return Ability.QUALITY_INDIFFERENT;
+}
 
   @Override
 public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)

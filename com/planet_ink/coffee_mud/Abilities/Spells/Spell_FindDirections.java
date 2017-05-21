@@ -35,13 +35,44 @@ import java.util.*;
 
 public class Spell_FindDirections extends Spell
 {
-	@Override public String ID() { return "Spell_FindDirections"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_FindDirections";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Find Directions");
-	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	@Override protected int canTargetCode(){return Ability.CAN_AREAS;}
-	@Override protected int canAffectCode(){return 0;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_AREAS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -51,7 +82,6 @@ public class Spell_FindDirections extends Spell
 			return false;
 
 		if((commands.size()>0)
-		
 		&&((commands.get(0)).toLowerCase().startsWith("direction")))
 			commands.remove(0);
 		Area A=null;
@@ -66,11 +96,13 @@ public class Spell_FindDirections extends Spell
 				{
 					boolean foundOne=false;
 					for(int i=0;i<10;i++)
+					{
 						if(CMLib.flags().canAccess(mob, A.getRandomProperRoom()))
 						{
 							foundOne=true;
 							break;
 						}
+					}
 					if(!foundOne)
 						A=null;
 				}
@@ -98,7 +130,6 @@ public class Spell_FindDirections extends Spell
 		}
 		else
 			beneficialVisualFizzle(mob,targetR,L("<S-NAME> wave(s) <S-HIS-HER> hands around, looking more frustrated every second."));
-
 
 		// return whether it worked
 		return success;

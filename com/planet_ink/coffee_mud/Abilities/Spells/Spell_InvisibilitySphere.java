@@ -34,17 +34,48 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Spell_InvisibilitySphere extends Spell
 {
-	@Override public String ID() { return "Spell_InvisibilitySphere"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_InvisibilitySphere";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Invisibility Sphere");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Invisibility Sphere)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS|Ability.CAN_ITEMS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
 	
 	protected volatile WeakReference<Room> lastRoom = new WeakReference<Room>(null);
 	protected volatile long lastRoomHash=0;
@@ -247,7 +278,6 @@ public class Spell_InvisibilitySphere extends Spell
 		}
 		else
 			return beneficialWordsFizzle(mob,null,L("<S-NAME> cast(s) a spell, but nothing happens."));
-
 
 		// return whether it worked
 		return success;

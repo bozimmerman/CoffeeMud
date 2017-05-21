@@ -35,14 +35,47 @@ import java.util.*;
 
 public class Spell_KineticBubble extends Spell
 {
-	@Override public String ID() { return "Spell_KineticBubble"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_KineticBubble";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Kinetic Bubble");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Kinetic Bubble)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ABJURATION;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_SELF;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_ABJURATION;
+	}
+
 	protected int kickBack=0;
 
 	@Override
@@ -53,8 +86,10 @@ public class Spell_KineticBubble extends Spell
 			return;
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
+		{
 			if((mob.location()!=null)&&(!mob.amDead()))
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> Kinetic Bubble pops."));
+		}
 
 		super.unInvoke();
 	}

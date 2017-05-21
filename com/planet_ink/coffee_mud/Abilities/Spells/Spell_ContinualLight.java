@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2003-2017 Bo Zimmerman
 
@@ -36,15 +35,52 @@ import java.util.*;
 
 public class Spell_ContinualLight extends Spell
 {
-	@Override public String ID() { return "Spell_ContinualLight"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_ContinualLight";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Continual Light");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Continual Light)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
-	@Override protected int canTargetCode(){return CAN_MOBS|CAN_ITEMS;}
-	@Override protected int canAffectCode(){return CAN_MOBS|CAN_ITEMS;}
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_SELF;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS|CAN_ITEMS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS|CAN_ITEMS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
@@ -54,6 +90,7 @@ public class Spell_ContinualLight extends Spell
 		if(CMLib.flags().isInDark(affected))
 			affectableStats.setDisposition(affectableStats.disposition()-PhyStats.IS_DARK);
 	}
+
 	@Override
 	public void unInvoke()
 	{

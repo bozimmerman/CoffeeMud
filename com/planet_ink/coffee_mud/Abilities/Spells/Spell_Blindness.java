@@ -35,14 +35,46 @@ import java.util.*;
 
 public class Spell_Blindness extends Spell
 {
-	@Override public String ID() { return "Spell_Blindness"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_Blindness";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Blind");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Blind)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
@@ -50,7 +82,6 @@ public class Spell_Blindness extends Spell
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_SEE);
 	}
-
 
 	@Override
 	public void unInvoke()

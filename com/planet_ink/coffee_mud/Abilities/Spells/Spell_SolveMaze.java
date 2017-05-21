@@ -35,13 +35,44 @@ import java.util.*;
 
 public class Spell_SolveMaze extends Spell
 {
-	@Override public String ID() { return "Spell_SolveMaze"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_SolveMaze";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Solve Maze");
-	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override protected int canAffectCode(){return 0;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -58,7 +89,6 @@ public class Spell_SolveMaze extends Spell
 		int direction=-1;
 		Room outRoom=null;
 		if((commands.size()>0)
-		
 		&&((commands.get(0)).toLowerCase().startsWith("ma")))
 			commands.remove(0);
 		if(commands.size()==0)
@@ -110,7 +140,6 @@ public class Spell_SolveMaze extends Spell
 		}
 		else
 			beneficialVisualFizzle(mob,targetR,L("<S-NAME> wave(s) <S-HIS-HER> hands around, looking more frustrated every second."));
-
 
 		// return whether it worked
 		return success;

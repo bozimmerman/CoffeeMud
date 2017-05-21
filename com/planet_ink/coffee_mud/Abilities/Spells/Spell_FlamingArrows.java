@@ -36,13 +36,44 @@ import java.util.*;
 
 public class Spell_FlamingArrows extends Spell
 {
-	@Override public String ID() { return "Spell_FlamingArrows"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_FlamingArrows";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Flaming Arrows");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return CAN_ITEMS;}
-	@Override protected int canTargetCode(){return CAN_ITEMS;}
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_ITEMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_ITEMS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
 	
 	protected volatile boolean norecurse=false;
 
@@ -100,7 +131,6 @@ public class Spell_FlamingArrows extends Spell
 		}
 	}
 
-
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -122,7 +152,6 @@ public class Spell_FlamingArrows extends Spell
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 

@@ -35,14 +35,50 @@ import java.util.*;
 
 public class Spell_Portal extends Spell
 {
-	@Override public String ID() { return "Spell_Portal"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_Portal";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Portal");
-	@Override public String name() { return localizedName; }
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
-	@Override public long flags(){return Ability.FLAG_TRANSPORTING;}
-	@Override protected int overrideMana(){return Ability.COST_ALL-90;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_TRANSPORTING;
+	}
+
+	@Override
+	protected int overrideMana()
+	{
+		return Ability.COST_ALL-90;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
 
 	Room newRoom=null;
 	Room oldRoom=null;
@@ -114,7 +150,10 @@ public class Spell_Portal extends Spell
 				final List<Room> rooms=CMLib.map().findRooms(CMLib.map().rooms(), mob, areaName, true, 10);
 				if(rooms.size()>0)
 					newRoom=rooms.get(CMLib.dice().roll(1,rooms.size(),-1));
-			}catch(final NoSuchElementException nse){}
+			}
+			catch(final NoSuchElementException nse)
+			{
+			}
 		}
 
 		if(newRoom==null)
@@ -182,7 +221,6 @@ public class Spell_Portal extends Spell
 		}
 		else
 			beneficialWordsFizzle(mob,null,L("<S-NAME> attempt(s) to evoke a portal, but fizzle(s) the spell."));
-
 
 		// return whether it worked
 		return success;

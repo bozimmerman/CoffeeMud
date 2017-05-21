@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2001-2017 Bo Zimmerman
 
@@ -36,15 +35,52 @@ import java.util.*;
 
 public class Spell_DetectInvisible extends Spell
 {
-	@Override public String ID() { return "Spell_DetectInvisible"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_DetectInvisible";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Detect Invisible");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Detecting Invisible)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
-	@Override public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_SELF;
+	}
+
+	@Override
+	public int enchantQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_SELF;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;
+	}
 
 	@Override
 	public void unInvoke()
@@ -75,12 +111,17 @@ public class Spell_DetectInvisible extends Spell
 				final Room R=((MOB)target).location();
 				boolean found=false;
 				if(R!=null)
+				{
 					for(int r=0;r<R.numInhabitants();r++)
 					{
 						final MOB M=R.fetchInhabitant(r);
 						if((M!=null)&&(M!=mob)&&(M!=target)&&(CMLib.flags().isInvisible(M)))
-						{ found=true; break;}
+						{
+							found=true;
+							break;
+						}
 					}
+				}
 				if(!found)
 					return Ability.QUALITY_INDIFFERENT;
 			}

@@ -35,14 +35,47 @@ import java.util.*;
 
 public class Spell_MageClaws extends Spell
 {
-	@Override public String ID() { return "Spell_MageClaws"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_MageClaws";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Mage Claws");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Mage Claws spell)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;	}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_SELF;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;
+	}
+
 	protected Weapon naturalWeapon=null;
 
 	private boolean freeHands(MOB mob)
@@ -105,8 +138,6 @@ public class Spell_MageClaws extends Spell
 			if((mob.location()!=null)&&(!mob.amDead()))
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> claws return to normal."));
 	}
-
-
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)

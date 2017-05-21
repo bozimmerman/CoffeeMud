@@ -35,13 +35,44 @@ import java.util.*;
 
 public class Spell_Alarm extends Spell
 {
-	@Override public String ID() { return "Spell_Alarm"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_Alarm";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Alarm");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return CAN_ITEMS;}
-	@Override protected int canTargetCode(){return CAN_ITEMS;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	@Override public int classificationCode(){	return Ability.ACODE_SPELL | Ability.DOMAIN_ENCHANTMENT;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_ITEMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_ITEMS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL | Ability.DOMAIN_ENCHANTMENT;
+	}
 	Room myRoomContainer=null;
 	boolean waitingForLook=false;
 
@@ -68,7 +99,6 @@ public class Spell_Alarm extends Spell
 		}
 	}
 
-
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -93,7 +123,6 @@ public class Spell_Alarm extends Spell
 		}
 		else
 			beneficialWordsFizzle(mob,target,L("<S-NAME> speak(s) and touch(es) <T-NAMESELF> very lightly, but the spell fizzles."));
-
 
 		// return whether it worked
 		return success;

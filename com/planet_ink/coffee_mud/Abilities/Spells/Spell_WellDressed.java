@@ -34,6 +34,7 @@ import java.util.*;
 */
 public class Spell_WellDressed extends Spell
 {
+
 	@Override
 	public String ID()
 	{
@@ -92,7 +93,6 @@ public class Spell_WellDressed extends Spell
 		affectableStats.setStat(CharStats.STAT_CHARISMA,affectableStats.getStat(CharStats.STAT_CHARISMA)+dressCode);
 	}
 
-
 	@Override
 	public void setMiscText(String newText)
 	{
@@ -117,8 +117,10 @@ public class Spell_WellDressed extends Spell
 		super.unInvoke();
 		/*
 		if(canBeUninvoked())
+		{
 			if((mob.location()!=null)&&(!mob.amDead()))
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> clothe(s) aren't quite as appealing any more."));
+		}
 		*/
 	}
 

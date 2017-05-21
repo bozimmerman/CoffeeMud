@@ -35,19 +35,71 @@ import java.util.*;
 
 public class Spell_AcidFog extends Spell
 {
-	@Override public String ID() { return "Spell_AcidFog"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_AcidFog";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Acid Fog");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Acid Fog)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int minRange(){return 2;}
-	@Override public int maxRange(){return adjustedMaxInvokerRange(5);}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int minRange()
+	{
+		return 2;
+	}
+
+	@Override
+	public int maxRange()
+	{
+		return adjustedMaxInvokerRange(5);
+	}
 	Room castingLocation=null;
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
-	@Override public long flags(){return Ability.FLAG_EARTHBASED;}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_EARTHBASED;
+	}
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
@@ -69,6 +121,7 @@ public class Spell_AcidFog extends Spell
 		}
 		return super.tick(ticking,tickID);
 	}
+
 	@Override
 	public void unInvoke()
 	{
@@ -84,7 +137,6 @@ public class Spell_AcidFog extends Spell
 				mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> manage(s) to escape the acid fog!"));
 		}
 	}
-
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -104,6 +156,7 @@ public class Spell_AcidFog extends Spell
 		if(success)
 		{
 			if(mob.location().show(mob,null,this,somanticCastCode(mob,null,auto),auto?L("A horrendous cloud of acid appears!"):L("^S<S-NAME> incant(s) and wave(s) <S-HIS-HER> arms around.^?")))
+			{
 				for (final Object element : h)
 				{
 					final MOB target=(MOB)element;
@@ -111,8 +164,8 @@ public class Spell_AcidFog extends Spell
 					final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),null);
 					final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_ACID|(auto?CMMsg.MASK_ALWAYS:0),null);
 					if((mob.location().okMessage(mob,msg))
-					   &&(mob.location().okMessage(mob,msg2))
-					   &&(target.fetchEffect(this.ID())==null))
+					&&(mob.location().okMessage(mob,msg2))
+					&&(target.fetchEffect(this.ID())==null))
 					{
 						mob.location().send(mob,msg);
 						mob.location().send(mob,msg2);
@@ -124,10 +177,10 @@ public class Spell_AcidFog extends Spell
 						}
 					}
 				}
+			}
 		}
 		else
 			return maliciousFizzle(mob,null,L("<S-NAME> incant(s), but the spell fizzles."));
-
 
 		// return whether it worked
 		return success;

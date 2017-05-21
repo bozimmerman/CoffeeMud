@@ -35,14 +35,47 @@ import java.util.*;
 
 public class Spell_ManaShield extends Spell
 {
-	@Override public String ID() { return "Spell_ManaShield"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_ManaShield";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Mana Shield");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Mana Shield)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ABJURATION;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_SELF;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_ABJURATION;
+	}
+
 	protected double protection(){return 0.5;}
 	protected String adjective(){return " a";}
 
@@ -85,6 +118,7 @@ public class Spell_ManaShield extends Spell
 		}
 		return true;
 	}
+
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -121,7 +155,6 @@ public class Spell_ManaShield extends Spell
 		}
 		else
 			return beneficialWordsFizzle(mob,target,L("<S-NAME> attempt(s) to invoke@x1 protective shield, but mess(es) up.",adjective()));
-
 
 		// return whether it worked
 		return success;

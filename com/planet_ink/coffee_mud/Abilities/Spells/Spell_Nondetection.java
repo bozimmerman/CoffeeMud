@@ -35,14 +35,46 @@ import java.util.*;
 
 public class Spell_Nondetection extends Spell
 {
-	@Override public String ID() { return "Spell_Nondetection"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_Nondetection";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Resist Divination");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Resist Divination)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ABJURATION;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_OTHERS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_ABJURATION;
+	}
 
 	@Override
 	public void unInvoke()

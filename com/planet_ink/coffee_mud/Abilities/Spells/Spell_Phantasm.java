@@ -35,17 +35,59 @@ import java.util.*;
 
 public class Spell_Phantasm extends Spell
 {
-	@Override public String ID() { return "Spell_Phantasm"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_Phantasm";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Phantasm");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Phantasm)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_SELF;
+	}
+
+	@Override
+	public int enchantQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
 	MOB myTarget=null;
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;
+	}
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
@@ -91,6 +133,7 @@ public class Spell_Phantasm extends Spell
 		}
 		return true;
 	}
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -124,7 +167,6 @@ public class Spell_Phantasm extends Spell
 			mob.destroy();
 		}
 	}
-
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -194,6 +236,7 @@ public class Spell_Phantasm extends Spell
 		// return whether it worked
 		return success;
 	}
+
 	public MOB determineMonster(MOB caster, Race R, int level)
 	{
 		final MOB newMOB=CMClass.getMOB("GenMob");

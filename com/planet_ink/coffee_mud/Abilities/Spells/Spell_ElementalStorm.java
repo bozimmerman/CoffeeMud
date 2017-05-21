@@ -35,13 +35,44 @@ import java.util.*;
 
 public class Spell_ElementalStorm extends Spell
 {
-	@Override public String ID() { return "Spell_ElementalStorm"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_ElementalStorm";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Elemental Storm");
-	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "";}
-	@Override public int maxRange(){return adjustedMaxInvokerRange(1);}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public String displayText()
+	{
+		return "";
+	}
+
+	@Override
+	public int maxRange()
+	{
+		return adjustedMaxInvokerRange(1);
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -103,7 +134,6 @@ public class Spell_ElementalStorm extends Spell
 		}
 		else
 			return maliciousFizzle(mob,target,L("<S-NAME> point(s) at <T-NAMESELF>, but fizzle(s) the spell."));
-
 
 		// return whether it worked
 		return success;

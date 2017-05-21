@@ -35,12 +35,38 @@ import java.util.*;
 
 public class Spell_ShapeObject extends Spell
 {
-	@Override public String ID() { return "Spell_ShapeObject"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_ShapeObject";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Shape Object");
-	@Override public String name() { return localizedName; }
-	@Override protected int canTargetCode(){return CAN_ITEMS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_ITEMS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
 
 	@Override
 	public void affectPhyStats(Physical affectedEnv, PhyStats affectableStats)

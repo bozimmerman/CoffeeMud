@@ -35,15 +35,52 @@ import java.util.*;
 
 public class Spell_PurgeInvisibility extends Spell
 {
-	@Override public String ID() { return "Spell_PurgeInvisibility"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_PurgeInvisibility";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Purge Invisibility");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Invisibility Purge)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return CAN_ROOMS|CAN_ITEMS|CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_ROOMS|CAN_ITEMS|CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;
+	}
 	
 	@Override
 	public void unInvoke()
@@ -96,7 +133,8 @@ public class Spell_PurgeInvisibility extends Spell
 						offenders.add(A);
 				}
 				catch(final Exception e)
-				{}
+				{
+				}
 			}
 		}
 		newMOB.destroy();

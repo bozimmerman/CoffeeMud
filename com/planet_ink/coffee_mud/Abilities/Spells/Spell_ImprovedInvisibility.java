@@ -35,14 +35,46 @@ import java.util.*;
 
 public class Spell_ImprovedInvisibility extends Spell
 {
-	@Override public String ID() { return "Spell_ImprovedInvisibility"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_ImprovedInvisibility";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Improved Invisibility");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Improved Invisibility)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_OTHERS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
@@ -68,8 +100,6 @@ public class Spell_ImprovedInvisibility extends Spell
 			if((mob.location()!=null)&&(!mob.amDead()))
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> fade(s) back into view."));
 	}
-
-
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)

@@ -36,6 +36,7 @@ import java.util.*;
 
 public class Spell_ChanneledMissiles extends Spell
 {
+
 	@Override
 	public String ID()
 	{
@@ -179,6 +180,7 @@ public class Spell_ChanneledMissiles extends Spell
 					{
 						thisSpellA.channelingClass = new Runnable()
 						{
+
 							@Override
 							public void run()
 							{

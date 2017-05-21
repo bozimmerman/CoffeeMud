@@ -35,6 +35,7 @@ import java.util.*;
 
 public class Spell_FeelTheVoid extends Spell
 {
+
 	@Override
 	public String ID()
 	{
@@ -100,7 +101,6 @@ public class Spell_FeelTheVoid extends Spell
 		affectableStats.setSensesMask(mask&mask2);
 	}
 
-
 	@Override
 	public void unInvoke()
 	{
@@ -113,8 +113,6 @@ public class Spell_FeelTheVoid extends Spell
 		if(canBeUninvoked())
 			mob.tell(L("You are no longer in the void."));
 	}
-
-
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)

@@ -35,15 +35,52 @@ import java.util.*;
 
 public class Spell_Fly extends Spell
 {
-	@Override public String ID() { return "Spell_Fly"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_Fly";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Fly");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Fly spell)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	@Override protected int canAffectCode(){return CAN_MOBS|CAN_ITEMS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
-	@Override public long flags(){return Ability.FLAG_MOVING;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_OTHERS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS|CAN_ITEMS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_MOVING;
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
@@ -51,7 +88,6 @@ public class Spell_Fly extends Spell
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_FLYING);
 	}
-
 
 	@Override
 	public void unInvoke()

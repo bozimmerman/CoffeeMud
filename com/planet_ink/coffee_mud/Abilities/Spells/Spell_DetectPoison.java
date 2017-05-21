@@ -35,14 +35,50 @@ import java.util.*;
 
 public class Spell_DetectPoison extends Spell
 {
-	@Override public String ID() { return "Spell_DetectPoison"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_DetectPoison";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Detect Poison");
-	@Override public String name() { return localizedName; }
-	@Override public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return CAN_MOBS|CAN_ITEMS;}
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int enchantQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_SELF;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_OTHERS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS|CAN_ITEMS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;
+	}
 
 	public List<Ability> returnOffensiveAffects(Physical fromMe)
 	{
@@ -112,7 +148,6 @@ public class Spell_DetectPoison extends Spell
 		}
 		else
 			beneficialWordsFizzle(mob,target,auto?"":L("<S-NAME> incant(s) over <T-NAME>, but receives no insight."));
-
 
 		// return whether it worked
 		return success;

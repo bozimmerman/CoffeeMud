@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2001-2017 Bo Zimmerman
 
@@ -36,14 +35,46 @@ import java.util.*;
 
 public class Spell_Light extends Spell
 {
-	@Override public String ID() { return "Spell_Light"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_Light";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Light");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Light)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_SELF;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;
+	}
 
 	@Override
 	public int castingQuality(MOB mob, Physical target)
@@ -64,6 +95,7 @@ public class Spell_Light extends Spell
 		if(CMLib.flags().isInDark(affected))
 			affectableStats.setDisposition(affectableStats.disposition()-PhyStats.IS_DARK);
 	}
+
 	@Override
 	public void unInvoke()
 	{

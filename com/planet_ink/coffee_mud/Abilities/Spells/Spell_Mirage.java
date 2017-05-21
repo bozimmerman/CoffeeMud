@@ -35,15 +35,52 @@ import java.util.*;
 
 public class Spell_Mirage extends Spell
 {
-	@Override public String ID() { return "Spell_Mirage"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_Mirage";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Mirage");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Mirage spell)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return CAN_ROOMS;}
-	@Override protected int canTargetCode(){return CAN_ROOMS;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_ROOMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_ROOMS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;
+	}
 
 	Room newRoom=null;
 
@@ -75,7 +112,6 @@ public class Spell_Mirage extends Spell
 		}
 		return newRoom;
 	}
-
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)

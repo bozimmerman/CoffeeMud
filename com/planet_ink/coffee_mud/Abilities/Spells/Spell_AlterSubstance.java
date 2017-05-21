@@ -35,13 +35,45 @@ import java.util.*;
 
 public class Spell_AlterSubstance extends Spell
 {
-	@Override public String ID() { return "Spell_AlterSubstance"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_AlterSubstance";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Alter Substance");
-	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	@Override protected int canTargetCode(){return CAN_ITEMS;}
-	@Override protected int canAffectCode(){return CAN_ITEMS;}
-	@Override public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_ITEMS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_ITEMS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;
+	}
+
 	public String newName="";
 	public int oldMaterial=0;
 
@@ -148,7 +180,6 @@ public class Spell_AlterSubstance extends Spell
 		}
 		else
 			beneficialVisualFizzle(mob,target,L("<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, incanting but nothing happens."));
-
 
 		// return whether it worked
 		return success;

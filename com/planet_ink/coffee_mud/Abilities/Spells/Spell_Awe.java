@@ -35,14 +35,46 @@ import java.util.*;
 
 public class Spell_Awe extends Spell
 {
-	@Override public String ID() { return "Spell_Awe"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_Awe";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Awe");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Awe spell)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	@Override public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_SELF;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;
+	}
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
@@ -96,8 +128,6 @@ public class Spell_Awe extends Spell
 			if((mob.location()!=null)&&(!mob.amDead()))
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> seem(s) less awesome."));
 	}
-
-
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)

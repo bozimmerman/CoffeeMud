@@ -35,13 +35,44 @@ import java.util.*;
 
 public class Spell_NaturalCommunion extends Spell
 {
-	@Override public String ID() { return "Spell_NaturalCommunion"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_NaturalCommunion";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Natural Communion");
-	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override protected int canAffectCode(){return 0;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;
+	}
 
 	public void communeWithThisRoom(MOB mob, Room room, List<String> stuff)
 	{
@@ -114,7 +145,6 @@ public class Spell_NaturalCommunion extends Spell
 		}
 		else
 			beneficialVisualFizzle(mob,targetR,L("<S-NAME> attempt(s) to commune with nature, and fail(s)."));
-
 
 		// return whether it worked
 		return success;

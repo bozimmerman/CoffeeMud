@@ -35,6 +35,7 @@ import java.util.*;
 
 public class Spell_Boomerang extends Spell
 {
+
 	@Override
 	public String ID()
 	{
@@ -160,6 +161,7 @@ public class Spell_Boomerang extends Spell
 	}
 
 	// this fixes a damn PUT bug
+
 	@Override
 	public void affectPhyStats(Physical affectedEnv, PhyStats stats)
 	{
@@ -205,7 +207,6 @@ public class Spell_Boomerang extends Spell
 		}
 		else
 			beneficialVisualFizzle(mob,target,L("<S-NAME> point(s) at <T-NAMESELF>, but fail(s) to cast a spell."));
-
 
 		// return whether it worked
 		return success;

@@ -37,12 +37,27 @@ import java.util.*;
  * @version 1.0.0.0
  */
 
-
 public class Spell_CEqElectric extends Spell_BaseClanEq {
-@Override public String ID() { return "Spell_CEqElectric"; }
+
+@Override
+public String ID()
+{
+	return "Spell_CEqElectric";
+}
+
 private final static String localizedName = CMLib.lang().L("ClanEnchant Electric");
-	@Override public String name() { return localizedName; }
-@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+@Override
+public int abstractQuality()
+{
+	return Ability.QUALITY_INDIFFERENT;
+}
 
   @Override
 public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)

@@ -35,18 +35,61 @@ import java.util.*;
 
 public class Spell_Delay extends Spell
 {
-	@Override public String ID() { return "Spell_Delay"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_Delay";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Delay");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Delay spell)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return CAN_ROOMS;}
-	@Override protected int canTargetCode(){return CAN_ROOMS;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_ROOMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_ROOMS;
+	}
+
 	private Ability shooter=null;
 	protected List<String> parameters=null;
-	@Override public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
-	@Override protected int overrideMana(){return Ability.COST_ALL;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;
+	}
+
+	@Override
+	protected int overrideMana()
+	{
+		return Ability.COST_ALL;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
 
 	@Override
 	public void unInvoke()
@@ -75,7 +118,10 @@ public class Spell_Delay extends Spell
 				shooter.setProficiency(100);
 				shooter.invoke(newCaster,parameters,null,false,invoker.phyStats().level()+(2*getXLEVELLevel(invoker)));
 			}
-			catch(final Exception e){Log.errOut("DELAY/"+CMParms.combine(parameters,0),e);}
+			catch (final Exception e)
+			{
+				Log.errOut("DELAY/" + CMParms.combine(parameters, 0), e);
+			}
 			newCaster.delAbility(shooter);
 			newCaster.setLocation(null);
 			newCaster.destroy();
@@ -108,13 +154,15 @@ public class Spell_Delay extends Spell
 		}
 
 		if(shooter.enchantQuality()==Ability.QUALITY_MALICIOUS)
-		for(int m=0;m<mob.location().numInhabitants();m++)
 		{
-			final MOB M=mob.location().fetchInhabitant(m);
-			if((M!=null)&&(M!=mob)&&(!M.mayIFight(mob)))
+			for(int m=0;m<mob.location().numInhabitants();m++)
 			{
-				mob.tell(L("You cannot delay that spell here -- there are other players present!"));
-				return false;
+				final MOB M=mob.location().fetchInhabitant(m);
+				if((M!=null)&&(M!=mob)&&(!M.mayIFight(mob)))
+				{
+					mob.tell(L("You cannot delay that spell here -- there are other players present!"));
+					return false;
+				}
 			}
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

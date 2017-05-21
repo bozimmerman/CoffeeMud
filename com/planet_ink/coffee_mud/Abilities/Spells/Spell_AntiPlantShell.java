@@ -35,15 +35,52 @@ import java.util.*;
 
 public class Spell_AntiPlantShell extends Spell
 {
-	@Override public String ID() { return "Spell_AntiPlantShell"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_AntiPlantShell";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Anti Plant Shell");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Anti Plant Shell)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ABJURATION;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_OTHERS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_ABJURATION;
+	}
 
 	protected int pointsRemaining = 5;
 	

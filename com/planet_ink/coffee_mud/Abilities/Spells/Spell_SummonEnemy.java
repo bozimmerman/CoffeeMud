@@ -35,6 +35,7 @@ import java.util.*;
 
 public class Spell_SummonEnemy extends Spell
 {
+
 	@Override
 	public String ID()
 	{
@@ -212,6 +213,7 @@ public class Spell_SummonEnemy extends Spell
 		// return whether it worked
 		return success;
 	}
+
 	public MOB determineMonster(MOB caster, int level)
 	{
 		if(caster==null)

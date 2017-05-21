@@ -35,14 +35,46 @@ import java.util.*;
 
 public class Spell_DivineBeauty extends Spell
 {
-	@Override public String ID() { return "Spell_DivineBeauty"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_DivineBeauty";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Divine Beauty");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Divine Beauty)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_OTHERS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;
+	}
 
 	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
@@ -53,7 +85,6 @@ public class Spell_DivineBeauty extends Spell
 		else
 			affectableStats.setStat(CharStats.STAT_CHARISMA,30);
 	}
-
 
 	@Override
 	public void unInvoke()
@@ -93,7 +124,6 @@ public class Spell_DivineBeauty extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-
 		// now see if it worked
 		final boolean success=proficiencyCheck(mob,0,auto);
 
@@ -112,7 +142,6 @@ public class Spell_DivineBeauty extends Spell
 		}
 		else
 			return beneficialWordsFizzle(mob,target,L("<S-NAME> speak(s) beautifully to <T-NAMESELF>, but nothing more happens."));
-
 
 		// return whether it worked
 		return success;

@@ -35,16 +35,53 @@ import java.util.*;
 
 public class Spell_CombatPrecognition extends Spell
 {
-	@Override public String ID() { return "Spell_CombatPrecognition"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_CombatPrecognition";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Combat Precognition");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Combat Precognition)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int overrideMana(){return 100;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_SELF;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int overrideMana()
+	{
+		return 100;
+	}
 	boolean lastTime=false;
-	@Override public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;
+	}
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)

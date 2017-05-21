@@ -35,6 +35,7 @@ import java.util.*;
 
 public class Spell_Anchor extends Spell
 {
+
 	@Override
 	public String ID()
 	{
@@ -92,7 +93,6 @@ public class Spell_Anchor extends Spell
 
 	}
 
-
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -148,7 +148,6 @@ public class Spell_Anchor extends Spell
 		}
 		return true;
 	}
-
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)

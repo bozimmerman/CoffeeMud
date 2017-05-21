@@ -35,13 +35,44 @@ import java.util.*;
 
 public class Spell_MassFly extends Spell
 {
-	@Override public String ID() { return "Spell_MassFly"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_MassFly";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Mass Fly");
-	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "";}
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	@Override protected int canAffectCode(){return 0;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public String displayText()
+	{
+		return "";
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_OTHERS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -79,7 +110,6 @@ public class Spell_MassFly extends Spell
 		}
 		else
 			return beneficialVisualFizzle(mob,null,L("<S-NAME> wave(s) <S-HIS-HER> arms and speak(s), but the spell fizzles."));
-
 
 		// return whether it worked
 		return success;

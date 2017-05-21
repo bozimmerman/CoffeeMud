@@ -35,13 +35,45 @@ import java.util.*;
 
 public class Spell_Claireaudience extends Spell
 {
-	@Override public String ID() { return "Spell_Claireaudience"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_Claireaudience";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Claireaudience");
-	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "";}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;	}
-	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public String displayText()
+	{
+		return "";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_OTHERS;
+	}
+
 	public static final DVector scries=new DVector(2);
 
 	@Override
@@ -59,6 +91,7 @@ public class Spell_Claireaudience extends Spell
 		super.unInvoke();
 
 	}
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -96,8 +129,10 @@ public class Spell_Claireaudience extends Spell
 		{
 			final StringBuffer scryList=new StringBuffer("");
 			for(int e=0;e<scries.size();e++)
+			{
 				if(scries.elementAt(e,2)==mob)
 					scryList.append(((e>0)?", ":"")+((MOB)scries.elementAt(e,1)).name());
+			}
 			if(scryList.length()>0)
 				mob.tell(L("Cast on or revoke from whom?  You currently have @x1 on the following: @x2.",name(),scryList.toString()));
 			else
@@ -119,7 +154,10 @@ public class Spell_Claireaudience extends Spell
 					targets=CMLib.map().findInhabitants(CMLib.map().rooms(), mob, mobName, 10);
 				if(targets.size()>0)
 					target=targets.get(CMLib.dice().roll(1,targets.size(),-1));
-			}catch(final NoSuchElementException nse){}
+			}
+			catch(final NoSuchElementException nse)
+			{
+			}
 		}
 		if(target instanceof Deity)
 			target=null;
@@ -172,7 +210,6 @@ public class Spell_Claireaudience extends Spell
 		}
 		else
 			beneficialVisualFizzle(mob,null,L("<S-NAME> attempt(s) to invoke claireaudience, but fizzle(s) the spell."));
-
 
 		// return whether it worked
 		return success;

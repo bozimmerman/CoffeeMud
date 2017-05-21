@@ -35,11 +35,32 @@ import java.util.*;
 
 public class Spell_Dream extends Spell
 {
-	@Override public String ID() { return "Spell_Dream"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_Dream";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Dream");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -67,24 +88,28 @@ public class Spell_Dream extends Spell
 					{
 						final Room R=r.nextElement();
 						if(CMLib.flags().canAccess(mob,R))
-						for(int i=0;i<R.numInhabitants();i++)
 						{
-							final MOB inhab=R.fetchInhabitant(i);
-							if((inhab!=null)&&(CMLib.flags().isSleeping(inhab)))
+							for(int i=0;i<R.numInhabitants();i++)
 							{
-								msg=CMClass.getMsg(mob,inhab,this,verbalCastCode(mob,inhab,auto),null);
-								if(R.okMessage(mob,msg))
-									inhab.tell(L("You dream @x1.",CMParms.combine(commands,0)));
+								final MOB inhab=R.fetchInhabitant(i);
+								if((inhab!=null)&&(CMLib.flags().isSleeping(inhab)))
+								{
+									msg=CMClass.getMsg(mob,inhab,this,verbalCastCode(mob,inhab,auto),null);
+									if(R.okMessage(mob,msg))
+										inhab.tell(L("You dream @x1.",CMParms.combine(commands,0)));
+								}
 							}
 						}
 					}
-				}catch(final NoSuchElementException nse){}
+				}
+				catch(final NoSuchElementException nse)
+				{
+				}
 			}
 
 		}
 		else
 			beneficialVisualFizzle(mob,null,L("<S-NAME> attempt(s) to invoke a dream, but fizzle(s) the spell."));
-
 
 		// return whether it worked
 		return success;

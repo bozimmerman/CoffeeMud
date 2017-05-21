@@ -35,15 +35,52 @@ import java.util.*;
 
 public class Spell_RogueLimb extends Spell
 {
-	@Override public String ID() { return "Spell_RogueLimb"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_RogueLimb";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Rogue Limb");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Rogue Limb)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;
+	}
 
 	public MOB rogueLimb=null;
 
@@ -172,7 +209,6 @@ public class Spell_RogueLimb extends Spell
 		}
 		else
 			mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,L("^S<S-NAME> invoke(s) at <T-NAMESELF>, causing <T-NAME> to twitch, and nothing more."));
-
 
 		// return whether it worked
 		return success;

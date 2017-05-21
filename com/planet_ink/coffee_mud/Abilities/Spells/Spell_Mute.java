@@ -35,15 +35,46 @@ import java.util.*;
 
 public class Spell_Mute extends Spell
 {
-	@Override public String ID() { return "Spell_Mute"; }
-	private final static String localizedName = CMLib.lang().L("Mute");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Mute)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
 
+	@Override
+	public String ID()
+	{
+		return "Spell_Mute";
+	}
+
+	private final static String localizedName = CMLib.lang().L("Mute");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Mute)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
@@ -51,7 +82,6 @@ public class Spell_Mute extends Spell
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_SPEAK);
 	}
-
 
 	@Override
 	public void unInvoke()

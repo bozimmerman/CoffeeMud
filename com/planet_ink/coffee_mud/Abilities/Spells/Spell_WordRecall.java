@@ -35,15 +35,56 @@ import java.util.*;
 
 public class Spell_WordRecall extends Spell
 {
-	@Override public String ID() { return "Spell_WordRecall"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_WordRecall";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Word of Recall");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
-	@Override protected int overrideMana(){return Ability.COST_ALL-90;}
-	@Override public long flags(){return Ability.FLAG_TRANSPORTING;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;
+	}
+
+	@Override
+	protected int overrideMana()
+	{
+		return Ability.COST_ALL-90;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_TRANSPORTING;
+	}
 
 	@Override
 	protected int verbalCastCode(MOB mob, Physical target, boolean auto)

@@ -35,15 +35,52 @@ import java.util.*;
 
 public class Spell_PolymorphSelf extends Spell
 {
-	@Override public String ID() { return "Spell_PolymorphSelf"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_PolymorphSelf";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Polymorph Self");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Polymorph Self)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_SELF;
+	}
 
 	Race newRace=null;
 
@@ -63,6 +100,7 @@ public class Spell_PolymorphSelf extends Spell
 				affectableStats.setWeight(affectableStats.weight()+oldAdd);
 		}
 	}
+
 	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
@@ -75,7 +113,6 @@ public class Spell_PolymorphSelf extends Spell
 				affectableStats.setStat(CharStats.STAT_AGE,newRace.getAgingChart()[oldCat]);
 		}
 	}
-
 
 	@Override
 	public void unInvoke()
@@ -90,8 +127,6 @@ public class Spell_PolymorphSelf extends Spell
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> morph(s) back into <S-HIM-HERSELF> again."));
 	}
 
-
-
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -100,8 +135,10 @@ public class Spell_PolymorphSelf extends Spell
 			commands.clear();
 			final XVector<Race> V=new XVector<Race>(CMClass.races());
 			for(int v=V.size()-1;v>=0;v--)
+			{
 				if(!CMath.bset(V.elementAt(v).availabilityCode(),Area.THEME_FANTASY))
 					V.removeElementAt(v);
+			}
 			if(V.size()>0)
 				commands.add(V.elementAt(CMLib.dice().roll(1,V.size(),-1)).name());
 		}

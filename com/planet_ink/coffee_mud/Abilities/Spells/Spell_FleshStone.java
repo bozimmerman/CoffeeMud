@@ -35,6 +35,7 @@ import java.util.*;
 
 public class Spell_FleshStone extends Spell
 {
+
 	@Override
 	public String ID()
 	{
@@ -170,7 +171,6 @@ public class Spell_FleshStone extends Spell
 			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_NOT_SEEN);
 		}
 	}
-
 
 	@Override
 	public void unInvoke()

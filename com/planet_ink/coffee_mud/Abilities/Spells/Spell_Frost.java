@@ -35,15 +35,52 @@ import java.util.*;
 
 public class Spell_Frost extends Spell
 {
-	@Override public String ID() { return "Spell_Frost"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_Frost";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Frost");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Frost)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int maxRange(){return adjustedMaxInvokerRange(2);}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
-	@Override public long flags(){return Ability.FLAG_WATERBASED;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int maxRange()
+	{
+		return adjustedMaxInvokerRange(2);
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_WATERBASED;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -83,7 +120,6 @@ public class Spell_Frost extends Spell
 		}
 		else
 			return maliciousFizzle(mob,target,L("<S-NAME> incant(s) and point(s) at <T-NAMESELF>, but flub(s) the spell."));
-
 
 		// return whether it worked
 		return success;

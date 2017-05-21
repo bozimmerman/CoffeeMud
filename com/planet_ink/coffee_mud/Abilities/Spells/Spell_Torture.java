@@ -36,15 +36,52 @@ import java.util.*;
 
 public class Spell_Torture extends Spell
 {
-	@Override public String ID() { return "Spell_Torture"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_Torture";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Torture");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(being tortured)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int maxRange(){return adjustedMaxInvokerRange(1);}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int maxRange()
+	{
+		return adjustedMaxInvokerRange(1);
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;
+	}
 
 	@Override
 	public void unInvoke()
@@ -55,8 +92,9 @@ public class Spell_Torture extends Spell
 		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
-		if(canBeUninvoked())
-		if((!mob.amDead())&&(mob.location()!=null))
+		if((canBeUninvoked())
+		&&(!mob.amDead())
+		&&(mob.location()!=null))
 			mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> manage(s) to survive the torture."));
 	}
 
@@ -65,8 +103,10 @@ public class Spell_Torture extends Spell
 		if((text().length()>0)&&(!text().equalsIgnoreCase("HITONLY")))
 		{
 			for(final Session S : CMLib.sessions().localOnlineIterable())
+			{
 				if(S.mob()!=null)
 					S.println(mob,null,null,text());
+			}
 			setMiscText("");
 			return;
 		}
@@ -167,7 +207,13 @@ public class Spell_Torture extends Spell
 		{
 			final StringBuffer str=new StringBuffer("");
 			final Command C=CMClass.getCommand("Affect");
-			try{str.append(C.executeInternal(mob,0,mob).toString());}catch(final Exception e){}
+			try
+			{
+				str.append(C.executeInternal(mob,0,mob).toString());
+			}
+			catch(final Exception e)
+			{
+			}
 			mob.location().show(mob,null,CMMsg.MSG_SPEAK,
 			L("<S-NAME> says OK! I am affected by:\n\r@x1",str.toString()));
 			break;
@@ -239,7 +285,6 @@ public class Spell_Torture extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-
 		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
@@ -262,5 +307,4 @@ public class Spell_Torture extends Spell
 		return success;
 	}
 }
-
 

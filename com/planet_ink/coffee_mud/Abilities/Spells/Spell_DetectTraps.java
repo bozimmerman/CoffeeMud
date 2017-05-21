@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2003-2017 Bo Zimmerman
 
@@ -36,16 +35,53 @@ import java.util.*;
 
 public class Spell_DetectTraps extends Spell
 {
-	@Override public String ID() { return "Spell_DetectTraps"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_DetectTraps";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Detect Traps");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Detecting Traps)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
-	@Override public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_SELF;
+	}
+
+	@Override
+	public int enchantQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_SELF;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
 	Room lastRoom=null;
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;
+	}
 
 	@Override
 	public void unInvoke()
@@ -59,11 +95,14 @@ public class Spell_DetectTraps extends Spell
 		if(canBeUninvoked())
 			mob.tell(L("Your senses are no longer sensitive to traps."));
 	}
+
 	public String trapCheck(Physical P)
 	{
 		if(P!=null)
-		if(CMLib.utensils().fetchMyTrap(P)!=null)
-			return L("@x1 is trapped.\n\r",P.name());
+		{
+			if(CMLib.utensils().fetchMyTrap(P)!=null)
+				return L("@x1 is trapped.\n\r",P.name());
+		}
 		return "";
 	}
 
@@ -80,8 +119,10 @@ public class Spell_DetectTraps extends Spell
 			final Container C=(Container)P;
 			final List<Item> V=C.getDeepContents();
 			for(int v=0;v<V.size();v++)
+			{
 				if(trapCheck(V.get(v)).length()>0)
 					msg.append(L("@x1 contains something trapped.",C.name()));
+			}
 		}
 		else
 		if((P instanceof Item)&&(CMLib.flags().canBeSeenBy(P,mob)))
@@ -91,16 +132,18 @@ public class Spell_DetectTraps extends Spell
 		{
 			final Room room=mob.location();
 			if(room!=null)
-			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 			{
-				if(room.getExitInDir(d)==P)
+				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 				{
-					final Exit E2=room.getReverseExit(d);
-					final Room R2=room.getRoomInDir(d);
-					msg.append(trapCheck(P));
-					msg.append(trapCheck(E2));
-					msg.append(trapCheck(R2));
-					break;
+					if(room.getExitInDir(d)==P)
+					{
+						final Exit E2=room.getReverseExit(d);
+						final Room R2=room.getRoomInDir(d);
+						msg.append(trapCheck(P));
+						msg.append(trapCheck(E2));
+						msg.append(trapCheck(R2));
+						break;
+					}
 				}
 			}
 		}
@@ -120,8 +163,10 @@ public class Spell_DetectTraps extends Spell
 				{
 					final Environmental E2=i.next();
 					if(E2 instanceof Item)
+					{
 						if(trapCheck((Item)E2).length()>0)
 							return P.name()+" has something trapped in stock.";
+					}
 				}
 			}
 		}

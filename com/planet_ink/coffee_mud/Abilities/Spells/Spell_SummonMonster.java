@@ -35,6 +35,7 @@ import java.util.*;
 
 public class Spell_SummonMonster extends Spell
 {
+
 	@Override
 	public String ID()
 	{

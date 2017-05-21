@@ -35,21 +35,67 @@ import java.util.*;
 
 public class Spell_Earthquake extends Spell
 {
-	@Override public String ID() { return "Spell_Earthquake"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_Earthquake";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Earthquake");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Earthquake)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int maxRange(){return adjustedMaxInvokerRange(5);}
-	@Override public int minRange(){return 1;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int maxRange()
+	{
+		return adjustedMaxInvokerRange(5);
+	}
+
+	@Override
+	public int minRange()
+	{
+		return 1;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;
+	}
+
 	protected boolean oncePerRd=false;
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
-	{ oncePerRd=false; return super.tick(ticking,tickID);}
+	{
+		oncePerRd=false;
+		return super.tick(ticking,tickID);
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
@@ -157,7 +203,6 @@ public class Spell_Earthquake extends Spell
 		}
 		else
 			return maliciousFizzle(mob,null,L("<S-NAME> attempt(s) to invoke a thunderous spell, but the spell fizzles."));
-
 
 		// return whether it worked
 		return success;

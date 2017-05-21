@@ -35,13 +35,44 @@ import java.util.*;
 
 public class Spell_ConjureNexus extends Spell
 {
-	@Override public String ID() { return "Spell_ConjureNexus"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_ConjureNexus";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Conjure Nexus");
-	@Override public String name() { return localizedName; }
-	@Override protected int canTargetCode(){return 0;}
-	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ROOMS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
 
 	@Override
 	public void unInvoke()
@@ -60,20 +91,22 @@ public class Spell_ConjureNexus extends Spell
 			return false;
 		final Room R=(Room)affected;
 		if(tickID==Tickable.TICKID_MOB)
-		for(int m=0;m<R.numInhabitants();m++)
 		{
-			final MOB mob=R.fetchInhabitant(m);
-			if(mob!=null)
+			for(int m=0;m<R.numInhabitants();m++)
 			{
-				final int oldHP=mob.curState().getHitPoints();
-				final int oldMV=mob.curState().getMovement();
-				final int oldHU=mob.curState().getHunger();
-				final int oldTH=mob.curState().getThirst();
-				CMLib.combat().recoverTick(mob);
-				mob.curState().setHitPoints(oldHP);
-				mob.curState().setMovement(oldMV);
-				mob.curState().setHunger(oldHU);
-				mob.curState().setThirst(oldTH);
+				final MOB mob=R.fetchInhabitant(m);
+				if(mob!=null)
+				{
+					final int oldHP=mob.curState().getHitPoints();
+					final int oldMV=mob.curState().getMovement();
+					final int oldHU=mob.curState().getHunger();
+					final int oldTH=mob.curState().getThirst();
+					CMLib.combat().recoverTick(mob);
+					mob.curState().setHitPoints(oldHP);
+					mob.curState().setMovement(oldMV);
+					mob.curState().setHunger(oldHU);
+					mob.curState().setThirst(oldTH);
+				}
 			}
 		}
 		return true;
@@ -121,7 +154,6 @@ public class Spell_ConjureNexus extends Spell
 		}
 		else
 			beneficialWordsFizzle(mob,null,L("<S-NAME> attempt(s) to summon a Nexus, but fail(s)."));
-
 
 		// return whether it worked
 		return success;

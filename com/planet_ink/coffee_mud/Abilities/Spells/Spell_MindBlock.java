@@ -35,14 +35,46 @@ import java.util.*;
 
 public class Spell_MindBlock extends Spell
 {
-	@Override public String ID() { return "Spell_MindBlock"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_MindBlock";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Mind Block");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Mind Block)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ABJURATION;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_OTHERS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_ABJURATION;
+	}
 
 	int amountAbsorbed=0;
 
@@ -54,13 +86,14 @@ public class Spell_MindBlock extends Spell
 			return;
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
+		{
 			if((mob.location()!=null)&&(!mob.amDead()))
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> anti-psionic field fades."));
+		}
 
 		super.unInvoke();
 
 	}
-
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
@@ -90,7 +123,6 @@ public class Spell_MindBlock extends Spell
 		}
 		return true;
 	}
-
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)

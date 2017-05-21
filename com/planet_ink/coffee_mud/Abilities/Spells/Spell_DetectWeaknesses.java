@@ -35,17 +35,45 @@ import java.util.*;
 
 public class Spell_DetectWeaknesses extends Spell
 {
-	@Override public String ID() { return "Spell_DetectWeaknesses"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_DetectWeaknesses";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Detect Weaknesses");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	@Override
 	public String displayText()
 	{
 		return "(Know weaknesses of "+text()+")";
 	}
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_SELF;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;
+	}
+
 	protected MOB spottedM=null;
 	protected boolean activated=true;
 
@@ -156,7 +184,6 @@ public class Spell_DetectWeaknesses extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-
 		// now see if it worked
 		final boolean success=proficiencyCheck(mob,0,auto);
 
@@ -181,7 +208,6 @@ public class Spell_DetectWeaknesses extends Spell
 		}
 		else
 			return beneficialWordsFizzle(mob,target,L("<S-NAME> speak(s) knowingly about <T-NAMESELF>, but nothing more happens."));
-
 
 		// return whether it worked
 		return success;

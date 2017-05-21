@@ -34,6 +34,7 @@ import java.util.*;
 */
 public class Spell_WardArea extends Spell implements Trap
 {
+
 	@Override
 	public String ID()
 	{
@@ -201,7 +202,6 @@ public class Spell_WardArea extends Spell implements Trap
 		return super.okMessage(myHost,msg);
 	}
 
-
 	@Override
 	public void spring(MOB mob)
 	{
@@ -306,13 +306,15 @@ public class Spell_WardArea extends Spell implements Trap
 		}
 
 		if(shooter.enchantQuality()==Ability.QUALITY_MALICIOUS)
-		for(int m=0;m<mob.location().numInhabitants();m++)
 		{
-			final MOB M=mob.location().fetchInhabitant(m);
-			if((M!=null)&&(M!=mob)&&(!M.mayIFight(mob)))
+			for(int m=0;m<mob.location().numInhabitants();m++)
 			{
-				mob.tell(L("You cannot set that spell here -- there are other players present!"));
-				return false;
+				final MOB M=mob.location().fetchInhabitant(m);
+				if((M!=null)&&(M!=mob)&&(!M.mayIFight(mob)))
+				{
+					mob.tell(L("You cannot set that spell here -- there are other players present!"));
+					return false;
+				}
 			}
 		}
 		final Physical target = mob.location();

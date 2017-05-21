@@ -35,6 +35,7 @@ import java.util.*;
 
 public class Spell_ClanDonate extends Spell
 {
+
 	@Override
 	public String ID()
 	{
@@ -168,7 +169,6 @@ public class Spell_ClanDonate extends Spell
 		}
 		else
 			beneficialWordsFizzle(mob,target,L("<S-NAME> attempt(s) to invoke donation upon <T-NAMESELF>, but fizzle(s) the spell."));
-
 
 		// return whether it worked
 		return success;

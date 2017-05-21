@@ -35,19 +35,67 @@ import java.util.*;
 
 public class Spell_FlamingEnsnarement extends Spell
 {
-	@Override public String ID() { return "Spell_FlamingEnsnarement"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_FlamingEnsnarement";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Flaming Ensnarement");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Ensnared in Fire)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int maxRange(){return adjustedMaxInvokerRange(5);}
-	@Override public int minRange(){return 1;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
-	@Override public long flags(){return Ability.FLAG_BINDING|Ability.FLAG_FIREBASED|Ability.FLAG_HEATING;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int maxRange()
+	{
+		return adjustedMaxInvokerRange(5);
+	}
+
+	@Override
+	public int minRange()
+	{
+		return 1;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_BINDING|Ability.FLAG_FIREBASED|Ability.FLAG_HEATING;
+	}
 
 	public int amountRemaining=0;
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -85,6 +133,7 @@ public class Spell_FlamingEnsnarement extends Spell
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setDisposition((int)(affectableStats.disposition()&(PhyStats.ALLMASK-PhyStats.IS_FLYING)));
 	}
+
 	@Override
 	public void unInvoke()
 	{
@@ -133,6 +182,7 @@ public class Spell_FlamingEnsnarement extends Spell
 		if(success)
 		{
 			if(mob.location().show(mob,null,this,somanticCastCode(mob,null,auto),auto?"":L("^S<S-NAME> speak(s) and wave(s) <S-HIS-HER> fingers at the ground.^?")))
+			{
 				for (final Object element : h)
 				{
 					final MOB target=(MOB)element;
@@ -152,10 +202,10 @@ public class Spell_FlamingEnsnarement extends Spell
 						}
 					}
 				}
+			}
 		}
 		else
 			return maliciousFizzle(mob,null,L("<S-NAME> speak(s) and wave(s) <S-HIS-HER> fingers, but the spell fizzles."));
-
 
 		// return whether it worked
 		return success;

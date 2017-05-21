@@ -35,13 +35,44 @@ import java.util.*;
 
 public class Spell_Immunity extends Spell
 {
-	@Override public String ID() { return "Spell_Immunity"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_Immunity";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Immunity");
-	@Override public String name() { return localizedName; }
-	@Override public String displayText() { return L("(Immunity to "+immunityName+")"); }
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ABJURATION;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public String displayText()
+	{
+		return L("(Immunity to "+immunityName+")");
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_OTHERS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_ABJURATION;
+	}
 
 	protected int immunityType=-1;
 	protected String immunityName="";

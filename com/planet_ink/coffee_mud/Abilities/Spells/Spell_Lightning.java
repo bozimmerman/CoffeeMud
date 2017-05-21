@@ -35,15 +35,52 @@ import java.util.*;
 
 public class Spell_Lightning extends Spell
 {
-	@Override public String ID() { return "Spell_Lightning"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_Lightning";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Lightning Bolt");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Lightning Bolt spell)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int maxRange(){return adjustedMaxInvokerRange(5);}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
-	@Override public long flags(){return Ability.FLAG_AIRBASED;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int maxRange()
+	{
+		return adjustedMaxInvokerRange(5);
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_AIRBASED;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -54,7 +91,6 @@ public class Spell_Lightning extends Spell
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 
@@ -77,7 +113,6 @@ public class Spell_Lightning extends Spell
 		}
 		else
 			return maliciousFizzle(mob,target,L("<S-NAME> invoke(s) at <T-NAMESELF>, but the spell fades."));
-
 
 		// return whether it worked
 		return success;

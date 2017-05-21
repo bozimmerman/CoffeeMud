@@ -35,12 +35,38 @@ import java.util.*;
 
 public class Spell_KnowValue extends Spell
 {
-	@Override public String ID() { return "Spell_KnowValue"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_KnowValue";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Know Value");
-	@Override public String name() { return localizedName; }
-	@Override protected int canTargetCode(){return CAN_ITEMS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_ITEMS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -77,7 +103,6 @@ public class Spell_KnowValue extends Spell
 		}
 		else
 			beneficialVisualFizzle(mob,target,L("<S-NAME> weigh(s) the value of <T-NAMESELF>, looking more frustrated every second."));
-
 
 		// return whether it worked
 		return success;

@@ -35,6 +35,7 @@ import java.util.*;
 
 public class Spell_Cogniportive extends Spell
 {
+
 	@Override
 	public String ID()
 	{
@@ -211,48 +212,50 @@ public class Spell_Cogniportive extends Spell
 		final MOB mob=msg.source();
 
 		if(affected instanceof Item)
-		switch(msg.targetMinor())
 		{
-		case CMMsg.TYP_WAND_USE:
-			if(msg.amITarget(affected)&&((msg.tool()==null)||(msg.tool() instanceof Physical)))
-				waveIfAble(mob,msg.tool(),(Item)affected);
-			break;
-		case CMMsg.TYP_SPEAK:
-			if((msg.sourceMinor()==CMMsg.TYP_SPEAK)
-			&&(msg.sourceMessage()!=null))
+			switch(msg.targetMinor())
 			{
-				final String msgStr=CMStrings.getSayFromMessage(msg.sourceMessage());
-				if(msgStr!=null)
+			case CMMsg.TYP_WAND_USE:
+				if(msg.amITarget(affected)&&((msg.tool()==null)||(msg.tool() instanceof Physical)))
+					waveIfAble(mob,msg.tool(),(Item)affected);
+				break;
+			case CMMsg.TYP_SPEAK:
+				if((msg.sourceMinor()==CMMsg.TYP_SPEAK)
+				&&(msg.sourceMessage()!=null))
 				{
-					final Vector<String> V=CMParms.parse(msgStr);
-					if((V.size()>=2)
-					&&(V.firstElement().equalsIgnoreCase("HOME")))
+					final String msgStr=CMStrings.getSayFromMessage(msg.sourceMessage());
+					if(msgStr!=null)
 					{
-						final String str=CMParms.combine(V,1);
-						if((str.length()>0)
-						&&((CMLib.english().containsString(affected.name(),str)
-							||CMLib.english().containsString(affected.displayText(),str))))
+						final Vector<String> V=CMParms.parse(msgStr);
+						if((V.size()>=2)
+						&&(V.firstElement().equalsIgnoreCase("HOME")))
 						{
-							boolean alreadyWanding=false;
-							final List<CMMsg> trailers =msg.trailerMsgs();
-							if(trailers!=null)
+							final String str=CMParms.combine(V,1);
+							if((str.length()>0)
+							&&((CMLib.english().containsString(affected.name(),str)
+								||CMLib.english().containsString(affected.displayText(),str))))
 							{
-								for(final CMMsg msg2 : trailers)
+								boolean alreadyWanding=false;
+								final List<CMMsg> trailers =msg.trailerMsgs();
+								if(trailers!=null)
 								{
-									if((msg2.targetMinor()==CMMsg.TYP_WAND_USE)
-									&&(msg2.target() == affected))
-										alreadyWanding=true;
+									for(final CMMsg msg2 : trailers)
+									{
+										if((msg2.targetMinor()==CMMsg.TYP_WAND_USE)
+										&&(msg2.target() == affected))
+											alreadyWanding=true;
+									}
 								}
+								if(!alreadyWanding)
+									msg.addTrailerMsg(CMClass.getMsg(msg.source(),affected,msg.target(),CMMsg.NO_EFFECT,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_WAND_USE,CMStrings.getSayFromMessage(msg.sourceMessage()),CMMsg.NO_EFFECT,null));
 							}
-							if(!alreadyWanding)
-								msg.addTrailerMsg(CMClass.getMsg(msg.source(),affected,msg.target(),CMMsg.NO_EFFECT,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_WAND_USE,CMStrings.getSayFromMessage(msg.sourceMessage()),CMMsg.NO_EFFECT,null));
 						}
 					}
 				}
+				break;
+			default:
+				break;
 			}
-			break;
-		default:
-			break;
 		}
 		super.executeMsg(myHost,msg);
 	}
@@ -305,7 +308,6 @@ public class Spell_Cogniportive extends Spell
 		}
 		else
 			beneficialWordsFizzle(mob,target,L("<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, incanting, but nothing happens."));
-
 
 		// return whether it worked
 		return success;

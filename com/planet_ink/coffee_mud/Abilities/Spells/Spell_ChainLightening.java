@@ -35,13 +35,44 @@ import java.util.*;
 
 public class Spell_ChainLightening extends Spell
 {
-	@Override public String ID() { return "Spell_ChainLightening"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_ChainLightening";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Chain Lightning");
-	@Override public String name() { return localizedName; }
-	@Override public int maxRange(){return adjustedMaxInvokerRange(2);}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
-	@Override public long flags(){return Ability.FLAG_AIRBASED;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int maxRange()
+	{
+		return adjustedMaxInvokerRange(2);
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_AIRBASED;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -87,10 +118,10 @@ public class Spell_ChainLightening extends Spell
 							{
 								final MOB M2=targets.elementAt(i2);
 								if((!M2.amDead())
-								   &&(mob.location()!=null)
-								   &&(mob.location().isInhabitant(M2))
-								   &&(M2.location()==mob.location()))
-									 count++;
+								&&(mob.location()!=null)
+								&&(mob.location().isInhabitant(M2))
+								&&(M2.location()==mob.location()))
+									count++;
 							}
 							if(count<2)
 								return true;
@@ -99,7 +130,7 @@ public class Spell_ChainLightening extends Spell
 
 						final boolean oldAuto=auto;
 						if((target==mob)||(myGroup.contains(target)))
-						   auto=true;
+							auto=true;
 						final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),null);
 						final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_ELECTRIC|(auto?CMMsg.MASK_ALWAYS:0),null);
 						auto=oldAuto;
@@ -116,7 +147,11 @@ public class Spell_ChainLightening extends Spell
 							{
 								CMLib.combat().postDamage(mob,target,this,dmg,CMMsg.MASK_ALWAYS|CMMsg.TYP_ELECTRIC,Weapon.TYPE_STRIKING,L("The bolt <DAMAGE> <T-NAME>!"));
 								damage = (int)Math.round(CMath.div(damage,2.0));
-								if(damage<5){ damage=0; break;}
+								if(damage<5)
+								{
+									damage=0;
+									break;
+								}
 							}
 						}
 					}
@@ -127,7 +162,6 @@ public class Spell_ChainLightening extends Spell
 		}
 		else
 			return maliciousFizzle(mob,null,L("<S-NAME> attempt(s) to invoke a ferocious spell, but the spell fizzles."));
-
 
 		// return whether it worked
 		return success;

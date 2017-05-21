@@ -35,15 +35,52 @@ import java.util.*;
 
 public class Spell_Grow extends Spell
 {
-	@Override public String ID() { return "Spell_Grow"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_Grow";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Grow");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Grow)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_OTHERS;
+	}
 
 	protected int getOldWeight()
 	{
@@ -142,7 +179,6 @@ public class Spell_Grow extends Spell
 		}
 		else
 			beneficialVisualFizzle(mob,target,L("<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, incanting but nothing happens."));
-
 
 		// return whether it worked
 		return success;

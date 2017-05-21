@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2001-2017 Bo Zimmerman
 
@@ -36,17 +35,50 @@ import java.util.*;
 
 public class Spell_FeignDeath extends Spell
 {
-	@Override public String ID() { return "Spell_FeignDeath"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_FeignDeath";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Feign Death");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Feign Death)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_OTHERS;
+	}
 
 	public DeadBody Body=null;
 	public Room deathRoom=null;
+
 	@Override
 	public void unInvoke()
 	{
@@ -125,7 +157,6 @@ public class Spell_FeignDeath extends Spell
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_INVISIBLE);
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_NOT_SEEN);
 	}
-
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)

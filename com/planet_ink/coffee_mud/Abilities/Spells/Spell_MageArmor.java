@@ -35,14 +35,46 @@ import java.util.*;
 
 public class Spell_MageArmor extends Spell
 {
-	@Override public String ID() { return "Spell_MageArmor"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_MageArmor";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Mage Armor");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Mage Armor)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ABJURATION;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_SELF;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_ABJURATION;
+	}
 
 	Armor theArmor=null;
 
@@ -53,8 +85,8 @@ public class Spell_MageArmor extends Spell
 		if(!(affected instanceof MOB))
 			return;
 		final MOB mob=(MOB)affected;
-		if(canBeUninvoked())
-		if(theArmor!=null)
+		if((canBeUninvoked())
+		&&(theArmor!=null))
 		{
 			theArmor.destroy();
 			mob.location().recoverRoomStats();

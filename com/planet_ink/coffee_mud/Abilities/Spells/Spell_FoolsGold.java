@@ -35,6 +35,7 @@ import java.util.*;
 
 public class Spell_FoolsGold extends Spell
 {
+
 	@Override
 	public String ID()
 	{
@@ -98,6 +99,7 @@ public class Spell_FoolsGold extends Spell
 				destroyOnNextTick=true;
 		}
 	}
+
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -145,7 +147,6 @@ public class Spell_FoolsGold extends Spell
 		}
 		else
 			beneficialVisualFizzle(mob,null,L("<S-NAME> wave(s) <S-HIS-HER> arms around dramatically, but fizzle(s) the spell."));
-
 
 		// return whether it worked
 		return success;

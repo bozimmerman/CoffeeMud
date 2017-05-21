@@ -36,6 +36,7 @@ import java.util.*;
 
 public class Spell_Wish extends Spell
 {
+
 	@Override
 	public String ID()
 	{
@@ -510,7 +511,6 @@ public class Spell_Wish extends Spell
 				myWish=" "+CMParms.combine(wishV,0).toUpperCase().trim()+" ";
 			}
 			
-
 			if(target instanceof PackagedItems)
 				target = ((PackagedItems)target).peekFirstItem();
 
@@ -1083,8 +1083,6 @@ public class Spell_Wish extends Spell
 				}
 				return true;
 			}
-
-
 
 			if((target instanceof MOB)
 			&&((myWish.indexOf(" BECOME ")>=0)

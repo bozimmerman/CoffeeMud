@@ -35,12 +35,38 @@ import java.util.*;
 
 public class Spell_Shatter extends Spell
 {
-	@Override public String ID() { return "Spell_Shatter"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_Shatter";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Shatter");
-	@Override public String name() { return localizedName; }
-	@Override protected int canTargetCode(){return CAN_MOBS|CAN_ITEMS;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS|CAN_ITEMS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;
+	}
 
 	public Item getItem(MOB mobTarget)
 	{
@@ -173,7 +199,6 @@ public class Spell_Shatter extends Spell
 		}
 		else
 			return maliciousFizzle(mob,null,L("<S-NAME> attempt(s) a shattering spell, but nothing happens."));
-
 
 		// return whether it worked
 		return success;

@@ -35,6 +35,7 @@ import java.util.*;
 
 public class Spell_ReadMagic extends Spell
 {
+
 	@Override
 	public String ID()
 	{
@@ -87,7 +88,6 @@ public class Spell_ReadMagic extends Spell
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if((success)&&(mob.fetchEffect(this.ID())==null))

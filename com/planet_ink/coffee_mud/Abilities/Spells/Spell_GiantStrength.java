@@ -35,14 +35,46 @@ import java.util.*;
 
 public class Spell_GiantStrength extends Spell
 {
-	@Override public String ID() { return "Spell_GiantStrength"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_GiantStrength";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Giant Strength");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Giant-Strength spell)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_OTHERS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;
+	}
 
 	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
@@ -70,7 +102,6 @@ public class Spell_GiantStrength extends Spell
 		affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_STRENGTH) + increase);
 	}
 
-
 	@Override
 	public void unInvoke()
 	{
@@ -94,7 +125,6 @@ public class Spell_GiantStrength extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-
 		// now see if it worked
 		final boolean success=proficiencyCheck(mob,0,auto);
 
@@ -110,7 +140,6 @@ public class Spell_GiantStrength extends Spell
 		}
 		else
 			return beneficialWordsFizzle(mob,target,L("<S-NAME> speak(s) strongly to <T-NAMESELF>, but nothing more happens."));
-
 
 		// return whether it worked
 		return success;

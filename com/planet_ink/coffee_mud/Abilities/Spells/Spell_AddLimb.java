@@ -35,15 +35,53 @@ import java.util.*;
 
 public class Spell_AddLimb extends Spell
 {
-	@Override public String ID() { return "Spell_AddLimb"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_AddLimb";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Add Limb");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Add Limb)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_OTHERS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;
+	}
+
 	public Item itemRef=null;
 	public long wornRef=0;
 	public int oldMsg=0;
@@ -121,7 +159,6 @@ public class Spell_AddLimb extends Spell
 		}
 		else
 			beneficialVisualFizzle(mob,target,L("<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, incanting but nothing happens."));
-
 
 		// return whether it worked
 		return success;

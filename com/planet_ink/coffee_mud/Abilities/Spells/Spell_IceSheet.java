@@ -32,9 +32,9 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Spell_IceSheet extends Spell
 {
+
 	@Override
 	public String ID()
 	{
@@ -106,7 +106,7 @@ public class Spell_IceSheet extends Spell
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof Room)))
-		   return false;
+			return false;
 		final Room room=(Room)affected;
 		if(msg.source().location()==room)
 		{
@@ -161,7 +161,7 @@ public class Spell_IceSheet extends Spell
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof Room)))
-		   return;
+			return;
 		super.executeMsg(myHost,msg);
 		if((msg.target()==affected)
 		&&((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE)))
@@ -194,7 +194,6 @@ public class Spell_IceSheet extends Spell
 			mob.tell(mob,null,null,L("An Ice Sheet is already here!"));
 			return false;
 		}
-
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 

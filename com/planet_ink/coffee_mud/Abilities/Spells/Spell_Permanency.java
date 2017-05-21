@@ -36,14 +36,50 @@ import java.util.*;
 
 public class Spell_Permanency extends Spell
 {
-	@Override public String ID() { return "Spell_Permanency"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_Permanency";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Permanency");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return CAN_ITEMS|CAN_MOBS|CAN_EXITS;}
-	@Override protected int canTargetCode(){return CAN_ITEMS|CAN_MOBS|CAN_EXITS;}
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
-	@Override protected int overrideMana(){return Ability.COST_ALL;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_ITEMS|CAN_MOBS|CAN_EXITS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_ITEMS|CAN_MOBS|CAN_EXITS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;
+	}
+
+	@Override
+	protected int overrideMana()
+	{
+		return Ability.COST_ALL;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -113,7 +149,10 @@ public class Spell_Permanency extends Spell
 						Room R2=null;
 						for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 							if(R.getExitInDir(d)==target)
-							{ R2=R.getRoomInDir(d); break;}
+							{
+								R2=R.getRoomInDir(d);
+								break;
+							}
 						if((CMLib.law().doesOwnThisLand(mob,R))
 						||((R2!=null)&&(CMLib.law().doesOwnThisLand(mob,R2))))
 							CMLib.database().DBUpdateExits(R);
@@ -125,7 +164,6 @@ public class Spell_Permanency extends Spell
 		}
 		else
 			beneficialWordsFizzle(mob,target,L("<S-NAME> incant(s) to <T-NAMESELF>, but lose(s) patience."));
-
 
 		// return whether it worked
 		return success;

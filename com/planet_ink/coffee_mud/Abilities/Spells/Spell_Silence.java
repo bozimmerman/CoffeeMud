@@ -35,15 +35,53 @@ import java.util.*;
 
 public class Spell_Silence extends Spell
 {
-	@Override public String ID() { return "Spell_Silence"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_Silence";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Silence");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Silence spell)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return CAN_ROOMS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_ROOMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;
+	}
+
 	public Room theRoom=null;
 
 	@Override
@@ -124,7 +162,6 @@ public class Spell_Silence extends Spell
 			mob.tell(mob,null,null,L("This place is already silent."));
 			return false;
 		}
-
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 

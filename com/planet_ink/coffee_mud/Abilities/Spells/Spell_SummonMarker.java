@@ -35,13 +35,44 @@ import java.util.*;
 
 public class Spell_SummonMarker extends Spell
 {
-	@Override public String ID() { return "Spell_SummonMarker"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_SummonMarker";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Summon Marker");
-	@Override public String name() { return localizedName; }
-	@Override protected int canTargetCode(){return 0;}
-	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ROOMS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
 
 	@Override
 	public void unInvoke()
@@ -75,7 +106,10 @@ public class Spell_SummonMarker extends Spell
 					}
 				}
 			}
-		}catch(final NoSuchElementException nse){}
+		}
+		catch(final NoSuchElementException nse)
+		{
+		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -94,7 +128,6 @@ public class Spell_SummonMarker extends Spell
 		}
 		else
 			beneficialWordsFizzle(mob,null,L("<S-NAME> attempt(s) to summon <S-HIS-HER> marker energy, but fail(s)."));
-
 
 		// return whether it worked
 		return success;

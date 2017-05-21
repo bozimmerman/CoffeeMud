@@ -35,15 +35,46 @@ import java.util.*;
 
 public class Spell_ComprehendLangs extends Spell
 {
-	@Override public String ID() { return "Spell_ComprehendLangs"; }
-	private final static String localizedName = CMLib.lang().L("Comprehend Languages");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Comprehend Languages)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
 
+	@Override
+	public String ID()
+	{
+		return "Spell_ComprehendLangs";
+	}
+
+	private final static String localizedName = CMLib.lang().L("Comprehend Languages");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Comprehend Languages)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_SELF;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;
+	}
 
 	@Override
 	public void unInvoke()

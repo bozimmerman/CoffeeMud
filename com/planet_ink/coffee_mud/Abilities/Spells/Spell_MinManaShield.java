@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -35,12 +34,39 @@ import java.util.*;
 */
 public class Spell_MinManaShield extends Spell_ManaShield
 {
-	@Override public String ID() { return "Spell_MinManaShield"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_MinManaShield";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Minor Mana Shield");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Minor Mana Shield)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected double protection(){return 0.25;}
-	@Override protected String adjective(){return " a faint";}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected double protection()
+	{
+		return 0.25;
+	}
+
+	@Override
+	protected String adjective()
+	{
+		return " a faint";
+	}
 
 }

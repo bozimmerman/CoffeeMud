@@ -35,13 +35,44 @@ import java.util.*;
 
 public class Spell_Teleport extends Spell
 {
-	@Override public String ID() { return "Spell_Teleport"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_Teleport";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Teleport");
-	@Override public String name() { return localizedName; }
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
-	@Override public long flags(){return Ability.FLAG_TRANSPORTING;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_TRANSPORTING;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
 
 	private boolean isBadRoom(final Room room, final MOB mob, final Room newRoom)
 	{
@@ -76,8 +107,10 @@ public class Spell_Teleport extends Spell
 		if(A!=null)
 			candidates.addAll(new XVector<Room>(A.getProperMap()));
 		for(int c=candidates.size()-1;c>=0;c--)
+		{
 			if(!CMLib.flags().canAccess(mob,candidates.elementAt(c)))
 				candidates.removeElementAt(c);
+		}
 
 		if(candidates.size()==0)
 		{
@@ -161,8 +194,6 @@ public class Spell_Teleport extends Spell
 				}
 			}
 		}
-
-
 
 		// return whether it worked
 		return success;

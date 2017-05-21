@@ -35,14 +35,46 @@ import java.util.*;
 
 public class Spell_Enlightenment extends Spell
 {
-	@Override public String ID() { return "Spell_Enlightenment"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_Enlightenment";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Enlightenment");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Enlightenment spell)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_OTHERS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;
+	}
 
 	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
@@ -69,7 +101,6 @@ public class Spell_Enlightenment extends Spell
 		affectableStats.setStat(CharStats.STAT_INTELLIGENCE,affectableStats.getStat(CharStats.STAT_INTELLIGENCE) + increase);
 	}
 
-
 	@Override
 	public void unInvoke()
 	{
@@ -82,8 +113,6 @@ public class Spell_Enlightenment extends Spell
 			mob.tell(L("Your newfound intellect quickly fades...."));
 	}
 
-
-
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -93,7 +122,6 @@ public class Spell_Enlightenment extends Spell
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-
 
 		// now see if it worked
 		final boolean success=proficiencyCheck(mob,0,auto);
@@ -110,7 +138,6 @@ public class Spell_Enlightenment extends Spell
 		}
 		else
 			return beneficialWordsFizzle(mob,target,L("<S-NAME> attempt(s) to educate <T-NAMESELF>, but look(s) perplexed."));
-
 
 		// return whether it worked
 		return success;

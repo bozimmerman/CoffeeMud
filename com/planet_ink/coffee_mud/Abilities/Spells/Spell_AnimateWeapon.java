@@ -35,13 +35,44 @@ import java.util.*;
 
 public class Spell_AnimateWeapon extends Spell
 {
-	@Override public String ID() { return "Spell_AnimateWeapon"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_AnimateWeapon";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Animate Weapon");
-	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	@Override protected int canTargetCode(){return CAN_ITEMS;}
-	@Override public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
-	@Override public int overrideMana(){return 100;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_ITEMS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;
+	}
+
+	@Override
+	public int overrideMana()
+	{
+		return 100;
+	}
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
@@ -169,7 +200,6 @@ public class Spell_AnimateWeapon extends Spell
 		}
 		else
 			mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,L("<T-NAME> twitch(es) oddly, but does nothing more."));
-
 
 		// return whether it worked
 		return success;

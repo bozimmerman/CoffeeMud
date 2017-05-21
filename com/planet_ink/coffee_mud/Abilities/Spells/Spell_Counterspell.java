@@ -35,14 +35,47 @@ import java.util.*;
 
 public class Spell_Counterspell extends Spell
 {
-	@Override public String ID() { return "Spell_Counterspell"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_Counterspell";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Counterspell");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Counterspell)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ABJURATION;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_OTHERS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_ABJURATION;
+	}
+
 	public boolean ticked=false;
 
 	@Override
@@ -96,7 +129,6 @@ public class Spell_Counterspell extends Spell
 		}
 		return super.castingQuality(mob,target);
 	}
-
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)

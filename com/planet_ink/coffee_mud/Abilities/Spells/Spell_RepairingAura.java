@@ -35,6 +35,7 @@ import java.util.*;
 
 public class Spell_RepairingAura extends Spell
 {
+
 	@Override
 	public String ID()
 	{
@@ -112,7 +113,6 @@ public class Spell_RepairingAura extends Spell
 		}
 		return true;
 	}
-
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)

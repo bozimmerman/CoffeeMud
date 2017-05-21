@@ -35,14 +35,46 @@ import java.util.*;
 
 public class Spell_CharmWard extends Spell
 {
-	@Override public String ID() { return "Spell_CharmWard"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_CharmWard";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Charm Ward");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Charm Ward)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
-	@Override protected int canAffectCode(){return CAN_MOBS|CAN_ROOMS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ABJURATION;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_OTHERS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS|CAN_ROOMS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_ABJURATION;
+	}
 
 	@Override
 	public void unInvoke()
@@ -60,7 +92,6 @@ public class Spell_CharmWard extends Spell
 		super.unInvoke();
 
 	}
-
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)

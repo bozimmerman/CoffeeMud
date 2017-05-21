@@ -35,18 +35,66 @@ import java.util.*;
 
 public class Spell_Shove extends Spell
 {
-	@Override public String ID() { return "Spell_Shove"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_Shove";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Shove");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Shoved Down)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int maxRange(){return adjustedMaxInvokerRange(4);}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return Tickable.TICKID_MOB;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int maxRange()
+	{
+		return adjustedMaxInvokerRange(4);
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Tickable.TICKID_MOB;
+	}
+
 	public boolean doneTicking=false;
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
-	@Override public long flags(){return Ability.FLAG_MOVING;}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_MOVING;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -116,7 +164,6 @@ public class Spell_Shove extends Spell
 		}
 		else
 			return maliciousFizzle(mob,null,L("<S-NAME> incant(s), but nothing seems to happen."));
-
 
 		// return whether it worked
 		return success;

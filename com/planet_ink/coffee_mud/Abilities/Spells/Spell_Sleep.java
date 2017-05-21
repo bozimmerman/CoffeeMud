@@ -35,14 +35,46 @@ import java.util.*;
 
 public class Spell_Sleep extends Spell
 {
-	@Override public String ID() { return "Spell_Sleep"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_Sleep";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Sleep");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Sleep spell)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;
+	}
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
@@ -75,7 +107,6 @@ public class Spell_Sleep extends Spell
 		// can get them out of it.
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SLEEPING);
 	}
-
 
 	@Override
 	public void unInvoke()
@@ -136,10 +167,8 @@ public class Spell_Sleep extends Spell
 			return false;
 		}
 
-
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-
 
 		boolean success=proficiencyCheck(mob,-((target.charStats().getStat(CharStats.STAT_INTELLIGENCE)*2)),auto);
 

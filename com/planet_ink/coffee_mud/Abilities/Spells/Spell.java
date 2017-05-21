@@ -36,6 +36,7 @@ import java.util.*;
 
 public class Spell extends StdAbility
 {
+
 	@Override
 	public String ID()
 	{

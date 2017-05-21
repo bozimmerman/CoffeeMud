@@ -36,6 +36,7 @@ import java.util.*;
 
 public class Spell_StoreSpell extends Spell
 {
+
 	@Override
 	public String ID()
 	{

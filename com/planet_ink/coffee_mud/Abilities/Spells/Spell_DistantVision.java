@@ -35,12 +35,38 @@ import java.util.*;
 
 public class Spell_DistantVision extends Spell
 {
-	@Override public String ID() { return "Spell_DistantVision"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_DistantVision";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Distant Vision");
-	@Override public String name() { return localizedName; }
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -57,7 +83,10 @@ public class Spell_DistantVision extends Spell
 			final List<Room> rooms=CMLib.map().findRooms(CMLib.map().rooms(), mob, areaName, true, 10);
 			if(rooms.size()>0)
 				thisRoom=rooms.get(CMLib.dice().roll(1,rooms.size(),-1));
-		}catch(final NoSuchElementException nse){}
+		}
+		catch(final NoSuchElementException nse)
+		{
+		}
 
 		if(thisRoom==null)
 		{
@@ -84,7 +113,6 @@ public class Spell_DistantVision extends Spell
 		}
 		else
 			beneficialWordsFizzle(mob,null,L("<S-NAME> close(s) <S-HIS-HER> eyes, incanting, but then open(s) them in frustration."));
-
 
 		// return whether it worked
 		return success;

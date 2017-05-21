@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2016-2017 Bo Zimmerman
 
@@ -36,6 +35,7 @@ import java.util.*;
 
 public class Spell_DarknessGlobe extends Spell
 {
+
 	@Override
 	public String ID()
 	{

@@ -35,14 +35,46 @@ import java.util.*;
 
 public class Spell_Fear extends Spell
 {
-	@Override public String ID() { return "Spell_Fear"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_Fear";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Fear");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Afraid)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
-	@Override public long flags(){return Ability.FLAG_TRANSPORTING;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_TRANSPORTING;
+	}
 
 	@Override
 	public void unInvoke()
@@ -134,7 +166,6 @@ public class Spell_Fear extends Spell
 		}
 		else
 			return beneficialWordsFizzle(mob,null,L("<S-NAME> attempt(s) a frightening spell, but completely flub(s) it."));
-
 
 		// return whether it worked
 		return success;

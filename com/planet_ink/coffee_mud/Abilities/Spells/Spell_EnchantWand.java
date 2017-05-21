@@ -36,14 +36,50 @@ import java.util.*;
 
 public class Spell_EnchantWand extends Spell
 {
-	@Override public String ID() { return "Spell_EnchantWand"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_EnchantWand";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Enchant Wand");
-	@Override public String name() { return localizedName; }
-	@Override protected int canTargetCode(){return CAN_ITEMS;}
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
-	@Override public long flags(){return Ability.FLAG_NOORDERING;}
-	@Override protected int overrideMana(){return Ability.COST_ALL;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_ITEMS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_NOORDERING;
+	}
+
+	@Override
+	protected int overrideMana()
+	{
+		return Ability.COST_ALL;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -145,7 +181,6 @@ public class Spell_EnchantWand extends Spell
 		}
 		else
 			beneficialWordsFizzle(mob,target,L("<S-NAME> move(s) <S-HIS-HER> fingers around <T-NAMESELF>, incanting softly, and looking very frustrated."));
-
 
 		// return whether it worked
 		return success;

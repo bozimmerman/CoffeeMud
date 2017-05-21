@@ -35,6 +35,7 @@ import java.util.*;
 
 public class Spell_Flameshield extends Spell
 {
+
 	@Override
 	public String ID()
 	{
@@ -178,7 +179,6 @@ public class Spell_Flameshield extends Spell
 		}
 		else
 			return beneficialVisualFizzle(mob,target,L("<S-NAME> incant(s) and wave(s) <S-HIS-HER> arms, but only sparks emerge."));
-
 
 		// return whether it worked
 		return success;

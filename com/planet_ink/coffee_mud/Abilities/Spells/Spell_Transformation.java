@@ -35,13 +35,41 @@ import java.util.*;
 
 public class Spell_Transformation extends Spell
 {
-	@Override public String ID() { return "Spell_Transformation"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_Transformation";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Transformation");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Transformation)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_SELF;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;
+	}
+
 	protected int inc=0;
 
 	@Override
@@ -61,6 +89,7 @@ public class Spell_Transformation extends Spell
 		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+affected.phyStats().level()+getXLEVELLevel(invoker()));
 		affectableStats.setDamage(affectableStats.damage()+(affected.phyStats().level()/2)+getXLEVELLevel(invoker()));
 	}
+
 	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
@@ -84,7 +113,6 @@ public class Spell_Transformation extends Spell
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 

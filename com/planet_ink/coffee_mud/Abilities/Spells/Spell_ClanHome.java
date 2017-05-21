@@ -35,6 +35,7 @@ import java.util.*;
 
 public class Spell_ClanHome extends Spell
 {
+
 	@Override
 	public String ID()
 	{
@@ -152,7 +153,6 @@ public class Spell_ClanHome extends Spell
 		}
 		else
 			beneficialWordsFizzle(mob,null,L("<S-NAME> attempt(s) to invoke transportation, but fizzle(s) the spell."));
-
 
 		// return whether it worked
 		return success;

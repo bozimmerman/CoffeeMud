@@ -35,12 +35,38 @@ import java.util.*;
 
 public class Spell_Meld extends Spell
 {
-	@Override public String ID() { return "Spell_Meld"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_Meld";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Meld");
-	@Override public String name() { return localizedName; }
-	@Override protected int canTargetCode(){return CAN_ITEMS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_ITEMS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
 
 	public boolean shinBone(Item one, Item two, long locationOne, long locationTwo)
 	{
@@ -72,8 +98,10 @@ public class Spell_Meld extends Spell
 	protected int getHeiarchy(int material)
 	{
 		for(int i=0;i<heiarchy.length;i++)
+		{
 			if(heiarchy[i]==material)
 				return i;
+		}
 		return 99;
 	}
 
@@ -256,7 +284,6 @@ public class Spell_Meld extends Spell
 								wornLocation-=Wearable.WORN_LEFT_WRIST;
 						}
 					}
-
 
 					final Armor gc=CMClass.getArmor("GenArmor");
 					gc.setMaterial(material);

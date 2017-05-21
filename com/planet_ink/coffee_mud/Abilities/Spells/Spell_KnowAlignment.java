@@ -35,11 +35,32 @@ import java.util.*;
 
 public class Spell_KnowAlignment extends Spell
 {
-	@Override public String ID() { return "Spell_KnowAlignment"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_KnowAlignment";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Know Alignment");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -66,7 +87,6 @@ public class Spell_KnowAlignment extends Spell
 				mob.tell(mob,target,null,L("<T-NAME> seem(s) like <T-HE-SHE> is @x1.",Faction.Align.values()[CMLib.dice().roll(1,Faction.Align.values().length-1,0)].toString().toLowerCase()));
 			}
 		}
-
 
 		// return whether it worked
 		return success;

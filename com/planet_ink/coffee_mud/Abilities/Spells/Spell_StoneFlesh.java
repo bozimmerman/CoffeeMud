@@ -35,12 +35,38 @@ import java.util.*;
 
 public class Spell_StoneFlesh extends Spell
 {
-	@Override public String ID() { return "Spell_StoneFlesh"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_StoneFlesh";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Stone Flesh");
-	@Override public String name() { return localizedName; }
-	@Override protected int canTargetCode(){return CAN_ITEMS;}
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_ITEMS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -72,7 +98,6 @@ public class Spell_StoneFlesh extends Spell
 			return false;
 		}
 
-
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -88,7 +113,6 @@ public class Spell_StoneFlesh extends Spell
 		}
 		else
 			beneficialWordsFizzle(mob,target,L("<S-NAME> attempt(s) to dispel @x1 from <T-NAMESELF>, but flub(s) it.",revokeThis.name()));
-
 
 		// return whether it worked
 		return success;

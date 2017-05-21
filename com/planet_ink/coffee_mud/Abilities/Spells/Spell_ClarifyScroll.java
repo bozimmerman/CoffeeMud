@@ -35,13 +35,44 @@ import java.util.*;
 
 public class Spell_ClarifyScroll extends Spell
 {
-	@Override public String ID() { return "Spell_ClarifyScroll"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_ClarifyScroll";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Clarify Scroll");
-	@Override public String name() { return localizedName; }
-	@Override public int overrideMana(){return 50;}
-	@Override protected int canTargetCode(){return CAN_ITEMS;}
-	@Override public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;	}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int overrideMana()
+	{
+		return 50;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_ITEMS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -80,7 +111,6 @@ public class Spell_ClarifyScroll extends Spell
 		}
 		else
 			beneficialVisualFizzle(mob,target,L("<S-NAME> wave(s) <S-HIS-HER> fingers at <T-NAMESELF>, uttering a magical phrase, and looking very frustrated."));
-
 
 		// return whether it worked
 		return success;

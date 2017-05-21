@@ -35,14 +35,46 @@ import java.util.*;
 
 public class Spell_Slow extends Spell
 {
-	@Override public String ID() { return "Spell_Slow"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_Slow";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Slow");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Slow spell)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
@@ -50,7 +82,6 @@ public class Spell_Slow extends Spell
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setSpeed(CMath.div(affectableStats.speed(),2.0));
 	}
-
 
 	@Override
 	public void unInvoke()
@@ -64,8 +95,6 @@ public class Spell_Slow extends Spell
 		if(canBeUninvoked())
 			mob.tell(L("You begin to go back to a normal speed."));
 	}
-
-
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)

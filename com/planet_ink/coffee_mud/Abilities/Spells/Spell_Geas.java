@@ -15,8 +15,6 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.SlaveryLibrary;
 
-
-
 import java.util.*;
 
 /*
@@ -37,14 +35,51 @@ import java.util.*;
 
 public class Spell_Geas extends Spell
 {
-	@Override public String ID() { return "Spell_Geas"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_Geas";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Geas");
-	@Override public String name() { return localizedName; }
-	@Override public String displayText() { return L("(Geas to "+text()+")"); }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int maxRange(){return adjustedMaxInvokerRange(5);}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public String displayText()
+	{
+		return L("(Geas to "+text()+")");
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int maxRange()
+	{
+		return adjustedMaxInvokerRange(5);
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_OTHERS;
+	}
+
 	public SlaveryLibrary.GeasSteps STEPS=null;
 
 	@Override

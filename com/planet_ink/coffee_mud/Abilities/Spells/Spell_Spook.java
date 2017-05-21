@@ -35,13 +35,40 @@ import java.util.*;
 
 public class Spell_Spook extends Spell
 {
-	@Override public String ID() { return "Spell_Spook"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_Spook";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Spook");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Spooked)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -79,7 +106,6 @@ public class Spell_Spook extends Spell
 		}
 		else
 			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to scare <T-NAMESELF>, but fizzle(s) the spell."));
-
 
 		// return whether it worked
 		return success;

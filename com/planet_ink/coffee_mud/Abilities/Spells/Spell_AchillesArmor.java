@@ -35,15 +35,53 @@ import java.util.*;
 
 public class Spell_AchillesArmor extends Spell
 {
-	@Override public String ID() { return "Spell_AchillesArmor"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_AchillesArmor";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Achilles Armor");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Achilles Armor)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int overrideMana(){return 100;}
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ABJURATION;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_OTHERS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int overrideMana()
+	{
+		return 100;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_ABJURATION;
+	}
+
 	protected int vulnerability=0;
 
 	@Override
@@ -54,13 +92,14 @@ public class Spell_AchillesArmor extends Spell
 			return;
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
+		{
 			if((mob.location()!=null)&&(!mob.amDead()))
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> Achilles Armor is now gone."));
+		}
 
 		super.unInvoke();
 
 	}
-
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
@@ -79,7 +118,7 @@ public class Spell_AchillesArmor extends Spell
 		{
 			int weaponDamageType=-1;
 			if(msg.tool() instanceof Weapon)
-			   weaponDamageType=((Weapon)msg.tool()).weaponDamageType();
+				weaponDamageType=((Weapon)msg.tool()).weaponDamageType();
 			else
 			switch(msg.sourceMinor())
 			{
@@ -139,7 +178,6 @@ public class Spell_AchillesArmor extends Spell
 		}
 		return super.okMessage(myHost,msg);
 	}
-
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)

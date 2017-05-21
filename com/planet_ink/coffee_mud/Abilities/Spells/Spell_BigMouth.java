@@ -35,14 +35,46 @@ import java.util.*;
 
 public class Spell_BigMouth extends Spell
 {
-	@Override public String ID() { return "Spell_BigMouth"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_BigMouth";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Big Mouth");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Big Mouth)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;	}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_SELF;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;
+	}
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
@@ -173,6 +205,7 @@ public class Spell_BigMouth extends Spell
 			lastKnownRoom=R;
 		return lastKnownRoom;
 	}
+
 	protected Room Stomach()
 	{
 		if((myStomach==null)&&(affected!=null))
@@ -184,12 +217,13 @@ public class Spell_BigMouth extends Spell
 		}
 		return myStomach;
 	}
+
 	protected int digestDown=4;
 
 	public void kill()
 	{
 		if((Stomach()==null)||(lastKnownLocation()==null))
-		   return;
+			return;
 
 		// ===== move all inhabitants to the dragons location
 		// ===== loop through all inhabitants of the stomach

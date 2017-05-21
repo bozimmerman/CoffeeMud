@@ -35,15 +35,47 @@ import java.util.*;
 
 public class Spell_FakeArmor extends Spell
 {
-	@Override public String ID() { return "Spell_FakeArmor"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_FakeArmor";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Fake Armor");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return CAN_ITEMS;}
-	@Override protected int canTargetCode(){return 0;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_ITEMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
 	protected Item myItem=null;
 	private static boolean notAgainThisRound=false;
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
@@ -71,6 +103,7 @@ public class Spell_FakeArmor extends Spell
 		return super.okMessage(myHost,msg);
 
 	}
+
 	@Override
 	public void unInvoke()
 	{
@@ -168,7 +201,6 @@ public class Spell_FakeArmor extends Spell
 		}
 		else
 			beneficialVisualFizzle(mob,null,L("<S-NAME> dramatically wave(s) <S-HIS-HER> arms around, but fizzle(s) the spell."));
-
 
 		// return whether it worked
 		return success;

@@ -35,14 +35,46 @@ import java.util.*;
 
 public class Spell_Stoneskin extends Spell
 {
-	@Override public String ID() { return "Spell_Stoneskin"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_Stoneskin";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Stoneskin");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Stoneskin)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_OTHERS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;
+	}
 
 	int HitsRemaining=0;
 	int oldHP=-1;
@@ -67,7 +99,6 @@ public class Spell_Stoneskin extends Spell
 			if((mob.location()!=null)&&(!mob.amDead()))
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> skin softens."));
 	}
-
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)

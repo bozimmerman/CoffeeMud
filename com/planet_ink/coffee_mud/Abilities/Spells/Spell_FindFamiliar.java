@@ -35,17 +35,64 @@ import java.util.*;
 
 public class Spell_FindFamiliar extends Spell
 {
-	@Override public String ID() { return "Spell_FindFamiliar"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_FindFamiliar";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Find Familiar");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Find Familiar)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
-	@Override public long flags(){return Ability.FLAG_NOORDERING;}
-	@Override protected int overrideMana(){return Ability.COST_ALL;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_SELF;
+	}
+
+	@Override
+	public int enchantQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_NOORDERING;
+	}
+
+	@Override
+	protected int overrideMana()
+	{
+		return Ability.COST_ALL;
+	}
 	
 	public int castingQuality(MOB mob, MOB target)
 	{
@@ -112,6 +159,7 @@ public class Spell_FindFamiliar extends Spell
 		// return whether it worked
 		return success;
 	}
+
 	public MOB determineMonster(MOB caster, int level)
 	{
 
@@ -211,7 +259,6 @@ public class Spell_FindFamiliar extends Spell
 		newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> appears!"));
 		caster.location().recoverRoomStats();
 		return(newMOB);
-
 
 	}
 }

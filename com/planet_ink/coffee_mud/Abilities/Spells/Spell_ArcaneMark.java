@@ -35,13 +35,44 @@ import java.util.*;
 
 public class Spell_ArcaneMark extends Spell
 {
-	@Override public String ID() { return "Spell_ArcaneMark"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_ArcaneMark";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Arcane Mark");
-	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return CAN_ITEMS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_ITEMS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -84,7 +115,6 @@ public class Spell_ArcaneMark extends Spell
 		}
 		else
 			beneficialWordsFizzle(mob,target,L("<S-NAME> attempt(s) to invoke a spell upon <T-NAMESELF>, but the spell fizzles."));
-
 
 		// return whether it worked
 		return success;

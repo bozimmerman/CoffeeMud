@@ -35,14 +35,51 @@ import java.util.*;
 
 public class Spell_Scry extends Spell
 {
-	@Override public String ID() { return "Spell_Scry"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_Scry";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Scry");
-	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "";}
-	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public String displayText()
+	{
+		return "";
+	}
+
+	@Override
+	public int enchantQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;
+	}
+
 	public static final DVector scries=new DVector(2);
 	private boolean recurse=false;
 
@@ -117,8 +154,10 @@ public class Spell_Scry extends Spell
 		{
 			final StringBuffer scryList=new StringBuffer("");
 			for(int e=0;e<scries.size();e++)
+			{
 				if(scries.elementAt(e,2)==mob)
 					scryList.append(((e>0)?", ":"")+((MOB)scries.elementAt(e,1)).name());
+			}
 			if(scryList.length()>0)
 				mob.tell(L("Cast on or revoke from whom?  You currently have @x1 on the following: @x2.",name(),scryList.toString()));
 			else
@@ -138,7 +177,10 @@ public class Spell_Scry extends Spell
 				final List<MOB> targets=CMLib.map().findInhabitants(CMLib.map().rooms(), mob, mobName, 50);
 				if(targets.size()>0)
 					target=targets.get(CMLib.dice().roll(1,targets.size(),-1));
-			}catch(final NoSuchElementException nse){}
+			}
+			catch(final NoSuchElementException nse)
+			{
+			}
 		}
 		if(target instanceof Deity)
 			target=null;
@@ -190,7 +232,6 @@ public class Spell_Scry extends Spell
 		}
 		else
 			beneficialVisualFizzle(mob,null,L("<S-NAME> attempt(s) to invoke scrying, but fizzle(s) the spell."));
-
 
 		// return whether it worked
 		return success;

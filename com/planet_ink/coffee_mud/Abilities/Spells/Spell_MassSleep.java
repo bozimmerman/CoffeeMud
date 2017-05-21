@@ -35,13 +35,44 @@ import java.util.*;
 
 public class Spell_MassSleep extends Spell
 {
-	@Override public String ID() { return "Spell_MassSleep"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_MassSleep";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Mass Sleep");
-	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "";}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override protected int canAffectCode(){return 0;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public String displayText()
+	{
+		return "";
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;
+	}
 
 	@Override
 	public int castingQuality(MOB mob, Physical target)
@@ -106,7 +137,6 @@ public class Spell_MassSleep extends Spell
 		}
 		else
 			return maliciousFizzle(mob,null,L("<S-NAME> whisper(s) a sleeping spell, but the spell fizzles."));
-
 
 		// return whether it worked
 		return success;

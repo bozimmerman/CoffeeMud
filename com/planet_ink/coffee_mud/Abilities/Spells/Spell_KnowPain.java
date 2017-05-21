@@ -35,13 +35,40 @@ import java.util.*;
 
 public class Spell_KnowPain extends Spell
 {
-	@Override public String ID() { return "Spell_KnowPain"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_KnowPain";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Know Pain");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Spell_KnowPain)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -78,7 +105,6 @@ public class Spell_KnowPain extends Spell
 		}
 		else
 			return maliciousFizzle(mob,target,L("<S-NAME> incant(s) at <T-NAMESELF>, but flub(s) the spell."));
-
 
 		// return whether it worked
 		return success;

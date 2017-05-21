@@ -35,15 +35,52 @@ import java.util.*;
 
 public class Spell_WizardLock extends Spell
 {
-	@Override public String ID() { return "Spell_WizardLock"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_WizardLock";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Wizard Lock");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Wizard Locked)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return CAN_ITEMS|CAN_EXITS;}
-	@Override protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_EXITS;}
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_ITEMS|CAN_EXITS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_ITEMS|Ability.CAN_EXITS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
@@ -73,8 +110,10 @@ public class Spell_WizardLock extends Spell
 			mob.tell(L("@x1 appears to be magically locked.",affected.name()));
 			return false;
 		case CMMsg.TYP_JUSTICE:
+		{
 			if(!msg.targetMajor(CMMsg.MASK_DELICATE))
 				return true;
+		}
 		//$FALL-THROUGH$
 		case CMMsg.TYP_DELICATE_HANDS_ACT:
 			mob.tell(L("@x1 appears to be magically protected.",affected.name()));
@@ -177,7 +216,10 @@ public class Spell_WizardLock extends Spell
 					Room R2=null;
 					for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 						if(R.getExitInDir(d)==target)
-						{ R2=R.getRoomInDir(d); break;}
+						{
+							R2=R.getRoomInDir(d);
+							break;
+						}
 					if((CMLib.law().doesOwnThisLand(mob,R))
 					||((R2!=null)&&(CMLib.law().doesOwnThisLand(mob,R2))))
 					{
@@ -218,7 +260,6 @@ public class Spell_WizardLock extends Spell
 		}
 		else
 			beneficialVisualFizzle(mob,target,L("<S-NAME> point(s) at <T-NAMESELF>, incanting, but nothing happens."));
-
 
 		// return whether it worked
 		return success;

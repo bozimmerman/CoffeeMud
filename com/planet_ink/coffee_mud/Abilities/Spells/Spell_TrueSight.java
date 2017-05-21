@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2003-2017 Bo Zimmerman
 
@@ -36,6 +35,7 @@ import java.util.*;
 
 public class Spell_TrueSight extends Spell
 {
+
 	@Override
 	public String ID()
 	{
@@ -117,6 +117,7 @@ public class Spell_TrueSight extends Spell
 				msg.addTrailerRunnable(new Runnable()
 				{
 					final MOB M=(MOB)affected;
+
 					@Override
 					public void run()
 					{
@@ -131,6 +132,7 @@ public class Spell_TrueSight extends Spell
 				msg.addTrailerRunnable(new Runnable()
 				{
 					final MOB M=(MOB)affected;
+
 					@Override
 					public void run()
 					{
@@ -184,7 +186,6 @@ public class Spell_TrueSight extends Spell
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 

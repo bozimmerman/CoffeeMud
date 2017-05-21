@@ -35,6 +35,7 @@ import java.util.*;
 
 public class Spell_SummonSteed extends Spell
 {
+
 	@Override
 	public String ID()
 	{
@@ -269,7 +270,6 @@ public class Spell_SummonSteed extends Spell
 		caster.location().recoverRoomStats();
 		newMOB.setStartRoom(null);
 		return(newMOB);
-
 
 	}
 

@@ -35,15 +35,52 @@ import java.util.*;
 
 public class Spell_Dragonfire extends Spell
 {
-	@Override public String ID() { return "Spell_Dragonfire"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_Dragonfire";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Dragonfire");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Dragonfire)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int maxRange(){return adjustedMaxInvokerRange(3);}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
-	@Override public long flags(){return Ability.FLAG_FIREBASED;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int maxRange()
+	{
+		return adjustedMaxInvokerRange(3);
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_FIREBASED;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -70,6 +107,7 @@ public class Spell_Dragonfire extends Spell
 		{
 
 			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),L(auto?"A blast of flames erupt!":"^S<S-NAME> blast(s) flames from <S-HIS-HER> mouth!^?")+CMLib.protocol().msp("fireball.wav",40)))
+			{
 				for (final Object element : h)
 				{
 					final MOB target=(MOB)element;
@@ -89,10 +127,10 @@ public class Spell_Dragonfire extends Spell
 						CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,L("The dragonfire <DAMAGE> <T-NAME>!"));
 					}
 				}
+			}
 		}
 		else
 			return maliciousFizzle(mob,null,L("<S-NAME> puff(s) smoke from <S-HIS-HER> mouth."));
-
 
 		// return whether it worked
 		return success;

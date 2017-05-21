@@ -35,13 +35,45 @@ import java.util.*;
 
 public class Spell_ArcanePossession extends Spell
 {
-	@Override public String ID() { return "Spell_ArcanePossession"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_ArcanePossession";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Arcane Possession");
-	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	@Override protected int canAffectCode(){return CAN_ITEMS;}
-	@Override protected int canTargetCode(){return CAN_ITEMS;}
-	@Override public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_ABJURATION;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_ITEMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_ITEMS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_ABJURATION;
+	}
+
 	protected MOB owner=null;
 
 	@Override
@@ -113,7 +145,6 @@ public class Spell_ArcanePossession extends Spell
 		}
 		else
 			beneficialWordsFizzle(mob,target,L("<S-NAME> hold(s) <T-NAMESELF> tightly and whisper(s), but fail(s) to cast a spell."));
-
 
 		// return whether it worked
 		return success;

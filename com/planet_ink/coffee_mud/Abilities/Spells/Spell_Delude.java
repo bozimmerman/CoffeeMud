@@ -35,15 +35,48 @@ import java.util.*;
 
 public class Spell_Delude extends Spell
 {
-	@Override public String ID() { return "Spell_Delude"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_Delude";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Delude");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Delude spell)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_SELF;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
 	int previousAlignment=500;
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;
+	}
 
 	@Override
 	public void unInvoke()
@@ -65,7 +98,6 @@ public class Spell_Delude extends Spell
 		}
 	}
 
-
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -81,7 +113,6 @@ public class Spell_Delude extends Spell
 			return false;
 
 		boolean success=proficiencyCheck(mob,0,auto);
-
 
 		if((success)&&(CMLib.factions().getFaction(CMLib.factions().AlignID())!=null))
 		{
@@ -111,11 +142,12 @@ public class Spell_Delude extends Spell
 						Enumeration<Faction.FRange> e;
 						switch(which)
 						{
-							case 1:
-								// find a good range, set them within that
-								int newAlign=0;
-								e=CMLib.factions().getRanges(CMLib.factions().AlignID());
-								if(e!=null)
+						case 1:
+							// find a good range, set them within that
+							int newAlign=0;
+							e=CMLib.factions().getRanges(CMLib.factions().AlignID());
+							if(e!=null)
+							{
 								for(;e.hasMoreElements();)
 								{
 									final Faction.FRange R=e.nextElement();
@@ -125,14 +157,16 @@ public class Spell_Delude extends Spell
 										break;
 									}
 								}
-								CMLib.factions().postFactionChange(target,this, CMLib.factions().AlignID(), newAlign-target.fetchFaction(CMLib.factions().AlignID()));
-								CMLib.utensils().confirmWearability(target);
-								return true;
-							case 2:
-								// find an evil range, set them within that
-								newAlign=0;
-								e=CMLib.factions().getRanges(CMLib.factions().AlignID());
-								if(e!=null)
+							}
+							CMLib.factions().postFactionChange(target,this, CMLib.factions().AlignID(), newAlign-target.fetchFaction(CMLib.factions().AlignID()));
+							CMLib.utensils().confirmWearability(target);
+							return true;
+						case 2:
+							// find an evil range, set them within that
+							newAlign=0;
+							e=CMLib.factions().getRanges(CMLib.factions().AlignID());
+							if(e!=null)
+							{
 								for(;e.hasMoreElements();)
 								{
 									final Faction.FRange R=e.nextElement();
@@ -142,9 +176,10 @@ public class Spell_Delude extends Spell
 										break;
 									}
 								}
-								CMLib.factions().postFactionChange(target,this, CMLib.factions().AlignID(), newAlign-target.fetchFaction(CMLib.factions().AlignID()));
-								CMLib.utensils().confirmWearability(target);
-								return true;
+							}
+							CMLib.factions().postFactionChange(target,this, CMLib.factions().AlignID(), newAlign-target.fetchFaction(CMLib.factions().AlignID()));
+							CMLib.utensils().confirmWearability(target);
+							return true;
 						}
 					}
 				}
@@ -152,7 +187,6 @@ public class Spell_Delude extends Spell
 		}
 		else
 			return beneficialWordsFizzle(mob,null,L("<S-NAME> incant(s) and meditate(s), but fizzle(s) the spell."));
-
 
 		// return whether it worked
 		return success;

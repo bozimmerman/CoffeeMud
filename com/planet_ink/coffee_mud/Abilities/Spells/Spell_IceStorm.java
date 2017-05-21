@@ -35,14 +35,50 @@ import java.util.*;
 
 public class Spell_IceStorm extends Spell
 {
-	@Override public String ID() { return "Spell_IceStorm"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_IceStorm";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Ice Storm");
-	@Override public String name() { return localizedName; }
-	@Override public int maxRange(){return adjustedMaxInvokerRange(5);}
-	@Override public int minRange(){return 1;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
-	@Override public long flags(){return Ability.FLAG_WATERBASED;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int maxRange()
+	{
+		return adjustedMaxInvokerRange(5);
+	}
+
+	@Override
+	public int minRange()
+	{
+		return 1;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_WATERBASED;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)

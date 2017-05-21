@@ -35,13 +35,44 @@ import java.util.*;
 
 public class Spell_MassInvisibility extends Spell
 {
-	@Override public String ID() { return "Spell_MassInvisibility"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_MassInvisibility";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Mass Invisibility");
-	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "";}
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	@Override protected int canAffectCode(){return 0;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public String displayText()
+	{
+		return "";
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_OTHERS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;
+	}
 
 	@Override
 	public int castingQuality(MOB mob, Physical target)
@@ -92,7 +123,6 @@ public class Spell_MassInvisibility extends Spell
 		}
 		else
 			return beneficialVisualFizzle(mob,null,L("<S-NAME> wave(s) <S-HIS-HER> arms and speak(s) softly, but the spell fizzles."));
-
 
 		// return whether it worked
 		return success;

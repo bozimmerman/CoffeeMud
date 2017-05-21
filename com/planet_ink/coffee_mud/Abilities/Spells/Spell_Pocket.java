@@ -34,6 +34,7 @@ import java.util.*;
 */
 public class Spell_Pocket extends Spell
 {
+
 	@Override
 	public String ID()
 	{
@@ -119,7 +120,6 @@ public class Spell_Pocket extends Spell
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-
 
 		boolean success=false;
 		int affectType=CMMsg.MSG_CAST_VERBAL_SPELL;

@@ -35,15 +35,52 @@ import java.util.*;
 
 public class Spell_Enthrall extends Spell
 {
-	@Override public String ID() { return "Spell_Enthrall"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_Enthrall";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Enthrall");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Enthralled)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
-	@Override public long flags(){return Ability.FLAG_CHARMING;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_CHARMING;
+	}
 
 	protected MOB charmer=null;
 	protected MOB getCharmer()

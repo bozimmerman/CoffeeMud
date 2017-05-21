@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2003-2017 Bo Zimmerman
 
@@ -36,6 +35,7 @@ import java.util.*;
 
 public class Spell_DetectSentience extends Spell
 {
+
 	@Override
 	public String ID()
 	{
@@ -102,20 +102,22 @@ public class Spell_DetectSentience extends Spell
 				{
 					final Room R=CMLib.map().getRoom(room);
 					if(CMLib.flags().canAccess(mob, R))
-					for(int m=0;m<R.numInhabitants();m++)
 					{
-						final MOB M=R.fetchInhabitant(m);
-						if((M!=null)
-						&&(M.charStats().getStat(CharStats.STAT_INTELLIGENCE)>=2)
-						&&(M.fetchEffect("Prop_WizInvis")==null))
+						for(int m=0;m<R.numInhabitants();m++)
 						{
-							msg2.setTarget(M);
-							if(R.okMessage(mob,msg2))
+							final MOB M=R.fetchInhabitant(m);
+							if((M!=null)
+							&&(M.charStats().getStat(CharStats.STAT_INTELLIGENCE)>=2)
+							&&(M.fetchEffect("Prop_WizInvis")==null))
 							{
-								R.send(mob,msg2);
-								lines.append("^!"+CMStrings.padRight(M.name(mob),25)+"^?| ");
-								lines.append(R.displayText(mob));
-								lines.append("\n\r");
+								msg2.setTarget(M);
+								if(R.okMessage(mob,msg2))
+								{
+									R.send(mob,msg2);
+									lines.append("^!"+CMStrings.padRight(M.name(mob),25)+"^?| ");
+									lines.append(R.displayText(mob));
+									lines.append("\n\r");
+								}
 							}
 						}
 					}

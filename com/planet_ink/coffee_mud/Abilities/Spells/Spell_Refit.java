@@ -35,12 +35,38 @@ import java.util.*;
 
 public class Spell_Refit extends Spell
 {
-	@Override public String ID() { return "Spell_Refit"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_Refit";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Refit");
-	@Override public String name() { return localizedName; }
-	@Override protected int canTargetCode(){return CAN_ITEMS;}
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_ITEMS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -49,7 +75,10 @@ public class Spell_Refit extends Spell
 		if(target==null)
 			return false;
 		if(!(target instanceof Armor))
-		{	mob.tell(L("@x1 cannot be refitted.",target.name(mob))); return false;}
+		{
+			mob.tell(L("@x1 cannot be refitted.",target.name(mob)));
+			return false;
+		}
 
 		if(!super.invoke(mob,commands, givenTarget, auto,asLevel))
 			return false;
@@ -79,7 +108,6 @@ public class Spell_Refit extends Spell
 		}
 		else
 			beneficialWordsFizzle(mob,target,L("<S-NAME> incant(s) at <T-NAMESELF>, but nothing happens."));
-
 
 		// return whether it worked
 		return success;

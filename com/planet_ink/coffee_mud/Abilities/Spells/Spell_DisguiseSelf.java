@@ -33,18 +33,54 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Spell_DisguiseSelf extends Spell
 {
-	@Override public String ID() { return "Spell_DisguiseSelf"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_DisguiseSelf";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Disguise Self");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Disguise Self)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
-	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_OTHERS;
+	}
 
 	private String raceName="Human";
 	private String newName="Bob";
@@ -174,7 +210,6 @@ public class Spell_DisguiseSelf extends Spell
 		}
 		else
 			return beneficialWordsFizzle(mob,target,L("<S-NAME> cast(s) a spell for <T-NAMESELF>, but nothing happens."));
-
 
 		// return whether it worked
 		return success;

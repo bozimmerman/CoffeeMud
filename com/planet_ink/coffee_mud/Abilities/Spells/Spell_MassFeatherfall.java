@@ -35,13 +35,44 @@ import java.util.*;
 
 public class Spell_MassFeatherfall extends Spell
 {
-	@Override public String ID() { return "Spell_MassFeatherfall"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_MassFeatherfall";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Mass FeatherFall");
-	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "";}
-	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
-	@Override protected int canAffectCode(){return 0;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public String displayText()
+	{
+		return "";
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_OTHERS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -77,7 +108,6 @@ public class Spell_MassFeatherfall extends Spell
 		}
 		else
 			return beneficialVisualFizzle(mob,null,L("<S-NAME> wave(s) <S-HIS-HER> arms and speak(s) lightly, but the spell fizzles."));
-
 
 		// return whether it worked
 		return success;

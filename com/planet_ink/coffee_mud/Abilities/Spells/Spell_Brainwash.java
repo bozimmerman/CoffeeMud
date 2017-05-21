@@ -35,6 +35,7 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Spell_Brainwash extends Spell
 {
+
 	@Override
 	public String ID()
 	{
@@ -204,10 +205,8 @@ public class Spell_Brainwash extends Spell
 		else
 			return maliciousFizzle(mob,target,L("<S-NAME> incant(s) at <T-NAMESELF>, but flub(s) the spell."));
 
-
 		// return whether it worked
 		return success;
 	}
 }
-
 

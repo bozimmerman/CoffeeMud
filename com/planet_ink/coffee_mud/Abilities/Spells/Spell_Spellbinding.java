@@ -40,6 +40,7 @@ import java.io.ObjectOutputStream;
 
 public class Spell_Spellbinding extends Spell
 {
+
 	@Override
 	public String ID()
 	{

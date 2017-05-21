@@ -35,14 +35,46 @@ import java.util.*;
 
 public class Spell_Toadstool extends Spell
 {
-	@Override public String ID() { return "Spell_Toadstool"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_Toadstool";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Toadstool");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Toadstool)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;
+	}
 
 	Race newRace=null;
 
@@ -63,6 +95,7 @@ public class Spell_Toadstool extends Spell
 		}
 		affectableStats.setLevel(1);
 	}
+
 	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{

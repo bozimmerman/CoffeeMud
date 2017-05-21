@@ -35,6 +35,7 @@ import java.util.*;
 
 public class Spell_StinkingCloud extends Spell
 {
+
 	@Override
 	public String ID()
 	{
@@ -235,7 +236,6 @@ public class Spell_StinkingCloud extends Spell
 		}
 		else
 			return maliciousFizzle(mob,null,L("<S-NAME> incant(s), but the spell fizzles."));
-
 
 		// return whether it worked
 		return success;

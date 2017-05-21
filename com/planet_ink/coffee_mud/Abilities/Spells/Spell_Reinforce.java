@@ -35,12 +35,38 @@ import java.util.*;
 
 public class Spell_Reinforce extends Spell
 {
-	@Override public String ID() { return "Spell_Reinforce"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_Reinforce";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Reinforce");
-	@Override public String name() { return localizedName; }
-	@Override protected int canTargetCode(){return CAN_ITEMS;}
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_ITEMS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -49,10 +75,16 @@ public class Spell_Reinforce extends Spell
 		if(target==null)
 			return false;
 		if(!target.subjectToWearAndTear())
-		{	mob.tell(L("@x1 cannot be reinforced.",target.name(mob))); return false;}
+		{
+			mob.tell(L("@x1 cannot be reinforced.",target.name(mob)));
+			return false;
+		}
 		else
 		if(target.usesRemaining()<100)
-		{	mob.tell(L("@x1 must be repaired before it can be reinforced.",target.name(mob))); return false;}
+		{
+			mob.tell(L("@x1 must be repaired before it can be reinforced.",target.name(mob)));
+			return false;
+		}
 
 		if(!super.invoke(mob,commands, givenTarget, auto,asLevel))
 			return false;

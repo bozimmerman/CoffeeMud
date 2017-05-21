@@ -40,16 +40,48 @@ public class Spell_Siphon extends Spell
 	{
 		super();
 		if(randomizer==null)
-		   randomizer = new Random(System.currentTimeMillis());
+			randomizer = new Random(System.currentTimeMillis());
 	}
-	@Override public String ID() { return "Spell_Siphon"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_Siphon";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Siphon");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Siphon spell)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int maxRange(){return adjustedMaxInvokerRange(1);}
-	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int maxRange()
+	{
+		return adjustedMaxInvokerRange(1);
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_OTHERS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)

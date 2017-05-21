@@ -35,13 +35,44 @@ import java.util.*;
 
 public class Spell_MeteorStorm extends Spell
 {
-	@Override public String ID() { return "Spell_MeteorStorm"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_MeteorStorm";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Meteor Storm");
-	@Override public String name() { return localizedName; }
-	@Override public int maxRange(){return adjustedMaxInvokerRange(5);}
-	@Override public int minRange(){return 1;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int maxRange()
+	{
+		return adjustedMaxInvokerRange(5);
+	}
+
+	@Override
+	public int minRange()
+	{
+		return 1;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -84,7 +115,6 @@ public class Spell_MeteorStorm extends Spell
 		}
 		else
 			return maliciousFizzle(mob,null,L("<S-NAME> attempt(s) to invoke a meteoric spell, but the spell fizzles."));
-
 
 		// return whether it worked
 		return success;

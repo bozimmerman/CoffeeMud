@@ -35,12 +35,38 @@ import java.util.*;
 
 public class Spell_Dismissal extends Spell
 {
-	@Override public String ID() { return "Spell_Dismissal"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_Dismissal";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Dismissal");
-	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
-	@Override public long flags(){return Ability.FLAG_MOVING|Ability.FLAG_TRANSPORTING;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_MOVING|Ability.FLAG_TRANSPORTING;
+	}
 
 	@Override
 	public int castingQuality(MOB mob, Physical target)
@@ -51,6 +77,7 @@ public class Spell_Dismissal extends Spell
 			return Ability.QUALITY_INDIFFERENT;
 		return super.castingQuality(mob,target);
 	}
+
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -97,7 +124,6 @@ public class Spell_Dismissal extends Spell
 		}
 		else
 			maliciousFizzle(mob,target,L("<S-NAME> point(s) at <T-NAMESELF> and utter(s) a dismissive but fizzled spell!"));
-
 
 		// return whether it worked
 		return success;

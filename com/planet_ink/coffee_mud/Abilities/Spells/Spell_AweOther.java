@@ -35,13 +35,44 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Spell_AweOther extends Spell
 {
-	@Override public String ID() { return "Spell_AweOther"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_AweOther";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Awe Other");
-	@Override public String name() { return localizedName; }
-	@Override public String displayText() { return L("(Awe of "+text()+")"); }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public String displayText()
+	{
+		return L("(Awe of "+text()+")");
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;
+	}
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
@@ -95,8 +126,6 @@ public class Spell_AweOther extends Spell
 			if((mob.location()!=null)&&(!mob.amDead()))
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> seem(s) less in awe of @x1.",text()));
 	}
-
-
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)

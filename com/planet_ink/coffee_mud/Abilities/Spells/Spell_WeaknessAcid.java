@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2002-2017 Bo Zimmerman
 
@@ -36,14 +35,46 @@ import java.util.*;
 
 public class Spell_WeaknessAcid extends Spell
 {
-	@Override public String ID() { return "Spell_WeaknessAcid"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_WeaknessAcid";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Weakness to Acid");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Weakness to Acid)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;
+	}
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
@@ -84,7 +115,6 @@ public class Spell_WeaknessAcid extends Spell
 		super.affectCharStats(affectedMOB,affectedStats);
 		affectedStats.setStat(CharStats.STAT_SAVE_ACID,affectedStats.getStat(CharStats.STAT_SAVE_ACID)-100);
 	}
-
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)

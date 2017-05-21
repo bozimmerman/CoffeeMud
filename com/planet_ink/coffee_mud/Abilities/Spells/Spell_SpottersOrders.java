@@ -35,13 +35,45 @@ import java.util.*;
 
 public class Spell_SpottersOrders extends Spell
 {
-	@Override public String ID() { return "Spell_SpottersOrders"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_SpottersOrders";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Spotters Orders");
-	@Override public String name() { return localizedName; }
-	@Override public String displayText() { return L("(Spotting weaknesses of "+text()+")"); }
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public String displayText()
+	{
+		return L("(Spotting weaknesses of "+text()+")");
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_SELF;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;
+	}
+
 	protected MOB spottedM=null;
 	protected boolean activated=true;
 	protected List<Triad<MOB,Ability,long[]>> groupMembers=null;
@@ -201,7 +233,6 @@ public class Spell_SpottersOrders extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-
 		// now see if it worked
 		final boolean success=proficiencyCheck(mob,0,auto);
 
@@ -226,7 +257,6 @@ public class Spell_SpottersOrders extends Spell
 		}
 		else
 			return beneficialVisualFizzle(mob,target,L("<S-NAME> point(s) at <S-HIS-HER> group members speak(s) knowingly about <T-NAMESELF>, but nothing more happens."));
-
 
 		// return whether it worked
 		return success;

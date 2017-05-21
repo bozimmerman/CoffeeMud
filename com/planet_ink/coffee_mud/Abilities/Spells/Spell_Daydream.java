@@ -35,11 +35,32 @@ import java.util.*;
 
 public class Spell_Daydream extends Spell
 {
-	@Override public String ID() { return "Spell_Daydream"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_Daydream";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Daydream");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -90,7 +111,6 @@ public class Spell_Daydream extends Spell
 		}
 		else
 			beneficialVisualFizzle(mob,null,L("<S-NAME> attempt(s) to invoke a daydream, but fizzle(s) the spell."));
-
 
 		// return whether it worked
 		return success;

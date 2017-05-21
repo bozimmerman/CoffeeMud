@@ -35,14 +35,47 @@ import java.util.*;
 
 public class Spell_GroupStatus extends Spell
 {
-	@Override public String ID() { return "Spell_GroupStatus"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_GroupStatus";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Group Status");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Group Status)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;
+	}
+
 	protected List<Pair<MOB,Ability>> groupMembers=null;
 
 	protected HashSet<String> reporteds=new HashSet<String>();
@@ -98,7 +131,6 @@ public class Spell_GroupStatus extends Spell
 				}
 				else
 					reporteds.remove("LOWHITPOINTS");
-
 
 				for(final Iterator<String> i=affects.iterator();i.hasNext();)
 				{
@@ -174,7 +206,6 @@ public class Spell_GroupStatus extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-
 		// now see if it worked
 		final boolean success=proficiencyCheck(mob,0,auto);
 
@@ -189,7 +220,6 @@ public class Spell_GroupStatus extends Spell
 		}
 		else
 			return beneficialVisualFizzle(mob,target,L("<S-NAME> point(s) at <S-HIS-HER> group members speak(s) knowingly, but nothing more happens."));
-
 
 		// return whether it worked
 		return success;

@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2002-2017 Bo Zimmerman
 
@@ -36,15 +35,46 @@ import java.util.*;
 
 public class Spell_IronGrip extends Spell
 {
-	@Override public String ID() { return "Spell_IronGrip"; }
-	private final static String localizedName = CMLib.lang().L("Iron Grip");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Iron Grip)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
 
+	@Override
+	public String ID()
+	{
+		return "Spell_IronGrip";
+	}
+
+	private final static String localizedName = CMLib.lang().L("Iron Grip");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Iron Grip)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_OTHERS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;
+	}
 
 	@Override
 	public void unInvoke()
@@ -54,8 +84,10 @@ public class Spell_IronGrip extends Spell
 			return;
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
+		{
 			if((mob.location()!=null)&&(!mob.amDead()))
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> weapon hand becomes flesh again."));
+		}
 
 		super.unInvoke();
 

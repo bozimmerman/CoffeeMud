@@ -35,14 +35,47 @@ import java.util.*;
 
 public class Spell_SpellTurning extends Spell
 {
-	@Override public String ID() { return "Spell_SpellTurning"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_SpellTurning";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Spell Turning");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Spell Turning)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ABJURATION;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_OTHERS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_ABJURATION;
+	}
+
 	protected boolean oncePerRound=false;
 
 	@Override
@@ -53,13 +86,14 @@ public class Spell_SpellTurning extends Spell
 			return;
 		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
+		{
 			if((mob.location()!=null)&&(!mob.amDead()))
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> reflective protection dissipates."));
+		}
 
 		super.unInvoke();
 
 	}
-
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
@@ -109,7 +143,6 @@ public class Spell_SpellTurning extends Spell
 		oncePerRound=false;
 		return super.tick(ticking,tickID);
 	}
-
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)

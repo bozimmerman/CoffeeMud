@@ -35,12 +35,38 @@ import java.util.*;
 
 public class Spell_Augury extends Spell
 {
-	@Override public String ID() { return "Spell_Augury"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_Augury";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Augury");
-	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -112,7 +138,6 @@ public class Spell_Augury extends Spell
 		}
 		else
 			beneficialVisualFizzle(mob,null,L("<S-NAME> point(s) <S-HIS-HER> finger @x1, incanting, but then loses concentration.",CMLib.directions().getDirectionName(dirCode)));
-
 
 		// return whether it worked
 		return success;

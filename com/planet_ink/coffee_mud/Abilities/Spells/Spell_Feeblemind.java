@@ -35,14 +35,46 @@ import java.util.*;
 
 public class Spell_Feeblemind extends Spell
 {
-	@Override public String ID() { return "Spell_Feeblemind"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_Feeblemind";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Feeblemind");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Feeblemind spell)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;
+	}
 
 	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
@@ -64,8 +96,6 @@ public class Spell_Feeblemind extends Spell
 		if(canBeUninvoked())
 			mob.tell(L("You begin to remember some rather simple things--like your name.  The feeblemind spell must be wearing off."));
 	}
-
-
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)

@@ -37,13 +37,44 @@ import java.util.*;
 
 public class Spell_Fabricate extends Spell
 {
-	@Override public String ID() { return "Spell_Fabricate"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_Fabricate";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Fabricate");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return CAN_ITEMS;}
-	@Override protected int canTargetCode(){return CAN_ITEMS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_ITEMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_ITEMS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
 	
 	protected static List<ItemCraftor> craftingSkills=new Vector<ItemCraftor>();
 	protected static List<ItemCraftor> getCraftingSkills()
@@ -169,7 +200,6 @@ public class Spell_Fabricate extends Spell
 				intoI.delBehavior(B);
 		}
 		
-			
 		intoI.basePhyStats().setDisposition(intoI.basePhyStats().disposition() & (~PhyStats.IS_BONUS));
 		intoI.recoverPhyStats();
 		intoI.setBaseValue(0);

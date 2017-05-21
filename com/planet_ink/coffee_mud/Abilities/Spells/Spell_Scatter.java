@@ -35,12 +35,38 @@ import java.util.*;
 
 public class Spell_Scatter extends Spell
 {
-	@Override public String ID() { return "Spell_Scatter"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_Scatter";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Scatter");
-	@Override public String name() { return localizedName; }
-	@Override protected int canTargetCode(){return CAN_MOBS|CAN_ITEMS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS|CAN_ITEMS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;
+	}
 
 	private Item getItem(MOB mobTarget)
 	{
@@ -179,10 +205,8 @@ public class Spell_Scatter extends Spell
 		else
 			return maliciousFizzle(mob,mobTarget,L("<S-NAME> attempt(s) a scattering spell, but nothing happens."));
 
-
 		// return whether it worked
 		return success;
 	}
 }
-
 

@@ -35,14 +35,46 @@ import java.util.*;
 
 public class Spell_Weaken extends Spell
 {
-	@Override public String ID() { return "Spell_Weaken"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_Weaken";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Weaken");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Weaken spell)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;
+	}
 
 	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
@@ -50,7 +82,6 @@ public class Spell_Weaken extends Spell
 		super.affectCharStats(affected,affectableStats);
 		affectableStats.setStat(CharStats.STAT_STRENGTH,(int)Math.round(CMath.div(affectableStats.getStat(CharStats.STAT_STRENGTH),2.0)));
 	}
-
 
 	@Override
 	public void unInvoke()
@@ -65,8 +96,6 @@ public class Spell_Weaken extends Spell
 			if((mob.location()!=null)&&(!mob.amDead()))
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> begin(s) to look a bit stronger."));
 	}
-
-
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)

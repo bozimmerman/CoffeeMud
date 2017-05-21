@@ -35,14 +35,46 @@ import java.util.*;
 
 public class Spell_BurningHands extends Spell
 {
-	@Override public String ID() { return "Spell_BurningHands"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_BurningHands";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Burning Hands");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Burning Hands spell)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
-	@Override public long flags(){return Ability.FLAG_FIREBASED;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_FIREBASED;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -77,7 +109,6 @@ public class Spell_BurningHands extends Spell
 		}
 		else
 			return maliciousFizzle(mob,target,L("<S-NAME> incant(s) and reach(es) for <T-NAMESELF>, but flub(s) the spell."));
-
 
 		// return whether it worked
 		return success;

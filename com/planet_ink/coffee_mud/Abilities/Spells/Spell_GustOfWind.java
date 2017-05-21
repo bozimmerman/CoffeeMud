@@ -35,17 +35,60 @@ import java.util.*;
 
 public class Spell_GustOfWind extends Spell
 {
-	@Override public String ID() { return "Spell_GustOfWind"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_GustOfWind";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Gust of Wind");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Blown Down)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int maxRange(){return adjustedMaxInvokerRange(4);}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int maxRange()
+	{
+		return adjustedMaxInvokerRange(4);
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
 	public boolean doneTicking=false;
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
-	@Override public long flags(){return Ability.FLAG_MOVING;}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_MOVING;
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
@@ -145,7 +188,6 @@ public class Spell_GustOfWind extends Spell
 		}
 		else
 			return maliciousFizzle(mob,null,L("<S-NAME> blow(s), but find(s) <S-HE-SHE> is only full of hot air."));
-
 
 		// return whether it worked
 		return success;

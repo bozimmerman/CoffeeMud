@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2002-2017 Bo Zimmerman
 
@@ -36,15 +35,52 @@ import java.util.*;
 
 public class Spell_PredictWeather extends Spell
 {
-	@Override public String ID() { return "Spell_PredictWeather"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_PredictWeather";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Forecast Weather");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Forecast Weather)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_SELF;
+	}
 
 	String lastPrediction="";
 
@@ -60,6 +96,7 @@ public class Spell_PredictWeather extends Spell
 		if(canBeUninvoked())
 			mob.tell(L("Your senses are no longer sensitive to the weather."));
 	}
+
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -80,7 +117,6 @@ public class Spell_PredictWeather extends Spell
 		return true;
 	}
 
-
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -94,7 +130,6 @@ public class Spell_PredictWeather extends Spell
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 

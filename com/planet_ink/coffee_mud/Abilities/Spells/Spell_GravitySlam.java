@@ -35,6 +35,7 @@ import java.util.*;
 
 public class Spell_GravitySlam extends Spell
 {
+
 	@Override
 	public String ID()
 	{
@@ -118,7 +119,6 @@ public class Spell_GravitySlam extends Spell
 		}
 		else
 			return maliciousFizzle(mob,target,L("<S-NAME> incant(s) and point(s) at <T-NAMESELF>, but flub(s) the spell."));
-
 
 		// return whether it worked
 		return success;

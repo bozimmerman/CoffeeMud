@@ -35,13 +35,44 @@ import java.util.*;
 
 public class Spell_Flagportation extends Spell
 {
-	@Override public String ID() { return "Spell_Flagportation"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_Flagportation";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Flagportation");
-	@Override public String name() { return localizedName; }
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
-	@Override public long flags(){return Ability.FLAG_TRANSPORTING|Ability.FLAG_CLANMAGIC;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_TRANSPORTING|Ability.FLAG_CLANMAGIC;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
 
 	private boolean isBadRoom(final Room room, final MOB mob, final Room newRoom)
 	{
@@ -93,7 +124,10 @@ public class Spell_Flagportation extends Spell
 					}
 				}
 			}
-		}catch(final NoSuchElementException nse){}
+		}
+		catch(final NoSuchElementException nse)
+		{
+		}
 		if(candidates.size()==0)
 		{
 			mob.tell(L("You don't have any flags to flagportate to!"));

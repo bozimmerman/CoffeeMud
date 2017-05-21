@@ -35,16 +35,58 @@ import java.util.*;
 
 public class Spell_TimeStop extends Spell
 {
-	@Override public String ID() { return "Spell_TimeStop"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_TimeStop";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Time Stop");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Time is Stopped)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return CAN_ROOMS|CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override protected int overrideMana(){return 100;}
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_ROOMS|CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int overrideMana()
+	{
+		return 100;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
 
 	protected Vector<MOB> fixed=new Vector<MOB>();
 
@@ -95,6 +137,7 @@ public class Spell_TimeStop extends Spell
 		}
 		super.unInvoke();
 	}
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -148,7 +191,6 @@ public class Spell_TimeStop extends Spell
 			mob.tell(mob,null,null,L("Time has already been stopped here!"));
 			return false;
 		}
-
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 

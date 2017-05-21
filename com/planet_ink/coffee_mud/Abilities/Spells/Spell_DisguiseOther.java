@@ -33,14 +33,30 @@ import java.util.*;
    limitations under the License.
 */
 
-
 public class Spell_DisguiseOther extends Spell_DisguiseSelf
 {
-	@Override public String ID() { return "Spell_DisguiseOther"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_DisguiseOther";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Disguise Other");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Disguise Other)");
-	@Override public String displayText() { return localizedStaticDisplay; }
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
 	
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)

@@ -35,13 +35,44 @@ import java.util.*;
 
 public class Spell_WaterCannon extends Spell
 {
-	@Override public String ID() { return "Spell_WaterCannon"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_WaterCannon";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Water Cannon");
-	@Override public String name() { return localizedName; }
-	@Override public int minRange(){return 2;}
-	@Override public int maxRange(){return adjustedMaxInvokerRange(3);}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int minRange()
+	{
+		return 2;
+	}
+
+	@Override
+	public int maxRange()
+	{
+		return adjustedMaxInvokerRange(3);
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;
+	}
 
    @Override
 public void affectPhyStats(Physical affected, PhyStats affectableStats)

@@ -35,15 +35,46 @@ import java.util.*;
 
 public class Spell_ChangeSex extends Spell
 {
-	@Override public String ID() { return "Spell_ChangeSex"; }
-	private final static String localizedName = CMLib.lang().L("Change Sex");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Change Sex)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
 
+	@Override
+	public String ID()
+	{
+		return "Spell_ChangeSex";
+	}
+
+	private final static String localizedName = CMLib.lang().L("Change Sex");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Change Sex)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;
+	}
 
 	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
@@ -144,8 +175,6 @@ public class Spell_ChangeSex extends Spell
 					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> feel(s) like <S-HIS-HER> old self again."));
 		}
 	}
-
-
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)

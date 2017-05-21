@@ -35,12 +35,38 @@ import java.util.*;
 
 public class Spell_Erase extends Spell
 {
-	@Override public String ID() { return "Spell_Erase"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_Erase";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Erase Scroll");
-	@Override public String name() { return localizedName; }
-	@Override protected int canTargetCode(){return CAN_ITEMS;}
-	@Override public int classificationCode() {	return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_ITEMS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -80,7 +106,6 @@ public class Spell_Erase extends Spell
 		}
 		else
 			beneficialWordsFizzle(mob,target,L("<S-NAME> whisper(s), and then rub(s) on <T-NAMESELF>, but nothing happens."));
-
 
 		// return whether it worked
 		return success;

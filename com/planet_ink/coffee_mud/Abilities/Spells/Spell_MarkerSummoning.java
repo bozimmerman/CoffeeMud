@@ -35,13 +35,44 @@ import java.util.*;
 
 public class Spell_MarkerSummoning extends Spell
 {
-	@Override public String ID() { return "Spell_MarkerSummoning"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_MarkerSummoning";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Marker Summoning");
-	@Override public String name() { return localizedName; }
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
-	@Override public long flags(){return Ability.FLAG_TRANSPORTING;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_TRANSPORTING;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -71,7 +102,10 @@ public class Spell_MarkerSummoning extends Spell
 				if(oldRoom!=null)
 					break;
 			}
-		}catch(final NoSuchElementException nse){}
+		}
+		catch(final NoSuchElementException nse)
+		{
+		}
 		if(oldRoom==null)
 		{
 			mob.tell(L("You can't seem to focus on your marker.  Are you sure you've already summoned it?"));
@@ -86,7 +120,6 @@ public class Spell_MarkerSummoning extends Spell
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-
 
 		final Vector<MOB> inhabs=new Vector<MOB>();
 		int profNeg=0;
@@ -144,7 +177,6 @@ public class Spell_MarkerSummoning extends Spell
 		}
 		else
 			beneficialWordsFizzle(mob,null,L("<S-NAME> attempt(s) to summon <S-HIS-HER> marker energy, but fail(s)."));
-
 
 		// return whether it worked
 		return success;

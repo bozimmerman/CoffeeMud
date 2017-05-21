@@ -34,6 +34,7 @@ import java.util.*;
 */
 public class Spell_HeatMetal extends Spell
 {
+
 	@Override
 	public String ID()
 	{
@@ -148,7 +149,6 @@ public class Spell_HeatMetal extends Spell
 			CMLib.combat().postAttack(mob,invoker,mob.fetchWieldedItem());
 		return true;
 	}
-
 
 	@Override
 	public void unInvoke()

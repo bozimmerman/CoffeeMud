@@ -35,6 +35,7 @@ import java.util.*;
 
 public class Spell_MassDisintegrate extends Spell
 {
+
 	@Override
 	public String ID()
 	{

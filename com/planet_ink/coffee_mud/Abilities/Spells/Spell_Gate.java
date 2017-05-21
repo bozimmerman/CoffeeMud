@@ -35,6 +35,7 @@ import java.util.*;
 
 public class Spell_Gate extends Spell
 {
+
 	@Override
 	public String ID()
 	{
@@ -136,7 +137,10 @@ public class Spell_Gate extends Spell
 		try
 		{
 			candidates=CMLib.map().findInhabitants(CMLib.map().rooms(), mob, areaName, 10);
-		}catch(final NoSuchElementException nse){}
+		}
+		catch(final NoSuchElementException nse)
+		{
+		}
 		Room newRoom=null;
 		if(candidates.size()>0)
 		{

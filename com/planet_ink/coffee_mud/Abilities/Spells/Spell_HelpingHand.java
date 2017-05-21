@@ -35,21 +35,57 @@ import java.util.*;
 
 public class Spell_HelpingHand extends Spell
 {
-	@Override public String ID() { return "Spell_HelpingHand"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_HelpingHand";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Helping Hand");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Helping Hand)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
 
 	protected MOB targetM = null;
 	protected int frustration = 0;
 	protected String targetName = "your target";
 	protected List<Room> trail = null;
-	
 	
 	@Override
 	public void setMiscText(String text)
@@ -280,7 +316,6 @@ public class Spell_HelpingHand extends Spell
 		}
 		else
 			beneficialVisualFizzle(mob,target,L("<S-NAME> wave(s) <S-HIS-HER> arms around, incanting, but nothing happens."));
-
 
 		// return whether it worked
 		return success;

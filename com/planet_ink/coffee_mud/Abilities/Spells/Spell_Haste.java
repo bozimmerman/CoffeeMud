@@ -35,14 +35,46 @@ import java.util.*;
 
 public class Spell_Haste extends Spell
 {
-	@Override public String ID() { return "Spell_Haste"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_Haste";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Haste");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Haste spell)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_OTHERS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
@@ -50,7 +82,6 @@ public class Spell_Haste extends Spell
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setSpeed(affectableStats.speed()+1.0+(CMath.mul(getXLEVELLevel(invoker()),0.20)));
 	}
-
 
 	@Override
 	public void unInvoke()
@@ -65,8 +96,6 @@ public class Spell_Haste extends Spell
 			if((mob.location()!=null)&&(!mob.amDead()))
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> slow(s) back down to normal speed."));
 	}
-
-
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)

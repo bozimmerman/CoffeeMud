@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2014-2017 Bo Zimmerman
 
@@ -36,15 +35,52 @@ import java.util.*;
 
 public class Spell_ProduceFlame extends Spell
 {
-	@Override public String ID() { return "Spell_ProduceFlame"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_ProduceFlame";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Produce Flame");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Produce Flame)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
-	@Override public long flags(){return Ability.FLAG_FIREBASED;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_SELF;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_FIREBASED;
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
@@ -52,6 +88,7 @@ public class Spell_ProduceFlame extends Spell
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_LIGHTSOURCE|PhyStats.IS_GLOWING);
 		affectableStats.setDisposition(affectableStats.disposition() & ~PhyStats.IS_DARK);
 	}
+
 	@Override
 	public void unInvoke()
 	{
@@ -91,7 +128,6 @@ public class Spell_ProduceFlame extends Spell
 		return;
 	}
 
-	
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{

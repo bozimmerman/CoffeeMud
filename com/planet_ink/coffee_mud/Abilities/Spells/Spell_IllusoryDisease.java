@@ -35,17 +35,65 @@ import java.util.*;
 
 public class Spell_IllusoryDisease extends Spell implements DiseaseAffect
 {
-	@Override public String ID() { return "Spell_IllusoryDisease"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_IllusoryDisease";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Illusory Disease");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Diseased)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
-	@Override public int difficultyLevel(){return 9;}
-	@Override public int spreadBitmap() { return 0; }
-	@Override public boolean isMalicious(){ return true;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;
+	}
+
+	@Override
+	public int difficultyLevel()
+	{
+		return 9;
+	}
+
+	@Override
+	public int spreadBitmap()
+	{
+		return 0;
+	}
+
+	@Override
+	public boolean isMalicious()
+	{
+		return true;
+	}
+
 	protected int diseaseTick=5;
 
 	@Override
@@ -61,7 +109,11 @@ public class Spell_IllusoryDisease extends Spell implements DiseaseAffect
 		return ""; // not really a condition
 	}
 
-	@Override public int abilityCode(){return 0;}
+	@Override
+	public int abilityCode()
+	{
+		return 0;
+	}
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
@@ -113,8 +165,6 @@ public class Spell_IllusoryDisease extends Spell implements DiseaseAffect
 		if(canBeUninvoked())
 			mob.tell(L("You begin to feel better."));
 	}
-
-
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)

@@ -35,14 +35,46 @@ import java.util.*;
 
 public class Spell_GraceOfTheCat extends Spell
 {
-	@Override public String ID() { return "Spell_GraceOfTheCat"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_GraceOfTheCat";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Grace Of The Cat");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Grace Of The Cat)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_OTHERS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;
+	}
 	int increase = -1;
 
 	@Override
@@ -69,7 +101,6 @@ public class Spell_GraceOfTheCat extends Spell
 		affectableStats.setStat(CharStats.STAT_DEXTERITY,affectableStats.getStat(CharStats.STAT_DEXTERITY) + increase);
 	}
 
-
 	@Override
 	public void unInvoke()
 	{
@@ -82,8 +113,6 @@ public class Spell_GraceOfTheCat extends Spell
 			mob.tell(L("You begin to feel more like your regular clumsy self."));
 	}
 
-
-
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -93,7 +122,6 @@ public class Spell_GraceOfTheCat extends Spell
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-
 
 		// now see if it worked
 		final boolean success=proficiencyCheck(mob,0,auto);
@@ -110,7 +138,6 @@ public class Spell_GraceOfTheCat extends Spell
 		}
 		else
 			return beneficialVisualFizzle(mob,target,L("<S-NAME> speak(s) gracefully to <T-NAMESELF>, but nothing more happens."));
-
 
 		// return whether it worked
 		return success;

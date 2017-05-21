@@ -37,19 +37,60 @@ import java.util.*;
  * @version 1.0.0.0
  */
 
-
 public class Spell_BaseClanEq extends Spell
 {
-	@Override public String ID() { return "Spell_BaseClanEq"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_BaseClanEq";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Enchant Clan Equipment Base Model");
-	@Override public String name() { return localizedName; }
-	@Override protected int canTargetCode(){return CAN_ITEMS;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
-	@Override public long flags(){return super.flags()|Ability.FLAG_CLANMAGIC;}
-	@Override protected int overrideMana(){return Ability.COST_ALL;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_ITEMS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;
+	}
+
+	@Override
+	public long flags()
+	{
+		return super.flags()|Ability.FLAG_CLANMAGIC;
+	}
+
+	@Override
+	protected int overrideMana()
+	{
+		return Ability.COST_ALL;
+	}
+
 	protected String type="";
-	@Override public boolean disregardsArmorCheck(MOB mob){return true;}
+
+	@Override
+	public boolean disregardsArmorCheck(MOB mob)
+	{
+		return true;
+	}
 
 	@Override
 	public boolean canBeLearnedBy(MOB teacher, MOB student)
@@ -69,6 +110,7 @@ public class Spell_BaseClanEq extends Spell
 		}
 		return super.canBeLearnedBy(teacher,student);
 	}
+
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{

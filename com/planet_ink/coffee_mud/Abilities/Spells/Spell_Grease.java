@@ -35,15 +35,52 @@ import java.util.*;
 
 public class Spell_Grease extends Spell
 {
-	@Override public String ID() { return "Spell_Grease"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_Grease";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Grease");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Covered in Grease)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
-	@Override public long flags(){return Ability.FLAG_MOVING;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_MOVING;
+	}
 
 	public final static int SIT = 0;
 	public final static int FUMBLE_WEAPON = 1;
@@ -82,8 +119,9 @@ public class Spell_Grease extends Spell
 					{
 						final int greaseEffect = (int) Math.round(Math.random()*3);
 						if((!CMLib.flags().isFlying(mob))||(greaseEffect==FUMBLE_WEAPON))
-						switch(greaseEffect)
 						{
+							switch(greaseEffect)
+							{
 							case SIT:
 								msg2=CMClass.getMsg(mob,msg.source(),null,CMMsg.MSG_OK_ACTION,L("<S-NAME> slip(s) and slide(s) around in the grease!"));
 								mob.phyStats().setDisposition(mob.phyStats().disposition() | PhyStats.IS_SITTING);
@@ -129,6 +167,7 @@ public class Spell_Grease extends Spell
 									mob.location().send(mob,msg2);
 								}
 								return false;
+							}
 						}
 					}
 				}
@@ -139,7 +178,6 @@ public class Spell_Grease extends Spell
 		}
 		return true;
 	}
-
 
 	@Override
 	public void unInvoke()
@@ -154,8 +192,6 @@ public class Spell_Grease extends Spell
 			if((mob.location()!=null)&&(!mob.amDead()))
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> manage(s) to work <S-HIS-HER> way out of the grease."));
 	}
-
-
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)

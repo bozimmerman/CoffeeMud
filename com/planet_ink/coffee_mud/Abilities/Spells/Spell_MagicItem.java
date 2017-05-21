@@ -36,6 +36,7 @@ import java.util.*;
 
 public class Spell_MagicItem extends Spell
 {
+
 	@Override
 	public String ID()
 	{
@@ -124,7 +125,6 @@ public class Spell_MagicItem extends Spell
 			return false;
 		}
 
-
 		if((wandThis.ID().equals("Spell_Stoneskin"))
 		||(wandThis.ID().equals("Spell_MirrorImage"))
 		||(CMath.bset(wandThis.flags(), FLAG_SUMMONING))
@@ -157,7 +157,6 @@ public class Spell_MagicItem extends Spell
 		// lose all the mana!
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 

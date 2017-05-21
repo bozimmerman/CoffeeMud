@@ -35,15 +35,52 @@ import java.util.*;
 
 public class Spell_WizardsChest extends Spell
 {
-	@Override public String ID() { return "Spell_WizardsChest"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_WizardsChest";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Wizards Chest");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Wizard Chest)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return CAN_ITEMS;}
-	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_ITEMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_ITEMS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
@@ -69,8 +106,10 @@ public class Spell_WizardsChest extends Spell
 			mob.tell(L("@x1 appears to be magically protected.",affected.name()));
 			return false;
 		case CMMsg.TYP_JUSTICE:
+		{
 			if(!msg.targetMajor(CMMsg.MASK_DELICATE))
 				return true;
+		}
 		//$FALL-THROUGH$
 		case CMMsg.TYP_DELICATE_HANDS_ACT:
 			mob.tell(L("@x1 appears to be magically protected.",affected.name()));
@@ -152,10 +191,8 @@ public class Spell_WizardsChest extends Spell
 		else
 			beneficialVisualFizzle(mob,target,L("<S-NAME> point(s) at <T-NAMESELF>, incanting, but nothing happens."));
 
-
 		// return whether it worked
 		return success;
 	}
 }
-
 

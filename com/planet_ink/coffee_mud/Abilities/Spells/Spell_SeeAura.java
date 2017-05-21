@@ -35,12 +35,38 @@ import java.util.*;
 
 public class Spell_SeeAura extends Spell
 {
-	@Override public String ID() { return "Spell_SeeAura"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_SeeAura";
+	}
+
 	private final static String localizedName = CMLib.lang().L("See Aura");
-	@Override public String name() { return localizedName; }
-	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int enchantQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -72,7 +98,6 @@ public class Spell_SeeAura extends Spell
 		}
 		else
 			beneficialVisualFizzle(mob,target,L("<S-NAME> examine(s) <T-NAME>, incanting, but the spell fizzles."));
-
 
 		// return whether it worked
 		return success;

@@ -35,6 +35,7 @@ import java.util.*;
 
 public class Spell_Scribe extends Spell
 {
+
 	@Override
 	public String ID()
 	{
@@ -205,7 +206,6 @@ public class Spell_Scribe extends Spell
 		}
 		else
 			beneficialWordsFizzle(mob,target,L("<S-NAME> move(s) <S-HIS-HER> fingers around <T-NAMESELF>, incanting softly, and looking very frustrated."));
-
 
 		// return whether it worked
 		return success;

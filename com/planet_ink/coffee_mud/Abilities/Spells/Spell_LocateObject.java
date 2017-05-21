@@ -34,6 +34,7 @@ import java.util.*;
 */
 public class Spell_LocateObject extends Spell
 {
+
 	@Override
 	public String ID()
 	{
@@ -209,7 +210,6 @@ public class Spell_LocateObject extends Spell
 		}
 		else
 			beneficialWordsFizzle(mob,null,L("<S-NAME> invoke(s) a divination, shouting '@x1', but there is no answer.",what));
-
 
 		// return whether it worked
 		return success;

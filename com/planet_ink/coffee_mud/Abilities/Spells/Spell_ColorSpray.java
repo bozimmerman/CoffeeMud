@@ -35,19 +35,51 @@ import java.util.*;
 
 public class Spell_ColorSpray extends Spell
 {
-	@Override public String ID() { return "Spell_ColorSpray"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_ColorSpray";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Color Spray");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	@Override public String displayText() { 
 		if(text().equalsIgnoreCase("UNCONSCIOUS"))
 			return L("(Dazed into unconsciousness)");
 		else
 			return L("(Dazed and blind)");
 	}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
@@ -57,7 +89,6 @@ public class Spell_ColorSpray extends Spell
 			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SLEEPING);
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_SEE);
 	}
-
 
 	@Override
 	public void unInvoke()
@@ -153,6 +184,7 @@ public class Spell_ColorSpray extends Spell
 		if(success)
 		{
 			if(mob.location().show(mob,null,this,somanticCastCode(mob,null,auto),auto?"":L("^S<S-NAME> wiggle(s) <S-HIS-HER> fingers, spraying a blast of colors!^?")))
+			{
 				for (final Object element : h)
 				{
 					final MOB target=(MOB)element;
@@ -211,6 +243,7 @@ public class Spell_ColorSpray extends Spell
 					else
 						maliciousFizzle(mob,target,L("<T-NAME> seem(s) unaffected by the spell from <S-NAME>."));
 				}
+			}
 		}
 		else
 			return maliciousFizzle(mob,null,L("<S-NAME> wiggle(s) fingers around, but the magic fizzles."));

@@ -35,13 +35,44 @@ import java.util.*;
 
 public class Spell_MagicMouth extends Spell
 {
-	@Override public String ID() { return "Spell_MagicMouth"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_MagicMouth";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Magic Mouth");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return CAN_ITEMS;}
-	@Override protected int canTargetCode(){return CAN_ITEMS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_ITEMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_ITEMS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
 
 	Room myRoomContainer=null;
 	int myTrigger=CMMsg.TYP_ENTER;
@@ -55,11 +86,11 @@ public class Spell_MagicMouth extends Spell
 		unInvoke();
 		return;
 	}
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
-
 
 		if(affected==null)
 		{
@@ -92,8 +123,7 @@ public class Spell_MagicMouth extends Spell
 			switch(myTrigger)
 			{
 			case CMMsg.TYP_GET:
-				if(
-				   (msg.targetMinor()==CMMsg.TYP_OPEN)
+				if((msg.targetMinor()==CMMsg.TYP_OPEN)
 				 ||(msg.targetMinor()==CMMsg.TYP_GIVE)
 				 ||(msg.targetMinor()==CMMsg.TYP_DELICATE_HANDS_ACT)
 				 ||(msg.targetMinor()==CMMsg.TYP_JUSTICE)
@@ -110,7 +140,6 @@ public class Spell_MagicMouth extends Spell
 		}
 
 	}
-
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -155,7 +184,6 @@ public class Spell_MagicMouth extends Spell
 			return false;
 		}
 
-
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -175,7 +203,6 @@ public class Spell_MagicMouth extends Spell
 		}
 		else
 			beneficialWordsFizzle(mob,target,L("<S-NAME> attempt(s) to invoke a spell upon <T-NAMESELF>, but the spell fizzles."));
-
 
 		// return whether it worked
 		return success;

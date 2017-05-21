@@ -35,12 +35,38 @@ import java.util.*;
 
 public class Spell_AnalyzeDweomer extends Spell
 {
-	@Override public String ID() { return "Spell_AnalyzeDweomer"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_AnalyzeDweomer";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Analyze Item");
-	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	@Override protected int canTargetCode(){return CAN_ITEMS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_ITEMS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -131,7 +157,9 @@ public class Spell_AnalyzeDweomer extends Spell
 					if(affectStr.length()<5)
 						str.append(L("It is affected by: @x1",affectStr));
 				}
-				catch(final Exception e){}
+				catch(final Exception e)
+				{
+				}
 				if(mob.isMonster())
 					CMLib.commands().postSay(mob,null,str.toString().trim(),false,false);
 				else
@@ -141,7 +169,6 @@ public class Spell_AnalyzeDweomer extends Spell
 		}
 		else
 			beneficialVisualFizzle(mob,target,L("<S-NAME> analyze(s) the nature of <T-NAMESELF>, looking more frustrated every second."));
-
 
 		// return whether it worked
 		return success;

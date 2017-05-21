@@ -35,12 +35,38 @@ import java.util.*;
 
 public class Spell_DispelDivination extends Spell
 {
-	@Override public String ID() { return "Spell_DispelDivination"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_DispelDivination";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Dispel Divination");
-	@Override public String name() { return localizedName; }
-	@Override protected int canTargetCode(){return CAN_ITEMS|CAN_MOBS|CAN_EXITS|CAN_ROOMS;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_ITEMS|CAN_MOBS|CAN_EXITS|CAN_ROOMS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;
+	}
 
 	public List<Ability> returnOffensiveAffects(MOB caster, Physical fromMe)
 	{
@@ -95,7 +121,6 @@ public class Spell_DispelDivination extends Spell
 			return false;
 		}
 
-
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -124,7 +149,6 @@ public class Spell_DispelDivination extends Spell
 		}
 		else
 			beneficialWordsFizzle(mob,target,L("<S-NAME> attempt(s) to dispel @x1 from <T-NAMESELF>, but flub(s) it.",revokeThis.name()));
-
 
 		// return whether it worked
 		return success;

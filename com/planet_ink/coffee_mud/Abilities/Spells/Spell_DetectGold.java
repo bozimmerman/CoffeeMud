@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2002-2017 Bo Zimmerman
 
@@ -36,15 +35,52 @@ import java.util.*;
 
 public class Spell_DetectGold extends Spell
 {
-	@Override public String ID() { return "Spell_DetectGold"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_DetectGold";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Detect Gold");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Detecting Gold)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
-	@Override public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_SELF;
+	}
+
+	@Override
+	public int enchantQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_SELF;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;
+	}
 
 	Room lastRoom=null;
 
@@ -60,6 +96,7 @@ public class Spell_DetectGold extends Spell
 		if(canBeUninvoked())
 			mob.tell(L("Your senses are no longer as golden."));
 	}
+
 	public String metalCheck(MOB mob, Item I, Item container, StringBuffer msg)
 	{
 		if(I==null)
@@ -72,10 +109,13 @@ public class Spell_DetectGold extends Spell
 		}
 		else
 		if((I.container()!=null)&&(I.container().container()==container))
+		{
 			if(msg.toString().indexOf(I.container().name()+" contains some sort of gold.")<0)
 				msg.append(L("@x1 contains some sort of gold.\n\r",I.container().name()));
+		}
 		return msg.toString();
 	}
+
 	public String metalHere(MOB mob, Environmental E, Item container)
 	{
 		final StringBuffer msg=new StringBuffer("");
@@ -108,6 +148,7 @@ public class Spell_DetectGold extends Spell
 		}
 		return msg.toString();
 	}
+
 	public void messageTo(MOB mob)
 	{
 		String last="";
@@ -136,7 +177,10 @@ public class Spell_DetectGold extends Spell
 				{
 					final MOB M=R.fetchInhabitant(m);
 					if((M!=null)&&(M!=mob)&&(metalHere(mob,M,null).length()>0))
-					{ metalFound=true; break;}
+					{
+						metalFound=true;
+						break;
+					}
 				}
 
 				if(metalFound)
@@ -159,6 +203,7 @@ public class Spell_DetectGold extends Spell
 				mob.tell(L("You sense golden emanations coming from @x1, and @x2.",dirs.substring(2),last));
 		}
 	}
+
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -174,7 +219,6 @@ public class Spell_DetectGold extends Spell
 		}
 		return true;
 	}
-
 
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
@@ -230,7 +274,6 @@ public class Spell_DetectGold extends Spell
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 

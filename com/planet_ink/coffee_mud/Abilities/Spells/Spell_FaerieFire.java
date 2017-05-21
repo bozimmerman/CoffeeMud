@@ -35,15 +35,46 @@ import java.util.*;
 
 public class Spell_FaerieFire extends Spell
 {
-	@Override public String ID() { return "Spell_FaerieFire"; }
-	private final static String localizedName = CMLib.lang().L("Faerie Fire");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Faerie Fire)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
 
+	@Override
+	public String ID()
+	{
+		return "Spell_FaerieFire";
+	}
+
+	private final static String localizedName = CMLib.lang().L("Faerie Fire");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Faerie Fire)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;
+	}
 
 	@Override
 	public void unInvoke()
@@ -94,7 +125,6 @@ public class Spell_FaerieFire extends Spell
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 

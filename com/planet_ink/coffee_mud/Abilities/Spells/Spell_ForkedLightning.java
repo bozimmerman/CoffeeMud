@@ -35,13 +35,44 @@ import java.util.*;
 
 public class Spell_ForkedLightning extends Spell
 {
-	@Override public String ID() { return "Spell_ForkedLightning"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_ForkedLightning";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Forked Lightning");
-	@Override public String name() { return localizedName; }
-	@Override public int maxRange(){return adjustedMaxInvokerRange(2);}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
-	@Override public long flags(){return Ability.FLAG_AIRBASED;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int maxRange()
+	{
+		return adjustedMaxInvokerRange(2);
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_AIRBASED;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -85,7 +116,6 @@ public class Spell_ForkedLightning extends Spell
 		}
 		else
 			return maliciousFizzle(mob,null,L("<S-NAME> attempt(s) to invoke a ferocious spell, but the spell fizzles."));
-
 
 		// return whether it worked
 		return success;

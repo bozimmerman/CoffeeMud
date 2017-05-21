@@ -35,6 +35,7 @@ import java.util.*;
 
 public class Spell_PhantomHound extends Spell
 {
+
 	@Override
 	public String ID()
 	{
@@ -194,6 +195,7 @@ public class Spell_PhantomHound extends Spell
 		return super.okMessage(myHost,msg);
 
 	}
+
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -253,7 +255,6 @@ public class Spell_PhantomHound extends Spell
 		}
 		else
 			beneficialVisualFizzle(mob,null,L("<S-NAME> attempt(s) to invoke a spell, but fizzle(s) the spell."));
-
 
 		// return whether it worked
 		return success;

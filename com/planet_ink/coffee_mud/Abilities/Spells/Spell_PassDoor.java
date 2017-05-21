@@ -34,6 +34,7 @@ import java.util.*;
 */
 public class Spell_PassDoor extends Spell
 {
+
 	@Override
 	public String ID()
 	{

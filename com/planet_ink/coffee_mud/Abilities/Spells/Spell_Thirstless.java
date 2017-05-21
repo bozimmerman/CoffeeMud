@@ -35,14 +35,46 @@ import java.util.*;
 
 public class Spell_Thirstless extends Spell
 {
-	@Override public String ID() { return "Spell_Thirstless"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_Thirstless";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Thirstless");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Thirstless)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_OTHERS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;
+	}
 
 	@Override
 	public void affectCharState(MOB affected, CharState affectableMaxState)
@@ -59,7 +91,6 @@ public class Spell_Thirstless extends Spell
 			((MOB)affected).curState().setThirst(((MOB)affected).maxState().maxThirst(((MOB)affected).baseWeight()));
 		return super.tick(ticking, tickID);
 	}
-
 
 	@Override
 	public void unInvoke()

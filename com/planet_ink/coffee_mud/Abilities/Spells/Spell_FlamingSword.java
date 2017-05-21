@@ -18,7 +18,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2012-2017 Bo Zimmerman
 
@@ -37,6 +36,7 @@ import java.util.*;
 
 public class Spell_FlamingSword extends Spell
 {
+
 	@Override
 	public String ID()
 	{

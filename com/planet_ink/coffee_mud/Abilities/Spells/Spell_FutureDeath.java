@@ -35,14 +35,44 @@ import java.util.*;
 
 public class Spell_FutureDeath extends Spell
 {
-	@Override public String ID() { return "Spell_FutureDeath"; }
-	private final static String localizedName = CMLib.lang().L("Future Death");
-	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override protected int canAffectCode(){return 0;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
 
+	@Override
+	public String ID()
+	{
+		return "Spell_FutureDeath";
+	}
+
+	private final static String localizedName = CMLib.lang().L("Future Death");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)

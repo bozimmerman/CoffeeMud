@@ -35,14 +35,47 @@ import java.util.*;
 
 public class Spell_Forget extends Spell
 {
-	@Override public String ID() { return "Spell_Forget"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_Forget";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Forget");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Forgetful)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;
+	}
+
 	public HashSet<Ability> forgotten=new HashSet<Ability>();
 	public HashSet<Ability> remember=new HashSet<Ability>();
 

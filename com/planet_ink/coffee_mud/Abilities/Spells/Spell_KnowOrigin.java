@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2003-2017 Bo Zimmerman
 
@@ -36,13 +35,44 @@ import java.util.*;
 
 public class Spell_KnowOrigin extends Spell
 {
-	@Override public String ID() { return "Spell_KnowOrigin"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_KnowOrigin";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Know Origin");
-	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_MOBS|Ability.CAN_ITEMS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;
+	}
 
 	public Room origin(MOB mob, Environmental meThang)
 	{
@@ -66,7 +96,10 @@ public class Spell_KnowOrigin extends Spell
 				if(E!=null)
 					return CMLib.map().getStartRoom(E);
 				return CMLib.map().findWorldRoomLiberally(mob,srchStr, "I",10,600000);
-			}catch(final NoSuchElementException nse){}
+			}
+			catch(final NoSuchElementException nse)
+			{
+			}
 		}
 		return null;
 	}

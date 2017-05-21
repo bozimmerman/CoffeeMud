@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2001-2017 Bo Zimmerman
 
@@ -36,14 +35,46 @@ import java.util.*;
 
 public class Spell_ResistAcid extends Spell
 {
-	@Override public String ID() { return "Spell_ResistAcid"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_ResistAcid";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Resist Acid");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Resist Acid)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ABJURATION;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_OTHERS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_ABJURATION;
+	}
 
 	@Override
 	public void unInvoke()
@@ -58,14 +89,12 @@ public class Spell_ResistAcid extends Spell
 		super.unInvoke();
 	}
 
-
 	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectedStats)
 	{
 		super.affectCharStats(affectedMOB,affectedStats);
 		affectedStats.setStat(CharStats.STAT_SAVE_ACID,affectedStats.getStat(CharStats.STAT_SAVE_ACID)+100);
 	}
-
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)

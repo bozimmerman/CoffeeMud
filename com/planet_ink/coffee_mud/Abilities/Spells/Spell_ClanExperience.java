@@ -35,6 +35,7 @@ import java.util.*;
 
 public class Spell_ClanExperience extends Spell
 {
+
 	@Override
 	public String ID()
 	{
@@ -163,7 +164,6 @@ public class Spell_ClanExperience extends Spell
 		}
 		else
 			beneficialWordsFizzle(mob,null,L("<S-NAME> attempt(s) to invoke experience donation, but fizzle(s) the spell."));
-
 
 		// return whether it worked
 		return success;

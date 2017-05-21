@@ -35,14 +35,44 @@ import java.util.*;
 
 public class Spell_Disintegrate extends Spell
 {
-	@Override public String ID() { return "Spell_Disintegrate"; }
-	private final static String localizedName = CMLib.lang().L("Disintegrate");
-	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override protected int canTargetCode(){return CAN_ITEMS|CAN_MOBS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;	}
-	@Override public int overrideMana(){return 100;}
 
+	@Override
+	public String ID()
+	{
+		return "Spell_Disintegrate";
+	}
+
+	private final static String localizedName = CMLib.lang().L("Disintegrate");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_ITEMS|CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;
+	}
+
+	@Override
+	public int overrideMana()
+	{
+		return 100;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -62,17 +92,14 @@ public class Spell_Disintegrate extends Spell
 			}
 		}
 
-		
 		if((target instanceof Item) && (!CMLib.utensils().canBePlayerDestroyed(mob,(Item)target,true)))
 		{
 			mob.tell(L("You are not powerful enough to disintegrate @x1.",target.name(mob)));
 			return false;
 		}
 		
-		
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-
 
 		boolean success=false;
 		int affectType=CMMsg.MSG_CAST_VERBAL_SPELL;
@@ -146,7 +173,6 @@ public class Spell_Disintegrate extends Spell
 		}
 		else
 			maliciousFizzle(mob,target,L("<S-NAME> point(s) at <T-NAMESELF> and utter(s) a treacherous but fizzled spell!"));
-
 
 		// return whether it worked
 		return success;

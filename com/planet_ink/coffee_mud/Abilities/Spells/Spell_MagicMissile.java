@@ -35,6 +35,7 @@ import java.util.*;
 
 public class Spell_MagicMissile extends Spell
 {
+
 	@Override
 	public String ID()
 	{
@@ -116,7 +117,6 @@ public class Spell_MagicMissile extends Spell
 		}
 		else
 			return maliciousFizzle(mob,target,L("<S-NAME> point(s) at <T-NAMESELF>, but fizzle(s) the spell."));
-
 
 		// return whether it worked
 		return success;

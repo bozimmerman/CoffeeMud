@@ -35,13 +35,44 @@ import java.util.*;
 
 public class Spell_IllusoryWall extends Spell
 {
-	@Override public String ID() { return "Spell_IllusoryWall"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_IllusoryWall";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Illusory Wall");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return CAN_EXITS;}
-	@Override protected int canTargetCode(){return CAN_EXITS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_EXITS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_EXITS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
@@ -53,7 +84,6 @@ public class Spell_IllusoryWall extends Spell
 		// can get them out of it.
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_INVISIBLE);
 	}
-
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -77,7 +107,6 @@ public class Spell_IllusoryWall extends Spell
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 

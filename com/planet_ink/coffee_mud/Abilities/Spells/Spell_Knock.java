@@ -35,14 +35,46 @@ import java.util.*;
 
 public class Spell_Knock extends Spell
 {
-	@Override public String ID() { return "Spell_Knock"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_Knock";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Knock");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Knock Spell)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canTargetCode(){return CAN_ITEMS|CAN_EXITS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_ITEMS|CAN_EXITS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -103,7 +135,6 @@ public class Spell_Knock extends Spell
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-
 
 		int levelDiff=openThis.phyStats().level()-(mob.phyStats().level()+(2*getXLEVELLevel(mob)));
 		if(levelDiff<0)

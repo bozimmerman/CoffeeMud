@@ -35,18 +35,70 @@ import java.util.*;
 
 public class Spell_WallOfForce extends Spell
 {
-	@Override public String ID() { return "Spell_WallOfForce"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_WallOfForce";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Wall of Force");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Wall of Force)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int maxRange(){return adjustedMaxInvokerRange(10);}
-	@Override public int minRange(){return 1;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
-	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
-	@Override protected int canAffectCode(){return CAN_ITEMS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int maxRange()
+	{
+		return adjustedMaxInvokerRange(10);
+	}
+
+	@Override
+	public int minRange()
+	{
+		return 1;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_SELF;
+	}
+
+	@Override
+	public int enchantQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_ITEMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;
+	}
 
 	protected Item theWall=null;
 
@@ -148,7 +200,6 @@ public class Spell_WallOfForce extends Spell
 			return false;
 
 		final Physical target = mob.location();
-
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 

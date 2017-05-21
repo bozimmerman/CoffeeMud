@@ -35,16 +35,58 @@ import java.util.*;
 
 public class Spell_Clone extends Spell
 {
-	@Override public String ID() { return "Spell_Clone"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_Clone";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Clone");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Clone)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int overrideMana(){return 200;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int overrideMana()
+	{
+		return 200;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;
+	}
 
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
@@ -165,6 +207,7 @@ public class Spell_Clone extends Spell
 		// return whether it worked
 		return success;
 	}
+
 	public MOB determineMonster(MOB caster)
 	{
 		final MOB newMOB=(MOB)caster.copyOf();

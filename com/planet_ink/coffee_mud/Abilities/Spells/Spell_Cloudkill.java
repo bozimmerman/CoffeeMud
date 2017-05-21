@@ -35,16 +35,58 @@ import java.util.*;
 
 public class Spell_Cloudkill extends Spell
 {
-	@Override public String ID() { return "Spell_Cloudkill"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_Cloudkill";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Cloudkill");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Cloudkill)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int maxRange(){return adjustedMaxInvokerRange(10);}
-	@Override public int minRange(){return 1;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int maxRange()
+	{
+		return adjustedMaxInvokerRange(10);
+	}
+
+	@Override
+	public int minRange()
+	{
+		return 1;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
@@ -56,7 +98,6 @@ public class Spell_Cloudkill extends Spell
 		// can get them out of it.
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SITTING);
 	}
-
 
 	@Override
 	public void unInvoke()
@@ -99,6 +140,7 @@ public class Spell_Cloudkill extends Spell
 		if(success)
 		{
 			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),auto?L("A horrendous green cloud appears!"):L("^S<S-NAME> evoke(s) a horrendous green cloud.^?")))
+			{
 				for (final Object element : h)
 				{
 					final MOB target=(MOB)element;
@@ -145,10 +187,10 @@ public class Spell_Cloudkill extends Spell
 						}
 					}
 				}
+			}
 		}
 		else
 			return maliciousFizzle(mob,null,L("<S-NAME> attempt(s) to evoke a green cloud, but the spell fizzles."));
-
 
 		// return whether it worked
 		return success;

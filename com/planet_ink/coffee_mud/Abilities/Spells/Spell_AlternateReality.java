@@ -35,14 +35,46 @@ import java.util.*;
 
 public class Spell_AlternateReality extends Spell
 {
-	@Override public String ID() { return "Spell_AlternateReality"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_AlternateReality";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Alternate Reality");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Alternate Reality)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;
+	}
 
 	@Override
 	public void unInvoke()
@@ -92,7 +124,6 @@ public class Spell_AlternateReality extends Spell
 		return super.okMessage(myHost,msg);
 	}
 
-
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -109,7 +140,6 @@ public class Spell_AlternateReality extends Spell
 			return false;
 
 		boolean success=proficiencyCheck(mob,0,auto);
-
 
 		if(success)
 		{
@@ -163,7 +193,6 @@ public class Spell_AlternateReality extends Spell
 		}
 		else
 			return maliciousFizzle(mob,target,L("<S-NAME> incant(s) to <T-NAME>, but fizzle(s) the spell."));
-
 
 		// return whether it worked
 		return success;

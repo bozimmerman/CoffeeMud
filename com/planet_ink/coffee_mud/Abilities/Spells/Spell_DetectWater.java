@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-
 /*
    Copyright 2002-2017 Bo Zimmerman
 
@@ -36,6 +35,7 @@ import java.util.*;
 
 public class Spell_DetectWater extends Spell
 {
+
 	@Override
 	public String ID()
 	{
@@ -110,8 +110,10 @@ public class Spell_DetectWater extends Spell
 		}
 		else
 		if((I.container()!=null)&&(I.container().container()==container))
+		{
 			if(msg.toString().indexOf(I.container().name()+" contains some sort of liquid.")<0)
 				msg.append(L("@x1 contains some sort of liquid.\n\r",I.container().name()));
+		}
 		return msg.toString();
 	}
 
@@ -186,6 +188,7 @@ public class Spell_DetectWater extends Spell
 		}
 		return msg.toString();
 	}
+
 	public void messageTo(MOB mob)
 	{
 		String last="";
@@ -214,7 +217,10 @@ public class Spell_DetectWater extends Spell
 				{
 					final MOB M=R.fetchInhabitant(m);
 					if((M!=null)&&(M!=mob)&&(waterHere(mob,M,null).length()>0))
-					{ metalFound=true; break;}
+					{
+						metalFound=true;
+						break;
+					}
 				}
 
 				if(metalFound)
@@ -237,6 +243,7 @@ public class Spell_DetectWater extends Spell
 				mob.tell(L("Water smells are coming from @x1, and @x2.",dirs.substring(2),last));
 		}
 	}
+
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -308,7 +315,6 @@ public class Spell_DetectWater extends Spell
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 

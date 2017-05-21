@@ -35,15 +35,52 @@ import java.util.*;
 
 public class Spell_Shockshield extends Spell
 {
-	@Override public String ID() { return "Spell_Shockshield"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_Shockshield";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Shockshield");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Shockshield)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
-	@Override public long flags(){return Ability.FLAG_AIRBASED;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_OTHERS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_AIRBASED;
+	}
 	final static String msgStr=CMLib.lang().L("The shock shield around <S-NAME> sparks and <DAMAGES> <T-NAME>!");
 	protected long oncePerTickTime=0;
 
@@ -78,7 +115,6 @@ public class Spell_Shockshield extends Spell
 		final MOB source=msg.source();
 		if(source.location()==null)
 			return;
-
 
 		if(msg.amITarget(mob)&&(!msg.amISource(mob)))
 		{
@@ -141,7 +177,6 @@ public class Spell_Shockshield extends Spell
 		}
 		else
 			return beneficialVisualFizzle(mob,target,L("<S-NAME> incant(s) and wave(s) <S-HIS-HER> arms, but only sparks emerge."));
-
 
 		// return whether it worked
 		return success;

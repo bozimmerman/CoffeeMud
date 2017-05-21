@@ -35,16 +35,58 @@ import java.util.*;
 
 public class Spell_WatchfulHound extends Spell
 {
-	@Override public String ID() { return "Spell_WatchfulHound"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_WatchfulHound";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Watchful Hound");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Watchful Hound)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
-	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;
+	}
+
+	@Override
+	public int enchantQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
 
 	@Override
 	public void unInvoke()
@@ -91,6 +133,7 @@ public class Spell_WatchfulHound extends Spell
 					{
 						final Room R = mob.location();
 						CMLib.threads().scheduleRunnable(new Runnable(){
+
 							@Override
 							public void run() 
 							{

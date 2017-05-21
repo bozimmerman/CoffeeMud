@@ -35,13 +35,44 @@ import java.util.*;
 
 public class Spell_FakeWeapon extends Spell
 {
-	@Override public String ID() { return "Spell_FakeWeapon"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_FakeWeapon";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Fake Weapon");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return CAN_ITEMS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_ITEMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
 
 	@Override
 	public void unInvoke()
@@ -196,7 +227,6 @@ public class Spell_FakeWeapon extends Spell
 		}
 		else
 			beneficialVisualFizzle(mob,null,L("<S-NAME> dramatically wave(s) <S-HIS-HER> arms around, but fizzle(s) the spell."));
-
 
 		// return whether it worked
 		return success;

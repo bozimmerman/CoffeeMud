@@ -35,13 +35,44 @@ import java.util.*;
 
 public class Spell_RechargeWand extends Spell
 {
-	@Override public String ID() { return "Spell_RechargeWand"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_RechargeWand";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Recharge Wand");
-	@Override public String name() { return localizedName; }
-	@Override protected int canTargetCode(){return CAN_ITEMS;}
-	@Override public int overrideMana(){return 100;}
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_ITEMS;
+	}
+
+	@Override
+	public int overrideMana()
+	{
+		return 100;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -92,7 +123,6 @@ public class Spell_RechargeWand extends Spell
 		}
 		else
 			beneficialWordsFizzle(mob,target,L("<S-NAME> incant(s) at <T-NAMESELF>, looking more frustrated every minute."));
-
 
 		// return whether it worked
 		return success;

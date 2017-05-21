@@ -34,6 +34,7 @@ import java.util.*;
 */
 public class Spell_Fireball extends Spell
 {
+
 	@Override
 	public String ID()
 	{

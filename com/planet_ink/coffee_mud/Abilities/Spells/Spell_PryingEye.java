@@ -35,12 +35,39 @@ import java.util.*;
 
 public class Spell_PryingEye extends Spell
 {
-	@Override public String ID() { return "Spell_PryingEye"; }
+
+	@Override
+	public String ID()
+	{
+		return "Spell_PryingEye";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Prying Eye");
-	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;
+	}
+
 	protected List<Integer> dirs=new LinkedList<Integer>();
 
 	@Override
