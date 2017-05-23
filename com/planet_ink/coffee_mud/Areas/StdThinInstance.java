@@ -689,7 +689,8 @@ public class StdThinInstance extends StdThinArea
 					{
 						if(msg.source() == weakReference.get())
 						{
-							myDex=i; break;
+							myDex=i; 
+							break;
 						}
 					}
 				}
