@@ -317,116 +317,110 @@ public class StdThinInstance extends StdThinArea
 		}
 	}
 	
-	protected boolean flushInstance(int index)
+	protected void flushInstance(AreaInstanceChild child)
 	{
-		final Area childA=instanceChildren.get(index).A;
-		if(childA.getAreaState() != Area.State.ACTIVE) // this is the one and only criteria -- if its not active, flush it.
+		final Area childA=child.A;
+		final Set<Physical> protectedList = getProtectedSet(childA, child.mobs);
+		Room returnBoatsToR = null;
+		for(final Physical P : protectedList)
 		{
-			final AreaInstanceChild child = instanceChildren.remove(index);
-			final Set<Physical> protectedList = getProtectedSet(childA, child.mobs);
-			Room returnBoatsToR = null;
-			for(final Physical P : protectedList)
+			if(P instanceof MOB)
 			{
-				if(P instanceof MOB)
+				final MOB wmob=(MOB)P;
+				final Room R=wmob.location();
+				if((R!=null)
+				&&(R.getArea()==childA))
 				{
-					final MOB wmob=(MOB)P;
-					final Room R=wmob.location();
-					if((R!=null)
-					&&(R.getArea()==childA))
+					final Room startRoom=wmob.getStartRoom();
+					if(startRoom != null)
 					{
-						final Room startRoom=wmob.getStartRoom();
-						if(startRoom != null)
-						{
-							if(R.isInhabitant(wmob))
-								startRoom.bringMobHere(wmob, true);
-							if(wmob.location()!=startRoom)
-								wmob.setLocation(startRoom);
-						}
-					}
-				}
-				else
-				if(P instanceof Item)
-				{
-					final Item I = (Item)P;
-					Room startRoom = returnBoatsToR;
-					Room R=CMLib.map().roomLocation(I);
-					if(R!=null)
-					{
-						if((startRoom == null)
-						&&(I instanceof SailingShip))
-						{
-							Room R1=CMLib.tracking().getRadiantRoomTarget(R, new AllWaterFilters(), new OutOfAreaFilter(childA));
-							if(R1!=null)
-							{
-								returnBoatsToR=R1;
-								startRoom=R1;
-							}
-						}
-						if(startRoom == null)
-						{
-							Room R1=CMLib.tracking().getRadiantRoomTarget(R, new EmptyFilters(), new OutOfAreaFilter(childA));
-							if(R1!=null)
-								startRoom=R1;
-						}
-						if(startRoom != null)
-						{
-							if(R.isHere(I))
-								startRoom.moveItemTo(I);
-							R=CMLib.map().roomLocation(I);
-							if(R!=startRoom)
-								I.setOwner(startRoom);
-						}
+						if(R.isInhabitant(wmob))
+							startRoom.bringMobHere(wmob, true);
+						if(wmob.location()!=startRoom)
+							wmob.setLocation(startRoom);
 					}
 				}
 			}
-			final MOB mob=CMClass.getFactoryMOB();
-			try
+			else
+			if(P instanceof Item)
 			{
-				final CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_EXPIRE,null);
-				for(final Enumeration<Room> r=childA.getFilledProperMap();r.hasMoreElements();)
+				final Item I = (Item)P;
+				Room startRoom = returnBoatsToR;
+				Room R=CMLib.map().roomLocation(I);
+				if(R!=null)
 				{
-					final Room R=r.nextElement();
-					try
+					if((startRoom == null)
+					&&(I instanceof SailingShip))
 					{
-						CMLib.map().emptyRoom(R, null, true);
+						Room R1=CMLib.tracking().getRadiantRoomTarget(R, new AllWaterFilters(), new OutOfAreaFilter(childA));
+						if(R1!=null)
+						{
+							returnBoatsToR=R1;
+							startRoom=R1;
+						}
 					}
-					catch(Exception e)
+					if(startRoom == null)
 					{
-						Log.errOut(e);
+						Room R1=CMLib.tracking().getRadiantRoomTarget(R, new EmptyFilters(), new OutOfAreaFilter(childA));
+						if(R1!=null)
+							startRoom=R1;
+					}
+					if(startRoom != null)
+					{
+						if(R.isHere(I))
+							startRoom.moveItemTo(I);
+						R=CMLib.map().roomLocation(I);
+						if(R!=startRoom)
+							I.setOwner(startRoom);
 					}
 				}
-				for(final Enumeration<Room> r=childA.getProperMap();r.hasMoreElements();)
-				{
-					final Room R=r.nextElement();
-					try
-					{
-						try
-						{
-							R.clearSky();
-							msg.setTarget(R);
-							R.executeMsg(mob,msg);
-						}
-						catch(Exception e)
-						{
-							Log.errOut(e);
-						}
-						R.destroy();
-					}
-					catch(Exception e)
-					{
-						Log.errOut(e);
-					}
-				}
-				CMLib.map().delArea(childA);
-				childA.destroy();
 			}
-			finally
-			{
-				mob.destroy();
-			}
-			return true;
 		}
-		return false;
+		final MOB mob=CMClass.getFactoryMOB();
+		try
+		{
+			final CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_EXPIRE,null);
+			for(final Enumeration<Room> r=childA.getFilledProperMap();r.hasMoreElements();)
+			{
+				final Room R=r.nextElement();
+				try
+				{
+					CMLib.map().emptyRoom(R, null, true);
+				}
+				catch(Exception e)
+				{
+					Log.errOut(e);
+				}
+			}
+			for(final Enumeration<Room> r=childA.getProperMap();r.hasMoreElements();)
+			{
+				final Room R=r.nextElement();
+				try
+				{
+					try
+					{
+						R.clearSky();
+						msg.setTarget(R);
+						R.executeMsg(mob,msg);
+					}
+					catch(Exception e)
+					{
+						Log.errOut(e);
+					}
+					R.destroy();
+				}
+				catch(Exception e)
+				{
+					Log.errOut(e);
+				}
+			}
+			CMLib.map().delArea(childA);
+			childA.destroy();
+		}
+		finally
+		{
+			mob.destroy();
+		}
 	}
 
 	@Override
@@ -473,11 +467,21 @@ public class StdThinInstance extends StdThinArea
 		if((--childCheckDown)<=0)
 		{
 			childCheckDown=CMProps.getMillisPerMudHour()/CMProps.getTickMillis();
+			final List<AreaInstanceChild> flushThese = new ArrayList<AreaInstanceChild>(1);
 			synchronized(instanceChildren)
 			{
 				for(int i=instanceChildren.size()-1;i>=0;i--)
-					flushInstance(i);
+				{
+					final Area childA=instanceChildren.get(i).A;
+					if(childA.getAreaState() != Area.State.ACTIVE) // this is the one and only criteria -- if its not active, flush it.
+					{
+						final AreaInstanceChild child = instanceChildren.remove(i);
+						flushThese.add(child);
+					}
+				}
 			}
+			for(final AreaInstanceChild inst : flushThese)
+				flushInstance(inst);
 		}
 		return true;
 	}
@@ -515,34 +519,37 @@ public class StdThinInstance extends StdThinArea
 					if(A instanceof StdThinInstance)
 					{
 						final StdThinInstance parentA=(StdThinInstance)A;
+						final List<AreaInstanceChild> resetThese = new LinkedList<AreaInstanceChild>();
 						synchronized(instanceChildren)
 						{
 							for(int i=0;i<parentA.instanceChildren.size();i++)
 							{
-								final List<WeakReference<MOB>> V=parentA.instanceChildren.get(i).mobs;
 								if(parentA.instanceChildren.get(i).A==this)
 								{
-									for(final WeakReference<MOB> wM : V)
-									{
-										final MOB M=wM.get();
-										if((M!=null)
-										&&CMLib.flags().isInTheGame(M,true)
-										&&(M.location()!=null)
-										&&(M.location()!=returnToRoom)
-										&&(M.location().getArea()==this))
-										{
-											returnToRoom.bringMobHere(M, true);
-											CMLib.commands().postLook(M, true);
-										}
-									}
-									setAreaState(Area.State.PASSIVE);
-									if(flushInstance(i))
-										msg.addTrailerMsg(CMClass.getMsg(msg.source(),CMMsg.MSG_OK_ACTION,L("The instance has been reset.")));
-									else
-										msg.addTrailerMsg(CMClass.getMsg(msg.source(),CMMsg.MSG_OK_ACTION,L("The instance was unable to be reset.")));
-									return;
+									final AreaInstanceChild child = parentA.instanceChildren.remove(i);
+									resetThese.add(child);
 								}
 							}
+						}
+						for(final AreaInstanceChild child : resetThese)
+						{
+							final List<WeakReference<MOB>> V=child.mobs;
+							for(final WeakReference<MOB> wM : V)
+							{
+								final MOB M=wM.get();
+								if((M!=null)
+								&&CMLib.flags().isInTheGame(M,true)
+								&&(M.location()!=null)
+								&&(M.location()!=returnToRoom)
+								&&(M.location().getArea()==this))
+								{
+									returnToRoom.bringMobHere(M, true);
+									CMLib.commands().postLook(M, true);
+								}
+							}
+							setAreaState(Area.State.PASSIVE);
+							flushInstance(child);
+							msg.addTrailerMsg(CMClass.getMsg(msg.source(),CMMsg.MSG_OK_ACTION,L("The instance has been reset.")));
 						}
 					}
 					msg.addTrailerMsg(CMClass.getMsg(msg.source(),CMMsg.MSG_OK_ACTION,L("The instance failed to reset.")));
