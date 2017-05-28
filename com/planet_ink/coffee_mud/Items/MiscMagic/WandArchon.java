@@ -51,26 +51,26 @@ public class WandArchon extends StdWand implements ArchonOnly
 		setName("a flashy wand");
 		setDisplayText("a flashy wand has been left here.");
 		setDescription("A wand made out of sparkling energy.");
-		secretIdentity="The Wand of the Archons!";
 		this.setUsesRemaining(99999);
 		baseGoldValue=20000;
 		material=RawMaterial.RESOURCE_OAK;
 		recoverPhyStats();
-		secretWord="REFRESH, RESTORE, BLAST, LEVEL X UP, LEVEL X DOWN, BURN, GAIN X UP";
+		secretWord="REFRESH";
+		secretIdentity="The Wand of the Archons! Commands: REFRESH, BLAST, LEVEL X UP, LEVEL X DOWN, BURN, GAIN X/All UP.";
 	}
 
 	@Override
 	public void setSpell(Ability theSpell)
 	{
 		super.setSpell(theSpell);
-		secretWord="REFRESH, BLAST, LEVEL X UP, LEVEL X DOWN, BURN, GAIN X UP";
+		secretWord="REFRESH";
 	}
 
 	@Override
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
-		secretWord="REFRESH, BLAST, LEVEL X UP, LEVEL X DOWN, BURN, GAIN X UP";
+		secretWord="REFRESH";
 	}
 
 	@Override
