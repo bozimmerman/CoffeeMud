@@ -141,6 +141,7 @@ public class Oracle extends Cleric
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Prayer_Omnipresence",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Prayer_SenseHidden",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Skill_Skillcraft",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Prayer_CureDisease",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Prayer_ProtectHealth",false);
@@ -154,6 +155,7 @@ public class Oracle extends Cleric
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Prayer_HolyAura",false,CMParms.parseSemicolons("Prayer_Bless",true));
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Prayer_Prophecy",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Skill_Thiefcraft",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Prayer_SenseSkills",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Skill_AttackHalf",false);

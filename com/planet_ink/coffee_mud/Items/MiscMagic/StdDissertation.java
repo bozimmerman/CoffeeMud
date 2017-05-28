@@ -129,6 +129,65 @@ public class StdDissertation extends StdItem implements Scroll
 						}
 					}
 
+					final Room R=mob.location();
+					if((thisOne != null)
+					&&(!CMLib.ableMapper().qualifiesByLevel(mob, thisOne))
+					&&(R!=null))
+					{
+						String ableID=null;
+						switch(thisOne.abilityCode()&Ability.ALL_ACODES)
+						{
+							case Ability.ACODE_SKILL:
+								ableID="Skill_Skillcraft";
+								break;
+							case Ability.ACODE_SPELL:
+								ableID="Skill_Spellcraft";
+								break;
+							case Ability.ACODE_PRAYER:
+								ableID="Skill_Prayercraft";
+								break;
+							case Ability.ACODE_SONG:
+								ableID="Skill_Songcraft";
+								break;
+							case Ability.ACODE_THIEF_SKILL:
+								ableID="Skill_Thiefcraft";
+								break;
+							case Ability.ACODE_CHANT:
+								ableID="Skill_Chantcraft";
+								break;
+							case Ability.ACODE_TRAP:
+							case Ability.ACODE_PROPERTY:
+							case Ability.ACODE_LANGUAGE:
+							case Ability.ACODE_COMMON_SKILL:
+							case Ability.ACODE_DISEASE:
+							case Ability.ACODE_POISON:
+							case Ability.ACODE_SUPERPOWER:
+							case Ability.ACODE_TECH:
+								break;
+						}
+						if(ableID!=null)
+						{
+							final Ability A=mob.fetchAbility(ableID);
+							if(A!=null)
+							{
+								A.setMiscText(thisOne.ID());
+								final MOB targetM=CMClass.getFactoryMOB();
+								try
+								{
+									targetM.addAbility(thisOne);
+									final CMMsg msg = CMClass.getMsg(mob,mob,A,CMMsg.MSG_OK_VISUAL,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
+									if(R.okMessage(mob, msg))
+										R.send(mob, msg);
+								}
+								finally
+								{
+									targetM.delAllAbilities();
+									targetM.destroy();
+								}
+							}
+						}
+					}
+					
 					if((thisOne!=null)&&(useTheScroll(thisOne,mob)))
 					{
 						final Ability learnThisAbility=(Ability)thisOne.copyOf();
@@ -149,7 +208,7 @@ public class StdDissertation extends StdItem implements Scroll
 								final MOB teacher = CMClass.getFactoryMOB(mobName, lowest, R);
 								try
 								{
-									learnThisAbility.setProficiency(100); //TODO: really?
+									learnThisAbility.setProficiency(0); //really? Why use these, ever?
 									teacher.addAbility(learnA);
 									CMLib.expertises().postTeach(teacher,mob,learnA);
 								}
