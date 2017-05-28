@@ -682,16 +682,20 @@ public class CommonSkill extends StdAbility
 		final AbilityComponents.AbilityLimits remainders = CMLib.ableComponents().getSpecialSkillRemainder(studentM, this);
 		if(remainders.commonSkills()<=0)
 		{
-			teacherM.tell(L("@x1 can not learn any more common skills.",studentM.name(teacherM)));
+			if(teacherM != null)
+				teacherM.tell(L("@x1 can not learn any more common skills.",studentM.name(teacherM)));
 			studentM.tell(L("You have learned the maximum @x1 common skills, and may not learn any more.",""+remainders.maxCommonSkills()));
 			return false;
 		}
 		if(remainders.specificSkillLimit()<=0)
 		{
-			if(crafting)
-				teacherM.tell(L("@x1 can not learn any more crafting common skills.",studentM.name(teacherM)));
-			else
-				teacherM.tell(L("@x1 can not learn any more non-crafting common skills.",studentM.name(teacherM)));
+			if(teacherM != null)
+			{
+				if(crafting)
+					teacherM.tell(L("@x1 can not learn any more crafting common skills.",studentM.name(teacherM)));
+				else
+					teacherM.tell(L("@x1 can not learn any more non-crafting common skills.",studentM.name(teacherM)));
+			}
 			final int max = crafting ? remainders.maxCraftingSkills() : remainders.maxNonCraftingSkills();
 			if(crafting)
 				studentM.tell(L("You have learned the maximum @x1 crafting skills, and may not learn any more.",""+max));

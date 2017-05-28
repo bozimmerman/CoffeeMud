@@ -100,9 +100,11 @@ public class Spell_BaseClanEq extends Spell
 			for(final Enumeration<Ability> a=student.allAbilities();a.hasMoreElements();)
 			{
 				final Ability A=a.nextElement();
-				if((A!=null)&&(A instanceof Spell_BaseClanEq))
+				if((A!=null)
+				&&(A instanceof Spell_BaseClanEq))
 				{
-					teacher.tell(L("@x1 already knows '@x2', and may not learn another clan enchantment.",student.name(),A.name()));
+					if(teacher != null)
+						teacher.tell(L("@x1 already knows '@x2', and may not learn another clan enchantment.",student.name(),A.name()));
 					student.tell(L("You may only learn a single clan enchantment."));
 					return false;
 				}

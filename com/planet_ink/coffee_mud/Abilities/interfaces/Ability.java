@@ -419,11 +419,11 @@ public interface Ability extends Environmental
 	 * Returns whether the given student mob is able and allowed to learn
 	 * this skill from the given teacher.  Error messages should be directed
 	 * to both.  This method should focus exclusively on the qualifications
-	 * of the student.
+	 * of the student, and the teacher is optional.
 	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#canBeTaughtBy(MOB, MOB)
 	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#teach(MOB, MOB)
-	 * @param teacher the potential teacher of this skill
-	 * @param student the potential learner of this skill
+	 * @param teacher the potential teacher of this skill, may be null
+	 * @param student the potential learner of this skill, may NOT be null
 	 * @return whether the student can learn the skill from the teacher
 	 */
 	public boolean canBeLearnedBy(MOB teacher, MOB student);

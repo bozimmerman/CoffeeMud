@@ -664,11 +664,14 @@ public class WeatherAffects extends PuddleMaker
 						break;
 					case Climate.WEATHER_HEAT_WAVE:
 						if((C.weatherType(R)==Climate.WEATHER_HEAT_WAVE)
-						&&((mob.fetchWornItems(Item.WORN_TORSO,(short)0,(short)0).size()>0)||(mob.fetchWornItems(Item.WORN_ABOUT_BODY,(short)0,(short)0).size()>0)))
+						&&(mob.charStats().getStat(CharStats.STAT_SAVE_FIRE)<10)
+						&&((mob.fetchWornItems(Item.WORN_TORSO,(short)0,(short)0).size()>0)
+							||(mob.fetchWornItems(Item.WORN_ABOUT_BODY,(short)0,(short)0).size()>0)))
 							mob.tell(L("^JYou are sweating in the grueling heat.^?"));
 						break;
 					case Climate.WEATHER_WINTER_COLD:
-						if((C.weatherType(R)==Climate.WEATHER_WINTER_COLD)&&((CMLib.dice().rollPercentage()>mob.charStats().getStat(CharStats.STAT_SAVE_COLD))))
+						if((C.weatherType(R)==Climate.WEATHER_WINTER_COLD)
+						&&(mob.charStats().getStat(CharStats.STAT_SAVE_COLD)<10))
 							mob.tell(L("^JYou shiver in the cold.^?"));
 						break;
 					}

@@ -81,7 +81,8 @@ public class Spell_ClarifyScroll extends Spell
 		if(target==null)
 			return false;
 
-		if(!(target instanceof Scroll))
+		if((!(target instanceof Scroll))
+		||(!(target instanceof MiscMagic)))
 		{
 			mob.tell(L("You can't clarify that."));
 			return false;

@@ -4157,33 +4157,36 @@ public class StdMOB implements MOB
 	}
 
 	@Override
-	public boolean willFollowOrdersOf(MOB mob)
+	public boolean willFollowOrdersOf(final MOB mob)
 	{
-		if ((amFollowing() == mob)
-		|| ((isMonster() && CMSecurity.isAllowed(mob, location(), CMSecurity.SecFlag.ORDER)))
-		|| (getLiegeID().equals(mob.Name()))
-		|| (CMLib.law().doesOwnThisProperty(mob, CMLib.map().getStartRoom(this))))
-			return true;
-		if ((!isMonster())
-		&& (CMSecurity.isAllowedEverywhere(mob, CMSecurity.SecFlag.ORDER))
-		&& ((!CMSecurity.isASysOp(this)) || CMSecurity.isASysOp(mob)))
-			return true;
-		for(final Triad<Clan,Integer,Integer> t : CMLib.clans().findCommonRivalrousClans(this, mob))
+		if(mob != null)
 		{
-			final Clan C=t.first;
-			final int myRole=t.second.intValue();
-			final int hisRole=t.third.intValue();
-			if ((C.getAuthority(hisRole, Clan.Function.ORDER_UNDERLINGS) != Clan.Authority.CAN_NOT_DO)
-			&& (C.doesOutRank(hisRole, myRole)))
+			if ((amFollowing() == mob)
+			|| ((isMonster() && CMSecurity.isAllowed(mob, location(), CMSecurity.SecFlag.ORDER)))
+			|| (getLiegeID().equals(mob.Name()))
+			|| (CMLib.law().doesOwnThisProperty(mob, CMLib.map().getStartRoom(this))))
 				return true;
-			else
-			if ((isMonster())
-			&& (C.getAuthority(hisRole, Clan.Function.ORDER_CONQUERED) != Clan.Authority.CAN_NOT_DO)
-			&& (getStartRoom() != null))
+			if ((!isMonster())
+			&& (CMSecurity.isAllowedEverywhere(mob, CMSecurity.SecFlag.ORDER))
+			&& ((!CMSecurity.isASysOp(this)) || CMSecurity.isASysOp(mob)))
+				return true;
+			for(final Triad<Clan,Integer,Integer> t : CMLib.clans().findCommonRivalrousClans(this, mob))
 			{
-				final LegalBehavior B = CMLib.law().getLegalBehavior(getStartRoom());
-				if ((B != null) && (mob.getClanRole(B.rulingOrganization())!=null))
+				final Clan C=t.first;
+				final int myRole=t.second.intValue();
+				final int hisRole=t.third.intValue();
+				if ((C.getAuthority(hisRole, Clan.Function.ORDER_UNDERLINGS) != Clan.Authority.CAN_NOT_DO)
+				&& (C.doesOutRank(hisRole, myRole)))
 					return true;
+				else
+				if ((isMonster())
+				&& (C.getAuthority(hisRole, Clan.Function.ORDER_CONQUERED) != Clan.Authority.CAN_NOT_DO)
+				&& (getStartRoom() != null))
+				{
+					final LegalBehavior B = CMLib.law().getLegalBehavior(getStartRoom());
+					if ((B != null) && (mob.getClanRole(B.rulingOrganization())!=null))
+						return true;
+				}
 			}
 		}
 		return false;

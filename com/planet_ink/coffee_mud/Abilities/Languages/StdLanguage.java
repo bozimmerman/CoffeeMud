@@ -505,7 +505,8 @@ public class StdLanguage extends StdAbility implements Language
 		final AbilityComponents.AbilityLimits remainders = CMLib.ableComponents().getSpecialSkillRemainder(student, this);
 		if(remainders.languageSkills()<=0)
 		{
-			teacher.tell(L("@x1 can not learn any more languages.",student.name(teacher)));
+			if(teacher != null)
+				teacher.tell(L("@x1 can not learn any more languages.",student.name(teacher)));
 			student.tell(L("You have learned the maximum @xlanguages, and may not learn any more.",""+remainders.maxLanguageSkills()));
 			return false;
 		}

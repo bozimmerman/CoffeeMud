@@ -94,9 +94,10 @@ public class Spell_Scribe extends Spell
 			mob.tell(L("You don't see '@x1' here.",(commands.get(commands.size()-1))));
 			return false;
 		}
-		if(!(target instanceof Scroll))
+		if((!(target instanceof Scroll))
+		||(!(target instanceof MiscMagic)))
 		{
-			mob.tell(L("You can't scribe onto that."));
+			mob.tell(L("You can't scribe magic onto that."));
 			return false;
 		}
 

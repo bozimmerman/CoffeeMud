@@ -1084,7 +1084,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					if(I instanceof Potion)
 						return ((Potion)I).getSpellList();
 					else
-					if(I instanceof Scroll)
+					if((I instanceof Scroll)
+					&&(I instanceof MiscMagic))
 						return ((Scroll)I).getSpellList();
 					return "";
 				}

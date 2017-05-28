@@ -1777,21 +1777,24 @@ public class StdAbility implements Ability
 		if(!cost.doesMeetCostRequirements(student))
 		{
 			final String ofWhat=cost.costType(student);
-			teacher.tell(L("@x1 does not have enough @x2 to learn '@x3'.",student.name(),ofWhat,name()));
+			if(teacher != null)
+				teacher.tell(L("@x1 does not have enough @x2 to learn '@x3'.",student.name(),ofWhat,name()));
 			student.tell(L("You do not have enough @x1.",ofWhat));
 			return false;
 		}
 		if((student.isAttributeSet(MOB.Attrib.NOTEACH))
 		&&((!student.isMonster())||(!student.willFollowOrdersOf(teacher))))
 		{
-			teacher.tell(L("@x1 is refusing training at this time.",student.name()));
+			if(teacher != null)
+				teacher.tell(L("@x1 is refusing training at this time.",student.name()));
 			student.tell(L("You are refusing training at this time."));
 			return false;
 		}
 		final int qLevel=CMLib.ableMapper().qualifyingLevel(student,this);
 		if(qLevel<0)
 		{
-			teacher.tell(L("@x1 is not the right class to learn '@x2'.",student.name(),name()));
+			if(teacher != null)
+				teacher.tell(L("@x1 is not the right class to learn '@x2'.",student.name(),name()));
 			student.tell(L("You are not the right class to learn '@x1'.",name()));
 			return false;
 		}
@@ -1799,50 +1802,58 @@ public class StdAbility implements Ability
 		&&(!CMLib.ableMapper().qualifiesByLevel(student,this))
 		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS)))
 		{
-			teacher.tell(L("@x1 is not high enough level to learn '@x2'.",student.name(),name()));
+			if(teacher != null)
+				teacher.tell(L("@x1 is not high enough level to learn '@x2'.",student.name(),name()));
 			student.tell(L("You are not high enough level to learn '@x1'.",name()));
 			return false;
 		}
 		if(student.charStats().getStat(CharStats.STAT_INTELLIGENCE)<2)
 		{
-			teacher.tell(L("@x1 is too stupid to learn new skills.",student.name()));
+			if(teacher != null)
+				teacher.tell(L("@x1 is too stupid to learn new skills.",student.name()));
 			student.tell(L("You are too stupid to learn new skills."));
 			return false;
 		}
 		if(qLevel>(student.charStats().getStat(CharStats.STAT_INTELLIGENCE)+18))
 		{
-			teacher.tell(L("@x1 is not smart enough to learn level @x2 skills.",student.name(),qLevel+""));
+			if(teacher != null)
+				teacher.tell(L("@x1 is not smart enough to learn level @x2 skills.",student.name(),qLevel+""));
 			student.tell(L("You are not of high enough intelligence to learn level @x2 skills.",qLevel+""));
 			return false;
 		}
 		final Ability yourAbility=student.fetchAbility(ID());
-		final Ability teacherAbility=teacher.fetchAbility(ID());
+		final Ability teacherAbility=(teacher != null) ? teacher.fetchAbility(ID()) : null;
 		if(yourAbility!=null)
 		{
-			teacher.tell(L("@x1 already knows '@x2'.",student.name(),name()));
+			if(teacher != null)
+				teacher.tell(L("@x1 already knows '@x2'.",student.name(),name()));
 			student.tell(L("You already know '@x1'.",name()));
 			return false;
 		}
 
-		if(teacherAbility!=null)
+		if(teacher != null)
 		{
-			final int prof25=(int)Math.round(CMath.mul(CMLib.ableMapper().getMaxProficiency(student,true,teacherAbility.ID()), .25));
-			if(teacherAbility.proficiency()<prof25)
+			if(teacherAbility!=null)
 			{
-				teacher.tell(L("You aren't proficient enough to teach '@x1'.",name()));
-				student.tell(L("@x1 isn't proficient enough to teach you '@x2'.",teacher.name(),name()));
+				final int prof25=(int)Math.round(CMath.mul(CMLib.ableMapper().getMaxProficiency(student,true,teacherAbility.ID()), .25));
+				if(teacherAbility.proficiency()<prof25)
+				{
+					teacher.tell(L("You aren't proficient enough to teach '@x1'.",name()));
+					student.tell(L("@x1 isn't proficient enough to teach you '@x2'.",teacher.name(),name()));
+					return false;
+				}
+			}
+			else
+			{
+				student.tell(L("@x1 does not know anything about that.",teacher.name()));
+				teacher.tell(L("You don't know that."));
 				return false;
 			}
 		}
-		else
-		{
-			student.tell(L("@x1 does not know anything about that.",teacher.name()));
-			teacher.tell(L("You don't know that."));
-			return false;
-		}
 		if(student.isInCombat())
 		{
-			teacher.tell(L("@x1 seems busy right now.",student.name()));
+			if(teacher != null)
+				teacher.tell(L("@x1 seems busy right now.",student.name()));
 			student.tell(L("Not while you are fighting!"));
 			return false;
 		}
@@ -1850,7 +1861,8 @@ public class StdAbility implements Ability
 		if(CMLib.flags().isSleeping(student)||CMLib.flags().isSitting(student))
 		{
 			student.tell(L("You need to stand up and be alert to learn."));
-			teacher.tell(L("@x1 needs to stand up to be taught about that.",student.name()));
+			if(teacher != null)
+				teacher.tell(L("@x1 needs to stand up to be taught about that.",student.name()));
 			return false;
 		}
 
@@ -1859,7 +1871,8 @@ public class StdAbility implements Ability
 		{
 			final String reason="requirements: "+CMLib.masking().maskDesc(extraMask);
 			student.tell(L("You may not learn '@x1' at this time due to the @x2.",name(),reason));
-			teacher.tell(L("@x1 does not fit the '@x2' @x3.",student.name(),name(),reason));
+			if(teacher != null)
+				teacher.tell(L("@x1 does not fit the '@x2' @x3.",student.name(),name(),reason));
 			return false;
 		}
 
@@ -1868,7 +1881,8 @@ public class StdAbility implements Ability
 		{
 			final String names=CMLib.ableMapper().formatPreRequisites(prereqs);
 			student.tell(L("You must learn @x1 before you can gain @x2.",names,name()));
-			teacher.tell(L("@x1 has net learned the pre-requisites to @x2 yet.",student.name(),name()));
+			if(teacher != null)
+				teacher.tell(L("@x1 has net learned the pre-requisites to @x2 yet.",student.name(),name()));
 			return false;
 		}
 

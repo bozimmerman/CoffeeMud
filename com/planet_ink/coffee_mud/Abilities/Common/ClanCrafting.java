@@ -152,14 +152,16 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 			return true;
 		if(!student.clans().iterator().hasNext())
 		{
-			teacher.tell(L("@x1 is not a member of a clan.",student.name()));
+			if(teacher != null)
+				teacher.tell(L("@x1 is not a member of a clan.",student.name()));
 			student.tell(L("You need to belong to a clan before you can learn @x1.",name()));
 			return false;
 		}
 		final Pair<Clan,Integer> p=CMLib.clans().findPrivilegedClan(student, Clan.Function.ENCHANT);
 		if(p==null)
 		{
-			teacher.tell(L("@x1 is not authorized to draw from the power of @x2 clan.",student.name(),student.charStats().hisher()));
+			if(teacher != null)
+				teacher.tell(L("@x1 is not authorized to draw from the power of @x2 clan.",student.name(),student.charStats().hisher()));
 			student.tell(L("You must be authorized to draw from the power of your clan to learn this skill."));
 			return false;
 		}

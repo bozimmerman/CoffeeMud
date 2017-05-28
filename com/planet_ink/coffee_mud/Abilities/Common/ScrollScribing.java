@@ -351,7 +351,9 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 				commonTell(mob,L("@x1 isn't even made of paper or silk!",buildingI.name(mob)));
 				return false;
 			}
-			if((!(buildingI instanceof Scroll))||(!buildingI.isGeneric()))
+			if((!(buildingI instanceof Scroll))
+			||(!buildingI.isGeneric())
+			||(!(buildingI instanceof MiscMagic)))
 			{
 				commonTell(mob,L("There's can't enscribe magic on @x1!",buildingI.name(mob)));
 				return false;
