@@ -237,7 +237,7 @@ public class Go extends StdCommand
 				mob.tell(L("@x1 which direction?\n\rTry @x2.",CMStrings.capitalizeAndLower(doing),validDirs.toLowerCase()));
 			else
 			if(prequeCommands.size()>0)
-				mob.enqueCommands(prequeCommands, metaFlags);
+				mob.prequeCommands(prequeCommands, metaFlags);
 		}
 		return false;
 	}
