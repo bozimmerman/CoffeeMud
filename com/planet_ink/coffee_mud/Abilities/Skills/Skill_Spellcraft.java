@@ -148,7 +148,8 @@ public class Skill_Spellcraft extends StdSkill
 			final int lvl=(mob.phyStats().level()/3)+getXLEVELLevel(mob);
 			if(myLevel<lvl)
 				myLevel=lvl;
-			if(((!hasAble)||proficiencyCheck(mob,0,false))&&(lowestLevel<=myLevel))
+			if(((!hasAble)||proficiencyCheck(mob,0,false))
+			&&(lowestLevel<=myLevel))
 			{
 				final Ability A=(Ability)copyOf();
 				A.setMiscText(msg.tool().ID());

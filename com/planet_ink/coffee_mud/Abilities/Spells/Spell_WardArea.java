@@ -304,6 +304,7 @@ public class Spell_WardArea extends Spell implements Trap
 			mob.tell(L("You don't know any arcane spell by that name."));
 			return false;
 		}
+		shooter = (Ability)shooter.copyOf();
 
 		if(shooter.enchantQuality()==Ability.QUALITY_MALICIOUS)
 		{
@@ -333,6 +334,7 @@ public class Spell_WardArea extends Spell implements Trap
 		if(success)
 		{
 
+			setMiscText(shooter.ID());
 			final CMMsg msg = CMClass.getMsg(mob, target, this, verbalCastCode(mob,target,auto), auto?"":L("^S<S-NAME> set(s) a magical trap.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{

@@ -340,11 +340,12 @@ public class Arcanist extends Thief
 					}
 				}
 				else
-				if(msg.tool().ID().equals("Spell_Scribe")
+				if((msg.sourceMinor()!=CMMsg.TYP_PREINVOKE)
+				&&(msg.tool().ID().equals("Spell_Scribe")
 				||msg.tool().ID().equals("Spell_EnchantWand")
 				||msg.tool().ID().equals("Spell_MagicItem")
 				||msg.tool().ID().equals("Spell_StoreSpell")
-				||msg.tool().ID().equals("Spell_WardArea"))
+				||msg.tool().ID().equals("Spell_WardArea")))
 				{
 					final Ability A=mob.fetchAbility(msg.tool().text());
 					if((A!=null)&&(!A.isSavable()))
