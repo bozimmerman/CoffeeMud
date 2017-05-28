@@ -192,11 +192,13 @@ public class StdDissertation extends StdItem implements Scroll
 					{
 						final Ability learnThisAbility=(Ability)thisOne.copyOf();
 						final String name = this.name;
+						final Item item = this;
 						final Runnable learnIt = new Runnable()
 						{
 							public final Ability learnA = learnThisAbility;
 							public final Room	 R 		= mob.location();
 							public final String	 mobName= name;
+							public final Item 	 I		= item;
 							
 							@Override
 							public void run()
@@ -217,6 +219,10 @@ public class StdDissertation extends StdItem implements Scroll
 									teacher.delAllAbilities();
 									teacher.destroy();
 								}
+								if(I.usesRemaining()<2)
+									I.destroy();
+								else
+									I.setUsesRemaining(I.usesRemaining()-1);
 							}
 						};
 						final Session sess=mob.session();
