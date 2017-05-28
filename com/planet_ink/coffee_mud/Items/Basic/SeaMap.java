@@ -120,13 +120,16 @@ public class SeaMap extends BardMap
 			}
 
 			map=new StringBuffer[xsize+1][ysize+1];
+			StringBuilder line1=new StringBuilder("");
+			StringBuilder line2=new StringBuilder("");
+			StringBuilder line3=new StringBuilder("");
 			for(int y=0;y<grid[0].length;y++)
 			{
+				line1.setLength(0);
+				line2.setLength(0);
+				line3.setLength(0);
 				final int ycoord=y/numYSquares;
 				int lastX=-1;
-				String line1="";
-				String line2="";
-				String line3="";
 				int xcoord=-1;
 				for(int x=0;x<grid.length;x++)
 				{
@@ -137,33 +140,34 @@ public class SeaMap extends BardMap
 						{
 							if(map[lastX][ycoord]==null)
 								map[lastX][ycoord]=new StringBuffer("");
-							map[lastX][ycoord].append(line1+"\n\r"+line2+"\n\r"+line3+"\n\r");
+							map[lastX][ycoord].append(line1.toString()+"\n\r"+line2.toString()+"\n\r"+line3.toString()+"\n\r");
 						}
 						lastX=xcoord;
-						line1="";
-						line2="";
-						line3="";
+						line1.setLength(0);
+						line2.setLength(0);
+						line3.setLength(0);
 					}
 					final MapRoom room=grid[x][y];
 					if(room==null)
 					{
-						line1+="   ";
-						line2+="   ";
-						line3+="   ";
+						line1.append("   ");
+						line2.append("   ");
+						line3.append("   ");
 					}
 					else
 					{
 						final char roomC=roomChar(room.r);
-						line1+=" "+dirChar(Directions.NORTH,grid,x,y,' ')+" ";
-						line2+=dirChar(Directions.WEST,grid,x,y,' ')+roomC+dirChar(Directions.EAST,grid,x,y,' ');
-						line3+=" "+dirChar(Directions.SOUTH,grid,x,y,' ')+" ";
+						line1.append(" ").append(dirChar(Directions.NORTH,grid,x,y,' ')).append(" ");
+						line2.append(dirChar(Directions.WEST,grid,x,y,' '))
+							 .append(roomC).append(dirChar(Directions.EAST,grid,x,y,' '));
+						line3.append(" ").append(dirChar(Directions.SOUTH,grid,x,y,' ')).append(" ");
 					}
 				}
 				if(xcoord>=0)
 				{
 					if(map[xcoord][ycoord]==null)
 						map[xcoord][ycoord]=new StringBuffer("");
-					map[xcoord][ycoord].append(line1+"\n\r"+line2+"\n\r"+line3+"\n\r");
+					map[xcoord][ycoord].append(line1.toString()+"\n\r"+line2.toString()+"\n\r"+line3.toString()+"\n\r");
 				}
 			}
 		}
