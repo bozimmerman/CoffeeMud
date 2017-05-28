@@ -129,7 +129,7 @@ public class Spell_AnalyzeDweomer extends Spell
 					if(target instanceof MiscMagic)
 						str.append(L("It is a magic scroll.  "));
 					else
-						str.append(L("It is a dissertation.  "));
+						str.append(L("It is an instructional document.  "));
 				}
 				if(target instanceof Wand)
 					str.append(L("It is a magic wand.  "));
