@@ -2088,33 +2088,35 @@ public class CMMap extends StdLibrary implements WorldMap
 		}
 		try
 		{
+			final List<Pair<Room,Integer>> roomsToDo=new LinkedList<Pair<Room,Integer>>();
 			for(final Enumeration<Room> r=rooms();r.hasMoreElements();)
 			{
 				Room R=r.nextElement();
-				boolean changes=false;
-				synchronized(("SYNC"+R.roomID()).intern())
+				R=getRoom(R);
+				if(R!=null)
 				{
-					R=getRoom(R);
-					if(R!=null)
+					for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 					{
-						for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
-						{
-							final Room thatRoom=R.rawDoors()[d];
-							if(thatRoom==deadRoom)
-							{
-								R.rawDoors()[d]=null;
-								changes=true;
-								if((R.getRawExit(d)!=null)&&(R.getRawExit(d).isGeneric()))
-								{
-									final Exit GE=R.getRawExit(d);
-									GE.setTemporaryDoorLink(deadRoom.roomID());
-								}
-							}
-						}
+						final Room thatRoom=R.rawDoors()[d];
+						if(thatRoom==deadRoom)
+							roomsToDo.add(new Pair<Room,Integer>(R,Integer.valueOf(d)));
 					}
 				}
-				if(changes)
+			}
+			for(Pair<Room,Integer> p : roomsToDo)
+			{
+				final Room R=p.first;
+				int d=p.second.intValue();
+				synchronized(("SYNC"+R.roomID()).intern())
+				{
+					R.rawDoors()[d]=null;
+					if((R.getRawExit(d)!=null)&&(R.getRawExit(d).isGeneric()))
+					{
+						final Exit GE=R.getRawExit(d);
+						GE.setTemporaryDoorLink(deadRoom.roomID());
+					}
 					CMLib.database().DBUpdateExits(R);
+				}
 			}
 		}
 		catch (final NoSuchElementException e)
@@ -3472,7 +3474,6 @@ public class CMMap extends StdLibrary implements WorldMap
 				}
 				R.sendOthers(expireM,expireMsg);
 			}
-
 		}
 		catch(final java.util.NoSuchElementException e)
 		{
